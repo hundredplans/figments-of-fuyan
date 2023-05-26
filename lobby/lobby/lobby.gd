@@ -15,8 +15,7 @@ func on_initialize_cards() -> Dictionary:
 		
 		card = convert_json_card_stats(card)
 		
-	print(cards_as_dict)
-	return {}
+	return cards_as_dict
 	
 func convert_json_card_stats(card: Dictionary) -> Dictionary:
 
