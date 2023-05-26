@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://d4egp3pgm332b"]
+
+[ext_resource type="Shader" path="res://test/ShaderTester/graphing_canvas.gdshader" id="1_5ik4k"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oll6y"]
+shader = ExtResource("1_5ik4k")
+
+[node name="GraphingCanvas" type="ColorRect"]
+material = SubResource("ShaderMaterial_oll6y")
+custom_minimum_size = Vector2(100, 100)

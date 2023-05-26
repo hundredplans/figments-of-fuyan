@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://c455jhickkjbc"]
+
+[ext_resource type="PackedScene" uid="uid://cnoeey3ynxfun" path="res://test/Water/WaterPlane.tscn" id="1_m3skc"]
+
+[node name="Map" type="Node3D"]
+
+[node name="WaterPlane" parent="." instance=ExtResource("1_m3skc")]

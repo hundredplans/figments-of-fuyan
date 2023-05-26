@@ -1,0 +1,94 @@
+[gd_scene load_steps=6 format=3 uid="uid://fq4xgxq0f6uh"]
+
+[ext_resource type="Texture2D" uid="uid://bkuqgnl8duu46" path="res://test/test_two/test_img.png" id="1_2cf1y"]
+[ext_resource type="Texture2D" uid="uid://rr6rnq25ybeo" path="res://test/cards/back_bg.png" id="1_xc0mt"]
+[ext_resource type="Texture2D" uid="uid://baon4ku440143" path="res://test/cards/angrusspr.png" id="2_qa31w"]
+[ext_resource type="FontFile" uid="uid://cbis1iyjjgv0q" path="res://test/cards/DynaPuff-SemiBold.ttf" id="5_ttouy"]
+[ext_resource type="FontFile" uid="uid://civw1ihn8qd38" path="res://test/cards/kenyan coffee bd.ttf" id="6_s3n70"]
+
+[node name="Card" type="Sprite3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.50095, 0)
+double_sided = false
+render_priority = 1
+texture = ExtResource("1_2cf1y")
+
+[node name="Sprite" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.807563, 0)
+texture = ExtResource("2_qa31w")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.49, 0, 0, 0, 3, 0, 0, 0, 0.02, 0, 0, -0.011)
+
+[node name="BackCard" type="Sprite3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -0.0235319)
+double_sided = false
+texture = ExtResource("1_xc0mt")
+
+[node name="Text" type="Node3D" parent="."]
+
+[node name="att" type="Label3D" parent="Text"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.513618, 0.0263183, 0.01)
+double_sided = false
+alpha_cut = 1
+text = "2"
+font = ExtResource("5_ttouy")
+outline_size = 18
+
+[node name="hp" type="Label3D" parent="Text"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.514154, 0.0345069, 0.01)
+double_sided = false
+alpha_cut = 1
+text = "4"
+font = ExtResource("5_ttouy")
+outline_size = 18
+
+[node name="energy" type="Label3D" parent="Text"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.566613, 1.32405, 0.01)
+double_sided = false
+alpha_cut = 1
+text = "4"
+font = ExtResource("5_ttouy")
+outline_size = 18
+
+[node name="spd" type="Label3D" parent="Text"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.547094, 1.34201, 0.01)
+double_sided = false
+alpha_cut = 1
+text = "3"
+font = ExtResource("5_ttouy")
+outline_size = 18
+
+[node name="clan" type="Label3D" parent="Text"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00158359, 0.0722256, 0.01)
+double_sided = false
+alpha_cut = 1
+text = "Palm"
+font = ExtResource("6_s3n70")
+font_size = 20
+outline_size = 8
+
+[node name="name" type="Label3D" parent="Text"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.28774, 0.01)
+double_sided = false
+alpha_cut = 1
+text = "Angrus Palmus"
+font = ExtResource("6_s3n70")
+
+[node name="text" type="Label3D" parent="Text"]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, -0.471392, 0.01)
+double_sided = false
+alpha_cut = 1
+texture_filter = 0
+text = "When an ally Coconut is 
+played: Gain: [+2/0]: 
+Lose it start of turn"
+font = ExtResource("6_s3n70")
+font_size = 48
+line_spacing = 20.0
+metadata/_edit_lock_ = true
+
+[node name="Node3D" type="Node3D" parent="Text"]
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0

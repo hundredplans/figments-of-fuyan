@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://test/test_two/game_world.gd" id="1_226l3"]
+[ext_resource type="PackedScene" uid="uid://c6aoiv8d2bxpd" path="res://test/test_two/tiles.tscn" id="2_psv24"]
+
+[node name="World" type="Node3D"]
+script = ExtResource("1_226l3")
+
+[node name="tiles" parent="." instance=ExtResource("2_psv24")]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.831954, 0.554844, 0, -0.554844, 0.831954, 0, 4.75663, 11.2853)

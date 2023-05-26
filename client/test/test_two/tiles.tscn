@@ -1,0 +1,145 @@
+[gd_scene load_steps=4 format=3 uid="uid://c6aoiv8d2bxpd"]
+
+[ext_resource type="Script" path="res://test/test_two/tiles.gd" id="1_13psk"]
+[ext_resource type="PackedScene" uid="uid://dl1qope4455w6" path="res://test/cards/camera_with_card.tscn" id="3_3xqyt"]
+[ext_resource type="PackedScene" uid="uid://bmewkpqg0ys2n" path="res://test/test_two/tile.tscn" id="3_qnvvs"]
+
+[node name="tiles" type="Node3D"]
+script = ExtResource("1_13psk")
+
+[node name="tile1" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 0)
+
+[node name="tile2" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 2)
+
+[node name="tile3" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 4)
+
+[node name="tile4" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 6)
+
+[node name="tile5" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 8)
+
+[node name="tile6" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -2)
+
+[node name="tile7" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -8)
+
+[node name="tile8" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -6)
+
+[node name="tile9" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -4)
+
+[node name="tile10" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
+
+[node name="tile11" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 2)
+
+[node name="tile12" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 4)
+
+[node name="tile13" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 6)
+
+[node name="tile14" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 8)
+
+[node name="tile15" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -2)
+
+[node name="tile16" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -8)
+
+[node name="tile17" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -6)
+
+[node name="tile18" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -4)
+
+[node name="tile19" parent="." instance=ExtResource("3_qnvvs")]
+
+[node name="tile20" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
+
+[node name="tile21" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
+
+[node name="tile22" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
+
+[node name="tile23" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 8)
+
+[node name="tile24" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
+
+[node name="tile25" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8)
+
+[node name="tile26" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -6)
+
+[node name="tile27" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4)
+
+[node name="tile28" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+
+[node name="tile29" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 2)
+
+[node name="tile30" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 4)
+
+[node name="tile31" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 6)
+
+[node name="tile32" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 8)
+
+[node name="tile33" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -2)
+
+[node name="tile34" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -8)
+
+[node name="tile35" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -6)
+
+[node name="tile36" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -4)
+
+[node name="tile37" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)
+
+[node name="tile38" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 2)
+
+[node name="tile39" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 4)
+
+[node name="tile40" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 6)
+
+[node name="tile41" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 8)
+
+[node name="tile42" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -2)
+
+[node name="tile43" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -8)
+
+[node name="tile44" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -6)
+
+[node name="tile45" parent="." instance=ExtResource("3_qnvvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -4)
+
+[node name="camera_with_card" parent="." instance=ExtResource("3_3xqyt")]
+transform = Transform3D(-0.0298232, 0, -0.999555, 0, 1, 0, 0.999555, 0, -0.0298232, -4.65856, 0.792337, 0.0443578)

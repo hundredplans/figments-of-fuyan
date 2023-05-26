@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://cjtyhpkwqbf74"]
+
+[ext_resource type="PackedScene" uid="uid://coe1lnws204nd" path="res://test/default_pillar.blend" id="1_bjqa5"]
+[ext_resource type="Script" path="res://test/default_pillar.gd" id="2_6opd4"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ys40c"]
+size = Vector3(1.9, 0.1, 1.9)
+
+[node name="default_pillar" instance=ExtResource("1_bjqa5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0148582, 0.0149584, -0.050477)
+script = ExtResource("2_6opd4")
+
+[node name="MouseCollision" type="Area3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.1054, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MouseCollision" index="0"]
+shape = SubResource("BoxShape3D_ys40c")

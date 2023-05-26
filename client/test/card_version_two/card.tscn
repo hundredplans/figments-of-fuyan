@@ -1,0 +1,52 @@
+[gd_scene load_steps=2 format=3 uid="uid://clainut21cjok"]
+
+[ext_resource type="PackedScene" uid="uid://dn7k1ava3yw5q" path="res://assets/max_mini/max/card_back/sugori_card_back/card_back.blend" id="3_11gqc"]
+
+[node name="card" type="Node3D"]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
+metadata/_edit_lock_ = true
+
+[node name="card_back" parent="." instance=ExtResource("3_11gqc")]
+
+[node name="stats" type="Node3D" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="text" type="Node3D" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="clan" type="Label3D" parent="text"]
+
+[node name="name" type="Label3D" parent="text"]
+
+[node name="text" type="Label3D" parent="text"]
+
+[node name="art" type="Node3D" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="art_max" type="Sprite3D" parent="art"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.808, 0.011)
+alpha_cut = 1
+metadata/_edit_lock_ = true
+
+[node name="stats" type="Sprite3D" parent="art"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.014)
+double_sided = false
+metadata/_edit_lock_ = true
+
+[node name="hero_mark" type="Sprite3D" parent="art"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.013)
+double_sided = false
+metadata/_edit_lock_ = true
+
+[node name="base" type="Sprite3D" parent="art"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.012)
+double_sided = false
+alpha_cut = 1
+render_priority = 1
+metadata/_edit_lock_ = true
+
+[node name="shadow" type="Sprite3D" parent="art"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.609, 0.015)
+double_sided = false
+alpha_cut = 1
+metadata/_edit_lock_ = true

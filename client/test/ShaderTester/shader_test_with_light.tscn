@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://ct2p4sq66816r"]
+
+[ext_resource type="PackedScene" uid="uid://d1hp1reusxpts" path="res://test/ShaderTester/shader_tester.tscn" id="1_ylmlh"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="ShaderTester" parent="." instance=ExtResource("1_ylmlh")]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.902277, 0.431157, 0, -0.431157, 0.902277, 0.218707, 2.07698, 2.27886)
+light_color = Color(0, 0.956863, 0.956863, 1)
+light_energy = 5.073
+light_indirect_energy = 3.0
+omni_range = 65.391
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+visible = false

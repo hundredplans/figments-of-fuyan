@@ -1,0 +1,23 @@
+[gd_scene load_steps=6 format=3 uid="uid://d1hp1reusxpts"]
+
+[ext_resource type="Shader" path="res://test/ShaderTester/shader_tester.gdshader" id="1_cx7j5"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_hvdar"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_j2sj4"]
+noise = SubResource("FastNoiseLite_hvdar")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ye81i"]
+render_priority = 0
+shader = ExtResource("1_cx7j5")
+shader_parameter/noise = SubResource("NoiseTexture2D_j2sj4")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_tl7po"]
+material = SubResource("ShaderMaterial_ye81i")
+size = Vector2(10, 10)
+subdivide_width = 32
+subdivide_depth = 32
+
+[node name="ShaderTester" type="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.261)
+mesh = SubResource("PlaneMesh_tl7po")

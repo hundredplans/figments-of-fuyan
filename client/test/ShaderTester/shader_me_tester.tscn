@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://5u2nj3xbv6n2"]
+
+[ext_resource type="Shader" path="res://test/ShaderTester/shader_me_tester.gdshader" id="1_kmoit"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_aiyvg"]
+render_priority = 0
+shader = ExtResource("1_kmoit")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_dsqdp"]
+material = SubResource("ShaderMaterial_aiyvg")
+
+[node name="shader_me_tester" type="MeshInstance3D"]
+mesh = SubResource("PlaneMesh_dsqdp")

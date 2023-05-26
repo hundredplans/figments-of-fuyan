@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://n4c4sxuw1lo7"]
+
+[ext_resource type="Shader" path="res://test/ShaderTester/shader_me_tester_2d.gdshader" id="1_t4okg"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_s8em7"]
+shader = ExtResource("1_t4okg")
+
+[node name="shader_me_tester_2d" type="CollisionPolygon2D"]
+material = SubResource("ShaderMaterial_s8em7")
+position = Vector2(98, 108)
+build_mode = 1
+polygon = PackedVector2Array(8, -77, 116, -46, 11, -42)

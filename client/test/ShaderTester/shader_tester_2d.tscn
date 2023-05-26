@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://cud1hv3o35r88"]
+
+[ext_resource type="Texture2D" uid="uid://c551hp3mjg3s3" path="res://icon.svg" id="1_nccap"]
+[ext_resource type="Shader" path="res://test/ShaderTester/shader_tester_2d.gdshader" id="1_tj55s"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fo2jc"]
+shader = ExtResource("1_tj55s")
+shader_parameter/size = null
+shader_parameter/blue = 1.0
+
+[node name="ShaderTester" type="Sprite2D"]
+material = SubResource("ShaderMaterial_fo2jc")
+texture = ExtResource("1_nccap")

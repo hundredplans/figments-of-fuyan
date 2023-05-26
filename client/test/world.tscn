@@ -1,0 +1,63 @@
+[gd_scene load_steps=8 format=3 uid="uid://47dytr5f0oss"]
+
+[ext_resource type="Script" path="res://test/world.gd" id="1_4wyro"]
+[ext_resource type="PackedScene" uid="uid://dhl6xen5h4xhy" path="res://test/pillars.tscn" id="2_m1nn2"]
+[ext_resource type="Script" path="res://test/Cards.gd" id="2_nshup"]
+[ext_resource type="Script" path="res://test/Camera.gd" id="3_lwaf1"]
+[ext_resource type="PackedScene" uid="uid://cnoeey3ynxfun" path="res://test/Water/WaterPlane.tscn" id="5_34q3s"]
+[ext_resource type="PackedScene" uid="uid://dl1qope4455w6" path="res://test/cards/camera_with_card.tscn" id="6_1cmp6"]
+
+[sub_resource type="Environment" id="Environment_msfvk"]
+background_mode = 1
+background_color = Color(0.568627, 0.827451, 0.972549, 1)
+background_energy_multiplier = 1.44
+
+[node name="World" type="Node3D"]
+script = ExtResource("1_4wyro")
+
+[node name="Cards" type="Node3D" parent="."]
+script = ExtResource("2_nshup")
+
+[node name="Camera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.4533, 13.3809, 8.76266)
+script = ExtResource("3_lwaf1")
+
+[node name="camera_with_card" parent="Camera" instance=ExtResource("6_1cmp6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.43954, 0, -7.80989)
+visible = false
+
+[node name="camera_with_card2" parent="Camera" instance=ExtResource("6_1cmp6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.716358, 0, -7.80989)
+visible = false
+
+[node name="camera_with_card3" parent="Camera" instance=ExtResource("6_1cmp6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.89689, 0, -7.80989)
+visible = false
+
+[node name="camera_with_card4" parent="Camera" instance=ExtResource("6_1cmp6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.1737, 0, -7.80989)
+visible = false
+
+[node name="camera_with_card5" parent="Camera" instance=ExtResource("6_1cmp6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.46046, 0, -7.80989)
+visible = false
+
+[node name="camera_with_card6" parent="Camera" instance=ExtResource("6_1cmp6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.18364, 0, -7.80989)
+visible = false
+
+[node name="camera_with_card7" parent="Camera" instance=ExtResource("6_1cmp6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.00311, 0, -7.80989)
+visible = false
+
+[node name="camera_with_card8" parent="Camera" instance=ExtResource("6_1cmp6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.7263, 0, -7.80989)
+visible = false
+
+[node name="Pillars" parent="." instance=ExtResource("2_m1nn2")]
+
+[node name="WaterPlane" parent="." instance=ExtResource("5_34q3s")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.40073, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_msfvk")
