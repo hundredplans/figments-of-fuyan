@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://bk4s7rropgbsh"]
+
+[ext_resource type="Script" path="res://screens/game_world/game_world.gd" id="1_k7yus"]
+
+[sub_resource type="Sky" id="Sky_7girg"]
+
+[sub_resource type="Environment" id="Environment_tcrgp"]
+background_mode = 2
+sky = SubResource("Sky_7girg")
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_alodn"]
+
+[node name="game_world" type="Node3D"]
+script = ExtResource("1_k7yus")
+
+[node name="Environment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_tcrgp")
+
+[node name="SimpleCamera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.792609, 0.60973, 0, -0.60973, 0.792609, 1.83758, 14.0031, 23.0814)
+attributes = SubResource("CameraAttributesPractical_alodn")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.294224, 0.955737, 0, -0.955737, 0.294224, 0, 66.0954, 0)

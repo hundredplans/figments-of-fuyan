@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="client"
-run/main_scene="res://test/test_two/test_two.tscn"
+run/main_scene="res://screens/main/main.tscn"
 config/features=PackedStringArray("4.0", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+lobby="*res://screens/lobby/lobby.tscn"
 
 [display]
 

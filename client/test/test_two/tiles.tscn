@@ -1,7 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://c6aoiv8d2bxpd"]
+[gd_scene load_steps=3 format=3 uid="uid://c6aoiv8d2bxpd"]
 
 [ext_resource type="Script" path="res://test/test_two/tiles.gd" id="1_13psk"]
-[ext_resource type="PackedScene" uid="uid://dl1qope4455w6" path="res://test/cards/camera_with_card.tscn" id="3_3xqyt"]
 [ext_resource type="PackedScene" uid="uid://bmewkpqg0ys2n" path="res://test/test_two/tile.tscn" id="3_qnvvs"]
 
 [node name="tiles" type="Node3D"]
@@ -140,6 +139,3 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -6)
 
 [node name="tile45" parent="." instance=ExtResource("3_qnvvs")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -4)
-
-[node name="camera_with_card" parent="." instance=ExtResource("3_3xqyt")]
-transform = Transform3D(-0.0298232, 0, -0.999555, 0, 1, 0, 0.999555, 0, -0.0298232, -4.65856, 0.792337, 0.0443578)

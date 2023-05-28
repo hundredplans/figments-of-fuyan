@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://bmovk7ggd0tyl"]
+
+[ext_resource type="PackedScene" uid="uid://6i2h01vjd1xx" path="res://assets/env/maps/start_screen/base_map.blend" id="1_cevmr"]
+
+[node name="start_screen" type="Node3D"]
+
+[node name="base_map" parent="." instance=ExtResource("1_cevmr")]
