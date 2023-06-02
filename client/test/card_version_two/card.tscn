@@ -1,12 +1,14 @@
-[gd_scene load_steps=2 format=3 uid="uid://clainut21cjok"]
+[gd_scene load_steps=6 format=3 uid="uid://clainut21cjok"]
 
-[ext_resource type="PackedScene" uid="uid://dn7k1ava3yw5q" path="res://assets/max_mini/max/card_back/sugori_card_back/card_back.blend" id="3_11gqc"]
+[ext_resource type="Script" path="res://test/card_version_two/card.gd" id="1_h4ecw"]
+[ext_resource type="Texture2D" uid="uid://bt1kdmwtdl6wk" path="res://assets/cards/28/art_max.png" id="2_3tel4"]
+[ext_resource type="PackedScene" uid="uid://c0rc5b48k3rdr" path="res://assets/max_mini/max/card_back/sugori_card_back/card_bac.blend" id="2_egkec"]
+[ext_resource type="Texture2D" uid="uid://p16aueug8gd0" path="res://assets/max_mini/max/stats/c.png" id="2_nenul"]
+[ext_resource type="Texture2D" uid="uid://u0f6gde5crix" path="res://assets/max_mini/max/base/1.png" id="3_1cd62"]
 
 [node name="card" type="Node3D"]
-transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
+script = ExtResource("1_h4ecw")
 metadata/_edit_lock_ = true
-
-[node name="card_back" parent="." instance=ExtResource("3_11gqc")]
 
 [node name="stats" type="Node3D" parent="."]
 metadata/_edit_lock_ = true
@@ -24,13 +26,20 @@ metadata/_edit_lock_ = true
 metadata/_edit_lock_ = true
 
 [node name="art_max" type="Sprite3D" parent="art"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.808, 0.011)
+process_priority = 3
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, 0.0004)
+pixel_size = 0.0005
 alpha_cut = 1
+render_priority = 3
+texture = ExtResource("2_3tel4")
 metadata/_edit_lock_ = true
 
 [node name="stats" type="Sprite3D" parent="art"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.014)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.001)
+pixel_size = 0.0005
 double_sided = false
+render_priority = 1
+texture = ExtResource("2_nenul")
 metadata/_edit_lock_ = true
 
 [node name="hero_mark" type="Sprite3D" parent="art"]
@@ -39,10 +48,12 @@ double_sided = false
 metadata/_edit_lock_ = true
 
 [node name="base" type="Sprite3D" parent="art"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.012)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.001)
+pixel_size = 0.0005
 double_sided = false
 alpha_cut = 1
-render_priority = 1
+render_priority = 5
+texture = ExtResource("3_1cd62")
 metadata/_edit_lock_ = true
 
 [node name="shadow" type="Sprite3D" parent="art"]
@@ -50,3 +61,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.609, 0.015)
 double_sided = false
 alpha_cut = 1
 metadata/_edit_lock_ = true
+
+[node name="card_bac" parent="." instance=ExtResource("2_egkec")]

@@ -4,9 +4,9 @@
 [ext_resource type="Script" path="res://screens/main/main.gd" id="1_s4xtk"]
 [ext_resource type="PackedScene" uid="uid://xjawsbmjknoo" path="res://screens/GUI/gui.tscn" id="2_ty1b0"]
 
-[node name="main" type="Node"]
+[node name="Main" type="Node"]
 script = ExtResource("1_s4xtk")
 
-[node name="game_world" parent="." instance=ExtResource("1_mt24i")]
+[node name="GameWorld" parent="." instance=ExtResource("1_mt24i")]
 
-[node name="gui" parent="." instance=ExtResource("2_ty1b0")]
+[node name="GUI" parent="." instance=ExtResource("2_ty1b0")]

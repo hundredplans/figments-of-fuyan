@@ -38,11 +38,9 @@ func _ready():
 	
 	multiplayer.connect("peer_connected", func(id): on_peer_connected(id))
 	multiplayer.connect("peer_disconnected", func(id): on_peer_disconnected(id))
-	
 func on_peer_connected(id: int) -> void:
 	print("Player Connected: " + str(id))
 	players.append(id)
-	
 func on_peer_disconnected(id: int) -> void:
 	print("Player Disconnected: " + str(id))
 	players.erase(id)

@@ -5,7 +5,7 @@ extends Resource
 	"s": [null, null, null, "nrg"],
 	"p": [null, "hp", "pop", "nrg"],
 	"t": ["att", "hp", "rng", "nrg"],
-	"w": [null, "hp", null, "nrg"],
+	"w": [null, "hp", "dec", "nrg"],
 	"r": [null, null, "bod", "bld"],
 	"c": [null, "hp", null, null],
 }

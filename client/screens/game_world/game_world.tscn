@@ -1,24 +1,29 @@
-[gd_scene load_steps=5 format=3 uid="uid://bk4s7rropgbsh"]
+[gd_scene load_steps=7 format=3 uid="uid://bk4s7rropgbsh"]
 
 [ext_resource type="Script" path="res://screens/game_world/game_world.gd" id="1_k7yus"]
+[ext_resource type="Texture2D" uid="uid://bijrpvoibce7k" path="res://assets/env/skies/kloofendal_48d_partly_cloudy_puresky_4k.exr" id="2_r7yob"]
+[ext_resource type="PackedScene" uid="uid://xllm2akuwb5l" path="res://screens/game_world/camera_body.tscn" id="3_3eqqw"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_q8vmi"]
+panorama = ExtResource("2_r7yob")
 
 [sub_resource type="Sky" id="Sky_7girg"]
+sky_material = SubResource("PanoramaSkyMaterial_q8vmi")
 
 [sub_resource type="Environment" id="Environment_tcrgp"]
 background_mode = 2
 sky = SubResource("Sky_7girg")
+ambient_light_source = 3
+reflected_light_source = 2
+glow_enabled = true
 
-[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_alodn"]
-
-[node name="game_world" type="Node3D"]
+[node name="GameWorld" type="Node3D"]
 script = ExtResource("1_k7yus")
+
+[node name="MainMap" type="Node3D" parent="."]
 
 [node name="Environment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_tcrgp")
 
-[node name="SimpleCamera" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.792609, 0.60973, 0, -0.60973, 0.792609, 1.83758, 14.0031, 23.0814)
-attributes = SubResource("CameraAttributesPractical_alodn")
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.294224, 0.955737, 0, -0.955737, 0.294224, 0, 66.0954, 0)
+[node name="CameraBody" parent="." instance=ExtResource("3_3eqqw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 13.749, 19.5657)

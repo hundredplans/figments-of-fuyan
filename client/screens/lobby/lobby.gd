@@ -10,4 +10,4 @@ func _ready():
 func on_connect_to_lobby():
 	network.create_client(ip, port)
 	multiplayer.multiplayer_peer = network
-	get_node("/root/main").on_lobby_connected()
+	multiplayer.connect("peer_connected", func(id): get_node("/root/Main").on_lobby_connected(id))

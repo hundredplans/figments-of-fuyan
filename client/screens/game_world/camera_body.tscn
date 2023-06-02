@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://xllm2akuwb5l"]
+
+[ext_resource type="Script" path="res://screens/game_world/camera_body.gd" id="1_2aq8l"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vvh7w"]
+
+[node name="CameraBody" type="CharacterBody3D"]
+script = ExtResource("1_2aq8l")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_vvh7w")
+disabled = true
