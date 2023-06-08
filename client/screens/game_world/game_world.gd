@@ -1,6 +1,6 @@
 extends Node3D
-@export var lobby_camera_position := Vector3(-63.747, 60.082, -64.839)
-@export var lobby_camera_rotation := Vector3(-40.8, -129.4, 0)
+@export var lobby_camera_position := Vector3(-1.692, 2.498, 7.86)
+@export var lobby_camera_rotation := Vector3(-12.2, 24.3, 0)
 
 func load_map(map_name: String) -> void:
 	

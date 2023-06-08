@@ -15,6 +15,9 @@ background_mode = 2
 sky = SubResource("Sky_7girg")
 ambient_light_source = 3
 reflected_light_source = 2
+ssr_enabled = true
+ssao_enabled = true
+ssil_enabled = true
 glow_enabled = true
 
 [node name="GameWorld" type="Node3D"]
@@ -26,4 +29,4 @@ script = ExtResource("1_k7yus")
 environment = SubResource("Environment_tcrgp")
 
 [node name="CameraBody" parent="." instance=ExtResource("3_3eqqw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 13.749, 19.5657)
+transform = Transform3D(0.911403, -0.0869632, 0.402221, 0, 0.977416, 0.211325, -0.411514, -0.192602, 0.89082, -1.692, 2.498, 7.86)

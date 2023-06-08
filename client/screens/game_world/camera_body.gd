@@ -20,7 +20,7 @@ var current_camera = CAMERA_HOLD
 var current_movement = MOVEMENT_HOLD_TOGGLE
 var current_state = [CAMERA_DISABLED, MOVEMENT_DISABLED]
 
-const camera_speed: float = 20
+const camera_speed: float = 5
 const camera_sensitivity: float = 0.1
 @export var camera_speed_multiplier: float = 1
 @export var camera_sensitivity_multiplier: float = 1
@@ -49,6 +49,7 @@ func move_camera(movement: Vector2):
 	total_pitch += pitch 
 	rotate_y(deg_to_rad(-movement.x))
 	rotate_object_local(Vector3(1,0,0), deg_to_rad(-pitch))
+	
 func _physics_process(_delta):
 	velocity = Vector3.ZERO
 	match current_state[1]:

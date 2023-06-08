@@ -1,9 +1,71 @@
-[gd_scene load_steps=2 format=3 uid="uid://ckebgiwbq3mcy"]
+[gd_scene load_steps=13 format=3 uid="uid://ckebgiwbq3mcy"]
 
 [ext_resource type="PackedScene" uid="uid://bpwc7a7ll14jq" path="res://assets/env/maps/lobby/base_map.blend" id="1_kdtvd"]
+[ext_resource type="PackedScene" uid="uid://0y3uhmve48hr" path="res://assets/env/maps/lobby/lobby_items/exit_door.blend" id="2_8x2e0"]
+[ext_resource type="PackedScene" uid="uid://be2xiafdkw400" path="res://assets/env/maps/lobby/lobby_items/play_table.blend" id="3_5mqm6"]
+[ext_resource type="PackedScene" uid="uid://b63tf5thj3ybm" path="res://assets/env/maps/lobby/lobby_items/quests.blend" id="4_aubc0"]
+[ext_resource type="PackedScene" uid="uid://bri6xomlwer4o" path="res://assets/env/maps/lobby/lobby_items/settings_door.blend" id="5_3x0pe"]
+[ext_resource type="PackedScene" uid="uid://bf0jrev3rg6gn" path="res://assets/env/maps/lobby/lobby_items/shop.blend" id="6_f4ob5"]
+[ext_resource type="PackedScene" uid="uid://3womxfl7227l" path="res://assets/env/maps/lobby/lobby_items/news.blend" id="7_ptlcr"]
+[ext_resource type="PackedScene" uid="uid://c2n8y6ykv5un5" path="res://assets/env/maps/lobby/lobby_items/items_table.blend" id="8_0e1is"]
+[ext_resource type="PackedScene" uid="uid://ceel7506o1evy" path="res://assets/env/maps/lobby/lobby_items/fuyanopedia.blend" id="9_07vke"]
+[ext_resource type="PackedScene" uid="uid://bgyr6u0rhpehs" path="res://assets/env/maps/lobby/lobby_items/deck_holder.blend" id="10_n8y08"]
+[ext_resource type="PackedScene" uid="uid://c58nuqiq5cia8" path="res://assets/env/maps/lobby/lobby_items/customization_hanger.blend" id="11_u5urx"]
+[ext_resource type="PackedScene" uid="uid://bq8e416cc6yvd" path="res://assets/packs/standard/card_pack.blend" id="12_2g26v"]
 
-[node name="lobby_map" type="Node3D"]
+[node name="LobbyMap" type="Node3D"]
+metadata/_edit_lock_ = true
 
-[node name="base_map" parent="." instance=ExtResource("1_kdtvd")]
+[node name="BaseMap" parent="." instance=ExtResource("1_kdtvd")]
+metadata/_edit_lock_ = true
 
-[node name="lobby_items" type="Node3D" parent="."]
+[node name="LobbyItems" type="Node3D" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="ExitDoor" parent="LobbyItems" instance=ExtResource("2_8x2e0")]
+transform = Transform3D(9.42946e-06, 0, -1, 0, 1, 0, 1, 0, 9.42946e-06, -7.60075, 0.665567, 5.61119)
+
+[node name="PlayTable" parent="LobbyItems" instance=ExtResource("3_5mqm6")]
+transform = Transform3D(0.390731, 0, 0.920505, 0, 1, 0, -0.920505, 0, 0.390731, -4.48176, 0.152511, 5.65998)
+
+[node name="Quests" parent="LobbyItems" instance=ExtResource("4_aubc0")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -7.42159, 0.753846, -1.31521)
+
+[node name="SettingsDoor" parent="LobbyItems" instance=ExtResource("5_3x0pe")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.379, 0.153, -3.691)
+
+[node name="Shop" parent="LobbyItems" instance=ExtResource("6_f4ob5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.511, 0.153, 1.314)
+
+[node name="NewsStand" parent="LobbyItems" instance=ExtResource("7_ptlcr")]
+transform = Transform3D(0.751103, 0, 0.660185, 0, 1, 0, -0.660185, 0, 0.751103, -6.00725, 1.29012, 0.597137)
+
+[node name="CustomizationHanger" parent="LobbyItems" instance=ExtResource("11_u5urx")]
+transform = Transform3D(0.947935, 0, -0.318463, 0, 1, 0, 0.318463, 0, 0.947935, -7.14217, 0.147461, 4.25751)
+
+[node name="ItemsTable" parent="LobbyItems" instance=ExtResource("8_0e1is")]
+transform = Transform3D(0.965332, 0, -0.261027, 0, 1, 0, 0.261027, 0, 0.965332, -1.782, 0.153, 5.37)
+
+[node name="Fuyanopedia" parent="LobbyItems" instance=ExtResource("9_07vke")]
+transform = Transform3D(0.760156, 0, -0.64974, 0, 1, 0, 0.64974, 0, 0.760156, -2.07, 0.958, 5.108)
+
+[node name="DeckHolder" parent="LobbyItems" instance=ExtResource("10_n8y08")]
+transform = Transform3D(-0.677198, 0, -0.735802, 0, 1, 0, 0.735802, 0, -0.677198, -2.076, 0.957, 5.691)
+
+[node name="PackPile" type="Node3D" parent="LobbyItems"]
+transform = Transform3D(0.891663, 0, -0.452699, 0, 1, 0, 0.452699, 0, 0.891663, -1.707, 0.957, 5.563)
+
+[node name="CardPack" parent="LobbyItems/PackPile" instance=ExtResource("12_2g26v")]
+transform = Transform3D(-0.952475, 0.304615, 9.57449e-07, -1.54691e-13, -3.14315e-06, 1, 0.304615, 0.952475, 2.99377e-06, -0.217048, 0.053636, -0.14089)
+
+[node name="CardPack2" parent="LobbyItems/PackPile" instance=ExtResource("12_2g26v")]
+transform = Transform3D(0.732899, 0.680337, 2.1384e-06, 0, -3.14315e-06, 1, 0.680337, -0.732899, -2.30361e-06, -0.273843, 0.00872034, -0.0658317)
+
+[node name="CardPack3" parent="LobbyItems/PackPile" instance=ExtResource("12_2g26v")]
+transform = Transform3D(0.940205, -0.340609, -1.07059e-06, -1.54691e-13, -3.14315e-06, 1, -0.340609, -0.940205, -2.9552e-06, -0.156576, 0.0236714, -0.0160942)
+
+[node name="CardPack4" parent="LobbyItems/PackPile" instance=ExtResource("12_2g26v")]
+transform = Transform3D(0.764325, -0.644831, -2.0268e-06, -1.54691e-13, -3.14315e-06, 1, -0.644831, -0.764325, -2.40239e-06, -0.155629, 0.0386672, 0)
+
+[node name="CardPack5" parent="LobbyItems/PackPile" instance=ExtResource("12_2g26v")]
+transform = Transform3D(0.960938, 0.276761, 8.69901e-07, -1.54691e-13, -3.14315e-06, 1, 0.276761, -0.960938, -3.02037e-06, -0.159101, 0.00872034, 0.0295839)
