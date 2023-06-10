@@ -22,11 +22,14 @@ metadata/_edit_lock_ = true
 [node name="ExitDoor" parent="LobbyItems" instance=ExtResource("2_8x2e0")]
 transform = Transform3D(9.42946e-06, 0, -1, 0, 1, 0, 1, 0, 9.42946e-06, -7.60075, 0.665567, 5.61119)
 
+[node name="CustomizationHanger" parent="LobbyItems" instance=ExtResource("11_u5urx")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -7.28167, 2.52479, 3.33677)
+
 [node name="PlayTable" parent="LobbyItems" instance=ExtResource("3_5mqm6")]
 transform = Transform3D(0.390731, 0, 0.920505, 0, 1, 0, -0.920505, 0, 0.390731, -4.48176, 0.152511, 5.65998)
 
 [node name="Quests" parent="LobbyItems" instance=ExtResource("4_aubc0")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -7.20461, 1.4611, 3.27197)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -7.18228, 1.62219, 1.38531)
 
 [node name="SettingsDoor" parent="LobbyItems" instance=ExtResource("5_3x0pe")]
 transform = Transform3D(0.627963, 0, -0.778243, 0, 1, 0, 0.778243, 0, 0.627963, 2.249, 0.153, -1.749)
@@ -35,16 +38,13 @@ transform = Transform3D(0.627963, 0, -0.778243, 0, 1, 0, 0.778243, 0, 0.627963, 
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.511, 0.153, 1.314)
 
 [node name="NewsStand" parent="LobbyItems" instance=ExtResource("7_ptlcr")]
-transform = Transform3D(0.751103, 0, 0.660185, 0, 1, 0, -0.660185, 0, 0.751103, -7.30766, 1.29012, 0.597137)
-
-[node name="CustomizationHanger" parent="LobbyItems" instance=ExtResource("11_u5urx")]
-transform = Transform3D(0.947935, 0, -0.318463, 0, 1, 0, 0.318463, 0, 0.947935, -6.87012, 0.147461, 4.25751)
+transform = Transform3D(0.799653, 0, -0.600462, 0, 1, 0, 0.600462, 0, 0.799653, 1.14555, 0.153, 2.66864)
 
 [node name="ItemsTable" parent="LobbyItems" instance=ExtResource("8_0e1is")]
 transform = Transform3D(0.965332, 0, -0.261027, 0, 1, 0, 0.261027, 0, 0.965332, -1.782, 0.153, 5.37)
 
 [node name="Fuyanopedia" parent="LobbyItems" instance=ExtResource("9_07vke")]
-transform = Transform3D(0.760156, 0, -0.64974, 0, 1, 0, 0.64974, 0, 0.760156, -2.07, 0.958, 5.108)
+transform = Transform3D(0.683146, 0, -0.730281, 0, 1, 0, 0.730281, 0, 0.683146, -2.07, 0.951146, 5.108)
 
 [node name="DeckHolder" parent="LobbyItems" instance=ExtResource("10_n8y08")]
 transform = Transform3D(-0.677198, 0, -0.735802, 0, 1, 0, 0.735802, 0, -0.677198, -2.076, 0.957, 5.691)
@@ -67,4 +67,4 @@ transform = Transform3D(0.764325, -0.644831, -2.0268e-06, -1.54691e-13, -3.14315
 [node name="CardPack5" parent="LobbyItems/PackPile" instance=ExtResource("12_2g26v")]
 transform = Transform3D(0.960938, 0.276761, 8.69901e-07, -1.54691e-13, -3.14315e-06, 1, 0.276761, -0.960938, -3.02037e-06, -0.159101, 0.00872034, 0.0295839)
 
-[node name="base_map" parent="." instance=ExtResource("1_kdtvd")]
+[node name="BaseMap" parent="." instance=ExtResource("1_kdtvd")]
