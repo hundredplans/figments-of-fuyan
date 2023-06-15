@@ -1,9 +1,8 @@
 extends Node3D
-@export var lobby_camera_position := Vector3(-1.692, 2.498, 7.86)
-@export var lobby_camera_rotation := Vector3(-12.2, 24.3, 0)
+const lobby_camera_posrot_path := "res://static_data/lobby_camera_posrot.json"
+@onready var lcps = Helper.load_json(lobby_camera_posrot_path)
 
 func load_map(map_name: String) -> void:
-	
 	for child in $MainMap.get_children():
 		child.queue_free()
 		
@@ -12,4 +11,4 @@ func load_map(map_name: String) -> void:
 	$MainMap.add_child(map)
 func load_lobby_map(map_name: String) -> void:
 	load_map(map_name)
-	$CameraBody.on_teleport_camera(lobby_camera_position, lobby_camera_rotation)
+	$CameraBody.on_teleport_camera(lcps.position, lcps.rotation_degrees)

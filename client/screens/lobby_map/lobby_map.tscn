@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://ckebgiwbq3mcy"]
+[gd_scene load_steps=14 format=3 uid="uid://ckebgiwbq3mcy"]
 
 [ext_resource type="PackedScene" uid="uid://bpwc7a7ll14jq" path="res://assets/env/maps/lobby/base_map.blend" id="1_kdtvd"]
 [ext_resource type="PackedScene" uid="uid://0y3uhmve48hr" path="res://assets/env/maps/lobby/lobby_items/exit_door.blend" id="2_8x2e0"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://bgyr6u0rhpehs" path="res://assets/env/maps/lobby/lobby_items/deck_holder.blend" id="10_n8y08"]
 [ext_resource type="PackedScene" uid="uid://c58nuqiq5cia8" path="res://assets/env/maps/lobby/lobby_items/customization_hanger.blend" id="11_u5urx"]
 [ext_resource type="PackedScene" uid="uid://bq8e416cc6yvd" path="res://assets/packs/standard/card_pack.blend" id="12_2g26v"]
+[ext_resource type="Curve3D" uid="uid://c13a6lgqfhddf" path="res://screens/lobby_map/paths/play_table-path.tres" id="13_275ea"]
 
 [node name="LobbyMap" type="Node3D"]
 metadata/_edit_lock_ = true
@@ -68,3 +69,7 @@ transform = Transform3D(0.764325, -0.644831, -2.0268e-06, -1.54691e-13, -3.14315
 transform = Transform3D(0.960938, 0.276761, 8.69901e-07, -1.54691e-13, -3.14315e-06, 1, 0.276761, -0.960938, -3.02037e-06, -0.159101, 0.00872034, 0.0295839)
 
 [node name="BaseMap" parent="." instance=ExtResource("1_kdtvd")]
+
+[node name="CameraTestPath" type="Path3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.692, 2.498, 7.86)
+curve = ExtResource("13_275ea")
