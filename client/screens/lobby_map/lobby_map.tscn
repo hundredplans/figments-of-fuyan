@@ -90,3 +90,6 @@ transform = Transform3D(0.911403, -0.0869632, 0.402221, 0, 0.977416, 0.211325, -
 [node name="Path3D" type="Path3D" parent="."]
 transform = Transform3D(0.911403, -0.0869631, 0.402221, 0, 0.977416, 0.211325, -0.411514, -0.192602, 0.89082, -0.692, 2.498, 7.86)
 curve = ExtResource("14_rxf8e")
+
+[node name="LobbyCameraNormalizedTimer" type="Timer" parent="."]
+one_shot = true

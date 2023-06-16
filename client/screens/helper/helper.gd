@@ -8,7 +8,7 @@ func load_json(path: String) -> Dictionary:
 		var dict: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(path))
 		for key in dict:
 			# Converts arrays into vector3s
-			if dict[key].size() == 3 and typeof(dict[key]) == TYPE_ARRAY:
+			if typeof(dict[key]) == TYPE_ARRAY and dict[key].size() == 3:
 				for child in dict[key]:
 					if typeof(child) != TYPE_FLOAT:
 						continue
