@@ -5,3 +5,6 @@
 [node name="start_screen" type="Node3D"]
 
 [node name="base_map" parent="." instance=ExtResource("1_cevmr")]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.903403, 0.428793, 0, -0.428793, 0.903403, 0, 14.2099, 26.1296)

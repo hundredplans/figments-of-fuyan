@@ -1,8 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://bk4s7rropgbsh"]
+[gd_scene load_steps=6 format=3 uid="uid://bk4s7rropgbsh"]
 
 [ext_resource type="Script" path="res://screens/game_world/game_world.gd" id="1_k7yus"]
 [ext_resource type="Texture2D" uid="uid://bijrpvoibce7k" path="res://assets/env/skies/kloofendal_48d_partly_cloudy_puresky_4k.exr" id="2_r7yob"]
-[ext_resource type="PackedScene" uid="uid://xllm2akuwb5l" path="res://screens/game_world/camera_body.tscn" id="3_3eqqw"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_q8vmi"]
 panorama = ExtResource("2_r7yob")
@@ -27,6 +26,3 @@ script = ExtResource("1_k7yus")
 
 [node name="Environment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_tcrgp")
-
-[node name="CameraBody" parent="." instance=ExtResource("3_3eqqw")]
-transform = Transform3D(0.911403, -0.0869632, 0.402221, 0, 0.977416, 0.211325, -0.411514, -0.192602, 0.89082, -1.692, 2.498, 7.86)

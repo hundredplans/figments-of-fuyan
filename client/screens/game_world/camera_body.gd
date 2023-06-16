@@ -49,7 +49,6 @@ func move_camera(movement: Vector2):
 	total_pitch += pitch 
 	rotate_y(deg_to_rad(-movement.x))
 	rotate_object_local(Vector3(1,0,0), deg_to_rad(-pitch))
-	
 func _physics_process(_delta):
 	velocity = Vector3.ZERO
 	match current_state[1]:
@@ -74,6 +73,3 @@ func set_current_state(new_state: int) -> void:
 			current_state = [CAMERA_DISABLED, MOVEMENT_DISABLED]
 		1:
 			current_state = [current_camera, current_movement]
-func on_teleport_camera(pos: Vector3, rot: Vector3) -> void:
-	position = pos
-	rotation_degrees = rot

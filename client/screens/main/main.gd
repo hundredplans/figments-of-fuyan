@@ -7,8 +7,8 @@ const lobby_map_name: String = "lobby_map"
 const lobby_gui_path: String = "res://screens/lobby_map/lobby_map_gui.tscn"
 
 func _ready():
-	$GameWorld.load_map(start_map_load_name)
-	$GUI.load_gui(start_gui_path)
+	#$GameWorld.load_map(start_map_load_name)
+	#$GUI.load_gui(start_gui_path)
 	on_lobby_connected(5)
 
 func on_lobby_connected(_id: int) -> void:
