@@ -17,11 +17,3 @@ func load_json(path: String) -> Dictionary:
 		
 	printerr("Your path isn't valid!")
 	return {}
-
-#func create_suicide_timer(function_name: Callable, parent: Node, args: Array, wait_time: float):
-#	var timer: Timer = Timer.new()
-#	parent.add_child(timer)
-#	timer.one_shot = false
-#	timer.start(wait_time)
-#	timer.timeout.connect(function_name.bind(args))
-#	timer.timeout.connect(timer.queue_free)
