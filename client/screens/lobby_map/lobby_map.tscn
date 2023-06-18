@@ -85,11 +85,10 @@ shape = SubResource("CylinderShape3D_0q6rs")
 [node name="BaseMap" parent="." instance=ExtResource("1_kdtvd")]
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(0.911403, -0.0869632, 0.402221, 0, 0.977416, 0.211325, -0.411514, -0.192602, 0.89082, -0.692, 2.498, 7.86)
+transform = Transform3D(0.911403, -0.0869632, 0.402221, 0, 0.977416, 0.211325, -0.411514, -0.192602, 0.89082, -1.692, 2.498, 7.86)
+metadata/_edit_lock_ = true
 
 [node name="Path3D" type="Path3D" parent="."]
-transform = Transform3D(0.911403, -0.0869631, 0.402221, 0, 0.977416, 0.211325, -0.411514, -0.192602, 0.89082, -0.692, 2.498, 7.86)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 curve = ExtResource("14_rxf8e")
-
-[node name="LobbyCameraNormalizedTimer" type="Timer" parent="."]
-one_shot = true
+metadata/_edit_lock_ = true
