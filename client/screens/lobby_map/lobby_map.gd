@@ -2,6 +2,9 @@ extends Node3D
 
 signal change_animation_status
 signal add_to_back_history
+var track_distance: bool = false
+var track_distance_travelled: float = 0
+var track_distance_total: float = 0
 var on_lobby_step_back_finished: Callable
 var at_item: bool = false
 var lobby_can_select_item: int = 0
@@ -9,13 +12,12 @@ var lobby_current_camera_travel_item_selected: int = 0
 var lobby_current_item_selected: int = 0
 var moving_lobby_camera_initial_position: Vector3
 var path_point_array: Array = []
+var path_rotation_array: Array = []
 
 const lobby_camera_posrot_path := "res://static_data/lobby_camera_posrot.json"
 @onready var lcps = Helper.load_json(lobby_camera_posrot_path)
-
 const lobby_camera_travel_info_json := "res://static_data/lobby_camera_travel_info.json"
 @onready var lobby_camera_travel_info_dict: Dictionary = Helper.load_json(lobby_camera_travel_info_json)
-
 @onready var camera: Camera3D = $Camera3D
 
 func _ready():
@@ -30,15 +32,48 @@ func _process(delta: float) -> void:
 		move_camera_to_or_from_lobby_item_position()
 
 	elif lobby_current_camera_travel_item_selected:
-		var movement: Vector3 = (path_point_array[0][2] * lobby_camera_travel_info_dict[str(lobby_current_camera_travel_item_selected)].speed * delta)
+		var movement: Vector3 = (path_point_array[0][1] * lobby_camera_travel_info_dict[str(lobby_current_camera_travel_item_selected)].speed * delta)
 		camera.position += movement
-		if moving_lobby_camera_initial_position.distance_to(camera.position) > moving_lobby_camera_initial_position.distance_to(path_point_array[0][0]):
+		var total_distance: float = moving_lobby_camera_initial_position.distance_to(path_point_array[0][0])
+		var travelled_distance: float = moving_lobby_camera_initial_position.distance_to(camera.position)
+		var remove_rotation: bool = rotate_camera_between_points(min(travelled_distance / total_distance, 1), total_distance)
+		if track_distance:
+			track_distance_travelled += travelled_distance
+		
+		if travelled_distance > total_distance:
 			path_point_array.remove_at(0)
+			if remove_rotation:
+				path_rotation_array.remove_at(0)
+				
 			if path_point_array.size():
 				path_point_array[0].append((path_point_array[0][0] - camera.position).normalized())
 				moving_lobby_camera_initial_position = camera.position
 			else:
 				lobby_camera_travel_finished()
+				
+func rotate_camera_between_points(distance: float, total_distance: float) -> bool:
+	if typeof(path_rotation_array[0]) == TYPE_VECTOR3:
+		camera.rotation_degrees = camera.rotation_degrees.lerp(path_rotation_array[0], distance)
+		return true
+		
+	elif typeof(path_rotation_array[0]) == TYPE_ARRAY:
+		if !track_distance:
+			track_distance_total += total_distance
+			for i in range(1, path_rotation_array[0][2]):
+				track_distance_total += path_point_array[i][0].distance_to(path_point_array[i+1][0])
+		track_distance = true
+		
+		var distance_travelled: float = track_distance_travelled / track_distance_total
+		if distance_travelled <= 1:
+			camera.rotation_degrees = path_rotation_array[0][0].lerp(path_rotation_array[0][1], distance_travelled)
+			return false
+		track_distance = false
+		track_distance_total = 0
+		track_distance_travelled = 0
+		return true
+		
+	return false
+		
 func lobby_camera_travel_finished() -> void:
 	if at_item:
 		lobby_current_item_selected = lobby_current_camera_travel_item_selected
@@ -48,6 +83,7 @@ func lobby_camera_travel_finished() -> void:
 		lobby_current_item_selected = 0
 	
 	change_animation_status.emit(0)
+	path_rotation_array.clear()
 	lobby_current_camera_travel_item_selected = 0
 func move_camera_to_or_from_lobby_item_position():
 	
@@ -59,37 +95,35 @@ func move_camera_to_or_from_lobby_item_position():
 	lobby_can_select_item = 0
 	lobby_current_item_selected = 0
 		
+	var tilts: Array = []
+	var rotations: Array = [camera.rotation_degrees]
 	var path: Curve3D = load("res://screens/lobby_map/paths/%slobby-item-path.tres" % lobby_current_camera_travel_item_selected)
 	if at_item:
 		for i in range(1, path.point_count):
-			var last_rotation: Vector3
-			if i > 1:
-				last_rotation = path_point_array[i - 2][1]
-			else:
-				last_rotation = camera.rotation_degrees
-			path_point_array.append([path.get_point_position(i), tilt_to_rotation_degrees(path.get_point_tilt(i), last_rotation)])
+			path_point_array.append([path.get_point_position(i)])
+			tilts.append(path.get_point_tilt(i))
 	else:
-		var max_count: int = path.point_count - 2
-		var c: int = 0
-		for i in range(max_count, -1, -1):
-			var last_rotation: Vector3
-			if i < max_count:
-				last_rotation = path_point_array[c - 1][1]
-			else:
-				last_rotation = camera.rotation_degrees
-				
-			path_point_array.append([path.get_point_position(i), tilt_to_rotation_degrees(path.get_point_tilt(i), last_rotation)])
-			c += 1
+		for i in range(path.point_count - 2, -1, -1):
+			path_point_array.append([path.get_point_position(i)])
+			tilts.append(path.get_point_tilt(i))
 	
+	for i in range(tilts.size()):
+		rotations.append(tilt_to_rotation_degrees(tilts[i], rotations[i]))
+		
+	convert_vector_one_to_interpolate(rotations)
+	
+	path_rotation_array.remove_at(0)
 	path_point_array[0].append((path_point_array[0][0] - camera.position).normalized())
 	change_animation_status.emit(1)
 func tilt_to_rotation_degrees(tilt: float, lr: Vector3) -> Vector3:
 	
 	var code: String = str(tilt)
 	var cr: Vector3 = Vector3.ZERO
-	if code.length() <= 1:
-		return lr
-
+	if code.length() == 1:
+		match code[0]:
+			"0": return lr
+			"1": return Vector3(1, 1, 1)
+	
 	elif code.length() == 7:
 		var c: int = 1
 		for i in ["x", "y", "z"]:
@@ -97,20 +131,20 @@ func tilt_to_rotation_degrees(tilt: float, lr: Vector3) -> Vector3:
 			c += 2
 		
 		match code[0]:
-			1: cr.x *= -1
-			2: cr.y *= -1
-			3:
+			"1": cr.x *= -1
+			"2": cr.y *= -1
+			"3":
 				cr.x *= -1
 				cr.y *= -1
-			4: cr.z *= -1
-			5: 
+			"4": cr.z *= -1
+			"5": 
 				cr.x *= -1
 				cr.z *= -1
-			6: 
+			"6": 
 				cr.y *= -1
 				cr.z *= -1
-			7: cr *= -1
-			8: cr *= (lr / lr)
+			"7": cr *= -1
+			"8": cr *= (lr / lr)
 			
 		match cr.x:
 			91: cr.x = lr.x
@@ -129,6 +163,24 @@ func tilt_to_rotation_degrees(tilt: float, lr: Vector3) -> Vector3:
 			97: cr = lr
 			
 	return cr
+func convert_vector_one_to_interpolate(rotations: Array):
+
+	var skip_to: int = 0
+	for i in range(rotations.size()):
+		if !skip_to or i > skip_to:
+			if i < rotations.size() - 1:
+				if rotations[i + 1] == Vector3(1, 1, 1):
+					for j in range(i + 1, rotations.size()):
+						if rotations[j] != Vector3(1, 1, 1):
+							path_rotation_array.append(rotations[i])
+							path_rotation_array.append([rotations[i], rotations[j], j - i - 1])
+							skip_to = j
+							break
+				else:
+					path_rotation_array.append(rotations[i])
+			else:
+				if rotations[i - 1] != Vector3(1, 1, 1):
+					path_rotation_array.append(rotations[i])
 func on_lobby_camera_step_back(info: Array): # location in enum [0], stepping back changer func [1]
 	at_item = false
 	move_camera_to_or_from_lobby_item_position()

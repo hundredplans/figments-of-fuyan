@@ -1,6 +1,6 @@
 [gd_scene load_steps=18 format=3 uid="uid://bko6m47ftw7gr"]
 
-[ext_resource type="PackedScene" uid="uid://bpwc7a7ll14jq" path="res://assets/env/maps/lobby/base_map.blend" id="1_kdtvd"]
+[ext_resource type="PackedScene" uid="uid://cpqt2p58s44w4" path="res://assets/env/maps/lobby/base_map.blend" id="1_kdtvd"]
 [ext_resource type="Script" path="res://screens/lobby_map/lobby_map.gd" id="1_yrpq0"]
 [ext_resource type="PackedScene" uid="uid://0y3uhmve48hr" path="res://assets/env/maps/lobby/lobby_items/exit_door.blend" id="2_8x2e0"]
 [ext_resource type="PackedScene" uid="uid://be2xiafdkw400" path="res://assets/env/maps/lobby/lobby_items/play_table.blend" id="3_5mqm6"]
@@ -13,14 +13,14 @@
 [ext_resource type="PackedScene" uid="uid://bgyr6u0rhpehs" path="res://assets/env/maps/lobby/lobby_items/deck_holder.blend" id="10_n8y08"]
 [ext_resource type="PackedScene" uid="uid://c58nuqiq5cia8" path="res://assets/env/maps/lobby/lobby_items/customization_hanger.blend" id="11_u5urx"]
 [ext_resource type="PackedScene" uid="uid://bq8e416cc6yvd" path="res://assets/packs/standard/card_pack.blend" id="12_2g26v"]
-[ext_resource type="Curve3D" uid="uid://c13a6lgqfhddf" path="res://screens/lobby_map/paths/3lobby-item-path.tres" id="14_pxb25"]
+[ext_resource type="Curve3D" uid="uid://d3me87ulkx0qr" path="res://screens/lobby_map/paths/5lobby-item-path.tres" id="14_ydy1m"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_0q6rs"]
 height = 1.1
 radius = 0.6
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ueifh"]
-size = Vector3(1.2, 2, 0.1)
+size = Vector3(1.2, 2.1, 0.1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_s4lq0"]
 size = Vector3(0.7, 0.9, 0.5)
@@ -45,7 +45,7 @@ transform = Transform3D(0.390731, 0, 0.920505, 0, 1, 0, -0.920505, 0, 0.390731, 
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -7.18228, 1.62219, 1.38531)
 
 [node name="5" parent="LobbyItems" instance=ExtResource("5_3x0pe")]
-transform = Transform3D(0.627963, 0, -0.778243, 0, 1, 0, 0.778243, 0, 0.627963, 2.249, 0.153, -1.749)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.225, 0.153, -2.87)
 
 [node name="6" parent="LobbyItems" instance=ExtResource("6_f4ob5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.511, 0.153, 1.314)
@@ -90,10 +90,10 @@ metadata/_edit_lock_ = true
 shape = SubResource("CylinderShape3D_0q6rs")
 
 [node name="5" type="Area3D" parent="LobbyAreas"]
-transform = Transform3D(0.672573, 0, -0.74003, 0, 1, 0, 0.74003, 0, 0.672573, 2.22034, 0.0137179, -1.66841)
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 3.22088, 1.14909, -2.89384)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="LobbyAreas/5"]
-transform = Transform3D(0.995897, 0, -0.0904936, 0, 1, 0, 0.0904936, 0, 0.995897, -0.0342671, 1.14797, -0.00459838)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00967026, 0.0457742, 0)
 shape = SubResource("BoxShape3D_ueifh")
 
 [node name="7" type="Area3D" parent="LobbyAreas"]
@@ -109,10 +109,9 @@ shape = SubResource("BoxShape3D_s4lq0")
 [node name="BaseMap" parent="." instance=ExtResource("1_kdtvd")]
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(0.913545, -0.0845653, 0.397849, 0, 0.978148, 0.207912, -0.406736, -0.189937, 0.893583, -1.692, 2.498, 7.86)
+transform = Transform3D(0.913546, -0.0845653, 0.397848, 0, 0.978148, 0.207912, -0.406736, -0.189937, 0.893582, -1.692, 2.498, 7.86)
 metadata/_edit_lock_ = true
 
 [node name="Path3D" type="Path3D" parent="."]
-visible = false
-curve = ExtResource("14_pxb25")
+curve = ExtResource("14_ydy1m")
 metadata/_edit_lock_ = true
