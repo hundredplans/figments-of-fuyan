@@ -2,6 +2,8 @@ extends Node3D
 
 signal change_animation_status
 signal add_to_back_history
+
+var points_removed: int = 0
 var track_distance: bool = false
 var track_distance_travelled: float = 0
 var track_distance_total: float = 0
@@ -36,13 +38,16 @@ func _process(delta: float) -> void:
 		camera.position += movement
 		var total_distance: float = moving_lobby_camera_initial_position.distance_to(path_point_array[0][0])
 		var travelled_distance: float = moving_lobby_camera_initial_position.distance_to(camera.position)
-		var remove_rotation: bool = rotate_camera_between_points(min(travelled_distance / total_distance, 1), total_distance)
-		if track_distance:
-			track_distance_travelled += travelled_distance
-		
+		var remove_rotation: bool = rotate_camera_between_points(total_distance, travelled_distance)
 		if travelled_distance > total_distance:
+			track_distance_travelled += travelled_distance
+			points_removed += 1
 			path_point_array.remove_at(0)
 			if remove_rotation:
+				track_distance = false
+				track_distance_total = 0
+				track_distance_travelled = 0
+				points_removed = 0
 				path_rotation_array.remove_at(0)
 				
 			if path_point_array.size():
@@ -51,27 +56,26 @@ func _process(delta: float) -> void:
 			else:
 				lobby_camera_travel_finished()
 				
-func rotate_camera_between_points(distance: float, total_distance: float) -> bool:
-	if typeof(path_rotation_array[0]) == TYPE_VECTOR3:
-		camera.rotation_degrees = camera.rotation_degrees.lerp(path_rotation_array[0], distance)
-		return true
-		
-	elif typeof(path_rotation_array[0]) == TYPE_ARRAY:
-		if !track_distance:
-			track_distance_total += total_distance
-			for i in range(1, path_rotation_array[0][2]):
-				track_distance_total += path_point_array[i][0].distance_to(path_point_array[i+1][0])
-		track_distance = true
-		
-		var distance_travelled: float = track_distance_travelled / track_distance_total
-		if distance_travelled <= 1:
-			camera.rotation_degrees = path_rotation_array[0][0].lerp(path_rotation_array[0][1], distance_travelled)
-			return false
-		track_distance = false
-		track_distance_total = 0
-		track_distance_travelled = 0
-		return true
-		
+func rotate_camera_between_points(total_distance: float, travelled_distance: float) -> bool:
+	if path_rotation_array.size():
+		if typeof(path_rotation_array[0]) == TYPE_VECTOR3:
+			camera.rotation_degrees = camera.rotation_degrees.lerp(path_rotation_array[0], min(travelled_distance / total_distance, 1))
+			return true
+		elif typeof(path_rotation_array[0]) == TYPE_ARRAY:
+			var current_track_distance_travelled: float = track_distance_travelled
+			if !track_distance:
+				track_distance_total += total_distance
+				for i in range(points_removed + 1, path_rotation_array[0][2]):
+					track_distance_total += path_point_array[i][0].distance_to(path_point_array[i+1][0])
+			
+			current_track_distance_travelled += travelled_distance
+			track_distance = true
+
+			var distance_travelled: float = min(current_track_distance_travelled / track_distance_total, 1)
+			if distance_travelled <= 0.999:
+				camera.rotation_degrees = path_rotation_array[0][0].lerp(path_rotation_array[0][1], distance_travelled)
+				return false
+			return true
 	return false
 		
 func lobby_camera_travel_finished() -> void:
@@ -82,8 +86,8 @@ func lobby_camera_travel_finished() -> void:
 		on_lobby_step_back_finished.call()
 		lobby_current_item_selected = 0
 	
+	points_removed = 0
 	change_animation_status.emit(0)
-	path_rotation_array.clear()
 	lobby_current_camera_travel_item_selected = 0
 func move_camera_to_or_from_lobby_item_position():
 	

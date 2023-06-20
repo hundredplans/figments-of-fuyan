@@ -13,6 +13,7 @@ config_version=5
 config/name="client"
 run/main_scene="res://screens/main/main.tscn"
 config/features=PackedStringArray("4.0", "Forward Plus")
+run/max_fps=60
 config/icon="res://icon.svg"
 
 [autoload]
@@ -85,5 +86,6 @@ InputBackMenu={
 
 [rendering]
 
+renderer/rendering_method="gl_compatibility"
 textures/vram_compression/import_s3tc_bptc=false
 anti_aliasing/default_font_antialiasing=0
