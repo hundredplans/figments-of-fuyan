@@ -29,6 +29,7 @@ func _ready():
 		child.mouse_exited.connect(func(): if !lobby_current_item_selected: lobby_can_select_item = 0)
 func _process(delta: float) -> void:
 	
+	print(track_distance_total)
 	if lobby_can_select_item and !lobby_current_camera_travel_item_selected and Input.is_action_just_pressed("InputA"):
 		at_item = true
 		move_camera_to_or_from_lobby_item_position()
@@ -38,7 +39,7 @@ func _process(delta: float) -> void:
 		camera.position += movement
 		var total_distance: float = moving_lobby_camera_initial_position.distance_to(path_point_array[0][0])
 		var travelled_distance: float = moving_lobby_camera_initial_position.distance_to(camera.position)
-		var remove_rotation: bool = rotate_camera_between_points(total_distance, travelled_distance)
+		var remove_rotation: bool = false#rotate_camera_between_points(total_distance, travelled_distance)
 		if travelled_distance > total_distance:
 			track_distance_travelled += travelled_distance
 			points_removed += 1
@@ -65,7 +66,7 @@ func rotate_camera_between_points(total_distance: float, travelled_distance: flo
 			var current_track_distance_travelled: float = track_distance_travelled
 			if !track_distance:
 				track_distance_total += total_distance
-				for i in range(points_removed + 1, path_rotation_array[0][2]):
+				for i in range(points_removed + 1, path_rotation_array[0][2] - 1):
 					track_distance_total += path_point_array[i][0].distance_to(path_point_array[i+1][0])
 			
 			current_track_distance_travelled += travelled_distance
@@ -117,6 +118,7 @@ func move_camera_to_or_from_lobby_item_position():
 	convert_vector_one_to_interpolate(rotations)
 	
 	path_rotation_array.remove_at(0)
+	print(path_rotation_array)
 	path_point_array[0].append((path_point_array[0][0] - camera.position).normalized())
 	change_animation_status.emit(1)
 func tilt_to_rotation_degrees(tilt: float, lr: Vector3) -> Vector3:
@@ -177,7 +179,7 @@ func convert_vector_one_to_interpolate(rotations: Array):
 					for j in range(i + 1, rotations.size()):
 						if rotations[j] != Vector3(1, 1, 1):
 							path_rotation_array.append(rotations[i])
-							path_rotation_array.append([rotations[i], rotations[j], j - i - 1])
+							path_rotation_array.append([rotations[i], rotations[j], j - i])
 							skip_to = j
 							break
 				else:
