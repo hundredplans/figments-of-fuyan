@@ -16,6 +16,7 @@ var camera_current_time: float = 0
 
 var camera_travelled_distance: float
 var camera_total_distance: float
+
 var camera_total_time: float
 var camera_point_distance: float
 
@@ -36,8 +37,7 @@ func _ready():
 		and !lobby_current_item_selected: lobby_can_select_item = child.name.to_int())
 		child.mouse_exited.connect(func(): if !lobby_current_item_selected: lobby_can_select_item = 0)
 func _process(delta: float) -> void:
-
-#	print(camera.rotation_degrees)
+	
 	if lobby_can_select_item and !lobby_current_camera_travel_item_selected and Input.is_action_just_pressed("InputA"):
 		camera_move_forward = true
 		create_camera_rotation_point_array()
@@ -47,11 +47,11 @@ func _process(delta: float) -> void:
 		var new_position: Vector3 = path_point_array[camera_points_index - 1].lerp(path_point_array[camera_points_index], lerp_factor)
 		process_camera_lerp_rotation(lerp_factor, new_position.distance_to(camera.position))
 		camera.position = new_position
-		
+			
+		camera.position = path_point_array[camera_points_index - 1].lerp(path_point_array[camera_points_index], lerp_factor)
 		if camera.position.is_equal_approx(path_point_array[camera_points_index]):
 			camera_points_index += 1
 			camera_current_time = 0
-			
 			if camera_points_index != path_point_array.size():
 				camera_point_distance = path_point_array[camera_points_index - 1].distance_to(path_point_array[camera_points_index])
 				camera_total_time = camera_point_distance / lobby_camera_travel_info_dict[str(lobby_current_camera_travel_item_selected)].speed
@@ -76,7 +76,7 @@ func process_camera_lerp_rotation(lerp_factor: float, current_travel_distance: f
 		camera.rotation_degrees = path_rotation_array[camera_rotations_index][1].lerp(path_rotation_array[camera_rotations_index][0], rotation_lerp_factor)
 	else:
 		camera.rotation_degrees = camera.rotation_degrees.lerp(path_rotation_array[camera_rotations_index][0], lerp_factor)
-		
+
 func lobby_camera_travel_finished() -> void:
 	if camera_move_forward:
 		lobby_current_item_selected = lobby_current_camera_travel_item_selected
@@ -121,6 +121,7 @@ func create_camera_rotation_point_array() -> void:
 	camera_rotations_index = 1
 	camera_points_index = 1
 	
+	camera_travelled_distance = 0
 	camera_total_distance = 0
 	camera_current_time = 0
 	
@@ -132,7 +133,6 @@ func create_camera_rotation_point_array() -> void:
 			path_rotation_array[camera_rotations_index + 1][2] -= 1
 			path_rotation_array.remove_at(camera_rotations_index)
 	
-	camera_travelled_distance = 0
 	if path_rotation_array[camera_rotations_index].size() > 1:
 		for i in range(path_rotation_array[camera_rotations_index][2], path_rotation_array[camera_rotations_index][3]):
 			camera_total_distance += path_point_array[i].distance_to(path_point_array[i + 1])
@@ -200,7 +200,7 @@ func convert_vector_one_to_interpolate(rotations: Array):
 						path_rotation_array.append([rotations[i - 1]])
 						path_rotation_array.append([rotations[j], rotations[i - 1], i, j])
 						skip_to = j
-						break
+
 func on_lobby_camera_step_back(info: Array): # location in enum [0], stepping back changer func [1]
 	camera_move_forward = false
 	create_camera_rotation_point_array()
