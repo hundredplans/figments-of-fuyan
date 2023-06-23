@@ -81,6 +81,7 @@ transform = Transform3D(0.764325, -0.644831, -2.0268e-06, -1.54691e-13, -3.14315
 transform = Transform3D(0.960938, 0.276761, 8.69901e-07, -1.54691e-13, -3.14315e-06, 1, 0.276761, -0.960938, -3.02037e-06, -0.159101, 0.00872034, 0.0295839)
 
 [node name="LobbyAreas" type="Node3D" parent="."]
+metadata/_edit_lock_ = true
 
 [node name="3" type="Area3D" parent="LobbyAreas"]
 transform = Transform3D(0.509402, 0, 0.860529, 0, 1, 0, -0.860529, 0, 0.509402, -4.50714, 0.703501, 5.64191)
@@ -88,14 +89,16 @@ metadata/_edit_lock_ = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="LobbyAreas/3"]
 shape = SubResource("CylinderShape3D_0q6rs")
+metadata/_edit_lock_ = true
 
 [node name="5" type="Area3D" parent="LobbyAreas"]
 transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 3.22088, 1.14909, -2.89384)
+metadata/_edit_lock_ = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="LobbyAreas/5"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00967026, 0.0457742, 0)
-visible = false
 shape = SubResource("BoxShape3D_ueifh")
+metadata/_edit_lock_ = true
 
 [node name="7" type="Area3D" parent="LobbyAreas"]
 transform = Transform3D(0.766044, 0, -0.642788, 0, 1, 0, 0.642788, 0, 0.766044, 0.400592, 0.657775, 3.6271)
@@ -104,6 +107,7 @@ metadata/_edit_lock_ = true
 [node name="CollisionShape3D" type="CollisionShape3D" parent="LobbyAreas/7"]
 transform = Transform3D(1, 0, -1.49012e-07, 0, 1, 0, 1.49012e-07, 0, 1, -0.0132053, -0.0526533, -0.0776789)
 shape = SubResource("BoxShape3D_s4lq0")
+metadata/_edit_lock_ = true
 
 [node name="GlowItem" type="Node3D" parent="."]
 

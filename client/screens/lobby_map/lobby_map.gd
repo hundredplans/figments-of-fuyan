@@ -30,17 +30,32 @@ const lobby_camera_posrot_path := "res://static_data/lobby_camera_posrot.json"
 const lobby_camera_travel_info_json := "res://static_data/lobby_camera_travel_info.json"
 @onready var lobby_camera_travel_info_dict: Dictionary = Helper.load_json(lobby_camera_travel_info_json)
 @onready var camera: Camera3D = $Camera3D
-
+		
 func _ready():
+	
 	for child in $LobbyAreas.get_children():
-		child.mouse_entered.connect(func(): if child.name.is_valid_int() \
-		and !lobby_current_item_selected: lobby_can_select_item = child.name.to_int())
-		child.mouse_exited.connect(func(): if !lobby_current_item_selected: lobby_can_select_item = 0)
+		if child.name.is_valid_int():
+			var int_name: int = child.name.to_int()
+			child.mouse_entered.connect(item_mouse_entered.bind(int_name))
+			child.mouse_exited.connect(item_mouse_exited.bind(int_name))
+		else:
+			print("Lobby item name is not a valid integer")
+			
+func item_mouse_entered(int_name: int) -> void:
+	if !lobby_current_item_selected:
+		lobby_can_select_item = int_name
+		print($LobbyItems.get_node("%s" % lobby_can_select_item).get_children())
+		
+func item_mouse_exited(_int_name: int) -> void:
+	if !lobby_current_item_selected:
+		lobby_can_select_item = 0
+	
 func _process(delta: float) -> void:
 	
 	if lobby_can_select_item and !lobby_current_camera_travel_item_selected and Input.is_action_just_pressed("InputA"):
 		camera_move_forward = true
 		create_camera_rotation_point_array()
+		$LobbyAreas.get_node("%s" % lobby_current_camera_travel_item_selected).mouse_exited.emit()
 		
 	elif lobby_current_camera_travel_item_selected:
 		var lerp_factor: float = min(camera_current_time / camera_total_time, 1)
