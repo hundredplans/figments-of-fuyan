@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://bko6m47ftw7gr"]
+[gd_scene load_steps=19 format=3 uid="uid://c3hbi52fqq4jm"]
 
 [ext_resource type="PackedScene" uid="uid://cpqt2p58s44w4" path="res://assets/env/maps/lobby/base_map.blend" id="1_kdtvd"]
 [ext_resource type="Script" path="res://screens/lobby_map/lobby_map.gd" id="1_yrpq0"]
@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://bgyr6u0rhpehs" path="res://assets/env/maps/lobby/lobby_items/deck_holder.blend" id="10_n8y08"]
 [ext_resource type="PackedScene" uid="uid://c58nuqiq5cia8" path="res://assets/env/maps/lobby/lobby_items/customization_hanger.blend" id="11_u5urx"]
 [ext_resource type="PackedScene" uid="uid://bq8e416cc6yvd" path="res://assets/packs/standard/card_pack.blend" id="12_2g26v"]
+[ext_resource type="Texture2D" uid="uid://dmmxh3hqa7imq" path="res://screens/lobby_map/game_background.png" id="13_ivopf"]
 [ext_resource type="Curve3D" uid="uid://c13a6lgqfhddf" path="res://screens/lobby_map/paths/3lobby-item-path.tres" id="14_veu5s"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_0q6rs"]
@@ -109,7 +110,104 @@ transform = Transform3D(1, 0, -1.49012e-07, 0, 1, 0, 1.49012e-07, 0, 1, -0.01320
 shape = SubResource("BoxShape3D_s4lq0")
 metadata/_edit_lock_ = true
 
-[node name="GlowItem" type="Node3D" parent="."]
+[node name="LobbyGlows" type="Node2D" parent="."]
+
+[node name="background" type="Sprite2D" parent="LobbyGlows"]
+position = Vector2(960, 540)
+texture = ExtResource("13_ivopf")
+metadata/_edit_lock_ = true
+
+[node name="3" type="Node2D" parent="LobbyGlows"]
+
+[node name="Line2D" type="Line2D" parent="LobbyGlows/3"]
+points = PackedVector2Array(507, 648, 463, 670, 465, 693, 537, 710, 545, 816, 549, 878, 572, 896, 633, 894, 679, 873, 704, 844, 696, 688, 746, 663, 751, 638, 711, 620, 586, 627, 576, 547, 493, 561, 500, 663)
+default_color = Color(1, 0, 0, 1)
+
+[node name="4" type="Node2D" parent="LobbyGlows"]
+visible = false
+
+[node name="Line2D" type="Line2D" parent="LobbyGlows/4"]
+points = PackedVector2Array(454, 688, 489, 706, 539, 712, 539, 792, 511, 825, 518, 850, 540, 859, 590, 864, 631, 861, 645, 958, 691, 1028, 695, 1064)
+default_color = Color(1, 0, 0, 1)
+
+[node name="Line2D2" type="Line2D" parent="LobbyGlows/4"]
+points = PackedVector2Array(459, 688, 477, 668, 504, 649, 495, 557, 580, 548, 589, 627, 688, 622, 745, 641, 740, 669, 786, 655, 801, 995)
+default_color = Color(1, 0, 0, 1)
+
+[node name="Line2D3" type="Line2D" parent="LobbyGlows/4"]
+points = PackedVector2Array(743, 668, 656, 698, 691, 1030)
+default_color = Color(1, 0, 0, 1)
+
+[node name="Line2D4" type="Line2D" parent="LobbyGlows/4"]
+points = PackedVector2Array(679, 873, 788, 827)
+default_color = Color(1, 0, 0, 1)
+
+[node name="Line2D5" type="Line2D" parent="LobbyGlows/4"]
+points = PackedVector2Array(686, 944, 794, 885)
+default_color = Color(1, 0, 0, 1)
+
+[node name="Line2D6" type="Line2D" parent="LobbyGlows/4"]
+points = PackedVector2Array(693, 1030, 798, 967)
+default_color = Color(1, 0, 0, 1)
+
+[node name="Line2D7" type="Line2D" parent="LobbyGlows/4"]
+points = PackedVector2Array(633, 879, 623, 816, 672, 871)
+default_color = Color(1, 0, 0, 1)
+
+[node name="Line2D8" type="Line2D" parent="LobbyGlows/4"]
+points = PackedVector2Array(624, 817, 743, 771, 792, 824)
+default_color = Color(1, 0, 0, 1)
+
+[node name="Line2D9" type="Line2D" parent="LobbyGlows/4"]
+points = PackedVector2Array(646, 989, 644, 956)
+default_color = Color(1, 0, 0, 1)
+
+[node name="Line2D10" type="Line2D" parent="LobbyGlows/4"]
+points = PackedVector2Array(539, 713, 620, 706, 745, 668)
+default_color = Color(1, 0, 0, 1)
+
+[node name="Line2D11" type="Line2D" parent="LobbyGlows/4"]
+points = PackedVector2Array(535, 861, 523, 881, 525, 905, 545, 922, 578, 930, 641, 920, 709, 889, 734, 849)
+default_color = Color(1, 0, 0, 1)
+
+[node name="Line2D12" type="Line2D" parent="LobbyGlows/4"]
+points = PackedVector2Array(666, 758, 789, 715)
+default_color = Color(1, 0, 0, 1)
+
+[node name="Line2D13" type="Line2D" parent="LobbyGlows/4"]
+points = PackedVector2Array(504, 648, 543, 635, 593, 627)
+default_color = Color(1, 0, 0, 1)
+
+[node name="Line2D14" type="Line2D" parent="LobbyGlows/4"]
+points = PackedVector2Array(707, 787, 705, 747, 699, 684)
+default_color = Color(1, 0, 0, 1)
+
+[node name="Line2D15" type="Line2D" parent="LobbyGlows/4"]
+points = PackedVector2Array(595, 927, 577, 861)
+default_color = Color(1, 0, 0, 1)
+
+[node name="8" type="Node2D" parent="LobbyGlows"]
+visible = false
+
+[node name="Line2D" type="Line2D" parent="LobbyGlows/8"]
+points = PackedVector2Array(502, 642, 459, 676, 462, 695, 489, 707, 545, 710, 538, 768, 541, 799, 514, 820, 519, 851, 537, 859, 526, 881, 528, 907, 562, 931, 639, 927, 645, 986)
+default_color = Color(1, 0, 0, 1)
+
+[node name="Line2D2" type="Line2D" parent="LobbyGlows/8"]
+points = PackedVector2Array(648, 965, 692, 1034, 692, 1060)
+default_color = Color(1, 0, 0, 1)
+
+[node name="Line2D3" type="Line2D" parent="LobbyGlows/8"]
+points = PackedVector2Array(692, 1032, 801, 967, 803, 997)
+default_color = Color(1, 0, 0, 1)
+
+[node name="Line2D4" type="Line2D" parent="LobbyGlows/8"]
+points = PackedVector2Array(800, 966, 749, 913, 736, 850, 738, 792, 725, 767, 705, 754, 701, 684, 746, 662, 749, 638, 693, 621, 601, 627, 584, 631, 576, 545, 492, 561, 500, 646)
+default_color = Color(1, 0, 0, 1)
+
+[node name="5" type="Polygon2D" parent="LobbyGlows"]
+
+[node name="7" type="Polygon2D" parent="LobbyGlows"]
 
 [node name="BaseMap" parent="." instance=ExtResource("1_kdtvd")]
 
@@ -118,4 +216,5 @@ transform = Transform3D(0.913546, -0.0845652, 0.397848, 0, 0.978148, 0.207912, -
 metadata/_edit_lock_ = true
 
 [node name="Path3D" type="Path3D" parent="."]
+visible = false
 curve = ExtResource("14_veu5s")

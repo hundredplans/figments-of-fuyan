@@ -41,24 +41,29 @@ func _ready():
 		else:
 			print("Lobby item name is not a valid integer")
 			
+	for child in $LobbyGlows.get_children():
+		child.visible = false
+			
 func item_mouse_entered(int_name: int) -> void:
-	if !lobby_current_item_selected:
+	if !lobby_current_camera_travel_item_selected and !lobby_current_item_selected and !lobby_can_select_item:
 		lobby_can_select_item = int_name
-		print($LobbyItems.get_node("%s" % lobby_can_select_item).get_children())
+		$LobbyGlows.get_node("%s" % int_name).visible = true
 		
-func item_mouse_exited(_int_name: int) -> void:
-	if !lobby_current_item_selected:
+func item_mouse_exited(int_name: int) -> void:
+	if lobby_can_select_item:
 		lobby_can_select_item = 0
+		$LobbyGlows.get_node("%s" % int_name).visible = false
 	
 func _process(delta: float) -> void:
 	
 	if lobby_can_select_item and !lobby_current_camera_travel_item_selected and Input.is_action_just_pressed("InputA"):
 		camera_move_forward = true
 		create_camera_rotation_point_array()
-		$LobbyAreas.get_node("%s" % lobby_current_camera_travel_item_selected).mouse_exited.emit()
+		lobby_can_select_item = 1
+		item_mouse_exited(lobby_current_camera_travel_item_selected)
 		
 	elif lobby_current_camera_travel_item_selected:
-		var lerp_factor: float = min(camera_current_time / camera_total_time, 1)
+		var lerp_factor: float = ease_item(min(camera_current_time / camera_total_time, 1), lobby_current_camera_travel_item_selected)
 		var new_position: Vector3 = path_point_array[camera_points_index - 1].lerp(path_point_array[camera_points_index], lerp_factor)
 		process_camera_lerp_rotation(lerp_factor, new_position.distance_to(camera.position))
 		camera.position = new_position
@@ -202,6 +207,7 @@ func tilt_to_rotation_degrees(tilt: float, lr: Vector3) -> Vector3:
 			97: cr = lr
 			
 	return cr
+
 func convert_vector_one_to_interpolate(rotations: Array):
 	
 	var skip_to: int = -1
@@ -220,3 +226,12 @@ func on_lobby_camera_step_back(info: Array): # location in enum [0], stepping ba
 	camera_move_forward = false
 	create_camera_rotation_point_array()
 	on_lobby_step_back_finished = info[1]
+
+func ease_item(x: float, item_id: int) -> float:
+	if x < 0: return 0
+	elif x > 1: return 1
+	match lobby_camera_travel_info_dict[str(item_id)].ease:
+		"EaseInSine": return  1.0 - cos((x * PI) / 2)
+		"EaseInOutSine": return -(cos(x * PI) - 1) / 2
+		"EaseInCirc": return 1.0 - sqrt(1 - pow(x, 2))
+	return 1
