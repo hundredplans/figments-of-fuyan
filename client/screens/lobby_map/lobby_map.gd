@@ -1,11 +1,11 @@
 extends Node3D
 
 signal change_animation_status
+signal lobby_camera_travel_main_menu_finished
 signal add_to_back_history
 
 var on_lobby_step_back_finished: Callable
 
-var lobby_can_select_item: int = 0
 var lobby_current_camera_travel_item_selected: int = 0
 var lobby_current_item_selected: int = 0
 
@@ -17,10 +17,9 @@ var camera_current_time: float = 0
 var camera_travelled_distance: float
 var camera_total_distance: float
 
+var camera_move_forward: bool = true
 var camera_total_time: float
 var camera_point_distance: float
-
-var camera_move_forward: bool = true
 
 var camera_rotations_index: int = 0
 var camera_points_index: int = 0
@@ -30,39 +29,10 @@ const lobby_camera_posrot_path := "res://static_data/lobby_camera_posrot.json"
 const lobby_camera_travel_info_json := "res://static_data/lobby_camera_travel_info.json"
 @onready var lobby_camera_travel_info_dict: Dictionary = Helper.load_json(lobby_camera_travel_info_json)
 @onready var camera: Camera3D = $Camera3D
-		
-func _ready():
-	
-	for child in $LobbyAreas.get_children():
-		if child.name.is_valid_int():
-			var int_name: int = child.name.to_int()
-			child.mouse_entered.connect(item_mouse_entered.bind(int_name))
-			child.mouse_exited.connect(item_mouse_exited.bind(int_name))
-		else:
-			print("Lobby item name is not a valid integer")
-			
-	for child in $LobbyGlows.get_children():
-		child.visible = false
-			
-func item_mouse_entered(int_name: int) -> void:
-	if !lobby_current_camera_travel_item_selected and !lobby_current_item_selected and !lobby_can_select_item:
-		lobby_can_select_item = int_name
-		$LobbyGlows.get_node("%s" % int_name).visible = true
-		
-func item_mouse_exited(int_name: int) -> void:
-	if lobby_can_select_item:
-		lobby_can_select_item = 0
-		$LobbyGlows.get_node("%s" % int_name).visible = false
 	
 func _process(delta: float) -> void:
-	
-	if lobby_can_select_item and !lobby_current_camera_travel_item_selected and Input.is_action_just_pressed("InputA"):
-		camera_move_forward = true
-		create_camera_rotation_point_array()
-		lobby_can_select_item = 1
-		item_mouse_exited(lobby_current_camera_travel_item_selected)
 		
-	elif lobby_current_camera_travel_item_selected:
+	if lobby_current_camera_travel_item_selected:
 		var lerp_factor: float = ease_item(min(camera_current_time / camera_total_time, 1), lobby_current_camera_travel_item_selected)
 		var new_position: Vector3 = path_point_array[camera_points_index - 1].lerp(path_point_array[camera_points_index], lerp_factor)
 		process_camera_lerp_rotation(lerp_factor, new_position.distance_to(camera.position))
@@ -76,7 +46,7 @@ func _process(delta: float) -> void:
 				camera_point_distance = path_point_array[camera_points_index - 1].distance_to(path_point_array[camera_points_index])
 				camera_total_time = camera_point_distance / lobby_camera_travel_info_dict[str(lobby_current_camera_travel_item_selected)].speed
 			else:
-				lobby_camera_travel_finished()
+				on_lobby_camera_travel_finished()
 				
 			if lobby_current_camera_travel_item_selected:
 				if camera.rotation_degrees.is_equal_approx(path_rotation_array[camera_rotations_index][0]):
@@ -97,29 +67,27 @@ func process_camera_lerp_rotation(lerp_factor: float, current_travel_distance: f
 	else:
 		camera.rotation_degrees = camera.rotation_degrees.lerp(path_rotation_array[camera_rotations_index][0], lerp_factor)
 
-func lobby_camera_travel_finished() -> void:
+func on_lobby_camera_travel_finished() -> void:
 	if camera_move_forward:
 		lobby_current_item_selected = lobby_current_camera_travel_item_selected
 		add_to_back_history.emit([on_lobby_camera_step_back, 0])
 	else:
 		on_lobby_step_back_finished.call()
+		lobby_camera_travel_main_menu_finished.emit()
 		lobby_current_item_selected = 0
 		
 	lobby_current_camera_travel_item_selected = 0
 	change_animation_status.emit(0)
 	
-func create_camera_rotation_point_array() -> void:
+func create_camera_rotation_point_array(item_id: int) -> void:
 	
 	var local_path_rotation_array: Array = []
 	path_rotation_array.clear()
 	path_point_array.clear()
 	
-	for item in [lobby_can_select_item, lobby_current_item_selected]:
-		if item:
-			lobby_current_camera_travel_item_selected = item
-		
-	lobby_can_select_item = 0
+	lobby_current_camera_travel_item_selected = item_id
 	lobby_current_item_selected = 0
+	
 	var path: Curve3D = load("res://screens/lobby_map/paths/%slobby-item-path.tres" % lobby_current_camera_travel_item_selected)
 	
 	if camera_move_forward:
@@ -181,10 +149,10 @@ func tilt_to_rotation_degrees(tilt: float, lr: Vector3) -> Vector3:
 				cr.x *= -1
 				cr.y *= -1
 			"4": cr.z *= -1
-			"5": 
+			"5":
 				cr.x *= -1
 				cr.z *= -1
-			"6": 
+			"6":
 				cr.y *= -1
 				cr.z *= -1
 			"7": cr *= -1
@@ -193,7 +161,7 @@ func tilt_to_rotation_degrees(tilt: float, lr: Vector3) -> Vector3:
 		match cr.x:
 			91: cr.x = lr.x
 			92: cr.y = lr.y
-			93: 
+			93:
 				cr.x = lr.x
 				cr.y = lr.y
 			94:
@@ -224,7 +192,7 @@ func convert_vector_one_to_interpolate(rotations: Array):
 
 func on_lobby_camera_step_back(info: Array): # location in enum [0], stepping back changer func [1]
 	camera_move_forward = false
-	create_camera_rotation_point_array()
+	create_camera_rotation_point_array(lobby_current_item_selected)
 	on_lobby_step_back_finished = info[1]
 
 func ease_item(x: float, item_id: int) -> float:
@@ -235,3 +203,7 @@ func ease_item(x: float, item_id: int) -> float:
 		"EaseInOutSine": return -(cos(x * PI) - 1) / 2
 		"EaseInCirc": return 1.0 - sqrt(1 - pow(x, 2))
 	return 1
+
+func on_lobby_item_selected(item_id: int) -> void:
+	camera_move_forward = true
+	create_camera_rotation_point_array(item_id)

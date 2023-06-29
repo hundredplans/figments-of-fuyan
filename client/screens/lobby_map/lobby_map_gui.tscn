@@ -1,8 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://gfq7abru8bn1"]
+[gd_scene load_steps=3 format=3 uid="uid://gfq7abru8bn1"]
 
 [ext_resource type="Script" path="res://screens/lobby_map/lobby_map_gui.gd" id="1_6pbdu"]
+[ext_resource type="Texture2D" uid="uid://clg45xejsjnd5" path="res://screens/lobby_map/game_background.png" id="3_7ph6f"]
 
-[node name="lobby_map_gui" type="Control"]
+[node name="LobbyMapGui" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,3 +12,39 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_6pbdu")
+
+[node name="LobbyGlows" type="Node2D" parent="."]
+
+[node name="background" type="Sprite2D" parent="LobbyGlows"]
+visible = false
+position = Vector2(960, 540)
+texture = ExtResource("3_7ph6f")
+metadata/_edit_lock_ = true
+
+[node name="3" type="Node2D" parent="LobbyGlows"]
+
+[node name="Line2D" type="Line2D" parent="LobbyGlows/3"]
+points = PackedVector2Array(497, 645, 484, 553, 498, 549, 501, 556, 570, 549, 569, 541, 583, 540, 592, 621, 660, 616, 712, 619, 745, 631, 757, 652, 744, 671, 771, 661, 773, 650, 785, 647, 793, 652, 813, 993, 798, 1004, 791, 985, 702, 1038, 705, 1063, 687, 1071, 682, 1052, 679, 1033, 651, 987, 640, 992, 635, 977, 630, 931, 581, 938, 544, 933, 518, 912, 520, 882, 527, 869, 506, 853, 503, 826, 517, 804, 532, 793, 527, 786, 518, 785, 508, 715, 482, 711, 455, 698, 451, 675, 463, 660, 496, 643)
+width = 5.0
+default_color = Color(1, 0, 0, 1)
+
+[node name="5" type="Node2D" parent="LobbyGlows"]
+
+[node name="Line2D" type="Line2D" parent="LobbyGlows/5"]
+points = PackedVector2Array(1664, 576, 1699, 411, 1857, 412, 1839, 481, 1805, 608, 1793, 606, 1706, 599, 1660, 596, 1665, 571)
+width = 5.0
+default_color = Color(0.792157, 0.717647, 0, 1)
+
+[node name="7" type="Node2D" parent="LobbyGlows"]
+
+[node name="Line2D" type="Line2D" parent="LobbyGlows/7"]
+points = PackedVector2Array(1671, 839, 1664, 870, 1656, 876, 1607, 853, 1658, 678, 1667, 675, 1877, 730, 1832, 906, 1828, 911, 1818, 907, 1804, 941, 1741, 913, 1755, 868, 1669, 837)
+width = 5.0
+default_color = Color(0.0941176, 1, 1, 1)
+
+[node name="10" type="Node2D" parent="LobbyGlows"]
+
+[node name="Line2D" type="Line2D" parent="LobbyGlows/10"]
+points = PackedVector2Array(1209, 927, 1230, 892, 1235, 819, 1057, 755, 1036, 773, 1030, 789, 1029, 805, 1037, 809, 1048, 804, 1036, 812, 1029, 829, 1027, 845, 1040, 848, 1047, 845, 1052, 848, 1052, 857, 1061, 859, 1072, 857, 1077, 859, 1079, 868, 1089, 871, 1099, 868, 1104, 871, 1105, 880, 1116, 884, 1128, 882, 1132, 884, 1134, 891, 1139, 896, 1145, 896, 1155, 895, 1160, 896, 1164, 898, 1165, 907, 1172, 910, 1179, 911, 1190, 909, 1196, 913, 1197, 920, 1211, 928)
+width = 5.0
+default_color = Color(0.278431, 0.615686, 0.231373, 1)

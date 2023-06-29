@@ -11,10 +11,12 @@ func _ready():
 	#$GUI.load_gui(start_gui_path)
 	$GameWorld.add_to_back_history.connect(add_to_back_history)
 	$GameWorld.change_animation_status.connect(change_animation_status)
+	$GameWorld.lobby_camera_travel_main_menu_finished.connect(on_lobby_camera_travel_main_menu_finished)
+	$GUI.lobby_item_selected.connect(on_lobby_item_selected)
 	on_lobby_connected(5)
 
 func on_lobby_connected(_id: int) -> void:
-	$GUI.load_gui(lobby_gui_path)
+	$GUI.load_lobby_gui(lobby_gui_path)
 	$GameWorld.load_lobby_map(lobby_map_name)
 	
 func add_to_back_history(item: Array):
@@ -22,3 +24,9 @@ func add_to_back_history(item: Array):
 
 func change_animation_status(status: int):
 	$GUI.change_animation_status(status)
+
+func on_lobby_item_selected(item_id: int):
+	$GameWorld.on_lobby_item_selected(item_id)
+	
+func on_lobby_camera_travel_main_menu_finished():
+	$GUI.on_lobby_camera_travel_main_menu_finished()

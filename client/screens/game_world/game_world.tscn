@@ -14,6 +14,10 @@ background_mode = 2
 sky = SubResource("Sky_7girg")
 ambient_light_source = 3
 reflected_light_source = 2
+ssr_enabled = true
+ssao_enabled = true
+ssil_enabled = true
+glow_enabled = true
 glow_hdr_threshold = 1.5
 
 [node name="GameWorld" type="Node3D"]
