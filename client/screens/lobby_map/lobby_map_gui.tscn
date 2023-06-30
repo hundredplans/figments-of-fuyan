@@ -16,10 +16,16 @@ script = ExtResource("1_6pbdu")
 [node name="LobbyGlows" type="Node2D" parent="."]
 
 [node name="background" type="Sprite2D" parent="LobbyGlows"]
-visible = false
 position = Vector2(960, 540)
 texture = ExtResource("3_7ph6f")
 metadata/_edit_lock_ = true
+
+[node name="1" type="Node2D" parent="LobbyGlows"]
+
+[node name="Line2D" type="Line2D" parent="LobbyGlows/1"]
+points = PackedVector2Array(86, 691, 33, 499, 55, 496, 87, 492, 124, 482, 166, 469, 196, 456, 237, 453, 298, 449, 338, 459, 371, 465, 383, 467, 423, 465, 429, 497, 445, 604, 418, 613, 391, 623, 367, 636, 357, 644, 353, 655, 297, 671, 236, 688, 216, 678, 194, 678, 157, 681, 117, 689, 87, 694, 84, 684)
+width = 5.0
+default_color = Color(0.698039, 0.0941176, 0.92549, 1)
 
 [node name="3" type="Node2D" parent="LobbyGlows"]
 

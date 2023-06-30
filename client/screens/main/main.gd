@@ -12,7 +12,9 @@ func _ready():
 	$GameWorld.add_to_back_history.connect(add_to_back_history)
 	$GameWorld.change_animation_status.connect(change_animation_status)
 	$GameWorld.lobby_camera_travel_main_menu_finished.connect(on_lobby_camera_travel_main_menu_finished)
+	$GameWorld.lobby_camera_travel_item_finished.connect(on_lobby_camera_travel_item_finished)
 	$GUI.lobby_item_selected.connect(on_lobby_item_selected)
+	$GUI.exit_door_exit_game.connect(on_exit_door_exit_game)
 	on_lobby_connected(5)
 
 func on_lobby_connected(_id: int) -> void:
@@ -30,3 +32,9 @@ func on_lobby_item_selected(item_id: int):
 	
 func on_lobby_camera_travel_main_menu_finished():
 	$GUI.on_lobby_camera_travel_main_menu_finished()
+
+func on_lobby_camera_travel_item_finished(path: String):
+	$GUI.on_lobby_camera_travel_item_finished(path)
+
+func on_exit_door_exit_game(path: String):
+	$GameWorld.on_exit_door_exit_game(path)

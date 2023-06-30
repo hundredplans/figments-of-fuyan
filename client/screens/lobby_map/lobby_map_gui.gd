@@ -49,6 +49,7 @@ func on_lobby_item_mouse_entered(item_id: int):
 	if can_glow:
 		on_set_lobby_glow_item_visibility(true, item_id)
 		on_item = item_id
+		
 func on_lobby_item_mouse_exited(item_id: int):
 	if can_glow:
 		on_set_lobby_glow_item_visibility(false, item_id)

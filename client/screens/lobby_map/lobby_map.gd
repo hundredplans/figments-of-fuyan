@@ -2,9 +2,16 @@ extends Node3D
 
 signal change_animation_status
 signal lobby_camera_travel_main_menu_finished
-signal add_to_back_history
+signal lobby_camera_travel_item_finished
+
+const exit_id: int = 99
+const exit_door_open_time: float = 0.4
+const exit_door_rotation_angle: float = 140
+var exit_door_current_time: float = 0
+var exit_door_start_interpolate: bool = false
 
 var on_lobby_step_back_finished: Callable
+var camera_travel_finished: Callable
 
 var lobby_current_camera_travel_item_selected: int = 0
 var lobby_current_item_selected: int = 0
@@ -26,38 +33,47 @@ var camera_points_index: int = 0
 
 const lobby_camera_posrot_path := "res://static_data/lobby_camera_posrot.json"
 @onready var lcps = Helper.load_json(lobby_camera_posrot_path)
-const lobby_camera_travel_info_json := "res://static_data/lobby_camera_travel_info.json"
+const lobby_camera_travel_info_json := "res://static_data/lobby_camera_item_info.json"
 @onready var lobby_camera_travel_info_dict: Dictionary = Helper.load_json(lobby_camera_travel_info_json)
 @onready var camera: Camera3D = $Camera3D
 	
 func _process(delta: float) -> void:
 		
-	if lobby_current_camera_travel_item_selected:
-		var lerp_factor: float = ease_item(min(camera_current_time / camera_total_time, 1), lobby_current_camera_travel_item_selected)
-		var new_position: Vector3 = path_point_array[camera_points_index - 1].lerp(path_point_array[camera_points_index], lerp_factor)
-		process_camera_lerp_rotation(lerp_factor, new_position.distance_to(camera.position))
-		camera.position = new_position
+	if lobby_current_camera_travel_item_selected: interpolate_camera_movement(delta)
+	if exit_door_start_interpolate: interpolate_exit_doors(delta)
+		
+func interpolate_camera_movement(delta: float):
+	var lerp_factor: float = ease_item(min(camera_current_time / camera_total_time, 1), lobby_current_camera_travel_item_selected)
+	var new_position: Vector3 = path_point_array[camera_points_index - 1].lerp(path_point_array[camera_points_index], lerp_factor)
+	process_camera_lerp_rotation(lerp_factor, new_position.distance_to(camera.position))
+	camera.position = new_position
+		
+	camera.position = path_point_array[camera_points_index - 1].lerp(path_point_array[camera_points_index], lerp_factor)
+	if camera.position.is_equal_approx(path_point_array[camera_points_index]):
+		camera_points_index += 1
+		camera_current_time = 0
+		if camera_points_index != path_point_array.size():
+			camera_point_distance = path_point_array[camera_points_index - 1].distance_to(path_point_array[camera_points_index])
+			camera_total_time = camera_point_distance / lobby_camera_travel_info_dict[str(lobby_current_camera_travel_item_selected)].speed
+		else:
+			camera_travel_finished.call()
 			
-		camera.position = path_point_array[camera_points_index - 1].lerp(path_point_array[camera_points_index], lerp_factor)
-		if camera.position.is_equal_approx(path_point_array[camera_points_index]):
-			camera_points_index += 1
-			camera_current_time = 0
-			if camera_points_index != path_point_array.size():
-				camera_point_distance = path_point_array[camera_points_index - 1].distance_to(path_point_array[camera_points_index])
-				camera_total_time = camera_point_distance / lobby_camera_travel_info_dict[str(lobby_current_camera_travel_item_selected)].speed
-			else:
-				on_lobby_camera_travel_finished()
-				
-			if lobby_current_camera_travel_item_selected:
-				if camera.rotation_degrees.is_equal_approx(path_rotation_array[camera_rotations_index][0]):
-					camera_rotations_index += 1
-					camera_travelled_distance = 0
-					if path_rotation_array[camera_rotations_index].size() > 1:
-						for i in range(path_rotation_array[camera_rotations_index][2], path_rotation_array[camera_rotations_index][3]):
-							camera_total_distance += path_point_array[i].distance_to(path_point_array[i + 1])
-
-		camera_current_time += delta
-
+		if lobby_current_camera_travel_item_selected:
+			if camera.rotation_degrees.is_equal_approx(path_rotation_array[camera_rotations_index][0]):
+				camera_rotations_index += 1
+				camera_travelled_distance = 0
+				if path_rotation_array[camera_rotations_index].size() > 1:
+					for i in range(path_rotation_array[camera_rotations_index][2], path_rotation_array[camera_rotations_index][3]):
+						camera_total_distance += path_point_array[i].distance_to(path_point_array[i + 1])
+						
+	camera_current_time += delta
+func interpolate_exit_doors(delta: float):
+	exit_door_current_time += delta
+	var rotation_angles: Array = [exit_door_rotation_angle, exit_door_rotation_angle * -1]
+	for i in range(rotation_angles.size()):
+		var child: Node3D = $LobbyItems.get_node("1").get_child(i)
+		child.rotation_degrees = child.rotation_degrees.lerp(Vector3(0, rotation_angles[i], 0), exit_door_current_time / exit_door_open_time)
+	
 func process_camera_lerp_rotation(lerp_factor: float, current_travel_distance: float):
 	
 	if path_rotation_array[camera_rotations_index].size() > 1:
@@ -67,28 +83,30 @@ func process_camera_lerp_rotation(lerp_factor: float, current_travel_distance: f
 	else:
 		camera.rotation_degrees = camera.rotation_degrees.lerp(path_rotation_array[camera_rotations_index][0], lerp_factor)
 
-func on_lobby_camera_travel_finished() -> void:
-	if camera_move_forward:
-		lobby_current_item_selected = lobby_current_camera_travel_item_selected
-		add_to_back_history.emit([on_lobby_camera_step_back, 0])
-	else:
-		on_lobby_step_back_finished.call()
-		lobby_camera_travel_main_menu_finished.emit()
-		lobby_current_item_selected = 0
-		
+func on_lobby_camera_exit_travel_finished() -> void: 
+	get_tree().quit()
+	on_lobby_camera_travel_finished()
+func on_lobby_camera_item_travel_finished() -> void:
+	lobby_current_item_selected = lobby_current_camera_travel_item_selected
+	lobby_camera_travel_item_finished.emit([on_lobby_camera_step_back, 0, lobby_camera_travel_info_dict[str(lobby_current_item_selected)].init])
+	on_lobby_camera_travel_finished()
+func on_lobby_camera_main_menu_travel_finished() -> void:
+	on_lobby_step_back_finished.call()
+	lobby_camera_travel_main_menu_finished.emit()
+	lobby_current_item_selected = 0
+	on_lobby_camera_travel_finished()
+func on_lobby_camera_travel_finished():
 	lobby_current_camera_travel_item_selected = 0
 	change_animation_status.emit(0)
+	camera_travel_finished = Callable()
 	
-func create_camera_rotation_point_array(item_id: int) -> void:
+func create_camera_rotation_point_array(path_str: String) -> void:
 	
 	var local_path_rotation_array: Array = []
 	path_rotation_array.clear()
 	path_point_array.clear()
 	
-	lobby_current_camera_travel_item_selected = item_id
-	lobby_current_item_selected = 0
-	
-	var path: Curve3D = load("res://screens/lobby_map/paths/%slobby-item-path.tres" % lobby_current_camera_travel_item_selected)
+	var path: Curve3D = load(path_str)
 	
 	if camera_move_forward:
 		local_path_rotation_array.append(tilt_to_rotation_degrees(path.get_point_tilt(0), camera.rotation_degrees))
@@ -126,7 +144,6 @@ func create_camera_rotation_point_array(item_id: int) -> void:
 			camera_total_distance += path_point_array[i].distance_to(path_point_array[i + 1])
 	
 	change_animation_status.emit(1)
-	
 func tilt_to_rotation_degrees(tilt: float, lr: Vector3) -> Vector3:
 	
 	var code: String = str(tilt)
@@ -175,7 +192,6 @@ func tilt_to_rotation_degrees(tilt: float, lr: Vector3) -> Vector3:
 			97: cr = lr
 			
 	return cr
-
 func convert_vector_one_to_interpolate(rotations: Array):
 	
 	var skip_to: int = -1
@@ -189,12 +205,10 @@ func convert_vector_one_to_interpolate(rotations: Array):
 						path_rotation_array.append([rotations[i - 1]])
 						path_rotation_array.append([rotations[j], rotations[i - 1], i, j])
 						skip_to = j
-
 func on_lobby_camera_step_back(info: Array): # location in enum [0], stepping back changer func [1]
-	camera_move_forward = false
-	create_camera_rotation_point_array(lobby_current_item_selected)
+	move_camera_through_path(false, on_lobby_camera_main_menu_travel_finished, item_id_to_path(lobby_current_item_selected), lobby_current_item_selected)
 	on_lobby_step_back_finished = info[1]
-
+	
 func ease_item(x: float, item_id: int) -> float:
 	if x < 0: return 0
 	elif x > 1: return 1
@@ -203,7 +217,20 @@ func ease_item(x: float, item_id: int) -> float:
 		"EaseInOutSine": return -(cos(x * PI) - 1) / 2
 		"EaseInCirc": return 1.0 - sqrt(1 - pow(x, 2))
 	return 1
-
 func on_lobby_item_selected(item_id: int) -> void:
-	camera_move_forward = true
-	create_camera_rotation_point_array(item_id)
+	move_camera_through_path(true, on_lobby_camera_item_travel_finished, item_id_to_path(item_id), item_id)
+	
+func item_id_to_path(item_id: int) -> String: return "res://screens/lobby_map/paths/%slobby-item-path.tres" % item_id
+	
+func on_exit_door_exit_game(path: String): 
+	move_camera_through_path(true, on_lobby_camera_exit_travel_finished, path, exit_id)
+	exit_door_start_interpolate = true
+	
+func move_camera_through_path(direction: bool, exit_function: Callable, path: String, item_id: int) -> void:
+	camera_move_forward = direction
+	camera_travel_finished = exit_function
+	
+	lobby_current_camera_travel_item_selected = item_id
+	lobby_current_item_selected = 0
+	
+	create_camera_rotation_point_array(path)
