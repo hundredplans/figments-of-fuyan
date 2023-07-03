@@ -1,4 +1,7 @@
-[gd_scene format=3 uid="uid://cjxexc7unp2li"]
+[gd_scene load_steps=3 format=3 uid="uid://cjxexc7unp2li"]
+
+[ext_resource type="Script" path="res://screens/deck_manager/deck_manager_gui.gd" id="1_ya8ap"]
+[ext_resource type="Texture2D" uid="uid://xe3l27higkni" path="res://screens/deck_manager/template.png" id="2_7s6m1"]
 
 [node name="DeckManagerGUI" type="Control"]
 layout_mode = 3
@@ -8,3 +11,20 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+script = ExtResource("1_ya8ap")
+
+[node name="Temp" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TempBG" type="TextureRect" parent="Temp"]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+texture = ExtResource("2_7s6m1")

@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://w4oe1lvatowh"]
+
+[ext_resource type="Script" path="res://screens/helper/custom_button/custom_button.gd" id="1_as1ps"]
+[ext_resource type="Texture2D" uid="uid://cbjem5s7uopbd" path="res://screens/GUI/back_arrow/back_arrow.png" id="2_0yw70"]
+
+[node name="custom_button" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1920.0
+offset_bottom = -1080.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_as1ps")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_0yw70")
+
+[node name="MouseCollision" type="Area2D" parent="."]
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

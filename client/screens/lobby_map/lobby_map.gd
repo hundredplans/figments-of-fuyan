@@ -38,7 +38,6 @@ const lobby_camera_travel_info_json := "res://static_data/lobby_camera_item_info
 @onready var camera: Camera3D = $Camera3D
 	
 func _process(delta: float) -> void:
-		
 	if lobby_current_camera_travel_item_selected: interpolate_camera_movement(delta)
 	if exit_door_start_interpolate: interpolate_exit_doors(delta)
 		
@@ -46,8 +45,6 @@ func interpolate_camera_movement(delta: float):
 	var lerp_factor: float = ease_item(min(camera_current_time / camera_total_time, 1), lobby_current_camera_travel_item_selected)
 	var new_position: Vector3 = path_point_array[camera_points_index - 1].lerp(path_point_array[camera_points_index], lerp_factor)
 	process_camera_lerp_rotation(lerp_factor, new_position.distance_to(camera.position))
-	camera.position = new_position
-		
 	camera.position = path_point_array[camera_points_index - 1].lerp(path_point_array[camera_points_index], lerp_factor)
 	if camera.position.is_equal_approx(path_point_array[camera_points_index]):
 		camera_points_index += 1

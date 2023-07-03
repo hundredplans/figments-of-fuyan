@@ -47,6 +47,11 @@ func change_animation_status(status: int):
 		1: $BackArrow.disabled = true; animation_status = 1
 		2: $BackArrow.disabled = true; $BackArrow.visible = false; animation_status = 1
 
+func currency_holder_status(status: int):
+	match status:
+		0: $CurrencyHolder.visible = false
+		1: $CurrencyHolder.visible = true
+
 func on_lobby_camera_travel_main_menu_finished():
 	get_node("LobbyMapGui").on_lobby_camera_travel_main_menu_finished()
 func on_lobby_camera_travel_item_finished(path: String):
@@ -63,4 +68,5 @@ func on_ExitDoorGUI_init(screen: Control):
 func on_PlayMenuGUI_init(_screen: Control): pass
 func on_SettingsGUI_init(_screen: Control): pass
 func on_NewsGUI_init(_screen: Control): pass
-func on_DeckManagerGUI_init(_screen: Control): pass
+func on_DeckManagerGUI_init(_screen: Control):
+	pass
