@@ -26,6 +26,7 @@ func _on_back_arrow_pressed():
 func _process(_delta: float):
 	if Input.is_action_just_pressed("InputBackMenu") and animation_status < 1:
 		on_go_back_step()
+		
 func on_go_back_step() -> void:
 	if back_history.size():
 		if !currently_stepping_back:
@@ -54,6 +55,8 @@ func currency_holder_status(status: int):
 
 func on_lobby_camera_travel_main_menu_finished():
 	get_node("LobbyMapGui").on_lobby_camera_travel_main_menu_finished()
+	currency_holder_status(1)
+	
 func on_lobby_camera_travel_item_finished(path: String):
 	var item_gui: Control = load_gui(path)
 	call("on_" + item_gui.name + "_init", item_gui)
@@ -65,8 +68,11 @@ func remove_main_screen():
 func on_ExitDoorGUI_init(screen: Control):
 	screen.go_back_step_from_child.connect(on_go_back_step)
 	screen.exit_door_exit_game.connect(func(path): change_animation_status(2); exit_door_exit_game.emit(path))
-func on_PlayMenuGUI_init(_screen: Control): pass
+func on_PlayMenuGUI_init(_screen: Control):
+	currency_holder_status(1)
 func on_SettingsGUI_init(_screen: Control): pass
 func on_NewsGUI_init(_screen: Control): pass
-func on_DeckManagerGUI_init(_screen: Control):
-	pass
+func on_DeckManagerGUI_init(_screen: Control): pass
+
+func on_lobby_camera_travel_item_started(_item_id: int, _direction: bool):
+	currency_holder_status(0)

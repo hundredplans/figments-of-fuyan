@@ -1,9 +1,9 @@
 {
 	"type_to_stat": {
-	"u": "s",
-	"t": "r",
-	"p": "p",
-	"r": "o",
+	"unit": "s",
+	"turret": "r",
+	"spawner": "p",
+	"ritual": ["b", "o"],
 	},
 	
 	"type_to_type": {
@@ -48,5 +48,8 @@
 	"att": "a",
 	"hp": "h",
 	"energy": "e",
-	}
+	},
+	
+	"stat_list": [
+	"a", "h", "e", "s", "r", "p", "o", "b"]
 }

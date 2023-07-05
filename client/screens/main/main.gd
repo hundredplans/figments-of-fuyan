@@ -14,6 +14,8 @@ func _ready():
 	$GameWorld.change_animation_status.connect(change_animation_status)
 	$GameWorld.lobby_camera_travel_main_menu_finished.connect(on_lobby_camera_travel_main_menu_finished)
 	$GameWorld.lobby_camera_travel_item_finished.connect(on_lobby_camera_travel_item_finished)
+	$GameWorld.lobby_camera_travel_item_started.connect(on_lobby_camera_travel_item_started)
+	
 	$GUI.lobby_item_selected.connect(on_lobby_item_selected)
 	$GUI.exit_door_exit_game.connect(on_exit_door_exit_game)
 	
@@ -45,7 +47,17 @@ func convert_card_properties(card: Dictionary) -> Dictionary:
 			"stat3":
 				for key in converter.type_to_stat:
 					if card.type == key:
-						new_card.merge({converter.type_to_stat[key]: card[stat]})
+						if card.type != "ritual":
+							new_card.merge({converter.type_to_stat[key]: card[stat]})
+						else:
+							var stats: Array = converter.type_to_stat[key]
+							match typeof(card[stat]):
+								TYPE_FLOAT:
+									new_card.merge({stats[0]: card[stat]})
+									new_card.merge({stats[1]: 1})
+								TYPE_STRING:
+									new_card.merge({stats[0]: int(card[stat][0])})
+									new_card.merge({stats[1]: int(card[stat][2])})
 						break
 			"att", "hp", "energy": 
 				new_card.merge({converter.stat_to_stat[stat]: card[stat]})
@@ -53,6 +65,8 @@ func convert_card_properties(card: Dictionary) -> Dictionary:
 
 	return {str(card.cid): new_card}
 
+func on_lobby_camera_travel_item_started(item_id: int, direction: bool):
+	$GUI.on_lobby_camera_travel_item_started(item_id, direction)
 
 func add_to_back_history(item: Array):
 	$GUI.add_to_back_history(item)

@@ -1,16 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://clainut21cjok"]
+[gd_scene load_steps=5 format=3 uid="uid://clainut21cjok"]
 
 [ext_resource type="Script" path="res://test/card_version_two/card.gd" id="1_h4ecw"]
 [ext_resource type="Texture2D" uid="uid://bt1kdmwtdl6wk" path="res://assets/cards/28/art_max.png" id="2_3tel4"]
 [ext_resource type="Texture2D" uid="uid://p16aueug8gd0" path="res://assets/max_mini/max/stats/c.png" id="2_nenul"]
 [ext_resource type="Texture2D" uid="uid://u0f6gde5crix" path="res://assets/max_mini/max/base/1.png" id="3_1cd62"]
-[ext_resource type="PackedScene" uid="uid://dfs4y0cwigh7p" path="res://assets/max_mini/max/card_back/kuba_card_back/card_back.blend" id="5_281cc"]
 
 [node name="card" type="Node3D"]
 script = ExtResource("1_h4ecw")
-metadata/_edit_lock_ = true
-
-[node name="card_back" parent="." instance=ExtResource("5_281cc")]
 
 [node name="stats" type="Node3D" parent="."]
 metadata/_edit_lock_ = true
@@ -59,7 +55,6 @@ texture = ExtResource("3_1cd62")
 metadata/_edit_lock_ = true
 
 [node name="shadow" type="Sprite3D" parent="art"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.609, 0.015)
 double_sided = false
 alpha_cut = 1
 metadata/_edit_lock_ = true

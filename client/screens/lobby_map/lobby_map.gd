@@ -3,6 +3,12 @@ extends Node3D
 signal change_animation_status
 signal lobby_camera_travel_main_menu_finished
 signal lobby_camera_travel_item_finished
+signal lobby_camera_travel_item_started
+
+const max_item_id: int = 13
+const min_item_id: int = 0
+
+var on_camera_distance_travelled: Callable
 
 const exit_id: int = 99
 const exit_door_open_time: float = 0.4
@@ -20,9 +26,9 @@ var path_point_array: Array = []
 var path_rotation_array: Array = []
 
 var camera_current_time: float = 0
-
 var camera_travelled_distance: float
 var camera_total_distance: float
+var camera_normalized_travelled_distance: float = 0
 
 var camera_move_forward: bool = true
 var camera_total_time: float
@@ -37,9 +43,14 @@ const lobby_camera_travel_info_json := "res://static_data/lobby_camera_item_info
 @onready var lobby_camera_travel_info_dict: Dictionary = Helper.load_json(lobby_camera_travel_info_json)
 @onready var camera: Camera3D = $Camera3D
 	
+func _ready():
+	for child in $LobbyItemEffects.get_children():
+		child.visible = false
+	
 func _process(delta: float) -> void:
 	if lobby_current_camera_travel_item_selected: interpolate_camera_movement(delta)
 	if exit_door_start_interpolate: interpolate_exit_doors(delta)
+	if on_camera_distance_travelled: on_camera_distance_travelled.call(camera_normalized_travelled_distance)
 		
 func interpolate_camera_movement(delta: float):
 	var lerp_factor: float = ease_item(min(camera_current_time / camera_total_time, 1), lobby_current_camera_travel_item_selected)
@@ -64,6 +75,8 @@ func interpolate_camera_movement(delta: float):
 						camera_total_distance += path_point_array[i].distance_to(path_point_array[i + 1])
 						
 	camera_current_time += delta
+	camera_normalized_travelled_distance = camera_travelled_distance / camera_total_distance
+	
 func interpolate_exit_doors(delta: float):
 	exit_door_current_time += delta
 	var rotation_angles: Array = [exit_door_rotation_angle, exit_door_rotation_angle * -1]
@@ -93,6 +106,9 @@ func on_lobby_camera_main_menu_travel_finished() -> void:
 	lobby_current_item_selected = 0
 	on_lobby_camera_travel_finished()
 func on_lobby_camera_travel_finished():
+	
+	on_camera_distance_travelled = Callable()
+	for child in $LobbyItemEffects.get_children(): child.queue_free()
 	lobby_current_camera_travel_item_selected = 0
 	change_animation_status.emit(0)
 	camera_travel_finished = Callable()
@@ -141,6 +157,7 @@ func create_camera_rotation_point_array(path_str: String) -> void:
 			camera_total_distance += path_point_array[i].distance_to(path_point_array[i + 1])
 	
 	change_animation_status.emit(1)
+	
 func tilt_to_rotation_degrees(tilt: float, lr: Vector3) -> Vector3:
 	
 	var code: String = str(tilt)
@@ -214,6 +231,7 @@ func ease_item(x: float, item_id: int) -> float:
 		"EaseInOutSine": return -(cos(x * PI) - 1) / 2
 		"EaseInCirc": return 1.0 - sqrt(1 - pow(x, 2))
 	return 1
+	
 func on_lobby_item_selected(item_id: int) -> void:
 	move_camera_through_path(true, on_lobby_camera_item_travel_finished, item_id_to_path(item_id), item_id)
 	
@@ -226,8 +244,26 @@ func on_exit_door_exit_game(path: String):
 func move_camera_through_path(direction: bool, exit_function: Callable, path: String, item_id: int) -> void:
 	camera_move_forward = direction
 	camera_travel_finished = exit_function
-	
+		
 	lobby_current_camera_travel_item_selected = item_id
 	lobby_current_item_selected = 0
 	
 	create_camera_rotation_point_array(path)
+	on_lobby_item_travel_start(item_id, direction)
+
+func on_lobby_item_travel_start(item_id: int, direction: bool):
+	if item_id > min_item_id and item_id < max_item_id:
+		lobby_camera_travel_item_started.emit(item_id, direction)
+		on_trigger_lobby_item_effects(item_id, direction)
+
+func on_trigger_lobby_item_effects(item_id: int, direction: bool) -> void:
+	var effect_path: String = "res://screens/lobby_map/travel_effects/%seffects_init.tscn" % str(item_id)
+	if ResourceLoader.exists(effect_path):
+		call("on_" + lobby_camera_travel_info_dict[str(item_id)].name + "_travel_effects_init", effect_path, item_id, direction)
+		
+func on_DeckManager_travel_effects_init(effect_path: String, _item_id: int, direction: bool):
+	var effect: Node3D = load(effect_path).instantiate()
+	effect.ready_with_direction(direction)
+	on_camera_distance_travelled = effect.on_camera_distance_travelled
+	$LobbyItemEffects.add_child(effect)
+	

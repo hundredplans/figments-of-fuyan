@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" path="res://screens/GUI/gui.gd" id="1_374hv"]
 [ext_resource type="Texture2D" uid="uid://cbjem5s7uopbd" path="res://screens/GUI/back_arrow/back_arrow.png" id="2_g1qdh"]
-[ext_resource type="PackedScene" uid="uid://w4oe1lvatowh" path="res://screens/helper/custom_button/custom_button.tscn" id="2_p4iky"]
+[ext_resource type="PackedScene" uid="uid://b2rah1fvcmeg5" path="res://screens/helper/custom_button/custom_button.tscn" id="2_p4iky"]
 [ext_resource type="Texture2D" uid="uid://b586ddmyf3e42" path="res://screens/GUI/back_arrow/back_arrow_dark.png" id="3_54tvh"]
-[ext_resource type="Texture2D" uid="uid://bggp8a72bm7gx" path="res://screens/GUI/back_arrow/arrow_back_darker.png" id="4_0rpkc"]
+[ext_resource type="Texture2D" uid="uid://bggp8a72bm7gx" path="res://screens/GUI/back_arrow/back_arrow_darker.png" id="4_26e45"]
 [ext_resource type="Texture2D" uid="uid://vqv8y1aoij4h" path="res://screens/lobby_map/currency_holder.png" id="6_0lmb1"]
 
 [node name="GUI" type="Control"]
@@ -17,30 +17,28 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_374hv")
 
-[node name="custom_button" parent="." instance=ExtResource("2_p4iky")]
-layout_mode = 1
-scale = Vector2(0.5, 0.5)
-hover = ExtResource("3_54tvh")
-disabled = ExtResource("4_0rpkc")
-
-[node name="BackArrow" type="TextureButton" parent="."]
+[node name="BackArrow" parent="." instance=ExtResource("2_p4iky")]
 layout_mode = 0
-offset_left = 32.0
-offset_top = 32.0
-offset_right = 232.0
-offset_bottom = 232.0
+offset_left = 34.0
+offset_top = 27.0
+offset_right = 234.0
+offset_bottom = 227.0
 scale = Vector2(0.5, 0.5)
+button_mask = 1
 texture_normal = ExtResource("2_g1qdh")
-texture_pressed = ExtResource("4_0rpkc")
+texture_pressed = ExtResource("4_26e45")
 texture_hover = ExtResource("3_54tvh")
+texture_disabled = ExtResource("4_26e45")
 
 [node name="CurrencyHolder" type="Control" parent="."]
+layout_mode = 1
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 1718.0
+offset_top = 109.0
+offset_right = 1718.0
+offset_bottom = 109.0
 
 [node name="Sprite2D" type="Sprite2D" parent="CurrencyHolder"]
-position = Vector2(1723, 115)
 texture = ExtResource("6_0lmb1")
 
 [node name="MainScreen" type="Control" parent="."]

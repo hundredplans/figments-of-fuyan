@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://bsyjeyhqsgttf"]
+
+[ext_resource type="PackedScene" uid="uid://cjxexc7unp2li" path="res://screens/deck_manager/deck_manager_gui.tscn" id="1_8kpnp"]
+[ext_resource type="Script" path="res://screens/lobby_map/travel_effects/10effects_init.gd" id="1_u3x81"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_pha2g"]
+viewport_path = NodePath("SubViewport")
+
+[node name="10effects_init" type="Node3D"]
+transform = Transform3D(0.0482963, 0.00778808, -0.0103351, 0, 0.0399318, 0.0300907, 0.012941, -0.0290654, 0.0385711, -2.14119, 1.3955, 6.14611)
+script = ExtResource("1_u3x81")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+texture = SubResource("ViewportTexture_pha2g")
+metadata/_edit_lock_ = true
+
+[node name="SubViewport" type="SubViewport" parent="."]
+disable_3d = true
+transparent_bg = true
+size = Vector2i(1920, 1080)
+
+[node name="DeckManagerGUI" parent="SubViewport" instance=ExtResource("1_8kpnp")]

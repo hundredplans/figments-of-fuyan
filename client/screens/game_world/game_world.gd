@@ -3,6 +3,7 @@ signal add_to_back_history
 signal change_animation_status
 signal lobby_camera_travel_main_menu_finished
 signal lobby_camera_travel_item_finished
+signal lobby_camera_travel_item_started
 
 func load_map(map_name: String) -> Node3D:
 	for child in $MainMap.get_children():
@@ -17,7 +18,8 @@ func load_lobby_map(map_name: String) -> void:
 	map.lobby_camera_travel_item_finished.connect(on_lobby_camera_travel_item_finished)
 	map.change_animation_status.connect(func(status: int): change_animation_status.emit(status))
 	map.lobby_camera_travel_main_menu_finished.connect(func(): lobby_camera_travel_main_menu_finished.emit())
-
+	map.lobby_camera_travel_item_started.connect(func(x, y): lobby_camera_travel_item_started.emit(x, y))
+	
 func on_lobby_item_selected(item_id: int) -> void:
 	
 	if $MainMap.get_child(0).name == "lobby_map":

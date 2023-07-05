@@ -1,8 +1,38 @@
 {
-	"1": {"speed": 10, "ease": "EaseInSine", "init": "res://screens/exit_door/exit_door_gui.tscn"},
-	"3": {"speed": 8, "ease": "EaseInSine", "init": "res://screens/play_menu/play_menu_gui.tscn"},
-	"5": {"speed": 16, "ease": "EaseInOutSine", "init": "res://screens/settings/settings_gui.tscn"},
-	"7": {"speed": 12, "ease": "EaseInCirc", "init": "res://screens/news/news_gui.tscn"},
-	"10": {"speed": 4, "ease": "EaseInSine", "init": "res://screens/deck_manager/deck_manager_gui.tscn"},
-	"99": {"speed": 15, "ease": "EaseInSine", "init": ""}
+	"1": {
+		"speed": 10, 
+		"ease": "EaseInSine", 
+		"init": "res://screens/exit_door/exit_door_gui.tscn",
+		"name": "ExitDoor",
+		},
+	"3": {
+		"speed": 8, 
+		"ease": "EaseInSine", 
+		"init": "res://screens/play_menu/play_menu_gui.tscn",
+		"name": "PlayMenu",
+		},
+	"5": {
+		"speed": 16, 
+		"ease": "EaseInOutSine", 
+		"init": "res://screens/settings/settings_gui.tscn",
+		"name": "Settings"
+		},
+	"7": {
+		"speed": 12,
+		 "ease": "EaseInCirc",
+		 "init": "res://screens/news/news_gui.tscn",
+		 "name": "News",
+		},
+	"10": {
+		"speed": 4, 
+		"ease": "EaseInSine", 
+		"init": "res://screens/deck_manager/deck_manager_gui.tscn", 
+		"name": "DeckManager",
+		},
+	"99": {
+		"speed": 15, 
+		"ease": "EaseInSine",
+		"init": "", 
+		"name": "ForceExit",
+		}
 }

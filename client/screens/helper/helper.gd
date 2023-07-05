@@ -17,3 +17,5 @@ func load_json(path: String) -> Dictionary:
 		
 	printerr("Your path isn't valid!")
 	return {}
+func create_card_object():
+	pass
