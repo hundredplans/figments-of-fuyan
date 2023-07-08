@@ -1,9 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://clainut21cjok"]
+[gd_scene load_steps=4 format=3 uid="uid://clainut21cjok"]
 
 [ext_resource type="Script" path="res://test/card_version_two/card.gd" id="1_h4ecw"]
-[ext_resource type="Texture2D" uid="uid://bt1kdmwtdl6wk" path="res://assets/cards/28/art_max.png" id="2_3tel4"]
 [ext_resource type="Texture2D" uid="uid://p16aueug8gd0" path="res://assets/max_mini/max/stats/c.png" id="2_nenul"]
-[ext_resource type="Texture2D" uid="uid://u0f6gde5crix" path="res://assets/max_mini/max/base/1.png" id="3_1cd62"]
+[ext_resource type="Texture2D" uid="uid://u0f6gde5crix" path="res://assets/max_mini/max/base/c.png" id="3_1cd62"]
 
 [node name="card" type="Node3D"]
 script = ExtResource("1_h4ecw")
@@ -29,7 +28,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, 0.0004)
 pixel_size = 0.0005
 alpha_cut = 1
 render_priority = 3
-texture = ExtResource("2_3tel4")
 metadata/_edit_lock_ = true
 
 [node name="stats" type="Sprite3D" parent="art"]

@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://bl1dsgshk8bac"]
+
+[ext_resource type="FontFile" uid="uid://dfckcwo02c6lv" path="res://assets/fonts/card_fonts/Roboto-Black.ttf" id="1_sf502"]
+
+[node name="StatsLabel" type="Label3D"]
+double_sided = false
+texture_filter = 0
+render_priority = 4
+outline_render_priority = 3
+font = ExtResource("1_sf502")

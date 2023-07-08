@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://c02bx4xtueifn"]
+
+[ext_resource type="Script" path="res://test/cardviewer.gd" id="1_00le4"]
+[ext_resource type="Script" path="res://test/cam.gd" id="1_rnv6m"]
+
+[node name="cardviewer" type="Node3D"]
+script = ExtResource("1_00le4")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+near = 0.001
+script = ExtResource("1_rnv6m")

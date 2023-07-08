@@ -1,6 +1,10 @@
 extends Node
 const static_data: String = "res://static_data/"
 var static_data_length: int = static_data.length()
+var uid: int = 1
+
+var clan_convert_path: String = "res://static_data/cards/card_clan_to_full_clan.json"
+@onready var clan_convert: Dictionary = Helper.load_json(clan_convert_path)
 
 func load_json(path: String) -> Dictionary:
 	
@@ -17,5 +21,9 @@ func load_json(path: String) -> Dictionary:
 		
 	printerr("Your path isn't valid!")
 	return {}
-func create_card_object():
-	pass
+	
+func create_max_card(card: Dictionary):
+	var max_card: Node3D = load("res://assets/max_mini/max/max_card.tscn").instantiate()
+	max_card.create_card(card, clan_convert, uid)
+	uid += 1
+	return max_card

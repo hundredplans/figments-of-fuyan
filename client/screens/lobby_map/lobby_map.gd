@@ -37,9 +37,9 @@ var camera_point_distance: float
 var camera_rotations_index: int = 0
 var camera_points_index: int = 0
 
-const lobby_camera_posrot_path := "res://static_data/lobby_camera_posrot.json"
+const lobby_camera_posrot_path := "res://static_data/lobby/lobby_camera_posrot.json"
 @onready var lcps = Helper.load_json(lobby_camera_posrot_path)
-const lobby_camera_travel_info_json := "res://static_data/lobby_camera_item_info.json"
+const lobby_camera_travel_info_json := "res://static_data/lobby/lobby_camera_item_info.json"
 @onready var lobby_camera_travel_info_dict: Dictionary = Helper.load_json(lobby_camera_travel_info_json)
 @onready var camera: Camera3D = $Camera3D
 	
@@ -157,7 +157,6 @@ func create_camera_rotation_point_array(path_str: String) -> void:
 			camera_total_distance += path_point_array[i].distance_to(path_point_array[i + 1])
 	
 	change_animation_status.emit(1)
-	
 func tilt_to_rotation_degrees(tilt: float, lr: Vector3) -> Vector3:
 	
 	var code: String = str(tilt)
@@ -222,7 +221,6 @@ func convert_vector_one_to_interpolate(rotations: Array):
 func on_lobby_camera_step_back(info: Array): # location in enum [0], stepping back changer func [1]
 	move_camera_through_path(false, on_lobby_camera_main_menu_travel_finished, item_id_to_path(lobby_current_item_selected), lobby_current_item_selected)
 	on_lobby_step_back_finished = info[1]
-	
 func ease_item(x: float, item_id: int) -> float:
 	if x < 0: return 0
 	elif x > 1: return 1
@@ -267,3 +265,5 @@ func on_DeckManager_travel_effects_init(effect_path: String, _item_id: int, dire
 	on_camera_distance_travelled = effect.on_camera_distance_travelled
 	$LobbyItemEffects.add_child(effect)
 	
+func on_receive_sort_cards(cards: Array, sort: Dictionary) -> void:
+	$Camera3D/CardSorter.on_receive_sort_cards(cards, sort)
