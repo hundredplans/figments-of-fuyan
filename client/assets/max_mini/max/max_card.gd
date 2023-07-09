@@ -1,5 +1,10 @@
 extends Node3D
 
+const max_lines: Dictionary = {
+	"Text": 5, 
+	"Clan": 1,
+	"Name": 1,
+}
 const size_rect := Rect2i(0, 0, 150, 300)
 var uid: int = 0
 var cid: int = 0
@@ -26,6 +31,8 @@ func create_card(card: Dictionary, clan_convert: Dictionary, card_back_convert: 
 	create_card_back(1, card_back_convert)
 	create_card_text(card, clan_convert)
 	create_card_stats(card)
+	call_deferred("change_text_size")
+	
 func create_card_art(card: Dictionary):
 	
 	var base: String = "g" if card.clan == "e" and card.type == "s" else card.rarity
@@ -50,14 +57,14 @@ func create_card_art(card: Dictionary):
 	baseImage.blend_rect(shadowImage, size_rect, card_art_positions.shadow)
 	var imageTx := ImageTexture.create_from_image(baseImage)
 	$Art.texture = imageTx
+func create_card_text(card: Dictionary, clan_convert: Dictionary) -> void:
+	$TextViewport/Clan.text = clan_convert[card.clan]
+	$TextViewport/Text.text = card.text
+	$TextViewport/Name.text = card.name
 func create_card_back(card_back_id: int, card_back_convert: Dictionary):
 	for child in get_children(): if child.name == "card_back": child.queue_free()
 	var card_back: Node3D = load(card_back_convert[str(card_back_id)]).instantiate()
 	add_child(card_back)
-func create_card_text(card: Dictionary, clan_convert: Dictionary) -> void:
-	$Text/Clan.text = clan_convert[card.clan]
-	$Text/Text.text = card.text
-	$Text/Name.text = card.name
 func create_card_stats(card: Dictionary) -> void:
 	for pos in card_stats_positions[card.type]:
 		if card.has(pos):
@@ -67,3 +74,11 @@ func create_card_stats(card: Dictionary) -> void:
 			label.position.x = card_stats_positions[card.type][pos].x
 			label.position.y = card_stats_positions[card.type][pos].y
 			$Stats.add_child(label)
+func change_text_size():
+	var restart: bool = false
+	for lab in $TextViewport.get_children():
+		if lab.get_line_count() > max_lines[lab.name]:
+			lab.set_label_settings(load("res://assets/max_mini/max/text/%s.tres" % str(int(lab.label_settings.font_size) -2)))
+			restart = true
+	
+	if restart: call_deferred("change_text_size")
