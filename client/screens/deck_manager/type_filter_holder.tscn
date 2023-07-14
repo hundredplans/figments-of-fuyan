@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://blytu20svhqn6"]
+
+[node name="Holder" type="ColorRect"]
+offset_top = 73.0
+offset_right = 98.0
+offset_bottom = 188.0
+color = Color(0.2, 0.2, 0.2, 0.54902)
+
+[node name="u" type="Button" parent="."]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 3.0
+offset_right = 93.0
+offset_bottom = 34.0
+text = "Units"
+
+[node name="sr" type="Button" parent="."]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 41.0
+offset_right = 93.0
+offset_bottom = 72.0
+text = "Spells"
+
+[node name="pwt" type="Button" parent="."]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 78.0
+offset_right = 93.0
+offset_bottom = 109.0
+text = "Buildings"

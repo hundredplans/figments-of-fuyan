@@ -34,7 +34,6 @@ canvas_item_default_texture_filter = 0
 size = Vector2i(300, 600)
 
 [node name="Name" type="Label" parent="TextViewport"]
-texture_filter = 1
 offset_left = 48.0
 offset_top = 536.0
 offset_right = 252.0
@@ -52,10 +51,10 @@ offset_right = 194.0
 offset_bottom = 302.0
 label_settings = ExtResource("2_1r33f")
 horizontal_alignment = 1
+vertical_alignment = 1
 autowrap_mode = 1
 
 [node name="Text" type="Label" parent="TextViewport"]
-texture_filter = 1
 offset_left = 28.0
 offset_top = 316.0
 offset_right = 272.0

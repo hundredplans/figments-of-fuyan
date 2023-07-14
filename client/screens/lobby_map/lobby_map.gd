@@ -264,6 +264,3 @@ func on_DeckManager_travel_effects_init(effect_path: String, _item_id: int, dire
 	effect.ready_with_direction(direction)
 	on_camera_distance_travelled = effect.on_camera_distance_travelled
 	$LobbyItemEffects.add_child(effect)
-	
-func on_receive_sort_cards(cards: Array, sort: Dictionary) -> void:
-	$Camera3D/CardSorter.on_receive_sort_cards(cards, sort)

@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://ba6p26ovc1l3"]
+
+[ext_resource type="Script" path="res://screens/card_display/card_display.gd" id="1_p7xdd"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_jxg5l"]
+viewport_path = NodePath("CardViewport")
+
+[sub_resource type="World3D" id="World3D_62pjc"]
+
+[node name="CardDisplay" type="Node2D"]
+script = ExtResource("1_p7xdd")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+top_level = true
+position = Vector2(960, 540)
+texture = SubResource("ViewportTexture_jxg5l")
+
+[node name="CardViewport" type="SubViewport" parent="."]
+own_world_3d = true
+world_3d = SubResource("World3D_62pjc")
+transparent_bg = true
+size = Vector2i(1920, 1080)
+
+[node name="Camera3D" type="Camera3D" parent="CardViewport"]
+
+[node name="Cards" type="Node3D" parent="CardViewport"]

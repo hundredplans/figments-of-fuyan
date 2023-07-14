@@ -20,7 +20,7 @@ var card_stats_positions: Dictionary = {
 	"t": {"a": Vector2(-0.512, 0.05), "h": Vector2(0.513,0.07), "r": Vector2(0.55, 1.34), "e": Vector2(-0.55, 1.32)},
 	"w": {"h": Vector2(0.513,0.07), "d": Vector2(0.55, 1.34), "e": Vector2(-0.55, 1.32)},
 	"p": {"h": Vector2(0.513,0.07), "p": Vector2(0.55, 1.34), "e": Vector2(-0.55, 1.32)},
-	"r": {"b": Vector2(-0.55, 1.32), "o": Vector2(0.513,0.07)},
+	"r": {"b": Vector2(-0.55, 1.32), "o": Vector2(0.55, 1.34)},
 	"c": {"h": Vector2(-0.55, 1.32)},
 }
 

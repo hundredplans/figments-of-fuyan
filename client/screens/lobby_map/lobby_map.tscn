@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://c3hbi52fqq4jm"]
+[gd_scene load_steps=15 format=3 uid="uid://c3hbi52fqq4jm"]
 
 [ext_resource type="PackedScene" uid="uid://cpqt2p58s44w4" path="res://assets/env/maps/lobby/base_map.blend" id="1_kdtvd"]
 [ext_resource type="Script" path="res://screens/lobby_map/lobby_map.gd" id="1_yrpq0"]
@@ -14,7 +14,6 @@
 [ext_resource type="PackedScene" uid="uid://c58nuqiq5cia8" path="res://assets/env/maps/lobby/lobby_items/customization_hanger.blend" id="11_u5urx"]
 [ext_resource type="PackedScene" uid="uid://bq8e416cc6yvd" path="res://assets/packs/standard/card_pack.blend" id="12_2g26v"]
 [ext_resource type="PackedScene" uid="uid://2ppwx23fhh7p" path="res://assets/env/maps/lobby/lobby_items/game_sign.blend" id="13_bgfun"]
-[ext_resource type="PackedScene" uid="uid://y657sm8s0iyj" path="res://screens/card_sorter/card_sorter.tscn" id="15_2j3vi"]
 
 [node name="LobbyMap" type="Node3D"]
 script = ExtResource("1_yrpq0")
@@ -81,10 +80,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00295544, -0.00366688, -0.0
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(0.913546, -0.0845652, 0.397848, 0, 0.978148, 0.207912, -0.406736, -0.189937, 0.893583, -1.692, 2.498, 7.86)
+cull_mask = 1047553
 current = true
 near = 0.001
 metadata/_edit_lock_ = true
-
-[node name="CardSorter" parent="Camera3D" instance=ExtResource("15_2j3vi")]
 
 [node name="Path3D" type="Path3D" parent="."]

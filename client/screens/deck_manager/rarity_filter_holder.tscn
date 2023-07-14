@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://c4t2thic1h3og"]
+
+[node name="Holder" type="ColorRect"]
+offset_top = 78.0
+offset_right = 174.0
+offset_bottom = 309.0
+color = Color(0.2, 0.2, 0.2, 0.54902)
+
+[node name="c" type="Button" parent="."]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 4.0
+offset_right = 170.0
+offset_bottom = 53.0
+text = "Common"
+
+[node name="r" type="Button" parent="."]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 61.0
+offset_right = 170.0
+offset_bottom = 110.0
+text = "Rare"
+
+[node name="e" type="Button" parent="."]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 118.0
+offset_right = 170.0
+offset_bottom = 167.0
+text = "Epic"
+
+[node name="l" type="Button" parent="."]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 176.0
+offset_right = 170.0
+offset_bottom = 225.0
+text = "Legendary"

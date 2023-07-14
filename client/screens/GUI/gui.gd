@@ -4,7 +4,6 @@ var animation_status: int = 0
 var back_history: Array = []
 signal lobby_item_selected
 signal exit_door_exit_game
-signal send_cards_to_card_sorter
 
 var current_gui_selected: StringName
 func _ready():
@@ -74,8 +73,12 @@ func on_PlayMenuGUI_init(_screen: Control):
 func on_SettingsGUI_init(_screen: Control): pass
 func on_NewsGUI_init(_screen: Control): pass
 func on_DeckManagerGUI_init(screen: Control):
-	screen.send_cards_to_card_sorter.connect(func(x: Array, y: Dictionary): send_cards_to_card_sorter.emit(x, y))
-	screen.show_first_eight_cards()
+	screen.main_screen = true
+	screen.on_display_cards()
+	
+func on_GameSignGUI_init(_screen: Control):
+	for child in get_parent().get_children(): child.queue_free()
+	get_parent().add_child(load("res://test/cardviewer.tscn").instantiate())
 	
 func on_lobby_camera_travel_item_started(_item_id: int, _direction: bool):
 	currency_holder_status(0)

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://gfq7abru8bn1"]
 
 [ext_resource type="Script" path="res://screens/lobby_map/lobby_map_gui.gd" id="1_6pbdu"]
-[ext_resource type="Texture2D" uid="uid://clg45xejsjnd5" path="res://screens/lobby_map/game_background.png" id="3_7ph6f"]
+[ext_resource type="Texture2D" uid="uid://2lh55hk6niny" path="res://screens/lobby_map/game_back.png" id="2_ryw4a"]
 
 [node name="LobbyMapGui" type="Control"]
 layout_mode = 3
@@ -17,7 +17,7 @@ script = ExtResource("1_6pbdu")
 
 [node name="background" type="Sprite2D" parent="LobbyGlows"]
 position = Vector2(960, 540)
-texture = ExtResource("3_7ph6f")
+texture = ExtResource("2_ryw4a")
 metadata/_edit_lock_ = true
 
 [node name="1" type="Node2D" parent="LobbyGlows"]
@@ -54,3 +54,11 @@ default_color = Color(0.0941176, 1, 1, 1)
 points = PackedVector2Array(1209, 927, 1230, 892, 1235, 819, 1057, 755, 1036, 773, 1030, 789, 1029, 805, 1037, 809, 1048, 804, 1036, 812, 1029, 829, 1027, 845, 1040, 848, 1047, 845, 1052, 848, 1052, 857, 1061, 859, 1072, 857, 1077, 859, 1079, 868, 1089, 871, 1099, 868, 1104, 871, 1105, 880, 1116, 884, 1128, 882, 1132, 884, 1134, 891, 1139, 896, 1145, 896, 1155, 895, 1160, 896, 1164, 898, 1165, 907, 1172, 910, 1179, 911, 1190, 909, 1196, 913, 1197, 920, 1211, 928)
 width = 5.0
 default_color = Color(0.278431, 0.615686, 0.231373, 1)
+
+[node name="12" type="Node2D" parent="LobbyGlows"]
+position = Vector2(960, 540)
+
+[node name="Line2D" type="Line2D" parent="LobbyGlows/12"]
+points = PackedVector2Array(-152, -542, -147, -405, -174, -405, -166, -246, 84, -248, 89, -408, 60, -408, 63, -540, 63, -543, 53, -543, 51, -408, -137, -405, -142, -540, -142, -543, -154, -543)
+width = 5.0
+default_color = Color(0.933333, 0.482353, 0, 1)

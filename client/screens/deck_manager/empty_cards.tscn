@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://q5qg75p7iyjy"]
+
+[ext_resource type="FontFile" uid="uid://dfckcwo02c6lv" path="res://assets/fonts/card_fonts/Roboto-Black.ttf" id="1_d0cgo"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_d7mw1"]
+font = ExtResource("1_d0cgo")
+font_size = 64
+outline_size = 12
+outline_color = Color(0, 0, 0, 1)
+
+[node name="EmptyCards" type="Label"]
+offset_left = 316.0
+offset_top = 464.0
+offset_right = 948.0
+offset_bottom = 722.0
+text = "Nothing to see here shmuck ಠ_ಠ"
+label_settings = SubResource("LabelSettings_d7mw1")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2

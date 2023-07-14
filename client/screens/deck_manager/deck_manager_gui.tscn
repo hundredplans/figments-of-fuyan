@@ -1,7 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://cjxexc7unp2li"]
+[gd_scene load_steps=7 format=3 uid="uid://cjxexc7unp2li"]
 
 [ext_resource type="Script" path="res://screens/deck_manager/deck_manager_gui.gd" id="1_ya8ap"]
 [ext_resource type="Texture2D" uid="uid://xe3l27higkni" path="res://screens/deck_manager/template.png" id="2_7s6m1"]
+[ext_resource type="PackedScene" uid="uid://ba6p26ovc1l3" path="res://screens/card_display/card_display.tscn" id="2_84jtk"]
+[ext_resource type="Script" path="res://screens/deck_manager/energy_filter.gd" id="4_auslq"]
+[ext_resource type="Script" path="res://screens/deck_manager/rarity_filter.gd" id="5_e870n"]
+[ext_resource type="Script" path="res://screens/deck_manager/type_filter.gd" id="6_1nrgc"]
 
 [node name="DeckManagerGUI" type="Control"]
 layout_mode = 3
@@ -21,6 +25,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+metadata/_edit_lock_ = true
+
+[node name="CardDisplay" parent="Temp" instance=ExtResource("2_84jtk")]
 
 [node name="TempBG" type="TextureRect" parent="Temp"]
 layout_mode = 0
@@ -28,3 +35,167 @@ offset_right = 1920.0
 offset_bottom = 1080.0
 mouse_filter = 2
 texture = ExtResource("2_7s6m1")
+
+[node name="BackPage" type="Button" parent="Temp"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 494.0
+offset_right = 34.0
+offset_bottom = 626.0
+
+[node name="ForwardPage" type="Button" parent="Temp"]
+layout_mode = 0
+offset_left = 1184.0
+offset_top = 494.0
+offset_right = 1215.0
+offset_bottom = 626.0
+
+[node name="Filters" type="Control" parent="Temp"]
+layout_mode = 2
+anchors_preset = 0
+offset_left = 54.0
+offset_top = 153.0
+offset_right = 54.0
+offset_bottom = 192.0
+
+[node name="HideHeroCards" type="Button" parent="Temp/Filters"]
+layout_mode = 0
+offset_left = 413.0
+offset_top = -5.0
+offset_right = 499.0
+offset_bottom = 73.0
+text = "Hide Hero"
+
+[node name="ShowScrapCards" type="Button" parent="Temp/Filters"]
+layout_mode = 0
+offset_left = 499.0
+offset_top = -5.0
+offset_right = 596.0
+offset_bottom = 73.0
+text = "Show Scrap"
+
+[node name="ShowUnownedCards" type="Button" parent="Temp/Filters"]
+layout_mode = 0
+offset_left = 596.0
+offset_top = -5.0
+offset_right = 725.0
+offset_bottom = 73.0
+text = "Show Unowned"
+
+[node name="EnergyFilter" type="Control" parent="Temp/Filters"]
+top_level = true
+anchors_preset = 0
+offset_left = 55.0
+offset_top = 148.0
+offset_right = 194.0
+offset_bottom = 490.0
+script = ExtResource("4_auslq")
+
+[node name="Button" type="Button" parent="Temp/Filters/EnergyFilter"]
+layout_mode = 0
+offset_right = 140.0
+offset_bottom = 78.0
+text = "Energy"
+
+[node name="RarityFilter" type="Control" parent="Temp/Filters"]
+top_level = true
+anchors_preset = 0
+offset_left = 195.0
+offset_top = 148.0
+offset_right = 369.0
+offset_bottom = 460.0
+script = ExtResource("5_e870n")
+
+[node name="Button" type="Button" parent="Temp/Filters/RarityFilter"]
+layout_mode = 1
+offset_right = 174.0
+offset_bottom = 78.0
+text = "Rarity"
+
+[node name="TypeFilter" type="Control" parent="Temp/Filters"]
+top_level = true
+anchors_preset = 0
+offset_left = 369.0
+offset_top = 153.0
+offset_right = 466.0
+offset_bottom = 378.0
+script = ExtResource("6_1nrgc")
+
+[node name="Button" type="Button" parent="Temp/Filters/TypeFilter"]
+layout_mode = 0
+offset_top = -5.0
+offset_right = 98.0
+offset_bottom = 73.0
+text = "Type"
+
+[node name="SortButtons" type="Control" parent="Temp"]
+anchors_preset = 0
+offset_left = 51.0
+offset_top = 1008.0
+offset_right = 466.0
+offset_bottom = 1047.0
+
+[node name="SortEnergy" type="Button" parent="Temp/SortButtons"]
+layout_mode = 2
+offset_left = 138.0
+offset_top = -6.0
+offset_right = 276.0
+offset_bottom = 43.0
+size_flags_horizontal = 0
+text = "Energy"
+
+[node name="SortClan" type="Button" parent="Temp/SortButtons"]
+layout_mode = 2
+offset_top = -6.0
+offset_right = 138.0
+offset_bottom = 43.0
+text = "Clan"
+
+[node name="SortRarity" type="Button" parent="Temp/SortButtons"]
+layout_mode = 2
+offset_left = 276.0
+offset_top = -6.0
+offset_right = 415.0
+offset_bottom = 43.0
+text = "Rarity"
+
+[node name="CardSearch" type="LineEdit" parent="Temp"]
+layout_mode = 0
+offset_left = 779.0
+offset_top = 153.0
+offset_right = 1167.0
+offset_bottom = 226.0
+placeholder_text = "Search For Cards Here"
+alignment = 1
+max_length = 40
+caret_blink = true
+
+[node name="NoCards" type="Control" parent="Temp"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Timers" type="Control" parent="."]
+anchors_preset = 0
+
+[node name="ChangePage" type="Timer" parent="Timers"]
+wait_time = 0.15
+one_shot = true
+
+[connection signal="pressed" from="Temp/BackPage" to="." method="_on_back_page_pressed"]
+[connection signal="pressed" from="Temp/ForwardPage" to="." method="_on_forward_page_pressed"]
+[connection signal="pressed" from="Temp/Filters/HideHeroCards" to="." method="_on_hide_hero_cards_pressed"]
+[connection signal="pressed" from="Temp/Filters/ShowScrapCards" to="." method="_on_show_scrap_cards_pressed"]
+[connection signal="pressed" from="Temp/Filters/ShowUnownedCards" to="." method="_on_show_unowned_cards_pressed"]
+[connection signal="energy_filter_changed" from="Temp/Filters/EnergyFilter" to="." method="_on_energy_filter_energy_filter_changed"]
+[connection signal="pressed" from="Temp/Filters/EnergyFilter/Button" to="Temp/Filters/EnergyFilter" method="_on_pressed"]
+[connection signal="rarity_filter_changed" from="Temp/Filters/RarityFilter" to="." method="_on_rarity_filter_rarity_filter_changed"]
+[connection signal="pressed" from="Temp/Filters/RarityFilter/Button" to="Temp/Filters/RarityFilter" method="_on_pressed"]
+[connection signal="type_filter_changed" from="Temp/Filters/TypeFilter" to="." method="_on_type_filter_type_filter_changed"]
+[connection signal="pressed" from="Temp/Filters/TypeFilter/Button" to="Temp/Filters/TypeFilter" method="_on_pressed"]
+[connection signal="pressed" from="Temp/SortButtons/SortEnergy" to="." method="_on_sort_energy_pressed"]
+[connection signal="pressed" from="Temp/SortButtons/SortClan" to="." method="_on_sort_clan_pressed"]
+[connection signal="pressed" from="Temp/SortButtons/SortRarity" to="." method="_on_sort_rarity_pressed"]
+[connection signal="text_changed" from="Temp/CardSearch" to="." method="_on_card_search_text_changed"]
+[connection signal="text_submitted" from="Temp/CardSearch" to="." method="_on_card_search_text_submitted"]
+[connection signal="timeout" from="Timers/ChangePage" to="." method="_on_change_page_timeout"]

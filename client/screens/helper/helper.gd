@@ -5,6 +5,8 @@ var uid: int = 1
 
 var clan_convert_path: String = "res://static_data/cards/card_clan_to_full_clan.json"
 @onready var clan_convert: Dictionary = Helper.load_json(clan_convert_path)
+var card_back_convert_path: String = "res://static_data/cards/card_back_convert.json"
+@onready var card_back_convert: Dictionary = Helper.load_json(card_back_convert_path)
 
 func load_json(path: String) -> Dictionary:
 	
@@ -24,6 +26,6 @@ func load_json(path: String) -> Dictionary:
 	
 func create_max_card(card: Dictionary):
 	var max_card: Node3D = load("res://assets/max_mini/max/max_card.tscn").instantiate()
-	max_card.create_card(card, clan_convert, uid)
+	max_card.create_card(card, clan_convert, card_back_convert, uid)
 	uid += 1
 	return max_card

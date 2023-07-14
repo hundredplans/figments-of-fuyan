@@ -18,7 +18,6 @@ func _ready():
 	
 	$GUI.lobby_item_selected.connect(on_lobby_item_selected)
 	$GUI.exit_door_exit_game.connect(on_exit_door_exit_game)
-	$GUI.send_cards_to_card_sorter.connect(on_send_cards_to_card_sorter)
 	
 	on_lobby_connected(5)
 func on_lobby_connected(_id: int) -> void:
@@ -38,6 +37,4 @@ func on_lobby_camera_travel_item_finished(path: String):
 	$GUI.on_lobby_camera_travel_item_finished(path)
 func on_exit_door_exit_game(path: String):
 	$GameWorld.on_exit_door_exit_game(path)
-func on_send_cards_to_card_sorter(cards: Array, sort: Dictionary):
-	print("hello hello")
-	$GameWorld.on_send_cards_to_card_sorter(cards, sort)
+

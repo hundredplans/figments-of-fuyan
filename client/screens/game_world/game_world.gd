@@ -31,7 +31,3 @@ func on_exit_door_exit_game(path: String):
 func on_lobby_camera_travel_item_finished(item: Array) -> void: # [0] func to call when back arrow called
 	add_to_back_history.emit([item[0], item[1]])                # [1] lobby item id to go back to (0), maybe unnecessary
 	lobby_camera_travel_item_finished.emit(item[2])             # [2] lobby item scene to instance
-
-func on_send_cards_to_card_sorter(cards: Array, sort: Dictionary):
-	if $MainMap.get_child(0).name == "lobby_map":
-		$MainMap.get_child(0).on_receive_sort_cards(cards, sort)

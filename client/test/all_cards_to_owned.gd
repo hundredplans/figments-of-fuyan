@@ -27,17 +27,18 @@ func convert_card_properties(card: Dictionary) -> Dictionary:
 							var stats: Array = converter.type_to_stat[key]
 							match typeof(card[stat]):
 								TYPE_FLOAT:
-									new_card.merge({stats[0]: card[stat]})
-									new_card.merge({stats[1]: 1})
+									new_card.merge({stats[0]: float(card[stat])})
+									new_card.merge({stats[1]: float(1)})
 								TYPE_STRING:
-									new_card.merge({stats[0]: int(card[stat][0])})
-									new_card.merge({stats[1]: int(card[stat][2])})
+									new_card.merge({stats[0]: float(card[stat][0])})
+									new_card.merge({stats[1]: float(card[stat][2])})
 						break
 			"att", "hp", "energy": 
 				new_card.merge({converter.stat_to_stat[stat]: card[stat]})
 			"text": new_card.merge({stat: card[stat]}); has_text = true
 			_: new_card.merge({stat: card[stat]})
 			
+	if new_card.cid == 236: print(new_card)
 	if !has_text: new_card.merge({"text": ""})
 	return new_card
 func _ready():
@@ -63,12 +64,13 @@ func convert_to_sorted_cards():
 	file = null
 	return sorted_cards
 func convert_to_owned_cards(all_cards):
-	var path: String = "res://static_data/owned_cards.json"
+	var path: String = "res://static_data/cards/owned_cards.json"
 	var file = FileAccess.open(path,FileAccess.WRITE)
 	var dad_dict: Dictionary = {}
 	for card in all_cards:
-		var amount: int = match_rarity(all_cards[card].rarity)
-		dad_dict.merge({card: [amount, 0, []]})
+		if all_cards[card].clan not in ["i", "e"]:
+			var amount: int = match_rarity(all_cards[card].rarity)
+			dad_dict.merge({card: [amount, 0, []]})
 		
 	file.store_string("{\n\t\"owned_cards\":{\n")
 	for key in dad_dict:
