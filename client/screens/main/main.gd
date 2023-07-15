@@ -30,7 +30,7 @@ func add_to_back_history(item: Array):
 func change_animation_status(status: int):
 	$GUI.change_animation_status(status)
 func on_lobby_item_selected(item_id: int):
-	$GameWorld.on_lobby_item_selected(item_id)	
+	$GameWorld.on_lobby_item_selected(item_id)
 func on_lobby_camera_travel_main_menu_finished():
 	$GUI.on_lobby_camera_travel_main_menu_finished()
 func on_lobby_camera_travel_item_finished(path: String):

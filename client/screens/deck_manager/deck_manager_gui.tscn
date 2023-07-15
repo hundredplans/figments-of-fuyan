@@ -182,6 +182,10 @@ anchors_preset = 0
 wait_time = 0.15
 one_shot = true
 
+[node name="SearchLoadPage" type="Timer" parent="Timers"]
+wait_time = 0.12
+one_shot = true
+
 [connection signal="pressed" from="Temp/BackPage" to="." method="_on_back_page_pressed"]
 [connection signal="pressed" from="Temp/ForwardPage" to="." method="_on_forward_page_pressed"]
 [connection signal="pressed" from="Temp/Filters/HideHeroCards" to="." method="_on_hide_hero_cards_pressed"]
@@ -199,3 +203,4 @@ one_shot = true
 [connection signal="text_changed" from="Temp/CardSearch" to="." method="_on_card_search_text_changed"]
 [connection signal="text_submitted" from="Temp/CardSearch" to="." method="_on_card_search_text_submitted"]
 [connection signal="timeout" from="Timers/ChangePage" to="." method="_on_change_page_timeout"]
+[connection signal="timeout" from="Timers/SearchLoadPage" to="." method="_on_search_load_page_timeout"]

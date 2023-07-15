@@ -9,6 +9,10 @@ var owned_cards_path: String = "res://static_data/cards/owned_cards.json"
 var hero_clan_path: String = "res://static_data/cards/hero_clans.json"
 var clan_convert_path: String = "res://static_data/cards/card_clan_to_full_clan.json"
 var stat_abbreviation_path: String = "res://static_data/cards/card_stat_abbreviations.json"
+var weird_letter_path: String = "res://static_data/deck_manager/weird_letter_conversion.json"
+var search_aliases_path: String = "res://static_data/deck_manager/search_aliases.json"
+var keyword_search_path: String = "res://static_data/deck_manager/keyword_search.json"
+
 var active_search_cards: Array = []
 var display_cards: Array = []
 @onready var all_cards: Dictionary = Helper.load_json(all_cards_path)
@@ -16,6 +20,9 @@ var display_cards: Array = []
 @onready var hero_clans: Dictionary = Helper.load_json(hero_clan_path)
 @onready var clan_convert: Dictionary = Helper.load_json(clan_convert_path)
 @onready var stat_abbreviation: Dictionary = Helper.load_json(stat_abbreviation_path)
+@onready var weird_letter: Dictionary = Helper.load_json(weird_letter_path)
+@onready var search_aliases: Dictionary = Helper.load_json(search_aliases_path)
+@onready var keyword_search: Dictionary = Helper.load_json(keyword_search_path)
 
 @onready var CardDisplay: Node2D = $Temp/CardDisplay
 var close_on_input: Array = [null, null]
@@ -94,9 +101,11 @@ func on_display_cards():
 	display_page = 0
 	display_cards = []
 	var group: Array = process_active_search()
+	var aliases: Array = find_active_aliases(group)
+	print(group)
 	for card in on_sort_display_cards(all_cards.values().filter(filter_card)):
 		if energy_rarity_type_filter_card(card):
-			if card_match_active_search(card, group):
+			if card_match_active_search(card, group, aliases):
 				display_cards.append(card)
 	
 	if display_cards.size() <= 0: $Temp/NoCards.add_child(load("res://screens/deck_manager/empty_cards.tscn").instantiate())
@@ -104,26 +113,38 @@ func on_display_cards():
 	max_page = ceil(float(display_cards.size()) / max_cards_on_display) - 1
 	on_load_page()
 	
-func process_active_search() -> Array:
-	return Array(($Temp/CardSearch.text.to_lower()).split(";", false)).map(func(x: String): return x.split(":", false))\
-	.map(func(x: Array): return x.map(func(x): return x.lstrip(" ")))\
-	.map(func(x: Array): return x.filter(func(x): return x.length() > 2))
+func find_active_aliases(group: Array) -> Array:
+	if group.size() > 0 and group[0].size() > 0:
+		return flatten(search_aliases.keys().\
+		filter(func(x: String): return flatten(group).\
+		any(func(y: String): return x.begins_with(y))).map(func(z: String): return search_aliases[z]))
+	return []
+func flatten(x: Array) -> Array:
+	var f: Array = []
+	for i in x: for j in i: f.append(j)
+	return f
 	
-func card_match_active_search(card: Dictionary, group: Array) -> bool:
+func process_active_search() -> Array:
+	return Array($Temp/CardSearch.text.to_lower().split(";", false)).map(func(x: String): return x.split(":", false))\
+	.map(func(x: Array): return x.map(func(x): return x.lstrip(" ")))\
+	.map(func(x: Array): return x.filter(func(x): return x.length() > 2)).filter(func(x: Array): return x.size())\
+	.filter(func(x: Array): return not (x.size() == 1 and x[0].length() == 3 and x[0][0].is_valid_int() and !("hp" in x[0])))
+	
+func card_match_active_search(card: Dictionary, group: Array, aliases: Array) -> bool:
 	if group.size() > 0 and group[0].size() > 0:
 		return group.any(func(x: Array): return x\
-		.all(func(x: String): return match_active_search(card, x)))
+		.all(func(x: String): return match_active_search(card, x, aliases)))
 	return true
 	
-func match_active_search(card: Dictionary, x: String) -> bool:
+func match_active_search(card: Dictionary, x: String, aliases: Array) -> bool:
 	if x[0].is_valid_int():
 		var abbrev: String = x.erase(0, 1)
 		if stat_abbreviation.has(abbrev) and\
 		card.has(stat_abbreviation[abbrev]) and\
 		card[stat_abbreviation[abbrev]] == x[0].to_int(): return true
-	else:
-		return [card.name, clan_convert[card.clan]].any(func(y: String): return (y.to_lower()).begins_with(x))
-		
+	elif [card.name, clan_convert[card.clan]].any(func(y: String): return y.to_lower().begins_with(x)): return true
+	elif card.cid in aliases: return true
+	elif keyword_search.keywords.any(func(y: String): if x in y: return y in card.text.to_lower()): return true
 	return false
 	
 func search_filter_card(card: Dictionary) -> bool:
@@ -279,6 +300,10 @@ func convert_to_property(card: Dictionary, property: String):
 		"cid": return card.cid
 
 func _on_card_search_text_changed(__):
-	on_display_cards()
+	$Timers/SearchLoadPage.start()
+	
 func _on_card_search_text_submitted(__: String):
 	$Temp/CardSearch.release_focus()
+
+func _on_search_load_page_timeout():
+	on_display_cards()
