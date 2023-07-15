@@ -102,7 +102,6 @@ func on_display_cards():
 	display_cards = []
 	var group: Array = process_active_search()
 	var aliases: Array = find_active_aliases(group)
-	print(group)
 	for card in on_sort_display_cards(all_cards.values().filter(filter_card)):
 		if energy_rarity_type_filter_card(card):
 			if card_match_active_search(card, group, aliases):

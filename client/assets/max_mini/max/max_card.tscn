@@ -4,7 +4,7 @@
 [ext_resource type="LabelSettings" uid="uid://c1letk71k0kxx" path="res://assets/max_mini/max/text/24.tres" id="2_1r33f"]
 [ext_resource type="LabelSettings" uid="uid://ckflrm3thku0u" path="res://assets/max_mini/max/text/32.tres" id="3_nq25g"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_inb2r"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_mwiqx"]
 viewport_path = NodePath("TextViewport")
 
 [node name="MaxCard" type="Node3D"]
@@ -22,7 +22,7 @@ transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 double_sided = false
 texture_filter = 0
 render_priority = 5
-texture = SubResource("ViewportTexture_inb2r")
+texture = SubResource("ViewportTexture_mwiqx")
 
 [node name="Stats" type="Node3D" parent="."]
 
@@ -32,6 +32,7 @@ transparent_bg = true
 handle_input_locally = false
 canvas_item_default_texture_filter = 0
 size = Vector2i(300, 600)
+render_target_update_mode = 4
 
 [node name="Name" type="Label" parent="TextViewport"]
 offset_left = 48.0
