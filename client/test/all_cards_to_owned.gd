@@ -1,7 +1,8 @@
 extends Node
 
+# 2nd property in owned_cards is the skin
 var all_cards_path: String = "res://static_data/cards/all_cards_unsorted.json"
-var card_property_converter_path: String = "res://static_data/cards/card_property_converter.json"
+var card_property_converter_path: String = "res://static_data/cards/card_property_converter.json" 
 @onready var converter: Dictionary = Helper.load_json(card_property_converter_path)
 
 func on_initialize_cards(_cards) -> Dictionary:
