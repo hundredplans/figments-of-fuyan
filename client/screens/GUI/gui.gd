@@ -73,7 +73,6 @@ func on_PlayMenuGUI_init(_screen: Control):
 func on_SettingsGUI_init(_screen: Control): pass
 func on_NewsGUI_init(_screen: Control): pass
 func on_DeckManagerGUI_init(screen: Control):
-	screen.main_screen = true
 	screen.on_display_cards()
 	
 func on_GameSignGUI_init(_screen: Control):

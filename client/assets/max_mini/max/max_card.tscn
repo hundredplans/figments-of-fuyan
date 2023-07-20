@@ -1,8 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://v5goj4jt5761"]
+[gd_scene load_steps=7 format=3 uid="uid://v5goj4jt5761"]
 
 [ext_resource type="Script" path="res://assets/max_mini/max/max_card.gd" id="1_va1sa"]
-[ext_resource type="LabelSettings" uid="uid://c1letk71k0kxx" path="res://assets/max_mini/max/text/24.tres" id="2_1r33f"]
-[ext_resource type="LabelSettings" uid="uid://ckflrm3thku0u" path="res://assets/max_mini/max/text/32.tres" id="3_nq25g"]
+[ext_resource type="FontFile" uid="uid://dfckcwo02c6lv" path="res://assets/fonts/card_fonts/Roboto-Black.ttf" id="2_bjvs0"]
+[ext_resource type="FontFile" uid="uid://dngt5npftx5mt" path="res://assets/fonts/card_fonts/Roboto-Bold.ttf" id="3_mmpdx"]
+[ext_resource type="FontFile" uid="uid://o1v0hlquidg7" path="res://assets/fonts/card_fonts/Roboto-Italic.ttf" id="4_pabht"]
+[ext_resource type="FontFile" uid="uid://bcmm8s4sfvtcb" path="res://assets/fonts/card_fonts/Roboto-BoldItalic.ttf" id="5_dkajv"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_mwiqx"]
 viewport_path = NodePath("TextViewport")
@@ -12,10 +14,18 @@ script = ExtResource("1_va1sa")
 
 [node name="Art" type="Sprite3D" parent="."]
 gi_mode = 0
-transparent = false
+double_sided = false
+no_depth_test = true
+texture_filter = 1
+render_priority = 2
+
+[node name="ArtMax" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.82, 0)
+gi_mode = 0
 double_sided = false
 no_depth_test = true
 texture_filter = 0
+render_priority = 1
 
 [node name="Text" type="Sprite3D" parent="."]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
@@ -33,32 +43,95 @@ handle_input_locally = false
 size = Vector2i(300, 600)
 render_target_update_mode = 4
 
-[node name="Name" type="Label" parent="TextViewport"]
-offset_left = 48.0
-offset_top = 536.0
-offset_right = 252.0
-offset_bottom = 584.0
-label_settings = ExtResource("3_nq25g")
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 1
-
-[node name="Clan" type="Label" parent="TextViewport"]
+[node name="Clan" type="Control" parent="TextViewport"]
+layout_mode = 3
+anchors_preset = 0
 offset_left = 104.0
 offset_top = 270.0
 offset_right = 194.0
 offset_bottom = 302.0
-label_settings = ExtResource("2_1r33f")
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 1
 
-[node name="Text" type="Label" parent="TextViewport"]
+[node name="Clan" type="RichTextLabel" parent="TextViewport/Clan"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -45.0
+offset_top = -2.0
+offset_right = 45.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/normal_font = ExtResource("2_bjvs0")
+theme_override_fonts/bold_font = ExtResource("3_mmpdx")
+theme_override_fonts/italics_font = ExtResource("4_pabht")
+theme_override_fonts/bold_italics_font = ExtResource("5_dkajv")
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+autowrap_mode = 1
+shortcut_keys_enabled = false
+
+[node name="Name" type="Control" parent="TextViewport"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 48.0
+offset_top = 536.0
+offset_right = 252.0
+offset_bottom = 559.0
+
+[node name="Name" type="RichTextLabel" parent="TextViewport/Name"]
+clip_contents = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -102.0
+offset_top = 10.5
+offset_right = 102.0
+offset_bottom = 10.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/normal_font = ExtResource("2_bjvs0")
+theme_override_fonts/bold_font = ExtResource("3_mmpdx")
+theme_override_fonts/italics_font = ExtResource("4_pabht")
+theme_override_fonts/bold_italics_font = ExtResource("5_dkajv")
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+autowrap_mode = 1
+shortcut_keys_enabled = false
+
+[node name="Text" type="Control" parent="TextViewport"]
+layout_mode = 3
+anchors_preset = 0
 offset_left = 28.0
 offset_top = 316.0
 offset_right = 272.0
 offset_bottom = 514.0
-label_settings = ExtResource("2_1r33f")
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 3
+
+[node name="Text" type="RichTextLabel" parent="TextViewport/Text"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -122.0
+offset_top = 6.0
+offset_right = 122.0
+offset_bottom = 6.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/normal_font = ExtResource("2_bjvs0")
+theme_override_fonts/bold_font = ExtResource("3_mmpdx")
+theme_override_fonts/italics_font = ExtResource("4_pabht")
+theme_override_fonts/bold_italics_font = ExtResource("5_dkajv")
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+shortcut_keys_enabled = false

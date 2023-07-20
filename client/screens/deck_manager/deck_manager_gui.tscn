@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://cjxexc7unp2li"]
+[gd_scene load_steps=8 format=3 uid="uid://cjxexc7unp2li"]
 
 [ext_resource type="Script" path="res://screens/deck_manager/deck_manager_gui.gd" id="1_ya8ap"]
 [ext_resource type="Texture2D" uid="uid://xe3l27higkni" path="res://screens/deck_manager/template.png" id="2_7s6m1"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://screens/deck_manager/energy_filter.gd" id="4_auslq"]
 [ext_resource type="Script" path="res://screens/deck_manager/rarity_filter.gd" id="5_e870n"]
 [ext_resource type="Script" path="res://screens/deck_manager/type_filter.gd" id="6_1nrgc"]
+[ext_resource type="Script" path="res://screens/deck_manager/decks.gd" id="7_7ome5"]
 
 [node name="DeckManagerGUI" type="Control"]
 layout_mode = 3
@@ -159,6 +160,49 @@ offset_right = 415.0
 offset_bottom = 43.0
 text = "Rarity"
 
+[node name="SelectHero" type="Control" parent="Temp"]
+anchors_preset = 0
+
+[node name="c" type="Button" parent="Temp/SelectHero"]
+layout_mode = 0
+offset_left = 1578.0
+offset_top = 35.0
+offset_right = 1641.0
+offset_bottom = 97.0
+text = "Sug"
+
+[node name="d" type="Button" parent="Temp/SelectHero"]
+layout_mode = 0
+offset_left = 1687.0
+offset_top = 35.0
+offset_right = 1750.0
+offset_bottom = 97.0
+text = "Var"
+
+[node name="j" type="Button" parent="Temp/SelectHero"]
+layout_mode = 0
+offset_left = 1800.0
+offset_top = 35.0
+offset_right = 1863.0
+offset_bottom = 97.0
+text = "Beef"
+
+[node name="l" type="Button" parent="Temp/SelectHero"]
+layout_mode = 0
+offset_left = 1631.0
+offset_top = 119.0
+offset_right = 1694.0
+offset_bottom = 181.0
+text = "Kol"
+
+[node name="q" type="Button" parent="Temp/SelectHero"]
+layout_mode = 0
+offset_left = 1742.0
+offset_top = 119.0
+offset_right = 1805.0
+offset_bottom = 181.0
+text = "Ham"
+
 [node name="CardSearch" type="LineEdit" parent="Temp"]
 layout_mode = 0
 offset_left = 779.0
@@ -186,6 +230,20 @@ one_shot = true
 wait_time = 0.12
 one_shot = true
 
+[node name="Decks" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 1215.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+script = ExtResource("7_7ome5")
+
+[node name="DeckSort" type="Control" parent="Decks"]
+anchors_preset = 0
+offset_left = 352.0
+offset_top = 219.0
+offset_right = 594.0
+offset_bottom = 599.0
+
 [connection signal="pressed" from="Temp/BackPage" to="." method="_on_back_page_pressed"]
 [connection signal="pressed" from="Temp/ForwardPage" to="." method="_on_forward_page_pressed"]
 [connection signal="pressed" from="Temp/Filters/HideHeroCards" to="." method="_on_hide_hero_cards_pressed"]
@@ -200,6 +258,11 @@ one_shot = true
 [connection signal="pressed" from="Temp/SortButtons/SortEnergy" to="." method="_on_sort_energy_pressed"]
 [connection signal="pressed" from="Temp/SortButtons/SortClan" to="." method="_on_sort_clan_pressed"]
 [connection signal="pressed" from="Temp/SortButtons/SortRarity" to="." method="_on_sort_rarity_pressed"]
+[connection signal="pressed" from="Temp/SelectHero/c" to="." method="on_hero_button_pressed" binds= ["c"]]
+[connection signal="pressed" from="Temp/SelectHero/d" to="." method="on_hero_button_pressed" binds= ["d"]]
+[connection signal="pressed" from="Temp/SelectHero/j" to="." method="on_hero_button_pressed" binds= ["j"]]
+[connection signal="pressed" from="Temp/SelectHero/l" to="." method="on_hero_button_pressed" binds= ["l"]]
+[connection signal="pressed" from="Temp/SelectHero/q" to="." method="on_hero_button_pressed" binds= ["q"]]
 [connection signal="text_changed" from="Temp/CardSearch" to="." method="_on_card_search_text_changed"]
 [connection signal="text_submitted" from="Temp/CardSearch" to="." method="_on_card_search_text_submitted"]
 [connection signal="timeout" from="Timers/ChangePage" to="." method="_on_change_page_timeout"]

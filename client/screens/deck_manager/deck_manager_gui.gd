@@ -12,6 +12,7 @@ var stat_abbreviation_path: String = "res://static_data/cards/card_stat_abbrevia
 var weird_letter_path: String = "res://static_data/deck_manager/weird_letter_conversion.json"
 var search_aliases_path: String = "res://static_data/deck_manager/search_aliases.json"
 var keyword_search_path: String = "res://static_data/deck_manager/keyword_search.json"
+var owned_heroes_path: String = "res://static_data/server/owned_heroes.json"
 
 var active_search_cards: Array = []
 var display_cards: Array = []
@@ -23,6 +24,7 @@ var display_cards: Array = []
 @onready var weird_letter: Dictionary = Helper.load_json(weird_letter_path)
 @onready var search_aliases: Dictionary = Helper.load_json(search_aliases_path)
 @onready var keyword_search: Dictionary = Helper.load_json(keyword_search_path)
+@onready var owned_heroes: Dictionary = Helper.load_json(owned_heroes_path)
 
 @onready var CardDisplay: Node2D = $Temp/CardDisplay
 var close_on_input: Array = [null, null]
@@ -64,7 +66,6 @@ var deck_manager_main_display: Dictionary = {
 	"sort_type": "DeckManagerDoubleDecker",
 }
 
-var main_screen: bool = false
 var max_cards_on_display: int = 10
 var max_page: int = 0
 var display_page: int = 0
@@ -79,8 +80,11 @@ func _ready():
 	set_button_state($Temp/Filters/RarityFilter/Button, TempData.filter_settings.rarity_filter.active)
 	set_button_state($Temp/Filters/TypeFilter/Button, TempData.filter_settings.type_filter.active)
 	set_sort_button_state($Temp/SortButtons/SortClan)
+	on_hero_selected(KeepData.current_hero_selected)
+	set_hero_button_state()
+	
 func _process(_delta):
-	if main_screen and $Timers/ChangePage.is_stopped():
+	if $Timers/ChangePage.is_stopped():
 		if !$Temp/CardSearch.has_focus():
 			if Input.is_action_pressed("InputLeft"):
 				_on_load_back_page()
@@ -111,7 +115,6 @@ func on_display_cards():
 	else: for child in $Temp/NoCards.get_children(): child.queue_free()
 	max_page = ceil(float(display_cards.size()) / max_cards_on_display) - 1
 	on_load_page()
-	
 func find_active_aliases(group: Array) -> Array:
 	if group.size() > 0 and group[0].size() > 0:
 		return flatten(search_aliases.keys().\
@@ -122,42 +125,43 @@ func flatten(x: Array) -> Array:
 	var f: Array = []
 	for i in x: for j in i: f.append(j)
 	return f
-	
 func process_active_search() -> Array:
-	return Array($Temp/CardSearch.text.to_lower().split(";", false)).map(func(x: String): return x.split(":", false))\
-	.map(func(x: Array): return x.map(func(x): return x.lstrip(" ")))\
-	.map(func(x: Array): return x.filter(func(x): return x.length() > 2)).filter(func(x: Array): return x.size())\
-	.filter(func(x: Array): return not (x.size() == 1 and x[0].length() == 3 and x[0][0].is_valid_int() and !("hp" in x[0])))
-	
+	return Array($Temp/CardSearch.text.to_lower().split(";", false))\
+	.map(func(a: String): return a.split(":", false))\
+	.map(func(b: Array): return b\
+	.map(func(c: String): return c.lstrip(" ")))\
+	.map(func(d: Array): return d\
+	.filter(func(e): return e.length() > 2))\
+	.map(func(f: Array): return (f\
+	.filter(func(g: String): return !(g.length() == 3 and g[0].is_valid_int() and !("hp" in g)))))\
+	.filter(func(h: Array): return h.size())
 func card_match_active_search(card: Dictionary, group: Array, aliases: Array) -> bool:
 	if group.size() > 0 and group[0].size() > 0:
 		return group.any(func(x: Array): return x\
 		.all(func(x: String): return match_active_search(card, x, aliases)))
 	return true
-	
 func match_active_search(card: Dictionary, x: String, aliases: Array) -> bool:
 	if x[0].is_valid_int():
 		var abbrev: String = x.erase(0, 1)
 		if stat_abbreviation.has(abbrev) and\
 		card.has(stat_abbreviation[abbrev]) and\
 		card[stat_abbreviation[abbrev]] == x[0].to_int(): return true
-	elif [card.name, clan_convert[card.clan]].any(func(y: String): return y.to_lower().begins_with(x)): return true
+	elif Array(card.name.split(" ", false)).any(func(y: String): return y.to_lower().begins_with(x)): return true
+	elif clan_convert[card.clan].to_lower().begins_with(x): return true
 	elif card.cid in aliases: return true
 	elif keyword_search.keywords.any(func(y: String): if x in y: return y in card.text.to_lower()): return true
 	return false
-	
 func search_filter_card(card: Dictionary) -> bool:
 	if card in active_search_cards: return true
 	return false
 func energy_rarity_type_filter_card(card: Dictionary) -> bool:
 	if TempData.filter_settings["energy_filter"].active:
 		if card.type != "r":
-			if int(card.e) > 9 and TempData.filter_settings["energy_filter"].applied.has(9): pass
-			elif !TempData.filter_settings["energy_filter"].applied.has(int(card.e)): return false
+			if !(int(card.e) > 9 and TempData.filter_settings["energy_filter"].applied.has(9)) and\
+			!TempData.filter_settings["energy_filter"].applied.has(int(card.e)): return false
 		elif !TempData.filter_settings["energy_filter"].applied.has(0): return false
 	if TempData.filter_settings["rarity_filter"].active:
-		if card.rarity == "s": pass
-		elif not (card.rarity in TempData.filter_settings["rarity_filter"].applied): return false
+		if card.rarity != "s" and !(card.rarity in TempData.filter_settings["rarity_filter"].applied): return false
 		
 	if TempData.filter_settings.type_filter.active:
 		if !TempData.filter_settings.type_filter.applied.any(func(st: String): return card.type in st): 
@@ -165,6 +169,7 @@ func energy_rarity_type_filter_card(card: Dictionary) -> bool:
 			
 	return true
 func filter_card(card: Dictionary) -> bool:
+	if KeepData.current_hero_selected: if card.clan in hero_clans.hero_clans and card.clan != KeepData.current_hero_selected: return false
 	if TempData.filter_settings["hide_hero_cards"].active: if card.clan in hero_clans.hero_clans: return false
 	if !TempData.filter_settings["show_scrap_cards"].active: if card.rarity == "s": return false
 	if !TempData.filter_settings["show_unowned_cards"].active:
@@ -188,7 +193,7 @@ func _on_load_forward_page():
 		display_page += 1
 		on_load_page()
 func _on_load_back_page():
-	if display_page > 0: 
+	if display_page > 0:
 		display_page -= 1
 		on_load_page()
 func _on_hide_hero_cards_pressed():
@@ -204,8 +209,7 @@ func _on_show_unowned_cards_pressed():
 	set_button_state($Temp/Filters/ShowUnownedCards, TempData.filter_settings.show_unowned_cards.active)
 	on_display_cards()
 func set_button_state(button: Button, pressed: bool):
-	var color := full_col
-	if pressed: color = half_col
+	var color = half_col if pressed else full_col
 	button.self_modulate = color
 func _on_change_page_timeout() -> void:
 	if active_page_change == 1:
@@ -278,7 +282,7 @@ func _on_sort_rarity_pressed():
 		on_display_cards()
 	set_sort_button_state($Temp/SortButtons/SortRarity)
 func set_sort_button_state(button: Button):
-	for b in [$Temp/SortButtons/SortEnergy, $Temp/SortButtons/SortClan, $Temp/SortButtons/SortRarity]:
+	for b in $Temp/SortButtons.get_children():
 		if b != button: set_button_state(b, false)
 		else: set_button_state(b, true)
 func on_sort_cards(cards: Array, property: String) -> Array:
@@ -294,15 +298,28 @@ func on_sort_cards(cards: Array, property: String) -> Array:
 func convert_to_property(card: Dictionary, property: String):
 	match property:
 		"e": return 0 if card.type == "r" else card.e
-		"clan": return alphabet_numbers[card.clan]
+		"clan": 
+			if KeepData.current_hero_selected and card.clan == KeepData.current_hero_selected: return -1
+			return alphabet_numbers[card.clan]
 		"rarity": return rarity_numbers[card.rarity]
 		"cid": return card.cid
-
 func _on_card_search_text_changed(__):
 	$Timers/SearchLoadPage.start()
-	
 func _on_card_search_text_submitted(__: String):
 	$Temp/CardSearch.release_focus()
-
 func _on_search_load_page_timeout():
 	on_display_cards()
+func on_hero_button_pressed(hero: String) -> void:
+	on_hero_selected(hero)
+	set_hero_button_state()
+
+func on_hero_selected(hero: String) -> void:
+	KeepData.set_current_hero_selected(hero)
+	on_display_cards()
+
+func set_hero_button_state():
+	for b in $Temp/SelectHero.get_children():
+		if b is Button:
+			match b.name:
+				KeepData.current_hero_selected: set_button_state(b, false)
+				_: set_button_state(b, true)

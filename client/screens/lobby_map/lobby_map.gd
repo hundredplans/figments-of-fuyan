@@ -252,7 +252,7 @@ func move_camera_through_path(direction: bool, exit_function: Callable, path: St
 func on_lobby_item_travel_start(item_id: int, direction: bool):
 	if item_id > min_item_id and item_id < max_item_id:
 		lobby_camera_travel_item_started.emit(item_id, direction)
-		on_trigger_lobby_item_effects(item_id, direction)
+#		on_trigger_lobby_item_effects(item_id, direction)
 
 func on_trigger_lobby_item_effects(item_id: int, direction: bool) -> void:
 	var effect_path: String = "res://screens/lobby_map/travel_effects/%seffects_init.tscn" % str(item_id)

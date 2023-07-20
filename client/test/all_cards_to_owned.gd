@@ -2,8 +2,10 @@ extends Node
 
 # 2nd property in owned_cards is the skin
 var all_cards_path: String = "res://static_data/cards/all_cards_unsorted.json"
-var card_property_converter_path: String = "res://static_data/cards/card_property_converter.json" 
+var card_property_converter_path: String = "res://static_data/cards/card_property_converter.json"
+var caps_keywords_path: String = "res://static_data/cards/caps_keywords.json" 
 @onready var converter: Dictionary = Helper.load_json(card_property_converter_path)
+@onready var caps_keywords: Dictionary = Helper.load_json(caps_keywords_path)
 
 func on_initialize_cards(_cards) -> Dictionary:
 	var cards_as_dict: Dictionary  = {}
@@ -36,7 +38,8 @@ func convert_card_properties(card: Dictionary) -> Dictionary:
 						break
 			"att", "hp", "energy": 
 				new_card.merge({converter.stat_to_stat[stat]: card[stat]})
-			"text": new_card.merge({stat: card[stat]}); has_text = true
+			"text":
+				new_card.merge({stat: card[stat]}); has_text = true
 			_: new_card.merge({stat: card[stat]})
 			
 	if new_card.cid == 236: print(new_card)
