@@ -42,12 +42,22 @@ func convert_card_properties(card: Dictionary) -> Dictionary:
 				new_card.merge({stat: card[stat]}); has_text = true
 			_: new_card.merge({stat: card[stat]})
 			
-	if new_card.cid == 236: print(new_card)
 	if !has_text: new_card.merge({"text": ""})
 	return new_card
 func _ready():
 	var all_cards: Dictionary = convert_to_sorted_cards()
 	convert_to_owned_cards(all_cards)
+	convert_to_text_parsed(all_cards)
+
+func convert_to_text_parsed(all_cards: Dictionary):
+	for card in all_cards.values():
+		var maxcard: Node3D = Helper.create_max_card(card)
+		maxcard.get_node("TextViewport/Text/Text").text = Helper.upgrade_ability_text(card.text)
+#		for lab in [
+#			[$TextViewport/Clan/Clan, clan_convert[card.clan]],
+#			[$TextViewport/Text/Text, $TextViewport/Text/Text.text],
+#			[$TextViewport/Name/Name, String(card.name)]]:
+#			lab[0].text = Helper.set_default_tags(lab[1])
 func convert_to_sorted_cards():
 	var all_cards: Dictionary = Helper.load_json(all_cards_path)
 	var sorted_cards: Dictionary = on_initialize_cards(all_cards)

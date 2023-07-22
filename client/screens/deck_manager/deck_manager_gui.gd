@@ -9,10 +9,9 @@ var owned_cards_path: String = "res://static_data/cards/owned_cards.json"
 var hero_clan_path: String = "res://static_data/cards/hero_clans.json"
 var clan_convert_path: String = "res://static_data/cards/card_clan_to_full_clan.json"
 var stat_abbreviation_path: String = "res://static_data/cards/card_stat_abbreviations.json"
-var weird_letter_path: String = "res://static_data/deck_manager/weird_letter_conversion.json"
 var search_aliases_path: String = "res://static_data/deck_manager/search_aliases.json"
 var keyword_search_path: String = "res://static_data/deck_manager/keyword_search.json"
-var owned_heroes_path: String = "res://static_data/server/owned_heroes.json"
+var owned_heroes_path: String = "res://mobile_data/owned_heroes.json"
 
 var active_search_cards: Array = []
 var display_cards: Array = []
@@ -21,7 +20,6 @@ var display_cards: Array = []
 @onready var hero_clans: Dictionary = Helper.load_json(hero_clan_path)
 @onready var clan_convert: Dictionary = Helper.load_json(clan_convert_path)
 @onready var stat_abbreviation: Dictionary = Helper.load_json(stat_abbreviation_path)
-@onready var weird_letter: Dictionary = Helper.load_json(weird_letter_path)
 @onready var search_aliases: Dictionary = Helper.load_json(search_aliases_path)
 @onready var keyword_search: Dictionary = Helper.load_json(keyword_search_path)
 @onready var owned_heroes: Dictionary = Helper.load_json(owned_heroes_path)
@@ -55,6 +53,7 @@ var alphabet_numbers: Dictionary = {
 	"x": 23,
 	"y": 24,
 	"z": 25,}
+	
 var rarity_numbers: Dictionary = {
 	"s": 0,
 	"c": 1,
@@ -80,7 +79,6 @@ func _ready():
 	set_button_state($Temp/Filters/RarityFilter/Button, TempData.filter_settings.rarity_filter.active)
 	set_button_state($Temp/Filters/TypeFilter/Button, TempData.filter_settings.type_filter.active)
 	set_sort_button_state($Temp/SortButtons/SortClan)
-	on_hero_selected(KeepData.current_hero_selected)
 	set_hero_button_state()
 	
 func _process(_delta):
@@ -315,6 +313,7 @@ func on_hero_button_pressed(hero: String) -> void:
 
 func on_hero_selected(hero: String) -> void:
 	KeepData.set_current_hero_selected(hero)
+	$Decks.create_decks_in_deck_sort()
 	on_display_cards()
 
 func set_hero_button_state():

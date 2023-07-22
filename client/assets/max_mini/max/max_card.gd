@@ -24,12 +24,12 @@ var card_stats_positions: Dictionary = {
 	"c": {"h": Vector2(-0.55, 1.32)},
 }
 
-func create_card(card: Dictionary, clan_convert: Dictionary, card_back_convert: Dictionary, card_text_data: Dictionary, caps_keywords: Dictionary, aliased_cards: Dictionary, _uid: int):
+func create_card(card: Dictionary, clan_convert: Dictionary, card_back_convert: Dictionary, aliased_cards: Dictionary, _uid: int):
 	uid = _uid
 	cid = card.cid
 	create_card_art(card, aliased_cards)
 	create_card_back(1, card_back_convert)
-	create_card_text(card, clan_convert, card_text_data, caps_keywords)
+	create_card_text(card, clan_convert)
 	create_card_stats(card)
 	call_deferred("change_text_size")
 	
@@ -57,24 +57,14 @@ func create_card_art(card: Dictionary, aliased_cards: Dictionary):
 	if card.cid in aliased_cards.cids: $ArtMax.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
 	$ArtMax.texture = ImageTexture.create_from_image(artmaxImage)
 	
-func create_card_text(card: Dictionary, clan_convert: Dictionary, card_text_data: Dictionary, caps_keywords: Dictionary) -> void:
+func create_card_text(card: Dictionary, clan_convert: Dictionary) -> void:
+	$TextViewport/Text/Text.text = Helper.upgrade_ability_text(card.text)
 	for lab in [
 		[$TextViewport/Clan/Clan, clan_convert[card.clan]],
-		[$TextViewport/Text/Text, upgrade_ability_text(card.text, caps_keywords)],
+		[$TextViewport/Text/Text, $TextViewport/Text/Text.text],
 		[$TextViewport/Name/Name, String(card.name)]]:
-		set_default_tags(lab[0], lab[1], card_text_data)
+		lab[0].text = Helper.set_default_tags(lab[1])
 		
-func upgrade_ability_text(text: String, caps_keywords: Dictionary) -> String:
-	for i in caps_keywords.keywords: text = text.replacen(i, "[color=aquamarine]%s[/color]" % i.capitalize())
-	return text
-	
-func set_default_tags(node: RichTextLabel, text: String, card_text_data: Dictionary) -> void:
-	node.text = \
-	"[center][outline_color=black][outline_size=8][font s=%s n=%s]%s[/font][/outline_size][/outline_color][/center]"\
-		% [
-		card_text_data[node.name].default_size,
-		card_text_data[node.name].path,
-		text]
 func create_card_back(card_back_id: int, card_back_convert: Dictionary):
 	for child in get_children(): if child.name == "card_back": child.queue_free()
 	var card_back: Node3D = load(card_back_convert[str(card_back_id)]).instantiate()
@@ -93,8 +83,8 @@ func change_text_size():
 	for a in $TextViewport.get_children():
 		for lab in a.get_children():
 			if lab.get_line_count() > max_lines[lab.name]:
-				var font_index: int = lab.text.find("font s=") + 7
-				lab.text = "%s%s%s" % [lab.text.left(font_index), str(int(lab.text[font_index] + lab.text[font_index + 1]) - 1), lab.text.substr(font_index + 2)]
+				lab["theme_override_font_sizes/normal_font_size"] -= 1
+				lab["theme_override_font_sizes/bold_font_size"] -= 1
 				restart = true
 	
 	if restart: call_deferred("change_text_size")

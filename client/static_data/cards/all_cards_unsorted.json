@@ -6,7 +6,7 @@
 	"type": "spell",
 	"rarity": "scrap",
 	"energy": 2,
-	"text": "Deal [2] Physical DMG to an enemy unit or Heal [2] an ally unit"
+	"text": "Deal [2] Physical DMG to an enemy unit or heal [2] an ally unit"
   },
   "2": {
 	"cid": 2,
@@ -63,7 +63,7 @@
 	"type": "unit",
 	"rarity": "common",
 	"att": 4,
-	"hp": 5,
+	"hp": 7,
 	"stat3": 2,
 	"energy": 4,
 	"text": "ARRIVE: Deal [2] Physical DMG to self"
@@ -276,7 +276,7 @@
 	"hp": 1,
 	"stat3": 3,
 	"energy": 3,
-	"text": "HORIZONTAL; MAGICAL; ARRIVE: Give or remove HORIZONTAL on an ally unit and give it MAGICAL"
+	"text": "HORIZONTAL; Gifted; ARRIVE: Give or remove HORIZONTAL on an ally unit and give it Gifted"
   },
   "25": {
 	"cid": 25,
@@ -336,7 +336,7 @@
 	"hp": 8,
 	"stat3": 3,
 	"energy": 8,
-	"text": "RAMPAGE: Attacks again HORIZONTALLY"
+	"text": "RAMPAGE: Attacks again on neighbouring tiles"
   },
   "30": {
 	"cid": 30,
@@ -453,7 +453,7 @@
 	"hp": 2,
 	"stat3": 3,
 	"energy": 2,
-	"text": "PIERCE; Deal [1] more DMG to enemies with ARMOR or SHIELD"
+	"text": "PIERCE; Enemies damaged by John Sharpshank can't be healed"
   },
   "40": {
 	"cid": 40,
@@ -486,7 +486,7 @@
 	"hp": 4,
 	"stat3": 2,
 	"energy": 4,
-	"text": "Whenever another ally unit attacks an enemy and survives: Heal it [2]"
+	"text": "Whenever another ally unit attacks an enemy and survives heal it [2]"
   },
   "43": {
 	"cid": 43,
@@ -1387,7 +1387,7 @@
 	"type": "spell",
 	"rarity": "rare",
 	"energy": 2,
-	"text": "Switch a target's ARMOR and RESISTANCE and draw a card"
+	"text": "Switch a units ARMOR and RESISTANCE and draw a card"
   },
   "128": {
 	"cid": 128,
@@ -1507,7 +1507,7 @@
 	"hp": 1,
 	"stat3": 3,
 	"energy": 2,
-	"text": "If inserted by Croomite: Copy Croomite's ATT & HP"
+	"text": "When inserted by Croomite: Copy it's ATT & HP"
   },
   "138": {
 	"cid": 138,
@@ -1615,7 +1615,7 @@
 	"hp": 3,
 	"stat3": 2,
 	"energy": 4,
-	"text": "ARRIVE: Give an ally unit [+2/0]: The target will randomly spread the buff when it dies"
+	"text": "ARRIVE: Give an ally unit [+2/0]: The unit will randomly spread the buff when it dies"
   },
   "147": {
 	"cid": 147,
@@ -2106,7 +2106,7 @@
 	"hp": 6,
 	"stat3": 3,
 	"energy": 6,
-	"text": "LEECH: Can OVERHEAL up to [2] HP"
+	"text": "LEECH: Can overheal up to [2] HP"
   },
   "190": {
 	"cid": 190,
@@ -2151,7 +2151,7 @@
 	"hp": 3,
 	"stat3": 3,
 	"energy": 4,
-	"text": "MAGICAL; MOVE TILE: Transform the previous tile into an Ice Tile for 5 turns"
+	"text": "Gifted; Every tile he passes turns into an Ice Tile for 5 turns"
   },
   "194": {
 	"cid": 194,
@@ -2187,7 +2187,7 @@
 	"hp": 6,
 	"stat3": 2,
 	"energy": 6,
-	"text": "MOVE TILE: Gain [1] Stack; When attacking a unit debuff [1] ATT per Stack and remove all Stacks"
+	"text": "For every tile moved; Gain [1] Stack; After attacking a unit debuff it [1] ATT per Stack and remove all Stacks"
   },
   "197": {
 	"cid": 197,
@@ -2276,7 +2276,7 @@
 	"type": "spell",
 	"rarity": "scrap",
 	"energy": 2,
-	"text": "Gain [2] temporary energy next turn"
+	"text": "Gain [2] temporary energy"
   },
   "206": {
 	"cid": 206,
@@ -2361,7 +2361,7 @@
 	"hp": 6,
 	"stat3": 2,
 	"energy": 7,
-	"text": "START OF TURN: If no targets died in the enemy's turn: Gain [+1/1]"
+	"text": "START OF TURN: If no units died in the enemy's turn: Gain [+1/1]"
   },
   "214": {
 	"cid": 214,
@@ -2444,7 +2444,7 @@
 	"hp": 2,
 	"stat3": 3,
 	"energy": 3,
-	"text": "END OF MOVEMENT: Tunnel until START OF TURN"
+	"text": "Whenever this finishes moving tunnel until your next turn"
   },
   "221": {
 	"cid": 221,
@@ -2512,7 +2512,7 @@
 	"type": "ritual",
 	"rarity": "common",
 	"stat3": 4,
-	"text": "RITUAL: Choose a target: If it dies before the start of your next turn: Insert [3] De'kaals"
+	"text": "RITUAL: Choose a unit: If it dies and kills the attacker by the start of your next turn: Insert [3] De'kaals"
   },
   "227": {
 	"cid": 227,
@@ -2521,7 +2521,7 @@
 	"type": "ritual",
 	"rarity": "common",
 	"stat3": 5,
-	"text": "RITUAL [3+]: Deal [4] Magical DMG to all targets in the lane"
+	"text": "RITUAL [3+]: Deal [4] Magical DMG to all cards in the lane"
   },
   "228": {
 	"cid": 228,
@@ -2620,7 +2620,7 @@
 	"type": "ritual",
 	"rarity": "rare",
 	"stat3": "6:2",
-	"text": "RITUAL: DRAW cards until you have as many as the enemy"
+	"text": "RITUAL: Draw cards until you have as many as the enemy"
   },
   "237": {
 	"cid": 237,
@@ -2694,7 +2694,7 @@
 	"hp": 1,
 	"stat3": 3,
 	"energy": 3,
-	"text": "MAGICAL; ARRIVE: Deal [1] Magical DMG to any unit; If they are injured apply BURN"
+	"text": "Gifted; ARRIVE: Deal [1] Magical DMG to any unit; If they are injured apply BURN"
   },
   "244": {
 	"cid": 244,
@@ -2805,7 +2805,7 @@
 	"hp": 6,
 	"stat3": 2,
 	"energy": 7,
-	"text": "MAGICAL; ARRIVE: Bloodbend an enemy unit"
+	"text": "Gifted; ARRIVE: Bloodbend an enemy unit"
   },
   "254": {
 	"cid": 254,
@@ -2826,7 +2826,7 @@
 	"hp": 4,
 	"stat3": 2,
 	"energy": 7,
-	"text": "ARRIVE: Bind with all enemy units for [1] Blood each; START TURN: Drain Binded units"
+	"text": "ARRIVE: Bind with all enemy units for [1] Blood each; START OF TURN: Drain Binded units"
   },
   "256": {
 	"cid": 256,
@@ -2969,7 +2969,7 @@
 	"hp": 3,
 	"stat3": 2,
 	"energy": 6,
-	"text": "RANGED [1-2]; After attacking: KNOCKBACK [2] yourself"
+	"text": "RANGED [1-2]; After attacking KNOCKBACK [2] yourself"
   },
   "268": {
 	"cid": 268,
@@ -3223,7 +3223,7 @@
 	"hp": 5,
 	"stat3": 2,
 	"energy": 5,
-	"text": "MAGICAL; START OF TURN: Apply [1] Venom to all other units"
+	"text": "Gifted; START OF TURN: Apply [1] Venom to all other units"
   },
   "290": {
 	"cid": 290,
@@ -3295,7 +3295,7 @@
 	"hp": 1,
 	"stat3": 3,
 	"energy": 1,
-	"text": "MAGICAL; When Weather is in effect gain [+2/0]"
+	"text": "Gifted; When Weather is in effect gain [+2/0]"
   },
   "297": {
 	"cid": 297,
@@ -3319,7 +3319,7 @@
 	"hp": 2,
 	"stat3": 2,
 	"energy": 3,
-	"text": "MAGICAL; ARRIVE: Give a unit [+2/0] and CHILL"
+	"text": "Gifted; ARRIVE: Give a unit [+2/0] and CHILL"
   },
   "299": {
 	"cid": 299,
@@ -3331,7 +3331,7 @@
 	"hp": 3,
 	"stat3": 2,
 	"energy": 4,
-	"text": "MAGICAL; ARRIVE: Scry a Weather spell"
+	"text": "Gifted; ARRIVE: Scry a Weather spell"
   },
   "300": {
 	"cid": 300,
@@ -3343,7 +3343,7 @@
 	"hp": 3,
 	"stat3": 3,
 	"energy": 6,
-	"text": "MAGICAL; RANGED [1-2]; RAMPAGE: Debuff all future enemy copies of this unit [-1/1]"
+	"text": "Gifted; RANGED [1-2]; RAMPAGE: Debuff all future enemy copies of this unit [-1/1]"
   },
   "301": {
 	"cid": 301,
@@ -3367,7 +3367,7 @@
 	"hp": 1,
 	"stat3": 2,
 	"energy": 2,
-	"text": "MAGICAL; Gain [+1/1] when an ally unit is awakened without being placed"
+	"text": "Gifted; Gain [+1/1] when an ally unit is awakened without being placed"
   },
   "303": {
 	"cid": 303,
@@ -3379,7 +3379,7 @@
 	"hp": 1,
 	"stat3": 3,
 	"energy": 3,
-	"text": "MAGICAL; RANGED [1-3]; Apply SHOCK, BURN or CHILL randomly to any unit this hits"
+	"text": "Gifted; RANGED [1-3]; Apply SHOCK, BURN or CHILL randomly to any unit this hits"
   },
   "304": {
 	"cid": 304,
@@ -3426,7 +3426,7 @@
 	"hp": 3,
 	"stat3": 3,
 	"energy": 5,
-	"text": "MAGICAL; ARRIVE: Insert the most recent discarded Weather spell"
+	"text": "Gifted; ARRIVE: Insert the most recent discarded Weather spell"
   },
   "308": {
 	"cid": 308,
@@ -3438,7 +3438,7 @@
 	"hp": 2,
 	"stat3": 3,
 	"energy": 3,
-	"text": "MAGICAL; ARRIVE: Shuffle [2] Students into your deck"
+	"text": "Gifted; ARRIVE: Shuffle [2] Students into your deck"
   },
   "309": {
 	"cid": 309,
@@ -3462,7 +3462,7 @@
 	"hp": 3,
 	"stat3": 2,
 	"energy": 6,
-	"text": "MAGICAL; RANGED [1-3]; Apply SHOCK to any unit this hits; Attacks chain to adjacent targets"
+	"text": "Gifted; RANGED [1-3]; Apply SHOCK to any unit this hits; Attacks chain to adjacent targets"
   },
   "311": {
 	"cid": 311,
@@ -3474,7 +3474,7 @@
 	"hp": 4,
 	"stat3": 2,
 	"energy": 4,
-	"text": "MAGICAL; Enhances current Weather; Enemies can't play Weather spells"
+	"text": "Gifted; Enhances current Weather; Enemies can't play Weather spells"
   },
   "312": {
 	"cid": 312,
@@ -3583,7 +3583,7 @@
 	"hp": 2,
 	"stat3": 3,
 	"energy": 3,
-	"text": "RESISTANCE [1]; START TURN: Shuffle a random ally unit that died last turn"
+	"text": "RESISTANCE [1]; START OF TURN: Shuffle a random ally unit that died last turn"
   },
   "322": {
 	"cid": 322,
@@ -3631,7 +3631,7 @@
 	"hp": 1,
 	"stat3": 3,
 	"energy": 5,
-	"text": "MAGICAL; ARRIVE: Trigger another ally unit's ARRIVE"
+	"text": "Gifted; ARRIVE: Trigger another ally unit's ARRIVE"
   },
   "326": {
 	"cid": 326,
@@ -3667,7 +3667,7 @@
 	"hp": 3,
 	"stat3": 3,
 	"energy": 3,
-	"text": "START TURN: Transform into another random [3] cost unit and keep this ability"
+	"text": "START OF TURN: Transform into another random [3] cost unit and keep this ability"
   },
   "329": {
 	"cid": 329,
@@ -3679,7 +3679,7 @@
 	"hp": 2,
 	"stat3": 3,
 	"energy": 3,
-	"text": "MAGICAL; ARRIVE: Insert your dead Core's Essences into your hand"
+	"text": "Gifted; ARRIVE: Insert your dead Core's Essences into your hand"
   },
   "330": {
 	"cid": 330,
@@ -3709,7 +3709,7 @@
 	"hp": 3,
 	"stat3": 3,
 	"energy": 4,
-	"text": "MAGICAL; START OF TURN: If a Ometotel died last turn insert one into your hand"
+	"text": "Gifted; START OF TURN: If a Ometotel died last turn insert one into your hand"
   },
   "333": {
 	"cid": 333,
@@ -3721,7 +3721,7 @@
 	"hp": 1,
 	"stat3": 3,
 	"energy": 1,
-	"text": "MAGICAL; ARRIVE: Reveal the enemy core in this lane"
+	"text": "Gifted; ARRIVE: Reveal the enemy core in this lane"
   },
   "334": {
 	"cid": 334,
@@ -3760,7 +3760,7 @@
 	"hp": 2,
 	"stat3": 3,
 	"energy": 2,
-	"text": "MAGICAL; RAMPAGE: Gain [1] temporary energy"
+	"text": "Gifted; RAMPAGE: Gain [1] temporary energy"
   },
   "338": {
 	"cid": 338,
@@ -3781,7 +3781,7 @@
 	"hp": 2,
 	"stat3": 3,
 	"energy": 3,
-	"text": "MAGICAL; ARRIVE: Draw [2] spells and reveal them"
+	"text": "Gifted; ARRIVE: Draw [2] spells and reveal them"
   },
   "340": {
 	"cid": 340,
@@ -3802,10 +3802,10 @@
 	"type": "unit",
 	"rarity": "common",
 	"att": 4,
-	"hp": 4,
+	"hp": 3,
 	"stat3": 3,
 	"energy": 5,
-	"text": "MAGICAL; ARRIVE: Gain [2] Shield; START OF TURN: If this unit is shielded gain [1] temporary energy"
+	"text": "Gifted; ARRIVE: Gain [2] Shield; START OF TURN: If this unit is shielded gain [1] temporary energy"
   },
   "342": {
 	"cid": 342,
@@ -3817,7 +3817,7 @@
 	"hp": 8,
 	"stat3": 3,
 	"energy": 12,
-	"text": "MAGICAL; While in hand costs [1] less whenever you play a spell"
+	"text": "Gifted; While in hand costs [1] less whenever you play a spell"
   },
   "343": {
 	"cid": 343,
@@ -3868,7 +3868,7 @@
 	"hp": 3,
 	"stat3": 2,
 	"energy": 3,
-	"text": "MAGICAL; Gain FATAL for this turn if you played [3] spells this turn"
+	"text": "Gifted; Gain FATAL for this turn if you played [3] spells this turn"
   },
   "348": {
 	"cid": 348,
@@ -3880,7 +3880,7 @@
 	"hp": 2,
 	"stat3": 3,
 	"energy": 4,
-	"text": "MAGICAL; ARRIVE: Deal [1] Magical DMG to all enemies in this lane per spell you played this turn"
+	"text": "Gifted; ARRIVE: Deal [1] Magical DMG to all enemies in this lane per spell you played this turn"
   },
   "349": {
 	"cid": 349,
@@ -3893,7 +3893,7 @@
   },
   "350": {
 	"cid": 350,
-	"name": "Ichtaca",
+	"name": "Michtaca",
 	"clan": "hama-cik",
 	"type": "unit",
 	"rarity": "rare",
@@ -3901,7 +3901,7 @@
 	"hp": 5,
 	"stat3": 2,
 	"energy": 4,
-	"text": "MAGICAL; While alive you can see the top [2] cards in your draw pile"
+	"text": "Gifted; While alive you can see the top [2] cards in your draw pile"
   },
   "351": {
 	"cid": 351,
@@ -3934,7 +3934,7 @@
 	"hp": 7,
 	"stat3": 2,
 	"energy": 9,
-	"text": "MAGICAL; Your spells cost [2] less"
+	"text": "Gifted; Your spells cost [2] less"
   },
   "354": {
 	"cid": 354,
@@ -3946,7 +3946,7 @@
 	"hp": 1,
 	"stat3": 2,
 	"energy": 1,
-	"text": "MAGICAL; ARRIVE: Consume the rest of your energy and gain [+1/1] per energy consumed"
+	"text": "Gifted; ARRIVE: Consume the rest of your energy and gain [+1/1] per energy consumed"
   },
   "355": {
 	"cid": 355,
@@ -3971,7 +3971,7 @@
   },
   "357": {
 	"cid": 357,
-	"name": "Ixquit",
+	"name": "Kixquit",
 	"clan": "hama-cik",
 	"type": "unit",
 	"rarity": "epic",
@@ -3979,7 +3979,7 @@
 	"hp": 5,
 	"stat3": 2,
 	"energy": 5,
-	"text": "MAGICAL; Whenever you insert cards: This gains [+1/0] and they cost [1] less"
+	"text": "Gifted; Whenever you insert cards: This gains [+1/0] and they cost [1] less"
   },
   "358": {
 	"cid": 358,
@@ -3991,7 +3991,7 @@
 	"hp": 4,
 	"stat3": 2,
 	"energy": 6,
-	"text": "All allies have MAGICAL"
+	"text": "All allies have Gifted"
   },
   "359": {
 	"cid": 359,
@@ -4021,7 +4021,7 @@
 	"hp": 3,
 	"stat3": 3,
 	"energy": 5,
-	"text": "MAGICAL; ARRIVE: Steal an enemy card from their deck into yours for every energy over [10] you have"
+	"text": "Gifted; ARRIVE: Steal an enemy card from their deck into yours for every energy over [10] you have"
   },
   "362": {
 	"cid": 362,
@@ -4030,6 +4030,6 @@
 	"type": "spell",
 	"rarity": "legendary",
 	"energy": 5,
-	"text": "WEATHER: Whenever a spell is played: Spells in the owner's hand cost [1] less"
+	"text": "Weather; Whenever a spell is played: Spells in the owner's hand cost [1] less"
   }
 }
