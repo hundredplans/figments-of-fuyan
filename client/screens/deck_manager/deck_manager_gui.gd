@@ -12,6 +12,8 @@ var stat_abbreviation_path: String = "res://static_data/cards/card_stat_abbrevia
 var search_aliases_path: String = "res://static_data/deck_manager/search_aliases.json"
 var keyword_search_path: String = "res://static_data/deck_manager/keyword_search.json"
 var owned_heroes_path: String = "res://mobile_data/owned_heroes.json"
+var unique_abilities_path: String = "res://static_data/cards/unique_abilities.json"
+var card_references_path: String = "res://static_data/cards/card_references.json"
 
 var active_search_cards: Array = []
 var display_cards: Array = []
@@ -23,6 +25,8 @@ var display_cards: Array = []
 @onready var search_aliases: Dictionary = Helper.load_json(search_aliases_path)
 @onready var keyword_search: Dictionary = Helper.load_json(keyword_search_path)
 @onready var owned_heroes: Dictionary = Helper.load_json(owned_heroes_path)
+@onready var unique_abilities: Dictionary = Helper.load_json(unique_abilities_path)
+@onready var card_references: Dictionary = Helper.load_json(card_references_path)
 
 @onready var CardDisplay: Node2D = $Temp/CardDisplay
 var close_on_input: Array = [null, null]
@@ -148,6 +152,8 @@ func match_active_search(card: Dictionary, x: String, aliases: Array) -> bool:
 	elif clan_convert[card.clan].to_lower().begins_with(x): return true
 	elif card.cid in aliases: return true
 	elif keyword_search.keywords.any(func(y: String): if x in y: return y in card.text.to_lower()): return true
+	elif unique_abilities.keys().any(func(y: String): if y.to_lower().begins_with(x.to_lower()): return y.to_lower() in card.text.to_lower()): return true
+	elif card_references.keys().any(func(y: String): if y.to_lower().begins_with(x.to_lower()): return float(card.cid) in card_references[y]): return true
 	return false
 func search_filter_card(card: Dictionary) -> bool:
 	if card in active_search_cards: return true

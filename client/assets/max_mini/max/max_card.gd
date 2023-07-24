@@ -1,10 +1,5 @@
 extends Node3D
 
-const max_lines: Dictionary = {
-	"Text": 5, 
-	"Clan": 1,
-	"Name": 1,
-}
 const size_rect := Rect2i(0, 0, 150, 300)
 var uid: int = 0
 var cid: int = 0
@@ -24,14 +19,25 @@ var card_stats_positions: Dictionary = {
 	"c": {"h": Vector2(-0.55, 1.32)},
 }
 
-func create_card(card: Dictionary, clan_convert: Dictionary, card_back_convert: Dictionary, aliased_cards: Dictionary, _uid: int):
+func create_card(card: Dictionary, card_back_convert: Dictionary, aliased_cards: Dictionary, card_preload: Dictionary, _uid: int):
 	uid = _uid
 	cid = card.cid
 	create_card_art(card, aliased_cards)
 	create_card_back(1, card_back_convert)
-	create_card_text(card, clan_convert)
+	create_card_text(card, card_preload)
 	create_card_stats(card)
-	call_deferred("change_text_size")
+	
+func create_card_text(card: Dictionary, card_preload: Dictionary) -> void:
+	$TextViewport/Name/Name.text = card_preload[str(card.cid)].name
+	$TextViewport/Clan/Clan.text = card_preload[str(card.cid)].clan
+	$TextViewport/Text/Text.text = card_preload[str(card.cid)].text
+	
+	$TextViewport/Name/Name["theme_override_font_sizes/normal_font_size"] = card_preload[str(card.cid)].name_size
+	$TextViewport/Name/Name["theme_override_font_sizes/bold_font_size"] = card_preload[str(card.cid)].name_size
+	$TextViewport/Clan/Clan["theme_override_font_sizes/normal_font_size"] = card_preload[str(card.cid)].clan_size
+	$TextViewport/Clan/Clan["theme_override_font_sizes/bold_font_size"] = card_preload[str(card.cid)].clan_size
+	$TextViewport/Text/Text["theme_override_font_sizes/normal_font_size"] = card_preload[str(card.cid)].text_size
+	$TextViewport/Text/Text["theme_override_font_sizes/bold_font_size"] = card_preload[str(card.cid)].text_size
 	
 func create_card_art(card: Dictionary, aliased_cards: Dictionary):
 	
@@ -56,15 +62,6 @@ func create_card_art(card: Dictionary, aliased_cards: Dictionary):
 	var artmaxImage: Image = load("res://assets/cards/%s/art_max.png" % card.cid)
 	if card.cid in aliased_cards.cids: $ArtMax.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
 	$ArtMax.texture = ImageTexture.create_from_image(artmaxImage)
-	
-func create_card_text(card: Dictionary, clan_convert: Dictionary) -> void:
-	$TextViewport/Text/Text.text = Helper.upgrade_ability_text(card.text)
-	for lab in [
-		[$TextViewport/Clan/Clan, clan_convert[card.clan]],
-		[$TextViewport/Text/Text, $TextViewport/Text/Text.text],
-		[$TextViewport/Name/Name, String(card.name)]]:
-		lab[0].text = Helper.set_default_tags(lab[1])
-		
 func create_card_back(card_back_id: int, card_back_convert: Dictionary):
 	for child in get_children(): if child.name == "card_back": child.queue_free()
 	var card_back: Node3D = load(card_back_convert[str(card_back_id)]).instantiate()
@@ -78,13 +75,3 @@ func create_card_stats(card: Dictionary) -> void:
 			label.position.x = card_stats_positions[card.type][pos].x
 			label.position.y = card_stats_positions[card.type][pos].y
 			$Stats.add_child(label)
-func change_text_size():
-	var restart: bool = false
-	for a in $TextViewport.get_children():
-		for lab in a.get_children():
-			if lab.get_line_count() > max_lines[lab.name]:
-				lab["theme_override_font_sizes/normal_font_size"] -= 1
-				lab["theme_override_font_sizes/bold_font_size"] -= 1
-				restart = true
-	
-	if restart: call_deferred("change_text_size")

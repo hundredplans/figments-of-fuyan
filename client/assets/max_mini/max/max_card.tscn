@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://v5goj4jt5761"]
+[gd_scene load_steps=8 format=3 uid="uid://v5goj4jt5761"]
 
 [ext_resource type="Script" path="res://assets/max_mini/max/max_card.gd" id="1_va1sa"]
 [ext_resource type="FontFile" uid="uid://dfckcwo02c6lv" path="res://assets/fonts/card_fonts/Roboto-Black.ttf" id="2_bjvs0"]
 [ext_resource type="FontFile" uid="uid://dngt5npftx5mt" path="res://assets/fonts/card_fonts/Roboto-Bold.ttf" id="3_mmpdx"]
 [ext_resource type="FontFile" uid="uid://o1v0hlquidg7" path="res://assets/fonts/card_fonts/Roboto-Italic.ttf" id="4_pabht"]
 [ext_resource type="FontFile" uid="uid://bcmm8s4sfvtcb" path="res://assets/fonts/card_fonts/Roboto-BoldItalic.ttf" id="5_dkajv"]
+[ext_resource type="FontFile" uid="uid://diumlv1x6jywm" path="res://assets/fonts/card_fonts/Tektur-Bold.ttf" id="6_5r3yo"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_mwiqx"]
 viewport_path = NodePath("TextViewport")
@@ -100,7 +101,7 @@ offset_bottom = 6.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/normal_font = ExtResource("2_bjvs0")
-theme_override_fonts/bold_font = ExtResource("3_mmpdx")
+theme_override_fonts/bold_font = ExtResource("6_5r3yo")
 theme_override_fonts/italics_font = ExtResource("4_pabht")
 theme_override_fonts/bold_italics_font = ExtResource("5_dkajv")
 theme_override_font_sizes/normal_font_size = 28

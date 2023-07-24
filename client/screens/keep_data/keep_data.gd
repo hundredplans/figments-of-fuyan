@@ -20,4 +20,4 @@ func set_current_hero_selected(new_hero: String) -> void:
 	
 func validate_current_hero_selected():
 	if current_hero_selected not in owned_heroes.heroes: current_hero_selected = ""
-	Helper.write_json(current_hero_selected_path, "{\"hero\": \"%s\"}" % current_hero_selected)
+	Helper.write_file(current_hero_selected_path, "{\"hero\": \"%s\"}" % current_hero_selected)
