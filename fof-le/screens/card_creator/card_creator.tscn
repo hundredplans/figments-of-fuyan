@@ -1,0 +1,124 @@
+[gd_scene load_steps=4 format=3 uid="uid://dwt2jmeur77v6"]
+
+[ext_resource type="Script" path="res://screens/card_creator/card_creator.gd" id="1_ft8ge"]
+[ext_resource type="Texture2D" uid="uid://bni3vhebth5gw" path="res://assets/sprites/Eddie Galeship.png" id="2_55dsr"]
+[ext_resource type="Theme" uid="uid://byxhe8c463j33" path="res://assets/fonts/roboto32.tres" id="2_ysnct"]
+
+[node name="CardCreator" type="Node2D"]
+script = ExtResource("1_ft8ge")
+
+[node name="Left" type="Button" parent="."]
+modulate = Color(0, 1, 1, 1)
+offset_left = 8.0
+offset_top = 407.0
+offset_right = 35.0
+offset_bottom = 510.0
+
+[node name="Right" type="Button" parent="."]
+offset_left = 765.0
+offset_top = 407.0
+offset_right = 792.0
+offset_bottom = 510.0
+
+[node name="SpriteList" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 61.0
+offset_top = 61.0
+offset_right = 61.0
+offset_bottom = 61.0
+
+[node name="Card" type="Node2D" parent="."]
+
+[node name="Background" type="ColorRect" parent="Card"]
+offset_left = 844.0
+offset_top = 280.0
+offset_right = 1327.0
+offset_bottom = 834.0
+color = Color(0.419608, 0.419608, 0.419608, 0.545098)
+
+[node name="CardArt" type="Sprite2D" parent="Card"]
+position = Vector2(1092, 372)
+texture = ExtResource("2_55dsr")
+
+[node name="SaveCard" type="Button" parent="Card"]
+offset_left = 844.0
+offset_top = 853.0
+offset_right = 1327.0
+offset_bottom = 946.0
+theme = ExtResource("2_ysnct")
+disabled = true
+text = "Save Card"
+
+[node name="Name" type="LineEdit" parent="Card"]
+offset_left = 910.0
+offset_top = 708.0
+offset_right = 1267.0
+offset_bottom = 787.0
+theme = ExtResource("2_ysnct")
+placeholder_text = "Write Name Here"
+alignment = 1
+max_length = 20
+
+[node name="Att" type="LineEdit" parent="Card"]
+offset_left = 872.0
+offset_top = 649.0
+offset_right = 992.0
+offset_bottom = 695.0
+theme = ExtResource("2_ysnct")
+placeholder_text = "Att"
+alignment = 1
+max_length = 1
+
+[node name="Hp" type="LineEdit" parent="Card"]
+offset_left = 1196.0
+offset_top = 649.0
+offset_right = 1316.0
+offset_bottom = 695.0
+theme = ExtResource("2_ysnct")
+placeholder_text = "Hp"
+alignment = 1
+max_length = 1
+
+[node name="Spd" type="LineEdit" parent="Card"]
+offset_left = 1196.0
+offset_top = 296.0
+offset_right = 1316.0
+offset_bottom = 342.0
+theme = ExtResource("2_ysnct")
+placeholder_text = "Spd"
+alignment = 1
+max_length = 1
+
+[node name="Energy" type="LineEdit" parent="Card"]
+offset_left = 872.0
+offset_top = 296.0
+offset_right = 992.0
+offset_bottom = 342.0
+theme = ExtResource("2_ysnct")
+placeholder_text = "Energy"
+alignment = 1
+max_length = 1
+
+[node name="Text" type="TextEdit" parent="Card"]
+offset_left = 880.0
+offset_top = 447.0
+offset_right = 1297.0
+offset_bottom = 638.0
+theme = ExtResource("2_ysnct")
+placeholder_text = "Write your text here"
+wrap_mode = 1
+
+[node name="LoadCard" type="Button" parent="."]
+offset_left = 844.0
+offset_top = 976.0
+offset_right = 1327.0
+offset_bottom = 1058.0
+theme = ExtResource("2_ysnct")
+text = "Load Card"
+
+[connection signal="pressed" from="Left" to="." method="_on_left_pressed"]
+[connection signal="pressed" from="Right" to="." method="_on_right_pressed"]
+[connection signal="pressed" from="Card/SaveCard" to="." method="_on_save_card_pressed"]
+[connection signal="text_changed" from="Card/Name" to="." method="_on_name_text_changed"]
+[connection signal="pressed" from="LoadCard" to="." method="_on_load_card_pressed"]

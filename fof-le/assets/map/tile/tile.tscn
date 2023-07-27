@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=3 uid="uid://8wlnjrhh2k4"]
+
+[ext_resource type="Script" path="res://assets/map/tile/tile.gd" id="1_cxmd0"]
+[ext_resource type="Texture2D" uid="uid://cdsgo4sdrenku" path="res://assets/map/tile/0.png" id="2_8u0si"]
+[ext_resource type="BitMap" uid="uid://b116yjswy3thk" path="res://assets/map/tile/tile_bitmap.png" id="3_jgicp"]
+[ext_resource type="Texture2D" uid="uid://dm6wga7ojaqyj" path="res://assets/map/tile/tile_outline.png" id="3_siugr"]
+
+[node name="Tile" type="Node2D"]
+script = ExtResource("1_cxmd0")
+
+[node name="Inside" type="TextureButton" parent="."]
+texture_filter = 1
+offset_left = -30.0
+offset_top = -34.0
+offset_right = 30.0
+offset_bottom = 35.0
+texture_normal = ExtResource("2_8u0si")
+texture_click_mask = ExtResource("3_jgicp")
+
+[node name="Outline" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("3_siugr")
+
+[node name="Arrow" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(-1, 0)
+
+[node name="TileItem" type="Sprite2D" parent="."]
+scale = Vector2(0.3, 0.3)
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+position = Vector2(0, 30)
+polygon = PackedVector2Array(0, 1, -26, -14, -26, -46, 0, -61, 26, -46, 26, -14)
+
+[node name="PositionDisplay" type="Node2D" parent="."]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(-20, -11)
+
+[connection signal="pressed" from="Inside" to="." method="_on_inside_pressed"]
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

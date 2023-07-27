@@ -1,0 +1,186 @@
+[gd_scene load_steps=19 format=3 uid="uid://dcfjqva3qapyn"]
+
+[ext_resource type="Script" path="res://screens/create_level/create_level.gd" id="1_gesax"]
+[ext_resource type="BitMap" uid="uid://b116yjswy3thk" path="res://assets/map/tile/tile_bitmap.png" id="2_06wc5"]
+[ext_resource type="Texture2D" uid="uid://cdsgo4sdrenku" path="res://assets/map/tile/0.png" id="2_xi7e5"]
+[ext_resource type="Texture2D" uid="uid://c0fk48pjd8118" path="res://assets/map/tile/1.png" id="4_5wtt3"]
+[ext_resource type="Texture2D" uid="uid://d2iyn2yub0ibi" path="res://assets/map/tile/2.png" id="5_ftjfm"]
+[ext_resource type="Texture2D" uid="uid://6tt5ujqu3xh1" path="res://assets/map/tile/3.png" id="6_iaee6"]
+[ext_resource type="Texture2D" uid="uid://cof3we76vrsbw" path="res://assets/map/tile/4.png" id="7_rbkd4"]
+[ext_resource type="Texture2D" uid="uid://cyve4t0uo8k77" path="res://assets/map/tile/5.png" id="8_by30e"]
+[ext_resource type="Texture2D" uid="uid://csg5kcljp082t" path="res://assets/map/tile/6.png" id="9_u5n28"]
+[ext_resource type="Texture2D" uid="uid://b6vyn2nbespfu" path="res://assets/map/tile/7.png" id="10_0qi6s"]
+[ext_resource type="Texture2D" uid="uid://clis6wec73nro" path="res://assets/map/arrows/1.png" id="11_3syb4"]
+[ext_resource type="Texture2D" uid="uid://xmox7hsyon8v" path="res://assets/map/arrows/0.png" id="11_tq3f7"]
+[ext_resource type="Texture2D" uid="uid://biso0ugqpayy5" path="res://assets/map/arrows/2.png" id="12_wsl6b"]
+[ext_resource type="Texture2D" uid="uid://5ouc0sxeco8y" path="res://assets/map/arrows/3.png" id="13_cak7k"]
+[ext_resource type="Texture2D" uid="uid://ds06m6v06bjn4" path="res://assets/map/arrows/4.png" id="14_fffbg"]
+[ext_resource type="Texture2D" uid="uid://cbpqeiwql556d" path="res://assets/map/arrows/5.png" id="15_uuln6"]
+[ext_resource type="Texture2D" uid="uid://chqkae6lsn0lw" path="res://assets/map/arrows/6.png" id="16_b7hxk"]
+[ext_resource type="Theme" uid="uid://byxhe8c463j33" path="res://assets/fonts/roboto32.tres" id="18_u1fij"]
+
+[node name="CreateLevel" type="Node2D"]
+script = ExtResource("1_gesax")
+
+[node name="FakeTiles" type="Node2D" parent="."]
+position = Vector2(93, 0)
+
+[node name="ChooseColor" type="Node2D" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="ChooseColor"]
+offset_right = 60.0
+offset_bottom = 580.0
+color = Color(0.756863, 0, 0.207843, 1)
+
+[node name="TileStates" type="VBoxContainer" parent="ChooseColor"]
+offset_right = 60.0
+offset_bottom = 580.0
+alignment = 1
+
+[node name="0" type="TextureButton" parent="ChooseColor/TileStates"]
+layout_mode = 2
+texture_normal = ExtResource("2_xi7e5")
+texture_click_mask = ExtResource("2_06wc5")
+
+[node name="1" type="TextureButton" parent="ChooseColor/TileStates"]
+layout_mode = 2
+texture_normal = ExtResource("4_5wtt3")
+texture_click_mask = ExtResource("2_06wc5")
+
+[node name="2" type="TextureButton" parent="ChooseColor/TileStates"]
+layout_mode = 2
+texture_normal = ExtResource("5_ftjfm")
+texture_click_mask = ExtResource("2_06wc5")
+
+[node name="3" type="TextureButton" parent="ChooseColor/TileStates"]
+layout_mode = 2
+texture_normal = ExtResource("6_iaee6")
+texture_click_mask = ExtResource("2_06wc5")
+
+[node name="4" type="TextureButton" parent="ChooseColor/TileStates"]
+layout_mode = 2
+texture_normal = ExtResource("7_rbkd4")
+texture_click_mask = ExtResource("2_06wc5")
+
+[node name="5" type="TextureButton" parent="ChooseColor/TileStates"]
+layout_mode = 2
+texture_normal = ExtResource("8_by30e")
+texture_click_mask = ExtResource("2_06wc5")
+
+[node name="6" type="TextureButton" parent="ChooseColor/TileStates"]
+layout_mode = 2
+texture_normal = ExtResource("9_u5n28")
+texture_click_mask = ExtResource("2_06wc5")
+
+[node name="7" type="TextureButton" parent="ChooseColor/TileStates"]
+layout_mode = 2
+texture_normal = ExtResource("10_0qi6s")
+texture_click_mask = ExtResource("2_06wc5")
+
+[node name="AddArrows" type="Node2D" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="AddArrows"]
+offset_top = 580.0
+offset_right = 60.0
+offset_bottom = 1080.0
+
+[node name="ArrowStates" type="VBoxContainer" parent="AddArrows"]
+offset_top = 580.0
+offset_right = 61.0
+offset_bottom = 1018.0
+alignment = 1
+
+[node name="0" type="TextureButton" parent="AddArrows/ArrowStates"]
+layout_mode = 2
+texture_normal = ExtResource("11_tq3f7")
+
+[node name="1" type="TextureButton" parent="AddArrows/ArrowStates"]
+layout_mode = 2
+texture_normal = ExtResource("11_3syb4")
+
+[node name="2" type="TextureButton" parent="AddArrows/ArrowStates"]
+layout_mode = 2
+texture_normal = ExtResource("12_wsl6b")
+
+[node name="3" type="TextureButton" parent="AddArrows/ArrowStates"]
+layout_mode = 2
+texture_normal = ExtResource("13_cak7k")
+
+[node name="4" type="TextureButton" parent="AddArrows/ArrowStates"]
+layout_mode = 2
+texture_normal = ExtResource("14_fffbg")
+
+[node name="5" type="TextureButton" parent="AddArrows/ArrowStates"]
+layout_mode = 2
+texture_normal = ExtResource("15_uuln6")
+
+[node name="6" type="TextureButton" parent="AddArrows/ArrowStates"]
+layout_mode = 2
+texture_normal = ExtResource("16_b7hxk")
+
+[node name="AddItem" type="Node2D" parent="."]
+position = Vector2(1748, 76)
+
+[node name="ColorRect" type="ColorRect" parent="AddItem"]
+offset_left = 8.0
+offset_top = -74.0
+offset_right = 163.0
+offset_bottom = 898.0
+color = Color(0.501961, 0.501961, 0.501961, 0.623529)
+
+[node name="Up" type="Button" parent="AddItem"]
+offset_left = 13.0
+offset_top = -74.0
+offset_right = 158.0
+offset_bottom = -25.0
+theme = ExtResource("18_u1fij")
+text = "Right"
+
+[node name="ClearSelection" type="Button" parent="AddItem"]
+offset_left = 14.0
+offset_top = 864.0
+offset_right = 159.0
+offset_bottom = 895.0
+text = "Clear"
+
+[node name="Down" type="Button" parent="AddItem"]
+offset_left = 13.0
+offset_top = -18.0
+offset_right = 158.0
+offset_bottom = 31.0
+theme = ExtResource("18_u1fij")
+text = "Left"
+
+[node name="Sprites" type="Node2D" parent="AddItem"]
+position = Vector2(28, 34)
+
+[node name="SaveLevelButton" type="Button" parent="."]
+offset_left = 1756.0
+offset_top = 1034.0
+offset_right = 1918.0
+offset_bottom = 1080.0
+theme = ExtResource("18_u1fij")
+text = "Save Level"
+
+[node name="ClearTiles" type="Button" parent="."]
+offset_left = 1584.0
+offset_top = 1034.0
+offset_right = 1746.0
+offset_bottom = 1080.0
+theme = ExtResource("18_u1fij")
+text = "Clear Tiles"
+
+[node name="LoadLevel" type="Button" parent="."]
+offset_left = 1410.0
+offset_top = 1034.0
+offset_right = 1572.0
+offset_bottom = 1080.0
+theme = ExtResource("18_u1fij")
+text = "Load Level"
+
+[connection signal="pressed" from="AddItem/Up" to="." method="_on_up_pressed"]
+[connection signal="pressed" from="AddItem/ClearSelection" to="." method="_on_clear_selection_pressed"]
+[connection signal="pressed" from="AddItem/Down" to="." method="_on_down_pressed"]
+[connection signal="pressed" from="SaveLevelButton" to="." method="_on_save_level_button_pressed"]
+[connection signal="pressed" from="ClearTiles" to="." method="_on_clear_tiles_pressed"]
+[connection signal="pressed" from="LoadLevel" to="." method="_on_load_level_pressed"]
