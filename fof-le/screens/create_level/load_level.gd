@@ -3,7 +3,7 @@ signal load_level
 
 func _ready():
 	var i: int = 0
-	while FileAccess.file_exists("res://data/save/levels/%s.txt" % i):
+	while FileAccess.file_exists("user://save/levels/%s.txt" % i):
 		i += 1
 	
 	var x: int = 0
@@ -27,3 +27,4 @@ func _on_button_pressed():
 
 func on_load_level(level_name: String) -> void:
 	load_level.emit(level_name)
+	queue_free()

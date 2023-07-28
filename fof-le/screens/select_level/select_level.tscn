@@ -1,6 +1,63 @@
-[gd_scene load_steps=2 format=3 uid="uid://bpqlo42gwv7ff"]
+[gd_scene load_steps=4 format=3 uid="uid://bpqlo42gwv7ff"]
 
 [ext_resource type="Script" path="res://screens/select_level/select_level.gd" id="1_pnvas"]
+[ext_resource type="PackedScene" uid="uid://dvr0ax682tg7k" path="res://screens/create_level/load_level.tscn" id="2_ky0od"]
+[ext_resource type="Theme" uid="uid://byxhe8c463j33" path="res://assets/fonts/roboto32.tres" id="3_borh0"]
 
 [node name="SelectLevel" type="Node2D"]
 script = ExtResource("1_pnvas")
+
+[node name="CardZone" type="Node2D" parent="."]
+
+[node name="LoadLevelButton" type="Button" parent="."]
+offset_top = 1025.0
+offset_right = 168.0
+offset_bottom = 1080.0
+theme = ExtResource("3_borh0")
+text = "Load Level"
+
+[node name="LoadCardsButton" type="Button" parent="."]
+offset_left = 187.0
+offset_top = 1025.0
+offset_right = 357.0
+offset_bottom = 1079.0
+theme = ExtResource("3_borh0")
+text = "Load Cards"
+
+[node name="Tiles" type="Node2D" parent="."]
+position = Vector2(93, 0)
+
+[node name="LoadLevel" parent="." instance=ExtResource("2_ky0od")]
+position = Vector2(428, 262)
+
+[node name="Circles" type="Node2D" parent="."]
+
+[node name="ActiveArt" type="Sprite2D" parent="."]
+position = Vector2(1860, 1025)
+
+[node name="TeamZero" type="Button" parent="."]
+offset_left = 380.0
+offset_top = 1025.0
+offset_right = 553.0
+offset_bottom = 1079.0
+theme = ExtResource("3_borh0")
+text = "Team Zero"
+
+[node name="TeamOne" type="Button" parent="."]
+offset_left = 574.0
+offset_top = 1025.0
+offset_right = 747.0
+offset_bottom = 1079.0
+theme = ExtResource("3_borh0")
+text = "Team One"
+
+[node name="RaycastSlave" type="RayCast2D" parent="."]
+target_position = Vector2(0, 0)
+collision_mask = 8
+collide_with_areas = true
+collide_with_bodies = false
+
+[connection signal="pressed" from="LoadLevelButton" to="." method="_on_load_level_button_pressed"]
+[connection signal="pressed" from="LoadCardsButton" to="." method="_on_load_cards_button_pressed"]
+[connection signal="pressed" from="TeamZero" to="." method="_on_team_zero_pressed"]
+[connection signal="pressed" from="TeamOne" to="." method="_on_team_one_pressed"]

@@ -11,7 +11,7 @@ var current_page: int = 0
 var max_page: int = 0
 var max_cards_on_page: int = 6
 var all_cards: Array
-const tile_amount: int = 800
+const tile_amount: int = 588
 const tile_rows: int = 28
 @onready var tile_default: PackedScene = preload("res://assets/map/tile/tile.tscn")
 
@@ -23,6 +23,7 @@ func _ready():
 	for i in range(tile_amount):
 		var tile: Node2D = tile_default.instantiate()
 		$FakeTiles.add_child(tile)
+		tile.get_node("Area2D").mouse_entered.connect(tile._on_area_2d_mouse_entered)
 		if x >= tile_rows:
 			x = 0
 			y += 1
@@ -95,9 +96,9 @@ func _process(_delta: float) -> void:
 
 func _on_save_level_button_pressed():
 	var i: int = 0
-	while FileAccess.file_exists("res://data/save/levels/%s.txt" % i):
+	while FileAccess.file_exists("user://save/levels/%s.txt" % i):
 		i += 1
-	var file := FileAccess.open("res://data/save/levels/%s.txt" % i, FileAccess.WRITE)
+	var file := FileAccess.open("user://save/levels/%s.txt" % i, FileAccess.WRITE)
 	var write_string: String = ""
 	for tile in $FakeTiles.get_children():
 		if tile.tile_state != 0:
@@ -111,7 +112,7 @@ func _on_clear_tiles_pressed():
 	on_change_active_tile_state("0")
 	_on_clear_selection_pressed()
 	for tile in $FakeTiles.get_children():
-		tile._on_inside_pressed()
+		tile._on_level_editor_inside_pressed()
 
 func _on_down_pressed():
 	if current_page > 0:
@@ -133,7 +134,7 @@ func _on_load_level_pressed():
 	
 func on_load_level(level_name: String) -> void:
 	_on_clear_tiles_pressed()
-	var lvl_path: String = "res://data/save/levels/%s.txt" % level_name
+	var lvl_path: String = "user://save/levels/%s.txt" % level_name
 	var file := FileAccess.open(lvl_path, FileAccess.READ)
 	var tiles: Array = []
 	for tile_info in file.get_as_text().split("\n"):
@@ -147,7 +148,7 @@ func on_load_level(level_name: String) -> void:
 		active_arrow_state = tile_info[3]
 		for tile in $FakeTiles.get_children():
 			if tile.tile_position == tile_info[0]:
-				tile._on_inside_pressed()
+				tile._on_level_editor_inside_pressed()
 	
 	on_change_active_arrow_state("0")
 	on_change_active_tile_state("0")

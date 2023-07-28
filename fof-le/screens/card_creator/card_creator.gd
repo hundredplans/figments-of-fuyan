@@ -43,7 +43,7 @@ func on_art_max_pressed(file: String):
 func _on_save_card_pressed():
 	var rpath = $Card/CardArt.texture.resource_path
 	var tex = rpath.right(rpath.length() - rpath.rfind("/") - 1)
-	var file := FileAccess.open("res://data/save/cards/%s.txt" % $Card/Name.get_text(), FileAccess.WRITE)
+	var file := FileAccess.open("user://save/cards/%s.txt" % $Card/Name.get_text(), FileAccess.WRITE)
 	var accum: String = $Card/Name.get_text() + "\n"
 	accum += $Card/Text.get_text() + "\n"
 	accum += tex + "\n"
@@ -74,7 +74,7 @@ func _on_load_card_pressed():
 	add_child(loadcard)
 
 func on_card_selected(card_path: String) -> void:
-	var file := FileAccess.open("res://data/save/cards/%s" % card_path, FileAccess.READ)
+	var file := FileAccess.open("user://save/cards/%s" % card_path, FileAccess.READ)
 	var card_info: Array = file.get_as_text().split("\n")
 	$Card/Name.text = card_info[0]
 	$Card/Text.text = card_info[1]

@@ -15,3 +15,11 @@ func _process(_delta: float):
 func _on_select_level_pressed():
 	add_child(preload("res://screens/select_level/select_level.tscn").instantiate())
 	$Buttons.visible = false
+
+func _ready():
+			
+	if !DirAccess.dir_exists_absolute("user://save/cards"):
+		DirAccess.make_dir_recursive_absolute("user://save/cards")
+		
+	if !DirAccess.dir_exists_absolute("user://save/levels"):
+		DirAccess.make_dir_recursive_absolute("user://save/levels")
