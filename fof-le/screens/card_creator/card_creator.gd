@@ -45,7 +45,7 @@ func _on_save_card_pressed():
 	var tex = rpath.right(rpath.length() - rpath.rfind("/") - 1)
 	var file := FileAccess.open("user://save/cards/%s.txt" % $Card/Name.get_text(), FileAccess.WRITE)
 	var accum: String = $Card/Name.get_text() + "\n"
-	accum += $Card/Text.get_text() + "\n"
+	accum += ($Card/Text.text.replace("\n", "")) + "\n"
 	accum += tex + "\n"
 	
 	for child in [$Card/Att, $Card/Hp, $Card/Spd, $Card/Energy]:
@@ -74,7 +74,7 @@ func _on_load_card_pressed():
 	add_child(loadcard)
 
 func on_card_selected(card_path: String) -> void:
-	var file := FileAccess.open("user://save/cards/%s" % card_path, FileAccess.READ)
+	var file := FileAccess.open("user://save/cards/%s" % card_path, FileAccess.WRITE)
 	var card_info: Array = file.get_as_text().split("\n")
 	$Card/Name.text = card_info[0]
 	$Card/Text.text = card_info[1]
@@ -83,3 +83,4 @@ func on_card_selected(card_path: String) -> void:
 	$Card/Spd.text = card_info[5]
 	$Card/Energy.text = card_info[6]
 	on_art_max_pressed(card_info[2])
+	file = null

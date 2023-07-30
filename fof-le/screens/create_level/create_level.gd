@@ -94,19 +94,6 @@ func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Escape"):
 		queue_free()
 
-func _on_save_level_button_pressed():
-	var i: int = 0
-	while FileAccess.file_exists("user://save/levels/%s.txt" % i):
-		i += 1
-	var file := FileAccess.open("user://save/levels/%s.txt" % i, FileAccess.WRITE)
-	var write_string: String = ""
-	for tile in $FakeTiles.get_children():
-		if tile.tile_state != 0:
-			write_string += "%s,%s,%s,%s,%s\n" % [tile.tile_position.x, tile.tile_position.y, tile.tile_state, tile.tile_item, tile.arrow_state]
-
-	file.store_string(write_string)
-	file = null
-
 func _on_clear_tiles_pressed():
 	on_change_active_arrow_state("0")
 	on_change_active_tile_state("0")
@@ -134,7 +121,7 @@ func _on_load_level_pressed():
 	
 func on_load_level(level_name: String) -> void:
 	_on_clear_tiles_pressed()
-	var lvl_path: String = "user://save/levels/%s.txt" % level_name
+	var lvl_path: String = "user://save/levels/%s" % level_name
 	var file := FileAccess.open(lvl_path, FileAccess.READ)
 	var tiles: Array = []
 	for tile_info in file.get_as_text().split("\n"):
@@ -156,3 +143,12 @@ func on_load_level(level_name: String) -> void:
 	file = null
 	
 	
+func _on_save_level_button_text_submitted(text: String):
+	var file := FileAccess.open("user://save/levels/%s.txt" % text, FileAccess.WRITE)
+	var write_string: String = ""
+	for tile in $FakeTiles.get_children():
+		if tile.tile_state != 0:
+			write_string += "%s,%s,%s,%s,%s\n" % [tile.tile_position.x, tile.tile_position.y, tile.tile_state, tile.tile_item, tile.arrow_state]
+
+	file.store_string(write_string)
+	file = null
