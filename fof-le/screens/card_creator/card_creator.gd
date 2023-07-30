@@ -74,7 +74,7 @@ func _on_load_card_pressed():
 	add_child(loadcard)
 
 func on_card_selected(card_path: String) -> void:
-	var file := FileAccess.open("user://save/cards/%s" % card_path, FileAccess.WRITE)
+	var file := FileAccess.open("user://save/cards/%s" % card_path, FileAccess.READ)
 	var card_info: Array = file.get_as_text().split("\n")
 	$Card/Name.text = card_info[0]
 	$Card/Text.text = card_info[1]
