@@ -8,6 +8,14 @@ func _ready():
 	for file in file_names:
 		var card := Button.new()
 		$LoadCardButtons.add_child(card)
+		
+		var rem_btn = Button.new()
+		rem_btn.text = "  X  "
+		rem_btn.position.x = 165
+		rem_btn.pressed.connect(on_rem_btn_pressed.bind(file, card))
+		
+		card.add_child(rem_btn)
+		
 		card.size = Vector2(200, 50)
 		card.text = file
 		card.pressed.connect(func(): card_selected.emit(file))
@@ -24,3 +32,8 @@ func _ready():
 
 func _on_button_pressed():
 	queue_free()
+
+func on_rem_btn_pressed(file: String, card: Control):
+	var dir := DirAccess.open("user://save/cards")
+	dir.remove(file)
+	card.queue_free()

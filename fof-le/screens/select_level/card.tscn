@@ -72,10 +72,10 @@ virtual_keyboard_enabled = false
 [node name="Team" type="LineEdit" parent="."]
 layout_mode = 0
 offset_left = 36.0
-offset_top = 270.0
+offset_top = 290.0
 offset_right = 72.0
-offset_bottom = 316.0
-theme = ExtResource("1_6rqsv")
+offset_bottom = 321.0
+theme_override_constants/minimum_character_width = 1
 text = "0"
 alignment = 1
 max_length = 1
@@ -110,7 +110,7 @@ text = "d"
 
 [node name="CollisionShape2D" type="CollisionPolygon2D" parent="DragZone"]
 position = Vector2(103, 162)
-polygon = PackedVector2Array(-103, -162, -104, 128, -67, 127, -67, 107, -31, 107, -31, 154, 30, 154, 31, 129, 66, 129, 102, 129, 103, -162)
+polygon = PackedVector2Array(-103, -162, -104, 128, -32, 127, -31, 154, 30, 154, 31, 129, 66, 129, 102, 129, 103, -162)
 
 [node name="Name" type="Label" parent="."]
 layout_mode = 0
@@ -129,7 +129,16 @@ offset_right = 36.0
 offset_bottom = 323.0
 text = "dd"
 
+[node name="EyeButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 72.0
+offset_top = 290.0
+offset_right = 134.0
+offset_bottom = 321.0
+text = "eye"
+
 [connection signal="pressed" from="Destroy" to="." method="_on_destroy_pressed"]
 [connection signal="pressed" from="Drag" to="." method="_on_drag_pressed"]
 [connection signal="mouse_entered" from="DragZone" to="." method="_on_drag_zone_mouse_entered"]
 [connection signal="mouse_exited" from="DragZone" to="." method="_on_drag_zone_mouse_exited"]
+[connection signal="pressed" from="EyeButton" to="." method="_on_eye_button_pressed"]

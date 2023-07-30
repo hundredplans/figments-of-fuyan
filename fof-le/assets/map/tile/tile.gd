@@ -1,7 +1,10 @@
 extends Node2D
 
+signal move_unit
+signal click_unit
 signal destroy_unit
 signal create_unit
+
 enum {TILE_NULL, TILE_VOID, TILE_TREE, TILE_WATER, TILE_SPAWN_ALLY, TILE_SPAWN_ENEMY, TILE_SPAWN_ITEM}
 enum {NOTHING_ARROW, ARROW_TOPLEFT, ARROW_TOPRIGHT, ARROW_BOTLEFT, ARROW_BOTRIGHT, ARROW_LEFT, ARROW_RIGHT}
 var tile_item = ""
@@ -31,6 +34,11 @@ func _process(_delta: float) -> void:
 				destroy_unit.emit(self)
 			elif get_parent().get_parent().active_card:
 				create_unit.emit(self)
+				
+		if Input.is_action_just_pressed("LeftClick"):
+			match get_parent().get_parent().move_unit:
+				[]: click_unit.emit(self)
+				_: move_unit.emit(self)
 			
 
 func _on_area_2d_mouse_entered():
@@ -56,9 +64,8 @@ func _on_simulation_inside_pressed(tile_info: Array):
 	tile_item = tile_info[2]
 	arrow_state = tile_info[3]
 	
-	if tile_state == TILE_TREE: $Area2D.collision_layer = 4
+	if tile_state == TILE_TREE: $Area2D.collision_mask = 0; $Area2D.collision_layer = 8
 	else: $Area2D.collision_layer = 1
-	print($Area2D.collision_layer)
 	$Inside.texture = load("res://assets/map/tile/%s.png" % tile_state)
 	if arrow_state != 0:
 		$Arrow.texture = load("res://assets/map/arrows/%s.png" % arrow_state)
@@ -70,3 +77,4 @@ func _on_simulation_inside_pressed(tile_info: Array):
 func _on_area_2d_mouse_exited():
 	allow_change = false
 	allow_change_anywhere = false
+

@@ -1,6 +1,7 @@
 extends Control
 var can_drag: bool = false
-var drag_mode: bool =false
+var drag_mode: bool = false
+var eye_mode: bool = false
 func _on_destroy_pressed():
 	queue_free()
 
@@ -18,7 +19,12 @@ func _process(_delta: float) -> void:
 
 func _on_drag_pressed():
 	drag_mode = !drag_mode
-	if drag_mode:
-		$Drag.modulate = Color(1,0,0,1)
-	else:
-		$Drag.modulate = Color(1,1,1,1)
+	match drag_mode:
+		false: $Drag.modulate = Color(1,1,1,1)
+		true: $Drag.modulate = Color(1,0,0,1)
+
+func _on_eye_button_pressed():
+	eye_mode = !eye_mode
+	match eye_mode:
+		false: $EyeButton.modulate = Color(1,1,1,1)
+		true: $EyeButton.modulate = Color(1,0,0,1)
