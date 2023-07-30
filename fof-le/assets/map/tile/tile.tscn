@@ -27,6 +27,6 @@ scale = Vector2(0.4, 0.4)
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
-polygon = PackedVector2Array(0, -36, -31, -18, -31, 18, 0, 36, 31, 18, 31, -18)
+polygon = PackedVector2Array(0, -35, -30, -18, -30, 18, 0, 35, 30, 18, 30, -18)
 
 [connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]
