@@ -223,3 +223,7 @@ func on_history_go_back():
 func add_to_history(hisinfo: Array) -> void:
 	if history.size() > history_max_size: history.remove_at(0)
 	history.append(hisinfo)
+
+
+func _on_dual_monitor_mode_pressed():
+	add_child(preload("res://screens/select_level/dual_monitor_mode.tscn").instantiate())
