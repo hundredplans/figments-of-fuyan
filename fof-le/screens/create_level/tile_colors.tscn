@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://0k73tx3ke1t7"]
+[gd_scene load_steps=20 format=3 uid="uid://0k73tx3ke1t7"]
 
 [ext_resource type="Texture2D" uid="uid://cdsgo4sdrenku" path="res://assets/map/tile/0.png" id="1_tnmb6"]
 [ext_resource type="BitMap" uid="uid://b116yjswy3thk" path="res://assets/map/tile/tile_bitmap.png" id="2_v0tcq"]
@@ -16,6 +16,9 @@
 [ext_resource type="Texture2D" uid="uid://t1xerciapp2o" path="res://assets/map/tile/12.png" id="14_3wmjk"]
 [ext_resource type="Texture2D" uid="uid://1l7c4k0xtasr" path="res://assets/map/tile/13.png" id="15_v8uun"]
 [ext_resource type="Texture2D" uid="uid://tkole2hqhrqb" path="res://assets/map/tile/14.png" id="16_luaoe"]
+[ext_resource type="Texture2D" uid="uid://bb1fl86wayuro" path="res://assets/map/tile/15.png" id="17_8dawb"]
+[ext_resource type="Texture2D" uid="uid://cdiu0b6qhtg3g" path="res://assets/map/tile/16.png" id="18_6sgnc"]
+[ext_resource type="Texture2D" uid="uid://50vy50sn7yf2" path="res://assets/map/tile/17.png" id="19_ijbqd"]
 
 [node name="TileColors" type="Control"]
 layout_mode = 3
@@ -277,20 +280,29 @@ grow_vertical = 2
 texture_normal = ExtResource("16_luaoe")
 texture_click_mask = ExtResource("2_v0tcq")
 
-[node name="fill" type="Sprite2D" parent="."]
-modulate = Color(0.54902, 0.596078, 0, 1)
+[node name="15" type="TextureButton" parent="."]
 texture_filter = 1
-position = Vector2(78, 44)
-texture = ExtResource("1_tnmb6")
+layout_mode = 0
+offset_left = 46.9231
+offset_top = 9.23077
+offset_right = 106.923
+offset_bottom = 78.2308
+texture_normal = ExtResource("17_8dawb")
 
-[node name="fill2" type="Sprite2D" parent="."]
-modulate = Color(0, 0.690196, 0.615686, 1)
+[node name="16" type="TextureButton" parent="."]
 texture_filter = 1
-position = Vector2(52, 89)
-texture = ExtResource("1_tnmb6")
+layout_mode = 0
+offset_left = 22.3077
+offset_top = 53.8462
+offset_right = 82.3077
+offset_bottom = 122.846
+texture_normal = ExtResource("18_6sgnc")
 
-[node name="fill3" type="Sprite2D" parent="."]
-modulate = Color(0, 0.537255, 1, 1)
+[node name="17" type="TextureButton" parent="."]
 texture_filter = 1
-position = Vector2(0, 89)
-texture = ExtResource("1_tnmb6")
+layout_mode = 0
+offset_left = -30.0
+offset_top = 55.3846
+offset_right = 30.0
+offset_bottom = 124.385
+texture_normal = ExtResource("19_ijbqd")
