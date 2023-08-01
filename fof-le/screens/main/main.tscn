@@ -1,47 +1,55 @@
-[gd_scene load_steps=4 format=3 uid="uid://8ddpu70t58q6"]
+[gd_scene load_steps=5 format=3 uid="uid://8ddpu70t58q6"]
 
 [ext_resource type="Script" path="res://screens/main/main.gd" id="1_4nbbu"]
 [ext_resource type="Texture2D" uid="uid://ck1pxemcx8mvt" path="res://screens/main/back.webp" id="2_g5oio"]
 [ext_resource type="Theme" uid="uid://byxhe8c463j33" path="res://assets/fonts/roboto32.tres" id="3_4lgoc"]
+[ext_resource type="Texture2D" uid="uid://c122qor61s6c" path="res://screens/main/bg2.jpg" id="3_m1q00"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_4nbbu")
 
 [node name="Background" type="Sprite2D" parent="."]
-position = Vector2(962.75, 541.75)
-scale = Vector2(1.00391, 1.00695)
+position = Vector2(960, 540)
 texture = ExtResource("2_g5oio")
+
+[node name="Backgrounder" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(1920, 0)
+texture = ExtResource("3_m1q00")
+centered = false
 
 [node name="Buttons" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 639.0
+offset_top = 331.0
+offset_right = 1145.0
+offset_bottom = 690.0
 
 [node name="EnterLevelEditor" type="Button" parent="Buttons"]
 layout_mode = 0
-offset_left = 750.0
-offset_top = 513.0
-offset_right = 1080.0
-offset_bottom = 613.0
+offset_left = 150.0
+offset_top = 168.0
+offset_right = 480.0
+offset_bottom = 268.0
 theme = ExtResource("3_4lgoc")
 text = "Enter Level Editor"
 
 [node name="EnterCardCreator" type="Button" parent="Buttons"]
 layout_mode = 0
-offset_left = 750.0
-offset_top = 628.0
-offset_right = 1080.0
-offset_bottom = 728.0
+offset_left = 150.0
+offset_top = 283.0
+offset_right = 480.0
+offset_bottom = 383.0
 theme = ExtResource("3_4lgoc")
 text = "Enter Card Creator"
 
 [node name="SelectLevel" type="Button" parent="Buttons"]
 layout_mode = 0
-offset_left = 750.0
-offset_top = 398.0
-offset_right = 1080.0
-offset_bottom = 498.0
+offset_left = 150.0
+offset_top = 53.0
+offset_right = 480.0
+offset_bottom = 153.0
 theme = ExtResource("3_4lgoc")
 text = "Select Level"
 

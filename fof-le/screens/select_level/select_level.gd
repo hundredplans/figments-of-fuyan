@@ -9,6 +9,7 @@ const tile_rows: int = 34
 const vision_range: int = 1
 const circle_vision_range: int = 240
 
+var multimode: bool = false
 var history: Array = []
 var active_card: Control
 var active_cards: Array = [[], []]
@@ -76,11 +77,13 @@ func on_load_level(level_name: String) -> void:
 
 func _on_load_level_button_pressed():
 	var loadlvl: Node2D = preload("res://screens/create_level/load_level.tscn").instantiate()
+	if multimode: loadlvl.position.x += 1920
 	loadlvl.load_level.connect(on_load_level)
 	add_child(loadlvl)
 
 func _on_load_cards_button_pressed():
 	var loadcard: Node2D = preload("res://screens/card_creator/load_card.tscn").instantiate()
+	if multimode: loadcard.position.x += 1920
 	loadcard.card_selected.connect(on_card_selected)
 	add_child(loadcard)
 
@@ -97,7 +100,10 @@ func on_card_selected(card_name: String):
 	refresh_vision()
 
 func add_card_to_card_zone(card: Control) -> void:
-	card.position = Vector2(randi_range(0, 1600), randi_range(0, 700))
+	var x: int = 1600
+	var minrange: int = 0
+	if multimode: x += 1920; minrange += 1920
+	card.position = Vector2(randi_range(minrange, x), randi_range(0, 700))
 	$CardZone.add_child(card)
 
 func on_art_max_selected(card_info: Array) -> void:
@@ -208,7 +214,9 @@ func on_move_unit(tile: Node2D):
 	$ActiveArt.texture = null
 
 func _on_draw_cards_pressed():
-	add_child(preload("res://screens/select_level/draw_cards.tscn").instantiate())
+	var draw_cards: Node2D = preload("res://screens/select_level/draw_cards.tscn").instantiate()
+	if multimode: draw_cards.position.x += 1920
+	add_child(draw_cards)
 	
 func on_history_go_back():
 	if history.size() > 0:
@@ -224,6 +232,6 @@ func add_to_history(hisinfo: Array) -> void:
 	if history.size() > history_max_size: history.remove_at(0)
 	history.append(hisinfo)
 
-
 func _on_dual_monitor_mode_pressed():
 	add_child(preload("res://screens/select_level/dual_monitor_mode.tscn").instantiate())
+	multimode = true
