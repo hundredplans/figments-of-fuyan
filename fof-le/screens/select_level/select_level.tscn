@@ -7,6 +7,14 @@
 [node name="SelectLevel" type="Node2D"]
 script = ExtResource("1_pnvas")
 
+[node name="DualMonitorMode" type="Button" parent="."]
+offset_left = 1412.0
+offset_top = 1007.0
+offset_right = 1580.0
+offset_bottom = 1062.0
+theme = ExtResource("3_borh0")
+text = "Dual Me"
+
 [node name="LoadLevelButton" type="Button" parent="."]
 offset_left = 108.0
 offset_top = 1007.0
@@ -76,6 +84,7 @@ position = Vector2(1860, 1025)
 
 [node name="LoadLevel" parent="." instance=ExtResource("2_ky0od")]
 
+[connection signal="pressed" from="DualMonitorMode" to="." method="_on_dual_monitor_mode_pressed"]
 [connection signal="pressed" from="LoadLevelButton" to="." method="_on_load_level_button_pressed"]
 [connection signal="pressed" from="LoadCardsButton" to="." method="_on_load_cards_button_pressed"]
 [connection signal="pressed" from="TeamZero" to="." method="_on_team_zero_pressed"]
