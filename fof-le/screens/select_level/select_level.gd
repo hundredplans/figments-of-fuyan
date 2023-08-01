@@ -107,7 +107,7 @@ func on_art_max_selected(card_info: Array) -> void:
 func on_create_unit(tile: Node2D, alter_history: bool) -> void:
 	active_cards[active_card.team].append([tile, active_card])
 	if alter_history: add_to_history(["DESTROY", tile])
-	tile.get_node("Unit").texture = load(active_card.get_node("ArtMax").texture.resource_path)
+	tile.get_node("In/Unit").texture = load(active_card.get_node("ArtMax").texture.resource_path)
 	refresh_vision()
 
 func on_destroy_unit(tile: Node2D, alter_history: bool) -> void:
@@ -116,7 +116,7 @@ func on_destroy_unit(tile: Node2D, alter_history: bool) -> void:
 		for i in range(team.size() - 1, -1, -1):
 			if team[i][0] == tile:
 				team.remove_at(i)
-				tile.get_node("Unit").texture = null
+				tile.get_node("In/Unit").texture = null
 				if alter_history: add_to_history(["CREATE", tile, active_card])
 	refresh_vision()
 
@@ -142,7 +142,7 @@ func _on_team_one_pressed():
 
 func refresh_vision() -> void:
 	for tile in $Tiles.get_children():
-		tile.visible = true
+		tile.get_node("In").visible = true
 		
 	for card in $CardZone.get_children():
 		card.visible = true
@@ -156,12 +156,12 @@ func refresh_vision() -> void:
 			visible_tiles += _refresh_vision_for_team(active_cards[1].map(func(x: Array): return x[0]))
 			
 		for tile in $Tiles.get_children():
-			tile.visible = false
-			if enable_vision_team_zero and tile.tile_state == 5: tile.visible = true
-			if enable_vision_team_one and tile.tile_state == 6: tile.visible = true
+			tile.get_node("In").visible = false
+			if enable_vision_team_zero and tile.tile_state == 5: tile.get_node("In").visible = true
+			if enable_vision_team_one and tile.tile_state == 6: tile.get_node("In").visible = true
 			
 		for tile in visible_tiles:
-			tile.visible = true
+			tile.get_node("In").visible = true
 			
 		for card in $CardZone.get_children():
 			match card.eye_mode:

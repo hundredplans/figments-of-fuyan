@@ -24,15 +24,15 @@ func _process(_delta: float) -> void:
 			
 	if allow_change_anywhere:
 		if Input.is_action_just_pressed("RightClick"):
-			if $TileItem.texture:
-				$TileItem.texture = null
+			if $In/TileItem.texture:
+				$In/TileItem.texture = null
 			
-			elif $TileItem.texture == null:
-				if tile_item: $TileItem.texture = load("res://assets/sprites/%s" % tile_item)
-				else: $TileItem.texture = null
+			elif $In/TileItem.texture == null:
+				if tile_item: $In/TileItem.texture = load("res://assets/sprites/%s" % tile_item)
+				else: $In/TileItem.texture = null
 				
 		if Input.is_action_just_pressed("MouseMiddle"):
-			if $Unit.texture:
+			if $In/Unit.texture:
 				destroy_unit.emit(self, true)
 			elif get_parent().get_parent().active_card:
 				create_unit.emit(self, true)
@@ -55,16 +55,16 @@ func _on_level_editor_inside_pressed():
 		arrow_state = get_parent().get_parent().active_arrow_state
 		tile_item = get_parent().get_parent().active_tile_item
 		
-		$Inside.texture = load("res://assets/map/tile/%s.png" % tile_state)
+		$In/Inside.texture = load("res://assets/map/tile/%s.png" % tile_state)
 		if arrow_state != 0:
-			$Arrow.texture = load("res://assets/map/arrows/%s.png" % arrow_state)
+			$In/Arrow.texture = load("res://assets/map/arrows/%s.png" % arrow_state)
 			get_parent().get_parent().active_arrow_state = 0
-		else: $Arrow.texture = null
+		else: $In/Arrow.texture = null
 		
 		if tile_item: 
-			$TileItem.texture = load("res://assets/sprites/%s" % tile_item)
+			$In/TileItem.texture = load("res://assets/sprites/%s" % tile_item)
 			get_parent().get_parent()._on_clear_selection_pressed()
-		else: $TileItem.texture = null
+		else: $In/TileItem.texture = null
 
 func _on_simulation_inside_pressed(tile_info: Array):
 	tile_state = tile_info[1]
@@ -73,13 +73,13 @@ func _on_simulation_inside_pressed(tile_info: Array):
 	
 	if tile_state in collision_tiles: $Area2D.collision_mask = 0; $Area2D.collision_layer = 8
 	else: $Area2D.collision_layer = 1
-	$Inside.texture = load("res://assets/map/tile/%s.png" % tile_state)
+	$In/Inside.texture = load("res://assets/map/tile/%s.png" % tile_state)
 	if arrow_state != 0:
-		$Arrow.texture = load("res://assets/map/arrows/%s.png" % arrow_state)
-	else: $Arrow.texture = null
+		$In/Arrow.texture = load("res://assets/map/arrows/%s.png" % arrow_state)
+	else: $In/Arrow.texture = null
 	
-	if tile_item: $TileItem.texture = load("res://assets/sprites/%s" % tile_item)
-	else: $TileItem.texture = null
+	if tile_item: $In/TileItem.texture = load("res://assets/sprites/%s" % tile_item)
+	else: $In/TileItem.texture = null
 
 func _on_area_2d_mouse_exited():
 	allow_change = false

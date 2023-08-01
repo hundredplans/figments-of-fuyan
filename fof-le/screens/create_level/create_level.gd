@@ -84,6 +84,7 @@ func on_choose_tile_settings():
 func _on_clear_tiles_pressed():
 	active_tile_state = 0
 	active_arrow_state = 0
+	nono_zone = false
 	_on_clear_selection_pressed()
 	for tile in $FakeTiles.get_children():
 		tile._on_level_editor_inside_pressed()
