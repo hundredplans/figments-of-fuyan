@@ -6,27 +6,30 @@
 [node name="LoadLevel" type="Node2D"]
 script = ExtResource("1_ux85v")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-offset_left = 34.0
-offset_top = 25.0
-offset_right = 1899.0
-offset_bottom = 1055.0
-color = Color(0.27451, 0.27451, 0.27451, 0.792157)
+[node name="Inside" type="ColorRect" parent="."]
+offset_left = 28.0
+offset_top = 21.0
+offset_right = 1893.0
+offset_bottom = 1051.0
+size_flags_horizontal = 4
+color = Color(1, 1, 1, 0.431373)
 
 [node name="Button" type="Button" parent="."]
-offset_left = 1805.0
-offset_top = 25.0
-offset_right = 1904.0
-offset_bottom = 121.0
+offset_left = 1794.0
+offset_top = 21.0
+offset_right = 1893.0
+offset_bottom = 117.0
+size_flags_horizontal = 4
 theme = ExtResource("2_pha2h")
 text = "X"
 
 [node name="LoadLevelButtons" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 34.0
-offset_top = 25.0
-offset_right = 1805.0
-offset_bottom = 1055.0
+offset_left = 28.0
+offset_top = 21.0
+offset_right = 1799.0
+offset_bottom = 1051.0
+size_flags_horizontal = 4
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

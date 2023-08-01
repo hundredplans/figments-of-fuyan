@@ -8,22 +8,64 @@
 script = ExtResource("1_pnvas")
 
 [node name="LoadLevelButton" type="Button" parent="."]
-offset_top = 1025.0
-offset_right = 168.0
-offset_bottom = 1080.0
+offset_left = 108.0
+offset_top = 1007.0
+offset_right = 276.0
+offset_bottom = 1062.0
 theme = ExtResource("3_borh0")
 text = "Load Level"
 
 [node name="LoadCardsButton" type="Button" parent="."]
-offset_left = 187.0
-offset_top = 1025.0
-offset_right = 357.0
-offset_bottom = 1079.0
+offset_left = 295.0
+offset_top = 1007.0
+offset_right = 465.0
+offset_bottom = 1061.0
 theme = ExtResource("3_borh0")
 text = "Load Cards"
 
+[node name="TeamZero" type="Button" parent="."]
+offset_left = 488.0
+offset_top = 1007.0
+offset_right = 661.0
+offset_bottom = 1061.0
+theme = ExtResource("3_borh0")
+text = "Team Zero"
+
+[node name="TeamOne" type="Button" parent="."]
+offset_left = 682.0
+offset_top = 1007.0
+offset_right = 855.0
+offset_bottom = 1061.0
+theme = ExtResource("3_borh0")
+text = "Team One"
+
+[node name="DrawCards" type="Button" parent="."]
+offset_left = 1608.0
+offset_top = 1007.0
+offset_right = 1781.0
+offset_bottom = 1062.0
+theme = ExtResource("3_borh0")
+text = "Draw Cards"
+
+[node name="Energy" type="LineEdit" parent="."]
+offset_left = 22.0
+offset_top = 992.0
+offset_right = 89.0625
+offset_bottom = 1071.0
+theme = ExtResource("3_borh0")
+theme_override_font_sizes/font_size = 60
+text = "1"
+alignment = 1
+max_length = 1
+select_all_on_focus = true
+
+[node name="Raycast" type="RayCast2D" parent="."]
+target_position = Vector2(0, 0)
+collision_mask = 8
+collide_with_areas = true
+collide_with_bodies = false
+
 [node name="Tiles" type="Node2D" parent="."]
-position = Vector2(93, 0)
 
 [node name="Circles" type="Node2D" parent="."]
 
@@ -33,28 +75,6 @@ position = Vector2(1860, 904)
 [node name="ActiveArt" type="Sprite2D" parent="."]
 position = Vector2(1860, 1025)
 
-[node name="TeamZero" type="Button" parent="."]
-offset_left = 380.0
-offset_top = 1025.0
-offset_right = 553.0
-offset_bottom = 1079.0
-theme = ExtResource("3_borh0")
-text = "Team Zero"
-
-[node name="TeamOne" type="Button" parent="."]
-offset_left = 574.0
-offset_top = 1025.0
-offset_right = 747.0
-offset_bottom = 1079.0
-theme = ExtResource("3_borh0")
-text = "Team One"
-
-[node name="Raycast" type="RayCast2D" parent="."]
-target_position = Vector2(0, 0)
-collision_mask = 8
-collide_with_areas = true
-collide_with_bodies = false
-
 [node name="CardZone" type="Node2D" parent="."]
 
 [node name="LoadLevel" parent="." instance=ExtResource("2_ky0od")]
@@ -63,3 +83,4 @@ collide_with_bodies = false
 [connection signal="pressed" from="LoadCardsButton" to="." method="_on_load_cards_button_pressed"]
 [connection signal="pressed" from="TeamZero" to="." method="_on_team_zero_pressed"]
 [connection signal="pressed" from="TeamOne" to="." method="_on_team_one_pressed"]
+[connection signal="pressed" from="DrawCards" to="." method="_on_draw_cards_pressed"]

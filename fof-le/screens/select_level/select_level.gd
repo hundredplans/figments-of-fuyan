@@ -1,13 +1,15 @@
 extends Node2D
 
+const history_max_size: int = 256
 const tile_size: int = 60
 const tile_x_offset: int = 30
 const tile_y_offset: int = 50
-const tile_amount: int = 588
-const tile_rows: int = 28
+const tile_amount: int = 800
+const tile_rows: int = 34
 const vision_range: int = 1
 const circle_vision_range: int = 240
 
+var history: Array = []
 var active_card: Control
 var active_cards: Array = [[], []]
 var move_unit: Array = []
@@ -19,6 +21,9 @@ var enable_vision_team_one: bool = false
 func _process(_delta):
 	if Input.is_action_just_pressed("Escape"):
 		queue_free()
+		
+	if Input.is_action_just_pressed("HistoryGoBack"):
+		on_history_go_back()
 
 func _ready() -> void:
 	refresh_vision()
@@ -84,14 +89,12 @@ func on_card_selected(card_name: String):
 	var card_info: Array = file.get_as_text().split("\n")
 	var card: Control = preload("res://screens/select_level/card.tscn").instantiate()
 	card.get_node("DragDrag").pressed.connect(on_art_max_selected.bind([card_info[2], card]))
+	card.refresh_vision.connect(refresh_vision)
 	add_card_to_card_zone(card)
-	card.get_node("Name").text = card_info[0]
-	card.get_node("Text").text = card_info[1]
-	card.get_node("ArtMax").texture = load("res://assets/sprites/%s" % card_info[2])
-	card.get_node("Att").text = card_info[3]
-	card.get_node("Hp").text = card_info[4]
-	card.get_node("Spd").text = card_info[5]
-	card.get_node("Energy").text = card_info[6]
+	
+	card.default_state = card_info.duplicate(true)
+	card._on_default_state_pressed()
+	refresh_vision()
 
 func add_card_to_card_zone(card: Control) -> void:
 	card.position = Vector2(randi_range(0, 1600), randi_range(0, 700))
@@ -101,20 +104,20 @@ func on_art_max_selected(card_info: Array) -> void:
 	$ActiveArt.texture = load("res://assets/sprites/%s" % card_info[0])
 	active_card = card_info[1]
 
-func on_create_unit(tile: Node2D) -> void:
-	if active_card.get_node("Team").text.is_valid_int():
-		active_cards[active_card.get_node("Team").text.to_int()].append([tile, active_card])
-		tile.get_node("Unit").texture = load(active_card.get_node("ArtMax").texture.resource_path)
+func on_create_unit(tile: Node2D, alter_history: bool) -> void:
+	active_cards[active_card.team].append([tile, active_card])
+	if alter_history: add_to_history(["DESTROY", tile])
+	tile.get_node("Unit").texture = load(active_card.get_node("ArtMax").texture.resource_path)
 	refresh_vision()
 
-func on_destroy_unit(tile: Node2D) -> void:
+func on_destroy_unit(tile: Node2D, alter_history: bool) -> void:
 	
 	for team in active_cards:
 		for i in range(team.size() - 1, -1, -1):
 			if team[i][0] == tile:
 				team.remove_at(i)
 				tile.get_node("Unit").texture = null
-
+				if alter_history: add_to_history(["CREATE", tile, active_card])
 	refresh_vision()
 
 func modulate_team_buttons() -> void:
@@ -141,6 +144,9 @@ func refresh_vision() -> void:
 	for tile in $Tiles.get_children():
 		tile.visible = true
 		
+	for card in $CardZone.get_children():
+		card.visible = true
+		
 	if !(!enable_vision_team_zero and !enable_vision_team_one):
 		var visible_tiles: Array = []
 		if enable_vision_team_zero:
@@ -151,22 +157,22 @@ func refresh_vision() -> void:
 			
 		for tile in $Tiles.get_children():
 			tile.visible = false
-			if enable_vision_team_zero and tile.tile_state == 4: tile.visible = true
-			if enable_vision_team_one and tile.tile_state == 5: tile.visible = true
+			if enable_vision_team_zero and tile.tile_state == 5: tile.visible = true
+			if enable_vision_team_one and tile.tile_state == 6: tile.visible = true
 			
 		for tile in visible_tiles:
 			tile.visible = true
 			
-	for card in $CardZone.get_children():
-		match card.eye_mode:
-			false: card.visible = false
-			_: card.visible = true; continue
-			
-		if enable_vision_team_zero and card.get_node("Team").text == "0":
-			card.visible = true
+		for card in $CardZone.get_children():
+			match card.eye_mode:
+				false: card.visible = false
+				_: card.visible = true; continue
 				
-		if enable_vision_team_one and card.get_node("Team").text == "1":
-			card.visible = true
+			if enable_vision_team_zero and card.team == 0:
+				card.visible = true
+					
+			if enable_vision_team_one and card.team == 1:
+				card.visible = true
 			
 func _refresh_vision_for_team(occupied_tiles: Array) -> Array:
 	var visible_tiles: Array = []
@@ -196,7 +202,24 @@ func on_click_unit(tile: Node2D):
 				return
 
 func on_move_unit(tile: Node2D):
-	on_destroy_unit(move_unit[0])
-	on_create_unit(tile)
+	on_destroy_unit(move_unit[0], true)
+	on_create_unit(tile, true)
 	move_unit = []
 	$ActiveUnit.texture = null
+
+func _on_draw_cards_pressed():
+	add_child(preload("res://screens/select_level/draw_cards.tscn").instantiate())
+	
+func on_history_go_back():
+	if history.size() > 0:
+		var hisinfo: Array = history.pop_back()
+		match hisinfo[0]:
+			"CREATE": 
+				active_card = hisinfo[2]
+				on_create_unit(hisinfo[1], false)
+				
+			"DESTROY": on_destroy_unit(hisinfo[1], false)
+	
+func add_to_history(hisinfo: Array) -> void:
+	if history.size() > history_max_size: history.remove_at(0)
+	history.append(hisinfo)
