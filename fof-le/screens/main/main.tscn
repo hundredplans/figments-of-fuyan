@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://8ddpu70t58q6"]
 
 [ext_resource type="Script" path="res://screens/main/main.gd" id="1_4nbbu"]
-[ext_resource type="Texture2D" uid="uid://cprp5hqll7vyr" path="res://screens/main/onepieceisreal.png" id="2_2d3k2"]
+[ext_resource type="Texture2D" uid="uid://ck1pxemcx8mvt" path="res://screens/main/back.webp" id="2_g5oio"]
 [ext_resource type="Theme" uid="uid://byxhe8c463j33" path="res://assets/fonts/roboto32.tres" id="3_4lgoc"]
 
 [node name="Main" type="Node2D"]
@@ -10,7 +10,7 @@ script = ExtResource("1_4nbbu")
 [node name="Background" type="Sprite2D" parent="."]
 position = Vector2(962.75, 541.75)
 scale = Vector2(1.00391, 1.00695)
-texture = ExtResource("2_2d3k2")
+texture = ExtResource("2_g5oio")
 
 [node name="Buttons" type="Control" parent="."]
 layout_mode = 3

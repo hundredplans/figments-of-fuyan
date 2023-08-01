@@ -10,6 +10,8 @@ func _process(_delta):
 		queue_free()
 
 func _ready() -> void:
+	$Card/RaritySelect.select(0)
+	_on_rarity_select_item_selected(0)
 	var file_names: PackedStringArray = DirAccess.open("res://assets/sprites").get_files()
 	file_names = Array(file_names).filter(func(x: String): return x.ends_with(".import"))
 	for file in file_names:
@@ -51,12 +53,9 @@ func _on_save_card_pressed():
 	for child in [$Card/Att, $Card/Hp, $Card/Spd, $Card/Energy]:
 		accum += child.text + "\n"
 	
+	accum += str($Card/RaritySelect.selected) + "\n"
 	file.store_string(accum)
 	file = null
-
-func _on_name_text_changed(new_text):
-	if new_text.length() > 2: $Card/SaveCard.disabled = false; current_name = new_text
-	else: $Card/SaveCard.disabled = true
 
 func _on_left_pressed():
 	if current_page > 0:
@@ -74,7 +73,7 @@ func _on_load_card_pressed():
 	add_child(loadcard)
 
 func on_card_selected(card_path: String) -> void:
-	var file := FileAccess.open("user://save/cards/%s" % card_path, FileAccess.WRITE)
+	var file := FileAccess.open("user://save/cards/%s" % card_path, FileAccess.READ)
 	var card_info: Array = file.get_as_text().split("\n")
 	$Card/Name.text = card_info[0]
 	$Card/Text.text = card_info[1]
@@ -82,5 +81,19 @@ func on_card_selected(card_path: String) -> void:
 	$Card/Hp.text = card_info[4]
 	$Card/Spd.text = card_info[5]
 	$Card/Energy.text = card_info[6]
+	
+	var rarity: int = 0
+	if card_info.size() > 7: rarity = int(card_info[7])
+	$Card/RaritySelect.select(rarity)
+	_on_rarity_select_item_selected(rarity)
+	
 	on_art_max_pressed(card_info[2])
 	file = null
+
+func _on_rarity_select_item_selected(rarity: int):
+	match rarity:
+		0: $Card/In.color = Color(0.43,0.43,0.43,1)
+		1: $Card/In.color = Color(0.31, 0.478, 0.439,1)
+		2: $Card/In.color = Color(0.966, 0.697, 0.253,1)
+		3: $Card/In.color = Color(0.639, 0.075, 0.722,1)
+		4: $Card/In.color = Color(0.773, 0.031, 0.141, 1)

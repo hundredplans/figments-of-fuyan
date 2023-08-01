@@ -1,18 +1,20 @@
 extends Node2D
 
+var nono_zone: bool = false
 var active_arrow_state: int = 0
 var active_tile_state: int = 0
 var active_tile_item: String
 const tile_size: int = 60
 const tile_x_offset: int = 30
 const tile_y_offset: int = 50
+var touched_tiles: Array = []
 
 var current_page: int = 0
 var max_page: int = 0
 var max_cards_on_page: int = 6
 var all_cards: Array
-const tile_amount: int = 588
-const tile_rows: int = 28
+const tile_amount: int = 800
+const tile_rows: int = 34
 @onready var tile_default: PackedScene = preload("res://assets/map/tile/tile.tscn")
 
 func _ready():
@@ -33,15 +35,6 @@ func _ready():
 		tile.position.y += y * tile_y_offset
 		x += 1
 		tile.tile_position = Vector2(x, y)
-
-	for child in $ChooseColor/TileStates.get_children():
-		child.pressed.connect(on_change_active_tile_state.bind(child.name))
-		
-	for child in $AddArrows/ArrowStates.get_children():
-		child.pressed.connect(on_change_active_arrow_state.bind(child.name))
-		
-	on_change_active_arrow_state("0")
-	on_change_active_tile_state("0")
 	
 	var file_names: PackedStringArray = DirAccess.open("res://assets/sprites").get_files()
 	file_names = Array(file_names).filter(func(x: String): return x.ends_with(".import"))
@@ -67,36 +60,31 @@ func on_load_cards():
 		
 func on_art_max_pressed(item_name: String):
 	active_tile_item = item_name
-		
-func on_change_active_arrow_state(arrow_name: String) -> void:
-	active_arrow_state = int(arrow_name)
-	for child in $AddArrows/ArrowStates.get_children():
-		match child.name:
-			arrow_name: child.modulate = Color(1,1,1,1)
-			_: child.modulate = Color(1,1,1,0.6)
-			
-func on_change_active_tile_state(tile_name: String) -> void:
-	active_tile_state = int(tile_name)
-	for child in $ChooseColor/TileStates.get_children():
-		match child.name:
-			tile_name: child.modulate = Color(1,1,1,1)
-			_: child.modulate = Color(1,1,1,0.6)
+	$AddItem/ClearSelection.modulate = Color(1,0,0,1)
 
 func _process(_delta: float) -> void:
-	if Input.is_action_just_pressed("MouseUp"):
-		if active_tile_state > 0:
-			on_change_active_tile_state(str(active_tile_state - 1))
-			
-	elif Input.is_action_just_pressed("MouseDown"):
-		if active_tile_state < $ChooseColor/TileStates.get_children().size() - 1:
-			on_change_active_tile_state(str(active_tile_state + 1))
-
 	if Input.is_action_just_pressed("Escape"):
 		queue_free()
+		
+	if Input.is_action_just_released("LeftClick"): touched_tiles.clear()
+
+	if Input.is_action_pressed("RightClick"):
+		on_choose_tile_settings()
+		
+	if Input.is_action_just_released("RightClick"):
+		if has_node("ChooseTileSettings"):
+			get_node("ChooseTileSettings").queue_free()
+
+func on_choose_tile_settings():
+	if !has_node("ChooseTileSettings"):
+		var choose_tile_settings: Node2D = preload("res://screens/create_level/choose_tile_settings.tscn").instantiate()
+		add_child(choose_tile_settings)
+		choose_tile_settings.position = get_viewport().get_mouse_position()
 
 func _on_clear_tiles_pressed():
-	on_change_active_arrow_state("0")
-	on_change_active_tile_state("0")
+	active_tile_state = 0
+	active_arrow_state = 0
+	nono_zone = false
 	_on_clear_selection_pressed()
 	for tile in $FakeTiles.get_children():
 		tile._on_level_editor_inside_pressed()
@@ -113,8 +101,11 @@ func _on_up_pressed():
 
 func _on_clear_selection_pressed():
 	active_tile_item = ""
+	$AddItem/ClearSelection.modulate = Color(1,1,1,1)
 
 func _on_load_level_pressed():
+	active_tile_state = 0
+	active_arrow_state = 0
 	var levelloader = preload("res://screens/create_level/load_level.tscn").instantiate()
 	add_child(levelloader)
 	levelloader.load_level.connect(on_load_level)
@@ -137,11 +128,10 @@ func on_load_level(level_name: String) -> void:
 			if tile.tile_position == tile_info[0]:
 				tile._on_level_editor_inside_pressed()
 	
-	on_change_active_arrow_state("0")
-	on_change_active_tile_state("0")
+	active_arrow_state = 0
+	active_tile_state = 4
 	_on_clear_selection_pressed()
-	file = null
-	
+	file = null 
 	
 func _on_save_level_button_text_submitted(text: String):
 	var file := FileAccess.open("user://save/levels/%s.txt" % text, FileAccess.WRITE)
@@ -152,3 +142,7 @@ func _on_save_level_button_text_submitted(text: String):
 
 	file.store_string(write_string)
 	file = null
+
+
+func _on_nono_zone_mouse_entered(): nono_zone = true
+func _on_nono_zone_mouse_exited(): nono_zone = false
