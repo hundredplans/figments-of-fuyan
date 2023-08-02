@@ -17,7 +17,6 @@ func _on_select_level_pressed():
 	$Buttons.visible = false
 
 func _ready():
-			
 	if !DirAccess.dir_exists_absolute("user://save/cards"):
 		DirAccess.make_dir_recursive_absolute("user://save/cards")
 		
