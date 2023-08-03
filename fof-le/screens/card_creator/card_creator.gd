@@ -97,3 +97,4 @@ func _on_rarity_select_item_selected(rarity: int):
 		2: $Card/In.color = Color(0.966, 0.697, 0.253,1)
 		3: $Card/In.color = Color(0.639, 0.075, 0.722,1)
 		4: $Card/In.color = Color(0.773, 0.031, 0.141, 1)
+		5: $Card/In.color = Color(0.374, 0.6, 1, 1)

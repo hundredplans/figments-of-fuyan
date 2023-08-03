@@ -46,7 +46,7 @@ layout_mode = 0
 offset_left = 6.0
 offset_right = 489.0
 offset_bottom = 554.0
-color = Color(0.419608, 0.419608, 0.419608, 0.545098)
+color = Color(0.374255, 0.599587, 1, 1)
 
 [node name="CardArt" type="Sprite2D" parent="Card"]
 position = Vector2(254, 92)
@@ -112,7 +112,7 @@ layout_mode = 0
 offset_left = 499.0
 offset_right = 633.0
 offset_bottom = 31.0
-item_count = 5
+item_count = 6
 popup/item_0/text = "Common"
 popup/item_0/id = 0
 popup/item_1/text = "Uncommon"
@@ -123,6 +123,8 @@ popup/item_3/text = "Miniboss"
 popup/item_3/id = 3
 popup/item_4/text = "Boss"
 popup/item_4/id = 4
+popup/item_5/text = "Champion"
+popup/item_5/id = 5
 
 [node name="Text" type="TextEdit" parent="Card"]
 layout_mode = 0

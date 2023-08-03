@@ -36,7 +36,7 @@ func _ready():
 		x += 1
 		tile.tile_position = Vector2(x, y)
 	
-	var file_names: PackedStringArray = DirAccess.open("res://assets/sprites").get_files()
+	var file_names: PackedStringArray = DirAccess.open("res://assets/trinkets").get_files()
 	file_names = Array(file_names).filter(func(x: String): return x.ends_with(".import"))
 	for file in file_names:
 		all_cards.append(file.replace(".import", ""))
@@ -49,7 +49,7 @@ func on_load_cards():
 	for i in range(current_page * max_cards_on_page, (current_page + 1) * max_cards_on_page):
 		if i < all_cards.size():
 			var sprite := TextureButton.new()
-			sprite.texture_normal = load("res://assets/sprites/%s" % all_cards[i])
+			sprite.texture_normal = load("res://assets/trinkets/%s" % all_cards[i])
 			$AddItem/Sprites.add_child(sprite)
 			sprite.pressed.connect(on_art_max_pressed.bind(all_cards[i]))
 		

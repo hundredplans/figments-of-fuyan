@@ -38,7 +38,7 @@ func _process(_delta: float) -> void:
 				create_unit.emit(self, true)
 				
 		if Input.is_action_just_pressed("LeftClick"):
-			match get_parent().get_parent().move_unit:
+			match get_parent().get_parent().unit_selected:
 				[]: click_unit.emit(self)
 				_: move_unit.emit(self)
 			
@@ -62,7 +62,7 @@ func _on_level_editor_inside_pressed():
 		else: $In/Arrow.texture = null
 		
 		if tile_item: 
-			$In/TileItem.texture = load("res://assets/sprites/%s" % tile_item)
+			$In/TileItem.texture = load("res://assets/trinkets/%s" % tile_item)
 			get_parent().get_parent()._on_clear_selection_pressed()
 		else: $In/TileItem.texture = null
 
@@ -78,7 +78,7 @@ func _on_simulation_inside_pressed(tile_info: Array):
 		$In/Arrow.texture = load("res://assets/map/arrows/%s.png" % arrow_state)
 	else: $In/Arrow.texture = null
 	
-	if tile_item: $In/TileItem.texture = load("res://assets/sprites/%s" % tile_item)
+	if tile_item: $In/TileItem.texture = load("res://assets/trinkets/%s" % tile_item)
 	else: $In/TileItem.texture = null
 
 func _on_area_2d_mouse_exited():
