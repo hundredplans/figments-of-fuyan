@@ -9,11 +9,11 @@ const tile_rows: int = 34
 const vision_range: int = 1
 const circle_vision_range: int = 240
 
+var unit_selected: Array
 var multimode: bool = false
 var history: Array = []
 var active_card: Control
 var active_cards: Array = [[], []]
-var move_unit: Array = []
 
 var enable_vision_team_zero: bool = false
 var enable_vision_team_one: bool = false
@@ -116,13 +116,14 @@ func on_create_unit(tile: Node2D, alter_history: bool) -> void:
 	tile.get_node("In/Unit").texture = load(active_card.get_node("ArtMax").texture.resource_path)
 	refresh_vision()
 	
+	unit_selected = []
 	active_card = null
 	$ActiveArt.texture = null
 
 func on_destroy_unit(tile: Node2D, alter_history: bool) -> void:
-	
 	for team in active_cards:
 		for i in range(team.size() - 1, -1, -1):
+			print(team[i])
 			if team[i][0] == tile:
 				team.remove_at(i)
 				tile.get_node("In/Unit").texture = null
@@ -206,16 +207,15 @@ func on_click_unit(tile: Node2D):
 	for team in active_cards:
 		for i in team:
 			if i[0] == tile:
-				move_unit = i
+				unit_selected = [i[1], tile]
+				active_card = null
 				$ActiveArt.texture = load(i[1].get_node("ArtMax").texture.resource_path)
 				return
 
 func on_move_unit(tile: Node2D):
-	on_destroy_unit(move_unit[0], true)
+	active_card = unit_selected[0]
+	on_destroy_unit(unit_selected[1], true)
 	on_create_unit(tile, true)
-	move_unit = []
-#	active_card = null
-	$ActiveArt.texture = null
 
 func _on_draw_cards_pressed():
 	var draw_cards: Node2D = preload("res://screens/select_level/draw_cards.tscn").instantiate()

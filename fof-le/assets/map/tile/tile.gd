@@ -38,7 +38,7 @@ func _process(_delta: float) -> void:
 				create_unit.emit(self, true)
 				
 		if Input.is_action_just_pressed("LeftClick"):
-			match get_parent().get_parent().move_unit:
+			match get_parent().get_parent().unit_selected:
 				[]: click_unit.emit(self)
 				_: move_unit.emit(self)
 			
