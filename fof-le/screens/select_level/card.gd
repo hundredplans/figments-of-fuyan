@@ -59,7 +59,7 @@ func _on_default_state_pressed():
 		2: $In.color = Color(0.966, 0.697, 0.253,1)
 		3: $In.color = Color(0.639, 0.075, 0.722,1)
 		4: $In.color = Color(0.773, 0.031, 0.141, 1)
-
+		5: $In.color = Color(0.374, 0.6, 1, 1)
 
 func _on_team_zero_pressed():
 	team = 0

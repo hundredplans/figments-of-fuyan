@@ -115,6 +115,9 @@ func on_create_unit(tile: Node2D, alter_history: bool) -> void:
 	if alter_history: add_to_history(["DESTROY", tile])
 	tile.get_node("In/Unit").texture = load(active_card.get_node("ArtMax").texture.resource_path)
 	refresh_vision()
+	
+	active_card = null
+	$ActiveArt.texture = null
 
 func on_destroy_unit(tile: Node2D, alter_history: bool) -> void:
 	
@@ -184,18 +187,18 @@ func _refresh_vision_for_team(occupied_tiles: Array) -> Array:
 	var visible_tiles: Array = []
 	for tile in occupied_tiles:
 		if tile not in visible_tiles: visible_tiles.append(tile)
-		var hk: Vector2 = tile.position
-		var found_tiles: Array = $Tiles.get_children().filter(func(xy: Node2D): return sqrt(pow(hk.x - xy.position.x, 2) + pow(hk.y - xy.position.y, 2)) <= 240)
-		$Raycast.position = Vector2(hk.x, hk.y)
+		var hk: Vector2 = tile.global_position
+		var found_tiles: Array = $Tiles.get_children().filter(func(xy: Node2D): return sqrt(pow(hk.x - xy.global_position.x, 2) + pow(hk.y - xy.global_position.y, 2)) <= 240)
+		$Raycast.global_position = Vector2(hk.x, hk.y)
 		for found_tile in found_tiles:
-			$Raycast.target_position = Vector2(found_tile.position.x, found_tile.position.y) - $Raycast.position
+			$Raycast.target_position = Vector2(found_tile.global_position.x, found_tile.global_position.y) - $Raycast.global_position
 			$Raycast.force_raycast_update()
 			if found_tile not in visible_tiles:
 				match $Raycast.is_colliding():
 					false: visible_tiles.append(found_tile)
 					true: if $Raycast.get_collider().get_parent() == found_tile: visible_tiles.append(found_tile)
 			
-		$Raycast.target_position = Vector2(found_tiles[0].position.x, found_tiles[0].position.y) - $Raycast.position
+		$Raycast.target_position = Vector2(found_tiles[0].global_position.x, found_tiles[0].global_position.y) - $Raycast.global_position
 	
 	return visible_tiles
 
@@ -211,6 +214,7 @@ func on_move_unit(tile: Node2D):
 	on_destroy_unit(move_unit[0], true)
 	on_create_unit(tile, true)
 	move_unit = []
+#	active_card = null
 	$ActiveArt.texture = null
 
 func _on_draw_cards_pressed():
