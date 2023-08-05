@@ -6,8 +6,6 @@ const tile_x_offset: int = 30
 const tile_y_offset: int = 50
 const tile_amount: int = 800
 const tile_rows: int = 34
-const vision_range: int = 1
-const circle_vision_range: int = 240
 
 var unit_selected: Array
 var multimode: bool = false
@@ -189,7 +187,9 @@ func _refresh_vision_for_team(occupied_tiles: Array) -> Array:
 	for tile in occupied_tiles:
 		if tile not in visible_tiles: visible_tiles.append(tile)
 		var hk: Vector2 = tile.global_position
-		var found_tiles: Array = $Tiles.get_children().filter(func(xy: Node2D): return sqrt(pow(hk.x - xy.global_position.x, 2) + pow(hk.y - xy.global_position.y, 2)) <= 240)
+		var found_tiles: Array = $Tiles.get_children().filter(func(xy: Node2D): \
+		if abs(hk.x - xy.global_position.x) == 300 and hk.y == xy.global_position.y: return true\
+		else: return sqrt(pow(hk.x - xy.global_position.x, 2) + pow(hk.y - xy.global_position.y, 2)) < 300)
 		$Raycast.global_position = Vector2(hk.x, hk.y)
 		for found_tile in found_tiles:
 			$Raycast.target_position = Vector2(found_tile.global_position.x, found_tile.global_position.y) - $Raycast.global_position
