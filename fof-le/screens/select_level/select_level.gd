@@ -185,21 +185,23 @@ func refresh_vision() -> void:
 func _refresh_vision_for_team(occupied_tiles: Array) -> Array:
 	var visible_tiles: Array = []
 	for tile in occupied_tiles:
-		if tile not in visible_tiles: visible_tiles.append(tile)
-		var hk: Vector2 = tile.global_position
-		var found_tiles: Array = $Tiles.get_children().filter(func(xy: Node2D): \
-		if abs(hk.x - xy.global_position.x) == 300 and hk.y == xy.global_position.y: return true\
-		else: return sqrt(pow(hk.x - xy.global_position.x, 2) + pow(hk.y - xy.global_position.y, 2)) < 300)
-		$Raycast.global_position = Vector2(hk.x, hk.y)
-		for found_tile in found_tiles:
-			$Raycast.target_position = Vector2(found_tile.global_position.x, found_tile.global_position.y) - $Raycast.global_position
-			$Raycast.force_raycast_update()
-			if found_tile not in visible_tiles:
-				match $Raycast.is_colliding():
-					false: visible_tiles.append(found_tile)
-					true: if $Raycast.get_collider().get_parent() == found_tile: visible_tiles.append(found_tile)
-			
-		$Raycast.target_position = Vector2(found_tiles[0].global_position.x, found_tiles[0].global_position.y) - $Raycast.global_position
+		var xyt: Vector2 = tile.global_position
+		var poses: Array = [xyt, Vector2(xyt.x - 24, xyt.y - 24), Vector2(xyt.x + 24, xyt.y + 24), Vector2(xyt.x - 24, xyt.y + 24), Vector2(xyt.x + 24, xyt.y - 24)]
+		for hk in poses:
+			if tile not in visible_tiles: visible_tiles.append(tile)
+			var found_tiles: Array = $Tiles.get_children().filter(func(xy: Node2D): \
+			if abs(hk.x - xy.global_position.x) == 300 and hk.y == xy.global_position.y: return true\
+			else: return sqrt(pow(hk.x - xy.global_position.x, 2) + pow(hk.y - xy.global_position.y, 2)) < 276)
+			$Raycast.global_position = Vector2(hk.x, hk.y)
+			for found_tile in found_tiles:
+				$Raycast.target_position = Vector2(found_tile.global_position.x, found_tile.global_position.y) - $Raycast.global_position
+				$Raycast.force_raycast_update()
+				if found_tile not in visible_tiles:
+					match $Raycast.is_colliding():
+						false: visible_tiles.append(found_tile)
+						true: if $Raycast.get_collider().get_parent() == found_tile: visible_tiles.append(found_tile)
+				
+			$Raycast.target_position = Vector2(found_tiles[0].global_position.x, found_tiles[0].global_position.y) - $Raycast.global_position
 	
 	return visible_tiles
 
