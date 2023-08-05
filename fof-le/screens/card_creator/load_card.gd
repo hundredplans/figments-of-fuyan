@@ -22,7 +22,7 @@ func _ready():
 		var nfile := FileAccess.open("user://save/cards/%s" % file, FileAccess.READ)
 		var card_info: Array = nfile.get_as_text().split("\n")
 		var rarity: int = 0
-		card.text = str(card_info[6]) + " " + file.left(-4)
+		card.text = str(card_info[6]) + " | " + file.left(-4)
 		if card_info.size() > 7: rarity = int(card_info[7])
 		
 		match rarity:
