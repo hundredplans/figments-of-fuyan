@@ -5,7 +5,7 @@ signal click_unit
 signal destroy_unit
 signal create_unit
 
-const collision_tiles: Array = [2, 13]
+const collision_tiles: Array = [1, 2, 13]
 var tile_item = ""
 var tile_state: int = 0
 var arrow_state: int = 0
