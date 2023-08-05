@@ -1,0 +1,29 @@
+[gd_scene load_steps=6 format=3 uid="uid://bnoei7u0kxl25"]
+
+[ext_resource type="Script" path="res://scenes/containers/main/main.gd" id="1_10ydf"]
+[ext_resource type="Script" path="res://scenes/screens/screens.gd" id="2_5vuj6"]
+[ext_resource type="Texture2D" uid="uid://cak4cux157c2" path="res://scenes/screens/main_menu/background.jpg" id="2_sqn13"]
+[ext_resource type="PackedScene" uid="uid://cd1hnc68uspy" path="res://scenes/screens/main_menu/main_menu.tscn" id="3_aqq17"]
+[ext_resource type="Script" path="res://scenes/world/world.gd" id="3_hfbug"]
+
+[node name="Main" type="Node"]
+script = ExtResource("1_10ydf")
+
+[node name="Background" type="Sprite2D" parent="."]
+texture = ExtResource("2_sqn13")
+centered = false
+
+[node name="Screens" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_5vuj6")
+
+[node name="MainMenu" parent="Screens" instance=ExtResource("3_aqq17")]
+layout_mode = 1
+
+[node name="World" type="Node3D" parent="."]
+script = ExtResource("3_hfbug")
