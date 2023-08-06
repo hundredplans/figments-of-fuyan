@@ -1,0 +1,38 @@
+[gd_scene load_steps=4 format=3 uid="uid://do84qt4hl0aic"]
+
+[ext_resource type="Script" path="res://test/simulation/screens/create_level/load_level.gd" id="1_46bkv"]
+[ext_resource type="Theme" uid="uid://be5u05ixh2dg7" path="res://test/simulation/assets/fonts/roboto32.tres" id="1_k3ama"]
+[ext_resource type="Theme" uid="uid://ckvg0fgx6jl8n" path="res://test/simulation/assets/fonts/bad_theme.tres" id="3_u03rl"]
+
+[node name="LoadLevel" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+theme = ExtResource("1_k3ama")
+script = ExtResource("1_46bkv")
+
+[node name="Inside" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 21.0
+offset_right = 1893.0
+offset_bottom = 1051.0
+color = Color(1, 1, 1, 0.431373)
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1799.0
+offset_top = 21.0
+offset_right = 1893.0
+offset_bottom = 108.0
+text = "X"
+
+[node name="LoadLevelButtons" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 28.0
+offset_top = 21.0
+offset_right = 1799.0
+offset_bottom = 1051.0
+theme = ExtResource("3_u03rl")
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

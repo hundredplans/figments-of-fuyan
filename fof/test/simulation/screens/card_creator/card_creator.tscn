@@ -1,0 +1,152 @@
+[gd_scene load_steps=3 format=3 uid="uid://dxe3pstav6p2q"]
+
+[ext_resource type="Script" path="res://test/simulation/screens/card_creator/card_creator.gd" id="1_ikfoh"]
+[ext_resource type="Texture2D" uid="uid://cjg2cmypyag7u" path="res://test/simulation/assets/sprites/82.png" id="3_7rmko"]
+
+[node name="CardCreator" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_ikfoh")
+
+[node name="Left" type="Button" parent="."]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 454.0
+offset_right = 112.0
+offset_bottom = 532.0
+text = "< -"
+
+[node name="Right" type="Button" parent="."]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 569.0
+offset_right = 110.0
+offset_bottom = 647.0
+text = "- >"
+
+[node name="SpriteList" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 190.0
+offset_top = 65.0
+offset_right = 190.0
+offset_bottom = 65.0
+
+[node name="Card" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 975.0
+offset_top = 181.0
+offset_right = 1619.0
+offset_bottom = 946.0
+
+[node name="In" type="ColorRect" parent="Card"]
+layout_mode = 0
+offset_left = 6.0
+offset_right = 489.0
+offset_bottom = 554.0
+color = Color(0.372549, 0.6, 1, 1)
+
+[node name="CardArt" type="Sprite2D" parent="Card"]
+position = Vector2(254, 92)
+texture = ExtResource("3_7rmko")
+
+[node name="Name" type="LineEdit" parent="Card"]
+layout_mode = 0
+offset_left = 72.0
+offset_top = 428.0
+offset_right = 429.0
+offset_bottom = 507.0
+placeholder_text = "Write Name Here"
+alignment = 1
+max_length = 25
+
+[node name="Att" type="LineEdit" parent="Card"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 364.0
+offset_right = 145.0
+offset_bottom = 410.0
+placeholder_text = "Att"
+alignment = 1
+max_length = 1
+
+[node name="Hp" type="LineEdit" parent="Card"]
+layout_mode = 0
+offset_left = 346.0
+offset_top = 364.0
+offset_right = 466.0
+offset_bottom = 410.0
+placeholder_text = "Hp"
+alignment = 1
+max_length = 1
+
+[node name="Spd" type="LineEdit" parent="Card"]
+layout_mode = 0
+offset_left = 346.0
+offset_top = 18.0
+offset_right = 466.0
+offset_bottom = 64.0
+placeholder_text = "Spd"
+alignment = 1
+max_length = 1
+
+[node name="Energy" type="LineEdit" parent="Card"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 18.0
+offset_right = 145.0
+offset_bottom = 64.0
+placeholder_text = "Energy"
+alignment = 1
+max_length = 1
+
+[node name="RaritySelect" type="OptionButton" parent="Card"]
+layout_mode = 0
+offset_left = 520.0
+offset_right = 729.0
+offset_bottom = 52.0
+item_count = 6
+popup/item_0/text = "Common"
+popup/item_0/id = 0
+popup/item_1/text = "Uncommon"
+popup/item_1/id = 1
+popup/item_2/text = "Exalt"
+popup/item_2/id = 2
+popup/item_3/text = "Miniboss"
+popup/item_3/id = 3
+popup/item_4/text = "Boss"
+popup/item_4/id = 4
+popup/item_5/text = "Champion"
+popup/item_5/id = 5
+
+[node name="Text" type="TextEdit" parent="Card"]
+layout_mode = 0
+offset_left = 42.0
+offset_top = 162.0
+offset_right = 459.0
+offset_bottom = 353.0
+placeholder_text = "Write your text here"
+wrap_mode = 1
+
+[node name="SaveCard" type="Button" parent="Card"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 586.0
+offset_right = 489.0
+offset_bottom = 695.0
+text = "Save Card"
+
+[node name="LoadCard" type="Button" parent="Card"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 714.0
+offset_right = 489.0
+offset_bottom = 829.0
+text = "Load Card"
+
+[connection signal="pressed" from="Left" to="." method="_on_left_pressed"]
+[connection signal="pressed" from="Right" to="." method="_on_right_pressed"]
+[connection signal="item_selected" from="Card/RaritySelect" to="." method="_on_rarity_select_item_selected"]
+[connection signal="pressed" from="Card/SaveCard" to="." method="_on_save_card_pressed"]
+[connection signal="pressed" from="Card/LoadCard" to="." method="_on_load_card_pressed"]

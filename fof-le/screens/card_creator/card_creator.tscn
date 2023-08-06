@@ -46,7 +46,7 @@ layout_mode = 0
 offset_left = 6.0
 offset_right = 489.0
 offset_bottom = 554.0
-color = Color(0.374255, 0.599587, 1, 1)
+color = Color(0.372549, 0.6, 1, 1)
 
 [node name="CardArt" type="Sprite2D" parent="Card"]
 position = Vector2(254, 92)
@@ -56,7 +56,7 @@ texture = ExtResource("2_55dsr")
 layout_mode = 0
 offset_left = 72.0
 offset_top = 428.0
-offset_right = 429.0
+offset_right = 427.0
 offset_bottom = 507.0
 theme = ExtResource("2_ysnct")
 placeholder_text = "Write Name Here"
@@ -128,22 +128,13 @@ popup/item_5/id = 5
 
 [node name="Text" type="TextEdit" parent="Card"]
 layout_mode = 0
-offset_left = 42.0
+offset_left = 40.0
 offset_top = 167.0
-offset_right = 459.0
-offset_bottom = 358.0
+offset_right = 457.0
+offset_bottom = 356.0
 theme = ExtResource("2_ysnct")
 placeholder_text = "Write your text here"
 wrap_mode = 1
-
-[node name="LoadCard" type="Button" parent="Card"]
-layout_mode = 0
-offset_left = 6.0
-offset_top = 683.0
-offset_right = 489.0
-offset_bottom = 765.0
-theme = ExtResource("2_ysnct")
-text = "Load Card"
 
 [node name="SaveCard" type="Button" parent="Card"]
 layout_mode = 0
@@ -154,8 +145,17 @@ offset_bottom = 666.0
 theme = ExtResource("2_ysnct")
 text = "Save Card"
 
+[node name="LoadCard" type="Button" parent="Card"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 683.0
+offset_right = 489.0
+offset_bottom = 765.0
+theme = ExtResource("2_ysnct")
+text = "Load Card"
+
 [connection signal="pressed" from="Left" to="." method="_on_left_pressed"]
 [connection signal="pressed" from="Right" to="." method="_on_right_pressed"]
 [connection signal="item_selected" from="Card/RaritySelect" to="." method="_on_rarity_select_item_selected"]
-[connection signal="pressed" from="Card/LoadCard" to="." method="_on_load_card_pressed"]
 [connection signal="pressed" from="Card/SaveCard" to="." method="_on_save_card_pressed"]
+[connection signal="pressed" from="Card/LoadCard" to="." method="_on_load_card_pressed"]

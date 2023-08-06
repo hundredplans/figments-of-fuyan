@@ -4,7 +4,9 @@ signal move_unit
 signal click_unit
 signal destroy_unit
 signal create_unit
+signal visibility_update
 
+var always_visible: bool = false
 const collision_tiles: Array = [1, 2, 13]
 var tile_item = ""
 var tile_state: int = 0
@@ -41,6 +43,11 @@ func _process(_delta: float) -> void:
 			match get_parent().get_parent().unit_selected:
 				[]: click_unit.emit(self)
 				_: move_unit.emit(self)
+				
+		if Input.is_action_just_pressed("VisibleCheck"):
+			if $In/Unit.texture != null:
+				always_visible = !always_visible
+				visibility_update.emit(self)
 
 func _on_area_2d_mouse_entered():
 	allow_change = true
