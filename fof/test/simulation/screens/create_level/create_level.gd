@@ -112,7 +112,7 @@ func _on_load_level_pressed():
 	
 func on_load_level(level_name: String) -> void:
 	_on_clear_tiles_pressed()
-	var lvl_path: String = "user://save/levels/%s" % level_name
+	var lvl_path: String = "user://savefofle/levels/%s" % level_name
 	var file := FileAccess.open(lvl_path, FileAccess.READ)
 	var tiles: Array = []
 	for tile_info in file.get_as_text().split("\n"):
