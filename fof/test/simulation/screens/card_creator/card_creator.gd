@@ -15,8 +15,9 @@ func _ready() -> void:
 	_on_rarity_select_item_selected(0)
 	var file_names: PackedStringArray = DirAccess.open("res://test/simulation/assets/sprites").get_files()
 	file_names = Array(file_names).filter(func(x: String): return x.ends_with(".import"))
-	for file in file_names:
-		all_cards.append(file.replace(".import", ""))
+	all_cards = Array(file_names).map(func(x: String): return int(x.replace(".png.import", "")))
+	all_cards.sort()
+	all_cards = all_cards.map(func(x: int): return str(x) + ".png")
 		
 	max_page = ceil(float(file_names.size()) / max_cards_on_page) - 1
 	load_cards()
