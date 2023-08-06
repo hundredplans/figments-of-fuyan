@@ -1,0 +1,54 @@
+[gd_scene load_steps=5 format=3 uid="uid://co578pd5gjkw"]
+
+[ext_resource type="Script" path="res://test/simulation/screens/main/main.gd" id="1_8k6df"]
+[ext_resource type="Texture2D" uid="uid://ck1pxemcx8mvt" path="res://test/simulation/screens/main/back.webp" id="2_3ll23"]
+[ext_resource type="Texture2D" uid="uid://c122qor61s6c" path="res://test/simulation/screens/main/bg2.jpg" id="3_qywbc"]
+[ext_resource type="Theme" uid="uid://byxhe8c463j33" path="res://test/simulation/assets/fonts/roboto32.tres" id="4_epwnp"]
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+theme = ExtResource("4_epwnp")
+script = ExtResource("1_8k6df")
+
+[node name="Background" type="Sprite2D" parent="."]
+texture = ExtResource("2_3ll23")
+centered = false
+
+[node name="Backgrounder" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(1920, 0)
+texture = ExtResource("3_qywbc")
+centered = false
+
+[node name="Buttons" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="SelectLevel" type="Button" parent="Buttons"]
+layout_mode = 0
+offset_left = 750.0
+offset_top = 361.0
+offset_right = 1169.0
+offset_bottom = 461.0
+text = "Play"
+
+[node name="EnterLevelEditor" type="Button" parent="Buttons"]
+layout_mode = 0
+offset_left = 750.0
+offset_top = 485.0
+offset_right = 1169.0
+offset_bottom = 585.0
+text = "Edit Levels"
+
+[node name="EnterCardCreator" type="Button" parent="Buttons"]
+layout_mode = 0
+offset_left = 750.0
+offset_top = 611.0
+offset_right = 1169.0
+offset_bottom = 711.0
+text = "Create Cards"
+
+[connection signal="pressed" from="Buttons/SelectLevel" to="." method="_on_select_level_pressed"]
+[connection signal="pressed" from="Buttons/EnterLevelEditor" to="." method="_on_enter_level_editor_pressed"]
+[connection signal="pressed" from="Buttons/EnterCardCreator" to="." method="_on_enter_card_creator_pressed"]

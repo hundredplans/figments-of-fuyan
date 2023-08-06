@@ -1,0 +1,105 @@
+[gd_scene load_steps=5 format=3 uid="uid://d3m5sg4vxjfi7"]
+
+[ext_resource type="Theme" uid="uid://be5u05ixh2dg7" path="res://test/simulation/assets/fonts/roboto32.tres" id="1_2ifwg"]
+[ext_resource type="Script" path="res://test/simulation/screens/select_level/draw_cards.gd" id="1_qrtjb"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_l6kgl"]
+font_size = 48
+
+[sub_resource type="LabelSettings" id="LabelSettings_kjrly"]
+font_size = 48
+
+[node name="DrawCards" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+theme = ExtResource("1_2ifwg")
+script = ExtResource("1_qrtjb")
+
+[node name="Inside" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 29.0
+offset_top = 18.0
+offset_right = 1898.0
+offset_bottom = 1054.0
+color = Color(0.686275, 0.686275, 0.686275, 0.615686)
+
+[node name="X" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1756.0
+offset_top = 29.0
+offset_right = 1886.0
+offset_bottom = 144.0
+text = "  X  "
+
+[node name="Cards" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 29.0
+offset_top = 18.0
+offset_right = 1789.0
+offset_bottom = 1054.0
+
+[node name="TeamZero" type="TextEdit" parent="Cards"]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 59.0
+offset_right = 859.0
+offset_bottom = 954.0
+
+[node name="TeamOne" type="TextEdit" parent="Cards"]
+layout_mode = 0
+offset_left = 889.0
+offset_top = 59.0
+offset_right = 1714.0
+offset_bottom = 954.0
+
+[node name="Result" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 63.0
+offset_top = 972.0
+offset_right = 1743.0
+offset_bottom = 1054.0
+
+[node name="ResultZero" type="Label" parent="Result"]
+layout_mode = 0
+offset_right = 817.0
+offset_bottom = 82.0
+label_settings = SubResource("LabelSettings_l6kgl")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ResultOne" type="Label" parent="Result"]
+layout_mode = 0
+offset_left = 855.0
+offset_right = 1680.0
+offset_bottom = 82.0
+label_settings = SubResource("LabelSettings_kjrly")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RollButtons" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="RollZero" type="Button" parent="RollButtons"]
+layout_mode = 0
+offset_left = 1886.0
+offset_top = 316.0
+offset_right = 2101.0
+offset_bottom = 446.0
+rotation = 1.5708
+text = "Roll Zero"
+
+[node name="RollOne" type="Button" parent="RollButtons"]
+layout_mode = 0
+offset_left = 1886.0
+offset_top = 558.0
+offset_right = 2101.0
+offset_bottom = 688.0
+rotation = 1.5708
+text = "Roll Zero"
+
+[connection signal="pressed" from="X" to="." method="_on_x_pressed"]
+[connection signal="pressed" from="RollButtons/RollZero" to="." method="_on_roll_zero_pressed"]
+[connection signal="pressed" from="RollButtons/RollOne" to="." method="_on_roll_one_pressed"]

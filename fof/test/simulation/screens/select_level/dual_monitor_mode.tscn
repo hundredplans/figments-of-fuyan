@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3 uid="uid://ioletipkeaik"]
+
+[ext_resource type="Script" path="res://test/simulation/screens/select_level/dual_monitor_mode.gd" id="1_i2xry"]
+[ext_resource type="Theme" uid="uid://byxhe8c463j33" path="res://test/simulation/assets/fonts/roboto32.tres" id="2_nswru"]
+
+[node name="DualMonitorMode" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1920.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_i2xry")
+
+[node name="Left" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1934.0
+offset_top = 18.0
+offset_right = 2037.0
+offset_bottom = 119.0
+theme = ExtResource("2_nswru")
+text = "<-"
+
+[node name="Right" type="Button" parent="."]
+layout_mode = 0
+offset_left = 2056.0
+offset_top = 18.0
+offset_right = 2157.0
+offset_bottom = 119.0
+theme = ExtResource("2_nswru")
+text = "->"
+
+[connection signal="pressed" from="Left" to="." method="_on_left_pressed"]
+[connection signal="pressed" from="Right" to="." method="_on_right_pressed"]

@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://ci0ma7ugobdew"]
+
+[ext_resource type="Script" path="res://test/simulation/assets/map/tile/tile.gd" id="1_5nuju"]
+[ext_resource type="Texture2D" uid="uid://dm6wga7ojaqyj" path="res://test/simulation/assets/map/tile/tile_outline.png" id="2_2asyp"]
+[ext_resource type="Texture2D" uid="uid://cdsgo4sdrenku" path="res://test/simulation/assets/map/tile/0.png" id="3_wdquu"]
+
+[node name="Tile" type="Node2D"]
+texture_filter = 1
+script = ExtResource("1_5nuju")
+
+[node name="Outline" type="Sprite2D" parent="."]
+texture = ExtResource("2_2asyp")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+polygon = PackedVector2Array(0, -35, -30, -17, -30, 17, 0, 35, 30, 17, 30, -17)
+
+[node name="In" type="Node2D" parent="."]
+
+[node name="Inside" type="Sprite2D" parent="In"]
+texture = ExtResource("3_wdquu")
+
+[node name="Arrow" type="Sprite2D" parent="In"]
+
+[node name="TileItem" type="Sprite2D" parent="In"]
+scale = Vector2(0.3, 0.3)
+
+[node name="Unit" type="Sprite2D" parent="In"]
+scale = Vector2(0.4, 0.4)
+
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

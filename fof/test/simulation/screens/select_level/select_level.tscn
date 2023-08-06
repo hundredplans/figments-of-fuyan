@@ -1,0 +1,106 @@
+[gd_scene load_steps=5 format=3 uid="uid://bgf4yihieirwb"]
+
+[ext_resource type="FontFile" uid="uid://bnuw8icxtgffv" path="res://test/simulation/assets/fonts/Roboto-Black.ttf" id="1_22i6u"]
+[ext_resource type="Script" path="res://test/simulation/screens/select_level/select_level.gd" id="1_j22bg"]
+[ext_resource type="PackedScene" uid="uid://do84qt4hl0aic" path="res://test/simulation/screens/create_level/load_level.tscn" id="3_lwh2p"]
+
+[sub_resource type="Theme" id="Theme_ty058"]
+default_font = ExtResource("1_22i6u")
+default_font_size = 32
+LineEdit/constants/minimum_character_width = 1
+
+[node name="SelectLevel" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+theme = SubResource("Theme_ty058")
+script = ExtResource("1_j22bg")
+
+[node name="DualMonitorMode" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1386.0
+offset_top = 1003.0
+offset_right = 1559.0
+offset_bottom = 1060.0
+theme = SubResource("Theme_ty058")
+text = "Dual Me"
+
+[node name="LoadLevelButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 139.0
+offset_top = 1003.0
+offset_right = 312.0
+offset_bottom = 1060.0
+theme = SubResource("Theme_ty058")
+text = "Load Level"
+
+[node name="LoadCardsButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 342.0
+offset_top = 1003.0
+offset_right = 515.0
+offset_bottom = 1060.0
+theme = SubResource("Theme_ty058")
+text = "Load Cards"
+
+[node name="TeamZero" type="Button" parent="."]
+layout_mode = 0
+offset_left = 749.0
+offset_top = 1003.0
+offset_right = 922.0
+offset_bottom = 1060.0
+theme = SubResource("Theme_ty058")
+text = "Team Zero"
+
+[node name="TeamOne" type="Button" parent="."]
+layout_mode = 0
+offset_left = 953.0
+offset_top = 1003.0
+offset_right = 1126.0
+offset_bottom = 1060.0
+theme = SubResource("Theme_ty058")
+text = "Team One"
+
+[node name="DrawCards" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1578.0
+offset_top = 1003.0
+offset_right = 1751.0
+offset_bottom = 1060.0
+theme = SubResource("Theme_ty058")
+text = "Draw Cards"
+
+[node name="Energy" type="LineEdit" parent="."]
+layout_mode = 0
+offset_top = 967.0
+offset_right = 112.0
+offset_bottom = 1080.0
+theme = SubResource("Theme_ty058")
+text = "1"
+alignment = 1
+max_length = 1
+caret_blink = true
+caret_blink_interval = 0.5
+
+[node name="Raycast" type="RayCast2D" parent="."]
+target_position = Vector2(0, 0)
+collision_mask = 8
+collide_with_areas = true
+collide_with_bodies = false
+
+[node name="Tiles" type="Node2D" parent="."]
+
+[node name="Circles" type="Node2D" parent="."]
+
+[node name="ActiveArt" type="Sprite2D" parent="."]
+position = Vector2(1860, 1025)
+
+[node name="CardZone" type="Node2D" parent="."]
+
+[node name="LoadLevel" parent="." instance=ExtResource("3_lwh2p")]
+
+[connection signal="pressed" from="DualMonitorMode" to="." method="_on_dual_monitor_mode_pressed"]
+[connection signal="pressed" from="LoadLevelButton" to="." method="_on_load_level_button_pressed"]
+[connection signal="pressed" from="LoadCardsButton" to="." method="_on_load_cards_button_pressed"]
+[connection signal="pressed" from="TeamZero" to="." method="_on_team_zero_pressed"]
+[connection signal="pressed" from="TeamOne" to="." method="_on_team_one_pressed"]
+[connection signal="pressed" from="DrawCards" to="." method="_on_draw_cards_pressed"]

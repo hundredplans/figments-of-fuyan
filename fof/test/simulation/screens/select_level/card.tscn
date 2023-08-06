@@ -1,0 +1,195 @@
+[gd_scene load_steps=5 format=3 uid="uid://c8k7xkl3eye1v"]
+
+[ext_resource type="Script" path="res://test/simulation/screens/select_level/card.gd" id="1_2mml4"]
+[ext_resource type="FontFile" uid="uid://bnuw8icxtgffv" path="res://test/simulation/assets/fonts/Roboto-Black.ttf" id="2_nufit"]
+
+[sub_resource type="Theme" id="Theme_ty058"]
+default_font = ExtResource("2_nufit")
+default_font_size = 32
+LineEdit/constants/minimum_character_width = 1
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_16qps"]
+size = Vector2(121, 123)
+
+[node name="Card" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_2mml4")
+
+[node name="Out" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 202.0
+offset_bottom = 318.0
+color = Color(0, 0, 0, 1)
+
+[node name="In" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 198.0
+offset_bottom = 314.0
+color = Color(0.639216, 0.0745098, 0.721569, 1)
+
+[node name="ArtMax" type="Sprite2D" parent="."]
+position = Vector2(101, 65)
+
+[node name="Name" type="Label" parent="."]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 121.0
+offset_right = 198.0
+offset_bottom = 162.0
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="Att" type="LineEdit" parent="."]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 81.0
+offset_right = 40.0
+offset_bottom = 127.0
+theme = SubResource("Theme_ty058")
+alignment = 1
+max_length = 1
+virtual_keyboard_enabled = false
+
+[node name="Hp" type="LineEdit" parent="."]
+layout_mode = 0
+offset_left = 162.0
+offset_top = 81.0
+offset_right = 198.0
+offset_bottom = 127.0
+theme = SubResource("Theme_ty058")
+alignment = 1
+max_length = 1
+virtual_keyboard_enabled = false
+
+[node name="Spd" type="LineEdit" parent="."]
+layout_mode = 0
+offset_left = 162.0
+offset_top = 4.0
+offset_right = 198.0
+offset_bottom = 50.0
+theme = SubResource("Theme_ty058")
+alignment = 1
+max_length = 1
+virtual_keyboard_enabled = false
+
+[node name="Energy" type="LineEdit" parent="."]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 40.0
+offset_bottom = 50.0
+theme = SubResource("Theme_ty058")
+alignment = 1
+max_length = 1
+virtual_keyboard_enabled = false
+
+[node name="Text" type="TextEdit" parent="."]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 159.0
+offset_right = 198.0
+offset_bottom = 281.0
+virtual_keyboard_enabled = false
+wrap_mode = 1
+
+[node name="Team" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="0" type="Button" parent="Team"]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 298.0
+offset_right = 22.0
+offset_bottom = 334.0
+rotation = -1.5708
+scale = Vector2(0.95, 1)
+text = "0"
+
+[node name="1" type="Button" parent="Team"]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 314.0
+offset_right = 22.0
+offset_bottom = 350.0
+rotation = -1.5708
+scale = Vector2(0.9, 1)
+text = "1"
+
+[node name="ScaleMe" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 4.0
+offset_top = 50.0
+offset_right = 198.0
+offset_bottom = 80.0
+
+[node name="Downscaled" type="Button" parent="ScaleMe"]
+layout_mode = 0
+offset_right = 36.0
+offset_bottom = 31.0
+text = "0.5"
+
+[node name="Fullscale" type="Button" parent="ScaleMe"]
+layout_mode = 0
+offset_left = 158.0
+offset_right = 194.0
+offset_bottom = 31.0
+text = "1"
+
+[node name="DragZone" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DragZone"]
+position = Vector2(101.5, 65.5)
+shape = SubResource("RectangleShape2D_16qps")
+
+[node name="Destroy" type="Button" parent="."]
+layout_mode = 0
+offset_left = 81.0
+offset_top = 281.0
+offset_right = 117.0
+offset_bottom = 314.0
+text = "x"
+
+[node name="DragDrag" type="Button" parent="."]
+layout_mode = 0
+offset_left = 148.0
+offset_top = 281.0
+offset_right = 198.0
+offset_bottom = 314.0
+text = "dd"
+
+[node name="EyeButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 281.0
+offset_right = 81.0
+offset_bottom = 314.0
+text = "eye"
+
+[node name="DefaultState" type="Button" parent="."]
+layout_mode = 0
+offset_left = 117.0
+offset_top = 281.0
+offset_right = 148.0
+offset_bottom = 314.0
+text = "d
+"
+
+[connection signal="pressed" from="Team/0" to="." method="_on_team_zero_pressed"]
+[connection signal="pressed" from="Team/1" to="." method="_on_team_one_pressed"]
+[connection signal="pressed" from="ScaleMe/Downscaled" to="." method="_on_downscaled_pressed"]
+[connection signal="pressed" from="ScaleMe/Fullscale" to="." method="_on_fullscale_pressed"]
+[connection signal="mouse_entered" from="DragZone" to="." method="_on_drag_zone_mouse_entered"]
+[connection signal="mouse_exited" from="DragZone" to="." method="_on_drag_zone_mouse_exited"]
+[connection signal="pressed" from="Destroy" to="." method="_on_destroy_pressed"]
+[connection signal="pressed" from="EyeButton" to="." method="_on_eye_button_pressed"]
+[connection signal="pressed" from="DefaultState" to="." method="_on_default_state_pressed"]

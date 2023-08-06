@@ -1,0 +1,38 @@
+[gd_scene load_steps=4 format=3 uid="uid://dpd3hbu82qyu8"]
+
+[ext_resource type="Theme" uid="uid://be5u05ixh2dg7" path="res://test/simulation/assets/fonts/roboto32.tres" id="1_34mfp"]
+[ext_resource type="Script" path="res://test/simulation/screens/card_creator/load_card.gd" id="1_qnaaf"]
+[ext_resource type="Theme" uid="uid://ckvg0fgx6jl8n" path="res://test/simulation/assets/fonts/bad_theme.tres" id="3_tn56h"]
+
+[node name="LoadCard" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+theme = ExtResource("1_34mfp")
+script = ExtResource("1_qnaaf")
+
+[node name="Outside" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 25.0
+offset_right = 1899.0
+offset_bottom = 1055.0
+color = Color(1, 1, 1, 0.431373)
+
+[node name="ExitButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1805.0
+offset_top = 25.0
+offset_right = 1899.0
+offset_bottom = 121.0
+text = "X"
+
+[node name="LoadCardButtons" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 34.0
+offset_top = 25.0
+offset_right = 1805.0
+offset_bottom = 1055.0
+theme = ExtResource("3_tn56h")
+
+[connection signal="pressed" from="ExitButton" to="." method="_on_button_pressed"]

@@ -15,6 +15,7 @@ var active_cards: Array = [[], []]
 
 var enable_vision_team_zero: bool = false
 var enable_vision_team_one: bool = false
+var always_visible_tiles: Array = []
 
 @onready var tile_default: PackedScene = preload("res://assets/map/tile/tile.tscn")
 func _process(_delta):
@@ -44,6 +45,7 @@ func on_load_level(level_name: String) -> void:
 		tile.destroy_unit.connect(on_destroy_unit)
 		tile.click_unit.connect(on_click_unit)
 		tile.move_unit.connect(on_move_unit)
+		tile.visibility_update.connect(on_update_visibility)
 		if x >= tile_rows:
 			x = 0
 			y += 1
@@ -121,8 +123,8 @@ func on_create_unit(tile: Node2D, alter_history: bool) -> void:
 func on_destroy_unit(tile: Node2D, alter_history: bool) -> void:
 	for team in active_cards:
 		for i in range(team.size() - 1, -1, -1):
-			print(team[i])
 			if team[i][0] == tile:
+				if tile.always_visible: always_visible_tiles.erase(tile); tile.always_visible = false
 				team.remove_at(i)
 				tile.get_node("In/Unit").texture = null
 				if alter_history: add_to_history(["CREATE", tile, active_card])
@@ -163,7 +165,9 @@ func refresh_vision() -> void:
 		if enable_vision_team_one:
 			visible_tiles += _refresh_vision_for_team(active_cards[1].map(func(x: Array): return x[0]))
 			
+			
 		for tile in $Tiles.get_children():
+			if tile not in visible_tiles and tile in always_visible_tiles: visible_tiles.append(tile)
 			tile.get_node("In").visible = false
 			if enable_vision_team_zero and tile.tile_state == 5: tile.get_node("In").visible = true
 			if enable_vision_team_one and tile.tile_state == 6: tile.get_node("In").visible = true
@@ -185,21 +189,23 @@ func refresh_vision() -> void:
 func _refresh_vision_for_team(occupied_tiles: Array) -> Array:
 	var visible_tiles: Array = []
 	for tile in occupied_tiles:
-		if tile not in visible_tiles: visible_tiles.append(tile)
-		var hk: Vector2 = tile.global_position
-		var found_tiles: Array = $Tiles.get_children().filter(func(xy: Node2D): \
-		if abs(hk.x - xy.global_position.x) == 300 and hk.y == xy.global_position.y: return true\
-		else: return sqrt(pow(hk.x - xy.global_position.x, 2) + pow(hk.y - xy.global_position.y, 2)) < 300)
-		$Raycast.global_position = Vector2(hk.x, hk.y)
-		for found_tile in found_tiles:
-			$Raycast.target_position = Vector2(found_tile.global_position.x, found_tile.global_position.y) - $Raycast.global_position
-			$Raycast.force_raycast_update()
-			if found_tile not in visible_tiles:
-				match $Raycast.is_colliding():
-					false: visible_tiles.append(found_tile)
-					true: if $Raycast.get_collider().get_parent() == found_tile: visible_tiles.append(found_tile)
-			
-		$Raycast.target_position = Vector2(found_tiles[0].global_position.x, found_tiles[0].global_position.y) - $Raycast.global_position
+		var xyt: Vector2 = tile.global_position
+		var poses: Array = [xyt]
+		for hk in poses:
+			if tile not in visible_tiles: visible_tiles.append(tile)
+			var found_tiles: Array = $Tiles.get_children().filter(func(xy: Node2D): \
+			if abs(hk.x - xy.global_position.x) == 300 and hk.y == xy.global_position.y: return true\
+			else: return sqrt(pow(hk.x - xy.global_position.x, 2) + pow(hk.y - xy.global_position.y, 2)) < 295)
+			$Raycast.global_position = Vector2(hk.x, hk.y)
+			for found_tile in found_tiles:
+				$Raycast.target_position = Vector2(found_tile.global_position.x, found_tile.global_position.y) - $Raycast.global_position
+				$Raycast.force_raycast_update()
+				if found_tile not in visible_tiles:
+					match $Raycast.is_colliding():
+						false: visible_tiles.append(found_tile)
+						true: if $Raycast.get_collider().get_parent() == found_tile: visible_tiles.append(found_tile)
+				
+			$Raycast.target_position = Vector2(found_tiles[0].global_position.x, found_tiles[0].global_position.y) - $Raycast.global_position
 	
 	return visible_tiles
 
@@ -214,6 +220,7 @@ func on_click_unit(tile: Node2D):
 
 func on_move_unit(tile: Node2D):
 	active_card = unit_selected[0]
+	if unit_selected[1].always_visible: tile.always_visible = true; always_visible_tiles.append(tile)
 	on_destroy_unit(unit_selected[1], true)
 	on_create_unit(tile, true)
 
@@ -239,3 +246,10 @@ func add_to_history(hisinfo: Array) -> void:
 func _on_dual_monitor_mode_pressed():
 	add_child(preload("res://screens/select_level/dual_monitor_mode.tscn").instantiate())
 	multimode = true
+
+func on_update_visibility(tile: Node2D):
+	if tile not in always_visible_tiles:
+		always_visible_tiles.append(tile)
+	else:
+		always_visible_tiles.erase(tile)
+	refresh_vision()
