@@ -186,12 +186,12 @@ func _refresh_vision_for_team(occupied_tiles: Array) -> Array:
 	var visible_tiles: Array = []
 	for tile in occupied_tiles:
 		var xyt: Vector2 = tile.global_position
-		var poses: Array = [xyt, Vector2(xyt.x - 24, xyt.y - 24), Vector2(xyt.x + 24, xyt.y + 24), Vector2(xyt.x - 24, xyt.y + 24), Vector2(xyt.x + 24, xyt.y - 24)]
+		var poses: Array = [xyt]
 		for hk in poses:
 			if tile not in visible_tiles: visible_tiles.append(tile)
 			var found_tiles: Array = $Tiles.get_children().filter(func(xy: Node2D): \
 			if abs(hk.x - xy.global_position.x) == 300 and hk.y == xy.global_position.y: return true\
-			else: return sqrt(pow(hk.x - xy.global_position.x, 2) + pow(hk.y - xy.global_position.y, 2)) < 276)
+			else: return sqrt(pow(hk.x - xy.global_position.x, 2) + pow(hk.y - xy.global_position.y, 2)) < 295)
 			$Raycast.global_position = Vector2(hk.x, hk.y)
 			for found_tile in found_tiles:
 				$Raycast.target_position = Vector2(found_tile.global_position.x, found_tile.global_position.y) - $Raycast.global_position

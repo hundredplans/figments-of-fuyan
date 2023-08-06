@@ -41,7 +41,6 @@ func _process(_delta: float) -> void:
 			match get_parent().get_parent().unit_selected:
 				[]: click_unit.emit(self)
 				_: move_unit.emit(self)
-			
 
 func _on_area_2d_mouse_entered():
 	allow_change = true
