@@ -6,7 +6,7 @@
 size = Vector2(223, 1107)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bdbpb"]
-size = Vector2(712.5, 134)
+size = Vector2(941.5, 134)
 
 [node name="CreateLevel" type="Control"]
 layout_mode = 3
@@ -82,6 +82,14 @@ offset_right = 1458.0
 offset_bottom = 1079.0
 text = "Load Level"
 
+[node name="LoadCard" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1068.0
+offset_top = 1001.0
+offset_right = 1257.0
+offset_bottom = 1079.0
+text = "Load Card"
+
 [node name="NonoZone" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="NonoZone"]
@@ -89,8 +97,11 @@ position = Vector2(1831.5, 543.5)
 shape = SubResource("RectangleShape2D_bpk01")
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="NonoZone"]
-position = Vector2(1596.25, 1043)
+position = Vector2(1481.75, 1043)
 shape = SubResource("RectangleShape2D_bdbpb")
+
+[node name="CardZone" type="Control" parent="."]
+anchors_preset = 0
 
 [connection signal="pressed" from="AddItem/Up" to="." method="_on_up_pressed"]
 [connection signal="pressed" from="AddItem/Down" to="." method="_on_down_pressed"]
@@ -98,5 +109,6 @@ shape = SubResource("RectangleShape2D_bdbpb")
 [connection signal="text_submitted" from="SaveLevelButton" to="." method="_on_save_level_button_text_submitted"]
 [connection signal="pressed" from="ClearTiles" to="." method="_on_clear_tiles_pressed"]
 [connection signal="pressed" from="LoadLevel" to="." method="_on_load_level_pressed"]
+[connection signal="pressed" from="LoadCard" to="." method="_on_load_card_pressed"]
 [connection signal="mouse_entered" from="NonoZone" to="." method="_on_nono_zone_mouse_entered"]
 [connection signal="mouse_exited" from="NonoZone" to="." method="_on_nono_zone_mouse_exited"]

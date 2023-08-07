@@ -60,10 +60,19 @@ func on_load_level(level_name: String) -> void:
 	var lvl_path: String = "user://savefofle/levels/%s" % level_name
 	var file := FileAccess.open(lvl_path, FileAccess.READ)
 	var tiles: Array = []
-	for tile_info in file.get_as_text().split("\n"):
-		var tii: Array = tile_info.split(",")
-		if tii.size() == 5:
-			tiles.append([Vector2(tii[0].to_int(), tii[1].to_int()), tii[2].to_int(), tii[3], tii[4].to_int()])
+	var splitter: Array = file.get_as_text().split("\n")
+	var i: int = 1
+	for tile_info in splitter:
+		if i != splitter.size():
+			var tii: Array = tile_info.split(",")
+			if tii.size() == 5:
+				tiles.append([Vector2(tii[0].to_int(), tii[1].to_int()), tii[2].to_int(), tii[3], tii[4].to_int()])
+			i += 1
+		else:
+			for card_name in tile_info.split(","):
+				if card_name:
+					card_name += ".txt"
+					on_card_selected(card_name)
 			
 	for tile_info in tiles:
 		for tile in $Tiles.get_children():

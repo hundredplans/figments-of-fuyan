@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://c8k7xkl3eye1v"]
+[gd_scene load_steps=6 format=3 uid="uid://c8k7xkl3eye1v"]
 
 [ext_resource type="Script" path="res://test/simulation/screens/select_level/card.gd" id="1_2mml4"]
+[ext_resource type="Theme" uid="uid://ckvg0fgx6jl8n" path="res://test/simulation/assets/fonts/bad_theme.tres" id="1_ve85a"]
 [ext_resource type="FontFile" uid="uid://bnuw8icxtgffv" path="res://test/simulation/assets/fonts/Roboto-Black.ttf" id="2_nufit"]
 
 [sub_resource type="Theme" id="Theme_ty058"]
@@ -18,6 +19,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_ve85a")
 script = ExtResource("1_2mml4")
 
 [node name="Out" type="ColorRect" parent="."]

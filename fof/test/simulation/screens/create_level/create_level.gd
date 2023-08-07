@@ -115,11 +115,20 @@ func on_load_level(level_name: String) -> void:
 	var lvl_path: String = "user://savefofle/levels/%s" % level_name
 	var file := FileAccess.open(lvl_path, FileAccess.READ)
 	var tiles: Array = []
-	for tile_info in file.get_as_text().split("\n"):
-		var tii: Array = tile_info.split(",")
-		if tii.size() == 5:
-			tiles.append([Vector2(tii[0].to_int(), tii[1].to_int()), tii[2].to_int(), tii[3], tii[4].to_int()])
-		
+	var splitter: Array = file.get_as_text().split("\n")
+	var i: int = 1
+	for tile_info in splitter:
+		if i != splitter.size():
+			var tii: Array = tile_info.split(",")
+			if tii.size() == 5:
+				tiles.append([Vector2(tii[0].to_int(), tii[1].to_int()), tii[2].to_int(), tii[3], tii[4].to_int()])
+			i += 1
+		else:
+			for card_name in tile_info.split(","):
+				if card_name:
+					card_name += ".txt"
+					on_card_selected(card_name)
+			
 	for tile_info in tiles:
 		active_tile_state = tile_info[1]
 		active_tile_item = tile_info[2]
@@ -131,18 +140,41 @@ func on_load_level(level_name: String) -> void:
 	active_arrow_state = 0
 	active_tile_state = 4
 	_on_clear_selection_pressed()
-	file = null 
+	file = null
 	
 func _on_save_level_button_text_submitted(text: String):
 	var file := FileAccess.open("user://savefofle/levels/%s.txt" % text, FileAccess.WRITE)
 	var write_string: String = ""
+	var card_names: Array = $CardZone.get_children().map(func(x: Control): return x.default_state[0])
 	for tile in $FakeTiles.get_children():
 		if tile.tile_state != 0:
 			write_string += "%s,%s,%s,%s,%s\n" % [tile.tile_position.x, tile.tile_position.y, tile.tile_state, tile.tile_item, tile.arrow_state]
-
+	for child in card_names: write_string += "%s," % child
 	file.store_string(write_string)
 	file = null
 
-
 func _on_nono_zone_mouse_entered(): nono_zone = true
 func _on_nono_zone_mouse_exited(): nono_zone = false
+func _on_load_card_pressed():
+	var loadcard: Control = preload("res://test/simulation/screens/card_creator/load_card.tscn").instantiate()
+	add_child(loadcard)
+	loadcard.card_selected.connect(on_card_selected)
+	var area = preload("res://test/simulation/screens/create_level/mouse_blocker.tscn").instantiate()
+	loadcard.add_child(area)
+	area.mouse_entered.connect(_on_nono_zone_mouse_entered)
+	area.mouse_exited.connect(_on_nono_zone_mouse_exited)
+	
+	
+func on_card_selected(card_name: String):
+	var file := FileAccess.open("user://savefofle/cards/%s" % card_name, FileAccess.READ)
+	var card_info: Array = file.get_as_text().split("\n")
+	var card: Control = preload("res://test/simulation/screens/select_level/card.tscn").instantiate()
+	card.default_state = card_info.duplicate(true)
+	card._on_default_state_pressed()
+	add_card_to_card_zone(card)
+	card.get_node("DragZone").mouse_entered.connect(_on_nono_zone_mouse_entered)
+	card.get_node("DragZone").mouse_exited.connect(_on_nono_zone_mouse_exited)
+	
+func add_card_to_card_zone(card: Control) -> void:
+	card.position = Vector2(randi_range(0, 1600), randi_range(0, 800))
+	$CardZone.add_child(card)
