@@ -103,6 +103,12 @@ shape = SubResource("RectangleShape2D_bdbpb")
 [node name="CardZone" type="Control" parent="."]
 anchors_preset = 0
 
+[node name="Raycast" type="RayCast2D" parent="."]
+target_position = Vector2(0, 0)
+collision_mask = 8
+collide_with_areas = true
+collide_with_bodies = false
+
 [connection signal="pressed" from="AddItem/Up" to="." method="_on_up_pressed"]
 [connection signal="pressed" from="AddItem/Down" to="." method="_on_down_pressed"]
 [connection signal="pressed" from="AddItem/ClearSelection" to="." method="_on_clear_selection_pressed"]

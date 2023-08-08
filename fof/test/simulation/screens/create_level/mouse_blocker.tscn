@@ -1,10 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://ck8t3dqqpo2bu"]
+[gd_scene load_steps=2 format=3 uid="uid://ck30hkv6jtfwk"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_phdrh"]
-size = Vector2(1849, 688)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t5rec"]
+size = Vector2(202, 318)
 
 [node name="MouseBlocker" type="Area2D"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(954.5, 383)
-shape = SubResource("RectangleShape2D_phdrh")
+position = Vector2(101, 159)
+shape = SubResource("RectangleShape2D_t5rec")

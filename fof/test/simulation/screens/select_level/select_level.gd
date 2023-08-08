@@ -32,6 +32,10 @@ func _ready() -> void:
 	$LoadLevel.load_level.connect(on_load_level)
 
 func on_load_level(level_name: String) -> void:
+	for child in $CardZone.get_children():
+		if child.team == 1:
+			child.free()
+			
 	for child in $Tiles.get_children(): 
 		child.free()
 
@@ -69,10 +73,16 @@ func on_load_level(level_name: String) -> void:
 				tiles.append([Vector2(tii[0].to_int(), tii[1].to_int()), tii[2].to_int(), tii[3], tii[4].to_int()])
 			i += 1
 		else:
-			for card_name in tile_info.split(","):
-				if card_name:
-					card_name += ".txt"
-					on_card_selected(card_name)
+			for card_info in tile_info.split("/"):
+				if card_info:
+					var card_intel: Array = card_info.split("|")
+					var card = on_card_selected(card_intel[0] + ".txt")
+					if card:
+						if int(card_intel[1]) < 1: card._on_downscaled_pressed()
+						card.global_position = Vector2(int(card_intel[2]), int(card_intel[3]))
+						match int(card_intel[4]):
+							0: card._on_team_zero_pressed()
+							1: card._on_team_one_pressed()
 			
 	for tile_info in tiles:
 		for tile in $Tiles.get_children():
@@ -97,17 +107,21 @@ func _on_load_cards_button_pressed():
 	loadcard.card_selected.connect(on_card_selected)
 	add_child(loadcard)
 
-func on_card_selected(card_name: String):
-	var file := FileAccess.open("user://savefofle/cards/%s" % card_name, FileAccess.READ)
-	var card_info: Array = file.get_as_text().split("\n")
-	var card: Control = preload("res://test/simulation/screens/select_level/card.tscn").instantiate()
-	card.get_node("DragDrag").pressed.connect(on_art_max_selected.bind([card_info[2], card]))
-	card.refresh_vision.connect(refresh_vision)
-	add_card_to_card_zone(card)
-	
-	card.default_state = card_info.duplicate(true)
-	card._on_default_state_pressed()
-	refresh_vision()
+func on_card_selected(card_name: String) -> Control:
+	var path: String = "user://savefofle/cards/%s" % card_name
+	if FileAccess.file_exists(path):
+		var file := FileAccess.open(path, FileAccess.READ)
+		var card_info: Array = file.get_as_text().split("\n")
+		var card: Control = preload("res://test/simulation/screens/select_level/card.tscn").instantiate()
+		card.get_node("DragDrag").pressed.connect(on_art_max_selected.bind([card_info[2], card]))
+		card.refresh_vision.connect(refresh_vision)
+		add_card_to_card_zone(card)
+		
+		card.default_state = card_info.duplicate(true)
+		card._on_default_state_pressed()
+		refresh_vision()
+		return card
+	return null
 
 func add_card_to_card_zone(card: Control) -> void:
 	var x: int = 1600

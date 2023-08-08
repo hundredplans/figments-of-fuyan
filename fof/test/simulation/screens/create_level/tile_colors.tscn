@@ -1,6 +1,7 @@
-[gd_scene load_steps=19 format=3 uid="uid://0k73tx3ke1t7"]
+[gd_scene load_steps=20 format=3 uid="uid://0k73tx3ke1t7"]
 
 [ext_resource type="Texture2D" uid="uid://cdsgo4sdrenku" path="res://test/simulation/assets/map/tile/0.png" id="1_tnmb6"]
+[ext_resource type="BitMap" uid="uid://dq8nopxv2h8ob" path="res://test/simulation/assets/map/tile/bitmap.png" id="2_p3vlp"]
 [ext_resource type="Texture2D" uid="uid://c6gntvjwts1uv" path="res://test/simulation/assets/map/tile/1.png" id="3_u02qg"]
 [ext_resource type="Texture2D" uid="uid://dub7aorse85ij" path="res://test/simulation/assets/map/tile/2.png" id="4_vifs2"]
 [ext_resource type="Texture2D" uid="uid://bg6s8eamywbsj" path="res://test/simulation/assets/map/tile/3.png" id="5_cq5i0"]
@@ -39,6 +40,7 @@ offset_bottom = 34.5
 grow_horizontal = 2
 grow_vertical = 2
 texture_normal = ExtResource("1_tnmb6")
+texture_click_mask = ExtResource("2_p3vlp")
 
 [node name="1" type="TextureButton" parent="."]
 texture_filter = 1
@@ -55,6 +57,7 @@ offset_bottom = -11.0
 grow_horizontal = 2
 grow_vertical = 2
 texture_normal = ExtResource("3_u02qg")
+texture_click_mask = ExtResource("2_p3vlp")
 
 [node name="2" type="TextureButton" parent="."]
 texture_filter = 1
@@ -71,6 +74,7 @@ offset_bottom = -11.0
 grow_horizontal = 2
 grow_vertical = 2
 texture_normal = ExtResource("4_vifs2")
+texture_click_mask = ExtResource("2_p3vlp")
 
 [node name="3" type="TextureButton" parent="."]
 texture_filter = 1
@@ -87,6 +91,7 @@ offset_bottom = 34.0
 grow_horizontal = 2
 grow_vertical = 2
 texture_normal = ExtResource("5_cq5i0")
+texture_click_mask = ExtResource("2_p3vlp")
 
 [node name="4" type="TextureButton" parent="."]
 texture_filter = 1
@@ -103,6 +108,7 @@ offset_bottom = 79.0
 grow_horizontal = 2
 grow_vertical = 2
 texture_normal = ExtResource("6_dbj45")
+texture_click_mask = ExtResource("2_p3vlp")
 
 [node name="5" type="TextureButton" parent="."]
 texture_filter = 1
@@ -119,6 +125,7 @@ offset_bottom = 124.0
 grow_horizontal = 2
 grow_vertical = 2
 texture_normal = ExtResource("7_5v23f")
+texture_click_mask = ExtResource("2_p3vlp")
 
 [node name="6" type="TextureButton" parent="."]
 texture_filter = 1
@@ -135,6 +142,7 @@ offset_bottom = 79.0
 grow_horizontal = 2
 grow_vertical = 2
 texture_normal = ExtResource("8_ktscn")
+texture_click_mask = ExtResource("2_p3vlp")
 
 [node name="7" type="TextureButton" parent="."]
 texture_filter = 1
@@ -151,6 +159,7 @@ offset_bottom = 35.0
 grow_horizontal = 2
 grow_vertical = 2
 texture_normal = ExtResource("9_o6bxs")
+texture_click_mask = ExtResource("2_p3vlp")
 
 [node name="8" type="TextureButton" parent="."]
 texture_filter = 1
@@ -167,6 +176,7 @@ offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 2
 texture_normal = ExtResource("10_l61wj")
+texture_click_mask = ExtResource("2_p3vlp")
 
 [node name="9" type="TextureButton" parent="."]
 texture_filter = 1
@@ -183,6 +193,7 @@ offset_bottom = -55.0
 grow_horizontal = 2
 grow_vertical = 2
 texture_normal = ExtResource("11_anjqu")
+texture_click_mask = ExtResource("2_p3vlp")
 
 [node name="10" type="TextureButton" parent="."]
 texture_filter = 1
@@ -199,6 +210,7 @@ offset_bottom = -55.0
 grow_horizontal = 2
 grow_vertical = 2
 texture_normal = ExtResource("12_fnyb7")
+texture_click_mask = ExtResource("2_p3vlp")
 
 [node name="11" type="TextureButton" parent="."]
 texture_filter = 1
@@ -215,6 +227,7 @@ offset_bottom = -56.0
 grow_horizontal = 2
 grow_vertical = 2
 texture_normal = ExtResource("13_xppyh")
+texture_click_mask = ExtResource("2_p3vlp")
 
 [node name="12" type="TextureButton" parent="."]
 texture_filter = 1
@@ -231,6 +244,7 @@ offset_bottom = -12.0
 grow_horizontal = 2
 grow_vertical = 2
 texture_normal = ExtResource("14_3wmjk")
+texture_click_mask = ExtResource("2_p3vlp")
 
 [node name="13" type="TextureButton" parent="."]
 texture_filter = 1
@@ -247,6 +261,7 @@ offset_bottom = 79.0
 grow_horizontal = 2
 grow_vertical = 2
 texture_normal = ExtResource("15_v8uun")
+texture_click_mask = ExtResource("2_p3vlp")
 
 [node name="14" type="TextureButton" parent="."]
 texture_filter = 1
@@ -263,6 +278,7 @@ offset_bottom = 33.0
 grow_horizontal = 2
 grow_vertical = 2
 texture_normal = ExtResource("16_luaoe")
+texture_click_mask = ExtResource("2_p3vlp")
 
 [node name="15" type="TextureButton" parent="."]
 texture_filter = 1
@@ -272,6 +288,7 @@ offset_top = 9.23077
 offset_right = 106.923
 offset_bottom = 78.2308
 texture_normal = ExtResource("17_8dawb")
+texture_click_mask = ExtResource("2_p3vlp")
 
 [node name="16" type="TextureButton" parent="."]
 texture_filter = 1
@@ -281,6 +298,7 @@ offset_top = 53.8462
 offset_right = 82.3077
 offset_bottom = 122.846
 texture_normal = ExtResource("18_6sgnc")
+texture_click_mask = ExtResource("2_p3vlp")
 
 [node name="17" type="TextureButton" parent="."]
 texture_filter = 1
@@ -290,3 +308,4 @@ offset_top = 55.3846
 offset_right = 30.0
 offset_bottom = 124.385
 texture_normal = ExtResource("19_ijbqd")
+texture_click_mask = ExtResource("2_p3vlp")
