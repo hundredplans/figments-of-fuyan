@@ -7,7 +7,7 @@ var default_state: Array = []
 var can_drag: bool = false
 var eye_mode: bool = false
 var held: bool = true
-var team: int = 0
+var team: int = 1
 
 signal refresh_vision
 

@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://c4fretq0lqafu"]
+[gd_scene load_steps=9 format=3 uid="uid://c4fretq0lqafu"]
 
 [ext_resource type="Texture2D" uid="uid://cdsgo4sdrenku" path="res://test/simulation/assets/map/tile/0.png" id="1_q4uus"]
+[ext_resource type="BitMap" uid="uid://dq8nopxv2h8ob" path="res://test/simulation/assets/map/tile/bitmap.png" id="2_1ef6n"]
 [ext_resource type="Texture2D" uid="uid://clis6wec73nro" path="res://test/simulation/assets/map/arrows/1.png" id="3_goedf"]
 [ext_resource type="Texture2D" uid="uid://biso0ugqpayy5" path="res://test/simulation/assets/map/arrows/2.png" id="4_jkmh8"]
 [ext_resource type="Texture2D" uid="uid://ds06m6v06bjn4" path="res://test/simulation/assets/map/arrows/4.png" id="5_tnlbn"]
@@ -28,6 +29,7 @@ offset_bottom = -11.0
 grow_horizontal = 2
 grow_vertical = 2
 texture_normal = ExtResource("1_q4uus")
+texture_click_mask = ExtResource("2_1ef6n")
 
 [node name="Sprite2D" type="Sprite2D" parent="1"]
 position = Vector2(29.6923, 38.3462)
@@ -48,6 +50,7 @@ offset_bottom = -11.0
 grow_horizontal = 2
 grow_vertical = 2
 texture_normal = ExtResource("1_q4uus")
+texture_click_mask = ExtResource("2_1ef6n")
 
 [node name="Sprite2D" type="Sprite2D" parent="2"]
 position = Vector2(29.6923, 38.3462)
@@ -68,6 +71,7 @@ offset_bottom = 79.0
 grow_horizontal = 2
 grow_vertical = 2
 texture_normal = ExtResource("1_q4uus")
+texture_click_mask = ExtResource("2_1ef6n")
 
 [node name="Sprite2D" type="Sprite2D" parent="3"]
 position = Vector2(29.6923, 38.3462)
@@ -88,6 +92,7 @@ offset_bottom = 79.0
 grow_horizontal = 2
 grow_vertical = 2
 texture_normal = ExtResource("1_q4uus")
+texture_click_mask = ExtResource("2_1ef6n")
 
 [node name="Sprite2D" type="Sprite2D" parent="4"]
 position = Vector2(29.6923, 38.3462)
@@ -108,6 +113,7 @@ offset_bottom = 34.3846
 grow_horizontal = 2
 grow_vertical = 2
 texture_normal = ExtResource("1_q4uus")
+texture_click_mask = ExtResource("2_1ef6n")
 
 [node name="Sprite2D" type="Sprite2D" parent="5"]
 position = Vector2(29.6923, 38.3462)
@@ -128,6 +134,7 @@ offset_bottom = 34.3846
 grow_horizontal = 2
 grow_vertical = 2
 texture_normal = ExtResource("1_q4uus")
+texture_click_mask = ExtResource("2_1ef6n")
 
 [node name="Sprite2D" type="Sprite2D" parent="6"]
 position = Vector2(29.6923, 38.3462)
