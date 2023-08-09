@@ -140,6 +140,7 @@ func _on_load_level_pressed():
 	nono_zone = 2
 	
 func on_load_level(level_name: String) -> void:
+	$WorldName.text = level_name.left(-4)
 	for child in $CardZone.get_children(): child.free()
 	_on_clear_tiles_pressed()
 	var lvl_path: String = "user://savefofle/levels/%s" % level_name

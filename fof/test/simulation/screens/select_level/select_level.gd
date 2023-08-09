@@ -79,7 +79,9 @@ func on_load_level(level_name: String) -> void:
 					var card = on_card_selected(card_intel[0] + ".txt")
 					if card:
 						if int(card_intel[1]) < 1: card._on_downscaled_pressed()
-						card.global_position = Vector2(int(card_intel[2]), int(card_intel[3]))
+						var xy: int = 0
+						if multimode: xy += 1920
+						card.position = Vector2(int(card_intel[2]) + xy, int(card_intel[3]))
 						match int(card_intel[4]):
 							0: card._on_team_zero_pressed()
 							1: card._on_team_one_pressed()
@@ -90,7 +92,7 @@ func on_load_level(level_name: String) -> void:
 				tile._on_simulation_inside_pressed(tile_info)
 				
 	for tile in $Tiles.get_children():
-		if tile.tile_state == 0: tile.queue_free()
+		if tile.tile_state == 0: tile.free()
 
 	active_cards = [[], []]
 	refresh_vision()
