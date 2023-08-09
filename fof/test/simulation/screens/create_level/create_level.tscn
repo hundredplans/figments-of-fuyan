@@ -1,12 +1,19 @@
-[gd_scene load_steps=4 format=3 uid="uid://b0wp6u723mki3"]
+[gd_scene load_steps=6 format=3 uid="uid://b0wp6u723mki3"]
 
 [ext_resource type="Script" path="res://test/simulation/screens/create_level/create_level.gd" id="1_ul5em"]
+[ext_resource type="FontFile" uid="uid://7k4xd8s0oed2" path="res://assets/UI/fonts/roboto.ttf" id="2_f466y"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bpk01"]
 size = Vector2(223, 1107)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bdbpb"]
 size = Vector2(941.5, 134)
+
+[sub_resource type="LabelSettings" id="LabelSettings_vlg0h"]
+font = ExtResource("2_f466y")
+font_size = 32
+outline_size = 8
+outline_color = Color(0, 0, 0, 1)
 
 [node name="CreateLevel" type="Control"]
 layout_mode = 3
@@ -108,6 +115,14 @@ target_position = Vector2(0, 0)
 collision_mask = 8
 collide_with_areas = true
 collide_with_bodies = false
+
+[node name="WorldName" type="Label" parent="."]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 5.0
+offset_right = 46.0
+offset_bottom = 43.0
+label_settings = SubResource("LabelSettings_vlg0h")
 
 [connection signal="pressed" from="AddItem/Up" to="." method="_on_up_pressed"]
 [connection signal="pressed" from="AddItem/Down" to="." method="_on_down_pressed"]
