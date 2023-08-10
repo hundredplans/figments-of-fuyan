@@ -5,7 +5,6 @@ const RED := Color(1,0,0,1)
 const DEF := Color(1,1,1,1)
 var default_state: Array = []
 var can_drag: bool = false
-var eye_mode: bool = false
 var held: bool = true
 var team: int = 1
 
@@ -34,14 +33,6 @@ func _process(_delta: float) -> void:
 			position.y = (get_viewport().get_mouse_position().y) - (($Out.size.y / 2) - 100) * scale.y
 		else:
 			held = false
-
-func _on_eye_button_pressed():
-	eye_mode = !eye_mode
-	match eye_mode:
-		false: $EyeButton.modulate = Color(1,1,1,1)
-		true: $EyeButton.modulate = Color(1,0,0,1)
-		
-	refresh_vision.emit()
 
 func _on_default_state_pressed():
 	$Name.text = default_state[0]

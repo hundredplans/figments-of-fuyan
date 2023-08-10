@@ -104,26 +104,22 @@ wrap_mode = 1
 
 [node name="Team" type="Control" parent="."]
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
 
 [node name="0" type="Button" parent="Team"]
 layout_mode = 0
 offset_left = 4.0
-offset_top = 298.0
-offset_right = 22.0
-offset_bottom = 334.0
-rotation = -1.5708
+offset_top = 281.0
+offset_right = 45.0
+offset_bottom = 314.0
 scale = Vector2(0.95, 1)
 text = "0"
 
 [node name="1" type="Button" parent="Team"]
 layout_mode = 0
-offset_left = 4.0
-offset_top = 314.0
-offset_right = 22.0
-offset_bottom = 350.0
-rotation = -1.5708
+offset_left = 43.0
+offset_top = 281.0
+offset_right = 85.0
+offset_bottom = 314.0
 scale = Vector2(0.9, 1)
 text = "1"
 
@@ -169,14 +165,6 @@ offset_right = 198.0
 offset_bottom = 314.0
 text = "dd"
 
-[node name="EyeButton" type="Button" parent="."]
-layout_mode = 0
-offset_left = 40.0
-offset_top = 281.0
-offset_right = 81.0
-offset_bottom = 314.0
-text = "eye"
-
 [node name="DefaultState" type="Button" parent="."]
 layout_mode = 0
 offset_left = 117.0
@@ -193,5 +181,4 @@ text = "d
 [connection signal="mouse_entered" from="DragZone" to="." method="_on_drag_zone_mouse_entered"]
 [connection signal="mouse_exited" from="DragZone" to="." method="_on_drag_zone_mouse_exited"]
 [connection signal="pressed" from="Destroy" to="." method="_on_destroy_pressed"]
-[connection signal="pressed" from="EyeButton" to="." method="_on_eye_button_pressed"]
 [connection signal="pressed" from="DefaultState" to="." method="_on_default_state_pressed"]

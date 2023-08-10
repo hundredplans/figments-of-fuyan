@@ -202,9 +202,6 @@ func refresh_vision() -> void:
 			tile.get_node("In").visible = true
 			
 		for card in $CardZone.get_children():
-			match card.eye_mode:
-				false: card.visible = false
-				_: card.visible = true; continue
 				
 			if enable_vision_team_zero and card.team == 0:
 				card.visible = true
