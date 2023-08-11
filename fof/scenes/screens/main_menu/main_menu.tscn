@@ -1,8 +1,132 @@
-[gd_scene load_steps=5 format=3 uid="uid://cd1hnc68uspy"]
+[gd_scene load_steps=8 format=3 uid="uid://cd1hnc68uspy"]
 
 [ext_resource type="Script" path="res://scenes/screens/main_menu/main_menu.gd" id="1_iwh4f"]
 [ext_resource type="Theme" uid="uid://byxhe8c463j33" path="res://assets/UI/base/base.tres" id="1_oh1b0"]
 [ext_resource type="FontFile" uid="uid://7k4xd8s0oed2" path="res://assets/UI/fonts/roboto.ttf" id="3_jx8ps"]
+
+[sub_resource type="Animation" id="Animation_kkdo4"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Buttons/LeftButtons:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Buttons/LeftButtons:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 181)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Buttons/Quit:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1749, 927)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Buttons/Quit:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_3ak8k"]
+resource_name = "exit_screen_animation"
+length = 0.25
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Buttons/Quit:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.25),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1749, 927), Vector2(1805, 975), Vector2(1853, 1010), Vector2(1920, 1053), Vector2(1968, 1109)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Buttons/Quit:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.14672]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.25),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"on_exit_screen_animation_finished"
+}]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Buttons/LeftButtons:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, -1.77254]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Buttons/LeftButtons:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 181), Vector2(-770, 1197)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_p5kgq"]
+_data = {
+"RESET": SubResource("Animation_kkdo4"),
+"exit_screen_animation": SubResource("Animation_3ak8k")
+}
 
 [sub_resource type="LabelSettings" id="LabelSettings_caatr"]
 font = ExtResource("3_jx8ps")
@@ -21,6 +145,11 @@ theme = ExtResource("1_oh1b0")
 script = ExtResource("1_iwh4f")
 metadata/_edit_lock_ = true
 
+[node name="ExitScreen" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_p5kgq")
+}
+
 [node name="Buttons" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -29,146 +158,161 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Play" type="Button" parent="Buttons"]
-layout_mode = 2
-offset_left = 10.0
-offset_top = 102.0
-offset_right = 510.0
-offset_bottom = 218.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Quit" type="Control" parent="Buttons"]
+anchors_preset = 0
+offset_left = 1749.0
+offset_top = 927.0
+offset_right = 1944.0
+offset_bottom = 1043.0
 
-[node name="Simulation" type="Button" parent="Buttons"]
+[node name="Quit" type="Button" parent="Buttons/Quit"]
 layout_mode = 2
-offset_left = 10.0
-offset_top = 252.0
-offset_right = 510.0
-offset_bottom = 368.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="LevelEditor" type="Button" parent="Buttons"]
-layout_mode = 2
-offset_left = 10.0
-offset_top = 402.0
-offset_right = 510.0
-offset_bottom = 518.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="CardEditor" type="Button" parent="Buttons"]
-layout_mode = 2
-offset_left = 10.0
-offset_top = 552.0
-offset_right = 510.0
-offset_bottom = 668.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Settings" type="Button" parent="Buttons"]
-layout_mode = 2
-offset_left = 10.0
-offset_top = 702.0
-offset_right = 510.0
-offset_bottom = 818.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Fuyanopedia" type="Button" parent="Buttons"]
-layout_mode = 2
-offset_left = 10.0
-offset_top = 852.0
-offset_right = 510.0
-offset_bottom = 968.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Quit" type="Button" parent="Buttons"]
-layout_mode = 2
-offset_left = 1944.0
-offset_top = 1042.0
-offset_right = 2138.0
-offset_bottom = 1158.0
+anchor_right = 1.0
+anchor_bottom = 0.991
+offset_left = 195.0
+offset_top = 115.0
+offset_right = 194.0
+offset_bottom = 116.044
 grow_horizontal = 2
 grow_vertical = 2
 rotation = -3.14159
 
-[node name="Labels" type="Control" parent="Buttons"]
-anchors_preset = 0
-offset_right = 1920.0
-offset_bottom = 1080.0
-mouse_filter = 2
-
-[node name="Play" type="Label" parent="Buttons/Labels"]
+[node name="Label" type="Label" parent="Buttons/Quit"]
 layout_mode = 0
-offset_left = 346.0
-offset_top = 122.0
-offset_right = 473.0
-offset_bottom = 201.0
-rotation = -0.0506702
-text = "Play"
-label_settings = SubResource("LabelSettings_caatr")
-
-[node name="Simulation" type="Label" parent="Buttons/Labels"]
-layout_mode = 0
-offset_left = 167.0
-offset_top = 279.0
-offset_right = 480.0
-offset_bottom = 358.0
-rotation = -0.0506702
-text = "Simulation"
-label_settings = SubResource("LabelSettings_caatr")
-
-[node name="LevelEditor" type="Label" parent="Buttons/Labels"]
-layout_mode = 0
-offset_left = 143.0
-offset_top = 419.0
-offset_right = 484.0
-offset_bottom = 498.0
-rotation = -0.0506702
-text = "Level Editor"
-label_settings = SubResource("LabelSettings_caatr")
-
-[node name="CardEditor" type="Label" parent="Buttons/Labels"]
-layout_mode = 0
-offset_left = 158.0
-offset_top = 582.0
-offset_right = 499.0
-offset_bottom = 661.0
-rotation = -0.0506702
-text = "Card Editor"
-label_settings = SubResource("LabelSettings_caatr")
-
-[node name="Settings" type="Label" parent="Buttons/Labels"]
-layout_mode = 0
-offset_left = 238.0
-offset_top = 724.0
-offset_right = 494.0
-offset_bottom = 803.0
-rotation = -0.0506702
-text = "Settings"
-label_settings = SubResource("LabelSettings_caatr")
-
-[node name="Fuyanopedia" type="Label" parent="Buttons/Labels"]
-layout_mode = 0
-offset_left = 119.0
-offset_top = 884.0
-offset_right = 487.0
-offset_bottom = 963.0
-rotation = -0.0506702
-text = "Fuyanopedia"
-label_settings = SubResource("LabelSettings_caatr")
-
-[node name="Quit" type="Label" parent="Buttons/Labels"]
-layout_mode = 0
-offset_left = 1786.0
-offset_top = 944.0
-offset_right = 1906.0
-offset_bottom = 1023.0
+offset_left = 37.0
+offset_top = 17.0
+offset_right = 157.0
+offset_bottom = 96.0
 rotation = -0.0506702
 text = "Quit"
 label_settings = SubResource("LabelSettings_caatr")
 
-[connection signal="pressed" from="Buttons/Play" to="." method="_on_play_pressed"]
-[connection signal="pressed" from="Buttons/Simulation" to="." method="_on_simulation_pressed"]
-[connection signal="pressed" from="Buttons/Quit" to="." method="_on_quit_pressed"]
+[node name="LeftButtons" type="Control" parent="Buttons"]
+anchors_preset = 0
+offset_top = 181.0
+offset_right = 503.0
+offset_bottom = 896.0
+
+[node name="Play" type="Control" parent="Buttons/LeftButtons"]
+anchors_preset = 0
+offset_right = 503.0
+offset_bottom = 116.0
+
+[node name="Play" type="Button" parent="Buttons/LeftButtons/Play"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Buttons/LeftButtons/Play"]
+layout_mode = 0
+offset_left = 339.0
+offset_top = 20.0
+offset_right = 466.0
+offset_bottom = 99.0
+rotation = -0.0506702
+text = "Play"
+label_settings = SubResource("LabelSettings_caatr")
+
+[node name="Simulation" type="Control" parent="Buttons/LeftButtons"]
+anchors_preset = 0
+offset_top = 150.0
+offset_right = 503.0
+offset_bottom = 266.0
+
+[node name="Simulation" type="Button" parent="Buttons/LeftButtons/Simulation"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Buttons/LeftButtons/Simulation"]
+layout_mode = 0
+offset_left = 160.0
+offset_top = 27.0
+offset_right = 473.0
+offset_bottom = 106.0
+rotation = -0.0506702
+text = "Simulation"
+label_settings = SubResource("LabelSettings_caatr")
+
+[node name="EditorMenu" type="Control" parent="Buttons/LeftButtons"]
+anchors_preset = 0
+offset_top = 300.0
+offset_right = 503.0
+offset_bottom = 416.0
+
+[node name="EditorMenu" type="Button" parent="Buttons/LeftButtons/EditorMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Buttons/LeftButtons/EditorMenu"]
+layout_mode = 0
+offset_left = 132.0
+offset_top = 23.0
+offset_right = 481.0
+offset_bottom = 102.0
+rotation = -0.0506702
+text = "Editor Menu"
+label_settings = SubResource("LabelSettings_caatr")
+
+[node name="Settings" type="Control" parent="Buttons/LeftButtons"]
+anchors_preset = 0
+offset_top = 449.0
+offset_right = 503.0
+offset_bottom = 565.0
+
+[node name="Settings" type="Button" parent="Buttons/LeftButtons/Settings"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Buttons/LeftButtons/Settings"]
+layout_mode = 0
+offset_left = 238.0
+offset_top = 22.0
+offset_right = 494.0
+offset_bottom = 101.0
+rotation = -0.0506702
+text = "Settings"
+label_settings = SubResource("LabelSettings_caatr")
+
+[node name="Fuyanopedia" type="Control" parent="Buttons/LeftButtons"]
+anchors_preset = 0
+offset_top = 599.0
+offset_right = 503.0
+offset_bottom = 715.0
+
+[node name="Fuyanopedia" type="Button" parent="Buttons/LeftButtons/Fuyanopedia"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Buttons/LeftButtons/Fuyanopedia"]
+layout_mode = 0
+offset_left = 119.0
+offset_top = 32.0
+offset_right = 487.0
+offset_bottom = 111.0
+rotation = -0.0506702
+text = "Fuyanopedia"
+label_settings = SubResource("LabelSettings_caatr")
+
+[connection signal="pressed" from="Buttons/Quit/Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="Buttons/LeftButtons/Play/Play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="Buttons/LeftButtons/Simulation/Simulation" to="." method="_on_simulation_pressed"]
+[connection signal="pressed" from="Buttons/LeftButtons/EditorMenu/EditorMenu" to="." method="_on_editor_menu_pressed"]

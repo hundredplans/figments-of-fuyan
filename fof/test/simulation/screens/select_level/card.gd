@@ -52,20 +52,8 @@ func _on_default_state_pressed():
 		4: $In.color = Color(0.773, 0.031, 0.141, 1)
 		5: $In.color = Color(0.374, 0.6, 1, 1)
 
-func _on_team_zero_pressed():
-	team = 0
-	on_team_buttons_modulate()
-	
-func _on_team_one_pressed():
-	team = 1
-	on_team_buttons_modulate()
-
 func on_team_buttons_modulate():
-	match team:
-		0: get_node("Team/0").modulate = RED; get_node("Team/1").modulate = DEF
-		1: get_node("Team/0").modulate = DEF; get_node("Team/1").modulate = RED
-	refresh_vision.emit()
-
+	$ChangeTeam.text = str(team)
 
 func on_scale_buttons_modulate():
 	match scale:
@@ -79,3 +67,29 @@ func _on_fullscale_pressed():
 func _on_downscaled_pressed():
 	scale = Vector2(downscale_scale, downscale_scale)
 	on_scale_buttons_modulate()
+
+func _on_change_team_pressed():
+	team = abs(team - 1)
+	on_team_buttons_modulate()
+
+func _on_save_card_pressed():
+	var rpath = $ArtMax.texture.resource_path
+	var tex = rpath.right(rpath.length() - rpath.rfind("/") - 1)
+	var file := FileAccess.open("user://savefofle/cards/%s.txt" % $Name.get_text(), FileAccess.WRITE)
+	var accum: String = $Name.get_text() + "\n"
+	accum += ($Text.text.replace("\n", "")) + "\n"
+	accum += tex + "\n"
+	
+	for child in [$Att, $Hp, $Spd, $Energy]:
+		accum += child.text + "\n"
+	
+	match $In.color:
+		Color(0.43,0.43,0.43,1): accum += str(0) + "\n"
+		Color(0.31, 0.478, 0.439,1): accum += str(1) + "\n"
+		Color(0.966, 0.697, 0.253,1): accum += str(2) + "\n"
+		Color(0.639, 0.075, 0.722,1): accum += str(3) + "\n"
+		Color(0.773, 0.031, 0.141, 1): accum += str(4) + "\n"
+		Color(0.374, 0.6, 1, 1): accum += str(5) + "\n"
+
+	file.store_string(accum)
+	file = null

@@ -14,11 +14,9 @@ size = Vector2(121, 123)
 
 [node name="Card" type="Control"]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = 0
+offset_right = 202.0
+offset_bottom = 318.0
 theme = ExtResource("1_ve85a")
 script = ExtResource("1_2mml4")
 
@@ -39,15 +37,13 @@ color = Color(0.639216, 0.0745098, 0.721569, 1)
 [node name="ArtMax" type="Sprite2D" parent="."]
 position = Vector2(101, 65)
 
-[node name="Name" type="Label" parent="."]
+[node name="Name" type="LineEdit" parent="."]
 layout_mode = 0
 offset_left = 4.0
-offset_top = 121.0
+offset_top = 127.0
 offset_right = 198.0
-offset_bottom = 162.0
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
+offset_bottom = 159.0
+alignment = 1
 
 [node name="Att" type="LineEdit" parent="."]
 layout_mode = 0
@@ -102,25 +98,12 @@ offset_bottom = 281.0
 virtual_keyboard_enabled = false
 wrap_mode = 1
 
-[node name="Team" type="Control" parent="."]
-anchors_preset = 0
-
-[node name="0" type="Button" parent="Team"]
+[node name="ChangeTeam" type="Button" parent="."]
 layout_mode = 0
 offset_left = 4.0
 offset_top = 281.0
-offset_right = 45.0
+offset_right = 43.0
 offset_bottom = 314.0
-scale = Vector2(0.95, 1)
-text = "0"
-
-[node name="1" type="Button" parent="Team"]
-layout_mode = 0
-offset_left = 43.0
-offset_top = 281.0
-offset_right = 85.0
-offset_bottom = 314.0
-scale = Vector2(0.9, 1)
 text = "1"
 
 [node name="ScaleMe" type="Control" parent="."]
@@ -174,11 +157,19 @@ offset_bottom = 314.0
 text = "d
 "
 
-[connection signal="pressed" from="Team/0" to="." method="_on_team_zero_pressed"]
-[connection signal="pressed" from="Team/1" to="." method="_on_team_one_pressed"]
+[node name="SaveCard" type="Button" parent="."]
+layout_mode = 0
+offset_left = 43.0
+offset_top = 281.0
+offset_right = 81.0
+offset_bottom = 314.0
+text = "sve"
+
+[connection signal="pressed" from="ChangeTeam" to="." method="_on_change_team_pressed"]
 [connection signal="pressed" from="ScaleMe/Downscaled" to="." method="_on_downscaled_pressed"]
 [connection signal="pressed" from="ScaleMe/Fullscale" to="." method="_on_fullscale_pressed"]
 [connection signal="mouse_entered" from="DragZone" to="." method="_on_drag_zone_mouse_entered"]
 [connection signal="mouse_exited" from="DragZone" to="." method="_on_drag_zone_mouse_exited"]
 [connection signal="pressed" from="Destroy" to="." method="_on_destroy_pressed"]
 [connection signal="pressed" from="DefaultState" to="." method="_on_default_state_pressed"]
+[connection signal="pressed" from="SaveCard" to="." method="_on_save_card_pressed"]

@@ -82,9 +82,8 @@ func on_load_level(level_name: String) -> void:
 						var xy: int = 0
 						if multimode: xy += 1920
 						card.position = Vector2(int(card_intel[2]) + xy, int(card_intel[3]))
-						match int(card_intel[4]):
-							0: card._on_team_zero_pressed()
-							1: card._on_team_one_pressed()
+						card.team = int(card_intel[4])
+						card.on_team_buttons_modulate()
 			
 	for tile_info in tiles:
 		for tile in $Tiles.get_children():

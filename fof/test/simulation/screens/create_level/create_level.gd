@@ -162,9 +162,8 @@ func on_load_level(level_name: String) -> void:
 					if card:
 						if int(card_intel[1]) < 1: card._on_downscaled_pressed()
 						card.global_position = Vector2(int(card_intel[2]), int(card_intel[3]))
-						match int(card_intel[4]):
-							0: card._on_team_zero_pressed()
-							1: card._on_team_one_pressed()
+						card.team = int(card_intel[4])
+						card.on_team_buttons_modulate()
 			
 	for tile_info in tiles:
 		active_tile_state = tile_info[1]
@@ -212,7 +211,7 @@ func on_card_selected(card_name: String) -> Control:
 		card.tree_exited.connect(func(): nono_zone = 0)
 		card.add_child(area)
 		card._on_default_state_pressed()
-		card._on_team_one_pressed()
+		card.on_team_buttons_modulate()
 		add_card_to_card_zone(card)
 		card.get_node("DragZone").mouse_entered.connect(_on_nono_zone_mouse_entered)
 		card.get_node("DragZone").mouse_exited.connect(_on_nono_zone_mouse_exited)
