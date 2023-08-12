@@ -70,7 +70,7 @@ func _on_right_pressed():
 		load_cards()
 
 func _on_load_card_pressed():
-	var loadcard = preload("res://test/simulation/screens/card_creator/load_card.tscn").instantiate()
+	var loadcard = preload("res://test/simulation/screens/load_stuff/load_stuff.tscn").instantiate()
 	loadcard.card_selected.connect(on_card_selected)
 	add_child(loadcard)
 

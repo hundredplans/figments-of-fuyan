@@ -133,9 +133,10 @@ func _on_clear_selection_pressed():
 func _on_load_level_pressed():
 	active_tile_state = 0
 	active_arrow_state = 0
-	var levelloader = preload("res://test/simulation/screens/create_level/load_level.tscn").instantiate()
+	var levelloader = preload("res://test/simulation/screens/load_stuff/load_stuff.tscn").instantiate()
+	levelloader.load_state = 1
 	add_child(levelloader)
-	levelloader.load_level.connect(on_load_level)
+	levelloader.level_selected.connect(on_load_level)
 	levelloader.tree_exited.connect(func(): nono_zone = 0)
 	nono_zone = 2
 	
@@ -179,6 +180,17 @@ func on_load_level(level_name: String) -> void:
 	file = null
 	
 func _on_save_level_button_text_submitted(text: String):
+	
+	if !(FileAccess.file_exists("user://savefofle/levels/%s.txt" % text)): save_level(text)
+	else:
+		var confirm_deletion_node: Control = preload("res://test/simulation/screens/load_stuff/confirm_deletion.tscn").instantiate()
+		add_child(confirm_deletion_node)
+		for child in confirm_deletion_node.get_node("Buttons").get_children():
+			match child.name:
+				"Yes": child.pressed.connect(save_level.bind(text)); child.pressed.connect(func(): confirm_deletion_node.queue_free())
+				"No": child.pressed.connect(func(): confirm_deletion_node.queue_free())
+
+func save_level(text: String) -> void:
 	var file := FileAccess.open("user://savefofle/levels/%s.txt" % text, FileAccess.WRITE)
 	var write_string: String = ""
 	var card_names: Array = $CardZone.get_children()
@@ -188,11 +200,10 @@ func _on_save_level_button_text_submitted(text: String):
 	for child in card_names: write_string += "%s|%s|%s|%s|%s/" % [child.default_state[0], child.scale.x, child.global_position.x, child.global_position.y, child.team]
 	file.store_string(write_string)
 	file = null
-
 func _on_nono_zone_mouse_entered(): if nono_zone == 0: nono_zone = 1
 func _on_nono_zone_mouse_exited(): if nono_zone == 1: nono_zone = 0
 func _on_load_card_pressed():
-	var loadcard: Control = preload("res://test/simulation/screens/card_creator/load_card.tscn").instantiate()
+	var loadcard: Control = preload("res://test/simulation/screens/load_stuff/load_stuff.tscn").instantiate()
 	add_child(loadcard)
 	loadcard.card_selected.connect(on_card_selected)
 	loadcard.tree_exited.connect(func(): nono_zone = 0)

@@ -1,0 +1,77 @@
+[gd_scene load_steps=3 format=3 uid="uid://ctejwsep8pfbt"]
+
+[ext_resource type="Theme" uid="uid://be5u05ixh2dg7" path="res://test/simulation/assets/fonts/roboto32.tres" id="1_m8g8h"]
+[ext_resource type="Script" path="res://test/simulation/screens/load_stuff/load_stuff.gd" id="2_m471h"]
+
+[node name="LoadStuff" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_m8g8h")
+script = ExtResource("2_m471h")
+
+[node name="Background" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Out" type="ColorRect" parent="Background"]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 26.0
+offset_right = 1893.0
+offset_bottom = 1054.0
+color = Color(0, 0, 0, 0.156863)
+
+[node name="In" type="ColorRect" parent="Background"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 40.0
+offset_right = 1880.0
+offset_bottom = 1040.0
+color = Color(0.65098, 0.65098, 0.65098, 0.156863)
+
+[node name="Buttons" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 1762.0
+offset_top = 40.0
+offset_right = 1880.0
+offset_bottom = 1040.0
+
+[node name="ExitButton" type="Button" parent="Buttons"]
+layout_mode = 0
+offset_right = 118.0
+offset_bottom = 121.0
+text = "X"
+
+[node name="BackButton" type="Button" parent="Buttons"]
+layout_mode = 0
+offset_top = 121.0
+offset_right = 118.0
+offset_bottom = 242.0
+text = "<-"
+
+[node name="LoadZone" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 45.0
+offset_top = 50.0
+offset_right = 1762.0
+offset_bottom = 1040.0
+
+[node name="Path" type="Label" parent="."]
+layout_mode = 0
+offset_left = 80.0
+offset_top = 929.0
+offset_right = 1880.0
+offset_bottom = 1042.0
+text = "Path Goes Here"
+vertical_alignment = 1
+
+[connection signal="pressed" from="Buttons/ExitButton" to="." method="_on_exit_button_pressed"]
+[connection signal="pressed" from="Buttons/BackButton" to="." method="_on_back_button_pressed"]

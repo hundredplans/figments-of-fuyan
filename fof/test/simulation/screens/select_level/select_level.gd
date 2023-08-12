@@ -26,10 +26,10 @@ func _process(_delta):
 		on_history_go_back()
 
 func _ready() -> void:
+	_on_load_level_button_pressed()
 	theme = preload("res://test/simulation/assets/fonts/roboto32.tres")
 	refresh_vision()
 	modulate_team_buttons()
-	$LoadLevel.load_level.connect(on_load_level)
 
 func on_load_level(level_name: String) -> void:
 	for child in $CardZone.get_children():
@@ -64,6 +64,7 @@ func on_load_level(level_name: String) -> void:
 	var lvl_path: String = "user://savefofle/levels/%s" % level_name
 	var file := FileAccess.open(lvl_path, FileAccess.READ)
 	var tiles: Array = []
+	print(file)
 	var splitter: Array = file.get_as_text().split("\n")
 	var i: int = 1
 	for tile_info in splitter:
@@ -97,13 +98,14 @@ func on_load_level(level_name: String) -> void:
 	refresh_vision()
 
 func _on_load_level_button_pressed():
-	var loadlvl: Control = preload("res://test/simulation/screens/create_level/load_level.tscn").instantiate()
+	var loadlvl: Control = preload("res://test/simulation/screens/load_stuff/load_stuff.tscn").instantiate()
+	loadlvl.load_state = 1
 	if multimode: loadlvl.position.x += 1920
-	loadlvl.load_level.connect(on_load_level)
+	loadlvl.level_selected.connect(on_load_level)
 	add_child(loadlvl)
 
 func _on_load_cards_button_pressed():
-	var loadcard: Control = preload("res://test/simulation/screens/card_creator/load_card.tscn").instantiate()
+	var loadcard: Control = preload("res://test/simulation/screens/load_stuff/load_stuff.tscn").instantiate()
 	if multimode: loadcard.position.x += 1920
 	loadcard.card_selected.connect(on_card_selected)
 	add_child(loadcard)
@@ -234,17 +236,18 @@ func _refresh_vision_for_team(occupied_tiles: Array) -> Array:
 func on_click_unit(tile: Node2D):
 	for team in active_cards:
 		for i in team:
-			if i[0] == tile:
+			if i[0] == tile and i[1] != null:
 				unit_selected = [i[1], tile]
 				active_card = null
 				$ActiveArt.texture = load(i[1].get_node("ArtMax").texture.resource_path)
 				return
 
 func on_move_unit(tile: Node2D):
-	active_card = unit_selected[0]
-	if unit_selected[1].always_visible: tile.always_visible = true; always_visible_tiles.append(tile)
-	on_destroy_unit(unit_selected[1], true)
-	on_create_unit(tile, true)
+	if unit_selected[0] != null:
+		active_card = unit_selected[0]
+		if unit_selected[1].always_visible: tile.always_visible = true; always_visible_tiles.append(tile)
+		on_destroy_unit(unit_selected[1], true)
+		on_create_unit(tile, true)
 
 func _on_draw_cards_pressed():
 	var draw_cards: Control = preload("res://test/simulation/screens/select_level/draw_cards.tscn").instantiate()

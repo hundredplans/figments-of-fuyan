@@ -1,4 +1,6 @@
 extends Control
+var load_card_path: String = "user://savefofle/cards"
+var load_level_path: String = "user://savefofle/levels"
 
 func _on_enter_level_editor_pressed():
 	add_child(preload("res://test/simulation/screens/create_level/create_level.tscn").instantiate())
