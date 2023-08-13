@@ -1,6 +1,70 @@
-[gd_scene load_steps=2 format=3 uid="uid://ia4c3788uo0q"]
+[gd_scene load_steps=7 format=3 uid="uid://ia4c3788uo0q"]
 
+[ext_resource type="Theme" uid="uid://byxhe8c463j33" path="res://assets/UI/base/base.tres" id="1_88q0g"]
 [ext_resource type="Script" path="res://scenes/screens/editor_menu/editor_menu.gd" id="1_olwko"]
+[ext_resource type="LabelSettings" uid="uid://dufeujtxl43vh" path="res://assets/UI/base/base_button_label_settings.tres" id="3_te6tr"]
+
+[sub_resource type="Animation" id="Animation_biso7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Buttons:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-679, 1035)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Buttons:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-1.7276]
+}
+
+[sub_resource type="Animation" id="Animation_7duac"]
+resource_name = "move_screen"
+length = 0.25
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Buttons:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 276), Vector2(-679, 1035)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Buttons:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, -1.7276]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dcjvj"]
+_data = {
+"RESET": SubResource("Animation_biso7"),
+"move_screen": SubResource("Animation_7duac")
+}
 
 [node name="EditorMenu" type="Control"]
 layout_mode = 3
@@ -9,9 +73,113 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_88q0g")
 script = ExtResource("1_olwko")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="MoveScreen" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_dcjvj")
+}
+
+[node name="Buttons" type="Control" parent="."]
+anchors_preset = 0
+offset_left = -679.0
+offset_top = 1035.0
+offset_right = -176.0
+offset_bottom = 1615.0
+rotation = -1.7276
+
+[node name="WorldEditor" type="Control" parent="Buttons"]
+anchors_preset = 0
+offset_right = 503.0
+offset_bottom = 116.0
+
+[node name="WorldEditor" type="Button" parent="Buttons/WorldEditor"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Buttons/WorldEditor"]
 layout_mode = 0
-offset_right = 1065.0
-offset_bottom = 489.0
+offset_left = 127.0
+offset_top = 30.0
+offset_right = 504.0
+offset_bottom = 109.0
+rotation = -0.0466075
+text = "World Editor"
+label_settings = ExtResource("3_te6tr")
+
+[node name="LevelEditor" type="Control" parent="Buttons"]
+anchors_preset = 0
+offset_top = 151.0
+offset_right = 503.0
+offset_bottom = 267.0
+
+[node name="LevelEditor" type="Button" parent="Buttons/LevelEditor"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Buttons/LevelEditor"]
+layout_mode = 0
+offset_left = 136.0
+offset_top = 27.0
+offset_right = 513.0
+offset_bottom = 106.0
+rotation = -0.0466075
+text = "Level Editor"
+label_settings = ExtResource("3_te6tr")
+
+[node name="CardEditor" type="Control" parent="Buttons"]
+anchors_preset = 0
+offset_top = 304.0
+offset_right = 503.0
+offset_bottom = 420.0
+
+[node name="CardEditor" type="Button" parent="Buttons/CardEditor"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Buttons/CardEditor"]
+layout_mode = 0
+offset_left = 150.0
+offset_top = 27.0
+offset_right = 527.0
+offset_bottom = 106.0
+rotation = -0.0466075
+text = "Card Editor"
+label_settings = ExtResource("3_te6tr")
+
+[node name="EncounterEditor" type="Control" parent="Buttons"]
+anchors_preset = 0
+offset_top = 446.0
+offset_right = 503.0
+offset_bottom = 562.0
+
+[node name="EncounterEditor" type="Button" parent="Buttons/EncounterEditor"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Buttons/EncounterEditor"]
+layout_mode = 0
+offset_left = 9.0
+offset_top = 35.0
+offset_right = 489.0
+offset_bottom = 114.0
+rotation = -0.0466075
+text = "Encounter Editor"
+label_settings = ExtResource("3_te6tr")

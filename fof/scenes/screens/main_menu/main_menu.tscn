@@ -1,8 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://cd1hnc68uspy"]
+[gd_scene load_steps=7 format=3 uid="uid://cd1hnc68uspy"]
 
 [ext_resource type="Script" path="res://scenes/screens/main_menu/main_menu.gd" id="1_iwh4f"]
 [ext_resource type="Theme" uid="uid://byxhe8c463j33" path="res://assets/UI/base/base.tres" id="1_oh1b0"]
-[ext_resource type="FontFile" uid="uid://7k4xd8s0oed2" path="res://assets/UI/fonts/roboto.ttf" id="3_jx8ps"]
+[ext_resource type="LabelSettings" uid="uid://dufeujtxl43vh" path="res://assets/UI/base/base_button_label_settings.tres" id="3_em14y"]
 
 [sub_resource type="Animation" id="Animation_kkdo4"]
 length = 0.001
@@ -16,7 +16,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [0.0]
+"values": [-1.77254]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -28,7 +28,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(0, 181)]
+"values": [Vector2(-770, 1197)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -40,7 +40,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(1749, 927)]
+"values": [Vector2(1968, 1109)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -52,11 +52,11 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [0.0]
+"values": [1.14672]
 }
 
 [sub_resource type="Animation" id="Animation_3ak8k"]
-resource_name = "exit_screen_animation"
+resource_name = "move_screen"
 length = 0.25
 step = 0.05
 tracks/0/type = "value"
@@ -111,14 +111,8 @@ tracks/3/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_p5kgq"]
 _data = {
 "RESET": SubResource("Animation_kkdo4"),
-"exit_screen_animation": SubResource("Animation_3ak8k")
+"move_screen": SubResource("Animation_3ak8k")
 }
-
-[sub_resource type="LabelSettings" id="LabelSettings_caatr"]
-font = ExtResource("3_jx8ps")
-font_size = 64
-outline_size = 12
-outline_color = Color(0, 0, 0, 1)
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -131,7 +125,7 @@ theme = ExtResource("1_oh1b0")
 script = ExtResource("1_iwh4f")
 metadata/_edit_lock_ = true
 
-[node name="ExitScreen" type="AnimationPlayer" parent="."]
+[node name="MoveScreen" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_p5kgq")
 }
@@ -146,10 +140,11 @@ grow_vertical = 2
 
 [node name="Quit" type="Control" parent="Buttons"]
 anchors_preset = 0
-offset_left = 1749.0
-offset_top = 927.0
-offset_right = 1944.0
-offset_bottom = 1043.0
+offset_left = 1968.0
+offset_top = 1109.0
+offset_right = 2163.0
+offset_bottom = 1225.0
+rotation = 1.14672
 
 [node name="Quit" type="Button" parent="Buttons/Quit"]
 layout_mode = 2
@@ -171,13 +166,15 @@ offset_right = 157.0
 offset_bottom = 96.0
 rotation = -0.0506702
 text = "Quit"
-label_settings = SubResource("LabelSettings_caatr")
+label_settings = ExtResource("3_em14y")
 
 [node name="LeftButtons" type="Control" parent="Buttons"]
 anchors_preset = 0
-offset_top = 181.0
-offset_right = 503.0
-offset_bottom = 896.0
+offset_left = -770.0
+offset_top = 1197.0
+offset_right = -267.0
+offset_bottom = 1912.0
+rotation = -1.77254
 
 [node name="Play" type="Control" parent="Buttons/LeftButtons"]
 anchors_preset = 0
@@ -200,7 +197,7 @@ offset_right = 466.0
 offset_bottom = 99.0
 rotation = -0.0506702
 text = "Play"
-label_settings = SubResource("LabelSettings_caatr")
+label_settings = ExtResource("3_em14y")
 
 [node name="Simulation" type="Control" parent="Buttons/LeftButtons"]
 anchors_preset = 0
@@ -224,7 +221,7 @@ offset_right = 473.0
 offset_bottom = 106.0
 rotation = -0.0506702
 text = "Simulation"
-label_settings = SubResource("LabelSettings_caatr")
+label_settings = ExtResource("3_em14y")
 
 [node name="EditorMenu" type="Control" parent="Buttons/LeftButtons"]
 anchors_preset = 0
@@ -248,7 +245,7 @@ offset_right = 481.0
 offset_bottom = 102.0
 rotation = -0.0506702
 text = "Editor Menu"
-label_settings = SubResource("LabelSettings_caatr")
+label_settings = ExtResource("3_em14y")
 
 [node name="Settings" type="Control" parent="Buttons/LeftButtons"]
 anchors_preset = 0
@@ -272,7 +269,7 @@ offset_right = 494.0
 offset_bottom = 101.0
 rotation = -0.0506702
 text = "Settings"
-label_settings = SubResource("LabelSettings_caatr")
+label_settings = ExtResource("3_em14y")
 
 [node name="Fuyanopedia" type="Control" parent="Buttons/LeftButtons"]
 anchors_preset = 0
@@ -296,7 +293,7 @@ offset_right = 487.0
 offset_bottom = 111.0
 rotation = -0.0506702
 text = "Fuyanopedia"
-label_settings = SubResource("LabelSettings_caatr")
+label_settings = ExtResource("3_em14y")
 
 [connection signal="pressed" from="Buttons/Quit/Quit" to="." method="_on_quit_pressed"]
 [connection signal="pressed" from="Buttons/LeftButtons/Play/Play" to="." method="_on_play_pressed"]
