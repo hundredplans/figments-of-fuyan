@@ -40,7 +40,7 @@ func load_stuff():
 		$LoadZone.add_child(load_stuff_node)
 		
 		if load_state == 0:
-			var nfile := FileAccess.open("user://savefofle/cards/%s" % file, FileAccess.READ)
+			var nfile := FileAccess.open(parent.load_card_path + "/" + file, FileAccess.READ)
 			var card_info: Array = nfile.get_as_text().split("\n")
 			var rarity: int = 0
 			load_stuff_button.text += " | " + str(card_info[6])
@@ -105,11 +105,12 @@ func on_destroy_button_pressed(node: Control, file: String) -> void:
 				match child.name:
 					"Yes": child.pressed.connect(on_delete_stuff.bind(node,file,confirm_deletion_node))
 					"No": child.pressed.connect(func(): confirm_deletion_node.queue_free())
-		false: node.queue_free()
+		false: on_delete_stuff(node, file, null)
 
 func on_delete_stuff(node: Control, file: String, confirm_deletion_node: Control) -> void:
 	node.queue_free()
-	confirm_deletion_node.queue_free()
+	if confirm_deletion_node != null:
+		confirm_deletion_node.queue_free()
 	confirm_deletion = !confirm_deletion
 	
 	var path: String
