@@ -45,6 +45,9 @@ func on_add_screen_history(load_path: String) -> void:
 
 func on_trigger_screen_history() -> void:
 	if screen_history.size() > 0 and !screen_change_animation_active:
-		var path: String = screen_history.pop_back()
+		screen_history.resize(screen_history.size() - 1)
+		var path: String = main_menu_path
 		if !screen_history.size(): path = main_menu_path
+		else: path = screen_history[screen_history.size() - 1]
 		on_load_screen(load(path).instantiate())
+		print(screen_history)

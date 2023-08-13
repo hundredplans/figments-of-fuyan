@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://bq65i6hwtd4b5"]
+
+[ext_resource type="Script" path="res://scenes/screens/world_editor/world_editor.gd" id="1_r82ym"]
+
+[sub_resource type="Animation" id="Animation_4oksu"]
+resource_name = "move_screen"
+length = 0.25
+step = 0.05
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5phqr"]
+_data = {
+"move_screen": SubResource("Animation_4oksu")
+}
+
+[node name="WorldEditor" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_r82ym")
+
+[node name="MoveScreen" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_5phqr")
+}

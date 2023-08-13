@@ -1,5 +1,6 @@
 extends Control
 
+var no_paint: bool = false
 var nono_zone: int = 0
 var active_arrow_state: int = 0
 var active_tile_state: int = 0
@@ -232,3 +233,9 @@ func on_card_selected(card_name: String) -> Control:
 func add_card_to_card_zone(card: Control) -> void:
 	card.position = Vector2(randi_range(0, 1600), randi_range(0, 800))
 	$CardZone.add_child(card)
+
+func _on_no_paint_pressed(): 
+	no_paint = !no_paint
+	match no_paint:
+		true: $NoPaint.modulate = Color(1,0,0,1)
+		false: $NoPaint.modulate = Color(1,1,1,1)

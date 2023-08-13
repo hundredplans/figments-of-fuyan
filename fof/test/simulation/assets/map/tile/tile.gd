@@ -56,7 +56,7 @@ func _on_allow_change_in_level_editor():
 	allow_change_anywhere = true
 
 func _on_level_editor_inside_pressed():
-	if get_parent().get_parent().nono_zone == 0:
+	if get_parent().get_parent().nono_zone == 0 and !get_parent().get_parent().no_paint:
 		tile_state = get_parent().get_parent().active_tile_state
 		arrow_state = get_parent().get_parent().active_arrow_state
 		tile_item = get_parent().get_parent().active_tile_item
