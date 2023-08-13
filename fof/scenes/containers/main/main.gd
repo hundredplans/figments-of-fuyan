@@ -17,6 +17,7 @@ func sim_pressed(): call_deferred("on_sim_pressed")
 func on_sim_pressed():
 	for child in get_tree().get_root().get_children(): child.queue_free()
 	get_tree().get_root().add_child(preload("res://test/simulation/screens/main/main.tscn").instantiate())
+	
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Escape"):
 		on_trigger_screen_history()
@@ -34,9 +35,9 @@ func on_load_screen(screen: Control) -> void:
 		_: print_debug("You have too many screens"); screen.queue_free()
 		
 func on_connect_screen_signals(screen: Control) -> void:
-	match screen.name:
-		"MainMenu":
-			screen.editor_menu_pressed.connect(on_load_screen.bind(preload("res://scenes/screens/editor_menu/editor_menu.tscn").instantiate()))
+	if "screen_change_signals" in screen:
+		for sig_info in screen.screen_change_signals:
+			sig_info[0].connect(on_load_screen.bind(load(sig_info[1]).instantiate()))
 	
 func on_add_screen_history(load_path: String) -> void:
 	if load_path != main_menu_path:

@@ -156,7 +156,7 @@ func on_load_level(level_name: String) -> void:
 				tiles.append([Vector2(tii[0].to_int(), tii[1].to_int()), tii[2].to_int(), tii[3], tii[4].to_int()])
 			i += 1
 		else:
-			for card_info in tile_info.split("/"):
+			for card_info in tile_info.split("~"):
 				if card_info:
 					var card_intel: Array = card_info.split("|")
 					var card = on_card_selected(card_intel[0] + ".txt")
@@ -180,7 +180,6 @@ func on_load_level(level_name: String) -> void:
 	file = null
 	
 func _on_save_level_button_text_submitted(text: String):
-	
 	if !(FileAccess.file_exists("user://savefofle/levels/%s.txt" % text)): save_level(text)
 	else:
 		var confirm_deletion_node: Control = preload("res://test/simulation/screens/load_stuff/confirm_deletion.tscn").instantiate()
@@ -197,7 +196,7 @@ func save_level(text: String) -> void:
 	for tile in $FakeTiles.get_children():
 		if tile.tile_state != 0:
 			write_string += "%s,%s,%s,%s,%s\n" % [tile.tile_position.x, tile.tile_position.y, tile.tile_state, tile.tile_item, tile.arrow_state]
-	for child in card_names: write_string += "%s|%s|%s|%s|%s/" % [child.default_state[0], child.scale.x, child.global_position.x, child.global_position.y, child.team]
+	for child in card_names: write_string += "%s|%s|%s|%s|%s~" % [child.card_path.left(-4), child.scale.x, child.global_position.x, child.global_position.y, child.team]
 	file.store_string(write_string)
 	file = null
 func _on_nono_zone_mouse_entered(): if nono_zone == 0: nono_zone = 1
@@ -215,6 +214,7 @@ func on_card_selected(card_name: String) -> Control:
 		var file := FileAccess.open(path, FileAccess.READ)
 		var card_info: Array = file.get_as_text().split("\n")
 		var card: Control = preload("res://test/simulation/screens/select_level/card.tscn").instantiate()
+		card.card_path = card_name
 		card.default_state = card_info.duplicate(true)
 		var area: Area2D = preload("res://test/simulation/screens/create_level/mouse_blocker.tscn").instantiate()
 		area.mouse_entered.connect(func(): nono_zone = 2)

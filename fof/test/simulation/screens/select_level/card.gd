@@ -7,6 +7,7 @@ var default_state: Array = []
 var can_drag: bool = false
 var held: bool = true
 var team: int = 1
+var card_path: String
 
 signal refresh_vision
 
