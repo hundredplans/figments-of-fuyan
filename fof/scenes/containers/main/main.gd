@@ -6,6 +6,7 @@ var screen_change_animation_active: bool = false
 var screen_history: Array = []
 
 func _ready() -> void:
+	
 	for helper_signal in [
 	["add_screen_history", on_add_screen_history], \
 	["screen_change_animation_state", func(x: bool): screen_change_animation_active = x],
@@ -40,14 +41,11 @@ func on_connect_screen_signals(screen: Control) -> void:
 			sig_info[0].connect(on_load_screen.bind(load(sig_info[1]).instantiate()))
 	
 func on_add_screen_history(load_path: String) -> void:
-	if load_path != main_menu_path:
-		screen_history.append(load_path)
+	screen_history.append(load_path)
 
 func on_trigger_screen_history() -> void:
-	if screen_history.size() > 0 and !screen_change_animation_active:
+	if !screen_change_animation_active and screen_history.size() > 1:
 		screen_history.resize(screen_history.size() - 1)
-		var path: String = main_menu_path
-		if !screen_history.size(): path = main_menu_path
-		else: path = screen_history[screen_history.size() - 1]
+		var path: String = screen_history[screen_history.size() - 1]
 		on_load_screen(load(path).instantiate())
-		print(screen_history)
+		screen_history.resize(screen_history.size() - 1)
