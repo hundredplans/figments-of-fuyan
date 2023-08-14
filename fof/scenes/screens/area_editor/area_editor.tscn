@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bq65i6hwtd4b5"]
 
-[ext_resource type="Script" path="res://scenes/screens/world_editor/world_editor.gd" id="1_r82ym"]
+[ext_resource type="Script" path="res://scenes/screens/area_editor/area_editor.gd" id="1_r82ym"]
 
 [sub_resource type="Animation" id="Animation_sqay2"]
 length = 0.001
@@ -40,7 +40,7 @@ _data = {
 "move_screen": SubResource("Animation_4oksu")
 }
 
-[node name="WorldEditor" type="Control"]
+[node name="AreaEditor" type="Control"]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 3
 anchors_preset = 15

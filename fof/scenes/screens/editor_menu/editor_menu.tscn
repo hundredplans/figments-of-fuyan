@@ -136,13 +136,13 @@ rotation = -0.0466075
 text = "Level Editor"
 label_settings = ExtResource("3_te6tr")
 
-[node name="WorldEditor" type="Control" parent="Buttons"]
+[node name="AreaEditor" type="Control" parent="Buttons"]
 anchors_preset = 0
 offset_top = 299.0
 offset_right = 503.0
 offset_bottom = 415.0
 
-[node name="WorldEditor" type="Button" parent="Buttons/WorldEditor"]
+[node name="AreaEditor" type="Button" parent="Buttons/AreaEditor"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -150,14 +150,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="Buttons/WorldEditor"]
+[node name="Label" type="Label" parent="Buttons/AreaEditor"]
 layout_mode = 0
-offset_left = 127.0
-offset_top = 30.0
-offset_right = 504.0
-offset_bottom = 109.0
+offset_left = 158.0
+offset_top = 29.0
+offset_right = 535.0
+offset_bottom = 108.0
 rotation = -0.0466075
-text = "World Editor"
+text = "Area Editor"
 label_settings = ExtResource("3_te6tr")
 
 [node name="EncounterEditor" type="Control" parent="Buttons"]
@@ -185,4 +185,4 @@ text = "Encounter Editor"
 label_settings = ExtResource("3_te6tr")
 
 [connection signal="pressed" from="Buttons/LevelEditor/LevelEditor" to="." method="_on_level_editor_pressed"]
-[connection signal="pressed" from="Buttons/WorldEditor/WorldEditor" to="." method="_on_world_editor_pressed"]
+[connection signal="pressed" from="Buttons/AreaEditor/AreaEditor" to="." method="_on_area_editor_pressed"]

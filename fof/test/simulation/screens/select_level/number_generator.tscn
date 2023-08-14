@@ -1,0 +1,62 @@
+[gd_scene load_steps=3 format=3 uid="uid://dutjrdc007kuh"]
+
+[ext_resource type="Theme" uid="uid://be5u05ixh2dg7" path="res://test/simulation/assets/fonts/roboto32.tres" id="1_22oxn"]
+[ext_resource type="Script" path="res://test/simulation/screens/select_level/number_generator.gd" id="2_34ip3"]
+
+[node name="NumberGenerator" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 307.0
+offset_bottom = 99.0
+theme = ExtResource("1_22oxn")
+script = ExtResource("2_34ip3")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.388235, 0.388235, 0.388235, 0.607843)
+
+[node name="GrabZone" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 250.0
+offset_right = 307.0
+offset_bottom = 100.0
+color = Color(1, 0.45098, 0.231373, 1)
+
+[node name="ExitButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 200.0
+offset_right = 250.0
+offset_bottom = 54.0
+text = "X"
+
+[node name="Numbers" type="LineEdit" parent="."]
+layout_mode = 0
+offset_right = 136.0
+offset_bottom = 54.0
+alignment = 1
+max_length = 3
+
+[node name="Roll" type="Button" parent="."]
+layout_mode = 0
+offset_top = 54.0
+offset_right = 250.0
+offset_bottom = 99.0
+text = "Roll"
+
+[node name="Result" type="Label" parent="."]
+layout_mode = 0
+offset_left = 136.0
+offset_right = 200.0
+offset_bottom = 54.0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="mouse_entered" from="GrabZone" to="." method="_on_grab_zone_mouse_entered"]
+[connection signal="mouse_exited" from="GrabZone" to="." method="_on_grab_zone_mouse_exited"]
+[connection signal="pressed" from="ExitButton" to="." method="_on_exit_button_pressed"]
+[connection signal="pressed" from="Roll" to="." method="_on_roll_pressed"]

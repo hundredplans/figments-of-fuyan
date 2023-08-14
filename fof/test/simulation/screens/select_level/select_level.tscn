@@ -43,18 +43,18 @@ text = "Load Cards"
 
 [node name="TeamZero" type="Button" parent="."]
 layout_mode = 0
-offset_left = 749.0
+offset_left = 657.0
 offset_top = 1003.0
-offset_right = 922.0
+offset_right = 830.0
 offset_bottom = 1060.0
 theme = SubResource("Theme_ty058")
 text = "Team Zero"
 
 [node name="TeamOne" type="Button" parent="."]
 layout_mode = 0
-offset_left = 953.0
+offset_left = 861.0
 offset_top = 1003.0
-offset_right = 1126.0
+offset_right = 1034.0
 offset_bottom = 1060.0
 theme = SubResource("Theme_ty058")
 text = "Team One"
@@ -67,6 +67,14 @@ offset_right = 1751.0
 offset_bottom = 1060.0
 theme = SubResource("Theme_ty058")
 text = "Draw Cards"
+
+[node name="NumberGenerator" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1196.0
+offset_top = 1003.0
+offset_right = 1369.0
+offset_bottom = 1060.0
+text = "Random"
 
 [node name="Energy" type="LineEdit" parent="."]
 layout_mode = 0
@@ -101,3 +109,4 @@ position = Vector2(1860, 1025)
 [connection signal="pressed" from="TeamZero" to="." method="_on_team_zero_pressed"]
 [connection signal="pressed" from="TeamOne" to="." method="_on_team_one_pressed"]
 [connection signal="pressed" from="DrawCards" to="." method="_on_draw_cards_pressed"]
+[connection signal="pressed" from="NumberGenerator" to="." method="_on_number_generator_pressed"]
