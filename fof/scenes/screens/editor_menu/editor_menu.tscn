@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=3 uid="uid://ia4c3788uo0q"]
 
-[ext_resource type="Theme" uid="uid://byxhe8c463j33" path="res://assets/UI/base/base.tres" id="1_88q0g"]
+[ext_resource type="Theme" uid="uid://byxhe8c463j33" path="res://assets/UI/menu_buttons/menu_buttons.tres" id="1_88q0g"]
 [ext_resource type="Script" path="res://scenes/screens/editor_menu/editor_menu.gd" id="1_olwko"]
-[ext_resource type="LabelSettings" uid="uid://dufeujtxl43vh" path="res://assets/UI/base/base_button_label_settings.tres" id="3_te6tr"]
+[ext_resource type="LabelSettings" uid="uid://dufeujtxl43vh" path="res://assets/UI/menu_buttons/menu_buttons_label_settings.tres" id="3_te6tr"]
 
 [sub_resource type="Animation" id="Animation_biso7"]
 length = 0.001
@@ -73,7 +73,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_88q0g")
 script = ExtResource("1_olwko")
 
 [node name="MoveScreen" type="AnimationPlayer" parent="."]
@@ -88,6 +87,7 @@ offset_top = 1035.0
 offset_right = -176.0
 offset_bottom = 1615.0
 rotation = -1.7276
+theme = ExtResource("1_88q0g")
 
 [node name="CardEditor" type="Control" parent="Buttons"]
 anchors_preset = 0

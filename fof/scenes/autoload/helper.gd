@@ -1,6 +1,9 @@
 extends Node
 signal add_screen_history
 signal screen_change_animation_state
+const RED := Color(1,0,0,1)
+const BASE := Color(1,1,1,1)
+
 
 func call_method(node: Node, method: String, args: Array) -> bool:
 	if node.has_method(method):
@@ -53,3 +56,15 @@ func purify_file_name(file_name: String) -> String:
 		for character in file_name: if character not in pure_characters: return ""
 		return file_name
 	return ""
+
+func return_file_contents(file_path: String) -> String:
+	if FileAccess.file_exists(file_path):
+		var file: FileAccess = FileAccess.open(file_path, FileAccess.READ)
+		return file.get_as_text()
+	return ""
+
+func get_children_recursive(node: Node, children := []):
+	children.append(node)
+	for child in node.get_children():
+		children = get_children_recursive(child, children)
+	return children

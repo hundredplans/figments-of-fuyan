@@ -1,11 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://dxe3pstav6p2q"]
+[gd_scene load_steps=4 format=3 uid="uid://dxe3pstav6p2q"]
 
 [ext_resource type="Script" path="res://test/simulation/screens/card_creator/card_creator.gd" id="1_ikfoh"]
+[ext_resource type="Theme" uid="uid://be5u05ixh2dg7" path="res://test/simulation/assets/fonts/roboto32.tres" id="3_6re5g"]
 [ext_resource type="Texture2D" uid="uid://cjg2cmypyag7u" path="res://test/simulation/assets/sprites/82.png" id="3_7rmko"]
 
 [node name="CardCreator" type="Control"]
 layout_mode = 3
 anchors_preset = 0
+theme = ExtResource("3_6re5g")
 script = ExtResource("1_ikfoh")
 
 [node name="Left" type="Button" parent="."]
@@ -145,8 +147,22 @@ offset_right = 489.0
 offset_bottom = 829.0
 text = "Load Card"
 
+[node name="CardZone" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="LoadCards" type="Button" parent="."]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 1010.0
+offset_right = 283.0
+offset_bottom = 1068.0
+text = "Allow Load Cards"
+
 [connection signal="pressed" from="Left" to="." method="_on_left_pressed"]
 [connection signal="pressed" from="Right" to="." method="_on_right_pressed"]
 [connection signal="item_selected" from="Card/RaritySelect" to="." method="_on_rarity_select_item_selected"]
 [connection signal="pressed" from="Card/SaveCard" to="." method="_on_save_card_pressed"]
 [connection signal="pressed" from="Card/LoadCard" to="." method="_on_load_card_pressed"]
+[connection signal="pressed" from="LoadCards" to="." method="_on_load_cards_pressed"]

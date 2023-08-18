@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=3 uid="uid://cd1hnc68uspy"]
 
 [ext_resource type="Script" path="res://scenes/screens/main_menu/main_menu.gd" id="1_iwh4f"]
-[ext_resource type="Theme" uid="uid://byxhe8c463j33" path="res://assets/UI/base/base.tres" id="1_oh1b0"]
-[ext_resource type="LabelSettings" uid="uid://dufeujtxl43vh" path="res://assets/UI/base/base_button_label_settings.tres" id="3_em14y"]
+[ext_resource type="Theme" uid="uid://byxhe8c463j33" path="res://assets/UI/menu_buttons/menu_buttons.tres" id="1_oh1b0"]
+[ext_resource type="LabelSettings" uid="uid://dufeujtxl43vh" path="res://assets/UI/menu_buttons/menu_buttons_label_settings.tres" id="3_em14y"]
 
 [sub_resource type="Animation" id="Animation_kkdo4"]
 length = 0.001
@@ -121,7 +121,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_oh1b0")
 script = ExtResource("1_iwh4f")
 metadata/_edit_lock_ = true
 
@@ -137,6 +136,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_oh1b0")
 
 [node name="Quit" type="Control" parent="Buttons"]
 anchors_preset = 0

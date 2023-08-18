@@ -1,3 +1,6 @@
-[gd_scene format=3 uid="uid://clbxu8gaqdsnt"]
+[gd_scene load_steps=2 format=3 uid="uid://clbxu8gaqdsnt"]
+
+[ext_resource type="Script" path="res://scenes/autoload/audio_master.gd" id="1_23n64"]
 
 [node name="AudioMaster" type="AudioStreamPlayer"]
+script = ExtResource("1_23n64")

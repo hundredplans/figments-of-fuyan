@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://bnoei7u0kxl25"]
+[gd_scene load_steps=4 format=3 uid="uid://bnoei7u0kxl25"]
 
 [ext_resource type="Script" path="res://scenes/containers/main/main.gd" id="1_10ydf"]
 [ext_resource type="Texture2D" uid="uid://cak4cux157c2" path="res://scenes/screens/main_menu/background.jpg" id="2_sqn13"]
-[ext_resource type="Theme" uid="uid://byxhe8c463j33" path="res://assets/UI/base/base.tres" id="3_2j7e6"]
 [ext_resource type="Script" path="res://scenes/world/world.gd" id="3_hfbug"]
 
 [node name="Main" type="Node"]
@@ -19,7 +18,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("3_2j7e6")
 
 [node name="World" type="Node3D" parent="."]
 script = ExtResource("3_hfbug")

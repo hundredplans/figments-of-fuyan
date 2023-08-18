@@ -9,6 +9,7 @@ signal visibility_update
 var always_visible: bool = false
 const collision_tiles: Array = [1, 2, 13]
 var tile_item = ""
+var old_tile_state: int = 0
 var tile_state: int = 0
 var arrow_state: int = 0
 
@@ -49,6 +50,28 @@ func _process(_delta: float) -> void:
 				always_visible = !always_visible
 				visibility_update.emit(self)
 
+		if Input.is_action_just_pressed("ShiftRightClick"):
+			match tile_state:
+				0:
+					tile_state = old_tile_state
+				_:
+					old_tile_state = tile_state
+					tile_state = 0
+			$In/Inside.texture = load("res://test/simulation/assets/map/tile/%s.png" % tile_state)
+			_on_simulation_inside_pressed([0, tile_state, tile_item, arrow_state])
+			get_parent().get_parent().refresh_vision()
+			
+		if Input.is_action_just_pressed("ShiftLeftClick"):
+			match tile_state:
+				2:
+					tile_state = old_tile_state
+				_:
+					old_tile_state = tile_state
+					tile_state = 2
+			$In/Inside.texture = load("res://test/simulation/assets/map/tile/%s.png" % tile_state)
+			_on_simulation_inside_pressed([0, tile_state, tile_item, arrow_state])
+			get_parent().get_parent().refresh_vision()
+			
 func _on_area_2d_mouse_entered():
 	allow_change = true
 	
@@ -78,7 +101,7 @@ func _on_simulation_inside_pressed(tile_info: Array):
 	arrow_state = tile_info[3]
 	
 	if tile_state in collision_tiles: $Area2D.collision_mask = 0; $Area2D.collision_layer = 8
-	else: $Area2D.collision_layer = 1
+	else: $Area2D.collision_layer = 1; $Area2D.collision_mask = 1
 	$In/Inside.texture = load("res://test/simulation/assets/map/tile/%s.png" % tile_state)
 	if arrow_state != 0:
 		$In/Arrow.texture = load("res://test/simulation/assets/map/arrows/%s.png" % arrow_state)

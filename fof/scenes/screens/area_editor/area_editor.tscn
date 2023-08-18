@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://bq65i6hwtd4b5"]
+[gd_scene load_steps=6 format=3 uid="uid://bq65i6hwtd4b5"]
 
 [ext_resource type="Script" path="res://scenes/screens/area_editor/area_editor.gd" id="1_r82ym"]
+[ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="2_euq7d"]
 
 [sub_resource type="Animation" id="Animation_sqay2"]
 length = 0.001
@@ -63,15 +64,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Primary" type="Control" parent="Background"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Background" type="ColorRect" parent="Background/Primary"]
+[node name="PRBackground" type="ColorRect" parent="Background"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -80,21 +73,12 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="Accent" type="Control" parent="Background"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Background" type="ColorRect" parent="Background/Accent"]
+[node name="ACBackground" type="ColorRect" parent="Background"]
 layout_mode = 0
 offset_left = 40.0
 offset_top = 40.0
 offset_right = 1880.0
 offset_bottom = 1040.0
-color = Color(0.556863, 0.556863, 0.556863, 1)
 
 [node name="Buttons" type="Control" parent="."]
 anchors_preset = 0
@@ -102,3 +86,198 @@ offset_left = 40.0
 offset_top = 40.0
 offset_right = 1880.0
 offset_bottom = 1040.0
+theme = ExtResource("2_euq7d")
+
+[node name="AreaName" type="LineEdit" parent="Buttons"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -247.0
+offset_top = 345.0
+offset_right = 247.0
+offset_bottom = 434.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+max_length = 20
+
+[node name="SaveArea" type="Button" parent="Buttons"]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 881.0
+offset_right = 225.0
+offset_bottom = 970.0
+text = "Save Area"
+
+[node name="Colors" type="Control" parent="Buttons"]
+anchors_preset = 0
+offset_left = 36.0
+offset_top = 25.0
+offset_right = 750.0
+offset_bottom = 385.0
+
+[node name="PrimaryColor" type="Control" parent="Buttons/Colors"]
+anchors_preset = 0
+offset_top = 40.0
+offset_right = 320.0
+offset_bottom = 360.0
+
+[node name="PROutline" type="ColorRect" parent="Buttons/Colors/PrimaryColor"]
+layout_mode = 0
+offset_left = -8.0
+offset_top = -46.0
+offset_right = 328.0
+offset_bottom = -8.0
+color = Color(0, 0, 0, 1)
+
+[node name="Outline" type="ColorRect" parent="Buttons/Colors/PrimaryColor"]
+layout_mode = 0
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 328.0
+offset_bottom = 329.0
+color = Color(0, 0, 0, 1)
+
+[node name="Background" type="ColorRect" parent="Buttons/Colors/PrimaryColor"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.345098, 0.345098, 0.345098, 1)
+
+[node name="ACLabel" type="Label" parent="Buttons/Colors/PrimaryColor"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -101.0
+offset_top = -45.0
+offset_right = 101.0
+offset_bottom = -4.0
+grow_horizontal = 2
+text = "Primary Color"
+
+[node name="Colors" type="Control" parent="Buttons/Colors/PrimaryColor"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="AccentColor" type="Control" parent="Buttons/Colors"]
+anchors_preset = 0
+offset_left = 394.0
+offset_top = 40.0
+offset_right = 714.0
+offset_bottom = 360.0
+
+[node name="PROutline" type="ColorRect" parent="Buttons/Colors/AccentColor"]
+layout_mode = 0
+offset_left = -8.0
+offset_top = -46.0
+offset_right = 328.0
+offset_bottom = -8.0
+color = Color(0, 0, 0, 1)
+
+[node name="Outline" type="ColorRect" parent="Buttons/Colors/AccentColor"]
+layout_mode = 0
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 328.0
+offset_bottom = 329.0
+color = Color(0, 0, 0, 1)
+
+[node name="Background" type="ColorRect" parent="Buttons/Colors/AccentColor"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.345098, 0.345098, 0.345098, 1)
+
+[node name="ACLabel" type="Label" parent="Buttons/Colors/AccentColor"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -94.0
+offset_top = -45.0
+offset_right = 94.0
+offset_bottom = -4.0
+grow_horizontal = 2
+text = "Accent Color"
+
+[node name="Colors" type="Control" parent="Buttons/Colors/AccentColor"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="WorldDifficulty" type="Control" parent="Buttons"]
+anchors_preset = 0
+offset_left = 807.0
+offset_top = 19.0
+offset_right = 1061.0
+offset_bottom = 419.0
+
+[node name="PRBackground" type="ColorRect" parent="Buttons/WorldDifficulty"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -8.0
+offset_top = -6.0
+offset_right = 6.0
+offset_bottom = 7.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="WorldOne" type="Button" parent="Buttons/WorldDifficulty"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 100.0
+grow_horizontal = 2
+text = "World 1"
+
+[node name="WorldTwo" type="Button" parent="Buttons/WorldDifficulty"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 100.0
+offset_bottom = 200.0
+grow_horizontal = 2
+text = "World 2"
+
+[node name="WorldThree" type="Button" parent="Buttons/WorldDifficulty"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 200.0
+offset_bottom = 300.0
+grow_horizontal = 2
+text = "World 3"
+
+[node name="WorldFour" type="Button" parent="Buttons/WorldDifficulty"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 300.0
+offset_bottom = 400.0
+grow_horizontal = 2
+text = "World 4"
+
+[connection signal="pressed" from="Buttons/WorldDifficulty/WorldOne" to="." method="_on_world_difficulty_pressed" binds= [1]]
+[connection signal="pressed" from="Buttons/WorldDifficulty/WorldTwo" to="." method="_on_world_difficulty_pressed" binds= [2]]
+[connection signal="pressed" from="Buttons/WorldDifficulty/WorldThree" to="." method="_on_world_difficulty_pressed" binds= [3]]
+[connection signal="pressed" from="Buttons/WorldDifficulty/WorldFour" to="." method="_on_world_difficulty_pressed" binds= [4]]
