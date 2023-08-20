@@ -17,7 +17,11 @@ func _process(_delta: float):
 func _on_select_level_pressed():
 	add_child(preload("res://test/simulation/screens/select_level/select_level.tscn").instantiate())
 	$Buttons.visible = false
-
+	
+func _on_create_auras_boons_pressed():
+	add_child(preload("res://test/simulation/screens/create_aura_boon/create_aura_boon.tscn").instantiate())
+	$Buttons.visible = false
+	
 func _ready():
 	theme = preload("res://test/simulation/assets/fonts/roboto32.tres")
 	if !DirAccess.dir_exists_absolute("user://savefofle/cards"):

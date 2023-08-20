@@ -14,7 +14,7 @@ func _ready() -> void:
 	theme = preload("res://test/simulation/assets/fonts/roboto32.tres")
 	$Card/RaritySelect.select(0)
 	_on_rarity_select_item_selected(0)
-	var file_names: PackedStringArray = DirAccess.open("res://test/simulation/assets/sprites").get_files()
+	var file_names: PackedStringArray = DirAccess.open("res://test/simulation/assets/sprites/units").get_files()
 	file_names = Array(file_names).filter(func(x: String): return x.ends_with(".import"))
 	all_cards = Array(file_names).map(func(x: String): return int(x.replace(".png.import", "")))
 	all_cards.sort()
@@ -28,7 +28,7 @@ func load_cards():
 	for i in range(current_page * max_cards_on_page, (current_page + 1) * max_cards_on_page):
 		if i < all_cards.size():
 			var sprite := TextureButton.new()
-			sprite.texture_normal = load("res://test/simulation/assets/sprites/%s" % all_cards[i])
+			sprite.texture_normal = load("res://test/simulation/assets/sprites/units/%s" % all_cards[i])
 			$SpriteList.add_child(sprite)
 			sprite.pressed.connect(on_art_max_pressed.bind(all_cards[i]))
 	
@@ -43,7 +43,7 @@ func load_cards():
 			y += 140
 
 func on_art_max_pressed(file: String):
-	$Card/CardArt.texture = load("res://test/simulation/assets/sprites/%s" % file)
+	$Card/CardArt.texture = load("res://test/simulation/assets/sprites/units/%s" % file)
 
 func _on_save_card_pressed():
 	var rpath = $Card/CardArt.texture.resource_path

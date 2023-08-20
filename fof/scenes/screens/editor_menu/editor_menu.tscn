@@ -208,4 +208,8 @@ rotation = -0.0466075
 text = "Encounter Editor"
 label_settings = ExtResource("3_te6tr")
 
-[connection signal="pressed" from="Buttons/WorldEditor/WorldEditor" to="." method="_on_world_editor_pressed"]
+[connection signal="pressed" from="Buttons/CardEditor/CardEditor" to="." method="on_menu_button_pressed"]
+[connection signal="pressed" from="Buttons/LevelEditor/LevelEditor" to="." method="on_menu_button_pressed"]
+[connection signal="pressed" from="Buttons/AreaEditor/AreaEditor" to="." method="on_menu_button_pressed"]
+[connection signal="pressed" from="Buttons/WorldEditor/WorldEditor" to="." method="on_menu_button_pressed"]
+[connection signal="pressed" from="Buttons/EncounterEditor/EncounterEditor" to="." method="on_menu_button_pressed"]

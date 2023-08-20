@@ -1,14 +1,14 @@
 [gd_scene load_steps=5 format=3 uid="uid://co578pd5gjkw"]
 
+[ext_resource type="Theme" uid="uid://be5u05ixh2dg7" path="res://test/simulation/assets/fonts/roboto32.tres" id="1_0dl7r"]
 [ext_resource type="Script" path="res://test/simulation/screens/main/main.gd" id="1_8k6df"]
 [ext_resource type="Texture2D" uid="uid://ck1pxemcx8mvt" path="res://test/simulation/screens/main/back.webp" id="2_3ll23"]
 [ext_resource type="Texture2D" uid="uid://c122qor61s6c" path="res://test/simulation/screens/main/bg2.jpg" id="3_qywbc"]
-[ext_resource type="Theme" uid="uid://byxhe8c463j33" path="res://assets/UI/base/base.tres" id="4_epwnp"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-theme = ExtResource("4_epwnp")
+theme = ExtResource("1_0dl7r")
 script = ExtResource("1_8k6df")
 
 [node name="Background" type="Sprite2D" parent="."]
@@ -49,6 +49,15 @@ offset_right = 1169.0
 offset_bottom = 711.0
 text = "Create Cards"
 
+[node name="CreateAurasBoons" type="Button" parent="Buttons"]
+layout_mode = 0
+offset_left = 750.0
+offset_top = 736.0
+offset_right = 1169.0
+offset_bottom = 836.0
+text = "Create Auras & Boons"
+
 [connection signal="pressed" from="Buttons/SelectLevel" to="." method="_on_select_level_pressed"]
 [connection signal="pressed" from="Buttons/EnterLevelEditor" to="." method="_on_enter_level_editor_pressed"]
 [connection signal="pressed" from="Buttons/EnterCardCreator" to="." method="_on_enter_card_creator_pressed"]
+[connection signal="pressed" from="Buttons/CreateAurasBoons" to="." method="_on_create_auras_boons_pressed"]

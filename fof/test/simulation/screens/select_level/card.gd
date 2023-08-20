@@ -38,7 +38,7 @@ func _process(_delta: float) -> void:
 func _on_default_state_pressed():
 	$Name.text = default_state[0]
 	$Text.text = default_state[1]
-	$ArtMax.texture = load("res://test/simulation/assets/sprites/%s" % default_state[2])
+	$ArtMax.texture = load("res://test/simulation/assets/sprites/units/%s" % default_state[2])
 	$Att.text = default_state[3]
 	$Hp.text = default_state[4]
 	$Spd.text = default_state[5]

@@ -133,7 +133,7 @@ func add_card_to_card_zone(card: Control) -> void:
 	$CardZone.add_child(card)
 
 func on_art_max_selected(card_info: Array) -> void:
-	$ActiveArt.texture = load("res://test/simulation/assets/sprites/%s" % card_info[0])
+	$ActiveArt.texture = load("res://test/simulation/assets/sprites/units/%s" % card_info[0])
 	active_card = card_info[1]
 
 func on_create_unit(tile: Node2D, alter_history: bool) -> void:
@@ -282,5 +282,5 @@ func on_update_visibility(tile: Node2D):
 
 func _on_number_generator_pressed():
 	var number_generator: Control = preload("res://test/simulation/screens/select_level/number_generator.tscn").instantiate()
-	number_generator.position = Vector2(1650, 700)
+	number_generator.position = Vector2(1200, 700)
 	add_child(number_generator)

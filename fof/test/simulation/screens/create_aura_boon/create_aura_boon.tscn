@@ -1,0 +1,180 @@
+[gd_scene load_steps=3 format=3 uid="uid://bl6w6vrg1dscg"]
+
+[ext_resource type="Theme" uid="uid://be5u05ixh2dg7" path="res://test/simulation/assets/fonts/roboto32.tres" id="1_d6fuu"]
+[ext_resource type="Script" path="res://test/simulation/screens/create_aura_boon/create_aura_boon.gd" id="1_tnmee"]
+
+[node name="CreateAuraBoon" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_d6fuu")
+script = ExtResource("1_tnmee")
+
+[node name="Left" type="Button" parent="."]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 441.0
+offset_right = 84.0
+offset_bottom = 511.0
+text = "<-"
+
+[node name="Right" type="Button" parent="."]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 528.0
+offset_right = 84.0
+offset_bottom = 598.0
+text = "->"
+
+[node name="AurasBoonSwap" type="Button" parent="."]
+layout_mode = 0
+offset_left = 43.0
+offset_top = 966.0
+offset_right = 222.0
+offset_bottom = 1039.0
+text = "Boons"
+
+[node name="CardZone" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 106.0
+offset_top = 166.0
+offset_right = 806.0
+offset_bottom = 866.0
+
+[node name="Inside" type="ColorRect" parent="CardZone"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Outside" type="ColorRect" parent="CardZone"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.490196, 0.490196, 0.490196, 0.6)
+
+[node name="SpriteList" type="Control" parent="CardZone"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CreateAuraBoon" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 1131.0
+offset_top = 213.0
+offset_right = 1593.0
+offset_bottom = 800.0
+
+[node name="Rarity" type="ColorRect" parent="CreateAuraBoon"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.431373, 0.431373, 0.431373, 1)
+
+[node name="Background" type="Control" parent="CreateAuraBoon"]
+anchors_preset = 0
+offset_left = 163.0
+offset_top = 51.0
+offset_right = 285.0
+offset_bottom = 173.0
+
+[node name="Inside" type="ColorRect" parent="CreateAuraBoon/Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -5.0
+offset_top = -5.0
+offset_right = 5.0
+offset_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Outside" type="ColorRect" parent="CreateAuraBoon/Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.658824, 0.658824, 0.658824, 1)
+
+[node name="ArtMax" type="Sprite2D" parent="CreateAuraBoon"]
+position = Vector2(225, 110)
+
+[node name="Text" type="TextEdit" parent="CreateAuraBoon"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 287.0
+offset_right = 440.0
+offset_bottom = 558.0
+placeholder_text = "Write your text here"
+
+[node name="Name" type="LineEdit" parent="CreateAuraBoon"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 228.0
+offset_right = 440.0
+offset_bottom = 274.0
+placeholder_text = "Write Name Here"
+alignment = 1
+
+[node name="SelectRarity" type="OptionButton" parent="CreateAuraBoon"]
+layout_mode = 0
+offset_left = 487.0
+offset_right = 648.0
+offset_bottom = 37.0
+item_count = 5
+popup/item_0/text = "Common"
+popup/item_0/id = 0
+popup/item_1/text = "Rare"
+popup/item_1/id = 1
+popup/item_2/text = "Exalt"
+popup/item_2/id = 2
+popup/item_3/text = "Miniboss"
+popup/item_3/id = 3
+popup/item_4/text = "Boss"
+popup/item_4/id = 4
+
+[node name="SaveCard" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1131.0
+offset_top = 831.0
+offset_right = 1593.0
+offset_bottom = 925.0
+text = "Save Card"
+
+[node name="LoadAurasBoons" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1131.0
+offset_top = 941.0
+offset_right = 1593.0
+offset_bottom = 1035.0
+text = "Load Auras & Boons"
+
+[connection signal="pressed" from="Left" to="." method="_on_left_pressed"]
+[connection signal="pressed" from="Right" to="." method="_on_right_pressed"]
+[connection signal="pressed" from="AurasBoonSwap" to="." method="_on_auras_boon_swap_pressed"]
+[connection signal="item_selected" from="CreateAuraBoon/SelectRarity" to="." method="_on_select_rarity_item_selected"]
+[connection signal="pressed" from="SaveCard" to="." method="_on_save_card_pressed"]
+[connection signal="pressed" from="LoadAurasBoons" to="." method="_on_load_auras_boons_pressed"]

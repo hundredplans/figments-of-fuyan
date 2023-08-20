@@ -58,7 +58,7 @@ tracks/3/keys = {
 [sub_resource type="Animation" id="Animation_3ak8k"]
 resource_name = "move_screen"
 length = 0.25
-step = 0.05
+step = 0.005
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -296,4 +296,10 @@ text = "Fuyanopedia"
 label_settings = ExtResource("3_em14y")
 
 [connection signal="pressed" from="Buttons/Quit/Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="Buttons/Quit/Quit" to="." method="on_menu_button_pressed"]
+[connection signal="pressed" from="Buttons/LeftButtons/Play/Play" to="." method="on_menu_button_pressed"]
 [connection signal="pressed" from="Buttons/LeftButtons/Simulation/Simulation" to="." method="_on_simulation_pressed"]
+[connection signal="pressed" from="Buttons/LeftButtons/Simulation/Simulation" to="." method="on_menu_button_pressed"]
+[connection signal="pressed" from="Buttons/LeftButtons/EditorMenu/EditorMenu" to="." method="on_menu_button_pressed"]
+[connection signal="pressed" from="Buttons/LeftButtons/Settings/Settings" to="." method="on_menu_button_pressed"]
+[connection signal="pressed" from="Buttons/LeftButtons/Fuyanopedia/Fuyanopedia" to="." method="on_menu_button_pressed"]
