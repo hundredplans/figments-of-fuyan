@@ -5,6 +5,7 @@ var load_path: String
 
 const base_load_card_path: String = "user://savefofle/cards"
 const base_load_level_path: String = "user://savefofle/levels"
+const base_load_auras_boons_path: String = "user://savefofle/auras_boons"
 
 signal card_selected
 signal level_selected
@@ -22,6 +23,7 @@ func load_stuff():
 	match load_state:
 		0: load_path = parent.load_card_path
 		1: load_path = parent.load_level_path
+		5: load_path = parent.load_aura_boon_path
 		
 	for dir in DirAccess.open(load_path).get_directories():
 		var load_stuff_node: Control = load_stuff_scene.instantiate()

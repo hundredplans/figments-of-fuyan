@@ -94,13 +94,23 @@ func _on_right_pressed():
 		load_cards()
 
 func _on_load_auras_boons_pressed():
-	pass # Replace with function body.
+	var loadcard: Control = preload("res://test/simulation/screens/load_stuff/load_stuff.tscn").instantiate()
+	loadcard.aura_selected.connect(on_aura_selected)
+	loadcard.boon_selected.connect(on_boon_selected)
+	loadcard.load_state = 5
+	add_child(loadcard)
+
+func on_aura_selected(file_name: String) -> void:
+	pass
+	
+func on_boon_selected(file_name: String) -> void:
+	pass
 
 func _on_save_card_pressed():
 	var path: String
 	match create_boons:
-		false: path = "user://savefofle/auras/"
-		true: path = "user://savefofle/boons/"
+		false: path = "user://savefofle/auras_boons/auras"
+		true: path = "user://savefofle/auras_boons/boons"
 		
 	if $CreateAuraBoon/Name.text and $CreateAuraBoon/Text.text and $CreateAuraBoon/ArtMax.texture:
 		var file := FileAccess.open(path + $CreateAuraBoon/Name.text, FileAccess.WRITE)
