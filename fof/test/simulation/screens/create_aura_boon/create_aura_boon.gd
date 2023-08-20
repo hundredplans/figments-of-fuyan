@@ -87,12 +87,10 @@ func _on_left_pressed():
 	if current_page > 0:
 		current_page -= 1
 		load_cards()
-	
 func _on_right_pressed():
 	if current_page < max_page:
 		current_page += 1
 		load_cards()
-
 func _on_load_auras_boons_pressed():
 	var loadcard: Control = preload("res://test/simulation/screens/load_stuff/load_stuff.tscn").instantiate()
 	loadcard.aura_selected.connect(on_aura_selected)
@@ -101,19 +99,33 @@ func _on_load_auras_boons_pressed():
 	add_child(loadcard)
 
 func on_aura_selected(file_name: String) -> void:
-	pass
+	if !create_boons: load_aura_boon(file_name)
+	else: _on_auras_boon_swap_pressed(); load_aura_boon(file_name)
 	
 func on_boon_selected(file_name: String) -> void:
-	pass
-
+	if create_boons: load_aura_boon(file_name)
+	else: _on_auras_boon_swap_pressed(); load_aura_boon(file_name)
+		
+func load_aura_boon(file_name: String) -> void:
+	var path: String = "user://savefofle/auras_boons" + file_name
+	if FileAccess.file_exists(path):
+		var file := FileAccess.open(path, FileAccess.READ)
+		var card_info: Array = file.get_as_text().split("\n")
+		if card_info.size() == 4:
+			$CreateAuraBoon/Name.text = card_info[0]
+			$CreateAuraBoon/Text.text = card_info[1]
+			$CreateAuraBoon/ArtMax.texture = load(card_info[2])
+			$CreateAuraBoon/SelectRarity.selected = int(card_info[3])
+			_on_select_rarity_item_selected(int(card_info[3]))
+		
 func _on_save_card_pressed():
 	var path: String
 	match create_boons:
-		false: path = "user://savefofle/auras_boons/auras"
-		true: path = "user://savefofle/auras_boons/boons"
+		false: path = "user://savefofle/auras_boons/auras/"
+		true: path = "user://savefofle/auras_boons/boons/"
 		
 	if $CreateAuraBoon/Name.text and $CreateAuraBoon/Text.text and $CreateAuraBoon/ArtMax.texture:
-		var file := FileAccess.open(path + $CreateAuraBoon/Name.text, FileAccess.WRITE)
+		var file := FileAccess.open(path + $CreateAuraBoon/Name.text + ".txt", FileAccess.WRITE)
 		var contents: String = "%s\n%s\n%s\n%s" % [$CreateAuraBoon/Name.text, $CreateAuraBoon/Text.text.replace("\n", ""), $CreateAuraBoon/ArtMax.texture.resource_path,str($CreateAuraBoon/SelectRarity.selected)]
 		file.store_string(contents)
 		file = null

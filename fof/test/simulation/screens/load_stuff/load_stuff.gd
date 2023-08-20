@@ -5,10 +5,12 @@ var load_path: String
 
 const base_load_card_path: String = "user://savefofle/cards"
 const base_load_level_path: String = "user://savefofle/levels"
-const base_load_auras_boons_path: String = "user://savefofle/auras_boons"
+const base_load_aura_boon_path: String = "user://savefofle/auras_boons"
 
 signal card_selected
 signal level_selected
+signal aura_selected
+signal boon_selected
 
 var load_state: int = 0
 var confirm_deletion: bool = true
@@ -71,6 +73,7 @@ func on_load_directory(dir_name: String) -> void:
 	match load_state:
 		0: parent.load_card_path += dir_name
 		1: parent.load_level_path += dir_name
+		5: parent.load_aura_boon_path += dir_name
 	load_stuff()
 
 func _on_back_button_pressed():
@@ -83,6 +86,10 @@ func _on_back_button_pressed():
 			if parent.load_level_path != base_load_level_path:
 				var last_slash: int = parent.load_level_path.rfind("/")
 				parent.load_level_path = parent.load_level_path.substr(0, last_slash)
+		5:
+			if parent.load_aura_boon_path != base_load_aura_boon_path:
+				var last_slash: int = parent.load_aura_boon_path.rfind("/")
+				parent.load_aura_boon_path = parent.load_aura_boon_path.substr(0, last_slash)
 	load_stuff()
 
 func on_load_stuff(file: String) -> void:
@@ -97,7 +104,14 @@ func on_load_stuff(file: String) -> void:
 			if new_load_path: new_load_path += "/"
 			else: new_load_path.insert(0, "U")
 			level_selected.emit(new_load_path + file)
-
+		5:
+			var new_load_path: String = parent.load_aura_boon_path.right(parent.load_aura_boon_path.length() - base_load_aura_boon_path.length())
+			if new_load_path: new_load_path += "/"
+			else: new_load_path.insert(0, "U")
+			
+			if new_load_path.contains("boons"): boon_selected.emit(new_load_path + file)
+			elif new_load_path.contains("auras"): aura_selected.emit(new_load_path + file)
+			
 func on_destroy_button_pressed(node: Control, file: String) -> void:
 	match confirm_deletion:
 		true:
@@ -119,6 +133,7 @@ func on_delete_stuff(node: Control, file: String, confirm_deletion_node: Control
 	match load_state:
 		0: path = parent.load_card_path
 		1: path = parent.load_level_path
+		5: path = parent.load_aura_boon_path
 		
 	var dir := DirAccess.open(path)
 	dir.remove(file)
