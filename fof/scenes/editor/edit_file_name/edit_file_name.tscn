@@ -1,0 +1,206 @@
+[gd_scene load_steps=9 format=3 uid="uid://bdd0m6wbuerq5"]
+
+[ext_resource type="Script" path="res://scenes/editor/edit_file_name/edit_file_name.gd" id="1_0fpue"]
+[ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="1_6unjv"]
+[ext_resource type="Texture2D" uid="uid://c1uaguvklwitm" path="res://assets/UI/lock_button/closed_variant.png" id="3_oqims"]
+[ext_resource type="Texture2D" uid="uid://4vbvarc8wvrv" path="res://assets/UI/lock_button/open_variant.png" id="4_bi6wg"]
+
+[sub_resource type="Animation" id="Animation_y3l2c"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("LockButton:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(608, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Showcase:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("LockButton:texture_normal")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("3_oqims")]
+}
+
+[sub_resource type="Animation" id="Animation_33dgc"]
+resource_name = "on_lock_button_closed"
+length = 0.15
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("LockButton:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(608, 70), Vector2(608, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Showcase:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("LockButton:texture_normal")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [ExtResource("4_bi6wg"), ExtResource("3_oqims")]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"on_play_lock_closed_sound_effect"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_qcp4e"]
+resource_name = "on_lock_button_open"
+length = 0.15
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("LockButton:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(608, 0), Vector2(608, 70)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Showcase:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("LockButton:texture_normal")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [ExtResource("3_oqims"), ExtResource("4_bi6wg")]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"on_play_lock_open_sound_effect"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0d7hp"]
+_data = {
+"RESET": SubResource("Animation_y3l2c"),
+"on_lock_button_closed": SubResource("Animation_33dgc"),
+"on_lock_button_open": SubResource("Animation_qcp4e")
+}
+
+[node name="EditFileName" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 678.0
+offset_bottom = 138.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_6unjv")
+script = ExtResource("1_0fpue")
+
+[node name="LockButtonPressed" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_0d7hp")
+}
+
+[node name="Internal" type="LineEdit" parent="."]
+layout_mode = 0
+offset_right = 608.0
+offset_bottom = 70.0
+placeholder_text = "Internal File Name"
+alignment = 1
+max_length = 40
+
+[node name="Showcase" type="LineEdit" parent="."]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_top = 70.0
+offset_right = 608.0
+offset_bottom = 140.0
+placeholder_text = "Showcase Name"
+alignment = 1
+max_length = 40
+
+[node name="LockButton" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 608.0
+offset_right = 678.0
+offset_bottom = 70.0
+texture_normal = ExtResource("3_oqims")
+
+[connection signal="text_changed" from="Internal" to="." method="_on_internal_text_changed"]
+[connection signal="text_changed" from="Showcase" to="." method="_on_showcase_text_changed"]
+[connection signal="pressed" from="LockButton" to="." method="_on_lock_button_pressed"]

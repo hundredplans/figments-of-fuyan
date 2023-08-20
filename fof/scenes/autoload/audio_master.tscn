@@ -2,5 +2,24 @@
 
 [ext_resource type="Script" path="res://scenes/autoload/audio_master.gd" id="1_23n64"]
 
-[node name="AudioMaster" type="AudioStreamPlayer"]
+[node name="AudioMaster" type="Node"]
 script = ExtResource("1_23n64")
+
+[node name="MusicStream" type="AudioStreamPlayer" parent="."]
+
+[node name="SFXContainer" type="Node" parent="."]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="SFXContainer"]
+bus = &"SFX"
+
+[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="SFXContainer"]
+bus = &"SFX"
+
+[node name="AudioStreamPlayer3" type="AudioStreamPlayer" parent="SFXContainer"]
+bus = &"SFX"
+
+[node name="AudioStreamPlayer4" type="AudioStreamPlayer" parent="SFXContainer"]
+bus = &"SFX"
+
+[node name="AudioStreamPlayer5" type="AudioStreamPlayer" parent="SFXContainer"]
+bus = &"SFX"

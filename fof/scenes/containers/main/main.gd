@@ -24,15 +24,12 @@ func _process(_delta: float) -> void:
 		on_trigger_screen_history()
 		
 func on_load_screen(screen: Control) -> void:
-	
 	match screens.get_children().size():
 		0: 
 			Helper.on_enter_screen(screen)
-			on_connect_screen_signals(screen)
 		1:
 			var child: Control = screens.get_child(0)
 			Helper.on_exit_screen(screen, child)
-			on_connect_screen_signals(screen)
 		_: print_debug("You have too many screens"); screen.queue_free()
 		
 func on_connect_screen_signals(screen: Control) -> void:

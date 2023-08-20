@@ -1,6 +1,5 @@
 extends Control
 
-var id: int = 1
 var world_difficulty: int = 1
 var area_name: String
 var primary_color: Color = Color("000000")
@@ -67,3 +66,7 @@ func modulate_world_difficulty_buttons() -> void:
 func _on_world_difficulty_pressed(_world_difficulty: int): 
 	world_difficulty = _world_difficulty
 	modulate_world_difficulty_buttons()
+
+func _on_save_area_pressed():
+	var contents: String = "%s\n%s\n%s\n%s\n%s" % [str(primary_color), str(accent_color), str(world_difficulty), cards_allowed, tiles_allowed]
+	Helper.write_to_base_game_file("res://static/base_game/areas/", $Buttons/EditFileName, contents)

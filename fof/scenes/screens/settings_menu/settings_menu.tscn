@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://ctefkqvn6jtcw"]
+
+[ext_resource type="Script" path="res://scenes/screens/settings_menu/settings_menu.gd" id="1_va7fn"]
+
+[sub_resource type="Animation" id="Animation_wh5y0"]
+resource_name = "move_screen"
+length = 0.1
+step = 0.01
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_fyrj1"]
+_data = {
+"move_screen": SubResource("Animation_wh5y0")
+}
+
+[node name="SettingsMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_va7fn")
+
+[node name="MoveScreen" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_fyrj1")
+}

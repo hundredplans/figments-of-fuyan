@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://bq65i6hwtd4b5"]
+[gd_scene load_steps=7 format=3 uid="uid://bq65i6hwtd4b5"]
 
 [ext_resource type="Script" path="res://scenes/screens/area_editor/area_editor.gd" id="1_r82ym"]
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="2_euq7d"]
+[ext_resource type="PackedScene" uid="uid://bdd0m6wbuerq5" path="res://scenes/editor/edit_file_name/edit_file_name.tscn" id="3_s437e"]
 
 [sub_resource type="Animation" id="Animation_sqay2"]
 length = 0.001
@@ -88,22 +89,6 @@ offset_right = 1880.0
 offset_bottom = 1040.0
 theme = ExtResource("2_euq7d")
 
-[node name="AreaName" type="LineEdit" parent="Buttons"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -247.0
-offset_top = 345.0
-offset_right = 247.0
-offset_bottom = 434.0
-grow_horizontal = 2
-grow_vertical = 2
-alignment = 1
-max_length = 20
-
 [node name="SaveArea" type="Button" parent="Buttons"]
 layout_mode = 0
 offset_left = 26.0
@@ -114,10 +99,10 @@ text = "Save Area"
 
 [node name="Colors" type="Control" parent="Buttons"]
 anchors_preset = 0
-offset_left = 36.0
-offset_top = 25.0
-offset_right = 750.0
-offset_bottom = 385.0
+offset_left = 464.0
+offset_top = 246.0
+offset_right = 1178.0
+offset_bottom = 606.0
 
 [node name="PrimaryColor" type="Control" parent="Buttons/Colors"]
 anchors_preset = 0
@@ -224,10 +209,10 @@ grow_vertical = 2
 
 [node name="WorldDifficulty" type="Control" parent="Buttons"]
 anchors_preset = 0
-offset_left = 807.0
-offset_top = 19.0
-offset_right = 1061.0
-offset_bottom = 419.0
+offset_left = 1297.0
+offset_top = 219.0
+offset_right = 1551.0
+offset_bottom = 619.0
 
 [node name="PRBackground" type="ColorRect" parent="Buttons/WorldDifficulty"]
 layout_mode = 1
@@ -277,6 +262,16 @@ offset_bottom = 400.0
 grow_horizontal = 2
 text = "World 4"
 
+[node name="EditFileName" parent="Buttons" instance=ExtResource("3_s437e")]
+anchors_preset = 0
+offset_left = 496.0
+offset_top = 832.0
+offset_right = 1174.0
+offset_bottom = 970.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[connection signal="pressed" from="Buttons/SaveArea" to="." method="_on_save_area_pressed"]
 [connection signal="pressed" from="Buttons/WorldDifficulty/WorldOne" to="." method="_on_world_difficulty_pressed" binds= [1]]
 [connection signal="pressed" from="Buttons/WorldDifficulty/WorldTwo" to="." method="_on_world_difficulty_pressed" binds= [2]]
 [connection signal="pressed" from="Buttons/WorldDifficulty/WorldThree" to="." method="_on_world_difficulty_pressed" binds= [3]]

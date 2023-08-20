@@ -21,13 +21,14 @@ func on_exit_screen_animation_finished(screen: Control, old_screen: Control) -> 
 
 func on_enter_screen(screen: Control) -> void:
 	get_parent().get_node("Main/Screens").add_child(screen)
+	get_parent().get_node("Main").on_connect_screen_signals(screen)
 	play_method_on_animation_end("move_screen", screen.get_node("MoveScreen"), on_enter_screen_animation_finished, [], true)
 	add_screen_history.emit(screen.scene_file_path)
 	screen_change_animation_state.emit(true)
 
 func on_enter_screen_animation_finished() -> void:
 	screen_change_animation_state.emit(false)
-
+	
 func play_method_on_animation_end(animation_name: String, animation_player: AnimationPlayer, method: Callable, args: Array, backwards: bool) -> void:
 	var animation: Animation = animation_player.get_animation(animation_name)
 	var track_index: int = animation.add_track(Animation.TYPE_METHOD)
@@ -43,25 +44,54 @@ func play_method_on_animation_end(animation_name: String, animation_player: Anim
 var pure_characters: Array = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",\
 "A", "B", "C", "D", "E", "F", 'G', "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",\
 "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",\
-"_", "'"]
+"_", "'"," "]
 var reserved_file_names: Array = ["CON", "PRN", "AUX", "NUL"]
 var reserved_file_names_loop: Array = ["COM", "LPT"]
 
-func purify_file_name(file_name: String) -> String:
-	if file_name not in reserved_file_names:
+func is_file_name_pure(file_name: String) -> bool:
+	if file_name not in reserved_file_names and file_name.length() >= 2:
 		for reserved_file_name in reserved_file_names_loop:
 			for i in range(0, 10):
-				if file_name == reserved_file_name + str(i): return ""
+				if file_name == reserved_file_name + str(i): return false
 		
-		for character in file_name: if character not in pure_characters: return ""
-		return file_name
-	return ""
+		for character in file_name: if character not in pure_characters: return false
+		return true
+	return false
+
+func return_new_highest_id(dir_path: String, file_name: String) -> int:
+	var dir := DirAccess.open(dir_path)
+	var id: int = 0
+	if dir != null:
+		for file in dir.get_files():
+			var file_name_info: Array = file.split("-", false)
+			var file_id: int = int(file_name_info[0])
+			if file_name_info[1].right(-1).left(-4) == file_name: return file_id
+			if file_id > id: id = file_id
+	id += 1
+	return id
 
 func return_file_contents(file_path: String) -> String:
 	if FileAccess.file_exists(file_path):
 		var file: FileAccess = FileAccess.open(file_path, FileAccess.READ)
 		return file.get_as_text()
 	return ""
+
+func write_to_base_game_file(dir: String, edit_file_name: Control, contents: String) -> void:
+	var file_name: String = edit_file_name.get_node("Internal").text
+	var showcase_name: String = edit_file_name.get_node("Showcase").text
+	if is_file_name_pure(file_name):
+		if dir.begins_with("res://static/base_game/"):
+			var id: String = str(return_new_highest_id(dir, file_name))
+			contents = contents.insert(0, "%s\n%s\n%s\n") % [id, file_name, showcase_name]
+			file_name = file_name.insert(0, "%s - " % id)
+			write_to_file(dir, file_name, contents)
+		else: print_debug("You are not writing to the correct directory")
+	else: print_debug("Your name is not pure")
+
+func write_to_file(dir: String, file_name: String, contents: String) -> void:
+	var file := FileAccess.open(dir + file_name + ".fof", FileAccess.WRITE)
+	file.store_string(contents)
+	file = null
 
 func get_children_recursive(node: Node, children := []):
 	children.append(node)

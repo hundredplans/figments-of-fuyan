@@ -296,6 +296,4 @@ text = "Fuyanopedia"
 label_settings = ExtResource("3_em14y")
 
 [connection signal="pressed" from="Buttons/Quit/Quit" to="." method="_on_quit_pressed"]
-[connection signal="pressed" from="Buttons/LeftButtons/Play/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="Buttons/LeftButtons/Simulation/Simulation" to="." method="_on_simulation_pressed"]
-[connection signal="pressed" from="Buttons/LeftButtons/EditorMenu/EditorMenu" to="." method="_on_editor_menu_pressed"]
