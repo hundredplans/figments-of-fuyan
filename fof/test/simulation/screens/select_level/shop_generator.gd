@@ -59,6 +59,8 @@ func on_generate_world(_difficulty: int) -> void:
 					old_total += rarity
 					i += 1
 		j += 1
+		
+	var card_results: Array = []
 	var k: int = 0 
 	for result in roll_results: 
 		if result == "TransformRarity" and _difficulty == 3:
@@ -73,6 +75,14 @@ func on_generate_world(_difficulty: int) -> void:
 			if result.begins_with("Rare"): rarity_result = 1
 			elif result.begins_with("Exalt"): rarity_result = 2
 			var card_result: Array = return_matching_rarity(rarity_result, path, dirfiles)
+			if card_result[0] not in card_results: card_results.append(card_result[0])
+			else:
+				card_result = return_matching_rarity(rarity_result, path, dirfiles)
+				if card_result[0] not in card_results: card_results.append(card_result[0])
+				else:
+					card_result = return_matching_rarity(rarity_result, path, dirfiles)
+					if card_result[0] not in card_results: card_results.append(card_result[0])
+			
 			var auraboon: Control = load("res://test/simulation/screens/select_level/" + path.left(-1) + ".tscn").instantiate()
 			if path == "boons": auraboon.load_boon(card_result)
 			elif path == "auras": auraboon.load_aura(card_result)
@@ -98,7 +108,6 @@ func return_matching_rarity(rarity: int, path: String, dirfiles: Array) -> Array
 	var contents: Array = return_path_contents(path, dirfiles).filter(func(x: Array): return int(x[3]) == rarity)
 	return contents[randi() % contents.size()]
 	
-
 func return_path_contents(path: String, dirfiles: Array) -> Array:
 	return dirfiles.map(func(_file: String): return FileAccess.open("user://savefofle/auras_boons/" + path + "/" + _file, FileAccess.READ).get_as_text().split("\n", false))
 

@@ -11,8 +11,8 @@ outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_gwwiq"]
 font = ExtResource("2_yl2f0")
-font_size = 14
-outline_size = 4
+font_size = 18
+outline_size = 6
 outline_color = Color(0, 0, 0, 1)
 
 [node name="Boon" type="Control"]
@@ -43,14 +43,44 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="ArtBackground" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 38.0
+offset_top = 7.0
+offset_right = 160.0
+offset_bottom = 129.0
+
+[node name="ArtOutside" type="ColorRect" parent="ArtBackground"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -5.0
+offset_top = -5.0
+offset_right = 5.0
+offset_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="ArtInside" type="ColorRect" parent="ArtBackground"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.658824, 0.658824, 0.658824, 1)
+
 [node name="ArtMax" type="Sprite2D" parent="."]
-position = Vector2(100, 80)
+position = Vector2(100, 65)
 
 [node name="Name" type="Label" parent="."]
 layout_mode = 0
-offset_top = 116.0
+offset_top = 134.0
 offset_right = 200.0
-offset_bottom = 172.0
+offset_bottom = 166.0
 label_settings = SubResource("LabelSettings_vxlbn")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -62,7 +92,6 @@ offset_right = 200.0
 offset_bottom = 300.0
 label_settings = SubResource("LabelSettings_gwwiq")
 horizontal_alignment = 1
-vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="DestroyButton" type="Button" parent="."]
