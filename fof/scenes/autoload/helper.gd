@@ -3,7 +3,12 @@ signal add_screen_history
 signal screen_change_animation_state
 const RED := Color(1,0,0,1)
 const BASE := Color(1,1,1,1)
-
+const settings_color_dict: Dictionary = {
+	"Graphics": "fcc71d",
+	"Audio": "0bc1dd",
+	"Video": "4f9c00",
+	"Preferences": "4f2a00",
+	"Controls": "bc57ef",}
 
 func call_method(node: Node, method: String, args: Array) -> bool:
 	if node.has_method(method):

@@ -1,0 +1,59 @@
+[gd_scene load_steps=5 format=3 uid="uid://kmpyflc5h7c8"]
+
+[ext_resource type="Script" path="res://scenes/screens/settings_menu/back_settings_card.gd" id="1_24xj7"]
+[ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="1_auox5"]
+[ext_resource type="FontFile" uid="uid://7k4xd8s0oed2" path="res://assets/UI/roboto/roboto.ttf" id="3_ff1jk"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_7intb"]
+font = ExtResource("3_ff1jk")
+font_size = 128
+outline_size = 20
+outline_color = Color(0, 0, 0, 1)
+
+[node name="BackSettingsCard" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 600.0
+offset_bottom = 900.0
+theme = ExtResource("1_auox5")
+script = ExtResource("1_24xj7")
+
+[node name="Background" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Outside" type="ColorRect" parent="Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Inside" type="ColorRect" parent="Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CardName" type="Label" parent="."]
+layout_mode = 0
+offset_left = 141.0
+offset_top = 74.0
+offset_right = 924.0
+offset_bottom = 228.0
+rotation = 0.96147
+label_settings = SubResource("LabelSettings_7intb")
+horizontal_alignment = 1
+vertical_alignment = 1
