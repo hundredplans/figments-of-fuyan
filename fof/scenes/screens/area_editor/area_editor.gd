@@ -55,6 +55,7 @@ func load_primary_and_accent_colors() -> void:
 
 func modulate_all() -> void:
 	modulate_world_difficulty_buttons()
+	
 func modulate_world_difficulty_buttons() -> void:
 	var i: int = 0
 	for child in $Buttons/WorldDifficulty.get_children():

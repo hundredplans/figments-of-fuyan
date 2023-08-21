@@ -1,0 +1,103 @@
+[gd_scene load_steps=3 format=3 uid="uid://bqspada3mu71p"]
+
+[ext_resource type="Theme" uid="uid://be5u05ixh2dg7" path="res://test/simulation/assets/fonts/roboto32.tres" id="1_1rxg0"]
+[ext_resource type="Script" path="res://test/simulation/screens/select_level/shop_generator.gd" id="1_l72y8"]
+
+[node name="ShopGenerator" type="Control"]
+layout_mode = 3
+anchor_right = 0.315
+anchor_bottom = 0.363
+offset_right = 271.2
+offset_bottom = -0.0400085
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_1rxg0")
+script = ExtResource("1_l72y8")
+
+[node name="Outside" type="ColorRect" parent="."]
+layout_mode = 1
+offset_left = -10.0
+offset_top = -8.0
+offset_right = 884.0
+offset_bottom = 404.0
+color = Color(0, 0, 0, 1)
+
+[node name="Inside" type="ColorRect" parent="."]
+layout_mode = 1
+offset_right = 876.0
+offset_bottom = 392.0
+color = Color(0.529412, 0.247059, 0.0941176, 1)
+
+[node name="DestroyButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 806.0
+offset_right = 876.0
+offset_bottom = 70.0
+text = "X"
+
+[node name="RolledCards" type="Control" parent="."]
+layout_mode = 1
+anchor_left = 0.02
+anchor_top = 0.028
+anchor_right = 0.911
+anchor_bottom = 0.814
+offset_left = -0.52
+offset_top = 0.0239992
+offset_right = -0.0360718
+offset_bottom = 2.91199
+
+[node name="GeneratorButtons" type="Control" parent="."]
+anchors_preset = 0
+offset_top = 346.0
+offset_right = 876.0
+offset_bottom = 392.0
+
+[node name="World1Pre" type="Button" parent="GeneratorButtons"]
+layout_mode = 0
+offset_right = 219.0
+offset_bottom = 46.0
+text = "World 1 - Pre"
+
+[node name="World1Post" type="Button" parent="GeneratorButtons"]
+layout_mode = 0
+offset_left = 219.0
+offset_right = 438.0
+offset_bottom = 46.0
+text = "World 1 - Post"
+
+[node name="World2" type="Button" parent="GeneratorButtons"]
+layout_mode = 0
+offset_left = 438.0
+offset_right = 657.0
+offset_bottom = 46.0
+text = "World 2"
+
+[node name="World3" type="Button" parent="GeneratorButtons"]
+layout_mode = 0
+offset_left = 657.0
+offset_right = 876.0
+offset_bottom = 46.0
+text = "World 3"
+
+[node name="TopRim" type="ColorRect" parent="GeneratorButtons"]
+layout_mode = 0
+offset_top = -12.0
+offset_right = 876.0
+offset_bottom = -1.0
+color = Color(0, 0, 0, 1)
+
+[node name="GrabZone" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 806.0
+offset_top = 70.0
+offset_right = 876.0
+offset_bottom = 334.0
+color = Color(1, 0.45098, 0.231373, 1)
+
+[connection signal="pressed" from="DestroyButton" to="." method="_on_destroy_button_pressed"]
+[connection signal="pressed" from="GeneratorButtons/World1Pre" to="." method="on_generate_world" binds= [0]]
+[connection signal="pressed" from="GeneratorButtons/World1Post" to="." method="on_generate_world" binds= [1]]
+[connection signal="pressed" from="GeneratorButtons/World2" to="." method="on_generate_world" binds= [2]]
+[connection signal="pressed" from="GeneratorButtons/World3" to="." method="on_generate_world" binds= [3]]
+[connection signal="mouse_entered" from="GrabZone" to="." method="_on_grab_zone_mouse_entered"]
+[connection signal="mouse_exited" from="GrabZone" to="." method="_on_grab_zone_mouse_exited"]

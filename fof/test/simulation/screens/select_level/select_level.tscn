@@ -14,15 +14,6 @@ anchors_preset = 0
 theme = SubResource("Theme_ty058")
 script = ExtResource("1_j22bg")
 
-[node name="DualMonitorMode" type="Button" parent="."]
-layout_mode = 0
-offset_left = 1386.0
-offset_top = 1003.0
-offset_right = 1559.0
-offset_bottom = 1060.0
-theme = SubResource("Theme_ty058")
-text = "Dual Me"
-
 [node name="LoadLevelButton" type="Button" parent="."]
 layout_mode = 0
 offset_left = 139.0
@@ -43,38 +34,55 @@ text = "Load Cards"
 
 [node name="TeamZero" type="Button" parent="."]
 layout_mode = 0
-offset_left = 657.0
+offset_left = 562.0
 offset_top = 1003.0
-offset_right = 830.0
+offset_right = 735.0
 offset_bottom = 1060.0
 theme = SubResource("Theme_ty058")
 text = "Team Zero"
 
 [node name="TeamOne" type="Button" parent="."]
 layout_mode = 0
-offset_left = 861.0
+offset_left = 766.0
 offset_top = 1003.0
-offset_right = 1034.0
+offset_right = 939.0
 offset_bottom = 1060.0
 theme = SubResource("Theme_ty058")
 text = "Team One"
 
+[node name="DualMonitorMode" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1392.0
+offset_top = 1003.0
+offset_right = 1565.0
+offset_bottom = 1060.0
+theme = SubResource("Theme_ty058")
+text = "Dual Me"
+
 [node name="DrawCards" type="Button" parent="."]
 layout_mode = 0
-offset_left = 1578.0
+offset_left = 1584.0
 offset_top = 1003.0
-offset_right = 1751.0
+offset_right = 1757.0
 offset_bottom = 1060.0
 theme = SubResource("Theme_ty058")
 text = "Draw Cards"
 
 [node name="NumberGenerator" type="Button" parent="."]
 layout_mode = 0
-offset_left = 1196.0
+offset_left = 1175.0
 offset_top = 1003.0
-offset_right = 1369.0
+offset_right = 1348.0
 offset_bottom = 1060.0
 text = "Random"
+
+[node name="ShopGenerator" type="Button" parent="."]
+layout_mode = 0
+offset_left = 981.0
+offset_top = 1003.0
+offset_right = 1154.0
+offset_bottom = 1060.0
+text = "Shop Gen"
 
 [node name="Energy" type="LineEdit" parent="."]
 layout_mode = 0
@@ -103,10 +111,11 @@ position = Vector2(1860, 1025)
 
 [node name="CardZone" type="Node2D" parent="."]
 
-[connection signal="pressed" from="DualMonitorMode" to="." method="_on_dual_monitor_mode_pressed"]
 [connection signal="pressed" from="LoadLevelButton" to="." method="_on_load_level_button_pressed"]
 [connection signal="pressed" from="LoadCardsButton" to="." method="_on_load_cards_button_pressed"]
 [connection signal="pressed" from="TeamZero" to="." method="_on_team_zero_pressed"]
 [connection signal="pressed" from="TeamOne" to="." method="_on_team_one_pressed"]
+[connection signal="pressed" from="DualMonitorMode" to="." method="_on_dual_monitor_mode_pressed"]
 [connection signal="pressed" from="DrawCards" to="." method="_on_draw_cards_pressed"]
 [connection signal="pressed" from="NumberGenerator" to="." method="_on_number_generator_pressed"]
+[connection signal="pressed" from="ShopGenerator" to="." method="_on_shop_generator_pressed"]

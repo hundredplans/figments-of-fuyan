@@ -284,3 +284,8 @@ func _on_number_generator_pressed():
 	var number_generator: Control = preload("res://test/simulation/screens/select_level/number_generator.tscn").instantiate()
 	number_generator.position = Vector2(1200, 700)
 	add_child(number_generator)
+
+func _on_shop_generator_pressed():
+	var shop_generator: Control = preload("res://test/simulation/screens/select_level/shop_generator.tscn").instantiate()
+	shop_generator.position = Vector2(500, 500)
+	add_child(shop_generator)
