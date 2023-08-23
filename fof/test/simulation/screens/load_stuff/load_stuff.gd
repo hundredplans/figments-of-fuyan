@@ -5,6 +5,8 @@ var load_path: String
 
 const base_load_card_path: String = "user://savefofle/cards"
 const base_load_level_path: String = "user://savefofle/levels"
+const base_load_aura_path: String = "user://savefofle/auras_boons/auras"
+const base_load_boon_path: String = "user://savefofle/auras_boons/boons"
 const base_load_aura_boon_path: String = "user://savefofle/auras_boons"
 
 signal card_selected
@@ -25,6 +27,8 @@ func load_stuff():
 	match load_state:
 		0: load_path = parent.load_card_path
 		1: load_path = parent.load_level_path
+		2: load_path = parent.load_aura_path
+		3: load_path = parent.load_boon_path
 		5: load_path = parent.load_aura_boon_path
 		
 	for dir in DirAccess.open(load_path).get_directories():
@@ -73,6 +77,8 @@ func on_load_directory(dir_name: String) -> void:
 	match load_state:
 		0: parent.load_card_path += dir_name
 		1: parent.load_level_path += dir_name
+		2: parent.load_aura_path += dir_name
+		3: parent.load_boon_path += dir_name
 		5: parent.load_aura_boon_path += dir_name
 	load_stuff()
 
@@ -86,6 +92,14 @@ func _on_back_button_pressed():
 			if parent.load_level_path != base_load_level_path:
 				var last_slash: int = parent.load_level_path.rfind("/")
 				parent.load_level_path = parent.load_level_path.substr(0, last_slash)
+		2:
+			if parent.load_aura_path != base_load_aura_path:
+				var last_slash: int = parent.load_aura_path.rfind("/")
+				parent.load_aura_path = parent.load_aura_path.substr(0, last_slash)
+		3:
+			if parent.load_boon_path != base_load_boon_path:
+				var last_slash: int = parent.load_boon_path.rfind("/")
+				parent.load_boon_path = parent.load_boon_path.substr(0, last_slash)
 		5:
 			if parent.load_aura_boon_path != base_load_aura_boon_path:
 				var last_slash: int = parent.load_aura_boon_path.rfind("/")
@@ -104,6 +118,16 @@ func on_load_stuff(file: String) -> void:
 			if new_load_path: new_load_path += "/"
 			else: new_load_path.insert(0, "U")
 			level_selected.emit(new_load_path + file)
+		2:
+			var new_load_path: String = parent.load_aura_path.right(parent.load_aura_path.length() - base_load_aura_path.length())
+			if new_load_path: new_load_path += "/"
+			else: new_load_path.insert(0, "U")
+			aura_selected.emit(new_load_path + file)
+		3:
+			var new_load_path: String = parent.load_boon_path.right(parent.load_boon_path.length() - base_load_boon_path.length())
+			if new_load_path: new_load_path += "/"
+			else: new_load_path.insert(0, "U")
+			boon_selected.emit(new_load_path + file)
 		5:
 			var new_load_path: String = parent.load_aura_boon_path.right(parent.load_aura_boon_path.length() - base_load_aura_boon_path.length())
 			if new_load_path: new_load_path += "/"
@@ -127,7 +151,6 @@ func on_delete_stuff(node: Control, file: String, confirm_deletion_node: Control
 	node.queue_free()
 	if confirm_deletion_node != null:
 		confirm_deletion_node.queue_free()
-	confirm_deletion = !confirm_deletion
 	
 	var path: String
 	match load_state:

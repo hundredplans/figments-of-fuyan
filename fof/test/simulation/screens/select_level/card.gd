@@ -1,5 +1,7 @@
 extends Control
 
+var remove_aura: bool = false
+@onready var utility_ani: AnimationPlayer = $UtilityMenu/UtilityPressed
 @export var downscale_scale: float = 0.5
 const RED := Color(1,0,0,1)
 const DEF := Color(1,1,1,1)
@@ -9,6 +11,7 @@ var held: bool = true
 var team: int = 1
 var card_path: String
 
+signal drag_drag_pressed
 signal refresh_vision
 
 func _ready():
@@ -34,6 +37,9 @@ func _process(_delta: float) -> void:
 			position.y = (get_viewport().get_mouse_position().y) - (($Out.size.y / 2) - 100) * scale.y
 		else:
 			held = false
+			
+	if remove_aura and Input.is_action_just_pressed("LeftClick"):
+		$AuraSelected/AuraArt.texture = null
 
 func _on_default_state_pressed():
 	$Name.text = default_state[0]
@@ -52,28 +58,18 @@ func _on_default_state_pressed():
 		3: $In.color = Color(0.639, 0.075, 0.722,1)
 		4: $In.color = Color(0.773, 0.031, 0.141, 1)
 		5: $In.color = Color(0.374, 0.6, 1, 1)
-
-func on_team_buttons_modulate():
-	$ChangeTeam.text = str(team)
-
-func on_scale_buttons_modulate():
-	match scale:
-		Vector2.ONE: $ScaleMe/Downscaled.modulate = DEF; $ScaleMe/Fullscale.modulate = RED
-		_: $ScaleMe/Downscaled.modulate = RED; $ScaleMe/Fullscale.modulate = DEF
-
-func _on_fullscale_pressed():
-	scale = Vector2.ONE
-	on_scale_buttons_modulate()
-
-func _on_downscaled_pressed():
-	scale = Vector2(downscale_scale, downscale_scale)
-	on_scale_buttons_modulate()
-
-func _on_change_team_pressed():
-	team = abs(team - 1)
-	on_team_buttons_modulate()
-
+		
 func _on_save_card_pressed():
+	var rarity: int = 0
+	match $In.color:
+		Color(0.43,0.43,0.43,1): rarity = 0
+		Color(0.31, 0.478, 0.439,1): rarity = 1
+		Color(0.966, 0.697, 0.253,1): rarity = 2
+		Color(0.639, 0.075, 0.722,1): rarity = 3
+		Color(0.773, 0.031, 0.141, 1): rarity = 4
+		Color(0.374, 0.6, 1, 1): rarity = 5
+
+	default_state = [$Name.text, $Text.text, $ArtMax.texture.resource_path.get_slice("/", 7), $Att.text, $Hp.text, $Spd.text, $Energy.text, rarity]
 	var rpath = $ArtMax.texture.resource_path
 	var tex = rpath.right(rpath.length() - rpath.rfind("/") - 1)
 	var file := FileAccess.open("user://savefofle/cards/%s.txt" % $Name.get_text(), FileAccess.WRITE)
@@ -94,3 +90,72 @@ func _on_save_card_pressed():
 
 	file.store_string(accum)
 	file = null
+		
+func on_team_buttons_modulate():
+	$ChangeTeam.text = str(team)
+func on_scale_buttons_modulate():
+	match scale:
+		Vector2.ONE: $ScaleMe/Downscaled.modulate = DEF; $ScaleMe/Fullscale.modulate = RED
+		_: $ScaleMe/Downscaled.modulate = RED; $ScaleMe/Fullscale.modulate = DEF
+func _on_fullscale_pressed():
+	scale = Vector2.ONE
+	on_scale_buttons_modulate()
+func _on_downscaled_pressed():
+	scale = Vector2(downscale_scale, downscale_scale)
+	on_scale_buttons_modulate()
+func _on_change_team_pressed():
+	team = abs(team - 1)
+	on_team_buttons_modulate()
+
+func _on_utility_pressed():
+	if !utility_ani.is_playing():
+		match $UtilityMenu.modulate:
+			Color(1,1,1,1): utility_ani.play_backwards("utility_pressed")
+			_: utility_ani.play("utility_pressed")
+
+func on_transform_pressed(state: int) -> void:
+	var rarity: int = 0
+	match $In.color:
+		Color(0.43,0.43,0.43,1): rarity = 0
+		Color(0.31, 0.478, 0.439,1): rarity = 1
+		Color(0.966, 0.697, 0.253,1): rarity = 2
+		Color(0.639, 0.075, 0.722,1): rarity = 3
+		Color(0.773, 0.031, 0.141, 1): rarity = 4
+		Color(0.374, 0.6, 1, 1): rarity = 5
+	
+	var filter_call: Callable
+	match state:
+		0: filter_call = func(x: String): var xs: Array = x.split("\n"); return xs[6] == $Energy.text and xs[0] != $Name.text
+		1: filter_call = func(x: String): var xs: Array = x.split("\n"); return int(xs[7]) == rarity and xs[0] != $Name.text
+		2: filter_call = func(x: String): var xs: Array = x.split("\n"); return int(xs[7]) == min(rarity + 1, 4) and xs[0] != $Name.text
+		
+	var contents: Array = get_directory_file_contents_recursive("user://savefofle/cards/").filter(filter_call)
+	if contents.size() > 0:
+		default_state = contents[randi() % contents.size()].split("\n")
+		_on_default_state_pressed()
+	
+func get_directory_file_contents_recursive(path: String, contents: Array = []):
+	var dir := DirAccess.open(path)
+	contents += Array(dir.get_files()).map(func(x: String): return FileAccess.open(path + x, FileAccess.READ).get_as_text())
+	for subdir in dir.get_directories():
+		if subdir not in ["None", "Champions"]:
+			contents = get_directory_file_contents_recursive(path + subdir + "/", contents)
+	return contents
+
+func _on_drag_drag_pressed():
+	drag_drag_pressed.emit([$ArtMax.texture.resource_path.get_slice("/", 7),self])
+
+func _on_load_aura_pressed():
+	var loadcard: Control = preload("res://test/simulation/screens/load_stuff/load_stuff.tscn").instantiate()
+	loadcard.aura_selected.connect(on_aura_selected)
+	loadcard.load_state = 2
+	get_parent().get_parent().add_child(loadcard)
+	
+func on_aura_selected(aura_path: String) -> void:
+	$AuraSelected/AuraArt.texture = load(FileAccess.open("user://savefofle/auras_boons/auras/" + aura_path, FileAccess.READ).get_as_text().split("\n")[2])
+
+func _on_aura_selected_mouse_entered():
+	remove_aura = true
+
+func _on_aura_selected_mouse_exited():
+	remove_aura = false

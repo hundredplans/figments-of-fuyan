@@ -1,4 +1,7 @@
 extends Control
+signal remove_from_inventory
+signal o_mouse_entered
+signal o_mouse_exited
 
 func load_boon(contents: Array) -> void:
 	$Name.text = contents[0]
@@ -12,5 +15,4 @@ func load_boon(contents: Array) -> void:
 		4: $Inside.color = Color(0.773, 0.031, 0.141, 1)
 		5: $Inside.color = Color(0.374, 0.6, 1, 1)
 
-
-func _on_destroy_button_pressed(): queue_free()
+func _on_destroy_button_pressed(): queue_free(); remove_from_inventory.emit($Name.text + ".txt")

@@ -166,6 +166,7 @@ func on_load_level(level_name: String) -> void:
 						card.global_position = Vector2(int(card_intel[2]), int(card_intel[3]))
 						card.team = int(card_intel[4])
 						card.on_team_buttons_modulate()
+						if card_intel[5]: card.get_node("AuraSelected/AuraArt").texture = load(card_intel[5])
 			
 	for tile_info in tiles:
 		active_tile_state = tile_info[1]
@@ -197,7 +198,12 @@ func save_level(text: String) -> void:
 	for tile in $FakeTiles.get_children():
 		if tile.tile_state != 0:
 			write_string += "%s,%s,%s,%s,%s\n" % [tile.tile_position.x, tile.tile_position.y, tile.tile_state, tile.tile_item, tile.arrow_state]
-	for child in card_names: write_string += "%s|%s|%s|%s|%s~" % [child.card_path.left(-4), child.scale.x, child.global_position.x, child.global_position.y, child.team]
+			
+	for child in card_names:
+		var aura_resource_path: String
+		if child.get_node("AuraSelected/AuraArt").texture: aura_resource_path = child.get_node("AuraSelected/AuraArt").texture.resource_path
+		write_string += "%s|%s|%s|%s|%s|%s~" % [child.card_path.left(-4), child.scale.x, child.global_position.x, child.global_position.y, child.team, aura_resource_path]
+	
 	file.store_string(write_string)
 	file = null
 func _on_nono_zone_mouse_entered(): if nono_zone == 0: nono_zone = 1

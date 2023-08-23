@@ -98,6 +98,7 @@ offset_left = -0.52
 offset_top = 0.0239992
 offset_right = -0.0360718
 offset_bottom = 2.91199
+mouse_filter = 2
 
 [connection signal="pressed" from="DestroyButton" to="." method="_on_destroy_button_pressed"]
 [connection signal="mouse_entered" from="GrabZone" to="." method="_on_grab_zone_mouse_entered"]

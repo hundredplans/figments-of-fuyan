@@ -84,6 +84,7 @@ func on_load_level(level_name: String) -> void:
 						card.position = Vector2(int(card_intel[2]) + xy, int(card_intel[3]))
 						card.team = int(card_intel[4])
 						card.on_team_buttons_modulate()
+						if card_intel[5]: card.get_node("AuraSelected/AuraArt").texture = load(card_intel[5])
 			
 	for tile_info in tiles:
 		for tile in $Tiles.get_children():
@@ -115,7 +116,7 @@ func on_card_selected(card_name: String) -> Control:
 		var file := FileAccess.open(path, FileAccess.READ)
 		var card_info: Array = file.get_as_text().split("\n")
 		var card: Control = preload("res://test/simulation/screens/select_level/card.tscn").instantiate()
-		card.get_node("DragDrag").pressed.connect(on_art_max_selected.bind([card_info[2], card]))
+		card.drag_drag_pressed.connect(on_art_max_selected)
 		card.refresh_vision.connect(refresh_vision)
 		add_card_to_card_zone(card)
 		
@@ -159,12 +160,12 @@ func on_destroy_unit(tile: Node2D, alter_history: bool) -> void:
 func modulate_team_buttons() -> void:
 	
 	match enable_vision_team_zero:
-		true: $TeamZero.modulate = Color(1,0,0,1)
-		false: $TeamZero.modulate = Color(1,1,1,1)
+		true: $Buttons/TeamZero.modulate = Color(1,0,0,1)
+		false: $Buttons/TeamZero.modulate = Color(1,1,1,1)
 		
 	match enable_vision_team_one:
-		true: $TeamOne.modulate = Color(1,0,0,1)
-		false: $TeamOne.modulate = Color(1,1,1,1)
+		true: $Buttons/TeamOne.modulate = Color(1,0,0,1)
+		false: $Buttons/TeamOne.modulate = Color(1,1,1,1)
 
 func _on_team_zero_pressed():
 	enable_vision_team_zero = !enable_vision_team_zero
@@ -289,3 +290,19 @@ func _on_shop_generator_pressed():
 	var shop_generator: Control = preload("res://test/simulation/screens/select_level/shop_generator.tscn").instantiate()
 	shop_generator.position = Vector2(500, 500)
 	add_child(shop_generator)
+
+func _on_add_boons_pressed():
+	var loadcard: Control = preload("res://test/simulation/screens/load_stuff/load_stuff.tscn").instantiate()
+	loadcard.boon_selected.connect(on_boon_selected)
+	loadcard.load_state = 3
+	add_child(loadcard)
+
+func on_boon_selected(boon_path: String) -> void:
+	var file := FileAccess.open("user://savefofle/loaded_boons.txt", FileAccess.READ_WRITE)
+	var text: String = file.get_as_text()
+	if boon_path not in text.split("\n", false):
+		file.store_string(text + boon_path + "\n")
+	file = null
+
+func _on_inventory_pressed():
+	add_child(preload("res://test/simulation/screens/select_level/inventory.tscn").instantiate())

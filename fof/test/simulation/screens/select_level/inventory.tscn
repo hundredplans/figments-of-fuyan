@@ -1,0 +1,61 @@
+[gd_scene load_steps=3 format=3 uid="uid://8duqba6i1u7w"]
+
+[ext_resource type="Theme" uid="uid://be5u05ixh2dg7" path="res://test/simulation/assets/fonts/roboto32.tres" id="1_3xixm"]
+[ext_resource type="Script" path="res://test/simulation/screens/select_level/inventory.gd" id="1_bs7cd"]
+
+[node name="Inventory" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_3xixm")
+script = ExtResource("1_bs7cd")
+
+[node name="Background" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="Out" type="ColorRect" parent="Background"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 1900.0
+offset_bottom = 1060.0
+color = Color(0, 0, 0, 0.258824)
+
+[node name="In" type="ColorRect" parent="Background"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 40.0
+offset_right = 1880.0
+offset_bottom = 1040.0
+color = Color(0.65098, 0.65098, 0.65098, 0.258824)
+
+[node name="BoonZone" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 60.0
+offset_top = 65.0
+offset_right = 1581.0
+offset_bottom = 1020.0
+
+[node name="ClearInventory" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1617.0
+offset_top = 927.0
+offset_right = 1863.0
+offset_bottom = 997.0
+text = "Clear Inventory"
+
+[node name="DestroyButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1801.0
+offset_top = 40.0
+offset_right = 1880.0
+offset_bottom = 120.0
+text = "X"
+
+[connection signal="pressed" from="ClearInventory" to="." method="_on_clear_inventory_pressed"]
+[connection signal="pressed" from="DestroyButton" to="." method="_on_destroy_button_pressed"]

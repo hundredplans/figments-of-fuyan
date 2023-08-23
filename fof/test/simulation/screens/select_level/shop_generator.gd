@@ -61,33 +61,29 @@ func on_generate_world(_difficulty: int) -> void:
 		j += 1
 		
 	var card_results: Array = []
-	var k: int = 0 
 	for result in roll_results: 
 		if result == "TransformRarity" and _difficulty == 3:
 			result = "TransformRarity+1"
-		k += 1
 		
 		if result.ends_with("Aura") or result.ends_with("Boon"):
 			var path: String = "boons"
 			if result.ends_with("Aura"): path = "auras"
 			var dirfiles: Array = DirAccess.open("user://savefofle/auras_boons/" + path).get_files()
+			var file_names: Array = Array(FileAccess.open("user://savefofle/loaded_boons.txt", FileAccess.READ).get_as_text().split("\n", false))
+			dirfiles = dirfiles.filter(func(x: String): return x not in file_names)
 			var rarity_result: int = 0
 			if result.begins_with("Rare"): rarity_result = 1
 			elif result.begins_with("Exalt"): rarity_result = 2
-			var card_result: Array = return_matching_rarity(rarity_result, path, dirfiles)
-			if card_result[0] not in card_results: card_results.append(card_result[0])
-			else:
-				card_result = return_matching_rarity(rarity_result, path, dirfiles)
-				if card_result[0] not in card_results: card_results.append(card_result[0])
-				else:
-					card_result = return_matching_rarity(rarity_result, path, dirfiles)
-					if card_result[0] not in card_results: card_results.append(card_result[0])
-			
+			return_matching_rarity_recursive([rarity_result, path, dirfiles], [], card_results)
 			var auraboon: Control = load("res://test/simulation/screens/select_level/" + path.left(-1) + ".tscn").instantiate()
-			if path == "boons": auraboon.load_boon(card_result)
-			elif path == "auras": auraboon.load_aura(card_result)
-			auraboon.get_node("DestroyButton").queue_free()
+			if path == "boons": auraboon.load_boon(card_results[card_results.size() - 1])
+			elif path == "auras": auraboon.load_aura(card_results[card_results.size() - 1])
 			$RolledCards.add_child(auraboon)
+			
+			if result.ends_with("Boon"):
+				auraboon.get_node("DestroyButton").pressed.disconnect(auraboon._on_destroy_button_pressed)
+				auraboon.get_node("DestroyButton").pressed.connect(get_parent().on_boon_selected.bind(auraboon.get_node("Name").text + ".txt"))
+			else: auraboon.get_node("DestroyButton").queue_free()
 		else:
 			var sprite := Sprite2D.new()
 			sprite.texture = load("res://test/simulation/assets/shop_rolls/" + result + ".png")
@@ -96,6 +92,10 @@ func on_generate_world(_difficulty: int) -> void:
 		
 	sort_rolled_results()
 		
+func return_matching_rarity_recursive(info: Array, x: Array, y: Array) -> void:
+	if x.size() > 0 and x not in y: y.append(x); return
+	return_matching_rarity_recursive(info, return_matching_rarity(info[0], info[1], info[2]), y)
+	
 func sort_rolled_results() -> void:
 	var total_x: int = 0
 	if $RolledCards.get_child_count() == 3: total_x += 150

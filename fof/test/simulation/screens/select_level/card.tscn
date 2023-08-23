@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://c8k7xkl3eye1v"]
+[gd_scene load_steps=9 format=3 uid="uid://c8k7xkl3eye1v"]
 
 [ext_resource type="Script" path="res://test/simulation/screens/select_level/card.gd" id="1_2mml4"]
 [ext_resource type="Theme" uid="uid://ckvg0fgx6jl8n" path="res://test/simulation/assets/fonts/bad_theme.tres" id="1_ve85a"]
@@ -11,6 +11,43 @@ LineEdit/constants/minimum_character_width = 1
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_16qps"]
 size = Vector2(121, 123)
+
+[sub_resource type="Animation" id="Animation_u1i44"]
+resource_name = "utility_pressed"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_h5l1u"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_k8m32"]
+_data = {
+"RESET": SubResource("Animation_h5l1u"),
+"utility_pressed": SubResource("Animation_u1i44")
+}
 
 [node name="Card" type="Control"]
 layout_mode = 3
@@ -148,14 +185,13 @@ offset_right = 198.0
 offset_bottom = 314.0
 text = "dd"
 
-[node name="DefaultState" type="Button" parent="."]
+[node name="Utility" type="Button" parent="."]
 layout_mode = 0
 offset_left = 117.0
 offset_top = 281.0
 offset_right = 148.0
 offset_bottom = 314.0
-text = "d
-"
+text = "ut"
 
 [node name="SaveCard" type="Button" parent="."]
 layout_mode = 0
@@ -165,11 +201,76 @@ offset_right = 81.0
 offset_bottom = 314.0
 text = "sve"
 
+[node name="UtilityMenu" type="Control" parent="."]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 0
+offset_top = 318.0
+offset_right = 202.0
+offset_bottom = 354.0
+
+[node name="UtilityPressed" type="AnimationPlayer" parent="UtilityMenu"]
+libraries = {
+"": SubResource("AnimationLibrary_k8m32")
+}
+
+[node name="DefaultState" type="Button" parent="UtilityMenu"]
+layout_mode = 0
+offset_right = 43.0
+offset_bottom = 36.0
+text = "def"
+
+[node name="TransformEnergy" type="Button" parent="UtilityMenu"]
+layout_mode = 0
+offset_left = 43.0
+offset_right = 81.0
+offset_bottom = 36.0
+text = "TE"
+
+[node name="TransformRarity" type="Button" parent="UtilityMenu"]
+layout_mode = 0
+offset_left = 81.0
+offset_right = 119.0
+offset_bottom = 36.0
+text = "TR"
+
+[node name="TransformRarityOne" type="Button" parent="UtilityMenu"]
+layout_mode = 0
+offset_left = 119.0
+offset_right = 157.0
+offset_bottom = 36.0
+text = "TR1"
+
+[node name="LoadAura" type="Button" parent="UtilityMenu"]
+layout_mode = 0
+offset_left = 157.0
+offset_right = 202.0
+offset_bottom = 36.0
+text = "aura"
+
+[node name="AuraSelected" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 148.0
+offset_top = 229.0
+offset_right = 270.0
+offset_bottom = 351.0
+scale = Vector2(0.4, 0.4)
+
+[node name="AuraArt" type="Sprite2D" parent="AuraSelected"]
+centered = false
+
 [connection signal="pressed" from="ChangeTeam" to="." method="_on_change_team_pressed"]
 [connection signal="pressed" from="ScaleMe/Downscaled" to="." method="_on_downscaled_pressed"]
 [connection signal="pressed" from="ScaleMe/Fullscale" to="." method="_on_fullscale_pressed"]
 [connection signal="mouse_entered" from="DragZone" to="." method="_on_drag_zone_mouse_entered"]
 [connection signal="mouse_exited" from="DragZone" to="." method="_on_drag_zone_mouse_exited"]
 [connection signal="pressed" from="Destroy" to="." method="_on_destroy_pressed"]
-[connection signal="pressed" from="DefaultState" to="." method="_on_default_state_pressed"]
+[connection signal="pressed" from="DragDrag" to="." method="_on_drag_drag_pressed"]
+[connection signal="pressed" from="Utility" to="." method="_on_utility_pressed"]
 [connection signal="pressed" from="SaveCard" to="." method="_on_save_card_pressed"]
+[connection signal="pressed" from="UtilityMenu/DefaultState" to="." method="_on_default_state_pressed"]
+[connection signal="pressed" from="UtilityMenu/TransformEnergy" to="." method="on_transform_pressed" binds= [0]]
+[connection signal="pressed" from="UtilityMenu/TransformRarity" to="." method="on_transform_pressed" binds= [1]]
+[connection signal="pressed" from="UtilityMenu/TransformRarityOne" to="." method="on_transform_pressed" binds= [2]]
+[connection signal="pressed" from="UtilityMenu/LoadAura" to="." method="_on_load_aura_pressed"]
+[connection signal="mouse_entered" from="AuraSelected" to="." method="_on_aura_selected_mouse_entered"]
+[connection signal="mouse_exited" from="AuraSelected" to="." method="_on_aura_selected_mouse_exited"]
