@@ -58,6 +58,7 @@ func _on_default_state_pressed():
 		3: $In.color = Color(0.639, 0.075, 0.722,1)
 		4: $In.color = Color(0.773, 0.031, 0.141, 1)
 		5: $In.color = Color(0.374, 0.6, 1, 1)
+		6: $In.color = Color(0.196, 0.196, 0.196, 1)
 		
 func _on_save_card_pressed():
 	var rarity: int = 0
@@ -68,6 +69,7 @@ func _on_save_card_pressed():
 		Color(0.639, 0.075, 0.722,1): rarity = 3
 		Color(0.773, 0.031, 0.141, 1): rarity = 4
 		Color(0.374, 0.6, 1, 1): rarity = 5
+		Color(0.196, 0.196, 0.196, 1): rarity = 6
 
 	default_state = [$Name.text, $Text.text, $ArtMax.texture.resource_path.get_slice("/", 7), $Att.text, $Hp.text, $Spd.text, $Energy.text, rarity]
 	var rpath = $ArtMax.texture.resource_path
@@ -87,6 +89,7 @@ func _on_save_card_pressed():
 		Color(0.639, 0.075, 0.722,1): accum += str(3) + "\n"
 		Color(0.773, 0.031, 0.141, 1): accum += str(4) + "\n"
 		Color(0.374, 0.6, 1, 1): accum += str(5) + "\n"
+		Color(0.196, 0.196, 0.196, 1): accum += str(6) + "\n"
 
 	file.store_string(accum)
 	file = null
@@ -122,10 +125,11 @@ func on_transform_pressed(state: int) -> void:
 		Color(0.639, 0.075, 0.722,1): rarity = 3
 		Color(0.773, 0.031, 0.141, 1): rarity = 4
 		Color(0.374, 0.6, 1, 1): rarity = 5
+		Color(0.196, 0.196, 0.196, 1): rarity = 6
 	
 	var filter_call: Callable
 	match state:
-		0: filter_call = func(x: String): var xs: Array = x.split("\n"); return xs[6] == $Energy.text and xs[0] != $Name.text
+		0: filter_call = func(x: String): var xs: Array = x.split("\n"); return xs[6] == $Energy.text and xs[0] != $Name.text and xs[7] != "6"
 		1: filter_call = func(x: String): var xs: Array = x.split("\n"); return int(xs[7]) == rarity and xs[0] != $Name.text
 		2: filter_call = func(x: String): var xs: Array = x.split("\n"); return int(xs[7]) == min(rarity + 1, 4) and xs[0] != $Name.text
 		

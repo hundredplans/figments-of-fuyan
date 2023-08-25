@@ -186,10 +186,11 @@ func _on_save_level_button_text_submitted(text: String):
 	else:
 		var confirm_deletion_node: Control = preload("res://test/simulation/screens/load_stuff/confirm_deletion.tscn").instantiate()
 		add_child(confirm_deletion_node)
+		nono_zone = 2
 		for child in confirm_deletion_node.get_node("Buttons").get_children():
 			match child.name:
-				"Yes": child.pressed.connect(save_level.bind(text)); child.pressed.connect(func(): confirm_deletion_node.queue_free())
-				"No": child.pressed.connect(func(): confirm_deletion_node.queue_free())
+				"Yes": child.pressed.connect(save_level.bind(text)); child.pressed.connect(func(): confirm_deletion_node.queue_free(); nono_zone = 0)
+				"No": child.pressed.connect(func(): confirm_deletion_node.queue_free(); nono_zone = 0)
 
 func save_level(text: String) -> void:
 	var file := FileAccess.open("user://savefofle/levels/%s.txt" % text, FileAccess.WRITE)

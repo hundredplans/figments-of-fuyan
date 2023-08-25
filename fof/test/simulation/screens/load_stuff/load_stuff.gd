@@ -60,6 +60,7 @@ func load_stuff():
 				3: load_stuff_node.modulate = Color(0.639, 0.075, 0.722,1)
 				4: load_stuff_node.modulate = Color(0.773, 0.031, 0.141,1)
 				5: load_stuff_node.modulate = Color(0.374, 0.6, 1, 1)
+				6: load_stuff_node.modulate = Color(0.196, 0.196, 0.196, 1)
 
 	$Path.text = load_path
 	var x: int = 0

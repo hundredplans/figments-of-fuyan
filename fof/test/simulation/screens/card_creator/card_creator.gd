@@ -118,6 +118,7 @@ func _on_rarity_select_item_selected(rarity: int):
 		3: $Card/In.color = Color(0.639, 0.075, 0.722,1)
 		4: $Card/In.color = Color(0.773, 0.031, 0.141, 1)
 		5: $Card/In.color = Color(0.374, 0.6, 1, 1)
+		6: $Card/In.color = Color(0.196, 0.196, 0.196, 1)
 
 func _on_load_cards_pressed(): 
 	load_cards_extra = !load_cards_extra

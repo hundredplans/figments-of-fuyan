@@ -13,6 +13,6 @@ func load_boon(contents: Array) -> void:
 		2: $Inside.color = Color(0.966, 0.697, 0.253,1)
 		3: $Inside.color = Color(0.639, 0.075, 0.722,1)
 		4: $Inside.color = Color(0.773, 0.031, 0.141, 1)
-		5: $Inside.color = Color(0.374, 0.6, 1, 1)
+		5: $Inside.color = Color(0.196, 0.196, 0.196, 1)
 
 func _on_destroy_button_pressed(): queue_free(); remove_from_inventory.emit($Name.text + ".txt")

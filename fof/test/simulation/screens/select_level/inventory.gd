@@ -23,7 +23,7 @@ func on_remove_from_inventory(boon_name: String) -> void:
 	file = null
 	
 	file = FileAccess.open("user://savefofle/loaded_boons.txt", FileAccess.WRITE)
-	var strarr: String
+	var strarr: String = ""
 	for s in textarr: strarr += s + "\n"
 	file.store_string(strarr)
 	file = null

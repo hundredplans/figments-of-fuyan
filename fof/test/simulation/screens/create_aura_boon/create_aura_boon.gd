@@ -82,6 +82,7 @@ func _on_select_rarity_item_selected(rarity: int):
 		2: $CreateAuraBoon/Rarity.color = Color(0.966, 0.697, 0.253,1)
 		3: $CreateAuraBoon/Rarity.color = Color(0.639, 0.075, 0.722,1)
 		4: $CreateAuraBoon/Rarity.color = Color(0.773, 0.031, 0.141, 1)
+		5: $CreateAuraBoon/Rarity.color = Color(0.196, 0.196, 0.196, 1)
 
 func _on_left_pressed():
 	if current_page > 0:
