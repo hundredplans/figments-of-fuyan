@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://ctefkqvn6jtcw"]
+[gd_scene load_steps=8 format=3 uid="uid://ctefkqvn6jtcw"]
 
 [ext_resource type="Script" path="res://scenes/screens/settings_menu/settings_menu.gd" id="1_va7fn"]
 
@@ -40,6 +40,15 @@ _data = {
 "move_screen": SubResource("Animation_wh5y0")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tdve8"]
+size = Vector2(124, 460)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3k25n"]
+size = Vector2(124, 460)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h05kf"]
+size = Vector2(254, 685)
+
 [node name="SettingsMenu" type="Control"]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 3
@@ -58,3 +67,34 @@ libraries = {
 [node name="CardSorter" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 0
+
+[node name="CardAreas" type="Control" parent="."]
+anchors_preset = 0
+
+[node name="0" type="Area2D" parent="CardAreas"]
+position = Vector2(1587, 425)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CardAreas/0"]
+shape = SubResource("RectangleShape2D_tdve8")
+metadata/_edit_lock_ = true
+
+[node name="1" type="Area2D" parent="CardAreas"]
+position = Vector2(334, 425)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CardAreas/1"]
+shape = SubResource("RectangleShape2D_3k25n")
+metadata/_edit_lock_ = true
+
+[node name="2" type="Area2D" parent="CardAreas"]
+position = Vector2(1398, 477)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CardAreas/2"]
+shape = SubResource("RectangleShape2D_h05kf")
+metadata/_edit_lock_ = true
+
+[node name="3" type="Area2D" parent="CardAreas"]
+position = Vector2(523, 477)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CardAreas/3"]
+shape = SubResource("RectangleShape2D_h05kf")
+metadata/_edit_lock_ = true

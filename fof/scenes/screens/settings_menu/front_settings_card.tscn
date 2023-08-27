@@ -51,7 +51,13 @@ color = Color(0.945098, 0.87451, 0.992157, 1)
 [node name="CardName" type="Label" parent="."]
 layout_mode = 0
 offset_right = 600.0
-offset_bottom = 101.0
+offset_bottom = 100.0
 label_settings = SubResource("LabelSettings_g23sb")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="LoadedSetting" type="Control" parent="."]
+anchors_preset = 0
+offset_top = 100.0
+offset_right = 600.0
+offset_bottom = 900.0

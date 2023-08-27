@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://c4fretq0lqafu"]
+[gd_scene load_steps=17 format=3 uid="uid://c4fretq0lqafu"]
 
 [ext_resource type="Texture2D" uid="uid://cdsgo4sdrenku" path="res://test/simulation/assets/map/tile/0.png" id="1_q4uus"]
 [ext_resource type="BitMap" uid="uid://dq8nopxv2h8ob" path="res://test/simulation/assets/map/tile/bitmap.png" id="2_1ef6n"]
@@ -8,6 +8,14 @@
 [ext_resource type="Texture2D" uid="uid://5ouc0sxeco8y" path="res://test/simulation/assets/map/arrows/3.png" id="6_ii5ej"]
 [ext_resource type="Texture2D" uid="uid://cbpqeiwql556d" path="res://test/simulation/assets/map/arrows/5.png" id="7_x34bx"]
 [ext_resource type="Texture2D" uid="uid://chqkae6lsn0lw" path="res://test/simulation/assets/map/arrows/6.png" id="8_smmfx"]
+[ext_resource type="Texture2D" uid="uid://b0iclmvv2utl1" path="res://test/simulation/assets/map/arrows/7.png" id="9_a662d"]
+[ext_resource type="Texture2D" uid="uid://drkx5gfl1e3qf" path="res://test/simulation/assets/map/arrows/8.png" id="10_3vob7"]
+[ext_resource type="Texture2D" uid="uid://c4gag05dxjvd" path="res://test/simulation/assets/map/tile/4.png" id="10_657cx"]
+[ext_resource type="Texture2D" uid="uid://dwxgtfkqgw5tb" path="res://test/simulation/assets/map/arrows/9.png" id="11_jy3fb"]
+[ext_resource type="Texture2D" uid="uid://1gm35uvb2r8q" path="res://test/simulation/assets/map/arrows/10.png" id="12_p7v1w"]
+[ext_resource type="Texture2D" uid="uid://ga8nbl78f50g" path="res://test/simulation/assets/map/arrows/11.png" id="13_4k8jm"]
+[ext_resource type="Texture2D" uid="uid://dub7aorse85ij" path="res://test/simulation/assets/map/tile/2.png" id="13_qbsmi"]
+[ext_resource type="Texture2D" uid="uid://b83flqqhslg1t" path="res://test/simulation/assets/map/arrows/12.png" id="14_2euc2"]
 
 [node name="TileColors" type="Control"]
 layout_mode = 3
@@ -139,3 +147,129 @@ texture_click_mask = ExtResource("2_1ef6n")
 [node name="Sprite2D" type="Sprite2D" parent="6"]
 position = Vector2(29.6923, 38.3462)
 texture = ExtResource("8_smmfx")
+
+[node name="7" type="TextureButton" parent="."]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -106.923
+offset_top = -80.0
+offset_right = -46.9231
+offset_bottom = -11.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = ExtResource("10_657cx")
+texture_click_mask = ExtResource("2_1ef6n")
+
+[node name="Sprite2D" type="Sprite2D" parent="7"]
+position = Vector2(29.6923, 38.3462)
+texture = ExtResource("9_a662d")
+
+[node name="8" type="TextureButton" parent="."]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -30.0
+offset_top = -125.385
+offset_right = 30.0
+offset_bottom = -56.3846
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = ExtResource("10_657cx")
+texture_click_mask = ExtResource("2_1ef6n")
+
+[node name="Sprite2D" type="Sprite2D" parent="8"]
+position = Vector2(29.6923, 38.3462)
+texture = ExtResource("10_3vob7")
+
+[node name="9" type="TextureButton" parent="."]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -82.3077
+offset_top = -125.385
+offset_right = -22.3077
+offset_bottom = -56.3846
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = ExtResource("10_657cx")
+texture_click_mask = ExtResource("2_1ef6n")
+
+[node name="Sprite2D" type="Sprite2D" parent="9"]
+position = Vector2(29.6923, 38.3462)
+texture = ExtResource("11_jy3fb")
+
+[node name="10" type="TextureButton" parent="."]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -30.0
+offset_top = 55.3846
+offset_right = 30.0
+offset_bottom = 124.385
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = ExtResource("13_qbsmi")
+texture_click_mask = ExtResource("2_1ef6n")
+
+[node name="Sprite2D" type="Sprite2D" parent="10"]
+position = Vector2(29.6923, 38.3462)
+texture = ExtResource("12_p7v1w")
+
+[node name="11" type="TextureButton" parent="."]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 22.3077
+offset_top = 55.3846
+offset_right = 82.3077
+offset_bottom = 124.385
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = ExtResource("13_qbsmi")
+texture_click_mask = ExtResource("2_1ef6n")
+
+[node name="Sprite2D" type="Sprite2D" parent="11"]
+position = Vector2(29.6923, 38.3462)
+texture = ExtResource("13_4k8jm")
+
+[node name="12" type="TextureButton" parent="."]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 48.4615
+offset_top = 10.0
+offset_right = 108.462
+offset_bottom = 79.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = ExtResource("13_qbsmi")
+texture_click_mask = ExtResource("2_1ef6n")
+
+[node name="Sprite2D" type="Sprite2D" parent="12"]
+position = Vector2(29.6923, 38.3462)
+texture = ExtResource("14_2euc2")

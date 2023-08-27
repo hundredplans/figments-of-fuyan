@@ -6,3 +6,5 @@ func on_load_setting_card(_setting: String) -> void:
 	$CardName.text = _setting
 	name = _setting
 	setting = _setting
+
+	$LoadedSetting.add_child(load("res://scenes/screens/settings_menu/setting_options/settings_" + _setting.to_lower() + ".tscn").instantiate())

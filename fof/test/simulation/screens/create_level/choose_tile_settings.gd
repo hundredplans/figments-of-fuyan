@@ -22,7 +22,7 @@ func on_change_setting():
 	for child in $ActiveSetting.get_children(): child.queue_free()
 	match tile_colors:
 		false: 
-			circle_size = 120
+			circle_size = 200
 			var arrow_states: Control = preload("res://test/simulation/screens/create_level/arrow_states.tscn").instantiate()
 			$ActiveSetting.add_child(arrow_states)
 			for child in arrow_states.get_children():
