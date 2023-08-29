@@ -8,24 +8,9 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 3840.0
 offset_bottom = 1080.0
+mouse_filter = 2
 theme = ExtResource("1_uk1mx")
 script = ExtResource("1_i2xry")
 
-[node name="Left" type="Button" parent="."]
-layout_mode = 0
-offset_left = 1934.0
-offset_top = 18.0
-offset_right = 2037.0
-offset_bottom = 119.0
-text = "<-"
-
-[node name="Right" type="Button" parent="."]
-layout_mode = 0
-offset_left = 2056.0
-offset_top = 18.0
-offset_right = 2157.0
-offset_bottom = 119.0
-text = "->"
-
-[connection signal="pressed" from="Left" to="." method="_on_left_pressed"]
-[connection signal="pressed" from="Right" to="." method="_on_right_pressed"]
+[node name="ActiveArt" type="Sprite2D" parent="."]
+position = Vector2(3780, 1025)

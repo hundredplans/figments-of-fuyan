@@ -16,8 +16,6 @@ script = ExtResource("1_j22bg")
 
 [node name="Buttons" type="Control" parent="."]
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
 
 [node name="LoadLevelButton" type="Button" parent="Buttons"]
 layout_mode = 0
@@ -55,24 +53,6 @@ offset_bottom = 1065.0
 theme = SubResource("Theme_ty058")
 text = "Inventory"
 
-[node name="TeamZero" type="Button" parent="Buttons"]
-layout_mode = 0
-offset_left = 740.0
-offset_top = 1008.0
-offset_right = 913.0
-offset_bottom = 1065.0
-theme = SubResource("Theme_ty058")
-text = "Team Zero"
-
-[node name="TeamOne" type="Button" parent="Buttons"]
-layout_mode = 0
-offset_left = 913.0
-offset_top = 1008.0
-offset_right = 1086.0
-offset_bottom = 1065.0
-theme = SubResource("Theme_ty058")
-text = "Team One"
-
 [node name="ShopGenerator" type="Button" parent="Buttons"]
 layout_mode = 0
 offset_left = 1086.0
@@ -107,6 +87,14 @@ offset_bottom = 1065.0
 theme = SubResource("Theme_ty058")
 text = "Draw Cards"
 
+[node name="RevealAll" type="Button" parent="Buttons"]
+layout_mode = 0
+offset_left = 740.0
+offset_top = 1008.0
+offset_right = 1085.0
+offset_bottom = 1065.0
+text = "Reveal All"
+
 [node name="Raycast" type="RayCast2D" parent="."]
 target_position = Vector2(0, 0)
 collision_mask = 8
@@ -114,6 +102,9 @@ collide_with_areas = true
 collide_with_bodies = false
 
 [node name="Tiles" type="Node2D" parent="."]
+
+[node name="DualTiles" type="Node2D" parent="."]
+position = Vector2(1920, 0)
 
 [node name="Circles" type="Node2D" parent="."]
 
@@ -126,9 +117,8 @@ position = Vector2(1860, 1025)
 [connection signal="pressed" from="Buttons/LoadCardsButton" to="." method="_on_load_cards_button_pressed"]
 [connection signal="pressed" from="Buttons/AddBoons" to="." method="_on_add_boons_pressed"]
 [connection signal="pressed" from="Buttons/Inventory" to="." method="_on_inventory_pressed"]
-[connection signal="pressed" from="Buttons/TeamZero" to="." method="_on_team_zero_pressed"]
-[connection signal="pressed" from="Buttons/TeamOne" to="." method="_on_team_one_pressed"]
 [connection signal="pressed" from="Buttons/ShopGenerator" to="." method="_on_shop_generator_pressed"]
 [connection signal="pressed" from="Buttons/NumberGenerator" to="." method="_on_number_generator_pressed"]
 [connection signal="pressed" from="Buttons/DualMonitorMode" to="." method="_on_dual_monitor_mode_pressed"]
 [connection signal="pressed" from="Buttons/DrawCards" to="." method="_on_draw_cards_pressed"]
+[connection signal="pressed" from="Buttons/RevealAll" to="." method="_on_reveal_all_pressed"]

@@ -7,14 +7,13 @@ const tile_y_offset: int = 50
 const tile_amount: int = 800
 const tile_rows: int = 34
 
+var loaded_level: String
+var always_reveal: bool = false
 var unit_selected: Array
 var multimode: bool = false
 var history: Array = []
 var active_card: Control
 var active_cards: Array = [[], []]
-
-var enable_vision_team_zero: bool = false
-var enable_vision_team_one: bool = false
 var always_visible_tiles: Array = []
 
 @onready var tile_default: PackedScene = preload("res://test/simulation/assets/map/tile/tile.tscn")
@@ -29,43 +28,96 @@ func _ready() -> void:
 	_on_load_level_button_pressed()
 	theme = preload("res://test/simulation/assets/fonts/roboto32.tres")
 	refresh_vision()
-	modulate_team_buttons()
+
+func create_tile() -> Node2D:
+	var tile: Node2D = tile_default.instantiate()
+	tile.get_node("Area2D").mouse_entered.connect(tile._on_allow_change_in_level_editor)
+	tile.create_unit.connect(on_create_unit)
+	tile.destroy_unit.connect(on_destroy_unit)
+	tile.click_unit.connect(on_click_unit)
+	tile.move_unit.connect(on_move_unit)
+	tile.visibility_update.connect(on_update_visibility)
+	tile.change_tile_state.connect(on_tile_change_tile_state)
+	tile.change_tile_item.connect(on_change_tile_item)
+	tile.unit_clicked.connect(on_unit_clicked)
+	return tile
+
+func on_unit_clicked(tile: Node2D) -> void:
+	match unit_selected:
+		[]: on_click_unit(tile)
+		_: on_move_unit(tile)
+
+func on_change_tile_item(tile: Node2D, tile_item: String) -> void:
+	match tile.get_node("In/TileItem").texture:
+		null: 
+			match tile_item.length():
+				0: tile.get_node("In/TileItem").texture = load("res://test/simulation/assets/sprites/%s" % tile_item)
+				_: tile.get_node("In/TileItem").texture = null
+		_: tile.get_node("In/TileItem").texture = null
+
+	tile = get_multi_tile(tile)
+	if tile:
+		match tile.get_node("In/TileItem").texture:
+			null:
+				match tile_item.length():
+					0: tile.get_node("In/TileItem").texture = load("res://test/simulation/assets/sprites/%s" % tile_item)
+					_: tile.get_node("In/TileItem").texture = null
+			_: tile.get_node("In/TileItem").texture = null
+
+func on_tile_change_tile_state(tile_info: Array, tile: Node2D) -> void:
+	var tx: Texture2D = load("res://test/simulation/assets/map/tile/%s.png" % tile_info[1])
+	tile.get_node("In/Inside").texture = tx
+	tile._on_simulation_inside_pressed(tile_info)
+	
+	var multi_tile: Node2D = get_multi_tile(tile)
+	if multi_tile:
+		multi_tile.get_node("In/Inside").texture = tx
+		multi_tile._on_simulation_inside_pressed(tile_info)
+	
+	refresh_vision()
 
 func on_load_level(level_name: String) -> void:
+	loaded_level = level_name
 	for child in $CardZone.get_children():
 		if child.team == 1:
 			child.free()
 			
-	for child in $Tiles.get_children(): 
-		child.free()
+	for child in $Tiles.get_children(): child.free()
+	if multimode: for child in $DualTiles.get_children(): child.free()
 
 	var x: int = 0
 	var y: int = 0
 	var trigger_offset: int = 0
 	for i in range(tile_amount):
-		var tile: Node2D = tile_default.instantiate()
+		var tile: Node2D = create_tile()
+		var dual_tile: Node2D
 		$Tiles.add_child(tile)
-		tile.get_node("Area2D").mouse_entered.connect(tile._on_allow_change_in_level_editor)
-		tile.create_unit.connect(on_create_unit)
-		tile.destroy_unit.connect(on_destroy_unit)
-		tile.click_unit.connect(on_click_unit)
-		tile.move_unit.connect(on_move_unit)
-		tile.visibility_update.connect(on_update_visibility)
+		if multimode:
+			dual_tile = create_tile()
+			$DualTiles.add_child(dual_tile)
+			
 		if x >= tile_rows:
 			x = 0
 			y += 1
 			trigger_offset = 1 - trigger_offset
 			
+		if multimode:
+			dual_tile.position.x += x * tile_size + (trigger_offset * tile_x_offset)
+			dual_tile.position.y += y * tile_y_offset
+			
 		tile.position.x += x * tile_size + (trigger_offset * tile_x_offset)
 		tile.position.y += y * tile_y_offset
 		x += 1
 		tile.tile_position = Vector2(x, y)
+		if multimode:
+			dual_tile.tile_position = Vector2(x, y)
 	
 	var lvl_path: String = "user://savefofle/levels/%s" % level_name
 	var file := FileAccess.open(lvl_path, FileAccess.READ)
 	var tiles: Array = []
 	var splitter: Array = file.get_as_text().split("\n")
 	var i: int = 1
+	
 	for tile_info in splitter:
 		if i != splitter.size():
 			var tii: Array = tile_info.split(",")
@@ -91,8 +143,17 @@ func on_load_level(level_name: String) -> void:
 			if tile.tile_position == tile_info[0]:
 				tile._on_simulation_inside_pressed(tile_info)
 				
+		if multimode:
+			for tile in $DualTiles.get_children():
+				if tile.tile_position == tile_info[0]:
+					tile._on_simulation_inside_pressed(tile_info)
+				
 	for tile in $Tiles.get_children():
 		if tile.tile_state == 0: tile.free()
+		
+	if multimode:
+		for tile in $DualTiles.get_children():
+			if tile.tile_state == 0: tile.free()
 
 	active_cards = [[], []]
 	refresh_vision()
@@ -134,83 +195,124 @@ func add_card_to_card_zone(card: Control) -> void:
 	$CardZone.add_child(card)
 
 func on_art_max_selected(card_info: Array) -> void:
-	$ActiveArt.texture = load("res://test/simulation/assets/sprites/units/%s" % card_info[0])
 	active_card = card_info[1]
+	if multimode:
+		match card_info[1].team:
+			1: $DualMonitorMode/ActiveArt.texture = load("res://test/simulation/assets/sprites/units/%s" % card_info[0])
+			0: $ActiveArt.texture = load("res://test/simulation/assets/sprites/units/%s" % card_info[0])
+	else: $ActiveArt.texture = load("res://test/simulation/assets/sprites/units/%s" % card_info[0])
 
 func on_create_unit(tile: Node2D, alter_history: bool) -> void:
 	active_cards[active_card.team].append([tile, active_card])
 	if alter_history: add_to_history(["DESTROY", tile])
-	tile.get_node("In/Unit").texture = load(active_card.get_node("ArtMax").texture.resource_path)
+	var tx: Texture2D = load(active_card.get_node("ArtMax").texture.resource_path)
+	tile.get_node("In/Unit").texture = tx
+	var multi_tile: Node2D = get_multi_tile(tile)
+	if multi_tile:
+		multi_tile.get_node("In/Unit").texture = tx
 	refresh_vision()
 	
 	unit_selected = []
 	active_card = null
 	$ActiveArt.texture = null
+	if multimode: $DualMonitorMode/ActiveArt.texture = null
+
+func get_multi_tile(tile: Node2D) -> Node2D:
+	if multimode:
+		match tile.get_parent().name:
+			"DualTiles":
+				var found_tile: Array = $Tiles.get_children().filter(func(x: Node2D): return tile.tile_position == x.tile_position)
+				if found_tile.size() > 0: return found_tile[0]
+			"Tiles":
+				var found_tile: Array = $DualTiles.get_children().filter(func(x: Node2D): return tile.tile_position == x.tile_position)
+				if found_tile.size() > 0: return found_tile[0]
+		
+	return null
 
 func on_destroy_unit(tile: Node2D, alter_history: bool) -> void:
 	for team in active_cards:
 		for i in range(team.size() - 1, -1, -1):
 			if team[i][0] == tile:
-				if tile.always_visible: always_visible_tiles.erase(tile); tile.always_visible = false
+				var is_always_visible: bool = false
+				if tile.always_visible: 
+					always_visible_tiles.erase(tile)
+					tile.always_visible = false
+					is_always_visible = true
+					
 				team.remove_at(i)
 				tile.get_node("In/Unit").texture = null
+				var multi_tile: Node2D = get_multi_tile(tile)
+				if multi_tile:
+					multi_tile.get_node("In/Unit").texture = null
+					if is_always_visible:
+						always_visible_tiles.erase(multi_tile)
+						multi_tile.always_visible = false
+				
 				if alter_history: add_to_history(["CREATE", tile, active_card])
 	refresh_vision()
-
-func modulate_team_buttons() -> void:
-	
-	match enable_vision_team_zero:
-		true: $Buttons/TeamZero.modulate = Color(1,0,0,1)
-		false: $Buttons/TeamZero.modulate = Color(1,1,1,1)
-		
-	match enable_vision_team_one:
-		true: $Buttons/TeamOne.modulate = Color(1,0,0,1)
-		false: $Buttons/TeamOne.modulate = Color(1,1,1,1)
-
-func _on_team_zero_pressed():
-	enable_vision_team_zero = !enable_vision_team_zero
-	refresh_vision()
-	modulate_team_buttons()
-
-func _on_team_one_pressed():
-	enable_vision_team_one = !enable_vision_team_one
-	refresh_vision()
-	modulate_team_buttons()
 
 func refresh_vision() -> void:
 	for tile in $Tiles.get_children():
 		tile.get_node("In").visible = true
 		
+	for tile in $DualTiles.get_children():
+		tile.get_node("In").visible = true
+		
 	for card in $CardZone.get_children():
 		card.visible = true
 		
-	if !(!enable_vision_team_zero and !enable_vision_team_one):
+	if !always_reveal:
 		var visible_tiles: Array = []
-		if enable_vision_team_zero:
-			visible_tiles += _refresh_vision_for_team(active_cards[0].map(func(x: Array): return x[0]))
-			
-		if enable_vision_team_one:
-			visible_tiles += _refresh_vision_for_team(active_cards[1].map(func(x: Array): return x[0]))
-			
-			
-		for tile in $Tiles.get_children():
-			if tile not in visible_tiles and tile in always_visible_tiles: visible_tiles.append(tile)
+		visible_tiles += refresh_vision_for_team(0)
+		visible_tiles += refresh_vision_for_team(1)
+		
+		for tile in $Tiles.get_children() + $DualTiles.get_children():
 			tile.get_node("In").visible = false
-			if enable_vision_team_zero and tile.tile_state == 5: tile.get_node("In").visible = true
-			if enable_vision_team_one and tile.tile_state == 6: tile.get_node("In").visible = true
+			if tile not in visible_tiles and tile in always_visible_tiles: visible_tiles.append(tile)
 			if tile.tile_state == 12: tile.get_node("In").visible = true
 			if tile.tile_state == 11 and tile.get_node("In/Unit").texture: tile.get_node("In").visible = true
 			
-		for tile in visible_tiles:
-			tile.get_node("In").visible = true
+		for tile in $DualTiles.get_children():
+			if tile.tile_state == 6: tile.get_node("In").visible = true
 			
-		for card in $CardZone.get_children():
-				
-			if enable_vision_team_zero and card.team == 0:
-				card.visible = true
+		for tile in $Tiles.get_children():
+			if tile.tile_state == 5: tile.get_node("In").visible = true
+			
+		for tile in visible_tiles: tile.get_node("In").visible = true
+			
+func refresh_vision_for_team(team: int) -> Array:
+	if team == 1 and multimode or team == 0:
+		var occupied_tiles: Array = []
+		var visible_tiles: Array = []
+		var find_tiles_func: Callable = func(xy: Node2D, xyt: Vector2): \
+		if abs(xyt.x - xy.global_position.x) == 300 and xyt.y == xy.global_position.y: return true\
+		else: return sqrt(pow(xyt.x - xy.global_position.x, 2) + pow(xyt.y - xy.global_position.y, 2)) < 295
+		
+		match team:
+			0: occupied_tiles = active_cards[0].map(func(x: Array): return x[0])
+			1: occupied_tiles = active_cards[1].map(func(x: Array): return x[0])
+			
+		for tile in occupied_tiles:
+			if is_instance_valid(tile) and tile.is_inside_tree():
+				var xyt: Vector2 = tile.global_position
+				if tile not in visible_tiles: visible_tiles.append(tile)
+				var found_tiles: Array = []
+				$Raycast.global_position = Vector2(xyt.x, xyt.y)
+				match team:
+					0: found_tiles = $Tiles.get_children().filter(find_tiles_func.bind(xyt))
+					1: found_tiles = $DualTiles.get_children().filter(find_tiles_func.bind(xyt))
 					
-			if enable_vision_team_one and card.team == 1:
-				card.visible = true
+				for found_tile in found_tiles:
+					$Raycast.target_position = Vector2(found_tile.global_position.x, found_tile.global_position.y) - $Raycast.global_position
+					$Raycast.force_raycast_update()
+					if found_tile not in visible_tiles:
+						match $Raycast.is_colliding():
+							false: visible_tiles.append(found_tile)
+							true: if $Raycast.get_collider().get_parent() == found_tile: visible_tiles.append(found_tile)
+				
+				$Raycast.target_position = Vector2(found_tiles[0].global_position.x, found_tiles[0].global_position.y) - $Raycast.global_position
+		return visible_tiles
+	return []
 			
 func _refresh_vision_for_team(occupied_tiles: Array) -> Array:
 	var visible_tiles: Array = []
@@ -242,13 +344,24 @@ func on_click_unit(tile: Node2D):
 			if i[0] == tile and i[1] != null:
 				unit_selected = [i[1], tile]
 				active_card = null
-				$ActiveArt.texture = load(i[1].get_node("ArtMax").texture.resource_path)
+				var texture: Texture2D = load(i[1].get_node("ArtMax").texture.resource_path)
+				if multimode: 
+					match i[1].team:
+						1: $DualMonitorMode/ActiveArt.texture = texture
+						0: $ActiveArt.texture = texture
+				else:
+					$ActiveArt.texture = texture
 				return
 
 func on_move_unit(tile: Node2D):
 	if unit_selected[0] != null:
 		active_card = unit_selected[0]
 		if unit_selected[1].always_visible: tile.always_visible = true; always_visible_tiles.append(tile)
+		var multi_tile: Node2D = get_multi_tile(tile)
+		if multi_tile:
+			if unit_selected[1].always_visible:
+				multi_tile.always_visible = true
+				always_visible_tiles.append(multi_tile)
 		on_destroy_unit(unit_selected[1], true)
 		on_create_unit(tile, true)
 
@@ -273,13 +386,23 @@ func add_to_history(hisinfo: Array) -> void:
 
 func _on_dual_monitor_mode_pressed():
 	add_child(preload("res://test/simulation/screens/select_level/dual_monitor_mode.tscn").instantiate())
+	$Buttons/DualMonitorMode.queue_free()
 	multimode = true
+	
+	if loaded_level: on_load_level(loaded_level)
+	else: _on_load_level_button_pressed()
 
 func on_update_visibility(tile: Node2D):
-	if tile not in always_visible_tiles:
-		always_visible_tiles.append(tile)
-	else:
-		always_visible_tiles.erase(tile)
+	tile.always_visible = !tile.always_visible
+	if tile not in always_visible_tiles: always_visible_tiles.append(tile)
+	else: always_visible_tiles.erase(tile)
+		
+	var multi_tile: Node2D = get_multi_tile(tile)
+	if multi_tile:
+		multi_tile.always_visible = tile.always_visible
+		if multi_tile not in always_visible_tiles: always_visible_tiles.append(multi_tile)
+		else: always_visible_tiles.erase(multi_tile)
+	
 	refresh_vision()
 
 func _on_number_generator_pressed():
@@ -307,3 +430,7 @@ func on_boon_selected(boon_path: String) -> void:
 
 func _on_inventory_pressed():
 	add_child(preload("res://test/simulation/screens/select_level/inventory.tscn").instantiate())
+
+func _on_reveal_all_pressed(): 
+	always_reveal = !always_reveal
+	refresh_vision()

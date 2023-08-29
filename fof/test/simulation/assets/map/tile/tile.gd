@@ -6,6 +6,11 @@ signal destroy_unit
 signal create_unit
 signal visibility_update
 
+signal change_tile_state
+signal change_tile_item
+
+signal unit_clicked
+
 var always_visible: bool = false
 const collision_tiles: Array = [1, 2, 13]
 var tile_item = ""
@@ -26,28 +31,16 @@ func _process(_delta: float) -> void:
 				_on_level_editor_inside_pressed()
 			
 	if allow_change_anywhere:
-		if Input.is_action_just_pressed("RightClick"):
-			if $In/TileItem.texture:
-				$In/TileItem.texture = null
-			
-			elif $In/TileItem.texture == null:
-				if tile_item: $In/TileItem.texture = load("res://test/simulation/assets/sprites/%s" % tile_item)
-				else: $In/TileItem.texture = null
-				
 		if Input.is_action_just_pressed("MouseMiddle"):
 			if $In/Unit.texture:
 				destroy_unit.emit(self, true)
 			elif get_parent().get_parent().active_card:
-				create_unit.emit(self, true)
-				
-		if Input.is_action_just_pressed("LeftClick"):
-			match get_parent().get_parent().unit_selected:
-				[]: click_unit.emit(self)
-				_: move_unit.emit(self)
-				
+				if get_parent().get_parent().active_card.team == 0 and get_parent().name == "Tiles":
+					create_unit.emit(self, true)
+				elif get_parent().get_parent().active_card.team == 1 and get_parent().name == "DualTiles":
+					create_unit.emit(self, true)
 		if Input.is_action_just_pressed("VisibleCheck"):
 			if $In/Unit.texture != null:
-				always_visible = !always_visible
 				visibility_update.emit(self)
 
 		if Input.is_action_just_pressed("ShiftRightClick"):
@@ -57,9 +50,11 @@ func _process(_delta: float) -> void:
 				_:
 					old_tile_state = tile_state
 					tile_state = 0
-			$In/Inside.texture = load("res://test/simulation/assets/map/tile/%s.png" % tile_state)
-			_on_simulation_inside_pressed([0, tile_state, tile_item, arrow_state])
-			get_parent().get_parent().refresh_vision()
+			
+			change_tile_state.emit([0, tile_state, tile_item, arrow_state], self)
+			
+		elif Input.is_action_just_pressed("RightClick"):
+			change_tile_item.emit(self, tile_item)
 			
 		if Input.is_action_just_pressed("ShiftLeftClick"):
 			match tile_state:
@@ -68,9 +63,11 @@ func _process(_delta: float) -> void:
 				_:
 					old_tile_state = tile_state
 					tile_state = 2
-			$In/Inside.texture = load("res://test/simulation/assets/map/tile/%s.png" % tile_state)
-			_on_simulation_inside_pressed([0, tile_state, tile_item, arrow_state])
-			get_parent().get_parent().refresh_vision()
+					
+			change_tile_state.emit([0, tile_state, tile_item, arrow_state], self)
+			
+		elif Input.is_action_just_pressed("LeftClick"):
+			unit_clicked.emit(self)
 			
 func _on_area_2d_mouse_entered():
 	allow_change = true
