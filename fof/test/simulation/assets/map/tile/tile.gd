@@ -100,7 +100,8 @@ func _on_simulation_inside_pressed(tile_info: Array):
 	tile_item = tile_info[2]
 	arrow_state = tile_info[3]
 	
-	if tile_state in collision_tiles: $Area2D.collision_mask = 0; $Area2D.collision_layer = 8
+	if tile_state in collision_tiles or tile_state == 3 and arrow_state in range(1, 11): 
+		$Area2D.collision_mask = 0; $Area2D.collision_layer = 8
 	else: $Area2D.collision_layer = 1; $Area2D.collision_mask = 1
 	$In/Inside.texture = load("res://test/simulation/assets/map/tile/%s.png" % tile_state)
 	if arrow_state != 0:

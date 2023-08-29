@@ -198,7 +198,8 @@ func refresh_vision() -> void:
 			tile.get_node("In").visible = false
 			if enable_vision_team_zero and tile.tile_state == 5: tile.get_node("In").visible = true
 			if enable_vision_team_one and tile.tile_state == 6: tile.get_node("In").visible = true
-			if tile.tile_state in [11,12]: tile.get_node("In").visible = true
+			if tile.tile_state == 12: tile.get_node("In").visible = true
+			if tile.tile_state == 11 and tile.get_node("In/Unit").texture: tile.get_node("In").visible = true
 			
 		for tile in visible_tiles:
 			tile.get_node("In").visible = true

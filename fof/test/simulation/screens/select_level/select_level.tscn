@@ -122,11 +122,6 @@ position = Vector2(1860, 1025)
 
 [node name="CardZone" type="Node2D" parent="."]
 
-[node name="BoonZone" type="Control" parent="."]
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
 [connection signal="pressed" from="Buttons/LoadLevelButton" to="." method="_on_load_level_button_pressed"]
 [connection signal="pressed" from="Buttons/LoadCardsButton" to="." method="_on_load_cards_button_pressed"]
 [connection signal="pressed" from="Buttons/AddBoons" to="." method="_on_add_boons_pressed"]
