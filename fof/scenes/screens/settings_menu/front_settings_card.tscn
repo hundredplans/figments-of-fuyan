@@ -1,8 +1,46 @@
-[gd_scene load_steps=5 format=3 uid="uid://2ow6fqunixlj"]
+[gd_scene load_steps=8 format=3 uid="uid://2ow6fqunixlj"]
 
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="1_1x4hc"]
 [ext_resource type="Script" path="res://scenes/screens/settings_menu/front_settings_card.gd" id="1_po7jd"]
 [ext_resource type="FontFile" uid="uid://7k4xd8s0oed2" path="res://assets/UI/roboto/roboto.ttf" id="3_igh6r"]
+
+[sub_resource type="Animation" id="Animation_fvr1w"]
+resource_name = "settings_enter"
+length = 0.2
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("LoadedSetting:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_e80k6"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("LoadedSetting:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_w55nn"]
+_data = {
+"RESET": SubResource("Animation_e80k6"),
+"settings_enter": SubResource("Animation_fvr1w")
+}
 
 [sub_resource type="LabelSettings" id="LabelSettings_g23sb"]
 font = ExtResource("3_igh6r")
@@ -17,6 +55,11 @@ offset_right = 600.0
 offset_bottom = 900.0
 theme = ExtResource("1_1x4hc")
 script = ExtResource("1_po7jd")
+
+[node name="SettingsEnter" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_w55nn")
+}
 
 [node name="Background" type="Control" parent="."]
 layout_mode = 1
@@ -48,6 +91,13 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.945098, 0.87451, 0.992157, 1)
 
+[node name="LoadedSetting" type="Control" parent="."]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 0
+offset_top = 100.0
+offset_right = 600.0
+offset_bottom = 900.0
+
 [node name="CardName" type="Label" parent="."]
 layout_mode = 0
 offset_right = 600.0
@@ -55,9 +105,3 @@ offset_bottom = 100.0
 label_settings = SubResource("LabelSettings_g23sb")
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="LoadedSetting" type="Control" parent="."]
-anchors_preset = 0
-offset_top = 100.0
-offset_right = 600.0
-offset_bottom = 900.0

@@ -31,20 +31,16 @@ func _ready() -> void:
 		else: 
 			load_card = preload("res://scenes/screens/settings_menu/back_settings_card.tscn").instantiate()
 			
-		load_card.position = card_positions[i]
-		load_card.scale = card_scales[i]
-		
-		load_card.on_load_setting_card(card_name)
-		$CardSorter.add_child(load_card)
+		place_card(load_card, i, card_name)
 		i += 1
 
 func on_center_selected_card(i: int) -> void:
 	cards_are_moving = true
-	var center_card: Control = $CardSorter.get_node(card_order[4])
-	var side_card: Control = $CardSorter.get_node(card_order[i])
+	var center_card: Control = get_card(card_order[4])
+	var side_card: Control = get_card(card_order[i])
 	
 	var j: int = 0
-	for k in [$CardSorter.get_node(card_order[4]), $CardSorter.get_node(card_order[i])]:
+	for k in [center_card, side_card]:
 		var n: int = i if j == 0 else 4
 		var scale_tween: Tween = k.create_tween()
 		var move_tween: Tween = k.create_tween()
@@ -52,13 +48,34 @@ func on_center_selected_card(i: int) -> void:
 		scale_tween.tween_property(k, "scale", card_scales[n], tween_speed)
 		move_tween.tween_property(k, "position", card_positions[n], tween_speed)
 		
-		
 		j += 1
-
-	center_card.get_parent().move_child(center_card, side_card.get_index())
-	center_card.get_parent().move_child(side_card, 4)
+	var front_tween: Tween = side_card.create_tween()
+	front_tween.tween_callback(on_replace_front_card.bind(side_card, center_card)).set_delay(tween_speed)
+	center_card.get_node("SettingsEnter").play_backwards("settings_enter")
 
 	var top_value: String = card_order[4]
 	card_order[4] = card_order[i]
 	card_order[i] = top_value
+
+func get_card(setting: String) -> Control:
+	for child in $CardSorter.get_children(): if setting == child.setting: return child
+	return null
+func on_replace_front_card(settings_card: Control, old_front_card: Control) -> void:
 	
+	old_front_card.queue_free()
+	var back_side_card: Control = preload("res://scenes/screens/settings_menu/back_settings_card.tscn").instantiate()
+	place_card(back_side_card, settings_card.get_index(), old_front_card.setting)
+	
+	settings_card.get_parent().move_child(back_side_card, settings_card.get_index())
+	settings_card.queue_free()
+	
+	var front_side_card: Control = preload("res://scenes/screens/settings_menu/front_settings_card.tscn").instantiate()
+	place_card(front_side_card, 4, settings_card.setting)
+	
+	cards_are_moving = false
+
+func place_card(settings_card: Control, i: int, card_name: String) -> void:
+	settings_card.position = card_positions[i]
+	settings_card.scale = card_scales[i]
+	$CardSorter.add_child(settings_card)
+	settings_card.on_load_setting_card(card_name)

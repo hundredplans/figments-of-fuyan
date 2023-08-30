@@ -4,10 +4,10 @@
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="1_auox5"]
 [ext_resource type="FontFile" uid="uid://7k4xd8s0oed2" path="res://assets/UI/roboto/roboto.ttf" id="3_ff1jk"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_7intb"]
+[sub_resource type="LabelSettings" id="LabelSettings_vqso2"]
 font = ExtResource("3_ff1jk")
-font_size = 128
-outline_size = 20
+font_size = 64
+outline_size = 10
 outline_color = Color(0, 0, 0, 1)
 
 [node name="BackSettingsCard" type="Control"]
@@ -48,12 +48,8 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="CardName" type="Label" parent="."]
-layout_mode = 0
-offset_left = 141.0
-offset_top = 74.0
-offset_right = 924.0
-offset_bottom = 228.0
-rotation = 0.96147
-label_settings = SubResource("LabelSettings_7intb")
+offset_right = 600.0
+offset_bottom = 100.0
+label_settings = SubResource("LabelSettings_vqso2")
 horizontal_alignment = 1
 vertical_alignment = 1
