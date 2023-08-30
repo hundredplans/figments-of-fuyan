@@ -3,7 +3,6 @@ const setting: String = "Video"
 
 func _ready():
 	for info in Settings.settings_info[setting]:
-		print(info)
 		match info[0]:
 			"FPS": $FPS/Button.select(info[1])
 			"WindowMode": $WindowMode/Button.select(info[1])
