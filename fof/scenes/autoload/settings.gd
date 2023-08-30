@@ -21,7 +21,7 @@ func update_settings_info(i: int, setting: String, setting_name: String) -> void
 
 func return_setting_file_info(file: String) -> Array:
 	if !file.ends_with(".txt"): file = file + ".txt"
-	var dir_path: String = "user:/z/save/settings/current/"
+	var dir_path: String = "user://save/settings/current/"
 	if FileAccess.file_exists(dir_path + file):
 		return Array(FileAccess.open(dir_path + file, FileAccess.READ).get_as_text().split("\n", false))\
 		.map(func(x: String): var split: Array = x.split(":", false); return [split[0], int(split[1])])
