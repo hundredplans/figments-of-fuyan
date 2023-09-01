@@ -91,6 +91,14 @@ offset_right = 820.0
 offset_bottom = 1040.0
 theme = ExtResource("2_euq7d")
 
+[node name="PRBackground" type="ColorRect" parent="Buttons"]
+layout_mode = 0
+offset_left = 311.0
+offset_top = 574.0
+offset_right = 762.0
+offset_bottom = 994.0
+color = Color(0, 0, 0, 1)
+
 [node name="SaveArea" type="Button" parent="Buttons"]
 layout_mode = 0
 offset_left = 322.0
@@ -302,6 +310,22 @@ offset_right = 762.0
 offset_bottom = 560.0
 grow_horizontal = 1
 grow_vertical = 1
+
+[node name="Label" type="Label" parent="Buttons"]
+layout_mode = 0
+offset_left = 425.0
+offset_top = 921.0
+offset_right = 620.0
+offset_bottom = 962.0
+text = "Tiles Allowed"
+
+[node name="Label2" type="Label" parent="Buttons"]
+layout_mode = 0
+offset_left = 417.0
+offset_top = 612.0
+offset_right = 625.0
+offset_bottom = 653.0
+text = "Cards Allowed"
 
 [connection signal="pressed" from="Buttons/SaveArea" to="." method="_on_save_area_pressed"]
 [connection signal="pressed" from="Buttons/WorldDifficulty/WorldOne" to="." method="_on_world_difficulty_pressed" binds= [1]]

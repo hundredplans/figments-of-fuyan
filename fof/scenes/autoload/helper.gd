@@ -89,12 +89,12 @@ func write_to_base_game_file(dir: String, edit_file_name: Control, contents: Str
 			var id: String = str(return_new_highest_id(dir, file_name))
 			contents = contents.insert(0, "%s\n%s\n%s\n") % [id, file_name, showcase_name]
 			file_name = file_name.insert(0, "%s - " % id)
-			write_to_file(dir, file_name, contents)
+			write_to_file(dir, file_name, ".fof", contents)
 		else: print_debug("You are not writing to the correct directory")
 	else: print_debug("Your name is not pure")
 
-func write_to_file(dir: String, file_name: String, contents: String) -> void:
-	var file := FileAccess.open(dir + file_name + ".fof", FileAccess.WRITE)
+func write_to_file(dir: String, file_name: String, extension: String, contents: String) -> void:
+	var file := FileAccess.open(dir + file_name + extension, FileAccess.WRITE)
 	file.store_string(contents)
 	file = null
 

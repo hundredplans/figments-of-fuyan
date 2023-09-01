@@ -5,6 +5,9 @@ const main_menu_path: String = "res://scenes/screens/main_menu/main_menu.tscn"
 var screen_change_animation_active: bool = false
 var screen_history: Array = []
 		
+func on_user_quit() -> void:
+	Settings.update_settings_file_info()
+	
 func _ready() -> void:
 	for helper_signal in [
 	["add_screen_history", on_add_screen_history], \
@@ -40,3 +43,6 @@ func on_trigger_screen_history() -> void:
 		var path: String = screen_history[screen_history.size() - 1]
 		on_load_screen(load(path).instantiate())
 		screen_history.resize(screen_history.size() - 1)
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST: on_user_quit()

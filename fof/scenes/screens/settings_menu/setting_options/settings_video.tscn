@@ -14,9 +14,8 @@ script = ExtResource("2_wdjfo")
 [node name="WindowMode" type="Control" parent="."]
 anchors_preset = 0
 offset_left = 23.0
-offset_top = 48.0
 offset_right = 623.0
-offset_bottom = 98.0
+offset_bottom = 50.0
 
 [node name="Button" type="OptionButton" parent="WindowMode"]
 layout_mode = 1
@@ -45,9 +44,9 @@ vertical_alignment = 1
 [node name="FPS" type="Control" parent="."]
 anchors_preset = 0
 offset_left = 23.0
-offset_top = 108.0
+offset_top = 60.0
 offset_right = 623.0
-offset_bottom = 158.0
+offset_bottom = 110.0
 
 [node name="Button" type="OptionButton" parent="FPS"]
 layout_mode = 1
@@ -80,9 +79,9 @@ vertical_alignment = 1
 [node name="VSync" type="Control" parent="."]
 anchors_preset = 0
 offset_left = 23.0
-offset_top = 170.0
+offset_top = 122.0
 offset_right = 623.0
-offset_bottom = 220.0
+offset_bottom = 172.0
 
 [node name="Button" type="OptionButton" parent="VSync"]
 layout_mode = 1
@@ -113,9 +112,9 @@ vertical_alignment = 1
 [node name="Resolution" type="Control" parent="."]
 anchors_preset = 0
 offset_left = 23.0
-offset_top = 231.0
+offset_top = 183.0
 offset_right = 623.0
-offset_bottom = 281.0
+offset_bottom = 233.0
 
 [node name="Button" type="OptionButton" parent="Resolution"]
 layout_mode = 1
@@ -130,6 +129,7 @@ popup/item_0/text = "1920x1080"
 popup/item_0/id = 0
 
 [node name="Label" type="Label" parent="Resolution"]
+layout_mode = 0
 offset_left = 228.0
 offset_right = 600.0
 offset_bottom = 50.0

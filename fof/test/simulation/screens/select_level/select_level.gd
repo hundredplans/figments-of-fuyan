@@ -7,6 +7,7 @@ const tile_y_offset: int = 50
 const tile_amount: int = 800
 const tile_rows: int = 34
 
+var end_turn_multiplier: int = 1
 var loaded_level: String
 var always_reveal: bool = false
 var unit_selected: Array
@@ -119,6 +120,7 @@ func on_load_level(level_name: String) -> void:
 	var i: int = 1
 	
 	for tile_info in splitter:
+		print(splitter.size())
 		if i != splitter.size():
 			var tii: Array = tile_info.split(",")
 			if tii.size() == 5:
@@ -136,7 +138,8 @@ func on_load_level(level_name: String) -> void:
 						card.position = Vector2(int(card_intel[2]) + xy, int(card_intel[3]))
 						card.team = int(card_intel[4])
 						card.on_team_buttons_modulate()
-						if card_intel[5]: card.get_node("AuraSelected/AuraArt").texture = load(card_intel[5])
+						if card_intel.size() > 5:
+							if card_intel[5]: card.get_node("AuraSelected/AuraArt").texture = load(card_intel[5])
 			
 	for tile_info in tiles:
 		for tile in $Tiles.get_children():
@@ -177,6 +180,7 @@ func on_card_selected(card_name: String) -> Control:
 		var file := FileAccess.open(path, FileAccess.READ)
 		var card_info: Array = file.get_as_text().split("\n")
 		var card: Control = preload("res://test/simulation/screens/select_level/card.tscn").instantiate()
+		card.card_path = card_name
 		card.drag_drag_pressed.connect(on_art_max_selected)
 		card.refresh_vision.connect(refresh_vision)
 		add_card_to_card_zone(card)
@@ -195,12 +199,13 @@ func add_card_to_card_zone(card: Control) -> void:
 	$CardZone.add_child(card)
 
 func on_art_max_selected(card_info: Array) -> void:
-	active_card = card_info[1]
-	if multimode:
-		match card_info[1].team:
-			1: $DualMonitorMode/ActiveArt.texture = load("res://test/simulation/assets/sprites/units/%s" % card_info[0])
-			0: $ActiveArt.texture = load("res://test/simulation/assets/sprites/units/%s" % card_info[0])
-	else: $ActiveArt.texture = load("res://test/simulation/assets/sprites/units/%s" % card_info[0])
+	if card_info[1].team == 0 and !$DualMonitorMode/ActiveArt.texture or card_info[1].team == 1 and !$ActiveArt.texture:
+		active_card = card_info[1]
+		if multimode:
+			match card_info[1].team:
+				1: $DualMonitorMode/ActiveArt.texture = load("res://test/simulation/assets/sprites/units/%s" % card_info[0])
+				0: $ActiveArt.texture = load("res://test/simulation/assets/sprites/units/%s" % card_info[0])
+		else: $ActiveArt.texture = load("res://test/simulation/assets/sprites/units/%s" % card_info[0])
 
 func on_create_unit(tile: Node2D, alter_history: bool) -> void:
 	active_cards[active_card.team].append([tile, active_card])
@@ -434,3 +439,15 @@ func _on_inventory_pressed():
 func _on_reveal_all_pressed(): 
 	always_reveal = !always_reveal
 	refresh_vision()
+
+func _on_end_turn_pressed():
+	$EndTurn.position.x += ($EndTurn.size.x) * end_turn_multiplier
+	end_turn_multiplier *= -1
+
+func _on_utility_menu_pressed():
+	if !has_node("UtilityMenu"):
+		var utility_menu: Control = preload("res://test/simulation/screens/select_level/utility_menu.tscn").instantiate()
+		add_child(utility_menu)
+		utility_menu.position = $Buttons/UtilityMenu.position + Vector2(-100, -150)
+	else:
+		get_node("UtilityMenu/UtilityPressed").play("utility_pressed_end")

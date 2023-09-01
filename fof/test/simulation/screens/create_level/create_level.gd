@@ -166,7 +166,8 @@ func on_load_level(level_name: String) -> void:
 						card.global_position = Vector2(int(card_intel[2]), int(card_intel[3]))
 						card.team = int(card_intel[4])
 						card.on_team_buttons_modulate()
-						if card_intel[5]: card.get_node("AuraSelected/AuraArt").texture = load(card_intel[5])
+						if card_intel.size() > 5:
+							if card_intel[5]: card.get_node("AuraSelected/AuraArt").texture = load(card_intel[5])
 			
 	for tile_info in tiles:
 		active_tile_state = tile_info[1]

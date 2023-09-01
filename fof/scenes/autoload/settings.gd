@@ -12,6 +12,11 @@ var settings_info: Dictionary = {
 	"Video": [],
 }
 
+func update_settings_file_info() -> void:
+	for setting in settings_info.keys():
+		var contents: String = settings_info[setting].reduce(func(a: String, x: Array): return a + (x[0] + ": " + str(x[1]) + "\n"), "")
+		Helper.write_to_file("user://save/settings/current/", setting, ".txt", contents)
+
 func update_settings_info(i: int, setting: String, setting_name: String) -> void:
 	if settings_info.has(setting):
 		for child in settings_info[setting]:
@@ -22,10 +27,8 @@ func update_settings_info(i: int, setting: String, setting_name: String) -> void
 func return_setting_file_info(file: String) -> Array:
 	if !file.ends_with(".txt"): file = file + ".txt"
 	var dir_path: String = "user://save/settings/current/"
-	if FileAccess.file_exists(dir_path + file):
-		return Array(FileAccess.open(dir_path + file, FileAccess.READ).get_as_text().split("\n", false))\
-		.map(func(x: String): var split: Array = x.split(":", false); return [split[0], int(split[1])])
-	return []
+	return Array(Helper.return_file_contents(dir_path + file).split("\n", false))\
+	.map(func(x: String): var split: Array = x.split(":", false); return [split[0], int(split[1])])
 
 func _init() -> void:
 	for file in DirAccess.get_files_at("user://save/settings/current/"):

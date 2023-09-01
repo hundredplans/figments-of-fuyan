@@ -41,6 +41,12 @@ func _process(_delta: float) -> void:
 	if remove_aura and Input.is_action_just_pressed("LeftClick"):
 		$AuraSelected/AuraArt.texture = null
 
+	if can_drag and Input.is_action_just_pressed("RightClick"):
+		if position.x > 1920: 
+			position.x -= 1920
+		else:
+			position.x += 1920
+
 func _on_default_state_pressed():
 	$Name.text = default_state[0]
 	$Text.text = default_state[1]
@@ -163,3 +169,16 @@ func _on_aura_selected_mouse_entered():
 
 func _on_aura_selected_mouse_exited():
 	remove_aura = false
+
+func _on_transform_custom_pressed():
+	var loadcard: Control = preload("res://test/simulation/screens/load_stuff/load_stuff.tscn").instantiate()
+	loadcard.card_selected.connect(on_card_selected)
+	get_parent().get_parent().add_child(loadcard)
+	
+func on_card_selected(card_name: String) -> void:
+	var path: String = "user://savefofle/cards/%s" % card_name
+	if FileAccess.file_exists(path):
+		var file := FileAccess.open(path, FileAccess.READ)
+		var card_info: Array = file.get_as_text().split("\n")
+		default_state = card_info
+		_on_default_state_pressed()

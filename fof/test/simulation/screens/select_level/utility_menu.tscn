@@ -1,0 +1,313 @@
+[gd_scene load_steps=7 format=3 uid="uid://c4517qungvqpw"]
+
+[ext_resource type="Script" path="res://test/simulation/screens/select_level/utility_menu.gd" id="1_7ilus"]
+[ext_resource type="Theme" uid="uid://be5u05ixh2dg7" path="res://test/simulation/assets/fonts/roboto32.tres" id="1_rpumo"]
+
+[sub_resource type="Animation" id="Animation_4a4ww"]
+resource_name = "utility_pressed"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_q24de"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_plxeg"]
+resource_name = "utility_pressed_end"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xe70h"]
+_data = {
+"RESET": SubResource("Animation_q24de"),
+"utility_pressed": SubResource("Animation_4a4ww"),
+"utility_pressed_end": SubResource("Animation_plxeg")
+}
+
+[node name="UtilityMenu" type="Control"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_rpumo")
+script = ExtResource("1_7ilus")
+
+[node name="UtilityPressed" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_xe70h")
+}
+
+[node name="Outside" type="ColorRect" parent="."]
+layout_mode = 1
+offset_top = 39.0
+offset_right = 375.0
+offset_bottom = 141.0
+color = Color(0, 0, 0, 1)
+
+[node name="Inside" type="ColorRect" parent="."]
+layout_mode = 1
+offset_left = 5.0
+offset_top = 44.0
+offset_right = 370.0
+offset_bottom = 136.0
+color = Color(0.682353, 0.262745, 0.482353, 0.52549)
+
+[node name="Buttons" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 4.0
+offset_top = 44.0
+offset_right = 370.0
+offset_bottom = 136.0
+
+[node name="SaveCards" type="Control" parent="Buttons"]
+anchors_preset = 0
+offset_left = 130.0
+offset_right = 180.0
+offset_bottom = 92.0
+
+[node name="0" type="Button" parent="Buttons/SaveCards"]
+layout_mode = 0
+offset_right = 50.0
+offset_bottom = 46.0
+text = "SA"
+
+[node name="1" type="Button" parent="Buttons/SaveCards"]
+layout_mode = 0
+offset_top = 46.0
+offset_right = 50.0
+offset_bottom = 92.0
+text = "SA"
+
+[node name="ScreenClear" type="Control" parent="Buttons"]
+anchors_preset = 0
+offset_left = 81.0
+offset_right = 127.0
+offset_bottom = 92.0
+
+[node name="0" type="Button" parent="Buttons/ScreenClear"]
+layout_mode = 0
+offset_left = -4.0
+offset_right = 46.0
+offset_bottom = 46.0
+text = "SC"
+
+[node name="1" type="Button" parent="Buttons/ScreenClear"]
+layout_mode = 0
+offset_left = -4.0
+offset_top = 46.0
+offset_right = 46.0
+offset_bottom = 92.0
+text = "SC"
+
+[node name="AddStats" type="Control" parent="Buttons"]
+anchors_preset = 0
+offset_left = 183.0
+offset_right = 366.0
+offset_bottom = 92.0
+mouse_filter = 2
+
+[node name="Att0" type="Button" parent="Buttons/AddStats"]
+layout_mode = 0
+offset_right = 32.0
+offset_bottom = 46.0
+text = "+"
+
+[node name="Att1" type="Button" parent="Buttons/AddStats"]
+layout_mode = 0
+offset_top = 46.0
+offset_right = 32.0
+offset_bottom = 92.0
+text = "+"
+
+[node name="Hp0" type="Button" parent="Buttons/AddStats"]
+layout_mode = 0
+offset_left = 61.0
+offset_right = 93.0
+offset_bottom = 46.0
+text = "+"
+
+[node name="Hp1" type="Button" parent="Buttons/AddStats"]
+layout_mode = 0
+offset_left = 61.0
+offset_top = 46.0
+offset_right = 93.0
+offset_bottom = 92.0
+text = "+"
+
+[node name="Spd0" type="Button" parent="Buttons/AddStats"]
+layout_mode = 0
+offset_left = 121.0
+offset_right = 153.0
+offset_bottom = 46.0
+text = "+"
+
+[node name="Spd1" type="Button" parent="Buttons/AddStats"]
+layout_mode = 0
+offset_left = 121.0
+offset_top = 46.0
+offset_right = 153.0
+offset_bottom = 92.0
+text = "+"
+
+[node name="SubtractStats" type="Control" parent="Buttons"]
+anchors_preset = 0
+offset_left = 183.0
+offset_right = 366.0
+offset_bottom = 92.0
+mouse_filter = 2
+
+[node name="Att0" type="Button" parent="Buttons/SubtractStats"]
+layout_mode = 0
+offset_left = 32.0
+offset_right = 61.0
+offset_bottom = 46.0
+text = "-"
+
+[node name="Att1" type="Button" parent="Buttons/SubtractStats"]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 46.0
+offset_right = 61.0
+offset_bottom = 92.0
+text = "-"
+
+[node name="Hp0" type="Button" parent="Buttons/SubtractStats"]
+layout_mode = 0
+offset_left = 93.0
+offset_right = 121.0
+offset_bottom = 46.0
+text = "-"
+
+[node name="Hp1" type="Button" parent="Buttons/SubtractStats"]
+layout_mode = 0
+offset_left = 93.0
+offset_top = 46.0
+offset_right = 121.0
+offset_bottom = 92.0
+text = "-"
+
+[node name="Spd0" type="Button" parent="Buttons/SubtractStats"]
+layout_mode = 0
+offset_left = 153.0
+offset_right = 183.0
+offset_bottom = 46.0
+text = "-"
+
+[node name="Spd1" type="Button" parent="Buttons/SubtractStats"]
+layout_mode = 0
+offset_left = 153.0
+offset_top = 46.0
+offset_right = 183.0
+offset_bottom = 92.0
+text = "-"
+
+[node name="TeamZero" type="Label" parent="."]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 44.0
+offset_right = 83.0
+offset_bottom = 90.0
+text = "Zero"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TeamOne" type="Label" parent="."]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 90.0
+offset_right = 83.0
+offset_bottom = 136.0
+text = "One"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Att" type="Label" parent="."]
+layout_mode = 0
+offset_left = 187.0
+offset_right = 248.0
+offset_bottom = 41.0
+text = "ATT"
+horizontal_alignment = 1
+
+[node name="Hp" type="Label" parent="."]
+layout_mode = 0
+offset_left = 248.0
+offset_right = 309.0
+offset_bottom = 41.0
+text = "HP"
+horizontal_alignment = 1
+
+[node name="Spd" type="Label" parent="."]
+layout_mode = 0
+offset_left = 308.0
+offset_right = 370.0
+offset_bottom = 41.0
+text = "SPD"
+horizontal_alignment = 1
+
+[connection signal="pressed" from="Buttons/SaveCards/0" to="." method="_on_save_cards_pressed" binds= [0]]
+[connection signal="pressed" from="Buttons/SaveCards/1" to="." method="_on_save_cards_pressed" binds= [1]]
+[connection signal="pressed" from="Buttons/ScreenClear/0" to="." method="on_screen_clear_pressed" binds= [0]]
+[connection signal="pressed" from="Buttons/ScreenClear/1" to="." method="on_screen_clear_pressed" binds= [1]]
+[connection signal="pressed" from="Buttons/AddStats/Att0" to="." method="on_change_stat" binds= [0, 1, 0]]
+[connection signal="pressed" from="Buttons/AddStats/Att1" to="." method="on_change_stat" binds= [1, 1, 0]]
+[connection signal="pressed" from="Buttons/AddStats/Hp0" to="." method="on_change_stat" binds= [0, 1, 1]]
+[connection signal="pressed" from="Buttons/AddStats/Hp1" to="." method="on_change_stat" binds= [1, 1, 1]]
+[connection signal="pressed" from="Buttons/AddStats/Spd0" to="." method="on_change_stat" binds= [0, 1, 2]]
+[connection signal="pressed" from="Buttons/AddStats/Spd1" to="." method="on_change_stat" binds= [1, 1, 2]]
+[connection signal="pressed" from="Buttons/SubtractStats/Att0" to="." method="on_change_stat" binds= [0, -1, 0]]
+[connection signal="pressed" from="Buttons/SubtractStats/Att1" to="." method="on_change_stat" binds= [1, -1, 0]]
+[connection signal="pressed" from="Buttons/SubtractStats/Hp0" to="." method="on_change_stat" binds= [0, -1, 1]]
+[connection signal="pressed" from="Buttons/SubtractStats/Hp1" to="." method="on_change_stat" binds= [1, -1, 1]]
+[connection signal="pressed" from="Buttons/SubtractStats/Spd0" to="." method="on_change_stat" binds= [0, -1, 2]]
+[connection signal="pressed" from="Buttons/SubtractStats/Spd1" to="." method="on_change_stat" binds= [1, -1, 2]]

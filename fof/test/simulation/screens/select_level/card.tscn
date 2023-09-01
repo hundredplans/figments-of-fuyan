@@ -232,46 +232,55 @@ modulate = Color(1, 1, 1, 0)
 anchors_preset = 0
 offset_top = 318.0
 offset_right = 202.0
-offset_bottom = 354.0
-
-[node name="SaveCard" type="Button" parent="UtilityMenu"]
-layout_mode = 0
-offset_right = 43.0
-offset_bottom = 36.0
-text = "sve"
+offset_bottom = 390.0
 
 [node name="UtilityPressed" type="AnimationPlayer" parent="UtilityMenu"]
 libraries = {
 "": SubResource("AnimationLibrary_k8m32")
 }
 
+[node name="TransformCustom" type="Button" parent="UtilityMenu"]
+layout_mode = 0
+offset_right = 67.0
+offset_bottom = 36.0
+text = "TC"
+
+[node name="SaveCard" type="Button" parent="UtilityMenu"]
+layout_mode = 0
+offset_left = 67.0
+offset_right = 135.0
+offset_bottom = 36.0
+text = "sve"
+
+[node name="LoadAura" type="Button" parent="UtilityMenu"]
+layout_mode = 0
+offset_left = 135.0
+offset_right = 202.0
+offset_bottom = 36.0
+text = "aura"
+
 [node name="TransformEnergy" type="Button" parent="UtilityMenu"]
 layout_mode = 0
-offset_left = 43.0
-offset_right = 81.0
-offset_bottom = 36.0
+offset_top = 36.0
+offset_right = 67.0
+offset_bottom = 72.0
 text = "TE"
 
 [node name="TransformRarity" type="Button" parent="UtilityMenu"]
 layout_mode = 0
-offset_left = 81.0
-offset_right = 119.0
-offset_bottom = 36.0
+offset_left = 67.0
+offset_top = 36.0
+offset_right = 135.0
+offset_bottom = 72.0
 text = "TR"
 
 [node name="TransformRarityOne" type="Button" parent="UtilityMenu"]
 layout_mode = 0
-offset_left = 119.0
-offset_right = 157.0
-offset_bottom = 36.0
-text = "TR1"
-
-[node name="LoadAura" type="Button" parent="UtilityMenu"]
-layout_mode = 0
-offset_left = 157.0
+offset_left = 135.0
+offset_top = 36.0
 offset_right = 202.0
-offset_bottom = 36.0
-text = "aura"
+offset_bottom = 72.0
+text = "TR1"
 
 [node name="AuraSelected" type="Control" parent="."]
 anchors_preset = 0
@@ -293,10 +302,11 @@ centered = false
 [connection signal="pressed" from="DragDrag" to="." method="_on_drag_drag_pressed"]
 [connection signal="pressed" from="Utility" to="." method="_on_utility_pressed"]
 [connection signal="pressed" from="DefaultState" to="." method="_on_default_state_pressed"]
+[connection signal="pressed" from="UtilityMenu/TransformCustom" to="." method="_on_transform_custom_pressed"]
 [connection signal="pressed" from="UtilityMenu/SaveCard" to="." method="_on_save_card_pressed"]
+[connection signal="pressed" from="UtilityMenu/LoadAura" to="." method="_on_load_aura_pressed"]
 [connection signal="pressed" from="UtilityMenu/TransformEnergy" to="." method="on_transform_pressed" binds= [0]]
 [connection signal="pressed" from="UtilityMenu/TransformRarity" to="." method="on_transform_pressed" binds= [1]]
 [connection signal="pressed" from="UtilityMenu/TransformRarityOne" to="." method="on_transform_pressed" binds= [2]]
-[connection signal="pressed" from="UtilityMenu/LoadAura" to="." method="_on_load_aura_pressed"]
 [connection signal="mouse_entered" from="AuraSelected" to="." method="_on_aura_selected_mouse_entered"]
 [connection signal="mouse_exited" from="AuraSelected" to="." method="_on_aura_selected_mouse_exited"]

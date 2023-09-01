@@ -14,6 +14,14 @@ anchors_preset = 0
 theme = SubResource("Theme_ty058")
 script = ExtResource("1_j22bg")
 
+[node name="EndTurn" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1730.0
+offset_top = 839.0
+offset_right = 1920.0
+offset_bottom = 900.0
+text = "End Turn"
+
 [node name="Buttons" type="Control" parent="."]
 anchors_preset = 0
 
@@ -89,11 +97,19 @@ text = "Draw Cards"
 
 [node name="RevealAll" type="Button" parent="Buttons"]
 layout_mode = 0
-offset_left = 740.0
+offset_left = 916.0
 offset_top = 1008.0
 offset_right = 1085.0
 offset_bottom = 1065.0
 text = "Reveal All"
+
+[node name="UtilityMenu" type="Button" parent="Buttons"]
+layout_mode = 0
+offset_left = 740.0
+offset_top = 1008.0
+offset_right = 916.0
+offset_bottom = 1065.0
+text = "Utility"
 
 [node name="Raycast" type="RayCast2D" parent="."]
 target_position = Vector2(0, 0)
@@ -113,6 +129,7 @@ position = Vector2(1860, 1025)
 
 [node name="CardZone" type="Node2D" parent="."]
 
+[connection signal="pressed" from="EndTurn" to="." method="_on_end_turn_pressed"]
 [connection signal="pressed" from="Buttons/LoadLevelButton" to="." method="_on_load_level_button_pressed"]
 [connection signal="pressed" from="Buttons/LoadCardsButton" to="." method="_on_load_cards_button_pressed"]
 [connection signal="pressed" from="Buttons/AddBoons" to="." method="_on_add_boons_pressed"]
@@ -122,3 +139,4 @@ position = Vector2(1860, 1025)
 [connection signal="pressed" from="Buttons/DualMonitorMode" to="." method="_on_dual_monitor_mode_pressed"]
 [connection signal="pressed" from="Buttons/DrawCards" to="." method="_on_draw_cards_pressed"]
 [connection signal="pressed" from="Buttons/RevealAll" to="." method="_on_reveal_all_pressed"]
+[connection signal="pressed" from="Buttons/UtilityMenu" to="." method="_on_utility_menu_pressed"]

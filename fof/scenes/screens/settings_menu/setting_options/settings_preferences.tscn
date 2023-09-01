@@ -1,14 +1,40 @@
-[gd_scene format=3 uid="uid://drao2oqxtnj6x"]
+[gd_scene load_steps=3 format=3 uid="uid://drao2oqxtnj6x"]
+
+[ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="1_7tu5m"]
+[ext_resource type="Script" path="res://scenes/screens/settings_menu/setting_options/settings_preferences.gd" id="1_ba0o4"]
 
 [node name="SettingsPreferences" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 600.0
 offset_bottom = 800.0
+theme = ExtResource("1_7tu5m")
+script = ExtResource("1_ba0o4")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="DefaultCameraSpeedMultiplier" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 23.0
+offset_right = 355.0
+offset_bottom = 50.0
+
+[node name="Button" type="OptionButton" parent="DefaultCameraSpeedMultiplier"]
+layout_mode = 1
+offset_right = 77.0
+offset_bottom = 50.0
+item_count = 4
+popup/item_0/text = "0.5x"
+popup/item_0/id = 0
+popup/item_1/text = "1x"
+popup/item_1/id = 1
+popup/item_2/text = "2x"
+popup/item_2/id = 2
+popup/item_3/text = "4x"
+popup/item_3/id = 3
+
+[node name="Label" type="Label" parent="DefaultCameraSpeedMultiplier"]
 layout_mode = 0
-offset_left = 35.0
-offset_top = 182.0
-offset_right = 563.0
-offset_bottom = 537.0
+offset_left = 122.0
+offset_right = 332.0
+offset_bottom = 50.0
+text = "Camera Speed"
+vertical_alignment = 1
