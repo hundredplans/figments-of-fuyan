@@ -3,6 +3,7 @@ extends Node
 var default_camera_speed_multiplier: int = 1
 var autoskip_turn: bool = false
 var close_fileloader: int = 256
+var notify_rewards: int = 0
 
 var settings_info: Dictionary = {
 	"Audio": [],
@@ -69,10 +70,12 @@ func set_vsync(i: int):
 	DisplayServer.window_set_vsync_mode(setting_info[i])
 
 func set_defaultcameraspeedmultiplier(i: int):
-	var setting_info: Array = [1]
+	var setting_info: Array = [0.5, 1, 2, 4]
 	default_camera_speed_multiplier = setting_info[i]
 func set_autoskipturn(i: int):
 	var setting_info: Array = [false, true]
 	autoskip_turn = setting_info[i]
 func set_closefileloader(i: int):
 	close_fileloader = i
+func set_notifyrewards(i: int):
+	notify_rewards = i

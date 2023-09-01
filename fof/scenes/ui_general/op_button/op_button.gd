@@ -1,11 +1,21 @@
 extends Control
+@export var options: PackedStringArray
+@export var default: int
+@export var label_text: String
+signal item_selected
 
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+func _ready() -> void:
+	$OptionButton.item_selected.connect(func(i: int): item_selected.emit(i))
+	for i in options:
+		$OptionButton.add_item(i)
+		
+	if default < $OptionButton.item_count:
+		$OptionButton.select(default)
+		
+	$Label.text = label_text
+	$Outside.color = Helper.DARK_BROWN
+	$Inside.color = Helper.LIGHT_BROWN
+	
+	(func(): $Label.position.x = $OptionButton.get_minimum_size().x + 15;\
+	$Outside.size.x += $Label.get_minimum_size().x + $OptionButton.get_minimum_size().x + 5;\
+	$Inside.size.x += $Label.get_minimum_size().x + $OptionButton.get_minimum_size().x + 5).call_deferred()

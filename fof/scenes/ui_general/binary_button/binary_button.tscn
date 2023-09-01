@@ -1,12 +1,52 @@
-[gd_scene load_steps=2 format=3 uid="uid://chkoma3ub3eqf"]
+[gd_scene load_steps=3 format=3 uid="uid://chkoma3ub3eqf"]
 
+[ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="1_0qqdq"]
 [ext_resource type="Script" path="res://scenes/ui_general/binary_button/binary_button.gd" id="1_we6j8"]
 
 [node name="BinaryButton" type="Control"]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = 0
+offset_right = 177.0
+offset_bottom = 63.0
+theme = ExtResource("1_0qqdq")
 script = ExtResource("1_we6j8")
+
+[node name="Outside" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 162.0
+offset_bottom = 63.0
+color = Color(0, 0, 0, 1)
+
+[node name="Inside" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 157.0
+offset_bottom = 58.0
+color = Color(0, 0, 0, 1)
+
+[node name="No" type="Button" parent="."]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 81.0
+offset_bottom = 58.0
+text = "No"
+
+[node name="Yes" type="Button" parent="."]
+layout_mode = 0
+offset_left = 81.0
+offset_top = 5.0
+offset_right = 157.0
+offset_bottom = 58.0
+text = "Yes"
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 169.0
+offset_right = 170.0
+offset_bottom = 63.0
+vertical_alignment = 1
+
+[connection signal="pressed" from="No" to="." method="_on_no_pressed"]
+[connection signal="pressed" from="Yes" to="." method="_on_yes_pressed"]

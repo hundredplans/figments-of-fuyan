@@ -1,12 +1,41 @@
-[gd_scene load_steps=2 format=3 uid="uid://bj3h1ak5dv73n"]
+[gd_scene load_steps=3 format=3 uid="uid://bj3h1ak5dv73n"]
 
+[ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="1_rsbc5"]
 [ext_resource type="Script" path="res://scenes/ui_general/op_button/op_button.gd" id="1_x1upb"]
 
 [node name="OpButton" type="Control"]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = 0
+offset_right = 24.0
+offset_bottom = 63.0
+theme = ExtResource("1_rsbc5")
 script = ExtResource("1_x1upb")
+options = PackedStringArray("")
+
+[node name="Outside" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 24.0
+offset_bottom = 63.0
+color = Color(0, 0, 0, 1)
+
+[node name="Inside" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 19.0
+offset_bottom = 58.0
+color = Color(0, 0, 0, 1)
+
+[node name="OptionButton" type="OptionButton" parent="."]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 19.0
+offset_bottom = 58.0
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 31.0
+offset_right = 32.0
+offset_bottom = 63.0
+vertical_alignment = 1

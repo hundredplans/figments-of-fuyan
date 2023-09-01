@@ -1,7 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://drao2oqxtnj6x"]
+[gd_scene load_steps=6 format=3 uid="uid://drao2oqxtnj6x"]
 
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="1_7tu5m"]
 [ext_resource type="Script" path="res://scenes/screens/settings_menu/setting_options/settings_preferences.gd" id="1_ba0o4"]
+[ext_resource type="PackedScene" uid="uid://bj3h1ak5dv73n" path="res://scenes/ui_general/op_button/op_button.tscn" id="3_dg7gw"]
+[ext_resource type="PackedScene" uid="uid://chkoma3ub3eqf" path="res://scenes/ui_general/binary_button/binary_button.tscn" id="4_70xc4"]
+[ext_resource type="PackedScene" uid="uid://do6a233hu0w6c" path="res://scenes/ui_general/mc_button/mc_button.tscn" id="5_t1xs1"]
 
 [node name="SettingsPreferences" type="Control"]
 layout_mode = 3
@@ -11,30 +14,30 @@ offset_bottom = 800.0
 theme = ExtResource("1_7tu5m")
 script = ExtResource("1_ba0o4")
 
-[node name="DefaultCameraSpeedMultiplier" type="Control" parent="."]
-anchors_preset = 0
-offset_left = 23.0
-offset_right = 355.0
-offset_bottom = 50.0
+[node name="DefaultCameraSpeedMultiplier" parent="." instance=ExtResource("3_dg7gw")]
+offset_left = 19.0
+offset_right = 43.0
+options = PackedStringArray("0.5x", "1x", "2x", "4x")
+label_text = "Camera Speed"
 
-[node name="Button" type="OptionButton" parent="DefaultCameraSpeedMultiplier"]
-layout_mode = 1
-offset_right = 77.0
-offset_bottom = 50.0
-item_count = 4
-popup/item_0/text = "0.5x"
-popup/item_0/id = 0
-popup/item_1/text = "1x"
-popup/item_1/id = 1
-popup/item_2/text = "2x"
-popup/item_2/id = 2
-popup/item_3/text = "4x"
-popup/item_3/id = 3
+[node name="AutoskipTurn" parent="." instance=ExtResource("4_70xc4")]
+offset_left = 19.0
+offset_top = 78.0
+offset_right = 196.0
+offset_bottom = 141.0
+label_text = "Autoskip Turn"
 
-[node name="Label" type="Label" parent="DefaultCameraSpeedMultiplier"]
-layout_mode = 0
-offset_left = 122.0
-offset_right = 332.0
-offset_bottom = 50.0
-text = "Camera Speed"
-vertical_alignment = 1
+[node name="CloseFileLoader" parent="." instance=ExtResource("5_t1xs1")]
+offset_left = 19.0
+offset_top = 155.0
+offset_right = 117.0
+offset_bottom = 215.0
+options = PackedStringArray("Units", "Auras", "Areas", "Boons", "Levels", "Trinkets", "Challenges", "World Variations")
+label_text = "Close File Loader"
+
+[node name="NotifyRewards" parent="." instance=ExtResource("4_70xc4")]
+offset_left = 19.0
+offset_top = 230.0
+offset_right = 196.0
+offset_bottom = 293.0
+label_text = "Notify For Rewards"

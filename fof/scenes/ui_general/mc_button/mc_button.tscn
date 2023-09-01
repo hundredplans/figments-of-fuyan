@@ -1,12 +1,50 @@
-[gd_scene load_steps=2 format=3 uid="uid://do6a233hu0w6c"]
+[gd_scene load_steps=3 format=3 uid="uid://do6a233hu0w6c"]
 
 [ext_resource type="Script" path="res://scenes/ui_general/mc_button/mc_button.gd" id="1_t5m2k"]
+[ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="1_wuw3l"]
 
 [node name="McButton" type="Control"]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = 0
+offset_right = 105.0
+offset_bottom = 60.0
+theme = ExtResource("1_wuw3l")
 script = ExtResource("1_t5m2k")
+
+[node name="Outside" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 98.0
+offset_bottom = 60.0
+color = Color(0, 0, 0, 1)
+
+[node name="Inside" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 94.0
+offset_bottom = 55.0
+color = Color(0, 0, 0, 1)
+
+[node name="OpenButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 94.0
+offset_bottom = 55.0
+text = "Close"
+clip_text = true
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 105.0
+offset_right = 106.0
+offset_bottom = 60.0
+vertical_alignment = 1
+
+[node name="Options" type="Control" parent="."]
+anchors_preset = 0
+offset_top = 60.0
+offset_right = 34.0
+offset_bottom = 103.0
+
+[connection signal="pressed" from="OpenButton" to="." method="_on_open_button_pressed"]

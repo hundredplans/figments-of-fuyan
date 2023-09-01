@@ -1,8 +1,12 @@
 extends Node
 signal add_screen_history
 signal screen_change_animation_state
+
 const RED := Color(1,0,0,1)
 const BASE := Color(1,1,1,1)
+const LIGHT_BROWN := Color(0.635, 0.447, 0.31,1)
+const DARK_BROWN := Color(0.165, 0.075, 0.008,1)
+
 const settings_color_dict: Dictionary = {
 	"Graphics": "fcc71d",
 	"Audio": "0bc1dd",
