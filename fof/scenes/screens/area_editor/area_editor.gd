@@ -1,5 +1,6 @@
 extends Control
 
+const file_loader_name: String = "Area"
 var world_difficulty: int = 1
 var area_name: String
 var primary_color: Color = Color("000000")

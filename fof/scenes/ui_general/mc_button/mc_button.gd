@@ -5,6 +5,7 @@ extends Control
 @export var open_state: bool
 signal item_selected
 var button_states: Array = []
+var is_animating: bool = false
 
 func _ready() -> void:
 	$Label.text = label_text
@@ -21,7 +22,6 @@ func modify_open_state() -> void:
 func _on_open_button_pressed():
 	if $Options.get_child_count() < 1:
 		open_state = true
-		
 		var n: int = 0
 		var options_size: int = options.size() - 1
 		var total: int = 0
@@ -40,9 +40,15 @@ func _on_open_button_pressed():
 				ndefault -= total
 			options_size -= 1
 			binary_button.item_selected.connect(on_item_selected.bind(binary_button))
+		$OpenOptions.play("open_options")
+		modify_open_state()
 	else:
-		open_state = false
-		for child in $Options.get_children(): child.queue_free()
+		Helper.play_method_on_animation_end("open_options", $OpenOptions, close_options, [], true, self)
+
+func close_options() -> void:
+	open_state = false
+	for child in $Options.get_children(): 
+		child.queue_free()
 	modify_open_state()
 
 func on_item_selected(state: int, child: Control) -> void:
@@ -50,5 +56,4 @@ func on_item_selected(state: int, child: Control) -> void:
 	match state:
 		0: default -= i
 		1: default += i
-	print(default)
 	item_selected.emit(default)

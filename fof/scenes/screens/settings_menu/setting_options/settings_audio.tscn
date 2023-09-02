@@ -1,4 +1,6 @@
-[gd_scene format=3 uid="uid://c71qn866tocqs"]
+[gd_scene load_steps=2 format=3 uid="uid://c71qn866tocqs"]
+
+[ext_resource type="PackedScene" uid="uid://bx2ne50cjcqkp" path="res://scenes/ui_general/scale_button/scale_button.tscn" id="1_t66ru"]
 
 [node name="SettingsAudio" type="Control"]
 layout_mode = 3
@@ -6,9 +8,11 @@ anchors_preset = 0
 offset_right = 600.0
 offset_bottom = 800.0
 
-[node name="ColorRect" type="ColorRect" parent="."]
-layout_mode = 0
-offset_left = 35.0
-offset_top = 182.0
-offset_right = 563.0
-offset_bottom = 537.0
+[node name="MasterVolume" parent="." instance=ExtResource("1_t66ru")]
+offset_left = 30.0
+offset_right = 100.0
+default = 100
+totalmax = 100
+step = 1
+bigstep = 10
+label_text = "Master"

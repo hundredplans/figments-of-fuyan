@@ -33,28 +33,32 @@ func return_setting_file_info(file: String) -> Array:
 
 func _init() -> void:
 	for file in DirAccess.get_files_at("user://save/settings/current/"):
-		call("on_load_" + (file.left(-4)).to_lower(), return_setting_file_info(file))
+		var info: Array = return_setting_file_info(file)
+		for setting in info:
+			var method_name: String = "set_" + setting[0].to_lower()
+			if has_method(method_name): call(method_name, setting[1])
+		settings_info[file.left(-4)] = info
+#		call("on_load_" + (file.left(-4)).to_lower(), return_setting_file_info(file))
 		
-func on_load_video(info: Array) -> void:
-	for setting in info:
-		var method_name: String = "set_" + setting[0].to_lower()
-		if has_method(method_name): call(method_name, setting[1])
-	settings_info["Video"] = info
-	
-func on_load_audio(info: Array) -> void:
-	settings_info["Audio"] = info
-	
-func on_load_preferences(info: Array) -> void:
-	for setting in info:
-		var method_name: String = "set_" + setting[0].to_lower()
-		if has_method(method_name): call(method_name, setting[1])
-	settings_info["Preferences"] = info
-	
-func on_load_controls(info: Array) -> void:
-	settings_info["Controls"] = info
-	
-func on_load_graphics(info: Array) -> void:
-	settings_info["Graphics"] = info
+#func on_load_video(info: Array) -> void:
+#	for setting in info:
+#		var method_name: String = "set_" + setting[0].to_lower()
+#		if has_method(method_name): call(method_name, setting[1])
+#	settings_info["Video"] = info
+#func on_load_audio(info: Array) -> void:
+#	for setting in info:
+#		var method_name: String = "set_" + setting[0].to_lower()
+#		if has_method(method_name): call(method_name, setting[1])
+#	settings_info["Audio"] = info
+#func on_load_preferences(info: Array) -> void:
+#	for setting in info:
+#		var method_name: String = "set_" + setting[0].to_lower()
+#		if has_method(method_name): call(method_name, setting[1])
+#	settings_info["Preferences"] = info
+#func on_load_controls(info: Array) -> void:
+#	settings_info["Controls"] = info
+#func on_load_graphics(info: Array) -> void:
+#	settings_info["Graphics"] = info
 
 func set_fps(i: int):
 	var setting_info: Array = [60, 120, 144, 240, 0]
@@ -79,3 +83,6 @@ func set_closefileloader(i: int):
 	close_fileloader = i
 func set_notifyrewards(i: int):
 	notify_rewards = i
+
+func set_mastervolume(i: int):
+	AudioMaster.master_volume_multiplier = i

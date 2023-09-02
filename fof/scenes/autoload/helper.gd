@@ -38,17 +38,21 @@ func on_enter_screen(screen: Control) -> void:
 func on_enter_screen_animation_finished() -> void:
 	screen_change_animation_state.emit(false)
 	
-func play_method_on_animation_end(animation_name: String, animation_player: AnimationPlayer, method: Callable, args: Array, backwards: bool) -> void:
+func play_method_on_animation_end(animation_name: String, animation_player: AnimationPlayer, method: Callable, args: Array, backwards: bool, call_on=self) -> void:
 	var animation: Animation = animation_player.get_animation(animation_name)
 	var track_index: int = animation.add_track(Animation.TYPE_METHOD)
-	animation.track_set_path(track_index, get_path())
+	animation.track_set_path(track_index, call_on.get_path())
 	var length: float = animation.length
 	if backwards: length = 0
 	animation.track_insert_key(track_index, length, {"method": method.get_method(), "args": args})
-	
+	animation_player.animation_finished.connect(on_animation_finished_remove_track.bind(animation_player, track_index))
 	match backwards:
 		false: animation_player.play(animation_name)
 		true: animation_player.play_backwards(animation_name)
+
+func on_animation_finished_remove_track(animation_name: String, animation_player: AnimationPlayer, i: int) -> void:
+	animation_player.get_animation(animation_name).remove_track(i)
+	animation_player.animation_finished.disconnect(on_animation_finished_remove_track)
 
 var pure_characters: Array = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",\
 "A", "B", "C", "D", "E", "F", 'G', "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",\
