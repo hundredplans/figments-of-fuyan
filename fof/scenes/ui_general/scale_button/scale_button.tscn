@@ -36,7 +36,92 @@ vertical_alignment = 1
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
-offset_left = 300.0
-offset_right = 301.0
+offset_left = 358.0
+offset_right = 359.0
 offset_bottom = 63.0
 vertical_alignment = 1
+
+[node name="Steppers" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 288.0
+offset_right = 348.0
+offset_bottom = 63.0
+
+[node name="Left" type="Control" parent="Steppers"]
+anchors_preset = 0
+offset_right = 25.0
+offset_bottom = 63.0
+
+[node name="Background" type="ColorRect" parent="Steppers/Left"]
+layout_mode = 0
+offset_left = -3.0
+offset_right = 28.0
+offset_bottom = 63.0
+color = Color(0, 0, 0, 1)
+
+[node name="SmallStep" type="ColorRect" parent="Steppers/Left"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 3.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.737255, 0.737255, 0.737255, 1)
+
+[node name="BigStep" type="ColorRect" parent="Steppers/Left"]
+layout_mode = 0
+offset_top = 20.0
+offset_right = 25.0
+offset_bottom = 43.0
+color = Color(0, 0, 0, 1)
+
+[node name="Label" type="Label" parent="Steppers/Left"]
+texture_filter = 1
+layout_mode = 0
+offset_top = 12.0
+offset_right = 25.0
+offset_bottom = 53.0
+text = "-"
+horizontal_alignment = 1
+
+[node name="Right" type="Control" parent="Steppers"]
+anchors_preset = 0
+offset_left = 35.0
+offset_right = 60.0
+offset_bottom = 63.0
+
+[node name="Background" type="ColorRect" parent="Steppers/Right"]
+layout_mode = 0
+offset_left = -3.0
+offset_right = 28.0
+offset_bottom = 63.0
+color = Color(0, 0, 0, 1)
+
+[node name="SmallStep" type="ColorRect" parent="Steppers/Right"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 3.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.737255, 0.737255, 0.737255, 1)
+
+[node name="BigStep" type="ColorRect" parent="Steppers/Right"]
+layout_mode = 0
+offset_top = 20.0
+offset_right = 25.0
+offset_bottom = 43.0
+color = Color(0, 0, 0, 1)
+
+[node name="Label" type="Label" parent="Steppers/Right"]
+texture_filter = 1
+layout_mode = 0
+offset_top = 12.0
+offset_right = 25.0
+offset_bottom = 53.0
+text = "+"
+horizontal_alignment = 1
