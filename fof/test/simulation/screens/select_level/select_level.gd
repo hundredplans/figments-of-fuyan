@@ -7,6 +7,7 @@ const tile_y_offset: int = 50
 const tile_amount: int = 800
 const tile_rows: int = 34
 
+var keep_visibility_disabled: bool = false
 var end_turn_multiplier: int = 1
 var loaded_level: String
 var always_reveal: bool = false
@@ -16,6 +17,7 @@ var history: Array = []
 var active_card: Control
 var active_cards: Array = [[], []]
 var always_visible_tiles: Array = []
+var always_disable_visibility: Array = []
 
 @onready var tile_default: PackedScene = preload("res://test/simulation/assets/map/tile/tile.tscn")
 func _process(_delta):
@@ -38,6 +40,7 @@ func create_tile() -> Node2D:
 	tile.click_unit.connect(on_click_unit)
 	tile.move_unit.connect(on_move_unit)
 	tile.visibility_update.connect(on_update_visibility)
+	tile.disable_visible.connect(on_disable_visible)
 	tile.change_tile_state.connect(on_tile_change_tile_state)
 	tile.change_tile_item.connect(on_change_tile_item)
 	tile.unit_clicked.connect(on_unit_clicked)
@@ -120,7 +123,6 @@ func on_load_level(level_name: String) -> void:
 	var i: int = 1
 	
 	for tile_info in splitter:
-		print(splitter.size())
 		if i != splitter.size():
 			var tii: Array = tile_info.split(",")
 			if tii.size() == 5:
@@ -212,9 +214,11 @@ func on_create_unit(tile: Node2D, alter_history: bool) -> void:
 	if alter_history: add_to_history(["DESTROY", tile])
 	var tx: Texture2D = load(active_card.get_node("ArtMax").texture.resource_path)
 	tile.get_node("In/Unit").texture = tx
+	
 	var multi_tile: Node2D = get_multi_tile(tile)
-	if multi_tile:
-		multi_tile.get_node("In/Unit").texture = tx
+	if multi_tile: multi_tile.get_node("In/Unit").texture = tx
+	if keep_visibility_disabled: on_disable_visible(tile)
+		
 	refresh_vision()
 	
 	unit_selected = []
@@ -243,6 +247,10 @@ func on_destroy_unit(tile: Node2D, alter_history: bool) -> void:
 					always_visible_tiles.erase(tile)
 					tile.always_visible = false
 					is_always_visible = true
+					
+				if tile.disable_visibility:
+					always_disable_visibility.erase(tile)
+					tile.disable_visibility = false
 					
 				team.remove_at(i)
 				tile.get_node("In/Unit").texture = null
@@ -301,21 +309,22 @@ func refresh_vision_for_team(team: int) -> Array:
 			if is_instance_valid(tile) and tile.is_inside_tree():
 				var xyt: Vector2 = tile.global_position
 				if tile not in visible_tiles: visible_tiles.append(tile)
-				var found_tiles: Array = []
-				$Raycast.global_position = Vector2(xyt.x, xyt.y)
-				match team:
-					0: found_tiles = $Tiles.get_children().filter(find_tiles_func.bind(xyt))
-					1: found_tiles = $DualTiles.get_children().filter(find_tiles_func.bind(xyt))
+				if tile not in always_disable_visibility:
+					var found_tiles: Array = []
+					$Raycast.global_position = Vector2(xyt.x, xyt.y)
+					match team:
+						0: found_tiles = $Tiles.get_children().filter(find_tiles_func.bind(xyt))
+						1: found_tiles = $DualTiles.get_children().filter(find_tiles_func.bind(xyt))
+						
+					for found_tile in found_tiles:
+						$Raycast.target_position = Vector2(found_tile.global_position.x, found_tile.global_position.y) - $Raycast.global_position
+						$Raycast.force_raycast_update()
+						if found_tile not in visible_tiles:
+							match $Raycast.is_colliding():
+								false: visible_tiles.append(found_tile)
+								true: if $Raycast.get_collider().get_parent() == found_tile: visible_tiles.append(found_tile)
 					
-				for found_tile in found_tiles:
-					$Raycast.target_position = Vector2(found_tile.global_position.x, found_tile.global_position.y) - $Raycast.global_position
-					$Raycast.force_raycast_update()
-					if found_tile not in visible_tiles:
-						match $Raycast.is_colliding():
-							false: visible_tiles.append(found_tile)
-							true: if $Raycast.get_collider().get_parent() == found_tile: visible_tiles.append(found_tile)
-				
-				$Raycast.target_position = Vector2(found_tiles[0].global_position.x, found_tiles[0].global_position.y) - $Raycast.global_position
+					$Raycast.target_position = Vector2(found_tiles[0].global_position.x, found_tiles[0].global_position.y) - $Raycast.global_position
 		return visible_tiles
 	return []
 			
@@ -396,6 +405,19 @@ func _on_dual_monitor_mode_pressed():
 	
 	if loaded_level: on_load_level(loaded_level)
 	else: _on_load_level_button_pressed()
+
+func on_disable_visible(tile: Node2D):
+	tile.disable_visibility = !tile.disable_visibility
+	if tile not in always_disable_visibility: always_disable_visibility.append(tile)
+	else: always_disable_visibility.erase(tile)
+	
+	var multi_tile: Node2D = get_multi_tile(tile)
+	if multi_tile:
+		multi_tile.disable_visibility = !multi_tile.disable_visibility
+		if multi_tile not in always_disable_visibility: always_disable_visibility.append(multi_tile)
+		else: always_disable_visibility.erase(multi_tile)
+	
+	refresh_vision()
 
 func on_update_visibility(tile: Node2D):
 	tile.always_visible = !tile.always_visible

@@ -4,7 +4,7 @@ extends Control
 @export var label_text: String
 signal item_selected
 
-func _ready() -> void:
+func _enter_tree() -> void:
 	$OptionButton.item_selected.connect(func(i: int): item_selected.emit(i))
 	for i in options:
 		$OptionButton.add_item(i)

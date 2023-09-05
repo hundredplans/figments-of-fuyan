@@ -9,35 +9,37 @@
 [node name="SettingsPreferences" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 600.0
-offset_bottom = 800.0
+offset_right = 518.0
+offset_bottom = 708.0
 theme = ExtResource("1_7tu5m")
 script = ExtResource("1_ba0o4")
 
 [node name="DefaultCameraSpeedMultiplier" parent="." instance=ExtResource("3_dg7gw")]
 offset_left = 19.0
+offset_top = 10.0
 offset_right = 43.0
+offset_bottom = 73.0
 options = PackedStringArray("0.5x", "1x", "2x", "4x")
 label_text = "Camera Speed"
 
 [node name="AutoskipTurn" parent="." instance=ExtResource("4_70xc4")]
 offset_left = 19.0
-offset_top = 78.0
+offset_top = 88.0
 offset_right = 196.0
-offset_bottom = 141.0
+offset_bottom = 151.0
 label_text = "Autoskip Turn"
 
 [node name="CloseFileLoader" parent="." instance=ExtResource("5_t1xs1")]
 offset_left = 19.0
-offset_top = 230.0
+offset_top = 240.0
 offset_right = 117.0
-offset_bottom = 290.0
+offset_bottom = 300.0
 options = PackedStringArray("Units", "Auras", "Areas", "Boons", "Levels", "Trinkets", "Challenges", "World Variations")
 label_text = "Close File Loader"
 
 [node name="NotifyRewards" parent="." instance=ExtResource("4_70xc4")]
 offset_left = 19.0
-offset_top = 154.0
+offset_top = 164.0
 offset_right = 196.0
-offset_bottom = 217.0
+offset_bottom = 227.0
 label_text = "Notify For Rewards"

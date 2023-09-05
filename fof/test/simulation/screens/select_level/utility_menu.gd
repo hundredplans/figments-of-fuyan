@@ -5,6 +5,10 @@ const stats: Array = ["Att", "Hp", "Spd"]
 
 func _ready():
 	$UtilityPressed.play("utility_pressed")
+	
+	match get_parent().keep_visibility_disabled:
+		false: $Buttons/DisableVisibility.modulate = Color(1,1,1,1)
+		true: $Buttons/DisableVisibility.modulate = Color(1,0,0,1)
 
 func _on_save_cards_pressed(i: int):
 	var write_string: String = ""
@@ -39,3 +43,9 @@ func on_screen_clear_pressed(i: int):
 	for child in card_zone.get_children():
 		if child.position.x > overpos[i].x and child.position.x < overpos[i].y:
 			child.queue_free()
+
+func _on_disable_visibility_pressed():
+	get_parent().keep_visibility_disabled = !get_parent().keep_visibility_disabled
+	match get_parent().keep_visibility_disabled:
+		false: $Buttons/DisableVisibility.modulate = Color(1,1,1,1)
+		true: $Buttons/DisableVisibility.modulate = Color(1,0,0,1)

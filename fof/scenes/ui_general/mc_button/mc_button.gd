@@ -7,7 +7,7 @@ signal item_selected
 var button_states: Array = []
 var is_animating: bool = false
 
-func _ready() -> void:
+func _enter_tree() -> void:
 	$Label.text = label_text
 	$Outside.color = Helper.DARK_BROWN
 	$Inside.color = Helper.LIGHT_BROWN

@@ -7,37 +7,39 @@
 [node name="SettingsVideo" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 600.0
-offset_bottom = 800.0
+offset_right = 518.0
+offset_bottom = 708.0
 theme = ExtResource("1_q21lc")
 script = ExtResource("2_wdjfo")
 
 [node name="WindowMode" parent="." instance=ExtResource("3_kh47f")]
 offset_left = 23.0
+offset_top = 13.0
 offset_right = 47.0
-options = PackedStringArray("Windowed", "Fullscreen", "Exclusive Fullscreen")
+offset_bottom = 76.0
+options = PackedStringArray("Windowed", "Borderless", "Fullscreen")
 label_text = "Window Mode"
 
 [node name="FPS" parent="." instance=ExtResource("3_kh47f")]
 offset_left = 24.0
-offset_top = 78.0
+offset_top = 91.0
 offset_right = 48.0
-offset_bottom = 141.0
+offset_bottom = 154.0
 options = PackedStringArray("60", "120", "144", "240", "Unlimited")
 label_text = "FPS"
 
 [node name="VSync" parent="." instance=ExtResource("3_kh47f")]
 offset_left = 24.0
-offset_top = 156.0
+offset_top = 169.0
 offset_right = 48.0
-offset_bottom = 219.0
+offset_bottom = 232.0
 options = PackedStringArray("Disabled", "Enabled", "Adaptive", "Mailbox")
 label_text = "VSync"
 
 [node name="Resolution" parent="." instance=ExtResource("3_kh47f")]
 offset_left = 24.0
-offset_top = 234.0
+offset_top = 247.0
 offset_right = 48.0
-offset_bottom = 297.0
+offset_bottom = 310.0
 options = PackedStringArray("1920x1080")
 label_text = "Resolution"

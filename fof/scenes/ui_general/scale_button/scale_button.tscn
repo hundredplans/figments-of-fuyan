@@ -6,7 +6,7 @@
 [node name="ScaleButton" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 70.0
+offset_right = 351.0
 offset_bottom = 63.0
 theme = ExtResource("1_qowab")
 script = ExtResource("1_wp1vw")
@@ -125,3 +125,14 @@ offset_right = 25.0
 offset_bottom = 53.0
 text = "+"
 horizontal_alignment = 1
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="Steppers/Left/SmallStep" to="." method="_on_small_step_mouse_entered" binds= [-1]]
+[connection signal="mouse_exited" from="Steppers/Left/SmallStep" to="." method="_on_small_step_mouse_exited"]
+[connection signal="mouse_entered" from="Steppers/Left/BigStep" to="." method="_on_big_step_mouse_entered" binds= [-1]]
+[connection signal="mouse_exited" from="Steppers/Left/BigStep" to="." method="_on_big_step_mouse_exited"]
+[connection signal="mouse_entered" from="Steppers/Right/SmallStep" to="." method="_on_small_step_mouse_entered" binds= [1]]
+[connection signal="mouse_exited" from="Steppers/Right/SmallStep" to="." method="_on_small_step_mouse_exited"]
+[connection signal="mouse_entered" from="Steppers/Right/BigStep" to="." method="_on_big_step_mouse_entered" binds= [1]]
+[connection signal="mouse_exited" from="Steppers/Right/BigStep" to="." method="_on_big_step_mouse_exited"]

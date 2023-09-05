@@ -3,7 +3,7 @@ extends Control
 @export var label_text: String
 signal item_selected
 
-func _ready():
+func _enter_tree():
 	on_buttons_pressed()
 	$Label.text = label_text
 	$Outside.color = Helper.DARK_BROWN
