@@ -33,7 +33,7 @@ func _ready() -> void:
 		$CardSorter.add_child(settings_card)
 		settings_card.on_load_setting_card(card_name)
 		settings_card.get_parent().move_child(settings_card, i)
-#		settings_card.z_index = i
+		settings_card.z_index = i
 		
 		var animation: Animation = settings_card.get_node("MoveCard").get_animation("move_card_" + directions[direction])
 		if i < 4:
@@ -58,8 +58,8 @@ func on_center_selected_card(i: int) -> void:
 		
 		center_card.get_parent().move_child(center_card, i)
 		side_card.get_parent().move_child(side_card, 4)
-#		center_card.z_index = i
-#		side_card.z_index = 4
+		center_card.z_index = i
+		side_card.z_index = 4
 		
 		var length: float = side_card.get_node("MoveCard").get_animation("move_card_left").length
 		var scales: Array = [card_scales[i], card_scales[4]]

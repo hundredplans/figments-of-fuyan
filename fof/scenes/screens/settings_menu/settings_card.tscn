@@ -64,10 +64,10 @@ tracks/3/keys = {
 "values": [true]
 }
 
-[sub_resource type="Animation" id="Animation_34dlj"]
-resource_name = "move_card_right_old"
-length = 0.3
-step = 0.05
+[sub_resource type="Animation" id="Animation_1jgi8"]
+resource_name = "move_card_left"
+length = 0.4
+step = 0.01
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -75,10 +75,10 @@ tracks/0/path = NodePath("Background:texture")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [ExtResource("2_x0gfo"), ExtResource("4_wtxnf"), ExtResource("5_3ywip"), ExtResource("6_eavep"), ExtResource("7_p1430"), ExtResource("2_d4j67"), ExtResource("3_di0b4")]
+"values": [ExtResource("3_di0b4"), ExtResource("10_i4jyh"), ExtResource("2_d4j67"), ExtResource("7_p1430"), ExtResource("6_eavep"), ExtResource("5_3ywip"), ExtResource("4_wtxnf"), ExtResource("3_t6scu"), ExtResource("2_x0gfo")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -87,10 +87,10 @@ tracks/1/path = NodePath("Settings:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [0.0, 1.5708, 1.5708, -1.57079, -1.57079, -1.57079, -1.57079]
+"values": [-1.57079, 0.0]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -99,22 +99,22 @@ tracks/2/path = NodePath("Settings:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(0, 0), Vector2(536, 285), Vector2(302, 379), Vector2(288, 489), Vector2(300, 563), Vector2(60, 639), Vector2(0, 765)]
+"values": [Vector2(0, 765), Vector2(0, 0)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Settings:scale")
+tracks/3/path = NodePath("Settings:visible")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(1, 1), Vector2(0.6, 0.6), Vector2(0.3, 0.3), Vector2(1e-05, 1e-05), Vector2(0.3, 0.3), Vector2(0.6, 0.6), Vector2(1, 1)]
+"times": PackedFloat32Array(0, 0.01, 0.39, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [true, false, false, true]
 }
 
 [sub_resource type="Animation" id="Animation_l1823"]
@@ -170,59 +170,6 @@ tracks/3/keys = {
 "values": [Vector2(1, 1), Vector2(0.6, 0.6), Vector2(0.3, 0.3), Vector2(1e-05, 1e-05), Vector2(0.3, 0.3), Vector2(0.6, 0.6), Vector2(1, 1)]
 }
 
-[sub_resource type="Animation" id="Animation_1jgi8"]
-resource_name = "move_card_left"
-length = 0.4
-step = 0.01
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Background:texture")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [ExtResource("3_di0b4"), ExtResource("10_i4jyh"), ExtResource("2_d4j67"), ExtResource("7_p1430"), ExtResource("6_eavep"), ExtResource("5_3ywip"), ExtResource("4_wtxnf"), ExtResource("3_t6scu"), ExtResource("2_x0gfo")]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Settings:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.4),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [-1.57079, 0.0]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Settings:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.4),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(0, 765), Vector2(0, 0)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Settings:visible")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.01, 0.39, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [true, false, false, true]
-}
-
 [sub_resource type="Animation" id="Animation_pup0i"]
 resource_name = "move_card_right"
 length = 0.4
@@ -274,6 +221,59 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
 "values": [true, false, false, true]
+}
+
+[sub_resource type="Animation" id="Animation_34dlj"]
+resource_name = "move_card_right_old"
+length = 0.3
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Background:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("2_x0gfo"), ExtResource("4_wtxnf"), ExtResource("5_3ywip"), ExtResource("6_eavep"), ExtResource("7_p1430"), ExtResource("2_d4j67"), ExtResource("3_di0b4")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Settings:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 1.5708, 1.5708, -1.57079, -1.57079, -1.57079, -1.57079]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Settings:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(536, 285), Vector2(302, 379), Vector2(288, 489), Vector2(300, 563), Vector2(60, 639), Vector2(0, 765)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Settings:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(0.6, 0.6), Vector2(0.3, 0.3), Vector2(1e-05, 1e-05), Vector2(0.3, 0.3), Vector2(0.6, 0.6), Vector2(1, 1)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_cxf2m"]
