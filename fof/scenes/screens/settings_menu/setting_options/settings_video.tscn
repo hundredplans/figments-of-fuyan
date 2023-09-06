@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://ys2m6lpmuqth"]
 
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="1_q21lc"]
-[ext_resource type="Script" path="res://scenes/screens/settings_menu/setting_options/settings_video.gd" id="2_wdjfo"]
+[ext_resource type="Script" path="res://scenes/screens/settings_menu/settings_connect.gd" id="2_hua15"]
 [ext_resource type="PackedScene" uid="uid://bj3h1ak5dv73n" path="res://scenes/ui_general/op_button/op_button.tscn" id="3_kh47f"]
 
 [node name="SettingsVideo" type="Control"]
@@ -10,7 +10,7 @@ anchors_preset = 0
 offset_right = 518.0
 offset_bottom = 708.0
 theme = ExtResource("1_q21lc")
-script = ExtResource("2_wdjfo")
+script = ExtResource("2_hua15")
 
 [node name="WindowMode" parent="." instance=ExtResource("3_kh47f")]
 offset_left = 23.0

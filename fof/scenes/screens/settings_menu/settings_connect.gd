@@ -1,5 +1,5 @@
 extends Control
-const setting: String = "Video"
+var setting: String
 
 func _enter_tree(): # Important it's this
 	for info in Settings.settings_info[setting]:

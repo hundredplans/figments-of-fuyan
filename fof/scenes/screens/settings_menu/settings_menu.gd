@@ -18,7 +18,6 @@ func _process(_delta: float) -> void:
 				i += 1
 				
 func _ready() -> void:
-	
 	for child in $CardAreas.get_children().map(func(x: Area2D): return x.get_node("CollisionShape2D")):
 		var rsize: Vector2 = child.shape.get_rect().size
 		card_areas.append(Rect2(child.get_parent().position - rsize / 2, rsize))
@@ -41,7 +40,7 @@ func _ready() -> void:
 			settings_card.get_node("Settings").position = animation.track_get_key_value(2, 0)
 		else:
 			settings_card.on_load_front_card()
-			settings_card.get_node("Background").texture = preload("res://scenes/screens/settings_menu/settings_assets/0.png")
+			settings_card.get_node("Background").texture = preload("res://scenes/screens/settings_menu/settings_assets/front0.png")
 			settings_card.get_node("Settings").rotation = animation.track_get_key_value(1, animation.track_get_key_count(1) - 1)
 			settings_card.get_node("Settings").position = animation.track_get_key_value(2, animation.track_get_key_count(2) - 1)
 		i += 1

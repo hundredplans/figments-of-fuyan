@@ -115,9 +115,9 @@ func get_children_recursive(node: Node, children := []):
 func start_timer_attach_method(timer: Timer, wait_time: float, method: Callable, args=[], one_shot=true) -> void:
 	timer.one_shot = one_shot
 	timer.start(wait_time)
+	timer.timeout.connect(on_timeout_disconnect.bind(timer, method))
 	if args: timer.timeout.connect(method.bind(args))
 	else: timer.timeout.connect(method)
-	timer.timeout.connect(on_timeout_disconnect.bind(timer, method))
 
 func on_timeout_disconnect(timer: Timer, method: Callable) -> void:
 	timer.timeout.disconnect(method)
