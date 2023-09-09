@@ -13,7 +13,7 @@ signal change_tile_item
 
 signal unit_clicked
 
-
+var active_editor_card: String
 var solo_visibility: bool = false
 var disable_visibility: bool = false
 var always_visible: bool = false
@@ -34,6 +34,11 @@ func _process(_delta: float) -> void:
 			if self not in get_parent().get_parent().touched_tiles:
 				get_parent().get_parent().touched_tiles.append(self)
 				_on_level_editor_inside_pressed()
+				
+		if Input.is_action_just_pressed("MouseMiddle"):
+			if $In/Unit.texture: destroy_unit.emit(self)
+			else: create_unit.emit(self)
+				
 			
 	if allow_change_anywhere:
 		if Input.is_action_just_pressed("MouseMiddle"):

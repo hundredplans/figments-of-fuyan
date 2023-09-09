@@ -123,12 +123,16 @@ func on_load_level(level_name: String) -> void:
 	var tiles: Array = []
 	var splitter: Array = file.get_as_text().split("\n")
 	var i: int = 1
+	var cards: Array = []
 	
+	active_cards = [[], []]
 	for tile_info in splitter:
 		if i != splitter.size():
 			var tii: Array = tile_info.split(",")
-			if tii.size() == 5:
+			if tii.size() >= 5:
 				tiles.append([Vector2(tii[0].to_int(), tii[1].to_int()), tii[2].to_int(), tii[3], tii[4].to_int()])
+				if tii.size() == 6:
+					tiles[tiles.size() - 1].append(tii[5])
 			i += 1
 		else:
 			for card_info in tile_info.split("~"):
@@ -136,6 +140,7 @@ func on_load_level(level_name: String) -> void:
 					var card_intel: Array = card_info.split("|")
 					var card = on_card_selected(card_intel[0] + ".txt")
 					if card:
+						cards.append(card)
 						if int(card_intel[1]) < 1: card._on_downscaled_pressed()
 						var xy: int = 0
 						if multimode: xy += 1920
@@ -149,20 +154,30 @@ func on_load_level(level_name: String) -> void:
 		for tile in $Tiles.get_children():
 			if tile.tile_position == tile_info[0]:
 				tile._on_simulation_inside_pressed(tile_info)
+				break
+				
 				
 		if multimode:
 			for tile in $DualTiles.get_children():
 				if tile.tile_position == tile_info[0]:
 					tile._on_simulation_inside_pressed(tile_info)
-				
+					if tile_info.size() == 5:
+						for card in cards:
+							var split: Array = tile_info[4].split("/")
+							if split[split.size() - 1].left(-4) == card.get_node("Name").text:
+								active_card = card
+								on_create_unit(tile, false)
+								cards.erase(card)
+								break
+					break
 	for tile in $Tiles.get_children():
 		if tile.tile_state == 0: tile.free()
 		
 	if multimode:
 		for tile in $DualTiles.get_children():
 			if tile.tile_state == 0: tile.free()
-
-	active_cards = [[], []]
+	
+	active_card = null
 	refresh_vision()
 
 func _on_load_level_button_pressed():
@@ -330,7 +345,8 @@ func refresh_vision_for_team(team: int) -> Array:
 								false: visible_tiles.append(found_tile)
 								true: if $Raycast.get_collider().get_parent() == found_tile: visible_tiles.append(found_tile)
 					
-					$Raycast.target_position = Vector2(found_tiles[0].global_position.x, found_tiles[0].global_position.y) - $Raycast.global_position
+					if found_tiles:
+						$Raycast.target_position = Vector2(found_tiles[0].global_position.x, found_tiles[0].global_position.y) - $Raycast.global_position
 		return visible_tiles
 	return []
 			

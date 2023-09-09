@@ -1,5 +1,6 @@
 extends Control
 
+var active_card: Array
 var no_paint: bool = false
 var nono_zone: int = 0
 var active_arrow_state: int = 0
@@ -25,6 +26,8 @@ func _ready():
 	var trigger_offset: int = 0
 	for i in range(tile_amount):
 		var tile: Node2D = tile_default.instantiate()
+		tile.create_unit.connect(on_create_unit)
+		tile.destroy_unit.connect(on_destroy_unit)
 		$FakeTiles.add_child(tile)
 		tile.get_node("Area2D").mouse_entered.connect(tile._on_area_2d_mouse_entered)
 		if x >= tile_rows:
@@ -44,6 +47,17 @@ func _ready():
 	
 	max_page = ceil(float(file_names.size()) / max_cards_on_page) - 1
 	on_load_cards()
+	
+func on_create_unit(tile: Node2D) -> void:
+	if active_card:
+		tile.get_node("In/Unit").texture = load("res://test/simulation/assets/sprites/units/" + active_card[0])
+		tile.active_editor_card = active_card[1].card_path
+		active_card = []
+	
+func on_destroy_unit(tile: Node2D) -> void:
+	tile.get_node("In/Unit").texture = null
+	tile.active_editor_card = ""
+	active_card = []
 	
 func on_load_cards():
 	for child in $AddItem/Sprites.get_children(): child.free()
@@ -153,8 +167,10 @@ func on_load_level(level_name: String) -> void:
 	for tile_info in splitter:
 		if i != splitter.size():
 			var tii: Array = tile_info.split(",")
-			if tii.size() == 5:
+			if tii.size() >= 5:
 				tiles.append([Vector2(tii[0].to_int(), tii[1].to_int()), tii[2].to_int(), tii[3], tii[4].to_int()])
+				if tii.size() == 6:
+					tiles[tiles.size() - 1].append(tii[5])
 			i += 1
 		else:
 			for card_info in tile_info.split("~"):
@@ -176,7 +192,16 @@ func on_load_level(level_name: String) -> void:
 		for tile in $FakeTiles.get_children():
 			if tile.tile_position == tile_info[0]:
 				tile._on_level_editor_inside_pressed()
-	
+				if tile_info.size() == 5 and tile_info[4]:
+					tile.active_editor_card = tile_info[4]
+					var path: String = "user://savefofle/cards/" + tile_info[4]
+					if FileAccess.file_exists(path):
+						var cardfile := FileAccess.open(path, FileAccess.READ).get_as_text().split("\n", false)
+						tile.get_node("In/Unit").texture = load("res://test/simulation/assets/sprites/units/" + cardfile[2])
+				else:
+					tile.get_node("In/Unit").texture = null
+					tile.active_editor_card = ""
+				break
 	active_arrow_state = 0
 	active_tile_state = 4
 	_on_clear_selection_pressed()
@@ -199,7 +224,7 @@ func save_level(text: String) -> void:
 	var card_names: Array = $CardZone.get_children()
 	for tile in $FakeTiles.get_children():
 		if tile.tile_state != 0:
-			write_string += "%s,%s,%s,%s,%s\n" % [tile.tile_position.x, tile.tile_position.y, tile.tile_state, tile.tile_item, tile.arrow_state]
+			write_string += "%s,%s,%s,%s,%s,%s\n" % [tile.tile_position.x, tile.tile_position.y, tile.tile_state, tile.tile_item, tile.arrow_state, tile.active_editor_card]
 			
 	for child in card_names:
 		var aura_resource_path: String
@@ -233,10 +258,14 @@ func on_card_selected(card_name: String) -> Control:
 		card._on_default_state_pressed()
 		card.on_team_buttons_modulate()
 		add_card_to_card_zone(card)
+		card.drag_drag_pressed.connect(on_drag_drag_pressed)
 		card.get_node("DragZone").mouse_entered.connect(_on_nono_zone_mouse_entered)
 		card.get_node("DragZone").mouse_exited.connect(_on_nono_zone_mouse_exited)
 		return card
 	return null
+	
+func on_drag_drag_pressed(_active_card: Array) -> void:
+	active_card = _active_card
 	
 func add_card_to_card_zone(card: Control) -> void:
 	card.position = Vector2(randi_range(0, 1600), randi_range(0, 800))
