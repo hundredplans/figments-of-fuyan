@@ -22,7 +22,6 @@ func modify_open_state() -> void:
 func _on_open_button_pressed():
 	if $Options.get_child_count() < 1:
 		open_state = true
-		var n: int = 0
 		var options_size: int = options.size() - 1
 		var total: int = 0
 		var ndefault: int = default
@@ -30,10 +29,7 @@ func _on_open_button_pressed():
 		for i in options:
 			var binary_button: Control = preload("res://scenes/ui_general/binary_button/binary_button.tscn").instantiate()
 			binary_button.label_text = i
-			binary_button.position.y += binary_button.size.y * n
 			$Options.add_child(binary_button)
-			n += 1
-			
 			total = int(pow(2, options_size))
 			if ndefault >= total:
 				binary_button.press()
@@ -42,8 +38,21 @@ func _on_open_button_pressed():
 			binary_button.item_selected.connect(on_item_selected.bind(binary_button))
 		$OpenOptions.play("open_options")
 		modify_open_state()
+		position_binary_buttons.call_deferred()
 	else:
 		Helper.play_method_on_animation_end("open_options", $OpenOptions, close_options, [], true, self)
+
+func position_binary_buttons() -> void:
+	
+	var xbp: int = 0
+	var ybp: int = 0
+	for button in $Options.get_children():
+		button.scale = Vector2(0.6, 0.6)
+		xbp = button.get_node("Outside").size.x if xbp == 0 else 0
+		button.position.x = max(xbp - 80, 0)
+		button.position.y += ybp
+		if xbp == 0:
+			ybp += button.size.y - 15
 
 func close_options() -> void:
 	open_state = false

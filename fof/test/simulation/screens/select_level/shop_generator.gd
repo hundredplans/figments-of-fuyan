@@ -123,6 +123,5 @@ func _process(_delta: float) -> void:
 
 func _on_grab_zone_mouse_entered():
 	can_drag = true
-
 func _on_grab_zone_mouse_exited():
 	can_drag = false

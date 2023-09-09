@@ -1,0 +1,99 @@
+[gd_scene load_steps=3 format=3 uid="uid://nasf3msk26ia"]
+
+[ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="1_njlad"]
+[ext_resource type="Script" path="res://test/simulation/screens/select_level/shilling_counter.gd" id="1_vd6pv"]
+
+[node name="ShillingCounter" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 171.0
+offset_bottom = 225.0
+theme = ExtResource("1_njlad")
+script = ExtResource("1_vd6pv")
+
+[node name="Count" type="LineEdit" parent="."]
+layout_mode = 0
+offset_right = 126.0
+offset_bottom = 87.0
+text = "0"
+alignment = 1
+max_length = 4
+
+[node name="UpdateShillings" type="Control" parent="."]
+anchors_preset = 0
+offset_top = 87.0
+offset_right = 120.0
+offset_bottom = 173.0
+
+[node name="One" type="Button" parent="UpdateShillings"]
+layout_mode = 0
+offset_right = 63.0
+offset_bottom = 46.0
+text = "1"
+
+[node name="Two" type="Button" parent="UpdateShillings"]
+layout_mode = 0
+offset_left = 63.0
+offset_right = 126.0
+offset_bottom = 46.0
+text = "2"
+
+[node name="Five" type="Button" parent="UpdateShillings"]
+layout_mode = 0
+offset_top = 46.0
+offset_right = 63.0
+offset_bottom = 92.0
+text = "5"
+
+[node name="Ten" type="Button" parent="UpdateShillings"]
+layout_mode = 0
+offset_left = 63.0
+offset_top = 46.0
+offset_right = 126.0
+offset_bottom = 92.0
+text = "10"
+
+[node name="ChangeShillings" type="Control" parent="."]
+anchors_preset = 0
+offset_top = 179.0
+offset_right = 126.0
+offset_bottom = 219.0
+
+[node name="Subtract" type="Button" parent="ChangeShillings"]
+layout_mode = 0
+offset_right = 63.0
+offset_bottom = 40.0
+text = "-"
+
+[node name="Add" type="Button" parent="ChangeShillings"]
+layout_mode = 0
+offset_left = 63.0
+offset_right = 126.0
+offset_bottom = 46.0
+text = "+"
+
+[node name="RemoveButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 126.0
+offset_top = 179.0
+offset_right = 171.0
+offset_bottom = 225.0
+text = "X"
+
+[node name="GrabZone" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 126.0
+offset_right = 171.0
+offset_bottom = 179.0
+color = Color(1, 0.45098, 0.231373, 1)
+
+[connection signal="text_changed" from="Count" to="." method="_on_count_text_changed"]
+[connection signal="pressed" from="UpdateShillings/One" to="." method="on_shilling_update_counter" binds= [1]]
+[connection signal="pressed" from="UpdateShillings/Two" to="." method="on_shilling_update_counter" binds= [2]]
+[connection signal="pressed" from="UpdateShillings/Five" to="." method="on_shilling_update_counter" binds= [5]]
+[connection signal="pressed" from="UpdateShillings/Ten" to="." method="on_shilling_update_counter" binds= [10]]
+[connection signal="pressed" from="ChangeShillings/Subtract" to="." method="on_change_shillings_pressed" binds= [-1]]
+[connection signal="pressed" from="ChangeShillings/Add" to="." method="on_change_shillings_pressed" binds= [1]]
+[connection signal="pressed" from="RemoveButton" to="." method="_on_remove_button_pressed"]
+[connection signal="mouse_entered" from="GrabZone" to="." method="_on_grab_zone_mouse_entered"]
+[connection signal="mouse_exited" from="GrabZone" to="." method="_on_grab_zone_mouse_exited"]

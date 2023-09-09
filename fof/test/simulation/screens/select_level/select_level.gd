@@ -18,6 +18,7 @@ var active_card: Control
 var active_cards: Array = [[], []]
 var always_visible_tiles: Array = []
 var always_disable_visibility: Array = []
+var always_solo_visibility: Array = []
 
 @onready var tile_default: PackedScene = preload("res://test/simulation/assets/map/tile/tile.tscn")
 func _process(_delta):
@@ -41,6 +42,7 @@ func create_tile() -> Node2D:
 	tile.move_unit.connect(on_move_unit)
 	tile.visibility_update.connect(on_update_visibility)
 	tile.disable_visible.connect(on_disable_visible)
+	tile.solo_visible.connect(on_solo_visible)
 	tile.change_tile_state.connect(on_tile_change_tile_state)
 	tile.change_tile_item.connect(on_change_tile_item)
 	tile.unit_clicked.connect(on_unit_clicked)
@@ -252,6 +254,10 @@ func on_destroy_unit(tile: Node2D, alter_history: bool) -> void:
 					always_disable_visibility.erase(tile)
 					tile.disable_visibility = false
 					
+				if tile.solo_visibility:
+					always_solo_visibility.erase(tile)
+					tile.solo_visibility = false
+					
 				team.remove_at(i)
 				tile.get_node("In/Unit").texture = null
 				var multi_tile: Node2D = get_multi_tile(tile)
@@ -300,11 +306,11 @@ func refresh_vision_for_team(team: int) -> Array:
 		var find_tiles_func: Callable = func(xy: Node2D, xyt: Vector2): \
 		if abs(xyt.x - xy.global_position.x) == 300 and xyt.y == xy.global_position.y: return true\
 		else: return sqrt(pow(xyt.x - xy.global_position.x, 2) + pow(xyt.y - xy.global_position.y, 2)) < 295
-		
-		match team:
-			0: occupied_tiles = active_cards[0].map(func(x: Array): return x[0])
-			1: occupied_tiles = active_cards[1].map(func(x: Array): return x[0])
+		occupied_tiles = active_cards[team].map(func(x: Array): return x[0])
 			
+		if always_solo_visibility.size() > 0:
+			occupied_tiles = occupied_tiles.filter(func(x: Node2D): return x in always_solo_visibility)
+		
 		for tile in occupied_tiles:
 			if is_instance_valid(tile) and tile.is_inside_tree():
 				var xyt: Vector2 = tile.global_position
@@ -400,11 +406,16 @@ func add_to_history(hisinfo: Array) -> void:
 
 func _on_dual_monitor_mode_pressed():
 	add_child(preload("res://test/simulation/screens/select_level/dual_monitor_mode.tscn").instantiate())
-	$Buttons/DualMonitorMode.queue_free()
 	multimode = true
 	
 	if loaded_level: on_load_level(loaded_level)
 	else: _on_load_level_button_pressed()
+
+func on_solo_visible(tile: Node2D):
+	tile.solo_visibility = !tile.solo_visibility
+	if tile not in always_solo_visibility: always_solo_visibility.append(tile)
+	else: always_solo_visibility.erase(tile)
+	refresh_vision()
 
 func on_disable_visible(tile: Node2D):
 	tile.disable_visibility = !tile.disable_visibility
@@ -473,3 +484,6 @@ func _on_utility_menu_pressed():
 		utility_menu.position = $Buttons/UtilityMenu.position + Vector2(-100, -150)
 	else:
 		get_node("UtilityMenu/UtilityPressed").play("utility_pressed_end")
+
+func on_create_shop_pressed() -> void:
+	add_child(preload("res://test/simulation/screens/select_level/create_shop.tscn").instantiate())

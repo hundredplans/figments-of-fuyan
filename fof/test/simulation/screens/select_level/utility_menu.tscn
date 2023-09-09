@@ -90,7 +90,7 @@ libraries = {
 [node name="Outside" type="ColorRect" parent="."]
 layout_mode = 1
 offset_top = 39.0
-offset_right = 415.0
+offset_right = 375.0
 offset_bottom = 141.0
 color = Color(0, 0, 0, 1)
 
@@ -98,7 +98,7 @@ color = Color(0, 0, 0, 1)
 layout_mode = 1
 offset_left = 5.0
 offset_top = 44.0
-offset_right = 410.0
+offset_right = 370.0
 offset_bottom = 136.0
 color = Color(0.682353, 0.262745, 0.482353, 0.52549)
 
@@ -117,14 +117,16 @@ offset_bottom = 92.0
 
 [node name="0" type="Button" parent="Buttons/SaveCards"]
 layout_mode = 0
-offset_right = 50.0
+offset_left = 3.0
+offset_right = 53.0
 offset_bottom = 46.0
 text = "SA"
 
 [node name="1" type="Button" parent="Buttons/SaveCards"]
 layout_mode = 0
+offset_left = 3.0
 offset_top = 46.0
-offset_right = 50.0
+offset_right = 53.0
 offset_bottom = 92.0
 text = "SA"
 
@@ -136,16 +138,16 @@ offset_bottom = 92.0
 
 [node name="0" type="Button" parent="Buttons/ScreenClear"]
 layout_mode = 0
-offset_left = -4.0
-offset_right = 46.0
+offset_left = 2.0
+offset_right = 52.0
 offset_bottom = 46.0
 text = "SC"
 
 [node name="1" type="Button" parent="Buttons/ScreenClear"]
 layout_mode = 0
-offset_left = -4.0
+offset_left = 2.0
 offset_top = 46.0
-offset_right = 46.0
+offset_right = 52.0
 offset_bottom = 92.0
 text = "SC"
 
@@ -253,10 +255,83 @@ text = "-"
 
 [node name="DisableVisibility" type="Button" parent="Buttons"]
 layout_mode = 0
-offset_left = 366.0
-offset_right = 406.0
-offset_bottom = 46.0
-text = "V"
+offset_left = 223.0
+offset_top = -95.0
+offset_right = 384.0
+offset_bottom = -49.0
+text = "DisableVis"
+
+[node name="ShillingCounter" type="Button" parent="Buttons"]
+layout_mode = 0
+offset_left = 89.0
+offset_top = -95.0
+offset_right = 223.0
+offset_bottom = -49.0
+text = "Shillings"
+
+[node name="LoadTasks" type="Button" parent="Buttons"]
+layout_mode = 0
+offset_left = -4.0
+offset_top = -95.0
+offset_right = 89.0
+offset_bottom = -49.0
+text = "Tasks"
+
+[node name="RevealAll" type="Button" parent="Buttons"]
+layout_mode = 0
+offset_left = 261.0
+offset_top = -141.0
+offset_right = 437.0
+offset_bottom = -95.0
+text = "Reveal Map"
+
+[node name="DrawCards" type="Button" parent="Buttons"]
+layout_mode = 0
+offset_left = 180.0
+offset_top = -141.0
+offset_right = 261.0
+offset_bottom = -95.0
+text = "Draw"
+
+[node name="NumberGenerator" type="Button" parent="Buttons"]
+layout_mode = 0
+offset_left = 115.0
+offset_top = -141.0
+offset_right = 180.0
+offset_bottom = -95.0
+text = "Roll"
+
+[node name="ShopGenerator" type="Button" parent="Buttons"]
+layout_mode = 0
+offset_left = 69.0
+offset_top = -141.0
+offset_right = 115.0
+offset_bottom = -95.0
+text = "$$"
+
+[node name="DualMonitorMode" type="Button" parent="Buttons"]
+layout_mode = 0
+offset_left = -4.0
+offset_top = -141.0
+offset_right = 69.0
+offset_bottom = -95.0
+text = "Dual"
+
+[node name="LoadInventory" type="Button" parent="Buttons"]
+layout_mode = 0
+offset_left = -4.0
+offset_top = -187.0
+offset_right = 141.0
+offset_bottom = -141.0
+text = "Inventory"
+
+[node name="LoadBoons" type="Button" parent="Buttons"]
+layout_mode = 0
+offset_left = 141.0
+offset_top = -187.0
+offset_right = 318.0
+offset_bottom = -141.0
+text = "Load Boons"
 
 [node name="TeamZero" type="Label" parent="."]
 layout_mode = 0
@@ -319,3 +394,12 @@ horizontal_alignment = 1
 [connection signal="pressed" from="Buttons/SubtractStats/Spd0" to="." method="on_change_stat" binds= [0, -1, 2]]
 [connection signal="pressed" from="Buttons/SubtractStats/Spd1" to="." method="on_change_stat" binds= [1, -1, 2]]
 [connection signal="pressed" from="Buttons/DisableVisibility" to="." method="_on_disable_visibility_pressed"]
+[connection signal="pressed" from="Buttons/ShillingCounter" to="." method="_on_shilling_counter_pressed"]
+[connection signal="pressed" from="Buttons/LoadTasks" to="." method="_on_load_tasks_pressed"]
+[connection signal="pressed" from="Buttons/RevealAll" to="." method="_on_reveal_all_pressed"]
+[connection signal="pressed" from="Buttons/DrawCards" to="." method="_on_draw_cards_pressed"]
+[connection signal="pressed" from="Buttons/NumberGenerator" to="." method="_on_number_generator_pressed"]
+[connection signal="pressed" from="Buttons/ShopGenerator" to="." method="_on_shop_generator_pressed"]
+[connection signal="pressed" from="Buttons/DualMonitorMode" to="." method="_on_dual_monitor_mode_pressed"]
+[connection signal="pressed" from="Buttons/LoadInventory" to="." method="_on_load_inventory_pressed"]
+[connection signal="pressed" from="Buttons/LoadBoons" to="." method="_on_load_boons_pressed"]

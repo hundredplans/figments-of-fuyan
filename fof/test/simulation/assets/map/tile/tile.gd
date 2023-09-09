@@ -6,6 +6,7 @@ signal destroy_unit
 signal create_unit
 signal visibility_update
 signal disable_visible
+signal solo_visible
 
 signal change_tile_state
 signal change_tile_item
@@ -13,6 +14,7 @@ signal change_tile_item
 signal unit_clicked
 
 
+var solo_visibility: bool = false
 var disable_visibility: bool = false
 var always_visible: bool = false
 const collision_tiles: Array = [1, 2, 13]
@@ -46,7 +48,9 @@ func _process(_delta: float) -> void:
 			if $In/Unit.texture != null:
 				visibility_update.emit(self)
 		if Input.is_action_just_pressed("DisableVisible"):
-				disable_visible.emit(self)
+			disable_visible.emit(self)
+		if Input.is_action_just_pressed("SoloVisible"):
+			solo_visible.emit(self)
 
 		if Input.is_action_just_pressed("ShiftRightClick"):
 			match tile_state:

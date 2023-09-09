@@ -1,0 +1,40 @@
+[gd_scene load_steps=3 format=3 uid="uid://cv0c4qmebufvu"]
+
+[ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="1_mf4js"]
+[ext_resource type="Script" path="res://test/simulation/screens/tasks/tasks.gd" id="1_v4126"]
+
+[node name="Tasks" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 428.0
+offset_bottom = 360.0
+theme = ExtResource("1_mf4js")
+script = ExtResource("1_v4126")
+
+[node name="TaskNumbers" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -208.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GrabZone" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 360.0
+offset_right = 428.0
+offset_bottom = 303.0
+color = Color(1, 0.45098, 0.231373, 1)
+
+[node name="RemoveButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 360.0
+offset_top = 303.0
+offset_right = 428.0
+offset_bottom = 361.0
+text = "X"
+
+[connection signal="mouse_entered" from="GrabZone" to="." method="_on_grab_zone_mouse_entered"]
+[connection signal="mouse_exited" from="GrabZone" to="." method="_on_grab_zone_mouse_exited"]
+[connection signal="pressed" from="RemoveButton" to="." method="_on_remove_button_pressed"]

@@ -1,0 +1,71 @@
+[gd_scene load_steps=5 format=3 uid="uid://h487sd76dtmf"]
+
+[ext_resource type="Theme" uid="uid://be5u05ixh2dg7" path="res://test/simulation/assets/fonts/roboto32.tres" id="1_4f2au"]
+[ext_resource type="Script" path="res://test/simulation/screens/tasks/single_task.gd" id="1_bymgo"]
+[ext_resource type="FontFile" uid="uid://bnuw8icxtgffv" path="res://test/simulation/assets/fonts/Roboto-Black.ttf" id="3_tsx7g"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_p6xvj"]
+font = ExtResource("3_tsx7g")
+outline_size = 3
+outline_color = Color(0, 0, 0, 1)
+
+[node name="SingleTask" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 360.0
+offset_bottom = 120.0
+theme = ExtResource("1_4f2au")
+script = ExtResource("1_bymgo")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.776471, 0.105882, 0.137255, 1)
+
+[node name="TaskName" type="Label" parent="."]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 3.0
+offset_right = 225.0
+offset_bottom = 45.0
+vertical_alignment = 1
+
+[node name="TaskText" type="Label" parent="."]
+layout_mode = 0
+offset_left = 7.0
+offset_top = 52.0
+offset_right = 351.0
+offset_bottom = 110.0
+label_settings = SubResource("LabelSettings_p6xvj")
+autowrap_mode = 2
+justification_flags = 161
+
+[node name="OutOf" type="Label" parent="."]
+layout_mode = 0
+offset_left = 291.0
+offset_top = 1.0
+offset_right = 360.0
+offset_bottom = 46.0
+text = "0/"
+vertical_alignment = 1
+
+[node name="SubtractTotal" type="Button" parent="."]
+layout_mode = 0
+offset_left = 232.0
+offset_right = 257.0
+offset_bottom = 46.0
+text = "-"
+
+[node name="AddTotal" type="Button" parent="."]
+layout_mode = 0
+offset_left = 257.0
+offset_right = 282.0
+offset_bottom = 46.0
+text = "+"
+
+[connection signal="pressed" from="SubtractTotal" to="." method="_on_subtract_total_pressed"]
+[connection signal="pressed" from="AddTotal" to="." method="_on_add_total_pressed"]

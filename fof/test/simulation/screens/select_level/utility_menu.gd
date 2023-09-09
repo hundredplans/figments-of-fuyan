@@ -9,6 +9,9 @@ func _ready():
 	match get_parent().keep_visibility_disabled:
 		false: $Buttons/DisableVisibility.modulate = Color(1,1,1,1)
 		true: $Buttons/DisableVisibility.modulate = Color(1,0,0,1)
+		
+	if get_parent().get_parent().get_node("Backgrounder").visible == true:
+		$Buttons/DualMonitorMode.disabled = true
 
 func _on_save_cards_pressed(i: int):
 	var write_string: String = ""
@@ -49,3 +52,38 @@ func _on_disable_visibility_pressed():
 	match get_parent().keep_visibility_disabled:
 		false: $Buttons/DisableVisibility.modulate = Color(1,1,1,1)
 		true: $Buttons/DisableVisibility.modulate = Color(1,0,0,1)
+
+func _on_shilling_counter_pressed():
+	var sc: Control = preload("res://test/simulation/screens/select_level/shilling_counter.tscn").instantiate()
+	sc.position = Vector2(1528, 755)
+	get_parent().add_child(sc)
+
+func _on_load_tasks_pressed():
+	var tasks: Control = preload("res://test/simulation/screens/tasks/tasks.tscn").instantiate()
+	tasks.position = Vector2(1000, 500)
+	get_parent().add_child(tasks)
+
+func _on_reveal_all_pressed():
+	get_parent()._on_reveal_all_pressed.call()
+
+
+func _on_draw_cards_pressed():
+	get_parent()._on_draw_cards_pressed.call()
+	
+func _on_number_generator_pressed():
+	get_parent()._on_number_generator_pressed.call()
+
+
+func _on_shop_generator_pressed():
+	get_parent().on_create_shop_pressed.call()
+#	get_parent()._on_shop_generator_pressed.call()
+
+func _on_dual_monitor_mode_pressed():
+	get_parent()._on_dual_monitor_mode_pressed.call()
+	$Buttons/DualMonitorMode.disabled = true
+
+func _on_load_inventory_pressed():
+	get_parent()._on_inventory_pressed.call()
+
+func _on_load_boons_pressed():
+	get_parent()._on_add_boons_pressed.call()

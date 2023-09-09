@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=3 uid="uid://s2rag83h6m6l"]
+
+[ext_resource type="Theme" uid="uid://be5u05ixh2dg7" path="res://test/simulation/assets/fonts/roboto32.tres" id="1_ilvse"]
+[ext_resource type="Script" path="res://test/simulation/screens/select_level/create_shop.gd" id="1_lvgyu"]
+
+[node name="CreateShop" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_ilvse")
+script = ExtResource("1_lvgyu")
+
+[node name="RemoveButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 469.0
+offset_top = 279.0
+offset_right = 533.0
+offset_bottom = 346.0
+text = "X"
+
+[node name="GrabZone" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 469.0
+offset_right = 533.0
+offset_bottom = 279.0
+color = Color(1, 0.45098, 0.231373, 1)
+
+[connection signal="pressed" from="RemoveButton" to="." method="_on_remove_button_pressed"]
+[connection signal="mouse_entered" from="GrabZone" to="." method="_on_grab_zone_mouse_entered"]
+[connection signal="mouse_exited" from="GrabZone" to="." method="_on_grab_zone_mouse_exited"]

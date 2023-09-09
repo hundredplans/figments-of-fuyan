@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://bgf4yihieirwb"]
+[gd_scene load_steps=5 format=3 uid="uid://bgf4yihieirwb"]
 
 [ext_resource type="FontFile" uid="uid://bnuw8icxtgffv" path="res://test/simulation/assets/fonts/Roboto-Black.ttf" id="1_22i6u"]
 [ext_resource type="Script" path="res://test/simulation/screens/select_level/select_level.gd" id="1_j22bg"]
+[ext_resource type="PackedScene" uid="uid://nasf3msk26ia" path="res://test/simulation/screens/select_level/shilling_counter.tscn" id="3_3tnat"]
 
 [sub_resource type="Theme" id="Theme_ty058"]
 default_font = ExtResource("1_22i6u")
@@ -27,87 +28,27 @@ anchors_preset = 0
 
 [node name="LoadLevelButton" type="Button" parent="Buttons"]
 layout_mode = 0
-offset_left = 40.0
+offset_left = 213.0
 offset_top = 1008.0
-offset_right = 213.0
+offset_right = 386.0
 offset_bottom = 1065.0
 theme = SubResource("Theme_ty058")
 text = "Load Level"
 
 [node name="LoadCardsButton" type="Button" parent="Buttons"]
 layout_mode = 0
-offset_left = 213.0
+offset_left = 39.0
 offset_top = 1008.0
-offset_right = 386.0
+offset_right = 212.0
 offset_bottom = 1065.0
 theme = SubResource("Theme_ty058")
 text = "Load Cards"
 
-[node name="AddBoons" type="Button" parent="Buttons"]
+[node name="UtilityMenu" type="Button" parent="Buttons"]
 layout_mode = 0
 offset_left = 386.0
 offset_top = 1008.0
-offset_right = 563.0
-offset_bottom = 1065.0
-theme = SubResource("Theme_ty058")
-text = "Add Boons"
-
-[node name="Inventory" type="Button" parent="Buttons"]
-layout_mode = 0
-offset_left = 563.0
-offset_top = 1008.0
-offset_right = 740.0
-offset_bottom = 1065.0
-theme = SubResource("Theme_ty058")
-text = "Inventory"
-
-[node name="ShopGenerator" type="Button" parent="Buttons"]
-layout_mode = 0
-offset_left = 1086.0
-offset_top = 1008.0
-offset_right = 1259.0
-offset_bottom = 1065.0
-text = "Shop Gen"
-
-[node name="NumberGenerator" type="Button" parent="Buttons"]
-layout_mode = 0
-offset_left = 1259.0
-offset_top = 1008.0
-offset_right = 1432.0
-offset_bottom = 1065.0
-text = "Random"
-
-[node name="DualMonitorMode" type="Button" parent="Buttons"]
-layout_mode = 0
-offset_left = 1432.0
-offset_top = 1008.0
-offset_right = 1605.0
-offset_bottom = 1065.0
-theme = SubResource("Theme_ty058")
-text = "Dual Me"
-
-[node name="DrawCards" type="Button" parent="Buttons"]
-layout_mode = 0
-offset_left = 1605.0
-offset_top = 1008.0
-offset_right = 1778.0
-offset_bottom = 1065.0
-theme = SubResource("Theme_ty058")
-text = "Draw Cards"
-
-[node name="RevealAll" type="Button" parent="Buttons"]
-layout_mode = 0
-offset_left = 916.0
-offset_top = 1008.0
-offset_right = 1085.0
-offset_bottom = 1065.0
-text = "Reveal All"
-
-[node name="UtilityMenu" type="Button" parent="Buttons"]
-layout_mode = 0
-offset_left = 740.0
-offset_top = 1008.0
-offset_right = 916.0
+offset_right = 562.0
 offset_bottom = 1065.0
 text = "Utility"
 
@@ -129,14 +70,13 @@ position = Vector2(1860, 1025)
 
 [node name="CardZone" type="Node2D" parent="."]
 
+[node name="ShillingCounter" parent="." instance=ExtResource("3_3tnat")]
+offset_left = 1528.0
+offset_top = 755.0
+offset_right = 1699.0
+offset_bottom = 980.0
+
 [connection signal="pressed" from="EndTurn" to="." method="_on_end_turn_pressed"]
 [connection signal="pressed" from="Buttons/LoadLevelButton" to="." method="_on_load_level_button_pressed"]
 [connection signal="pressed" from="Buttons/LoadCardsButton" to="." method="_on_load_cards_button_pressed"]
-[connection signal="pressed" from="Buttons/AddBoons" to="." method="_on_add_boons_pressed"]
-[connection signal="pressed" from="Buttons/Inventory" to="." method="_on_inventory_pressed"]
-[connection signal="pressed" from="Buttons/ShopGenerator" to="." method="_on_shop_generator_pressed"]
-[connection signal="pressed" from="Buttons/NumberGenerator" to="." method="_on_number_generator_pressed"]
-[connection signal="pressed" from="Buttons/DualMonitorMode" to="." method="_on_dual_monitor_mode_pressed"]
-[connection signal="pressed" from="Buttons/DrawCards" to="." method="_on_draw_cards_pressed"]
-[connection signal="pressed" from="Buttons/RevealAll" to="." method="_on_reveal_all_pressed"]
 [connection signal="pressed" from="Buttons/UtilityMenu" to="." method="_on_utility_menu_pressed"]

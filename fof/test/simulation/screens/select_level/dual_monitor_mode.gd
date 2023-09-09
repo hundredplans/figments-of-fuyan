@@ -6,5 +6,3 @@ func _ready():
 	DisplayServer.window_set_size(Vector2i(3840, 1080), 0)
 	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED, 0)
 	get_parent().get_parent().get_node("Backgrounder").visible = true
-	for child in get_parent().get_node("Buttons").get_children():
-		child.position.x += 1920

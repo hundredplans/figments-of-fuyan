@@ -41,13 +41,13 @@ _data = {
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tdve8"]
-size = Vector2(124, 460)
+size = Vector2(130, 450)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3k25n"]
-size = Vector2(124, 460)
+size = Vector2(130, 450)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_h05kf"]
-size = Vector2(254, 685)
+size = Vector2(250, 680)
 
 [node name="SettingsMenu" type="Control"]
 modulate = Color(1, 1, 1, 0)
@@ -72,28 +72,28 @@ anchors_preset = 0
 anchors_preset = 0
 
 [node name="0" type="Area2D" parent="CardAreas"]
-position = Vector2(1587, 425)
+position = Vector2(1583, 425)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CardAreas/0"]
 shape = SubResource("RectangleShape2D_tdve8")
 metadata/_edit_lock_ = true
 
 [node name="1" type="Area2D" parent="CardAreas"]
-position = Vector2(334, 425)
+position = Vector2(340, 425)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CardAreas/1"]
 shape = SubResource("RectangleShape2D_3k25n")
 metadata/_edit_lock_ = true
 
 [node name="2" type="Area2D" parent="CardAreas"]
-position = Vector2(1398, 477)
+position = Vector2(1387, 477)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CardAreas/2"]
 shape = SubResource("RectangleShape2D_h05kf")
 metadata/_edit_lock_ = true
 
 [node name="3" type="Area2D" parent="CardAreas"]
-position = Vector2(523, 477)
+position = Vector2(534, 477)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CardAreas/3"]
 shape = SubResource("RectangleShape2D_h05kf")
