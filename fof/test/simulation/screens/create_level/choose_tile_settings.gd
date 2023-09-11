@@ -30,7 +30,7 @@ func on_change_setting():
 					child.mouse_entered.connect(func(): get_parent().active_arrow_state = int(str(child.name)))
 			queue_redraw()
 		true: 
-			circle_size = 200
+			circle_size = 260
 			var set_tile_colors: Control = preload("res://test/simulation/screens/create_level/tile_colors.tscn").instantiate()
 			$ActiveSetting.add_child(set_tile_colors)
 			for child in set_tile_colors.get_children():

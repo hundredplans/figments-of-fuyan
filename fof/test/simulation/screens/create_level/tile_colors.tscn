@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://0k73tx3ke1t7"]
+[gd_scene load_steps=23 format=3 uid="uid://0k73tx3ke1t7"]
 
 [ext_resource type="Texture2D" uid="uid://cdsgo4sdrenku" path="res://test/simulation/assets/map/tile/0.png" id="1_tnmb6"]
 [ext_resource type="BitMap" uid="uid://dq8nopxv2h8ob" path="res://test/simulation/assets/map/tile/bitmap.png" id="2_p3vlp"]
@@ -19,6 +19,9 @@
 [ext_resource type="Texture2D" uid="uid://bb1fl86wayuro" path="res://test/simulation/assets/map/tile/15.png" id="17_8dawb"]
 [ext_resource type="Texture2D" uid="uid://cdiu0b6qhtg3g" path="res://test/simulation/assets/map/tile/16.png" id="18_6sgnc"]
 [ext_resource type="Texture2D" uid="uid://50vy50sn7yf2" path="res://test/simulation/assets/map/tile/17.png" id="19_ijbqd"]
+[ext_resource type="Texture2D" uid="uid://bj3i2vjir4mar" path="res://test/simulation/assets/map/tile/18.png" id="20_evy56"]
+[ext_resource type="Texture2D" uid="uid://dlxhm7y2ewhyi" path="res://test/simulation/assets/map/tile/19.png" id="21_g1fnt"]
+[ext_resource type="Texture2D" uid="uid://dornwmyunnt36" path="res://test/simulation/assets/map/tile/20.png" id="22_cm82m"]
 
 [node name="TileColors" type="Control"]
 layout_mode = 3
@@ -308,4 +311,34 @@ offset_top = 55.3846
 offset_right = 30.0
 offset_bottom = 124.385
 texture_normal = ExtResource("19_ijbqd")
+texture_click_mask = ExtResource("2_p3vlp")
+
+[node name="18" type="TextureButton" parent="."]
+texture_filter = 1
+layout_mode = 0
+offset_left = -133.846
+offset_top = -123.846
+offset_right = -73.8462
+offset_bottom = -54.8458
+texture_normal = ExtResource("20_evy56")
+texture_click_mask = ExtResource("2_p3vlp")
+
+[node name="19" type="TextureButton" parent="."]
+texture_filter = 1
+layout_mode = 0
+offset_left = -160.0
+offset_top = -79.2308
+offset_right = -100.0
+offset_bottom = -10.2304
+texture_normal = ExtResource("21_g1fnt")
+texture_click_mask = ExtResource("2_p3vlp")
+
+[node name="20" type="TextureButton" parent="."]
+texture_filter = 1
+layout_mode = 0
+offset_left = -107.692
+offset_top = -169.231
+offset_right = -47.6923
+offset_bottom = -100.23
+texture_normal = ExtResource("22_cm82m")
 texture_click_mask = ExtResource("2_p3vlp")

@@ -1,0 +1,173 @@
+[gd_scene load_steps=7 format=3 uid="uid://be8tpuhi7k705"]
+
+[ext_resource type="Script" path="res://scenes/screens/fuyanopedia/fuyanopedia.gd" id="1_6q4td"]
+[ext_resource type="Theme" uid="uid://byxhe8c463j33" path="res://assets/UI/menu_buttons/menu_buttons.tres" id="2_f56d5"]
+[ext_resource type="LabelSettings" uid="uid://dufeujtxl43vh" path="res://assets/UI/menu_buttons/menu_buttons_label_settings.tres" id="3_6vg0m"]
+
+[sub_resource type="Animation" id="Animation_8cggs"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Buttons:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-679, 1035)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Buttons:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-1.72788]
+}
+
+[sub_resource type="Animation" id="Animation_r2kn0"]
+resource_name = "move_screen"
+length = 0.25
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Buttons:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 317), Vector2(-679, 1035)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Buttons:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, -1.7276]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_n4fo2"]
+_data = {
+"RESET": SubResource("Animation_8cggs"),
+"move_screen": SubResource("Animation_r2kn0")
+}
+
+[node name="Fuyanopedia" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_6q4td")
+
+[node name="MoveScreen" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_n4fo2")
+}
+
+[node name="Buttons" type="Control" parent="."]
+anchors_preset = 0
+offset_left = -679.0
+offset_top = 1035.0
+offset_right = -176.0
+offset_bottom = 1464.0
+rotation = -1.72788
+
+[node name="AchievementsMenu" type="Control" parent="Buttons"]
+anchors_preset = 0
+offset_right = 503.0
+offset_bottom = 116.0
+theme = ExtResource("2_f56d5")
+
+[node name="AchievementsMenu" type="Button" parent="Buttons/AchievementsMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Buttons/AchievementsMenu"]
+layout_mode = 0
+offset_left = 54.0
+offset_top = 30.0
+offset_right = 468.0
+offset_bottom = 109.0
+rotation = -0.0470349
+text = "Achievements"
+label_settings = ExtResource("3_6vg0m")
+metadata/_edit_lock_ = true
+
+[node name="LoreBooks" type="Control" parent="Buttons"]
+anchors_preset = 0
+offset_top = 153.0
+offset_right = 503.0
+offset_bottom = 269.0
+theme = ExtResource("2_f56d5")
+
+[node name="LoreBooks" type="Button" parent="Buttons/LoreBooks"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Buttons/LoreBooks"]
+layout_mode = 0
+offset_left = 139.0
+offset_top = 26.0
+offset_right = 475.0
+offset_bottom = 105.0
+rotation = -0.0470349
+text = "Lore Books"
+label_settings = ExtResource("3_6vg0m")
+metadata/_edit_lock_ = true
+
+[node name="Dictionary" type="Control" parent="Buttons"]
+anchors_preset = 0
+offset_top = 309.0
+offset_right = 503.0
+offset_bottom = 425.0
+theme = ExtResource("2_f56d5")
+
+[node name="Dictionary" type="Button" parent="Buttons/Dictionary"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Buttons/Dictionary"]
+layout_mode = 0
+offset_left = 176.0
+offset_top = 23.0
+offset_right = 474.0
+offset_bottom = 102.0
+rotation = -0.0470349
+text = "Dictionary"
+label_settings = ExtResource("3_6vg0m")
+metadata/_edit_lock_ = true
+
+[connection signal="pressed" from="Buttons/AchievementsMenu/AchievementsMenu" to="." method="on_menu_button_pressed"]
+[connection signal="pressed" from="Buttons/LoreBooks/LoreBooks" to="." method="on_menu_button_pressed"]
+[connection signal="pressed" from="Buttons/Dictionary/Dictionary" to="." method="on_menu_button_pressed"]

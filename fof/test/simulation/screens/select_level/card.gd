@@ -1,5 +1,7 @@
 extends Control
 
+signal team_changed
+
 var remove_aura: bool = false
 @onready var utility_ani: AnimationPlayer = $UtilityMenu/UtilityPressed
 @export var downscale_scale: float = 0.5
@@ -115,6 +117,7 @@ func _on_downscaled_pressed():
 func _on_change_team_pressed():
 	team = abs(team - 1)
 	on_team_buttons_modulate()
+	team_changed.emit(self)
 
 func _on_utility_pressed():
 	if !utility_ani.is_playing():

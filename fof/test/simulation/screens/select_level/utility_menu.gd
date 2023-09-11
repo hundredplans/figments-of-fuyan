@@ -73,7 +73,6 @@ func _on_draw_cards_pressed():
 func _on_number_generator_pressed():
 	get_parent()._on_number_generator_pressed.call()
 
-
 func _on_shop_generator_pressed():
 	get_parent().on_create_shop_pressed.call()
 #	get_parent()._on_shop_generator_pressed.call()
@@ -87,3 +86,8 @@ func _on_load_inventory_pressed():
 
 func _on_load_boons_pressed():
 	get_parent()._on_add_boons_pressed.call()
+
+func _on_random_aura_boon_pressed():
+	var random_aura_boon: Control = preload("res://test/simulation/screens/select_level/random_aura_boon.tscn").instantiate()
+	get_parent().add_child(random_aura_boon)
+	random_aura_boon.position = Vector2(1000, 500)

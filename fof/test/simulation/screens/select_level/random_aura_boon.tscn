@@ -1,0 +1,92 @@
+[gd_scene load_steps=3 format=3 uid="uid://bjmwnbsa3q5e6"]
+
+[ext_resource type="Script" path="res://test/simulation/screens/select_level/random_aura_boon.gd" id="1_7qm8i"]
+[ext_resource type="Theme" uid="uid://be5u05ixh2dg7" path="res://test/simulation/assets/fonts/roboto32.tres" id="1_rw7i6"]
+
+[node name="RandomAuraBoon" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 323.0
+offset_bottom = 137.0
+theme = ExtResource("1_rw7i6")
+script = ExtResource("1_7qm8i")
+
+[node name="ChoiceButtons" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 293.0
+offset_bottom = 92.0
+
+[node name="Aura" type="Button" parent="ChoiceButtons"]
+layout_mode = 0
+offset_left = 94.0
+offset_right = 171.0
+offset_bottom = 46.0
+text = "Aura"
+
+[node name="Boon" type="Button" parent="ChoiceButtons"]
+layout_mode = 0
+offset_left = 171.0
+offset_right = 254.0
+offset_bottom = 46.0
+text = "Boon"
+
+[node name="Common" type="Button" parent="ChoiceButtons"]
+layout_mode = 0
+offset_top = 46.0
+offset_right = 139.0
+offset_bottom = 92.0
+text = "Common"
+
+[node name="Rare" type="Button" parent="ChoiceButtons"]
+layout_mode = 0
+offset_left = 139.0
+offset_top = 46.0
+offset_right = 214.0
+offset_bottom = 92.0
+text = "Rare"
+
+[node name="Exalt" type="Button" parent="ChoiceButtons"]
+layout_mode = 0
+offset_left = 214.0
+offset_top = 46.0
+offset_right = 293.0
+offset_bottom = 92.0
+text = "Exalt"
+
+[node name="RemoveButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 254.0
+offset_right = 293.0
+offset_bottom = 46.0
+text = "X"
+
+[node name="RollButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 3.0
+offset_right = 91.0
+offset_bottom = 46.0
+text = "ROLL"
+
+[node name="Result" type="Label" parent="."]
+layout_mode = 0
+offset_top = 92.0
+offset_right = 293.0
+offset_bottom = 137.0
+horizontal_alignment = 1
+
+[node name="GrabZone" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 293.0
+offset_right = 323.0
+offset_bottom = 92.0
+color = Color(1, 0.45098, 0.231373, 1)
+
+[connection signal="pressed" from="ChoiceButtons/Aura" to="." method="on_state_button_pressed" binds= ["Aura"]]
+[connection signal="pressed" from="ChoiceButtons/Boon" to="." method="on_state_button_pressed" binds= ["Boon"]]
+[connection signal="pressed" from="ChoiceButtons/Common" to="." method="on_state_button_pressed" binds= ["Common"]]
+[connection signal="pressed" from="ChoiceButtons/Rare" to="." method="on_state_button_pressed" binds= ["Rare"]]
+[connection signal="pressed" from="ChoiceButtons/Exalt" to="." method="on_state_button_pressed" binds= ["Exalt"]]
+[connection signal="pressed" from="RemoveButton" to="." method="_on_remove_button_pressed"]
+[connection signal="pressed" from="RollButton" to="." method="_on_roll_button_pressed"]
+[connection signal="mouse_entered" from="GrabZone" to="." method="_on_grab_zone_mouse_entered"]
+[connection signal="mouse_exited" from="GrabZone" to="." method="_on_grab_zone_mouse_exited"]

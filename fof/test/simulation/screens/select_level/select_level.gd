@@ -156,7 +156,6 @@ func on_load_level(level_name: String) -> void:
 				tile._on_simulation_inside_pressed(tile_info)
 				break
 				
-				
 		if multimode:
 			for tile in $DualTiles.get_children():
 				if tile.tile_position == tile_info[0]:
@@ -502,4 +501,6 @@ func _on_utility_menu_pressed():
 		get_node("UtilityMenu/UtilityPressed").play("utility_pressed_end")
 
 func on_create_shop_pressed() -> void:
-	add_child(preload("res://test/simulation/screens/select_level/create_shop.tscn").instantiate())
+	var create_shop: Control = preload("res://test/simulation/screens/select_level/create_shop.tscn").instantiate()
+	create_shop.position = Vector2(400, 176)
+	add_child(create_shop)

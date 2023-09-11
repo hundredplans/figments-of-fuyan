@@ -2,8 +2,8 @@
 
 [ext_resource type="Theme" uid="uid://be5u05ixh2dg7" path="res://test/simulation/assets/fonts/roboto32.tres" id="1_0dl7r"]
 [ext_resource type="Script" path="res://test/simulation/screens/main/main.gd" id="1_8k6df"]
-[ext_resource type="Texture2D" uid="uid://ck1pxemcx8mvt" path="res://test/simulation/screens/main/back.webp" id="2_3ll23"]
-[ext_resource type="Texture2D" uid="uid://c122qor61s6c" path="res://test/simulation/screens/main/bg2.jpg" id="3_qywbc"]
+[ext_resource type="Texture2D" uid="uid://qjyt6sfigy0u" path="res://test/simulation/screens/main/bg.jpg" id="3_n68fv"]
+[ext_resource type="Texture2D" uid="uid://d3bkw0jpx0be0" path="res://test/simulation/screens/main/bg1.png" id="4_phlow"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -12,13 +12,13 @@ theme = ExtResource("1_0dl7r")
 script = ExtResource("1_8k6df")
 
 [node name="Background" type="Sprite2D" parent="."]
-texture = ExtResource("2_3ll23")
+texture = ExtResource("3_n68fv")
 centered = false
 
 [node name="Backgrounder" type="Sprite2D" parent="."]
 visible = false
 position = Vector2(1920, 0)
-texture = ExtResource("3_qywbc")
+texture = ExtResource("4_phlow")
 centered = false
 
 [node name="Buttons" type="Control" parent="."]

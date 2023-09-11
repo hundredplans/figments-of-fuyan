@@ -5,28 +5,49 @@
 
 [node name="CreateShop" type="Control"]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = 0
+offset_right = 1200.0
+offset_bottom = 788.0
 theme = ExtResource("1_ilvse")
 script = ExtResource("1_lvgyu")
 
+[node name="Background" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Inside" type="ColorRect" parent="Background"]
+layout_mode = 1
+offset_top = 20.0
+offset_right = 1208.0
+offset_bottom = 687.0
+color = Color(0.568627, 0.568627, 0.568627, 0.176471)
+
 [node name="RemoveButton" type="Button" parent="."]
 layout_mode = 0
-offset_left = 469.0
-offset_top = 279.0
-offset_right = 533.0
-offset_bottom = 346.0
+offset_left = 1000.0
+offset_top = 20.0
+offset_right = 1200.0
+offset_bottom = 87.0
 text = "X"
 
 [node name="GrabZone" type="ColorRect" parent="."]
 layout_mode = 0
-offset_left = 469.0
-offset_right = 533.0
-offset_bottom = 279.0
+offset_left = 1000.0
+offset_top = 87.0
+offset_right = 1200.0
+offset_bottom = 346.0
 color = Color(1, 0.45098, 0.231373, 1)
+
+[node name="RolledCards" type="Control" parent="."]
+anchors_preset = 0
+
+[node name="Labels" type="Control" parent="."]
+anchors_preset = 0
 
 [connection signal="pressed" from="RemoveButton" to="." method="_on_remove_button_pressed"]
 [connection signal="mouse_entered" from="GrabZone" to="." method="_on_grab_zone_mouse_entered"]
