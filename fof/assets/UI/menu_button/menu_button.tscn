@@ -1,0 +1,35 @@
+[gd_scene load_steps=4 format=3 uid="uid://ce7pqa77ekwxb"]
+
+[ext_resource type="Script" path="res://assets/UI/menu_button/menu_button.gd" id="1_b3ywb"]
+[ext_resource type="Texture2D" uid="uid://dnsqlvjky177x" path="res://assets/UI/menu_button/sword.png" id="2_gkld5"]
+[ext_resource type="LabelSettings" uid="uid://ca1adfm5it7q6" path="res://assets/UI/menu_button/menu_button_label_settings.tres" id="3_jrqli"]
+
+[node name="MenuButton" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 675.0
+offset_bottom = 268.0
+script = ExtResource("1_b3ywb")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_gkld5")
+centered = false
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+polygon = PackedVector2Array(1, 59, 550, 59, 562, 41, 567, 3, 593, 4, 605, 43, 609, 84, 636, 100, 714, 100, 724, 123, 713, 147, 631, 145, 606, 162, 598, 245, 565, 246, 553, 184, -1, 184)
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 48.0
+offset_right = 518.0
+offset_bottom = 185.0
+text = "Card Editor"
+label_settings = ExtResource("3_jrqli")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

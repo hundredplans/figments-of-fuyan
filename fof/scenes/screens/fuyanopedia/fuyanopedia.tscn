@@ -1,8 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://be8tpuhi7k705"]
+[gd_scene load_steps=6 format=3 uid="uid://be8tpuhi7k705"]
 
 [ext_resource type="Script" path="res://scenes/screens/fuyanopedia/fuyanopedia.gd" id="1_6q4td"]
-[ext_resource type="Theme" uid="uid://byxhe8c463j33" path="res://assets/UI/menu_buttons/menu_buttons.tres" id="2_f56d5"]
-[ext_resource type="LabelSettings" uid="uid://dufeujtxl43vh" path="res://assets/UI/menu_buttons/menu_buttons_label_settings.tres" id="3_6vg0m"]
+[ext_resource type="PackedScene" uid="uid://ce7pqa77ekwxb" path="res://assets/UI/menu_button/menu_button.tscn" id="2_64vel"]
 
 [sub_resource type="Animation" id="Animation_8cggs"]
 length = 0.001
@@ -88,86 +87,19 @@ offset_right = -176.0
 offset_bottom = 1464.0
 rotation = -1.72788
 
-[node name="AchievementsMenu" type="Control" parent="Buttons"]
-anchors_preset = 0
-offset_right = 503.0
-offset_bottom = 116.0
-theme = ExtResource("2_f56d5")
-
-[node name="AchievementsMenu" type="Button" parent="Buttons/AchievementsMenu"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-metadata/_edit_lock_ = true
-
-[node name="Label" type="Label" parent="Buttons/AchievementsMenu"]
-layout_mode = 0
-offset_left = 54.0
-offset_top = 30.0
-offset_right = 468.0
+[node name="AchievementMenu" parent="Buttons" instance=ExtResource("2_64vel")]
+offset_top = -159.0
 offset_bottom = 109.0
-rotation = -0.0470349
-text = "Achievements"
-label_settings = ExtResource("3_6vg0m")
-metadata/_edit_lock_ = true
+label_text = "Achievements"
 
-[node name="LoreBooks" type="Control" parent="Buttons"]
-anchors_preset = 0
-offset_top = 153.0
-offset_right = 503.0
-offset_bottom = 269.0
-theme = ExtResource("2_f56d5")
+[node name="LoreBooks" parent="Buttons" instance=ExtResource("2_64vel")]
+offset_left = -67.0
+offset_top = 43.0
+offset_right = 608.0
+offset_bottom = 311.0
+label_text = "Lore Books"
 
-[node name="LoreBooks" type="Button" parent="Buttons/LoreBooks"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-metadata/_edit_lock_ = true
-
-[node name="Label" type="Label" parent="Buttons/LoreBooks"]
-layout_mode = 0
-offset_left = 139.0
-offset_top = 26.0
-offset_right = 475.0
-offset_bottom = 105.0
-rotation = -0.0470349
-text = "Lore Books"
-label_settings = ExtResource("3_6vg0m")
-metadata/_edit_lock_ = true
-
-[node name="Dictionary" type="Control" parent="Buttons"]
-anchors_preset = 0
-offset_top = 309.0
-offset_right = 503.0
-offset_bottom = 425.0
-theme = ExtResource("2_f56d5")
-
-[node name="Dictionary" type="Button" parent="Buttons/Dictionary"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-metadata/_edit_lock_ = true
-
-[node name="Label" type="Label" parent="Buttons/Dictionary"]
-layout_mode = 0
-offset_left = 176.0
-offset_top = 23.0
-offset_right = 474.0
-offset_bottom = 102.0
-rotation = -0.0470349
-text = "Dictionary"
-label_settings = ExtResource("3_6vg0m")
-metadata/_edit_lock_ = true
-
-[connection signal="pressed" from="Buttons/AchievementsMenu/AchievementsMenu" to="." method="on_menu_button_pressed"]
-[connection signal="pressed" from="Buttons/LoreBooks/LoreBooks" to="." method="on_menu_button_pressed"]
-[connection signal="pressed" from="Buttons/Dictionary/Dictionary" to="." method="on_menu_button_pressed"]
+[node name="Dictionary" parent="Buttons" instance=ExtResource("2_64vel")]
+offset_top = 249.0
+offset_bottom = 517.0
+label_text = "Dictionary"

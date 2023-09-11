@@ -1,8 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://cd1hnc68uspy"]
+[gd_scene load_steps=6 format=3 uid="uid://cd1hnc68uspy"]
 
 [ext_resource type="Script" path="res://scenes/screens/main_menu/main_menu.gd" id="1_iwh4f"]
-[ext_resource type="Theme" uid="uid://byxhe8c463j33" path="res://assets/UI/menu_buttons/menu_buttons.tres" id="1_oh1b0"]
-[ext_resource type="LabelSettings" uid="uid://dufeujtxl43vh" path="res://assets/UI/menu_buttons/menu_buttons_label_settings.tres" id="3_em14y"]
+[ext_resource type="PackedScene" uid="uid://ce7pqa77ekwxb" path="res://assets/UI/menu_button/menu_button.tscn" id="4_bvscx"]
 
 [sub_resource type="Animation" id="Animation_kkdo4"]
 length = 0.001
@@ -69,7 +68,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.25),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(1749, 927), Vector2(1805, 975), Vector2(1853, 1010), Vector2(1920, 1053), Vector2(1968, 1109)]
+"values": [Vector2(1546, 807), Vector2(1805, 975), Vector2(1853, 1010), Vector2(1920, 1053), Vector2(1968, 1109)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -136,37 +135,15 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_oh1b0")
 
-[node name="Quit" type="Control" parent="Buttons"]
-anchors_preset = 0
+[node name="Quit" parent="Buttons" instance=ExtResource("4_bvscx")]
 offset_left = 1968.0
 offset_top = 1109.0
-offset_right = 2163.0
-offset_bottom = 1225.0
+offset_right = 2643.0
+offset_bottom = 1377.0
 rotation = 1.14672
-
-[node name="Quit" type="Button" parent="Buttons/Quit"]
-layout_mode = 2
-anchor_right = 1.0
-anchor_bottom = 0.991
-offset_left = 195.0
-offset_top = 115.0
-offset_right = 194.0
-offset_bottom = 116.044
-grow_horizontal = 2
-grow_vertical = 2
-rotation = -3.14159
-
-[node name="Label" type="Label" parent="Buttons/Quit"]
-layout_mode = 0
-offset_left = 37.0
-offset_top = 17.0
-offset_right = 157.0
-offset_bottom = 96.0
-rotation = -0.0506702
-text = "Quit"
-label_settings = ExtResource("3_em14y")
+flipped = true
+label_text = "Quit"
 
 [node name="LeftButtons" type="Control" parent="Buttons"]
 anchors_preset = 0
@@ -176,130 +153,34 @@ offset_right = -267.0
 offset_bottom = 1912.0
 rotation = -1.77254
 
-[node name="Play" type="Control" parent="Buttons/LeftButtons"]
-anchors_preset = 0
-offset_right = 503.0
-offset_bottom = 116.0
+[node name="Play" parent="Buttons/LeftButtons" instance=ExtResource("4_bvscx")]
+offset_top = -174.0
+offset_bottom = 94.0
+label_text = "Play"
 
-[node name="Play" type="Button" parent="Buttons/LeftButtons/Play"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Simulation" parent="Buttons/LeftButtons" instance=ExtResource("4_bvscx")]
+offset_left = -67.0
+offset_top = 31.0
+offset_right = 608.0
+offset_bottom = 299.0
+label_text = "Simulation"
 
-[node name="Label" type="Label" parent="Buttons/LeftButtons/Play"]
-layout_mode = 0
-offset_left = 339.0
-offset_top = 20.0
-offset_right = 466.0
-offset_bottom = 99.0
-rotation = -0.0506702
-text = "Play"
-label_settings = ExtResource("3_em14y")
+[node name="EditorMenu" parent="Buttons/LeftButtons" instance=ExtResource("4_bvscx")]
+offset_top = 240.0
+offset_bottom = 508.0
+label_text = "Editor Menu"
 
-[node name="Simulation" type="Control" parent="Buttons/LeftButtons"]
-anchors_preset = 0
-offset_top = 150.0
-offset_right = 503.0
-offset_bottom = 266.0
+[node name="Settings" parent="Buttons/LeftButtons" instance=ExtResource("4_bvscx")]
+offset_left = -67.0
+offset_top = 442.0
+offset_right = 608.0
+offset_bottom = 710.0
+label_text = "Settings"
 
-[node name="Simulation" type="Button" parent="Buttons/LeftButtons/Simulation"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Fuyanopedia" parent="Buttons/LeftButtons" instance=ExtResource("4_bvscx")]
+offset_top = 645.0
+offset_bottom = 913.0
+label_text = "Fuyanopedia"
 
-[node name="Label" type="Label" parent="Buttons/LeftButtons/Simulation"]
-layout_mode = 0
-offset_left = 160.0
-offset_top = 27.0
-offset_right = 473.0
-offset_bottom = 106.0
-rotation = -0.0506702
-text = "Simulation"
-label_settings = ExtResource("3_em14y")
-
-[node name="EditorMenu" type="Control" parent="Buttons/LeftButtons"]
-anchors_preset = 0
-offset_top = 300.0
-offset_right = 503.0
-offset_bottom = 416.0
-
-[node name="EditorMenu" type="Button" parent="Buttons/LeftButtons/EditorMenu"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Label" type="Label" parent="Buttons/LeftButtons/EditorMenu"]
-layout_mode = 0
-offset_left = 132.0
-offset_top = 23.0
-offset_right = 481.0
-offset_bottom = 102.0
-rotation = -0.0506702
-text = "Editor Menu"
-label_settings = ExtResource("3_em14y")
-
-[node name="Settings" type="Control" parent="Buttons/LeftButtons"]
-anchors_preset = 0
-offset_top = 449.0
-offset_right = 503.0
-offset_bottom = 565.0
-
-[node name="Settings" type="Button" parent="Buttons/LeftButtons/Settings"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Label" type="Label" parent="Buttons/LeftButtons/Settings"]
-layout_mode = 0
-offset_left = 238.0
-offset_top = 22.0
-offset_right = 494.0
-offset_bottom = 101.0
-rotation = -0.0506702
-text = "Settings"
-label_settings = ExtResource("3_em14y")
-
-[node name="Fuyanopedia" type="Control" parent="Buttons/LeftButtons"]
-anchors_preset = 0
-offset_top = 599.0
-offset_right = 503.0
-offset_bottom = 715.0
-
-[node name="Fuyanopedia" type="Button" parent="Buttons/LeftButtons/Fuyanopedia"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Label" type="Label" parent="Buttons/LeftButtons/Fuyanopedia"]
-layout_mode = 0
-offset_left = 119.0
-offset_top = 32.0
-offset_right = 487.0
-offset_bottom = 111.0
-rotation = -0.0506702
-text = "Fuyanopedia"
-label_settings = ExtResource("3_em14y")
-
-[connection signal="pressed" from="Buttons/Quit/Quit" to="." method="_on_quit_pressed"]
-[connection signal="pressed" from="Buttons/Quit/Quit" to="." method="on_menu_button_pressed"]
-[connection signal="pressed" from="Buttons/LeftButtons/Play/Play" to="." method="on_menu_button_pressed"]
-[connection signal="pressed" from="Buttons/LeftButtons/Simulation/Simulation" to="." method="_on_simulation_pressed"]
-[connection signal="pressed" from="Buttons/LeftButtons/Simulation/Simulation" to="." method="on_menu_button_pressed"]
-[connection signal="pressed" from="Buttons/LeftButtons/EditorMenu/EditorMenu" to="." method="on_menu_button_pressed"]
-[connection signal="pressed" from="Buttons/LeftButtons/Settings/Settings" to="." method="on_menu_button_pressed"]
-[connection signal="pressed" from="Buttons/LeftButtons/Fuyanopedia/Fuyanopedia" to="." method="on_menu_button_pressed"]
+[connection signal="pressed" from="Buttons/Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="Buttons/LeftButtons/Simulation" to="." method="_on_simulation_pressed"]

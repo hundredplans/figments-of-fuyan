@@ -1,8 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://ia4c3788uo0q"]
+[gd_scene load_steps=6 format=3 uid="uid://ia4c3788uo0q"]
 
-[ext_resource type="Theme" uid="uid://byxhe8c463j33" path="res://assets/UI/menu_buttons/menu_buttons.tres" id="1_88q0g"]
 [ext_resource type="Script" path="res://scenes/screens/editor_menu/editor_menu.gd" id="1_olwko"]
-[ext_resource type="LabelSettings" uid="uid://dufeujtxl43vh" path="res://assets/UI/menu_buttons/menu_buttons_label_settings.tres" id="3_te6tr"]
+[ext_resource type="PackedScene" uid="uid://ce7pqa77ekwxb" path="res://assets/UI/menu_button/menu_button.tscn" id="4_8hhk6"]
 
 [sub_resource type="Animation" id="Animation_biso7"]
 length = 0.001
@@ -87,129 +86,32 @@ offset_top = 1035.0
 offset_right = -176.0
 offset_bottom = 1743.0
 rotation = -1.7276
-theme = ExtResource("1_88q0g")
 
-[node name="CardEditor" type="Control" parent="Buttons"]
-anchors_preset = 0
-offset_right = 503.0
-offset_bottom = 116.0
+[node name="CardEditor" parent="Buttons" instance=ExtResource("4_8hhk6")]
+offset_top = -156.0
+offset_bottom = 112.0
+label_text = "Card Editor"
 
-[node name="CardEditor" type="Button" parent="Buttons/CardEditor"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="LevelEditor" parent="Buttons" instance=ExtResource("4_8hhk6")]
+offset_left = -67.0
+offset_top = 44.0
+offset_right = 608.0
+offset_bottom = 312.0
+label_text = "Level Editor"
 
-[node name="Label" type="Label" parent="Buttons/CardEditor"]
-layout_mode = 0
-offset_left = 150.0
-offset_top = 27.0
-offset_right = 527.0
-offset_bottom = 106.0
-rotation = -0.0466075
-text = "Card Editor"
-label_settings = ExtResource("3_te6tr")
+[node name="AreaEditor" parent="Buttons" instance=ExtResource("4_8hhk6")]
+offset_top = 251.0
+offset_bottom = 519.0
+label_text = "AreaEditor"
 
-[node name="LevelEditor" type="Control" parent="Buttons"]
-anchors_preset = 0
-offset_top = 151.0
-offset_right = 503.0
-offset_bottom = 267.0
+[node name="WorldEditor" parent="Buttons" instance=ExtResource("4_8hhk6")]
+offset_left = -67.0
+offset_top = 453.0
+offset_right = 608.0
+offset_bottom = 721.0
+label_text = "World Editor"
 
-[node name="LevelEditor" type="Button" parent="Buttons/LevelEditor"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Label" type="Label" parent="Buttons/LevelEditor"]
-layout_mode = 0
-offset_left = 136.0
-offset_top = 27.0
-offset_right = 513.0
-offset_bottom = 106.0
-rotation = -0.0466075
-text = "Level Editor"
-label_settings = ExtResource("3_te6tr")
-
-[node name="AreaEditor" type="Control" parent="Buttons"]
-anchors_preset = 0
-offset_top = 299.0
-offset_right = 503.0
-offset_bottom = 415.0
-
-[node name="AreaEditor" type="Button" parent="Buttons/AreaEditor"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Label" type="Label" parent="Buttons/AreaEditor"]
-layout_mode = 0
-offset_left = 158.0
-offset_top = 29.0
-offset_right = 535.0
-offset_bottom = 108.0
-rotation = -0.0466075
-text = "Area Editor"
-label_settings = ExtResource("3_te6tr")
-
-[node name="WorldEditor" type="Control" parent="Buttons"]
-anchors_preset = 0
-offset_top = 446.0
-offset_right = 503.0
-offset_bottom = 562.0
-
-[node name="WorldEditor" type="Button" parent="Buttons/WorldEditor"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Label" type="Label" parent="Buttons/WorldEditor"]
-layout_mode = 0
-offset_left = 118.0
-offset_top = 29.0
-offset_right = 473.0
-offset_bottom = 108.0
-rotation = -0.0525903
-text = "World Editor"
-label_settings = ExtResource("3_te6tr")
-
-[node name="EncounterEditor" type="Control" parent="Buttons"]
-anchors_preset = 0
-offset_top = 592.0
-offset_right = 503.0
-offset_bottom = 708.0
-
-[node name="EncounterEditor" type="Button" parent="Buttons/EncounterEditor"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Label" type="Label" parent="Buttons/EncounterEditor"]
-layout_mode = 0
-offset_left = 9.0
-offset_top = 35.0
-offset_right = 489.0
-offset_bottom = 114.0
-rotation = -0.0466075
-text = "Encounter Editor"
-label_settings = ExtResource("3_te6tr")
-
-[connection signal="pressed" from="Buttons/CardEditor/CardEditor" to="." method="on_menu_button_pressed"]
-[connection signal="pressed" from="Buttons/LevelEditor/LevelEditor" to="." method="on_menu_button_pressed"]
-[connection signal="pressed" from="Buttons/AreaEditor/AreaEditor" to="." method="on_menu_button_pressed"]
-[connection signal="pressed" from="Buttons/WorldEditor/WorldEditor" to="." method="on_menu_button_pressed"]
-[connection signal="pressed" from="Buttons/EncounterEditor/EncounterEditor" to="." method="on_menu_button_pressed"]
+[node name="EncounterEditor" parent="Buttons" instance=ExtResource("4_8hhk6")]
+offset_top = 658.0
+offset_bottom = 926.0
+label_text = "Encounter Editor"
