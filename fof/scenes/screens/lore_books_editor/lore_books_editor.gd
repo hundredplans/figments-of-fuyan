@@ -24,10 +24,15 @@ func on_create_category(category_name: String) -> void:
 
 func on_create_book(book_name: String) -> void:
 	if selected_category and Helper.create_file(static_lore + selected_category + "/", book_name, ".txt"):
-		save_book()
 		book_mode = 0
-		selected_book = book_name
-		$BookZone/BookText.text = ""
+		if !selected_book:
+			selected_book = book_name
+			save_book()
+		else:
+			save_book()
+			selected_book = book_name
+			$BookZone/BookText.text = ""
+			save_book()
 		on_refresh_books()
 	$SelectBook/CreateBook.release_focus()
 	$SelectBook/CreateBook.text = ""
@@ -96,10 +101,10 @@ func on_category_selected(_selected_category: String) -> void:
 					selected_category: selected_category = ""
 					_: selected_category = _selected_category
 		_:
+			save_book()
 			match _selected_category:
 				selected_category: selected_category = ""
 				_: selected_category = _selected_category
-			save_book()
 		
 	$BookZone/BookText.text = ""
 	selected_book = ""
