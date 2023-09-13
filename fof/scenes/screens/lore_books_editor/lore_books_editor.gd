@@ -9,8 +9,7 @@ func _ready():
 	on_refresh_categories()
 
 func _exit_tree():
-	if selected_book and selected_category:
-		Helper.write_to_file(temp_lore, selected_book + "_exit", ".txt", $BookZone/BookText.text)
+	save_book(true, selected_category, "_exit")
 
 func on_create_category(category_name: String) -> void:
 	if Helper.is_file_name_pure(category_name):
@@ -25,8 +24,10 @@ func on_create_category(category_name: String) -> void:
 
 func on_create_book(book_name: String) -> void:
 	if selected_category and Helper.create_file(static_lore + selected_category + "/", book_name, ".txt"):
+		save_book()
 		book_mode = 0
 		selected_book = book_name
+		$BookZone/BookText.text = ""
 		on_refresh_books()
 	$SelectBook/CreateBook.release_focus()
 	$SelectBook/CreateBook.text = ""
@@ -78,7 +79,6 @@ func modulate_all() -> void:
 		btn.get_node("Background/Inside").color = color
 
 func on_category_selected(_selected_category: String) -> void:
-	var book_moved: bool = false
 	match book_mode:
 		3:
 			book_mode = 2
@@ -86,12 +86,7 @@ func on_category_selected(_selected_category: String) -> void:
 				$BookZone/BookText.text = Helper.return_file_contents(static_lore + selected_category + "/" + selected_book + ".txt")
 				Helper.write_to_file(static_lore + _selected_category + "/", selected_book, ".txt", $BookZone/BookText.text)
 				Helper.delete_file(static_lore + selected_category + "/", selected_book, ".txt")
-				book_moved = true
-				
-				var old_selected_category: String = selected_category
-				selected_category = _selected_category
-				save_book()
-				selected_category = old_selected_category
+				save_book(true, _selected_category)
 		1:
 			if !DirAccess.remove_absolute(static_lore + _selected_category):
 				selected_category = ""
@@ -104,9 +99,7 @@ func on_category_selected(_selected_category: String) -> void:
 			match _selected_category:
 				selected_category: selected_category = ""
 				_: selected_category = _selected_category
-	
-	if !book_moved:
-		save_book()
+			save_book()
 		
 	$BookZone/BookText.text = ""
 	selected_book = ""
@@ -122,7 +115,8 @@ func on_book_selected(_selected_book: String) -> void:
 	match book_mode:
 		0: $BookZone/BookText.text = Helper.return_file_contents(static_lore + selected_category + "/" + selected_book + ".txt")
 		1:
-			Helper.write_to_file(temp_lore, selected_book + "_delete", ".txt", Helper.return_file_contents(static_lore + selected_category + "/" + selected_book + ".txt"))
+			if Settings.clear_backup_files_array[Settings.clear_backup_files] != 1:
+				Helper.write_to_file(temp_lore, selected_book + "_delete", ".txt", Helper.return_file_contents(static_lore + selected_category + "/" + selected_book + ".txt"))
 			Helper.delete_file(static_lore + selected_category + "/", selected_book, ".txt")
 			selected_book = ""
 			on_refresh_books()
@@ -149,15 +143,10 @@ func _on_move_books_pressed():
 		2: book_mode = 0
 		_: book_mode = 2
 	modulate_all()
-
-func _on_book_name_text_submitted(text: String):
-	$BookZone/BookButtons/BookName.release_focus()
-	$BookZone/BookButtons/BookName.text = ""
-	save_book(true)
 	
-func save_book(save_button_pressed:bool=false) -> void:
+func save_book(save_button_pressed:bool=false, category:String =selected_category, exit:="") -> void:
 	if selected_book and selected_category:
-		Helper.write_to_file(static_lore + selected_category + "/", selected_book, ".txt", $BookZone/BookText.text)
+		Helper.write_to_file(static_lore + category + "/", selected_book, ".txt", $BookZone/BookText.text)
 	
-	if save_button_pressed:
-		Helper.write_to_file(temp_lore, selected_book, ".txt", $BookZone/BookText.text)
+		if save_button_pressed and Settings.clear_backup_files_array[Settings.clear_backup_files] != 1:
+			Helper.write_to_file(temp_lore, selected_book + exit, ".txt", $BookZone/BookText.text)

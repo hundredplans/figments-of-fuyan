@@ -5,6 +5,7 @@ var default_camera_speed_multiplier: int = 1
 var autoskip_turn: bool = false
 var close_fileloader: int = 256
 var notify_rewards: int = 0
+const clear_backup_files_array: Array = [0, 86400, 259200, 604800, 2592000, 1]
 
 var settings_info: Dictionary = {
 	"Audio": [],

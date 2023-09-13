@@ -4,7 +4,6 @@ extends Node
 const main_menu_path: String = "res://scenes/screens/main_menu/main_menu.tscn"
 var screen_change_animation_active: bool = false
 var screen_history: Array = []
-const clear_backup_files: Array = [0, 86400, 259200, 604800, 2592000, 1]
 		
 func on_user_quit() -> void:
 	Settings.update_settings_file_info()
@@ -17,7 +16,7 @@ func _ready() -> void:
 		Helper[helper_signal[0]].connect(helper_signal[1])
 	on_load_screen(main_menu_path)
 	
-	var modified_time: int = clear_backup_files[Settings.clear_backup_files]
+	var modified_time: int = Settings.clear_backup_files_array[Settings.clear_backup_files]
 	if modified_time > 1:
 		for file in Helper.return_file_names_recursive("user://save/temp"):
 			if FileAccess.get_modified_time(file) < Time.get_unix_time_from_system() - modified_time:

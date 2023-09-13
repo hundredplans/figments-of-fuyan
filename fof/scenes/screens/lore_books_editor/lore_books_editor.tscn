@@ -182,31 +182,24 @@ offset_bottom = 1040.0
 
 [node name="DeleteBooks" type="Button" parent="BookZone/BookButtons"]
 layout_mode = 0
-offset_right = 228.0
+offset_left = 274.0
+offset_right = 502.0
 offset_bottom = 107.0
 text = "Delete Mode"
 
 [node name="MoveBooks" type="Button" parent="BookZone/BookButtons"]
 layout_mode = 0
-offset_left = 228.0
-offset_right = 456.0
+offset_left = 502.0
+offset_right = 730.0
 offset_bottom = 107.0
 text = "Move Mode"
 
 [node name="SaveBook" type="Button" parent="BookZone/BookButtons"]
 layout_mode = 0
-offset_left = 456.0
-offset_right = 684.0
+offset_left = 730.0
+offset_right = 958.0
 offset_bottom = 107.0
 text = "Save"
-
-[node name="BookName" type="LineEdit" parent="BookZone/BookButtons"]
-layout_mode = 0
-offset_left = 684.0
-offset_right = 1230.0
-offset_bottom = 107.0
-placeholder_text = "Write Book Name Here"
-alignment = 1
 
 [node name="BookText" type="TextEdit" parent="BookZone"]
 layout_mode = 0
@@ -221,4 +214,3 @@ wrap_mode = 1
 [connection signal="pressed" from="BookZone/BookButtons/DeleteBooks" to="." method="_on_delete_books_pressed"]
 [connection signal="pressed" from="BookZone/BookButtons/MoveBooks" to="." method="_on_move_books_pressed"]
 [connection signal="pressed" from="BookZone/BookButtons/SaveBook" to="." method="save_book"]
-[connection signal="text_submitted" from="BookZone/BookButtons/BookName" to="." method="_on_book_name_text_submitted"]
