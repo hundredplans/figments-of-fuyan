@@ -92,19 +92,32 @@ func return_file_contents(file_path: String) -> String:
 func write_to_base_game_file(dir: String, edit_file_name: Control, contents: String) -> void:
 	var file_name: String = edit_file_name.get_node("Internal").text
 	var showcase_name: String = edit_file_name.get_node("Showcase").text
-	if is_file_name_pure(file_name):
-		if dir.begins_with("res://static/base_game/"):
-			var id: String = str(return_new_highest_id(dir, file_name))
-			contents = contents.insert(0, "%s\n%s\n%s\n") % [id, file_name, showcase_name]
-			file_name = file_name.insert(0, "%s - " % id)
-			write_to_file(dir, file_name, ".fof", contents)
-		else: print_debug("You are not writing to the correct directory")
-	else: print_debug("Your name is not pure")
+	if dir.begins_with("res://static/base_game/"):
+		var id: String = str(return_new_highest_id(dir, file_name))
+		contents = contents.insert(0, "%s\n%s\n%s\n") % [id, file_name, showcase_name]
+		file_name = file_name.insert(0, "%s - " % id)
+		write_to_file(dir, file_name, ".fof", contents)
+	else: print_debug("You are not writing to the correct directory")
 
-func write_to_file(dir: String, file_name: String, extension: String, contents: String) -> void:
-	var file := FileAccess.open(dir + file_name + extension, FileAccess.WRITE)
-	file.store_string(contents)
-	file = null
+func create_file(dir: String, file_name: String, extension: String, contents:String="") -> bool:
+	var existing_contents: String = return_file_contents(dir + file_name + extension)
+	if !existing_contents: existing_contents = contents
+	return write_to_file(dir, file_name, extension, existing_contents)
+
+func return_file_names_recursive(path: String, contents := []) -> Array:
+	contents += Array(DirAccess.get_files_at(path)).map(func(x: String): return path + "/" + x)
+	for dir in DirAccess.get_directories_at(path):
+		contents = return_file_names_recursive(path + "/" + dir, contents)
+	return contents
+
+func write_to_file(dir: String, file_name: String, extension: String, contents: String) -> bool:
+	if is_file_name_pure(file_name):
+		var file := FileAccess.open(dir + file_name + extension, FileAccess.WRITE)
+		file.store_string(contents)
+		file = null
+		return true
+	else: print_debug("Your file name is not pure: " + file_name)
+	return false
 
 func get_children_recursive(node: Node, children := []):
 	children.append(node)
@@ -122,3 +135,7 @@ func start_timer_attach_method(timer: Timer, wait_time: float, method: Callable,
 func on_timeout_disconnect(timer: Timer, method: Callable) -> void:
 	timer.timeout.disconnect(method)
 	timer.timeout.disconnect(on_timeout_disconnect)
+
+func delete_file(dir: String, file: String, extension: String) -> void:
+	if FileAccess.file_exists(dir + file + extension):
+		DirAccess.remove_absolute(dir + file + extension)

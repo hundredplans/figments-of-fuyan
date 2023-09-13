@@ -74,7 +74,7 @@ func on_center_selected_card(i: int) -> void:
 			var tweens: Array = [card.create_tween(), card.create_tween(), card.create_tween(), card.create_tween()]
 			tweens[0].tween_property(card, "scale", scales[j], length)
 			tweens[1].tween_property(card, "position", positions[j], length)
-			tweens[2].tween_callback(func(): cards_are_moving = false).set_delay(tween_speed)
+			tweens[2].tween_callback(func(): cards_are_moving = false).set_delay(tween_speed + 0.02)
 			tweens[3].tween_callback(method).set_delay(tween_speed / 2)
 			j += 1
 		

@@ -35,7 +35,7 @@ func _ready() -> void:
 
 func create_tile() -> Node2D:
 	var tile: Node2D = tile_default.instantiate()
-	tile.get_node("Area2D").mouse_entered.connect(tile._on_allow_change_in_level_editor)
+	tile.get_node("Area2D").mouse_entered.connect(tile._on_allow_change_in_select_level)
 	tile.create_unit.connect(on_create_unit)
 	tile.destroy_unit.connect(on_destroy_unit)
 	tile.click_unit.connect(on_click_unit)
@@ -84,6 +84,7 @@ func on_tile_change_tile_state(tile_info: Array, tile: Node2D) -> void:
 
 func on_load_level(level_name: String) -> void:
 	loaded_level = level_name
+	print(loaded_level)
 	for child in $CardZone.get_children():
 		if child.team == 1:
 			child.free()

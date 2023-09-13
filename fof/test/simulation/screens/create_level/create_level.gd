@@ -28,6 +28,7 @@ func _ready():
 		var tile: Node2D = tile_default.instantiate()
 		tile.create_unit.connect(on_create_unit)
 		tile.destroy_unit.connect(on_destroy_unit)
+		tile.allow_change_anywhere = false
 		$FakeTiles.add_child(tile)
 		tile.get_node("Area2D").mouse_entered.connect(tile._on_area_2d_mouse_entered)
 		if x >= tile_rows:

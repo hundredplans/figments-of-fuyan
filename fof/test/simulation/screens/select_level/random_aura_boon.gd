@@ -1,5 +1,11 @@
 extends Control
 
+var world_distinguisher: Array = [
+	["Swamp", "Critters", "Bouldaak Jungle", "Palm", "Fungite"],
+	["Mages", "Wild West", "Sugori", "Dwarven"],
+	["Varoma", "Kaluta"]
+	]
+
 var states: Dictionary = {
 	"Aura": false,
 	"Boon": false,
@@ -43,15 +49,50 @@ func on_state_button_pressed(btn_name: String) -> void:
 	on_modulate_buttons()
 
 func _on_roll_button_pressed():
+	var equipped_boons: Array = Array(FileAccess.open("user://savefofle/loaded_boons.txt", FileAccess.READ).get_as_text().split("\n", false)).map(func(x: String): return x.left(-4))
 	var roll_pool: Array = []
+	
 	for aura_boon in ["Aura", "Boon"].filter(func(x: String): return states[x]).map(func(x: String): return x.to_lower() + "s"):
 		var dir: DirAccess = DirAccess.open("user://savefofle/auras_boons/" + aura_boon)
 		for file_info in Array(dir.get_files()).map(func(x: String): return FileAccess.open("user://savefofle/auras_boons/" + aura_boon + "/" + x, FileAccess.READ).get_as_text().split("\n", false)):
-			var i: int = 0
-			for difficulty in ["Common", "Rare", "Exalt"]:
-				if states[difficulty] and str(i) == file_info[3]:
-					roll_pool.append(file_info[0])
-				i += 1
+			if file_info[0] not in equipped_boons:
+				var i: int = 0
+				for difficulty in ["Common", "Rare", "Exalt"]:
+					if states[difficulty] and str(i) == file_info[3]:
+						roll_pool.append(file_info)
+					i += 1
 	if roll_pool:
-		$Result.text = roll_pool[randi() % roll_pool.size()]
+		var weighted_roll: int = 0
+		for difficulty in ["Common", "Rare", "Exalt"]:
+			if states[difficulty]:
+				weighted_roll += 1
+				
+		match weighted_roll:
+			1: $Result.text = roll_pool[randi() % roll_pool.size()][0]
+			3: 
+				if get_parent().loaded_level:
+					var i: int = 0
+					for difficulty in world_distinguisher:
+						if get_parent().loaded_level.split("/", false)[0] in difficulty:
+							var world_odds: Array = [[0.65,0.35,0.05],[0.45,0.45,0.1],[0.3,0.5,0.2]][i-1]
+							var difficulty_tier: Array = []
+							for k in range(0, 3):
+								difficulty_tier.append([])
+								difficulty_tier[k] = roll_pool.filter(func(x: Array): return x[3] == str(k))
+							
+							var random: float = randf()
+							var total: float = 0
+							var j: int = 0
+							for odd in world_odds:
+								if random < odd + total:
+									$Result.text = difficulty_tier[j][randi() % difficulty_tier[j].size()][0]
+									return
+								total += odd
+								j += 1
+							break
+						i += 1
+						if i > 3:
+							$Result.text = roll_pool[randi() % roll_pool.size()][0]
+				else:
+					$Result.text = roll_pool[randi() % roll_pool.size()][0]
  

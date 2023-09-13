@@ -8,26 +8,50 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Buttons:position")
+tracks/0/path = NodePath("Buttons/LeftButtons:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(-679, 1035)]
+"values": [Vector2(-933, 1012)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Buttons:rotation")
+tracks/1/path = NodePath("Buttons/LeftButtons:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [-1.7276]
+"values": [-1.72788]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Buttons/RightButtons:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(2550, 791)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Buttons/RightButtons:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [2.05886]
 }
 
 [sub_resource type="Animation" id="Animation_7duac"]
@@ -37,26 +61,50 @@ step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Buttons:position")
+tracks/0/path = NodePath("Buttons/LeftButtons:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.25),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(0, 168), Vector2(-679, 1035)]
+"values": [Vector2(0, 0), Vector2(-933, 1012)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Buttons:rotation")
+tracks/1/path = NodePath("Buttons/LeftButtons:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.25),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [0.0, -1.7276]
+"values": [0.0, -1.72788]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Buttons/RightButtons:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1915, 0), Vector2(2550, 791)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Buttons/RightButtons:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 2.05886]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_dcjvj"]
@@ -81,37 +129,75 @@ libraries = {
 
 [node name="Buttons" type="Control" parent="."]
 anchors_preset = 0
-offset_left = -679.0
-offset_top = 1035.0
-offset_right = -176.0
-offset_bottom = 1743.0
-rotation = -1.7276
+offset_top = 168.0
+offset_right = 1920.0
+offset_bottom = 876.0
 
-[node name="CardEditor" parent="Buttons" instance=ExtResource("4_8hhk6")]
+[node name="LeftButtons" type="Control" parent="Buttons"]
+anchors_preset = 0
+offset_left = -933.0
+offset_top = 1012.0
+offset_right = -933.0
+offset_bottom = 1012.0
+rotation = -1.72788
+
+[node name="CardEditor" parent="Buttons/LeftButtons" instance=ExtResource("4_8hhk6")]
 offset_top = -156.0
 offset_bottom = 112.0
 label_text = "Card Editor"
 
-[node name="LevelEditor" parent="Buttons" instance=ExtResource("4_8hhk6")]
+[node name="LevelEditor" parent="Buttons/LeftButtons" instance=ExtResource("4_8hhk6")]
 offset_left = -67.0
 offset_top = 44.0
 offset_right = 608.0
 offset_bottom = 312.0
 label_text = "Level Editor"
 
-[node name="AreaEditor" parent="Buttons" instance=ExtResource("4_8hhk6")]
+[node name="AreaEditor" parent="Buttons/LeftButtons" instance=ExtResource("4_8hhk6")]
 offset_top = 251.0
 offset_bottom = 519.0
 label_text = "AreaEditor"
 
-[node name="WorldEditor" parent="Buttons" instance=ExtResource("4_8hhk6")]
+[node name="WorldEditor" parent="Buttons/LeftButtons" instance=ExtResource("4_8hhk6")]
 offset_left = -67.0
 offset_top = 453.0
 offset_right = 608.0
 offset_bottom = 721.0
 label_text = "World Editor"
 
-[node name="EncounterEditor" parent="Buttons" instance=ExtResource("4_8hhk6")]
+[node name="EncounterEditor" parent="Buttons/LeftButtons" instance=ExtResource("4_8hhk6")]
 offset_top = 658.0
 offset_bottom = 926.0
 label_text = "Encounter Editor"
+
+[node name="RightButtons" type="Control" parent="Buttons"]
+anchors_preset = 0
+offset_left = 2550.0
+offset_top = 791.0
+offset_right = 2550.0
+offset_bottom = 791.0
+rotation = 2.05886
+
+[node name="AchievementEditor" parent="Buttons/RightButtons" instance=ExtResource("4_8hhk6")]
+offset_left = -726.0
+offset_top = 48.0
+offset_right = -51.0
+offset_bottom = 316.0
+flipped = true
+label_text = "Achievements"
+
+[node name="LoreBooksEditor" parent="Buttons/RightButtons" instance=ExtResource("4_8hhk6")]
+offset_left = -626.0
+offset_top = 251.0
+offset_right = 49.0
+offset_bottom = 519.0
+flipped = true
+label_text = "Lore Books"
+
+[node name="DictionaryEditor" parent="Buttons/RightButtons" instance=ExtResource("4_8hhk6")]
+offset_left = -726.0
+offset_top = 453.0
+offset_right = -51.0
+offset_bottom = 721.0
+flipped = true
+label_text = "Dictionary"

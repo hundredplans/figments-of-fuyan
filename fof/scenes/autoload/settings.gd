@@ -1,5 +1,6 @@
 extends Node
 
+var clear_backup_files: int = 0
 var default_camera_speed_multiplier: int = 1
 var autoskip_turn: bool = false
 var close_fileloader: int = 256
@@ -62,15 +63,14 @@ func set_closefileloader(i: int):
 	close_fileloader = i
 func set_notifyrewards(i: int):
 	notify_rewards = i
+func set_clearbackupfiles(i: int):
+	clear_backup_files = i
 
 func set_mastervolume(i: int):
-	AudioMaster.master_volume_multiplier = i
-	
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(i * 0.01))
 func set_sfxvolume(i: int):
-	AudioMaster.sfx_volume_multiplier = i 
-	
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), linear_to_db(i * 0.01))
 func set_musicvolume(i: int):
-	AudioMaster.music_volume_multiplier = i
-	
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), linear_to_db(i * 0.01))
 func set_vlvolume(i: int): 
-	AudioMaster.vl_volume_multiplier = i
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("VL"), linear_to_db(i * 0.01))

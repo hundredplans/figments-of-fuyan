@@ -17,7 +17,7 @@ var active_editor_card: String
 var solo_visibility: bool = false
 var disable_visibility: bool = false
 var always_visible: bool = false
-const collision_tiles: Array = [1, 2, 13]
+const collision_tiles: Array = [1, 2, 13, 18, 19, 20]
 var tile_item = ""
 var old_tile_state: int = 0
 var tile_state: int = 0
@@ -39,8 +39,7 @@ func _process(_delta: float) -> void:
 			if $In/Unit.texture: destroy_unit.emit(self)
 			else: create_unit.emit(self)
 				
-			
-	if allow_change_anywhere:
+	elif allow_change_anywhere:
 		if Input.is_action_just_pressed("MouseMiddle"):
 			if $In/Unit.texture:
 				destroy_unit.emit(self, true)
@@ -86,7 +85,7 @@ func _process(_delta: float) -> void:
 func _on_area_2d_mouse_entered():
 	allow_change = true
 	
-func _on_allow_change_in_level_editor():
+func _on_allow_change_in_select_level():
 	allow_change_anywhere = true
 
 func _on_level_editor_inside_pressed():
