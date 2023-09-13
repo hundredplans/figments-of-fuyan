@@ -102,6 +102,7 @@ func write_to_base_game_file(dir: String, edit_file_name: Control, contents: Str
 func create_file(dir: String, file_name: String, extension: String, contents:String="") -> bool:
 	var existing_contents: String = return_file_contents(dir + file_name + extension)
 	if !existing_contents: existing_contents = contents
+	print(existing_contents)
 	return write_to_file(dir, file_name, extension, existing_contents)
 
 func return_file_names_recursive(path: String, contents := []) -> Array:

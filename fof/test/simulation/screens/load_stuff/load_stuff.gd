@@ -61,7 +61,15 @@ func load_stuff():
 				4: load_stuff_node.modulate = Color(0.773, 0.031, 0.141,1)
 				5: load_stuff_node.modulate = Color(0.374, 0.6, 1, 1)
 				6: load_stuff_node.modulate = Color(0.196, 0.196, 0.196, 1)
-
+		elif load_state in [2, 3, 5]:
+			match int(FileAccess.open(load_path + "/" + file, FileAccess.READ).get_as_text().split("\n", false)[3]):
+				0: load_stuff_node.modulate = Color(0.43,0.43,0.43,1)
+				1: load_stuff_node.modulate = Color(0.31, 0.478, 0.439,1)
+				2: load_stuff_node.modulate = Color(0.966, 0.697, 0.253,1)
+				3: load_stuff_node.modulate = Color(0.639, 0.075, 0.722,1)
+				4: load_stuff_node.modulate = Color(0.773, 0.031, 0.141,1)
+				5: load_stuff_node.modulate = Color(0.374, 0.6, 1, 1)
+				6: load_stuff_node.modulate = Color(0.196, 0.196, 0.196, 1)
 	$Path.text = load_path
 	var x: int = 0
 	var y: int = 0

@@ -81,6 +81,7 @@ func on_center_selected_card(i: int) -> void:
 		var top_value: String = card_order[4]
 		card_order[4] = card_order[i]
 		card_order[i] = top_value
+		AudioMaster.play_sfx(load("res://assets/sounds/animations/settings_menu/card_flip.wav"))
 
 func get_card(setting: String) -> Control:
 	for child in $CardSorter.get_children(): if setting == child.setting: return child

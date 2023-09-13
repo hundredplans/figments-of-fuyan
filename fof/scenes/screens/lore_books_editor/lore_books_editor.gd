@@ -31,7 +31,7 @@ func on_create_book(book_name: String) -> void:
 		else:
 			save_book()
 			selected_book = book_name
-			$BookZone/BookText.text = ""
+			$BookZone/BookText.text = Helper.return_file_contents(static_lore + selected_category + "/" + book_name + ".txt")
 			save_book()
 		on_refresh_books()
 	$SelectBook/CreateBook.release_focus()
