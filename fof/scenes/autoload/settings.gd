@@ -1,5 +1,6 @@
 extends Node
 
+var book_font_size: int = 0
 var clear_backup_files: int = 0
 var default_camera_speed_multiplier: int = 1
 var autoskip_turn: bool = false
@@ -66,6 +67,8 @@ func set_notifyrewards(i: int):
 	notify_rewards = i
 func set_clearbackupfiles(i: int):
 	clear_backup_files = i
+func set_bookfontsize(i: int):
+	book_font_size = i
 
 func set_mastervolume(i: int):
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(i * 0.01))

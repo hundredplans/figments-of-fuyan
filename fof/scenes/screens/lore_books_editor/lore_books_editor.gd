@@ -4,8 +4,10 @@ const temp_lore: String = "user://save/temp/lore_books/"
 var selected_category: String
 var selected_book: String
 var book_mode: int = 0
+const book_font_sizes: Array = [16, 20, 24, 28, 32, 36]
 
 func _ready():
+	$BookZone/BookText["theme_override_font_sizes/font_size"] = book_font_sizes[Settings.book_font_size]
 	on_refresh_categories()
 
 func _exit_tree():

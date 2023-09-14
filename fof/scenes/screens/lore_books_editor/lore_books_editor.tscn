@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://ckggpn5duo86e"]
+[gd_scene load_steps=7 format=3 uid="uid://ckggpn5duo86e"]
 
 [ext_resource type="Script" path="res://scenes/screens/lore_books_editor/lore_books_editor.gd" id="1_1ujl7"]
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="1_fpok6"]
+[ext_resource type="FontFile" uid="uid://7k4xd8s0oed2" path="res://assets/UI/roboto/roboto.ttf" id="3_iaosm"]
 
 [sub_resource type="Animation" id="Animation_ni6lj"]
 length = 0.001
@@ -207,6 +208,8 @@ offset_left = 98.0
 offset_top = 10.0
 offset_right = 1308.0
 offset_bottom = 892.0
+theme_override_fonts/font = ExtResource("3_iaosm")
+theme_override_font_sizes/font_size = 0
 wrap_mode = 1
 
 [connection signal="text_submitted" from="SelectCategory/CreateCategory" to="." method="on_create_category"]

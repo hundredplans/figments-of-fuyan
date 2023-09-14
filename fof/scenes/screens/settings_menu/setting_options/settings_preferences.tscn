@@ -1,10 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://drao2oqxtnj6x"]
+[gd_scene load_steps=8 format=3 uid="uid://drao2oqxtnj6x"]
 
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="1_7tu5m"]
 [ext_resource type="Script" path="res://scenes/screens/settings_menu/settings_connect.gd" id="2_odmui"]
 [ext_resource type="PackedScene" uid="uid://bj3h1ak5dv73n" path="res://scenes/ui_general/op_button/op_button.tscn" id="3_dg7gw"]
 [ext_resource type="PackedScene" uid="uid://chkoma3ub3eqf" path="res://scenes/ui_general/binary_button/binary_button.tscn" id="4_70xc4"]
+[ext_resource type="FontFile" uid="uid://7k4xd8s0oed2" path="res://assets/UI/roboto/roboto.ttf" id="5_iikn7"]
 [ext_resource type="PackedScene" uid="uid://do6a233hu0w6c" path="res://scenes/ui_general/mc_button/mc_button.tscn" id="5_t1xs1"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_nac3c"]
+font = ExtResource("5_iikn7")
+font_size = 48
+outline_size = 8
+outline_color = Color(0, 0, 0, 1)
 
 [node name="SettingsPreferences" type="Control"]
 layout_mode = 3
@@ -44,10 +51,27 @@ offset_bottom = 303.0
 options = PackedStringArray("Don\'t Backup", "1 Day", "3 Days", "1 Week", "1 Month", "Never")
 label_text = "Clear Backup"
 
+[node name="Admin" type="Label" parent="."]
+layout_mode = 0
+offset_left = 169.0
+offset_top = 311.0
+offset_right = 310.0
+offset_bottom = 371.0
+text = "Admin"
+label_settings = SubResource("LabelSettings_nac3c")
+
+[node name="BookFontSize" parent="." instance=ExtResource("3_dg7gw")]
+offset_left = 19.0
+offset_top = 376.0
+offset_right = 43.0
+offset_bottom = 439.0
+options = PackedStringArray("16", "20", "24", "28", "32", "36")
+label_text = "Book Font Size"
+
 [node name="CloseFileLoader" parent="." instance=ExtResource("5_t1xs1")]
 offset_left = 19.0
-offset_top = 317.0
+offset_top = 453.0
 offset_right = 117.0
-offset_bottom = 377.0
+offset_bottom = 513.0
 options = PackedStringArray("Units", "Auras", "Areas", "Boons", "Levels", "Trinkets", "Challenges", "World Variations")
 label_text = "Close File Loader"

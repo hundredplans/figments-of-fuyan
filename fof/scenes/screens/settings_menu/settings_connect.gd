@@ -7,5 +7,6 @@ func _enter_tree(): # Important it's this
 		else: print_debug("The setting node is non-existent")
 
 	for child in get_children():
-		child.item_selected.connect(Settings["set_" + child.name.to_lower()])
-		child.item_selected.connect(Settings.update_settings_info.bind(setting, child.name))
+		if !(child is Label):
+			child.item_selected.connect(Settings["set_" + child.name.to_lower()])
+			child.item_selected.connect(Settings.update_settings_info.bind(setting, child.name))
