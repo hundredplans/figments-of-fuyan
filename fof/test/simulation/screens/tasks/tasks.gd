@@ -11,15 +11,16 @@ func _ready() -> void:
 	roll_contents.append(roll_random(roll_contents))
 	
 	var y: int = 0
+	var arr: Array = [[], [], []]
+	for i in text:
+		arr[int(i.split("-", false)[1]) - 1].append(i)
+		
 	for difficulty in roll_contents:
 		var task: Control = preload("res://test/simulation/screens/tasks/single_task.tscn").instantiate()
-		for i in text:
-			if int(i.split("-", false)[1]) == difficulty:
-				task.load_task(i)
-				task.position.y += y
-				$TaskNumbers.add_child(task)
-				difficulties[difficulty - 1] -= 1
-				break
+		task.load_task(arr[difficulty - 1][randi() % arr[difficulty - 1].size()])
+		task.position.y += y
+		$TaskNumbers.add_child(task)
+		difficulties[difficulty - 1] -= 1
 		y += int(task.size.y)
 
 func roll_random(roll_contents: Array) -> float:
