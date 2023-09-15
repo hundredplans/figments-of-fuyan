@@ -3,7 +3,7 @@ extends Control
 var world_distinguisher: Array = [
 	["Swamp", "Critters", "Bouldaak Jungle", "Palm", "Fungite"],
 	["Mages", "Wild West", "Sugori", "Dwarven"],
-	["Varoma", "Kaluta"]
+	["Varoma", "Kaluta", "Befre", "Hama Cik"]
 	]
 var can_drag: bool = false
 var held: bool = true
@@ -75,7 +75,7 @@ func random_card_in_another_area(odds: Array, area_name: String, difficulty: int
 func return_area_name() -> String:
 	if get_parent().loaded_level:
 		return get_parent().loaded_level.split("/", false)[0]
-	return ""
+	return "Varoma"
 	
 func random_aura_boon(odds: Array, aura_boon: String, avoid: String="") -> Array:
 	var files: Array = return_file_names("user://savefofle/auras_boons/" + aura_boon)

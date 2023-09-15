@@ -27,6 +27,7 @@ func on_sim_pressed():
 	for child in get_tree().get_root().get_children(): child.queue_free()
 	get_tree().get_root().add_child(preload("res://test/simulation/screens/main/main.tscn").instantiate())
 func _process(_delta: float) -> void:
+	
 	if Input.is_action_just_pressed("Escape"):
 		on_trigger_screen_history()
 func on_load_screen(screen_name: String) -> void:

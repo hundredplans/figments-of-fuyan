@@ -1,11 +1,16 @@
 extends Control
 
 signal item_selected
-var inputs: Dictionary = {
+var pressed_inputs: Dictionary = {
 	"DownArrow": -2,
 	"LeftArrow": -1,
 	"UpArrow": 2,
 	"RightArrow": 1,
+	}
+	
+var inputs: Dictionary = {
+	"MouseDown": -1,
+	"MouseUp": 1,
 	}
 
 var grabbed: bool = false
@@ -40,8 +45,15 @@ func _process(_delta: float) -> void:
 			
 	elif is_mouse_entered:
 		var old_can_press: int = can_press
-		for key in inputs:
+		for key in pressed_inputs:
 			if Input.is_action_pressed(key):
+				can_press = pressed_inputs[key]
+				on_step()
+				can_press = 0 if !old_can_press else old_can_press
+				return
+				
+		for key in inputs:
+			if Input.is_action_just_pressed(key):
 				can_press = inputs[key]
 				on_step()
 				can_press = 0 if !old_can_press else old_can_press
