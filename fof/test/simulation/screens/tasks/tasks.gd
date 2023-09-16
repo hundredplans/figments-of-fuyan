@@ -3,8 +3,11 @@ extends Control
 var can_drag: bool = false
 var held: bool = true
 
-func _ready() -> void:
-	var text := FileAccess.open("res://test/simulation/screens/tasks/tasks.txt", FileAccess.READ).get_as_text().split("\n", false)
+func _ready() -> void: roll_tasks()
+
+func roll_tasks() -> void:
+	for child in $TaskNumbers.get_children(): child.queue_free()
+	var text := FileAccess.open("user://savefofle/tasks.txt", FileAccess.READ).get_as_text().split("\n", false)
 	var difficulties: Array = [0,0,0]
 	for i in text: difficulties[int(i.split("-", false)[1]) - 1] += 1
 	var roll_contents: Array = [convert_to_rarity(randf()), convert_to_rarity(randf())]
@@ -17,7 +20,9 @@ func _ready() -> void:
 		
 	for difficulty in roll_contents:
 		var task: Control = preload("res://test/simulation/screens/tasks/single_task.tscn").instantiate()
-		task.load_task(arr[difficulty - 1][randi() % arr[difficulty - 1].size()])
+		var task_info: String = arr[difficulty - 1][randi() % arr[difficulty - 1].size()]
+		arr[difficulty - 1].erase(task_info)
+		task.load_task(task_info)
 		task.position.y += y
 		$TaskNumbers.add_child(task)
 		difficulties[difficulty - 1] -= 1
@@ -48,6 +53,9 @@ func _process(_delta: float) -> void:
 			held = true
 		elif Input.is_action_pressed("LeftClick") and held:
 			position.x = (get_viewport().get_mouse_position().x) - 390
-			position.y = (get_viewport().get_mouse_position().y) - 160
+			position.y = (get_viewport().get_mouse_position().y) - 120
 		else:
 			held = false
+
+func _on_roll_button_pressed():
+	roll_tasks()

@@ -2,8 +2,6 @@ extends Control
 var card_positions: Array = [Vector2(1344, 200), Vector2(278, 200), Vector2(1066, 140), Vector2(406, 140), Vector2(660, 90)]
 var card_scales: Array = [Vector2(0.5, 0.5), Vector2(0.5, 0.5), Vector2(0.75, 0.75), Vector2(0.75, 0.75), Vector2.ONE]
 var card_order: Array = ["Audio", "Preferences", "Graphics", "Controls", "Video"]
-
-const tween_speed: float = 0.4
 var cards_are_moving: bool = false
 var card_areas: Array = []
 
@@ -31,7 +29,6 @@ func _ready() -> void:
 		settings_card.scale = card_scales[i]
 		$CardSorter.add_child(settings_card)
 		settings_card.on_load_setting_card(card_name)
-		settings_card.get_parent().move_child(settings_card, i)
 		settings_card.z_index = i
 		
 		var animation: Animation = settings_card.get_node("MoveCard").get_animation("move_card_" + directions[direction])
@@ -55,18 +52,26 @@ func on_center_selected_card(i: int) -> void:
 		var center_card: Control = get_card(card_order[4])
 		var side_card: Control = get_card(card_order[i])
 		
-		center_card.get_parent().move_child(center_card, i)
-		side_card.get_parent().move_child(side_card, 4)
-		center_card.z_index = i
-		side_card.z_index = 4
-		
 		var length: float = side_card.get_node("MoveCard").get_animation("move_card_left").length
+		var extra_length: float = (length * 0.5) if i in [0, 1] else 0.0
+		length += extra_length
+		
+		var between_card: Control
+		if extra_length > 0:
+			between_card = get_card(card_order[i + 2])
+			between_card.z_index = 3
+			var tween: Tween = between_card.create_tween()
+			tween.tween_callback(func(): between_card.z_index = i + 2).set_delay(length)
+		
 		var scales: Array = [card_scales[i], card_scales[4]]
 		var positions: Array = [card_positions[i], card_positions[4]]
 		var j: int = 0
 		
 		for card in [center_card, side_card]:
-			var method: Callable = card.on_load_front_card if j == 1 else card.on_load_back_card
+			var move_child_position: Array = [i, 4]
+			var methods: Array = [card.on_load_back_card, card.on_load_front_card]
+			card.get_node("MoveCard").speed_scale = 0.75 if extra_length > 0 else 1.0
+			
 			match j:
 				0: card.get_node("MoveCard").play_backwards("move_card_" + directions[direction])
 				1: card.get_node("MoveCard").play("move_card_" + directions[direction])
@@ -74,14 +79,22 @@ func on_center_selected_card(i: int) -> void:
 			var tweens: Array = [card.create_tween(), card.create_tween(), card.create_tween(), card.create_tween()]
 			tweens[0].tween_property(card, "scale", scales[j], length)
 			tweens[1].tween_property(card, "position", positions[j], length)
-			tweens[2].tween_callback(func(): cards_are_moving = false).set_delay(tween_speed + 0.02)
-			tweens[3].tween_callback(method).set_delay(tween_speed / 2)
+			tweens[2].tween_callback(on_card_finished_moving.bind(card, move_child_position[j])).set_delay(length + 0.02)
+			tweens[3].tween_callback(on_card_move_halfway.bind(methods[j], card, move_child_position[j])).set_delay(length * 0.5)
 			j += 1
 		
 		var top_value: String = card_order[4]
 		card_order[4] = card_order[i]
 		card_order[i] = top_value
-		AudioMaster.play_sfx(load("res://assets/sounds/animations/settings_menu/card_flip.wav"))
+		AudioMaster.play_sfx(preload("res://scenes/screens/settings_menu/card_flip.wav"))
+
+func on_card_move_halfway(method: Callable, card: Control, i: int) -> void:
+	method.call()
+	card.z_index = i
+
+func on_card_finished_moving(card: Control, i: int) -> void:
+	cards_are_moving = false
+	card.get_parent().move_child(card, i)
 
 func get_card(setting: String) -> Control:
 	for child in $CardSorter.get_children(): if setting == child.setting: return child

@@ -466,7 +466,7 @@ func _on_number_generator_pressed():
 
 func _on_shop_generator_pressed():
 	var shop_generator: Control = preload("res://test/simulation/screens/select_level/shop_generator.tscn").instantiate()
-	shop_generator.position = Vector2(500, 500)
+	shop_generator.position = Vector2(500, 100)
 	add_child(shop_generator)
 
 func _on_add_boons_pressed():
@@ -503,5 +503,5 @@ func _on_utility_menu_pressed():
 
 func on_create_shop_pressed() -> void:
 	var create_shop: Control = preload("res://test/simulation/screens/select_level/create_shop.tscn").instantiate()
-	create_shop.position = Vector2(400, 176)
+	create_shop.position = Vector2(600, 100)
 	add_child(create_shop)

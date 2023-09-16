@@ -27,14 +27,6 @@ offset_right = 1208.0
 offset_bottom = 687.0
 color = Color(0.568627, 0.568627, 0.568627, 0.176471)
 
-[node name="RemoveButton" type="Button" parent="."]
-layout_mode = 0
-offset_left = 1000.0
-offset_top = 20.0
-offset_right = 1200.0
-offset_bottom = 87.0
-text = "X"
-
 [node name="GrabZone" type="ColorRect" parent="."]
 layout_mode = 0
 offset_left = 1000.0
@@ -49,6 +41,23 @@ anchors_preset = 0
 [node name="Labels" type="Control" parent="."]
 anchors_preset = 0
 
-[connection signal="pressed" from="RemoveButton" to="." method="_on_remove_button_pressed"]
+[node name="RemoveButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1100.0
+offset_top = 20.0
+offset_right = 1200.0
+offset_bottom = 87.0
+text = "X"
+
+[node name="RollButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1000.0
+offset_top = 20.0
+offset_right = 1100.0
+offset_bottom = 87.0
+text = "Roll"
+
 [connection signal="mouse_entered" from="GrabZone" to="." method="_on_grab_zone_mouse_entered"]
 [connection signal="mouse_exited" from="GrabZone" to="." method="_on_grab_zone_mouse_exited"]
+[connection signal="pressed" from="RemoveButton" to="." method="_on_remove_button_pressed"]
+[connection signal="pressed" from="RollButton" to="." method="_on_roll_button_pressed"]

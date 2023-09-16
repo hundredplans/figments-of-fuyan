@@ -75,7 +75,6 @@ func _on_number_generator_pressed():
 
 func _on_shop_generator_pressed():
 	get_parent().on_create_shop_pressed.call()
-#	get_parent()._on_shop_generator_pressed.call()
 
 func _on_dual_monitor_mode_pressed():
 	get_parent()._on_dual_monitor_mode_pressed.call()

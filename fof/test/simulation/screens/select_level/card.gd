@@ -8,6 +8,7 @@ var remove_aura: bool = false
 const RED := Color(1,0,0,1)
 const DEF := Color(1,1,1,1)
 var default_state: Array = []
+var can_hold: bool = true
 var can_drag: bool = false
 var held: bool = true
 var team: int = 1
@@ -31,7 +32,7 @@ func _on_drag_zone_mouse_exited():
 	can_drag = false
 	
 func _process(_delta: float) -> void:
-	if can_drag or held:
+	if can_hold and (can_drag or held):
 		if Input.is_action_just_pressed("LeftClick"):
 			held = true
 		elif Input.is_action_pressed("LeftClick") and held:

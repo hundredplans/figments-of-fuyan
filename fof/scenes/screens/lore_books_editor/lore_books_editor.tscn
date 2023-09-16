@@ -134,11 +134,11 @@ placeholder_text = "Create Category"
 alignment = 1
 
 [node name="Categories" type="Control" parent="SelectCategory"]
+clip_contents = true
 layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
+anchors_preset = 0
+offset_right = 300.0
 offset_bottom = 902.0
-grow_horizontal = 2
 
 [node name="SelectBook" type="Control" parent="."]
 anchors_preset = 0
@@ -162,6 +162,7 @@ placeholder_text = "Create Book"
 alignment = 1
 
 [node name="Books" type="Control" parent="SelectBook"]
+clip_contents = true
 layout_mode = 1
 anchors_preset = 0
 offset_right = 300.0
@@ -169,16 +170,15 @@ offset_bottom = 902.0
 
 [node name="BookZone" type="Control" parent="."]
 anchors_preset = 0
-offset_left = 582.0
+offset_left = 670.0
 offset_top = 20.0
 offset_right = 1900.0
 offset_bottom = 1060.0
 
 [node name="BookButtons" type="Control" parent="BookZone"]
 anchors_preset = 0
-offset_left = 88.0
 offset_top = 933.0
-offset_right = 1318.0
+offset_right = 1230.0
 offset_bottom = 1040.0
 
 [node name="DeleteBooks" type="Button" parent="BookZone/BookButtons"]
@@ -204,16 +204,21 @@ text = "Save"
 
 [node name="BookText" type="TextEdit" parent="BookZone"]
 layout_mode = 0
-offset_left = 98.0
+offset_left = 10.0
 offset_top = 10.0
-offset_right = 1308.0
+offset_right = 1220.0
 offset_bottom = 892.0
 theme_override_fonts/font = ExtResource("3_iaosm")
 theme_override_font_sizes/font_size = 0
 wrap_mode = 1
 
+[connection signal="mouse_entered" from="SelectCategory/Background" to="." method="_on_category_mouse_entered"]
 [connection signal="text_submitted" from="SelectCategory/CreateCategory" to="." method="on_create_category"]
+[connection signal="mouse_entered" from="SelectCategory/Categories" to="." method="_on_category_mouse_entered"]
+[connection signal="mouse_exited" from="SelectCategory/Categories" to="." method="_on_scroll_mouse_exited"]
 [connection signal="text_submitted" from="SelectBook/CreateBook" to="." method="on_create_book"]
+[connection signal="mouse_entered" from="SelectBook/Books" to="." method="_on_book_mouse_entered"]
+[connection signal="mouse_exited" from="SelectBook/Books" to="." method="_on_scroll_mouse_exited"]
 [connection signal="pressed" from="BookZone/BookButtons/DeleteBooks" to="." method="_on_delete_books_pressed"]
 [connection signal="pressed" from="BookZone/BookButtons/MoveBooks" to="." method="_on_move_books_pressed"]
 [connection signal="pressed" from="BookZone/BookButtons/SaveBook" to="." method="save_book"]

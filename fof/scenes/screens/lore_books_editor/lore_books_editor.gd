@@ -4,11 +4,52 @@ const temp_lore: String = "user://save/temp/lore_books/"
 var selected_category: String
 var selected_book: String
 var book_mode: int = 0
+var enable_scroll: int = 0
 const book_font_sizes: Array = [16, 20, 24, 28, 32, 36]
+
+var max_book_size: int = 0
+var max_category_size: int = 0
+
+var inputs: Dictionary = {
+	"DownArrow": ["book", "up"],
+	"LeftArrow": ["category", "down"],
+	"UpArrow": ["book", "down"],
+	"RightArrow": ["category", "up"],
+	}
 
 func _ready():
 	$BookZone/BookText["theme_override_font_sizes/font_size"] = book_font_sizes[Settings.book_font_size]
 	on_refresh_categories()
+
+func _process(_delta: float) -> void:
+	for input in inputs:
+		if Input.is_action_just_pressed(input) and !Rect2($BookZone/BookText.global_position, $BookZone/BookText.size).has_point(get_viewport().get_mouse_position()):
+			call("on_button_moved", inputs[input][0], inputs[input][1])
+			
+	if enable_scroll:
+		pass
+
+func on_button_moved(parent: String, direction: String) -> void:
+	var selection: String = get("selected_" + parent)
+	var parent_name: String = "Books" if parent == "book" else "Categories"
+	var parent_node: Control = get_node("Select" + parent.capitalize() + "/" + parent_name)
+	if selection:
+		for child in parent_node.get_children():
+			if child.label_text == selection:
+				var i: int = child.get_index()
+				match direction:
+					"down": 
+						if i != 0: 
+							call("on_" + parent + "_selected", parent_node.get_child(i - 1).label_text)
+					"up": 
+						if i != parent_node.get_child_count() - 1: 
+							call("on_" + parent + "_selected", parent_node.get_child(i + 1).label_text)
+				return
+	else:
+		if parent_node.get_child_count() > 0:
+			match direction:
+				"down": call("on_" + parent + "_selected", parent_node.get_child(0).label_text)
+				"up": call("on_" + parent + "_selected", parent_node.get_child(parent_node.get_child_count() - 1).label_text)
 
 func _exit_tree():
 	save_book(true, selected_category, "_exit")
@@ -50,6 +91,11 @@ func on_refresh_books() -> void:
 		lorebtn.size.x = $SelectBook.size.x
 		lorebtn.pressed.connect(on_book_selected.bind(lorebtn.label_text))
 		y += 58
+		
+	if $SelectBook/Books.get_child_count() > 0:
+		var last_child: Control = $SelectBook/Books.get_child($SelectBook/Books.get_child_count() - 1)
+		max_book_size = last_child.global_position.y + last_child.size.y
+		
 	modulate_all()
 
 func on_refresh_categories() -> void:
@@ -65,6 +111,9 @@ func on_refresh_categories() -> void:
 		lorebtn.pressed.connect(on_category_selected.bind(lorebtn.label_text))
 		y += 57
 		
+	if $SelectCategory/Categories.get_child_count() > 0:
+		var last_child: Control = $SelectCategory/Categories.get_child($SelectCategory/Categories.get_child_count() - 1)
+		max_category_size = last_child.global_position.y + last_child.size.y
 	modulate_all()
 	on_refresh_books()
 
@@ -157,3 +206,13 @@ func save_book(save_button_pressed:bool=false, category:String =selected_categor
 	
 		if save_button_pressed and Settings.clear_backup_files_array[Settings.clear_backup_files] != 1:
 			Helper.write_to_file(temp_lore, selected_book + exit, ".txt", $BookZone/BookText.text)
+
+func _on_category_mouse_entered():
+	if $SelectCategory/Categories.get_child_count() > 15:
+		enable_scroll = 1
+
+func _on_book_mouse_entered():
+	if $SelectBook/Books.get_child_count() > 15:
+		enable_scroll = 2
+
+func _on_scroll_mouse_exited(): enable_scroll = 0

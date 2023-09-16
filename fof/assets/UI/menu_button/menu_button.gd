@@ -5,7 +5,7 @@ signal pressed
 @export var label_text: String
 var can_press: bool = false
 
-@onready var click_sfx: AudioStreamWAV = preload("res://assets/sounds/UI/menu_buttons/click.wav")
+@onready var click_sfx: AudioStreamWAV = preload("res://assets/UI/menu_button/click.wav")
 func _ready():
 	pressed.connect(func(): AudioMaster.play_sfx(click_sfx))
 	match label_text:

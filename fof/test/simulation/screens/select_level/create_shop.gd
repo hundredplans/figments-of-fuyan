@@ -104,7 +104,7 @@ func return_cost(rarity: int, type: String):
 func _ready() -> void:
 	var area_name: String = return_area_name()
 	var difficulty: int = calculate_difficulty(area_name)
-	var world_odds: Array = [[0.65,0.35,0.05],[0.45,0.45,0.1],[0.3,0.5,0.2]][difficulty-1]
+	var world_odds: Array = [[0.6,0.35,0.05],[0.45,0.45,0.1],[0.3,0.5,0.2]][difficulty-1]
 	var transform: Array = [["RemoveCard", 20], ["TransformEnergy", 30], ["TransformRarity", 25]]
 	if difficulty == 4: transform.append(["TransformRarity+1", 40])
 	
@@ -149,15 +149,17 @@ func _ready() -> void:
 				"AreaCard": 
 					item = preload("res://test/simulation/screens/select_level/card.tscn").instantiate()
 					item.default_state = nslots[i][0]
-					item.team_changed.connect(func(x: Control): x.queue_free(); get_parent().on_card_selected(area_name + "/" + nslots[i][0][0] + ".txt"))
+					item.team_changed.connect(on_card_team_pressed.bind(area_name + "/" + nslots[i][0][0] + ".txt"))
 					item._on_default_state_pressed()
+					item.can_hold = false
 				"OtherAreaCard":
 					item = preload("res://test/simulation/screens/select_level/card.tscn").instantiate()
 					var old_name: String = nslots[i][0][0] + ".txt"
 					nslots[i][0][0] = nslots[i][0][0].split("/", false)[1]
 					item.default_state = nslots[i][0]
-					item.team_changed.connect(func(x: Control): x.queue_free(); get_parent().on_card_selected(old_name))
+					item.team_changed.connect(on_card_team_pressed.bind(old_name))
 					item._on_default_state_pressed()
+					item.can_hold = false
 				"Aura":
 					item = preload("res://test/simulation/screens/select_level/aura.tscn").instantiate()
 					item.load_aura(nslots[i][0])
@@ -187,7 +189,15 @@ func _ready() -> void:
 			
 		i += 1
 	
+func on_card_team_pressed(x: Control, old_name: String) -> void:
+	x.queue_free()
+	var card: Control = get_parent().on_card_selected(old_name)
+	if card: card._on_change_team_pressed()
+	
 func return_file_names(path: String) -> Array:
 	var dir: DirAccess = DirAccess.open(path)
 	if dir != null: return dir.get_files()
 	return []
+
+func _on_roll_button_pressed():
+	pass # Replace with function body.
