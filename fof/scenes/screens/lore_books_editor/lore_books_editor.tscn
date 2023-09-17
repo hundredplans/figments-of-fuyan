@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://ckggpn5duo86e"]
+[gd_scene load_steps=8 format=3 uid="uid://ckggpn5duo86e"]
 
 [ext_resource type="Script" path="res://scenes/screens/lore_books_editor/lore_books_editor.gd" id="1_1ujl7"]
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="1_fpok6"]
@@ -41,6 +41,12 @@ _data = {
 "RESET": SubResource("Animation_ni6lj"),
 "move_screen": SubResource("Animation_jeo47")
 }
+
+[sub_resource type="LabelSettings" id="LabelSettings_but4c"]
+font = ExtResource("3_iaosm")
+font_size = 48
+outline_size = 12
+outline_color = Color(0, 0, 0, 1)
 
 [node name="LoreBooksEditor" type="Control"]
 modulate = Color(1, 1, 1, 0)
@@ -183,22 +189,21 @@ offset_bottom = 1040.0
 
 [node name="DeleteBooks" type="Button" parent="BookZone/BookButtons"]
 layout_mode = 0
-offset_left = 274.0
-offset_right = 502.0
+offset_right = 228.0
 offset_bottom = 107.0
 text = "Delete Mode"
 
 [node name="MoveBooks" type="Button" parent="BookZone/BookButtons"]
 layout_mode = 0
-offset_left = 502.0
-offset_right = 730.0
+offset_left = 228.0
+offset_right = 456.0
 offset_bottom = 107.0
 text = "Move Mode"
 
 [node name="SaveBook" type="Button" parent="BookZone/BookButtons"]
 layout_mode = 0
-offset_left = 730.0
-offset_right = 958.0
+offset_left = 456.0
+offset_right = 684.0
 offset_bottom = 107.0
 text = "Save"
 
@@ -210,7 +215,40 @@ offset_right = 1220.0
 offset_bottom = 892.0
 theme_override_fonts/font = ExtResource("3_iaosm")
 theme_override_font_sizes/font_size = 0
+context_menu_enabled = false
 wrap_mode = 1
+
+[node name="FindInFiles" type="LineEdit" parent="BookZone"]
+visible = false
+layout_mode = 0
+offset_left = 684.0
+offset_top = 933.0
+offset_right = 958.0
+offset_bottom = 1040.0
+placeholder_text = "Find in Files"
+alignment = 1
+
+[node name="FindInText" type="LineEdit" parent="BookZone"]
+visible = false
+layout_mode = 0
+offset_left = 684.0
+offset_top = 933.0
+offset_right = 956.0
+offset_bottom = 1040.0
+placeholder_text = "Find in Text"
+alignment = 1
+
+[node name="Label" type="Label" parent="BookZone"]
+visible = false
+layout_mode = 0
+offset_left = 958.0
+offset_top = 933.0
+offset_right = 1230.0
+offset_bottom = 1040.0
+text = "1/1"
+label_settings = SubResource("LabelSettings_but4c")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="mouse_entered" from="SelectCategory/Background" to="." method="_on_category_mouse_entered"]
 [connection signal="text_submitted" from="SelectCategory/CreateCategory" to="." method="on_create_category"]
@@ -222,3 +260,6 @@ wrap_mode = 1
 [connection signal="pressed" from="BookZone/BookButtons/DeleteBooks" to="." method="_on_delete_books_pressed"]
 [connection signal="pressed" from="BookZone/BookButtons/MoveBooks" to="." method="_on_move_books_pressed"]
 [connection signal="pressed" from="BookZone/BookButtons/SaveBook" to="." method="save_book"]
+[connection signal="text_changed" from="BookZone/BookText" to="." method="_on_book_text_text_changed"]
+[connection signal="text_changed" from="BookZone/FindInFiles" to="." method="_on_find_in_files_text_changed"]
+[connection signal="text_changed" from="BookZone/FindInText" to="." method="_on_find_in_text_text_changed"]

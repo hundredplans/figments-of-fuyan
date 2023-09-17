@@ -101,7 +101,9 @@ func return_cost(rarity: int, type: String):
 	}
 	return types[type][rarity]
 	
-func _ready() -> void:
+func roll_cards() -> void:
+	for child in $RolledCards.get_children(): child.queue_free()
+	for child in $Labels.get_children(): child.queue_free()
 	var area_name: String = return_area_name()
 	var difficulty: int = calculate_difficulty(area_name)
 	var world_odds: Array = [[0.6,0.35,0.05],[0.45,0.45,0.1],[0.3,0.5,0.2]][difficulty-1]
@@ -189,6 +191,8 @@ func _ready() -> void:
 			
 		i += 1
 	
+func _ready() -> void: roll_cards()
+	
 func on_card_team_pressed(x: Control, old_name: String) -> void:
 	x.queue_free()
 	var card: Control = get_parent().on_card_selected(old_name)
@@ -199,5 +203,4 @@ func return_file_names(path: String) -> Array:
 	if dir != null: return dir.get_files()
 	return []
 
-func _on_roll_button_pressed():
-	pass # Replace with function body.
+func _on_roll_button_pressed(): roll_cards()

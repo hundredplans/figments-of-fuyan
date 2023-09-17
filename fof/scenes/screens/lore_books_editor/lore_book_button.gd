@@ -1,5 +1,6 @@
 extends Control
 signal pressed
+var base_y_position: int = 0
 var can_press: bool = false
 @export var label_text: String
 
