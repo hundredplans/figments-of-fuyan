@@ -36,7 +36,9 @@ func _process(_delta: float) -> void:
 		if can_press: on_step()
 		elif is_mouse_entered_grabber_area or grabbed:
 			grabbed = true
-			$GradientInside/Grabber.position.x = (clamp(get_viewport().get_mouse_position().x - $GradientInside.global_position.x, 0, 200) * 0.825) + 3
+			var true_mouse_pos: int = get_viewport().get_mouse_position().x - $GradientInside.global_position.x
+			print(true_mouse_pos)
+			$GradientInside/Grabber.position.x = (clamp(true_mouse_pos, 0, 200) * 0.825) + 3
 			default = ($GradientInside/Grabber.position.x - 3) / 1.65
 			set_grabber_position(false)
 			$Number.text = str(default)
