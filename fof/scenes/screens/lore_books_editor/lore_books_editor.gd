@@ -18,7 +18,7 @@ var offset: int = 0
 var old_text: String
 
 const SCROLL_OFFSET: int = 150
-const scroll_pixels: int = 9
+const scroll_pixels: int = 36
 const moved_button_delay: float = 0.2
 
 var has_moved_button: bool = false
