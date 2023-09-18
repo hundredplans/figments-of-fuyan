@@ -37,10 +37,10 @@ func _process(_delta: float) -> void:
 		elif is_mouse_entered_grabber_area or grabbed:
 			grabbed = true
 			var true_mouse_pos: int = get_viewport().get_mouse_position().x - $GradientInside.global_position.x
-			print(true_mouse_pos)
-			$GradientInside/Grabber.position.x = (clamp(true_mouse_pos, 0, 200) * 0.825) + 3
-			default = ($GradientInside/Grabber.position.x - 3) / 1.65
-			set_grabber_position(false)
+			var new_mouse_pos: float = true_mouse_pos
+			$GradientInside/Grabber.position.x = (clamp(new_mouse_pos, 0, 200) * 0.825)
+			default = ($GradientInside/Grabber.position.x) / 1.7
+			set_grabber_position()
 			$Number.text = str(default)
 			item_selected.emit(default)
 		return
@@ -132,9 +132,8 @@ func _on_mouse_exited():
 func _on_mouse_entered():
 	is_mouse_entered = true
 
-func set_grabber_position(set_pos:bool=true) -> void:
-	if set_pos:
-		$GradientInside/Grabber.position.x = (default * 1.65) + 3
+func set_grabber_position() -> void:
+	$GradientInside/Grabber.position.x = default * 1.7
 	$GradientInside/Grabber/GrabberSprite.modulate = $GradientInside.texture.get_image().get_pixel(\
 	$GradientInside/Grabber.position.x + 10, $GradientInside/Grabber.position.y + 30)
 

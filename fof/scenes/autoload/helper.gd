@@ -139,3 +139,8 @@ func on_timeout_disconnect(timer: Timer, method: Callable) -> void:
 func delete_file(dir: String, file: String, extension: String) -> void:
 	if FileAccess.file_exists(dir + file + extension):
 		DirAccess.remove_absolute(dir + file + extension)
+
+func is_upper(i: String) -> bool:
+	if i.to_upper() == i and i != " ":
+		return true
+	return false

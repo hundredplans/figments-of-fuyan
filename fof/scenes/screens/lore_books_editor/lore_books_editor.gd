@@ -1,4 +1,13 @@
 extends Control
+
+@onready var FindSettings: Control = $BookZone/SearchMenu/FindSettings
+@onready var SearchMenu: Control = $BookZone/SearchMenu
+@onready var BookText: TextEdit = $BookZone/BookText
+@onready var Category: Control = $SelectCategory/Categories
+@onready var Books: Control = $SelectBook/Books
+
+var search_enum: int = 0
+
 const static_lore: String = "res://static/lore_books/"
 const temp_lore: String = "user://save/temp/lore_books/"
 var selected_category: String
@@ -31,24 +40,20 @@ var inputs: Dictionary = {
 	}
 
 func _ready():
-	$BookZone/BookText["theme_override_font_sizes/font_size"] = book_font_sizes[Settings.book_font_size]
-	$BookZone/Label.visible = false
-	for btn in [$BookZone/FindInFiles, $BookZone/FindInText]:
-		btn.visible = false
-		btn.text_submitted.connect(on_find_text_submitted.bind(btn))
+	BookText["theme_override_font_sizes/font_size"] = book_font_sizes[Settings.book_font_size]
+	SearchMenu.visible = false
 	on_refresh_categories()
-
 
 func _process(_delta: float) -> void:
 	
-	if [$BookZone/BookText, $BookZone/FindInFiles, $BookZone/FindInText].all(func(x: Control): return !x.has_focus()):
-		for input in [["FindInFiles", 2], ["FindInText", 1]]:
-			if Input.is_action_just_pressed(input[0]):
-				modify_find_books(input[1])
+	if !BookText.has_focus():
+		for input in ["FindInFiles", "FindInText", "ReplaceInFiles", "ReplaceInText"]:
+			if Input.is_action_just_pressed(input):
+				open_search_books(input)
 				break
 	
 	for input in inputs:
-		if !Rect2($BookZone/BookText.global_position, $BookZone/BookText.size).has_point(get_viewport().get_mouse_position()):
+		if !Rect2(BookText.global_position, BookText.size).has_point(get_viewport().get_mouse_position()):
 			if Input.is_action_pressed(input):
 				if !has_moved_button:
 					has_moved_button = true
@@ -67,8 +72,8 @@ func on_container_moved(i: int) -> void:
 	var container: Control
 	var max_position: int
 	match enable_scroll:
-		1: container = $SelectCategory/Categories; max_position = max_category_size
-		2: container = $SelectBook/Books; max_position = max_book_size
+		1: container = Category; max_position = max_category_size
+		2: container = Books; max_position = max_book_size
 		
 	offset = container.get_child(0).position.y + (scroll_pixels * i)
 	if offset >= -max_position and offset <= 0:
@@ -78,6 +83,7 @@ func on_container_moved(i: int) -> void:
 	container.queue_redraw()
 	
 func on_button_moved(parent: String, direction: String) -> void:
+	BookText.release_focus()
 	var selection: String = get("selected_" + parent)
 	var parent_name: String = "Books" if parent == "book" else "Categories"
 	var parent_node: Control = get_node("Select" + parent.capitalize() + "/" + parent_name)
@@ -156,8 +162,8 @@ func on_create_book(book_name: String) -> void:
 		else:
 			save_book()
 			selected_book = book_name
-			$BookZone/BookText.text = Helper.return_file_contents(static_lore + selected_category + "/" + book_name + ".txt")
-			old_text = $BookZone/BookText.text
+			BookText.text = Helper.return_file_contents(static_lore + selected_category + "/" + book_name + ".txt")
+			old_text = BookText.text
 			save_book()
 		on_refresh_books()
 	$SelectBook/CreateBook.release_focus()
@@ -165,49 +171,49 @@ func on_create_book(book_name: String) -> void:
 
 func on_refresh_books() -> void:
 	var y: int = 0
-	for child in $SelectBook/Books.get_children(): child.queue_free()
+	for child in Books.get_children(): child.queue_free()
 	for file in DirAccess.get_files_at(static_lore + selected_category):
 		var lorebtn: Control = preload("res://scenes/screens/lore_books_editor/lore_book_button.tscn").instantiate()
 		lorebtn.label_text = file.left(-4)
-		$SelectBook/Books.add_child(lorebtn)
+		Books.add_child(lorebtn)
 		lorebtn.position.y = y
 		lorebtn.size.x = $SelectBook.size.x
 		lorebtn.pressed.connect(on_book_selected.bind(lorebtn.label_text))
 		y += 58
 		
-	if $SelectBook/Books.get_child_count() > 0:
-		var last_child: Control = $SelectBook/Books.get_child($SelectBook/Books.get_child_count() - 1)
-		max_book_size = last_child.global_position.y + last_child.size.y - $SelectBook/Books.size.y - 14
+	if Books.get_child_count() > 0:
+		var last_child: Control = Books.get_child(Books.get_child_count() - 1)
+		max_book_size = int(last_child.global_position.y + last_child.size.y - Books.size.y - 14)
 		
 	modulate_all()
 
 func on_refresh_categories() -> void:
 	selected_book = ""
 	var y: int = 0
-	for child in $SelectCategory/Categories.get_children(): child.queue_free()
+	for child in Category.get_children(): child.queue_free()
 	for dir in DirAccess.get_directories_at(static_lore):
 		var lorebtn: Control = preload("res://scenes/screens/lore_books_editor/lore_book_button.tscn").instantiate()
 		lorebtn.label_text = dir
-		$SelectCategory/Categories.add_child(lorebtn)
+		Category.add_child(lorebtn)
 		lorebtn.position.y = y
 		lorebtn.size.x = $SelectCategory.size.x
 		lorebtn.pressed.connect(on_category_selected.bind(lorebtn.label_text))
 		y += 57
 		
-	if $SelectCategory/Categories.get_child_count() > 0:
-		var last_child: Control = $SelectCategory/Categories.get_child($SelectCategory/Categories.get_child_count() - 1)
-		max_category_size = last_child.global_position.y + last_child.size.y - $SelectCategory/Categories.size.y - 14
+	if Category.get_child_count() > 0:
+		var last_child: Control = Category.get_child(Category.get_child_count() - 1)
+		max_category_size = int(last_child.global_position.y + last_child.size.y - Category.size.y - 14)
 	on_refresh_books()
 
 func modulate_all() -> void:
 	var colors: Array = [$Details/Inside.color, Color("c4383e"), Color("a23cbd"), Color("721cb2"), Color("492e1c")]
-	for btn in $SelectCategory/Categories.get_children():
+	for btn in Category.get_children():
 		var color: Color = colors[0]
 		if selected_category == btn.label_text:
 			color = colors[4]
 		btn.get_node("Background/Inside").color = color
 			
-	for btn in $SelectBook/Books.get_children():
+	for btn in Books.get_children():
 		var color: Color = colors[book_mode]
 		if book_mode == 3: color = colors[2]
 		if selected_book == btn.label_text:
@@ -221,9 +227,9 @@ func on_category_selected(_selected_category: String) -> void:
 		3:
 			book_mode = 2
 			if selected_book and !FileAccess.file_exists(static_lore + _selected_category + "/" + selected_book + ".txt"):
-				$BookZone/BookText.text = Helper.return_file_contents(static_lore + selected_category + "/" + selected_book + ".txt")
-				old_text = $BookZone/BookText.text
-				Helper.write_to_file(static_lore + _selected_category + "/", selected_book, ".txt", $BookZone/BookText.text)
+				BookText.text = Helper.return_file_contents(static_lore + selected_category + "/" + selected_book + ".txt")
+				old_text = BookText.text
+				Helper.write_to_file(static_lore + _selected_category + "/", selected_book, ".txt", BookText.text)
 				Helper.delete_file(static_lore + selected_category + "/", selected_book, ".txt")
 				save_book(true, _selected_category)
 		1:
@@ -240,7 +246,7 @@ func on_category_selected(_selected_category: String) -> void:
 				selected_category: selected_category = ""
 				_: selected_category = _selected_category
 
-	$BookZone/BookText.text = ""
+	BookText.text = ""
 	old_text = ""
 	selected_book = ""
 	on_refresh_books()
@@ -254,8 +260,8 @@ func on_book_selected(_selected_book: String) -> void:
 		
 	match book_mode:
 		0: 
-			$BookZone/BookText.text = Helper.return_file_contents(static_lore + selected_category + "/" + selected_book + ".txt")
-			old_text = $BookZone/BookText.text
+			BookText.text = Helper.return_file_contents(static_lore + selected_category + "/" + selected_book + ".txt")
+			old_text = BookText.text
 		1:
 			if Settings.clear_backup_files_array[Settings.clear_backup_files] != 1:
 				Helper.write_to_file(temp_lore, selected_book + "_delete", ".txt", Helper.return_file_contents(static_lore + selected_category + "/" + selected_book + ".txt"))
@@ -267,7 +273,7 @@ func on_book_selected(_selected_book: String) -> void:
 		3: if !(old_selected_book and selected_book): book_mode = 2
 
 	if book_mode != 0:
-		$BookZone/BookText.text = ""
+		BookText.text = ""
 		old_text = ""
 
 	if book_mode != 1:
@@ -289,62 +295,96 @@ func _on_move_books_pressed():
 	
 func save_book(save_button_pressed:bool=false, category:String =selected_category, exit:="") -> void:
 	if selected_book and selected_category:
-		Helper.write_to_file(static_lore + category + "/", selected_book, ".txt", $BookZone/BookText.text)
+		Helper.write_to_file(static_lore + category + "/", selected_book, ".txt", BookText.text)
 		if save_button_pressed and Settings.clear_backup_files_array[Settings.clear_backup_files] != 1:
-			Helper.write_to_file(temp_lore, selected_book + exit, ".txt", $BookZone/BookText.text)
+			Helper.write_to_file(temp_lore, selected_book + exit, ".txt", BookText.text)
 
 func _on_category_mouse_entered():
-	if $SelectCategory/Categories.get_child_count() > 15:
+	if Category.get_child_count() > 15:
 		enable_scroll = 1
 
 func _on_book_mouse_entered():
-	if $SelectBook/Books.get_child_count() > 15:
+	if Books.get_child_count() > 15:
 		enable_scroll = 2
 
 func _on_scroll_mouse_exited(): enable_scroll = 0
 
 func _on_book_text_text_changed():
 	var update_old_text: bool = true
-	for input in [["FindInFiles", 2], ["FindInText", 1]]:
-		if Input.is_action_pressed(input[0]):
-			if $BookZone/BookText.has_focus():
+	for input in ["FindInFiles", "FindInText", "ReplaceInFiles", "ReplaceInText"]:
+		if Input.is_action_pressed(input):
+			if BookText.has_focus():
 				update_old_text = false
-				$BookZone/BookText.text = old_text
-			if Input.is_action_just_pressed(input[0]):
-				modify_find_books(input[1])
+				BookText.text = old_text
+			if Input.is_action_just_pressed(input):
+				open_search_books(input)
 			break
 			
 	if update_old_text:
-		old_text = $BookZone/BookText.text
+		old_text = BookText.text
 
-func modify_find_books(find_enum: int) -> void:
-	var btns: Dictionary = {
-		0: $BookZone/FindInText,
-		1: $BookZone/FindInFiles,
-	}
-	
-	btns[abs(find_enum - 2)].visible = false
-	btns[find_enum - 1].visible = !btns[find_enum - 1].visible
-	btns[find_enum - 1].text = ""
-	btns[find_enum - 1].grab_focus()
-	$BookZone/Label.text = ""
-	
-	for btn in btns.values():
-		if btn.visible: $BookZone/Label.visible = true
-
-func on_find_text_submitted(_text: String, btn: Control) -> void:
-	btn.release_focus()
-
-func _on_find_in_files_text_changed(text: String):
-	pass
-
-func _on_find_in_text_text_changed(text: String):
-	if text.length() > 2:
-		print(return_found_searches(text))
+func open_search_books(find_string: String) -> void:
+	if !SearchMenu.get_child_count() > 2:
+		$BookZone/ResultLabel.text = ""
+		reset_find_settings(find_string)
+		SearchMenu.visible = true
+		var SearchButton: Control = LineEdit.new()
+		SearchMenu.add_child(SearchButton)
+		SearchButton.name = find_string
+		SearchButton.size = Vector2(274, SearchMenu.size.y)
+		SearchButton.alignment = HORIZONTAL_ALIGNMENT_CENTER
 		
-func return_found_searches(find: String, found := [], search_pos := Vector2(0, 0)) -> Array:
-	var search: Vector2 = $BookZone/BookText.search(find, 0, search_pos.x, search_pos.y)
-	if search != Vector2(-1, -1):
-		found.append(search)
-		found += return_found_searches(find, found, search)
-	return found
+		var i: int = 0
+		for c in find_string:
+			if !Helper.is_upper(c) or i == 0: SearchButton.placeholder_text += c
+			else: SearchButton.placeholder_text += " " + c
+			i += 1
+			
+		SearchButton.text_submitted.connect(on_find_text_submitted.bind(find_string, SearchButton))
+	else:
+		var new_press: bool = !SearchMenu.has_node(find_string)
+		SearchMenu.visible = new_press
+		SearchMenu.get_child(2).queue_free()
+		if new_press:
+			open_search_books(find_string)
+			
+func reset_find_settings(search_string: String) -> void:
+	match search_string:
+		"FindInFiles", "FindInText": search_enum = 0; for child in FindSettings.get_children(): child.disabled = false
+		"ReplaceInText", "ReplaceInFiles": search_enum = 3; for child in FindSettings.get_children(): child.disabled = true
+		
+	modulate_find_settings()
+	
+func modulate_find_settings() -> void:
+	match search_enum:
+		0: for child in FindSettings.get_children(): child.modulate = Helper.BASE
+		1:
+			FindSettings.get_node("WholeWords").modulate = Helper.RED
+			FindSettings.get_node("CaseSensitive").modulate = Helper.BASE
+		2: 
+			FindSettings.get_node("WholeWords").modulate = Helper.BASE
+			FindSettings.get_node("CaseSensitive").modulate = Helper.RED
+		3: for child in FindSettings.get_children(): child.modulate = Helper.RED
+
+func on_find_text_submitted(text: String, find_string: String, btn: Control) -> void:
+	btn.release_focus()
+	if text.length() > 2:
+		pass
+		
+#func return_found_searches(find: String, found := [], search_pos := Vector2(0, 0)) -> Array:
+#	found.append(BookText.search(find, 0, search_pos.y, 14))
+#	var search: Vector2 = BookText.search(find, 0, search_pos.x, search_pos.y)
+#	if search != Vector2(-1, -1):
+#		found.append(search)
+#		found += return_found_searches(find, found, search)
+#	return found
+
+func _on_whole_words_pressed():
+	if search_enum in [1, 3]: search_enum -= 1
+	else: search_enum += 1
+	modulate_find_settings()
+
+func _on_case_sensitive_pressed():
+	if search_enum in [2, 3]: search_enum -= 2
+	else: search_enum += 2
+	modulate_find_settings()

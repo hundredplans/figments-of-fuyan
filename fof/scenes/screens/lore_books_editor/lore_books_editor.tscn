@@ -184,28 +184,77 @@ offset_bottom = 1060.0
 [node name="BookButtons" type="Control" parent="BookZone"]
 anchors_preset = 0
 offset_top = 933.0
-offset_right = 1230.0
+offset_right = 613.0
 offset_bottom = 1040.0
 
 [node name="DeleteBooks" type="Button" parent="BookZone/BookButtons"]
-layout_mode = 0
-offset_right = 228.0
-offset_bottom = 107.0
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 189.0
+grow_vertical = 2
 text = "Delete Mode"
 
 [node name="MoveBooks" type="Button" parent="BookZone/BookButtons"]
 layout_mode = 0
-offset_left = 228.0
-offset_right = 456.0
+offset_left = 189.0
+offset_right = 417.0
 offset_bottom = 107.0
 text = "Move Mode"
 
 [node name="SaveBook" type="Button" parent="BookZone/BookButtons"]
-layout_mode = 0
-offset_left = 456.0
-offset_right = 684.0
-offset_bottom = 107.0
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -196.0
+offset_right = -7.0
+grow_horizontal = 0
+grow_vertical = 2
 text = "Save"
+
+[node name="SearchMenu" type="Control" parent="BookZone"]
+anchors_preset = 0
+offset_left = 606.0
+offset_top = 933.0
+offset_right = 1230.0
+offset_bottom = 1040.0
+
+[node name="FindSettings" type="Control" parent="BookZone/SearchMenu"]
+anchors_preset = 0
+offset_left = 272.0
+offset_right = 482.0
+offset_bottom = 107.0
+
+[node name="WholeWords" type="Button" parent="BookZone/SearchMenu/FindSettings"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 54.0
+grow_horizontal = 2
+text = "Whole"
+
+[node name="CaseSensitive" type="Button" parent="BookZone/SearchMenu/FindSettings"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -53.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Case"
+
+[node name="ResultLabel" type="Label" parent="BookZone"]
+layout_mode = 0
+offset_left = 1088.0
+offset_top = 933.0
+offset_right = 1230.0
+offset_bottom = 1040.0
+label_settings = SubResource("LabelSettings_but4c")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="BookText" type="TextEdit" parent="BookZone"]
 layout_mode = 0
@@ -218,38 +267,6 @@ theme_override_font_sizes/font_size = 0
 context_menu_enabled = false
 wrap_mode = 1
 
-[node name="FindInFiles" type="LineEdit" parent="BookZone"]
-visible = false
-layout_mode = 0
-offset_left = 684.0
-offset_top = 933.0
-offset_right = 958.0
-offset_bottom = 1040.0
-placeholder_text = "Find in Files"
-alignment = 1
-
-[node name="FindInText" type="LineEdit" parent="BookZone"]
-visible = false
-layout_mode = 0
-offset_left = 684.0
-offset_top = 933.0
-offset_right = 956.0
-offset_bottom = 1040.0
-placeholder_text = "Find in Text"
-alignment = 1
-
-[node name="Label" type="Label" parent="BookZone"]
-visible = false
-layout_mode = 0
-offset_left = 958.0
-offset_top = 933.0
-offset_right = 1230.0
-offset_bottom = 1040.0
-text = "1/1"
-label_settings = SubResource("LabelSettings_but4c")
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [connection signal="mouse_entered" from="SelectCategory/Background" to="." method="_on_category_mouse_entered"]
 [connection signal="text_submitted" from="SelectCategory/CreateCategory" to="." method="on_create_category"]
 [connection signal="mouse_entered" from="SelectCategory/Categories" to="." method="_on_category_mouse_entered"]
@@ -260,6 +277,6 @@ vertical_alignment = 1
 [connection signal="pressed" from="BookZone/BookButtons/DeleteBooks" to="." method="_on_delete_books_pressed"]
 [connection signal="pressed" from="BookZone/BookButtons/MoveBooks" to="." method="_on_move_books_pressed"]
 [connection signal="pressed" from="BookZone/BookButtons/SaveBook" to="." method="save_book"]
+[connection signal="pressed" from="BookZone/SearchMenu/FindSettings/WholeWords" to="." method="_on_whole_words_pressed"]
+[connection signal="pressed" from="BookZone/SearchMenu/FindSettings/CaseSensitive" to="." method="_on_case_sensitive_pressed"]
 [connection signal="text_changed" from="BookZone/BookText" to="." method="_on_book_text_text_changed"]
-[connection signal="text_changed" from="BookZone/FindInFiles" to="." method="_on_find_in_files_text_changed"]
-[connection signal="text_changed" from="BookZone/FindInText" to="." method="_on_find_in_text_text_changed"]
