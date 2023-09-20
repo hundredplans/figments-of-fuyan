@@ -6,6 +6,8 @@ extends Control
 @onready var Category: Control = $SelectCategory/Categories
 @onready var Books: Control = $SelectBook/Books
 
+var SearchNode: LineEdit
+var has_changed_select_search: bool = false
 var search_enum: int = 0
 
 const static_lore: String = "res://static/lore_books/"
@@ -17,6 +19,7 @@ var enable_scroll: int = 0
 var offset: int = 0
 var old_text: String
 
+const CHANGE_SELECT_SEARCH_DELAY: float = 0.15
 const SCROLL_OFFSET: int = 150
 const scroll_pixels: int = 36
 const moved_button_delay: float = 0.2
@@ -170,6 +173,7 @@ func on_create_book(book_name: String) -> void:
 	$SelectBook/CreateBook.text = ""
 
 func on_refresh_books() -> void:
+	$BookZone/SearchMenu/ResultLabel.text = "0"
 	var y: int = 0
 	for child in Books.get_children(): child.queue_free()
 	for file in DirAccess.get_files_at(static_lore + selected_category):
@@ -252,6 +256,7 @@ func on_category_selected(_selected_category: String) -> void:
 	on_refresh_books()
 	
 func on_book_selected(_selected_book: String) -> void:
+	$BookZone/SearchMenu/ResultLabel.text = "0"
 	save_book()
 	var old_selected_book: String = selected_book
 	match _selected_book:
@@ -324,8 +329,8 @@ func _on_book_text_text_changed():
 		old_text = BookText.text
 
 func open_search_books(find_string: String) -> void:
-	if !SearchMenu.get_child_count() > 2:
-		$BookZone/ResultLabel.text = ""
+	if SearchMenu.get_child_count() <= 2 or SearchMenu.get_child(2).is_queued_for_deletion():
+		$BookZone/SearchMenu/ResultLabel.text = ""
 		reset_find_settings(find_string)
 		SearchMenu.visible = true
 		var SearchButton: Control = LineEdit.new()
@@ -333,6 +338,8 @@ func open_search_books(find_string: String) -> void:
 		SearchButton.name = find_string
 		SearchButton.size = Vector2(274, SearchMenu.size.y)
 		SearchButton.alignment = HORIZONTAL_ALIGNMENT_CENTER
+		SearchButton.grab_focus()
+		SearchNode = SearchButton
 		
 		var i: int = 0
 		for c in find_string:
@@ -340,51 +347,76 @@ func open_search_books(find_string: String) -> void:
 			else: SearchButton.placeholder_text += " " + c
 			i += 1
 			
-		SearchButton.text_submitted.connect(on_find_text_submitted.bind(find_string, SearchButton))
+		SearchButton.text_submitted.connect(on_find_text_submitted)
 	else:
 		var new_press: bool = !SearchMenu.has_node(find_string)
 		SearchMenu.visible = new_press
 		SearchMenu.get_child(2).queue_free()
 		if new_press:
 			open_search_books(find_string)
+		else:
+			SearchNode = null
 			
 func reset_find_settings(search_string: String) -> void:
+	
 	match search_string:
 		"FindInFiles", "FindInText": search_enum = 0; for child in FindSettings.get_children(): child.disabled = false
-		"ReplaceInText", "ReplaceInFiles": search_enum = 3; for child in FindSettings.get_children(): child.disabled = true
-		
+		"ReplaceInText", "ReplaceInFiles": 
+			search_enum = 3
+			for child in ["WholeWords", "CaseSensitive"].map(func(x: String): return FindSettings.get_node(x)):
+				child.disabled = true
+			FindSettings.get_node("SearchOnStart").disabled = false
+				
+	match search_string:
+		"ReplaceInFiles", "FindInFiles": search_enum += 4; FindSettings.get_node("SearchOnStart").disabled = true
+				
 	modulate_find_settings()
 	
 func modulate_find_settings() -> void:
-	match search_enum:
-		0: for child in FindSettings.get_children(): child.modulate = Helper.BASE
-		1:
-			FindSettings.get_node("WholeWords").modulate = Helper.RED
-			FindSettings.get_node("CaseSensitive").modulate = Helper.BASE
-		2: 
-			FindSettings.get_node("WholeWords").modulate = Helper.BASE
-			FindSettings.get_node("CaseSensitive").modulate = Helper.RED
-		3: for child in FindSettings.get_children(): child.modulate = Helper.RED
+	for setting in [["WholeWords", [2, 3, 6, 7]], ["CaseSensitive", [1, 3, 5, 7]], ["SearchOnStart", [4, 5, 6, 7]]]:
+		match search_enum in setting[1]:
+			false: FindSettings.get_node(setting[0]).modulate = Helper.BASE
+			true: FindSettings.get_node(setting[0]).modulate = Helper.RED
 
-func on_find_text_submitted(text: String, find_string: String, btn: Control) -> void:
-	btn.release_focus()
+func on_find_text_submitted(text: String) -> void: # find_string is search node name
+	SearchNode.release_focus()
+	for i in range(BookText.get_caret_count()):
+		BookText.deselect(i)
+	
+	var search_results: Array[Vector2i]
 	if text.length() > 2:
-		pass
+		search_results = return_found_searches(text)
+		for selection in search_results:
+			var caret_index: int = BookText.add_caret(selection.y, selection.x)
+			BookText.select_word_under_caret(caret_index)
 		
-#func return_found_searches(find: String, found := [], search_pos := Vector2(0, 0)) -> Array:
-#	found.append(BookText.search(find, 0, search_pos.y, 14))
-#	var search: Vector2 = BookText.search(find, 0, search_pos.x, search_pos.y)
-#	if search != Vector2(-1, -1):
-#		found.append(search)
-#		found += return_found_searches(find, found, search)
-#	return found
+	$BookZone/SearchMenu/ResultLabel.text = str(search_results.size())
+		
+func return_found_searches(find: String) -> Array[Vector2i]:
+	var result:Array[Vector2i] = []
+	var new_search_enum: int = search_enum if search_enum < 4 else search_enum - 4
+	var pos: Vector2i = BookText.search(find, new_search_enum, 0, 0)
+	while pos != Vector2i(-1, -1):
+		if pos not in result:
+			result.append(pos)
+			pos = BookText.search(find, new_search_enum, pos.y, pos.x + 1)
+		else: pos = Vector2(-1, -1)
+	return result
 
 func _on_whole_words_pressed():
-	if search_enum in [1, 3]: search_enum -= 1
-	else: search_enum += 1
-	modulate_find_settings()
-
-func _on_case_sensitive_pressed():
-	if search_enum in [2, 3]: search_enum -= 2
+	if search_enum in [2, 3, 6, 7]: search_enum -= 2
 	else: search_enum += 2
 	modulate_find_settings()
+	on_find_text_submitted(SearchNode.text)
+
+func _on_case_sensitive_pressed():
+	if search_enum in [1, 3, 5, 7]: search_enum -= 1
+	else: search_enum += 1
+	modulate_find_settings()
+	on_find_text_submitted(SearchNode.text)
+
+func _on_search_on_start_pressed():
+	if search_enum in [4, 5, 6, 7]: search_enum -= 4
+	else: search_enum += 4
+	modulate_find_settings()
+	on_find_text_submitted(SearchNode.text)

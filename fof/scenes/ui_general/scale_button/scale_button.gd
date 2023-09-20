@@ -36,13 +36,8 @@ func _process(_delta: float) -> void:
 		if can_press: on_step()
 		elif is_mouse_entered_grabber_area or grabbed:
 			grabbed = true
-			var true_mouse_pos: int = get_viewport().get_mouse_position().x - $GradientInside.global_position.x
-			var new_mouse_pos: float = true_mouse_pos
-			$GradientInside/Grabber.position.x = (clamp(new_mouse_pos, 0, 200) * 0.825)
-			default = ($GradientInside/Grabber.position.x) / 1.7
+			default = ceil((clamp(get_viewport().get_mouse_position().x - $GradientInside.global_position.x, 20, 188) - 20) * 0.59)
 			set_grabber_position()
-			$Number.text = str(default)
-			item_selected.emit(default)
 		return
 			
 	elif is_mouse_entered:
@@ -71,7 +66,6 @@ func _process(_delta: float) -> void:
 func _enter_tree() -> void:
 	if default >= totalmin and default <= totalmax:
 		$Number.text = str(default)
-	
 	$Label.text = label_text
 	
 	$Outside.color = Helper.DARK_BROWN
@@ -94,8 +88,6 @@ func on_step() -> void:
 				1: default = clamp(int($Number.text) + step, totalmin, totalmax)
 				2: default = clamp(int($Number.text) + bigstep, totalmin, totalmax)
 				
-			$Number.text = str(default)
-			item_selected.emit(default)
 			set_grabber_position()
 			if regular_delay_passed != 1: regular_delay_passed = 0
 			
@@ -136,6 +128,8 @@ func set_grabber_position() -> void:
 	$GradientInside/Grabber.position.x = default * 1.7
 	$GradientInside/Grabber/GrabberSprite.modulate = $GradientInside.texture.get_image().get_pixel(\
 	$GradientInside/Grabber.position.x + 10, $GradientInside/Grabber.position.y + 30)
+	$Number.text = str(default)
+	item_selected.emit(default)
 
 func _on_grabber_area_mouse_entered():
 	is_mouse_entered_grabber_area = true
