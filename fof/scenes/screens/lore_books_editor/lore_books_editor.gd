@@ -9,10 +9,13 @@ extends Control
 var SearchNode: LineEdit
 var has_changed_select_search: bool = false
 var search_enum: int = 0
+var replace_text: String = ""
 
 var find_string_dictionary: Dictionary = {
 	"FindInText": on_find_text_submitted,
 	"FindInFiles": on_find_files_text_submitted,
+	"ReplaceInText": on_replace_text_submitted,
+	"ReplaceInFiles": on_replace_files_text_submitted,
 }
 
 const static_lore: String = "res://static/lore_books/"
@@ -340,6 +343,7 @@ func _on_book_text_text_changed():
 		old_text = BookText.text
 
 func open_search_books(find_string: String) -> void:
+	replace_text = ""
 	reset_found_searches()
 	if SearchMenu.get_child_count() <= 2 or SearchMenu.get_child(2).is_queued_for_deletion():
 		$BookZone/SearchMenu/ResultLabel.text = ""
@@ -404,12 +408,40 @@ func on_find_files_text_submitted(find: String) -> void:
 		if found > 0:
 			var split: Array = path.split("/")
 			Category.get_node(split[split.size() - 2]).change_found_searches(found, 2)
-			for book in Books.get_children():
-				if book.label_text == split[split.size() - 1].left(-4):
-					book.change_found_searches(found, 2)
+			if split[split.size() - 2] == selected_category:
+				for book in Books.get_children():
+					if book.label_text == split[split.size() - 1].left(-4):
+						book.change_found_searches(found, 2)
 		
 	BookText.text = original_book_text
 	on_find_text_submitted(find)
+
+func on_replace_text_submitted(text: String) -> void:
+	match replace_text:
+		"":
+			on_find_text_submitted(text) 
+			SearchNode.text = ""
+			SearchNode.placeholder_text = "Replace Text?"
+			SearchNode.grab_focus()
+			replace_text = text
+		_: 
+			on_replace_text(text)
+			replace_text = ""
+			open_search_books("ReplaceInText")
+			
+func on_replace_text(find: String) -> void:
+	save_book()
+	save_book(true, selected_category, "_replace")
+	on_find_text_submitted(replace_text)
+	for caret in range(BookText.get_caret_count()):
+		if BookText.has_selection(caret):
+			BookText.delete_selection(caret)
+			BookText.insert_text_at_caret(find, caret)
+		
+	on_find_text_submitted(find)
+	
+func on_replace_files_text_submitted(text: String) -> void:
+	pass
 
 func on_find_text_submitted(text: String) -> void:
 	SearchNode.release_focus()
@@ -419,10 +451,12 @@ func on_find_text_submitted(text: String) -> void:
 	var search_results: Array[Vector2i]
 	if text.length() > 2:
 		search_results = return_found_searches(text)
+		BookText.remove_secondary_carets()
+		var j: int = 0
 		for selection in search_results:
-			var caret_index: int = BookText.add_caret(selection.y, selection.x)
-			BookText.select_word_under_caret(caret_index)
-		
+			var caret_index: int = 0 if j == 0 else BookText.add_caret(selection.y, selection.x)
+			BookText.select(selection.y, selection.x, selection.y, selection.x + text.length(), caret_index)
+			j += 1
 	$BookZone/SearchMenu/ResultLabel.text = str(search_results.size())
 		
 func return_found_searches(find: String) -> Array[Vector2i]:
