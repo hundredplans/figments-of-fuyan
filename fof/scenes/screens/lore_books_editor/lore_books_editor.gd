@@ -10,6 +10,11 @@ var SearchNode: LineEdit
 var has_changed_select_search: bool = false
 var search_enum: int = 0
 
+var find_string_dictionary: Dictionary = {
+	"FindInText": on_find_text_submitted,
+	"FindInFiles": on_find_files_text_submitted,
+}
+
 const static_lore: String = "res://static/lore_books/"
 const temp_lore: String = "user://save/temp/lore_books/"
 var selected_category: String
@@ -48,7 +53,6 @@ func _ready():
 	on_refresh_categories()
 
 func _process(_delta: float) -> void:
-	
 	if !BookText.has_focus():
 		for input in ["FindInFiles", "FindInText", "ReplaceInFiles", "ReplaceInText"]:
 			if Input.is_action_just_pressed(input):
@@ -173,12 +177,14 @@ func on_create_book(book_name: String) -> void:
 	$SelectBook/CreateBook.text = ""
 
 func on_refresh_books() -> void:
+	
 	$BookZone/SearchMenu/ResultLabel.text = "0"
 	var y: int = 0
 	for child in Books.get_children(): child.queue_free()
 	for file in DirAccess.get_files_at(static_lore + selected_category):
 		var lorebtn: Control = preload("res://scenes/screens/lore_books_editor/lore_book_button.tscn").instantiate()
 		lorebtn.label_text = file.left(-4)
+		lorebtn.name = file.left(-4)
 		Books.add_child(lorebtn)
 		lorebtn.position.y = y
 		lorebtn.size.x = $SelectBook.size.x
@@ -189,6 +195,9 @@ func on_refresh_books() -> void:
 		var last_child: Control = Books.get_child(Books.get_child_count() - 1)
 		max_book_size = int(last_child.global_position.y + last_child.size.y - Books.size.y - 14)
 		
+	if SearchNode and SearchNode.name == "FindInFiles":
+		on_find_files_text_submitted(SearchNode.text)
+		
 	modulate_all()
 
 func on_refresh_categories() -> void:
@@ -198,6 +207,7 @@ func on_refresh_categories() -> void:
 	for dir in DirAccess.get_directories_at(static_lore):
 		var lorebtn: Control = preload("res://scenes/screens/lore_books_editor/lore_book_button.tscn").instantiate()
 		lorebtn.label_text = dir
+		lorebtn.name = dir
 		Category.add_child(lorebtn)
 		lorebtn.position.y = y
 		lorebtn.size.x = $SelectCategory.size.x
@@ -267,6 +277,8 @@ func on_book_selected(_selected_book: String) -> void:
 		0: 
 			BookText.text = Helper.return_file_contents(static_lore + selected_category + "/" + selected_book + ".txt")
 			old_text = BookText.text
+			if search_enum >= 4 and SearchNode != null:
+				on_find_text_submitted(SearchNode.text)
 		1:
 			if Settings.clear_backup_files_array[Settings.clear_backup_files] != 1:
 				Helper.write_to_file(temp_lore, selected_book + "_delete", ".txt", Helper.return_file_contents(static_lore + selected_category + "/" + selected_book + ".txt"))
@@ -317,18 +329,18 @@ func _on_scroll_mouse_exited(): enable_scroll = 0
 func _on_book_text_text_changed():
 	var update_old_text: bool = true
 	for input in ["FindInFiles", "FindInText", "ReplaceInFiles", "ReplaceInText"]:
-		if Input.is_action_pressed(input):
+		if Input.is_action_just_pressed(input):
 			if BookText.has_focus():
 				update_old_text = false
 				BookText.text = old_text
-			if Input.is_action_just_pressed(input):
-				open_search_books(input)
+			BookText.release_focus()
 			break
-			
+
 	if update_old_text:
 		old_text = BookText.text
 
 func open_search_books(find_string: String) -> void:
+	reset_found_searches()
 	if SearchMenu.get_child_count() <= 2 or SearchMenu.get_child(2).is_queued_for_deletion():
 		$BookZone/SearchMenu/ResultLabel.text = ""
 		reset_find_settings(find_string)
@@ -346,8 +358,9 @@ func open_search_books(find_string: String) -> void:
 			if !Helper.is_upper(c) or i == 0: SearchButton.placeholder_text += c
 			else: SearchButton.placeholder_text += " " + c
 			i += 1
-			
-		SearchButton.text_submitted.connect(on_find_text_submitted)
+
+		SearchButton.text_submitted.connect(find_string_dictionary[find_string])
+		
 	else:
 		var new_press: bool = !SearchMenu.has_node(find_string)
 		SearchMenu.visible = new_press
@@ -355,6 +368,7 @@ func open_search_books(find_string: String) -> void:
 		if new_press:
 			open_search_books(find_string)
 		else:
+			search_enum = 0
 			SearchNode = null
 			
 func reset_find_settings(search_string: String) -> void:
@@ -378,7 +392,26 @@ func modulate_find_settings() -> void:
 			false: FindSettings.get_node(setting[0]).modulate = Helper.BASE
 			true: FindSettings.get_node(setting[0]).modulate = Helper.RED
 
-func on_find_text_submitted(text: String) -> void: # find_string is search node name
+func reset_found_searches() -> void:
+	for node in Category.get_children() + Books.get_children(): node.change_found_searches(0, 0)
+
+func on_find_files_text_submitted(find: String) -> void:
+	reset_found_searches()
+	var original_book_text: String = BookText.text
+	for path in Helper.return_file_names_recursive(static_lore.left(-1)):
+		BookText.text = Helper.return_file_contents(path)
+		var found: int = return_found_searches(find).size()
+		if found > 0:
+			var split: Array = path.split("/")
+			Category.get_node(split[split.size() - 2]).change_found_searches(found, 2)
+			for book in Books.get_children():
+				if book.label_text == split[split.size() - 1].left(-4):
+					book.change_found_searches(found, 2)
+		
+	BookText.text = original_book_text
+	on_find_text_submitted(find)
+
+func on_find_text_submitted(text: String) -> void:
 	SearchNode.release_focus()
 	for i in range(BookText.get_caret_count()):
 		BookText.deselect(i)
@@ -407,16 +440,16 @@ func _on_whole_words_pressed():
 	if search_enum in [2, 3, 6, 7]: search_enum -= 2
 	else: search_enum += 2
 	modulate_find_settings()
-	on_find_text_submitted(SearchNode.text)
+	find_string_dictionary[SearchNode.name].call(SearchNode.text)
 
 func _on_case_sensitive_pressed():
 	if search_enum in [1, 3, 5, 7]: search_enum -= 1
 	else: search_enum += 1
 	modulate_find_settings()
-	on_find_text_submitted(SearchNode.text)
+	find_string_dictionary[SearchNode.name].call(SearchNode.text)
 
 func _on_search_on_start_pressed():
 	if search_enum in [4, 5, 6, 7]: search_enum -= 4
 	else: search_enum += 4
 	modulate_find_settings()
-	on_find_text_submitted(SearchNode.text)
+	find_string_dictionary[SearchNode.name].call(SearchNode.text)
