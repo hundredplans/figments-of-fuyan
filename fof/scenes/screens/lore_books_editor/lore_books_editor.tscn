@@ -229,29 +229,38 @@ offset_bottom = 107.0
 
 [node name="WholeWords" type="Button" parent="BookZone/SearchMenu/FindSettings"]
 layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
+anchors_preset = -1
+anchor_right = 0.595
+offset_right = 0.0499954
 offset_bottom = 54.0
 grow_horizontal = 2
 text = "Whole"
 
 [node name="CaseSensitive" type="Button" parent="BookZone/SearchMenu/FindSettings"]
 layout_mode = 1
-anchors_preset = 12
+anchors_preset = -1
 anchor_top = 1.0
-anchor_right = 1.0
+anchor_right = 0.595
 anchor_bottom = 1.0
 offset_top = -53.0
+offset_right = 0.0499954
 grow_horizontal = 2
 grow_vertical = 0
 text = "Case"
 
-[node name="ResultLabel" type="Label" parent="BookZone"]
+[node name="SearchOnStart" type="Button" parent="BookZone/SearchMenu/FindSettings"]
 layout_mode = 0
-offset_left = 1088.0
-offset_top = 933.0
-offset_right = 1230.0
-offset_bottom = 1040.0
+offset_left = 210.0
+offset_right = 317.0
+offset_bottom = 85.0
+rotation = 1.57079
+text = "Start"
+
+[node name="ResultLabel" type="Label" parent="BookZone/SearchMenu"]
+layout_mode = 0
+offset_left = 482.0
+offset_right = 624.0
+offset_bottom = 107.0
 label_settings = SubResource("LabelSettings_but4c")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -267,6 +276,11 @@ theme_override_font_sizes/font_size = 0
 context_menu_enabled = false
 wrap_mode = 1
 
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_right = 345.0
+offset_bottom = 179.0
+
 [connection signal="mouse_entered" from="SelectCategory/Background" to="." method="_on_category_mouse_entered"]
 [connection signal="text_submitted" from="SelectCategory/CreateCategory" to="." method="on_create_category"]
 [connection signal="mouse_entered" from="SelectCategory/Categories" to="." method="_on_category_mouse_entered"]
@@ -276,7 +290,8 @@ wrap_mode = 1
 [connection signal="mouse_exited" from="SelectBook/Books" to="." method="_on_scroll_mouse_exited"]
 [connection signal="pressed" from="BookZone/BookButtons/DeleteBooks" to="." method="_on_delete_books_pressed"]
 [connection signal="pressed" from="BookZone/BookButtons/MoveBooks" to="." method="_on_move_books_pressed"]
-[connection signal="pressed" from="BookZone/BookButtons/SaveBook" to="." method="save_book"]
+[connection signal="pressed" from="BookZone/BookButtons/SaveBook" to="." method="save_book" binds= [true]]
 [connection signal="pressed" from="BookZone/SearchMenu/FindSettings/WholeWords" to="." method="_on_whole_words_pressed"]
 [connection signal="pressed" from="BookZone/SearchMenu/FindSettings/CaseSensitive" to="." method="_on_case_sensitive_pressed"]
+[connection signal="pressed" from="BookZone/SearchMenu/FindSettings/SearchOnStart" to="." method="_on_search_on_start_pressed"]
 [connection signal="text_changed" from="BookZone/BookText" to="." method="_on_book_text_text_changed"]

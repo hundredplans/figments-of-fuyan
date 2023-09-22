@@ -72,3 +72,8 @@ func _on_world_difficulty_pressed(_world_difficulty: int):
 func _on_save_area_pressed():
 	var contents: String = "%s\n%s\n%s\n%s\n%s" % [str(primary_color), str(accent_color), str(world_difficulty), cards_allowed, tiles_allowed]
 	Helper.write_to_base_game_file("res://static/base_game/areas/", $Buttons/EditFileName, contents)
+
+func _on_load_area_pressed():
+	var FileLoader: Control = preload("res://scenes/editor/file_loader/file_loader.tscn").instantiate()
+	FileLoader.on_ready(file_loader_name)
+	add_child(FileLoader)

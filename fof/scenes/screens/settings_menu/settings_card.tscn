@@ -108,7 +108,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.19, 0.25, 0.3, 0.35, 0.4),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [-1.57079, -1.57079, 0.819181, 0.265085, 0.048172, 0.0]
+"values": [-1.57079, -1.57079, 0.265085, 0.265085, 0.048172, 0.0]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -120,7 +120,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.25, 0.3, 0.35, 0.4),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(0, 765), Vector2(43, 689), Vector2(61, 604), Vector2(291, 548), Vector2(166, 90), Vector2(123, 14), Vector2(44, 1), Vector2(0, 0)]
+"values": [Vector2(0, 765), Vector2(43, 689), Vector2(59, 622), Vector2(295, 548), Vector2(36, 130), Vector2(92, 2), Vector2(44, 1), Vector2(0, 0)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -144,7 +144,7 @@ tracks/4/keys = {
 "times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.25, 0.3, 0.35, 0.4),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(1, 1), Vector2(0.8, 0.8), Vector2(0.6, 0.6), Vector2(0.4, 0.4), Vector2(0.4, 0.4), Vector2(0.8, 0.8), Vector2(0.9, 0.9), Vector2(1, 1)]
+"values": [Vector2(1, 1), Vector2(0.8, 0.8), Vector2(0.65, 0.65), Vector2(0.4, 0.4), Vector2(0.7, 0.7), Vector2(0.8, 0.8), Vector2(0.9, 0.9), Vector2(1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_hoa87"]
@@ -170,10 +170,10 @@ tracks/1/path = NodePath("Settings:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.19, 0.25, 0.3, 0.35, 0.4),
+"times": PackedFloat32Array(0, 0.19, 0.25, 0.298979, 0.35, 0.4),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [1.5708, 1.5708, -0.818559, -0.26529, -0.0488692, 0.0]
+"values": [1.5708, 1.5708, -0.26529, -0.26529, -0.0488692, 0.0]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -182,10 +182,10 @@ tracks/2/path = NodePath("Settings:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.25, 0.3, 0.35, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.25, 0.298979, 0.3, 0.35, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(600, 203), Vector2(561, 202), Vector2(544, 224), Vector2(306, 302), Vector2(262, 274), Vector2(67, 124), Vector2(39, 24), Vector2(0, 0)]
+"values": [Vector2(600, 178), Vector2(561, 202), Vector2(544, 224), Vector2(306, 302), Vector2(169, 180), Vector2(67, 124), Vector2(42, 138), Vector2(39, 24), Vector2(0, 0)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -206,10 +206,10 @@ tracks/4/path = NodePath("Settings:scale")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.25, 0.3, 0.35, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.25, 0.298979, 0.3, 0.35, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(1, 1), Vector2(0.8, 0.8), Vector2(0.7, 0.7), Vector2(0.4, 0.4), Vector2(0.4, 0.4), Vector2(0.7, 0.7), Vector2(0.86, 0.86), Vector2(1, 1)]
+"values": [Vector2(1, 1), Vector2(0.8, 0.8), Vector2(0.65, 0.65), Vector2(0.4, 0.4), Vector2(0.7, 0.7), Vector2(0.7, 0.7), Vector2(0.8, 0.8), Vector2(0.86, 0.86), Vector2(1, 1)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_cxf2m"]
