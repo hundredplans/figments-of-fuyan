@@ -45,11 +45,9 @@ _data = {
 [node name="AreaEditor" type="Control"]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 3
-anchor_left = 0.218
-anchor_right = 0.801
-anchor_bottom = 1.0
-offset_left = 137.44
-offset_right = -117.92
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_r82ym")
@@ -69,26 +67,24 @@ grow_vertical = 2
 
 [node name="PRBackground" type="ColorRect" parent="Background"]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_left = 570.0
+offset_right = 1412.0
+offset_bottom = 1080.0
 color = Color(0, 0, 0, 1)
 
 [node name="ACBackground" type="ColorRect" parent="Background"]
 layout_mode = 0
-offset_left = 40.0
-offset_top = 40.0
-offset_right = 820.0
-offset_bottom = 1040.0
+offset_left = 600.0
+offset_top = 30.0
+offset_right = 1380.0
+offset_bottom = 1050.0
 
 [node name="Buttons" type="Control" parent="."]
 anchors_preset = 0
-offset_left = 40.0
-offset_top = 40.0
-offset_right = 820.0
-offset_bottom = 1040.0
+offset_left = 600.0
+offset_top = 30.0
+offset_right = 1380.0
+offset_bottom = 1050.0
 theme = ExtResource("2_euq7d")
 
 [node name="Colors" type="Control" parent="Buttons"]
@@ -350,3 +346,4 @@ grow_vertical = 1
 [connection signal="pressed" from="Buttons/WorldDifficulty/WorldThree" to="." method="_on_world_difficulty_pressed" binds= [3]]
 [connection signal="pressed" from="Buttons/WorldDifficulty/WorldFour" to="." method="_on_world_difficulty_pressed" binds= [4]]
 [connection signal="pressed" from="Buttons/OtherButtons/SaveArea" to="." method="_on_save_area_pressed"]
+[connection signal="pressed" from="Buttons/OtherButtons/LoadArea" to="." method="_on_load_area_pressed"]

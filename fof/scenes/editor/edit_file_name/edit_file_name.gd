@@ -15,8 +15,8 @@ func _on_internal_text_changed(new_text: String):
 func _on_showcase_text_changed(__):
 	showcase_text_changed = true
 	
-@onready var lock_open_sfx: AudioStreamWAV = preload("res://assets/UI/lock_button/lock_closed_sfx.wav")
-@onready var lock_closed_sfx: AudioStreamWAV = preload("res://assets/UI/lock_button/lock_open_sfx.wav")
+@onready var lock_open_sfx: AudioStreamWAV = preload("res://scenes/editor/edit_file_name/lock_button/lock_closed_sfx.wav")
+@onready var lock_closed_sfx: AudioStreamWAV = preload("res://scenes/editor/edit_file_name/lock_button/lock_open_sfx.wav")
 	
 func on_play_lock_open_sound_effect(): AudioMaster.play_sfx(lock_open_sfx, -15)
 func on_play_lock_closed_sound_effect(): AudioMaster.play_sfx(lock_closed_sfx)
