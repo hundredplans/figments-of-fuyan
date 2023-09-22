@@ -276,6 +276,11 @@ theme_override_font_sizes/font_size = 0
 context_menu_enabled = false
 wrap_mode = 1
 
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_right = 345.0
+offset_bottom = 179.0
+
 [connection signal="mouse_entered" from="SelectCategory/Background" to="." method="_on_category_mouse_entered"]
 [connection signal="text_submitted" from="SelectCategory/CreateCategory" to="." method="on_create_category"]
 [connection signal="mouse_entered" from="SelectCategory/Categories" to="." method="_on_category_mouse_entered"]

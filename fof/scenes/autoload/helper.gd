@@ -85,18 +85,17 @@ func return_new_highest_id(dir_path: String, file_name: String) -> int:
 
 func return_file_contents(file_path: String) -> String:
 	if FileAccess.file_exists(file_path):
-		var file: FileAccess = FileAccess.open(file_path, FileAccess.READ)
-		return file.get_as_text()
+		return FileAccess.open(file_path, FileAccess.READ).get_as_text()
 	return ""
 
 func write_to_base_game_file(dir: String, edit_file_name: Control, contents: String) -> void:
 	var file_name: String = edit_file_name.get_node("Internal").text
 	var showcase_name: String = edit_file_name.get_node("Showcase").text
-	if dir.begins_with("res://static/base_game/"):
+	if dir.begins_with("res://static/base_game/") and is_file_name_pure(file_name):
 		var id: String = str(return_new_highest_id(dir, file_name))
 		contents = contents.insert(0, "%s\n%s\n%s\n") % [id, file_name, showcase_name]
 		file_name = file_name.insert(0, "%s - " % id)
-		write_to_file(dir, file_name, ".fof", contents)
+		write_to_file(dir, file_name, ".fof", contents, false)
 	else: print_debug("You are not writing to the correct directory")
 
 func create_file(dir: String, file_name: String, extension: String, contents:String="") -> bool:
@@ -110,8 +109,8 @@ func return_file_names_recursive(path: String, contents := []) -> Array:
 		contents = return_file_names_recursive(path + "/" + dir, contents)
 	return contents
 
-func write_to_file(dir: String, file_name: String, extension: String, contents: String) -> bool:
-	if is_file_name_pure(file_name):
+func write_to_file(dir: String, file_name: String, extension: String, contents: String, test_purity:bool=true) -> bool:
+	if !test_purity or is_file_name_pure(file_name):
 		var file := FileAccess.open(dir + file_name + extension, FileAccess.WRITE)
 		file.store_string(contents)
 		file = null

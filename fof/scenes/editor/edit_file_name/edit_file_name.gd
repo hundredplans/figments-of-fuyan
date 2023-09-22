@@ -18,5 +18,5 @@ func _on_showcase_text_changed(__):
 @onready var lock_open_sfx: AudioStreamWAV = preload("res://assets/UI/lock_button/lock_closed_sfx.wav")
 @onready var lock_closed_sfx: AudioStreamWAV = preload("res://assets/UI/lock_button/lock_open_sfx.wav")
 	
-func on_play_lock_open_sound_effect(): AudioMaster.play_sfx(lock_open_sfx)
-func on_play_lock_closed_sound_effect(): AudioMaster.play_sfx(lock_closed_sfx, -15)
+func on_play_lock_open_sound_effect(): AudioMaster.play_sfx(lock_open_sfx, -15)
+func on_play_lock_closed_sound_effect(): AudioMaster.play_sfx(lock_closed_sfx)

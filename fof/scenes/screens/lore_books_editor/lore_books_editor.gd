@@ -6,6 +6,7 @@ extends Control
 @onready var Category: Control = $SelectCategory/Categories
 @onready var Books: Control = $SelectBook/Books
 
+var old_replaced_text: String
 var SearchNode: LineEdit
 var has_changed_select_search: bool = false
 var search_enum: int = 0
@@ -15,7 +16,6 @@ var find_string_dictionary: Dictionary = {
 	"FindInText": on_find_text_submitted,
 	"FindInFiles": on_find_files_text_submitted,
 	"ReplaceInText": on_replace_text_submitted,
-	"ReplaceInFiles": on_replace_files_text_submitted,
 }
 
 const static_lore: String = "res://static/lore_books/"
@@ -57,7 +57,7 @@ func _ready():
 
 func _process(_delta: float) -> void:
 	if !BookText.has_focus():
-		for input in ["FindInFiles", "FindInText", "ReplaceInFiles", "ReplaceInText"]:
+		for input in ["FindInFiles", "FindInText", "ReplaceInText"]:
 			if Input.is_action_just_pressed(input):
 				open_search_books(input)
 				break
@@ -180,7 +180,7 @@ func on_create_book(book_name: String) -> void:
 	$SelectBook/CreateBook.text = ""
 
 func on_refresh_books() -> void:
-	
+	old_replaced_text = ""
 	$BookZone/SearchMenu/ResultLabel.text = "0"
 	var y: int = 0
 	for child in Books.get_children(): child.queue_free()
@@ -331,7 +331,7 @@ func _on_scroll_mouse_exited(): enable_scroll = 0
 
 func _on_book_text_text_changed():
 	var update_old_text: bool = true
-	for input in ["FindInFiles", "FindInText", "ReplaceInFiles", "ReplaceInText"]:
+	for input in ["FindInFiles", "FindInText", "ReplaceInText"]:
 		if Input.is_action_just_pressed(input):
 			if BookText.has_focus():
 				update_old_text = false
@@ -379,14 +379,14 @@ func reset_find_settings(search_string: String) -> void:
 	
 	match search_string:
 		"FindInFiles", "FindInText": search_enum = 0; for child in FindSettings.get_children(): child.disabled = false
-		"ReplaceInText", "ReplaceInFiles": 
+		"ReplaceInText": 
 			search_enum = 3
 			for child in ["WholeWords", "CaseSensitive"].map(func(x: String): return FindSettings.get_node(x)):
 				child.disabled = true
 			FindSettings.get_node("SearchOnStart").disabled = false
 				
 	match search_string:
-		"ReplaceInFiles", "FindInFiles": search_enum += 4; FindSettings.get_node("SearchOnStart").disabled = true
+		"FindInFiles": search_enum += 4; FindSettings.get_node("SearchOnStart").disabled = true
 				
 	modulate_find_settings()
 	
@@ -423,6 +423,8 @@ func on_replace_text_submitted(text: String) -> void:
 			SearchNode.text = ""
 			SearchNode.placeholder_text = "Replace Text?"
 			SearchNode.grab_focus()
+			
+			old_replaced_text = BookText.text
 			replace_text = text
 		_: 
 			on_replace_text(text)
@@ -430,18 +432,15 @@ func on_replace_text_submitted(text: String) -> void:
 			open_search_books("ReplaceInText")
 			
 func on_replace_text(find: String) -> void:
-	save_book()
 	save_book(true, selected_category, "_replace")
 	on_find_text_submitted(replace_text)
 	for caret in range(BookText.get_caret_count()):
 		if BookText.has_selection(caret):
 			BookText.delete_selection(caret)
 			BookText.insert_text_at_caret(find, caret)
-		
-	on_find_text_submitted(find)
 	
-func on_replace_files_text_submitted(text: String) -> void:
-	pass
+	save_book()
+	on_find_text_submitted(find)
 
 func on_find_text_submitted(text: String) -> void:
 	SearchNode.release_focus()
