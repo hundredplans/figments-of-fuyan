@@ -3,6 +3,21 @@
 [ext_resource type="Script" path="res://scenes/editor/file_loader/file_loader.gd" id="1_0yoq3"]
 [ext_resource type="PackedScene" uid="uid://colpm2577r0kn" path="res://assets/UI/exit_button/exit_button.tscn" id="2_n880b"]
 
+[sub_resource type="Animation" id="Animation_gnmio"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
 [sub_resource type="Animation" id="Animation_w86xr"]
 resource_name = "load_in_out"
 length = 0.25
@@ -18,21 +33,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_gnmio"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_0w4tr"]
@@ -83,6 +83,30 @@ offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.792157, 0.576471, 0.431373, 1)
+
+[node name="Items" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 46.0
+offset_top = 150.0
+offset_right = 1746.0
+offset_bottom = 1038.0
+
+[node name="Settings" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 1746.0
+offset_bottom = 150.0
+
+[node name="Search" type="Control" parent="Settings"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Filter" type="Control" parent="Settings"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
 
 [node name="ExitButton" parent="." instance=ExtResource("2_n880b")]
 layout_mode = 0
