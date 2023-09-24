@@ -41,13 +41,14 @@ _data = {
 "load_in_out": SubResource("Animation_w86xr")
 }
 
-[node name="FileLoader" type="Control"]
+[node name="FileLoader" type="Control" node_paths=PackedStringArray("Items")]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
 script = ExtResource("1_0yoq3")
+Items = NodePath("Items")
 
 [node name="LoadInOut" type="AnimationPlayer" parent="."]
 libraries = {
