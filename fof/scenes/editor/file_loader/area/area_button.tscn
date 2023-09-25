@@ -1,11 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://c6nuh0hx28d80"]
+[gd_scene load_steps=4 format=3 uid="uid://c6nuh0hx28d80"]
 
 [ext_resource type="Theme" uid="uid://c7y2qa3kssows" path="res://assets/UI/lora/lora.tres" id="1_8ojuo"]
 [ext_resource type="Script" path="res://scenes/editor/file_loader/area/area_button.gd" id="1_lvn1e"]
 [ext_resource type="LabelSettings" uid="uid://c5h6tv2uhlrjf" path="res://assets/UI/lora/lora_outline.tres" id="3_qof04"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_drhbw"]
-size = Vector2(250, 250)
 
 [node name="AreaButton" type="Control"]
 layout_mode = 3
@@ -72,11 +69,10 @@ label_settings = ExtResource("3_qof04")
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="PressedButton" type="Button" parent="."]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_right = 250.0
+offset_bottom = 250.0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(125, 125)
-shape = SubResource("RectangleShape2D_drhbw")
-
-[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
-[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]
+[connection signal="pressed" from="PressedButton" to="." method="_on_pressed_button_pressed"]

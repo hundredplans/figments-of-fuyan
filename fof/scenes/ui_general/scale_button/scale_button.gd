@@ -123,8 +123,8 @@ func set_grabber_position() -> void:
 	$GradientInside/Grabber.position.x = default * 1.7
 	$GradientInside/Grabber/GrabberSprite.modulate = $GradientInside.texture.get_image().get_pixel(\
 	$GradientInside/Grabber.position.x + 10, $GradientInside/Grabber.position.y + 30)
-	$Number.text = str(default)
-	item_selected.emit(default)
+	$Number.text = str(int(remap(default, 0, 100, totalmin, totalmax)))
+	item_selected.emit(int($Number.text))
 
 func _on_grabber_area_mouse_entered():
 	is_mouse_entered_grabber_area = true

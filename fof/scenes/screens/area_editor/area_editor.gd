@@ -1,4 +1,5 @@
 extends Control
+signal change_fileloader_state
 
 const TID: int = 1
 const file_loader_name: String = "Area"

@@ -2,6 +2,7 @@ extends Node
 @onready var screens: Control = $Screens
 @onready var world: Node3D = $World
 const main_menu_path: String = "res://scenes/screens/main_menu/main_menu.tscn"
+var fileloader_state: int = 0
 var screen_change_animation_active: bool = false
 var screen_history: Array = []
 		
@@ -49,15 +50,26 @@ func on_connect_screen_signals(screen: Control) -> void:
 		for sig_info in screen.screen_change_signals:
 			sig_info[0].connect(on_load_screen.bind(sig_info[1]))
 			
+	for sig in ["change_fileloader_state"]:
+		if sig in screen:
+			screen[sig].connect(get("on_" + sig))
+			
 func on_add_screen_history(load_path: String) -> void:
 	screen_history.append(load_path)
 	
 func on_trigger_screen_history() -> void:
-	if !screen_change_animation_active and screen_history.size() > 1:
-		screen_history.resize(screen_history.size() - 1)
-		var path: String = screen_history[screen_history.size() - 1]
-		on_load_screen(path)
-		screen_history.resize(screen_history.size() - 1)
+	match fileloader_state:
+		0:
+			if !screen_change_animation_active and screen_history.size() > 1:
+				screen_history.resize(screen_history.size() - 1)
+				var path: String = screen_history[screen_history.size() - 1]
+				on_load_screen(path)
+				screen_history.resize(screen_history.size() - 1)
+		2: screens.get_child(0).get_node("FileLoader").on_exit_button_pressed.call()
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST: on_user_quit()
+
+func on_change_fileloader_state(i: int) -> void:
+	fileloader_state = i
+	print(i)
