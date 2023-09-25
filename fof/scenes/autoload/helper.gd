@@ -154,7 +154,22 @@ func return_item_dict(item: String, _contents: String) -> Dictionary:
 		
 		var i: int = 0
 		for key in keys:
+			if contents[i].is_valid_int():
+				contents[i] = int(contents[i])
+			
+			elif contents[i].begins_with("(") and contents[i].ends_with(")"):
+				contents[i] = str_to_var("Color" + contents[i])
+				
 			item_dict.merge({key: contents[i]})
 			i += 1
-			
 	return item_dict
+
+func return_bitwise(i: int, ntotal: int, total: int) -> bool:
+	var k: int = 0
+	while ntotal > 0:
+		if ntotal >= total:
+			ntotal -= total
+			if k == i: return true
+		total = int(total * 0.5)
+		k += 1
+	return false

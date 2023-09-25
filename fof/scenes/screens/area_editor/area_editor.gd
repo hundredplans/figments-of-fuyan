@@ -77,4 +77,12 @@ func _on_save_area_pressed():
 func _on_load_area_pressed():
 	var FileLoader: Control = preload("res://scenes/editor/file_loader/file_loader.tscn").instantiate()
 	FileLoader.on_ready(file_loader_name)
+	FileLoader.item_selected.connect(on_item_selected)
 	add_child(FileLoader)
+	
+func on_item_selected(item_info: Dictionary) -> void:
+	_on_world_difficulty_pressed(item_info.world)
+	primary_color = item_info.pcolor
+	accent_color = item_info.acolor
+	load_primary_and_accent_colors()
+	$Buttons/EditFileName.set_text(item_info.iname, item_info.sname)

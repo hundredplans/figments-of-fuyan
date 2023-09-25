@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://drao2oqxtnj6x"]
+[gd_scene load_steps=9 format=3 uid="uid://drao2oqxtnj6x"]
 
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="1_7tu5m"]
 [ext_resource type="Script" path="res://scenes/screens/settings_menu/settings_connect.gd" id="2_odmui"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://chkoma3ub3eqf" path="res://scenes/ui_general/binary_button/binary_button.tscn" id="4_70xc4"]
 [ext_resource type="FontFile" uid="uid://7k4xd8s0oed2" path="res://assets/UI/roboto/roboto.ttf" id="5_iikn7"]
 [ext_resource type="PackedScene" uid="uid://do6a233hu0w6c" path="res://scenes/ui_general/mc_button/mc_button.tscn" id="5_t1xs1"]
+[ext_resource type="PackedScene" uid="uid://bx2ne50cjcqkp" path="res://scenes/ui_general/scale_button/scale_button.tscn" id="6_3lxbg"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_nac3c"]
 font = ExtResource("5_iikn7")
@@ -68,10 +69,20 @@ offset_bottom = 439.0
 options = PackedStringArray("16", "20", "24", "28", "32", "36")
 label_text = "Book Font Size"
 
-[node name="CloseFileLoader" parent="." instance=ExtResource("5_t1xs1")]
+[node name="FileLoaderOpacity" parent="." instance=ExtResource("6_3lxbg")]
 offset_left = 19.0
 offset_top = 453.0
+offset_right = 370.0
+offset_bottom = 516.0
+totalmax = 100
+step = 1
+bigstep = 10
+label_text = "FL Opacity"
+
+[node name="CloseFileLoader" parent="." instance=ExtResource("5_t1xs1")]
+offset_left = 19.0
+offset_top = 553.0
 offset_right = 117.0
-offset_bottom = 513.0
-options = PackedStringArray("Units", "Auras", "Areas", "Boons", "Levels", "Trinkets", "Challenges", "World Variations")
+offset_bottom = 613.0
+options = PackedStringArray("Areas", "Units", "Auras", "Boons", "Levels", "Trinkets", "Challenges", "World Variations")
 label_text = "Close File Loader"

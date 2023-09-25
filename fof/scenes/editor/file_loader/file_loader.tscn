@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://bl21q1wy6uij6"]
+[gd_scene load_steps=7 format=3 uid="uid://bl21q1wy6uij6"]
 
 [ext_resource type="Script" path="res://scenes/editor/file_loader/file_loader.gd" id="1_0yoq3"]
+[ext_resource type="Theme" uid="uid://c7y2qa3kssows" path="res://assets/UI/lora/lora.tres" id="2_hm2h0"]
 [ext_resource type="PackedScene" uid="uid://colpm2577r0kn" path="res://assets/UI/exit_button/exit_button.tscn" id="2_n880b"]
 
 [sub_resource type="Animation" id="Animation_gnmio"]
@@ -89,7 +90,7 @@ color = Color(0.792157, 0.576471, 0.431373, 1)
 anchors_preset = 0
 offset_left = 46.0
 offset_top = 150.0
-offset_right = 1746.0
+offset_right = 1769.0
 offset_bottom = 1038.0
 
 [node name="Settings" type="Control" parent="."]
@@ -109,9 +110,34 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
+[node name="PageArrows" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 1769.0
+offset_top = 150.0
+offset_right = 1889.0
+offset_bottom = 1038.0
+theme = ExtResource("2_hm2h0")
+
+[node name="LeftArrow" type="Button" parent="PageArrows"]
+layout_mode = 0
+offset_top = 459.0
+offset_right = 120.0
+offset_bottom = 888.0
+text = "<-"
+
+[node name="RightArrow" type="Button" parent="PageArrows"]
+layout_mode = 0
+offset_top = 13.0
+offset_right = 120.0
+offset_bottom = 427.0
+text = "->"
+
 [node name="ExitButton" parent="." instance=ExtResource("2_n880b")]
 layout_mode = 0
 offset_left = 1769.0
 offset_top = 28.0
 offset_right = 1889.0
 offset_bottom = 150.0
+
+[connection signal="pressed" from="PageArrows/LeftArrow" to="." method="change_page" binds= [-1]]
+[connection signal="pressed" from="PageArrows/RightArrow" to="." method="change_page" binds= [1]]

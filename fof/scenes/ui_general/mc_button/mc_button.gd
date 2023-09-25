@@ -43,7 +43,6 @@ func _on_open_button_pressed():
 		Helper.play_method_on_animation_end("open_options", $OpenOptions, close_options, [], true, self)
 
 func position_binary_buttons() -> void:
-	
 	var xbp: int = 0
 	var ybp: int = 0
 	for button in $Options.get_children():

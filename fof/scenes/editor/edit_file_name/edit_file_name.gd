@@ -1,6 +1,7 @@
 extends Control
 var open: bool = false
 var showcase_text_changed: bool = false
+
 func _on_lock_button_pressed():
 	if !$LockButtonPressed.is_playing():
 		open = !open
@@ -12,8 +13,15 @@ func _on_internal_text_changed(new_text: String):
 	if !showcase_text_changed:
 		$Showcase.text = new_text
 
-func _on_showcase_text_changed(__):
+func _on_showcase_text_changed(__: String):
 	showcase_text_changed = true
+	
+func set_text(itext: String, stext:String="") -> void:
+	$Internal.text = itext
+	match stext:
+		itext, "": $Showcase.text = itext
+		_: $Showcase.text = stext; _on_showcase_text_changed("")
+		
 	
 @onready var lock_open_sfx: AudioStreamWAV = preload("res://scenes/editor/edit_file_name/lock_button/lock_closed_sfx.wav")
 @onready var lock_closed_sfx: AudioStreamWAV = preload("res://scenes/editor/edit_file_name/lock_button/lock_open_sfx.wav")

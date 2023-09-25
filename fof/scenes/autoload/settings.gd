@@ -4,7 +4,9 @@ var book_font_size: int = 0
 var clear_backup_files: int = 0
 var default_camera_speed_multiplier: int = 1
 var autoskip_turn: bool = false
-var close_fileloader: int = 256
+var close_fileloader := Vector2(0, return_max_mc_value("res://scenes/screens/settings_menu/setting_options/settings_preferences.tscn", "CloseFileLoader"))
+var fileloader_opacity: int = 0
+
 var notify_rewards: int = 0
 const clear_backup_files_array: Array = [0, 86400, 259200, 604800, 2592000, 1]
 
@@ -15,6 +17,12 @@ var settings_info: Dictionary = {
 	"Preferences": [],
 	"Video": [],
 }
+
+func return_max_mc_value(path: String, node_name: String) -> int:
+	var node: Control = load(path).instantiate()
+	var rvalue: int = int(pow(2, load(path).instantiate().get_node(node_name).options.size()))
+	node.queue_free()
+	return rvalue
 
 func update_settings_file_info() -> void:
 	for setting in settings_info.keys():
@@ -62,7 +70,10 @@ func set_autoskipturn(i: int):
 	var setting_info: Array = [false, true]
 	autoskip_turn = setting_info[i]
 func set_closefileloader(i: int):
-	close_fileloader = i
+	close_fileloader.x = i
+func set_fileloaderopacity(i: int):
+	fileloader_opacity = i
+	
 func set_notifyrewards(i: int):
 	notify_rewards = i
 func set_clearbackupfiles(i: int):

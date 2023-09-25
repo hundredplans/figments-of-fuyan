@@ -69,12 +69,7 @@ func _enter_tree() -> void:
 	$Label.text = label_text
 	
 	$Outside.color = Helper.DARK_BROWN
-	for child in [$Steppers/Left/BigStep, $Steppers/Right/BigStep]:
-		child.color = Color.BLACK
-	
 	$Inside.color = Helper.LIGHT_BROWN
-	for child in [$Steppers/Left/SmallStep, $Steppers/Right/SmallStep]:
-		child.color = Color.WHITE
 		
 	(func():$Outside.size.x += $Label.size.x + 23; $Inside.size.x += $Label.size.x + 23).call_deferred()
 	set_grabber_position()

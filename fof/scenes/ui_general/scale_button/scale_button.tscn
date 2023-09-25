@@ -7,10 +7,9 @@
 
 [node name="ScaleButton" type="Control"]
 layout_mode = 3
-anchor_right = 0.183
-anchor_bottom = 0.058
-offset_right = -0.360016
-offset_bottom = 0.359997
+anchors_preset = 0
+offset_right = 283.0
+offset_bottom = 63.0
 theme = ExtResource("1_qowab")
 script = ExtResource("1_wp1vw")
 
@@ -19,7 +18,7 @@ one_shot = true
 
 [node name="Outside" type="ColorRect" parent="."]
 layout_mode = 0
-offset_right = 351.0
+offset_right = 286.0
 offset_bottom = 63.0
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
@@ -28,17 +27,19 @@ color = Color(0, 0, 0, 1)
 layout_mode = 0
 offset_left = 5.0
 offset_top = 5.0
-offset_right = 346.0
+offset_right = 281.0
 offset_bottom = 58.0
 mouse_filter = 2
 color = Color(0.737255, 0.737255, 0.737255, 1)
 
 [node name="GradientInside" type="Sprite2D" parent="."]
-position = Vector2(71, 5)
+position = Vector2(71, 0)
+scale = Vector2(1, 1.18868)
 texture = ExtResource("3_yychw")
 centered = false
 
 [node name="Grabber" type="Node2D" parent="GradientInside"]
+position = Vector2(0, -8.4127)
 
 [node name="GrabberArea" type="Area2D" parent="GradientInside/Grabber"]
 
@@ -53,128 +54,22 @@ centered = false
 
 [node name="Number" type="Label" parent="."]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = -276.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 71.0
+offset_bottom = 58.0
 text = "100"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
-offset_left = 358.0
-offset_right = 359.0
+offset_left = 295.0
+offset_right = 296.0
 offset_bottom = 63.0
 vertical_alignment = 1
-
-[node name="Steppers" type="Control" parent="."]
-anchors_preset = 0
-offset_left = 284.0
-offset_top = 5.0
-offset_right = 343.0
-offset_bottom = 58.0
-mouse_filter = 1
-
-[node name="Left" type="Control" parent="Steppers"]
-anchors_preset = 0
-offset_left = 3.0
-offset_right = 28.0
-offset_bottom = 53.0
-mouse_filter = 1
-
-[node name="Background" type="ColorRect" parent="Steppers/Left"]
-layout_mode = 0
-offset_left = -3.0
-offset_right = 28.0
-offset_bottom = 53.0
-mouse_filter = 2
-color = Color(0, 0, 0, 1)
-
-[node name="SmallStep" type="ColorRect" parent="Steppers/Left"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = 3.0
-offset_bottom = -3.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 1
-color = Color(0.737255, 0.737255, 0.737255, 1)
-
-[node name="BigStep" type="ColorRect" parent="Steppers/Left"]
-layout_mode = 0
-offset_top = 15.0
-offset_right = 25.0
-offset_bottom = 38.0
-mouse_filter = 1
-color = Color(0, 0, 0, 1)
-
-[node name="Label" type="Label" parent="Steppers/Left"]
-texture_filter = 1
-layout_mode = 0
-offset_top = 7.0
-offset_right = 25.0
-offset_bottom = 48.0
-text = "-"
-horizontal_alignment = 1
-
-[node name="Right" type="Control" parent="Steppers"]
-anchors_preset = 0
-offset_left = 31.0
-offset_right = 56.0
-offset_bottom = 53.0
-mouse_filter = 1
-
-[node name="Background" type="ColorRect" parent="Steppers/Right"]
-layout_mode = 0
-offset_left = -3.0
-offset_right = 28.0
-offset_bottom = 53.0
-mouse_filter = 2
-color = Color(0, 0, 0, 1)
-
-[node name="SmallStep" type="ColorRect" parent="Steppers/Right"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = 3.0
-offset_bottom = -3.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 1
-color = Color(0.737255, 0.737255, 0.737255, 1)
-
-[node name="BigStep" type="ColorRect" parent="Steppers/Right"]
-layout_mode = 0
-offset_top = 15.0
-offset_right = 25.0
-offset_bottom = 38.0
-mouse_filter = 1
-color = Color(0, 0, 0, 1)
-
-[node name="Label" type="Label" parent="Steppers/Right"]
-texture_filter = 1
-layout_mode = 0
-offset_top = 7.0
-offset_right = 25.0
-offset_bottom = 48.0
-text = "+"
-horizontal_alignment = 1
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
 [connection signal="mouse_entered" from="GradientInside/Grabber/GrabberArea" to="." method="_on_grabber_area_mouse_entered"]
 [connection signal="mouse_exited" from="GradientInside/Grabber/GrabberArea" to="." method="_on_grabber_area_mouse_exited"]
-[connection signal="mouse_entered" from="Steppers/Left/SmallStep" to="." method="_on_small_step_mouse_entered" binds= [-1]]
-[connection signal="mouse_exited" from="Steppers/Left/SmallStep" to="." method="_on_small_step_mouse_exited"]
-[connection signal="mouse_entered" from="Steppers/Left/BigStep" to="." method="_on_big_step_mouse_entered" binds= [-1]]
-[connection signal="mouse_exited" from="Steppers/Left/BigStep" to="." method="_on_big_step_mouse_exited"]
-[connection signal="mouse_entered" from="Steppers/Right/SmallStep" to="." method="_on_small_step_mouse_entered" binds= [1]]
-[connection signal="mouse_exited" from="Steppers/Right/SmallStep" to="." method="_on_small_step_mouse_exited"]
-[connection signal="mouse_entered" from="Steppers/Right/BigStep" to="." method="_on_big_step_mouse_entered" binds= [1]]
-[connection signal="mouse_exited" from="Steppers/Right/BigStep" to="." method="_on_big_step_mouse_exited"]
