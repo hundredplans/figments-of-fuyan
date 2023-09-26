@@ -1,0 +1,196 @@
+[gd_scene load_steps=9 format=3 uid="uid://dgjchsjrv72a3"]
+
+[ext_resource type="Script" path="res://scenes/screens/card_editor/card_editor.gd" id="1_hv8xs"]
+[ext_resource type="PackedScene" uid="uid://bdd0m6wbuerq5" path="res://scenes/editor/edit_file_name/edit_file_name.tscn" id="2_axojh"]
+[ext_resource type="Theme" uid="uid://c5rky1f5xs5if" path="res://assets/UI/lora/lora48.tres" id="2_q225b"]
+[ext_resource type="Theme" uid="uid://c7y2qa3kssows" path="res://assets/UI/lora/lora.tres" id="3_vsycf"]
+[ext_resource type="PackedScene" uid="uid://bj3h1ak5dv73n" path="res://scenes/ui_general/op_button/op_button.tscn" id="4_nujyg"]
+
+[sub_resource type="Animation" id="Animation_2hkxa"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_1m7tu"]
+resource_name = "move_screen"
+length = 0.25
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qo4m8"]
+_data = {
+"RESET": SubResource("Animation_2hkxa"),
+"move_screen": SubResource("Animation_1m7tu")
+}
+
+[node name="CardEditor" type="Control"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hv8xs")
+
+[node name="MoveScreen" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_qo4m8")
+}
+
+[node name="CardCreator" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 652.0
+offset_right = 1313.0
+offset_bottom = 916.0
+theme = ExtResource("2_q225b")
+
+[node name="RarityColor" type="ColorRect" parent="CardCreator"]
+layout_mode = 0
+offset_right = 661.0
+offset_bottom = 916.0
+color = Color(0.403922, 0.333333, 0.301961, 1)
+
+[node name="EditFileName" parent="CardCreator" instance=ExtResource("2_axojh")]
+offset_top = 415.0
+offset_right = 662.0
+offset_bottom = 553.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="Stats" type="Control" parent="CardCreator"]
+anchors_preset = 0
+offset_right = 661.0
+offset_bottom = 414.0
+
+[node name="Att" type="LineEdit" parent="CardCreator/Stats"]
+layout_mode = 0
+offset_top = 343.0
+offset_right = 192.0
+offset_bottom = 414.0
+placeholder_text = "ATT"
+alignment = 1
+max_length = 2
+
+[node name="Hp" type="LineEdit" parent="CardCreator/Stats"]
+layout_mode = 0
+offset_left = 469.0
+offset_top = 343.0
+offset_right = 661.0
+offset_bottom = 414.0
+placeholder_text = "HP"
+alignment = 1
+max_length = 2
+
+[node name="Spd" type="LineEdit" parent="CardCreator/Stats"]
+layout_mode = 0
+offset_left = 469.0
+offset_right = 661.0
+offset_bottom = 71.0
+placeholder_text = "SPD"
+alignment = 1
+max_length = 2
+
+[node name="Energy" type="LineEdit" parent="CardCreator/Stats"]
+layout_mode = 0
+offset_right = 192.0
+offset_bottom = 71.0
+placeholder_text = "ENER"
+alignment = 1
+max_length = 2
+
+[node name="ChooseRarity" parent="CardCreator" instance=ExtResource("4_nujyg")]
+offset_left = 220.0
+offset_right = 244.0
+options = PackedStringArray("Scrap", "Common", "Rare", "Exalt", "Miniboss", "Boss", "Champion")
+default = 1
+
+[node name="CardText" type="TextEdit" parent="CardCreator"]
+layout_mode = 0
+offset_left = 31.0
+offset_top = 555.0
+offset_right = 621.0
+offset_bottom = 892.0
+theme = ExtResource("3_vsycf")
+wrap_mode = 1
+
+[node name="Art" type="Sprite2D" parent="CardCreator"]
+position = Vector2(331, 198)
+
+[node name="ModelViewer" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 652.0
+offset_bottom = 1080.0
+
+[node name="AISettings" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 1313.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="Buttons" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 652.0
+offset_top = 916.0
+offset_right = 1313.0
+offset_bottom = 1080.0
+theme = ExtResource("3_vsycf")
+
+[node name="SaveCard" type="Button" parent="Buttons"]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -330.5
+offset_right = -110.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Save Card"
+
+[node name="LoadCard" type="Button" parent="Buttons"]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -105.5
+offset_right = 114.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Load Card"
+
+[node name="DeleteCard" type="Button" parent="Buttons"]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 114.5
+offset_right = 334.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Delete Card"
+
+[connection signal="item_selected" from="CardCreator/ChooseRarity" to="." method="_on_choose_rarity_item_selected"]

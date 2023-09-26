@@ -69,20 +69,20 @@ offset_bottom = 439.0
 options = PackedStringArray("16", "20", "24", "28", "32", "36")
 label_text = "Book Font Size"
 
+[node name="CloseFileLoader" parent="." instance=ExtResource("5_t1xs1")]
+offset_left = 19.0
+offset_top = 451.0
+offset_right = 117.0
+offset_bottom = 511.0
+options = PackedStringArray("Areas", "Units", "Auras", "Boons", "Levels", "Trinkets", "Challenges", "World Variations")
+label_text = "Close File Loader"
+
 [node name="FileLoaderOpacity" parent="." instance=ExtResource("6_3lxbg")]
 offset_left = 19.0
-offset_top = 453.0
+offset_top = 523.0
 offset_right = 370.0
-offset_bottom = 516.0
+offset_bottom = 586.0
 totalmax = 100
 step = 1
 bigstep = 10
 label_text = "FL Opacity"
-
-[node name="CloseFileLoader" parent="." instance=ExtResource("5_t1xs1")]
-offset_left = 19.0
-offset_top = 553.0
-offset_right = 117.0
-offset_bottom = 613.0
-options = PackedStringArray("Areas", "Units", "Auras", "Boons", "Levels", "Trinkets", "Challenges", "World Variations")
-label_text = "Close File Loader"

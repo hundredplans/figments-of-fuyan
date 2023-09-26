@@ -1,4 +1,6 @@
 extends Node
+
+@export var BackArrow: TextureButton
 @onready var screens: Control = $Screens
 @onready var world: Node3D = $World
 const main_menu_path: String = "res://scenes/screens/main_menu/main_menu.tscn"
@@ -10,9 +12,10 @@ func on_user_quit() -> void:
 	Settings.update_settings_file_info()
 	
 func _ready() -> void:
+	Helper.create_button_clickmask(BackArrow)
 	for helper_signal in [
-	["add_screen_history", on_add_screen_history], \
-	["screen_change_animation_state", func(x: bool): screen_change_animation_active = x],
+	["add_screen_history", on_add_screen_history],
+	["screen_change_animation_state", on_screen_change_animation_state],
 	]:
 		Helper[helper_signal[0]].connect(helper_signal[1])
 	on_load_screen(main_menu_path)
@@ -22,6 +25,10 @@ func _ready() -> void:
 		for file in Helper.return_file_names_recursive("user://save/temp"):
 			if FileAccess.get_modified_time(file) < Time.get_unix_time_from_system() - modified_time:
 				DirAccess.remove_absolute(file)
+
+func on_screen_change_animation_state(x: bool) -> void:
+	screen_change_animation_active = x
+	BackArrow.disabled = x
 
 func sim_pressed(): call_deferred("on_sim_pressed")
 func on_sim_pressed():
@@ -54,6 +61,10 @@ func on_connect_screen_signals(screen: Control) -> void:
 		if sig in screen:
 			screen[sig].connect(get("on_" + sig))
 			
+	match screen.name:
+		"MainMenu": BackArrow.visible = false
+		_: BackArrow.visible = true
+			
 func on_add_screen_history(load_path: String) -> void:
 	screen_history.append(load_path)
 	
@@ -72,4 +83,3 @@ func _notification(what: int) -> void:
 
 func on_change_fileloader_state(i: int) -> void:
 	fileloader_state = i
-	print(i)

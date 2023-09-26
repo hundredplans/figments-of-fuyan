@@ -28,3 +28,7 @@ func set_text(itext: String, stext:String="") -> void:
 	
 func on_play_lock_open_sound_effect(): AudioMaster.play_sfx(lock_open_sfx, -15)
 func on_play_lock_closed_sound_effect(): AudioMaster.play_sfx(lock_closed_sfx)
+
+func _on_text_submitted(new_text):
+	$Internal.release_focus()
+	$Showcase.release_focus()

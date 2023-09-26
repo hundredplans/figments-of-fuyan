@@ -205,5 +205,7 @@ offset_bottom = 70.0
 texture_normal = ExtResource("3_o4ly1")
 
 [connection signal="text_changed" from="Internal" to="." method="_on_internal_text_changed"]
+[connection signal="text_submitted" from="Internal" to="." method="_on_text_submitted"]
 [connection signal="text_changed" from="Showcase" to="." method="_on_showcase_text_changed"]
+[connection signal="text_submitted" from="Showcase" to="." method="_on_text_submitted"]
 [connection signal="pressed" from="LockButton" to="." method="_on_lock_button_pressed"]

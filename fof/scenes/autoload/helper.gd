@@ -173,3 +173,9 @@ func return_bitwise(i: int, ntotal: int, total: int) -> bool:
 		total = int(total * 0.5)
 		k += 1
 	return false
+
+func create_button_clickmask(button: TextureButton) -> void:
+	var img: Image = load(button.texture_normal.resource_path.left(-4) + "_image.png")
+	var bitmap := BitMap.new()
+	bitmap.create_from_image_alpha(img)
+	button.texture_click_mask = bitmap

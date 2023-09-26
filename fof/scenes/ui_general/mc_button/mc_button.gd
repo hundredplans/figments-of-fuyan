@@ -4,8 +4,10 @@ extends Control
 @export var label_text: String
 @export var open_state: bool
 signal item_selected
+signal change_open_state
 var button_states: Array = []
 var is_animating: bool = false
+var max_size: int = 0
 
 func _enter_tree() -> void:
 	$Label.text = label_text
@@ -36,6 +38,7 @@ func _on_open_button_pressed():
 				ndefault -= total
 			options_size -= 1
 			binary_button.item_selected.connect(on_item_selected.bind(binary_button))
+			
 		$OpenOptions.play("open_options")
 		modify_open_state()
 		position_binary_buttons.call_deferred()
@@ -52,9 +55,15 @@ func position_binary_buttons() -> void:
 		button.position.y += ybp
 		if xbp == 0:
 			ybp += button.size.y - 15
+	max_size = ybp
+	on_change_open_state()
+
+func on_change_open_state() -> void:
+	change_open_state.emit(open_state)
 
 func close_options() -> void:
 	open_state = false
+	on_change_open_state()
 	for child in $Options.get_children(): 
 		child.queue_free()
 	modify_open_state()
