@@ -1,5 +1,7 @@
 extends Node
 
+var cards_can_delete_directory: int = 0
+var auto_create_dir: int = 0
 var confirm_file_delete: int = 0
 var hide_back_arrow: int = 0
 var book_font_size: int = 0
@@ -85,6 +87,10 @@ func set_bookfontsize(i: int):
 	book_font_size = i
 func set_confirmfiledelete(i: int):
 	confirm_file_delete = i
+func set_autocreatedir(i: int):
+	auto_create_dir = i
+func set_cardscandeletedirectory(i: int):
+	cards_can_delete_directory = i
 
 func set_mastervolume(i: int):
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(i * 0.01))

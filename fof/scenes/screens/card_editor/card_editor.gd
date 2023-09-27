@@ -69,4 +69,6 @@ func _on_save_card_pressed():
 	var contents: String = "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s"\
 	% [stats[0], stats[1], stats[2], stats[3], rarity, CardText.text, FlavorText.text,
 	personality_sliders[0], personality_sliders[1], personality_sliders[2], personality_sliders[3], personality_sliders[4]]
-	Helper.write_to_base_game_file("res://static/base_game/cards/", $CardCreator/EditFileName, contents, TID)
+	var item_dict: Dictionary = Helper.write_to_base_game_file(FILE_LOADER_NAME, $CardCreator/EditFileName, contents, TID)
+	if item_dict and Settings.auto_create_dir == 1:
+		DirAccess.make_dir_absolute("res://assets/base_game/cards/" + str(item_dict.id) + " - " + item_dict.iname)

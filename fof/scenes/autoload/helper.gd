@@ -88,18 +88,19 @@ func return_file_contents(file_path: String) -> String:
 		return FileAccess.open(file_path, FileAccess.READ).get_as_text()
 	return ""
 
-func write_to_base_game_file(dir: String, edit_file_name: Control, contents: String, TID: int) -> bool:
+func write_to_base_game_file(item: String, edit_file_name: Control, contents: String, TID: int) -> Dictionary:
+	item = item.to_lower()
 	var file_name: String = edit_file_name.get_node("Internal").text
 	var showcase_name: String = edit_file_name.get_node("Showcase").text
-	if dir.begins_with("res://static/base_game/"):
-		if is_file_name_pure(file_name):
-			var id: String = str(return_new_highest_id(dir, file_name))
-			contents = contents.insert(0, "%s\n%s\n%s\n%s\n") % [id, TID, file_name, showcase_name]
-			file_name = file_name.insert(0, "%s - " % id)
-			return write_to_file(dir, file_name, ".fof", contents, false)
-		else: print_debug("Your file name is not pure: " + file_name)
-	else: print_debug("You are not writing to the correct directory")
-	return false
+	var dir: String = "res://static/base_game/" + item + "s/"
+	if is_file_name_pure(file_name):
+		var id: String = str(return_new_highest_id(dir, file_name))
+		contents = contents.insert(0, "%s\n%s\n%s\n%s\n") % [id, TID, file_name, showcase_name]
+		file_name = file_name.insert(0, "%s - " % id)
+		write_to_file(dir, file_name, ".fof", contents, false)
+		return return_item_dict(item, contents)
+	else: print_debug("Your file name is not pure: " + file_name)
+	return {}
 
 func create_file(dir: String, file_name: String, extension: String, contents:String="") -> bool:
 	var existing_contents: String = return_file_contents(dir + file_name + extension)
@@ -150,10 +151,11 @@ func is_upper(i: String) -> bool:
 func return_item_dict(item: String, _contents: String) -> Dictionary:
 	var item_dict: Dictionary = {}
 	if _contents:
-		var contents: Array = _contents.split("\n", false)
+		var contents: Array = _contents.split("\n")
 		var keys: Array[String] = ["id", "tid", "iname", "sname"]
 		match item:
 			"area": keys += ["pcolor", "acolor", "world"]
+			"card": keys += ["a", "h", "s", "e", "r", "text", "flavor", "aic", "aii", "aiw", "ait", "aia"]
 		
 		var i: int = 0
 		for key in keys:

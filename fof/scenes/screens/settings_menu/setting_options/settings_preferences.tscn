@@ -54,12 +54,12 @@ label_text = "Clear Backup"
 
 [node name="Admin" type="Label" parent="."]
 layout_mode = 0
-offset_left = 169.0
 offset_top = 311.0
-offset_right = 310.0
+offset_right = 518.0
 offset_bottom = 371.0
 text = "Admin"
 label_settings = SubResource("LabelSettings_nac3c")
+horizontal_alignment = 1
 
 [node name="BookFontSize" parent="." instance=ExtResource("3_dg7gw")]
 offset_left = 19.0
@@ -69,35 +69,61 @@ offset_bottom = 439.0
 options = PackedStringArray("16", "20", "24", "28", "32", "36")
 label_text = "Book Font Size"
 
-[node name="CloseFileLoader" parent="." instance=ExtResource("5_t1xs1")]
-offset_left = 19.0
-offset_top = 451.0
-offset_right = 117.0
-offset_bottom = 511.0
-options = PackedStringArray("Areas", "Units", "Auras", "Boons", "Levels", "Trinkets", "Challenges", "World Variations")
-label_text = "Close File Loader"
-
 [node name="HideBackArrow" parent="." instance=ExtResource("3_dg7gw")]
+offset_left = 19.0
+offset_top = 449.0
+offset_right = 43.0
+offset_bottom = 512.0
+options = PackedStringArray("Never", "Lore Books", "Always")
+label_text = "Hide Back Arrow"
+
+[node name="CardsCanDeleteDirectory" parent="." instance=ExtResource("3_dg7gw")]
 offset_left = 19.0
 offset_top = 520.0
 offset_right = 43.0
 offset_bottom = 583.0
-options = PackedStringArray("Never", "Lore Books", "Always")
-label_text = "Hide Back Arrow"
+options = PackedStringArray("Never", "Only Empty", "OnlyArt")
+label_text = "Delete Directory"
+
+[node name="Fileloader" type="Label" parent="."]
+layout_mode = 0
+offset_top = 592.0
+offset_right = 518.0
+offset_bottom = 652.0
+text = "Fileloader"
+label_settings = SubResource("LabelSettings_nac3c")
+horizontal_alignment = 1
+
+[node name="CloseFileLoader" parent="." instance=ExtResource("5_t1xs1")]
+offset_left = 19.0
+offset_top = 664.0
+offset_right = 117.0
+offset_bottom = 724.0
+options = PackedStringArray("Areas", "Units", "Auras", "Boons", "Levels", "Trinkets", "Challenges", "World Variations")
+label_text = "Close File Loader"
+
+[node name="AutoCreateDir" parent="." instance=ExtResource("3_dg7gw")]
+offset_left = 19.0
+offset_top = 733.0
+offset_right = 43.0
+offset_bottom = 796.0
+options = PackedStringArray("Never", "Always")
+default = 1
+label_text = "Auto-create Folders"
 
 [node name="ConfirmFileDelete" parent="." instance=ExtResource("3_dg7gw")]
 offset_left = 19.0
-offset_top = 594.0
+offset_top = 806.0
 offset_right = 43.0
-offset_bottom = 657.0
-options = PackedStringArray("Name Prompt", "Yes/No Prompt", "None")
+offset_bottom = 869.0
+options = PackedStringArray("Name Prompt", "Yes/No Prompt", "None", "")
 label_text = "File Delete"
 
 [node name="FileLoaderOpacity" parent="." instance=ExtResource("6_3lxbg")]
 offset_left = 19.0
-offset_top = 667.0
+offset_top = 879.0
 offset_right = 370.0
-offset_bottom = 764.0
+offset_bottom = 976.0
 totalmax = 100
 step = 1
 bigstep = 10
