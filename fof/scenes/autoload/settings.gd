@@ -1,5 +1,7 @@
 extends Node
 
+var confirm_file_delete: int = 0
+var hide_back_arrow: int = 0
 var book_font_size: int = 0
 var clear_backup_files: int = 0
 var default_camera_speed_multiplier: int = 1
@@ -73,13 +75,16 @@ func set_closefileloader(i: int):
 	close_fileloader.x = i
 func set_fileloaderopacity(i: int):
 	fileloader_opacity = i
-	
+func set_hidebackarrow(i: int):
+	hide_back_arrow = i
 func set_notifyrewards(i: int):
 	notify_rewards = i
 func set_clearbackupfiles(i: int):
 	clear_backup_files = i
 func set_bookfontsize(i: int):
 	book_font_size = i
+func set_confirmfiledelete(i: int):
+	confirm_file_delete = i
 
 func set_mastervolume(i: int):
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(i * 0.01))

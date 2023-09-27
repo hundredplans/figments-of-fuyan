@@ -2,7 +2,7 @@ extends Control
 signal change_fileloader_state
 
 const TID: int = 1
-const file_loader_name: String = "Area"
+const FILE_LOADER_NAME: String = "Area"
 var world_difficulty: int = 1
 var area_name: String
 var primary_color: Color = Color("000000")
@@ -77,7 +77,7 @@ func _on_save_area_pressed():
 
 func _on_load_area_pressed():
 	var FileLoader: Control = preload("res://scenes/editor/file_loader/file_loader.tscn").instantiate()
-	FileLoader.on_ready(file_loader_name)
+	FileLoader.on_ready(FILE_LOADER_NAME)
 	FileLoader.item_selected.connect(on_item_selected)
 	add_child(FileLoader)
 	

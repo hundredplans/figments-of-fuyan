@@ -77,11 +77,27 @@ offset_bottom = 511.0
 options = PackedStringArray("Areas", "Units", "Auras", "Boons", "Levels", "Trinkets", "Challenges", "World Variations")
 label_text = "Close File Loader"
 
+[node name="HideBackArrow" parent="." instance=ExtResource("3_dg7gw")]
+offset_left = 19.0
+offset_top = 520.0
+offset_right = 43.0
+offset_bottom = 583.0
+options = PackedStringArray("Never", "Lore Books", "Always")
+label_text = "Hide Back Arrow"
+
+[node name="ConfirmFileDelete" parent="." instance=ExtResource("3_dg7gw")]
+offset_left = 19.0
+offset_top = 594.0
+offset_right = 43.0
+offset_bottom = 657.0
+options = PackedStringArray("Name Prompt", "Yes/No Prompt", "None")
+label_text = "File Delete"
+
 [node name="FileLoaderOpacity" parent="." instance=ExtResource("6_3lxbg")]
 offset_left = 19.0
-offset_top = 523.0
+offset_top = 667.0
 offset_right = 370.0
-offset_bottom = 586.0
+offset_bottom = 764.0
 totalmax = 100
 step = 1
 bigstep = 10

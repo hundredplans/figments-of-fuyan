@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://dgjchsjrv72a3"]
+[gd_scene load_steps=10 format=3 uid="uid://dgjchsjrv72a3"]
 
 [ext_resource type="Script" path="res://scenes/screens/card_editor/card_editor.gd" id="1_hv8xs"]
 [ext_resource type="PackedScene" uid="uid://bdd0m6wbuerq5" path="res://scenes/editor/edit_file_name/edit_file_name.tscn" id="2_axojh"]
 [ext_resource type="Theme" uid="uid://c5rky1f5xs5if" path="res://assets/UI/lora/lora48.tres" id="2_q225b"]
 [ext_resource type="Theme" uid="uid://c7y2qa3kssows" path="res://assets/UI/lora/lora.tres" id="3_vsycf"]
 [ext_resource type="PackedScene" uid="uid://bj3h1ak5dv73n" path="res://scenes/ui_general/op_button/op_button.tscn" id="4_nujyg"]
+[ext_resource type="PackedScene" uid="uid://bx2ne50cjcqkp" path="res://scenes/ui_general/scale_button/scale_button.tscn" id="6_18pqn"]
 
 [sub_resource type="Animation" id="Animation_2hkxa"]
 length = 0.001
@@ -44,7 +45,7 @@ _data = {
 "move_screen": SubResource("Animation_1m7tu")
 }
 
-[node name="CardEditor" type="Control"]
+[node name="CardEditor" type="Control" node_paths=PackedStringArray("CardText", "FlavorText")]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 3
 anchors_preset = 15
@@ -53,6 +54,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_hv8xs")
+CardText = NodePath("CardCreator/CardText")
+FlavorText = NodePath("CardCreator/FlavorText")
 
 [node name="MoveScreen" type="AnimationPlayer" parent="."]
 libraries = {
@@ -133,10 +136,23 @@ offset_top = 555.0
 offset_right = 621.0
 offset_bottom = 892.0
 theme = ExtResource("3_vsycf")
+placeholder_text = "                         Card Text"
+wrap_mode = 1
+
+[node name="FlavorText" type="TextEdit" parent="CardCreator"]
+layout_mode = 0
+offset_left = 688.0
+offset_top = 523.0
+offset_right = 1239.0
+offset_bottom = 1056.0
+theme = ExtResource("3_vsycf")
+placeholder_text = "                     Flavor Text"
 wrap_mode = 1
 
 [node name="Art" type="Sprite2D" parent="CardCreator"]
-position = Vector2(331, 198)
+texture_filter = 1
+position = Vector2(331, 206)
+scale = Vector2(2, 2)
 
 [node name="ModelViewer" type="Control" parent="."]
 anchors_preset = 0
@@ -147,7 +163,67 @@ offset_bottom = 1080.0
 anchors_preset = 0
 offset_left = 1313.0
 offset_right = 1920.0
-offset_bottom = 1080.0
+offset_bottom = 523.0
+
+[node name="ConfidenceButton" parent="AISettings" instance=ExtResource("6_18pqn")]
+offset_left = 22.0
+offset_top = 25.0
+offset_right = 305.0
+offset_bottom = 88.0
+default = 1
+totalmin = 1
+totalmax = 7
+step = 1
+bigstep = 3
+label_text = "Confidence"
+
+[node name="IntelligenceButton" parent="AISettings" instance=ExtResource("6_18pqn")]
+offset_left = 22.0
+offset_top = 122.0
+offset_right = 305.0
+offset_bottom = 185.0
+default = 1
+totalmin = 1
+totalmax = 7
+step = 1
+bigstep = 3
+label_text = "Intelligence"
+
+[node name="AwarenessButton" parent="AISettings" instance=ExtResource("6_18pqn")]
+offset_left = 22.0
+offset_top = 219.0
+offset_right = 305.0
+offset_bottom = 282.0
+default = 1
+totalmin = 1
+totalmax = 7
+step = 1
+bigstep = 3
+label_text = "Awarenesss"
+
+[node name="TeamworkButton" parent="AISettings" instance=ExtResource("6_18pqn")]
+offset_left = 22.0
+offset_top = 316.0
+offset_right = 305.0
+offset_bottom = 379.0
+default = 1
+totalmin = 1
+totalmax = 7
+step = 1
+bigstep = 3
+label_text = "Teamwork"
+
+[node name="AdventurousnessButton" parent="AISettings" instance=ExtResource("6_18pqn")]
+offset_left = 22.0
+offset_top = 413.0
+offset_right = 305.0
+offset_bottom = 476.0
+default = 1
+totalmin = 1
+totalmax = 7
+step = 1
+bigstep = 3
+label_text = "Adventurousness"
 
 [node name="Buttons" type="Control" parent="."]
 anchors_preset = 0
@@ -164,7 +240,7 @@ anchor_left = 0.5
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -330.5
-offset_right = -110.5
+offset_right = -105.5
 grow_horizontal = 2
 grow_vertical = 2
 text = "Save Card"
@@ -193,4 +269,8 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Delete Card"
 
+[connection signal="text_submitted" from="CardCreator/EditFileName" to="." method="_on_edit_file_name_text_submitted"]
 [connection signal="item_selected" from="CardCreator/ChooseRarity" to="." method="_on_choose_rarity_item_selected"]
+[connection signal="text_changed" from="CardCreator/CardText" to="." method="_on_card_text_changed"]
+[connection signal="text_changed" from="CardCreator/FlavorText" to="." method="_on_flavor_text_changed"]
+[connection signal="pressed" from="Buttons/SaveCard" to="." method="_on_save_card_pressed"]

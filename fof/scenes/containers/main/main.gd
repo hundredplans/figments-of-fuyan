@@ -61,9 +61,10 @@ func on_connect_screen_signals(screen: Control) -> void:
 		if sig in screen:
 			screen[sig].connect(get("on_" + sig))
 			
-	match screen.name:
-		"MainMenu": BackArrow.visible = false
-		_: BackArrow.visible = true
+	if screen.name == "MainMenu" or Settings.hide_back_arrow == 2 or screen.name == "LoreBooksEditor" and Settings.hide_back_arrow == 1:
+		BackArrow.visible = false
+	else:
+		BackArrow.visible = true
 			
 func on_add_screen_history(load_path: String) -> void:
 	screen_history.append(load_path)

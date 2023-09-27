@@ -64,6 +64,9 @@ func _process(_delta: float) -> void:
 			timer.timeout.disconnect(method)
 
 func _enter_tree() -> void:
+	bigstep = int(remap(bigstep, totalmin, totalmax, 0, 100))
+	step = int(remap(step, totalmin, totalmax,  0, 100))
+	
 	if default >= totalmin and default <= totalmax:
 		$Number.text = str(default)
 	$Label.text = label_text
@@ -78,10 +81,10 @@ func on_step() -> void:
 	if initial_delay_passed in [0,2]:
 		if regular_delay_passed in [0, 2]:
 			match can_press:
-				-2: default = clamp(int($Number.text) - bigstep, totalmin, totalmax)
-				-1: default = clamp(int($Number.text) - step, totalmin, totalmax)
-				1: default = clamp(int($Number.text) + step, totalmin, totalmax)
-				2: default = clamp(int($Number.text) + bigstep, totalmin, totalmax)
+				-2: default = clamp(default - bigstep, totalmin, totalmax)
+				-1: default = clamp(default - step, totalmin, totalmax)
+				1: default = clamp(default + step, totalmin, totalmax)
+				2: default = clamp(default + bigstep, totalmin, totalmax)
 				
 			set_grabber_position()
 			if regular_delay_passed != 1: regular_delay_passed = 0
