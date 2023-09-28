@@ -42,13 +42,13 @@ func on_stat_submitted(__: String):
 
 func _on_choose_rarity_item_selected(i: int):
 	var rarity_colors: Dictionary = {
-		0: "cbccd0",
-		1: "67554d",
-		2: "6de0ee",
+		0: "8e8f88",
+		1: "b7a48b",
+		2: "5b8500",
 		3: "ebdf60",
 		4: "a001fb",
 		5: "d72500",
-		6: "00ea3d",
+		6: "5f91e1",
 	}
 	$CardCreator/RarityColor.color = rarity_colors[i]
 	rarity = i

@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://0k73tx3ke1t7"]
+[gd_scene load_steps=24 format=3 uid="uid://0k73tx3ke1t7"]
 
 [ext_resource type="Texture2D" uid="uid://cdsgo4sdrenku" path="res://test/simulation/assets/map/tile/0.png" id="1_tnmb6"]
 [ext_resource type="BitMap" uid="uid://dq8nopxv2h8ob" path="res://test/simulation/assets/map/tile/bitmap.png" id="2_p3vlp"]
@@ -22,6 +22,7 @@
 [ext_resource type="Texture2D" uid="uid://bj3i2vjir4mar" path="res://test/simulation/assets/map/tile/18.png" id="20_evy56"]
 [ext_resource type="Texture2D" uid="uid://dlxhm7y2ewhyi" path="res://test/simulation/assets/map/tile/19.png" id="21_g1fnt"]
 [ext_resource type="Texture2D" uid="uid://dornwmyunnt36" path="res://test/simulation/assets/map/tile/20.png" id="22_cm82m"]
+[ext_resource type="Texture2D" uid="uid://chjvv2xmfgc1f" path="res://test/simulation/assets/map/tile/21.png" id="23_e052u"]
 
 [node name="TileColors" type="Control"]
 layout_mode = 3
@@ -341,4 +342,14 @@ offset_top = -169.231
 offset_right = -47.6923
 offset_bottom = -100.23
 texture_normal = ExtResource("22_cm82m")
+texture_click_mask = ExtResource("2_p3vlp")
+
+[node name="21" type="TextureButton" parent="."]
+texture_filter = 1
+layout_mode = 0
+offset_left = -56.1539
+offset_top = -169.231
+offset_right = 3.84615
+offset_bottom = -100.23
+texture_normal = ExtResource("23_e052u")
 texture_click_mask = ExtResource("2_p3vlp")
