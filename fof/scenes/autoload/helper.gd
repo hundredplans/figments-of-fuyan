@@ -13,6 +13,19 @@ const settings_color_dict: Dictionary = {
 	"Video": "4f9c00",
 	"Preferences": "4f2a00",
 	"Controls": "bc57ef",}
+	
+const stat_ai_dict: Dictionary = {
+	"aii": "Intelligence",
+	"ait": "Teamwork",
+	"aiw": "Awareness", 
+	"aia": "Adventurousness",
+	"aic": "Confidence",
+	"a": "Attack",
+	"h": "Health",
+	"s": "Speed",
+	"e": "Energy",
+	"r": "Rarity",
+}
 
 func call_method(node: Node, method: String, args: Array) -> bool:
 	if node.has_method(method):

@@ -87,7 +87,7 @@ anchors_preset = 0
 offset_right = 661.0
 offset_bottom = 414.0
 
-[node name="Att" type="LineEdit" parent="CardCreator/Stats"]
+[node name="Attack" type="LineEdit" parent="CardCreator/Stats"]
 layout_mode = 0
 offset_top = 343.0
 offset_right = 192.0
@@ -96,7 +96,7 @@ placeholder_text = "ATT"
 alignment = 1
 max_length = 2
 
-[node name="Hp" type="LineEdit" parent="CardCreator/Stats"]
+[node name="Health" type="LineEdit" parent="CardCreator/Stats"]
 layout_mode = 0
 offset_left = 469.0
 offset_top = 343.0
@@ -106,7 +106,7 @@ placeholder_text = "HP"
 alignment = 1
 max_length = 2
 
-[node name="Spd" type="LineEdit" parent="CardCreator/Stats"]
+[node name="Speed" type="LineEdit" parent="CardCreator/Stats"]
 layout_mode = 0
 offset_left = 469.0
 offset_right = 661.0
@@ -274,3 +274,4 @@ text = "Delete Card"
 [connection signal="text_changed" from="CardCreator/CardText" to="." method="_on_card_text_changed"]
 [connection signal="text_changed" from="CardCreator/FlavorText" to="." method="_on_flavor_text_changed"]
 [connection signal="pressed" from="Buttons/SaveCard" to="." method="_on_save_card_pressed"]
+[connection signal="pressed" from="Buttons/LoadCard" to="." method="_on_load_card_pressed"]

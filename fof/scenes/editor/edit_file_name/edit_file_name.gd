@@ -18,6 +18,7 @@ func _on_showcase_text_changed(__: String):
 	showcase_text_changed = true
 	
 func set_text(itext: String, stext:String="") -> void:
+	showcase_text_changed = false
 	$Internal.text = itext
 	match stext:
 		itext, "": $Showcase.text = itext

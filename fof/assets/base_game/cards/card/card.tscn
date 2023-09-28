@@ -1,12 +1,13 @@
-[gd_scene load_steps=7 format=3 uid="uid://d3wjg2pg1go2m"]
+[gd_scene load_steps=8 format=3 uid="uid://d3wjg2pg1go2m"]
 
 [ext_resource type="LabelSettings" uid="uid://c5h6tv2uhlrjf" path="res://assets/UI/lora/lora_outline.tres" id="1_5lyx8"]
 [ext_resource type="Texture2D" uid="uid://bpoed2fu72r2r" path="res://assets/base_game/cards/card/card.png" id="1_dlyr5"]
+[ext_resource type="Script" path="res://assets/base_game/cards/card/card.gd" id="1_q5cne"]
 [ext_resource type="FontFile" uid="uid://dnq2ul3ia4hy3" path="res://assets/UI/lora/Lora-Bold.ttf" id="2_iho42"]
-[ext_resource type="FontFile" uid="uid://b7a4ligukhgey" path="res://assets/UI/lora/Lora-SemiBoldItalic.ttf" id="3_7xyhd"]
+[ext_resource type="FontFile" uid="uid://7k4xd8s0oed2" path="res://assets/UI/roboto/roboto.ttf" id="3_3275s"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_r5gru"]
-font = ExtResource("3_7xyhd")
+font = ExtResource("3_3275s")
 font_size = 12
 outline_size = 4
 outline_color = Color(0, 0, 0, 1)
@@ -17,11 +18,15 @@ font_size = 12
 outline_size = 8
 outline_color = Color(0, 0, 0, 1)
 
-[node name="Card" type="Control"]
+[node name="Card" type="Control" node_paths=PackedStringArray("Art", "Text", "Stats")]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 170.0
 offset_bottom = 320.0
+script = ExtResource("1_q5cne")
+Art = NodePath("Art")
+Text = NodePath("Text")
+Stats = NodePath("Stats")
 
 [node name="Art" type="Control" parent="."]
 anchors_preset = 0
@@ -127,7 +132,7 @@ offset_top = -320.0
 offset_right = 47.0
 offset_bottom = -268.0
 
-[node name="Energy" type="Label" parent="Stats/Energy"]
+[node name="Label" type="Label" parent="Stats/Energy"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

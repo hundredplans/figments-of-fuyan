@@ -1,4 +1,5 @@
 extends Control
+signal change_fileloader_state
 
 var rarity: int = 1
 var stats: Array = [1,1,1,1]
@@ -29,11 +30,11 @@ func on_stat_text_submitted(__: String, i: int) -> void:
 		$CardCreator/EditFileName/Internal.grab_focus()
 
 func on_stat_text_changed(text: String, node: LineEdit) -> void:
-	if text != "" and !text.is_valid_int():
-		node.text = old_stat_texts[node.get_index()]
-	else:
+	if text.is_valid_int():
 		old_stat_texts[node.get_index()] = text
 		stats[node.get_index()] = int(node.text)
+	elif text != "":
+		node.text = old_stat_texts[node.get_index()]
 		
 func on_stat_submitted(__: String):
 	for child in $CardCreator/Stats.get_children():
@@ -72,3 +73,25 @@ func _on_save_card_pressed():
 	var item_dict: Dictionary = Helper.write_to_base_game_file(FILE_LOADER_NAME, $CardCreator/EditFileName, contents, TID)
 	if item_dict and Settings.auto_create_dir == 1:
 		DirAccess.make_dir_absolute("res://assets/base_game/cards/" + str(item_dict.id) + " - " + item_dict.iname)
+
+func _on_load_card_pressed():
+	var FileLoader: Control = preload("res://scenes/editor/file_loader/file_loader.tscn").instantiate()
+	FileLoader.on_ready(FILE_LOADER_NAME)
+	FileLoader.item_selected.connect(on_item_selected)
+	add_child(FileLoader)
+	
+func on_item_selected(item_info: Dictionary) -> void:
+	$CardCreator/EditFileName.set_text(item_info.iname, item_info.sname)
+	for stat in ["a", "h", "s", "e"]:
+		var stat_edit: LineEdit = $CardCreator/Stats.get_node(Helper.stat_ai_dict[stat])
+		stat_edit.text = str(item_info[stat])
+		on_stat_text_changed(stat_edit.text, stat_edit)
+	
+	for ai_stat in ["aii", "aia", "aiw", "ait", "aic"]:
+		var btn: Control = get_node("AISettings/" + Helper.stat_ai_dict[ai_stat] + "Button")
+		btn.default = int(remap(item_info[ai_stat], 1, 7, 0, 100))
+		btn.set_grabber_position()
+		
+	$CardCreator/FlavorText.text = item_info.flavor
+	$CardCreator/CardText.text = item_info.text
+	_on_choose_rarity_item_selected(item_info.r)

@@ -45,9 +45,11 @@ func on_ready(_item_name: String) -> void:
 	var item_button_path: PackedScene = load("res://scenes/editor/file_loader/" + item_name + "/" + item_name + "_button.tscn")
 	var set_button_size: bool = false
 	for item_dict in Helper.return_file_names_recursive(base_path.left(-1)).map(func(x: String): return Helper.return_item_dict(item_name, Helper.return_file_contents(x))):
-		var item_button: Control = item_button_path.instantiate() 
-		item_button.pressed.connect(on_item_selected)
-		item_button.set_info(item_dict)
+		var item_button: Control = item_button_path.instantiate()
+		item_button.get_node("PressedButton").pressed.connect(on_item_selected.bind(item_button, item_dict))
+		item_button.get_node("ID").text = str(item_dict.id)
+		item_button.info = item_dict
+		item_button.apply_info()
 		all_item_buttons.append(item_button)
 		
 		if !set_button_size:
@@ -63,6 +65,7 @@ func on_item_ready() -> void:
 	var search_options: PackedStringArray = []
 	match item_name:
 		"area": search_options = ["World"]
+		"card": search_options = ["Rarity", "Attack", "Health", "Speed", "Energy", "Confidence", "Intelligence", "Awareness", "Teamwork", "Adventurousness", "Ability"]
 
 	$Settings/Search/SearchOptions.options += search_options
 		
@@ -112,12 +115,23 @@ func match_search_item_selected(btn: Control) -> bool:
 			return true
 		1: if str(btn.info.id).begins_with(SearchEdit.text):
 			return true
+			
 		2: if (btn.info.iname.to_lower()).begins_with(SearchEdit.text.to_lower()):
 			return true
 		3:
 			match item_name:
-				"area": if str(btn.info.world).begins_with(SearchEdit.text):
-					return true
+				"area": if str(btn.info.world).begins_with(SearchEdit.text): return true
+				"card": if str(btn.info.r).begins_with(SearchEdit.text): return true
+		4: if str(btn.info.a).begins_with(SearchEdit.text): return true
+		5: if str(btn.info.h).begins_with(SearchEdit.text): return true
+		6: if str(btn.info.s).begins_with(SearchEdit.text): return true
+		7: if str(btn.info.e).begins_with(SearchEdit.text): return true
+		8: if str(btn.info.aic).begins_with(SearchEdit.text): return true
+		9: if str(btn.info.aii).begins_with(SearchEdit.text): return true
+		10: if str(btn.info.aiw).begins_with(SearchEdit.text): return true
+		11: if str(btn.info.ait).begins_with(SearchEdit.text): return true
+		12: if str(btn.info.aia).begins_with(SearchEdit.text): return true
+		13: return true
 	return false
 
 func _on_search_edit_text_changed(__: String):

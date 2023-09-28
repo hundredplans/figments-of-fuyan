@@ -99,7 +99,7 @@ offset_left = 19.0
 offset_top = 664.0
 offset_right = 117.0
 offset_bottom = 724.0
-options = PackedStringArray("Areas", "Units", "Auras", "Boons", "Levels", "Trinkets", "Challenges", "World Variations")
+options = PackedStringArray("Areas", "Cards", "Auras", "Boons", "Levels", "Trinkets", "Challenges", "World Variations")
 label_text = "Close File Loader"
 
 [node name="AutoCreateDir" parent="." instance=ExtResource("3_dg7gw")]
@@ -128,3 +128,4 @@ totalmax = 100
 step = 1
 bigstep = 10
 label_text = "FL Opacity"
+disable_scrollwheel = true

@@ -29,6 +29,7 @@ var regular_delay_passed: int = 0
 @export var step: int
 @export var bigstep: int
 @export var label_text: String
+@export var disable_scrollwheel: bool = false
 
 func _process(_delta: float) -> void:
 	
@@ -48,13 +49,14 @@ func _process(_delta: float) -> void:
 				on_step()
 				can_press = 0 if !old_can_press else old_can_press
 				return
-				
-		for key in inputs:
-			if Input.is_action_just_pressed(key):
-				can_press = inputs[key]
-				on_step()
-				can_press = 0 if !old_can_press else old_can_press
-				return
+		
+		if !disable_scrollwheel:
+			for key in inputs:
+				if Input.is_action_just_pressed(key):
+					can_press = inputs[key]
+					on_step()
+					can_press = 0 if !old_can_press else old_can_press
+					return
 				
 	regular_delay_passed = 0
 	initial_delay_passed = 0
