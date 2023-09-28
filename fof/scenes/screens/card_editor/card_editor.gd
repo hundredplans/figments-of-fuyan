@@ -94,4 +94,11 @@ func on_item_selected(item_info: Dictionary) -> void:
 		
 	$CardCreator/FlavorText.text = item_info.flavor
 	$CardCreator/CardText.text = item_info.text
+	
+	var texture_path: String = "res://assets/base_game/cards/card/default_art.png"
+	var card_texture_path: String = "res://assets/base_game/cards/" + str(item_info.id) + " - " + item_info.iname + "/art_max.png"
+	if FileAccess.file_exists(card_texture_path):
+		texture_path = card_texture_path
+	$CardCreator/Art.texture = load(texture_path)
+	
 	_on_choose_rarity_item_selected(item_info.r)

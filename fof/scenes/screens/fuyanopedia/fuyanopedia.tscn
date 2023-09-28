@@ -88,18 +88,30 @@ offset_bottom = 1464.0
 rotation = -1.72788
 
 [node name="AchievementMenu" parent="Buttons" instance=ExtResource("2_64vel")]
-offset_top = -159.0
-offset_bottom = 109.0
+offset_top = -310.0
+offset_bottom = -42.0
 label_text = "Achievements"
 
 [node name="LoreBooks" parent="Buttons" instance=ExtResource("2_64vel")]
 offset_left = -67.0
-offset_top = 43.0
+offset_top = -108.0
 offset_right = 608.0
-offset_bottom = 311.0
+offset_bottom = 160.0
 label_text = "Lore Books"
 
 [node name="Dictionary" parent="Buttons" instance=ExtResource("2_64vel")]
-offset_top = 249.0
-offset_bottom = 517.0
+offset_top = 98.0
+offset_bottom = 366.0
 label_text = "Dictionary"
+
+[node name="Library" parent="Buttons" instance=ExtResource("2_64vel")]
+offset_left = -72.0
+offset_top = 298.0
+offset_right = 603.0
+offset_bottom = 566.0
+label_text = "Library"
+
+[node name="History" parent="Buttons" instance=ExtResource("2_64vel")]
+offset_top = 508.0
+offset_bottom = 776.0
+label_text = "History"

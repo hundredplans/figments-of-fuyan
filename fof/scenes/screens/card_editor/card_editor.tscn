@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dgjchsjrv72a3"]
+[gd_scene load_steps=12 format=3 uid="uid://dgjchsjrv72a3"]
 
 [ext_resource type="Script" path="res://scenes/screens/card_editor/card_editor.gd" id="1_hv8xs"]
 [ext_resource type="PackedScene" uid="uid://bdd0m6wbuerq5" path="res://scenes/editor/edit_file_name/edit_file_name.tscn" id="2_axojh"]
@@ -6,6 +6,8 @@
 [ext_resource type="Theme" uid="uid://c7y2qa3kssows" path="res://assets/UI/lora/lora.tres" id="3_vsycf"]
 [ext_resource type="PackedScene" uid="uid://bj3h1ak5dv73n" path="res://scenes/ui_general/op_button/op_button.tscn" id="4_nujyg"]
 [ext_resource type="PackedScene" uid="uid://bx2ne50cjcqkp" path="res://scenes/ui_general/scale_button/scale_button.tscn" id="6_18pqn"]
+[ext_resource type="Texture2D" uid="uid://bb4t7ng803hme" path="res://assets/base_game/cards/card/default_art.png" id="6_c7mm2"]
+[ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="6_crlth"]
 
 [sub_resource type="Animation" id="Animation_2hkxa"]
 length = 0.001
@@ -135,7 +137,7 @@ offset_left = 31.0
 offset_top = 555.0
 offset_right = 621.0
 offset_bottom = 892.0
-theme = ExtResource("3_vsycf")
+theme = ExtResource("6_crlth")
 placeholder_text = "                         Card Text"
 wrap_mode = 1
 
@@ -145,7 +147,7 @@ offset_left = 688.0
 offset_top = 523.0
 offset_right = 1239.0
 offset_bottom = 1056.0
-theme = ExtResource("3_vsycf")
+theme = ExtResource("6_crlth")
 placeholder_text = "                     Flavor Text"
 wrap_mode = 1
 
@@ -153,6 +155,7 @@ wrap_mode = 1
 texture_filter = 1
 position = Vector2(331, 206)
 scale = Vector2(2, 2)
+texture = ExtResource("6_c7mm2")
 
 [node name="ModelViewer" type="Control" parent="."]
 anchors_preset = 0

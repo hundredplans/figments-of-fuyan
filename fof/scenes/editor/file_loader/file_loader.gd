@@ -67,7 +67,7 @@ func on_item_ready() -> void:
 		"area": search_options = ["World"]
 		"card": search_options = ["Rarity", "Attack", "Health", "Speed", "Energy", "Confidence", "Intelligence", "Awareness", "Teamwork", "Adventurousness", "Ability"]
 
-	$Settings/Search/SearchOptions.options += search_options
+	$Search/SearchOptions.options += search_options
 		
 	
 func on_item_selected(_item: Control, item_info: Dictionary) -> void:

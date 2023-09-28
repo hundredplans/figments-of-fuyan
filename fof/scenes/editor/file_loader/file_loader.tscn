@@ -50,7 +50,7 @@ anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
 script = ExtResource("1_0yoq3")
-SearchEdit = NodePath("Settings/Search/SearchEdit")
+SearchEdit = NodePath("Search/SearchEdit")
 Items = NodePath("Items")
 
 [node name="LoadInOut" type="AnimationPlayer" parent="."]
@@ -95,22 +95,14 @@ offset_top = 168.0
 offset_right = 1769.0
 offset_bottom = 1038.0
 
-[node name="Settings" type="Control" parent="."]
+[node name="Search" type="Control" parent="."]
 anchors_preset = 0
-offset_left = 20.0
-offset_top = 20.0
-offset_right = 1746.0
-offset_bottom = 150.0
-theme = ExtResource("2_hm2h0")
+offset_left = 559.0
+offset_top = 28.0
+offset_right = 1399.0
+offset_bottom = 158.0
 
-[node name="Search" type="Control" parent="Settings"]
-anchors_preset = 0
-offset_left = 739.0
-offset_top = 8.0
-offset_right = 1579.0
-offset_bottom = 138.0
-
-[node name="SearchEdit" type="LineEdit" parent="Settings/Search"]
+[node name="SearchEdit" type="LineEdit" parent="Search"]
 layout_mode = 0
 offset_top = 8.0
 offset_right = 576.0
@@ -118,18 +110,13 @@ offset_bottom = 130.0
 placeholder_text = "Search Here"
 alignment = 1
 
-[node name="SearchOptions" parent="Settings/Search" instance=ExtResource("3_uvj3x")]
+[node name="SearchOptions" parent="Search" instance=ExtResource("3_uvj3x")]
 offset_left = 576.0
 offset_top = 8.0
 offset_right = 600.0
 offset_bottom = 71.0
 options = PackedStringArray("Name", "ID", "IName")
 label_text = "Search By"
-
-[node name="Filter" type="Control" parent="Settings"]
-anchors_preset = 0
-offset_right = 886.0
-offset_bottom = 143.0
 
 [node name="PageArrows" type="Control" parent="."]
 anchors_preset = 0
@@ -160,7 +147,7 @@ offset_top = 28.0
 offset_right = 1889.0
 offset_bottom = 150.0
 
-[connection signal="text_changed" from="Settings/Search/SearchEdit" to="." method="_on_search_edit_text_changed"]
-[connection signal="item_selected" from="Settings/Search/SearchOptions" to="." method="_on_search_item_selected"]
+[connection signal="text_changed" from="Search/SearchEdit" to="." method="_on_search_edit_text_changed"]
+[connection signal="item_selected" from="Search/SearchOptions" to="." method="_on_search_item_selected"]
 [connection signal="pressed" from="PageArrows/LeftArrow" to="." method="change_page" binds= [-1]]
 [connection signal="pressed" from="PageArrows/RightArrow" to="." method="change_page" binds= [1]]

@@ -18,3 +18,4 @@ func set_info(_info: Dictionary) -> void:
 	if FileAccess.file_exists(card_texture_path):
 		texture_path = card_texture_path
 	Art.get_node("ArtMax").texture = load(texture_path)
+	Art.get_node("FrontCard").texture = load("res://assets/base_game/cards/card/rarity/" + str(info.r) + ".png")
