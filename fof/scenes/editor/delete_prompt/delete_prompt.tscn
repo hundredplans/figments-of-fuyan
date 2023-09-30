@@ -1,0 +1,54 @@
+[gd_scene load_steps=4 format=3 uid="uid://cv3oci17fi34p"]
+
+[ext_resource type="Script" path="res://scenes/editor/delete_prompt/delete_prompt.gd" id="1_nwu3l"]
+[ext_resource type="LabelSettings" uid="uid://c5h6tv2uhlrjf" path="res://assets/UI/lora/lora_outline.tres" id="2_at6od"]
+[ext_resource type="PackedScene" uid="uid://colpm2577r0kn" path="res://assets/UI/exit_button/exit_button.tscn" id="2_g3edf"]
+
+[node name="DeletePrompt" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+script = ExtResource("1_nwu3l")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.215686, 0.215686, 0.215686, 0.941176)
+
+[node name="ExitButton" parent="." instance=ExtResource("2_g3edf")]
+layout_mode = 0
+offset_left = 1786.0
+offset_top = 15.0
+offset_right = 1906.0
+offset_bottom = 137.0
+
+[node name="Prompt" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -436.0
+offset_top = -169.0
+offset_right = 436.0
+offset_bottom = 478.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Prompt"]
+layout_mode = 0
+offset_right = 872.0
+offset_bottom = 135.0
+text = "Are you sure you want to delete this?
+Remember if you accidentally delete
+something you can find a copy inside temp!"
+label_settings = ExtResource("2_at6od")
+horizontal_alignment = 1
+
+[connection signal="pressed" from="ExitButton" to="." method="_on_exit_button_pressed"]

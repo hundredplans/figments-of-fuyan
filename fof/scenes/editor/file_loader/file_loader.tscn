@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://bl21q1wy6uij6"]
+[gd_scene load_steps=9 format=3 uid="uid://bl21q1wy6uij6"]
 
 [ext_resource type="Script" path="res://scenes/editor/file_loader/file_loader.gd" id="1_0yoq3"]
+[ext_resource type="Theme" uid="uid://c5rky1f5xs5if" path="res://assets/UI/lora/lora48.tres" id="2_5k07i"]
 [ext_resource type="Theme" uid="uid://c7y2qa3kssows" path="res://assets/UI/lora/lora.tres" id="2_hm2h0"]
 [ext_resource type="PackedScene" uid="uid://colpm2577r0kn" path="res://assets/UI/exit_button/exit_button.tscn" id="2_n880b"]
 [ext_resource type="PackedScene" uid="uid://bj3h1ak5dv73n" path="res://scenes/ui_general/op_button/op_button.tscn" id="3_uvj3x"]
@@ -107,6 +108,7 @@ layout_mode = 0
 offset_top = 8.0
 offset_right = 576.0
 offset_bottom = 130.0
+theme = ExtResource("2_5k07i")
 placeholder_text = "Search Here"
 alignment = 1
 

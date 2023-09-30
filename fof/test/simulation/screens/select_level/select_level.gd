@@ -84,7 +84,6 @@ func on_tile_change_tile_state(tile_info: Array, tile: Node2D) -> void:
 
 func on_load_level(level_name: String) -> void:
 	loaded_level = level_name
-	print(loaded_level)
 	for child in $CardZone.get_children():
 		if child.team == 1:
 			child.free()

@@ -1,12 +1,15 @@
 extends Control
 signal change_fileloader_state
 
+var ID: int = 0
 var rarity: int = 1
 var stats: Array = [1,1,1,1]
 var personality_sliders: Array = [1,1,1,1,1]
 
 const TID: int = 2
 const FILE_LOADER_NAME: String = "Card"
+
+@onready var Internal: LineEdit = $CardCreator/EditFileName/Internal
 @export var CardText: TextEdit
 @export var FlavorText: TextEdit
 
@@ -27,7 +30,7 @@ func on_stat_text_submitted(__: String, i: int) -> void:
 	if i < 4:
 		$CardCreator/Stats.get_child(i).grab_focus()
 	else:
-		$CardCreator/EditFileName/Internal.grab_focus()
+		Internal.grab_focus()
 
 func on_stat_text_changed(text: String, node: LineEdit) -> void:
 	if text.is_valid_int():
@@ -95,6 +98,7 @@ func on_item_selected(item_info: Dictionary) -> void:
 	$CardCreator/FlavorText.text = item_info.flavor
 	$CardCreator/CardText.text = item_info.text
 	
+	ID = item_info.id
 	var texture_path: String = "res://assets/base_game/cards/card/default_art.png"
 	var card_texture_path: String = "res://assets/base_game/cards/" + str(item_info.id) + " - " + item_info.iname + "/art_max.png"
 	if FileAccess.file_exists(card_texture_path):
@@ -102,3 +106,6 @@ func on_item_selected(item_info: Dictionary) -> void:
 	$CardCreator/Art.texture = load(texture_path)
 	
 	_on_choose_rarity_item_selected(item_info.r)
+
+func _on_delete_card_pressed():
+	Helper.on_delete_item(FILE_LOADER_NAME, str(ID), Internal, self, Settings.cards_can_delete_directory)

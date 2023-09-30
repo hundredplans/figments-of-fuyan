@@ -27,8 +27,9 @@ func on_change_fileloader_state(i: int) -> void:
 	get_parent().change_fileloader_state.emit(i)
 
 func on_exit_button_pressed() -> void:
-	on_change_fileloader_state(1)
-	Helper.play_method_on_animation_end("load_in_out", $LoadInOut, _queue_free, [], false, self)
+	if !$LoadInOut.is_playing():
+		on_change_fileloader_state(1)
+		Helper.play_method_on_animation_end("load_in_out", $LoadInOut, _queue_free, [], false, self)
 
 func _queue_free() -> void:
 	on_change_fileloader_state(0)

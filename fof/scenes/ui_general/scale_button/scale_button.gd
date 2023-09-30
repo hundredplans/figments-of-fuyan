@@ -23,6 +23,8 @@ var initial_delay_passed: int = 0
 var regular_delay_passed: int = 0
 
 @onready var timer: Timer = $DelayTimer
+
+@export var Grabber: TextureButton
 @export var default: int
 @export var totalmin: int
 @export var totalmax: int
@@ -30,6 +32,9 @@ var regular_delay_passed: int = 0
 @export var bigstep: int
 @export var label_text: String
 @export var disable_scrollwheel: bool = false
+
+func _ready() -> void:
+	Helper.create_button_clickmask(Grabber)
 
 func _process(_delta: float) -> void:
 	
@@ -126,13 +131,13 @@ func _on_mouse_entered():
 
 func set_grabber_position() -> void:
 	$GradientInside/Grabber.position.x = default * 1.7
-	$GradientInside/Grabber/GrabberSprite.modulate = $GradientInside.texture.get_image().get_pixel(\
+	$GradientInside/Grabber.modulate = $GradientInside.texture.get_image().get_pixel(\
 	$GradientInside/Grabber.position.x + 10, $GradientInside/Grabber.position.y + 30)
 	$Number.text = str(int(remap(default, 0, 100, totalmin, totalmax)))
 	item_selected.emit(int($Number.text))
 
-func _on_grabber_area_mouse_entered():
+func _on_grabber_button_down():
 	is_mouse_entered_grabber_area = true
 
-func _on_grabber_area_mouse_exited():
+func _on_grabber_button_up():
 	is_mouse_entered_grabber_area = false

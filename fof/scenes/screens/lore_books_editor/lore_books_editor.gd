@@ -239,6 +239,7 @@ func modulate_all() -> void:
 				3: color = colors[3]
 		btn.get_node("Background/Inside").color = color
 
+
 func on_category_selected(_selected_category: String) -> void:
 	match book_mode:
 		3:

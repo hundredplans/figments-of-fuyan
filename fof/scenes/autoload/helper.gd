@@ -88,11 +88,15 @@ func return_new_highest_id(dir_path: String, file_name: String) -> int:
 	var dir := DirAccess.open(dir_path)
 	var id: int = 0
 	if dir != null:
-		for file in dir.get_files():
+		var arr: Array = Array(dir.get_files())
+		arr.sort_custom(func(a: String, b: String): return int(a.get_slice(" ", 0)) < int(b.get_slice(" ", 0)))
+		for file in arr:
 			var file_name_info: Array = file.split("-", false)
 			var file_id: int = int(file_name_info[0])
 			if file_name_info[1].right(-1).left(-4) == file_name: return file_id
-			if file_id > id: id = file_id
+			id += 1
+			if file_id != id: return id
+			
 	id += 1
 	return id
 
@@ -197,3 +201,21 @@ func create_button_clickmask(button: TextureButton) -> void:
 	var bitmap := BitMap.new()
 	bitmap.create_from_image_alpha(img)
 	button.texture_click_mask = bitmap
+
+func on_delete_item(item: String, ID: String, Internal: LineEdit, node: Control, can_del_dir: int) -> void:
+	item = item.to_lower() + "s/"
+	if Internal.text.length() > 0:
+		var delete_prompt: Control = preload("res://scenes/editor/delete_prompt/delete_prompt.tscn").instantiate()
+		node.add_child(delete_prompt)
+		delete_prompt.delete_item.connect(on_delete_item_confirmed.bind(item, ID, Internal, can_del_dir))
+		delete_prompt.on_ready(Settings.confirm_file_delete, Internal.text)
+		
+func on_delete_item_confirmed(item: String, ID: String, Internal: LineEdit, can_del_dir: int) -> void:
+	var base_game_file_name: String = ID + " - " + Internal.text
+	var dir: String = "res://static/base_game/" + item
+	var contents: String = Helper.return_file_contents(dir + base_game_file_name + ".fof")
+	if contents:
+		delete_file(dir, base_game_file_name, ".fof")
+		write_to_file("user://save/temp/" + item, Internal.text, ".fof", contents, false)
+		if can_del_dir == 1:
+			DirAccess.remove_absolute("res://assets/base_game/" + item)
