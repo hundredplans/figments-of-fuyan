@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bnoei7u0kxl25"]
+[gd_scene load_steps=10 format=3 uid="uid://bnoei7u0kxl25"]
 
 [ext_resource type="Script" path="res://scenes/containers/main/main.gd" id="1_10ydf"]
 [ext_resource type="Texture2D" uid="uid://cak4cux157c2" path="res://scenes/screens/main_menu/background.jpg" id="2_sqn13"]
@@ -6,9 +6,13 @@
 [ext_resource type="Script" path="res://scenes/world/world.gd" id="3_hfbug"]
 [ext_resource type="Texture2D" uid="uid://svbsdkqet370" path="res://assets/UI/back_arrow/back_arrow_darker.png" id="4_qr5ib"]
 [ext_resource type="Texture2D" uid="uid://bak0pucgtak0b" path="res://assets/UI/back_arrow/back_arrow_dark.png" id="5_fjqpq"]
+[ext_resource type="Texture2D" uid="uid://et3bcj7gnugo" path="res://assets/UI/setting_cog/setting_cog.png" id="6_vmtrq"]
+[ext_resource type="Texture2D" uid="uid://cw2fnn7hfibl3" path="res://assets/UI/setting_cog/setting_cog_pressed.png" id="7_dwuio"]
+[ext_resource type="Texture2D" uid="uid://bp06vcvriyo3d" path="res://assets/UI/setting_cog/setting_cog_hover.png" id="8_ymrhe"]
 
-[node name="Main" type="Node" node_paths=PackedStringArray("BackArrow")]
+[node name="Main" type="Node" node_paths=PackedStringArray("SettingCog", "BackArrow")]
 script = ExtResource("1_10ydf")
+SettingCog = NodePath("GUI/SettingCog")
 BackArrow = NodePath("GUI/BackArrow")
 
 [node name="Background" type="Sprite2D" parent="."]
@@ -33,18 +37,32 @@ offset_bottom = 1080.0
 mouse_filter = 2
 
 [node name="BackArrow" type="TextureButton" parent="GUI"]
-layout_mode = 0
-offset_left = 8.0
-offset_top = 1012.0
-offset_right = 208.0
-offset_bottom = 1212.0
+layout_mode = 2
+offset_left = 1768.0
+offset_top = 8.0
+offset_right = 1968.0
+offset_bottom = 208.0
 scale = Vector2(0.3, 0.3)
 texture_normal = ExtResource("3_cu6v7")
 texture_pressed = ExtResource("4_qr5ib")
 texture_hover = ExtResource("5_fjqpq")
 texture_disabled = ExtResource("4_qr5ib")
 
+[node name="SettingCog" type="TextureButton" parent="GUI"]
+texture_filter = 1
+layout_mode = 2
+offset_left = 1829.0
+offset_top = -4.0
+offset_right = 1889.0
+offset_bottom = 56.0
+scale = Vector2(1.5, 1.5)
+texture_normal = ExtResource("6_vmtrq")
+texture_pressed = ExtResource("7_dwuio")
+texture_hover = ExtResource("8_ymrhe")
+texture_disabled = ExtResource("7_dwuio")
+
 [node name="World" type="Node3D" parent="."]
 script = ExtResource("3_hfbug")
 
 [connection signal="pressed" from="GUI/BackArrow" to="." method="on_trigger_screen_history"]
+[connection signal="pressed" from="GUI/SettingCog" to="." method="_on_setting_cog_pressed"]

@@ -1,8 +1,10 @@
 extends Node
 
+@export var SettingCog: TextureButton
 @export var BackArrow: TextureButton
 @onready var screens: Control = $Screens
 @onready var world: Node3D = $World
+
 const main_menu_path: String = "res://scenes/screens/main_menu/main_menu.tscn"
 var fileloader_state: int = 0
 var screen_change_animation_active: bool = false
@@ -12,7 +14,9 @@ func on_user_quit() -> void:
 	Settings.update_settings_file_info()
 	
 func _ready() -> void:
+	$GUI.z_index = 10
 	Helper.create_button_clickmask(BackArrow)
+	Helper.create_button_clickmask(SettingCog)
 	for helper_signal in [
 	["add_screen_history", on_add_screen_history],
 	["screen_change_animation_state", on_screen_change_animation_state],
@@ -29,6 +33,7 @@ func _ready() -> void:
 func on_screen_change_animation_state(x: bool) -> void:
 	screen_change_animation_active = x
 	BackArrow.disabled = x
+	SettingCog.disabled = x
 
 func sim_pressed(): call_deferred("on_sim_pressed")
 func on_sim_pressed():
@@ -41,6 +46,7 @@ func _process(_delta: float) -> void:
 func on_load_screen(screen_name: String) -> void:
 	if !screen_change_animation_active:
 		var screen: Control = load(screen_name).instantiate()
+		fileloader_state = 0
 		match screens.get_children().size():
 			0: 
 				Helper.on_enter_screen(screen)
@@ -63,8 +69,14 @@ func on_connect_screen_signals(screen: Control) -> void:
 			
 	if screen.name == "MainMenu" or Settings.hide_back_arrow == 2 or screen.name == "LoreBooksEditor" and Settings.hide_back_arrow == 1:
 		BackArrow.visible = false
-	else:
-		BackArrow.visible = true
+	else: BackArrow.visible = true
+		
+	match screen.name:
+		"SettingsMenu": 
+			SettingCog.visible = false
+			BackArrow.position.x += 70
+			get_viewport().warp_mouse(get_viewport().get_mouse_position())
+		_: SettingCog.visible = true; if BackArrow.position.x > 1768: BackArrow.position.x = 1768
 			
 func on_add_screen_history(load_path: String) -> void:
 	screen_history.append(load_path)
@@ -84,3 +96,6 @@ func _notification(what: int) -> void:
 
 func on_change_fileloader_state(i: int) -> void:
 	fileloader_state = i
+
+func _on_setting_cog_pressed():
+	on_load_screen("res://scenes/screens/settings_menu/settings_menu.tscn")

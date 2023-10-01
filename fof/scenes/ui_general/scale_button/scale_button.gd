@@ -1,143 +1,95 @@
 extends Control
-
 signal item_selected
-var pressed_inputs: Dictionary = {
-	"DownArrow": -2,
-	"LeftArrow": -1,
-	"UpArrow": 2,
-	"RightArrow": 1,
+
+var arrow_delay: int = 0
+@onready var GradientButton: TextureButton = $GradientButton
+@onready var Grabber: TextureButton = $Grabber
+
+@export var min_max: Vector2i = Vector2i(0, 100)
+@export var steps: Vector2i = Vector2(1, 10)
+@export var default: int = 0
+@export var label_text: String
+@export var disable_scrollwheel: bool
+@export var snap_mode: bool
+
+const INITIAL_DELAY: float = 0.3
+const REGULAR_DELAY: float = 0.05
+const GRADIENT_OFFSET: int = 20
+
+@onready var pressed_inputs: Dictionary = {
+	"DownArrow": -steps.y,
+	"LeftArrow": -steps.x,
+	"UpArrow": steps.y,
+	"RightArrow": steps.x,
 	}
 	
-var inputs: Dictionary = {
-	"MouseDown": -1,
-	"MouseUp": 1,
+@onready var inputs: Dictionary = {
+	"MouseDown": -steps.x,
+	"MouseUp": steps.x,
 	}
+func _process(_delta: float) -> void:
+	if Grabber.button_pressed: _on_gradient_button_pressed()
+	var is_pressed: bool = false
+	if Rect2(GradientButton.global_position, GradientButton.size).has_point(get_viewport().get_mouse_position()):
+		for input in pressed_inputs:
+			if Input.is_action_pressed(input):
+				is_pressed = true
+				if arrow_delay in [0, 3]:
+					match arrow_delay:
+						0: arrow_delay = 1
+						3: arrow_delay = 4
+					default = clamp(default + pressed_inputs[input], min_max.x, min_max.y)
+					set_grabber_position()
+					break
+		
+		if !disable_scrollwheel:
+			for input in inputs:
+				if Input.is_action_just_pressed(input):
+					default = clamp(default + inputs[input], min_max.x, min_max.y)
+					set_grabber_position()
+					break
 
-var grabbed: bool = false
-var is_mouse_entered_grabber_area: bool = false
-var is_mouse_entered: bool = false
-var can_press: int = 0
-const initial_delay: float = 0.3
-const regular_delay: float = 0.05
-var initial_delay_passed: int = 0
-var regular_delay_passed: int = 0
-
-@onready var timer: Timer = $DelayTimer
-
-@export var Grabber: TextureButton
-@export var default: int
-@export var totalmin: int
-@export var totalmax: int
-@export var step: int
-@export var bigstep: int
-@export var label_text: String
-@export var disable_scrollwheel: bool = false
+		if arrow_delay in [1, 4]:
+			var delay: float
+			match arrow_delay:
+				1: arrow_delay = 2; delay = INITIAL_DELAY
+				4: arrow_delay = 5; delay = REGULAR_DELAY
+			await get_tree().create_timer(delay).timeout
+			arrow_delay = 3
+			
+	if !is_pressed: arrow_delay = 0
 
 func _ready() -> void:
 	Helper.create_button_clickmask(Grabber)
-
-func _process(_delta: float) -> void:
-	
-	if Input.is_action_pressed("LeftClick"):
-		if can_press: on_step()
-		elif is_mouse_entered_grabber_area or grabbed:
-			grabbed = true
-			default = ceil((clamp(get_viewport().get_mouse_position().x - $GradientInside.global_position.x, 20, 188) - 20) * 0.59)
-			set_grabber_position()
-		return
+	(func():$Background/Outside.size.x += $Label.size.x + 23; $Background/Inside.size.x += $Label.size.x + 23).call_deferred()
+	set_grabber_position()
+	if snap_mode:
+		var total: int = min_max.y - min_max.x - 1
+		var difference: int = round($SnapBars.size.x / (total + 1))
+		for i in range(total + 2):
+			var bar := ColorRect.new()
+			$SnapBars.add_child(bar)
+			bar.color = Color(0,0,0)
+			bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			bar.size.y = $SnapBars.size.y
+			bar.size.x = 6
+			bar.position.x = (difference * i) - 3
 			
-	elif is_mouse_entered:
-		var old_can_press: int = can_press
-		for key in pressed_inputs:
-			if Input.is_action_pressed(key):
-				can_press = pressed_inputs[key]
-				on_step()
-				can_press = 0 if !old_can_press else old_can_press
-				return
-		
-		if !disable_scrollwheel:
-			for key in inputs:
-				if Input.is_action_just_pressed(key):
-					can_press = inputs[key]
-					on_step()
-					can_press = 0 if !old_can_press else old_can_press
-					return
-				
-	regular_delay_passed = 0
-	initial_delay_passed = 0
-	grabbed = false
-	for method in [on_regular_delay_passed, on_initial_delay_passed, Helper.on_timeout_disconnect]:
-		if timer.timeout.is_connected(method):
-			timer.timeout.disconnect(method)
-
-func _enter_tree() -> void:
-	bigstep = int(remap(bigstep, totalmin, totalmax, 0, 100))
-	step = int(remap(step, totalmin, totalmax,  0, 100))
 	
-	if default >= totalmin and default <= totalmax:
-		$Number.text = str(default)
+func _enter_tree() -> void:
+	default = clamp(default, min_max.x, min_max.y)
 	$Label.text = label_text
 	
-	$Outside.color = Helper.DARK_BROWN
-	$Inside.color = Helper.LIGHT_BROWN
-		
-	(func():$Outside.size.x += $Label.size.x + 23; $Inside.size.x += $Label.size.x + 23).call_deferred()
-	set_grabber_position()
-		
-func on_step() -> void:
-	if initial_delay_passed in [0,2]:
-		if regular_delay_passed in [0, 2]:
-			match can_press:
-				-2: default = clamp(default - bigstep, totalmin, totalmax)
-				-1: default = clamp(default - step, totalmin, totalmax)
-				1: default = clamp(default + step, totalmin, totalmax)
-				2: default = clamp(default + bigstep, totalmin, totalmax)
-				
-			set_grabber_position()
-			if regular_delay_passed != 1: regular_delay_passed = 0
-			
-	if initial_delay_passed == 0:
-		initial_delay_passed = 1
-		Helper.start_timer_attach_method(timer, initial_delay, on_initial_delay_passed)
-		
-	elif initial_delay_passed == 2 and regular_delay_passed == 0:
-		regular_delay_passed = 1
-		Helper.start_timer_attach_method(timer, regular_delay, on_regular_delay_passed)
-
-func on_regular_delay_passed() -> void:
-	regular_delay_passed = 2
-		
-func on_initial_delay_passed() -> void:
-	initial_delay_passed = 2
-
-func _on_big_step_mouse_entered(i: int):
-	can_press = 2 * i
-
-func _on_big_step_mouse_exited():
-	can_press = 0
-
-func _on_small_step_mouse_entered(i: int):
-	can_press = 1 * i
-
-func _on_small_step_mouse_exited():
-	can_press = 0
-
-func _on_mouse_exited():
-	is_mouse_entered = false
-	can_press = 0
-
-func _on_mouse_entered():
-	is_mouse_entered = true
-
 func set_grabber_position() -> void:
-	$GradientInside/Grabber.position.x = default * 1.7
-	$GradientInside/Grabber.modulate = $GradientInside.texture.get_image().get_pixel(\
-	$GradientInside/Grabber.position.x + 10, $GradientInside/Grabber.position.y + 30)
-	$Number.text = str(int(remap(default, 0, 100, totalmin, totalmax)))
-	item_selected.emit(int($Number.text))
+	$Number.text = str(default)
+	var gbgpx: int = int(GradientButton.position.x)
+	Grabber.position.x = round(remap(default, min_max.x, min_max.y, gbgpx + GRADIENT_OFFSET, gbgpx + GradientButton.size.x - GRADIENT_OFFSET) - 15)
+	Grabber.modulate = GradientButton.texture_normal.get_image().get_pixel(\
+	int(Grabber.position.x - GradientButton.position.x + Grabber.size.x * 0.5), 30)
+	item_selected.emit(default)
 
-func _on_grabber_button_down():
-	is_mouse_entered_grabber_area = true
-
-func _on_grabber_button_up():
-	is_mouse_entered_grabber_area = false
+func _on_gradient_button_pressed():
+	var gbgpx: int = int(GradientButton.global_position.x)
+	var clamped_mouse: int = clamp(get_viewport().get_mouse_position().x, gbgpx + GRADIENT_OFFSET, gbgpx + GradientButton.size.x - GRADIENT_OFFSET)
+	default = round(remap(clamped_mouse, gbgpx + GRADIENT_OFFSET, gbgpx + GradientButton.size.x - GRADIENT_OFFSET, min_max.x, min_max.y))
+	set_grabber_position()

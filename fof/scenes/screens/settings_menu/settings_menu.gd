@@ -1,23 +1,17 @@
 extends Control
 var card_positions: Array = [Vector2(1344, 200), Vector2(278, 200), Vector2(1066, 140), Vector2(406, 140), Vector2(660, 90)]
 var card_scales: Array = [Vector2(0.5, 0.5), Vector2(0.5, 0.5), Vector2(0.75, 0.75), Vector2(0.75, 0.75), Vector2.ONE]
-var card_order: Array = ["Audio", "Preferences", "Graphics", "Controls", "Video"]
+var card_order: Array = Helper.return_file_contents("user://save/settings/settings_order.txt").split("\n", false)
 var cards_are_moving: bool = false
 var card_areas: Array = []
 
-func _process(_delta: float) -> void:
-	if Input.is_action_just_pressed("LeftClick"):
-		if !cards_are_moving:
-			var i: int = 0
-			for rect in card_areas:
-				if rect.has_point(get_viewport().get_mouse_position()):
-					on_center_selected_card(i)
-					break
-				i += 1
+func _queue_free() -> void:
+	var contents: String = "%s\n%s\n%s\n%s\n%s" % $CardSorter.get_children().map(func(x: Control): return x.name)
+	Helper.write_to_file("user://save/settings/", "settings_order", ".txt", contents)
 				
 func _ready() -> void:
-	for child in $CardAreas.get_children().map(func(x: Area2D): return x.get_node("CollisionShape2D")):
-		var rsize: Vector2 = child.shape.get_rect().size
+	for child in $CardAreas.get_children():
+		var rsize: Vector2 = child.get_rect().size
 		card_areas.append(Rect2(child.get_parent().position - rsize / 2, rsize))
 	
 	var directions: Array = ["left", "right"]
@@ -44,7 +38,7 @@ func _ready() -> void:
 	
 
 func on_center_selected_card(i: int) -> void:
-	if i < 4:
+	if i < 4 and !cards_are_moving:
 		cards_are_moving = true
 		var directions: Array = ["left", "right"]
 		var direction: int = 0 if i in [1,3] else 1

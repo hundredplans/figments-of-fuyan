@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://ctefkqvn6jtcw"]
+[gd_scene load_steps=5 format=3 uid="uid://ctefkqvn6jtcw"]
 
 [ext_resource type="Script" path="res://scenes/screens/settings_menu/settings_menu.gd" id="1_va7fn"]
 
@@ -64,15 +64,6 @@ _data = {
 "move_screen": SubResource("Animation_wh5y0")
 }
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_tdve8"]
-size = Vector2(130, 450)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_3k25n"]
-size = Vector2(130, 450)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_h05kf"]
-size = Vector2(250, 680)
-
 [node name="SettingsMenu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -97,30 +88,39 @@ rotation = 0.261799
 [node name="CardAreas" type="Control" parent="."]
 anchors_preset = 0
 
-[node name="0" type="Area2D" parent="CardAreas"]
-position = Vector2(1583, 425)
+[node name="0" type="Button" parent="CardAreas"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 1518.0
+offset_top = 200.0
+offset_right = 1648.0
+offset_bottom = 650.0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CardAreas/0"]
-shape = SubResource("RectangleShape2D_tdve8")
-metadata/_edit_lock_ = true
+[node name="1" type="Button" parent="CardAreas"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 275.0
+offset_top = 200.0
+offset_right = 405.0
+offset_bottom = 650.0
 
-[node name="1" type="Area2D" parent="CardAreas"]
-position = Vector2(340, 425)
+[node name="2" type="Button" parent="CardAreas"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 1262.0
+offset_top = 137.0
+offset_right = 1512.0
+offset_bottom = 817.0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CardAreas/1"]
-shape = SubResource("RectangleShape2D_3k25n")
-metadata/_edit_lock_ = true
+[node name="3" type="Button" parent="CardAreas"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 409.0
+offset_top = 137.0
+offset_right = 659.0
+offset_bottom = 817.0
 
-[node name="2" type="Area2D" parent="CardAreas"]
-position = Vector2(1387, 477)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CardAreas/2"]
-shape = SubResource("RectangleShape2D_h05kf")
-metadata/_edit_lock_ = true
-
-[node name="3" type="Area2D" parent="CardAreas"]
-position = Vector2(534, 477)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CardAreas/3"]
-shape = SubResource("RectangleShape2D_h05kf")
-metadata/_edit_lock_ = true
+[connection signal="pressed" from="CardAreas/0" to="." method="on_center_selected_card" binds= [0]]
+[connection signal="pressed" from="CardAreas/1" to="." method="on_center_selected_card" binds= [1]]
+[connection signal="pressed" from="CardAreas/2" to="." method="on_center_selected_card" binds= [2]]
+[connection signal="pressed" from="CardAreas/3" to="." method="on_center_selected_card" binds= [3]]

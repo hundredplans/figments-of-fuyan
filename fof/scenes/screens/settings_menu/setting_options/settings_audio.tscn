@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://c71qn866tocqs"]
 
 [ext_resource type="Script" path="res://scenes/screens/settings_menu/settings_connect.gd" id="1_6c3e1"]
-[ext_resource type="PackedScene" uid="uid://bx2ne50cjcqkp" path="res://scenes/ui_general/scale_button/scale_button.tscn" id="1_t66ru"]
+[ext_resource type="PackedScene" uid="uid://65cqb6wug8it" path="res://scenes/ui_general/scale_button/scale_button.tscn" id="3_y2ht1"]
 
 [node name="SettingsAudio" type="Control"]
 layout_mode = 3
@@ -10,66 +10,30 @@ offset_right = 518.0
 offset_bottom = 708.0
 script = ExtResource("1_6c3e1")
 
-[node name="MasterVolume" parent="." instance=ExtResource("1_t66ru")]
-layout_mode = 1
-anchor_left = 0.019
-anchor_top = 0.017
-anchor_right = 0.019
-anchor_bottom = 0.017
-offset_left = 0.157999
-offset_top = -0.0360003
-offset_right = 351.158
-offset_bottom = 62.964
-default = 100
-totalmax = 100
-step = 1
-bigstep = 10
+[node name="MasterVolume" parent="." instance=ExtResource("3_y2ht1")]
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 299.0
+offset_bottom = 69.0
 label_text = "Master"
 
-[node name="MusicVolume" parent="." instance=ExtResource("1_t66ru")]
-layout_mode = 1
-anchor_left = 0.019
-anchor_top = 0.017
-anchor_right = 0.019
-anchor_bottom = 0.017
-offset_left = 0.157999
-offset_top = 104.964
-offset_right = 351.158
-offset_bottom = 167.964
-default = 100
-totalmax = 100
-step = 1
-bigstep = 10
+[node name="MusicVolume" parent="." instance=ExtResource("3_y2ht1")]
+offset_left = 16.0
+offset_top = 102.0
+offset_right = 299.0
+offset_bottom = 155.0
 label_text = "Music"
 
-[node name="SFXVolume" parent="." instance=ExtResource("1_t66ru")]
-layout_mode = 1
-anchor_left = 0.019
-anchor_top = 0.017
-anchor_right = 0.019
-anchor_bottom = 0.017
-offset_left = 0.157999
-offset_top = 209.964
-offset_right = 351.158
-offset_bottom = 272.964
-default = 100
-totalmax = 100
-step = 1
-bigstep = 10
+[node name="SFXVolume" parent="." instance=ExtResource("3_y2ht1")]
+offset_left = 16.0
+offset_top = 183.0
+offset_right = 299.0
+offset_bottom = 236.0
 label_text = "SFX"
 
-[node name="VLVolume" parent="." instance=ExtResource("1_t66ru")]
-layout_mode = 1
-anchor_left = 0.019
-anchor_top = 0.017
-anchor_right = 0.019
-anchor_bottom = 0.017
-offset_left = 0.157999
-offset_top = 314.964
-offset_right = 351.158
-offset_bottom = 377.964
-default = 100
-totalmax = 100
-step = 1
-bigstep = 10
+[node name="VLVolume" parent="." instance=ExtResource("3_y2ht1")]
+offset_left = 16.0
+offset_top = 268.0
+offset_right = 299.0
+offset_bottom = 321.0
 label_text = "VL"

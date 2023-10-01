@@ -39,6 +39,8 @@ func on_exit_screen(screen: Control, old_screen: Control):
 
 func on_exit_screen_animation_finished(screen: Control, old_screen: Control) -> void:
 	on_enter_screen(screen)
+	if old_screen.has_method("_queue_free"):
+		old_screen._queue_free()
 	old_screen.queue_free()
 
 func on_enter_screen(screen: Control) -> void:

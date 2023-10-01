@@ -75,7 +75,9 @@ func _on_save_card_pressed():
 	personality_sliders[0], personality_sliders[1], personality_sliders[2], personality_sliders[3], personality_sliders[4]]
 	var item_dict: Dictionary = Helper.write_to_base_game_file(FILE_LOADER_NAME, $CardCreator/EditFileName, contents, TID)
 	if item_dict and Settings.auto_create_dir == 1:
-		DirAccess.make_dir_absolute("res://assets/base_game/cards/" + str(item_dict.id) + " - " + item_dict.iname)
+		var dir_path: String = "res://assets/base_game/cards/"
+		if !Array(DirAccess.get_directories_at(dir_path)).any(func(x: String): return x.begins_with(str(item_dict.id))):
+			DirAccess.make_dir_absolute(dir_path + str(item_dict.id) + " - " + item_dict.iname)
 
 func _on_load_card_pressed():
 	var FileLoader: Control = preload("res://scenes/editor/file_loader/file_loader.tscn").instantiate()
@@ -92,7 +94,7 @@ func on_item_selected(item_info: Dictionary) -> void:
 	
 	for ai_stat in ["aii", "aia", "aiw", "ait", "aic"]:
 		var btn: Control = get_node("AISettings/" + Helper.stat_ai_dict[ai_stat] + "Button")
-		btn.default = int(remap(item_info[ai_stat], 1, 7, 0, 100))
+		btn.default = item_info[ai_stat]
 		btn.set_grabber_position()
 		
 	$CardCreator/FlavorText.text = item_info.flavor

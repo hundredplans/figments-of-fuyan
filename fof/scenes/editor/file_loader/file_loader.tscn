@@ -144,10 +144,11 @@ text = "->"
 
 [node name="ExitButton" parent="." instance=ExtResource("2_n880b")]
 layout_mode = 0
-offset_left = 1769.0
-offset_top = 28.0
-offset_right = 1889.0
-offset_bottom = 150.0
+offset_left = 1788.0
+offset_top = 61.0
+offset_right = 1908.0
+offset_bottom = 181.0
+scale = Vector2(0.7, 0.7)
 
 [connection signal="text_changed" from="Search/SearchEdit" to="." method="_on_search_edit_text_changed"]
 [connection signal="item_selected" from="Search/SearchOptions" to="." method="_on_search_item_selected"]

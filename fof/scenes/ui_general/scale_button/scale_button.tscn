@@ -1,69 +1,75 @@
-[gd_scene load_steps=5 format=3 uid="uid://bx2ne50cjcqkp"]
+[gd_scene load_steps=5 format=3 uid="uid://65cqb6wug8it"]
 
-[ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="1_qowab"]
+[ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="1_62k3r"]
 [ext_resource type="Script" path="res://scenes/ui_general/scale_button/scale_button.gd" id="1_wp1vw"]
-[ext_resource type="Texture2D" uid="uid://bott4acv4s5xd" path="res://scenes/ui_general/scale_button/gradient_scale.png" id="3_yychw"]
-[ext_resource type="Texture2D" uid="uid://pbfgddg30sab" path="res://scenes/ui_general/scale_button/grabber.png" id="4_il0ro"]
+[ext_resource type="Texture2D" uid="uid://bott4acv4s5xd" path="res://scenes/ui_general/scale_button/gradient_scale.png" id="2_rr8ay"]
+[ext_resource type="Texture2D" uid="uid://pbfgddg30sab" path="res://scenes/ui_general/scale_button/grabber.png" id="4_ihojy"]
 
-[node name="ScaleButton" type="Control" node_paths=PackedStringArray("Grabber")]
+[node name="ScaleButton" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 286.0
-offset_bottom = 97.0
-theme = ExtResource("1_qowab")
+offset_right = 283.0
+offset_bottom = 53.0
+theme = ExtResource("1_62k3r")
 script = ExtResource("1_wp1vw")
-Grabber = NodePath("GradientInside/Grabber")
 
-[node name="DelayTimer" type="Timer" parent="."]
-one_shot = true
+[node name="Background" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 0
+offset_right = 283.0
+offset_bottom = 53.0
 
-[node name="Outside" type="ColorRect" parent="."]
-layout_mode = 0
-offset_right = 286.0
-offset_bottom = 63.0
-mouse_filter = 2
+[node name="Inside" type="ColorRect" parent="Background"]
+layout_mode = 1
+offset_right = 283.0
+offset_bottom = 53.0
 color = Color(0, 0, 0, 1)
 
-[node name="Inside" type="ColorRect" parent="."]
-layout_mode = 0
-offset_left = 5.0
-offset_top = 5.0
-offset_right = 281.0
-offset_bottom = 58.0
-mouse_filter = 2
-color = Color(0.737255, 0.737255, 0.737255, 1)
-
-[node name="GradientInside" type="Sprite2D" parent="."]
-position = Vector2(71, 0)
-scale = Vector2(1, 1.18868)
-texture = ExtResource("3_yychw")
-centered = false
-
-[node name="Grabber" type="TextureButton" parent="GradientInside"]
-offset_left = 5.0
-offset_top = 17.0
-offset_right = 35.0
-offset_bottom = 82.0
-texture_normal = ExtResource("4_il0ro")
-
-[node name="Number" type="Label" parent="."]
+[node name="Outside" type="ColorRect" parent="Background"]
 layout_mode = 1
 offset_left = 5.0
 offset_top = 5.0
-offset_right = 71.0
-offset_bottom = 58.0
+offset_right = 278.0
+offset_bottom = 48.0
+color = Color(0.298039, 0.298039, 0.298039, 1)
+
+[node name="GradientButton" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 73.0
+offset_right = 283.0
+offset_bottom = 53.0
+texture_normal = ExtResource("2_rr8ay")
+
+[node name="SnapBars" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 93.0
+offset_top = 5.0
+offset_right = 263.0
+offset_bottom = 48.0
+mouse_filter = 2
+
+[node name="Grabber" type="TextureButton" parent="."]
+layout_mode = 1
+anchors_preset = -1
+offset_left = 79.0
+offset_top = 16.0
+offset_right = 109.0
+offset_bottom = 81.0
+texture_normal = ExtResource("4_ihojy")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 290.0
+offset_right = 291.0
+offset_bottom = 53.0
+vertical_alignment = 1
+
+[node name="Number" type="Label" parent="."]
+layout_mode = 0
+offset_right = 79.0
+offset_bottom = 53.0
 text = "100"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label" type="Label" parent="."]
-layout_mode = 0
-offset_left = 295.0
-offset_right = 296.0
-offset_bottom = 63.0
-vertical_alignment = 1
-
-[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
-[connection signal="button_down" from="GradientInside/Grabber" to="." method="_on_grabber_button_down"]
-[connection signal="button_up" from="GradientInside/Grabber" to="." method="_on_grabber_button_up"]
+[connection signal="pressed" from="GradientButton" to="." method="_on_gradient_button_pressed"]

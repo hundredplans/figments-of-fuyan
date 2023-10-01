@@ -132,7 +132,13 @@ func match_search_item_selected(btn: Control) -> bool:
 		10: if str(btn.info.aiw).begins_with(SearchEdit.text): return true
 		11: if str(btn.info.ait).begins_with(SearchEdit.text): return true
 		12: if str(btn.info.aia).begins_with(SearchEdit.text): return true
-		13: return true
+		13:
+			var contents: String = Helper.return_file_contents("res://scenes/editor/file_loader/card/abilities.txt")
+			var ltext: String = btn.info.text.to_lower()
+			for i in contents.split("\n", false):
+				if i.begins_with(SearchEdit.text) and ltext.contains(i):
+					return true
+			
 	return false
 
 func _on_search_edit_text_changed(__: String):
