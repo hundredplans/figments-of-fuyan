@@ -15,6 +15,7 @@ func on_user_quit() -> void:
 	
 func _ready() -> void:
 	$GUI.z_index = 10
+	SettingCog.pressed.connect(func(): AudioMaster.play_sfx(preload("res://assets/UI/setting_cog/click.wav"), -10))
 	Helper.create_button_clickmask(BackArrow)
 	Helper.create_button_clickmask(SettingCog)
 	for helper_signal in [
@@ -67,16 +68,19 @@ func on_connect_screen_signals(screen: Control) -> void:
 		if sig in screen:
 			screen[sig].connect(get("on_" + sig))
 			
-	if screen.name == "MainMenu" or Settings.hide_back_arrow == 2 or screen.name == "LoreBooksEditor" and Settings.hide_back_arrow == 1:
+	if screen.name == "MainMenu" or Settings.hide_menu_gui == 2 or screen.name == "LoreBooksEditor" and Settings.hide_menu_gui == 1:
 		BackArrow.visible = false
-	else: BackArrow.visible = true
+		SettingCog.visible = false
+	else: 
+		BackArrow.visible = true
+		SettingCog.visible = true
 		
 	match screen.name:
 		"SettingsMenu": 
 			SettingCog.visible = false
 			BackArrow.position.x += 70
-			get_viewport().warp_mouse(get_viewport().get_mouse_position())
-		_: SettingCog.visible = true; if BackArrow.position.x > 1768: BackArrow.position.x = 1768
+		_: if BackArrow.position.x > 1768: BackArrow.position.x = 1768
+	get_viewport().warp_mouse(get_viewport().get_mouse_position())
 			
 func on_add_screen_history(load_path: String) -> void:
 	screen_history.append(load_path)
