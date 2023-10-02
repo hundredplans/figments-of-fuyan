@@ -5,7 +5,7 @@ func on_ready(i: int, confirm_name: String) -> void:
 	match i:
 		0: on_confirm_name(confirm_name)
 		1: on_confirm_checkbox()
-		2: delete_item.emit(); queue_free()
+		2: on_confirm_match(true)
 
 func on_confirm_checkbox() -> void:
 	var binary_button: Control = preload('res://scenes/ui_general/binary_button/binary_button.tscn').instantiate()
