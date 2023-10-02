@@ -206,11 +206,11 @@ func create_button_clickmask(button: TextureButton) -> void:
 
 func on_delete_item(item: String, ID: String, Internal: LineEdit, node: Control, can_del_dir: int) -> void:
 	item = item.to_lower() + "s/"
-	if Internal.text.length() > 0:
-		var delete_prompt: Control = preload("res://scenes/editor/delete_prompt/delete_prompt.tscn").instantiate()
-		node.add_child(delete_prompt)
-		delete_prompt.delete_item.connect(on_delete_item_confirmed.bind(item, ID, Internal, can_del_dir))
-		delete_prompt.on_ready(Settings.confirm_file_delete, Internal.text)
+	var file_valid: bool = Internal.text.length() > 0 and FileAccess.file_exists("res://static/base_game/"  + item + ID + " - " + Internal.text + ".fof")
+	var delete_prompt: Control = preload("res://scenes/editor/delete_prompt/delete_prompt.tscn").instantiate()
+	node.add_child(delete_prompt)
+	delete_prompt.delete_item.connect(on_delete_item_confirmed.bind(item, ID, Internal, can_del_dir))
+	delete_prompt.on_ready(Settings.confirm_file_delete, Internal.text, file_valid)
 		
 func on_delete_item_confirmed(item: String, ID: String, Internal: LineEdit, can_del_dir: int) -> void:
 	var base_game_file_name: String = ID + " - " + Internal.text

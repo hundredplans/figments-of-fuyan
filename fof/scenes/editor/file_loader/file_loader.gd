@@ -43,10 +43,10 @@ func on_ready(_item_name: String) -> void:
 	
 	on_item_ready()
 	
-	var item_button_path: PackedScene = load("res://scenes/editor/file_loader/" + item_name + "/" + item_name + "_button.tscn")
+	var item_button_path: String = "res://scenes/editor/file_loader/" + item_name + "/" + item_name + "_button.tscn"
 	var set_button_size: bool = false
 	for item_dict in Helper.return_file_names_recursive(base_path.left(-1)).map(func(x: String): return Helper.return_item_dict(item_name, Helper.return_file_contents(x))):
-		var item_button: Control = item_button_path.instantiate()
+		var item_button: Control = load(item_button_path).instantiate()
 		item_button.get_node("PressedButton").pressed.connect(on_item_selected.bind(item_button, item_dict))
 		item_button.get_node("ID").text = str(item_dict.id)
 		item_button.info = item_dict

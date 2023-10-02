@@ -1,11 +1,15 @@
 extends Control
 signal delete_item
 
-func on_ready(i: int, confirm_name: String) -> void:
-	match i:
-		0: on_confirm_name(confirm_name)
-		1: on_confirm_checkbox()
-		2: on_confirm_match(true)
+func on_ready(i: int, confirm_name: String, file_valid: bool) -> void:
+	
+	match file_valid:
+		true:
+			match i:
+				0: on_confirm_name(confirm_name)
+				1: on_confirm_checkbox()
+				2: on_confirm_match(true)
+		false: on_confirm_match(false)
 
 func on_confirm_checkbox() -> void:
 	var binary_button: Control = preload('res://scenes/ui_general/binary_button/binary_button.tscn').instantiate()
@@ -20,7 +24,7 @@ func on_confirm_name(confirm_name: String) -> void:
 	$Prompt.add_child(line_edit)
 	line_edit.placeholder_text = confirm_name
 	line_edit.alignment = HORIZONTAL_ALIGNMENT_CENTER
-	line_edit.text_submitted.connect((func(x: String): on_confirm_match.bind(x == confirm_name)))
+	line_edit.text_submitted.connect((func(x: String): on_confirm_match(x == confirm_name)))
 	line_edit.size.x = $Prompt.size.x
 	line_edit.position.y = 150
 	line_edit.theme = preload("res://assets/UI/lora/lora48.tres")
