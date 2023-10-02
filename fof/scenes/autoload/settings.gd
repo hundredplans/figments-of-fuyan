@@ -3,7 +3,7 @@ extends Node
 var cards_can_delete_directory: int = 0
 var auto_create_dir: int = 0
 var confirm_file_delete: int = 0
-var hide_back_arrow: int = 0
+var hide_menu_gui: int = 0
 var book_font_size: int = 0
 var clear_backup_files: int = 0
 var default_camera_speed_multiplier: int = 1
@@ -77,8 +77,8 @@ func set_closefileloader(i: int):
 	close_fileloader.x = i
 func set_fileloaderopacity(i: int):
 	fileloader_opacity = i
-func set_hidebackarrow(i: int):
-	hide_back_arrow = i
+func set_hidemenugui(i: int):
+	hide_menu_gui = i
 func set_notifyrewards(i: int):
 	notify_rewards = i
 func set_clearbackupfiles(i: int):
