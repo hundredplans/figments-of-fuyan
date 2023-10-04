@@ -93,36 +93,50 @@ offset_bottom = 655.0
 options = PackedStringArray("Name Prompt", "Yes/No Prompt", "None")
 label_text = "File Delete"
 
+[node name="HidePatchNotesMenu" parent="." instance=ExtResource("4_70xc4")]
+offset_left = 19.0
+offset_top = 665.0
+offset_right = 196.0
+offset_bottom = 728.0
+label_text = "Hide Patch Notes"
+
+[node name="OpenPatchNotesMenu" parent="." instance=ExtResource("4_70xc4")]
+offset_left = 19.0
+offset_top = 737.0
+offset_right = 196.0
+offset_bottom = 800.0
+label_text = "Open Patch Notes"
+
 [node name="Fileloader" type="Label" parent="."]
 layout_mode = 0
-offset_top = 662.0
+offset_top = 808.0
 offset_right = 518.0
-offset_bottom = 722.0
+offset_bottom = 868.0
 text = "Fileloader"
 label_settings = SubResource("LabelSettings_nac3c")
 horizontal_alignment = 1
 
 [node name="CloseFileLoader" parent="." instance=ExtResource("5_t1xs1")]
 offset_left = 19.0
-offset_top = 734.0
+offset_top = 880.0
 offset_right = 117.0
-offset_bottom = 794.0
+offset_bottom = 940.0
 options = PackedStringArray("Areas", "Cards", "Auras", "Boons", "Levels", "Trinkets", "Challenges", "World Variations")
 label_text = "Close File Loader"
 
 [node name="AutoCreateDir" parent="." instance=ExtResource("3_dg7gw")]
 offset_left = 19.0
-offset_top = 803.0
+offset_top = 949.0
 offset_right = 43.0
-offset_bottom = 866.0
+offset_bottom = 1012.0
 options = PackedStringArray("Never", "Always")
 default = 1
 label_text = "Auto-create Folders"
 
 [node name="FileLoaderOpacity" parent="." instance=ExtResource("6_3lxbg")]
 offset_left = 19.0
-offset_top = 873.0
+offset_top = 1019.0
 offset_right = 370.0
-offset_bottom = 970.0
+offset_bottom = 1116.0
 label_text = "FL Opacity"
 disable_scrollwheel = true

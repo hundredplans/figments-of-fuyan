@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://cd1hnc68uspy"]
+[gd_scene load_steps=7 format=3 uid="uid://cd1hnc68uspy"]
 
 [ext_resource type="Script" path="res://scenes/screens/main_menu/main_menu.gd" id="1_iwh4f"]
+[ext_resource type="PackedScene" uid="uid://cm5ntwf8speq1" path="res://scenes/screens/main_menu/patch_notes/patch_notes.tscn" id="3_c76i0"]
 [ext_resource type="PackedScene" uid="uid://ce7pqa77ekwxb" path="res://assets/UI/menu_button/menu_button.tscn" id="4_bvscx"]
 
 [sub_resource type="Animation" id="Animation_kkdo4"]
@@ -181,6 +182,10 @@ label_text = "Settings"
 offset_top = 645.0
 offset_bottom = 913.0
 label_text = "Fuyanopedia"
+
+[node name="PatchNotes" parent="." instance=ExtResource("3_c76i0")]
+offset_left = 1083.0
+offset_right = 1920.0
 
 [connection signal="pressed" from="Buttons/Quit" to="." method="_on_quit_pressed"]
 [connection signal="pressed" from="Buttons/LeftButtons/Simulation" to="." method="_on_simulation_pressed"]

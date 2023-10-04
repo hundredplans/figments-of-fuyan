@@ -2,9 +2,9 @@ extends Node3D
 @onready var tiles = $tiles
 
 func _ready():
-#	for tile in tiles.get_children():
-#		tile.tile_inputA.connect(on_tile_inputA)
-#		tile.tile_inputB.connect(on_tile_inputB)
+	for tile in tiles.get_children():
+		tile.tile_inputA.connect(on_tile_inputA)
+		tile.tile_inputB.connect(on_tile_inputB)
 	pass
 
 func on_tile_inputA(tile: Node3D):

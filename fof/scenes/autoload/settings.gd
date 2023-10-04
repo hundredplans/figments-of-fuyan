@@ -1,5 +1,7 @@
 extends Node
 
+var hide_patch_notes_menu: int = 0
+var open_patch_notes_menu: int = 0
 var cards_can_delete_directory: int = 0
 var auto_create_dir: int = 0
 var confirm_file_delete: int = 0
@@ -8,7 +10,7 @@ var book_font_size: int = 0
 var clear_backup_files: int = 0
 var default_camera_speed_multiplier: int = 1
 var autoskip_turn: bool = false
-var close_fileloader := Vector2(0, return_max_mc_value("res://scenes/screens/settings_menu/setting_options/settings_preferences.tscn", "CloseFileLoader"))
+var close_fileloader := Vector2i(0, return_max_mc_value("res://scenes/screens/settings_menu/setting_options/settings_preferences.tscn", "CloseFileLoader"))
 var fileloader_opacity: int = 0
 
 var notify_rewards: int = 0
@@ -91,6 +93,10 @@ func set_autocreatedir(i: int):
 	auto_create_dir = i
 func set_cardscandeletedirectory(i: int):
 	cards_can_delete_directory = i
+func set_hidepatchnotesmenu(i: int):
+	hide_patch_notes_menu = i
+func set_openpatchnotesmenu(i: int):
+	open_patch_notes_menu = i
 
 func set_mastervolume(i: int):
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(i * 0.01))

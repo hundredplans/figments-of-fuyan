@@ -173,7 +173,7 @@ func return_item_dict(item: String, _contents: String) -> Dictionary:
 		var contents: Array = _contents.split("\n")
 		var keys: Array[String] = ["id", "tid", "iname", "sname"]
 		match item:
-			"area": keys += ["pcolor", "acolor", "world"]
+			"area": keys += ["pcolor", "acolor", "world", "cards"]
 			"card": keys += ["a", "h", "s", "e", "r", "text", "flavor", "aic", "aii", "aiw", "ait", "aia"]
 		
 		var i: int = 0
@@ -184,17 +184,21 @@ func return_item_dict(item: String, _contents: String) -> Dictionary:
 			elif contents[i].begins_with("(") and contents[i].ends_with(")"):
 				contents[i] = str_to_var("Color" + contents[i])
 				
+			elif contents[i].begins_with("[") and contents[i].ends_with("]"):
+				contents[i] = str_to_var(contents[i])
+				
 			item_dict.merge({key: contents[i]})
 			i += 1
+		item_dict.merge({"bgfn": str(item_dict.id) + " - " + item_dict.iname})
 	return item_dict
 
-func return_bitwise(i: int, ntotal: int, total: int) -> bool:
+func return_bitwise(i: int, total: Vector2i) -> bool:
 	var k: int = 0
-	while ntotal > 0:
-		if ntotal >= total:
-			ntotal -= total
+	while total.x > 0:
+		if total.x >= total.y:
+			total.x -= total.y
 			if k == i: return true
-		total = int(total * 0.5)
+		total.y = int(total.y * 0.5)
 		k += 1
 	return false
 
@@ -221,3 +225,11 @@ func on_delete_item_confirmed(item: String, ID: String, Internal: LineEdit, can_
 		write_to_file("user://save/temp/" + item, Internal.text, ".fof", contents, false)
 		if can_del_dir == 1:
 			DirAccess.remove_absolute("res://assets/base_game/" + item)
+
+func id_to_dict(i: int, item: String) -> Dictionary:
+	item = item.to_lower() + "s/"
+	var dir_path: String = "res://static/base_game/" + item
+	for file_path in DirAccess.get_files_at(dir_path):
+		if int(file_path.split(" ")[0]) == i:
+			return return_item_dict(item.left(-2), return_file_contents(dir_path + file_path))
+	return {}

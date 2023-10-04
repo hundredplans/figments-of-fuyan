@@ -73,7 +73,7 @@ func on_item_ready() -> void:
 	
 func on_item_selected(_item: Control, item_info: Dictionary) -> void:
 	item_selected.emit(item_info)
-	if Helper.return_bitwise(item_info.tid, int(Settings.close_fileloader.x), int(Settings.close_fileloader.y)):
+	if Helper.return_bitwise(item_info.tid, Settings.close_fileloader):
 		on_exit_button_pressed()
 	
 func position_item_buttons() -> void:

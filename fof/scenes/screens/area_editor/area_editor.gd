@@ -4,14 +4,15 @@ signal change_fileloader_state
 const TID: int = 1
 const FILE_LOADER_NAME: String = "Area"
 var world_difficulty: int = 1
-var area_name: String
 var primary_color: Color = Color("000000")
 var accent_color: Color = Color("ffffff")
-var cards_allowed: Array
+var cards: Array
 var tiles_allowed: Array
 
 var primary_color_selected: bool = false
 var choose_color := Color(0x00000000)
+
+@onready var CardZone: Control = $AddedCards/CardZone
 
 func _ready():
 	modulate_all()
@@ -72,7 +73,7 @@ func _on_world_difficulty_pressed(_world_difficulty: int):
 	modulate_world_difficulty_buttons()
 
 func _on_save_area_pressed():
-	var contents: String = "%s\n%s\n%s\n%s\n%s" % [str(primary_color), str(accent_color), str(world_difficulty), cards_allowed, tiles_allowed]
+	var contents: String = "%s\n%s\n%s\n%s\n%s" % [str(primary_color), str(accent_color), str(world_difficulty), cards, tiles_allowed]
 	Helper.write_to_base_game_file(FILE_LOADER_NAME, $Buttons/EditFileName, contents, TID)
 
 func _on_load_area_pressed():
@@ -87,3 +88,41 @@ func on_item_selected(item_info: Dictionary) -> void:
 	accent_color = item_info.acolor
 	load_primary_and_accent_colors()
 	$Buttons/EditFileName.set_text(item_info.iname, item_info.sname)
+	
+	cards = []
+	for child in $AddedCards/CardZone.get_children(): child.queue_free()
+	
+	for i in item_info.cards:
+		on_card_selected(Helper.id_to_dict(i, "Card"))
+
+func _on_add_cards_pressed():
+	var FileLoader: Control = preload("res://scenes/editor/file_loader/file_loader.tscn").instantiate()
+	FileLoader.on_ready("Card")
+	FileLoader.item_selected.connect(on_card_selected)
+	add_child(FileLoader)
+	
+func on_card_selected(card_info: Dictionary) -> void:
+	if card_info and !card_info.id in cards:
+		var added_card: Control = preload("res://scenes/screens/area_editor/added_card.tscn").instantiate()
+		added_card.name = str(card_info.id)
+		added_card.remove_card.connect(on_remove_card)
+		added_card.change_art(card_info.bgfn)
+		CardZone.add_child(added_card)
+		cards.append(card_info.id)
+		on_sort_added_cards()
+		
+func on_remove_card(btn: Control) -> void:
+	cards.erase(int(str(btn.name)))
+	btn.queue_free()
+	on_sort_added_cards()
+	get_viewport().warp_mouse(get_viewport().get_mouse_position())
+	
+func on_sort_added_cards():
+	var xy := Vector2(0, 20)
+	for child in CardZone.get_children():
+		if !child.is_queued_for_deletion():
+			child.position = xy
+			xy.x += 150
+			if xy.x > 300:
+				xy.y += 150
+				xy.x = 0

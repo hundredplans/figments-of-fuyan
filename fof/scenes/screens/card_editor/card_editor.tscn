@@ -6,7 +6,7 @@
 [ext_resource type="Theme" uid="uid://c7y2qa3kssows" path="res://assets/UI/lora/lora.tres" id="3_vsycf"]
 [ext_resource type="PackedScene" uid="uid://bj3h1ak5dv73n" path="res://scenes/ui_general/op_button/op_button.tscn" id="4_nujyg"]
 [ext_resource type="PackedScene" uid="uid://65cqb6wug8it" path="res://scenes/ui_general/scale_button/scale_button.tscn" id="6_18pqn"]
-[ext_resource type="Texture2D" uid="uid://bgbyoyqx40n27" path="res://assets/base_game/cards/card/default_art.png" id="6_c7mm2"]
+[ext_resource type="Texture2D" uid="uid://bgbyoyqx40n27" path="res://assets/base_game/cards/card/default_art_max.png" id="6_036w2"]
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="6_crlth"]
 [ext_resource type="PackedScene" uid="uid://60bl7vlw3efv" path="res://assets/base_game/cards/card/default_model.glb" id="9_cp3lr"]
 
@@ -156,7 +156,7 @@ wrap_mode = 1
 texture_filter = 1
 position = Vector2(331, 206)
 scale = Vector2(2, 2)
-texture = ExtResource("6_c7mm2")
+texture = ExtResource("6_036w2")
 
 [node name="AISettings" type="Control" parent="."]
 layout_mode = 1
@@ -277,27 +277,37 @@ grow_vertical = 2
 text = "Delete Card"
 
 [node name="ModelViewer" type="SubViewportContainer" parent="."]
-layout_mode = 0
-offset_right = 652.0
-offset_bottom = 1080.0
+layout_mode = 1
+anchors_preset = -1
+offset_top = 145.0
+offset_right = 650.0
+offset_bottom = 795.0
 
 [node name="SubViewport" type="SubViewport" parent="ModelViewer"]
 transparent_bg = true
 handle_input_locally = false
+size = Vector2i(650, 650)
 render_target_update_mode = 4
 
-[node name="Node3D" type="Node3D" parent="ModelViewer/SubViewport"]
-transform = Transform3D(0.649581, 0, -0.760293, 0, 1, 0, 0.760293, 0, 0.649581, 0, 0, 0)
+[node name="ModelWorld" type="Node3D" parent="ModelViewer/SubViewport"]
 
-[node name="default_model" parent="ModelViewer/SubViewport/Node3D" instance=ExtResource("9_cp3lr")]
+[node name="Model" type="Node3D" parent="ModelViewer/SubViewport/ModelWorld"]
 
-[node name="OmniLight3D" type="OmniLight3D" parent="ModelViewer/SubViewport/Node3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.75951, 3.96493, -4.06644)
-omni_range = 320.0
+[node name="DefaultModel" parent="ModelViewer/SubViewport/ModelWorld/Model" instance=ExtResource("9_cp3lr")]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="ModelViewer/SubViewport/ModelWorld"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0811731, 1.69899, 3.2611)
 
 [node name="Camera3D" type="Camera3D" parent="ModelViewer/SubViewport"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.30054, 2.78849)
-fov = 58.0
+
+[node name="ModelViewerButton" type="Button" parent="."]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+offset_top = 145.0
+offset_right = 650.0
+offset_bottom = 795.0
+button_mask = 2
 
 [connection signal="text_submitted" from="CardCreator/EditFileName" to="." method="_on_edit_file_name_text_submitted"]
 [connection signal="item_selected" from="CardCreator/ChooseRarity" to="." method="_on_choose_rarity_item_selected"]
@@ -306,3 +316,5 @@ fov = 58.0
 [connection signal="pressed" from="Buttons/SaveCard" to="." method="_on_save_card_pressed"]
 [connection signal="pressed" from="Buttons/LoadCard" to="." method="_on_load_card_pressed"]
 [connection signal="pressed" from="Buttons/DeleteCard" to="." method="_on_delete_card_pressed"]
+[connection signal="button_down" from="ModelViewerButton" to="." method="_on_model_viewer_button_button_down"]
+[connection signal="button_up" from="ModelViewerButton" to="." method="_on_model_viewer_button_button_up"]

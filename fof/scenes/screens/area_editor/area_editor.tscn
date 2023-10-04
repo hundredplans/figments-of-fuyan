@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://bq65i6hwtd4b5"]
+[gd_scene load_steps=9 format=3 uid="uid://bq65i6hwtd4b5"]
 
 [ext_resource type="Script" path="res://scenes/screens/area_editor/area_editor.gd" id="1_r82ym"]
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="2_euq7d"]
 [ext_resource type="PackedScene" uid="uid://bdd0m6wbuerq5" path="res://scenes/editor/edit_file_name/edit_file_name.tscn" id="3_s437e"]
+[ext_resource type="FontFile" uid="uid://dnq2ul3ia4hy3" path="res://assets/UI/lora/Lora-Bold.ttf" id="4_ygm6e"]
 
 [sub_resource type="Animation" id="Animation_sqay2"]
 length = 0.001
@@ -42,6 +43,12 @@ _data = {
 "move_screen": SubResource("Animation_4oksu")
 }
 
+[sub_resource type="LabelSettings" id="LabelSettings_u43yd"]
+font = ExtResource("4_ygm6e")
+font_size = 48
+outline_size = 8
+outline_color = Color(0, 0, 0, 1)
+
 [node name="AreaEditor" type="Control"]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 3
@@ -71,6 +78,7 @@ offset_left = 570.0
 offset_right = 1412.0
 offset_bottom = 1080.0
 color = Color(0, 0, 0, 1)
+metadata/_edit_lock_ = true
 
 [node name="ACBackground" type="ColorRect" parent="Background"]
 layout_mode = 0
@@ -78,6 +86,21 @@ offset_left = 600.0
 offset_top = 30.0
 offset_right = 1380.0
 offset_bottom = 1050.0
+metadata/_edit_lock_ = true
+
+[node name="PRAddCardsBG" type="ColorRect" parent="Background"]
+layout_mode = 0
+offset_right = 570.0
+offset_bottom = 1080.0
+color = Color(0, 0, 0, 1)
+
+[node name="ACAddCardsBG" type="ColorRect" parent="Background"]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 30.0
+offset_right = 570.0
+offset_bottom = 1050.0
+metadata/_edit_lock_ = true
 
 [node name="Buttons" type="Control" parent="."]
 anchors_preset = 0
@@ -317,13 +340,12 @@ offset_right = 440.0
 offset_bottom = 217.0
 text = "Load Area"
 
-[node name="Label2" type="Label" parent="Buttons/OtherButtons"]
+[node name="AddCards" type="Button" parent="Buttons/OtherButtons"]
 layout_mode = 0
-offset_left = 124.0
-offset_top = 232.0
-offset_right = 332.0
-offset_bottom = 273.0
-text = "Cards Allowed"
+offset_top = 217.0
+offset_right = 440.0
+offset_bottom = 324.0
+text = "Add Cards"
 
 [node name="Label" type="Label" parent="Buttons/OtherButtons"]
 layout_mode = 0
@@ -341,9 +363,36 @@ offset_bottom = 560.0
 grow_horizontal = 1
 grow_vertical = 1
 
+[node name="AddedCards" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 570.0
+offset_bottom = 1080.0
+
+[node name="Label" type="Label" parent="AddedCards"]
+layout_mode = 1
+offset_left = 30.0
+offset_top = 30.0
+offset_right = 570.0
+offset_bottom = 1050.0
+text = "Added Cards
+Go Here 
+
+(Tap to Delete)"
+label_settings = SubResource("LabelSettings_u43yd")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CardZone" type="Control" parent="AddedCards"]
+anchors_preset = 0
+offset_left = 72.0
+offset_top = 30.0
+offset_right = 570.0
+offset_bottom = 1050.0
+
 [connection signal="pressed" from="Buttons/WorldDifficulty/WorldOne" to="." method="_on_world_difficulty_pressed" binds= [1]]
 [connection signal="pressed" from="Buttons/WorldDifficulty/WorldTwo" to="." method="_on_world_difficulty_pressed" binds= [2]]
 [connection signal="pressed" from="Buttons/WorldDifficulty/WorldThree" to="." method="_on_world_difficulty_pressed" binds= [3]]
 [connection signal="pressed" from="Buttons/WorldDifficulty/WorldFour" to="." method="_on_world_difficulty_pressed" binds= [4]]
 [connection signal="pressed" from="Buttons/OtherButtons/SaveArea" to="." method="_on_save_area_pressed"]
 [connection signal="pressed" from="Buttons/OtherButtons/LoadArea" to="." method="_on_load_area_pressed"]
+[connection signal="pressed" from="Buttons/OtherButtons/AddCards" to="." method="_on_add_cards_pressed"]
