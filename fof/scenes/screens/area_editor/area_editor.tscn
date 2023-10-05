@@ -329,31 +329,24 @@ color = Color(0, 0, 0, 1)
 
 [node name="SaveArea" type="Button" parent="Buttons/OtherButtons"]
 layout_mode = 0
+offset_top = 48.0
 offset_right = 440.0
-offset_bottom = 110.0
+offset_bottom = 158.0
 text = "Save Area"
 
 [node name="LoadArea" type="Button" parent="Buttons/OtherButtons"]
 layout_mode = 0
-offset_top = 110.0
+offset_top = 158.0
 offset_right = 440.0
-offset_bottom = 217.0
+offset_bottom = 265.0
 text = "Load Area"
 
 [node name="AddCards" type="Button" parent="Buttons/OtherButtons"]
 layout_mode = 0
-offset_top = 217.0
+offset_top = 265.0
 offset_right = 440.0
-offset_bottom = 324.0
+offset_bottom = 372.0
 text = "Add Cards"
-
-[node name="Label" type="Label" parent="Buttons/OtherButtons"]
-layout_mode = 0
-offset_left = 124.0
-offset_top = 341.0
-offset_right = 319.0
-offset_bottom = 382.0
-text = "Tiles Allowed"
 
 [node name="EditFileName" parent="Buttons" instance=ExtResource("3_s437e")]
 offset_left = 84.0

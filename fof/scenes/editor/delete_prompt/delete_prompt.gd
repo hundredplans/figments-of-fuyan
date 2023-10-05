@@ -32,8 +32,8 @@ func on_confirm_name(confirm_name: String) -> void:
 func on_confirm_match(x: bool) -> void:
 	_on_exit_button_pressed()
 	var sfx: Dictionary = {
-		false: "res://scenes/editor/delete_prompt/unconfirm.wav",
-		true: "res://scenes/editor/delete_prompt/confirm.wav",
+		false: "res://assets/sounds/confirmation/unconfirm_default.wav",
+		true: "res://assets/sounds/confirmation/confirm_default.wav",
 	}
 	if x: delete_item.emit()
 	AudioMaster.play_sfx(load(sfx[x]), -10)

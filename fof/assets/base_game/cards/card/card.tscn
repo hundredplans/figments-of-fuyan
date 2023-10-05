@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://d3wjg2pg1go2m"]
+[gd_scene load_steps=10 format=3 uid="uid://d3wjg2pg1go2m"]
 
 [ext_resource type="LabelSettings" uid="uid://c5h6tv2uhlrjf" path="res://assets/UI/lora/lora_outline.tres" id="1_5lyx8"]
 [ext_resource type="Script" path="res://assets/base_game/cards/card/card.gd" id="1_q5cne"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://dpeyrc41hexuj" path="res://assets/base_game/cards/card/rarity/1.png" id="2_ht4sl"]
 [ext_resource type="FontFile" uid="uid://dnq2ul3ia4hy3" path="res://assets/UI/lora/Lora-Bold.ttf" id="2_iho42"]
 [ext_resource type="FontFile" uid="uid://7k4xd8s0oed2" path="res://assets/UI/roboto/roboto.ttf" id="3_3275s"]
+[ext_resource type="Texture2D" uid="uid://d16d7hw1iemwl" path="res://assets/base_game/cards/card/stats/hp/hp.png" id="7_xact2"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_r5gru"]
 font = ExtResource("3_3275s")
@@ -101,6 +102,11 @@ anchors_preset = 0
 offset_left = 56.0
 offset_right = 112.0
 offset_bottom = 75.0
+
+[node name="Sprite2D" type="Sprite2D" parent="Stats/Health"]
+position = Vector2(1, 0)
+texture = ExtResource("7_xact2")
+centered = false
 
 [node name="Label" type="Label" parent="Stats/Health"]
 layout_mode = 1

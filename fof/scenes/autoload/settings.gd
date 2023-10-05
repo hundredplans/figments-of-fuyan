@@ -1,5 +1,7 @@
 extends Node
 
+var interact_button: int = 0
+var level_size: int = 0
 var hide_patch_notes_menu: int = 0
 var open_patch_notes_menu: int = 0
 var cards_can_delete_directory: int = 0
@@ -97,6 +99,10 @@ func set_hidepatchnotesmenu(i: int):
 	hide_patch_notes_menu = i
 func set_openpatchnotesmenu(i: int):
 	open_patch_notes_menu = i
+func set_levelsize(i: int):
+	level_size = i
+func set_interactbutton(i: int):
+	interact_button = i
 
 func set_mastervolume(i: int):
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(i * 0.01))

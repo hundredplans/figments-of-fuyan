@@ -16,7 +16,7 @@ var choose_color := Color(0x00000000)
 
 func _ready():
 	modulate_all()
-	load_primary_and_accent_colors()
+	Helper.load_area_colors(self, primary_color, accent_color)
 	var available_colors: Array = Helper.return_file_contents("res://static/screens/area_editor/available_colors.txt").split("\n", false)
 	if available_colors.size() > 0:
 		var primary_container: bool = false
@@ -46,16 +46,7 @@ func _process(_delta: float) -> void:
 			match primary_color_selected:
 				true: primary_color = choose_color
 				false: accent_color = choose_color
-			load_primary_and_accent_colors()
-
-func load_primary_and_accent_colors() -> void:
-	for child in Helper.get_children_recursive(self):
-		if child.name.begins_with("PR"):
-			if child is ColorRect: child.color = primary_color
-			else: child.modulate = primary_color
-		elif child.name.begins_with("AC"):
-			if child is ColorRect: child.color = accent_color
-			else: child.modulate = accent_color
+			Helper.load_area_colors(self, primary_color, accent_color)
 
 func modulate_all() -> void:
 	modulate_world_difficulty_buttons()
@@ -86,7 +77,7 @@ func on_item_selected(item_info: Dictionary) -> void:
 	_on_world_difficulty_pressed(item_info.world)
 	primary_color = item_info.pcolor
 	accent_color = item_info.acolor
-	load_primary_and_accent_colors()
+	Helper.load_area_colors(self, primary_color, accent_color)
 	$Buttons/EditFileName.set_text(item_info.iname, item_info.sname)
 	
 	cards = []
@@ -103,6 +94,7 @@ func _on_add_cards_pressed():
 	
 func on_card_selected(card_info: Dictionary) -> void:
 	if card_info and !card_info.id in cards:
+		$AddedCards/Label.visible = false
 		var added_card: Control = preload("res://scenes/screens/area_editor/added_card.tscn").instantiate()
 		added_card.name = str(card_info.id)
 		added_card.remove_card.connect(on_remove_card)
@@ -113,6 +105,7 @@ func on_card_selected(card_info: Dictionary) -> void:
 		
 func on_remove_card(btn: Control) -> void:
 	cards.erase(int(str(btn.name)))
+	if cards.is_empty(): $AddedCards/Label.visible = true
 	btn.queue_free()
 	on_sort_added_cards()
 	get_viewport().warp_mouse(get_viewport().get_mouse_position())

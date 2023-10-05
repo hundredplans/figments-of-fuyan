@@ -52,91 +52,107 @@ offset_bottom = 303.0
 options = PackedStringArray("Don\'t Backup", "1 Day", "3 Days", "1 Week", "1 Month", "Never")
 label_text = "Clear Backup"
 
+[node name="InteractButton" parent="." instance=ExtResource("3_dg7gw")]
+offset_left = 19.0
+offset_top = 315.0
+offset_right = 43.0
+offset_bottom = 378.0
+options = PackedStringArray("RMB", "MMBN")
+label_text = "Interact Button"
+
 [node name="Admin" type="Label" parent="."]
 layout_mode = 0
-offset_top = 311.0
+offset_top = 381.0
 offset_right = 518.0
-offset_bottom = 371.0
+offset_bottom = 441.0
 text = "Admin"
 label_settings = SubResource("LabelSettings_nac3c")
 horizontal_alignment = 1
 
 [node name="BookFontSize" parent="." instance=ExtResource("3_dg7gw")]
 offset_left = 19.0
-offset_top = 376.0
+offset_top = 446.0
 offset_right = 43.0
-offset_bottom = 439.0
+offset_bottom = 509.0
 options = PackedStringArray("16", "20", "24", "28", "32", "36")
 label_text = "Book Font Size"
 
 [node name="HideMenuGUI" parent="." instance=ExtResource("3_dg7gw")]
 offset_left = 19.0
-offset_top = 449.0
+offset_top = 519.0
 offset_right = 43.0
-offset_bottom = 512.0
+offset_bottom = 582.0
 options = PackedStringArray("Never", "Lore Books", "Always")
 label_text = "Hide Menu GUI"
 
 [node name="CardsCanDeleteDirectory" parent="." instance=ExtResource("3_dg7gw")]
 offset_left = 19.0
-offset_top = 520.0
+offset_top = 590.0
 offset_right = 43.0
-offset_bottom = 583.0
+offset_bottom = 653.0
 options = PackedStringArray("Never", "Only Empty")
 label_text = "Delete Directory"
 
 [node name="ConfirmFileDelete" parent="." instance=ExtResource("3_dg7gw")]
 offset_left = 19.0
-offset_top = 592.0
+offset_top = 662.0
 offset_right = 43.0
-offset_bottom = 655.0
+offset_bottom = 725.0
 options = PackedStringArray("Name Prompt", "Yes/No Prompt", "None")
 label_text = "File Delete"
 
 [node name="HidePatchNotesMenu" parent="." instance=ExtResource("4_70xc4")]
 offset_left = 19.0
-offset_top = 665.0
+offset_top = 735.0
 offset_right = 196.0
-offset_bottom = 728.0
+offset_bottom = 798.0
 label_text = "Hide Patch Notes"
 
 [node name="OpenPatchNotesMenu" parent="." instance=ExtResource("4_70xc4")]
 offset_left = 19.0
-offset_top = 737.0
+offset_top = 807.0
 offset_right = 196.0
-offset_bottom = 800.0
+offset_bottom = 870.0
 label_text = "Open Patch Notes"
+
+[node name="LevelSize" parent="." instance=ExtResource("3_dg7gw")]
+offset_left = 19.0
+offset_top = 878.0
+offset_right = 43.0
+offset_bottom = 941.0
+options = PackedStringArray("30x30", "50x50", "70x70", "100x100")
+label_text = "Level Size"
 
 [node name="Fileloader" type="Label" parent="."]
 layout_mode = 0
-offset_top = 808.0
+offset_top = 950.0
 offset_right = 518.0
-offset_bottom = 868.0
+offset_bottom = 1010.0
 text = "Fileloader"
 label_settings = SubResource("LabelSettings_nac3c")
 horizontal_alignment = 1
 
 [node name="CloseFileLoader" parent="." instance=ExtResource("5_t1xs1")]
 offset_left = 19.0
-offset_top = 880.0
+offset_top = 1022.0
 offset_right = 117.0
-offset_bottom = 940.0
+offset_bottom = 1082.0
 options = PackedStringArray("Areas", "Cards", "Auras", "Boons", "Levels", "Trinkets", "Challenges", "World Variations")
 label_text = "Close File Loader"
 
 [node name="AutoCreateDir" parent="." instance=ExtResource("3_dg7gw")]
 offset_left = 19.0
-offset_top = 949.0
+offset_top = 1091.0
 offset_right = 43.0
-offset_bottom = 1012.0
+offset_bottom = 1154.0
 options = PackedStringArray("Never", "Always")
 default = 1
 label_text = "Auto-create Folders"
 
 [node name="FileLoaderOpacity" parent="." instance=ExtResource("6_3lxbg")]
 offset_left = 19.0
-offset_top = 1019.0
+offset_top = 1161.0
 offset_right = 370.0
-offset_bottom = 1116.0
+offset_bottom = 1258.0
 label_text = "FL Opacity"
 disable_scrollwheel = true

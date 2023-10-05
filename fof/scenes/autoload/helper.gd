@@ -233,3 +233,12 @@ func id_to_dict(i: int, item: String) -> Dictionary:
 		if int(file_path.split(" ")[0]) == i:
 			return return_item_dict(item.left(-2), return_file_contents(dir_path + file_path))
 	return {}
+	
+func load_area_colors(node: Node, primary_color: Color, accent_color: Color) -> void:
+	for child in get_children_recursive(node):
+		if child.name.begins_with("PR"):
+			if child is ColorRect: child.color = primary_color
+			else: child.modulate = primary_color
+		elif child.name.begins_with("AC"):
+			if child is ColorRect: child.color = accent_color
+			else: child.modulate = accent_color
