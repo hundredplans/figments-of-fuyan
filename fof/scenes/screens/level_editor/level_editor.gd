@@ -1,6 +1,7 @@
 extends Control
 signal change_fileloader_state
 
+var tiles: Dictionary
 @onready var Tiles = $WorldContainer/World/World/Tiles
 @onready var LoadButtons = $LoadButtons
 @onready var BuildMenu = $BuildMenu
@@ -55,7 +56,7 @@ func on_area_selected(item: Dictionary) -> void:
 
 func on_load_empty_level() -> void:
 	for child in Tiles.get_children(): child.queue_free()
-	var tile_packed: PackedScene = preload("res://assets/models/tiles/null_tile.glb")
+	var tile_packed: PackedScene = preload("res://assets/models/tiles/null_tile/null_tile.tscn")
 	Tiles.add_child(tile_packed.instantiate())
 	
 func on_build_menu_enabled() -> void:

@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://7n12odd5drgo"]
+
+[ext_resource type="PackedScene" uid="uid://04cwrdd6ildg" path="res://assets/models/tiles/null_tile/null_tile.glb" id="1_cc50j"]
+[ext_resource type="Script" path="res://assets/models/tiles/editor_tile.gd" id="2_lrxq7"]
+
+[node name="NullTile" instance=ExtResource("1_cc50j")]
+script = ExtResource("2_lrxq7")
