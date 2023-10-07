@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://duy7scwi5u0c5"]
+
+[ext_resource type="Script" path="res://assets/models/tiles/editor_tile.gd" id="1_8x5vn"]
+[ext_resource type="PackedScene" uid="uid://563obd8fpt3t" path="res://assets/models/tiles/hover_tile.glb" id="2_ukjp5"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_f5gx4"]
+points = PackedVector3Array(-0.865, 0, 0.5, 0, 0, 1, 0.865, 0, -0.5, 0, 0, -1, 0.865, 0, 0.5, -0.865, 0, -0.5, -0.865, 0.02, 0.5, 0, 0.02, 1, 0.865, 0.02, -0.5, 0, 0.02, -1, 0.865, 0.02, 0.5, -0.865, 0.02, -0.5)
+
+[node name="EditorTile" type="Node3D"]
+script = ExtResource("1_8x5vn")
+
+[node name="hover_tile" parent="." instance=ExtResource("2_ukjp5")]
+
+[node name="DetectMouse" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DetectMouse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0709, 0.0296775, 0)
+visible = false
+shape = SubResource("ConvexPolygonShape3D_f5gx4")
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="DetectMouse"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.00414906, -0.999762, 0.861544, -0.495272, 0.861544, 0.507737, -0.00127934, 1.01201, -0.86816, 0.500411, -0.872897, -0.522793)
+
+[connection signal="mouse_entered" from="DetectMouse" to="." method="_on_detect_mouse_mouse_entered"]

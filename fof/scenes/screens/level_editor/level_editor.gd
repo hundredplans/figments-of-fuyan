@@ -1,7 +1,7 @@
 extends Control
 signal change_fileloader_state
 
-var tiles: Dictionary
+var tiles: Dictionary = {}
 @onready var Tiles = $WorldContainer/World/World/Tiles
 @onready var LoadButtons = $LoadButtons
 @onready var BuildMenu = $BuildMenu
@@ -15,6 +15,7 @@ var loaded_level: Dictionary
 var build_menu_positions := Vector2.ZERO
 var build_weight: float = 0
 var build_menu_is_moving: int = 0
+var default_level_size: int = [6, 10, 16, 20, 30, 40, 50, 100][Settings.level_size]
 
 func _process(delta: float) -> void:
 	
@@ -56,8 +57,22 @@ func on_area_selected(item: Dictionary) -> void:
 
 func on_load_empty_level() -> void:
 	for child in Tiles.get_children(): child.queue_free()
-	var tile_packed: PackedScene = preload("res://assets/models/tiles/null_tile/null_tile.tscn")
-	Tiles.add_child(tile_packed.instantiate())
+	var tile_packed: PackedScene = preload("res://assets/models/tiles/editor_tile.tscn")
+	
+	var dx: float = sqrt(3)
+	var offset_values: Array = [dx * 0.5, 0]
+	var offset: float = dx * 0.5
+	var grid_half_size: int = int(default_level_size * 0.5)
+	
+	for x in range(-grid_half_size, grid_half_size + 1):
+		offset = 0
+		for y in range(-grid_half_size, grid_half_size + 1):
+			var tile: Node3D = tile_packed.instantiate()
+			tile.load_tile(0, [Vector4(x, y, -x - y, 0)])
+			tile.position = Vector3((x * dx) + offset, 0, y * 1.5)
+			tiles.merge({tile.info.position: tile})
+			Tiles.add_child(tile)
+			offset = offset_values[round(offset)]
 	
 func on_build_menu_enabled() -> void:
 	BuildMenu.get_node("WarningLabel").text = ""

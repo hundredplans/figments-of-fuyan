@@ -76,7 +76,8 @@ render_target_update_mode = 4
 transform = Transform3D(1, 0, 0, 0, 0.931989, 0.362487, 0, -0.362487, 0.931989, 0, 3.15166, 4.96536)
 
 [node name="MovementCamera" type="Camera3D" parent="WorldContainer/World"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.56583)
+transform = Transform3D(1, 0, 0, 0, 0.725867, 0.687835, 0, -0.687835, 0.725867, 0, 4.59777, 2.83832)
+current = true
 script = ExtResource("2_xr3lr")
 
 [node name="LoadButtons" type="Control" parent="."]

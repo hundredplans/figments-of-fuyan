@@ -27,6 +27,8 @@ const stat_ai_dict: Dictionary = {
 	"r": "Rarity",
 }
 
+var _id_to_tile: Array = ["null_tile", "hover_tile"]
+
 func call_method(node: Node, method: String, args: Array) -> bool:
 	if node.has_method(method):
 		node.call(method, args)
@@ -242,3 +244,7 @@ func load_area_colors(node: Node, primary_color: Color, accent_color: Color) -> 
 		elif child.name.begins_with("AC"):
 			if child is ColorRect: child.color = accent_color
 			else: child.modulate = accent_color
+
+func id_to_tile(id: int) -> String:
+	return _id_to_tile[id]
+	
