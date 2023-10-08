@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://c4mbrxpcwxcxb"]
+
+[ext_resource type="Script" path="res://scenes/world/movement_camera.gd" id="1_fcivy"]
+
+[node name="EditorWorld" type="Node3D"]
+
+[node name="Tiles" type="Node3D" parent="."]
+
+[node name="MovementCamera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.910186, 0.414201, 0, -0.414201, 0.910186, 0, 4.13879, 3.69939)
+script = ExtResource("1_fcivy")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.364861, -0.717437, -0.593431, 0, -0.63737, 0.770558, -0.931062, 0.281146, 0.232551, -8.16589, 3.17913, 0)

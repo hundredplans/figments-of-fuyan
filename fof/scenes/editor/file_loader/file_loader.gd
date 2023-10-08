@@ -67,7 +67,7 @@ func on_item_ready() -> void:
 	match item_name:
 		"area": search_options = ["World"]
 		"card": search_options = ["Rarity", "Attack", "Health", "Speed", "Energy", "Confidence", "Intelligence", "Awareness", "Teamwork", "Adventurousness", "Ability"]
-
+		"level": search_options = ["Area"]
 	$Search/SearchOptions.options += search_options
 		
 	
@@ -123,6 +123,11 @@ func match_search_item_selected(btn: Control) -> bool:
 			match item_name:
 				"area": if str(btn.info.world).begins_with(SearchEdit.text): return true
 				"card": if str(btn.info.r).begins_with(SearchEdit.text): return true
+				"level": 
+					if str(btn.info.area).begins_with(SearchEdit.text): return true
+					var area_info: Dictionary = Helper.id_to_dict(btn.info.area, "Area")
+					if area_info:
+						if (area_info.sname.to_lower()).begins_with(SearchEdit.text.to_lower()): return true
 		4: if str(btn.info.a).begins_with(SearchEdit.text): return true
 		5: if str(btn.info.h).begins_with(SearchEdit.text): return true
 		6: if str(btn.info.s).begins_with(SearchEdit.text): return true

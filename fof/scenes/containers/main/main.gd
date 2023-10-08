@@ -3,7 +3,7 @@ extends Node
 @export var SettingCog: TextureButton
 @export var BackArrow: TextureButton
 @onready var screens: Control = $Screens
-@onready var world: Node3D = $World
+@onready var World: Node3D = $World
 
 const main_menu_path: String = "res://scenes/screens/main_menu/main_menu.tscn"
 var fileloader_state: int = 0
@@ -59,6 +59,10 @@ func on_load_screen(screen_name: String) -> void:
 				for child in $Screens.get_children(): child.queue_free()
 				Helper.on_enter_screen(screen)
 				
+func on_connect_early_screen_signals(screen: Control) -> void:
+	match screen.name:
+		"LevelEditor": screen.load_world.connect(on_load_world)
+				
 func on_connect_screen_signals(screen: Control) -> void:
 	if "screen_change_signals" in screen:
 		for sig_info in screen.screen_change_signals:
@@ -103,3 +107,8 @@ func on_change_fileloader_state(i: int) -> void:
 
 func _on_setting_cog_pressed():
 	on_load_screen("res://scenes/screens/settings_menu/settings_menu.tscn")
+
+func on_load_world(world: Node3D) -> void:
+	$Background.visible = world == null
+	for child in World.get_node("Scene").get_children(): child.queue_free()
+	if world != null: World.get_node("Scene").add_child(world)

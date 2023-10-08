@@ -27,8 +27,6 @@ const stat_ai_dict: Dictionary = {
 	"r": "Rarity",
 }
 
-var _id_to_tile: Array = ["null_tile", "hover_tile"]
-
 func call_method(node: Node, method: String, args: Array) -> bool:
 	if node.has_method(method):
 		node.call(method, args)
@@ -46,6 +44,7 @@ func on_exit_screen_animation_finished(screen: Control, old_screen: Control) -> 
 	old_screen.queue_free()
 
 func on_enter_screen(screen: Control) -> void:
+	get_parent().get_node("Main").on_connect_early_screen_signals(screen)
 	get_parent().get_node("Main/Screens").add_child(screen)
 	get_parent().get_node("Main").on_connect_screen_signals(screen)
 	play_method_on_animation_end("move_screen", screen.get_node("MoveScreen"), on_enter_screen_animation_finished, [], true)
@@ -177,7 +176,7 @@ func return_item_dict(item: String, _contents: String) -> Dictionary:
 		match item:
 			"area": keys += ["pcolor", "acolor", "world", "cards"]
 			"card": keys += ["a", "h", "s", "e", "r", "text", "flavor", "aic", "aii", "aiw", "ait", "aia"]
-		
+			"level": keys += ["area", "difficulty", "tiles"]
 		var i: int = 0
 		for key in keys:
 			if contents[i].is_valid_int():
@@ -224,7 +223,8 @@ func on_delete_item_confirmed(item: String, ID: String, Internal: LineEdit, can_
 	var contents: String = Helper.return_file_contents(dir + base_game_file_name + ".fof")
 	if contents:
 		delete_file(dir, base_game_file_name, ".fof")
-		write_to_file("user://save/temp/" + item, Internal.text, ".fof", contents, false)
+		if Settings.clear_backup_files_array[Settings.clear_backup_files] != 1:
+			write_to_file("user://save/temp/" + item, Internal.text, ".fof", contents, false)
 		if can_del_dir == 1:
 			DirAccess.remove_absolute("res://assets/base_game/" + item)
 
@@ -245,6 +245,10 @@ func load_area_colors(node: Node, primary_color: Color, accent_color: Color) -> 
 			if child is ColorRect: child.color = accent_color
 			else: child.modulate = accent_color
 
-func id_to_tile(id: int) -> String:
+var _id_to_tile: Array = ["ground/", "hover_tile", "void_tile", "water_tile"]
+func id_to_tile(id: int, area: int) -> String:
+	if id == 0: return _id_to_tile[0] + str(area)
 	return _id_to_tile[id]
 	
+func interact_button(flip: bool = false) -> String:
+	return ["RightClick", "MouseMiddle"][abs(Settings.interact_button - int(flip))]

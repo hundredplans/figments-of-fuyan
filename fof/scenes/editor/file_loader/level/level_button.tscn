@@ -1,0 +1,76 @@
+[gd_scene load_steps=4 format=3 uid="uid://dt3dvubo3e8j4"]
+
+[ext_resource type="Script" path="res://scenes/editor/file_loader/level/level_button.gd" id="1_76yc6"]
+[ext_resource type="Theme" uid="uid://c7y2qa3kssows" path="res://assets/UI/lora/lora.tres" id="1_dkcwm"]
+[ext_resource type="LabelSettings" uid="uid://c5h6tv2uhlrjf" path="res://assets/UI/lora/lora_outline.tres" id="3_25r3s"]
+
+[node name="LevelButton" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 250.0
+offset_bottom = 250.0
+mouse_filter = 1
+theme = ExtResource("1_dkcwm")
+script = ExtResource("1_76yc6")
+
+[node name="Background" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Outside" type="ColorRect" parent="Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Inside" type="ColorRect" parent="Background"]
+layout_mode = 1
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 240.0
+offset_bottom = 240.0
+mouse_filter = 1
+color = Color(0, 0, 0, 1)
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -77.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+label_settings = ExtResource("3_25r3s")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="ID" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 166.0
+offset_top = 195.0
+offset_right = -18.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+label_settings = ExtResource("3_25r3s")
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="PressedButton" type="Button" parent="."]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_right = 250.0
+offset_bottom = 250.0

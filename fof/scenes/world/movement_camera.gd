@@ -45,7 +45,7 @@ func _input(event):
 				_vel_multiplier = clamp(_vel_multiplier / 1.1, 0.2, 20)
 
 	# Receives key input
-	if event is InputEventKey:
+	if event is InputEventKey and !(get_viewport().gui_get_focus_owner() as LineEdit):
 		match event.keycode:
 			KEY_W:
 				_w = event.pressed

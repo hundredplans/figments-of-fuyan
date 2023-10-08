@@ -13,7 +13,7 @@ func _ready():
 		_: $Label.text = label_text
 		
 	if flipped:
-		$Sprite2D.texture = load("res://assets/UI/menu_button/sword_flipped.png")
+		$Sprite2D.flip_h = true
 		var offset: int = Array($Area2D/CollisionPolygon2D.polygon).reduce((func(a: int, xy: Vector2): if a > xy.x: return a else: return xy.x), 0)
 		$Area2D/CollisionPolygon2D.polygon = Array($Area2D/CollisionPolygon2D.polygon).map(func(xy: Vector2): return Vector2((xy.x * -1) + offset, xy.y))
 		$Label.position.x += 200

@@ -19,3 +19,6 @@ func _enter_tree() -> void:
 	(func(): $Label.position.x = $OptionButton.get_minimum_size().x + 15;\
 	$Outside.size.x += $Label.get_minimum_size().x + $OptionButton.get_minimum_size().x + 5;\
 	$Inside.size.x += $Label.get_minimum_size().x + $OptionButton.get_minimum_size().x + 5).call_deferred()
+
+func select_item(i: int) -> void:
+	$OptionButton.select(i)

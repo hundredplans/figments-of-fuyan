@@ -1,9 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://bnoei7u0kxl25"]
+[gd_scene load_steps=9 format=3 uid="uid://bnoei7u0kxl25"]
 
 [ext_resource type="Script" path="res://scenes/containers/main/main.gd" id="1_10ydf"]
 [ext_resource type="Texture2D" uid="uid://rlbd0hboru02" path="res://scenes/containers/main/background.jpg" id="2_14ibu"]
 [ext_resource type="Texture2D" uid="uid://cj8j06xypgaw7" path="res://assets/UI/back_arrow/back_arrow.png" id="3_cu6v7"]
-[ext_resource type="Script" path="res://scenes/world/world.gd" id="3_hfbug"]
 [ext_resource type="Texture2D" uid="uid://svbsdkqet370" path="res://assets/UI/back_arrow/back_arrow_darker.png" id="4_qr5ib"]
 [ext_resource type="Texture2D" uid="uid://bak0pucgtak0b" path="res://assets/UI/back_arrow/back_arrow_dark.png" id="5_fjqpq"]
 [ext_resource type="Texture2D" uid="uid://et3bcj7gnugo" path="res://assets/UI/setting_cog/setting_cog.png" id="6_vmtrq"]
@@ -61,7 +60,10 @@ texture_hover = ExtResource("8_ymrhe")
 texture_disabled = ExtResource("7_dwuio")
 
 [node name="World" type="Node3D" parent="."]
-script = ExtResource("3_hfbug")
+
+[node name="Scene" type="Node3D" parent="World"]
+
+[node name="General" type="Node3D" parent="World"]
 
 [connection signal="pressed" from="GUI/BackArrow" to="." method="on_trigger_screen_history"]
 [connection signal="pressed" from="GUI/SettingCog" to="." method="_on_setting_cog_pressed"]

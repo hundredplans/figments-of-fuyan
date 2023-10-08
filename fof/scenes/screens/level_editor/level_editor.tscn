@@ -1,9 +1,13 @@
-[gd_scene load_steps=8 format=3 uid="uid://bauy3car7d8gx"]
+[gd_scene load_steps=12 format=3 uid="uid://bauy3car7d8gx"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_editor/level_editor.gd" id="1_c1ufw"]
-[ext_resource type="Script" path="res://scenes/screens/level_editor/movement_camera.gd" id="2_xr3lr"]
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="3_hyt8o"]
 [ext_resource type="LabelSettings" uid="uid://c5h6tv2uhlrjf" path="res://assets/UI/lora/lora_outline.tres" id="4_5jaug"]
+[ext_resource type="PackedScene" uid="uid://bj3h1ak5dv73n" path="res://scenes/ui_general/op_button/op_button.tscn" id="4_lvhxm"]
+[ext_resource type="PackedScene" uid="uid://bdd0m6wbuerq5" path="res://scenes/editor/edit_file_name/edit_file_name.tscn" id="5_2x3tu"]
+[ext_resource type="Texture2D" uid="uid://byo3hcibsn61s" path="res://scenes/screens/level_editor/arrow/arrow.png" id="5_331us"]
+[ext_resource type="Texture2D" uid="uid://d2k0uadn3rkde" path="res://scenes/screens/level_editor/arrow/arrow_pressed.png" id="6_sq1ti"]
+[ext_resource type="Texture2D" uid="uid://bi0r48tc0qc8m" path="res://scenes/screens/level_editor/arrow/arrow_hovered.png" id="7_pe1rn"]
 
 [sub_resource type="Animation" id="Animation_dub3r"]
 length = 0.001
@@ -58,34 +62,12 @@ libraries = {
 "": SubResource("AnimationLibrary_dwy82")
 }
 
-[node name="WorldContainer" type="SubViewportContainer" parent="."]
-layout_mode = 0
-offset_right = 1920.0
-offset_bottom = 1080.0
-
-[node name="World" type="SubViewport" parent="WorldContainer"]
-handle_input_locally = false
-size = Vector2i(1920, 1080)
-render_target_update_mode = 4
-
-[node name="World" type="Node3D" parent="WorldContainer/World"]
-
-[node name="Tiles" type="Node3D" parent="WorldContainer/World/World"]
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldContainer/World/World"]
-transform = Transform3D(1, 0, 0, 0, 0.931989, 0.362487, 0, -0.362487, 0.931989, 0, 3.15166, 4.96536)
-
-[node name="MovementCamera" type="Camera3D" parent="WorldContainer/World"]
-transform = Transform3D(1, 0, 0, 0, 0.725867, 0.687835, 0, -0.687835, 0.725867, 0, 4.59777, 2.83832)
-current = true
-script = ExtResource("2_xr3lr")
-
 [node name="LoadButtons" type="Control" parent="."]
 anchors_preset = 0
 offset_left = 50.0
-offset_top = 143.0
+offset_top = 213.0
 offset_right = 863.0
-offset_bottom = 193.0
+offset_bottom = 263.0
 rotation = 1.5708
 theme = ExtResource("3_hyt8o")
 
@@ -99,6 +81,7 @@ offset_top = -5.0
 offset_right = 5.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 color = Color(0.364706, 0.235294, 0.14902, 1)
 metadata/_edit_lock_ = true
 
@@ -109,6 +92,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 color = Color(0.792157, 0.576471, 0.431373, 1)
 metadata/_edit_lock_ = true
 
@@ -148,6 +132,80 @@ offset_bottom = 49.9977
 text = "Save Level"
 metadata/_edit_lock_ = true
 
+[node name="InfoMenu" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 910.0
+offset_bottom = 175.0
+
+[node name="Background" type="Control" parent="InfoMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="PROutside" type="ColorRect" parent="InfoMenu/Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.364706, 0.235294, 0.14902, 1)
+
+[node name="ACInside" type="ColorRect" parent="InfoMenu/Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -9.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.792157, 0.576471, 0.431373, 1)
+
+[node name="EditFileName" parent="InfoMenu" instance=ExtResource("5_2x3tu")]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -741.0
+offset_top = 17.0
+offset_right = -63.0
+offset_bottom = 155.0
+grow_horizontal = 0
+grow_vertical = 1
+
+[node name="LevelDifficulty" parent="InfoMenu" instance=ExtResource("4_lvhxm")]
+offset_left = 15.0
+offset_top = 21.0
+offset_right = 39.0
+offset_bottom = 84.0
+options = PackedStringArray("1", "2", "3", "4", "5", "6", "7", "8", "9", "10")
+label_text = "LD"
+
+[node name="ArrowButton" type="TextureButton" parent="InfoMenu"]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -74.0
+offset_top = 10.0
+offset_right = -9.0
+offset_bottom = -10.0
+grow_horizontal = 0
+grow_vertical = 2
+texture_normal = ExtResource("5_331us")
+texture_pressed = ExtResource("6_sq1ti")
+texture_hover = ExtResource("7_pe1rn")
+
 [node name="BuildMenu" type="Control" parent="."]
 anchors_preset = 0
 offset_left = 269.0
@@ -181,12 +239,14 @@ offset_left = -10.0
 offset_top = -10.0
 offset_right = 1434.0
 offset_bottom = 249.0
+mouse_filter = 2
 color = Color(0.364706, 0.235294, 0.14902, 1)
 
 [node name="ACInside" type="ColorRect" parent="BuildMenu/Background"]
 layout_mode = 1
 offset_right = 1424.0
 offset_bottom = 249.0
+mouse_filter = 2
 color = Color(0.792157, 0.576471, 0.431373, 1)
 
 [node name="WarningLabel" type="Label" parent="BuildMenu"]
@@ -206,3 +266,6 @@ vertical_alignment = 1
 [connection signal="pressed" from="LoadButtons/LoadLevel" to="." method="_on_load_level_pressed"]
 [connection signal="pressed" from="LoadButtons/LoadEmpty" to="." method="_on_load_empty_pressed"]
 [connection signal="pressed" from="LoadButtons/SaveLevel" to="." method="_on_save_level_pressed"]
+[connection signal="text_submitted" from="InfoMenu/EditFileName" to="." method="_on_save_level_pressed"]
+[connection signal="item_selected" from="InfoMenu/LevelDifficulty" to="." method="_on_level_difficulty_item_selected"]
+[connection signal="pressed" from="InfoMenu/ArrowButton" to="." method="_on_arrow_button_pressed"]
