@@ -2,6 +2,7 @@ extends Control
 signal change_fileloader_state
 signal load_world
 
+@onready var Tabs: HBoxContainer = $BuildMenu/Tabs/Tabs
 @onready var LevelDifficulty = $InfoMenu/LevelDifficulty
 @onready var EditFileName = $InfoMenu/EditFileName
 @onready var ArrowButton = $InfoMenu/ArrowButton
@@ -43,6 +44,10 @@ func admin() -> void:
 
 func _process(delta: float) -> void:
 	
+	for input in [1,2,3,4]:
+		if Input.is_action_just_pressed("Number" + str(input)):
+			on_load_tab(input - 1)
+	
 	if build_menu_is_moving == 0 and Input.is_action_just_pressed("Tab"):
 		build_menu_is_moving = -1 if BuildMenu.position.y > 1000 else 1
 		build_menu_positions = Vector2(BuildMenu.position.y, BuildMenu.position.y + (BuildMenu.size.y * build_menu_is_moving))
@@ -78,12 +83,15 @@ func _ready() -> void:
 #	for child in mblockers:
 #		child.mouse_entered.connect(func(): for tile in World.get_node("Tiles").get_children(): tile.on_check_mouse_entered())
 #		child.mouse_exited.connect(func(): for tile in World.get_node("Tiles").get_children(): tile.on_check_mouse_entered())
-		
+	on_load_tab(0)
 	reset_mblocker_rects()
-	Helper.create_button_clickmask(ArrowButton)
+	for btn in [ArrowButton,  $BuildMenu/LoadedMenu/LeftArrow, $BuildMenu/LoadedMenu/RightArrow]:
+		Helper.create_button_clickmask(btn)
+		btn.pressed.connect((func(): AudioMaster.play_sfx(preload("res://scenes/screens/level_editor/arrow/woosh.wav"))))
 	load_world.emit(World)
 	BuildMenu.get_node("WarningLabel").text = "Make sure to load in an area, silly!"
 	BuildMenu.get_node("Tabs").visible = false
+	BuildMenu.get_node("LoadedMenu").visible = false
 	BuildMenu.position.y += BuildMenu.size.y
 #	admin()
 
@@ -149,6 +157,7 @@ func create_tile(xy: Vector3) -> Node3D:
 func on_build_menu_enabled() -> void:
 	BuildMenu.get_node("WarningLabel").text = ""
 	BuildMenu.get_node("Tabs").visible = true
+	BuildMenu.get_node("LoadedMenu").visible = true
 
 func _on_load_empty_pressed():
 	if !loaded_area: _on_load_area_pressed()
@@ -161,8 +170,7 @@ func _on_load_level_pressed():
 	add_child(FileLoader)
 
 func _on_save_level_pressed(play_sfx: bool = true, create_temp: int = 1):
-	if !loaded_level: _on_load_level_pressed()
-	else:
+	if loaded_level:
 		var contents: String = "%s\n%s\n%s\n" % [loaded_area.id, level_difficulty,
 		World.get_node("Tiles").get_children().map(func(x: Node3D): return x.info)
 		.map(func(x: Dictionary) :return\
@@ -192,3 +200,9 @@ func _on_arrow_button_pressed():
 
 func _on_level_difficulty_item_selected(i: int):
 	level_difficulty = i + 1
+
+func on_load_tab(i: int):
+	for child in Tabs.get_children():
+		match child.get_index():
+			i: child.modulate = Helper.RED
+			_: child.modulate = Helper.BASE

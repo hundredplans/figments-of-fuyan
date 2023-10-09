@@ -209,11 +209,11 @@ texture_hover = ExtResource("7_pe1rn")
 [node name="BuildMenu" type="Control" parent="."]
 anchors_preset = 0
 offset_left = 269.0
-offset_top = 821.0
+offset_top = 773.0
 offset_right = 1713.0
 offset_bottom = 1080.0
 
-[node name="Tabs" type="Control" parent="BuildMenu"]
+[node name="Background" type="Control" parent="BuildMenu"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -221,31 +221,34 @@ anchor_bottom = 1.0
 offset_left = 10.0
 offset_top = 10.0
 offset_right = -10.0
-offset_bottom = -205.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Background" type="Control" parent="BuildMenu"]
-layout_mode = 1
-anchors_preset = 0
-offset_left = 10.0
-offset_top = 10.0
-offset_right = 1434.0
-offset_bottom = 259.0
-
 [node name="PROutside" type="ColorRect" parent="BuildMenu/Background"]
 layout_mode = 1
-offset_left = -10.0
-offset_top = -10.0
-offset_right = 1434.0
-offset_bottom = 249.0
+anchors_preset = -1
+anchor_left = -0.007
+anchor_top = -0.04
+anchor_right = 1.007
+anchor_bottom = 1.0
+offset_left = -0.0319996
+offset_top = -0.039999
+offset_right = 0.0318604
 mouse_filter = 2
 color = Color(0.364706, 0.235294, 0.14902, 1)
 
 [node name="ACInside" type="ColorRect" parent="BuildMenu/Background"]
 layout_mode = 1
-offset_right = 1424.0
-offset_bottom = 249.0
+anchors_preset = -1
+anchor_left = -0.007
+anchor_top = -0.04
+anchor_right = 1.007
+anchor_bottom = 1.0
+offset_left = 9.968
+offset_top = 9.96
+offset_right = -9.96814
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 color = Color(0.792157, 0.576471, 0.431373, 1)
 
@@ -254,13 +257,128 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 10.0
+offset_left = 11.0
+offset_top = 68.0
+offset_right = -10.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Make sure to load in an area, silly!"
 label_settings = ExtResource("4_5jaug")
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="Tabs" type="Control" parent="BuildMenu"]
+anchors_preset = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 1434.0
+offset_bottom = 56.0
+
+[node name="Tabs" type="HBoxContainer" parent="BuildMenu/Tabs"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = -1.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_hyt8o")
+theme_override_constants/separation = 10
+
+[node name="TileTab" type="Button" parent="BuildMenu/Tabs/Tabs"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Tiles"
+
+[node name="ObjectTab" type="Button" parent="BuildMenu/Tabs/Tabs"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Object"
+
+[node name="WallTab" type="Button" parent="BuildMenu/Tabs/Tabs"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Walls"
+
+[node name="DecorationTab" type="Button" parent="BuildMenu/Tabs/Tabs"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Decorations"
+
+[node name="PRSeperator1" type="ColorRect" parent="BuildMenu/Tabs"]
+layout_mode = 0
+offset_left = 350.0
+offset_right = 357.0
+offset_bottom = 48.0
+color = Color(0.364706, 0.235294, 0.14902, 1)
+
+[node name="PRSeperator2" type="ColorRect" parent="BuildMenu/Tabs"]
+layout_mode = 0
+offset_left = 708.0
+offset_right = 716.0
+offset_bottom = 48.0
+color = Color(0.364706, 0.235294, 0.14902, 1)
+
+[node name="PRSeperator3" type="ColorRect" parent="BuildMenu/Tabs"]
+layout_mode = 0
+offset_left = 1066.0
+offset_right = 1074.0
+offset_bottom = 48.0
+color = Color(0.364706, 0.235294, 0.14902, 1)
+
+[node name="PRRim" type="ColorRect" parent="BuildMenu/Tabs"]
+layout_mode = 0
+offset_top = 48.0
+offset_right = 1424.0
+offset_bottom = 58.0
+color = Color(0.364706, 0.235294, 0.14902, 1)
+
+[node name="LoadedMenu" type="Control" parent="BuildMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 11.0
+offset_top = 68.0
+offset_right = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LeftArrow" type="TextureButton" parent="BuildMenu/LoadedMenu"]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1423.0
+offset_top = 46.0
+offset_right = -1358.0
+offset_bottom = -38.0
+grow_horizontal = 0
+grow_vertical = 2
+texture_normal = ExtResource("5_331us")
+texture_pressed = ExtResource("6_sq1ti")
+texture_hover = ExtResource("7_pe1rn")
+flip_h = true
+
+[node name="RightArrow" type="TextureButton" parent="BuildMenu/LoadedMenu"]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -65.0
+offset_top = 46.0
+offset_bottom = -38.0
+grow_horizontal = 0
+grow_vertical = 2
+texture_normal = ExtResource("5_331us")
+texture_pressed = ExtResource("6_sq1ti")
+texture_hover = ExtResource("7_pe1rn")
 
 [connection signal="pressed" from="LoadButtons/LoadArea" to="." method="_on_load_area_pressed"]
 [connection signal="pressed" from="LoadButtons/LoadLevel" to="." method="_on_load_level_pressed"]
@@ -269,3 +387,7 @@ vertical_alignment = 1
 [connection signal="text_submitted" from="InfoMenu/EditFileName" to="." method="_on_save_level_pressed"]
 [connection signal="item_selected" from="InfoMenu/LevelDifficulty" to="." method="_on_level_difficulty_item_selected"]
 [connection signal="pressed" from="InfoMenu/ArrowButton" to="." method="_on_arrow_button_pressed"]
+[connection signal="pressed" from="BuildMenu/Tabs/Tabs/TileTab" to="." method="on_load_tab" binds= [0]]
+[connection signal="pressed" from="BuildMenu/Tabs/Tabs/ObjectTab" to="." method="on_load_tab" binds= [1]]
+[connection signal="pressed" from="BuildMenu/Tabs/Tabs/WallTab" to="." method="on_load_tab" binds= [2]]
+[connection signal="pressed" from="BuildMenu/Tabs/Tabs/DecorationTab" to="." method="on_load_tab" binds= [3]]
