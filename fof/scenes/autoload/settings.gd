@@ -1,5 +1,6 @@
 extends Node
 
+var equipped_theme: int = 0
 var interact_button: int = 0
 var level_size: int = 0
 var hide_patch_notes_menu: int = 0

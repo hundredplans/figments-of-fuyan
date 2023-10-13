@@ -1,47 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://bq65i6hwtd4b5"]
+[gd_scene load_steps=6 format=3 uid="uid://bq65i6hwtd4b5"]
 
 [ext_resource type="Script" path="res://scenes/screens/area_editor/area_editor.gd" id="1_r82ym"]
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="2_euq7d"]
 [ext_resource type="PackedScene" uid="uid://bdd0m6wbuerq5" path="res://scenes/editor/edit_file_name/edit_file_name.tscn" id="3_s437e"]
 [ext_resource type="FontFile" uid="uid://dnq2ul3ia4hy3" path="res://assets/UI/lora/Lora-Bold.ttf" id="4_ygm6e"]
-
-[sub_resource type="Animation" id="Animation_sqay2"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_4oksu"]
-resource_name = "move_screen"
-length = 0.25
-step = 0.05
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.25),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_5phqr"]
-_data = {
-"RESET": SubResource("Animation_sqay2"),
-"move_screen": SubResource("Animation_4oksu")
-}
 
 [sub_resource type="LabelSettings" id="LabelSettings_u43yd"]
 font = ExtResource("4_ygm6e")
@@ -58,11 +20,6 @@ offset_bottom = 1080.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_r82ym")
-
-[node name="MoveScreen" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_5phqr")
-}
 
 [node name="Background" type="Control" parent="."]
 layout_mode = 1

@@ -20,6 +20,12 @@ var always_visible_tiles: Array = []
 var always_disable_visibility: Array = []
 var always_solo_visibility: Array = []
 
+var world_distinguisher: Array = [
+	["Swamp", "Critters", "Bouldaak Jungle", "Palm", "Fungite"],
+	["Mages", "Wild West", "Sugori", "Dwarven", "Nolaka"],
+	["Varoma", "Kaluta", "Befre", "Hama Cik"]
+	]
+
 @onready var tile_default: PackedScene = preload("res://test/simulation/assets/map/tile/tile.tscn")
 func _process(_delta):
 	if Input.is_action_just_pressed("Escape"):
@@ -205,6 +211,7 @@ func on_card_selected(card_name: String) -> Control:
 		
 		card.default_state = card_info.duplicate(true)
 		card._on_default_state_pressed()
+		randomize_aura(card)
 		refresh_vision()
 		return card
 	return null
@@ -504,3 +511,40 @@ func on_create_shop_pressed() -> void:
 	var create_shop: Control = preload("res://test/simulation/screens/select_level/create_shop.tscn").instantiate()
 	create_shop.position = Vector2(600, 100)
 	add_child(create_shop)
+
+func calculate_difficulty(area_name: String) -> int:
+	var difficulty: int = 3
+	if area_name:
+		var i: int = 0
+		for diff in world_distinguisher:
+			if area_name in diff:
+				difficulty = i + 1
+				break
+			i += 1
+	return difficulty
+
+func randomize_aura(card: Control) -> void:
+	var dir: DirAccess = DirAccess.open("user://savefofle/auras_boons/auras/")
+	
+	var j: int = 2
+	var i: int = 0
+	
+	for world_name in world_distinguisher:
+		if loaded_level.split("/", false)[0] in world_name:
+			j = i
+			break
+		i += 1
+	
+	var can_aura: float = [0.1, 0.15, 0.25][j]
+	if randf() <= can_aura:
+		var world_odds: Array = [[0.6,0.35,0.05],[0.45,0.45,0.1],[0.3,0.5,0.2]][j]
+		var roll: float = randf()
+		var rarity: int = 0
+		var total: float = 0
+		for odd in world_odds:
+			if roll <= odd + total: break
+			rarity += 1
+			total += odd
+		
+		var auras: Array = Array(dir.get_files()).filter(func(x: String): return FileAccess.open("user://savefofle/auras_boons/auras/" + x, FileAccess.READ).get_as_text().split("\n")[3] == str(rarity))
+		card.on_aura_selected(auras[randi() % auras.size()])

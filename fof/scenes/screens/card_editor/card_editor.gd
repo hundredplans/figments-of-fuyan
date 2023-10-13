@@ -1,6 +1,4 @@
 extends Control
-signal change_fileloader_state
-
 var ID: int = 0
 var rarity: int = 1
 var stats: Array = [1,1,1,1]

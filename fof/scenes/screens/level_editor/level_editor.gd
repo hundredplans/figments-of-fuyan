@@ -1,5 +1,4 @@
 extends Control
-signal change_fileloader_state
 signal load_world
 
 @onready var Tabs: HBoxContainer = $BuildMenu/Tabs/Tabs

@@ -74,7 +74,7 @@ func _on_roll_button_pressed():
 					var i: int = 0
 					for difficulty in world_distinguisher:
 						if get_parent().loaded_level.split("/", false)[0] in difficulty:
-							var world_odds: Array = [[0.65,0.35,0.05],[0.45,0.45,0.1],[0.3,0.5,0.2]][i-1]
+							var world_odds: Array = [[0.6,0.35,0.05],[0.45,0.45,0.1],[0.3,0.5,0.2]][i-1]
 							var difficulty_tier: Array = []
 							for k in range(0, 3):
 								difficulty_tier.append([])

@@ -1,40 +1,53 @@
-[gd_scene load_steps=9 format=3 uid="uid://bnoei7u0kxl25"]
+[gd_scene load_steps=11 format=3 uid="uid://bnoei7u0kxl25"]
 
 [ext_resource type="Script" path="res://scenes/containers/main/main.gd" id="1_10ydf"]
 [ext_resource type="Texture2D" uid="uid://rlbd0hboru02" path="res://scenes/containers/main/background.jpg" id="2_14ibu"]
 [ext_resource type="Texture2D" uid="uid://cj8j06xypgaw7" path="res://assets/UI/back_arrow/back_arrow.png" id="3_cu6v7"]
+[ext_resource type="PackedScene" uid="uid://cd1hnc68uspy" path="res://scenes/screens/main_menu/main_menu.tscn" id="3_roh8t"]
 [ext_resource type="Texture2D" uid="uid://svbsdkqet370" path="res://assets/UI/back_arrow/back_arrow_darker.png" id="4_qr5ib"]
 [ext_resource type="Texture2D" uid="uid://bak0pucgtak0b" path="res://assets/UI/back_arrow/back_arrow_dark.png" id="5_fjqpq"]
 [ext_resource type="Texture2D" uid="uid://et3bcj7gnugo" path="res://assets/UI/setting_cog/setting_cog.png" id="6_vmtrq"]
 [ext_resource type="Texture2D" uid="uid://cw2fnn7hfibl3" path="res://assets/UI/setting_cog/setting_cog_pressed.png" id="7_dwuio"]
 [ext_resource type="Texture2D" uid="uid://bp06vcvriyo3d" path="res://assets/UI/setting_cog/setting_cog_hover.png" id="8_ymrhe"]
 
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_blkxs"]
+
 [node name="Main" type="Node" node_paths=PackedStringArray("SettingCog", "BackArrow")]
 script = ExtResource("1_10ydf")
-SettingCog = NodePath("GUI/SettingCog")
-BackArrow = NodePath("GUI/BackArrow")
+SettingCog = NodePath("UI/SettingCog")
+BackArrow = NodePath("UI/BackArrow")
 
 [node name="Background" type="Sprite2D" parent="."]
 texture_filter = 1
 texture = ExtResource("2_14ibu")
 centered = false
 
-[node name="Screens" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="GUI" type="Control" parent="."]
+[node name="UI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
 mouse_filter = 2
 
-[node name="BackArrow" type="TextureButton" parent="GUI"]
+[node name="MoveScreen" type="AnimationPlayer" parent="UI"]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_blkxs")
+}
+
+[node name="Screens" type="Control" parent="UI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainMenu" parent="UI/Screens" instance=ExtResource("3_roh8t")]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+
+[node name="BackArrow" type="TextureButton" parent="UI"]
 layout_mode = 2
 offset_left = 1768.0
 offset_top = 8.0
@@ -46,7 +59,7 @@ texture_pressed = ExtResource("4_qr5ib")
 texture_hover = ExtResource("5_fjqpq")
 texture_disabled = ExtResource("4_qr5ib")
 
-[node name="SettingCog" type="TextureButton" parent="GUI"]
+[node name="SettingCog" type="TextureButton" parent="UI"]
 texture_filter = 1
 layout_mode = 2
 offset_left = 1829.0
@@ -65,5 +78,5 @@ texture_disabled = ExtResource("7_dwuio")
 
 [node name="General" type="Node3D" parent="World"]
 
-[connection signal="pressed" from="GUI/BackArrow" to="." method="on_trigger_screen_history"]
-[connection signal="pressed" from="GUI/SettingCog" to="." method="_on_setting_cog_pressed"]
+[connection signal="pressed" from="UI/BackArrow" to="." method="on_trigger_screen_history"]
+[connection signal="pressed" from="UI/SettingCog" to="." method="_on_setting_cog_pressed"]

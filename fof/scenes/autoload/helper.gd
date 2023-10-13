@@ -1,6 +1,4 @@
 extends Node
-signal add_screen_history
-signal screen_change_animation_state
 
 const RED := Color(1,0,0,1)
 const BASE := Color(1,1,1,1)
@@ -32,27 +30,6 @@ func call_method(node: Node, method: String, args: Array) -> bool:
 		node.call(method, args)
 		return true
 	return false
-
-func on_exit_screen(screen: Control, old_screen: Control):
-	play_method_on_animation_end("move_screen", old_screen.get_node("MoveScreen"), on_exit_screen_animation_finished, [screen, old_screen], false)
-	screen_change_animation_state.emit(true)
-
-func on_exit_screen_animation_finished(screen: Control, old_screen: Control) -> void:
-	on_enter_screen(screen)
-	if old_screen.has_method("_queue_free"):
-		old_screen._queue_free()
-	old_screen.queue_free()
-
-func on_enter_screen(screen: Control) -> void:
-	get_parent().get_node("Main").on_connect_early_screen_signals(screen)
-	get_parent().get_node("Main/Screens").add_child(screen)
-	get_parent().get_node("Main").on_connect_screen_signals(screen)
-	play_method_on_animation_end("move_screen", screen.get_node("MoveScreen"), on_enter_screen_animation_finished, [], true)
-	add_screen_history.emit(screen.scene_file_path)
-	screen_change_animation_state.emit(true)
-
-func on_enter_screen_animation_finished() -> void:
-	screen_change_animation_state.emit(false)
 	
 func play_method_on_animation_end(animation_name: String, animation_player: AnimationPlayer, method: Callable, args: Array, backwards: bool, call_on=self) -> void:
 	var animation: Animation = animation_player.get_animation(animation_name)
@@ -252,3 +229,7 @@ func id_to_tile(id: int, area: int) -> String:
 	
 func interact_button(flip: bool = false) -> String:
 	return ["RightClick", "MouseMiddle"][abs(Settings.interact_button - int(flip))]
+
+func on_timer_end(function: Callable, args: Array, delay: float):
+	var tween: Tween = create_tween()
+	tween.tween_callback(function.bindv(args)).set_delay(delay)

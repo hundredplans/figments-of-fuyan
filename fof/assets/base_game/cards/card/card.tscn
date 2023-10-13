@@ -82,20 +82,24 @@ vertical_alignment = 1
 [node name="Stats" type="Control" parent="."]
 anchors_preset = 0
 offset_left = -4.0
-offset_top = 296.0
+offset_top = 5.0
 offset_right = 164.0
-offset_bottom = 371.0
+offset_bottom = 338.0
 
 [node name="Attack" type="Control" parent="Stats"]
-anchors_preset = 0
-offset_left = -35.0
-offset_top = -5.0
-offset_right = 21.0
-offset_bottom = 70.0
+layout_mode = 1
+anchor_left = 0.024
+anchor_top = -0.015
+anchor_right = 0.024
+anchor_bottom = -0.015
+offset_left = -0.0320001
+offset_top = 288.995
+offset_right = 63.968
+offset_bottom = 338.995
 
 [node name="Sprite2D" type="Sprite2D" parent="Stats/Attack"]
 texture_filter = 1
-position = Vector2(51, -3)
+position = Vector2(11, 0)
 texture = ExtResource("6_upcdy")
 centered = false
 offset = Vector2(3, 0)
@@ -103,73 +107,62 @@ offset = Vector2(3, 0)
 [node name="Label" type="Label" parent="Stats/Attack"]
 modulate = Color(0.976471, 0.454902, 0.105882, 1)
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 22.0
-offset_top = 15.0
-offset_right = 22.0
-offset_bottom = 15.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_left = -20.0
+offset_top = 18.0
+offset_right = 20.0
+offset_bottom = 59.0
 text = "3"
 label_settings = ExtResource("7_hmnl8")
-horizontal_alignment = 1
+horizontal_alignment = 2
 
 [node name="Health" type="Control" parent="Stats"]
-anchors_preset = 0
-offset_left = 121.0
-offset_top = -40.0
-offset_right = 177.0
-offset_bottom = 35.0
+layout_mode = 1
+anchor_left = 0.024
+anchor_top = -0.015
+anchor_right = 0.024
+anchor_bottom = -0.015
+offset_left = 102.968
+offset_top = 288.995
+offset_right = 172.968
+offset_bottom = 338.995
 
 [node name="Sprite2D" type="Sprite2D" parent="Stats/Health"]
 texture_filter = 1
-position = Vector2(3, 32)
+position = Vector2(20, 0)
 texture = ExtResource("7_xact2")
 centered = false
 
 [node name="Label" type="Label" parent="Stats/Health"]
 modulate = Color(1, 0, 0, 1)
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -30.0
-offset_top = 49.0
-offset_right = -30.0
-offset_bottom = 49.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_left = -26.0
+offset_top = 17.0
+offset_right = 24.0
+offset_bottom = 58.0
 text = "2"
 label_settings = ExtResource("7_hmnl8")
-horizontal_alignment = 1
+horizontal_alignment = 2
 
 [node name="Speed" type="Control" parent="Stats"]
 anchors_preset = 0
 offset_left = 120.0
-offset_top = -190.0
+offset_top = -9.0
 offset_right = 176.0
-offset_bottom = -115.0
+offset_bottom = 49.0
 
 [node name="Sprite2D" type="Sprite2D" parent="Stats/Speed"]
 texture_filter = 1
-position = Vector2(5, -101)
+position = Vector2(5, 9)
 texture = ExtResource("9_6ko0y")
 centered = false
 
 [node name="Label" type="Label" parent="Stats/Speed"]
 modulate = Color(0.282353, 0.678431, 0.113725, 1)
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -7.0
-offset_top = -110.0
-offset_right = -7.0
-offset_bottom = -110.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_left = 12.0
+offset_top = 2.0
+offset_right = 28.0
+offset_bottom = 38.0
 rotation = 0.118654
 text = "3"
 label_settings = ExtResource("7_iqk8w")
@@ -187,8 +180,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 9.0
-offset_bottom = 9.0
+offset_top = 301.0
+offset_bottom = 301.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "5"

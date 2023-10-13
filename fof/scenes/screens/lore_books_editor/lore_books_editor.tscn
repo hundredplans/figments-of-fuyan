@@ -1,46 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://ckggpn5duo86e"]
+[gd_scene load_steps=5 format=3 uid="uid://ckggpn5duo86e"]
 
 [ext_resource type="Script" path="res://scenes/screens/lore_books_editor/lore_books_editor.gd" id="1_1ujl7"]
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="1_fpok6"]
 [ext_resource type="FontFile" uid="uid://7k4xd8s0oed2" path="res://assets/UI/roboto/roboto.ttf" id="3_iaosm"]
-
-[sub_resource type="Animation" id="Animation_ni6lj"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_jeo47"]
-resource_name = "move_screen"
-length = 0.25
-step = 0.05
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.25),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_hvjhk"]
-_data = {
-"RESET": SubResource("Animation_ni6lj"),
-"move_screen": SubResource("Animation_jeo47")
-}
 
 [sub_resource type="LabelSettings" id="LabelSettings_but4c"]
 font = ExtResource("3_iaosm")
@@ -49,7 +11,6 @@ outline_size = 12
 outline_color = Color(0, 0, 0, 1)
 
 [node name="LoreBooksEditor" type="Control"]
-modulate = Color(1, 1, 1, 0)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -58,11 +19,6 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_fpok6")
 script = ExtResource("1_1ujl7")
-
-[node name="MoveScreen" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_hvjhk")
-}
 
 [node name="Details" type="Control" parent="."]
 layout_mode = 1

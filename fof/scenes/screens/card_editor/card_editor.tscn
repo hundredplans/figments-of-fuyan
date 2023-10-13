@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dgjchsjrv72a3"]
+[gd_scene load_steps=10 format=3 uid="uid://dgjchsjrv72a3"]
 
 [ext_resource type="Script" path="res://scenes/screens/card_editor/card_editor.gd" id="1_hv8xs"]
 [ext_resource type="PackedScene" uid="uid://bdd0m6wbuerq5" path="res://scenes/editor/edit_file_name/edit_file_name.tscn" id="2_axojh"]
@@ -9,44 +9,6 @@
 [ext_resource type="Texture2D" uid="uid://bgbyoyqx40n27" path="res://assets/base_game/cards/card/default_art_max.png" id="6_036w2"]
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="6_crlth"]
 [ext_resource type="PackedScene" uid="uid://60bl7vlw3efv" path="res://assets/base_game/cards/card/default_model.glb" id="9_cp3lr"]
-
-[sub_resource type="Animation" id="Animation_2hkxa"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_1m7tu"]
-resource_name = "move_screen"
-length = 0.25
-step = 0.05
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.25),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_qo4m8"]
-_data = {
-"RESET": SubResource("Animation_2hkxa"),
-"move_screen": SubResource("Animation_1m7tu")
-}
 
 [node name="CardEditor" type="Control" node_paths=PackedStringArray("CardText", "FlavorText")]
 modulate = Color(1, 1, 1, 0)
@@ -59,11 +21,6 @@ grow_vertical = 2
 script = ExtResource("1_hv8xs")
 CardText = NodePath("CardCreator/CardText")
 FlavorText = NodePath("CardCreator/FlavorText")
-
-[node name="MoveScreen" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_qo4m8")
-}
 
 [node name="CardCreator" type="Control" parent="."]
 anchors_preset = 0

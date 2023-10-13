@@ -1,6 +1,4 @@
 extends Control
-signal change_fileloader_state
-
 const TID: int = 1
 const FILE_LOADER_NAME: String = "Area"
 var world_difficulty: int = 1
