@@ -24,7 +24,7 @@ func _ready() -> void:
 	$Background.modulate = Color(1, 1, 1, Settings.fileloader_opacity * 0.01)
 
 func on_change_fileloader_state(i: int) -> void:
-	get_tree().get_child(0).fileloader_state = i
+	get_tree().get_root().get_node("Main").fileloader_state = i
 
 func on_exit_button_pressed() -> void:
 	if !$LoadInOut.is_playing():

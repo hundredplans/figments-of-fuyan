@@ -1,5 +1,16 @@
 extends Control
 signal pressed
+@export var label_text: String
+@export var flip_h: bool
+
+func _ready() -> void:
+	$Label.text = label_text
+	$Button.flip_h = flip_h
+	
+	if flip_h:
+		$Label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+		$Label.position.x += 200
+
 func _on_button_pressed():
-	pressed.emit()
 	AudioMaster.play_sfx(preload("res://scenes/screens/main_menu/equipped_theme/0/click.wav"))
+	pressed.emit()

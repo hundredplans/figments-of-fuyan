@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://ia4c3788uo0q"]
+[gd_scene load_steps=3 format=3 uid="uid://ia4c3788uo0q"]
 
 [ext_resource type="Script" path="res://scenes/screens/editor_menu/editor_menu.gd" id="1_olwko"]
+[ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="2_5vrw5"]
 
 [node name="EditorMenu" type="Control"]
 layout_mode = 3
@@ -10,3 +11,68 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_olwko")
+
+[node name="MenuButtons" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+theme = ExtResource("2_5vrw5")
+
+[node name="CardEditor" type="Button" parent="MenuButtons"]
+layout_mode = 0
+offset_top = 152.0
+offset_right = 368.0
+offset_bottom = 304.0
+text = "Card Editor"
+
+[node name="LevelEditor" type="Button" parent="MenuButtons"]
+layout_mode = 0
+offset_top = 304.0
+offset_right = 368.0
+offset_bottom = 456.0
+text = "Level Editor"
+
+[node name="AreaEditor" type="Button" parent="MenuButtons"]
+layout_mode = 0
+offset_top = 456.0
+offset_right = 368.0
+offset_bottom = 608.0
+text = "Area Editor"
+
+[node name="MapEditor" type="Button" parent="MenuButtons"]
+layout_mode = 0
+offset_top = 608.0
+offset_right = 368.0
+offset_bottom = 760.0
+text = "Map Editor"
+
+[node name="QuestEditor" type="Button" parent="MenuButtons"]
+layout_mode = 0
+offset_top = 760.0
+offset_right = 368.0
+offset_bottom = 912.0
+text = "Quest Editor"
+
+[node name="Achievements" type="Button" parent="MenuButtons"]
+layout_mode = 0
+offset_left = 566.0
+offset_top = 456.0
+offset_right = 934.0
+offset_bottom = 608.0
+text = "Achievements"
+
+[node name="LoreBooks" type="Button" parent="MenuButtons"]
+layout_mode = 0
+offset_left = 566.0
+offset_top = 608.0
+offset_right = 934.0
+offset_bottom = 760.0
+text = "Lore Books"
+
+[node name="Dictionary" type="Button" parent="MenuButtons"]
+layout_mode = 0
+offset_left = 566.0
+offset_top = 760.0
+offset_right = 934.0
+offset_bottom = 912.0
+text = "Dictionary"

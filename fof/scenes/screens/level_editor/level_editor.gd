@@ -78,6 +78,9 @@ func _process(delta: float) -> void:
 func on_move_build_menu() -> void:
 	build_menu_is_moving = true
 	
+func on_move_screen_switch() -> void:
+	load_world.emit(World)
+	
 func _ready() -> void:
 #	for child in mblockers:
 #		child.mouse_entered.connect(func(): for tile in World.get_node("Tiles").get_children(): tile.on_check_mouse_entered())
@@ -87,7 +90,6 @@ func _ready() -> void:
 	for btn in [ArrowButton,  $BuildMenu/LoadedMenu/LeftArrow, $BuildMenu/LoadedMenu/RightArrow]:
 		Helper.create_button_clickmask(btn)
 		btn.pressed.connect((func(): AudioMaster.play_sfx(preload("res://scenes/screens/level_editor/arrow/woosh.wav"))))
-	load_world.emit(World)
 	BuildMenu.get_node("WarningLabel").text = "Make sure to load in an area, silly!"
 	BuildMenu.get_node("Tabs").visible = false
 	BuildMenu.get_node("LoadedMenu").visible = false

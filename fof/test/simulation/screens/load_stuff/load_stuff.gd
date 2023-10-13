@@ -1,6 +1,6 @@
 extends Control
 
-@onready var parent: Control = get_tree().get_root().get_child(0)
+@onready var parent: Control = get_tree().get_root().get_node("Main")
 var load_path: String
 
 const base_load_card_path: String = "user://savefofle/cards"
