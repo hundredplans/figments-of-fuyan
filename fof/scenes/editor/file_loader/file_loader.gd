@@ -148,3 +148,9 @@ func match_search_item_selected(btn: Control) -> bool:
 
 func _on_search_edit_text_changed(__: String):
 	refresh_search()
+
+func set_search(text: String, i: int) -> void:
+	SearchEdit.text = text
+	$Search/SearchOptions.select_item(i)
+	_on_search_item_selected(i)
+	

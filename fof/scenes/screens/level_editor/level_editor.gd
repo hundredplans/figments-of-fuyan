@@ -169,6 +169,9 @@ func _on_load_level_pressed():
 	FileLoader.on_ready(FILE_LOADER_NAME)
 	FileLoader.item_selected.connect(on_load_level)
 	add_child(FileLoader)
+	
+	if loaded_area:
+		FileLoader.set_search(str(loaded_area.id), 3)
 
 func _on_save_level_pressed(play_sfx: bool = true, create_temp: int = 1):
 	if loaded_level:

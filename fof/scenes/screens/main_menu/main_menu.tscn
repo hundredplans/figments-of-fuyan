@@ -36,7 +36,7 @@ offset_top = 418.0
 offset_bottom = 668.0
 label_text = "Editor Menu"
 
-[node name="Settings" parent="MenuButtons" instance=ExtResource("2_awgqh")]
+[node name="SettingsMenu" parent="MenuButtons" instance=ExtResource("2_awgqh")]
 offset_left = -83.0
 offset_top = 625.0
 offset_right = 642.0
@@ -69,4 +69,5 @@ offset_left = 1083.0
 offset_right = 1920.0
 
 [node name="AnimationItem" type="Sprite2D" parent="."]
+visible = false
 centered = false

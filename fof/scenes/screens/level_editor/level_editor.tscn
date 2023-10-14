@@ -208,22 +208,6 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0.792157, 0.576471, 0.431373, 1)
 
-[node name="WarningLabel" type="Label" parent="BuildMenu"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 11.0
-offset_top = 68.0
-offset_right = -10.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Make sure to load in an area, silly!"
-label_settings = ExtResource("4_5jaug")
-horizontal_alignment = 1
-vertical_alignment = 1
-metadata/_edit_lock_ = true
-
 [node name="Tabs" type="Control" parent="BuildMenu"]
 anchors_preset = 0
 offset_left = 10.0
@@ -335,6 +319,22 @@ grow_vertical = 2
 texture_normal = ExtResource("5_331us")
 texture_pressed = ExtResource("6_sq1ti")
 texture_hover = ExtResource("7_pe1rn")
+
+[node name="WarningLabel" type="Label" parent="BuildMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 11.0
+offset_top = 68.0
+offset_right = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Make sure to load in an area, silly!"
+label_settings = ExtResource("4_5jaug")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
 
 [connection signal="pressed" from="LoadButtons/LoadArea" to="." method="_on_load_area_pressed"]
 [connection signal="pressed" from="LoadButtons/LoadLevel" to="." method="_on_load_level_pressed"]
