@@ -5,8 +5,8 @@ var held: bool = true
 
 func _ready() -> void: roll_tasks()
 
-func roll_tasks(rolls: Array = [2,1,0]) -> void:
-	for i in rolls: if $TaskNumbers.get_child_count() > i: $TaskNumbers.get_child(i).queue_free()
+func roll_tasks() -> void:
+	for i in $TaskNumbers.get_children(): i.queue_free()
 	var text := FileAccess.open("user://savefofle/tasks.txt", FileAccess.READ).get_as_text().split("\n", false)
 	var difficulties: Array = [0,0,0]
 	for i in text: difficulties[int(i.split("-", false)[1]) - 1] += 1
@@ -25,7 +25,6 @@ func roll_tasks(rolls: Array = [2,1,0]) -> void:
 		task.load_task(task_info)
 		task.position.y += y
 		$TaskNumbers.add_child(task)
-		task.get_node("RollRandom").pressed.connect(roll_tasks.bind([task.get_index() - 1]))
 		difficulties[difficulty - 1] -= 1
 		y += int(task.size.y)
 

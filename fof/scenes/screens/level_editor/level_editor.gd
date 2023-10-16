@@ -8,6 +8,10 @@ signal load_world
 @onready var InfoMenu = $InfoMenu
 @onready var LoadButtons = $LoadButtons
 @onready var BuildMenu = $BuildMenu
+@onready var Items = $BuildMenu/LoadedMenu/Items
+@onready var BackArrow = $BuildMenu/LoadedMenu/BackArrow
+@onready var BuildMenuWorld = $BuildMenu/LoadedMenu/ItemsViewer/ItemViewport/BuildMenuWorld
+@onready var ModelItem: Node3D = $BuildMenu/LoadedMenu/ModelViewer/ViewmodelViewport/ViewmodelWorld/Model
 
 @export var INFO_MENU_MOVE_SPEED: float = 6
 @export var BUILD_MENU_MOVE_SPEED: float = 4
@@ -31,6 +35,8 @@ var World: Node3D = preload("res://scenes/world/editor_world/editor_world.tscn")
 var build_menu_positions := Vector2.ZERO
 var build_weight: float = 0
 
+const SPIN_MODEL_SPEED: int = 50
+var spin_model: bool = false
 var info_weight: float = 0
 var info_menu_positions := Vector2.ZERO
 var info_menu_is_moving: int = 0
@@ -42,6 +48,9 @@ func admin() -> void:
 	on_area_selected(Helper.id_to_dict(1, "area"))
 
 func _process(delta: float) -> void:
+	
+	if spin_model:
+		ModelItem.rotation_degrees.y += delta * SPIN_MODEL_SPEED
 	
 	for input in [1,2,3,4]:
 		if Input.is_action_just_pressed("Number" + str(input)):
@@ -82,6 +91,8 @@ func on_move_screen_switch() -> void:
 	load_world.emit(World)
 	
 func _ready() -> void:
+	on_setup_tabs()
+	build_folders = [build_folders[0], build_folders[3], build_folders[2], build_folders[4], build_folders[1]]
 #	for child in mblockers:
 #		child.mouse_entered.connect(func(): for tile in World.get_node("Tiles").get_children(): tile.on_check_mouse_entered())
 #		child.mouse_exited.connect(func(): for tile in World.get_node("Tiles").get_children(): tile.on_check_mouse_entered())
@@ -94,7 +105,7 @@ func _ready() -> void:
 	BuildMenu.get_node("Tabs").visible = false
 	BuildMenu.get_node("LoadedMenu").visible = false
 	BuildMenu.position.y += BuildMenu.size.y
-#	admin()
+	admin()
 
 func reset_mblocker_rects() -> void:
 	mblocker_rects = mblockers.map(func(x: Control): return Rect2i(x.global_position, x.size))
@@ -205,8 +216,139 @@ func _on_arrow_button_pressed():
 func _on_level_difficulty_item_selected(i: int):
 	level_difficulty = i + 1
 
+var build_folders: Array = ["res://assets/models/"]
+var selected_item_pos: Array
+var folder_pos: Array
+
 func on_load_tab(i: int):
+	on_load_model(false)
+	current_page = 1
 	for child in Tabs.get_children():
 		match child.get_index():
 			i: child.modulate = Helper.RED
 			_: child.modulate = Helper.BASE
+	folder_pos = [i + 1]
+	on_load_folder()
+	
+func on_setup_tabs(current_folder: Array = build_folders) -> void:
+	var i: int = 1
+	for directory in DirAccess.get_directories_at(get_folder_path()):
+		folder_pos.append(i)
+		current_folder.append([directory + "/"])
+		var fpath: String = get_folder_path()
+		if Array(DirAccess.get_files_at(fpath)).any(func(x: String): return x.ends_with(".glb")):
+			for directory_two in DirAccess.get_directories_at(fpath):
+				on_setup_tabs(current_folder[i])
+				
+			for file in Array(DirAccess.get_files_at(fpath)).filter(func(x: String): return x.ends_with(".glb")):
+				current_folder[i].append(file)
+		folder_pos.remove_at(folder_pos.size() - 1)
+		i += 1
+	
+func get_folder_path(pos: Array = folder_pos, get_item: bool = false) -> String:
+	var path: String = build_folders[0]
+	var arr: Array = build_folders
+	var i: int = 1
+	for key in pos:
+		if !get_item or get_item and i != pos.size():
+			arr = arr[key]
+			path += arr[0]
+		else: path += arr[key]
+		i += 1
+	return path
+
+func get_folder_contents(pos: Array = folder_pos) -> Array:
+	var contents: Array = build_folders
+	for key in pos:
+		contents = contents[key]
+	return contents
+
+var loaded_items: Array
+var current_page: int = 1
+const ITEM_COUNT_ONE_PAGE: int = 12
+
+func on_load_folder() -> void:
+	BackArrow.visible = !(folder_pos.size() == 0)
+	$BuildMenu/LoadedMenu/LeftArrow.disabled = (current_page == 1)
+	$BuildMenu/LoadedMenu/RightArrow.disabled = ceil(float((get_folder_contents().size() - 1)) / ITEM_COUNT_ONE_PAGE) <= current_page
+
+	loaded_items = []
+	for child in Items.get_children(): child.queue_free()
+	BuildMenuWorld.clear_items()
+	
+	var skip_first: bool = true
+	var contents: Array = get_folder_contents()
+	for i in range((current_page - 1) * ITEM_COUNT_ONE_PAGE, min(contents.size(), (current_page * ITEM_COUNT_ONE_PAGE) + 1)):
+		var item_contents: Variant = contents[i]
+		if !skip_first:
+			var item: Control
+			match typeof(item_contents):
+				TYPE_ARRAY:
+					item = preload("res://scenes/screens/level_editor/build_menu/folder.tscn").instantiate()
+					item.get_node("Label").text = item_contents[0].left(-1).capitalize()
+					item.get_node("Button").pressed.connect(on_folder_pressed.bind(item_contents[0]))
+				TYPE_STRING:
+					item = preload("res://scenes/screens/level_editor/build_menu/item.tscn").instantiate()
+					item.get_node("Label").text = item_contents.left(-4).capitalize()
+					BuildMenuWorld.add_item(get_folder_path(folder_pos + [i], true))
+					item.get_node("Button").pressed.connect(on_item_pressed.bind(i))
+			Items.add_child(item)
+			loaded_items.append(item)
+		else: skip_first = false
+		
+	var xy := Vector2.ZERO
+	for item in loaded_items:
+		if item.scene_file_path.ends_with("item.tscn"): BuildMenuWorld.position_item(xy)
+		item.position += xy
+		xy.x += 200
+		if xy.x == 1200:
+			xy.y += 150
+			xy.x = 0
+	modulate_items()
+			
+func _on_change_page_pressed(i: int) -> void:
+	var old_current_page: int = current_page
+	current_page = clamp(current_page + i, 1, ceil(float((get_folder_contents().size() - 1)) / ITEM_COUNT_ONE_PAGE))
+	if current_page != old_current_page:
+		on_load_folder()
+func on_folder_pressed(folder_name: String) -> void:
+	var j: int = 0
+	for item in get_folder_contents():
+		if j > 0 and folder_name == item[0]:
+			folder_pos.append(j)
+		j += 1
+	on_load_folder()
+
+func on_item_pressed(i: int) -> void:
+	var has_pressed: bool = selected_item_pos == folder_pos + [i]
+	if !has_pressed:
+		selected_item_pos = folder_pos + [i]
+	else: selected_item_pos = []
+	modulate_items()
+	on_load_model(!has_pressed)
+
+func on_load_model(_load: bool = true) -> void:
+	spin_model = _load
+	for child in ModelItem.get_children(): child.queue_free()
+	if _load:
+		var model: Node3D = load(get_folder_path(selected_item_pos, true)).instantiate()
+		ModelItem.add_child(model)
+
+func _on_back_arrow_pressed():
+	folder_pos.resize(folder_pos.size() - 1)
+	current_page = 1
+	on_load_folder()
+
+func modulate_items():
+	var j: int = 0 if selected_item_pos.is_empty() or !(folder_pos.size() == selected_item_pos.size() - 1) else selected_item_pos[selected_item_pos.size() - 1]
+	if j > 0:
+		for i in range(folder_pos.size()):
+			if folder_pos[i] != selected_item_pos[i]:
+				j = 0
+				break
+	
+	var n: int = 1
+	for btn in Items.get_children():
+		if !btn.is_queued_for_deletion():
+			btn.modulate = Helper.LIGHT_GREY if n == j else Helper.BASE
+			n += 1

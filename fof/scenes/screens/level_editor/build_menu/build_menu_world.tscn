@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://ddhe7b82xpn7a"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_editor/build_menu/build_menu_world.gd" id="1_pkkvb"]
+
+[node name="BuildMenuWorld" type="Node3D"]
+script = ExtResource("1_pkkvb")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 0, 10, 0)
+projection = 1
+size = 15.0
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.794415, 0.607376, 0, -0.607376, 0.794415, 0, 3.35595, 2.75074)
+
+[node name="Items" type="Node3D" parent="."]

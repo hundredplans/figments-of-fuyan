@@ -4,6 +4,7 @@ const RED := Color(1,0,0,1)
 const BASE := Color(1,1,1,1)
 const LIGHT_BROWN := Color(0.635, 0.447, 0.31,1)
 const DARK_BROWN := Color(0.165, 0.075, 0.008,1)
+const LIGHT_GREY := Color("5a5a5a")
 
 const settings_color_dict: Dictionary = {
 	"Graphics": "fcc71d",
