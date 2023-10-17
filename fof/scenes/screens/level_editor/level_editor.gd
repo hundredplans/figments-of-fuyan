@@ -91,12 +91,9 @@ func on_move_screen_switch() -> void:
 	load_world.emit(World)
 	
 func _ready() -> void:
-	on_setup_tabs()
-	build_folders = [build_folders[0], build_folders[3], build_folders[2], build_folders[4], build_folders[1]]
 #	for child in mblockers:
 #		child.mouse_entered.connect(func(): for tile in World.get_node("Tiles").get_children(): tile.on_check_mouse_entered())
 #		child.mouse_exited.connect(func(): for tile in World.get_node("Tiles").get_children(): tile.on_check_mouse_entered())
-	on_load_tab(0)
 	reset_mblocker_rects()
 	for btn in [ArrowButton,  $BuildMenu/LoadedMenu/LeftArrow, $BuildMenu/LoadedMenu/RightArrow]:
 		Helper.create_button_clickmask(btn)
@@ -119,8 +116,16 @@ func _on_load_area_pressed():
 func on_area_selected(item: Dictionary) -> void:
 	loaded_area = item
 	Helper.load_area_colors(self, item.pcolor, item.acolor)
-	on_load_empty_level()
+	
+	folder_pos = []
+	build_folders = ["res://assets/models/"]
+	on_setup_tabs()
+	build_folders = [build_folders[0], build_folders[3], build_folders[2], build_folders[4], build_folders[1]]
+	build_folders[1] = build_folders[1].filter(func(x: Variant): return !(typeof(x) == TYPE_STRING) or !x[0].is_valid_int() or int(x) == item.id)
+	on_load_tab(0)
+	
 	if !loaded_level:
+		on_load_empty_level()
 		on_build_menu_enabled()
 
 func on_load_level(info: Dictionary) -> void:
@@ -235,11 +240,11 @@ func on_setup_tabs(current_folder: Array = build_folders) -> void:
 		folder_pos.append(i)
 		current_folder.append([directory + "/"])
 		var fpath: String = get_folder_path()
-		if Array(DirAccess.get_files_at(fpath)).any(func(x: String): return x.ends_with(".glb")):
+		if Array(DirAccess.get_files_at(fpath)).any(func(x: String): return x.ends_with(".glb") and x[0] != "_"):
 			for directory_two in DirAccess.get_directories_at(fpath):
 				on_setup_tabs(current_folder[i])
 				
-			for file in Array(DirAccess.get_files_at(fpath)).filter(func(x: String): return x.ends_with(".glb")):
+			for file in Array(DirAccess.get_files_at(fpath)).filter(func(x: String): return x.ends_with(".glb") and x[0] != "_"):
 				current_folder[i].append(file)
 		folder_pos.remove_at(folder_pos.size() - 1)
 		i += 1
@@ -288,7 +293,7 @@ func on_load_folder() -> void:
 					item.get_node("Button").pressed.connect(on_folder_pressed.bind(item_contents[0]))
 				TYPE_STRING:
 					item = preload("res://scenes/screens/level_editor/build_menu/item.tscn").instantiate()
-					item.get_node("Label").text = item_contents.left(-4).capitalize()
+					item.get_node("Label").text = item_contents.left(-4).capitalize() if !item_contents[0].is_valid_int() else "Ground"
 					BuildMenuWorld.add_item(get_folder_path(folder_pos + [i], true))
 					item.get_node("Button").pressed.connect(on_item_pressed.bind(i))
 			Items.add_child(item)
