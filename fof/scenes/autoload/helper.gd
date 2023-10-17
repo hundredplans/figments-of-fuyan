@@ -225,7 +225,7 @@ func load_area_colors(node: Node, primary_color: Color, accent_color: Color) -> 
 
 var _id_to_tile: Array = ["ground/", "hover_tile", "void_tile", "water_tile"]
 func id_to_tile(id: int, area: int) -> String:
-	if id == 0: return _id_to_tile[0] + str(area)
+	if id == 0: return str(area)
 	return _id_to_tile[id]
 	
 func interact_button(flip: bool = false) -> String:

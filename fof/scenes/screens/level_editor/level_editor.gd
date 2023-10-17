@@ -119,10 +119,9 @@ func _on_load_area_pressed():
 func on_area_selected(item: Dictionary) -> void:
 	loaded_area = item
 	Helper.load_area_colors(self, item.pcolor, item.acolor)
-	
+	on_load_empty_level()
 	if !loaded_level:
 		on_build_menu_enabled()
-		on_load_empty_level(false)
 
 func on_load_level(info: Dictionary) -> void:
 	match loaded_level:

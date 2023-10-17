@@ -10,6 +10,7 @@ var info: Dictionary = {
 func load_tid(id: int) -> void:
 	for child in Tile.get_children(): child.queue_free()
 	if info.active_tile:
+		print(id)
 		var tile: Node3D = load("res://assets/models/tiles/" + Helper.id_to_tile(id, info.area) + ".glb").instantiate()
 		Tile.add_child(tile)
 
