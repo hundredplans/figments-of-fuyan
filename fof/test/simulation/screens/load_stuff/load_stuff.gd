@@ -13,7 +13,7 @@ signal card_selected
 signal level_selected
 signal aura_selected
 signal boon_selected
-
+ 
 var load_state: int = 0
 var confirm_deletion: bool = true
 
