@@ -91,10 +91,6 @@ func on_move_screen_switch() -> void:
 	load_world.emit(World)
 	
 func _ready() -> void:
-#	for child in mblockers:
-#		child.mouse_entered.connect(func(): for tile in World.get_node("Tiles").get_children(): tile.on_check_mouse_entered())
-#		child.mouse_exited.connect(func(): for tile in World.get_node("Tiles").get_children(): tile.on_check_mouse_entered())
-	reset_mblocker_rects()
 	for btn in [ArrowButton,  $BuildMenu/LoadedMenu/LeftArrow, $BuildMenu/LoadedMenu/RightArrow]:
 		Helper.create_button_clickmask(btn)
 		btn.pressed.connect((func(): AudioMaster.play_sfx(preload("res://scenes/screens/level_editor/arrow/woosh.wav"))))
@@ -102,6 +98,10 @@ func _ready() -> void:
 	BuildMenu.get_node("Tabs").visible = false
 	BuildMenu.get_node("LoadedMenu").visible = false
 	BuildMenu.position.y += BuildMenu.size.y
+	reset_mblocker_rects()
+	for child in mblockers:
+		child.mouse_exited.connect(func(): for tile in World.get_node("Tiles").get_children(): if tile.can_press in [1, 3]: tile._on_detect_mouse_mouse_entered(mblocker_rects))
+		child.mouse_entered.connect(func(): for tile in World.get_node("Tiles").get_children(): tile.on_force_exit())
 	admin()
 
 func reset_mblocker_rects() -> void:
@@ -112,6 +112,8 @@ func _on_load_area_pressed():
 	FileLoader.on_ready("Area")
 	FileLoader.item_selected.connect(on_area_selected)
 	add_child(FileLoader)
+	disable_tiles()
+	FileLoader.queued.connect(disable_tiles.bind(false))
 
 func on_area_selected(item: Dictionary) -> void:
 	loaded_area = item
@@ -161,11 +163,18 @@ func on_load_empty_level(save_level: bool = true) -> void:
 			tile.load_tid(0)
 	loaded_level = true
 
+func on_exit_ones(pos: Vector4) -> void:
+	for tile in World.get_node("Tiles").get_children():
+		if tile.info.position != pos and tile.can_press == 1:
+			tile.can_press = 0
+
 func create_tile(xy: Vector3) -> Node3D:
 	var tile: Node3D = preload("res://assets/models/tiles/editor_tile.tscn").instantiate()
 	tile.position = Vector3((xy.x * dx) + offset, xy.z, xy.y * 1.5)
 	tile.active_tile_change_state.connect(on_active_tile_change_state)
+	tile.exit_ones.connect(on_exit_ones)
 	tile.get_node("DetectMouse").mouse_entered.connect(func(): tile._on_detect_mouse_mouse_entered(mblocker_rects))
+	tile.get_node("DetectMouse").mouse_exited.connect(tile._on_detect_mouse_mouse_exited)
 	World.get_node("Tiles").add_child(tile)
 	offset = offset_values[round(offset)]
 	return tile
@@ -184,6 +193,8 @@ func _on_load_level_pressed():
 	FileLoader.on_ready(FILE_LOADER_NAME)
 	FileLoader.item_selected.connect(on_load_level)
 	add_child(FileLoader)
+	disable_tiles()
+	FileLoader.queued.connect(disable_tiles.bind(false))
 	
 	if loaded_area:
 		FileLoader.set_search(str(loaded_area.id), 3)
@@ -356,3 +367,6 @@ func modulate_items():
 		if !btn.is_queued_for_deletion():
 			btn.modulate = Helper.LIGHT_GREY if n == j else Helper.BASE
 			n += 1
+
+func disable_tiles(disable: bool = true) -> void:
+	for child in World.get_node("Tiles").get_children(): child.can_press = 4 if disable else 0

@@ -5,6 +5,7 @@ extends Control
 const static_path: String = "res://static/base_game/"
 const ITEM_COUNT_ON_ONE_PAGE: int = 10
 
+signal queued
 signal item_selected
 var search_item_selected: int = 0
 var current_page: int = 1
@@ -33,6 +34,7 @@ func on_exit_button_pressed() -> void:
 
 func _queue_free() -> void:
 	on_change_fileloader_state(0)
+	queued.emit()
 	queue_free()
 
 func on_ready(_item_name: String) -> void:
