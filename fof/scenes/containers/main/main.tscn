@@ -1,16 +1,236 @@
-[gd_scene load_steps=11 format=3 uid="uid://bnoei7u0kxl25"]
+[gd_scene load_steps=47 format=3 uid="uid://bnoei7u0kxl25"]
 
 [ext_resource type="Script" path="res://scenes/containers/main/main.gd" id="1_10ydf"]
-[ext_resource type="Texture2D" uid="uid://rlbd0hboru02" path="res://scenes/containers/main/background.jpg" id="2_14ibu"]
+[ext_resource type="Texture2D" uid="uid://c8aba0r4ejkga" path="res://scenes/containers/main/background.png" id="2_ljcb4"]
 [ext_resource type="Texture2D" uid="uid://cj8j06xypgaw7" path="res://assets/UI/back_arrow/back_arrow.png" id="3_cu6v7"]
-[ext_resource type="PackedScene" uid="uid://cd1hnc68uspy" path="res://scenes/screens/main_menu/main_menu.tscn" id="3_roh8t"]
+[ext_resource type="Texture2D" uid="uid://cr2qfigfm40tx" path="res://scenes/screens/main_menu/equipped_theme/0/1.png" id="3_ihthr"]
+[ext_resource type="Texture2D" uid="uid://cartccpd4oihk" path="res://scenes/screens/main_menu/equipped_theme/0/2.png" id="4_7cd5k"]
 [ext_resource type="Texture2D" uid="uid://svbsdkqet370" path="res://assets/UI/back_arrow/back_arrow_darker.png" id="4_qr5ib"]
 [ext_resource type="Texture2D" uid="uid://bak0pucgtak0b" path="res://assets/UI/back_arrow/back_arrow_dark.png" id="5_fjqpq"]
+[ext_resource type="Texture2D" uid="uid://djtbxnhyda7ys" path="res://scenes/screens/main_menu/equipped_theme/0/3.png" id="5_gyhs1"]
+[ext_resource type="Texture2D" uid="uid://ypcru7onhqgf" path="res://scenes/screens/main_menu/equipped_theme/0/4.png" id="6_ohtgg"]
 [ext_resource type="Texture2D" uid="uid://et3bcj7gnugo" path="res://assets/UI/setting_cog/setting_cog.png" id="6_vmtrq"]
+[ext_resource type="Texture2D" uid="uid://bacdpylm6taxn" path="res://scenes/screens/main_menu/equipped_theme/0/5.png" id="7_1niv4"]
 [ext_resource type="Texture2D" uid="uid://cw2fnn7hfibl3" path="res://assets/UI/setting_cog/setting_cog_pressed.png" id="7_dwuio"]
+[ext_resource type="Texture2D" uid="uid://btupprhkyl0uw" path="res://scenes/screens/main_menu/equipped_theme/0/6.png" id="8_im0bw"]
 [ext_resource type="Texture2D" uid="uid://bp06vcvriyo3d" path="res://assets/UI/setting_cog/setting_cog_hover.png" id="8_ymrhe"]
+[ext_resource type="Texture2D" uid="uid://b1t113rk2xt8g" path="res://scenes/screens/main_menu/equipped_theme/0/7.png" id="9_gd1fe"]
+[ext_resource type="Texture2D" uid="uid://dck3fjf45lenu" path="res://scenes/screens/main_menu/equipped_theme/0/8.png" id="10_n33l1"]
+[ext_resource type="Texture2D" uid="uid://byhmiltggr88x" path="res://scenes/screens/main_menu/equipped_theme/0/9.png" id="11_54ho5"]
+[ext_resource type="Texture2D" uid="uid://rle4g88l733n" path="res://scenes/screens/main_menu/equipped_theme/0/10.png" id="12_kxf1i"]
+[ext_resource type="Texture2D" uid="uid://bijn8wfxci44v" path="res://scenes/screens/main_menu/equipped_theme/0/11.png" id="13_0jh0j"]
+[ext_resource type="Texture2D" uid="uid://bgjka8tayb8fd" path="res://scenes/screens/main_menu/equipped_theme/0/12.png" id="14_mrybt"]
+[ext_resource type="Texture2D" uid="uid://doyoskmkaquaw" path="res://scenes/screens/main_menu/equipped_theme/0/13.png" id="15_gccrj"]
+[ext_resource type="Texture2D" uid="uid://b5h64ogjy5b0y" path="res://scenes/screens/main_menu/equipped_theme/0/14.png" id="16_bqfa0"]
+[ext_resource type="Texture2D" uid="uid://dekrm8lgtby80" path="res://scenes/screens/main_menu/equipped_theme/0/15.png" id="17_565c2"]
+[ext_resource type="Texture2D" uid="uid://44h6wqpleva3" path="res://scenes/screens/main_menu/equipped_theme/0/16.png" id="18_thyp3"]
+[ext_resource type="Texture2D" uid="uid://dfmfkomy887mj" path="res://scenes/screens/main_menu/equipped_theme/0/17.png" id="19_dks4p"]
+[ext_resource type="Texture2D" uid="uid://ktb0xo8kufsa" path="res://scenes/screens/main_menu/equipped_theme/0/18.png" id="20_s8qrr"]
+[ext_resource type="Texture2D" uid="uid://cl6onsr862o0n" path="res://scenes/screens/main_menu/equipped_theme/0/19.png" id="21_4ph3t"]
+[ext_resource type="Texture2D" uid="uid://dojkmcfdo8j6d" path="res://scenes/screens/main_menu/equipped_theme/0/20.png" id="22_y1tdh"]
+[ext_resource type="Texture2D" uid="uid://b4kpfsvd2rbt7" path="res://scenes/screens/main_menu/equipped_theme/0/21.png" id="23_1017u"]
+[ext_resource type="Texture2D" uid="uid://b7x2sewv2tt0n" path="res://scenes/screens/main_menu/equipped_theme/0/22.png" id="24_vy1sr"]
+[ext_resource type="Texture2D" uid="uid://cmg6yg77axlq5" path="res://scenes/screens/main_menu/equipped_theme/0/23.png" id="25_6d1wf"]
+[ext_resource type="Texture2D" uid="uid://cf1fyh1ubty2r" path="res://scenes/screens/main_menu/equipped_theme/0/24.png" id="26_u3m48"]
+[ext_resource type="Texture2D" uid="uid://dibrfnru08oig" path="res://scenes/screens/main_menu/equipped_theme/0/25.png" id="27_d6hih"]
+[ext_resource type="Texture2D" uid="uid://k2pl8gdbp3y3" path="res://scenes/screens/main_menu/equipped_theme/0/26.png" id="28_tkrnk"]
+[ext_resource type="Texture2D" uid="uid://d3cak4jo2cu2c" path="res://scenes/screens/main_menu/equipped_theme/0/27.png" id="29_edrjm"]
+
+[sub_resource type="Animation" id="Animation_3l08o"]
+resource_name = "AreaEditor"
+length = 0.25
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UI/Screens/AreaEditor:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_a0yjb"]
+resource_name = "CardEditor"
+length = 0.25
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UI/Screens/CardEditor:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_qfqq0"]
+resource_name = "EditorMenu"
+length = 0.25
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UI/Screens/EditorMenu:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_33gwq"]
+resource_name = "Fuyanopedia"
+length = 0.25
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UI/Screens/Fuyanopedia:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_aiqn2"]
+resource_name = "LevelEditor"
+length = 0.25
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UI/Screens/LevelEditor:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_146u0"]
+resource_name = "LoreBooksEditor"
+length = 0.25
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UI/Screens/LoreBooksEditor:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_21302"]
+resource_name = "MainMenu"
+length = 0.6
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UI/Screens/MainMenu/AnimationItem:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18, 0.2, 0.22, 0.24, 0.26, 0.28, 0.3, 0.32, 0.34, 0.36, 0.38, 0.4, 0.42, 0.44, 0.54, 0.56, 0.58, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("3_ihthr"), ExtResource("4_7cd5k"), ExtResource("5_gyhs1"), ExtResource("6_ohtgg"), ExtResource("7_1niv4"), ExtResource("8_im0bw"), ExtResource("9_gd1fe"), ExtResource("10_n33l1"), ExtResource("11_54ho5"), ExtResource("12_kxf1i"), ExtResource("13_0jh0j"), ExtResource("14_mrybt"), ExtResource("15_gccrj"), ExtResource("16_bqfa0"), ExtResource("17_565c2"), ExtResource("18_thyp3"), ExtResource("19_dks4p"), ExtResource("20_s8qrr"), ExtResource("21_4ph3t"), ExtResource("22_y1tdh"), ExtResource("23_1017u"), ExtResource("24_vy1sr"), ExtResource("25_6d1wf"), ExtResource("26_u3m48"), ExtResource("27_d6hih"), ExtResource("28_tkrnk"), ExtResource("29_edrjm")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("UI/Screens/MainMenu/MenuButtons:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.45, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 0), Vector2(-3000, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_py2as"]
+resource_name = "SettingsMenu"
+length = 0.25
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UI/Screens/SettingsMenu:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_svd31"]
+resource_name = "AuraEditor"
+length = 0.25
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UI/Screens/AuraEditor:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ymcru"]
+resource_name = "BoonEditor"
+length = 0.25
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UI/Screens/BoonEditor:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_blkxs"]
+_data = {
+"AreaEditor": SubResource("Animation_3l08o"),
+"AuraEditor": SubResource("Animation_svd31"),
+"BoonEditor": SubResource("Animation_ymcru"),
+"CardEditor": SubResource("Animation_a0yjb"),
+"EditorMenu": SubResource("Animation_qfqq0"),
+"Fuyanopedia": SubResource("Animation_33gwq"),
+"LevelEditor": SubResource("Animation_aiqn2"),
+"LoreBooksEditor": SubResource("Animation_146u0"),
+"MainMenu": SubResource("Animation_21302"),
+"SettingsMenu": SubResource("Animation_py2as")
+}
 
 [node name="Main" type="Node" node_paths=PackedStringArray("SettingCog", "BackArrow")]
 script = ExtResource("1_10ydf")
@@ -19,7 +239,8 @@ BackArrow = NodePath("UI/BackArrow")
 
 [node name="Background" type="Sprite2D" parent="."]
 texture_filter = 1
-texture = ExtResource("2_14ibu")
+scale = Vector2(1.77778, 1)
+texture = ExtResource("2_ljcb4")
 centered = false
 
 [node name="UI" type="Control" parent="."]
@@ -42,10 +263,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="MainMenu" parent="UI/Screens" instance=ExtResource("3_roh8t")]
-modulate = Color(1, 1, 1, 0)
-layout_mode = 1
 
 [node name="BackArrow" type="TextureButton" parent="UI"]
 layout_mode = 2
@@ -78,5 +295,6 @@ texture_disabled = ExtResource("7_dwuio")
 
 [node name="General" type="Node3D" parent="World"]
 
+[connection signal="animation_finished" from="UI/MoveScreen" to="." method="_on_move_screen_animation_finished"]
 [connection signal="pressed" from="UI/BackArrow" to="." method="on_trigger_screen_history"]
 [connection signal="pressed" from="UI/SettingCog" to="." method="_on_setting_cog_pressed"]

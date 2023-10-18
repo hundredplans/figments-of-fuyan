@@ -6,7 +6,7 @@ var held: bool = true
 func _ready() -> void: roll_tasks()
 
 func roll_tasks() -> void:
-	for child in $TaskNumbers.get_children(): child.queue_free()
+	for i in $TaskNumbers.get_children(): i.queue_free()
 	var text := FileAccess.open("user://savefofle/tasks.txt", FileAccess.READ).get_as_text().split("\n", false)
 	var difficulties: Array = [0,0,0]
 	for i in text: difficulties[int(i.split("-", false)[1]) - 1] += 1

@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://cd1hnc68uspy"]
+[gd_scene load_steps=4 format=3 uid="uid://cd1hnc68uspy"]
 
 [ext_resource type="Script" path="res://scenes/screens/main_menu/main_menu.gd" id="1_iwh4f"]
+[ext_resource type="PackedScene" uid="uid://dbm4t7qcmb87r" path="res://scenes/screens/main_menu/equipped_theme/0/menu_button.tscn" id="2_awgqh"]
 [ext_resource type="PackedScene" uid="uid://cm5ntwf8speq1" path="res://scenes/screens/main_menu/patch_notes/patch_notes.tscn" id="3_c76i0"]
 
 [node name="MainMenu" type="Control"]
@@ -18,6 +19,55 @@ anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
 
+[node name="Play" parent="MenuButtons" instance=ExtResource("2_awgqh")]
+offset_top = 17.0
+offset_bottom = 267.0
+label_text = "Play"
+
+[node name="Simulation" parent="MenuButtons" instance=ExtResource("2_awgqh")]
+offset_left = -83.0
+offset_top = 219.0
+offset_right = 642.0
+offset_bottom = 469.0
+label_text = "Simulation"
+
+[node name="EditorMenu" parent="MenuButtons" instance=ExtResource("2_awgqh")]
+offset_top = 418.0
+offset_bottom = 668.0
+label_text = "Editor Menu"
+
+[node name="SettingsMenu" parent="MenuButtons" instance=ExtResource("2_awgqh")]
+offset_left = -83.0
+offset_top = 625.0
+offset_right = 642.0
+offset_bottom = 875.0
+label_text = "Settings"
+
+[node name="Fuyanopedia" parent="MenuButtons" instance=ExtResource("2_awgqh")]
+offset_top = 824.0
+offset_bottom = 1074.0
+label_text = "Fuyanopedia"
+
+[node name="LevelEditor" parent="MenuButtons" instance=ExtResource("2_awgqh")]
+offset_left = 1340.0
+offset_top = 635.0
+offset_right = 2065.0
+offset_bottom = 885.0
+label_text = "Level Editor"
+flip_h = true
+
+[node name="Quit" parent="MenuButtons" instance=ExtResource("2_awgqh")]
+offset_left = 1568.0
+offset_top = 824.0
+offset_right = 2293.0
+offset_bottom = 1074.0
+label_text = "Quit"
+flip_h = true
+
 [node name="PatchNotes" parent="." instance=ExtResource("3_c76i0")]
 offset_left = 1083.0
 offset_right = 1920.0
+
+[node name="AnimationItem" type="Sprite2D" parent="."]
+visible = false
+centered = false

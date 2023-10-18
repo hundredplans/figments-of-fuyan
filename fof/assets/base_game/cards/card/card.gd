@@ -4,15 +4,6 @@ var info: Dictionary
 @export var Text: Control
 @export var Stats: Control
 
-func _ready():
-	print($Stats/Energy/Label.global_position)
-	print($Stats/Speed/Label.global_position)
-	
-	print($Stats/Attack/Sprite2D.global_position)
-	print($Stats/Attack/Label.global_position)
-	
-	print($Stats/Health/Sprite2D.global_position)
-	print($Stats/Health/Label.global_position)
 func set_info(_info: Dictionary) -> void:
 	info = _info
 	for stat in ["a", "h", "s", "e"]:

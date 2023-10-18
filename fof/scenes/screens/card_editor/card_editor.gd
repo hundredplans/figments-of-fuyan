@@ -49,16 +49,7 @@ func on_stat_submitted(__: String):
 		child.release_focus()
 
 func _on_choose_rarity_item_selected(i: int):
-	var rarity_colors: Dictionary = {
-		0: "8e8f88",
-		1: "b7a48b",
-		2: "5b8500",
-		3: "ebdf60",
-		4: "a001fb",
-		5: "d72500",
-		6: "5f91e1",
-	}
-	$CardCreator/RarityColor.color = rarity_colors[i]
+	$CardCreator/RarityColor.color = Helper.rarity_colors[i]
 	rarity = i
 
 func _on_card_text_changed():
@@ -76,13 +67,9 @@ func _on_edit_file_name_text_submitted():
 
 func _on_save_card_pressed():
 	var contents: String = "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s"\
-	% [stats[0], stats[1], stats[2], stats[3], rarity, CardText.text, FlavorText.text,
+	% [stats[0], stats[1], stats[2], stats[3], rarity, CardText.text.replace("\n", " "), FlavorText.text.replace("\n", " "),
 	personality_sliders[0], personality_sliders[1], personality_sliders[2], personality_sliders[3], personality_sliders[4]]
-	var item_dict: Dictionary = Helper.write_to_base_game_file(FILE_LOADER_NAME, $CardCreator/EditFileName, contents, TID)
-	if item_dict and Settings.auto_create_dir == 1:
-		var dir_path: String = "res://assets/base_game/cards/"
-		if !Array(DirAccess.get_directories_at(dir_path)).any(func(x: String): return x.begins_with(str(item_dict.id))):
-			DirAccess.make_dir_absolute(dir_path + item_dict.bgfn)
+	Helper.create_base_game_id_dir(Helper.write_to_base_game_file(FILE_LOADER_NAME, $CardCreator/EditFileName, contents, TID), FILE_LOADER_NAME)
 
 func _on_load_card_pressed():
 	var FileLoader: Control = preload("res://scenes/editor/file_loader/file_loader.tscn").instantiate()
@@ -114,6 +101,7 @@ func on_item_selected(item_info: Dictionary) -> void:
 	
 	on_load_model(item_info.bgfn)
 	_on_choose_rarity_item_selected(item_info.r)
+	$CardCreator/ChooseRarity.select_item(item_info.r)
 
 func _on_delete_card_pressed():
 	Helper.on_delete_item(FILE_LOADER_NAME, str(ID), Internal, self, Settings.cards_can_delete_directory)

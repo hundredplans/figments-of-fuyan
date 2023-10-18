@@ -5,6 +5,7 @@ extends Control
 const static_path: String = "res://static/base_game/"
 const ITEM_COUNT_ON_ONE_PAGE: int = 10
 
+signal queued
 signal item_selected
 var search_item_selected: int = 0
 var current_page: int = 1
@@ -24,7 +25,7 @@ func _ready() -> void:
 	$Background.modulate = Color(1, 1, 1, Settings.fileloader_opacity * 0.01)
 
 func on_change_fileloader_state(i: int) -> void:
-	get_tree().get_child(0).fileloader_state = i
+	get_tree().get_root().get_node("Main").fileloader_state = i
 
 func on_exit_button_pressed() -> void:
 	if !$LoadInOut.is_playing():
@@ -33,6 +34,7 @@ func on_exit_button_pressed() -> void:
 
 func _queue_free() -> void:
 	on_change_fileloader_state(0)
+	queued.emit()
 	queue_free()
 
 func on_ready(_item_name: String) -> void:
@@ -68,6 +70,8 @@ func on_item_ready() -> void:
 		"area": search_options = ["World"]
 		"card": search_options = ["Rarity", "Attack", "Health", "Speed", "Energy", "Confidence", "Intelligence", "Awareness", "Teamwork", "Adventurousness", "Ability"]
 		"level": search_options = ["Area"]
+		"aura": search_options = ["Rarity"]
+		"boon": search_options = ["Rarity"]
 	$Search/SearchOptions.options += search_options
 		
 	
@@ -122,7 +126,7 @@ func match_search_item_selected(btn: Control) -> bool:
 		3:
 			match item_name:
 				"area": if str(btn.info.world).begins_with(SearchEdit.text): return true
-				"card": if str(btn.info.r).begins_with(SearchEdit.text): return true
+				"card", "aura", "boon": if str(btn.info.r).begins_with(SearchEdit.text): return true
 				"level": 
 					if str(btn.info.area).begins_with(SearchEdit.text): return true
 					var area_info: Dictionary = Helper.id_to_dict(btn.info.area, "Area")
@@ -148,3 +152,9 @@ func match_search_item_selected(btn: Control) -> bool:
 
 func _on_search_edit_text_changed(__: String):
 	refresh_search()
+
+func set_search(text: String, i: int) -> void:
+	SearchEdit.text = text
+	$Search/SearchOptions.select_item(i)
+	_on_search_item_selected(i) 
+	

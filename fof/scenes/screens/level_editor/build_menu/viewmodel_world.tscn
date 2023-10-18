@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://v3the1ihrgp"]
+
+[node name="ViewmodelWorld" type="Node3D"]
+
+[node name="Model" type="Node3D" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.915417, 0.402507, 0, -0.402507, 0.915417, 0, 2.1899, 4.28416)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.79039, 0.612604, 0, -0.612604, 0.79039, 0, 3.08278, 4.26116)

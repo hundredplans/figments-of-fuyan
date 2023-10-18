@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://dkt6xp4cltmdo"]
+
+[ext_resource type="Texture2D" uid="uid://dwixkfes2uu6v" path="res://scenes/screens/level_editor/build_menu/folder.png" id="1_l474p"]
+[ext_resource type="LabelSettings" uid="uid://b3ehbfjlj57iy" path="res://assets/UI/lora/lora_outline_20.tres" id="2_dtlsd"]
+
+[node name="Folder" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 90.0
+offset_bottom = 90.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_l474p")
+centered = false
+
+[node name="Button" type="Button" parent="."]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_right = 90.0
+offset_bottom = 90.0
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = -105.0
+offset_top = 92.0
+offset_right = 195.0
+offset_bottom = 122.0
+label_settings = ExtResource("2_dtlsd")
+horizontal_alignment = 1

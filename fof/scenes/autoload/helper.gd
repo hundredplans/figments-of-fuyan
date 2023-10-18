@@ -4,6 +4,7 @@ const RED := Color(1,0,0,1)
 const BASE := Color(1,1,1,1)
 const LIGHT_BROWN := Color(0.635, 0.447, 0.31,1)
 const DARK_BROWN := Color(0.165, 0.075, 0.008,1)
+const LIGHT_GREY := Color("828282")
 
 const settings_color_dict: Dictionary = {
 	"Graphics": "fcc71d",
@@ -23,6 +24,26 @@ const stat_ai_dict: Dictionary = {
 	"s": "Speed",
 	"e": "Energy",
 	"r": "Rarity",
+}
+
+const rarity_colors: Dictionary = {
+	0: "8e8f88",
+	1: "b7a48b",
+	2: "5b8500",
+	3: "ebdf60",
+	4: "a001fb",
+	5: "d72500",
+	6: "5f91e1",
+}
+	
+const rarity_accent_colors: Dictionary = {
+	0: "6d6e67",
+	1: "97846b",
+	2: "476900",
+	3: "bfb32f",
+	4: "8001ca",
+	5: "a81a00",
+	6: "467ace",
 }
 
 func call_method(node: Node, method: String, args: Array) -> bool:
@@ -154,6 +175,8 @@ func return_item_dict(item: String, _contents: String) -> Dictionary:
 			"area": keys += ["pcolor", "acolor", "world", "cards"]
 			"card": keys += ["a", "h", "s", "e", "r", "text", "flavor", "aic", "aii", "aiw", "ait", "aia"]
 			"level": keys += ["area", "difficulty", "tiles"]
+			"aura": keys += ["r", "text", "flavor"]
+			"boon": keys += ["r", "text", "flavor"]
 		var i: int = 0
 		for key in keys:
 			if contents[i].is_valid_int():
@@ -222,9 +245,9 @@ func load_area_colors(node: Node, primary_color: Color, accent_color: Color) -> 
 			if child is ColorRect: child.color = accent_color
 			else: child.modulate = accent_color
 
-var _id_to_tile: Array = ["ground/", "hover_tile", "void_tile", "water_tile"]
+var _id_to_tile: Array = ["ground/", "_hover_tile", "void_tile", "water_tile"]
 func id_to_tile(id: int, area: int) -> String:
-	if id == 0: return _id_to_tile[0] + str(area)
+	if id == 0: return str(area)
 	return _id_to_tile[id]
 	
 func interact_button(flip: bool = false) -> String:
@@ -233,3 +256,9 @@ func interact_button(flip: bool = false) -> String:
 func on_timer_end(function: Callable, args: Array, delay: float):
 	var tween: Tween = create_tween()
 	tween.tween_callback(function.bindv(args)).set_delay(delay)
+
+func create_base_game_id_dir(item_dict: Dictionary, file_loader_name: String) -> void:
+	if item_dict and Settings.auto_create_dir == 1:
+		var dir_path: String = "res://assets/base_game/" + file_loader_name.to_lower() + "s/"
+		if !Array(DirAccess.get_directories_at(dir_path)).any(func(x: String): return x.begins_with(str(item_dict.id))):
+			DirAccess.make_dir_absolute(dir_path + item_dict.bgfn)

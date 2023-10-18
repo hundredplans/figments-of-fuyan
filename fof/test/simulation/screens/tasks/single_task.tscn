@@ -67,5 +67,14 @@ offset_right = 282.0
 offset_bottom = 46.0
 text = "+"
 
+[node name="RollRandom" type="Button" parent="."]
+layout_mode = 0
+offset_left = 331.0
+offset_top = 74.0
+offset_right = 360.0
+offset_bottom = 120.0
+text = "R"
+
 [connection signal="pressed" from="SubtractTotal" to="." method="_on_subtract_total_pressed"]
 [connection signal="pressed" from="AddTotal" to="." method="_on_add_total_pressed"]
+[connection signal="pressed" from="RollRandom" to="." method="_on_roll_random_pressed"]
