@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cx06gj5p60ff1"]
 
-[ext_resource type="Texture2D" uid="uid://cs7xndyyyg6q4" path="res://scenes/screens/level_editor/build_menu/item_box.png" id="1_k44cg"]
+[ext_resource type="Texture2D" uid="uid://cpj446snod8kg" path="res://scenes/screens/level_editor/build_menu/item_box.png" id="1_k44cg"]
 [ext_resource type="LabelSettings" uid="uid://b3ehbfjlj57iy" path="res://assets/UI/lora/lora_outline_20.tres" id="2_0ytm7"]
 
 [node name="Item" type="Control"]
@@ -9,7 +9,7 @@ anchors_preset = 0
 offset_right = 90.0
 offset_bottom = 90.0
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="PROutside" type="Sprite2D" parent="."]
 texture = ExtResource("1_k44cg")
 centered = false
 

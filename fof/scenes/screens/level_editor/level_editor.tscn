@@ -1,13 +1,12 @@
-[gd_scene load_steps=16 format=3 uid="uid://bauy3car7d8gx"]
+[gd_scene load_steps=18 format=3 uid="uid://bauy3car7d8gx"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_editor/level_editor.gd" id="1_c1ufw"]
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="3_hyt8o"]
 [ext_resource type="LabelSettings" uid="uid://c5h6tv2uhlrjf" path="res://assets/UI/lora/lora_outline.tres" id="4_5jaug"]
 [ext_resource type="PackedScene" uid="uid://bj3h1ak5dv73n" path="res://scenes/ui_general/op_button/op_button.tscn" id="4_lvhxm"]
 [ext_resource type="PackedScene" uid="uid://bdd0m6wbuerq5" path="res://scenes/editor/edit_file_name/edit_file_name.tscn" id="5_2x3tu"]
-[ext_resource type="Texture2D" uid="uid://byo3hcibsn61s" path="res://scenes/screens/level_editor/arrow/arrow.png" id="5_331us"]
-[ext_resource type="Texture2D" uid="uid://d2k0uadn3rkde" path="res://scenes/screens/level_editor/arrow/arrow_pressed.png" id="6_sq1ti"]
-[ext_resource type="Texture2D" uid="uid://bi0r48tc0qc8m" path="res://scenes/screens/level_editor/arrow/arrow_hovered.png" id="7_pe1rn"]
+[ext_resource type="Texture2D" uid="uid://b8drk0oid8kdr" path="res://scenes/screens/level_editor/arrow/arrow.png" id="5_c5gvh"]
+[ext_resource type="Texture2D" uid="uid://dgd0htlk7lc78" path="res://scenes/screens/level_editor/build_menu/model_viewer_sprite.png" id="8_b8gpa"]
 [ext_resource type="Texture2D" uid="uid://cahwx87hkiryc" path="res://scenes/screens/level_editor/build_menu/back_arrow.png" id="8_uibcn"]
 [ext_resource type="PackedScene" uid="uid://ddhe7b82xpn7a" path="res://scenes/screens/level_editor/build_menu/build_menu_world.tscn" id="8_v7j65"]
 [ext_resource type="PackedScene" uid="uid://v3the1ihrgp" path="res://scenes/screens/level_editor/build_menu/viewmodel_world.tscn" id="10_xk6di"]
@@ -21,6 +20,15 @@ environment = SubResource("Environment_550hv")
 
 [sub_resource type="World3D" id="World3D_gk5xn"]
 environment = SubResource("Environment_5yhyt")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oppik"]
+size = Vector2(70, 823)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ayxxt"]
+size = Vector2(956, 174.75)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ncy6r"]
+size = Vector2(1444, 367)
 
 [node name="LevelEditor" type="Control"]
 layout_mode = 3
@@ -113,7 +121,7 @@ text = "Save Level"
 
 [node name="InfoMenu" type="Control" parent="."]
 anchors_preset = 0
-offset_right = 910.0
+offset_right = 956.0
 offset_bottom = 175.0
 
 [node name="Background" type="Control" parent="InfoMenu"]
@@ -151,14 +159,11 @@ color = Color(0.792157, 0.576471, 0.431373, 1)
 
 [node name="EditFileName" parent="InfoMenu" instance=ExtResource("5_2x3tu")]
 layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -741.0
+offset_left = 169.0
 offset_top = 17.0
-offset_right = -63.0
+offset_right = 847.0
 offset_bottom = 155.0
-grow_horizontal = 0
+grow_horizontal = 1
 grow_vertical = 1
 
 [node name="LevelDifficulty" parent="InfoMenu" instance=ExtResource("4_lvhxm")]
@@ -169,21 +174,17 @@ offset_bottom = 84.0
 options = PackedStringArray("1", "2", "3", "4", "5", "6", "7", "8", "9", "10")
 label_text = "LD"
 
-[node name="ArrowButton" type="TextureButton" parent="InfoMenu"]
+[node name="PRArrow" type="TextureButton" parent="InfoMenu"]
 layout_mode = 1
-anchors_preset = 11
+anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -74.0
-offset_top = 10.0
-offset_right = -9.0
-offset_bottom = -10.0
+offset_left = -95.0
+offset_top = 40.0
+offset_right = -15.0
+offset_bottom = 138.0
 grow_horizontal = 0
-grow_vertical = 2
-texture_normal = ExtResource("5_331us")
-texture_pressed = ExtResource("6_sq1ti")
-texture_hover = ExtResource("7_pe1rn")
+texture_normal = ExtResource("5_c5gvh")
 
 [node name="BuildMenu" type="Control" parent="."]
 anchors_preset = 0
@@ -197,56 +198,47 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 10.0
-offset_top = 10.0
-offset_right = -10.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="PROutside" type="ColorRect" parent="BuildMenu/Background"]
 layout_mode = 1
-anchors_preset = -1
-anchor_left = -0.007
-anchor_top = -0.04
-anchor_right = 1.007
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -0.0319996
-offset_top = -0.039999
-offset_right = 0.0318604
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 color = Color(0.364706, 0.235294, 0.14902, 1)
 
 [node name="ACInside" type="ColorRect" parent="BuildMenu/Background"]
 layout_mode = 1
-anchors_preset = -1
-anchor_left = -0.007
-anchor_top = -0.04
-anchor_right = 1.007
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 9.968
-offset_top = 9.96
-offset_right = -9.96814
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(0.792157, 0.576471, 0.431373, 1)
 
 [node name="Tabs" type="Control" parent="BuildMenu"]
-anchors_preset = 0
+layout_mode = 1
+anchor_top = 0.153
+anchor_bottom = 0.153
 offset_left = 10.0
-offset_top = 10.0
+offset_top = -46.151
 offset_right = 1434.0
-offset_bottom = 56.0
+offset_bottom = 0.848995
 
 [node name="Tabs" type="HBoxContainer" parent="BuildMenu/Tabs"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 1.0
-offset_top = -4.0
-offset_right = -1.0
-offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("3_hyt8o")
@@ -278,33 +270,30 @@ metadata/_edit_lock_ = true
 
 [node name="PRSeperator1" type="ColorRect" parent="BuildMenu/Tabs"]
 layout_mode = 0
-offset_left = 350.0
-offset_top = -4.0
-offset_right = 358.0
-offset_bottom = 42.0
+offset_left = 349.0
+offset_right = 357.0
+offset_bottom = 47.0
 color = Color(0.364706, 0.235294, 0.14902, 1)
 
 [node name="PRSeperator2" type="ColorRect" parent="BuildMenu/Tabs"]
 layout_mode = 0
 offset_left = 708.0
-offset_top = -4.0
 offset_right = 716.0
-offset_bottom = 42.0
+offset_bottom = 47.0
 color = Color(0.364706, 0.235294, 0.14902, 1)
 
 [node name="PRSeperator3" type="ColorRect" parent="BuildMenu/Tabs"]
 layout_mode = 0
 offset_left = 1066.0
-offset_top = -4.0
 offset_right = 1074.0
-offset_bottom = 42.0
+offset_bottom = 47.0
 color = Color(0.364706, 0.235294, 0.14902, 1)
 
 [node name="PRRim" type="ColorRect" parent="BuildMenu/Tabs"]
 layout_mode = 0
-offset_top = 42.0
+offset_top = 47.0
 offset_right = 1424.0
-offset_bottom = 52.0
+offset_bottom = 57.0
 color = Color(0.364706, 0.235294, 0.14902, 1)
 
 [node name="LoadedMenu" type="Control" parent="BuildMenu"]
@@ -319,39 +308,33 @@ offset_bottom = 367.0
 layout_mode = 1
 anchors_preset = -1
 offset_left = 4.007
-offset_top = 4.99998
+offset_top = 9.99998
 offset_right = 64.007
-offset_bottom = 65.0
+offset_bottom = 70.0
 texture_normal = ExtResource("8_uibcn")
 
-[node name="LeftArrow" type="TextureButton" parent="BuildMenu/LoadedMenu"]
-layout_mode = 1
-anchors_preset = -1
-offset_left = 4.0
-offset_top = 182.994
-offset_right = 69.0
-offset_bottom = 337.994
-grow_horizontal = 0
-scale = Vector2(0.8, 0.8)
-texture_normal = ExtResource("5_331us")
-texture_pressed = ExtResource("6_sq1ti")
-texture_hover = ExtResource("7_pe1rn")
-texture_disabled = ExtResource("6_sq1ti")
-flip_h = true
-
-[node name="RightArrow" type="TextureButton" parent="BuildMenu/LoadedMenu"]
+[node name="PRLeftArrow" type="TextureButton" parent="BuildMenu/LoadedMenu"]
 layout_mode = 1
 anchors_preset = -1
 offset_left = 11.0
-offset_top = 64.994
-offset_right = 76.0
-offset_bottom = 219.994
+offset_top = 183.0
+offset_right = 91.0
+offset_bottom = 281.0
 grow_horizontal = 0
 scale = Vector2(0.8, 0.8)
-texture_normal = ExtResource("5_331us")
-texture_pressed = ExtResource("6_sq1ti")
-texture_hover = ExtResource("7_pe1rn")
-texture_disabled = ExtResource("6_sq1ti")
+texture_normal = ExtResource("5_c5gvh")
+flip_h = true
+
+[node name="PRRightArrow" type="TextureButton" parent="BuildMenu/LoadedMenu"]
+layout_mode = 1
+anchors_preset = -1
+offset_left = 11.0
+offset_top = 84.0
+offset_right = 91.0
+offset_bottom = 182.0
+grow_horizontal = 0
+scale = Vector2(0.8, 0.8)
+texture_normal = ExtResource("5_c5gvh")
 
 [node name="ItemsViewer" type="SubViewportContainer" parent="BuildMenu/LoadedMenu"]
 layout_mode = 0
@@ -369,6 +352,11 @@ size = Vector2i(1091, 284)
 render_target_update_mode = 4
 
 [node name="BuildMenuWorld" parent="BuildMenu/LoadedMenu/ItemsViewer/ItemViewport" instance=ExtResource("8_v7j65")]
+
+[node name="PRModelViewerSprite" type="Sprite2D" parent="BuildMenu/LoadedMenu"]
+position = Vector2(1251, 12)
+texture = ExtResource("8_b8gpa")
+centered = false
 
 [node name="ModelViewer" type="SubViewportContainer" parent="BuildMenu/LoadedMenu"]
 layout_mode = 0
@@ -409,17 +397,33 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_lock_ = true
 
+[node name="MouseBlockers" type="Area2D" parent="."]
+
+[node name="LoadButtons" type="CollisionShape2D" parent="MouseBlockers"]
+position = Vector2(35, 624.5)
+shape = SubResource("RectangleShape2D_oppik")
+
+[node name="InfoMenu" type="CollisionShape2D" parent="MouseBlockers"]
+position = Vector2(478, 87.625)
+shape = SubResource("RectangleShape2D_ayxxt")
+
+[node name="BuildMenu" type="CollisionShape2D" parent="MouseBlockers"]
+position = Vector2(991, 896.5)
+shape = SubResource("RectangleShape2D_ncy6r")
+
 [connection signal="pressed" from="LoadButtons/Buttons/LoadArea" to="." method="_on_load_area_pressed"]
 [connection signal="pressed" from="LoadButtons/Buttons/LoadLevel" to="." method="_on_load_level_pressed"]
 [connection signal="pressed" from="LoadButtons/Buttons/LoadEmpty" to="." method="_on_load_empty_pressed"]
 [connection signal="pressed" from="LoadButtons/Buttons/SaveLevel" to="." method="_on_save_level_pressed"]
 [connection signal="text_submitted" from="InfoMenu/EditFileName" to="." method="_on_save_level_pressed"]
 [connection signal="item_selected" from="InfoMenu/LevelDifficulty" to="." method="_on_level_difficulty_item_selected"]
-[connection signal="pressed" from="InfoMenu/ArrowButton" to="." method="_on_arrow_button_pressed"]
+[connection signal="pressed" from="InfoMenu/PRArrow" to="." method="_on_arrow_button_pressed"]
 [connection signal="pressed" from="BuildMenu/Tabs/Tabs/TileTab" to="." method="on_load_tab" binds= [0]]
 [connection signal="pressed" from="BuildMenu/Tabs/Tabs/ObjectTab" to="." method="on_load_tab" binds= [1]]
 [connection signal="pressed" from="BuildMenu/Tabs/Tabs/WallTab" to="." method="on_load_tab" binds= [2]]
 [connection signal="pressed" from="BuildMenu/Tabs/Tabs/DecorationTab" to="." method="on_load_tab" binds= [3]]
 [connection signal="pressed" from="BuildMenu/LoadedMenu/BackArrow" to="." method="_on_back_arrow_pressed"]
-[connection signal="pressed" from="BuildMenu/LoadedMenu/LeftArrow" to="." method="_on_change_page_pressed" binds= [-1]]
-[connection signal="pressed" from="BuildMenu/LoadedMenu/RightArrow" to="." method="_on_change_page_pressed" binds= [1]]
+[connection signal="pressed" from="BuildMenu/LoadedMenu/PRLeftArrow" to="." method="_on_change_page_pressed" binds= [-1]]
+[connection signal="pressed" from="BuildMenu/LoadedMenu/PRRightArrow" to="." method="_on_change_page_pressed" binds= [1]]
+[connection signal="mouse_entered" from="MouseBlockers" to="." method="on_mblocker_mouse_entered"]
+[connection signal="mouse_exited" from="MouseBlockers" to="." method="on_mblocker_mouse_exited"]

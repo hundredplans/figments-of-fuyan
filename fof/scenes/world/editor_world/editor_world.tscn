@@ -4,6 +4,11 @@
 
 [node name="EditorWorld" type="Node3D"]
 
+[node name="TileRaycast" type="RayCast3D" parent="."]
+collision_mask = 2
+collide_with_areas = true
+collide_with_bodies = false
+
 [node name="Tiles" type="Node3D" parent="."]
 
 [node name="MovementCamera" type="Camera3D" parent="."]
