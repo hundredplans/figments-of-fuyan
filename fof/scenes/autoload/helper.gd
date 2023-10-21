@@ -248,7 +248,7 @@ func load_area_colors(node: Node, primary_color: Color, accent_color: Color) -> 
 var _id_to: Array = [
 	["null", "ground", "_hover_tile", "void_tile", "water_tile"],
 	["null", "spawns/spawn_enemy", "spawns/spawn_ally", "spawns/spawn_neutral", "spawns/spawn_trinket", "light"],
-	["null"],
+	["null", "wooden_wall"],
 	["null", "shrub"]]
 	
 func editor_id_to(btab: int, id: int, extra: int = 0) -> String:
