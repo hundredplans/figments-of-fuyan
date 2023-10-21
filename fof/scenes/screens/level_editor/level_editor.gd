@@ -401,7 +401,7 @@ func on_tile_select(tile: Node3D) -> void:
 					tile.load_obj(tile.info.obj.id)
 				3: 
 					tile.info.wall = {"id": Helper.id_to_editor(2, item_name), "rotation": 0, "type": 0}
-					tile.load_wall(tile.info.obj.id)
+					tile.load_wall(tile.info.wall.id)
 				4:
 					tile.info.deco = {"id": Helper.id_to_editor(3, item_name), "rotation": 0, "type": 0}
 					tile.load_deco(tile.info.deco.id)
