@@ -245,10 +245,25 @@ func load_area_colors(node: Node, primary_color: Color, accent_color: Color) -> 
 			if child is ColorRect: child.color = accent_color
 			else: child.modulate = accent_color
 
-var _id_to_tile: Array = ["ground/", "_hover_tile", "void_tile", "water_tile"]
-func id_to_tile(id: int, area: int) -> String:
-	if id == 0: return str(area)
-	return _id_to_tile[id]
+var _id_to: Array = [
+	["null", "ground", "_hover_tile", "void_tile", "water_tile"],
+	["null", "spawns/spawn_enemy", "spawns/spawn_ally", "spawns/spawn_neutral", "spawns/spawn_trinket", "light"],
+	["null"],
+	["null", "shrub"]]
+	
+func editor_id_to(btab: int, id: int, extra: int = 0) -> String:
+	if btab == 0 and id == 1: return str(extra)
+	return _id_to[btab][id]
+	
+func id_to_editor(btab: int, item: String) -> int:
+	item = item.left(-4)
+	var j: int = 0
+	for i in _id_to[btab]:
+		if i == item:
+			return j
+		j += 1
+		
+	return 1 if btab == 0 else 0
 	
 func interact_button(flip: bool = false) -> String:
 	return ["RightClick", "MouseMiddle"][abs(Settings.interact_button - int(flip))]

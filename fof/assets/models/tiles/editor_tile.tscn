@@ -2,14 +2,28 @@
 
 [ext_resource type="Script" path="res://assets/models/tiles/editor_tile.gd" id="1_8x5vn"]
 
-[node name="EditorTile" type="Node3D" node_paths=PackedStringArray("Tile")]
+[node name="EditorTile" type="Node3D" node_paths=PackedStringArray("Tile", "TileObject", "TileDecoration", "TileWall", "DetectMouse")]
 script = ExtResource("1_8x5vn")
 Tile = NodePath("Tile")
+TileObject = NodePath("TileObject")
+TileDecoration = NodePath("TileDecoration")
+TileWall = NodePath("TileWall")
+DetectMouse = NodePath("DetectMouse")
 
 [node name="Tile" type="Node3D" parent="."]
 
+[node name="TileObject" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.201, 0)
+
+[node name="TileDecoration" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.201, 0)
+
+[node name="TileWall" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.201, 0)
+
 [node name="DetectMouse" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.19, 0)
+collision_layer = 3
 monitoring = false
 monitorable = false
 

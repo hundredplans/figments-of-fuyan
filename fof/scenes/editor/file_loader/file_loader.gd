@@ -120,7 +120,6 @@ func match_search_item_selected(btn: Control) -> bool:
 			return true
 		1: if str(btn.info.id).begins_with(SearchEdit.text):
 			return true
-			2
 		2: if (btn.info.iname.to_lower()).begins_with(SearchEdit.text.to_lower()):
 			return true
 		3:
