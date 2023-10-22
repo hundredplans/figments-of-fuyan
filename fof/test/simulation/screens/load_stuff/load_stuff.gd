@@ -49,7 +49,7 @@ func load_stuff():
 		
 		if load_state == 0:
 			var nfile := FileAccess.open(parent.load_card_path + "/" + file, FileAccess.READ)
-			var card_info: Array = nfile.get_as_text().split("\n")
+			var card_info: Array = nfile.get_as_text().split("\n", false)
 			var rarity: int = 0
 			load_stuff_button.text += " | " + str(card_info[6])
 			if card_info.size() > 7: rarity = int(card_info[7])

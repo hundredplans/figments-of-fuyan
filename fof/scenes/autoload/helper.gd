@@ -187,7 +187,6 @@ func return_item_dict(item: String, _contents: String) -> Dictionary:
 				
 			elif contents[i].begins_with("[") and contents[i].ends_with("]"):
 				contents[i] = str_to_var(contents[i])
-				
 			item_dict.merge({key: contents[i]})
 			i += 1
 		item_dict.merge({"bgfn": str(item_dict.id) + " - " + item_dict.iname})
@@ -251,8 +250,12 @@ var _id_to: Array = [
 	["null", "wooden_wall"],
 	["null", "shrub"]]
 	
-func editor_id_to(btab: int, id: int, extra: int = 0) -> String:
-	if btab == 0 and id == 1: return str(extra)
+func tid_to(id: int, area: int = 0, type: int = 0) -> String:
+	if id == 1: return str(area)
+	var end: String = "" if type == 0 else "_" + str(type)
+	return _id_to[0][id] + end
+	
+func editor_id_to(btab: int, id: int) -> String:
 	return _id_to[btab][id]
 	
 func id_to_editor(btab: int, item: String) -> int:

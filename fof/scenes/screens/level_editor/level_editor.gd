@@ -1,6 +1,7 @@
 extends Control
 signal load_world
 
+@onready var ItemTypes: Control = $BuildMenu/LoadedMenu/ItemTypes
 @onready var Tabs: HBoxContainer = $BuildMenu/Tabs/Tabs
 @onready var LevelDifficulty = $InfoMenu/LevelDifficulty
 @onready var EditFileName = $InfoMenu/EditFileName
@@ -86,6 +87,16 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_released("Remove"):
 		reset_active_tile_state(4)
 			
+	if Input.is_action_just_pressed("ClearSelection") and selected_item_pos:
+		deselect_item()
+			
+	if active_tile and active_tile.can_press:
+		if Input.is_action_pressed("LeftClick"): on_tile_select(active_tile)
+		elif Input.is_action_pressed("Remove"): on_tile_remove(active_tile)
+		elif Input.is_action_pressed(Helper.interact_button()): on_tile_interact(active_tile)
+		elif Input.is_action_pressed("RotateLeft"): on_tile_rotate(active_tile, -1)
+		elif Input.is_action_pressed("RotateRight"): on_tile_rotate(active_tile, 1)
+			
 func on_move_build_menu() -> void:
 	build_menu_is_moving = true
 func on_move_screen_switch() -> void:
@@ -142,6 +153,7 @@ func on_area_selected(item: Dictionary) -> void:
 	if !loaded_level:
 		on_build_menu_enabled()
 func on_load_level(info: Dictionary) -> void:
+	active_tile = null
 	match loaded_level:
 		false: on_build_menu_enabled(); loaded_level = true
 		_: _on_save_level_pressed(false, 2)
@@ -154,13 +166,18 @@ func on_load_level(info: Dictionary) -> void:
 	for child in World.get_node("Tiles").get_children(): child.queue_free()
 	var lastx: int = 0
 	for i in info.tiles:
-		if i.position.x != lastx: offset = 0
-		lastx = i.position.x
-		var tile: Node3D = create_tile(Vector3(i.position.x, i.position.y, i.position.w))
+		if i.position[0] != lastx: offset = 0
+		lastx = i.position[0]
+		var tile: Node3D = create_tile(Vector3(i.position[0], i.position[1], i.position[3]))
 		tile.info = i
-		tile.load_tid(i.tile.id)
+		
+		tile.load_tile(i.tile.id)
+		tile.load_obj(i.obj.id)
+		tile.load_wall(i.wall.id)
+		tile.load_deco(i.deco.id)
 		
 func on_load_empty_level(save_level: bool = true) -> void:
+	active_tile = null
 	LevelDifficulty.select_item(0)
 	if save_level: _on_save_level_pressed(false, 2)
 	EditFileName.set_text("")
@@ -169,7 +186,7 @@ func on_load_empty_level(save_level: bool = true) -> void:
 		offset = 0
 		for y in range(-grid_half_size, grid_half_size + 1):
 			var tile: Node3D = create_tile(Vector3(x, y, 0))
-			tile.info = {"tile": {"id": 1, "rotation": 0, "type": 0}, "obj": {"id": 0, "rotation": 0}, "deco": {"id": 0, "rotation": 0}, "wall": {"id": 0, "rotation": 0}, "position": Vector4(x, y, -x - y, 0)}
+			tile.info = {"tile": {"id": 1, "rotation": 0, "type": 0}, "obj": {"id": 0, "rotation": 0, "type": 0}, "deco": {"id": 0, "rotation": 0, "type": 0}, "wall": {"id": 0, "rotation": 0, "type": 0}, "position": [x, y, -x - y, 0]}
 			tile.load_tile(tile.info.tile.id)
 	loaded_level = true
 	
@@ -178,10 +195,6 @@ func create_tile(xy: Vector3) -> Node3D:
 	tile.position = Vector3((xy.x * dx) + offset, xy.z, xy.y * 1.5)
 	tile.load_tile_get_area.connect(on_load_tile_get_area)
 	tile.active_tile.connect(on_is_active_tile)
-	
-	tile.tile_select.connect(on_tile_select)
-	tile.tile_remove.connect(on_tile_remove)
-	tile.tile_interact.connect(on_tile_interact)
 	
 	tile.DetectMouse.mouse_entered.connect(func(): tile.on_mouse_entered_check_mblockers(mblocker_rects))
 	tile.DetectMouse.mouse_exited.connect(tile.on_mouse_exited)
@@ -212,7 +225,7 @@ func _on_save_level_pressed(play_sfx: bool = true, create_temp: int = 1):
 			_: if play_sfx: AudioMaster.play_sfx(preload("res://assets/sounds/confirmation/confirm_default.wav"), -10)
 		
 		if Settings.clear_backup_files_array[Settings.clear_backup_files] != 1:
-			Helper.write_to_file("user://save/temp/levels/", EditFileName.get_node("Showcase").text + ["", "_save", "_override"][create_temp], ".txt", contents)		
+			Helper.write_to_file("user://save/temp/levels/", EditFileName.get_node("Showcase").text + ["", "_save", "_override"][create_temp], ".txt", contents)
 func _queue_free() -> void:
 	_on_save_level_pressed(false, 0)
 	load_world.emit(null)
@@ -330,12 +343,40 @@ func on_folder_pressed(folder_name: String) -> void:
 		j += 1
 	on_load_folder()
 func on_item_pressed(i: int) -> void:
-	var has_pressed: bool = selected_item_pos == folder_pos + [i]
-	if !has_pressed:
+	if selected_item_pos == folder_pos + [i]: deselect_item()
+	else:
+		for child in ItemTypes.get_children(): child.queue_free()
 		selected_item_pos = folder_pos + [i]
-	else: selected_item_pos = []
+		modulate_items()
+		on_load_model()
+		
+		var fpath: String = get_folder_path(selected_item_pos, true)
+		var farray: Array = fpath.split("/")
+		var fitem: String = "_" + farray[farray.size() - 1].left(-4) + "_"
+		if fitem.begins_with("__"): fitem = fitem.right(-1)
+		fpath = ""
+		for j in range(farray.size()):
+			if j < farray.size() - 1:
+				fpath += farray[j] + "/"
+				
+		var fexists: bool = false
+		for n in range(1, 5):
+			if FileAccess.file_exists(fpath + fitem + str(n) + ".glb"):
+				if fexists == false: create_type_button(0)
+				create_type_button(n)
+				fexists = true
+
+func create_type_button(i: int) -> void:
+	var btn := Button.new()
+	ItemTypes.add_child(btn)
+	btn.text = str(i)
+
+func deselect_item() -> void:
+	selected_item_pos = []
 	modulate_items()
-	on_load_model(!has_pressed)
+	on_load_model(false)
+	for child in ItemTypes.get_children(): child.queue_free()
+	
 func on_load_model(_load: bool = true) -> void:
 	spin_model = _load
 	for child in ModelItem.get_children(): child.queue_free()
@@ -368,7 +409,7 @@ func on_is_active_tile(tile: Node3D) -> void:
 	reset_active_tile_state(0)
 
 func on_tile_remove(tile: Node3D) -> void:
-	if active_tile == tile and active_tile_state != 1:
+	if active_tile_state != 1:
 		var i: int = 1
 		for item in ["obj", "deco", "wall", "tile"]:
 			if active_remove_state in [0, i]:
@@ -384,26 +425,43 @@ func on_tile_remove(tile: Node3D) -> void:
 			i += 1
 		reset_active_tile_state(1)
 	
-func on_tile_interact(tile: Node3D) -> void:
-	if active_tile == tile and active_tile_state != 2:
+var has_rotated_tile_delay: bool = false
+const ROTATION_TILE_DELAY: float = 0.2
+	
+func on_tile_rotate(tile: Node3D, rotate_direction: int) -> void:
+	if !has_rotated_tile_delay:
+		has_rotated_tile_delay = true
+		var i: int = 1
+		for j in ["tile", "obj", "wall", "deco"]:
+			if !selected_item_pos or i == selected_item_pos[0]:
+				var old_rotation: int = tile.info[j].rotation
+				tile.info[j].rotation = clamp(tile.info[j].rotation + rotate_direction, 0, 5)
+				if old_rotation == tile.info[j].rotation: tile.info[j].rotation = 0 if old_rotation == 5 else 5
+				tile.call("load_" + j, tile.info[j].id)
+			i += 1
+		await get_tree().create_timer(ROTATION_TILE_DELAY).timeout
+		has_rotated_tile_delay = false
+	
+func on_tile_interact(_tile: Node3D) -> void:
+	if active_tile_state != 2:
 		reset_active_tile_state(2)
 	
 func on_tile_select(tile: Node3D) -> void:
-	if active_tile == tile and active_tile_state != 3:
+	if active_tile_state != 3:
 		if selected_item_pos:
 			var item_name: String = get_folder_path(selected_item_pos, true, true)
 			match selected_item_pos[0]:
 				1:
-					tile.info.tile = {"id": Helper.id_to_editor(0, item_name), "rotation": 0, "type": 0}
+					tile.info.tile = {"id": Helper.id_to_editor(0, item_name), "rotation": tile.info.tile.rotation, "type": 0}
 					tile.load_tile(tile.info.tile.id)
 				2: 
-					tile.info.obj = {"id": Helper.id_to_editor(1, item_name), "rotation": 0, "type": 0}
+					tile.info.obj = {"id": Helper.id_to_editor(1, item_name), "rotation": tile.info.obj.rotation, "type": 0}
 					tile.load_obj(tile.info.obj.id)
 				3: 
-					tile.info.wall = {"id": Helper.id_to_editor(2, item_name), "rotation": 0, "type": 0}
+					tile.info.wall = {"id": Helper.id_to_editor(2, item_name), "rotation": tile.info.wall.rotation, "type": 0}
 					tile.load_wall(tile.info.wall.id)
 				4:
-					tile.info.deco = {"id": Helper.id_to_editor(3, item_name), "rotation": 0, "type": 0}
+					tile.info.deco = {"id": Helper.id_to_editor(3, item_name), "rotation": tile.info.deco.rotation, "type": 0}
 					tile.load_deco(tile.info.deco.id)
 		reset_active_tile_state(3)
 

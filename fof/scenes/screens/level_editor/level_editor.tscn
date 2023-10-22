@@ -186,6 +186,15 @@ offset_bottom = 138.0
 grow_horizontal = 0
 texture_normal = ExtResource("5_c5gvh")
 
+[node name="PreviewButton" type="Button" parent="InfoMenu"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 100.0
+offset_right = 144.0
+offset_bottom = 146.0
+theme = ExtResource("3_hyt8o")
+text = "Preview"
+
 [node name="BuildMenu" type="Control" parent="."]
 anchors_preset = 0
 offset_left = 269.0
@@ -380,6 +389,11 @@ offset_left = 166.0
 offset_top = 10.0
 offset_right = 1257.0
 offset_bottom = 294.0
+
+[node name="ItemTypes" type="Control" parent="BuildMenu/LoadedMenu"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
 
 [node name="WarningLabel" type="Label" parent="BuildMenu"]
 layout_mode = 1
