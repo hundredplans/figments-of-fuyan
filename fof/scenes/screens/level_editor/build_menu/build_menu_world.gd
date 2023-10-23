@@ -30,6 +30,23 @@ func add_item(path: String) -> void:
 	Items.add_child(item)
 	items.append(item)
 	
+func replace_item(i: int, path: String) -> void:
+	if i < items.size():
+		var j: int = 0
+		for child in Items.get_children():
+			if !child.is_queued_for_deletion():
+				if i == j:
+					var cindex: int = child.get_index()
+					var pos: Vector3 = child.position
+					child.queue_free()
+					var item: Node3D = load(path).instantiate()
+					item.position = pos
+					Items.add_child(item)
+					Items.move_child(item, cindex)
+					items[i] = item
+					break
+				j += 1
+	
 func position_item(pos: Vector2i) -> void:
 	if pos.y == 150: items[ipos].position = Vector3(_remap(pos.x, 14.6, -22.6), 0, _remap(pos.x, -22.6, 14.6))
 	else: items[ipos].position = Vector3(_remap(pos.x, -30.8, 6.6), 0, _remap(pos.x, 6.6, -30.8))

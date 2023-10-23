@@ -247,26 +247,40 @@ func load_area_colors(node: Node, primary_color: Color, accent_color: Color) -> 
 var _id_to: Array = [
 	["null", "ground", "_hover_tile", "void_tile", "water_tile"],
 	["null", "spawns/spawn_enemy", "spawns/spawn_ally", "spawns/spawn_neutral", "spawns/spawn_trinket", "light"],
-	["null", "wooden_wall"],
+	["null", "wall", "wooden_wall"],
 	["null", "shrub"]]
 	
+func wid_to(id: int, area: int = 0, type: int = 0) -> String:
+	if id == 1:
+		if type > 0:
+			return "_" + str(area) + "_" + str(type)
+		return str(area)
+	return editor_id_to(2, id, type)
+	
 func tid_to(id: int, area: int = 0, type: int = 0) -> String:
-	if id == 1: return str(area)
+	if id == 1:
+		if type > 0:
+			return "_" + str(area) + "_" + str(type)
+		return str(area)
+	var end: String = "" if type == 0 or id == 2 else "_" + str(type)
+	var rstring: String = _id_to[0][id]
+	return "_" if end and !rstring.begins_with("_") else "" + _id_to[0][id] + end
+	
+func editor_id_to(btab: int, id: int, type: int = 0) -> String:
+	var rstring: String = _id_to[btab][id]
 	var end: String = "" if type == 0 else "_" + str(type)
-	return _id_to[0][id] + end
+	if end and !rstring.begins_with("_"): rstring = rstring.insert(0, "_")
+	return rstring + end
 	
-func editor_id_to(btab: int, id: int) -> String:
-	return _id_to[btab][id]
-	
-func id_to_editor(btab: int, item: String) -> int:
+func id_to_editor(btab: int, item: String) -> int: 
 	item = item.left(-4)
 	var j: int = 0
 	for i in _id_to[btab]:
-		if i == item:
+		if item.contains(i):
 			return j
 		j += 1
 		
-	return 1 if btab == 0 else 0
+	return 1 if btab in [0, 2] else 0
 	
 func interact_button(flip: bool = false) -> String:
 	return ["RightClick", "MouseMiddle"][abs(Settings.interact_button - int(flip))]

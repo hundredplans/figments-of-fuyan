@@ -47,7 +47,9 @@ var build_menu_is_moving: int = 0
 var default_level_size: int = [6, 10, 16, 20, 30, 40, 50, 100][Settings.level_size]
 var grid_half_size: int = round(default_level_size * 0.5)
 
+var selected_item_type: int = 0
 var active_tile_state: int = 0
+var max_item_types: int = 0
 
 func admin() -> void:
 	on_area_selected_from_fileloader(Helper.id_to_dict(1, "area"))
@@ -56,7 +58,10 @@ func _process(delta: float) -> void:
 		ModelItem.rotation_degrees.y += delta * SPIN_MODEL_SPEED
 	
 	for input in [1,2,3,4]:
-		if Input.is_action_just_pressed("Number" + str(input)):
+		if max_item_types > 0 and Input.is_action_just_pressed("ShiftNumber" + str(input)):
+			on_type_button_pressed(input - 1)
+		
+		elif Input.is_action_just_pressed("Number" + str(input)):
 			on_load_tab(input - 1)
 	
 	if build_menu_is_moving == 0 and Input.is_action_just_pressed("Tab"):
@@ -148,6 +153,7 @@ func on_area_selected(item: Dictionary) -> void:
 	on_setup_tabs()
 	build_folders = [build_folders[0], build_folders[3], build_folders[2], build_folders[4], build_folders[1]]
 	build_folders[1] = build_folders[1].filter(func(x: Variant): return !(typeof(x) == TYPE_STRING) or !x[0].is_valid_int() or int(x) == item.id)
+	build_folders[3] = build_folders[3].filter(func(x: Variant): return !(typeof(x) == TYPE_STRING) or !x[0].is_valid_int() or int(x) == item.id)
 	on_load_tab(0)
 	
 	if !loaded_level:
@@ -194,6 +200,7 @@ func create_tile(xy: Vector3) -> Node3D:
 	var tile: Node3D = preload("res://assets/models/tiles/editor_tile.tscn").instantiate()
 	tile.position = Vector3((xy.x * dx) + offset, xy.z, xy.y * 1.5)
 	tile.load_tile_get_area.connect(on_load_tile_get_area)
+	tile.load_wall_get_area.connect(on_load_wall_get_area)
 	tile.active_tile.connect(on_is_active_tile)
 	
 	tile.DetectMouse.mouse_entered.connect(func(): tile.on_mouse_entered_check_mblockers(mblocker_rects))
@@ -269,7 +276,8 @@ func get_item_name(pos: Array = folder_pos) -> String:
 		if i == pos.size() - 1: return arr[pos[i]]
 		else: arr = arr[pos[i]]
 	return ""
-func get_folder_path(pos: Array = folder_pos, get_item: bool = false, from_fol: bool = false) -> String:
+	
+func get_folder_path(pos: Array = folder_pos, get_item: bool = false, from_fol: bool = false, get_type: bool = true) -> String:
 	var path: String = build_folders[0] if !from_fol else ""
 	var arr: Array = build_folders
 	var i: int = 1
@@ -280,7 +288,9 @@ func get_folder_path(pos: Array = folder_pos, get_item: bool = false, from_fol: 
 		else: path += arr[key]
 		if from_fol and i == 1: path = ""
 		i += 1
+	if get_item and get_type: path = get_selected_item_type_path(path)
 	return path
+	
 func get_folder_contents(pos: Array = folder_pos) -> Array:
 	var contents: Array = build_folders
 	for key in pos:
@@ -290,6 +300,14 @@ func get_folder_contents(pos: Array = folder_pos) -> Array:
 var loaded_items: Array
 var current_page: int = 1
 const ITEM_COUNT_ONE_PAGE: int = 12
+
+func is_in_selection_folder() -> bool:
+	if selected_item_pos.size() == folder_pos.size() + 1:
+		for i in range(folder_pos.size()):
+			if folder_pos[i] != selected_item_pos[i]:
+				return false
+		return true
+	return false
 
 func on_load_folder() -> void:
 	BackArrow.visible = !(folder_pos.size() == 0)
@@ -313,8 +331,12 @@ func on_load_folder() -> void:
 					item.get_node("Button").pressed.connect(on_folder_pressed.bind(item_contents[0]))
 				TYPE_STRING:
 					item = preload("res://scenes/screens/level_editor/build_menu/item.tscn").instantiate()
-					item.get_node("Label").text = item_contents.left(-4).capitalize() if !item_contents[0].is_valid_int() else "Ground"
-					BuildMenuWorld.add_item(get_folder_path(folder_pos + [i], true))
+					if item_contents[0].is_valid_int():
+						match folder_pos[0]:
+							1: item.get_node("Label").text = "Ground"
+							3: item.get_node("Label").text = "Wall"
+					else: item.get_node("Label").text = item_contents.left(-4).capitalize()
+					BuildMenuWorld.add_item(get_folder_path(folder_pos + [i], true, false, false))
 					item.get_node("Button").pressed.connect(on_item_pressed.bind(i))
 					item.get_node("PROutside").modulate = loaded_area.pcolor
 			Items.add_child(item)
@@ -330,6 +352,13 @@ func on_load_folder() -> void:
 			xy.y += 150
 			xy.x = 0
 	modulate_items()
+	if !is_in_selection_folder(): clear_item_types()
+	else: type_button_factory()
+	
+func clear_item_types() -> void: 
+	for child in ItemTypes.get_children(): child.queue_free()
+	max_item_types = 0
+	
 func _on_change_page_pressed(i: int) -> void:
 	var old_current_page: int = current_page
 	current_page = clamp(current_page + i, 1, ceil(float((get_folder_contents().size() - 1)) / ITEM_COUNT_ONE_PAGE))
@@ -345,37 +374,90 @@ func on_folder_pressed(folder_name: String) -> void:
 func on_item_pressed(i: int) -> void:
 	if selected_item_pos == folder_pos + [i]: deselect_item()
 	else:
-		for child in ItemTypes.get_children(): child.queue_free()
+		if selected_item_type > 0:
+			selected_item_type = 0
+			replace_build_menu_item()
 		selected_item_pos = folder_pos + [i]
+		selected_item_type = 0
+		type_button_factory()
 		modulate_items()
 		on_load_model()
-		
-		var fpath: String = get_folder_path(selected_item_pos, true)
-		var farray: Array = fpath.split("/")
-		var fitem: String = "_" + farray[farray.size() - 1].left(-4) + "_"
-		if fitem.begins_with("__"): fitem = fitem.right(-1)
-		fpath = ""
-		for j in range(farray.size()):
-			if j < farray.size() - 1:
-				fpath += farray[j] + "/"
-				
-		var fexists: bool = false
-		for n in range(1, 5):
-			if FileAccess.file_exists(fpath + fitem + str(n) + ".glb"):
-				if fexists == false: create_type_button(0)
-				create_type_button(n)
-				fexists = true
 
-func create_type_button(i: int) -> void:
+func get_selected_item_type_path(path: String) -> String:
+	if selected_item_type > 0 and is_in_selection_folder():
+		var farray: Array = path.split("/")
+		var fitem: String = "_" + farray[farray.size() - 1].left(-4) + "_" + str(selected_item_type) + ".glb"
+		if fitem.begins_with("__"): fitem = fitem.right(-1)
+		farray.resize(farray.size() - 1)
+		path = ""
+		for i in farray: path += i + "/"
+		return path + fitem
+	return path
+
+func type_button_factory() -> void:
+	clear_item_types()
+	var fpath: String = get_folder_path(selected_item_pos, true, false, false)
+	var item_btn: Control = Items.get_child(get_selected_item_index() - 1)
+	var farray: Array = fpath.split("/")
+	var fitem: String = "_" + farray[farray.size() - 1].left(-4) + "_"
+	if fitem.begins_with("__"): fitem = fitem.right(-1)
+	fpath = ""
+	for j in range(farray.size()):
+		if j < farray.size() - 1:
+			fpath += farray[j] + "/"
+	
+	ItemTypes.global_position = Vector2(item_btn.global_position.x + 95, item_btn.global_position.y)
+	var fexists: bool = false
+	var xy := Vector2.ZERO
+	for n in range(1, 7):
+		if FileAccess.file_exists(fpath + fitem + str(n) + ".glb"):
+			if fexists == false: xy = create_type_button(0, xy)
+			xy = create_type_button(n, xy)
+			fexists = true
+
+func create_type_button(i: int, xy: Vector2) -> Vector2:
 	var btn := Button.new()
 	ItemTypes.add_child(btn)
 	btn.text = str(i)
+	btn.size = Vector2(30, 30)
+	btn.position = xy
+	btn.pressed.connect(on_type_button_pressed.bind(i))
+	max_item_types += 1
+	if i == selected_item_type: 
+		btn.modulate = Helper.RED
+		replace_build_menu_item()
+		
+	xy.x += 40
+	if xy.x >= 80:
+		xy.y += 40
+		xy.x = 0
+	return xy
+
+func replace_build_menu_item() -> void:
+	var j: int = selected_item_pos[selected_item_pos.size() - 1]
+	selected_item_pos.resize(selected_item_pos.size() - 1)
+	var i: int = get_folder_contents(selected_item_pos).filter(func(x: Variant): return typeof(x) == TYPE_ARRAY).size()
+	selected_item_pos.append(j)
+	BuildMenuWorld.replace_item(j - 1 - i, get_folder_path(selected_item_pos, true))
+
+func on_type_button_pressed(i: int) -> void:
+	if i <= max_item_types:
+		selected_item_type = i
+		for child in ItemTypes.get_children():
+			if int(child.text) == i: child.modulate = Helper.RED
+			else: child.modulate = Helper.BASE
+		on_load_model()
+		replace_build_menu_item()
 
 func deselect_item() -> void:
+	clear_item_types()
+	if selected_item_type > 0:
+		selected_item_type = 0
+		replace_build_menu_item()
+	selected_item_type = 0
 	selected_item_pos = []
 	modulate_items()
 	on_load_model(false)
-	for child in ItemTypes.get_children(): child.queue_free()
 	
 func on_load_model(_load: bool = true) -> void:
 	spin_model = _load
@@ -388,19 +470,26 @@ func _on_back_arrow_pressed():
 	current_page = 1
 	on_load_folder()
 func modulate_items():
+	
+	var j: int = get_selected_item_index()
+	var n: int = 1
+	for btn in Items.get_children():
+		if !btn.is_queued_for_deletion():
+			btn.modulate = Helper.LIGHT_GREY if n == j else Helper.BASE
+			n += 1
+
+func get_selected_item_index() -> int:
 	var j: int = 0 if selected_item_pos.is_empty() or !(folder_pos.size() == selected_item_pos.size() - 1) else selected_item_pos[selected_item_pos.size() - 1]
 	if j > 0:
 		for i in range(folder_pos.size()):
 			if folder_pos[i] != selected_item_pos[i]:
 				j = 0
 				break
-	
-	var n: int = 1
-	for btn in Items.get_children():
-		if !btn.is_queued_for_deletion():
-			btn.modulate = Helper.LIGHT_GREY if n == j else Helper.BASE
-			n += 1
-			
+	return j
+
+func on_load_wall_get_area(id: int, tile: Node3D) -> void:
+	tile.on_load_wall_get_area(id, loaded_area.id)
+
 func on_load_tile_get_area(id: int, tile: Node3D) -> void:
 	tile.on_load_tile_get_area(id, loaded_area.id)
 
@@ -412,8 +501,16 @@ func on_tile_remove(tile: Node3D) -> void:
 	if active_tile_state != 1:
 		var i: int = 1
 		for item in ["obj", "deco", "wall", "tile"]:
+			
+			if item == "tile" and tile.info.tile.type > 0 and active_remove_state in [0, i + 2]:
+				tile.info.tile.type = 0
+				tile.load_tile(tile.info.tile.id)
+				active_remove_state = i + 2
+				break
+				
 			if active_remove_state in [0, i]:
 				if tile.info[item].id != 0:
+					tile.info.tile.type = 0
 					tile.call("load_" + item, 0)
 					active_remove_state = i
 					break
@@ -422,6 +519,7 @@ func on_tile_remove(tile: Node3D) -> void:
 				tile.load_tile(1)
 				active_remove_state = i + 1
 				break
+				
 			i += 1
 		reset_active_tile_state(1)
 	
@@ -452,16 +550,16 @@ func on_tile_select(tile: Node3D) -> void:
 			var item_name: String = get_folder_path(selected_item_pos, true, true)
 			match selected_item_pos[0]:
 				1:
-					tile.info.tile = {"id": Helper.id_to_editor(0, item_name), "rotation": tile.info.tile.rotation, "type": 0}
+					tile.info.tile = {"id": Helper.id_to_editor(0, item_name), "rotation": tile.info.tile.rotation, "type": selected_item_type}
 					tile.load_tile(tile.info.tile.id)
 				2: 
-					tile.info.obj = {"id": Helper.id_to_editor(1, item_name), "rotation": tile.info.obj.rotation, "type": 0}
+					tile.info.obj = {"id": Helper.id_to_editor(1, item_name), "rotation": tile.info.obj.rotation, "type": selected_item_type}
 					tile.load_obj(tile.info.obj.id)
 				3: 
-					tile.info.wall = {"id": Helper.id_to_editor(2, item_name), "rotation": tile.info.wall.rotation, "type": 0}
+					tile.info.wall = {"id": Helper.id_to_editor(2, item_name), "rotation": tile.info.wall.rotation, "type": selected_item_type}
 					tile.load_wall(tile.info.wall.id)
 				4:
-					tile.info.deco = {"id": Helper.id_to_editor(3, item_name), "rotation": tile.info.deco.rotation, "type": 0}
+					tile.info.deco = {"id": Helper.id_to_editor(3, item_name), "rotation": tile.info.deco.rotation, "type": selected_item_type}
 					tile.load_deco(tile.info.deco.id)
 		reset_active_tile_state(3)
 
