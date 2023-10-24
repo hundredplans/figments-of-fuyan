@@ -262,9 +262,10 @@ func tid_to(id: int, area: int = 0, type: int = 0) -> String:
 		if type > 0:
 			return "_" + str(area) + "_" + str(type)
 		return str(area)
-	var end: String = "" if type == 0 or id == 2 else "_" + str(type)
 	var rstring: String = _id_to[0][id]
-	return "_" if end and !rstring.begins_with("_") else "" + _id_to[0][id] + end
+	var end: String = "" if type == 0  or id == 2 else "_" + str(type)
+	if end and !rstring.begins_with("_"): rstring = rstring.insert(0, "_")
+	return rstring + end
 	
 func editor_id_to(btab: int, id: int, type: int = 0) -> String:
 	var rstring: String = _id_to[btab][id]
@@ -275,8 +276,9 @@ func editor_id_to(btab: int, id: int, type: int = 0) -> String:
 func id_to_editor(btab: int, item: String) -> int: 
 	item = item.left(-4)
 	var j: int = 0
+	var _adjusted: String = item.substr(1, item.length())
 	for i in _id_to[btab]:
-		if item.contains(i):
+		if item.begins_with(i) or _adjusted.begins_with(i):
 			return j
 		j += 1
 		
