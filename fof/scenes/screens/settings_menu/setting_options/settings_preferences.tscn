@@ -179,26 +179,33 @@ offset_left = 19.0
 offset_top = 1409.0
 offset_right = 43.0
 offset_bottom = 1472.0
-options = PackedStringArray("0.5", "0.8", "1", "2", "3", "4", "5")
+options = PackedStringArray("0.5", "1", "2", "3", "4", "5")
 label_text = "Wall Height"
 
-[node name="WallAutoFill" parent="." instance=ExtResource("4_70xc4")]
+[node name="TileWalls" parent="." instance=ExtResource("4_70xc4")]
 offset_left = 19.0
 offset_top = 1491.0
 offset_right = 196.0
 offset_bottom = 1554.0
-label_text = "Autofill Wall"
+label_text = "Tile Walls"
 
-[node name="WallAutoTile" parent="." instance=ExtResource("4_70xc4")]
+[node name="WallAutoFill" parent="." instance=ExtResource("4_70xc4")]
 offset_left = 19.0
 offset_top = 1574.0
 offset_right = 196.0
 offset_bottom = 1637.0
+label_text = "Autofill Wall"
+
+[node name="WallAutoTile" parent="." instance=ExtResource("4_70xc4")]
+offset_left = 19.0
+offset_top = 1657.0
+offset_right = 196.0
+offset_bottom = 1720.0
 label_text = "Autotile Wall"
 
 [node name="StaircaseFillUnder" parent="." instance=ExtResource("4_70xc4")]
 offset_left = 19.0
-offset_top = 1652.0
+offset_top = 1735.0
 offset_right = 196.0
-offset_bottom = 1715.0
+offset_bottom = 1798.0
 label_text = "Staircase Fill"

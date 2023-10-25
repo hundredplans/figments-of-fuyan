@@ -11,6 +11,18 @@ collide_with_bodies = false
 
 [node name="Tiles" type="Node3D" parent="."]
 
+[node name="0" type="Node3D" parent="Tiles"]
+
+[node name="1" type="Node3D" parent="Tiles"]
+
+[node name="2" type="Node3D" parent="Tiles"]
+
+[node name="3" type="Node3D" parent="Tiles"]
+
+[node name="4" type="Node3D" parent="Tiles"]
+
+[node name="5" type="Node3D" parent="Tiles"]
+
 [node name="MovementCamera" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.910186, 0.414201, 0, -0.414201, 0.910186, 0, 4.13879, 3.69939)
 script = ExtResource("1_fcivy")

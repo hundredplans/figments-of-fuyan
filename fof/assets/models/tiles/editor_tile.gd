@@ -23,9 +23,26 @@ func load_wall(id: int) -> void:
 	if info.tile.id > 0 and id > 0: load_wall_get_area.emit(id, self)
 	
 func on_load_wall_get_area(id: int, area: int) -> void:
-	var wall: Node3D = load("res://assets/models/walls/" + Helper.wid_to(id, area, info.wall.type) + ".glb").instantiate()
+	var p: int = 0
+	var add_height: bool = info.wall.tile_wall and info.wall.height != 0
+	
+	var wall_string: String = Helper.wid_to(id, area, info.wall.type)
+	var wall_short: PackedScene = load("res://assets/models/walls/" + Helper.wid_to(id, area, info.wall.type) + ".glb")
+	if add_height: create_wall(load("res://assets/models/walls/" + ("_" if !wall_string.begins_with("_") else "") + wall_string + "_t" + ".glb"))
+	
+	if info.wall.height == 0: p = 1
+	else: p = (info.wall.height - int(add_height)) * 2
+	
+	for n in range(p):
+		var wall: Node3D = create_wall(wall_short)
+		wall.position.y = (n * 0.5)
+		if add_height: wall.position.y += 0.8
+	
+func create_wall(wall_scene: PackedScene) -> Node3D:
+	var wall: Node3D = wall_scene.instantiate()
 	TileWall.add_child(wall)
 	TileWall.rotation_degrees.y = info.wall.rotation * 60
+	return wall
 	
 func load_deco(id: int) -> void:
 	for child in TileDecoration.get_children(): child.queue_free()

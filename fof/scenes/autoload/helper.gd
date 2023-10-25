@@ -251,11 +251,17 @@ var _id_to: Array = [
 	["null", "shrub"]]
 	
 func wid_to(id: int, area: int = 0, type: int = 0) -> String:
-	if id == 1:
-		if type > 0:
-			return "_" + str(area) + "_" + str(type)
-		return str(area)
-	return editor_id_to(2, id, type)
+	var contents: Array = _id_to[2][id].split("/")
+	var middle: String = str(area) if id == 1 else contents.pop_back() 
+	var end: String = ""
+	
+	if type > 0:
+		if !middle.begins_with("_"): middle = middle.insert(0, "_")
+		if type > 0: end += "_" + str(type)
+		
+	if id != 1:
+		for n in contents: middle.insert(0, n + "/")
+	return middle + end
 	
 func tid_to(id: int, area: int = 0, type: int = 0) -> String:
 	if id == 1:
@@ -263,7 +269,7 @@ func tid_to(id: int, area: int = 0, type: int = 0) -> String:
 			return "_" + str(area) + "_" + str(type)
 		return str(area)
 	var rstring: String = _id_to[0][id]
-	var end: String = "" if type == 0  or id == 2 else "_" + str(type)
+	var end: String = "" if type == 0 or id == 2 else "_" + str(type)
 	if end and !rstring.begins_with("_"): rstring = rstring.insert(0, "_")
 	return rstring + end
 	

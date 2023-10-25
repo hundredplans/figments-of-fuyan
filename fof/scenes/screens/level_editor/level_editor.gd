@@ -17,8 +17,10 @@ signal load_world
 @export var INFO_MENU_MOVE_SPEED: float = 6
 @export var BUILD_MENU_MOVE_SPEED: float = 4
 
+var Tiles: Node3D
+
 @onready var mblockers: Array = [$LoadButtons, $InfoMenu, $BuildMenu]
-var file_loader_is_active: bool = false
+var block_screen: bool = false
 var active_tile: Node3D
 var active_remove_state: int = 0
 var level_difficulty: int = 1
@@ -96,12 +98,15 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("ClearSelection") and selected_item_pos:
 		deselect_item()
 			
+	var disable_interact: bool = false
 	if active_tile and active_tile.can_press:
 		if Input.is_action_pressed("LeftClick"): on_tile_select(active_tile)
 		elif Input.is_action_pressed("Remove"): on_tile_remove(active_tile)
-		elif Input.is_action_pressed(Helper.interact_button()): on_tile_interact(active_tile)
+		elif Input.is_action_pressed(Helper.interact_button()): on_tile_interact(active_tile); disable_interact = true
 		elif Input.is_action_pressed("RotateLeft"): on_tile_rotate(active_tile, -1)
 		elif Input.is_action_pressed("RotateRight"): on_tile_rotate(active_tile, 1)
+	
+	if !disable_interact and Input.is_action_just_pressed(Helper.interact_button()): load_settings_mini_menu()
 			
 func on_move_build_menu() -> void:
 	build_menu_is_moving = true
@@ -137,7 +142,7 @@ func reset_mblocker_rects() -> void:
 	$MouseBlockers/BuildMenu.position = BuildMenu.position + ($MouseBlockers/BuildMenu.shape.size / 2)
 	$MouseBlockers/InfoMenu.position = InfoMenu.position + ($MouseBlockers/InfoMenu.shape.size / 2)
 	
-	if file_loader_is_active:
+	if block_screen:
 		mblocker_rects.append(Rect2i(Vector2.ZERO, Vector2(1920, 1080)))
 	
 func _on_load_area_pressed():
@@ -145,7 +150,7 @@ func _on_load_area_pressed():
 	FileLoader.on_ready("Area")
 	FileLoader.item_selected.connect(on_area_selected_from_fileloader)
 	FileLoader.queued.connect(on_file_loader_queued)
-	file_loader_is_active = true
+	block_screen = true
 	reset_mblocker_rects()
 	add_child(FileLoader)
 func on_area_selected_from_fileloader(item: Dictionary) -> void:
@@ -176,7 +181,7 @@ func on_load_level(info: Dictionary) -> void:
 	level_difficulty = info.difficulty
 	LevelDifficulty.select_item(level_difficulty - 1)
 	
-	for child in World.get_node("Tiles").get_children(): child.queue_free()
+	clear_world_tiles()
 	var lastx: int = 0
 	for i in info.tiles:
 		if i.position[0] != lastx: offset = 0
@@ -188,20 +193,31 @@ func on_load_level(info: Dictionary) -> void:
 		tile.load_obj(i.obj.id)
 		tile.load_wall(i.wall.id)
 		tile.load_deco(i.deco.id)
-		
+	setup_elevation()
+	
 func on_load_empty_level(save_level: bool = true) -> void:
+	Settings.set_leveleditorelevation(0)
+	Settings.update_settings_info(0, "Preferences", "LevelEditorElevation")
+	
 	active_tile = null
 	LevelDifficulty.select_item(0)
 	if save_level: _on_save_level_pressed(false, 2)
 	EditFileName.set_text("")
-	for child in World.get_node("Tiles").get_children(): child.queue_free()
-	for x in range(-grid_half_size, grid_half_size + 1):
-		offset = 0
-		for y in range(-grid_half_size, grid_half_size + 1):
-			var tile: Node3D = create_tile(Vector3(x, y, 0))
-			tile.info = {"tile": {"id": 1, "rotation": 0, "type": 0}, "obj": {"id": 0, "rotation": 0, "type": 0}, "deco": {"id": 0, "rotation": 0, "type": 0}, "wall": {"id": 0, "rotation": 0, "type": 0}, "position": [x, y, -x - y, 0]}
-			tile.load_tile(tile.info.tile.id)
+	clear_world_tiles()
+	for n in range(6):
+		for x in range(-grid_half_size, grid_half_size + 1):
+			offset = 0
+			for y in range(-grid_half_size, grid_half_size + 1):
+				var tile: Node3D = create_tile(Vector3(x, y, n))
+				tile.info = {"tile": {"id": 1 if n == 0 else 0, "rotation": 0, "type": 0}, "obj": {"id": 0, "rotation": 0, "type": 0}, "deco": {"id": 0, "rotation": 0, "type": 0}, "wall": {"id": 0, "rotation": 0, "type": 0, "height": 0, "tile_wall": 0}, "position": [x, y, -x - y, n]}
+				tile.load_tile(tile.info.tile.id)
 	loaded_level = true
+	setup_elevation()
+	
+func clear_world_tiles() -> void:
+	for child in World.get_node("Tiles").get_children():
+		for tile in child.get_children():
+			tile.queue_free()
 	
 func create_tile(xy: Vector3) -> Node3D:
 	var tile: Node3D = preload("res://assets/models/tiles/editor_tile.tscn").instantiate()
@@ -212,7 +228,7 @@ func create_tile(xy: Vector3) -> Node3D:
 	
 	tile.DetectMouse.mouse_entered.connect(func(): tile.on_mouse_entered_check_mblockers(mblocker_rects))
 	tile.DetectMouse.mouse_exited.connect(tile.on_mouse_exited)
-	World.get_node("Tiles").add_child(tile)
+	World.get_node("Tiles/" + str(xy.z)).add_child(tile)
 	offset = offset_values[round(offset)]
 	return tile
 func on_build_menu_enabled() -> void:
@@ -227,7 +243,7 @@ func _on_load_level_pressed():
 	FileLoader.on_ready(FILE_LOADER_NAME)
 	FileLoader.item_selected.connect(on_load_level)
 	FileLoader.queued.connect(on_file_loader_queued)
-	file_loader_is_active = true
+	block_screen = true
 	reset_mblocker_rects()
 	add_child(FileLoader)
 	
@@ -235,13 +251,16 @@ func _on_load_level_pressed():
 		FileLoader.set_search(str(loaded_area.id), 3)
 		
 func on_file_loader_queued() -> void:
-	file_loader_is_active = false
+	block_screen = false
 	reset_mblocker_rects()
 		
 func _on_save_level_pressed(play_sfx: bool = true, create_temp: int = 1):
 	if loaded_level:
-		var contents: String = "%s\n%s\n%s\n" % [loaded_area.id, level_difficulty,
-		World.get_node("Tiles").get_children().map(func(x: Node3D): return x.info)]
+		var children: Array = []
+		for child in World.get_node("Tiles").get_children():
+			for tile in child.get_children():
+				children.append(tile)
+		var contents: String = "%s\n%s\n%s\n" % [loaded_area.id, level_difficulty, children.map(func(x: Node3D): return x.info)]
 		match Helper.write_to_base_game_file(FILE_LOADER_NAME, EditFileName, contents, TID):
 			{}: if play_sfx: AudioMaster.play_sfx(preload("res://assets/sounds/confirmation/unconfirm_default.wav"), -10)
 			_: if play_sfx: AudioMaster.play_sfx(preload("res://assets/sounds/confirmation/confirm_default.wav"), -10)
@@ -571,7 +590,7 @@ func on_tile_select(tile: Node3D) -> void:
 					tile.info.obj = {"id": Helper.id_to_editor(1, item_name), "rotation": tile.info.obj.rotation, "type": selected_item_type}
 					tile.load_obj(tile.info.obj.id)
 				3: 
-					tile.info.wall = {"id": Helper.id_to_editor(2, item_name), "rotation": tile.info.wall.rotation, "type": selected_item_type}
+					tile.info.wall = {"id": Helper.id_to_editor(2, item_name), "rotation": tile.info.wall.rotation, "type": selected_item_type, "height": Settings.default_wall_height, "tile_wall": Settings.tile_walls}
 					tile.load_wall(tile.info.wall.id)
 				4:
 					tile.info.deco = {"id": Helper.id_to_editor(3, item_name), "rotation": tile.info.deco.rotation, "type": selected_item_type}
@@ -581,3 +600,18 @@ func on_tile_select(tile: Node3D) -> void:
 func reset_active_tile_state(i: int) -> void:
 	active_tile_state = i
 	if i == 4: active_remove_state = 0
+
+func load_settings_mini_menu() -> void:
+	if !block_screen and loaded_area:
+		block_screen = true
+		reset_mblocker_rects()
+		var mini_menu: Control = preload("res://scenes/screens/level_editor/build_menu/settings_mini_menu.tscn").instantiate()
+		mini_menu.colors = [loaded_area.pcolor, loaded_area.acolor]
+		add_child(mini_menu)
+		mini_menu.queued.connect(on_file_loader_queued)
+		mini_menu.get_node("Settings/LevelEditorElevation").item_selected.connect(func(__: int): setup_elevation())
+
+func setup_elevation() -> void:
+	for child in World.get_node("Tiles").get_children():
+		var p: bool = child.name == str(Settings.level_editor_elevation)
+		for tile in child.get_children(): tile.get_node("DetectMouse").visible = p

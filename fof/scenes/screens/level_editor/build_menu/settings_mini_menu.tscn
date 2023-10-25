@@ -1,0 +1,115 @@
+[gd_scene load_steps=4 format=3 uid="uid://5fxc7rpakhvw"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_editor/build_menu/settings_mini_menu.gd" id="1_dw4gy"]
+[ext_resource type="PackedScene" uid="uid://bj3h1ak5dv73n" path="res://scenes/ui_general/op_button/op_button.tscn" id="2_l0ho0"]
+[ext_resource type="PackedScene" uid="uid://chkoma3ub3eqf" path="res://scenes/ui_general/binary_button/binary_button.tscn" id="3_6ogw5"]
+
+[node name="SettingsMiniMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 407.0
+offset_bottom = 416.0
+script = ExtResource("1_dw4gy")
+
+[node name="Background" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PRTail" type="ColorRect" parent="Background"]
+layout_mode = 0
+offset_left = -0.999985
+offset_top = 379.0
+offset_right = 53.0
+offset_bottom = 481.0
+rotation = 0.727611
+color = Color(0, 0, 0, 1)
+
+[node name="ACTail" type="ColorRect" parent="Background"]
+layout_mode = 0
+offset_left = -1.0
+offset_top = 387.0
+offset_right = 43.0
+offset_bottom = 479.0
+rotation = 0.727611
+
+[node name="PROutside" type="ColorRect" parent="Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -5.0
+offset_top = -5.0
+offset_right = 5.0
+offset_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="ACInside" type="ColorRect" parent="Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Settings" type="Control" parent="."]
+anchors_preset = 0
+offset_left = -5.0
+offset_top = -5.0
+offset_right = 412.0
+offset_bottom = 421.0
+
+[node name="LevelEditorElevation" parent="Settings" instance=ExtResource("2_l0ho0")]
+offset_left = 8.33337
+offset_top = 6.66667
+offset_right = 32.3334
+offset_bottom = 69.6667
+options = PackedStringArray("0", "1", "2", "3", "4", "5")
+label_text = "Elevation"
+
+[node name="DefaultWallHeight" parent="Settings" instance=ExtResource("2_l0ho0")]
+offset_left = 8.0
+offset_top = 75.0
+offset_right = 32.0
+offset_bottom = 138.0
+options = PackedStringArray("0.5", "1", "2", "3", "4", "5")
+label_text = "Wall Height"
+
+[node name="TileWalls" parent="Settings" instance=ExtResource("3_6ogw5")]
+offset_left = 8.33337
+offset_top = 143.0
+offset_right = 185.333
+offset_bottom = 206.0
+label_text = "Tile Walls"
+
+[node name="WallAutoFill" parent="Settings" instance=ExtResource("3_6ogw5")]
+offset_left = 8.00004
+offset_top = 211.0
+offset_right = 185.0
+offset_bottom = 274.0
+label_text = "Autofill Wall"
+
+[node name="WallAutoTile" parent="Settings" instance=ExtResource("3_6ogw5")]
+offset_left = 8.33337
+offset_top = 277.667
+offset_right = 185.333
+offset_bottom = 340.667
+label_text = "Autotile Wall"
+
+[node name="StaircaseFillUnder" parent="Settings" instance=ExtResource("3_6ogw5")]
+offset_left = 8.00004
+offset_top = 347.0
+offset_right = 185.0
+offset_bottom = 410.0
+label_text = "Staircase Fill"
+
+[node name="DetectMouse" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="DetectMouse"]
+position = Vector2(0, -1)
+polygon = PackedVector2Array(-5, -4, 412, -4, 412, 422, 34, 422, -29, 493, -69, 456, -5, 384)
