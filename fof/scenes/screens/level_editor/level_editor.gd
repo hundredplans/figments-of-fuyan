@@ -18,6 +18,7 @@ signal load_world
 @export var BUILD_MENU_MOVE_SPEED: float = 4
 
 @onready var mblockers: Array = [$LoadButtons, $InfoMenu, $BuildMenu]
+var file_loader_is_active: bool = false
 var active_tile: Node3D
 var active_remove_state: int = 0
 var level_difficulty: int = 1
@@ -136,10 +137,16 @@ func reset_mblocker_rects() -> void:
 	$MouseBlockers/BuildMenu.position = BuildMenu.position + ($MouseBlockers/BuildMenu.shape.size / 2)
 	$MouseBlockers/InfoMenu.position = InfoMenu.position + ($MouseBlockers/InfoMenu.shape.size / 2)
 	
+	if file_loader_is_active:
+		mblocker_rects.append(Rect2i(Vector2.ZERO, Vector2(1920, 1080)))
+	
 func _on_load_area_pressed():
 	var FileLoader: Control = preload("res://scenes/editor/file_loader/file_loader.tscn").instantiate()
 	FileLoader.on_ready("Area")
 	FileLoader.item_selected.connect(on_area_selected_from_fileloader)
+	FileLoader.queued.connect(on_file_loader_queued)
+	file_loader_is_active = true
+	reset_mblocker_rects()
 	add_child(FileLoader)
 func on_area_selected_from_fileloader(item: Dictionary) -> void:
 	on_area_selected(item)
@@ -219,10 +226,18 @@ func _on_load_level_pressed():
 	var FileLoader: Control = preload("res://scenes/editor/file_loader/file_loader.tscn").instantiate()
 	FileLoader.on_ready(FILE_LOADER_NAME)
 	FileLoader.item_selected.connect(on_load_level)
+	FileLoader.queued.connect(on_file_loader_queued)
+	file_loader_is_active = true
+	reset_mblocker_rects()
 	add_child(FileLoader)
 	
 	if loaded_area:
 		FileLoader.set_search(str(loaded_area.id), 3)
+		
+func on_file_loader_queued() -> void:
+	file_loader_is_active = false
+	reset_mblocker_rects()
+		
 func _on_save_level_pressed(play_sfx: bool = true, create_temp: int = 1):
 	if loaded_level:
 		var contents: String = "%s\n%s\n%s\n" % [loaded_area.id, level_difficulty,
@@ -374,7 +389,7 @@ func on_folder_pressed(folder_name: String) -> void:
 func on_item_pressed(i: int) -> void:
 	if selected_item_pos == folder_pos + [i]: deselect_item()
 	else:
-		if selected_item_type > 0:
+		if selected_item_type > 0 and selected_item_pos[selected_item_pos.size() - 2] == folder_pos[folder_pos.size() - 1]:
 			selected_item_type = 0
 			replace_build_menu_item()
 		selected_item_pos = folder_pos + [i]

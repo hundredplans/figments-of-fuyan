@@ -16,6 +16,12 @@ var autoskip_turn: bool = false
 var close_fileloader := Vector2i(0, return_max_mc_value("res://scenes/screens/settings_menu/setting_options/settings_preferences.tscn", "CloseFileLoader"))
 var fileloader_opacity: int = 0
 
+var level_editor_elevation: int = 0
+var default_wall_height: int = 0
+var auto_fill_wall: int = 0
+var auto_tile_wall: int = 0
+var staircase_fill: int = 0
+
 var notify_rewards: int = 0
 const clear_backup_files_array: Array = [0, 86400, 259200, 604800, 2592000, 1]
 
@@ -104,6 +110,16 @@ func set_levelsize(i: int):
 	level_size = i
 func set_interactbutton(i: int):
 	interact_button = i
+func set_leveleditorelevation(i: int):
+	level_editor_elevation = i
+func set_defaultwallheight(i: int):
+	default_wall_height = i
+func set_wallautofill(i: int):
+	auto_fill_wall = i
+func set_wallautotile(i: int):
+	auto_tile_wall = i
+func set_staircasefillunder(i: int):
+	staircase_fill = i
 
 func set_mastervolume(i: int):
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(i * 0.01))

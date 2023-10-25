@@ -156,3 +156,49 @@ offset_right = 370.0
 offset_bottom = 1258.0
 label_text = "FL Opacity"
 disable_scrollwheel = true
+
+[node name="LevelEditor" type="Label" parent="."]
+layout_mode = 0
+offset_top = 1248.0
+offset_right = 518.0
+offset_bottom = 1308.0
+text = "Level Editor"
+label_settings = SubResource("LabelSettings_nac3c")
+horizontal_alignment = 1
+
+[node name="LevelEditorElevation" parent="." instance=ExtResource("3_dg7gw")]
+offset_left = 19.0
+offset_top = 1327.0
+offset_right = 43.0
+offset_bottom = 1390.0
+options = PackedStringArray("0", "1", "2", "3", "4", "5")
+label_text = "Elevation"
+
+[node name="DefaultWallHeight" parent="." instance=ExtResource("3_dg7gw")]
+offset_left = 19.0
+offset_top = 1409.0
+offset_right = 43.0
+offset_bottom = 1472.0
+options = PackedStringArray("0.5", "0.8", "1", "2", "3", "4", "5")
+label_text = "Wall Height"
+
+[node name="WallAutoFill" parent="." instance=ExtResource("4_70xc4")]
+offset_left = 19.0
+offset_top = 1491.0
+offset_right = 196.0
+offset_bottom = 1554.0
+label_text = "Autofill Wall"
+
+[node name="WallAutoTile" parent="." instance=ExtResource("4_70xc4")]
+offset_left = 19.0
+offset_top = 1574.0
+offset_right = 196.0
+offset_bottom = 1637.0
+label_text = "Autotile Wall"
+
+[node name="StaircaseFillUnder" parent="." instance=ExtResource("4_70xc4")]
+offset_left = 19.0
+offset_top = 1652.0
+offset_right = 196.0
+offset_bottom = 1715.0
+label_text = "Staircase Fill"

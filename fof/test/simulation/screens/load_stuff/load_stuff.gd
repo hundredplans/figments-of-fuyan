@@ -49,7 +49,7 @@ func load_stuff():
 		
 		if load_state == 0:
 			var nfile := FileAccess.open(parent.load_card_path + "/" + file, FileAccess.READ)
-			var card_info: Array = nfile.get_as_text().split("\n", false)
+			var card_info: Array = nfile.get_as_text().split("\n")
 			var rarity: int = 0
 			load_stuff_button.text += " | " + str(card_info[6])
 			if card_info.size() > 7: rarity = int(card_info[7])
@@ -62,7 +62,7 @@ func load_stuff():
 				5: load_stuff_node.modulate = Color(0.374, 0.6, 1, 1)
 				6: load_stuff_node.modulate = Color(0.196, 0.196, 0.196, 1)
 		elif load_state in [2, 3, 5]:
-			match int(FileAccess.open(load_path + "/" + file, FileAccess.READ).get_as_text().split("\n", false)[3]):
+			match int(FileAccess.open(load_path + "/" + file, FileAccess.READ).get_as_text().split("\n")[3]):
 				0: load_stuff_node.modulate = Color(0.43,0.43,0.43,1)
 				1: load_stuff_node.modulate = Color(0.31, 0.478, 0.439,1)
 				2: load_stuff_node.modulate = Color(0.966, 0.697, 0.253,1)
