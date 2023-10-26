@@ -41,4 +41,4 @@ func _process(_delta: float) -> void:
 			break
 	
 func scroll_settings(i: int) -> void:
-	position.y = clamp(position.y + (i * SCROLL_SPEED), -max_bottom, 0)
+	position.y = clamp(position.y + (i * SCROLL_SPEED), -max_bottom - 20, 0)

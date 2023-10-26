@@ -20,7 +20,7 @@ var level_editor_elevation: int = 0
 var default_wall_height: int = 0
 var auto_fill_wall: int = 0
 var auto_tile_wall: int = 0
-var staircase_fill: int = 0
+var elevation_fill: int = 0
 var tile_walls: int = 0
 
 var notify_rewards: int = 0
@@ -119,8 +119,8 @@ func set_wallautofill(i: int):
 	auto_fill_wall = i
 func set_wallautotile(i: int):
 	auto_tile_wall = i
-func set_staircasefillunder(i: int):
-	staircase_fill = i
+func set_elevationfill(i: int):
+	elevation_fill = i
 func set_tilewalls(i: int):
 	tile_walls = i
 

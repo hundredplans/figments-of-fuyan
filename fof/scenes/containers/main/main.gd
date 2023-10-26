@@ -85,6 +85,7 @@ func after_ready_connect_screen(screen: Control):
 	get_viewport().warp_mouse(get_viewport().get_mouse_position())
 	
 func _ready() -> void:
+	load_general_world()
 	$UI.z_index = 10
 	for screen in Screens.get_children(): screen.free()
 	BackArrow.visible = false
@@ -135,6 +136,10 @@ func _notification(what: int) -> void:
 func _on_setting_cog_pressed():
 	on_load_screen("res://scenes/screens/settings_menu/settings_menu.tscn", true)
 func on_load_world(world: Node3D) -> void:
-	$Background.visible = world == null
+	if world == null: load_general_world()
+	else: $World/General.get_child(0).queue_free()
 	for child in World.get_node("Scene").get_children(): child.queue_free()
 	if world != null: World.get_node("Scene").add_child(world)
+
+func load_general_world() -> void:
+	$World/General.add_child(load("res://assets/env/main_menu/" + str(Settings.equipped_theme) + ".tscn").instantiate())

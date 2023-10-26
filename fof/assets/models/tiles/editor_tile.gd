@@ -32,11 +32,11 @@ func on_load_wall_get_area(id: int, area: int) -> void:
 	
 	if info.wall.height == 0: p = 1
 	else: p = (info.wall.height - int(add_height)) * 2
-	
+	var addh: float = (0.7 if id == 3 else 0.8) if add_height else 0.0
 	for n in range(p):
 		var wall: Node3D = create_wall(wall_short)
 		wall.position.y = (n * 0.5)
-		if add_height: wall.position.y += 0.8
+		if add_height: wall.position.y += addh
 	
 func create_wall(wall_scene: PackedScene) -> Node3D:
 	var wall: Node3D = wall_scene.instantiate()

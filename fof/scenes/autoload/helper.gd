@@ -247,7 +247,7 @@ func load_area_colors(node: Node, primary_color: Color, accent_color: Color) -> 
 var _id_to: Array = [
 	["null", "ground", "_hover_tile", "void_tile", "water_tile"],
 	["null", "spawns/spawn_enemy", "spawns/spawn_ally", "spawns/spawn_neutral", "spawns/spawn_trinket", "light"],
-	["null", "wall", "wooden_wall"],
+	["null", "wall", "wooden_wall", "water_wall"],
 	["null", "shrub"]]
 	
 func wid_to(id: int, area: int = 0, type: int = 0) -> String:

@@ -1,7 +1,6 @@
-[gd_scene load_steps=47 format=3 uid="uid://bnoei7u0kxl25"]
+[gd_scene load_steps=46 format=3 uid="uid://bnoei7u0kxl25"]
 
 [ext_resource type="Script" path="res://scenes/containers/main/main.gd" id="1_10ydf"]
-[ext_resource type="Texture2D" uid="uid://c8aba0r4ejkga" path="res://scenes/containers/main/background.png" id="2_ljcb4"]
 [ext_resource type="Texture2D" uid="uid://cj8j06xypgaw7" path="res://assets/UI/back_arrow/back_arrow.png" id="3_cu6v7"]
 [ext_resource type="Texture2D" uid="uid://cr2qfigfm40tx" path="res://scenes/screens/main_menu/equipped_theme/0/1.png" id="3_ihthr"]
 [ext_resource type="Texture2D" uid="uid://cartccpd4oihk" path="res://scenes/screens/main_menu/equipped_theme/0/2.png" id="4_7cd5k"]
@@ -237,12 +236,6 @@ script = ExtResource("1_10ydf")
 SettingCog = NodePath("UI/SettingCog")
 BackArrow = NodePath("UI/BackArrow")
 
-[node name="Background" type="Sprite2D" parent="."]
-texture_filter = 1
-scale = Vector2(1.77778, 1)
-texture = ExtResource("2_ljcb4")
-centered = false
-
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
@@ -291,9 +284,9 @@ texture_disabled = ExtResource("7_dwuio")
 
 [node name="World" type="Node3D" parent="."]
 
-[node name="Scene" type="Node3D" parent="World"]
-
 [node name="General" type="Node3D" parent="World"]
+
+[node name="Scene" type="Node3D" parent="World"]
 
 [connection signal="animation_finished" from="UI/MoveScreen" to="." method="_on_move_screen_animation_finished"]
 [connection signal="pressed" from="UI/BackArrow" to="." method="on_trigger_screen_history"]

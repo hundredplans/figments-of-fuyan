@@ -453,7 +453,7 @@ func create_type_button(i: int, xy: Vector2) -> Vector2:
 	var btn := Button.new()
 	ItemTypes.add_child(btn)
 	btn.text = str(i)
-	btn.size = Vector2(30, 30)
+	btn.size = Vector2(20, 20)
 	btn.position = xy
 	btn.pressed.connect(on_type_button_pressed.bind(i))
 	max_item_types += 1
@@ -461,8 +461,8 @@ func create_type_button(i: int, xy: Vector2) -> Vector2:
 		btn.modulate = Helper.RED
 		replace_build_menu_item()
 		
-	xy.x += 40
-	if xy.x >= 80:
+	xy.x += 25
+	if xy.x >= 75:
 		xy.y += 40
 		xy.x = 0
 	return xy
@@ -586,16 +586,35 @@ func on_tile_select(tile: Node3D) -> void:
 				1:
 					tile.info.tile = {"id": Helper.id_to_editor(0, item_name), "rotation": tile.info.tile.rotation, "type": selected_item_type}
 					tile.load_tile(tile.info.tile.id)
+					
+					if Settings.elevation_fill:
+						var f: bool = Settings.tile_walls
+						Settings.tile_walls = false
+						var p: Array = tile.info.position
+						for i in range(p[3] - 1, -1, -1):
+							var _tile: Node3D = get_tile_by_position([p[0], p[1], p[2], i])
+							if _tile.info.tile.id > 0 and _tile.info.wall.id == 0:
+								load_wall(_tile, 1 if tile.info.tile.id != 4 else 3, 0, 4 if tile.info.tile.id != 4 else 0, p[3], 1)
+								break
+						Settings.tile_walls = f
 				2: 
 					tile.info.obj = {"id": Helper.id_to_editor(1, item_name), "rotation": tile.info.obj.rotation, "type": selected_item_type}
 					tile.load_obj(tile.info.obj.id)
-				3: 
-					tile.info.wall = {"id": Helper.id_to_editor(2, item_name), "rotation": tile.info.wall.rotation, "type": selected_item_type, "height": Settings.default_wall_height, "tile_wall": Settings.tile_walls}
-					tile.load_wall(tile.info.wall.id)
+				3: load_wall(tile, Helper.id_to_editor(2, item_name), tile.info.wall.rotation, selected_item_type, Settings.default_wall_height, Settings.tile_walls)
 				4:
 					tile.info.deco = {"id": Helper.id_to_editor(3, item_name), "rotation": tile.info.deco.rotation, "type": selected_item_type}
 					tile.load_deco(tile.info.deco.id)
 		reset_active_tile_state(3)
+
+func load_wall(tile: Node3D, id: int, rot: int, type: int, height: int, tile_wall: int) -> void:
+	tile.info.wall = {"id": id, "rotation": rot, "type": type, "height": height, "tile_wall": tile_wall}
+	tile.load_wall(id)
+
+func get_tile_by_position(pos: Array) -> Node3D:
+	for tile in World.get_node("Tiles/" + str(pos[3])).get_children():
+		if tile.info.position == pos: return tile
+	print_debug("Tile not found!")
+	return null
 
 func reset_active_tile_state(i: int) -> void:
 	active_tile_state = i
@@ -614,4 +633,4 @@ func load_settings_mini_menu() -> void:
 func setup_elevation() -> void:
 	for child in World.get_node("Tiles").get_children():
 		var p: bool = child.name == str(Settings.level_editor_elevation)
-		for tile in child.get_children(): tile.get_node("DetectMouse").visible = p
+		for tile in child.get_children(): tile.get_node("DetectMouse").collision_layer = 2 if p else 0

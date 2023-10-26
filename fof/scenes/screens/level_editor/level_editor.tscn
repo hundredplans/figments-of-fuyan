@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bauy3car7d8gx"]
+[gd_scene load_steps=18 format=3 uid="uid://bauy3car7d8gx"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_editor/level_editor.gd" id="1_c1ufw"]
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="3_hyt8o"]
@@ -20,9 +20,6 @@ environment = SubResource("Environment_550hv")
 
 [sub_resource type="World3D" id="World3D_gk5xn"]
 environment = SubResource("Environment_5yhyt")
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_wdnt0"]
-size = Vector2(1920, 1080)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oppik"]
 size = Vector2(70, 823)
@@ -413,11 +410,6 @@ vertical_alignment = 1
 metadata/_edit_lock_ = true
 
 [node name="MouseBlockers" type="Area2D" parent="."]
-
-[node name="FileLoader" type="CollisionShape2D" parent="MouseBlockers"]
-visible = false
-position = Vector2(960, 540)
-shape = SubResource("RectangleShape2D_wdnt0")
 
 [node name="LoadButtons" type="CollisionShape2D" parent="MouseBlockers"]
 position = Vector2(35, 624.5)
