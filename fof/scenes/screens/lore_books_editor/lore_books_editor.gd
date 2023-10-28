@@ -50,10 +50,14 @@ var inputs: Dictionary = {
 	"RightArrow": ["category", "up"],
 	}
 
+signal load_world
+
 func _ready():
 	BookText["theme_override_font_sizes/font_size"] = book_font_sizes[Settings.book_font_size]
 	SearchMenu.visible = false
 	on_refresh_categories()
+	load_world.emit(Node3D.new())
+	
 
 func _process(_delta: float) -> void:
 	if !BookText.has_focus():
@@ -196,7 +200,7 @@ func on_refresh_books() -> void:
 		
 	if Books.get_child_count() > 0:
 		var last_child: Control = Books.get_child(Books.get_child_count() - 1)
-		max_book_size = int(last_child.global_position.y + last_child.size.y - Books.size.y - 14)
+		max_book_size = int(last_child.global_position.y + last_child.size.y - Books.size.y)
 		
 	if SearchNode and SearchNode.name == "FindInFiles":
 		on_find_files_text_submitted(SearchNode.text)
@@ -487,3 +491,6 @@ func _on_search_on_start_pressed():
 	else: search_enum += 4
 	modulate_find_settings()
 	find_string_dictionary[SearchNode.name].call(SearchNode.text)
+
+func _queue_free() -> void:
+	load_world.emit(null)

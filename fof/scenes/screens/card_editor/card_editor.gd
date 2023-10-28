@@ -3,6 +3,7 @@ var ID: int = 0
 var rarity: int = 1
 var stats: Array = [1,1,1,1]
 var personality_sliders: Array = [1,1,1,1,1]
+var height: int = 1
 
 const TID: int = 2
 const FILE_LOADER_NAME: String = "Card"
@@ -66,9 +67,9 @@ func _on_edit_file_name_text_submitted():
 	$CardCreator/CardText.grab_focus()
 
 func _on_save_card_pressed():
-	var contents: String = "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s"\
+	var contents: String = "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s"\
 	% [stats[0], stats[1], stats[2], stats[3], rarity, CardText.text.replace("\n", " "), FlavorText.text.replace("\n", " "),
-	personality_sliders[0], personality_sliders[1], personality_sliders[2], personality_sliders[3], personality_sliders[4]]
+	personality_sliders[0], personality_sliders[1], personality_sliders[2], personality_sliders[3], personality_sliders[4], height]
 	Helper.create_base_game_id_dir(Helper.write_to_base_game_file(FILE_LOADER_NAME, $CardCreator/EditFileName, contents, TID), FILE_LOADER_NAME)
 
 func _on_load_card_pressed():
@@ -102,6 +103,10 @@ func on_item_selected(item_info: Dictionary) -> void:
 	on_load_model(item_info.bgfn)
 	_on_choose_rarity_item_selected(item_info.r)
 	$CardCreator/ChooseRarity.select_item(item_info.r)
+	
+	height = item_info.height
+	$HeightButton.default = height
+	$HeightButton.set_grabber_position()
 
 func _on_delete_card_pressed():
 	Helper.on_delete_item(FILE_LOADER_NAME, str(ID), Internal, self, Settings.cards_can_delete_directory)
@@ -122,3 +127,7 @@ func _on_model_viewer_button_button_down():
 
 func _on_model_viewer_button_button_up():
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
+
+func _on_height_selected(i: int):
+	height = i

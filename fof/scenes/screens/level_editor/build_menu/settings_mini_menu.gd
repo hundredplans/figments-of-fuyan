@@ -1,11 +1,7 @@
 extends Control
 signal queued
-var colors: Array = []
 
 func _ready() -> void:
-	$Background/ACInside.color = colors[0]
-	$Background/PROutside.color = colors[1]
-	$Background/PRTail.color = colors[1]
 	position = get_viewport().get_mouse_position() - $Background/PRTail.position - Vector2(-15, 50)
 
 func _enter_tree() -> void:

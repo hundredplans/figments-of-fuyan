@@ -23,6 +23,8 @@ var auto_tile_wall: int = 0
 var elevation_fill: int = 0
 var tile_walls: int = 0
 
+var highlight_empty_tiles: int = 0
+
 var notify_rewards: int = 0
 const clear_backup_files_array: Array = [0, 86400, 259200, 604800, 2592000, 1]
 
@@ -123,6 +125,8 @@ func set_elevationfill(i: int):
 	elevation_fill = i
 func set_tilewalls(i: int):
 	tile_walls = i
+func set_highlightemptytiles(i: int):
+	highlight_empty_tiles = i
 
 func set_mastervolume(i: int):
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(i * 0.01))

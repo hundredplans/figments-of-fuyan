@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=3 uid="uid://bnoei7u0kxl25"]
+[gd_scene load_steps=47 format=3 uid="uid://bnoei7u0kxl25"]
 
 [ext_resource type="Script" path="res://scenes/containers/main/main.gd" id="1_10ydf"]
 [ext_resource type="Texture2D" uid="uid://cj8j06xypgaw7" path="res://assets/UI/back_arrow/back_arrow.png" id="3_cu6v7"]
@@ -34,6 +34,7 @@
 [ext_resource type="Texture2D" uid="uid://dibrfnru08oig" path="res://scenes/screens/main_menu/equipped_theme/0/25.png" id="27_d6hih"]
 [ext_resource type="Texture2D" uid="uid://k2pl8gdbp3y3" path="res://scenes/screens/main_menu/equipped_theme/0/26.png" id="28_tkrnk"]
 [ext_resource type="Texture2D" uid="uid://d3cak4jo2cu2c" path="res://scenes/screens/main_menu/equipped_theme/0/27.png" id="29_edrjm"]
+[ext_resource type="Environment" uid="uid://cb6o21l8cjbwp" path="res://scenes/world/equipped_theme/0/world_env.tres" id="35_ieb5k"]
 
 [sub_resource type="Animation" id="Animation_3l08o"]
 resource_name = "AreaEditor"
@@ -287,6 +288,9 @@ texture_disabled = ExtResource("7_dwuio")
 [node name="General" type="Node3D" parent="World"]
 
 [node name="Scene" type="Node3D" parent="World"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="World"]
+environment = ExtResource("35_ieb5k")
 
 [connection signal="animation_finished" from="UI/MoveScreen" to="." method="_on_move_screen_animation_finished"]
 [connection signal="pressed" from="UI/BackArrow" to="." method="on_trigger_screen_history"]

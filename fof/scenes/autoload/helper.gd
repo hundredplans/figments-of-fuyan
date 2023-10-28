@@ -173,7 +173,7 @@ func return_item_dict(item: String, _contents: String) -> Dictionary:
 		var keys: Array[String] = ["id", "tid", "iname", "sname"]
 		match item:
 			"area": keys += ["pcolor", "acolor", "world", "cards"]
-			"card": keys += ["a", "h", "s", "e", "r", "text", "flavor", "aic", "aii", "aiw", "ait", "aia"]
+			"card": keys += ["a", "h", "s", "e", "r", "text", "flavor", "aic", "aii", "aiw", "ait", "aia", "height"]
 			"level": keys += ["area", "difficulty", "tiles"]
 			"aura": keys += ["r", "text", "flavor"]
 			"boon": keys += ["r", "text", "flavor"]
@@ -245,9 +245,9 @@ func load_area_colors(node: Node, primary_color: Color, accent_color: Color) -> 
 			else: child.modulate = accent_color
 
 var _id_to: Array = [
-	["null", "ground", "_hover_tile", "void_tile", "water_tile"],
+	["null", "ground", "_hover_tile", "void_tile", "water/shallow_water_tile", "water/deep_water_tile"],
 	["null", "spawns/spawn_enemy", "spawns/spawn_ally", "spawns/spawn_neutral", "spawns/spawn_trinket", "light"],
-	["null", "wall", "wooden_wall", "water_wall"],
+	["null", "wall", "wooden_wall", "shallow_water_wall", "deep_water_wall"],
 	["null", "shrub"]]
 	
 func wid_to(id: int, area: int = 0, type: int = 0) -> String:
@@ -260,18 +260,20 @@ func wid_to(id: int, area: int = 0, type: int = 0) -> String:
 		if type > 0: end += "_" + str(type)
 		
 	if id != 1:
-		for n in contents: middle.insert(0, n + "/")
+		for n in contents: middle = middle.insert(0, n + "/")
 	return middle + end
 	
 func tid_to(id: int, area: int = 0, type: int = 0) -> String:
-	if id == 1:
-		if type > 0:
-			return "_" + str(area) + "_" + str(type)
-		return str(area)
-	var rstring: String = _id_to[0][id]
-	var end: String = "" if type == 0 or id == 2 else "_" + str(type)
-	if end and !rstring.begins_with("_"): rstring = rstring.insert(0, "_")
-	return rstring + end
+	var contents: Array = _id_to[0][id].split("/")
+	var middle: String = str(area) if id == 1 else contents.pop_back()
+	var end: String = ""
+	if type > 0:
+		if !middle.begins_with("_"): middle = middle.insert(0, "_")
+		if type > 0: end += "_" + str(type)
+		
+	if id != 1:
+		for n in contents: middle = middle.insert(0, n + "/")
+	return middle + end
 	
 func editor_id_to(btab: int, id: int, type: int = 0) -> String:
 	var rstring: String = _id_to[btab][id]
@@ -282,9 +284,14 @@ func editor_id_to(btab: int, id: int, type: int = 0) -> String:
 func id_to_editor(btab: int, item: String) -> int: 
 	item = item.left(-4)
 	var j: int = 0
-	var _adjusted: String = item.substr(1, item.length())
+	var sp: Array = item.split("/")
+	var _adjusted: String = sp.pop_back().substr(1, item.length())
+	var fu: String = ""
+	for n in sp: fu += n + "/"
+	fu += _adjusted
+	
 	for i in _id_to[btab]:
-		if item.begins_with(i) or _adjusted.begins_with(i):
+		if item.begins_with(i) or fu.begins_with(i):
 			return j
 		j += 1
 		

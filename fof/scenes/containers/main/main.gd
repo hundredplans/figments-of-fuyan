@@ -67,7 +67,7 @@ func on_setup_screen(screen: Control) -> void:
 
 func before_ready_connect_screen(screen: Control):
 	match screen.name:
-		"LevelEditor": screen.load_world.connect(on_load_world)
+		"LevelEditor", "LoreBooksEditor": screen.load_world.connect(on_load_world)
 	
 func after_ready_connect_screen(screen: Control):
 	if screen.name == "MainMenu" or Settings.hide_menu_gui == 2 or screen.name == "LoreBooksEditor" and Settings.hide_menu_gui == 1:

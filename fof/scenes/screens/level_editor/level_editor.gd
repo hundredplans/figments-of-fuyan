@@ -14,10 +14,13 @@ signal load_world
 @onready var BuildMenuWorld = $BuildMenu/LoadedMenu/ItemsViewer/ItemViewport/BuildMenuWorld
 @onready var ModelItem: Node3D = $BuildMenu/LoadedMenu/ModelViewer/ViewmodelViewport/ViewmodelWorld/Model
 
+@onready var HeightButtons: Control = $BuildMenu/HeightMenu/HeightButtons
+@onready var ElevationButtons: Control = $BuildMenu/HeightMenu/ElevationButtons
+
 @export var INFO_MENU_MOVE_SPEED: float = 6
 @export var BUILD_MENU_MOVE_SPEED: float = 4
 
-var Tiles: Node3D
+var SelectionBox: ColorRect
 
 @onready var mblockers: Array = [$LoadButtons, $InfoMenu, $BuildMenu]
 var block_screen: bool = false
@@ -54,17 +57,43 @@ var selected_item_type: int = 0
 var active_tile_state: int = 0
 var max_item_types: int = 0
 
+var current_history: Array = []
+var erased_history: Array = []
+
+func _ready() -> void:
+	for i in [["DefaultWallHeight", HeightButtons.get_children()], ["LevelEditorElevation", ElevationButtons.get_children()]]:
+		for btn in i[1]:
+			btn.pressed.connect(Settings["set_" + i[0].to_lower()].bind(int(str(btn.name))))
+			btn.pressed.connect(Settings.update_settings_info.bind(int(str(btn.name)), "Preferences", i[0]))
+			btn.pressed.connect(set_heightbuttons_modulate)
+			if i[0] == "LevelEditorElevation":
+				btn.pressed.connect(setup_elevation)
+	
+	for btn in [ArrowButton, $BuildMenu/LoadedMenu/PRLeftArrow, $BuildMenu/LoadedMenu/PRRightArrow]:
+		Helper.create_button_clickmask(btn)
+		btn.pressed.connect((func(): AudioMaster.play_sfx(preload("res://scenes/screens/level_editor/arrow/woosh.wav"))))
+	BuildMenu.get_node("WarningLabel").text = "Make sure to load in an area, silly!"
+	BuildMenu.get_node("Tabs").visible = false
+	BuildMenu.get_node("LoadedMenu").visible = false
+	BuildMenu.position.y += BuildMenu.size.y
+	reset_mblocker_rects()
+	admin()
+	
+	setup_elevation()
+	set_heightbuttons_modulate()
+
 func admin() -> void:
 	on_area_selected_from_fileloader(Helper.id_to_dict(1, "area"))
+	
 func _process(delta: float) -> void:
 	if spin_model:
 		ModelItem.rotation_degrees.y += delta * SPIN_MODEL_SPEED
 	
-	for input in [1,2,3,4]:
+	for input in [1,2,3,4,5,6,7]:
 		if max_item_types > 0 and Input.is_action_just_pressed("ShiftNumber" + str(input)):
 			on_type_button_pressed(input - 1)
 		
-		elif Input.is_action_just_pressed("Number" + str(input)):
+		elif input < 5 and Input.is_action_just_pressed("Number" + str(input)):
 			on_load_tab(input - 1)
 	
 	if build_menu_is_moving == 0 and Input.is_action_just_pressed("Tab"):
@@ -102,27 +131,55 @@ func _process(delta: float) -> void:
 	if active_tile and active_tile.can_press:
 		if Input.is_action_pressed("LeftClick"): on_tile_select(active_tile)
 		elif Input.is_action_pressed("Remove"): on_tile_remove(active_tile)
-		elif Input.is_action_pressed(Helper.interact_button()): on_tile_interact(active_tile); disable_interact = true
+		elif Input.is_action_just_pressed(Helper.interact_button()): on_tile_interact(active_tile); disable_interact = true
 		elif Input.is_action_pressed("RotateLeft"): on_tile_rotate(active_tile, -1)
 		elif Input.is_action_pressed("RotateRight"): on_tile_rotate(active_tile, 1)
-	
+		
+	if Input.is_action_pressed("LeftClick") and !selected_item_pos:
+		match SelectionBox:
+			null: on_create_selection_box()
+			_: on_resize_selection_box()
+		
 	if !disable_interact and Input.is_action_just_pressed(Helper.interact_button()): load_settings_mini_menu()
+	if Input.is_action_just_released("LeftClick"):
+		on_clear_selection_box()
+	
+var og_sbox_pos: Vector2
+func on_create_selection_box() -> void:
+	var color_rect := ColorRect.new()
+	SelectionBox = color_rect
+	add_child(SelectionBox)
+	color_rect.position = get_viewport().get_mouse_position()
+	color_rect.color = "2fffff87"
+	og_sbox_pos = color_rect.position
+	
+func on_resize_selection_box() -> void:
+	var s: Vector2 = (og_sbox_pos - get_viewport().get_mouse_position()) * -1
+	SelectionBox.scale = Vector2(-1 if s.x < 0 else 1, -1 if s.y < 0 else 1)
+	SelectionBox.size = Vector2(abs(s.x), abs(s.y))
+	
+func on_clear_selection_box() -> void:
+	if SelectionBox != null:
+		var tiles: Array = []
+		var ray: RayCast3D = World.get_node("TileRaycast")
+		for tile in World.get_node("Tiles/" + str(Settings.level_editor_elevation)).get_children():
+			ray.position = World.get_node("MovementCamera").position
+			ray.target_position = tile.position - ray.position
+			ray.force_raycast_update()
+			if ray.get_collider() == tile.get_node("DetectMouse"):
+				var rect := Rect2(SelectionBox.position, SelectionBox.size)
+				if SelectionBox.scale.x == -1: rect.position.x -= rect.size.x
+				if SelectionBox.scale.y == -1: rect.position.y -= rect.size.y
+				if rect.has_point(World.get_node("MovementCamera").unproject_position(ray.get_collision_point())):
+					tiles.append(tile)
 			
+		on_tiles_selected(tiles)
+		SelectionBox.queue_free()
+		SelectionBox = null
 func on_move_build_menu() -> void:
 	build_menu_is_moving = true
 func on_move_screen_switch() -> void:
 	load_world.emit(World)
-	
-func _ready() -> void:
-	for btn in [ArrowButton, $BuildMenu/LoadedMenu/PRLeftArrow, $BuildMenu/LoadedMenu/PRRightArrow]:
-		Helper.create_button_clickmask(btn)
-		btn.pressed.connect((func(): AudioMaster.play_sfx(preload("res://scenes/screens/level_editor/arrow/woosh.wav"))))
-	BuildMenu.get_node("WarningLabel").text = "Make sure to load in an area, silly!"
-	BuildMenu.get_node("Tabs").visible = false
-	BuildMenu.get_node("LoadedMenu").visible = false
-	BuildMenu.position.y += BuildMenu.size.y
-	reset_mblocker_rects()
-	admin()
 
 func on_mblocker_mouse_exited():
 	if active_tile:
@@ -196,7 +253,7 @@ func on_load_level(info: Dictionary) -> void:
 	setup_elevation()
 	
 func on_load_empty_level(save_level: bool = true) -> void:
-	Settings.set_leveleditorelevation(0)
+#	Settings.set_leveleditorelevation(0)
 	Settings.update_settings_info(0, "Preferences", "LevelEditorElevation")
 	
 	active_tile = null
@@ -225,6 +282,8 @@ func create_tile(xy: Vector3) -> Node3D:
 	tile.load_tile_get_area.connect(on_load_tile_get_area)
 	tile.load_wall_get_area.connect(on_load_wall_get_area)
 	tile.active_tile.connect(on_is_active_tile)
+	tile.hover_tile.connect(on_hover_tile)
+	tile.exit_mouse.connect(on_tile_exit_mouse)
 	
 	tile.DetectMouse.mouse_entered.connect(func(): tile.on_mouse_entered_check_mblockers(mblocker_rects))
 	tile.DetectMouse.mouse_exited.connect(tile.on_mouse_exited)
@@ -462,7 +521,7 @@ func create_type_button(i: int, xy: Vector2) -> Vector2:
 		replace_build_menu_item()
 		
 	xy.x += 25
-	if xy.x >= 75:
+	if xy.x >= 100:
 		xy.y += 40
 		xy.x = 0
 	return xy
@@ -547,6 +606,14 @@ func on_tile_remove(tile: Node3D) -> void:
 					tile.info.tile.type = 0
 					tile.call("load_" + item, 0)
 					active_remove_state = i
+					if item == "tile":
+						var p: Array = tile.info.position
+						for j in range(p[3] - 1, -1, -1):
+							var _tile: Node3D = get_tile_by_position([p[0], p[1], p[2], j])
+							if _tile.info.tile.id != 0:
+								if _tile.info.wall.id != 0 and _tile.info.wall.type == 4 and _tile.info.wall.tile_wall == 1:
+									_tile.load_wall(0)
+								break
 					break
 					
 			if item == "tile" and active_remove_state in [0, i + 1]:
@@ -574,37 +641,56 @@ func on_tile_rotate(tile: Node3D, rotate_direction: int) -> void:
 		await get_tree().create_timer(ROTATION_TILE_DELAY).timeout
 		has_rotated_tile_delay = false
 	
-func on_tile_interact(_tile: Node3D) -> void:
+func on_tile_interact(tile: Node3D) -> void:
 	if active_tile_state != 2:
 		reset_active_tile_state(2)
+		on_tiles_selected([tile])
 	
 func on_tile_select(tile: Node3D) -> void:
 	if active_tile_state != 3:
-		if selected_item_pos:
+		if selected_item_pos and !is_wall_below_you_reaches_above_you(tile.info.position):
 			var item_name: String = get_folder_path(selected_item_pos, true, true)
 			match selected_item_pos[0]:
-				1:
-					tile.info.tile = {"id": Helper.id_to_editor(0, item_name), "rotation": tile.info.tile.rotation, "type": selected_item_type}
-					tile.load_tile(tile.info.tile.id)
-					
-					if Settings.elevation_fill:
-						var f: bool = Settings.tile_walls
-						Settings.tile_walls = false
-						var p: Array = tile.info.position
-						for i in range(p[3] - 1, -1, -1):
-							var _tile: Node3D = get_tile_by_position([p[0], p[1], p[2], i])
-							if _tile.info.tile.id > 0 and _tile.info.wall.id == 0:
-								load_wall(_tile, 1 if tile.info.tile.id != 4 else 3, 0, 4 if tile.info.tile.id != 4 else 0, p[3], 1)
-								break
-						Settings.tile_walls = f
+				1: load_tile(tile, Helper.id_to_editor(0, item_name), tile.info.tile.rotation, selected_item_type)
 				2: 
 					tile.info.obj = {"id": Helper.id_to_editor(1, item_name), "rotation": tile.info.obj.rotation, "type": selected_item_type}
 					tile.load_obj(tile.info.obj.id)
-				3: load_wall(tile, Helper.id_to_editor(2, item_name), tile.info.wall.rotation, selected_item_type, Settings.default_wall_height, Settings.tile_walls)
+					if tile.info.tile.id == 0 and tile.info.obj.id != 5: load_tile(tile, 1, 0, 0)
+				3: 
+					load_wall(tile, Helper.id_to_editor(2, item_name), tile.info.wall.rotation, selected_item_type, Settings.default_wall_height, Settings.tile_walls)
+					if tile.info.tile.id == 0: load_tile(tile, 1, 0, 0)
 				4:
 					tile.info.deco = {"id": Helper.id_to_editor(3, item_name), "rotation": tile.info.deco.rotation, "type": selected_item_type}
 					tile.load_deco(tile.info.deco.id)
+					if tile.info.tile.id == 0: load_tile(tile, 1, 0, 0)
 		reset_active_tile_state(3)
+
+func is_wall_below_you_reaches_above_you(p: Array) -> bool:
+	for i in range(p[3] - 1, -1, -1):
+		var _tile: Node3D = get_tile_by_position([p[0], p[1], p[2], i])
+		if _tile.info.wall.id > 0 and _tile.info.wall.height > p[3] - i:
+			return true
+	return false
+
+func load_tile(tile: Node3D, id: int, rot: int, type: int) -> void:
+	tile.info.tile = {"id": id, "rotation": rot, "type": type}
+	tile.load_tile(id)
+	
+	if Settings.elevation_fill:
+		var f: bool = Settings.tile_walls
+		Settings.tile_walls = false
+		var p: Array = tile.info.position
+		var is_water: Array = [1, 4]
+		if tile.info.tile.id in [4, 5]:
+			is_water[0] = tile.info.tile.id - 1
+			is_water[1] = 0
+		for i in range(p[3] - 1, -1, -1):
+			var _tile: Node3D = get_tile_by_position([p[0], p[1], p[2], i])
+			if _tile.info.tile.id > 0 and _tile.info.wall.id == 0 and _tile.info.obj.id == 0 and _tile.info.deco.id == 0 and _tile.info.tile.type == 0:
+				if _tile.info.position[3] == 0:
+					load_wall(_tile, is_water[0], 0, is_water[1], p[3], 1)
+				break
+		Settings.tile_walls = f
 
 func load_wall(tile: Node3D, id: int, rot: int, type: int, height: int, tile_wall: int) -> void:
 	tile.info.wall = {"id": id, "rotation": rot, "type": type, "height": height, "tile_wall": tile_wall}
@@ -625,12 +711,45 @@ func load_settings_mini_menu() -> void:
 		block_screen = true
 		reset_mblocker_rects()
 		var mini_menu: Control = preload("res://scenes/screens/level_editor/build_menu/settings_mini_menu.tscn").instantiate()
-		mini_menu.colors = [loaded_area.pcolor, loaded_area.acolor]
+		Helper.load_area_colors(mini_menu, loaded_area.pcolor, loaded_area.acolor)
 		add_child(mini_menu)
 		mini_menu.queued.connect(on_file_loader_queued)
-		mini_menu.get_node("Settings/LevelEditorElevation").item_selected.connect(func(__: int): setup_elevation())
 
 func setup_elevation() -> void:
+	$ElevationNumber.text = str(Settings.level_editor_elevation)
 	for child in World.get_node("Tiles").get_children():
 		var p: bool = child.name == str(Settings.level_editor_elevation)
-		for tile in child.get_children(): tile.get_node("DetectMouse").collision_layer = 2 if p else 0
+		for tile in child.get_children(): 
+			tile.get_node("DetectMouse").collision_layer = 2 if p else 0
+
+func set_heightbuttons_modulate() -> void:
+	for btn in HeightButtons.get_children():
+		btn.modulate = Helper.RED if btn.name == str(Settings.default_wall_height) else Helper.BASE
+
+	for btn in ElevationButtons.get_children():
+		btn.modulate = Helper.RED if btn.name == str(Settings.level_editor_elevation) else Helper.BASE
+
+func on_hover_tile(tile: Node3D) -> void:
+	if tile.info.tile.type == 0 and !(!Settings.highlight_empty_tiles and tile.info.tile.id == 0) and SelectionBox == null:
+		tile.load_tile(2)
+		
+func on_tiles_selected(tiles: Array) -> void:
+	if tiles.size() > 0 and !block_screen and loaded_area:
+		for t in tiles: if t.info.tile.type == 0: t.load_tile(2)
+		block_screen = true
+		reset_mblocker_rects()
+		
+		var tile_menu: Control = preload("res://scenes/screens/level_editor/build_menu/tile_menu.tscn").instantiate()
+		Helper.load_area_colors(tile_menu, loaded_area.pcolor, loaded_area.acolor)
+		add_child(tile_menu)
+		tile_menu.queued.connect(on_tile_menu_queued)
+
+func on_tile_menu_queued() -> void:
+	for tile in World.get_node("Tiles/" + str(Settings.level_editor_elevation)).get_children():
+		tile.mouse_exited()
+	block_screen = false
+	reset_mblocker_rects()
+
+func on_tile_exit_mouse(tile: Node3D) -> void:
+	if tile.info.tile.type == 0 and !block_screen:
+		tile.load_tile(tile.info.tile.id)
