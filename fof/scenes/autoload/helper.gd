@@ -28,22 +28,24 @@ const stat_ai_dict: Dictionary = {
 
 const rarity_colors: Dictionary = {
 	0: "8e8f88",
-	1: "b7a48b",
-	2: "5b8500",
-	3: "ebdf60",
-	4: "a001fb",
-	5: "d72500",
-	6: "5f91e1",
+	1: "8e8f88",
+	2: "b7a48b",
+	3: "5b8500",
+	4: "ebdf60",
+	5: "a001fb",
+	6: "d72500",
+	7: "5f91e1",
 }
 	
 const rarity_accent_colors: Dictionary = {
 	0: "6d6e67",
-	1: "97846b",
-	2: "476900",
-	3: "bfb32f",
-	4: "8001ca",
-	5: "a81a00",
-	6: "467ace",
+	1: "6d6e67",
+	2: "97846b",
+	3: "476900",
+	4: "bfb32f",
+	5: "8001ca",
+	6: "a81a00",
+	7: "467ace",
 }
 
 func call_method(node: Node, method: String, args: Array) -> bool:
@@ -309,3 +311,23 @@ func create_base_game_id_dir(item_dict: Dictionary, file_loader_name: String) ->
 		var dir_path: String = "res://assets/base_game/" + file_loader_name.to_lower() + "s/"
 		if !Array(DirAccess.get_directories_at(dir_path)).any(func(x: String): return x.begins_with(str(item_dict.id))):
 			DirAccess.make_dir_absolute(dir_path + item_dict.bgfn)
+
+var cube_directions: Array[Vector3] = [Vector3(1, 0, -1), Vector3(1, -1, 0), Vector3(0, -1, 1), Vector3(-1, 0, 1), Vector3(-1, 1, 0), Vector3(0, 1, -1)]
+
+func position_to_vec(pos: Array) -> Vector4:
+	return Vector4(pos[0], pos[1], pos[2], pos[3])
+
+func hex_neighbours(tile: Node3D, tiles: Array, distance: int = 1, search_elevation: bool = false) -> Array:
+	return _hex_neighbours(tile.info.position, tiles.map(func(x: Node3D): return x.info.position), distance, search_elevation)\
+	.map(func(x: Vector4): return tiles.filter(func(y: Node3D): return y.info.position == x)[0])
+	
+func _hex_neighbours(tile: Vector4, tiles: Array, distance: int = 1, search_elevation: bool = false) -> Array:
+	return tiles.filter(_is_hex_neighbour.bind(tile, distance, search_elevation))
+	
+func is_hex_neighbour(tile: Node3D, otile: Node3D, distance: int = 1, search_elevation: bool = false) -> void:
+	return _is_hex_neighbour(tile.info.position, otile.info.position, distance, search_elevation)
+	
+func _is_hex_neighbour(tile: Vector4, otile: Vector4, distance: int = 1, search_elevation: bool = false) -> bool:
+	if search_elevation: if tile.z != otile.z: return false
+	if Vector3(tile.x, tile.y, tile.z) - Vector3(otile.x, otile.y, otile.z) in cube_directions.map(func(x: Vector3): return x * distance): return true
+	return false

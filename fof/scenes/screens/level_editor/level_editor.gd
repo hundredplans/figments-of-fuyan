@@ -144,14 +144,18 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_released("LeftClick"):
 		on_clear_selection_box()
 	
+#	if Input.is_action_just_pressed("TopDownAlign"):
+#		World.get_node("MovementCamera").rotation_degrees = Vector3(-90, 0, 0)
+	
 var og_sbox_pos: Vector2
 func on_create_selection_box() -> void:
-	var color_rect := ColorRect.new()
-	SelectionBox = color_rect
-	add_child(SelectionBox)
-	color_rect.position = get_viewport().get_mouse_position()
-	color_rect.color = "2fffff87"
-	og_sbox_pos = color_rect.position
+	if !block_screen and !(mblocker_rects.filter(func(x: Rect2i): return x.has_point(get_viewport().get_mouse_position()))):
+		var color_rect := ColorRect.new()
+		SelectionBox = color_rect
+		add_child(SelectionBox)
+		color_rect.position = get_viewport().get_mouse_position()
+		color_rect.color = "2fffff87"
+		og_sbox_pos = color_rect.position
 	
 func on_resize_selection_box() -> void:
 	var s: Vector2 = (og_sbox_pos - get_viewport().get_mouse_position()) * -1
@@ -159,7 +163,7 @@ func on_resize_selection_box() -> void:
 	SelectionBox.size = Vector2(abs(s.x), abs(s.y))
 	
 func on_clear_selection_box() -> void:
-	if SelectionBox != null:
+	if SelectionBox != null and is_inside_tree():
 		var tiles: Array = []
 		var ray: RayCast3D = World.get_node("TileRaycast")
 		for tile in World.get_node("Tiles/" + str(Settings.level_editor_elevation)).get_children():
@@ -285,7 +289,7 @@ func create_tile(xy: Vector3) -> Node3D:
 	tile.hover_tile.connect(on_hover_tile)
 	tile.exit_mouse.connect(on_tile_exit_mouse)
 	
-	tile.DetectMouse.mouse_entered.connect(func(): tile.on_mouse_entered_check_mblockers(mblocker_rects))
+	tile.DetectMouse.mouse_entered.connect(func(): if !block_screen: tile.on_mouse_entered_check_mblockers(mblocker_rects))
 	tile.DetectMouse.mouse_exited.connect(tile.on_mouse_exited)
 	World.get_node("Tiles/" + str(xy.z)).add_child(tile)
 	offset = offset_values[round(offset)]
@@ -633,13 +637,16 @@ func on_tile_rotate(tile: Node3D, rotate_direction: int) -> void:
 		var i: int = 1
 		for j in ["tile", "obj", "wall", "deco"]:
 			if !selected_item_pos or i == selected_item_pos[0]:
-				var old_rotation: int = tile.info[j].rotation
-				tile.info[j].rotation = clamp(tile.info[j].rotation + rotate_direction, 0, 5)
-				if old_rotation == tile.info[j].rotation: tile.info[j].rotation = 0 if old_rotation == 5 else 5
-				tile.call("load_" + j, tile.info[j].id)
+				on_rotate_tile_object(tile, rotate_direction, j, tile.info[j].id)
 			i += 1
 		await get_tree().create_timer(ROTATION_TILE_DELAY).timeout
 		has_rotated_tile_delay = false
+	
+func on_rotate_tile_object(tile: Node3D, direction: int, j: String, id: int):
+	var old_rotation: int = tile.info[j].rotation
+	tile.info[j].rotation = clamp(tile.info[j].rotation + direction, 0, 5)
+	if old_rotation == tile.info[j].rotation: tile.info[j].rotation = 0 if old_rotation == 5 else 5
+	tile.call("load_" + j, id)
 	
 func on_tile_interact(tile: Node3D) -> void:
 	if active_tile_state != 2:
@@ -734,22 +741,73 @@ func on_hover_tile(tile: Node3D) -> void:
 		tile.load_tile(2)
 		
 func on_tiles_selected(tiles: Array) -> void:
+	if !Settings.select_empty_tiles: tiles = tiles.filter(func(x: Node3D): return x.info.tile.id != 0)
 	if tiles.size() > 0 and !block_screen and loaded_area:
 		for t in tiles: if t.info.tile.type == 0: t.load_tile(2)
 		block_screen = true
 		reset_mblocker_rects()
 		
 		var tile_menu: Control = preload("res://scenes/screens/level_editor/build_menu/tile_menu.tscn").instantiate()
-		Helper.load_area_colors(tile_menu, loaded_area.pcolor, loaded_area.acolor)
+		tile_menu.tiles = tiles
 		add_child(tile_menu)
 		tile_menu.queued.connect(on_tile_menu_queued)
+		Helper.load_area_colors(tile_menu, loaded_area.pcolor, loaded_area.acolor)
+		
+		for item in tile_menu.items:
+			item.rotate_full.connect(on_rotate_item_full.bind(tiles))
+			item.rotate_direction.connect(on_rotate_item_direction.bind(tiles))
+			for i in ["delete", "copy", "paste", "move", "bucket"]:
+				item[i].connect(get("on_" + i + "_item").bind(tiles))
 
-func on_tile_menu_queued() -> void:
-	for tile in World.get_node("Tiles/" + str(Settings.level_editor_elevation)).get_children():
-		tile.mouse_exited()
+func on_tile_menu_queued(TileMenu: Control) -> void:
 	block_screen = false
+	for tile in TileMenu.tiles: on_tile_exit_mouse(tile)
 	reset_mblocker_rects()
 
 func on_tile_exit_mouse(tile: Node3D) -> void:
 	if tile.info.tile.type == 0 and !block_screen:
 		tile.load_tile(tile.info.tile.id)
+
+var item_id_array: Array = [["tile", "obj", "wall", "deco"], ["tile"], ["obj"], ["wall"], ["deco"]]
+func on_rotate_item_full(item: int, i: int, tiles: Array) -> void:
+	for tile in tiles:
+		for j in item_id_array[item]:
+			var load_id: int = (2 if j == "tile" else tile.info[j].id) if tile.info[j].type == 0 else tile.info[j].id
+			tile.info[j].rotation = i - 1
+			tile.call("load_" + j, load_id)
+	
+func on_rotate_item_direction(item: int, direction: int, tiles: Array) -> void:
+	for tile in tiles:
+		for j in item_id_array[item]:
+			on_rotate_tile_object(tile, direction, j, (2 if j == "tile" else tile.info[j].id) if tile.info[j].type == 0 else tile.info[j].id)
+	
+func on_delete_item(item: int, tiles: Array) -> void:
+	for tile in tiles:
+		for j in item_id_array[item]:
+			var load_id: int = 0
+			if j == "tile":
+				if item_id_array[item].size() > 1 or tile.info[j].id == 0:
+					load_id = 1
+			tile.call("load_" + j, load_id)
+			if j == "tile" and load_id == 1: tile.call("load_" + j, 2)
+	
+var copy_info: Array
+func on_copy_item(item: int, tiles: Array) -> void:
+	copy_info = []
+	for tile in tiles:
+		copy_info.append([tile.info.position])
+		var csize: int = copy_info.size() - 1
+		for j in item_id_array[item]:
+			copy_info[csize].append(tile.info[j])
+	
+func on_paste_item(item: int, tiles: Array) -> void:
+	if copy_info.size() > 0 and tiles.size() == 1:
+		var vecs: Array = copy_info.map(func(x: Array): return Helper.position_to_vec(x[0]))
+		for vec in vecs:
+			print(Helper._hex_neighbours(vec, vecs))
+	
+func on_move_item(item: int, tiles: Array) -> void:
+	pass
+	
+func on_bucket_item(item: int, tiles: Array) -> void:
+	pass

@@ -87,7 +87,7 @@ max_length = 2
 [node name="ChooseRarity" parent="CardCreator" instance=ExtResource("4_nujyg")]
 offset_left = 231.0
 offset_right = 255.0
-options = PackedStringArray("Scrap", "Common", "Rare", "Exalt", "Miniboss", "Boss", "Champion")
+options = PackedStringArray("Neutral", "Scrap", "Common", "Rare", "Exalt", "Miniboss", "Boss", "Champion")
 default = 1
 
 [node name="CardText" type="TextEdit" parent="CardCreator"]

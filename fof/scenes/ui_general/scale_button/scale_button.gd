@@ -81,12 +81,13 @@ func _enter_tree() -> void:
 	$Label.text = label_text
 	
 func set_grabber_position() -> void:
-	$Number.text = str(default)
-	var gbgpx: int = int(GradientButton.position.x)
-	Grabber.position.x = round(remap(default, min_max.x, min_max.y, gbgpx + GRADIENT_OFFSET, gbgpx + GradientButton.size.x - GRADIENT_OFFSET) - 15)
-	Grabber.modulate = GradientButton.texture_normal.get_image().get_pixel(\
-	int(Grabber.position.x - GradientButton.position.x + Grabber.size.x * 0.5), 30)
-	item_selected.emit(default)
+	if str(default) != $Number.text:
+		$Number.text = str(default)
+		var gbgpx: int = int(GradientButton.position.x)
+		Grabber.position.x = round(remap(default, min_max.x, min_max.y, gbgpx + GRADIENT_OFFSET, gbgpx + GradientButton.size.x - GRADIENT_OFFSET) - 15)
+		Grabber.modulate = GradientButton.texture_normal.get_image().get_pixel(\
+		int(Grabber.position.x - GradientButton.position.x + (Grabber.size.x * 0.5)), 30)
+		item_selected.emit(default)
 
 func _on_gradient_button_pressed():
 	var gbgpx: int = int(GradientButton.global_position.x)

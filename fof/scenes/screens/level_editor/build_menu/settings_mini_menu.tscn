@@ -7,7 +7,7 @@
 layout_mode = 3
 anchors_preset = 0
 offset_right = 407.0
-offset_bottom = 346.0
+offset_bottom = 414.0
 script = ExtResource("1_dw4gy")
 
 [node name="Background" type="Control" parent="."]
@@ -21,18 +21,18 @@ grow_vertical = 2
 [node name="PRTail" type="ColorRect" parent="Background"]
 layout_mode = 0
 offset_left = -0.999985
-offset_top = 313.0
+offset_top = 381.0
 offset_right = 53.0
-offset_bottom = 415.0
+offset_bottom = 483.0
 rotation = 0.727611
 color = Color(0, 0, 0, 1)
 
 [node name="ACTail" type="ColorRect" parent="Background"]
 layout_mode = 0
 offset_left = -1.0
-offset_top = 321.0
+offset_top = 389.0
 offset_right = 43.0
-offset_bottom = 413.0
+offset_bottom = 481.0
 rotation = 0.727611
 
 [node name="PROutside" type="ColorRect" parent="Background"]
@@ -98,8 +98,15 @@ offset_right = 185.0
 offset_bottom = 346.0
 label_text = "Lightup Empty"
 
+[node name="SelectEmptyTiles" parent="Settings" instance=ExtResource("3_6ogw5")]
+offset_left = 8.0
+offset_top = 351.0
+offset_right = 185.0
+offset_bottom = 414.0
+label_text = "Select Empty"
+
 [node name="DetectMouse" type="Area2D" parent="."]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="DetectMouse"]
 position = Vector2(0, -1)
-polygon = PackedVector2Array(-5, -4, 412, -4, 412, 352, 37, 352, -29, 426, -69, 390, -5, 319)
+polygon = PackedVector2Array(-5, -4, 412, -4, 412, 420, 37, 420, -29, 494, -69, 458, -5, 387)
