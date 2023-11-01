@@ -39,7 +39,7 @@ var settings_info: Dictionary = {
 
 func return_max_mc_value(path: String, node_name: String) -> int:
 	var node: Control = load(path).instantiate()
-	var rvalue: int = int(pow(2, load(path).instantiate().get_node(node_name).options.size()))
+	var rvalue: int = int(pow(2, node.get_node(node_name).options.size()))
 	node.queue_free()
 	return rvalue
 

@@ -15,8 +15,6 @@ var all_item_buttons: Array
 var item_buttons: Array
 
 var item_name: String
-var base_path: String
-var current_path: String
 
 func _ready() -> void:
 	on_change_fileloader_state(1)
@@ -40,28 +38,41 @@ func _queue_free() -> void:
 func on_ready(_item_name: String) -> void:
 	item_name = _item_name.to_lower()
 	var path: String = item_name + "s/"
-	base_path = static_path + path
-	current_path = static_path + path
-	
 	on_item_ready()
 	
-	var item_button_path: String = "res://scenes/editor/file_loader/" + item_name + "/" + item_name + "_button.tscn"
 	var set_button_size: bool = false
-	for item_dict in Helper.return_file_names_recursive(base_path.left(-1)).map(func(x: String): return Helper.return_item_dict(item_name, Helper.return_file_contents(x))):
-		var item_button: Control = load(item_button_path).instantiate()
-		item_button.get_node("PressedButton").pressed.connect(on_item_selected.bind(item_button, item_dict))
-		item_button.get_node("ID").text = str(item_dict.id)
-		item_button.info = item_dict
-		item_button.apply_info()
-		all_item_buttons.append(item_button)
-		
-		if !set_button_size:
-			button_size = item_button.size
-			set_button_size = true
-	
+	for item_dict in Helper.return_file_names_recursive((static_path + path).left(-1)).map(func(x: String): return Helper.return_item_dict(item_name, Helper.return_file_contents(x))):
+		set_button_size = create_item_button(item_dict, set_button_size)
+
+	sort_buttons()
+
+func sort_buttons() -> void:
 	item_buttons = all_item_buttons
 	item_buttons.sort_custom(func(a: Control, b: Control): return int(a.get_node("ID").text) < int(b.get_node("ID").text))
 	position_item_buttons()
+
+func create_item_button(item_dict: Dictionary, set_button_size: bool) -> bool:
+	var item_button: Control = load("res://scenes/editor/file_loader/" + item_name + "/" + item_name + "_button.tscn").instantiate()
+	item_button.get_node("PressedButton").pressed.connect(on_item_selected.bind(item_button, item_dict))
+	item_button.get_node("ID").text = str(item_dict.id)
+	item_button.info = item_dict
+	item_button.apply_info()
+	all_item_buttons.append(item_button)
+	
+	if !set_button_size:
+		button_size = item_button.size
+		set_button_size = true
+	return set_button_size
+
+func on_ready_preselected(_item_name: String, items: Array) -> void:
+	item_name = _item_name.to_lower()
+	on_item_ready()
+	
+	var sbs: bool = false
+	for item_dict in items:
+		sbs = create_item_button(item_dict, sbs)
+
+	sort_buttons()
 
 func on_item_ready() -> void:
 	
@@ -73,7 +84,6 @@ func on_item_ready() -> void:
 		"aura": search_options = ["Rarity"]
 		"boon": search_options = ["Rarity"]
 	$Search/SearchOptions.options += search_options
-		
 	
 func on_item_selected(_item: Control, item_info: Dictionary) -> void:
 	item_selected.emit(item_info)

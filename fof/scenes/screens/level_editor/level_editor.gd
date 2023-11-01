@@ -29,14 +29,11 @@ var active_remove_state: int = 0
 var level_difficulty: int = 1
 var mblocker_rects: Array = []
 
-var offset_values: Array = [dx * 0.5, 0]
-var offset: float = dx * 0.5
-const dx: float = sqrt(3)
-
 const RAY_LENGTH: int = 1000
 const TID: int = 5
 const FILE_LOADER_NAME: String = "Level"
 
+var file_loader_loaded: bool = false
 var loaded_area: Dictionary
 var loaded_level: bool = false
 var World: Node3D = preload("res://scenes/world/editor_world/editor_world.tscn").instantiate()
@@ -50,17 +47,18 @@ var info_weight: float = 0
 var info_menu_positions := Vector2.ZERO
 var info_menu_is_moving: int = 0
 var build_menu_is_moving: int = 0
-var default_level_size: int = [6, 10, 16, 20, 30, 40, 50, 100][Settings.level_size]
-var grid_half_size: int = round(default_level_size * 0.5)
+var default_level_size: int = [3, 5, 7, 9, 12, 15, 20, 25][Settings.level_size]
 
 var selected_item_type: int = 0
 var active_tile_state: int = 0
 var max_item_types: int = 0
+var trinket_amount: int = 0
 
 var current_history: Array = []
 var erased_history: Array = []
 
 func _ready() -> void:
+	$InfoMenu/EditFileName.open_state.connect(func(x: bool): $InfoMenu/TrinketAmount.visible = !x)
 	for i in [["DefaultWallHeight", HeightButtons.get_children()], ["LevelEditorElevation", ElevationButtons.get_children()]]:
 		for btn in i[1]:
 			btn.pressed.connect(Settings["set_" + i[0].to_lower()].bind(int(str(btn.name))))
@@ -134,6 +132,9 @@ func _process(delta: float) -> void:
 		elif Input.is_action_just_pressed(Helper.interact_button()): on_tile_interact(active_tile); disable_interact = true
 		elif Input.is_action_pressed("RotateLeft"): on_tile_rotate(active_tile, -1)
 		elif Input.is_action_pressed("RotateRight"): on_tile_rotate(active_tile, 1)
+	else:
+		if Input.is_action_just_pressed("ShiftLeftClick"):
+			on_update_tile_menu()
 		
 	if Input.is_action_pressed("LeftClick") and !selected_item_pos:
 		match SelectionBox:
@@ -180,6 +181,7 @@ func on_clear_selection_box() -> void:
 		on_tiles_selected(tiles)
 		SelectionBox.queue_free()
 		SelectionBox = null
+		
 func on_move_build_menu() -> void:
 	build_menu_is_moving = true
 func on_move_screen_switch() -> void:
@@ -203,20 +205,17 @@ func reset_mblocker_rects() -> void:
 	$MouseBlockers/BuildMenu.position = BuildMenu.position + ($MouseBlockers/BuildMenu.shape.size / 2)
 	$MouseBlockers/InfoMenu.position = InfoMenu.position + ($MouseBlockers/InfoMenu.shape.size / 2)
 	
-	if block_screen:
-		mblocker_rects.append(Rect2i(Vector2.ZERO, Vector2(1920, 1080)))
-	
 func _on_load_area_pressed():
 	var FileLoader: Control = preload("res://scenes/editor/file_loader/file_loader.tscn").instantiate()
 	FileLoader.on_ready("Area")
 	FileLoader.item_selected.connect(on_area_selected_from_fileloader)
-	FileLoader.queued.connect(on_file_loader_queued)
-	block_screen = true
-	reset_mblocker_rects()
-	add_child(FileLoader)
+	on_file_loader_loaded(FileLoader)
+	
 func on_area_selected_from_fileloader(item: Dictionary) -> void:
+	_on_save_level_pressed(false, 2)
 	on_area_selected(item)
-	on_load_empty_level()
+	on_load_empty_level(false)
+	
 func on_area_selected(item: Dictionary) -> void:
 	loaded_area = item
 	Helper.load_area_colors(self, item.pcolor, item.acolor)
@@ -243,21 +242,21 @@ func on_load_level(info: Dictionary) -> void:
 	LevelDifficulty.select_item(level_difficulty - 1)
 	
 	clear_world_tiles()
-	var lastx: int = 0
 	for i in info.tiles:
-		if i.position[0] != lastx: offset = 0
-		lastx = i.position[0]
 		var tile: Node3D = create_tile(Vector3(i.position[0], i.position[1], i.position[3]))
 		tile.info = i
-		
 		tile.load_tile(i.tile.id)
 		tile.load_obj(i.obj.id)
 		tile.load_wall(i.wall.id)
-		tile.load_deco(i.deco.id)
+		tile.load_tdeco(i.tdeco.id)
+		tile.load_wdeco(i.wdeco.id)
 	setup_elevation()
+	trinket_amount = info.trinkets
+	$InfoMenu/TrinketAmount.default = trinket_amount
+	$InfoMenu/TrinketAmount.set_grabber_position()
 	
 func on_load_empty_level(save_level: bool = true) -> void:
-#	Settings.set_leveleditorelevation(0)
+	Settings.set_leveleditorelevation(0)
 	Settings.update_settings_info(0, "Preferences", "LevelEditorElevation")
 	
 	active_tile = null
@@ -265,15 +264,23 @@ func on_load_empty_level(save_level: bool = true) -> void:
 	if save_level: _on_save_level_pressed(false, 2)
 	EditFileName.set_text("")
 	clear_world_tiles()
-	for n in range(6):
-		for x in range(-grid_half_size, grid_half_size + 1):
-			offset = 0
-			for y in range(-grid_half_size, grid_half_size + 1):
-				var tile: Node3D = create_tile(Vector3(x, y, n))
-				tile.info = {"tile": {"id": 1 if n == 0 else 0, "rotation": 0, "type": 0}, "obj": {"id": 0, "rotation": 0, "type": 0}, "deco": {"id": 0, "rotation": 0, "type": 0}, "wall": {"id": 0, "rotation": 0, "type": 0, "height": 0, "tile_wall": 0}, "position": [x, y, -x - y, n]}
+	for w in range(6):
+		for x in range(-default_level_size, (default_level_size + 1)):
+			for y in range(max(-default_level_size, -x - default_level_size), min(default_level_size, -x + default_level_size) + 1):
+				var tile: Node3D = create_tile(Vector3(x, y, w))
+				tile.info = {"tile": {
+				"id": 1 if w == 0 else 0, "rotation": 0, "type": 0}, 
+				"obj": {"id": 0, "rotation": 0, "type": 0, "loaded": 0}, 
+				"wdeco": {"id": 0, "rotation": 0, "type": 0}, 
+				"tdeco": {"id": 0, "rotation": 0, "type": 0},
+				"wall": {"id": 0, "rotation": 0, "type": 0, "height": 0, "tile_wall": 0}, 
+				"position": [x, y, -x-y, w]}
 				tile.load_tile(tile.info.tile.id)
 	loaded_level = true
 	setup_elevation()
+	trinket_amount = 0
+	$InfoMenu/TrinketAmount.default = trinket_amount
+	$InfoMenu/TrinketAmount.set_grabber_position()
 	
 func clear_world_tiles() -> void:
 	for child in World.get_node("Tiles").get_children():
@@ -282,18 +289,25 @@ func clear_world_tiles() -> void:
 	
 func create_tile(xy: Vector3) -> Node3D:
 	var tile: Node3D = preload("res://assets/models/tiles/editor_tile.tscn").instantiate()
-	tile.position = Vector3((xy.x * dx) + offset, xy.z, xy.y * 1.5)
+	tile.position = Vector3((sqrt(3) * xy.x + sqrt(3) * xy.y * 0.5),
+	xy.z * 1.2,
+	xy.y * 3 / 2)
+	tile.load_obj_get_area.connect(on_load_obj_get_area)
 	tile.load_tile_get_area.connect(on_load_tile_get_area)
 	tile.load_wall_get_area.connect(on_load_wall_get_area)
 	tile.active_tile.connect(on_is_active_tile)
 	tile.hover_tile.connect(on_hover_tile)
 	tile.exit_mouse.connect(on_tile_exit_mouse)
 	
-	tile.DetectMouse.mouse_entered.connect(func(): if !block_screen: tile.on_mouse_entered_check_mblockers(mblocker_rects))
+	tile.DetectMouse.mouse_entered.connect(on_tile_mouse_entered.bind(tile))
 	tile.DetectMouse.mouse_exited.connect(tile.on_mouse_exited)
 	World.get_node("Tiles/" + str(xy.z)).add_child(tile)
-	offset = offset_values[round(offset)]
 	return tile
+	
+func on_tile_mouse_entered(tile: Node3D) -> void:
+	if !block_screen or tile in selection_tiles:
+		tile.on_mouse_entered_check_mblockers(mblocker_rects)
+	
 func on_build_menu_enabled() -> void:
 	BuildMenu.get_node("WarningLabel").text = ""
 	BuildMenu.get_node("Tabs").visible = true
@@ -305,10 +319,7 @@ func _on_load_level_pressed():
 	var FileLoader: Control = preload("res://scenes/editor/file_loader/file_loader.tscn").instantiate()
 	FileLoader.on_ready(FILE_LOADER_NAME)
 	FileLoader.item_selected.connect(on_load_level)
-	FileLoader.queued.connect(on_file_loader_queued)
-	block_screen = true
-	reset_mblocker_rects()
-	add_child(FileLoader)
+	on_file_loader_loaded(FileLoader)
 	
 	if loaded_area:
 		FileLoader.set_search(str(loaded_area.id), 3)
@@ -316,6 +327,7 @@ func _on_load_level_pressed():
 func on_file_loader_queued() -> void:
 	block_screen = false
 	reset_mblocker_rects()
+	file_loader_loaded = false
 		
 func _on_save_level_pressed(play_sfx: bool = true, create_temp: int = 1):
 	if loaded_level:
@@ -323,7 +335,7 @@ func _on_save_level_pressed(play_sfx: bool = true, create_temp: int = 1):
 		for child in World.get_node("Tiles").get_children():
 			for tile in child.get_children():
 				children.append(tile)
-		var contents: String = "%s\n%s\n%s\n" % [loaded_area.id, level_difficulty, children.map(func(x: Node3D): return x.info)]
+		var contents: String = "%s\n%s\n%s\n%s\n" % [loaded_area.id, level_difficulty, trinket_amount, children.map(func(x: Node3D): return x.info)]
 		match Helper.write_to_base_game_file(FILE_LOADER_NAME, EditFileName, contents, TID):
 			{}: if play_sfx: AudioMaster.play_sfx(preload("res://assets/sounds/confirmation/unconfirm_default.wav"), -10)
 			_: if play_sfx: AudioMaster.play_sfx(preload("res://assets/sounds/confirmation/confirm_default.wav"), -10)
@@ -359,12 +371,12 @@ func on_setup_tabs(current_folder: Array = build_folders) -> void:
 		folder_pos.append(i)
 		current_folder.append([directory + "/"])
 		var fpath: String = get_folder_path()
-		if Array(DirAccess.get_files_at(fpath)).any(func(x: String): return x.ends_with(".glb") and x[0] != "_"):
-			for directory_two in DirAccess.get_directories_at(fpath):
-				on_setup_tabs(current_folder[i])
+		on_setup_tabs(current_folder[i])
+		if Array(DirAccess.get_files_at(fpath)).any(func(x: String): return x.ends_with(".glb") and x[0] != "_" and !x[x.length() - 5].is_valid_int()):
 				
-			for file in Array(DirAccess.get_files_at(fpath)).filter(func(x: String): return x.ends_with(".glb") and x[0] != "_"):
+			for file in Array(DirAccess.get_files_at(fpath)).filter(func(x: String): return x.ends_with(".glb") and x[0] != "_" and !x[x.length() - 5].is_valid_int()):
 				current_folder[i].append(file)
+				
 		folder_pos.remove_at(folder_pos.size() - 1)
 		i += 1
 func get_item_name(pos: Array = folder_pos) -> String:
@@ -385,6 +397,11 @@ func get_folder_path(pos: Array = folder_pos, get_item: bool = false, from_fol: 
 		else: path += arr[key]
 		if from_fol and i == 1: path = ""
 		i += 1
+	if pos.size() > 2 and pos[0] == 4 and get_item and from_fol:
+		var n: Array = path.split("/")
+		path = n.pop_back()
+		n.remove_at(0)
+		for j in n: path += j + "/"
 	if get_item and get_type: path = get_selected_item_type_path(path)
 	return path
 	
@@ -481,23 +498,15 @@ func on_item_pressed(i: int) -> void:
 		on_load_model()
 
 func get_selected_item_type_path(path: String) -> String:
-	if selected_item_type > 0 and is_in_selection_folder():
-		var farray: Array = path.split("/")
-		var fitem: String = "_" + farray[farray.size() - 1].left(-4) + "_" + str(selected_item_type) + ".glb"
-		if fitem.begins_with("__"): fitem = fitem.right(-1)
-		farray.resize(farray.size() - 1)
-		path = ""
-		for i in farray: path += i + "/"
-		return path + fitem
+	if selected_item_type > 0 and is_in_selection_folder(): return path.left(-4) + str(selected_item_type) + ".glb"
 	return path
 
 func type_button_factory() -> void:
 	clear_item_types()
 	var fpath: String = get_folder_path(selected_item_pos, true, false, false)
-	var item_btn: Control = Items.get_child(get_selected_item_index() - 1)
+	var item_btn: Control = Items.get_children().filter(func(x: Node): return !x.is_queued_for_deletion())[get_selected_item_index() - 1]
 	var farray: Array = fpath.split("/")
-	var fitem: String = "_" + farray[farray.size() - 1].left(-4) + "_"
-	if fitem.begins_with("__"): fitem = fitem.right(-1)
+	var fitem: String = farray[farray.size() - 1].left(-4)
 	fpath = ""
 	for j in range(farray.size()):
 		if j < farray.size() - 1:
@@ -506,7 +515,7 @@ func type_button_factory() -> void:
 	ItemTypes.global_position = Vector2(item_btn.global_position.x + 95, item_btn.global_position.y)
 	var fexists: bool = false
 	var xy := Vector2.ZERO
-	for n in range(1, 7):
+	for n in range(1, 9):
 		if FileAccess.file_exists(fpath + fitem + str(n) + ".glb"):
 			if fexists == false: xy = create_type_button(0, xy)
 			xy = create_type_button(n, xy)
@@ -584,6 +593,9 @@ func get_selected_item_index() -> int:
 				break
 	return j
 
+func on_load_obj_get_area(id: int, tile: Node3D) -> void:
+	tile.on_load_obj_get_area(id, loaded_area)
+
 func on_load_wall_get_area(id: int, tile: Node3D) -> void:
 	tile.on_load_wall_get_area(id, loaded_area.id)
 
@@ -597,8 +609,7 @@ func on_is_active_tile(tile: Node3D) -> void:
 func on_tile_remove(tile: Node3D) -> void:
 	if active_tile_state != 1:
 		var i: int = 1
-		for item in ["obj", "deco", "wall", "tile"]:
-			
+		for item in ["obj", "wdeco", "tdeco", "wall", "tile"]:
 			if item == "tile" and tile.info.tile.type > 0 and active_remove_state in [0, i + 2]:
 				tile.info.tile.type = 0
 				tile.load_tile(tile.info.tile.id)
@@ -615,7 +626,7 @@ func on_tile_remove(tile: Node3D) -> void:
 						for j in range(p[3] - 1, -1, -1):
 							var _tile: Node3D = get_tile_by_position([p[0], p[1], p[2], j])
 							if _tile.info.tile.id != 0:
-								if _tile.info.wall.id != 0 and _tile.info.wall.type == 4 and _tile.info.wall.tile_wall == 1:
+								if _tile.info.wall.id != 0 and _tile.info.wall.type == 1 and _tile.info.wall.tile_wall == 1:
 									_tile.load_wall(0)
 								break
 					break
@@ -635,12 +646,14 @@ func on_tile_rotate(tile: Node3D, rotate_direction: int) -> void:
 	if !has_rotated_tile_delay:
 		has_rotated_tile_delay = true
 		var i: int = 1
-		for j in ["tile", "obj", "wall", "deco"]:
-			if !selected_item_pos or i == selected_item_pos[0]:
+		for j in ["tile", "obj", "wall", "tdeco", "wdeco"]:
+			if !selected_item_pos or i == selected_item_pos[0] or selected_item_pos[0] == 4 and selected_item_pos[1] == 2 and j == "wdeco":
 				on_rotate_tile_object(tile, rotate_direction, j, tile.info[j].id)
 			i += 1
 		await get_tree().create_timer(ROTATION_TILE_DELAY).timeout
 		has_rotated_tile_delay = false
+	
+func _on_trinket_amount_item_selected(i: int): trinket_amount = i
 	
 func on_rotate_tile_object(tile: Node3D, direction: int, j: String, id: int):
 	var old_rotation: int = tile.info[j].rotation
@@ -655,21 +668,31 @@ func on_tile_interact(tile: Node3D) -> void:
 	
 func on_tile_select(tile: Node3D) -> void:
 	if active_tile_state != 3:
-		if selected_item_pos and !is_wall_below_you_reaches_above_you(tile.info.position):
-			var item_name: String = get_folder_path(selected_item_pos, true, true)
-			match selected_item_pos[0]:
-				1: load_tile(tile, Helper.id_to_editor(0, item_name), tile.info.tile.rotation, selected_item_type)
-				2: 
-					tile.info.obj = {"id": Helper.id_to_editor(1, item_name), "rotation": tile.info.obj.rotation, "type": selected_item_type}
-					tile.load_obj(tile.info.obj.id)
-					if tile.info.tile.id == 0 and tile.info.obj.id != 5: load_tile(tile, 1, 0, 0)
-				3: 
-					load_wall(tile, Helper.id_to_editor(2, item_name), tile.info.wall.rotation, selected_item_type, Settings.default_wall_height, Settings.tile_walls)
-					if tile.info.tile.id == 0: load_tile(tile, 1, 0, 0)
-				4:
-					tile.info.deco = {"id": Helper.id_to_editor(3, item_name), "rotation": tile.info.deco.rotation, "type": selected_item_type}
-					tile.load_deco(tile.info.deco.id)
-					if tile.info.tile.id == 0: load_tile(tile, 1, 0, 0)
+		if !is_wall_below_you_reaches_above_you(tile.info.position):
+			if selected_item_pos:
+				var item_name: String = get_folder_path(selected_item_pos, true, true)
+				match selected_item_pos[0]:
+					1: load_tile(tile, Helper.id_to_editor(0, item_name), tile.info.tile.rotation, selected_item_type)
+					2: 
+						tile.info.obj = {"id": Helper.id_to_editor(1, item_name), "rotation": tile.info.obj.rotation, "type": selected_item_type, "loaded": 0}
+						tile.load_obj(tile.info.obj.id)
+						if tile.info.tile.id == 0 and tile.info.obj.id != 5: load_tile(tile, 1, 0, 0)
+					3: 
+						load_wall(tile, Helper.id_to_editor(2, item_name), tile.info.wall.rotation, selected_item_type, Settings.default_wall_height, Settings.tile_walls)
+						if tile.info.tile.id == 0: load_tile(tile, 1, 0, 0)
+					4:
+						match selected_item_pos[1]:
+							1: 
+								tile.info.tdeco = {"id": Helper.id_to_editor(3, item_name), "rotation": tile.info.tdeco.rotation, "type": selected_item_type}
+								tile.load_tdeco(tile.info.tdeco.id)
+								if tile.info.tile.id == 0: load_tile(tile, 1, 0, 0)
+							2:
+								tile.info.wdeco = {"id": Helper.id_to_editor(4, item_name), "rotation": tile.info.wdeco.rotation, "type": selected_item_type}
+								tile.load_wdeco(tile.info.wdeco.id)
+								if tile.info.tile.id == 0: load_tile(tile, 1, 0, 0)
+			elif tile in selection_tiles:
+				on_call_selection_callable(tile)
+					
 		reset_active_tile_state(3)
 
 func is_wall_below_you_reaches_above_you(p: Array) -> bool:
@@ -685,17 +708,15 @@ func load_tile(tile: Node3D, id: int, rot: int, type: int) -> void:
 	
 	if Settings.elevation_fill:
 		var f: bool = Settings.tile_walls
-		Settings.tile_walls = false
+		Settings.tile_walls = true
 		var p: Array = tile.info.position
-		var is_water: Array = [1, 4]
-		if tile.info.tile.id in [4, 5]:
-			is_water[0] = tile.info.tile.id - 1
-			is_water[1] = 0
+		var load_id: int = 1
+		if tile.info.tile.id in [3, 4]: load_id = tile.info.tile.id
 		for i in range(p[3] - 1, -1, -1):
 			var _tile: Node3D = get_tile_by_position([p[0], p[1], p[2], i])
-			if _tile.info.tile.id > 0 and _tile.info.wall.id == 0 and _tile.info.obj.id == 0 and _tile.info.deco.id == 0 and _tile.info.tile.type == 0:
-				if _tile.info.position[3] == 0:
-					load_wall(_tile, is_water[0], 0, is_water[1], p[3], 1)
+			if _tile.info.tile.id > 0 and _tile.info.wall.id == 0 and _tile.info.obj.id == 0 and _tile.info.wdeco.id == 0 and _tile.info.tdeco.id == 0 and _tile.info.tile.type == 0:
+				if _tile.info.position[3] == 0: load_wall(_tile, load_id, 0, 1, p[3], 1)
+				if tile.info.tile.id in [3, 4]: load_tile(_tile, tile.info.tile.id, 0, 0)
 				break
 		Settings.tile_walls = f
 
@@ -705,8 +726,7 @@ func load_wall(tile: Node3D, id: int, rot: int, type: int, height: int, tile_wal
 
 func get_tile_by_position(pos: Array) -> Node3D:
 	for tile in World.get_node("Tiles/" + str(pos[3])).get_children():
-		if tile.info.position == pos: return tile
-	print_debug("Tile not found!")
+		if Helper.compare_by_value(tile.info.position, pos): return tile
 	return null
 
 func reset_active_tile_state(i: int) -> void:
@@ -738,8 +758,21 @@ func set_heightbuttons_modulate() -> void:
 
 func on_hover_tile(tile: Node3D) -> void:
 	if tile.info.tile.type == 0 and !(!Settings.highlight_empty_tiles and tile.info.tile.id == 0) and SelectionBox == null:
-		tile.load_tile(2)
+		if tile in selection_tiles: tile.load_tile(tile.info.tile.id)
+		else: tile.load_tile(2)
 		
+func on_call_selection_callable(tile: Node3D) -> void:
+	selection_callable.call(tile)
+		
+func on_set_selection_tiles(tiles: Array = [], c: Callable = Callable()) -> void:
+	selection_tiles = tiles
+	selection_callable = c
+	
+	if selection_tiles.size() == 1: on_call_selection_callable(tiles[0])
+	elif tiles.size() > 0: on_tile_menu_highlight_tiles(1, tiles)
+		
+signal update_tile_menu
+var tile_menu_tiles: Array
 func on_tiles_selected(tiles: Array) -> void:
 	if !Settings.select_empty_tiles: tiles = tiles.filter(func(x: Node3D): return x.info.tile.id != 0)
 	if tiles.size() > 0 and !block_screen and loaded_area:
@@ -748,40 +781,63 @@ func on_tiles_selected(tiles: Array) -> void:
 		reset_mblocker_rects()
 		
 		var tile_menu: Control = preload("res://scenes/screens/level_editor/build_menu/tile_menu.tscn").instantiate()
+		update_tile_menu.connect(tile_menu.on_update_tile_menu)
+		tile_menu_tiles = tiles
 		tile_menu.tiles = tiles
 		add_child(tile_menu)
-		tile_menu.queued.connect(on_tile_menu_queued)
-		Helper.load_area_colors(tile_menu, loaded_area.pcolor, loaded_area.acolor)
-		
-		for item in tile_menu.items:
-			item.rotate_full.connect(on_rotate_item_full.bind(tiles))
-			item.rotate_direction.connect(on_rotate_item_direction.bind(tiles))
-			for i in ["delete", "copy", "paste", "move", "bucket"]:
-				item[i].connect(get("on_" + i + "_item").bind(tiles))
+		for sig in tile_menu.signals: sig.connect(get("on_tile_menu_" + sig.get_name()))
+
+func on_update_tile_menu() -> void:
+	if tile_menu_tiles.size() > 0:
+		var ray: RayCast3D = World.get_node("TileRaycast")
+		var tiles: Array = World.get_node("Tiles/" + str(Settings.level_editor_elevation)).get_children()
+		if !Settings.select_empty_tiles: tiles = tiles.filter(func(x: Node3D): return x.info.tile.id != 0)
+		ray.position = World.get_node("MovementCamera").position
+		ray.target_position = (World.get_node("MovementCamera").project_ray_origin(get_viewport().get_mouse_position())) + World.get_node("MovementCamera").project_ray_normal(get_viewport().get_mouse_position()) * 300
+		ray.force_raycast_update()
+		if ray.get_collider():
+			var tile: Node3D = ray.get_collider().get_parent()
+			if tile in tile_menu_tiles:
+				if tile_menu_tiles.size() > 1: # important its here
+					tile_menu_tiles.erase(tile)
+					tile.load_tile(tile.info.tile.id)
+			else: tile_menu_tiles.append(tile); tile.load_tile(2)
+			update_tile_menu.emit()
 
 func on_tile_menu_queued(TileMenu: Control) -> void:
-	block_screen = false
-	for tile in TileMenu.tiles: on_tile_exit_mouse(tile)
-	reset_mblocker_rects()
+	if !file_loader_loaded:
+		block_screen = false
+		on_set_selection_tiles()
+		for tile in TileMenu.tiles: on_tile_exit_mouse(tile)
+		reset_mblocker_rects()
+		TileMenu.queue_free()
+
+func on_tile_menu_highlight_tiles(state: int, tiles: Array) -> void:
+	for tile in tiles:
+		var i: int = 2 if state > 0 else tile.info.tile.id
+		tile.load_tile(i)
 
 func on_tile_exit_mouse(tile: Node3D) -> void:
-	if tile.info.tile.type == 0 and !block_screen:
-		tile.load_tile(tile.info.tile.id)
+	if tile.info.tile.type == 0:
+		if !block_screen:
+			tile.load_tile(tile.info.tile.id)
+		elif tile in selection_tiles:
+			tile.load_tile(2)
 
-var item_id_array: Array = [["tile", "obj", "wall", "deco"], ["tile"], ["obj"], ["wall"], ["deco"]]
-func on_rotate_item_full(item: int, i: int, tiles: Array) -> void:
+var item_id_array: Array = [["tile", "obj", "wall", "wdeco", "tdeco"], ["tile"], ["obj"], ["wall"], ["wdeco"], ["tdeco"]]
+func on_tile_menu_rotate_full(item: int, i: int, tiles: Array) -> void:
 	for tile in tiles:
 		for j in item_id_array[item]:
 			var load_id: int = (2 if j == "tile" else tile.info[j].id) if tile.info[j].type == 0 else tile.info[j].id
 			tile.info[j].rotation = i - 1
 			tile.call("load_" + j, load_id)
 	
-func on_rotate_item_direction(item: int, direction: int, tiles: Array) -> void:
+func on_tile_menu_rotate_direction(item: int, direction: int, tiles: Array) -> void:
 	for tile in tiles:
 		for j in item_id_array[item]:
 			on_rotate_tile_object(tile, direction, j, (2 if j == "tile" else tile.info[j].id) if tile.info[j].type == 0 else tile.info[j].id)
 	
-func on_delete_item(item: int, tiles: Array) -> void:
+func on_tile_menu_delete(item: int, tiles: Array) -> void:
 	for tile in tiles:
 		for j in item_id_array[item]:
 			var load_id: int = 0
@@ -789,25 +845,93 @@ func on_delete_item(item: int, tiles: Array) -> void:
 				if item_id_array[item].size() > 1 or tile.info[j].id == 0:
 					load_id = 1
 			tile.call("load_" + j, load_id)
-			if j == "tile" and load_id == 1: tile.call("load_" + j, 2)
 	
+var selection_callable: Callable
+var selection_tiles: Array = []
 var copy_info: Array
-func on_copy_item(item: int, tiles: Array) -> void:
-	copy_info = []
-	for tile in tiles:
-		copy_info.append([tile.info.position])
-		var csize: int = copy_info.size() - 1
+
+func on_tile_menu_copy(item: int, tiles: Array) -> void:
+	on_set_selection_tiles(tiles, on_tile_menu_copy_tile_selected.bind(item, tiles))
+	
+func on_tile_menu_copy_tile_selected(tile: Node3D, item: int, tiles: Array) -> void:
+	var i: int = tiles.find(tile)
+	tiles[i] = tiles[0]
+	tiles[0] = tile
+	copy_info = store_tile_info(tiles, tile, [], item)
+	on_set_selection_tiles.call_deferred()
+	tile.load_tile(2)
+	
+func store_tile_info(tiles: Array, tile: Node3D, arr: Array, item: int) -> Array:
+	var p: Vector4 = Helper.position_to_vec(tile.info.position)
+	for _tile in tiles:
+		var x: Vector4 = Helper.position_to_vec(_tile.info.position) - p
+		arr.append([[x.x, x.y, x.z, x.w]])
+		var csize: int = arr.size() - 1
 		for j in item_id_array[item]:
-			copy_info[csize].append(tile.info[j])
+			arr[csize].append([j, _tile.info[j].duplicate(true)])
+	return arr
 	
-func on_paste_item(item: int, tiles: Array) -> void:
-	if copy_info.size() > 0 and tiles.size() == 1:
-		var vecs: Array = copy_info.map(func(x: Array): return Helper.position_to_vec(x[0]))
-		for vec in vecs:
-			print(Helper._hex_neighbours(vec, vecs))
+func on_tile_menu_paste(_tiles: Array) -> void:
+	if copy_info.size() > 0 and _tiles.size() == 1:
+		var p: Vector4 = Helper.position_to_vec(_tiles[0].info.position)
+		for i in copy_info:
+			var x: Vector4 = Helper.position_to_vec(i[0]) + p
+			var tile: Node3D = get_tile_by_position([x.x, x.y, x.z, x.w])
+			if tile != null:
+				for k in range(1, i.size()):
+					tile.info[i[k][0]] = i[k][1].duplicate(true)
+					tile.call("load_" + i[k][0], tile.info[i[k][0]].id)
 	
-func on_move_item(item: int, tiles: Array) -> void:
-	pass
+func on_tile_menu_move(item: int, tiles: Array) -> void:
+	on_set_selection_tiles(tiles, on_tile_menu_move_center_tile_selected.bind(item, tiles))
 	
-func on_bucket_item(item: int, tiles: Array) -> void:
-	pass
+func on_tile_menu_move_center_tile_selected(center_tile: Node3D, item: int, tiles: Array) -> void:
+	copy_info = store_tile_info(tiles, center_tile, [], item)
+	for tile in tiles:
+		for j in item_id_array[item]:
+			tile.call("load_" + j, 1 if j == "tile" else 0)
+	
+	on_set_selection_tiles(World.get_node("Tiles/" + str(Settings.level_editor_elevation)).get_children(), on_tile_menu_move_finished.bind(tiles))
+func on_tile_menu_move_finished(tile: Node3D, tiles: Array) -> void:
+	on_tile_menu_paste([tile])
+	on_set_selection_tiles.call_deferred()
+	on_tile_menu_highlight_tiles(0, World.get_node("Tiles/" + str(Settings.level_editor_elevation)).get_children())
+	on_tile_menu_highlight_tiles(1, tiles)
+	
+var bucket_info: Array = []
+func on_tile_menu_bucket(item: int, tiles: Array) -> void:
+	if tiles.size() == 1:
+		bucket_info = []
+		for j in item_id_array[item]:
+			bucket_info.append([j, tiles[0].info[j].duplicate(true)])
+	else:
+		if bucket_info.size() > 0:
+			for tile in tiles:
+				for j in bucket_info:
+					tile.info[j[0]] = j[1].duplicate(true)
+					tile.call("load_" + j[0], tile.info[j[0]].id)
+
+func on_tile_menu_spawn(tiles: Array) -> void:
+	if tiles.size() == 1 and loaded_area:
+		var FileLoader: Control = preload("res://scenes/editor/file_loader/file_loader.tscn").instantiate()
+		var cards: Array = loaded_area.cards.map(func(i: int): return Helper.id_to_dict(i, "Card"))
+		match tiles[0].info.obj.id:
+			1: cards = cards.filter(func(x: Dictionary): return x != {} and x.r != 1)
+			3: cards = cards.filter(func(x: Dictionary): return x != {} and x.r == 0)
+			
+		FileLoader.on_ready_preselected("Card", cards)
+		FileLoader.item_selected.connect(on_card_selected_from_fileloader)
+		on_file_loader_loaded(FileLoader)
+		FileLoader.queued.connect(func(): block_screen = true; reset_mblocker_rects())
+
+func on_file_loader_loaded(FileLoader: Control):
+	FileLoader.queued.connect(on_file_loader_queued)
+	file_loader_loaded = true
+	block_screen = true
+	reset_mblocker_rects()
+	add_child(FileLoader)
+
+func on_card_selected_from_fileloader(item_info: Dictionary) -> void:
+	if tile_menu_tiles.size() == 1:
+		tile_menu_tiles[0].info.obj.loaded = item_info.id
+		tile_menu_tiles[0].load_obj(tile_menu_tiles[0].info.obj.id)

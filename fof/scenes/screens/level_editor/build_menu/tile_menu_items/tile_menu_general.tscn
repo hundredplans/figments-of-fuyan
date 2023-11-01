@@ -1,7 +1,31 @@
-[gd_scene format=3 uid="uid://dq8sdpy0ahho7"]
+[gd_scene load_steps=4 format=3 uid="uid://dq8sdpy0ahho7"]
+
+[ext_resource type="Theme" uid="uid://du2bpyvp41rdk" path="res://assets/UI/roboto/roboto20.tres" id="1_b2ff5"]
+[ext_resource type="PackedScene" uid="uid://chkoma3ub3eqf" path="res://scenes/ui_general/binary_button/binary_button.tscn" id="2_blapp"]
+[ext_resource type="Script" path="res://scenes/screens/level_editor/build_menu/tile_menu_items/tile_menu_items.gd" id="2_to70j"]
 
 [node name="TileMenuGeneral" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 437.0
-offset_bottom = 150.0
+offset_bottom = 178.0
+theme = ExtResource("1_b2ff5")
+script = ExtResource("2_to70j")
+
+[node name="Highlight_Tiles" parent="." instance=ExtResource("2_blapp")]
+offset_left = 245.0
+offset_top = 138.0
+offset_right = 422.0
+offset_bottom = 201.0
+scale = Vector2(0.6, 0.6)
+default = 1
+label_text = "Highlight"
+ignore_repeat = false
+
+[node name="Paste" type="Button" parent="."]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 135.0
+offset_right = 90.0
+offset_bottom = 167.0
+text = "Paste"

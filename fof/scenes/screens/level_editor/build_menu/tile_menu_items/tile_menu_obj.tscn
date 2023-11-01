@@ -1,7 +1,18 @@
-[gd_scene format=3 uid="uid://2uysjf0b5m55"]
+[gd_scene load_steps=2 format=3 uid="uid://2uysjf0b5m55"]
 
-[node name="TileMenuWall" type="Control"]
+[ext_resource type="Script" path="res://scenes/screens/level_editor/build_menu/tile_menu_items/tile_menu_items.gd" id="1_rr7dp"]
+
+[node name="TileMenuObject" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 437.0
-offset_bottom = 150.0
+offset_bottom = 130.0
+script = ExtResource("1_rr7dp")
+
+[node name="Spawn" type="Button" parent="."]
+layout_mode = 0
+offset_left = 360.0
+offset_top = 138.0
+offset_right = 420.0
+offset_bottom = 169.0
+text = "Spawn"

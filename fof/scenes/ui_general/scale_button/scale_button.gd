@@ -14,7 +14,7 @@ var arrow_delay: int = 0
 
 const INITIAL_DELAY: float = 0.3
 const REGULAR_DELAY: float = 0.05
-const GRADIENT_OFFSET: int = 20
+var GRADIENT_OFFSET: float = 20 * scale.x
 
 @onready var pressed_inputs: Dictionary = {
 	"DownArrow": -steps.y,
@@ -22,7 +22,6 @@ const GRADIENT_OFFSET: int = 20
 	"UpArrow": steps.y,
 	"RightArrow": steps.x,
 	}
-	
 @onready var inputs: Dictionary = {
 	"MouseDown": -steps.x,
 	"MouseUp": steps.x,
@@ -30,7 +29,7 @@ const GRADIENT_OFFSET: int = 20
 func _process(_delta: float) -> void:
 	if Grabber.button_pressed: _on_gradient_button_pressed()
 	var is_pressed: bool = false
-	if Rect2(GradientButton.global_position, GradientButton.size).has_point(get_viewport().get_mouse_position()):
+	if Rect2(GradientButton.global_position, GradientButton.size * scale).has_point(get_viewport().get_mouse_position()):
 		for input in pressed_inputs:
 			if Input.is_action_pressed(input):
 				is_pressed = true
@@ -58,7 +57,6 @@ func _process(_delta: float) -> void:
 			arrow_delay = 3
 			
 	if !is_pressed: arrow_delay = 0
-
 func _ready() -> void:
 	Helper.create_button_clickmask(Grabber)
 	(func():$Background/Outside.size.x += $Label.size.x + 23; $Background/Inside.size.x += $Label.size.x + 23).call_deferred()
@@ -74,8 +72,6 @@ func _ready() -> void:
 			bar.size.y = $SnapBars.size.y
 			bar.size.x = 6
 			bar.position.x = (difference * i) - 3
-			
-	
 func _enter_tree() -> void:
 	default = clamp(default, min_max.x, min_max.y)
 	$Label.text = label_text
@@ -86,11 +82,11 @@ func set_grabber_position() -> void:
 		var gbgpx: int = int(GradientButton.position.x)
 		Grabber.position.x = round(remap(default, min_max.x, min_max.y, gbgpx + GRADIENT_OFFSET, gbgpx + GradientButton.size.x - GRADIENT_OFFSET) - 15)
 		Grabber.modulate = GradientButton.texture_normal.get_image().get_pixel(\
-		int(Grabber.position.x - GradientButton.position.x + (Grabber.size.x * 0.5)), 30)
+		int(Grabber.position.x - gbgpx + (Grabber.size.x * 0.5)), 30)
 		item_selected.emit(default)
 
 func _on_gradient_button_pressed():
 	var gbgpx: int = int(GradientButton.global_position.x)
-	var clamped_mouse: int = clamp(get_viewport().get_mouse_position().x, gbgpx + GRADIENT_OFFSET, gbgpx + GradientButton.size.x - GRADIENT_OFFSET)
-	default = round(remap(clamped_mouse, gbgpx + GRADIENT_OFFSET, gbgpx + GradientButton.size.x - GRADIENT_OFFSET, min_max.x, min_max.y))
+	var clamped_mouse: int = clamp(get_viewport().get_mouse_position().x, gbgpx + GRADIENT_OFFSET, gbgpx + (GradientButton.size.x * scale.x) - GRADIENT_OFFSET)
+	default = round(remap(clamped_mouse, gbgpx + GRADIENT_OFFSET, gbgpx + (GradientButton.size.x * scale.x) - GRADIENT_OFFSET, min_max.x, min_max.y))
 	set_grabber_position()

@@ -128,6 +128,5 @@ func _on_model_viewer_button_button_down():
 func _on_model_viewer_button_button_up():
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
-
 func _on_height_selected(i: int):
 	height = i

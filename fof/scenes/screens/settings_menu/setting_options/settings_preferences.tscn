@@ -115,111 +115,111 @@ offset_right = 196.0
 offset_bottom = 870.0
 label_text = "Open Patch Notes"
 
-[node name="LevelSize" parent="." instance=ExtResource("3_dg7gw")]
-offset_left = 19.0
-offset_top = 878.0
-offset_right = 43.0
-offset_bottom = 941.0
-options = PackedStringArray("6x6", "10x10", "16x16", "20x20", "30x30", "40x40", "50x50", "100x100")
-label_text = "Level Size"
-
 [node name="Fileloader" type="Label" parent="."]
 layout_mode = 0
-offset_top = 950.0
+offset_top = 886.0
 offset_right = 518.0
-offset_bottom = 1010.0
+offset_bottom = 946.0
 text = "Fileloader"
 label_settings = SubResource("LabelSettings_nac3c")
 horizontal_alignment = 1
 
 [node name="CloseFileLoader" parent="." instance=ExtResource("5_t1xs1")]
 offset_left = 19.0
-offset_top = 1022.0
+offset_top = 958.0
 offset_right = 117.0
-offset_bottom = 1082.0
+offset_bottom = 1018.0
 options = PackedStringArray("Areas", "Cards", "Auras", "Boons", "Levels", "Trinkets", "Challenges", "World Variations")
 label_text = "Close File Loader"
 
 [node name="AutoCreateDir" parent="." instance=ExtResource("3_dg7gw")]
 offset_left = 19.0
-offset_top = 1091.0
+offset_top = 1027.0
 offset_right = 43.0
-offset_bottom = 1154.0
+offset_bottom = 1090.0
 options = PackedStringArray("Never", "Always")
 default = 1
 label_text = "Auto-create Folders"
 
 [node name="FileLoaderOpacity" parent="." instance=ExtResource("6_3lxbg")]
 offset_left = 19.0
-offset_top = 1161.0
+offset_top = 1097.0
 offset_right = 370.0
-offset_bottom = 1258.0
+offset_bottom = 1194.0
 label_text = "FL Opacity"
 disable_scrollwheel = true
 
 [node name="LevelEditor" type="Label" parent="."]
 layout_mode = 0
-offset_top = 1248.0
+offset_top = 1184.0
 offset_right = 518.0
-offset_bottom = 1308.0
+offset_bottom = 1244.0
 text = "Level Editor"
 label_settings = SubResource("LabelSettings_nac3c")
 horizontal_alignment = 1
 
+[node name="LevelSize" parent="." instance=ExtResource("3_dg7gw")]
+offset_left = 19.0
+offset_top = 1263.0
+offset_right = 43.0
+offset_bottom = 1326.0
+options = PackedStringArray("3", "5", "7", "9", "12", "15", "20", "25")
+label_text = "Level Size"
+
 [node name="LevelEditorElevation" parent="." instance=ExtResource("3_dg7gw")]
 offset_left = 19.0
-offset_top = 1327.0
+offset_top = 1345.0
 offset_right = 43.0
-offset_bottom = 1390.0
+offset_bottom = 1408.0
 options = PackedStringArray("0", "1", "2", "3", "4", "5")
 label_text = "Elevation"
 
 [node name="DefaultWallHeight" parent="." instance=ExtResource("3_dg7gw")]
 offset_left = 19.0
-offset_top = 1409.0
+offset_top = 1427.0
 offset_right = 43.0
-offset_bottom = 1472.0
+offset_bottom = 1490.0
 options = PackedStringArray("0.5", "1", "2", "3", "4", "5")
 label_text = "Wall Height"
 
 [node name="TileWalls" parent="." instance=ExtResource("4_70xc4")]
 offset_left = 19.0
-offset_top = 1491.0
+offset_top = 1509.0
 offset_right = 196.0
-offset_bottom = 1554.0
+offset_bottom = 1572.0
 label_text = "Tile Walls"
 
 [node name="WallAutoFill" parent="." instance=ExtResource("4_70xc4")]
 offset_left = 19.0
-offset_top = 1574.0
+offset_top = 1592.0
 offset_right = 196.0
-offset_bottom = 1637.0
+offset_bottom = 1655.0
 label_text = "Autofill Wall"
 
 [node name="WallAutoTile" parent="." instance=ExtResource("4_70xc4")]
 offset_left = 19.0
-offset_top = 1657.0
+offset_top = 1675.0
 offset_right = 196.0
-offset_bottom = 1720.0
+offset_bottom = 1738.0
 label_text = "Autotile Wall"
 
 [node name="ElevationFill" parent="." instance=ExtResource("4_70xc4")]
 offset_left = 19.0
-offset_top = 1735.0
+offset_top = 1753.0
 offset_right = 196.0
-offset_bottom = 1798.0
+offset_bottom = 1816.0
 label_text = "Elevation Fill"
 
 [node name="HighlightEmptyTiles" parent="." instance=ExtResource("4_70xc4")]
 offset_left = 19.0
-offset_top = 1735.0
+offset_top = 1753.0
 offset_right = 196.0
-offset_bottom = 1798.0
+offset_bottom = 1816.0
 label_text = "Lightup Empty"
 
 [node name="SelectEmptyTiles" parent="." instance=ExtResource("4_70xc4")]
 offset_left = 19.0
-offset_top = 1815.0
+offset_top = 1833.0
 offset_right = 196.0
-offset_bottom = 1878.0
+offset_bottom = 1896.0
 label_text = "Select Empty"

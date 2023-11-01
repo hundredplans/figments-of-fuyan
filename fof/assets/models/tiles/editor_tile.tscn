@@ -2,27 +2,31 @@
 
 [ext_resource type="Script" path="res://assets/models/tiles/editor_tile.gd" id="1_8x5vn"]
 
-[node name="EditorTile" type="Node3D" node_paths=PackedStringArray("Tile", "TileObject", "TileDecoration", "TileWall", "DetectMouse")]
+[node name="EditorTile" type="Node3D" node_paths=PackedStringArray("Tile", "TileObject", "TileDecoration", "TileWallDecoration", "TileWall", "DetectMouse")]
 script = ExtResource("1_8x5vn")
 Tile = NodePath("Tile")
 TileObject = NodePath("TileObject")
 TileDecoration = NodePath("TileDecoration")
+TileWallDecoration = NodePath("TileWallDecoration")
 TileWall = NodePath("TileWall")
 DetectMouse = NodePath("DetectMouse")
 
 [node name="Tile" type="Node3D" parent="."]
 
 [node name="TileObject" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.201, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
 
 [node name="TileDecoration" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.201, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+
+[node name="TileWallDecoration" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
 
 [node name="TileWall" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.201, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
 
 [node name="DetectMouse" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.19, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.29, 0)
 collision_layer = 2
 collision_mask = 0
 monitoring = false
@@ -31,5 +35,3 @@ monitoring = false
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
 depth = 0.01
 polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
-
-[connection signal="area_entered" from="DetectMouse" to="." method="_on_detect_mouse_area_entered"]

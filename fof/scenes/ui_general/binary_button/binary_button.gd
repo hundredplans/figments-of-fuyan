@@ -1,6 +1,7 @@
 extends Control
 @export var default: int = 0
 @export var label_text: String
+@export var ignore_repeat: bool = true
 signal item_selected
 
 func _enter_tree():
@@ -16,13 +17,13 @@ func press():
 	item_selected.emit(default)
 
 func _on_no_pressed():
-	if default != 0:
+	if default != 0 or !ignore_repeat:
 		default = 0
 		on_buttons_pressed()
 		item_selected.emit(default)
 
 func _on_yes_pressed():
-	if default != 1:
+	if default != 1 or !ignore_repeat:
 		default = 1
 		on_buttons_pressed()
 		item_selected.emit(default)

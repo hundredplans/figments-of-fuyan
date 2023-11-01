@@ -1,5 +1,6 @@
 extends Control
 signal text_submitted
+signal open_state
 var open: bool = false
 var showcase_text_changed: bool = false
 
@@ -35,3 +36,5 @@ func _on_text_submitted(__: String):
 	$Internal.release_focus()
 	$Showcase.release_focus()
 	text_submitted.emit()
+
+func _on_lock_button_pressed_animation_finished(__): open_state.emit(open)

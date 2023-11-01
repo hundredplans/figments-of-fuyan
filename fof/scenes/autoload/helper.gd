@@ -176,7 +176,7 @@ func return_item_dict(item: String, _contents: String) -> Dictionary:
 		match item:
 			"area": keys += ["pcolor", "acolor", "world", "cards"]
 			"card": keys += ["a", "h", "s", "e", "r", "text", "flavor", "aic", "aii", "aiw", "ait", "aia", "height"]
-			"level": keys += ["area", "difficulty", "tiles"]
+			"level": keys += ["area", "difficulty", "trinkets", "tiles"]
 			"aura": keys += ["r", "text", "flavor"]
 			"boon": keys += ["r", "text", "flavor"]
 		var i: int = 0
@@ -247,41 +247,31 @@ func load_area_colors(node: Node, primary_color: Color, accent_color: Color) -> 
 			else: child.modulate = accent_color
 
 var _id_to: Array = [
-	["null", "ground", "_hover_tile", "void_tile", "water/shallow_water_tile", "water/deep_water_tile"],
+	["null", "ground", "_hover", "water/shallow_water", "water/deep_water", "void"],
 	["null", "spawns/spawn_enemy", "spawns/spawn_ally", "spawns/spawn_neutral", "spawns/spawn_trinket", "light"],
-	["null", "wall", "wooden_wall", "shallow_water_wall", "deep_water_wall"],
-	["null", "shrub"]]
+	["null", "wall", "wooden_wall", "water/shallow_water_wall", "water/deep_water_wall"],
+	["null", "shrub"],
+	["null", "lamp"]]
 	
 func wid_to(id: int, area: int = 0, type: int = 0) -> String:
 	var contents: Array = _id_to[2][id].split("/")
-	var middle: String = str(area) if id == 1 else contents.pop_back() 
-	var end: String = ""
+	var middle: String = str(area) + "wall" if id == 1 else contents.pop_back() 
+	if type > 0: middle += str(type)
 	
-	if type > 0:
-		if !middle.begins_with("_"): middle = middle.insert(0, "_")
-		if type > 0: end += "_" + str(type)
-		
 	if id != 1:
 		for n in contents: middle = middle.insert(0, n + "/")
-	return middle + end
+	return middle
 	
 func tid_to(id: int, area: int = 0, type: int = 0) -> String:
 	var contents: Array = _id_to[0][id].split("/")
-	var middle: String = str(area) if id == 1 else contents.pop_back()
-	var end: String = ""
-	if type > 0:
-		if !middle.begins_with("_"): middle = middle.insert(0, "_")
-		if type > 0: end += "_" + str(type)
-		
+	var middle: String = str(area) + "tile" if id == 1 else contents.pop_back()
+	if type > 0: middle += str(type)
 	if id != 1:
 		for n in contents: middle = middle.insert(0, n + "/")
-	return middle + end
+	return middle
 	
 func editor_id_to(btab: int, id: int, type: int = 0) -> String:
-	var rstring: String = _id_to[btab][id]
-	var end: String = "" if type == 0 else "_" + str(type)
-	if end and !rstring.begins_with("_"): rstring = rstring.insert(0, "_")
-	return rstring + end
+	return _id_to[btab][id] + ("" if type == 0 else str(type))
 	
 func id_to_editor(btab: int, item: String) -> int: 
 	item = item.left(-4)
@@ -312,8 +302,12 @@ func create_base_game_id_dir(item_dict: Dictionary, file_loader_name: String) ->
 		if !Array(DirAccess.get_directories_at(dir_path)).any(func(x: String): return x.begins_with(str(item_dict.id))):
 			DirAccess.make_dir_absolute(dir_path + item_dict.bgfn)
 
-var cube_directions: Array[Vector3] = [Vector3(1, 0, -1), Vector3(1, -1, 0), Vector3(0, -1, 1), Vector3(-1, 0, 1), Vector3(-1, 1, 0), Vector3(0, 1, -1)]
+func compare_by_value(a: Array, b: Array) -> bool:
+	for n in range(a.size()):
+		if a[n] != b[n]: return false
+	return true
 
+var cube_directions: Array[Vector3] = [Vector3(1, 0, -1), Vector3(1, -1, 0), Vector3(0, -1, 1), Vector3(-1, 0, 1), Vector3(-1, 1, 0), Vector3(0, 1, -1)]
 func position_to_vec(pos: Array) -> Vector4:
 	return Vector4(pos[0], pos[1], pos[2], pos[3])
 

@@ -117,3 +117,6 @@ func on_sort_added_cards():
 			if xy.x > 300:
 				xy.y += 150
 				xy.x = 0
+
+func _queue_free() -> void:
+	_on_save_area_pressed()
