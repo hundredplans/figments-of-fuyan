@@ -17,7 +17,7 @@ var active_editor_card: String
 var solo_visibility: bool = false
 var disable_visibility: bool = false
 var always_visible: bool = false
-const collision_tiles: Array = [1, 2, 13, 18, 19, 20]
+const collision_tiles: Array = [1, 2, 13, 18, 19, 20, 23]
 var tile_item = ""
 var old_tile_state: int = 0
 var tile_state: int = 0
