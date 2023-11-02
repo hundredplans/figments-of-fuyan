@@ -13,8 +13,15 @@ signal spawn
 signal update_item_rotations
 signal update_tile_menu
 
+signal fill_wall
+signal tile_wall
+signal wall_height
+signal item_type
+
 @onready var signals: Array[Signal] = [
-	delete, copy, move, paste, bucket, rotate_full, rotate_direction, highlight_tiles, queued, spawn]
+	delete, copy, move, paste, bucket, rotate_full, rotate_direction, 
+	highlight_tiles, queued, spawn, fill_wall, tile_wall, wall_height,
+	item_type]
 	
 var tiles: Array
 var items: Array

@@ -1,6 +1,7 @@
 extends Control
 
 var parent: Control
+var ItemButton: Control
 var RotateButton: Control
 var rotate_item_index: int = 0
 var tiles: Array
@@ -45,6 +46,8 @@ func _ready():
 	add_rotate_button.call_deferred(tile_menu_item)
 	(func(): flip_button.position = Vector2($Label.position.x + $Label.size.x + 215, 5)).call_deferred()
 	
+	add_item_btn.call_deferred()
+	
 	var base_pos: Array[Vector2i] = [Vector2i(10, 55), Vector2i(10, 95), Vector2(100, 55), Vector2i(100, 95)]
 	var base_btns: Array[String] = ["Copy", "Bucket", "Delete", "Move"]
 	for i in range(base_btns.size()):
@@ -54,6 +57,55 @@ func _ready():
 		btn.size.x = 80
 		btn.pressed.connect(func(): parent[base_btns[i].to_lower()].emit(item, tiles))
 		tile_menu_item.add_child(btn)
+
+func add_item_btn() -> void:
+	if item_name != "General":
+		var item_btn: Control = preload("res://scenes/ui_general/scale_button/scale_button.tscn").instantiate()
+		ItemButton = item_btn
+		item_btn.scale = Vector2(0.5, 0.5)
+		item_btn.name = "Item_Type"
+		item_btn.steps = Vector2(1, 2)
+		item_btn.position = Vector2(6, 136)
+		item_btn.label_text = "Item Type"
+		item_btn.snap_mode = true
+
+func on_set_item_btn() -> void:
+	if item_name != "General":
+		var first_time: bool = !ItemButton.is_inside_tree()
+		var area: Dictionary = parent.get_parent().loaded_area
+		if tiles.size() == 1 and area:
+			var variances: Array = range(1, 10)
+			var tile: Node3D = tiles[0]
+			var path: String = "res://assets/models/"
+			match item:
+				1: 
+					path += "tiles/"
+					path += Helper.tid_to(tile.info.tile.id, area.id, 0)
+				2: 
+					path += "objects/"
+					path += Helper.editor_id_to(item - 1, tile.info.obj.id, 0)
+				3: 
+					path += "walls/"
+					path += Helper.wid_to(tile.info.wall.id, area.id, 0)
+				4:
+					path += "decorations/tiles/"
+					path += Helper.editor_id_to(item - 1, tile.info.obj.id, 0)
+				5:
+					path += "decorations/walls/"
+					path += Helper.editor_id_to(item - 1, tile.info.obj.id, 0)
+			
+			variances = variances.filter(func(i: int): return FileAccess.file_exists(path + str(i) + ".glb"))
+			if variances.size() > 0:
+				ItemButton.default = tile.info[item_name.to_lower()].type
+				ItemButton.min_max = Vector2(0, variances.size())
+				ItemButton.visible = true
+				if !first_time: ItemButton.recalibrate_min_max()
+			else: ItemButton.visible = false
+		else: ItemButton.visible = false
+		
+		if first_time: 
+			add_child(ItemButton)
+			ItemButton.item_selected.connect(func(i: int): parent.item_type.emit(i, item, tiles))
 
 func on_flip_button_pressed(tmi: Control) -> void:
 	rotate_item_index = abs(rotate_item_index - 1)
@@ -65,7 +117,7 @@ func add_rotate_button(tmi: Control) -> void:
 		0:
 			var rotate_btn: Control = preload("res://scenes/ui_general/scale_button/scale_button.tscn").instantiate()
 			rotate_btn.scale = Vector2(0.5, 0.5)
-			rotate_btn.min_max = Vector2(1, 6)
+			rotate_btn.min_max = Vector2(0, 5)
 			rotate_btn.steps = Vector2(1, 6)
 			rotate_btn.label_text = "Rotate"
 			rotate_btn.snap_mode = true
@@ -100,7 +152,9 @@ func add_rotate_button(tmi: Control) -> void:
 
 func on_update_item_rotation() -> void:
 	if tiles.size() == 1 and item_name != "General" and RotateButton != null and !(RotateButton is Button):
-		RotateButton.default = tiles[0].info[item_name.to_lower()].rotation + 1
+		RotateButton.default = tiles[0].info[item_name.to_lower()].rotation
 		RotateButton.set_grabber_position()
 
-func on_update_tile_menu() -> void: update_tile_menu.emit()
+func on_update_tile_menu() -> void: 
+	update_tile_menu.emit()
+	on_set_item_btn.call_deferred()

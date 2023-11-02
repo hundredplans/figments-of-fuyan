@@ -60,18 +60,7 @@ func _process(_delta: float) -> void:
 func _ready() -> void:
 	Helper.create_button_clickmask(Grabber)
 	(func():$Background/Outside.size.x += $Label.size.x + 23; $Background/Inside.size.x += $Label.size.x + 23).call_deferred()
-	set_grabber_position()
-	if snap_mode:
-		var total: int = min_max.y - min_max.x - 1
-		var difference: int = round($SnapBars.size.x / (total + 1))
-		for i in range(total + 2):
-			var bar := ColorRect.new()
-			$SnapBars.add_child(bar)
-			bar.color = Color(0,0,0)
-			bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
-			bar.size.y = $SnapBars.size.y
-			bar.size.x = 6
-			bar.position.x = (difference * i) - 3
+	recalibrate_min_max()
 func _enter_tree() -> void:
 	default = clamp(default, min_max.x, min_max.y)
 	$Label.text = label_text
@@ -89,4 +78,19 @@ func _on_gradient_button_pressed():
 	var gbgpx: int = int(GradientButton.global_position.x)
 	var clamped_mouse: int = clamp(get_viewport().get_mouse_position().x, gbgpx + GRADIENT_OFFSET, gbgpx + (GradientButton.size.x * scale.x) - GRADIENT_OFFSET)
 	default = round(remap(clamped_mouse, gbgpx + GRADIENT_OFFSET, gbgpx + (GradientButton.size.x * scale.x) - GRADIENT_OFFSET, min_max.x, min_max.y))
+	set_grabber_position()
+
+func recalibrate_min_max() -> void:
+	for child in $SnapBars.get_children(): child.queue_free()
+	if snap_mode:
+		var total: int = min_max.y - min_max.x - 1
+		var difference: int = round($SnapBars.size.x / (total + 1))
+		for i in range(total + 2):
+			var bar := ColorRect.new()
+			$SnapBars.add_child(bar)
+			bar.color = Color(0,0,0)
+			bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			bar.size.y = $SnapBars.size.y
+			bar.size.x = 6
+			bar.position.x = (difference * i) - 3
 	set_grabber_position()

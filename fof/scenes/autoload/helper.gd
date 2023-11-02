@@ -248,7 +248,7 @@ func load_area_colors(node: Node, primary_color: Color, accent_color: Color) -> 
 
 var _id_to: Array = [
 	["null", "ground", "_hover", "water/shallow_water", "water/deep_water", "void"],
-	["null", "spawns/spawn_enemy", "spawns/spawn_ally", "spawns/spawn_neutral", "spawns/spawn_trinket", "light"],
+	["null", "spawns/spawn_enemy", "spawns/spawn_ally", "spawns/spawn_neutral", "spawns/spawn_trinket", "light", "stairs/wooden_stair"],
 	["null", "wall", "wooden_wall", "water/shallow_water_wall", "water/deep_water_wall"],
 	["null", "shrub"],
 	["null", "lamp"]]

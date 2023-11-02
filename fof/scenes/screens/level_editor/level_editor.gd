@@ -785,8 +785,9 @@ func on_tiles_selected(tiles: Array) -> void:
 		tile_menu_tiles = tiles
 		tile_menu.tiles = tiles
 		add_child(tile_menu)
-		for sig in tile_menu.signals: sig.connect(get("on_tile_menu_" + sig.get_name()))
-
+		for sig in tile_menu.signals: 
+			sig.connect(get("on_tile_menu_" + sig.get_name()))
+		update_tile_menu.emit()
 func on_update_tile_menu() -> void:
 	if tile_menu_tiles.size() > 0:
 		var ray: RayCast3D = World.get_node("TileRaycast")
@@ -829,7 +830,7 @@ func on_tile_menu_rotate_full(item: int, i: int, tiles: Array) -> void:
 	for tile in tiles:
 		for j in item_id_array[item]:
 			var load_id: int = (2 if j == "tile" else tile.info[j].id) if tile.info[j].type == 0 else tile.info[j].id
-			tile.info[j].rotation = i - 1
+			tile.info[j].rotation = i
 			tile.call("load_" + j, load_id)
 	
 func on_tile_menu_rotate_direction(item: int, direction: int, tiles: Array) -> void:
@@ -845,6 +846,8 @@ func on_tile_menu_delete(item: int, tiles: Array) -> void:
 				if item_id_array[item].size() > 1 or tile.info[j].id == 0:
 					load_id = 1
 			tile.call("load_" + j, load_id)
+			
+	update_tile_menu.emit()
 	
 var selection_callable: Callable
 var selection_tiles: Array = []
@@ -923,6 +926,24 @@ func on_tile_menu_spawn(tiles: Array) -> void:
 		FileLoader.item_selected.connect(on_card_selected_from_fileloader)
 		on_file_loader_loaded(FileLoader)
 		FileLoader.queued.connect(func(): block_screen = true; reset_mblocker_rects())
+
+func on_tile_menu_item_type(val: int, item: int, tiles: Array) -> void:
+	if tiles.size() == 1 and item != 0:
+		for j in item_id_array[item]:
+			tiles[0].info[j].type = val
+			tiles[0].call("load_" + j, tiles[0].info[j].id)
+
+func on_tile_menu_fill_wall(tiles: Array) -> void:
+	pass
+	
+func on_tile_menu_tile_wall(tiles: Array) -> void:
+	pass
+
+func on_tile_menu_wall_height(i: int, tiles: Array) -> void:
+	for tile in tiles:
+		if tile.info.wall.id > 0:
+			tile.info.wall.height = i
+			tile.load_wall(tile.info.wall.id)
 
 func on_file_loader_loaded(FileLoader: Control):
 	FileLoader.queued.connect(on_file_loader_queued)
