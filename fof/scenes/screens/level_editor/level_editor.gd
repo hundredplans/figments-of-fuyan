@@ -20,7 +20,7 @@ signal load_world
 @export var INFO_MENU_MOVE_SPEED: float = 6
 @export var BUILD_MENU_MOVE_SPEED: float = 4
 
-var SelectionBox: ColorRect
+var SelectionBox: Node
 
 @onready var mblockers: Array = [$LoadButtons, $InfoMenu, $BuildMenu]
 var block_screen: bool = false
@@ -146,23 +146,32 @@ func _process(delta: float) -> void:
 		on_clear_selection_box()
 	
 #	if Input.is_action_just_pressed("TopDownAlign"):
-#		World.get_node("MovementCamera").rotation_degrees = Vector3(-90, 0, 0)
+#		World.get_node("MovementCamera").rotation_degrees = Vector3(-80, 0, 0)
 	
 var og_sbox_pos: Vector2
 func on_create_selection_box() -> void:
 	if !block_screen and !(mblocker_rects.filter(func(x: Rect2i): return x.has_point(get_viewport().get_mouse_position()))):
-		var color_rect := ColorRect.new()
-		SelectionBox = color_rect
+		if !Settings.lasso_select:
+			SelectionBox = ColorRect.new() 
+			SelectionBox.position = get_viewport().get_mouse_position()
+			og_sbox_pos = SelectionBox.position
+		else:
+			SelectionBox = Polygon2D.new()
+			SelectionBox.position = Vector2(0, 0)
+			SelectionBox.polygon = [get_viewport().get_mouse_position()]
+			
 		add_child(SelectionBox)
-		color_rect.position = get_viewport().get_mouse_position()
-		color_rect.color = "2fffff87"
-		og_sbox_pos = color_rect.position
+		SelectionBox.color = "2fffff87"
+			
 	
 func on_resize_selection_box() -> void:
-	var s: Vector2 = (og_sbox_pos - get_viewport().get_mouse_position()) * -1
-	SelectionBox.scale = Vector2(-1 if s.x < 0 else 1, -1 if s.y < 0 else 1)
-	SelectionBox.size = Vector2(abs(s.x), abs(s.y))
-	
+	if !Settings.lasso_select:
+		var s: Vector2 = (og_sbox_pos - get_viewport().get_mouse_position()) * -1
+		SelectionBox.scale = Vector2(-1 if s.x < 0 else 1, -1 if s.y < 0 else 1)
+		SelectionBox.size = Vector2(abs(s.x), abs(s.y))
+	else:
+		if get_viewport().get_mouse_position() not in SelectionBox.polygon:
+			SelectionBox.polygon = Array(SelectionBox.polygon) + [get_viewport().get_mouse_position()]
 func on_clear_selection_box() -> void:
 	if SelectionBox != null and is_inside_tree():
 		var tiles: Array = []
@@ -172,12 +181,14 @@ func on_clear_selection_box() -> void:
 			ray.target_position = tile.position - ray.position
 			ray.force_raycast_update()
 			if ray.get_collider() == tile.get_node("DetectMouse"):
-				var rect := Rect2(SelectionBox.position, SelectionBox.size)
-				if SelectionBox.scale.x == -1: rect.position.x -= rect.size.x
-				if SelectionBox.scale.y == -1: rect.position.y -= rect.size.y
-				if rect.has_point(World.get_node("MovementCamera").unproject_position(ray.get_collision_point())):
+				if !Settings.lasso_select:
+					var rect := Rect2(SelectionBox.position, SelectionBox.size)
+					if SelectionBox.scale.x == -1: rect.position.x -= rect.size.x
+					if SelectionBox.scale.y == -1: rect.position.y -= rect.size.y
+					if rect.has_point(World.get_node("MovementCamera").unproject_position(ray.get_collision_point())):
+						tiles.append(tile)
+				elif Geometry2D.is_point_in_polygon(World.get_node("MovementCamera").unproject_position(ray.get_collision_point()), SelectionBox.polygon):
 					tiles.append(tile)
-			
 		on_tiles_selected(tiles)
 		SelectionBox.queue_free()
 		SelectionBox = null
@@ -886,7 +897,7 @@ func on_tile_menu_paste(_tiles: Array) -> void:
 					tile.call("load_" + i[k][0], tile.info[i[k][0]].id)
 	
 func on_tile_menu_move(item: int, tiles: Array) -> void:
-	on_set_selection_tiles(tiles, on_tile_menu_move_center_tile_selected.bind(item, tiles))
+		on_set_selection_tiles(tiles, on_tile_menu_move_center_tile_selected.bind(item, tiles))
 	
 func on_tile_menu_move_center_tile_selected(center_tile: Node3D, item: int, tiles: Array) -> void:
 	copy_info = store_tile_info(tiles, center_tile, [], item)
