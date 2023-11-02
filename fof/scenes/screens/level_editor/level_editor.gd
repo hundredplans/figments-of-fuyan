@@ -56,8 +56,10 @@ var trinket_amount: int = 0
 
 var current_history: Array = []
 var erased_history: Array = []
+var item_rects: Array = []
 
 func _ready() -> void:
+	on_load_favorites()
 	$InfoMenu/EditFileName.open_state.connect(func(x: bool): $InfoMenu/TrinketAmount.visible = !x)
 	for i in [["DefaultWallHeight", HeightButtons.get_children()], ["LevelEditorElevation", ElevationButtons.get_children()]]:
 		for btn in i[1]:
@@ -145,8 +147,70 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_released("LeftClick"):
 		on_clear_selection_box()
 	
+	if Input.is_action_just_pressed("Favorite"):
+		var items: Array = Items.get_children().filter(func(x: Control): return Rect2(x.global_position, x.size).has_point(get_viewport().get_mouse_position()) and x.scene_file_path.ends_with("item.tscn"))
+		if items.size() == 1: on_favorite_item(items[0])
+		else: on_load_favorite_menu()
 #	if Input.is_action_just_pressed("TopDownAlign"):
 #		World.get_node("MovementCamera").rotation_degrees = Vector3(-80, 0, 0)
+	
+var favorites: Array = []
+func on_favorite_item(item: Control) -> void:
+	var pos: Array = folder_pos + item.get_node("Button").pressed.get_connections()[0].callable.get_bound_arguments()
+	var spos: String = str(pos)
+	var contents: Array = Helper.return_file_contents("user://save/level_editor/favorite_items.txt").split("\n", false)
+	var erased: bool = false
+	for p in contents:
+		if spos == p:
+			contents.erase(p)
+			favorites.erase(pos)
+			erased = true
+			break
+			
+	if !erased and contents.size() < 7: 
+		contents.append(pos)
+		favorites.append(pos)
+	var scontents: String = ""
+	for p in contents:
+		scontents += str(p) + "\n"
+	
+	Helper.write_to_file("user://save/level_editor/", "favorite_items", ".txt", scontents, false)
+	on_load_folder()
+	
+func on_load_favorite_menu() -> void:
+	if loaded_area and !block_screen:
+		block_screen = true
+		reset_mblocker_rects()
+		var favorite_menu: Control = preload("res://scenes/screens/level_editor/favorite_menu.tscn").instantiate()
+		favorite_menu.position.x = get_viewport().get_mouse_position().x + 100
+		favorite_menu.position.y = 10
+		
+		var contents: Array = Array(Helper.return_file_contents("user://save/level_editor/favorite_items.txt").split("\n", false)).map(func(x: String): return str_to_var(x))
+		favorite_menu.label_texts = contents.map(func(x: Array): return transform_item_name(get_item_name(x), x[0]))
+		favorite_menu.favorite_items = contents.map(func(x: Array): return get_folder_path(x, true, false, false))
+		
+		for j in favorite_menu.favorite_items:
+			favorite_menu.variations.append(0)
+			for n in range(10):
+				if FileAccess.file_exists(j.left(-4) + str(n) + ".glb"):
+					favorite_menu.variations[favorite_menu.variations.size() - 1] += 1
+		
+		add_child(favorite_menu)
+		Helper.load_area_colors(favorite_menu, loaded_area.pcolor, loaded_area.acolor)
+		favorite_menu.queued.connect(on_file_loader_queued)
+	
+func transform_item_name(unrefined_name: String, first_slot: int) -> String:
+	if unrefined_name[0].is_valid_int():
+		match first_slot:
+			1: return "Ground"
+			3: return "Wall"
+	else: return unrefined_name.left(-4).capitalize()
+	return ""
+	
+func on_load_favorites() -> void:
+	favorites = []
+	for p in Helper.return_file_contents("user://save/level_editor/favorite_items.txt").split("\n", false):
+		favorites.append(str_to_var(p))
 	
 var og_sbox_pos: Vector2
 func on_create_selection_box() -> void:
@@ -435,6 +499,7 @@ func is_in_selection_folder() -> bool:
 	return false
 
 func on_load_folder() -> void:
+	item_rects = []
 	BackArrow.visible = !(folder_pos.size() == 0)
 	$BuildMenu/LoadedMenu/PRLeftArrow.disabled = (current_page == 1)
 	$BuildMenu/LoadedMenu/PRRightArrow.disabled = ceil(float((get_folder_contents().size() - 1)) / ITEM_COUNT_ONE_PAGE) <= current_page
@@ -464,14 +529,19 @@ func on_load_folder() -> void:
 					BuildMenuWorld.add_item(get_folder_path(folder_pos + [i], true, false, false))
 					item.get_node("Button").pressed.connect(on_item_pressed.bind(i))
 					item.get_node("PROutside").modulate = loaded_area.pcolor
+					
+					if folder_pos + [i] in favorites:
+						item.get_node("Label").text += " ★"
+					
 			Items.add_child(item)
 			loaded_items.append(item)
 		else: skip_first = false
-		
+	
 	var xy := Vector2.ZERO
 	for item in loaded_items:
-		if item.scene_file_path.ends_with("item.tscn"): BuildMenuWorld.position_item(xy)
 		item.position += xy
+		if item.scene_file_path.ends_with("item.tscn"): 
+			BuildMenuWorld.position_item(xy)
 		xy.x += 200
 		if xy.x == 1200:
 			xy.y += 150
