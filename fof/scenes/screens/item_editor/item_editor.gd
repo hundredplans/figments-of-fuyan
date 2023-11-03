@@ -49,7 +49,7 @@ func on_item_selected(nm: Vector2) -> void:
 	add_option_buttons(SELECTED_ITEM_X[int(selected_item.x)])
 
 func load_item_settings() -> void:
-	var items: Array = Array(Helper.return_file_contents("user://save/item_properties.txt").split("\n", false)).map(func(x: String): return str_to_var(x))
+	var items: Array = Array(Helper.return_file_contents("res://static/game_info/item_properties.txt").split("\n", false)).map(func(x: String): return str_to_var(x))
 	var has_broke: bool = false
 	for item in items:
 		if Vector2i(item.id[0], item.id[1]) == selected_item:
@@ -98,7 +98,7 @@ func on_height_set(i: int) -> void:
 
 func _on_save_button_pressed():
 	if item_settings:
-		var contents: Array = Array(Helper.return_file_contents("user://save/item_properties.txt").split("\n", false)).map(func(x: String): return str_to_var(x))
+		var contents: Array = Array(Helper.return_file_contents("res://static/game_info/item_properties.txt").split("\n", false)).map(func(x: String): return str_to_var(x))
 		var has_broke: bool = false
 		for i in range(contents.size()):
 			if Vector2i(contents[i].id[0], contents[i].id[1]) == selected_item:
@@ -109,7 +109,7 @@ func _on_save_button_pressed():
 		if !has_broke: contents.append(item_settings)
 		var scontents: String = ""
 		for i in contents: scontents += var_to_str(i).replace("\n", "") + "\n"
-		Helper.write_to_file("user://save/", "item_properties", ".txt", scontents)
+		Helper.write_to_file("res://static/game_info/", "item_properties", ".txt", scontents)
 	
 const MODEL_BASE_PATHS: Dictionary = {
 	1: "res://assets/models/objects/",
