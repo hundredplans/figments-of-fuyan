@@ -25,6 +25,7 @@ var tile_walls: int = 0
 var select_empty_tiles: int = 0
 var lasso_select: int = 0
 var highlight_empty_tiles: int = 0
+var keep_rotation: int = 0
 
 var notify_rewards: int = 0
 const clear_backup_files_array: Array = [0, 86400, 259200, 604800, 2592000, 1]
@@ -132,6 +133,8 @@ func set_selectemptytiles(i: int):
 	select_empty_tiles = i
 func set_lassoselect(i: int):
 	lasso_select = i
+func set_keeprotation(i: int):
+	keep_rotation = i
 
 func set_mastervolume(i: int):
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(i * 0.01))

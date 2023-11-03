@@ -22,6 +22,7 @@ var move_screen_switch_length: Dictionary = {
 	"CardEditor": 0.25,
 	"BoonEditor": 0.25,
 	"AuraEditor": 0.25,
+	"ItemEditor": 0.25,
 }
 
 func on_user_quit() -> void:

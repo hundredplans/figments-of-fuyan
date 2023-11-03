@@ -54,53 +54,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ItemBoxes" type="Control" parent="Items"]
-layout_mode = 1
-anchors_preset = 11
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -179.0
-offset_top = 26.0
-offset_right = -89.0
-offset_bottom = -13.0
-grow_horizontal = 0
-grow_vertical = 2
-
-[node name="1" parent="Items/ItemBoxes" instance=ExtResource("2_v3bw2")]
-layout_mode = 2
-offset_bottom = 0.0
-
-[node name="2" parent="Items/ItemBoxes" instance=ExtResource("2_v3bw2")]
-layout_mode = 2
-offset_top = 150.0
-offset_bottom = 150.0
-
-[node name="3" parent="Items/ItemBoxes" instance=ExtResource("2_v3bw2")]
-layout_mode = 2
-offset_top = 300.0
-offset_bottom = 300.0
-
-[node name="4" parent="Items/ItemBoxes" instance=ExtResource("2_v3bw2")]
-layout_mode = 2
-offset_top = 450.0
-offset_bottom = 450.0
-
-[node name="5" parent="Items/ItemBoxes" instance=ExtResource("2_v3bw2")]
-layout_mode = 2
-offset_top = 600.0
-offset_bottom = 600.0
-
-[node name="6" parent="Items/ItemBoxes" instance=ExtResource("2_v3bw2")]
-layout_mode = 2
-offset_top = 750.0
-offset_bottom = 750.0
-
-[node name="7" parent="Items/ItemBoxes" instance=ExtResource("2_v3bw2")]
-layout_mode = 2
-offset_top = 900.0
-offset_bottom = 900.0
-
 [node name="SubViewportContainer" type="SubViewportContainer" parent="Items"]
 layout_mode = 1
 offset_left = 89.0
@@ -125,3 +78,55 @@ size = 40.0
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Items/SubViewportContainer/SubViewport"]
 transform = Transform3D(1, 0, 0, 0, 0.794415, 0.607376, 0, -0.607376, 0.794415, 0, 3.35595, 2.75074)
+
+[node name="ItemVariations" type="Control" parent="Items"]
+anchors_preset = 0
+offset_top = 26.0
+offset_right = 268.0
+offset_bottom = 1019.0
+
+[node name="ItemBoxes" type="Control" parent="Items"]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -179.0
+offset_top = 26.0
+offset_right = -89.0
+offset_bottom = -13.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="1" parent="Items/ItemBoxes" instance=ExtResource("2_v3bw2")]
+layout_mode = 2
+
+[node name="2" parent="Items/ItemBoxes" instance=ExtResource("2_v3bw2")]
+layout_mode = 2
+offset_top = 150.0
+offset_bottom = 240.0
+
+[node name="3" parent="Items/ItemBoxes" instance=ExtResource("2_v3bw2")]
+layout_mode = 2
+offset_top = 300.0
+offset_bottom = 390.0
+
+[node name="4" parent="Items/ItemBoxes" instance=ExtResource("2_v3bw2")]
+layout_mode = 2
+offset_top = 450.0
+offset_bottom = 540.0
+
+[node name="5" parent="Items/ItemBoxes" instance=ExtResource("2_v3bw2")]
+layout_mode = 2
+offset_top = 600.0
+offset_bottom = 690.0
+
+[node name="6" parent="Items/ItemBoxes" instance=ExtResource("2_v3bw2")]
+layout_mode = 2
+offset_top = 750.0
+offset_bottom = 840.0
+
+[node name="7" parent="Items/ItemBoxes" instance=ExtResource("2_v3bw2")]
+layout_mode = 2
+offset_top = 900.0
+offset_bottom = 990.0

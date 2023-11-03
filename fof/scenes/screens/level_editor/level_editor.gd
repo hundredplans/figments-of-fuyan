@@ -58,6 +58,8 @@ var current_history: Array = []
 var erased_history: Array = []
 var item_rects: Array = []
 
+var keep_rotation: Array = [0, 0, 0, 0]
+
 func _ready() -> void:
 	on_load_favorites()
 	$InfoMenu/EditFileName.open_state.connect(func(x: bool): $InfoMenu/TrinketAmount.visible = !x)
@@ -177,27 +179,62 @@ func on_favorite_item(item: Control) -> void:
 	Helper.write_to_file("user://save/level_editor/", "favorite_items", ".txt", scontents, false)
 	on_load_folder()
 	
+var FavoriteMenu: Control
 func on_load_favorite_menu() -> void:
 	if loaded_area and !block_screen:
 		block_screen = true
 		reset_mblocker_rects()
 		var favorite_menu: Control = preload("res://scenes/screens/level_editor/favorite_menu.tscn").instantiate()
-		favorite_menu.position.x = get_viewport().get_mouse_position().x + 100
+		favorite_menu.position.x = get_viewport().get_mouse_position().x + 30
 		favorite_menu.position.y = 10
 		
 		var contents: Array = Array(Helper.return_file_contents("user://save/level_editor/favorite_items.txt").split("\n", false)).map(func(x: String): return str_to_var(x))
 		favorite_menu.label_texts = contents.map(func(x: Array): return transform_item_name(get_item_name(x), x[0]))
 		favorite_menu.favorite_items = contents.map(func(x: Array): return get_folder_path(x, true, false, false))
-		
 		for j in favorite_menu.favorite_items:
 			favorite_menu.variations.append(0)
 			for n in range(10):
 				if FileAccess.file_exists(j.left(-4) + str(n) + ".glb"):
 					favorite_menu.variations[favorite_menu.variations.size() - 1] += 1
 		
+		favorite_menu.item_selected.connect(on_favorite_menu_item_selected)
+		favorite_menu.removed_items.connect(on_remove_favorite_menu_items)
 		add_child(favorite_menu)
 		Helper.load_area_colors(favorite_menu, loaded_area.pcolor, loaded_area.acolor)
 		favorite_menu.queued.connect(on_file_loader_queued)
+		FavoriteMenu = favorite_menu
+		if active_tile:
+			active_tile.load_tile(active_tile.info.tile.id)
+
+func on_favorite_menu_item_selected(i: int, variation: int) -> void:
+	selected_item_type = variation
+	var f: Array = favorites[i]
+	var tab_index: int = f[0] - 1
+	selected_item_pos = f
+	for child in Tabs.get_children():
+		match child.get_index():
+			tab_index: child.modulate = Helper.RED
+			_: child.modulate = Helper.BASE
+	
+	folder_pos = []
+	for n in range(f.size()):
+		if n != f.size() - 1:
+			folder_pos.append(f[n])
+	
+	on_load_folder()
+	on_load_model()
+	
+	FavoriteMenu._queue_free()
+	
+
+func on_remove_favorite_menu_items(values: Array) -> void:
+	for i in values:
+		favorites.remove_at(i)
+		
+	var contents: String = ""
+	for i in favorites: contents += str(i) + "\n"
+	Helper.write_to_file("user://save/level_editor/", "favorite_items", ".txt", contents, false)
+	on_load_folder()
 	
 func transform_item_name(unrefined_name: String, first_slot: int) -> String:
 	if unrefined_name[0].is_valid_int():
@@ -736,10 +773,21 @@ func on_tile_rotate(tile: Node3D, rotate_direction: int) -> void:
 	
 func _on_trinket_amount_item_selected(i: int): trinket_amount = i
 	
+
+const KEEP_ROTATION_DICT: Dictionary = {
+	"tile": 0,
+	"obj": 1,
+	"wall": 2,
+	"wdeco": 2,
+	"tdeco": 3,
+}
+	
 func on_rotate_tile_object(tile: Node3D, direction: int, j: String, id: int):
 	var old_rotation: int = tile.info[j].rotation
 	tile.info[j].rotation = clamp(tile.info[j].rotation + direction, 0, 5)
 	if old_rotation == tile.info[j].rotation: tile.info[j].rotation = 0 if old_rotation == 5 else 5
+	
+	if Settings.keep_rotation: keep_rotation[KEEP_ROTATION_DICT[j]] = tile.info[j].rotation
 	tile.call("load_" + j, id)
 	
 func on_tile_interact(tile: Node3D) -> void:
@@ -753,22 +801,28 @@ func on_tile_select(tile: Node3D) -> void:
 			if selected_item_pos:
 				var item_name: String = get_folder_path(selected_item_pos, true, true)
 				match selected_item_pos[0]:
-					1: load_tile(tile, Helper.id_to_editor(0, item_name), tile.info.tile.rotation, selected_item_type)
+					1: 
+						var rot: int = tile.info.tile.rotation if !Settings.keep_rotation else keep_rotation[0]
+						load_tile(tile, Helper.id_to_editor(0, item_name), rot, selected_item_type)
 					2: 
-						tile.info.obj = {"id": Helper.id_to_editor(1, item_name), "rotation": tile.info.obj.rotation, "type": selected_item_type, "loaded": 0}
+						var rot: int = tile.info.obj.rotation if !Settings.keep_rotation else keep_rotation[1]
+						tile.info.obj = {"id": Helper.id_to_editor(1, item_name), "rotation": rot, "type": selected_item_type, "loaded": 0}
 						tile.load_obj(tile.info.obj.id)
 						if tile.info.tile.id == 0 and tile.info.obj.id != 5: load_tile(tile, 1, 0, 0)
 					3: 
-						load_wall(tile, Helper.id_to_editor(2, item_name), tile.info.wall.rotation, selected_item_type, Settings.default_wall_height, Settings.tile_walls)
+						var rot: int = tile.info.wall.rotation if !Settings.keep_rotation else keep_rotation[2]
+						load_wall(tile, Helper.id_to_editor(2, item_name), rot, selected_item_type, Settings.default_wall_height, Settings.tile_walls)
 						if tile.info.tile.id == 0: load_tile(tile, 1, 0, 0)
 					4:
 						match selected_item_pos[1]:
 							1: 
-								tile.info.tdeco = {"id": Helper.id_to_editor(3, item_name), "rotation": tile.info.tdeco.rotation, "type": selected_item_type}
+								var rot: int = tile.info.tdeco.rotation if !Settings.keep_rotation else keep_rotation[3]
+								tile.info.tdeco = {"id": Helper.id_to_editor(3, item_name), "rotation": rot, "type": selected_item_type}
 								tile.load_tdeco(tile.info.tdeco.id)
 								if tile.info.tile.id == 0: load_tile(tile, 1, 0, 0)
 							2:
-								tile.info.wdeco = {"id": Helper.id_to_editor(4, item_name), "rotation": tile.info.wdeco.rotation, "type": selected_item_type}
+								var rot: int = tile.info.wdeco.rotation if !Settings.keep_rotation else keep_rotation[2]
+								tile.info.wdeco = {"id": Helper.id_to_editor(4, item_name), "rotation": rot, "type": selected_item_type}
 								tile.load_wdeco(tile.info.wdeco.id)
 								if tile.info.tile.id == 0: load_tile(tile, 1, 0, 0)
 			elif tile in selection_tiles:
@@ -912,6 +966,7 @@ func on_tile_menu_rotate_full(item: int, i: int, tiles: Array) -> void:
 		for j in item_id_array[item]:
 			var load_id: int = (2 if j == "tile" else tile.info[j].id) if tile.info[j].type == 0 else tile.info[j].id
 			tile.info[j].rotation = i
+			if Settings.keep_rotation: keep_rotation[KEEP_ROTATION_DICT[j]] = i
 			tile.call("load_" + j, load_id)
 	
 func on_tile_menu_rotate_direction(item: int, direction: int, tiles: Array) -> void:

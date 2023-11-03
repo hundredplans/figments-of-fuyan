@@ -1,0 +1,112 @@
+[gd_scene load_steps=8 format=3 uid="uid://bqbmha4sns2d8"]
+
+[ext_resource type="Script" path="res://scenes/screens/item_editor/item_editor.gd" id="1_44h6i"]
+[ext_resource type="PackedScene" uid="uid://bj3h1ak5dv73n" path="res://scenes/ui_general/op_button/op_button.tscn" id="2_h4mea"]
+[ext_resource type="LabelSettings" uid="uid://qp0350v2j4ah" path="res://assets/UI/roboto/roboto32outline.tres" id="3_pf3bk"]
+[ext_resource type="Environment" uid="uid://cb6o21l8cjbwp" path="res://scenes/world/equipped_theme/0/world_env.tres" id="3_rq7ib"]
+[ext_resource type="Script" path="res://scenes/world/movement_camera.gd" id="3_ypp8i"]
+[ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="5_5fahx"]
+
+[sub_resource type="World3D" id="World3D_dt0o4"]
+environment = ExtResource("3_rq7ib")
+
+[node name="ItemEditor" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_44h6i")
+
+[node name="ItemType" parent="." instance=ExtResource("2_h4mea")]
+options = PackedStringArray("Objects", "Walls", "TDecoration", "WDecoration")
+label_text = "Select Item"
+
+[node name="AvailableItems" type="Control" parent="."]
+anchors_preset = 0
+offset_top = 63.0
+offset_right = 275.0
+offset_bottom = 1080.0
+
+[node name="Background" type="Control" parent="AvailableItems"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Outside" type="ColorRect" parent="AvailableItems/Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Inside" type="ColorRect" parent="AvailableItems/Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = -5.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.654902, 0.654902, 0.654902, 1)
+
+[node name="Items" type="Control" parent="AvailableItems"]
+anchors_preset = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 270.0
+offset_bottom = 1012.0
+
+[node name="ViewTile" type="SubViewportContainer" parent="."]
+layout_mode = 0
+offset_left = 275.0
+offset_top = 63.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="SubViewport" type="SubViewport" parent="ViewTile"]
+world_3d = SubResource("World3D_dt0o4")
+handle_input_locally = false
+size = Vector2i(1645, 1017)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="ViewTile/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 2.5, 2.5)
+script = ExtResource("3_ypp8i")
+
+[node name="Tiles" type="Node3D" parent="ViewTile/SubViewport"]
+
+[node name="ItemSettings" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 275.0
+offset_right = 1559.0
+offset_bottom = 131.0
+
+[node name="ItemName" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1559.0
+offset_right = 1914.0
+offset_bottom = 41.0
+label_settings = ExtResource("3_pf3bk")
+horizontal_alignment = 2
+
+[node name="SaveButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1733.0
+offset_top = 988.0
+offset_right = 1911.0
+offset_bottom = 1072.0
+theme = ExtResource("5_5fahx")
+text = "Save "
+
+[connection signal="item_selected" from="ItemType" to="." method="_on_item_type_item_selected"]
+[connection signal="pressed" from="SaveButton" to="." method="_on_save_button_pressed"]

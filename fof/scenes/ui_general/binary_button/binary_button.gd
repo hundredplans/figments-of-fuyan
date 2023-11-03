@@ -36,4 +36,3 @@ func on_buttons_pressed():
 		1:
 			$No.modulate = Helper.BASE
 			$Yes.modulate = Helper.RED
-			
