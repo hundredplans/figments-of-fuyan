@@ -277,8 +277,8 @@ func on_clear_selection_box() -> void:
 	if SelectionBox != null and is_inside_tree():
 		var tiles: Array = []
 		var ray: RayCast3D = World.get_node("TileRaycast")
+		ray.position = World.get_node("MovementCamera").position
 		for tile in World.get_node("Tiles/" + str(Settings.level_editor_elevation)).get_children():
-			ray.position = World.get_node("MovementCamera").position
 			ray.target_position = tile.position - ray.position
 			ray.force_raycast_update()
 			if ray.get_collider() == tile.get_node("DetectMouse"):

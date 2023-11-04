@@ -4,6 +4,11 @@
 
 [node name="ItemEditorWorld" type="Node3D"]
 
+[node name="RayCast3D" type="RayCast3D" parent="."]
+collision_mask = 2
+collide_with_areas = true
+collide_with_bodies = false
+
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 2.5, 2.5)
 script = ExtResource("1_qigap")

@@ -4,6 +4,7 @@ var World: Node3D = preload("res://scenes/world/item_editor_world/item_editor_wo
 var Model: Node3D
 var Tile: Node3D
 var Tiles: Node3D
+var Ray: RayCast3D
 
 var active_tile: Node3D
 
@@ -27,6 +28,7 @@ func _ready():
 	Model = World.get_node("Model")
 	Tile = World.get_node("Tile")
 	Tiles = World.get_node("Tiles")
+	Ray = World.get_node("RayCast3D")
 	_on_item_type_item_selected(0)
 
 func _on_item_type_item_selected(i: int) -> void:
@@ -36,9 +38,8 @@ func _on_item_type_item_selected(i: int) -> void:
 	for child in Tiles.get_children(): child.queue_free()
 	for child in ItemSettings.get_children(): child.queue_free()
 	for child in Items.get_children(): child.queue_free()
-	
+	on_set_tile_queued()
 	ItemName.text = ""
-	
 	item_settings = {}
 	selected_item = Vector2i.ZERO
 	ElevationSettings.visible = false
@@ -65,6 +66,7 @@ const SELECTED_ITEM_X: Dictionary = {
 }
 
 func on_item_selected(nm: Vector2) -> void:
+	on_set_tile_queued()
 	ElevationSettings.visible = false
 	_on_save_button_pressed()
 	ItemName.text = convert_item_name(id_to[nm.x][nm.y])
@@ -157,7 +159,7 @@ func load_single_tile() -> void:
 	if selected_item:
 		for child in Model.get_children(): child.queue_free()
 		for child in Tile.get_children(): child.queue_free()
-		var single_item: Node3D = preload("res://assets/models/tiles/_default_tile.glb").instantiate()
+		var single_item: Node3D = default_tile.instantiate()
 		var mdl_name: String = id_to[selected_item.x][selected_item.y]
 		match mdl_name:
 			"wall": mdl_name = "1wall"
@@ -177,6 +179,7 @@ func load_multi_tile() -> void:
 					create_tile(Vector3(x, y, w))
 		on_set_elevation(0)
 
+var hover_tile: PackedScene = preload("res://assets/models/tiles/_hover.glb")
 var default_tile: PackedScene = preload("res://assets/models/tiles/_default_tile.glb")
 func create_tile(xy: Vector3) -> void:
 	var tile: Node3D = preload("res://scenes/screens/item_editor/item_editor_tile.tscn").instantiate()
@@ -191,13 +194,13 @@ func create_tile(xy: Vector3) -> void:
 	tile.get_node("DetectMouse").mouse_exited.connect(on_tile_mouse_exited.bind(tile))
 
 func on_tile_mouse_entered(tile: Node3D) -> void:
-	if !(tile.tile.position.x == 0 and tile.tile.position.y == 0 and tile.tile.position.z == 0):
+	if !(tile.tile.position.x == 0 and tile.tile.position.y == 0 and tile.tile.position.z == 0) and SelectionBox == null and !selected_tiles:
 		if !blockers.any(func(x: Rect2): return x.has_point(get_viewport().get_mouse_position())):
 			tile.get_node("Tile").add_child(default_tile.instantiate())
 			active_tile = tile
 	
 func on_tile_mouse_exited(tile: Node3D) -> void:
-	if !(tile.tile.position.x == 0 and tile.tile.position.y == 0 and tile.tile.position.z == 0):
+	if !(tile.tile.position.x == 0 and tile.tile.position.y == 0 and tile.tile.position.z == 0) and SelectionBox == null and !selected_tiles:
 		for child in tile.get_node("Tile").get_children(): child.queue_free()
 		active_tile = null
 func _queue_free() -> void:
@@ -214,7 +217,76 @@ func on_set_elevation(i: int) -> void:
 			_: child.modulate = Helper.BASE 
 			
 	for child in Tiles.get_children():
-		child.get_node("DetectMouse").collision_layer = 2 if child.tile.position.z == elevation else 0
+		child.get_node("DetectMouse").collision_layer = 2 if child.tile.position.z == elevation and child.tile.position != Vector3.ZERO else 0
 
 func _on_detect_mouse_mouse_entered(): if active_tile: on_tile_mouse_exited(active_tile)
 func _on_detect_mouse_mouse_exited(): if active_tile: on_tile_mouse_entered(active_tile)
+
+var selected_tiles: Array
+var SelectionBox: Node2D
+
+func _process(_delta: float) -> void:
+	if Input.is_action_just_pressed(Helper.interact_button()) and active_tile:
+		on_selected_tiles([active_tile])
+	
+	if Input.is_action_pressed("LeftClick") and !selected_tiles and item_settings and item_settings.multi_tile:
+		match SelectionBox:
+			null: on_create_selection_box()
+			_: on_resize_selection_box()
+		
+	if Input.is_action_just_released("LeftClick"):
+		on_clear_selection_box()
+
+func on_create_selection_box() -> void:
+	if active_tile: on_tile_mouse_exited(active_tile)
+	SelectionBox = Polygon2D.new()
+	SelectionBox.position = Vector2(0, 0)
+	SelectionBox.polygon = [get_viewport().get_mouse_position()]
+	add_child(SelectionBox)
+	SelectionBox.color = "2fffff87"
+	
+func on_resize_selection_box() -> void:
+	if get_viewport().get_mouse_position() not in SelectionBox.polygon:
+		SelectionBox.polygon = Array(SelectionBox.polygon) + [get_viewport().get_mouse_position()]
+
+func on_clear_selection_box() -> void:
+	if SelectionBox:
+		if item_settings and item_settings.multi_tile:
+			var tiles: Array = []
+			Ray.position = World.get_node("Camera3D").position
+			for tile in Tiles.get_children():
+				Ray.target_position = tile.position - Ray.position
+				Ray.force_raycast_update()
+				if Ray.get_collider() == tile.get_node("DetectMouse"):
+					if Geometry2D.is_point_in_polygon(World.get_node("Camera3D").unproject_position(Ray.get_collision_point()), SelectionBox.polygon):
+						tiles.append(tile)
+						
+			if tiles:
+				on_selected_tiles(tiles)
+		
+		SelectionBox.queue_free()
+		SelectionBox = null
+
+
+var SetTile: Control
+func on_selected_tiles(tiles: Array) -> void:
+	if active_tile: on_tile_mouse_exited(active_tile)
+	selected_tiles = tiles
+	for child in selected_tiles: on_tile_selected(child, true)
+	
+	var _SetTile: Control = preload("res://scenes/screens/item_editor/set_tile.tscn").instantiate()
+	SetTile = _SetTile
+	SetTile.position = Vector2(960, 540)
+	add_child(SetTile)
+	SetTile.get_node("RemoveButton").pressed.connect(on_set_tile_queued)
+
+func on_set_tile_queued() -> void:
+	if SetTile:
+		SetTile.queue_free()
+	
+	for child in selected_tiles: on_tile_selected(child, false)
+	selected_tiles = []
+
+func on_tile_selected(Tile: Node3D, is_selected: bool) -> void:
+	for child in Tile.get_node("Tile").get_children(): child.queue_free()
+	if is_selected: Tile.get_node("Tile").add_child(hover_tile.instantiate())

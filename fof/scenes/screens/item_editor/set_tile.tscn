@@ -1,0 +1,55 @@
+[gd_scene load_steps=2 format=3 uid="uid://benp6anrk4eh8"]
+
+[ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="1_lwj0v"]
+
+[node name="SetTile" type="Control"]
+modulate = Color(1, 1, 1, 0.501961)
+layout_mode = 3
+anchor_left = -0.182
+anchor_top = -0.324
+anchor_right = -0.182
+anchor_bottom = -0.324
+offset_left = -0.559967
+offset_top = -0.0799866
+offset_right = 699.44
+offset_bottom = 699.92
+
+[node name="Background" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Outside" type="ColorRect" parent="Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Inside" type="ColorRect" parent="Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = -5.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.654902, 0.654902, 0.654902, 0.654902)
+
+[node name="RemoveButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 639.0
+offset_top = 10.0
+offset_right = 689.0
+offset_bottom = 60.0
+theme = ExtResource("1_lwj0v")
+text = "X"
