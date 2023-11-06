@@ -23,12 +23,8 @@ func load_wall(id: int) -> void:
 	if id > 0: load_wall_get_area.emit(id, self)
 	
 func on_load_wall_get_area(id: int, area: int) -> void:
-	var p: int = -1 if info.wall.tile_wall else 0
-	
 	var wall_short: PackedScene = load("res://assets/models/walls/" + Helper.wid_to(id, area, info.wall.type) + ".glb")
-	if info.wall.height == 0: p = 2
-	else: p += info.wall.height * 4
-	for n in range(p):
+	for n in range(4 - info.wall.tile_wall):
 		var wall: Node3D = create_wall(wall_short)
 		wall.position.y = (n * 0.3)
 	

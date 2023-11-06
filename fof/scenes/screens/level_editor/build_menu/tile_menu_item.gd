@@ -151,6 +151,7 @@ func add_rotate_button(tmi: Control) -> void:
 				x += 100
 
 func on_update_item_rotation() -> void:
+	
 	if tiles.size() == 1 and item_name != "General" and RotateButton != null and !(RotateButton is Button):
 		RotateButton.default = tiles[0].info[item_name.to_lower()].rotation
 		RotateButton.set_grabber_position()

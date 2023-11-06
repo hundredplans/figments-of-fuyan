@@ -330,3 +330,16 @@ func _is_hex_neighbour(tile: Vector4, otile: Vector4, distance: int = 1, search_
 	if search_elevation: if tile.z != otile.z: return false
 	if Vector3(tile.x, tile.y, tile.z) - Vector3(otile.x, otile.y, otile.z) in cube_directions.map(func(x: Vector3): return x * distance): return true
 	return false
+
+func return_multi_tile(id: Array) -> Array:
+	var datas: Array = Helper.return_file_contents("res://static/game_info/item_properties.txt").split("\n", false)
+	for _data in datas:
+		var data: Dictionary = str_to_var(_data)
+		if compare_by_value(data.id, id):
+			var arr: Array = [[0, 0, 0, 0]]
+			for key in data:
+				if key.contains("|") and key != "0|0|0":
+					var k: Array = Array(key.split("|", false)).map(func(x: String): return int(x))
+					arr.append([k[0], k[1], -k[0] - k[1], k[2]])
+			return arr
+	return []

@@ -20,5 +20,6 @@ func on_update_tile_menu() -> void:
 		if child.name == "Paste": child.disabled = parent.tiles.size() > 1
 		elif child.name == "Wall_Height":
 			if parent.tiles.size() == 1 and parent.tiles[0].info.wall.id > 0:
-				child.default = parent.tiles[0].info.wall.height
-				child.set_grabber_position()
+				child.default = parent.tiles[0].info.wall.multi_tile.size()
+				if child.default == 0 and parent.tiles[0].info.wall.tile_wall != 2: child.default = 1
+				child.set_grabber_position(false)

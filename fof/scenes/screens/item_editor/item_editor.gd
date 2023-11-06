@@ -33,6 +33,7 @@ func _ready():
 
 func _on_item_type_item_selected(i: int) -> void:
 	_on_save_button_pressed()
+	enabled_tiles = []
 	for child in Tile.get_children(): child.queue_free()
 	for child in Model.get_children(): child.queue_free()
 	for child in Tiles.get_children(): child.queue_free()
@@ -66,9 +67,10 @@ const SELECTED_ITEM_X: Dictionary = {
 }
 
 func on_item_selected(nm: Vector2) -> void:
+	_on_save_button_pressed()
+	enabled_tiles = []
 	on_set_tile_queued()
 	ElevationSettings.visible = false
-	_on_save_button_pressed()
 	ItemName.text = convert_item_name(id_to[nm.x][nm.y])
 	selected_item = nm
 	load_item_settings()
@@ -132,15 +134,11 @@ func _on_save_button_pressed():
 		var has_broke: bool = false
 		for i in range(contents.size()):
 			if Vector2i(contents[i].id[0], contents[i].id[1]) == selected_item:
-				contents[i] = item_settings
-			
-				for tile in Tiles.get_children():
+				contents[i] = {"id": item_settings.id, "multi_tile": item_settings.multi_tile, "0|0|0": item_settings["0|0|0"]}
+				for tile in enabled_tiles:
 					var solidity: int = tile.tile.solidity if tile.tile.has("solidity") else 0
 					var visibility: int = tile.tile.visibility if tile.tile.has("visibility") else 0
-					if solidity or visibility > 0: print(solidity, visibility)
-					if !(solidity == 0 and visibility == 0):
-						contents[i].merge({"%s|%s|%s" % [tile.tile.position.x, tile.tile.position.y, tile.tile.position.z]: {"solidity": solidity, "visibility": visibility}})
-					
+					contents[i].merge({"%s|%s|%s" % [tile.tile.position.x, tile.tile.position.y, tile.tile.position.z]: {"solidity": solidity, "visibility": visibility}})
 				has_broke = true
 				break
 				
@@ -170,20 +168,46 @@ func load_single_tile() -> void:
 		Tile.add_child(single_item)
 	
 func load_multi_tile() -> void:
+	selected_tiles = []
+	enabled_tiles = []
 	load_single_tile()
 	ElevationSettings.visible = item_settings.multi_tile
 	for child in Tiles.get_children(): child.queue_free()
 	if item_settings.multi_tile:
+		var pos_settings: Array = convert_item_pos_dict()
 		for child in Tile.get_children(): child.queue_free()
 		for w in range(6):
 			for x in range(-MULTI_TILE_SIZE, (MULTI_TILE_SIZE + 1)):
 				for y in range(max(-MULTI_TILE_SIZE, -x - MULTI_TILE_SIZE), min(MULTI_TILE_SIZE, -x + MULTI_TILE_SIZE) + 1):
-					create_tile(Vector3(x, y, w))
+					var tile: Node3D = create_tile(Vector3(x, y, w))
+					for i in range(pos_settings[0].size()):
+						if pos_settings[0][i] == Vector3(x, y, w):
+							selected_tiles.append(tile)
+							if pos_settings[1][i].has("solidity"):
+								tile.tile.solidity = pos_settings[1][i].solidity
+								
+							if pos_settings[1][i].has("visibility"):
+								tile.tile.visibility = pos_settings[1][i].visibility
 		on_set_elevation(0)
+	on_change_enabled(1)
+	for tile in enabled_tiles: tile.get_node("Tile").add_child(void_tile.instantiate())
+	selected_tiles = []
 
+func convert_item_pos_dict() -> Array:
+	var poses: Array = []
+	var settings: Array = []
+	for i in item_settings:
+		if typeof(item_settings[i]) == TYPE_DICTIONARY and i != "0|0|0":
+			var j: Array = Array(i.split("|", false)).map(func(x: String): return int(x))
+			poses.append(Vector3(j[0], j[1], j[2]))
+			settings.append(item_settings[i])
+	
+	return [poses, settings]
+
+var void_tile: PackedScene = preload("res://assets/models/tiles/void.glb")
 var hover_tile: PackedScene = preload("res://assets/models/tiles/_hover.glb")
 var default_tile: PackedScene = preload("res://assets/models/tiles/_default_tile.glb")
-func create_tile(xy: Vector3) -> void:
+func create_tile(xy: Vector3) -> Node3D:
 	var tile: Node3D = preload("res://scenes/screens/item_editor/item_editor_tile.tscn").instantiate()
 	tile.position = Vector3((sqrt(3) * xy.x + sqrt(3) * xy.y * 0.5),
 	xy.z * 1.2,
@@ -194,6 +218,7 @@ func create_tile(xy: Vector3) -> void:
 	if (xy.x == 0 and xy.y == 0 and xy.z == 0): tile.get_node("Tile").add_child(default_tile.instantiate())
 	tile.get_node("DetectMouse").mouse_entered.connect(on_tile_mouse_entered.bind(tile))
 	tile.get_node("DetectMouse").mouse_exited.connect(on_tile_mouse_exited.bind(tile))
+	return tile
 
 func on_tile_mouse_entered(tile: Node3D) -> void:
 	if !(tile.tile.position.x == 0 and tile.tile.position.y == 0 and tile.tile.position.z == 0) and SelectionBox == null and !selected_tiles:
@@ -293,9 +318,11 @@ func on_selected_tiles(tiles: Array) -> void:
 			"Visibility":
 				btn = preload("res://scenes/ui_general/op_button/op_button.tscn").instantiate()
 				btn.options = ["Full-Vision", "Half-Vision", "Over-Vision", "Block"]
+				if tiles.size() == 1: btn.default = tiles[0].tile.visibility if tiles[0].tile.has("visibility") else 0
 			"Solidity":
 				btn = preload("res://scenes/ui_general/binary_button/binary_button.tscn").instantiate()
 				btn.ignore_repeat = false
+				if tiles.size() == 1: btn.default = tiles[0].tile.solidity if tiles[0].tile.has("solidity") else 0
 			"Enabled":
 				btn = preload("res://scenes/ui_general/binary_button/binary_button.tscn").instantiate()
 				btn.default = 1
@@ -324,8 +351,11 @@ func on_set_tile_queued() -> void:
 		SetTile.queue_free()
 	
 	for child in selected_tiles: on_tile_selected(child, false)
+	for tile in enabled_tiles:
+		for child in tile.get_node("Tile").get_children(): child.queue_free()
+		tile.get_node("Tile").add_child(void_tile.instantiate())
 	selected_tiles = []
 
 func on_tile_selected(tile: Node3D, is_selected: bool) -> void:
-	if tile not in enabled_tiles: for child in tile.get_node("Tile").get_children(): child.queue_free()
+	for child in tile.get_node("Tile").get_children(): child.queue_free()
 	if is_selected: tile.get_node("Tile").add_child(hover_tile.instantiate())
