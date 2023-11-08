@@ -702,6 +702,16 @@ func modulate_items():
 			btn.modulate = Helper.LIGHT_GREY if n == j else Helper.BASE
 			n += 1
 
+func get_item_index(pos: Array) -> Array:
+	var item_name: String = get_folder_path(pos, true, true, false).left(-4)
+	for i in range(Helper._id_to.size()):
+		for j in range(Helper._id_to[i].size()):
+			if Helper._id_to[i][j] == item_name \
+			or i == 0 and j == 1 and item_name[0].is_valid_int() and item_name.ends_with("tile") \
+			or i == 2 and j == 1 and item_name[0].is_valid_int() and item_name.ends_with("wall"):
+				return [i, j]
+	return []
+
 func get_selected_item_index() -> int:
 	var j: int = 0 if selected_item_pos.is_empty() or !(folder_pos.size() == selected_item_pos.size() - 1) else selected_item_pos[selected_item_pos.size() - 1]
 	if j > 0:
@@ -710,6 +720,7 @@ func get_selected_item_index() -> int:
 				j = 0
 				break
 	return j
+	
 
 func on_load_obj_get_area(id: int, tile: Node3D) -> void:
 	tile.on_load_obj_get_area(id, loaded_area)
@@ -821,14 +832,13 @@ func on_tile_select(tile: Node3D) -> void:
 				match selected_item_pos[0]:
 					1: 
 						var rot: int = tile.info.tile.rotation if !Settings.keep_rotation else keep_rotation[0]
-						load_tile(tile, Helper.id_to_editor(0, item_name), rot, selected_item_type)
+						on_load_tile(tile, Helper.id_to_editor(0, item_name), rot, selected_item_type)
 					2: 
 						var rot: int = tile.info.obj.rotation if !Settings.keep_rotation else keep_rotation[1]
 						on_load_obj(tile, Helper.id_to_editor(1, item_name), rot, selected_item_type)
 					3: 
 						var rot: int = tile.info.wall.rotation if !Settings.keep_rotation else keep_rotation[2]
 						on_load_wall(tile, Helper.id_to_editor(2, item_name), rot, selected_item_type, Settings.default_wall_height, Settings.tile_walls)
-						if tile.info.tile.id == 0: load_tile(tile, 1, 0, 0)
 					4:
 						match selected_item_pos[1]:
 							1: 
@@ -842,11 +852,16 @@ func on_tile_select(tile: Node3D) -> void:
 					
 		reset_active_tile_state(3)
 
-func load_tile(tile: Node3D, id: int, rot: int, type: int) -> void:
+func item_pos_to_str(pos: Array) -> String:
+	if pos[0] < 4: return BTAB_TO_STR[pos[0] - 1]
+	elif pos[1] == 1: return "tdeco"
+	else: return "wdeco"
+
+func on_load_tile(tile: Node3D, id: int, rot: int, type: int, create_wall: bool = true) -> void:
 	tile.info.tile = {"id": id, "rotation": rot, "type": type, "multi_tile": []}
 	tile.load_tile(id)
 	
-	if Settings.elevation_fill:
+	if create_wall and Settings.elevation_fill:
 		var f: bool = Settings.tile_walls
 		Settings.tile_walls = true
 		var p: Array = tile.info.position
@@ -856,21 +871,21 @@ func load_tile(tile: Node3D, id: int, rot: int, type: int) -> void:
 			var _tile = true_tile_by_position([p[0], p[1], p[2], i])
 			if _tile.info.tile.id > 0 and _tile.info.wall.id == 0 and _tile.info.obj.id == 0 and _tile.info.wdeco.id == 0 and _tile.info.tdeco.id == 0 and _tile.info.tile.type == 0:
 				if _tile.info.position[3] == 0: on_load_wall(_tile, load_id, 0, 1, p[3], 1)
-				if tile.info.tile.id in [3, 4]: load_tile(_tile, tile.info.tile.id, 0, 0)
+				if tile.info.tile.id in [3, 4]: on_load_tile(_tile, tile.info.tile.id, 0, 0)
 				break
 		Settings.tile_walls = f
 
-func on_load_tdeco(tile: Node3D, id: int, rot: int, type: int) -> void:
+func on_load_tdeco(tile: Node3D, id: int, rot: int, type: int, _create_tile: bool = true) -> void:
 	on_create_multi_tile_object(tile, 3, {"id": id, "rotation": rot, "type": type, "multi_tile": []})
-	if tile.info.tile.id == 0: load_tile(tile, 1, 0, 0)
+	if _create_tile and tile.info.tile.id == 0: on_load_tile(tile, 1, 0, 0)
 	
-func on_load_wdeco(tile: Node3D, id: int, rot: int, type: int) -> void:
+func on_load_wdeco(tile: Node3D, id: int, rot: int, type: int, _create_tile: bool = true) -> void:
 	on_create_multi_tile_object(tile, 4, {"id": id, "rotation": rot, "type": type, "multi_tile": []})
-	if tile.info.tile.id == 0: load_tile(tile, 1, 0, 0)
+	if _create_tile and tile.info.tile.id == 0: on_load_tile(tile, 1, 0, 0)
 
-func on_load_obj(tile: Node3D, id: int, rot: int, type: int):
+func on_load_obj(tile: Node3D, id: int, rot: int, type: int, _create_tile: bool = true):
 	on_create_multi_tile_object(tile, 1, {"id": id, "rotation": rot, "type": type, "multi_tile": [], "loaded": 0})
-	if tile.info.tile.id == 0 and tile.info.obj.id != 5: load_tile(tile, 1, 0, 0)
+	if _create_tile and tile.info.tile.id == 0 and tile.info.obj.id != 5: on_load_tile(tile, 1, 0, 0)
 
 const EMPTY_DATA: Dictionary = {
 	0: {"id": 0, "type": 0, "rotation": 0, "multi_tile": []},
@@ -888,27 +903,26 @@ func on_create_multi_tile_object(tile: Node3D, btab: int, data: Dictionary) -> v
 	var tiles: Array = tiles_by_multitile(tile, btab)
 	
 	for i in range(tiles.size()):
-		if i == 0: tiles[i].info[b] = data
-		else: tiles[i].info[b] = EMPTY_DATA[btab].duplicate(true)
-		tiles[i].info[b].multi_tile = positions
-		tiles[i].call("load_" + b, tiles[i].info[b].id)
+		if tiles[i] != null:
+			if i == 0: tiles[i].info[b] = data
+			else: tiles[i].info[b] = EMPTY_DATA[btab].duplicate(true)
+			tiles[i].info[b].multi_tile = positions
+			tiles[i].call("load_" + b, tiles[i].info[b].id)
 	
 func on_tile_remove_specific(tile: Node3D, btab: int) -> void:
 	var tiles: Array = tiles_by_multitile(tile, btab)
 	var b: String = BTAB_TO_STR[btab]
 	for _tile in tiles:
-		_tile.info[b] = EMPTY_DATA[btab].duplicate(true)
-		if _tile.info.position[3] < 6:
-			_tile.call("load_" + b, tile.info[b].id)
-		else: _tile.queue_free()
+		if _tile != null:
+			_tile.info[b] = EMPTY_DATA[btab].duplicate(true)
+			if _tile.info.position[3] < 6:
+				_tile.call("load_" + b, tile.info[b].id)
+			else: _tile.queue_free()
 		
-func on_load_wall(tile: Node3D, id: int, rot: int, type: int, multi_tile_height: int, tile_wall: int) -> void:
-	if multi_tile_height == 0: tile_wall = 2; multi_tile_height = 1
-	for i in range(multi_tile_height):
-		tile.info.wall.multi_tile.append([tile.info.position[0], tile.info.position[1], tile.info.position[2], tile.info.position[3] + i])
-	if tile.info.wall.multi_tile.size() < 2: tile.info.wall.multi_tile = []
-	
+func on_load_wall(tile: Node3D, id: int, rot: int, type: int, multi_tile_height: int, tile_wall: int, _create_tile: bool = true) -> void:
+	tile_wall = set_tile_wall_multi_tile(tile, multi_tile_height, tile_wall)
 	var tiles: Array = tiles_by_multitile(tile, 2)
+	print(tiles.size())
 	for i in range(tiles.size()):
 		var _tile: Node3D = tiles[i]
 		if i == 0: 
@@ -920,7 +934,15 @@ func on_load_wall(tile: Node3D, id: int, rot: int, type: int, multi_tile_height:
 			"multi_tile": tile.info.wall.multi_tile,
 			"tile_wall": tile_wall if i == tiles.size() - 1 else 0}
 		_tile.load_wall(id)
-
+	if _create_tile and tile.info.tile.id == 0: on_load_tile(tile, 1, 0, 0)
+	
+func set_tile_wall_multi_tile(tile: Node3D, height: int, tile_wall: int) -> int:
+	if height == 0: tile_wall = 2; height = 1
+	for i in range(height):
+		tile.info.wall.multi_tile.append([tile.info.position[0], tile.info.position[1], tile.info.position[2], tile.info.position[3] + i])
+	if tile.info.wall.multi_tile.size() < 1: tile.info.wall.multi_tile = []
+	return tile_wall
+	
 func tiles_by_multitile(tile: Node3D, btab: int) -> Array:
 	if tile:
 		if tile.info[BTAB_TO_STR[btab]].multi_tile.size() > 1:
@@ -989,10 +1011,38 @@ func set_heightbuttons_modulate() -> void:
 		btn.modulate = Helper.RED if btn.name == str(Settings.level_editor_elevation) else Helper.BASE
 
 func on_hover_tile(tile: Node3D) -> void:
-	if tile.info.tile.type == 0 and !(!Settings.highlight_empty_tiles and tile.info.tile.id == 0) and SelectionBox == null:
+	if !(!Settings.highlight_empty_tiles and tile.info.tile.id == 0) and SelectionBox == null:
 		if tile in selection_tiles: tile.load_tile(tile.info.tile.id)
-		else: tile.load_tile(2)
-		
+		else: 
+			if !(selected_item_pos.size() > 0 and selected_item_pos[0] == 0) and tile.info.tile.type == 0: tile.load_tile(2)
+			on_preview_tiles([tile], [[selected_item_pos, selected_item_type]])
+
+func on_preview_tiles(tiles: Array, item_poses: Array) -> void:
+	if item_poses.size() > 0 and item_poses[0][0].size() > 0:
+		for i in range(tiles.size()):
+			var pos: Array = get_item_index(item_poses[i][0])
+			if pos.size() == 2:
+				var b: String = item_pos_to_str(item_poses[i][0])
+				var btab: int = STR_TO_BTAB[b]
+				var old_data: Dictionary = {b:tiles[i].info[b].duplicate(true)}
+				tiles[i].info[b] = EMPTY_DATA[btab].duplicate(true)
+				tiles[i].info[b].id = pos[1]
+				tiles[i].info[b].type = item_poses[i][1]
+				if b == "wall":
+					tiles[i].info[b].tile_wall = set_tile_wall_multi_tile(tiles[i], Settings.default_wall_height, Settings.tile_walls)
+#				print(tiles[i].info[b].multi_tile)
+				on_load(tiles[i], btab, tiles[i].info[b], false)
+				
+				var _tiles: Array= []
+				if b == "wall": _tiles = tiles_by_multitile(tiles[i], 2)
+				else: _tiles = [tiles[i]]
+				
+				for tile in _tiles:
+					for child in tile.get_node(b).get_children().map(func(x: Node3D): return x.get_child(0)):
+						child.set_surface_override_material(0, preload("res://assets/materials/base_materials/base_material_half_transparent.tres"))
+						
+				tiles[i].preview_data.merge(old_data, true)
+				
 func on_call_selection_callable(tile: Node3D) -> void:
 	selection_callable.call(tile)
 		
@@ -1051,11 +1101,17 @@ func on_tile_menu_highlight_tiles(state: int, tiles: Array) -> void:
 		tile.load_tile(i)
 
 func on_tile_exit_mouse(tile: Node3D) -> void:
-	if tile.info.tile.type == 0:
-		if !block_screen:
-			tile.load_tile(tile.info.tile.id)
-		elif tile in selection_tiles:
-			tile.load_tile(2)
+	if !block_screen:
+		var load_default: bool = true
+		for bstr in tile.preview_data:
+			tile.info[bstr] = tile.preview_data[bstr].duplicate(true)
+			tile.call("load_" + bstr, tile.preview_data[bstr].id)
+			if bstr == "tile": load_default = false
+			
+		if load_default and tile.info.tile.type == 0: tile.load_tile(tile.info.tile.id)
+		
+	elif tile in selection_tiles:
+		tile.load_tile(2)
 
 var item_id_array: Array = [["tile", "obj", "wall", "wdeco", "tdeco"], ["tile"], ["obj"], ["wall"], ["wdeco"], ["tdeco"]]
 func on_tile_menu_rotate_full(item: int, i: int, tiles: Array) -> void:
@@ -1085,11 +1141,8 @@ func on_tile_menu_rotate_direction(item: int, direction: int, tiles: Array) -> v
 func on_tile_menu_delete(item: int, tiles: Array) -> void:
 	for tile in tiles:
 		for j in item_id_array[item]:
-			var load_id: int = 0
-			if j == "tile":
-				if item_id_array[item].size() > 1 or tile.info[j].id == 0:
-					load_id = 1
-			tile.call("load_" + j, load_id)
+			if j == "tile": tile.load_tile(1 if item_id_array[item].size() > 1 or tile.info[j].id == 0 else 0)
+			else: on_tile_remove_specific(tile, STR_TO_BTAB[j])
 			
 	update_tile_menu.emit()
 	
@@ -1120,14 +1173,14 @@ func store_tile_info(tiles: Array, tile: Node3D, arr: Array, item: int) -> Array
 	
 func on_tile_menu_paste(_tiles: Array) -> void:
 	if copy_info.size() > 0 and _tiles.size() == 1:
-		var p: Vector4 = Helper.position_to_vec(_tiles[0].info.position)
 		for i in copy_info:
-			var x: Vector4 = Helper.position_to_vec(i[0]) + p
-			var tile = tiles_by_position([x.x, x.y, x.z, x.w])
-			if tile != null:
-				for k in range(1, i.size()):
-					tile.info[i[k][0]] = i[k][1].duplicate(true)
-					tile.call("load_" + i[k][0], tile.info[i[k][0]].id)
+			var p: Vector4 = Helper.position_to_vec(i[0]) + Helper.position_to_vec(_tiles[0].info.position)
+			var tile: Node3D = true_tile_by_position([p.x, p.y, p.z, p.w])
+			for k in range(1, i.size()):
+				var btab: int = STR_TO_BTAB[i[k][0]]
+				if tile:
+					on_tile_remove_specific(tile, btab)
+					on_load(tile, btab, i[k][1])
 	
 func on_tile_menu_move(item: int, tiles: Array) -> void:
 		on_set_selection_tiles(tiles, on_tile_menu_move_center_tile_selected.bind(item, tiles))
@@ -1155,8 +1208,16 @@ func on_tile_menu_bucket(item: int, tiles: Array) -> void:
 		if bucket_info.size() > 0:
 			for tile in tiles:
 				for j in bucket_info:
-					tile.info[j[0]] = j[1].duplicate(true)
-					tile.call("load_" + j[0], tile.info[j[0]].id)
+					var _tiles: Array = tiles_by_multitile(tile, STR_TO_BTAB[j[0]])
+					on_tile_remove_specific(tile, STR_TO_BTAB[j[0]])
+					on_load(tile, STR_TO_BTAB[j[0]], j[1])
+
+func on_load(tile: Node3D, btab: int, info: Dictionary, _create_tile: bool = true) -> void:
+	info = info.duplicate(true)
+	var args: Array = [tile, info.id, info.rotation, info.type, _create_tile]
+	match btab:
+		2: args += [1 if info.multi_tile.size() == 0 else info.multi_tile.size(), info.tile_wall]
+	callv("on_load_" + BTAB_TO_STR[btab], args)
 
 func on_tile_menu_spawn(tiles: Array) -> void:
 	if tiles.size() == 1 and loaded_area:

@@ -278,7 +278,7 @@ func tid_to(id: int, area: int = 0, type: int = 0) -> String:
 func editor_id_to(btab: int, id: int, type: int = 0) -> String:
 	return _id_to[btab][id] + ("" if type == 0 else str(type))
 	
-func id_to_editor(btab: int, item: String) -> int: 
+func id_to_editor(btab: int, item: String) -> int:
 	item = item.left(-4)
 	var j: int = 0
 	var sp: Array = item.split("/")
@@ -286,12 +286,11 @@ func id_to_editor(btab: int, item: String) -> int:
 	var fu: String = ""
 	for n in sp: fu += n + "/"
 	fu += _adjusted
-	
 	for i in _id_to[btab]:
 		if item.begins_with(i) or fu.begins_with(i):
 			return j
 		j += 1
-		
+
 	return 1 if btab in [0, 2] else 0
 	
 func interact_button(flip: bool = false) -> String:

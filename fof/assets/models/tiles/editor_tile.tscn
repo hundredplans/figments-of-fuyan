@@ -4,25 +4,25 @@
 
 [node name="EditorTile" type="Node3D" node_paths=PackedStringArray("Tile", "TileObject", "TileDecoration", "TileWallDecoration", "TileWall", "DetectMouse")]
 script = ExtResource("1_8x5vn")
-Tile = NodePath("Tile")
-TileObject = NodePath("TileObject")
-TileDecoration = NodePath("TileDecoration")
-TileWallDecoration = NodePath("TileWallDecoration")
-TileWall = NodePath("TileWall")
+Tile = NodePath("tile")
+TileObject = NodePath("obj")
+TileDecoration = NodePath("tdeco")
+TileWallDecoration = NodePath("wdeco")
+TileWall = NodePath("wall")
 DetectMouse = NodePath("DetectMouse")
 
-[node name="Tile" type="Node3D" parent="."]
+[node name="tile" type="Node3D" parent="."]
 
-[node name="TileObject" type="Node3D" parent="."]
+[node name="obj" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
 
-[node name="TileDecoration" type="Node3D" parent="."]
+[node name="wall" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
 
-[node name="TileWallDecoration" type="Node3D" parent="."]
+[node name="tdeco" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
 
-[node name="TileWall" type="Node3D" parent="."]
+[node name="wdeco" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
 
 [node name="DetectMouse" type="Area3D" parent="."]
