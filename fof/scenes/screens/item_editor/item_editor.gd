@@ -243,7 +243,7 @@ func on_set_elevation(i: int) -> void:
 	for child in ElevationButtons.get_children():
 		match int(str(child.name)):
 			i: child.modulate = Helper.RED
-			_: child.modulate = Helper.BASE 
+			_: child.modulate = Helper.BASE
 			
 	for child in Tiles.get_children():
 		child.get_node("DetectMouse").collision_layer = 2 if child.tile.position.z == elevation and child.tile.position != Vector3.ZERO else 0

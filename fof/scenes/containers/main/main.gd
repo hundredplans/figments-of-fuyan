@@ -86,6 +86,7 @@ func after_ready_connect_screen(screen: Control):
 	get_viewport().warp_mouse(get_viewport().get_mouse_position())
 	
 func _ready() -> void:
+	
 	load_general_world()
 	$UI.z_index = 10
 	for screen in Screens.get_children(): screen.free()
