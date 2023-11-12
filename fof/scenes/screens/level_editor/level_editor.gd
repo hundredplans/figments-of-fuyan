@@ -131,7 +131,7 @@ func _process(delta: float) -> void:
 			
 	var disable_interact: bool = false
 	if active_tile and active_tile.can_press:
-		if Input.is_action_pressed("LeftClick"): on_tile_select(active_tile)
+		if Input.is_action_pressed("LeftClick"): on_tile_select()
 		elif Input.is_action_pressed("Remove"): on_tile_remove(active_tile)
 		elif Input.is_action_just_pressed(Helper.interact_button()): on_tile_interact(active_tile); disable_interact = true
 		elif Input.is_action_pressed("RotateLeft"): on_tile_rotate(active_tile, -1)
@@ -182,6 +182,7 @@ func on_favorite_item(item: Control) -> void:
 var FavoriteMenu: Control
 func on_load_favorite_menu() -> void:
 	if loaded_area and !block_screen:
+		reset_infos(true)
 		block_screen = true
 		reset_mblocker_rects()
 		var favorite_menu: Control = preload("res://scenes/screens/level_editor/favorite_menu.tscn").instantiate()
@@ -310,7 +311,7 @@ func on_mblocker_mouse_exited():
 			active_tile.on_mouse_entered()
 	
 func on_mblocker_mouse_entered():
-	if active_tile: active_tile.on_mouse_exited()
+	if active_tile: active_tile.on_mouse_exited(); reset_infos(true)
 
 func reset_mblocker_rects() -> void:
 	mblocker_rects = mblockers.map(func(x: Control): return Rect2i(x.global_position, x.size))
@@ -410,6 +411,7 @@ func create_tile(xy: Vector3) -> Node3D:
 	tile.active_tile.connect(on_is_active_tile)
 	tile.hover_tile.connect(on_hover_tile)
 	tile.exit_mouse.connect(on_tile_exit_mouse)
+	tile.set_tile_material.connect(on_set_tile_material)
 	
 	tile.DetectMouse.mouse_entered.connect(on_tile_mouse_entered.bind(tile))
 	tile.DetectMouse.mouse_exited.connect(tile.on_mouse_exited)
@@ -674,6 +676,7 @@ func on_type_button_pressed(i: int) -> void:
 		replace_build_menu_item()
 
 func deselect_item() -> void:
+	reset_infos(true)
 	clear_item_types()
 	if selected_item_type > 0:
 		selected_item_type = 0
@@ -824,56 +827,55 @@ func on_tile_interact(tile: Node3D) -> void:
 		reset_active_tile_state(2)
 		on_tiles_selected([tile])
 	
-func on_tile_select(tile: Node3D) -> void:
+func on_set_tile_material(tile: Node3D, highlights: Array, set_override: bool = true) -> void:
+	for i in highlights:
+		for child in tile.get_node(BTAB_TO_STR[i]).get_children():
+			if !child.is_queued_for_deletion():
+				for mesh_instance in child.get_children():
+					mesh_instance.set_surface_override_material(0, preload("res://assets/materials/base_materials/base_material_half_transparent.tres") if set_override else null)
+
+func on_tile_select() -> void:
 	if active_tile_state != 3:
-		if !(tile.info.wall.id > 0 and tile.info.tile.id == 0) or tile.info.position[3] == 0:
-			if selected_item_pos:
-				var item_name: String = get_folder_path(selected_item_pos, true, true)
-				match selected_item_pos[0]:
-					1: 
-						var rot: int = tile.info.tile.rotation if !Settings.keep_rotation else keep_rotation[0]
-						on_load_tile(tile, Helper.id_to_editor(0, item_name), rot, selected_item_type)
-					2: 
-						var rot: int = tile.info.obj.rotation if !Settings.keep_rotation else keep_rotation[1]
-						on_load_obj(tile, Helper.id_to_editor(1, item_name), rot, selected_item_type)
-					3: 
-						var rot: int = tile.info.wall.rotation if !Settings.keep_rotation else keep_rotation[2]
-						on_load_wall(tile, Helper.id_to_editor(2, item_name), rot, selected_item_type, Settings.default_wall_height, Settings.tile_walls)
-					4:
-						match selected_item_pos[1]:
-							1: 
-								var rot: int = tile.info.tdeco.rotation if !Settings.keep_rotation else keep_rotation[3]
-								on_load_tdeco(tile, Helper.id_to_editor(3, item_name), rot, selected_item_type)
-							2:
-								var rot: int = tile.info.wdeco.rotation if !Settings.keep_rotation else keep_rotation[2]
-								on_load_wdeco(tile, Helper.id_to_editor(4, item_name), rot, selected_item_type)
-			elif tile in selection_tiles:
-				on_call_selection_callable(tile)
-					
 		reset_active_tile_state(3)
+		if load_infos:
+			for i in load_infos:
+				var tile: Node3D = true_tile_by_position(i.position)
+#				if tile.info.tile.id == 0: on_load_tile(tile, 1, 0, 0, 1)
+				on_set_tile_material(tile, range(5), false)
+				tile.preview_state = []
+			reset_infos()
+			
+		elif active_tile and active_tile in selection_tiles:
+			on_call_selection_callable(active_tile)
 
 func item_pos_to_str(pos: Array) -> String:
 	if pos[0] < 4: return BTAB_TO_STR[pos[0] - 1]
 	elif pos[1] == 1: return "tdeco"
 	else: return "wdeco"
 
+func item_pos_to_btab(pos: Array) -> int:
+	if pos[0] < 4: return pos[0] - 1
+	elif pos[1] == 1: return 3
+	return 4
+
 func on_load_tile(tile: Node3D, id: int, rot: int, type: int, create_wall: bool = true) -> void:
 	tile.info.tile = {"id": id, "rotation": rot, "type": type, "multi_tile": []}
 	tile.load_tile(id)
-	
-	if create_wall and Settings.elevation_fill:
-		var f: bool = Settings.tile_walls
-		Settings.tile_walls = true
-		var p: Array = tile.info.position
-		var load_id: int = 1
-		if tile.info.tile.id in [3, 4]: load_id = tile.info.tile.id
-		for i in range(p[3] - 1, -1, -1):
-			var _tile = true_tile_by_position([p[0], p[1], p[2], i])
-			if _tile.info.tile.id > 0 and _tile.info.wall.id == 0 and _tile.info.obj.id == 0 and _tile.info.wdeco.id == 0 and _tile.info.tdeco.id == 0 and _tile.info.tile.type == 0:
-				if _tile.info.position[3] == 0: on_load_wall(_tile, load_id, 0, 1, p[3], 1)
-				if tile.info.tile.id in [3, 4]: on_load_tile(_tile, tile.info.tile.id, 0, 0)
-				break
-		Settings.tile_walls = f
+	if create_wall and Settings.elevation_fill: create_elevation_fill(tile)
+
+func create_elevation_fill(tile: Node3D) -> void:
+	var f: bool = Settings.tile_walls
+	Settings.tile_walls = true
+	var p: Array = tile.info.position
+	var load_id: int = 1
+	if tile.info.tile.id in [3, 4]: load_id = tile.info.tile.id
+	for i in range(p[3] - 1, -1, -1):
+		var _tile = true_tile_by_position([p[0], p[1], p[2], i])
+		if _tile.info.tile.id > 0 and _tile.info.wall.id == 0 and _tile.info.obj.id == 0 and _tile.info.wdeco.id == 0 and _tile.info.tdeco.id == 0 and _tile.info.tile.type == 0:
+			if _tile.info.position[3] == 0: on_load_wall(_tile, load_id, 0, 1, p[3], 1)
+			if tile.info.tile.id in [3, 4]: on_load_tile(_tile, tile.info.tile.id, 0, 0)
+			break
+	Settings.tile_walls = f
 
 func on_load_tdeco(tile: Node3D, id: int, rot: int, type: int, _create_tile: bool = true) -> void:
 	on_create_multi_tile_object(tile, 3, {"id": id, "rotation": rot, "type": type, "multi_tile": []})
@@ -988,6 +990,7 @@ func reset_active_tile_state(i: int) -> void:
 
 func load_settings_mini_menu() -> void:
 	if !block_screen and loaded_area:
+		reset_infos(true)
 		block_screen = true
 		reset_mblocker_rects()
 		var mini_menu: Control = preload("res://scenes/screens/level_editor/build_menu/settings_mini_menu.tscn").instantiate()
@@ -1017,16 +1020,16 @@ func on_hover_tile(tile: Node3D) -> void:
 				tile.load_tile(2)
 				
 			if selected_item_pos.size() > 0:
-				on_preview_tiles([tile], [create_tile_info(tile)], [selected_item_type])
-#				on_preview_tile(tile, [selected_item_pos], [selected_item_type], Settings.default_wall_height, Settings.tile_walls)
-#				preview_tiles = _preview_tiles.duplicate()
-#				_preview_tiles = []
+				var btab: int = item_pos_to_btab(selected_item_pos)
+				if !(tile.info[BTAB_TO_STR[btab]].type == selected_item_type and tile.info[BTAB_TO_STR[btab]].id == get_item_index(selected_item_pos)[1]):
+					on_preview_tiles([tile], [create_tile_info(tile)], [btab])
+				else: reset_infos(true)
 
 func create_tile_info(tile: Node3D) -> Dictionary:
 	var info: Dictionary = {"position": tile.info.position.duplicate(true)}
 	for i in range(item_id_array[0].size()):
 		var b: String = item_id_array[0][i]
-		if i != selected_item_pos[0] - 1:
+		if i != item_pos_to_btab(selected_item_pos):
 			info.merge({b: tile.info[b].duplicate(true)})
 		else:
 			var empty: Dictionary = EMPTY_DATA[i].duplicate(true)
@@ -1059,31 +1062,35 @@ func create_tile_info(tile: Node3D) -> Dictionary:
 var load_infos: Array = []
 var bs_infos: Array = []
 
-func on_preview_tiles(ts: Array, infos: Array, highlights: Array) -> void:
-	for i in bs_infos:
-		for j in load_infos:
-			if i.position == j.position:
-				var tile: Node3D = true_tile_by_position(i.position)
-				tile.info = i
-				reload_tile(tile)
-				
+func reset_infos(true_reset: bool = false) -> void:
+	if true_reset:
+		for i in bs_infos:
+			for j in load_infos:
+				if i.position == j.position:
+					var tile: Node3D = true_tile_by_position(i.position)
+					tile.preview_state = []
+					tile.info = i
+					reload_tile(tile)
+	
 	load_infos = []
 	bs_infos = []
-	
+
+func on_preview_tiles(ts: Array, infos: Array, highlights: Array) -> void:
+	reset_infos(true)
 	for i in range(ts.size()):
 		add_to_bs_infos(ts[i].info)
-		for n in range(0, 5):
+		for n in range(5):
 			if ts[i].info[BTAB_TO_STR[n]].multi_tile.size() > 1:
 				for tile in tiles_by_multitile(ts[i], n):
 					if tile != ts[i]: add_to_bs_infos(tile.info)
-					tile.info = EMPTY_DATA[n].duplicate(true)
+					tile.info[BTAB_TO_STR[n]] = EMPTY_DATA[n].duplicate(true)
 					
 		ts[i].info = infos[i]
 		load_infos.append(ts[i].info)
 		for b in item_id_array[0]:
 			if ts[i].info[b].multi_tile.size() > 1:
 				for tile in tiles_by_multitile(ts[i], STR_TO_BTAB[b]):
-					if tile != ts[i]:
+					if tile != null and tile != ts[i]:
 						add_to_bs_infos(tile.info)
 						match b:
 							"wall": 
@@ -1095,73 +1102,19 @@ func on_preview_tiles(ts: Array, infos: Array, highlights: Array) -> void:
 									tile.info.wall.tile_wall = infos[i].wall.tile_wall
 									ts[i].info.wall.tile_wall = 0
 								
-							_: tile.info = EMPTY_DATA[STR_TO_BTAB[b]].duplicate(true)
+							_: tile.info[b] = EMPTY_DATA[STR_TO_BTAB[b]].duplicate(true)
 						load_infos.append(tile.info)
 						
 	for info in load_infos:
 		var tile: Node3D = true_tile_by_position(info.position)
+		tile.preview_state = highlights
 		reload_tile(tile)
-		# add highlighting here (loop through each btab
 
 func reload_tile(tile: Node3D) -> void:
 	for b in item_id_array[0]: tile.call("load_" + b, tile.info[b].id)
 
 func add_to_bs_infos(info: Dictionary) -> void:
 	if info not in bs_infos: bs_infos.append(info.duplicate(true))
-
-#var _preview_tiles: Array = []
-#var preview_tiles: Array = []
-#func on_preview_tile(tile: Node3D, poses: Array, types: Array, height: int = 0, tile_wall: int = 0) -> void:
-#	for i in range(poses.size()):
-#		var item_index: Array = get_item_index(poses[i])
-#		var b: String = item_pos_to_str(poses[i])
-#		var btab: int = STR_TO_BTAB[b]
-#
-#		if b == "wall":
-#			for _pos in Helper.return_multi_tile(item_index).map(func(x: Array): return [x[0] + tile.info.position[0], x[1] + tile.info.position[1], x[2] + tile.info.position[2], x[3] + tile.info.position[3]]):
-#				var _tile: Node3D = true_tile_by_position(_pos, true)
-#				if _tile: add_to_preview_tiles(_tile, b)
-#		add_to_preview_tiles(tile, b)
-#		on_tile_remove_specific(tile, item_index[0])
-#		tile.info[b] = EMPTY_DATA[btab].duplicate(true)
-#		tile.info[b].id = item_index[1]
-#		tile.info[b].type = types[i]
-#
-#		match b:
-#			"wall": on_load_wall(tile, tile.info.wall.id, tile.info.wall.rotation, tile.info.wall.type, height, tile_wall, false)
-#			_: on_load(tile, item_index[0], tile.info[b], false)
-#
-#		for _tile in tiles_by_multitile(tile, btab).filter(func(x: Node3D): return x != null):
-#			for child in _tile.get_node(b).get_children():
-#				if !child.is_queued_for_deletion():
-#					for mesh_instance in child.get_children():
-#						mesh_instance.set_surface_override_material(0, preload("res://assets/materials/base_materials/base_material_half_transparent.tres"))
-#
-#var is_previewing: bool = false
-#func on_erase_preview_data() -> void:
-#	if !is_previewing and preview_tiles:
-#		is_previewing = true
-#		for i in preview_tiles:
-#			for key in i[1]:
-#				var info: Dictionary = i[1][key]
-#				on_tile_remove_specific(i[0], STR_TO_BTAB[key])
-#				i[0].info[key] = info
-#
-#				if info.id != 0:
-#					match key:
-#						"wall": on_load_wall(i[0], info.id, info.rotation, info.type, info.multi_tile.size(), info.tile_wall, false)
-#						_: on_load(i[0], STR_TO_BTAB[key], i[0].info[key], false)
-#
-#		is_previewing = false
-#		preview_tiles = []
-#
-#func add_to_preview_tiles(tile: Node3D, b: String) -> void:
-#	for i in _preview_tiles:
-#		if i[0] == tile:
-#			for key in i[1]: if key == b: return
-#			i[1].merge({b: tile.info[b].duplicate(true)})
-#			return
-#	_preview_tiles.append([tile, {b: tile.info[b].duplicate(true)}])
 			
 func on_call_selection_callable(tile: Node3D) -> void:
 	selection_callable.call(tile)
@@ -1178,6 +1131,7 @@ var tile_menu_tiles: Array
 func on_tiles_selected(tiles: Array) -> void:
 	if !Settings.select_empty_tiles: tiles = tiles.filter(func(x: Node3D): return x.info.tile.id != 0)
 	if tiles.size() > 0 and !block_screen and loaded_area:
+		reset_infos(true)
 		for t in tiles: if t.info.tile.type == 0: t.load_tile(2)
 		block_screen = true
 		reset_mblocker_rects()
@@ -1190,6 +1144,7 @@ func on_tiles_selected(tiles: Array) -> void:
 		for sig in tile_menu.signals: 
 			sig.connect(get("on_tile_menu_" + sig.get_name()))
 		update_tile_menu.emit()
+		
 func on_update_tile_menu() -> void:
 	if tile_menu_tiles.size() > 0:
 		var ray: RayCast3D = World.get_node("TileRaycast")
@@ -1228,7 +1183,7 @@ func on_tile_exit_mouse(tile: Node3D) -> void:
 	elif tile in selection_tiles:
 		tile.load_tile(2)
 
-var item_id_array: Array = [["tile", "obj", "wall", "wdeco", "tdeco"], ["tile"], ["obj"], ["wall"], ["wdeco"], ["tdeco"]]
+var item_id_array: Array = [["tile", "obj", "wall", "tdeco", "wdeco"], ["tile"], ["obj"], ["wall"], ["tdeco"], ["wdeco"]]
 func on_tile_menu_rotate_full(item: int, i: int, tiles: Array) -> void:
 	for tile in tiles:
 		for j in item_id_array[item]:

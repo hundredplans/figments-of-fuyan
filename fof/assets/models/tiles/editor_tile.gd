@@ -5,7 +5,6 @@ extends Node
 @export var TileWallDecoration: Node3D
 @export var TileWall: Node3D
 @export var DetectMouse: Area3D
-@export var intel: Node3D
 
 signal load_obj_get_area
 signal load_wall_get_area
@@ -14,7 +13,9 @@ signal active_tile
 
 signal exit_mouse
 signal hover_tile
+signal set_tile_material
 
+var preview_state: Array = []
 var can_press: bool = false
 var info: Dictionary = {}
 
@@ -28,6 +29,7 @@ func on_load_wall_get_area(id: int, area: int) -> void:
 	for n in range(4 - info.wall.tile_wall):
 		var wall: Node3D = create_wall(wall_short)
 		wall.position.y = (n * 0.3)
+	emit_set_tile_material(2)
 	
 func create_wall(wall_scene: PackedScene) -> Node3D:
 	var wall: Node3D = wall_scene.instantiate()
@@ -42,6 +44,10 @@ func load_tdeco(id: int) -> void:
 		var decoration: Node3D = load("res://assets/models/decorations/tiles/" + Helper.editor_id_to(3, id, info.tdeco.type) + ".glb").instantiate()
 		TileDecoration.add_child(decoration)
 		TileDecoration.rotation_degrees.y = info.tdeco.rotation * 60
+		emit_set_tile_material(3)
+	
+func emit_set_tile_material(btab: int) -> void:
+	if btab in preview_state: set_tile_material.emit(self, [btab])
 	
 func load_wdeco(id: int) -> void:
 	for child in TileWallDecoration.get_children(): child.queue_free()
@@ -50,7 +56,8 @@ func load_wdeco(id: int) -> void:
 		var decoration: Node3D = load("res://assets/models/decorations/walls/" + Helper.editor_id_to(4, id, info.wdeco.type) + ".glb").instantiate()
 		TileWallDecoration.add_child(decoration)
 		TileWallDecoration.rotation_degrees.y = info.wdeco.rotation * 60
-
+		emit_set_tile_material(4)
+		
 func load_obj(id: int) -> void:
 	for child in TileObject.get_children(): child.queue_free()
 	info.obj.id = id
@@ -61,6 +68,7 @@ func load_obj(id: int) -> void:
 			TileObject.rotation_degrees.y = info.obj.rotation * 60
 		else:
 			load_obj_get_area.emit(id, self)
+		emit_set_tile_material(1)
 	
 func on_load_obj_get_area(id: int, area: Dictionary) -> void:
 	if info.obj.loaded in area.cards:
@@ -84,6 +92,7 @@ func on_load_tile_get_area(id: int, area: int) -> void:
 	var tile: Node3D = load("res://assets/models/tiles/" + Helper.tid_to(id, area, info.tile.type) + ".glb").instantiate()
 	Tile.add_child(tile)
 	Tile.rotation_degrees.y = info.tile.rotation * 60
+	emit_set_tile_material(0)
 	
 func on_mouse_entered_check_mblockers(mblockers: Array) -> void:
 	if is_inside_tree():

@@ -2,7 +2,7 @@ extends Control
 
 var world_distinguisher: Array = [
 	["Swamp", "Critters", "Bouldaak Jungle", "Palm", "Fungite"],
-	["Mages", "Wild West", "Sugori", "Dwarven", "Nolaka"],
+	["Zengef", "Wild West", "Sugori Isles", "Dwarven", "Nolaka"],
 	["Varoma", "Kaluta", "Befre", "Hama Cik"]
 	]
 var can_drag: bool = false
