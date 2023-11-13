@@ -1092,9 +1092,10 @@ func on_preview_tiles(ts: Array, infos: Array, highlights: Array) -> void:
 					for tile in tiles_by_multitile(ts[i], n):
 						if tile != ts[i]: add_to_bs_infos(tile.info)
 						tile.info[BTAB_TO_STR[n]] = EMPTY_DATA[n].duplicate(true)
+						if tile != ts[i]: add_to_load_infos(tile.info)
 						
 			ts[i].info = infos[i]
-			load_infos.append(ts[i].info)
+			add_to_load_infos(ts[i].info)
 			for b in item_id_array[0]:
 				if ts[i].info[b].multi_tile.size() > 1:
 					for tile in tiles_by_multitile(ts[i], STR_TO_BTAB[b]):
@@ -1110,12 +1111,15 @@ func on_preview_tiles(ts: Array, infos: Array, highlights: Array) -> void:
 									tile.info.wall.tile_wall = infos[i].wall.tile_wall
 									ts[i].info.wall.tile_wall = 0
 							tile.info[b].multi_tile = infos[i][b].multi_tile
-							load_infos.append(tile.info)
+							add_to_load_infos(tile.info)
 							
 	for info in load_infos:
 		var tile: Node3D = true_tile_by_position(info.position)
 		tile.preview_state = highlights
 		reload_tile(tile)
+
+func add_to_load_infos(info: Dictionary):
+	if !load_infos.any(func(x: Dictionary): return x.position == info.position): load_infos.append(info)
 
 func reload_tile(tile: Node3D) -> void:
 	for b in item_id_array[0]: tile.call("load_" + b, tile.info[b].id)
