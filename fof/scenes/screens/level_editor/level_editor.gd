@@ -130,7 +130,7 @@ func _process(delta: float) -> void:
 		deselect_item()
 			
 	var disable_interact: bool = false
-	if active_tile and active_tile.can_press:
+	if active_tile != null and active_tile.can_press:
 		if Input.is_action_pressed("LeftClick"): on_tile_select()
 		elif Input.is_action_pressed("Remove"): on_tile_remove(active_tile)
 		elif Input.is_action_just_pressed(Helper.interact_button()): on_tile_interact(active_tile); disable_interact = true
@@ -399,6 +399,11 @@ func clear_world_tiles() -> void:
 	for child in World.get_node("Tiles").get_children():
 		for tile in child.get_children():
 			tile.queue_free()
+			
+	active_tile_check_deletion()
+	
+func active_tile_check_deletion() -> void:
+	if active_tile != null and active_tile.is_queued_for_deletion(): active_tile = null
 	
 func create_tile(xy: Vector3) -> Node3D:
 	var tile: Node3D = preload("res://assets/models/tiles/editor_tile.tscn").instantiate()
@@ -844,7 +849,10 @@ func on_tile_select() -> void:
 				for n in range(5):
 					var b: String = BTAB_TO_STR[n]
 					var is_centric: bool = tile.info[b].id > 0 and (tile.info[b].multi_tile.size() == 0 or tile.info[b].multi_tile[0] == tile.info.position)
-					if is_centric and tile.info.tile.id == 0 and tile.info.obj.id != 5: on_load_tile(tile, 1, 0, 0, 1)
+					var is_tile_change: bool = 0 in tile.preview_state
+					if is_centric and (tile.info.tile.id == 0 or is_tile_change) and tile.info.obj.id != 5: 
+						if !is_tile_change: on_load_tile(tile, 1, 0, 0, 1)
+						else: on_load_tile(tile, tile.info.tile.id, tile.info.tile.rotation, tile.info.tile.type, 1)
 					if n == 2 or is_centric: 
 						highlight.append(n)
 
@@ -924,9 +932,8 @@ func on_tile_remove_specific(tile: Node3D, btab: int) -> void:
 	for _tile in tiles:
 		if _tile != null:
 			_tile.info[b] = EMPTY_DATA[btab].duplicate(true)
-			if _tile.info.position[3] < 6:
+			if !remove_midair_tile(_tile):
 				_tile.call("load_" + b, tile.info[b].id)
-			else: _tile.queue_free()
 		
 func on_load_wall(tile: Node3D, id: int, rot: int, type: int, multi_tile_height: int, tile_wall: int, _create_tile: bool = true) -> void:
 	tile_wall = set_tile_wall_multi_tile(tile, multi_tile_height, tile_wall)
@@ -952,15 +959,16 @@ func set_tile_wall_multi_tile(tile: Node3D, height: int, tile_wall: int) -> int:
 	return tile_wall
 	
 func tiles_by_multitile(tile: Node3D, btab: int) -> Array:
-	if tile:
-		if tile.info[BTAB_TO_STR[btab]].multi_tile.size() > 1:
-			return tile.info[BTAB_TO_STR[btab]].multi_tile.map(func(x: Array): return true_tile_by_position(x, true))
+	if tile and !tile.preview_state:
+		var b: String = BTAB_TO_STR[btab]
+		if tile.info[b].multi_tile.size() > 1:
+			return tile.info[b].multi_tile.map(func(x: Array): return true_tile_by_position(x, true))
 		return [true_tile_by_position(tile.info.position)]
 	return []
 	
 func true_tile_by_position(pos: Array, _create_tile: bool = false) -> Node3D:
 	if pos[3] >= 0:
-		for tile in World.get_node("Tiles/" + str(pos[3])).get_children():
+		for tile in World.get_node("Tiles/" + str(pos[3])).get_children().filter(func(x: Node3D): return !x.is_queued_for_deletion()):
 			if Helper.compare_by_value(tile.info.position, pos): return tile
 		if _create_tile and pos[3] > 5: 
 			return create_empty_tile_with_info(Vector3(pos[0], pos[1], pos[3]))
@@ -1075,15 +1083,17 @@ func reset_infos(true_reset: bool = false) -> void:
 			for j in load_infos:
 				if i.position == j.position:
 					var tile: Node3D = true_tile_by_position(i.position)
-					tile.preview_state = []
-					tile.info = i
-					reload_tile(tile)
+					if tile != null and !remove_midair_tile(tile):
+						tile.preview_state = []
+						tile.info = i
+						reload_tile(tile)
 	
 	load_infos = []
 	bs_infos = []
 
 func on_preview_tiles(ts: Array, infos: Array, highlights: Array) -> void:
 	reset_infos(true)
+	var late_load_info: Array = []
 	for i in range(ts.size()):
 		if !(ts[i].info.wall.id > 0 and ts[i].info.wall.multi_tile.size() > 0 and ts[i].info.wall.multi_tile[0] != ts[i].info.position):
 			add_to_bs_infos(ts[i].info)
@@ -1092,17 +1102,24 @@ func on_preview_tiles(ts: Array, infos: Array, highlights: Array) -> void:
 					for tile in tiles_by_multitile(ts[i], n):
 						if tile != ts[i]: add_to_bs_infos(tile.info)
 						tile.info[BTAB_TO_STR[n]] = EMPTY_DATA[n].duplicate(true)
-						if tile != ts[i]: add_to_load_infos(tile.info)
+						if tile != ts[i]: late_load_info.append(tile.info)
 						
 			ts[i].info = infos[i]
 			add_to_load_infos(ts[i].info)
 			for b in item_id_array[0]:
 				if ts[i].info[b].multi_tile.size() > 1:
-					for tile in tiles_by_multitile(ts[i], STR_TO_BTAB[b]):
+					var btab: int = STR_TO_BTAB[b]
+					for tile in tiles_by_multitile(ts[i], btab):
 						if tile != null and tile != ts[i]:
 							add_to_bs_infos(tile.info)
-							tile.info[b] = EMPTY_DATA[STR_TO_BTAB[b]].duplicate(true)
-							if b == "wall": 
+							for _tile in tiles_by_multitile(tile, btab):
+								if _tile != null and _tile != tile:
+									add_to_bs_infos(_tile.info)
+									if _tile not in load_infos:
+										_tile.info[b] = EMPTY_DATA[btab].duplicate(true)
+										late_load_info.append(_tile.info)
+							tile.info[b] = EMPTY_DATA[btab].duplicate(true)
+							if b == "wall":
 								tile.info.wall = EMPTY_DATA[2].duplicate(true)
 								tile.info.wall.id = infos[i].wall.id
 								tile.info.wall.rotation = infos[i].wall.rotation
@@ -1110,11 +1127,15 @@ func on_preview_tiles(ts: Array, infos: Array, highlights: Array) -> void:
 								if tile.info.position == infos[i].wall.multi_tile[infos[i].wall.multi_tile.size() - 1]:
 									tile.info.wall.tile_wall = infos[i].wall.tile_wall
 									ts[i].info.wall.tile_wall = 0
+									
 							tile.info[b].multi_tile = infos[i][b].multi_tile
 							add_to_load_infos(tile.info)
 							
+	for info in late_load_info:
+		add_to_load_infos(info)
+	
 	for info in load_infos:
-		var tile: Node3D = true_tile_by_position(info.position)
+		var tile: Node3D = true_tile_by_position(info.position, true)
 		tile.preview_state = highlights
 		reload_tile(tile)
 
@@ -1345,13 +1366,11 @@ func on_card_selected_from_fileloader(item_info: Dictionary) -> void:
 		tile_menu_tiles[0].info.obj.loaded = item_info.id
 		tile_menu_tiles[0].load_obj(tile_menu_tiles[0].info.obj.id)
 
-#func remove_midair_tile(tile: Node3D) -> bool:
-#	if tile.info.position[3] > 5:
-#		var r2: bool = false
-#		for b in item_id_array[0]:
-#			if tile.info[b].multi_tile.size() > 0:
-#				if r2: return false
-#				r2 = true
-#		tile.queue_free()
-#		return true
-#	return false
+func remove_midair_tile(tile: Node3D) -> bool:
+	if tile.info.position[3] > 5:
+		if item_id_array[0].filter(func(x: String): return tile.info[x].multi_tile.size() > 0).size() > 1: 
+			return false
+		tile.queue_free()
+		active_tile_check_deletion()
+		return true
+	return false
