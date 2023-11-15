@@ -783,7 +783,7 @@ func on_tile_rotate(tile: Node3D, rotate_direction: int) -> void:
 		for j in ["tile", "obj", "wall", "tdeco", "wdeco"]:
 			if !selected_item_pos or i == selected_item_pos[0] or selected_item_pos[0] == 4 and selected_item_pos[1] == 2 and j == "wdeco":
 				if j == "wall":
-					var tiles: Array = tiles_by_multitile(tile, 2)
+					var tiles: Array = tiles_by_multitile(tile, 2, false)
 					for _tile in tiles:
 						on_rotate_tile_object(_tile, rotate_direction, j, tile.info[j].id)
 				else: on_rotate_tile_object(tile, rotate_direction, j, tile.info[j].id)
@@ -958,8 +958,8 @@ func set_tile_wall_multi_tile(tile: Node3D, height: int, tile_wall: int) -> int:
 	if tile.info.wall.multi_tile.size() < 1: tile.info.wall.multi_tile = []
 	return tile_wall
 	
-func tiles_by_multitile(tile: Node3D, btab: int) -> Array:
-	if tile and !tile.preview_state:
+func tiles_by_multitile(tile: Node3D, btab: int, prevent_preview: bool = true) -> Array:
+	if tile and (prevent_preview and !tile.preview_state) or !prevent_preview:
 		var b: String = BTAB_TO_STR[btab]
 		if tile.info[b].multi_tile.size() > 1:
 			return tile.info[b].multi_tile.map(func(x: Array): return true_tile_by_position(x, true))
@@ -997,6 +997,7 @@ func create_empty_tile_with_info(pos: Vector3) -> Node3D:
 		"wdeco": EMPTY_DATA[4].duplicate(true),
 		"position": [pos.x, pos.y, -pos.x - pos.y, pos.z],
 		}
+	tile.get_node("DetectMouse").collision_layer = 0
 	return tile
 	
 func reset_active_tile_state(i: int) -> void:
