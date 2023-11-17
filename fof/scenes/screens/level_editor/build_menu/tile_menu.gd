@@ -30,7 +30,7 @@ var items: Array
 
 func _ready():
 	load_option(0, tiles)
-	var options: Array = ["tile", "obj", "wall", "wdeco", "tdeco"]
+	var options: Array = ["tile", "obj", "wall", "tdeco", "wdeco"]
 	for i in range(options.size()):
 		for tile in tiles:
 			if tile.info[options[i]].id > 0 or options[i] == "tile" and Settings.select_empty_tiles:

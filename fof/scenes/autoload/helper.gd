@@ -254,7 +254,7 @@ var _id_to: Array = [
 	
 	["null", "wall", "wooden_wall", "water/shallow_water_wall", "water/deep_water_wall"],
 	
-	["null", "shrub", "tree"],
+	["null", "shrub", "tree", "rock"],
 	
 	["null", "lamp"]]
 	
