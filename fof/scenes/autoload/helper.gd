@@ -250,7 +250,8 @@ var _id_to: Array = [
 	["null", "ground", "_hover", "water/shallow_water", "water/deep_water", "void", "_default_tile"],
 	
 	["null", "spawns/spawn_enemy", "spawns/spawn_ally", "spawns/spawn_neutral", 
-	"spawns/spawn_trinket", "light", "stairs/wooden_stair", "doors/wooden_door", "windows/wooden_window"],
+	"spawns/spawn_trinket", "light", "stairs/wooden_stair", "doors/wooden_door", "windows/wooden_window",
+	"skeletons/grave_spawn"],
 	
 	["null", "wall", "wooden_wall", "water/shallow_water_wall", "water/deep_water_wall"],
 	
@@ -314,6 +315,9 @@ func compare_by_value(a: Array, b: Array) -> bool:
 var cube_directions: Array[Vector3] = [Vector3(1, 0, -1), Vector3(1, -1, 0), Vector3(0, -1, 1), Vector3(-1, 0, 1), Vector3(-1, 1, 0), Vector3(0, 1, -1)]
 func position_to_vec(pos: Array) -> Vector4:
 	return Vector4(pos[0], pos[1], pos[2], pos[3])
+
+func vec_to_position(pos: Vector4) -> Array:
+	return [pos.x, pos.y, pos.z, pos.w]
 
 func hex_neighbours(tile: Node3D, tiles: Array, distance: int = 1, search_elevation: bool = false) -> Array:
 	return _hex_neighbours(tile.info.position, tiles.map(func(x: Node3D): return x.info.position), distance, search_elevation)\

@@ -432,7 +432,7 @@ func create_tile(xy: Vector3) -> Node3D:
 	return tile
 	
 func on_tile_mouse_entered(tile: Node3D) -> void:
-	if !block_screen or tile in selection_tiles:
+	if !block_screen or tile in selection_tiles or move_tile != null:
 		tile.on_mouse_entered_check_mblockers(mblocker_rects)
 	
 func on_build_menu_enabled() -> void:
@@ -853,6 +853,7 @@ func on_tile_select() -> void:
 	if active_tile_state != 3:
 		reset_active_tile_state(3)
 		if load_infos:
+			var load_tiles: Array = []
 			for i in load_infos:
 				var tile: Node3D = true_tile_by_position(i.position)
 				var highlight: Array = []
@@ -862,7 +863,7 @@ func on_tile_select() -> void:
 					var mt: int = tile.info[b].multi_tile.size()
 					
 					if (tile.info[b].id > 0 or mt > 0) and !(0 in tile.preview_state) and tile.info.tile.id == 0 and tile.info.obj.id != 5 and (mt == 0 or tile.info[b].multi_tile[0][3] == tile.info.position[3]):
-						on_load_tile(tile, 1, 0, 0, 1)
+						if tile not in load_tiles: load_tiles.append(tile)
 
 					if n == 2 or is_centric: 
 						highlight.append(n)
@@ -870,6 +871,8 @@ func on_tile_select() -> void:
 				on_set_tile_material(tile, highlight, false)
 				tile.preview_state = []
 			reset_infos()
+			for tile in load_tiles:
+				on_load_tile(tile, 1, 0, 0, 1)
 			
 		elif active_tile and active_tile in selection_tiles:
 			on_call_selection_callable(active_tile)
@@ -1000,16 +1003,19 @@ func tiles_by_position(pos: Array) -> Array:
 
 func create_empty_tile_with_info(pos: Vector3) -> Node3D:
 	var tile: Node3D = create_tile(pos)
-	tile.info = {
+	tile.info = return_empty_info([pos.x, pos.y, -pos.x - pos.y, pos.z])
+	tile.get_node("DetectMouse").collision_layer = 0
+	return tile
+	
+func return_empty_info(pos: Array) -> Dictionary:
+	return {
 		"tile": EMPTY_DATA[0].duplicate(true),
 		"obj": EMPTY_DATA[1].duplicate(true),
 		"wall": EMPTY_DATA[2].duplicate(true),
 		"tdeco": EMPTY_DATA[3].duplicate(true),
 		"wdeco": EMPTY_DATA[4].duplicate(true),
-		"position": [pos.x, pos.y, -pos.x - pos.y, pos.z],
+		"position": pos.duplicate(),
 		}
-	tile.get_node("DetectMouse").collision_layer = 0
-	return tile
 	
 func reset_active_tile_state(i: int) -> void:
 	active_tile_state = i
@@ -1042,11 +1048,12 @@ func set_heightbuttons_modulate() -> void:
 func on_hover_tile(tile: Node3D) -> void:
 	if !(!Settings.highlight_empty_tiles and tile.info.tile.id == 0) and SelectionBox == null:
 		if tile in selection_tiles: tile.load_tile(tile.info.tile.id)
+		elif move_tile: on_preview_tiles_new_tile(tile)
 		elif active_remove_state == 0:
 			if selected_item_pos.size() > 0:
 				var btab: int = item_pos_to_btab(selected_item_pos)
 				if !(tile.info[BTAB_TO_STR[btab]].type == selected_item_type and tile.info[BTAB_TO_STR[btab]].id == get_item_index(selected_item_pos)[1]):
-					on_preview_tiles([tile], [create_tile_info(tile)], [btab])
+					on_preview_tiles(tile, create_tile_info(tile), btab)
 				else: reset_infos(true)
 			elif tile.info.tile.type == 0: tile.load_tile(2)
 
@@ -1104,53 +1111,52 @@ func reset_infos(true_reset: bool = false) -> void:
 	load_infos = []
 	bs_infos = []
 
-func on_preview_tiles(ts: Array, infos: Array, highlights: Array) -> void:
+func on_preview_tiles(tsi: Node3D, info: Dictionary, highlight: int) -> void:
 	reset_infos(true)
 	var late_load_info: Array = []
-	for i in range(ts.size()):
-		if !(ts[i].info.wall.id > 0 and ts[i].info.wall.multi_tile.size() > 0 and ts[i].info.wall.multi_tile[0] != ts[i].info.position):
-			add_to_bs_infos(ts[i].info)
-			for n in range(5):
-				if ts[i].info[BTAB_TO_STR[n]].multi_tile.size() > 1:
-					for tile in tiles_by_multitile(ts[i], n):
-						if tile != null:
-							if tile != ts[i]: add_to_bs_infos(tile.info)
-							tile.info[BTAB_TO_STR[n]] = EMPTY_DATA[n].duplicate(true)
-							if tile != ts[i]: late_load_info.append(tile.info)
+	if !(tsi.info.wall.id > 0 and tsi.info.wall.multi_tile.size() > 0 and tsi.info.wall.multi_tile[0] != tsi.info.position):
+		add_to_bs_infos(tsi.info)
+		for n in range(5):
+			if tsi.info[BTAB_TO_STR[n]].multi_tile.size() > 1:
+				for tile in tiles_by_multitile(tsi, n):
+					if tile != null:
+						if tile != tsi: add_to_bs_infos(tile.info)
+						tile.info[BTAB_TO_STR[n]] = EMPTY_DATA[n].duplicate(true)
+						if tile != tsi: late_load_info.append(tile.info)
+					
+		tsi.info = info
+		add_to_load_infos(tsi.info)
+		for b in item_id_array[0]:
+			if tsi.info[b].multi_tile.size() > 1:
+				var btab: int = STR_TO_BTAB[b]
+				for tile in tiles_by_multitile(tsi, btab):
+					if tile != null and tile != tsi:
+						add_to_bs_infos(tile.info)
+						for _tile in tiles_by_multitile(tile, btab):
+							if _tile != null and _tile != tile:
+								add_to_bs_infos(_tile.info)
+								if _tile not in load_infos:
+									_tile.info[b] = EMPTY_DATA[btab].duplicate(true)
+									late_load_info.append(_tile.info)
+						tile.info[b] = EMPTY_DATA[btab].duplicate(true)
+						if b == "wall":
+							tile.info.wall = EMPTY_DATA[2].duplicate(true)
+							tile.info.wall.id = info.wall.id
+							tile.info.wall.rotation = info.wall.rotation
+							tile.info.wall.type = info.wall.type
+							if tile.info.position == info.wall.multi_tile[info.wall.multi_tile.size() - 1]:
+								tile.info.wall.tile_wall = info.wall.tile_wall
+								tsi.info.wall.tile_wall = 0
+								
+						tile.info[b].multi_tile = info[b].multi_tile
+						add_to_load_infos(tile.info)
 						
-			ts[i].info = infos[i]
-			add_to_load_infos(ts[i].info)
-			for b in item_id_array[0]:
-				if ts[i].info[b].multi_tile.size() > 1:
-					var btab: int = STR_TO_BTAB[b]
-					for tile in tiles_by_multitile(ts[i], btab):
-						if tile != null and tile != ts[i]:
-							add_to_bs_infos(tile.info)
-							for _tile in tiles_by_multitile(tile, btab):
-								if _tile != null and _tile != tile:
-									add_to_bs_infos(_tile.info)
-									if _tile not in load_infos:
-										_tile.info[b] = EMPTY_DATA[btab].duplicate(true)
-										late_load_info.append(_tile.info)
-							tile.info[b] = EMPTY_DATA[btab].duplicate(true)
-							if b == "wall":
-								tile.info.wall = EMPTY_DATA[2].duplicate(true)
-								tile.info.wall.id = infos[i].wall.id
-								tile.info.wall.rotation = infos[i].wall.rotation
-								tile.info.wall.type = infos[i].wall.type
-								if tile.info.position == infos[i].wall.multi_tile[infos[i].wall.multi_tile.size() - 1]:
-									tile.info.wall.tile_wall = infos[i].wall.tile_wall
-									ts[i].info.wall.tile_wall = 0
-									
-							tile.info[b].multi_tile = infos[i][b].multi_tile
-							add_to_load_infos(tile.info)
-							
-	for info in late_load_info:
-		add_to_load_infos(info)
+	for _info in late_load_info:
+		add_to_load_infos(_info)
 	
-	for info in load_infos:
-		var tile: Node3D = true_tile_by_position(info.position, true)
-		tile.preview_state = highlights
+	for _info in load_infos:
+		var tile: Node3D = true_tile_by_position(_info.position, true)
+		tile.preview_state = [highlight]
 		reload_tile(tile)
 
 func add_to_load_infos(info: Dictionary):
@@ -1317,22 +1323,75 @@ func on_replace_tile_item(tile: Node3D, btab: int, info: Dictionary) -> void:
 		tile.info[btab] = info
 		on_load(tile, btab, info, true)
 	
+var move_tile: Node3D
+var move_highlights: Array = []
+var move_tile_positions: Array = []
+var move_finish := Callable()
+
 func on_tile_menu_move(item: int, tiles: Array) -> void:
 	var ftiles: Array = []
 	on_set_selection_tiles(tiles, on_tile_menu_move_center_tile_selected.bind(item, tiles))
 	
 func on_tile_menu_move_center_tile_selected(center_tile: Node3D, item: int, tiles: Array) -> void:
-	copy_info = store_tile_info(tiles, center_tile, [], item)
-	for tile in tiles:
-		for j in item_id_array[item]:
-			tile.call("load_" + j, 1 if j == "tile" else 0)
+#	copy_info = store_tile_info(tiles, center_tile, [], item)
+	on_set_selection_tiles()
+	var btab: int = item - 1
+	if item == 0: move_highlights = range(5)
+	else: move_highlights = [btab]
 	
-	on_set_selection_tiles(World.get_node("Tiles/" + str(Settings.level_editor_elevation)).get_children(), on_tile_menu_move_finished.bind(tiles))
+	var add_tiles: Array = []
+	for tile in tiles:
+		for b in item_id_array[item]:
+			for _tile in tiles_by_multitile(tile, STR_TO_BTAB[b]):
+				if _tile != tile and _tile not in tiles: add_tiles.append(_tile)
+	for tile in add_tiles: tiles.append(tile)
+	
+	move_tile = center_tile
+	move_tile_positions = tiles.map(func(x: Node3D): return x.info.position)
+	move_finish = on_tile_menu_move_finished.bind(tiles)
+	
+	create_move_tile_empties()
+	on_preview_tiles_move()
+#	on_preview_tiles(tiles, tiles.map(func(x: Node3D): return x.info.duplicate(true)), highlights)
+#	for tile in tiles:
+#		for j in item_id_array[item]:
+#			tile.call("load_" + j, 1 if j == "tile" else 0)
+#
+#	on_set_selection_tiles(World.get_node("Tiles/" + str(Settings.level_editor_elevation)).get_children(), on_tile_menu_move_finished.bind(tiles))
+
+func create_move_tile_empties() -> void:
+	for tile in move_tile_positions.map(func(x: Array): return true_tile_by_position(x)):
+		if tile:
+			match move_highlights.size():
+				1:
+					var btab: int = move_highlights[0]
+					var empty: Dictionary = EMPTY_DATA[btab].duplicate(true)
+					var data: Dictionary = tile.info.duplicate(true)
+					data[BTAB_TO_STR[btab]] = empty
+					bs_infos.append(data)
+				_: bs_infos.append(return_empty_info(tile.info.position))
+
+func on_preview_tiles_new_tile(tile: Node3D) -> void:
+	for i in load_infos: pass
+	reset_infos(true)
+	var difference: Vector4 = Helper.position_to_vec(move_tile.info.position) - Helper.position_to_vec(tile.info.position)
+	move_tile_positions = move_tile_positions.map(func(x: Array): return Helper.vec_to_position(Helper.position_to_vec(x) - difference))
+	create_move_tile_empties()
+	on_preview_tiles_move()
+	
+func on_preview_tiles_move() -> void:
+	for tile in move_tile_positions.map(func(x: Array): return true_tile_by_position(x)):
+		if tile:
+			on_set_tile_material(tile, move_highlights)
+			tile.preview_state = move_highlights
+			load_infos.append(tile.info)
+
 func on_tile_menu_move_finished(tile: Node3D, tiles: Array) -> void:
-	on_tile_menu_paste([tile])
-	on_set_selection_tiles.call_deferred()
-	on_tile_menu_highlight_tiles(0, World.get_node("Tiles/" + str(Settings.level_editor_elevation)).get_children())
-	on_tile_menu_highlight_tiles(1, tiles)
+	move_finish = Callable()
+#	on_tile_menu_paste([tile])
+#	on_set_selection_tiles.call_deferred()
+#	on_tile_menu_highlight_tiles(0, World.get_node("Tiles/" + str(Settings.level_editor_elevation)).get_children())
+#	on_tile_menu_highlight_tiles(1, tiles)
 
 func on_load(tile: Node3D, btab: int, info: Dictionary, _create_tile: bool = true) -> void:
 	info = info.duplicate(true)
