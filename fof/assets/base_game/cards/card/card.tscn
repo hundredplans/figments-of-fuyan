@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" path="res://assets/base_game/cards/card/card.gd" id="1_q5cne"]
 [ext_resource type="Texture2D" uid="uid://bgbyoyqx40n27" path="res://assets/base_game/cards/card/default_art_max.png" id="2_871jw"]
-[ext_resource type="Texture2D" uid="uid://dpeyrc41hexuj" path="res://assets/base_game/cards/card/rarity/1.png" id="2_ht4sl"]
 [ext_resource type="FontFile" uid="uid://dnq2ul3ia4hy3" path="res://assets/UI/lora/Lora-Bold.ttf" id="2_iho42"]
 [ext_resource type="FontFile" uid="uid://7k4xd8s0oed2" path="res://assets/UI/roboto/roboto.ttf" id="3_3275s"]
+[ext_resource type="Texture2D" uid="uid://hqwtikr8tivw" path="res://assets/base_game/cards/card/rarity/1.png" id="3_xfojv"]
 [ext_resource type="Texture2D" uid="uid://dqj6m376wbhwo" path="res://assets/base_game/cards/card/stats/att/att2.png" id="6_upcdy"]
 [ext_resource type="LabelSettings" uid="uid://qp0350v2j4ah" path="res://assets/UI/roboto/roboto32outline.tres" id="7_hmnl8"]
 [ext_resource type="LabelSettings" uid="uid://bp2u8sp36bt72" path="res://assets/UI/roboto/roboto_outline.tres" id="7_iqk8w"]
@@ -45,7 +45,7 @@ centered = false
 
 [node name="FrontCard" type="Sprite2D" parent="Art"]
 texture_filter = 1
-texture = ExtResource("2_ht4sl")
+texture = ExtResource("3_xfojv")
 centered = false
 
 [node name="AreaMark" type="Sprite2D" parent="Art"]
