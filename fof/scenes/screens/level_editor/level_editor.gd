@@ -1047,7 +1047,7 @@ func set_heightbuttons_modulate() -> void:
 		btn.modulate = Helper.RED if btn.name == str(Settings.level_editor_elevation) else Helper.BASE
 
 func on_hover_tile(tile: Node3D) -> void:
-	if !(!Settings.highlight_empty_tiles and tile.info.tile.id == 0) and SelectionBox == null:
+	if !(!Settings.highlight_empty_tiles and tile.info.tile.id == 0) and (SelectionBox == null):
 		if tile in selection_tiles: tile.load_tile(tile.info.tile.id)
 		elif move_tile: on_preview_tiles_new_tile(tile)
 		elif active_remove_state == 0:
@@ -1180,6 +1180,8 @@ func on_set_selection_tiles(tiles: Array = [], c: Callable = Callable()) -> void
 	elif tiles.size() > 0: on_tile_menu_highlight_tiles(1, tiles)
 		
 signal update_tile_menu
+
+var TileMenuGlobal: Control
 var tile_menu_tiles: Array
 func on_tiles_selected(tiles: Array) -> void:
 	if !Settings.select_empty_tiles: tiles = tiles.filter(func(x: Node3D): return x.info.tile.id != 0)
@@ -1192,6 +1194,7 @@ func on_tiles_selected(tiles: Array) -> void:
 		
 		var tile_menu: Control = preload("res://scenes/screens/level_editor/build_menu/tile_menu.tscn").instantiate()
 		update_tile_menu.connect(tile_menu.on_update_tile_menu)
+		TileMenuGlobal = tile_menu
 		tile_menu_tiles = tiles
 		tile_menu.tiles = tiles
 		add_child(tile_menu)
@@ -1217,7 +1220,7 @@ func on_update_tile_menu() -> void:
 			update_tile_menu.emit()
 
 func on_tile_menu_queued(TileMenu: Control) -> void:
-	if !file_loader_loaded:
+	if !file_loader_loaded and TileMenu and !TileMenu.is_queued_for_deletion():
 		block_screen = false
 		on_set_selection_tiles()
 		
@@ -1334,6 +1337,9 @@ var move_tile: Node3D
 
 func on_tile_menu_move(item: int, tiles: Array) -> void:
 	on_set_selection_tiles(tiles, on_tile_menu_move_center_tile_selected.bind(item, tiles))
+	if tiles.size() == 1: 
+		on_tile_menu_queued(TileMenuGlobal)
+		warp_mouse(get_viewport().get_mouse_position())
 	
 func on_tile_menu_move_center_tile_selected(center_tile: Node3D, item: int, _tiles: Array) -> void:
 	on_set_selection_tiles()
@@ -1370,8 +1376,8 @@ func on_tile_menu_move_center_tile_selected(center_tile: Node3D, item: int, _til
 		on_set_tile_material(tile, move_highlights)
 		
 	var state: int = active_tile_state
-	await get_tree().create_timer(0.2).timeout
-	if state != active_tile_state: reset_active_tile_state(0)
+	await get_tree().create_timer(0.1).timeout
+	if state == active_tile_state: reset_active_tile_state(1)
 		
 func true_tile_by_move_infos() -> Array:
 	return move_infos.map(func(x: Dictionary): 
