@@ -848,7 +848,6 @@ func on_set_tile_material(tile: Node3D, highlights: Array, set_override: bool = 
 			if !child.is_queued_for_deletion():
 				for mesh_instance in child.get_children():
 					mesh_instance.set_surface_override_material(0, preload("res://assets/materials/base_materials/base_material_half_transparent.tres") if set_override else null)
-
 func on_tile_select() -> void:
 	if active_tile_state != 3:
 		reset_active_tile_state(3)
@@ -1185,6 +1184,7 @@ var tile_menu_tiles: Array
 func on_tiles_selected(tiles: Array) -> void:
 	if !Settings.select_empty_tiles: tiles = tiles.filter(func(x: Node3D): return x.info.tile.id != 0)
 	if tiles.size() > 0 and !block_screen and loaded_area:
+		active_tile = null
 		reset_infos(true)
 		for t in tiles: if t.info.tile.type == 0: t.load_tile(2)
 		block_screen = true
@@ -1220,7 +1220,8 @@ func on_tile_menu_queued(TileMenu: Control) -> void:
 	if !file_loader_loaded:
 		block_screen = false
 		on_set_selection_tiles()
-		for tile in TileMenu.tiles: on_tile_exit_mouse(tile)
+		
+		if move_tile == null: for tile in TileMenu.tiles: on_tile_exit_mouse(tile)
 		reset_mblocker_rects()
 		TileMenu.queue_free()
 
@@ -1364,9 +1365,13 @@ func on_tile_menu_move_center_tile_selected(center_tile: Node3D, item: int, _til
 		
 	move_tile = center_tile
 	original_move_position = center_tile.info.position
-	
 	for tile in true_tile_by_move_infos():
+		tile.load_tile(tile.info.tile.id)
 		on_set_tile_material(tile, move_highlights)
+		
+	var state: int = active_tile_state
+	await get_tree().create_timer(0.2).timeout
+	if state != active_tile_state: reset_active_tile_state(0)
 		
 func true_tile_by_move_infos() -> Array:
 	return move_infos.map(func(x: Dictionary): 
@@ -1378,10 +1383,13 @@ func on_preview_tiles_new_tile(tile: Node3D) -> void:
 		for info in old_infos:
 			var _tile: Node3D = true_tile_by_position(info.position)
 			for b in item_id_array[0]:
-				if info.has(b): 
+				if info.has(b):
 					_tile.info[b] = info[b].duplicate(true)
-					_tile.call("load_" + b, _tile.info[b].id)
+					if !remove_midair_tile(_tile):
+						_tile.call("load_" + b, _tile.info[b].id)
+					else: break
 		
+		var op: Vector4 = Helper.position_to_vec(move_tile.info.position)
 		move_tile = tile
 		var p: Vector4 = Helper.position_to_vec(move_tile.info.position)
 		var move_tiles: Array = true_tile_by_move_infos()
@@ -1404,9 +1412,11 @@ func on_preview_tiles_new_tile(tile: Node3D) -> void:
 			var pp: Vector4 = Helper.position_to_vec(_tile.info.position)
 			for info in move_infos:
 				if pp - p == Helper.position_to_vec(info.position):
+					var offset: Vector4 = p - op
 					for btab in move_highlights:
 						var _b: String = BTAB_TO_STR[btab]
-						_tile.info[_b] = info[_b].duplicate(true)
+						info[_b].multi_tile = info[_b].multi_tile.map(func(x: Array): return Helper.vec_to_position(Helper.position_to_vec(x) + offset))
+						_tile.info[_b] = info[_b]
 						_tile.call("load_" + _b, _tile.info[_b].id)
 					break
 			on_set_tile_material(_tile, move_highlights)

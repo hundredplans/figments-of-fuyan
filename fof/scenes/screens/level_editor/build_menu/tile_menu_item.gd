@@ -89,10 +89,10 @@ func on_set_item_btn() -> void:
 					path += Helper.wid_to(tile.info.wall.id, area.id, 0)
 				4:
 					path += "decorations/tiles/"
-					path += Helper.editor_id_to(item - 1, tile.info.obj.id, 0)
+					path += Helper.editor_id_to(item - 1, tile.info.tdeco.id, 0)
 				5:
 					path += "decorations/walls/"
-					path += Helper.editor_id_to(item - 1, tile.info.obj.id, 0)
+					path += Helper.editor_id_to(item - 1, tile.info.wdeco.id, 0)
 			
 			variances = variances.filter(func(i: int): return FileAccess.file_exists(path + str(i) + ".glb"))
 			if variances.size() > 0:
