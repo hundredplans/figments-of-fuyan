@@ -252,7 +252,7 @@ var _id_to: Array = [
 	
 	["null", "spawns/spawn_enemy", "spawns/spawn_ally", "spawns/spawn_neutral", 
 	"spawns/spawn_trinket", "light", "stairs/wooden_stair", "doors/wooden_door", "windows/wooden_window",
-	"skeletons/grave_spawn"],
+	"skeletons/grave_spawn", "skeletons/pumpkin"],
 	
 	["null", "wall", "wooden_wall", "water/shallow_water_wall", "water/deep_water_wall"],
 	
