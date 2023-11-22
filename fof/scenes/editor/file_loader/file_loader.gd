@@ -18,7 +18,7 @@ var item_name: String
 
 func _ready() -> void:
 	on_change_fileloader_state(1)
-	Helper.play_method_on_animation_end("load_in_out", $LoadInOut, on_change_fileloader_state,  [2], true, self)
+	Helper.play_method_on_animation_end("load_in_out", $LoadInOut, on_change_fileloader_state, [2], true, self)
 	$ExitButton.pressed.connect(on_exit_button_pressed)
 	$Background.modulate = Color(1, 1, 1, Settings.fileloader_opacity * 0.01)
 
@@ -29,8 +29,11 @@ func on_exit_button_pressed() -> void:
 	if !$LoadInOut.is_playing():
 		on_change_fileloader_state(1)
 		Helper.play_method_on_animation_end("load_in_out", $LoadInOut, _queue_free, [], false, self)
+		for button in Items.get_children().map(func(x: Control): return x.get_node("PressedButton")):
+			button.disabled = true
 
 func _queue_free() -> void:
+	for child in all_item_buttons: child.queue_free()
 	on_change_fileloader_state(0)
 	queued.emit()
 	queue_free()
@@ -107,7 +110,7 @@ func position_item_buttons() -> void:
 		j += 1
 	
 func change_page(i: int) -> void:
-	current_page = clamp(current_page + i, 1, ceil((item_buttons.size() + 1) * 0.1))
+	current_page = clamp(current_page + i, 1, ceil((item_buttons.size()) * 0.1))
 	position_item_buttons()
 
 func _on_search_item_selected(i: int):

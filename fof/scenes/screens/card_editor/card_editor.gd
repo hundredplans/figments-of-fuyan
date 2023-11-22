@@ -1,6 +1,6 @@
 extends Control
 var ID: int = 0
-var rarity: int = 1
+var rarity: int = 2
 var stats: Array = [1,1,1,1]
 var personality_sliders: Array = [1,1,1,1,1]
 var height: int = 1
@@ -34,7 +34,9 @@ func on_ai_settings_item_selected(item: int, i: int) -> void:
 func on_stat_text_submitted(__: String, i: int) -> void:
 	i = i + 1
 	if i < 4:
-		$CardCreator/Stats.get_child(i).grab_focus()
+		var ledit: LineEdit = $CardCreator/Stats.get_child(i)
+		ledit.grab_focus()
+		ledit.caret_column = ledit.text.length()
 	else:
 		Internal.grab_focus()
 
@@ -70,7 +72,9 @@ func _on_save_card_pressed():
 	var contents: String = "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s"\
 	% [stats[0], stats[1], stats[2], stats[3], rarity, CardText.text.replace("\n", " "), FlavorText.text.replace("\n", " "),
 	personality_sliders[0], personality_sliders[1], personality_sliders[2], personality_sliders[3], personality_sliders[4], height]
-	Helper.create_base_game_id_dir(Helper.write_to_base_game_file(FILE_LOADER_NAME, $CardCreator/EditFileName, contents, TID), FILE_LOADER_NAME)
+	var item_dict: Dictionary = Helper.write_to_base_game_file(FILE_LOADER_NAME, $CardCreator/EditFileName, contents, TID)
+	Helper.create_base_game_id_dir(item_dict, FILE_LOADER_NAME)
+	ID = item_dict.id
 
 func _on_load_card_pressed():
 	var FileLoader: Control = preload("res://scenes/editor/file_loader/file_loader.tscn").instantiate()
@@ -82,8 +86,10 @@ func on_item_selected(item_info: Dictionary) -> void:
 	$CardCreator/EditFileName.set_text(item_info.iname, item_info.sname)
 	for stat in ["a", "h", "s", "e"]:
 		var stat_edit: LineEdit = $CardCreator/Stats.get_node(Helper.stat_ai_dict[stat])
-		stat_edit.text = str(item_info[stat])
-		on_stat_text_changed(stat_edit.text, stat_edit)
+		if item_info[stat] >= 0:
+			stat_edit.text = str(item_info[stat])
+			on_stat_text_changed(stat_edit.text, stat_edit)
+		else: stat_edit.text = ""
 	
 	for ai_stat in ["aii", "aia", "aiw", "ait", "aic"]:
 		var btn: Control = get_node("AISettings/" + Helper.stat_ai_dict[ai_stat] + "Button")
@@ -130,3 +136,25 @@ func _on_model_viewer_button_button_up():
 
 func _on_height_selected(i: int):
 	height = i
+
+const EMPTY_INFO: Dictionary = {
+	"id": 0,
+	"tid": 2,
+	"iname": "",
+	"sname": "",
+	"a": -1,
+	"h": -1,
+	"s": -1,
+	"e": -1,
+	"r": 2,
+	"text": "",
+	"flavor": "",
+	"aii": 4,
+	"aiw": 4,
+	"aic": 4,
+	"ait": 4,
+	"aia": 4,
+	"height": 2,
+	"bgfn": "",
+}
+func _on_empty_card_pressed(): on_item_selected(EMPTY_INFO)

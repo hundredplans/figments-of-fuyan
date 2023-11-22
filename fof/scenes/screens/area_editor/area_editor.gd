@@ -63,8 +63,9 @@ func _on_world_difficulty_pressed(_world_difficulty: int):
 
 func _on_save_area_pressed():
 	var contents: String = "%s\n%s\n%s\n%s\n%s" % [str(primary_color), str(accent_color), str(world_difficulty), cards, tiles_allowed]
-	Helper.write_to_base_game_file(FILE_LOADER_NAME, $Buttons/EditFileName, contents, TID)
-
+	var item_contents: Dictionary = Helper.write_to_base_game_file(FILE_LOADER_NAME, $Buttons/EditFileName, contents, TID)
+	Helper.create_base_game_id_dir(item_contents, FILE_LOADER_NAME)
+	
 func _on_load_area_pressed():
 	var FileLoader: Control = preload("res://scenes/editor/file_loader/file_loader.tscn").instantiate()
 	FileLoader.on_ready(FILE_LOADER_NAME)

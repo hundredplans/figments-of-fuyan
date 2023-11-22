@@ -27,13 +27,13 @@ const stat_ai_dict: Dictionary = {
 }
 
 const rarity_colors: Dictionary = {
-	0: "8e8f88",
-	1: "8e8f88",
-	2: "b7a48b",
-	3: "5b8500",
-	4: "ebdf60",
-	5: "a001fb",
-	6: "d72500",
+	0: "5b3a24",
+	1: "606060",
+	2: "ce9f80",
+	3: "00946d",
+	4: "f7ce00",
+	5: "7300a8",
+	6: "ad0000",
 	7: "5f91e1",
 }
 	
@@ -213,10 +213,11 @@ func create_button_clickmask(button: TextureButton) -> void:
 func on_delete_item(item: String, ID: String, Internal: LineEdit, node: Control, can_del_dir: int) -> void:
 	item = item.to_lower() + "s/"
 	var file_valid: bool = Internal.text.length() > 0 and FileAccess.file_exists("res://static/base_game/"  + item + ID + " - " + Internal.text + ".fof")
-	var delete_prompt: Control = preload("res://scenes/editor/delete_prompt/delete_prompt.tscn").instantiate()
-	node.add_child(delete_prompt)
-	delete_prompt.delete_item.connect(on_delete_item_confirmed.bind(item, ID, Internal, can_del_dir))
-	delete_prompt.on_ready(Settings.confirm_file_delete, Internal.text, file_valid)
+	if file_valid:
+		var delete_prompt: Control = preload("res://scenes/editor/delete_prompt/delete_prompt.tscn").instantiate()
+		node.add_child(delete_prompt)
+		delete_prompt.delete_item.connect(on_delete_item_confirmed.bind(item, ID, Internal, can_del_dir))
+		delete_prompt.on_ready(Settings.confirm_file_delete, Internal.text, file_valid)
 		
 func on_delete_item_confirmed(item: String, ID: String, Internal: LineEdit, can_del_dir: int) -> void:
 	var base_game_file_name: String = ID + " - " + Internal.text
@@ -227,7 +228,7 @@ func on_delete_item_confirmed(item: String, ID: String, Internal: LineEdit, can_
 		if Settings.clear_backup_files_array[Settings.clear_backup_files] != 1:
 			write_to_file("user://save/temp/" + item, Internal.text, ".fof", contents, false)
 		if can_del_dir == 1:
-			DirAccess.remove_absolute("res://assets/base_game/" + item)
+			DirAccess.remove_absolute("res://assets/base_game/" + item + base_game_file_name)
 
 func id_to_dict(i: int, item: String) -> Dictionary:
 	item = item.to_lower() + "s/"

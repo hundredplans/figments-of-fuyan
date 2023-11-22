@@ -34,7 +34,7 @@ theme = ExtResource("2_q225b")
 layout_mode = 0
 offset_right = 686.0
 offset_bottom = 916.0
-color = Color(0.717647, 0.643137, 0.545098, 1)
+color = Color(0.807843, 0.623529, 0.501961, 1)
 
 [node name="EditFileName" parent="CardCreator" instance=ExtResource("2_axojh")]
 offset_top = 415.0
@@ -88,7 +88,7 @@ max_length = 2
 offset_left = 231.0
 offset_right = 255.0
 options = PackedStringArray("Neutral", "Scrap", "Common", "Rare", "Exalt", "Miniboss", "Boss", "Champion")
-default = 1
+default = 2
 
 [node name="CardText" type="TextEdit" parent="CardCreator"]
 layout_mode = 0
@@ -103,7 +103,7 @@ wrap_mode = 1
 [node name="FlavorText" type="TextEdit" parent="CardCreator"]
 layout_mode = 0
 offset_left = 711.0
-offset_top = 523.0
+offset_top = 559.0
 offset_right = 1262.0
 offset_bottom = 1056.0
 theme = ExtResource("6_crlth")
@@ -118,20 +118,20 @@ texture = ExtResource("6_036w2")
 
 [node name="AISettings" type="Control" parent="."]
 layout_mode = 1
-anchor_left = 0.684
-anchor_right = 0.684
-offset_left = -0.280029
-offset_right = 606.72
-offset_bottom = 523.0
+anchors_preset = 0
+offset_left = 1331.0
+offset_top = 60.0
+offset_right = 1705.0
+offset_bottom = 471.0
 
 [node name="ConfidenceButton" parent="AISettings" instance=ExtResource("6_18pqn")]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = -2.163
 anchor_right = -2.163
-offset_left = 1335.94
+offset_left = 808.962
 offset_top = 14.0
-offset_right = 1618.94
+offset_right = 1091.96
 offset_bottom = 67.0
 min_max = Vector2i(1, 7)
 steps = Vector2i(1, 3)
@@ -143,9 +143,9 @@ layout_mode = 1
 anchors_preset = -1
 anchor_left = -2.163
 anchor_right = -2.163
-offset_left = 1335.94
+offset_left = 808.962
 offset_top = 95.0
-offset_right = 1618.94
+offset_right = 1091.96
 offset_bottom = 148.0
 min_max = Vector2i(1, 7)
 steps = Vector2i(1, 3)
@@ -157,9 +157,9 @@ layout_mode = 1
 anchors_preset = -1
 anchor_left = -2.163
 anchor_right = -2.163
-offset_left = 1335.94
+offset_left = 808.962
 offset_top = 176.0
-offset_right = 1618.94
+offset_right = 1091.96
 offset_bottom = 229.0
 min_max = Vector2i(1, 7)
 steps = Vector2i(1, 3)
@@ -171,9 +171,9 @@ layout_mode = 1
 anchors_preset = -1
 anchor_left = -2.163
 anchor_right = -2.163
-offset_left = 1335.94
+offset_left = 808.962
 offset_top = 257.0
-offset_right = 1618.94
+offset_right = 1091.96
 offset_bottom = 310.0
 min_max = Vector2i(1, 7)
 steps = Vector2i(1, 3)
@@ -181,9 +181,7 @@ label_text = "Teamwork"
 snap_mode = true
 
 [node name="AdventurousnessButton" parent="AISettings" instance=ExtResource("6_18pqn")]
-offset_left = 23.0
 offset_top = 338.0
-offset_right = 306.0
 offset_bottom = 391.0
 min_max = Vector2i(1, 7)
 steps = Vector2i(1, 3)
@@ -192,7 +190,7 @@ snap_mode = true
 
 [node name="Buttons" type="Control" parent="."]
 anchors_preset = 0
-offset_left = 652.0
+offset_left = 631.0
 offset_top = 916.0
 offset_right = 1313.0
 offset_bottom = 1080.0
@@ -204,8 +202,10 @@ anchors_preset = 13
 anchor_left = 0.5
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -351.5
-offset_right = -112.5
+offset_left = -341.0
+offset_top = 8.0
+offset_right = -121.0
+offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Save Card"
@@ -216,8 +216,10 @@ anchors_preset = 13
 anchor_left = 0.5
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -112.5
-offset_right = 107.5
+offset_left = -113.0
+offset_top = 8.0
+offset_right = 107.0
+offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Load Card"
@@ -228,11 +230,21 @@ anchors_preset = 13
 anchor_left = 0.5
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = 107.5
-offset_right = 336.5
+offset_left = 114.0
+offset_top = 8.0
+offset_right = 345.0
+offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Delete Card"
+
+[node name="EmptyCard" type="Button" parent="Buttons"]
+layout_mode = 0
+offset_left = -225.0
+offset_top = 8.0
+offset_right = -6.0
+offset_bottom = 156.0
+text = "Empty Card"
 
 [node name="ModelViewer" type="SubViewportContainer" parent="."]
 layout_mode = 1
@@ -261,10 +273,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0811731, 1.69899, 3.2611)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.30054, 2.78849)
 
 [node name="HeightButton" parent="." instance=ExtResource("6_18pqn")]
-offset_left = 1415.0
-offset_top = 434.0
-offset_right = 1698.0
-offset_bottom = 487.0
+offset_left = 1331.0
+offset_top = 478.0
+offset_right = 1614.0
+offset_bottom = 531.0
 min_max = Vector2i(1, 6)
 steps = Vector2i(1, 2)
 default = 2
@@ -286,6 +298,7 @@ button_mask = 2
 [connection signal="pressed" from="Buttons/SaveCard" to="." method="_on_save_card_pressed"]
 [connection signal="pressed" from="Buttons/LoadCard" to="." method="_on_load_card_pressed"]
 [connection signal="pressed" from="Buttons/DeleteCard" to="." method="_on_delete_card_pressed"]
+[connection signal="pressed" from="Buttons/EmptyCard" to="." method="_on_empty_card_pressed"]
 [connection signal="item_selected" from="HeightButton" to="." method="_on_height_selected"]
 [connection signal="button_down" from="ModelViewerButton" to="." method="_on_model_viewer_button_button_down"]
 [connection signal="button_up" from="ModelViewerButton" to="." method="_on_model_viewer_button_button_up"]
