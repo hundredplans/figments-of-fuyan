@@ -3,7 +3,7 @@ var screen_change: Array = [
 	["CardEditor", "res://scenes/screens/card_editor/card_editor.tscn"],
 	["LevelEditor", "res://scenes/screens/level_editor/level_editor.tscn"],
 	["AreaEditor", "res://scenes/screens/area_editor/area_editor.tscn"],
-	["AuraEditor", "res://scenes/screens/aura_editor/aura_editor.tscn"],
+	["ToolEditor", "res://scenes/screens/tool_editor/tool_editor.tscn"],
 	["BoonEditor", "res://scenes/screens/boon_editor/boon_editor.tscn"],
 	["MapEditor", 0],
 	["QuestEditor", 0],

@@ -34,7 +34,7 @@
 [ext_resource type="Texture2D" uid="uid://dibrfnru08oig" path="res://scenes/screens/main_menu/equipped_theme/0/25.png" id="27_d6hih"]
 [ext_resource type="Texture2D" uid="uid://k2pl8gdbp3y3" path="res://scenes/screens/main_menu/equipped_theme/0/26.png" id="28_tkrnk"]
 [ext_resource type="Texture2D" uid="uid://d3cak4jo2cu2c" path="res://scenes/screens/main_menu/equipped_theme/0/27.png" id="29_edrjm"]
-[ext_resource type="Environment" uid="uid://cb6o21l8cjbwp" path="res://scenes/world/equipped_theme/0/world_env.tres" id="35_ieb5k"]
+[ext_resource type="Environment" uid="uid://cb6o21l8cjbwp" path="res://scenes/world/equipped_theme/0/env.tres" id="35_1v80a"]
 
 [sub_resource type="Animation" id="Animation_3l08o"]
 resource_name = "AreaEditor"
@@ -44,23 +44,6 @@ tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/path = NodePath("UI/Screens/AreaEditor:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.25),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
-}
-
-[sub_resource type="Animation" id="Animation_svd31"]
-resource_name = "AuraEditor"
-length = 0.25
-step = 0.05
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("UI/Screens/AuraEditor:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -235,10 +218,26 @@ tracks/0/keys = {
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
 }
 
+[sub_resource type="Animation" id="Animation_svd31"]
+resource_name = "ToolEditor"
+length = 0.25
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UI/Screens/ToolEditor:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_blkxs"]
 _data = {
 "AreaEditor": SubResource("Animation_3l08o"),
-"AuraEditor": SubResource("Animation_svd31"),
 "BoonEditor": SubResource("Animation_ymcru"),
 "CardEditor": SubResource("Animation_a0yjb"),
 "EditorMenu": SubResource("Animation_qfqq0"),
@@ -247,7 +246,8 @@ _data = {
 "LevelEditor": SubResource("Animation_aiqn2"),
 "LoreBooksEditor": SubResource("Animation_146u0"),
 "MainMenu": SubResource("Animation_21302"),
-"SettingsMenu": SubResource("Animation_py2as")
+"SettingsMenu": SubResource("Animation_py2as"),
+"ToolEditor": SubResource("Animation_svd31")
 }
 
 [node name="Main" type="Node" node_paths=PackedStringArray("SettingCog", "BackArrow")]
@@ -308,7 +308,7 @@ texture_disabled = ExtResource("7_dwuio")
 [node name="Scene" type="Node3D" parent="World"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="World"]
-environment = ExtResource("35_ieb5k")
+environment = ExtResource("35_1v80a")
 
 [connection signal="animation_finished" from="UI/MoveScreen" to="." method="_on_move_screen_animation_finished"]
 [connection signal="pressed" from="UI/BackArrow" to="." method="on_trigger_screen_history"]

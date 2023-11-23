@@ -6,6 +6,7 @@ extends Node
 @onready var MoveScreen: AnimationPlayer = $UI/MoveScreen
 @onready var Screens: Control = $UI/Screens
 @onready var World: Node3D = $World
+@onready var WorldEnv: WorldEnvironment = $World/WorldEnvironment
 
 const main_menu_path: String = "res://scenes/screens/main_menu/main_menu.tscn"
 var fileloader_state: int = 0
@@ -21,7 +22,7 @@ var move_screen_switch_length: Dictionary = {
 	"AreaEditor": 0.25,
 	"CardEditor": 0.25,
 	"BoonEditor": 0.25,
-	"AuraEditor": 0.25,
+	"ToolEditor": 0.25,
 	"ItemEditor": 0.25,
 }
 
@@ -67,6 +68,9 @@ func on_setup_screen(screen: Control) -> void:
 			screen.get_node("MenuButtons/" + i[0]).pressed.connect(on_menu_button_pressed.bind(i[1]))
 
 func before_ready_connect_screen(screen: Control):
+	if screen.name == "LevelEditor":
+		screen.equip_sky.connect(on_equip_sky)
+	
 	match screen.name:
 		"LevelEditor", "LoreBooksEditor", "ItemEditor": screen.load_world.connect(on_load_world)
 	
@@ -145,3 +149,9 @@ func on_load_world(world: Node3D) -> void:
 
 func load_general_world() -> void:
 	$World/General.add_child(load("res://assets/env/main_menu/" + str(Settings.equipped_theme) + ".tscn").instantiate())
+	on_equip_sky(Settings.equipped_theme, true)
+
+func on_equip_sky(value: int, is_theme: bool) -> void:
+	if is_theme: WorldEnv.environment = load("res://scenes/world/equipped_theme/" + str(value) + "/env.tres")
+	else: WorldEnv.environment = load("res://assets/base_game/areas/" + Helper.id_to_bgfn(value, "Area") + "/env.tres")
+		

@@ -1,5 +1,6 @@
 extends Control
 signal load_world
+signal equip_sky
 
 @onready var ItemTypes: Control = $BuildMenu/LoadedMenu/ItemTypes
 @onready var Tabs: HBoxContainer = $BuildMenu/Tabs/Tabs
@@ -339,6 +340,7 @@ func on_area_selected_from_fileloader(item: Dictionary) -> void:
 	_on_save_level_pressed(false, 2)
 	on_area_selected(item)
 	on_load_empty_level(false)
+	equip_sky.emit(item.id, false)
 	
 func on_area_selected(item: Dictionary) -> void:
 	loaded_area = item
@@ -475,6 +477,7 @@ func _on_save_level_pressed(play_sfx: bool = true, create_temp: int = 1):
 func _queue_free() -> void:
 	_on_save_level_pressed(false, 0)
 	load_world.emit(null)
+	
 func _on_arrow_button_pressed():
 	if info_menu_is_moving == 0:
 		info_weight = 0

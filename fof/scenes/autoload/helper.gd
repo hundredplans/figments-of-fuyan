@@ -177,7 +177,7 @@ func return_item_dict(item: String, _contents: String) -> Dictionary:
 			"area": keys += ["pcolor", "acolor", "world", "cards"]
 			"card": keys += ["a", "h", "s", "e", "r", "text", "flavor", "aic", "aii", "aiw", "ait", "aia", "height"]
 			"level": keys += ["area", "difficulty", "trinkets", "tiles"]
-			"aura": keys += ["r", "text", "flavor"]
+			"tool": keys += ["r", "text", "flavor"]
 			"boon": keys += ["r", "text", "flavor"]
 		var i: int = 0
 		for key in keys:
@@ -237,6 +237,8 @@ func id_to_dict(i: int, item: String) -> Dictionary:
 		if int(file_path.split(" ")[0]) == i:
 			return return_item_dict(item.left(-2), return_file_contents(dir_path + file_path))
 	return {}
+	
+func id_to_bgfn(i: int, item: String) -> String: return id_to_dict(i, item).bgfn
 	
 func load_area_colors(node: Node, primary_color: Color, accent_color: Color) -> void:
 	for child in get_children_recursive(node):
