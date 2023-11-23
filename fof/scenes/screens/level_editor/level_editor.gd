@@ -82,7 +82,7 @@ func _ready() -> void:
 	BuildMenu.position.y += BuildMenu.size.y
 	reset_mblocker_rects()
 	admin()
-	
+	_on_arrow_button_pressed()
 	setup_elevation()
 	set_heightbuttons_modulate()
 
@@ -870,7 +870,8 @@ func on_tile_select() -> void:
 						var is_centric: bool = tile.info[b].id > 0 and (tile.info[b].multi_tile.size() == 0 or tile.info[b].multi_tile[0] == tile.info.position)
 						var mt: int = tile.info[b].multi_tile.size()
 						
-						if (tile.info[b].id > 0 or mt > 0) and !(0 in tile.preview_state) and tile.info.tile.id == 0 and tile.info.obj.id != 5 and (mt == 0 or tile.info[b].multi_tile[0][3] == tile.info.position[3]):
+						if ((tile.info[b].id > 0 or mt > 0) and !(0 in tile.preview_state) and tile.info.tile.id == 0 \
+						and tile.info.obj.id != 5 and (mt == 0 or tile.info[b].multi_tile[0][3] == tile.info.position[3])):
 							if tile not in load_tiles: load_tiles.append(tile)
 
 						if n == 2 or is_centric: 
@@ -878,9 +879,12 @@ func on_tile_select() -> void:
 
 					on_set_tile_material(tile, highlight, false)
 					tile.preview_state = []
+				
+				for tile in load_tiles: on_load_tile(tile, 1, 0, 0, true)
+				if load_infos.size() == 1 and load_infos[0].tile.id > 0:
+					var tile: Node3D = true_tile_by_position(load_infos[0].position)
+					on_load_tile(tile, tile.info.tile.id, tile.info.tile.rotation, tile.info.tile.type, true)
 				reset_infos()
-				for tile in load_tiles:
-					on_load_tile(tile, 1, 0, 0, 1)
 				
 			elif active_tile and active_tile in selection_tiles:
 				on_call_selection_callable(active_tile)
