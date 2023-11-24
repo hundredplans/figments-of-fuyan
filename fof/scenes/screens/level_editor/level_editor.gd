@@ -1147,7 +1147,7 @@ func on_preview_tiles(tsi: Node3D, info: Dictionary, highlight: int) -> void:
 					
 		tsi.info = info
 		add_to_load_infos(tsi.info)
-		for b in item_id_array[0]:
+		for b in item_id_array[highlight + 1]:
 			if tsi.info[b].multi_tile.size() > 1:
 				var btab: int = STR_TO_BTAB[b]
 				for tile in tiles_by_multitile(tsi, btab):
@@ -1165,6 +1165,7 @@ func on_preview_tiles(tsi: Node3D, info: Dictionary, highlight: int) -> void:
 							tile.info.wall.id = info.wall.id
 							tile.info.wall.rotation = info.wall.rotation
 							tile.info.wall.type = info.wall.type
+							
 							if tile.info.position == info.wall.multi_tile[info.wall.multi_tile.size() - 1]:
 								tile.info.wall.tile_wall = info.wall.tile_wall
 								tsi.info.wall.tile_wall = 0
