@@ -82,8 +82,15 @@ func on_item_selected(item_info: Dictionary) -> void:
 	cards = []
 	for child in $AddedCards/CardZone.get_children(): child.queue_free()
 	
+	
 	for i in item_info.cards:
 		on_card_selected(Helper.id_to_dict(i, "Card"))
+		
+	set_card_amount()
+
+func set_card_amount() -> void:
+	$AddedCards/Amount.visible = cards.size() > 0
+	$AddedCards/Amount.text = str(cards.size())
 
 func _on_add_cards_pressed():
 	var FileLoader: Control = preload("res://scenes/editor/file_loader/file_loader.tscn").instantiate()
@@ -101,6 +108,7 @@ func on_card_selected(card_info: Dictionary) -> void:
 		CardZone.add_child(added_card)
 		cards.append(card_info.id)
 		on_sort_added_cards()
+		set_card_amount()
 		
 func on_remove_card(btn: Control) -> void:
 	cards.erase(int(str(btn.name)))
@@ -108,6 +116,7 @@ func on_remove_card(btn: Control) -> void:
 	btn.queue_free()
 	on_sort_added_cards()
 	get_viewport().warp_mouse(get_viewport().get_mouse_position())
+	set_card_amount()
 	
 func on_sort_added_cards():
 	var xy := Vector2(0, 20)

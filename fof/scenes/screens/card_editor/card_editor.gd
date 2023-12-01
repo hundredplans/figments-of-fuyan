@@ -33,12 +33,13 @@ func on_ai_settings_item_selected(item: int, i: int) -> void:
 
 func on_stat_text_submitted(__: String, i: int) -> void:
 	i = i + 1
-	if i < 4:
-		var ledit: LineEdit = $CardCreator/Stats.get_child(i)
-		ledit.grab_focus()
-		ledit.caret_column = ledit.text.length()
-	else:
-		Internal.grab_focus()
+	match i:
+		3: $CardCreator/CardText.grab_focus()
+		4: $CardCreator/Stats/Attack.grab_focus()
+		_: 
+			var ledit: LineEdit = $CardCreator/Stats.get_child(i)
+			ledit.grab_focus()
+			ledit.caret_column = ledit.text.length()
 
 func on_stat_text_changed(text: String, node: LineEdit) -> void:
 	if text.is_valid_int():
@@ -66,7 +67,7 @@ func _on_flavor_text_changed():
 		FlavorText.release_focus()
 
 func _on_edit_file_name_text_submitted():
-	$CardCreator/CardText.grab_focus()
+	$CardCreator/Stats/Energy.grab_focus()
 
 func _on_save_card_pressed():
 	var contents: String = "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s"\
@@ -76,13 +77,32 @@ func _on_save_card_pressed():
 	Helper.create_base_game_id_dir(item_dict, FILE_LOADER_NAME)
 	ID = item_dict.id
 
+var FileLoader: Control
 func _on_load_card_pressed():
-	var FileLoader: Control = preload("res://scenes/editor/file_loader/file_loader.tscn").instantiate()
-	FileLoader.on_ready(FILE_LOADER_NAME)
-	FileLoader.item_selected.connect(on_item_selected)
-	add_child(FileLoader)
+	FileLoader = preload("res://scenes/editor/file_loader/file_loader.tscn").instantiate()
 	
-func on_item_selected(item_info: Dictionary) -> void:
+	FileLoader.get_node("Search/SearchEdit").text = search_item_text
+	FileLoader.current_page = fileloader_page
+	
+	FileLoader.on_ready(FILE_LOADER_NAME)
+	if search_item_selected > 0 or search_item_text.length() > 0:
+		FileLoader._on_search_item_selected(search_item_selected)
+	
+	FileLoader.item_selected.connect(on_item_selected)
+	FileLoader.queued.connect(on_fileloader_queued)
+	add_child(FileLoader)
+	FileLoader.get_node("Search/SearchOptions").select_item(search_item_selected)
+	
+var fileloader_page: int = 1
+var search_item_selected: int = 0
+var search_item_text: String = ""
+
+func on_fileloader_queued() -> void:
+	fileloader_page = FileLoader.current_page
+	search_item_selected = FileLoader.search_item_selected
+	search_item_text = FileLoader.get_node("Search/SearchEdit").text
+	
+func on_item_selected(item_info: Dictionary, change_rarity: bool = true) -> void:
 	$CardCreator/EditFileName.set_text(item_info.iname, item_info.sname)
 	for stat in ["a", "h", "s", "e"]:
 		var stat_edit: LineEdit = $CardCreator/Stats.get_node(Helper.stat_ai_dict[stat])
@@ -107,8 +127,10 @@ func on_item_selected(item_info: Dictionary) -> void:
 	$CardCreator/Art.texture = load(texture_path)
 	
 	on_load_model(item_info.bgfn)
-	_on_choose_rarity_item_selected(item_info.r)
-	$CardCreator/ChooseRarity.select_item(item_info.r)
+	
+	if change_rarity:
+		_on_choose_rarity_item_selected(item_info.r)
+		$CardCreator/ChooseRarity.select_item(item_info.r)
 	
 	height = item_info.height
 	$HeightButton.default = height
@@ -157,4 +179,4 @@ const EMPTY_INFO: Dictionary = {
 	"height": 2,
 	"bgfn": "",
 }
-func _on_empty_card_pressed(): on_item_selected(EMPTY_INFO)
+func _on_empty_card_pressed(): on_item_selected(EMPTY_INFO, false)

@@ -135,6 +135,7 @@ offset_right = 1091.96
 offset_bottom = 67.0
 min_max = Vector2i(1, 7)
 steps = Vector2i(1, 3)
+default = 4
 label_text = "Confidence"
 snap_mode = true
 
@@ -149,6 +150,7 @@ offset_right = 1091.96
 offset_bottom = 148.0
 min_max = Vector2i(1, 7)
 steps = Vector2i(1, 3)
+default = 4
 label_text = "Intelligence"
 snap_mode = true
 
@@ -163,6 +165,7 @@ offset_right = 1091.96
 offset_bottom = 229.0
 min_max = Vector2i(1, 7)
 steps = Vector2i(1, 3)
+default = 4
 label_text = "Awareness"
 snap_mode = true
 
@@ -177,6 +180,7 @@ offset_right = 1091.96
 offset_bottom = 310.0
 min_max = Vector2i(1, 7)
 steps = Vector2i(1, 3)
+default = 4
 label_text = "Teamwork"
 snap_mode = true
 
@@ -185,6 +189,7 @@ offset_top = 338.0
 offset_bottom = 391.0
 min_max = Vector2i(1, 7)
 steps = Vector2i(1, 3)
+default = 4
 label_text = "Adventurosness"
 snap_mode = true
 
@@ -238,13 +243,13 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Delete Card"
 
-[node name="EmptyCard" type="Button" parent="Buttons"]
+[node name="NewCard" type="Button" parent="Buttons"]
 layout_mode = 0
-offset_left = -225.0
+offset_left = -624.0
 offset_top = 8.0
-offset_right = -6.0
+offset_right = -405.0
 offset_bottom = 156.0
-text = "Empty Card"
+text = "New Card"
 
 [node name="ModelViewer" type="SubViewportContainer" parent="."]
 layout_mode = 1
@@ -298,7 +303,7 @@ button_mask = 2
 [connection signal="pressed" from="Buttons/SaveCard" to="." method="_on_save_card_pressed"]
 [connection signal="pressed" from="Buttons/LoadCard" to="." method="_on_load_card_pressed"]
 [connection signal="pressed" from="Buttons/DeleteCard" to="." method="_on_delete_card_pressed"]
-[connection signal="pressed" from="Buttons/EmptyCard" to="." method="_on_empty_card_pressed"]
+[connection signal="pressed" from="Buttons/NewCard" to="." method="_on_empty_card_pressed"]
 [connection signal="item_selected" from="HeightButton" to="." method="_on_height_selected"]
 [connection signal="button_down" from="ModelViewerButton" to="." method="_on_model_viewer_button_button_down"]
 [connection signal="button_up" from="ModelViewerButton" to="." method="_on_model_viewer_button_button_up"]

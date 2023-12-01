@@ -10,6 +10,7 @@ signal item_selected
 var search_item_selected: int = 0
 var current_page: int = 1
 var button_size: Vector2i
+var max_page: int = 0
 
 var all_item_buttons: Array
 var item_buttons: Array
@@ -46,8 +47,8 @@ func on_ready(_item_name: String) -> void:
 	var set_button_size: bool = false
 	for item_dict in Helper.return_file_names_recursive((static_path + path).left(-1)).map(func(x: String): return Helper.return_item_dict(item_name, Helper.return_file_contents(x))):
 		set_button_size = create_item_button(item_dict, set_button_size)
-
 	sort_buttons()
+	max_page = ceil((item_buttons.size()) * 0.1)
 
 func sort_buttons() -> void:
 	item_buttons = all_item_buttons
@@ -110,7 +111,10 @@ func position_item_buttons() -> void:
 		j += 1
 	
 func change_page(i: int) -> void:
-	current_page = clamp(current_page + i, 1, ceil((item_buttons.size()) * 0.1))
+	if current_page == 1 and i == -1: current_page = max_page
+	elif current_page == max_page and i == 1: current_page = 1
+	else: current_page = clamp(current_page + i, 1, max_page)
+	
 	position_item_buttons()
 
 func _on_search_item_selected(i: int):
