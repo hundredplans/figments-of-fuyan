@@ -42,7 +42,7 @@ func _ready():
 		tile.tile_position = Vector2(x, y)
 	
 	var file_names: PackedStringArray = DirAccess.open("res://test/simulation/assets/trinkets").get_files()
-	file_names = Array(file_names).filter(func(x: String): return x.ends_with(".import"))
+	file_names = Array(file_names).filter(func(z: String): return z.ends_with(".import"))
 	for file in file_names:
 		all_cards.append(file.replace(".import", ""))
 	

@@ -24,5 +24,5 @@ func _on_add_total_pressed():
 
 func _on_roll_random_pressed():
 	var ntask: Array = Array(FileAccess.open("user://savefofle/tasks.txt", FileAccess.READ).get_as_text().split("\n", false))\
-	.filter(func(x: String): var split: Array = Array(x.split("-")); return get_parent().get_children().all(func(x: Control): return split != x.task) and task[1] == split[1])
+	.filter(func(x: String): var split: Array = Array(x.split("-")); return get_parent().get_children().all(func(y: Control): return split != y.task) and task[1] == split[1])
 	load_task(ntask[randi() % ntask.size()])

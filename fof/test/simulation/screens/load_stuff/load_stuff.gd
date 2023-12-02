@@ -39,7 +39,7 @@ func load_stuff():
 		load_stuff_button.pressed.connect(on_load_directory.bind("/" + dir))
 		$LoadZone.add_child(load_stuff_node)
 		
-	for file in Array(DirAccess.open(load_path).get_files()).filter(func(x: String): return x.ends_with(".txt")):
+	for file in Array(DirAccess.open(load_path).get_files()).filter(func(z: String): return z.ends_with(".txt")):
 		var load_stuff_node: Control = load_stuff_scene.instantiate()
 		var load_stuff_button: Button = load_stuff_node.get_node("LoadStuff")
 		load_stuff_button.text = file.left(-4)
