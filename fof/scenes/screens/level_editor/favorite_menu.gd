@@ -10,6 +10,8 @@ var label_texts: Array = []
 var variations: Array = []
 var items_removed: Array = []
 
+# -180, -245
+
 func _ready() -> void:
 	for i in range(favorite_items.size()):
 		var item: Node3D = load(favorite_items[i]).instantiate()
@@ -17,8 +19,8 @@ func _ready() -> void:
 		var kid: Control = $Items/ItemBoxes.get_child(i)
 		kid.get_node("Label").text = label_texts[i]
 		kid.get_node("Button").pressed.connect(func(): item_selected.emit(i, 0))
-		on_position_item(item, kid.position.y + 45, Vector2(float(-103 * 0.2), float(-181 * 0.2)))
-		
+		on_position_item(item, kid.position.y + 45, Vector2(-36, -49))
+
 		var xy := Vector2.ZERO
 		var z := Control.new()
 		z.size = Vector2.ZERO
@@ -31,7 +33,7 @@ func _ready() -> void:
 			btn.text = str(j + 1)
 			btn.pressed.connect(func(): item_selected.emit(i, j + 1))
 			z.add_child(btn)
-			
+
 			xy.x += 40
 			if xy.x == 80 or xy.x == 260:
 				xy.y += 40

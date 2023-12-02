@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://bq65i6hwtd4b5"]
+[gd_scene load_steps=7 format=3 uid="uid://bq65i6hwtd4b5"]
 
 [ext_resource type="Script" path="res://scenes/screens/area_editor/area_editor.gd" id="1_r82ym"]
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="2_euq7d"]
 [ext_resource type="PackedScene" uid="uid://bdd0m6wbuerq5" path="res://scenes/editor/edit_file_name/edit_file_name.tscn" id="3_s437e"]
 [ext_resource type="FontFile" uid="uid://dnq2ul3ia4hy3" path="res://assets/UI/lora/Lora-Bold.ttf" id="4_ygm6e"]
+[ext_resource type="LabelSettings" uid="uid://qp0350v2j4ah" path="res://assets/UI/roboto/roboto32outline.tres" id="5_vb57l"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_u43yd"]
 font = ExtResource("4_ygm6e")
@@ -336,6 +337,16 @@ offset_left = 72.0
 offset_top = 30.0
 offset_right = 570.0
 offset_bottom = 1050.0
+
+[node name="Amount" type="Label" parent="AddedCards"]
+visible = false
+layout_mode = 0
+offset_left = 34.0
+offset_top = 30.0
+offset_right = 108.0
+offset_bottom = 71.0
+text = "0"
+label_settings = ExtResource("5_vb57l")
 
 [connection signal="pressed" from="Buttons/WorldDifficulty/WorldOne" to="." method="_on_world_difficulty_pressed" binds= [1]]
 [connection signal="pressed" from="Buttons/WorldDifficulty/WorldTwo" to="." method="_on_world_difficulty_pressed" binds= [2]]
