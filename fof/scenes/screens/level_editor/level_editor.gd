@@ -795,6 +795,7 @@ func on_remove_under_tile(tile: Node3D) -> void:
 func on_tile_rotate(tile: Node3D, rotate_direction: int) -> void:
 	if !has_rotated_tile_delay:
 		has_rotated_tile_delay = true
+		
 		for j in ["tile", "obj", "wall", "tdeco", "wdeco"]:
 			if tile.info[j].id > 0 or tile.info[j].multi_tile.size() > 1:
 				match j:
@@ -1136,14 +1137,17 @@ func on_preview_tiles(tsi: Node3D, info: Dictionary, highlight: int) -> void:
 	reset_infos(true)
 	var late_load_info: Array = []
 	if !(tsi.info.wall.id > 0 and tsi.info.wall.multi_tile.size() > 0 and tsi.info.wall.multi_tile[0] != tsi.info.position):
+		
 		add_to_bs_infos(tsi.info)
-		for n in range(5):
-			if tsi.info[BTAB_TO_STR[n]].multi_tile.size() > 1:
-				for tile in tiles_by_multitile(tsi, n):
-					if tile != null:
-						if tile != tsi: add_to_bs_infos(tile.info)
-						tile.info[BTAB_TO_STR[n]] = EMPTY_DATA[n].duplicate(true)
-						if tile != tsi: late_load_info.append(tile.info)
+		print(tsi.info)
+		for btab in range(5):
+			if tsi.info[BTAB_TO_STR[btab]].multi_tile.size() > 1:
+				for tile in tiles_by_multitile(tsi, highlight).filter(func(x: Node3D): return x != null and x != tsi):
+					print(tile)
+					add_to_bs_infos(tile.info)
+					if btab == highlight:
+						tile.info[BTAB_TO_STR[highlight]] = EMPTY_DATA[highlight].duplicate(true)
+						late_load_info.append(tile.info)
 					
 		tsi.info = info
 		add_to_load_infos(tsi.info)
@@ -1429,7 +1433,7 @@ func on_preview_tiles_new_tile(tile: Node3D) -> void:
 		var tiles: Array = []
 		for _tile in move_tiles: # put all the tiles that will be affected in tiles array
 			for btab in move_highlights:
-				for __tile in tiles_by_multitile(_tile, btab, true):
+				for __tile in tiles_by_multitile(_tile, btab, true).filter(func(x: Node3D): return x != null):
 					if __tile not in tiles: tiles.append(__tile)
 		
 		old_infos = []
@@ -1485,8 +1489,7 @@ func on_tile_menu_spawn(tiles: Array) -> void:
 		FileLoader.on_ready_preselected("Card", cards)
 		FileLoader.item_selected.connect(on_card_selected_from_fileloader)
 		on_file_loader_loaded(FileLoader)
-		FileLoader.queued.connect(func(): block_screen = true; reset_mblocker_rects())
-
+ 
 func on_tile_menu_item_type(val: int, item: int, tiles: Array) -> void:
 	if tiles.size() == 1 and item != 0:
 		for j in item_id_array[item]:
@@ -1509,8 +1512,9 @@ func on_tile_menu_wall_height(i: int, tiles: Array) -> void:
 
 func on_file_loader_loaded(FileLoader: Control):
 	FileLoader.queued.connect(on_file_loader_queued)
-	file_loader_loaded = true
+	on_tile_menu_queued(TileMenuGlobal, true)
 	block_screen = true
+	file_loader_loaded = true
 	reset_mblocker_rects()
 	add_child(FileLoader)
 

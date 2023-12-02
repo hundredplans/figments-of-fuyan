@@ -77,6 +77,7 @@ func on_ready_preselected(_item_name: String, items: Array) -> void:
 		sbs = create_item_button(item_dict, sbs)
 
 	sort_buttons()
+	max_page = ceil((item_buttons.size()) * 0.1)
 
 func on_item_ready() -> void:
 	
