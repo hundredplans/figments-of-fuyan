@@ -8,6 +8,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 24.0
 offset_bottom = 63.0
+mouse_filter = 1
 theme = ExtResource("1_rsbc5")
 script = ExtResource("1_x1upb")
 options = PackedStringArray("")
@@ -16,6 +17,7 @@ options = PackedStringArray("")
 layout_mode = 0
 offset_right = 24.0
 offset_bottom = 63.0
+mouse_filter = 1
 color = Color(0, 0, 0, 1)
 
 [node name="Inside" type="ColorRect" parent="."]
@@ -24,6 +26,7 @@ offset_left = 5.0
 offset_top = 5.0
 offset_right = 19.0
 offset_bottom = 58.0
+mouse_filter = 1
 color = Color(0, 0, 0, 1)
 
 [node name="OptionButton" type="OptionButton" parent="."]
@@ -32,10 +35,12 @@ offset_left = 5.0
 offset_top = 5.0
 offset_right = 19.0
 offset_bottom = 58.0
+mouse_filter = 1
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
 offset_left = 31.0
 offset_right = 32.0
 offset_bottom = 63.0
+mouse_filter = 1
 vertical_alignment = 1

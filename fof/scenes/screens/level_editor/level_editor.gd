@@ -795,9 +795,11 @@ func on_remove_under_tile(tile: Node3D) -> void:
 func on_tile_rotate(tile: Node3D, rotate_direction: int) -> void:
 	if !has_rotated_tile_delay:
 		has_rotated_tile_delay = true
+		var rotate_order: Array = item_id_array[0]
+		if highlight: rotate_order = [BTAB_TO_STR[highlight]]
 		
-		for j in ["tile", "obj", "wall", "tdeco", "wdeco"]:
-			if tile.info[j].id > 0 or tile.info[j].multi_tile.size() > 1:
+		for j in rotate_order:
+			if (tile.info[j].id > 0 and !(j == "tile" and tile.info[j].type == 0)) or tile.info[j].multi_tile.size() > 1:
 				match j:
 					"wall":
 						var tiles: Array = tiles_by_multitile(tile, 2, false)
@@ -1119,6 +1121,7 @@ var load_infos: Array = []
 var bs_infos: Array = []
 
 func reset_infos(true_reset: bool = false) -> void:
+	highlight = 0
 	if true_reset:
 		for i in bs_infos:
 			for j in load_infos:
@@ -1133,17 +1136,17 @@ func reset_infos(true_reset: bool = false) -> void:
 	load_infos = []
 	bs_infos = []
 
-func on_preview_tiles(tsi: Node3D, info: Dictionary, highlight: int) -> void:
+var highlight: int = 0
+func on_preview_tiles(tsi: Node3D, info: Dictionary, _highlight: int) -> void:
 	reset_infos(true)
+	highlight = _highlight
 	var late_load_info: Array = []
 	if !(tsi.info.wall.id > 0 and tsi.info.wall.multi_tile.size() > 0 and tsi.info.wall.multi_tile[0] != tsi.info.position):
 		
 		add_to_bs_infos(tsi.info)
-		print(tsi.info)
 		for btab in range(5):
 			if tsi.info[BTAB_TO_STR[btab]].multi_tile.size() > 1:
 				for tile in tiles_by_multitile(tsi, highlight).filter(func(x: Node3D): return x != null and x != tsi):
-					print(tile)
 					add_to_bs_infos(tile.info)
 					if btab == highlight:
 						tile.info[BTAB_TO_STR[highlight]] = EMPTY_DATA[highlight].duplicate(true)

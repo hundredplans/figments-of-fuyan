@@ -10,6 +10,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 283.0
 offset_bottom = 53.0
+mouse_filter = 1
 theme = ExtResource("1_62k3r")
 script = ExtResource("1_wp1vw")
 
@@ -18,11 +19,13 @@ layout_mode = 1
 anchors_preset = 0
 offset_right = 283.0
 offset_bottom = 53.0
+mouse_filter = 1
 
 [node name="Inside" type="ColorRect" parent="Background"]
 layout_mode = 1
 offset_right = 283.0
 offset_bottom = 53.0
+mouse_filter = 1
 color = Color(0, 0, 0, 1)
 
 [node name="Outside" type="ColorRect" parent="Background"]
@@ -31,6 +34,7 @@ offset_left = 5.0
 offset_top = 5.0
 offset_right = 278.0
 offset_bottom = 48.0
+mouse_filter = 1
 color = Color(0.298039, 0.298039, 0.298039, 1)
 
 [node name="GradientButton" type="TextureButton" parent="."]
@@ -38,6 +42,7 @@ layout_mode = 0
 offset_left = 73.0
 offset_right = 283.0
 offset_bottom = 53.0
+mouse_filter = 1
 texture_normal = ExtResource("2_rr8ay")
 
 [node name="SnapBars" type="Control" parent="."]
@@ -46,7 +51,7 @@ offset_left = 93.0
 offset_top = 5.0
 offset_right = 263.0
 offset_bottom = 48.0
-mouse_filter = 2
+mouse_filter = 1
 
 [node name="Grabber" type="TextureButton" parent="."]
 layout_mode = 1
@@ -55,6 +60,7 @@ offset_left = 79.0
 offset_top = 16.0
 offset_right = 109.0
 offset_bottom = 81.0
+mouse_filter = 1
 texture_normal = ExtResource("4_ihojy")
 
 [node name="Label" type="Label" parent="."]
@@ -62,12 +68,14 @@ layout_mode = 0
 offset_left = 290.0
 offset_right = 291.0
 offset_bottom = 53.0
+mouse_filter = 1
 vertical_alignment = 1
 
 [node name="Number" type="Label" parent="."]
 layout_mode = 0
 offset_right = 79.0
 offset_bottom = 53.0
+mouse_filter = 1
 horizontal_alignment = 1
 vertical_alignment = 1
 

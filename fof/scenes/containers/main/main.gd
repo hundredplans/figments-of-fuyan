@@ -8,6 +8,8 @@ extends Node
 @onready var World: Node3D = $World
 @onready var WorldEnv: WorldEnvironment = $World/WorldEnvironment
 
+@onready var MoveLibrary: AnimationLibrary = $UI/MoveScreen.get_animation_library("")
+
 const main_menu_path: String = "res://scenes/screens/main_menu/main_menu.tscn"
 var fileloader_state: int = 0
 var screen_change_animation_active: bool = false
@@ -30,6 +32,19 @@ func on_user_quit() -> void:
 	Settings.update_settings_file_info()
 	get_tree().quit()
 	
+const move_screen_name_to_path: Dictionary = {
+	"MainMenu": "res://scenes/screens/main_menu/move_screen.tres",
+	"EditorMenu": "res://scenes/screens/editor_menu/move_screen.tres",
+	"SettingsMenu": "res://scenes/screens/settings_menu/move_screen.tres",
+	"Fuyanopedia": "res://scenes/screens/fuyanopedia/move_screen.tres",
+	"LevelEditor": "res://scenes/screens/level_editor/move_screen.tres",
+	"LoreBooksEditor": "res://scenes/screens/lore_books_editor/move_screen.tres",
+	"AreaEditor": "res://scenes/screens/area_editor/move_screen.tres",
+	"BoonEditor": "res://scenes/screens/boon_editor/move_screen.tres",
+	"ToolEditor": "res://scenes/screens/tool_editor/move_screen.tres",
+	"ItemEditor": "res://scenes/screens/item_editor/move_screen.tres",
+}
+	
 func on_menu_transition(screen: Control, old_screen: Control, is_enter: bool) -> void:
 	on_setup_screen(screen)
 	if old_screen.has_method("on_move_screen_setup"):
@@ -37,6 +52,7 @@ func on_menu_transition(screen: Control, old_screen: Control, is_enter: bool) ->
 	on_screen_change_animation_state(true)
 	screen.visible = false
 	
+	MoveLibrary.add_animation(old_screen.name,  load(move_screen_name_to_path[old_screen.name]))
 	if is_enter:
 		MoveScreen.play(old_screen.name)
 		screen_history.append(old_screen.scene_file_path)
@@ -47,10 +63,13 @@ func on_menu_button_pressed(i: Variant) -> void:
 		TYPE_CALLABLE: i.call()
 		TYPE_STRING: on_load_screen(i, true)
 	
-func _on_move_screen_animation_finished(__: String):
+func _on_move_screen_animation_finished(animation_name: String):
 	var screen: Control = Screens.get_child(1)
 	if screen.has_method("_queue_free"): screen._queue_free()
 	screen.queue_free()
+	
+	MoveScreen.current_animation = ""
+	MoveLibrary.remove_animation(animation_name)
 	on_screen_change_animation_state(false)
 
 func on_move_screen_switch(screen: Control) -> void:

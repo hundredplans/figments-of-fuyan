@@ -46,6 +46,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_c1ufw")
 
 [node name="LoadButtons" type="Control" parent="."]
@@ -53,6 +54,7 @@ anchors_preset = 0
 offset_top = 213.0
 offset_right = 70.0
 offset_bottom = 1036.0
+mouse_filter = 1
 theme = ExtResource("3_hyt8o")
 
 [node name="Background" type="Control" parent="LoadButtons"]
@@ -61,7 +63,7 @@ offset_left = 70.0
 offset_right = 893.0
 offset_bottom = 70.0
 rotation = 1.5708
-mouse_filter = 2
+mouse_filter = 1
 
 [node name="PROutside" type="ColorRect" parent="LoadButtons/Background"]
 layout_mode = 1
@@ -70,7 +72,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
+mouse_filter = 1
 color = Color(0.364706, 0.235294, 0.14902, 1)
 
 [node name="ACInside" type="ColorRect" parent="LoadButtons/Background"]
@@ -83,7 +85,7 @@ offset_top = 10.0
 offset_right = -10.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
+mouse_filter = 1
 color = Color(0.792157, 0.576471, 0.431373, 1)
 
 [node name="Buttons" type="Control" parent="LoadButtons"]
@@ -92,7 +94,7 @@ offset_left = 70.0
 offset_right = 893.0
 offset_bottom = 70.0
 rotation = 1.5708
-mouse_filter = 2
+mouse_filter = 1
 
 [node name="LoadArea" type="Button" parent="LoadButtons/Buttons"]
 layout_mode = 1
@@ -101,6 +103,7 @@ offset_left = 10.0
 offset_top = 10.0
 offset_right = 173.0
 offset_bottom = 70.0
+mouse_filter = 1
 text = "Load Area"
 
 [node name="LoadLevel" type="Button" parent="LoadButtons/Buttons"]
@@ -110,6 +113,7 @@ offset_left = 207.0
 offset_top = 10.0
 offset_right = 370.0
 offset_bottom = 70.0
+mouse_filter = 1
 text = "Load Level"
 
 [node name="LoadEmpty" type="Button" parent="LoadButtons/Buttons"]
@@ -118,6 +122,7 @@ offset_left = 421.0
 offset_top = 10.0
 offset_right = 599.0
 offset_bottom = 70.0
+mouse_filter = 1
 text = "Load Empty"
 
 [node name="SaveLevel" type="Button" parent="LoadButtons/Buttons"]
@@ -126,12 +131,14 @@ offset_left = 639.0
 offset_top = 10.0
 offset_right = 813.0
 offset_bottom = 70.0
+mouse_filter = 1
 text = "Save Level"
 
 [node name="InfoMenu" type="Control" parent="."]
 anchors_preset = 0
 offset_right = 956.0
 offset_bottom = 175.0
+mouse_filter = 1
 
 [node name="Background" type="Control" parent="InfoMenu"]
 layout_mode = 1
@@ -222,6 +229,7 @@ offset_left = 187.0
 offset_top = 713.0
 offset_right = 1816.0
 offset_bottom = 1080.0
+mouse_filter = 2
 
 [node name="Background" type="Control" parent="BuildMenu"]
 layout_mode = 1
@@ -263,6 +271,7 @@ offset_left = 10.0
 offset_top = -46.151
 offset_right = 1434.0
 offset_bottom = 0.848995
+mouse_filter = 1
 
 [node name="Tabs" type="HBoxContainer" parent="BuildMenu/Tabs"]
 layout_mode = 1
@@ -277,24 +286,28 @@ theme_override_constants/separation = 10
 [node name="TileTab" type="Button" parent="BuildMenu/Tabs/Tabs"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 1
 text = "Tiles"
 metadata/_edit_lock_ = true
 
 [node name="ObjectTab" type="Button" parent="BuildMenu/Tabs/Tabs"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 1
 text = "Object"
 metadata/_edit_lock_ = true
 
 [node name="WallTab" type="Button" parent="BuildMenu/Tabs/Tabs"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 1
 text = "Walls"
 metadata/_edit_lock_ = true
 
 [node name="DecorationTab" type="Button" parent="BuildMenu/Tabs/Tabs"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 1
 text = "Decorations"
 metadata/_edit_lock_ = true
 
@@ -303,6 +316,7 @@ layout_mode = 0
 offset_left = 349.0
 offset_right = 357.0
 offset_bottom = 47.0
+mouse_filter = 2
 color = Color(0.364706, 0.235294, 0.14902, 1)
 
 [node name="PRSeperator2" type="ColorRect" parent="BuildMenu/Tabs"]
@@ -310,6 +324,7 @@ layout_mode = 0
 offset_left = 708.0
 offset_right = 716.0
 offset_bottom = 47.0
+mouse_filter = 2
 color = Color(0.364706, 0.235294, 0.14902, 1)
 
 [node name="PRSeperator3" type="ColorRect" parent="BuildMenu/Tabs"]
@@ -317,6 +332,7 @@ layout_mode = 0
 offset_left = 1066.0
 offset_right = 1074.0
 offset_bottom = 47.0
+mouse_filter = 2
 color = Color(0.364706, 0.235294, 0.14902, 1)
 
 [node name="PRSeperator4" type="ColorRect" parent="BuildMenu/Tabs"]
@@ -324,6 +340,7 @@ layout_mode = 0
 offset_left = 1424.0
 offset_right = 1432.0
 offset_bottom = 357.0
+mouse_filter = 2
 color = Color(0.364706, 0.235294, 0.14902, 1)
 
 [node name="PRRim" type="ColorRect" parent="BuildMenu/Tabs"]
@@ -331,6 +348,7 @@ layout_mode = 0
 offset_top = 47.0
 offset_right = 1609.0
 offset_bottom = 57.0
+mouse_filter = 2
 color = Color(0.364706, 0.235294, 0.14902, 1)
 
 [node name="LoadedMenu" type="Control" parent="BuildMenu"]
@@ -340,6 +358,7 @@ offset_left = 10.0
 offset_top = 62.0
 offset_right = 1434.0
 offset_bottom = 367.0
+mouse_filter = 2
 
 [node name="BackArrow" type="TextureButton" parent="BuildMenu/LoadedMenu"]
 layout_mode = 1
@@ -348,6 +367,7 @@ offset_left = 4.007
 offset_top = 9.99998
 offset_right = 64.007
 offset_bottom = 70.0
+mouse_filter = 1
 texture_normal = ExtResource("8_uibcn")
 
 [node name="PRLeftArrow" type="TextureButton" parent="BuildMenu/LoadedMenu"]
@@ -359,6 +379,7 @@ offset_right = 91.0
 offset_bottom = 281.0
 grow_horizontal = 0
 scale = Vector2(0.8, 0.8)
+mouse_filter = 1
 texture_normal = ExtResource("5_c5gvh")
 flip_h = true
 
@@ -371,6 +392,7 @@ offset_right = 91.0
 offset_bottom = 182.0
 grow_horizontal = 0
 scale = Vector2(0.8, 0.8)
+mouse_filter = 1
 texture_normal = ExtResource("5_c5gvh")
 
 [node name="ItemsViewer" type="SubViewportContainer" parent="BuildMenu/LoadedMenu"]
@@ -417,9 +439,11 @@ offset_left = 116.0
 offset_top = 10.0
 offset_right = 1207.0
 offset_bottom = 294.0
+mouse_filter = 1
 
 [node name="ItemTypes" type="Control" parent="BuildMenu/LoadedMenu"]
 anchors_preset = 0
+mouse_filter = 1
 
 [node name="HeightMenu" type="Control" parent="BuildMenu"]
 anchors_preset = 0
@@ -427,6 +451,7 @@ offset_left = 1442.0
 offset_top = 10.0
 offset_right = 1619.0
 offset_bottom = 367.0
+mouse_filter = 1
 theme = ExtResource("3_hyt8o")
 
 [node name="Elevation" type="Label" parent="BuildMenu/HeightMenu"]
@@ -453,6 +478,7 @@ layout_mode = 0
 offset_top = 299.0
 offset_right = 177.0
 offset_bottom = 309.0
+mouse_filter = 1
 color = Color(0.364706, 0.235294, 0.14902, 1)
 
 [node name="PRCenterRim" type="ColorRect" parent="BuildMenu/HeightMenu"]
@@ -460,6 +486,7 @@ layout_mode = 0
 offset_top = 173.0
 offset_right = 177.0
 offset_bottom = 183.0
+mouse_filter = 1
 color = Color(0.364706, 0.235294, 0.14902, 1)
 
 [node name="HeightButtons" type="Control" parent="BuildMenu/HeightMenu"]
@@ -467,6 +494,7 @@ anchors_preset = 0
 offset_top = 183.0
 offset_right = 177.0
 offset_bottom = 299.0
+mouse_filter = 1
 
 [node name="0" type="Button" parent="BuildMenu/HeightMenu/HeightButtons"]
 layout_mode = 0
@@ -474,6 +502,7 @@ offset_left = 10.0
 offset_top = 6.0
 offset_right = 60.0
 offset_bottom = 56.0
+mouse_filter = 1
 text = ".5"
 
 [node name="1" type="Button" parent="BuildMenu/HeightMenu/HeightButtons"]
@@ -482,6 +511,7 @@ offset_left = 64.0
 offset_top = 6.0
 offset_right = 114.0
 offset_bottom = 56.0
+mouse_filter = 1
 text = "1"
 
 [node name="2" type="Button" parent="BuildMenu/HeightMenu/HeightButtons"]
@@ -490,6 +520,7 @@ offset_left = 117.0
 offset_top = 6.0
 offset_right = 167.0
 offset_bottom = 56.0
+mouse_filter = 1
 text = "2"
 
 [node name="3" type="Button" parent="BuildMenu/HeightMenu/HeightButtons"]
@@ -498,6 +529,7 @@ offset_left = 10.0
 offset_top = 59.0
 offset_right = 60.0
 offset_bottom = 109.0
+mouse_filter = 1
 text = "3"
 
 [node name="4" type="Button" parent="BuildMenu/HeightMenu/HeightButtons"]
@@ -506,6 +538,7 @@ offset_left = 64.0
 offset_top = 59.0
 offset_right = 114.0
 offset_bottom = 109.0
+mouse_filter = 1
 text = "4"
 
 [node name="5" type="Button" parent="BuildMenu/HeightMenu/HeightButtons"]
@@ -514,6 +547,7 @@ offset_left = 117.0
 offset_top = 59.0
 offset_right = 167.0
 offset_bottom = 109.0
+mouse_filter = 1
 text = "5"
 
 [node name="ElevationButtons" type="Control" parent="BuildMenu/HeightMenu"]
@@ -521,6 +555,7 @@ anchors_preset = 0
 offset_top = 57.0
 offset_right = 177.0
 offset_bottom = 173.0
+mouse_filter = 1
 
 [node name="0" type="Button" parent="BuildMenu/HeightMenu/ElevationButtons"]
 layout_mode = 0
@@ -528,6 +563,7 @@ offset_left = 10.0
 offset_top = 6.0
 offset_right = 60.0
 offset_bottom = 56.0
+mouse_filter = 1
 text = "0"
 
 [node name="1" type="Button" parent="BuildMenu/HeightMenu/ElevationButtons"]
@@ -536,6 +572,7 @@ offset_left = 64.0
 offset_top = 6.0
 offset_right = 114.0
 offset_bottom = 56.0
+mouse_filter = 1
 text = "1"
 
 [node name="2" type="Button" parent="BuildMenu/HeightMenu/ElevationButtons"]
@@ -544,6 +581,7 @@ offset_left = 117.0
 offset_top = 6.0
 offset_right = 167.0
 offset_bottom = 56.0
+mouse_filter = 1
 text = "2"
 
 [node name="3" type="Button" parent="BuildMenu/HeightMenu/ElevationButtons"]
@@ -552,6 +590,7 @@ offset_left = 10.0
 offset_top = 59.0
 offset_right = 60.0
 offset_bottom = 109.0
+mouse_filter = 1
 text = "3"
 
 [node name="4" type="Button" parent="BuildMenu/HeightMenu/ElevationButtons"]
@@ -560,6 +599,7 @@ offset_left = 64.0
 offset_top = 59.0
 offset_right = 114.0
 offset_bottom = 109.0
+mouse_filter = 1
 text = "4"
 
 [node name="5" type="Button" parent="BuildMenu/HeightMenu/ElevationButtons"]
@@ -568,6 +608,7 @@ offset_left = 117.0
 offset_top = 59.0
 offset_right = 167.0
 offset_bottom = 109.0
+mouse_filter = 1
 text = "5"
 
 [node name="WarningLabel" type="Label" parent="BuildMenu"]
