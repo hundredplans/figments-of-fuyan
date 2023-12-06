@@ -87,7 +87,7 @@ func is_file_name_pure(file_name: String) -> bool:
 		return true
 	return false
 
-func return_new_highest_id(dir_path: String, file_name: String) -> int:
+func return_new_highest_id(dir_path: String, file_name: String, TID: int) -> int:
 	var dir := DirAccess.open(dir_path)
 	var id: int = 0
 	if dir != null:
@@ -98,9 +98,15 @@ func return_new_highest_id(dir_path: String, file_name: String) -> int:
 			var file_id: int = int(file_name_info[0])
 			if file_name_info[1].right(-1).left(-4) == file_name: return file_id
 			id += 1
-			if file_id != id: return id
+			if file_id != id: return is_level_id(TID, id)
 			
 	id += 1
+	return is_level_id(TID, id)
+
+func is_level_id(TID: int, id: int) -> int:
+	if TID == 5 and Settings.level_id > 0:
+		if (Settings.level_id == 2 and id % 2 == 1) or (Settings.level_id == 1 and id % 2 == 0): id += 1
+		while(id_to_dict(id, "Level")): id += 2
 	return id
 
 func return_file_contents(file_path: String) -> String:
@@ -114,7 +120,7 @@ func write_to_base_game_file(item: String, edit_file_name: Control, contents: St
 	var showcase_name: String = edit_file_name.get_node("Showcase").text
 	var dir: String = "res://static/base_game/" + item + "s/"
 	if is_file_name_pure(file_name):
-		var id: String = str(return_new_highest_id(dir, file_name))
+		var id: String = str(return_new_highest_id(dir, file_name, TID))
 		contents = contents.insert(0, "%s\n%s\n%s\n%s\n") % [id, TID, file_name, showcase_name]
 		file_name = file_name.insert(0, "%s - " % id)
 		write_to_file(dir, file_name, ".fof", contents, false)
@@ -254,11 +260,11 @@ var _id_to: Array = [
 	
 	["null", "spawns/spawn_enemy", "spawns/spawn_ally", "spawns/spawn_neutral", 
 	"spawns/spawn_trinket", "light", "stairs/wooden_stair", "doors/wooden_door", "windows/wooden_window",
-	"skeletons/grave", "skeletons/pumpkin"],
+	"skeletons/grave"],
 	
 	["null", "wall", "wooden_wall", "water/shallow_water_wall", "water/deep_water_wall"],
 	
-	["null", "shrub", "tree", "rock", "skull", "graveyard_fence"],
+	["null", "shrub", "tree", "rock", "skeletons/skull", "skeletons/graveyard_fence", "skeletons/graveyard_gate", "skeletons/pumpkin"],
 	
 	["null", "lamp"]]
 	

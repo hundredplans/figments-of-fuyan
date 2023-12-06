@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://5fxc7rpakhvw"]
+[gd_scene load_steps=4 format=3 uid="uid://5fxc7rpakhvw"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_editor/build_menu/settings_mini_menu.gd" id="1_dw4gy"]
 [ext_resource type="PackedScene" uid="uid://chkoma3ub3eqf" path="res://scenes/ui_general/binary_button/binary_button.tscn" id="3_6ogw5"]
+[ext_resource type="PackedScene" uid="uid://bj3h1ak5dv73n" path="res://scenes/ui_general/op_button/op_button.tscn" id="3_qvrxb"]
 
 [node name="SettingsMiniMenu" type="Control"]
 layout_mode = 3
@@ -21,18 +22,18 @@ grow_vertical = 2
 [node name="PRTail" type="ColorRect" parent="Background"]
 layout_mode = 0
 offset_left = -1.0
-offset_top = 521.0
+offset_top = 583.0
 offset_right = 53.0
-offset_bottom = 623.0
+offset_bottom = 685.0
 rotation = 0.727611
 color = Color(0, 0, 0, 1)
 
 [node name="ACTail" type="ColorRect" parent="Background"]
 layout_mode = 0
 offset_left = -1.0
-offset_top = 529.0
+offset_top = 591.0
 offset_right = 43.0
-offset_bottom = 621.0
+offset_bottom = 683.0
 rotation = 0.727611
 
 [node name="PROutside" type="ColorRect" parent="Background"]
@@ -43,7 +44,7 @@ anchor_bottom = 1.0
 offset_left = -5.0
 offset_top = -5.0
 offset_right = 5.0
-offset_bottom = 5.0
+offset_bottom = 67.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
@@ -53,6 +54,7 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_bottom = 62.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -63,64 +65,72 @@ offset_top = -5.0
 offset_right = 412.0
 offset_bottom = 346.0
 
+[node name="LevelId" parent="Settings" instance=ExtResource("3_qvrxb")]
+offset_left = 8.0
+offset_top = 10.0
+offset_right = 32.0
+offset_bottom = 73.0
+options = PackedStringArray("Regular", "Odd ID", "Even ID")
+label_text = "Level ID"
+
 [node name="TileWalls" parent="Settings" instance=ExtResource("3_6ogw5")]
 offset_left = 8.33337
-offset_top = 10.0
+offset_top = 78.0
 offset_right = 185.333
-offset_bottom = 73.0
+offset_bottom = 141.0
 label_text = "Tile Walls"
 
 [node name="WallAutoFill" parent="Settings" instance=ExtResource("3_6ogw5")]
 offset_left = 8.00004
-offset_top = 78.0
+offset_top = 146.0
 offset_right = 185.0
-offset_bottom = 141.0
+offset_bottom = 209.0
 label_text = "Autofill Wall"
 
 [node name="WallAutoTile" parent="Settings" instance=ExtResource("3_6ogw5")]
 offset_left = 8.33337
-offset_top = 144.667
+offset_top = 212.667
 offset_right = 185.333
-offset_bottom = 207.667
+offset_bottom = 275.667
 label_text = "Autotile Wall"
 
 [node name="ElevationFill" parent="Settings" instance=ExtResource("3_6ogw5")]
 offset_left = 8.00004
-offset_top = 214.0
+offset_top = 282.0
 offset_right = 185.0
-offset_bottom = 277.0
+offset_bottom = 345.0
 label_text = "Elevation Fill"
 
 [node name="HighlightEmptyTiles" parent="Settings" instance=ExtResource("3_6ogw5")]
 offset_left = 8.0
-offset_top = 283.0
+offset_top = 351.0
 offset_right = 185.0
-offset_bottom = 346.0
+offset_bottom = 414.0
 label_text = "Lightup Empty"
 
 [node name="SelectEmptyTiles" parent="Settings" instance=ExtResource("3_6ogw5")]
 offset_left = 8.0
-offset_top = 351.0
+offset_top = 419.0
 offset_right = 185.0
-offset_bottom = 414.0
+offset_bottom = 482.0
 label_text = "Select Empty"
 
 [node name="LassoSelect" parent="Settings" instance=ExtResource("3_6ogw5")]
 offset_left = 8.0
-offset_top = 419.0
+offset_top = 487.0
 offset_right = 185.0
-offset_bottom = 482.0
+offset_bottom = 550.0
 label_text = "Lasso Select"
 
 [node name="KeepRotation" parent="Settings" instance=ExtResource("3_6ogw5")]
 offset_left = 8.0
-offset_top = 487.0
+offset_top = 555.0
 offset_right = 185.0
-offset_bottom = 550.0
+offset_bottom = 618.0
 label_text = "Keep Rotation"
 
 [node name="DetectMouse" type="Area2D" parent="."]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="DetectMouse"]
 position = Vector2(0, -1)
-polygon = PackedVector2Array(-5, -4, 412, -4, 412, 560, 37, 560, -29, 634, -69, 598, -5, 527)
+polygon = PackedVector2Array(-5, -4, 412, -4, 412, 622, 37, 622, -29, 696, -69, 660, -5, 589)

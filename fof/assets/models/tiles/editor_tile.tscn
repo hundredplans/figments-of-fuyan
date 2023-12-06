@@ -25,6 +25,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
 [node name="wdeco" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
 
+[node name="extra" type="Node3D" parent="."]
+
+[node name="GhostArrow" type="Node3D" parent="extra"]
+
 [node name="DetectMouse" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
 collision_layer = 2

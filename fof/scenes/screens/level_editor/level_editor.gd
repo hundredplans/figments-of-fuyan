@@ -320,7 +320,7 @@ func on_mblocker_mouse_exited():
 	if active_tile:
 		var tile: Node3D = on_ray_mouse()
 		if tile == active_tile:
-			active_tile.on_mouse_entered()
+			active_tile.on_mouse_entered_check_mblockers(mblocker_rects)
 	
 func on_mblocker_mouse_entered():
 	if active_tile: active_tile.on_mouse_exited(); reset_infos(true)
@@ -523,6 +523,7 @@ func get_folder_path(pos: Array = folder_pos, get_item: bool = false, from_fol: 
 	var path: String = build_folders[0] if !from_fol else ""
 	var arr: Array = build_folders
 	var i: int = 1
+	
 	for key in pos:
 		if !get_item or get_item and i != pos.size():
 			arr = arr[key]
@@ -532,9 +533,9 @@ func get_folder_path(pos: Array = folder_pos, get_item: bool = false, from_fol: 
 		i += 1
 	if pos.size() > 2 and pos[0] == 4 and get_item and from_fol:
 		var n: Array = path.split("/")
-		path = n.pop_back()
 		n.remove_at(0)
-		for j in n: path += j + "/"
+		path = n.pop_front()
+		for j in n: path += "/" + j
 	if get_item and get_type: path = get_selected_item_type_path(path)
 	return path
 	
@@ -805,13 +806,69 @@ func on_tile_rotate(tile: Node3D, rotate_direction: int) -> void:
 						var tiles: Array = tiles_by_multitile(tile, 2, false)
 						for _tile in tiles:
 							on_rotate_tile_object(_tile, rotate_direction, j, tile.info[j].id)
+							
+						if 2 in tiles[0].preview_state: 
+							on_remove_ghost_arrow(tiles[0])
+							on_place_ghost_arrow(tiles[0], tiles[0].info.wall.rotation)
+							
 					_:
-						var ctile: Node3D = center_tile_by_multi_tile(tile, STR_TO_BTAB[j], false)
-						on_rotate_tile_object(ctile, rotate_direction, j, ctile.info[j].id)
+						if !tile.info[j].multi_tile.size() > 1:
+							on_rotate_tile_object(tile, rotate_direction, j, tile.info[j].id)
+							
+							if STR_TO_BTAB[j] in tile.preview_state:
+								on_remove_ghost_arrow(tile)
+								on_place_ghost_arrow(tile, tile.info[j].rotation)
+							
+						else: on_rotate_multi_tile_object(tile, rotate_direction, j)
+						
 					
 		await get_tree().create_timer(ROTATION_TILE_DELAY).timeout
 		has_rotated_tile_delay = false
 	
+func on_rotate_multi_tile_object(tile: Node3D, direction: int, j: String)-> void:
+	var btab: int = STR_TO_BTAB[j]
+	var is_center: bool = tile.info.position == tile.info[j].multi_tile[0]
+	var p: Vector4 = Helper.position_to_vec(tile.info.position)
+	direction *= -1
+	
+	var tiles: Array = tiles_by_multitile(tile, btab, false).filter(func(x: Node3D): return x != tile)
+	var opos: Array = tiles.map(func(x: Node3D): return Helper.position_to_vec(x.info.position) - p)
+	
+	var npos: Array = []
+	if direction == 1: npos = opos.map(func(x: Vector4): return Vector4(-x.y, -x.z, -x.x, x.w))
+	else: npos = opos.map(func(x: Vector4): return Vector4(-x.z, -x.x, -x.y, x.w))
+	
+	npos = npos.map(func(x: Vector4): return true_tile_by_position(Helper.vec_to_position(p + x)))
+	if !npos.any(func(x: Node3D): return x == null):
+		tile.info[j].rotation += (direction * -1)
+		var odatas: Array = []
+		for _tile in tiles:
+			odatas.append(_tile.info[j].duplicate(true)) 
+			_tile.info[j] = EMPTY_DATA[btab].duplicate(true)
+		
+		var multi_tile: Array = [tile.info.position]
+		for i in range(odatas.size()):
+			npos[i].info[j] = odatas[i]
+			npos[i].info[j].rotation = tile.info[j].rotation
+			if npos[i] not in tiles: tiles.append(npos[i])
+			multi_tile.append(npos[i].info.position)
+		
+		if !is_center:
+			var _pos: Array = multi_tile[0]
+			multi_tile[0] = multi_tile[1]
+			multi_tile[1] = _pos
+		
+		for _tile in npos: _tile.info[j].multi_tile = multi_tile.duplicate(true)
+		tile.info[j].multi_tile = multi_tile
+		tiles.append(tile)
+		for _tile in tiles: _tile.call("load_" + j, _tile.info[j].id)
+		
+		var _tile: Node3D = true_tile_by_position(multi_tile[0])
+		
+		if STR_TO_BTAB[j] in _tile.preview_state:
+			on_remove_ghost_arrow(_tile)
+			on_place_ghost_arrow(_tile, _tile.info[j].rotation)
+			
 func _on_trinket_amount_item_selected(i: int): trinket_amount = i
 	
 
@@ -867,7 +924,8 @@ func on_tile_select() -> void:
 				var load_tiles: Array = []
 				for i in load_infos:
 					var tile: Node3D = true_tile_by_position(i.position)
-					var highlight: Array = []
+					on_remove_ghost_arrow(tile)
+					var _highlight: Array = []
 					for n in range(5):
 						var b: String = BTAB_TO_STR[n]
 						var is_centric: bool = tile.info[b].id > 0 and (tile.info[b].multi_tile.size() == 0 or tile.info[b].multi_tile[0] == tile.info.position)
@@ -878,9 +936,9 @@ func on_tile_select() -> void:
 							if tile not in load_tiles: load_tiles.append(tile)
 
 						if n == 2 or is_centric: 
-							highlight.append(n)
+							_highlight.append(n)
 
-					on_set_tile_material(tile, highlight, false)
+					on_set_tile_material(tile, _highlight, false)
 					tile.preview_state = []
 				
 				for tile in load_tiles: on_load_tile(tile, 1, 0, 0, true)
@@ -1129,6 +1187,7 @@ func reset_infos(true_reset: bool = false) -> void:
 					var tile: Node3D = true_tile_by_position(i.position)
 					if tile != null:
 						tile.info = i
+						on_remove_ghost_arrow(tile)
 						if !remove_midair_tile(tile):
 							tile.preview_state = []
 							reload_tile(tile)
@@ -1136,6 +1195,7 @@ func reset_infos(true_reset: bool = false) -> void:
 	load_infos = []
 	bs_infos = []
 
+var ghost_arrow: PackedScene = preload("res://assets/env/level_editor/ghost_arrow.glb")
 var highlight: int = 0
 func on_preview_tiles(tsi: Node3D, info: Dictionary, _highlight: int) -> void:
 	reset_infos(true)
@@ -1183,10 +1243,20 @@ func on_preview_tiles(tsi: Node3D, info: Dictionary, _highlight: int) -> void:
 	for _info in late_load_info:
 		add_to_load_infos(_info)
 	
+	on_place_ghost_arrow(tsi, tsi.info[BTAB_TO_STR[highlight]].rotation)
+	
 	for _info in load_infos:
 		var tile: Node3D = true_tile_by_position(_info.position, true)
 		tile.preview_state = [highlight]
 		reload_tile(tile)
+
+func on_remove_ghost_arrow(tile: Node3D) -> void:
+	for child in tile.get_node("extra/GhostArrow").get_children(): child.queue_free()
+	
+func on_place_ghost_arrow(tile: Node3D, _rotation: int) -> void:
+	var GhostArrow: Node3D = ghost_arrow.instantiate()
+	tile.get_node("extra/GhostArrow").add_child(GhostArrow)
+	GhostArrow.rotation_degrees.y = 60 * _rotation
 
 func add_to_load_infos(info: Dictionary):
 	if !load_infos.any(func(x: Dictionary): return x.position == info.position): load_infos.append(info)
@@ -1500,7 +1570,7 @@ func on_tile_menu_item_type(val: int, item: int, tiles: Array) -> void:
 			tiles[0].call("load_" + j, tiles[0].info[j].id)
 
 func on_tile_menu_fill_wall(tiles: Array) -> void:
-	pass
+	print(tiles)
 	
 func on_tile_menu_tile_wall(tiles: Array) -> void:
 	pass

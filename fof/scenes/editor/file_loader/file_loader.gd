@@ -129,7 +129,9 @@ func refresh_search() -> void:
 			if match_search_item_selected(btn):
 				item_buttons.append(btn)
 		else: item_buttons.append(btn)
+	
 	current_page = 1
+	max_page = ceil((item_buttons.size()) * 0.1)
 	position_item_buttons()
 
 func match_search_item_selected(btn: Control) -> bool:
