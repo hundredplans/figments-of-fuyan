@@ -255,6 +255,8 @@ func load_area_colors(node: Node, primary_color: Color, accent_color: Color) -> 
 			if child is ColorRect: child.color = accent_color
 			else: child.modulate = accent_color
 
+var exclude_fill: Array = [0, 3, 4]
+
 var _id_to: Array = [
 	["null", "ground", "_hover", "water/shallow_water", "water/deep_water", "void", "_default_tile"],
 	

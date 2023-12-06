@@ -11,7 +11,7 @@ func load_independent() -> void:
 		"Obj":
 			$Spawn.visible = (parent.tiles.size() == 1 and parent.tiles[0].info.obj.id in [1, 3])
 		"Wall":
-			for child in [$Fill_Wall, $Tile_Wall, $Wall_Height]:
+			for child in [$Unfill_Wall, $Fill_Wall, $Wall_Height]:
 				child.visible = parent.tiles.any(func(x: Node3D): return x.info.wall.id > 0)
 
 func on_update_tile_menu() -> void:

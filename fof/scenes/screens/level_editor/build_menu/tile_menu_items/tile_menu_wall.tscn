@@ -12,19 +12,19 @@ script = ExtResource("1_nrc37")
 
 [node name="Fill_Wall" type="Button" parent="."]
 layout_mode = 0
-offset_left = 353.0
-offset_top = 136.0
-offset_right = 433.0
-offset_bottom = 167.0
+offset_left = 345.0
+offset_top = 143.0
+offset_right = 435.0
+offset_bottom = 174.0
 text = "Fill Wall"
 
-[node name="Tile_Wall" type="Button" parent="."]
+[node name="Unfill_Wall" type="Button" parent="."]
 layout_mode = 0
-offset_left = 264.0
-offset_top = 136.0
-offset_right = 344.0
-offset_bottom = 167.0
-text = "Tile Wall"
+offset_left = 243.0
+offset_top = 143.0
+offset_right = 333.0
+offset_bottom = 174.0
+text = "Unfill Wall"
 
 [node name="Wall_Height" parent="." instance=ExtResource("2_pe2pq")]
 offset_left = 196.0

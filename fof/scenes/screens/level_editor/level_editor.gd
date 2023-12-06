@@ -96,6 +96,8 @@ func _process(delta: float) -> void:
 	for input in [1,2,3,4,5,6,7]:
 		if max_item_types > 0 and Input.is_action_just_pressed("ShiftNumber" + str(input)):
 			on_type_button_pressed(input - 1)
+			reset_infos(true)
+			if active_tile: on_hover_tile(active_tile)
 		
 		elif input < 5 and Input.is_action_just_pressed("Number" + str(input)):
 			on_load_tab(input - 1)
@@ -138,6 +140,7 @@ func _process(delta: float) -> void:
 		elif Input.is_action_pressed("Remove"): on_tile_remove(active_tile) 
 		elif Input.is_action_pressed("RotateLeft"): on_tile_rotate(active_tile, -1)
 		elif Input.is_action_pressed("RotateRight"): on_tile_rotate(active_tile, 1)
+		elif Input.is_action_pressed("FButton"): on_fill_pressed(active_tile)
 	else:
 		if Input.is_action_just_pressed("ShiftLeftClick"):
 			on_update_tile_menu()
@@ -1569,10 +1572,13 @@ func on_tile_menu_item_type(val: int, item: int, tiles: Array) -> void:
 			tiles[0].info[j].type = val
 			tiles[0].call("load_" + j, tiles[0].info[j].id)
 
+func on_fill_pressed(tile: Node3D) -> void:
+	pass
+
 func on_tile_menu_fill_wall(tiles: Array) -> void:
-	print(tiles)
+	pass
 	
-func on_tile_menu_tile_wall(tiles: Array) -> void:
+func on_tile_menu_unfill_wall(tiles: Array) -> void:
 	pass
 
 func on_tile_menu_wall_height(i: int, tiles: Array) -> void:
