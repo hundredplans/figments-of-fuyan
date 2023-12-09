@@ -831,7 +831,7 @@ func on_tile_rotate(tile: Node3D, rotate_direction: int) -> void:
 					
 		get_tree().create_timer(ROTATION_TILE_DELAY).timeout.connect(func(): has_rotated_tile_delay = false)
 	
-func on_rotate_multi_tile_object(tile: Node3D, direction: int, j: String)-> void:
+func on_rotate_multi_tile_object(tile: Node3D, direction: int, j: String) -> bool:
 	var btab: int = STR_TO_BTAB[j]
 	var is_center: bool = tile.info.position == tile.info[j].multi_tile[0]
 	var p: Vector4 = Helper.position_to_vec(tile.info.position)
@@ -847,39 +847,47 @@ func on_rotate_multi_tile_object(tile: Node3D, direction: int, j: String)-> void
 	npos = npos.map(func(x: Vector4): return true_tile_by_position(Helper.vec_to_position(p + x)))
 	if !npos.any(func(x: Node3D): return x == null):
 		apply_rotation(tile, (direction * -1), j)
-		var odatas: Array = []
-		for _tile in tiles:
-			odatas.append(_tile.info[j].duplicate(true)) 
-			_tile.info[j] = EMPTY_DATA[btab].duplicate(true)
-		
-		for _tiles in npos.map(func(x: Node3D): return tiles_by_multitile(x, btab)):
-			for _tile in _tiles:
-				if _tile != null and _tile != tile:
-					if _tile not in npos: _tile.info[j] = EMPTY_DATA[btab].duplicate(true)
-					if _tile not in tiles: tiles.append(_tile)
-		
-		var multi_tile: Array = [tile.info.position]
-		for i in range(odatas.size()):
-			npos[i].info[j] = odatas[i]
-			npos[i].info[j].rotation = tile.info[j].rotation
-			multi_tile.append(npos[i].info.position)
-		
-		if !is_center:
-			var _pos: Array = multi_tile[0]
-			multi_tile[0] = multi_tile[1]
-			multi_tile[1] = _pos
-		
-		for _tile in npos: _tile.info[j].multi_tile = multi_tile.duplicate(true)
-		tile.info[j].multi_tile = multi_tile
-		tiles.append(tile)
-		for _tile in tiles: _tile.call("load_" + j, _tile.info[j].id)
-		
-		var _tile: Node3D = true_tile_by_position(multi_tile[0])
-		
-		if STR_TO_BTAB[j] in _tile.preview_state:
-			on_remove_ghost_arrow(_tile)
-			on_place_ghost_arrow(_tile, _tile.info[j].rotation)
+		if !(STR_TO_BTAB[j] in tile.preview_state):
+			var odatas: Array = []
+			for _tile in tiles:
+				odatas.append(_tile.info[j].duplicate(true)) 
+				_tile.info[j] = EMPTY_DATA[btab].duplicate(true)
 			
+			for _tiles in npos.map(func(x: Node3D): return tiles_by_multitile(x, btab)):
+				for _tile in _tiles:
+					if _tile != null and _tile != tile:
+						if _tile not in npos: _tile.info[j] = EMPTY_DATA[btab].duplicate(true)
+						if _tile not in tiles: tiles.append(_tile)
+			
+			var multi_tile: Array = [tile.info.position]
+			for i in range(odatas.size()):
+				npos[i].info[j] = odatas[i]
+				npos[i].info[j].rotation = tile.info[j].rotation
+				multi_tile.append(npos[i].info.position)
+			
+			if !is_center:
+				var _pos: Array = multi_tile[0]
+				multi_tile[0] = multi_tile[1]
+				multi_tile[1] = _pos
+			
+			for _tile in npos: _tile.info[j].multi_tile = multi_tile.duplicate(true)
+			tile.info[j].multi_tile = multi_tile
+			tiles.append(tile)
+			for _tile in tiles: _tile.call("load_" + j, _tile.info[j].id)
+			var _tile: Node3D = true_tile_by_position(multi_tile[0])
+			return true
+		else:
+			var multi_tile: Array = [tile.info.position]
+			for i in range(npos.size()):
+				multi_tile.append(npos[i].info.position)
+				
+			if !is_center:
+				var _pos: Array = multi_tile[0]
+				multi_tile[0] = multi_tile[1]
+				multi_tile[1] = _pos
+			tile.info[j].multi_tile = multi_tile
+			on_preview_tiles(tile, tile.info.duplicate(true), STR_TO_BTAB[j])
+	return false
 func _on_trinket_amount_item_selected(i: int): trinket_amount = i
 	
 
@@ -1377,20 +1385,56 @@ func on_tile_menu_rotate_full(item: int, i: int, tiles: Array) -> void:
 		for j in item_id_array[item]:
 			var load_id: int = (2 if j == "tile" else tile.info[j].id) if tile.info[j].type == 0 else tile.info[j].id
 			if Settings.keep_rotation: keep_rotation[KEEP_ROTATION_DICT[j]] = i
-			if j != "wall":
-				tile.info[j].rotation = i
-				tile.call("load_" + j, load_id)
-			else:
+			if j == "wall":
 				var _tiles: Array = tiles_by_multitile(tile, 2)
 				for _tile in _tiles:
 					_tile.info[j].rotation = i
 					_tile.call("load_wall", load_id)
+			elif tile.info[j].multi_tile.size() > 1:
+				var ctile: Node3D = center_tile_by_multi_tile(tile, STR_TO_BTAB[j])
+				if tile == ctile:
+					var diff: int = i - tile.info[j].rotation
+					if diff < 0: diff += 5
+					var is_worked: bool = false
+					if is_final_rotation_destination_valid(tile, j, tile.info[j].rotation + diff):
+						is_worked = true
+						for n in range(diff):
+							if is_worked: is_worked = on_rotate_multi_tile_object(tile, 1, j)
+							
+					if !is_worked:
+						diff = tile.info[j].rotation - i
+						if is_final_rotation_destination_valid(tile, j, tile.info[j].rotation - diff):
+							for n in range(abs(diff)): on_rotate_multi_tile_object(tile, -1, j)
+					
+			else:
+				tile.info[j].rotation = i
+				tile.call("load_" + j, load_id)
+
+func is_final_rotation_destination_valid(tile: Node3D, j: String, destination: int) -> bool:
+	if destination > 5: destination -= 5
+	elif destination < 0: destination += 5
+	elif destination == 0: return false
+	var direction: int = clamp(destination, -1, 1)
+	
+	var p: Vector4 = Helper.position_to_vec(tile.info.position)
+	var tiles: Array = tiles_by_multitile(tile, STR_TO_BTAB[j], false).filter(func(x: Node3D): return x != tile)
+	var npos: Array = tiles.map(func(x: Node3D): return Helper.position_to_vec(x.info.position) - p)
+	
+	for n in range(destination):
+		if direction == 1: npos = npos.map(func(x: Vector4): return Vector4(-x.y, -x.z, -x.x, x.w))
+		else: npos = npos.map(func(x: Vector4): return Vector4(-x.z, -x.x, -x.y, x.w))
+	
+	npos = npos.map(func(x: Vector4): return true_tile_by_position(Helper.vec_to_position(p + x)))
+	return !npos.any(func(x: Node3D): return x == null)
 	
 func on_tile_menu_rotate_direction(item: int, direction: int, tiles: Array) -> void:
 	for tile in tiles:
 		for j in item_id_array[item]:
 			if j != "wall":
-				if tile.info[j].multi_tile.size() > 1: on_rotate_multi_tile_object(tile, direction, j)
+				if tile.info[j].multi_tile.size() > 1:
+					var ctile: Node3D = center_tile_by_multi_tile(tile, STR_TO_BTAB[j])
+					if tile == ctile:
+						on_rotate_multi_tile_object(tile, direction, j)
 				else: on_rotate_tile_object(tile, direction, j, (2 if j == "tile" else tile.info[j].id) if tile.info[j].type == 0 else tile.info[j].id)
 			else: on_rotate_tile_object(tile, direction, j, tile.info[j].id)
 	
@@ -1662,7 +1706,7 @@ func on_tile_menu_wall_height(i: int, tiles: Array) -> void:
 
 func on_file_loader_loaded(FileLoader: Control):
 	FileLoader.queued.connect(on_file_loader_queued)
-	on_tile_menu_queued(TileMenuGlobal, true)
+	if is_instance_valid(TileMenuGlobal): on_tile_menu_queued(TileMenuGlobal, true)
 	block_screen = true
 	file_loader_loaded = true
 	reset_mblocker_rects()

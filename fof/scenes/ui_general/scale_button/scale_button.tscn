@@ -10,7 +10,6 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 283.0
 offset_bottom = 53.0
-mouse_filter = 1
 theme = ExtResource("1_62k3r")
 script = ExtResource("1_wp1vw")
 
@@ -19,13 +18,11 @@ layout_mode = 1
 anchors_preset = 0
 offset_right = 283.0
 offset_bottom = 53.0
-mouse_filter = 1
 
 [node name="Inside" type="ColorRect" parent="Background"]
 layout_mode = 1
 offset_right = 283.0
 offset_bottom = 53.0
-mouse_filter = 1
 color = Color(0, 0, 0, 1)
 
 [node name="Outside" type="ColorRect" parent="Background"]
@@ -42,7 +39,6 @@ layout_mode = 0
 offset_left = 73.0
 offset_right = 283.0
 offset_bottom = 53.0
-mouse_filter = 1
 texture_normal = ExtResource("2_rr8ay")
 
 [node name="SnapBars" type="Control" parent="."]
@@ -51,7 +47,6 @@ offset_left = 93.0
 offset_top = 5.0
 offset_right = 263.0
 offset_bottom = 48.0
-mouse_filter = 1
 
 [node name="Grabber" type="TextureButton" parent="."]
 layout_mode = 1
