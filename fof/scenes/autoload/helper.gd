@@ -255,7 +255,7 @@ func load_area_colors(node: Node, primary_color: Color, accent_color: Color) -> 
 			if child is ColorRect: child.color = accent_color
 			else: child.modulate = accent_color
 
-var exclude_fill: Array = [0, 3, 4]
+var exclude_fill: Array = []
 
 var _id_to: Array = [
 	["null", "ground", "_hover", "water/shallow_water", "water/deep_water", "void", "_default_tile"],
@@ -264,7 +264,7 @@ var _id_to: Array = [
 	"spawns/spawn_trinket", "light", "stairs/wooden_stair", "doors/wooden_door", "windows/wooden_window",
 	"skeletons/grave"],
 	
-	["null", "wall", "wooden_wall", "water/shallow_water_wall", "water/deep_water_wall"],
+	["null", "wall", "wooden_wall"],
 	
 	["null", "shrub", "tree", "rock", "skeletons/skull", "skeletons/graveyard_fence", "skeletons/graveyard_gate", "skeletons/pumpkin"],
 	
@@ -272,8 +272,12 @@ var _id_to: Array = [
 	
 func wid_to(id: int, area: int = 0, type: int = 0) -> String:
 	var contents: Array = _id_to[2][id].split("/")
-	var middle: String = str(area) + "wall" if id == 1 else contents.pop_back() 
-	if type > 0: middle += str(type)
+	var middle: String = (str(area) + "wall" if id == 1 else contents.pop_back())
+	if type > 0:
+		if type > 2:
+			middle = middle.insert(0, "_")
+			type -= 3
+		if type > 0: middle += str(type)
 	
 	if id != 1:
 		for n in contents: middle = middle.insert(0, n + "/")

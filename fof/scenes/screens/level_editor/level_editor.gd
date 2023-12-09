@@ -15,15 +15,15 @@ signal equip_sky
 @onready var BuildMenuWorld = $BuildMenu/LoadedMenu/ItemsViewer/ItemViewport/BuildMenuWorld
 @onready var ModelItem: Node3D = $BuildMenu/LoadedMenu/ModelViewer/ViewmodelViewport/ViewmodelWorld/Model
 
-@onready var HeightButtons: Control = $BuildMenu/HeightMenu/HeightButtons
-@onready var ElevationButtons: Control = $BuildMenu/HeightMenu/ElevationButtons
+@onready var HeightButtons: Control = $UtilityMenu/Buttons/WallButtons
+@onready var ElevationButtons: Control = $UtilityMenu/Buttons/ElevationButtons
 
 @export var INFO_MENU_MOVE_SPEED: float = 6
 @export var BUILD_MENU_MOVE_SPEED: float = 4
 
 var SelectionBox: Node
 
-@onready var mblockers: Array = [$LoadButtons, $InfoMenu, $BuildMenu]
+@onready var mblockers: Array = [$LoadButtons, $InfoMenu, $BuildMenu, $UtilityMenu]
 var block_screen: bool = false
 var active_tile: Node3D
 var active_remove_state: int = 0
@@ -164,6 +164,11 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("TopDownAlign") and !Input.is_action_pressed(Helper.interact_button(true)):
 		World.get_node("MovementCamera").rotation_degrees = Vector3(-88.5, 0, 0)
 		World.get_node("MovementCamera")._total_pitch = 63.5
+		
+	if Input.is_action_just_released("FButton") and active_tile_state == 5: 
+		reset_active_tile_state(0)
+		fill_mode = 0
+		
 var favorites: Array = []
 func on_favorite_item(item: Control) -> void:
 	var pos: Array = folder_pos + item.get_node("Button").pressed.get_connections()[0].callable.get_bound_arguments()
@@ -813,7 +818,6 @@ func on_tile_rotate(tile: Node3D, rotate_direction: int) -> void:
 						if 2 in tiles[0].preview_state: 
 							on_remove_ghost_arrow(tiles[0])
 							on_place_ghost_arrow(tiles[0], tiles[0].info.wall.rotation)
-							
 					_:
 						if !tile.info[j].multi_tile.size() > 1:
 							on_rotate_tile_object(tile, rotate_direction, j, tile.info[j].id)
@@ -825,8 +829,7 @@ func on_tile_rotate(tile: Node3D, rotate_direction: int) -> void:
 						else: on_rotate_multi_tile_object(tile, rotate_direction, j)
 						
 					
-		await get_tree().create_timer(ROTATION_TILE_DELAY).timeout
-		has_rotated_tile_delay = false
+		get_tree().create_timer(ROTATION_TILE_DELAY).timeout.connect(func(): has_rotated_tile_delay = false)
 	
 func on_rotate_multi_tile_object(tile: Node3D, direction: int, j: String)-> void:
 	var btab: int = STR_TO_BTAB[j]
@@ -843,17 +846,22 @@ func on_rotate_multi_tile_object(tile: Node3D, direction: int, j: String)-> void
 	
 	npos = npos.map(func(x: Vector4): return true_tile_by_position(Helper.vec_to_position(p + x)))
 	if !npos.any(func(x: Node3D): return x == null):
-		tile.info[j].rotation += (direction * -1)
+		apply_rotation(tile, (direction * -1), j)
 		var odatas: Array = []
 		for _tile in tiles:
 			odatas.append(_tile.info[j].duplicate(true)) 
 			_tile.info[j] = EMPTY_DATA[btab].duplicate(true)
 		
+		for _tiles in npos.map(func(x: Node3D): return tiles_by_multitile(x, btab)):
+			for _tile in _tiles:
+				if _tile != null and _tile != tile:
+					if _tile not in npos: _tile.info[j] = EMPTY_DATA[btab].duplicate(true)
+					if _tile not in tiles: tiles.append(_tile)
+		
 		var multi_tile: Array = [tile.info.position]
 		for i in range(odatas.size()):
 			npos[i].info[j] = odatas[i]
 			npos[i].info[j].rotation = tile.info[j].rotation
-			if npos[i] not in tiles: tiles.append(npos[i])
 			multi_tile.append(npos[i].info.position)
 		
 		if !is_center:
@@ -899,12 +907,14 @@ const BTAB_TO_STR: Dictionary = {
 	4: "wdeco",
 }
 	
-func on_rotate_tile_object(tile: Node3D, direction: int, j: String, id: int):
+func apply_rotation(tile: Node3D, direction: int, j: String) -> void:
 	var old_rotation: int = tile.info[j].rotation
 	tile.info[j].rotation = clamp(tile.info[j].rotation + direction, 0, 5)
 	if old_rotation == tile.info[j].rotation: tile.info[j].rotation = 0 if old_rotation == 5 else 5
-	
 	if Settings.keep_rotation: keep_rotation[KEEP_ROTATION_DICT[j]] = tile.info[j].rotation
+	
+func on_rotate_tile_object(tile: Node3D, direction: int, j: String, id: int):
+	apply_rotation(tile, direction, j)
 	tile.call("load_" + j, id)
 	
 func on_tile_interact(tile: Node3D) -> void:
@@ -979,7 +989,7 @@ func create_elevation_fill(tile: Node3D) -> void:
 	for i in range(p[3] - 1, -1, -1):
 		var _tile: Node3D = true_tile_by_position([p[0], p[1], p[2], i])
 		if _tile and _tile.info.tile.id > 0 and ["wall", "obj", "tdeco", "wdeco"].all(func(x: String): return _tile.info[x].id == 0):
-			if _tile.info.position[3] == 0: on_load_wall(_tile, load_id, 0, 1, p[3], 1)
+			if _tile.info.position[3] == 0: on_load_wall(_tile, load_id, 0, 2, p[3], 1)
 			if tile.info.tile.id in [3, 4]: on_load_tile(_tile, tile.info.tile.id, 0, 0)
 			break
 	Settings.tile_walls = f
@@ -1130,7 +1140,9 @@ func on_hover_tile(tile: Node3D) -> void:
 			if selected_item_pos.size() > 0:
 				var btab: int = item_pos_to_btab(selected_item_pos)
 				if !(tile.info[BTAB_TO_STR[btab]].type == selected_item_type and tile.info[BTAB_TO_STR[btab]].id == get_item_index(selected_item_pos)[1]):
-					on_preview_tiles(tile, create_tile_info(tile), btab)
+					var tile_info: Dictionary = create_tile_info(tile)
+					if !tile_info.is_empty(): on_preview_tiles(tile, tile_info, btab)
+					else: reset_infos(true)
 				else: reset_infos(true)
 			elif tile.info.tile.type == 0: tile.load_tile(2)
 
@@ -1157,8 +1169,8 @@ func create_tile_info(tile: Node3D) -> Dictionary:
 			match b:
 				"wall": create_wall_multi_tile(tile, empty)
 				"tile": pass
-				_: create_any_multi_tile(tile, idx, empty)
-						
+				_: if !create_any_multi_tile(tile, idx, empty): return {}
+			
 			info.merge({b: empty})
 	return info
 
@@ -1173,11 +1185,15 @@ func create_wall_multi_tile(tile: Node3D, empty: Dictionary) -> void:
 		for j in range(height):
 			empty.multi_tile.append([tile.info.position[0], tile.info.position[1], tile.info.position[2], tile.info.position[3] + j])
 
-func create_any_multi_tile(tile: Node3D, idx: Array, empty: Dictionary) -> void:
+func tile_exists(pos: Array) -> bool:
+	return World.get_node("Tiles/" + str(pos[3])).get_children().any(func(x: Node3D): return x.info.position == pos)
+
+func create_any_multi_tile(tile: Node3D, idx: Array, empty: Dictionary) -> bool:
 	var mt: Array = Helper.return_multi_tile(idx)
 	if mt.size() > 1:
 		empty.multi_tile = mt.map(func(x: Array): return [x[0] + tile.info.position[0], x[1] + tile.info.position[1], x[2] + tile.info.position[2], x[3] + tile.info.position[3]])
-
+		return empty.multi_tile.all(func(x: Array): return x[3] > 5 or tile_exists(x))
+	return true
 var load_infos: Array = []
 var bs_infos: Array = []
 
@@ -1205,7 +1221,6 @@ func on_preview_tiles(tsi: Node3D, info: Dictionary, _highlight: int) -> void:
 	highlight = _highlight
 	var late_load_info: Array = []
 	if !(tsi.info.wall.id > 0 and tsi.info.wall.multi_tile.size() > 0 and tsi.info.wall.multi_tile[0] != tsi.info.position):
-		
 		add_to_bs_infos(tsi.info)
 		for btab in range(5):
 			if tsi.info[BTAB_TO_STR[btab]].multi_tile.size() > 1:
@@ -1236,7 +1251,7 @@ func on_preview_tiles(tsi: Node3D, info: Dictionary, _highlight: int) -> void:
 							tile.info.wall.rotation = info.wall.rotation
 							tile.info.wall.type = info.wall.type
 							
-							if tile.info.position == info.wall.multi_tile[info.wall.multi_tile.size() - 1]:
+							if Helper.compare_by_value(tile.info.position, info.wall.multi_tile[info.wall.multi_tile.size() - 1]):
 								tile.info.wall.tile_wall = info.wall.tile_wall
 								tsi.info.wall.tile_wall = 0
 								
@@ -1375,11 +1390,9 @@ func on_tile_menu_rotate_direction(item: int, direction: int, tiles: Array) -> v
 	for tile in tiles:
 		for j in item_id_array[item]:
 			if j != "wall":
-				on_rotate_tile_object(tile, direction, j, (2 if j == "tile" else tile.info[j].id) if tile.info[j].type == 0 else tile.info[j].id)
-			else:
-				var _tiles: Array = tiles_by_multitile(tile, 2)
-				for _tile in _tiles:
-					on_rotate_tile_object(_tile, direction, j, _tile.info[j].id)
+				if tile.info[j].multi_tile.size() > 1: on_rotate_multi_tile_object(tile, direction, j)
+				else: on_rotate_tile_object(tile, direction, j, (2 if j == "tile" else tile.info[j].id) if tile.info[j].type == 0 else tile.info[j].id)
+			else: on_rotate_tile_object(tile, direction, j, tile.info[j].id)
 	
 func on_tile_menu_delete(item: int, tiles: Array) -> void:
 	for tile in tiles:
@@ -1572,14 +1585,72 @@ func on_tile_menu_item_type(val: int, item: int, tiles: Array) -> void:
 			tiles[0].info[j].type = val
 			tiles[0].call("load_" + j, tiles[0].info[j].id)
 
+var fill_mode: int = 0
 func on_fill_pressed(tile: Node3D) -> void:
-	pass
+	if active_tile_state != 5 and tile.info.wall.id not in Helper.exclude_fill:
+		reset_active_tile_state(5)
+		if tile.info.wall.id == 0 and fill_mode in [0, 2]:
+			var wall_id: int = 1
+			var elevation_positions: Array = World.get_node("Tiles/" + str(tile.info.position[3])).get_children()\
+			.map(func(x: Node3D): return Helper.position_to_vec(x.info.position))
+			var hex_ids: Array = Helper._hex_neighbours(Helper.position_to_vec(tile.info.position), elevation_positions)
+			hex_ids = hex_ids.map(func(x: Vector4): return true_tile_by_position(Helper.vec_to_position(x)))
+			hex_ids = hex_ids.filter(func(x: Node3D): return x.info.wall.id > 0 and x.info.wall.id not in Helper.exclude_fill)\
+			.map(func(y: Node3D): return y.info.wall.id)
+			
+			var _total_count: int = 0
+			var total_count: int = 0
+			for i in hex_ids:
+				_total_count = 0
+				for j in hex_ids:
+					if i == j: total_count += 1
+				if total_count > _total_count: total_count = _total_count; wall_id = i
+			
+			on_load_wall(tile, wall_id, tile.info.wall.rotation, 2, Settings.default_wall_height, Settings.tile_walls)
+			fill_mode = 2
+		elif tile.info.wall.type != 2:
+			var mult: int = 0
+			if tile.info.wall.type > 2: 
+				if fill_mode in [0, 1]:
+					mult = -3
+					fill_mode = 1
+			elif fill_mode in [0, 2]:
+				mult = 3
+				fill_mode = 2
+				
+			if mult != 0:
+				on_load_wall(tile, tile.info.wall.id, tile.info.wall.rotation, tile.info.wall.type + mult, tile.info.wall.multi_tile.size(), tile.info.wall.tile_wall)
+		elif fill_mode in [0, 1]:
+			var tiles: Array = tiles_by_multitile(tile, 2)
+			for _tile in tiles: _tile.info.wall = EMPTY_DATA[2].duplicate(true); _tile.load_wall(0)
+			fill_mode = 1
 
 func on_tile_menu_fill_wall(tiles: Array) -> void:
-	pass
+	var wall_ids: Array = tiles.filter(func(x: Node3D): return x.info.wall.id > 0 and x.info.wall.id not in Helper.exclude_fill).map(func(y: Node3D): return y.info.wall.id)
+	var _total_count: int = 0
+	var total_count: int = 0
+	var wall_id: int = 1
+	
+	for i in wall_ids:
+		_total_count = 0
+		for j in wall_ids:
+			if i == j: total_count += 1
+		if total_count > _total_count: total_count = _total_count; wall_id = i
+	
+	for tile in tiles:
+		if tile.info.wall.id == 0:
+			on_load_wall(tile, wall_id, tile.info.wall.rotation, 2, Settings.default_wall_height, Settings.tile_walls)
+		elif tile.info.wall.type < 2 and tile.info.wall.id not in Helper.exclude_fill:
+			on_load_wall(tile, tile.info.wall.id, tile.info.wall.rotation, tile.info.wall.type + 3, tile.info.wall.multi_tile.size(), tile.info.wall.tile_wall)
 	
 func on_tile_menu_unfill_wall(tiles: Array) -> void:
-	pass
+	tiles = tiles.filter(func(x: Node3D): return x.info.wall.id > 0 and x.info.wall.id not in Helper.exclude_fill)
+	for tile in tiles:
+		if tile.info.wall.type == 2:
+			var _tiles: Array = tiles_by_multitile(tile, 2)
+			for _tile in _tiles: _tile.info.wall = EMPTY_DATA[2].duplicate(true); _tile.load_wall(0)
+		elif tile.info.wall.type > 2:
+			on_load_wall(tile, tile.info.wall.id, tile.info.wall.rotation, tile.info.wall.type - 3, tile.info.wall.multi_tile.size(), tile.info.wall.tile_wall)
 
 func on_tile_menu_wall_height(i: int, tiles: Array) -> void:
 	for tile in tiles:
