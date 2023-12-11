@@ -73,7 +73,7 @@ func _ready() -> void:
 			if i[0] == "LevelEditorElevation":
 				btn.pressed.connect(setup_elevation)
 	
-	for btn in [ArrowButton, $BuildMenu/LoadedMenu/PRLeftArrow, $BuildMenu/LoadedMenu/PRRightArrow]:
+	for btn in [ArrowButton, $BuildMenu/LoadedMenu/PRLeftArrow, $BuildMenu/LoadedMenu/PRRightArrow, $HistoryMenu/PRLeft, $HistoryMenu/PRRight]:
 		Helper.create_button_clickmask(btn)
 		btn.pressed.connect((func(): AudioMaster.play_sfx(preload("res://scenes/screens/level_editor/arrow/woosh.wav"))))
 	BuildMenu.get_node("WarningLabel").text = "Make sure to load in an area, silly!"
@@ -137,10 +137,12 @@ func _process(delta: float) -> void:
 	if active_tile != null and active_tile.can_press:
 		if Input.is_action_just_pressed(Helper.interact_button()): on_tile_interact(active_tile); disable_interact = true
 		elif Input.is_action_pressed("LeftClick"): on_tile_select()
-		elif Input.is_action_pressed("Remove"): on_tile_remove(active_tile) 
-		elif Input.is_action_pressed("RotateLeft"): on_tile_rotate(active_tile, -1)
-		elif Input.is_action_pressed("RotateRight"): on_tile_rotate(active_tile, 1)
-		elif Input.is_action_pressed("FButton"): on_fill_pressed(active_tile)
+		
+		if !block_screen:
+			if Input.is_action_pressed("Remove"): on_tile_remove(active_tile) 
+			elif Input.is_action_pressed("RotateLeft"): on_tile_rotate(active_tile, -1)
+			elif Input.is_action_pressed("RotateRight"): on_tile_rotate(active_tile, 1)
+			elif Input.is_action_pressed("FButton"): on_fill_pressed(active_tile)
 	else:
 		if Input.is_action_just_pressed("ShiftLeftClick"):
 			on_update_tile_menu()
@@ -169,6 +171,17 @@ func _process(delta: float) -> void:
 		reset_active_tile_state(0)
 		fill_mode = 0
 		
+	if !is_undo_redo_delay:
+		if Input.is_action_pressed("Redo"):
+			on_redo_pressed()
+			is_undo_redo_delay = true
+			get_tree().create_timer(UNDO_REDO_DELAY).timeout.connect(func(): is_undo_redo_delay = false)
+		elif Input.is_action_pressed("Undo"):
+			on_undo_pressed()
+			is_undo_redo_delay = true
+			get_tree().create_timer(UNDO_REDO_DELAY).timeout.connect(func(): is_undo_redo_delay = false)
+
+
 var favorites: Array = []
 func on_favorite_item(item: Control) -> void:
 	var pos: Array = folder_pos + item.get_node("Button").pressed.get_connections()[0].callable.get_bound_arguments()
@@ -833,20 +846,21 @@ func on_tile_rotate(tile: Node3D, rotate_direction: int) -> void:
 	
 func on_rotate_multi_tile_object(tile: Node3D, direction: int, j: String) -> bool:
 	var btab: int = STR_TO_BTAB[j]
-	var is_center: bool = tile.info.position == tile.info[j].multi_tile[0]
 	var p: Vector4 = Helper.position_to_vec(tile.info.position)
 	direction *= -1
 	
-	var tiles: Array = tiles_by_multitile(tile, btab, false).filter(func(x: Node3D): return x != tile)
-	var opos: Array = tiles.map(func(x: Node3D): return Helper.position_to_vec(x.info.position) - p)
+	var tiles: Array = tiles_by_multitile(tile, btab, false).filter(func(x: Node3D): return x != null and x != tile)
+	var npos: Array = tiles.map(func(x: Node3D): return Helper.position_to_vec(x.info.position) - p)
 	
-	var npos: Array = []
-	if direction == 1: npos = opos.map(func(x: Vector4): return Vector4(-x.y, -x.z, -x.x, x.w))
-	else: npos = opos.map(func(x: Vector4): return Vector4(-x.z, -x.x, -x.y, x.w))
+	for n in range(abs(direction)):
+		if direction > 0: npos = npos.map(func(x: Vector4): return Vector4(-x.y, -x.z, -x.x, x.w))
+		else: npos = npos.map(func(x: Vector4): return Vector4(-x.z, -x.x, -x.y, x.w))
 	
 	npos = npos.map(func(x: Vector4): return true_tile_by_position(Helper.vec_to_position(p + x)))
 	if !npos.any(func(x: Node3D): return x == null):
-		apply_rotation(tile, (direction * -1), j)
+		var clamped_direction: int = clamp(direction * -1, -1, 1)
+		for i in range(abs(direction)):
+			apply_rotation(tile, clamped_direction, j)
 		if !(STR_TO_BTAB[j] in tile.preview_state):
 			var odatas: Array = []
 			for _tile in tiles:
@@ -865,32 +879,27 @@ func on_rotate_multi_tile_object(tile: Node3D, direction: int, j: String) -> boo
 				npos[i].info[j].rotation = tile.info[j].rotation
 				multi_tile.append(npos[i].info.position)
 			
-			if !is_center:
-				var _pos: Array = multi_tile[0]
-				multi_tile[0] = multi_tile[1]
-				multi_tile[1] = _pos
-			
+			var multis: Array = multi_tile.map(func(x: Array): return true_tile_by_position(x))
+			for i in range(multis.size()):
+				if multis[i] != null and multis[i].info[j].id > 0:
+					var val: Array = multi_tile[0].duplicate(true)
+					multi_tile[0] = multi_tile[i].duplicate(true)
+					multi_tile[i] = val
+					break
+					
 			for _tile in npos: _tile.info[j].multi_tile = multi_tile.duplicate(true)
 			tile.info[j].multi_tile = multi_tile
 			tiles.append(tile)
 			for _tile in tiles: _tile.call("load_" + j, _tile.info[j].id)
-			var _tile: Node3D = true_tile_by_position(multi_tile[0])
 			return true
 		else:
 			var multi_tile: Array = [tile.info.position]
-			for i in range(npos.size()):
-				multi_tile.append(npos[i].info.position)
-				
-			if !is_center:
-				var _pos: Array = multi_tile[0]
-				multi_tile[0] = multi_tile[1]
-				multi_tile[1] = _pos
+			for i in range(npos.size()): multi_tile.append(npos[i].info.position)
 			tile.info[j].multi_tile = multi_tile
 			on_preview_tiles(tile, tile.info.duplicate(true), STR_TO_BTAB[j])
 	return false
 func _on_trinket_amount_item_selected(i: int): trinket_amount = i
 	
-
 const KEEP_ROTATION_DICT: Dictionary = {
 	"tile": 0,
 	"obj": 1,
@@ -958,7 +967,7 @@ func on_tile_select() -> void:
 
 						if n == 2 or is_centric: 
 							_highlight.append(n)
-
+					
 					on_set_tile_material(tile, _highlight, false)
 					tile.preview_state = []
 				
@@ -966,6 +975,8 @@ func on_tile_select() -> void:
 				if load_infos.size() == 1 and load_infos[0].tile.id > 0:
 					var tile: Node3D = true_tile_by_position(load_infos[0].position)
 					on_load_tile(tile, tile.info.tile.id, tile.info.tile.rotation, tile.info.tile.type, true)
+				
+				on_add_to_history(bs_infos.duplicate(true), "PLACE")
 				reset_infos()
 				
 			elif active_tile and active_tile in selection_tiles:
@@ -1194,12 +1205,20 @@ func create_wall_multi_tile(tile: Node3D, empty: Dictionary) -> void:
 			empty.multi_tile.append([tile.info.position[0], tile.info.position[1], tile.info.position[2], tile.info.position[3] + j])
 
 func tile_exists(pos: Array) -> bool:
-	return World.get_node("Tiles/" + str(pos[3])).get_children().any(func(x: Node3D): return x.info.position == pos)
+	return World.get_node("Tiles/" + str(pos[3])).get_children().any(func(x: Node3D): return Helper.compare_by_value(x.info.position, pos))
 
 func create_any_multi_tile(tile: Node3D, idx: Array, empty: Dictionary) -> bool:
 	var mt: Array = Helper.return_multi_tile(idx)
 	if mt.size() > 1:
 		empty.multi_tile = mt.map(func(x: Array): return [x[0] + tile.info.position[0], x[1] + tile.info.position[1], x[2] + tile.info.position[2], x[3] + tile.info.position[3]])
+		if empty.rotation > 0:
+			empty.multi_tile.remove_at(0)
+			var p: Vector4 = Helper.position_to_vec(tile.info.position)
+			var vec_poses: Array = empty.multi_tile.map(func(x: Array): return Helper.position_to_vec(x) - p)
+			for n in range(empty.rotation):
+				vec_poses = vec_poses.map(func(x: Vector4): return Vector4(-x.z, -x.x, -x.y, x.w))
+			empty.multi_tile = vec_poses.map(func(x: Vector4): return Helper.vec_to_position(p + x))
+			empty.multi_tile.push_front(tile.info.position)
 		return empty.multi_tile.all(func(x: Array): return x[3] > 5 or tile_exists(x))
 	return true
 var load_infos: Array = []
@@ -1393,39 +1412,11 @@ func on_tile_menu_rotate_full(item: int, i: int, tiles: Array) -> void:
 			elif tile.info[j].multi_tile.size() > 1:
 				var ctile: Node3D = center_tile_by_multi_tile(tile, STR_TO_BTAB[j])
 				if tile == ctile:
-					var diff: int = i - tile.info[j].rotation
-					if diff < 0: diff += 5
-					var is_worked: bool = false
-					if is_final_rotation_destination_valid(tile, j, tile.info[j].rotation + diff):
-						is_worked = true
-						for n in range(diff):
-							if is_worked: is_worked = on_rotate_multi_tile_object(tile, 1, j)
-							
-					if !is_worked:
-						diff = tile.info[j].rotation - i
-						if is_final_rotation_destination_valid(tile, j, tile.info[j].rotation - diff):
-							for n in range(abs(diff)): on_rotate_multi_tile_object(tile, -1, j)
-					
+					var rotation_base: int = i - tile.info[j].rotation
+					if rotation_base != 0: on_rotate_multi_tile_object(tile, rotation_base, j)
 			else:
 				tile.info[j].rotation = i
 				tile.call("load_" + j, load_id)
-
-func is_final_rotation_destination_valid(tile: Node3D, j: String, destination: int) -> bool:
-	if destination > 5: destination -= 5
-	elif destination < 0: destination += 5
-	elif destination == 0: return false
-	var direction: int = clamp(destination, -1, 1)
-	
-	var p: Vector4 = Helper.position_to_vec(tile.info.position)
-	var tiles: Array = tiles_by_multitile(tile, STR_TO_BTAB[j], false).filter(func(x: Node3D): return x != tile)
-	var npos: Array = tiles.map(func(x: Node3D): return Helper.position_to_vec(x.info.position) - p)
-	
-	for n in range(destination):
-		if direction == 1: npos = npos.map(func(x: Vector4): return Vector4(-x.y, -x.z, -x.x, x.w))
-		else: npos = npos.map(func(x: Vector4): return Vector4(-x.z, -x.x, -x.y, x.w))
-	
-	npos = npos.map(func(x: Vector4): return true_tile_by_position(Helper.vec_to_position(p + x)))
-	return !npos.any(func(x: Node3D): return x == null)
 	
 func on_tile_menu_rotate_direction(item: int, direction: int, tiles: Array) -> void:
 	for tile in tiles:
@@ -1436,7 +1427,9 @@ func on_tile_menu_rotate_direction(item: int, direction: int, tiles: Array) -> v
 					if tile == ctile:
 						on_rotate_multi_tile_object(tile, direction, j)
 				else: on_rotate_tile_object(tile, direction, j, (2 if j == "tile" else tile.info[j].id) if tile.info[j].type == 0 else tile.info[j].id)
-			else: on_rotate_tile_object(tile, direction, j, tile.info[j].id)
+			else:
+				for _tile in tiles_by_multitile(tile, 2): 
+					on_rotate_tile_object(_tile, direction, j, _tile.info[j].id)
 	
 func on_tile_menu_delete(item: int, tiles: Array) -> void:
 	for tile in tiles:
@@ -1727,8 +1720,44 @@ func remove_midair_tile(tile: Node3D) -> bool:
 	return false
 
 func center_tile_by_multi_tile(tile: Node3D, btab: int, pp: bool = true) -> Node3D:
-	if tile.info[BTAB_TO_STR[btab]].multi_tile.size() > 1: return tiles_by_multitile(tile, btab, pp)[0]
+	if tile.info[BTAB_TO_STR[btab]].multi_tile.size() > 1: 
+		return tiles_by_multitile(tile, btab, pp)[0]
 	else: return tile
 
 func _on_buffer_preview_tile_timer_timeout():
 	if BufferTile: on_preview_tiles_new_tile(BufferTile)
+	
+const UNDO_REDO_DELAY: float = 0.25
+const HISTORY_SIZE: int = 1000
+var is_undo_redo_delay: bool = false
+
+var tree_selected: int = 1
+var mtree: Array = []
+var shadow_realm: Array = []
+
+func on_undo_pressed() -> void:
+	if mtree.size() > 0:
+		var last_index: int = mtree.size() - 1
+		for tile_info in mtree[last_index]:
+			var tile: Node3D = true_tile_by_position(tile_info.position, true)
+			tile.info = tile_info
+			reload_tile(tile)
+		shadow_realm.append(mtree[last_index])
+		mtree.remove_at(last_index)
+	
+func on_redo_pressed() -> void:
+	if shadow_realm.size() > 0:
+		for tile_info in shadow_realm[shadow_realm.size() - 1]:
+			var tile: Node3D = true_tile_by_position(tile_info.position, true)
+			tile.info = tile_info
+			reload_tile(tile)
+			
+		on_ungrey_history_button()
+
+func on_add_to_history(tile_infos: Array, type: String) -> void:
+	if mtree.size() > HISTORY_SIZE: mtree.remove_at(0)
+	mtree.append(tile_infos)
+	shadow_realm = [] # cleanse the shadow realm here
+
+func on_ungrey_history_button() -> void:
+	pass

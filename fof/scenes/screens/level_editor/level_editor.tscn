@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://bauy3car7d8gx"]
+[gd_scene load_steps=25 format=3 uid="uid://bauy3car7d8gx"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_editor/level_editor.gd" id="1_c1ufw"]
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="3_hyt8o"]
@@ -14,6 +14,7 @@
 [ext_resource type="FontFile" uid="uid://7k4xd8s0oed2" path="res://assets/UI/roboto/roboto.ttf" id="12_i56tg"]
 [ext_resource type="Theme" uid="uid://du2bpyvp41rdk" path="res://assets/UI/roboto/roboto20.tres" id="13_b5jku"]
 [ext_resource type="LabelSettings" uid="uid://duy8g0fum2k06" path="res://assets/UI/roboto/roboto20_outline.tres" id="13_i5pda"]
+[ext_resource type="Theme" uid="uid://bsbktaxrkrggi" path="res://assets/UI/roboto/roboto12.tres" id="14_37qlv"]
 
 [sub_resource type="Environment" id="Environment_550hv"]
 
@@ -676,6 +677,75 @@ offset_right = 88.0
 offset_bottom = 128.0
 mouse_filter = 1
 text = "5"
+
+[node name="HistoryMenu" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 1830.0
+offset_top = 598.0
+offset_right = 1920.0
+offset_bottom = 999.0
+mouse_filter = 1
+
+[node name="Background" type="Control" parent="HistoryMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="PROutside" type="ColorRect" parent="HistoryMenu/Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -5.0
+offset_top = -5.0
+offset_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+color = Color(0.364706, 0.235294, 0.14902, 1)
+
+[node name="ACInside" type="ColorRect" parent="HistoryMenu/Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+color = Color(0.792157, 0.576471, 0.431373, 1)
+
+[node name="HistoryData" type="Control" parent="HistoryMenu"]
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 0.898
+offset_bottom = 0.145966
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme = ExtResource("14_37qlv")
+
+[node name="PRLeft" type="TextureButton" parent="HistoryMenu"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 360.0
+offset_right = 83.0
+offset_bottom = 458.0
+scale = Vector2(0.45, 0.45)
+texture_normal = ExtResource("5_c5gvh")
+flip_h = true
+
+[node name="PRRight" type="TextureButton" parent="HistoryMenu"]
+layout_mode = 0
+offset_left = 51.0
+offset_top = 360.0
+offset_right = 131.0
+offset_bottom = 458.0
+scale = Vector2(0.45, 0.45)
+texture_normal = ExtResource("5_c5gvh")
 
 [node name="ElevationNumber" type="Label" parent="."]
 layout_mode = 0
