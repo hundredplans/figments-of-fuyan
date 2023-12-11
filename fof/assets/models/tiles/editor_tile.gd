@@ -108,7 +108,3 @@ func on_mouse_entered() -> void:
 func on_mouse_exited() -> void:
 	can_press = false
 	exit_mouse.emit(self)
-
-
-func _on_detect_mouse_mouse_entered():
-	print("mos")

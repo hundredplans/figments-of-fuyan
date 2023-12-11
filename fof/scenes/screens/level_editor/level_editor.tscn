@@ -797,6 +797,8 @@ one_shot = true
 [connection signal="pressed" from="BuildMenu/LoadedMenu/BackArrow" to="." method="_on_back_arrow_pressed"]
 [connection signal="pressed" from="BuildMenu/LoadedMenu/PRLeftArrow" to="." method="_on_change_page_pressed" binds= [-1]]
 [connection signal="pressed" from="BuildMenu/LoadedMenu/PRRightArrow" to="." method="_on_change_page_pressed" binds= [1]]
+[connection signal="pressed" from="HistoryMenu/PRLeft" to="." method="on_change_history_menu_page" binds= [-1]]
+[connection signal="pressed" from="HistoryMenu/PRRight" to="." method="on_change_history_menu_page" binds= [1]]
 [connection signal="mouse_entered" from="MouseBlockers" to="." method="on_mblocker_mouse_entered"]
 [connection signal="mouse_exited" from="MouseBlockers" to="." method="on_mblocker_mouse_exited"]
 [connection signal="timeout" from="BufferPreviewTileTimer" to="." method="_on_buffer_preview_tile_timer_timeout"]
