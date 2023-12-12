@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://bauy3car7d8gx"]
+[gd_scene load_steps=27 format=3 uid="uid://bauy3car7d8gx"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_editor/level_editor.gd" id="1_c1ufw"]
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="3_hyt8o"]
@@ -15,6 +15,7 @@
 [ext_resource type="Theme" uid="uid://du2bpyvp41rdk" path="res://assets/UI/roboto/roboto20.tres" id="13_b5jku"]
 [ext_resource type="LabelSettings" uid="uid://duy8g0fum2k06" path="res://assets/UI/roboto/roboto20_outline.tres" id="13_i5pda"]
 [ext_resource type="Theme" uid="uid://bsbktaxrkrggi" path="res://assets/UI/roboto/roboto12.tres" id="14_37qlv"]
+[ext_resource type="Texture2D" uid="uid://bj8qaug3a4at1" path="res://scenes/screens/level_editor/arrow/arrow_disabled.png" id="15_f5tsu"]
 
 [sub_resource type="Environment" id="Environment_550hv"]
 
@@ -44,11 +45,15 @@ size = Vector2(1444, 367)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pyln6"]
 size = Vector2(95, 355)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qs7ar"]
+size = Vector2(95, 432)
+
 [node name="LevelEditor" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_bottom = -700.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -683,7 +688,7 @@ anchors_preset = 0
 offset_left = 1830.0
 offset_top = 598.0
 offset_right = 1920.0
-offset_bottom = 999.0
+offset_bottom = 1020.0
 mouse_filter = 1
 
 [node name="Background" type="Control" parent="HistoryMenu"]
@@ -720,9 +725,9 @@ color = Color(0.792157, 0.576471, 0.431373, 1)
 
 [node name="HistoryData" type="Control" parent="HistoryMenu"]
 layout_mode = 1
-anchor_right = 1.0
-anchor_bottom = 0.898
-offset_bottom = 0.145966
+anchors_preset = 0
+offset_right = 90.0
+offset_bottom = 380.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
@@ -731,28 +736,34 @@ theme = ExtResource("14_37qlv")
 [node name="PRLeft" type="TextureButton" parent="HistoryMenu"]
 layout_mode = 0
 offset_left = 3.0
-offset_top = 360.0
+offset_top = 380.0
 offset_right = 83.0
-offset_bottom = 458.0
+offset_bottom = 478.0
 scale = Vector2(0.45, 0.45)
+mouse_filter = 1
+disabled = true
 texture_normal = ExtResource("5_c5gvh")
+texture_disabled = ExtResource("15_f5tsu")
 flip_h = true
 
 [node name="PRRight" type="TextureButton" parent="HistoryMenu"]
 layout_mode = 0
 offset_left = 51.0
-offset_top = 360.0
+offset_top = 380.0
 offset_right = 131.0
-offset_bottom = 458.0
+offset_bottom = 478.0
 scale = Vector2(0.45, 0.45)
+mouse_filter = 1
+disabled = true
 texture_normal = ExtResource("5_c5gvh")
+texture_disabled = ExtResource("15_f5tsu")
 
 [node name="ElevationNumber" type="Label" parent="."]
 layout_mode = 0
 offset_left = 1830.0
-offset_top = 77.0
+offset_top = 88.0
 offset_right = 1920.0
-offset_bottom = 156.0
+offset_bottom = 167.0
 text = "1"
 label_settings = SubResource("LabelSettings_407vy")
 horizontal_alignment = 1
@@ -777,6 +788,10 @@ shape = SubResource("RectangleShape2D_ncy6r")
 [node name="UtilityMenu" type="CollisionShape2D" parent="MouseBlockers"]
 position = Vector2(1872.5, 337.5)
 shape = SubResource("RectangleShape2D_pyln6")
+
+[node name="HistoryMenu" type="CollisionShape2D" parent="MouseBlockers"]
+position = Vector2(1872.5, 809)
+shape = SubResource("RectangleShape2D_qs7ar")
 
 [node name="BufferPreviewTileTimer" type="Timer" parent="."]
 wait_time = 0.1

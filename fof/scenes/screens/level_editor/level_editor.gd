@@ -23,7 +23,7 @@ signal equip_sky
 
 var SelectionBox: Node
 
-@onready var mblockers: Array = [$LoadButtons, $InfoMenu, $BuildMenu, $UtilityMenu]
+@onready var mblockers: Array = [$LoadButtons, $InfoMenu, $BuildMenu, $UtilityMenu, $HistoryMenu]
 var block_screen: bool = false
 var active_tile: Node3D
 var active_remove_state: int = 0
@@ -820,6 +820,7 @@ func on_tile_rotate(tile: Node3D, rotate_direction: int) -> void:
 		var rotate_order: Array = item_id_array[0]
 		if highlight: rotate_order = [BTAB_TO_STR[highlight]]
 		
+		if tile.preview_state.size() == 0: on_add_to_history(on_multi_tiles_info_duplicate(tile), "ROTATE")
 		for j in rotate_order:
 			if (tile.info[j].id > 0 and !(j == "tile" and tile.info[j].type == 0)) or tile.info[j].multi_tile.size() > 1:
 				match j:
@@ -843,6 +844,13 @@ func on_tile_rotate(tile: Node3D, rotate_direction: int) -> void:
 						
 					
 		get_tree().create_timer(ROTATION_TILE_DELAY).timeout.connect(func(): has_rotated_tile_delay = false)
+	
+func on_multi_tiles_info_duplicate(tile: Node3D) -> Array:
+	var tiles: Array = [tile]
+	for _tiles in item_id_array[0].map(func(x: String): return tiles_by_multitile(tile, STR_TO_BTAB[x])):
+		for _tile in _tiles:
+			if _tile != null and _tile not in tiles: tiles.append(_tile)
+	return tiles.map(func(x: Node3D): return x.info.duplicate(true))
 	
 func on_rotate_multi_tile_object(tile: Node3D, direction: int, j: String) -> bool:
 	var btab: int = STR_TO_BTAB[j]
@@ -1727,7 +1735,7 @@ func center_tile_by_multi_tile(tile: Node3D, btab: int, pp: bool = true) -> Node
 func _on_buffer_preview_tile_timer_timeout():
 	if BufferTile: on_preview_tiles_new_tile(BufferTile)
 	
-const UNDO_REDO_DELAY: float = 0.25
+const UNDO_REDO_DELAY: float = 0.2
 const HISTORY_SIZE: int = 1000
 const MAX_PAGE_COUNT: int = 10
 
@@ -1740,8 +1748,9 @@ var shadow_realm: Array = []
 var _HistoryButton: PackedScene = preload("res://scenes/screens/level_editor/history_menu/history_button.tscn")
 @onready var HistoryData: Control = $HistoryMenu/HistoryData
 
-func on_undo_pressed() -> void:
+func on_undo_pressed(reload: bool = true) -> void:
 	if mtree.size() > 0:
+		#if reload: reset_infos(true)
 		var last_index: int = mtree.size() - 1
 		var tiles: Array = mtree[last_index].map(func(x: Variant): 
 			if typeof(x) == TYPE_DICTIONARY: return true_tile_by_position(x.position, true)
@@ -1756,10 +1765,14 @@ func on_undo_pressed() -> void:
 			reload_tile(tiles[i])
 		
 		mtree.remove_at(last_index)
+		
+		if reload:
+			on_change_history_menu_page(0)
 	
-func on_redo_pressed() -> void:
+func on_redo_pressed(reload: bool = true) -> void:
 	if shadow_realm.size() > 0:
-		var last_index: int = shadow_realm.size() - 2
+		#if reload: reset_infos(true)
+		var last_index: int = shadow_realm.size() - 1
 		var tiles: Array = shadow_realm[last_index].map(func(x: Variant): 
 			if typeof(x) == TYPE_DICTIONARY: return true_tile_by_position(x.position, true)
 			else: return x)
@@ -1767,20 +1780,23 @@ func on_redo_pressed() -> void:
 			if typeof(x) == TYPE_OBJECT: return x.info.duplicate(true)
 			else: return x))
 		
-		for i in range(shadow_realm[last_index].size() - 2):
+		for i in range(shadow_realm[last_index].size() - 1):
 			tiles[i].info = shadow_realm[last_index][i]
 			reload_tile(tiles[i])
 			
 		shadow_realm.remove_at(last_index)
-		on_ungrey_history_button()
+		
+		if reload:
+			on_change_history_menu_page(0)
 
 func on_add_to_history(tile_infos: Array, type: String) -> void:
-	if mtree.size() > HISTORY_SIZE: mtree.remove_at(0)
-	tile_infos.append(type)
-	mtree.append(tile_infos)
-	
-	on_reload_history_data()
-	shadow_realm = [] # cleanse the shadow realm here
+	if tile_infos.size() > 0:
+		if mtree.size() > HISTORY_SIZE: mtree.remove_at(0)
+		tile_infos.append(type)
+		mtree.append(tile_infos)
+		
+		shadow_realm = []
+		on_change_history_menu_page(0)
 
 func on_reload_history_data() -> void:
 	for button in HistoryData.get_children():
@@ -1788,18 +1804,37 @@ func on_reload_history_data() -> void:
 	
 	var page_space: int = 10 * history_page
 	var history_display: Array = []
+	var srs: int = shadow_realm.size() - 1
+	var mts: int = mtree.size()
+	
 	for i in range(page_space, page_space + 10):
-		if shadow_realm.size() > i: history_display.append(shadow_realm[i])
-		elif mtree.size() > i: history_display.append(mtree[i])
+		var srs_inverse: int = srs - i
+		if srs_inverse >= 0: history_display.append([shadow_realm[srs_inverse], 1])
+		elif mts - abs(srs_inverse) >= 0: history_display.append([mtree[mts - abs(srs_inverse)], 0])
 		
 	for i in range(history_display.size()):
 		var btn: Button = _HistoryButton.instantiate()
-		btn.text = history_display[i][1]
+		HistoryData.add_child(btn)
+		match history_display[i][0][history_display[i][0].size() - 1]:
+			"PLACE": btn.text = "PLACE\n" + str(history_display[i][0][0].position)
+			"ROTATE": btn.text = "ROTATE\n" + str(history_display[i][0][0].position)
 		btn.position.y = i * 38
+		var is_shadow: bool = history_display[i][1] == 1
+		if is_shadow: btn.modulate = Helper.LIGHT_GREY
+		btn.pressed.connect(on_history_button_pressed.bind(page_space + i, is_shadow))
 
-func on_ungrey_history_button() -> void:
-	pass
+func on_history_button_pressed(pos: int, is_shadow: bool) -> void:
+	#reset_infos(true)
+	if is_shadow:
+		for i in range(pos): on_redo_pressed(false)
+	else:
+		for i in range(pos): on_undo_pressed(false)
+	
+	on_change_history_menu_page(0)
 
 func on_change_history_menu_page(i: int):
-	history_page = clamp(history_page + i, 0, ceil(mtree.size() + shadow_realm.size()) / HISTORY_SIZE)
+	var max_page: int = floor(float(mtree.size() + shadow_realm.size() - 1) / MAX_PAGE_COUNT)
+	history_page = clamp(history_page + i, 0, max_page)
+	$HistoryMenu/PRLeft.disabled = history_page == 0
+	$HistoryMenu/PRRight.disabled = history_page == max_page
 	on_reload_history_data()
