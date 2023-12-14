@@ -7,8 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://bdd0m6wbuerq5" path="res://scenes/editor/edit_file_name/edit_file_name.tscn" id="5_2x3tu"]
 [ext_resource type="PackedScene" uid="uid://65cqb6wug8it" path="res://scenes/ui_general/scale_button/scale_button.tscn" id="5_a6slm"]
 [ext_resource type="Texture2D" uid="uid://b8drk0oid8kdr" path="res://scenes/screens/level_editor/arrow/arrow.png" id="5_c5gvh"]
+[ext_resource type="Texture2D" uid="uid://bhphpw6y0dli" path="res://scenes/ui_general/back_arrow/back_arrow.png" id="7_dwfvl"]
 [ext_resource type="Texture2D" uid="uid://dgd0htlk7lc78" path="res://scenes/screens/level_editor/build_menu/model_viewer_sprite.png" id="8_b8gpa"]
-[ext_resource type="Texture2D" uid="uid://cahwx87hkiryc" path="res://scenes/screens/level_editor/build_menu/back_arrow.png" id="8_uibcn"]
 [ext_resource type="PackedScene" uid="uid://ddhe7b82xpn7a" path="res://scenes/screens/level_editor/build_menu/build_menu_world.tscn" id="8_v7j65"]
 [ext_resource type="PackedScene" uid="uid://v3the1ihrgp" path="res://scenes/screens/level_editor/build_menu/viewmodel_world.tscn" id="10_xk6di"]
 [ext_resource type="FontFile" uid="uid://7k4xd8s0oed2" path="res://assets/UI/roboto/roboto.ttf" id="12_i56tg"]
@@ -363,15 +363,15 @@ offset_right = 1434.0
 offset_bottom = 367.0
 mouse_filter = 2
 
-[node name="BackArrow" type="TextureButton" parent="BuildMenu/LoadedMenu"]
+[node name="PRBackArrow" type="TextureButton" parent="BuildMenu/LoadedMenu"]
 layout_mode = 1
 anchors_preset = -1
-offset_left = 4.007
-offset_top = 9.99998
-offset_right = 64.007
-offset_bottom = 70.0
+offset_left = 19.0
+offset_top = 22.0
+offset_right = 69.0
+offset_bottom = 72.0
 mouse_filter = 1
-texture_normal = ExtResource("8_uibcn")
+texture_normal = ExtResource("7_dwfvl")
 
 [node name="PRLeftArrow" type="TextureButton" parent="BuildMenu/LoadedMenu"]
 layout_mode = 1
@@ -809,7 +809,7 @@ one_shot = true
 [connection signal="pressed" from="BuildMenu/Tabs/Tabs/ObjectTab" to="." method="on_load_tab" binds= [1]]
 [connection signal="pressed" from="BuildMenu/Tabs/Tabs/WallTab" to="." method="on_load_tab" binds= [2]]
 [connection signal="pressed" from="BuildMenu/Tabs/Tabs/DecorationTab" to="." method="on_load_tab" binds= [3]]
-[connection signal="pressed" from="BuildMenu/LoadedMenu/BackArrow" to="." method="_on_back_arrow_pressed"]
+[connection signal="pressed" from="BuildMenu/LoadedMenu/PRBackArrow" to="." method="_on_back_arrow_pressed"]
 [connection signal="pressed" from="BuildMenu/LoadedMenu/PRLeftArrow" to="." method="_on_change_page_pressed" binds= [-1]]
 [connection signal="pressed" from="BuildMenu/LoadedMenu/PRRightArrow" to="." method="_on_change_page_pressed" binds= [1]]
 [connection signal="pressed" from="HistoryMenu/PRLeft" to="." method="on_change_history_menu_page" binds= [-1]]

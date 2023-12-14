@@ -11,7 +11,7 @@ signal equip_sky
 @onready var LoadButtons = $LoadButtons
 @onready var BuildMenu = $BuildMenu
 @onready var Items = $BuildMenu/LoadedMenu/Items
-@onready var BackArrow = $BuildMenu/LoadedMenu/BackArrow
+@onready var BackArrow = $BuildMenu/LoadedMenu/PRBackArrow
 @onready var BuildMenuWorld = $BuildMenu/LoadedMenu/ItemsViewer/ItemViewport/BuildMenuWorld
 @onready var ModelItem: Node3D = $BuildMenu/LoadedMenu/ModelViewer/ViewmodelViewport/ViewmodelWorld/Model
 
