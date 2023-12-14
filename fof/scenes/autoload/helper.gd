@@ -361,3 +361,10 @@ func return_multi_tile(id: Array) -> Array:
 					arr.append([k[0], k[1], -k[0] - k[1], k[2]])
 			return arr
 	return []
+
+func flatten(arr: Array, remove_duplicates: bool) -> Array:
+	var narr: Array = []
+	for a in arr: 
+		if remove_duplicates and a in narr: continue
+		narr += a
+	return narr

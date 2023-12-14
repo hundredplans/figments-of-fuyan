@@ -33,6 +33,7 @@ func on_user_quit() -> void:
 	get_tree().quit()
 	
 const move_screen_name_to_path: Dictionary = {
+	"CardEditor": "res://scenes/screens/card_editor/move_screen.tres",
 	"MainMenu": "res://scenes/screens/main_menu/move_screen.tres",
 	"EditorMenu": "res://scenes/screens/editor_menu/move_screen.tres",
 	"SettingsMenu": "res://scenes/screens/settings_menu/move_screen.tres",
@@ -52,7 +53,7 @@ func on_menu_transition(screen: Control, old_screen: Control, is_enter: bool) ->
 	on_screen_change_animation_state(true)
 	screen.visible = false
 	
-	MoveLibrary.add_animation(old_screen.name,  load(move_screen_name_to_path[old_screen.name]))
+	MoveLibrary.add_animation(old_screen.name, load(move_screen_name_to_path[old_screen.name]))
 	if is_enter:
 		MoveScreen.play(old_screen.name)
 		screen_history.append(old_screen.scene_file_path)

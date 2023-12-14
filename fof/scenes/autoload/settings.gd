@@ -18,8 +18,6 @@ var fileloader_opacity: int = 0
 
 var level_editor_elevation: int = 0
 var default_wall_height: int = 0
-var auto_fill_wall: int = 0
-var auto_tile_wall: int = 0
 var elevation_fill: int = 0
 var tile_walls: int = 0
 var select_empty_tiles: int = 0
@@ -120,10 +118,6 @@ func set_leveleditorelevation(i: int):
 	level_editor_elevation = i
 func set_defaultwallheight(i: int):
 	default_wall_height = i
-func set_wallautofill(i: int):
-	auto_fill_wall = i
-func set_wallautotile(i: int):
-	auto_tile_wall = i
 func set_elevationfill(i: int):
 	elevation_fill = i
 func set_tilewalls(i: int):

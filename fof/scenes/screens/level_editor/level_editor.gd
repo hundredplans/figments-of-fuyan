@@ -364,6 +364,7 @@ func on_area_selected_from_fileloader(item: Dictionary) -> void:
 	equip_sky.emit(item.id, false)
 	
 func on_area_selected(item: Dictionary) -> void:
+	on_clear_history()
 	loaded_area = item
 	Helper.load_area_colors(self, item.pcolor, item.acolor)
 	
@@ -378,6 +379,7 @@ func on_area_selected(item: Dictionary) -> void:
 	if !loaded_level:
 		on_build_menu_enabled()
 func on_load_level(info: Dictionary) -> void:
+	on_clear_history()
 	active_tile = null
 	match loaded_level:
 		false: on_build_menu_enabled(); loaded_level = true
@@ -403,6 +405,7 @@ func on_load_level(info: Dictionary) -> void:
 	$InfoMenu/TrinketAmount.set_grabber_position()
 	
 func on_load_empty_level(save_level: bool = true) -> void:
+	on_clear_history()
 	Settings.set_leveleditorelevation(0)
 	Settings.update_settings_info(0, "Preferences", "LevelEditorElevation")
 	
@@ -765,7 +768,6 @@ func get_selected_item_index() -> int:
 				break
 	return j
 	
-
 func on_load_obj_get_area(id: int, tile: Node3D) -> void:
 	tile.on_load_obj_get_area(id, loaded_area)
 
@@ -781,6 +783,7 @@ func on_is_active_tile(tile: Node3D) -> void:
 
 func on_tile_remove(tile: Node3D) -> void:
 	if active_tile_state != 1 and !tile.preview_state:
+		var infos: Array = on_multi_tiles_info_duplicate(tile)
 		reset_active_tile_state(1)
 		var i: int = 1
 		for item in ["wdeco", "tdeco", "wall", "obj", "tile"]: # potential for a multi-tile bug here
@@ -804,7 +807,8 @@ func on_tile_remove(tile: Node3D) -> void:
 				active_remove_state = i + 1
 				break
 			i += 1
-		
+			if i == 6: infos = []
+		on_add_to_history(infos, "REMOVE")
 	
 var has_rotated_tile_delay: bool = false
 const ROTATION_TILE_DELAY: float = 0.2
@@ -851,6 +855,9 @@ func on_multi_tiles_info_duplicate(tile: Node3D) -> Array:
 		for _tile in _tiles:
 			if _tile != null and _tile not in tiles: tiles.append(_tile)
 	return tiles.map(func(x: Node3D): return x.info.duplicate(true))
+	
+func on_multi_tiles_info_duplicates(tiles: Array) -> Array:
+	return Helper.flatten(tiles.map(func(x: Node3D): return on_multi_tiles_info_duplicate(x)), true)
 	
 func on_rotate_multi_tile_object(tile: Node3D, direction: int, j: String) -> bool:
 	var btab: int = STR_TO_BTAB[j]
@@ -1011,13 +1018,15 @@ func create_elevation_fill(tile: Node3D) -> void:
 	Settings.tile_walls = true
 	var p: Array = tile.info.position
 	var load_id: int = 1
-	if tile.info.tile.id in [3, 4]: load_id = tile.info.tile.id
+	#if tile.info.tile.id in [3, 4]: load_id = tile.info.tile.id
 	
 	for i in range(p[3] - 1, -1, -1):
 		var _tile: Node3D = true_tile_by_position([p[0], p[1], p[2], i])
 		if _tile and _tile.info.tile.id > 0 and ["wall", "obj", "tdeco", "wdeco"].all(func(x: String): return _tile.info[x].id == 0):
-			if _tile.info.position[3] == 0: on_load_wall(_tile, load_id, 0, 2, p[3], 1)
-			if tile.info.tile.id in [3, 4]: on_load_tile(_tile, tile.info.tile.id, 0, 0)
+			if _tile.info.position[3] == 0:
+				on_add_to_history([_tile.info.duplicate(true)], "ELEVATION")
+				on_load_wall(_tile, load_id, 0, 2, p[3], 1)
+			#if tile.info.tile.id in [3, 4]: on_load_tile(_tile, tile.info.tile.id, 0, 0)
 			break
 	Settings.tile_walls = f
 
@@ -1080,7 +1089,12 @@ func on_load_wall(tile: Node3D, id: int, rot: int, type: int, multi_tile_height:
 	if _create_tile and tile.info.tile.id == 0: on_load_tile(tile, 1, 0, 0)
 	
 func set_tile_wall_multi_tile(tile: Node3D, height: int, tile_wall: int) -> int:
-	if height == 0: tile_wall = 2; height = 1
+	tile.info.wall.multi_tile = []
+	if height == 0:
+		height = 1
+		tile_wall = 2
+		
+		
 	for i in range(height):
 		tile.info.wall.multi_tile.append([tile.info.position[0], tile.info.position[1], tile.info.position[2], tile.info.position[3] + i])
 	if tile.info.wall.multi_tile.size() < 1: tile.info.wall.multi_tile = []
@@ -1408,6 +1422,7 @@ func on_tile_exit_mouse(tile: Node3D) -> void:
 
 var item_id_array: Array = [["tile", "obj", "wall", "tdeco", "wdeco"], ["tile"], ["obj"], ["wall"], ["tdeco"], ["wdeco"]]
 func on_tile_menu_rotate_full(item: int, i: int, tiles: Array) -> void:
+	on_add_to_history(on_multi_tiles_info_duplicates(tiles), "FULL-ROTATE")
 	for tile in tiles:
 		for j in item_id_array[item]:
 			var load_id: int = (2 if j == "tile" else tile.info[j].id) if tile.info[j].type == 0 else tile.info[j].id
@@ -1427,6 +1442,7 @@ func on_tile_menu_rotate_full(item: int, i: int, tiles: Array) -> void:
 				tile.call("load_" + j, load_id)
 	
 func on_tile_menu_rotate_direction(item: int, direction: int, tiles: Array) -> void:
+	on_add_to_history(on_multi_tiles_info_duplicates(tiles), "TILES-ROTATE")
 	for tile in tiles:
 		for j in item_id_array[item]:
 			if j != "wall":
@@ -1440,6 +1456,7 @@ func on_tile_menu_rotate_direction(item: int, direction: int, tiles: Array) -> v
 					on_rotate_tile_object(_tile, direction, j, _tile.info[j].id)
 	
 func on_tile_menu_delete(item: int, tiles: Array) -> void:
+	on_add_to_history(on_multi_tiles_info_duplicates(tiles), "TILES-DELETE")
 	for tile in tiles:
 		for j in item_id_array[item]:
 			if j == "tile": 
@@ -1471,9 +1488,25 @@ func on_tile_menu_bucket(item: int, tiles: Array) -> void:
 	if tiles.size() == 1:
 		bucket_info = []
 		for j in item_id_array[item]:
-			bucket_info.append([j, tiles[0].info[j].duplicate(true)])
+			match j:
+				"wall":
+					var mt: Array = tiles[0].info.wall.multi_tile
+					if mt.size() > 0:
+						bucket_info.append([j, true_tile_by_position(mt[mt.size() - 1], true).info.wall.duplicate(true)])
+					else: bucket_info.append([j, tiles[0].info[j].duplicate(true)])
+				_: bucket_info.append([j, tiles[0].info[j].duplicate(true)])
 	else:
 		if bucket_info.size() > 0:
+			var extra: Array = tiles.duplicate()
+			for j in bucket_info: 
+				if j[0] == "wall" and j[1].id > 0 and j[1].multi_tile.size() > 0:
+					extra = []
+					for tile in tiles:
+						var p: Array = tile.info.position
+						for n in range(0, j[1].multi_tile.size()):
+							extra.append(true_tile_by_position([p[0], p[1], p[2], p[3] + n], true))
+					break
+			on_add_to_history(on_multi_tiles_info_duplicates(extra), "TILES-BUCKET")
 			for tile in tiles:
 				for j in bucket_info:
 					if j[1].multi_tile.size() == 0 or j[1].multi_tile.all(func(x: Array): return [x[0], x[1], x[2]] == [j[1].multi_tile[0][0], j[1].multi_tile[0][1], j[1].multi_tile[0][2]]):
@@ -1490,8 +1523,10 @@ var old_infos: Array = []
 var move_infos: Array = []
 var move_highlights: Array = []
 var move_tile: Node3D
+var original_infos = []
 
 func on_tile_menu_move(item: int, tiles: Array, copy_mode: int = 0) -> void:
+	original_infos = on_multi_tiles_info_duplicates(tiles)
 	on_set_selection_tiles(tiles, on_tile_menu_move_center_tile_selected.bind(item, tiles, copy_mode))
 	if tiles.size() == 1: 
 		on_tile_menu_queued(TileMenuGlobal)
@@ -1593,12 +1628,19 @@ func on_preview_tiles_new_tile(tile: Node3D) -> void:
 			on_set_tile_material(_tile, move_highlights)
 
 func on_tile_menu_move_finished() -> void:
+	var positions: Array = original_infos.map(func(x: Dictionary): return x.position)
+	for info in old_infos:
+		if info.position not in positions:
+			original_infos.append(info.duplicate(true))
+	
+	on_add_to_history(original_infos, "TILES-MOVE")
 	for _tile in true_tile_by_move_infos():
 		on_set_tile_material(_tile, move_highlights, false)
 	
 	move_tile = null
 	original_move_tile = null
 	move_infos = []
+	original_infos = []
 	move_highlights = []
 	old_infos = []
 	block_screen = false
@@ -1614,6 +1656,7 @@ func on_load(tile: Node3D, btab: int, info: Dictionary, _create_tile: bool = tru
 
 func on_tile_menu_spawn(tiles: Array) -> void:
 	if tiles.size() == 1 and loaded_area:
+		on_add_to_history(tiles.map(func(x: Node3D): return x.info.duplicate(true)), "SPAWN")
 		var FileLoader: Control = preload("res://scenes/editor/file_loader/file_loader.tscn").instantiate()
 		var cards: Array = loaded_area.cards.map(func(i: int): return Helper.id_to_dict(i, "Card"))
 		match tiles[0].info.obj.id:
@@ -1626,15 +1669,33 @@ func on_tile_menu_spawn(tiles: Array) -> void:
  
 func on_tile_menu_item_type(val: int, item: int, tiles: Array) -> void:
 	if tiles.size() == 1 and item != 0:
+		
+		var _tiles: Array = tiles
+		if item == 3: _tiles = tiles_by_multitile(tiles[0], 2)
+		on_add_to_history(_tiles.map(func(x: Node3D): return x.info.duplicate(true)), "ITEM-TYPE")
+		
 		for j in item_id_array[item]:
-			tiles[0].info[j].type = val
-			tiles[0].call("load_" + j, tiles[0].info[j].id)
+			if j == "wall": 
+				for _tile in _tiles:
+					_tile.info[j].type = val
+					_tile.call("load_" + j, _tile.info[j].id)
+			else:
+				tiles[0].info[j].type = val
+				tiles[0].call("load_" + j, tiles[0].info[j].id)
 
 var fill_mode: int = 0
 func on_fill_pressed(tile: Node3D) -> void:
-	if active_tile_state != 5 and tile.info.wall.id not in Helper.exclude_fill:
+	if active_tile_state != 5 and tile.info.wall.id not in Helper.exclude_fill and tile.info.tile.id != 0 and !tile.preview_state:
 		reset_active_tile_state(5)
 		if tile.info.wall.id == 0 and fill_mode in [0, 2]:
+			var infos: Array = on_multi_tiles_info_duplicate(tile)
+			var infos_positions: Array = infos.map(func(x: Dictionary): return x.position)
+			var p: Array = tile.info.position
+			for _tile in range(Settings.default_wall_height).map(func(x: int): return true_tile_by_position([p[0], p[1], p[2], p[3] + x], true)):
+				if _tile != null and !infos_positions.any(func(x: Array): return Helper.compare_by_value(_tile.info.position, x)): infos.append(_tile.info.duplicate(true))
+			
+			on_add_to_history(infos, "FILL")
+				
 			var wall_id: int = 1
 			var elevation_positions: Array = World.get_node("Tiles/" + str(tile.info.position[3])).get_children()\
 			.map(func(x: Node3D): return Helper.position_to_vec(x.info.position))
@@ -1653,6 +1714,7 @@ func on_fill_pressed(tile: Node3D) -> void:
 			
 			on_load_wall(tile, wall_id, tile.info.wall.rotation, 2, Settings.default_wall_height, Settings.tile_walls)
 			fill_mode = 2
+			
 		elif tile.info.wall.type != 2:
 			var mult: int = 0
 			if tile.info.wall.type > 2: 
@@ -1664,8 +1726,12 @@ func on_fill_pressed(tile: Node3D) -> void:
 				fill_mode = 2
 				
 			if mult != 0:
-				on_load_wall(tile, tile.info.wall.id, tile.info.wall.rotation, tile.info.wall.type + mult, tile.info.wall.multi_tile.size(), tile.info.wall.tile_wall)
+				on_add_to_history(on_multi_tiles_info_duplicate(tile), "FILL")
+				var twh: Array = on_find_wall_tile_wall_and_height(tile)
+				on_load_wall(tile, tile.info.wall.id, tile.info.wall.rotation, tile.info.wall.type + mult, twh[0], twh[1], true)
+		
 		elif fill_mode in [0, 1]:
+			on_add_to_history(on_multi_tiles_info_duplicate(tile), "FILL")
 			var tiles: Array = tiles_by_multitile(tile, 2)
 			for _tile in tiles: _tile.info.wall = EMPTY_DATA[2].duplicate(true); _tile.load_wall(0)
 			fill_mode = 1
@@ -1681,29 +1747,62 @@ func on_tile_menu_fill_wall(tiles: Array) -> void:
 		for j in wall_ids:
 			if i == j: total_count += 1
 		if total_count > _total_count: total_count = _total_count; wall_id = i
-	
+	on_add_to_history(on_multi_tiles_info_duplicates(on_find_wall_tiles(tiles, func(x: int): return x == 0, Settings.default_wall_height)), "TILES-FILL")
 	for tile in tiles:
 		if tile.info.wall.id == 0:
 			on_load_wall(tile, wall_id, tile.info.wall.rotation, 2, Settings.default_wall_height, Settings.tile_walls)
 		elif tile.info.wall.type < 2 and tile.info.wall.id not in Helper.exclude_fill:
-			on_load_wall(tile, tile.info.wall.id, tile.info.wall.rotation, tile.info.wall.type + 3, tile.info.wall.multi_tile.size(), tile.info.wall.tile_wall)
+			var twh: Array = on_find_wall_tile_wall_and_height(tile)
+			on_load_wall(tile, tile.info.wall.id, tile.info.wall.rotation, tile.info.wall.type + 3, twh[0], twh[1], true)
 	
 func on_tile_menu_unfill_wall(tiles: Array) -> void:
 	tiles = tiles.filter(func(x: Node3D): return x.info.wall.id > 0 and x.info.wall.id not in Helper.exclude_fill)
+	on_add_to_history(on_multi_tiles_info_duplicates(tiles), "TILES-UNFILL")
 	for tile in tiles:
 		if tile.info.wall.type == 2:
 			var _tiles: Array = tiles_by_multitile(tile, 2)
 			for _tile in _tiles: _tile.info.wall = EMPTY_DATA[2].duplicate(true); _tile.load_wall(0)
 		elif tile.info.wall.type > 2:
-			on_load_wall(tile, tile.info.wall.id, tile.info.wall.rotation, tile.info.wall.type - 3, tile.info.wall.multi_tile.size(), tile.info.wall.tile_wall)
+			var twh: Array = on_find_wall_tile_wall_and_height(tile)
+			on_load_wall(tile, tile.info.wall.id, tile.info.wall.rotation, tile.info.wall.type - 3, twh[0], twh[1], true)
+
+func on_find_wall_tile_wall_and_height(tile: Node3D) -> Array:
+	var tile_wall: int = tile.info.wall.tile_wall
+	var j: int = tile.info.wall.multi_tile.size() - 1
+	if j > 0:
+		tile_wall = true_tile_by_position(tile.info.wall.multi_tile[j], true).info.wall.tile_wall
+		j += 1
+	elif tile_wall != 2:
+		j = 1
+	else: j = 0
+	return [j, tile_wall]
+func on_find_wall_tiles(tiles: Array, condition: Callable, height: int) -> Array:
+	var extra: Array = []
+	for tile in tiles:
+		if condition.call(tile.info.wall.id):
+			var p: Array = tile.info.position
+			for n in range(1, height):
+				extra.append(true_tile_by_position([p[0], p[1], p[2], p[3] + n], true))
+	for tile in tiles: if tile not in extra: extra.append(tile)
+	return extra
 
 func on_tile_menu_wall_height(i: int, tiles: Array) -> void:
+	var extra: Array = []
+	for tile in tiles:
+		if tile.info.wall.id > 0:
+			var p: Array = tile.info.position
+			for n in range(1, i):
+				extra.append(true_tile_by_position([p[0], p[1], p[2], p[3] + n], true))
+	
+	for tile in tiles: if tile not in extra: extra.append(tile)
+	on_add_to_history(on_multi_tiles_info_duplicates(on_find_wall_tiles(tiles, func(x: int): return x > 0, i)), "WALL-HEIGHT")
 	for tile in tiles:
 		if tile.info.wall.id > 0:
 			var _tiles: Array = tiles_by_multitile(tile, 2)
 			var tdata: Dictionary = _tiles[0].info.wall.duplicate()
+			var tile_wall: int = on_find_wall_tile_wall_and_height(_tiles[0])[1]
 			on_tile_remove_specific(_tiles[0], 2)
-			on_load_wall(_tiles[0], tdata.id, tdata.rotation, tdata.type, i, tdata.tile_wall if tdata.tile_wall != 2 else 0)
+			on_load_wall(_tiles[0], tdata.id, tdata.rotation, tdata.type, i, tile_wall)
 
 func on_file_loader_loaded(FileLoader: Control):
 	FileLoader.queued.connect(on_file_loader_queued)
@@ -1749,8 +1848,8 @@ var _HistoryButton: PackedScene = preload("res://scenes/screens/level_editor/his
 @onready var HistoryData: Control = $HistoryMenu/HistoryData
 
 func on_undo_pressed(reload: bool = true) -> void:
-	if mtree.size() > 0:
-		#if reload: reset_infos(true)
+	if mtree.size() > 0 and !block_screen:
+		if reload: reset_infos(true)
 		var last_index: int = mtree.size() - 1
 		var tiles: Array = mtree[last_index].map(func(x: Variant): 
 			if typeof(x) == TYPE_DICTIONARY: return true_tile_by_position(x.position, true)
@@ -1770,8 +1869,8 @@ func on_undo_pressed(reload: bool = true) -> void:
 			on_change_history_menu_page(0)
 	
 func on_redo_pressed(reload: bool = true) -> void:
-	if shadow_realm.size() > 0:
-		#if reload: reset_infos(true)
+	if shadow_realm.size() > 0 and !block_screen:
+		if reload: reset_infos(true)
 		var last_index: int = shadow_realm.size() - 1
 		var tiles: Array = shadow_realm[last_index].map(func(x: Variant): 
 			if typeof(x) == TYPE_DICTIONARY: return true_tile_by_position(x.position, true)
@@ -1815,26 +1914,27 @@ func on_reload_history_data() -> void:
 	for i in range(history_display.size()):
 		var btn: Button = _HistoryButton.instantiate()
 		HistoryData.add_child(btn)
-		match history_display[i][0][history_display[i][0].size() - 1]:
-			"PLACE": btn.text = "PLACE\n" + str(history_display[i][0][0].position)
-			"ROTATE": btn.text = "ROTATE\n" + str(history_display[i][0][0].position)
+		btn.text = history_display[i][0][history_display[i][0].size() - 1] + "\n" + str(history_display[i][0][0].position)
+			
 		btn.position.y = i * 38
 		var is_shadow: bool = history_display[i][1] == 1
 		if is_shadow: btn.modulate = Helper.LIGHT_GREY
 		btn.pressed.connect(on_history_button_pressed.bind(page_space + i, is_shadow))
 
 func on_history_button_pressed(pos: int, is_shadow: bool) -> void:
-	#reset_infos(true)
-	if is_shadow:
-		for i in range(pos): on_redo_pressed(false)
-	else:
-		for i in range(pos): on_undo_pressed(false)
-	
+	reset_infos(true)
+	if is_shadow: for i in range(pos + 1): on_redo_pressed(false)
+	else: for i in range(pos + 1 - shadow_realm.size()): on_undo_pressed(false)
 	on_change_history_menu_page(0)
 
 func on_change_history_menu_page(i: int):
-	var max_page: int = floor(float(mtree.size() + shadow_realm.size() - 1) / MAX_PAGE_COUNT)
+	var max_page: int = max(floor(float(mtree.size() + shadow_realm.size() - 1) / MAX_PAGE_COUNT), 0)
 	history_page = clamp(history_page + i, 0, max_page)
 	$HistoryMenu/PRLeft.disabled = history_page == 0
 	$HistoryMenu/PRRight.disabled = history_page == max_page
 	on_reload_history_data()
+
+func on_clear_history() -> void:
+	shadow_realm = []
+	mtree = []
+	on_change_history_menu_page(0)

@@ -189,59 +189,45 @@ offset_right = 196.0
 offset_bottom = 1572.0
 label_text = "Tile Walls"
 
-[node name="WallAutoFill" parent="." instance=ExtResource("4_70xc4")]
-offset_left = 19.0
-offset_top = 1592.0
-offset_right = 196.0
-offset_bottom = 1655.0
-label_text = "Autofill Wall"
-
-[node name="WallAutoTile" parent="." instance=ExtResource("4_70xc4")]
-offset_left = 19.0
-offset_top = 1675.0
-offset_right = 196.0
-offset_bottom = 1738.0
-label_text = "Autotile Wall"
-
 [node name="ElevationFill" parent="." instance=ExtResource("4_70xc4")]
 offset_left = 19.0
-offset_top = 1753.0
+offset_top = 1585.0
 offset_right = 196.0
-offset_bottom = 1816.0
+offset_bottom = 1648.0
 label_text = "Elevation Fill"
 
 [node name="HighlightEmptyTiles" parent="." instance=ExtResource("4_70xc4")]
 offset_left = 19.0
-offset_top = 1753.0
+offset_top = 1585.0
 offset_right = 196.0
-offset_bottom = 1816.0
+offset_bottom = 1648.0
 label_text = "Lightup Empty"
 
 [node name="SelectEmptyTiles" parent="." instance=ExtResource("4_70xc4")]
 offset_left = 19.0
-offset_top = 1833.0
+offset_top = 1665.0
 offset_right = 196.0
-offset_bottom = 1896.0
+offset_bottom = 1728.0
 label_text = "Select Empty"
 
 [node name="LassoSelect" parent="." instance=ExtResource("4_70xc4")]
 offset_left = 19.0
-offset_top = 1910.0
+offset_top = 1742.0
 offset_right = 196.0
-offset_bottom = 1973.0
+offset_bottom = 1805.0
 label_text = "Lasso Select"
 
 [node name="KeepRotation" parent="." instance=ExtResource("4_70xc4")]
 offset_left = 20.0
-offset_top = 1989.0
+offset_top = 1821.0
 offset_right = 197.0
-offset_bottom = 2052.0
+offset_bottom = 1884.0
 label_text = "Keep Rotation"
 
 [node name="LevelId" parent="." instance=ExtResource("3_dg7gw")]
 offset_left = 20.0
-offset_top = 2070.0
+offset_top = 1902.0
 offset_right = 44.0
-offset_bottom = 2133.0
+offset_bottom = 1965.0
 options = PackedStringArray("Regular", "Odd ID", "Even ID")
 label_text = "Level ID"

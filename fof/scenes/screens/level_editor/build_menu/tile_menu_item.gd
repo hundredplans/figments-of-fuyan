@@ -123,13 +123,12 @@ func add_rotate_button(tmi: Control) -> void:
 			rotate_btn.snap_mode = true
 			rotate_btn.position = Vector2($Label.position.x + $Label.size.x + 10, 5)
 			tmi.add_child(rotate_btn)
-			rotate_btn.item_selected.connect(func(i: int): parent.rotate_full.emit(item, i, tiles))
 			RotateButton = rotate_btn
 			
 			if tiles.size() == 1:
 				if item_name != "General": on_update_item_rotation()
 				else: rotate_btn.item_selected.connect(func(__: int): parent.update_item_rotations.emit())
-			
+			rotate_btn.item_selected.connect(func(i: int): parent.rotate_full.emit(item, i, tiles))
 		1: 
 			var cnt := Control.new()
 			RotateButton = cnt
