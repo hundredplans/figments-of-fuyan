@@ -75,7 +75,7 @@ func _ready() -> void:
 	
 	for btn in [ArrowButton, $BuildMenu/LoadedMenu/PRLeftArrow, $BuildMenu/LoadedMenu/PRRightArrow, $HistoryMenu/PRLeft, $HistoryMenu/PRRight]:
 		Helper.create_button_clickmask(btn)
-		btn.pressed.connect((func(): AudioMaster.play_sfx(preload("res://scenes/screens/level_editor/arrow/woosh.wav"))))
+		btn.pressed.connect((func(): AudioMaster.play_sfx(preload("res://scenes/ui_general/arrow/woosh.wav"))))
 	BuildMenu.get_node("WarningLabel").text = "Make sure to load in an area, silly!"
 	BuildMenu.get_node("Tabs").visible = false
 	BuildMenu.get_node("LoadedMenu").visible = false

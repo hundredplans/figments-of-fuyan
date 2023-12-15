@@ -13,6 +13,7 @@ var choose_color := Color(0x00000000)
 @onready var CardZone: Control = $AddedCards/CardZone
 
 func _ready():
+	on_reload_page(0)
 	modulate_all()
 	Helper.load_area_colors(self, primary_color, accent_color)
 	var available_colors: Array = Helper.return_file_contents("res://static/screens/area_editor/available_colors.txt").split("\n", false)
@@ -62,7 +63,7 @@ func _on_world_difficulty_pressed(_world_difficulty: int):
 	modulate_world_difficulty_buttons()
 
 func _on_save_area_pressed():
-	var contents: String = "%s\n%s\n%s\n%s\n%s" % [str(primary_color), str(accent_color), str(world_difficulty), cards, tiles_allowed]
+	var contents: String = "%s\n%s\n%s\n%s\n%s" % [str(primary_color), str(accent_color), str(world_difficulty), str(cards.map(func(x: Dictionary): return x.id)), tiles_allowed]
 	var item_contents: Dictionary = Helper.write_to_base_game_file(FILE_LOADER_NAME, $Buttons/EditFileName, contents, TID)
 	Helper.create_base_game_id_dir(item_contents, FILE_LOADER_NAME)
 	
@@ -79,44 +80,34 @@ func on_item_selected(item_info: Dictionary) -> void:
 	Helper.load_area_colors(self, primary_color, accent_color)
 	$Buttons/EditFileName.set_text(item_info.iname, item_info.sname)
 	
-	cards = []
-	for child in $AddedCards/CardZone.get_children(): child.queue_free()
-	
-	
-	for i in item_info.cards:
-		on_card_selected(Helper.id_to_dict(i, "Card"))
+	cards = item_info.cards.map(func(x: int): return Helper.id_to_dict(x, "Card"))
+	on_reload_page(0)
 		
-	set_card_amount()
-
-func set_card_amount() -> void:
-	$AddedCards/Amount.visible = cards.size() > 0
-	$AddedCards/Amount.text = str(cards.size())
-
 func _on_add_cards_pressed():
 	var FileLoader: Control = preload("res://scenes/editor/file_loader/file_loader.tscn").instantiate()
 	FileLoader.on_ready("Card")
-	FileLoader.item_selected.connect(on_card_selected)
+	FileLoader.item_selected.connect(on_add_card)
 	add_child(FileLoader)
 	
-func on_card_selected(card_info: Dictionary) -> void:
-	if card_info and !card_info.id in cards:
-		$AddedCards/Label.visible = false
-		var added_card: Control = preload("res://scenes/screens/area_editor/added_card.tscn").instantiate()
-		added_card.name = str(card_info.id)
-		added_card.remove_card.connect(on_remove_card)
-		added_card.change_art(card_info.bgfn)
-		CardZone.add_child(added_card)
-		cards.append(card_info.id)
-		on_sort_added_cards()
-		set_card_amount()
+#func on_card_selected(card_info: Dictionary) -> void:
+	#if card_info and !card_info.id in cards:
+		#$AddedCards/Label.visible = false
+		#var added_card: Control = preload("res://scenes/screens/area_editor/added_card.tscn").instantiate()
+		#added_card.name = str(card_info.id)
+		#added_card.remove_card.connect(on_remove_card)
+		#added_card.change_art(card_info.bgfn)
+		#CardZone.add_child(added_card)
+		#cards.append(card_info.id)
+		#on_sort_added_cards()
+		##set_card_amount()
 		
-func on_remove_card(btn: Control) -> void:
-	cards.erase(int(str(btn.name)))
-	if cards.is_empty(): $AddedCards/Label.visible = true
-	btn.queue_free()
-	on_sort_added_cards()
-	get_viewport().warp_mouse(get_viewport().get_mouse_position())
-	set_card_amount()
+#func on_remove_card(btn: Control) -> void:
+	#cards.erase(int(str(btn.name)))
+	#if cards.is_empty(): $AddedCards/Label.visible = true
+	#btn.queue_free()
+	#on_sort_added_cards()
+	#get_viewport().warp_mouse(get_viewport().get_mouse_position())
+	#set_card_amount()
 	
 func on_sort_added_cards():
 	var xy := Vector2(0, 20)
@@ -130,3 +121,34 @@ func on_sort_added_cards():
 
 func _queue_free() -> void:
 	_on_save_area_pressed()
+
+const MAX_PAGE_COUNT: int = 18
+var page: int = 0
+
+var _area_card: PackedScene = preload("res://scenes/screens/area_editor/added_card.tscn")
+func on_reload_page(i: int) -> void:
+	var max_page: int = floor(max(cards.size(), 1) / MAX_PAGE_COUNT)
+	page = clamp(page + i, 0, max_page)
+	$AddedCards/PageZone/PRLeftArrow.disabled = page == 0
+	$AddedCards/PageZone/PRRightArrow.disabled = page == max_page
+	
+	for child in CardZone.get_children(): child.queue_free()
+	for j in range(page * MAX_PAGE_COUNT, min((page + 1) * MAX_PAGE_COUNT, cards.size())):
+		var area_card: Control = _area_card.instantiate()
+		area_card.remove_card.connect(on_remove_card.bind(cards[j]))
+		area_card.change_art(cards[j].bgfn)
+		CardZone.add_child(area_card)
+		
+	on_sort_added_cards()
+	$AddedCards/Label.visible = cards.size() == 0
+	$AddedCards/Amount.visible = cards.size() > 0
+	$AddedCards/Amount.text = str(cards.size())
+	
+func on_remove_card(card_info: Dictionary) -> void:
+	cards.erase(card_info)
+	on_reload_page(0)
+
+func on_add_card(card_info: Dictionary) -> void:
+	if !cards.any(func(x: Dictionary): return x.id == card_info.id):
+		cards.append(card_info)
+		on_reload_page(0)

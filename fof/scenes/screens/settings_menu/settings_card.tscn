@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://bak8gc1mx41gq"]
+[gd_scene load_steps=25 format=3 uid="uid://bak8gc1mx41gq"]
 
 [ext_resource type="Script" path="res://scenes/screens/settings_menu/settings_card.gd" id="1_lngsg"]
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="1_ymu3o"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://bpcgj8pn3xwnp" path="res://scenes/screens/settings_menu/settings_assets/front6.png" id="11_ijpyp"]
 [ext_resource type="Texture2D" uid="uid://c4ufmqtbmvuv1" path="res://scenes/screens/settings_menu/settings_assets/back5.png" id="13_0ow5q"]
 [ext_resource type="Texture2D" uid="uid://vr8wlegndsls" path="res://scenes/screens/settings_menu/settings_assets/back6.png" id="18_lo2iw"]
+[ext_resource type="Texture2D" uid="uid://bhphpw6y0dli" path="res://scenes/ui_general/back_arrow/back_arrow.png" id="19_4mfqq"]
 [ext_resource type="Texture2D" uid="uid://bnqi2oq317g66" path="res://scenes/screens/settings_menu/settings_assets/back4.png" id="19_hq85k"]
 [ext_resource type="Texture2D" uid="uid://ceaduy4bqe2x8" path="res://scenes/screens/settings_menu/settings_assets/front3.png" id="20_pjr3j"]
 [ext_resource type="Texture2D" uid="uid://de8by113jbv3f" path="res://scenes/screens/settings_menu/settings_assets/front2.png" id="21_hltqk"]
@@ -273,3 +274,12 @@ text = "water"
 label_settings = SubResource("LabelSettings_bwuoh")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="ResetButton" type="TextureButton" parent="Settings"]
+modulate = Color(0.709804, 0.568627, 0.47451, 1)
+layout_mode = 0
+offset_left = 535.005
+offset_top = 834.997
+offset_right = 585.005
+offset_bottom = 884.997
+texture_normal = ExtResource("19_4mfqq")

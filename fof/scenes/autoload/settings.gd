@@ -63,11 +63,14 @@ func return_setting_file_info(file: String) -> Array:
 
 func _init() -> void:
 	for file in DirAccess.get_files_at("user://save/settings/current/"):
-		var info: Array = return_setting_file_info(file)
-		for setting in info:
-			var method_name: String = "set_" + setting[0].to_lower()
-			if has_method(method_name): call(method_name, setting[1])
-		settings_info[file.left(-4)] = info
+		on_trigger_setting(file)
+
+func on_trigger_setting(file: String) -> void:
+	var info: Array = return_setting_file_info(file)
+	for setting in info:
+		var method_name: String = "set_" + setting[0].to_lower()
+		if has_method(method_name): call(method_name, setting[1])
+	settings_info[file.left(-4)] = info
 
 func set_fps(i: int):
 	var setting_info: Array = [60, 120, 144, 240, 0]

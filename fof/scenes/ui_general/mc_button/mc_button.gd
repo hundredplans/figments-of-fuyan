@@ -74,3 +74,6 @@ func on_item_selected(state: int, child: Control) -> void:
 		0: default -= i
 		1: default += i
 	item_selected.emit(default)
+
+func select_item() -> void:
+	pass

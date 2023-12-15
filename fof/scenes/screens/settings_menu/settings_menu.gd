@@ -23,6 +23,8 @@ func _ready() -> void:
 		settings_card.scale = card_scales[i]
 		$CardSorter.add_child(settings_card)
 		settings_card.on_load_setting_card(card_name)
+		settings_card.get_node("Settings/ResetButton").pressed.connect(on_reset_button_pressed.bind(card_name))
+		
 		settings_card.z_index = i
 		
 		var animation: Animation = settings_card.get_node("MoveCard").get_animation("move_card_" + directions[direction])
@@ -35,7 +37,6 @@ func _ready() -> void:
 			settings_card.get_node("Settings").rotation = animation.track_get_key_value(1, animation.track_get_key_count(1) - 1)
 			settings_card.get_node("Settings").position = animation.track_get_key_value(2, animation.track_get_key_count(2) - 1)
 		i += 1
-	
 
 func on_center_selected_card(i: int) -> void:
 	if i < 4 and !cards_are_moving:
@@ -93,3 +94,20 @@ func on_card_finished_moving(card: Control, i: int) -> void:
 func get_card(setting: String) -> Control:
 	for child in $CardSorter.get_children(): if setting == child.setting: return child
 	return null
+
+func on_reset_button_pressed(card_name: String) -> void:
+	var data: String = Helper.return_file_contents("user://save/settings/default/" + card_name + ".txt")
+	if data:
+		Helper.write_to_file("user://save/settings/current/", card_name, ".txt", data, false)
+		
+		Settings.on_trigger_setting(card_name + ".txt")
+		var card: Control = get_card(card_name)
+		
+		var loaded_new_card: Control = load("res://scenes/screens/settings_menu/setting_options/settings_" + card_name.to_lower() + ".tscn").instantiate()
+		loaded_new_card.setting = card_name
+		
+		for info in Settings.settings_info[card_name]:
+			if card.has_node(info[0]): card.get_node(info[0]).default = info[1]
+			
+		card.get_node("Settings/LoadedSetting/Settings" + card_name).free()
+		card.get_node("Settings/LoadedSetting").add_child(loaded_new_card)

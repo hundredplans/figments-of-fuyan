@@ -1,0 +1,10 @@
+[gd_scene load_steps=4 format=3 uid="uid://bkbg8go87dqws"]
+
+[ext_resource type="Texture2D" uid="uid://b8drk0oid8kdr" path="res://scenes/ui_general/arrow/arrow.png" id="1_gp5ja"]
+[ext_resource type="Texture2D" uid="uid://bj8qaug3a4at1" path="res://scenes/ui_general/arrow/arrow_disabled.png" id="2_7jgp6"]
+[ext_resource type="Script" path="res://scenes/ui_general/arrow/ui_arrow.gd" id="3_5uquh"]
+
+[node name="UIArrow" type="TextureButton"]
+texture_normal = ExtResource("1_gp5ja")
+texture_disabled = ExtResource("2_7jgp6")
+script = ExtResource("3_5uquh")

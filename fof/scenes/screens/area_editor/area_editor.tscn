@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://bq65i6hwtd4b5"]
+[gd_scene load_steps=8 format=3 uid="uid://bq65i6hwtd4b5"]
 
 [ext_resource type="Script" path="res://scenes/screens/area_editor/area_editor.gd" id="1_r82ym"]
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="2_euq7d"]
 [ext_resource type="PackedScene" uid="uid://bdd0m6wbuerq5" path="res://scenes/editor/edit_file_name/edit_file_name.tscn" id="3_s437e"]
 [ext_resource type="FontFile" uid="uid://dnq2ul3ia4hy3" path="res://assets/UI/lora/Lora-Bold.ttf" id="4_ygm6e"]
+[ext_resource type="PackedScene" uid="uid://bkbg8go87dqws" path="res://scenes/ui_general/arrow/ui_arrow.tscn" id="5_18n6o"]
 [ext_resource type="LabelSettings" uid="uid://qp0350v2j4ah" path="res://assets/UI/roboto/roboto32outline.tres" id="5_vb57l"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_u43yd"]
@@ -332,19 +333,49 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="CardZone" type="Control" parent="AddedCards"]
+clip_children = 2
 anchors_preset = 0
-offset_left = 72.0
+offset_left = 81.0
 offset_top = 30.0
+offset_right = 570.0
+offset_bottom = 943.0
+
+[node name="PageZone" type="Control" parent="AddedCards"]
+anchors_preset = 0
+offset_left = 30.0
+offset_top = 943.0
 offset_right = 570.0
 offset_bottom = 1050.0
 
-[node name="Amount" type="Label" parent="AddedCards"]
-visible = false
+[node name="PRRim" type="ColorRect" parent="AddedCards/PageZone"]
 layout_mode = 0
-offset_left = 34.0
-offset_top = 30.0
-offset_right = 108.0
-offset_bottom = 71.0
+offset_right = 540.0
+offset_bottom = 20.0
+color = Color(0, 0, 0, 1)
+
+[node name="PRLeftArrow" parent="AddedCards/PageZone" instance=ExtResource("5_18n6o")]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 342.0
+offset_top = 15.0
+offset_right = 422.0
+offset_bottom = 113.0
+flip_h = true
+
+[node name="PRRightArrow" parent="AddedCards/PageZone" instance=ExtResource("5_18n6o")]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 448.0
+offset_top = 15.0
+offset_right = 528.0
+offset_bottom = 113.0
+
+[node name="Amount" type="Label" parent="AddedCards"]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 963.0
+offset_right = 104.0
+offset_bottom = 1001.0
 text = "0"
 label_settings = ExtResource("5_vb57l")
 
@@ -355,3 +386,5 @@ label_settings = ExtResource("5_vb57l")
 [connection signal="pressed" from="Buttons/OtherButtons/SaveArea" to="." method="_on_save_area_pressed"]
 [connection signal="pressed" from="Buttons/OtherButtons/LoadArea" to="." method="_on_load_area_pressed"]
 [connection signal="pressed" from="Buttons/OtherButtons/AddCards" to="." method="_on_add_cards_pressed"]
+[connection signal="pressed" from="AddedCards/PageZone/PRLeftArrow" to="." method="on_reload_page" binds= [-1]]
+[connection signal="pressed" from="AddedCards/PageZone/PRRightArrow" to="." method="on_reload_page" binds= [1]]
