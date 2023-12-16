@@ -23,21 +23,9 @@ const temp_lore: String = "user://save/temp/lore_books/"
 var selected_category: String
 var selected_book: String
 var book_mode: int = 0
-var enable_scroll: int = 0
-var offset: int = 0
 var old_text: String
 
-const CHANGE_SELECT_SEARCH_DELAY: float = 0.15
-const SCROLL_OFFSET: int = 150
-const scroll_pixels: int = 36
-const moved_button_delay: float = 0.2
-
-var has_moved_button: bool = false
 const book_font_sizes: Array = [16, 20, 24, 28, 32, 36]
-
-var max_book_size: int = 0
-var max_category_size: int = 0
-
 var scroll_inputs: Dictionary = {
 	"MouseDown": -1,
 	"MouseUp": 1,
@@ -55,9 +43,9 @@ signal load_world
 func _ready():
 	BookText["theme_override_font_sizes/font_size"] = book_font_sizes[Settings.book_font_size]
 	SearchMenu.visible = false
-	on_refresh_categories()
+	all_categories = DirAccess.get_directories_at(static_lore)
+	on_change_category_page(0)
 	load_world.emit(Node3D.new())
-	
 
 func _process(_delta: float) -> void:
 	if !BookText.has_focus():
@@ -65,104 +53,20 @@ func _process(_delta: float) -> void:
 			if Input.is_action_just_pressed(input):
 				open_search_books(input)
 				break
-	
-	for input in inputs:
-		if !Rect2(BookText.global_position, BookText.size).has_point(get_viewport().get_mouse_position()):
-			if Input.is_action_pressed(input):
-				if !has_moved_button:
-					has_moved_button = true
-					call("on_button_moved", inputs[input][0], inputs[input][1])
-					await get_tree().create_timer(moved_button_delay).timeout
-					has_moved_button = false
-					return
-				
-		
-	if enable_scroll:
-		for input in scroll_inputs:
-			if Input.is_action_just_pressed(input):
-				call("on_container_moved", scroll_inputs[input])
-
-func on_container_moved(i: int) -> void:
-	var container: Control
-	var max_position: int
-	match enable_scroll:
-		1: container = Category; max_position = max_category_size
-		2: container = Books; max_position = max_book_size
-		
-	offset = container.get_child(0).position.y + (scroll_pixels * i)
-	if offset >= -max_position and offset <= 0:
-		for child in container.get_children():
-			child.position.y += scroll_pixels * i
-	
-	container.queue_redraw()
-	
-func on_button_moved(parent: String, direction: String) -> void:
-	BookText.release_focus()
-	var selection: String = get("selected_" + parent)
-	var parent_name: String = "Books" if parent == "book" else "Categories"
-	var parent_node: Control = get_node("Select" + parent.capitalize() + "/" + parent_name)
-	if selection:
-		for child in parent_node.get_children():
-			if child.label_text == selection:
-				var i: int = child.get_index()
-				var j: int = -1
-				match direction:
-					"down": if i != 0: j = i - 1
-					"up": if i != parent_node.get_child_count() - 1: j = i + 1
-				
-				if j >= 0:
-					call("on_" + parent + "_selected", parent_node.get_child(j).label_text)
-					if get("max_" + parent + "_size") > 0: move_buttons_to_match(j, i, parent, parent_node)
-				return
-	else:
-		if parent_node.get_child_count() > 0:
-			var i: int
-			match direction:
-				"down": i = parent_node.get_child_count() - 1
-				"up": i = 0
-			
-			call("on_" + parent + "_selected", parent_node.get_child(i).label_text)
-			if get("max_" + parent + "_size") > 0: align_top_bottom_buttons(i, parent)
-			return
-			
-func align_top_bottom_buttons(i: int, parent: String) -> void:
-	var old_enable_scroll: int = enable_scroll
-	enable_scroll = 1 if parent == "category" else 2
-	var j: int
-	match i:
-		0: j = 1
-		_: j = -1
-	
-	for _i in range(ceil(get("max_" + parent + "_size") / scroll_pixels)):
-		on_container_moved(j)
-	
-	enable_scroll = old_enable_scroll
-			
-func move_buttons_to_match(j: int, i: int, parent: String, parent_node: Control) -> void:
-	var old_enable_scroll: int = enable_scroll
-	enable_scroll = 1 if parent == "category" else 2
-	var scroll_direction: int = -1 if j > i else 1
-	var enable_move: bool = false
-	match scroll_direction:
-		-1: if parent_node.get_child(j).position.y > parent_node.size.y - SCROLL_OFFSET: enable_move = true
-		1: if parent_node.get_child(j).position.y < 0 + SCROLL_OFFSET: enable_move = true
-		
-	if enable_move:
-		for m in range(7):
-			on_container_moved(scroll_direction)
-	
-	enable_scroll = old_enable_scroll
 			
 func _exit_tree():
 	save_book(true, selected_category, "_exit")
 	
 func on_create_category(category_name: String) -> void:
-	if Helper.is_file_name_pure(category_name):
+	if Helper.is_file_name_pure(category_name) and category_name not in all_categories:
+		all_categories.append(category_name)
+		all_categories.sort()
 		book_mode = 0
 		var dir := DirAccess.open(static_lore)
 		dir.make_dir(category_name)
 		selected_category = category_name
-		on_refresh_categories()
+		on_change_category_page(0)
+		
 	else: print_debug("The name: " + category_name + " isn't pure!")
 	$SelectCategory/CreateCategory.release_focus()
 	$SelectCategory/CreateCategory.text = ""
@@ -179,52 +83,9 @@ func on_create_book(book_name: String) -> void:
 			BookText.text = Helper.return_file_contents(static_lore + selected_category + "/" + book_name + ".txt")
 			old_text = BookText.text
 			save_book()
-		on_refresh_books()
+		on_change_book_page(0)
 	$SelectBook/CreateBook.release_focus()
 	$SelectBook/CreateBook.text = ""
-
-func on_refresh_books() -> void:
-	old_replaced_text = ""
-	$BookZone/SearchMenu/ResultLabel.text = "0"
-	var y: int = 0
-	for child in Books.get_children(): child.queue_free()
-	for file in DirAccess.get_files_at(static_lore + selected_category):
-		var lorebtn: Control = preload("res://scenes/screens/lore_books_editor/lore_book_button.tscn").instantiate()
-		lorebtn.label_text = file.left(-4)
-		lorebtn.name = file.left(-4)
-		Books.add_child(lorebtn)
-		lorebtn.position.y = y
-		lorebtn.size.x = $SelectBook.size.x
-		lorebtn.pressed.connect(on_book_selected.bind(lorebtn.label_text))
-		y += 58
-		
-	if Books.get_child_count() > 0:
-		var last_child: Control = Books.get_child(Books.get_child_count() - 1)
-		max_book_size = int(last_child.global_position.y + last_child.size.y - Books.size.y)
-		
-	if SearchNode and SearchNode.name == "FindInFiles":
-		on_find_files_text_submitted(SearchNode.text)
-		
-	modulate_all()
-
-func on_refresh_categories() -> void:
-	selected_book = ""
-	var y: int = 0
-	for child in Category.get_children(): child.queue_free()
-	for dir in DirAccess.get_directories_at(static_lore):
-		var lorebtn: Control = preload("res://scenes/screens/lore_books_editor/lore_book_button.tscn").instantiate()
-		lorebtn.label_text = dir
-		lorebtn.name = dir
-		Category.add_child(lorebtn)
-		lorebtn.position.y = y
-		lorebtn.size.x = $SelectCategory.size.x
-		lorebtn.pressed.connect(on_category_selected.bind(lorebtn.label_text))
-		y += 57
-		
-	if Category.get_child_count() > 0:
-		var last_child: Control = Category.get_child(Category.get_child_count() - 1)
-		max_category_size = int(last_child.global_position.y + last_child.size.y - Category.size.y - 14)
-	on_refresh_books()
 
 func modulate_all() -> void:
 	var colors: Array = [$Details/Inside.color, Color("c4383e"), Color("a23cbd"), Color("721cb2"), Color("492e1c")]
@@ -254,14 +115,6 @@ func on_category_selected(_selected_category: String) -> void:
 				Helper.write_to_file(static_lore + _selected_category + "/", selected_book, ".txt", BookText.text)
 				Helper.delete_file(static_lore + selected_category + "/", selected_book, ".txt")
 				save_book(true, _selected_category)
-		1:
-			if !DirAccess.remove_absolute(static_lore + _selected_category):
-				selected_category = ""
-				on_refresh_categories()
-			else:
-				match _selected_category:
-					selected_category: selected_category = ""
-					_: selected_category = _selected_category
 		_:
 			save_book()
 			match _selected_category:
@@ -271,7 +124,7 @@ func on_category_selected(_selected_category: String) -> void:
 	BookText.text = ""
 	old_text = ""
 	selected_book = ""
-	on_refresh_books()
+	on_change_category_page(0)
 	
 func on_book_selected(_selected_book: String) -> void:
 	$BookZone/SearchMenu/ResultLabel.text = "0"
@@ -292,7 +145,7 @@ func on_book_selected(_selected_book: String) -> void:
 				Helper.write_to_file(temp_lore, selected_book + "_delete", ".txt", Helper.return_file_contents(static_lore + selected_category + "/" + selected_book + ".txt"))
 			Helper.delete_file(static_lore + selected_category + "/", selected_book, ".txt")
 			selected_book = ""
-			on_refresh_books()
+			on_change_book_page(0)
 			
 		2: if !(old_selected_book and selected_book): book_mode = 3
 		3: if !(old_selected_book and selected_book): book_mode = 2
@@ -323,16 +176,6 @@ func save_book(save_button_pressed:bool=false, category:String =selected_categor
 		Helper.write_to_file(static_lore + category + "/", selected_book, ".txt", BookText.text)
 		if save_button_pressed and Settings.clear_backup_files_array[Settings.clear_backup_files] != 1:
 			Helper.write_to_file(temp_lore, selected_book + exit, ".txt", BookText.text)
-
-func _on_category_mouse_entered():
-	if Category.get_child_count() > 15:
-		enable_scroll = 1
-
-func _on_book_mouse_entered():
-	if Books.get_child_count() > 15:
-		enable_scroll = 2
-
-func _on_scroll_mouse_exited(): enable_scroll = 0
 
 func _on_book_text_text_changed():
 	var update_old_text: bool = true
@@ -419,7 +262,9 @@ func on_find_files_text_submitted(find: String) -> void:
 						book.change_found_searches(found, 2)
 		
 	BookText.text = original_book_text
-	on_find_text_submitted(find)
+	
+	if SearchNode and SearchNode.name == "FindInFiles":
+		on_find_text_submitted(find)
 
 func on_replace_text_submitted(text: String) -> void:
 	match replace_text:
@@ -494,3 +339,65 @@ func _on_search_on_start_pressed():
 
 func _queue_free() -> void:
 	load_world.emit(null)
+
+const MAX_PAGE_COUNT: int = 14
+var book_page: int = 0
+var category_page: int = 0
+
+var all_books: Array = []
+var all_categories: Array = []
+
+var _lore_button: PackedScene = preload("res://scenes/screens/lore_books_editor/lore_book_button.tscn")
+
+func on_change_book_page(i: int) -> void:
+	old_replaced_text = ""
+	$BookZone/SearchMenu/ResultLabel.text = "0"
+	
+	all_books = Array(DirAccess.get_files_at(static_lore + selected_category)).map(func(x: String): return x.left(-4))\
+	if selected_category else []
+	
+	var max_page: int = floor(max(all_books.size(), 1) / MAX_PAGE_COUNT)
+	book_page = clamp(book_page + i, 0, max_page)
+	
+	$SelectBook/PageZone/LeftArrow.disabled = book_page == 0
+	$SelectBook/PageZone/RightArrow.disabled = book_page == max_page
+	
+	for child in $SelectBook/Books.get_children(): child.queue_free()
+	var y: int = 0
+	for j in range(book_page * MAX_PAGE_COUNT, min((book_page + 1) * MAX_PAGE_COUNT, all_books.size())):
+		var lore_button: Control = _lore_button.instantiate()
+		lore_button.label_text = all_books[j]
+		Books.add_child(lore_button)
+		lore_button.name = all_books[j]
+		lore_button.position.y += 57 * y
+		lore_button.size.x = Books.size.x
+		lore_button.pressed.connect(on_book_selected.bind(lore_button.label_text))
+		y += 1
+	
+	$SelectBook/PageZone/Amount.text = str(book_page)
+	modulate_all()
+	
+	if SearchNode and SearchNode.name == "FindInFiles":
+		on_find_files_text_submitted(SearchNode.text)
+	
+func on_change_category_page(i: int) -> void:
+	var max_page: int = floor(max(all_categories.size(), 1) / MAX_PAGE_COUNT)
+	category_page = clamp(category_page + i, 0, max_page)
+	
+	$SelectCategory/PageZone/LeftArrow.disabled = category_page == 0
+	$SelectCategory/PageZone/RightArrow.disabled = category_page == max_page
+	
+	for child in $SelectCategory/Categories.get_children(): child.queue_free()
+	var y: int = 0
+	for j in range(category_page * MAX_PAGE_COUNT, min((category_page + 1) * MAX_PAGE_COUNT, all_categories.size())):
+		var lore_button: Control = _lore_button.instantiate()
+		lore_button.label_text = all_categories[j]
+		Category.add_child(lore_button)
+		lore_button.position.y += 57 * y
+		lore_button.size.x = Category.size.x
+		lore_button.name = all_categories[j]
+		lore_button.pressed.connect(on_category_selected.bind(all_categories[j]))
+		y += 1
+		
+	$SelectCategory/PageZone/Amount.text = str(category_page)
+	on_change_book_page(0)
