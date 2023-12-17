@@ -356,7 +356,7 @@ func on_change_book_page(i: int) -> void:
 	all_books = Array(DirAccess.get_files_at(static_lore + selected_category)).map(func(x: String): return x.left(-4))\
 	if selected_category else []
 	
-	var max_page: int = floor(max(all_books.size(), 1) / MAX_PAGE_COUNT)
+	var max_page: int = floor(max(all_books.size() - 1, 1) / MAX_PAGE_COUNT)
 	book_page = clamp(book_page + i, 0, max_page)
 	
 	$SelectBook/PageZone/LeftArrow.disabled = book_page == 0

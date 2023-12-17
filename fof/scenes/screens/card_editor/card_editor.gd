@@ -82,7 +82,7 @@ func _on_load_card_pressed():
 	FileLoader = preload("res://scenes/editor/file_loader/file_loader.tscn").instantiate()
 	
 	FileLoader.get_node("Search/SearchEdit").text = search_item_text
-	FileLoader.current_page = fileloader_page
+	FileLoader.page = fileloader_page
 	
 	FileLoader.on_ready(FILE_LOADER_NAME)
 	if search_item_selected > 0 or search_item_text.length() > 0:
@@ -93,12 +93,12 @@ func _on_load_card_pressed():
 	add_child(FileLoader)
 	FileLoader.get_node("Search/SearchOptions").select_item(search_item_selected)
 	
-var fileloader_page: int = 1
+var fileloader_page: int = 0
 var search_item_selected: int = 0
 var search_item_text: String = ""
 
 func on_fileloader_queued() -> void:
-	fileloader_page = FileLoader.current_page
+	fileloader_page = FileLoader.page
 	search_item_selected = FileLoader.search_item_selected
 	search_item_text = FileLoader.get_node("Search/SearchEdit").text
 	

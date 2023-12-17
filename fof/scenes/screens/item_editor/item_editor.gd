@@ -16,7 +16,7 @@ var blockers: Array
 @onready var ElevationButtons: Control = $ElevationSettings/Buttons
 
 var item_settings: Dictionary
-var selected_item: Vector2i
+var selected_item := Vector2i(1, 0)
 var id_to: Array = Helper._id_to
 
 signal load_world
@@ -24,37 +24,19 @@ signal load_world
 func _ready():
 	for child in ElevationButtons.get_children(): child.pressed.connect(on_set_elevation.bind(int(str(child.name))))
 	blockers = $DetectMouse.get_children().map(func(x: CollisionShape2D): return Rect2(x.position - (x.shape.size / 2), x.shape.size))
+	
 	load_world.emit(World)
 	Model = World.get_node("Model")
 	Tile = World.get_node("Tile")
 	Tiles = World.get_node("Tiles")
 	Ray = World.get_node("RayCast3D")
-	_on_item_type_item_selected(0)
-
-func _on_item_type_item_selected(i: int) -> void:
-	_on_save_button_pressed()
-	enabled_tiles = []
-	for child in Tile.get_children(): child.queue_free()
-	for child in Model.get_children(): child.queue_free()
-	for child in Tiles.get_children(): child.queue_free()
-	for child in ItemSettings.get_children(): child.queue_free()
-	for child in Items.get_children(): child.queue_free()
-	on_set_tile_queued()
-	ItemName.text = ""
-	item_settings = {}
-	selected_item = Vector2i.ZERO
-	ElevationSettings.visible = false
 	
-	var y: int = 0
-	for n in range(id_to[i + 1].size()):
-		if n > 0:
-			var btn := Button.new()
-			Items.add_child(btn)
-			btn.size.x = Items.size.x
-			btn.text = convert_item_name(id_to[i + 1][n])
-			btn.position.y = y
-			btn.pressed.connect(on_item_selected.bind(Vector2(i + 1, n)))
-			y += 31
+	on_change_page(0)
+
+func on_set_item_selected(i: int) -> void:
+	selected_item = Vector2(i + 1, 0)
+	page = 0
+	on_change_page(0)
 
 func convert_item_name(n: String) -> String:
 	return n.split("/")[n.get_slice_count("/") - 1]
@@ -258,10 +240,11 @@ func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed(Helper.interact_button()) and active_tile:
 		on_selected_tiles([active_tile])
 	
-	if Input.is_action_pressed("LeftClick") and !selected_tiles and item_settings and item_settings.multi_tile:
+	elif Input.is_action_pressed("LeftClick") and !selected_tiles and item_settings and item_settings.multi_tile:
 		match SelectionBox:
 			null: on_create_selection_box()
 			_: on_resize_selection_box()
+		
 		
 	if Input.is_action_just_released("LeftClick"):
 		on_clear_selection_box()
@@ -359,3 +342,37 @@ func on_set_tile_queued() -> void:
 func on_tile_selected(tile: Node3D, is_selected: bool) -> void:
 	for child in tile.get_node("Tile").get_children(): child.queue_free()
 	if is_selected: tile.get_node("Tile").add_child(hover_tile.instantiate())
+
+const MAX_PAGE_COUNT: int = 18
+var page: int = 0
+var all_items: Array = []
+
+func on_change_page(i: int) -> void:
+	_on_save_button_pressed()
+	enabled_tiles = []
+	on_set_tile_queued()
+	ItemName.text = ""
+	item_settings = {}
+	ElevationSettings.visible = false
+	
+	var id_arr: Array = id_to[selected_item.x].filter(func(x: String): return x != "null")
+	var max_page: int = floor(max(id_arr.size() - 1, 1) / MAX_PAGE_COUNT)
+	page = clamp(page + i, 0, max_page)
+	
+	$AvailableItems/PageZone/LeftArrow.disabled = page == 0
+	$AvailableItems/PageZone/RightArrow.disabled = page == max_page
+	$AvailableItems/PageZone/Page.text = str(page)
+	
+	for parent in ["Tile", "Model", "Tiles", "ItemSettings", "Items"].map(func(x: String): return get(x).get_children()):
+		for child in parent: child.queue_free()
+	
+	var y: int = 0
+	for n in range(page * MAX_PAGE_COUNT, min((page + 1) * MAX_PAGE_COUNT, id_arr.size())):
+		var btn := Button.new()
+		Items.add_child(btn)
+		btn.size.x = Items.size.x
+		btn.size.y = 50
+		btn.position.y = y * 50
+		btn.text = convert_item_name(id_arr[n])
+		btn.pressed.connect(on_item_selected.bind(Vector2(selected_item.x, n+1)))
+		y += 1

@@ -3,18 +3,10 @@ extends Control
 @export var SearchEdit: LineEdit
 @export var Items: Control
 const static_path: String = "res://static/base_game/"
-const ITEM_COUNT_ON_ONE_PAGE: int = 10
 
 signal queued
 signal item_selected
 var search_item_selected: int = 0
-var current_page: int = 1
-var button_size: Vector2i
-var max_page: int = 0
-
-var all_item_buttons: Array
-var item_buttons: Array
-
 var item_name: String
 
 func _ready() -> void:
@@ -22,19 +14,15 @@ func _ready() -> void:
 	Helper.play_method_on_animation_end("load_in_out", $LoadInOut, on_change_fileloader_state, [2], true, self)
 	$ExitButton.pressed.connect(on_exit_button_pressed)
 	$Background.modulate = Color(1, 1, 1, Settings.fileloader_opacity * 0.01)
-
 func on_change_fileloader_state(i: int) -> void:
 	get_tree().get_root().get_node("Main").fileloader_state = i
-
 func on_exit_button_pressed() -> void:
 	if !$LoadInOut.is_playing():
 		on_change_fileloader_state(1)
 		Helper.play_method_on_animation_end("load_in_out", $LoadInOut, _queue_free, [], false, self)
 		for button in Items.get_children().map(func(x: Control): return x.get_node("PressedButton")):
 			button.disabled = true
-
 func _queue_free() -> void:
-	for child in all_item_buttons: child.queue_free()
 	on_change_fileloader_state(0)
 	queued.emit()
 	queue_free()
@@ -44,43 +32,22 @@ func on_ready(_item_name: String) -> void:
 	var path: String = item_name + "s/"
 	on_item_ready()
 	
-	var set_button_size: bool = false
-	for item_dict in Helper.return_file_names_recursive((static_path + path).left(-1)).map(func(x: String): return Helper.return_item_dict(item_name, Helper.return_file_contents(x))):
-		set_button_size = create_item_button(item_dict, set_button_size)
-	sort_buttons()
-	max_page = ceil((item_buttons.size()) * 0.1)
-
-func sort_buttons() -> void:
-	item_buttons = all_item_buttons
-	item_buttons.sort_custom(func(a: Control, b: Control): return int(a.get_node("ID").text) < int(b.get_node("ID").text))
-	position_item_buttons()
-
-func create_item_button(item_dict: Dictionary, set_button_size: bool) -> bool:
-	var item_button: Control = load("res://scenes/editor/file_loader/" + item_name + "/" + item_name + "_button.tscn").instantiate()
-	item_button.get_node("PressedButton").pressed.connect(on_item_selected.bind(item_button, item_dict))
-	item_button.get_node("ID").text = str(item_dict.id)
-	item_button.info = item_dict
-	item_button.apply_info()
-	all_item_buttons.append(item_button)
-	
-	if !set_button_size:
-		button_size = item_button.size
-		set_button_size = true
-	return set_button_size
+	all_item_buttons = Helper.return_file_names_recursive((static_path + path).left(-1)).map(func(x: String): return Helper.return_item_dict(item_name, Helper.return_file_contents(x)))
+	all_item_buttons.sort_custom(func(a: Dictionary, b: Dictionary): return a.id < b.id)
+	item_buttons = all_item_buttons.duplicate()
+	on_reload_page(0)
 
 func on_ready_preselected(_item_name: String, items: Array) -> void:
 	item_name = _item_name.to_lower()
 	on_item_ready()
 	
-	var sbs: bool = false
-	for item_dict in items:
-		sbs = create_item_button(item_dict, sbs)
-
-	sort_buttons()
-	max_page = ceil((item_buttons.size()) * 0.1)
+	all_item_buttons = items
+	all_item_buttons.sort_custom(func(a: Dictionary, b: Dictionary): return a.id < b.id)
+	item_buttons = all_item_buttons.duplicate()
+	
+	on_reload_page(0)
 
 func on_item_ready() -> void:
-	
 	var search_options: PackedStringArray = []
 	match item_name:
 		"area": search_options = ["World"]
@@ -89,84 +56,56 @@ func on_item_ready() -> void:
 		"tool": search_options = ["Rarity"]
 		"boon": search_options = ["Rarity"]
 	$Search/SearchOptions.options += search_options
+	_item_button = load("res://scenes/editor/file_loader/" + item_name + "/" + item_name + "_button.tscn")
 	
 func on_item_selected(_item: Control, item_info: Dictionary) -> void:
 	item_selected.emit(item_info)
 	if Helper.return_bitwise(item_info.tid, Settings.close_fileloader):
 		on_exit_button_pressed()
-	
-func position_item_buttons() -> void:
-	for button in Items.get_children(): Items.remove_child(button)
-	var xy := Vector2.ZERO
-	var xdelta: int = int(Items.size.x * 0.2)
-	var ydelta: int = int(Items.size.y) - button_size.y
-	
-	var j: int = 0
-	for i in range(max(0, (current_page * ITEM_COUNT_ON_ONE_PAGE) - ITEM_COUNT_ON_ONE_PAGE), min(current_page * ITEM_COUNT_ON_ONE_PAGE, item_buttons.size())):
-		Items.add_child(item_buttons[i])
-		item_buttons[i].position = xy
-		xy.x += xdelta
-		if j == 4:
-			xy.x = 0
-			xy.y += ydelta
-		j += 1
-	
-func change_page(i: int) -> void:
-	if current_page == 1 and i == -1: current_page = max_page
-	elif current_page == max_page and i == 1: current_page = 1
-	else: current_page = clamp(current_page + i, 1, max_page)
-	
-	position_item_buttons()
 
 func _on_search_item_selected(i: int):
 	search_item_selected = i
 	refresh_search()
 
 func refresh_search() -> void:
-	item_buttons = []
-	for btn in all_item_buttons:
-		if SearchEdit.text.length() > 2 or SearchEdit.text.is_valid_int():
-			if match_search_item_selected(btn):
-				item_buttons.append(btn)
-		else: item_buttons.append(btn)
-	
-	current_page = 1
-	max_page = ceil((item_buttons.size()) * 0.1)
-	position_item_buttons()
+	if SearchEdit.text.length() > 0:
+		item_buttons = []
+		for item_dict in all_item_buttons:
+			if match_search_item_selected(item_dict):
+				item_buttons.append(item_dict)
+	else:
+		item_buttons = all_item_buttons.duplicate()
+	page = 0
+	on_reload_page(0)
 
-func match_search_item_selected(btn: Control) -> bool:
+func match_search_item_selected(item_dict: Dictionary) -> bool:
 	match search_item_selected:
-		0: if (btn.info.sname.to_lower()).begins_with(SearchEdit.text.to_lower()):
-			return true
-		1: if str(btn.info.id).begins_with(SearchEdit.text):
-			return true
-		2: if (btn.info.iname.to_lower()).begins_with(SearchEdit.text.to_lower()):
-			return true
-		3:
+		0: return item_dict.sname.to_lower().begins_with(SearchEdit.text.to_lower())
+		1: return str(item_dict.id) == SearchEdit.text
+		2: return item_dict.iname.to_lower().begins_with(SearchEdit.text.to_lower())
+		3: 
 			match item_name:
-				"area": if str(btn.info.world).begins_with(SearchEdit.text): return true
-				"card", "tool", "boon": if str(btn.info.r).begins_with(SearchEdit.text): return true
-				"level": 
-					if str(btn.info.area).begins_with(SearchEdit.text): return true
-					var area_info: Dictionary = Helper.id_to_dict(btn.info.area, "Area")
-					if area_info:
-						if (area_info.sname.to_lower()).begins_with(SearchEdit.text.to_lower()): return true
-		4: if str(btn.info.a).begins_with(SearchEdit.text): return true
-		5: if str(btn.info.h).begins_with(SearchEdit.text): return true
-		6: if str(btn.info.s).begins_with(SearchEdit.text): return true
-		7: if str(btn.info.e).begins_with(SearchEdit.text): return true
-		8: if str(btn.info.aic).begins_with(SearchEdit.text): return true
-		9: if str(btn.info.aii).begins_with(SearchEdit.text): return true
-		10: if str(btn.info.aiw).begins_with(SearchEdit.text): return true
-		11: if str(btn.info.ait).begins_with(SearchEdit.text): return true
-		12: if str(btn.info.aia).begins_with(SearchEdit.text): return true
-		13:
+				"area": return item_dict.world.begins_with(SearchEdit.text)
+				"card", "tool", "boon": return str(item_dict.r) == SearchEdit.text
+				"level":
+					if item_dict.area.begins_with(SearchEdit.text): return true
+					var area_info: Dictionary = Helper.id_to_dict(item_dict.area, "Area")
+					return area_info and area_info.sname.to_lower().begins_with(SearchEdit.text.to_lower())
+		4:  return str(item_dict.a) == SearchEdit.text
+		5: return str(item_dict.h) == SearchEdit.text
+		6: return str(item_dict.s) == SearchEdit.text
+		7: return str(item_dict.e) == SearchEdit.text
+		8: return str(item_dict.aic) == SearchEdit.text
+		9: return str(item_dict.aii) == SearchEdit.text
+		10: return str(item_dict.aiw) == SearchEdit.text
+		11: return str(item_dict.ait) == SearchEdit.text
+		12: return str(item_dict.aia) == SearchEdit.text
+		13: 
 			var contents: String = Helper.return_file_contents("res://scenes/editor/file_loader/card/abilities.txt")
-			var ltext: String = btn.info.text.to_lower()
+			var ltext: String = item_dict.text.to_lower()
 			for i in contents.split("\n", false):
 				if i.begins_with(SearchEdit.text) and ltext.contains(i):
 					return true
-			
 	return false
 
 func _on_search_edit_text_changed(__: String):
@@ -177,3 +116,32 @@ func set_search(text: String, i: int) -> void:
 	$Search/SearchOptions.select_item(i)
 	_on_search_item_selected(i) 
 	
+var MAX_PAGE_COUNT: int = 12
+var page: int = 0
+var all_item_buttons: Array = []
+var item_buttons: Array = []
+var _item_button: PackedScene
+
+func on_reload_page(i: int) -> void:
+	var max_page: int = floor(max(item_buttons.size() - 1, 1) / MAX_PAGE_COUNT)
+	if page + i == -1: page = max_page
+	elif page + i > max_page: page = 0
+	else: page = clamp(page + i, 0, max_page)
+	$PageArrows/Page.text = str(page)
+	
+	for child in Items.get_children(): child.queue_free()
+	
+	var xy := Vector2(50, 50)
+	for j in range(page * MAX_PAGE_COUNT, min((page + 1) * MAX_PAGE_COUNT, item_buttons.size())):
+		var item_button: Control = _item_button.instantiate()
+		Items.add_child(item_button)
+		item_button.position = xy
+		item_button.get_node("PressedButton").pressed.connect(on_item_selected.bind(item_button, item_buttons[j]))
+		item_button.get_node("ID").text = str(item_buttons[j].id)
+		item_button.info = item_buttons[j]
+		item_button.apply_info()
+		
+		xy.x += 300
+		if xy.x == 1850:
+			xy.x = 50
+			xy.y += 400

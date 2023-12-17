@@ -1,15 +1,23 @@
-[gd_scene load_steps=8 format=3 uid="uid://bqbmha4sns2d8"]
+[gd_scene load_steps=11 format=3 uid="uid://bqbmha4sns2d8"]
 
 [ext_resource type="Script" path="res://scenes/screens/item_editor/item_editor.gd" id="1_44h6i"]
 [ext_resource type="PackedScene" uid="uid://bj3h1ak5dv73n" path="res://scenes/ui_general/op_button/op_button.tscn" id="2_h4mea"]
-[ext_resource type="LabelSettings" uid="uid://qp0350v2j4ah" path="res://assets/UI/roboto/roboto32outline.tres" id="3_pf3bk"]
+[ext_resource type="PackedScene" uid="uid://bkbg8go87dqws" path="res://scenes/ui_general/arrow/ui_arrow.tscn" id="3_lfhxu"]
+[ext_resource type="LabelSettings" uid="uid://qp0350v2j4ah" path="res://assets/UI/roboto/roboto32_outline.tres" id="3_pf3bk"]
+[ext_resource type="FontFile" uid="uid://7k4xd8s0oed2" path="res://assets/UI/roboto/roboto.ttf" id="4_lt34y"]
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="5_5fahx"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_wxfhb"]
+font = ExtResource("4_lt34y")
+font_size = 64
+outline_size = 12
+outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1sjm6"]
 size = Vector2(1920, 63)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cxo16"]
-size = Vector2(275, 1017)
+size = Vector2(275, 1006)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yt6aq"]
 size = Vector2(60, 333)
@@ -30,7 +38,7 @@ label_text = "Select Item"
 
 [node name="AvailableItems" type="Control" parent="."]
 anchors_preset = 0
-offset_top = 63.0
+offset_top = 74.0
 offset_right = 275.0
 offset_bottom = 1080.0
 
@@ -64,12 +72,59 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.654902, 0.654902, 0.654902, 1)
 
+[node name="Rim" type="ColorRect" parent="AvailableItems/Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = 905.0
+offset_right = -5.0
+offset_bottom = -96.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
 [node name="Items" type="Control" parent="AvailableItems"]
 anchors_preset = 0
 offset_left = 5.0
 offset_top = 5.0
 offset_right = 270.0
-offset_bottom = 1012.0
+offset_bottom = 905.0
+
+[node name="PageZone" type="Control" parent="AvailableItems"]
+anchors_preset = 0
+offset_left = 5.0
+offset_top = 910.0
+offset_right = 270.0
+offset_bottom = 1001.0
+
+[node name="RightArrow" parent="AvailableItems/PageZone" instance=ExtResource("3_lfhxu")]
+modulate = Color(0.882353, 0.882353, 0.882353, 1)
+layout_mode = 0
+offset_left = 176.0
+offset_top = -5.0
+offset_right = 256.0
+offset_bottom = 93.0
+
+[node name="LeftArrow" parent="AvailableItems/PageZone" instance=ExtResource("3_lfhxu")]
+modulate = Color(0.882353, 0.882353, 0.882353, 1)
+layout_mode = 0
+offset_left = 74.0
+offset_top = -5.0
+offset_right = 154.0
+offset_bottom = 93.0
+flip_h = true
+
+[node name="Page" type="Label" parent="AvailableItems/PageZone"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = -5.0
+offset_right = 69.0
+offset_bottom = 93.0
+text = "0"
+label_settings = SubResource("LabelSettings_wxfhb")
+vertical_alignment = 1
 
 [node name="ItemSettings" type="Control" parent="."]
 anchors_preset = 0
@@ -183,13 +238,15 @@ position = Vector2(960, 31.5)
 shape = SubResource("RectangleShape2D_1sjm6")
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="DetectMouse"]
-position = Vector2(137.5, 571.5)
+position = Vector2(137.5, 577)
 shape = SubResource("RectangleShape2D_cxo16")
 
 [node name="CollisionShape2D3" type="CollisionShape2D" parent="DetectMouse"]
 position = Vector2(1890, 470.5)
 shape = SubResource("RectangleShape2D_yt6aq")
 
-[connection signal="item_selected" from="ItemType" to="." method="_on_item_type_item_selected"]
+[connection signal="item_selected" from="ItemType" to="." method="on_set_item_selected"]
+[connection signal="pressed" from="AvailableItems/PageZone/RightArrow" to="." method="on_change_page" binds= [1]]
+[connection signal="pressed" from="AvailableItems/PageZone/LeftArrow" to="." method="on_change_page" binds= [-1]]
 [connection signal="mouse_entered" from="DetectMouse" to="." method="_on_detect_mouse_mouse_entered"]
 [connection signal="mouse_exited" from="DetectMouse" to="." method="_on_detect_mouse_mouse_exited"]

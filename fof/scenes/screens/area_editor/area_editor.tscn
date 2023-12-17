@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://bdd0m6wbuerq5" path="res://scenes/editor/edit_file_name/edit_file_name.tscn" id="3_s437e"]
 [ext_resource type="FontFile" uid="uid://dnq2ul3ia4hy3" path="res://assets/UI/lora/Lora-Bold.ttf" id="4_ygm6e"]
 [ext_resource type="PackedScene" uid="uid://bkbg8go87dqws" path="res://scenes/ui_general/arrow/ui_arrow.tscn" id="5_18n6o"]
-[ext_resource type="LabelSettings" uid="uid://qp0350v2j4ah" path="res://assets/UI/roboto/roboto32outline.tres" id="5_vb57l"]
+[ext_resource type="LabelSettings" uid="uid://b3fuc4s50fgra" path="res://assets/UI/roboto/roboto64.tres" id="6_jdpgo"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_u43yd"]
 font = ExtResource("4_ygm6e")
@@ -372,12 +372,22 @@ offset_bottom = 113.0
 
 [node name="Amount" type="Label" parent="AddedCards"]
 layout_mode = 0
-offset_left = 36.0
+offset_left = 42.0
 offset_top = 963.0
-offset_right = 104.0
-offset_bottom = 1001.0
-text = "0"
-label_settings = ExtResource("5_vb57l")
+offset_right = 123.0
+offset_bottom = 1050.0
+label_settings = ExtResource("6_jdpgo")
+vertical_alignment = 1
+
+[node name="Page" type="Label" parent="AddedCards"]
+layout_mode = 0
+offset_left = 273.0
+offset_top = 963.0
+offset_right = 354.0
+offset_bottom = 1050.0
+label_settings = ExtResource("6_jdpgo")
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [connection signal="pressed" from="Buttons/WorldDifficulty/WorldOne" to="." method="_on_world_difficulty_pressed" binds= [1]]
 [connection signal="pressed" from="Buttons/WorldDifficulty/WorldTwo" to="." method="_on_world_difficulty_pressed" binds= [2]]

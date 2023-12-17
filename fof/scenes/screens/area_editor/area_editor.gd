@@ -89,26 +89,6 @@ func _on_add_cards_pressed():
 	FileLoader.item_selected.connect(on_add_card)
 	add_child(FileLoader)
 	
-#func on_card_selected(card_info: Dictionary) -> void:
-	#if card_info and !card_info.id in cards:
-		#$AddedCards/Label.visible = false
-		#var added_card: Control = preload("res://scenes/screens/area_editor/added_card.tscn").instantiate()
-		#added_card.name = str(card_info.id)
-		#added_card.remove_card.connect(on_remove_card)
-		#added_card.change_art(card_info.bgfn)
-		#CardZone.add_child(added_card)
-		#cards.append(card_info.id)
-		#on_sort_added_cards()
-		##set_card_amount()
-		
-#func on_remove_card(btn: Control) -> void:
-	#cards.erase(int(str(btn.name)))
-	#if cards.is_empty(): $AddedCards/Label.visible = true
-	#btn.queue_free()
-	#on_sort_added_cards()
-	#get_viewport().warp_mouse(get_viewport().get_mouse_position())
-	#set_card_amount()
-	
 func on_sort_added_cards():
 	var xy := Vector2(0, 20)
 	for child in CardZone.get_children():
@@ -127,7 +107,7 @@ var page: int = 0
 
 var _area_card: PackedScene = preload("res://scenes/screens/area_editor/added_card.tscn")
 func on_reload_page(i: int) -> void:
-	var max_page: int = floor(max(cards.size(), 1) / MAX_PAGE_COUNT)
+	var max_page: int = floor(max(cards.size() - 1, 1) / MAX_PAGE_COUNT)
 	page = clamp(page + i, 0, max_page)
 	$AddedCards/PageZone/PRLeftArrow.disabled = page == 0
 	$AddedCards/PageZone/PRRightArrow.disabled = page == max_page
@@ -143,6 +123,7 @@ func on_reload_page(i: int) -> void:
 	$AddedCards/Label.visible = cards.size() == 0
 	$AddedCards/Amount.visible = cards.size() > 0
 	$AddedCards/Amount.text = str(cards.size())
+	$AddedCards/Page.text = str(page)
 	
 func on_remove_card(card_info: Dictionary) -> void:
 	cards.erase(card_info)
