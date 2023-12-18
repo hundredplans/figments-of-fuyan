@@ -26,22 +26,22 @@ FlavorText = NodePath("CardCreator/FlavorText")
 [node name="CardCreator" type="Control" parent="."]
 anchors_preset = 0
 offset_left = 631.0
-offset_right = 1319.0
+offset_right = 1342.0
 offset_bottom = 916.0
 theme = ExtResource("2_q225b")
 
 [node name="RarityColor" type="ColorRect" parent="CardCreator"]
 layout_mode = 0
-offset_right = 686.0
+offset_right = 711.0
 offset_bottom = 916.0
 color = Color(0.807843, 0.623529, 0.501961, 1)
 
 [node name="EditFileName" parent="CardCreator" instance=ExtResource("2_axojh")]
+offset_left = 5.0
 offset_top = 415.0
-offset_right = 686.0
+offset_right = 690.0
 offset_bottom = 553.0
-grow_horizontal = 1
-grow_vertical = 1
+ItemNAME = "Card"
 
 [node name="Stats" type="Control" parent="CardCreator"]
 anchors_preset = 0
@@ -102,10 +102,10 @@ wrap_mode = 1
 
 [node name="FlavorText" type="TextEdit" parent="CardCreator"]
 layout_mode = 0
-offset_left = 711.0
-offset_top = 559.0
-offset_right = 1262.0
-offset_bottom = 1056.0
+offset_left = 725.0
+offset_top = 571.0
+offset_right = 1276.0
+offset_bottom = 1068.0
 theme = ExtResource("6_crlth")
 placeholder_text = "                     Flavor Text"
 wrap_mode = 1
@@ -119,9 +119,9 @@ texture = ExtResource("6_036w2")
 [node name="AISettings" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 0
-offset_left = 1331.0
+offset_left = 1355.0
 offset_top = 60.0
-offset_right = 1705.0
+offset_right = 1729.0
 offset_bottom = 471.0
 
 [node name="ConfidenceButton" parent="AISettings" instance=ExtResource("6_18pqn")]
@@ -197,7 +197,7 @@ snap_mode = true
 anchors_preset = 0
 offset_left = 631.0
 offset_top = 916.0
-offset_right = 1313.0
+offset_right = 1342.0
 offset_bottom = 1080.0
 theme = ExtResource("3_vsycf")
 
@@ -278,9 +278,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0811731, 1.69899, 3.2611)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.30054, 2.78849)
 
 [node name="HeightButton" parent="." instance=ExtResource("6_18pqn")]
-offset_left = 1331.0
+offset_left = 1355.0
 offset_top = 478.0
-offset_right = 1614.0
+offset_right = 1638.0
 offset_bottom = 531.0
 min_max = Vector2i(1, 6)
 steps = Vector2i(1, 2)

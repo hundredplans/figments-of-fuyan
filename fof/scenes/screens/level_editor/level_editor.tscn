@@ -37,7 +37,7 @@ outline_color = Color(0, 0, 0, 1)
 size = Vector2(70, 823)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ayxxt"]
-size = Vector2(956, 174.75)
+size = Vector2(986, 175)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ncy6r"]
 size = Vector2(1444, 367)
@@ -146,7 +146,7 @@ text = "Save Level"
 
 [node name="InfoMenu" type="Control" parent="."]
 anchors_preset = 0
-offset_right = 956.0
+offset_right = 986.0
 offset_bottom = 175.0
 mouse_filter = 1
 
@@ -777,7 +777,7 @@ position = Vector2(35, 624.5)
 shape = SubResource("RectangleShape2D_oppik")
 
 [node name="InfoMenu" type="CollisionShape2D" parent="MouseBlockers"]
-position = Vector2(478, 87.625)
+position = Vector2(493, 87.5)
 shape = SubResource("RectangleShape2D_ayxxt")
 
 [node name="BuildMenu" type="CollisionShape2D" parent="MouseBlockers"]

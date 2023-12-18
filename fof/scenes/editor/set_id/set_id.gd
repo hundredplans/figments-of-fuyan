@@ -6,8 +6,11 @@ func _on_text_submitted(__: String):
 
 func _on_focus_exited():
 	if !has_checked and text.is_valid_int():
-		if !Helper.id_to_dict(int(text), ItemNAME):
+		if int(text) != 0 and !Helper.id_to_dict(int(text), ItemNAME):
 			has_checked = true
-		else: AudioMaster.play_sfx(preload("res://assets/sounds/confirmation/unconfirm_default.wav"), -10)
+		else:
+			has_checked = false
+			text = "" 
+			AudioMaster.play_sfx(preload("res://assets/sounds/confirmation/unconfirm_default.wav"), -10)
 
 func _on_text_changed(__: String): has_checked = false
