@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://ldys7jleuk68"]
+
+[ext_resource type="Theme" uid="uid://du2bpyvp41rdk" path="res://assets/UI/roboto/roboto20.tres" id="1_nckfj"]
+[ext_resource type="Script" path="res://scenes/editor/set_id/set_id.gd" id="1_sqybf"]
+
+[node name="SetID" type="LineEdit"]
+offset_right = 67.0625
+offset_bottom = 31.0
+theme = ExtResource("1_nckfj")
+placeholder_text = "SET ID"
+alignment = 1
+caret_blink = true
+caret_blink_interval = 0.5
+script = ExtResource("1_sqybf")
+
+[connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
+[connection signal="text_changed" from="." to="." method="_on_text_changed"]
+[connection signal="text_submitted" from="." to="." method="_on_text_submitted"]

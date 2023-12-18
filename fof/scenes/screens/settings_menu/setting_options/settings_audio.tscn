@@ -10,30 +10,39 @@ offset_right = 518.0
 offset_bottom = 708.0
 script = ExtResource("1_6c3e1")
 
-[node name="MasterVolume" parent="." instance=ExtResource("3_y2ht1")]
-offset_left = 16.0
-offset_top = 16.0
-offset_right = 299.0
-offset_bottom = 69.0
+[node name="0" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MasterVolume" parent="0" instance=ExtResource("3_y2ht1")]
+offset_left = 20.0
+offset_top = 10.0
+offset_right = 303.0
+offset_bottom = 63.0
 label_text = "Master"
 
-[node name="MusicVolume" parent="." instance=ExtResource("3_y2ht1")]
-offset_left = 16.0
-offset_top = 102.0
-offset_right = 299.0
-offset_bottom = 155.0
+[node name="MusicVolume" parent="0" instance=ExtResource("3_y2ht1")]
+offset_left = 20.0
+offset_top = 100.0
+offset_right = 303.0
+offset_bottom = 153.0
 label_text = "Music"
 
-[node name="SFXVolume" parent="." instance=ExtResource("3_y2ht1")]
-offset_left = 16.0
-offset_top = 183.0
-offset_right = 299.0
-offset_bottom = 236.0
+[node name="SFXVolume" parent="0" instance=ExtResource("3_y2ht1")]
+offset_left = 20.0
+offset_top = 190.0
+offset_right = 303.0
+offset_bottom = 243.0
 label_text = "SFX"
 
-[node name="VLVolume" parent="." instance=ExtResource("3_y2ht1")]
-offset_left = 16.0
-offset_top = 268.0
-offset_right = 299.0
-offset_bottom = 321.0
+[node name="VLVolume" parent="0" instance=ExtResource("3_y2ht1")]
+offset_left = 20.0
+offset_top = 280.0
+offset_right = 303.0
+offset_bottom = 333.0
 label_text = "VL"

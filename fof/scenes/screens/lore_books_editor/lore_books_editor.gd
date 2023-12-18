@@ -48,11 +48,10 @@ func _ready():
 	load_world.emit(Node3D.new())
 
 func _process(_delta: float) -> void:
-	if !BookText.has_focus():
-		for input in ["FindInFiles", "FindInText", "ReplaceInText"]:
-			if Input.is_action_just_pressed(input):
-				open_search_books(input)
-				break
+	for input in ["FindInFiles", "FindInText", "ReplaceInText"]:
+		if Input.is_action_just_pressed(input):
+			open_search_books(input)
+			break
 			
 func _exit_tree():
 	save_book(true, selected_category, "_exit")
@@ -255,7 +254,8 @@ func on_find_files_text_submitted(find: String) -> void:
 		var found: int = return_found_searches(find).size()
 		if found > 0:
 			var split: Array = path.split("/")
-			Category.get_node(split[split.size() - 2]).change_found_searches(found, 2)
+			if Category.has_node(split[split.size() - 2]):
+				Category.get_node(split[split.size() - 2]).change_found_searches(found, 2)
 			if split[split.size() - 2] == selected_category:
 				for book in Books.get_children():
 					if book.label_text == split[split.size() - 1].left(-4):
@@ -387,7 +387,7 @@ func on_change_category_page(i: int) -> void:
 	$SelectCategory/PageZone/LeftArrow.disabled = category_page == 0
 	$SelectCategory/PageZone/RightArrow.disabled = category_page == max_page
 	
-	for child in $SelectCategory/Categories.get_children(): child.queue_free()
+	for child in $SelectCategory/Categories.get_children(): child.name = "null"; child.queue_free()
 	var y: int = 0
 	for j in range(category_page * MAX_PAGE_COUNT, min((category_page + 1) * MAX_PAGE_COUNT, all_categories.size())):
 		var lore_button: Control = _lore_button.instantiate()

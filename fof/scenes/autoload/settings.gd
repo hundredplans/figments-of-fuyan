@@ -39,7 +39,10 @@ var settings_info: Dictionary = {
 
 func return_max_mc_value(path: String, node_name: String) -> int:
 	var node: Control = load(path).instantiate()
-	var rvalue: int = int(pow(2, node.get_node(node_name).options.size()))
+	var rnode: Control = Helper.flatten(node.get_children().map(func(x: Control): return x.get_children()), false)\
+	.filter(func(x: Control): return x.name == node_name)[0]
+	
+	var rvalue: int = int(pow(2, rnode.options.size()))
 	node.queue_free()
 	return rvalue
 

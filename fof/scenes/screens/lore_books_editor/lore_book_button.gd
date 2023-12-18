@@ -27,6 +27,7 @@ func change_found_searches(i: int, mode: int = 0) -> void:
 		
 	if nlabel:
 		if i == 0:
+			print("here")
 			nlabel.queue_free()
 			nlabel = null
 		else:

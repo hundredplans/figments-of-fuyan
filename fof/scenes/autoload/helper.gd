@@ -120,7 +120,9 @@ func write_to_base_game_file(item: String, edit_file_name: Control, contents: St
 	var showcase_name: String = edit_file_name.get_node("Showcase").text
 	var dir: String = "res://static/base_game/" + item + "s/"
 	if is_file_name_pure(file_name):
-		var id: String = str(return_new_highest_id(dir, file_name, TID))
+		var id: String = str(return_new_highest_id(dir, file_name, TID))\
+		if !edit_file_name.get_node("SetID").has_checked else edit_file_name.get_node("SetID").text
+		
 		contents = contents.insert(0, "%s\n%s\n%s\n%s\n") % [id, TID, file_name, showcase_name]
 		file_name = file_name.insert(0, "%s - " % id)
 		write_to_file(dir, file_name, ".fof", contents, false)

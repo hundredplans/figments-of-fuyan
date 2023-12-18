@@ -23,7 +23,7 @@ func _ready() -> void:
 		settings_card.scale = card_scales[i]
 		$CardSorter.add_child(settings_card)
 		settings_card.on_load_setting_card(card_name)
-		settings_card.get_node("Settings/ResetButton").pressed.connect(on_reset_button_pressed.bind(card_name))
+		settings_card.get_node("Settings/UtilityMenu/ResetButton").pressed.connect(on_reset_button_pressed.bind(card_name))
 		
 		settings_card.z_index = i
 		
@@ -32,10 +32,12 @@ func _ready() -> void:
 			settings_card.get_node("Settings").rotation = animation.track_get_key_value(1, 0)
 			settings_card.get_node("Settings").position = animation.track_get_key_value(2, 0)
 		else:
+			
 			settings_card.on_load_front_card()
 			settings_card.get_node("Background").texture = preload("res://scenes/screens/settings_menu/settings_assets/front0.png")
 			settings_card.get_node("Settings").rotation = animation.track_get_key_value(1, animation.track_get_key_count(1) - 1)
 			settings_card.get_node("Settings").position = animation.track_get_key_value(2, animation.track_get_key_count(2) - 1)
+			settings_card.get_node("Settings/UtilityMenu").visible = true
 		i += 1
 
 func on_center_selected_card(i: int) -> void:
@@ -61,6 +63,9 @@ func on_center_selected_card(i: int) -> void:
 		var scales: Array = [card_scales[i], card_scales[4]]
 		var positions: Array = [card_positions[i], card_positions[4]]
 		var j: int = 0
+		
+		side_card.get_node("Settings/UtilityMenu").visible = true
+		center_card.get_node("Settings/UtilityMenu").visible = false
 		
 		for card in [center_card, side_card]:
 			var move_child_position: Array = [i, 4]
@@ -105,9 +110,16 @@ func on_reset_button_pressed(card_name: String) -> void:
 		
 		var loaded_new_card: Control = load("res://scenes/screens/settings_menu/setting_options/settings_" + card_name.to_lower() + ".tscn").instantiate()
 		loaded_new_card.setting = card_name
+		var old_loaded_card: Control = card.get_node("Settings/LoadedSetting/Settings" + card_name)
+		
+		var nodes: Array = Helper.flatten(old_loaded_card.get_children()\
+		.map(func(x: Control): return x.get_children()), false)
 		
 		for info in Settings.settings_info[card_name]:
-			if card.has_node(info[0]): card.get_node(info[0]).default = info[1]
-			
-		card.get_node("Settings/LoadedSetting/Settings" + card_name).free()
+			for node in nodes:
+				if node.name == info[0]:
+					node.default = info[1]
+					
+		old_loaded_card.free()
 		card.get_node("Settings/LoadedSetting").add_child(loaded_new_card)
+		card.on_reload_page(0)

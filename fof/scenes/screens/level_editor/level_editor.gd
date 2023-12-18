@@ -815,7 +815,7 @@ const ROTATION_TILE_DELAY: float = 0.2
 	
 func on_remove_under_tile(tile: Node3D) -> void:
 	var p: Array = tile.info.position
-	var tiles: Array = tiles_by_multitile(true_tile_by_position([p[0], p[1], p[2], p[3] - 1]), 2)
+	var tiles: Array = tiles_by_multitile(true_tile_by_position([p[0], p[1], p[2], p[3] - 1]), 2).filter(func(x: Node3D): return x != null and x.info.wall.type == 2)
 	for _tile in tiles: on_tile_remove_specific(_tile, 2)
 	
 func on_tile_rotate(tile: Node3D, rotate_direction: int) -> void:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bdd0m6wbuerq5"]
+[gd_scene load_steps=14 format=3 uid="uid://bdd0m6wbuerq5"]
 
 [ext_resource type="Script" path="res://scenes/editor/edit_file_name/edit_file_name.gd" id="1_0fpue"]
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="1_6unjv"]
@@ -8,52 +8,41 @@
 [ext_resource type="Texture2D" uid="uid://cc82yvo4htf1s" path="res://scenes/editor/edit_file_name/lock_button/lock3.png" id="6_6j5jm"]
 [ext_resource type="Texture2D" uid="uid://dium14702q2x4" path="res://scenes/editor/edit_file_name/lock_button/lock2.png" id="7_gbr85"]
 [ext_resource type="Texture2D" uid="uid://cttis2irtg312" path="res://scenes/editor/edit_file_name/lock_button/lock6.png" id="8_x5g12"]
+[ext_resource type="PackedScene" uid="uid://ldys7jleuk68" path="res://scenes/editor/set_id/set_id.tscn" id="9_ny2po"]
 
 [sub_resource type="Animation" id="Animation_y3l2c"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("LockButton:position")
+tracks/0/path = NodePath("Showcase:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(613, 0)]
+"values": [Color(1, 1, 1, 0)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Showcase:modulate")
+tracks/1/path = NodePath("LockButton:texture_normal")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 0)]
+"update": 1,
+"values": [ExtResource("3_o4ly1")]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("LockButton:texture_normal")
+tracks/2/path = NodePath("Showcase:visible")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [ExtResource("3_o4ly1")]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Showcase:visible")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -67,46 +56,34 @@ step = 0.04
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("LockButton:position")
+tracks/0/path = NodePath("Showcase:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(613, 70), Vector2(613, 0)]
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Showcase:modulate")
+tracks/1/path = NodePath("LockButton:texture_normal")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("LockButton:texture_normal")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
 "times": PackedFloat32Array(0, 0.04, 0.08, 0.12, 0.16, 0.2),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [ExtResource("8_x5g12"), ExtResource("4_x5xua"), ExtResource("5_w66f0"), ExtResource("6_6j5jm"), ExtResource("7_gbr85"), ExtResource("3_o4ly1")]
 }
-tracks/3/type = "method"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath(".")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "values": [{
@@ -114,13 +91,13 @@ tracks/3/keys = {
 "method": &"on_play_lock_closed_sound_effect"
 }]
 }
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Showcase:visible")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Showcase:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
 "times": PackedFloat32Array(0, 0.2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
@@ -134,46 +111,34 @@ step = 0.04
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("LockButton:position")
+tracks/0/path = NodePath("Showcase:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(613, 0), Vector2(613, 70)]
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Showcase:modulate")
+tracks/1/path = NodePath("LockButton:texture_normal")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("LockButton:texture_normal")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
 "times": PackedFloat32Array(0, 0.04, 0.08, 0.12, 0.16, 0.2),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [ExtResource("3_o4ly1"), ExtResource("7_gbr85"), ExtResource("6_6j5jm"), ExtResource("5_w66f0"), ExtResource("4_x5xua"), ExtResource("8_x5g12")]
 }
-tracks/3/type = "method"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath(".")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "values": [{
@@ -181,13 +146,13 @@ tracks/3/keys = {
 "method": &"on_play_lock_open_sound_effect"
 }]
 }
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Showcase:visible")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Showcase:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
 "times": PackedFloat32Array(0, 0.2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
@@ -206,8 +171,6 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 678.0
 offset_bottom = 138.0
-grow_horizontal = 2
-grow_vertical = 2
 theme = ExtResource("1_6unjv")
 script = ExtResource("1_0fpue")
 
@@ -238,9 +201,16 @@ max_length = 40
 [node name="LockButton" type="TextureButton" parent="."]
 layout_mode = 0
 offset_left = 613.0
-offset_right = 683.0
+offset_right = 703.0
 offset_bottom = 70.0
 texture_normal = ExtResource("3_o4ly1")
+
+[node name="SetID" parent="." instance=ExtResource("9_ny2po")]
+layout_mode = 0
+offset_left = 613.0
+offset_top = 70.0
+offset_right = 703.0
+offset_bottom = 102.0
 
 [connection signal="animation_finished" from="LockButtonPressed" to="." method="_on_lock_button_pressed_animation_finished"]
 [connection signal="text_changed" from="Internal" to="." method="_on_internal_text_changed"]

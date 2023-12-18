@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://bak8gc1mx41gq"]
+[gd_scene load_steps=27 format=3 uid="uid://bak8gc1mx41gq"]
 
 [ext_resource type="Script" path="res://scenes/screens/settings_menu/settings_card.gd" id="1_lngsg"]
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="1_ymu3o"]
@@ -15,7 +15,9 @@
 [ext_resource type="Texture2D" uid="uid://vr8wlegndsls" path="res://scenes/screens/settings_menu/settings_assets/back6.png" id="18_lo2iw"]
 [ext_resource type="Texture2D" uid="uid://bhphpw6y0dli" path="res://scenes/ui_general/back_arrow/back_arrow.png" id="19_4mfqq"]
 [ext_resource type="Texture2D" uid="uid://bnqi2oq317g66" path="res://scenes/screens/settings_menu/settings_assets/back4.png" id="19_hq85k"]
+[ext_resource type="PackedScene" uid="uid://bkbg8go87dqws" path="res://scenes/ui_general/arrow/ui_arrow.tscn" id="20_3cak7"]
 [ext_resource type="Texture2D" uid="uid://ceaduy4bqe2x8" path="res://scenes/screens/settings_menu/settings_assets/front3.png" id="20_pjr3j"]
+[ext_resource type="LabelSettings" uid="uid://qp0350v2j4ah" path="res://assets/UI/roboto/roboto32_outline.tres" id="21_ag2qq"]
 [ext_resource type="Texture2D" uid="uid://de8by113jbv3f" path="res://scenes/screens/settings_menu/settings_assets/front2.png" id="21_hltqk"]
 [ext_resource type="Texture2D" uid="uid://cmfy6fjnjgvjq" path="res://scenes/screens/settings_menu/settings_assets/front1.png" id="22_xo58e"]
 [ext_resource type="Texture2D" uid="uid://bj1430wxbkdd2" path="res://scenes/screens/settings_menu/settings_assets/front0.png" id="23_vlohk"]
@@ -82,6 +84,18 @@ tracks/4/keys = {
 "update": 0,
 "values": [Vector2(1, 1)]
 }
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Settings/UtilityMenu:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.968627, 0.776471, 0.647059, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_1jgi8"]
 resource_name = "move_card_left"
@@ -146,6 +160,18 @@ tracks/4/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
 "update": 0,
 "values": [Vector2(1, 1), Vector2(0.8, 0.8), Vector2(0.65, 0.65), Vector2(0.4, 0.4), Vector2(0.7, 0.7), Vector2(0.8, 0.8), Vector2(0.9, 0.9), Vector2(1, 1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Settings/UtilityMenu:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.29, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(0.709804, 0.568627, 0.47451, 0), Color(0.709804, 0.568627, 0.47451, 0), Color(0.968627, 0.776471, 0.647059, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_hoa87"]
@@ -212,6 +238,18 @@ tracks/4/keys = {
 "update": 0,
 "values": [Vector2(1, 1), Vector2(0.8, 0.8), Vector2(0.65, 0.65), Vector2(0.4, 0.4), Vector2(0.7, 0.7), Vector2(0.7, 0.7), Vector2(0.8, 0.8), Vector2(0.86, 0.86), Vector2(1, 1)]
 }
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Settings/UtilityMenu:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.29, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(0.709804, 0.568627, 0.47451, 0), Color(0.709804, 0.568627, 0.47451, 0), Color(0.968627, 0.776471, 0.647059, 1)]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_cxf2m"]
 _data = {
@@ -249,7 +287,7 @@ centered = false
 layout_mode = 1
 anchors_preset = 0
 offset_top = 765.0
-offset_right = 600.0
+offset_right = 599.999
 offset_bottom = 1665.0
 rotation = -1.57079
 
@@ -275,11 +313,57 @@ label_settings = SubResource("LabelSettings_bwuoh")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ResetButton" type="TextureButton" parent="Settings"]
-modulate = Color(0.709804, 0.568627, 0.47451, 1)
+[node name="UtilityMenu" type="Control" parent="Settings"]
+visible = false
+modulate = Color(0.968627, 0.776471, 0.647059, 1)
+anchors_preset = 0
+offset_top = 820.0
+offset_right = 590.0
+offset_bottom = 900.0
+mouse_filter = 2
+
+[node name="PageZone" type="Control" parent="Settings/UtilityMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LeftArrow" parent="Settings/UtilityMenu/PageZone" instance=ExtResource("20_3cak7")]
 layout_mode = 0
-offset_left = 535.005
-offset_top = 834.997
-offset_right = 585.005
-offset_bottom = 884.997
+offset_left = 476.005
+offset_top = 6.99701
+offset_right = 556.005
+offset_bottom = 104.997
+scale = Vector2(0.6, 0.6)
+flip_h = true
+
+[node name="RightArrow" parent="Settings/UtilityMenu/PageZone" instance=ExtResource("20_3cak7")]
+layout_mode = 0
+offset_left = 532.005
+offset_top = 6.99664
+offset_right = 612.005
+offset_bottom = 104.997
+scale = Vector2(0.6, 0.6)
+
+[node name="Page" type="Label" parent="Settings/UtilityMenu/PageZone"]
+layout_mode = 0
+offset_left = 367.0
+offset_top = 11.0
+offset_right = 471.0
+offset_bottom = 60.0
+label_settings = ExtResource("21_ag2qq")
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ResetButton" type="TextureButton" parent="Settings/UtilityMenu"]
+layout_mode = 0
+offset_left = 15.0052
+offset_top = 15.0002
+offset_right = 65.0052
+offset_bottom = 65.0002
 texture_normal = ExtResource("19_4mfqq")
+
+[connection signal="pressed" from="Settings/UtilityMenu/PageZone/LeftArrow" to="." method="on_reload_page" binds= [-1]]
+[connection signal="pressed" from="Settings/UtilityMenu/PageZone/RightArrow" to="." method="on_reload_page" binds= [1]]

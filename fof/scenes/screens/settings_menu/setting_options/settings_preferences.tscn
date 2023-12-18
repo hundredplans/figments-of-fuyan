@@ -1,18 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://drao2oqxtnj6x"]
+[gd_scene load_steps=7 format=3 uid="uid://drao2oqxtnj6x"]
 
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="1_7tu5m"]
 [ext_resource type="Script" path="res://scenes/screens/settings_menu/settings_connect.gd" id="2_odmui"]
 [ext_resource type="PackedScene" uid="uid://bj3h1ak5dv73n" path="res://scenes/ui_general/op_button/op_button.tscn" id="3_dg7gw"]
 [ext_resource type="PackedScene" uid="uid://chkoma3ub3eqf" path="res://scenes/ui_general/binary_button/binary_button.tscn" id="4_70xc4"]
-[ext_resource type="FontFile" uid="uid://7k4xd8s0oed2" path="res://assets/UI/roboto/roboto.ttf" id="5_iikn7"]
 [ext_resource type="PackedScene" uid="uid://do6a233hu0w6c" path="res://scenes/ui_general/mc_button/mc_button.tscn" id="5_t1xs1"]
 [ext_resource type="PackedScene" uid="uid://65cqb6wug8it" path="res://scenes/ui_general/scale_button/scale_button.tscn" id="6_3lxbg"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_nac3c"]
-font = ExtResource("5_iikn7")
-font_size = 48
-outline_size = 8
-outline_color = Color(0, 0, 0, 1)
 
 [node name="SettingsPreferences" type="Control"]
 layout_mode = 3
@@ -22,212 +15,220 @@ offset_bottom = 708.0
 theme = ExtResource("1_7tu5m")
 script = ExtResource("2_odmui")
 
-[node name="DefaultCameraSpeedMultiplier" parent="." instance=ExtResource("3_dg7gw")]
-offset_left = 19.0
+[node name="0" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 0
+offset_right = 518.0
+offset_bottom = 708.0
+
+[node name="DefaultCameraSpeedMultiplier" parent="0" instance=ExtResource("3_dg7gw")]
+offset_left = 20.0
 offset_top = 10.0
-offset_right = 43.0
+offset_right = 44.0
 offset_bottom = 73.0
 options = PackedStringArray("0.5x", "1x", "2x", "4x")
 label_text = "Camera Speed"
 
-[node name="AutoskipTurn" parent="." instance=ExtResource("4_70xc4")]
-offset_left = 19.0
-offset_top = 88.0
-offset_right = 196.0
-offset_bottom = 151.0
+[node name="AutoskipTurn" parent="0" instance=ExtResource("4_70xc4")]
+offset_left = 20.0
+offset_top = 90.0
+offset_right = 197.0
+offset_bottom = 153.0
 label_text = "Autoskip Turn"
 
-[node name="NotifyRewards" parent="." instance=ExtResource("4_70xc4")]
-offset_left = 19.0
-offset_top = 164.0
-offset_right = 196.0
-offset_bottom = 227.0
+[node name="NotifyRewards" parent="0" instance=ExtResource("4_70xc4")]
+offset_left = 20.0
+offset_top = 170.0
+offset_right = 197.0
+offset_bottom = 233.0
 label_text = "Notify For Rewards"
 
-[node name="ClearBackupFiles" parent="." instance=ExtResource("3_dg7gw")]
-offset_left = 19.0
-offset_top = 240.0
-offset_right = 43.0
-offset_bottom = 303.0
+[node name="ClearBackupFiles" parent="0" instance=ExtResource("3_dg7gw")]
+offset_left = 20.0
+offset_top = 250.0
+offset_right = 44.0
+offset_bottom = 313.0
 options = PackedStringArray("Don\'t Backup", "1 Day", "3 Days", "1 Week", "1 Month", "Never")
 label_text = "Clear Backup"
 
-[node name="InteractButton" parent="." instance=ExtResource("3_dg7gw")]
-offset_left = 19.0
-offset_top = 315.0
-offset_right = 43.0
-offset_bottom = 378.0
+[node name="InteractButton" parent="0" instance=ExtResource("3_dg7gw")]
+offset_left = 20.0
+offset_top = 330.0
+offset_right = 44.0
+offset_bottom = 393.0
 options = PackedStringArray("RMB", "MMBN")
 label_text = "Interact Button"
 
-[node name="Admin" type="Label" parent="."]
-layout_mode = 0
-offset_top = 381.0
+[node name="1" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 0
 offset_right = 518.0
-offset_bottom = 441.0
-text = "Admin"
-label_settings = SubResource("LabelSettings_nac3c")
-horizontal_alignment = 1
+offset_bottom = 708.0
 
-[node name="BookFontSize" parent="." instance=ExtResource("3_dg7gw")]
-offset_left = 19.0
-offset_top = 446.0
-offset_right = 43.0
-offset_bottom = 509.0
+[node name="BookFontSize" parent="1" instance=ExtResource("3_dg7gw")]
+offset_left = 20.0
+offset_top = 10.0
+offset_right = 44.0
+offset_bottom = 73.0
 options = PackedStringArray("16", "20", "24", "28", "32", "36")
 label_text = "Book Font Size"
 
-[node name="HideMenuGUI" parent="." instance=ExtResource("3_dg7gw")]
-offset_left = 19.0
-offset_top = 519.0
-offset_right = 43.0
-offset_bottom = 582.0
+[node name="HideMenuGUI" parent="1" instance=ExtResource("3_dg7gw")]
+offset_left = 20.0
+offset_top = 90.0
+offset_right = 44.0
+offset_bottom = 153.0
 options = PackedStringArray("Never", "Lore Books", "Always")
 label_text = "Hide Menu GUI"
 
-[node name="CardsCanDeleteDirectory" parent="." instance=ExtResource("3_dg7gw")]
-offset_left = 19.0
-offset_top = 590.0
-offset_right = 43.0
-offset_bottom = 653.0
+[node name="CardsCanDeleteDirectory" parent="1" instance=ExtResource("3_dg7gw")]
+offset_left = 20.0
+offset_top = 170.0
+offset_right = 44.0
+offset_bottom = 233.0
 options = PackedStringArray("Never", "Only Empty")
 label_text = "Delete Directory"
 
-[node name="ConfirmFileDelete" parent="." instance=ExtResource("3_dg7gw")]
-offset_left = 19.0
-offset_top = 662.0
-offset_right = 43.0
-offset_bottom = 725.0
+[node name="ConfirmFileDelete" parent="1" instance=ExtResource("3_dg7gw")]
+offset_left = 20.0
+offset_top = 250.0
+offset_right = 44.0
+offset_bottom = 313.0
 options = PackedStringArray("Name Prompt", "Yes/No Prompt", "None")
 label_text = "File Delete"
 
-[node name="HidePatchNotesMenu" parent="." instance=ExtResource("4_70xc4")]
-offset_left = 19.0
-offset_top = 735.0
-offset_right = 196.0
-offset_bottom = 798.0
+[node name="HidePatchNotesMenu" parent="1" instance=ExtResource("4_70xc4")]
+offset_left = 20.0
+offset_top = 330.0
+offset_right = 197.0
+offset_bottom = 393.0
 label_text = "Hide Patch Notes"
 
-[node name="OpenPatchNotesMenu" parent="." instance=ExtResource("4_70xc4")]
-offset_left = 19.0
-offset_top = 807.0
-offset_right = 196.0
-offset_bottom = 870.0
+[node name="OpenPatchNotesMenu" parent="1" instance=ExtResource("4_70xc4")]
+offset_left = 20.0
+offset_top = 410.0
+offset_right = 197.0
+offset_bottom = 473.0
 label_text = "Open Patch Notes"
 
-[node name="Fileloader" type="Label" parent="."]
-layout_mode = 0
-offset_top = 886.0
+[node name="2" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 0
 offset_right = 518.0
-offset_bottom = 946.0
-text = "Fileloader"
-label_settings = SubResource("LabelSettings_nac3c")
-horizontal_alignment = 1
+offset_bottom = 708.0
 
-[node name="CloseFileLoader" parent="." instance=ExtResource("5_t1xs1")]
-offset_left = 19.0
-offset_top = 958.0
-offset_right = 117.0
-offset_bottom = 1018.0
+[node name="CloseFileLoader" parent="2" instance=ExtResource("5_t1xs1")]
+offset_left = 20.0
+offset_top = 10.0
+offset_right = 118.0
+offset_bottom = 70.0
 options = PackedStringArray("Areas", "Cards", "Auras", "Boons", "Levels", "Trinkets", "Challenges", "World Variations")
 label_text = "Close File Loader"
 
-[node name="AutoCreateDir" parent="." instance=ExtResource("3_dg7gw")]
-offset_left = 19.0
-offset_top = 1027.0
-offset_right = 43.0
-offset_bottom = 1090.0
+[node name="AutoCreateDir" parent="2" instance=ExtResource("3_dg7gw")]
+offset_left = 20.0
+offset_top = 90.0
+offset_right = 44.0
+offset_bottom = 153.0
 options = PackedStringArray("Never", "Always")
 default = 1
 label_text = "Auto-create Folders"
 
-[node name="FileLoaderOpacity" parent="." instance=ExtResource("6_3lxbg")]
-offset_left = 19.0
-offset_top = 1097.0
-offset_right = 370.0
-offset_bottom = 1194.0
+[node name="FileLoaderOpacity" parent="2" instance=ExtResource("6_3lxbg")]
+offset_left = 20.0
+offset_top = 170.0
+offset_right = 371.0
+offset_bottom = 267.0
 label_text = "FL Opacity"
 disable_scrollwheel = true
 
-[node name="LevelEditor" type="Label" parent="."]
-layout_mode = 0
-offset_top = 1184.0
+[node name="3" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 0
 offset_right = 518.0
-offset_bottom = 1244.0
-text = "Level Editor"
-label_settings = SubResource("LabelSettings_nac3c")
-horizontal_alignment = 1
+offset_bottom = 708.0
 
-[node name="LevelSize" parent="." instance=ExtResource("3_dg7gw")]
-offset_left = 19.0
-offset_top = 1263.0
-offset_right = 43.0
-offset_bottom = 1326.0
+[node name="LevelSize" parent="3" instance=ExtResource("3_dg7gw")]
+offset_left = 20.0
+offset_top = 10.0
+offset_right = 44.0
+offset_bottom = 73.0
 options = PackedStringArray("3", "5", "7", "9", "12", "15", "20", "25")
 label_text = "Level Size"
 
-[node name="LevelEditorElevation" parent="." instance=ExtResource("3_dg7gw")]
-offset_left = 19.0
-offset_top = 1345.0
-offset_right = 43.0
-offset_bottom = 1408.0
+[node name="LevelEditorElevation" parent="3" instance=ExtResource("3_dg7gw")]
+offset_left = 20.0
+offset_top = 90.0
+offset_right = 44.0
+offset_bottom = 153.0
 options = PackedStringArray("0", "1", "2", "3", "4", "5")
 label_text = "Elevation"
 
-[node name="DefaultWallHeight" parent="." instance=ExtResource("3_dg7gw")]
-offset_left = 19.0
-offset_top = 1427.0
-offset_right = 43.0
-offset_bottom = 1490.0
+[node name="DefaultWallHeight" parent="3" instance=ExtResource("3_dg7gw")]
+offset_left = 20.0
+offset_top = 170.0
+offset_right = 44.0
+offset_bottom = 233.0
 options = PackedStringArray("0.5", "1", "2", "3", "4", "5")
 label_text = "Wall Height"
 
-[node name="TileWalls" parent="." instance=ExtResource("4_70xc4")]
-offset_left = 19.0
-offset_top = 1509.0
-offset_right = 196.0
-offset_bottom = 1572.0
-label_text = "Tile Walls"
-
-[node name="ElevationFill" parent="." instance=ExtResource("4_70xc4")]
-offset_left = 19.0
-offset_top = 1585.0
-offset_right = 196.0
-offset_bottom = 1648.0
-label_text = "Elevation Fill"
-
-[node name="HighlightEmptyTiles" parent="." instance=ExtResource("4_70xc4")]
-offset_left = 19.0
-offset_top = 1585.0
-offset_right = 196.0
-offset_bottom = 1648.0
-label_text = "Lightup Empty"
-
-[node name="SelectEmptyTiles" parent="." instance=ExtResource("4_70xc4")]
-offset_left = 19.0
-offset_top = 1665.0
-offset_right = 196.0
-offset_bottom = 1728.0
-label_text = "Select Empty"
-
-[node name="LassoSelect" parent="." instance=ExtResource("4_70xc4")]
-offset_left = 19.0
-offset_top = 1742.0
-offset_right = 196.0
-offset_bottom = 1805.0
-label_text = "Lasso Select"
-
-[node name="KeepRotation" parent="." instance=ExtResource("4_70xc4")]
+[node name="LevelId" parent="3" instance=ExtResource("3_dg7gw")]
 offset_left = 20.0
-offset_top = 1821.0
-offset_right = 197.0
-offset_bottom = 1884.0
-label_text = "Keep Rotation"
-
-[node name="LevelId" parent="." instance=ExtResource("3_dg7gw")]
-offset_left = 20.0
-offset_top = 1902.0
+offset_top = 250.0
 offset_right = 44.0
-offset_bottom = 1965.0
+offset_bottom = 313.0
 options = PackedStringArray("Regular", "Odd ID", "Even ID")
 label_text = "Level ID"
+
+[node name="4" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 0
+offset_right = 518.0
+offset_bottom = 708.0
+
+[node name="TileWalls" parent="4" instance=ExtResource("4_70xc4")]
+offset_left = 20.0
+offset_top = 10.0
+offset_right = 197.0
+offset_bottom = 73.0
+label_text = "Tile Walls"
+
+[node name="ElevationFill" parent="4" instance=ExtResource("4_70xc4")]
+offset_left = 20.0
+offset_top = 90.0
+offset_right = 197.0
+offset_bottom = 153.0
+label_text = "Elevation Fill"
+
+[node name="HighlightEmptyTiles" parent="4" instance=ExtResource("4_70xc4")]
+offset_left = 20.0
+offset_top = 170.0
+offset_right = 197.0
+offset_bottom = 233.0
+label_text = "Lightup Empty"
+
+[node name="SelectEmptyTiles" parent="4" instance=ExtResource("4_70xc4")]
+offset_left = 20.0
+offset_top = 250.0
+offset_right = 197.0
+offset_bottom = 313.0
+label_text = "Select Empty"
+
+[node name="LassoSelect" parent="4" instance=ExtResource("4_70xc4")]
+offset_left = 20.0
+offset_top = 330.0
+offset_right = 197.0
+offset_bottom = 393.0
+label_text = "Lasso Select"
+
+[node name="KeepRotation" parent="4" instance=ExtResource("4_70xc4")]
+offset_left = 20.0
+offset_top = 410.0
+offset_right = 197.0
+offset_bottom = 473.0
+label_text = "Keep Rotation"

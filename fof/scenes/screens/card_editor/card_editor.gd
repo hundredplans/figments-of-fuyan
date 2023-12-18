@@ -2,7 +2,7 @@ extends Control
 var ID: int = 0
 var rarity: int = 2
 var stats: Array = [1,1,1,1]
-var personality_sliders: Array = [1,1,1,1,1]
+var personality_sliders: Array = [4,4,4,4,4]
 var height: int = 1
 
 const TID: int = 2

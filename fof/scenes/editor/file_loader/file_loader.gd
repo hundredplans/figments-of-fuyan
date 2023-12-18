@@ -88,7 +88,7 @@ func match_search_item_selected(item_dict: Dictionary) -> bool:
 				"area": return item_dict.world.begins_with(SearchEdit.text)
 				"card", "tool", "boon": return str(item_dict.r) == SearchEdit.text
 				"level":
-					if item_dict.area.begins_with(SearchEdit.text): return true
+					if str(item_dict.area).begins_with(SearchEdit.text): return true
 					var area_info: Dictionary = Helper.id_to_dict(item_dict.area, "Area")
 					return area_info and area_info.sname.to_lower().begins_with(SearchEdit.text.to_lower())
 		4:  return str(item_dict.a) == SearchEdit.text
