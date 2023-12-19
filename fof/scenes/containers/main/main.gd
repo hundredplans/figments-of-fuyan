@@ -26,6 +26,7 @@ var move_screen_switch_length: Dictionary = {
 	"BoonEditor": 0.25,
 	"ToolEditor": 0.25,
 	"ItemEditor": 0.25,
+	"MapEditor": 0.25,
 }
 
 func on_user_quit() -> void:
@@ -44,6 +45,7 @@ const move_screen_name_to_path: Dictionary = {
 	"BoonEditor": "res://scenes/screens/boon_editor/move_screen.tres",
 	"ToolEditor": "res://scenes/screens/tool_editor/move_screen.tres",
 	"ItemEditor": "res://scenes/screens/item_editor/move_screen.tres",
+	"MapEditor": "res://scenes/screens/map_editor/move_screen.tres",
 }
 	
 func on_menu_transition(screen: Control, old_screen: Control, is_enter: bool) -> void:

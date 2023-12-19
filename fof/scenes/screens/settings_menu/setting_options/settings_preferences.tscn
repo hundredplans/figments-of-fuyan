@@ -114,7 +114,6 @@ offset_bottom = 473.0
 label_text = "Open Patch Notes"
 
 [node name="2" type="Control" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = 0
 offset_right = 518.0
@@ -125,7 +124,7 @@ offset_left = 20.0
 offset_top = 10.0
 offset_right = 118.0
 offset_bottom = 70.0
-options = PackedStringArray("Areas", "Cards", "Auras", "Boons", "Levels", "Trinkets", "Challenges", "World Variations")
+options = PackedStringArray("Areas", "Cards", "Auras", "Boons", "Levels", "Trinkets", "Challenges", "Maps")
 label_text = "Close File Loader"
 
 [node name="AutoCreateDir" parent="2" instance=ExtResource("3_dg7gw")]
