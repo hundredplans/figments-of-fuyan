@@ -48,14 +48,24 @@ func _on_open_button_pressed():
 func position_binary_buttons() -> void:
 	var xbp: int = 0
 	var ybp: int = 0
+	
+	var xy := Vector2.ZERO
 	for button in $Options.get_children():
 		button.scale = Vector2(0.6, 0.6)
-		xbp = button.get_node("Outside").size.x if xbp == 0 else 0
-		button.position.x = max(xbp - 80, 0)
-		button.position.y += ybp
-		if xbp == 0:
-			ybp += button.size.y - 15
-	max_size = ybp
+		button.position = xy
+		xy.x += button.get_node("Outside").size.x
+		
+		if xy.x > 300:
+			xy.y += 60
+			xy.x = 0
+		
+		#xbp = button.get_node("Outside").size.x if xbp == 0 else 0
+		#button.position.x = max(xbp - 80, 0)
+		#button.position.y += ybp
+		#if xbp == 0:
+			#ybp += button.size.y - 15
+	#max_size = ybp
+	max_size = xy.y
 	on_change_open_state()
 
 func on_change_open_state() -> void:

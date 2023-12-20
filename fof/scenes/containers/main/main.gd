@@ -48,6 +48,24 @@ const move_screen_name_to_path: Dictionary = {
 	"MapEditor": "res://scenes/screens/map_editor/move_screen.tres",
 }
 	
+func _ready() -> void:
+	load_general_world()
+	$UI.z_index = 10
+	for screen in Screens.get_children(): screen.free()
+	BackArrow.visible = false
+	SettingCog.visible = false
+	
+	SettingCog.pressed.connect(func(): AudioMaster.play_sfx(preload("res://assets/UI/setting_cog/click.wav"), -10))
+	Helper.create_button_clickmask(BackArrow)
+	Helper.create_button_clickmask(SettingCog)
+	on_setup_screen(preload("res://scenes/screens/main_menu/main_menu.tscn").instantiate())
+	
+	var modified_time: int = Settings.clear_backup_files_array[Settings.clear_backup_files]
+	if modified_time > 1:
+		for file in Helper.return_file_names_recursive("user://save/temp"):
+			if FileAccess.get_modified_time(file) < Time.get_unix_time_from_system() - modified_time:
+				DirAccess.remove_absolute(file)
+	
 func on_menu_transition(screen: Control, old_screen: Control, is_enter: bool) -> void:
 	on_setup_screen(screen)
 	if old_screen.has_method("on_move_screen_setup"):
@@ -111,24 +129,7 @@ func after_ready_connect_screen(screen: Control):
 		_: if BackArrow.position.x > 1768: BackArrow.position.x = 1768
 	get_viewport().warp_mouse(get_viewport().get_mouse_position())
 	
-func _ready() -> void:
-	
-	load_general_world()
-	$UI.z_index = 10
-	for screen in Screens.get_children(): screen.free()
-	BackArrow.visible = false
-	SettingCog.visible = false
-	
-	SettingCog.pressed.connect(func(): AudioMaster.play_sfx(preload("res://assets/UI/setting_cog/click.wav"), -10))
-	Helper.create_button_clickmask(BackArrow)
-	Helper.create_button_clickmask(SettingCog)
-	on_setup_screen(preload("res://scenes/screens/main_menu/main_menu.tscn").instantiate())
-	
-	var modified_time: int = Settings.clear_backup_files_array[Settings.clear_backup_files]
-	if modified_time > 1:
-		for file in Helper.return_file_names_recursive("user://save/temp"):
-			if FileAccess.get_modified_time(file) < Time.get_unix_time_from_system() - modified_time:
-				DirAccess.remove_absolute(file)
+
 
 func on_screen_change_animation_state(x: bool) -> void:
 	screen_change_animation_active = x
@@ -176,4 +177,3 @@ func load_general_world() -> void:
 func on_equip_sky(value: int, is_theme: bool) -> void:
 	if is_theme: WorldEnv.environment = load("res://scenes/world/equipped_theme/" + str(value) + "/env.tres")
 	else: WorldEnv.environment = load("res://assets/base_game/areas/" + Helper.id_to_bgfn(value, "Area") + "/env.tres")
-		

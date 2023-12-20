@@ -1,8 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://bnoei7u0kxl25"]
+[gd_scene load_steps=10 format=3 uid="uid://bnoei7u0kxl25"]
 
 [ext_resource type="Script" path="res://scenes/containers/main/main.gd" id="1_10ydf"]
 [ext_resource type="Texture2D" uid="uid://cj8j06xypgaw7" path="res://assets/UI/back_arrow/back_arrow.png" id="3_cu6v7"]
-[ext_resource type="PackedScene" uid="uid://lokglsqflnj0" path="res://scenes/screens/map_editor/map_editor.tscn" id="3_mfw58"]
 [ext_resource type="Texture2D" uid="uid://svbsdkqet370" path="res://assets/UI/back_arrow/back_arrow_darker.png" id="4_qr5ib"]
 [ext_resource type="Texture2D" uid="uid://bak0pucgtak0b" path="res://assets/UI/back_arrow/back_arrow_dark.png" id="5_fjqpq"]
 [ext_resource type="Texture2D" uid="uid://et3bcj7gnugo" path="res://assets/UI/setting_cog/setting_cog.png" id="6_vmtrq"]
@@ -38,9 +37,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-
-[node name="MapEditor" parent="UI/Screens" instance=ExtResource("3_mfw58")]
-layout_mode = 1
 
 [node name="BackArrow" type="TextureButton" parent="UI"]
 layout_mode = 2

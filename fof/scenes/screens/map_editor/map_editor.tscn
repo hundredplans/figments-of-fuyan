@@ -1,6 +1,19 @@
-[gd_scene load_steps=2 format=3 uid="uid://lokglsqflnj0"]
+[gd_scene load_steps=15 format=3 uid="uid://lokglsqflnj0"]
 
 [ext_resource type="Script" path="res://scenes/screens/map_editor/map_editor.gd" id="1_vtbfq"]
+[ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="2_hs8e5"]
+[ext_resource type="LabelSettings" uid="uid://b3fuc4s50fgra" path="res://assets/UI/roboto/roboto64.tres" id="2_uc3fk"]
+[ext_resource type="Texture2D" uid="uid://e08p1p3qmksq" path="res://scenes/screens/map_editor/node_types/0.png" id="4_njhnq"]
+[ext_resource type="Texture2D" uid="uid://b8m4h6kqekdta" path="res://scenes/screens/map_editor/node_types/1.png" id="4_ywny2"]
+[ext_resource type="Texture2D" uid="uid://cmyv7iopedk5d" path="res://scenes/screens/map_editor/node_types/2.png" id="5_o501q"]
+[ext_resource type="Texture2D" uid="uid://d0babow4cf46q" path="res://scenes/screens/map_editor/node_types/3.png" id="6_ayul2"]
+[ext_resource type="Texture2D" uid="uid://bavyk166pxynp" path="res://scenes/screens/map_editor/node_types/4.png" id="7_g2b4f"]
+[ext_resource type="Texture2D" uid="uid://dpjuu0dw12d6a" path="res://scenes/screens/map_editor/node_types/5.png" id="8_54vbj"]
+[ext_resource type="Texture2D" uid="uid://d0pjl248yigy7" path="res://scenes/screens/map_editor/node_types/6.png" id="9_mlv4x"]
+[ext_resource type="Texture2D" uid="uid://wvv6m7igr6ht" path="res://scenes/screens/map_editor/node_types/7.png" id="10_2ao5c"]
+[ext_resource type="LabelSettings" uid="uid://qp0350v2j4ah" path="res://assets/UI/roboto/roboto32_outline.tres" id="11_eyjc3"]
+[ext_resource type="PackedScene" uid="uid://bdd0m6wbuerq5" path="res://scenes/editor/edit_file_name/edit_file_name.tscn" id="12_xsest"]
+[ext_resource type="PackedScene" uid="uid://65cqb6wug8it" path="res://scenes/ui_general/scale_button/scale_button.tscn" id="13_jet6y"]
 
 [node name="MapEditor" type="Control"]
 layout_mode = 3
@@ -11,7 +24,387 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_vtbfq")
 
-[node name="Background" type="Control" parent="."]
+[node name="NodeMenu" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -230.0
+offset_top = -277.0
+offset_bottom = 222.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="Outside" type="ColorRect" parent="NodeMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -10.0
+offset_top = -10.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+metadata/_edit_lock_ = true
+
+[node name="Inside" type="ColorRect" parent="NodeMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.74902, 0.74902, 0.74902, 1)
+metadata/_edit_lock_ = true
+
+[node name="Rim" type="ColorRect" parent="NodeMenu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -86.0
+offset_right = 230.0
+offset_bottom = -76.0
+color = Color(0, 0, 0, 1)
+metadata/_edit_lock_ = true
+
+[node name="AmountMenu" type="Control" parent="NodeMenu"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -76.0
+offset_right = 222.0
+grow_vertical = 0
+theme = ExtResource("2_hs8e5")
+
+[node name="NodeAmount" type="Label" parent="NodeMenu/AmountMenu"]
+layout_mode = 1
+offset_left = 137.0
+offset_right = 222.0
+offset_bottom = 76.0
+label_settings = ExtResource("2_uc3fk")
+horizontal_alignment = 2
+
+[node name="NodeSubtract" type="Button" parent="NodeMenu/AmountMenu"]
+layout_mode = 0
+offset_right = 68.0
+offset_bottom = 76.0
+text = "-"
+
+[node name="NodeAdd" type="Button" parent="NodeMenu/AmountMenu"]
+layout_mode = 0
+offset_left = 68.0
+offset_right = 136.0
+offset_bottom = 76.0
+text = "+"
+
+[node name="NodeSelectType" type="Control" parent="NodeMenu"]
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 222.0
+offset_bottom = 358.0
+
+[node name="NodeButtons" type="Control" parent="NodeMenu/NodeSelectType"]
+anchors_preset = 0
+offset_right = 68.0
+offset_bottom = 413.0
+
+[node name="0" type="TextureButton" parent="NodeMenu/NodeSelectType/NodeButtons"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 6.0
+offset_right = 55.0
+offset_bottom = 56.0
+texture_normal = ExtResource("4_njhnq")
+
+[node name="1" type="TextureButton" parent="NodeMenu/NodeSelectType/NodeButtons"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 57.0
+offset_right = 55.0
+offset_bottom = 107.0
+texture_normal = ExtResource("4_ywny2")
+
+[node name="2" type="TextureButton" parent="NodeMenu/NodeSelectType/NodeButtons"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 107.0
+offset_right = 55.0
+offset_bottom = 157.0
+texture_normal = ExtResource("5_o501q")
+
+[node name="3" type="TextureButton" parent="NodeMenu/NodeSelectType/NodeButtons"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 157.0
+offset_right = 55.0
+offset_bottom = 207.0
+texture_normal = ExtResource("6_ayul2")
+
+[node name="4" type="TextureButton" parent="NodeMenu/NodeSelectType/NodeButtons"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 207.0
+offset_right = 55.0
+offset_bottom = 257.0
+texture_normal = ExtResource("7_g2b4f")
+
+[node name="5" type="TextureButton" parent="NodeMenu/NodeSelectType/NodeButtons"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 257.0
+offset_right = 55.0
+offset_bottom = 307.0
+texture_normal = ExtResource("8_54vbj")
+
+[node name="6" type="TextureButton" parent="NodeMenu/NodeSelectType/NodeButtons"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 307.0
+offset_right = 55.0
+offset_bottom = 357.0
+texture_normal = ExtResource("9_mlv4x")
+
+[node name="7" type="TextureButton" parent="NodeMenu/NodeSelectType/NodeButtons"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 357.0
+offset_right = 55.0
+offset_bottom = 407.0
+texture_normal = ExtResource("10_2ao5c")
+
+[node name="NodeLabels" type="Control" parent="NodeMenu/NodeSelectType"]
+anchors_preset = 0
+offset_left = 68.0
+offset_right = 222.0
+offset_bottom = 407.0
+
+[node name="0" type="Label" parent="NodeMenu/NodeSelectType/NodeLabels"]
+layout_mode = 0
+offset_top = 6.0
+offset_right = 154.0
+offset_bottom = 57.0
+text = "Null"
+label_settings = ExtResource("11_eyjc3")
+vertical_alignment = 1
+
+[node name="1" type="Label" parent="NodeMenu/NodeSelectType/NodeLabels"]
+layout_mode = 0
+offset_top = 57.0
+offset_right = 154.0
+offset_bottom = 108.0
+text = "Fight"
+label_settings = ExtResource("11_eyjc3")
+vertical_alignment = 1
+
+[node name="2" type="Label" parent="NodeMenu/NodeSelectType/NodeLabels"]
+layout_mode = 0
+offset_top = 107.0
+offset_right = 154.0
+offset_bottom = 157.0
+text = "Elite Fight"
+label_settings = ExtResource("11_eyjc3")
+vertical_alignment = 1
+
+[node name="3" type="Label" parent="NodeMenu/NodeSelectType/NodeLabels"]
+layout_mode = 0
+offset_top = 157.0
+offset_right = 154.0
+offset_bottom = 207.0
+text = "Miniboss"
+label_settings = ExtResource("11_eyjc3")
+vertical_alignment = 1
+
+[node name="4" type="Label" parent="NodeMenu/NodeSelectType/NodeLabels"]
+layout_mode = 0
+offset_top = 207.0
+offset_right = 154.0
+offset_bottom = 257.0
+text = "Boss"
+label_settings = ExtResource("11_eyjc3")
+vertical_alignment = 1
+
+[node name="5" type="Label" parent="NodeMenu/NodeSelectType/NodeLabels"]
+layout_mode = 0
+offset_top = 257.0
+offset_right = 154.0
+offset_bottom = 307.0
+text = "Encounter"
+label_settings = ExtResource("11_eyjc3")
+vertical_alignment = 1
+
+[node name="6" type="Label" parent="NodeMenu/NodeSelectType/NodeLabels"]
+layout_mode = 0
+offset_top = 307.0
+offset_right = 154.0
+offset_bottom = 357.0
+text = "Shop"
+label_settings = ExtResource("11_eyjc3")
+vertical_alignment = 1
+
+[node name="7" type="Label" parent="NodeMenu/NodeSelectType/NodeLabels"]
+layout_mode = 0
+offset_top = 357.0
+offset_right = 154.0
+offset_bottom = 407.0
+text = "Forge"
+label_settings = ExtResource("11_eyjc3")
+vertical_alignment = 1
+
+[node name="SaveMenu" type="Control" parent="."]
+anchors_preset = 0
+offset_top = 752.0
+offset_right = 713.0
+offset_bottom = 1080.0
+
+[node name="Outside" type="ColorRect" parent="SaveMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -10.0
+offset_right = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+metadata/_edit_lock_ = true
+
+[node name="Inside" type="ColorRect" parent="SaveMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.74902, 0.74902, 0.74902, 1)
+metadata/_edit_lock_ = true
+
+[node name="Rim" type="ColorRect" parent="SaveMenu"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -100.0
+offset_right = 713.0
+offset_bottom = -90.0
+grow_vertical = 0
+color = Color(0, 0, 0, 1)
+
+[node name="Buttons" type="HBoxContainer" parent="SaveMenu"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -90.0
+offset_right = 713.0
+grow_vertical = 0
+theme = ExtResource("2_hs8e5")
+theme_override_constants/separation = 0
+
+[node name="SaveMap" type="Button" parent="SaveMenu/Buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Save Map"
+
+[node name="LoadMap" type="Button" parent="SaveMenu/Buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Load Map"
+
+[node name="DeleteMap" type="Button" parent="SaveMenu/Buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Delete Map"
+
+[node name="EditFileName" parent="SaveMenu" instance=ExtResource("12_xsest")]
+ItemNAME = "Map"
+
+[node name="WorldSelector" parent="SaveMenu" instance=ExtResource("13_jet6y")]
+offset_left = 6.0
+offset_top = 148.0
+offset_right = 289.0
+offset_bottom = 201.0
+min_max = Vector2i(1, 4)
+steps = Vector2i(1, 4)
+default = 1
+label_text = "World"
+snap_mode = true
+
+[node name="MapMenu" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 723.0
+offset_right = 1680.0
+offset_bottom = 1080.0
+
+[node name="Outside" type="ColorRect" parent="MapMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -10.0
+offset_right = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Inside" type="ColorRect" parent="MapMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.74902, 0.74902, 0.74902, 1)
+metadata/_edit_lock_ = true
+
+[node name="NodesArrows" type="Control" parent="MapMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Nodes" type="Control" parent="MapMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="0" type="VBoxContainer" parent="MapMenu/Nodes"]
+layout_mode = 0
+offset_left = 159.0
+offset_right = 209.0
+offset_bottom = 1080.0
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="1" type="VBoxContainer" parent="MapMenu/Nodes"]
+layout_mode = 0
+offset_left = 478.0
+offset_right = 528.0
+offset_bottom = 1080.0
+alignment = 1
+
+[node name="2" type="VBoxContainer" parent="MapMenu/Nodes"]
+layout_mode = 0
+offset_left = 797.0
+offset_right = 847.0
+offset_bottom = 1080.0
+alignment = 1
+
+[node name="SelectedNodeType" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(1705, 830)
+scale = Vector2(4, 4)
+centered = false
+
+[connection signal="pressed" from="NodeMenu/AmountMenu/NodeSubtract" to="." method="on_change_map_size" binds= [-1]]
+[connection signal="pressed" from="NodeMenu/AmountMenu/NodeAdd" to="." method="on_change_map_size" binds= [1]]

@@ -58,9 +58,15 @@ func _process(_delta: float) -> void:
 			
 	if !is_pressed: arrow_delay = 0
 func _ready() -> void:
-	Helper.create_button_clickmask(Grabber)
-	(func():$Background/Outside.size.x += $Label.size.x + 23; $Background/Inside.size.x += $Label.size.x + 23).call_deferred()
-	recalibrate_min_max()
+	if is_inside_tree() and is_instance_valid(self):
+		Helper.create_button_clickmask(Grabber)
+		on_set_sizes.call_deferred()
+		recalibrate_min_max()
+	
+func on_set_sizes() -> void:
+	$Background/Outside.size.x += $Label.size.x + 23
+	$Background/Inside.size.x += $Label.size.x + 23
+	
 func _enter_tree() -> void:
 	default = clamp(default, min_max.x, min_max.y)
 	$Label.text = label_text
