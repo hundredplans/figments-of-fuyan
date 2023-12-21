@@ -3,8 +3,10 @@ extends Control
 const TID: int = 7
 const FILE_LOADER_NAME: String = "Map"
 
+@onready var NodeArrows: Control = $MapMenu/NodeArrows
 @onready var NodeButtons: Control = $NodeMenu/NodeSelectType/NodeButtons
 @onready var NodeAmount: Label = $NodeMenu/AmountMenu/NodeAmount
+
 var selected_node_type: int = 0
 var map_size: int = 10
 var world_selected: int = 1
@@ -79,6 +81,7 @@ func add_selectable_arrow(NodeButton: Control, arrow_type: int) -> void:
 	var TxBtn := TextureButton.new()
 	TxBtn.texture_normal = load("res://scenes/screens/map_editor/node_arrows/" + str(arrow_type) + ".png")
 	TxBtn.position = ARROW_OFFSET
+	TxBtn.pressed.connect(on_arrow_node_pressed.bind(NodeButton, TxBtn, arrow_type))
 	Helper.create_button_clickmask(TxBtn)
 	NodeButton.get_node("NodeArrows").add_child(TxBtn)
 		
@@ -93,4 +96,11 @@ func on_node_texture_held(NodeButton: Control) -> void:
 	WheelNode = preload("res://scenes/screens/map_editor/wheel_node_select.tscn").instantiate()
 	WheelNode.position = Vector2(WheelButton.global_position.x + 65, WheelButton.global_position.y + 28)
 	add_child(WheelNode)
+	
+var _NodeArrow: PackedScene = preload("res://scenes/screens/map_editor/node_arrow.tscn")
+func on_arrow_node_pressed(NodeButton: Control, Arrow: TextureButton, arrow_type: int) -> void:
+	Arrow.queue_free()
+	var NodeArrow: Control = _NodeArrow.instantiate()
+	NodeArrows.add_child(NodeArrow)
+	
 	
