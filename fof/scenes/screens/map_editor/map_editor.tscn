@@ -22,6 +22,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 script = ExtResource("1_vtbfq")
 
 [node name="NodeMenu" type="Control" parent="."]
@@ -338,6 +339,7 @@ anchors_preset = 0
 offset_left = 723.0
 offset_right = 1680.0
 offset_bottom = 1080.0
+mouse_filter = 1
 
 [node name="Outside" type="ColorRect" parent="MapMenu"]
 layout_mode = 1
@@ -348,6 +350,7 @@ offset_left = -10.0
 offset_right = 10.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 color = Color(0, 0, 0, 1)
 
 [node name="Inside" type="ColorRect" parent="MapMenu"]
@@ -357,26 +360,19 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 color = Color(0.74902, 0.74902, 0.74902, 1)
 metadata/_edit_lock_ = true
 
-[node name="NodeArrows" type="Control" parent="MapMenu"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-
 [node name="Nodes" type="Control" parent="MapMenu"]
+z_index = 1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
+mouse_filter = 1
 
 [node name="0" type="VBoxContainer" parent="MapMenu/Nodes"]
 layout_mode = 0
@@ -399,6 +395,9 @@ offset_left = 797.0
 offset_right = 847.0
 offset_bottom = 1080.0
 alignment = 1
+
+[node name="NodeArrows" type="Node2D" parent="MapMenu"]
+position = Vector2(-723, 0)
 
 [node name="SelectedNodeType" type="Sprite2D" parent="."]
 texture_filter = 1

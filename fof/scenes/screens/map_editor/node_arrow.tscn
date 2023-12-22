@@ -1,12 +1,16 @@
-[gd_scene load_steps=2 format=3 uid="uid://cjheg105txn7c"]
+[gd_scene load_steps=2 format=3 uid="uid://c0mkmjjkgbgj6"]
 
 [ext_resource type="Script" path="res://scenes/screens/map_editor/node_arrow.gd" id="1_6fgqb"]
 
-[node name="NodeArrow" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="NodeArrow" type="Line2D"]
+width = 16.0
+default_color = Color(0, 0, 0, 1)
+antialiased = true
 script = ExtResource("1_6fgqb")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]
