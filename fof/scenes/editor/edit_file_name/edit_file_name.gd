@@ -39,3 +39,10 @@ func _on_text_submitted(__: String):
 	text_submitted.emit()
 
 func _on_lock_button_pressed_animation_finished(__): open_state.emit(open)
+
+func on_reset_set_id() -> void: 
+	$SetID.text = ""
+
+func on_reset() -> void:
+	on_reset_set_id()
+	set_text("", "")

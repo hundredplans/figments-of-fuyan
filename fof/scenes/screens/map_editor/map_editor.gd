@@ -20,12 +20,8 @@ func _process(_delta: float) -> void:
 		WheelButton = null
 
 func _ready() -> void:
-	for n in range(map_size): on_load_empty_node_row()
-	for n in range(1, map_size): on_add_arrows_to_row(n)
-	on_autofill_nodes()
-	
+	on_create_default_map()
 	on_select_node_type(0)
-	on_change_map_size(0)
 	for button in NodeButtons.get_children():
 		button.pressed.connect(on_select_node_type.bind(int(str(button.name))))
 
@@ -36,21 +32,22 @@ func on_autofill_nodes() -> void:
 	on_node_texture_pressed(get_node("MapMenu/Nodes/1").get_child(5), 3)
 	on_node_texture_pressed(get_node("MapMenu/Nodes/1").get_child(0), 4)
 	
-func on_change_map_size(i: int):
+func on_change_map_size(i: int, alter: bool = true):
 	var omapsize: int = map_size
 	map_size = clamp(map_size + i, 5, 15)
 	NodeAmount.text = str(map_size)
 	
-	if map_size > omapsize:
-		on_load_empty_node_row()
-		on_add_arrows_to_row(1)
-		call_deferred("on_recreate_arrows")
-		
-	elif map_size < omapsize:
-		for node_container in Nodes.get_children():
-			node_container.get_child(0).free()
-			for child in node_container.get_child(0).get_node("NodeArrows").get_children(): child.queue_free()
-		call_deferred("on_remove_dead_arrows")
+	if alter:
+		if map_size > omapsize:
+			on_load_empty_node_row()
+			on_add_arrows_to_row(1)
+			call_deferred("on_recreate_arrows")
+			
+		elif map_size < omapsize:
+			for node_container in Nodes.get_children():
+				node_container.get_child(0).free()
+				for child in node_container.get_child(0).get_node("NodeArrows").get_children(): child.queue_free()
+			call_deferred("on_remove_dead_arrows")
 
 func on_recreate_arrows() -> void:
 	for arrow in NodeArrows.get_children():
@@ -96,6 +93,7 @@ func on_load_empty_node_row() -> void:
 		NodeButton.held.connect(on_node_texture_held)
 		NodeButton.pressed.connect(on_node_texture_pressed)
 		NodeButton.remove_node_texture.connect(on_node_texture_pressed)
+		NodeButton.is_inside.connect(on_node_button_is_inside)
 		
 		node_container.add_child(NodeButton)
 		node_container.move_child(NodeButton, 0)
@@ -154,3 +152,30 @@ func on_arrow_node_pressed(NodeButton: Control, Arrow: TextureButton, arrow_type
 		
 		disabled_arrow_selectors.append(TargetArrow)
 		disabled_arrow_selectors_arrows.append(NodeArrow)
+
+func on_create_default_map() -> void:
+	map_size = 10
+	for node_container in Nodes.get_children():
+		for child in node_container.get_children(): child.queue_free()
+	for arrow in NodeArrows.get_children(): arrow.queue_free()
+	on_create_default_map_deferred.call_deferred()
+	
+	world_selected = 1
+	$SaveMenu/WorldSelector.default = 1
+	$SaveMenu/WorldSelector.set_grabber_position()
+	$SaveMenu/EditFileName.set_text("", "")
+	on_select_node_type(0)
+
+func on_create_default_map_deferred():
+	on_change_map_size(0, false)
+	for n in range(map_size): on_load_empty_node_row()
+	for n in range(1, map_size): on_add_arrows_to_row(n)
+	on_autofill_nodes()
+
+func on_node_button_is_inside() -> void:
+	for arrow in NodeArrows.get_children(): arrow.can_press = false
+func _on_world_selector_item_selected(i: int):
+	world_selected = i
+
+func _on_save_map_pressed():
+	pass # Replace with function body.

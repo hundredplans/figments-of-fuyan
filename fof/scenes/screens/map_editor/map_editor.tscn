@@ -294,6 +294,15 @@ offset_bottom = -90.0
 grow_vertical = 0
 color = Color(0, 0, 0, 1)
 
+[node name="DeleteMap" type="Button" parent="SaveMenu"]
+layout_mode = 2
+offset_left = 6.0
+offset_top = -66.0
+offset_right = 133.0
+offset_bottom = -16.0
+size_flags_horizontal = 3
+text = "Default State"
+
 [node name="Buttons" type="HBoxContainer" parent="SaveMenu"]
 layout_mode = 1
 anchors_preset = 2
@@ -314,11 +323,6 @@ text = "Save Map"
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Load Map"
-
-[node name="DeleteMap" type="Button" parent="SaveMenu/Buttons"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Delete Map"
 
 [node name="EditFileName" parent="SaveMenu" instance=ExtResource("12_xsest")]
 ItemNAME = "Map"
@@ -364,8 +368,10 @@ mouse_filter = 1
 color = Color(0.74902, 0.74902, 0.74902, 1)
 metadata/_edit_lock_ = true
 
+[node name="NodeArrows" type="Node2D" parent="MapMenu"]
+position = Vector2(-723, 0)
+
 [node name="Nodes" type="Control" parent="MapMenu"]
-z_index = 1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -396,9 +402,6 @@ offset_right = 847.0
 offset_bottom = 1080.0
 alignment = 1
 
-[node name="NodeArrows" type="Node2D" parent="MapMenu"]
-position = Vector2(-723, 0)
-
 [node name="SelectedNodeType" type="Sprite2D" parent="."]
 texture_filter = 1
 position = Vector2(1705, 830)
@@ -407,3 +410,6 @@ centered = false
 
 [connection signal="pressed" from="NodeMenu/AmountMenu/NodeSubtract" to="." method="on_change_map_size" binds= [-1]]
 [connection signal="pressed" from="NodeMenu/AmountMenu/NodeAdd" to="." method="on_change_map_size" binds= [1]]
+[connection signal="pressed" from="SaveMenu/DeleteMap" to="." method="on_create_default_map"]
+[connection signal="pressed" from="SaveMenu/Buttons/SaveMap" to="." method="_on_save_map_pressed"]
+[connection signal="item_selected" from="SaveMenu/WorldSelector" to="." method="_on_world_selector_item_selected"]

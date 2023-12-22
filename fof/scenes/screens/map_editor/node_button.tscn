@@ -41,11 +41,5 @@ grow_horizontal = 2
 grow_vertical = 2
 texture_normal = ExtResource("1_5scxp")
 
-[node name="Label" type="Label" parent="."]
-layout_mode = 0
-offset_top = 21.0
-offset_right = 50.0
-offset_bottom = 44.0
-
 [connection signal="mouse_entered" from="NodeTexture" to="." method="_on_node_texture_mouse_entered"]
 [connection signal="mouse_exited" from="NodeTexture" to="." method="_on_node_texture_mouse_exited"]

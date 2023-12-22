@@ -179,4 +179,4 @@ const EMPTY_INFO: Dictionary = {
 	"height": 2,
 	"bgfn": "",
 }
-func _on_empty_card_pressed(): on_item_selected(EMPTY_INFO, false)
+func _on_empty_card_pressed(): on_item_selected(EMPTY_INFO, false); $CardCreator/EditFileName.on_reset_set_id()

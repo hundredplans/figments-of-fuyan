@@ -6,6 +6,7 @@ var node_texture: int = 0
 var minside: bool = false
 var is_pressed: bool = false
 
+signal is_inside
 signal held
 signal pressed
 signal remove_node_texture
@@ -16,7 +17,7 @@ func _process(_delta: float) -> void:
 		get_tree().create_timer(PRESS_HOLD).timeout.connect(on_pressed)
 		is_pressed = true
 
-func _on_node_texture_mouse_entered(): minside = true
+func _on_node_texture_mouse_entered(): minside = true; is_inside.emit()
 func _on_node_texture_mouse_exited(): minside = false
 
 func on_pressed() -> void:
