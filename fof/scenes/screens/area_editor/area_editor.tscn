@@ -68,136 +68,12 @@ offset_right = 1380.0
 offset_bottom = 1050.0
 theme = ExtResource("2_euq7d")
 
-[node name="Colors" type="Control" parent="Buttons"]
-anchors_preset = 0
-offset_left = 38.0
-offset_top = 39.0
-offset_right = 752.0
-offset_bottom = 399.0
-
-[node name="PrimaryColor" type="Control" parent="Buttons/Colors"]
-anchors_preset = 0
-offset_top = 40.0
-offset_right = 320.0
-offset_bottom = 360.0
-
-[node name="TopOutline" type="ColorRect" parent="Buttons/Colors/PrimaryColor"]
-layout_mode = 0
-offset_left = -8.0
-offset_top = -55.0
-offset_right = 328.0
-offset_bottom = -8.0
-color = Color(0, 0, 0, 1)
-
-[node name="PROutline" type="ColorRect" parent="Buttons/Colors/PrimaryColor"]
-layout_mode = 0
-offset_top = -48.0
-offset_right = 320.0
-offset_bottom = -8.0
-color = Color(0, 0, 0, 1)
-
-[node name="Outline" type="ColorRect" parent="Buttons/Colors/PrimaryColor"]
-layout_mode = 0
-offset_left = -8.0
-offset_top = -8.0
-offset_right = 328.0
-offset_bottom = 329.0
-color = Color(0, 0, 0, 1)
-
-[node name="Background" type="ColorRect" parent="Buttons/Colors/PrimaryColor"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.345098, 0.345098, 0.345098, 1)
-
-[node name="ACLabel" type="Label" parent="Buttons/Colors/PrimaryColor"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -101.0
-offset_top = -49.0
-offset_right = 101.0
-offset_bottom = -4.0
-grow_horizontal = 2
-text = "Primary Color"
-
-[node name="Colors" type="Control" parent="Buttons/Colors/PrimaryColor"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="AccentColor" type="Control" parent="Buttons/Colors"]
-anchors_preset = 0
-offset_left = 387.0
-offset_top = 40.0
-offset_right = 707.0
-offset_bottom = 360.0
-
-[node name="TopOutline" type="ColorRect" parent="Buttons/Colors/AccentColor"]
-layout_mode = 0
-offset_left = -8.0
-offset_top = -55.0
-offset_right = 328.0
-offset_bottom = -4.0
-color = Color(0, 0, 0, 1)
-
-[node name="PROutline" type="ColorRect" parent="Buttons/Colors/AccentColor"]
-layout_mode = 0
-offset_top = -48.0
-offset_right = 320.0
-offset_bottom = -8.0
-color = Color(0, 0, 0, 1)
-
-[node name="Outline" type="ColorRect" parent="Buttons/Colors/AccentColor"]
-layout_mode = 0
-offset_left = -8.0
-offset_top = -8.0
-offset_right = 328.0
-offset_bottom = 329.0
-color = Color(0, 0, 0, 1)
-
-[node name="Background" type="ColorRect" parent="Buttons/Colors/AccentColor"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.345098, 0.345098, 0.345098, 1)
-
-[node name="ACLabel" type="Label" parent="Buttons/Colors/AccentColor"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -93.0
-offset_top = -49.0
-offset_right = 95.0
-offset_bottom = -8.0
-grow_horizontal = 2
-text = "Accent Color"
-
-[node name="Colors" type="Control" parent="Buttons/Colors/AccentColor"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
 [node name="WorldDifficulty" type="Control" parent="Buttons"]
 anchors_preset = 0
 offset_left = 38.0
-offset_top = 584.0
+offset_top = 349.0
 offset_right = 292.0
-offset_bottom = 984.0
+offset_bottom = 749.0
 
 [node name="Outline" type="ColorRect" parent="Buttons/WorldDifficulty"]
 layout_mode = 1
@@ -259,9 +135,9 @@ text = "World 4"
 [node name="OtherButtons" type="Control" parent="Buttons"]
 anchors_preset = 0
 offset_left = 322.0
-offset_top = 574.0
+offset_top = 339.0
 offset_right = 762.0
-offset_bottom = 984.0
+offset_bottom = 749.0
 
 [node name="Outline" type="ColorRect" parent="Buttons/OtherButtons"]
 layout_mode = 1
@@ -307,9 +183,9 @@ text = "Add Cards"
 
 [node name="EditFileName" parent="Buttons" instance=ExtResource("3_s437e")]
 offset_left = 84.0
-offset_top = 422.0
+offset_top = 187.0
 offset_right = 762.0
-offset_bottom = 560.0
+offset_bottom = 325.0
 ItemNAME = "Area"
 
 [node name="AddedCards" type="Control" parent="."]

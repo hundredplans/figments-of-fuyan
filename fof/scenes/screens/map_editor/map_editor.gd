@@ -178,4 +178,37 @@ func _on_world_selector_item_selected(i: int):
 	world_selected = i
 
 func _on_save_map_pressed():
-	pass # Replace with function body.
+	if !on_find_error("completable") and !on_find_error("null-arrows") and !on_find_error("empty-level"): #reverse this
+		pass
+
+func on_find_error(error_name: String) -> bool:
+	match error_name:
+		"null-arrows":
+			for arrow in NodeArrows.get_children():
+				for type in ["to", "from"]:
+					if Nodes.get_child(arrow[type].x).get_child(arrow[type].y).node_texture == 0:
+						on_create_error_popup("You have an arrow connected to a null node!")
+						return true
+		"completable":
+			var arrows_sorted: Array = []
+			for i in range(map_size): arrows_sorted.append([])
+			for arrow in NodeArrows.get_children():
+				arrows_sorted[arrow.from.y].append(arrow)
+				
+			for n in range(1, arrows_sorted.size()):
+				var previous: Array = arrows_sorted[n - 1].map(func(x: Line2D): return x.from)
+				if !(arrows_sorted[n].any(func(x: Line2D): return x.to in previous)):
+					on_create_error_popup("Your level is not valid!")
+					return true
+					
+		"empty-level":
+			if NodeArrows.size() == 0: on_create_error_popup("Your level is empty")
+			
+			
+	return false
+	
+var _ErrorPopup: PackedScene = preload("res://scenes/screens/map_editor/error_popup.tscn")
+func on_create_error_popup(text: String) -> void:
+	var _ErrorPopup: Control = _ErrorPopup.instantiate()
+	_ErrorPopup.get_node("Label").text = text
+	add_child(_ErrorPopup)

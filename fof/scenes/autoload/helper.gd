@@ -189,7 +189,7 @@ func return_item_dict(item: String, _contents: String) -> Dictionary:
 			"boon": keys += ["r", "text", "flavor"]
 		var i: int = 0
 		for key in keys:
-			if contents[i].is_valid_int():
+			if contents[i].is_valid_int() and key not in ["pcolor", "acolor"]:
 				contents[i] = int(contents[i])
 			
 			elif contents[i].begins_with("(") and contents[i].ends_with(")"):
@@ -248,7 +248,9 @@ func id_to_dict(i: int, item: String) -> Dictionary:
 	
 func id_to_bgfn(i: int, item: String) -> String: return id_to_dict(i, item).bgfn
 	
-func load_area_colors(node: Node, primary_color: Color, accent_color: Color) -> void:
+func load_area_colors(node: Node, _primary_color: String, _accent_color: String) -> void:
+	var primary_color: Color = Color(_primary_color)
+	var accent_color: Color = Color(_accent_color)
 	for child in get_children_recursive(node):
 		if child.name.begins_with("PR"):
 			if child is ColorRect: child.color = primary_color

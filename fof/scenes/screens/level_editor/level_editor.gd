@@ -81,7 +81,7 @@ func _ready() -> void:
 	BuildMenu.get_node("LoadedMenu").visible = false
 	BuildMenu.position.y += BuildMenu.size.y
 	reset_mblocker_rects()
-	admin()
+	#admin()
 	_on_arrow_button_pressed()
 	setup_elevation()
 	set_heightbuttons_modulate()
