@@ -1,14 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://dlgorwdqff7of"]
+[gd_scene load_steps=3 format=3 uid="uid://b8wsanye0w43x"]
 
-[ext_resource type="Script" path="res://scenes/editor/file_loader/map/map_button.gd" id="1_okj08"]
-[ext_resource type="LabelSettings" uid="uid://c5h6tv2uhlrjf" path="res://assets/UI/lora/lora_outline.tres" id="1_s7urp"]
+[ext_resource type="Script" path="res://scenes/editor/file_loader/trinket/trinket_button.gd" id="1_u5oa5"]
+[ext_resource type="LabelSettings" uid="uid://c5h6tv2uhlrjf" path="res://assets/UI/lora/lora_outline.tres" id="2_swq6g"]
 
-[node name="MapButton" type="Control"]
+[node name="TrinketButton" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 250.0
 offset_bottom = 250.0
-script = ExtResource("1_okj08")
+script = ExtResource("1_u5oa5")
 
 [node name="Background" type="Control" parent="."]
 layout_mode = 3
@@ -38,41 +38,24 @@ mouse_filter = 1
 color = Color(0.882353, 0.678431, 0.427451, 1)
 
 [node name="Label" type="Label" parent="."]
-layout_mode = 0
 offset_right = 250.0
 offset_bottom = 195.0
 mouse_filter = 1
-label_settings = ExtResource("1_s7urp")
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-
-[node name="World" type="Label" parent="."]
-layout_mode = 0
-offset_left = 10.0
-offset_top = 16.0
-offset_right = 240.0
-offset_bottom = 61.0
-mouse_filter = 1
-text = "
-"
-label_settings = ExtResource("1_s7urp")
+label_settings = ExtResource("2_swq6g")
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="ID" type="Label" parent="."]
-layout_mode = 0
 offset_left = 166.0
 offset_top = 195.0
 offset_right = 232.0
 offset_bottom = 240.0
-label_settings = ExtResource("1_s7urp")
+label_settings = ExtResource("2_swq6g")
 horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="PressedButton" type="Button" parent="."]
 modulate = Color(1, 1, 1, 0)
-layout_mode = 0
 offset_right = 250.0
 offset_bottom = 250.0

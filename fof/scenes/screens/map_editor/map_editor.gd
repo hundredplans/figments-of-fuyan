@@ -1,5 +1,5 @@
 extends Control
-
+signal fileloader_state
 const TID: int = 7
 const FILE_LOADER_NAME: String = "Map"
 
@@ -258,6 +258,7 @@ func on_map_selected(map_info: Dictionary) -> void:
 	$SaveMenu/WorldSelector.default = map_info.world
 	$SaveMenu/WorldSelector.set_grabber_position()
 	$SaveMenu/EditFileName.set_text(map_info.iname, map_info.sname)
+	
 	on_change_map_size(0, false)
 	for n in range(map_size): on_load_empty_node_row()
 	for n in range(1, map_size): on_add_arrows_to_row(n)

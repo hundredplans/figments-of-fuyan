@@ -1,16 +1,16 @@
 extends Control
+signal fileloader_state
 const TID: int = 3
 const FILE_LOADER_NAME: String = "Tool"
 var rarity: int = 1
 
 @onready var ToolText: TextEdit = $Contents/ToolText
-@onready var FlavorText: TextEdit = $Contents/FlavorText
 
 func _ready() -> void:
 	on_modulate_rarity()
 
 func _on_save_tool_pressed():
-	var contents: String = "%s\n%s\n%s" % [rarity, ToolText.text.replace("\n", " "), FlavorText.text.replace("\n", " ")]
+	var contents: String = "%s\n%s" % [rarity, ToolText.text.replace("\n", " ")]
 	Helper.create_base_game_id_dir(Helper.write_to_base_game_file(FILE_LOADER_NAME, $Contents/EditFileName, contents, TID), FILE_LOADER_NAME)
 
 func _on_rarity_selector_item_selected(i: int): 
@@ -30,6 +30,8 @@ func _on_load_tool_pressed():
 func on_tool_selected(item_info: Dictionary) -> void:
 	$Contents/EditFileName.set_text(item_info.iname, item_info.sname)
 	ToolText.text = item_info.text
-	FlavorText.text = item_info.flavor
 	_on_rarity_selector_item_selected(item_info.r)
 	$Contents/RaritySelector.select_item(item_info.r)
+
+func _on_default_tool_pressed():
+	pass # Replace with function body.

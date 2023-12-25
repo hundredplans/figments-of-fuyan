@@ -27,6 +27,7 @@ var move_screen_switch_length: Dictionary = {
 	"ToolEditor": 0.25,
 	"ItemEditor": 0.25,
 	"MapEditor": 0.25,
+	"TrinketEditor": 0.25,
 }
 
 func on_user_quit() -> void:
@@ -46,6 +47,7 @@ const move_screen_name_to_path: Dictionary = {
 	"ToolEditor": "res://scenes/screens/tool_editor/move_screen.tres",
 	"ItemEditor": "res://scenes/screens/item_editor/move_screen.tres",
 	"MapEditor": "res://scenes/screens/map_editor/move_screen.tres",
+	"TrinketEditor": "res://scenes/screens/trinket_editor/move_screen.tres",
 }
 	
 func _ready() -> void:
@@ -114,6 +116,9 @@ func before_ready_connect_screen(screen: Control):
 	match screen.name:
 		"LevelEditor", "LoreBooksEditor", "ItemEditor": screen.load_world.connect(on_load_world)
 	
+	match screen.name:
+		"TrinketEditor", "AreaEditor", "BoonEditor", "CardEditor", "LevelEditor", "MapEditor", "ToolEditor": screen.fileloader_state.connect(on_change_fileloader_state)
+	
 func after_ready_connect_screen(screen: Control):
 	if screen.name == "MainMenu" or Settings.hide_menu_gui == 2 or screen.name == "LoreBooksEditor" and Settings.hide_menu_gui == 1:
 		BackArrow.visible = false
@@ -126,9 +131,11 @@ func after_ready_connect_screen(screen: Control):
 		"SettingsMenu": 
 			SettingCog.visible = false
 			BackArrow.position.x += 70
-		_: if BackArrow.position.x > 1768: BackArrow.position.x = 1768
+		_: 
+			if BackArrow.position.x > 1768: BackArrow.position.x = 1768
 	get_viewport().warp_mouse(get_viewport().get_mouse_position())
 	
+func on_change_fileloader_state(i: int) -> void: fileloader_state = i
 
 
 func on_screen_change_animation_state(x: bool) -> void:

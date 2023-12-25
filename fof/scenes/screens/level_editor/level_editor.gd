@@ -2,6 +2,7 @@ extends Control
 signal load_world
 signal equip_sky
 
+signal fileloader_state
 @onready var ItemTypes: Control = $BuildMenu/LoadedMenu/ItemTypes
 @onready var Tabs: HBoxContainer = $BuildMenu/Tabs/Tabs
 @onready var LevelDifficulty = $InfoMenu/LevelDifficulty

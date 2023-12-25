@@ -14,8 +14,8 @@ func _ready() -> void:
 	Helper.play_method_on_animation_end("load_in_out", $LoadInOut, on_change_fileloader_state, [2], true, self)
 	$ExitButton.pressed.connect(on_exit_button_pressed)
 	$Background.modulate = Color(1, 1, 1, Settings.fileloader_opacity * 0.01)
-func on_change_fileloader_state(i: int) -> void:
-	get_tree().get_root().get_node("Main").fileloader_state = i
+func on_change_fileloader_state(i: int) -> void: get_parent().fileloader_state.emit(i)
+	#get_tree().get_root().get_node("Main").fileloader_state = i
 func on_exit_button_pressed() -> void:
 	if !$LoadInOut.is_playing():
 		on_change_fileloader_state(1)

@@ -25,7 +25,7 @@ func set_text(itext: String, stext:String="") -> void:
 	match stext:
 		itext, "": $Showcase.text = itext
 		_: $Showcase.text = stext; _on_showcase_text_changed("")
-		
+	on_reset_set_id()
 	
 @onready var lock_open_sfx: AudioStreamWAV = preload("res://scenes/editor/edit_file_name/lock_button/lock_closed_sfx.wav")
 @onready var lock_closed_sfx: AudioStreamWAV = preload("res://scenes/editor/edit_file_name/lock_button/lock_open_sfx.wav")
@@ -42,7 +42,3 @@ func _on_lock_button_pressed_animation_finished(__): open_state.emit(open)
 
 func on_reset_set_id() -> void: 
 	$SetID.text = ""
-
-func on_reset() -> void:
-	on_reset_set_id()
-	set_text("", "")

@@ -185,9 +185,10 @@ func return_item_dict(item: String, _contents: String) -> Dictionary:
 			"area": keys += ["pcolor", "acolor", "world", "cards"]
 			"card": keys += ["a", "h", "s", "e", "r", "text", "flavor", "aic", "aii", "aiw", "ait", "aia", "height"]
 			"level": keys += ["area", "difficulty", "trinkets", "tiles"]
-			"tool": keys += ["r", "text", "flavor"]
-			"boon": keys += ["r", "text", "flavor"]
+			"tool": keys += ["r", "text"]
+			"boon": keys += ["r", "text"]
 			"map": keys += ["world", "map_size", "nodes", "arrows"]
+			"trinket": keys += ["text"]
 		var i: int = 0
 		for key in keys:
 			if contents[i].is_valid_int() and key not in ["pcolor", "acolor"]:

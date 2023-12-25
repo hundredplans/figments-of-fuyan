@@ -58,22 +58,12 @@ ItemNAME = "Boon"
 
 [node name="BoonText" type="TextEdit" parent="Contents"]
 layout_mode = 0
-offset_left = 9.0
+offset_left = 16.0
 offset_top = 158.0
-offset_right = 716.0
-offset_bottom = 486.0
+offset_right = 905.0
+offset_bottom = 808.0
 theme = ExtResource("3_cyxrl")
-placeholder_text = "                                  Boon Text"
-wrap_mode = 1
-
-[node name="FlavorText" type="TextEdit" parent="Contents"]
-layout_mode = 0
-offset_left = 9.0
-offset_top = 496.0
-offset_right = 716.0
-offset_bottom = 824.0
-theme = ExtResource("3_cyxrl")
-placeholder_text = "                                 Flavor Text"
+placeholder_text = "                                              Boon Text"
 wrap_mode = 1
 
 [node name="RaritySelector" parent="Contents" instance=ExtResource("4_p0pls")]
@@ -84,31 +74,31 @@ offset_bottom = 67.0
 options = PackedStringArray("Scrap", "Common", "Rare", "Exalt", "Miniboss", "Boss", "Champion")
 default = 1
 
-[node name="Buttons" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
+[node name="Buttons" type="HBoxContainer" parent="."]
+layout_mode = 0
 offset_left = 500.0
 offset_top = 844.0
 offset_right = 1420.0
 offset_bottom = 1060.0
 theme = ExtResource("3_cyxrl")
+theme_override_constants/separation = 0
 
 [node name="SaveBoon" type="Button" parent="Buttons"]
-layout_mode = 0
-offset_left = 8.0
-offset_top = 15.0
-offset_right = 448.0
-offset_bottom = 201.0
+layout_mode = 2
+size_flags_horizontal = 3
 text = "Save Boon"
 
 [node name="LoadBoon" type="Button" parent="Buttons"]
-layout_mode = 0
-offset_left = 478.0
-offset_top = 15.0
-offset_right = 905.0
-offset_bottom = 201.0
+layout_mode = 2
+size_flags_horizontal = 3
 text = "Load Boon"
+
+[node name="DefaultBoon" type="Button" parent="Buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Default Boon"
 
 [connection signal="item_selected" from="Contents/RaritySelector" to="." method="_on_rarity_selector_item_selected"]
 [connection signal="pressed" from="Buttons/SaveBoon" to="." method="_on_save_boon_pressed"]
 [connection signal="pressed" from="Buttons/LoadBoon" to="." method="_on_load_boon_pressed"]
+[connection signal="pressed" from="Buttons/DefaultBoon" to="." method="_on_default_boon_pressed"]

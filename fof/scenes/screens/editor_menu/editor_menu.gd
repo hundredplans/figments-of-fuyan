@@ -10,4 +10,5 @@ var screen_change: Array = [
 	["Achievements", 0],
 	["LoreBooks", "res://scenes/screens/lore_books_editor/lore_books_editor.tscn"],
 	["ItemEditor", "res://scenes/screens/item_editor/item_editor.tscn"],
-	["Dictionary", 0]]
+	["Dictionary", 0],
+	["TrinketEditor", "res://scenes/screens/trinket_editor/trinket_editor.tscn"]]
