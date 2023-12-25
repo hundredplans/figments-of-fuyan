@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cti8pjdryrd67"]
+[gd_scene load_steps=8 format=3 uid="uid://cti8pjdryrd67"]
 
 [ext_resource type="Script" path="res://scenes/screens/map_editor/wheel_node_select.gd" id="1_x5nft"]
 [ext_resource type="Texture2D" uid="uid://b8m4h6kqekdta" path="res://scenes/screens/map_editor/node_types/1.png" id="2_afgp4"]
@@ -7,12 +7,11 @@
 [ext_resource type="Texture2D" uid="uid://bavyk166pxynp" path="res://scenes/screens/map_editor/node_types/4.png" id="5_vb0n5"]
 [ext_resource type="Texture2D" uid="uid://dpjuu0dw12d6a" path="res://scenes/screens/map_editor/node_types/5.png" id="6_r5r2x"]
 [ext_resource type="Texture2D" uid="uid://d0pjl248yigy7" path="res://scenes/screens/map_editor/node_types/6.png" id="7_pqr7o"]
-[ext_resource type="Texture2D" uid="uid://wvv6m7igr6ht" path="res://scenes/screens/map_editor/node_types/7.png" id="8_ify6w"]
 
 [node name="WheelNodeSelect" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 350.0
+offset_right = 300.0
 offset_bottom = 50.0
 script = ExtResource("1_x5nft")
 
@@ -78,7 +77,3 @@ texture = ExtResource("6_r5r2x")
 [node name="6" type="TextureRect" parent="Buttons"]
 layout_mode = 2
 texture = ExtResource("7_pqr7o")
-
-[node name="7" type="TextureRect" parent="Buttons"]
-layout_mode = 2
-texture = ExtResource("8_ify6w")

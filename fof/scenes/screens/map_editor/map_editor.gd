@@ -177,38 +177,108 @@ func on_node_button_is_inside() -> void:
 func _on_world_selector_item_selected(i: int):
 	world_selected = i
 
-func _on_save_map_pressed():
-	if !on_find_error("completable") and !on_find_error("null-arrows") and !on_find_error("empty-level"): #reverse this
-		pass
+func _on_save_map_pressed(do_popup: bool = true):
+	if !on_find_error("null-arrows", do_popup) and !on_find_error("empty-level", do_popup) and !on_find_error("completable", do_popup):
+		var contents: String = "%s\n%s\n%s\n%s" % [str(world_selected), str(map_size),
+		
+		str(Helper.flatten(Nodes.get_children().map(func(c: Control): return c.get_children()), false)\
+		.filter(func(x: Control): return x.node_texture > 0)\
+		.map(func(y: Control): return [y.node_texture, int(str(y.get_parent().name)), y.get_index()])),
+		
+		str(NodeArrows.get_children().map(func(x: Line2D): return [[x.from.x, x.from.y], [x.to.x, x.to.y]]))]
+		Helper.write_to_base_game_file(FILE_LOADER_NAME, $SaveMenu/EditFileName, contents, TID)
 
-func on_find_error(error_name: String) -> bool:
+func on_find_error(error_name: String, do_popup: bool) -> bool:
 	match error_name:
 		"null-arrows":
-			for arrow in NodeArrows.get_children():
-				for type in ["to", "from"]:
-					if Nodes.get_child(arrow[type].x).get_child(arrow[type].y).node_texture == 0:
-						on_create_error_popup("You have an arrow connected to a null node!")
-						return true
+			if Nodes.get_children().map(func(x: Control): return x.get_child(map_size - 1)).all(func(y: Control): return y.node_texture != 0):
+				for arrow in NodeArrows.get_children():
+					for type in ["to", "from"]:
+						if Nodes.get_child(arrow[type].x).get_child(arrow[type].y).node_texture == 0:
+							if do_popup: on_create_error_popup("You have an arrow connected to a null node!")
+							return true
+			else:
+				if do_popup: on_create_error_popup("Your beginning nodes are null!")
+				return true
 		"completable":
-			var arrows_sorted: Array = []
-			for i in range(map_size): arrows_sorted.append([])
-			for arrow in NodeArrows.get_children():
-				arrows_sorted[arrow.from.y].append(arrow)
-				
-			for n in range(1, arrows_sorted.size()):
-				var previous: Array = arrows_sorted[n - 1].map(func(x: Line2D): return x.from)
-				if !(arrows_sorted[n].any(func(x: Line2D): return x.to in previous)):
-					on_create_error_popup("Your level is not valid!")
+			if on_all_lines_exist() and on_all_lines_lead():
+				var first_arrows: Array = NodeArrows.get_children().filter(func(x: Line2D): return x.from.y == map_size - 1)
+				on_recursive_arrows(first_arrows.duplicate(), first_arrows)
+				if first_arrows.size() != NodeArrows.get_children().size():
+					if do_popup: on_create_error_popup("Your level is not completable!")
 					return true
+			else: 
+				if do_popup: on_create_error_popup("Your level is not completable!")
+				return true
 					
 		"empty-level":
-			if NodeArrows.size() == 0: on_create_error_popup("Your level is empty")
-			
-			
+			if NodeArrows.get_children().size() == 0 and do_popup: on_create_error_popup("Your level is empty")
 	return false
+	
+func on_all_lines_lead() -> bool:
+	return NodeArrows.get_children().all(func(x: Line2D): return NodeArrows.get_children().any(func(y: Line2D): return x.to == y.from or x.to.y == 0))
+	
+func on_all_lines_exist() -> bool:
+	for i in range(1, map_size): 
+		var is_exist: bool = NodeArrows.get_children().any(func(x: Line2D): return x.from.y == i)
+		if !is_exist: return false
+	return true
+	
+func on_recursive_arrows(arrows: Array, passed_arrows: Array) -> Array:
+	var next_arrows: Array = []
+	for arrow in arrows:
+		for _arrow in NodeArrows.get_children():
+			if arrow.to == _arrow.from:
+				if _arrow not in passed_arrows: passed_arrows.append(_arrow)
+				next_arrows.append(_arrow)
+				
+	if next_arrows:
+		return on_recursive_arrows(next_arrows, passed_arrows)
+	return passed_arrows
 	
 var _ErrorPopup: PackedScene = preload("res://scenes/screens/map_editor/error_popup.tscn")
 func on_create_error_popup(text: String) -> void:
-	var _ErrorPopup: Control = _ErrorPopup.instantiate()
-	_ErrorPopup.get_node("Label").text = text
-	add_child(_ErrorPopup)
+	var ErrorPopup: Control = _ErrorPopup.instantiate()
+	ErrorPopup.get_node("Label").text = text
+	add_child(ErrorPopup)
+
+func _on_load_map_pressed():
+	var FileLoader: Control = preload("res://scenes/editor/file_loader/file_loader.tscn").instantiate()
+	FileLoader.on_ready(FILE_LOADER_NAME)
+	FileLoader.item_selected.connect(on_map_selected)
+	add_child(FileLoader)
+	
+func on_map_selected(map_info: Dictionary) -> void:
+	map_size = map_info.map_size
+	for node_container in Nodes.get_children():
+		for child in node_container.get_children(): child.queue_free()
+	for arrow in NodeArrows.get_children(): arrow.queue_free()
+
+	world_selected = map_info.world
+	$SaveMenu/WorldSelector.default = map_info.world
+	$SaveMenu/WorldSelector.set_grabber_position()
+	$SaveMenu/EditFileName.set_text(map_info.iname, map_info.sname)
+	on_change_map_size(0, false)
+	for n in range(map_size): on_load_empty_node_row()
+	for n in range(1, map_size): on_add_arrows_to_row(n)
+	
+	for node_info in map_info.nodes:
+		on_node_texture_pressed(Nodes.get_child(node_info[1]).get_child(node_info[2]), node_info[0])
+
+	await get_tree().create_timer(0.02).timeout
+	on_map_selected_arrows(map_info)
+
+const ARROW_DIFFERENT_CONVERSION: Dictionary = {
+	"-1": 0,
+	"0": 1,
+	"1": 2,
+}
+func on_map_selected_arrows(map_info: Dictionary) -> void:
+	for arrow_info in map_info.arrows:
+		var NodeButton: Control = Nodes.get_child(arrow_info[0][0]).get_child(arrow_info[0][1])
+		var arrow_type: int = arrow_info[0][0] - arrow_info[1][0]
+		var converted_arrow: int = ARROW_DIFFERENT_CONVERSION[str(arrow_type)]
+		on_arrow_node_pressed(NodeButton, NodeButton.get_node("NodeArrows").get_node(str(converted_arrow)), converted_arrow)
+
+func _queue_free() -> void:
+	_on_save_map_pressed(false)

@@ -55,6 +55,7 @@ func on_item_ready() -> void:
 		"level": search_options = ["Area"]
 		"tool": search_options = ["Rarity"]
 		"boon": search_options = ["Rarity"]
+		"map": search_options = ["World", "Map Size"]
 	$Search/SearchOptions.options += search_options
 	_item_button = load("res://scenes/editor/file_loader/" + item_name + "/" + item_name + "_button.tscn")
 	
@@ -85,7 +86,7 @@ func match_search_item_selected(item_dict: Dictionary) -> bool:
 		2: return item_dict.iname.to_lower().begins_with(SearchEdit.text.to_lower())
 		3: 
 			match item_name:
-				"area": return item_dict.world.begins_with(SearchEdit.text)
+				"area", "map": return item_dict.world.begins_with(SearchEdit.text)
 				"card", "tool", "boon": return str(item_dict.r) == SearchEdit.text
 				"level":
 					if str(item_dict.area).begins_with(SearchEdit.text): return true

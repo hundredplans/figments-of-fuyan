@@ -187,6 +187,7 @@ func return_item_dict(item: String, _contents: String) -> Dictionary:
 			"level": keys += ["area", "difficulty", "trinkets", "tiles"]
 			"tool": keys += ["r", "text", "flavor"]
 			"boon": keys += ["r", "text", "flavor"]
+			"map": keys += ["world", "map_size", "nodes", "arrows"]
 		var i: int = 0
 		for key in keys:
 			if contents[i].is_valid_int() and key not in ["pcolor", "acolor"]:

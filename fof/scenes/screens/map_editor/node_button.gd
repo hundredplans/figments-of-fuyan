@@ -1,4 +1,3 @@
-
 extends Control
 
 const PRESS_HOLD: float = 0.15
