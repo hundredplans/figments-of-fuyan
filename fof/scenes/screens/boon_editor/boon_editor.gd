@@ -34,4 +34,7 @@ func on_boon_selected(item_info: Dictionary) -> void:
 	$Contents/RaritySelector.select_item(item_info.r)
 
 func _on_default_boon_pressed():
-	pass # Replace with function body.
+	rarity = 1
+	$Contents/RaritySelector.select_item(1)
+	$Contents/EditFileName.set_text("", "")
+	BoonText.text = ""

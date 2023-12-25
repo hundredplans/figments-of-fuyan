@@ -1,0 +1,143 @@
+[gd_scene load_steps=7 format=3 uid="uid://cpu5ce146bp1r"]
+
+[ext_resource type="Script" path="res://scenes/screens/encounter_editor/encounter_editor.gd" id="1_xmwvi"]
+[ext_resource type="PackedScene" uid="uid://bdd0m6wbuerq5" path="res://scenes/editor/edit_file_name/edit_file_name.tscn" id="2_1va4u"]
+[ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="3_7wt6y"]
+[ext_resource type="Theme" uid="uid://bsbktaxrkrggi" path="res://assets/UI/roboto/roboto12.tres" id="4_7tpok"]
+[ext_resource type="LabelSettings" uid="uid://b3fuc4s50fgra" path="res://assets/UI/roboto/roboto64.tres" id="4_gtpgw"]
+[ext_resource type="Theme" uid="uid://du2bpyvp41rdk" path="res://assets/UI/roboto/roboto20.tres" id="5_fwsme"]
+
+[node name="EncounterEditor" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xmwvi")
+
+[node name="Background" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 480.0
+offset_right = 1440.0
+offset_bottom = 1080.0
+
+[node name="Outside" type="ColorRect" parent="Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.364706, 0.235294, 0.14902, 1)
+
+[node name="Inside" type="ColorRect" parent="Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.792157, 0.576471, 0.431373, 1)
+
+[node name="Contents" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 500.0
+offset_top = 20.0
+offset_right = 1420.0
+offset_bottom = 844.0
+
+[node name="EditFileName" parent="Contents" instance=ExtResource("2_1va4u")]
+offset_left = 9.0
+offset_top = 5.0
+offset_right = 687.0
+offset_bottom = 143.0
+ItemNAME = "Boon"
+
+[node name="EncounterText" type="TextEdit" parent="Contents"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 158.0
+offset_right = 905.0
+offset_bottom = 808.0
+theme = ExtResource("3_7wt6y")
+placeholder_text = "                                         Encounter Text"
+wrap_mode = 1
+
+[node name="Buttons" type="HBoxContainer" parent="."]
+offset_left = 500.0
+offset_top = 1007.0
+offset_right = 1420.0
+offset_bottom = 1060.0
+theme = ExtResource("3_7wt6y")
+theme_override_constants/separation = 0
+
+[node name="SaveEncounter" type="Button" parent="Buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Save Encounter"
+
+[node name="LoadEncounter" type="Button" parent="Buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Load Encounter"
+
+[node name="DefaultEncounter" type="Button" parent="Buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Default Encounter"
+
+[node name="EncounterOptions" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 721.0
+offset_top = 844.0
+offset_right = 1405.0
+offset_bottom = 1000.0
+theme = ExtResource("4_7tpok")
+theme_override_constants/separation = 5
+
+[node name="EncounterOptionSettings" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 500.0
+offset_top = 844.0
+offset_right = 710.0
+offset_bottom = 1007.0
+
+[node name="Amount" type="Label" parent="EncounterOptionSettings"]
+layout_mode = 0
+offset_left = 134.0
+offset_right = 210.0
+offset_bottom = 163.0
+label_settings = ExtResource("4_gtpgw")
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ModifyButtons" type="HBoxContainer" parent="EncounterOptionSettings"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 54.0
+offset_right = 134.0
+offset_bottom = 111.0
+theme = ExtResource("5_fwsme")
+
+[node name="MinusButton" type="Button" parent="EncounterOptionSettings/ModifyButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "-"
+
+[node name="AddButton" type="Button" parent="EncounterOptionSettings/ModifyButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "+"
+
+[connection signal="pressed" from="Buttons/SaveEncounter" to="." method="_on_save_encounter_pressed"]
+[connection signal="pressed" from="Buttons/LoadEncounter" to="." method="_on_load_encounter_pressed"]
+[connection signal="pressed" from="Buttons/DefaultEncounter" to="." method="_on_default_encounter_pressed"]
+[connection signal="pressed" from="EncounterOptionSettings/ModifyButtons/MinusButton" to="." method="on_reload_option_amount" binds= [-1]]
+[connection signal="pressed" from="EncounterOptionSettings/ModifyButtons/AddButton" to="." method="on_reload_option_amount" binds= [1]]

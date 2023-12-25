@@ -34,4 +34,7 @@ func on_tool_selected(item_info: Dictionary) -> void:
 	$Contents/RaritySelector.select_item(item_info.r)
 
 func _on_default_tool_pressed():
-	pass # Replace with function body.
+	rarity = 1
+	$Contents/RaritySelector.select_item(1)
+	$Contents/EditFileName.set_text("", "")
+	ToolText.text = ""

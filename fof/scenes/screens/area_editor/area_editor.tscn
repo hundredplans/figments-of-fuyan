@@ -135,7 +135,7 @@ anchors_preset = 0
 offset_left = 330.0
 offset_top = 339.0
 offset_right = 770.0
-offset_bottom = 749.0
+offset_bottom = 887.0
 
 [node name="Outline" type="ColorRect" parent="Buttons/OtherButtons"]
 layout_mode = 1
@@ -178,6 +178,13 @@ offset_top = 272.0
 offset_right = 440.0
 offset_bottom = 410.0
 text = "Add Cards"
+
+[node name="DefaultArea" type="Button" parent="Buttons/OtherButtons"]
+layout_mode = 0
+offset_top = 410.0
+offset_right = 440.0
+offset_bottom = 548.0
+text = "Default Area"
 
 [node name="EditFileName" parent="Buttons" instance=ExtResource("3_s437e")]
 offset_left = 84.0
@@ -269,5 +276,6 @@ vertical_alignment = 1
 [connection signal="pressed" from="Buttons/OtherButtons/SaveArea" to="." method="_on_save_area_pressed"]
 [connection signal="pressed" from="Buttons/OtherButtons/LoadArea" to="." method="_on_load_area_pressed"]
 [connection signal="pressed" from="Buttons/OtherButtons/AddCards" to="." method="_on_add_cards_pressed"]
+[connection signal="pressed" from="Buttons/OtherButtons/DefaultArea" to="." method="_on_default_area_pressed"]
 [connection signal="pressed" from="AddedCards/PageZone/PRLeftArrow" to="." method="on_reload_page" binds= [-1]]
 [connection signal="pressed" from="AddedCards/PageZone/PRRightArrow" to="." method="on_reload_page" binds= [1]]

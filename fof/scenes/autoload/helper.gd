@@ -48,6 +48,18 @@ const rarity_accent_colors: Dictionary = {
 	7: "467ace",
 }
 
+const task_primary_colors: Dictionary = {
+	0: "8fdb6d",
+	1: "f1f829",
+	2: "fb3415",
+}
+
+const task_accent_colors: Dictionary = {
+	0: "70c44a",
+	1: "d6da51",
+	2: "ad3e21",
+}
+
 func call_method(node: Node, method: String, args: Array) -> bool:
 	if node.has_method(method):
 		node.call(method, args)
@@ -87,27 +99,22 @@ func is_file_name_pure(file_name: String) -> bool:
 		return true
 	return false
 
-func return_new_highest_id(dir_path: String, file_name: String, TID: int) -> int:
-	var dir := DirAccess.open(dir_path)
-	var id: int = 0
-	if dir != null:
-		var arr: Array = Array(dir.get_files())
-		arr.sort_custom(func(a: String, b: String): return int(a.get_slice(" ", 0)) < int(b.get_slice(" ", 0)))
-		for file in arr:
-			var file_name_info: Array = file.split("-", false)
-			var file_id: int = int(file_name_info[0])
-			if file_name_info[1].right(-1).left(-4) == file_name: return file_id
-			id += 1
-			if file_id != id: return is_level_id(TID, id)
-			
-	id += 1
-	return is_level_id(TID, id)
+func return_new_highest_id(dir_path: String, file_name: String, ITEM_NAME: String, set_id_text: String) -> String:
+	var total: int = 0
+	var item_array: Array = Array(DirAccess.get_files_at(dir_path))\
+	.map(func(x: String): return id_to_dict(int(x.get_slice("-", 0)), ITEM_NAME))
+	
+	item_array.sort_custom(func(a: Dictionary, b: Dictionary): return a.id < b.id)
+	for item in item_array:
+		if item.iname == file_name or set_id_text == str(item.id): return str(item.id)
+		elif total == item.id - 1: total = item.id
+	return set_id_text if set_id_text else is_level_id(ITEM_NAME, total + 1)
 
-func is_level_id(TID: int, id: int) -> int:
-	if TID == 5 and Settings.level_id > 0:
+func is_level_id(item: String, id: int) -> String:
+	if item == "level" and Settings.level_id > 0:
 		if (Settings.level_id == 2 and id % 2 == 1) or (Settings.level_id == 1 and id % 2 == 0): id += 1
 		while(id_to_dict(id, "Level")): id += 2
-	return id
+	return str(id)
 
 func return_file_contents(file_path: String) -> String:
 	if FileAccess.file_exists(file_path):
@@ -120,9 +127,7 @@ func write_to_base_game_file(item: String, edit_file_name: Control, contents: St
 	var showcase_name: String = edit_file_name.get_node("Showcase").text
 	var dir: String = "res://static/base_game/" + item + "s/"
 	if is_file_name_pure(file_name):
-		var id: String = str(return_new_highest_id(dir, file_name, TID))\
-		if !edit_file_name.get_node("SetID").has_checked else edit_file_name.get_node("SetID").text
-		
+		var id: String = return_new_highest_id(dir, file_name, item, "" if !(edit_file_name.get_node("SetID").has_checked) else edit_file_name.get_node("SetID").text)
 		contents = contents.insert(0, "%s\n%s\n%s\n%s\n") % [id, TID, file_name, showcase_name]
 		file_name = file_name.insert(0, "%s - " % id)
 		write_to_file(dir, file_name, ".fof", contents, false)
@@ -188,7 +193,10 @@ func return_item_dict(item: String, _contents: String) -> Dictionary:
 			"tool": keys += ["r", "text"]
 			"boon": keys += ["r", "text"]
 			"map": keys += ["world", "map_size", "nodes", "arrows"]
-			"trinket": keys += ["text"]
+			"trinket", "challenge": keys += ["text"]
+			"task": keys += ["text", "difficulty"]
+			"encounter": keys += ["text", "options"]
+			
 		var i: int = 0
 		for key in keys:
 			if contents[i].is_valid_int() and key not in ["pcolor", "acolor"]:

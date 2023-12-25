@@ -1,5 +1,5 @@
 extends Control
-@export var options: PackedStringArray
+@export var options: Resource
 @export var default: int
 @export var label_text: String
 @export var open_state: bool
@@ -24,11 +24,11 @@ func modify_open_state() -> void:
 func _on_open_button_pressed():
 	if $Options.get_child_count() < 1:
 		open_state = true
-		var options_size: int = options.size() - 1
+		var options_size: int = options.options.size() - 1
 		var total: int = 0
 		var ndefault: int = default
 		
-		for i in options:
+		for i in options.options:
 			var binary_button: Control = preload("res://scenes/ui_general/binary_button/binary_button.tscn").instantiate()
 			binary_button.label_text = i
 			$Options.add_child(binary_button)
@@ -39,33 +39,26 @@ func _on_open_button_pressed():
 			options_size -= 1
 			binary_button.item_selected.connect(on_item_selected.bind(binary_button))
 			
-		$OpenOptions.play("open_options")
+		$OpenOptions.play_backwards("open_options")
 		modify_open_state()
 		position_binary_buttons.call_deferred()
 	else:
-		Helper.play_method_on_animation_end("open_options", $OpenOptions, close_options, [], true, self)
+		Helper.play_method_on_animation_end("open_options", $OpenOptions, close_options, [], false, self)
 
 func position_binary_buttons() -> void:
-	var xbp: int = 0
-	var ybp: int = 0
-	
-	var xy := Vector2.ZERO
+	var xy := Vector2i.ZERO
+	var i: bool = false
 	for button in $Options.get_children():
 		button.scale = Vector2(0.6, 0.6)
-		button.position = xy
+		button.position = Vector2(int(xy.x * 0.63), int(xy.y * 0.8))
 		xy.x += button.get_node("Outside").size.x
-		
-		if xy.x > 300:
+		if i:
 			xy.y += 60
 			xy.x = 0
+		i = !i
 		
-		#xbp = button.get_node("Outside").size.x if xbp == 0 else 0
-		#button.position.x = max(xbp - 80, 0)
-		#button.position.y += ybp
-		#if xbp == 0:
-			#ybp += button.size.y - 15
-	#max_size = ybp
-	max_size = xy.y
+	var last_child: Control = $Options.get_child($Options.get_child_count() - 1)
+	max_size = int(last_child.position.y + last_child.size.y - 15)
 	on_change_open_state()
 
 func on_change_open_state() -> void:
@@ -74,8 +67,7 @@ func on_change_open_state() -> void:
 func close_options() -> void:
 	open_state = false
 	on_change_open_state()
-	for child in $Options.get_children(): 
-		child.queue_free()
+	for child in $Options.get_children(): child.queue_free()
 	modify_open_state()
 
 func on_item_selected(state: int, child: Control) -> void:
@@ -84,6 +76,3 @@ func on_item_selected(state: int, child: Control) -> void:
 		0: default -= i
 		1: default += i
 	item_selected.emit(default)
-
-func select_item() -> void:
-	pass

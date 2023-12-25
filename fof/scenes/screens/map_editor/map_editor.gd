@@ -1,6 +1,6 @@
 extends Control
 signal fileloader_state
-const TID: int = 7
+const TID: int = 8
 const FILE_LOADER_NAME: String = "Map"
 
 @onready var NodeArrows: Node2D = $MapMenu/NodeArrows

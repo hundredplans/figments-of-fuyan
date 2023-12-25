@@ -101,3 +101,14 @@ func on_add_card(card_info: Dictionary) -> void:
 	if !cards.any(func(x: Dictionary): return x.id == card_info.id):
 		cards.append(card_info)
 		on_reload_page(0)
+		
+const EMPTY_AREA: Dictionary = {
+	"sname": "",
+	"iname": "",
+	"pcolor": "000000",
+	"acolor": "ffffff",
+	"world": 1,
+	"cards": [],
+}
+func _on_default_area_pressed():
+	on_item_selected(EMPTY_AREA)

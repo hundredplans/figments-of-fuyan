@@ -28,6 +28,9 @@ var move_screen_switch_length: Dictionary = {
 	"ItemEditor": 0.25,
 	"MapEditor": 0.25,
 	"TrinketEditor": 0.25,
+	"ChallengeEditor": 0.25,
+	"TaskEditor": 0.25,
+	"EncounterEditor": 0.25,
 }
 
 func on_user_quit() -> void:
@@ -48,6 +51,9 @@ const move_screen_name_to_path: Dictionary = {
 	"ItemEditor": "res://scenes/screens/item_editor/move_screen.tres",
 	"MapEditor": "res://scenes/screens/map_editor/move_screen.tres",
 	"TrinketEditor": "res://scenes/screens/trinket_editor/move_screen.tres",
+	"ChallengeEditor": "res://scenes/screens/challenge_editor/move_screen.tres",
+	"TaskEditor": "res://scenes/screens/task_editor/move_screen.tres",
+	"EncounterEditor": "res://scenes/screens/encounter_editor/move_screen.tres",
 }
 	
 func _ready() -> void:
@@ -117,7 +123,7 @@ func before_ready_connect_screen(screen: Control):
 		"LevelEditor", "LoreBooksEditor", "ItemEditor": screen.load_world.connect(on_load_world)
 	
 	match screen.name:
-		"TrinketEditor", "AreaEditor", "BoonEditor", "CardEditor", "LevelEditor", "MapEditor", "ToolEditor": screen.fileloader_state.connect(on_change_fileloader_state)
+		"TrinketEditor", "AreaEditor", "BoonEditor", "CardEditor", "LevelEditor", "MapEditor", "ToolEditor", "TaskEditor", "ChallengeEditor", "EncounterEditor": screen.fileloader_state.connect(on_change_fileloader_state)
 	
 func after_ready_connect_screen(screen: Control):
 	if screen.name == "MainMenu" or Settings.hide_menu_gui == 2 or screen.name == "LoreBooksEditor" and Settings.hide_menu_gui == 1:

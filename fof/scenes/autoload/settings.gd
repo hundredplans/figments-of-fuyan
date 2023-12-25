@@ -13,7 +13,7 @@ var book_font_size: int = 0
 var clear_backup_files: int = 0
 var default_camera_speed_multiplier: int = 1
 var autoskip_turn: bool = false
-var close_fileloader := Vector2i(0, return_max_mc_value("res://scenes/screens/settings_menu/setting_options/settings_preferences.tscn", "CloseFileLoader"))
+var close_fileloader := Vector2i(0, return_max_mc_value("res://scenes/screens/settings_menu/mc_button_infos/close_fileloader.tres"))
 var fileloader_opacity: int = 0
 
 var level_editor_elevation: int = 0
@@ -37,14 +37,8 @@ var settings_info: Dictionary = {
 	"Video": [],
 }
 
-func return_max_mc_value(path: String, node_name: String) -> int:
-	var node: Control = load(path).instantiate()
-	var rnode: Control = Helper.flatten(node.get_children().map(func(x: Control): return x.get_children()), false)\
-	.filter(func(x: Control): return x.name == node_name)[0]
-	
-	var rvalue: int = int(pow(2, rnode.options.size()))
-	node.queue_free()
-	return rvalue
+func return_max_mc_value(path: String) -> int:
+	return int(pow(float(2), float(load(path).options.size())))
 
 func update_settings_file_info() -> void:
 	for setting in settings_info.keys():

@@ -12,99 +12,97 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_olwko")
 
-[node name="MenuButtons" type="Control" parent="."]
-anchors_preset = 0
-offset_right = 1920.0
-offset_bottom = 1080.0
+[node name="MenuButtons" type="GridContainer" parent="."]
+layout_mode = 0
+offset_left = 226.0
+offset_top = 40.0
+offset_right = 1675.0
+offset_bottom = 1042.0
 theme = ExtResource("2_5vrw5")
+theme_override_constants/h_separation = 20
+theme_override_constants/v_separation = 20
+columns = 5
 
 [node name="CardEditor" type="Button" parent="MenuButtons"]
-layout_mode = 0
-offset_top = 152.0
-offset_right = 368.0
-offset_bottom = 304.0
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 text = "Card Editor"
 
+[node name="LevelEditor" type="Button" parent="MenuButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Level Editor"
+
 [node name="ToolEditor" type="Button" parent="MenuButtons"]
-layout_mode = 0
-offset_left = 566.0
-offset_top = 152.0
-offset_right = 934.0
-offset_bottom = 304.0
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 text = "Tool Editor"
 
 [node name="BoonEditor" type="Button" parent="MenuButtons"]
-layout_mode = 0
-offset_left = 566.0
-offset_top = 304.0
-offset_right = 934.0
-offset_bottom = 456.0
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 text = "Boon Editor"
 
-[node name="LevelEditor" type="Button" parent="MenuButtons"]
-layout_mode = 0
-offset_top = 304.0
-offset_right = 368.0
-offset_bottom = 456.0
-text = "Level Editor"
-
 [node name="AreaEditor" type="Button" parent="MenuButtons"]
-layout_mode = 0
-offset_top = 456.0
-offset_right = 368.0
-offset_bottom = 608.0
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 text = "Area Editor"
 
 [node name="MapEditor" type="Button" parent="MenuButtons"]
-layout_mode = 0
-offset_top = 608.0
-offset_right = 368.0
-offset_bottom = 760.0
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 text = "Map Editor"
 
-[node name="QuestEditor" type="Button" parent="MenuButtons"]
-layout_mode = 0
-offset_top = 760.0
-offset_right = 368.0
-offset_bottom = 912.0
-text = "Quest Editor"
+[node name="TrinketEditor" type="Button" parent="MenuButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Trinket Editor"
 
-[node name="Achievements" type="Button" parent="MenuButtons"]
-layout_mode = 0
-offset_left = 566.0
-offset_top = 456.0
-offset_right = 934.0
-offset_bottom = 608.0
-text = "Achievements"
+[node name="TaskEditor" type="Button" parent="MenuButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Task Editor"
 
-[node name="LoreBooks" type="Button" parent="MenuButtons"]
-layout_mode = 0
-offset_left = 566.0
-offset_top = 608.0
-offset_right = 934.0
-offset_bottom = 760.0
-text = "Lore Books"
+[node name="ChallengeEditor" type="Button" parent="MenuButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Challenge Editor"
 
-[node name="Dictionary" type="Button" parent="MenuButtons"]
-layout_mode = 0
-offset_left = 566.0
-offset_top = 760.0
-offset_right = 934.0
-offset_bottom = 912.0
-text = "Dictionary"
+[node name="EncounterEditor" type="Button" parent="MenuButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Encounter Editor"
 
 [node name="ItemEditor" type="Button" parent="MenuButtons"]
-layout_mode = 0
-offset_left = 1059.0
-offset_top = 152.0
-offset_right = 1427.0
-offset_bottom = 304.0
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 text = "Item Editor"
 
-[node name="TrinketEditor" type="Button" parent="MenuButtons"]
-layout_mode = 0
-offset_left = 1059.0
-offset_top = 304.0
-offset_right = 1427.0
-offset_bottom = 456.0
-text = "Trinket Editor"
+[node name="Achievements" type="Button" parent="MenuButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Achievements"
+
+[node name="Dictionary" type="Button" parent="MenuButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Dictionary"
+
+[node name="LoreBooks" type="Button" parent="MenuButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Lore Books"
