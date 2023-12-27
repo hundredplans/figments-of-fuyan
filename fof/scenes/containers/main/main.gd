@@ -31,6 +31,7 @@ var move_screen_switch_length: Dictionary = {
 	"ChallengeEditor": 0.25,
 	"TaskEditor": 0.25,
 	"EncounterEditor": 0.25,
+	"PlayMenu": 0.25,
 }
 
 func on_user_quit() -> void:
@@ -54,9 +55,11 @@ const move_screen_name_to_path: Dictionary = {
 	"ChallengeEditor": "res://scenes/screens/challenge_editor/move_screen.tres",
 	"TaskEditor": "res://scenes/screens/task_editor/move_screen.tres",
 	"EncounterEditor": "res://scenes/screens/encounter_editor/move_screen.tres",
+	"PlayMenu": "res://scenes/screens/play_menu/move_screen.tres",
 }
 	
 func _ready() -> void:
+	Helper.main = self
 	load_general_world()
 	$UI.z_index = 10
 	for screen in Screens.get_children(): screen.free()
@@ -87,6 +90,9 @@ func on_menu_transition(screen: Control, old_screen: Control, is_enter: bool) ->
 		screen_history.append(old_screen.scene_file_path)
 	else: MoveScreen.play_backwards(old_screen.name)
 	Helper.on_timer_end(on_move_screen_switch, [screen], move_screen_switch_length[old_screen.name])
+	
+func on_change_screen_visible_delay(screen: Control) -> void: screen.visible = true
+	
 func on_menu_button_pressed(i: Variant) -> void:
 	match typeof(i):
 		TYPE_CALLABLE: i.call()
@@ -156,7 +162,7 @@ func on_sim_pressed():
 	main.name = "SimulationMain"
 	get_tree().get_root().add_child(main)
 func _process(_delta: float) -> void:
-	if Input.is_action_just_pressed("Escape"):
+	if !Helper.is_gamestate and Input.is_action_just_pressed("Escape"):
 		on_trigger_screen_history()
 		
 func on_load_screen(screen_name: String, is_enter: bool) -> void:

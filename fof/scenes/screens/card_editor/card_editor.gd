@@ -75,8 +75,10 @@ func _on_save_card_pressed():
 	% [stats[0], stats[1], stats[2], stats[3], rarity, CardText.text.replace("\n", " "), FlavorText.text.replace("\n", " "),
 	personality_sliders[0], personality_sliders[1], personality_sliders[2], personality_sliders[3], personality_sliders[4], height]
 	var item_dict: Dictionary = Helper.write_to_base_game_file(FILE_LOADER_NAME, $CardCreator/EditFileName, contents, TID)
-	Helper.create_base_game_id_dir(item_dict, FILE_LOADER_NAME)
-	ID = item_dict.id
+	
+	if item_dict:
+		Helper.create_base_game_id_dir(item_dict, FILE_LOADER_NAME)
+		ID = item_dict.id
 
 var FileLoader: Control
 func _on_load_card_pressed():

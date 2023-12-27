@@ -19,7 +19,7 @@ anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
 
-[node name="Play" parent="MenuButtons" instance=ExtResource("2_awgqh")]
+[node name="PlayMenu" parent="MenuButtons" instance=ExtResource("2_awgqh")]
 offset_top = 17.0
 offset_bottom = 267.0
 label_text = "Play"
@@ -32,6 +32,7 @@ offset_bottom = 469.0
 label_text = "Simulation"
 
 [node name="EditorMenu" parent="MenuButtons" instance=ExtResource("2_awgqh")]
+offset_left = -3.0
 offset_top = 418.0
 offset_bottom = 668.0
 label_text = "Editor Menu"

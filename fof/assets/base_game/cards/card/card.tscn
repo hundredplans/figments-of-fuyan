@@ -37,6 +37,7 @@ Stats = NodePath("Stats")
 anchors_preset = 0
 offset_right = 170.0
 offset_bottom = 320.0
+mouse_filter = 1
 
 [node name="ArtMax" type="Sprite2D" parent="Art"]
 position = Vector2(24, 18)
@@ -56,6 +57,7 @@ position = Vector2(85, 241)
 anchors_preset = 0
 offset_right = 168.0
 offset_bottom = 320.0
+mouse_filter = 1
 
 [node name="Text" type="Label" parent="Text"]
 texture_filter = 1
@@ -86,6 +88,7 @@ offset_left = -4.0
 offset_top = 5.0
 offset_right = 164.0
 offset_bottom = 338.0
+mouse_filter = 1
 
 [node name="Attack" type="Control" parent="Stats"]
 layout_mode = 1
@@ -97,6 +100,7 @@ offset_left = -0.0320001
 offset_top = 288.995
 offset_right = 63.968
 offset_bottom = 338.995
+mouse_filter = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="Stats/Attack"]
 texture_filter = 1
@@ -126,6 +130,7 @@ offset_left = 102.968
 offset_top = 288.995
 offset_right = 172.968
 offset_bottom = 338.995
+mouse_filter = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="Stats/Health"]
 texture_filter = 1
@@ -150,6 +155,7 @@ offset_left = 120.0
 offset_top = -9.0
 offset_right = 176.0
 offset_bottom = 49.0
+mouse_filter = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="Stats/Speed"]
 texture_filter = 1
@@ -175,6 +181,7 @@ offset_left = 9.0
 offset_top = -300.0
 offset_right = 56.0
 offset_bottom = -253.0
+mouse_filter = 1
 
 [node name="Label" type="Label" parent="Stats/Energy"]
 layout_mode = 1

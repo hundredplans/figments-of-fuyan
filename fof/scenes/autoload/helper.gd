@@ -1,10 +1,12 @@
 extends Node
 
+var main: Node
 const RED := Color(1,0,0,1)
 const BASE := Color(1,1,1,1)
 const LIGHT_BROWN := Color(0.635, 0.447, 0.31,1)
 const DARK_BROWN := Color(0.165, 0.075, 0.008,1)
 const LIGHT_GREY := Color("828282")
+const DARK_GREY := Color("3d3d3d")
 
 const settings_color_dict: Dictionary = {
 	"Graphics": "fcc71d",
@@ -382,3 +384,18 @@ func flatten(arr: Array, remove_duplicates: bool) -> Array:
 		if remove_duplicates and a in narr: continue
 		narr += a
 	return narr
+
+var is_gamestate: bool = false
+var _GameState: PackedScene = preload("res://scenes/autoload/game_state.tscn")
+func on_load_game_state(hid: int, gseed: int) -> void:
+	var GameState: Node = _GameState.instantiate()
+	GameState.hero_id = hid
+	GameState.gseed = gseed
+	is_gamestate = true
+	
+	main.SettingCog.queue_free()
+	main.BackArrow.queue_free()
+	
+	add_child(GameState)
+	
+	

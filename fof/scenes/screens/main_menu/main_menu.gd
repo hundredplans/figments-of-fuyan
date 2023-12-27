@@ -7,7 +7,7 @@ var original_position := Vector2.ZERO
 var lerp_item: int = 0
 @onready var AniItem: Sprite2D = $AnimationItem
 @onready var screen_change: Array = [
-["Play", ""],
+["PlayMenu", "res://scenes/screens/play_menu/play_menu.tscn"],
 ["Simulation", get_parent().get_parent().get_parent().sim_pressed],
 ["EditorMenu", "res://scenes/screens/editor_menu/editor_menu.tscn"],
 ["SettingsMenu", "res://scenes/screens/settings_menu/settings_menu.tscn"],

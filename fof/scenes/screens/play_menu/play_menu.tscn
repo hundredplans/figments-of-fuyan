@@ -1,0 +1,67 @@
+[gd_scene load_steps=4 format=3 uid="uid://ckupdmi2gxkq5"]
+
+[ext_resource type="Script" path="res://scenes/screens/play_menu/play_menu.gd" id="1_atqxs"]
+[ext_resource type="Script" path="res://static/game_info/heroes.gd" id="2_1luli"]
+[ext_resource type="PackedScene" uid="uid://d0kmucxnl6ah3" path="res://scenes/screens/play_menu/hero_button.tscn" id="3_h80h1"]
+
+[node name="PlayMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_atqxs")
+
+[node name="HeroInfo" type="Node" parent="."]
+script = ExtResource("2_1luli")
+
+[node name="Background" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Outside" type="ColorRect" parent="Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Inside" type="ColorRect" parent="Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="SelectHero" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HeroButton" parent="SelectHero" node_paths=PackedStringArray("Heroes") instance=ExtResource("3_h80h1")]
+layout_mode = 2
+Heroes = NodePath("../../HeroInfo")
+hid = 1

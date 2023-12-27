@@ -1,0 +1,78 @@
+[gd_scene load_steps=4 format=3 uid="uid://d0kmucxnl6ah3"]
+
+[ext_resource type="Script" path="res://scenes/screens/play_menu/hero_button.gd" id="1_dqds6"]
+[ext_resource type="LabelSettings" uid="uid://qp0350v2j4ah" path="res://assets/UI/roboto/roboto32_outline.tres" id="2_cwjyr"]
+[ext_resource type="LabelSettings" uid="uid://duy8g0fum2k06" path="res://assets/UI/roboto/roboto20_outline.tres" id="3_3vqy7"]
+
+[node name="HeroButton" type="Control"]
+layout_mode = 3
+offset_right = 254.0
+offset_bottom = 1060.0
+mouse_filter = 1
+script = ExtResource("1_dqds6")
+
+[node name="Background" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 0
+offset_right = 254.0
+offset_bottom = 1060.0
+mouse_filter = 1
+
+[node name="Outside" type="ColorRect" parent="Background"]
+layout_mode = 1
+offset_right = 254.0
+offset_bottom = 1060.0
+mouse_filter = 1
+color = Color(0, 0, 0, 1)
+
+[node name="Inside" type="ColorRect" parent="Background"]
+layout_mode = 1
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 249.0
+offset_bottom = 1055.0
+mouse_filter = 1
+color = Color(0.678431, 0.678431, 0.678431, 1)
+
+[node name="HeroNameBackground" type="ColorRect" parent="Background"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 249.0
+offset_right = 249.0
+offset_bottom = 341.0
+mouse_filter = 1
+color = Color(0.85098, 0.85098, 0.85098, 1)
+
+[node name="HeroTexture" type="TextureRect" parent="."]
+texture_filter = 1
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 127.0
+offset_bottom = 127.0
+scale = Vector2(2, 2)
+
+[node name="HeroName" type="Label" parent="."]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 249.0
+offset_right = 249.0
+offset_bottom = 341.0
+mouse_filter = 1
+label_settings = ExtResource("2_cwjyr")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="HeroDescription" type="Label" parent="."]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 359.0
+offset_right = 249.0
+offset_bottom = 700.0
+mouse_filter = 1
+label_settings = ExtResource("3_3vqy7")
+autowrap_mode = 2
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
