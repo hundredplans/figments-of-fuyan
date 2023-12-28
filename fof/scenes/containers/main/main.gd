@@ -170,7 +170,7 @@ func on_load_screen(screen_name: String, is_enter: bool) -> void:
 		fileloader_state = 0
 		var screen: Control = load(screen_name).instantiate()
 		on_menu_transition(screen, Screens.get_child(0), is_enter)
-	
+		
 func on_trigger_screen_history() -> void:
 	match fileloader_state:
 		0:
