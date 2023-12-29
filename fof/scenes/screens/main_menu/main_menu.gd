@@ -8,17 +8,18 @@ var lerp_item: int = 0
 @onready var AniItem: Sprite2D = $AnimationItem
 @onready var screen_change: Array = [
 ["PlayMenu", "res://scenes/screens/play_menu/play_menu.tscn"],
-["Simulation", get_parent().get_parent().get_parent().sim_pressed],
+["Simulation", Helper.main.sim_pressed],
 ["EditorMenu", "res://scenes/screens/editor_menu/editor_menu.tscn"],
 ["SettingsMenu", "res://scenes/screens/settings_menu/settings_menu.tscn"],
 ["Fuyanopedia", "res://scenes/screens/fuyanopedia/fuyanopedia.tscn"],
-["LevelEditor", "res://scenes/screens/level_editor/level_editor.tscn"],
-["Quit", get_parent().get_parent().get_parent().on_user_quit],
+["ContinueMenu", "res://scenes/screens/continue_menu/continue_menu.tscn"],
+["Quit", Helper.main.on_user_quit],
 ]
 
 func _ready() -> void:
 	AniItem.visible = false
-
+	$MenuButtons/ContinueMenu/Button.disabled = DirAccess.get_files_at("user://save/save_files").is_empty()
+		
 func on_move_screen_setup(btn_name: String) -> void:
 	AniItem.visible = true
 	var btn: Control = $MenuButtons.get_node(btn_name)

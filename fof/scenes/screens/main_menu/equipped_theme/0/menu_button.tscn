@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://dbm4t7qcmb87r"]
+[gd_scene load_steps=5 format=3 uid="uid://dbm4t7qcmb87r"]
 
 [ext_resource type="Texture2D" uid="uid://d27icoexxqllh" path="res://scenes/screens/main_menu/equipped_theme/0/menu_button_sprite.png" id="1_pa77n"]
 [ext_resource type="Script" path="res://scenes/screens/main_menu/equipped_theme/0/menu_button.gd" id="1_vvuwe"]
+[ext_resource type="Texture2D" uid="uid://bm3laf0dk1bew" path="res://scenes/screens/main_menu/equipped_theme/0/menu_button_disabled.png" id="3_e7mbj"]
 [ext_resource type="LabelSettings" uid="uid://ca1adfm5it7q6" path="res://scenes/screens/main_menu/equipped_theme/0/menu_button_label_settings.tres" id="3_mt6r7"]
 
 [node name="MenuButton" type="Control"]
@@ -16,6 +17,7 @@ layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 texture_normal = ExtResource("1_pa77n")
+texture_disabled = ExtResource("3_e7mbj")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0

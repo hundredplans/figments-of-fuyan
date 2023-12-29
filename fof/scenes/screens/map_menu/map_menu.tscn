@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://bhoh8annebp7b"]
+[gd_scene load_steps=4 format=3 uid="uid://bhoh8annebp7b"]
 
 [ext_resource type="Script" path="res://scenes/screens/map_menu/map_menu.gd" id="1_apveo"]
+[ext_resource type="LabelSettings" uid="uid://qp0350v2j4ah" path="res://assets/UI/roboto/roboto32_outline.tres" id="2_3u30o"]
+[ext_resource type="Texture2D" uid="uid://cnykim4ihwroj" path="res://assets/game_sprites/shilling.png" id="3_hd0ks"]
 
 [node name="MapMenu" type="Control"]
 layout_mode = 3
@@ -10,3 +12,30 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_apveo")
+
+[node name="SeedLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1782.0
+offset_top = 1054.0
+offset_right = 1916.0
+offset_bottom = 1077.0
+horizontal_alignment = 2
+
+[node name="ShillingCounter" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 128.0
+offset_bottom = 38.0
+
+[node name="Label" type="Label" parent="ShillingCounter"]
+modulate = Color(0.890196, 0.890196, 0, 1)
+layout_mode = 0
+offset_left = 46.0
+offset_right = 87.0
+offset_bottom = 38.0
+text = "1"
+label_settings = ExtResource("2_3u30o")
+horizontal_alignment = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="ShillingCounter"]
+texture = ExtResource("3_hd0ks")
+centered = false

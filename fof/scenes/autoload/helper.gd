@@ -385,17 +385,15 @@ func flatten(arr: Array, remove_duplicates: bool) -> Array:
 		narr += a
 	return narr
 
-var is_gamestate: bool = false
 var _GameState: PackedScene = preload("res://scenes/autoload/game_state.tscn")
-func on_load_game_state(hid: int, gseed: int) -> void:
+
+func on_start_new_game(_hid: int, gseed: int) -> void:
+	pass
+
+func on_load_game_state(_hid: int, gseed: int) -> void:
 	var GameState: Node = _GameState.instantiate()
-	GameState.hero_id = hid
+	# add hero to player deck here
 	GameState.gseed = gseed
-	is_gamestate = true
-	
-	main.SettingCog.queue_free()
-	main.BackArrow.queue_free()
-	
 	add_child(GameState)
-	
+	main.GameState = GameState
 	

@@ -24,12 +24,12 @@ offset_top = 17.0
 offset_bottom = 267.0
 label_text = "Play"
 
-[node name="Simulation" parent="MenuButtons" instance=ExtResource("2_awgqh")]
+[node name="ContinueMenu" parent="MenuButtons" instance=ExtResource("2_awgqh")]
 offset_left = -83.0
-offset_top = 219.0
+offset_top = 220.0
 offset_right = 642.0
-offset_bottom = 469.0
-label_text = "Simulation"
+offset_bottom = 470.0
+label_text = "Continue"
 
 [node name="EditorMenu" parent="MenuButtons" instance=ExtResource("2_awgqh")]
 offset_left = -3.0
@@ -49,12 +49,12 @@ offset_top = 824.0
 offset_bottom = 1074.0
 label_text = "Fuyanopedia"
 
-[node name="LevelEditor" parent="MenuButtons" instance=ExtResource("2_awgqh")]
+[node name="Simulation" parent="MenuButtons" instance=ExtResource("2_awgqh")]
 offset_left = 1340.0
 offset_top = 635.0
 offset_right = 2065.0
 offset_bottom = 885.0
-label_text = "Level Editor"
+label_text = "Simulation"
 flip_h = true
 
 [node name="Quit" parent="MenuButtons" instance=ExtResource("2_awgqh")]

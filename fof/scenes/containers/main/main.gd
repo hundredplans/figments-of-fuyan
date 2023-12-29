@@ -32,6 +32,8 @@ var move_screen_switch_length: Dictionary = {
 	"TaskEditor": 0.25,
 	"EncounterEditor": 0.25,
 	"PlayMenu": 0.25,
+	"MapMenu": 0.25,
+	"ContinueMenu": 0.25,
 }
 
 func on_user_quit() -> void:
@@ -56,6 +58,8 @@ const move_screen_name_to_path: Dictionary = {
 	"TaskEditor": "res://scenes/screens/task_editor/move_screen.tres",
 	"EncounterEditor": "res://scenes/screens/encounter_editor/move_screen.tres",
 	"PlayMenu": "res://scenes/screens/play_menu/move_screen.tres",
+	"MapMenu": "res://scenes/screens/map_menu/move_screen.tres",
+	"ContinueMenu": "res://scenes/screens/continue_menu/move_screen.tres",
 }
 	
 func _ready() -> void:
@@ -120,13 +124,17 @@ func on_setup_screen(screen: Control) -> void:
 	if screen.get("screen_change"):
 		for i in screen.screen_change:
 			screen.get_node("MenuButtons/" + i[0]).pressed.connect(on_menu_button_pressed.bind(i[1]))
+	
+	if screen.get("screen_change_sig"): screen.screen_change_sig.connect(on_menu_button_pressed)
 
 func before_ready_connect_screen(screen: Control):
 	if screen.name == "LevelEditor":
 		screen.equip_sky.connect(on_equip_sky)
+	elif screen.name == "MapMenu":
+		screen.GameState = GameState
 	
 	match screen.name:
-		"LevelEditor", "LoreBooksEditor", "ItemEditor": screen.load_world.connect(on_load_world)
+		"LevelEditor", "LoreBooksEditor", "ItemEditor", "MapMenu": screen.load_world.connect(on_load_world)
 	
 	match screen.name:
 		"TrinketEditor", "AreaEditor", "BoonEditor", "CardEditor", "LevelEditor", "MapEditor", "ToolEditor", "TaskEditor", "ChallengeEditor", "EncounterEditor": screen.fileloader_state.connect(on_change_fileloader_state)
@@ -162,7 +170,7 @@ func on_sim_pressed():
 	main.name = "SimulationMain"
 	get_tree().get_root().add_child(main)
 func _process(_delta: float) -> void:
-	if !Helper.is_gamestate and Input.is_action_just_pressed("Escape"):
+	if Input.is_action_just_pressed("Escape"):
 		on_trigger_screen_history()
 		
 func on_load_screen(screen_name: String, is_enter: bool) -> void:
@@ -196,3 +204,5 @@ func load_general_world() -> void:
 func on_equip_sky(value: int, is_theme: bool) -> void:
 	if is_theme: WorldEnv.environment = load("res://scenes/world/equipped_theme/" + str(value) + "/env.tres")
 	else: WorldEnv.environment = load("res://assets/base_game/areas/" + Helper.id_to_bgfn(value, "Area") + "/env.tres")
+
+var GameState: Node
