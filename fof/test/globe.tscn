@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=3 uid="uid://0nc3nuumhnyt"]
+
+[ext_resource type="Texture2D" uid="uid://bjdbe123hkmq0" path="res://test/map_of_the_world.png" id="1_eodaq"]
+[ext_resource type="Script" path="res://scenes/world/movement_camera.gd" id="2_i3nqc"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7r4in"]
+albedo_texture = ExtResource("1_eodaq")
+
+[sub_resource type="Environment" id="Environment_oab3b"]
+background_mode = 1
+
+[node name="Globe" type="Node3D"]
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="."]
+radius = 4.309
+radial_segments = 64
+rings = 24
+material = SubResource("StandardMaterial3D_7r4in")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 12)
+script = ExtResource("2_i3nqc")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_oab3b")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.531399, 0.847122, 0, -0.847122, -0.531399, 0, 6.13754, -12.8286)
+
+[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.10616, -0.994349, 0, 0.994349, 0.10616, 0, -13.5454, 12.9669)
+
+[node name="DirectionalLight3D3" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.340544, 0.940229, 0, -0.940229, 0.340544, 0, -13.5454, 12.9669)
