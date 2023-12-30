@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://q443a6em4irm"]
+
+[ext_resource type="LabelSettings" uid="uid://qp0350v2j4ah" path="res://assets/UI/roboto/roboto32_outline.tres" id="1_slyew"]
+[ext_resource type="Script" path="res://scenes/ui_general/shilling_counter/shilling_counter.gd" id="1_y656r"]
+[ext_resource type="Texture2D" uid="uid://cnykim4ihwroj" path="res://assets/game_sprites/shilling.png" id="2_whm68"]
+
+[node name="ShillingCounter" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 103.0
+offset_bottom = 38.0
+script = ExtResource("1_y656r")
+
+[node name="Label" type="Label" parent="."]
+modulate = Color(0.890196, 0.890196, 0, 1)
+layout_mode = 0
+offset_left = 46.0
+offset_right = 103.0
+offset_bottom = 38.0
+label_settings = ExtResource("1_slyew")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_whm68")
+centered = false

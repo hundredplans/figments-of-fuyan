@@ -1,10 +1,67 @@
-[gd_scene load_steps=2 format=3 uid="uid://ctkny2dmy35t8"]
+[gd_scene load_steps=3 format=3 uid="uid://ctkny2dmy35t8"]
 
 [ext_resource type="Script" path="res://scenes/screens/continue_menu/continue_menu.gd" id="1_gbkhx"]
+[ext_resource type="Script" path="res://static/game_info/heroes.gd" id="3_4cukm"]
 
 [node name="ContinueMenu" type="Control"]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 1920.0
-offset_bottom = 1080.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -506.0
+offset_top = -528.0
+offset_right = 506.0
+offset_bottom = 528.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_gbkhx")
+
+[node name="Background" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Outside" type="ColorRect" parent="Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.364706, 0.235294, 0.14902, 1)
+
+[node name="Inside" type="ColorRect" parent="Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.792157, 0.576471, 0.431373, 1)
+
+[node name="SaveFiles" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -464.0
+offset_top = -520.5
+offset_right = 464.0
+offset_bottom = 520.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 210
+
+[node name="Heroes" type="Node" parent="."]
+script = ExtResource("3_4cukm")

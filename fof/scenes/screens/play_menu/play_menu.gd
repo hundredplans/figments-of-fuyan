@@ -12,7 +12,7 @@ func on_select_hero(hid: int) -> void:
 	else: gseed = SeedSetter.text.hash()
 	
 	seed(gseed)
-	Helper.on_load_game_state(hid, gseed)
+	Helper.on_start_new_game(hid, gseed)
 	screen_change_sig.emit("res://scenes/screens/map_menu/map_menu.tscn")
 
 func _on_seed_setter_text_submitted(__: String): SeedSetter.release_focus()

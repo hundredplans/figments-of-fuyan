@@ -18,7 +18,9 @@ var lerp_item: int = 0
 
 func _ready() -> void:
 	AniItem.visible = false
-	$MenuButtons/ContinueMenu/Button.disabled = DirAccess.get_files_at("user://save/save_files").is_empty()
+	var save_files_size: int = Array(DirAccess.get_files_at("user://save/save_files")).filter(func(x: String): return int(x[0]) in range(1, 6) and x.ends_with(".txt") and x.length() == 5).size()
+	$MenuButtons/ContinueMenu/Button.disabled = save_files_size == 0
+	$MenuButtons/PlayMenu/Button.disabled = save_files_size == 5
 		
 func on_move_screen_setup(btn_name: String) -> void:
 	AniItem.visible = true

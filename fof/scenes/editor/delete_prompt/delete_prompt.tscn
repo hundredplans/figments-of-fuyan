@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scenes/editor/delete_prompt/delete_prompt.gd" id="1_nwu3l"]
 [ext_resource type="LabelSettings" uid="uid://c5h6tv2uhlrjf" path="res://assets/UI/lora/lora_outline.tres" id="2_at6od"]
-[ext_resource type="PackedScene" uid="uid://colpm2577r0kn" path="res://assets/UI/exit_button/exit_button.tscn" id="2_g3edf"]
+[ext_resource type="PackedScene" uid="uid://ccd8hdb0550na" path="res://assets/UI/standard_remove_button/remove_button.tscn" id="4_udvbs"]
 
 [node name="DeletePrompt" type="Control"]
 layout_mode = 3
@@ -19,13 +19,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.215686, 0.215686, 0.215686, 0.941176)
-
-[node name="ExitButton" parent="." instance=ExtResource("2_g3edf")]
-layout_mode = 0
-offset_left = 1786.0
-offset_top = 15.0
-offset_right = 1906.0
-offset_bottom = 137.0
 
 [node name="Prompt" type="Control" parent="."]
 layout_mode = 1
@@ -50,5 +43,12 @@ Remember if you accidentally delete
 something you can find a copy inside temp!"
 label_settings = ExtResource("2_at6od")
 horizontal_alignment = 1
+
+[node name="ExitButton" parent="." instance=ExtResource("4_udvbs")]
+layout_mode = 0
+offset_left = 1865.0
+offset_top = 5.0
+offset_right = 1915.0
+offset_bottom = 55.0
 
 [connection signal="pressed" from="ExitButton" to="." method="_on_exit_button_pressed"]

@@ -497,7 +497,7 @@ func _on_save_level_pressed(play_sfx: bool = true, create_temp: int = 1):
 			{}: if play_sfx: AudioMaster.play_sfx(preload("res://assets/sounds/confirmation/unconfirm_default.wav"), -10)
 			_: if play_sfx: AudioMaster.play_sfx(preload("res://assets/sounds/confirmation/confirm_default.wav"), -10)
 		
-		if Settings.clear_backup_files_array[Settings.clear_backup_files] != 1:
+		if Settings.clear_backup_files_array[Settings.clear_backup_files] != 0:
 			Helper.write_to_file("user://save/temp/levels/", EditFileName.get_node("Showcase").text + ["", "_save", "_override"][create_temp], ".txt", contents)
 func _queue_free() -> void:
 	_on_save_level_pressed(false, 0)

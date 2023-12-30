@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://ccd8hdb0550na"]
+
+[ext_resource type="Texture2D" uid="uid://d2xgok05um0vs" path="res://assets/UI/standard_remove_button/remove_button.png" id="1_qgrx3"]
+[ext_resource type="Script" path="res://assets/UI/standard_remove_button/remove_button.gd" id="2_o8bgp"]
+
+[node name="RemoveButton" type="TextureButton"]
+offset_right = 50.0
+offset_bottom = 50.0
+mouse_filter = 1
+texture_normal = ExtResource("1_qgrx3")
+script = ExtResource("2_o8bgp")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

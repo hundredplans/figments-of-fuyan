@@ -199,19 +199,24 @@ func return_item_dict(item: String, _contents: String) -> Dictionary:
 			"task": keys += ["text", "difficulty"]
 			"encounter": keys += ["text", "options"]
 			
-		var i: int = 0
-		for key in keys:
-			if contents[i].is_valid_int() and key not in ["pcolor", "acolor"]:
-				contents[i] = int(contents[i])
-			
-			elif contents[i].begins_with("(") and contents[i].ends_with(")"):
-				contents[i] = str_to_var("Color" + contents[i])
-				
-			elif contents[i].begins_with("[") and contents[i].ends_with("]"):
-				contents[i] = str_to_var(contents[i])
-			item_dict.merge({key: contents[i]})
-			i += 1
+		item_dict = on_convert_type(keys, contents)
 		item_dict.merge({"bgfn": str(item_dict.id) + " - " + item_dict.iname})
+	return item_dict
+
+func on_convert_type(keys: Array, contents: Array) -> Dictionary:
+	var item_dict: Dictionary = {}
+	var i: int = 0
+	for key in keys:
+		if contents[i].is_valid_int() and key not in ["pcolor", "acolor"]:
+			contents[i] = int(contents[i])
+		
+		elif contents[i].begins_with("(") and contents[i].ends_with(")"):
+			contents[i] = str_to_var("Color" + contents[i])
+			
+		elif contents[i].begins_with("[") and contents[i].ends_with("]"):
+			contents[i] = str_to_var(contents[i])
+		item_dict.merge({key: contents[i]})
+		i += 1
 	return item_dict
 
 func return_bitwise(i: int, total: Vector2i) -> bool:
@@ -245,7 +250,7 @@ func on_delete_item_confirmed(item: String, ID: String, Internal: LineEdit, can_
 	var contents: String = Helper.return_file_contents(dir + base_game_file_name + ".fof")
 	if contents:
 		delete_file(dir, base_game_file_name, ".fof")
-		if Settings.clear_backup_files_array[Settings.clear_backup_files] != 1:
+		if Settings.clear_backup_files_array[Settings.clear_backup_files] != 0:
 			write_to_file("user://save/temp/" + item, Internal.text, ".fof", contents, false)
 		if can_del_dir == 1:
 			DirAccess.remove_absolute("res://assets/base_game/" + item + base_game_file_name)
@@ -257,6 +262,11 @@ func id_to_dict(i: int, item: String) -> Dictionary:
 		if int(file_path.split(" ")[0]) == i:
 			return return_item_dict(item.left(-2), return_file_contents(dir_path + file_path))
 	return {}
+	
+func on_item_dicts(item: String) -> Array:
+	item = item.to_lower() + "s/"
+	var dir_path: String = "res://static/base_game/" + item
+	return Array(DirAccess.get_files_at(dir_path)).map(func(x: String): return return_item_dict(item.left(-2), return_file_contents(dir_path + x)))
 	
 func id_to_bgfn(i: int, item: String) -> String: return id_to_dict(i, item).bgfn
 	
@@ -386,14 +396,37 @@ func flatten(arr: Array, remove_duplicates: bool) -> Array:
 	return narr
 
 var _GameState: PackedScene = preload("res://scenes/autoload/game_state.tscn")
+var GameState: Node
 
-func on_start_new_game(_hid: int, gseed: int) -> void:
-	pass
-
-func on_load_game_state(_hid: int, gseed: int) -> void:
-	var GameState: Node = _GameState.instantiate()
-	# add hero to player deck here
+func on_start_new_game(hid: int, gseed: int) -> void:
+	Helper.on_load_game_state(0)
+	GameState.on_load_new_area(1)
 	GameState.gseed = gseed
+	GameState.hero_id = hid
+	GameState.on_create_new_save_file()
+	# add hero to player deck here
+	
+func on_load_game_state(save_file: int) -> void:
+	GameState = _GameState.instantiate()
+	if save_file != 0: GameState.on_set_info(on_save_file_contents(save_file))
 	add_child(GameState)
 	main.GameState = GameState
 	
+var save_file_keys: Array = [
+	"save_file",
+	"area_id",
+	"map_id",
+	"level_id",
+	"map_progress",
+	"shillings",
+	"hero_level",
+	"hero_id",
+	"gseed",
+]
+func on_save_file_contents(i: int) -> Dictionary:
+	var contents: Array = return_file_contents("user://save/save_files/" + str(i) + ".txt").split("\n", false)
+	if contents.size() > 0:
+		return on_convert_type(save_file_keys, contents)
+	return {}
+
+var settings_loaded: bool = false

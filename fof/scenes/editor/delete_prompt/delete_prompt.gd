@@ -2,7 +2,6 @@ extends Control
 signal delete_item
 
 func on_ready(i: int, confirm_name: String, file_valid: bool) -> void:
-	
 	match file_valid:
 		true:
 			match i:

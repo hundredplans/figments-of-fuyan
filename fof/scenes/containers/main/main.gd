@@ -128,10 +128,9 @@ func on_setup_screen(screen: Control) -> void:
 	if screen.get("screen_change_sig"): screen.screen_change_sig.connect(on_menu_button_pressed)
 
 func before_ready_connect_screen(screen: Control):
-	if screen.name == "LevelEditor":
-		screen.equip_sky.connect(on_equip_sky)
-	elif screen.name == "MapMenu":
-		screen.GameState = GameState
+	if screen.get("equip_sky"): screen.equip_sky.connect(on_equip_sky)
+	match screen.name:
+		"MapMenu": screen.GameState = GameState
 	
 	match screen.name:
 		"LevelEditor", "LoreBooksEditor", "ItemEditor", "MapMenu": screen.load_world.connect(on_load_world)
@@ -184,18 +183,26 @@ func on_trigger_screen_history() -> void:
 		0:
 			if !screen_change_animation_active and screen_history.size() > 0:
 				var path: String = screen_history[screen_history.size() - 1]
-				on_load_screen(path, false)
-				screen_history.resize(screen_history.size() - 1)
+				if !(path.ends_with("play_menu.tscn")) and !(path.ends_with("continue_menu.tscn")):
+					on_load_screen(path, false)
+					screen_history.resize(screen_history.size() - 1)
+				else:
+					path = screen_history[screen_history.size() - 2]
+					on_load_screen(path, false)
+					screen_history.resize(screen_history.size() - 2)
 		2: Screens.get_child(0).get_node("FileLoader").on_exit_button_pressed.call()
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST: on_user_quit()
 func _on_setting_cog_pressed():
 	on_load_screen("res://scenes/screens/settings_menu/settings_menu.tscn", true)
+	
 func on_load_world(world: Node3D) -> void:
 	if world == null: load_general_world()
 	else: $World/General.get_child(0).queue_free()
+	
 	for child in World.get_node("Scene").get_children(): child.queue_free()
-	if world != null: World.get_node("Scene").add_child(world)
+	if world != null: 
+		World.get_node("Scene").add_child(world)
 
 func load_general_world() -> void:
 	$World/General.add_child(load("res://assets/env/main_menu/" + str(Settings.equipped_theme) + ".tscn").instantiate())

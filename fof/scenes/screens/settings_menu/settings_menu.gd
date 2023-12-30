@@ -8,8 +8,10 @@ var card_areas: Array = []
 func _queue_free() -> void:
 	var contents: String = "%s\n%s\n%s\n%s\n%s" % $CardSorter.get_children().map(func(x: Control): return x.name)
 	Helper.write_to_file("user://save/settings/", "settings_order", ".txt", contents)
+	Helper.settings_loaded = false
 				
 func _ready() -> void:
+	Helper.settings_loaded = true
 	for child in $CardAreas.get_children():
 		var rsize: Vector2 = child.get_rect().size
 		card_areas.append(Rect2(child.get_parent().position - rsize / 2, rsize))

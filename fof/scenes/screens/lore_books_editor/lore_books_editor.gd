@@ -140,7 +140,7 @@ func on_book_selected(_selected_book: String) -> void:
 			if search_enum >= 4 and SearchNode != null:
 				on_find_text_submitted(SearchNode.text)
 		1:
-			if Settings.clear_backup_files_array[Settings.clear_backup_files] != 1:
+			if Settings.clear_backup_files_array[Settings.clear_backup_files] != 0:
 				Helper.write_to_file(temp_lore, selected_book + "_delete", ".txt", Helper.return_file_contents(static_lore + selected_category + "/" + selected_book + ".txt"))
 			Helper.delete_file(static_lore + selected_category + "/", selected_book, ".txt")
 			selected_book = ""
@@ -173,7 +173,7 @@ func _on_move_books_pressed():
 func save_book(save_button_pressed:bool=false, category:String =selected_category, exit:="") -> void:
 	if selected_book and selected_category:
 		Helper.write_to_file(static_lore + category + "/", selected_book, ".txt", BookText.text)
-		if save_button_pressed and Settings.clear_backup_files_array[Settings.clear_backup_files] != 1:
+		if save_button_pressed and Settings.clear_backup_files_array[Settings.clear_backup_files] != 0:
 			Helper.write_to_file(temp_lore, selected_book + exit, ".txt", BookText.text)
 
 func _on_book_text_text_changed():
