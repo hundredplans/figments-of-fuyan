@@ -17,7 +17,7 @@ func _on_internal_text_changed(new_text: String):
 		$Showcase.text = new_text
 
 func _on_showcase_text_changed(__: String):
-	showcase_text_changed = !($Showcase.text == "" and $Internal.text == "")
+	showcase_text_changed = !$Showcase.text == ""
 	
 func set_text(itext: String, stext:String="") -> void:
 	showcase_text_changed = false
