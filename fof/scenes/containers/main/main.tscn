@@ -63,6 +63,15 @@ texture_pressed = ExtResource("7_dwuio")
 texture_hover = ExtResource("8_ymrhe")
 texture_disabled = ExtResource("7_dwuio")
 
+[node name="TemporaryScreenCover" type="ColorRect" parent="UI"]
+modulate = Color(0, 0, 0, 1)
+z_index = 5
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0)
+
 [node name="World" type="Node3D" parent="."]
 
 [node name="General" type="Node3D" parent="World"]

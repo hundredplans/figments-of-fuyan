@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bl21q1wy6uij6"]
+[gd_scene load_steps=12 format=3 uid="uid://bl21q1wy6uij6"]
 
 [ext_resource type="Script" path="res://scenes/editor/file_loader/file_loader.gd" id="1_0yoq3"]
 [ext_resource type="Theme" uid="uid://c5rky1f5xs5if" path="res://assets/UI/lora/lora48.tres" id="2_5k07i"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bj3h1ak5dv73n" path="res://scenes/ui_general/op_button/op_button.tscn" id="3_uvj3x"]
 [ext_resource type="PackedScene" uid="uid://bkbg8go87dqws" path="res://scenes/ui_general/arrow/ui_arrow.tscn" id="5_5x5od"]
 [ext_resource type="LabelSettings" uid="uid://b3fuc4s50fgra" path="res://assets/UI/roboto/roboto64.tres" id="6_py2b3"]
+[ext_resource type="Script" path="res://static/game_info/heroes.gd" id="8_txgsn"]
 
 [sub_resource type="Animation" id="Animation_gnmio"]
 length = 0.001
@@ -161,6 +162,9 @@ offset_left = 1637.0
 offset_top = 28.0
 offset_right = 1757.0
 offset_bottom = 148.0
+
+[node name="Heroes" type="Node" parent="."]
+script = ExtResource("8_txgsn")
 
 [connection signal="text_changed" from="Search/SearchEdit" to="." method="_on_search_edit_text_changed"]
 [connection signal="item_selected" from="Search/SearchOptions" to="." method="_on_search_item_selected"]

@@ -124,12 +124,13 @@ func on_item_selected(item_info: Dictionary, change_rarity: bool = true) -> void
 	
 	ID = item_info.id
 	var texture_path: String = "res://assets/base_game/cards/card/default_art_max.png"
-	var card_texture_path: String = "res://assets/base_game/cards/" + item_info.bgfn + "/art_max.png"
+	var hero_bgfn: String = item_info.bgfn if item_info.r != 7 else Helper.id_to_dict($Heroes.id_to_base(item_info.id), "Card").bgfn
+	var card_texture_path: String = "res://assets/base_game/cards/" + hero_bgfn + "/art_max.png"
 	if FileAccess.file_exists(card_texture_path):
 		texture_path = card_texture_path
 	$CardCreator/Art.texture = load(texture_path)
 	
-	on_load_model(item_info.bgfn)
+	on_load_model( hero_bgfn)
 	
 	if change_rarity:
 		_on_choose_rarity_item_selected(item_info.r)

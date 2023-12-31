@@ -135,6 +135,7 @@ func on_reload_page(i: int) -> void:
 	var xy := Vector2(50, 50)
 	for j in range(page * MAX_PAGE_COUNT, min((page + 1) * MAX_PAGE_COUNT, item_buttons.size())):
 		var item_button: Control = _item_button.instantiate()
+		if item_name == "card": item_button.get_node("Card").Heroes = $Heroes
 		Items.add_child(item_button)
 		item_button.position = xy
 		item_button.get_node("PressedButton").pressed.connect(on_item_selected.bind(item_button, item_buttons[j]))

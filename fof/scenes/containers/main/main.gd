@@ -16,24 +16,6 @@ var screen_change_animation_active: bool = false
 var screen_history: Array = []
 var move_screen_switch_length: Dictionary = {
 	"MainMenu": 0.5,
-	"EditorMenu": 0.25,
-	"SettingsMenu": 0.25,
-	"Fuyanopedia": 0.25,
-	"LevelEditor": 0.25,
-	"LoreBooksEditor": 0.25,
-	"AreaEditor": 0.25,
-	"CardEditor": 0.25,
-	"BoonEditor": 0.25,
-	"ToolEditor": 0.25,
-	"ItemEditor": 0.25,
-	"MapEditor": 0.25,
-	"TrinketEditor": 0.25,
-	"ChallengeEditor": 0.25,
-	"TaskEditor": 0.25,
-	"EncounterEditor": 0.25,
-	"PlayMenu": 0.25,
-	"MapMenu": 0.25,
-	"ContinueMenu": 0.25,
 }
 
 func on_user_quit() -> void:
@@ -41,25 +23,7 @@ func on_user_quit() -> void:
 	get_tree().quit()
 	
 const move_screen_name_to_path: Dictionary = {
-	"CardEditor": "res://scenes/screens/card_editor/move_screen.tres",
 	"MainMenu": "res://scenes/screens/main_menu/move_screen.tres",
-	"EditorMenu": "res://scenes/screens/editor_menu/move_screen.tres",
-	"SettingsMenu": "res://scenes/screens/settings_menu/move_screen.tres",
-	"Fuyanopedia": "res://scenes/screens/fuyanopedia/move_screen.tres",
-	"LevelEditor": "res://scenes/screens/level_editor/move_screen.tres",
-	"LoreBooksEditor": "res://scenes/screens/lore_books_editor/move_screen.tres",
-	"AreaEditor": "res://scenes/screens/area_editor/move_screen.tres",
-	"BoonEditor": "res://scenes/screens/boon_editor/move_screen.tres",
-	"ToolEditor": "res://scenes/screens/tool_editor/move_screen.tres",
-	"ItemEditor": "res://scenes/screens/item_editor/move_screen.tres",
-	"MapEditor": "res://scenes/screens/map_editor/move_screen.tres",
-	"TrinketEditor": "res://scenes/screens/trinket_editor/move_screen.tres",
-	"ChallengeEditor": "res://scenes/screens/challenge_editor/move_screen.tres",
-	"TaskEditor": "res://scenes/screens/task_editor/move_screen.tres",
-	"EncounterEditor": "res://scenes/screens/encounter_editor/move_screen.tres",
-	"PlayMenu": "res://scenes/screens/play_menu/move_screen.tres",
-	"MapMenu": "res://scenes/screens/map_menu/move_screen.tres",
-	"ContinueMenu": "res://scenes/screens/continue_menu/move_screen.tres",
 }
 	
 func _ready() -> void:
@@ -87,13 +51,21 @@ func on_menu_transition(screen: Control, old_screen: Control, is_enter: bool) ->
 		old_screen.on_move_screen_setup(screen.name)
 	on_screen_change_animation_state(true)
 	screen.visible = false
-	
-	MoveLibrary.add_animation(old_screen.name, load(move_screen_name_to_path[old_screen.name]))
+	var screen_path: String = "res://scenes/ui_general/move_screen.tres"
+	if move_screen_name_to_path.has(old_screen.name): screen_path = move_screen_name_to_path[old_screen.name]
+	MoveLibrary.add_animation(old_screen.name, load(screen_path))
 	if is_enter:
 		MoveScreen.play(old_screen.name)
 		screen_history.append(old_screen.scene_file_path)
 	else: MoveScreen.play_backwards(old_screen.name)
-	Helper.on_timer_end(on_move_screen_switch, [screen], move_screen_switch_length[old_screen.name])
+	
+	var length: float = 0.3
+	if move_screen_switch_length.has(old_screen.name): length = move_screen_switch_length[old_screen.name]
+	Helper.on_timer_end(on_move_screen_switch, [screen], length)
+	
+	if length == 0.3: 
+		await get_tree().create_timer(length).timeout
+		old_screen.visible = false
 	
 func on_change_screen_visible_delay(screen: Control) -> void: screen.visible = true
 	

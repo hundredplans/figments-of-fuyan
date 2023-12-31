@@ -1,5 +1,6 @@
-[gd_scene load_steps=11 format=3 uid="uid://dgjchsjrv72a3"]
+[gd_scene load_steps=12 format=3 uid="uid://dgjchsjrv72a3"]
 
+[ext_resource type="Script" path="res://static/game_info/heroes.gd" id="1_5aclk"]
 [ext_resource type="Script" path="res://scenes/screens/card_editor/card_editor.gd" id="1_hv8xs"]
 [ext_resource type="PackedScene" uid="uid://bdd0m6wbuerq5" path="res://scenes/editor/edit_file_name/edit_file_name.tscn" id="2_axojh"]
 [ext_resource type="Theme" uid="uid://c5rky1f5xs5if" path="res://assets/UI/lora/lora48.tres" id="2_q225b"]
@@ -12,7 +13,7 @@
 
 [sub_resource type="World3D" id="World3D_8b6j0"]
 
-[node name="CardEditor" type="Control" node_paths=PackedStringArray("CardText", "FlavorText")]
+[node name="CardEditor" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,8 +21,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_hv8xs")
-CardText = NodePath("CardCreator/CardText")
-FlavorText = NodePath("CardCreator/FlavorText")
+
+[node name="Heroes" type="Node" parent="."]
+script = ExtResource("1_5aclk")
 
 [node name="CardCreator" type="Control" parent="."]
 anchors_preset = 0
