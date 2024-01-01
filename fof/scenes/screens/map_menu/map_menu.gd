@@ -12,6 +12,7 @@ func _ready() -> void:
 	if !Helper.settings_loaded:
 		var GeneralMap: Node3D = _GeneralMap.instantiate()
 		GeneralMap.area_id = GameState.area_info.id
+		GeneralMap.map_id = GameState.map_info.id
 		load_world.emit(GeneralMap)
 		equip_sky.emit(GameState.area_info.id, false)
 	
