@@ -4,12 +4,15 @@ signal equip_sky
 signal load_world
 var GameState: Node
 
+var _GeneralMap: PackedScene = preload("res://assets/env/area_map/general_map.tscn")
 func _ready() -> void:
 	$SeedLabel.text = str(GameState.gseed)
 	$ShillingCounter.set_shilling_count(GameState.shillings)
 	
 	if !Helper.settings_loaded:
-		load_world.emit(load("res://assets/base_game/areas/" + GameState.area_info.bgfn + "/area_map.tscn").instantiate())
+		var GeneralMap: Node3D = _GeneralMap.instantiate()
+		GeneralMap.area_id = GameState.area_info.id
+		load_world.emit(GeneralMap)
 		equip_sky.emit(GameState.area_info.id, false)
 	
 func _queue_free() -> void: 

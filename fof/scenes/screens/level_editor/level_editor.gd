@@ -1023,7 +1023,7 @@ func create_elevation_fill(tile: Node3D) -> void:
 	
 	for i in range(p[3] - 1, -1, -1):
 		var _tile: Node3D = true_tile_by_position([p[0], p[1], p[2], i])
-		if _tile and _tile.info.tile.id > 0 and ["wall", "obj", "tdeco", "wdeco"].all(func(x: String): return _tile.info[x].id == 0):
+		if _tile and _tile.info.tile.id > 0  and _tile.info.tile.type == 0 and ["wall", "obj", "tdeco", "wdeco"].all(func(x: String): return _tile.info[x].id == 0):
 			if _tile.info.position[3] == 0:
 				on_add_to_history([_tile.info.duplicate(true)], "ELEVATION")
 				on_load_wall(_tile, load_id, 0, 2, p[3], 1)

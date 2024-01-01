@@ -61,9 +61,19 @@ layout_mode = 0
 offset_left = 16.0
 offset_top = 158.0
 offset_right = 905.0
-offset_bottom = 808.0
+offset_bottom = 484.0
 theme = ExtResource("3_cyxrl")
 placeholder_text = "                                              Boon Text"
+wrap_mode = 1
+
+[node name="UpgradedBoonText" type="TextEdit" parent="Contents"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 492.0
+offset_right = 905.0
+offset_bottom = 818.0
+theme = ExtResource("3_cyxrl")
+placeholder_text = "                                    Upgraded Boon Text"
 wrap_mode = 1
 
 [node name="RaritySelector" parent="Contents" instance=ExtResource("4_p0pls")]
@@ -71,7 +81,7 @@ offset_left = 693.0
 offset_top = 4.0
 offset_right = 717.0
 offset_bottom = 67.0
-options = PackedStringArray("Scrap", "Common", "Rare", "Exalt", "Miniboss", "Boss", "Champion")
+options = PackedStringArray("Scrap", "Common", "Rare", "Exalt", "Boss", "Event", "Shop")
 default = 1
 
 [node name="Buttons" type="HBoxContainer" parent="."]

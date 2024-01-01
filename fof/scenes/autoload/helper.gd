@@ -50,6 +50,26 @@ const rarity_accent_colors: Dictionary = {
 	7: "467ace",
 }
 
+const rarity_secondary_colors: Dictionary = {
+	0: "808080",
+	1: "ce9f80",
+	2: "00c48f",
+	3: "ffdd47",
+	4: "ad0000",
+	5: "c27fb7",
+	6: "00bf18",
+}
+
+const rarity_secondary_accent_colors: Dictionary = {
+	0: "606060",
+	1: "825841",
+	2: "00946d",
+	3: "f7ce00",
+	4: "540000",
+	5: "62335b",
+	6: "004c04",
+}
+
 const task_primary_colors: Dictionary = {
 	0: "8fdb6d",
 	1: "f1f829",
@@ -192,8 +212,8 @@ func return_item_dict(item: String, _contents: String) -> Dictionary:
 			"area": keys += ["pcolor", "acolor", "world", "cards"]
 			"card": keys += ["a", "h", "s", "e", "r", "text", "flavor", "aic", "aii", "aiw", "ait", "aia", "height"]
 			"level": keys += ["area", "difficulty", "trinkets", "tiles"]
-			"tool": keys += ["r", "text"]
-			"boon": keys += ["r", "text"]
+			"tool": keys += ["r", "text", "utext"]
+			"boon": keys += ["r", "text", "utext"]
 			"map": keys += ["world", "map_size", "nodes", "arrows"]
 			"trinket", "challenge": keys += ["text"]
 			"task": keys += ["text", "difficulty"]

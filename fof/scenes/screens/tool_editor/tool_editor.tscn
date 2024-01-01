@@ -60,9 +60,19 @@ layout_mode = 0
 offset_left = 19.0
 offset_top = 158.0
 offset_right = 905.0
-offset_bottom = 808.0
+offset_bottom = 484.0
 theme = ExtResource("3_efbk5")
 placeholder_text = "                                               Tool Text"
+wrap_mode = 1
+
+[node name="UpgradedToolText" type="TextEdit" parent="Contents"]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 490.0
+offset_right = 905.0
+offset_bottom = 816.0
+theme = ExtResource("3_efbk5")
+placeholder_text = "                                    Upgraded Tool Text"
 wrap_mode = 1
 
 [node name="RaritySelector" parent="Contents" instance=ExtResource("4_p5skt")]
@@ -70,7 +80,7 @@ offset_left = 693.0
 offset_top = 4.0
 offset_right = 717.0
 offset_bottom = 67.0
-options = PackedStringArray("Scrap", "Common", "Rare", "Exalt", "Miniboss", "Boss", "Champion")
+options = PackedStringArray("Scrap", "Common", "Rare", "Exalt", "Boss", "Event", "Shop")
 default = 1
 
 [node name="Buttons" type="HBoxContainer" parent="."]
