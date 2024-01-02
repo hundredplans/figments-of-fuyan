@@ -11,6 +11,7 @@ func _ready() -> void:
 	$HeroDescription.text = Heroes.hid_description[hid]
 	
 	var card: Control = preload("res://assets/base_game/cards/card/card.tscn").instantiate()
+	card.Heroes = Heroes
 	card.set_info(Helper.id_to_dict(Heroes.hid_to_base(hid), "Card"))
 	card.position = Vector2(42, 709)
 	card.mouse_filter = Control.MOUSE_FILTER_PASS
