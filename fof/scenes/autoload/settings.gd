@@ -75,6 +75,7 @@ func set_fps(i: int):
 func set_windowmode(i: int):
 	var setting_info: Array = [DisplayServer.WINDOW_MODE_WINDOWED, DisplayServer.WINDOW_MODE_FULLSCREEN, DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN]
 	DisplayServer.window_set_mode(setting_info[i])
+	
 func set_resolution(i: int):
 	var setting_info: Array = [Vector2i(1920, 1080)]
 	DisplayServer.window_set_size(setting_info[i])
