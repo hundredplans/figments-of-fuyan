@@ -1,11 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://cjbklqywt785i"]
+[gd_scene load_steps=4 format=3 uid="uid://cjbklqywt785i"]
 
 [ext_resource type="Script" path="res://assets/env/area_map/general_map.gd" id="1_qx6l4"]
 [ext_resource type="Script" path="res://scenes/world/movement_camera.gd" id="2_4jbqf"]
+[ext_resource type="Script" path="res://static/game_info/heroes.gd" id="2_xlvcw"]
 
 [node name="GeneralMap" type="Node3D"]
 script = ExtResource("1_qx6l4")
 
+[node name="Heroes" type="Node" parent="."]
+script = ExtResource("2_xlvcw")
+
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.56631, 0)
+transform = Transform3D(1, 0, 0, 0, 0.258819, 0.965926, 0, -0.965926, 0.258819, 0, 6, 0)
 script = ExtResource("2_4jbqf")

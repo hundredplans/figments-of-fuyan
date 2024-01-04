@@ -11,6 +11,6 @@ func _on_focus_exited():
 		else:
 			has_checked = false
 			text = "" 
-			AudioMaster.play_sfx(preload("res://assets/sounds/confirmation/unconfirm_default.wav"), -10)
+			AudioMaster.play_sfx("unconfirm_default")
 
 func _on_text_changed(__: String): has_checked = false

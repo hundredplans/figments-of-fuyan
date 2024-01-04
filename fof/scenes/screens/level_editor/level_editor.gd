@@ -76,7 +76,7 @@ func _ready() -> void:
 	
 	for btn in [ArrowButton, $BuildMenu/LoadedMenu/PRLeftArrow, $BuildMenu/LoadedMenu/PRRightArrow, $HistoryMenu/PRLeft, $HistoryMenu/PRRight]:
 		Helper.create_button_clickmask(btn)
-		btn.pressed.connect((func(): AudioMaster.play_sfx(preload("res://scenes/ui_general/arrow/woosh.wav"))))
+		btn.pressed.connect((func(): AudioMaster.play_sfx("woosh")))
 	BuildMenu.get_node("WarningLabel").text = "Make sure to load in an area, silly!"
 	BuildMenu.get_node("Tabs").visible = false
 	BuildMenu.get_node("LoadedMenu").visible = false
@@ -494,8 +494,8 @@ func _on_save_level_pressed(play_sfx: bool = true, create_temp: int = 1):
 				children.append(tile)
 		var contents: String = "%s\n%s\n%s\n%s\n" % [loaded_area.id, level_difficulty, trinket_amount, children.map(func(x: Node3D): return x.info)]
 		match Helper.write_to_base_game_file(FILE_LOADER_NAME, EditFileName, contents, TID):
-			{}: if play_sfx: AudioMaster.play_sfx(preload("res://assets/sounds/confirmation/unconfirm_default.wav"), -10)
-			_: if play_sfx: AudioMaster.play_sfx(preload("res://assets/sounds/confirmation/confirm_default.wav"), -10)
+			{}: if play_sfx: AudioMaster.play_sfx("unconfirm_default")
+			_: if play_sfx: AudioMaster.play_sfx("confirm_default")
 		
 		if Settings.clear_backup_files_array[Settings.clear_backup_files] != 0:
 			Helper.write_to_file("user://save/temp/levels/", EditFileName.get_node("Showcase").text + ["", "_save", "_override"][create_temp], ".txt", contents)

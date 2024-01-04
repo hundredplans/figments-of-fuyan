@@ -130,7 +130,7 @@ func on_item_selected(item_info: Dictionary, change_rarity: bool = true) -> void
 		texture_path = card_texture_path
 	$CardCreator/Art.texture = load(texture_path)
 	
-	on_load_model( hero_bgfn)
+	on_load_model(hero_bgfn)
 	
 	if change_rarity:
 		_on_choose_rarity_item_selected(item_info.r)
@@ -143,6 +143,7 @@ func on_item_selected(item_info: Dictionary, change_rarity: bool = true) -> void
 func _on_delete_card_pressed():
 	Helper.on_delete_item(FILE_LOADER_NAME, str(ID), Internal, self, Settings.cards_can_delete_directory)
 
+var _Roboto20: Theme = preload("res://assets/UI/roboto/roboto20.tres")
 func on_load_model(bgfn: String) -> void:
 	for child in ModelWorld.get_node("Model").get_children():
 		child.queue_free()
@@ -151,8 +152,23 @@ func on_load_model(bgfn: String) -> void:
 	var card_model_path: String = "res://assets/base_game/cards/" + bgfn + "/model.glb"
 	if FileAccess.file_exists(card_model_path):
 		model_path = card_model_path
-	ModelWorld.get_node("Model").add_child(load(model_path).instantiate())
+		
+	var model: Node3D = load(model_path).instantiate()
+	ModelWorld.get_node("Model").add_child(model)
+	
+	for button in $ModelControls.get_children(): button.queue_free()
+	if model.has_node("AnimationPlayer"):
+		var ani_player: AnimationPlayer = model.get_node("AnimationPlayer")
+		for ani in ani_player.get_animation_library("").get_animation_list():
+			var btn := Button.new()
+			btn.text = ani
+			btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			btn.theme = _Roboto20
+			btn.pressed.connect(on_play_model_animation.bind(ani_player, ani))
+			$ModelControls.add_child(btn)
 
+func on_play_model_animation(ani_player: AnimationPlayer, ani: String) -> void:
+	ani_player.play(ani)
 
 func _on_model_viewer_button_button_down():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED

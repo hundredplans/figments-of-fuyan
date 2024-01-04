@@ -13,7 +13,7 @@
 
 [sub_resource type="World3D" id="World3D_8b6j0"]
 
-[node name="CardEditor" type="Control"]
+[node name="CardEditor" type="Control" node_paths=PackedStringArray("CardText", "FlavorText")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -21,6 +21,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_hv8xs")
+CardText = NodePath("CardCreator/CardText")
+FlavorText = NodePath("CardCreator/FlavorText")
 
 [node name="Heroes" type="Node" parent="."]
 script = ExtResource("1_5aclk")
@@ -253,6 +255,13 @@ offset_right = -405.0
 offset_bottom = 156.0
 text = "New Card"
 
+[node name="GreenScreen" type="ColorRect" parent="."]
+layout_mode = 0
+offset_top = 145.0
+offset_right = 631.0
+offset_bottom = 795.0
+color = Color(0, 0, 0, 1)
+
 [node name="ModelViewer" type="SubViewportContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
@@ -297,6 +306,13 @@ offset_top = 145.0
 offset_right = 631.0
 offset_bottom = 795.0
 button_mask = 2
+
+[node name="ModelControls" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_top = 715.0
+offset_right = 631.0
+offset_bottom = 795.0
+theme_override_constants/separation = 0
 
 [connection signal="text_submitted" from="CardCreator/EditFileName" to="." method="_on_edit_file_name_text_submitted"]
 [connection signal="item_selected" from="CardCreator/ChooseRarity" to="." method="_on_choose_rarity_item_selected"]

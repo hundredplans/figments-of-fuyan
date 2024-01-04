@@ -28,7 +28,7 @@ func _on_save_encounter_pressed():
 		var contents: String = "%s\n%s" % [$Contents/EncounterText.text.replace("\n", " "), $EncounterOptions.get_children().map(func(x: TextEdit): return x.text)]
 		Helper.create_base_game_id_dir(Helper.write_to_base_game_file(FILE_LOADER_NAME, $Contents/EditFileName, contents, TID), FILE_LOADER_NAME)
 	else:
-		AudioMaster.play_sfx(preload("res://assets/sounds/confirmation/unconfirm_default.wav"), -10)
+		AudioMaster.play_sfx("unconfirm_default")
 		print_debug("One of your text boxes is empty!")
 		
 func _on_load_encounter_pressed():

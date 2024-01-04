@@ -26,12 +26,8 @@ func set_text(itext: String, stext:String="") -> void:
 		itext, "": $Showcase.text = itext
 		_: $Showcase.text = stext; _on_showcase_text_changed("")
 	on_reset_set_id()
-	
-@onready var lock_open_sfx: AudioStreamWAV = preload("res://scenes/editor/edit_file_name/lock_button/lock_closed_sfx.wav")
-@onready var lock_closed_sfx: AudioStreamWAV = preload("res://scenes/editor/edit_file_name/lock_button/lock_open_sfx.wav")
-	
-func on_play_lock_open_sound_effect(): AudioMaster.play_sfx(lock_open_sfx, -15)
-func on_play_lock_closed_sound_effect(): AudioMaster.play_sfx(lock_closed_sfx)
+func on_play_lock_open_sound_effect(): AudioMaster.play_sfx("lock_open")
+func on_play_lock_closed_sound_effect(): AudioMaster.play_sfx("lock_closed")
 
 func _on_text_submitted(__: String):
 	$Internal.release_focus()

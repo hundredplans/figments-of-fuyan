@@ -82,6 +82,10 @@ const task_accent_colors: Dictionary = {
 	2: "ad3e21",
 }
 
+const area_to_default_ground: Dictionary = {
+	1: "sand_walk"
+}
+
 func call_method(node: Node, method: String, args: Array) -> bool:
 	if node.has_method(method):
 		node.call(method, args)

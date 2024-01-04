@@ -13,7 +13,7 @@ func on_load_save_file(info: Dictionary, area_info: Dictionary) -> void:
 	$Background/Inside.color = area_info.pcolor
 	$SaveInfo/ShillingCounter.set_shilling_count(info.shillings)
 	$SaveInfo/HeroArt.texture = load("res://assets/base_game/cards/" + Helper.id_to_bgfn(Heroes.hid_to_base(info.hero_id), "Card") + "/art_max.png")
-	$SaveInfo/Progress.text = str(area_info.world) + "-" + str(info.map_progress)
+	$SaveInfo/Progress.text = str(area_info.world) + "-" + str(abs(info.map_progress[1] - 10))
 	$SaveInfo/Seed.text = str(info.gseed)
 	
 	match info.level_id:

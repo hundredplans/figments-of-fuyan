@@ -12,5 +12,5 @@ func _ready() -> void:
 		$Label.position.x += 200
 
 func _on_button_pressed():
-	AudioMaster.play_sfx(preload("res://scenes/screens/main_menu/equipped_theme/0/click.wav"))
+	AudioMaster.play_sfx("mouse_click")
 	pressed.emit()

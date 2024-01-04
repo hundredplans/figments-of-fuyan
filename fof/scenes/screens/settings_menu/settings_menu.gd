@@ -88,7 +88,7 @@ func on_center_selected_card(i: int) -> void:
 		var top_value: String = card_order[4]
 		card_order[4] = card_order[i]
 		card_order[i] = top_value
-		AudioMaster.play_sfx(preload("res://scenes/screens/settings_menu/card_flip.wav"))
+		AudioMaster.play_sfx("page_flip")
 
 func on_card_move_halfway(method: Callable, card: Control, i: int) -> void:
 	method.call()

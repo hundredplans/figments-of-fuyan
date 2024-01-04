@@ -8,7 +8,7 @@ var save_file: int = 0
 var area_info: Dictionary
 var map_info: Dictionary
 var level_info: Dictionary = {"id": 0}
-var map_progress: int = 0
+var map_progress := Vector2(1, 10)
 var shillings: int = 0
 var hero_level: int = 0
 var hero_id: int = 0
@@ -19,7 +19,7 @@ func on_set_info(info: Dictionary) -> void:
 	area_info = Helper.id_to_dict(info.area_id, "Area")
 	map_info = Helper.id_to_dict(info.map_id, "Map")
 	level_info = {"id": 0} if info.level_id == 0 else {} # load in level info here using map progress
-	map_progress = info.map_progress
+	map_progress = Vector2(info.map_progress[0], info.map_progress[1])
 	shillings = info.shillings
 	hero_level = info.hero_level
 	hero_id = info.hero_id
@@ -43,7 +43,7 @@ func on_save_game_state() -> void:
 		area_info.id,
 		map_info.id,
 		level_info.id,
-		map_progress,
+		[map_progress.x, map_progress.y],
 		shillings, 
 		hero_level, 
 		hero_id,

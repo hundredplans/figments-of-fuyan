@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://bsgpqkqigebmp"]
+
+[ext_resource type="Script" path="res://scenes/screens/map_menu/node_select_box.gd" id="1_5ljnq"]
+
+[node name="NodeSelectBox" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 175.0
+offset_bottom = 250.0
+script = ExtResource("1_5ljnq")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

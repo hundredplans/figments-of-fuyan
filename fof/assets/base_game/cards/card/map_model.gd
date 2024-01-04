@@ -1,0 +1,46 @@
+extends Node3D
+
+@export var ROTATION_TIME: float = 2
+@export var BLEND_TIME: float = 0.3
+@export var TRAVEL_TIME: float = 1.2
+
+@onready var AniP: AnimationPlayer = $AnimationPlayer
+func _ready() -> void:
+	AniP.animation_finished.connect(on_anip_animation_finished)
+	AniP.play("Idle")
+	rotation_degrees.y = -180
+
+var move_position: Vector3
+var is_walk_animation: int = 0
+func move_to(pos: Vector3, rot: int) -> void:
+	rotation_degrees.y = -180 + rot
+	is_walk_animation = 1
+	move_position = pos
+	
+func _physics_process(_delta: float) -> void:
+	match is_walk_animation:
+		1:
+			var MoveTween: Tween = get_tree().create_tween()
+			MoveTween.tween_property(self, "global_position", move_position, TRAVEL_TIME)
+			MoveTween.finished.connect(on_anip_animation_finished.bind("Walk"))
+			AniP.play("Walk", BLEND_TIME)
+			is_walk_animation = 0
+	
+var t: float = 0
+var rotate_interpolate: bool = false
+func _process(delta: float) -> void:
+	if rotate_interpolate:
+		t += delta
+		rotation.y = rotation.y + (PI - rotation.y) * min((t / ROTATION_TIME), 1)
+		if t >= ROTATION_TIME: t = 0; rotate_interpolate = false
+	
+func on_anip_animation_finished(ani_name: String = "") -> void:
+	if ani_name != "Death": AniP.play("Idle", BLEND_TIME)
+	if rotation.y < 0: rotation.y += (2 * PI)
+	rotate_interpolate = true
+
+func on_add_walk_sfx(area_id: int) -> void:
+	var walk_ani: Animation = AniP.get_animation("Walk")
+	var ti: int = walk_ani.add_track(Animation.TYPE_AUDIO)
+	walk_ani.track_set_path(ti, AudioMaster.WalkStreamPlayer.get_path())
+	walk_ani.audio_track_insert_key(ti, 0, AudioMaster.sfx_library[Helper.area_to_default_ground[area_id]][0])
