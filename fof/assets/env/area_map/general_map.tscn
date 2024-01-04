@@ -13,3 +13,13 @@ script = ExtResource("2_xlvcw")
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.258819, 0.965926, 0, -0.965926, 0.258819, 0, 6, 0)
 script = ExtResource("2_4jbqf")
+
+[node name="HeavenlyLight" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+visible = false
+light_energy = 20.0
+light_indirect_energy = 3.0
+spot_range = 20.0
+spot_attenuation = 1.27456
+spot_angle = 41.47
+spot_angle_attenuation = 1.68179

@@ -86,6 +86,15 @@ const area_to_default_ground: Dictionary = {
 	1: "sand_walk"
 }
 
+const node_type_to_light: Dictionary = {
+	1: "727272",
+	2: "ff4239",
+	3: "b409b7",
+	4: "93001d",
+	5: "ffcc09",
+	6: "1af90d",
+}
+
 func call_method(node: Node, method: String, args: Array) -> bool:
 	if node.has_method(method):
 		node.call(method, args)

@@ -1,5 +1,6 @@
 extends Node3D
 
+signal champion_arrived
 @export var ROTATION_TIME: float = 2
 @export var BLEND_TIME: float = 0.3
 @export var TRAVEL_TIME: float = 1.2
@@ -22,7 +23,7 @@ func _physics_process(_delta: float) -> void:
 		1:
 			var MoveTween: Tween = get_tree().create_tween()
 			MoveTween.tween_property(self, "global_position", move_position, TRAVEL_TIME)
-			MoveTween.finished.connect(on_anip_animation_finished.bind("Walk"))
+			MoveTween.finished.connect(on_walk_animation_finished)
 			AniP.play("Walk", BLEND_TIME)
 			is_walk_animation = 0
 	
@@ -33,6 +34,10 @@ func _process(delta: float) -> void:
 		t += delta
 		rotation.y = rotation.y + (PI - rotation.y) * min((t / ROTATION_TIME), 1)
 		if t >= ROTATION_TIME: t = 0; rotate_interpolate = false
+	
+func on_walk_animation_finished() -> void:
+	on_anip_animation_finished("Walk")
+	champion_arrived.emit()
 	
 func on_anip_animation_finished(ani_name: String = "") -> void:
 	if ani_name != "Death": AniP.play("Idle", BLEND_TIME)
