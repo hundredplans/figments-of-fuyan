@@ -40,7 +40,8 @@ func on_anip_animation_finished(ani_name: String = "") -> void:
 	rotate_interpolate = true
 
 func on_add_walk_sfx(area_id: int) -> void:
-	var walk_ani: Animation = AniP.get_animation("Walk")
-	var ti: int = walk_ani.add_track(Animation.TYPE_AUDIO)
-	walk_ani.track_set_path(ti, AudioMaster.WalkStreamPlayer.get_path())
-	walk_ani.audio_track_insert_key(ti, 0, AudioMaster.sfx_library[Helper.area_to_default_ground[area_id]][0])
+	AniP.animation_started.connect(on_animation_play_walk_sfx.bind(area_id))
+
+func on_animation_play_walk_sfx(ani_name: String, area_id: int) -> void:
+	if ani_name == "Walk":
+		AudioMaster.play_sfx(Helper.area_to_default_ground[area_id], 0, TRAVEL_TIME)

@@ -24,8 +24,3 @@ bus = &"SFX"
 
 [node name="AudioStreamPlayer5" type="AudioStreamPlayer" parent="SFXContainer"]
 bus = &"SFX"
-
-[node name="SFXDedicated" type="Node" parent="."]
-
-[node name="WalkStreamPlayer" type="AudioStreamPlayer" parent="SFXDedicated"]
-bus = &"SFX"
