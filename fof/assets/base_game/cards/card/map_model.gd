@@ -13,8 +13,8 @@ func _ready() -> void:
 
 var move_position: Vector3
 var is_walk_animation: int = 0
-func move_to(pos: Vector3, rot: int) -> void:
-	rotation_degrees.y = -180 + rot
+func move_to(pos: Vector3) -> void:
+	look_at(pos, Vector3(0, 1, 0), true)
 	is_walk_animation = 1
 	move_position = pos
 	

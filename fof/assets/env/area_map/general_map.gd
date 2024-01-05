@@ -1,35 +1,43 @@
 extends Node3D
 
+@onready var Nodes: Node3D = $Nodes
 @onready var HeavenlyLight: SpotLight3D = $HeavenlyLight
 @onready var Heroes: Node = $Heroes
 var GameState: Node
-var AreaMap: Node3D
+var node_amount: int = 0
+var row_nodes: Array = []
 
 func _ready():
-	AreaMap = load("res://assets/base_game/areas/" + Helper.id_to_dict(GameState.area_info.id, "Area").bgfn + "/area_map.tscn").instantiate()
-	add_child(AreaMap)
+	add_child(load("res://assets/base_game/areas/" + Helper.id_to_dict(GameState.area_info.id, "Area").bgfn + "/area_map.tscn").instantiate())
+	add_node_row()
 	
-	var Markers: Node3D = AreaMap.get_node("Markers")
-	var map_info: Dictionary = Helper.id_to_dict(GameState.map_info.id, "Map")
-	for node_info in map_info.nodes:
-		if node_info[0] != 0:
-			Markers.get_child(node_info[2]).get_child(node_info[1]).add_child(\
-			load("res://assets/env/area_map/map_nodes/" + str(node_info[0]) +".glb").instantiate())
-	
-	if GameState.map_progress.y < GameState.map_info.map_size: 
-		$Camera3D.position = Vector3(0, $Camera3D.position.y,\
-		Markers.get_node(str(GameState.map_progress.y - 1)).get_node(str(GameState.map_progress.x)).global_position.z + 4.5)
-		Markers.get_node(str(GameState.map_progress.y)).visible = false
-		
-		var is_marker_visible: bool = false
-		for i in range(0, 3):
-			is_marker_visible = false
-			for node_info in GameState.map_info.arrows:
-				if Vector2(node_info[0][0], node_info[0][1]) == GameState.map_progress and node_info[1][0] == i:
-					is_marker_visible = true
-					break
-			Markers.get_node(str(GameState.map_progress.y - 1)).get_node(str(i)).visible = is_marker_visible
+	$Camera3D.position.z = Nodes.position.z + 4.5
 	on_load_base_hero()
+
+const NodeModelPositions: Array = [
+	[0],
+	[-2, 2],
+	[-4, 0, 4],
+]
+
+func add_node_row() -> void:
+	row_nodes = GameState.map_info.nodes.filter(func(x: Array): return x[2] == GameState.map_progress.y - 1 and on_node_arrow_exists(x))
+	node_amount = row_nodes.size()
+	Nodes.position.z = abs(GameState.map_progress.y - 1 - GameState.map_info.map_size) * -4.5
+	
+	for i in range(node_amount):
+		var NodeModel: Node3D = load("res://assets/env/area_map/map_nodes/" + str(row_nodes[i][0]) +".glb").instantiate()
+		Nodes.add_child(NodeModel)
+		NodeModel.rotation_degrees.x = -75
+		NodeModel.position.x = NodeModelPositions[node_amount - 1][i]
+		NodeModel.script = preload("res://assets/env/area_map/map_nodes/map_node.gd")
+		NodeModel.node_type = row_nodes[i][0]
+	
+func on_node_arrow_exists(node_info: Array) -> bool:
+	if GameState.map_progress.y < GameState.map_info.map_size:
+		return GameState.map_info.arrows.any(func(x: Array): return Vector2(x[0][0], x[0][1]) == GameState.map_progress\
+		and Vector2(node_info[1], node_info[2]) == Vector2(x[1][0], x[1][1]))
+	return true
 
 var HeroModel: Node3D
 func on_load_base_hero() -> void:
@@ -44,20 +52,17 @@ func on_load_base_hero() -> void:
 	model.on_add_walk_sfx(GameState.area_info.id)
 	model.champion_arrived.connect(on_champion_arrived)
 
-func on_node_selected(i: int) -> void:
-	GameState.map_progress.x = i
+func on_node_selected(id: int, index: int) -> void:
+	GameState.map_progress.x = id
 	GameState.map_progress.y -= 1
-	
-	var marker_node: Marker3D = AreaMap.get_node("Markers").get_node(str(GameState.map_progress.y)).get_node(str(i))
-	HeroModel.move_to(marker_node.global_position, (i - 1) * -30)
+	HeroModel.move_to(Nodes.get_child(index).global_position)
 
-func on_node_hovered(state: bool, id: int) -> void:
+func on_node_hovered(state: bool, index: int) -> void:
 	HeavenlyLight.visible = state
 	if state:
-		var marker_node: Marker3D = AreaMap.get_node("Markers").get_node(str(GameState.map_progress.y - 1)).get_node(str(id))
-		var node_type: int = int(str(marker_node.get_child(0).name))
-		HeavenlyLight.light_color = Helper.node_type_to_light[node_type]
-		HeavenlyLight.position = Vector3(marker_node.global_position.x, marker_node.global_position.y + 2, marker_node.global_position.z - 1)
+		var NodeModel: Node3D = Nodes.get_child(index)
+		HeavenlyLight.light_color = Helper.node_type_to_light[NodeModel.node_type]
+		HeavenlyLight.position = Vector3(NodeModel.global_position.x, NodeModel.global_position.y + 2, NodeModel.global_position.z - 1)
 
 func on_champion_arrived() -> void:
 	pass
