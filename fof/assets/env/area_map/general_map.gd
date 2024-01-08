@@ -1,5 +1,6 @@
 extends Node3D
 
+signal champion_arrived
 @onready var Nodes: Node3D = $Nodes
 @onready var HeavenlyLight: SpotLight3D = $HeavenlyLight
 @onready var Heroes: Node = $Heroes
@@ -65,4 +66,5 @@ func on_node_hovered(state: bool, index: int) -> void:
 		HeavenlyLight.position = Vector3(NodeModel.global_position.x, NodeModel.global_position.y + 2, NodeModel.global_position.z - 1)
 
 func on_champion_arrived() -> void:
-	pass
+	var index: int = Nodes.get_child(GameState.map_progress.x).node_type
+	champion_arrived.emit(index)

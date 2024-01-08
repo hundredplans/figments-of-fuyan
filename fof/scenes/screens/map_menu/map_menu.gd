@@ -1,7 +1,9 @@
 extends Control
 
+signal screen_change_sig
 signal equip_sky
 signal load_world
+
 var GameState: Node
 
 var GeneralMap: Node3D
@@ -15,11 +17,13 @@ const NodeSelectVariations: Array = [
 
 var _NodeSelectorBox: PackedScene = preload("res://scenes/screens/map_menu/node_select_box.tscn")
 func _ready() -> void:
+	$MiniMap.on_load_minimap(GameState)
 	$SeedLabel.text = str(GameState.gseed)
 	$ShillingCounter.set_shilling_count(GameState.shillings)
 	
 	if !Helper.settings_loaded:
 		GeneralMap = _GeneralMap.instantiate()
+		GeneralMap.champion_arrived.connect(on_champion_arrived)
 		GeneralMap.GameState = GameState
 		load_world.emit(GeneralMap)
 		equip_sky.emit(GameState.area_info.id, false)
@@ -47,3 +51,10 @@ func on_node_selected(id: int, index: int) -> void: # here in case i need more s
 
 func on_node_hovered(state: bool, id: int) -> void:
 	GeneralMap.on_node_hovered(state, id)
+
+const INDEX_TO_SCREEN: Dictionary = {
+	1: "res://scenes/screens/level/level.tscn"
+}
+
+func on_champion_arrived(index: int) -> void:
+	screen_change_sig.emit(INDEX_TO_SCREEN[index])

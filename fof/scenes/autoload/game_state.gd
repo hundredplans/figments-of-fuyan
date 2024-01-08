@@ -14,11 +14,13 @@ var hero_level: int = 0
 var hero_id: int = 0
 var gseed: int = 0
 
+var history: Array = []
+
 func on_set_info(info: Dictionary) -> void:
 	save_file = info.save_file
 	area_info = Helper.id_to_dict(info.area_id, "Area")
 	map_info = Helper.id_to_dict(info.map_id, "Map")
-	level_info = {"id": 0} if info.level_id == 0 else {} # load in level info here using map progress
+	level_info = {"id": 0} if info.level_id == 0 else Helper.id_to_dict(info.level_id, "Level")
 	map_progress = Vector2(info.map_progress[0], info.map_progress[1])
 	shillings = info.shillings
 	hero_level = info.hero_level
@@ -48,6 +50,7 @@ func on_save_game_state() -> void:
 		hero_level, 
 		hero_id,
 		gseed,
+		history,
 		]
 		
 	for i in range(array_contents.size()):

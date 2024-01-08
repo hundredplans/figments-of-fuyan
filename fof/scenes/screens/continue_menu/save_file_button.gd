@@ -2,6 +2,7 @@ extends Control
 
 signal pressed
 var Heroes: Node
+var level_id: int = 0
 var can_press: bool = false
 
 func on_load_save_file(info: Dictionary, area_info: Dictionary) -> void:
@@ -16,6 +17,7 @@ func on_load_save_file(info: Dictionary, area_info: Dictionary) -> void:
 	$SaveInfo/Progress.text = str(area_info.world) + "-" + str(abs(info.map_progress[1] - 10))
 	$SaveInfo/Seed.text = str(info.gseed)
 	
+	level_id = info.level_id
 	match info.level_id:
 		0: $SaveInfo/Status.text = "World Map"
 		_: $SaveInfo/Status.text = "In Battle"

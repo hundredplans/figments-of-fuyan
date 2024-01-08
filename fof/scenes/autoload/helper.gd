@@ -325,7 +325,7 @@ var _id_to: Array = [
 	
 	["null", "wall", "wooden_wall"],
 	
-	["null", "shrub", "tree", "rock", "skeletons/skull", "skeletons/graveyard_fence", "skeletons/graveyard_gate", "skeletons/pumpkin"],
+	["null", "shrub", "tree", "rock", "skeletons/skull", "skeletons/graveyard_fence", "skeletons/graveyard_gate", "skeletons/pumpkin", "palms/palm_tree"],
 	
 	["null", "lamp"]]
 	
@@ -455,6 +455,7 @@ var save_file_keys: Array = [
 	"hero_level",
 	"hero_id",
 	"gseed",
+	"history",
 ]
 func on_save_file_contents(i: int) -> Dictionary:
 	var contents: Array = return_file_contents("user://save/save_files/" + str(i) + ".txt").split("\n", false)
@@ -463,3 +464,10 @@ func on_save_file_contents(i: int) -> Dictionary:
 	return {}
 
 var settings_loaded: bool = false
+const TYPE_TO_BTAB: Dictionary = {
+	"tile": 0,
+	"obj": 1,
+	"wall": 2,
+	"tdeco": 3,
+	"wdeco": 4,
+}

@@ -51,7 +51,7 @@ func on_item_ready() -> void:
 	var search_options: PackedStringArray = []
 	match item_name:
 		"area": search_options = ["World"]
-		"card": search_options = ["Rarity", "Attack", "Health", "Speed", "Energy", "Confidence", "Intelligence", "Awareness", "Teamwork", "Adventurousness", "Ability"]
+		"card": search_options = ["Rarity", "Attack", "Health", "Speed", "Energy", "Confidence", "Intelligence", "Awareness", "Teamwork", "Adventurousness", "Ability", "Area"]
 		"level": search_options = ["Area"]
 		"tool": search_options = ["Rarity"]
 		"boon": search_options = ["Rarity"]
@@ -79,6 +79,7 @@ func refresh_search() -> void:
 	page = 0
 	on_reload_page(0)
 
+var areas: Array = Helper.on_item_dicts("Area")
 func match_search_item_selected(item_dict: Dictionary) -> bool:
 	match search_item_selected:
 		0: return item_dict.sname.to_lower().begins_with(SearchEdit.text.to_lower())
@@ -107,6 +108,12 @@ func match_search_item_selected(item_dict: Dictionary) -> bool:
 			for i in contents.split("\n", false):
 				if i.begins_with(SearchEdit.text) and ltext.contains(i):
 					return true
+		14:
+			var area: Dictionary = Helper.id_to_dict(int(SearchEdit.text), "Area")
+			if area: return item_dict.id in area.cards
+			
+			var _areas: Array = areas.filter(func(x: Dictionary): return x.sname.to_lower().begins_with(SearchEdit.text.to_lower()))
+			if _areas: return item_dict.id in _areas[0].cards
 	return false
 
 func _on_search_edit_text_changed(__: String):

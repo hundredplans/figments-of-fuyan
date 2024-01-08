@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://k204oklklmgl"]
+
+[ext_resource type="Script" path="res://scenes/screens/level/level_map.gd" id="1_eqsu1"]
+[ext_resource type="Script" path="res://scenes/world/movement_camera.gd" id="2_3vwdb"]
+
+[node name="LevelMap" type="Node3D"]
+script = ExtResource("1_eqsu1")
+
+[node name="UnitCamera" type="Camera3D" parent="."]
+script = ExtResource("2_3vwdb")
+
+[node name="Tiles" type="Node3D" parent="."]
+
+[node name="Units" type="Node3D" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.960789, 0.277281, 0, -0.277281, 0.960789, 0, 0, 0)

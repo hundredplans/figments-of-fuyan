@@ -18,7 +18,10 @@ func _ready() -> void:
 
 func on_save_file_pressed(index: int) -> void:
 	Helper.on_load_game_state(index)
-	screen_change_sig.emit("res://scenes/screens/map_menu/map_menu.tscn")
+	
+	if get_node("SaveFiles").get_child(index - 1).level_id == 0: screen_change_sig.emit("res://scenes/screens/map_menu/map_menu.tscn")
+	else: screen_change_sig.emit("res://scenes/screens/level/level.tscn")
+	
 
 var save_file_index: int = 0
 var _DeletePrompt: PackedScene = preload("res://scenes/editor/delete_prompt/delete_prompt.tscn")
