@@ -1,7 +1,7 @@
 extends Node3D
 
 var area: int = 0
-var tile_info: Dictionary
+@export var tile_info: Dictionary
 func on_load_info(type: String) -> void:
 	type = type.to_lower()
 	match type:
