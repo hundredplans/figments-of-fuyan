@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://gepsuoyh2fqo"]
+
+[ext_resource type="Script" path="res://scenes/world/movement_camera.gd" id="1_xoy6l"]
+
+[node name="LightTester" type="Node3D"]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+script = ExtResource("1_xoy6l")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]

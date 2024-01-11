@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://dgmftd8tyn1h7"]
+
+[node name="LoadedLevel" type="Node3D"]
+
+[node name="Lights" type="Node3D" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Lights"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, 0)
+
+[node name="Tiles" type="Node3D" parent="."]

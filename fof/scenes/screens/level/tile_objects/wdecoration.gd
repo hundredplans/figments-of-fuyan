@@ -1,5 +1,5 @@
 extends Node3D
-
+var type: String = "wdeco"
 func on_load_info(info: Dictionary, btab: int) -> void:
 	for child in get_children(): child.queue_free()
 	

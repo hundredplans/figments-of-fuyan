@@ -37,7 +37,7 @@ outline_color = Color(0, 0, 0, 1)
 size = Vector2(70, 823)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ayxxt"]
-size = Vector2(986, 175)
+size = Vector2(988, 175)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ncy6r"]
 size = Vector2(1444, 367)
@@ -146,7 +146,7 @@ text = "Save Level"
 
 [node name="InfoMenu" type="Control" parent="."]
 anchors_preset = 0
-offset_right = 986.0
+offset_right = 988.0
 offset_bottom = 175.0
 mouse_filter = 1
 
@@ -231,6 +231,15 @@ offset_right = 847.0
 offset_bottom = 155.0
 mouse_filter = 2
 ItemNAME = "Level"
+
+[node name="BakeLevel" type="Button" parent="InfoMenu"]
+layout_mode = 0
+offset_left = 606.0
+offset_top = 100.0
+offset_right = 770.0
+offset_bottom = 146.0
+theme = ExtResource("3_hyt8o")
+text = "Bake Level"
 
 [node name="BuildMenu" type="Control" parent="."]
 anchors_preset = 0
@@ -777,7 +786,7 @@ position = Vector2(35, 624.5)
 shape = SubResource("RectangleShape2D_oppik")
 
 [node name="InfoMenu" type="CollisionShape2D" parent="MouseBlockers"]
-position = Vector2(493, 87.5)
+position = Vector2(494, 87.5)
 shape = SubResource("RectangleShape2D_ayxxt")
 
 [node name="BuildMenu" type="CollisionShape2D" parent="MouseBlockers"]
@@ -804,6 +813,7 @@ one_shot = true
 [connection signal="pressed" from="InfoMenu/PRArrow" to="." method="_on_arrow_button_pressed"]
 [connection signal="item_selected" from="InfoMenu/TrinketAmount" to="." method="_on_trinket_amount_item_selected"]
 [connection signal="text_submitted" from="InfoMenu/EditFileName" to="." method="_on_save_level_pressed"]
+[connection signal="pressed" from="InfoMenu/BakeLevel" to="." method="_on_bake_level_pressed"]
 [connection signal="pressed" from="BuildMenu/Tabs/Tabs/TileTab" to="." method="on_load_tab" binds= [0]]
 [connection signal="pressed" from="BuildMenu/Tabs/Tabs/ObjectTab" to="." method="on_load_tab" binds= [1]]
 [connection signal="pressed" from="BuildMenu/Tabs/Tabs/WallTab" to="." method="on_load_tab" binds= [2]]

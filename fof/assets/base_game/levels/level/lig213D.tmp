@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://gepsuoyh2fqo"]
+
+[ext_resource type="Script" path="res://assets/base_game/levels/level/light_tester.gd" id="1_mmjdb"]
+[ext_resource type="Script" path="res://scenes/world/movement_camera.gd" id="1_xoy6l"]
+[ext_resource type="PackedScene" uid="uid://b3hj16q5pn85k" path="res://assets/base_game/levels/1 - PalmTestLevel1/loaded_level.tscn" id="2_gr28v"]
+
+[node name="LightTester" type="Node3D"]
+script = ExtResource("1_mmjdb")
+
+[node name="PlaceLevelHere" type="Node3D" parent="."]
+
+[node name="LoadedLevel" parent="PlaceLevelHere" instance=ExtResource("2_gr28v")]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+script = ExtResource("1_xoy6l")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]

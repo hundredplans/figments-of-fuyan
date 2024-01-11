@@ -1,5 +1,6 @@
 extends Node3D
 
+var type: String = "wall"
 func on_load_info(info: Dictionary, area: int) -> void:
 	for child in get_children(): child.queue_free()
 	

@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bgbyoyqx40n27" path="res://assets/base_game/cards/card/default_art_max.png" id="2_871jw"]
 [ext_resource type="FontFile" uid="uid://dnq2ul3ia4hy3" path="res://assets/UI/lora/Lora-Bold.ttf" id="2_iho42"]
 [ext_resource type="FontFile" uid="uid://7k4xd8s0oed2" path="res://assets/UI/roboto/roboto.ttf" id="3_3275s"]
-[ext_resource type="Texture2D" uid="uid://bkbfqv388ygnu" path="res://assets/base_game/cards/card/rarity/4.png" id="3_evifo"]
+[ext_resource type="Texture2D" uid="uid://b12571j4xxx3a" path="res://assets/base_game/cards/card/rarity/6.png" id="3_gvims"]
 [ext_resource type="Texture2D" uid="uid://dqj6m376wbhwo" path="res://assets/base_game/cards/card/stats/att/att2.png" id="6_upcdy"]
 [ext_resource type="LabelSettings" uid="uid://qp0350v2j4ah" path="res://assets/UI/roboto/roboto32_outline.tres" id="7_hmnl8"]
 [ext_resource type="LabelSettings" uid="uid://bp2u8sp36bt72" path="res://assets/UI/roboto/roboto_outline.tres" id="7_iqk8w"]
@@ -26,46 +26,52 @@ outline_color = Color(0, 0, 0, 1)
 [node name="Card" type="Control" node_paths=PackedStringArray("Art", "Text", "Stats")]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 170.0
-offset_bottom = 320.0
+offset_right = 220.0
+offset_bottom = 348.0
 script = ExtResource("1_q5cne")
 Art = NodePath("Art")
 Text = NodePath("Text")
 Stats = NodePath("Stats")
 
 [node name="Art" type="Control" parent="."]
-anchors_preset = 0
-offset_right = 170.0
-offset_bottom = 320.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 1
 
 [node name="ArtMax" type="Sprite2D" parent="Art"]
-position = Vector2(24, 18)
+position = Vector2(49, 27)
 texture = ExtResource("2_871jw")
 centered = false
 
 [node name="FrontCard" type="Sprite2D" parent="Art"]
 texture_filter = 1
-position = Vector2(-26, -9)
-texture = ExtResource("3_evifo")
+position = Vector2(0, -1)
+texture = ExtResource("3_gvims")
 centered = false
 
 [node name="AreaMark" type="Sprite2D" parent="Art"]
-position = Vector2(85, 241)
+position = Vector2(109, 248)
 
 [node name="Text" type="Control" parent="."]
-anchors_preset = 0
-offset_right = 168.0
-offset_bottom = 320.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 1
 
 [node name="Text" type="Label" parent="Text"]
 texture_filter = 1
 layout_mode = 0
-offset_left = 25.0
-offset_top = 182.0
-offset_right = 143.0
-offset_bottom = 298.0
+offset_left = 51.0
+offset_top = 191.0
+offset_right = 169.0
+offset_bottom = 307.0
 label_settings = SubResource("LabelSettings_r5gru")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -74,20 +80,21 @@ autowrap_mode = 2
 [node name="Name" type="Label" parent="Text"]
 texture_filter = 1
 layout_mode = 0
-offset_left = 25.0
-offset_top = 142.0
-offset_right = 145.0
-offset_bottom = 177.0
+offset_left = 50.0
+offset_top = 152.0
+offset_right = 170.0
+offset_bottom = 186.0
 label_settings = SubResource("LabelSettings_o5q0t")
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Stats" type="Control" parent="."]
-anchors_preset = 0
-offset_left = -4.0
-offset_top = 5.0
-offset_right = 164.0
-offset_bottom = 338.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 1
 
 [node name="Attack" type="Control" parent="Stats"]
@@ -96,9 +103,9 @@ anchor_left = 0.024
 anchor_top = -0.015
 anchor_right = 0.024
 anchor_bottom = -0.015
-offset_left = -0.0320001
+offset_left = 30.72
 offset_top = 288.995
-offset_right = 63.968
+offset_right = 94.72
 offset_bottom = 338.995
 mouse_filter = 1
 
@@ -126,9 +133,9 @@ anchor_left = 0.024
 anchor_top = -0.015
 anchor_right = 0.024
 anchor_bottom = -0.015
-offset_left = 102.968
+offset_left = 112.72
 offset_top = 288.995
-offset_right = 172.968
+offset_right = 182.72
 offset_bottom = 338.995
 mouse_filter = 1
 
@@ -151,10 +158,9 @@ horizontal_alignment = 2
 
 [node name="Speed" type="Control" parent="Stats"]
 anchors_preset = 0
-offset_left = 120.0
-offset_top = -9.0
-offset_right = 176.0
-offset_bottom = 49.0
+offset_left = 142.0
+offset_right = 198.0
+offset_bottom = 58.0
 mouse_filter = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="Stats/Speed"]
@@ -177,10 +183,10 @@ horizontal_alignment = 1
 
 [node name="Energy" type="Control" parent="Stats"]
 anchors_preset = 0
-offset_left = 9.0
-offset_top = -300.0
-offset_right = 56.0
-offset_bottom = -253.0
+offset_left = 30.0
+offset_top = 15.0
+offset_right = 77.0
+offset_bottom = 62.0
 mouse_filter = 1
 
 [node name="Label" type="Label" parent="Stats/Energy"]
@@ -188,10 +194,6 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -1.0
-offset_top = 301.0
-offset_right = -1.0
-offset_bottom = 301.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "5"

@@ -5,8 +5,11 @@ var tile_info: Dictionary
 func on_load_info(type: String) -> void:
 	type = type.to_lower()
 	match type:
-		"tile", "wall": get_node(type).on_load_info(tile_info[type], area)
-		"tdeco", "wdeco": get_node(type).on_load_info(tile_info[type], Helper.TYPE_TO_BTAB[type])
-	
-	
-	
+		"tile", "wall", "obj": on_get_node_by_type(type).on_load_info(tile_info[type], area)
+		"tdeco", "wdeco": on_get_node_by_type(type).on_load_info(tile_info[type], Helper.TYPE_TO_BTAB[type])
+
+func on_get_node_by_type(type: String) -> Node3D:
+	for child in get_children():
+		if child.type == type:
+			return child
+	return null

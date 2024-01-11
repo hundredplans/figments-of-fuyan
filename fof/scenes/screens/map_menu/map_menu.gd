@@ -1,8 +1,8 @@
 extends Control
 
 signal screen_change_sig
-signal equip_sky
 signal load_world
+signal equip_sky
 
 var GameState: Node
 

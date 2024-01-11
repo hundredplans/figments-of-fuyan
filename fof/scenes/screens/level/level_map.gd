@@ -1,30 +1,31 @@
 extends Node3D
 var GameState: Node
 
-@onready var Tiles: Node3D = $Tiles
-var _LevelTile: PackedScene = preload("res://scenes/screens/level/level_tile.tscn")
+var LoadedLevel: Node3D
+var Tiles: Node3D
+@onready var Units: Node3D = $Units
+@onready var SpectateCamera: Camera3D = $SpectateCamera
+
 func on_load_default_world_state() -> void:
-	for tile_info in GameState.level_info.tiles:
-		on_create_tile(tile_info)
+	LoadedLevel = load("res://assets/base_game/levels/" + GameState.level_info.bgfn + "/loaded_level.tscn").instantiate()
+	LoadedLevel.script = null
+	Tiles = LoadedLevel.get_node("Tiles")
 	
+	add_child(LoadedLevel)
+	on_spectate("Spawn")
+
 func on_load_world_history() -> void:
-	pass
+	var history: Array = GameState.history.duplicate()
+	GameState.history = []
+	for event in history:
+		pass
 	
-var TILE_OBJECT_NAMES: Array = ["tile", "wall", "obj", "tdeco", "wdeco"]
-func on_create_tile(tile_info: Dictionary) -> void:
-	if TILE_OBJECT_NAMES.any(func(x: String): return tile_info[x].id > 0):
-		var LevelTile: Node3D = _LevelTile.instantiate()
-		Tiles.add_child(LevelTile)
-		tile_info.position = Vector4(tile_info.position[0], tile_info.position[1], tile_info.position[2], tile_info.position[3])
-		LevelTile.position = Vector3(
-		(sqrt(3) * tile_info.position.x + sqrt(3) * tile_info.position.y * 0.5),
-		tile_info.position.w * 1.2,
-		tile_info.position.y * 3 / 2)
-		
-		LevelTile.area = GameState.area_info.id
-		LevelTile.tile_info = tile_info
-		
-		LevelTile.on_load_info("Tile")
-		LevelTile.on_load_info("Wall")
-		LevelTile.on_load_info("TDeco")
-		LevelTile.on_load_info("WDeco")
+func on_spectate(type: String = "Unit", id: int = 0) -> void:
+	var i: int = 0
+	for tile in get_tiles():
+		if type == "Spawn" and tile.tile_info.obj.id == 2:
+			if i == id: SpectateCamera.on_camera_start_spectate(tile.global_position); return
+			i += 1
+
+func get_tiles() -> Array:
+	return Tiles.get_children()

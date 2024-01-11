@@ -62,7 +62,7 @@ func load_obj(id: int) -> void:
 	for child in TileObject.get_children(): child.queue_free()
 	info.obj.id = id
 	if id > 0:
-		if info.obj.loaded <= 0:
+		if !(id in [1, 3] and info.obj.obj_info != []):
 			var object: Node3D = load("res://assets/models/objects/" + Helper.editor_id_to(1, id, info.obj.type) + ".glb").instantiate()
 			TileObject.add_child(object)
 			TileObject.rotation_degrees.y = info.obj.rotation * 60
@@ -71,8 +71,8 @@ func load_obj(id: int) -> void:
 		emit_set_tile_material(1)
 	
 func on_load_obj_get_area(id: int, area: Dictionary) -> void:
-	if info.obj.loaded in area.cards:
-		var card: Dictionary = Helper.id_to_dict(info.obj.loaded, "Card")
+	if info.obj.obj_info[0] in area.cards:
+		var card: Dictionary = Helper.id_to_dict(info.obj.obj_info[0], "Card")
 		var model_path: String = "res://assets/base_game/cards/card/default_model.glb"
 		var card_model_path: String = "res://assets/base_game/cards/" + card.bgfn + "/model.glb"
 		if FileAccess.file_exists(card_model_path):
@@ -80,7 +80,7 @@ func on_load_obj_get_area(id: int, area: Dictionary) -> void:
 		TileObject.add_child(load(model_path).instantiate())
 		TileObject.rotation_degrees.y = info.obj.rotation * 60
 	else:
-		info.obj.loaded = 0
+		info.obj.obj_info = []
 		load_obj(id)
 	
 func load_tile(id: int) -> void:
