@@ -26,3 +26,7 @@ func _queue_free() -> void:
 	if !Helper.settings_loaded:
 		GameState._queue_free()
 		load_world.emit(null)
+
+func _input(_event: InputEvent) -> void:
+	if Input.is_action_just_pressed("SelectLeft"): LevelMap.on_select_spectate_camera_direction(-1)
+	elif Input.is_action_just_pressed("SelectRight"): LevelMap.on_select_spectate_camera_direction(1)
