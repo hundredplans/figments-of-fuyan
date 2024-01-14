@@ -224,7 +224,7 @@ func return_item_dict(item: String, _contents: String) -> Dictionary:
 		match item:
 			"area": keys += ["pcolor", "acolor", "world", "cards"]
 			"card": keys += ["a", "h", "s", "e", "r", "text", "flavor", "aic", "aii", "aiw", "ait", "aia", "height"]
-			"level": keys += ["area", "difficulty", "trinkets", "tiles"]
+			"level": keys += ["area", "difficulty", "trinkets", "tiles", "level_size"]
 			"tool": keys += ["r", "text", "utext"]
 			"boon": keys += ["r", "text", "utext"]
 			"map": keys += ["world", "map_size", "nodes", "arrows"]

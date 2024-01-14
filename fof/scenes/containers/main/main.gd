@@ -102,10 +102,10 @@ func on_setup_screen(screen: Control) -> void:
 func before_ready_connect_screen(screen: Control):
 	if screen.get("equip_sky"): screen.equip_sky.connect(on_equip_sky)
 	match screen.name:
-		"MapMenu", "Level": screen.GameState = GameState
+		"MapMenu", "LevelUI": screen.GameState = GameState
 	
 	match screen.name:
-		"LevelEditor", "LoreBooksEditor", "ItemEditor", "MapMenu", "Level": screen.load_world.connect(on_load_world)
+		"LevelEditor", "LoreBooksEditor", "ItemEditor", "MapMenu", "LevelUI": screen.load_world.connect(on_load_world)
 	
 	match screen.name:
 		"TrinketEditor", "AreaEditor", "BoonEditor", "CardEditor", "LevelEditor", "MapEditor", "ToolEditor", "TaskEditor", "ChallengeEditor", "EncounterEditor": screen.fileloader_state.connect(on_change_fileloader_state)

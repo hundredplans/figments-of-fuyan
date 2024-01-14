@@ -1,0 +1,30 @@
+[gd_scene load_steps=7 format=3 uid="uid://ce3k6kxjup2ks"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/tiles/level_tile.gd" id="1_7jf70"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/tile_objects/tile.gd" id="2_s16xh"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/tile_objects/wall.gd" id="3_oylyl"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/tile_objects/object.gd" id="4_6nyd3"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/tile_objects/wdecoration.gd" id="5_cmfry"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/tile_objects/tdecoration.gd" id="6_1c460"]
+
+[node name="LevelTile" type="Node3D"]
+script = ExtResource("1_7jf70")
+
+[node name="tile" type="Node3D" parent="."]
+script = ExtResource("2_s16xh")
+
+[node name="wall" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("3_oylyl")
+
+[node name="obj" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("4_6nyd3")
+
+[node name="wdeco" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("5_cmfry")
+
+[node name="tdeco" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_1c460")

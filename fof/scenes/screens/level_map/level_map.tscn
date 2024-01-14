@@ -1,0 +1,39 @@
+[gd_scene load_steps=7 format=3 uid="uid://k204oklklmgl"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_map/level_map.gd" id="1_2p706"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/spectate_camera.gd" id="2_rteys"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/units.gd" id="3_m4q4f"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vision.gd" id="4_84ynl"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/history.gd" id="5_86tkp"]
+[ext_resource type="Script" path="res://scenes/world/movement_camera.gd" id="6_odf42"]
+
+[node name="LevelMap" type="Node3D"]
+script = ExtResource("1_2p706")
+
+[node name="SpectateCamera" type="Camera3D" parent="."]
+current = true
+script = ExtResource("2_rteys")
+
+[node name="Units" type="Node3D" parent="."]
+script = ExtResource("3_m4q4f")
+
+[node name="Vision" type="Node3D" parent="."]
+script = ExtResource("4_84ynl")
+
+[node name="Tools" type="Node" parent="."]
+
+[node name="Boons" type="Node" parent="."]
+
+[node name="Tasks" type="Node" parent="."]
+
+[node name="Cards" type="Node" parent="."]
+
+[node name="Trinkets" type="Node" parent="."]
+
+[node name="History" type="Node" parent="."]
+script = ExtResource("5_86tkp")
+
+[node name="BOT" type="Node" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+script = ExtResource("6_odf42")

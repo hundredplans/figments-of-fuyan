@@ -48,12 +48,12 @@ func _queue_free() -> void:
 func on_node_selected(id: int, index: int) -> void: # here in case i need more stuff here
 	GeneralMap.on_node_selected(id, index)
 	$NodeSelect.visible = false
-
+	
 func on_node_hovered(state: bool, id: int) -> void:
 	GeneralMap.on_node_hovered(state, id)
 
 const INDEX_TO_SCREEN: Dictionary = {
-	1: "res://scenes/screens/level/level.tscn"
+	1: "res://scenes/screens/level_ui/level_ui.tscn"
 }
 
 func on_champion_arrived(index: int) -> void:

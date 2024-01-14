@@ -50,6 +50,7 @@ var info_menu_positions := Vector2.ZERO
 var info_menu_is_moving: int = 0
 var build_menu_is_moving: int = 0
 var default_level_size: int = [3, 5, 7, 9, 12, 15, 20, 25][Settings.level_size]
+var level_size: int = 0
 
 var selected_item_type: int = 0
 var active_tile_state: int = 0
@@ -389,6 +390,7 @@ func on_load_level(info: Dictionary) -> void:
 		_: _on_save_level_pressed(false, 2)
 	
 	on_area_selected(Helper.id_to_dict(info.area, "Area"))
+	level_size = info.level_size
 	level_difficulty = info.difficulty
 	LevelDifficulty.select_item(level_difficulty - 1)
 	
@@ -414,6 +416,7 @@ func on_load_empty_level(save_level: bool = true) -> void:
 	setup_elevation()
 	set_heightbuttons_modulate()
 	Settings.update_settings_info(0, "Preferences", "LevelEditorElevation")
+	level_size = default_level_size
 	
 	active_tile = null
 	LevelDifficulty.select_item(0)
@@ -498,7 +501,7 @@ func _on_save_level_pressed(play_sfx: bool = true, create_temp: int = 1) -> Dict
 		for child in World.get_node("Tiles").get_children():
 			for tile in child.get_children():
 				children.append(tile)
-		var contents: String = "%s\n%s\n%s\n%s\n" % [loaded_area.id, level_difficulty, trinket_amount, children.map(func(x: Node3D): return x.info)]
+		var contents: String = "%s\n%s\n%s\n%s\n%s" % [loaded_area.id, level_difficulty, trinket_amount, children.map(func(x: Node3D): return x.info), level_size]
 		var item_dict: Dictionary =  Helper.write_to_base_game_file(FILE_LOADER_NAME, EditFileName, contents, TID)
 		match item_dict:
 			{}: if play_sfx: AudioMaster.play_sfx("unconfirm_default")
@@ -1984,7 +1987,7 @@ func _on_bake_level_pressed():
 	else:
 		AudioMaster.play_sfx("unconfirm_default")
 
-var _LevelTile: PackedScene = preload("res://scenes/screens/level/level_tile.tscn")
+var _LevelTile: PackedScene = preload("res://scenes/screens/level_map/utility_nodes/tiles/level_tile.tscn")
 var TILE_OBJECT_NAMES: Array = ["tile", "wall", "obj", "tdeco", "wdeco"]
 func on_create_tile(tile_info: Dictionary, owner_node: Node3D, area: int) -> void:
 	if TILE_OBJECT_NAMES.any(func(x: String): return tile_info[x].id > 0):
@@ -1997,7 +2000,7 @@ func on_create_tile(tile_info: Dictionary, owner_node: Node3D, area: int) -> voi
 		tile_info.position.y * 3 / 2)
 		
 		LevelTile.area = area
-		LevelTile.tile_info = tile_info
+		LevelTile.info = tile_info
 		
 		LevelTile.on_load_info("Tile")
 		LevelTile.on_load_info("Wall")

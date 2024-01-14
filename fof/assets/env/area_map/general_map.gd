@@ -64,7 +64,8 @@ func on_node_hovered(state: bool, index: int) -> void:
 		var NodeModel: Node3D = Nodes.get_child(index)
 		HeavenlyLight.light_color = Helper.node_type_to_light[NodeModel.node_type]
 		HeavenlyLight.position = Vector3(NodeModel.global_position.x, NodeModel.global_position.y + 2, NodeModel.global_position.z - 1)
-
+		AudioMaster.play_sfx(AudioMaster.ID_TO_HOVER_SFX[NodeModel.node_type])
+		
 func on_champion_arrived() -> void:
 	var index: int = Nodes.get_child(GameState.map_progress.x).node_type
 	champion_arrived.emit(index)

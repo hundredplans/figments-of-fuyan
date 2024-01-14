@@ -1,6 +1,7 @@
 extends Control
 var info: Dictionary
 
+@export var show_tool: bool = true
 var Heroes: Node
 @export var Art: Control
 @export var Text: Control
@@ -21,3 +22,4 @@ func set_info(_info: Dictionary) -> void:
 		texture_path = card_texture_path
 	Art.get_node("ArtMax").texture = load(texture_path)
 	Art.get_node("FrontCard").texture = load("res://assets/base_game/cards/card/rarity/" + str(info.r) + ".png")
+	$Stats/Tool.visible = show_tool

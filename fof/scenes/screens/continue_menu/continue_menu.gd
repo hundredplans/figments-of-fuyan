@@ -20,7 +20,7 @@ func on_save_file_pressed(index: int) -> void:
 	Helper.on_load_game_state(index)
 	
 	if get_node("SaveFiles").get_child(index - 1).level_id == 0: screen_change_sig.emit("res://scenes/screens/map_menu/map_menu.tscn")
-	else: screen_change_sig.emit("res://scenes/screens/level/level.tscn")
+	else: screen_change_sig.emit("res://scenes/screens/level_ui/level_ui.tscn")
 	
 
 var save_file_index: int = 0
