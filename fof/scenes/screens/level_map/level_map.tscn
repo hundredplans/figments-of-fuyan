@@ -1,11 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://k204oklklmgl"]
+[gd_scene load_steps=10 format=3 uid="uid://k204oklklmgl"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_map/level_map.gd" id="1_2p706"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/spectate_camera.gd" id="2_rteys"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/units.gd" id="3_m4q4f"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vision.gd" id="4_84ynl"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/history.gd" id="5_86tkp"]
-[ext_resource type="Script" path="res://scenes/world/movement_camera.gd" id="6_odf42"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/base_cards.gd" id="5_juu21"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/hand/hand.gd" id="6_0ftum"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/deck/deck.gd" id="7_np1ua"]
+[ext_resource type="Script" path="res://static/game_info/heroes.gd" id="9_a027f"]
 
 [node name="LevelMap" type="Node3D"]
 script = ExtResource("1_2p706")
@@ -26,14 +29,21 @@ script = ExtResource("4_84ynl")
 
 [node name="Tasks" type="Node" parent="."]
 
-[node name="Cards" type="Node" parent="."]
-
 [node name="Trinkets" type="Node" parent="."]
+
+[node name="BaseCards" type="Node" parent="."]
+script = ExtResource("5_juu21")
 
 [node name="History" type="Node" parent="."]
 script = ExtResource("5_86tkp")
 
-[node name="BOT" type="Node" parent="."]
+[node name="Hand" type="Node" parent="."]
+script = ExtResource("6_0ftum")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-script = ExtResource("6_odf42")
+[node name="Deck" type="Node" parent="."]
+script = ExtResource("7_np1ua")
+
+[node name="Heroes" type="Node" parent="."]
+script = ExtResource("9_a027f")
+
+[node name="BOT" type="Node" parent="."]

@@ -1,4 +1,5 @@
-class_name TilesGD extends GameObject
+class_name TilesGD
+extends Node3D
 var cube_directions: Array[Vector3] = [Vector3(-1, 1, 0), Vector3(0, 1, -1), Vector3(1, 0, -1), Vector3(1, -1, 0), Vector3(0, -1, 1), Vector3(-1, 0, 1)]
 const IS_TYPE: Dictionary = {
 	"Spawn": 2,

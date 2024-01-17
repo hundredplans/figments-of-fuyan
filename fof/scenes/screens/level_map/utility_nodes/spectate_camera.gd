@@ -5,8 +5,8 @@ extends Camera3D
 @export var CAMERA_HEIGHT: float = 1.4
 @export var CAMERA_ROTATION_SPEED: float = 3.0
 
-var Tiles: Node3D
-var History: Node
+var Tiles: TilesGD
+var History: HistoryGD
 
 var central_point: Vector3
 func on_camera_start_spectate(pos: Vector3) -> void:

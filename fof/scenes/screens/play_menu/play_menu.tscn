@@ -15,7 +15,7 @@ grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("1_atqxs")
 
-[node name="HeroInfo" type="Node" parent="."]
+[node name="Heroes" type="Node" parent="."]
 script = ExtResource("2_1luli")
 
 [node name="Background" type="Control" parent="."]
@@ -64,7 +64,7 @@ grow_vertical = 2
 
 [node name="HeroButton" parent="SelectHero" node_paths=PackedStringArray("Heroes") instance=ExtResource("3_h80h1")]
 layout_mode = 2
-Heroes = NodePath("../../HeroInfo")
+Heroes = NodePath("../../Heroes")
 hid = 1
 
 [node name="SeedSetter" type="LineEdit" parent="."]

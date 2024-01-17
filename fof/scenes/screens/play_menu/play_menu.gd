@@ -1,6 +1,8 @@
 extends Control
 
 signal screen_change_sig
+
+@onready var Heroes: HeroesGD = $Heroes
 @onready var SeedSetter: LineEdit = $SeedSetter
 var gseed: int = 0
 func _ready() -> void:
@@ -12,7 +14,7 @@ func on_select_hero(hid: int) -> void:
 	else: gseed = SeedSetter.text.hash()
 	
 	seed(gseed)
-	Helper.on_start_new_game(hid, gseed)
+	Helper.on_start_new_game(hid, Heroes.hid_to_base(hid), gseed)
 	screen_change_sig.emit("res://scenes/screens/map_menu/map_menu.tscn")
 
 func _on_seed_setter_text_submitted(__: String): SeedSetter.release_focus()

@@ -1,3 +1,4 @@
+class_name HistoryGD
 extends Node
 
 var GameState: Node

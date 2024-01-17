@@ -138,14 +138,17 @@ func on_reload_page(i: int) -> void:
 	$PageArrows/Page.text = str(page)
 	
 	for child in Items.get_children(): child.queue_free()
-	
 	var xy := Vector2(50, 50)
 	for j in range(page * MAX_PAGE_COUNT, min((page + 1) * MAX_PAGE_COUNT, item_buttons.size())):
 		var item_button: Control = _item_button.instantiate()
-		if item_name == "card": item_button.get_node("Card").Heroes = $Heroes
 		Items.add_child(item_button)
 		item_button.position = xy
-		item_button.get_node("PressedButton").pressed.connect(on_item_selected.bind(item_button, item_buttons[j]))
+		if item_name == "card": 
+			item_button.get_node("Card").Heroes = $Heroes
+			item_button.get_node("Card").is_hover = true
+			item_button.get_node("Card").pressed.connect(on_item_selected.bind(item_button, item_buttons[j]))
+		else:
+			item_button.get_node("PressedButton").pressed.connect(on_item_selected.bind(item_button, item_buttons[j]))
 		item_button.get_node("ID").text = str(item_buttons[j].id)
 		item_button.info = item_buttons[j]
 		item_button.apply_info()

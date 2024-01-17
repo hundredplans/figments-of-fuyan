@@ -1,6 +1,10 @@
-extends GameObject
+class_name LevelUIGD
+extends Control
 signal load_world
 signal equip_sky
+
+@onready var Heroes: HeroesGD
+@onready var HandBox := $HandBox
 
 var _LevelMap: PackedScene = preload("res://scenes/screens/level_map/level_map.tscn")
 var LevelMap: Node3D
@@ -15,6 +19,7 @@ func _ready() -> void:
 	LevelMap.LevelUI = self
 	
 	load_world.emit(LevelMap)
+	Heroes = LevelMap.Heroes
 	equip_sky.emit(GameState.area_info.id, false)
 	
 func on_is_level_valid(level_info: Dictionary) -> bool:
@@ -28,3 +33,16 @@ func _queue_free() -> void:
 func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("SelectLeft"): LevelMap.SpectateCamera.on_select_spectate_camera_direction(-1)
 	elif Input.is_action_just_pressed("SelectRight"): LevelMap.SpectateCamera.on_select_spectate_camera_direction(1)
+
+var _CardUI: PackedScene = preload("res://assets/base_game/cards/card_ui/card_ui.tscn")
+func on_draw_card(HandCard: HandCardGD) -> void:
+	var CardUI: Control = _CardUI.instantiate()
+	CardUI.is_hover = true
+	CardUI.Heroes = Heroes
+	CardUI.custom_minimum_size = Vector2(CardUI.size.x, 0)
+	CardUI.set_info(Helper.id_to_dict(HandCard.id, "Card"))
+	CardUI.pressed.connect(on_card_selected.bind(CardUI))
+	HandBox.add_child(CardUI)
+	
+func on_card_selected(CardUI: Control) -> void:
+	LevelMap.Hand.on_card_selected(CardUI.get_index())

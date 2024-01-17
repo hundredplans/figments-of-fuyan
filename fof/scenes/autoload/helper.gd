@@ -431,13 +431,13 @@ func flatten(arr: Array, remove_duplicates: bool) -> Array:
 var _GameState: PackedScene = preload("res://scenes/autoload/game_state.tscn")
 var GameState: Node
 
-func on_start_new_game(hid: int, gseed: int) -> void:
+func on_start_new_game(hid: int, id: int, gseed: int) -> void:
 	Helper.on_load_game_state(0)
 	GameState.on_load_new_area(1)
 	GameState.gseed = gseed
 	GameState.hero_id = hid
+	GameState.on_add_card_to_player_deck(id)
 	GameState.on_create_new_save_file()
-	# add hero to player deck here
 	
 func on_load_game_state(save_file: int) -> void:
 	GameState = _GameState.instantiate()
@@ -456,6 +456,7 @@ var save_file_keys: Array = [
 	"hero_id",
 	"gseed",
 	"history",
+	"player_deck",
 ]
 func on_save_file_contents(i: int) -> Dictionary:
 	var contents: Array = return_file_contents("user://save/save_files/" + str(i) + ".txt").split("\n", false)

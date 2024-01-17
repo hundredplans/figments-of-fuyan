@@ -45,7 +45,7 @@ func on_load_base_hero() -> void:
 	var model: Node3D = load("res://assets/base_game/cards/" + \
 	Helper.id_to_dict(Heroes.hid_to_base(GameState.hero_id), "Card").bgfn + "/model.glb").instantiate()
 	
-	model.script = preload("res://assets/base_game/cards/card/map_model.gd")
+	model.script = preload("res://assets/base_game/cards/card_ui/map_model.gd")
 	HeroModel = model
 	
 	model.position.z = $Camera3D.position.z - 1

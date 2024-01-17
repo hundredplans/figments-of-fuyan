@@ -148,7 +148,7 @@ func on_load_model(bgfn: String) -> void:
 	for child in ModelWorld.get_node("Model").get_children():
 		child.queue_free()
 		
-	var model_path: String = "res://assets/base_game/cards/card/default_model.glb"
+	var model_path: String = "res://assets/base_game/cards/card_ui/default_model.glb"
 	var card_model_path: String = "res://assets/base_game/cards/" + bgfn + "/model.glb"
 	if FileAccess.file_exists(card_model_path):
 		model_path = card_model_path

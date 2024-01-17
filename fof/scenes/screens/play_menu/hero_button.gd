@@ -10,11 +10,10 @@ func _ready() -> void:
 	$Background/HeroNameBackground.color = Heroes.hid_primary_color[hid]
 	$HeroDescription.text = Heroes.hid_description[hid]
 	
-	var card: Control = preload("res://assets/base_game/cards/card/card.tscn").instantiate()
+	var card: Control = preload("res://assets/base_game/cards/card_ui/card_ui.tscn").instantiate()
 	card.Heroes = Heroes
 	card.set_info(Helper.id_to_dict(Heroes.hid_to_base(hid), "Card"))
-	card.position = Vector2(42, 709)
-	card.mouse_filter = Control.MOUSE_FILTER_PASS
+	card.position = Vector2(17, 700)
 	add_child(card)
 	
 	$HeroName.text = card.info.sname

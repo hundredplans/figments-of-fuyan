@@ -1,7 +1,7 @@
+class_name GameStateGD
 extends Node
 
 var player_deck: Array = []
-var player_auras: Array = []
 var player_boons: Array = []
 
 var save_file: int = 0
@@ -26,6 +26,7 @@ func on_set_info(info: Dictionary) -> void:
 	hero_level = info.hero_level
 	hero_id = info.hero_id
 	gseed = info.gseed
+	player_deck = info.player_deck
 	
 func _queue_free() -> void:
 	on_save_game_state()
@@ -51,6 +52,7 @@ func on_save_game_state() -> void:
 		hero_id,
 		gseed,
 		history,
+		player_deck,
 		]
 		
 	for i in range(array_contents.size()):
@@ -66,3 +68,6 @@ func on_load_new_area(world: int) -> void:
 func on_load_new_map() -> void:
 	var maps: Array = Helper.on_item_dicts("Map").filter(func(x: Dictionary): return x.world == area_info.world)
 	map_info = maps[randi() % maps.size()]
+
+func on_add_card_to_player_deck(id: int, tool_id: int = 0, effects: Array = []) -> void:
+	player_deck.append({"id": id, "tool_id": tool_id, "effects": effects})

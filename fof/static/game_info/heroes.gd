@@ -1,3 +1,4 @@
+class_name HeroesGD
 extends Node
 const hid_primary_color: Dictionary = {
 	1: "386b3c",
