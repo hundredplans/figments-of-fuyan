@@ -1,6 +1,9 @@
 class_name HandGD
 extends Node
 
+var energy: int = 0
+
+var SpectateCamera: Camera3D
 var LevelUI: LevelUIGD
 var History: HistoryGD
 var GameState: GameStateGD
@@ -18,5 +21,8 @@ func on_create_card(id: int, tool_id: int = 0, effects: Array = []) -> void:
 	card.on_create_card(id, tool_id, effects)
 	LevelUI.on_draw_card(card)
 
+var card_selected_index: int
 func on_card_selected(index: int) -> void:
-	pass
+	card_selected_index = index
+	if index > -1:
+		SpectateCamera.on_spectate("Spawn")

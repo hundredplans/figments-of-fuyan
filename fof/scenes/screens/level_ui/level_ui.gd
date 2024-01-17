@@ -44,5 +44,15 @@ func on_draw_card(HandCard: HandCardGD) -> void:
 	CardUI.pressed.connect(on_card_selected.bind(CardUI))
 	HandBox.add_child(CardUI)
 	
+var _card_selected_material: Resource = preload("res://assets/base_game/cards/card_ui/card_selected_material.tres")
+var CardUISelected: Control
 func on_card_selected(CardUI: Control) -> void:
-	LevelMap.Hand.on_card_selected(CardUI.get_index())
+	var index: int = -1
+	if CardUISelected != null: CardUISelected.get_node("Art/BlackCard").material = null
+	if CardUI != CardUISelected:
+		CardUISelected = CardUI
+		CardUI.get_node("Art/BlackCard").material = _card_selected_material
+		index = CardUI.get_index()
+	else: CardUISelected = null
+	LevelMap.Hand.on_card_selected(index)
+		

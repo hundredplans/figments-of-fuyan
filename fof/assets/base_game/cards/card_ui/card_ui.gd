@@ -24,10 +24,13 @@ func set_info(_info: Dictionary) -> void:
 		texture_path = card_texture_path
 	Art.get_node("ArtMax").texture = load(texture_path)
 	
-	Art.get_node("FrontCard").texture_normal = load("res://assets/base_game/cards/card_ui/rarity/" + str(info.r) + ".png")
+	var front_card: TextureButton = Art.get_node("FrontCard")
+	front_card.texture_normal = load("res://assets/base_game/cards/card_ui/rarity/" + str(info.r) + ".png")
+	$Art/BlackCard.texture = ImageTexture.create_from_image(load("res://assets/base_game/cards/card_ui/rarity/" + str(info.r) + "_image.png"))
+	
 	$Stats/Tool.visible = show_tool
-	Helper.create_button_clickmask(Art.get_node("FrontCard"))
-	if !is_hover: Art.get_node("FrontCard").mouse_filter = MOUSE_FILTER_PASS
+	Helper.create_button_clickmask(front_card)
+	if !is_hover: front_card.mouse_filter = MOUSE_FILTER_PASS
 
 func set_tool(_tool_id: int) -> void:
 	pass
