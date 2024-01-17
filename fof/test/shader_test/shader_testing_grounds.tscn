@@ -1,9 +1,24 @@
-[gd_scene load_steps=2 format=3 uid="uid://66jfnj24qiif"]
+[gd_scene load_steps=5 format=3 uid="uid://66jfnj24qiif"]
 
 [ext_resource type="Texture2D" uid="uid://djmlhiue0q61r" path="res://assets/base_game/cards/105 - Frederic the Fearless'0/art_max.png" id="1_bo8bg"]
+[ext_resource type="Shader" path="res://test/shader_test/color_something.gdshader" id="1_humnc"]
+[ext_resource type="Script" path="res://test/shader_test/color_something.gd" id="3_si0d2"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4bwjw"]
+shader = ExtResource("1_humnc")
+shader_parameter/replacement_color = Color(0, 0, 0, 1)
 
 [node name="ShaderTestingGrounds" type="Node"]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(346, 285)
+texture_filter = 1
+material = SubResource("ShaderMaterial_4bwjw")
+position = Vector2(478, 328)
 texture = ExtResource("1_bo8bg")
+script = ExtResource("3_si0d2")
+
+[node name="ColorPicker" type="ColorPicker" parent="."]
+offset_right = 298.0
+offset_bottom = 576.0
+
+[connection signal="color_changed" from="ColorPicker" to="Sprite2D" method="_on_color_picker_color_changed"]
