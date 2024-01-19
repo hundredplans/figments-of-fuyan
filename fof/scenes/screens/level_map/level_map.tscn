@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scenes/screens/level_map/level_map.gd" id="1_2p706"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/spectate_camera.gd" id="2_rteys"]
-[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/units.gd" id="3_m4q4f"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/units/units.gd" id="3_2cmnp"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vision.gd" id="4_84ynl"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/history.gd" id="5_86tkp"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/base_cards.gd" id="5_juu21"]
@@ -18,7 +18,7 @@ current = true
 script = ExtResource("2_rteys")
 
 [node name="Units" type="Node3D" parent="."]
-script = ExtResource("3_m4q4f")
+script = ExtResource("3_2cmnp")
 
 [node name="Vision" type="Node3D" parent="."]
 script = ExtResource("4_84ynl")

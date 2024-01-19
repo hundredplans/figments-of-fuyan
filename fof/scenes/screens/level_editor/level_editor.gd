@@ -1974,7 +1974,6 @@ func _on_bake_level_pressed():
 		for child in Helper.get_children_recursive(LoadedLevel, []):
 			if child != LoadedLevel: 
 				child.owner = LoadedLevel
-				
 		
 		for child in Helper.get_children_recursive(LoadedLevel.get_node("Tiles"), []):
 			if child != LoadedLevel.get_node("Tiles"):

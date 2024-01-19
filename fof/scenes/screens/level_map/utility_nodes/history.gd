@@ -8,5 +8,5 @@ func on_load_world_history() -> void:
 	for event in history:
 		pass
 
-func add_to_history(history_info: Array) -> void:
+func add_to_history(history_info: Array) -> void: # ["name of event", arg1, arg2]
 	GameState.history.append(history_info)

@@ -5,9 +5,10 @@ signal equip_sky
 
 @onready var Heroes: HeroesGD
 @onready var HandBox := $HandBox
+@onready var ChangePhase: Control = $ChangePhase
 
 var _LevelMap: PackedScene = preload("res://scenes/screens/level_map/level_map.tscn")
-var LevelMap: Node3D
+var LevelMap: LevelMapGD
 var GameState: Node
 
 func _ready() -> void:
@@ -21,6 +22,7 @@ func _ready() -> void:
 	load_world.emit(LevelMap)
 	Heroes = LevelMap.Heroes
 	equip_sky.emit(GameState.area_info.id, false)
+	ChangePhase.visible = false
 	
 func on_is_level_valid(level_info: Dictionary) -> bool:
 	return level_info.area == GameState.area_info.id and level_info.difficulty == abs(GameState.map_progress.y - GameState.map_info.map_size)
@@ -56,3 +58,30 @@ func on_card_selected(CardUI: Control) -> void:
 	else: CardUISelected = null
 	LevelMap.Hand.on_card_selected(index)
 		
+func on_card_placed(index: int) -> void:
+	HandBox.get_child(index).queue_free()
+
+func on_change_energy(energy: int) -> void:
+	$Energy/Label.text = str(min(energy, 0))
+
+func on_player_end_turn_phase_start() -> void:
+	ChangePhase.visible = false
+
+func on_hand_phase_start(playable_cards: Array) -> void:
+	for i in range(HandBox.get_child_count()):
+		HandBox.get_child(i).on_set_disabled(i in playable_cards)
+	HandBox.visible = true
+	ChangePhase.visible = true
+
+func _on_hand_phase_hitbox_pressed():
+	LevelMap.on_change_game_phase("PlayerPhase")
+	
+func on_player_phase_start() -> void:
+	if CardUISelected != null: 
+		CardUISelected.material = null
+		CardUISelected = null
+	HandBox.visible = false
+
+func _on_change_phase_hitbox_pressed():
+	LevelMap.on_advance_game_phase()
+	$ChangePhase/ChangePhaseSprite.on_hyperspeed()

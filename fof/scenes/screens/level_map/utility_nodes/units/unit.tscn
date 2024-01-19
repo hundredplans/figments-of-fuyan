@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://ddxx7fd8ku8th"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/units/unit.gd" id="1_2slrp"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/units/model.gd" id="2_422x4"]
+
+[node name="Unit" type="Node3D"]
+script = ExtResource("1_2slrp")
+
+[node name="Model" type="Node3D" parent="."]
+script = ExtResource("2_422x4")

@@ -1,3 +1,4 @@
+class_name TileGD
 extends Node3D
 
 var area: int = 0

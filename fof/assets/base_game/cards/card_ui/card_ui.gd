@@ -38,3 +38,8 @@ func set_tool(_tool_id: int) -> void:
 func _on_front_card_mouse_entered(): if is_hover: modulate = Helper.LIGHT_GREY
 func _on_front_card_mouse_exited(): if is_hover: modulate = Helper.BASE
 func _on_front_card_pressed(): pressed.emit()
+
+func on_set_disabled(state: bool) -> void:
+	$Art/FrontCard.disabled = state
+	modulate = Helper.BASE if !state else Helper.DARK_GREY
+	is_hover = !state

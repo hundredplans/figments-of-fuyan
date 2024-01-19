@@ -11,7 +11,7 @@ func on_load_info(info: Dictionary, area: int) -> void:
 		"spawns/spawn_enemy", "spawns/spawn_neutral":
 			if info.obj_info.size() > 0 and info.obj_info[0] in Helper.id_to_dict(area, "Area").cards:
 				var card: Dictionary = Helper.id_to_dict(info.obj_info[0], "Card")
-				var model_path: String = "res://assets/base_game/cards/card/default_model.glb"
+				var model_path: String = "res://assets/base_game/cards/card_ui/default_model.glb"
 				var card_model_path: String = "res://assets/base_game/cards/" + card.bgfn + "/model.glb"
 				if FileAccess.file_exists(card_model_path):
 					model_path = card_model_path

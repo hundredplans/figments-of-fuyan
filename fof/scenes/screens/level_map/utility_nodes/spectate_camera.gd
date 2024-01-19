@@ -5,6 +5,7 @@ extends Camera3D
 @export var CAMERA_HEIGHT: float = 1.4
 @export var CAMERA_ROTATION_SPEED: float = 3.0
 
+var Units: UnitsGD
 var Tiles: TilesGD
 var History: HistoryGD
 
@@ -40,13 +41,22 @@ var spectate_id: int = 0
 func on_spectate(type: String = "Unit", id: int = 0) -> void:
 	spectate_type = type
 	spectate_id = id
-	if type == "Spawn":
-		var spawn_tiles: Array = Tiles.on_is_type_get_tiles("Spawn", "obj")
-		
-		if spectate_id == spawn_tiles.size(): spectate_id = 0
-		elif spectate_id < 0: spectate_id = spawn_tiles.size() - 1
-		
-		on_camera_start_spectate(spawn_tiles[spectate_id].position)
+	match type:
+		"Spawn":
+			var spawn_tiles: Array = Tiles.on_is_type_get_tiles("Spawn", "obj")
+			
+			if spectate_id == spawn_tiles.size(): spectate_id = 0
+			elif spectate_id < 0: spectate_id = spawn_tiles.size() - 1
+			
+			on_camera_start_spectate(spawn_tiles[spectate_id].position)
+		"Unit":
+			var units: Array = Units.on_units(0, "Ally")
+			
+			if spectate_id == units.size(): spectate_id = 0
+			elif spectate_id < 0: spectate_id = units.size() - 1
+			
+			on_camera_start_spectate(units[spectate_id].position)
+			
 	History.add_to_history(["on_spectate", type, id])
 
 func on_select_spectate_camera_direction(i: int) -> void:

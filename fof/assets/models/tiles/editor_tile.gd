@@ -73,7 +73,7 @@ func load_obj(id: int) -> void:
 func on_load_obj_get_area(id: int, area: Dictionary) -> void:
 	if info.obj.obj_info[0] in area.cards:
 		var card: Dictionary = Helper.id_to_dict(info.obj.obj_info[0], "Card")
-		var model_path: String = "res://assets/base_game/cards/card/default_model.glb"
+		var model_path: String = "res://assets/base_game/cards/card_ui/default_model.glb"
 		var card_model_path: String = "res://assets/base_game/cards/" + card.bgfn + "/model.glb"
 		if FileAccess.file_exists(card_model_path):
 			model_path = card_model_path

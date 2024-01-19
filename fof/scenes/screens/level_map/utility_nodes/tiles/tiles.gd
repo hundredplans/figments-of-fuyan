@@ -1,5 +1,9 @@
 class_name TilesGD
 extends Node3D
+
+var Lights: LightsGD
+var Hand: HandGD
+
 var cube_directions: Array[Vector3] = [Vector3(-1, 1, 0), Vector3(0, 1, -1), Vector3(1, 0, -1), Vector3(1, -1, 0), Vector3(0, -1, 1), Vector3(-1, 0, 1)]
 const IS_TYPE: Dictionary = {
 	"Spawn": 2,
@@ -49,8 +53,13 @@ func position_to_tile(pos: Vector4) -> Node3D:
 
 func on_is_type_get_tiles(is_type: String, type: String) -> Array:
 	return get_children().filter(on_match_type.bind(is_type, type))
+	
 func on_match_type(tile: Node3D, is_type: String, type: String) -> bool:
 	return tile.info[type].id == IS_TYPE[is_type]
+	
+func on_find_tile_type(tile: Node3D) -> String:
+	if tile.info.obj.id == 2: return "Spawn"
+	return "Regular"
 	
 func outside_neighbours(tiles: Array, otiles: Array = get_children(), distance: int = 1, search_elevation: bool = false) -> Array:
 	return tiles_unique(all_neighbours_tiles(tiles, otiles, distance, search_elevation), tiles)
@@ -84,3 +93,23 @@ func _is_diagonal(pos: Vector4, opos: Vector4, distance: int = 1, search_elevati
 
 func admin_highlight_tiles(tiles: Array) -> void:
 	for tile in tiles: tile.visible = false
+
+# -----------------
+
+func _ready() -> void:
+	for child in get_children():
+		child.get_node("MouseDetector").mouse_entered.connect(on_tile_mouse_entered.bind(child))
+		child.get_node("MouseDetector").mouse_exited.connect(on_tile_mouse_exited.bind(child))
+		
+var active_tile: Node3D
+func on_tile_mouse_entered(tile: Node3D) -> void:
+	active_tile = tile
+	Lights.on_tile_hovered(active_tile, on_find_tile_type(tile))
+	
+func on_tile_mouse_exited(__: Node3D) -> void:
+	active_tile = null
+	Lights.on_tile_unhovered()
+
+func _input(_event: InputEvent) -> void:
+	if active_tile != null and on_find_tile_type(active_tile) == "Spawn" and Input.is_action_just_pressed("LeftClick"):
+		Hand.on_card_placed(active_tile.global_position)

@@ -1,6 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://b0kr4uhvdhmq3"]
+[gd_scene load_steps=6 format=3 uid="uid://b0kr4uhvdhmq3"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_ui/level_ui.gd" id="1_mmiwi"]
+[ext_resource type="Texture2D" uid="uid://iucmlitjenwl" path="res://assets/base_game/cards/card_ui/stats/energy/energy.png" id="2_bww7p"]
+[ext_resource type="LabelSettings" uid="uid://b3fuc4s50fgra" path="res://assets/UI/roboto/roboto64.tres" id="3_7ly33"]
+[ext_resource type="Texture2D" uid="uid://bhphpw6y0dli" path="res://scenes/ui_general/back_arrow/back_arrow.png" id="4_uruhh"]
+[ext_resource type="Script" path="res://scenes/screens/level_ui/hand_phase/hand_phase_sprite.gd" id="5_filg1"]
 
 [node name="LevelUI" type="Control"]
 layout_mode = 3
@@ -9,6 +13,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_mmiwi")
 
 [node name="HandBox" type="HBoxContainer" parent="."]
@@ -26,3 +31,44 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 20
 alignment = 1
+
+[node name="Energy" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Sprite2D" type="Sprite2D" parent="Energy"]
+position = Vector2(60, 60)
+scale = Vector2(2, 2)
+texture = ExtResource("2_bww7p")
+
+[node name="Label" type="Label" parent="Energy"]
+layout_mode = 0
+offset_right = 120.0
+offset_bottom = 120.0
+label_settings = ExtResource("3_7ly33")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ChangePhase" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ChangePhaseSprite" type="Sprite2D" parent="ChangePhase"]
+modulate = Color(0.607843, 0.380392, 0.176471, 1)
+texture_filter = 1
+position = Vector2(1834, 524)
+scale = Vector2(3, 3)
+texture = ExtResource("4_uruhh")
+script = ExtResource("5_filg1")
+
+[node name="ChangePhaseHitbox" type="Button" parent="ChangePhase"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 1759.0
+offset_top = 449.0
+offset_right = 1909.0
+offset_bottom = 599.0
+
+[connection signal="pressed" from="ChangePhase/ChangePhaseHitbox" to="." method="_on_change_phase_hitbox_pressed"]

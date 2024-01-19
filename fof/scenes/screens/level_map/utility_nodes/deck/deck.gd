@@ -1,6 +1,9 @@
 class_name DeckGD
 extends Node
 
+const AFTER_PHASE_START_DRAW_COUNT: int = 3
+
+var LevelMap: LevelMapGD
 var Heroes: HeroesGD
 var BaseCards: BaseCardsGD
 var Hand: HandGD
@@ -36,3 +39,7 @@ func _get_children() -> Array: return get_children().filter(is_not_queued_for_de
 func _get_child_count() -> int: return _get_children().size()
 
 func is_not_queued_for_deletion(deck_card: DeckCardGD) -> bool: return !deck_card.is_queued_for_deletion()
+
+func on_after_start_phase_start() -> void:
+	for i in range(AFTER_PHASE_START_DRAW_COUNT): on_draw_card()
+	LevelMap.on_change_game_phase("HandPhase")
