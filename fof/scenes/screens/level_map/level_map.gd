@@ -33,7 +33,7 @@ func _ready() -> void:
 	Vision.on_recalculate_vision()
 	Deck.on_create_deck()
 	Deck.on_choose_champion()
-
+	
 func on_load_default_world_state() -> void:
 	LoadedLevel = load("res://assets/base_game/levels/" + GameState.level_info.bgfn + "/loaded_level.tscn").instantiate()
 	LoadedLevel.script = null
@@ -70,6 +70,8 @@ func on_change_game_phase(phase: String) -> void:
 		"PlayerStartTurnPhase":
 			pass
 	
+	if GameState.admin:
+		LevelUI.get_node("ChangePhase/ShowPhase").text = phase
 	History.add_to_history(["on_change_game_phase", phase])
 
 func on_advance_game_phase() -> void:

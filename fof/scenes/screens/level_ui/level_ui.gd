@@ -24,6 +24,8 @@ func _ready() -> void:
 	equip_sky.emit(GameState.area_info.id, false)
 	ChangePhase.visible = false
 	
+	$ChangePhase/ShowPhase.visible = GameState.admin
+	
 func on_is_level_valid(level_info: Dictionary) -> bool:
 	return level_info.area == GameState.area_info.id and level_info.difficulty == abs(GameState.map_progress.y - GameState.map_info.map_size)
 

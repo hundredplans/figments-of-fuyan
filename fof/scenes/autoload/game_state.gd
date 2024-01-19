@@ -4,6 +4,7 @@ extends Node
 var player_deck: Array = []
 var player_boons: Array = []
 
+var admin: bool = true
 var save_file: int = 0
 var area_info: Dictionary
 var map_info: Dictionary
