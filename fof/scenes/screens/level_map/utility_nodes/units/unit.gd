@@ -34,4 +34,4 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	Model.on_add_model()
 	position = pos
 	position.y += 0.3
-	rotation_degrees.y = rot * 60
+	rotation_degrees.y = (rot * 60) + 30

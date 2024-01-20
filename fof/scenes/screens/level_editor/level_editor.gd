@@ -1967,6 +1967,7 @@ func _on_bake_level_pressed():
 			
 		var LoadedLevel: Node3D = load(load_level_path).instantiate()
 		for child in LoadedLevel.get_node("Tiles").get_children(): child.free()
+		add_child(LoadedLevel)
 		
 		await get_tree().create_timer(0.05).timeout
 		for tile_info in item_dict.tiles: on_create_tile(tile_info, LoadedLevel, item_dict.area)
@@ -1987,6 +1988,7 @@ func _on_bake_level_pressed():
 		AudioMaster.play_sfx("unconfirm_default")
 
 var _LevelTile: PackedScene = preload("res://scenes/screens/level_map/utility_nodes/tiles/level_tile.tscn")
+
 var TILE_OBJECT_NAMES: Array = ["tile", "wall", "obj", "tdeco", "wdeco"]
 func on_create_tile(tile_info: Dictionary, owner_node: Node3D, area: int) -> void:
 	if TILE_OBJECT_NAMES.any(func(x: String): return tile_info[x].id > 0):
@@ -2000,6 +2002,9 @@ func on_create_tile(tile_info: Dictionary, owner_node: Node3D, area: int) -> voi
 		
 		LevelTile.area = area
 		LevelTile.info = tile_info
+		
+		for obj_name in TILE_OBJECT_NAMES:
+			LevelTile.on_load_info(obj_name)
 		
 		LevelTile.on_load_info("Tile")
 		LevelTile.on_load_info("Wall")

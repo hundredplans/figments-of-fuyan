@@ -60,7 +60,7 @@ func on_match_type(tile: Node3D, is_type: String, type: String) -> bool:
 	
 func on_find_tile_primary_type(tile: Node3D) -> String:
 	match tile.info.obj.id:
-		1: return "Spawn"
+		2: return "Spawn"
 	return "Regular"
 	
 func outside_neighbours(tiles: Array, otiles: Array = get_children(), distance: int = 1, search_elevation: bool = false) -> Array:
@@ -115,8 +115,3 @@ func on_tile_mouse_exited(__: Node3D) -> void:
 func _input(_event: InputEvent) -> void:
 	if active_tile != null and on_find_tile_primary_type(active_tile) == "Spawn" and Input.is_action_just_pressed("LeftClick"):
 		Hand.on_card_placed(active_tile)
-
-func on_clear_enemy_tiles() -> Array:
-	var tiles: Array = on_is_type_get_tiles("Enemy", "obj")
-	for Tile in tiles: Tile.obj.on_clear_enemy_tile()
-	return tiles

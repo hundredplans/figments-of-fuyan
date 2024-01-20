@@ -15,9 +15,10 @@ func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int
 	return Unit
 
 func on_start_phase_start() -> void:
-	var enemy_tiles: Array = Tiles.on_clear_enemy_tiles()
+	var enemy_tiles: Array = Tiles.on_is_type_get_tiles("Enemy", "obj")
 	for Tile in enemy_tiles:
 		on_unit_awakened(Tile.info.obj.obj_info[0], 0, [], 1, Tile.info.obj.rotation, Tile.position) # add Random.on_create_random_tool() here, maybe no args and it takes from GameState
+
 func on_player_phase_start() -> void:
 	pass
 

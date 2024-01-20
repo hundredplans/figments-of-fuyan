@@ -3,8 +3,8 @@ extends Camera3D
 @export var LOOK_AT_HEIGHT: float = 1.0
 @export var CAMERA_RADIUS: float = 1.4
 @export var CAMERA_HEIGHT: Dictionary = {
-	"Spawn": 1.4,
-	"Unit": 2.5,
+	"Spawn": 2,
+	"Unit": 3.2,
 }
 @export var CAMERA_ROTATION_SPEED: float = 3.0
 
