@@ -72,7 +72,12 @@ offset_top = 449.0
 offset_right = 1909.0
 offset_bottom = 599.0
 
-[node name="ShowPhase" type="Label" parent="ChangePhase"]
+[node name="Admin" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ShowPhase" type="Label" parent="Admin"]
 layout_mode = 0
 offset_left = 1436.0
 offset_right = 1753.0

@@ -18,3 +18,5 @@ func on_load_info(info: Dictionary, area: int) -> void:
 				add_child(load(model_path).instantiate())
 		_: add_child(load("res://assets/models/objects/" + obj_decoration_name + ".glb").instantiate())
 		
+func on_clear_enemy_tile() -> void:
+	for child in get_children(): child.queue_free()

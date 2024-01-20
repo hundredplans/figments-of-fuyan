@@ -14,7 +14,6 @@ var game_phase: String
 @onready var Heroes: HeroesGD = $Heroes
 @onready var Deck: DeckGD = $Deck
 @onready var Hand: HandGD = $Hand
-@onready var History: HistoryGD = $History
 @onready var Units: UnitsGD = $Units
 
 @onready var SpectateCamera: Camera3D = $SpectateCamera
@@ -29,10 +28,13 @@ func on_set_utility_nodes_paths() -> void:
 
 func _ready() -> void:
 	on_load_default_world_state()
-	History.on_load_world_history()
+	on_load_world_history()
 	Vision.on_recalculate_vision()
 	Deck.on_create_deck()
 	Deck.on_choose_champion()
+	
+func on_load_world_history() -> void:
+	pass
 	
 func on_load_default_world_state() -> void:
 	LoadedLevel = load("res://assets/base_game/levels/" + GameState.level_info.bgfn + "/loaded_level.tscn").instantiate()
@@ -50,10 +52,14 @@ func on_load_default_world_state() -> void:
 	
 func on_change_game_phase(phase: String) -> void:
 	game_phase = phase
+	
+	if GameState.admin:
+		LevelUI.get_node("Admin/ShowPhase").text = phase
 	match phase:
 		"StartPhase":
 			SpectateCamera.on_spectate("Spawn")
 			Hand.on_start_phase_start()
+			Units.on_start_phase_start()
 		"AfterStartPhase": 
 			Deck.on_after_start_phase_start()
 		"HandPhase":
@@ -69,10 +75,6 @@ func on_change_game_phase(phase: String) -> void:
 			pass
 		"PlayerStartTurnPhase":
 			pass
-	
-	if GameState.admin:
-		LevelUI.get_node("ChangePhase/ShowPhase").text = phase
-	History.add_to_history(["on_change_game_phase", phase])
 
 func on_advance_game_phase() -> void:
 	match game_phase:

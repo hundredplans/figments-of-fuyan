@@ -1,8 +1,6 @@
 class_name HandCardGD
 extends Node
 
-var History: HistoryGD
-
 var id: int = 0
 var energy: int = 0
 var tool_id: int = 0
@@ -14,5 +12,3 @@ func on_create_card(_id: int, _tool_id: int, _effects: Array) -> void:
 	effects = _effects
 	
 	energy = Helper.id_to_dict(id, "Card").e
-	
-	History.add_to_history(["create_hand_card", id, tool_id, effects])

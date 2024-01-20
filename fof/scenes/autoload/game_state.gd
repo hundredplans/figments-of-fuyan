@@ -15,8 +15,6 @@ var hero_level: int = 0
 var hero_id: int = 0
 var gseed: int = 0
 
-var history: Array = []
-
 func on_set_info(info: Dictionary) -> void:
 	save_file = info.save_file
 	area_info = Helper.id_to_dict(info.area_id, "Area")
@@ -52,7 +50,6 @@ func on_save_game_state() -> void:
 		hero_level, 
 		hero_id,
 		gseed,
-		history,
 		player_deck,
 		]
 		

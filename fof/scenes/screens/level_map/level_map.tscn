@@ -4,11 +4,11 @@
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/spectate_camera.gd" id="2_rteys"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/units/units.gd" id="3_2cmnp"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vision.gd" id="4_84ynl"]
-[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/history.gd" id="5_86tkp"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/base_cards.gd" id="5_juu21"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/hand/hand.gd" id="6_0ftum"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/deck/deck.gd" id="7_np1ua"]
 [ext_resource type="Script" path="res://static/game_info/heroes.gd" id="9_a027f"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/random.gd" id="9_ylyj8"]
 
 [node name="LevelMap" type="Node3D"]
 script = ExtResource("1_2p706")
@@ -34,9 +34,6 @@ script = ExtResource("4_84ynl")
 [node name="BaseCards" type="Node" parent="."]
 script = ExtResource("5_juu21")
 
-[node name="History" type="Node" parent="."]
-script = ExtResource("5_86tkp")
-
 [node name="Hand" type="Node" parent="."]
 script = ExtResource("6_0ftum")
 
@@ -45,5 +42,8 @@ script = ExtResource("7_np1ua")
 
 [node name="Heroes" type="Node" parent="."]
 script = ExtResource("9_a027f")
+
+[node name="Random" type="Node" parent="."]
+script = ExtResource("9_ylyj8")
 
 [node name="BOT" type="Node" parent="."]

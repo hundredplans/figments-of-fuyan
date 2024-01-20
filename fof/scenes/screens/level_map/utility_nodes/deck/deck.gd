@@ -7,7 +7,6 @@ var LevelMap: LevelMapGD
 var Heroes: HeroesGD
 var BaseCards: BaseCardsGD
 var Hand: HandGD
-var History: HistoryGD
 var GameState: Node
 
 func on_create_deck() -> void:
@@ -19,7 +18,6 @@ func on_create_card(id: int, tool_id: int = 0, effects: Array = []) -> void:
 	card.script = preload("res://scenes/screens/level_map/utility_nodes/deck/deck_card.gd")
 	add_child(card)
 	move_child(card, randi() % get_child_count() - 1)
-	card.History = History
 	card.on_create_card(id, tool_id, effects)
 	
 func on_choose_champion() -> void: # make this work for multiple champions eventually

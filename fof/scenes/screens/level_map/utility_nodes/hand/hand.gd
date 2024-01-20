@@ -8,7 +8,6 @@ var LevelMap: LevelMapGD
 var Units: UnitsGD
 var SpectateCamera: Camera3D
 var LevelUI: LevelUIGD
-var History: HistoryGD
 var GameState: GameStateGD
 
 func on_start_phase_start() -> void:
@@ -43,7 +42,6 @@ func on_create_card(id: int, tool_id: int = 0, effects: Array = []) -> void:
 	card.script = preload("res://scenes/screens/level_map/utility_nodes/hand/hand_card.gd")
 	add_child(card)
 	
-	card.History = History
 	card.on_create_card(id, tool_id, effects)
 	LevelUI.on_draw_card(card)
 
@@ -53,21 +51,18 @@ func on_card_selected(index: int) -> void:
 	if index > -1:
 		SpectateCamera.on_spectate("Spawn")
 
-func on_card_placed(tile_position: Vector3) -> void:
+func on_card_placed(Tile: TileGD) -> void:
 	if card_selected_index > -1:
 		var hand_card: HandCardGD = get_child(card_selected_index)
 		LevelUI.on_card_placed(card_selected_index)
 		on_change_energy(-Helper.id_to_dict(hand_card.id, "Card").e)
-		Units.on_card_placed(hand_card, tile_position)
+		Units.on_card_placed(hand_card, Tile)
 		hand_card.queue_free()
 		card_selected_index = -1
 		
 		if LevelMap.game_phase == "StartPhase":
 			LevelMap.on_change_game_phase("AfterStartPhase")
-		
-		History.add_to_history(["on_card_placed", tile_position])
 
 func on_change_energy(delta: int) -> void:
 	energy += delta
 	LevelUI.on_change_energy(energy)
-	History.add_to_history(["on_change_energy", delta])

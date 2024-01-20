@@ -455,7 +455,6 @@ var save_file_keys: Array = [
 	"hero_level",
 	"hero_id",
 	"gseed",
-	"history",
 	"player_deck",
 ]
 func on_save_file_contents(i: int) -> Dictionary:

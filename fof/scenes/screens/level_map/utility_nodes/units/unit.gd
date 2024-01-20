@@ -13,10 +13,9 @@ var mh: int
 var r: int
 var team: int
 
-
 var TeamControl: Node
 @onready var Model: Node3D = $Model
-func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, pos: Vector3) -> void:
+func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: int, pos: Vector3) -> void:
 	id = _id
 	tool_id = _tool_id
 	effects = _effects
@@ -35,4 +34,4 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, pos: V
 	Model.on_add_model()
 	position = pos
 	position.y += 0.3
-	
+	rotation_degrees.y = rot * 60

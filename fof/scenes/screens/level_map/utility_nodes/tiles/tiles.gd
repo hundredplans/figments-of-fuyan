@@ -6,6 +6,7 @@ var Hand: HandGD
 
 var cube_directions: Array[Vector3] = [Vector3(-1, 1, 0), Vector3(0, 1, -1), Vector3(1, 0, -1), Vector3(1, -1, 0), Vector3(0, -1, 1), Vector3(-1, 0, 1)]
 const IS_TYPE: Dictionary = {
+	"Enemy": 1,
 	"Spawn": 2,
 }
 
@@ -57,8 +58,9 @@ func on_is_type_get_tiles(is_type: String, type: String) -> Array:
 func on_match_type(tile: Node3D, is_type: String, type: String) -> bool:
 	return tile.info[type].id == IS_TYPE[is_type]
 	
-func on_find_tile_type(tile: Node3D) -> String:
-	if tile.info.obj.id == 2: return "Spawn"
+func on_find_tile_primary_type(tile: Node3D) -> String:
+	match tile.info.obj.id:
+		1: return "Spawn"
 	return "Regular"
 	
 func outside_neighbours(tiles: Array, otiles: Array = get_children(), distance: int = 1, search_elevation: bool = false) -> Array:
@@ -104,12 +106,17 @@ func _ready() -> void:
 var active_tile: Node3D
 func on_tile_mouse_entered(tile: Node3D) -> void:
 	active_tile = tile
-	Lights.on_tile_hovered(active_tile, on_find_tile_type(tile))
+	Lights.on_tile_hovered(active_tile, on_find_tile_primary_type(tile))
 	
 func on_tile_mouse_exited(__: Node3D) -> void:
 	active_tile = null
 	Lights.on_tile_unhovered()
 
 func _input(_event: InputEvent) -> void:
-	if active_tile != null and on_find_tile_type(active_tile) == "Spawn" and Input.is_action_just_pressed("LeftClick"):
-		Hand.on_card_placed(active_tile.global_position)
+	if active_tile != null and on_find_tile_primary_type(active_tile) == "Spawn" and Input.is_action_just_pressed("LeftClick"):
+		Hand.on_card_placed(active_tile)
+
+func on_clear_enemy_tiles() -> Array:
+	var tiles: Array = on_is_type_get_tiles("Enemy", "obj")
+	for Tile in tiles: Tile.obj.on_clear_enemy_tile()
+	return tiles
