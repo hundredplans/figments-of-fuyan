@@ -1,10 +1,17 @@
 extends Camera3D
 
-@export var LOOK_AT_HEIGHT: float = 1.0
+@export var LOOK_AT_UNIT_HEIGHT_MULTIPLIER: float = 0.8
+@export var CAMERA_UNIT_HEIGHT_MULTIPLIER: float = 1.2
 @export var CAMERA_RADIUS: float = 1.4
+
+@export var CAMERA_LOOK_AT_HEIGHT: Dictionary = {
+	"Spawn": 1.0,
+	"Unit": 0.0,
+}
+
 @export var CAMERA_HEIGHT: Dictionary = {
 	"Spawn": 2,
-	"Unit": 3.2,
+	"Unit": 0.0,
 }
 @export var CAMERA_ROTATION_SPEED: float = 3.0
 
@@ -14,7 +21,7 @@ var Tiles: TilesGD
 var central_point: Vector3
 func on_camera_start_spectate(pos: Vector3, type: String) -> void:
 	central_point = pos
-	central_point.y += LOOK_AT_HEIGHT
+	central_point.y += CAMERA_LOOK_AT_HEIGHT[type]
 	position = Vector3(pos.x, pos.y + CAMERA_HEIGHT[type], pos.z)
 	on_set_camera_point_along_circle(0)
 
@@ -57,7 +64,10 @@ func on_spectate(type: String = "Unit", id: int = 0) -> void:
 			if spectate_id == units.size(): spectate_id = 0
 			elif spectate_id < 0: spectate_id = units.size() - 1
 			
-			on_camera_start_spectate(units[spectate_id].position, type)
+			var Unit: UnitGD = units[spectate_id]
+			CAMERA_HEIGHT["Unit"] = Unit.height * CAMERA_UNIT_HEIGHT_MULTIPLIER
+			CAMERA_LOOK_AT_HEIGHT["Unit"] = Unit.height * LOOK_AT_UNIT_HEIGHT_MULTIPLIER
+			on_camera_start_spectate(Unit.position, type)
 
 func on_select_spectate_camera_direction(i: int) -> void:
 	spectate_id += i

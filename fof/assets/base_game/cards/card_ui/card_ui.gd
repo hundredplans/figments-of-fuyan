@@ -14,7 +14,7 @@ func set_info(_info: Dictionary) -> void:
 	for stat in ["a", "h", "s", "e"]:
 		Stats.get_node(Helper.stat_ai_dict[stat] + "/Label").text = str(info[stat])
 	
-	Text.get_node("Text").text = info["text"]
+	on_apply_text_processing(info["text"])
 	Text.get_node("Name").text = info["sname"]
 	
 	var hero_bgfn: String = info.bgfn if info.r != 7 else Helper.id_to_dict(Heroes.id_to_base(info.id), "Card").bgfn
@@ -43,3 +43,17 @@ func on_set_disabled(state: bool) -> void:
 	$Art/FrontCard.disabled = state
 	modulate = Helper.BASE if !state else Helper.DARK_GREY
 	is_hover = !state
+
+func on_apply_text_processing(text: String) -> void:
+	var TextLabel: RichTextLabel = $Text/Text
+	TextLabel.text = text
+	on_add_surrounding_bbcode(TextLabel, "center")
+	for type in DirAccess.get_files_at("res://assets/base_game/cards/card_ui/bbcode/"):
+		on_add_bbcode_image(TextLabel, type.left(-4))
+
+func on_add_bbcode_image(TextLabel: RichTextLabel, type: String) ->  void:
+	TextLabel.text = TextLabel.text.replace(type, "[img=15x15]res://assets/base_game/cards/card_ui/bbcode/" + type + ".png[/img]")
+
+func on_add_surrounding_bbcode(TextLabel: RichTextLabel, text: String) -> void:
+	TextLabel.text = TextLabel.text.insert(0, "[" + text + "]")
+	TextLabel.text += "[/" + text + "]"

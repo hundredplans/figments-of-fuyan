@@ -56,7 +56,7 @@ func on_card_placed(Tile: TileGD) -> void:
 		var hand_card: HandCardGD = get_child(card_selected_index)
 		LevelUI.on_card_placed(card_selected_index)
 		on_change_energy(-Helper.id_to_dict(hand_card.id, "Card").e)
-		Units.on_card_placed(hand_card, Tile)
+		Units.PlayerManager.on_card_placed(hand_card, Tile)
 		hand_card.queue_free()
 		card_selected_index = -1
 		

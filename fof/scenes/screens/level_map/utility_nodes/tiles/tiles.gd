@@ -1,5 +1,6 @@
 class_name TilesGD
 extends Node3D
+const MAX_HEIGHT: int = 11
 
 var Lights: LightsGD
 var Hand: HandGD
@@ -21,21 +22,31 @@ func _is_neighbour(pos: Vector4, opos: Vector4, distance: int = 1, search_elevat
 	return (search_elevation or pos.w == opos.w) and \
 	abs(pos.x - opos.x) + abs(pos.y - opos.y) + abs(pos.z - opos.z) == distance * 2
 	
-func all_neighbours(tile: Node3D, tiles: Array = get_children(), distance: int = 1, search_elevation: bool = false) -> Array:
-	return positions_to_tiles(_all_neighbours(tile.info.position, tiles_to_positions(tiles), distance, search_elevation))
+func all_neighbours(tile: Node3D, distance: int = 1, search_elevation: bool = false, tiles: Array = get_children()) -> Array:
+	return positions_to_tiles(_all_neighbours(tile.info.position, distance, search_elevation, tiles_to_positions(tiles)))
 	
-func _all_neighbours(pos: Vector4, poses: Array = get_children_positions(), distance: int = 1, search_elevation: bool = false) -> Array:
+func _all_neighbours(pos: Vector4, distance: int = 1, search_elevation: bool = false, poses: Array = get_children_positions()) -> Array:
 	return poses.filter(_is_neighbour.bind(pos, distance, search_elevation))
 	
 func all_neighbours_tiles(tiles: Array, otiles: Array = get_children(), distance: int = 1, search_elevation: bool = false) -> Array:
 	var tiles_set: Dictionary = {}
 	for tile in tiles: 
-		for otile in all_neighbours(tile, otiles, distance, search_elevation):
+		for otile in all_neighbours(tile, distance, search_elevation, otiles):
 			tiles_set.merge({otile: null})
 	return tiles_set.keys()
 
 func tiles_intersection(tiles: Array, otiles: Array) -> Array:
 	return tiles.filter(is_tile_in_tiles.bind(otiles))
+
+func all_in_range(tile: Node3D, distance: int = 2, search_elevation: bool = false, tiles: Array = get_children()) -> Array:
+	return positions_to_tiles(_all_in_range(tile_to_position(tile), distance, search_elevation, tiles_to_positions(tiles)))
+
+func _all_in_range(pos: Vector4, distance: int = 2, search_elevation: bool = false, poses: Array = get_children_positions()) -> Array:
+	var a: Array = []
+	for n in range(distance):
+		for _pos in _all_neighbours(pos, n, search_elevation, poses):
+			a.append(_pos)
+	return a
 
 func tiles_unique(tiles: Array, otiles: Array) -> Array:
 	return tiles.filter(is_tile_not_in_tiles.bind(otiles))
@@ -46,6 +57,8 @@ func get_children_positions() -> Array: return get_children().map(tile_to_positi
 func tile_to_position(tile: Node3D) -> Vector4: return tile.info.position
 func tiles_to_positions(tiles: Array) -> Array: return tiles.map(tile_to_position)
 func positions_to_tiles(tiles: Array) -> Array: return tiles.map(position_to_tile)
+
+
 func position_to_tile(pos: Vector4) -> Node3D: 
 	var positions: Array = get_children_positions()
 	for i in range(positions.size()):
@@ -67,7 +80,7 @@ func outside_neighbours(tiles: Array, otiles: Array = get_children(), distance: 
 	return tiles_unique(all_neighbours_tiles(tiles, otiles, distance, search_elevation), tiles)
 
 func from_center_concentric(distance: int = 1, otiles: Array = get_children(), elevation: int = 0, search_elevation: bool = false):
-	return all_neighbours(position_to_tile(Vector4(0, 0, 0, elevation)), otiles, distance, search_elevation)
+	return all_neighbours(position_to_tile(Vector4(0, 0, 0, elevation)), distance, search_elevation, otiles)
 
 func neighbour_rotation(tile: Node3D, otile: Node3D, flip: bool = false) -> int:
 	if is_neighbour(tile, otile):

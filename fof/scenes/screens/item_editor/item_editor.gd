@@ -85,7 +85,7 @@ func add_option_buttons(arr: Array) -> void:
 		match i:
 			"Visibility":
 				btn = preload("res://scenes/ui_general/op_button/op_button.tscn").instantiate()
-				btn.options = ["Full-Vision", "Half-Vision", "Over-Vision", "Block"]
+				btn.options = ["Full-Vision", "Half-Vision", "Block"]
 			"Solidity", "MultiTile":
 				btn = preload("res://scenes/ui_general/binary_button/binary_button.tscn").instantiate()
 		
@@ -300,7 +300,7 @@ func on_selected_tiles(tiles: Array) -> void:
 		match i:
 			"Visibility":
 				btn = preload("res://scenes/ui_general/op_button/op_button.tscn").instantiate()
-				btn.options = ["Full-Vision", "Half-Vision", "Over-Vision", "Block"]
+				btn.options = ["Full-Vision", "Half-Vision", "Block"]
 				if tiles.size() == 1: btn.default = tiles[0].tile.visibility if tiles[0].tile.has("visibility") else 0
 			"Solidity":
 				btn = preload("res://scenes/ui_general/binary_button/binary_button.tscn").instantiate()

@@ -12,10 +12,12 @@ var s: int
 var mh: int
 var r: int
 var team: int
+var height: int
+var Tile: TileGD
 
 var TeamControl: Node
 @onready var Model: Node3D = $Model
-func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: int, pos: Vector3) -> void:
+func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: int, tile: TileGD) -> void:
 	id = _id
 	tool_id = _tool_id
 	effects = _effects
@@ -27,11 +29,13 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	s = base_card.s
 	mh = base_card.h
 	r = base_card.r
+	height = base_card.height
 
 	TeamControl = load("res://scenes/screens/level_map/utility_nodes/units/Team" + str(team) + ".tscn").instantiate()
 	add_child(TeamControl)
 	
 	Model.on_add_model()
-	position = pos
+	Tile = tile
+	position = tile.position
 	position.y += 0.3
 	rotation_degrees.y = (rot * 60) + 30

@@ -17,7 +17,7 @@ var game_phase: String
 @onready var Units: UnitsGD = $Units
 
 @onready var SpectateCamera: Camera3D = $SpectateCamera
-@onready var Vision: Node3D = $Vision
+@onready var Vision: VisionGD = $Vision
 
 func on_set_utility_nodes_paths() -> void:
 	var new_children: Array = get_children() + [GameState, Tiles, LevelUI, Lights, self]

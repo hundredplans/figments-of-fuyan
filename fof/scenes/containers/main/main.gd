@@ -27,6 +27,7 @@ const move_screen_name_to_path: Dictionary = {
 }
 	
 func _ready() -> void:
+	$UI/CardUI.set_info(Helper.id_to_dict(150, "Card"))
 	Helper.main = self
 	load_general_world()
 	$UI.z_index = 10

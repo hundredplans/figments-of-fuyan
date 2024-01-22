@@ -1,6 +1,7 @@
 extends Node
 
 var main: Node
+const BLACK := Color(1, 1, 1, 1)
 const RED := Color(1,0,0,1)
 const BASE := Color(1,1,1,1)
 const LIGHT_BROWN := Color(0.635, 0.447, 0.31,1)
