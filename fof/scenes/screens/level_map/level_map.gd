@@ -64,6 +64,7 @@ func on_change_game_phase(phase: String) -> void:
 			Deck.on_after_start_phase_start()
 		"HandPhase":
 			SpectateCamera.on_spectate("Spawn")
+			Deck.on_hand_phase_start()
 			Hand.on_hand_phase_start()
 		"PlayerPhase":
 			Hand.on_player_phase_start()
@@ -71,6 +72,7 @@ func on_change_game_phase(phase: String) -> void:
 			SpectateCamera.on_spectate("Unit")
 		"PlayerEndTurnPhase":
 			LevelUI.on_player_end_turn_phase_start()
+			on_change_game_phase("HandPhase")
 		"BOTPhase":
 			pass
 		"PlayerStartTurnPhase":

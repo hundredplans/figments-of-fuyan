@@ -1,7 +1,27 @@
 class_name GameStateGD
 extends Node
 
-var player_deck: Array = []
+var player_deck: Array = [
+	{"id": 118,
+	"tool_id": 0,
+	"effects": []},
+	
+	{"id": 160,
+	"tool_id": 0,
+	"effects": []},
+	
+	{"id": 56,
+	"tool_id": 0,
+	"effects": []},
+	
+	{"id": 92,
+	"tool_id": 0,
+	"effects": []},
+	
+	{"id": 32,
+	"tool_id": 0,
+	"effects": []},
+]
 var player_boons: Array = []
 
 var admin: bool = true
