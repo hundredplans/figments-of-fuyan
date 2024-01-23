@@ -31,13 +31,21 @@ func on_force_draw_card(deck_card: DeckCardGD) -> void:
 	deck_card.queue_free()
 
 func on_draw_card() -> void:
-	if _get_child_count() > 0: Hand.on_draw_card(get_child(0))
+	if _get_child_count() > 0: 
+		var deck_card: DeckCardGD = _get_child(0)
+		Hand.on_draw_card(deck_card)
+		deck_card.queue_free()
 		
+		
+func _get_child(i: int) -> DeckCardGD: return _get_children()[i]
 func _get_children() -> Array: return get_children().filter(is_not_queued_for_deletion)
 func _get_child_count() -> int: return _get_children().size()
 
 func is_not_queued_for_deletion(deck_card: DeckCardGD) -> bool: return !deck_card.is_queued_for_deletion()
 
+func on_hand_phase_start() -> void:
+	on_draw_card()
+
 func on_after_start_phase_start() -> void:
-	for i in range(AFTER_PHASE_START_DRAW_COUNT): on_draw_card()
+	for i in range(AFTER_PHASE_START_DRAW_COUNT - 1): on_draw_card()
 	LevelMap.on_change_game_phase("HandPhase")

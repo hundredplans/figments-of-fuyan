@@ -63,23 +63,26 @@ func on_card_selected(CardUI: Control) -> void:
 func on_card_placed(index: int) -> void:
 	HandBox.get_child(index).queue_free()
 
-func on_change_energy(energy: int) -> void:
-	$Energy/Label.text = str(min(energy, 0))
+func on_change_energy(energy: int, is_energy_max: bool) -> void:
+	$Energy/Label.text = str(max(energy, 0))
+	$Energy/Label.modulate = Helper.BASE if !is_energy_max else Helper.YELLOW
 
 func on_player_end_turn_phase_start() -> void:
 	ChangePhase.visible = false
 
-func on_hand_phase_start(playable_cards: Array) -> void:
-	for i in range(HandBox.get_child_count()):
-		HandBox.get_child(i).on_set_disabled(i in playable_cards)
+func on_hand_phase_start() -> void:
 	HandBox.visible = true
 	ChangePhase.visible = true
+
+func on_set_hand_box_disabled(playable_cards: Array) -> void:
+	for i in range(HandBox.get_child_count()):
+		HandBox.get_child(i).on_set_disabled(i not in playable_cards)
 
 func _on_hand_phase_hitbox_pressed():
 	LevelMap.on_change_game_phase("PlayerPhase")
 	
 func on_player_phase_start() -> void:
-	if CardUISelected != null: 
+	if CardUISelected != null:
 		CardUISelected.material = null
 		CardUISelected = null
 	HandBox.visible = false

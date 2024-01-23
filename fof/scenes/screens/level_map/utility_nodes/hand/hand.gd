@@ -2,7 +2,9 @@ class_name HandGD
 extends Node
 
 var energy: int = 0
+var energy_cap: int = 0
 
+var Tiles: TilesGD
 var Heroes: HeroesGD
 var LevelMap: LevelMapGD
 var Units: UnitsGD
@@ -14,10 +16,10 @@ func on_start_phase_start() -> void:
 	on_change_energy(Helper.id_to_dict(Heroes.hid_to_id(GameState.hero_id, GameState.hero_level), "Card").e - 1)
 
 func on_hand_phase_start() -> void:
-	on_change_energy(1)
 	card_selected_index = -1
+	on_change_energy(1)
 	if LevelMap.play_ui:
-		LevelUI.on_hand_phase_start(on_playable_cards())
+		LevelUI.on_hand_phase_start()
 
 func on_playable_cards() -> Array:
 	return get_children().filter(on_is_card_playable).map(on_get_child_index)
@@ -43,6 +45,7 @@ func on_create_card(id: int, tool_id: int = 0, effects: Array = []) -> void:
 	add_child(card)
 	
 	card.on_create_card(id, tool_id, effects)
+	energy_cap = max(Helper.id_to_dict(id, "Card").e, energy_cap)
 	LevelUI.on_draw_card(card)
 
 var card_selected_index: int = -1
@@ -52,7 +55,7 @@ func on_card_selected(index: int) -> void:
 		SpectateCamera.on_spectate("Spawn")
 
 func on_card_placed(Tile: TileGD) -> void:
-	if card_selected_index > -1:
+	if card_selected_index > -1 and !Tiles.is_tile_occupied_by_units(Tile):
 		var hand_card: HandCardGD = get_child(card_selected_index)
 		LevelUI.on_card_placed(card_selected_index)
 		on_change_energy(-Helper.id_to_dict(hand_card.id, "Card").e)
@@ -64,5 +67,8 @@ func on_card_placed(Tile: TileGD) -> void:
 			LevelMap.on_change_game_phase("AfterStartPhase")
 
 func on_change_energy(delta: int) -> void:
-	energy += delta
-	LevelUI.on_change_energy(energy)
+	energy = clamp(energy + delta, 0, energy_cap)
+	LevelUI.on_change_energy(energy, energy == energy_cap)
+	
+	if LevelMap.play_ui:
+		LevelUI.on_set_hand_box_disabled(on_playable_cards())

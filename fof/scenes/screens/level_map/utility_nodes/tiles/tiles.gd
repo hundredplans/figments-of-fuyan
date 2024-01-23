@@ -2,6 +2,7 @@ class_name TilesGD
 extends Node3D
 const MAX_HEIGHT: int = 11
 
+var Units: UnitsGD
 var Lights: LightsGD
 var Hand: HandGD
 
@@ -109,6 +110,12 @@ func _is_diagonal(pos: Vector4, opos: Vector4, distance: int = 1, search_elevati
 func admin_highlight_tiles(tiles: Array) -> void:
 	for tile in tiles: tile.visible = false
 
+func is_tile_occupied_by_units(Tile: TileGD) -> bool:
+	return Tile in Units.on_units().map(tile_by_unit)
+
+func tile_by_unit(Unit: UnitGD) -> TileGD:
+	return Unit.Tile
+	
 # -----------------
 
 func _ready() -> void:
