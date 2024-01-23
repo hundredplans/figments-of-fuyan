@@ -46,29 +46,34 @@ func on_set_camera_point_along_circle(progress: float) -> void:
 	look_at(central_point)
 	
 var spectate_type: String
-var spectate_id: int = 0
-func on_spectate(type: String = "Unit", id: int = 0) -> void:
+var unit_spectate_id: int = 0
+var spawn_spectate_id: int = 0
+func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0) -> void:
+	var old_type: bool = type == spectate_type
 	spectate_type = type
-	spectate_id = id
 	match type:
 		"Spawn":
+			
 			var spawn_tiles: Array = Tiles.on_is_type_get_tiles("Spawn", "obj")
+			if id == -1: spawn_spectate_id += direction
+			else: spawn_spectate_id = id
 			
-			if spectate_id == spawn_tiles.size(): spectate_id = 0
-			elif spectate_id < 0: spectate_id = spawn_tiles.size() - 1
+			if spawn_spectate_id >= spawn_tiles.size(): spawn_spectate_id = 0
+			elif spawn_spectate_id < 0: spawn_spectate_id = spawn_tiles.size() - 1
 			
-			on_camera_start_spectate(spawn_tiles[spectate_id].position, type)
+			on_camera_start_spectate(spawn_tiles[spawn_spectate_id].position, type)
 		"Unit":
 			var units: Array = Units.on_units(0, "Ally")
+			if id == -1: unit_spectate_id += direction
+			else: unit_spectate_id = id
 			
-			if spectate_id == units.size(): spectate_id = 0
-			elif spectate_id < 0: spectate_id = units.size() - 1
+			if unit_spectate_id == units.size(): unit_spectate_id = 0
+			elif unit_spectate_id < 0: unit_spectate_id = units.size() - 1
 			
-			var Unit: UnitGD = units[spectate_id]
+			var Unit: UnitGD = units[unit_spectate_id]
 			CAMERA_HEIGHT["Unit"] = Unit.height * CAMERA_UNIT_HEIGHT_MULTIPLIER
 			CAMERA_LOOK_AT_HEIGHT["Unit"] = Unit.height * LOOK_AT_UNIT_HEIGHT_MULTIPLIER
 			on_camera_start_spectate(Unit.position, type)
 
 func on_select_spectate_camera_direction(i: int) -> void:
-	spectate_id += i
-	on_spectate(spectate_type, spectate_id)
+	on_spectate(spectate_type, -1, i)

@@ -1,6 +1,7 @@
 class_name HandGD
 extends Node
 
+const MAX_HAND_SIZE: int = 10
 var energy: int = 0
 var energy_cap: int = 0
 
@@ -36,7 +37,8 @@ func on_player_phase_start() -> void:
 		LevelUI.on_player_phase_start()
 
 func on_draw_card(deck_card: DeckCardGD) -> void:
-	on_create_card(deck_card.id, deck_card.tool_id, deck_card.effects)
+	if get_child_count() < MAX_HAND_SIZE:
+		on_create_card(deck_card.id, deck_card.tool_id, deck_card.effects)
 
 func on_create_card(id: int, tool_id: int = 0, effects: Array = []) -> void:
 	var card := HandCardGD.new()
@@ -51,8 +53,7 @@ func on_create_card(id: int, tool_id: int = 0, effects: Array = []) -> void:
 var card_selected_index: int = -1
 func on_card_selected(index: int) -> void:
 	card_selected_index = index
-	if index > -1:
-		SpectateCamera.on_spectate("Spawn")
+	SpectateCamera.on_spectate("Spawn" if index > -1 else "Unit")
 
 func on_card_placed(Tile: TileGD) -> void:
 	if card_selected_index > -1 and !Tiles.is_tile_occupied_by_units(Tile):

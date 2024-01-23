@@ -83,7 +83,7 @@ func _on_hand_phase_hitbox_pressed():
 	
 func on_player_phase_start() -> void:
 	if CardUISelected != null:
-		CardUISelected.material = null
+		CardUISelected.get_node("Art/BlackCard").material = null
 		CardUISelected = null
 	HandBox.visible = false
 

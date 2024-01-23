@@ -63,7 +63,6 @@ func on_change_game_phase(phase: String) -> void:
 		"AfterStartPhase": 
 			Deck.on_after_start_phase_start()
 		"HandPhase":
-			SpectateCamera.on_spectate("Spawn")
 			Deck.on_hand_phase_start()
 			Hand.on_hand_phase_start()
 		"PlayerPhase":

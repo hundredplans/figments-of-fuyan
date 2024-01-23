@@ -1,6 +1,7 @@
 class_name UnitsGD
 extends Node3D
 
+var SpectateCamera: Camera3D
 var Vision: VisionGD
 var Random: RandomGD
 var Tiles: TilesGD
@@ -22,6 +23,7 @@ func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int
 func on_start_phase_start() -> void:
 	BotManager.Units = self
 	PlayerManager.Units = self
+	PlayerManager.SpectateCamera = SpectateCamera
 	
 	var enemy_tiles: Array = Tiles.on_is_type_get_tiles("Enemy", "obj")
 	for Tile in enemy_tiles:
