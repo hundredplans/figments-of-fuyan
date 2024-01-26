@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://ctkc1c48xn82v"]
+
+[ext_resource type="Material" uid="uid://1v364aakp4he" path="res://scenes/screens/level_map/utility_nodes/vision/darkness_material.tres" id="1_htpfi"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_sc62j"]
+material = ExtResource("1_htpfi")
+top_radius = 1.0
+bottom_radius = 1.0
+height = 10.0
+radial_segments = 6
+rings = 1
+cap_top = false
+cap_bottom = false
+
+[node name="Darkness" type="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+mesh = SubResource("CylinderMesh_sc62j")
