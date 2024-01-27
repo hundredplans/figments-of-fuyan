@@ -474,15 +474,3 @@ const TYPE_TO_BTAB: Dictionary = {
 	"tdeco": 3,
 	"wdeco": 4,
 }
-
-const CARD_TEXT_TO_COLOR: Dictionary = {
-	"DMG": "NAVAJO_WHITE",
-	"RANGED": "BROWN",
-	"GBONES": "PAPAYA_WHIP",
-	"BLOCK": "GRAY",
-	"CARD_NAME": "SLATE_GRAY",
-	"ATT": "ORANGE",
-	"HP": "RED",
-	"SPD": "GREEN",
-	"ENERGY": "YELLOW",
-}

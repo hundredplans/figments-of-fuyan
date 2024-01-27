@@ -27,6 +27,11 @@ const move_screen_name_to_path: Dictionary = {
 }
 	
 func _ready() -> void:
+	var regex := RegEx.new()
+	regex.compile("{.*}")
+	for result in regex.search_all("{heyho}"):
+		print(result.get_string())
+	
 	$UI/CardUI.set_info(Helper.id_to_dict(150, "Card"))
 	Helper.main = self
 	load_general_world()

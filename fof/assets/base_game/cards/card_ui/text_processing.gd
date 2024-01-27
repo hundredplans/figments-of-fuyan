@@ -3,14 +3,72 @@ extends Node
 @export var CardUI: Control
 
 func on_apply_text_processing(text: String, TextLabel: RichTextLabel) -> void:
-	text = text.insert(0, "[center]")
-	text += "[/center]"
-	
+	text = on_color_and_bold_premade_stats(text)
+	text = on_color_card_names(text)
+	text = on_replace_att_hp_spd(text)
+	text = on_color_outliers(text)
 	
 	for type in DirAccess.get_files_at("res://assets/base_game/cards/card_ui/bbcode/"):
-		on_add_bbcode_image(TextLabel, type.left(-4))
+		text = on_add_bbcode_image(text, type.left(-4))
 
+	text = text.insert(0, "[center]")
+	text += "[/center]"
 	TextLabel.text = text
 
-func on_add_bbcode_image(TextLabel: RichTextLabel, type: String) ->  void:
-	TextLabel.text = TextLabel.text.replace(type, "[img=15x15]res://assets/base_game/cards/card_ui/bbcode/" + type + ".png[/img]")
+func on_add_bbcode_image(text: String, type: String) ->  String:
+	return text.replace(type, "[img=15x15]res://assets/base_game/cards/card_ui/bbcode/" + type + ".png[/img]")
+
+
+var STAT_TO_INDEX: Array = ["ATTACK", "HEALTH", "SPEED"]
+const CARD_TEXT_TO_COLOR: Dictionary = {
+	"DMG": "NAVAJO_WHITE",
+	"RANGED": "BROWN",
+	"GBONES": "PAPAYA_WHIP",
+	"BLOCK": "GRAY",
+	"CARD_NAME": "SLATE_GRAY",
+	"ATTACK": "ORANGE",
+	"HEALTH": "RED",
+	"SPEED": "GREEN",
+	"ENERGY": "YELLOW",
+}
+
+func on_color_outliers(text: String) -> String:
+	return text
+
+func on_color_and_bold_premade_stats(text: String) -> String:
+	var regex := RegEx.new()
+	regex.compile("\\[[0-9]\\] (ENERGY|HEALTH|ATTACK|SPEED)")
+	for result in regex.search_all(text):
+		var on_replace: String = result.get_string()
+		var replacement: String = "[b][color=" + CARD_TEXT_TO_COLOR[on_replace.get_slice(" ", 1)] + "]" + on_replace + "[/color][/b]"
+		text = text.replace(on_replace, replacement)
+	return text
+	
+func on_color_card_names(text: String) -> String:
+	var regex := RegEx.new()
+	regex.compile("{[a-zA-Z\\s\\-]*}")
+	for result in regex.search_all(text):
+		var on_replace: String = result.get_string()
+		text = text.replace(on_replace, "[b][color=" + CARD_TEXT_TO_COLOR["CARD_NAME"] + "]" + \
+		on_replace.substr(1, on_replace.length() - 2) + "[/color][/b]")
+	return text
+
+func on_replace_att_hp_spd(text: String) -> String:
+	var regex := RegEx.new()
+	regex.compile("\\[[+-][0-9]/[0-9]/*[0-9]*\\]")
+	for result in regex.search_all(text):
+		var stats: Array = Array(result.get_string().split("/", false)).map(func(x: String): return int(x))
+		var replacement: String = ""
+		
+		for j in range(stats.size()):
+			if stats[j] != 0:
+				var replacement_operator: String = "+" if stats[j] > 0 else ""
+				replacement += \
+				"[b][color=" + CARD_TEXT_TO_COLOR[STAT_TO_INDEX[j]] + "]" + \
+				replacement_operator + \
+				str(stats[j]) + \
+				" [/color][/b]" + \
+				STAT_TO_INDEX[j] + \
+				" "
+		text = text.replace(result.get_string(), replacement)
+	return text
