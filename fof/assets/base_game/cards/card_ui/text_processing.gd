@@ -3,10 +3,10 @@ extends Node
 @export var CardUI: Control
 
 func on_apply_text_processing(text: String, TextLabel: RichTextLabel) -> void:
+	text = on_replace_att_hp_spd(text)
 	text = on_color_and_bold_premade_stats(text)
 	text = on_color_card_names(text)
-	text = on_replace_att_hp_spd(text)
-	text = on_color_outliers(text)
+	
 	
 	for type in DirAccess.get_files_at("res://assets/base_game/cards/card_ui/bbcode/"):
 		text = on_add_bbcode_image(text, type.left(-4))
@@ -17,7 +17,6 @@ func on_apply_text_processing(text: String, TextLabel: RichTextLabel) -> void:
 
 func on_add_bbcode_image(text: String, type: String) ->  String:
 	return text.replace(type, "[img=15x15]res://assets/base_game/cards/card_ui/bbcode/" + type + ".png[/img]")
-
 
 var STAT_TO_INDEX: Array = ["ATTACK", "HEALTH", "SPEED"]
 const CARD_TEXT_TO_COLOR: Dictionary = {
@@ -32,15 +31,13 @@ const CARD_TEXT_TO_COLOR: Dictionary = {
 	"ENERGY": "YELLOW",
 }
 
-func on_color_outliers(text: String) -> String:
-	return text
-
 func on_color_and_bold_premade_stats(text: String) -> String:
 	var regex := RegEx.new()
-	regex.compile("\\[[0-9]\\] (ENERGY|HEALTH|ATTACK|SPEED)")
+	regex.compile("((\\[[0-9]\\]\\s)|[+-][0-9]\\s)?(ENERGY|HEALTH|ATTACK|SPEED|DMG|GBONES|RANGED|BLOCK)(\\s\\[[0-9](-[0-9])?\\])?")
 	for result in regex.search_all(text):
 		var on_replace: String = result.get_string()
-		var replacement: String = "[b][color=" + CARD_TEXT_TO_COLOR[on_replace.get_slice(" ", 1)] + "]" + on_replace + "[/color][/b]"
+		var replacement: String = "[color=" + CARD_TEXT_TO_COLOR[on_replace.get_slice(" ", 1 if !(on_replace.contains("RANGED") or on_replace.contains("BLOCK")) else 0)] \
+		+ "]" + on_replace + "[/color]"
 		text = text.replace(on_replace, replacement)
 	return text
 	
@@ -63,12 +60,6 @@ func on_replace_att_hp_spd(text: String) -> String:
 		for j in range(stats.size()):
 			if stats[j] != 0:
 				var replacement_operator: String = "+" if stats[j] > 0 else ""
-				replacement += \
-				"[b][color=" + CARD_TEXT_TO_COLOR[STAT_TO_INDEX[j]] + "]" + \
-				replacement_operator + \
-				str(stats[j]) + \
-				" [/color][/b]" + \
-				STAT_TO_INDEX[j] + \
-				" "
+				replacement += replacement_operator + str(stats[j]) + " " + STAT_TO_INDEX[j] + " "
 		text = text.replace(result.get_string(), replacement)
 	return text
