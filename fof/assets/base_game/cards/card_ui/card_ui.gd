@@ -8,6 +8,7 @@ var Heroes: HeroesGD
 @export var Art: Control
 @export var Text: Control
 @export var Stats: Control
+	
 
 func set_info(_info: Dictionary) -> void:
 	info = _info

@@ -1,23 +1,25 @@
 extends Node
 
 @export var CardUI: Control
+var TextLabel: RichTextLabel
 
-func on_apply_text_processing(text: String, TextLabel: RichTextLabel) -> void:
-	text = text.replace("\n", " ")
+func on_apply_text_processing(text: String, _TextLabel: RichTextLabel) -> void:
+	TextLabel = _TextLabel
 	text = on_replace_att_hp_spd(text)
 	text = on_color_words(text)
 	text = on_bold_caps_words(text)
 	text = on_color_card_names(text)
 	
-	for type in DirAccess.get_files_at("res://assets/base_game/cards/card_ui/bbcode/"):
-		text = on_add_bbcode_image(text, type.left(-4))
-
 	text = text.insert(0, "[center]")
 	text += "[/center]"
+	
+	for type in DirAccess.get_files_at("res://assets/base_game/cards/card_ui/bbcode/"):
+		text = on_add_bbcode_image(text, type.left(-4))
+	
 	TextLabel.text = text
 
 func on_add_bbcode_image(text: String, type: String) ->  String:
-	return text.replace(type, "[img=15x15]res://assets/base_game/cards/card_ui/bbcode/" + type + ".png[/img]")
+	return text.replace(type, "[img=14x14]res://assets/base_game/cards/card_ui/bbcode/" + type + ".png[/img]")
 
 var STAT_TO_INDEX: Array = ["ATTACK", "HEALTH", "SPEED"]
 const CARD_TEXT_TO_COLOR: Dictionary = {

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bnoei7u0kxl25"]
+[gd_scene load_steps=10 format=3 uid="uid://bnoei7u0kxl25"]
 
 [ext_resource type="Script" path="res://scenes/containers/main/main.gd" id="1_10ydf"]
 [ext_resource type="Texture2D" uid="uid://cj8j06xypgaw7" path="res://assets/UI/back_arrow/back_arrow.png" id="3_cu6v7"]
@@ -6,7 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://bak0pucgtak0b" path="res://assets/UI/back_arrow/back_arrow_dark.png" id="5_fjqpq"]
 [ext_resource type="Texture2D" uid="uid://et3bcj7gnugo" path="res://assets/UI/setting_cog/setting_cog.png" id="6_vmtrq"]
 [ext_resource type="Texture2D" uid="uid://cw2fnn7hfibl3" path="res://assets/UI/setting_cog/setting_cog_pressed.png" id="7_dwuio"]
-[ext_resource type="PackedScene" uid="uid://d3wjg2pg1go2m" path="res://assets/base_game/cards/card_ui/card_ui.tscn" id="8_rj5v8"]
 [ext_resource type="Texture2D" uid="uid://bp06vcvriyo3d" path="res://assets/UI/setting_cog/setting_cog_hover.png" id="8_ymrhe"]
 [ext_resource type="Environment" uid="uid://cb6o21l8cjbwp" path="res://scenes/world/equipped_theme/0/env.tres" id="35_187mi"]
 
@@ -72,10 +71,6 @@ offset_right = 1920.0
 offset_bottom = 1080.0
 mouse_filter = 2
 color = Color(0, 0, 0, 0)
-
-[node name="CardUI" parent="UI" instance=ExtResource("8_rj5v8")]
-visible = false
-layout_mode = 1
 
 [node name="World" type="Node3D" parent="."]
 
