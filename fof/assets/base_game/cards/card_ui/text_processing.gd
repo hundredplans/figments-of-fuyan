@@ -3,10 +3,11 @@ extends Node
 @export var CardUI: Control
 
 func on_apply_text_processing(text: String, TextLabel: RichTextLabel) -> void:
+	text = text.replace("\n", " ")
 	text = on_replace_att_hp_spd(text)
-	text = on_color_and_bold_premade_stats(text)
+	text = on_color_words(text)
+	text = on_bold_caps_words(text)
 	text = on_color_card_names(text)
-	
 	
 	for type in DirAccess.get_files_at("res://assets/base_game/cards/card_ui/bbcode/"):
 		text = on_add_bbcode_image(text, type.left(-4))
@@ -20,46 +21,59 @@ func on_add_bbcode_image(text: String, type: String) ->  String:
 
 var STAT_TO_INDEX: Array = ["ATTACK", "HEALTH", "SPEED"]
 const CARD_TEXT_TO_COLOR: Dictionary = {
-	"DMG": "NAVAJO_WHITE",
-	"RANGED": "BROWN",
-	"GBONES": "PAPAYA_WHIP",
-	"BLOCK": "GRAY",
-	"CARD_NAME": "SLATE_GRAY",
-	"ATTACK": "ORANGE",
-	"HEALTH": "RED",
-	"SPEED": "GREEN",
-	"ENERGY": "YELLOW",
+	"DMG": "navajo_white",
+	"RANGED": "brown",
+	"GBONE": "papaya_whip",
+	"BLOCK": "gray",
+	"CARD_NAME": "slate_gray",
+	"ATTACK": "orange",
+	"HEALTH": "red",
+	"SPEED": "green",
+	"ENERGY": "yellow",
 }
 
-func on_color_and_bold_premade_stats(text: String) -> String:
+func on_bold_caps_words(text: String) -> String:
 	var regex := RegEx.new()
-	regex.compile("((\\[[0-9]\\]\\s)|[+-][0-9]\\s)?(ENERGY|HEALTH|ATTACK|SPEED|DMG|GBONES|RANGED|BLOCK)(\\s\\[[0-9](-[0-9])?\\])?")
+	regex.compile(Helper.return_file_contents("res://assets/base_game/cards/card_ui/bbcode/to_highlight.txt").replace("\n", ""))
 	for result in regex.search_all(text):
 		var on_replace: String = result.get_string()
-		var replacement: String = "[color=" + CARD_TEXT_TO_COLOR[on_replace.get_slice(" ", 1 if !(on_replace.contains("RANGED") or on_replace.contains("BLOCK")) else 0)] \
-		+ "]" + on_replace + "[/color]"
+		var replacement: String = ""
+		
+		replacement = "[b]" + on_replace + "[/b]"
+		text = text.replace(on_replace, replacement)
+	
+	return text
+
+func on_color_words(text: String) -> String:
+	var regex := RegEx.new()
+	regex.compile("((\\[[[0-9]\\]\\s)|[+-][0-9][\\s\\n])?(ENERGY|HEALTH|ATTACK|SPEED|DMG|GBONE|RANGED|BLOCK)(\\s\\[[0-9](-[0-9])?\\])?")
+	for result in regex.search_all(text):
+		var on_replace: String = result.get_string()
+		var replacement: String = "[b][color=" + CARD_TEXT_TO_COLOR[on_replace.get_slice(" ", 1 if !(on_replace.contains("RANGED") or on_replace.contains("BLOCK")) else 0)] \
+		+ "]" + on_replace + "[/color][/b]"
 		text = text.replace(on_replace, replacement)
 	return text
 	
 func on_color_card_names(text: String) -> String:
 	var regex := RegEx.new()
-	regex.compile("{[a-zA-Z\\s\\-]*}")
+	regex.compile("{[a-zA-Z\\s\\-0-9']*}")
 	for result in regex.search_all(text):
 		var on_replace: String = result.get_string()
+		
 		text = text.replace(on_replace, "[b][color=" + CARD_TEXT_TO_COLOR["CARD_NAME"] + "]" + \
 		on_replace.substr(1, on_replace.length() - 2) + "[/color][/b]")
 	return text
 
 func on_replace_att_hp_spd(text: String) -> String:
 	var regex := RegEx.new()
-	regex.compile("\\[[+-][0-9]/[0-9]/*[0-9]*\\]")
+	regex.compile("\\[[+-]?-?[0-9]/-?[0-9]/*-?[0-9]*\\]")
 	for result in regex.search_all(text):
 		var stats: Array = Array(result.get_string().split("/", false)).map(func(x: String): return int(x))
 		var replacement: String = ""
 		
 		for j in range(stats.size()):
 			if stats[j] != 0:
-				var replacement_operator: String = "+" if stats[j] > 0 else ""
-				replacement += replacement_operator + str(stats[j]) + " " + STAT_TO_INDEX[j] + " "
+				var replacement_operator: String = "+" if stats[j] > 0 else "-"
+				replacement += replacement_operator + str(abs(stats[j])) + " " + STAT_TO_INDEX[j] + " "
 		text = text.replace(result.get_string(), replacement)
 	return text
