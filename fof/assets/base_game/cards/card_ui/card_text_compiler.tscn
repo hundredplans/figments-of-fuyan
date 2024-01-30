@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://7pdpk7yh7tkr"]
+
+[ext_resource type="Script" path="res://assets/base_game/cards/card_ui/card_text_compiler.gd" id="1_jphbe"]
+[ext_resource type="Script" path="res://assets/base_game/cards/card_ui/text_processing.gd" id="2_ydrl4"]
+[ext_resource type="PackedScene" uid="uid://bdd0m6wbuerq5" path="res://scenes/editor/edit_file_name/edit_file_name.tscn" id="3_wia73"]
+
+[node name="CardTextCompiler" type="Node"]
+script = ExtResource("1_jphbe")
+
+[node name="TextProcessing" type="Node" parent="."]
+script = ExtResource("2_ydrl4")
+
+[node name="EditFileName" parent="." instance=ExtResource("3_wia73")]

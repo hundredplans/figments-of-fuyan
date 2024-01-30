@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://dgjchsjrv72a3"]
+[gd_scene load_steps=13 format=3 uid="uid://dgjchsjrv72a3"]
 
 [ext_resource type="Script" path="res://static/game_info/heroes.gd" id="1_5aclk"]
 [ext_resource type="Script" path="res://scenes/screens/card_editor/card_editor.gd" id="1_hv8xs"]
 [ext_resource type="PackedScene" uid="uid://bdd0m6wbuerq5" path="res://scenes/editor/edit_file_name/edit_file_name.tscn" id="2_axojh"]
 [ext_resource type="Theme" uid="uid://c5rky1f5xs5if" path="res://assets/UI/lora/lora48.tres" id="2_q225b"]
+[ext_resource type="Script" path="res://assets/base_game/cards/card_ui/text_processing.gd" id="2_w7p2h"]
 [ext_resource type="Theme" uid="uid://c7y2qa3kssows" path="res://assets/UI/lora/lora.tres" id="3_vsycf"]
 [ext_resource type="PackedScene" uid="uid://bj3h1ak5dv73n" path="res://scenes/ui_general/op_button/op_button.tscn" id="4_nujyg"]
 [ext_resource type="PackedScene" uid="uid://65cqb6wug8it" path="res://scenes/ui_general/scale_button/scale_button.tscn" id="6_18pqn"]
@@ -23,6 +24,9 @@ grow_vertical = 2
 script = ExtResource("1_hv8xs")
 CardText = NodePath("CardCreator/CardText")
 FlavorText = NodePath("CardCreator/FlavorText")
+
+[node name="TextProcessing" type="Node" parent="."]
+script = ExtResource("2_w7p2h")
 
 [node name="Heroes" type="Node" parent="."]
 script = ExtResource("1_5aclk")

@@ -71,8 +71,13 @@ func _on_edit_file_name_text_submitted():
 	$CardCreator/Stats/Energy.grab_focus()
 
 func _on_save_card_pressed():
+	var card_text: String = CardText.text.replace("\n", " ")
+	var text: Dictionary = {
+		"raw": card_text,
+		"compiled": $TextProcessing.on_apply_text_processing(card_text)
+	}
 	var contents: String = "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s"\
-	% [stats[0], stats[1], stats[2], stats[3], rarity, CardText.text.replace("\n", " "), FlavorText.text.replace("\n", " "),
+	% [stats[0], stats[1], stats[2], stats[3], rarity, text, FlavorText.text.replace("\n", " "),
 	personality_sliders[0], personality_sliders[1], personality_sliders[2], personality_sliders[3], personality_sliders[4], height]
 	var item_dict: Dictionary = Helper.write_to_base_game_file(FILE_LOADER_NAME, $CardCreator/EditFileName, contents, TID)
 	
@@ -120,7 +125,7 @@ func on_item_selected(item_info: Dictionary, change_rarity: bool = true) -> void
 		btn.set_grabber_position()
 		
 	$CardCreator/FlavorText.text = item_info.flavor
-	$CardCreator/CardText.text = item_info.text
+	$CardCreator/CardText.text = item_info.text.raw
 	
 	ID = item_info.id
 	var texture_path: String = "res://assets/base_game/cards/card_ui/default_art_max.png"

@@ -15,8 +15,7 @@ func set_info(_info: Dictionary) -> void:
 	for stat in ["a", "h", "s", "e"]:
 		Stats.get_node(Helper.stat_ai_dict[stat] + "/Label").text = str(info[stat])
 	
-	Text.get_node("Text").text = info["text"]
-	$TextProcessing.on_apply_text_processing(info["text"], Text.get_node("Text"))
+	Text.get_node("Text").text = info.text.compiled
 	Text.get_node("Name").text = info["sname"]
 	
 	var hero_bgfn: String = info.bgfn if info.r != 7 else Helper.id_to_dict(Heroes.id_to_base(info.id), "Card").bgfn

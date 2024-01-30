@@ -251,6 +251,10 @@ func on_convert_type(keys: Array, contents: Array) -> Dictionary:
 			
 		elif contents[i].begins_with("[") and contents[i].ends_with("]"):
 			contents[i] = str_to_var(contents[i])
+			
+		elif contents[i].begins_with("{"):
+			contents[i] = str_to_var(contents[i])
+			
 		item_dict.merge({key: contents[i]})
 		i += 1
 	return item_dict
