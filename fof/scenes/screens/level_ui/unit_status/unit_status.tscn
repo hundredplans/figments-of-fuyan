@@ -1,0 +1,206 @@
+[gd_scene load_steps=10 format=3 uid="uid://c58jdx2o7cfwc"]
+
+[ext_resource type="Texture2D" uid="uid://bgbyoyqx40n27" path="res://assets/base_game/cards/card_ui/default_art_max.png" id="1_w4417"]
+[ext_resource type="Texture2D" uid="uid://b74ndaaqnns1v" path="res://assets/base_game/cards/card_ui/tool/tool.png" id="2_fccpi"]
+[ext_resource type="Texture2D" uid="uid://bq7oil2dvc6bs" path="res://assets/base_game/cards/card_ui/bbcode/ATTACK.png" id="3_sw1gj"]
+[ext_resource type="LabelSettings" uid="uid://qp0350v2j4ah" path="res://assets/UI/roboto/roboto32_outline.tres" id="4_h5nh6"]
+[ext_resource type="Texture2D" uid="uid://cor7udw0x0ufw" path="res://assets/base_game/cards/card_ui/bbcode/HEALTH.png" id="5_qsmdt"]
+[ext_resource type="Texture2D" uid="uid://dkdx58e2117h0" path="res://assets/base_game/cards/card_ui/bbcode/SPEED.png" id="6_j12nd"]
+[ext_resource type="Texture2D" uid="uid://bh6s1yqelunc2" path="res://assets/base_game/cards/card_ui/bbcode/RANGED.png" id="7_xwbdd"]
+[ext_resource type="Texture2D" uid="uid://dgalti4lrsybg" path="res://assets/base_game/cards/card_ui/bbcode/ENERGY.png" id="8_rctaj"]
+[ext_resource type="Texture2D" uid="uid://drk7j81ycdepc" path="res://assets/base_game/cards/card_ui/bbcode/GBONE.png" id="9_hy0xg"]
+
+[node name="UnitStatus" type="Control"]
+layout_mode = 3
+anchor_right = 0.194
+anchor_bottom = 0.113
+offset_right = -0.480011
+offset_bottom = -0.0400085
+
+[node name="Background" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_lock_ = true
+
+[node name="Outside" type="ColorRect" parent="Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -5.0
+offset_top = -5.0
+offset_right = 5.0
+offset_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+metadata/_edit_lock_ = true
+
+[node name="Inside" type="ColorRect" parent="Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.384314, 1, 0.266667, 1)
+metadata/_edit_lock_ = true
+
+[node name="Rim1" type="ColorRect" parent="Background"]
+layout_mode = 0
+offset_left = 122.0
+offset_right = 127.0
+offset_bottom = 122.0
+color = Color(0, 0, 0, 1)
+
+[node name="ArtMax" type="Sprite2D" parent="."]
+texture = ExtResource("1_w4417")
+centered = false
+
+[node name="Tool" type="Node2D" parent="."]
+
+[node name="ToolCircle" type="Sprite2D" parent="Tool"]
+position = Vector2(0, 122)
+texture = ExtResource("2_fccpi")
+
+[node name="ToolArt" type="Sprite2D" parent="Tool"]
+
+[node name="Stats" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 127.0
+offset_right = 249.0
+offset_bottom = 122.0
+theme_override_constants/separation = 0
+
+[node name="Attack" type="Control" parent="Stats"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect" type="ColorRect" parent="Stats/Attack"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.658824, 0.262745, 0, 1)
+
+[node name="Sprite2D" type="Sprite2D" parent="Stats/Attack"]
+texture_filter = 1
+position = Vector2(19, 87)
+texture = ExtResource("3_sw1gj")
+
+[node name="Label" type="Label" parent="Stats/Attack"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -38.0
+offset_right = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "3"
+label_settings = ExtResource("4_h5nh6")
+horizontal_alignment = 1
+
+[node name="Health" type="Control" parent="Stats"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect" type="ColorRect" parent="Stats/Health"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.560784, 0, 0, 1)
+
+[node name="Sprite2D" type="Sprite2D" parent="Stats/Health"]
+texture_filter = 1
+position = Vector2(19, 87)
+texture = ExtResource("5_qsmdt")
+
+[node name="Label" type="Label" parent="Stats/Health"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.5
+offset_top = -38.0
+offset_right = 20.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "2"
+label_settings = ExtResource("4_h5nh6")
+horizontal_alignment = 1
+
+[node name="Speed" type="Control" parent="Stats"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect" type="ColorRect" parent="Stats/Speed"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.203922, 0.490196, 0.0823529, 1)
+
+[node name="Sprite2D" type="Sprite2D" parent="Stats/Speed"]
+texture_filter = 1
+position = Vector2(19, 87)
+texture = ExtResource("6_j12nd")
+
+[node name="Label" type="Label" parent="Stats/Speed"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.5
+offset_top = -38.0
+offset_right = 20.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "2"
+label_settings = ExtResource("4_h5nh6")
+horizontal_alignment = 1
+
+[node name="Status Effects" type="Node2D" parent="."]
+position = Vector2(249, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Status Effects"]
+texture_filter = 1
+position = Vector2(8, 6)
+texture = ExtResource("7_xwbdd")
+centered = false
+
+[node name="Sprite2D2" type="Sprite2D" parent="Status Effects"]
+texture_filter = 1
+position = Vector2(48, 6)
+texture = ExtResource("8_rctaj")
+centered = false
+
+[node name="Sprite2D3" type="Sprite2D" parent="Status Effects"]
+texture_filter = 1
+position = Vector2(87, 6)
+texture = ExtResource("9_hy0xg")
+centered = false
+
+[node name="Sprite2D4" type="Sprite2D" parent="Status Effects"]
+texture_filter = 1
+position = Vector2(8, 42)
+texture = ExtResource("3_sw1gj")
+centered = false

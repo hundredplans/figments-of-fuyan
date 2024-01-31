@@ -6,6 +6,7 @@ var Vision: VisionGD
 var Random: RandomGD
 var Tiles: TilesGD
 var LevelMap: LevelMapGD
+var LevelUI: LevelUIGD
 
 @onready var BotManager: BotManagerGD = $BotManager
 @onready var PlayerManager: PlayerManagerGD = $PlayerManager
@@ -32,8 +33,23 @@ func on_start_phase_start() -> void:
 func on_player_phase_start() -> void:
 	pass
 
+func unit_by_tile(Tile: TileGD) -> UnitGD:
+	for Unit in FieldedUnits.get_children():
+		if Tile == Unit.Tile: return Unit
+	return null
+
 func on_units(team: int = 0, relation: String = "Ally") -> Array:
 	return FieldedUnits.get_children().filter(on_match_team_relation.bind(team, relation))
 
 func on_match_team_relation(unit: UnitGD, team: int, relation: String) -> bool:
 	return (unit.team == team and relation == "Ally") or (unit.team != team and relation == "Enemy")
+
+var UnitSelected: UnitGD
+func on_occupied_tile_inspected(Tile: TileGD) -> void:
+	var Unit: UnitGD = unit_by_tile(Tile)
+	if Unit.team == 0:
+		match LevelMap.game_phase:
+			"PlayerPhase":
+				UnitSelected = Tiles.on_unit_selected(Unit)
+	else:
+		pass

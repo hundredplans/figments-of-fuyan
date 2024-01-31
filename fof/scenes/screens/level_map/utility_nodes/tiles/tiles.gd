@@ -2,6 +2,7 @@ class_name TilesGD
 extends Node3D
 const MAX_HEIGHT: int = 11
 
+var Vision: VisionGD
 var Units: UnitsGD
 var Lights: LightsGD
 var Hand: HandGD
@@ -54,11 +55,23 @@ func tiles_unique(tiles: Array, otiles: Array) -> Array:
 
 func is_tile_not_in_tiles(tile: Node3D, tiles: Array) -> bool: return tile not in tiles
 func is_tile_in_tiles(tile: Node3D, tiles: Array) -> bool: return tile in tiles
+
 func get_children_positions() -> Array: return get_children().map(tile_to_position)
 func tile_to_position(tile: Node3D) -> Vector4: return tile.info.position
 func tiles_to_positions(tiles: Array) -> Array: return tiles.map(tile_to_position)
 func positions_to_tiles(tiles: Array) -> Array: return tiles.map(position_to_tile)
 
+func nonexistent_positions_above(tile: Node3D) -> Array: #TASK: Optimise this
+	var pos: Vector4 = tile_to_position(tile)
+	var positions: Array = range(1, MAX_HEIGHT).map(func(x: int): return Vector4(pos.x, pos.y, pos.z, pos.w + x))
+	var return_positions: Array = []
+	for _pos in positions: # necessary for loop or it will ignore ceiling tiles
+		if is_nonexistent_valid_pos(_pos): return_positions.append(_pos)
+		else: break
+	return return_positions
+
+func is_nonexistent_valid_pos(pos: Vector4) -> bool:
+	return pos.w < MAX_HEIGHT and pos not in get_children_positions()
 
 func position_to_tile(pos: Vector4) -> Node3D: 
 	var positions: Array = get_children_positions()
@@ -133,5 +146,29 @@ func on_tile_mouse_exited(__: Node3D) -> void:
 	Lights.on_tile_unhovered()
 
 func _input(_event: InputEvent) -> void:
-	if active_tile != null and on_find_tile_primary_type(active_tile) == "Spawn" and Input.is_action_just_pressed("LeftClick"):
-		Hand.on_card_placed(active_tile)
+	if active_tile != null and Input.is_action_just_pressed("LeftClick"):
+		if is_tile_occupied_by_units(active_tile):
+			Units.on_occupied_tile_inspected(active_tile)
+		elif on_find_tile_primary_type(active_tile) == "Spawn":
+			Hand.on_card_placed(active_tile)
+
+# ----------------- Tiles UI
+
+func on_unit_selected(Unit: UnitGD) -> UnitGD:
+	if Units.UnitSelected == Unit:
+		_on_unit_deselected(Unit)
+		return null
+	elif Units.UnitSelected != null:
+		_on_unit_deselected(Units.UnitSelected)
+		_on_unit_selected(Unit)
+	else: _on_unit_selected(Unit)
+	return Unit
+
+var UnitSelectedMaterial: ShaderMaterial = preload("res://scenes/screens/level_map/utility_nodes/tiles/unit_selected_material.tres")
+func _on_unit_deselected(Unit: UnitGD) -> void:
+	for Tile in Vision.tiles_in_vision(Unit):
+		Unit.Tile.set_material(null)
+	
+func _on_unit_selected(Unit: UnitGD) -> void:
+	for Tile in Vision.tiles_in_vision(Unit):
+		Unit.Tile.set_material(UnitSelectedMaterial)

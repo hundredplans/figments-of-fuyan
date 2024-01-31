@@ -12,3 +12,6 @@ func on_load_info(info: Dictionary, area: int) -> void:
 			add_child(wall)
 			wall.position.y = n * 0.3
 			
+func set_material(mat: Material) -> void:
+	if get_child_count() > 0:
+		get_child(0).set_surface_material_override(0, mat)

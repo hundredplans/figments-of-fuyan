@@ -478,3 +478,12 @@ const TYPE_TO_BTAB: Dictionary = {
 	"tdeco": 3,
 	"wdeco": 4,
 }
+
+const BTAB_TO_TYPE: Dictionary = {
+	-1: ["tile", "obj", "wall", "tdeco", "wdeco"],
+	0: ["tile"],
+	1: ["obj"],
+	2: ["wall"],
+	3: ["tdeco"],
+	4: ["wdeco"],
+}

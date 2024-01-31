@@ -86,4 +86,10 @@ label_settings = ExtResource("6_byv4h")
 horizontal_alignment = 2
 vertical_alignment = 1
 
+[node name="UnitStatusBox" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 175.0
+offset_right = 1753.0
+offset_bottom = 122.0
+
 [connection signal="pressed" from="ChangePhase/ChangePhaseHitbox" to="." method="_on_change_phase_hitbox_pressed"]

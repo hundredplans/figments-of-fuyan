@@ -49,7 +49,6 @@ var spectate_type: String
 var unit_spectate_id: int = 0
 var spawn_spectate_id: int = 0
 func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0) -> void:
-	var old_type: bool = type == spectate_type
 	spectate_type = type
 	match type:
 		"Spawn":

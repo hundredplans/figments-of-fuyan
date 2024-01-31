@@ -7,8 +7,13 @@
 [ext_resource type="Script" path="res://scenes/screens/level_map/tile_objects/wdecoration.gd" id="5_cmfry"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/tile_objects/tdecoration.gd" id="6_1c460"]
 
-[node name="LevelTile" type="Node3D"]
+[node name="LevelTile" type="Node3D" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco")]
 script = ExtResource("1_7jf70")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
 
 [node name="Tile" type="Node3D" parent="."]
 script = ExtResource("2_s16xh")

@@ -1,3 +1,6 @@
-[gd_scene format=3 uid="uid://budwkgncgavta"]
+[gd_scene load_steps=2 format=3 uid="uid://ddb4g8qywfjrs"]
 
-[node name="Player" type="Node"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/units/player_unit_manager.gd" id="1_cxg45"]
+
+[node name="PlayerUnitManager" type="Node"]
+script = ExtResource("1_cxg45")

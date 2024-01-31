@@ -1971,15 +1971,6 @@ func _on_bake_level_pressed():
 		
 		await get_tree().create_timer(0.05).timeout
 		for tile_info in item_dict.tiles: on_create_tile(tile_info, LoadedLevel, item_dict.area)
-		
-		for child in Helper.get_children_recursive(LoadedLevel, []):
-			if child != LoadedLevel: 
-				child.owner = LoadedLevel
-		
-		for child in Helper.get_children_recursive(LoadedLevel.get_node("Tiles"), []):
-			if child != LoadedLevel.get_node("Tiles"):
-				child.name = str(randi())
-		
 		LoadedLevel.script = light_tester_gd
 		packed_scene.pack(LoadedLevel)
 		ResourceSaver.save(packed_scene, "res://assets/base_game/levels/" + item_dict.bgfn + "/loaded_level.tscn")
@@ -1993,7 +1984,12 @@ var TILE_OBJECT_NAMES: Array = ["tile", "wall", "obj", "tdeco", "wdeco"]
 func on_create_tile(tile_info: Dictionary, owner_node: Node3D, area: int) -> void:
 	if TILE_OBJECT_NAMES.any(func(x: String): return tile_info[x].id > 0):
 		var LevelTile: Node3D = _LevelTile.instantiate()
+	
+		LevelTile.name = str(randi())
 		owner_node.get_node("Tiles").add_child(LevelTile)
+		LevelTile.owner = owner_node
+		owner_node.set_editable_instance(LevelTile, true)
+		
 		tile_info.position = Vector4(tile_info.position[0], tile_info.position[1], tile_info.position[2], tile_info.position[3])
 		LevelTile.position = Vector3(
 		(sqrt(3) * tile_info.position.x + sqrt(3) * tile_info.position.y * 0.5),
@@ -2011,3 +2007,10 @@ func on_create_tile(tile_info: Dictionary, owner_node: Node3D, area: int) -> voi
 		LevelTile.on_load_info("TDeco")
 		LevelTile.on_load_info("WDeco")
 		LevelTile.on_load_info("Obj")
+		
+		for type in Helper.BTAB_TO_TYPE[-1]:
+			var parent: Node3D = LevelTile.get(type)
+			for child in parent.get_children():
+				owner_node.set_editable_instance(child, true)
+				#child.owner = owner_node
+				#print(child.name)

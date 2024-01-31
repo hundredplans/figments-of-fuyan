@@ -87,6 +87,7 @@ func _on_save_card_pressed():
 
 var FileLoader: Control
 func _on_load_card_pressed():
+	$Buttons/LoadCard.disabled = true
 	FileLoader = preload("res://scenes/editor/file_loader/file_loader.tscn").instantiate()
 	
 	FileLoader.get_node("Search/SearchEdit").text = search_item_text
@@ -106,6 +107,7 @@ var search_item_selected: int = 0
 var search_item_text: String = ""
 
 func on_fileloader_queued() -> void:
+	$Buttons/LoadCard.disabled = false
 	fileloader_page = FileLoader.page
 	search_item_selected = FileLoader.search_item_selected
 	search_item_text = FileLoader.get_node("Search/SearchEdit").text
