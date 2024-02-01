@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" script_class="BaseMaterial" load_steps=3 format=3 uid="uid://cnwclfum0ivym"]
+
+[ext_resource type="Script" path="res://assets/materials/base_material.gd" id="1_1ordc"]
+[ext_resource type="Shader" path="res://scenes/screens/level_map/utility_nodes/lights/regular_inspected.gdshader" id="2_0m3va"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("2_0m3va")
+shader_parameter/hover_color = null
+script = ExtResource("1_1ordc")
+material_name = "RegularInspected"

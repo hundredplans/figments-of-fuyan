@@ -11,7 +11,7 @@ func on_recalculate_vision() -> void:
 	var visible_tiles: Array = on_find_visible_tiles()
 	var other_tiles: Array = Tiles.tiles_unique(Tiles.get_children(), visible_tiles)
 	on_apply_visibility(visible_tiles, other_tiles)
-	on_create_darkness(visible_tiles, other_tiles)
+	on_create_darkness(other_tiles)
 	
 func on_clear_darkness() -> void:
 	for child in get_children(): child.queue_free()
@@ -37,7 +37,7 @@ func on_apply_visibility(visible_tiles: Array, other_tiles: Array) -> void:
 	for unit in Units.on_units(1, "Ally"):
 		unit.visible = unit.Tile in visible_tiles
 
-func on_create_darkness(visible_tiles: Array, other_tiles: Array) -> void:
+func on_create_darkness(other_tiles: Array) -> void:
 	for Tile in other_tiles:
 		var Darkness: MeshInstance3D = preload("res://scenes/screens/level_map/utility_nodes/vision/darkness.tscn").instantiate()
 		Darkness.mesh = load("res://scenes/screens/level_map/utility_nodes/vision/darkness" \

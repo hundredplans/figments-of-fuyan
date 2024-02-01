@@ -135,15 +135,21 @@ func _ready() -> void:
 	for child in get_children():
 		child.get_node("MouseDetector").mouse_entered.connect(on_tile_mouse_entered.bind(child))
 		child.get_node("MouseDetector").mouse_exited.connect(on_tile_mouse_exited.bind(child))
-		
-var active_tile: Node3D
-func on_tile_mouse_entered(tile: Node3D) -> void:
-	active_tile = tile
-	Lights.on_tile_hovered(active_tile, on_find_tile_primary_type(tile))
+
+var active_tile: TileGD
+func on_tile_mouse_entered(Tile: TileGD) -> void:
+	active_tile = Tile
+	on_tile_hovered(active_tile, on_find_tile_primary_type(Tile))
 	
-func on_tile_mouse_exited(__: Node3D) -> void:
+func on_tile_mouse_exited(Tile: TileGD) -> void:
 	active_tile = null
-	Lights.on_tile_unhovered()
+	on_tile_unhovered(Tile)
+
+func on_tile_hovered(Tile: TileGD, type: String) -> void:
+	on_set_tile_material(Tile, type + "Inspected")
+
+func on_tile_unhovered(Tile: TileGD) -> void:
+	on_set_tile_material(Tile)
 
 func _input(_event: InputEvent) -> void:
 	if active_tile != null and Input.is_action_just_pressed("LeftClick"):
@@ -164,11 +170,29 @@ func on_unit_selected(Unit: UnitGD) -> UnitGD:
 	else: _on_unit_selected(Unit)
 	return Unit
 
-var UnitSelectedMaterial: ShaderMaterial = preload("res://scenes/screens/level_map/utility_nodes/tiles/unit_selected_material.tres")
 func _on_unit_deselected(Unit: UnitGD) -> void:
 	for Tile in Vision.tiles_in_vision(Unit):
-		Unit.Tile.set_material(null)
+		on_set_tile_material(Tile)
 	
 func _on_unit_selected(Unit: UnitGD) -> void:
 	for Tile in Vision.tiles_in_vision(Unit):
-		Unit.Tile.set_material(UnitSelectedMaterial)
+		on_set_tile_material(Tile, "UnitSelected")
+
+var MATERIAL_NAME_TO_MATERIAL: Dictionary = {
+	"RegularInspected": preload("res://scenes/screens/level_map/utility_nodes/lights/regular_inspected_material.tres"),
+	"SpawnInspected": preload("res://scenes/screens/level_map/utility_nodes/lights/regular_inspected_material.tres"),
+	"UnitSelected": preload("res://scenes/screens/level_map/utility_nodes/tiles/unit_selected_material.tres"),
+	"": null,
+}
+
+func on_set_tile_material(Tile: TileGD, material_name: String = "", btab: int = 0):
+	for type in Helper.BTAB_TO_TYPE[btab]:
+		var TileObj: Node3D = Tile.get(type)
+		match TileObj.previous_material_name:
+			"UnitSelected": if material_name == "": material_name = "UnitSelected"
+		
+		match material_name:
+			"SpawnInspected": MATERIAL_NAME_TO_MATERIAL["SpawnInspected"].set_shader_parameter("hover_color", Vector3(0, 1, 0))
+			"RegularInspected": MATERIAL_NAME_TO_MATERIAL["RegularInspected"].set_shader_parameter("hover_color", Vector3(1, 0, 0))
+		
+		Tile.get(type).set_material(MATERIAL_NAME_TO_MATERIAL[material_name])

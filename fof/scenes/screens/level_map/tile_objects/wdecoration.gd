@@ -13,4 +13,5 @@ func on_load_info(info: Dictionary) -> void:
 
 func set_material(mat: Material) -> void:
 	if get_child_count() > 0:
-		get_child(0).set_surface_material_override(0, mat)
+		for child in get_child(0).get_children():
+			child.set_surface_override_material(0, mat)

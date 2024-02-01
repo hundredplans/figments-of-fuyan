@@ -1969,8 +1969,9 @@ func _on_bake_level_pressed():
 		for child in LoadedLevel.get_node("Tiles").get_children(): child.free()
 		add_child(LoadedLevel)
 		
-		await get_tree().create_timer(0.05).timeout
 		for tile_info in item_dict.tiles: on_create_tile(tile_info, LoadedLevel, item_dict.area)
+		
+		await get_tree().create_timer(0.02).timeout # absolutely necessary
 		LoadedLevel.script = light_tester_gd
 		packed_scene.pack(LoadedLevel)
 		ResourceSaver.save(packed_scene, "res://assets/base_game/levels/" + item_dict.bgfn + "/loaded_level.tscn")
@@ -1987,8 +1988,8 @@ func on_create_tile(tile_info: Dictionary, owner_node: Node3D, area: int) -> voi
 	
 		LevelTile.name = str(randi())
 		owner_node.get_node("Tiles").add_child(LevelTile)
-		LevelTile.owner = owner_node
 		owner_node.set_editable_instance(LevelTile, true)
+		LevelTile.owner = owner_node
 		
 		tile_info.position = Vector4(tile_info.position[0], tile_info.position[1], tile_info.position[2], tile_info.position[3])
 		LevelTile.position = Vector3(
@@ -2007,10 +2008,6 @@ func on_create_tile(tile_info: Dictionary, owner_node: Node3D, area: int) -> voi
 		LevelTile.on_load_info("TDeco")
 		LevelTile.on_load_info("WDeco")
 		LevelTile.on_load_info("Obj")
-		
 		for type in Helper.BTAB_TO_TYPE[-1]:
-			var parent: Node3D = LevelTile.get(type)
-			for child in parent.get_children():
-				owner_node.set_editable_instance(child, true)
-				#child.owner = owner_node
-				#print(child.name)
+			for grandchild in LevelTile.get(type).get_children():
+				grandchild.owner = owner_node

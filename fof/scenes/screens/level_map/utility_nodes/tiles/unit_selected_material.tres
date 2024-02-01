@@ -1,7 +1,12 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cp8wbj7ws3mhk"]
+[gd_resource type="ShaderMaterial" script_class="BaseMaterial" load_steps=4 format=3 uid="uid://cp8wbj7ws3mhk"]
 
 [ext_resource type="Shader" path="res://scenes/screens/level_map/utility_nodes/tiles/unit_selected.gdshader" id="1_eawu3"]
+[ext_resource type="Script" path="res://assets/materials/base_material.gd" id="1_g0m5r"]
+[ext_resource type="Texture2D" uid="uid://ebuqqa5efmoi" path="res://assets/materials/base_materials/base_material.png" id="3_mfge4"]
 
 [resource]
 render_priority = 0
 shader = ExtResource("1_eawu3")
+shader_parameter/texture_albedo = ExtResource("3_mfge4")
+script = ExtResource("1_g0m5r")
+material_name = "UnitSelected"
