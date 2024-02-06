@@ -7,6 +7,7 @@ var Tiles: TilesGD
 var Lights: LightsGD
 var LevelUI: Control
 
+var lock_inputs: bool = false
 var play_ui: bool = true
 var game_phase: String
 
@@ -60,7 +61,7 @@ func on_change_game_phase(phase: String) -> void:
 			SpectateCamera.on_spectate("Spawn")
 			Hand.on_start_phase_start()
 			Units.on_start_phase_start()
-		"AfterStartPhase": 
+		"AfterStartPhase":
 			Deck.on_after_start_phase_start()
 		"HandPhase":
 			Deck.on_hand_phase_start()

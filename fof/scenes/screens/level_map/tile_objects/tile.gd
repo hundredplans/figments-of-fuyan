@@ -1,6 +1,5 @@
 extends Node3D
 
-var previous_material_name: String
 var type: String = "tile"
 func on_load_info(info: Dictionary, area: int) -> void:
 	for child in get_children(): child.queue_free()
@@ -14,8 +13,4 @@ func set_material(mat: Material) -> void:
 	if get_child_count() > 0:
 		var children: Array = get_child(0).get_children()
 		for i in range(children.size()):
-			if i == 0 and mat != null:
-				var previous_material: Material = children[i].get_surface_override_material(0)
-				if previous_material != null:
-					previous_material_name = previous_material.material_name
 			children[i].set_surface_override_material(0, mat)

@@ -9,7 +9,7 @@ const VISION_RANGE: int = 5
 func on_recalculate_vision() -> void:
 	on_clear_darkness()
 	var visible_tiles: Array = on_find_visible_tiles()
-	var other_tiles: Array = Tiles.tiles_unique(Tiles.get_children(), visible_tiles)
+	var other_tiles: Array = Tiles.tiles_unique(Tiles.get_children_by_elevation(), visible_tiles)
 	on_apply_visibility(visible_tiles, other_tiles)
 	on_create_darkness(other_tiles)
 	

@@ -56,7 +56,7 @@ func on_card_selected(index: int) -> void:
 	SpectateCamera.on_spectate("Spawn" if index > -1 else "Unit")
 
 func on_card_placed(Tile: TileGD) -> void:
-	if card_selected_index > -1 and !Tiles.is_tile_occupied_by_units(Tile):
+	if card_selected_index > -1 and Tile.solid_status == 0:
 		var hand_card: HandCardGD = get_child(card_selected_index)
 		LevelUI.on_card_placed(card_selected_index)
 		on_change_energy(-Helper.id_to_dict(hand_card.id, "Card").e)

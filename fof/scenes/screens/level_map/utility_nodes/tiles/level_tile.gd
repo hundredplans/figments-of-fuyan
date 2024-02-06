@@ -9,6 +9,10 @@ extends Node3D
 
 var area: int = 0
 @export var info: Dictionary
+@export var vision_status: int = 0
+@export var solid_status: int = 0
+var original_solid_status: int = 0
+var tile_state: Array
 
 func on_load_info(type: String) -> void:
 	type = type.to_lower()

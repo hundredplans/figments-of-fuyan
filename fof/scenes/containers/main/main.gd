@@ -38,7 +38,7 @@ func _ready() -> void:
 	Helper.create_button_clickmask(BackArrow)
 	Helper.create_button_clickmask(SettingCog)
 	on_setup_screen(preload("res://scenes/screens/main_menu/main_menu.tscn").instantiate())
-	
+		
 	var modified_time: int = Settings.clear_backup_files_array[Settings.clear_backup_files]
 	if modified_time > 1:
 		for file in Helper.return_file_names_recursive("user://save/temp"):

@@ -8,13 +8,18 @@ var effects: Array = []
 var base_card: Dictionary
 var a: int
 var h: int
-var s: int
+
+var max_speed: int
+var speed: int
+
 var mh: int
 var r: int
 var team: int
 var height: int
 var Tile: TileGD
 
+var Vision: VisionGD
+var Units: UnitsGD
 var TeamControl: Node
 @onready var Model: Node3D = $Model
 func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: int, tile: TileGD) -> void:
@@ -26,7 +31,7 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	base_card = Helper.id_to_dict(id, "Card")
 	a = base_card.a
 	h = base_card.h
-	s = base_card.s
+	max_speed = base_card.s
 	mh = base_card.h
 	r = base_card.r
 	height = base_card.height
@@ -35,7 +40,15 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	add_child(TeamControl)
 	
 	Model.on_add_model()
-	Tile = tile
+	occupy_tile(tile)
 	position = tile.position
 	position.y += 0.3
 	rotation_degrees.y = (rot * 60) + 30
+
+func occupy_tile(_Tile: TileGD) -> void:
+	if Tile != null: Tile.solid_status = Tile.original_solid_status
+	
+	Tile = _Tile
+	Tile.original_solid_status = Tile.solid_status
+	Tile.solid_status = 1
+	Vision.on_recalculate_vision()

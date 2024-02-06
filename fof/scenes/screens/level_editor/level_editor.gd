@@ -65,6 +65,7 @@ var keep_rotation: Array = [0, 0, 0, 0]
 var old_mpos: Vector2
 
 func _ready() -> void:
+	on_load_item_properties()
 	on_load_favorites()
 	$InfoMenu/EditFileName.open_state.connect(func(x: bool): $InfoMenu/TrinketAmount.visible = !x; $InfoMenu/BakeLevel.visible = !x)
 	for i in [["DefaultWallHeight", HeightButtons.get_children()], ["LevelEditorElevation", ElevationButtons.get_children()]]:
@@ -1969,7 +1970,13 @@ func _on_bake_level_pressed():
 		for child in LoadedLevel.get_node("Tiles").get_children(): child.free()
 		add_child(LoadedLevel)
 		
-		for tile_info in item_dict.tiles: on_create_tile(tile_info, LoadedLevel, item_dict.area)
+		var tiles: Array = []
+		for tile_info in item_dict.tiles:
+			tiles.append(on_create_tile(tile_info, LoadedLevel, item_dict.area))
+		
+		tiles = tiles.filter(func(x: TileGD): return x != null)
+		var positions: Array = tiles.map(func(x: TileGD): return x.info.position)
+		for Tile in tiles: on_set_tile_vision_and_block_status(Tile, tiles, positions)
 		
 		await get_tree().create_timer(0.02).timeout # absolutely necessary
 		LoadedLevel.script = light_tester_gd
@@ -1980,9 +1987,10 @@ func _on_bake_level_pressed():
 		AudioMaster.play_sfx("unconfirm_default")
 
 var _LevelTile: PackedScene = preload("res://scenes/screens/level_map/utility_nodes/tiles/level_tile.tscn")
+var item_properties: Array
 
 var TILE_OBJECT_NAMES: Array = ["tile", "wall", "obj", "tdeco", "wdeco"]
-func on_create_tile(tile_info: Dictionary, owner_node: Node3D, area: int) -> void:
+func on_create_tile(tile_info: Dictionary, owner_node: Node3D, area: int) -> TileGD:
 	if TILE_OBJECT_NAMES.any(func(x: String): return tile_info[x].id > 0):
 		var LevelTile: Node3D = _LevelTile.instantiate()
 	
@@ -2008,6 +2016,35 @@ func on_create_tile(tile_info: Dictionary, owner_node: Node3D, area: int) -> voi
 		LevelTile.on_load_info("TDeco")
 		LevelTile.on_load_info("WDeco")
 		LevelTile.on_load_info("Obj")
+		
 		for type in Helper.BTAB_TO_TYPE[-1]:
 			for grandchild in LevelTile.get(type).get_children():
 				grandchild.owner = owner_node
+		return LevelTile
+	return null
+
+func on_set_tile_vision_and_block_status(Tile: TileGD, tiles: Array, positions: Array) -> void:
+	var btab: int = 0
+	for tile_object in Helper.BTAB_TO_TYPE[-1]:
+		if tile_object != "tile":
+			if Tile.info[tile_object].id > 0:
+				for info in item_properties:
+					if info.id[0] == btab and info.id[1] == Tile.info[tile_object].id:
+						var abs_positions: Array = positions.map(func(x: Vector4): return Vector3(Tile.info.position.x - x.x,\
+						Tile.info.position.y - x.y, Tile.info.position.w - x.w))
+						for key in info:
+							if key.contains("|"):
+								var pos: Vector3 = Vector3(int(key.get_slice("|", 0)), int(key.get_slice("|", 1)), int(key.get_slice("|", 2)))
+								for i in range(abs_positions.size()):
+									if abs_positions[i] == pos:
+										if tiles[i].solid_status < 1 and info[key].solidity > 0:
+											tiles[i].solid_status = 1
+										
+										if tiles[i].vision_status < info[key].visibility:
+											tiles[i].vision_status = info[key].visibility
+		btab += 1
+	
+func on_load_item_properties() -> void:
+	var data: String = Helper.return_file_contents("res://static/game_info/item_properties.txt")
+	for line in data.split("\n", false):
+		item_properties.append(str_to_var(line))

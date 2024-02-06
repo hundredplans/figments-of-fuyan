@@ -15,6 +15,7 @@ extends Camera3D
 }
 @export var CAMERA_ROTATION_SPEED: float = 3.0
 
+var LevelMap: LevelMapGD
 var Units: UnitsGD
 var Tiles: TilesGD
 
@@ -31,7 +32,7 @@ func _input(event: InputEvent) -> void:
 		
 	elif Input.is_action_just_released(Helper.interact_button(true)):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-		
+			
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		on_set_camera_point_along_circle((event.relative.x / 10000) * CAMERA_ROTATION_SPEED)
 
@@ -62,6 +63,8 @@ func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0) -> voi
 			
 			on_camera_start_spectate(spawn_tiles[spawn_spectate_id].position, type)
 		"Unit":
+			if Units.UnitSelected != null: Tiles._on_unit_deselected(Units.UnitSelected)
+			
 			var units: Array = Units.on_units(0, "Ally")
 			if id == -1: unit_spectate_id += direction
 			else: unit_spectate_id = id

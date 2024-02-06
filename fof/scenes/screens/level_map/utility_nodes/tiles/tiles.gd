@@ -2,6 +2,7 @@ class_name TilesGD
 extends Node3D
 const MAX_HEIGHT: int = 11
 
+var LevelMap: LevelMapGD
 var Vision: VisionGD
 var Units: UnitsGD
 var Lights: LightsGD
@@ -40,12 +41,12 @@ func all_neighbours_tiles(tiles: Array, otiles: Array = get_children(), distance
 func tiles_intersection(tiles: Array, otiles: Array) -> Array:
 	return tiles.filter(is_tile_in_tiles.bind(otiles))
 
-func all_in_range(tile: Node3D, distance: int = 2, search_elevation: bool = false, tiles: Array = get_children()) -> Array:
-	return positions_to_tiles(_all_in_range(tile_to_position(tile), distance, search_elevation, tiles_to_positions(tiles)))
+func all_in_range(tile: Node3D, distance: int = 2, include_central: bool = false, search_elevation: bool = false, tiles: Array = get_children()) -> Array:
+	return positions_to_tiles(_all_in_range(tile_to_position(tile), distance, include_central, search_elevation, tiles_to_positions(tiles)))
 
-func _all_in_range(pos: Vector4, distance: int = 2, search_elevation: bool = false, poses: Array = get_children_positions()) -> Array:
+func _all_in_range(pos: Vector4, distance: int = 2, include_central: bool = false, search_elevation: bool = false, poses: Array = get_children_positions()) -> Array:
 	var a: Array = []
-	for n in range(distance):
+	for n in range(1 - int(include_central), distance + 1):
 		for _pos in _all_neighbours(pos, n, search_elevation, poses):
 			a.append(_pos)
 	return a
@@ -59,6 +60,7 @@ func is_tile_in_tiles(tile: Node3D, tiles: Array) -> bool: return tile in tiles
 func get_children_positions() -> Array: return get_children().map(tile_to_position)
 func tile_to_position(tile: Node3D) -> Vector4: return tile.info.position
 func tiles_to_positions(tiles: Array) -> Array: return tiles.map(tile_to_position)
+
 func positions_to_tiles(tiles: Array) -> Array: return tiles.map(position_to_tile)
 
 func nonexistent_positions_above(tile: Node3D) -> Array: #TASK: Optimise this
@@ -129,34 +131,65 @@ func is_tile_occupied_by_units(Tile: TileGD) -> bool:
 func tile_by_unit(Unit: UnitGD) -> TileGD:
 	return Unit.Tile
 	
+func get_children_by_elevation(w: int = 0) -> Array:
+	var positions: Array = []
+	for pos in get_children_positions():
+		if pos.w == w: positions.append(pos)
+	return positions_to_tiles(positions)
+	
+func tile_distance(Tile: TileGD, _Tile: TileGD) -> int:
+	var pos: Vector4 = Tile.info.position - _Tile.info.position
+	return (abs(pos.x) + abs(pos.y) + abs(pos.z)) / 2
+	
 # -----------------
 
 func _ready() -> void:
 	for child in get_children():
 		child.get_node("MouseDetector").mouse_entered.connect(on_tile_mouse_entered.bind(child))
 		child.get_node("MouseDetector").mouse_exited.connect(on_tile_mouse_exited.bind(child))
+	on_set_default_shader_parameters()
 
 var active_tile: TileGD
 func on_tile_mouse_entered(Tile: TileGD) -> void:
-	active_tile = Tile
-	on_tile_hovered(active_tile, on_find_tile_primary_type(Tile))
+	if !LevelMap.lock_inputs:
+		active_tile = Tile
+		on_tile_hovered(active_tile, on_find_tile_primary_type(Tile))
 	
 func on_tile_mouse_exited(Tile: TileGD) -> void:
-	active_tile = null
-	on_tile_unhovered(Tile)
+	if !LevelMap.lock_inputs:
+		active_tile = null
+		on_tile_unhovered(Tile)
 
-func on_tile_hovered(Tile: TileGD, type: String) -> void:
-	on_set_tile_material(Tile, type + "Inspected")
+func tiles_by_tile_state(tile_state: String) -> Array:
+	return get_children().filter(func(x: TileGD): return tile_state in x.tile_state)
 
-func on_tile_unhovered(Tile: TileGD) -> void:
-	on_set_tile_material(Tile)
+func _process(_delta: float) -> void:
+	if !LevelMap.lock_inputs:
+		if active_tile != null and Input.is_action_just_pressed("LeftClick"):
+			if is_tile_occupied_by_units(active_tile):
+				Units.on_occupied_tile_inspected(active_tile)
+			elif "PathHovered" in active_tile.tile_state:
+				on_path_hovered_tile_selected(active_tile)
+			elif on_find_tile_primary_type(active_tile) == "Spawn":
+				Hand.on_card_placed(active_tile)
 
-func _input(_event: InputEvent) -> void:
-	if active_tile != null and Input.is_action_just_pressed("LeftClick"):
-		if is_tile_occupied_by_units(active_tile):
-			Units.on_occupied_tile_inspected(active_tile)
-		elif on_find_tile_primary_type(active_tile) == "Spawn":
-			Hand.on_card_placed(active_tile)
+func tiles_in_speed(Unit: UnitGD) -> Array:
+	return all_in_range(Unit.Tile, Unit.speed, true).filter(func(x: TileGD): return x.solid_status == 0)
+
+func tile_path(begin: TileGD, end: TileGD, tiles: Array = get_children()) -> Array:
+	var astar := AStar3D.new()
+	var begin_id: int
+	var end_id: int
+	for i in range(tiles.size()): 
+		astar.add_point(i, tiles[i].position)
+		if begin == tiles[i]: begin_id = i
+		elif end == tiles[i]: end_id = i
+		
+	for i in range(tiles.size()):
+		for j in range(tiles.size()):
+			if i != j and !astar.are_points_connected(i, j) and is_neighbour(tiles[i], tiles[j]):
+				astar.connect_points(i, j)
+	return Array(astar.get_id_path(begin_id, end_id)).map(func(x: int): return tiles[x])
 
 # ----------------- Tiles UI
 
@@ -171,28 +204,79 @@ func on_unit_selected(Unit: UnitGD) -> UnitGD:
 	return Unit
 
 func _on_unit_deselected(Unit: UnitGD) -> void:
-	for Tile in Vision.tiles_in_vision(Unit):
-		on_set_tile_material(Tile)
+	on_set_tile_material(Unit.Tile, "", true)
+	for Tile in tiles_in_speed(Unit):
+		on_set_tile_material(Tile, "", true)
 	
 func _on_unit_selected(Unit: UnitGD) -> void:
-	for Tile in Vision.tiles_in_vision(Unit):
-		on_set_tile_material(Tile, "UnitSelected")
+	on_set_tile_material(Unit.Tile, "UnitSelected")
+	for Tile in tiles_in_speed(Unit):
+		on_set_tile_material(Tile, "MovementRange")
 
+func on_tile_hovered(Tile: TileGD, type: String) -> void:
+	if "MovementRange" not in Tile.tile_state and "UnitSelected" not in Tile.tile_state:
+		on_set_tile_material(Tile, (type + "Inspected") if !is_tile_occupied_by_units(Tile) else "UnitInspected")
+		
+	elif "UnitSelected" not in Tile.tile_state: # create hovered tiles
+		var starter_tile: TileGD = tiles_by_tile_state("UnitSelected")[0]
+		
+		path_hovered_tiles = tile_path(starter_tile, Tile, tiles_by_tile_state("MovementRange") + [starter_tile])
+		path_hovered_tiles.remove_at(0)
+		
+		for _Tile in path_hovered_tiles:
+			on_set_tile_material(_Tile, "PathHovered")
+
+func on_tile_unhovered(Tile: TileGD) -> void:
+	if "PathHovered" not in Tile.tile_state and "UnitSelected" not in Tile.tile_state:
+		on_set_tile_material(Tile)
+	elif "UnitSelected" not in Tile.tile_state: # remove all effects of hovered tiles
+		for _Tile in tiles_by_tile_state("PathHovered"):
+			on_set_tile_material(_Tile)
+
+var path_hovered_tiles: Array
+func on_path_hovered_tile_selected(Tile: TileGD) -> void:
+	_on_unit_deselected(Units.UnitSelected)
+	for _Tile in path_hovered_tiles:
+		Units.move_to_tile(Units.UnitSelected, _Tile)
+		if Tile == _Tile: break
+		
 var MATERIAL_NAME_TO_MATERIAL: Dictionary = {
-	"RegularInspected": preload("res://scenes/screens/level_map/utility_nodes/lights/regular_inspected_material.tres"),
-	"SpawnInspected": preload("res://scenes/screens/level_map/utility_nodes/lights/regular_inspected_material.tres"),
-	"UnitSelected": preload("res://scenes/screens/level_map/utility_nodes/tiles/unit_selected_material.tres"),
+	"RegularInspected": null,
+	"SpawnInspected": null,
+	"UnitSelected": null,
+	"PathHovered": null,
+	"MovementRange": null,
+	"UnitInspected": null,
 	"": null,
 }
+ 
+var MATERIAL_PRIORITIES: Array = ["", "MovementRange", "RegularInspected",
+ "SpawnInspected", "UnitInspected", "PathHovered", "UnitSelected"]
 
-func on_set_tile_material(Tile: TileGD, material_name: String = "", btab: int = 0):
+var base_material: Material = preload("res://assets/materials/base_materials/base_material.tres")
+func on_set_default_shader_parameters() -> void:
+	for key in MATERIAL_NAME_TO_MATERIAL.keys():
+		if key not in ["", "reset"]: 
+			MATERIAL_NAME_TO_MATERIAL[key] = base_material.duplicate()
+			MATERIAL_NAME_TO_MATERIAL[key].material_name = key
+	
+	MATERIAL_NAME_TO_MATERIAL["RegularInspected"].albedo_color = Color(1, 0, 0)
+	MATERIAL_NAME_TO_MATERIAL["SpawnInspected"].albedo_color = Color(0, 1, 0)
+	MATERIAL_NAME_TO_MATERIAL["MovementRange"].albedo_color = Color(1, 1, 0)
+	MATERIAL_NAME_TO_MATERIAL["UnitSelected"].albedo_color = Color(0, 1, 1)
+	MATERIAL_NAME_TO_MATERIAL["PathHovered"].albedo_color = Color(1, 0, 1)
+	MATERIAL_NAME_TO_MATERIAL["UnitInspected"].albedo_color = Color(0, 0, 0)
+	
+func on_set_tile_material(Tile: TileGD, material_name: String = "", absolute_reset: bool = false, btab: int = 0):
+	if material_name == "":
+		if absolute_reset: Tile.tile_state = []
+		else: Tile.tile_state.pop_back()
+	else: Tile.tile_state.append(material_name)
+	
+	var highest: int = 0
+	for tile_state in Tile.tile_state:
+		var f: int = MATERIAL_PRIORITIES.find(tile_state)
+		if f > highest: highest = f
+	
 	for type in Helper.BTAB_TO_TYPE[btab]:
-		var TileObj: Node3D = Tile.get(type)
-		match TileObj.previous_material_name:
-			"UnitSelected": if material_name == "": material_name = "UnitSelected"
-		
-		match material_name:
-			"SpawnInspected": MATERIAL_NAME_TO_MATERIAL["SpawnInspected"].set_shader_parameter("hover_color", Vector3(0, 1, 0))
-			"RegularInspected": MATERIAL_NAME_TO_MATERIAL["RegularInspected"].set_shader_parameter("hover_color", Vector3(1, 0, 0))
-		
-		Tile.get(type).set_material(MATERIAL_NAME_TO_MATERIAL[material_name])
+		Tile.get(type).set_material(MATERIAL_NAME_TO_MATERIAL[MATERIAL_PRIORITIES[highest]])
