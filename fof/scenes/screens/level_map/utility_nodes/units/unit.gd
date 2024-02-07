@@ -1,19 +1,23 @@
 class_name UnitGD
 extends Node3D
 
+var UnitStatus: Control
 var id: int = 0
 var tool_id: int = 0
 var effects: Array = []
 
 var base_card: Dictionary
-var a: int
-var h: int
+
+var max_attack: int
+var attack: int
 
 var max_speed: int
 var speed: int
 
-var mh: int
-var r: int
+var max_health: int
+var health: int
+
+var rarity: int
 var team: int
 var height: int
 var Tile: TileGD
@@ -29,14 +33,17 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	team = _team
 	
 	base_card = Helper.id_to_dict(id, "Card")
-	a = base_card.a
-	h = base_card.h
+	attack = base_card.a
+	health = base_card.h
 	max_speed = base_card.s
-	mh = base_card.h
-	r = base_card.r
+	
+	max_health = base_card.h
+	max_attack = base_card.a
+	rarity = base_card.r
 	height = base_card.height
 
 	TeamControl = load("res://scenes/screens/level_map/utility_nodes/units/Team" + str(team) + ".tscn").instantiate()
+	TeamControl.Unit = self
 	add_child(TeamControl)
 	
 	Model.on_add_model()
@@ -52,3 +59,23 @@ func occupy_tile(_Tile: TileGD) -> void:
 	Tile.original_solid_status = Tile.solid_status
 	Tile.solid_status = 1
 	Vision.on_recalculate_vision()
+
+func stats(stat_type: String, val: int, absolute: bool = false) -> void:
+	match stat_type:
+		"speed":
+			if absolute:
+				speed = val
+			else: speed += val
+		"attack":
+			if absolute:
+				attack = val
+			else: attack += val
+		"health":
+			if absolute: 
+				health = val
+			else: health += val
+				
+	UnitStatus.on_reset_stats()
+
+func status_effect() -> void:
+	pass

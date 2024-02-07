@@ -193,26 +193,6 @@ func tile_path(begin: TileGD, end: TileGD, tiles: Array = get_children()) -> Arr
 
 # ----------------- Tiles UI
 
-func on_unit_selected(Unit: UnitGD) -> UnitGD:
-	if Units.UnitSelected == Unit:
-		_on_unit_deselected(Unit)
-		return null
-	elif Units.UnitSelected != null:
-		_on_unit_deselected(Units.UnitSelected)
-		_on_unit_selected(Unit)
-	else: _on_unit_selected(Unit)
-	return Unit
-
-func _on_unit_deselected(Unit: UnitGD) -> void:
-	on_set_tile_material(Unit.Tile, "", true)
-	for Tile in tiles_in_speed(Unit):
-		on_set_tile_material(Tile, "", true)
-	
-func _on_unit_selected(Unit: UnitGD) -> void:
-	on_set_tile_material(Unit.Tile, "UnitSelected")
-	for Tile in tiles_in_speed(Unit):
-		on_set_tile_material(Tile, "MovementRange")
-
 func on_tile_hovered(Tile: TileGD, type: String) -> void:
 	if "MovementRange" not in Tile.tile_state and "UnitSelected" not in Tile.tile_state:
 		on_set_tile_material(Tile, (type + "Inspected") if !is_tile_occupied_by_units(Tile) else "UnitInspected")
@@ -235,7 +215,7 @@ func on_tile_unhovered(Tile: TileGD) -> void:
 
 var path_hovered_tiles: Array
 func on_path_hovered_tile_selected(Tile: TileGD) -> void:
-	_on_unit_deselected(Units.UnitSelected)
+	Units._on_unit_deselected(Units.UnitSelected)
 	for _Tile in path_hovered_tiles:
 		Units.move_to_tile(Units.UnitSelected, _Tile)
 		if Tile == _Tile: break

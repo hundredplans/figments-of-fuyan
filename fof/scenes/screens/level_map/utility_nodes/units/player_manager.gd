@@ -1,6 +1,7 @@
 class_name PlayerManagerGD
 extends Node
 
+var LevelUI: LevelUIGD
 var SpectateCamera: Camera3D
 var Units: UnitsGD
 func on_card_placed(hand_card: HandCardGD, Tile: TileGD) -> void:

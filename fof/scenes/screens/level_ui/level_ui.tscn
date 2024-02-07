@@ -35,13 +35,13 @@ alignment = 1
 
 [node name="Energy" type="Control" parent="."]
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 120.0
+offset_bottom = 120.0
 
 [node name="Sprite2D" type="Sprite2D" parent="Energy"]
-position = Vector2(60, 60)
 scale = Vector2(2, 2)
 texture = ExtResource("2_bww7p")
+centered = false
 
 [node name="Label" type="Label" parent="Energy"]
 layout_mode = 0
@@ -86,10 +86,15 @@ label_settings = ExtResource("6_byv4h")
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="UnitStatusBox" type="HBoxContainer" parent="."]
+[node name="UnitStatusBox" type="GridContainer" parent="."]
 layout_mode = 0
-offset_left = 175.0
-offset_right = 1753.0
-offset_bottom = 122.0
+offset_left = 131.0
+offset_top = 28.0
+offset_right = 2276.0
+offset_bottom = 342.0
+scale = Vector2(0.75, 0.75)
+theme_override_constants/h_separation = 60
+theme_override_constants/v_separation = 50
+columns = 5
 
 [connection signal="pressed" from="ChangePhase/ChangePhaseHitbox" to="." method="_on_change_phase_hitbox_pressed"]

@@ -1,21 +1,37 @@
-[gd_scene load_steps=10 format=3 uid="uid://c58jdx2o7cfwc"]
+[gd_scene load_steps=13 format=3 uid="uid://c58jdx2o7cfwc"]
 
-[ext_resource type="Texture2D" uid="uid://bgbyoyqx40n27" path="res://assets/base_game/cards/card_ui/default_art_max.png" id="1_w4417"]
+[ext_resource type="Script" path="res://scenes/screens/level_ui/unit_status/unit_status.gd" id="1_32v7v"]
 [ext_resource type="Texture2D" uid="uid://b74ndaaqnns1v" path="res://assets/base_game/cards/card_ui/tool/tool.png" id="2_fccpi"]
+[ext_resource type="Theme" uid="uid://cgtduqtnn1x0m" path="res://scenes/screens/level_ui/unit_status/unit_status_outside.tres" id="2_u7bev"]
+[ext_resource type="Theme" uid="uid://bqd32kfms85a7" path="res://scenes/screens/level_ui/unit_status/unit_status_inside.tres" id="3_8wqgc"]
 [ext_resource type="Texture2D" uid="uid://bq7oil2dvc6bs" path="res://assets/base_game/cards/card_ui/bbcode/ATTACK.png" id="3_sw1gj"]
-[ext_resource type="LabelSettings" uid="uid://qp0350v2j4ah" path="res://assets/UI/roboto/roboto32_outline.tres" id="4_h5nh6"]
+[ext_resource type="Texture2D" uid="uid://dqi4eya023ekp" path="res://assets/base_game/cards/133 - Mama Palmer/art_max.png" id="4_dc7iq"]
+[ext_resource type="LabelSettings" uid="uid://je535i1721un" path="res://assets/UI/sixty_four/sixty_four_default.tres" id="4_pk6wt"]
 [ext_resource type="Texture2D" uid="uid://cor7udw0x0ufw" path="res://assets/base_game/cards/card_ui/bbcode/HEALTH.png" id="5_qsmdt"]
 [ext_resource type="Texture2D" uid="uid://dkdx58e2117h0" path="res://assets/base_game/cards/card_ui/bbcode/SPEED.png" id="6_j12nd"]
-[ext_resource type="Texture2D" uid="uid://bh6s1yqelunc2" path="res://assets/base_game/cards/card_ui/bbcode/RANGED.png" id="7_xwbdd"]
-[ext_resource type="Texture2D" uid="uid://dgalti4lrsybg" path="res://assets/base_game/cards/card_ui/bbcode/ENERGY.png" id="8_rctaj"]
-[ext_resource type="Texture2D" uid="uid://drk7j81ycdepc" path="res://assets/base_game/cards/card_ui/bbcode/GBONE.png" id="9_hy0xg"]
+[ext_resource type="LabelSettings" uid="uid://x63q2nfy4si3" path="res://assets/UI/sixty_four/sixty_four_medium.tres" id="10_qsy7n"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i2ie0"]
+bg_color = Color(0, 0, 0, 1)
+border_width_bottom = 1
+border_color = Color(0.592157, 0, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_color = Color(0.435294, 0, 0, 0.6)
+shadow_size = 10
+
+[sub_resource type="Theme" id="Theme_oao6c"]
+Panel/styles/panel = SubResource("StyleBoxFlat_i2ie0")
 
 [node name="UnitStatus" type="Control"]
+custom_minimum_size = Vector2(381, 132)
 layout_mode = 3
-anchor_right = 0.194
-anchor_bottom = 0.113
-offset_right = -0.480011
-offset_bottom = -0.0400085
+anchors_preset = 0
+offset_right = 381.0
+offset_bottom = 132.0
+script = ExtResource("1_32v7v")
 
 [node name="Background" type="Control" parent="."]
 layout_mode = 1
@@ -26,42 +42,49 @@ grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_lock_ = true
 
-[node name="Outside" type="ColorRect" parent="Background"]
+[node name="Outside" type="Panel" parent="Background"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -5.0
-offset_top = -5.0
-offset_right = 5.0
-offset_bottom = 5.0
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 1)
+theme = ExtResource("2_u7bev")
 metadata/_edit_lock_ = true
 
-[node name="Inside" type="ColorRect" parent="Background"]
+[node name="Inside" type="Panel" parent="Background"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.384314, 1, 0.266667, 1)
+theme = ExtResource("3_8wqgc")
 metadata/_edit_lock_ = true
 
 [node name="Rim1" type="ColorRect" parent="Background"]
 layout_mode = 0
-offset_left = 122.0
-offset_right = 127.0
-offset_bottom = 122.0
+offset_left = 127.0
+offset_top = 5.0
+offset_right = 132.0
+offset_bottom = 127.0
 color = Color(0, 0, 0, 1)
 
-[node name="ArtMax" type="Sprite2D" parent="."]
-texture = ExtResource("1_w4417")
-centered = false
+[node name="ArtMax" type="TextureButton" parent="."]
+texture_filter = 1
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 5.0
+offset_bottom = 5.0
+texture_normal = ExtResource("4_dc7iq")
 
 [node name="Tool" type="Node2D" parent="."]
+position = Vector2(5, 0)
 
 [node name="ToolCircle" type="Sprite2D" parent="Tool"]
 position = Vector2(0, 122)
@@ -71,9 +94,10 @@ texture = ExtResource("2_fccpi")
 
 [node name="Stats" type="HBoxContainer" parent="."]
 layout_mode = 0
-offset_left = 127.0
-offset_right = 249.0
-offset_bottom = 122.0
+offset_left = 132.0
+offset_top = 5.0
+offset_right = 254.0
+offset_bottom = 127.0
 theme_override_constants/separation = 0
 
 [node name="Attack" type="Control" parent="Stats"]
@@ -91,10 +115,11 @@ color = Color(0.658824, 0.262745, 0, 1)
 
 [node name="Sprite2D" type="Sprite2D" parent="Stats/Attack"]
 texture_filter = 1
-position = Vector2(19, 87)
+position = Vector2(20, 34)
 texture = ExtResource("3_sw1gj")
 
 [node name="Label" type="Label" parent="Stats/Attack"]
+texture_filter = 1
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -102,13 +127,15 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -20.0
-offset_top = -38.0
+offset_top = -3.0
 offset_right = 20.0
+offset_bottom = 35.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "3"
-label_settings = ExtResource("4_h5nh6")
+label_settings = ExtResource("4_pk6wt")
 horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Health" type="Control" parent="Stats"]
 layout_mode = 2
@@ -125,10 +152,11 @@ color = Color(0.560784, 0, 0, 1)
 
 [node name="Sprite2D" type="Sprite2D" parent="Stats/Health"]
 texture_filter = 1
-position = Vector2(19, 87)
+position = Vector2(21, 34)
 texture = ExtResource("5_qsmdt")
 
 [node name="Label" type="Label" parent="Stats/Health"]
+texture_filter = 1
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -136,13 +164,15 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -20.5
-offset_top = -38.0
+offset_top = -3.0
 offset_right = 20.5
+offset_bottom = 35.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "2"
-label_settings = ExtResource("4_h5nh6")
+label_settings = ExtResource("4_pk6wt")
 horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Speed" type="Control" parent="Stats"]
 layout_mode = 2
@@ -159,10 +189,11 @@ color = Color(0.203922, 0.490196, 0.0823529, 1)
 
 [node name="Sprite2D" type="Sprite2D" parent="Stats/Speed"]
 texture_filter = 1
-position = Vector2(19, 87)
+position = Vector2(20, 34)
 texture = ExtResource("6_j12nd")
 
 [node name="Label" type="Label" parent="Stats/Speed"]
+texture_filter = 1
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -170,37 +201,116 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -20.5
-offset_top = -38.0
+offset_top = -3.0
 offset_right = 20.5
+offset_bottom = 35.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "2"
-label_settings = ExtResource("4_h5nh6")
+label_settings = ExtResource("4_pk6wt")
 horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Status Effects" type="Node2D" parent="."]
-position = Vector2(249, 0)
+position = Vector2(254, 5)
 
-[node name="Sprite2D" type="Sprite2D" parent="Status Effects"]
-texture_filter = 1
-position = Vector2(8, 6)
-texture = ExtResource("7_xwbdd")
-centered = false
+[node name="HoverCard" type="Control" parent="."]
+top_level = true
+anchors_preset = 0
+offset_right = 240.0
+offset_bottom = 422.0
+mouse_filter = 2
 
-[node name="Sprite2D2" type="Sprite2D" parent="Status Effects"]
-texture_filter = 1
-position = Vector2(48, 6)
-texture = ExtResource("8_rctaj")
-centered = false
+[node name="Buffs" type="Control" parent="HoverCard"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -50.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
 
-[node name="Sprite2D3" type="Sprite2D" parent="Status Effects"]
-texture_filter = 1
-position = Vector2(87, 6)
-texture = ExtResource("9_hy0xg")
-centered = false
+[node name="TopRim" type="Panel" parent="HoverCard/Buffs"]
+layout_mode = 0
+offset_right = 240.0
+offset_bottom = 10.0
+theme = SubResource("Theme_oao6c")
 
-[node name="Sprite2D4" type="Sprite2D" parent="Status Effects"]
+[node name="HBoxContainer" type="HBoxContainer" parent="HoverCard/Buffs"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -5.0
+offset_top = 25.0
+offset_right = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="Attack" type="Control" parent="HoverCard/Buffs/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="HoverCard/Buffs/HBoxContainer/Attack"]
 texture_filter = 1
-position = Vector2(8, 42)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_right = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "+0"
+label_settings = ExtResource("10_qsy7n")
+
+[node name="Sprite2D" type="Sprite2D" parent="HoverCard/Buffs/HBoxContainer/Attack"]
+position = Vector2(69, 11)
 texture = ExtResource("3_sw1gj")
-centered = false
+
+[node name="Health" type="Control" parent="HoverCard/Buffs/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="HoverCard/Buffs/HBoxContainer/Health"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "+0"
+label_settings = ExtResource("10_qsy7n")
+
+[node name="Sprite2D" type="Sprite2D" parent="HoverCard/Buffs/HBoxContainer/Health"]
+position = Vector2(67, 11)
+texture = ExtResource("5_qsmdt")
+
+[node name="Speed" type="Control" parent="HoverCard/Buffs/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="HoverCard/Buffs/HBoxContainer/Speed"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_right = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "+0"
+label_settings = ExtResource("10_qsy7n")
+
+[node name="Sprite2D" type="Sprite2D" parent="HoverCard/Buffs/HBoxContainer/Speed"]
+position = Vector2(70, 11)
+texture = ExtResource("6_j12nd")
+
+[connection signal="mouse_entered" from="ArtMax" to="." method="_on_art_max_mouse_entered"]
+[connection signal="mouse_exited" from="ArtMax" to="." method="_on_art_max_mouse_exited"]
+[connection signal="pressed" from="ArtMax" to="." method="_on_art_max_pressed"]

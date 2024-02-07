@@ -3,9 +3,10 @@ extends Control
 signal load_world
 signal equip_sky
 
-@onready var Heroes: HeroesGD
+var Heroes: HeroesGD
 @onready var HandBox := $HandBox
 @onready var ChangePhase: Control = $ChangePhase
+@onready var StatusBox: Control = $UnitStatusBox
 
 var _LevelMap: PackedScene = preload("res://scenes/screens/level_map/level_map.tscn")
 var LevelMap: LevelMapGD
@@ -90,3 +91,11 @@ func on_player_phase_start() -> void:
 func _on_change_phase_hitbox_pressed():
 	LevelMap.on_advance_game_phase()
 	$ChangePhase/ChangePhaseSprite.on_hyperspeed()
+
+func on_add_unit_status_box(Unit: UnitGD) -> void:
+	var UnitStatus: Control = preload("res://scenes/screens/level_ui/unit_status/unit_status.tscn").instantiate()
+	UnitStatus.Heroes = Heroes
+	StatusBox.add_child(UnitStatus)
+	UnitStatus.on_set_unit(Unit)
+	Unit.UnitStatus = UnitStatus
+	

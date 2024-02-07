@@ -24,20 +24,25 @@ func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int
 	FieldedUnits.add_child(Unit)
 	Unit.on_create_unit(id, tool_id, effects, team, rot, tile)
 	Unit.Model.movement_finished.connect(on_movement_finished.bind(Unit))
+	LevelUI.on_add_unit_status_box(Unit)
 	return Unit
 
 func on_start_phase_start() -> void:
 	BotManager.Units = self
 	PlayerManager.Units = self
+	PlayerManager.LevelUI = LevelUI
 	PlayerManager.SpectateCamera = SpectateCamera
 	
 	var enemy_tiles: Array = Tiles.on_is_type_get_tiles("Enemy", "obj")
 	for Tile in enemy_tiles:
 		on_unit_awakened(Tile.info.obj.obj_info[0], 0, [], 1, Tile.info.obj.rotation, Tile) # add Random.on_create_random_tool() here, maybe no args and it takes from GameState
 
+func on_player_end_turn_phase_start() -> void:
+	if UnitSelected != null: _on_unit_deselected(UnitSelected)
+
 func on_player_phase_start() -> void:
 	for Unit in on_units():
-		Unit.speed = Unit.max_speed
+		Unit.stats("speed", Unit.max_speed, true)
 
 func unit_by_tile(Tile: TileGD) -> UnitGD:
 	for Unit in FieldedUnits.get_children():
@@ -56,7 +61,7 @@ func on_occupied_tile_inspected(Tile: TileGD) -> void:
 	if Unit.team == 0:
 		match LevelMap.game_phase:
 			"PlayerPhase":
-				UnitSelected = Tiles.on_unit_selected(Unit)
+				UnitSelected = on_unit_selected(Unit)
 	else:
 		pass
 
@@ -78,7 +83,28 @@ func _process(_delta: float) -> void:
 		SpectateCamera.central_point = Vector3(active_event[1].position.x, SpectateCamera.central_point.y, active_event[1].position.z)
 		
 func on_movement_finished(Unit: UnitGD) -> void:
+	Unit.stats("speed", -1)
 	Unit.occupy_tile(active_event[2])
 	active_event = []
 	LevelMap.lock_inputs = false
 	
+func on_unit_selected(Unit: UnitGD) -> UnitGD:
+	if UnitSelected == Unit:
+		_on_unit_deselected(Unit)
+		return null
+	elif UnitSelected != null:
+		_on_unit_deselected(UnitSelected)
+		if Unit.speed > 0:
+			_on_unit_selected(Unit)
+	elif Unit.speed > 0: _on_unit_selected(Unit)
+	return Unit
+
+func _on_unit_deselected(Unit: UnitGD) -> void:
+	Tiles.on_set_tile_material(Unit.Tile, "", true)
+	for Tile in Tiles.tiles_in_speed(Unit):
+		Tiles.on_set_tile_material(Tile, "", true)
+	
+func _on_unit_selected(Unit: UnitGD) -> void:
+	Tiles.on_set_tile_material(Unit.Tile, "UnitSelected")
+	for Tile in Tiles.tiles_in_speed(Unit):
+		Tiles.on_set_tile_material(Tile, "MovementRange")

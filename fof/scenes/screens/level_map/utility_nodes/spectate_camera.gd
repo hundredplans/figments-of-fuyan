@@ -63,7 +63,7 @@ func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0) -> voi
 			
 			on_camera_start_spectate(spawn_tiles[spawn_spectate_id].position, type)
 		"Unit":
-			if Units.UnitSelected != null: Tiles._on_unit_deselected(Units.UnitSelected)
+			if Units.UnitSelected != null: Units._on_unit_deselected(Units.UnitSelected)
 			
 			var units: Array = Units.on_units(0, "Ally")
 			if id == -1: unit_spectate_id += direction

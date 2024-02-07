@@ -71,6 +71,7 @@ func on_change_game_phase(phase: String) -> void:
 			Units.on_player_phase_start()
 			SpectateCamera.on_spectate("Unit")
 		"PlayerEndTurnPhase":
+			Units.on_player_end_turn_phase_start()
 			LevelUI.on_player_end_turn_phase_start()
 			on_change_game_phase("HandPhase")
 		"BOTPhase":
