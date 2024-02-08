@@ -1,5 +1,7 @@
 class_name LevelMapGD
 extends Node3D
+
+signal lock_inputs_changed
 var GameState: Node
 
 var LoadedLevel: Node3D
@@ -86,3 +88,7 @@ func on_advance_game_phase() -> void:
 		"PlayerEndTurnPhase": on_change_game_phase("BOTPhase")
 		"BOTPhase": on_change_game_phase("PlayerStartTurnPhase")
 		"PlayerStartTurnPhase": on_change_game_phase("HandPhase")
+
+func set_lock_inputs(x: bool) -> void:
+	lock_inputs = x
+	lock_inputs_changed.emit(x)

@@ -25,6 +25,13 @@ func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int
 	Unit.on_create_unit(id, tool_id, effects, team, rot, tile)
 	Unit.Model.movement_finished.connect(on_movement_finished.bind(Unit))
 	LevelUI.on_add_unit_status_box(Unit)
+	
+	var in_vision: bool = Vision.is_unit_in_vision(Unit)
+	Unit.on_arrive(team == 0 or in_vision)
+	
+	if team == 1 and in_vision:
+		on_unit_enters_vision(Unit)
+		
 	return Unit
 
 func on_start_phase_start() -> void:
@@ -38,7 +45,7 @@ func on_start_phase_start() -> void:
 		on_unit_awakened(Tile.info.obj.obj_info[0], 0, [], 1, Tile.info.obj.rotation, Tile) # add Random.on_create_random_tool() here, maybe no args and it takes from GameState
 
 func on_player_end_turn_phase_start() -> void:
-	if UnitSelected != null: _on_unit_deselected(UnitSelected)
+	if UnitSelected != null: _on_unit_deselected(UnitSelected, true)
 
 func on_player_phase_start() -> void:
 	for Unit in on_units():
@@ -48,6 +55,9 @@ func unit_by_tile(Tile: TileGD) -> UnitGD:
 	for Unit in FieldedUnits.get_children():
 		if Tile == Unit.Tile: return Unit
 	return null
+
+func all_units() -> Array:
+	return FieldedUnits.get_children()
 
 func on_units(team: int = 0, relation: String = "Ally") -> Array:
 	return FieldedUnits.get_children().filter(on_match_team_relation.bind(team, relation))
@@ -61,7 +71,7 @@ func on_occupied_tile_inspected(Tile: TileGD) -> void:
 	if Unit.team == 0:
 		match LevelMap.game_phase:
 			"PlayerPhase":
-				UnitSelected = on_unit_selected(Unit)
+				on_unit_selected(Unit)
 	else:
 		pass
 
@@ -75,7 +85,7 @@ func _process(_delta: float) -> void:
 	if !move_queue.is_empty() and active_event.is_empty():
 		active_event = ["MoveUnit"] + move_queue.pop_front()
 		active_event[1].Model.move_to_tile(active_event[2])
-		LevelMap.lock_inputs = true
+		LevelMap.set_lock_inputs(true)
 		
 	if !active_event.is_empty() and active_event[0] == "MoveUnit":
 		SpectateCamera.position.x += active_event[1].position.x - SpectateCamera.central_point.x
@@ -85,26 +95,43 @@ func _process(_delta: float) -> void:
 func on_movement_finished(Unit: UnitGD) -> void:
 	Unit.stats("speed", -1)
 	Unit.occupy_tile(active_event[2])
-	active_event = []
-	LevelMap.lock_inputs = false
+	LevelMap.set_lock_inputs(false)
 	
-func on_unit_selected(Unit: UnitGD) -> UnitGD:
+	if move_queue.is_empty(): on_force_resume_idle_animation_from_walk()
+	active_event = []
+	
+func on_unit_selected(Unit: UnitGD) -> void:
 	if UnitSelected == Unit:
 		_on_unit_deselected(Unit)
-		return null
 	elif UnitSelected != null:
 		_on_unit_deselected(UnitSelected)
 		if Unit.speed > 0:
 			_on_unit_selected(Unit)
 	elif Unit.speed > 0: _on_unit_selected(Unit)
-	return Unit
 
-func _on_unit_deselected(Unit: UnitGD) -> void:
-	Tiles.on_set_tile_material(Unit.Tile, "", true)
-	for Tile in Tiles.tiles_in_speed(Unit):
-		Tiles.on_set_tile_material(Tile, "", true)
+func _on_unit_deselected(Unit: UnitGD, absolute: bool = false) -> void:
+	Tiles.on_set_tile_material(UnitSelected.Tile, "", absolute)
+	for Tile in Tiles.tiles_in_speed(UnitSelected):
+		Tiles.on_set_tile_material(Tile, "", absolute)
+	if Unit == UnitSelected: UnitSelected = null
 	
 func _on_unit_selected(Unit: UnitGD) -> void:
 	Tiles.on_set_tile_material(Unit.Tile, "UnitSelected")
 	for Tile in Tiles.tiles_in_speed(Unit):
 		Tiles.on_set_tile_material(Tile, "MovementRange")
+	if UnitSelected == null: UnitSelected = Unit
+
+func on_unit_enters_vision(Unit: UnitGD) -> void:
+	if Unit.team == 1: PlayerManager.on_enemy_unit_enters_vision(Unit)
+		
+func on_unit_exits_vision(Unit: UnitGD) -> void:
+	if Unit.team == 1: PlayerManager.on_enemy_unit_exits_vision(Unit)
+
+func on_empty_move_queue() -> void:
+	on_force_resume_idle_animation_from_walk()
+	active_event = []
+	move_queue = []
+	
+func on_force_resume_idle_animation_from_walk() -> void:
+	if active_event.size() > 0 and active_event[0] == "MoveUnit":
+		active_event[1].Model.on_play_animation("Idle")

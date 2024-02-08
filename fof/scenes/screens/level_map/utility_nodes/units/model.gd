@@ -22,9 +22,9 @@ func on_play_animation(ani_name: String) -> void:
 	AniPlayer.play(ani_name, Unit.Units.UNIT_ANIMATION_BLEND_TIME)
 	
 func on_finish_animation(ani_name: String) -> void:
-	match ani_name:
-		"Walk": movement_finished.emit();
-	on_play_animation("Idle")
+	if ani_name == "Walk":
+		movement_finished.emit()
+	else: on_play_animation("Idle")
 
 func move_to_tile(Tile: TileGD) -> void:
 	walk_to = Tile

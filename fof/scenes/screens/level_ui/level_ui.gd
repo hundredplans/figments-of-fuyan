@@ -99,3 +99,15 @@ func on_add_unit_status_box(Unit: UnitGD) -> void:
 	UnitStatus.on_set_unit(Unit)
 	Unit.UnitStatus = UnitStatus
 	
+func _on_unit_status_box_pre_sort_children():
+	var enemies: Array = []
+	var last_ally: int = -1
+	for child in StatusBox.get_children():
+		if child.Unit.team == 1: enemies.append(child)
+		else: last_ally = child.get_index()
+		
+	if last_ally >= 0:
+		for Unit in enemies:
+			if Unit.get_index() < last_ally:
+				StatusBox.move_child(Unit, last_ally + 1)
+				last_ally -= 1

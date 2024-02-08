@@ -144,28 +144,32 @@ func tile_distance(Tile: TileGD, _Tile: TileGD) -> int:
 # -----------------
 
 func _ready() -> void:
+	LevelMap.lock_inputs_changed.connect(on_lock_inputs_changed)
 	for child in get_children():
 		child.get_node("MouseDetector").mouse_entered.connect(on_tile_mouse_entered.bind(child))
 		child.get_node("MouseDetector").mouse_exited.connect(on_tile_mouse_exited.bind(child))
 	on_set_default_shader_parameters()
 
+var TileInHopper: TileGD
 var active_tile: TileGD
 func on_tile_mouse_entered(Tile: TileGD) -> void:
 	if !LevelMap.lock_inputs:
 		active_tile = Tile
 		on_tile_hovered(active_tile, on_find_tile_primary_type(Tile))
+	else: TileInHopper = Tile
 	
 func on_tile_mouse_exited(Tile: TileGD) -> void:
 	if !LevelMap.lock_inputs:
 		active_tile = null
 		on_tile_unhovered(Tile)
+	else: TileInHopper = null
 
 func tiles_by_tile_state(tile_state: String) -> Array:
 	return get_children().filter(func(x: TileGD): return tile_state in x.tile_state)
 
 func _process(_delta: float) -> void:
 	if !LevelMap.lock_inputs:
-		if active_tile != null and Input.is_action_just_pressed("LeftClick"):
+		if active_tile != null and Input.is_action_just_released("LeftClick"):
 			if is_tile_occupied_by_units(active_tile):
 				Units.on_occupied_tile_inspected(active_tile)
 			elif "PathHovered" in active_tile.tile_state:
@@ -215,10 +219,10 @@ func on_tile_unhovered(Tile: TileGD) -> void:
 
 var path_hovered_tiles: Array
 func on_path_hovered_tile_selected(Tile: TileGD) -> void:
-	Units._on_unit_deselected(Units.UnitSelected)
 	for _Tile in path_hovered_tiles:
 		Units.move_to_tile(Units.UnitSelected, _Tile)
 		if Tile == _Tile: break
+	Units._on_unit_deselected(Units.UnitSelected, true)
 		
 var MATERIAL_NAME_TO_MATERIAL: Dictionary = {
 	"RegularInspected": null,
@@ -260,3 +264,11 @@ func on_set_tile_material(Tile: TileGD, material_name: String = "", absolute_res
 	
 	for type in Helper.BTAB_TO_TYPE[btab]:
 		Tile.get(type).set_material(MATERIAL_NAME_TO_MATERIAL[MATERIAL_PRIORITIES[highest]])
+
+func on_lock_inputs_changed(x: bool) -> void:
+	await get_tree().create_timer(0.02).timeout
+	if !LevelMap.lock_inputs and TileInHopper != null:
+		on_tile_mouse_entered(TileInHopper)
+		TileInHopper = null
+	elif x and active_tile != null: TileInHopper = active_tile
+		

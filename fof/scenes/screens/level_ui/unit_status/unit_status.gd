@@ -47,10 +47,6 @@ func on_reset_stats() -> void:
 	elif Unit.speed <= Unit.max_speed: SpeedLabel.modulate = Helper.BASE
 	else: SpeedLabel.modulate = BRIGHT_GREEN
 	
-	var unit_base_attack_offset: int = Unit.max_attack - Unit.base_card.a
-	var unit_base_health_offset: int = Unit.max_health - Unit.base_card.h
-	var unit_base_speed_offset: int = Unit.max_speed - Unit.base_card.s
-	
 	for stat in ["Attack", "Health", "Speed"]:
 		var val: int = Unit["max_" + stat.to_lower()] - Unit.base_card[stat[0].to_lower()]
 		get_node("HoverCard/Buffs/HBoxContainer/" + stat + "/Label").text = ("+" if val >= 0 else "") + str(val)
@@ -94,3 +90,11 @@ const HOVER_CARD_OFFSET := Vector2(-110, 70)
 func _process(_delta: float) -> void:
 	if visible and HoverCard != null:
 		$HoverCard.position = get_global_mouse_position() + HOVER_CARD_OFFSET
+
+func _on_mouse_entered():
+	if !Unit.Units.LevelMap.lock_inputs:
+		Unit.Units.Tiles.on_set_tile_material(Unit.Tile, "UnitInspected")
+
+func _on_mouse_exited():
+	if !Unit.Units.LevelMap.lock_inputs:
+		Unit.Units.Tiles.on_set_tile_material(Unit.Tile)

@@ -40,6 +40,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 metadata/_edit_lock_ = true
 
 [node name="Outside" type="Panel" parent="Background"]
@@ -53,6 +54,7 @@ offset_right = 10.0
 offset_bottom = 10.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme = ExtResource("2_u7bev")
 metadata/_edit_lock_ = true
 
@@ -63,6 +65,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme = ExtResource("3_8wqgc")
 metadata/_edit_lock_ = true
 
@@ -72,6 +75,7 @@ offset_left = 127.0
 offset_top = 5.0
 offset_right = 132.0
 offset_bottom = 127.0
+mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
 [node name="ArtMax" type="TextureButton" parent="."]
@@ -81,6 +85,7 @@ offset_left = 5.0
 offset_top = 5.0
 offset_right = 5.0
 offset_bottom = 5.0
+mouse_filter = 1
 texture_normal = ExtResource("4_dc7iq")
 
 [node name="Tool" type="Node2D" parent="."]
@@ -98,11 +103,13 @@ offset_left = 132.0
 offset_top = 5.0
 offset_right = 254.0
 offset_bottom = 127.0
+mouse_filter = 2
 theme_override_constants/separation = 0
 
 [node name="Attack" type="Control" parent="Stats"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 2
 
 [node name="ColorRect" type="ColorRect" parent="Stats/Attack"]
 layout_mode = 1
@@ -111,6 +118,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 color = Color(0.658824, 0.262745, 0, 1)
 
 [node name="Sprite2D" type="Sprite2D" parent="Stats/Attack"]
@@ -140,6 +148,7 @@ vertical_alignment = 1
 [node name="Health" type="Control" parent="Stats"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 2
 
 [node name="ColorRect" type="ColorRect" parent="Stats/Health"]
 layout_mode = 1
@@ -148,6 +157,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 color = Color(0.560784, 0, 0, 1)
 
 [node name="Sprite2D" type="Sprite2D" parent="Stats/Health"]
@@ -177,6 +187,7 @@ vertical_alignment = 1
 [node name="Speed" type="Control" parent="Stats"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 2
 
 [node name="ColorRect" type="ColorRect" parent="Stats/Speed"]
 layout_mode = 1
@@ -185,6 +196,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 color = Color(0.203922, 0.490196, 0.0823529, 1)
 
 [node name="Sprite2D" type="Sprite2D" parent="Stats/Speed"]
@@ -236,6 +248,7 @@ mouse_filter = 2
 layout_mode = 0
 offset_right = 240.0
 offset_bottom = 10.0
+mouse_filter = 2
 theme = SubResource("Theme_oao6c")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HoverCard/Buffs"]
@@ -248,11 +261,13 @@ offset_top = 25.0
 offset_right = -5.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_constants/separation = 10
 
 [node name="Attack" type="Control" parent="HoverCard/Buffs/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 2
 
 [node name="Label" type="Label" parent="HoverCard/Buffs/HBoxContainer/Attack"]
 texture_filter = 1
@@ -274,6 +289,7 @@ texture = ExtResource("3_sw1gj")
 [node name="Health" type="Control" parent="HoverCard/Buffs/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 2
 
 [node name="Label" type="Label" parent="HoverCard/Buffs/HBoxContainer/Health"]
 texture_filter = 1
@@ -293,6 +309,7 @@ texture = ExtResource("5_qsmdt")
 [node name="Speed" type="Control" parent="HoverCard/Buffs/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 2
 
 [node name="Label" type="Label" parent="HoverCard/Buffs/HBoxContainer/Speed"]
 texture_filter = 1
@@ -311,6 +328,8 @@ label_settings = ExtResource("10_qsy7n")
 position = Vector2(70, 11)
 texture = ExtResource("6_j12nd")
 
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
 [connection signal="mouse_entered" from="ArtMax" to="." method="_on_art_max_mouse_entered"]
 [connection signal="mouse_exited" from="ArtMax" to="." method="_on_art_max_mouse_exited"]
 [connection signal="pressed" from="ArtMax" to="." method="_on_art_max_pressed"]

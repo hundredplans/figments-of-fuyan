@@ -79,3 +79,18 @@ func stats(stat_type: String, val: int, absolute: bool = false) -> void:
 
 func status_effect() -> void:
 	pass
+
+const ARRIVE_EFFECT_LIGHT_DURATION: float = 1.2
+const ARRIVE_EFFECT_INITIAL_LIGHT_ENERGY: float = 3
+
+func on_arrive(in_vision: bool) -> void:
+	if in_vision:
+		var Light := OmniLight3D.new()
+		add_child(Light)
+		Light.position.y = height * 1.2
+		Light.light_energy = ARRIVE_EFFECT_INITIAL_LIGHT_ENERGY
+		Light.light_color = Helper.rarity_colors[rarity]
+		var LightTween: Tween = get_tree().create_tween()
+		LightTween.tween_property(Light, "light_energy", 0, ARRIVE_EFFECT_LIGHT_DURATION)
+		LightTween.finished.connect(func(): Light.queue_free())
+	# can do regular arrive effects here
