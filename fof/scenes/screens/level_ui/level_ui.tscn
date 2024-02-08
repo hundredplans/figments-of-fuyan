@@ -24,9 +24,7 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -960.0
 offset_top = 133.0
-offset_right = 960.0
 offset_bottom = 492.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -96,6 +94,22 @@ scale = Vector2(0.75, 0.75)
 theme_override_constants/h_separation = 60
 theme_override_constants/v_separation = 50
 columns = 5
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -960.0
+offset_top = 133.0
+offset_right = 960.0
+offset_bottom = 492.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
 
 [connection signal="pressed" from="ChangePhase/ChangePhaseHitbox" to="." method="_on_change_phase_hitbox_pressed"]
 [connection signal="pre_sort_children" from="UnitStatusBox" to="." method="_on_unit_status_box_pre_sort_children"]
