@@ -4,7 +4,7 @@ signal load_world
 signal equip_sky
 
 var Heroes: HeroesGD
-@onready var HandBox := $HandBox
+@onready var HandBox := $PanelContainer/HandBox
 @onready var ChangePhase: Control = $ChangePhase
 @onready var StatusBox: Control = $UnitStatusBox
 
@@ -72,7 +72,7 @@ func on_player_end_turn_phase_start() -> void:
 	ChangePhase.visible = false
 
 func on_hand_phase_start() -> void:
-	HandBox.visible = true
+	$PanelContainer.visible = true
 	ChangePhase.visible = true
 
 func on_set_hand_box_disabled(playable_cards: Array) -> void:
@@ -86,7 +86,7 @@ func on_player_phase_start() -> void:
 	if CardUISelected != null:
 		CardUISelected.get_node("Art/BlackCard").material = null
 		CardUISelected = null
-	HandBox.visible = false
+	$PanelContainer.visible = false
 
 func _on_change_phase_hitbox_pressed():
 	LevelMap.on_advance_game_phase()
