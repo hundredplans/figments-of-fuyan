@@ -6,15 +6,16 @@ const BRIGHT_GREEN: Color = Color("00ff00")
 const MEDIUM_GRAY: Color = Color("8c8c8c")
 
 var Unit: UnitGD
+@onready var oHoverCard: Control = $UnitStatus/HoverCard
 
 func _ready() -> void:
-	$HoverCard.visible = false
+	oHoverCard.visible = false
 
 func on_set_unit(_Unit: UnitGD) -> void:
 	Unit = _Unit
 	visible = !(bool(Unit.team))
 	if Unit.team == 1:
-		$Background/Outside["theme_override_styles/panel"] = preload("res://scenes/screens/level_ui/unit_status/unit_status_outside_box_flat1.tres")
+		$UnitStatus/Background/Outside["theme_override_styles/panel"] = preload("res://scenes/screens/level_ui/unit_status/unit_status_outside_box_flat1.tres")
 	on_reset_stats()
 	on_reset_status_effects()
 	on_reset_tool()
@@ -24,11 +25,11 @@ func on_set_unit(_Unit: UnitGD) -> void:
 	var card_texture_path: String = "res://assets/base_game/cards/" + hero_bgfn + "/art_max.png"
 	if FileAccess.file_exists(card_texture_path):
 		texture_path = card_texture_path
-	$ArtMax.texture_normal = load(texture_path)
+	$UnitStatus/ArtMax.texture_normal = load(texture_path)
 
-@onready var AttackLabel: Label = $Stats/Attack/Label
-@onready var HealthLabel: Label = $Stats/Health/Label
-@onready var SpeedLabel: Label = $Stats/Speed/Label
+@onready var AttackLabel: Label = $UnitStatus/Stats/Attack/Label
+@onready var HealthLabel: Label = $UnitStatus/Stats/Health/Label
+@onready var SpeedLabel: Label = $UnitStatus/Stats/Speed/Label
 
 func on_reset_stats() -> void:
 	AttackLabel.text = str(Unit.attack)
@@ -49,7 +50,7 @@ func on_reset_stats() -> void:
 	
 	for stat in ["Attack", "Health", "Speed"]:
 		var val: int = Unit["max_" + stat.to_lower()] - Unit.base_card[stat[0].to_lower()]
-		get_node("HoverCard/Buffs/HBoxContainer/" + stat + "/Label").text = ("+" if val >= 0 else "") + str(val)
+		get_node("UnitStatus/HoverCard/Buffs/HBoxContainer/" + stat + "/Label").text = ("+" if val >= 0 else "") + str(val)
 	
 func on_reset_status_effects() -> void:
 	pass
@@ -73,23 +74,24 @@ var HoverCard: Control
 func on_initiate_hover_card() -> void:
 	await get_tree().create_timer(HOVER_TIME_DELAY).timeout
 	if is_hover and HoverCard == null:
-		$HoverCard.visible = true
+		oHoverCard.visible = true
 		var CardUI: Control = preload("res://assets/base_game/cards/card_ui/card_ui.tscn").instantiate()
 		CardUI.Heroes = Heroes
 		CardUI.set_info(Unit.base_card)
 		HoverCard = CardUI
-		$HoverCard.add_child(CardUI)
+		HoverCard.z_index = 10
+		oHoverCard.add_child(CardUI)
 	
 func on_remove_hover_card() -> void:
 	if HoverCard != null:
-		$HoverCard.visible = false
+		oHoverCard.visible = false
 		HoverCard.queue_free()
 		HoverCard = null
 
-const HOVER_CARD_OFFSET := Vector2(-110, 70)
+const HOVER_CARD_OFFSET := Vector2(-110, 40)
 func _process(_delta: float) -> void:
 	if visible and HoverCard != null:
-		$HoverCard.position = get_global_mouse_position() + HOVER_CARD_OFFSET
+		oHoverCard.position = get_global_mouse_position() + HOVER_CARD_OFFSET
 
 func _on_mouse_entered():
 	if !Unit.Units.LevelMap.lock_inputs:

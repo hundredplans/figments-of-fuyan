@@ -4,15 +4,19 @@ signal load_world
 signal equip_sky
 
 var Heroes: HeroesGD
-@onready var HandBox := $PanelContainer/HandBox
+
+@onready var StatusBoxPanel := $UnitStatusBoxPanel
+@onready var HandBoxPanel := $HandBoxPanel
+@onready var HandBox := $HandBoxPanel/HandBox
 @onready var ChangePhase: Control = $ChangePhase
-@onready var StatusBox: Control = $UnitStatusBox
+@onready var StatusBox: Control = $UnitStatusBoxPanel/UnitStatusBox
 
 var _LevelMap: PackedScene = preload("res://scenes/screens/level_map/level_map.tscn")
 var LevelMap: LevelMapGD
 var GameState: Node
 
 func _ready() -> void:
+	StatusBoxPanel.visible = false
 	var levels: Array = Helper.on_item_dicts("Level").filter(on_is_level_valid)
 	GameState.level_info = levels[randi() % levels.size()]
 	
@@ -72,7 +76,7 @@ func on_player_end_turn_phase_start() -> void:
 	ChangePhase.visible = false
 
 func on_hand_phase_start() -> void:
-	$PanelContainer.visible = true
+	HandBoxPanel.visible = true
 	ChangePhase.visible = true
 
 func on_set_hand_box_disabled(playable_cards: Array) -> void:
@@ -86,7 +90,7 @@ func on_player_phase_start() -> void:
 	if CardUISelected != null:
 		CardUISelected.get_node("Art/BlackCard").material = null
 		CardUISelected = null
-	$PanelContainer.visible = false
+	HandBoxPanel.visible = false
 
 func _on_change_phase_hitbox_pressed():
 	LevelMap.on_advance_game_phase()
@@ -99,7 +103,39 @@ func on_add_unit_status_box(Unit: UnitGD) -> void:
 	UnitStatus.on_set_unit(Unit)
 	Unit.UnitStatus = UnitStatus
 	
-func _on_unit_status_box_pre_sort_children():
+	if UnitStatus.visible: StatusBoxPanel.visible = true
+
+var is_panel_moving: bool = false
+const PANEL_MOVE_TWEEN_DURATION: float = 0.1
+const HAND_BOX_PANEL_OFFSET: int = 380
+const STATUS_BOX_PANEL_OFFSET: int = 135
+
+func _on_panel_container_mouse_entered(): on_move_panel_container(HandBoxPanel)
+func _on_panel_container_mouse_exited(): on_move_panel_container(HandBoxPanel)
+
+const STATUS_BOX_INITIAL_PANEL_CONTAINER_POSITION: int = -155
+const HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION: int = 1065
+func on_move_panel_container(cont: PanelContainer) -> void:
+	if !is_panel_moving:
+		var final_val: int = 0
+		match cont:
+			HandBoxPanel:
+				final_val = HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION if cont.position.y < HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION\
+				else HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION - HAND_BOX_PANEL_OFFSET
+			StatusBoxPanel:
+				final_val = STATUS_BOX_INITIAL_PANEL_CONTAINER_POSITION if cont.position.y > STATUS_BOX_INITIAL_PANEL_CONTAINER_POSITION\
+				else STATUS_BOX_INITIAL_PANEL_CONTAINER_POSITION + STATUS_BOX_PANEL_OFFSET
+				
+		var MoveTween := get_tree().create_tween()
+		MoveTween.tween_property(cont, "position:y", final_val, PANEL_MOVE_TWEEN_DURATION)
+		is_panel_moving = true
+		MoveTween.finished.connect(func(): is_panel_moving = false; warp_mouse(get_viewport().get_mouse_position()))
+
+func _on_hand_box_panel_pre_sort_children():
+	HandBoxPanel.size.x = 0
+	HandBoxPanel.position.x = 960 - (HandBoxPanel.size.x / 2)
+
+func _on_unit_status_box_panel_pre_sort_children():
 	var enemies: Array = []
 	var last_ally: int = -1
 	for child in StatusBox.get_children():
@@ -111,3 +147,9 @@ func _on_unit_status_box_pre_sort_children():
 			if Unit.get_index() < last_ally:
 				StatusBox.move_child(Unit, last_ally + 1)
 				last_ally -= 1
+	
+	StatusBoxPanel.size.x = 0
+	StatusBoxPanel.position.x = 960 - ((StatusBoxPanel.size.x) / 2)
+
+func _on_unit_status_box_panel_mouse_entered(): on_move_panel_container(StatusBoxPanel)
+func _on_unit_status_box_panel_mouse_exited(): on_move_panel_container(StatusBoxPanel)
