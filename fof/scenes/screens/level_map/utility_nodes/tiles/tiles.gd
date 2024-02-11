@@ -218,13 +218,14 @@ func on_tile_hovered(Tile: TileGD, type: String) -> void:
 		path_hovered_tiles = tile_path(starter_tile, Tile, tiles_by_tile_state("MovementRange") + tiles_by_tile_state("EnemyFound") + [starter_tile])
 		if !path_hovered_tiles.is_empty():
 			path_hovered_tiles.remove_at(0)
-			if path_hovered_tiles.size() <= Units.UnitSelected.speed:
-				for _Tile in path_hovered_tiles:
-					on_set_tile_material(_Tile, "PathHovered")
+			
+			var is_enemy: bool = "EnemyFound" in path_hovered_tiles[path_hovered_tiles.size() - 1].tile_state
+			if path_hovered_tiles.size() <= Units.UnitSelected.speed + int(is_enemy):
+				for _Tile in path_hovered_tiles: on_set_tile_material(_Tile, "PathHovered")
 			else: path_hovered_tiles = []
 
 func on_tile_unhovered(Tile: TileGD) -> void:
-	if "PathHovered" not in Tile.tile_state and "UnitSelected" not in Tile.tile_state:
+	if "EnemyFound" not in Tile.tile_state and "PathHovered" not in Tile.tile_state and "UnitSelected" not in Tile.tile_state:
 		on_set_tile_material(Tile)
 	elif "UnitSelected" not in Tile.tile_state: # remove all effects of hovered tiles
 		for _Tile in tiles_by_tile_state("PathHovered"):

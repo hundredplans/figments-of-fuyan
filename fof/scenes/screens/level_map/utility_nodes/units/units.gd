@@ -175,6 +175,7 @@ func _attack_enemy(Unit: UnitGD, _Unit: UnitGD, Tile: TileGD) -> void:
 	
 func on_attack_enemy() -> void:
 	active_event[1].Model.attack_tile(active_event[3])
+	active_event[2].Model._look_at(active_event[1].Tile)
 	# can do all the ui stuff here for attacking
 	
 func on_attack_finished(Unit: UnitGD) -> void:

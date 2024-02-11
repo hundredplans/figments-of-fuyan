@@ -50,11 +50,11 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	TeamControl.Unit = self
 	add_child(TeamControl)
 	
+	Model.rot = rot
 	Model.on_add_model()
 	occupy_tile(tile)
 	position = tile.position
 	position.y += 0.3
-	rotation_degrees.y = (rot * 60) + 30
 	
 	AudioDict = load("res://assets/base_game/cards/" + base_card.bgfn + "/audio.tres")
 

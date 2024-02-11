@@ -1,0 +1,66 @@
+[gd_scene load_steps=9 format=3 uid="uid://b45pm48no380g"]
+
+[ext_resource type="Texture2D" uid="uid://ddob5qay4neya" path="res://assets/base_game/cards/card_ui/stats/spd/spd.png" id="1_7vbn2"]
+[ext_resource type="LabelSettings" uid="uid://je535i1721un" path="res://assets/UI/sixty_four/sixty_four_default.tres" id="2_uno0g"]
+[ext_resource type="Texture2D" uid="uid://iucmlitjenwl" path="res://assets/base_game/cards/card_ui/stats/energy/energy.png" id="3_tjg01"]
+[ext_resource type="Texture2D" uid="uid://b0l6fop34q6ew" path="res://assets/base_game/cards/card_ui/stats/hp/hp.png" id="4_suwfb"]
+[ext_resource type="Texture2D" uid="uid://dqj6m376wbhwo" path="res://assets/base_game/cards/card_ui/stats/att/att.png" id="5_mwhde"]
+[ext_resource type="Shader" path="res://test.gdshader" id="6_qjtu2"]
+[ext_resource type="Texture2D" uid="uid://culyrsrvkiaay" path="res://test/image.png" id="7_7r7kv"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_goh8p"]
+shader = ExtResource("6_qjtu2")
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-69, 147)
+texture = ExtResource("1_7vbn2")
+
+[node name="Label3" type="Label" parent="Sprite2D"]
+offset_left = -25.0
+offset_top = 30.0
+offset_right = 15.0
+offset_bottom = 62.0
+text = "4"
+label_settings = ExtResource("2_uno0g")
+
+[node name="Sprite2D4" type="Sprite2D" parent="."]
+position = Vector2(68, 147)
+texture = ExtResource("3_tjg01")
+
+[node name="Label4" type="Label" parent="Sprite2D4"]
+offset_left = -17.0
+offset_top = -15.0
+offset_right = 23.0
+offset_bottom = 17.0
+text = "3"
+label_settings = ExtResource("2_uno0g")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(84, -159)
+texture = ExtResource("4_suwfb")
+
+[node name="Label2" type="Label" parent="Sprite2D2"]
+offset_left = -23.0
+offset_top = 34.0
+offset_right = 17.0
+offset_bottom = 66.0
+text = "4"
+label_settings = ExtResource("2_uno0g")
+
+[node name="Sprite2D3" type="Sprite2D" parent="."]
+position = Vector2(-88, -159)
+texture = ExtResource("5_mwhde")
+
+[node name="Label" type="Label" parent="Sprite2D3"]
+offset_left = -18.0
+offset_top = 35.0
+offset_right = 22.0
+offset_bottom = 67.0
+text = "4"
+label_settings = ExtResource("2_uno0g")
+
+[node name="Sprite2D5" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_goh8p")
+texture = ExtResource("7_7r7kv")
