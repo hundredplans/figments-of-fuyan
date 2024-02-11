@@ -22,8 +22,10 @@ var team: int
 var height: int
 var Tile: TileGD
 
-var AudioDict: AudioDictGD
+var attack_range: int = 1
+var attack_amount: int = 0
 
+var AudioDict: AudioDictGD
 var Vision: VisionGD
 var Units: UnitsGD
 var TeamControl: Node
@@ -65,19 +67,20 @@ func occupy_tile(_Tile: TileGD) -> void:
 	Vision.on_recalculate_vision()
 
 func stats(stat_type: String, val: int, absolute: bool = false) -> void:
+	if absolute: val = max(val, 0)
 	match stat_type:
 		"speed":
 			if absolute:
 				speed = val
-			else: speed += val
+			else: speed = max(speed + val, 0)
 		"attack":
 			if absolute:
 				attack = val
-			else: attack += val
+			else: attack = max(attack + val, 0)
 		"health":
 			if absolute: 
 				health = val
-			else: health += val
+			else: health = max(health + val, 0)
 				
 	UnitStatus.on_reset_stats()
 

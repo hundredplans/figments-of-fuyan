@@ -25,6 +25,7 @@ func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int
 	FieldedUnits.add_child(Unit)
 	Unit.on_create_unit(id, tool_id, effects, team, rot, tile)
 	Unit.Model.movement_finished.connect(on_movement_finished.bind(Unit))
+	Unit.Model.attack_finished.connect(on_attack_finished.bind(Unit))
 	LevelUI.on_add_unit_status_box(Unit)
 	
 	var in_vision: bool = Vision.is_unit_in_vision(Unit)
@@ -51,6 +52,7 @@ func on_player_end_turn_phase_start() -> void:
 func on_player_phase_start() -> void:
 	for Unit in on_units():
 		Unit.stats("speed", Unit.max_speed, true)
+		Unit.attack_amount = 1
 
 func unit_by_tile(Tile: TileGD) -> UnitGD:
 	for Unit in FieldedUnits.get_children():
@@ -78,6 +80,7 @@ func on_occupied_tile_inspected(Tile: TileGD) -> void:
 
 var active_event: Array
 var move_queue: Array
+var attack_queue: Array
 
 func move_to_tile(Unit: UnitGD, Tile: TileGD) -> void:
 	move_queue.append([Unit, Tile])
@@ -93,6 +96,11 @@ func _process(_delta: float) -> void:
 		SpectateCamera.position.z += active_event[1].position.z - SpectateCamera.central_point.z
 		SpectateCamera.central_point = Vector3(active_event[1].position.x, SpectateCamera.central_point.y, active_event[1].position.z)
 		
+	if !attack_queue.is_empty() and move_queue.is_empty() and active_event.is_empty():
+		active_event = ["AttackUnit"] + attack_queue.pop_front() if attack_queue[0].size() == 3 else []
+		on_attack_enemy()
+		LevelMap.set_lock_inputs(true)
+		
 func on_movement_finished(Unit: UnitGD) -> void:
 	Unit.stats("speed", -1)
 	Unit.occupy_tile(active_event[2])
@@ -106,20 +114,33 @@ func on_unit_selected(Unit: UnitGD) -> void:
 		_on_unit_deselected(Unit)
 	elif UnitSelected != null:
 		_on_unit_deselected(UnitSelected)
-		if Unit.speed > 0:
-			_on_unit_selected(Unit)
-	elif Unit.speed > 0: _on_unit_selected(Unit)
+		_on_unit_selected(Unit)
+	else: _on_unit_selected(Unit)
 
 func _on_unit_deselected(Unit: UnitGD, absolute: bool = false) -> void:
-	Tiles.on_set_tile_material(UnitSelected.Tile, "", absolute)
-	for Tile in Tiles.tiles_in_speed(UnitSelected):
+	Tiles.on_set_tile_material(Unit.Tile, "", absolute)
+	var tiles: Dictionary = Tiles.tiles_in_speed(Unit)
+	for Tile in tiles.in_speed + tiles.in_range:
 		Tiles.on_set_tile_material(Tile, "", absolute)
 	if Unit == UnitSelected: UnitSelected = null
 	
 func _on_unit_selected(Unit: UnitGD) -> void:
 	Tiles.on_set_tile_material(Unit.Tile, "UnitSelected")
-	for Tile in Tiles.tiles_in_speed(Unit):
-		Tiles.on_set_tile_material(Tile, "MovementRange")
+	var tiles: Dictionary = Tiles.tiles_in_speed(Unit)
+	var enemy_tiles: Array = on_units(1).map(func(x: UnitGD): return x.Tile)
+
+	for Tile in tiles.in_speed:
+		if Unit.attack_amount > 0 and Tile in enemy_tiles:
+			Tiles.on_set_tile_material(Tile, "EnemyFound")
+			
+		elif Tile.solid_status == 0:
+			Tiles.on_set_tile_material(Tile, "MovementRange")
+		
+	if Unit.attack_amount > 0:
+		for Tile in tiles.in_range:
+			if Tile in enemy_tiles:
+				Tiles.on_set_tile_material(Tile, "EnemyFound")
+		
 	if UnitSelected == null: UnitSelected = Unit
 
 func on_unit_enters_vision(Unit: UnitGD) -> void:
@@ -139,3 +160,28 @@ func on_force_resume_idle_animation_from_walk() -> void:
 		active_event[1].Model.on_play_animation("Idle")
 		if active_event[1].Model.current_walk_stream_player != null:
 			AudioMaster.on_cutoff_sfx(active_event[1].Model.current_walk_stream_player)
+
+func attack_enemy_or_target(Unit: UnitGD, Tile: TileGD) -> void:
+	if Unit.attack_amount > 0:
+		var enemies: Array = on_units(Unit.team, "Enemy")
+		for _Unit in enemies:
+			if Tile == _Unit.Tile:
+				_attack_enemy(Unit, _Unit, Tile)
+				break
+		# if this check fails can check for attacks on objects and such here
+
+func _attack_enemy(Unit: UnitGD, _Unit: UnitGD, Tile: TileGD) -> void:
+	attack_queue.append([Unit, _Unit, Tile])
+	
+func on_attack_enemy() -> void:
+	active_event[1].Model.attack_tile(active_event[3])
+	# can do all the ui stuff here for attacking
+	
+func on_attack_finished(Unit: UnitGD) -> void:
+	active_event[2].stats("health", -Unit.attack)
+	Unit.attack_amount -= 1
+	active_event = []
+	LevelMap.set_lock_inputs(false)
+	
+func _attack_target(_Unit: UnitGD, _Tile: TileGD) -> void:
+	pass

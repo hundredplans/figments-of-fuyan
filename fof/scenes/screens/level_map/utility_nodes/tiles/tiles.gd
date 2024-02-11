@@ -178,12 +178,18 @@ func _process(_delta: float) -> void:
 			if is_tile_occupied_by_units(active_tile):
 				Units.on_occupied_tile_inspected(active_tile)
 			elif "PathHovered" in active_tile.tile_state:
+				if active_tile.tile_state.has("EnemyFound"):
+					on_enemy_found_tile_selected(active_tile)
+					path_hovered_tiles.erase(active_tile)
 				on_path_hovered_tile_selected(active_tile)
 			elif on_find_tile_primary_type(active_tile) == "Spawn":
 				Hand.on_card_placed(active_tile)
 
-func tiles_in_speed(Unit: UnitGD) -> Array:
-	return all_in_range(Unit.Tile, Unit.speed, true).filter(func(x: TileGD): return x.solid_status == 0)
+func tiles_in_speed(Unit: UnitGD) -> Dictionary:
+	return {
+		"in_speed": all_in_range(Unit.Tile, Unit.speed, true),
+		"in_range": all_neighbours(Unit.Tile, Unit.speed + 1, true)
+	}
 
 func tile_path(begin: TileGD, end: TileGD, tiles: Array = get_children()) -> Array:
 	var astar := AStar3D.new()
@@ -196,26 +202,26 @@ func tile_path(begin: TileGD, end: TileGD, tiles: Array = get_children()) -> Arr
 		
 	for i in range(tiles.size()):
 		for j in range(tiles.size()):
-			if i != j and !astar.are_points_connected(i, j) and is_neighbour(tiles[i], tiles[j]):
+			if i != j and (!(tiles[i].solid_status == 1 and tiles[j].solid_status == 1) or tiles[i] == begin)\
+			and !astar.are_points_connected(i, j) and is_neighbour(tiles[i], tiles[j]):
 				astar.connect_points(i, j)
 	return Array(astar.get_id_path(begin_id, end_id)).map(func(x: int): return tiles[x])
 
 # ----------------- Tiles UI
 
 func on_tile_hovered(Tile: TileGD, type: String) -> void:
-	if "MovementRange" not in Tile.tile_state and "UnitSelected" not in Tile.tile_state:
+	if "EnemyFound" not in Tile.tile_state and "MovementRange" not in Tile.tile_state and "UnitSelected" not in Tile.tile_state:
 		on_set_tile_material(Tile, (type + "Inspected") if !is_tile_occupied_by_units(Tile) else "UnitInspected")
 		
 	elif "UnitSelected" not in Tile.tile_state: # create hovered tiles
 		var starter_tile: TileGD = tiles_by_tile_state("UnitSelected")[0]
-		
-		path_hovered_tiles = tile_path(starter_tile, Tile, tiles_by_tile_state("MovementRange") + [starter_tile])
-		path_hovered_tiles.remove_at(0)
-		
-		if path_hovered_tiles.size() <= Units.UnitSelected.speed:
-			for _Tile in path_hovered_tiles:
-				on_set_tile_material(_Tile, "PathHovered")
-		else: path_hovered_tiles = []
+		path_hovered_tiles = tile_path(starter_tile, Tile, tiles_by_tile_state("MovementRange") + tiles_by_tile_state("EnemyFound") + [starter_tile])
+		if !path_hovered_tiles.is_empty():
+			path_hovered_tiles.remove_at(0)
+			if path_hovered_tiles.size() <= Units.UnitSelected.speed:
+				for _Tile in path_hovered_tiles:
+					on_set_tile_material(_Tile, "PathHovered")
+			else: path_hovered_tiles = []
 
 func on_tile_unhovered(Tile: TileGD) -> void:
 	if "PathHovered" not in Tile.tile_state and "UnitSelected" not in Tile.tile_state:
@@ -231,6 +237,9 @@ func on_path_hovered_tile_selected(Tile: TileGD) -> void:
 		if Tile == _Tile: break
 	Units._on_unit_deselected(Units.UnitSelected, true)
 		
+func on_enemy_found_tile_selected(Tile: TileGD) -> void:
+	Units.attack_enemy_or_target(Units.UnitSelected, Tile)
+	
 var MATERIAL_NAME_TO_MATERIAL: Dictionary = {
 	"RegularInspected": null,
 	"SpawnInspected": null,
@@ -238,11 +247,12 @@ var MATERIAL_NAME_TO_MATERIAL: Dictionary = {
 	"PathHovered": null,
 	"MovementRange": null,
 	"UnitInspected": null,
+	"EnemyFound": null,
 	"": null,
 }
  
 var MATERIAL_PRIORITIES: Array = ["", "MovementRange", "RegularInspected",
- "SpawnInspected", "UnitInspected", "PathHovered", "UnitSelected"]
+ "SpawnInspected", "UnitInspected", "PathHovered", "EnemyFound", "UnitSelected"]
 
 var base_material: Material = preload("res://assets/materials/base_materials/base_material.tres")
 func on_set_default_shader_parameters() -> void:
@@ -257,6 +267,7 @@ func on_set_default_shader_parameters() -> void:
 	MATERIAL_NAME_TO_MATERIAL["UnitSelected"].albedo_color = Color(0, 1, 1)
 	MATERIAL_NAME_TO_MATERIAL["PathHovered"].albedo_color = Color(1, 0, 1)
 	MATERIAL_NAME_TO_MATERIAL["UnitInspected"].albedo_color = Color(0, 0, 0)
+	MATERIAL_NAME_TO_MATERIAL["EnemyFound"].albedo_color = Color(0.6, 0, 0)
 	
 func on_set_tile_material(Tile: TileGD, material_name: String = "", absolute_reset: bool = false, btab: int = 0):
 	if material_name == "":

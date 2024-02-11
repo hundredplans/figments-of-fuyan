@@ -4,6 +4,7 @@ extends Node3D
 var UnitModel: Node3D
 var AniPlayer: AnimationPlayer
 signal movement_finished
+signal attack_finished
 
 func on_add_model() -> void:
 	var model_path: String = "res://assets/base_game/cards/card_ui/default_model.glb"
@@ -37,13 +38,19 @@ func on_find_walk_sfx(id: int) -> String:
 	return sfx
 	
 func on_finish_animation(ani_name: String) -> void:
-	if ani_name == "Walk":
-		movement_finished.emit()
-	else: on_play_animation("Idle")
+	match ani_name:
+		"Walk": movement_finished.emit()
+		"Attack": attack_finished.emit()
+		
+	if ani_name != "Walk": on_play_animation("Idle")
 
 func move_to_tile(Tile: TileGD) -> void:
 	walk_to = Tile
 	on_play_animation("Walk")
+	
+func attack_tile(Tile: TileGD) -> void:
+	Unit.look_at(Tile.global_position, Vector3(0, 1, 0), true)
+	on_play_animation("Attack")
 	
 var walk_to: TileGD
 func _process(_delta: float) -> void:
@@ -56,3 +63,6 @@ func _process(_delta: float) -> void:
 		
 		MoveTween.finished.connect(on_finish_animation.bind("Walk"))
 		walk_to = null
+
+func _look_at(tile_position: Vector4) -> void: #will rotate the object
+	pass
