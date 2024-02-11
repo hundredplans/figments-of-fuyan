@@ -4,6 +4,8 @@ extends Node3D
 signal lock_inputs_changed
 var GameState: Node
 
+
+
 var LoadedLevel: Node3D
 var Tiles: TilesGD
 var Lights: LightsGD

@@ -2,13 +2,13 @@ extends Control
 var info: Dictionary
 
 signal pressed
+var past_is_hover: bool = false
 var is_hover: bool = false
 @export var show_tool: bool = true
 var Heroes: HeroesGD
 @export var Art: Control
 @export var Text: Control
 @export var Stats: Control
-	
 
 func set_info(_info: Dictionary) -> void:
 	info = _info

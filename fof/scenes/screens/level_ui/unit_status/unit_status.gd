@@ -94,9 +94,9 @@ func _process(_delta: float) -> void:
 		oHoverCard.position = get_global_mouse_position() + HOVER_CARD_OFFSET
 
 func _on_mouse_entered():
-	if !Unit.Units.LevelMap.lock_inputs:
+	if !Unit.Units.LevelMap.lock_inputs and !Unit.Units.LevelUI.is_status_box_panel_moving:
 		Unit.Units.Tiles.on_set_tile_material(Unit.Tile, "UnitInspected")
 
 func _on_mouse_exited():
-	if !Unit.Units.LevelMap.lock_inputs:
+	if !Unit.Units.LevelMap.lock_inputs and !Unit.Units.LevelUI.is_status_box_panel_moving:
 		Unit.Units.Tiles.on_set_tile_material(Unit.Tile)

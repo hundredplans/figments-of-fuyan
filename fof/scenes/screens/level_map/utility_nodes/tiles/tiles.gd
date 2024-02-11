@@ -2,6 +2,8 @@ class_name TilesGD
 extends Node3D
 const MAX_HEIGHT: int = 11
 
+var SpectateCamera: Camera3D
+var LevelUI: LevelUIGD
 var LevelMap: LevelMapGD
 var Vision: VisionGD
 var Units: UnitsGD
@@ -144,6 +146,7 @@ func tile_distance(Tile: TileGD, _Tile: TileGD) -> int:
 # -----------------
 
 func _ready() -> void:
+	LevelUI.mouse_in_ui.connect(on_mouse_enters_ui)
 	LevelMap.lock_inputs_changed.connect(on_lock_inputs_changed)
 	for child in get_children():
 		child.get_node("MouseDetector").mouse_entered.connect(on_tile_mouse_entered.bind(child))
@@ -152,17 +155,19 @@ func _ready() -> void:
 
 var TileInHopper: TileGD
 var active_tile: TileGD
-func on_tile_mouse_entered(Tile: TileGD) -> void:
-	if !LevelMap.lock_inputs:
-		active_tile = Tile
-		on_tile_hovered(active_tile, on_find_tile_primary_type(Tile))
-	else: TileInHopper = Tile
+func on_tile_mouse_entered(Tile: TileGD, override: bool = false) -> void:
+	if active_tile == null and Tile.visible and (!LevelUI.is_mouse_in_ui or override):
+		if !LevelMap.lock_inputs:
+			active_tile = Tile
+			on_tile_hovered(active_tile, on_find_tile_primary_type(Tile))
+		else: TileInHopper = Tile
 	
-func on_tile_mouse_exited(Tile: TileGD) -> void:
-	if !LevelMap.lock_inputs:
-		active_tile = null
-		on_tile_unhovered(Tile)
-	else: TileInHopper = null
+func on_tile_mouse_exited(Tile: TileGD, override: bool = false) -> void:
+	if active_tile != null and Tile.visible and (!LevelUI.is_mouse_in_ui or override):
+		if !LevelMap.lock_inputs:
+			active_tile = null
+			on_tile_unhovered(Tile)
+		else: TileInHopper = null
 
 func tiles_by_tile_state(tile_state: String) -> Array:
 	return get_children().filter(func(x: TileGD): return tile_state in x.tile_state)
@@ -207,8 +212,10 @@ func on_tile_hovered(Tile: TileGD, type: String) -> void:
 		path_hovered_tiles = tile_path(starter_tile, Tile, tiles_by_tile_state("MovementRange") + [starter_tile])
 		path_hovered_tiles.remove_at(0)
 		
-		for _Tile in path_hovered_tiles:
-			on_set_tile_material(_Tile, "PathHovered")
+		if path_hovered_tiles.size() <= Units.UnitSelected.speed:
+			for _Tile in path_hovered_tiles:
+				on_set_tile_material(_Tile, "PathHovered")
+		else: path_hovered_tiles = []
 
 func on_tile_unhovered(Tile: TileGD) -> void:
 	if "PathHovered" not in Tile.tile_state and "UnitSelected" not in Tile.tile_state:
@@ -272,3 +279,21 @@ func on_lock_inputs_changed(x: bool) -> void:
 		TileInHopper = null
 	elif x and active_tile != null: TileInHopper = active_tile
 		
+func on_mouse_enters_ui(x: bool) -> void:
+	if active_tile and x: on_tile_mouse_exited(active_tile, true)
+	elif active_tile == null and !x:
+		var new_tile: TileGD = on_find_tile_by_raycast()
+		if new_tile != null: on_tile_mouse_entered(new_tile, true)
+
+const RAY_LENGTH: int = 1000
+func on_find_tile_by_raycast() -> TileGD:
+	var to: Vector3 = SpectateCamera.project_ray_normal(get_viewport().get_mouse_position()) * RAY_LENGTH
+	var ray: RayCast3D = Vision.TileRayCast
+	
+	ray.position = SpectateCamera.position
+	ray.target_position = to
+	ray.force_raycast_update()
+	
+	var node: Node3D = ray.get_collider()
+	if node: node = node.get_parent()
+	return node

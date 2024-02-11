@@ -4,7 +4,6 @@ extends Node3D
 var UnitModel: Node3D
 var AniPlayer: AnimationPlayer
 signal movement_finished
-# controls all stuff related to animation and maybe movement of character
 
 func on_add_model() -> void:
 	var model_path: String = "res://assets/base_game/cards/card_ui/default_model.glb"
@@ -20,6 +19,22 @@ func on_add_model() -> void:
 
 func on_play_animation(ani_name: String) -> void:
 	AniPlayer.play(ani_name, Unit.Units.UNIT_ANIMATION_BLEND_TIME)
+	if ani_name == "Walk": on_play_walk_sfx()
+	
+var current_walk_stream_player: AudioStreamPlayer
+func on_play_walk_sfx() -> void:
+	var sfx: String = on_find_walk_sfx(Unit.Tile.info.tile.id)
+	var is_null: bool = current_walk_stream_player == null 
+	if is_null or sfx != current_walk_stream_player.playing_sfx:
+		if !is_null: AudioMaster.on_cutoff_sfx(current_walk_stream_player)
+		current_walk_stream_player = AudioMaster.play_sfx(sfx)
+	
+func on_find_walk_sfx(id: int) -> String:
+	var sfx: String
+	match id:
+		1: sfx = Helper.area_to_default_ground[Unit.Units.GameState.area_info.id]
+		3,4: sfx = "water_walk"
+	return sfx
 	
 func on_finish_animation(ani_name: String) -> void:
 	if ani_name == "Walk":

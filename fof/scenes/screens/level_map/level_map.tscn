@@ -22,6 +22,13 @@ script = ExtResource("2_rteys")
 [node name="Vision" type="Node3D" parent="."]
 script = ExtResource("4_84ynl")
 
+[node name="TileRayCast" type="RayCast3D" parent="Vision"]
+collision_mask = 2
+collide_with_areas = true
+collide_with_bodies = false
+
+[node name="DarknessNode" type="Node3D" parent="Vision"]
+
 [node name="Units" type="Node3D" parent="."]
 script = ExtResource("3_2cmnp")
 

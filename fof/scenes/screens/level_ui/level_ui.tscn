@@ -51,7 +51,7 @@ anchor_bottom = 0.5
 offset_left = -15.76
 offset_top = -695.0
 offset_right = 4.23999
-offset_bottom = -535.0
+offset_bottom = -525.0
 mouse_filter = 1
 theme = ExtResource("2_pmg4n")
 theme_override_styles/panel = ExtResource("8_d8dru")
@@ -87,6 +87,7 @@ offset_left = 1759.0
 offset_top = 449.0
 offset_right = 1909.0
 offset_bottom = 599.0
+mouse_filter = 2
 
 [node name="ChangePhaseSprite" type="Sprite2D" parent="ChangePhase"]
 modulate = Color(0.607843, 0.380392, 0.176471, 1)
@@ -117,9 +118,17 @@ label_settings = ExtResource("6_byv4h")
 vertical_alignment = 1
 
 [connection signal="mouse_entered" from="HandBoxPanel" to="." method="_on_panel_container_mouse_entered"]
+[connection signal="mouse_entered" from="HandBoxPanel" to="." method="on_is_mouse_in_ui" binds= [true]]
 [connection signal="mouse_exited" from="HandBoxPanel" to="." method="_on_panel_container_mouse_exited"]
+[connection signal="mouse_exited" from="HandBoxPanel" to="." method="on_is_mouse_in_ui" binds= [false]]
 [connection signal="pre_sort_children" from="HandBoxPanel" to="." method="_on_hand_box_panel_pre_sort_children"]
 [connection signal="mouse_entered" from="UnitStatusBoxPanel" to="." method="_on_unit_status_box_panel_mouse_entered"]
+[connection signal="mouse_entered" from="UnitStatusBoxPanel" to="." method="on_is_mouse_in_ui" binds= [true]]
 [connection signal="mouse_exited" from="UnitStatusBoxPanel" to="." method="_on_unit_status_box_panel_mouse_exited"]
+[connection signal="mouse_exited" from="UnitStatusBoxPanel" to="." method="on_is_mouse_in_ui" binds= [false]]
 [connection signal="pre_sort_children" from="UnitStatusBoxPanel" to="." method="_on_unit_status_box_panel_pre_sort_children"]
+[connection signal="mouse_entered" from="Energy" to="." method="on_is_mouse_in_ui" binds= [true]]
+[connection signal="mouse_exited" from="Energy" to="." method="on_is_mouse_in_ui" binds= [false]]
+[connection signal="mouse_entered" from="ChangePhase/ChangePhaseHitbox" to="." method="on_is_mouse_in_ui" binds= [true]]
+[connection signal="mouse_exited" from="ChangePhase/ChangePhaseHitbox" to="." method="on_is_mouse_in_ui" binds= [false]]
 [connection signal="pressed" from="ChangePhase/ChangePhaseHitbox" to="." method="_on_change_phase_hitbox_pressed"]

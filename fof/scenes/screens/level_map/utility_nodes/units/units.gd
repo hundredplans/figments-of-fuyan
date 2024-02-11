@@ -2,6 +2,7 @@ class_name UnitsGD
 extends Node3D
 
 var SpectateCamera: Camera3D
+var GameState: GameStateGD
 var Vision: VisionGD
 var Random: RandomGD
 var Tiles: TilesGD
@@ -95,10 +96,10 @@ func _process(_delta: float) -> void:
 func on_movement_finished(Unit: UnitGD) -> void:
 	Unit.stats("speed", -1)
 	Unit.occupy_tile(active_event[2])
-	LevelMap.set_lock_inputs(false)
-	
-	if move_queue.is_empty(): on_force_resume_idle_animation_from_walk()
-	active_event = []
+	if move_queue.is_empty(): on_empty_move_queue()
+	else:
+		Unit.Model.on_play_walk_sfx()
+		active_event = []
 	
 func on_unit_selected(Unit: UnitGD) -> void:
 	if UnitSelected == Unit:
@@ -131,7 +132,10 @@ func on_empty_move_queue() -> void:
 	on_force_resume_idle_animation_from_walk()
 	active_event = []
 	move_queue = []
+	LevelMap.set_lock_inputs(false)
 	
 func on_force_resume_idle_animation_from_walk() -> void:
 	if active_event.size() > 0 and active_event[0] == "MoveUnit":
 		active_event[1].Model.on_play_animation("Idle")
+		if active_event[1].Model.current_walk_stream_player != null:
+			AudioMaster.on_cutoff_sfx(active_event[1].Model.current_walk_stream_player)

@@ -2,6 +2,7 @@ class_name LevelUIGD
 extends Control
 signal load_world
 signal equip_sky
+signal mouse_in_ui
 
 var Heroes: HeroesGD
 
@@ -23,6 +24,7 @@ func _ready() -> void:
 	LevelMap = _LevelMap.instantiate()
 	LevelMap.GameState = GameState
 	LevelMap.LevelUI = self
+	LevelMap.lock_inputs_changed.connect(on_lock_inputs_changed)
 	
 	load_world.emit(LevelMap)
 	Heroes = LevelMap.Heroes
@@ -105,31 +107,71 @@ func on_add_unit_status_box(Unit: UnitGD) -> void:
 	
 	if UnitStatus.visible: StatusBoxPanel.visible = true
 
-var is_panel_moving: bool = false
 const PANEL_MOVE_TWEEN_DURATION: float = 0.1
 const HAND_BOX_PANEL_OFFSET: int = 380
 const STATUS_BOX_PANEL_OFFSET: int = 135
 
-func _on_panel_container_mouse_entered(): on_move_panel_container(HandBoxPanel)
-func _on_panel_container_mouse_exited(): on_move_panel_container(HandBoxPanel)
+func _on_panel_container_mouse_entered(): on_extended_position_container(HandBoxPanel)
+func _on_panel_container_mouse_exited(): on_default_position_container(HandBoxPanel)
 
 const STATUS_BOX_INITIAL_PANEL_CONTAINER_POSITION: int = -155
 const HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION: int = 1065
-func on_move_panel_container(cont: PanelContainer) -> void:
-	if !is_panel_moving:
-		var final_val: int = 0
+
+func on_default_position_container(cont: PanelContainer, tween_time: float = PANEL_MOVE_TWEEN_DURATION) -> void:
+	if (cont == HandBoxPanel and !is_hand_box_panel_moving) or (cont == StatusBoxPanel and !is_status_box_panel_moving):
+		var tween_to: int = -1
 		match cont:
 			HandBoxPanel:
-				final_val = HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION if cont.position.y < HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION\
-				else HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION - HAND_BOX_PANEL_OFFSET
+				if cont.position.y != HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION:
+					tween_to = HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION
+					
 			StatusBoxPanel:
-				final_val = STATUS_BOX_INITIAL_PANEL_CONTAINER_POSITION if cont.position.y > STATUS_BOX_INITIAL_PANEL_CONTAINER_POSITION\
-				else STATUS_BOX_INITIAL_PANEL_CONTAINER_POSITION + STATUS_BOX_PANEL_OFFSET
+				var pos: int = STATUS_BOX_INITIAL_PANEL_CONTAINER_POSITION - (STATUS_BOX_PANEL_OFFSET + 15)\
+				* (ceil(StatusBox.get_children().filter(func(x: Node): return x.visible).size() * 0.25) - 1)
 				
-		var MoveTween := get_tree().create_tween()
-		MoveTween.tween_property(cont, "position:y", final_val, PANEL_MOVE_TWEEN_DURATION)
-		is_panel_moving = true
-		MoveTween.finished.connect(func(): is_panel_moving = false; warp_mouse(get_viewport().get_mouse_position()))
+				if cont.position.y != pos: tween_to = pos
+		
+		if tween_to != -1:
+			on_move_panel_container(cont, tween_to, tween_time)
+
+func on_extended_position_container(cont: PanelContainer, tween_time: float = PANEL_MOVE_TWEEN_DURATION) -> void:
+	if (cont == HandBoxPanel and !is_hand_box_panel_moving) or (cont == StatusBoxPanel and !is_status_box_panel_moving):
+		var tween_to: int = -1
+		match cont:
+			HandBoxPanel:
+				var pos: int = HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION - HAND_BOX_PANEL_OFFSET
+				if cont.position.y != pos:
+					tween_to = pos
+					for child in HandBox.get_children():
+						child.past_is_hover = child.is_hover
+						child.is_hover = false
+			StatusBoxPanel:
+				var pos: int = STATUS_BOX_INITIAL_PANEL_CONTAINER_POSITION + STATUS_BOX_PANEL_OFFSET
+				if cont.position.y != pos:
+					tween_to = pos
+					
+		if tween_to != -1:
+			on_move_panel_container(cont, tween_to, tween_time)
+
+var is_hand_box_panel_moving: bool = false
+var is_status_box_panel_moving: bool = false
+func on_move_panel_container(cont: PanelContainer, tween_to: int, tween_time: float) -> void:
+	var MoveTween := get_tree().create_tween()
+	MoveTween.tween_property(cont, "position:y", tween_to, tween_time)
+	MoveTween.finished.connect(on_move_tween_finished.bind(cont))
+	
+	match cont:
+		HandBoxPanel: is_hand_box_panel_moving = true
+		StatusBoxPanel: is_status_box_panel_moving = true
+
+func on_move_tween_finished(cont: PanelContainer) -> void:
+	if cont == HandBoxPanel:
+		for child in HandBox.get_children():
+			child.is_hover = child.past_is_hover
+	
+	match cont:
+		HandBoxPanel: is_hand_box_panel_moving = false
+		StatusBoxPanel: is_status_box_panel_moving = false
 
 func _on_hand_box_panel_pre_sort_children():
 	HandBoxPanel.size.x = 0
@@ -148,8 +190,23 @@ func _on_unit_status_box_panel_pre_sort_children():
 				StatusBox.move_child(Unit, last_ally + 1)
 				last_ally -= 1
 	
-	StatusBoxPanel.size.x = 0
+	StatusBoxPanel.size = Vector2.ZERO
 	StatusBoxPanel.position.x = 960 - ((StatusBoxPanel.size.x) / 2)
+	
+	if !is_mouse_in_status_box_panel:
+		on_extended_position_container(StatusBoxPanel)
+		await get_tree().create_timer(STATUS_BOX_RESORT_DELAY).timeout
+		if !is_mouse_in_status_box_panel:
+			on_default_position_container(StatusBoxPanel)
 
-func _on_unit_status_box_panel_mouse_entered(): on_move_panel_container(StatusBoxPanel)
-func _on_unit_status_box_panel_mouse_exited(): on_move_panel_container(StatusBoxPanel)
+const STATUS_BOX_RESORT_DELAY: float = 1.2
+var is_mouse_in_status_box_panel: bool = false
+func _on_unit_status_box_panel_mouse_entered(): on_extended_position_container(StatusBoxPanel); is_mouse_in_status_box_panel = true
+func _on_unit_status_box_panel_mouse_exited(): on_default_position_container(StatusBoxPanel); is_mouse_in_status_box_panel = false
+func on_lock_inputs_changed(x: bool) -> void:
+	ChangePhase.visible = !x
+
+var is_mouse_in_ui: bool = false
+func on_is_mouse_in_ui(x: bool) -> void: 
+	is_mouse_in_ui = x
+	mouse_in_ui.emit(x)
