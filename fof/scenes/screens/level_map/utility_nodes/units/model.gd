@@ -5,6 +5,7 @@ var UnitModel: Node3D
 var AniPlayer: AnimationPlayer
 signal movement_finished
 signal attack_finished
+signal death_finished
 var rot: int
 
 func on_add_model() -> void:
@@ -43,8 +44,9 @@ func on_finish_animation(ani_name: String) -> void:
 	match ani_name:
 		"Walk": movement_finished.emit()
 		"Attack": attack_finished.emit()
+		"Death": death_finished.emit()
 		
-	if ani_name != "Walk": on_play_animation("Idle")
+	if ani_name != "Walk" and ani_name != "Death": on_play_animation("Idle")
 
 func move_to_tile(Tile: TileGD) -> void:
 	walk_to = Tile
@@ -69,3 +71,6 @@ func _process(_delta: float) -> void:
 func _look_at(Tile: TileGD) -> void: #will rotate the object
 	rot = Unit.Units.Tiles.neighbour_rotation(Tile, Unit.Tile)
 	rotation_degrees.y = (rot * 60) - 30
+
+func on_death() -> void:
+	on_play_animation("Death")

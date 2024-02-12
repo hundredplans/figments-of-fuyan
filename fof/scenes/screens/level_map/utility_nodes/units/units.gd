@@ -1,6 +1,7 @@
 class_name UnitsGD
 extends Node3D
 
+var Deck: DeckGD
 var SpectateCamera: Camera3D
 var GameState: GameStateGD
 var Vision: VisionGD
@@ -26,6 +27,7 @@ func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int
 	Unit.on_create_unit(id, tool_id, effects, team, rot, tile)
 	Unit.Model.movement_finished.connect(on_movement_finished.bind(Unit))
 	Unit.Model.attack_finished.connect(on_attack_finished.bind(Unit))
+	Unit.Model.death_finished.connect(on_death_finished.bind(Unit))
 	LevelUI.on_add_unit_status_box(Unit)
 	
 	var in_vision: bool = Vision.is_unit_in_vision(Unit)
@@ -51,7 +53,7 @@ func on_player_end_turn_phase_start() -> void:
 
 func on_player_phase_start() -> void:
 	for Unit in on_units():
-		Unit.stats("speed", Unit.max_speed, true)
+		Unit.stats("speed", Unit.max_speed, null, true)
 		Unit.attack_amount = 1
 
 func unit_by_tile(Tile: TileGD) -> UnitGD:
@@ -79,8 +81,10 @@ func on_occupied_tile_inspected(Tile: TileGD) -> void:
 		pass
 
 var active_event: Array
+
 var move_queue: Array
 var attack_queue: Array
+var death_queue: Array
 
 func move_to_tile(Unit: UnitGD, Tile: TileGD) -> void:
 	move_queue.append([Unit, Tile])
@@ -96,10 +100,14 @@ func _process(_delta: float) -> void:
 		SpectateCamera.position.z += active_event[1].position.z - SpectateCamera.central_point.z
 		SpectateCamera.central_point = Vector3(active_event[1].position.x, SpectateCamera.central_point.y, active_event[1].position.z)
 		
-	if !attack_queue.is_empty() and move_queue.is_empty() and active_event.is_empty():
-		active_event = ["AttackUnit"] + attack_queue.pop_front() if attack_queue[0].size() == 3 else []
-		on_attack_enemy()
-		LevelMap.set_lock_inputs(true)
+	if active_event.is_empty() and move_queue.is_empty():
+		if !attack_queue.is_empty():
+			active_event = ["AttackUnit"] + attack_queue.pop_front() if attack_queue[0].size() == 3 else []
+			on_attack_enemy()
+			
+		elif !death_queue.is_empty():
+			active_event = ["DeathUnit"] + death_queue.pop_front()
+			on_death()
 		
 func on_movement_finished(Unit: UnitGD) -> void:
 	Unit.stats("speed", -1)
@@ -123,6 +131,9 @@ func _on_unit_deselected(Unit: UnitGD, absolute: bool = false) -> void:
 	for Tile in tiles.in_speed + tiles.in_range:
 		Tiles.on_set_tile_material(Tile, "", absolute)
 	if Unit == UnitSelected: UnitSelected = null
+	
+	if !absolute:
+		Tiles.on_force_mouse_entered()
 	
 func _on_unit_selected(Unit: UnitGD) -> void:
 	Tiles.on_set_tile_material(Unit.Tile, "UnitSelected")
@@ -176,13 +187,27 @@ func _attack_enemy(Unit: UnitGD, _Unit: UnitGD, Tile: TileGD) -> void:
 func on_attack_enemy() -> void:
 	active_event[1].Model.attack_tile(active_event[3])
 	active_event[2].Model._look_at(active_event[1].Tile)
+	LevelMap.set_lock_inputs(true)
 	# can do all the ui stuff here for attacking
 	
 func on_attack_finished(Unit: UnitGD) -> void:
-	active_event[2].stats("health", -Unit.attack)
+	active_event[2].stats("health", -Unit.attack, Unit)
 	Unit.attack_amount -= 1
 	active_event = []
 	LevelMap.set_lock_inputs(false)
 	
 func _attack_target(_Unit: UnitGD, _Tile: TileGD) -> void:
 	pass
+
+func kill_unit(Unit: UnitGD, Killer: UnitGD) -> void:
+	death_queue.append([Unit, Killer])
+
+func on_death() -> void:
+	active_event[1].Model.on_death()
+	LevelMap.set_lock_inputs(true)
+
+func on_death_finished(Unit: UnitGD) -> void:
+	Deck.on_draw_card()
+	Unit.on_death()
+	active_event = []
+	LevelMap.set_lock_inputs(false)

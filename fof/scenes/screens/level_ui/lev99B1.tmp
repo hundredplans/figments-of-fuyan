@@ -1,0 +1,136 @@
+[gd_scene load_steps=9 format=3 uid="uid://b0kr4uhvdhmq3"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_ui/level_ui.gd" id="1_mmiwi"]
+[ext_resource type="Texture2D" uid="uid://iucmlitjenwl" path="res://assets/base_game/cards/card_ui/stats/energy/energy.png" id="2_bww7p"]
+[ext_resource type="Theme" uid="uid://bhyiyheobours" path="res://scenes/screens/level_ui/panel_theme.tres" id="2_pmg4n"]
+[ext_resource type="LabelSettings" uid="uid://b3fuc4s50fgra" path="res://assets/UI/roboto/roboto64.tres" id="3_7ly33"]
+[ext_resource type="Texture2D" uid="uid://bhphpw6y0dli" path="res://scenes/ui_general/back_arrow/back_arrow.png" id="4_uruhh"]
+[ext_resource type="Script" path="res://scenes/screens/level_ui/hand_phase/hand_phase_sprite.gd" id="5_filg1"]
+[ext_resource type="LabelSettings" uid="uid://qp0350v2j4ah" path="res://assets/UI/roboto/roboto32_outline.tres" id="6_byv4h"]
+[ext_resource type="StyleBox" uid="uid://pvqn3n171kwj" path="res://scenes/screens/level_ui/unit_status_box_flat_style.tres" id="8_d8dru"]
+
+[node name="LevelUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_mmiwi")
+
+[node name="HandBoxPanel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = 525.0
+offset_right = 20.0
+offset_bottom = 935.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme = ExtResource("2_pmg4n")
+
+[node name="HandBox" type="HBoxContainer" parent="HandBoxPanel"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="UnitStatusBoxPanel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.503
+anchor_top = 0.5
+anchor_right = 0.503
+anchor_bottom = 0.5
+offset_left = -15.76
+offset_top = -695.0
+offset_right = 4.23999
+offset_bottom = -525.0
+mouse_filter = 1
+theme = ExtResource("2_pmg4n")
+theme_override_styles/panel = ExtResource("8_d8dru")
+
+[node name="UnitStatusBox" type="GridContainer" parent="UnitStatusBoxPanel"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
+columns = 4
+
+[node name="Energy" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 120.0
+offset_bottom = 120.0
+
+[node name="Sprite2D" type="Sprite2D" parent="Energy"]
+scale = Vector2(2, 2)
+texture = ExtResource("2_bww7p")
+centered = false
+
+[node name="Label" type="Label" parent="Energy"]
+layout_mode = 0
+offset_right = 120.0
+offset_bottom = 120.0
+label_settings = ExtResource("3_7ly33")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ChangePhase" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 1759.0
+offset_top = 449.0
+offset_right = 1909.0
+offset_bottom = 599.0
+mouse_filter = 2
+
+[node name="ChangePhaseSprite" type="Sprite2D" parent="ChangePhase"]
+modulate = Color(0.607843, 0.380392, 0.176471, 1)
+texture_filter = 1
+position = Vector2(75, 75)
+scale = Vector2(3, 3)
+texture = ExtResource("4_uruhh")
+script = ExtResource("5_filg1")
+
+[node name="ChangePhaseHitbox" type="Button" parent="ChangePhase"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_right = 150.0
+offset_bottom = 150.0
+
+[node name="Admin" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ShowPhase" type="Label" parent="Admin"]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 1001.0
+offset_right = 317.0
+offset_bottom = 1077.0
+label_settings = ExtResource("6_byv4h")
+vertical_alignment = 1
+
+[connection signal="mouse_entered" from="HandBoxPanel" to="." method="_on_panel_container_mouse_entered"]
+[connection signal="mouse_entered" from="HandBoxPanel" to="." method="on_is_mouse_in_ui" binds= [true]]
+[connection signal="mouse_exited" from="HandBoxPanel" to="." method="_on_panel_container_mouse_exited"]
+[connection signal="mouse_exited" from="HandBoxPanel" to="." method="on_is_mouse_in_ui" binds= [false]]
+[connection signal="pre_sort_children" from="HandBoxPanel" to="." method="_on_hand_box_panel_pre_sort_children"]
+[connection signal="child_entered_tree" from="HandBoxPanel/HandBox" to="." method="on_hand_box_calculate_visibility"]
+[connection signal="child_exiting_tree" from="HandBoxPanel/HandBox" to="." method="on_hand_box_calculate_visibility" binds= [1]]
+[connection signal="mouse_entered" from="UnitStatusBoxPanel" to="." method="_on_unit_status_box_panel_mouse_entered"]
+[connection signal="mouse_entered" from="UnitStatusBoxPanel" to="." method="on_is_mouse_in_ui" binds= [true]]
+[connection signal="mouse_exited" from="UnitStatusBoxPanel" to="." method="_on_unit_status_box_panel_mouse_exited"]
+[connection signal="mouse_exited" from="UnitStatusBoxPanel" to="." method="on_is_mouse_in_ui" binds= [false]]
+[connection signal="pre_sort_children" from="UnitStatusBoxPanel" to="." method="_on_unit_status_box_panel_pre_sort_children"]
+[connection signal="mouse_entered" from="Energy" to="." method="on_is_mouse_in_ui" binds= [true]]
+[connection signal="mouse_exited" from="Energy" to="." method="on_is_mouse_in_ui" binds= [false]]
+[connection signal="mouse_entered" from="ChangePhase/ChangePhaseHitbox" to="." method="on_is_mouse_in_ui" binds= [true]]
+[connection signal="mouse_exited" from="ChangePhase/ChangePhaseHitbox" to="." method="on_is_mouse_in_ui" binds= [false]]
+[connection signal="pressed" from="ChangePhase/ChangePhaseHitbox" to="." method="_on_change_phase_hitbox_pressed"]

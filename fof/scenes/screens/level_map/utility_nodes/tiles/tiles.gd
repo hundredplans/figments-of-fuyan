@@ -191,7 +191,7 @@ func tiles_in_speed(Unit: UnitGD) -> Dictionary:
 		"in_range": all_neighbours(Unit.Tile, Unit.speed + 1, true)
 	}
 
-func tile_path(begin: TileGD, end: TileGD, tiles: Array = get_children()) -> Array:
+func tile_path(begin: TileGD, end: TileGD, unidirectional_tiles: Array, tiles: Array = get_children()) -> Array:
 	var astar := AStar3D.new()
 	var begin_id: int
 	var end_id: int
@@ -200,11 +200,24 @@ func tile_path(begin: TileGD, end: TileGD, tiles: Array = get_children()) -> Arr
 		if begin == tiles[i]: begin_id = i
 		elif end == tiles[i]: end_id = i
 		
+	for i in range(unidirectional_tiles.size()):
+		var j: int = tiles.size() + i
+		astar.add_point(j, unidirectional_tiles[i].position)
+		if end == unidirectional_tiles[i]: end_id = j
 	for i in range(tiles.size()):
 		for j in range(tiles.size()):
 			if i != j and (!(tiles[i].solid_status == 1 and tiles[j].solid_status == 1) or tiles[i] == begin)\
 			and !astar.are_points_connected(i, j) and is_neighbour(tiles[i], tiles[j]):
 				astar.connect_points(i, j)
+				
+	for _i in range(unidirectional_tiles.size()):
+		var i: int = tiles.size() + _i
+		for j in range(tiles.size()):
+			if !astar.are_points_connected(j, i) and unidirectional_tiles[_i] != tiles[j]\
+			and is_neighbour(unidirectional_tiles[_i], tiles[j]):
+				astar.connect_points(j, i, false)
+				
+	tiles += unidirectional_tiles
 	return Array(astar.get_id_path(begin_id, end_id)).map(func(x: int): return tiles[x])
 
 # ----------------- Tiles UI
@@ -215,7 +228,7 @@ func on_tile_hovered(Tile: TileGD, type: String) -> void:
 		
 	elif "UnitSelected" not in Tile.tile_state: # create hovered tiles
 		var starter_tile: TileGD = tiles_by_tile_state("UnitSelected")[0]
-		path_hovered_tiles = tile_path(starter_tile, Tile, tiles_by_tile_state("MovementRange") + tiles_by_tile_state("EnemyFound") + [starter_tile])
+		path_hovered_tiles = tile_path(starter_tile, Tile, tiles_by_tile_state("EnemyFound"), tiles_by_tile_state("MovementRange") + [starter_tile])
 		if !path_hovered_tiles.is_empty():
 			path_hovered_tiles.remove_at(0)
 			
@@ -285,17 +298,18 @@ func on_set_tile_material(Tile: TileGD, material_name: String = "", absolute_res
 		Tile.get(type).set_material(MATERIAL_NAME_TO_MATERIAL[MATERIAL_PRIORITIES[highest]])
 
 func on_lock_inputs_changed(x: bool) -> void:
-	await get_tree().create_timer(0.02).timeout
-	if !LevelMap.lock_inputs and TileInHopper != null:
-		on_tile_mouse_entered(TileInHopper)
-		TileInHopper = null
-	elif x and active_tile != null: TileInHopper = active_tile
+	if !x and !LevelUI.is_mouse_in_ui:
+		on_force_mouse_entered()
 		
 func on_mouse_enters_ui(x: bool) -> void:
 	if active_tile and x: on_tile_mouse_exited(active_tile, true)
 	elif active_tile == null and !x:
-		var new_tile: TileGD = on_find_tile_by_raycast()
-		if new_tile != null: on_tile_mouse_entered(new_tile, true)
+		on_force_mouse_entered()
+
+func on_force_mouse_entered() -> void:
+	if active_tile != null: on_tile_mouse_exited(active_tile, true)
+	var new_tile: TileGD = on_find_tile_by_raycast()
+	if new_tile != null: on_tile_mouse_entered(new_tile, true)
 
 const RAY_LENGTH: int = 1000
 func on_find_tile_by_raycast() -> TileGD:

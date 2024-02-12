@@ -100,3 +100,7 @@ func _on_mouse_entered():
 func _on_mouse_exited():
 	if !Unit.Units.LevelMap.lock_inputs and !Unit.Units.LevelUI.is_status_box_panel_moving:
 		Unit.Units.Tiles.on_set_tile_material(Unit.Tile)
+
+func _queue_free() -> void:
+	# dissolve effect here
+	queue_free()

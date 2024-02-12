@@ -66,7 +66,7 @@ func occupy_tile(_Tile: TileGD) -> void:
 	Tile.solid_status = 1
 	Vision.on_recalculate_vision()
 
-func stats(stat_type: String, val: int, absolute: bool = false) -> void:
+func stats(stat_type: String, val: int, AppliedBy: UnitGD = null, absolute: bool = false) -> void:
 	if absolute: val = max(val, 0)
 	match stat_type:
 		"speed":
@@ -83,6 +83,7 @@ func stats(stat_type: String, val: int, absolute: bool = false) -> void:
 			else: health = max(health + val, 0)
 				
 	UnitStatus.on_reset_stats()
+	if health == 0: Units.kill_unit(self, AppliedBy)
 
 func status_effect() -> void:
 	pass
@@ -102,3 +103,7 @@ func on_arrive(in_vision: bool) -> void:
 		LightTween.finished.connect(func(): Light.queue_free())
 		AudioMaster.play_sfx(AudioDict.ARRIVE)
 	# can do regular arrive effects here
+
+func on_death() -> void:
+	queue_free()
+	UnitStatus._queue_free()
