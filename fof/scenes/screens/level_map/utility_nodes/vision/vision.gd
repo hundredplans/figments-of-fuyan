@@ -1,6 +1,8 @@
 class_name VisionGD
 extends Node3D
 
+@onready var TileRayCast: RayCast3D = $TileRayCast
+@onready var DarknessNode: Node3D = $DarknessNode
 var Units: UnitsGD
 var Tiles: TilesGD
 var GameState: Node
@@ -18,7 +20,7 @@ func on_recalculate_vision() -> void:
 	on_create_darkness(other_tiles)
 	
 func on_clear_darkness() -> void:
-	for child in get_children(): child.queue_free()
+	for child in DarknessNode.get_children(): child.queue_free()
 
 func on_find_visible_tiles() -> Array:
 	var _visible_tiles: Dictionary = {}
@@ -49,7 +51,7 @@ func on_create_darkness(other_tiles: Array) -> void:
 		
 		Darkness.position = Tile.position
 		Darkness.position.y = (Darkness.mesh.height / 2) + 0.3
-		add_child(Darkness)
+		DarknessNode.add_child(Darkness)
 
 func on_find_units_enter_vision(old_visible_tiles: Array) -> void:
 	for Unit in Units.all_units():

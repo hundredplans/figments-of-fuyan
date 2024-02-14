@@ -1,0 +1,3329 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://assets/base_game/levels/level/loaded_level_light_tester.gd" id="1_061r5"]
+[ext_resource type="PackedScene" path="res://scenes/screens/level_map/utility_nodes/tiles/level_tile.tscn" id="2_qh1ph"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/tiles/level_tile.gd" id="3_5xcqx"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/tile_objects/tile.gd" id="4_bvr64"]
+[ext_resource type="PackedScene" path="res://assets/models/tiles/1tile.glb" id="5_v84fy"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/tile_objects/wall.gd" id="6_jhod1"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/tile_objects/object.gd" id="7_m2qw4"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/tile_objects/tdecoration.gd" id="8_s2rij"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/tile_objects/wdecoration.gd" id="9_tio3o"]
+[ext_resource type="PackedScene" path="res://assets/models/walls/wooden_wall.glb" id="10_y5tef"]
+
+[node name="LoadedLevel" type="Node3D"]
+script = ExtResource("1_061r5")
+
+[node name="Lights" type="Node3D" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Lights"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, 0)
+
+[node name="Tiles" type="Node3D" parent="."]
+
+[node name="329045898" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.19615, 0, 0)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-3, 0, 3, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 0
+solid_status = 0
+
+[node name="Tile" parent="Tiles/329045898" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@977" type="Node3D" parent="Tiles/329045898/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/329045898" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="Object" parent="Tiles/329045898" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/329045898" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/329045898" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/329045898" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/329045898/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="1610975456" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 0, 1.5)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-3, 1, 2, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 0
+solid_status = 0
+
+[node name="Tile" parent="Tiles/1610975456" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@978" type="Node3D" parent="Tiles/1610975456/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/1610975456" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="Object" parent="Tiles/1610975456" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/1610975456" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/1610975456" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/1610975456" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/1610975456/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="256595710" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641, 0, 3)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-3, 2, 1, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 0
+solid_status = 0
+
+[node name="Tile" parent="Tiles/256595710" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@979" type="Node3D" parent="Tiles/256595710/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/256595710" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="Object" parent="Tiles/256595710" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/256595710" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/256595710" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/256595710" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/256595710/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="1510016719" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 0, 4.5)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-3, 3, 0, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 0
+solid_status = 0
+
+[node name="Tile" parent="Tiles/1510016719" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@980" type="Node3D" parent="Tiles/1510016719/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/1510016719" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="Object" parent="Tiles/1510016719" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/1510016719" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/1510016719" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/1510016719" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/1510016719/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="1833142779" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 0, -1.5)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-2, -1, 3, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 0
+solid_status = 0
+
+[node name="Tile" parent="Tiles/1833142779" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@981" type="Node3D" parent="Tiles/1833142779/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/1833142779" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="Object" parent="Tiles/1833142779" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/1833142779" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/1833142779" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/1833142779" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/1833142779/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="4196010210" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641, 0, 0)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-2, 0, 2, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 0
+solid_status = 0
+
+[node name="Tile" parent="Tiles/4196010210" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@982" type="Node3D" parent="Tiles/4196010210/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/4196010210" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="Object" parent="Tiles/4196010210" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/4196010210" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/4196010210" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/4196010210" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/4196010210/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="1429770283" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 0, 1.5)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-2, 1, 1, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 0
+solid_status = 0
+
+[node name="Tile" parent="Tiles/1429770283" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@983" type="Node3D" parent="Tiles/1429770283/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/1429770283" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="Object" parent="Tiles/1429770283" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/1429770283" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/1429770283" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/1429770283" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/1429770283/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="2973884623" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.73205, 0, 3)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 2,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 2,
+"type": 0
+},
+"position": Vector4(-2, 2, 0, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 0
+solid_status = 0
+
+[node name="Tile" parent="Tiles/2973884623" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@984" type="Node3D" parent="Tiles/2973884623/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/2973884623" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="Object" parent="Tiles/2973884623" index="2"]
+transform = Transform3D(-0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, -0.5, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/2973884623" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/2973884623" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/2973884623" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/2973884623/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="1243335053" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 0, 4.5)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-2, 3, -1, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 0
+solid_status = 0
+
+[node name="Tile" parent="Tiles/1243335053" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@985" type="Node3D" parent="Tiles/1243335053/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/1243335053" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="Object" parent="Tiles/1243335053" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/1243335053" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/1243335053" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/1243335053" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/1243335053/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="1485328423" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641, 0, -3)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-1, -2, 3, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 0
+solid_status = 0
+
+[node name="Tile" parent="Tiles/1485328423" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@986" type="Node3D" parent="Tiles/1485328423/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/1485328423" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="Object" parent="Tiles/1485328423" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/1485328423" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/1485328423" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/1485328423" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/1485328423/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="3645982482" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 0, -1.5)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-1, -1, 2, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 2,
+"multi_tile": [[-1, -1, 2, 0], [-1, -1, 2, 1]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="Tile" parent="Tiles/3645982482" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@990" type="Node3D" parent="Tiles/3645982482/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/3645982482" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="@Node3D@991" type="Node3D" parent="Tiles/3645982482/Wall" index="0" instance=ExtResource("10_y5tef")]
+
+[node name="@Node3D@992" type="Node3D" parent="Tiles/3645982482/Wall" index="1" instance=ExtResource("10_y5tef")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@993" type="Node3D" parent="Tiles/3645982482/Wall" index="2" instance=ExtResource("10_y5tef")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@994" type="Node3D" parent="Tiles/3645982482/Wall" index="3" instance=ExtResource("10_y5tef")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="Object" parent="Tiles/3645982482" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/3645982482" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/3645982482" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/3645982482" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/3645982482/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="3157037726" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.73205, 0, 0)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 1,
+"multi_tile": [],
+"obj_info": [118],
+"rotation": 1,
+"type": 0
+},
+"position": Vector4(-1, 0, 1, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 0
+solid_status = 0
+
+[node name="Tile" parent="Tiles/3157037726" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@995" type="Node3D" parent="Tiles/3157037726/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/3157037726" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="Object" parent="Tiles/3157037726" index="2"]
+transform = Transform3D(0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/3157037726" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/3157037726" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/3157037726" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/3157037726/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="3887806802" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 0, 1.5)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-1, 1, 0, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 0
+solid_status = 0
+
+[node name="Tile" parent="Tiles/3887806802" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@996" type="Node3D" parent="Tiles/3887806802/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/3887806802" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="Object" parent="Tiles/3887806802" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/3887806802" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/3887806802" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/3887806802" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/3887806802/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="476390426" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 2,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 3,
+"type": 0
+},
+"position": Vector4(-1, 2, -1, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 0
+solid_status = 0
+
+[node name="Tile" parent="Tiles/476390426" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@997" type="Node3D" parent="Tiles/476390426/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/476390426" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="Object" parent="Tiles/476390426" index="2"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/476390426" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/476390426" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/476390426" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/476390426/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="23873999" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 0, 4.5)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-1, 3, -2, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 0
+solid_status = 0
+
+[node name="Tile" parent="Tiles/23873999" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@998" type="Node3D" parent="Tiles/23873999/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/23873999" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="Object" parent="Tiles/23873999" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/23873999" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/23873999" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/23873999" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/23873999/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="15430551" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 0, -4.5)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(0, -3, 3, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 0
+solid_status = 0
+
+[node name="Tile" parent="Tiles/15430551" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@999" type="Node3D" parent="Tiles/15430551/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/15430551" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="Object" parent="Tiles/15430551" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/15430551" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/15430551" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/15430551" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/15430551/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="2875768136" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.73205, 0, -3)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(0, -2, 2, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 0
+solid_status = 0
+
+[node name="Tile" parent="Tiles/2875768136" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@1000" type="Node3D" parent="Tiles/2875768136/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/2875768136" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="Object" parent="Tiles/2875768136" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/2875768136" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/2875768136" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/2875768136" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/2875768136/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="882761724" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 0, -1.5)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(0, -1, 1, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 2,
+"multi_tile": [[0, -1, 1, 0], [0, -1, 1, 1]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="Tile" parent="Tiles/882761724" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@1004" type="Node3D" parent="Tiles/882761724/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/882761724" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="@Node3D@1005" type="Node3D" parent="Tiles/882761724/Wall" index="0" instance=ExtResource("10_y5tef")]
+
+[node name="@Node3D@1006" type="Node3D" parent="Tiles/882761724/Wall" index="1" instance=ExtResource("10_y5tef")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@1007" type="Node3D" parent="Tiles/882761724/Wall" index="2" instance=ExtResource("10_y5tef")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@1008" type="Node3D" parent="Tiles/882761724/Wall" index="3" instance=ExtResource("10_y5tef")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="Object" parent="Tiles/882761724" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/882761724" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/882761724" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/882761724" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/882761724/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="481056785" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 1,
+"multi_tile": [],
+"obj_info": [118],
+"rotation": 5,
+"type": 0
+},
+"position": Vector4(0, 0, 0, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 0
+solid_status = 0
+
+[node name="Tile" parent="Tiles/481056785" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@1009" type="Node3D" parent="Tiles/481056785/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/481056785" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="Object" parent="Tiles/481056785" index="2"]
+transform = Transform3D(0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, 0.5, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/481056785" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/481056785" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/481056785" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/481056785/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="3094442415" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 0, 1.5)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(0, 1, -1, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 0
+solid_status = 0
+
+[node name="Tile" parent="Tiles/3094442415" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@1010" type="Node3D" parent="Tiles/3094442415/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/3094442415" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="Object" parent="Tiles/3094442415" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/3094442415" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/3094442415" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/3094442415" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/3094442415/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="3217729687" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.73205, 0, 3)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 2,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 3,
+"type": 0
+},
+"position": Vector4(0, 2, -2, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 0
+solid_status = 0
+
+[node name="Tile" parent="Tiles/3217729687" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@1011" type="Node3D" parent="Tiles/3217729687/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/3217729687" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="Object" parent="Tiles/3217729687" index="2"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/3217729687" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/3217729687" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/3217729687" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/3217729687/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="1209634804" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.59808, 0, 4.5)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(0, 3, -3, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 0
+solid_status = 0
+
+[node name="Tile" parent="Tiles/1209634804" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@1012" type="Node3D" parent="Tiles/1209634804/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/1209634804" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="Object" parent="Tiles/1209634804" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/1209634804" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/1209634804" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/1209634804" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/1209634804/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="2273421668" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 0, -4.5)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(1, -3, 2, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 0
+solid_status = 0
+
+[node name="Tile" parent="Tiles/2273421668" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@1013" type="Node3D" parent="Tiles/2273421668/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/2273421668" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="Object" parent="Tiles/2273421668" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/2273421668" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/2273421668" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/2273421668" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/2273421668/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="2424152725" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(1, -2, 1, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 0
+solid_status = 0
+
+[node name="Tile" parent="Tiles/2424152725" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@1014" type="Node3D" parent="Tiles/2424152725/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/2424152725" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="Object" parent="Tiles/2424152725" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/2424152725" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/2424152725" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/2424152725" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/2424152725/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="4214183718" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 0, -1.5)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(1, -1, 0, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 2,
+"multi_tile": [[1, -1, 0, 0], [1, -1, 0, 1]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="Tile" parent="Tiles/4214183718" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@1018" type="Node3D" parent="Tiles/4214183718/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/4214183718" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="@Node3D@1019" type="Node3D" parent="Tiles/4214183718/Wall" index="0" instance=ExtResource("10_y5tef")]
+
+[node name="@Node3D@1020" type="Node3D" parent="Tiles/4214183718/Wall" index="1" instance=ExtResource("10_y5tef")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@1021" type="Node3D" parent="Tiles/4214183718/Wall" index="2" instance=ExtResource("10_y5tef")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@1022" type="Node3D" parent="Tiles/4214183718/Wall" index="3" instance=ExtResource("10_y5tef")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="Object" parent="Tiles/4214183718" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/4214183718" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/4214183718" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/4214183718" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/4214183718/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="2299098335" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.73205, 0, 0)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 1,
+"multi_tile": [],
+"obj_info": [118],
+"rotation": 5,
+"type": 0
+},
+"position": Vector4(1, 0, -1, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 0
+solid_status = 0
+
+[node name="Tile" parent="Tiles/2299098335" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@1023" type="Node3D" parent="Tiles/2299098335/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/2299098335" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="Object" parent="Tiles/2299098335" index="2"]
+transform = Transform3D(0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, 0.5, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/2299098335" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/2299098335" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/2299098335" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/2299098335/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="3596452885" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.59808, 0, 1.5)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(1, 1, -2, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 0
+solid_status = 0
+
+[node name="Tile" parent="Tiles/3596452885" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@1024" type="Node3D" parent="Tiles/3596452885/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/3596452885" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="Object" parent="Tiles/3596452885" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/3596452885" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/3596452885" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/3596452885" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/3596452885/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="3101524673" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641, 0, 3)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(1, 2, -3, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 0
+solid_status = 0
+
+[node name="Tile" parent="Tiles/3101524673" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@1025" type="Node3D" parent="Tiles/3101524673/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/3101524673" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="Object" parent="Tiles/3101524673" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/3101524673" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/3101524673" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/3101524673" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/3101524673/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="1044138608" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 0, -4.5)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(2, -3, 1, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 0
+solid_status = 0
+
+[node name="Tile" parent="Tiles/1044138608" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@1026" type="Node3D" parent="Tiles/1044138608/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/1044138608" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="Object" parent="Tiles/1044138608" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/1044138608" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/1044138608" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/1044138608" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/1044138608/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="274955829" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.73205, 0, -3)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(2, -2, 0, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 0
+solid_status = 0
+
+[node name="Tile" parent="Tiles/274955829" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@1027" type="Node3D" parent="Tiles/274955829/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/274955829" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="Object" parent="Tiles/274955829" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/274955829" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/274955829" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/274955829" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/274955829/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="1239616266" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.59808, 0, -1.5)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(2, -1, -1, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 2,
+"multi_tile": [[2, -1, -1, 0], [2, -1, -1, 1]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="Tile" parent="Tiles/1239616266" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@1031" type="Node3D" parent="Tiles/1239616266/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/1239616266" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="@Node3D@1032" type="Node3D" parent="Tiles/1239616266/Wall" index="0" instance=ExtResource("10_y5tef")]
+
+[node name="@Node3D@1033" type="Node3D" parent="Tiles/1239616266/Wall" index="1" instance=ExtResource("10_y5tef")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@1034" type="Node3D" parent="Tiles/1239616266/Wall" index="2" instance=ExtResource("10_y5tef")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@1035" type="Node3D" parent="Tiles/1239616266/Wall" index="3" instance=ExtResource("10_y5tef")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="Object" parent="Tiles/1239616266" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/1239616266" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/1239616266" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/1239616266" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/1239616266/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="1043681665" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641, 0, 0)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(2, 0, -2, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 0
+solid_status = 0
+
+[node name="Tile" parent="Tiles/1043681665" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@1036" type="Node3D" parent="Tiles/1043681665/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/1043681665" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="Object" parent="Tiles/1043681665" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/1043681665" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/1043681665" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/1043681665" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/1043681665/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="2568959923" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.33013, 0, 1.5)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(2, 1, -3, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 0
+solid_status = 0
+
+[node name="Tile" parent="Tiles/2568959923" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@1037" type="Node3D" parent="Tiles/2568959923/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/2568959923" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="Object" parent="Tiles/2568959923" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/2568959923" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/2568959923" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/2568959923" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/2568959923/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="104530828" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.59808, 0, -4.5)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(3, -3, 0, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 0
+solid_status = 0
+
+[node name="Tile" parent="Tiles/104530828" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@1038" type="Node3D" parent="Tiles/104530828/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/104530828" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="Object" parent="Tiles/104530828" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/104530828" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/104530828" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/104530828" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/104530828/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="2710078696" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641, 0, -3)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(3, -2, -1, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 0
+solid_status = 0
+
+[node name="Tile" parent="Tiles/2710078696" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@1039" type="Node3D" parent="Tiles/2710078696/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/2710078696" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="Object" parent="Tiles/2710078696" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/2710078696" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/2710078696" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/2710078696" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/2710078696/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="1196455596" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.33013, 0, -1.5)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(3, -1, -2, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 0
+solid_status = 0
+
+[node name="Tile" parent="Tiles/1196455596" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@1040" type="Node3D" parent="Tiles/1196455596/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/1196455596" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="Object" parent="Tiles/1196455596" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/1196455596" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/1196455596" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/1196455596" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/1196455596/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="677207024" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.19615, 0, 0)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(3, 0, -3, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 0
+solid_status = 0
+
+[node name="Tile" parent="Tiles/677207024" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="@Node3D@1041" type="Node3D" parent="Tiles/677207024/Tile" index="0" instance=ExtResource("5_v84fy")]
+
+[node name="Wall" parent="Tiles/677207024" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="Object" parent="Tiles/677207024" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/677207024" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/677207024" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/677207024" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/677207024/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="544031074" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 1.2, -1.5)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-1, -1, 2, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 2,
+"multi_tile": [[-1, -1, 2, 0], [-1, -1, 2, 1]],
+"rotation": 0,
+"tile_wall": 1,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="Tile" parent="Tiles/544031074" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="Wall" parent="Tiles/544031074" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="@Node3D@1044" type="Node3D" parent="Tiles/544031074/Wall" index="0" instance=ExtResource("10_y5tef")]
+
+[node name="@Node3D@1045" type="Node3D" parent="Tiles/544031074/Wall" index="1" instance=ExtResource("10_y5tef")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@1046" type="Node3D" parent="Tiles/544031074/Wall" index="2" instance=ExtResource("10_y5tef")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="Object" parent="Tiles/544031074" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/544031074" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/544031074" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/544031074" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/544031074/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="1648440518" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 1.2, -1.5)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(0, -1, 1, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 2,
+"multi_tile": [[0, -1, 1, 0], [0, -1, 1, 1]],
+"rotation": 0,
+"tile_wall": 1,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="Tile" parent="Tiles/1648440518" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="Wall" parent="Tiles/1648440518" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="@Node3D@1049" type="Node3D" parent="Tiles/1648440518/Wall" index="0" instance=ExtResource("10_y5tef")]
+
+[node name="@Node3D@1050" type="Node3D" parent="Tiles/1648440518/Wall" index="1" instance=ExtResource("10_y5tef")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@1051" type="Node3D" parent="Tiles/1648440518/Wall" index="2" instance=ExtResource("10_y5tef")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="Object" parent="Tiles/1648440518" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/1648440518" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/1648440518" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/1648440518" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/1648440518/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="1629290929" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 1.2, -1.5)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(1, -1, 0, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 2,
+"multi_tile": [[1, -1, 0, 0], [1, -1, 0, 1]],
+"rotation": 0,
+"tile_wall": 1,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="Tile" parent="Tiles/1629290929" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="Wall" parent="Tiles/1629290929" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="@Node3D@1054" type="Node3D" parent="Tiles/1629290929/Wall" index="0" instance=ExtResource("10_y5tef")]
+
+[node name="@Node3D@1055" type="Node3D" parent="Tiles/1629290929/Wall" index="1" instance=ExtResource("10_y5tef")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@1056" type="Node3D" parent="Tiles/1629290929/Wall" index="2" instance=ExtResource("10_y5tef")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="Object" parent="Tiles/1629290929" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/1629290929" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/1629290929" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/1629290929" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/1629290929/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[node name="166843112" parent="Tiles" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco") instance=ExtResource("2_qh1ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.59808, 1.2, -1.5)
+script = ExtResource("3_5xcqx")
+tile = NodePath("Tile")
+wall = NodePath("Wall")
+obj = NodePath("Object")
+tdeco = NodePath("TileDecoration")
+wdeco = NodePath("WallDecoration")
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(2, -1, -1, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 2,
+"multi_tile": [[2, -1, -1, 0], [2, -1, -1, 1]],
+"rotation": 0,
+"tile_wall": 1,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="Tile" parent="Tiles/166843112" index="0"]
+script = ExtResource("4_bvr64")
+
+[node name="Wall" parent="Tiles/166843112" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jhod1")
+
+[node name="@Node3D@1059" type="Node3D" parent="Tiles/166843112/Wall" index="0" instance=ExtResource("10_y5tef")]
+
+[node name="@Node3D@1060" type="Node3D" parent="Tiles/166843112/Wall" index="1" instance=ExtResource("10_y5tef")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@1061" type="Node3D" parent="Tiles/166843112/Wall" index="2" instance=ExtResource("10_y5tef")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="Object" parent="Tiles/166843112" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("7_m2qw4")
+
+[node name="TileDecoration" parent="Tiles/166843112" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("8_s2rij")
+
+[node name="WallDecoration" parent="Tiles/166843112" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("9_tio3o")
+
+[node name="MouseDetector" parent="Tiles/166843112" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301, 0)
+collision_layer = 66
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionPolygon3D" parent="Tiles/166843112/MouseDetector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+depth = 0.01
+polygon = PackedVector2Array(-0.000283577, -0.999828, 0.867682, -0.498548, 0.865192, 0.500828, 0.00134659, 1.00074, -0.86816, 0.500411, -0.864738, -0.499017)
+
+[editable path="Tiles/329045898"]
+[editable path="Tiles/1610975456"]
+[editable path="Tiles/256595710"]
+[editable path="Tiles/1510016719"]
+[editable path="Tiles/1833142779"]
+[editable path="Tiles/4196010210"]
+[editable path="Tiles/1429770283"]
+[editable path="Tiles/2973884623"]
+[editable path="Tiles/1243335053"]
+[editable path="Tiles/1485328423"]
+[editable path="Tiles/3645982482"]
+[editable path="Tiles/3157037726"]
+[editable path="Tiles/3887806802"]
+[editable path="Tiles/476390426"]
+[editable path="Tiles/23873999"]
+[editable path="Tiles/15430551"]
+[editable path="Tiles/2875768136"]
+[editable path="Tiles/882761724"]
+[editable path="Tiles/481056785"]
+[editable path="Tiles/3094442415"]
+[editable path="Tiles/3217729687"]
+[editable path="Tiles/1209634804"]
+[editable path="Tiles/2273421668"]
+[editable path="Tiles/2424152725"]
+[editable path="Tiles/4214183718"]
+[editable path="Tiles/2299098335"]
+[editable path="Tiles/3596452885"]
+[editable path="Tiles/3101524673"]
+[editable path="Tiles/1044138608"]
+[editable path="Tiles/274955829"]
+[editable path="Tiles/1239616266"]
+[editable path="Tiles/1043681665"]
+[editable path="Tiles/2568959923"]
+[editable path="Tiles/104530828"]
+[editable path="Tiles/2710078696"]
+[editable path="Tiles/1196455596"]
+[editable path="Tiles/677207024"]
+[editable path="Tiles/544031074"]
+[editable path="Tiles/1648440518"]
+[editable path="Tiles/1629290929"]
+[editable path="Tiles/166843112"]

@@ -2,23 +2,27 @@ class_name LevelUIGD
 extends Control
 signal load_world
 signal equip_sky
+signal mouse_in_ui
 
 var Heroes: HeroesGD
-@onready var HandBox := $HandBox
+
+@onready var StatusBoxPanel := $UnitStatusBoxPanel
+@onready var HandBoxPanel := $HandBoxPanel
+@onready var HandBox := $HandBoxPanel/HandBox
 @onready var ChangePhase: Control = $ChangePhase
-@onready var StatusBox: Control = $UnitStatusBox
+@onready var StatusBox: Control = $UnitStatusBoxPanel/UnitStatusBox
 
 var _LevelMap: PackedScene = preload("res://scenes/screens/level_map/level_map.tscn")
 var LevelMap: LevelMapGD
 var GameState: Node
 
 func _ready() -> void:
-	var levels: Array = Helper.on_item_dicts("Level").filter(on_is_level_valid)
-	GameState.level_info = levels[randi() % levels.size()]
+	StatusBoxPanel.visible = false
 	
 	LevelMap = _LevelMap.instantiate()
 	LevelMap.GameState = GameState
 	LevelMap.LevelUI = self
+	LevelMap.lock_inputs_changed.connect(on_lock_inputs_changed)
 	
 	load_world.emit(LevelMap)
 	Heroes = LevelMap.Heroes
@@ -26,9 +30,6 @@ func _ready() -> void:
 	ChangePhase.visible = false
 	
 	$Admin/ShowPhase.visible = GameState.admin
-	
-func on_is_level_valid(level_info: Dictionary) -> bool:
-	return level_info.area == GameState.area_info.id and level_info.difficulty == abs(GameState.map_progress.y - GameState.map_info.map_size)
 
 func _queue_free() -> void:
 	if !Helper.settings_loaded:
@@ -72,7 +73,7 @@ func on_player_end_turn_phase_start() -> void:
 	ChangePhase.visible = false
 
 func on_hand_phase_start() -> void:
-	HandBox.visible = true
+	HandBoxPanel.visible = HandBox.get_child_count() > 0
 	ChangePhase.visible = true
 
 func on_set_hand_box_disabled(playable_cards: Array) -> void:
@@ -86,7 +87,7 @@ func on_player_phase_start() -> void:
 	if CardUISelected != null:
 		CardUISelected.get_node("Art/BlackCard").material = null
 		CardUISelected = null
-	HandBox.visible = false
+	HandBoxPanel.visible = false
 
 func _on_change_phase_hitbox_pressed():
 	LevelMap.on_advance_game_phase()
@@ -99,7 +100,79 @@ func on_add_unit_status_box(Unit: UnitGD) -> void:
 	UnitStatus.on_set_unit(Unit)
 	Unit.UnitStatus = UnitStatus
 	
-func _on_unit_status_box_pre_sort_children():
+	if UnitStatus.visible: StatusBoxPanel.visible = true
+
+const PANEL_MOVE_TWEEN_DURATION: float = 0.1
+const HAND_BOX_PANEL_OFFSET: int = 380
+const STATUS_BOX_PANEL_OFFSET: int = 135
+
+func _on_panel_container_mouse_entered(): on_extended_position_container(HandBoxPanel)
+func _on_panel_container_mouse_exited(): on_default_position_container(HandBoxPanel)
+
+const STATUS_BOX_INITIAL_PANEL_CONTAINER_POSITION: int = -155
+const HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION: int = 1065
+
+func on_default_position_container(cont: PanelContainer, tween_time: float = PANEL_MOVE_TWEEN_DURATION) -> void:
+	if (cont == HandBoxPanel and !is_hand_box_panel_moving) or (cont == StatusBoxPanel and !is_status_box_panel_moving):
+		var tween_to: int = -1
+		match cont:
+			HandBoxPanel:
+				if cont.position.y != HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION:
+					tween_to = HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION
+					
+			StatusBoxPanel:
+				var pos: int = STATUS_BOX_INITIAL_PANEL_CONTAINER_POSITION - (STATUS_BOX_PANEL_OFFSET + 15)\
+				* (ceil(StatusBox.get_children().filter(func(x: Node): return x.visible).size() * 0.25) - 1)
+				
+				if cont.position.y != pos: tween_to = pos
+		
+		if tween_to != -1:
+			on_move_panel_container(cont, tween_to, tween_time)
+
+func on_extended_position_container(cont: PanelContainer, tween_time: float = PANEL_MOVE_TWEEN_DURATION) -> void:
+	if (cont == HandBoxPanel and !is_hand_box_panel_moving) or (cont == StatusBoxPanel and !is_status_box_panel_moving):
+		var tween_to: int = -1
+		match cont:
+			HandBoxPanel:
+				var pos: int = HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION - HAND_BOX_PANEL_OFFSET
+				if cont.position.y != pos:
+					tween_to = pos
+					for child in HandBox.get_children():
+						child.past_is_hover = child.is_hover
+						child.is_hover = false
+			StatusBoxPanel:
+				var pos: int = STATUS_BOX_INITIAL_PANEL_CONTAINER_POSITION + STATUS_BOX_PANEL_OFFSET
+				if cont.position.y != pos:
+					tween_to = pos
+					
+		if tween_to != -1:
+			on_move_panel_container(cont, tween_to, tween_time)
+
+var is_hand_box_panel_moving: bool = false
+var is_status_box_panel_moving: bool = false
+func on_move_panel_container(cont: PanelContainer, tween_to: int, tween_time: float) -> void:
+	var MoveTween := get_tree().create_tween()
+	MoveTween.tween_property(cont, "position:y", tween_to, tween_time)
+	MoveTween.finished.connect(on_move_tween_finished.bind(cont))
+	
+	match cont:
+		HandBoxPanel: is_hand_box_panel_moving = true
+		StatusBoxPanel: is_status_box_panel_moving = true
+
+func on_move_tween_finished(cont: PanelContainer) -> void:
+	if cont == HandBoxPanel:
+		for child in HandBox.get_children():
+			child.is_hover = child.past_is_hover
+	
+	match cont:
+		HandBoxPanel: is_hand_box_panel_moving = false
+		StatusBoxPanel: is_status_box_panel_moving = false
+
+func _on_hand_box_panel_pre_sort_children():
+	HandBoxPanel.size.x = 0
+	HandBoxPanel.position.x = 960 - (HandBoxPanel.size.x / 2)
+
+func _on_unit_status_box_panel_pre_sort_children():
 	var enemies: Array = []
 	var last_ally: int = -1
 	for child in StatusBox.get_children():
@@ -111,3 +184,28 @@ func _on_unit_status_box_pre_sort_children():
 			if Unit.get_index() < last_ally:
 				StatusBox.move_child(Unit, last_ally + 1)
 				last_ally -= 1
+	
+	StatusBoxPanel.size = Vector2.ZERO
+	StatusBoxPanel.position.x = 960 - ((StatusBoxPanel.size.x) / 2)
+	
+	if !is_mouse_in_status_box_panel:
+		on_extended_position_container(StatusBoxPanel)
+		await get_tree().create_timer(STATUS_BOX_RESORT_DELAY).timeout
+		if !is_mouse_in_status_box_panel:
+			on_default_position_container(StatusBoxPanel)
+
+const STATUS_BOX_RESORT_DELAY: float = 1.2
+var is_mouse_in_status_box_panel: bool = false
+func _on_unit_status_box_panel_mouse_entered(): on_extended_position_container(StatusBoxPanel); is_mouse_in_status_box_panel = true
+func _on_unit_status_box_panel_mouse_exited(): on_default_position_container(StatusBoxPanel); is_mouse_in_status_box_panel = false
+func on_lock_inputs_changed(x: bool) -> void:
+	ChangePhase.visible = !x
+
+var is_mouse_in_ui: bool = false
+func on_is_mouse_in_ui(x: bool) -> void: 
+	is_mouse_in_ui = x
+	mouse_in_ui.emit(x)
+
+func on_hand_box_calculate_visibility(__: Control, offset: int = 0):
+	if !is_queued_for_deletion():
+		HandBoxPanel.visible = HandBox.get_child_count() > 0 + offset and LevelMap.game_phase in ["HandPhase", "StartPhase", "AfterStartPhase"]

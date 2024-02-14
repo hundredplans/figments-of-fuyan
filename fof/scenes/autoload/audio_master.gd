@@ -21,15 +21,17 @@ var ID_TO_HOVER_SFX: Dictionary = {
 	"page_flip": [preload("res://scenes/screens/settings_menu/card_flip.wav"), 0],
 	"woosh": [preload("res://scenes/ui_general/arrow/woosh.wav"), 0],
 	"sand_walk": [preload("res://assets/sounds/walk/sand_walk.wav"), 0],
+	"water_walk": [preload("res://assets/sounds/walk/water_walk.wav"), 0],
 	"fight_hover": [preload("res://assets/env/area_map/map_nodes/1.wav"), -10],
 	"elite_fight_hover": [preload("res://assets/env/area_map/map_nodes/2.wav"), 0],
 	"miniboss_hover": [preload("res://assets/env/area_map/map_nodes/3.wav"), 0],
 	"boss_hover": [preload("res://assets/env/area_map/map_nodes/4.wav"), 0],
 	"encounter_hover": [preload("res://assets/env/area_map/map_nodes/5.wav"), 0],
 	"shop_hover": [preload("res://assets/env/area_map/map_nodes/6.wav"), 0],
+	"charge_deep": [preload("res://assets/sounds/arrive/charge_deep.wav"), 0],
 }
 
-func play_sfx(sfx: String, volume_offset: int = 0, early_cutoff: float = 0) -> void:
+func play_sfx(sfx: String, volume_offset: int = 0, early_cutoff: float = 0) -> AudioStreamPlayer:
 	if sfx_container.get_children().all(is_playing_sfx.bind(sfx)):
 		for child in sfx_container.get_children():
 			if !child.playing:
@@ -38,10 +40,13 @@ func play_sfx(sfx: String, volume_offset: int = 0, early_cutoff: float = 0) -> v
 				child.volume_db = sfx_library[sfx][1] + volume_offset
 				child.play()
 				if early_cutoff > 0:
-					await get_tree().create_timer(early_cutoff).timeout
-					child.stop()
-					child.finished.emit()
-				return
+					get_tree().create_timer(early_cutoff).timeout.connect(on_cutoff_sfx.bind(child))
+				else: return child
+	return null
+	
+func on_cutoff_sfx(stream_player: AudioStreamPlayer) -> void:
+	stream_player.stop()
+	stream_player.finished.emit()
 	
 func is_playing_sfx(player: AudioStreamPlayer, sfx: String) -> bool:
 	return player.playing_sfx != sfx

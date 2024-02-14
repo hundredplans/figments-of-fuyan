@@ -43,9 +43,6 @@ func _get_child_count() -> int: return _get_children().size()
 
 func is_not_queued_for_deletion(deck_card: DeckCardGD) -> bool: return !deck_card.is_queued_for_deletion()
 
-func on_hand_phase_start() -> void:
-	on_draw_card()
-
 func on_after_start_phase_start() -> void:
-	for i in range(AFTER_PHASE_START_DRAW_COUNT - 1): on_draw_card()
+	for i in range(AFTER_PHASE_START_DRAW_COUNT): on_draw_card()
 	LevelMap.on_change_game_phase("HandPhase")

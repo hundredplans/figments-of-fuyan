@@ -66,16 +66,17 @@ func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0) -> voi
 			if Units.UnitSelected != null: Units._on_unit_deselected(Units.UnitSelected)
 			
 			var units: Array = Units.on_units(0, "Ally")
-			if id == -1: unit_spectate_id += direction
-			else: unit_spectate_id = id
-			
-			if unit_spectate_id == units.size(): unit_spectate_id = 0
-			elif unit_spectate_id < 0: unit_spectate_id = units.size() - 1
-			
-			var Unit: UnitGD = units[unit_spectate_id]
-			CAMERA_HEIGHT["Unit"] = Unit.height * CAMERA_UNIT_HEIGHT_MULTIPLIER
-			CAMERA_LOOK_AT_HEIGHT["Unit"] = Unit.height * LOOK_AT_UNIT_HEIGHT_MULTIPLIER
-			on_camera_start_spectate(Unit.position, type)
+			if units.size() > 0:
+				if id == -1: unit_spectate_id += direction
+				else: unit_spectate_id = id
+				
+				if unit_spectate_id == units.size(): unit_spectate_id = 0
+				elif unit_spectate_id < 0: unit_spectate_id = units.size() - 1
+				
+				var Unit: UnitGD = units[unit_spectate_id]
+				CAMERA_HEIGHT["Unit"] = Unit.height * CAMERA_UNIT_HEIGHT_MULTIPLIER
+				CAMERA_LOOK_AT_HEIGHT["Unit"] = Unit.height * LOOK_AT_UNIT_HEIGHT_MULTIPLIER
+				on_camera_start_spectate(Unit.position, type)
 
 func on_select_spectate_camera_direction(i: int) -> void:
 	on_spectate(spectate_type, -1, i)
