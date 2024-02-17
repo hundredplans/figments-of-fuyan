@@ -19,8 +19,6 @@ func on_start_phase_start() -> void:
 func on_hand_phase_start() -> void:
 	card_selected_index = -1
 	on_change_energy(1)
-	if LevelMap.play_ui:
-		LevelUI.on_hand_phase_start()
 
 func on_playable_cards() -> Array:
 	return get_children().filter(on_is_card_playable).map(on_get_child_index)
@@ -33,8 +31,6 @@ func on_get_child_index(child: Node) -> int:
 
 func on_player_phase_start() -> void:
 	card_selected_index = -1
-	if LevelMap.play_ui:
-		LevelUI.on_player_phase_start()
 
 func on_draw_card(deck_card: DeckCardGD) -> void:
 	if get_child_count() < MAX_HAND_SIZE:
@@ -70,6 +66,5 @@ func on_card_placed(Tile: TileGD) -> void:
 func on_change_energy(delta: int) -> void:
 	energy = clamp(energy + delta, 0, energy_cap)
 	LevelUI.on_change_energy(energy, energy == energy_cap)
-	
-	if LevelMap.play_ui:
-		LevelUI.on_set_hand_box_disabled(on_playable_cards())
+	LevelUI.playable_cards = on_playable_cards()
+	LevelUI.on_set_hand_box_cards_state()

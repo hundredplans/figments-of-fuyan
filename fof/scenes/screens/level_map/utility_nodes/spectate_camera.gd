@@ -2,7 +2,7 @@ extends Camera3D
 
 @export var LOOK_AT_UNIT_HEIGHT_MULTIPLIER: float = 0.8
 @export var CAMERA_UNIT_HEIGHT_MULTIPLIER: float = 1.2
-@export var CAMERA_RADIUS: float = 1.4
+@export var CAMERA_RADIUS: float = 2.0
 
 @export var CAMERA_LOOK_AT_HEIGHT: Dictionary = {
 	"Spawn": 1.0,
@@ -53,7 +53,6 @@ func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0) -> voi
 	spectate_type = type
 	match type:
 		"Spawn":
-			
 			var spawn_tiles: Array = Tiles.on_is_type_get_tiles("Spawn", "obj")
 			if id == -1: spawn_spectate_id += direction
 			else: spawn_spectate_id = id
@@ -67,6 +66,11 @@ func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0) -> voi
 			
 			var units: Array = Units.on_units(0, "Ally")
 			if units.size() > 0:
+				if LevelMap.game_phase == "PlayerPhase":
+					var past_unit: UnitGD = units[unit_spectate_id]
+					if past_unit.UnitStatus.modulate_state != "TurnActive":
+						past_unit.UnitStatus.on_set_status_box_modulate(past_unit.UnitStatus.past_modulate_state)
+				
 				if id == -1: unit_spectate_id += direction
 				else: unit_spectate_id = id
 				
@@ -77,6 +81,10 @@ func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0) -> voi
 				CAMERA_HEIGHT["Unit"] = Unit.height * CAMERA_UNIT_HEIGHT_MULTIPLIER
 				CAMERA_LOOK_AT_HEIGHT["Unit"] = Unit.height * LOOK_AT_UNIT_HEIGHT_MULTIPLIER
 				on_camera_start_spectate(Unit.position, type)
+				
+				if LevelMap.game_phase == "PlayerPhase" and Unit.UnitStatus.modulate_state != "TurnActive":
+					Unit.on_spectated_in_player_phase()
+					
 
 func on_select_spectate_camera_direction(i: int) -> void:
 	on_spectate(spectate_type, -1, i)

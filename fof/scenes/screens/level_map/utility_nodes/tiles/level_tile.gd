@@ -23,3 +23,9 @@ func on_load_info(type: String) -> void:
 func set_material(mat: Material, btab: int = -1) -> void:
 	for type in Helper.BTAB_TO_TYPE[btab]:
 		get(type).set_material(mat)
+
+func unit_state() -> String:
+	for _unit_state in tile_state:
+		if _unit_state in Helper.unit_states:
+			return _unit_state
+	return ""

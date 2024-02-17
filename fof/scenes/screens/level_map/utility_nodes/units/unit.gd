@@ -29,6 +29,9 @@ var AudioDict: AudioDictGD
 var Vision: VisionGD
 var Units: UnitsGD
 var TeamControl: Node
+
+var turn_status: int = 0 # 0 = inactive, 1 = ready, 2 = used
+
 @onready var Model: Node3D = $Model
 func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: int, tile: TileGD) -> void:
 	id = _id
@@ -59,9 +62,12 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	AudioDict = load("res://assets/base_game/cards/" + base_card.bgfn + "/audio.tres")
 
 func occupy_tile(_Tile: TileGD) -> void:
-	if Tile != null: Tile.solid_status = Tile.original_solid_status
+	if Tile != null: 
+		Tile.solid_status = Tile.original_solid_status
+		#Units.Tiles.on_set_tile_unit_state(Tile, 0)
 	
 	Tile = _Tile
+	#Units.Tiles.on_set_tile_unit_state(Tile, team + 1)
 	Tile.original_solid_status = Tile.solid_status
 	Tile.solid_status = 1
 	Vision.on_recalculate_vision()
@@ -106,4 +112,8 @@ func on_arrive(in_vision: bool) -> void:
 
 func on_death() -> void:
 	queue_free()
+	Tile.solid_status = Tile.original_solid_status
 	UnitStatus._queue_free()
+
+func on_spectated_in_player_phase() -> void:
+	UnitStatus.on_set_status_box_modulate("Spectating")

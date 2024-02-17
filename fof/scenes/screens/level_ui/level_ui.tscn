@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://b0kr4uhvdhmq3"]
+[gd_scene load_steps=11 format=3 uid="uid://b0kr4uhvdhmq3"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_ui/level_ui.gd" id="1_mmiwi"]
 [ext_resource type="Texture2D" uid="uid://iucmlitjenwl" path="res://assets/base_game/cards/card_ui/stats/energy/energy.png" id="2_bww7p"]
@@ -8,6 +8,8 @@
 [ext_resource type="Script" path="res://scenes/screens/level_ui/hand_phase/hand_phase_sprite.gd" id="5_filg1"]
 [ext_resource type="LabelSettings" uid="uid://qp0350v2j4ah" path="res://assets/UI/roboto/roboto32_outline.tres" id="6_byv4h"]
 [ext_resource type="StyleBox" uid="uid://pvqn3n171kwj" path="res://scenes/screens/level_ui/unit_status_box_flat_style.tres" id="8_d8dru"]
+[ext_resource type="PackedScene" uid="uid://bkbg8go87dqws" path="res://scenes/ui_general/arrow/ui_arrow.tscn" id="8_t3xo3"]
+[ext_resource type="LabelSettings" uid="uid://je535i1721un" path="res://assets/UI/sixty_four/sixty_four_default.tres" id="10_b7a03"]
 
 [node name="LevelUI" type="Control"]
 layout_mode = 3
@@ -83,11 +85,18 @@ vertical_alignment = 1
 
 [node name="ChangePhase" type="Control" parent="."]
 anchors_preset = 0
-offset_left = 1759.0
-offset_top = 449.0
-offset_right = 1909.0
-offset_bottom = 599.0
+offset_left = 1741.0
+offset_top = 764.0
+offset_right = 1891.0
+offset_bottom = 914.0
 mouse_filter = 2
+
+[node name="Background" type="Panel" parent="ChangePhase"]
+layout_mode = 0
+offset_right = 150.0
+offset_bottom = 150.0
+mouse_filter = 2
+theme = ExtResource("2_pmg4n")
 
 [node name="ChangePhaseSprite" type="Sprite2D" parent="ChangePhase"]
 modulate = Color(0.607843, 0.380392, 0.176471, 1)
@@ -102,6 +111,107 @@ modulate = Color(1, 1, 1, 0)
 layout_mode = 0
 offset_right = 150.0
 offset_bottom = 150.0
+
+[node name="CameraArrows" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -248.0
+offset_top = 961.0
+offset_right = -28.0
+offset_bottom = 1054.0
+grow_horizontal = 0
+mouse_filter = 1
+
+[node name="Panel" type="Panel" parent="CameraArrows"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme = ExtResource("2_pmg4n")
+
+[node name="LeftArrow" parent="CameraArrows" instance=ExtResource("8_t3xo3")]
+modulate = Color(0.411765, 0.254902, 0.117647, 1)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -207.0
+offset_top = -1.0
+offset_right = -127.0
+offset_bottom = 97.0
+grow_horizontal = 0
+mouse_filter = 1
+flip_h = true
+
+[node name="RightArrow" parent="CameraArrows" instance=ExtResource("8_t3xo3")]
+modulate = Color(0.411765, 0.254902, 0.117647, 1)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -89.0
+offset_top = -1.0
+offset_right = -9.0
+offset_bottom = 97.0
+grow_horizontal = 0
+mouse_filter = 1
+
+[node name="PassUnitTurn" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -179.0
+offset_top = 663.0
+offset_right = -29.0
+offset_bottom = 715.0
+grow_horizontal = 0
+
+[node name="Panel" type="Panel" parent="PassUnitTurn"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("2_pmg4n")
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="PassUnitTurn"]
+modulate = Color(0.831373, 0.517647, 0.239216, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -16.0
+offset_right = 64.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "PASS"
+label_settings = ExtResource("10_b7a03")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PassUnitTurnButton" type="Button" parent="PassUnitTurn"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
 
 [node name="Admin" type="Control" parent="."]
 anchors_preset = 0
@@ -134,3 +244,8 @@ vertical_alignment = 1
 [connection signal="mouse_entered" from="ChangePhase/ChangePhaseHitbox" to="." method="on_is_mouse_in_ui" binds= [true]]
 [connection signal="mouse_exited" from="ChangePhase/ChangePhaseHitbox" to="." method="on_is_mouse_in_ui" binds= [false]]
 [connection signal="pressed" from="ChangePhase/ChangePhaseHitbox" to="." method="_on_change_phase_hitbox_pressed"]
+[connection signal="mouse_entered" from="CameraArrows" to="." method="on_is_mouse_in_ui" binds= [true]]
+[connection signal="mouse_exited" from="CameraArrows" to="." method="on_is_mouse_in_ui" binds= [false]]
+[connection signal="pressed" from="CameraArrows/LeftArrow" to="." method="on_camera_arrow_pressed" binds= [-1]]
+[connection signal="pressed" from="CameraArrows/RightArrow" to="." method="on_camera_arrow_pressed" binds= [1]]
+[connection signal="pressed" from="PassUnitTurn/PassUnitTurnButton" to="." method="_on_pass_unit_turn_button_pressed"]

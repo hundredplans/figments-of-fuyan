@@ -6,6 +6,7 @@ signal mouse_in_ui
 
 var Heroes: HeroesGD
 
+@onready var PassUnitTurn := %PassUnitTurn
 @onready var StatusBoxPanel := $UnitStatusBoxPanel
 @onready var HandBoxPanel := $HandBoxPanel
 @onready var HandBox := $HandBoxPanel/HandBox
@@ -28,8 +29,10 @@ func _ready() -> void:
 	Heroes = LevelMap.Heroes
 	equip_sky.emit(GameState.area_info.id, false)
 	ChangePhase.visible = false
+	PassUnitTurn.visible = false
 	
 	$Admin/ShowPhase.visible = GameState.admin
+	on_pin_hand_box_panel(0)
 
 func _queue_free() -> void:
 	if !Helper.settings_loaded:
@@ -54,12 +57,14 @@ var _card_selected_material: Resource = preload("res://assets/base_game/cards/ca
 var CardUISelected: Control
 func on_card_selected(CardUI: Control) -> void:
 	var index: int = -1
-	if CardUISelected != null: CardUISelected.get_node("Art/BlackCard").material = null
+	if CardUISelected != null: 
+		CardUISelected.get_node("Art/BlackCard").material = null
 	if CardUI != CardUISelected:
 		CardUISelected = CardUI
 		CardUI.get_node("Art/BlackCard").material = _card_selected_material
 		index = CardUI.get_index()
-	else: CardUISelected = null
+		on_unpin_hand_box_panel()
+	else: CardUISelected = null; on_pin_hand_box_panel()
 	LevelMap.Hand.on_card_selected(index)
 		
 func on_card_placed(index: int) -> void:
@@ -73,12 +78,16 @@ func on_player_end_turn_phase_start() -> void:
 	ChangePhase.visible = false
 
 func on_hand_phase_start() -> void:
+	on_pin_hand_box_panel()
 	HandBoxPanel.visible = HandBox.get_child_count() > 0
+	on_set_hand_box_cards_state()
 	ChangePhase.visible = true
 
-func on_set_hand_box_disabled(playable_cards: Array) -> void:
+var playable_cards: Array
+func on_set_hand_box_cards_state() -> void:
+	var state: bool = LevelMap.game_phase != "HandPhase"
 	for i in range(HandBox.get_child_count()):
-		HandBox.get_child(i).on_set_disabled(i not in playable_cards)
+		HandBox.get_child(i).on_set_disabled(state or i not in playable_cards)
 
 func _on_hand_phase_hitbox_pressed():
 	LevelMap.on_change_game_phase("PlayerPhase")
@@ -87,7 +96,9 @@ func on_player_phase_start() -> void:
 	if CardUISelected != null:
 		CardUISelected.get_node("Art/BlackCard").material = null
 		CardUISelected = null
-	HandBoxPanel.visible = false
+		
+	on_set_hand_box_cards_state()
+	on_unpin_hand_box_panel()
 
 func _on_change_phase_hitbox_pressed():
 	LevelMap.on_advance_game_phase()
@@ -111,9 +122,10 @@ func _on_panel_container_mouse_exited(): on_default_position_container(HandBoxPa
 
 const STATUS_BOX_INITIAL_PANEL_CONTAINER_POSITION: int = -155
 const HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION: int = 1065
+var hand_box_pinned: bool = true
 
 func on_default_position_container(cont: PanelContainer, tween_time: float = PANEL_MOVE_TWEEN_DURATION) -> void:
-	if (cont == HandBoxPanel and !is_hand_box_panel_moving) or (cont == StatusBoxPanel and !is_status_box_panel_moving):
+	if (cont == HandBoxPanel and !is_hand_box_panel_moving and !hand_box_pinned) or (cont == StatusBoxPanel and !is_status_box_panel_moving):
 		var tween_to: int = -1
 		match cont:
 			HandBoxPanel:
@@ -135,15 +147,11 @@ func on_extended_position_container(cont: PanelContainer, tween_time: float = PA
 		match cont:
 			HandBoxPanel:
 				var pos: int = HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION - HAND_BOX_PANEL_OFFSET
-				if cont.position.y != pos:
-					tween_to = pos
-					for child in HandBox.get_children():
-						child.past_is_hover = child.is_hover
-						child.is_hover = false
+				if cont.position.y != pos: tween_to = pos
+					
 			StatusBoxPanel:
 				var pos: int = STATUS_BOX_INITIAL_PANEL_CONTAINER_POSITION + STATUS_BOX_PANEL_OFFSET
-				if cont.position.y != pos:
-					tween_to = pos
+				if cont.position.y != pos: tween_to = pos
 					
 		if tween_to != -1:
 			on_move_panel_container(cont, tween_to, tween_time)
@@ -160,10 +168,6 @@ func on_move_panel_container(cont: PanelContainer, tween_to: int, tween_time: fl
 		StatusBoxPanel: is_status_box_panel_moving = true
 
 func on_move_tween_finished(cont: PanelContainer) -> void:
-	if cont == HandBoxPanel:
-		for child in HandBox.get_children():
-			child.is_hover = child.past_is_hover
-	
 	match cont:
 		HandBoxPanel: is_hand_box_panel_moving = false
 		StatusBoxPanel: is_status_box_panel_moving = false
@@ -208,4 +212,21 @@ func on_is_mouse_in_ui(x: bool) -> void:
 
 func on_hand_box_calculate_visibility(__: Control, offset: int = 0):
 	if !is_queued_for_deletion():
-		HandBoxPanel.visible = HandBox.get_child_count() > 0 + offset and LevelMap.game_phase in ["HandPhase", "StartPhase", "AfterStartPhase"]
+		HandBoxPanel.visible = HandBox.get_child_count() > 0 + offset
+
+func on_camera_arrow_pressed(direction: int) -> void:
+	LevelMap.SpectateCamera.on_select_spectate_camera_direction(direction)
+
+func on_pin_hand_box_panel(time: float = PANEL_MOVE_TWEEN_DURATION) -> void:
+	hand_box_pinned = true
+	on_extended_position_container(HandBoxPanel, time)
+
+func on_unpin_hand_box_panel(time: float = PANEL_MOVE_TWEEN_DURATION) -> void:
+	hand_box_pinned = false
+	on_default_position_container(HandBoxPanel, time)
+
+func on_ally_unit_awakened() -> void:
+	on_pin_hand_box_panel()
+
+func _on_pass_unit_turn_button_pressed():
+	LevelMap.Units.PlayerManager.on_pass_unit_turn()

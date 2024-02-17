@@ -1,9 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://c58jdx2o7cfwc"]
+[gd_scene load_steps=14 format=3 uid="uid://c58jdx2o7cfwc"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_ui/unit_status/unit_status.gd" id="1_32v7v"]
+[ext_resource type="Theme" uid="uid://cgtduqtnn1x0m" path="res://scenes/screens/level_ui/unit_status/unit_status_theme.tres" id="2_25yvr"]
 [ext_resource type="Texture2D" uid="uid://b74ndaaqnns1v" path="res://assets/base_game/cards/card_ui/tool/tool.png" id="2_fccpi"]
-[ext_resource type="Theme" uid="uid://cgtduqtnn1x0m" path="res://scenes/screens/level_ui/unit_status/unit_status_outside.tres" id="2_u7bev"]
-[ext_resource type="Theme" uid="uid://bqd32kfms85a7" path="res://scenes/screens/level_ui/unit_status/unit_status_inside.tres" id="3_8wqgc"]
+[ext_resource type="StyleBox" uid="uid://c4fenyexksrv4" path="res://scenes/screens/level_ui/unit_status/unit_status_box_inside_style_flat.tres" id="3_p647x"]
+[ext_resource type="StyleBox" uid="uid://causs3cpwht5i" path="res://scenes/screens/level_ui/unit_status/unit_status_box_outside_style_flat.tres" id="3_pj0yo"]
 [ext_resource type="Texture2D" uid="uid://bq7oil2dvc6bs" path="res://assets/base_game/cards/card_ui/bbcode/ATTACK.png" id="3_sw1gj"]
 [ext_resource type="Texture2D" uid="uid://dqi4eya023ekp" path="res://assets/base_game/cards/133 - Mama Palmer/art_max.png" id="4_dc7iq"]
 [ext_resource type="LabelSettings" uid="uid://je535i1721un" path="res://assets/UI/sixty_four/sixty_four_default.tres" id="4_pk6wt"]
@@ -28,6 +29,7 @@ Panel/styles/panel = SubResource("StyleBoxFlat_i2ie0")
 [node name="UnitStatus" type="Control"]
 custom_minimum_size = Vector2(350, 150)
 layout_mode = 3
+anchors_preset = 0
 offset_right = 350.0
 offset_bottom = 150.0
 mouse_filter = 2
@@ -71,7 +73,8 @@ offset_bottom = 10.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme = ExtResource("2_u7bev")
+theme = ExtResource("2_25yvr")
+theme_override_styles/panel = ExtResource("3_pj0yo")
 
 [node name="Inside" type="Panel" parent="UnitStatus/Background"]
 layout_mode = 1
@@ -81,7 +84,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme = ExtResource("3_8wqgc")
+theme = ExtResource("2_25yvr")
+theme_override_styles/panel = ExtResource("3_p647x")
 metadata/_edit_lock_ = true
 
 [node name="Rim1" type="ColorRect" parent="UnitStatus/Background"]
@@ -245,6 +249,7 @@ position = Vector2(254, 5)
 [node name="HoverCard" type="Control" parent="UnitStatus"]
 top_level = true
 layout_mode = 1
+anchors_preset = 0
 offset_right = 240.0
 offset_bottom = 422.0
 mouse_filter = 2
