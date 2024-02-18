@@ -69,8 +69,11 @@ func on_change_game_phase(phase: String) -> void:
 			Deck.on_after_start_phase_start()
 		"HandPhase":
 			Hand.on_hand_phase_start()
+			if play_ui:
+				LevelUI.on_hand_phase_start()
 		"PlayerPhase":
 			Hand.on_player_phase_start()
+			LevelUI.on_player_phase_start()
 			Units.on_player_phase_start()
 			SpectateCamera.on_spectate("Unit")
 		"PlayerEndTurnPhase":

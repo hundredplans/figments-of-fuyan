@@ -14,8 +14,7 @@ func _ready() -> void:
 func on_set_unit(_Unit: UnitGD) -> void:
 	Unit = _Unit
 	visible = !(bool(Unit.team))
-	if Unit.team == 1:
-		$UnitStatus/Background/Outside["theme_override_styles/panel"] = preload("res://scenes/screens/level_ui/unit_status/unit_status_outside_box_flat1.tres")
+	on_set_status_box_modulate("Enemy" if Unit.team == 1 else "TurnUsed")
 	on_reset_stats()
 	on_reset_status_effects()
 	on_reset_tool()
@@ -104,3 +103,18 @@ func _on_mouse_exited():
 func _queue_free() -> void:
 	# dissolve effect here
 	queue_free()
+
+const modulates: Dictionary = {
+	"Ally": "78ea8f",
+	"Enemy": "c80012",
+	"TurnUsed": "787878",
+	"TurnActive": "00fa00",
+	"Spectating": "ffef30"}
+	
+var past_modulate_state: String
+var modulate_state: String
+func on_set_status_box_modulate(val: String) -> void:
+	$UnitStatus/Background/Outside.modulate = modulates[val]
+	modulate_state = val
+	if modulate_state in ["Ally", "TurnUsed", "Enemy"]:
+		past_modulate_state = modulate_state

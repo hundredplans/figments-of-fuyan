@@ -42,19 +42,23 @@ func on_start_phase_start() -> void:
 	BotManager.Units = self
 	PlayerManager.Units = self
 	PlayerManager.LevelUI = LevelUI
+	PlayerManager.LevelMap = LevelMap
+	PlayerManager.Tiles = Tiles
 	PlayerManager.SpectateCamera = SpectateCamera
 	
 	var enemy_tiles: Array = Tiles.on_is_type_get_tiles("Enemy", "obj")
 	for Tile in enemy_tiles:
 		on_unit_awakened(Tile.info.obj.obj_info[0], 0, [], 1, Tile.info.obj.rotation, Tile) # add Random.on_create_random_tool() here, maybe no args and it takes from GameState
 
-func on_player_end_turn_phase_start() -> void:
-	if UnitSelected != null: _on_unit_deselected(UnitSelected, true)
-
 func on_player_phase_start() -> void:
+	PlayerManager.on_player_phase_start()
 	for Unit in on_units():
 		Unit.stats("speed", Unit.max_speed, null, true)
 		Unit.attack_amount = 1
+
+func on_player_end_turn_phase_start() -> void:
+	PlayerManager.on_player_end_turn_phase_start()
+	if UnitSelected != null: _on_unit_deselected(UnitSelected, true)
 
 func unit_by_tile(Tile: TileGD) -> UnitGD:
 	for Unit in FieldedUnits.get_children():
@@ -142,7 +146,7 @@ func _on_unit_selected(Unit: UnitGD) -> void:
 
 	for Tile in tiles.in_speed:
 		if Unit.attack_amount > 0 and Tile in enemy_tiles:
-			Tiles.on_set_tile_material(Tile, "EnemyFound")
+			Tiles.on_set_tile_material(Tile, "EnemyInRange")
 			
 		elif Tile.solid_status == 0:
 			Tiles.on_set_tile_material(Tile, "MovementRange")
@@ -150,7 +154,7 @@ func _on_unit_selected(Unit: UnitGD) -> void:
 	if Unit.attack_amount > 0:
 		for Tile in tiles.in_range:
 			if Tile in enemy_tiles:
-				Tiles.on_set_tile_material(Tile, "EnemyFound")
+				Tiles.on_set_tile_material(Tile, "EnemyInRange")
 		
 	if UnitSelected == null: UnitSelected = Unit
 
