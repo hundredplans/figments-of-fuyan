@@ -76,6 +76,7 @@ func on_change_energy(energy: int, is_energy_max: bool) -> void:
 
 func on_player_end_turn_phase_start() -> void:
 	ChangePhase.visible = false
+	PassUnitTurn.visible = false
 
 func on_hand_phase_start() -> void:
 	on_pin_hand_box_panel()
@@ -97,6 +98,7 @@ func on_player_phase_start() -> void:
 		CardUISelected.get_node("Art/BlackCard").material = null
 		CardUISelected = null
 		
+	PassUnitTurn.visible = true
 	on_set_hand_box_cards_state()
 	on_unpin_hand_box_panel()
 
@@ -204,6 +206,7 @@ func _on_unit_status_box_panel_mouse_entered(): on_extended_position_container(S
 func _on_unit_status_box_panel_mouse_exited(): on_default_position_container(StatusBoxPanel); is_mouse_in_status_box_panel = false
 func on_lock_inputs_changed(x: bool) -> void:
 	ChangePhase.visible = !x
+	PassUnitTurn.visible = !x
 
 var is_mouse_in_ui: bool = false
 func on_is_mouse_in_ui(x: bool) -> void: 
@@ -230,3 +233,7 @@ func on_ally_unit_awakened() -> void:
 
 func _on_pass_unit_turn_button_pressed():
 	LevelMap.Units.PlayerManager.on_pass_unit_turn()
+
+func on_pass_unit_turn_button_state(x: bool) -> void:
+	PassUnitTurn.modulate = Helper.BASE if !x else Helper.LIGHT_GREY
+	PassUnitTurn.get_node("PassUnitTurnButton").disabled = x

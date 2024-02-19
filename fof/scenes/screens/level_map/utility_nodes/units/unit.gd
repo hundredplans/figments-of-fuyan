@@ -30,8 +30,6 @@ var Vision: VisionGD
 var Units: UnitsGD
 var TeamControl: Node
 
-var turn_status: int = 0 # 0 = inactive, 1 = ready, 2 = used
-
 @onready var Model: Node3D = $Model
 func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: int, tile: TileGD) -> void:
 	id = _id
@@ -64,10 +62,11 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 func occupy_tile(_Tile: TileGD) -> void:
 	if Tile != null: 
 		Tile.solid_status = Tile.original_solid_status
-		#Units.Tiles.on_set_tile_unit_state(Tile, 0)
+		Units.Tiles.on_remove_tile_material(Tile, "")
 	
 	Tile = _Tile
-	#Units.Tiles.on_set_tile_unit_state(Tile, team + 1)
+	if team == 1: Units.Tiles.on_set_tile_material(Tile, "EnemyOccupy")
+	
 	Tile.original_solid_status = Tile.solid_status
 	Tile.solid_status = 1
 	Vision.on_recalculate_vision()
@@ -117,3 +116,5 @@ func on_death() -> void:
 
 func on_spectated_in_player_phase() -> void:
 	UnitStatus.on_set_status_box_modulate("Spectating")
+	
+	if Tile.unit_state() not in ["TurnActive", "TurnUsed"]: Units.Tiles.on_set_tile_material(Tile, "SpectatingUnit")

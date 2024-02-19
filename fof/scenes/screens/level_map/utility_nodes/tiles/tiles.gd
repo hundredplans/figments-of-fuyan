@@ -166,7 +166,7 @@ func on_tile_mouse_exited(Tile: TileGD, override: bool = false) -> void:
 	if active_tile != null and Tile.visible and (!LevelUI.is_mouse_in_ui or override):
 		if !LevelMap.lock_inputs:
 			active_tile = null
-			on_tile_unhovered(Tile)
+			on_tile_unhovered(Tile, on_find_tile_primary_type(Tile))
 		else: TileInHopper = null
 
 func tiles_by_tile_state(tile_state: String) -> Array:
@@ -185,9 +185,9 @@ func _process(_delta: float) -> void:
 			elif on_find_tile_primary_type(active_tile) == "Spawn":
 				Hand.on_card_placed(active_tile)
 
-func tiles_in_speed(Unit: UnitGD) -> Dictionary:
+func tiles_in_speed(Unit: UnitGD, include_central: bool = true) -> Dictionary:
 	return {
-		"in_speed": all_in_range(Unit.Tile, Unit.speed, true),
+		"in_speed": all_in_range(Unit.Tile, Unit.speed, include_central),
 		"in_range": all_neighbours(Unit.Tile, Unit.speed + 1, true)
 	}
 
@@ -223,13 +223,14 @@ func tile_path(begin: TileGD, end: TileGD, unidirectional_tiles: Array, tiles: A
 # ----------------- Tiles UI
 
 func on_tile_hovered(Tile: TileGD, type: String) -> void:
-	if "EnemyInRange" not in Tile.tile_state and "MovementRange" not in Tile.tile_state and "UnitSelected" not in Tile.tile_state:
-		on_set_tile_material(Tile, (type + "Inspected") if !is_tile_occupied_by_units(Tile) else "UnitInspected")
+	if "RegularInspected" not in Tile.tile_state or "SpawnInspected" not in Tile.tile_state:
+		on_set_tile_material(Tile, type + "Inspected")
 		
-	elif "UnitSelected" not in Tile.tile_state: # create hovered tiles
-		var starter_tile: TileGD = tiles_by_tile_state("UnitSelected")[0]
+	if Units.UnitSelected != null and "UnitSelected" not in Tile.tile_state: # create hovered tiles
+		var starter_tile: TileGD = Units.UnitSelected.Tile
+		
 		path_hovered_tiles = tile_path(starter_tile, Tile, tiles_by_tile_state("EnemyInRange"), tiles_by_tile_state("MovementRange") + [starter_tile])
-		if !path_hovered_tiles.is_empty():
+		if Tile in path_hovered_tiles and path_hovered_tiles.size() > 1:
 			path_hovered_tiles.remove_at(0)
 			
 			var is_enemy: bool = "EnemyInRange" in path_hovered_tiles[path_hovered_tiles.size() - 1].tile_state
@@ -237,41 +238,47 @@ func on_tile_hovered(Tile: TileGD, type: String) -> void:
 				for _Tile in path_hovered_tiles: on_set_tile_material(_Tile, "PathHovered")
 			else: path_hovered_tiles = []
 
-func on_tile_unhovered(Tile: TileGD) -> void:
-	if "EnemyInRange" not in Tile.tile_state and "PathHovered" not in Tile.tile_state and "UnitSelected" not in Tile.tile_state:
-		on_set_tile_material(Tile)
-	elif "UnitSelected" not in Tile.tile_state: # remove all effects of hovered tiles
+func on_tile_unhovered(Tile: TileGD, type: String) -> void:
+	if "RegularInspected" in Tile.tile_state or "SpawnInspected" in Tile.tile_state:
+		on_remove_tile_material(Tile, type + "Inspected")
+		
+	if Units.UnitSelected != null and "UnitSelected" not in Tile.tile_state:
 		for _Tile in tiles_by_tile_state("PathHovered"):
-			on_set_tile_material(_Tile)
+			on_remove_tile_material(_Tile, "PathHovered")
 
 var path_hovered_tiles: Array
 func on_path_hovered_tile_selected(Tile: TileGD) -> void:
+	Units.PlayerManager.on_select_active_unit(Units.UnitSelected)
 	for _Tile in path_hovered_tiles:
 		Units.move_to_tile(Units.UnitSelected, _Tile)
 		if Tile == _Tile: break
+		
+	on_remove_tile_material(Units.UnitSelected.Tile, "SpectatingUnit")
+	on_remove_tile_material(Units.UnitSelected.Tile, "TurnActive")
 	Units._on_unit_deselected(Units.UnitSelected, true)
 		
 func on_enemy_found_tile_selected(Tile: TileGD) -> void:
 	Units.attack_enemy_or_target(Units.UnitSelected, Tile)
 	
 var MATERIAL_NAME_TO_MATERIAL: Dictionary = {
-	"RegularInspected": null,
-	"SpawnInspected": null,
-	"UnitSelected": null,
-	"PathHovered": null,
-	"MovementRange": null,
-	"EnemyInRange": null,
+	"RegularInspected": null, # When hovering over a regular tile
+	"SpawnInspected": null, # Over a spawn tile
+	"UnitSelected": null, # Clicked on a unit
+	"PathHovered": null, # When seeing where you should go
+	"MovementRange": null, # Possible movement positions
+	"EnemyInRange": null, # Enemies you can click on and attack
+	"UnitInspected": null, # When inspected with the unit status
 	
-	"UnitInspected": null,
-	"TurnActive": null,
-	"TurnUsed": null,
-	"EnemyOccupy": null,
+	"SpectatingUnit": null, # Allies who's turn it's not but they are being spectated
+	"TurnActive": null, # Allies that it's currently the unit turn of
+	"TurnUsed": null, # Allies that used up their unit turn
+	"EnemyOccupy": null, # Tiles where an enemy exists
 	
 	"": null,
 }
  
 var MATERIAL_PRIORITIES: Array = ["", "MovementRange", "RegularInspected",
- "SpawnInspected", "PathHovered", "EnemyInRange"]
+ "SpawnInspected", "PathHovered"] + Helper.unit_states + ["UnitSelected", "UnitInspected", "EnemyInRange"]
 
 var base_material: Material = preload("res://assets/materials/base_materials/base_material.tres")
 func on_set_default_shader_parameters() -> void:
@@ -285,26 +292,41 @@ func on_set_default_shader_parameters() -> void:
 	MATERIAL_NAME_TO_MATERIAL["MovementRange"].albedo_color = Color(1, 1, 0)
 	MATERIAL_NAME_TO_MATERIAL["UnitSelected"].albedo_color = Color(0, 1, 1)
 	MATERIAL_NAME_TO_MATERIAL["PathHovered"].albedo_color = Color(1, 0, 1)
-	MATERIAL_NAME_TO_MATERIAL["EnemyInRange"].albedo_color = Color(1, 0, 0)
+	MATERIAL_NAME_TO_MATERIAL["EnemyInRange"].albedo_color = Color(1, 0.7, 0.7)
+	MATERIAL_NAME_TO_MATERIAL["UnitInspected"].albedo_color = Color(0.8, 0.8, 0.8)
 	
-	MATERIAL_NAME_TO_MATERIAL["UnitInspected"].albedo_color = Color(0, 0, 0)
-	MATERIAL_NAME_TO_MATERIAL["TurnActive"].albedo_color = Color(0.3, 1, 0.3)
-	MATERIAL_NAME_TO_MATERIAL["TurnUsed"].albedo_color = Color(0.2, 0.2, 0.2)
+	MATERIAL_NAME_TO_MATERIAL["SpectatingUnit"].albedo_color = Color(0, 0, 1)
+	MATERIAL_NAME_TO_MATERIAL["TurnActive"].albedo_color = Color(0, 0, 0)
+	MATERIAL_NAME_TO_MATERIAL["TurnUsed"].albedo_color = Color(0.35, 0.35, 0.35)
 	MATERIAL_NAME_TO_MATERIAL["EnemyOccupy"].albedo_color = Color(1, 0, 0)
 	
-func on_set_tile_material(Tile: TileGD, material_name: String = "", absolute_reset: bool = false, btab: int = 0):
-	if material_name == "":
-		if absolute_reset: Tile.tile_state = []
-		else: Tile.tile_state.pop_back()
-	else: Tile.tile_state.append(material_name)
 	
+func on_remove_tile_material(Tile: TileGD, material_name: String = "UnitNull") -> void:
+	if material_name == "":
+		Tile.tile_state = []
+	elif material_name == "UnitNull":
+		Tile.tile_state = Tile.tile_state.filter(func(x: String): return x in Helper.unit_states)
+	else: 
+		Tile.tile_state.erase(material_name)
+	on_set_tile_highest_material(Tile)
+	
+func on_set_tile_material(Tile: TileGD, material_name: String):
+	if !Tile.tile_state.has(material_name):
+		if material_name not in Helper.unit_states:
+			Tile.tile_state.append(material_name)
+		else:
+			Tile.tile_state = Tile.tile_state.filter(func(x: String): return x not in Helper.unit_states)
+			Tile.tile_state.append(material_name)
+	
+	on_set_tile_highest_material(Tile)
+
+func on_set_tile_highest_material(Tile: TileGD) -> void:
 	var highest: int = 0
 	for tile_state in Tile.tile_state:
 		var f: int = MATERIAL_PRIORITIES.find(tile_state)
 		if f > highest: highest = f
 	
-	for type in Helper.BTAB_TO_TYPE[btab]:
-		Tile.get(type).set_material(MATERIAL_NAME_TO_MATERIAL[MATERIAL_PRIORITIES[highest]])
+	Tile.tile.set_material(MATERIAL_NAME_TO_MATERIAL[MATERIAL_PRIORITIES[highest]])
 
 func on_lock_inputs_changed(x: bool) -> void:
 	if !x and !LevelUI.is_mouse_in_ui:

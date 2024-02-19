@@ -62,12 +62,14 @@ func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0) -> voi
 			
 			on_camera_start_spectate(spawn_tiles[spawn_spectate_id].position, type)
 		"Unit":
-			if Units.UnitSelected != null: Units._on_unit_deselected(Units.UnitSelected)
+			if Units.UnitSelected != null:
+				Units._on_unit_deselected(Units.UnitSelected)
 			
 			var units: Array = Units.on_units(0, "Ally")
 			if units.size() > 0:
 				if LevelMap.game_phase == "PlayerPhase":
 					var past_unit: UnitGD = units[unit_spectate_id]
+					Tiles.on_remove_tile_material(past_unit.Tile, "SpectatingUnit")
 					if past_unit.UnitStatus.modulate_state != "TurnActive":
 						past_unit.UnitStatus.on_set_status_box_modulate(past_unit.UnitStatus.past_modulate_state)
 				

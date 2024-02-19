@@ -60,6 +60,9 @@ func on_player_end_turn_phase_start() -> void:
 	PlayerManager.on_player_end_turn_phase_start()
 	if UnitSelected != null: _on_unit_deselected(UnitSelected, true)
 
+func unit_by_tile_bool(Tile: TileGD) -> bool:
+	return FieldedUnits.get_children().any(func(x: UnitGD): return x.Tile == Tile)
+
 func unit_by_tile(Tile: TileGD) -> UnitGD:
 	for Unit in FieldedUnits.get_children():
 		if Tile == Unit.Tile: return Unit
@@ -130,33 +133,34 @@ func on_unit_selected(Unit: UnitGD) -> void:
 	else: _on_unit_selected(Unit)
 
 func _on_unit_deselected(Unit: UnitGD, absolute: bool = false) -> void:
-	Tiles.on_set_tile_material(Unit.Tile, "", absolute)
+	Tiles.on_remove_tile_material(Unit.Tile)
 	var tiles: Dictionary = Tiles.tiles_in_speed(Unit)
 	for Tile in tiles.in_speed + tiles.in_range:
-		Tiles.on_set_tile_material(Tile, "", absolute)
+		Tiles.on_remove_tile_material(Tile)
+		
 	if Unit == UnitSelected: UnitSelected = null
-	
 	if !absolute:
 		Tiles.on_force_mouse_entered()
 	
 func _on_unit_selected(Unit: UnitGD) -> void:
-	Tiles.on_set_tile_material(Unit.Tile, "UnitSelected")
-	var tiles: Dictionary = Tiles.tiles_in_speed(Unit)
-	var enemy_tiles: Array = on_units(1).map(func(x: UnitGD): return x.Tile)
+	if Unit.Tile.unit_state() in ["TurnActive", "SpectatingUnit"]:
+		Tiles.on_set_tile_material(Unit.Tile, "UnitSelected")
+		var tiles: Dictionary = Tiles.tiles_in_speed(Unit)
+		var enemy_tiles: Array = on_units(1).map(func(x: UnitGD): return x.Tile)
 
-	for Tile in tiles.in_speed:
-		if Unit.attack_amount > 0 and Tile in enemy_tiles:
-			Tiles.on_set_tile_material(Tile, "EnemyInRange")
-			
-		elif Tile.solid_status == 0:
-			Tiles.on_set_tile_material(Tile, "MovementRange")
-		
-	if Unit.attack_amount > 0:
-		for Tile in tiles.in_range:
-			if Tile in enemy_tiles:
+		for Tile in tiles.in_speed:
+			if Unit.attack_amount > 0 and Tile in enemy_tiles:
 				Tiles.on_set_tile_material(Tile, "EnemyInRange")
-		
-	if UnitSelected == null: UnitSelected = Unit
+				
+			elif Tile.solid_status == 0:
+				Tiles.on_set_tile_material(Tile, "MovementRange")
+			
+		if Unit.attack_amount > 0:
+			for Tile in tiles.in_range:
+				if Tile in enemy_tiles:
+					Tiles.on_set_tile_material(Tile, "EnemyInRange")
+			
+		UnitSelected = Unit
 
 func on_unit_enters_vision(Unit: UnitGD) -> void:
 	if Unit.team == 1: PlayerManager.on_enemy_unit_enters_vision(Unit)
@@ -165,9 +169,17 @@ func on_unit_exits_vision(Unit: UnitGD) -> void:
 	if Unit.team == 1: PlayerManager.on_enemy_unit_exits_vision(Unit)
 
 func on_empty_move_queue() -> void:
-	on_force_resume_idle_animation_from_walk()
+	if !active_event.is_empty():
+		on_unit_travel_finished(active_event[1])
 	active_event = []
 	move_queue = []
+	
+func on_unit_travel_finished(Unit: UnitGD) -> void:
+	on_force_resume_idle_animation_from_walk()
+	
+	if Unit.team == 0: PlayerManager.on_unit_travel_finished(Unit)
+	elif Unit.team == 1: Tiles.on_set_tile_material(Unit.Tile, "EnemyOccupy")
+	
 	LevelMap.set_lock_inputs(false)
 	
 func on_force_resume_idle_animation_from_walk() -> void:
@@ -181,6 +193,7 @@ func attack_enemy_or_target(Unit: UnitGD, Tile: TileGD) -> void:
 		var enemies: Array = on_units(Unit.team, "Enemy")
 		for _Unit in enemies:
 			if Tile == _Unit.Tile:
+				PlayerManager.on_select_active_unit(Unit)
 				_attack_enemy(Unit, _Unit, Tile)
 				break
 		# if this check fails can check for attacks on objects and such here
@@ -199,6 +212,7 @@ func on_attack_finished(Unit: UnitGD) -> void:
 	Unit.attack_amount -= 1
 	active_event = []
 	LevelMap.set_lock_inputs(false)
+	if Unit.team == 0: PlayerManager.on_attack_finished(Unit)
 	
 func _attack_target(_Unit: UnitGD, _Tile: TileGD) -> void:
 	pass

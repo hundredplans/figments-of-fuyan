@@ -24,23 +24,24 @@ var unpassed_turns: Array
 var passed_turns: Array
 
 func on_select_active_unit(Unit: UnitGD) -> void:
-	ActiveUnit = Unit
-	ActiveUnit.UnitStatus.on_set_status_box_modulate("TurnActive")
-	Tiles.on_set_tile_material(ActiveUnit.Tile, "TurnActive")
+	if ActiveUnit != Unit:
+		ActiveUnit = Unit
+		ActiveUnit.UnitStatus.on_set_status_box_modulate("TurnActive")
+		LevelUI.on_pass_unit_turn_button_state(false)
 
 func on_pass_unit_turn() -> void:
 	unpassed_turns.erase(ActiveUnit)
 	passed_turns.append(ActiveUnit)
 	ActiveUnit.UnitStatus.on_set_status_box_modulate("TurnUsed")
-	ActiveUnit.Tile.tile_state.erase("TurnActive")
+	Tiles.on_remove_tile_material(ActiveUnit.Tile, "TurnActive")
 	Tiles.on_set_tile_material(ActiveUnit.Tile, "TurnUsed")
 	
 	ActiveUnit = null
 	
-	if !unpassed_turns.is_empty():
-		on_select_active_unit(unpassed_turns[0])
-	else: # do whatever happens when no units have turns here
-		pass
+	if unpassed_turns.is_empty(): 
+		LevelUI.on_pass_unit_turn_button_state(true)
+		# check with settings here if to autopass the full turn
+		
 
 func on_player_phase_start() -> void:
 	LevelUI.PassUnitTurn.visible = true
@@ -50,12 +51,24 @@ func on_player_phase_start() -> void:
 	var units: Array = Units.on_units()
 	for i in range(units.size()):
 		units[i].UnitStatus.on_set_status_box_modulate("Ally")
-		if i == 0: on_select_active_unit(units[0])
 	
 func on_player_end_turn_phase_start() -> void:
 	LevelUI.PassUnitTurn.visible = false
+	for Unit in passed_turns + unpassed_turns:
+		Tiles.on_remove_tile_material(Unit.Tile, "")
+	
 	unpassed_turns = []
 	passed_turns = []
 	
 	for Unit in Units.on_units():
 		Unit.UnitStatus.on_set_status_box_modulate("TurnUsed")
+
+func on_attack_finished(Unit: UnitGD) -> void:
+	if ActiveUnit == Unit: on_pass_unit_turn()
+
+func on_unit_travel_finished(Unit: UnitGD) -> void:
+	if ActiveUnit == Unit:
+		var tiles: Dictionary = Tiles.tiles_in_speed(Unit, false)
+		if tiles.in_speed.is_empty() and !tiles.in_range.any(func(x: TileGD): return Units.unit_by_tile_bool(x)):
+			on_pass_unit_turn()
+		else: Tiles.on_set_tile_material(Unit.Tile, "TurnActive")
