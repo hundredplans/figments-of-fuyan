@@ -76,7 +76,7 @@ func on_attack_finished(Unit: UnitGD) -> void:
 func on_unit_travel_finished(Unit: UnitGD) -> void:
 	if ActiveUnit == Unit:
 		var tiles: Dictionary = Tiles.tiles_in_speed(Unit, false)
-		if Settings.autopass_unit_turn and tiles.in_speed.is_empty()\
+		if Settings.autopass_unit_turn and tiles.in_range.is_empty()\
 		and Units.event_queue.is_empty() and \
 		!tiles.in_range.any(func(x: TileGD): var y: UnitGD = Units.unit_by_tile(x); return y != null and y.team == 1):
 			on_pass_unit_turn()
