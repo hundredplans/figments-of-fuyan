@@ -112,9 +112,9 @@ func on_arrive(in_vision: bool) -> void:
 func on_death() -> void:
 	queue_free()
 	Tile.solid_status = Tile.original_solid_status
+	Units.Tiles.on_remove_tile_material(Tile, "")
 	UnitStatus._queue_free()
 
 func on_spectated_in_player_phase() -> void:
 	UnitStatus.on_set_status_box_modulate("Spectating")
-	
 	if Tile.unit_state() not in ["TurnActive", "TurnUsed"]: Units.Tiles.on_set_tile_material(Tile, "SpectatingUnit")

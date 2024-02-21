@@ -176,7 +176,7 @@ func _process(_delta: float) -> void:
 	if !LevelMap.lock_inputs:
 		if active_tile != null and Input.is_action_just_released("LeftClick"):
 			if is_tile_occupied_by_units(active_tile):
-				Units.on_occupied_tile_inspected(active_tile)
+				Units.PlayerManager.on_occupied_tile_inspected(active_tile)
 			elif "PathHovered" in active_tile.tile_state:
 				if active_tile.tile_state.has("EnemyInRange"):
 					on_enemy_found_tile_selected(active_tile)
@@ -226,15 +226,15 @@ func on_tile_hovered(Tile: TileGD, type: String) -> void:
 	if "RegularInspected" not in Tile.tile_state or "SpawnInspected" not in Tile.tile_state:
 		on_set_tile_material(Tile, type + "Inspected")
 		
-	if Units.UnitSelected != null and "UnitSelected" not in Tile.tile_state: # create hovered tiles
-		var starter_tile: TileGD = Units.UnitSelected.Tile
+	if Units.PlayerManager.UnitSelected != null and "UnitSelected" not in Tile.tile_state: # create hovered tiles
+		var starter_tile: TileGD = Units.PlayerManager.UnitSelected.Tile
 		
 		path_hovered_tiles = tile_path(starter_tile, Tile, tiles_by_tile_state("EnemyInRange"), tiles_by_tile_state("MovementRange") + [starter_tile])
 		if Tile in path_hovered_tiles and path_hovered_tiles.size() > 1:
 			path_hovered_tiles.remove_at(0)
 			
 			var is_enemy: bool = "EnemyInRange" in path_hovered_tiles[path_hovered_tiles.size() - 1].tile_state
-			if path_hovered_tiles.size() <= Units.UnitSelected.speed + int(is_enemy):
+			if path_hovered_tiles.size() <= Units.PlayerManager.UnitSelected.speed + int(is_enemy):
 				for _Tile in path_hovered_tiles: on_set_tile_material(_Tile, "PathHovered")
 			else: path_hovered_tiles = []
 
@@ -242,23 +242,23 @@ func on_tile_unhovered(Tile: TileGD, type: String) -> void:
 	if "RegularInspected" in Tile.tile_state or "SpawnInspected" in Tile.tile_state:
 		on_remove_tile_material(Tile, type + "Inspected")
 		
-	if Units.UnitSelected != null and "UnitSelected" not in Tile.tile_state:
+	if Units.PlayerManager.UnitSelected != null and "UnitSelected" not in Tile.tile_state:
 		for _Tile in tiles_by_tile_state("PathHovered"):
 			on_remove_tile_material(_Tile, "PathHovered")
 
 var path_hovered_tiles: Array
 func on_path_hovered_tile_selected(Tile: TileGD) -> void:
-	Units.PlayerManager.on_select_active_unit(Units.UnitSelected)
+	Units.PlayerManager.on_select_active_unit(Units.PlayerManager.UnitSelected)
 	for _Tile in path_hovered_tiles:
-		Units.move_to_tile(Units.UnitSelected, _Tile)
+		Units.move_to_tile(Units.PlayerManager.UnitSelected, _Tile)
 		if Tile == _Tile: break
 		
-	on_remove_tile_material(Units.UnitSelected.Tile, "SpectatingUnit")
-	on_remove_tile_material(Units.UnitSelected.Tile, "TurnActive")
-	Units._on_unit_deselected(Units.UnitSelected, true)
+	on_remove_tile_material(Units.PlayerManager.UnitSelected.Tile, "SpectatingUnit")
+	on_remove_tile_material(Units.PlayerManager.UnitSelected.Tile, "TurnActive")
+	Units.PlayerManager._on_unit_deselected(Units.PlayerManager.UnitSelected, true)
 		
 func on_enemy_found_tile_selected(Tile: TileGD) -> void:
-	Units.attack_enemy_or_target(Units.UnitSelected, Tile)
+	Units.attack_enemy_or_target(Units.PlayerManager.UnitSelected, Tile)
 	
 var MATERIAL_NAME_TO_MATERIAL: Dictionary = {
 	"RegularInspected": null, # When hovering over a regular tile

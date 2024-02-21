@@ -6,10 +6,12 @@ const BRIGHT_GREEN: Color = Color("00ff00")
 const MEDIUM_GRAY: Color = Color("8c8c8c")
 
 var Unit: UnitGD
+@onready var CameraIcon: Sprite2D = $UnitStatus/CameraIcon
 @onready var oHoverCard: Control = $UnitStatus/HoverCard
 
 func _ready() -> void:
 	oHoverCard.visible = false
+	CameraIcon.visible = false
 
 func on_set_unit(_Unit: UnitGD) -> void:
 	Unit = _Unit
@@ -108,13 +110,14 @@ const modulates: Dictionary = {
 	"Ally": "78ea8f",
 	"Enemy": "c80012",
 	"TurnUsed": "787878",
-	"TurnActive": "00fa00",
-	"Spectating": "ffef30"}
+	"TurnActive": "00fa00",}
 	
 var past_modulate_state: String
 var modulate_state: String
 func on_set_status_box_modulate(val: String) -> void:
-	$UnitStatus/Background/Outside.modulate = modulates[val]
-	modulate_state = val
-	if modulate_state in ["Ally", "TurnUsed", "Enemy"]:
-		past_modulate_state = modulate_state
+	CameraIcon.visible = val == "Spectating"
+	if !CameraIcon.visible:
+		$UnitStatus/Background/Outside.modulate = modulates[val]
+		modulate_state = val
+		if modulate_state in ["Ally", "TurnUsed", "Enemy"]:
+			past_modulate_state = modulate_state

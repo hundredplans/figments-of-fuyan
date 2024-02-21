@@ -69,8 +69,10 @@ func on_change_game_phase(phase: String) -> void:
 			Deck.on_after_start_phase_start()
 		"HandPhase":
 			Hand.on_hand_phase_start()
-			if play_ui:
-				LevelUI.on_hand_phase_start()
+			var skip_hand_phase: bool = on_skip_hand_phase_result()
+			if play_ui: LevelUI.on_hand_phase_start(skip_hand_phase)
+			if skip_hand_phase: on_advance_game_phase()
+				
 		"PlayerPhase":
 			Hand.on_player_phase_start()
 			LevelUI.on_player_phase_start()
@@ -96,3 +98,6 @@ func on_advance_game_phase() -> void:
 func set_lock_inputs(x: bool) -> void:
 	lock_inputs = x
 	lock_inputs_changed.emit(x)
+
+func on_skip_hand_phase_result() -> bool: return game_phase == "HandPhase" and \
+Settings.autopass_handphase and Hand.on_playable_cards().is_empty()

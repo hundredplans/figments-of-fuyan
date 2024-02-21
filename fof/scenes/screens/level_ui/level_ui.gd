@@ -78,8 +78,8 @@ func on_player_end_turn_phase_start() -> void:
 	ChangePhase.visible = false
 	PassUnitTurn.visible = false
 
-func on_hand_phase_start() -> void:
-	on_pin_hand_box_panel()
+func on_hand_phase_start(skip_hand_phase: bool) -> void:
+	if !skip_hand_phase: on_pin_hand_box_panel()
 	HandBoxPanel.visible = HandBox.get_child_count() > 0
 	on_set_hand_box_cards_state()
 	ChangePhase.visible = true
@@ -228,8 +228,9 @@ func on_unpin_hand_box_panel(time: float = PANEL_MOVE_TWEEN_DURATION) -> void:
 	hand_box_pinned = false
 	on_default_position_container(HandBoxPanel, time)
 
-func on_ally_unit_awakened() -> void:
-	on_pin_hand_box_panel()
+func on_ally_unit_awakened(skip_result: bool) -> void:
+	if !skip_result: on_pin_hand_box_panel()
+	
 
 func _on_pass_unit_turn_button_pressed():
 	LevelMap.Units.PlayerManager.on_pass_unit_turn()

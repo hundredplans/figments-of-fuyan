@@ -62,30 +62,31 @@ func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0) -> voi
 			
 			on_camera_start_spectate(spawn_tiles[spawn_spectate_id].position, type)
 		"Unit":
-			if Units.UnitSelected != null:
-				Units._on_unit_deselected(Units.UnitSelected)
-			
-			var units: Array = Units.on_units(0, "Ally")
-			if units.size() > 0:
-				if LevelMap.game_phase == "PlayerPhase":
-					var past_unit: UnitGD = units[unit_spectate_id]
-					Tiles.on_remove_tile_material(past_unit.Tile, "SpectatingUnit")
-					if past_unit.UnitStatus.modulate_state != "TurnActive":
-						past_unit.UnitStatus.on_set_status_box_modulate(past_unit.UnitStatus.past_modulate_state)
+			if !(id >= 0 and id == unit_spectate_id):
+				if Units.PlayerManager.UnitSelected != null:
+					Units.PlayerManager._on_unit_deselected(Units.PlayerManager.UnitSelected)
 				
-				if id == -1: unit_spectate_id += direction
-				else: unit_spectate_id = id
-				
-				if unit_spectate_id == units.size(): unit_spectate_id = 0
-				elif unit_spectate_id < 0: unit_spectate_id = units.size() - 1
-				
-				var Unit: UnitGD = units[unit_spectate_id]
-				CAMERA_HEIGHT["Unit"] = Unit.height * CAMERA_UNIT_HEIGHT_MULTIPLIER
-				CAMERA_LOOK_AT_HEIGHT["Unit"] = Unit.height * LOOK_AT_UNIT_HEIGHT_MULTIPLIER
-				on_camera_start_spectate(Unit.position, type)
-				
-				if LevelMap.game_phase == "PlayerPhase" and Unit.UnitStatus.modulate_state != "TurnActive":
-					Unit.on_spectated_in_player_phase()
+				var units: Array = Units.on_units(0, "Ally")
+				if units.size() > 0:
+					if LevelMap.game_phase == "PlayerPhase":
+						var past_unit: UnitGD = units[unit_spectate_id]
+						Tiles.on_remove_tile_material(past_unit.Tile, "SpectatingUnit")
+						if past_unit.UnitStatus.modulate_state != "TurnActive":
+							past_unit.UnitStatus.on_set_status_box_modulate(past_unit.UnitStatus.past_modulate_state)
+					
+					if id == -1: unit_spectate_id += direction
+					else: unit_spectate_id = id
+					
+					if unit_spectate_id == units.size(): unit_spectate_id = 0
+					elif unit_spectate_id < 0: unit_spectate_id = units.size() - 1
+					
+					var Unit: UnitGD = units[unit_spectate_id]
+					CAMERA_HEIGHT["Unit"] = Unit.height * CAMERA_UNIT_HEIGHT_MULTIPLIER
+					CAMERA_LOOK_AT_HEIGHT["Unit"] = Unit.height * LOOK_AT_UNIT_HEIGHT_MULTIPLIER
+					on_camera_start_spectate(Unit.position, type)
+					Units.PlayerManager.on_spectate_unit(Unit)
+					if LevelMap.game_phase == "PlayerPhase" and Unit.UnitStatus.modulate_state != "TurnActive":
+						Unit.on_spectated_in_player_phase()
 					
 
 func on_select_spectate_camera_direction(i: int) -> void:

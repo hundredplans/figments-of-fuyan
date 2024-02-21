@@ -11,7 +11,7 @@ var LevelMap: LevelMapGD
 var LevelUI: LevelUIGD
 
 @export var UNIT_ANIMATION_BLEND_TIME: float = 0.2
-@export var WALK_TRAVEL_TIME: float = 1.2
+@export var WALK_TRAVEL_TIME: float = 1.0
 
 @onready var BotManager: BotManagerGD = $BotManager
 @onready var PlayerManager: PlayerManagerGD = $PlayerManager
@@ -58,7 +58,6 @@ func on_player_phase_start() -> void:
 
 func on_player_end_turn_phase_start() -> void:
 	PlayerManager.on_player_end_turn_phase_start()
-	if UnitSelected != null: _on_unit_deselected(UnitSelected, true)
 
 func unit_by_tile_bool(Tile: TileGD) -> bool:
 	return FieldedUnits.get_children().any(func(x: UnitGD): return x.Tile == Tile)
@@ -74,18 +73,11 @@ func all_units() -> Array:
 func on_units(team: int = 0, relation: String = "Ally") -> Array:
 	return FieldedUnits.get_children().filter(on_match_team_relation.bind(team, relation))
 
+func on_unit_team_index(Unit: UnitGD) -> int:
+	return on_units(Unit.team).find(Unit)
+
 func on_match_team_relation(unit: UnitGD, team: int, relation: String) -> bool:
 	return (unit.team == team and relation == "Ally") or (unit.team != team and relation == "Enemy")
-
-var UnitSelected: UnitGD
-func on_occupied_tile_inspected(Tile: TileGD) -> void:
-	var Unit: UnitGD = unit_by_tile(Tile)
-	if Unit.team == 0:
-		match LevelMap.game_phase:
-			"PlayerPhase":
-				on_unit_selected(Unit)
-	else:
-		pass
 
 var active_event: Array
 
@@ -93,7 +85,10 @@ var move_queue: Array
 var attack_queue: Array
 var death_queue: Array
 
+var event_queue: Array = []
+
 func move_to_tile(Unit: UnitGD, Tile: TileGD) -> void:
+	#event|_qu
 	move_queue.append([Unit, Tile])
 	
 func _process(_delta: float) -> void:
@@ -123,44 +118,6 @@ func on_movement_finished(Unit: UnitGD) -> void:
 	else:
 		Unit.Model.on_play_walk_sfx()
 		active_event = []
-	
-func on_unit_selected(Unit: UnitGD) -> void:
-	if UnitSelected == Unit:
-		_on_unit_deselected(Unit)
-	elif UnitSelected != null:
-		_on_unit_deselected(UnitSelected)
-		_on_unit_selected(Unit)
-	else: _on_unit_selected(Unit)
-
-func _on_unit_deselected(Unit: UnitGD, absolute: bool = false) -> void:
-	Tiles.on_remove_tile_material(Unit.Tile)
-	var tiles: Dictionary = Tiles.tiles_in_speed(Unit)
-	for Tile in tiles.in_speed + tiles.in_range:
-		Tiles.on_remove_tile_material(Tile)
-		
-	if Unit == UnitSelected: UnitSelected = null
-	if !absolute:
-		Tiles.on_force_mouse_entered()
-	
-func _on_unit_selected(Unit: UnitGD) -> void:
-	if Unit.Tile.unit_state() in ["TurnActive", "SpectatingUnit"]:
-		Tiles.on_set_tile_material(Unit.Tile, "UnitSelected")
-		var tiles: Dictionary = Tiles.tiles_in_speed(Unit)
-		var enemy_tiles: Array = on_units(1).map(func(x: UnitGD): return x.Tile)
-
-		for Tile in tiles.in_speed:
-			if Unit.attack_amount > 0 and Tile in enemy_tiles:
-				Tiles.on_set_tile_material(Tile, "EnemyInRange")
-				
-			elif Tile.solid_status == 0:
-				Tiles.on_set_tile_material(Tile, "MovementRange")
-			
-		if Unit.attack_amount > 0:
-			for Tile in tiles.in_range:
-				if Tile in enemy_tiles:
-					Tiles.on_set_tile_material(Tile, "EnemyInRange")
-			
-		UnitSelected = Unit
 
 func on_unit_enters_vision(Unit: UnitGD) -> void:
 	if Unit.team == 1: PlayerManager.on_enemy_unit_enters_vision(Unit)
