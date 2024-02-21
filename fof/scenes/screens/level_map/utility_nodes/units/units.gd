@@ -80,44 +80,37 @@ func on_match_team_relation(unit: UnitGD, team: int, relation: String) -> bool:
 	return (unit.team == team and relation == "Ally") or (unit.team != team and relation == "Enemy")
 
 var active_event: Array
-
-var move_queue: Array
-var attack_queue: Array
-var death_queue: Array
-
 var event_queue: Array = []
 
 func move_to_tile(Unit: UnitGD, Tile: TileGD) -> void:
-	#event|_qu
-	move_queue.append([Unit, Tile])
+	event_queue.append(["MoveUnit", Unit, Tile])
 	
 func _process(_delta: float) -> void:
-	if !move_queue.is_empty() and active_event.is_empty():
-		active_event = ["MoveUnit"] + move_queue.pop_front()
-		active_event[1].Model.move_to_tile(active_event[2])
-		LevelMap.set_lock_inputs(true)
+	if active_event.is_empty():
+		if !event_queue.is_empty():
+			active_event = event_queue.pop_front()
+			match active_event[0]:
+				"MoveUnit": active_event[1].Model.move_to_tile(active_event[2])
+				"AttackTarget": on_attack_enemy()
+				"DeathUnit": on_death()
+			LevelMap.set_lock_inputs(true)
 		
-	if !active_event.is_empty() and active_event[0] == "MoveUnit":
+	elif active_event[0] == "MoveUnit":
 		SpectateCamera.position.x += active_event[1].position.x - SpectateCamera.central_point.x
 		SpectateCamera.position.z += active_event[1].position.z - SpectateCamera.central_point.z
 		SpectateCamera.central_point = Vector3(active_event[1].position.x, SpectateCamera.central_point.y, active_event[1].position.z)
-		
-	if active_event.is_empty() and move_queue.is_empty():
-		if !attack_queue.is_empty():
-			active_event = ["AttackUnit"] + attack_queue.pop_front() if attack_queue[0].size() == 3 else []
-			on_attack_enemy()
 			
-		elif !death_queue.is_empty():
-			active_event = ["DeathUnit"] + death_queue.pop_front()
-			on_death()
 		
 func on_movement_finished(Unit: UnitGD) -> void:
 	Unit.stats("speed", -1)
 	Unit.occupy_tile(active_event[2])
-	if move_queue.is_empty(): on_empty_move_queue()
-	else:
-		Unit.Model.on_play_walk_sfx()
-		active_event = []
+	if event_queue.is_empty() or event_queue[0][0] != "MoveUnit" or event_queue[0][1] != Unit:
+		on_unit_travel_finished(Unit)
+	else: Unit.Model.on_play_walk_sfx()
+	active_event = []
+	
+	if event_queue.is_empty() and Unit.speed > 0:
+		PlayerManager._on_unit_selected(Unit)
 
 func on_unit_enters_vision(Unit: UnitGD) -> void:
 	if Unit.team == 1: PlayerManager.on_enemy_unit_enters_vision(Unit)
@@ -125,11 +118,10 @@ func on_unit_enters_vision(Unit: UnitGD) -> void:
 func on_unit_exits_vision(Unit: UnitGD) -> void:
 	if Unit.team == 1: PlayerManager.on_enemy_unit_exits_vision(Unit)
 
-func on_empty_move_queue() -> void:
-	if !active_event.is_empty():
-		on_unit_travel_finished(active_event[1])
+func on_clear_event_queue() -> void:
+	if !active_event.is_empty() and active_event[0] == "MoveUnit": on_unit_travel_finished(active_event[1])
 	active_event = []
-	move_queue = []
+	event_queue = []
 	
 func on_unit_travel_finished(Unit: UnitGD) -> void:
 	on_force_resume_idle_animation_from_walk()
@@ -140,7 +132,7 @@ func on_unit_travel_finished(Unit: UnitGD) -> void:
 	LevelMap.set_lock_inputs(false)
 	
 func on_force_resume_idle_animation_from_walk() -> void:
-	if active_event.size() > 0 and active_event[0] == "MoveUnit":
+	if !active_event.is_empty() and active_event[0] == "MoveUnit":
 		active_event[1].Model.on_play_animation("Idle")
 		if active_event[1].Model.current_walk_stream_player != null:
 			AudioMaster.on_cutoff_sfx(active_event[1].Model.current_walk_stream_player)
@@ -156,7 +148,7 @@ func attack_enemy_or_target(Unit: UnitGD, Tile: TileGD) -> void:
 		# if this check fails can check for attacks on objects and such here
 
 func _attack_enemy(Unit: UnitGD, _Unit: UnitGD, Tile: TileGD) -> void:
-	attack_queue.append([Unit, _Unit, Tile])
+	event_queue.append(["AttackTarget", Unit, _Unit, Tile])
 	
 func on_attack_enemy() -> void:
 	active_event[1].Model.attack_tile(active_event[3])
@@ -175,7 +167,7 @@ func _attack_target(_Unit: UnitGD, _Tile: TileGD) -> void:
 	pass
 
 func kill_unit(Unit: UnitGD, Killer: UnitGD) -> void:
-	death_queue.append([Unit, Killer])
+	event_queue.append(["DeathUnit", Unit, Killer])
 
 func on_death() -> void:
 	active_event[1].Model.on_death()
@@ -186,3 +178,5 @@ func on_death_finished(Unit: UnitGD) -> void:
 	Unit.on_death()
 	active_event = []
 	LevelMap.set_lock_inputs(false)
+	if event_queue.is_empty():
+		PlayerManager.on_pass_unit_turn()

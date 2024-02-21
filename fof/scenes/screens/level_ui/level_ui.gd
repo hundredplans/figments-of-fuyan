@@ -18,6 +18,7 @@ var LevelMap: LevelMapGD
 var GameState: Node
 
 func _ready() -> void:
+	$SkipReminder.visible = false
 	StatusBoxPanel.visible = false
 	
 	LevelMap = _LevelMap.instantiate()
@@ -230,7 +231,6 @@ func on_unpin_hand_box_panel(time: float = PANEL_MOVE_TWEEN_DURATION) -> void:
 
 func on_ally_unit_awakened(skip_result: bool) -> void:
 	if !skip_result: on_pin_hand_box_panel()
-	
 
 func _on_pass_unit_turn_button_pressed():
 	LevelMap.Units.PlayerManager.on_pass_unit_turn()

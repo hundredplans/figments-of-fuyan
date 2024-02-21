@@ -16,7 +16,7 @@ func on_card_placed(hand_card: HandCardGD, Tile: TileGD) -> void:
 
 func on_enemy_unit_enters_vision(Unit: UnitGD) -> void:
 	Unit.UnitStatus.visible = true
-	Units.on_empty_move_queue()
+	Units.on_clear_event_queue()
 
 func on_enemy_unit_exits_vision(Unit: UnitGD) -> void:
 	Unit.UnitStatus.visible = false
@@ -33,18 +33,19 @@ func on_select_active_unit(Unit: UnitGD) -> void:
 		LevelUI.on_pass_unit_turn_button_state(false)
 
 func on_pass_unit_turn() -> void:
-	unpassed_turns.erase(ActiveUnit)
-	passed_turns.append(ActiveUnit)
-	ActiveUnit.UnitStatus.on_set_status_box_modulate("TurnUsed")
-	Tiles.on_remove_tile_material(ActiveUnit.Tile, "TurnActive")
-	Tiles.on_set_tile_material(ActiveUnit.Tile, "TurnUsed")
-	
-	ActiveUnit = null
-	
-	if unpassed_turns.is_empty():
-		LevelUI.on_pass_unit_turn_button_state(true)
-		if Settings.autopass_turn: LevelMap.on_advance_game_phase()
-	else: SpectateCamera.on_spectate("Unit", Units.on_unit_team_index(unpassed_turns[0]))
+	if ActiveUnit != null:
+		unpassed_turns.erase(ActiveUnit)
+		passed_turns.append(ActiveUnit)
+		ActiveUnit.UnitStatus.on_set_status_box_modulate("TurnUsed")
+		Tiles.on_remove_tile_material(ActiveUnit.Tile, "TurnActive")
+		Tiles.on_set_tile_material(ActiveUnit.Tile, "TurnUsed")
+		
+		ActiveUnit = null
+		
+		if unpassed_turns.is_empty():
+			LevelUI.on_pass_unit_turn_button_state(true)
+			if Settings.autopass_turn: LevelMap.on_advance_game_phase()
+		else: SpectateCamera.on_spectate("Unit", Units.on_unit_team_index(unpassed_turns[0]))
 		
 
 func on_player_phase_start() -> void:
@@ -64,18 +65,20 @@ func on_player_end_turn_phase_start() -> void:
 	
 	unpassed_turns = []
 	passed_turns = []
+	ActiveUnit = null
 	
 	for Unit in Units.on_units():
 		Unit.UnitStatus.on_set_status_box_modulate("TurnUsed")
 
 func on_attack_finished(Unit: UnitGD) -> void:
-	if ActiveUnit == Unit: on_pass_unit_turn()
+	if ActiveUnit == Unit and Units.event_queue.is_empty(): on_pass_unit_turn()
 
 func on_unit_travel_finished(Unit: UnitGD) -> void:
 	if ActiveUnit == Unit:
 		var tiles: Dictionary = Tiles.tiles_in_speed(Unit, false)
 		if Settings.autopass_unit_turn and tiles.in_speed.is_empty()\
-		and !tiles.in_range.any(func(x: TileGD): var y: UnitGD = Units.unit_by_tile(x); return y != null and y.team == 1):
+		and Units.event_queue.is_empty() and \
+		!tiles.in_range.any(func(x: TileGD): var y: UnitGD = Units.unit_by_tile(x); return y != null and y.team == 1):
 			on_pass_unit_turn()
 		else: Tiles.on_set_tile_material(Unit.Tile, "TurnActive")
 
@@ -109,6 +112,8 @@ func _on_unit_deselected(Unit: UnitGD, absolute: bool = false) -> void:
 	if Unit == UnitSelected: UnitSelected = null
 	if !absolute:
 		Tiles.on_force_mouse_entered()
+		
+	LevelUI.get_node("SkipReminder").visible = false
 	
 func _on_unit_selected(Unit: UnitGD) -> void:
 	if Unit.Tile.unit_state() in ["TurnActive", "SpectatingUnit"]:
@@ -129,3 +134,4 @@ func _on_unit_selected(Unit: UnitGD) -> void:
 					Tiles.on_set_tile_material(Tile, "EnemyInRange")
 			
 		UnitSelected = Unit
+		LevelUI.get_node("SkipReminder").visible = ActiveUnit != null and ActiveUnit != Unit

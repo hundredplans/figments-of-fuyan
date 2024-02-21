@@ -178,12 +178,16 @@ func _process(_delta: float) -> void:
 			if is_tile_occupied_by_units(active_tile):
 				Units.PlayerManager.on_occupied_tile_inspected(active_tile)
 			elif "PathHovered" in active_tile.tile_state:
-				if active_tile.tile_state.has("EnemyInRange"):
-					on_enemy_found_tile_selected(active_tile)
-					path_hovered_tiles.erase(active_tile)
-				on_path_hovered_tile_selected(active_tile)
+				on_begin_unit_movement()
 			elif on_find_tile_primary_type(active_tile) == "Spawn":
 				Hand.on_card_placed(active_tile)
+
+func on_begin_unit_movement() -> void:
+	var enemy_is_in_range: bool = active_tile.tile_state.has("EnemyInRange")
+	var Unit: UnitGD = Units.PlayerManager.UnitSelected
+	if enemy_is_in_range: path_hovered_tiles.erase(active_tile)
+	on_path_hovered_tile_selected(active_tile)
+	if enemy_is_in_range: on_enemy_found_tile_selected(active_tile, Unit)
 
 func tiles_in_speed(Unit: UnitGD, include_central: bool = true) -> Dictionary:
 	return {
@@ -257,8 +261,8 @@ func on_path_hovered_tile_selected(Tile: TileGD) -> void:
 	on_remove_tile_material(Units.PlayerManager.UnitSelected.Tile, "TurnActive")
 	Units.PlayerManager._on_unit_deselected(Units.PlayerManager.UnitSelected, true)
 		
-func on_enemy_found_tile_selected(Tile: TileGD) -> void:
-	Units.attack_enemy_or_target(Units.PlayerManager.UnitSelected, Tile)
+func on_enemy_found_tile_selected(Tile: TileGD, Unit: UnitGD) -> void:
+	Units.attack_enemy_or_target(Unit, Tile)
 	
 var MATERIAL_NAME_TO_MATERIAL: Dictionary = {
 	"RegularInspected": null, # When hovering over a regular tile

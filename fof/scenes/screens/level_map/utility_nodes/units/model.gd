@@ -60,13 +60,16 @@ var walk_to: TileGD
 func _process(_delta: float) -> void:
 	if walk_to != null:
 		_look_at(walk_to)
-		var MoveTween: Tween = get_tree().create_tween()
-		MoveTween.tween_property(Unit, "global_position", 
-		Vector3(walk_to.global_position.x, walk_to.global_position.y + 0.3, walk_to.global_position.z),
-		Unit.Units.WALK_TRAVEL_TIME)
+		on_create_move_tween()
 		
-		MoveTween.finished.connect(on_finish_animation.bind("Walk"))
-		walk_to = null
+func on_create_move_tween() -> void:
+	var MoveTween: Tween = get_tree().create_tween()
+	MoveTween.tween_property(Unit, "global_position", 
+	Vector3(walk_to.global_position.x, walk_to.global_position.y + 0.3, walk_to.global_position.z),
+	Unit.Units.WALK_TRAVEL_TIME)
+	
+	MoveTween.finished.connect(on_finish_animation.bind("Walk"))
+	walk_to = null
 
 func _look_at(Tile: TileGD) -> void: #will rotate the object
 	rot = Unit.Units.Tiles.neighbour_rotation(Tile, Unit.Tile)

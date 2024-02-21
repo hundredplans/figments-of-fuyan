@@ -227,6 +227,26 @@ offset_bottom = 1077.0
 label_settings = ExtResource("6_byv4h")
 vertical_alignment = 1
 
+[node name="SkipReminder" type="Label" parent="."]
+modulate = Color(1, 0.278431, 0.278431, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -402.0
+offset_top = -117.0
+offset_right = 402.0
+offset_bottom = 117.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "If you perform an action with this unit you will skip another unit's turn!"
+label_settings = ExtResource("3_7ly33")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
 [connection signal="mouse_entered" from="HandBoxPanel" to="." method="_on_panel_container_mouse_entered"]
 [connection signal="mouse_entered" from="HandBoxPanel" to="." method="on_is_mouse_in_ui" binds= [true]]
 [connection signal="mouse_exited" from="HandBoxPanel" to="." method="_on_panel_container_mouse_exited"]
