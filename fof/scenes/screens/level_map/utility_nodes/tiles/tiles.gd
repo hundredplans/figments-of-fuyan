@@ -234,15 +234,15 @@ func on_create_movement_paths(Unit: UnitGD) -> void:
 				if hdiff == 0: on_connect_points(astar, movement_types, Tile, _Tile, 0)
 				elif hdiff == 1:
 					if _Tile.info.tile.type == 1:
-						on_connect_points(astar, movement_types, Tile, _Tile, 2)
+						on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(2, 0))
 					elif _Tile.info.tile.type == 2:
-						if (neighbour_rotation(Tile, _Tile)) == 2:
+						if neighbour_rotation(Tile, _Tile) == (_Tile.info.tile.rotation + 1) % 6:
 							on_connect_points(astar, movement_types, Tile, _Tile, 3)
 					elif _Tile.info.obj.id in is_stair_object:
-						if neighbour_rotation(Tile, _Tile) == 1:
+						if (neighbour_rotation(Tile, _Tile) + 2) % 6 == _Tile.info.tile.rotation:
 							on_connect_points(astar, movement_types, Tile, _Tile, 3)
-				#elif hdiff == -1 and !_plus_height or neighbour_rotation(Tile, _Tile) == 3:
-					#on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(4, 0))
+				elif hdiff == -1:
+					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(2, 1))
 				#elif hdiff < -1: on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(5, hdiff))
 	
 	movement_paths.tiles = []
@@ -252,9 +252,11 @@ func on_create_movement_paths(Unit: UnitGD) -> void:
 			if id_path.size() > 1:
 				id_path = id_path.map(func(x: int): return instance_from_id(x))
 				var true_path: Array = on_create_true_path(id_path, movement_types)
-				if !true_path.is_empty() and true_path.size() <= Unit.speed + int(true_path[true_path.size() - 1][1] == 1):
-					movement_paths[Tile] = true_path
-					movement_paths.tiles.append(Tile)
+				if !true_path.is_empty():
+					var val: Variant = true_path[true_path.size() - 1][1]
+					if true_path.size() <= Unit.speed + int(typeof(val) == TYPE_INT and val == 1):
+						movement_paths[Tile] = true_path
+						movement_paths.tiles.append(Tile)
 
 func on_create_true_path(id_path: Array, movement_types: Array) -> Array:
 	var true_path: Array = []
@@ -265,10 +267,11 @@ func on_create_true_path(id_path: Array, movement_types: Array) -> Array:
 					true_path.append([tile_array[1], tile_array[2]])
 	return true_path
 	
-# 0 = MoveTile, 1 = AttackTile, 2 = JumpTile, 3 = ClimbTile, 4 = DownTile, 5 = Vector2(DropTile, hdiff)
+# 0 = MoveTile, 1 = AttackTile, 2 = JumpTile, 3 = ClimbTile, 4 = Vector2(DropTile, hdiff)
+# vec(2, 0) = climb up, vec(2, 1) = climb down
 func on_connect_points(astar: AStar3D, movement_types: Array, Tile: TileGD, _Tile: TileGD, type: Variant) -> void:
 	movement_types.append([Tile, _Tile, type])
-	astar.connect_points(Tile.get_instance_id(), _Tile.get_instance_id(), false if typeof(type) == TYPE_VECTOR2I else true)
+	astar.connect_points(Tile.get_instance_id(), _Tile.get_instance_id(), false if typeof(type) == TYPE_VECTOR2I and type.x == 4 else true)
 	
 func on_tile_hovered(Tile: TileGD, type: String) -> void:
 	if "RegularInspected" not in Tile.tile_state or "SpawnInspected" not in Tile.tile_state:
