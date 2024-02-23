@@ -488,5 +488,3 @@ const BTAB_TO_TYPE: Dictionary = {
 	3: ["tdeco"],
 	4: ["wdeco"],
 }
-
-var is_stair_object: Array = [5]

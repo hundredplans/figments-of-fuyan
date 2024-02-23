@@ -75,12 +75,15 @@ func on_attack_finished(Unit: UnitGD) -> void:
 
 func on_unit_travel_finished(Unit: UnitGD) -> void:
 	if ActiveUnit == Unit:
-		var tiles: Dictionary = Tiles.tiles_in_speed(Unit, false)
-		if Settings.autopass_unit_turn and tiles.in_range.is_empty()\
-		and Units.event_queue.is_empty() and \
-		!tiles.in_range.any(func(x: TileGD): var y: UnitGD = Units.unit_by_tile(x); return y != null and y.team == 1):
-			on_pass_unit_turn()
-		else: Tiles.on_set_tile_material(Unit.Tile, "TurnActive")
+		pass
+		#on_pass_unit_turn()
+		#var tiles_in_range: Array = Tiles.
+		#var tiles: Dictionary
+		#if Settings.autopass_unit_turn and tiles.in_range.is_empty()\
+		#and Units.event_queue.is_empty() and \
+		#!tiles.in_range.any(func(x: TileGD): var y: UnitGD = Units.unit_by_tile(x); return y != null and y.team == 1):
+			#on_pass_unit_turn()
+		#else: Tiles.on_set_tile_material(Unit.Tile, "TurnActive")
 
 func on_spectate_unit(Unit: UnitGD) -> void:
 	LevelUI.on_pass_unit_turn_button_state(Unit in passed_turns or Unit != ActiveUnit)
@@ -105,10 +108,9 @@ func on_unit_selected(Unit: UnitGD) -> void:
 
 func _on_unit_deselected(Unit: UnitGD, absolute: bool = false) -> void:
 	Tiles.on_remove_tile_material(Unit.Tile)
-	var tiles: Dictionary = Tiles.tiles_in_speed(Unit)
-	for Tile in tiles.in_speed + tiles.in_range:
+	for Tile in Tiles.movement_paths.tiles:
 		Tiles.on_remove_tile_material(Tile)
-		
+	Tiles.movement_paths = {}
 	if Unit == UnitSelected: UnitSelected = null
 	if !absolute:
 		Tiles.on_force_mouse_entered()
@@ -118,20 +120,12 @@ func _on_unit_deselected(Unit: UnitGD, absolute: bool = false) -> void:
 func _on_unit_selected(Unit: UnitGD) -> void:
 	if Unit.Tile.unit_state() in ["TurnActive", "SpectatingUnit"]:
 		Tiles.on_set_tile_material(Unit.Tile, "UnitSelected")
-		var tiles: Dictionary = Tiles.tiles_in_speed(Unit)
+		Tiles.on_create_movement_paths(Unit)
 		var enemy_tiles: Array = Units.on_units(1).map(func(x: UnitGD): return x.Tile)
-
-		for Tile in tiles.in_speed:
+		for Tile in Tiles.movement_paths.tiles:
 			if Unit.attack_amount > 0 and Tile in enemy_tiles:
 				Tiles.on_set_tile_material(Tile, "EnemyInRange")
-				
-			elif Tile.solid_status == 0:
-				Tiles.on_set_tile_material(Tile, "MovementRange")
-			
-		if Unit.attack_amount > 0:
-			for Tile in tiles.in_range:
-				if Tile in enemy_tiles:
-					Tiles.on_set_tile_material(Tile, "EnemyInRange")
+			else: Tiles.on_set_tile_material(Tile, "MovementRange")
 			
 		UnitSelected = Unit
 		LevelUI.get_node("SkipReminder").visible = ActiveUnit != null and ActiveUnit != Unit

@@ -97,6 +97,7 @@ func _process(_delta: float) -> void:
 		
 	elif active_event[0] == "MoveUnit":
 		SpectateCamera.position.x += active_event[1].position.x - SpectateCamera.central_point.x
+		SpectateCamera.position.y = SpectateCamera.CAMERA_HEIGHT["Unit"] + active_event[1].position.y
 		SpectateCamera.position.z += active_event[1].position.z - SpectateCamera.central_point.z
 		SpectateCamera.central_point = Vector3(active_event[1].position.x, SpectateCamera.central_point.y, active_event[1].position.z)
 			

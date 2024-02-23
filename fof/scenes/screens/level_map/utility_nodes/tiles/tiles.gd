@@ -10,7 +10,14 @@ var Units: UnitsGD
 var Lights: LightsGD
 var Hand: HandGD
 
-var cube_directions: Array[Vector3] = [Vector3(-1, 1, 0), Vector3(0, 1, -1), Vector3(1, 0, -1), Vector3(1, -1, 0), Vector3(0, -1, 1), Vector3(-1, 0, 1)]
+var cube_directions: Array[Vector3] = [
+Vector3(1, 0, -1),
+Vector3(1, -1, 0),
+Vector3(0, -1, 1),
+Vector3(-1, 0, 1),
+Vector3(-1, 1, 0),
+Vector3(0, 1, -1)
+]
 const IS_TYPE: Dictionary = {
 	"Enemy": 1,
 	"Spawn": 2,
@@ -100,13 +107,13 @@ func outside_neighbours(tiles: Array, otiles: Array = get_children(), distance: 
 func from_center_concentric(distance: int = 1, otiles: Array = get_children(), elevation: int = 0, search_elevation: bool = false):
 	return all_neighbours(position_to_tile(Vector4(0, 0, 0, elevation)), distance, search_elevation, otiles)
 
-func neighbour_rotation(tile: Node3D, otile: Node3D, flip: bool = false) -> int:
+func neighbour_rotation(tile: Node3D, otile: Node3D) -> int:
 	if is_neighbour(tile, otile):
-		var direction: Variant = tile_to_position(tile) - tile_to_position(otile)
+		var direction: Variant = tile_to_position(otile) - tile_to_position(tile)
+		
 		direction = Vector3(direction.x, direction.y, direction.z)
 		for i in range(cube_directions.size()):
 			if cube_directions[i] == direction:
-				if flip: return (i + 3) % 6
 				return i
 	return -1
 
@@ -189,58 +196,97 @@ func on_begin_unit_movement() -> void:
 	on_path_hovered_tile_selected(active_tile)
 	if enemy_is_in_range: on_enemy_found_tile_selected(active_tile, Unit)
 
-func tiles_in_speed(Unit: UnitGD, include_central: bool = true) -> Dictionary:
-	return {
-		"in_speed": all_in_range(Unit.Tile, Unit.speed, include_central),
-		"in_range": all_neighbours(Unit.Tile, Unit.speed + 1, true)
-	}
-
-func tile_path(begin: TileGD, end: TileGD, unidirectional_tiles: Array, tiles: Array = get_children()) -> Array:
-	var astar := AStar3D.new()
-	var begin_id: int
-	var end_id: int
-	for i in range(tiles.size()): 
-		astar.add_point(i, tiles[i].position)
-		if begin == tiles[i]: begin_id = i
-		elif end == tiles[i]: end_id = i
-		
-	for i in range(unidirectional_tiles.size()):
-		var j: int = tiles.size() + i
-		astar.add_point(j, unidirectional_tiles[i].position)
-		if end == unidirectional_tiles[i]: end_id = j
-	for i in range(tiles.size()):
-		for j in range(tiles.size()):
-			if i != j and (!(tiles[i].solid_status == 1 and tiles[j].solid_status == 1) or tiles[i] == begin)\
-			and !astar.are_points_connected(i, j) and is_neighbour(tiles[i], tiles[j]):
-				astar.connect_points(i, j)
-				
-	for _i in range(unidirectional_tiles.size()):
-		var i: int = tiles.size() + _i
-		for j in range(tiles.size()):
-			if !astar.are_points_connected(j, i) and unidirectional_tiles[_i] != tiles[j]\
-			and is_neighbour(unidirectional_tiles[_i], tiles[j]):
-				astar.connect_points(j, i, false)
-				
-	tiles += unidirectional_tiles
-	return Array(astar.get_id_path(begin_id, end_id)).map(func(x: int): return tiles[x])
+var is_stair_object: Array = [5]
+func on_tiles_by_adjacent(tiles: Array = get_children(), astar: AStar3D = null) -> Dictionary:
+	var by_adjacent: Dictionary = {}
+	for Tile in tiles:
+		by_adjacent[Tile] = all_neighbours(Tile, 1, true, tiles)
+		astar.add_point(Tile.get_instance_id(), Tile.position)
+	return by_adjacent
 
 # ----------------- Tiles UI
 
+var movement_paths: Dictionary = {}
+func on_create_movement_paths(Unit: UnitGD) -> void:
+	movement_paths = {}
+	var _enemy_tiles: Array = all_neighbours(Unit.Tile, Unit.speed + 1, true).filter(func(x: TileGD): return Units.unit_by_tile_bool(x))
+	var _in_range_tiles: Array = all_in_range(Unit.Tile, Unit.speed, true, true)\
+	.filter(func(x: TileGD): return x.solid_status == 0 or Units.unit_by_tile_bool(x))
+	
+	var astar := AStar3D.new()
+	var tiles_by_adjacent: Dictionary = on_tiles_by_adjacent(_enemy_tiles + _in_range_tiles, astar)
+	var movement_types: Array = []
+	for Tile in tiles_by_adjacent.keys():
+		for _Tile in tiles_by_adjacent[Tile]:
+			
+			var _plus_height: int = int(_Tile.info.tile.type > 0 or _Tile.info.obj.id in is_stair_object)
+			var _tile_pos: int = (_Tile.info.position.w * 2) + _plus_height
+			var tile_pos: int = (Tile.info.position.w * 2) + int(Tile.info.tile.type > 0 or Tile.info.obj.id in is_stair_object)
+			var hdiff: int = _tile_pos - tile_pos
+			
+			var EnemyUnit: UnitGD = Units.unit_by_tile(_Tile)
+			if EnemyUnit != null and EnemyUnit.team != Unit.team:
+				if hdiff == 0\
+				or (hdiff > 0 and Unit.Tile.info.position.w + Unit.height > EnemyUnit.Tile.info.position.w)\
+				or (hdiff < 0 and EnemyUnit.Tile.info.position.w + EnemyUnit.height > Unit.Tile.info.position.w): 
+					on_connect_points(astar, movement_types, Tile, _Tile, 1)
+			else:
+				if hdiff == 0: on_connect_points(astar, movement_types, Tile, _Tile, 0)
+				elif hdiff == 1:
+					if _Tile.info.tile.type == 1:
+						on_connect_points(astar, movement_types, Tile, _Tile, 2)
+					elif _Tile.info.tile.type == 2:
+						if (neighbour_rotation(Tile, _Tile)) == 2:
+							on_connect_points(astar, movement_types, Tile, _Tile, 3)
+					elif _Tile.info.obj.id in is_stair_object:
+						if neighbour_rotation(Tile, _Tile) == 1:
+							on_connect_points(astar, movement_types, Tile, _Tile, 3)
+				#elif hdiff == -1 and !_plus_height or neighbour_rotation(Tile, _Tile) == 3:
+					#on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(4, 0))
+				#elif hdiff < -1: on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(5, hdiff))
+	
+	movement_paths.tiles = []
+	for Tile in tiles_by_adjacent.keys():
+		if Tile != Unit.Tile:
+			var id_path: Array = astar.get_id_path(Unit.Tile.get_instance_id(), Tile.get_instance_id())
+			if id_path.size() > 1:
+				id_path = id_path.map(func(x: int): return instance_from_id(x))
+				var true_path: Array = on_create_true_path(id_path, movement_types)
+				if !true_path.is_empty() and true_path.size() <= Unit.speed + int(true_path[true_path.size() - 1][1] == 1):
+					movement_paths[Tile] = true_path
+					movement_paths.tiles.append(Tile)
+
+func on_create_true_path(id_path: Array, movement_types: Array) -> Array:
+	var true_path: Array = []
+	for i in range(id_path.size()):
+		if i > 0:
+			for tile_array in movement_types:
+				if tile_array[0] == id_path[i - 1] and tile_array[1] == id_path[i]:
+					true_path.append([tile_array[1], tile_array[2]])
+	return true_path
+	
+# 0 = MoveTile, 1 = AttackTile, 2 = JumpTile, 3 = ClimbTile, 4 = DownTile, 5 = Vector2(DropTile, hdiff)
+func on_connect_points(astar: AStar3D, movement_types: Array, Tile: TileGD, _Tile: TileGD, type: Variant) -> void:
+	movement_types.append([Tile, _Tile, type])
+	astar.connect_points(Tile.get_instance_id(), _Tile.get_instance_id(), false if typeof(type) == TYPE_VECTOR2I else true)
+	
 func on_tile_hovered(Tile: TileGD, type: String) -> void:
 	if "RegularInspected" not in Tile.tile_state or "SpawnInspected" not in Tile.tile_state:
 		on_set_tile_material(Tile, type + "Inspected")
 		
-	if Units.PlayerManager.UnitSelected != null and "UnitSelected" not in Tile.tile_state: # create hovered tiles
-		var starter_tile: TileGD = Units.PlayerManager.UnitSelected.Tile
-		
-		path_hovered_tiles = tile_path(starter_tile, Tile, tiles_by_tile_state("EnemyInRange"), tiles_by_tile_state("MovementRange") + [starter_tile])
-		if Tile in path_hovered_tiles and path_hovered_tiles.size() > 1:
-			path_hovered_tiles.remove_at(0)
-			
-			var is_enemy: bool = "EnemyInRange" in path_hovered_tiles[path_hovered_tiles.size() - 1].tile_state
-			if path_hovered_tiles.size() <= Units.PlayerManager.UnitSelected.speed + int(is_enemy):
-				for _Tile in path_hovered_tiles: on_set_tile_material(_Tile, "PathHovered")
-			else: path_hovered_tiles = []
+	if Units.PlayerManager.UnitSelected != null and "UnitSelected" not in Tile.tile_state and movement_paths.has(Tile): # create hovered tiles
+		path_hovered_tiles = movement_paths[Tile].map(func(x: Array): return x[0])
+		for _Tile in path_hovered_tiles: on_set_tile_material(_Tile, "PathHovered")
+		#var starter_tile: TileGD = Units.PlayerManager.UnitSelected.Tile
+		#
+		#path_hovered_tiles = tile_path(starter_tile, Tile, tiles_by_tile_state("EnemyInRange"), tiles_by_tile_state("MovementRange") + [starter_tile])
+		#if Tile in path_hovered_tiles and path_hovered_tiles.size() > 1:
+			#path_hovered_tiles.remove_at(0)
+			#
+			#var is_enemy: bool = "EnemyInRange" in path_hovered_tiles[path_hovered_tiles.size() - 1].tile_state
+			#if path_hovered_tiles.size() <= Units.PlayerManager.UnitSelected.speed + int(is_enemy):
+				#for _Tile in path_hovered_tiles: on_set_tile_material(_Tile, "PathHovered")
+			#else: path_hovered_tiles = []
 
 func on_tile_unhovered(Tile: TileGD, type: String) -> void:
 	if "RegularInspected" in Tile.tile_state or "SpawnInspected" in Tile.tile_state:

@@ -10,14 +10,15 @@ const VISION_RANGE: int = 5
 
 var visible_tiles: Array
 func on_recalculate_vision() -> void:
-	on_clear_darkness()
-	var old_visible_tiles: Array = visible_tiles.duplicate()
-	visible_tiles = on_find_visible_tiles()
-	on_find_units_enter_vision(old_visible_tiles)
-	
-	var other_tiles: Array = Tiles.tiles_unique(Tiles.get_children_by_elevation(), visible_tiles)
-	on_apply_visibility(other_tiles)
-	on_create_darkness(other_tiles)
+	pass
+	#on_clear_darkness()
+	#var old_visible_tiles: Array = visible_tiles.duplicate()
+	#visible_tiles = on_find_visible_tiles()
+	#on_find_units_enter_vision(old_visible_tiles)
+	#
+	#var other_tiles: Array = Tiles.tiles_unique(Tiles.get_children_by_elevation(), visible_tiles)
+	#on_apply_visibility(other_tiles)
+	#on_create_darkness(other_tiles)
 	
 func on_clear_darkness() -> void:
 	for child in DarknessNode.get_children(): child.queue_free()

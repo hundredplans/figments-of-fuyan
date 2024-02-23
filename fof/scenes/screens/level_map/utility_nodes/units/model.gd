@@ -19,7 +19,9 @@ func on_add_model() -> void:
 	AniPlayer.animation_finished.connect(on_finish_animation)
 	on_play_animation("Idle")
 	add_child(UnitModel)
-	rotation_degrees.y = (rot * 60) + 30
+	
+	rot = (rot + 2) % 6
+	on_set_rotation()
 
 func on_play_animation(ani_name: String) -> void:
 	AniPlayer.play(ani_name, Unit.Units.UNIT_ANIMATION_BLEND_TIME)
@@ -73,7 +75,10 @@ func on_create_move_tween() -> void:
 
 func _look_at(Tile: TileGD) -> void: #will rotate the object
 	rot = Unit.Units.Tiles.neighbour_rotation(Tile, Unit.Tile)
-	rotation_degrees.y = (rot * 60) - 30
+	on_set_rotation()
 
 func on_death() -> void:
 	on_play_animation("Death")
+
+func on_set_rotation() -> void:
+	rotation_degrees.y = 270 + (rot * 60)
