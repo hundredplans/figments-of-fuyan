@@ -270,9 +270,10 @@ func on_create_true_path(id_path: Array, movement_types: Array) -> Dictionary:
 	for i in range(id_path.size()):
 		if i > 0:
 			for tile_array in movement_types:
-				if tile_array[0] == id_path[i - 1] and tile_array[1] == id_path[i]:
-					true_path.tiles.append(tile_array[1])
-					true_path.types.append(tile_array[2])
+				#if !(i != id_path.size() - 1 and tile_array[2].x == 1):
+					if tile_array[0] == id_path[i - 1] and tile_array[1] == id_path[i]:
+						true_path.tiles.append(tile_array[1])
+						true_path.types.append(tile_array[2])
 	return true_path
 	
 # 0 = MoveTile, 1 = AttackTile, 2 = ClimbInstant, 3 = Jump, 4 = Drop
@@ -282,7 +283,8 @@ func on_connect_points(astar: AStar3D, movement_types: Array, Tile: TileGD, _Til
 		movement_types.append([Tile, _Tile, type])
 	else:
 		hdiff *= 0.5
-		if height - hdiff > 0 or EnemyUnit.height > abs(hdiff):
+		print(hdiff)
+		if height - abs(hdiff) > 0 or EnemyUnit.height > abs(hdiff):
 			movement_types.append([Tile, _Tile, Vector2(1, 0)])
 	astar.connect_points(Tile.get_instance_id(), _Tile.get_instance_id(), false)
 	
