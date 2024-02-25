@@ -108,7 +108,7 @@ func from_center_concentric(distance: int = 1, otiles: Array = get_children(), e
 	return all_neighbours(position_to_tile(Vector4(0, 0, 0, elevation)), distance, search_elevation, otiles)
 
 func neighbour_rotation(tile: Node3D, otile: Node3D) -> int:
-	if is_neighbour(tile, otile):
+	if is_neighbour(tile, otile, 1, true):
 		var direction: Variant = tile_to_position(otile) - tile_to_position(tile)
 		
 		direction = Vector3(direction.x, direction.y, direction.z)
@@ -192,7 +192,11 @@ func _process(_delta: float) -> void:
 func on_begin_unit_movement() -> void:
 	var enemy_is_in_range: bool = active_tile.tile_state.has("EnemyInRange")
 	var Unit: UnitGD = Units.PlayerManager.UnitSelected
-	if enemy_is_in_range: path_hovered_tiles.erase(active_tile)
+	if enemy_is_in_range: 
+		var active_index: int = path_hovered_info.tiles.find(active_tile)
+		if active_index > -1:
+			path_hovered_info.tiles.remove_at(active_index)
+			path_hovered_info.types.remove_at(active_index)
 	on_path_hovered_tile_selected(active_tile)
 	if enemy_is_in_range: on_enemy_found_tile_selected(active_tile, Unit)
 
@@ -206,44 +210,47 @@ func on_tiles_by_adjacent(tiles: Array = get_children(), astar: AStar3D = null) 
 
 # ----------------- Tiles UI
 
+func on_can_ramp_connect(Tile: TileGD, _Tile: TileGD, hdiff: int) -> bool:
+	if abs(hdiff) == 1: # ensures it's from a regular tile
+		var stair_or_tile_rot: int = (_Tile.info.obj.rotation) if (_Tile.info.obj.id in is_stair_object) else (_Tile.info.tile.rotation)
+		var neirot: int = neighbour_rotation(Tile, _Tile) 
+		return neirot == (stair_or_tile_rot + 1) % 6 or neirot == (stair_or_tile_rot + 4) % 6
+	return false
+
 var movement_paths: Dictionary = {}
 func on_create_movement_paths(Unit: UnitGD) -> void:
 	movement_paths = {}
 	var _enemy_tiles: Array = all_neighbours(Unit.Tile, Unit.speed + 1, true).filter(func(x: TileGD): return Units.unit_by_tile_bool(x))
 	var _in_range_tiles: Array = all_in_range(Unit.Tile, Unit.speed, true, true)\
 	.filter(func(x: TileGD): return x.solid_status == 0 or Units.unit_by_tile_bool(x))
-	
 	var astar := AStar3D.new()
 	var tiles_by_adjacent: Dictionary = on_tiles_by_adjacent(_enemy_tiles + _in_range_tiles, astar)
 	var movement_types: Array = []
+	
 	for Tile in tiles_by_adjacent.keys():
 		for _Tile in tiles_by_adjacent[Tile]:
+			var hdiff: int = (_Tile.info.position.w * 2) + int(_Tile.info.tile.type > 0 or _Tile.info.obj.id in is_stair_object)\
+			 - ((Tile.info.position.w * 2) + int(Tile.info.tile.type > 0 or Tile.info.obj.id in is_stair_object))
 			
-			var _plus_height: int = int(_Tile.info.tile.type > 0 or _Tile.info.obj.id in is_stair_object)
-			var _tile_pos: int = (_Tile.info.position.w * 2) + _plus_height
-			var tile_pos: int = (Tile.info.position.w * 2) + int(Tile.info.tile.type > 0 or Tile.info.obj.id in is_stair_object)
-			var hdiff: int = _tile_pos - tile_pos
-			
-			var EnemyUnit: UnitGD = Units.unit_by_tile(_Tile)
-			if EnemyUnit != null and EnemyUnit.team != Unit.team:
-				if hdiff == 0\
-				or (hdiff > 0 and Unit.Tile.info.position.w + Unit.height > EnemyUnit.Tile.info.position.w)\
-				or (hdiff < 0 and EnemyUnit.Tile.info.position.w + EnemyUnit.height > Unit.Tile.info.position.w): 
-					on_connect_points(astar, movement_types, Tile, _Tile, 1)
-			else:
-				if hdiff == 0: on_connect_points(astar, movement_types, Tile, _Tile, 0)
-				elif hdiff == 1:
-					if _Tile.info.tile.type == 1:
-						on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(2, 0))
-					elif _Tile.info.tile.type == 2:
-						if neighbour_rotation(Tile, _Tile) == (_Tile.info.tile.rotation + 1) % 6:
-							on_connect_points(astar, movement_types, Tile, _Tile, 3)
-					elif _Tile.info.obj.id in is_stair_object:
-						if (neighbour_rotation(Tile, _Tile) + 2) % 6 == _Tile.info.tile.rotation:
-							on_connect_points(astar, movement_types, Tile, _Tile, 3)
-				elif hdiff == -1:
-					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(2, 1))
-				#elif hdiff < -1: on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(5, hdiff))
+			if (_Tile.info.obj.id in is_stair_object or _Tile.info.tile.type == 2):  # Move to ramp
+				if on_can_ramp_connect(Tile, _Tile, hdiff):
+					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(2, hdiff))
+			elif (Tile.info.obj.id in is_stair_object or Tile.info.tile.type == 2): # start on ramp
+				if on_can_ramp_connect(_Tile, Tile, hdiff):
+					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i.ZERO)
+			elif Tile.info.tile.type == 1: # start on half tile
+				if hdiff in [-1, 1]:
+					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(3, 0))
+				elif hdiff == 0:
+					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i.ZERO)
+			elif hdiff == 1 and _Tile.info.tile.type == 1: # regular to half tile
+				on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(3, 0))
+			elif hdiff == 0: # movement between regular tiles
+				on_connect_points(astar, movement_types, Tile, _Tile, Vector2i.ZERO)
+			elif hdiff < 0: # jump down from regular tile
+				if hdiff == -1:
+					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(3, 0))
+				else: on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(4, hdiff))
 	
 	movement_paths.tiles = []
 	for Tile in tiles_by_adjacent.keys():
@@ -251,35 +258,35 @@ func on_create_movement_paths(Unit: UnitGD) -> void:
 			var id_path: Array = astar.get_id_path(Unit.Tile.get_instance_id(), Tile.get_instance_id())
 			if id_path.size() > 1:
 				id_path = id_path.map(func(x: int): return instance_from_id(x))
-				var true_path: Array = on_create_true_path(id_path, movement_types)
-				if !true_path.is_empty():
-					var val: Variant = true_path[true_path.size() - 1][1]
-					if true_path.size() <= Unit.speed + int(typeof(val) == TYPE_INT and val == 1):
+				var true_path: Dictionary = on_create_true_path(id_path, movement_types)
+				if !true_path.tiles.is_empty():
+					var val: Vector2i = true_path.types[true_path.types.size() - 1]
+					if true_path.tiles.size() <= Unit.speed + int(val.x == 1):
 						movement_paths[Tile] = true_path
 						movement_paths.tiles.append(Tile)
 
-func on_create_true_path(id_path: Array, movement_types: Array) -> Array:
-	var true_path: Array = []
+func on_create_true_path(id_path: Array, movement_types: Array) -> Dictionary:
+	var true_path: Dictionary = {"tiles": [], "types": []}
 	for i in range(id_path.size()):
 		if i > 0:
 			for tile_array in movement_types:
 				if tile_array[0] == id_path[i - 1] and tile_array[1] == id_path[i]:
-					true_path.append([tile_array[1], tile_array[2]])
+					true_path.tiles.append(tile_array[1])
+					true_path.types.append(tile_array[2])
 	return true_path
 	
-# 0 = MoveTile, 1 = AttackTile, 2 = JumpTile, 3 = ClimbTile, 4 = Vector2(DropTile, hdiff)
-# vec(2, 0) = climb up, vec(2, 1) = climb down
-func on_connect_points(astar: AStar3D, movement_types: Array, Tile: TileGD, _Tile: TileGD, type: Variant) -> void:
+# 0 = MoveTile, 1 = AttackTile, 2 = ClimbInstant, 3 = Jump, 4 = Drop
+func on_connect_points(astar: AStar3D, movement_types: Array, Tile: TileGD, _Tile: TileGD, type: Vector2) -> void:
 	movement_types.append([Tile, _Tile, type])
-	astar.connect_points(Tile.get_instance_id(), _Tile.get_instance_id(), false if typeof(type) == TYPE_VECTOR2I and type.x == 4 else true)
+	astar.connect_points(Tile.get_instance_id(), _Tile.get_instance_id(), false)
 	
 func on_tile_hovered(Tile: TileGD, type: String) -> void:
 	if "RegularInspected" not in Tile.tile_state or "SpawnInspected" not in Tile.tile_state:
 		on_set_tile_material(Tile, type + "Inspected")
 		
 	if Units.PlayerManager.UnitSelected != null and "UnitSelected" not in Tile.tile_state and movement_paths.has(Tile): # create hovered tiles
-		path_hovered_tiles = movement_paths[Tile].map(func(x: Array): return x[0])
-		for _Tile in path_hovered_tiles: on_set_tile_material(_Tile, "PathHovered")
+		path_hovered_info = movement_paths[Tile]
+		for _Tile in path_hovered_info.tiles: on_set_tile_material(_Tile, "PathHovered")
 		#var starter_tile: TileGD = Units.PlayerManager.UnitSelected.Tile
 		#
 		#path_hovered_tiles = tile_path(starter_tile, Tile, tiles_by_tile_state("EnemyInRange"), tiles_by_tile_state("MovementRange") + [starter_tile])
@@ -299,12 +306,12 @@ func on_tile_unhovered(Tile: TileGD, type: String) -> void:
 		for _Tile in tiles_by_tile_state("PathHovered"):
 			on_remove_tile_material(_Tile, "PathHovered")
 
-var path_hovered_tiles: Array
+var path_hovered_info: Dictionary
 func on_path_hovered_tile_selected(Tile: TileGD) -> void:
 	Units.PlayerManager.on_select_active_unit(Units.PlayerManager.UnitSelected)
-	for _Tile in path_hovered_tiles:
-		Units.move_to_tile(Units.PlayerManager.UnitSelected, _Tile)
-		if Tile == _Tile: break
+	for i in range(path_hovered_info.tiles.size()):
+		Units.move_to_tile(Units.PlayerManager.UnitSelected, path_hovered_info.tiles[i], path_hovered_info.types[i])
+		if Tile == path_hovered_info.tiles[i]: break
 		
 	on_remove_tile_material(Units.PlayerManager.UnitSelected.Tile, "SpectatingUnit")
 	on_remove_tile_material(Units.PlayerManager.UnitSelected.Tile, "TurnActive")

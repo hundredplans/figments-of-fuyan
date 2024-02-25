@@ -38,9 +38,10 @@ func _input(event: InputEvent) -> void:
 
 var total_progress: float = 0
 func on_set_camera_point_along_circle(progress: float) -> void:
-	total_progress = clampf(total_progress + progress, 0.0, 1.0)
-	if total_progress <= 0.0: total_progress = 1.0
-	elif total_progress >= 1.0: total_progress = 0.0
+	if progress != 0:
+		total_progress = clampf(total_progress + progress, 0.0, 1.0)
+		if total_progress <= 0.0: total_progress = 1.0
+		elif total_progress >= 1.0: total_progress = 0.0
 	
 	position.x = (cos(2 * PI * total_progress) * CAMERA_RADIUS) + central_point.x
 	position.z = (sin(2 * PI * total_progress) * CAMERA_RADIUS) + central_point.z
@@ -91,3 +92,16 @@ func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0) -> voi
 
 func on_select_spectate_camera_direction(i: int) -> void:
 	on_spectate(spectate_type, -1, i)
+
+var TrackUnit: UnitGD
+func on_start_track_unit(Unit: UnitGD) -> void:
+	TrackUnit = Unit
+	
+func on_end_track_unit() -> void:
+	TrackUnit = null
+	
+func on_track_unit() -> void:
+	on_camera_start_spectate(TrackUnit.global_position, "Unit")
+	
+func _process(_delta) -> void:
+	if TrackUnit != null: on_track_unit()

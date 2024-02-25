@@ -26,6 +26,7 @@ func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int
 	FieldedUnits.add_child(Unit)
 	Unit.on_create_unit(id, tool_id, effects, team, rot, tile)
 	Unit.Model.movement_finished.connect(on_movement_finished.bind(Unit))
+	Unit.Model.drop_calculate_damage.connect(on_drop_calculate_damage.bind(Unit))
 	Unit.Model.attack_finished.connect(on_attack_finished.bind(Unit))
 	Unit.Model.death_finished.connect(on_death_finished.bind(Unit))
 	LevelUI.on_add_unit_status_box(Unit)
@@ -82,25 +83,20 @@ func on_match_team_relation(unit: UnitGD, team: int, relation: String) -> bool:
 var active_event: Array
 var event_queue: Array = []
 
-func move_to_tile(Unit: UnitGD, Tile: TileGD) -> void:
-	event_queue.append(["MoveUnit", Unit, Tile])
+func move_to_tile(Unit: UnitGD, Tile: TileGD, type: Vector2) -> void:
+	event_queue.append(["MoveUnit", Unit, Tile, type])
 	
 func _process(_delta: float) -> void:
 	if active_event.is_empty():
 		if !event_queue.is_empty():
 			active_event = event_queue.pop_front()
 			match active_event[0]:
-				"MoveUnit": active_event[1].Model.move_to_tile(active_event[2])
+				"MoveUnit": 
+					active_event[1].Model.move_to_tile(active_event[2], active_event[3])
+					SpectateCamera.on_start_track_unit(active_event[1])
 				"AttackTarget": on_attack_enemy()
 				"DeathUnit": on_death()
 			LevelMap.set_lock_inputs(true)
-		
-	elif active_event[0] == "MoveUnit":
-		SpectateCamera.position.x += active_event[1].position.x - SpectateCamera.central_point.x
-		SpectateCamera.position.y = SpectateCamera.CAMERA_HEIGHT["Unit"] + active_event[1].position.y
-		SpectateCamera.position.z += active_event[1].position.z - SpectateCamera.central_point.z
-		SpectateCamera.central_point = Vector3(active_event[1].position.x, SpectateCamera.central_point.y, active_event[1].position.z)
-			
 		
 func on_movement_finished(Unit: UnitGD) -> void:
 	Unit.stats("speed", -1)
@@ -131,6 +127,7 @@ func on_unit_travel_finished(Unit: UnitGD) -> void:
 	elif Unit.team == 1: Tiles.on_set_tile_material(Unit.Tile, "EnemyOccupy")
 	
 	LevelMap.set_lock_inputs(false)
+	SpectateCamera.on_end_track_unit()
 	
 func on_force_resume_idle_animation_from_walk() -> void:
 	if !active_event.is_empty() and active_event[0] == "MoveUnit":
@@ -181,3 +178,22 @@ func on_death_finished(Unit: UnitGD) -> void:
 	LevelMap.set_lock_inputs(false)
 	if event_queue.is_empty():
 		PlayerManager.on_pass_unit_turn()
+
+func on_drop_calculate_damage(hdiff: int, scale_time: float, Unit: UnitGD) -> void:
+	hdiff = abs(hdiff * 0.5)
+	if hdiff > Unit.height:
+		var health_decrease: int = -((hdiff - Unit.height)) * 2
+		if Unit.health + health_decrease <= 0:
+			on_clear_event_queue()
+		else: on_descale_unit(Unit, scale_time)
+		Unit.stats("health", health_decrease)
+
+const DROP_HEIGHT_SCALE_DOWN := Vector3(1, 0.05, 1)
+func on_descale_unit(Unit: UnitGD, scale_time: float) -> void:
+	var ScaleTween := get_tree().create_tween()
+	ScaleTween.tween_property(Unit, "scale", DROP_HEIGHT_SCALE_DOWN, scale_time)
+	ScaleTween.finished.connect(on_unscale_unit.bind(Unit, scale_time))
+
+func on_unscale_unit(Unit: UnitGD, scale_time: float) -> void:
+	var ScaleTween := get_tree().create_tween()
+	ScaleTween.tween_property(Unit, "scale", Vector3.ONE, scale_time)
