@@ -100,7 +100,7 @@ func on_create_regular_jump(Tile: TileGD) -> void:
 	
 	on_play_animation("Jump")
 	
-const JUMP_HEIGHT_MULTIPLIER: float = 1.5
+const JUMP_HEIGHT_MULTIPLIER: float = 2.3
 func on_create_drop_jump(Tile: TileGD, hdiff: int) -> void:
 	JUMP_TIME = 1 - (hdiff * 0.1)
 	JUMP_HEIGHT = -3 + (hdiff * JUMP_HEIGHT_MULTIPLIER)

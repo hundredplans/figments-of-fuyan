@@ -172,6 +172,7 @@ func on_death() -> void:
 	LevelMap.set_lock_inputs(true)
 
 func on_death_finished(Unit: UnitGD) -> void:
+	PlayerManager.on_death_finished(Unit)
 	Deck.on_draw_card()
 	Unit.on_death()
 	active_event = []

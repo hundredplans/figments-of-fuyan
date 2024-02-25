@@ -234,23 +234,23 @@ func on_create_movement_paths(Unit: UnitGD) -> void:
 			
 			if (_Tile.info.obj.id in is_stair_object or _Tile.info.tile.type == 2):  # Move to ramp
 				if on_can_ramp_connect(Tile, _Tile, hdiff):
-					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(2, hdiff))
+					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(2, hdiff), hdiff, Unit.height)
 			elif (Tile.info.obj.id in is_stair_object or Tile.info.tile.type == 2): # start on ramp
 				if on_can_ramp_connect(_Tile, Tile, hdiff):
-					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i.ZERO)
+					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i.ZERO, hdiff, Unit.height)
 			elif Tile.info.tile.type == 1: # start on half tile
 				if hdiff in [-1, 1]:
-					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(3, 0))
+					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(3, 0), hdiff, Unit.height)
 				elif hdiff == 0:
-					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i.ZERO)
+					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i.ZERO, hdiff, Unit.height)
 			elif hdiff == 1 and _Tile.info.tile.type == 1: # regular to half tile
-				on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(3, 0))
+				on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(3, 0), hdiff, Unit.height)
 			elif hdiff == 0: # movement between regular tiles
-				on_connect_points(astar, movement_types, Tile, _Tile, Vector2i.ZERO)
+				on_connect_points(astar, movement_types, Tile, _Tile, Vector2i.ZERO, hdiff, Unit.height)
 			elif hdiff < 0: # jump down from regular tile
 				if hdiff == -1:
-					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(3, 0))
-				else: on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(4, hdiff))
+					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(3, 0), hdiff, Unit.height)
+				else: on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(4, hdiff), hdiff, Unit.height)
 	
 	movement_paths.tiles = []
 	for Tile in tiles_by_adjacent.keys():
@@ -276,8 +276,14 @@ func on_create_true_path(id_path: Array, movement_types: Array) -> Dictionary:
 	return true_path
 	
 # 0 = MoveTile, 1 = AttackTile, 2 = ClimbInstant, 3 = Jump, 4 = Drop
-func on_connect_points(astar: AStar3D, movement_types: Array, Tile: TileGD, _Tile: TileGD, type: Vector2) -> void:
-	movement_types.append([Tile, _Tile, type])
+func on_connect_points(astar: AStar3D, movement_types: Array, Tile: TileGD, _Tile: TileGD, type: Vector2, hdiff: int, height: int) -> void:
+	var EnemyUnit: UnitGD = Units.unit_by_tile(_Tile)
+	if EnemyUnit == null:
+		movement_types.append([Tile, _Tile, type])
+	else:
+		hdiff *= 0.5
+		if height - hdiff > 0 or EnemyUnit.height > abs(hdiff):
+			movement_types.append([Tile, _Tile, Vector2(1, 0)])
 	astar.connect_points(Tile.get_instance_id(), _Tile.get_instance_id(), false)
 	
 func on_tile_hovered(Tile: TileGD, type: String) -> void:
@@ -286,7 +292,10 @@ func on_tile_hovered(Tile: TileGD, type: String) -> void:
 		
 	if Units.PlayerManager.UnitSelected != null and "UnitSelected" not in Tile.tile_state and movement_paths.has(Tile): # create hovered tiles
 		path_hovered_info = movement_paths[Tile]
-		for _Tile in path_hovered_info.tiles: on_set_tile_material(_Tile, "PathHovered")
+		for i in range(path_hovered_info.tiles.size()):
+			on_set_tile_material(path_hovered_info.tiles[i], "PathHovered")
+			if path_hovered_info.types[i].x == 1:
+				on_set_tile_material(path_hovered_info.tiles[i], "EnemyInRange")
 		#var starter_tile: TileGD = Units.PlayerManager.UnitSelected.Tile
 		#
 		#path_hovered_tiles = tile_path(starter_tile, Tile, tiles_by_tile_state("EnemyInRange"), tiles_by_tile_state("MovementRange") + [starter_tile])
@@ -310,7 +319,9 @@ var path_hovered_info: Dictionary
 func on_path_hovered_tile_selected(Tile: TileGD) -> void:
 	Units.PlayerManager.on_select_active_unit(Units.PlayerManager.UnitSelected)
 	for i in range(path_hovered_info.tiles.size()):
-		Units.move_to_tile(Units.PlayerManager.UnitSelected, path_hovered_info.tiles[i], path_hovered_info.types[i])
+		if path_hovered_info.types[i].x != 1:
+			Units.move_to_tile(Units.PlayerManager.UnitSelected, path_hovered_info.tiles[i], path_hovered_info.types[i])
+		else: Units.attack_enemy_or_target(Units.PlayerManager.UnitSelected, path_hovered_info.tiles[i])
 		if Tile == path_hovered_info.tiles[i]: break
 		
 	on_remove_tile_material(Units.PlayerManager.UnitSelected.Tile, "SpectatingUnit")

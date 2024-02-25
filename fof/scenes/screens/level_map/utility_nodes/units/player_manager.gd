@@ -129,3 +129,7 @@ func _on_unit_selected(Unit: UnitGD) -> void:
 			
 		UnitSelected = Unit
 		LevelUI.get_node("SkipReminder").visible = ActiveUnit != null and ActiveUnit != Unit
+
+func on_death_finished(Unit: UnitGD) -> void:
+	if Unit == ActiveUnit: on_pass_unit_turn()
+	passed_turns.erase(Unit)
