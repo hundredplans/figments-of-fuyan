@@ -9,6 +9,16 @@ signal death_finished
 signal drop_calculate_damage
 var rot: int
 
+var IdleRareTimer: Timer
+
+const IDLE_RARE_MINIMUM: int = 3
+const IDLE_RARE_MAXIMUM: int = 6
+
+func on_idle_rare_timer_timeout() -> void:
+	if AniPlayer.current_animation == "Idle":
+		on_play_animation("IdleRare")
+	IdleRareTimer.start(Unit.Units.Random.RNG.randi_range(IDLE_RARE_MINIMUM, IDLE_RARE_MAXIMUM))
+
 func on_add_model() -> void:
 	var model_path: String = "res://assets/base_game/cards/card_ui/default_model.glb"
 	var card_model_path: String = "res://assets/base_game/cards/" + Unit.base_card.bgfn + "/model.glb"
@@ -18,11 +28,19 @@ func on_add_model() -> void:
 	UnitModel = load(model_path).instantiate()
 	AniPlayer = UnitModel.get_node("AnimationPlayer")
 	AniPlayer.animation_finished.connect(on_finish_animation)
+	
+	IdleRareTimer = Timer.new()
+	add_child(IdleRareTimer)
+	IdleRareTimer.timeout.connect(on_idle_rare_timer_timeout)
+	on_idle_rare_timer_timeout()
+	
 	on_play_animation("Idle")
 	add_child(UnitModel)
 	
 	rot = (rot + 2) % 6
 	on_set_rotation()
+	
+	
 
 func on_play_animation(ani_name: String) -> void:
 	AniPlayer.play(ani_name, Unit.Units.UNIT_ANIMATION_BLEND_TIME)

@@ -88,8 +88,7 @@ func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0) -> voi
 					Units.PlayerManager.on_spectate_unit(Unit)
 					if LevelMap.game_phase == "PlayerPhase" and Unit.UnitStatus.modulate_state != "TurnActive":
 						Unit.on_spectated_in_player_phase()
-					
-
+						
 func on_select_spectate_camera_direction(i: int) -> void:
 	on_spectate(spectate_type, -1, i)
 

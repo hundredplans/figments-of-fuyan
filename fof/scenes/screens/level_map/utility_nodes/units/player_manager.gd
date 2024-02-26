@@ -75,15 +75,11 @@ func on_attack_finished(Unit: UnitGD) -> void:
 
 func on_unit_travel_finished(Unit: UnitGD) -> void:
 	if ActiveUnit == Unit:
-		pass
-		#on_pass_unit_turn()
-		#var tiles_in_range: Array = Tiles.
-		#var tiles: Dictionary
-		#if Settings.autopass_unit_turn and tiles.in_range.is_empty()\
-		#and Units.event_queue.is_empty() and \
-		#!tiles.in_range.any(func(x: TileGD): var y: UnitGD = Units.unit_by_tile(x); return y != null and y.team == 1):
-			#on_pass_unit_turn()
-		#else: Tiles.on_set_tile_material(Unit.Tile, "TurnActive")
+		Tiles.on_set_tile_material(Unit.Tile, "TurnActive")
+		_on_unit_selected(Unit)
+		if Settings.autopass_unit_turn and (Tiles.movement_paths.tiles.is_empty() or Unit.attack_amount == 0) and Units.event_queue.is_empty():
+			on_pass_unit_turn()
+		else: _on_unit_deselected(Unit, true)
 
 func on_spectate_unit(Unit: UnitGD) -> void:
 	LevelUI.on_pass_unit_turn_button_state(Unit in passed_turns or Unit != ActiveUnit)
@@ -110,7 +106,7 @@ func _on_unit_deselected(Unit: UnitGD, absolute: bool = false) -> void:
 	Tiles.on_remove_tile_material(Unit.Tile)
 	for Tile in Tiles.movement_paths.tiles:
 		Tiles.on_remove_tile_material(Tile)
-	Tiles.movement_paths = {}
+	Tiles.movement_paths = {"tiles": []}
 	if Unit == UnitSelected: UnitSelected = null
 	if !absolute:
 		Tiles.on_force_mouse_entered()

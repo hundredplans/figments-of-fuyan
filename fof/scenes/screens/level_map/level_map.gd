@@ -4,8 +4,6 @@ extends Node3D
 signal lock_inputs_changed
 var GameState: Node
 
-
-
 var LoadedLevel: Node3D
 var Tiles: TilesGD
 var Lights: LightsGD
@@ -34,9 +32,9 @@ func on_set_utility_nodes_paths() -> void:
 func _ready() -> void:
 	on_load_default_world_state()
 	on_load_world_history()
-	Vision.on_recalculate_vision()
 	Deck.on_create_deck()
 	Deck.on_choose_champion()
+	Vision.on_recalculate_vision()
 	
 func on_load_world_history() -> void:
 	pass
@@ -65,6 +63,7 @@ func on_change_game_phase(phase: String) -> void:
 			SpectateCamera.on_spectate("Spawn")
 			Hand.on_start_phase_start()
 			Units.on_start_phase_start()
+			Vision.on_start_phase_start()
 		"AfterStartPhase":
 			Deck.on_after_start_phase_start()
 		"HandPhase":

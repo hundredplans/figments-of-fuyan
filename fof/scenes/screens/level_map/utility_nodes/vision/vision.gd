@@ -9,6 +9,11 @@ var GameState: Node
 const VISION_RANGE: int = 5
 
 var visible_tiles: Array
+
+func on_start_phase_start() -> void:
+	for Unit in Units.on_units(1):
+		Units.on_unit_enters_vision(Unit)
+
 func on_recalculate_vision() -> void:
 	pass
 	#on_clear_darkness()
