@@ -4,8 +4,6 @@ extends Node3D
 signal lock_inputs_changed
 var GameState: Node
 
-
-
 var LoadedLevel: Node3D
 var Tiles: TilesGD
 var Lights: LightsGD
@@ -34,9 +32,9 @@ func on_set_utility_nodes_paths() -> void:
 func _ready() -> void:
 	on_load_default_world_state()
 	on_load_world_history()
-	Vision.on_recalculate_vision()
 	Deck.on_create_deck()
 	Deck.on_choose_champion()
+	Vision.on_recalculate_vision()
 	
 func on_load_world_history() -> void:
 	pass
@@ -62,9 +60,11 @@ func on_change_game_phase(phase: String) -> void:
 		LevelUI.get_node("Admin/ShowPhase").text = phase
 	match phase:
 		"StartPhase":
+			SpectateCamera.on_start_phase_start()
 			SpectateCamera.on_spectate("Spawn")
 			Hand.on_start_phase_start()
 			Units.on_start_phase_start()
+			Vision.on_start_phase_start()
 		"AfterStartPhase":
 			Deck.on_after_start_phase_start()
 		"HandPhase":
@@ -72,7 +72,6 @@ func on_change_game_phase(phase: String) -> void:
 			var skip_hand_phase: bool = on_skip_hand_phase_result()
 			if play_ui: LevelUI.on_hand_phase_start(skip_hand_phase)
 			if skip_hand_phase: on_advance_game_phase()
-				
 		"PlayerPhase":
 			Hand.on_player_phase_start()
 			LevelUI.on_player_phase_start()
@@ -96,8 +95,9 @@ func on_advance_game_phase() -> void:
 		"PlayerStartTurnPhase": on_change_game_phase("HandPhase")
 
 func set_lock_inputs(x: bool) -> void:
-	lock_inputs = x
-	lock_inputs_changed.emit(x)
+	if !(!x and !Units.event_queue.is_empty()):
+		lock_inputs = x
+		lock_inputs_changed.emit(x)
 
 func on_skip_hand_phase_result() -> bool: return game_phase == "HandPhase" and \
 Settings.autopass_handphase and Hand.on_playable_cards().is_empty()

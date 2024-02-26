@@ -71,19 +71,22 @@ func on_player_end_turn_phase_start() -> void:
 		Unit.UnitStatus.on_set_status_box_modulate("TurnUsed")
 
 func on_attack_finished(Unit: UnitGD) -> void:
-	if ActiveUnit == Unit and Units.event_queue.is_empty(): on_pass_unit_turn()
+	on_check_autopass(Unit)
 
-func on_unit_travel_finished(Unit: UnitGD) -> void:
-	if ActiveUnit == Unit:
-		pass
-		#on_pass_unit_turn()
-		#var tiles_in_range: Array = Tiles.
-		#var tiles: Dictionary
-		#if Settings.autopass_unit_turn and tiles.in_range.is_empty()\
-		#and Units.event_queue.is_empty() and \
-		#!tiles.in_range.any(func(x: TileGD): var y: UnitGD = Units.unit_by_tile(x); return y != null and y.team == 1):
-			#on_pass_unit_turn()
-		#else: Tiles.on_set_tile_material(Unit.Tile, "TurnActive")
+func on_check_autopass(Unit: UnitGD) -> void:
+	if !Units.event_queue.is_empty(): return
+	if ActiveUnit != Unit: return
+	
+	if Settings.autopass_unit_turn:
+		if Unit.attack_amount == 0: on_pass_unit_turn(); return
+		else: 
+			Tiles.on_create_movement_paths(Unit)
+			if Tiles.movement_paths.tiles.is_empty(): 
+				on_pass_unit_turn()
+				return
+	
+	Tiles.on_set_tile_material(Unit.Tile, "TurnActive")
+	_on_unit_selected(Unit)
 
 func on_spectate_unit(Unit: UnitGD) -> void:
 	LevelUI.on_pass_unit_turn_button_state(Unit in passed_turns or Unit != ActiveUnit)
@@ -110,7 +113,7 @@ func _on_unit_deselected(Unit: UnitGD, absolute: bool = false) -> void:
 	Tiles.on_remove_tile_material(Unit.Tile)
 	for Tile in Tiles.movement_paths.tiles:
 		Tiles.on_remove_tile_material(Tile)
-	Tiles.movement_paths = {}
+	Tiles.movement_paths = {"tiles": []}
 	if Unit == UnitSelected: UnitSelected = null
 	if !absolute:
 		Tiles.on_force_mouse_entered()
@@ -129,3 +132,13 @@ func _on_unit_selected(Unit: UnitGD) -> void:
 			
 		UnitSelected = Unit
 		LevelUI.get_node("SkipReminder").visible = ActiveUnit != null and ActiveUnit != Unit
+
+func on_death_finished(Killer: UnitGD, Deathee: UnitGD) -> void:
+	if Killer.team == 0: on_check_autopass(Killer)
+	if Deathee.team == 0:
+		passed_turns.erase(Deathee)
+		SpectateCamera.unit_positions.remove_at(Deathee.get_index())
+	
+func on_unit_awakened(_Unit: UnitGD) -> void:
+	SpectateCamera.unit_positions.append(SpectateCamera.total_progress)
+	

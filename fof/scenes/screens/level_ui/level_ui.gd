@@ -41,8 +41,8 @@ func _queue_free() -> void:
 		load_world.emit(null)
 
 func _input(_event: InputEvent) -> void:
-	if Input.is_action_just_pressed("SelectLeft"): LevelMap.SpectateCamera.on_select_spectate_camera_direction(-1)
-	elif Input.is_action_just_pressed("SelectRight"): LevelMap.SpectateCamera.on_select_spectate_camera_direction(1)
+	if Input.is_action_just_pressed("SelectLeft") and !LevelMap.lock_inputs: LevelMap.SpectateCamera.on_select_spectate_camera_direction(-1)
+	elif Input.is_action_just_pressed("SelectRight") and !LevelMap.lock_inputs: LevelMap.SpectateCamera.on_select_spectate_camera_direction(1)
 
 var _CardUI: PackedScene = preload("res://assets/base_game/cards/card_ui/card_ui.tscn")
 func on_draw_card(HandCard: HandCardGD) -> void:
