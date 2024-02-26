@@ -29,6 +29,8 @@ func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int
 	Unit.Model.drop_calculate_damage.connect(on_drop_calculate_damage.bind(Unit))
 	Unit.Model.attack_finished.connect(on_attack_finished.bind(Unit))
 	Unit.Model.death_finished.connect(on_death_finished.bind(Unit))
+	
+	if team == 0: PlayerManager.on_unit_awakened(Unit)
 	LevelUI.on_add_unit_status_box(Unit)
 	
 	var in_vision: bool = Vision.is_unit_in_vision(Unit)
@@ -123,7 +125,7 @@ func on_clear_event_queue() -> void:
 func on_unit_travel_finished(Unit: UnitGD) -> void:
 	on_force_resume_idle_animation_from_walk()
 	
-	if Unit.team == 0: PlayerManager.on_unit_travel_finished(Unit)
+	if Unit.team == 0: PlayerManager.on_check_autopass(Unit)
 	elif Unit.team == 1: Tiles.on_set_tile_material(Unit.Tile, "EnemyOccupy")
 	
 	LevelMap.set_lock_inputs(false)
@@ -158,6 +160,7 @@ func on_attack_finished(Unit: UnitGD) -> void:
 	active_event[2].stats("health", -Unit.attack, Unit)
 	Unit.attack_amount -= 1
 	active_event = []
+	
 	LevelMap.set_lock_inputs(false)
 	if Unit.team == 0: PlayerManager.on_attack_finished(Unit)
 	
@@ -172,13 +175,11 @@ func on_death() -> void:
 	LevelMap.set_lock_inputs(true)
 
 func on_death_finished(Unit: UnitGD) -> void:
-	PlayerManager.on_death_finished(Unit)
+	PlayerManager.on_death_finished(active_event[2], Unit)
 	Deck.on_draw_card()
 	Unit.on_death()
 	active_event = []
 	LevelMap.set_lock_inputs(false)
-	if event_queue.is_empty():
-		PlayerManager.on_pass_unit_turn()
 
 func on_drop_calculate_damage(hdiff: int, scale_time: float, Unit: UnitGD) -> void:
 	hdiff = abs(hdiff * 0.5)

@@ -71,15 +71,22 @@ func on_player_end_turn_phase_start() -> void:
 		Unit.UnitStatus.on_set_status_box_modulate("TurnUsed")
 
 func on_attack_finished(Unit: UnitGD) -> void:
-	if ActiveUnit == Unit and Units.event_queue.is_empty(): on_pass_unit_turn()
+	on_check_autopass(Unit)
 
-func on_unit_travel_finished(Unit: UnitGD) -> void:
-	if ActiveUnit == Unit:
-		Tiles.on_set_tile_material(Unit.Tile, "TurnActive")
-		_on_unit_selected(Unit)
-		if Settings.autopass_unit_turn and (Tiles.movement_paths.tiles.is_empty() or Unit.attack_amount == 0) and Units.event_queue.is_empty():
-			on_pass_unit_turn()
-		else: _on_unit_deselected(Unit, true)
+func on_check_autopass(Unit: UnitGD) -> void:
+	if !Units.event_queue.is_empty(): return
+	if ActiveUnit != Unit: return
+	
+	if Settings.autopass_unit_turn:
+		if Unit.attack_amount == 0: on_pass_unit_turn(); return
+		else: 
+			Tiles.on_create_movement_paths(Unit)
+			if Tiles.movement_paths.tiles.is_empty(): 
+				on_pass_unit_turn()
+				return
+	
+	Tiles.on_set_tile_material(Unit.Tile, "TurnActive")
+	_on_unit_selected(Unit)
 
 func on_spectate_unit(Unit: UnitGD) -> void:
 	LevelUI.on_pass_unit_turn_button_state(Unit in passed_turns or Unit != ActiveUnit)
@@ -126,6 +133,12 @@ func _on_unit_selected(Unit: UnitGD) -> void:
 		UnitSelected = Unit
 		LevelUI.get_node("SkipReminder").visible = ActiveUnit != null and ActiveUnit != Unit
 
-func on_death_finished(Unit: UnitGD) -> void:
-	if Unit == ActiveUnit: on_pass_unit_turn()
-	passed_turns.erase(Unit)
+func on_death_finished(Killer: UnitGD, Deathee: UnitGD) -> void:
+	if Killer.team == 0: on_check_autopass(Killer)
+	if Deathee.team == 0:
+		passed_turns.erase(Deathee)
+		SpectateCamera.unit_positions.remove_at(Deathee.get_index())
+	
+func on_unit_awakened(_Unit: UnitGD) -> void:
+	SpectateCamera.unit_positions.append(SpectateCamera.total_progress)
+	

@@ -11,11 +11,11 @@ var rot: int
 
 var IdleRareTimer: Timer
 
-const IDLE_RARE_MINIMUM: int = 3
-const IDLE_RARE_MAXIMUM: int = 6
+const IDLE_RARE_MINIMUM: int = 8
+const IDLE_RARE_MAXIMUM: int = 100
 
 func on_idle_rare_timer_timeout() -> void:
-	if AniPlayer.current_animation == "Idle":
+	if AniPlayer.current_animation == "Idle" and AniPlayer.has_animation("IdleRare"):
 		on_play_animation("IdleRare")
 	IdleRareTimer.start(Unit.Units.Random.RNG.randi_range(IDLE_RARE_MINIMUM, IDLE_RARE_MAXIMUM))
 
@@ -69,7 +69,7 @@ func on_finish_animation(ani_name: String) -> void:
 		"Death": death_finished.emit()
 		"Jump": movement_finished.emit(); is_jump = false; jump_time = 0
 		
-	if ani_name != "Walk" and ani_name != "Death" and ani_name != "Jump": on_play_animation("Idle")
+	if ani_name != "Walk" and ani_name != "Death" and (ani_name != "Jump"): on_play_animation("Idle")
 
 var walk_to_info: Array = []
 func move_to_tile(Tile: TileGD, type: Vector2i) -> void:
