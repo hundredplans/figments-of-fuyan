@@ -1,0 +1,8030 @@
+[gd_scene load_steps=14 format=3 uid="uid://c6bskt83p5yqh"]
+
+[ext_resource type="Script" path="res://assets/base_game/levels/level/loaded_level_light_tester.gd" id="1_wm0hf"]
+[ext_resource type="PackedScene" uid="uid://ce3k6kxjup2ks" path="res://scenes/screens/level_map/utility_nodes/tiles/level_tile.tscn" id="2_ujahc"]
+[ext_resource type="PackedScene" uid="uid://d1ttfirjfkjre" path="res://assets/models/tiles/1tile.glb" id="5_15k4g"]
+[ext_resource type="PackedScene" uid="uid://ny5w3assie26" path="res://assets/models/decorations/tiles/shrub.glb" id="9_rg5gk"]
+[ext_resource type="PackedScene" uid="uid://csq8vxgohty6p" path="res://assets/models/walls/1wall2.glb" id="11_drw4v"]
+[ext_resource type="PackedScene" uid="uid://cioivx6qrmj7w" path="res://assets/models/tiles/1tile2.glb" id="12_age6o"]
+[ext_resource type="PackedScene" uid="uid://cqa4pjtww1uej" path="res://assets/models/tiles/1tile1.glb" id="13_uj05c"]
+[ext_resource type="PackedScene" uid="uid://wsrmt15gglsx" path="res://assets/models/decorations/tiles/skeletons/pumpkin1.glb" id="14_a53rq"]
+[ext_resource type="PackedScene" uid="uid://d3i1knhlsnprp" path="res://assets/models/decorations/tiles/rock.glb" id="15_ccfpd"]
+[ext_resource type="PackedScene" uid="uid://db8om6budh6t4" path="res://assets/models/tiles/water/shallow_water.glb" id="16_xjvws"]
+[ext_resource type="PackedScene" uid="uid://hrg53lhxe5sf" path="res://assets/models/tiles/water/deep_water.glb" id="17_eyder"]
+[ext_resource type="PackedScene" uid="uid://p0mlcerf38aw" path="res://assets/models/decorations/tiles/tree.glb" id="18_6seqf"]
+[ext_resource type="PackedScene" uid="uid://boilo6homws72" path="res://assets/models/decorations/tiles/palms/palm_tree.glb" id="19_gk8b5"]
+
+[node name="LoadedLevel" type="Node3D"]
+script = ExtResource("1_wm0hf")
+
+[node name="Lights" type="Node3D" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Lights"]
+transform = Transform3D(-0.062134, -0.824411, 0.562571, -0.978113, 0.162446, 0.130025, -0.198581, -0.542179, -0.81646, 0, 12, 0)
+light_color = Color(0.862745, 1, 0.882353, 1)
+light_energy = 2.0
+
+[node name="Tiles" type="Node3D" parent="."]
+
+[node name="1733285156" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.66025, 0, 0)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-5, 0, 5, 0),
+"tdeco": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@5925" parent="Tiles/1733285156/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@5926" parent="Tiles/1733285156/TileDecoration" index="0" instance=ExtResource("9_rg5gk")]
+
+[node name="4260622175" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.79423, 0, 1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-5, 1, 4, 0),
+"tdeco": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@5927" parent="Tiles/4260622175/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@5928" parent="Tiles/4260622175/TileDecoration" index="0" instance=ExtResource("9_rg5gk")]
+
+[node name="1534670676" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.9282, 0, 3)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-5, 2, 3, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@5929" parent="Tiles/1534670676/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="3371318128" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.06218, 0, 4.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-5, 3, 2, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@5930" parent="Tiles/3371318128/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="3499163143" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.19615, 0, 6)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-5, 4, 1, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-5, 4, 1, 0], [-5, 4, 1, 1]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@5934" parent="Tiles/3499163143/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@5935" parent="Tiles/3499163143/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@5936" parent="Tiles/3499163143/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@5937" parent="Tiles/3499163143/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@5938" parent="Tiles/3499163143/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="1453695887" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 0, 7.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-5, 5, 0, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-5, 5, 0, 0], [-5, 5, 0, 1]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@5942" parent="Tiles/1453695887/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@5943" parent="Tiles/1453695887/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@5944" parent="Tiles/1453695887/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@5945" parent="Tiles/1453695887/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@5946" parent="Tiles/1453695887/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="3429005994" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.79423, 0, -1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-4, -1, 5, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@5947" parent="Tiles/3429005994/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="3357700534" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.9282, 0, 0)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-4, 0, 4, 0),
+"tdeco": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@5948" parent="Tiles/3357700534/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@5949" parent="Tiles/3357700534/TileDecoration" index="0" instance=ExtResource("9_rg5gk")]
+
+[node name="1587697915" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.06218, 0, 1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-4, 1, 3, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@5950" parent="Tiles/1587697915/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="3667880920" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.19615, 0, 3)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-4, 2, 2, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-4, 2, 2, 0], [-4, 2, 2, 1], [-4, 2, 2, 2]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@5954" parent="Tiles/3667880920/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@5955" parent="Tiles/3667880920/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@5956" parent="Tiles/3667880920/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@5957" parent="Tiles/3667880920/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@5958" parent="Tiles/3667880920/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="2445838215" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 0, 4.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-4, 3, 1, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-4, 3, 1, 0], [-4, 3, 1, 1], [-4, 3, 1, 2]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@5962" parent="Tiles/2445838215/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@5963" parent="Tiles/2445838215/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@5964" parent="Tiles/2445838215/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@5965" parent="Tiles/2445838215/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@5966" parent="Tiles/2445838215/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="2100580408" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641, 0, 6)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-4, 4, 0, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-4, 4, 0, 0], [-4, 4, 0, 1]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@5970" parent="Tiles/2100580408/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@5971" parent="Tiles/2100580408/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@5972" parent="Tiles/2100580408/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@5973" parent="Tiles/2100580408/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@5974" parent="Tiles/2100580408/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="2883917139" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 0, 7.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-4, 5, -1, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-4, 5, -1, 0], [-4, 5, -1, 1]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@5978" parent="Tiles/2883917139/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@5979" parent="Tiles/2883917139/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@5980" parent="Tiles/2883917139/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@5981" parent="Tiles/2883917139/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@5982" parent="Tiles/2883917139/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="3802493341" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.9282, 0, -3)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-3, -2, 5, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 2
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@5983" parent="Tiles/3802493341/Tile" index="0" instance=ExtResource("12_age6o")]
+
+[node name="1462689462" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.06218, 0, -1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-3, -1, 4, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@5984" parent="Tiles/1462689462/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="2490802583" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.19615, 0, 0)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-3, 0, 3, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@5985" parent="Tiles/2490802583/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="4030109124" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 0, 1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-3, 1, 2, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@5986" parent="Tiles/4030109124/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="1279237757" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641, 0, 3)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-3, 2, 1, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-3, 2, 1, 0], [-3, 2, 1, 1], [-3, 2, 1, 2]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@5990" parent="Tiles/1279237757/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@5991" parent="Tiles/1279237757/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@5992" parent="Tiles/1279237757/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@5993" parent="Tiles/1279237757/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@5994" parent="Tiles/1279237757/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="4036759100" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 0, 4.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-3, 3, 0, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-3, 3, 0, 0], [-3, 3, 0, 1]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@5998" parent="Tiles/4036759100/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@5999" parent="Tiles/4036759100/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6000" parent="Tiles/4036759100/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6001" parent="Tiles/4036759100/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6002" parent="Tiles/4036759100/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="4224293765" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.73205, 0, 6)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-3, 4, -1, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-3, 4, -1, 0], [-3, 4, -1, 1]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6006" parent="Tiles/4224293765/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@6007" parent="Tiles/4224293765/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6008" parent="Tiles/4224293765/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6009" parent="Tiles/4224293765/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6010" parent="Tiles/4224293765/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="584936504" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 0, 7.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-3, 5, -2, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-3, 5, -2, 0], [-3, 5, -2, 1]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6014" parent="Tiles/584936504/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@6015" parent="Tiles/584936504/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6016" parent="Tiles/584936504/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6017" parent="Tiles/584936504/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6018" parent="Tiles/584936504/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="1639509864" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.06218, 0, -4.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-2, -3, 5, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6021" parent="Tiles/1639509864/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@6022" parent="Tiles/1639509864/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6023" parent="Tiles/1639509864/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6024" parent="Tiles/1639509864/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="2798281466" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.19615, 0, -3)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-2, -2, 4, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6025" parent="Tiles/2798281466/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="819843613" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 0, -1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-2, -1, 3, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-2, -1, 3, 0], [-2, -1, 3, 1]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6029" parent="Tiles/819843613/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@6030" parent="Tiles/819843613/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6031" parent="Tiles/819843613/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6032" parent="Tiles/819843613/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6033" parent="Tiles/819843613/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="3621425273" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641, 0, 0)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-2, 0, 2, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-2, 0, 2, 0], [-2, 0, 2, 1], [-2, 0, 2, 2]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6037" parent="Tiles/3621425273/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@6038" parent="Tiles/3621425273/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6039" parent="Tiles/3621425273/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6040" parent="Tiles/3621425273/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6041" parent="Tiles/3621425273/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="2657373950" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 0, 1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-2, 1, 1, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-2, 1, 1, 0], [-2, 1, 1, 1], [-2, 1, 1, 2]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6045" parent="Tiles/2657373950/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@6046" parent="Tiles/2657373950/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6047" parent="Tiles/2657373950/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6048" parent="Tiles/2657373950/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6049" parent="Tiles/2657373950/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="3645391452" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.73205, 0, 3)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-2, 2, 0, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6050" parent="Tiles/3645391452/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="3149790735" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 0, 4.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-2, 3, -1, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-2, 3, -1, 0], [-2, 3, -1, 1]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6054" parent="Tiles/3149790735/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@6055" parent="Tiles/3149790735/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6056" parent="Tiles/3149790735/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6057" parent="Tiles/3149790735/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6058" parent="Tiles/3149790735/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="1032068591" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-2, 4, -2, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6061" parent="Tiles/1032068591/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@6062" parent="Tiles/1032068591/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6063" parent="Tiles/1032068591/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6064" parent="Tiles/1032068591/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="1995243983" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 0, 7.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-2, 5, -3, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6067" parent="Tiles/1995243983/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@6068" parent="Tiles/1995243983/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6069" parent="Tiles/1995243983/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6070" parent="Tiles/1995243983/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="3390073200" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.19615, 0, -6)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-1, -4, 5, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6073" parent="Tiles/3390073200/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@6074" parent="Tiles/3390073200/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6075" parent="Tiles/3390073200/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6076" parent="Tiles/3390073200/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="4236616625" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 0, -4.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-1, -3, 4, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6077" parent="Tiles/4236616625/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="2274499872" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641, 0, -3)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-1, -2, 3, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-1, -2, 3, 0], [-1, -2, 3, 1]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6081" parent="Tiles/2274499872/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@6082" parent="Tiles/2274499872/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6083" parent="Tiles/2274499872/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6084" parent="Tiles/2274499872/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6085" parent="Tiles/2274499872/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="2842664404" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 0, -1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-1, -1, 2, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-1, -1, 2, 0], [-1, -1, 2, 1]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6089" parent="Tiles/2842664404/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@6090" parent="Tiles/2842664404/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6091" parent="Tiles/2842664404/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6092" parent="Tiles/2842664404/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6093" parent="Tiles/2842664404/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="143290369" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.73205, 0, 0)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-1, 0, 1, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6096" parent="Tiles/143290369/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@6097" parent="Tiles/143290369/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6098" parent="Tiles/143290369/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6099" parent="Tiles/143290369/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="449657924" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 0, 1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-1, 1, 0, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6102" parent="Tiles/449657924/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@6103" parent="Tiles/449657924/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6104" parent="Tiles/449657924/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6105" parent="Tiles/449657924/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="1083427488" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-1, 2, -1, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6106" parent="Tiles/1083427488/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="517693975" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 0, 4.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-1, 3, -2, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6109" parent="Tiles/517693975/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@6110" parent="Tiles/517693975/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6111" parent="Tiles/517693975/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6112" parent="Tiles/517693975/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="3012548803" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.73205, 0, 6)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-1, 4, -3, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 1
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6113" parent="Tiles/3012548803/Tile" index="0" instance=ExtResource("13_uj05c")]
+
+[node name="1865622584" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.59808, 0, 7.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-1, 5, -4, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 2,
+"type": 2
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="Tile" parent="Tiles/1865622584" index="0"]
+transform = Transform3D(-0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, -0.5, 0, 0, 0)
+
+[node name="@Node3D@6114" parent="Tiles/1865622584/Tile" index="0" instance=ExtResource("12_age6o")]
+
+[node name="2395130918" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 0, -7.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(0, -5, 5, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[0, -5, 5, 0], [0, -5, 5, 1]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6118" parent="Tiles/2395130918/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@6119" parent="Tiles/2395130918/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6120" parent="Tiles/2395130918/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6121" parent="Tiles/2395130918/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6122" parent="Tiles/2395130918/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="3480592480" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641, 0, -6)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(0, -4, 4, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6123" parent="Tiles/3480592480/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="588006283" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 0, -4.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(0, -3, 3, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6124" parent="Tiles/588006283/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="3734929400" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.73205, 0, -3)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(0, -2, 2, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[0, -2, 2, 0], [0, -2, 2, 1]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6128" parent="Tiles/3734929400/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@6129" parent="Tiles/3734929400/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6130" parent="Tiles/3734929400/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6131" parent="Tiles/3734929400/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6132" parent="Tiles/3734929400/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="3845485304" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 0, -1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(0, -1, 1, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6135" parent="Tiles/3845485304/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@6136" parent="Tiles/3845485304/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6137" parent="Tiles/3845485304/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6138" parent="Tiles/3845485304/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="3833789233" parent="Tiles" instance=ExtResource("2_ujahc")]
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(0, 0, 0, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 1
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6139" parent="Tiles/3833789233/Tile" index="0" instance=ExtResource("13_uj05c")]
+
+[node name="1678403324" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 0, 1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(0, 1, -1, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [[1, 1, -2, 0], [0, 1, -1, 0], [0, 2, -2, 0], [1, 0, -1, 0], [1, 1, -2, 1], [1, 2, -3, 0], [2, 0, -2, 0], [2, 1, -3, 0]],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 1
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6140" parent="Tiles/1678403324/Tile" index="0" instance=ExtResource("13_uj05c")]
+
+[node name="939624195" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.73205, 0, 3)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(0, 2, -2, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [[1, 1, -2, 0], [0, 1, -1, 0], [0, 2, -2, 0], [1, 0, -1, 0], [1, 1, -2, 1], [1, 2, -3, 0], [2, 0, -2, 0], [2, 1, -3, 0]],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6141" parent="Tiles/939624195/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="1520923004" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.59808, 0, 4.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(0, 3, -3, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 2,
+"type": 2
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="Tile" parent="Tiles/1520923004" index="0"]
+transform = Transform3D(-0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, -0.5, 0, 0, 0)
+
+[node name="@Node3D@6142" parent="Tiles/1520923004/Tile" index="0" instance=ExtResource("12_age6o")]
+
+[node name="1477592249" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641, 0, 6)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(0, 4, -4, 0),
+"tdeco": {
+"id": 7,
+"multi_tile": [],
+"rotation": 5,
+"type": 1
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6143" parent="Tiles/1477592249/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="TileDecoration" parent="Tiles/1477592249" index="3"]
+transform = Transform3D(0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, 0.5, 0, 0.3, 0)
+
+[node name="@Node3D@6144" parent="Tiles/1477592249/TileDecoration" index="0" instance=ExtResource("14_a53rq")]
+
+[node name="3154546145" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.33013, 0, 7.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(0, 5, -5, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6145" parent="Tiles/3154546145/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="1879633388" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 0, -7.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(1, -5, 4, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[1, -5, 4, 0], [1, -5, 4, 1]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6149" parent="Tiles/1879633388/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@6150" parent="Tiles/1879633388/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6151" parent="Tiles/1879633388/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6152" parent="Tiles/1879633388/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6153" parent="Tiles/1879633388/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="634265253" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.73205, 0, -6)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(1, -4, 3, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6154" parent="Tiles/634265253/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="1099570134" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 0, -4.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(1, -3, 2, 0),
+"tdeco": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6155" parent="Tiles/1099570134/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@6156" parent="Tiles/1099570134/TileDecoration" index="0" instance=ExtResource("9_rg5gk")]
+
+[node name="803246865" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(1, -2, 1, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6159" parent="Tiles/803246865/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@6160" parent="Tiles/803246865/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6161" parent="Tiles/803246865/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6162" parent="Tiles/803246865/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="3487428581" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 0, -1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(1, -1, 0, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 1
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6163" parent="Tiles/3487428581/Tile" index="0" instance=ExtResource("13_uj05c")]
+
+[node name="2352623253" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.73205, 0, 0)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(1, 0, -1, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [[1, 1, -2, 0], [0, 1, -1, 0], [0, 2, -2, 0], [1, 0, -1, 0], [1, 1, -2, 1], [1, 2, -3, 0], [2, 0, -2, 0], [2, 1, -3, 0]],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6164" parent="Tiles/2352623253/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="416258334" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.59808, 0, 1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(1, 1, -2, 0),
+"tdeco": {
+"id": 3,
+"multi_tile": [[1, 1, -2, 0], [0, 1, -1, 0], [0, 2, -2, 0], [1, 0, -1, 0], [1, 1, -2, 1], [1, 2, -3, 0], [2, 0, -2, 0], [2, 1, -3, 0]],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6165" parent="Tiles/416258334/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@6166" parent="Tiles/416258334/TileDecoration" index="0" instance=ExtResource("15_ccfpd")]
+
+[node name="1864710603" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641, 0, 3)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(1, 2, -3, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [[1, 1, -2, 0], [0, 1, -1, 0], [0, 2, -2, 0], [1, 0, -1, 0], [1, 1, -2, 1], [1, 2, -3, 0], [2, 0, -2, 0], [2, 1, -3, 0]],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6167" parent="Tiles/1864710603/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="758792026" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.33013, 0, 4.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(1, 3, -4, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6168" parent="Tiles/758792026/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="725239148" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.19615, 0, 6)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(1, 4, -5, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6169" parent="Tiles/725239148/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="2335329204" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 0, -7.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(2, -5, 3, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6170" parent="Tiles/2335329204/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="2796731066" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -6)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(2, -4, 2, 0),
+"tdeco": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6171" parent="Tiles/2796731066/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@6172" parent="Tiles/2796731066/TileDecoration" index="0" instance=ExtResource("9_rg5gk")]
+
+[node name="1904136335" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 0, -4.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(2, -3, 1, 0),
+"tdeco": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6173" parent="Tiles/1904136335/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@6174" parent="Tiles/1904136335/TileDecoration" index="0" instance=ExtResource("9_rg5gk")]
+
+[node name="1919451137" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.73205, 0, -3)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(2, -2, 0, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 1
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6175" parent="Tiles/1919451137/Tile" index="0" instance=ExtResource("13_uj05c")]
+
+[node name="3650444051" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.59808, 0, -1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(2, -1, -1, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 3,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6176" parent="Tiles/3650444051/Tile" index="0" instance=ExtResource("16_xjvws")]
+
+[node name="2092732941" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641, 0, 0)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(2, 0, -2, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [[1, 1, -2, 0], [0, 1, -1, 0], [0, 2, -2, 0], [1, 0, -1, 0], [1, 1, -2, 1], [1, 2, -3, 0], [2, 0, -2, 0], [2, 1, -3, 0]],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6177" parent="Tiles/2092732941/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="349355888" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.33013, 0, 1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(2, 1, -3, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [[1, 1, -2, 0], [0, 1, -1, 0], [0, 2, -2, 0], [1, 0, -1, 0], [1, 1, -2, 1], [1, 2, -3, 0], [2, 0, -2, 0], [2, 1, -3, 0]],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6178" parent="Tiles/349355888/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="4277439415" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.19615, 0, 3)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(2, 2, -4, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6179" parent="Tiles/4277439415/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="4013168093" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.06218, 0, 4.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(2, 3, -5, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6180" parent="Tiles/4013168093/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="2663197201" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 0, -7.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(3, -5, 2, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6181" parent="Tiles/2663197201/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="3722138778" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.73205, 0, -6)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(3, -4, 1, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[3, -4, 1, 0], [3, -4, 1, 1]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6185" parent="Tiles/3722138778/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@6186" parent="Tiles/3722138778/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6187" parent="Tiles/3722138778/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6188" parent="Tiles/3722138778/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6189" parent="Tiles/3722138778/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="4281355535" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.59808, 0, -4.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(3, -3, 0, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[3, -3, 0, 0], [3, -3, 0, 1], [3, -3, 0, 2]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6193" parent="Tiles/4281355535/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@6194" parent="Tiles/4281355535/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6195" parent="Tiles/4281355535/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6196" parent="Tiles/4281355535/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6197" parent="Tiles/4281355535/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="4156201727" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641, 0, -3)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(3, -2, -1, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 4,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6198" parent="Tiles/4156201727/Tile" index="0" instance=ExtResource("17_eyder")]
+
+[node name="2558214251" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.33013, 0, -1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(3, -1, -2, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 3,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6199" parent="Tiles/2558214251/Tile" index="0" instance=ExtResource("16_xjvws")]
+
+[node name="1216717489" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.19615, 0, 0)
+info = {
+"obj": {
+"id": 2,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 5,
+"type": 0
+},
+"position": Vector4(3, 0, -3, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6200" parent="Tiles/1216717489/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="Object" parent="Tiles/1216717489" index="2"]
+transform = Transform3D(0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, 0.5, 0, 0.3, 0)
+
+[node name="3892480640" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.06218, 0, 1.5)
+info = {
+"obj": {
+"id": 2,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 4,
+"type": 0
+},
+"position": Vector4(3, 1, -4, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6201" parent="Tiles/3892480640/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="Object" parent="Tiles/3892480640" index="2"]
+transform = Transform3D(-0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, -0.5, 0, 0.3, 0)
+
+[node name="1499904961" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.9282, 0, 3)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(3, 2, -5, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6202" parent="Tiles/1499904961/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="780997010" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.59808, 0, -7.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(4, -5, 1, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6203" parent="Tiles/780997010/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="1400883582" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641, 0, -6)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(4, -4, 0, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6204" parent="Tiles/1400883582/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="2920453061" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.33013, 0, -4.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(4, -3, -1, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 4,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6205" parent="Tiles/2920453061/Tile" index="0" instance=ExtResource("17_eyder")]
+
+[node name="268153919" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.19615, 0, -3)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(4, -2, -2, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 3,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6206" parent="Tiles/268153919/Tile" index="0" instance=ExtResource("16_xjvws")]
+
+[node name="3736730258" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.06218, 0, -1.5)
+info = {
+"obj": {
+"id": 2,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 4,
+"type": 0
+},
+"position": Vector4(4, -1, -3, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6207" parent="Tiles/3736730258/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="Object" parent="Tiles/3736730258" index="2"]
+transform = Transform3D(-0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, -0.5, 0, 0.3, 0)
+
+[node name="3873443978" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.9282, 0, 0)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(4, 0, -4, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[4, 0, -4, 0], [4, 0, -4, 1], [4, 0, -4, 2], [4, 0, -4, 3]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6211" parent="Tiles/3873443978/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@6212" parent="Tiles/3873443978/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6213" parent="Tiles/3873443978/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6214" parent="Tiles/3873443978/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6215" parent="Tiles/3873443978/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="3917262057" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.79423, 0, 1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(4, 1, -5, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[4, 1, -5, 0], [4, 1, -5, 1], [4, 1, -5, 2], [4, 1, -5, 3]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6219" parent="Tiles/3917262057/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@6220" parent="Tiles/3917262057/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6221" parent="Tiles/3917262057/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6222" parent="Tiles/3917262057/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6223" parent="Tiles/3917262057/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="1809589845" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.33013, 0, -7.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(5, -5, 0, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6224" parent="Tiles/1809589845/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="2452936971" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.19615, 0, -6)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(5, -4, -1, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 3,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6225" parent="Tiles/2452936971/Tile" index="0" instance=ExtResource("16_xjvws")]
+
+[node name="2721252183" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.06218, 0, -4.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(5, -3, -2, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 3,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6226" parent="Tiles/2721252183/Tile" index="0" instance=ExtResource("16_xjvws")]
+
+[node name="1069529951" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.9282, 0, -3)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(5, -2, -3, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6227" parent="Tiles/1069529951/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="2317534216" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.79423, 0, -1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(5, -1, -4, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[5, -1, -4, 0], [5, -1, -4, 1], [5, -1, -4, 2], [5, -1, -4, 3], [5, -1, -4, 4]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6231" parent="Tiles/2317534216/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@6232" parent="Tiles/2317534216/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6233" parent="Tiles/2317534216/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6234" parent="Tiles/2317534216/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6235" parent="Tiles/2317534216/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="3537171902" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.66025, 0, 0)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(5, 0, -5, 0),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[5, 0, -5, 0], [5, 0, -5, 1], [5, 0, -5, 2], [5, 0, -5, 3], [5, 0, -5, 4]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6239" parent="Tiles/3537171902/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@6240" parent="Tiles/3537171902/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6241" parent="Tiles/3537171902/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6242" parent="Tiles/3537171902/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6243" parent="Tiles/3537171902/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="1379262441" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.19615, 1.2, 6)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-5, 4, 1, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-5, 4, 1, 0], [-5, 4, 1, 1]],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6246" parent="Tiles/1379262441/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6247" parent="Tiles/1379262441/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6248" parent="Tiles/1379262441/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="1643728950" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 1.2, 7.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-5, 5, 0, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-5, 5, 0, 0], [-5, 5, 0, 1]],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6251" parent="Tiles/1643728950/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6252" parent="Tiles/1643728950/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6253" parent="Tiles/1643728950/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="1458512003" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.19615, 1.2, 3)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-4, 2, 2, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-4, 2, 2, 0], [-4, 2, 2, 1], [-4, 2, 2, 2]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6257" parent="Tiles/1458512003/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6258" parent="Tiles/1458512003/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6259" parent="Tiles/1458512003/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6260" parent="Tiles/1458512003/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="1865679492" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 1.2, 4.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-4, 3, 1, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-4, 3, 1, 0], [-4, 3, 1, 1], [-4, 3, 1, 2]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6264" parent="Tiles/1865679492/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6265" parent="Tiles/1865679492/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6266" parent="Tiles/1865679492/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6267" parent="Tiles/1865679492/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="1765957539" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641, 1.2, 6)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-4, 4, 0, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-4, 4, 0, 0], [-4, 4, 0, 1]],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6270" parent="Tiles/1765957539/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6271" parent="Tiles/1765957539/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6272" parent="Tiles/1765957539/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="4008109219" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 1.2, 7.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-4, 5, -1, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-4, 5, -1, 0], [-4, 5, -1, 1]],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6275" parent="Tiles/4008109219/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6276" parent="Tiles/4008109219/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6277" parent="Tiles/4008109219/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="2883061120" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641, 1.2, 3)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-3, 2, 1, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-3, 2, 1, 0], [-3, 2, 1, 1], [-3, 2, 1, 2]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6281" parent="Tiles/2883061120/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6282" parent="Tiles/2883061120/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6283" parent="Tiles/2883061120/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6284" parent="Tiles/2883061120/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="3533703286" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 1.2, 4.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-3, 3, 0, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-3, 3, 0, 0], [-3, 3, 0, 1]],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6287" parent="Tiles/3533703286/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6288" parent="Tiles/3533703286/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6289" parent="Tiles/3533703286/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="3638713080" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.73205, 1.2, 6)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-3, 4, -1, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-3, 4, -1, 0], [-3, 4, -1, 1]],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6292" parent="Tiles/3638713080/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6293" parent="Tiles/3638713080/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6294" parent="Tiles/3638713080/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="571643413" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 1.2, 7.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-3, 5, -2, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-3, 5, -2, 0], [-3, 5, -2, 1]],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6297" parent="Tiles/571643413/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6298" parent="Tiles/571643413/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6299" parent="Tiles/571643413/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="1143369353" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.06218, 1.2, -4.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-2, -3, 5, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6300" parent="Tiles/1143369353/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="1897168740" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 1.2, -1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-2, -1, 3, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-2, -1, 3, 0], [-2, -1, 3, 1]],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6303" parent="Tiles/1897168740/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6304" parent="Tiles/1897168740/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6305" parent="Tiles/1897168740/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="340706128" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641, 1.2, 0)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-2, 0, 2, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-2, 0, 2, 0], [-2, 0, 2, 1], [-2, 0, 2, 2]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6309" parent="Tiles/340706128/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6310" parent="Tiles/340706128/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6311" parent="Tiles/340706128/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6312" parent="Tiles/340706128/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="3993027272" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 1.2, 1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-2, 1, 1, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-2, 1, 1, 0], [-2, 1, 1, 1], [-2, 1, 1, 2]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6316" parent="Tiles/3993027272/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6317" parent="Tiles/3993027272/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6318" parent="Tiles/3993027272/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6319" parent="Tiles/3993027272/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="2363580152" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 1.2, 4.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-2, 3, -1, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-2, 3, -1, 0], [-2, 3, -1, 1]],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6322" parent="Tiles/2363580152/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6323" parent="Tiles/2363580152/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6324" parent="Tiles/2363580152/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="959797078" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 6)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-2, 4, -2, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 1
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6325" parent="Tiles/959797078/Tile" index="0" instance=ExtResource("13_uj05c")]
+
+[node name="2176990832" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 1.2, 7.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-2, 5, -3, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6326" parent="Tiles/2176990832/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="2290852637" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.19615, 1.2, -6)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-1, -4, 5, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 1
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6327" parent="Tiles/2290852637/Tile" index="0" instance=ExtResource("13_uj05c")]
+
+[node name="1071144625" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641, 1.2, -3)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-1, -2, 3, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-1, -2, 3, 0], [-1, -2, 3, 1]],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6330" parent="Tiles/1071144625/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6331" parent="Tiles/1071144625/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6332" parent="Tiles/1071144625/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="3429618297" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 1.2, -1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-1, -1, 2, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-1, -1, 2, 0], [-1, -1, 2, 1]],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6335" parent="Tiles/3429618297/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6336" parent="Tiles/3429618297/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6337" parent="Tiles/3429618297/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="721162469" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.73205, 1.2, 0)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-1, 0, 1, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6338" parent="Tiles/721162469/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="2567738461" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 1.2, 1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-1, 1, 0, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6339" parent="Tiles/2567738461/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="3476585630" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 1.2, 4.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-1, 3, -2, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6340" parent="Tiles/3476585630/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="2499335547" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 1.2, -7.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(0, -5, 5, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[0, -5, 5, 0], [0, -5, 5, 1]],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6343" parent="Tiles/2499335547/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6344" parent="Tiles/2499335547/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6345" parent="Tiles/2499335547/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="3562590944" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.73205, 1.2, -3)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(0, -2, 2, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[0, -2, 2, 0], [0, -2, 2, 1]],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6348" parent="Tiles/3562590944/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6349" parent="Tiles/3562590944/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6350" parent="Tiles/3562590944/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="1136383214" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 1.2, -1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(0, -1, 1, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 1
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6351" parent="Tiles/1136383214/Tile" index="0" instance=ExtResource("13_uj05c")]
+
+[node name="3392424979" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 1.2, -7.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(1, -5, 4, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[1, -5, 4, 0], [1, -5, 4, 1]],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6354" parent="Tiles/3392424979/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6355" parent="Tiles/3392424979/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6356" parent="Tiles/3392424979/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="2597034494" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, -3)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(1, -2, 1, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6357" parent="Tiles/2597034494/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="2756471693" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.73205, 1.2, -6)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(3, -4, 1, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[3, -4, 1, 0], [3, -4, 1, 1]],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6360" parent="Tiles/2756471693/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6361" parent="Tiles/2756471693/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6362" parent="Tiles/2756471693/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="51696114" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.59808, 1.2, -4.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(3, -3, 0, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[3, -3, 0, 0], [3, -3, 0, 1], [3, -3, 0, 2]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6366" parent="Tiles/51696114/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6367" parent="Tiles/51696114/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6368" parent="Tiles/51696114/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6369" parent="Tiles/51696114/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="1253495633" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.59808, 1.2, -7.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(4, -5, 1, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6370" parent="Tiles/1253495633/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="2673114794" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.9282, 1.2, 0)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(4, 0, -4, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[4, 0, -4, 0], [4, 0, -4, 1], [4, 0, -4, 2], [4, 0, -4, 3]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6374" parent="Tiles/2673114794/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6375" parent="Tiles/2673114794/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6376" parent="Tiles/2673114794/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6377" parent="Tiles/2673114794/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="2484166752" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.79423, 1.2, 1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(4, 1, -5, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[4, 1, -5, 0], [4, 1, -5, 1], [4, 1, -5, 2], [4, 1, -5, 3]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6381" parent="Tiles/2484166752/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6382" parent="Tiles/2484166752/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6383" parent="Tiles/2484166752/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6384" parent="Tiles/2484166752/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="3591562164" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.33013, 1.2, -7.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(5, -5, 0, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6385" parent="Tiles/3591562164/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="170663928" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.79423, 1.2, -1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(5, -1, -4, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[5, -1, -4, 0], [5, -1, -4, 1], [5, -1, -4, 2], [5, -1, -4, 3], [5, -1, -4, 4]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6389" parent="Tiles/170663928/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6390" parent="Tiles/170663928/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6391" parent="Tiles/170663928/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6392" parent="Tiles/170663928/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="3194176111" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.66025, 1.2, 0)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(5, 0, -5, 1),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[5, 0, -5, 0], [5, 0, -5, 1], [5, 0, -5, 2], [5, 0, -5, 3], [5, 0, -5, 4]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6396" parent="Tiles/3194176111/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6397" parent="Tiles/3194176111/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6398" parent="Tiles/3194176111/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6399" parent="Tiles/3194176111/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="2594335178" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.19615, 2.4, 6)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-5, 4, 1, 2),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 1
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6400" parent="Tiles/2594335178/Tile" index="0" instance=ExtResource("13_uj05c")]
+
+[node name="3484288067" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 2.4, 7.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-5, 5, 0, 2),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 1
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6401" parent="Tiles/3484288067/Tile" index="0" instance=ExtResource("13_uj05c")]
+
+[node name="2963348605" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.19615, 2.4, 3)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-4, 2, 2, 2),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-4, 2, 2, 0], [-4, 2, 2, 1], [-4, 2, 2, 2]],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6404" parent="Tiles/2963348605/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6405" parent="Tiles/2963348605/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6406" parent="Tiles/2963348605/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="2752000953" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 2.4, 4.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-4, 3, 1, 2),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-4, 3, 1, 0], [-4, 3, 1, 1], [-4, 3, 1, 2]],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6409" parent="Tiles/2752000953/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6410" parent="Tiles/2752000953/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6411" parent="Tiles/2752000953/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="15192084" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641, 2.4, 6)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-4, 4, 0, 2),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 1
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6412" parent="Tiles/15192084/Tile" index="0" instance=ExtResource("13_uj05c")]
+
+[node name="1139677544" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 2.4, 7.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-4, 5, -1, 2),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 1
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6413" parent="Tiles/1139677544/Tile" index="0" instance=ExtResource("13_uj05c")]
+
+[node name="261516944" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641, 2.4, 3)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-3, 2, 1, 2),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-3, 2, 1, 0], [-3, 2, 1, 1], [-3, 2, 1, 2]],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6416" parent="Tiles/261516944/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6417" parent="Tiles/261516944/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6418" parent="Tiles/261516944/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="2148882389" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 2.4, 4.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-3, 3, 0, 2),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 1
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6419" parent="Tiles/2148882389/Tile" index="0" instance=ExtResource("13_uj05c")]
+
+[node name="2437580827" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.73205, 2.4, 6)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-3, 4, -1, 2),
+"tdeco": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6420" parent="Tiles/2437580827/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@6421" parent="Tiles/2437580827/TileDecoration" index="0" instance=ExtResource("9_rg5gk")]
+
+[node name="1797520211" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 2.4, 7.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-3, 5, -2, 2),
+"tdeco": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6422" parent="Tiles/1797520211/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@6423" parent="Tiles/1797520211/TileDecoration" index="0" instance=ExtResource("9_rg5gk")]
+
+[node name="3052830944" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 2.4, -1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-2, -1, 3, 2),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 1
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6424" parent="Tiles/3052830944/Tile" index="0" instance=ExtResource("13_uj05c")]
+
+[node name="1675254778" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641, 2.4, 0)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-2, 0, 2, 2),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-2, 0, 2, 0], [-2, 0, 2, 1], [-2, 0, 2, 2]],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6427" parent="Tiles/1675254778/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6428" parent="Tiles/1675254778/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6429" parent="Tiles/1675254778/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="3524152025" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 2.4, 1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-2, 1, 1, 2),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[-2, 1, 1, 0], [-2, 1, 1, 1], [-2, 1, 1, 2]],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6432" parent="Tiles/3524152025/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6433" parent="Tiles/3524152025/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6434" parent="Tiles/3524152025/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="3526324252" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 2.4, 4.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-2, 3, -1, 2),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6435" parent="Tiles/3526324252/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="210202535" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641, 2.4, -3)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-1, -2, 3, 2),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 1
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6436" parent="Tiles/210202535/Tile" index="0" instance=ExtResource("13_uj05c")]
+
+[node name="3584722488" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 2.4, -1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-1, -1, 2, 2),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6437" parent="Tiles/3584722488/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="1673852817" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 2.4, -7.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(0, -5, 5, 2),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6438" parent="Tiles/1673852817/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="3940654717" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.73205, 2.4, -3)
+info = {
+"obj": {
+"id": 1,
+"multi_tile": [],
+"obj_info": [118],
+"rotation": 1,
+"type": 0
+},
+"position": Vector4(0, -2, 2, 2),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6439" parent="Tiles/3940654717/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="Object" parent="Tiles/3940654717" index="2"]
+transform = Transform3D(0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, 0, 0.3, 0)
+
+[node name="1907512320" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 2.4, -7.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(1, -5, 4, 2),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6440" parent="Tiles/1907512320/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="1208696569" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 2.4, -7.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(2, -5, 3, 2),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6441" parent="Tiles/1208696569/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="1883622071" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 2.4, -7.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(3, -5, 2, 2),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6442" parent="Tiles/1883622071/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="1742353348" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.73205, 2.4, -6)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(3, -4, 1, 2),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 1
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6443" parent="Tiles/1742353348/Tile" index="0" instance=ExtResource("13_uj05c")]
+
+[node name="3445965910" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.59808, 2.4, -4.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(3, -3, 0, 2),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[3, -3, 0, 0], [3, -3, 0, 1], [3, -3, 0, 2]],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6446" parent="Tiles/3445965910/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6447" parent="Tiles/3445965910/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6448" parent="Tiles/3445965910/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="1598457882" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.9282, 2.4, 0)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(4, 0, -4, 2),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[4, 0, -4, 0], [4, 0, -4, 1], [4, 0, -4, 2], [4, 0, -4, 3]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6452" parent="Tiles/1598457882/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6453" parent="Tiles/1598457882/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6454" parent="Tiles/1598457882/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6455" parent="Tiles/1598457882/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="1299225270" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.79423, 2.4, 1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(4, 1, -5, 2),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[4, 1, -5, 0], [4, 1, -5, 1], [4, 1, -5, 2], [4, 1, -5, 3]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6459" parent="Tiles/1299225270/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6460" parent="Tiles/1299225270/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6461" parent="Tiles/1299225270/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6462" parent="Tiles/1299225270/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="123593743" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.9282, 2.4, -3)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(5, -2, -3, 2),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6463" parent="Tiles/123593743/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="939360502" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.79423, 2.4, -1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(5, -1, -4, 2),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[5, -1, -4, 0], [5, -1, -4, 1], [5, -1, -4, 2], [5, -1, -4, 3], [5, -1, -4, 4]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6467" parent="Tiles/939360502/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6468" parent="Tiles/939360502/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6469" parent="Tiles/939360502/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6470" parent="Tiles/939360502/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="170200663" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.66025, 2.4, 0)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(5, 0, -5, 2),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[5, 0, -5, 0], [5, 0, -5, 1], [5, 0, -5, 2], [5, 0, -5, 3], [5, 0, -5, 4]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6474" parent="Tiles/170200663/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6475" parent="Tiles/170200663/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6476" parent="Tiles/170200663/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6477" parent="Tiles/170200663/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="1566891542" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.19615, 3.6, 3)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-4, 2, 2, 3),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6478" parent="Tiles/1566891542/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="740246175" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 3.6, 4.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-4, 3, 1, 3),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6479" parent="Tiles/740246175/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="642268700" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 3.6, 1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-3, 1, 2, 3),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6480" parent="Tiles/642268700/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="4204174089" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641, 3.6, 3)
+info = {
+"obj": {
+"id": 1,
+"multi_tile": [],
+"obj_info": [118],
+"rotation": 1,
+"type": 0
+},
+"position": Vector4(-3, 2, 1, 3),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6481" parent="Tiles/4204174089/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="Object" parent="Tiles/4204174089" index="2"]
+transform = Transform3D(0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, 0, 0.3, 0)
+
+[node name="3144850909" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641, 3.6, 0)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-2, 0, 2, 3),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6482" parent="Tiles/3144850909/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="727393114" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 3.6, 1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(-2, 1, 1, 3),
+"tdeco": {
+"id": 2,
+"multi_tile": [[-2, 1, 1, 3], [-3, 1, 2, 7], [-3, 2, 1, 7], [-2, 0, 2, 7], [-2, 1, 1, 4], [-2, 1, 1, 5], [-2, 1, 1, 6], [-2, 1, 1, 7], [-2, 1, 1, 8], [-2, 2, 0, 7], [-1, 0, 1, 7], [-1, 1, 0, 7]],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6483" parent="Tiles/727393114/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="@Node3D@6484" parent="Tiles/727393114/TileDecoration" index="0" instance=ExtResource("18_6seqf")]
+
+[node name="1106135863" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.59808, 3.6, -4.5)
+info = {
+"obj": {
+"id": 1,
+"multi_tile": [],
+"obj_info": [120],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(3, -3, 0, 3),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6485" parent="Tiles/1106135863/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="2833544158" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.9282, 3.6, 0)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(4, 0, -4, 3),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[4, 0, -4, 0], [4, 0, -4, 1], [4, 0, -4, 2], [4, 0, -4, 3]],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6488" parent="Tiles/2833544158/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6489" parent="Tiles/2833544158/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6490" parent="Tiles/2833544158/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="2158215459" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.79423, 3.6, 1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(4, 1, -5, 3),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[4, 1, -5, 0], [4, 1, -5, 1], [4, 1, -5, 2], [4, 1, -5, 3]],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6493" parent="Tiles/2158215459/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6494" parent="Tiles/2158215459/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6495" parent="Tiles/2158215459/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="1061332685" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.19615, 3.6, -6)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(5, -4, -1, 3),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6496" parent="Tiles/1061332685/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="2156804731" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.06218, 3.6, -4.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(5, -3, -2, 3),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6497" parent="Tiles/2156804731/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="1787808047" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.79423, 3.6, -1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(5, -1, -4, 3),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[5, -1, -4, 0], [5, -1, -4, 1], [5, -1, -4, 2], [5, -1, -4, 3], [5, -1, -4, 4]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6501" parent="Tiles/1787808047/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6502" parent="Tiles/1787808047/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6503" parent="Tiles/1787808047/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6504" parent="Tiles/1787808047/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="2775514329" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.66025, 3.6, 0)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(5, 0, -5, 3),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[5, 0, -5, 0], [5, 0, -5, 1], [5, 0, -5, 2], [5, 0, -5, 3], [5, 0, -5, 4]],
+"rotation": 0,
+"tile_wall": 0,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6508" parent="Tiles/2775514329/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6509" parent="Tiles/2775514329/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6510" parent="Tiles/2775514329/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="@Node3D@6511" parent="Tiles/2775514329/Wall" index="3" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="2865586883" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.9282, 4.8, 0)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(4, 0, -4, 4),
+"tdeco": {
+"id": 8,
+"multi_tile": [[4, 0, -4, 4], [4, 0, -4, 5], [4, 0, -4, 6], [4, 0, -4, 7]],
+"rotation": 1,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6512" parent="Tiles/2865586883/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="TileDecoration" parent="Tiles/2865586883" index="3"]
+transform = Transform3D(0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, 0, 0.3, 0)
+
+[node name="@Node3D@6513" parent="Tiles/2865586883/TileDecoration" index="0" instance=ExtResource("19_gk8b5")]
+
+[node name="419279359" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.79423, 4.8, 1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(4, 1, -5, 4),
+"tdeco": {
+"id": 8,
+"multi_tile": [[4, 1, -5, 4], [4, 1, -5, 5], [4, 1, -5, 6], [4, 1, -5, 7]],
+"rotation": 1,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6514" parent="Tiles/419279359/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="TileDecoration" parent="Tiles/419279359" index="3"]
+transform = Transform3D(0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, 0, 0.3, 0)
+
+[node name="@Node3D@6515" parent="Tiles/419279359/TileDecoration" index="0" instance=ExtResource("19_gk8b5")]
+
+[node name="693358427" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.79423, 4.8, -1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(5, -1, -4, 4),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[5, -1, -4, 0], [5, -1, -4, 1], [5, -1, -4, 2], [5, -1, -4, 3], [5, -1, -4, 4]],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6518" parent="Tiles/693358427/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6519" parent="Tiles/693358427/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6520" parent="Tiles/693358427/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="3574431286" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.66025, 4.8, 0)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(5, 0, -5, 4),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 1,
+"multi_tile": [[5, 0, -5, 0], [5, 0, -5, 1], [5, 0, -5, 2], [5, 0, -5, 3], [5, 0, -5, 4]],
+"rotation": 0,
+"tile_wall": 1,
+"type": 2
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+vision_status = 2
+solid_status = 1
+
+[node name="@Node3D@6523" parent="Tiles/3574431286/Wall" index="0" instance=ExtResource("11_drw4v")]
+
+[node name="@Node3D@6524" parent="Tiles/3574431286/Wall" index="1" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="@Node3D@6525" parent="Tiles/3574431286/Wall" index="2" instance=ExtResource("11_drw4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="3603319277" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.79423, 6, -1.5)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(5, -1, -4, 5),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6526" parent="Tiles/3603319277/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[node name="368340166" parent="Tiles" instance=ExtResource("2_ujahc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.66025, 6, 0)
+info = {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": Vector4(5, 0, -5, 5),
+"tdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}
+
+[node name="@Node3D@6527" parent="Tiles/368340166/Tile" index="0" instance=ExtResource("5_15k4g")]
+
+[editable path="Tiles/1733285156"]
+[editable path="Tiles/4260622175"]
+[editable path="Tiles/1534670676"]
+[editable path="Tiles/3371318128"]
+[editable path="Tiles/3499163143"]
+[editable path="Tiles/1453695887"]
+[editable path="Tiles/3429005994"]
+[editable path="Tiles/3357700534"]
+[editable path="Tiles/1587697915"]
+[editable path="Tiles/3667880920"]
+[editable path="Tiles/2445838215"]
+[editable path="Tiles/2100580408"]
+[editable path="Tiles/2883917139"]
+[editable path="Tiles/3802493341"]
+[editable path="Tiles/1462689462"]
+[editable path="Tiles/2490802583"]
+[editable path="Tiles/4030109124"]
+[editable path="Tiles/1279237757"]
+[editable path="Tiles/4036759100"]
+[editable path="Tiles/4224293765"]
+[editable path="Tiles/584936504"]
+[editable path="Tiles/1639509864"]
+[editable path="Tiles/2798281466"]
+[editable path="Tiles/819843613"]
+[editable path="Tiles/3621425273"]
+[editable path="Tiles/2657373950"]
+[editable path="Tiles/3645391452"]
+[editable path="Tiles/3149790735"]
+[editable path="Tiles/1032068591"]
+[editable path="Tiles/1995243983"]
+[editable path="Tiles/3390073200"]
+[editable path="Tiles/4236616625"]
+[editable path="Tiles/2274499872"]
+[editable path="Tiles/2842664404"]
+[editable path="Tiles/143290369"]
+[editable path="Tiles/449657924"]
+[editable path="Tiles/1083427488"]
+[editable path="Tiles/517693975"]
+[editable path="Tiles/3012548803"]
+[editable path="Tiles/1865622584"]
+[editable path="Tiles/2395130918"]
+[editable path="Tiles/3480592480"]
+[editable path="Tiles/588006283"]
+[editable path="Tiles/3734929400"]
+[editable path="Tiles/3845485304"]
+[editable path="Tiles/3833789233"]
+[editable path="Tiles/1678403324"]
+[editable path="Tiles/939624195"]
+[editable path="Tiles/1520923004"]
+[editable path="Tiles/1477592249"]
+[editable path="Tiles/3154546145"]
+[editable path="Tiles/1879633388"]
+[editable path="Tiles/634265253"]
+[editable path="Tiles/1099570134"]
+[editable path="Tiles/803246865"]
+[editable path="Tiles/3487428581"]
+[editable path="Tiles/2352623253"]
+[editable path="Tiles/416258334"]
+[editable path="Tiles/1864710603"]
+[editable path="Tiles/758792026"]
+[editable path="Tiles/725239148"]
+[editable path="Tiles/2335329204"]
+[editable path="Tiles/2796731066"]
+[editable path="Tiles/1904136335"]
+[editable path="Tiles/1919451137"]
+[editable path="Tiles/3650444051"]
+[editable path="Tiles/2092732941"]
+[editable path="Tiles/349355888"]
+[editable path="Tiles/4277439415"]
+[editable path="Tiles/4013168093"]
+[editable path="Tiles/2663197201"]
+[editable path="Tiles/3722138778"]
+[editable path="Tiles/4281355535"]
+[editable path="Tiles/4156201727"]
+[editable path="Tiles/2558214251"]
+[editable path="Tiles/1216717489"]
+[editable path="Tiles/3892480640"]
+[editable path="Tiles/1499904961"]
+[editable path="Tiles/780997010"]
+[editable path="Tiles/1400883582"]
+[editable path="Tiles/2920453061"]
+[editable path="Tiles/268153919"]
+[editable path="Tiles/3736730258"]
+[editable path="Tiles/3873443978"]
+[editable path="Tiles/3917262057"]
+[editable path="Tiles/1809589845"]
+[editable path="Tiles/2452936971"]
+[editable path="Tiles/2721252183"]
+[editable path="Tiles/1069529951"]
+[editable path="Tiles/2317534216"]
+[editable path="Tiles/3537171902"]
+[editable path="Tiles/1379262441"]
+[editable path="Tiles/1643728950"]
+[editable path="Tiles/1458512003"]
+[editable path="Tiles/1865679492"]
+[editable path="Tiles/1765957539"]
+[editable path="Tiles/4008109219"]
+[editable path="Tiles/2883061120"]
+[editable path="Tiles/3533703286"]
+[editable path="Tiles/3638713080"]
+[editable path="Tiles/571643413"]
+[editable path="Tiles/1143369353"]
+[editable path="Tiles/1897168740"]
+[editable path="Tiles/340706128"]
+[editable path="Tiles/3993027272"]
+[editable path="Tiles/2363580152"]
+[editable path="Tiles/959797078"]
+[editable path="Tiles/2176990832"]
+[editable path="Tiles/2290852637"]
+[editable path="Tiles/1071144625"]
+[editable path="Tiles/3429618297"]
+[editable path="Tiles/721162469"]
+[editable path="Tiles/2567738461"]
+[editable path="Tiles/3476585630"]
+[editable path="Tiles/2499335547"]
+[editable path="Tiles/3562590944"]
+[editable path="Tiles/1136383214"]
+[editable path="Tiles/3392424979"]
+[editable path="Tiles/2597034494"]
+[editable path="Tiles/2756471693"]
+[editable path="Tiles/51696114"]
+[editable path="Tiles/1253495633"]
+[editable path="Tiles/2673114794"]
+[editable path="Tiles/2484166752"]
+[editable path="Tiles/3591562164"]
+[editable path="Tiles/170663928"]
+[editable path="Tiles/3194176111"]
+[editable path="Tiles/2594335178"]
+[editable path="Tiles/3484288067"]
+[editable path="Tiles/2963348605"]
+[editable path="Tiles/2752000953"]
+[editable path="Tiles/15192084"]
+[editable path="Tiles/1139677544"]
+[editable path="Tiles/261516944"]
+[editable path="Tiles/2148882389"]
+[editable path="Tiles/2437580827"]
+[editable path="Tiles/1797520211"]
+[editable path="Tiles/3052830944"]
+[editable path="Tiles/1675254778"]
+[editable path="Tiles/3524152025"]
+[editable path="Tiles/3526324252"]
+[editable path="Tiles/210202535"]
+[editable path="Tiles/3584722488"]
+[editable path="Tiles/1673852817"]
+[editable path="Tiles/3940654717"]
+[editable path="Tiles/1907512320"]
+[editable path="Tiles/1208696569"]
+[editable path="Tiles/1883622071"]
+[editable path="Tiles/1742353348"]
+[editable path="Tiles/3445965910"]
+[editable path="Tiles/1598457882"]
+[editable path="Tiles/1299225270"]
+[editable path="Tiles/123593743"]
+[editable path="Tiles/939360502"]
+[editable path="Tiles/170200663"]
+[editable path="Tiles/1566891542"]
+[editable path="Tiles/740246175"]
+[editable path="Tiles/642268700"]
+[editable path="Tiles/4204174089"]
+[editable path="Tiles/3144850909"]
+[editable path="Tiles/727393114"]
+[editable path="Tiles/1106135863"]
+[editable path="Tiles/2833544158"]
+[editable path="Tiles/2158215459"]
+[editable path="Tiles/1061332685"]
+[editable path="Tiles/2156804731"]
+[editable path="Tiles/1787808047"]
+[editable path="Tiles/2775514329"]
+[editable path="Tiles/2865586883"]
+[editable path="Tiles/419279359"]
+[editable path="Tiles/693358427"]
+[editable path="Tiles/3574431286"]
+[editable path="Tiles/3603319277"]
+[editable path="Tiles/368340166"]
