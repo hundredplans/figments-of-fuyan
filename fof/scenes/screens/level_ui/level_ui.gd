@@ -44,28 +44,27 @@ func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("SelectLeft") and !LevelMap.lock_inputs: LevelMap.SpectateCamera.on_select_spectate_camera_direction(-1)
 	elif Input.is_action_just_pressed("SelectRight") and !LevelMap.lock_inputs: LevelMap.SpectateCamera.on_select_spectate_camera_direction(1)
 
-var _CardUI: PackedScene = preload("res://assets/base_game/cards/card_ui/card_ui.tscn")
+var _GameCard: PackedScene = preload("res://assets/base_game/cards/game_card/game_card.tscn")
 func on_draw_card(HandCard: HandCardGD) -> void:
-	var CardUI: Control = _CardUI.instantiate()
-	CardUI.is_hover = true
-	CardUI.Heroes = Heroes
-	CardUI.custom_minimum_size = Vector2(CardUI.size.x, 0)
-	CardUI.set_info(Helper.id_to_dict(HandCard.id, "Card"))
-	CardUI.pressed.connect(on_card_selected.bind(CardUI))
-	HandBox.add_child(CardUI)
+	var GameCard: Control = _GameCard.instantiate()
+	GameCard.is_hover = true
+	GameCard.Heroes = Heroes
+	GameCard.custom_minimum_size = Vector2(GameCard.size.x, 0)
+	GameCard.set_info(Helper.id_to_dict(HandCard.id, "Card"))
+	GameCard.pressed.connect(on_card_selected.bind(GameCard))
+	HandBox.add_child(GameCard)
 	
 var _card_selected_material: Resource = preload("res://assets/base_game/cards/card_ui/card_selected_material.tres")
-var CardUISelected: Control
-func on_card_selected(CardUI: Control) -> void:
+var GameCardSelected: Control
+func on_card_selected(GameCard: Control) -> void:
 	var index: int = -1
-	if CardUISelected != null: 
-		CardUISelected.get_node("Art/BlackCard").material = null
-	if CardUI != CardUISelected:
-		CardUISelected = CardUI
-		CardUI.get_node("Art/BlackCard").material = _card_selected_material
-		index = CardUI.get_index()
+	if GameCardSelected != null: GameCardSelected.Art.get_node("CardButton").material = null
+	if GameCard != GameCardSelected:
+		GameCardSelected = GameCard
+		GameCardSelected.Art.get_node("CardButton").material = _card_selected_material
+		index = GameCard.get_index()
 		on_unpin_hand_box_panel()
-	else: CardUISelected = null; on_pin_hand_box_panel()
+	else: GameCardSelected = null; on_pin_hand_box_panel()
 	LevelMap.Hand.on_card_selected(index)
 		
 func on_card_placed(index: int) -> void:
@@ -95,9 +94,9 @@ func _on_hand_phase_hitbox_pressed():
 	LevelMap.on_change_game_phase("PlayerPhase")
 	
 func on_player_phase_start() -> void:
-	if CardUISelected != null:
-		CardUISelected.get_node("Art/BlackCard").material = null
-		CardUISelected = null
+	if GameCardSelected != null:
+		#GameCardSelected.get_node("Art/BlackCard").material = null
+		GameCardSelected = null
 		
 	PassUnitTurn.visible = true
 	on_set_hand_box_cards_state()
@@ -117,7 +116,7 @@ func on_add_unit_status_box(Unit: UnitGD) -> void:
 	if UnitStatus.visible: StatusBoxPanel.visible = true
 
 const PANEL_MOVE_TWEEN_DURATION: float = 0.1
-const HAND_BOX_PANEL_OFFSET: int = 380
+const HAND_BOX_PANEL_OFFSET: int = 390
 const STATUS_BOX_PANEL_OFFSET: int = 135
 
 func _on_panel_container_mouse_entered(): on_extended_position_container(HandBoxPanel)

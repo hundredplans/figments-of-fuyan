@@ -56,7 +56,7 @@ func on_start_phase_start() -> void:
 func on_player_phase_start() -> void:
 	PlayerManager.on_player_phase_start()
 	for Unit in on_units():
-		Unit.stats("speed", Unit.max_speed, null, true)
+		Unit.stats("speed", Unit.max_speed, "StartPlayerPhase", true)
 		Unit.attack_amount = 1
 
 func on_player_end_turn_phase_start() -> void:
@@ -74,7 +74,7 @@ func all_units() -> Array:
 	return FieldedUnits.get_children()
 
 func on_units(team: int = 0, relation: String = "Ally") -> Array:
-	return FieldedUnits.get_children().filter(on_match_team_relation.bind(team, relation))
+	return FieldedUnits.get_children().filter(func(x: UnitGD): return !x.is_queued_for_deletion()).filter(on_match_team_relation.bind(team, relation))
 
 func on_unit_team_index(Unit: UnitGD) -> int:
 	return on_units(Unit.team).find(Unit)
@@ -101,7 +101,7 @@ func _process(_delta: float) -> void:
 			LevelMap.set_lock_inputs(true)
 		
 func on_movement_finished(Unit: UnitGD) -> void:
-	Unit.stats("speed", -1)
+	Unit.stats("speed", -1, "MovementFinished")
 	Unit.occupy_tile(active_event[2])
 	if event_queue.is_empty() or event_queue[0][0] != "MoveUnit" or event_queue[0][1] != Unit:
 		on_unit_travel_finished(Unit)
@@ -167,7 +167,7 @@ func on_attack_finished(Unit: UnitGD) -> void:
 func _attack_target(_Unit: UnitGD, _Tile: TileGD) -> void:
 	pass
 
-func kill_unit(Unit: UnitGD, Killer: UnitGD) -> void:
+func kill_unit(Unit: UnitGD, Killer: String) -> void:
 	event_queue.append(["DeathUnit", Unit, Killer])
 
 func on_death() -> void:
@@ -175,20 +175,21 @@ func on_death() -> void:
 	LevelMap.set_lock_inputs(true)
 
 func on_death_finished(Unit: UnitGD) -> void:
+	Unit.on_death()
+	LevelMap.set_lock_inputs(false)
 	PlayerManager.on_death_finished(active_event[2], Unit)
 	Deck.on_draw_card()
-	Unit.on_death()
 	active_event = []
-	LevelMap.set_lock_inputs(false)
 
 func on_drop_calculate_damage(hdiff: int, scale_time: float, Unit: UnitGD) -> void:
 	hdiff = abs(hdiff * 0.5)
 	if hdiff > Unit.height:
 		var health_decrease: int = -((hdiff - Unit.height)) * 2
 		if Unit.health + health_decrease <= 0:
-			on_clear_event_queue()
+			active_event = []
+			event_queue = []
 		else: on_descale_unit(Unit, scale_time)
-		Unit.stats("health", health_decrease)
+		Unit.stats("health", health_decrease, "Height")
 
 const DROP_HEIGHT_SCALE_DOWN := Vector3(1, 0.05, 1)
 func on_descale_unit(Unit: UnitGD, scale_time: float) -> void:

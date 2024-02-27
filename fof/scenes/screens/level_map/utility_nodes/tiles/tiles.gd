@@ -210,6 +210,15 @@ func on_tiles_by_adjacent(tiles: Array = get_children(), astar: AStar3D = null) 
 
 # ----------------- Tiles UI
 
+func _on_remove_tiles_above_height(Tile: TileGD, height: int) -> bool:
+	for i in range(Tile.info.position.w + 1, height + int(Tile.info.tile.type > 0 or Tile.info.obj.id in is_stair_object)):
+		var _Tile: TileGD = position_to_tile(Vector4(Tile.info.position.x, Tile.info.position.y, Tile.info.position.z, Tile.info.position.w + i))
+		if _Tile != null: return false
+	return true
+
+func on_remove_tiles_above_height(tiles: Array, height: int) -> Array:
+	return tiles.filter(func(x: TileGD): return _on_remove_tiles_above_height(x, height))
+
 func on_can_ramp_connect(Tile: TileGD, _Tile: TileGD, hdiff: int) -> bool:
 	if abs(hdiff) == 1: # ensures it's from a regular tile
 		var stair_or_tile_rot: int = (_Tile.info.obj.rotation) if (_Tile.info.obj.id in is_stair_object) else (_Tile.info.tile.rotation)
@@ -229,8 +238,9 @@ func on_create_movement_paths(Unit: UnitGD) -> void:
 	var _enemy_tiles: Array = all_neighbours(Unit.Tile, Unit.speed + 1, true)\
 	.filter(func(x: TileGD): var _Unit: UnitGD = Units.unit_by_tile(x); return _Unit != null and _Unit.team == 1)
 	var _in_range_tiles: Array = all_in_range(Unit.Tile, Unit.speed, true, true).filter(on_filter_in_range_tiles)
-	_in_range_tiles.append(Unit.Tile)
-	var full_tiles: Array = _enemy_tiles + _in_range_tiles
+	
+	var full_tiles: Array = on_remove_tiles_above_height(_enemy_tiles + _in_range_tiles, Unit.height + Unit.Tile.info.position.w)
+	full_tiles.append(Unit.Tile)
 	
 	var tiles_by_adjacent: Dictionary = on_tiles_by_adjacent(full_tiles, astar)
 	var movement_types: Array = []

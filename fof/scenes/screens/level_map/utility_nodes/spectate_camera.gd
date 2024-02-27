@@ -92,12 +92,13 @@ func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0) -> voi
 					if past_unit.UnitStatus.modulate_state != "TurnActive":
 						past_unit.UnitStatus.on_set_status_box_modulate(past_unit.UnitStatus.past_modulate_state)
 					
-					if id == -1: unit_spectate_id += direction
-					else: unit_spectate_id = id
-					
-					if unit_spectate_id == units.size(): unit_spectate_id = 0
-					elif unit_spectate_id < 0: unit_spectate_id = units.size() - 1
-					
+				if id == -1: unit_spectate_id += direction
+				else: unit_spectate_id = id
+				
+				if unit_spectate_id == units.size(): unit_spectate_id = 0
+				elif unit_spectate_id < 0: unit_spectate_id = units.size() - 1
+				
+				if units.size() > unit_spectate_id:
 					var Unit: UnitGD = units[unit_spectate_id]
 					CAMERA_HEIGHT["Unit"] = Unit.height * CAMERA_UNIT_HEIGHT_MULTIPLIER
 					CAMERA_LOOK_AT_HEIGHT["Unit"] = Unit.height * LOOK_AT_UNIT_HEIGHT_MULTIPLIER

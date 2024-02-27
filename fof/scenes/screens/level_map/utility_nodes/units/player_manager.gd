@@ -133,12 +133,23 @@ func _on_unit_selected(Unit: UnitGD) -> void:
 		UnitSelected = Unit
 		LevelUI.get_node("SkipReminder").visible = ActiveUnit != null and ActiveUnit != Unit
 
-func on_death_finished(Killer: UnitGD, Deathee: UnitGD) -> void:
-	if Killer.team == 0: on_check_autopass(Killer)
+func on_death_finished(Killer: String, Deathee: UnitGD) -> void:
+	if Killer == "Unit" and Deathee.Killer.team == 0: on_check_autopass(Deathee.Killer)
+	on_remove_unit_turn(Deathee)
 	if Deathee.team == 0:
-		passed_turns.erase(Deathee)
 		SpectateCamera.unit_positions.remove_at(Deathee.get_index())
-	
+		if SpectateCamera.unit_spectate_id == Deathee.get_index():
+			SpectateCamera.on_select_spectate_camera_direction(1)
+			
+	if Units.on_units().is_empty(): print("DIE")
+		
 func on_unit_awakened(_Unit: UnitGD) -> void:
 	SpectateCamera.unit_positions.append(SpectateCamera.total_progress)
 	
+func on_remove_unit_turn(Unit: UnitGD) -> void:
+	if Unit.team == 0:
+		if ActiveUnit == Unit:
+			on_pass_unit_turn()
+			Tiles.on_remove_tile_material(Unit.Tile, "TurnUsed")
+			passed_turns.erase(Unit)
+		else: unpassed_turns.erase(Unit); passed_turns.erase(Unit)
