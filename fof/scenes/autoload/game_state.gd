@@ -9,6 +9,10 @@ var player_deck: Array = [
 	{"id": 120,
 	"tool_id": 0,
 	"effects": []},
+	
+	{"id": 124,
+	"tool_id": 0,
+	"effects": []},
 ]
 var player_boons: Array = []
 

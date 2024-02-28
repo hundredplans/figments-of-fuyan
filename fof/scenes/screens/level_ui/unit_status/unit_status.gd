@@ -22,11 +22,8 @@ func on_set_unit(_Unit: UnitGD) -> void:
 	on_reset_tool()
 	
 	var hero_bgfn: String = Unit.base_card.bgfn if Unit.rarity != 7 else Helper.id_to_dict(Heroes.id_to_base(Unit.id), "Card").bgfn
-	var texture_path: String = "res://assets/base_game/cards/card_ui/default_art_max.png"
-	var card_texture_path: String = "res://assets/base_game/cards/" + hero_bgfn + "/art_max.png"
-	if FileAccess.file_exists(card_texture_path):
-		texture_path = card_texture_path
-	$ArtPop.texture_normal = load(texture_path)
+	var card_texture_path: String = "res://assets/base_game/cards/" + hero_bgfn + "/art_mini.png"
+	$ArtPop.texture_normal = load(card_texture_path)
 
 @onready var AttackLabel: Label = $Stats/Attack/Label
 @onready var HealthLabel: Label = $Stats/Health/Label
