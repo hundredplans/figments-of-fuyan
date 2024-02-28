@@ -30,6 +30,7 @@ var Vision: VisionGD
 var Units: UnitsGD
 var TeamControl: Node
 
+@onready var UnitCombatStatus: Sprite3D = $UnitCombatStatus
 @onready var Model: Node3D = $Model
 func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: int, tile: TileGD) -> void:
 	id = _id
@@ -51,6 +52,7 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	TeamControl.Unit = self
 	add_child(TeamControl)
 	
+	UnitCombatStatus.position.y = height * 1.2
 	Model.rot = rot
 	Model.on_add_model()
 	occupy_tile(tile)

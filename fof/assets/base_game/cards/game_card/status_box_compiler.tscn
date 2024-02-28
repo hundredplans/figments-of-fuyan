@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://c87y7tgdpfa5n"]
+
+[ext_resource type="Script" path="res://assets/base_game/cards/game_card/status_box_compiler.gd" id="1_hn25t"]
+
+[node name="StatusBoxCompiler" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hn25t")
+card_id = 105
+
+[node name="ArtCompile" type="Sprite2D" parent="."]
+centered = false

@@ -1,8 +1,10 @@
-[gd_scene load_steps=15 format=3 uid="uid://ccsnhg1yt1lia"]
+[gd_scene load_steps=17 format=3 uid="uid://ccsnhg1yt1lia"]
 
 [ext_resource type="Script" path="res://assets/base_game/cards/game_card/game_card.gd" id="1_pl2by"]
-[ext_resource type="Texture2D" uid="uid://cioht26pw4tou" path="res://assets/base_game/cards/game_card/test/118.png" id="2_bykob"]
+[ext_resource type="Texture2D" uid="uid://b6q51hfsin88k" path="res://assets/base_game/cards/game_card/rarity/2.png" id="2_hayc4"]
+[ext_resource type="Texture2D" uid="uid://1fasb544tbjl" path="res://assets/base_game/cards/game_card/area_background/1.png" id="2_md8b4"]
 [ext_resource type="Texture2D" uid="uid://dqj6m376wbhwo" path="res://assets/base_game/cards/card_ui/stats/att/att.png" id="3_l1qqa"]
+[ext_resource type="Texture2D" uid="uid://cb6nky7lu8ox1" path="res://assets/base_game/cards/118 - Palmsy Dumsy/art_pop.png" id="3_ugywk"]
 [ext_resource type="LabelSettings" uid="uid://qp0350v2j4ah" path="res://assets/UI/roboto/roboto32_outline.tres" id="4_56a35"]
 [ext_resource type="Texture2D" uid="uid://b0l6fop34q6ew" path="res://assets/base_game/cards/card_ui/stats/hp/hp.png" id="5_f4yyf"]
 [ext_resource type="Texture2D" uid="uid://ddob5qay4neya" path="res://assets/base_game/cards/card_ui/stats/spd/spd.png" id="6_raaxe"]
@@ -23,7 +25,8 @@ outline_color = Color(0, 0, 0, 1)
 [node name="GameCard" type="Control" node_paths=PackedStringArray("Art", "Text", "Stats")]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 240.0
+offset_top = 10.0
+offset_right = 264.0
 offset_bottom = 390.0
 mouse_filter = 2
 script = ExtResource("1_pl2by")
@@ -34,12 +37,18 @@ Stats = NodePath("Stats")
 [node name="Art" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 0
-offset_top = 10.0
-offset_right = 240.0
-offset_bottom = 390.0
+offset_right = 264.0
+offset_bottom = 380.0
 mouse_filter = 2
 
+[node name="AreaBackground" type="Sprite2D" parent="Art"]
+texture_filter = 1
+position = Vector2(132, 190)
+texture = ExtResource("2_md8b4")
+metadata/_edit_lock_ = true
+
 [node name="CardButton" type="TextureButton" parent="Art"]
+texture_filter = 1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -47,24 +56,32 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
-texture_normal = ExtResource("2_bykob")
+texture_normal = ExtResource("2_hayc4")
+metadata/_edit_lock_ = true
+
+[node name="ArtPop" type="Sprite2D" parent="Art"]
+texture_filter = 1
+position = Vector2(132, 190)
+texture = ExtResource("3_ugywk")
+metadata/_edit_lock_ = true
 
 [node name="Stats" type="Control" parent="."]
 layout_mode = 1
-anchors_preset = 0
-offset_top = 10.0
-offset_right = 240.0
-offset_bottom = 390.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 
 [node name="Attack" type="Control" parent="Stats"]
 layout_mode = 1
 anchor_top = -0.026
 anchor_bottom = -0.026
-offset_left = 38.0
-offset_top = 331.58
-offset_right = 102.0
-offset_bottom = 381.58
+offset_left = 48.0
+offset_top = 345.88
+offset_right = 112.0
+offset_bottom = 395.88
 mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="Stats/Attack"]
@@ -81,9 +98,9 @@ anchor_left = -0.469
 anchor_top = -6.037
 anchor_right = -0.469
 anchor_bottom = -6.037
-offset_left = 10.016
+offset_left = 7.016
 offset_top = 319.015
-offset_right = 50.016
+offset_right = 47.016
 offset_bottom = 360.015
 text = "3"
 label_settings = ExtResource("4_56a35")
@@ -94,10 +111,10 @@ metadata/_edit_lock_ = true
 layout_mode = 1
 anchor_top = -0.026
 anchor_bottom = -0.026
-offset_left = 125.0
-offset_top = 331.58
-offset_right = 195.0
-offset_bottom = 381.58
+offset_left = 138.0
+offset_top = 345.88
+offset_right = 208.0
+offset_bottom = 395.88
 mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="Stats/Health"]
@@ -127,10 +144,10 @@ metadata/_edit_lock_ = true
 layout_mode = 1
 anchor_top = -0.026
 anchor_bottom = -0.026
-offset_left = 195.0
-offset_top = 303.88
-offset_right = 251.0
-offset_bottom = 361.88
+offset_left = 208.0
+offset_top = 296.88
+offset_right = 264.0
+offset_bottom = 354.88
 mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="Stats/Speed"]
@@ -158,10 +175,10 @@ horizontal_alignment = 1
 
 [node name="Energy" type="Control" parent="Stats"]
 anchors_preset = 0
-offset_left = 6.0
-offset_top = 163.0
-offset_right = 53.0
-offset_bottom = 210.0
+offset_left = 17.0
+offset_top = 181.0
+offset_right = 64.0
+offset_bottom = 228.0
 mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="Stats/Energy"]
@@ -186,10 +203,10 @@ metadata/_edit_lock_ = true
 layout_mode = 1
 anchor_top = -0.026
 anchor_bottom = -0.026
-offset_left = 187.0
-offset_top = 172.88
-offset_right = 237.0
-offset_bottom = 222.88
+offset_left = 197.0
+offset_top = 190.88
+offset_right = 247.0
+offset_bottom = 240.88
 mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="Stats/Tool"]
@@ -199,20 +216,21 @@ metadata/_edit_lock_ = true
 
 [node name="Text" type="Control" parent="."]
 layout_mode = 1
-anchors_preset = 0
-offset_top = 10.0
-offset_right = 240.0
-offset_bottom = 390.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 
 [node name="Text" type="RichTextLabel" parent="Text"]
 clip_contents = false
 layout_mode = 1
 anchors_preset = -1
-offset_left = 61.0
-offset_top = 269.0
-offset_right = 179.0
-offset_bottom = 271.0
+offset_left = 71.0
+offset_top = 285.0
+offset_right = 189.0
+offset_bottom = 287.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -233,10 +251,10 @@ threaded = true
 [node name="Name" type="Label" parent="Text"]
 texture_filter = 1
 layout_mode = 0
-offset_left = 59.0
-offset_top = 173.0
-offset_right = 181.0
-offset_bottom = 207.0
+offset_left = 69.0
+offset_top = 193.0
+offset_right = 191.0
+offset_bottom = 227.0
 label_settings = SubResource("LabelSettings_23xl3")
 horizontal_alignment = 1
 vertical_alignment = 1

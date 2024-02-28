@@ -6,8 +6,8 @@ const BRIGHT_GREEN: Color = Color("00ff00")
 const MEDIUM_GRAY: Color = Color("8c8c8c")
 
 var Unit: UnitGD
-@onready var CameraIcon: Sprite2D = $UnitStatus/CameraIcon
-@onready var oHoverCard: Control = $UnitStatus/HoverCard
+@onready var CameraIcon: Sprite2D = $CameraIcon
+@onready var oHoverCard: Control = $HoverCard
 
 func _ready() -> void:
 	oHoverCard.visible = false
@@ -26,11 +26,11 @@ func on_set_unit(_Unit: UnitGD) -> void:
 	var card_texture_path: String = "res://assets/base_game/cards/" + hero_bgfn + "/art_max.png"
 	if FileAccess.file_exists(card_texture_path):
 		texture_path = card_texture_path
-	$UnitStatus/ArtMax.texture_normal = load(texture_path)
+	$ArtPop.texture_normal = load(texture_path)
 
-@onready var AttackLabel: Label = $UnitStatus/Stats/Attack/Label
-@onready var HealthLabel: Label = $UnitStatus/Stats/Health/Label
-@onready var SpeedLabel: Label = $UnitStatus/Stats/Speed/Label
+@onready var AttackLabel: Label = $Stats/Attack/Label
+@onready var HealthLabel: Label = $Stats/Health/Label
+@onready var SpeedLabel: Label = $Stats/Speed/Label
 
 func on_reset_stats() -> void:
 	AttackLabel.text = str(Unit.attack)
@@ -51,7 +51,7 @@ func on_reset_stats() -> void:
 	
 	for stat in ["Attack", "Health", "Speed"]:
 		var val: int = Unit["max_" + stat.to_lower()] - Unit.base_card[stat[0].to_lower()]
-		get_node("UnitStatus/HoverCard/Buffs/HBoxContainer/" + stat + "/Label").text = ("+" if val >= 0 else "") + str(val)
+		get_node("HoverCard/Buffs/HBoxContainer/" + stat + "/Label").text = ("+" if val >= 0 else "") + str(val)
 	
 func on_reset_status_effects() -> void:
 	pass
@@ -117,7 +117,10 @@ var modulate_state: String
 func on_set_status_box_modulate(val: String) -> void:
 	CameraIcon.visible = val == "Spectating"
 	if !CameraIcon.visible:
-		$UnitStatus/Background/Outside.modulate = modulates[val]
+		$Background/Outside.modulate = modulates[val]
 		modulate_state = val
 		if modulate_state in ["Ally", "TurnUsed", "Enemy"]:
 			past_modulate_state = modulate_state
+
+func on_update_sprite_texture() -> void:
+	pass

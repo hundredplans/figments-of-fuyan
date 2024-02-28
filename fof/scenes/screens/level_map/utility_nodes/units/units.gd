@@ -62,6 +62,8 @@ func on_player_phase_start() -> void:
 func on_player_end_turn_phase_start() -> void:
 	PlayerManager.on_player_end_turn_phase_start()
 
+func unit_by_tile_team_bool(Tile: TileGD, team: int) -> bool:
+	return FieldedUnits.get_children().any(func(x: UnitGD): return x.Tile == Tile and x.team == team)
 func unit_by_tile_bool(Tile: TileGD) -> bool:
 	return FieldedUnits.get_children().any(func(x: UnitGD): return x.Tile == Tile)
 
@@ -180,6 +182,9 @@ func on_death_finished(Unit: UnitGD) -> void:
 	PlayerManager.on_death_finished(active_event[2], Unit)
 	Deck.on_draw_card()
 	active_event = []
+	
+	if Unit.Model.current_walk_stream_player != null:
+		AudioMaster.on_cutoff_sfx(Unit.Model.current_walk_stream_player)
 
 func on_drop_calculate_damage(hdiff: int, scale_time: float, Unit: UnitGD) -> void:
 	hdiff = abs(hdiff * 0.5)

@@ -81,7 +81,7 @@ func on_check_autopass(Unit: UnitGD) -> void:
 		if Unit.attack_amount == 0: on_pass_unit_turn(); return
 		else: 
 			Tiles.on_create_movement_paths(Unit)
-			if Tiles.movement_paths.tiles.is_empty(): 
+			if Tiles.movement_paths.tiles.is_empty() and Tiles.movement_paths.tiles.filter(func(x: TileGD): return Units.unit_by_tile_team_bool(x, 0)).is_empty(): 
 				on_pass_unit_turn()
 				return
 	
@@ -138,8 +138,8 @@ func on_death_finished(Killer: String, Deathee: UnitGD) -> void:
 	on_remove_unit_turn(Deathee)
 	if Deathee.team == 0:
 		SpectateCamera.unit_positions.remove_at(Deathee.get_index())
-		if SpectateCamera.unit_spectate_id == Deathee.get_index():
-			SpectateCamera.on_select_spectate_camera_direction(1)
+		if !unpassed_turns.is_empty() and SpectateCamera.unit_spectate_id == Deathee.get_index():
+			SpectateCamera.on_spectate("Unit", unpassed_turns[0].get_index())
 			
 	if Units.on_units().is_empty(): print("DIE")
 		

@@ -18,7 +18,15 @@ func set_info(_info: Dictionary) -> void:
 	Text.get_node("Text").text = info.text.compiled
 	Text.get_node("Name").text = info["sname"]
 	
-	Art.get_node("CardButton").texture_normal = load("res://assets/base_game/cards/game_card/test/" + str(info.id) + ".png")
+	Art.get_node("CardButton").texture_normal = load("res://assets/base_game/cards/game_card/rarity/" + str(info.r) + ".png")
+	Helper.create_button_clickmask(Art.get_node("CardButton"))
+	
+	for area in Helper.on_item_dicts("Area"):
+		if info.id in area.cards:
+			$Art/AreaBackground.texture = load("res://assets/base_game/cards/game_card/area_background/" + str(area.id) + ".png")
+			break
+			
+	$Art/ArtPop.texture = load("res://assets/base_game/cards/" + info.bgfn + "/art_pop.png")
 
 func set_tool(_tool_id: int) -> void:
 	pass
