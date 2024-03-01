@@ -1,0 +1,40 @@
+[gd_scene load_steps=4 format=3 uid="uid://c42bnq7frgogc"]
+
+[ext_resource type="LabelSettings" uid="uid://duy8g0fum2k06" path="res://assets/UI/roboto/roboto20_outline.tres" id="1_d75mo"]
+[ext_resource type="Script" path="res://assets/env/level_editor/height_control.gd" id="1_ig1uf"]
+[ext_resource type="LabelSettings" uid="uid://qp0350v2j4ah" path="res://assets/UI/roboto/roboto32_outline.tres" id="2_62ly6"]
+
+[node name="HeightControl" type="Control"]
+layout_mode = 3
+anchor_right = 0.078
+anchor_bottom = 0.037
+offset_right = -0.76001
+offset_bottom = 0.0400009
+script = ExtResource("1_ig1uf")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_right = 149.0
+offset_bottom = 40.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Eye"
+label_settings = ExtResource("1_d75mo")
+horizontal_alignment = 1
+
+[node name="HeightLabel" type="Label" parent="PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "1.6"
+label_settings = ExtResource("2_62ly6")
+horizontal_alignment = 1
+
+[node name="GrabButton" type="Button" parent="PanelContainer/HBoxContainer"]
+modulate = Color(1, 1, 0.0745098, 1)
+layout_mode = 2
+size_flags_horizontal = 3

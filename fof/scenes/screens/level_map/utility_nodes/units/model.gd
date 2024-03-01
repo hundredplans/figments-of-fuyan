@@ -39,8 +39,6 @@ func on_add_model() -> void:
 	
 	rot = (rot + 2) % 6
 	on_set_rotation()
-	
-	
 
 func on_play_animation(ani_name: String) -> void:
 	AniPlayer.play(ani_name, Unit.Units.UNIT_ANIMATION_BLEND_TIME)
@@ -58,7 +56,7 @@ func on_find_walk_sfx(id: int) -> String:
 	var sfx: String
 	match id:
 		1: sfx = Helper.area_to_default_ground[Unit.Units.GameState.area_info.id]
-		3,4: sfx = "water_walk"
+		3,4: sfx = "WaterWalk"
 	return sfx
 	
 func on_finish_animation(ani_name: String) -> void:
@@ -79,7 +77,7 @@ func move_to_tile(Tile: TileGD, type: Vector2i) -> void:
 func attack_tile(Tile: TileGD) -> void:
 	_look_at(Tile)
 	on_play_animation("Attack")
-	
+	AudioMaster.play_sfx(Unit.AudioDict.ATTACK)
 
 var jump_start: Vector3
 var jump_end: Vector3
@@ -157,6 +155,7 @@ func _look_at(Tile: TileGD) -> void: #will rotate the object
 
 func on_death() -> void:
 	on_play_animation("Death")
+	AudioMaster.play_sfx(Unit.AudioDict.DEATH)
 
 func on_set_rotation() -> void:
 	rotation_degrees.y = 270 + (rot * 60)

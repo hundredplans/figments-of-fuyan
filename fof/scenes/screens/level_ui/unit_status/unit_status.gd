@@ -1,5 +1,6 @@
 extends Control
 
+var is_model: bool
 var Heroes: HeroesGD
 const DARK_RED: Color = Color("ff0000")
 const BRIGHT_GREEN: Color = Color("00ff00")
@@ -72,13 +73,14 @@ var HoverCard: Control
 func on_initiate_hover_card() -> void:
 	await get_tree().create_timer(HOVER_TIME_DELAY).timeout
 	if is_hover and HoverCard == null:
-		oHoverCard.visible = true
 		var CardUI: Control = preload("res://assets/base_game/cards/card_ui/card_ui.tscn").instantiate()
 		CardUI.Heroes = Heroes
 		CardUI.set_info(Unit.base_card)
 		HoverCard = CardUI
 		HoverCard.z_index = 10
 		oHoverCard.add_child(CardUI)
+		oHoverCard.visible = true
+		oHoverCard.position = get_global_mouse_position() + HOVER_CARD_OFFSET
 	
 func on_remove_hover_card() -> void:
 	if HoverCard != null:
@@ -119,5 +121,5 @@ func on_set_status_box_modulate(val: String) -> void:
 		if modulate_state in ["Ally", "TurnUsed", "Enemy"]:
 			past_modulate_state = modulate_state
 
-func on_update_sprite_texture() -> void:
-	pass
+func on_update_combat_status_texture() -> void: pass
+	#Unit.UnitCombatStatus.texture = ImageTexture.create_from_image(RenderingServer.bake_render_uv2(self, [], size)[0])

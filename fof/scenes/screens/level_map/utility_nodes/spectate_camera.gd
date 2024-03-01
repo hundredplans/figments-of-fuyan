@@ -2,7 +2,7 @@ extends Camera3D
 
 @export var LOOK_AT_UNIT_HEIGHT_MULTIPLIER: float = 0.8
 @export var CAMERA_UNIT_HEIGHT_MULTIPLIER: float = 1.2
-@export var CAMERA_RADIUS: float = 2.0
+@export var CAMERA_RADIUS: float = 2.0 * (1 + (0.01 * Settings.camera_distance))
 
 @export var CAMERA_LOOK_AT_HEIGHT: Dictionary = {
 	"Spawn": 1.9, # This is always equal to a 2 height unit to make transitions as smoothless as possible

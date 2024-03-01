@@ -4,7 +4,7 @@ var ID: int = 0
 var rarity: int = 2
 var stats: Array = [1,1,1,1]
 var personality_sliders: Array = [4,4,4,4,4]
-var height: int = 1
+var height: Dictionary
 
 const TID: int = 2
 const FILE_LOADER_NAME: String = "Card"
@@ -143,9 +143,7 @@ func on_item_selected(item_info: Dictionary, change_rarity: bool = true) -> void
 		_on_choose_rarity_item_selected(item_info.r)
 		$CardCreator/ChooseRarity.select_item(item_info.r)
 	
-	height = item_info.height
-	$HeightButton.default = height
-	$HeightButton.set_grabber_position()
+	if typeof(item_info.height) == TYPE_DICTIONARY: height = item_info.height; on_set_inital_height_controls()
 
 func _on_delete_card_pressed():
 	Helper.on_delete_item(FILE_LOADER_NAME, str(ID), Internal, self, Settings.cards_can_delete_directory)
@@ -183,9 +181,6 @@ func _on_model_viewer_button_button_down():
 func _on_model_viewer_button_button_up():
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
-func _on_height_selected(i: int):
-	height = i
-
 const EMPTY_INFO: Dictionary = {
 	"id": 0,
 	"tid": 2,
@@ -203,7 +198,10 @@ const EMPTY_INFO: Dictionary = {
 	"aic": 4,
 	"ait": 4,
 	"aia": 4,
-	"height": 2,
+	"height": {"eye": 1.6, "top": 1.8},
 	"bgfn": "",
 }
 func _on_empty_card_pressed(): on_item_selected(EMPTY_INFO, false)
+
+func on_set_inital_height_controls() -> void:
+	pass

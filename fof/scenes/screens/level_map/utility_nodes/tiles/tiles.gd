@@ -264,6 +264,8 @@ func on_create_movement_paths(Unit: UnitGD) -> void:
 					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(3, 0))
 				elif hdiff == 0:
 					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i.ZERO)
+				else: on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(4, hdiff))
+					
 			elif hdiff == 1 and _Tile.info.tile.type == 1: # regular to half tile
 				on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(3, 0))
 			elif hdiff == 0: # movement between regular tiles

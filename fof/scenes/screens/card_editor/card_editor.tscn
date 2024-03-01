@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dgjchsjrv72a3"]
+[gd_scene load_steps=15 format=3 uid="uid://dgjchsjrv72a3"]
 
 [ext_resource type="Script" path="res://static/game_info/heroes.gd" id="1_5aclk"]
 [ext_resource type="Script" path="res://scenes/screens/card_editor/card_editor.gd" id="1_hv8xs"]
@@ -11,6 +11,8 @@
 [ext_resource type="Texture2D" uid="uid://bgbyoyqx40n27" path="res://assets/base_game/cards/card_ui/default_art_max.png" id="6_036w2"]
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="6_crlth"]
 [ext_resource type="PackedScene" uid="uid://60bl7vlw3efv" path="res://assets/base_game/cards/card_ui/default_model.glb" id="9_cp3lr"]
+[ext_resource type="PackedScene" uid="uid://dqfh4mrpesgll" path="res://assets/env/level_editor/ghost_arrow.glb" id="12_0o1rn"]
+[ext_resource type="PackedScene" uid="uid://c42bnq7frgogc" path="res://assets/env/level_editor/height_control.tscn" id="13_ik3kg"]
 
 [sub_resource type="World3D" id="World3D_8b6j0"]
 
@@ -289,19 +291,17 @@ render_target_update_mode = 4
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="ModelViewer/SubViewport/ModelWorld"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0811731, 1.69899, 3.2611)
 
-[node name="Camera3D" type="Camera3D" parent="ModelViewer/SubViewport"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.30054, 2.78849)
+[node name="HeightTracker" type="Node3D" parent="ModelViewer/SubViewport/ModelWorld"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 
-[node name="HeightButton" parent="." instance=ExtResource("6_18pqn")]
-offset_left = 1355.0
-offset_top = 478.0
-offset_right = 1638.0
-offset_bottom = 531.0
-min_max = Vector2i(1, 6)
-steps = Vector2i(1, 2)
-default = 2
-label_text = "Height"
-snap_mode = true
+[node name="Eye" parent="ModelViewer/SubViewport/ModelWorld/HeightTracker" instance=ExtResource("12_0o1rn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Top" parent="ModelViewer/SubViewport/ModelWorld/HeightTracker" instance=ExtResource("12_0o1rn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+
+[node name="Camera3D" type="Camera3D" parent="ModelViewer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 3)
 
 [node name="ModelViewerButton" type="Button" parent="."]
 modulate = Color(1, 1, 1, 0)
@@ -318,6 +318,28 @@ offset_right = 631.0
 offset_bottom = 795.0
 theme_override_constants/separation = 0
 
+[node name="HeightControls" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 331.0
+offset_top = 145.0
+offset_right = 506.0
+offset_bottom = 621.0
+mouse_filter = 1
+
+[node name="EyeControl" parent="HeightControls" instance=ExtResource("13_ik3kg")]
+layout_mode = 1
+offset_top = 436.0
+offset_right = 135.74
+offset_bottom = 458.388
+label_name = "Eye"
+
+[node name="TopControl" parent="HeightControls" instance=ExtResource("13_ik3kg")]
+layout_mode = 1
+offset_top = 395.0
+offset_right = 135.74
+offset_bottom = 417.388
+label_name = "Top"
+
 [connection signal="text_submitted" from="CardCreator/EditFileName" to="." method="_on_edit_file_name_text_submitted"]
 [connection signal="item_selected" from="CardCreator/ChooseRarity" to="." method="_on_choose_rarity_item_selected"]
 [connection signal="text_changed" from="CardCreator/CardText" to="." method="_on_card_text_changed"]
@@ -326,6 +348,5 @@ theme_override_constants/separation = 0
 [connection signal="pressed" from="Buttons/LoadCard" to="." method="_on_load_card_pressed"]
 [connection signal="pressed" from="Buttons/DeleteCard" to="." method="_on_delete_card_pressed"]
 [connection signal="pressed" from="Buttons/NewCard" to="." method="_on_empty_card_pressed"]
-[connection signal="item_selected" from="HeightButton" to="." method="_on_height_selected"]
 [connection signal="button_down" from="ModelViewerButton" to="." method="_on_model_viewer_button_button_down"]
 [connection signal="button_up" from="ModelViewerButton" to="." method="_on_model_viewer_button_button_up"]
