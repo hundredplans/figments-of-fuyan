@@ -6,6 +6,7 @@ signal mouse_in_ui
 
 var Heroes: HeroesGD
 
+
 @onready var PassUnitTurn := %PassUnitTurn
 @onready var StatusBoxPanel := $UnitStatusBoxPanel
 @onready var HandBoxPanel := $HandBoxPanel
@@ -116,14 +117,14 @@ func on_add_unit_status_box(Unit: UnitGD) -> void:
 	if UnitStatus.visible: StatusBoxPanel.visible = true
 
 const PANEL_MOVE_TWEEN_DURATION: float = 0.1
-const HAND_BOX_PANEL_OFFSET: int = 390
-const STATUS_BOX_PANEL_OFFSET: int = 135
+const HAND_BOX_PANEL_OFFSET: int = 400
+const STATUS_BOX_PANEL_OFFSET: int = 130
 
 func _on_panel_container_mouse_entered(): on_extended_position_container(HandBoxPanel)
 func _on_panel_container_mouse_exited(): on_default_position_container(HandBoxPanel)
 
-const STATUS_BOX_INITIAL_PANEL_CONTAINER_POSITION: int = -155
-const HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION: int = 1065
+const STATUS_BOX_INITIAL_PANEL_CONTAINER_POSITION: int = -145
+const HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION: int = 1070
 var hand_box_pinned: bool = true
 
 func on_default_position_container(cont: PanelContainer, tween_time: float = PANEL_MOVE_TWEEN_DURATION) -> void:
@@ -223,10 +224,12 @@ func on_camera_arrow_pressed(direction: int) -> void:
 func on_pin_hand_box_panel(time: float = PANEL_MOVE_TWEEN_DURATION) -> void:
 	hand_box_pinned = true
 	on_extended_position_container(HandBoxPanel, time)
+	$GreyScale.visible = true
 
 func on_unpin_hand_box_panel(time: float = PANEL_MOVE_TWEEN_DURATION) -> void:
 	hand_box_pinned = false
 	on_default_position_container(HandBoxPanel, time)
+	$GreyScale.visible = false
 
 func on_ally_unit_awakened(skip_result: bool) -> void:
 	if !skip_result: on_pin_hand_box_panel()

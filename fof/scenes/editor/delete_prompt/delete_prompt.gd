@@ -31,8 +31,8 @@ func on_confirm_name(confirm_name: String) -> void:
 func on_confirm_match(x: bool) -> void:
 	_on_exit_button_pressed()
 	var sfx: Dictionary = {
-		false: "unconfirm_default",
-		true: "confirm_default"
+		false: "UnconfirmDefault",
+		true: "ConfirmDefault"
 	}
 	if x: delete_item.emit()
 	AudioMaster.play_sfx(sfx[x])

@@ -34,7 +34,7 @@ func _ready() -> void:
 	BackArrow.visible = false
 	SettingCog.visible = false
 	
-	SettingCog.pressed.connect(func(): AudioMaster.play_sfx("hard_click"))
+	SettingCog.pressed.connect(func(): AudioMaster.play_sfx("HardClick"))
 	Helper.create_button_clickmask(BackArrow)
 	Helper.create_button_clickmask(SettingCog)
 	on_setup_screen(preload("res://scenes/screens/main_menu/main_menu.tscn").instantiate())

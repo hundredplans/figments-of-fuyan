@@ -26,8 +26,8 @@ func set_text(itext: String, stext:String="") -> void:
 		itext, "": $Showcase.text = itext
 		_: $Showcase.text = stext; _on_showcase_text_changed("")
 	on_reset_set_id()
-func on_play_lock_open_sound_effect(): AudioMaster.play_sfx("lock_open")
-func on_play_lock_closed_sound_effect(): AudioMaster.play_sfx("lock_closed")
+func on_play_lock_open_sound_effect(): AudioMaster.play_sfx("LockOpen")
+func on_play_lock_closed_sound_effect(): AudioMaster.play_sfx("LockClosed")
 
 func _on_text_submitted(__: String):
 	$Internal.release_focus()

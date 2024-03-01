@@ -39,6 +39,7 @@ script = ExtResource("1_32v7v")
 [node name="Background" type="Control" parent="."]
 texture_filter = 1
 layout_mode = 1
+anchors_preset = 0
 offset_left = 30.0
 offset_top = 26.0
 offset_right = 339.0
@@ -60,7 +61,6 @@ grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("2_25yvr")
 theme_override_styles/panel = ExtResource("3_pj0yo")
-metadata/_edit_lock_ = true
 
 [node name="Inside" type="Panel" parent="Background"]
 texture_filter = 1
@@ -73,7 +73,6 @@ grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("2_25yvr")
 theme_override_styles/panel = ExtResource("3_p647x")
-metadata/_edit_lock_ = true
 
 [node name="Rim1" type="ColorRect" parent="Background"]
 texture_filter = 1
@@ -102,6 +101,7 @@ mouse_filter = 1
 texture_normal = ExtResource("11_int12")
 
 [node name="Tool" type="Node2D" parent="."]
+visible = false
 position = Vector2(31, 26)
 scale = Vector2(0.75, 0.75)
 

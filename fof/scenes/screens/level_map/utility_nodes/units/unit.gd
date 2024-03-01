@@ -52,6 +52,7 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	TeamControl.Unit = self
 	add_child(TeamControl)
 	
+	UnitCombatStatus.visible = true
 	UnitCombatStatus.position.y = height * 1.2
 	Model.rot = rot
 	Model.on_add_model()
@@ -75,6 +76,7 @@ func occupy_tile(_Tile: TileGD) -> void:
 
 var Killer: UnitGD
 func stats(stat_type: String, val: int, AppliedBy: Variant = "GameEvent", absolute: bool = false) -> void:
+	var current_health: int = health
 	if absolute: val = max(val, 0)
 	match stat_type:
 		"speed":
@@ -94,6 +96,7 @@ func stats(stat_type: String, val: int, AppliedBy: Variant = "GameEvent", absolu
 	if health == 0:
 		if typeof(AppliedBy) != TYPE_STRING: Killer = AppliedBy; AppliedBy = "Unit"
 		Units.kill_unit(self, AppliedBy)
+	elif health < current_health: AudioMaster.play_sfx(AudioDict.HURT)
 
 func status_effect() -> void:
 	pass

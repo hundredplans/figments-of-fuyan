@@ -21,6 +21,14 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_mmiwi")
 
+[node name="GreyScale" type="Panel" parent="."]
+visible = false
+modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+
 [node name="HandBoxPanel" type="PanelContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
@@ -29,9 +37,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -20.0
-offset_top = 525.0
+offset_top = 530.0
 offset_right = 20.0
-offset_bottom = 935.0
+offset_bottom = 980.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
@@ -51,9 +59,9 @@ anchor_top = 0.5
 anchor_right = 0.503
 anchor_bottom = 0.5
 offset_left = -15.76
-offset_top = -695.0
+offset_top = -685.0
 offset_right = 4.23999
-offset_bottom = -525.0
+offset_bottom = -535.0
 mouse_filter = 1
 theme = ExtResource("2_pmg4n")
 theme_override_styles/panel = ExtResource("8_d8dru")

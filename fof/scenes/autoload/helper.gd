@@ -86,7 +86,7 @@ const task_accent_colors: Dictionary = {
 }
 
 const area_to_default_ground: Dictionary = {
-	1: "sand_walk"
+	1: "SandWalk"
 }
 
 const node_type_to_light: Dictionary = {

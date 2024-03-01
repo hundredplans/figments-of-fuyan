@@ -78,7 +78,7 @@ func _ready() -> void:
 	
 	for btn in [ArrowButton, $BuildMenu/LoadedMenu/PRLeftArrow, $BuildMenu/LoadedMenu/PRRightArrow, $HistoryMenu/PRLeft, $HistoryMenu/PRRight]:
 		Helper.create_button_clickmask(btn)
-		btn.pressed.connect((func(): AudioMaster.play_sfx("woosh")))
+		btn.pressed.connect((func(): AudioMaster.play_sfx("Woosh")))
 	BuildMenu.get_node("WarningLabel").text = "Make sure to load in an area, silly!"
 	BuildMenu.get_node("Tabs").visible = false
 	BuildMenu.get_node("LoadedMenu").visible = false
@@ -505,9 +505,9 @@ func _on_save_level_pressed(play_sfx: bool = true, create_temp: int = 1) -> Dict
 		var contents: String = "%s\n%s\n%s\n%s\n%s" % [loaded_area.id, level_difficulty, trinket_amount, children.map(func(x: Node3D): return x.info), level_size]
 		var item_dict: Dictionary =  Helper.write_to_base_game_file(FILE_LOADER_NAME, EditFileName, contents, TID)
 		match item_dict:
-			{}: if play_sfx: AudioMaster.play_sfx("unconfirm_default")
+			{}: if play_sfx: AudioMaster.play_sfx("UnconfirmDefault")
 			_: if play_sfx: 
-				AudioMaster.play_sfx("confirm_default")
+				AudioMaster.play_sfx("ConfirmDefault")
 				Helper.create_base_game_id_dir(item_dict, FILE_LOADER_NAME)
 				if DirAccess.dir_exists_absolute("res://assets/base_game/levels/" + item_dict.bgfn):
 					return item_dict
@@ -1984,7 +1984,7 @@ func _on_bake_level_pressed():
 		ResourceSaver.save(packed_scene, "res://assets/base_game/levels/" + item_dict.bgfn + "/loaded_level.tscn")
 		LoadedLevel.queue_free()
 	else:
-		AudioMaster.play_sfx("unconfirm_default")
+		AudioMaster.play_sfx("UnconfirmDefault")
 
 var _LevelTile: PackedScene = preload("res://scenes/screens/level_map/utility_nodes/tiles/level_tile.tscn")
 var item_properties: Array

@@ -32,6 +32,7 @@ const clear_backup_files_array: Array = [0, 86400, 259200, 604800, 2592000, 1]
 var autopass_turn: int = 0
 var autopass_unit_turn: int = 0
 var autopass_handphase: int = 0
+var camera_distance: int = 0
 
 var settings_info: Dictionary = {
 	"Audio": [],
@@ -143,6 +144,8 @@ func set_autopasshandphase(i: int):
 	autopass_handphase = i
 func set_autopassunitturn(i: int):
 	autopass_unit_turn = i
+func set_cameradistance(i: int):
+	camera_distance = i
 
 func set_mastervolume(i: int):
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(i * 0.01))
