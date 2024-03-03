@@ -19,7 +19,7 @@ var health: int
 
 var rarity: int
 var team: int
-var height: int
+var height: Dictionary
 var Tile: TileGD
 
 var attack_range: int = 1
@@ -53,9 +53,10 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	add_child(TeamControl)
 	
 	UnitCombatStatus.visible = true
-	UnitCombatStatus.position.y = height * 1.2
+	UnitCombatStatus.position.y = height.top * 1.2
 	Model.rot = rot
 	Model.on_add_model()
+	
 	occupy_tile(tile)
 	position = tile.position
 	position.y += 0.3
@@ -108,7 +109,7 @@ func on_arrive(in_vision: bool) -> void:
 	if in_vision:
 		var Light := OmniLight3D.new()
 		add_child(Light)
-		Light.position.y = height * 1.2
+		Light.position.y = height.top * 1.2
 		Light.light_energy = ARRIVE_EFFECT_INITIAL_LIGHT_ENERGY
 		Light.light_color = Helper.rarity_colors[rarity]
 		var LightTween: Tween = get_tree().create_tween()

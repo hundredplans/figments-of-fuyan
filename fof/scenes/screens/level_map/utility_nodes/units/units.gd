@@ -87,7 +87,7 @@ func on_match_team_relation(unit: UnitGD, team: int, relation: String) -> bool:
 var active_event: Array
 var event_queue: Array = []
 
-func move_to_tile(Unit: UnitGD, Tile: TileGD, type: Vector2) -> void:
+func move_to_tile(Unit: UnitGD, Tile: TileGD, type: Variant) -> void:
 	event_queue.append(["MoveUnit", Unit, Tile, type])
 	
 func _process(_delta: float) -> void:
@@ -158,8 +158,13 @@ func on_attack_enemy() -> void:
 	LevelMap.set_lock_inputs(true)
 	# can do all the ui stuff here for attacking
 	
+@export var ATTACK_AFTER_DELAY: float = 0.5
 func on_attack_finished(Unit: UnitGD) -> void:
 	active_event[2].stats("health", -Unit.attack, Unit)
+	
+	if active_event[2].health > 0:
+		await get_tree().create_timer(ATTACK_AFTER_DELAY).timeout
+	
 	Unit.attack_amount -= 1
 	active_event = []
 	
@@ -176,25 +181,26 @@ func on_death() -> void:
 	active_event[1].Model.on_death()
 	LevelMap.set_lock_inputs(true)
 
+@export var DEATH_AFTER_DELAY: float = 1.0
 func on_death_finished(Unit: UnitGD) -> void:
+	await get_tree().create_timer(DEATH_AFTER_DELAY).timeout
+	var deathee_index: int = on_unit_team_index(Unit)
 	Unit.on_death()
 	LevelMap.set_lock_inputs(false)
-	PlayerManager.on_death_finished(active_event[2], Unit)
+	PlayerManager.on_death_finished(active_event[2], Unit, deathee_index)
 	Deck.on_draw_card()
 	active_event = []
 	
 	if Unit.Model.current_walk_stream_player != null:
 		AudioMaster.on_cutoff_sfx(Unit.Model.current_walk_stream_player)
 
-func on_drop_calculate_damage(hdiff: int, scale_time: float, Unit: UnitGD) -> void:
-	hdiff = abs(hdiff * 0.5)
-	if hdiff > Unit.height:
-		var health_decrease: int = -((hdiff - Unit.height)) * 2
-		if Unit.health + health_decrease <= 0:
+func on_drop_calculate_damage(new_health: int, scale_time: float, Unit: UnitGD) -> void:
+	if new_health >= 0:
+		if new_health == 0:
 			active_event = []
 			event_queue = []
 		else: on_descale_unit(Unit, scale_time)
-		Unit.stats("health", health_decrease, "Height")
+		Unit.stats("health", new_health, "Height", true)
 
 const DROP_HEIGHT_SCALE_DOWN := Vector3(1, 0.05, 1)
 func on_descale_unit(Unit: UnitGD, scale_time: float) -> void:

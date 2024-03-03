@@ -133,13 +133,13 @@ func _on_unit_selected(Unit: UnitGD) -> void:
 		UnitSelected = Unit
 		LevelUI.get_node("SkipReminder").visible = ActiveUnit != null and ActiveUnit != Unit
 
-func on_death_finished(Killer: String, Deathee: UnitGD) -> void:
+func on_death_finished(Killer: String, Deathee: UnitGD, deathee_index: int) -> void:
 	if Killer == "Unit" and Deathee.Killer.team == 0: on_check_autopass(Deathee.Killer)
 	on_remove_unit_turn(Deathee)
 	if Deathee.team == 0:
-		SpectateCamera.unit_positions.remove_at(Deathee.get_index())
-		if !unpassed_turns.is_empty() and SpectateCamera.unit_spectate_id == Deathee.get_index():
-			SpectateCamera.on_spectate("Unit", unpassed_turns[0].get_index())
+		SpectateCamera.unit_positions.remove_at(deathee_index)
+		if !unpassed_turns.is_empty() and SpectateCamera.unit_spectate_id == deathee_index:
+			SpectateCamera.on_spectate("Unit", Units.on_unit_team_index(unpassed_turns[0]))
 			
 	if Units.on_units().is_empty(): print("DIE")
 		

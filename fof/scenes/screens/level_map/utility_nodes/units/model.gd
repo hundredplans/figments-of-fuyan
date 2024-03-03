@@ -70,7 +70,7 @@ func on_finish_animation(ani_name: String) -> void:
 	if ani_name != "Walk" and ani_name != "Death" and (ani_name != "Jump"): on_play_animation("Idle")
 
 var walk_to_info: Array = []
-func move_to_tile(Tile: TileGD, type: Vector2i) -> void:
+func move_to_tile(Tile: TileGD, type: Variant) -> void:
 	walk_to_info = [Tile, type]
 	on_play_animation("Walk")
 	
@@ -101,7 +101,7 @@ func on_begin_all_movement_between_tiles() -> void:
 	_look_at(walk_to_info[0])
 	match walk_to_info[1].x:
 		3: on_create_regular_jump(walk_to_info[0])
-		4: on_create_drop_jump(walk_to_info[0], walk_to_info[1].y)
+		4: on_create_drop_jump(walk_to_info[0], walk_to_info[1].y, walk_to_info[1].z)
 		_: on_create_move_tween(walk_to_info[0], walk_to_info[1])
 	walk_to_info = []
 		
@@ -117,7 +117,7 @@ func on_create_regular_jump(Tile: TileGD) -> void:
 	on_play_animation("Jump")
 	
 const JUMP_HEIGHT_MULTIPLIER: float = 2.3
-func on_create_drop_jump(Tile: TileGD, hdiff: int) -> void:
+func on_create_drop_jump(Tile: TileGD, hdiff: int, new_health: int) -> void:
 	JUMP_TIME = 1 - (hdiff * 0.1)
 	JUMP_HEIGHT = -3 + (hdiff * JUMP_HEIGHT_MULTIPLIER)
 	jump_start = Unit.global_position
@@ -127,7 +127,7 @@ func on_create_drop_jump(Tile: TileGD, hdiff: int) -> void:
 	on_play_animation("Jump")
 	
 	get_tree().create_timer((3 / AniPlayer.speed_scale) / 1.5).timeout\
-	.connect(func(): drop_calculate_damage.emit(hdiff, (3 / AniPlayer.speed_scale) / 6))
+	.connect(func(): drop_calculate_damage.emit(new_health, (3 / AniPlayer.speed_scale) / 6))
 		
 func on_create_move_tween(Tile: TileGD, type: Vector2i) -> void:
 	var MoveTween: Tween = get_tree().create_tween()

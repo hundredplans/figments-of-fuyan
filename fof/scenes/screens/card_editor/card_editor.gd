@@ -9,16 +9,30 @@ var height: Dictionary
 const TID: int = 2
 const FILE_LOADER_NAME: String = "Card"
 
-@onready var ModelWorld: Node3D = $ModelViewer/SubViewport/ModelWorld
+@onready var ModelWorld: Node3D = $ModelArea/ModelViewer/SubViewport/ModelWorld
 @onready var Internal: LineEdit = $CardCreator/EditFileName/Internal
 @export var CardText: TextEdit
 @export var FlavorText: TextEdit
 
 var old_stat_texts: Array = ["", "", "", ""]
 
+@export var Y_GHOST_OFFSET: int = -260
+
+func _process(_delta: float) -> void:
+	if is_mouse_in_model_viewer and Input.is_action_just_pressed("RightClick"): Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	if Input.is_action_just_released("RightClick"): Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion and $ModelViewerButton.button_pressed:
-		ModelWorld.get_node("Model").rotation_degrees.y += event.relative.x
+	if event is InputEventMouseMotion:
+		if is_mouse_in_model_viewer and Input.is_action_pressed("RightClick"):
+			ModelWorld.get_node("Model").rotation_degrees.y += event.relative.x
+		elif !ActiveHeightControl.is_empty(): 
+			on_align_height_control(ActiveHeightControl[0], ActiveHeightControl[1], event.relative.y)
+
+func on_align_height_control(HeightControl: Control, Arrow: Node3D, y_offset: float) -> void:
+	HeightControl.position.y += y_offset
+	Arrow.position.y = Camera.project_position(HeightControl.global_position + Vector2(0, -260), 3).y
+	HeightControl.HeightLabel.text = str(snapped(Arrow.position.y, 0.01))
 
 func _ready():
 	if get_parent() == get_tree().get_root(): $MoveScreen.play_backwards("move_screen")
@@ -28,6 +42,13 @@ func _ready():
 
 	for child in $AISettings.get_children():
 		child.item_selected.connect(on_ai_settings_item_selected.bind(child.get_index()))
+		
+	height_arrows = [EyeArrow, TopArrow, WeaponArrow]
+	height_controls = [EyeControl, TopControl, WeaponControl]
+	on_set_inital_height_controls()
+	for i in range(height_controls.size()):
+		height_controls[i].GrabButton.button_down.connect(on_move_height_control.bind(height_controls[i], height_arrows[i]))
+		height_controls[i].GrabButton.button_up.connect(on_height_control_inactive)
 
 func on_ai_settings_item_selected(item: int, i: int) -> void:
 	personality_sliders[i] = item
@@ -70,12 +91,16 @@ func _on_flavor_text_changed():
 func _on_edit_file_name_text_submitted():
 	$CardCreator/Stats/Energy.grab_focus()
 
+var height_arrows: Array = []
+var height_controls: Array = []
 func _on_save_card_pressed():
 	var card_text: String = CardText.text.replace("\n", " ")
 	var text: Dictionary = {
 		"raw": card_text,
 		"compiled": $TextProcessing.on_apply_text_processing(card_text)
 	}
+	height = {"eye": float(EyeControl.HeightLabel.text), "top": float(TopControl.HeightLabel.text), "weapon": float(WeaponControl.HeightLabel.text)}
+	
 	var contents: String = "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s"\
 	% [stats[0], stats[1], stats[2], stats[3], rarity, text, FlavorText.text.replace("\n", " "),
 	personality_sliders[0], personality_sliders[1], personality_sliders[2], personality_sliders[3], personality_sliders[4], height]
@@ -143,7 +168,14 @@ func on_item_selected(item_info: Dictionary, change_rarity: bool = true) -> void
 		_on_choose_rarity_item_selected(item_info.r)
 		$CardCreator/ChooseRarity.select_item(item_info.r)
 	
-	if typeof(item_info.height) == TYPE_DICTIONARY: height = item_info.height; on_set_inital_height_controls()
+	if typeof(item_info.height) == TYPE_DICTIONARY:
+		if !item_info.height.has("weapon"): item_info.height.weapon = 1.0
+		height = item_info.height
+		EyeArrow.position.y = height.eye
+		TopArrow.position.y = height.top
+		WeaponArrow.position.y = height.weapon
+		
+		on_set_inital_height_controls()
 
 func _on_delete_card_pressed():
 	Helper.on_delete_item(FILE_LOADER_NAME, str(ID), Internal, self, Settings.cards_can_delete_directory)
@@ -161,7 +193,7 @@ func on_load_model(bgfn: String) -> void:
 	var model: Node3D = load(model_path).instantiate()
 	ModelWorld.get_node("Model").add_child(model)
 	
-	for button in $ModelControls.get_children(): button.queue_free()
+	for button in $ModelArea/ModelControls.get_children(): button.queue_free()
 	if model.has_node("AnimationPlayer"):
 		var ani_player: AnimationPlayer = model.get_node("AnimationPlayer")
 		for ani in ani_player.get_animation_library("").get_animation_list():
@@ -170,7 +202,7 @@ func on_load_model(bgfn: String) -> void:
 			btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			btn.theme = _Roboto20
 			btn.pressed.connect(on_play_model_animation.bind(ani_player, ani))
-			$ModelControls.add_child(btn)
+			$ModelArea/ModelControls.add_child(btn)
 
 func on_play_model_animation(ani_player: AnimationPlayer, ani: String) -> void:
 	ani_player.play(ani)
@@ -203,5 +235,29 @@ const EMPTY_INFO: Dictionary = {
 }
 func _on_empty_card_pressed(): on_item_selected(EMPTY_INFO, false)
 
+@onready var WeaponControl: Control = %WeaponControl
+@onready var EyeControl: Control = %EyeControl
+@onready var TopControl: Control = %TopControl
+
+@onready var WeaponArrow: Node3D = %WeaponArrow
+@onready var EyeArrow: Node3D = %EyeArrow
+@onready var TopArrow: Node3D = %TopArrow
+@onready var Camera: Camera3D = $ModelArea/ModelViewer/SubViewport/Camera3D
+
+var DEFAULT_HEIGHT_CONTROL_OFFSET: Vector2 = Vector2(20, -20)
 func on_set_inital_height_controls() -> void:
-	pass
+	for i in range(height_controls.size()):
+		height_controls[i].global_position = Camera.unproject_position(height_arrows[i].global_position)
+		height_controls[i].global_position += DEFAULT_HEIGHT_CONTROL_OFFSET
+		height_controls[i].HeightLabel.text = str(snapped(height_arrows[i].position.y, 0.01))
+	
+func on_height_control_inactive() -> void: ActiveHeightControl = []
+	
+var ActiveHeightControl: Array = []
+func on_move_height_control(HeightControl: Control, Arrow: Node3D) -> void:
+	ActiveHeightControl = [HeightControl, Arrow]
+
+
+var is_mouse_in_model_viewer: bool = false
+func _on_model_viewer_control_mouse_entered(): is_mouse_in_model_viewer = true
+func _on_model_viewer_control_mouse_exited(): is_mouse_in_model_viewer = false

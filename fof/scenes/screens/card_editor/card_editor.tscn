@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dgjchsjrv72a3"]
+[gd_scene load_steps=16 format=3 uid="uid://dgjchsjrv72a3"]
 
 [ext_resource type="Script" path="res://static/game_info/heroes.gd" id="1_5aclk"]
 [ext_resource type="Script" path="res://scenes/screens/card_editor/card_editor.gd" id="1_hv8xs"]
@@ -11,10 +11,13 @@
 [ext_resource type="Texture2D" uid="uid://bgbyoyqx40n27" path="res://assets/base_game/cards/card_ui/default_art_max.png" id="6_036w2"]
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="6_crlth"]
 [ext_resource type="PackedScene" uid="uid://60bl7vlw3efv" path="res://assets/base_game/cards/card_ui/default_model.glb" id="9_cp3lr"]
-[ext_resource type="PackedScene" uid="uid://dqfh4mrpesgll" path="res://assets/env/level_editor/ghost_arrow.glb" id="12_0o1rn"]
+[ext_resource type="Material" uid="uid://byedqx8icr44y" path="res://assets/materials/red_on_top.tres" id="13_hxk1e"]
 [ext_resource type="PackedScene" uid="uid://c42bnq7frgogc" path="res://assets/env/level_editor/height_control.tscn" id="13_ik3kg"]
 
 [sub_resource type="World3D" id="World3D_8b6j0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o4ixg"]
+size = Vector2(631, 795)
 
 [node name="CardEditor" type="Control" node_paths=PackedStringArray("CardText", "FlavorText")]
 layout_mode = 3
@@ -23,6 +26,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 script = ExtResource("1_hv8xs")
 CardText = NodePath("CardCreator/CardText")
 FlavorText = NodePath("CardCreator/FlavorText")
@@ -261,64 +265,33 @@ offset_right = -405.0
 offset_bottom = 156.0
 text = "New Card"
 
-[node name="GreenScreen" type="ColorRect" parent="."]
+[node name="ModelArea" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 631.0
+offset_bottom = 795.0
+mouse_filter = 1
+
+[node name="GreenScreen" type="ColorRect" parent="ModelArea"]
 layout_mode = 0
-offset_top = 145.0
 offset_right = 631.0
 offset_bottom = 795.0
 color = Color(0, 0, 0, 1)
 
-[node name="ModelViewer" type="SubViewportContainer" parent="."]
+[node name="ModelViewer" type="SubViewportContainer" parent="ModelArea"]
 layout_mode = 1
 anchors_preset = -1
-offset_top = 145.0
 offset_right = 631.0
 offset_bottom = 795.0
 
-[node name="SubViewport" type="SubViewport" parent="ModelViewer"]
+[node name="SubViewport" type="SubViewport" parent="ModelArea/ModelViewer"]
 world_3d = SubResource("World3D_8b6j0")
 transparent_bg = true
 handle_input_locally = false
 size = Vector2i(631, 650)
 render_target_update_mode = 4
 
-[node name="ModelWorld" type="Node3D" parent="ModelViewer/SubViewport"]
-
-[node name="Model" type="Node3D" parent="ModelViewer/SubViewport/ModelWorld"]
-
-[node name="DefaultModel" parent="ModelViewer/SubViewport/ModelWorld/Model" instance=ExtResource("9_cp3lr")]
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="ModelViewer/SubViewport/ModelWorld"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0811731, 1.69899, 3.2611)
-
-[node name="HeightTracker" type="Node3D" parent="ModelViewer/SubViewport/ModelWorld"]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
-
-[node name="Eye" parent="ModelViewer/SubViewport/ModelWorld/HeightTracker" instance=ExtResource("12_0o1rn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-
-[node name="Top" parent="ModelViewer/SubViewport/ModelWorld/HeightTracker" instance=ExtResource("12_0o1rn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
-
-[node name="Camera3D" type="Camera3D" parent="ModelViewer/SubViewport"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 3)
-
-[node name="ModelViewerButton" type="Button" parent="."]
-modulate = Color(1, 1, 1, 0)
-layout_mode = 2
-offset_top = 145.0
-offset_right = 631.0
-offset_bottom = 795.0
-button_mask = 2
-
-[node name="ModelControls" type="HBoxContainer" parent="."]
-layout_mode = 0
-offset_top = 715.0
-offset_right = 631.0
-offset_bottom = 795.0
-theme_override_constants/separation = 0
-
-[node name="HeightControls" type="Control" parent="."]
+[node name="HeightControls" type="Control" parent="ModelArea/ModelViewer/SubViewport"]
+layout_mode = 3
 anchors_preset = 0
 offset_left = 331.0
 offset_top = 145.0
@@ -326,19 +299,76 @@ offset_right = 506.0
 offset_bottom = 621.0
 mouse_filter = 1
 
-[node name="EyeControl" parent="HeightControls" instance=ExtResource("13_ik3kg")]
+[node name="EyeControl" parent="ModelArea/ModelViewer/SubViewport/HeightControls" instance=ExtResource("13_ik3kg")]
+unique_name_in_owner = true
 layout_mode = 1
-offset_top = 436.0
+offset_top = 437.0
 offset_right = 135.74
-offset_bottom = 458.388
+offset_bottom = 459.388
 label_name = "Eye"
 
-[node name="TopControl" parent="HeightControls" instance=ExtResource("13_ik3kg")]
+[node name="TopControl" parent="ModelArea/ModelViewer/SubViewport/HeightControls" instance=ExtResource("13_ik3kg")]
+unique_name_in_owner = true
 layout_mode = 1
 offset_top = 395.0
 offset_right = 135.74
 offset_bottom = 417.388
 label_name = "Top"
+
+[node name="WeaponControl" parent="ModelArea/ModelViewer/SubViewport/HeightControls" instance=ExtResource("13_ik3kg")]
+unique_name_in_owner = true
+layout_mode = 1
+offset_top = 395.0
+offset_right = 135.74
+offset_bottom = 417.388
+label_name = "ATT"
+
+[node name="ModelWorld" type="Node3D" parent="ModelArea/ModelViewer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
+
+[node name="Model" type="Node3D" parent="ModelArea/ModelViewer/SubViewport/ModelWorld"]
+
+[node name="DefaultModel" parent="ModelArea/ModelViewer/SubViewport/ModelWorld/Model" instance=ExtResource("9_cp3lr")]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="ModelArea/ModelViewer/SubViewport/ModelWorld"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0811731, 1.69899, 3.2611)
+
+[node name="HeightTracker" type="Node3D" parent="ModelArea/ModelViewer/SubViewport/ModelWorld"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+
+[node name="EyeArrow" type="CSGBox3D" parent="ModelArea/ModelViewer/SubViewport/ModelWorld/HeightTracker"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.823358, 0)
+size = Vector3(0.1, 0.1, 0.1)
+material = ExtResource("13_hxk1e")
+
+[node name="TopArrow" type="CSGBox3D" parent="ModelArea/ModelViewer/SubViewport/ModelWorld/HeightTracker"]
+unique_name_in_owner = true
+size = Vector3(0.1, 0.1, 0.1)
+material = ExtResource("13_hxk1e")
+
+[node name="WeaponArrow" type="CSGBox3D" parent="ModelArea/ModelViewer/SubViewport/ModelWorld/HeightTracker"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.20093, 0)
+size = Vector3(0.1, 0.1, 0.1)
+material = ExtResource("13_hxk1e")
+
+[node name="Camera3D" type="Camera3D" parent="ModelArea/ModelViewer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
+
+[node name="ModelControls" type="HBoxContainer" parent="ModelArea"]
+layout_mode = 0
+offset_top = 715.0
+offset_right = 631.0
+offset_bottom = 795.0
+mouse_filter = 0
+theme_override_constants/separation = 0
+
+[node name="ModelViewerControl" type="Area2D" parent="ModelArea"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ModelArea/ModelViewerControl"]
+position = Vector2(315.5, 397.5)
+shape = SubResource("RectangleShape2D_o4ixg")
 
 [connection signal="text_submitted" from="CardCreator/EditFileName" to="." method="_on_edit_file_name_text_submitted"]
 [connection signal="item_selected" from="CardCreator/ChooseRarity" to="." method="_on_choose_rarity_item_selected"]
@@ -348,5 +378,5 @@ label_name = "Top"
 [connection signal="pressed" from="Buttons/LoadCard" to="." method="_on_load_card_pressed"]
 [connection signal="pressed" from="Buttons/DeleteCard" to="." method="_on_delete_card_pressed"]
 [connection signal="pressed" from="Buttons/NewCard" to="." method="_on_empty_card_pressed"]
-[connection signal="button_down" from="ModelViewerButton" to="." method="_on_model_viewer_button_button_down"]
-[connection signal="button_up" from="ModelViewerButton" to="." method="_on_model_viewer_button_button_up"]
+[connection signal="mouse_entered" from="ModelArea/ModelViewerControl" to="." method="_on_model_viewer_control_mouse_entered"]
+[connection signal="mouse_exited" from="ModelArea/ModelViewerControl" to="." method="_on_model_viewer_control_mouse_exited"]

@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://bag77s2v1afs4"]
+
+[ext_resource type="FontFile" uid="uid://7k4xd8s0oed2" path="res://assets/UI/roboto/roboto.ttf" id="1_nwwxn"]
+[ext_resource type="Texture2D" uid="uid://cor7udw0x0ufw" path="res://assets/base_game/cards/card_ui/bbcode/HEALTH.png" id="2_b4052"]
+
+[node name="HeightDropLabel" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.063, 0.31, 0.027)
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.276649, 0, -0.0334438)
+no_depth_test = true
+render_priority = 3
+text = "2"
+font = ExtResource("1_nwwxn")
+font_size = 64
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, -0.013)
+no_depth_test = true
+render_priority = 2
+texture = ExtResource("2_b4052")

@@ -10,6 +10,10 @@ var player_deck: Array = [
 	"tool_id": 0,
 	"effects": []},
 	
+	{"id": 123,
+	"tool_id": 0,
+	"effects": []},
+	
 	{"id": 124,
 	"tool_id": 0,
 	"effects": []},

@@ -100,8 +100,8 @@ func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0) -> voi
 				
 				if units.size() > unit_spectate_id:
 					var Unit: UnitGD = units[unit_spectate_id]
-					CAMERA_HEIGHT["Unit"] = Unit.height * CAMERA_UNIT_HEIGHT_MULTIPLIER
-					CAMERA_LOOK_AT_HEIGHT["Unit"] = Unit.height * LOOK_AT_UNIT_HEIGHT_MULTIPLIER
+					CAMERA_HEIGHT["Unit"] = Unit.height.top * CAMERA_UNIT_HEIGHT_MULTIPLIER
+					CAMERA_LOOK_AT_HEIGHT["Unit"] = Unit.height.top * LOOK_AT_UNIT_HEIGHT_MULTIPLIER
 					
 					total_progress = unit_positions[unit_spectate_id]
 					on_camera_start_spectate(Unit.position, type)

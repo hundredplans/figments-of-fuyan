@@ -1,0 +1,63 @@
+[gd_scene load_steps=12 format=3 uid="uid://oolv461paipv"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_map/level_map.gd" id="1_2p706"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/spectate_camera.gd" id="2_rteys"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/units/units.gd" id="3_2cmnp"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vision/vision.gd" id="4_84ynl"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/units/player_manager.gd" id="4_j0l8t"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/units/bot_manager.gd" id="5_03qrj"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/base_cards.gd" id="5_juu21"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/hand/hand.gd" id="6_0ftum"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/deck/deck.gd" id="6_pxoii"]
+[ext_resource type="Script" path="res://static/game_info/heroes.gd" id="8_rwmlg"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/random.gd" id="10_1t13j"]
+
+[node name="LevelMap" type="Node3D"]
+script = ExtResource("1_2p706")
+
+[node name="SpectateCamera" type="Camera3D" parent="."]
+current = true
+script = ExtResource("2_rteys")
+
+[node name="Vision" type="Node3D" parent="."]
+script = ExtResource("4_84ynl")
+
+[node name="TileRayCast" type="RayCast3D" parent="Vision"]
+collision_mask = 2
+collide_with_areas = true
+collide_with_bodies = false
+
+[node name="DarknessNode" type="Node3D" parent="Vision"]
+
+[node name="Units" type="Node3D" parent="."]
+script = ExtResource("3_2cmnp")
+UNIT_ANIMATION_BLEND_TIME = null
+WALK_TRAVEL_TIME = null
+DEATH_AFTER_DELAY = null
+
+[node name="BotManager" type="Node" parent="Units"]
+script = ExtResource("5_03qrj")
+
+[node name="PlayerManager" type="Node" parent="Units"]
+script = ExtResource("4_j0l8t")
+
+[node name="FieldedUnits" type="Node3D" parent="Units"]
+
+[node name="Hand" type="Node" parent="."]
+script = ExtResource("6_0ftum")
+
+[node name="Deck" type="Node" parent="."]
+script = ExtResource("6_pxoii")
+
+[node name="BaseCards" type="Node" parent="."]
+script = ExtResource("5_juu21")
+
+[node name="Heroes" type="Node" parent="."]
+script = ExtResource("8_rwmlg")
+
+[node name="Random" type="Node" parent="."]
+script = ExtResource("10_1t13j")
+
+[node name="Trinkets" type="Node" parent="."]
+
+[node name="Boons" type="Node" parent="."]

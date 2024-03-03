@@ -210,14 +210,16 @@ func on_tiles_by_adjacent(tiles: Array = get_children(), astar: AStar3D = null) 
 
 # ----------------- Tiles UI
 
-func _on_remove_tiles_above_height(Tile: TileGD, height: int) -> bool:
-	for i in range(Tile.info.position.w + 1, height + int(Tile.info.tile.type > 0 or Tile.info.obj.id in is_stair_object)):
+func _on_remove_tiles_blocked_by_height(Tile: TileGD, height: float) -> bool:
+	var free_tile_space: float = 0.3 if is_ramp_tile(Tile) else 0.9
+	for i in range(Tile.info.position.w + 1, Tile.info.position.w + 7):
 		var _Tile: TileGD = position_to_tile(Vector4(Tile.info.position.x, Tile.info.position.y, Tile.info.position.z, Tile.info.position.w + i))
-		if _Tile != null: return false
-	return true
+		if _Tile == null: free_tile_space += 1.2
+		else: break
+	return free_tile_space >= height
 
-func on_remove_tiles_above_height(tiles: Array, height: int) -> Array:
-	return tiles.filter(func(x: TileGD): return _on_remove_tiles_above_height(x, height))
+func on_remove_tiles_blocked_by_height(tiles: Array, height: float) -> Array:
+	return tiles.filter(func(x: TileGD): return _on_remove_tiles_blocked_by_height(x, height))
 
 func on_can_ramp_connect(Tile: TileGD, _Tile: TileGD, hdiff: int) -> bool:
 	if abs(hdiff) == 1: # ensures it's from a regular tile
@@ -230,6 +232,9 @@ func on_filter_in_range_tiles(x: TileGD):
 	var Unit: UnitGD = Units.unit_by_tile(x)
 	return x.solid_status == 0 or (Unit != null and Unit.team == 1)
 
+func is_ramp_tile(Tile: TileGD) -> bool:
+	return Tile.info.obj.id in is_stair_object or Tile.info.tile.type > 0
+
 var movement_paths: Dictionary = {"tiles": []}
 func on_create_movement_paths(Unit: UnitGD) -> void:
 	movement_paths = {"tiles": []}
@@ -239,7 +244,7 @@ func on_create_movement_paths(Unit: UnitGD) -> void:
 	.filter(func(x: TileGD): var _Unit: UnitGD = Units.unit_by_tile(x); return _Unit != null and _Unit.team == 1)
 	var _in_range_tiles: Array = all_in_range(Unit.Tile, Unit.speed, true, true).filter(on_filter_in_range_tiles)
 	
-	var full_tiles: Array = on_remove_tiles_above_height(_enemy_tiles + _in_range_tiles, Unit.height + Unit.Tile.info.position.w)
+	var full_tiles: Array = on_remove_tiles_blocked_by_height(_enemy_tiles + _in_range_tiles, Unit.height.top)
 	full_tiles.append(Unit.Tile)
 	
 	var tiles_by_adjacent: Dictionary = on_tiles_by_adjacent(full_tiles, astar)
@@ -247,11 +252,13 @@ func on_create_movement_paths(Unit: UnitGD) -> void:
 	for Tile in tiles_by_adjacent.keys():
 		for _Tile in tiles_by_adjacent[Tile]:
 			var EnemyUnit: UnitGD = Units.unit_by_tile(_Tile)
-			var hdiff: int = (_Tile.info.position.w * 2) + int(_Tile.info.tile.type > 0 or _Tile.info.obj.id in is_stair_object)\
-			 - ((Tile.info.position.w * 2) + int(Tile.info.tile.type > 0 or Tile.info.obj.id in is_stair_object))
+			var hdiff: int = (_Tile.info.position.w * 2) + int(is_ramp_tile(_Tile)) - ((Tile.info.position.w * 2) + int(is_ramp_tile(Tile)))
 			if EnemyUnit != null:
-				var enemy_hdiff: int = abs(int(hdiff * 0.5))
-				if Unit.height - enemy_hdiff > 0 or EnemyUnit.height > enemy_hdiff:
+				var enemy_low_point: float = _Tile.info.position.w + (0.6 if is_ramp_tile(_Tile) else 0.0)
+				var your_weapon_point: float = Tile.info.position.w + (0.6 if is_ramp_tile(Tile) else 0.0) + Unit.height.weapon
+				var enemy_high_point: float = enemy_low_point + EnemyUnit.height.top
+				
+				if hdiff == 0 or (hdiff > 0 and your_weapon_point >= enemy_low_point) or (hdiff < 0 and enemy_high_point >= your_weapon_point):
 					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(1, 0))
 			elif (_Tile.info.obj.id in is_stair_object or _Tile.info.tile.type == 2):  # Move to ramp
 				if on_can_ramp_connect(Tile, _Tile, hdiff):
@@ -264,8 +271,7 @@ func on_create_movement_paths(Unit: UnitGD) -> void:
 					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(3, 0))
 				elif hdiff == 0:
 					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i.ZERO)
-				else: on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(4, hdiff))
-					
+				elif hdiff < 0: on_calculate_drop_damage(astar, movement_types, Tile, _Tile, hdiff, Unit)
 			elif hdiff == 1 and _Tile.info.tile.type == 1: # regular to half tile
 				on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(3, 0))
 			elif hdiff == 0: # movement between regular tiles
@@ -273,7 +279,7 @@ func on_create_movement_paths(Unit: UnitGD) -> void:
 			elif hdiff < 0: # jump down from regular tile
 				if hdiff == -1:
 					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(3, 0))
-				else: on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(4, hdiff))
+				else: on_calculate_drop_damage(astar, movement_types, Tile, _Tile, hdiff, Unit)
 	tiles_by_adjacent.erase(Unit.Tile)
 	
 	for Tile in tiles_by_adjacent.keys(): # disconnect all points that a unit can't get to
@@ -298,6 +304,14 @@ func on_create_movement_paths(Unit: UnitGD) -> void:
 			movement_paths[Tile] = path
 			movement_paths.tiles.append(Tile)
 
+func on_calculate_drop_damage(astar: AStar3D, movement_types: Array, Tile: TileGD, _Tile: TileGD, _hdiff: int, Unit: UnitGD) -> void:
+	var hdiff: int = abs(_hdiff * 0.5)
+	var nhealth: int = -1
+	if hdiff > Unit.height.top:
+		nhealth = -((hdiff - floor(Unit.height.top))) * 2
+		nhealth = max(Unit.health + nhealth, 0)
+	on_connect_points(astar, movement_types, Tile, _Tile, Vector3i(4, _hdiff, nhealth))
+
 func on_create_true_path(id_path: Array, movement_types: Array) -> Dictionary:
 	var true_path: Dictionary = {"tiles": [], "types": [], "size": 0}
 	for i in range(id_path.size()):
@@ -311,7 +325,7 @@ func on_create_true_path(id_path: Array, movement_types: Array) -> Dictionary:
 	return true_path
 	
 # 0 = MoveTile, 1 = AttackTile, 2 = ClimbInstant, 3 = Jump, 4 = Drop
-func on_connect_points(astar: AStar3D, movement_types: Array, Tile: TileGD, _Tile: TileGD, type: Vector2) -> void:
+func on_connect_points(astar: AStar3D, movement_types: Array, Tile: TileGD, _Tile: TileGD, type: Variant) -> void:
 	movement_types.append([Tile, _Tile, type])
 	astar.connect_points(Tile.get_instance_id(), _Tile.get_instance_id(), false)
 	
@@ -323,6 +337,7 @@ func on_tile_hovered(Tile: TileGD, type: String) -> void:
 		path_hovered_info = movement_paths[Tile]
 		for i in range(path_hovered_info.tiles.size()):
 			on_set_tile_material(path_hovered_info.tiles[i], "PathHovered")
+			path_hovered_info.tiles[i].hovered_type = path_hovered_info.types[i]
 			if path_hovered_info.types[i].x == 1:
 				on_set_tile_material(path_hovered_info.tiles[i], "EnemyInRange")
 
@@ -417,6 +432,7 @@ func on_set_tile_highest_material(Tile: TileGD) -> void:
 		if f > highest: highest = f
 	
 	Tile.tile.set_material(MATERIAL_NAME_TO_MATERIAL[MATERIAL_PRIORITIES[highest]])
+	Tile.on_update_materials(Units.PlayerManager.UnitSelected)
 
 func on_lock_inputs_changed(x: bool) -> void:
 	if !x and !LevelUI.is_mouse_in_ui:
