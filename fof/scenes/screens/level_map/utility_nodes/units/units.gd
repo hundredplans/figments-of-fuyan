@@ -124,8 +124,10 @@ func on_clear_event_queue() -> void:
 	active_event = []
 	event_queue = []
 	
+const MOVEMENT_AFTER_DELAY: float = 0.25
 func on_unit_travel_finished(Unit: UnitGD) -> void:
 	on_force_resume_idle_animation_from_walk()
+	if event_queue.is_empty(): await get_tree().create_timer(MOVEMENT_AFTER_DELAY).timeout
 	
 	if Unit.team == 0: PlayerManager.on_check_autopass(Unit)
 	elif Unit.team == 1: Tiles.on_set_tile_material(Unit.Tile, "EnemyOccupy")
@@ -162,7 +164,7 @@ func on_attack_enemy() -> void:
 func on_attack_finished(Unit: UnitGD) -> void:
 	active_event[2].stats("health", -Unit.attack, Unit)
 	
-	if active_event[2].health > 0:
+	if active_event[2].health > 0 and event_queue.is_empty():
 		await get_tree().create_timer(ATTACK_AFTER_DELAY).timeout
 	
 	Unit.attack_amount -= 1

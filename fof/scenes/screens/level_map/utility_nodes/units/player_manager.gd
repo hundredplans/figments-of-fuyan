@@ -135,12 +135,12 @@ func _on_unit_selected(Unit: UnitGD) -> void:
 
 func on_death_finished(Killer: String, Deathee: UnitGD, deathee_index: int) -> void:
 	if Killer == "Unit" and Deathee.Killer.team == 0: on_check_autopass(Deathee.Killer)
+	SpectateCamera.unit_positions.remove_at(deathee_index)
 	on_remove_unit_turn(Deathee)
 	if Deathee.team == 0:
-		SpectateCamera.unit_positions.remove_at(deathee_index)
-		if !unpassed_turns.is_empty() and SpectateCamera.unit_spectate_id == deathee_index:
-			SpectateCamera.on_spectate("Unit", Units.on_unit_team_index(unpassed_turns[0]))
-			
+		if !Settings.autopass_turn and unpassed_turns.is_empty() and !passed_turns.is_empty(): 
+			SpectateCamera.on_spectate("Unit", Units.on_unit_team_index(passed_turns[0]))
+	
 	if Units.on_units().is_empty(): print("DIE")
 		
 func on_unit_awakened(_Unit: UnitGD) -> void:

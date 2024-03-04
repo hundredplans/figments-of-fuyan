@@ -31,17 +31,18 @@ func unit_state() -> String:
 			return _unit_state
 	return ""
 	
-var HeightDropLabel: Node3D
+var last_tile_state_action: bool = false
+var HeightDropLabel: Node3D = null
 var hovered_type: Variant = Vector2.ZERO
 
 func on_update_materials(UnitSelected: UnitGD) -> void:
 	on_manage_height_drop_label(UnitSelected)
 	
 func on_manage_height_drop_label(UnitSelected: UnitGD) -> void:
-	if hovered_type.x == 4 and hovered_type.z != -1:
-		for state in tile_state:
-			if state == "PathHovered":
-				if HeightDropLabel == null or HeightDropLabel.is_queued_for_deletion():
+	if HeightDropLabel == null or HeightDropLabel.is_queued_for_deletion():
+		if hovered_type.x == 4 and hovered_type.z != -1:
+			for state in tile_state:
+				if state == "PathHovered":
 					HeightDropLabel = preload("res://scenes/screens/level_map/height_drop_label.tscn").instantiate()
 					Effects.add_child(HeightDropLabel)
 					HeightDropLabel.look_at(\
@@ -51,7 +52,7 @@ func on_manage_height_drop_label(UnitSelected: UnitGD) -> void:
 						HeightDropLabel.get_node("Sprite3D").texture = preload("res://scenes/screens/level_map/red_skull.png")
 						HeightDropLabel.get_node("Label3D").visible = false
 					else: HeightDropLabel.get_node("Label3D").text = str(hovered_type.z)
-				return
+					return
 			
-	if HeightDropLabel != null:
-		HeightDropLabel.queue_free()
+	else: HeightDropLabel.queue_free()
+		

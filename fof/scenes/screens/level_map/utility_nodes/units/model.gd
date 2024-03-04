@@ -63,7 +63,7 @@ func on_finish_animation(ani_name: String) -> void:
 	AniPlayer.speed_scale = 1
 	match ani_name:
 		"Walk": movement_finished.emit()
-		"Attack": attack_finished.emit()
+		"Attack": attack_finished.emit(); AudioMaster.play_sfx(Unit.AudioDict.ATTACK)
 		"Death": death_finished.emit()
 		"Jump": movement_finished.emit(); is_jump = false; jump_time = 0
 		
@@ -77,7 +77,6 @@ func move_to_tile(Tile: TileGD, type: Variant) -> void:
 func attack_tile(Tile: TileGD) -> void:
 	_look_at(Tile)
 	on_play_animation("Attack")
-	AudioMaster.play_sfx(Unit.AudioDict.ATTACK)
 
 var jump_start: Vector3
 var jump_end: Vector3

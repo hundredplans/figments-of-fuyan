@@ -271,15 +271,14 @@ func on_create_movement_paths(Unit: UnitGD) -> void:
 					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(3, 0))
 				elif hdiff == 0:
 					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i.ZERO)
-				elif hdiff < 0: on_connect_points(astar, movement_types, Tile, _Tile, Vector3i(4, hdiff, 0))
+				elif hdiff < 0 and is_valid_jump(Tile, _Tile): on_connect_points(astar, movement_types, Tile, _Tile, Vector3i(4, hdiff, 0))
 			elif hdiff == 1 and _Tile.info.tile.type == 1: # regular to half tile
 				on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(3, 0))
 			elif hdiff == 0: # movement between regular tiles
 				on_connect_points(astar, movement_types, Tile, _Tile, Vector2i.ZERO)
 			elif hdiff < 0: # jump down from regular tile
-				if hdiff == -1:
-					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(3, 0))
-				else: on_connect_points(astar, movement_types, Tile, _Tile, Vector3i(4, hdiff, 0))
+				if hdiff == -1: on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(3, 0))
+				elif is_valid_jump(Tile, _Tile): on_connect_points(astar, movement_types, Tile, _Tile, Vector3i(4, hdiff, 0))
 	tiles_by_adjacent.erase(Unit.Tile)
 	
 	for Tile in tiles_by_adjacent.keys(): # disconnect all points that a unit can't get to
@@ -312,18 +311,29 @@ func on_calculate_drop_damage(_hdiff: int, current_health: int, top_height: floa
 		nhealth = max(current_health + nhealth, 0)
 	return Vector3i(4, _hdiff, nhealth)
 
-func on_create_true_path(id_path: Array, movement_types: Array, Unit: UnitGD) -> Dictionary:
+# 
+func is_valid_jump(From: TileGD, To: TileGD) -> bool:
+	var to_pos: Vector4 = To.info.position
+	for Tile in range(to_pos.w + 1, From.info.position.w + 1).map(func(x: int): return position_to_tile(Vector4(to_pos.x, to_pos.y, to_pos.z, x))):
+		if !(Tile == null or Tile.solid_status == 1): return false
+	return true
+
+func on_create_true_path(id_path: Array, movement_types: Array, Unit: UnitGD) -> Dictionary: # For eliminating Tiles
 	var current_health: int = Unit.health
 	var true_path: Dictionary = {"tiles": [], "types": [], "size": 0}
 	for i in range(id_path.size()):
-		if i > 0:
-			for tile_array in movement_types:
-				if tile_array[0] == id_path[i - 1] and tile_array[1] == id_path[i]:
-					true_path.tiles.append(tile_array[1])
-					if tile_array[2].x == 4:
-						tile_array[2] = on_calculate_drop_damage(tile_array[2].y, current_health, Unit.height.top)
-						current_health = tile_array[2].z
-					true_path.types.append(tile_array[2])
+		if current_health != 0:
+			if i > 0:
+				for tile_array in movement_types:
+					if tile_array[0] == id_path[i - 1] and tile_array[1] == id_path[i]:
+						if tile_array[2].x == 4:
+							tile_array[2] = on_calculate_drop_damage(tile_array[2].y, current_health, Unit.height.top)
+							current_health = tile_array[2].z
+						true_path.tiles.append(tile_array[1])
+						true_path.types.append(tile_array[2])
+						break
+		else: return {"tiles": [], "types": [], "size": 0}
+			
 					
 	true_path.size = true_path.tiles.size()
 	return true_path
@@ -340,8 +350,8 @@ func on_tile_hovered(Tile: TileGD, type: String) -> void:
 	if Units.PlayerManager.UnitSelected != null and "UnitSelected" not in Tile.tile_state and movement_paths.has(Tile): # create hovered tiles
 		path_hovered_info = movement_paths[Tile]
 		for i in range(path_hovered_info.tiles.size()):
-			on_set_tile_material(path_hovered_info.tiles[i], "PathHovered")
 			path_hovered_info.tiles[i].hovered_type = path_hovered_info.types[i]
+			on_set_tile_material(path_hovered_info.tiles[i], "PathHovered")
 			if path_hovered_info.types[i].x == 1:
 				on_set_tile_material(path_hovered_info.tiles[i], "EnemyInRange")
 

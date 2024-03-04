@@ -96,7 +96,7 @@ func _on_hand_phase_hitbox_pressed():
 	
 func on_player_phase_start() -> void:
 	if GameCardSelected != null:
-		#GameCardSelected.get_node("Art/BlackCard").material = null
+		GameCardSelected.Art.get_node("CardButton").material = null
 		GameCardSelected = null
 		
 	PassUnitTurn.visible = true

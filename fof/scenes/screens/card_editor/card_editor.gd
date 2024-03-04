@@ -109,6 +109,11 @@ func _on_save_card_pressed():
 	if item_dict:
 		Helper.create_base_game_id_dir(item_dict, FILE_LOADER_NAME)
 		ID = item_dict.id
+		
+		var dir_path: String = "res://assets/base_game/cards/" + item_dict.bgfn 
+		if DirAccess.dir_exists_absolute(dir_path):
+			var audio_dict := AudioDictGD.new()
+			ResourceSaver.save(audio_dict, dir_path + "/audio.tres")
 
 var FileLoader: Control
 func _on_load_card_pressed():
