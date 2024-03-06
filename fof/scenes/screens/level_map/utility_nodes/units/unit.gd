@@ -30,7 +30,7 @@ var Vision: VisionGD
 var Units: UnitsGD
 var TeamControl: Node
 
-@onready var UnitCombatStatus: Sprite3D = $UnitCombatStatus
+@onready var UnitFieldStatus: Node3D = $UnitFieldStatus
 @onready var Model: Node3D = $Model
 func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: int, tile: TileGD) -> void:
 	id = _id
@@ -52,15 +52,17 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	TeamControl.Unit = self
 	add_child(TeamControl)
 	
-	UnitCombatStatus.visible = true
-	UnitCombatStatus.position.y = height.top * 1.2
+	UnitFieldStatus.position.y = height.top * 1.25
+	UnitFieldStatus.Heroes = Units.Heroes
+	UnitFieldStatus.SpectateCamera = Units.SpectateCamera
+	UnitFieldStatus.on_set_unit(self)
 	Model.rot = rot
 	Model.on_add_model()
 	
-	occupy_tile(tile)
+	
 	position = tile.position
 	position.y += 0.3
-	
+	occupy_tile(tile)
 	AudioDict = load("res://assets/base_game/cards/" + base_card.bgfn + "/audio.tres")
 
 func occupy_tile(_Tile: TileGD) -> void:
@@ -125,5 +127,5 @@ func on_death() -> void:
 	queue_free()
 
 func on_spectated_in_player_phase() -> void:
-	UnitStatus.on_set_status_box_modulate("Spectating")
+	UnitStatus.on_unit_spectated(true)
 	if Tile.unit_state() not in ["TurnActive", "TurnUsed"]: Units.Tiles.on_set_tile_material(Tile, "SpectatingUnit")

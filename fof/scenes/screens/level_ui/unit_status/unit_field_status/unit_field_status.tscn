@@ -1,0 +1,102 @@
+[gd_scene load_steps=10 format=3 uid="uid://kipaaomw7to0"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_ui/unit_status/unit_field_status/unit_field_status.gd" id="1_qelrw"]
+[ext_resource type="Texture2D" uid="uid://dr4ojvlaol232" path="res://scenes/screens/level_ui/unit_status/unit_status_pieces/status_in.png" id="1_wa8ns"]
+[ext_resource type="Texture2D" uid="uid://dqwa4ewr44mxc" path="res://scenes/screens/level_ui/unit_status/unit_status_pieces/status_gem.png" id="2_6katj"]
+[ext_resource type="Texture2D" uid="uid://o2y0lth6qfc2" path="res://assets/base_game/cards/105 - Frederic the Fearless'0/art_mini.png" id="3_haub8"]
+[ext_resource type="FontFile" uid="uid://mfgjlwtefh1g" path="res://assets/UI/sixty_four/Sixtyfour-Regular.ttf" id="4_0hv37"]
+[ext_resource type="Texture2D" uid="uid://d3bre8hc3do4r" path="res://scenes/screens/level_ui/unit_status/unit_field_status/unit_field_status_outline.png" id="4_vt55u"]
+[ext_resource type="Texture2D" uid="uid://bq7oil2dvc6bs" path="res://assets/base_game/cards/card_ui/bbcode/ATTACK.png" id="5_2f52w"]
+[ext_resource type="Texture2D" uid="uid://cor7udw0x0ufw" path="res://assets/base_game/cards/card_ui/bbcode/HEALTH.png" id="6_c3eyv"]
+[ext_resource type="Texture2D" uid="uid://dkdx58e2117h0" path="res://assets/base_game/cards/card_ui/bbcode/SPEED.png" id="7_ymhbe"]
+
+[node name="UnitFieldStatus" type="Node3D"]
+script = ExtResource("1_qelrw")
+
+[node name="Background" type="Node3D" parent="."]
+
+[node name="In" type="Sprite3D" parent="Background"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.0477778, 0, 2.08843e-09)
+pixel_size = 0.005
+texture_filter = 2
+render_priority = 1
+texture = ExtResource("1_wa8ns")
+
+[node name="Gem" type="Sprite3D" parent="Background"]
+unique_name_in_owner = true
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.873271, 0, 1.4669e-07)
+pixel_size = 0.005
+texture_filter = 2
+render_priority = 4
+texture = ExtResource("2_6katj")
+
+[node name="ArtMini" type="Sprite3D" parent="Background"]
+unique_name_in_owner = true
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.602195, 0, -1.11558e-07)
+pixel_size = 0.005
+texture_filter = 2
+render_priority = 5
+texture = ExtResource("3_haub8")
+
+[node name="Background" type="Sprite3D" parent="Background"]
+unique_name_in_owner = true
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.0477778, 0, 2.08843e-09)
+pixel_size = 0.005
+texture_filter = 2
+texture = ExtResource("4_vt55u")
+
+[node name="Stats" type="Node3D" parent="."]
+
+[node name="Attack" type="Label3D" parent="Stats"]
+unique_name_in_owner = true
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.266692, -0.102384, -5.32446e-08)
+texture_filter = 2
+render_priority = 3
+outline_render_priority = 2
+text = "2"
+font = ExtResource("4_0hv37")
+font_size = 24
+outline_size = 8
+
+[node name="Health" type="Label3D" parent="Stats"]
+unique_name_in_owner = true
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.00355071, -0.12896, -6.1342e-09)
+texture_filter = 2
+render_priority = 3
+outline_render_priority = 2
+text = "3"
+font = ExtResource("4_0hv37")
+font_size = 24
+outline_size = 8
+
+[node name="Speed" type="Label3D" parent="Stats"]
+unique_name_in_owner = true
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.260843, -0.111163, 3.87545e-08)
+texture_filter = 2
+render_priority = 3
+outline_render_priority = 2
+text = "3"
+font = ExtResource("4_0hv37")
+font_size = 24
+outline_size = 8
+
+[node name="AttackSprite" type="Sprite3D" parent="Stats"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.264161, 0.078602, -5.22811e-08)
+pixel_size = 0.005
+texture_filter = 2
+render_priority = 2
+texture = ExtResource("5_2f52w")
+
+[node name="HealthSprite" type="Sprite3D" parent="Stats"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 5.98021e-05, 0.0470759, -5.84764e-09)
+pixel_size = 0.005
+texture_filter = 2
+render_priority = 2
+texture = ExtResource("6_c3eyv")
+
+[node name="SpeedSprite" type="Sprite3D" parent="Stats"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.268425, 0.0692087, 3.9444e-08)
+pixel_size = 0.005
+texture_filter = 2
+render_priority = 2
+texture = ExtResource("7_ymhbe")

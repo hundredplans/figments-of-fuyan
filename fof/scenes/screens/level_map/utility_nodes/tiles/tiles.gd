@@ -152,12 +152,17 @@ func tile_distance(Tile: TileGD, _Tile: TileGD) -> int:
 	
 # -----------------
 
+func _input(_event: InputEvent) -> void: pass
+	#if event is InputEventMouseMotion:
+		#pass
+
 func _ready() -> void:
 	LevelUI.mouse_in_ui.connect(on_mouse_enters_ui)
 	LevelMap.lock_inputs_changed.connect(on_lock_inputs_changed)
 	for child in get_children():
-		child.get_node("MouseDetector").mouse_entered.connect(on_tile_mouse_entered.bind(child))
-		child.get_node("MouseDetector").mouse_exited.connect(on_tile_mouse_exited.bind(child))
+		if child.get_node("Tile").get_child_count() > 0:
+			child.get_node("Tile").get_child(0).get_child(1).mouse_entered.connect(on_tile_mouse_entered.bind(child))
+			child.get_node("Tile").get_child(0).get_child(1).mouse_exited.connect(on_tile_mouse_exited.bind(child))
 	on_set_default_shader_parameters()
 
 var TileInHopper: TileGD
@@ -465,12 +470,12 @@ func on_force_mouse_entered() -> void:
 const RAY_LENGTH: int = 1000
 func on_find_tile_by_raycast() -> TileGD:
 	var to: Vector3 = SpectateCamera.project_ray_normal(get_viewport().get_mouse_position()) * RAY_LENGTH
-	var ray: RayCast3D = Vision.TileRayCast
+	var ray: RayCast3D = Vision.MouseRayCast
 	
 	ray.position = SpectateCamera.position
 	ray.target_position = to
 	ray.force_raycast_update()
 	
 	var node: Node3D = ray.get_collider()
-	if node: node = node.get_parent()
+	if node: node = node.get_node("../../..")
 	return node

@@ -1971,8 +1971,13 @@ func _on_bake_level_pressed():
 		add_child(LoadedLevel)
 		
 		var tiles: Array = []
+		var s: int = item_dict.tiles.size()
+		var i: int = 0
 		for tile_info in item_dict.tiles:
 			tiles.append(on_create_tile(tile_info, LoadedLevel, item_dict.area))
+			await get_tree().create_timer(0.001).timeout
+			i += 1
+			print(str(i) + "/" + str(s))
 		
 		tiles = tiles.filter(func(x: TileGD): return x != null)
 		var positions: Array = tiles.map(func(x: TileGD): return x.info.position)

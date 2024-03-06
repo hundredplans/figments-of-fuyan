@@ -8,7 +8,7 @@ func on_load_info(info: Dictionary) -> void:
 	rotation_degrees.y = info.rotation * 60
 	
 	if tile_decoration_name != "null":
-		add_child(load("res://assets/models/decorations/tiles/" + tile_decoration_name + ".glb").instantiate())
+		add_child(load("res://assets/models/decorations/tiles/" + tile_decoration_name + ".tscn").instantiate())
 
 func set_material(mat: Material) -> void:
 	if get_child_count() > 0:

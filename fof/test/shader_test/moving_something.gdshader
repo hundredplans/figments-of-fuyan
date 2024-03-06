@@ -1,7 +1,0 @@
-shader_type canvas_item;
-
-void vertex() {
-	if (VERTEX.y < 0.0) {
-		VERTEX += vec2(sin(TIME * 3.0) * 40.0, 0);
-	}
-}

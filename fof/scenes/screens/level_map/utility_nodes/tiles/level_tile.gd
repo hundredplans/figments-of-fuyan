@@ -53,6 +53,11 @@ func on_manage_height_drop_label(UnitSelected: UnitGD) -> void:
 						HeightDropLabel.get_node("Label3D").visible = false
 					else: HeightDropLabel.get_node("Label3D").text = str(hovered_type.z)
 					return
-			
 	else: HeightDropLabel.queue_free()
 		
+func on_change_collision_state(state: bool) -> void:
+	for child in [tile, wall, obj, tdeco, wdeco]:
+		for grandchild in child.get_children():
+			for grandestchild in grandchild.get_children():
+				if grandestchild is Area3D:
+					grandestchild.collision_layer = 0 if !state else 8

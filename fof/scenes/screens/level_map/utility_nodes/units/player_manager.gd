@@ -55,7 +55,7 @@ func on_player_phase_start() -> void:
 	
 	var units: Array = Units.on_units()
 	for i in range(units.size()):
-		units[i].UnitStatus.on_set_status_box_modulate("Ally")
+		units[i].UnitStatus.on_set_status_box_modulate("TurnUnused")
 	
 func on_player_end_turn_phase_start() -> void:
 	if UnitSelected != null: _on_unit_deselected(UnitSelected, true)
@@ -135,9 +135,9 @@ func _on_unit_selected(Unit: UnitGD) -> void:
 
 func on_death_finished(Killer: String, Deathee: UnitGD, deathee_index: int) -> void:
 	if Killer == "Unit" and Deathee.Killer.team == 0: on_check_autopass(Deathee.Killer)
-	SpectateCamera.unit_positions.remove_at(deathee_index)
-	on_remove_unit_turn(Deathee)
 	if Deathee.team == 0:
+		SpectateCamera.unit_positions.remove_at(deathee_index)
+		on_remove_unit_turn(Deathee)
 		if !Settings.autopass_turn and unpassed_turns.is_empty() and !passed_turns.is_empty(): 
 			SpectateCamera.on_spectate("Unit", Units.on_unit_team_index(passed_turns[0]))
 	

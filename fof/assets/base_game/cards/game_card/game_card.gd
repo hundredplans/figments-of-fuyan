@@ -20,11 +20,6 @@ func set_info(_info: Dictionary) -> void:
 	
 	Art.get_node("CardButton").texture_normal = load("res://assets/base_game/cards/game_card/rarity/" + str(info.r) + ".png")
 	Helper.create_button_clickmask(Art.get_node("CardButton"))
-	
-	for area in Helper.on_item_dicts("Area"):
-		if info.id in area.cards:
-			$Art/AreaBackground.texture = load("res://assets/base_game/cards/game_card/area_background/" + str(area.id) + ".png")
-			break
 			
 	$Art/ArtPop.texture = load("res://assets/base_game/cards/" + info.bgfn + "/art_pop.png")
 

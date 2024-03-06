@@ -2,42 +2,50 @@ class_name VisionGD
 extends Node3D
 
 @onready var TileRayCast: RayCast3D = $TileRayCast
-@onready var DarknessNode: Node3D = $DarknessNode
+@onready var MouseRayCast: RayCast3D = $MouseRayCast
 var Units: UnitsGD
 var Tiles: TilesGD
 var GameState: Node
 const VISION_RANGE: int = 5
 
 var visible_tiles: Array
-
-func on_start_phase_start() -> void:
-	for Unit in Units.on_units(1):
-		Units.on_unit_enters_vision(Unit)
+var grey_tiles: Array
 
 func on_recalculate_vision() -> void:
-	pass
-	#on_clear_darkness()
-	#var old_visible_tiles: Array = visible_tiles.duplicate()
-	#visible_tiles = on_find_visible_tiles()
-	#on_find_units_enter_vision(old_visible_tiles)
-	#
-	#var other_tiles: Array = Tiles.tiles_unique(Tiles.get_children_by_elevation(), visible_tiles)
-	#on_apply_visibility(other_tiles)
-	#on_create_darkness(other_tiles)
+	var old_visible_tiles: Array = visible_tiles.duplicate()
+	visible_tiles = on_find_visible_tiles()
+	on_find_units_enter_vision(old_visible_tiles)
 	
-func on_clear_darkness() -> void:
-	for child in DarknessNode.get_children(): child.queue_free()
+	var other_tiles: Array = Tiles.tiles_unique(Tiles.get_children(), visible_tiles)
+	on_apply_visibility(other_tiles)
+	on_create_darkness(other_tiles)
 
 func on_find_visible_tiles() -> Array:
 	var _visible_tiles: Dictionary = {}
 	on_merge_visible_tiles(_visible_tiles, Tiles.on_is_type_get_tiles("Spawn", "obj"))
 	
-	for Unit in Units.on_units():
-		on_merge_visible_tiles(_visible_tiles, tiles_in_vision(Unit))
+	var vision_check_passed: Array = []
+	var units: Array = Units.on_units()
+	for Unit in units:
+		var vision_range: Array = tiles_in_vision(Unit)
+		Unit.Tile.on_change_collision_state(false)
+		TileRayCast.position = Unit.global_position
+		TileRayCast.position.y += Unit.height.eye + (0.6 if Unit.Tile.info.tile.type > 0 else 0.0)
+		
+		for Tile in vision_range:
+			TileRayCast.target_position = Tile.position - TileRayCast.position
+			TileRayCast.target_position.y += (0.3 if Tile.info.tile.type == 0 else 0.6) if Tile.info.tile.id not in [3, 4] else 0.2
+			TileRayCast.force_raycast_update()
+			if TileRayCast.is_colliding():
+				if TileRayCast.get_collider().get_node("../../..") == Tile:
+					vision_check_passed.append(Tile)
+		Unit.Tile.on_change_collision_state(true)
+	
+	on_merge_visible_tiles(_visible_tiles, vision_check_passed + units.map(func(x: UnitGD): return x.Tile))
 	return Tiles.positions_to_tiles(_visible_tiles.keys())
 
 func tiles_in_vision(Unit: UnitGD) -> Array:
-	return Tiles.all_in_range(Unit.Tile, VISION_RANGE, true)
+	return Tiles.all_in_range(Unit.Tile, VISION_RANGE, false, true).filter(func(x: TileGD): return x.info.tile.id > 0)
 
 func on_merge_visible_tiles(_visible_tiles: Dictionary, tiles: Array) -> void:
 	for tile in tiles: _visible_tiles.merge({tile.info.position: null})
@@ -51,13 +59,7 @@ func on_apply_visibility(other_tiles: Array) -> void:
 
 func on_create_darkness(other_tiles: Array) -> void:
 	for Tile in other_tiles:
-		var Darkness: MeshInstance3D = preload("res://scenes/screens/level_map/utility_nodes/vision/darkness.tscn").instantiate()
-		Darkness.mesh = load("res://scenes/screens/level_map/utility_nodes/vision/darkness" \
-		+ str(Tiles.nonexistent_positions_above(Tile).size()) + ".tres")
-		
-		Darkness.position = Tile.position
-		Darkness.position.y = (Darkness.mesh.height / 2) + 0.3
-		DarknessNode.add_child(Darkness)
+		pass
 
 func on_find_units_enter_vision(old_visible_tiles: Array) -> void:
 	for Unit in Units.all_units():

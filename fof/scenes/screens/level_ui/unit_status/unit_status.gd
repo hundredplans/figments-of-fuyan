@@ -7,24 +7,29 @@ const BRIGHT_GREEN: Color = Color("00ff00")
 const MEDIUM_GRAY: Color = Color("8c8c8c")
 
 var Unit: UnitGD
-@onready var CameraIcon: Sprite2D = $CameraIcon
 @onready var oHoverCard: Control = $HoverCard
+@onready var Gem: Sprite2D = %Gem
+@onready var ShiftingBackground: Sprite2D = %ShiftingBackground
 
 func _ready() -> void:
 	oHoverCard.visible = false
-	CameraIcon.visible = false
+	Rainbow.visible = false
 
 func on_set_unit(_Unit: UnitGD) -> void:
 	Unit = _Unit
 	visible = !(bool(Unit.team))
-	on_set_status_box_modulate("Enemy" if Unit.team == 1 else "TurnUsed")
+	Gem.visible = !(bool(Unit.team))
+	ShiftingBackground.material = load("res://scenes/screens/level_ui/unit_status/unit_status_pieces/shifting_background_"\
+	+ ("green" if Unit.team == 0 else "red") + ".tres")
+	
+	on_set_status_box_modulate("TurnUsed")
 	on_reset_stats()
 	on_reset_status_effects()
 	on_reset_tool()
 	
 	var hero_bgfn: String = Unit.base_card.bgfn if Unit.rarity != 7 else Helper.id_to_dict(Heroes.id_to_base(Unit.id), "Card").bgfn
 	var card_texture_path: String = "res://assets/base_game/cards/" + hero_bgfn + "/art_mini.png"
-	$ArtPop.texture_normal = load(card_texture_path)
+	$Background/ArtPop.texture_normal = load(card_texture_path)
 
 @onready var AttackLabel: Label = $Stats/Attack/Label
 @onready var HealthLabel: Label = $Stats/Health/Label
@@ -50,6 +55,8 @@ func on_reset_stats() -> void:
 	for stat in ["Attack", "Health", "Speed"]:
 		var val: int = Unit["max_" + stat.to_lower()] - Unit.base_card[stat[0].to_lower()]
 		get_node("HoverCard/Buffs/HBoxContainer/" + stat + "/Label").text = ("+" if val >= 0 else "") + str(val)
+	
+	on_update_combat_status_texture()
 	
 func on_reset_status_effects() -> void:
 	pass
@@ -89,9 +96,11 @@ func on_remove_hover_card() -> void:
 		HoverCard = null
 
 const HOVER_CARD_OFFSET := Vector2(-110, 40)
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	if visible and HoverCard != null:
 		oHoverCard.position = get_global_mouse_position() + HOVER_CARD_OFFSET
+
+	if Rainbow.visible: Rainbow.rotation_degrees += RAINBOW_SPEED * delta
 
 func _on_mouse_entered():
 	if !Unit.Units.LevelMap.lock_inputs and !Unit.Units.LevelUI.is_status_box_panel_moving:
@@ -106,20 +115,22 @@ func _queue_free() -> void:
 	queue_free()
 
 const modulates: Dictionary = {
-	"Ally": "78ea8f",
-	"Enemy": "c80012",
-	"TurnUsed": "787878",
-	"TurnActive": "00fa00",}
+	"TurnUsed": Color(0.2, 0.2, 0.2),
+	"TurnUnused": Color(0.6, 0.6, 0.6),
+	"TurnActive": Color(1, 1, 1),}
 	
-var past_modulate_state: String
 var modulate_state: String
 func on_set_status_box_modulate(val: String) -> void:
-	CameraIcon.visible = val == "Spectating"
-	if !CameraIcon.visible:
-		$Background/Outside.modulate = modulates[val]
+	if Unit.team == 0:
+		Gem.modulate = modulates[val]
 		modulate_state = val
-		if modulate_state in ["Ally", "TurnUsed", "Enemy"]:
-			past_modulate_state = modulate_state
 
-func on_update_combat_status_texture() -> void: pass
+const RAINBOW_SPEED: int = 300
+@onready var Rainbow = %RainbowLight
+func on_unit_spectated(state: bool) -> void:
+	Rainbow.visible = state
+
+func on_update_combat_status_texture() -> void:
+	pass
 	#Unit.UnitCombatStatus.texture = ImageTexture.create_from_image(RenderingServer.bake_render_uv2(self, [], size)[0])
+

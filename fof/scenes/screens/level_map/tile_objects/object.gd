@@ -10,7 +10,7 @@ func on_load_info(info: Dictionary) -> void:
 	
 	match obj_decoration_name:
 		"null", "spawns/spawn_ally", "spawns/spawn_trinket", "spawns/spawn_enemy", "spawns/spawn_neutral": pass
-		_: add_child(load("res://assets/models/objects/" + obj_decoration_name + ".glb").instantiate())
+		_: add_child(load("res://assets/models/objects/" + obj_decoration_name + ".tscn").instantiate())
 
 func set_material(mat: Material) -> void:
 	if get_child_count() > 0:

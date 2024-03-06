@@ -89,8 +89,7 @@ func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0) -> voi
 					var past_unit: UnitGD = units[unit_spectate_id]
 					unit_positions[unit_spectate_id] = total_progress
 					Tiles.on_remove_tile_material(past_unit.Tile, "SpectatingUnit")
-					if past_unit.UnitStatus.modulate_state != "TurnActive":
-						past_unit.UnitStatus.on_set_status_box_modulate(past_unit.UnitStatus.past_modulate_state)
+					past_unit.UnitStatus.on_unit_spectated(false)
 					
 				if id == -1: unit_spectate_id += direction
 				else: unit_spectate_id = id

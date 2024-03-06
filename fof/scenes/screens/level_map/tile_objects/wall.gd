@@ -8,7 +8,7 @@ func on_load_info(info: Dictionary, area: int) -> void:
 	rotation_degrees.y = info.rotation * 60
 	if wall_name != "null":
 		for n in range(4 - info.tile_wall):
-			var wall: Node3D = load("res://assets/models/walls/" + wall_name + ".glb").instantiate()
+			var wall: Node3D = load("res://assets/models/walls/" + wall_name + ".tscn").instantiate()
 			add_child(wall)
 			wall.position.y = n * 0.3
 			
