@@ -32,6 +32,7 @@ func _ready() -> void:
 	equip_sky.emit(GameState.area_info.id, false)
 	ChangePhase.visible = false
 	PassUnitTurn.visible = false
+	LevelMap.SpectateCamera.mouse_in_ui.connect(on_camera_panning)
 	
 	$Admin/ShowPhase.visible = GameState.admin
 	on_pin_hand_box_panel(0)
@@ -64,8 +65,9 @@ func on_card_selected(GameCard: Control) -> void:
 		GameCardSelected = GameCard
 		GameCardSelected.Art.get_node("CardButton").material = _card_selected_material
 		index = GameCard.get_index()
+		LevelMap.set_lock_inputs(false)
 		on_unpin_hand_box_panel()
-	else: GameCardSelected = null; on_pin_hand_box_panel()
+	else: GameCardSelected = null; on_pin_hand_box_panel(); LevelMap.set_lock_inputs(true)
 	LevelMap.Hand.on_card_selected(index)
 		
 func on_card_placed(index: int) -> void:
@@ -209,10 +211,15 @@ func on_lock_inputs_changed(x: bool) -> void:
 	ChangePhase.visible = !x
 	PassUnitTurn.visible = !x
 
+var absolute_mouse_in_ui: bool
 var is_mouse_in_ui: bool = false
-func on_is_mouse_in_ui(x: bool) -> void: 
+func on_is_mouse_in_ui(x: bool, absolute_change: bool = true) -> void:
+	absolute_mouse_in_ui = x and absolute_change
 	is_mouse_in_ui = x
 	mouse_in_ui.emit(x)
+	
+func on_camera_panning(x: bool) -> void:
+	if !absolute_mouse_in_ui: on_is_mouse_in_ui(x, false)
 
 func on_hand_box_calculate_visibility(__: Control, offset: int = 0):
 	if !is_queued_for_deletion():

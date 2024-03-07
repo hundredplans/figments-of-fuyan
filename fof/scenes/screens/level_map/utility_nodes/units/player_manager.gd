@@ -116,7 +116,7 @@ func _on_unit_deselected(Unit: UnitGD, absolute: bool = false) -> void:
 	Tiles.movement_paths = {"tiles": []}
 	if Unit == UnitSelected: UnitSelected = null
 	if !absolute:
-		Tiles.on_force_mouse_entered()
+		Tiles.on_mouse_entered(Tiles.on_find_tile_by_raycast())
 		
 	LevelUI.get_node("SkipReminder").visible = false
 	

@@ -101,7 +101,7 @@ func _process(_delta: float) -> void:
 					SpectateCamera.on_start_track_unit(active_event[1])
 				"AttackTarget": on_attack_enemy()
 				"DeathUnit": on_death()
-			LevelMap.set_lock_inputs(true)
+			LevelMap.on_set_lock_inputs_event_queue(true)
 		
 func on_movement_finished(Unit: UnitGD) -> void:
 	Unit.stats("speed", -1, "MovementFinished")
@@ -131,7 +131,7 @@ func on_unit_travel_finished(Unit: UnitGD) -> void:
 	if Unit.team == 0: PlayerManager.on_check_autopass(Unit)
 	elif Unit.team == 1: Tiles.on_set_tile_material(Unit.Tile, "EnemyOccupy")
 	
-	LevelMap.set_lock_inputs(false)
+	LevelMap.on_set_lock_inputs_event_queue(false)
 	SpectateCamera.on_end_track_unit()
 	
 func on_force_resume_idle_animation_from_walk() -> void:
@@ -156,7 +156,7 @@ func _attack_enemy(Unit: UnitGD, _Unit: UnitGD, Tile: TileGD) -> void:
 func on_attack_enemy() -> void:
 	active_event[1].Model.attack_tile(active_event[3])
 	active_event[2].Model._look_at(active_event[1].Tile)
-	LevelMap.set_lock_inputs(true)
+	LevelMap.on_set_lock_inputs_event_queue(true)
 	# can do all the ui stuff here for attacking
 	
 @export var ATTACK_AFTER_DELAY: float = 0.5
@@ -169,7 +169,7 @@ func on_attack_finished(Unit: UnitGD) -> void:
 	Unit.attack_amount -= 1
 	active_event = []
 	
-	LevelMap.set_lock_inputs(false)
+	LevelMap.on_set_lock_inputs_event_queue(false)
 	if Unit.team == 0: PlayerManager.on_attack_finished(Unit)
 	
 func _attack_target(_Unit: UnitGD, _Tile: TileGD) -> void:
@@ -180,14 +180,14 @@ func kill_unit(Unit: UnitGD, Killer: String) -> void:
 
 func on_death() -> void:
 	active_event[1].Model.on_death()
-	LevelMap.set_lock_inputs(true)
+	LevelMap.on_set_lock_inputs_event_queue(true)
 
 @export var DEATH_AFTER_DELAY: float = 1.0
 func on_death_finished(Unit: UnitGD) -> void:
 	await get_tree().create_timer(DEATH_AFTER_DELAY).timeout
 	var deathee_index: int = on_unit_team_index(Unit)
 	Unit.on_death()
-	LevelMap.set_lock_inputs(false)
+	LevelMap.on_set_lock_inputs_event_queue(false)
 	PlayerManager.on_death_finished(active_event[2], Unit, deathee_index)
 	Deck.on_draw_card()
 	active_event = []

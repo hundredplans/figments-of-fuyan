@@ -60,6 +60,7 @@ func on_change_game_phase(phase: String) -> void:
 		LevelUI.get_node("Admin/ShowPhase").text = phase
 	match phase:
 		"StartPhase":
+			set_lock_inputs(true)
 			SpectateCamera.on_start_phase_start()
 			SpectateCamera.on_spectate("Spawn")
 			Hand.on_start_phase_start()
@@ -67,16 +68,19 @@ func on_change_game_phase(phase: String) -> void:
 		"AfterStartPhase":
 			Deck.on_after_start_phase_start()
 		"HandPhase":
+			set_lock_inputs(true)
 			Hand.on_hand_phase_start()
 			var skip_hand_phase: bool = on_skip_hand_phase_result()
 			if play_ui: LevelUI.on_hand_phase_start(skip_hand_phase)
 			if skip_hand_phase: on_advance_game_phase()
 		"PlayerPhase":
+			set_lock_inputs(false)
 			Hand.on_player_phase_start()
 			LevelUI.on_player_phase_start()
 			Units.on_player_phase_start()
 			SpectateCamera.on_spectate("Unit")
 		"PlayerEndTurnPhase":
+			set_lock_inputs(true)
 			Units.on_player_end_turn_phase_start()
 			LevelUI.on_player_end_turn_phase_start()
 			on_change_game_phase("HandPhase")
@@ -93,8 +97,11 @@ func on_advance_game_phase() -> void:
 		"BOTPhase": on_change_game_phase("PlayerStartTurnPhase")
 		"PlayerStartTurnPhase": on_change_game_phase("HandPhase")
 
+func on_set_lock_inputs_event_queue(x: bool) -> void:
+	if x or Units.event_queue.is_empty(): set_lock_inputs(x)
+
 func set_lock_inputs(x: bool) -> void:
-	if !(!x and !Units.event_queue.is_empty()):
+	if Units.event_queue.is_empty():
 		lock_inputs = x
 		lock_inputs_changed.emit(x)
 

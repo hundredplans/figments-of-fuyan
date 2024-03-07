@@ -11,14 +11,14 @@ const VISION_RANGE: int = 5
 var visible_tiles: Array
 var grey_tiles: Array
 
-func on_recalculate_vision() -> void:
-	var old_visible_tiles: Array = visible_tiles.duplicate()
-	visible_tiles = on_find_visible_tiles()
-	on_find_units_enter_vision(old_visible_tiles)
-	
-	var other_tiles: Array = Tiles.tiles_unique(Tiles.get_children(), visible_tiles)
-	on_apply_visibility(other_tiles)
-	on_create_darkness(other_tiles)
+func on_recalculate_vision() -> void: pass
+	#var old_visible_tiles: Array = visible_tiles.duplicate()
+	#visible_tiles = on_find_visible_tiles()
+	#on_find_units_enter_vision(old_visible_tiles)
+	#
+	#var other_tiles: Array = Tiles.tiles_unique(Tiles.get_children(), visible_tiles)
+	#on_apply_visibility(other_tiles)
+	#on_create_darkness(other_tiles)
 
 func on_find_visible_tiles() -> Array:
 	var _visible_tiles: Dictionary = {}
@@ -69,7 +69,6 @@ func on_find_units_enter_vision(old_visible_tiles: Array) -> void:
 		if !(is_in_old_vision and is_in_vision):
 			if is_in_vision: Units.on_unit_enters_vision(Unit)
 			elif is_in_old_vision: Units.on_unit_exits_vision(Unit)
-			
 
 func is_unit_in_vision(Unit: UnitGD) -> bool: # two diff visions for the two teams
 	if Unit.team == 1: return Unit.Tile in visible_tiles

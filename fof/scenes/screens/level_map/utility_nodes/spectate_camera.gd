@@ -1,5 +1,6 @@
 extends Camera3D
 
+signal mouse_in_ui
 @export var LOOK_AT_UNIT_HEIGHT_MULTIPLIER: float = 0.8
 @export var CAMERA_UNIT_HEIGHT_MULTIPLIER: float = 1.2
 @export var CAMERA_RADIUS: float = 2.0 * (1 + (0.01 * Settings.camera_distance))
@@ -30,9 +31,11 @@ func on_camera_start_spectate(pos: Vector3, type: String) -> void:
 func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed(Helper.interact_button(true)):
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		mouse_in_ui.emit(true)
 		
 	elif Input.is_action_just_released(Helper.interact_button(true)):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		mouse_in_ui.emit(false)
 			
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		on_set_camera_point_along_circle((event.relative / 10000) * CAMERA_ROTATION_SPEED)
@@ -105,7 +108,7 @@ func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0) -> voi
 					total_progress = unit_positions[unit_spectate_id]
 					on_camera_start_spectate(Unit.position, type)
 					Units.PlayerManager.on_spectate_unit(Unit)
-					if LevelMap.game_phase == "PlayerPhase" and Unit.UnitStatus.modulate_state != "TurnActive":
+					if LevelMap.game_phase == "PlayerPhase":
 						Unit.on_spectated_in_player_phase()
 						
 func on_select_spectate_camera_direction(i: int) -> void:

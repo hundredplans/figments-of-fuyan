@@ -152,40 +152,25 @@ func tile_distance(Tile: TileGD, _Tile: TileGD) -> int:
 	
 # -----------------
 
-func _input(_event: InputEvent) -> void: pass
-	#if event is InputEventMouseMotion:
-		#pass
-
 func _ready() -> void:
 	LevelUI.mouse_in_ui.connect(on_mouse_enters_ui)
 	LevelMap.lock_inputs_changed.connect(on_lock_inputs_changed)
-	for child in get_children():
-		if child.get_node("Tile").get_child_count() > 0:
-			child.get_node("Tile").get_child(0).get_child(1).mouse_entered.connect(on_tile_mouse_entered.bind(child))
-			child.get_node("Tile").get_child(0).get_child(1).mouse_exited.connect(on_tile_mouse_exited.bind(child))
 	on_set_default_shader_parameters()
 
-var TileInHopper: TileGD
 var active_tile: TileGD
-func on_tile_mouse_entered(Tile: TileGD, override: bool = false) -> void:
-	if active_tile == null and Tile.visible and (!LevelUI.is_mouse_in_ui or override):
-		if !LevelMap.lock_inputs:
-			active_tile = Tile
-			on_tile_hovered(active_tile, on_find_tile_primary_type(Tile))
-		else: TileInHopper = Tile
+func on_tile_mouse_entered(Tile: TileGD) -> void:
+	active_tile = Tile
+	on_tile_hovered(active_tile, on_find_tile_primary_type(Tile))
 	
-func on_tile_mouse_exited(Tile: TileGD, override: bool = false) -> void:
-	if active_tile != null and Tile.visible and (!LevelUI.is_mouse_in_ui or override):
-		if !LevelMap.lock_inputs:
-			active_tile = null
-			on_tile_unhovered(Tile, on_find_tile_primary_type(Tile))
-		else: TileInHopper = null
+func on_tile_mouse_exited(Tile: TileGD) -> void:
+	active_tile = null
+	on_tile_unhovered(Tile, on_find_tile_primary_type(Tile))
 
 func tiles_by_tile_state(tile_state: String) -> Array:
 	return get_children().filter(func(x: TileGD): return tile_state in x.tile_state)
 
 func _process(_delta: float) -> void:
-	if !LevelMap.lock_inputs:
+	if (!LevelMap.lock_inputs and !LevelUI.is_mouse_in_ui):
 		if active_tile != null and Input.is_action_just_released("LeftClick"):
 			if is_tile_occupied_by_units(active_tile):
 				Units.PlayerManager.on_occupied_tile_inspected(active_tile)
@@ -454,18 +439,30 @@ func on_set_tile_highest_material(Tile: TileGD) -> void:
 	Tile.on_update_materials(Units.PlayerManager.UnitSelected)
 
 func on_lock_inputs_changed(x: bool) -> void:
-	if !x and !LevelUI.is_mouse_in_ui:
-		on_force_mouse_entered()
+	on_force_mouse_tile(x, 2)
+		
+var InputTile: TileGD
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion:
+		on_mouse_entered(on_find_tile_by_raycast())
 		
 func on_mouse_enters_ui(x: bool) -> void:
-	if active_tile and x: on_tile_mouse_exited(active_tile, true)
-	elif active_tile == null and !x:
-		on_force_mouse_entered()
+	on_force_mouse_tile(x, 1)
 
-func on_force_mouse_entered() -> void:
-	if active_tile != null: on_tile_mouse_exited(active_tile, true)
-	var new_tile: TileGD = on_find_tile_by_raycast()
-	if new_tile != null: on_tile_mouse_entered(new_tile, true)
+func on_force_mouse_tile(state: bool, override: int = 0) -> void:
+	if state: on_mouse_entered(null, override)
+	else: on_mouse_entered(on_find_tile_by_raycast(), override)
+
+func on_mouse_entered(Tile: TileGD, override: int = 0) -> void:
+	if ((!LevelUI.is_mouse_in_ui or override == 1) and (!LevelMap.lock_inputs or override == 2)):
+		if InputTile != null and Tile != null and Tile != InputTile:
+			on_tile_mouse_exited(InputTile)
+			on_tile_mouse_entered(Tile)
+		elif Tile == null and InputTile != null:
+			on_tile_mouse_exited(InputTile)
+		elif Tile != null and InputTile == null:
+			on_tile_mouse_entered(Tile)
+		InputTile = Tile
 
 const RAY_LENGTH: int = 1000
 func on_find_tile_by_raycast() -> TileGD:
