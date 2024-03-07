@@ -14,5 +14,7 @@ func on_load_info(info: Dictionary, area: int) -> void:
 			
 func set_material(mat: Material) -> void:
 	if get_child_count() > 0:
-		for child in get_child(0).get_children():
-			child.set_surface_override_material(0, mat)
+		for child in get_children():
+			for grandchild in child.get_children():
+				if grandchild is MeshInstance3D: grandchild.set_surface_override_material(0, mat)
+			

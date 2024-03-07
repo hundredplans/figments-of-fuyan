@@ -14,6 +14,7 @@ var area: int = 0
 @export var solid_status: int = 0
 var original_solid_status: int = 0
 var tile_state: Array
+var greyscale: bool = false
 
 func on_load_info(type: String) -> void:
 	type = type.to_lower()
@@ -60,4 +61,4 @@ func on_change_collision_state(state: bool) -> void:
 		for grandchild in child.get_children():
 			for grandestchild in grandchild.get_children():
 				if grandestchild is Area3D:
-					grandestchild.collision_layer = 0 if !state else 8
+					grandestchild.collision_layer = 0 if !state else (10 if child.name == "Tile" else 8)

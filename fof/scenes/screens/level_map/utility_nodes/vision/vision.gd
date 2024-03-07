@@ -11,14 +11,13 @@ const VISION_RANGE: int = 5
 var visible_tiles: Array
 var grey_tiles: Array
 
-func on_recalculate_vision() -> void: pass
-	#var old_visible_tiles: Array = visible_tiles.duplicate()
-	#visible_tiles = on_find_visible_tiles()
-	#on_find_units_enter_vision(old_visible_tiles)
-	#
-	#var other_tiles: Array = Tiles.tiles_unique(Tiles.get_children(), visible_tiles)
-	#on_apply_visibility(other_tiles)
-	#on_create_darkness(other_tiles)
+func on_recalculate_vision() -> void:
+	var old_visible_tiles: Array = visible_tiles.duplicate()
+	visible_tiles = on_find_visible_tiles()
+	on_find_units_enter_vision(old_visible_tiles)
+	
+	var other_tiles: Array = Tiles.tiles_unique(Tiles.get_children(), visible_tiles)
+	on_apply_visibility(other_tiles)
 
 func on_find_visible_tiles() -> Array:
 	var _visible_tiles: Dictionary = {}
@@ -39,6 +38,7 @@ func on_find_visible_tiles() -> Array:
 			if TileRayCast.is_colliding():
 				if TileRayCast.get_collider().get_node("../../..") == Tile:
 					vision_check_passed.append(Tile)
+					
 		Unit.Tile.on_change_collision_state(true)
 	
 	on_merge_visible_tiles(_visible_tiles, vision_check_passed + units.map(func(x: UnitGD): return x.Tile))
@@ -50,16 +50,27 @@ func tiles_in_vision(Unit: UnitGD) -> Array:
 func on_merge_visible_tiles(_visible_tiles: Dictionary, tiles: Array) -> void:
 	for tile in tiles: _visible_tiles.merge({tile.info.position: null})
 	
+var GreyscaleMaterial: Material = preload("res://scenes/screens/level_map/utility_nodes/vision/greyscale_material.tres")
 func on_apply_visibility(other_tiles: Array) -> void:
-	for tile in visible_tiles: tile.visible = true
-	for tile in other_tiles: tile.visible = false
-	
-	for unit in Units.on_units(1, "Ally"):
-		unit.visible = unit.Tile in visible_tiles
-
-func on_create_darkness(other_tiles: Array) -> void:
+	for Tile in visible_tiles:
+		for type in ["TileDecoration", "WallDecoration", "Object"]:
+			Tile.get_node(type).visible = true
+		
+		for btab in [0, 2]:
+			Tile.set_material(null, btab)
+		Tile.greyscale = false
+		
 	for Tile in other_tiles:
-		pass
+		for type in ["TileDecoration", "WallDecoration", "Object"]:
+			Tile.get_node(type).visible = false
+		
+		for btab in [0, 2]:
+			Tile.set_material(GreyscaleMaterial, btab)
+		Tiles.on_remove_tile_material(Tile, "")
+		Tile.greyscale = true
+	
+	for Unit in Units.on_units(1, "Ally"):
+		Unit.visible = Unit.Tile in visible_tiles
 
 func on_find_units_enter_vision(old_visible_tiles: Array) -> void:
 	for Unit in Units.all_units():
