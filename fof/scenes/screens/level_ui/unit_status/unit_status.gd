@@ -1,4 +1,5 @@
 extends Control
+signal status_box_update_state
 
 var is_model: bool
 var Heroes: HeroesGD
@@ -11,16 +12,24 @@ var Unit: UnitGD
 @onready var Gem: Sprite2D = %Gem
 @onready var ShiftingBackground: Sprite2D = %ShiftingBackground
 
+@onready var In: Sprite2D = %In
+@onready var ArtPop: TextureButton = %ArtPop
+@onready var AttackSprite: Sprite2D = %AttackSprite
+@onready var HealthSprite: Sprite2D = %HealthSprite 
+@onready var SpeedSprite: Sprite2D = %SpeedSprite
+
 func _ready() -> void:
 	oHoverCard.visible = false
 	Rainbow.visible = false
+	pivot_offset = size / 2
 
 func on_set_unit(_Unit: UnitGD) -> void:
 	Unit = _Unit
-	visible = !(bool(Unit.team))
-	Gem.visible = !(bool(Unit.team))
-	ShiftingBackground.material = load("res://scenes/screens/level_ui/unit_status/unit_status_pieces/shifting_background_"\
-	+ ("green" if Unit.team == 0 else "red") + ".tres")
+	Gem.visible = false
+	
+	ShiftingBackground.material = preload("res://scenes/screens/level_ui/unit_status/unit_status_pieces/shifting_background.tres").duplicate()
+	ShiftingBackground.material.set_shader_parameter("modulate", modulates["TurnUnused"] if Unit.team == 0 else Color("c11e00")) 
+	if Unit.team == 1: ShiftingBackground.material.set_shader_parameter("speed", 0.02)
 	
 	on_set_status_box_modulate("TurnUsed")
 	on_reset_stats()
@@ -29,7 +38,7 @@ func on_set_unit(_Unit: UnitGD) -> void:
 	
 	var hero_bgfn: String = Unit.base_card.bgfn if Unit.rarity != 7 else Helper.id_to_dict(Heroes.id_to_base(Unit.id), "Card").bgfn
 	var card_texture_path: String = "res://assets/base_game/cards/" + hero_bgfn + "/art_mini.png"
-	$Background/ArtPop.texture_normal = load(card_texture_path)
+	ArtPop.texture_normal = load(card_texture_path)
 
 @onready var AttackLabel: Label = $Stats/Attack/Label
 @onready var HealthLabel: Label = $Stats/Health/Label
@@ -80,11 +89,10 @@ var HoverCard: Control
 func on_initiate_hover_card() -> void:
 	await get_tree().create_timer(HOVER_TIME_DELAY).timeout
 	if is_hover and HoverCard == null:
-		var CardUI: Control = preload("res://assets/base_game/cards/card_ui/card_ui.tscn").instantiate()
+		var CardUI: Control = preload("res://assets/base_game/cards/game_card/game_card.tscn").instantiate()
 		CardUI.Heroes = Heroes
 		CardUI.set_info(Unit.base_card)
 		HoverCard = CardUI
-		HoverCard.z_index = 10
 		oHoverCard.add_child(CardUI)
 		oHoverCard.visible = true
 		oHoverCard.position = get_global_mouse_position() + HOVER_CARD_OFFSET
@@ -95,12 +103,15 @@ func on_remove_hover_card() -> void:
 		HoverCard.queue_free()
 		HoverCard = null
 
-const HOVER_CARD_OFFSET := Vector2(-110, 40)
+var ROTATION_DEATH_SPEED: float = 300
+const HOVER_CARD_OFFSET := Vector2(80, -200)
 func _process(delta: float) -> void:
 	if visible and HoverCard != null:
 		oHoverCard.position = get_global_mouse_position() + HOVER_CARD_OFFSET
 
 	if Rainbow.visible: Rainbow.rotation_degrees += RAINBOW_SPEED * delta
+	if on_rotate_queue_free:
+		rotation_degrees += delta * ROTATION_DEATH_SPEED
 
 func _on_mouse_entered():
 	if !Unit.Units.LevelMap.lock_inputs and !Unit.Units.LevelUI.is_status_box_panel_moving:
@@ -110,27 +121,44 @@ func _on_mouse_exited():
 	if !Unit.Units.LevelMap.lock_inputs and !Unit.Units.LevelUI.is_status_box_panel_moving:
 		Unit.Units.Tiles.on_remove_tile_material(Unit.Tile)
 
-func _queue_free() -> void:
-	# dissolve effect hereq
-	queue_free()
+const DEATH_AFTER_MULTIPLIER: float = 2.0
+var on_rotate_queue_free: bool = false
+func _queue_free(DEATH_AFTER_DELAY: float) -> void:
+	var ScaleTween: Tween = get_tree().create_tween()
+	ScaleTween.tween_property(self, "scale", Vector2.ZERO, DEATH_AFTER_DELAY * DEATH_AFTER_MULTIPLIER)
+	on_rotate_queue_free = true
+	ScaleTween.finished.connect(func(): queue_free())
 
-const modulates: Dictionary = {
-	"TurnUsed": Color(0.2, 0.2, 0.2),
-	"TurnUnused": Color(0.6, 0.6, 0.6),
-	"TurnActive": Color(1, 1, 1),}
+const speeds: Dictionary = {
+	"TurnUsed": 0.02,
+	"TurnUnused": 0.2,
+	"TurnActive": 0.6,}
 	
+const modulates: Dictionary = {
+	"TurnUsed": Color("8fbf8f"),
+	"TurnUnused": Color("43bf43"),
+	"TurnActive": Color("00bf00"),
+}
+
 var modulate_state: String
 func on_set_status_box_modulate(val: String) -> void:
 	if Unit.team == 0:
-		Gem.modulate = modulates[val]
+		ShiftingBackground.material.set_shader_parameter("speed", speeds[val])
+		ShiftingBackground.material.set_shader_parameter("modulate", modulates[val])
+			
 		modulate_state = val
-
+		Gem.visible = val == "TurnActive"
+		status_box_update_state.emit()
+		
 const RAINBOW_SPEED: int = 300
 @onready var Rainbow = %RainbowLight
 func on_unit_spectated(state: bool) -> void:
 	Rainbow.visible = state
+	on_set_light_mask(0 if !state else 32)
 
 func on_update_combat_status_texture() -> void:
 	pass
-	#Unit.UnitCombatStatus.texture = ImageTexture.create_from_image(RenderingServer.bake_render_uv2(self, [], size)[0])
 
+func on_set_light_mask(state: int) -> void:
+	for node in [In, ArtPop, AttackSprite, HealthSprite, SpeedSprite]:
+		node.light_mask = state

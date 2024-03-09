@@ -30,11 +30,11 @@ shadow_size = 10
 Panel/styles/panel = SubResource("StyleBoxFlat_i2ie0")
 
 [node name="UnitStatus" type="Control"]
-custom_minimum_size = Vector2(405, 140)
+custom_minimum_size = Vector2(353, 91)
 layout_mode = 3
 anchors_preset = 0
-offset_right = 405.0
-offset_bottom = 140.0
+offset_right = 353.0
+offset_bottom = 91.0
 mouse_filter = 2
 script = ExtResource("1_32v7v")
 
@@ -42,10 +42,8 @@ script = ExtResource("1_32v7v")
 texture_filter = 1
 layout_mode = 1
 anchors_preset = 0
-offset_left = 25.0
-offset_top = 25.0
-offset_right = 378.0
-offset_bottom = 116.0
+offset_right = 353.0
+offset_bottom = 91.0
 mouse_filter = 2
 
 [node name="LightMask" type="Sprite2D" parent="Background"]
@@ -66,7 +64,7 @@ position = Vector2(4, 0)
 texture = ExtResource("2_n604n")
 
 [node name="ArtPop" type="TextureButton" parent="Background"]
-light_mask = 32
+unique_name_in_owner = true
 texture_filter = 1
 use_parent_material = true
 clip_contents = true
@@ -84,7 +82,7 @@ mouse_filter = 1
 texture_normal = ExtResource("11_int12")
 
 [node name="In" type="Sprite2D" parent="Background"]
-light_mask = 32
+unique_name_in_owner = true
 texture_filter = 1
 position = Vector2(175, 46)
 texture = ExtResource("3_bwt2n")
@@ -99,10 +97,10 @@ texture = ExtResource("5_mw3jb")
 material = ExtResource("7_mq0yb")
 layout_mode = 1
 anchors_preset = -1
-offset_left = 116.0
-offset_top = 33.0
-offset_right = 269.0
-offset_bottom = 113.0
+offset_left = 91.0
+offset_top = 8.0
+offset_right = 244.0
+offset_bottom = 88.0
 mouse_filter = 2
 theme_override_constants/separation = 8
 
@@ -112,8 +110,8 @@ layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="Sprite2D" type="Sprite2D" parent="Stats/Attack"]
-light_mask = 32
+[node name="AttackSprite" type="Sprite2D" parent="Stats/Attack"]
+unique_name_in_owner = true
 texture_filter = 1
 use_parent_material = true
 position = Vector2(20, 22)
@@ -145,8 +143,8 @@ layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="Sprite2D" type="Sprite2D" parent="Stats/Health"]
-light_mask = 32
+[node name="HealthSprite" type="Sprite2D" parent="Stats/Health"]
+unique_name_in_owner = true
 texture_filter = 1
 use_parent_material = true
 position = Vector2(21, 19)
@@ -173,8 +171,8 @@ layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="Sprite2D" type="Sprite2D" parent="Stats/Speed"]
-light_mask = 32
+[node name="SpeedSprite" type="Sprite2D" parent="Stats/Speed"]
+unique_name_in_owner = true
 texture_filter = 1
 use_parent_material = true
 position = Vector2(20, 20)
@@ -199,7 +197,7 @@ vertical_alignment = 1
 
 [node name="Status Effects" type="Node2D" parent="."]
 light_mask = 32
-position = Vector2(278, 31)
+position = Vector2(253, 6)
 scale = Vector2(0.75, 0.75)
 
 [node name="Tool" type="Node2D" parent="."]
@@ -219,19 +217,23 @@ light_mask = 32
 [node name="HoverCard" type="Control" parent="."]
 visible = false
 top_level = true
+z_index = 10
 layout_mode = 1
 anchors_preset = 0
-offset_right = 240.0
-offset_bottom = 422.0
+offset_left = 106.0
+offset_top = -195.0
+offset_right = 346.0
+offset_bottom = 227.0
 mouse_filter = 2
 
 [node name="Buffs" type="Control" parent="HoverCard"]
 layout_mode = 1
-anchors_preset = 12
 anchor_top = 1.0
-anchor_right = 1.0
+anchor_right = 0.132
 anchor_bottom = 1.0
-offset_top = -50.0
+offset_left = 10.0
+offset_right = 218.32
+offset_bottom = 50.0
 grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
@@ -329,7 +331,7 @@ energy = 0.4
 blend_mode = 1
 range_item_cull_mask = 32
 texture = ExtResource("12_emc3m")
-texture_scale = 1.2
+texture_scale = 1.5
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

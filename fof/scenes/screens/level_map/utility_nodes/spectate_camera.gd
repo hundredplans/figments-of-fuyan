@@ -31,6 +31,7 @@ func on_camera_start_spectate(pos: Vector3, type: String) -> void:
 func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed(Helper.interact_button(true)):
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		get_viewport().update_mouse_cursor_state()
 		mouse_in_ui.emit(true)
 		
 	elif Input.is_action_just_released(Helper.interact_button(true)):
@@ -107,10 +108,11 @@ func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0) -> voi
 					
 					total_progress = unit_positions[unit_spectate_id]
 					on_camera_start_spectate(Unit.position, type)
-					Units.PlayerManager.on_spectate_unit(Unit)
+					SpectateUnit = Unit
 					if LevelMap.game_phase == "PlayerPhase":
 						Unit.on_spectated_in_player_phase()
-						
+
+var SpectateUnit: UnitGD
 func on_select_spectate_camera_direction(i: int) -> void:
 	on_spectate(spectate_type, -1, i)
 

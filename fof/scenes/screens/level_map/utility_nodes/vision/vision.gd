@@ -3,6 +3,8 @@ extends Node3D
 
 @onready var TileRayCast: RayCast3D = $TileRayCast
 @onready var MouseRayCast: RayCast3D = $MouseRayCast
+
+var LevelUI: LevelUIGD
 var Units: UnitsGD
 var Tiles: TilesGD
 var GameState: Node
@@ -18,6 +20,7 @@ func on_recalculate_vision() -> void:
 	
 	var other_tiles: Array = Tiles.tiles_unique(Tiles.get_children(), visible_tiles)
 	on_apply_visibility(other_tiles)
+	LevelUI.on_update_vision()
 
 func on_find_visible_tiles() -> Array:
 	var _visible_tiles: Dictionary = {}
@@ -26,6 +29,7 @@ func on_find_visible_tiles() -> Array:
 	var vision_check_passed: Array = []
 	var units: Array = Units.on_units()
 	for Unit in units:
+		Unit.units_in_vision = []
 		var vision_range: Array = tiles_in_vision(Unit)
 		Unit.Tile.on_change_collision_state(false)
 		TileRayCast.position = Unit.global_position
@@ -38,6 +42,9 @@ func on_find_visible_tiles() -> Array:
 			if TileRayCast.is_colliding():
 				if TileRayCast.get_collider().get_node("../../..") == Tile:
 					vision_check_passed.append(Tile)
+					var SomeUnit: UnitGD = Units.unit_by_tile(Tile)
+					if SomeUnit != null and SomeUnit != Unit:
+						Unit.units_in_vision.append(SomeUnit)
 					
 		Unit.Tile.on_change_collision_state(true)
 	
@@ -83,4 +90,11 @@ func on_find_units_enter_vision(old_visible_tiles: Array) -> void:
 
 func is_unit_in_vision(Unit: UnitGD) -> bool: # two diff visions for the two teams
 	if Unit.team == 1: return Unit.Tile in visible_tiles
+	return false
+
+func is_unit_in_unit_vision(VisionUnit: UnitGD, ObservedUnit: UnitGD, include_self: bool) -> bool:
+	if VisionUnit != null and ObservedUnit != null:
+		if VisionUnit == ObservedUnit: return include_self
+		return ObservedUnit in VisionUnit.units_in_vision
+
 	return false

@@ -1,13 +1,14 @@
-[gd_scene load_steps=11 format=3 uid="uid://b0kr4uhvdhmq3"]
+[gd_scene load_steps=12 format=3 uid="uid://b0kr4uhvdhmq3"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_ui/level_ui.gd" id="1_mmiwi"]
 [ext_resource type="Texture2D" uid="uid://iucmlitjenwl" path="res://assets/base_game/cards/card_ui/stats/energy/energy.png" id="2_bww7p"]
 [ext_resource type="Theme" uid="uid://bhyiyheobours" path="res://scenes/screens/level_ui/panel_theme.tres" id="2_pmg4n"]
+[ext_resource type="PackedScene" uid="uid://bj3h1ak5dv73n" path="res://scenes/ui_general/op_button/op_button.tscn" id="3_1rebl"]
 [ext_resource type="LabelSettings" uid="uid://b3fuc4s50fgra" path="res://assets/UI/roboto/roboto64.tres" id="3_7ly33"]
+[ext_resource type="PackedScene" uid="uid://c58jdx2o7cfwc" path="res://scenes/screens/level_ui/unit_status/unit_status.tscn" id="4_l1u2a"]
 [ext_resource type="Texture2D" uid="uid://bhphpw6y0dli" path="res://scenes/ui_general/back_arrow/back_arrow.png" id="4_uruhh"]
+[ext_resource type="Texture2D" uid="uid://5va3kdmal6hs" path="res://scenes/screens/level_ui/unit_status/unit_status_pieces/backlight.png" id="5_a5t25"]
 [ext_resource type="Script" path="res://scenes/screens/level_ui/hand_phase/hand_phase_sprite.gd" id="5_filg1"]
-[ext_resource type="LabelSettings" uid="uid://qp0350v2j4ah" path="res://assets/UI/roboto/roboto32_outline.tres" id="6_byv4h"]
-[ext_resource type="StyleBox" uid="uid://pvqn3n171kwj" path="res://scenes/screens/level_ui/unit_status_box_flat_style.tres" id="8_d8dru"]
 [ext_resource type="PackedScene" uid="uid://bkbg8go87dqws" path="res://scenes/ui_general/arrow/ui_arrow.tscn" id="8_t3xo3"]
 [ext_resource type="LabelSettings" uid="uid://je535i1721un" path="res://assets/UI/sixty_four/sixty_four_default.tres" id="10_b7a03"]
 
@@ -51,88 +52,17 @@ mouse_filter = 2
 theme_override_constants/separation = 20
 alignment = 1
 
-[node name="UnitStatusBoxPanel" type="PanelContainer" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.503
-anchor_top = 0.5
-anchor_right = 0.503
-anchor_bottom = 0.5
-offset_left = -5.76001
-offset_top = -685.0
-offset_right = 14.24
-offset_bottom = -535.0
-mouse_filter = 1
-theme = ExtResource("2_pmg4n")
-theme_override_styles/panel = ExtResource("8_d8dru")
-
-[node name="UnitStatusBox" type="GridContainer" parent="UnitStatusBoxPanel"]
-layout_mode = 2
-mouse_filter = 2
-theme_override_constants/h_separation = 0
-theme_override_constants/v_separation = 0
-columns = 4
-
-[node name="Energy" type="Control" parent="."]
+[node name="StatusBox" type="Control" parent="."]
+unique_name_in_owner = true
 anchors_preset = 0
-offset_right = 120.0
-offset_bottom = 120.0
+offset_left = -400.0
+offset_top = 144.0
+offset_right = 3.0
+offset_bottom = 1005.0
 
-[node name="Sprite2D" type="Sprite2D" parent="Energy"]
-scale = Vector2(2, 2)
-texture = ExtResource("2_bww7p")
-centered = false
-
-[node name="Label" type="Label" parent="Energy"]
-layout_mode = 0
-offset_right = 120.0
-offset_bottom = 120.0
-label_settings = ExtResource("3_7ly33")
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="ChangePhase" type="Control" parent="."]
-anchors_preset = 0
-offset_left = 1741.0
-offset_top = 764.0
-offset_right = 1891.0
-offset_bottom = 914.0
-mouse_filter = 2
-
-[node name="Background" type="Panel" parent="ChangePhase"]
-layout_mode = 0
-offset_right = 150.0
-offset_bottom = 150.0
-mouse_filter = 2
-theme = ExtResource("2_pmg4n")
-
-[node name="ChangePhaseSprite" type="Sprite2D" parent="ChangePhase"]
-modulate = Color(0.607843, 0.380392, 0.176471, 1)
-texture_filter = 1
-position = Vector2(75, 75)
-scale = Vector2(3, 3)
-texture = ExtResource("4_uruhh")
-script = ExtResource("5_filg1")
-
-[node name="ChangePhaseHitbox" type="Button" parent="ChangePhase"]
-modulate = Color(1, 1, 1, 0)
-layout_mode = 0
-offset_right = 150.0
-offset_bottom = 150.0
-
-[node name="CameraArrows" type="Control" parent="."]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -248.0
-offset_top = 961.0
-offset_right = -28.0
-offset_bottom = 1054.0
-grow_horizontal = 0
-mouse_filter = 1
-
-[node name="Panel" type="Panel" parent="CameraArrows"]
+[node name="Background" type="Panel" parent="StatusBox"]
+modulate = Color(1, 1, 1, 0.196078)
+light_mask = 4
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -141,47 +71,107 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 theme = ExtResource("2_pmg4n")
+metadata/_edit_lock_ = true
 
-[node name="LeftArrow" parent="CameraArrows" instance=ExtResource("8_t3xo3")]
-modulate = Color(0.411765, 0.254902, 0.117647, 1)
+[node name="SortMenu" type="VBoxContainer" parent="StatusBox"]
 layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -207.0
-offset_top = -1.0
-offset_right = -127.0
-offset_bottom = 97.0
-grow_horizontal = 0
-mouse_filter = 1
-flip_h = true
+anchors_preset = -1
+anchor_left = 0.025
+anchor_top = 0.006
+anchor_right = 1.012
+anchor_bottom = 1.005
+offset_left = -0.0749998
+offset_top = -0.166
+offset_right = -7.836
+offset_bottom = -7.30499
 
-[node name="RightArrow" parent="CameraArrows" instance=ExtResource("8_t3xo3")]
-modulate = Color(0.411765, 0.254902, 0.117647, 1)
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -89.0
-offset_top = -1.0
-offset_right = -9.0
-offset_bottom = 97.0
-grow_horizontal = 0
-mouse_filter = 1
+[node name="Buttons" type="Control" parent="StatusBox/SortMenu"]
+layout_mode = 2
+size_flags_vertical = 3
 
-[node name="PassUnitTurn" type="Control" parent="."]
+[node name="TeamButton" parent="StatusBox/SortMenu/Buttons" instance=ExtResource("3_1rebl")]
+unique_name_in_owner = true
+layout_mode = 2
+offset_right = 355.0
+offset_bottom = 64.0
+size_flags_vertical = 3
+options = PackedStringArray("Ally", "Enemy", "Both")
+default = 2
+label_text = "Team"
+
+[node name="VisionButton" parent="StatusBox/SortMenu/Buttons" instance=ExtResource("3_1rebl")]
+unique_name_in_owner = true
+layout_mode = 2
+offset_top = 72.0
+offset_right = 355.0
+offset_bottom = 136.0
+size_flags_vertical = 3
+options = PackedStringArray("Vision", "Everyone")
+label_text = "Show for"
+
+[node name="StatusClipper" type="ScrollContainer" parent="StatusBox/SortMenu"]
+custom_minimum_size = Vector2(0, 696)
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="Statuses" type="VBoxContainer" parent="StatusBox/SortMenu/StatusClipper"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="UnitStatus" parent="StatusBox/SortMenu/StatusClipper/Statuses" instance=ExtResource("4_l1u2a")]
+layout_mode = 2
+
+[node name="UnitStatus2" parent="StatusBox/SortMenu/StatusClipper/Statuses" instance=ExtResource("4_l1u2a")]
+layout_mode = 2
+
+[node name="UnitStatus3" parent="StatusBox/SortMenu/StatusClipper/Statuses" instance=ExtResource("4_l1u2a")]
+layout_mode = 2
+
+[node name="UnitStatus4" parent="StatusBox/SortMenu/StatusClipper/Statuses" instance=ExtResource("4_l1u2a")]
+layout_mode = 2
+
+[node name="UnitStatus5" parent="StatusBox/SortMenu/StatusClipper/Statuses" instance=ExtResource("4_l1u2a")]
+layout_mode = 2
+
+[node name="UnitStatus6" parent="StatusBox/SortMenu/StatusClipper/Statuses" instance=ExtResource("4_l1u2a")]
+layout_mode = 2
+
+[node name="UnitStatus7" parent="StatusBox/SortMenu/StatusClipper/Statuses" instance=ExtResource("4_l1u2a")]
+layout_mode = 2
+
+[node name="UnitStatus8" parent="StatusBox/SortMenu/StatusClipper/Statuses" instance=ExtResource("4_l1u2a")]
+layout_mode = 2
+
+[node name="Backlight" type="PointLight2D" parent="StatusBox"]
+unique_name_in_owner = true
+visible = false
+position = Vector2(187.5, 220)
+scale = Vector2(2.92969, 1.32813)
+range_item_cull_mask = 4
+texture = ExtResource("5_a5t25")
+
+[node name="CornerRightMenu" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 1672.0
+offset_top = 657.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+
+[node name="PassUnitTurn" type="Control" parent="CornerRightMenu"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
 offset_left = -179.0
-offset_top = 663.0
+offset_top = 6.0
 offset_right = -29.0
-offset_bottom = 715.0
+offset_bottom = 58.0
 grow_horizontal = 0
 
-[node name="Panel" type="Panel" parent="PassUnitTurn"]
+[node name="Panel" type="Panel" parent="CornerRightMenu/PassUnitTurn"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -192,7 +182,7 @@ mouse_filter = 2
 theme = ExtResource("2_pmg4n")
 metadata/_edit_lock_ = true
 
-[node name="Label" type="Label" parent="PassUnitTurn"]
+[node name="Label" type="Label" parent="CornerRightMenu/PassUnitTurn"]
 modulate = Color(0.831373, 0.517647, 0.239216, 1)
 layout_mode = 1
 anchors_preset = 8
@@ -211,7 +201,7 @@ label_settings = ExtResource("10_b7a03")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PassUnitTurnButton" type="Button" parent="PassUnitTurn"]
+[node name="PassUnitTurnButton" type="Button" parent="CornerRightMenu/PassUnitTurn"]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = 15
@@ -221,18 +211,102 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
-[node name="Admin" type="Control" parent="."]
+[node name="ChangePhase" type="Control" parent="CornerRightMenu"]
+unique_name_in_owner = true
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 69.0
+offset_top = 107.0
+offset_right = 219.0
+offset_bottom = 257.0
+mouse_filter = 2
 
-[node name="ShowPhase" type="Label" parent="Admin"]
+[node name="Background" type="Panel" parent="CornerRightMenu/ChangePhase"]
 layout_mode = 0
-offset_left = 11.0
-offset_top = 1001.0
-offset_right = 317.0
-offset_bottom = 1077.0
-label_settings = ExtResource("6_byv4h")
+offset_right = 150.0
+offset_bottom = 150.0
+mouse_filter = 2
+theme = ExtResource("2_pmg4n")
+
+[node name="ChangePhaseSprite" type="Sprite2D" parent="CornerRightMenu/ChangePhase"]
+modulate = Color(0.607843, 0.380392, 0.176471, 1)
+texture_filter = 1
+position = Vector2(75, 75)
+scale = Vector2(3, 3)
+texture = ExtResource("4_uruhh")
+script = ExtResource("5_filg1")
+
+[node name="ChangePhaseHitbox" type="Button" parent="CornerRightMenu/ChangePhase"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_right = 150.0
+offset_bottom = 150.0
+
+[node name="CameraArrows" type="Control" parent="CornerRightMenu"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -248.0
+offset_top = 304.0
+offset_right = -28.0
+offset_bottom = 397.0
+grow_horizontal = 0
+mouse_filter = 1
+
+[node name="Panel" type="Panel" parent="CornerRightMenu/CameraArrows"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme = ExtResource("2_pmg4n")
+
+[node name="LeftArrow" parent="CornerRightMenu/CameraArrows" instance=ExtResource("8_t3xo3")]
+modulate = Color(0.411765, 0.254902, 0.117647, 1)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -207.0
+offset_top = -1.0
+offset_right = -127.0
+offset_bottom = 97.0
+grow_horizontal = 0
+mouse_filter = 1
+flip_h = true
+
+[node name="RightArrow" parent="CornerRightMenu/CameraArrows" instance=ExtResource("8_t3xo3")]
+modulate = Color(0.411765, 0.254902, 0.117647, 1)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -89.0
+offset_top = -1.0
+offset_right = -9.0
+offset_bottom = 97.0
+grow_horizontal = 0
+mouse_filter = 1
+
+[node name="Energy" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 120.0
+offset_bottom = 120.0
+
+[node name="Sprite2D" type="Sprite2D" parent="Energy"]
+scale = Vector2(2, 2)
+texture = ExtResource("2_bww7p")
+centered = false
+
+[node name="Label" type="Label" parent="Energy"]
+layout_mode = 0
+offset_right = 120.0
+offset_bottom = 120.0
+label_settings = ExtResource("3_7ly33")
+horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="SkipReminder" type="Label" parent="."]
@@ -262,18 +336,18 @@ autowrap_mode = 2
 [connection signal="pre_sort_children" from="HandBoxPanel" to="." method="_on_hand_box_panel_pre_sort_children"]
 [connection signal="child_entered_tree" from="HandBoxPanel/HandBox" to="." method="on_hand_box_calculate_visibility"]
 [connection signal="child_exiting_tree" from="HandBoxPanel/HandBox" to="." method="on_hand_box_calculate_visibility" binds= [1]]
-[connection signal="mouse_entered" from="UnitStatusBoxPanel" to="." method="_on_unit_status_box_panel_mouse_entered"]
-[connection signal="mouse_entered" from="UnitStatusBoxPanel" to="." method="on_is_mouse_in_ui" binds= [true]]
-[connection signal="mouse_exited" from="UnitStatusBoxPanel" to="." method="_on_unit_status_box_panel_mouse_exited"]
-[connection signal="mouse_exited" from="UnitStatusBoxPanel" to="." method="on_is_mouse_in_ui" binds= [false]]
-[connection signal="pre_sort_children" from="UnitStatusBoxPanel" to="." method="_on_unit_status_box_panel_pre_sort_children"]
+[connection signal="mouse_entered" from="StatusBox" to="." method="on_is_mouse_in_ui" binds= [true]]
+[connection signal="mouse_exited" from="StatusBox" to="." method="on_is_mouse_in_ui" binds= [false]]
+[connection signal="item_selected" from="StatusBox/SortMenu/Buttons/TeamButton" to="." method="_on_team_button_item_selected"]
+[connection signal="item_selected" from="StatusBox/SortMenu/Buttons/VisionButton" to="." method="on_vision_selected"]
+[connection signal="sort_children" from="StatusBox/SortMenu/StatusClipper/Statuses" to="." method="on_status_box_update_state"]
+[connection signal="pressed" from="CornerRightMenu/PassUnitTurn/PassUnitTurnButton" to="." method="_on_pass_unit_turn_button_pressed"]
+[connection signal="mouse_entered" from="CornerRightMenu/ChangePhase/ChangePhaseHitbox" to="." method="on_is_mouse_in_ui" binds= [true]]
+[connection signal="mouse_exited" from="CornerRightMenu/ChangePhase/ChangePhaseHitbox" to="." method="on_is_mouse_in_ui" binds= [false]]
+[connection signal="pressed" from="CornerRightMenu/ChangePhase/ChangePhaseHitbox" to="." method="_on_change_phase_hitbox_pressed"]
+[connection signal="mouse_entered" from="CornerRightMenu/CameraArrows" to="." method="on_is_mouse_in_ui" binds= [true]]
+[connection signal="mouse_exited" from="CornerRightMenu/CameraArrows" to="." method="on_is_mouse_in_ui" binds= [false]]
+[connection signal="pressed" from="CornerRightMenu/CameraArrows/LeftArrow" to="." method="on_camera_arrow_pressed" binds= [-1]]
+[connection signal="pressed" from="CornerRightMenu/CameraArrows/RightArrow" to="." method="on_camera_arrow_pressed" binds= [1]]
 [connection signal="mouse_entered" from="Energy" to="." method="on_is_mouse_in_ui" binds= [true]]
 [connection signal="mouse_exited" from="Energy" to="." method="on_is_mouse_in_ui" binds= [false]]
-[connection signal="mouse_entered" from="ChangePhase/ChangePhaseHitbox" to="." method="on_is_mouse_in_ui" binds= [true]]
-[connection signal="mouse_exited" from="ChangePhase/ChangePhaseHitbox" to="." method="on_is_mouse_in_ui" binds= [false]]
-[connection signal="pressed" from="ChangePhase/ChangePhaseHitbox" to="." method="_on_change_phase_hitbox_pressed"]
-[connection signal="mouse_entered" from="CameraArrows" to="." method="on_is_mouse_in_ui" binds= [true]]
-[connection signal="mouse_exited" from="CameraArrows" to="." method="on_is_mouse_in_ui" binds= [false]]
-[connection signal="pressed" from="CameraArrows/LeftArrow" to="." method="on_camera_arrow_pressed" binds= [-1]]
-[connection signal="pressed" from="CameraArrows/RightArrow" to="." method="on_camera_arrow_pressed" binds= [1]]
-[connection signal="pressed" from="PassUnitTurn/PassUnitTurnButton" to="." method="_on_pass_unit_turn_button_pressed"]

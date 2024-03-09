@@ -5,22 +5,27 @@ signal equip_sky
 signal mouse_in_ui
 
 var Heroes: HeroesGD
-
+var Vision: VisionGD
+var SpectateCamera: Camera3D
 
 @onready var PassUnitTurn := %PassUnitTurn
-@onready var StatusBoxPanel := $UnitStatusBoxPanel
 @onready var HandBoxPanel := $HandBoxPanel
 @onready var HandBox := $HandBoxPanel/HandBox
-@onready var ChangePhase: Control = $ChangePhase
-@onready var StatusBox: Control = $UnitStatusBoxPanel/UnitStatusBox
+@onready var ChangePhase: Control = %ChangePhase
+@onready var StatusBox: Control = %StatusBox
 
 var _LevelMap: PackedScene = preload("res://scenes/screens/level_map/level_map.tscn")
 var LevelMap: LevelMapGD
 var GameState: Node
 
+@onready var VisionButton: Control = %VisionButton
+@onready var TeamButton: Control = %TeamButton
+
+func _process(_delta: float) -> void:
+	if Input.is_action_just_pressed("Tab"): on_tab_pressed()
+
 func _ready() -> void:
 	$SkipReminder.visible = false
-	StatusBoxPanel.visible = false
 	
 	LevelMap = _LevelMap.instantiate()
 	LevelMap.GameState = GameState
@@ -29,13 +34,16 @@ func _ready() -> void:
 	
 	load_world.emit(LevelMap)
 	Heroes = LevelMap.Heroes
+	Vision = LevelMap.Vision
+	SpectateCamera = LevelMap.SpectateCamera
 	equip_sky.emit(GameState.area_info.id, false)
 	ChangePhase.visible = false
 	PassUnitTurn.visible = false
 	LevelMap.SpectateCamera.mouse_in_ui.connect(on_camera_panning)
 	
-	$Admin/ShowPhase.visible = GameState.admin
 	on_pin_hand_box_panel(0)
+	vision_selected = VisionButton.default
+	team_selected = TeamButton.default
 
 func _queue_free() -> void:
 	if !Helper.settings_loaded:
@@ -107,109 +115,63 @@ func on_player_phase_start() -> void:
 
 func _on_change_phase_hitbox_pressed():
 	LevelMap.on_advance_game_phase()
-	$ChangePhase/ChangePhaseSprite.on_hyperspeed()
+	ChangePhase.get_node("ChangePhaseSprite").on_hyperspeed()
 
+@onready var Statuses: Control = %Statuses
 func on_add_unit_status_box(Unit: UnitGD) -> void:
 	var UnitStatus: Control = preload("res://scenes/screens/level_ui/unit_status/unit_status.tscn").instantiate()
 	UnitStatus.Heroes = Heroes
-	StatusBox.add_child(UnitStatus)
+	Statuses.add_child(UnitStatus)
 	UnitStatus.on_set_unit(Unit)
+	UnitStatus.status_box_update_state.connect(on_status_box_update_state)
 	Unit.UnitStatus = UnitStatus
-	
-	if UnitStatus.visible: StatusBoxPanel.visible = true
 
 const PANEL_MOVE_TWEEN_DURATION: float = 0.1
 const HAND_BOX_PANEL_OFFSET: int = 400
-const STATUS_BOX_PANEL_OFFSET: int = 130
 
 func _on_panel_container_mouse_entered(): on_extended_position_container(HandBoxPanel)
 func _on_panel_container_mouse_exited(): on_default_position_container(HandBoxPanel)
 
-const STATUS_BOX_INITIAL_PANEL_CONTAINER_POSITION: int = -145
 const HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION: int = 1070
 var hand_box_pinned: bool = true
 
 func on_default_position_container(cont: PanelContainer, tween_time: float = PANEL_MOVE_TWEEN_DURATION) -> void:
-	if (cont == HandBoxPanel and !is_hand_box_panel_moving and !hand_box_pinned) or (cont == StatusBoxPanel and !is_status_box_panel_moving):
+	if (cont == HandBoxPanel and !is_hand_box_panel_moving and !hand_box_pinned):
 		var tween_to: int = -1
-		match cont:
-			HandBoxPanel:
-				if cont.position.y != HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION:
-					tween_to = HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION
-					
-			StatusBoxPanel:
-				var pos: int = STATUS_BOX_INITIAL_PANEL_CONTAINER_POSITION - (STATUS_BOX_PANEL_OFFSET + 15)\
-				* (ceil(StatusBox.get_children().filter(func(x: Node): return x.visible).size() * 0.25) - 1)
-				
-				if cont.position.y != pos: tween_to = pos
+		if cont.position.y != HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION:
+			tween_to = HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION
 		
 		if tween_to != -1:
 			on_move_panel_container(cont, tween_to, tween_time)
 
 func on_extended_position_container(cont: PanelContainer, tween_time: float = PANEL_MOVE_TWEEN_DURATION) -> void:
-	if (cont == HandBoxPanel and !is_hand_box_panel_moving) or (cont == StatusBoxPanel and !is_status_box_panel_moving):
+	if (cont == HandBoxPanel and !is_hand_box_panel_moving):
 		var tween_to: int = -1
-		match cont:
-			HandBoxPanel:
-				var pos: int = HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION - HAND_BOX_PANEL_OFFSET
-				if cont.position.y != pos: tween_to = pos
-					
-			StatusBoxPanel:
-				var pos: int = STATUS_BOX_INITIAL_PANEL_CONTAINER_POSITION + STATUS_BOX_PANEL_OFFSET
-				if cont.position.y != pos: tween_to = pos
-					
+		
+		var pos: int = HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION - HAND_BOX_PANEL_OFFSET
+		if cont.position.y != pos: tween_to = pos
+		
 		if tween_to != -1:
 			on_move_panel_container(cont, tween_to, tween_time)
 
 var is_hand_box_panel_moving: bool = false
-var is_status_box_panel_moving: bool = false
 func on_move_panel_container(cont: PanelContainer, tween_to: int, tween_time: float) -> void:
 	var MoveTween := get_tree().create_tween()
 	MoveTween.tween_property(cont, "position:y", tween_to, tween_time)
-	MoveTween.finished.connect(on_move_tween_finished.bind(cont))
-	
-	match cont:
-		HandBoxPanel: is_hand_box_panel_moving = true
-		StatusBoxPanel: is_status_box_panel_moving = true
+	MoveTween.finished.connect(on_move_tween_finished)
+	is_hand_box_panel_moving = true
 
-func on_move_tween_finished(cont: PanelContainer) -> void:
-	match cont:
-		HandBoxPanel: is_hand_box_panel_moving = false
-		StatusBoxPanel: is_status_box_panel_moving = false
+func on_move_tween_finished() -> void:
+	is_hand_box_panel_moving = false
 
 func _on_hand_box_panel_pre_sort_children():
 	HandBoxPanel.size.x = 0
 	HandBoxPanel.position.x = 960 - (HandBoxPanel.size.x / 2)
 
-func _on_unit_status_box_panel_pre_sort_children():
-	var enemies: Array = []
-	var last_ally: int = -1
-	for child in StatusBox.get_children():
-		if child.Unit.team == 1: enemies.append(child)
-		else: last_ally = child.get_index()
-		
-	if last_ally >= 0:
-		for Unit in enemies:
-			if Unit.get_index() < last_ally:
-				StatusBox.move_child(Unit, last_ally + 1)
-				last_ally -= 1
-	
-	StatusBoxPanel.size = Vector2.ZERO
-	StatusBoxPanel.position.x = 960 - ((StatusBoxPanel.size.x) / 2)
-	
-	if !is_mouse_in_status_box_panel:
-		on_extended_position_container(StatusBoxPanel)
-		await get_tree().create_timer(STATUS_BOX_RESORT_DELAY).timeout
-		if !is_mouse_in_status_box_panel:
-			on_default_position_container(StatusBoxPanel)
-
-const STATUS_BOX_RESORT_DELAY: float = 1.2
-var is_mouse_in_status_box_panel: bool = false
-func _on_unit_status_box_panel_mouse_entered(): on_extended_position_container(StatusBoxPanel); is_mouse_in_status_box_panel = true
-func _on_unit_status_box_panel_mouse_exited(): on_default_position_container(StatusBoxPanel); is_mouse_in_status_box_panel = false
 func on_lock_inputs_changed(x: bool) -> void:
-	ChangePhase.visible = !x
-	PassUnitTurn.visible = !x
+	if LevelMap.game_phase == "PlayerPhase":
+		ChangePhase.visible = !x
+		PassUnitTurn.visible = !x
 
 var absolute_mouse_in_ui: bool
 var is_mouse_in_ui: bool = false
@@ -247,3 +209,47 @@ func _on_pass_unit_turn_button_pressed():
 func on_pass_unit_turn_button_state(x: bool) -> void:
 	PassUnitTurn.modulate = Helper.BASE if !x else Helper.LIGHT_GREY
 	PassUnitTurn.get_node("PassUnitTurnButton").disabled = x
+
+var team_selected: int = 0
+var vision_selected: int = 0
+func _on_team_button_item_selected(x: int):
+	team_selected = x
+	for child in Statuses.get_children().filter(func(y: Control): return y.Unit != null):
+		child.visible = true if (x == 2) else x == child.Unit.team
+	_on_vision_button_item_selected()
+
+func on_vision_selected(x: int) -> void:
+	vision_selected = x
+	_on_team_button_item_selected(team_selected)
+
+func _on_vision_button_item_selected():
+	for child in Statuses.get_children():
+		if child.visible:
+			if vision_selected == 0:
+				child.visible = Vision.is_unit_in_unit_vision(SpectateCamera.SpectateUnit, child.Unit, true)
+			elif child.Unit.team == 1:
+				child.visible = Vision.is_unit_in_vision(child.Unit)
+
+func on_update_vision() -> void:
+	_on_team_button_item_selected(team_selected)
+
+const STATUS_BOX_TRAVEL_TIME: float = 0.12
+var status_box_positions: Array = [0, -400]
+var status_box_state: int = 1
+var is_status_box_moving: bool
+
+func on_tab_pressed() -> void:
+	if !is_status_box_moving:
+		is_status_box_moving = true
+		status_box_state = abs(status_box_state - 1)
+		var MoveTween := get_tree().create_tween()
+		MoveTween.tween_property(StatusBox, "position:x", status_box_positions[status_box_state], STATUS_BOX_TRAVEL_TIME)
+		MoveTween.finished.connect(func(): is_status_box_moving = false; get_viewport().update_mouse_cursor_state())
+
+@onready var Backlight: PointLight2D = %Backlight
+func on_status_box_update_state() -> void:
+	await get_tree().create_timer(0.01).timeout
+	var turn_active_unit_status_array: Array = Statuses.get_children().filter(func(x: Control): return x.modulate_state == "TurnActive")
+	Backlight.visible = turn_active_unit_status_array.size() > 0
+	if turn_active_unit_status_array.size() > 0:
+		Backlight.global_position =  turn_active_unit_status_array[0].global_position + turn_active_unit_status_array[0].pivot_offset

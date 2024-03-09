@@ -1,9 +1,0 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://34y4qk1ml4w0"]
-
-[ext_resource type="Shader" path="res://scenes/screens/level_ui/unit_status/unit_status_pieces/shifting_background.gdshader" id="1_taa6b"]
-
-[resource]
-shader = ExtResource("1_taa6b")
-shader_parameter/modulate = Color(0, 0.745098, 0, 1)
-shader_parameter/SPEED = 0.05
-shader_parameter/DIRECTION = Vector2(1, 0)

@@ -55,9 +55,6 @@ func on_load_default_world_state() -> void:
 	
 func on_change_game_phase(phase: String) -> void:
 	game_phase = phase
-	
-	if GameState.admin:
-		LevelUI.get_node("Admin/ShowPhase").text = phase
 	match phase:
 		"StartPhase":
 			set_lock_inputs(true)

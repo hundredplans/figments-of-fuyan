@@ -103,6 +103,7 @@ func _process(_delta: float) -> void:
 				"DeathUnit": on_death()
 			LevelMap.on_set_lock_inputs_event_queue(true)
 		
+		
 func on_movement_finished(Unit: UnitGD) -> void:
 	Unit.stats("speed", -1, "MovementFinished")
 	Unit.occupy_tile(active_event[2])
@@ -180,8 +181,9 @@ func kill_unit(Unit: UnitGD, Killer: String) -> void:
 
 func on_death() -> void:
 	active_event[1].Model.on_death()
+	active_event[1].UnitStatus._queue_free(DEATH_AFTER_DELAY)
 	LevelMap.on_set_lock_inputs_event_queue(true)
-
+	
 @export var DEATH_AFTER_DELAY: float = 1.0
 func on_death_finished(Unit: UnitGD) -> void:
 	await get_tree().create_timer(DEATH_AFTER_DELAY).timeout

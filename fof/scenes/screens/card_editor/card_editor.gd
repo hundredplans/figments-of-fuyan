@@ -19,7 +19,10 @@ var old_stat_texts: Array = ["", "", "", ""]
 @export var Y_GHOST_OFFSET: int = -260
 
 func _process(_delta: float) -> void:
-	if is_mouse_in_model_viewer and Input.is_action_just_pressed("RightClick"): Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	if is_mouse_in_model_viewer and Input.is_action_just_pressed("RightClick"): 
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		get_viewport().update_mouse_cursor_state()
+		
 	if Input.is_action_just_released("RightClick"): Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 func _input(event: InputEvent) -> void:
