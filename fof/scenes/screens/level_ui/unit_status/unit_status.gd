@@ -1,11 +1,11 @@
 extends Control
-signal status_box_update_state
 
 var is_model: bool
 var Heroes: HeroesGD
 const DARK_RED: Color = Color("ff0000")
 const BRIGHT_GREEN: Color = Color("00ff00")
 const MEDIUM_GRAY: Color = Color("8c8c8c")
+const BASE: Color = Color("ffffff")
 
 var Unit: UnitGD
 @onready var oHoverCard: Control = $HoverCard
@@ -18,6 +18,9 @@ var Unit: UnitGD
 @onready var HealthSprite: Sprite2D = %HealthSprite 
 @onready var SpeedSprite: Sprite2D = %SpeedSprite
 
+@onready var SelectedMask: Sprite2D = %SelectedMask 
+
+var card_selected_material: Material = preload("res://assets/base_game/cards/card_ui/card_selected_material.tres")
 func _ready() -> void:
 	oHoverCard.visible = false
 	Rainbow.visible = false
@@ -45,27 +48,35 @@ func on_set_unit(_Unit: UnitGD) -> void:
 @onready var SpeedLabel: Label = $Stats/Speed/Label
 
 func on_reset_stats() -> void:
+	var attack_modulate: String
+	var health_modulate: String
+	var speed_modulate: String
+	
 	AttackLabel.text = str(Unit.attack)
 	HealthLabel.text = str(Unit.health)
 	SpeedLabel.text = str(Unit.speed)
 	
-	if Unit.attack < Unit.base_card.a: AttackLabel.modulate = DARK_RED
-	elif Unit.attack == Unit.base_card.a: AttackLabel.modulate = Helper.BASE
-	else: AttackLabel.modulate = BRIGHT_GREEN 
+	if Unit.attack < Unit.base_card.a: attack_modulate = "DARK_RED"
+	elif Unit.attack == Unit.base_card.a: attack_modulate = "BASE"
+	else: attack_modulate = "BRIGHT_GREEN" 
 	
-	if Unit.health < Unit.max_health: HealthLabel.modulate = DARK_RED
-	elif Unit.health == Unit.max_health: HealthLabel.modulate = Helper.BASE
-	else: HealthLabel.modulate = BRIGHT_GREEN
+	if Unit.health < Unit.max_health: health_modulate = "DARK_RED"
+	elif Unit.health == Unit.max_health: health_modulate = "BASE"
+	else: health_modulate = "BRIGHT_GREEN"
 	
-	if Unit.speed == 0: SpeedLabel.modulate = MEDIUM_GRAY
-	elif Unit.speed <= Unit.max_speed: SpeedLabel.modulate = Helper.BASE
-	else: SpeedLabel.modulate = BRIGHT_GREEN
+	if Unit.speed == 0: speed_modulate = "MEDIUM_GRAY"
+	elif Unit.speed <= Unit.max_speed: speed_modulate = "BASE"
+	else: speed_modulate = "BRIGHT_GREEN"
+	
+	AttackLabel.modulate = get(attack_modulate)
+	HealthLabel.modulate = get(health_modulate)
+	SpeedLabel.modulate = get(speed_modulate)
 	
 	for stat in ["Attack", "Health", "Speed"]:
 		var val: int = Unit["max_" + stat.to_lower()] - Unit.base_card[stat[0].to_lower()]
 		get_node("HoverCard/Buffs/HBoxContainer/" + stat + "/Label").text = ("+" if val >= 0 else "") + str(val)
 	
-	on_update_combat_status_texture()
+	on_set_unit_field_status_stats(attack_modulate, health_modulate, speed_modulate)
 	
 func on_reset_status_effects() -> void:
 	pass
@@ -121,6 +132,7 @@ func _on_mouse_exited():
 	if !Unit.Units.LevelMap.lock_inputs and !Unit.Units.LevelUI.is_status_box_panel_moving:
 		Unit.Units.Tiles.on_remove_tile_material(Unit.Tile)
 
+signal queue_free_signal
 const DEATH_AFTER_MULTIPLIER: float = 2.0
 var on_rotate_queue_free: bool = false
 func _queue_free(DEATH_AFTER_DELAY: float) -> void:
@@ -128,11 +140,12 @@ func _queue_free(DEATH_AFTER_DELAY: float) -> void:
 	ScaleTween.tween_property(self, "scale", Vector2.ZERO, DEATH_AFTER_DELAY * DEATH_AFTER_MULTIPLIER)
 	on_rotate_queue_free = true
 	ScaleTween.finished.connect(func(): queue_free())
+	queue_free_signal.emit(self)
 
 const speeds: Dictionary = {
 	"TurnUsed": 0.02,
-	"TurnUnused": 0.2,
-	"TurnActive": 0.6,}
+	"TurnUnused": 0.12,
+	"TurnActive": 0.2,}
 	
 const modulates: Dictionary = {
 	"TurnUsed": Color("8fbf8f"),
@@ -148,7 +161,7 @@ func on_set_status_box_modulate(val: String) -> void:
 			
 		modulate_state = val
 		Gem.visible = val == "TurnActive"
-		status_box_update_state.emit()
+		SelectedMask.material = null if val != "TurnActive" else card_selected_material
 		
 const RAINBOW_SPEED: int = 300
 @onready var Rainbow = %RainbowLight
@@ -156,8 +169,8 @@ func on_unit_spectated(state: bool) -> void:
 	Rainbow.visible = state
 	on_set_light_mask(0 if !state else 32)
 
-func on_update_combat_status_texture() -> void:
-	pass
+func on_set_unit_field_status_stats(attack_modulate, health_modulate, speed_modulate) -> void:
+	Unit.UnitFieldStatus.on_set_stats(Unit.attack, Unit.health, Unit.speed, attack_modulate, health_modulate, speed_modulate)
 
 func on_set_light_mask(state: int) -> void:
 	for node in [In, ArtPop, AttackSprite, HealthSprite, SpeedSprite]:

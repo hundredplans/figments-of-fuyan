@@ -55,6 +55,9 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	Model.rot = rot
 	Model.on_add_model()
 	
+	UnitFieldStatus.SpectateCamera = Units.SpectateCamera
+	UnitFieldStatus.unit_set = true
+	UnitFieldStatus.position.y = height.top + 0.2
 	position = tile.position
 	position.y += 0.3
 	occupy_tile(tile)

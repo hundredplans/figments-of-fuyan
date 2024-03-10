@@ -488,3 +488,16 @@ const BTAB_TO_TYPE: Dictionary = {
 	3: ["tdeco"],
 	4: ["wdeco"],
 }
+
+const NUM_TO_STRING_NUM: Dictionary = {
+	0: "zero",
+	1: "one",
+	2: "two",
+	3: "three",
+	4: "four",
+	5: "five",
+	6: "six",
+	7: "seven",
+	8: "eight",
+	9: "nine",
+}

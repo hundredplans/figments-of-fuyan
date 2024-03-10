@@ -117,14 +117,22 @@ func _on_change_phase_hitbox_pressed():
 	LevelMap.on_advance_game_phase()
 	ChangePhase.get_node("ChangePhaseSprite").on_hyperspeed()
 
+var last_ally: int = 0
 @onready var Statuses: Control = %Statuses
 func on_add_unit_status_box(Unit: UnitGD) -> void:
 	var UnitStatus: Control = preload("res://scenes/screens/level_ui/unit_status/unit_status.tscn").instantiate()
 	UnitStatus.Heroes = Heroes
+	UnitStatus.queue_free_signal.connect(on_unit_status_queue_free)
 	Statuses.add_child(UnitStatus)
 	UnitStatus.on_set_unit(Unit)
-	UnitStatus.status_box_update_state.connect(on_status_box_update_state)
 	Unit.UnitStatus = UnitStatus
+	
+	if Unit.team == 0:
+		Statuses.move_child(UnitStatus, last_ally)
+		last_ally += 1
+	
+func on_unit_status_queue_free(UnitStatus: Control) -> void:
+	if last_ally > 0 and UnitStatus.get_index() == last_ally: last_ally -= 1
 
 const PANEL_MOVE_TWEEN_DURATION: float = 0.1
 const HAND_BOX_PANEL_OFFSET: int = 400
@@ -245,11 +253,3 @@ func on_tab_pressed() -> void:
 		var MoveTween := get_tree().create_tween()
 		MoveTween.tween_property(StatusBox, "position:x", status_box_positions[status_box_state], STATUS_BOX_TRAVEL_TIME)
 		MoveTween.finished.connect(func(): is_status_box_moving = false; get_viewport().update_mouse_cursor_state())
-
-@onready var Backlight: PointLight2D = %Backlight
-func on_status_box_update_state() -> void:
-	await get_tree().create_timer(0.01).timeout
-	var turn_active_unit_status_array: Array = Statuses.get_children().filter(func(x: Control): return x.modulate_state == "TurnActive")
-	Backlight.visible = turn_active_unit_status_array.size() > 0
-	if turn_active_unit_status_array.size() > 0:
-		Backlight.global_position =  turn_active_unit_status_array[0].global_position + turn_active_unit_status_array[0].pivot_offset

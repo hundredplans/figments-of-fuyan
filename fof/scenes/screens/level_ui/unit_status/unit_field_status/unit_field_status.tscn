@@ -1,6 +1,35 @@
-[gd_scene load_steps=2 format=3 uid="uid://kipaaomw7to0"]
+[gd_scene load_steps=5 format=3 uid="uid://kipaaomw7to0"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_ui/unit_status/unit_field_status/unit_field_status.gd" id="1_qelrw"]
+[ext_resource type="PackedScene" uid="uid://stsyvwcse7av" path="res://scenes/screens/level_map/floating_stats/attack.glb" id="2_4fbtn"]
+[ext_resource type="PackedScene" uid="uid://b4r0v67xgiwsm" path="res://scenes/screens/level_map/floating_stats/speed.glb" id="3_ff1dn"]
+[ext_resource type="PackedScene" uid="uid://decfumeu2nk8w" path="res://scenes/screens/level_map/floating_stats/health.glb" id="4_afrvl"]
 
 [node name="UnitFieldStatus" type="Node3D"]
 script = ExtResource("1_qelrw")
+
+[node name="FloatingStats" type="Node3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.275092, 0, 0)
+
+[node name="attack" parent="FloatingStats" instance=ExtResource("2_4fbtn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.154, 0.5, 0)
+
+[node name="health" parent="FloatingStats" instance=ExtResource("4_afrvl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.15, 0.25, 0)
+
+[node name="speed" parent="FloatingStats" instance=ExtResource("3_ff1dn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0969241, 0, 0)
+
+[node name="Numbers" type="Node3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.275092, 0, 0)
+
+[node name="attack" type="Node3D" parent="Numbers"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.374, 0.525, 0)
+
+[node name="health" type="Node3D" parent="Numbers"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.382, 0.275, 0)
+
+[node name="speed" type="Node3D" parent="Numbers"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.378, 0.025, 0)

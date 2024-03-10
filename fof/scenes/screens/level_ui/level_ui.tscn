@@ -1,13 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://b0kr4uhvdhmq3"]
+[gd_scene load_steps=10 format=3 uid="uid://b0kr4uhvdhmq3"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_ui/level_ui.gd" id="1_mmiwi"]
 [ext_resource type="Texture2D" uid="uid://iucmlitjenwl" path="res://assets/base_game/cards/card_ui/stats/energy/energy.png" id="2_bww7p"]
 [ext_resource type="Theme" uid="uid://bhyiyheobours" path="res://scenes/screens/level_ui/panel_theme.tres" id="2_pmg4n"]
 [ext_resource type="PackedScene" uid="uid://bj3h1ak5dv73n" path="res://scenes/ui_general/op_button/op_button.tscn" id="3_1rebl"]
 [ext_resource type="LabelSettings" uid="uid://b3fuc4s50fgra" path="res://assets/UI/roboto/roboto64.tres" id="3_7ly33"]
-[ext_resource type="PackedScene" uid="uid://c58jdx2o7cfwc" path="res://scenes/screens/level_ui/unit_status/unit_status.tscn" id="4_l1u2a"]
 [ext_resource type="Texture2D" uid="uid://bhphpw6y0dli" path="res://scenes/ui_general/back_arrow/back_arrow.png" id="4_uruhh"]
-[ext_resource type="Texture2D" uid="uid://5va3kdmal6hs" path="res://scenes/screens/level_ui/unit_status/unit_status_pieces/backlight.png" id="5_a5t25"]
 [ext_resource type="Script" path="res://scenes/screens/level_ui/hand_phase/hand_phase_sprite.gd" id="5_filg1"]
 [ext_resource type="PackedScene" uid="uid://bkbg8go87dqws" path="res://scenes/ui_general/arrow/ui_arrow.tscn" id="8_t3xo3"]
 [ext_resource type="LabelSettings" uid="uid://je535i1721un" path="res://assets/UI/sixty_four/sixty_four_default.tres" id="10_b7a03"]
@@ -118,38 +116,6 @@ horizontal_scroll_mode = 0
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 30
-
-[node name="UnitStatus" parent="StatusBox/SortMenu/StatusClipper/Statuses" instance=ExtResource("4_l1u2a")]
-layout_mode = 2
-
-[node name="UnitStatus2" parent="StatusBox/SortMenu/StatusClipper/Statuses" instance=ExtResource("4_l1u2a")]
-layout_mode = 2
-
-[node name="UnitStatus3" parent="StatusBox/SortMenu/StatusClipper/Statuses" instance=ExtResource("4_l1u2a")]
-layout_mode = 2
-
-[node name="UnitStatus4" parent="StatusBox/SortMenu/StatusClipper/Statuses" instance=ExtResource("4_l1u2a")]
-layout_mode = 2
-
-[node name="UnitStatus5" parent="StatusBox/SortMenu/StatusClipper/Statuses" instance=ExtResource("4_l1u2a")]
-layout_mode = 2
-
-[node name="UnitStatus6" parent="StatusBox/SortMenu/StatusClipper/Statuses" instance=ExtResource("4_l1u2a")]
-layout_mode = 2
-
-[node name="UnitStatus7" parent="StatusBox/SortMenu/StatusClipper/Statuses" instance=ExtResource("4_l1u2a")]
-layout_mode = 2
-
-[node name="UnitStatus8" parent="StatusBox/SortMenu/StatusClipper/Statuses" instance=ExtResource("4_l1u2a")]
-layout_mode = 2
-
-[node name="Backlight" type="PointLight2D" parent="StatusBox"]
-unique_name_in_owner = true
-visible = false
-position = Vector2(187.5, 220)
-scale = Vector2(2.92969, 1.32813)
-range_item_cull_mask = 4
-texture = ExtResource("5_a5t25")
 
 [node name="CornerRightMenu" type="Control" parent="."]
 anchors_preset = 0
