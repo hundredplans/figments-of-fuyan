@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://oolv461paipv"]
+[gd_scene load_steps=13 format=3 uid="uid://oolv461paipv"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_map/level_map.gd" id="1_2p706"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/spectate_camera.gd" id="2_rteys"]
@@ -12,26 +12,32 @@
 [ext_resource type="Script" path="res://static/game_info/heroes.gd" id="8_rwmlg"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/random.gd" id="10_1t13j"]
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_eotmy"]
+radius = 0.01
+
 [node name="LevelMap" type="Node3D"]
 script = ExtResource("1_2p706")
 
-[node name="SpectateCamera" type="Camera3D" parent="."]
-current = true
+[node name="SpectateCamera" type="Node3D" parent="."]
 script = ExtResource("2_rteys")
+
+[node name="SpringArm" type="SpringArm3D" parent="SpectateCamera"]
+collision_mask = 8
+shape = SubResource("SphereShape3D_eotmy")
+spring_length = 3.0
+
+[node name="Camera3D" type="Camera3D" parent="SpectateCamera/SpringArm"]
+current = true
 
 [node name="Vision" type="Node3D" parent="."]
 script = ExtResource("4_84ynl")
 
 [node name="TileRayCast" type="RayCast3D" parent="Vision"]
 collision_mask = 8
-collide_with_areas = true
-collide_with_bodies = false
 
 [node name="MouseRayCast" type="RayCast3D" parent="Vision"]
 collision_mask = 2
-collide_with_areas = true
-collide_with_bodies = false
-debug_shape_custom_color = Color(0, 0, 0, 0)
+debug_shape_custom_color = Color(0, 0, 0, 0.478431)
 debug_shape_thickness = 1
 
 [node name="Units" type="Node3D" parent="."]

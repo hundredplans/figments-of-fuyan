@@ -1,6 +1,6 @@
 extends Node3D
 
-var SpectateCamera: Camera3D
+var SpectateCamera: Node3D
 
 @export var NUMBER_SCALE_TIME: float = 0.15
 @export var NUMBER_SHAKE_SPEED: int = 12
@@ -31,7 +31,6 @@ func on_set_stats(att: int, hp: int, spd: int, att_mod: String, hp_mod: String, 
 				stat_array.append(int(stat_str[i]))
 			
 			if stat_info[1] == "speed" and spd == 0: on_move_boot(0, -1)
-			
 			var ScaleTween := get_tree().create_tween()
 			ScaleTween.tween_property(Numbers.get_node(stat_info[1]), "scale:y", 0, NUMBER_SCALE_TIME)
 			ScaleTween.finished.connect(on_create_new_stats.bind(stat_array, stat_info[1], stat_info[2], stat_info[3]))
@@ -49,12 +48,14 @@ func on_create_new_stats(stat_array: Array, stat_type: String, mod_type: String,
 		if !(stat_type == "speed" and stat == 0): # fix this to work for numbers bigger than 10 too
 			var loaded_number: Node3D = load("res://scenes/screens/level_map/floating_stats/numbers/" + Helper.NUM_TO_STRING_NUM[stat] + ".glb").instantiate()
 			loaded_number.get_child(0).set_surface_override_material(0, load("res://scenes/screens/level_map/floating_stats/color_materials/" + mod_type + "_MATERIAL.tres"))
+			loaded_number.position.y -= 0.1
 			Numbers.get_node(stat_type).add_child(loaded_number)
 			
 			var ScaleTween := get_tree().create_tween()
 			ScaleTween.tween_property(Numbers.get_node(stat_type), "scale:y", 1, NUMBER_SCALE_TIME)
-			
+					
 			if stat_type == "speed" and original_stat == 0: on_move_boot(1, 1)
+			Numbers.get_node(stat_type).on_sort_children()
 						
 func on_move_boot(boot_scale: int, offset_multiplier: int) -> void:
 	var GeneralTween := get_tree().create_tween()

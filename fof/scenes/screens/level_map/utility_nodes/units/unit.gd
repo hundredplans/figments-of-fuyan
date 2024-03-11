@@ -57,7 +57,7 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	
 	UnitFieldStatus.SpectateCamera = Units.SpectateCamera
 	UnitFieldStatus.unit_set = true
-	UnitFieldStatus.position.y = height.top + 0.2
+	UnitFieldStatus.position.y = height.top + 0.05
 	position = tile.position
 	position.y += 0.3
 	occupy_tile(tile)
@@ -78,22 +78,26 @@ func occupy_tile(_Tile: TileGD) -> void:
 var Killer: UnitGD
 func stats(stat_type: String, val: int, AppliedBy: Variant = "GameEvent", absolute: bool = false) -> void:
 	var current_health: int = health
-	if absolute: val = max(val, 0)
+	var stats_changed: String = ""
+	if absolute: val = clamp(val, 0, 99)
 	match stat_type:
 		"speed":
+			if speed != val: stats_changed = stat_type
 			if absolute:
-				speed = val
-			else: speed = max(speed + val, 0)
+				speed = clamp(val, 0, 9)
+			else: speed = clamp(speed + val, 0, 9)
 		"attack":
+			if attack != val: stats_changed = stat_type
 			if absolute:
 				attack = val
-			else: attack = max(attack + val, 0)
+			else: attack = clamp(attack + val, 0, 99)
 		"health":
+			if health != val: stats_changed = stat_type
 			if absolute: 
 				health = val
-			else: health = max(health + val, 0)
+			else: health = clamp(health + val, 0, 99)
 				
-	UnitStatus.on_reset_stats()
+	UnitStatus.on_reset_stats(stats_changed)
 	if health == 0:
 		if typeof(AppliedBy) != TYPE_STRING: Killer = AppliedBy; AppliedBy = "Unit"
 		Units.kill_unit(self, AppliedBy)

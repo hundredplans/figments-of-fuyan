@@ -1,6 +1,7 @@
-extends Camera3D
-
+extends Node3D
 signal mouse_in_ui
+
+@onready var Camera: Camera3D = get_node("SpringArm/Camera3D")
 @export var LOOK_AT_UNIT_HEIGHT_MULTIPLIER: float = 0.8
 @export var CAMERA_UNIT_HEIGHT_MULTIPLIER: float = 1.2
 @export var CAMERA_RADIUS: float = 2.0 * (1 + (0.01 * Settings.camera_distance))
@@ -53,7 +54,7 @@ func on_set_camera_point_along_circle(progress: Vector2 = Vector2.ZERO) -> void:
 	
 	var theta: float = total_progress.x * 2 * PI
 	var phi: float = total_progress.y * PI
-
+	
 	position.x = cos(phi) * cos(theta) * CAMERA_RADIUS + central_point.x
 	position.y = sin(phi) * CAMERA_RADIUS + central_point.y
 	position.z = cos(phi) * sin(theta) * CAMERA_RADIUS + central_point.z

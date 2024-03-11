@@ -6,7 +6,7 @@ signal mouse_in_ui
 
 var Heroes: HeroesGD
 var Vision: VisionGD
-var SpectateCamera: Camera3D
+var SpectateCamera: Node3D
 
 @onready var PassUnitTurn := %PassUnitTurn
 @onready var HandBoxPanel := $HandBoxPanel
@@ -124,6 +124,7 @@ func on_add_unit_status_box(Unit: UnitGD) -> void:
 	UnitStatus.Heroes = Heroes
 	UnitStatus.queue_free_signal.connect(on_unit_status_queue_free)
 	Statuses.add_child(UnitStatus)
+	
 	UnitStatus.on_set_unit(Unit)
 	Unit.UnitStatus = UnitStatus
 	

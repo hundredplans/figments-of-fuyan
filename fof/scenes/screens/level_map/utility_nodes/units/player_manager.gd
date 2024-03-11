@@ -4,7 +4,7 @@ extends Node
 var Tiles: TilesGD
 var LevelMap: LevelMapGD
 var LevelUI: LevelUIGD
-var SpectateCamera: Camera3D
+var SpectateCamera: Node3D
 var Units: UnitsGD
 
 func on_card_placed(hand_card: HandCardGD, Tile: TileGD) -> void:

@@ -3,7 +3,7 @@ extends Node3D
 
 var Heroes: HeroesGD
 var Deck: DeckGD
-var SpectateCamera: Camera3D
+var SpectateCamera: Node3D
 var GameState: GameStateGD
 var Vision: VisionGD
 var Random: RandomGD
@@ -32,6 +32,7 @@ func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int
 	Unit.Model.death_finished.connect(on_death_finished.bind(Unit))
 	
 	if team == 0: PlayerManager.on_unit_awakened(Unit)
+	
 	LevelUI.on_add_unit_status_box(Unit)
 	
 	var in_vision: bool = Vision.is_unit_in_vision(Unit)

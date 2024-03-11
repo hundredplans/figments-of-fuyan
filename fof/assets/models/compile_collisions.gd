@@ -9,18 +9,13 @@ func _ready() -> void:
 		var folder_name: String = file.get_slice("/", 4)
 		for child in glb.get_children():
 			child.create_trimesh_collision()
-			var area := Area3D.new()
-			area.collision_layer = 8 if folder_name != "tiles" else 10
-			area.collision_mask = 0
-			glb.add_child(area)
-			area.owner = glb
-			child.get_child(0).get_child(0).owner = glb
-			var col = child.get_child(0).get_child(0)
-			col.reparent(area)
-			col.owner = glb
 			
-			child.get_child(0).queue_free()
-			
+			var static_body: StaticBody3D = child.get_child(0)
+			static_body.collision_layer = 8 if folder_name != "tiles" else 10
+			static_body.collision_mask = 0
+			#static_body.disable_mode
+			static_body.owner = glb
+			static_body.get_child(0).owner = glb
 			
 		await get_tree().create_timer(0.001).timeout
 		print(glb.name)

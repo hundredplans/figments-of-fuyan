@@ -2,7 +2,7 @@ class_name TilesGD
 extends Node3D
 const MAX_HEIGHT: int = 11
 
-var SpectateCamera: Camera3D
+var SpectateCamera: Node3D
 var LevelUI: LevelUIGD
 var LevelMap: LevelMapGD
 var Vision: VisionGD
@@ -468,7 +468,7 @@ func on_mouse_entered(Tile: TileGD, override: int = 0) -> void:
 
 const RAY_LENGTH: int = 1000
 func on_find_tile_by_raycast() -> TileGD:
-	var to: Vector3 = SpectateCamera.project_ray_normal(get_viewport().get_mouse_position()) * RAY_LENGTH
+	var to: Vector3 = SpectateCamera.Camera.project_ray_normal(get_viewport().get_mouse_position()) * RAY_LENGTH
 	var ray: RayCast3D = Vision.MouseRayCast
 	
 	ray.position = SpectateCamera.position
@@ -476,5 +476,7 @@ func on_find_tile_by_raycast() -> TileGD:
 	ray.force_raycast_update()
 	
 	var node: Node3D = ray.get_collider()
-	if node: node = node.get_node("../../..") if node.visible else null # TODO
+	if node:
+		node = node.get_node("../../../..")
+		if node.greyscale: node = null
 	return node

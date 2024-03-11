@@ -9,7 +9,7 @@ var Tiles: TilesGD
 var Heroes: HeroesGD
 var LevelMap: LevelMapGD
 var Units: UnitsGD
-var SpectateCamera: Camera3D
+var SpectateCamera: Node3D
 var LevelUI: LevelUIGD
 var GameState: GameStateGD
 

@@ -40,7 +40,7 @@ func on_find_visible_tiles() -> Array:
 			TileRayCast.target_position.y += (0.3 if Tile.info.tile.type == 0 else 0.6) if Tile.info.tile.id not in [3, 4] else 0.2
 			TileRayCast.force_raycast_update()
 			if TileRayCast.is_colliding():
-				if TileRayCast.get_collider().get_node("../../..") == Tile:
+				if TileRayCast.get_collider().get_node("../../../..") == Tile:
 					vision_check_passed.append(Tile)
 					var SomeUnit: UnitGD = Units.unit_by_tile(Tile)
 					if SomeUnit != null and SomeUnit != Unit:

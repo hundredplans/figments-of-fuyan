@@ -12,6 +12,7 @@ var Unit: UnitGD
 @onready var Gem: Sprite2D = %Gem
 @onready var ShiftingBackground: Sprite2D = %ShiftingBackground
 
+@onready var Stats: Control = %Stats
 @onready var In: Sprite2D = %In
 @onready var ArtPop: TextureButton = %ArtPop
 @onready var AttackSprite: Sprite2D = %AttackSprite
@@ -34,8 +35,8 @@ func on_set_unit(_Unit: UnitGD) -> void:
 	ShiftingBackground.material.set_shader_parameter("modulate", modulates["TurnUnused"] if Unit.team == 0 else Color("c11e00")) 
 	if Unit.team == 1: ShiftingBackground.material.set_shader_parameter("speed", 0.02)
 	
+	for stat in ["speed", "attack", "health"]: on_reset_stats(stat)
 	on_set_status_box_modulate("TurnUsed")
-	on_reset_stats()
 	on_reset_status_effects()
 	on_reset_tool()
 	
@@ -46,15 +47,13 @@ func on_set_unit(_Unit: UnitGD) -> void:
 @onready var AttackLabel: Label = $Stats/Attack/Label
 @onready var HealthLabel: Label = $Stats/Health/Label
 @onready var SpeedLabel: Label = $Stats/Speed/Label
+@export var NUMBER_SCALE_TIME: float = 0.15
 
-func on_reset_stats() -> void:
+func on_reset_stats(stat_changed: String) -> void:
+	stat_changed = stat_changed.capitalize()
 	var attack_modulate: String
 	var health_modulate: String
 	var speed_modulate: String
-	
-	AttackLabel.text = str(Unit.attack)
-	HealthLabel.text = str(Unit.health)
-	SpeedLabel.text = str(Unit.speed)
 	
 	if Unit.attack < Unit.base_card.a: attack_modulate = "DARK_RED"
 	elif Unit.attack == Unit.base_card.a: attack_modulate = "BASE"
@@ -67,6 +66,18 @@ func on_reset_stats() -> void:
 	if Unit.speed == 0: speed_modulate = "MEDIUM_GRAY"
 	elif Unit.speed <= Unit.max_speed: speed_modulate = "BASE"
 	else: speed_modulate = "BRIGHT_GREEN"
+		
+	if !stat_changed.is_empty():
+		on_set_unit_field_status_stats(attack_modulate, health_modulate, speed_modulate)
+		var ScaleTween := get_tree().create_tween()
+		var StatLabel: Label = Stats.get_node(stat_changed + "/Label")
+		ScaleTween.tween_property(StatLabel, "scale:y", 0, NUMBER_SCALE_TIME)
+		ScaleTween.finished.connect(on_reset_stat_numbers.bind(attack_modulate, health_modulate, speed_modulate, stat_changed))
+	
+func on_reset_stat_numbers(attack_modulate: String, health_modulate: String, speed_modulate: String, stat_changed: String) -> void:
+	AttackLabel.text = str(Unit.attack)
+	HealthLabel.text = str(Unit.health)
+	SpeedLabel.text = str(Unit.speed)
 	
 	AttackLabel.modulate = get(attack_modulate)
 	HealthLabel.modulate = get(health_modulate)
@@ -76,7 +87,9 @@ func on_reset_stats() -> void:
 		var val: int = Unit["max_" + stat.to_lower()] - Unit.base_card[stat[0].to_lower()]
 		get_node("HoverCard/Buffs/HBoxContainer/" + stat + "/Label").text = ("+" if val >= 0 else "") + str(val)
 	
-	on_set_unit_field_status_stats(attack_modulate, health_modulate, speed_modulate)
+	var StatLabel: Label = Stats.get_node(stat_changed + "/Label")
+	var ScaleTween := get_tree().create_tween()
+	ScaleTween.tween_property(StatLabel, "scale:y", 1, NUMBER_SCALE_TIME)
 	
 func on_reset_status_effects() -> void:
 	pass
