@@ -1,7 +1,10 @@
 extends Node3D
 signal mouse_in_ui
 
-@onready var Camera: Camera3D = get_node("SpringArm/Camera3D")
+@onready var SpringOrigin: Node3D = %SpringOrigin
+@onready var SpringArm: SpringArm3D = %SpringArm
+@onready var Camera: Camera3D = %RealCamera
+
 @export var LOOK_AT_UNIT_HEIGHT_MULTIPLIER: float = 0.8
 @export var CAMERA_UNIT_HEIGHT_MULTIPLIER: float = 1.2
 @export var CAMERA_RADIUS: float = 2.0 * (1 + (0.01 * Settings.camera_distance))
@@ -21,13 +24,12 @@ var LevelMap: LevelMapGD
 var Units: UnitsGD
 var Tiles: TilesGD
 
-var central_point: Vector3
+func _ready() -> void: pass
+	#SpringArm.spring_length = CAMERA_RADIUS
+
 func on_camera_start_spectate(pos: Vector3, type: String) -> void:
-	central_point = pos
-	central_point.y += CAMERA_LOOK_AT_HEIGHT[type]
-	position = Vector3(pos.x, pos.y + CAMERA_HEIGHT[type], pos.z)
-	
-	on_set_camera_point_along_circle()
+	SpringOrigin.position = pos
+	SpringOrigin.position.y += CAMERA_LOOK_AT_HEIGHT[type]
 
 func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed(Helper.interact_button(true)):
@@ -40,25 +42,15 @@ func _input(event: InputEvent) -> void:
 		mouse_in_ui.emit(false)
 			
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-		on_set_camera_point_along_circle((event.relative / 10000) * CAMERA_ROTATION_SPEED)
+		on_set_camera_point_along_circle((event.relative / 2000) * CAMERA_ROTATION_SPEED)
 
-var total_progress := Vector2.ZERO
-var Y_SPHERE_BLOCK: float = 0.3
-func on_set_camera_point_along_circle(progress: Vector2 = Vector2.ZERO) -> void:
-	if progress != Vector2.ZERO:
-		total_progress.x = clampf(total_progress.x + progress.x, 0, 1)
-		if total_progress.x <= 0: total_progress.x = 1
-		elif total_progress.x >= 1: total_progress.x = 0
-		
-		total_progress.y = clampf(total_progress.y + progress.y, -Y_SPHERE_BLOCK, Y_SPHERE_BLOCK)
-	
-	var theta: float = total_progress.x * 2 * PI
-	var phi: float = total_progress.y * PI
-	
-	position.x = cos(phi) * cos(theta) * CAMERA_RADIUS + central_point.x
-	position.y = sin(phi) * CAMERA_RADIUS + central_point.y
-	position.z = cos(phi) * sin(theta) * CAMERA_RADIUS + central_point.z
-	look_at(central_point)
+var azimuthal_angle: float
+var polar_angle: float
+var total_progress := Vector2.ZERO # TODO this should store the current rotation instead
+func on_set_camera_point_along_circle(rot: Vector2) -> void:
+	azimuthal_angle -= rot.x
+	polar_angle = clamp(polar_angle - rot.y, -PI/2, PI/2)
+	SpringOrigin.rotation = Vector3(polar_angle, azimuthal_angle, 0.0)
 	
 var spectate_type: String
 var unit_spectate_id: int = 0
