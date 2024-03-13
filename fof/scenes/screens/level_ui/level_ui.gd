@@ -15,7 +15,7 @@ var SpectateCamera: Node3D
 @onready var StatusBox: Control = %StatusBox
 
 var _LevelMap: PackedScene = preload("res://scenes/screens/level_map/level_map.tscn")
-var LevelMap: LevelMapGD
+var LevelMap: Node3D
 var GameState: Node
 
 @onready var VisionButton: Control = %VisionButton

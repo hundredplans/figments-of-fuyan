@@ -7,7 +7,7 @@ var energy_cap: int = 0
 
 var Tiles: TilesGD
 var Heroes: HeroesGD
-var LevelMap: LevelMapGD
+var LevelMap: Node3D
 var Units: UnitsGD
 var SpectateCamera: Node3D
 var LevelUI: LevelUIGD

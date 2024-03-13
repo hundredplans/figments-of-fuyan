@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://oolv461paipv"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_map/level_map.gd" id="1_2p706"]
-[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/spectate_camera.gd" id="2_rteys"]
+[ext_resource type="PackedScene" uid="uid://cnk5eh0ojgtqs" path="res://scenes/screens/level_map/utility_nodes/spectate_camera/spectate_camera.tscn" id="2_jcp7i"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/units/units.gd" id="3_2cmnp"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vision/vision.gd" id="4_84ynl"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/units/player_manager.gd" id="4_j0l8t"]
@@ -15,20 +15,7 @@
 [node name="LevelMap" type="Node3D"]
 script = ExtResource("1_2p706")
 
-[node name="SpectateCamera" type="Node3D" parent="."]
-script = ExtResource("2_rteys")
-
-[node name="SpringOrigin" type="Node3D" parent="SpectateCamera"]
-unique_name_in_owner = true
-
-[node name="SpringArm" type="SpringArm3D" parent="SpectateCamera/SpringOrigin"]
-unique_name_in_owner = true
-collision_mask = 10
-spring_length = 3.0
-
-[node name="RealCamera" type="Camera3D" parent="SpectateCamera/SpringOrigin/SpringArm"]
-unique_name_in_owner = true
-current = true
+[node name="SpectateCamera" parent="." instance=ExtResource("2_jcp7i")]
 
 [node name="Vision" type="Node3D" parent="."]
 script = ExtResource("4_84ynl")

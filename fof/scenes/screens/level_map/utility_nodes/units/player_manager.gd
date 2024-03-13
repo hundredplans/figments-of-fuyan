@@ -2,7 +2,7 @@ class_name PlayerManagerGD
 extends Node
 
 var Tiles: TilesGD
-var LevelMap: LevelMapGD
+var LevelMap: Node3D
 var LevelUI: LevelUIGD
 var SpectateCamera: Node3D
 var Units: UnitsGD

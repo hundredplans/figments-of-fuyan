@@ -4,7 +4,7 @@ const MAX_HEIGHT: int = 11
 
 var SpectateCamera: Node3D
 var LevelUI: LevelUIGD
-var LevelMap: LevelMapGD
+var LevelMap: Node3D
 var Vision: VisionGD
 var Units: UnitsGD
 var Lights: LightsGD

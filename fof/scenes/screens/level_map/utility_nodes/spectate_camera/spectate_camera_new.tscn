@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://bhu1aevtxnjcl"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/spectate_camera/spectate_camera_new.gd" id="1_vxu2a"]
+
+[node name="SpectateCamera" type="Node3D"]
+script = ExtResource("1_vxu2a")
+
+[node name="SpringOrigin" type="Node3D" parent="."]
+unique_name_in_owner = true
+
+[node name="SpringArm" type="SpringArm3D" parent="SpringOrigin"]
+unique_name_in_owner = true
+collision_mask = 10
+spring_length = 3.0
+
+[node name="RealCamera" type="Camera3D" parent="SpringOrigin/SpringArm"]
+unique_name_in_owner = true
+current = true

@@ -3,7 +3,7 @@ extends Node
 
 const AFTER_PHASE_START_DRAW_COUNT: int = 3
 
-var LevelMap: LevelMapGD
+var LevelMap: Node3D
 var Heroes: HeroesGD
 var BaseCards: BaseCardsGD
 var Hand: HandGD

@@ -8,7 +8,7 @@ var GameState: GameStateGD
 var Vision: VisionGD
 var Random: RandomGD
 var Tiles: TilesGD
-var LevelMap: LevelMapGD
+var LevelMap: Node3D
 var LevelUI: LevelUIGD
 
 @export var UNIT_ANIMATION_BLEND_TIME: float = 0.2
