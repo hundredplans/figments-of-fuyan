@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://cl8umomj1g4oh"]
+
+[ext_resource type="Texture2D" uid="uid://ebuqqa5efmoi" path="res://assets/materials/base_materials/base_material.png" id="1_cfbvx"]
+[ext_resource type="Material" uid="uid://b58x1i62usxa4" path="res://scenes/screens/level_map/utility_nodes/vision/grey_next_pass_mat.tres" id="2_8y63v"]
+
+[resource]
+render_priority = 1
+next_pass = ExtResource("2_8y63v")
+cull_mode = 2
+albedo_texture = ExtResource("1_cfbvx")

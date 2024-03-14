@@ -2,11 +2,35 @@ class_name GameStateGD
 extends Node
 
 var player_deck: Array = [
-	{"id": 118,
+	{"id": 113,
+	"tool_id": 0,
+	"effects": []},
+	
+	{"id": 114,
+	"tool_id": 0,
+	"effects": []},
+	
+	{"id": 115,
+	"tool_id": 0,
+	"effects": []},
+	
+	{"id": 116,
 	"tool_id": 0,
 	"effects": []},
 	
 	{"id": 117,
+	"tool_id": 0,
+	"effects": []},
+	
+	{"id": 118,
+	"tool_id": 0,
+	"effects": []},
+	
+	{"id": 120,
+	"tool_id": 0,
+	"effects": []},
+	
+	{"id": 122,
 	"tool_id": 0,
 	"effects": []},
 	
@@ -14,7 +38,7 @@ var player_deck: Array = [
 	"tool_id": 0,
 	"effects": []},
 	
-	{"id": 117,
+	{"id": 124,
 	"tool_id": 0,
 	"effects": []},
 ]

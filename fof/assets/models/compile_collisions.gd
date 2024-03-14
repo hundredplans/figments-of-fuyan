@@ -13,7 +13,7 @@ func _ready() -> void:
 			var static_body: StaticBody3D = child.get_child(0)
 			static_body.collision_layer = 8 if folder_name != "tiles" else 10
 			static_body.collision_mask = 0
-			#static_body.disable_mode
+			static_body.reparent(glb)
 			static_body.owner = glb
 			static_body.get_child(0).owner = glb
 			

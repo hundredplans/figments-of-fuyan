@@ -477,6 +477,6 @@ func on_find_tile_by_raycast() -> TileGD:
 	
 	var node: Node3D = ray.get_collider()
 	if node:
-		node = node.get_node("../../../..")
+		node = node.get_node("../../..")
 		if node.greyscale: node = null
 	return node

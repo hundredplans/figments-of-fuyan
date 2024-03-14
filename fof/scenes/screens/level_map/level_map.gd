@@ -19,7 +19,7 @@ var game_phase: String
 @onready var Hand: HandGD = $Hand
 @onready var Units: UnitsGD = $Units
 
-@onready var SpectateCamera: Node3D = $SpectateCamera
+@onready var SpectateCamera: Node3D = $SpectateCamera	
 @onready var Vision: VisionGD = $Vision
 
 func on_set_utility_nodes_paths() -> void:
