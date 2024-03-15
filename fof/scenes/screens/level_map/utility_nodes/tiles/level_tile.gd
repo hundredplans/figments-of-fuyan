@@ -14,7 +14,6 @@ var area: int = 0
 @export var solid_status: int = 0
 var original_solid_status: int = 0
 var tile_state: Array
-var greyscale: bool = false
 
 func on_load_info(type: String) -> void:
 	type = type.to_lower()

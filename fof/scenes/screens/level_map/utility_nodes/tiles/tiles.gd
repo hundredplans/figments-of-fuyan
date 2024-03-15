@@ -409,27 +409,24 @@ func on_set_default_shader_parameters() -> void:
 	MATERIAL_NAME_TO_MATERIAL["TurnUsed"].albedo_color = Color(0.35, 0.35, 0.35)
 	MATERIAL_NAME_TO_MATERIAL["EnemyOccupy"].albedo_color = Color(1, 0, 0)
 	
-	
 func on_remove_tile_material(Tile: TileGD, material_name: String = "UnitNull") -> void:
-	if !Tile.greyscale:
-		if material_name == "":
-			Tile.tile_state = []
-		elif material_name == "UnitNull":
-			Tile.tile_state = Tile.tile_state.filter(func(x: String): return x in Helper.unit_states)
-		else: 
-			Tile.tile_state.erase(material_name)
-		on_set_tile_highest_material(Tile)
+	if material_name == "":
+		Tile.tile_state = []
+	elif material_name == "UnitNull":
+		Tile.tile_state = Tile.tile_state.filter(func(x: String): return x in Helper.unit_states)
+	else: 
+		Tile.tile_state.erase(material_name)
+	on_set_tile_highest_material(Tile)
 	
 func on_set_tile_material(Tile: TileGD, material_name: String):
-	if !Tile.greyscale:
-		if !Tile.tile_state.has(material_name):
-			if material_name not in Helper.unit_states:
-				Tile.tile_state.append(material_name)
-			else:
-				Tile.tile_state = Tile.tile_state.filter(func(x: String): return x not in Helper.unit_states)
-				Tile.tile_state.append(material_name)
-		
-		on_set_tile_highest_material(Tile)
+	if !Tile.tile_state.has(material_name):
+		if material_name not in Helper.unit_states:
+			Tile.tile_state.append(material_name)
+		else:
+			Tile.tile_state = Tile.tile_state.filter(func(x: String): return x not in Helper.unit_states)
+			Tile.tile_state.append(material_name)
+	
+	on_set_tile_highest_material(Tile)
 
 func on_set_tile_highest_material(Tile: TileGD) -> void:
 	var highest: int = 0
@@ -456,7 +453,7 @@ func on_force_mouse_tile(state: bool, override: int = 0) -> void:
 	else: on_mouse_entered(on_find_tile_by_raycast(), override)
 
 func on_mouse_entered(Tile: TileGD, override: int = 0) -> void:
-	if !(Tile != null and Tile.greyscale) and ((!LevelUI.is_mouse_in_ui or override == 1) and (!LevelMap.lock_inputs or override == 2)):
+	if ((!LevelUI.is_mouse_in_ui or override == 1) and (!LevelMap.lock_inputs or override == 2)):
 		if InputTile != null and Tile != null and Tile != InputTile:
 			on_tile_mouse_exited(InputTile)
 			on_tile_mouse_entered(Tile)
@@ -478,5 +475,5 @@ func on_find_tile_by_raycast() -> TileGD:
 	var node: Node3D = ray.get_collider()
 	if node:
 		node = node.get_node("../../..")
-		if node.greyscale: node = null
+		#if node.greyscale: node = null REMEMBER TO FIX THIS
 	return node

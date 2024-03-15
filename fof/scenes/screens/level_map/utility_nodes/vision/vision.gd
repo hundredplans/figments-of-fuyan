@@ -64,26 +64,11 @@ func on_merge_visible_tiles(_visible_tiles: Dictionary, tiles: Array) -> void:
 var GreyscaleMaterial: Material = preload("res://scenes/screens/level_map/utility_nodes/vision/black_material.tres")
 func on_apply_visibility(other_tiles: Array) -> void:
 	for Tile in visible_tiles:
-		for type in ["TileDecoration", "WallDecoration", "Object"]:
-			for child in Tile.get_node(type).get_children():
-				for grandchild in child.get_children():
-					if grandchild is MeshInstance3D:
-						grandchild.visible = true
-		
 		for btab in [0, 2]:
 			Tile.set_material(null, btab)
-		Tile.greyscale = false
 		
 	for Tile in other_tiles:
-		for type in ["TileDecoration", "WallDecoration", "Object"]:
-			for child in Tile.get_node(type).get_children():
-				for grandchild in child.get_children():
-					if grandchild is MeshInstance3D:
-						grandchild.visible = false
-		
 		Tiles.on_remove_tile_material(Tile, "")
-		Tile.greyscale = true
-		
 		for btab in [0, 2]:
 			Tile.set_material(GreyscaleMaterial, btab)
 	
