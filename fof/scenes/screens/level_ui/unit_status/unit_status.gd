@@ -2,10 +2,6 @@ extends Control
 
 var is_model: bool
 var Heroes: HeroesGD
-const DARK_RED: Color = Color("ff0000")
-const BRIGHT_GREEN: Color = Color("00ff00")
-const MEDIUM_GRAY: Color = Color("8c8c8c")
-const BASE: Color = Color("ffffff")
 
 var Unit: UnitGD
 @onready var oHoverCard: Control = $HoverCard
@@ -19,10 +15,11 @@ var Unit: UnitGD
 @onready var HealthSprite: Sprite2D = %HealthSprite 
 @onready var SpeedSprite: Sprite2D = %SpeedSprite
 
-@onready var SelectedMask: Sprite2D = %SelectedMask 
+@onready var SelectedMask: TextureButton = %SelectedMask 
 
 var card_selected_material: Material = preload("res://assets/base_game/cards/card_ui/card_selected_material.tres")
 func _ready() -> void:
+	Helper.create_button_clickmask(SelectedMask)
 	oHoverCard.visible = false
 	Rainbow.visible = false
 	pivot_offset = size / 2
@@ -79,9 +76,9 @@ func on_reset_stat_numbers(attack_modulate: String, health_modulate: String, spe
 	HealthLabel.text = str(Unit.health)
 	SpeedLabel.text = str(Unit.speed)
 	
-	AttackLabel.modulate = get(attack_modulate)
-	HealthLabel.modulate = get(health_modulate)
-	SpeedLabel.modulate = get(speed_modulate)
+	AttackLabel.modulate = Unit.Units.get(attack_modulate)
+	HealthLabel.modulate = Unit.Units.get(health_modulate)
+	SpeedLabel.modulate = Unit.Units.get(speed_modulate)
 	
 	for stat in ["Attack", "Health", "Speed"]:
 		var val: int = Unit["max_" + stat.to_lower()] - Unit.base_card[stat[0].to_lower()]
@@ -138,21 +135,23 @@ func _process(delta: float) -> void:
 		rotation_degrees += delta * ROTATION_DEATH_SPEED
 
 func _on_mouse_entered():
-	if !Unit.Units.LevelMap.lock_inputs and !Unit.Units.LevelUI.is_status_box_panel_moving:
+	if !Unit.Units.LevelMap.lock_inputs and !Unit.Units.LevelUI.is_status_box_moving:
 		Unit.Units.Tiles.on_set_tile_material(Unit.Tile, "UnitInspected")
 
 func _on_mouse_exited():
-	if !Unit.Units.LevelMap.lock_inputs and !Unit.Units.LevelUI.is_status_box_panel_moving:
+	if !Unit.Units.LevelMap.lock_inputs and !Unit.Units.LevelUI.is_status_box_moving:
 		Unit.Units.Tiles.on_remove_tile_material(Unit.Tile)
 
 signal queue_free_signal
 const DEATH_AFTER_MULTIPLIER: float = 2.0
 var on_rotate_queue_free: bool = false
-func _queue_free(DEATH_AFTER_DELAY: float) -> void:
+func onBeginUnitStatusDeath(DEATH_AFTER_DELAY: float) -> void:
 	var ScaleTween: Tween = get_tree().create_tween()
 	ScaleTween.tween_property(self, "scale", Vector2.ZERO, DEATH_AFTER_DELAY * DEATH_AFTER_MULTIPLIER)
 	on_rotate_queue_free = true
-	ScaleTween.finished.connect(func(): queue_free())
+	
+func _queue_free() -> void:
+	queue_free()
 	queue_free_signal.emit(self)
 
 const speeds: Dictionary = {

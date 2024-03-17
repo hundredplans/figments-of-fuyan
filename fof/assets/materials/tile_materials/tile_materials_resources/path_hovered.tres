@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="TileMaterial" load_steps=2 format=3 uid="uid://bij0kv4dok1hh"]
+
+[ext_resource type="Script" path="res://assets/materials/tile_materials/tile_materials_resources/_tile_material.gd" id="1_v6bex"]
+
+[resource]
+script = ExtResource("1_v6bex")
+material_name = "PathHovered"
+is_unit_state = false
+albedo = Color(1, 0, 1, 1)
+priority = 65
+priority_over_greyscale = true
+unshaded = false

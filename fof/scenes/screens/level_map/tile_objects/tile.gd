@@ -10,7 +10,6 @@ func on_load_info(info: Dictionary, area: int) -> void:
 		add_child(load("res://assets/models/tiles/" + tile_object_name + ".tscn").instantiate())
 		
 func set_material(mat: Material) -> void:
-	print(mat)
 	if get_child_count() > 0:
 		var children: Array = get_child(0).get_children()
 		for i in range(children.size()):

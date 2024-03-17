@@ -368,74 +368,86 @@ func on_path_hovered_tile_selected(Tile: TileGD) -> void:
 		
 func on_enemy_found_tile_selected(Tile: TileGD, Unit: UnitGD) -> void:
 	Units.attack_enemy_or_target(Unit, Tile)
-	
-var MATERIAL_NAME_TO_MATERIAL: Dictionary = {
-	"RegularInspected": null, # When hovering over a regular tile
-	"SpawnInspected": null, # Over a spawn tile
-	"UnitSelected": null, # Clicked on a unit
-	"PathHovered": null, # When seeing where you should go
-	"MovementRange": null, # Possible movement positions
-	"EnemyInRange": null, # Enemies you can click on and attack
-	"UnitInspected": null, # When inspected with the unit status
-	
-	"SpectatingUnit": null, # Allies who's turn it's not but they are being spectated
-	"TurnActive": null, # Allies that it's currently the unit turn of
-	"TurnUsed": null, # Allies that used up their unit turn
-	"EnemyOccupy": null, # Tiles where an enemy exists
-	
-	"": null,
-}
- 
-var MATERIAL_PRIORITIES: Array = ["", "MovementRange", "RegularInspected",
- "SpawnInspected", "PathHovered"] + Helper.unit_states + ["UnitSelected", "UnitInspected", "EnemyInRange"]
 
-var base_material: Material = preload("res://assets/materials/base_materials/base_material.tres")
+func onCalculateUnitStates() -> void: 
+	for tile_material in TILE_MATERIALS.values():
+		if tile_material.is_unit_state: unit_states.append(tile_material.material_name)
+
+var unit_states: Array = []
+var color_material: Material = preload("res://assets/materials/tile_materials/color_material.tres")
+var TILE_MATERIALS: Dictionary
+
+func getUnitState(Tile: TileGD) -> String:
+	for _unit_state in Tile.tile_state:
+		if _unit_state in unit_states:
+			return _unit_state
+	return ""
+const TILE_MATERIAL_PATH: String = "res://assets/materials/tile_materials/tile_materials_resources/"
 func on_set_default_shader_parameters() -> void:
-	for key in MATERIAL_NAME_TO_MATERIAL.keys():
-		if key not in ["", "reset"]: 
-			MATERIAL_NAME_TO_MATERIAL[key] = base_material.duplicate()
-			MATERIAL_NAME_TO_MATERIAL[key].material_name = key
-	
-	MATERIAL_NAME_TO_MATERIAL["RegularInspected"].albedo_color = Color(0.5, 0.5, 0.5)
-	MATERIAL_NAME_TO_MATERIAL["SpawnInspected"].albedo_color = Color(0, 1, 0)
-	MATERIAL_NAME_TO_MATERIAL["MovementRange"].albedo_color = Color(1, 1, 0)
-	MATERIAL_NAME_TO_MATERIAL["UnitSelected"].albedo_color = Color(0, 1, 1)
-	MATERIAL_NAME_TO_MATERIAL["PathHovered"].albedo_color = Color(1, 0, 1)
-	MATERIAL_NAME_TO_MATERIAL["EnemyInRange"].albedo_color = Color(1, 0.7, 0.7)
-	MATERIAL_NAME_TO_MATERIAL["UnitInspected"].albedo_color = Color(0.8, 0.8, 0.8)
-	
-	MATERIAL_NAME_TO_MATERIAL["SpectatingUnit"].albedo_color = Color(0, 0, 1)
-	MATERIAL_NAME_TO_MATERIAL["TurnActive"].albedo_color = Color(0, 0, 0)
-	MATERIAL_NAME_TO_MATERIAL["TurnUsed"].albedo_color = Color(0.35, 0.35, 0.35)
-	MATERIAL_NAME_TO_MATERIAL["EnemyOccupy"].albedo_color = Color(1, 0, 0)
+	for file in DirAccess.get_files_at(TILE_MATERIAL_PATH):
+		if file.ends_with(".tres"):
+			var tile_material: TileMaterial = load(TILE_MATERIAL_PATH + file)
+			tile_material.material = color_material.duplicate()
+			tile_material.material.set_shader_parameter("albedo", Vector4(tile_material.albedo.r, tile_material.albedo.g, tile_material.albedo.b, 1))
+			if tile_material.unshaded:
+				tile_material.material.shader = preload("res://assets/materials/tile_materials/color_material_unshaded.gdshader")
+			TILE_MATERIALS.merge({tile_material.material_name: tile_material})
+			
+			match file.left(-5):
+				"greyscale": tile_material.material.set_shader_parameter("specular", 0.0)
+			
+	onCalculateUnitStates()
 	
 func on_remove_tile_material(Tile: TileGD, material_name: String = "UnitNull") -> void:
-	if material_name == "":
-		Tile.tile_state = []
-	elif material_name == "UnitNull":
-		Tile.tile_state = Tile.tile_state.filter(func(x: String): return x in Helper.unit_states)
-	else: 
-		Tile.tile_state.erase(material_name)
-	on_set_tile_highest_material(Tile)
+	match material_name:
+		"":
+			var has_greyscale: bool = "Greyscale" in Tile.tile_state
+			Tile.tile_state = []
+			if has_greyscale: Tile.tile_state = ["Greyscale"]
+		"UnitNull": 
+			Tile.tile_state = Tile.tile_state.filter(\
+			func(x: String): return x in unit_states or x == "Greyscale")
+		_: Tile.tile_state.erase(material_name)
+	on_set_tile_highest_material(Tile, material_name)
 	
 func on_set_tile_material(Tile: TileGD, material_name: String):
 	if !Tile.tile_state.has(material_name):
-		if material_name not in Helper.unit_states:
+		if material_name not in unit_states:
 			Tile.tile_state.append(material_name)
 		else:
-			Tile.tile_state = Tile.tile_state.filter(func(x: String): return x not in Helper.unit_states)
+			Tile.tile_state = Tile.tile_state.filter(func(x: String): return x not in unit_states)
 			Tile.tile_state.append(material_name)
 	
 	on_set_tile_highest_material(Tile)
 
-func on_set_tile_highest_material(Tile: TileGD) -> void:
+func on_set_tile_highest_material(Tile: TileGD, removed_material: String = "") -> void:
+	var is_greyscale: bool = Tile.tile_state.has("Greyscale")
+	var greyscale_override: bool = false
 	var highest: int = 0
-	for tile_state in Tile.tile_state:
-		var f: int = MATERIAL_PRIORITIES.find(tile_state)
+	
+	for state in Tile.tile_state:
+		var f: int = TILE_MATERIALS[state].priority
+		if TILE_MATERIALS[state].priority_over_greyscale: greyscale_override = true
 		if f > highest: highest = f
 	
-	Tile.tile.set_material(MATERIAL_NAME_TO_MATERIAL[MATERIAL_PRIORITIES[highest]])
+	if is_greyscale and !greyscale_override: highest = 1
+	var highest_tile_material: TileMaterial = getTileMaterialFromPriority(highest)
+	
+	var mat: ShaderMaterial
+	if highest_tile_material == null: mat = null
+	else: mat = highest_tile_material.material
+	
+	if (mat != null and highest_tile_material.material_name == "Greyscale")\
+	or removed_material == "Greyscale":
+		for i in Helper.BTAB_TO_TYPE[-1]: Tile[i].set_material(mat)
+	else: Tile.tile.set_material(mat)
 	Tile.on_update_materials(Units.PlayerManager.UnitSelected)
+
+func getTileMaterialFromPriority(priority: int) -> TileMaterial:
+	for tile_material in TILE_MATERIALS.values():
+		if tile_material.priority == priority:
+			return tile_material
+	return null
 
 func on_lock_inputs_changed(x: bool) -> void:
 	on_force_mouse_tile(x, 2)
@@ -475,5 +487,4 @@ func on_find_tile_by_raycast() -> TileGD:
 	var node: Node3D = ray.get_collider()
 	if node:
 		node = node.get_node("../../..")
-		#if node.greyscale: node = null REMEMBER TO FIX THIS
 	return node

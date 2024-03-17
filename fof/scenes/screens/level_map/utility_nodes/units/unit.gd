@@ -55,6 +55,7 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	Model.rot = rot
 	Model.on_add_model()
 	
+	UnitFieldStatus.Unit = self
 	UnitFieldStatus.SpectateCamera = Units.SpectateCamera
 	UnitFieldStatus.unit_set = true
 	UnitFieldStatus.position.y = height.top + 0.05
@@ -128,7 +129,11 @@ func on_death() -> void:
 	queue_free()
 
 var units_in_vision: Array
-func on_spectated_in_player_phase() -> void:
-	UnitStatus.on_unit_spectated(true)
-	if Tile.unit_state() not in ["TurnActive", "TurnUsed"]: Units.Tiles.on_set_tile_material(Tile, "SpectatingUnit")
-	Units.LevelUI.on_update_vision()
+func on_spectated_in_player_phase(state: bool) -> void:
+	UnitStatus.on_unit_spectated(state)
+	UnitFieldStatus.on_unit_spectated(state)
+	if state:
+		if Units.Tiles.getUnitState(Tile) not in ["TurnActive", "TurnUsed"]: Units.Tiles.on_set_tile_material(Tile, "SpectatingUnit")
+		Units.LevelUI.on_update_vision()
+	else:
+		Units.Tiles.on_remove_tile_material(Tile, "SpectatingUnit")

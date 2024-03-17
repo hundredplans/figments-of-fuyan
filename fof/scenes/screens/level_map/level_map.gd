@@ -96,11 +96,11 @@ func on_advance_game_phase() -> void:
 
 func on_set_lock_inputs_event_queue(x: bool) -> void:
 	if x or Units.event_queue.is_empty(): set_lock_inputs(x)
-
+	
+	
 func set_lock_inputs(x: bool) -> void:
-	if Units.event_queue.is_empty():
-		lock_inputs = x
-		lock_inputs_changed.emit(x)
+	lock_inputs = x
+	lock_inputs_changed.emit(x)
 
 func on_skip_hand_phase_result() -> bool: return game_phase == "HandPhase" and \
 Settings.autopass_handphase and Hand.on_playable_cards().is_empty()

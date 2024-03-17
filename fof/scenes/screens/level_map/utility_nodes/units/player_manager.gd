@@ -121,7 +121,7 @@ func _on_unit_deselected(Unit: UnitGD, absolute: bool = false) -> void:
 	LevelUI.get_node("SkipReminder").visible = false
 	
 func _on_unit_selected(Unit: UnitGD) -> void:
-	if Unit.Tile.unit_state() in ["TurnActive", "SpectatingUnit"]:
+	if Tiles.getUnitState(Unit.Tile) in ["TurnActive", "SpectatingUnit"]:
 		Tiles.on_set_tile_material(Unit.Tile, "UnitSelected")
 		Tiles.on_create_movement_paths(Unit)
 		var enemy_tiles: Array = Units.on_units(1).map(func(x: UnitGD): return x.Tile)
@@ -140,7 +140,7 @@ func on_death_finished(Killer: String, Deathee: UnitGD, deathee_index: int) -> v
 		on_remove_unit_turn(Deathee)
 		if !Settings.autopass_turn and unpassed_turns.is_empty() and !passed_turns.is_empty(): 
 			SpectateCamera.on_spectate("Unit", Units.on_unit_team_index(passed_turns[0]))
-	
+		Units.Vision.on_recalculate_vision()
 	if Units.on_units().is_empty(): print("DIE")
 		
 func on_unit_awakened(_Unit: UnitGD) -> void:

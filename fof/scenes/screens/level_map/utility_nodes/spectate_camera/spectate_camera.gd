@@ -94,8 +94,7 @@ func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0) -> voi
 				if units.size() > unit_spectate_id:
 					var past_unit: UnitGD = units[unit_spectate_id]
 					unit_positions[unit_spectate_id] = total_progress
-					Tiles.on_remove_tile_material(past_unit.Tile, "SpectatingUnit")
-					past_unit.UnitStatus.on_unit_spectated(false)
+					past_unit.on_spectated_in_player_phase(false)
 					
 				if id == -1: unit_spectate_id += direction
 				else: unit_spectate_id = id
@@ -112,7 +111,7 @@ func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0) -> voi
 					on_camera_start_spectate(Unit.position, type)
 					SpectateUnit = Unit
 					if LevelMap.game_phase == "PlayerPhase":
-						Unit.on_spectated_in_player_phase()
+						Unit.on_spectated_in_player_phase(true)
 
 var SpectateUnit: UnitGD
 func on_select_spectate_camera_direction(i: int) -> void:

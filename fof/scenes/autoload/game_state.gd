@@ -41,9 +41,17 @@ var player_deck: Array = [
 	{"id": 124,
 	"tool_id": 0,
 	"effects": []},
-]
-var player_boons: Array = []
 
+	{"id": 125,
+	"tool_id": 0,
+	"effects": []},
+	
+	{"id": 126,
+	"tool_id": 0,
+	"effects": []},
+]
+
+var player_boons: Array = []
 var admin: bool = true
 var save_file: int = 0
 var area_info: Dictionary

@@ -1,10 +1,6 @@
-[gd_resource type="StandardMaterial3D" script_class="BaseMaterial" load_steps=3 format=3 uid="uid://bjut0ft2iahrn"]
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://bjut0ft2iahrn"]
 
 [ext_resource type="Texture2D" uid="uid://ebuqqa5efmoi" path="res://assets/materials/base_materials/base_material.png" id="1_igkl5"]
-[ext_resource type="Script" path="res://assets/materials/base_material.gd" id="2_a4rta"]
 
 [resource]
-render_priority = 1
 albedo_texture = ExtResource("1_igkl5")
-script = ExtResource("2_a4rta")
-material_name = "BaseMaterial"

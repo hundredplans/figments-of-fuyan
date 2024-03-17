@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" path="res://assets/base_game/levels/level/loaded_level_light_tester.gd" id="1_m5ah0"]
 [ext_resource type="PackedScene" uid="uid://ce3k6kxjup2ks" path="res://scenes/screens/level_map/utility_nodes/tiles/level_tile.tscn" id="2_26sbp"]
-[ext_resource type="PackedScene" uid="uid://dekktdwr5o18" path="res://assets/models/tiles/1tile.tscn" id="5_8o6yc"]
+[ext_resource type="PackedScene" path="res://assets/models/tiles/1tile.tscn" id="5_8o6yc"]
 [ext_resource type="PackedScene" path="res://assets/models/decorations/tiles/shrub.tscn" id="10_yjf63"]
-[ext_resource type="PackedScene" uid="uid://dj01jn3r3u2l4" path="res://assets/models/walls/1wall2.tscn" id="11_tmwcc"]
-[ext_resource type="PackedScene" uid="uid://bfltns5twne28" path="res://assets/models/decorations/tiles/palms/palm_tree.tscn" id="12_24cph"]
-[ext_resource type="PackedScene" path="res://assets/models/tiles/water/shallow_water.tscn" id="13_0k84x"]
+[ext_resource type="PackedScene" path="res://assets/models/walls/1wall2.tscn" id="11_tmwcc"]
+[ext_resource type="PackedScene" uid="uid://d1es1jko8yanh" path="res://assets/models/decorations/tiles/palms/palm_tree.tscn" id="12_24cph"]
+[ext_resource type="PackedScene" uid="uid://cjpic383a28wt" path="res://assets/models/tiles/water/shallow_water.tscn" id="13_0k84x"]
 [ext_resource type="PackedScene" path="res://assets/models/decorations/tiles/rock.tscn" id="14_ugxix"]
 
 [node name="LoadedLevel" type="Node3D"]
@@ -15,7 +15,9 @@ script = ExtResource("1_m5ah0")
 [node name="Lights" type="Node3D" parent="."]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Lights"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, 0)
+transform = Transform3D(0.390746, -0.121298, -0.912471, 0.0477492, 0.992616, -0.111504, 0.919259, 3.42451e-09, 0.393653, 0, 12, 0)
+light_color = Color(1, 0.615686, 0.309804, 1)
+light_energy = 1.246
 
 [node name="Tiles" type="Node3D" parent="."]
 

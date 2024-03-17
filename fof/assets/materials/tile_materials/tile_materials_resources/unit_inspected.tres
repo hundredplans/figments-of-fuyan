@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="TileMaterial" load_steps=2 format=3 uid="uid://bigyfimpdjulk"]
+
+[ext_resource type="Script" path="res://assets/materials/tile_materials/tile_materials_resources/_tile_material.gd" id="1_y8cmt"]
+
+[resource]
+script = ExtResource("1_y8cmt")
+material_name = "UnitInspected"
+is_unit_state = false
+albedo = Color(0.25098, 0.25098, 0.25098, 1)
+priority = 95
+priority_over_greyscale = true

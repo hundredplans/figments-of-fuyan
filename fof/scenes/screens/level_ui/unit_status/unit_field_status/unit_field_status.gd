@@ -2,6 +2,7 @@ extends Node3D
 
 var SpectateCamera: Node3D
 
+var Unit: UnitGD
 @export var NUMBER_SCALE_TIME: float = 0.15
 @export var NUMBER_SHAKE_SPEED: int = 12
 @onready var FloatingStats: Node3D = %FloatingStats
@@ -40,15 +41,20 @@ func on_set_stats(att: int, hp: int, spd: int, att_mod: String, hp_mod: String, 
 				"health": health = hp
 				"speed": speed = spd
 
+var stat_type_mod_types: Dictionary = {
+	"attack": "",
+	"health": "",
+	"speed": "",
+}
 func on_create_new_stats(stat_array: Array, stat_type: String, mod_type: String, original_stat: int) -> void:
 	for child in Numbers.get_node(stat_type).get_children():
 		child.queue_free()
 		
-	for stat in stat_array: #TODO make this work for numbers bigger than 10
-		if !(stat_type == "speed" and stat == 0): # fix this to work for numbers bigger than 10 too
+	for stat in stat_array:
+		if !(stat_type == "speed" and stat == 0):
 			var loaded_number: Node3D = load("res://scenes/screens/level_map/floating_stats/numbers/" + Helper.NUM_TO_STRING_NUM[stat] + ".glb").instantiate()
-			loaded_number.get_child(0).set_surface_override_material(0, load("res://scenes/screens/level_map/floating_stats/color_materials/" + mod_type + "_MATERIAL.tres"))
 			loaded_number.position.y -= 0.1
+			stat_type_mod_types[stat_type] = mod_type
 			Numbers.get_node(stat_type).add_child(loaded_number)
 			
 			var ScaleTween := get_tree().create_tween()
@@ -56,7 +62,8 @@ func on_create_new_stats(stat_array: Array, stat_type: String, mod_type: String,
 					
 			if stat_type == "speed" and original_stat == 0: on_move_boot(1, 1)
 			Numbers.get_node(stat_type).on_sort_children()
-						
+		on_set_number_materials(stat_type, spectate_state)
+		
 func on_move_boot(boot_scale: int, offset_multiplier: int) -> void:
 	var GeneralTween := get_tree().create_tween()
 	GeneralTween.tween_property(FloatingStats.get_node("speed"), "scale:y", boot_scale, NUMBER_SCALE_TIME)
@@ -65,3 +72,17 @@ func on_move_boot(boot_scale: int, offset_multiplier: int) -> void:
 			var NewTween := get_tree().create_tween()
 			NewTween.tween_property(node, "position:y", node.position.y + (0.25 * offset_multiplier), NUMBER_SCALE_TIME)
 	
+var spectate_state: bool = false
+func on_unit_spectated(state: bool) -> void:
+	spectate_state = state
+	for child in [%attack.get_child(0), %health.get_child(0), %speed.get_child(0)]:
+		child.set_surface_override_material(0, null if !state else preload("res://assets/materials/base_materials/base_material_on_top.tres"))
+	
+	for _stat in ["attack", "health", "speed"]:
+		on_set_number_materials(_stat, state)
+
+func on_set_number_materials(stat_type: String, state: bool) -> void:
+	for child in Numbers.get_node(stat_type).get_children():
+		for grandchild in child.get_children():
+			grandchild.set_surface_override_material(0, \
+			Unit.Units.unit_field_status_materials[stat_type_mod_types[stat_type]][int(state)])

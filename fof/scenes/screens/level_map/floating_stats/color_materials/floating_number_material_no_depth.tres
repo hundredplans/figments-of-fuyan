@@ -1,0 +1,14 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://n8ciwg6wnmu3"]
+
+[ext_resource type="Shader" path="res://scenes/screens/level_map/floating_stats/color_materials/floating_number_shader_no_depth.gdshader" id="1_bgkfa"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_bgkfa")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/roughness = null
+shader_parameter/metallic_texture_channel = null
+shader_parameter/specular = null
+shader_parameter/metallic = null
+shader_parameter/uv1_scale = null
+shader_parameter/uv1_offset = null

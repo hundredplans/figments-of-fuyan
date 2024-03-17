@@ -48,12 +48,15 @@ offset_right = 358.0
 offset_bottom = 100.0
 mouse_filter = 2
 
-[node name="SelectedMask" type="Sprite2D" parent="Background"]
+[node name="SelectedMask" type="TextureButton" parent="Background"]
 unique_name_in_owner = true
 light_mask = 32
 texture_filter = 1
-position = Vector2(175, 50)
-texture = ExtResource("8_sa0gl")
+layout_mode = 0
+offset_left = -5.0
+offset_right = 355.0
+offset_bottom = 100.0
+texture_normal = ExtResource("8_sa0gl")
 
 [node name="LightMask" type="Sprite2D" parent="Background"]
 clip_children = 2
@@ -360,6 +363,10 @@ texture_scale = 1.5
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="Background/SelectedMask" to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Background/SelectedMask" to="." method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="Background/ArtPop" to="." method="_on_mouse_entered"]
 [connection signal="mouse_entered" from="Background/ArtPop" to="." method="_on_art_max_mouse_entered"]
+[connection signal="mouse_exited" from="Background/ArtPop" to="." method="_on_mouse_exited"]
 [connection signal="mouse_exited" from="Background/ArtPop" to="." method="_on_art_max_mouse_exited"]
 [connection signal="pressed" from="Background/ArtPop" to="." method="_on_art_max_pressed"]

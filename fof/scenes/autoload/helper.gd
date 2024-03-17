@@ -98,7 +98,6 @@ const node_type_to_light: Dictionary = {
 	6: "1af90d",
 }
 
-var unit_states: Array = ["TurnActive", "TurnUsed", "EnemyOccupy", "SpectatingUnit"]
 func call_method(node: Node, method: String, args: Array) -> bool:
 	if node.has_method(method):
 		node.call(method, args)

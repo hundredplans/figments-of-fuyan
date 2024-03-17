@@ -19,6 +19,30 @@ var LevelUI: LevelUIGD
 @onready var FieldedUnits: Node3D = $FieldedUnits
 
 var UnitScene: PackedScene = preload("res://scenes/screens/level_map/utility_nodes/units/unit.tscn")
+func _ready() -> void:
+	onCreateUnitFieldStatusMaterials()
+	
+const DARK_RED: Color = Color("ff0000")
+const BRIGHT_GREEN: Color = Color("00ff00")
+const MEDIUM_GRAY: Color = Color("8c8c8c")
+const BASE: Color = Color("ffffff")
+	
+var unit_field_status_materials: Dictionary = {
+	"BASE": [], # [bot, top_level]
+	"BRIGHT_GREEN": [],
+	"DARK_RED": [],
+	"MEDIUM_GRAY": [],
+}
+func onCreateUnitFieldStatusMaterials():
+	for key in unit_field_status_materials:
+		var color: Color = get(key)
+		var bot_material: ShaderMaterial = preload("res://scenes/screens/level_map/floating_stats/color_materials/floating_number_material.tres").duplicate() 
+		bot_material.set_shader_parameter("albedo", color)
+		unit_field_status_materials[key].append(bot_material)
+		
+		var top_material: ShaderMaterial = preload("res://scenes/screens/level_map/floating_stats/color_materials/floating_number_material_no_depth.tres").duplicate() 
+		top_material.set_shader_parameter("albedo", color)
+		unit_field_status_materials[key].append(top_material)
 	
 func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int, tile: TileGD) -> UnitGD:
 	var Unit: UnitGD = UnitScene.instantiate()
@@ -104,7 +128,6 @@ func _process(_delta: float) -> void:
 				"DeathUnit": on_death()
 			LevelMap.on_set_lock_inputs_event_queue(true)
 		
-		
 func on_movement_finished(Unit: UnitGD) -> void:
 	Unit.stats("speed", -1, "MovementFinished")
 	Unit.occupy_tile(active_event[2])
@@ -182,13 +205,14 @@ func kill_unit(Unit: UnitGD, Killer: String) -> void:
 
 func on_death() -> void:
 	active_event[1].Model.on_death()
-	active_event[1].UnitStatus._queue_free(DEATH_AFTER_DELAY)
+	active_event[1].UnitStatus.onBeginUnitStatusDeath(DEATH_AFTER_DELAY)
 	LevelMap.on_set_lock_inputs_event_queue(true)
 	
 @export var DEATH_AFTER_DELAY: float = 1.0
 func on_death_finished(Unit: UnitGD) -> void:
 	await get_tree().create_timer(DEATH_AFTER_DELAY).timeout
 	var deathee_index: int = on_unit_team_index(Unit)
+	Unit.UnitStatus._queue_free()
 	Unit.on_death()
 	LevelMap.on_set_lock_inputs_event_queue(false)
 	PlayerManager.on_death_finished(active_event[2], Unit, deathee_index)

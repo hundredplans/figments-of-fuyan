@@ -1,0 +1,370 @@
+[gd_scene load_steps=18 format=3 uid="uid://c58jdx2o7cfwc"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_ui/unit_status/unit_status.gd" id="1_32v7v"]
+[ext_resource type="Texture2D" uid="uid://b74ndaaqnns1v" path="res://assets/base_game/cards/card_ui/tool/tool.png" id="2_fccpi"]
+[ext_resource type="Texture2D" uid="uid://bgts82p0ip45a" path="res://scenes/screens/level_ui/unit_status/unit_status_pieces/shifting_background.png" id="2_n604n"]
+[ext_resource type="Texture2D" uid="uid://dr4ojvlaol232" path="res://scenes/screens/level_ui/unit_status/unit_status_pieces/status_in.png" id="3_bwt2n"]
+[ext_resource type="Texture2D" uid="uid://bq7oil2dvc6bs" path="res://assets/base_game/cards/card_ui/bbcode/ATTACK.png" id="3_sw1gj"]
+[ext_resource type="LabelSettings" uid="uid://je535i1721un" path="res://assets/UI/sixty_four/sixty_four_default.tres" id="4_pk6wt"]
+[ext_resource type="Texture2D" uid="uid://dqwa4ewr44mxc" path="res://scenes/screens/level_ui/unit_status/unit_status_pieces/status_gem.png" id="5_mw3jb"]
+[ext_resource type="Texture2D" uid="uid://cor7udw0x0ufw" path="res://assets/base_game/cards/card_ui/bbcode/HEALTH.png" id="5_qsmdt"]
+[ext_resource type="Texture2D" uid="uid://dkdx58e2117h0" path="res://assets/base_game/cards/card_ui/bbcode/SPEED.png" id="6_j12nd"]
+[ext_resource type="Material" uid="uid://ft8je82hjek6" path="res://scenes/screens/level_ui/unit_status/move_slight.tres" id="7_mq0yb"]
+[ext_resource type="Texture2D" uid="uid://dr6tmi3ckdsvk" path="res://scenes/screens/level_ui/unit_status/unit_status_pieces/light_mask.png" id="7_sc76b"]
+[ext_resource type="Texture2D" uid="uid://b0hfj23m52s2r" path="res://scenes/screens/level_ui/unit_status/unit_status_pieces/status_white.png" id="8_sa0gl"]
+[ext_resource type="LabelSettings" uid="uid://x63q2nfy4si3" path="res://assets/UI/sixty_four/sixty_four_medium.tres" id="10_qsy7n"]
+[ext_resource type="Texture2D" uid="uid://o2y0lth6qfc2" path="res://assets/base_game/cards/105 - Frederic the Fearless'0/art_mini.png" id="11_int12"]
+[ext_resource type="Texture2D" uid="uid://bybmcf64yfglo" path="res://scenes/screens/level_ui/unit_status/unit_status_pieces/rainbow.png" id="12_emc3m"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i2ie0"]
+bg_color = Color(0, 0, 0, 1)
+border_width_bottom = 1
+border_color = Color(0.592157, 0, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_color = Color(0.435294, 0, 0, 0.6)
+shadow_size = 10
+
+[sub_resource type="Theme" id="Theme_oao6c"]
+Panel/styles/panel = SubResource("StyleBoxFlat_i2ie0")
+
+[node name="UnitStatus" type="Control"]
+custom_minimum_size = Vector2(360, 100)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 353.0
+offset_bottom = 91.0
+mouse_filter = 2
+script = ExtResource("1_32v7v")
+
+[node name="Background" type="Control" parent="."]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 0
+offset_left = 5.0
+offset_right = 358.0
+offset_bottom = 100.0
+mouse_filter = 2
+
+[node name="SelectedMask" type="TextureButton" parent="Background"]
+unique_name_in_owner = true
+light_mask = 32
+texture_filter = 1
+layout_mode = 0
+offset_left = -5.0
+offset_right = 355.0
+offset_bottom = 100.0
+texture_normal = ExtResource("8_sa0gl")
+
+[node name="LightMask" type="Sprite2D" parent="Background"]
+clip_children = 2
+texture_filter = 1
+position = Vector2(175, 50)
+texture = ExtResource("7_sc76b")
+region_enabled = true
+region_rect = Rect2(-0.328911, -0.118393, 360.329, 100.118)
+
+[node name="ShiftingBackground" type="Sprite2D" parent="Background/LightMask"]
+unique_name_in_owner = true
+light_mask = 0
+visibility_layer = 2
+texture_filter = 1
+texture_repeat = 2
+position = Vector2(4, 0)
+texture = ExtResource("2_n604n")
+
+[node name="ArtPop" type="TextureButton" parent="Background"]
+unique_name_in_owner = true
+texture_filter = 1
+use_parent_material = true
+clip_contents = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.017
+anchor_top = -0.056
+anchor_right = 1.017
+anchor_bottom = -0.056
+offset_left = -354.001
+offset_top = 15.6
+offset_right = -274.001
+offset_bottom = 95.6
+mouse_filter = 1
+texture_normal = ExtResource("11_int12")
+
+[node name="In" type="Sprite2D" parent="Background"]
+unique_name_in_owner = true
+texture_filter = 1
+position = Vector2(175, 50)
+texture = ExtResource("3_bwt2n")
+
+[node name="Gem" type="Sprite2D" parent="Background"]
+unique_name_in_owner = true
+use_parent_material = true
+position = Vector2(340, 49)
+texture = ExtResource("5_mw3jb")
+
+[node name="Stats" type="Control" parent="."]
+unique_name_in_owner = true
+material = ExtResource("7_mq0yb")
+layout_mode = 1
+anchors_preset = 0
+offset_left = 95.0
+offset_top = 13.0
+offset_right = 248.0
+offset_bottom = 93.0
+mouse_filter = 2
+
+[node name="Attack" type="Control" parent="Stats"]
+use_parent_material = true
+layout_mode = 2
+anchors_preset = 0
+offset_right = 45.0
+offset_bottom = 80.0
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="AttackSprite" type="Sprite2D" parent="Stats/Attack"]
+unique_name_in_owner = true
+texture_filter = 1
+use_parent_material = true
+position = Vector2(20, 22)
+texture = ExtResource("3_sw1gj")
+
+[node name="Label" type="Label" parent="Stats/Attack"]
+texture_filter = 1
+use_parent_material = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.006
+anchor_right = 0.1
+anchor_bottom = 0.006
+offset_left = -17.5
+offset_top = 37.52
+offset_right = 52.5
+offset_bottom = 77.52
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(35, 20)
+text = "3"
+label_settings = ExtResource("4_pk6wt")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Health" type="Control" parent="Stats"]
+use_parent_material = true
+layout_mode = 2
+anchors_preset = 0
+offset_left = 53.0
+offset_right = 99.0
+offset_bottom = 80.0
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="HealthSprite" type="Sprite2D" parent="Stats/Health"]
+unique_name_in_owner = true
+texture_filter = 1
+use_parent_material = true
+position = Vector2(21, 19)
+texture = ExtResource("5_qsmdt")
+
+[node name="Label" type="Label" parent="Stats/Health"]
+texture_filter = 1
+use_parent_material = true
+layout_mode = 1
+anchors_preset = -1
+offset_left = -12.0
+offset_top = 36.0
+offset_right = 58.0
+offset_bottom = 76.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(35, 20)
+text = "2"
+label_settings = ExtResource("4_pk6wt")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Speed" type="Control" parent="Stats"]
+use_parent_material = true
+layout_mode = 2
+anchors_preset = 0
+offset_left = 107.0
+offset_right = 153.0
+offset_bottom = 80.0
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="SpeedSprite" type="Sprite2D" parent="Stats/Speed"]
+unique_name_in_owner = true
+texture_filter = 1
+use_parent_material = true
+position = Vector2(20, 20)
+texture = ExtResource("6_j12nd")
+
+[node name="Label" type="Label" parent="Stats/Speed"]
+texture_filter = 1
+use_parent_material = true
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.006
+anchor_bottom = 0.006
+offset_left = -14.0
+offset_top = 37.52
+offset_right = 56.0
+offset_bottom = 77.52
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(35, 20)
+text = "2"
+label_settings = ExtResource("4_pk6wt")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Status Effects" type="Node2D" parent="."]
+light_mask = 32
+position = Vector2(253, 6)
+scale = Vector2(0.75, 0.75)
+
+[node name="Tool" type="Node2D" parent="."]
+visible = false
+light_mask = 32
+position = Vector2(31, 26)
+scale = Vector2(0.75, 0.75)
+
+[node name="ToolCircle" type="Sprite2D" parent="Tool"]
+light_mask = 32
+position = Vector2(0, 122)
+texture = ExtResource("2_fccpi")
+
+[node name="ToolArt" type="Sprite2D" parent="Tool"]
+light_mask = 32
+
+[node name="HoverCard" type="Control" parent="."]
+visible = false
+top_level = true
+z_index = 10
+layout_mode = 1
+anchors_preset = 0
+offset_left = 106.0
+offset_top = -195.0
+offset_right = 346.0
+offset_bottom = 227.0
+mouse_filter = 2
+
+[node name="Buffs" type="Control" parent="HoverCard"]
+layout_mode = 1
+anchor_top = 1.0
+anchor_right = 0.132
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_right = 218.32
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="TopRim" type="Panel" parent="HoverCard/Buffs"]
+layout_mode = 0
+offset_right = 240.0
+offset_bottom = 10.0
+mouse_filter = 2
+theme = SubResource("Theme_oao6c")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HoverCard/Buffs"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -5.0
+offset_top = 25.0
+offset_right = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+
+[node name="Attack" type="Control" parent="HoverCard/Buffs/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="HoverCard/Buffs/HBoxContainer/Attack"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_right = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "+0"
+label_settings = ExtResource("10_qsy7n")
+
+[node name="Sprite2D" type="Sprite2D" parent="HoverCard/Buffs/HBoxContainer/Attack"]
+position = Vector2(69, 11)
+texture = ExtResource("3_sw1gj")
+
+[node name="Health" type="Control" parent="HoverCard/Buffs/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="HoverCard/Buffs/HBoxContainer/Health"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "+0"
+label_settings = ExtResource("10_qsy7n")
+
+[node name="Sprite2D" type="Sprite2D" parent="HoverCard/Buffs/HBoxContainer/Health"]
+position = Vector2(67, 11)
+texture = ExtResource("5_qsmdt")
+
+[node name="Speed" type="Control" parent="HoverCard/Buffs/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="HoverCard/Buffs/HBoxContainer/Speed"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_right = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "+0"
+label_settings = ExtResource("10_qsy7n")
+
+[node name="Sprite2D" type="Sprite2D" parent="HoverCard/Buffs/HBoxContainer/Speed"]
+position = Vector2(70, 11)
+texture = ExtResource("6_j12nd")
+
+[node name="RainbowLight" type="PointLight2D" parent="."]
+unique_name_in_owner = true
+visible = false
+position = Vector2(185, 70)
+scale = Vector2(0.75, 0.75)
+energy = 0.4
+blend_mode = 1
+range_item_cull_mask = 32
+texture = ExtResource("12_emc3m")
+texture_scale = 1.5
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="Background/SelectedMask" to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Background/SelectedMask" to="." method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="Background/ArtPop" to="." method="_on_art_max_mouse_entered"]
+[connection signal="mouse_exited" from="Background/ArtPop" to="." method="_on_art_max_mouse_exited"]
+[connection signal="pressed" from="Background/ArtPop" to="." method="_on_art_max_pressed"]
