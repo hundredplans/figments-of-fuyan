@@ -103,7 +103,7 @@ func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0) -> voi
 					on_camera_start_spectate(Unit.position, type)
 					SpectateUnit = Unit
 					if LevelMap.game_phase == "PlayerPhase":
-						Unit.on_spectated_in_player_phase()
+						Unit.on_spectated_in_player_phase(true)
 
 var SpectateUnit: UnitGD
 func on_select_spectate_camera_direction(i: int) -> void:

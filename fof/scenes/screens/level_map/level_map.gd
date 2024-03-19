@@ -49,7 +49,6 @@ func on_load_default_world_state() -> void:
 	Lights = LoadedLevel.get_node("Lights")
 	
 	on_set_utility_nodes_paths()
-	
 	add_child(LoadedLevel)
 	on_change_game_phase("StartPhase")
 	
@@ -58,6 +57,7 @@ func on_change_game_phase(phase: String) -> void:
 	match phase:
 		"StartPhase":
 			set_lock_inputs(true)
+			Tiles.on_start_phase_start()
 			SpectateCamera.on_start_phase_start()
 			SpectateCamera.on_spectate("Spawn")
 			Hand.on_start_phase_start()
@@ -80,6 +80,7 @@ func on_change_game_phase(phase: String) -> void:
 			set_lock_inputs(true)
 			Units.on_player_end_turn_phase_start()
 			LevelUI.on_player_end_turn_phase_start()
+			Vision.on_player_end_turn_phase_start()
 			on_change_game_phase("HandPhase")
 		"BOTPhase":
 			pass

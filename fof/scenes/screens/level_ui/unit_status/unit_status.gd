@@ -1,5 +1,6 @@
 extends Control
 
+var UnitStatusExtra: Control
 var is_model: bool
 var Heroes: HeroesGD
 
@@ -71,6 +72,8 @@ func on_reset_stats(stat_changed: String) -> void:
 		ScaleTween.tween_property(StatLabel, "scale:y", 0, NUMBER_SCALE_TIME)
 		ScaleTween.finished.connect(on_reset_stat_numbers.bind(attack_modulate, health_modulate, speed_modulate, stat_changed))
 	
+	if UnitStatusExtra != null: UnitStatusExtra.on_reset_stats(stat_changed)
+	
 func on_reset_stat_numbers(attack_modulate: String, health_modulate: String, speed_modulate: String, stat_changed: String) -> void:
 	AttackLabel.text = str(Unit.attack)
 	HealthLabel.text = str(Unit.health)
@@ -125,7 +128,7 @@ func on_remove_hover_card() -> void:
 		HoverCard = null
 
 var ROTATION_DEATH_SPEED: float = 300
-const HOVER_CARD_OFFSET := Vector2(80, -200)
+@export var HOVER_CARD_OFFSET := Vector2(80, -200)
 func _process(delta: float) -> void:
 	if visible and HoverCard != null:
 		oHoverCard.position = get_global_mouse_position() + HOVER_CARD_OFFSET
@@ -150,9 +153,13 @@ func onBeginUnitStatusDeath(DEATH_AFTER_DELAY: float) -> void:
 	ScaleTween.tween_property(self, "scale", Vector2.ZERO, DEATH_AFTER_DELAY * DEATH_AFTER_MULTIPLIER)
 	on_rotate_queue_free = true
 	
+	if UnitStatusExtra != null: UnitStatusExtra.onBeginUnitStatusDeath(DEATH_AFTER_DELAY)
+	
 func _queue_free() -> void:
 	queue_free()
 	queue_free_signal.emit(self)
+	
+	if UnitStatusExtra != null: UnitStatusExtra._queue_free()
 
 const speeds: Dictionary = {
 	"TurnUsed": 0.02,
@@ -180,10 +187,11 @@ const RAINBOW_SPEED: int = 300
 func on_unit_spectated(state: bool) -> void:
 	Rainbow.visible = state
 	on_set_light_mask(0 if !state else 32)
+	if UnitStatusExtra != null: UnitStatusExtra.on_unit_spectated(state)
 
 func on_set_unit_field_status_stats(attack_modulate, health_modulate, speed_modulate) -> void:
 	Unit.UnitFieldStatus.on_set_stats(Unit.attack, Unit.health, Unit.speed, attack_modulate, health_modulate, speed_modulate)
 
 func on_set_light_mask(state: int) -> void:
-	for node in [In, ArtPop, AttackSprite, HealthSprite, SpeedSprite]:
+	for node in [In, ArtPop, AttackSprite, HealthSprite, SpeedSprite, SelectedMask]:
 		node.light_mask = state

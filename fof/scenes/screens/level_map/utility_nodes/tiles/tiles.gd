@@ -160,11 +160,11 @@ func _ready() -> void:
 var active_tile: TileGD
 func on_tile_mouse_entered(Tile: TileGD) -> void:
 	active_tile = Tile
-	on_tile_hovered(active_tile, on_find_tile_primary_type(Tile))
+	on_tile_hovered(active_tile)
 	
 func on_tile_mouse_exited(Tile: TileGD) -> void:
 	active_tile = null
-	on_tile_unhovered(Tile, on_find_tile_primary_type(Tile))
+	on_tile_unhovered(Tile)
 
 func tiles_by_tile_state(tile_state: String) -> Array:
 	return get_children().filter(func(x: TileGD): return tile_state in x.tile_state)
@@ -200,6 +200,26 @@ func on_tiles_by_adjacent(tiles: Array = get_children(), astar: AStar3D = null) 
 
 # ----------------- Tiles UI
 
+func on_start_phase_start() -> void:
+	onConvertMultiTilePositions()
+	onCreateTopOfCliffWall()
+	
+func onCreateTopOfCliffWall() -> void:
+	for Tile in get_children():
+		if Tile.info.tile.id > 0:
+			for w in range(Tile.info.position.w - 1, -1, -1):
+				var pos: Vector4 = Tile.info.position
+				var _Tile: TileGD = position_to_tile(Vector4(pos.x, pos.y, pos.z, w))
+				if _Tile != null and _Tile.info.wall.id > 0: Tile.top_of_cliff_wall.append(_Tile)
+				else: break
+	
+func onConvertMultiTilePositions() -> void:
+	for Tile in get_children():
+		for type in Helper.BTAB_TO_TYPE[-1]:
+			Tile.info[type].multi_tile = Tile.info[type].multi_tile\
+			.map(func(x: Array): return position_to_tile(Vector4(x[0], x[1], x[2], x[3])))\
+			.filter(func(x: Node3D): return x != null)
+	
 func _on_remove_tiles_blocked_by_height(Tile: TileGD, height: float) -> bool:
 	var free_tile_space: float = 0.3 if is_ramp_tile(Tile) else 0.9
 	for i in range(Tile.info.position.w + 1, Tile.info.position.w + 7):
@@ -333,25 +353,27 @@ func on_connect_points(astar: AStar3D, movement_types: Array, Tile: TileGD, _Til
 	movement_types.append([Tile, _Tile, type])
 	astar.connect_points(Tile.get_instance_id(), _Tile.get_instance_id(), false)
 	
-func on_tile_hovered(Tile: TileGD, type: String) -> void:
-	if "RegularInspected" not in Tile.tile_state or "SpawnInspected" not in Tile.tile_state:
-		on_set_tile_material(Tile, type + "Inspected")
+func on_tile_hovered(Tile: TileGD) -> void:
+	if "RegularInspected" not in Tile.tile_state:
+		on_set_tile_material(Tile, "RegularInspected")
 		
-	if Units.PlayerManager.UnitSelected != null and "UnitSelected" not in Tile.tile_state and movement_paths.has(Tile): # create hovered tiles
+	if Units.PlayerManager.UnitSelected != null and movement_paths.has(Tile): # create hovered tiles
 		path_hovered_info = movement_paths[Tile]
 		for i in range(path_hovered_info.tiles.size()):
 			path_hovered_info.tiles[i].hovered_type = path_hovered_info.types[i]
 			on_set_tile_material(path_hovered_info.tiles[i], "PathHovered")
 			if path_hovered_info.types[i].x == 1:
 				on_set_tile_material(path_hovered_info.tiles[i], "EnemyInRange")
+	Vision.on_tile_hovered(Tile)
 
-func on_tile_unhovered(Tile: TileGD, type: String) -> void:
-	if "RegularInspected" in Tile.tile_state or "SpawnInspected" in Tile.tile_state:
-		on_remove_tile_material(Tile, type + "Inspected")
+func on_tile_unhovered(Tile: TileGD) -> void:
+	if "RegularInspected" in Tile.tile_state:
+		on_remove_tile_material(Tile, "RegularInspected")
 		
-	if Units.PlayerManager.UnitSelected != null and "UnitSelected" not in Tile.tile_state:
+	if Units.PlayerManager.UnitSelected != null:
 		for _Tile in tiles_by_tile_state("PathHovered"):
 			on_remove_tile_material(_Tile, "PathHovered")
+	Vision.on_tile_unhovered(Tile)
 
 var path_hovered_info: Dictionary
 func on_path_hovered_tile_selected(Tile: TileGD) -> void:
@@ -363,7 +385,6 @@ func on_path_hovered_tile_selected(Tile: TileGD) -> void:
 		if Tile == path_hovered_info.tiles[i]: break
 		
 	on_remove_tile_material(Units.PlayerManager.UnitSelected.Tile, "SpectatingUnit")
-	on_remove_tile_material(Units.PlayerManager.UnitSelected.Tile, "TurnActive")
 	Units.PlayerManager._on_unit_deselected(Units.PlayerManager.UnitSelected, true)
 		
 func on_enemy_found_tile_selected(Tile: TileGD, Unit: UnitGD) -> void:
@@ -398,15 +419,15 @@ func on_set_default_shader_parameters() -> void:
 			
 	onCalculateUnitStates()
 	
-func on_remove_tile_material(Tile: TileGD, material_name: String = "UnitNull") -> void:
+func on_remove_tile_material(Tile: TileGD, material_name: String = "") -> void:
 	match material_name:
 		"":
-			var has_greyscale: bool = "Greyscale" in Tile.tile_state
-			Tile.tile_state = []
-			if has_greyscale: Tile.tile_state = ["Greyscale"]
-		"UnitNull": 
-			Tile.tile_state = Tile.tile_state.filter(\
-			func(x: String): return x in unit_states or x == "Greyscale")
+			var new_state: Array = []
+			for state in Tile.tile_state:
+				if state in ["Greyscale", "AllyOccupy"] + unit_states:
+					new_state.append(state)
+			Tile.tile_state = new_state
+		"UnitChangeTile": Tile.tile_state = []
 		_: Tile.tile_state.erase(material_name)
 	on_set_tile_highest_material(Tile, material_name)
 	

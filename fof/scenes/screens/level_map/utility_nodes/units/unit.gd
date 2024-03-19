@@ -30,6 +30,8 @@ var Vision: VisionGD
 var Units: UnitsGD
 var TeamControl: Node
 
+var turn_status: int = 0 # 0 = turn active, 1 = turn inactive, 2 = turn used
+
 @onready var UnitFieldStatus: Node3D = $UnitFieldStatus
 @onready var Model: Node3D = $Model
 func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: int, tile: TileGD) -> void:
@@ -62,15 +64,19 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	position = tile.position
 	position.y += 0.3
 	occupy_tile(tile)
+	Units.Tiles.on_set_tile_material(tile, "AllyOccupy" if team == 0 else "EnemyOccupy")
 	AudioDict = load("res://assets/base_game/cards/" + base_card.bgfn + "/audio.tres")
 
 func occupy_tile(_Tile: TileGD) -> void:
+	var old_tile_state: Array = []
 	if Tile != null: 
 		Tile.solid_status = Tile.original_solid_status
-		Units.Tiles.on_remove_tile_material(Tile, "")
+		old_tile_state = Tile.tile_state.duplicate()
+		Units.Tiles.on_remove_tile_material(Tile, "UnitChangeTile")
 	
 	Tile = _Tile
-	if team == 1: Units.Tiles.on_set_tile_material(Tile, "EnemyOccupy")
+	Tile.tile_state = old_tile_state
+	Units.Tiles.on_set_tile_highest_material(Tile, "")
 	
 	Tile.original_solid_status = Tile.solid_status
 	Tile.solid_status = 1
@@ -133,7 +139,12 @@ func on_spectated_in_player_phase(state: bool) -> void:
 	UnitStatus.on_unit_spectated(state)
 	UnitFieldStatus.on_unit_spectated(state)
 	if state:
-		if Units.Tiles.getUnitState(Tile) not in ["TurnActive", "TurnUsed"]: Units.Tiles.on_set_tile_material(Tile, "SpectatingUnit")
+		Units.Tiles.on_set_tile_material(Tile, "SpectatingUnit")
 		Units.LevelUI.on_update_vision()
-	else:
-		Units.Tiles.on_remove_tile_material(Tile, "SpectatingUnit")
+	else: Units.Tiles.on_remove_tile_material(Tile, "SpectatingUnit")
+
+func on_set_turn_status() -> void:
+	UnitStatus.get_node("Effects/TurnUsed").visible = turn_status == 2
+	if turn_status == 0: UnitStatus.on_set_status_box_modulate("TurnActive")
+	
+	UnitFieldStatus.get_node("Effects/TurnUsed").visible = turn_status == 2

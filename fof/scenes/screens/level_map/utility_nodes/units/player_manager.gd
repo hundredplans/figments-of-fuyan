@@ -29,24 +29,37 @@ func on_select_active_unit(Unit: UnitGD) -> void:
 	if ActiveUnit != Unit:
 		if ActiveUnit != null: on_pass_unit_turn()
 		ActiveUnit = Unit
-		ActiveUnit.UnitStatus.on_set_status_box_modulate("TurnActive")
+		on_set_unit_turn_status(Unit, 0)
 		LevelUI.on_pass_unit_turn_button_state(false)
+
+func on_pass_unit_turn_pressed() -> void:
+	if ActiveUnit == null:
+		if SpectateCamera.SpectateUnit in unpassed_turns:
+			on_select_active_unit(SpectateCamera.SpectateUnit)
+			on_pass_unit_turn()
+	else:
+		on_pass_unit_turn()
+
+func on_set_unit_turn_status(Unit: UnitGD, status: int) -> void:
+	Unit.turn_status = status
+	Unit.on_set_turn_status()
+	LevelUI.on_set_unit_turn_status(Unit, status)
 
 func on_pass_unit_turn() -> void:
 	if ActiveUnit != null:
 		unpassed_turns.erase(ActiveUnit)
 		passed_turns.append(ActiveUnit)
 		ActiveUnit.UnitStatus.on_set_status_box_modulate("TurnUsed")
-		Tiles.on_remove_tile_material(ActiveUnit.Tile, "TurnActive")
-		Tiles.on_set_tile_material(ActiveUnit.Tile, "TurnUsed")
-		
+		on_set_unit_turn_status(ActiveUnit, 2)
 		ActiveUnit = null
 		
 		if unpassed_turns.is_empty():
 			LevelUI.on_pass_unit_turn_button_state(true)
 			if Settings.autopass_turn: LevelMap.on_advance_game_phase()
 		else: SpectateCamera.on_spectate("Unit", Units.on_unit_team_index(unpassed_turns[0]))
-		
+
+func on_spectated_in_player_phase(Unit: UnitGD) -> void:
+	LevelUI.on_pass_unit_turn_button_state(Unit in passed_turns)
 
 func on_player_phase_start() -> void:
 	LevelUI.PassUnitTurn.visible = true
@@ -62,6 +75,7 @@ func on_player_end_turn_phase_start() -> void:
 	LevelUI.PassUnitTurn.visible = false
 	for Unit in passed_turns + unpassed_turns:
 		Tiles.on_remove_tile_material(Unit.Tile, "")
+		on_set_unit_turn_status(Unit, 1)
 	
 	unpassed_turns = []
 	passed_turns = []
@@ -85,7 +99,7 @@ func on_check_autopass(Unit: UnitGD) -> void:
 				on_pass_unit_turn()
 				return
 	
-	Tiles.on_set_tile_material(Unit.Tile, "TurnActive")
+	on_set_unit_turn_status(Unit, 0)
 	_on_unit_selected(Unit)
 
 func on_spectate_unit(Unit: UnitGD) -> void:
@@ -121,8 +135,7 @@ func _on_unit_deselected(Unit: UnitGD, absolute: bool = false) -> void:
 	LevelUI.get_node("SkipReminder").visible = false
 	
 func _on_unit_selected(Unit: UnitGD) -> void:
-	if Tiles.getUnitState(Unit.Tile) in ["TurnActive", "SpectatingUnit"]:
-		Tiles.on_set_tile_material(Unit.Tile, "UnitSelected")
+	if Unit.turn_status == 0:
 		Tiles.on_create_movement_paths(Unit)
 		var enemy_tiles: Array = Units.on_units(1).map(func(x: UnitGD): return x.Tile)
 		for Tile in Tiles.movement_paths.tiles:
@@ -150,6 +163,6 @@ func on_remove_unit_turn(Unit: UnitGD) -> void:
 	if Unit.team == 0:
 		if ActiveUnit == Unit:
 			on_pass_unit_turn()
-			Tiles.on_remove_tile_material(Unit.Tile, "TurnUsed")
+			# ? was remove turnused
 			passed_turns.erase(Unit)
 		else: unpassed_turns.erase(Unit); passed_turns.erase(Unit)

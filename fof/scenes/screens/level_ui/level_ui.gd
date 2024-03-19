@@ -8,6 +8,7 @@ var Heroes: HeroesGD
 var Vision: VisionGD
 var SpectateCamera: Node3D
 
+@onready var VisionMode := %VisionMode
 @onready var PassUnitTurn := %PassUnitTurn
 @onready var HandBoxPanel := $HandBoxPanel
 @onready var HandBox := $HandBoxPanel/HandBox
@@ -34,11 +35,13 @@ func _ready() -> void:
 	
 	load_world.emit(LevelMap)
 	Heroes = LevelMap.Heroes
+	UnitStatusState.Heroes = Heroes
 	Vision = LevelMap.Vision
 	SpectateCamera = LevelMap.SpectateCamera
 	equip_sky.emit(GameState.area_info.id, false)
 	ChangePhase.visible = false
 	PassUnitTurn.visible = false
+	VisionMode.visible = false
 	LevelMap.SpectateCamera.mouse_in_ui.connect(on_camera_panning)
 	
 	on_pin_hand_box_panel(0)
@@ -88,6 +91,8 @@ func on_change_energy(energy: int, is_energy_max: bool) -> void:
 func on_player_end_turn_phase_start() -> void:
 	ChangePhase.visible = false
 	PassUnitTurn.visible = false
+	VisionMode.visible = false
+	on_pass_unit_turn_button_state(false)
 
 func on_hand_phase_start(skip_hand_phase: bool) -> void:
 	if !skip_hand_phase: on_pin_hand_box_panel()
@@ -110,6 +115,7 @@ func on_player_phase_start() -> void:
 		GameCardSelected = null
 		
 	PassUnitTurn.visible = true
+	VisionMode.visible = true
 	on_set_hand_box_cards_state()
 	on_unpin_hand_box_panel()
 
@@ -181,6 +187,7 @@ func on_lock_inputs_changed(x: bool) -> void:
 	if LevelMap.game_phase == "PlayerPhase":
 		ChangePhase.visible = !x
 		PassUnitTurn.visible = !x
+		VisionMode.visible = !x
 
 var absolute_mouse_in_ui: bool
 var is_mouse_in_ui: bool = false
@@ -213,7 +220,7 @@ func on_ally_unit_awakened(skip_result: bool) -> void:
 	if !skip_result: on_pin_hand_box_panel()
 
 func _on_pass_unit_turn_button_pressed():
-	LevelMap.Units.PlayerManager.on_pass_unit_turn()
+	LevelMap.Units.PlayerManager.on_pass_unit_turn_pressed()
 
 func on_pass_unit_turn_button_state(x: bool) -> void:
 	PassUnitTurn.modulate = Helper.BASE if !x else Helper.LIGHT_GREY
@@ -254,3 +261,10 @@ func on_tab_pressed() -> void:
 		var MoveTween := get_tree().create_tween()
 		MoveTween.tween_property(StatusBox, "position:x", status_box_positions[status_box_state], STATUS_BOX_TRAVEL_TIME)
 		MoveTween.finished.connect(func(): is_status_box_moving = false; get_viewport().update_mouse_cursor_state())
+
+@onready var UnitStatusState: Control = %UnitStatusState
+func on_set_unit_turn_status(Unit: UnitGD, status: int) -> void:
+	UnitStatusState.on_set_state(Unit if status == 0 else null)
+
+func _on_vision_mode_set():
+	Vision.on_vision_mode_set(1 if Vision.vision_mode == 0 else 0)

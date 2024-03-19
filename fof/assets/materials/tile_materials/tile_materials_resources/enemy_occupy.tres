@@ -5,8 +5,9 @@
 [resource]
 script = ExtResource("1_x23nj")
 material_name = "EnemyOccupy"
-is_unit_state = true
+is_unit_state = false
 albedo = Color(0.6, 0, 0, 1)
 priority = 80
 priority_over_greyscale = false
 unshaded = true
+unremovable = true

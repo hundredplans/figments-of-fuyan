@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://kipaaomw7to0"]
+[gd_scene load_steps=7 format=3 uid="uid://kipaaomw7to0"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_ui/unit_status/unit_field_status/unit_field_status.gd" id="1_qelrw"]
 [ext_resource type="PackedScene" uid="uid://stsyvwcse7av" path="res://scenes/screens/level_map/floating_stats/attack.glb" id="2_4fbtn"]
 [ext_resource type="PackedScene" uid="uid://b4r0v67xgiwsm" path="res://scenes/screens/level_map/floating_stats/speed.glb" id="3_ff1dn"]
 [ext_resource type="PackedScene" uid="uid://decfumeu2nk8w" path="res://scenes/screens/level_map/floating_stats/health.glb" id="4_afrvl"]
 [ext_resource type="Script" path="res://scenes/screens/level_ui/unit_status/unit_field_status/container_3d.gd" id="5_upefk"]
+[ext_resource type="Texture2D" uid="uid://c887ujblogwhg" path="res://scenes/screens/level_ui/unit_status/unit_status_pieces/zzz.png" id="6_rn8df"]
 
 [node name="UnitFieldStatus" type="Node3D"]
 script = ExtResource("1_qelrw")
@@ -40,3 +41,13 @@ script = ExtResource("5_upefk")
 [node name="speed" type="Node3D" parent="Numbers"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.378, 0.125, 0)
 script = ExtResource("5_upefk")
+
+[node name="Effects" type="Node3D" parent="."]
+unique_name_in_owner = true
+
+[node name="TurnUsed" type="Sprite3D" parent="Effects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.518543, 0.403773, 0)
+visible = false
+flip_h = true
+texture_filter = 0
+texture = ExtResource("6_rn8df")

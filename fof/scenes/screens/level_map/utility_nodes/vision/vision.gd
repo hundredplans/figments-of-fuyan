@@ -4,6 +4,7 @@ extends Node3D
 @onready var TileRayCast: RayCast3D = $TileRayCast
 @onready var MouseRayCast: RayCast3D = $MouseRayCast
 
+var SpectateCamera: Node3D
 var LevelUI: LevelUIGD
 var Units: UnitsGD
 var Tiles: TilesGD
@@ -11,40 +12,48 @@ var GameState: Node
 const VISION_RANGE: int = 5
 
 var visible_tiles: Array
-var grey_tiles: Array
 
 func on_recalculate_vision() -> void:
+	var other_tiles: Array = []
 	var old_visible_tiles: Array = visible_tiles.duplicate()
-	visible_tiles = on_find_visible_tiles()
+	visible_tiles = []
+	match vision_mode:
+		0:
+			visible_tiles = on_find_visible_tiles()
+		1:
+			var _visible_tiles: Dictionary = {}
+			if ActiveUnitVision != null:
+				on_merge_visible_tiles(_visible_tiles, onUnitRayCast(ActiveUnitVision))
+				visible_tiles = _visible_tiles.keys()
+		2: pass
+		
+	other_tiles = Tiles.tiles_unique(Tiles.get_children(), visible_tiles)
 	on_find_units_enter_vision(old_visible_tiles)
-	
-	var other_tiles: Array = Tiles.tiles_unique(Tiles.get_children(), visible_tiles)
 	on_apply_visibility(other_tiles)
 	LevelUI.on_update_vision()
 
-func onCheckConnectedWallsBelow(found_tiles: Array) -> void:
-	for Tile in found_tiles:
-		for w in range(Tile.info.position.w - 1, -1, -1):
-			var pos: Vector4 = Tile.info.position
-			var _Tile: TileGD = Tiles.position_to_tile(Vector4(pos.x, pos.y, pos.z, w))
-			if _Tile != null and _Tile.info.wall.id > 0: found_tiles.append(_Tile)
-			else: break
+func onUnitRayCast(Unit: UnitGD, all_units: Array = Units.all_units()) -> Array:
+	Unit.units_in_vision = []
+	TileRayCast.position = Unit.global_position
+	TileRayCast.position.y += Unit.height.eye + (0.6 if Unit.Tile.info.tile.type > 0 else 0.0)
+	
+	var found_tiles: Array = onCircleRay(TileRayCast, tiles_in_vision(Unit))
+	for i in range(found_tiles.size()):
+		found_tiles += found_tiles[i].top_of_cliff_wall
+		
+	for _Unit in all_units:
+		if _Unit.Tile in found_tiles and _Unit != Unit:
+			Unit.units_in_vision.append(_Unit)
+	return found_tiles
 
 func on_find_visible_tiles() -> Array:
 	var _visible_tiles: Dictionary = {}
 	on_merge_visible_tiles(_visible_tiles, Tiles.on_is_type_get_tiles("Spawn", "obj"))
 	var units: Array = Units.on_units()
 	var all_units: Array = Units.all_units()
+	
 	for Unit in units:
-		Unit.units_in_vision = []
-		TileRayCast.position = Unit.global_position
-		TileRayCast.position.y += Unit.height.eye + (0.6 if Unit.Tile.info.tile.type > 0 else 0.0)
-		var found_tiles: Array = onCircleRay(TileRayCast, tiles_in_vision(Unit))
-		onCheckConnectedWallsBelow(found_tiles)
-		for _Unit in all_units:
-			if _Unit.Tile in found_tiles:
-				Unit.units_in_vision.append(_Unit)
-		on_merge_visible_tiles(_visible_tiles, found_tiles)
+		on_merge_visible_tiles(_visible_tiles, onUnitRayCast(Unit, all_units))
 		
 	on_merge_visible_tiles(_visible_tiles, units.map(func(x: UnitGD): return x.Tile))
 	on_merge_visible_tiles(_visible_tiles, onUnitsHeightAdjacentTiles(units))
@@ -62,7 +71,8 @@ func onUnitsHeightAdjacentTiles(units: Array) -> Array:
 						found_tiles.append(Tile)
 						break
 				
-	onCheckConnectedWallsBelow(found_tiles)
+	for i in range(found_tiles.size()):
+		found_tiles += found_tiles[i].top_of_cliff_wall
 	return found_tiles
 	
 const RAY_COUNT: int = 75
@@ -78,12 +88,12 @@ func onCircleRay(Ray: RayCast3D, vision_range: Array) -> Array:
 			if Ray.is_colliding():
 				var Tile: TileGD = Ray.get_collider().get_node("../../..")
 				if Tile in vision_range:
+					vision_range.erase(Tile)
 					var type: String = Ray.get_collider().get_node("../..").type
 					if Tile.info[type].multi_tile.size() > 0:
 						if Tile.solid_status == 1:
-							for _Tile in Tiles.positions_to_tiles(Tile.info[type].multi_tile.map(func(x: Array): return Vector4(x[0], x[1], x[2], x[3]))):
-								if _Tile != null: collisions.append(_Tile)
-								
+							for _Tile in Tile.info[type].multi_tile:
+								collisions.append(_Tile)
 					else: collisions.append(Tile)
 					
 	return collisions
@@ -117,3 +127,30 @@ func is_unit_in_unit_vision(VisionUnit: UnitGD, ObservedUnit: UnitGD, include_se
 		return ObservedUnit in VisionUnit.units_in_vision
 
 	return false
+
+var vision_mode: int = 0 # 0 = default, 1 = unit_vision, 2 
+func on_vision_mode_set(x: int) -> void:
+	ActiveUnitVision = null
+	vision_mode = x
+	on_recalculate_vision()
+
+var ActiveUnitVision: UnitGD
+func on_tile_hovered(Tile: TileGD) -> void:
+	if vision_mode == 1 and ActiveUnitVision == null:
+		var Unit: UnitGD = Units.unit_by_tile(Tile)
+		if Unit != null:
+			ActiveUnitVision = Unit
+			on_recalculate_vision()
+		
+func on_tile_unhovered(__: TileGD) -> void:
+	if vision_mode == 1 and ActiveUnitVision != null:
+		var keep_unit: UnitGD = ActiveUnitVision
+		ActiveUnitVision = null
+		await get_tree().create_timer(0.02).timeout
+		
+		if Tiles.active_tile != null and !("MovementRange" in Tiles.active_tile.tile_state):
+			on_recalculate_vision()
+		else: ActiveUnitVision = keep_unit
+
+func on_player_end_turn_phase_start() -> void:
+	on_vision_mode_set(0)

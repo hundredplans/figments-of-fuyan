@@ -7,11 +7,12 @@ var Unit: UnitGD
 @export var NUMBER_SHAKE_SPEED: int = 12
 @onready var FloatingStats: Node3D = %FloatingStats
 @onready var Numbers: Node3D = %Numbers
+@onready var Effects: Node3D = %Effects
 
 var unit_set: bool = false
 func _process(delta: float) -> void:
 	if visible and unit_set:
-		for child in Numbers.get_children() + FloatingStats.get_children():
+		for child in Numbers.get_children() + FloatingStats.get_children() + Effects.get_children():
 			child.rotation_degrees.z += NUMBER_SHAKE_SPEED * delta
 			
 		var child_zero: Node3D = Numbers.get_child(0)
@@ -86,3 +87,5 @@ func on_set_number_materials(stat_type: String, state: bool) -> void:
 		for grandchild in child.get_children():
 			grandchild.set_surface_override_material(0, \
 			Unit.Units.unit_field_status_materials[stat_type_mod_types[stat_type]][int(state)])
+
+	Effects.get_node("TurnUsed").no_depth_test = state
