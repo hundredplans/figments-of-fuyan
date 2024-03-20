@@ -61,6 +61,8 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	UnitFieldStatus.SpectateCamera = Units.SpectateCamera
 	UnitFieldStatus.unit_set = true
 	UnitFieldStatus.position.y = height.top + 0.05
+	UnitFieldStatus.on_set_unit()
+	
 	position = tile.position
 	position.y += 0.3
 	occupy_tile(tile)
@@ -144,7 +146,7 @@ func on_spectated_in_player_phase(state: bool) -> void:
 	else: Units.Tiles.on_remove_tile_material(Tile, "SpectatingUnit")
 
 func on_set_turn_status() -> void:
-	UnitStatus.get_node("Effects/TurnUsed").visible = turn_status == 2
+	UnitStatus.SlotOne.visible = turn_status == 2
+	UnitFieldStatus.SlotOne.visible = turn_status == 2
 	if turn_status == 0: UnitStatus.on_set_status_box_modulate("TurnActive")
 	
-	UnitFieldStatus.get_node("Effects/TurnUsed").visible = turn_status == 2

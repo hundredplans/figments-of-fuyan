@@ -110,7 +110,10 @@ func on_occupied_tile_inspected(Tile: TileGD) -> void:
 	if Unit.team == 0:
 		match LevelMap.game_phase:
 			"PlayerPhase":
-				on_unit_selected(Unit)
+				if Unit == SpectateCamera.SpectateUnit:
+					on_unit_selected(Unit)
+				elif UnitSelected == null:
+					SpectateCamera.on_spectate("Unit", Units.on_unit_team_index(Unit))
 	else:
 		pass
 

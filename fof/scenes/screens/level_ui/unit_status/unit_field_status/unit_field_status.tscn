@@ -45,7 +45,8 @@ script = ExtResource("5_upefk")
 [node name="Effects" type="Node3D" parent="."]
 unique_name_in_owner = true
 
-[node name="TurnUsed" type="Sprite3D" parent="Effects"]
+[node name="SlotOne" type="Sprite3D" parent="Effects"]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.518543, 0.403773, 0)
 visible = false
 flip_h = true

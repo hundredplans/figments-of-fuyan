@@ -366,7 +366,8 @@ range_item_cull_mask = 32
 texture = ExtResource("12_emc3m")
 texture_scale = 1.5
 
-[node name="TurnUsed" type="Sprite2D" parent="Effects"]
+[node name="SlotOne" type="Sprite2D" parent="Effects"]
+unique_name_in_owner = true
 visible = false
 texture_filter = 1
 material = ExtResource("7_mq0yb")

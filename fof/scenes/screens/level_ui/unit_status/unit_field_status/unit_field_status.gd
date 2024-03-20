@@ -88,4 +88,10 @@ func on_set_number_materials(stat_type: String, state: bool) -> void:
 			grandchild.set_surface_override_material(0, \
 			Unit.Units.unit_field_status_materials[stat_type_mod_types[stat_type]][int(state)])
 
-	Effects.get_node("TurnUsed").no_depth_test = state
+	SlotOne.no_depth_test = state
+
+@onready var SlotOne: Sprite3D = %SlotOne
+func on_set_unit() -> void:
+	var path: String = "res://scenes/screens/level_ui/unit_status/unit_status_pieces/zzz.png" if\
+	Unit.team == 0 else "res://scenes/screens/level_ui/unit_status/unit_status_pieces/in_range.png"
+	SlotOne.texture = load(path)

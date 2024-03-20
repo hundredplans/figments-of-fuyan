@@ -128,16 +128,20 @@ func is_unit_in_unit_vision(VisionUnit: UnitGD, ObservedUnit: UnitGD, include_se
 
 	return false
 
-var vision_mode: int = 0 # 0 = default, 1 = unit_vision, 2 
+var vision_mode: int = 0 # 0 = default, 1 = unit_vision, 2 = spawn_vision
 func on_vision_mode_set(x: int) -> void:
-	ActiveUnitVision = null
-	vision_mode = x
-	on_recalculate_vision()
+	if x != vision_mode:
+		ActiveUnitVision = null
+		vision_mode = x
+		on_recalculate_vision()
 
 var ActiveUnitVision: UnitGD
 func on_tile_hovered(Tile: TileGD) -> void:
 	if vision_mode == 1 and ActiveUnitVision == null:
 		var Unit: UnitGD = Units.unit_by_tile(Tile)
+		if Unit == null and Tile in Tiles.path_hovered_info.tiles:
+			Unit = Units.PlayerManager.UnitSelected
+		
 		if Unit != null:
 			ActiveUnitVision = Unit
 			on_recalculate_vision()
@@ -146,9 +150,10 @@ func on_tile_unhovered(__: TileGD) -> void:
 	if vision_mode == 1 and ActiveUnitVision != null:
 		var keep_unit: UnitGD = ActiveUnitVision
 		ActiveUnitVision = null
+		
 		await get_tree().create_timer(0.02).timeout
 		
-		if Tiles.active_tile != null and !("MovementRange" in Tiles.active_tile.tile_state):
+		if Tiles.active_tile == null or !("MovementRange" in Tiles.active_tile.tile_state):
 			on_recalculate_vision()
 		else: ActiveUnitVision = keep_unit
 

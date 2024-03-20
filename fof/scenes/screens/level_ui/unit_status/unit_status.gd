@@ -17,6 +17,7 @@ var Unit: UnitGD
 @onready var SpeedSprite: Sprite2D = %SpeedSprite
 
 @onready var SelectedMask: TextureButton = %SelectedMask 
+@onready var SlotOne: Sprite2D = %SlotOne
 
 var card_selected_material: Material = preload("res://assets/base_game/cards/card_ui/card_selected_material.tres")
 func _ready() -> void:
@@ -32,6 +33,10 @@ func on_set_unit(_Unit: UnitGD) -> void:
 	ShiftingBackground.material = preload("res://scenes/screens/level_ui/unit_status/unit_status_pieces/shifting_background.tres").duplicate()
 	ShiftingBackground.material.set_shader_parameter("modulate", modulates["TurnUnused"] if Unit.team == 0 else Color("c11e00")) 
 	if Unit.team == 1: ShiftingBackground.material.set_shader_parameter("speed", 0.02)
+	
+	var path: String = "res://scenes/screens/level_ui/unit_status/unit_status_pieces/zzz.png" if\
+	Unit.team == 0 else "res://scenes/screens/level_ui/unit_status/unit_status_pieces/in_range.png"
+	SlotOne.texture = load(path)
 	
 	for stat in ["speed", "attack", "health"]: on_reset_stats(stat)
 	on_set_status_box_modulate("TurnUsed")

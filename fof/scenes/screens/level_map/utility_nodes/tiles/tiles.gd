@@ -375,7 +375,7 @@ func on_tile_unhovered(Tile: TileGD) -> void:
 			on_remove_tile_material(_Tile, "PathHovered")
 	Vision.on_tile_unhovered(Tile)
 
-var path_hovered_info: Dictionary
+var path_hovered_info: Dictionary = {"tiles": [], "size": 0}
 func on_path_hovered_tile_selected(Tile: TileGD) -> void:
 	Units.PlayerManager.on_select_active_unit(Units.PlayerManager.UnitSelected)
 	for i in range(path_hovered_info.tiles.size()):
@@ -458,9 +458,16 @@ func on_set_tile_highest_material(Tile: TileGD, removed_material: String = "") -
 	if highest_tile_material == null: mat = null
 	else: mat = highest_tile_material.material
 	
-	if (mat != null and highest_tile_material.material_name == "Greyscale")\
-	or removed_material == "Greyscale":
-		for i in Helper.BTAB_TO_TYPE[-1]: Tile[i].set_material(mat)
+	if removed_material == "Greyscale":
+		Tile.tile.set_material(mat)
+		for i in Helper.BTAB_TO_TYPE[-1]: 
+			if i != "tile":
+				Tile[i].set_material(null)
+				
+	if (mat != null and highest_tile_material.material_name == "Greyscale"):
+		for i in Helper.BTAB_TO_TYPE[-1]: 
+			Tile[i].set_material(mat)
+		
 	else: Tile.tile.set_material(mat)
 	Tile.on_update_materials(Units.PlayerManager.UnitSelected)
 

@@ -84,6 +84,7 @@ func on_player_phase_start() -> void:
 	for Unit in on_units():
 		Unit.stats("speed", Unit.max_speed, "StartPlayerPhase", true)
 		Unit.attack_amount = 1
+		Unit.turn_status = 0
 
 func on_player_end_turn_phase_start() -> void:
 	PlayerManager.on_player_end_turn_phase_start()
@@ -119,6 +120,7 @@ func move_to_tile(Unit: UnitGD, Tile: TileGD, type: Variant) -> void:
 func _process(_delta: float) -> void:
 	if active_event.is_empty():
 		if !event_queue.is_empty():
+			Vision.on_vision_mode_set(0)
 			active_event = event_queue.pop_front()
 			match active_event[0]:
 				"MoveUnit": 
