@@ -150,3 +150,8 @@ func on_set_turn_status() -> void:
 	UnitFieldStatus.SlotOne.visible = turn_status == 2
 	if turn_status == 0: UnitStatus.on_set_status_box_modulate("TurnActive")
 	
+func on_enemy_in_range(state: bool) -> void:
+	UnitStatus.SlotOne.visible = state
+	UnitFieldStatus.SlotOne.visible = state
+	if state:
+		Units.Tiles.on_set_tile_material(Tile, "EnemyInRange")

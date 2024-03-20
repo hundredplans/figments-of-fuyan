@@ -14,6 +14,7 @@ var SpectateCamera: Node3D
 @onready var HandBox := $HandBoxPanel/HandBox
 @onready var ChangePhase: Control = %ChangePhase
 @onready var StatusBox: Control = %StatusBox
+@onready var CameraArrows: Control = %CameraArrows
 
 var _LevelMap: PackedScene = preload("res://scenes/screens/level_map/level_map.tscn")
 var LevelMap: Node3D
@@ -42,6 +43,7 @@ func _ready() -> void:
 	ChangePhase.visible = false
 	PassUnitTurn.visible = false
 	VisionMode.visible = false
+	CameraArrows.visible = false
 	LevelMap.SpectateCamera.mouse_in_ui.connect(on_camera_panning)
 	
 	on_pin_hand_box_panel(0)
@@ -92,6 +94,7 @@ func on_player_end_turn_phase_start() -> void:
 	ChangePhase.visible = false
 	PassUnitTurn.visible = false
 	VisionMode.visible = false
+	CameraArrows.visible = false
 	on_pass_unit_turn_button_state(false)
 
 func on_hand_phase_start(skip_hand_phase: bool) -> void:
@@ -188,6 +191,7 @@ func on_lock_inputs_changed(x: bool) -> void:
 		ChangePhase.visible = !x
 		PassUnitTurn.visible = !x
 		VisionMode.visible = !x
+		CameraArrows.visible = !x
 
 var absolute_mouse_in_ui: bool
 var is_mouse_in_ui: bool = false

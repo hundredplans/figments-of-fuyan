@@ -129,6 +129,9 @@ func on_unit_selected(Unit: UnitGD) -> void:
 func _on_unit_deselected(Unit: UnitGD, absolute: bool = false) -> void:
 	Tiles.on_remove_tile_material(Unit.Tile)
 	for Tile in Tiles.movement_paths.tiles:
+		if "EnemyInRange" in Tile.tile_state:
+			(Units.unit_by_tile(Tile)).on_enemy_in_range(false)
+			
 		Tiles.on_remove_tile_material(Tile)
 	Tiles.movement_paths = {"tiles": []}
 	if Unit == UnitSelected: UnitSelected = null
@@ -140,11 +143,14 @@ func _on_unit_deselected(Unit: UnitGD, absolute: bool = false) -> void:
 func _on_unit_selected(Unit: UnitGD) -> void:
 	if Unit.turn_status == 0:
 		Tiles.on_create_movement_paths(Unit)
-		var enemy_tiles: Array = Units.on_units(1).map(func(x: UnitGD): return x.Tile)
+		var enemy_units: Array = Units.on_units(1)
 		for Tile in Tiles.movement_paths.tiles:
-			if Unit.attack_amount > 0 and Tile in enemy_tiles:
-				Tiles.on_set_tile_material(Tile, "EnemyInRange")
-			else: Tiles.on_set_tile_material(Tile, "MovementRange")
+			if Unit.attack_amount > 0:
+				for _Unit in enemy_units:
+					if _Unit.Tile == Tile:
+						_Unit.on_enemy_in_range(true)
+						continue
+			Tiles.on_set_tile_material(Tile, "MovementRange")
 			
 		UnitSelected = Unit
 		LevelUI.get_node("SkipReminder").visible = ActiveUnit != null and ActiveUnit != Unit
@@ -166,6 +172,5 @@ func on_remove_unit_turn(Unit: UnitGD) -> void:
 	if Unit.team == 0:
 		if ActiveUnit == Unit:
 			on_pass_unit_turn()
-			# ? was remove turnused
 			passed_turns.erase(Unit)
 		else: unpassed_turns.erase(Unit); passed_turns.erase(Unit)
