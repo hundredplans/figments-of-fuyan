@@ -75,7 +75,7 @@ func onUnitsHeightAdjacentTiles(units: Array) -> Array:
 		found_tiles += found_tiles[i].top_of_cliff_wall
 	return found_tiles
 	
-const RAY_COUNT: int = 75
+const RAY_COUNT: int = 100
 func onCircleRay(Ray: RayCast3D, vision_range: Array) -> Array:
 	var collisions: Array = []
 	for i in range(RAY_COUNT):
