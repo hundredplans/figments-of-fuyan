@@ -1980,8 +1980,10 @@ func _on_bake_level_pressed():
 			print(str(i) + "/" + str(s))
 		
 		tiles = tiles.filter(func(x: TileGD): return x != null)
-		var positions: Array = tiles.map(func(x: TileGD): return x.info.position)
-		for Tile in tiles: on_set_tile_vision_and_block_status(Tile, tiles, positions)
+		var positions: Array = tiles.map(func(x: TileGD): return x.onTTpos())
+		for Tile in tiles:
+			print(Tile.tile)
+			on_set_tile_solid_status(Tile, tiles, positions)
 		
 		await get_tree().create_timer(0.02).timeout # absolutely necessary
 		LoadedLevel.script = light_tester_gd
@@ -1994,6 +1996,13 @@ func _on_bake_level_pressed():
 var _LevelTile: PackedScene = preload("res://scenes/screens/level_map/utility_nodes/tiles/level_tile.tscn")
 var item_properties: Array
 
+var TILE_OBJECT_NAME_TO_FULL_NAME: Dictionary = {
+	"tile": "tiles",
+	"wdeco": "decorations/walls",
+	"tdeco": "decorations/tiles",
+	"obj": "objects",
+	"wall": "walls",
+}
 var TILE_OBJECT_NAMES: Array = ["tile", "wall", "obj", "tdeco", "wdeco"]
 func on_create_tile(tile_info: Dictionary, owner_node: Node3D, area: int) -> TileGD:
 	if TILE_OBJECT_NAMES.any(func(x: String): return tile_info[x].id > 0):
@@ -2004,39 +2013,53 @@ func on_create_tile(tile_info: Dictionary, owner_node: Node3D, area: int) -> Til
 		owner_node.set_editable_instance(LevelTile, true)
 		LevelTile.owner = owner_node
 		
-		tile_info.position = Vector4(tile_info.position[0], tile_info.position[1], tile_info.position[2], tile_info.position[3])
+		var temp_vec: Vector4 = Vector4(tile_info.position[0], tile_info.position[1], tile_info.position[2], tile_info.position[3])
 		LevelTile.position = Vector3(
-		(sqrt(3) * tile_info.position.x + sqrt(3) * tile_info.position.y * 0.5),
-		tile_info.position.w * 1.2,
-		tile_info.position.y * 3 / 2)
+		(sqrt(3) * temp_vec.x + sqrt(3) * temp_vec.y * 0.5),
+		temp_vec.w * 1.2,
+		temp_vec.y * 3 / 2)
 		
-		LevelTile.area = area
-		LevelTile.info = tile_info
-		
+		for child in LevelTile.ModelManager.get_children(): child.queue_free()
 		for obj_name in TILE_OBJECT_NAMES:
-			LevelTile.on_load_info(obj_name)
+			LevelTile[obj_name] = tile_info[obj_name]
+			LevelTile.w = tile_info.position[3]
+			LevelTile.tpos = Vector3(tile_info.position[0], tile_info.position[1], tile_info.position[2])
+			
+			var tile_object_name: String = "null"
+			match obj_name:
+				"tile": tile_object_name = Helper.tid_to(tile_info[obj_name].id, area, tile_info[obj_name].type)
+				"wall": tile_object_name = Helper.wid_to(tile_info[obj_name].id, area, tile_info[obj_name].type)
+				_: tile_object_name = Helper.editor_id_to(Helper.TYPE_TO_BTAB[obj_name], tile_info[obj_name].id, tile_info[obj_name].type)
+				
+			if tile_object_name != "null":
+				if obj_name != "wall":
+					var object_scene: Node3D = load("res://assets/models/" + TILE_OBJECT_NAME_TO_FULL_NAME[obj_name] + \
+					"/" + tile_object_name + ".tscn").instantiate()
+					object_scene.position.y = 0.0 if obj_name == "tile" else 0.3
+					object_scene.rotation_degrees.y = tile_info[obj_name].rotation * 60
+					LevelTile.ModelManager.add_child(object_scene)
+				else:
+					LevelTile[obj_name].model = []
+					var object_scene: Resource = load("res://assets/models/walls/" + tile_object_name + ".tscn")
+					for n in range(4 - tile_info.wall.tile_wall):
+						var object_instance: Node3D = object_scene.instantiate()
+						LevelTile.ModelManager.add_child(object_instance)
+						object_instance.position.y = (n * 0.3) + 0.3
 		
-		LevelTile.on_load_info("Tile")
-		LevelTile.on_load_info("Wall")
-		LevelTile.on_load_info("TDeco")
-		LevelTile.on_load_info("WDeco")
-		LevelTile.on_load_info("Obj")
-		
-		for type in Helper.BTAB_TO_TYPE[-1]:
-			for grandchild in LevelTile.get(type).get_children():
-				grandchild.owner = owner_node
+		for grandchild in LevelTile.ModelManager.get_children().filter(func(x: Node3D): return x.is_inside_tree() and !x.is_queued_for_deletion()):
+			grandchild.owner = owner_node
 		return LevelTile
 	return null
 
-func on_set_tile_vision_and_block_status(Tile: TileGD, tiles: Array, positions: Array) -> void:
+func on_set_tile_solid_status(Tile: TileGD, tiles: Array, positions: Array) -> void:
 	var btab: int = 0
 	for tile_object in Helper.BTAB_TO_TYPE[-1]:
 		if tile_object != "tile":
-			if Tile.info[tile_object].id > 0:
+			if Tile[tile_object].id > 0:
 				for info in item_properties:
-					if info.id[0] == btab and info.id[1] == Tile.info[tile_object].id:
-						var abs_positions: Array = positions.map(func(x: Vector4): return Vector3(Tile.info.position.x - x.x,\
-						Tile.info.position.y - x.y, Tile.info.position.w - x.w))
+					if info.id[0] == btab and info.id[1] == Tile[tile_object].id:
+						var abs_positions: Array = positions.map(func(x: Vector4): return Vector3(Tile.tpos.x - x.x,\
+						Tile.tpos.y - x.y, Tile.w - x.w))
 						for key in info:
 							if key.contains("|"):
 								var pos: Vector3 = Vector3(int(key.get_slice("|", 0)), int(key.get_slice("|", 1)), int(key.get_slice("|", 2)))
@@ -2044,9 +2067,6 @@ func on_set_tile_vision_and_block_status(Tile: TileGD, tiles: Array, positions: 
 									if abs_positions[i] == pos:
 										if tiles[i].solid_status < 1 and info[key].solidity > 0:
 											tiles[i].solid_status = 1
-										
-										if tiles[i].vision_status < info[key].visibility:
-											tiles[i].vision_status = info[key].visibility
 		btab += 1
 	
 func on_load_item_properties() -> void:

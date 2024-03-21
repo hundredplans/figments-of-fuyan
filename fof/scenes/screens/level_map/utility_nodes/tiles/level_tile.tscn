@@ -1,37 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://ce3k6kxjup2ks"]
+[gd_scene load_steps=3 format=3 uid="uid://baddps2x3fgau"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/tiles/level_tile.gd" id="1_7jf70"]
-[ext_resource type="Script" path="res://scenes/screens/level_map/tile_objects/tile.gd" id="2_s16xh"]
-[ext_resource type="Script" path="res://scenes/screens/level_map/tile_objects/wall.gd" id="3_oylyl"]
-[ext_resource type="Script" path="res://scenes/screens/level_map/tile_objects/object.gd" id="4_6nyd3"]
-[ext_resource type="Script" path="res://scenes/screens/level_map/tile_objects/wdecoration.gd" id="5_cmfry"]
-[ext_resource type="Script" path="res://scenes/screens/level_map/tile_objects/tdecoration.gd" id="6_1c460"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/tiles/effects.gd" id="2_jsybs"]
 
-[node name="LevelTile" type="Node3D" node_paths=PackedStringArray("tile", "wall", "obj", "tdeco", "wdeco")]
+[node name="LevelTile" type="Node3D"]
 script = ExtResource("1_7jf70")
-tile = NodePath("Tile")
-wall = NodePath("Wall")
-obj = NodePath("Object")
-tdeco = NodePath("TileDecoration")
-wdeco = NodePath("WallDecoration")
 
-[node name="Tile" type="Node3D" parent="."]
-script = ExtResource("2_s16xh")
-
-[node name="Wall" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
-script = ExtResource("3_oylyl")
-
-[node name="Object" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
-script = ExtResource("4_6nyd3")
-
-[node name="TileDecoration" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
-script = ExtResource("6_1c460")
-
-[node name="WallDecoration" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
-script = ExtResource("5_cmfry")
+[node name="ModelManager" type="Node3D" parent="."]
+unique_name_in_owner = true
 
 [node name="Effects" type="Node3D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2_jsybs")

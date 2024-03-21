@@ -1,21 +1,40 @@
 extends Node
 
+var FOLDER_NAME_TO_TYPE: Dictionary = {
+	"objects": "obj",
+	"tiles": "tile",
+	"walls": "wall",
+}
 func _ready() -> void:
 	var file_paths: Array = []
 	on_find_files(file_paths, "res://assets/models")
 	for file in file_paths:
 		var glb: Node3D = load(file).instantiate()
 		add_child(glb)
-		var folder_name: String = file.get_slice("/", 4)
-		for child in glb.get_children():
-			child.create_trimesh_collision()
-			
-			var static_body: StaticBody3D = child.get_child(0)
-			static_body.collision_layer = 8 if folder_name != "tiles" else 10
-			static_body.collision_mask = 0
-			static_body.reparent(glb)
-			static_body.owner = glb
-			static_body.get_child(0).owner = glb
+		var folder_array: Array = file.split("/")
+		var folder_name: String = ""
+		for i in range(folder_array.size()):
+			if i >= 4:
+				folder_name += folder_array[i]
+				if i != folder_array.size() - 1:
+					folder_name += "/"
+					
+		var mesh: MeshInstance3D = glb.get_child(0)
+		glb.script = preload("res://assets/models/model_type.gd")
+		glb.mesh = mesh
+		glb.type = FOLDER_NAME_TO_TYPE[folder_name.get_slice("/", 0)] if !folder_name.begins_with("decorations")\
+		else ("tdeco" if folder_name.begins_with("decorations/tiles") else "wdeco")
+		
+		mesh.create_trimesh_collision()
+		
+		var body: StaticBody3D = mesh.get_child(0)
+		glb.body = body
+		
+		body.collision_layer = 8 if folder_name.begins_with("tiles") else 10
+		body.collision_mask = 0
+		body.reparent(glb)
+		body.owner = glb
+		body.get_child(0).owner = glb
 			
 		await get_tree().create_timer(0.001).timeout
 		print(glb.name)

@@ -63,16 +63,16 @@ func _all_in_range(pos: Vector4, distance: int = 2, include_central: bool = fals
 func tiles_unique(tiles: Array, otiles: Array) -> Array:
 	return tiles.filter(is_tile_not_in_tiles.bind(otiles))
 
-func is_tile_not_in_tiles(tile: Node3D, tiles: Array) -> bool: return tile not in tiles
-func is_tile_in_tiles(tile: Node3D, tiles: Array) -> bool: return tile in tiles
+func is_tile_not_in_tiles(Tile: TileGD, tiles: Array) -> bool: return Tile not in tiles
+func is_tile_in_tiles(Tile: TileGD, tiles: Array) -> bool: return Tile in tiles
 
 func get_children_positions() -> Array: return get_children().map(tile_to_position)
-func tile_to_position(tile: Node3D) -> Vector4: return tile.info.position
+func tile_to_position(Tile: TileGD) -> Vector4: return Tile.onTTpos()
 func tiles_to_positions(tiles: Array) -> Array: return tiles.map(tile_to_position)
 
 func positions_to_tiles(tiles: Array) -> Array: return tiles.map(position_to_tile)
 
-func nonexistent_positions_above(tile: Node3D) -> Array: #TASK: Optimise this
+func nonexistent_positions_above(tile: TileGD) -> Array: #TASK: Optimise this
 	var pos: Vector4 = tile_to_position(tile)
 	var positions: Array = range(1, MAX_HEIGHT).map(func(x: int): return Vector4(pos.x, pos.y, pos.z, pos.w + x))
 	var return_positions: Array = []
@@ -93,11 +93,11 @@ func position_to_tile(pos: Vector4) -> Node3D:
 func on_is_type_get_tiles(is_type: String, type: String) -> Array:
 	return get_children().filter(on_match_type.bind(is_type, type))
 	
-func on_match_type(tile: Node3D, is_type: String, type: String) -> bool:
-	return tile.info[type].id == IS_TYPE[is_type]
+func on_match_type(Tile: TileGD, is_type: String, type: String) -> bool:
+	return Tile[type].id == IS_TYPE[is_type]
 	
-func on_find_tile_primary_type(tile: Node3D) -> String:
-	match tile.info.obj.id:
+func on_find_tile_primary_type(Tile: TileGD) -> String:
+	match Tile.obj.id:
 		2: return "Spawn"
 	return "Regular"
 	
@@ -203,20 +203,31 @@ func on_tiles_by_adjacent(tiles: Array = get_children(), astar: AStar3D = null) 
 func on_start_phase_start() -> void:
 	onConvertMultiTilePositions()
 	onCreateTopOfCliffWall()
+	onSetupTiles()
 	
 func onCreateTopOfCliffWall() -> void:
 	for Tile in get_children():
-		if Tile.info.tile.id > 0:
-			for w in range(Tile.info.position.w - 1, -1, -1):
-				var pos: Vector4 = Tile.info.position
-				var _Tile: TileGD = position_to_tile(Vector4(pos.x, pos.y, pos.z, w))
-				if _Tile != null and _Tile.info.wall.id > 0: Tile.top_of_cliff_wall.append(_Tile)
+		if Tile.tile.id > 0:
+			for w in range(Tile.w - 1, -1, -1):
+				var _Tile: TileGD = position_to_tile(Vector4(Tile.tpos.x, Tile.tpos.y, Tile.tpos.z, w))
+				if _Tile != null and _Tile.wall.id > 0: Tile.top_of_cliff_wall.append(_Tile)
 				else: break
+	
+func onSetupTiles() -> void:
+	for Tile in get_children():
+		Tile.Tiles = self
+		for type in Helper.BTAB_TO_TYPE[-1]:
+			@warning_ignore("incompatible_ternary")
+			Tile[type].model = null if type != "wall" else []
+			
+		for model in Tile.ModelManager.get_children():
+			if model.type != "wall": Tile[model.type].model = model 
+			else: Tile["wall"].model.append(model)
 	
 func onConvertMultiTilePositions() -> void:
 	for Tile in get_children():
 		for type in Helper.BTAB_TO_TYPE[-1]:
-			Tile.info[type].multi_tile = Tile.info[type].multi_tile\
+			Tile[type].multi_tile = Tile[type].multi_tile\
 			.map(func(x: Array): return position_to_tile(Vector4(x[0], x[1], x[2], x[3])))\
 			.filter(func(x: Node3D): return x != null)
 	
@@ -360,7 +371,7 @@ func on_tile_hovered(Tile: TileGD) -> void:
 	if Units.PlayerManager.UnitSelected != null and movement_paths.has(Tile): # create hovered tiles
 		path_hovered_info = movement_paths[Tile]
 		for i in range(path_hovered_info.tiles.size()):
-			path_hovered_info.tiles[i].hovered_type = path_hovered_info.types[i]
+			path_hovered_info.tiles[i].Effects.hovered_type = path_hovered_info.types[i]
 			on_set_tile_material(path_hovered_info.tiles[i], "PathHovered")
 			if path_hovered_info.types[i].x == 1:
 				on_set_tile_material(path_hovered_info.tiles[i], "EnemyInRange")
@@ -459,17 +470,11 @@ func on_set_tile_highest_material(Tile: TileGD, removed_material: String = "") -
 	else: mat = highest_tile_material.material
 	
 	if removed_material == "Greyscale":
-		Tile.tile.set_material(mat)
-		for i in Helper.BTAB_TO_TYPE[-1]: 
-			if i != "tile":
-				Tile[i].set_material(null)
+		Tile.setMaterial(null, -2)
 				
 	if (mat != null and highest_tile_material.material_name == "Greyscale"):
-		for i in Helper.BTAB_TO_TYPE[-1]: 
-			Tile[i].set_material(mat)
-		
-	else: Tile.tile.set_material(mat)
-	Tile.on_update_materials(Units.PlayerManager.UnitSelected)
+		Tile.setMaterial(mat)
+	Tile.Effects.on_manage_height_drop_label(Units.PlayerManager.UnitSelected)
 
 func getTileMaterialFromPriority(priority: int) -> TileMaterial:
 	for tile_material in TILE_MATERIALS.values():

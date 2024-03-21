@@ -72,16 +72,13 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 func occupy_tile(_Tile: TileGD) -> void:
 	var old_tile_state: Array = []
 	if Tile != null: 
-		Tile.solid_status = Tile.original_solid_status
 		old_tile_state = Tile.tile_state.duplicate()
 		Units.Tiles.on_remove_tile_material(Tile, "UnitChangeTile")
 	
 	Tile = _Tile
 	Tile.tile_state = old_tile_state
 	Units.Tiles.on_set_tile_highest_material(Tile, "")
-	
-	Tile.original_solid_status = Tile.solid_status
-	Tile.solid_status = 1
+
 	Vision.on_recalculate_vision()
 
 var Killer: UnitGD

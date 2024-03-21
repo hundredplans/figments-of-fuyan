@@ -51,7 +51,7 @@ func on_load_default_world_state() -> void:
 	on_set_utility_nodes_paths()
 	add_child(LoadedLevel)
 	on_change_game_phase("StartPhase")
-	
+				
 func on_change_game_phase(phase: String) -> void:
 	game_phase = phase
 	match phase:
