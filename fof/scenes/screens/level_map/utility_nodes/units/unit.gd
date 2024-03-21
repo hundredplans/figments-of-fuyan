@@ -129,7 +129,6 @@ func on_arrive(in_vision: bool) -> void:
 	# can do regular arrive effects here
 
 func on_death() -> void:
-	Tile.solid_status = Tile.original_solid_status
 	Units.Tiles.on_remove_tile_material(Tile, "")
 	queue_free()
 

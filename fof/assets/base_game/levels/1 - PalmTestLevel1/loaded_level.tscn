@@ -1,15 +1,12 @@
-[gd_scene load_steps=12 format=3 uid="uid://dw5uupp1pluel"]
+[gd_scene load_steps=9 format=3 uid="uid://dw5uupp1pluel"]
 
 [ext_resource type="Script" path="res://assets/base_game/levels/level/loaded_level_light_tester.gd" id="1_m5ah0"]
 [ext_resource type="PackedScene" uid="uid://baddps2x3fgau" path="res://scenes/screens/level_map/utility_nodes/tiles/level_tile.tscn" id="2_581ub"]
 [ext_resource type="PackedScene" path="res://assets/models/tiles/1tile.tscn" id="5_8o6yc"]
-[ext_resource type="PackedScene" path="res://assets/models/objects/spawns/spawn_ally.tscn" id="9_4q7r5"]
 [ext_resource type="PackedScene" path="res://assets/models/decorations/tiles/shrub.tscn" id="10_yjf63"]
 [ext_resource type="PackedScene" path="res://assets/models/walls/1wall2.tscn" id="11_tmwcc"]
-[ext_resource type="PackedScene" path="res://assets/models/objects/spawns/spawn_trinket.tscn" id="12_1uk7x"]
-[ext_resource type="PackedScene" path="res://assets/models/decorations/tiles/palms/palm_tree.tscn" id="12_24cph"]
+[ext_resource type="PackedScene" uid="uid://bsbpwuta3t023" path="res://assets/models/decorations/tiles/palms/palm_tree.tscn" id="12_24cph"]
 [ext_resource type="PackedScene" path="res://assets/models/tiles/water/shallow_water.tscn" id="13_0k84x"]
-[ext_resource type="PackedScene" path="res://assets/models/objects/spawns/spawn_enemy.tscn" id="14_e0vq2"]
 [ext_resource type="PackedScene" path="res://assets/models/decorations/tiles/rock.tscn" id="14_ugxix"]
 
 [node name="LoadedLevel" type="Node3D"]
@@ -24,7 +21,7 @@ light_energy = 1.246
 
 [node name="Tiles" type="Node3D" parent="."]
 
-[node name="1863427932" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="2159905128" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.66025, 0, 0)
 tile = {
 "id": 1,
@@ -58,13 +55,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(-5, 0, 5)
 
-[node name="1tile" parent="Tiles/1863427932/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/2159905128/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="2952166957" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="349844732" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.79423, 0, 1.5)
 tile = {
 "id": 1,
@@ -98,13 +93,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(-5, 1, 4)
 
-[node name="1tile" parent="Tiles/2952166957/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/349844732/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="2684327965" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="3212819618" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.9282, 0, 3)
 tile = {
 "id": 1,
@@ -138,16 +131,14 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(-5, 2, 3)
 
-[node name="1tile" parent="Tiles/2684327965/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/3212819618/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="shrub" parent="Tiles/2684327965/ModelManager" index="1" instance=ExtResource("10_yjf63")]
+[node name="shrub" parent="Tiles/3212819618/ModelManager" index="1" instance=ExtResource("10_yjf63")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="3475800001" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="2818480237" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.06218, 0, 4.5)
 tile = {
 "id": 1,
@@ -181,16 +172,14 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(-5, 3, 2)
 
-[node name="1tile" parent="Tiles/3475800001/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/2818480237/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="shrub" parent="Tiles/3475800001/ModelManager" index="1" instance=ExtResource("10_yjf63")]
+[node name="shrub" parent="Tiles/2818480237/ModelManager" index="1" instance=ExtResource("10_yjf63")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="1109156415" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="1849831246" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.19615, 0, 6)
 tile = {
 "id": 1,
@@ -224,13 +213,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(-5, 4, 1)
 
-[node name="1tile" parent="Tiles/1109156415/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/1849831246/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="1846759062" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="3157498115" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 0, 7.5)
 tile = {
 "id": 1,
@@ -266,24 +253,23 @@ wall = {
 "type": 2
 }
 solid_status = 1
-w = 0
 tpos = Vector3(-5, 5, 0)
 
-[node name="1tile" parent="Tiles/1846759062/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/3157498115/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="1wall2" parent="Tiles/1846759062/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/3157498115/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1207" parent="Tiles/1846759062/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1207" parent="Tiles/3157498115/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1208" parent="Tiles/1846759062/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1208" parent="Tiles/3157498115/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="@Node3D@1209" parent="Tiles/1846759062/ModelManager" index="4" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1209" parent="Tiles/3157498115/ModelManager" index="4" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 
-[node name="1863086106" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="3025630967" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.79423, 0, -1.5)
 tile = {
 "id": 1,
@@ -317,16 +303,14 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(-4, -1, 5)
 
-[node name="1tile" parent="Tiles/1863086106/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/3025630967/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="shrub" parent="Tiles/1863086106/ModelManager" index="1" instance=ExtResource("10_yjf63")]
+[node name="shrub" parent="Tiles/3025630967/ModelManager" index="1" instance=ExtResource("10_yjf63")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="3076386215" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="4171433216" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.9282, 0, 0)
 tile = {
 "id": 1,
@@ -360,16 +344,14 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(-4, 0, 4)
 
-[node name="1tile" parent="Tiles/3076386215/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/4171433216/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="shrub" parent="Tiles/3076386215/ModelManager" index="1" instance=ExtResource("10_yjf63")]
+[node name="shrub" parent="Tiles/4171433216/ModelManager" index="1" instance=ExtResource("10_yjf63")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="461441035" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="3836590621" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.06218, 0, 1.5)
 tile = {
 "id": 1,
@@ -403,13 +385,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(-4, 1, 3)
 
-[node name="1tile" parent="Tiles/461441035/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/3836590621/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="2515775777" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="2817532822" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.19615, 0, 3)
 tile = {
 "id": 1,
@@ -443,13 +423,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(-4, 2, 2)
 
-[node name="1tile" parent="Tiles/2515775777/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/2817532822/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="885970131" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="485977614" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 0, 4.5)
 tile = {
 "id": 1,
@@ -483,16 +461,14 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(-4, 3, 1)
 
-[node name="1tile" parent="Tiles/885970131/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/485977614/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="shrub" parent="Tiles/885970131/ModelManager" index="1" instance=ExtResource("10_yjf63")]
+[node name="shrub" parent="Tiles/485977614/ModelManager" index="1" instance=ExtResource("10_yjf63")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="2357522294" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="1439073195" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641, 0, 6)
 tile = {
 "id": 1,
@@ -528,24 +504,23 @@ wall = {
 "type": 2
 }
 solid_status = 1
-w = 0
 tpos = Vector3(-4, 4, 0)
 
-[node name="1tile" parent="Tiles/2357522294/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/1439073195/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="1wall2" parent="Tiles/2357522294/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/1439073195/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1210" parent="Tiles/2357522294/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1210" parent="Tiles/1439073195/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1211" parent="Tiles/2357522294/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1211" parent="Tiles/1439073195/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="@Node3D@1212" parent="Tiles/2357522294/ModelManager" index="4" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1212" parent="Tiles/1439073195/ModelManager" index="4" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 
-[node name="613926842" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="549809814" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 0, 7.5)
 tile = {
 "id": 1,
@@ -579,13 +554,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(-4, 5, -1)
 
-[node name="1tile" parent="Tiles/613926842/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/549809814/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="1943592585" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="2674214572" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.9282, 0, -3)
 tile = {
 "id": 1,
@@ -619,16 +592,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(-3, -2, 5)
 
-[node name="1tile" parent="Tiles/1943592585/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/2674214572/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="spawn_ally" parent="Tiles/1943592585/ModelManager" index="1" instance=ExtResource("9_4q7r5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
-
-[node name="194497759" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="3312497345" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.06218, 0, -1.5)
 tile = {
 "id": 1,
@@ -662,16 +630,14 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(-3, -1, 4)
 
-[node name="1tile" parent="Tiles/194497759/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/3312497345/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="shrub" parent="Tiles/194497759/ModelManager" index="1" instance=ExtResource("10_yjf63")]
+[node name="shrub" parent="Tiles/3312497345/ModelManager" index="1" instance=ExtResource("10_yjf63")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="2298543220" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="3085981295" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.19615, 0, 0)
 tile = {
 "id": 1,
@@ -706,15 +672,14 @@ wall = {
 "type": 0
 }
 solid_status = 1
-w = 0
 tpos = Vector3(-3, 0, 3)
 
-[node name="1tile" parent="Tiles/2298543220/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/3085981295/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="palm_tree" parent="Tiles/2298543220/ModelManager" index="1" instance=ExtResource("12_24cph")]
+[node name="palm_tree" parent="Tiles/3085981295/ModelManager" index="1" instance=ExtResource("12_24cph")]
 transform = Transform3D(0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, 0.5, 0, 0.3, 0)
 
-[node name="851315192" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="1861627056" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 0, 1.5)
 tile = {
 "id": 1,
@@ -749,15 +714,14 @@ wall = {
 "type": 0
 }
 solid_status = 1
-w = 0
 tpos = Vector3(-3, 1, 2)
 
-[node name="1tile" parent="Tiles/851315192/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/1861627056/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="palm_tree" parent="Tiles/851315192/ModelManager" index="1" instance=ExtResource("12_24cph")]
+[node name="palm_tree" parent="Tiles/1861627056/ModelManager" index="1" instance=ExtResource("12_24cph")]
 transform = Transform3D(0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, 0.5, 0, 0.3, 0)
 
-[node name="4013322068" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="2862692541" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641, 0, 3)
 tile = {
 "id": 1,
@@ -791,13 +755,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(-3, 2, 1)
 
-[node name="1tile" parent="Tiles/4013322068/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/2862692541/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="2120825650" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="1887785818" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 0, 4.5)
 tile = {
 "id": 1,
@@ -831,13 +793,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(-3, 3, 0)
 
-[node name="1tile" parent="Tiles/2120825650/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/1887785818/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="1076501758" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="307037557" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.73205, 0, 6)
 tile = {
 "id": 1,
@@ -871,13 +831,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(-3, 4, -1)
 
-[node name="1tile" parent="Tiles/1076501758/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/307037557/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="2691810873" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="810486783" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 0, 7.5)
 tile = {
 "id": 1,
@@ -911,13 +869,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(-3, 5, -2)
 
-[node name="1tile" parent="Tiles/2691810873/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/810486783/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="101515755" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="2390726240" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.06218, 0, -4.5)
 tile = {
 "id": 1,
@@ -951,16 +907,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(-2, -3, 5)
 
-[node name="1tile" parent="Tiles/101515755/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/2390726240/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="spawn_ally" parent="Tiles/101515755/ModelManager" index="1" instance=ExtResource("9_4q7r5")]
-transform = Transform3D(0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, 0, 0.3, 0)
-
-[node name="2157135349" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="3100622661" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.19615, 0, -3)
 tile = {
 "id": 1,
@@ -994,16 +945,14 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(-2, -2, 4)
 
-[node name="1tile" parent="Tiles/2157135349/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/3100622661/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="shrub" parent="Tiles/2157135349/ModelManager" index="1" instance=ExtResource("10_yjf63")]
+[node name="shrub" parent="Tiles/3100622661/ModelManager" index="1" instance=ExtResource("10_yjf63")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="2044269530" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="4269783529" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 0, -1.5)
 tile = {
 "id": 3,
@@ -1037,13 +986,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(-2, -1, 3)
 
-[node name="shallow_water" parent="Tiles/2044269530/ModelManager" index="0" instance=ExtResource("13_0k84x")]
+[node name="shallow_water" parent="Tiles/4269783529/ModelManager" index="0" instance=ExtResource("13_0k84x")]
 
-[node name="2489682462" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="447253244" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641, 0, 0)
 tile = {
 "id": 3,
@@ -1077,13 +1024,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(-2, 0, 2)
 
-[node name="shallow_water" parent="Tiles/2489682462/ModelManager" index="0" instance=ExtResource("13_0k84x")]
+[node name="shallow_water" parent="Tiles/447253244/ModelManager" index="0" instance=ExtResource("13_0k84x")]
 
-[node name="2737601883" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="1948685789" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 0, 1.5)
 tile = {
 "id": 1,
@@ -1117,13 +1062,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(-2, 1, 1)
 
-[node name="1tile" parent="Tiles/2737601883/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/1948685789/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="1722564971" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="1523874745" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.73205, 0, 3)
 tile = {
 "id": 1,
@@ -1157,16 +1100,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(-2, 2, 0)
 
-[node name="1tile" parent="Tiles/1722564971/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/1523874745/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="spawn_trinket" parent="Tiles/1722564971/ModelManager" index="1" instance=ExtResource("12_1uk7x")]
-transform = Transform3D(0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, 0.5, 0, 0.3, 0)
-
-[node name="166569723" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="615544965" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 0, 4.5)
 tile = {
 "id": 1,
@@ -1200,13 +1138,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(-2, 3, -1)
 
-[node name="1tile" parent="Tiles/166569723/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/615544965/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="1444521192" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="3440673806" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
 tile = {
 "id": 1,
@@ -1241,12 +1177,11 @@ wall = {
 "type": 0
 }
 solid_status = 1
-w = 0
 tpos = Vector3(-2, 4, -2)
 
-[node name="1tile" parent="Tiles/1444521192/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/3440673806/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="2339438715" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="985462966" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 0, 7.5)
 tile = {
 "id": 1,
@@ -1281,12 +1216,11 @@ wall = {
 "type": 0
 }
 solid_status = 1
-w = 0
 tpos = Vector3(-2, 5, -3)
 
-[node name="1tile" parent="Tiles/2339438715/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/985462966/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="84077568" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="91639303" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.19615, 0, -6)
 tile = {
 "id": 1,
@@ -1320,16 +1254,14 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(-1, -4, 5)
 
-[node name="1tile" parent="Tiles/84077568/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/91639303/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="shrub" parent="Tiles/84077568/ModelManager" index="1" instance=ExtResource("10_yjf63")]
+[node name="shrub" parent="Tiles/91639303/ModelManager" index="1" instance=ExtResource("10_yjf63")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="1527936458" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="2103743363" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 0, -4.5)
 tile = {
 "id": 1,
@@ -1363,16 +1295,14 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(-1, -3, 4)
 
-[node name="1tile" parent="Tiles/1527936458/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/2103743363/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="shrub" parent="Tiles/1527936458/ModelManager" index="1" instance=ExtResource("10_yjf63")]
+[node name="shrub" parent="Tiles/2103743363/ModelManager" index="1" instance=ExtResource("10_yjf63")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="3799265488" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="3584856898" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641, 0, -3)
 tile = {
 "id": 3,
@@ -1406,13 +1336,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(-1, -2, 3)
 
-[node name="shallow_water" parent="Tiles/3799265488/ModelManager" index="0" instance=ExtResource("13_0k84x")]
+[node name="shallow_water" parent="Tiles/3584856898/ModelManager" index="0" instance=ExtResource("13_0k84x")]
 
-[node name="2450711646" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="971927429" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 0, -1.5)
 tile = {
 "id": 3,
@@ -1446,13 +1374,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(-1, -1, 2)
 
-[node name="shallow_water" parent="Tiles/2450711646/ModelManager" index="0" instance=ExtResource("13_0k84x")]
+[node name="shallow_water" parent="Tiles/971927429/ModelManager" index="0" instance=ExtResource("13_0k84x")]
 
-[node name="140190081" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="2780510057" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.73205, 0, 0)
 tile = {
 "id": 1,
@@ -1488,24 +1414,23 @@ wall = {
 "type": 2
 }
 solid_status = 1
-w = 0
 tpos = Vector3(-1, 0, 1)
 
-[node name="1tile" parent="Tiles/140190081/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/2780510057/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="1wall2" parent="Tiles/140190081/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/2780510057/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1213" parent="Tiles/140190081/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1213" parent="Tiles/2780510057/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1214" parent="Tiles/140190081/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1214" parent="Tiles/2780510057/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="@Node3D@1215" parent="Tiles/140190081/ModelManager" index="4" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1215" parent="Tiles/2780510057/ModelManager" index="4" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 
-[node name="2131227406" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="196880675" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 0, 1.5)
 tile = {
 "id": 1,
@@ -1541,24 +1466,23 @@ wall = {
 "type": 2
 }
 solid_status = 1
-w = 0
 tpos = Vector3(-1, 1, 0)
 
-[node name="1tile" parent="Tiles/2131227406/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/196880675/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="1wall2" parent="Tiles/2131227406/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/196880675/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1216" parent="Tiles/2131227406/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1216" parent="Tiles/196880675/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1217" parent="Tiles/2131227406/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1217" parent="Tiles/196880675/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="@Node3D@1218" parent="Tiles/2131227406/ModelManager" index="4" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1218" parent="Tiles/196880675/ModelManager" index="4" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 
-[node name="1226304045" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="1394545822" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
 tile = {
 "id": 1,
@@ -1592,13 +1516,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(-1, 2, -1)
 
-[node name="1tile" parent="Tiles/1226304045/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/1394545822/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="1795033891" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="3282222142" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 0, 4.5)
 tile = {
 "id": 1,
@@ -1633,12 +1555,11 @@ wall = {
 "type": 0
 }
 solid_status = 1
-w = 0
 tpos = Vector3(-1, 3, -2)
 
-[node name="1tile" parent="Tiles/1795033891/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/3282222142/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="3913512549" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="209107776" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.73205, 0, 6)
 tile = {
 "id": 1,
@@ -1673,15 +1594,14 @@ wall = {
 "type": 0
 }
 solid_status = 1
-w = 0
 tpos = Vector3(-1, 4, -3)
 
-[node name="1tile" parent="Tiles/3913512549/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/209107776/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="rock" parent="Tiles/3913512549/ModelManager" index="1" instance=ExtResource("14_ugxix")]
+[node name="rock" parent="Tiles/209107776/ModelManager" index="1" instance=ExtResource("14_ugxix")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="1908998511" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="3125781338" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.59808, 0, 7.5)
 tile = {
 "id": 1,
@@ -1716,12 +1636,11 @@ wall = {
 "type": 0
 }
 solid_status = 1
-w = 0
 tpos = Vector3(-1, 5, -4)
 
-[node name="1tile" parent="Tiles/1908998511/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/3125781338/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="1052064625" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="2747615507" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 0, -7.5)
 tile = {
 "id": 1,
@@ -1755,13 +1674,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(0, -5, 5)
 
-[node name="1tile" parent="Tiles/1052064625/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/2747615507/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="2112686551" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="4051148830" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641, 0, -6)
 tile = {
 "id": 1,
@@ -1795,13 +1712,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(0, -4, 4)
 
-[node name="1tile" parent="Tiles/2112686551/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/4051148830/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="1625768879" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="2319951669" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 0, -4.5)
 tile = {
 "id": 1,
@@ -1836,15 +1751,14 @@ wall = {
 "type": 0
 }
 solid_status = 1
-w = 0
 tpos = Vector3(0, -3, 3)
 
-[node name="1tile" parent="Tiles/1625768879/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/2319951669/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="palm_tree" parent="Tiles/1625768879/ModelManager" index="1" instance=ExtResource("12_24cph")]
+[node name="palm_tree" parent="Tiles/2319951669/ModelManager" index="1" instance=ExtResource("12_24cph")]
 transform = Transform3D(0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, 0, 0.3, 0)
 
-[node name="2603531285" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="960147329" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.73205, 0, -3)
 tile = {
 "id": 3,
@@ -1878,13 +1792,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(0, -2, 2)
 
-[node name="shallow_water" parent="Tiles/2603531285/ModelManager" index="0" instance=ExtResource("13_0k84x")]
+[node name="shallow_water" parent="Tiles/960147329/ModelManager" index="0" instance=ExtResource("13_0k84x")]
 
-[node name="3946104339" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="1070767522" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 0, -1.5)
 tile = {
 "id": 1,
@@ -1920,24 +1832,23 @@ wall = {
 "type": 2
 }
 solid_status = 1
-w = 0
 tpos = Vector3(0, -1, 1)
 
-[node name="1tile" parent="Tiles/3946104339/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/1070767522/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="1wall2" parent="Tiles/3946104339/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/1070767522/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1219" parent="Tiles/3946104339/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1219" parent="Tiles/1070767522/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1220" parent="Tiles/3946104339/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1220" parent="Tiles/1070767522/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="@Node3D@1221" parent="Tiles/3946104339/ModelManager" index="4" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1221" parent="Tiles/1070767522/ModelManager" index="4" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 
-[node name="2363911550" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="3693294582" parent="Tiles" instance=ExtResource("2_581ub")]
 tile = {
 "id": 1,
 "multi_tile": [],
@@ -1972,24 +1883,22 @@ wall = {
 "type": 2
 }
 solid_status = 1
-w = 0
-tpos = Vector3(0, 0, 0)
 
-[node name="1tile" parent="Tiles/2363911550/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/3693294582/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="1wall2" parent="Tiles/2363911550/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/3693294582/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1222" parent="Tiles/2363911550/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1222" parent="Tiles/3693294582/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1223" parent="Tiles/2363911550/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1223" parent="Tiles/3693294582/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="@Node3D@1224" parent="Tiles/2363911550/ModelManager" index="4" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1224" parent="Tiles/3693294582/ModelManager" index="4" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 
-[node name="1280976235" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="935734504" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 0, 1.5)
 tile = {
 "id": 1,
@@ -2025,24 +1934,23 @@ wall = {
 "type": 2
 }
 solid_status = 1
-w = 0
 tpos = Vector3(0, 1, -1)
 
-[node name="1tile" parent="Tiles/1280976235/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/935734504/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="1wall2" parent="Tiles/1280976235/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/935734504/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1225" parent="Tiles/1280976235/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1225" parent="Tiles/935734504/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1226" parent="Tiles/1280976235/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1226" parent="Tiles/935734504/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="@Node3D@1227" parent="Tiles/1280976235/ModelManager" index="4" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1227" parent="Tiles/935734504/ModelManager" index="4" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 
-[node name="2240730397" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="3903776039" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.73205, 0, 3)
 tile = {
 "id": 1,
@@ -2076,13 +1984,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(0, 2, -2)
 
-[node name="1tile" parent="Tiles/2240730397/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/3903776039/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="3608427196" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="1658516511" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.59808, 0, 4.5)
 tile = {
 "id": 1,
@@ -2117,12 +2023,11 @@ wall = {
 "type": 0
 }
 solid_status = 1
-w = 0
 tpos = Vector3(0, 3, -3)
 
-[node name="1tile" parent="Tiles/3608427196/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/1658516511/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="3813848307" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="127997570" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641, 0, 6)
 tile = {
 "id": 1,
@@ -2157,12 +2062,11 @@ wall = {
 "type": 0
 }
 solid_status = 1
-w = 0
 tpos = Vector3(0, 4, -4)
 
-[node name="1tile" parent="Tiles/3813848307/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/127997570/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="1969751608" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="662362672" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.33013, 0, 7.5)
 tile = {
 "id": 1,
@@ -2196,13 +2100,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(0, 5, -5)
 
-[node name="1tile" parent="Tiles/1969751608/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/662362672/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="2842379285" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="1167323330" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 0, -7.5)
 tile = {
 "id": 1,
@@ -2236,13 +2138,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(1, -5, 4)
 
-[node name="1tile" parent="Tiles/2842379285/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/1167323330/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="1325513178" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="4217573174" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.73205, 0, -6)
 tile = {
 "id": 1,
@@ -2276,13 +2176,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(1, -4, 3)
 
-[node name="1tile" parent="Tiles/1325513178/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/4217573174/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="4187297037" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="554035368" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 0, -4.5)
 tile = {
 "id": 1,
@@ -2317,15 +2215,14 @@ wall = {
 "type": 0
 }
 solid_status = 1
-w = 0
 tpos = Vector3(1, -3, 2)
 
-[node name="1tile" parent="Tiles/4187297037/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/554035368/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="palm_tree" parent="Tiles/4187297037/ModelManager" index="1" instance=ExtResource("12_24cph")]
+[node name="palm_tree" parent="Tiles/554035368/ModelManager" index="1" instance=ExtResource("12_24cph")]
 transform = Transform3D(-0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, -0.5, 0, 0.3, 0)
 
-[node name="556667062" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="3951348764" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3)
 tile = {
 "id": 1,
@@ -2359,13 +2256,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(1, -2, 1)
 
-[node name="1tile" parent="Tiles/556667062/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/3951348764/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="461326202" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="3608591663" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 0, -1.5)
 tile = {
 "id": 1,
@@ -2401,24 +2296,23 @@ wall = {
 "type": 2
 }
 solid_status = 1
-w = 0
 tpos = Vector3(1, -1, 0)
 
-[node name="1tile" parent="Tiles/461326202/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/3608591663/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="1wall2" parent="Tiles/461326202/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/3608591663/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1228" parent="Tiles/461326202/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1228" parent="Tiles/3608591663/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1229" parent="Tiles/461326202/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1229" parent="Tiles/3608591663/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="@Node3D@1230" parent="Tiles/461326202/ModelManager" index="4" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1230" parent="Tiles/3608591663/ModelManager" index="4" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 
-[node name="4067136748" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="2097041686" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.73205, 0, 0)
 tile = {
 "id": 1,
@@ -2454,24 +2348,23 @@ wall = {
 "type": 2
 }
 solid_status = 1
-w = 0
 tpos = Vector3(1, 0, -1)
 
-[node name="1tile" parent="Tiles/4067136748/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/2097041686/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="1wall2" parent="Tiles/4067136748/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/2097041686/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1231" parent="Tiles/4067136748/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1231" parent="Tiles/2097041686/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1232" parent="Tiles/4067136748/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1232" parent="Tiles/2097041686/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="@Node3D@1233" parent="Tiles/4067136748/ModelManager" index="4" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1233" parent="Tiles/2097041686/ModelManager" index="4" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 
-[node name="1030204947" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="3753403527" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.59808, 0, 1.5)
 tile = {
 "id": 1,
@@ -2505,13 +2398,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(1, 1, -2)
 
-[node name="1tile" parent="Tiles/1030204947/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/3753403527/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="736354832" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="11531766" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641, 0, 3)
 tile = {
 "id": 1,
@@ -2545,13 +2436,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(1, 2, -3)
 
-[node name="1tile" parent="Tiles/736354832/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/11531766/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="3683214401" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="137638049" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.33013, 0, 4.5)
 tile = {
 "id": 1,
@@ -2585,13 +2474,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(1, 3, -4)
 
-[node name="1tile" parent="Tiles/3683214401/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/137638049/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="3807693241" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="1020241732" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.19615, 0, 6)
 tile = {
 "id": 1,
@@ -2625,13 +2512,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(1, 4, -5)
 
-[node name="1tile" parent="Tiles/3807693241/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/1020241732/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="378324814" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="4118752584" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 0, -7.5)
 tile = {
 "id": 1,
@@ -2665,13 +2550,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(2, -5, 3)
 
-[node name="1tile" parent="Tiles/378324814/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/4118752584/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="2256797392" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="4160264624" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -6)
 tile = {
 "id": 1,
@@ -2705,13 +2588,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(2, -4, 2)
 
-[node name="1tile" parent="Tiles/2256797392/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/4160264624/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="3716790959" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="2533369829" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 0, -4.5)
 tile = {
 "id": 1,
@@ -2745,13 +2626,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(2, -3, 1)
 
-[node name="1tile" parent="Tiles/3716790959/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/2533369829/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="1872422472" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="3384215878" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.73205, 0, -3)
 tile = {
 "id": 1,
@@ -2785,16 +2664,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(2, -2, 0)
 
-[node name="1tile" parent="Tiles/1872422472/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/3384215878/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="spawn_trinket" parent="Tiles/1872422472/ModelManager" index="1" instance=ExtResource("12_1uk7x")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.3, 0)
-
-[node name="2685109399" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="207904392" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.59808, 0, -1.5)
 tile = {
 "id": 1,
@@ -2828,13 +2702,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(2, -1, -1)
 
-[node name="1tile" parent="Tiles/2685109399/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/207904392/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="1766280268" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="389167242" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641, 0, 0)
 tile = {
 "id": 1,
@@ -2868,13 +2740,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(2, 0, -2)
 
-[node name="1tile" parent="Tiles/1766280268/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/389167242/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="152133305" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="612784628" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.33013, 0, 1.5)
 tile = {
 "id": 1,
@@ -2908,13 +2778,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(2, 1, -3)
 
-[node name="1tile" parent="Tiles/152133305/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/612784628/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="3447892796" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="2559611486" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.19615, 0, 3)
 tile = {
 "id": 1,
@@ -2948,13 +2816,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(2, 2, -4)
 
-[node name="1tile" parent="Tiles/3447892796/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/2559611486/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="556487516" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="251556423" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.06218, 0, 4.5)
 tile = {
 "id": 1,
@@ -2988,16 +2854,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(2, 3, -5)
 
-[node name="1tile" parent="Tiles/556487516/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/251556423/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="spawn_enemy" parent="Tiles/556487516/ModelManager" index="1" instance=ExtResource("14_e0vq2")]
-transform = Transform3D(-0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, -0.5, 0, 0.3, 0)
-
-[node name="876498786" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="2531876630" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 0, -7.5)
 tile = {
 "id": 1,
@@ -3031,13 +2892,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(3, -5, 2)
 
-[node name="1tile" parent="Tiles/876498786/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/2531876630/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="1835966397" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="1234755440" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.73205, 0, -6)
 tile = {
 "id": 1,
@@ -3071,13 +2930,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(3, -4, 1)
 
-[node name="1tile" parent="Tiles/1835966397/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/1234755440/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="1205164762" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="1668614044" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.59808, 0, -4.5)
 tile = {
 "id": 1,
@@ -3111,13 +2968,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(3, -3, 0)
 
-[node name="1tile" parent="Tiles/1205164762/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/1668614044/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="3448212342" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="2698798040" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641, 0, -3)
 tile = {
 "id": 1,
@@ -3152,12 +3007,11 @@ wall = {
 "type": 0
 }
 solid_status = 1
-w = 0
 tpos = Vector3(3, -2, -1)
 
-[node name="1tile" parent="Tiles/3448212342/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/2698798040/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="3941396198" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="2717373356" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.33013, 0, -1.5)
 tile = {
 "id": 1,
@@ -3192,12 +3046,11 @@ wall = {
 "type": 0
 }
 solid_status = 1
-w = 0
 tpos = Vector3(3, -1, -2)
 
-[node name="1tile" parent="Tiles/3941396198/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/2717373356/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="2842312828" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="3696479682" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.19615, 0, 0)
 tile = {
 "id": 1,
@@ -3231,13 +3084,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(3, 0, -3)
 
-[node name="1tile" parent="Tiles/2842312828/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/3696479682/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="1176564608" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="1070150683" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.06218, 0, 1.5)
 tile = {
 "id": 1,
@@ -3271,13 +3122,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(3, 1, -4)
 
-[node name="1tile" parent="Tiles/1176564608/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/1070150683/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="1791481336" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="4108636584" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.9282, 0, 3)
 tile = {
 "id": 1,
@@ -3311,16 +3160,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(3, 2, -5)
 
-[node name="1tile" parent="Tiles/1791481336/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/4108636584/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="spawn_enemy" parent="Tiles/1791481336/ModelManager" index="1" instance=ExtResource("14_e0vq2")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.3, 0)
-
-[node name="2560137022" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="2594395974" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.59808, 0, -7.5)
 tile = {
 "id": 1,
@@ -3354,13 +3198,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(4, -5, 1)
 
-[node name="1tile" parent="Tiles/2560137022/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/2594395974/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="4182498841" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="1384403143" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641, 0, -6)
 tile = {
 "id": 1,
@@ -3394,16 +3236,14 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(4, -4, 0)
 
-[node name="1tile" parent="Tiles/4182498841/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/1384403143/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="shrub" parent="Tiles/4182498841/ModelManager" index="1" instance=ExtResource("10_yjf63")]
+[node name="shrub" parent="Tiles/1384403143/ModelManager" index="1" instance=ExtResource("10_yjf63")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="2629704602" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="2745428721" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.33013, 0, -4.5)
 tile = {
 "id": 1,
@@ -3438,12 +3278,11 @@ wall = {
 "type": 0
 }
 solid_status = 1
-w = 0
 tpos = Vector3(4, -3, -1)
 
-[node name="1tile" parent="Tiles/2629704602/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/2745428721/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="3317588326" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="3038286198" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.19615, 0, -3)
 tile = {
 "id": 1,
@@ -3478,15 +3317,14 @@ wall = {
 "type": 0
 }
 solid_status = 1
-w = 0
 tpos = Vector3(4, -2, -2)
 
-[node name="1tile" parent="Tiles/3317588326/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/3038286198/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="rock" parent="Tiles/3317588326/ModelManager" index="1" instance=ExtResource("14_ugxix")]
+[node name="rock" parent="Tiles/3038286198/ModelManager" index="1" instance=ExtResource("14_ugxix")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="1150313427" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="3614990093" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.06218, 0, -1.5)
 tile = {
 "id": 1,
@@ -3521,12 +3359,11 @@ wall = {
 "type": 0
 }
 solid_status = 1
-w = 0
 tpos = Vector3(4, -1, -3)
 
-[node name="1tile" parent="Tiles/1150313427/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/3614990093/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="3429168709" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="2972499397" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.9282, 0, 0)
 tile = {
 "id": 1,
@@ -3560,13 +3397,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(4, 0, -4)
 
-[node name="1tile" parent="Tiles/3429168709/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/2972499397/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="2624753449" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="2275179082" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.79423, 0, 1.5)
 tile = {
 "id": 1,
@@ -3600,13 +3435,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(4, 1, -5)
 
-[node name="1tile" parent="Tiles/2624753449/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/2275179082/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="768056736" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="2742842488" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.33013, 0, -7.5)
 tile = {
 "id": 1,
@@ -3640,13 +3473,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(5, -5, 0)
 
-[node name="1tile" parent="Tiles/768056736/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/2742842488/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="814644769" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="2180741015" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.19615, 0, -6)
 tile = {
 "id": 1,
@@ -3680,13 +3511,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(5, -4, -1)
 
-[node name="1tile" parent="Tiles/814644769/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/2180741015/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="1161383772" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="2833712005" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.06218, 0, -4.5)
 tile = {
 "id": 1,
@@ -3721,12 +3550,11 @@ wall = {
 "type": 0
 }
 solid_status = 1
-w = 0
 tpos = Vector3(5, -3, -2)
 
-[node name="1tile" parent="Tiles/1161383772/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/2833712005/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="4205921648" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="1014230374" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.9282, 0, -3)
 tile = {
 "id": 1,
@@ -3761,12 +3589,11 @@ wall = {
 "type": 0
 }
 solid_status = 1
-w = 0
 tpos = Vector3(5, -2, -3)
 
-[node name="1tile" parent="Tiles/4205921648/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/1014230374/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="2985513755" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="3477106722" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.79423, 0, -1.5)
 tile = {
 "id": 1,
@@ -3800,13 +3627,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(5, -1, -4)
 
-[node name="1tile" parent="Tiles/2985513755/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/3477106722/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="1890271940" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="670078107" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.66025, 0, 0)
 tile = {
 "id": 1,
@@ -3840,13 +3665,11 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
-w = 0
 tpos = Vector3(5, 0, -5)
 
-[node name="1tile" parent="Tiles/1890271940/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/670078107/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="1302417684" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="200026252" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 1.2, 7.5)
 tile = {
 "id": 0,
@@ -3885,19 +3708,19 @@ solid_status = 1
 w = 1
 tpos = Vector3(-5, 5, 0)
 
-[node name="1wall2" parent="Tiles/1302417684/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/200026252/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1234" parent="Tiles/1302417684/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1234" parent="Tiles/200026252/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1235" parent="Tiles/1302417684/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1235" parent="Tiles/200026252/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="@Node3D@1236" parent="Tiles/1302417684/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1236" parent="Tiles/200026252/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 
-[node name="4160463107" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="3974425671" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641, 1.2, 6)
 tile = {
 "id": 0,
@@ -3936,16 +3759,16 @@ solid_status = 1
 w = 1
 tpos = Vector3(-4, 4, 0)
 
-[node name="1wall2" parent="Tiles/4160463107/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/3974425671/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1237" parent="Tiles/4160463107/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1237" parent="Tiles/3974425671/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1238" parent="Tiles/4160463107/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1238" parent="Tiles/3974425671/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="2949662176" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="4049860462" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.73205, 1.2, 0)
 tile = {
 "id": 0,
@@ -3984,19 +3807,19 @@ solid_status = 1
 w = 1
 tpos = Vector3(-1, 0, 1)
 
-[node name="1wall2" parent="Tiles/2949662176/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/4049860462/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1239" parent="Tiles/2949662176/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1239" parent="Tiles/4049860462/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1240" parent="Tiles/2949662176/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1240" parent="Tiles/4049860462/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="@Node3D@1241" parent="Tiles/2949662176/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1241" parent="Tiles/4049860462/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 
-[node name="3785528556" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="3312513250" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 1.2, 1.5)
 tile = {
 "id": 0,
@@ -4035,19 +3858,19 @@ solid_status = 1
 w = 1
 tpos = Vector3(-1, 1, 0)
 
-[node name="1wall2" parent="Tiles/3785528556/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/3312513250/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1242" parent="Tiles/3785528556/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1242" parent="Tiles/3312513250/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1243" parent="Tiles/3785528556/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1243" parent="Tiles/3312513250/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="@Node3D@1244" parent="Tiles/3785528556/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1244" parent="Tiles/3312513250/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 
-[node name="891218566" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="1586007543" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 1.2, -1.5)
 tile = {
 "id": 0,
@@ -4086,19 +3909,19 @@ solid_status = 1
 w = 1
 tpos = Vector3(0, -1, 1)
 
-[node name="1wall2" parent="Tiles/891218566/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/1586007543/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1245" parent="Tiles/891218566/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1245" parent="Tiles/1586007543/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1246" parent="Tiles/891218566/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1246" parent="Tiles/1586007543/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="@Node3D@1247" parent="Tiles/891218566/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1247" parent="Tiles/1586007543/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 
-[node name="3781040822" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="3833225584" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 tile = {
 "id": 0,
@@ -4135,21 +3958,20 @@ wall = {
 }
 solid_status = 1
 w = 1
-tpos = Vector3(0, 0, 0)
 
-[node name="1wall2" parent="Tiles/3781040822/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/3833225584/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1248" parent="Tiles/3781040822/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1248" parent="Tiles/3833225584/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1249" parent="Tiles/3781040822/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1249" parent="Tiles/3833225584/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="@Node3D@1250" parent="Tiles/3781040822/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1250" parent="Tiles/3833225584/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 
-[node name="1329681097" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="2214698484" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 1.2, 1.5)
 tile = {
 "id": 0,
@@ -4188,19 +4010,19 @@ solid_status = 1
 w = 1
 tpos = Vector3(0, 1, -1)
 
-[node name="1wall2" parent="Tiles/1329681097/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/2214698484/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1251" parent="Tiles/1329681097/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1251" parent="Tiles/2214698484/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1252" parent="Tiles/1329681097/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1252" parent="Tiles/2214698484/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="@Node3D@1253" parent="Tiles/1329681097/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1253" parent="Tiles/2214698484/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 
-[node name="175656481" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="2481442659" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 1.2, -1.5)
 tile = {
 "id": 0,
@@ -4239,19 +4061,19 @@ solid_status = 1
 w = 1
 tpos = Vector3(1, -1, 0)
 
-[node name="1wall2" parent="Tiles/175656481/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/2481442659/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1254" parent="Tiles/175656481/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1254" parent="Tiles/2481442659/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1255" parent="Tiles/175656481/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1255" parent="Tiles/2481442659/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="@Node3D@1256" parent="Tiles/175656481/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1256" parent="Tiles/2481442659/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 
-[node name="195763074" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="3310765552" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.73205, 1.2, 0)
 tile = {
 "id": 0,
@@ -4290,19 +4112,19 @@ solid_status = 1
 w = 1
 tpos = Vector3(1, 0, -1)
 
-[node name="1wall2" parent="Tiles/195763074/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/3310765552/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1257" parent="Tiles/195763074/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1257" parent="Tiles/3310765552/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1258" parent="Tiles/195763074/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1258" parent="Tiles/3310765552/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="@Node3D@1259" parent="Tiles/195763074/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1259" parent="Tiles/3310765552/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 
-[node name="1650500736" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="1100496990" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 2.4, 7.5)
 tile = {
 "id": 0,
@@ -4341,19 +4163,19 @@ solid_status = 1
 w = 2
 tpos = Vector3(-5, 5, 0)
 
-[node name="1wall2" parent="Tiles/1650500736/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/1100496990/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1260" parent="Tiles/1650500736/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1260" parent="Tiles/1100496990/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1261" parent="Tiles/1650500736/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1261" parent="Tiles/1100496990/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="@Node3D@1262" parent="Tiles/1650500736/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1262" parent="Tiles/1100496990/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 
-[node name="4158707803" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="736983187" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641, 2.4, 6)
 tile = {
 "id": 1,
@@ -4387,13 +4209,12 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
 w = 2
 tpos = Vector3(-4, 4, 0)
 
-[node name="1tile" parent="Tiles/4158707803/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/736983187/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="2236804901" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="2505722562" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.73205, 2.4, 0)
 tile = {
 "id": 0,
@@ -4432,19 +4253,19 @@ solid_status = 1
 w = 2
 tpos = Vector3(-1, 0, 1)
 
-[node name="1wall2" parent="Tiles/2236804901/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/2505722562/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1263" parent="Tiles/2236804901/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1263" parent="Tiles/2505722562/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1264" parent="Tiles/2236804901/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1264" parent="Tiles/2505722562/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="@Node3D@1265" parent="Tiles/2236804901/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1265" parent="Tiles/2505722562/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 
-[node name="3677534654" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="2431108837" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 2.4, 1.5)
 tile = {
 "id": 0,
@@ -4483,19 +4304,19 @@ solid_status = 1
 w = 2
 tpos = Vector3(-1, 1, 0)
 
-[node name="1wall2" parent="Tiles/3677534654/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/2431108837/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1266" parent="Tiles/3677534654/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1266" parent="Tiles/2431108837/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1267" parent="Tiles/3677534654/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1267" parent="Tiles/2431108837/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="@Node3D@1268" parent="Tiles/3677534654/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1268" parent="Tiles/2431108837/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 
-[node name="3513743021" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="506133374" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 2.4, -1.5)
 tile = {
 "id": 0,
@@ -4534,19 +4355,19 @@ solid_status = 1
 w = 2
 tpos = Vector3(0, -1, 1)
 
-[node name="1wall2" parent="Tiles/3513743021/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/506133374/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1269" parent="Tiles/3513743021/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1269" parent="Tiles/506133374/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1270" parent="Tiles/3513743021/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1270" parent="Tiles/506133374/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="@Node3D@1271" parent="Tiles/3513743021/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1271" parent="Tiles/506133374/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 
-[node name="2029223277" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="1099802296" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 0)
 tile = {
 "id": 0,
@@ -4583,21 +4404,20 @@ wall = {
 }
 solid_status = 1
 w = 2
-tpos = Vector3(0, 0, 0)
 
-[node name="1wall2" parent="Tiles/2029223277/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/1099802296/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1272" parent="Tiles/2029223277/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1272" parent="Tiles/1099802296/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1273" parent="Tiles/2029223277/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1273" parent="Tiles/1099802296/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="@Node3D@1274" parent="Tiles/2029223277/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1274" parent="Tiles/1099802296/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 
-[node name="318789051" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="3473792489" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 2.4, 1.5)
 tile = {
 "id": 0,
@@ -4636,19 +4456,19 @@ solid_status = 1
 w = 2
 tpos = Vector3(0, 1, -1)
 
-[node name="1wall2" parent="Tiles/318789051/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/3473792489/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1275" parent="Tiles/318789051/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1275" parent="Tiles/3473792489/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1276" parent="Tiles/318789051/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1276" parent="Tiles/3473792489/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="@Node3D@1277" parent="Tiles/318789051/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1277" parent="Tiles/3473792489/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 
-[node name="3273288199" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="3716010915" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 2.4, -1.5)
 tile = {
 "id": 0,
@@ -4687,19 +4507,19 @@ solid_status = 1
 w = 2
 tpos = Vector3(1, -1, 0)
 
-[node name="1wall2" parent="Tiles/3273288199/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/3716010915/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1278" parent="Tiles/3273288199/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1278" parent="Tiles/3716010915/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1279" parent="Tiles/3273288199/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1279" parent="Tiles/3716010915/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="@Node3D@1280" parent="Tiles/3273288199/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1280" parent="Tiles/3716010915/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 
-[node name="488453708" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="3888238132" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.73205, 2.4, 0)
 tile = {
 "id": 0,
@@ -4738,19 +4558,19 @@ solid_status = 1
 w = 2
 tpos = Vector3(1, 0, -1)
 
-[node name="1wall2" parent="Tiles/488453708/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/3888238132/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1281" parent="Tiles/488453708/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1281" parent="Tiles/3888238132/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1282" parent="Tiles/488453708/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1282" parent="Tiles/3888238132/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="@Node3D@1283" parent="Tiles/488453708/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1283" parent="Tiles/3888238132/ModelManager" index="3" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 
-[node name="60846069" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="1488756196" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 3.6, 7.5)
 tile = {
 "id": 0,
@@ -4789,16 +4609,16 @@ solid_status = 1
 w = 3
 tpos = Vector3(-5, 5, 0)
 
-[node name="1wall2" parent="Tiles/60846069/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/1488756196/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1284" parent="Tiles/60846069/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1284" parent="Tiles/1488756196/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1285" parent="Tiles/60846069/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1285" parent="Tiles/1488756196/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="2345046309" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="2428590202" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.73205, 3.6, 0)
 tile = {
 "id": 0,
@@ -4837,16 +4657,16 @@ solid_status = 1
 w = 3
 tpos = Vector3(-1, 0, 1)
 
-[node name="1wall2" parent="Tiles/2345046309/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/2428590202/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1286" parent="Tiles/2345046309/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1286" parent="Tiles/2428590202/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1287" parent="Tiles/2345046309/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1287" parent="Tiles/2428590202/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="1865838629" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="1653294806" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 3.6, 1.5)
 tile = {
 "id": 0,
@@ -4885,16 +4705,16 @@ solid_status = 1
 w = 3
 tpos = Vector3(-1, 1, 0)
 
-[node name="1wall2" parent="Tiles/1865838629/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/1653294806/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1288" parent="Tiles/1865838629/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1288" parent="Tiles/1653294806/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1289" parent="Tiles/1865838629/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1289" parent="Tiles/1653294806/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="1835963009" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="1623048665" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 3.6, -1.5)
 tile = {
 "id": 0,
@@ -4933,16 +4753,16 @@ solid_status = 1
 w = 3
 tpos = Vector3(0, -1, 1)
 
-[node name="1wall2" parent="Tiles/1835963009/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/1623048665/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1290" parent="Tiles/1835963009/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1290" parent="Tiles/1623048665/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1291" parent="Tiles/1835963009/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1291" parent="Tiles/1623048665/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="3849244332" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="241518548" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.6, 0)
 tile = {
 "id": 0,
@@ -4979,18 +4799,17 @@ wall = {
 }
 solid_status = 1
 w = 3
-tpos = Vector3(0, 0, 0)
 
-[node name="1wall2" parent="Tiles/3849244332/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/241518548/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1292" parent="Tiles/3849244332/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1292" parent="Tiles/241518548/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1293" parent="Tiles/3849244332/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1293" parent="Tiles/241518548/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="3870263616" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="760292152" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 3.6, 1.5)
 tile = {
 "id": 0,
@@ -5029,16 +4848,16 @@ solid_status = 1
 w = 3
 tpos = Vector3(0, 1, -1)
 
-[node name="1wall2" parent="Tiles/3870263616/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/760292152/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1294" parent="Tiles/3870263616/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1294" parent="Tiles/760292152/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1295" parent="Tiles/3870263616/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1295" parent="Tiles/760292152/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="1745310396" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="400495670" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 3.6, -1.5)
 tile = {
 "id": 0,
@@ -5077,16 +4896,16 @@ solid_status = 1
 w = 3
 tpos = Vector3(1, -1, 0)
 
-[node name="1wall2" parent="Tiles/1745310396/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/400495670/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1296" parent="Tiles/1745310396/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1296" parent="Tiles/400495670/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1297" parent="Tiles/1745310396/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1297" parent="Tiles/400495670/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="3714202227" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="3085787778" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.73205, 3.6, 0)
 tile = {
 "id": 0,
@@ -5125,16 +4944,16 @@ solid_status = 1
 w = 3
 tpos = Vector3(1, 0, -1)
 
-[node name="1wall2" parent="Tiles/3714202227/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
+[node name="1wall2" parent="Tiles/3085787778/ModelManager" index="0" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="@Node3D@1298" parent="Tiles/3714202227/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1298" parent="Tiles/3085787778/ModelManager" index="1" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
-[node name="@Node3D@1299" parent="Tiles/3714202227/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
+[node name="@Node3D@1299" parent="Tiles/3085787778/ModelManager" index="2" instance=ExtResource("11_tmwcc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="1000130606" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="1004713770" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 4.8, 7.5)
 tile = {
 "id": 1,
@@ -5168,16 +4987,12 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
 w = 4
 tpos = Vector3(-5, 5, 0)
 
-[node name="1tile" parent="Tiles/1000130606/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/1004713770/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="spawn_ally" parent="Tiles/1000130606/ModelManager" index="1" instance=ExtResource("9_4q7r5")]
-transform = Transform3D(-0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, -0.5, 0, 0.3, 0)
-
-[node name="1302824297" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="2887284577" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.73205, 4.8, 0)
 tile = {
 "id": 1,
@@ -5211,13 +5026,12 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
 w = 4
 tpos = Vector3(-1, 0, 1)
 
-[node name="1tile" parent="Tiles/1302824297/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/2887284577/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="653820852" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="286232598" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 4.8, 1.5)
 tile = {
 "id": 1,
@@ -5251,13 +5065,12 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
 w = 4
 tpos = Vector3(-1, 1, 0)
 
-[node name="1tile" parent="Tiles/653820852/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/286232598/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="3295961269" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="3791399867" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 4.8, -1.5)
 tile = {
 "id": 1,
@@ -5291,13 +5104,12 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
 w = 4
 tpos = Vector3(0, -1, 1)
 
-[node name="1tile" parent="Tiles/3295961269/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/3791399867/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="649074585" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="713874507" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.8, 0)
 tile = {
 "id": 1,
@@ -5333,14 +5145,13 @@ wall = {
 }
 solid_status = 1
 w = 4
-tpos = Vector3(0, 0, 0)
 
-[node name="1tile" parent="Tiles/649074585/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/713874507/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="palm_tree" parent="Tiles/649074585/ModelManager" index="1" instance=ExtResource("12_24cph")]
+[node name="palm_tree" parent="Tiles/713874507/ModelManager" index="1" instance=ExtResource("12_24cph")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="2860283342" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="342096614" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 4.8, 1.5)
 tile = {
 "id": 1,
@@ -5374,16 +5185,12 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
 w = 4
 tpos = Vector3(0, 1, -1)
 
-[node name="1tile" parent="Tiles/2860283342/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/342096614/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="spawn_ally" parent="Tiles/2860283342/ModelManager" index="1" instance=ExtResource("9_4q7r5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
-
-[node name="2726932524" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="454602120" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 4.8, -1.5)
 tile = {
 "id": 1,
@@ -5417,13 +5224,12 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
 w = 4
 tpos = Vector3(1, -1, 0)
 
-[node name="1tile" parent="Tiles/2726932524/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/454602120/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[node name="1333189478" parent="Tiles" instance=ExtResource("2_581ub")]
+[node name="1093882595" parent="Tiles" instance=ExtResource("2_581ub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.73205, 4.8, 0)
 tile = {
 "id": 1,
@@ -5457,134 +5263,133 @@ wall = {
 "tile_wall": 0,
 "type": 0
 }
-solid_status = 0
 w = 4
 tpos = Vector3(1, 0, -1)
 
-[node name="1tile" parent="Tiles/1333189478/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
+[node name="1tile" parent="Tiles/1093882595/ModelManager" index="0" instance=ExtResource("5_8o6yc")]
 
-[editable path="Tiles/1863427932"]
-[editable path="Tiles/2952166957"]
-[editable path="Tiles/2684327965"]
-[editable path="Tiles/3475800001"]
-[editable path="Tiles/1109156415"]
-[editable path="Tiles/1846759062"]
-[editable path="Tiles/1863086106"]
-[editable path="Tiles/3076386215"]
-[editable path="Tiles/461441035"]
-[editable path="Tiles/2515775777"]
-[editable path="Tiles/885970131"]
-[editable path="Tiles/2357522294"]
-[editable path="Tiles/613926842"]
-[editable path="Tiles/1943592585"]
-[editable path="Tiles/194497759"]
-[editable path="Tiles/2298543220"]
-[editable path="Tiles/851315192"]
-[editable path="Tiles/4013322068"]
-[editable path="Tiles/2120825650"]
-[editable path="Tiles/1076501758"]
-[editable path="Tiles/2691810873"]
-[editable path="Tiles/101515755"]
-[editable path="Tiles/2157135349"]
-[editable path="Tiles/2044269530"]
-[editable path="Tiles/2489682462"]
-[editable path="Tiles/2737601883"]
-[editable path="Tiles/1722564971"]
-[editable path="Tiles/166569723"]
-[editable path="Tiles/1444521192"]
-[editable path="Tiles/2339438715"]
-[editable path="Tiles/84077568"]
-[editable path="Tiles/1527936458"]
-[editable path="Tiles/3799265488"]
-[editable path="Tiles/2450711646"]
-[editable path="Tiles/140190081"]
-[editable path="Tiles/2131227406"]
-[editable path="Tiles/1226304045"]
-[editable path="Tiles/1795033891"]
-[editable path="Tiles/3913512549"]
-[editable path="Tiles/1908998511"]
-[editable path="Tiles/1052064625"]
-[editable path="Tiles/2112686551"]
-[editable path="Tiles/1625768879"]
-[editable path="Tiles/2603531285"]
-[editable path="Tiles/3946104339"]
-[editable path="Tiles/2363911550"]
-[editable path="Tiles/1280976235"]
-[editable path="Tiles/2240730397"]
-[editable path="Tiles/3608427196"]
-[editable path="Tiles/3813848307"]
-[editable path="Tiles/1969751608"]
-[editable path="Tiles/2842379285"]
-[editable path="Tiles/1325513178"]
-[editable path="Tiles/4187297037"]
-[editable path="Tiles/556667062"]
-[editable path="Tiles/461326202"]
-[editable path="Tiles/4067136748"]
-[editable path="Tiles/1030204947"]
-[editable path="Tiles/736354832"]
-[editable path="Tiles/3683214401"]
-[editable path="Tiles/3807693241"]
-[editable path="Tiles/378324814"]
-[editable path="Tiles/2256797392"]
-[editable path="Tiles/3716790959"]
-[editable path="Tiles/1872422472"]
-[editable path="Tiles/2685109399"]
-[editable path="Tiles/1766280268"]
-[editable path="Tiles/152133305"]
-[editable path="Tiles/3447892796"]
-[editable path="Tiles/556487516"]
-[editable path="Tiles/876498786"]
-[editable path="Tiles/1835966397"]
-[editable path="Tiles/1205164762"]
-[editable path="Tiles/3448212342"]
-[editable path="Tiles/3941396198"]
-[editable path="Tiles/2842312828"]
-[editable path="Tiles/1176564608"]
-[editable path="Tiles/1791481336"]
-[editable path="Tiles/2560137022"]
-[editable path="Tiles/4182498841"]
-[editable path="Tiles/2629704602"]
-[editable path="Tiles/3317588326"]
-[editable path="Tiles/1150313427"]
-[editable path="Tiles/3429168709"]
-[editable path="Tiles/2624753449"]
-[editable path="Tiles/768056736"]
-[editable path="Tiles/814644769"]
-[editable path="Tiles/1161383772"]
-[editable path="Tiles/4205921648"]
-[editable path="Tiles/2985513755"]
-[editable path="Tiles/1890271940"]
-[editable path="Tiles/1302417684"]
-[editable path="Tiles/4160463107"]
-[editable path="Tiles/2949662176"]
-[editable path="Tiles/3785528556"]
-[editable path="Tiles/891218566"]
-[editable path="Tiles/3781040822"]
-[editable path="Tiles/1329681097"]
-[editable path="Tiles/175656481"]
-[editable path="Tiles/195763074"]
-[editable path="Tiles/1650500736"]
-[editable path="Tiles/4158707803"]
-[editable path="Tiles/2236804901"]
-[editable path="Tiles/3677534654"]
-[editable path="Tiles/3513743021"]
-[editable path="Tiles/2029223277"]
-[editable path="Tiles/318789051"]
-[editable path="Tiles/3273288199"]
-[editable path="Tiles/488453708"]
-[editable path="Tiles/60846069"]
-[editable path="Tiles/2345046309"]
-[editable path="Tiles/1865838629"]
-[editable path="Tiles/1835963009"]
-[editable path="Tiles/3849244332"]
-[editable path="Tiles/3870263616"]
-[editable path="Tiles/1745310396"]
-[editable path="Tiles/3714202227"]
-[editable path="Tiles/1000130606"]
-[editable path="Tiles/1302824297"]
-[editable path="Tiles/653820852"]
-[editable path="Tiles/3295961269"]
-[editable path="Tiles/649074585"]
-[editable path="Tiles/2860283342"]
-[editable path="Tiles/2726932524"]
-[editable path="Tiles/1333189478"]
+[editable path="Tiles/2159905128"]
+[editable path="Tiles/349844732"]
+[editable path="Tiles/3212819618"]
+[editable path="Tiles/2818480237"]
+[editable path="Tiles/1849831246"]
+[editable path="Tiles/3157498115"]
+[editable path="Tiles/3025630967"]
+[editable path="Tiles/4171433216"]
+[editable path="Tiles/3836590621"]
+[editable path="Tiles/2817532822"]
+[editable path="Tiles/485977614"]
+[editable path="Tiles/1439073195"]
+[editable path="Tiles/549809814"]
+[editable path="Tiles/2674214572"]
+[editable path="Tiles/3312497345"]
+[editable path="Tiles/3085981295"]
+[editable path="Tiles/1861627056"]
+[editable path="Tiles/2862692541"]
+[editable path="Tiles/1887785818"]
+[editable path="Tiles/307037557"]
+[editable path="Tiles/810486783"]
+[editable path="Tiles/2390726240"]
+[editable path="Tiles/3100622661"]
+[editable path="Tiles/4269783529"]
+[editable path="Tiles/447253244"]
+[editable path="Tiles/1948685789"]
+[editable path="Tiles/1523874745"]
+[editable path="Tiles/615544965"]
+[editable path="Tiles/3440673806"]
+[editable path="Tiles/985462966"]
+[editable path="Tiles/91639303"]
+[editable path="Tiles/2103743363"]
+[editable path="Tiles/3584856898"]
+[editable path="Tiles/971927429"]
+[editable path="Tiles/2780510057"]
+[editable path="Tiles/196880675"]
+[editable path="Tiles/1394545822"]
+[editable path="Tiles/3282222142"]
+[editable path="Tiles/209107776"]
+[editable path="Tiles/3125781338"]
+[editable path="Tiles/2747615507"]
+[editable path="Tiles/4051148830"]
+[editable path="Tiles/2319951669"]
+[editable path="Tiles/960147329"]
+[editable path="Tiles/1070767522"]
+[editable path="Tiles/3693294582"]
+[editable path="Tiles/935734504"]
+[editable path="Tiles/3903776039"]
+[editable path="Tiles/1658516511"]
+[editable path="Tiles/127997570"]
+[editable path="Tiles/662362672"]
+[editable path="Tiles/1167323330"]
+[editable path="Tiles/4217573174"]
+[editable path="Tiles/554035368"]
+[editable path="Tiles/3951348764"]
+[editable path="Tiles/3608591663"]
+[editable path="Tiles/2097041686"]
+[editable path="Tiles/3753403527"]
+[editable path="Tiles/11531766"]
+[editable path="Tiles/137638049"]
+[editable path="Tiles/1020241732"]
+[editable path="Tiles/4118752584"]
+[editable path="Tiles/4160264624"]
+[editable path="Tiles/2533369829"]
+[editable path="Tiles/3384215878"]
+[editable path="Tiles/207904392"]
+[editable path="Tiles/389167242"]
+[editable path="Tiles/612784628"]
+[editable path="Tiles/2559611486"]
+[editable path="Tiles/251556423"]
+[editable path="Tiles/2531876630"]
+[editable path="Tiles/1234755440"]
+[editable path="Tiles/1668614044"]
+[editable path="Tiles/2698798040"]
+[editable path="Tiles/2717373356"]
+[editable path="Tiles/3696479682"]
+[editable path="Tiles/1070150683"]
+[editable path="Tiles/4108636584"]
+[editable path="Tiles/2594395974"]
+[editable path="Tiles/1384403143"]
+[editable path="Tiles/2745428721"]
+[editable path="Tiles/3038286198"]
+[editable path="Tiles/3614990093"]
+[editable path="Tiles/2972499397"]
+[editable path="Tiles/2275179082"]
+[editable path="Tiles/2742842488"]
+[editable path="Tiles/2180741015"]
+[editable path="Tiles/2833712005"]
+[editable path="Tiles/1014230374"]
+[editable path="Tiles/3477106722"]
+[editable path="Tiles/670078107"]
+[editable path="Tiles/200026252"]
+[editable path="Tiles/3974425671"]
+[editable path="Tiles/4049860462"]
+[editable path="Tiles/3312513250"]
+[editable path="Tiles/1586007543"]
+[editable path="Tiles/3833225584"]
+[editable path="Tiles/2214698484"]
+[editable path="Tiles/2481442659"]
+[editable path="Tiles/3310765552"]
+[editable path="Tiles/1100496990"]
+[editable path="Tiles/736983187"]
+[editable path="Tiles/2505722562"]
+[editable path="Tiles/2431108837"]
+[editable path="Tiles/506133374"]
+[editable path="Tiles/1099802296"]
+[editable path="Tiles/3473792489"]
+[editable path="Tiles/3716010915"]
+[editable path="Tiles/3888238132"]
+[editable path="Tiles/1488756196"]
+[editable path="Tiles/2428590202"]
+[editable path="Tiles/1653294806"]
+[editable path="Tiles/1623048665"]
+[editable path="Tiles/241518548"]
+[editable path="Tiles/760292152"]
+[editable path="Tiles/400495670"]
+[editable path="Tiles/3085787778"]
+[editable path="Tiles/1004713770"]
+[editable path="Tiles/2887284577"]
+[editable path="Tiles/286232598"]
+[editable path="Tiles/3791399867"]
+[editable path="Tiles/713874507"]
+[editable path="Tiles/342096614"]
+[editable path="Tiles/454602120"]
+[editable path="Tiles/1093882595"]

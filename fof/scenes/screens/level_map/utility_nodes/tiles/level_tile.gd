@@ -1,8 +1,8 @@
 class_name TileGD
 extends Node3D
 
-@onready var ModelManager: Node3D = %ModelManager
-@onready var Effects: Node3D = %Effects
+@onready var ModelManager: Node3D = $ModelManager
+@onready var Effects: Node3D = $Effects
 
 var tile_state: Array
 var top_of_cliff_wall: Array
@@ -30,8 +30,8 @@ func getUnitState() -> String:
 			return state
 	return ""
 
-func onTTpos() -> Vector4:
-	return Vector4(tpos.x, tpos.y, tpos.z, w)
+func onTTpos(_w: int = w) -> Vector4:
+	return Vector4(tpos.x, tpos.y, tpos.z, _w)
 
 func setMaterial(mat: Material, btab: int = -1) -> void:
 	match btab:

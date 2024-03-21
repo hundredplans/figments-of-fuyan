@@ -27,31 +27,31 @@ func cube_directions_by_distance(x: Vector3, distance: int) -> Vector3:
 	return x * distance
 
 # This class always takes tiles not positions and return you the tiles but works with positions internally
-func is_neighbour(tile: Node3D, opos: Node3D, distance: int = 1, search_elevation: bool = false) -> bool:
-	return _is_neighbour(tile.info.position, opos.info.position, distance, search_elevation)
+func is_neighbour(Tile: TileGD, _Tile: TileGD, distance: int = 1, search_elevation: bool = false) -> bool:
+	return _is_neighbour(Tile.onTTpos(), _Tile.onTTpos(), distance, search_elevation)
 	
 func _is_neighbour(pos: Vector4, opos: Vector4, distance: int = 1, search_elevation: bool = false) -> bool:
 	return (search_elevation or pos.w == opos.w) and \
 	abs(pos.x - opos.x) + abs(pos.y - opos.y) + abs(pos.z - opos.z) == distance * 2
 	
-func all_neighbours(tile: Node3D, distance: int = 1, search_elevation: bool = false, tiles: Array = get_children()) -> Array:
-	return positions_to_tiles(_all_neighbours(tile.info.position, distance, search_elevation, tiles_to_positions(tiles)))
+func all_neighbours(Tile: TileGD, distance: int = 1, search_elevation: bool = false, tiles: Array = get_children()) -> Array:
+	return positions_to_tiles(_all_neighbours(Tile.onTTpos(), distance, search_elevation, tiles_to_positions(tiles)))
 	
 func _all_neighbours(pos: Vector4, distance: int = 1, search_elevation: bool = false, poses: Array = get_children_positions()) -> Array:
 	return poses.filter(_is_neighbour.bind(pos, distance, search_elevation))
 	
 func all_neighbours_tiles(tiles: Array, otiles: Array = get_children(), distance: int = 1, search_elevation: bool = false) -> Array:
 	var tiles_set: Dictionary = {}
-	for tile in tiles: 
-		for otile in all_neighbours(tile, distance, search_elevation, otiles):
-			tiles_set.merge({otile: null})
+	for Tile in tiles: 
+		for _Tile in all_neighbours(Tile, distance, search_elevation, otiles):
+			tiles_set.merge({_Tile: null})
 	return tiles_set.keys()
 
 func tiles_intersection(tiles: Array, otiles: Array) -> Array:
 	return tiles.filter(is_tile_in_tiles.bind(otiles))
 
-func all_in_range(tile: Node3D, distance: int = 2, include_central: bool = false, search_elevation: bool = false, tiles: Array = get_children()) -> Array:
-	return positions_to_tiles(_all_in_range(tile_to_position(tile), distance, include_central, search_elevation, tiles_to_positions(tiles)))
+func all_in_range(Tile: TileGD, distance: int = 2, include_central: bool = false, search_elevation: bool = false, tiles: Array = get_children()) -> Array:
+	return positions_to_tiles(_all_in_range(Tile.onTTpos(), distance, include_central, search_elevation, tiles_to_positions(tiles)))
 
 func _all_in_range(pos: Vector4, distance: int = 2, include_central: bool = false, search_elevation: bool = false, poses: Array = get_children_positions()) -> Array:
 	var a: Array = []
@@ -72,8 +72,8 @@ func tiles_to_positions(tiles: Array) -> Array: return tiles.map(tile_to_positio
 
 func positions_to_tiles(tiles: Array) -> Array: return tiles.map(position_to_tile)
 
-func nonexistent_positions_above(tile: TileGD) -> Array: #TASK: Optimise this
-	var pos: Vector4 = tile_to_position(tile)
+func nonexistent_positions_above(Tile: TileGD) -> Array: #TASK: Optimise this
+	var pos: Vector4 = Tile.onTTpos()
 	var positions: Array = range(1, MAX_HEIGHT).map(func(x: int): return Vector4(pos.x, pos.y, pos.z, pos.w + x))
 	var return_positions: Array = []
 	for _pos in positions: # necessary for loop or it will ignore ceiling tiles
@@ -107,9 +107,9 @@ func outside_neighbours(tiles: Array, otiles: Array = get_children(), distance: 
 func from_center_concentric(distance: int = 1, otiles: Array = get_children(), elevation: int = 0, search_elevation: bool = false):
 	return all_neighbours(position_to_tile(Vector4(0, 0, 0, elevation)), distance, search_elevation, otiles)
 
-func neighbour_rotation(tile: Node3D, otile: Node3D) -> int:
-	if is_neighbour(tile, otile, 1, true):
-		var direction: Variant = tile_to_position(otile) - tile_to_position(tile)
+func neighbour_rotation(Tile: TileGD, _Tile: TileGD) -> int:
+	if is_neighbour(Tile, _Tile, 1, true):
+		var direction: Variant = _Tile.onTTpos() - Tile.onTTpos()
 		
 		direction = Vector3(direction.x, direction.y, direction.z)
 		for i in range(cube_directions.size()):
@@ -117,14 +117,14 @@ func neighbour_rotation(tile: Node3D, otile: Node3D) -> int:
 				return i
 	return -1
 
-func all_diagonals(tile: Node3D, distance: int = 1, tiles: Array = get_children(), search_elevation: bool = false) -> Array:
-	return positions_to_tiles(_all_diagonals(tile_to_position(tile), tiles_to_positions(tiles), distance, search_elevation))
+func all_diagonals(Tile: TileGD, distance: int = 1, tiles: Array = get_children(), search_elevation: bool = false) -> Array:
+	return positions_to_tiles(_all_diagonals(Tile.onTTpos(), tiles_to_positions(tiles), distance, search_elevation))
 	
 func _all_diagonals(pos: Vector4, poses: Array = get_children_positions(), distance: int = 1, search_elevation: bool = false) -> Array:
 	return poses.filter(_is_diagonal.bind(pos, distance, search_elevation))
 	
-func is_diagonal(tile: Node3D, otile: Node3D, distance: int = 1, search_elevation: bool = false) -> bool:
-	return _is_diagonal(tile_to_position(tile), tile_to_position(otile), distance, search_elevation)
+func is_diagonal(Tile: TileGD, _Tile: TileGD, distance: int = 1, search_elevation: bool = false) -> bool:
+	return _is_diagonal(Tile.onTTpos(), _Tile.onTTpos(), distance, search_elevation)
 	
 func _is_diagonal(pos: Vector4, opos: Vector4, distance: int = 1, search_elevation: bool = false) -> bool:
 	return (search_elevation or pos.w == opos.w) and \
@@ -147,7 +147,7 @@ func get_children_by_elevation(w: int = 0) -> Array:
 	return positions_to_tiles(positions)
 	
 func tile_distance(Tile: TileGD, _Tile: TileGD) -> int:
-	var pos: Vector4 = Tile.info.position - _Tile.info.position
+	var pos: Vector4 = Tile.onTTpos() - _Tile.onTTpos()
 	return (abs(pos.x) + abs(pos.y) + abs(pos.z)) / 2
 	
 # -----------------
@@ -229,12 +229,12 @@ func onConvertMultiTilePositions() -> void:
 		for type in Helper.BTAB_TO_TYPE[-1]:
 			Tile[type].multi_tile = Tile[type].multi_tile\
 			.map(func(x: Array): return position_to_tile(Vector4(x[0], x[1], x[2], x[3])))\
-			.filter(func(x: Node3D): return x != null)
+			.filter(func(x: TileGD): return x != null)
 	
 func _on_remove_tiles_blocked_by_height(Tile: TileGD, height: float) -> bool:
 	var free_tile_space: float = 0.3 if is_ramp_tile(Tile) else 0.9
-	for i in range(Tile.info.position.w + 1, Tile.info.position.w + 7):
-		var _Tile: TileGD = position_to_tile(Vector4(Tile.info.position.x, Tile.info.position.y, Tile.info.position.z, Tile.info.position.w + i))
+	for i in range(Tile.w + 1, Tile.w + 7):
+		var _Tile: TileGD = position_to_tile(Tile.onTTpos(Tile.w + i))
 		if _Tile == null: free_tile_space += 1.2
 		else: break
 	return free_tile_space >= height
@@ -244,7 +244,7 @@ func on_remove_tiles_blocked_by_height(tiles: Array, height: float) -> Array:
 
 func on_can_ramp_connect(Tile: TileGD, _Tile: TileGD, hdiff: int) -> bool:
 	if abs(hdiff) == 1: # ensures it's from a regular tile
-		var stair_or_tile_rot: int = (_Tile.info.obj.rotation) if (_Tile.info.obj.id in is_stair_object) else (_Tile.info.tile.rotation)
+		var stair_or_tile_rot: int = (_Tile.obj.rotation) if (_Tile.obj.id in is_stair_object) else (_Tile.tile.rotation)
 		var neirot: int = neighbour_rotation(Tile, _Tile) 
 		return neirot == (stair_or_tile_rot + 1) % 6 or neirot == (stair_or_tile_rot + 4) % 6
 	return false
@@ -254,7 +254,7 @@ func on_filter_in_range_tiles(x: TileGD):
 	return x.solid_status == 0 or (Unit != null and Unit.team == 1)
 
 func is_ramp_tile(Tile: TileGD) -> bool:
-	return Tile.info.obj.id in is_stair_object or Tile.info.tile.type > 0
+	return Tile.obj.id in is_stair_object or Tile.tile.type > 0
 
 var movement_paths: Dictionary = {"tiles": []}
 func on_create_movement_paths(Unit: UnitGD) -> void:
@@ -273,27 +273,27 @@ func on_create_movement_paths(Unit: UnitGD) -> void:
 	for Tile in tiles_by_adjacent.keys():
 		for _Tile in tiles_by_adjacent[Tile]:
 			var EnemyUnit: UnitGD = Units.unit_by_tile(_Tile)
-			var hdiff: int = (_Tile.info.position.w * 2) + int(is_ramp_tile(_Tile)) - ((Tile.info.position.w * 2) + int(is_ramp_tile(Tile)))
+			var hdiff: int = (_Tile.w * 2) + int(is_ramp_tile(_Tile)) - ((Tile.w * 2) + int(is_ramp_tile(Tile)))
 			if EnemyUnit != null:
-				var enemy_low_point: float = _Tile.info.position.w + (0.6 if is_ramp_tile(_Tile) else 0.0)
-				var your_weapon_point: float = Tile.info.position.w + (0.6 if is_ramp_tile(Tile) else 0.0) + Unit.height.weapon
+				var enemy_low_point: float = _Tile.w + (0.6 if is_ramp_tile(_Tile) else 0.0)
+				var your_weapon_point: float = Tile.w + (0.6 if is_ramp_tile(Tile) else 0.0) + Unit.height.weapon
 				var enemy_high_point: float = enemy_low_point + EnemyUnit.height.top
 				
 				if hdiff == 0 or (hdiff > 0 and your_weapon_point >= enemy_low_point) or (hdiff < 0 and enemy_high_point >= your_weapon_point):
 					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(1, 0))
-			elif (_Tile.info.obj.id in is_stair_object or _Tile.info.tile.type == 2):  # Move to ramp
+			elif (_Tile.obj.id in is_stair_object or _Tile.tile.type == 2):  # Move to ramp
 				if on_can_ramp_connect(Tile, _Tile, hdiff):
 					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(2, hdiff))
-			elif (Tile.info.obj.id in is_stair_object or Tile.info.tile.type == 2): # start on ramp
+			elif (Tile.obj.id in is_stair_object or Tile.tile.type == 2): # start on ramp
 				if on_can_ramp_connect(_Tile, Tile, hdiff):
 					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i.ZERO)
-			elif Tile.info.tile.type == 1: # start on half tile
+			elif Tile.tile.type == 1: # start on half tile
 				if hdiff in [-1, 1]:
 					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(3, 0))
 				elif hdiff == 0:
 					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i.ZERO)
 				elif hdiff < 0 and is_valid_jump(Tile, _Tile): on_connect_points(astar, movement_types, Tile, _Tile, Vector3i(4, hdiff, 0))
-			elif hdiff == 1 and _Tile.info.tile.type == 1: # regular to half tile
+			elif hdiff == 1 and _Tile.tile.type == 1: # regular to half tile
 				on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(3, 0))
 			elif hdiff == 0: # movement between regular tiles
 				on_connect_points(astar, movement_types, Tile, _Tile, Vector2i.ZERO)
@@ -334,8 +334,8 @@ func on_calculate_drop_damage(_hdiff: int, current_health: int, top_height: floa
 
 # 
 func is_valid_jump(From: TileGD, To: TileGD) -> bool:
-	var to_pos: Vector4 = To.info.position
-	for Tile in range(to_pos.w + 1, From.info.position.w + 1).map(func(x: int): return position_to_tile(Vector4(to_pos.x, to_pos.y, to_pos.z, x))):
+	var to_pos: Vector4 = To.onTTpos()
+	for Tile in range(to_pos.w + 1, From.w + 1).map(func(x: int): return position_to_tile(Vector4(to_pos.x, to_pos.y, to_pos.z, x))):
 		if !(Tile == null or Tile.solid_status == 1): return false
 	return true
 
@@ -471,9 +471,13 @@ func on_set_tile_highest_material(Tile: TileGD, removed_material: String = "") -
 	
 	if removed_material == "Greyscale":
 		Tile.setMaterial(null, -2)
-				
-	if (mat != null and highest_tile_material.material_name == "Greyscale"):
+		Tile.setMaterial(mat, 0)
+	elif (mat != null and highest_tile_material.material_name == "Greyscale"):
 		Tile.setMaterial(mat)
+	else:
+		Tile.setMaterial(mat, 0)
+		
+		
 	Tile.Effects.on_manage_height_drop_label(Units.PlayerManager.UnitSelected)
 
 func getTileMaterialFromPriority(priority: int) -> TileMaterial:

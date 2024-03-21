@@ -35,7 +35,7 @@ func on_recalculate_vision() -> void:
 func onUnitRayCast(Unit: UnitGD, all_units: Array = Units.all_units()) -> Array:
 	Unit.units_in_vision = []
 	TileRayCast.position = Unit.global_position
-	TileRayCast.position.y += Unit.height.eye + (0.6 if Unit.Tile.info.tile.type > 0 else 0.0)
+	TileRayCast.position.y += Unit.height.eye + (0.6 if Unit.Tile.tile.type > 0 else 0.0)
 	
 	var found_tiles: Array = onCircleRay(TileRayCast, tiles_in_vision(Unit))
 	for i in range(found_tiles.size()):
@@ -62,12 +62,12 @@ func on_find_visible_tiles() -> Array:
 func onUnitsHeightAdjacentTiles(units: Array) -> Array:
 	var found_tiles: Array = []
 	for Unit in units:
-		if Unit.Tile.info.position.w > 0:
+		if Unit.Tile.w > 0:
 			for direction in Tiles.cube_directions:
-				var pos: Vector3 = Vector3(Unit.Tile.info.position.x, Unit.Tile.info.position.y, Unit.Tile.info.position.z) + direction
-				for w in range(Unit.Tile.info.position.w - 1, -1, -1):
+				var pos: Vector3 = Unit.Tile.tpos + direction
+				for w in range(Unit.Tile.w - 1, -1, -1):
 					var Tile: TileGD = Tiles.position_to_tile(Vector4(pos.x, pos.y, pos.z, w))
-					if Tile != null and Tile.info.tile.id > 0:
+					if Tile != null and Tile.tile.id > 0:
 						found_tiles.append(Tile)
 						break
 				
@@ -89,16 +89,16 @@ func onCircleRay(Ray: RayCast3D, vision_range: Array) -> Array:
 				var Tile: TileGD = Ray.get_collider().get_node("../../..")
 				if Tile in vision_range:
 					vision_range.erase(Tile)
-					var type: String = Ray.get_collider().get_node("../..").type
-					if Tile.info[type].multi_tile.size() > 0:
+					var type: String = Ray.get_collider().get_node("..").type
+					if Tile[type].multi_tile.size() > 0:
 						if Tile.solid_status == 1:
-							for _Tile in Tile.info[type].multi_tile:
+							for _Tile in Tile[type].multi_tile:
 								collisions.append(_Tile)
 					else: collisions.append(Tile)
 					
 	return collisions
 func tiles_in_vision(Unit: UnitGD) -> Array:
-	return Tiles.all_in_range(Unit.Tile, VISION_RANGE, true, true).filter(func(x: TileGD): return x.info.tile.id > 0 or x.info.wall.id > 0	)
+	return Tiles.all_in_range(Unit.Tile, VISION_RANGE, true, true).filter(func(x: TileGD): return x.tile.id > 0 or x.wall.id > 0	)
 
 func on_merge_visible_tiles(_visible_tiles: Dictionary, tiles: Array) -> void:
 	for tile in tiles: _visible_tiles.merge({tile: null})

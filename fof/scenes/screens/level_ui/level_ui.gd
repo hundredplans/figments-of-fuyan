@@ -10,8 +10,7 @@ var SpectateCamera: Node3D
 
 @onready var VisionMode := %VisionMode
 @onready var PassUnitTurn := %PassUnitTurn
-@onready var HandBoxPanel := $HandBoxPanel
-@onready var HandBox := $HandBoxPanel/HandBox
+
 @onready var ChangePhase: Control = %ChangePhase
 @onready var StatusBox: Control = %StatusBox
 @onready var CameraArrows: Control = %CameraArrows
@@ -40,15 +39,20 @@ func _ready() -> void:
 	Vision = LevelMap.Vision
 	SpectateCamera = LevelMap.SpectateCamera
 	equip_sky.emit(GameState.area_info.id, false)
-	ChangePhase.visible = false
-	PassUnitTurn.visible = false
-	VisionMode.visible = false
-	CameraArrows.visible = false
+	setCornerRightVisibile(false)
 	LevelMap.SpectateCamera.mouse_in_ui.connect(on_camera_panning)
 	
-	on_pin_hand_box_panel(0)
+	var old: float = PANEL_MOVE_TWEEN_DURATION
+	PANEL_MOVE_TWEEN_DURATION = 0
+	on_pin_hand_box_panel()
+	PANEL_MOVE_TWEEN_DURATION = old
+	
 	vision_selected = VisionButton.default
 	team_selected = TeamButton.default
+
+@onready var CornerRightMenu = %CornerRightMenu
+func setCornerRightVisibile(state: bool) -> void:
+	for child in CornerRightMenu.get_children(): child.visible = state
 
 func _queue_free() -> void:
 	if !Helper.settings_loaded:
@@ -59,6 +63,8 @@ func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("SelectLeft") and !LevelMap.lock_inputs: LevelMap.SpectateCamera.on_select_spectate_camera_direction(-1)
 	elif Input.is_action_just_pressed("SelectRight") and !LevelMap.lock_inputs: LevelMap.SpectateCamera.on_select_spectate_camera_direction(1)
 
+@onready var CardBox: HBoxContainer = %CardBox
+
 var _GameCard: PackedScene = preload("res://assets/base_game/cards/game_card/game_card.tscn")
 func on_draw_card(HandCard: HandCardGD) -> void:
 	var GameCard: Control = _GameCard.instantiate()
@@ -67,7 +73,7 @@ func on_draw_card(HandCard: HandCardGD) -> void:
 	GameCard.custom_minimum_size = Vector2(GameCard.size.x, 0)
 	GameCard.set_info(Helper.id_to_dict(HandCard.id, "Card"))
 	GameCard.pressed.connect(on_card_selected.bind(GameCard))
-	HandBox.add_child(GameCard)
+	CardBox.add_child(GameCard)
 	
 var _card_selected_material: Resource = preload("res://assets/base_game/cards/card_ui/card_selected_material.tres")
 var GameCardSelected: Control
@@ -84,30 +90,27 @@ func on_card_selected(GameCard: Control) -> void:
 	LevelMap.Hand.on_card_selected(index)
 		
 func on_card_placed(index: int) -> void:
-	HandBox.get_child(index).queue_free()
+	CardBox.get_child(index).queue_free()
 
 func on_change_energy(energy: int, is_energy_max: bool) -> void:
 	$Energy/Label.text = str(max(energy, 0))
 	$Energy/Label.modulate = Helper.BASE if !is_energy_max else Helper.YELLOW
 
 func on_player_end_turn_phase_start() -> void:
-	ChangePhase.visible = false
-	PassUnitTurn.visible = false
-	VisionMode.visible = false
-	CameraArrows.visible = false
+	setCornerRightVisibile(false)
 	on_pass_unit_turn_button_state(false)
 
+@onready var HandBox: Control = %HandBox
 func on_hand_phase_start(skip_hand_phase: bool) -> void:
 	if !skip_hand_phase: on_pin_hand_box_panel()
-	HandBoxPanel.visible = HandBox.get_child_count() > 0
 	on_set_hand_box_cards_state()
 	ChangePhase.visible = true
 
 var playable_cards: Array
 func on_set_hand_box_cards_state() -> void:
 	var state: bool = LevelMap.game_phase != "HandPhase"
-	for i in range(HandBox.get_child_count()):
-		HandBox.get_child(i).on_set_disabled(state or i not in playable_cards)
+	for i in range(CardBox.get_child_count()):
+		CardBox.get_child(i).on_set_disabled(state or i not in playable_cards)
 
 func _on_hand_phase_hitbox_pressed():
 	LevelMap.on_change_game_phase("PlayerPhase")
@@ -144,54 +147,32 @@ func on_add_unit_status_box(Unit: UnitGD) -> void:
 func on_unit_status_queue_free(UnitStatus: Control) -> void:
 	if last_ally > 0 and UnitStatus.get_index() == last_ally: last_ally -= 1
 
-const PANEL_MOVE_TWEEN_DURATION: float = 0.1
-const HAND_BOX_PANEL_OFFSET: int = 400
-
-func _on_panel_container_mouse_entered(): on_extended_position_container(HandBoxPanel)
-func _on_panel_container_mouse_exited(): on_default_position_container(HandBoxPanel)
-
-const HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION: int = 1070
-var hand_box_pinned: bool = true
-
-func on_default_position_container(cont: PanelContainer, tween_time: float = PANEL_MOVE_TWEEN_DURATION) -> void:
-	if (cont == HandBoxPanel and !is_hand_box_panel_moving and !hand_box_pinned):
-		var tween_to: int = -1
-		if cont.position.y != HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION:
-			tween_to = HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION
+func on_extend_hand_box() -> void:
+	if !is_hand_box_panel_moving and HandBox.position.y == HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION:
+		on_move_hand_box(HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION - HAND_BOX_PANEL_OFFSET)
+	
+func on_unextend_hand_box() -> void:
+	if !is_hand_box_panel_moving and !hand_box_pinned and HandBox.position.y == HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION - HAND_BOX_PANEL_OFFSET:
+		on_move_hand_box(HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION)
 		
-		if tween_to != -1:
-			on_move_panel_container(cont, tween_to, tween_time)
-
-func on_extended_position_container(cont: PanelContainer, tween_time: float = PANEL_MOVE_TWEEN_DURATION) -> void:
-	if (cont == HandBoxPanel and !is_hand_box_panel_moving):
-		var tween_to: int = -1
-		
-		var pos: int = HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION - HAND_BOX_PANEL_OFFSET
-		if cont.position.y != pos: tween_to = pos
-		
-		if tween_to != -1:
-			on_move_panel_container(cont, tween_to, tween_time)
-
-var is_hand_box_panel_moving: bool = false
-func on_move_panel_container(cont: PanelContainer, tween_to: int, tween_time: float) -> void:
+func on_move_hand_box(to: int) -> void:
 	var MoveTween := get_tree().create_tween()
-	MoveTween.tween_property(cont, "position:y", tween_to, tween_time)
+	MoveTween.tween_property(HandBox, "position:y", to, PANEL_MOVE_TWEEN_DURATION)
 	MoveTween.finished.connect(on_move_tween_finished)
 	is_hand_box_panel_moving = true
+	
+var PANEL_MOVE_TWEEN_DURATION: float = 0.1
+const HAND_BOX_PANEL_OFFSET: int = 410
+const HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION: int = 1080
+var hand_box_pinned: bool = true
+var is_hand_box_panel_moving: bool = false
 
 func on_move_tween_finished() -> void:
 	is_hand_box_panel_moving = false
 
-func _on_hand_box_panel_pre_sort_children():
-	HandBoxPanel.size.x = 0
-	HandBoxPanel.position.x = 960 - (HandBoxPanel.size.x / 2)
-
 func on_lock_inputs_changed(x: bool) -> void:
 	if LevelMap.game_phase == "PlayerPhase":
-		ChangePhase.visible = !x
-		PassUnitTurn.visible = !x
-		VisionMode.visible = !x
-		CameraArrows.visible = !x
+		setCornerRightVisibile(!x)
 
 var absolute_mouse_in_ui: bool
 var is_mouse_in_ui: bool = false
@@ -203,21 +184,17 @@ func on_is_mouse_in_ui(x: bool, absolute_change: bool = true) -> void:
 func on_camera_panning(x: bool) -> void:
 	if !absolute_mouse_in_ui: on_is_mouse_in_ui(x, false)
 
-func on_hand_box_calculate_visibility(__: Control, offset: int = 0):
-	if !is_queued_for_deletion():
-		HandBoxPanel.visible = HandBox.get_child_count() > 0 + offset
-
 func on_camera_arrow_pressed(direction: int) -> void:
 	LevelMap.SpectateCamera.on_select_spectate_camera_direction(direction)
 
-func on_pin_hand_box_panel(time: float = PANEL_MOVE_TWEEN_DURATION) -> void:
+func on_pin_hand_box_panel() -> void:
 	hand_box_pinned = true
-	on_extended_position_container(HandBoxPanel, time)
+	on_extend_hand_box()
 	$GreyScale.visible = true
 
-func on_unpin_hand_box_panel(time: float = PANEL_MOVE_TWEEN_DURATION) -> void:
+func on_unpin_hand_box_panel() -> void:
 	hand_box_pinned = false
-	on_default_position_container(HandBoxPanel, time)
+	on_unextend_hand_box()
 	$GreyScale.visible = false
 
 func on_ally_unit_awakened(skip_result: bool) -> void:

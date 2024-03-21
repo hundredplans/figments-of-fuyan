@@ -2033,11 +2033,12 @@ func on_create_tile(tile_info: Dictionary, owner_node: Node3D, area: int) -> Til
 				
 			if tile_object_name != "null":
 				if obj_name != "wall":
-					var object_scene: Node3D = load("res://assets/models/" + TILE_OBJECT_NAME_TO_FULL_NAME[obj_name] + \
-					"/" + tile_object_name + ".tscn").instantiate()
-					object_scene.position.y = 0.0 if obj_name == "tile" else 0.3
-					object_scene.rotation_degrees.y = tile_info[obj_name].rotation * 60
-					LevelTile.ModelManager.add_child(object_scene)
+					if !(obj_name == "obj" and LevelTile[obj_name].id in range(1, 5)):
+						var object_scene: Node3D = load("res://assets/models/" + TILE_OBJECT_NAME_TO_FULL_NAME[obj_name] + \
+						"/" + tile_object_name + ".tscn").instantiate()
+						object_scene.position.y = 0.0 if obj_name == "tile" else 0.3
+						object_scene.rotation_degrees.y = tile_info[obj_name].rotation * 60
+						LevelTile.ModelManager.add_child(object_scene)
 				else:
 					LevelTile[obj_name].model = []
 					var object_scene: Resource = load("res://assets/models/walls/" + tile_object_name + ".tscn")

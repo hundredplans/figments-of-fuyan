@@ -46,7 +46,7 @@ func on_play_animation(ani_name: String) -> void:
 	
 var current_walk_stream_player: AudioStreamPlayer
 func on_play_walk_sfx() -> void:
-	var sfx: String = on_find_walk_sfx(Unit.Tile.info.tile.id)
+	var sfx: String = on_find_walk_sfx(Unit.Tile.tile.id)
 	var is_null: bool = current_walk_stream_player == null 
 	if is_null or sfx != current_walk_stream_player.playing_sfx:
 		if !is_null: AudioMaster.on_cutoff_sfx(current_walk_stream_player)
@@ -109,7 +109,7 @@ func on_create_regular_jump(Tile: TileGD) -> void:
 	JUMP_TIME = 1
 	JUMP_HEIGHT = -4
 	jump_start = Unit.global_position
-	jump_end = Vector3(Tile.global_position.x, Tile.global_position.y + (0.75 if Tile.info.tile.type == 1 else 0.3), Tile.global_position.z)
+	jump_end = Vector3(Tile.global_position.x, Tile.global_position.y + (0.75 if Tile.tile.type == 1 else 0.3), Tile.global_position.z)
 	is_jump = true
 	AniPlayer.speed_scale = 2
 	
@@ -120,7 +120,7 @@ func on_create_drop_jump(Tile: TileGD, hdiff: int, new_health: int) -> void:
 	JUMP_TIME = 1 - (hdiff * 0.1)
 	JUMP_HEIGHT = -3 + (hdiff * JUMP_HEIGHT_MULTIPLIER)
 	jump_start = Unit.global_position
-	jump_end = Vector3(Tile.global_position.x, Tile.global_position.y + (0.75 if Tile.info.tile.type == 1 else 0.3), Tile.global_position.z)
+	jump_end = Vector3(Tile.global_position.x, Tile.global_position.y + (0.75 if Tile.tile.type == 1 else 0.3), Tile.global_position.z)
 	is_jump = true
 	AniPlayer.speed_scale = 2.0 / JUMP_TIME
 	on_play_animation("Jump")
@@ -131,7 +131,7 @@ func on_create_drop_jump(Tile: TileGD, hdiff: int, new_health: int) -> void:
 func on_create_move_tween(Tile: TileGD, type: Vector2i) -> void:
 	var MoveTween: Tween = get_tree().create_tween()
 	var half_position := Vector3(Tile.global_position + global_position) * 0.5
-	var climb_slope: float = 0.75 if Tile.info.tile.type == 1 else 0.3
+	var climb_slope: float = 0.75 if Tile.tile.type == 1 else 0.3
 	if type.x == 2 and type.y == -1: climb_slope = 1.5
 		
 	MoveTween.tween_property(Unit, "global_position",
@@ -141,7 +141,7 @@ func on_create_move_tween(Tile: TileGD, type: Vector2i) -> void:
 	MoveTween.finished.connect(on_create_second_move_tween.bind(Tile, type))
 func on_create_second_move_tween(Tile: TileGD, type: Vector2i) -> void:
 	var MoveTween: Tween = get_tree().create_tween()
-	var climb_slope: float = 0.75 if Tile.info.tile.type == 1 else 0.3
+	var climb_slope: float = 0.75 if Tile.tile.type == 1 else 0.3
 	if type.x == 2: climb_slope = 0.9
 	
 	MoveTween.tween_property(Unit, "global_position",
