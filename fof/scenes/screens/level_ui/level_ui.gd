@@ -86,11 +86,17 @@ func on_card_selected(GameCard: Control) -> void:
 		index = GameCard.get_index()
 		LevelMap.set_lock_inputs(false)
 		on_unpin_hand_box_panel()
-	else: GameCardSelected = null; on_pin_hand_box_panel(); LevelMap.set_lock_inputs(true)
+		Vision.on_vision_mode_set(2)
+	else: 
+		GameCardSelected = null
+		on_pin_hand_box_panel()
+		LevelMap.set_lock_inputs(true)
+		Vision.on_vision_mode_set(0)
 	LevelMap.Hand.on_card_selected(index)
 		
 func on_card_placed(index: int) -> void:
 	CardBox.get_child(index).queue_free()
+	Vision.on_vision_mode_set(0)
 
 func on_change_energy(energy: int, is_energy_max: bool) -> void:
 	$Energy/Label.text = str(max(energy, 0))
@@ -162,8 +168,8 @@ func on_move_hand_box(to: int) -> void:
 	is_hand_box_panel_moving = true
 	
 var PANEL_MOVE_TWEEN_DURATION: float = 0.1
-const HAND_BOX_PANEL_OFFSET: int = 410
-const HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION: int = 1080
+const HAND_BOX_PANEL_OFFSET: int = 405
+const HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION: int = 1070
 var hand_box_pinned: bool = true
 var is_hand_box_panel_moving: bool = false
 

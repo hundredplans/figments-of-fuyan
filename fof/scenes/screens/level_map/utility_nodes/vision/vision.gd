@@ -11,115 +11,120 @@ var Tiles: TilesGD
 var GameState: Node
 const VISION_RANGE: int = 5
 
-var visible_tiles: Array
+var spawn_vision: Array
 
-func on_recalculate_vision() -> void:
-	var other_tiles: Array = []
-	var old_visible_tiles: Array = visible_tiles.duplicate()
-	visible_tiles = []
+func on_recalculate_vision(Unit: UnitGD = null) -> void:
+	var visible_tiles: Array = [[], []]
+	var all_units: Array = Units.all_units()
+	var ally_units: Array = Units.on_units()
 	match vision_mode:
 		0:
-			visible_tiles = on_find_visible_tiles()
+			if Unit != null:
+				var old_vision: Array = Unit.visible_tiles.duplicate()
+				Unit.onCircleRay()
+				for _Unit in all_units:
+					var was_visible: bool = _Unit in Unit.visible_units
+					var is_visible: bool = _Unit in Unit.visible_tiles
+					if was_visible and !is_visible:
+						if _Unit.visible_units.size() == 1:
+							Units.on_unit_exits_vision(_Unit)
+							Unit.visible_units.erase(_Unit)
+							_Unit.visible_units.erase(Unit)
+							
+					elif !was_visible and is_visible:
+						if _Unit.visible_units.is_empty():
+							Units.on_unit_enters_vision(_Unit)
+							Unit.visible_units.append(_Unit)
+							_Unit.visible_units.append(Unit)
+							
+			for Tile in get_children():
+				visible_tiles[int(ally_units.any(func(x: UnitGD): return x.visible_tiles.any(func(x: TileGD): return Tile == x)))].append(Tile)
 		1:
-			var _visible_tiles: Dictionary = {}
-			if ActiveUnitVision != null:
-				on_merge_visible_tiles(_visible_tiles, onUnitRayCast(ActiveUnitVision))
-				visible_tiles = _visible_tiles.keys()
-		2: pass
-		
-	other_tiles = Tiles.tiles_unique(Tiles.get_children(), visible_tiles)
-	on_find_units_enter_vision(old_visible_tiles)
-	on_apply_visibility(other_tiles)
-	LevelUI.on_update_vision()
-
-func onUnitRayCast(Unit: UnitGD, all_units: Array = Units.all_units()) -> Array:
-	Unit.units_in_vision = []
-	TileRayCast.position = Unit.global_position
-	TileRayCast.position.y += Unit.height.eye + (0.6 if Unit.Tile.tile.type > 0 else 0.0)
+			if ActiveUnitVision == null:
+				visible_tiles = [[], Tiles.get_children()]
+			else:
+				for Tile in Tiles.get_children():
+					visible_tiles[int(Tile in ActiveUnitVision.visible_tiles)].append(Tile)
+		2:
+			visible_tiles = spawn_vision
+		3: # enemy vision
+			pass
 	
-	var found_tiles: Array = onCircleRay(TileRayCast, tiles_in_vision(Unit))
-	for i in range(found_tiles.size()):
-		found_tiles += found_tiles[i].top_of_cliff_wall
-		
-	for _Unit in all_units:
-		if _Unit.Tile in found_tiles and _Unit != Unit:
-			Unit.units_in_vision.append(_Unit)
-	return found_tiles
+	on_apply_visibility(visible_tiles)
+	LevelUI.on_update_vision()
+	
+	#var unit_visions: Array = ally_units.map(func(x: ))
+	
+	#var other_tiles: Array = []
+	#var old_visible_tiles: Array = visible_tiles.duplicate()
+	#visible_tiles = []
+	#match vision_mode:
+		#0:
+			#visible_tiles = on_find_visible_tiles(Unit)
+		#1:
+			#var _visible_tiles: Dictionary = {}
+			#if ActiveUnitVision != null:
+				#on_merge_visible_tiles(_visible_tiles, onUnitRayCast(ActiveUnitVision))
+				#visible_tiles = _visible_tiles.keys()
+		#2: 
+			#var _visible_tiles: Dictionary = {}
+			#on_merge_visible_tiles(_visible_tiles, Tiles.get_children().filter(func(x: TileGD): return x.obj.id == 2))
+			#visible_tiles = _visible_tiles.keys()
+		#
+	#other_tiles = Tiles.tiles_unique(Tiles.get_children(), visible_tiles)
+	#on_find_units_enter_vision(old_visible_tiles)
+	#on_apply_visibility(other_tiles)
+	#LevelUI.on_update_vision()
 
-func on_find_visible_tiles() -> Array:
+func on_start_phase_start() -> void:
+	spawn_vision = [[], []]
+	for Tile in Tiles.get_children():
+		spawn_vision[int(Tile.obj.id != 2)].append(Tile)
+
+func on_find_visible_tiles(_Unit: UnitGD) -> Array:
 	var _visible_tiles: Dictionary = {}
 	on_merge_visible_tiles(_visible_tiles, Tiles.on_is_type_get_tiles("Spawn", "obj"))
 	var units: Array = Units.on_units()
 	var all_units: Array = Units.all_units()
 	
-	for Unit in units:
-		on_merge_visible_tiles(_visible_tiles, onUnitRayCast(Unit, all_units))
+	#if _Unit != null:
+		#vision_by_unit.Unit = onUnitRayCast(_Unit, all_units)
+		#on_merge_visible_tiles(_visible_tiles, vision_by_unit.Unit)
+		#
+		#for Unit in units:
+			#if Unit != _Unit and Unit != null:
+				#on_merge_visible_tiles(_visible_tiles, vision_by_unit.Unit)
+	#else:
+		#for Unit in units:
+			#vision_by_unit.Unit = onUnitRayCast(Unit, all_units)
+			#on_merge_visible_tiles(_visible_tiles, vision_by_unit.Unit)
 		
 	on_merge_visible_tiles(_visible_tiles, units.map(func(x: UnitGD): return x.Tile))
-	on_merge_visible_tiles(_visible_tiles, onUnitsHeightAdjacentTiles(units))
 	return _visible_tiles.keys()
-
-func onUnitsHeightAdjacentTiles(units: Array) -> Array:
-	var found_tiles: Array = []
-	for Unit in units:
-		if Unit.Tile.w > 0:
-			for direction in Tiles.cube_directions:
-				var pos: Vector3 = Unit.Tile.tpos + direction
-				for w in range(Unit.Tile.w - 1, -1, -1):
-					var Tile: TileGD = Tiles.position_to_tile(Vector4(pos.x, pos.y, pos.z, w))
-					if Tile != null and Tile.tile.id > 0:
-						found_tiles.append(Tile)
-						break
-				
-	for i in range(found_tiles.size()):
-		found_tiles += found_tiles[i].top_of_cliff_wall
-	return found_tiles
 	
-const RAY_COUNT: int = 100
-func onCircleRay(Ray: RayCast3D, vision_range: Array) -> Array:
-	var collisions: Array = []
-	for i in range(RAY_COUNT):
-		var phi: float = (i * (PI * 2)) / RAY_COUNT
-		var theta: float = 0
-		for j in range(RAY_COUNT):
-			theta = (j * PI) / RAY_COUNT
-			Ray.target_position = Vector3(sin(theta) * cos(phi), sin(theta) * sin(phi), cos(theta)) * 100
-			Ray.force_raycast_update()
-			if Ray.is_colliding():
-				var Tile: TileGD = Ray.get_collider().get_node("../../..")
-				if Tile in vision_range:
-					vision_range.erase(Tile)
-					var type: String = Ray.get_collider().get_node("..").type
-					if Tile[type].multi_tile.size() > 0:
-						if Tile.solid_status == 1:
-							for _Tile in Tile[type].multi_tile:
-								collisions.append(_Tile)
-					else: collisions.append(Tile)
-					
-	return collisions
 func tiles_in_vision(Unit: UnitGD) -> Array:
 	return Tiles.all_in_range(Unit.Tile, VISION_RANGE, true, true).filter(func(x: TileGD): return x.tile.id > 0 or x.wall.id > 0	)
 
 func on_merge_visible_tiles(_visible_tiles: Dictionary, tiles: Array) -> void:
 	for tile in tiles: _visible_tiles.merge({tile: null})
 	
-func on_apply_visibility(other_tiles: Array) -> void:
-	for Tile in visible_tiles: Tiles.on_remove_tile_material(Tile, "Greyscale")
-	for Tile in other_tiles: Tiles.on_set_tile_material(Tile, "Greyscale")
-	for Unit in Units.on_units(0, "Enemy"): Unit.visible = Unit.Tile in visible_tiles
+func on_apply_visibility(tiles: Array) -> void:
+	for Tile in tiles[0]: Tiles.on_remove_tile_material(Tile, "Greyscale")
+	for Tile in tiles[1]: Tiles.on_set_tile_material(Tile, "Greyscale")
+	#for Unit in Units.on_units(0, "Enemy"): Unit.visible = Unit.Tile in visible_tiles
 
 func on_find_units_enter_vision(old_visible_tiles: Array) -> void:
-	for Unit in Units.all_units():
-		var is_in_old_vision: bool = old_visible_tiles.any(func(x: TileGD): return x == Unit.Tile)
-		var is_in_vision: bool = visible_tiles.any(func(x: TileGD): return x == Unit.Tile)
-		
-		if !(is_in_old_vision and is_in_vision):
-			if is_in_vision: Units.on_unit_enters_vision(Unit)
-			elif is_in_old_vision: Units.on_unit_exits_vision(Unit)
+	pass
+	#for Unit in Units.all_units():
+		#var is_in_old_vision: bool = old_visible_tiles.any(func(x: TileGD): return x == Unit.Tile)
+			#var is_in_vision: bool = visible_tiles.any(func(x: TileGD): return x == Unit.Tile)
+		#
+		#if !(is_in_old_vision and is_in_vision):
+			#if is_in_vision: Units.on_unit_enters_vision(Unit)
+			#elif is_in_old_vision: Units.on_unit_exits_vision(Unit)
 
 func is_unit_in_vision(Unit: UnitGD) -> bool: # two diff visions for the two teams
-	if Unit.team == 1: return Unit.Tile in visible_tiles
-	return false
+	return Units.on_units(Unit.team, "Enemy").any(func(x: UnitGD): return Unit in x.visible_units)
 
 func is_unit_in_unit_vision(VisionUnit: UnitGD, ObservedUnit: UnitGD, include_self: bool) -> bool:
 	if VisionUnit != null and ObservedUnit != null:

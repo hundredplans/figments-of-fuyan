@@ -96,6 +96,8 @@ horizontal_scroll_mode = 0
 [node name="Statuses" type="VBoxContainer" parent="StatusBox/SortMenu/StatusClipper"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_override_constants/separation = 30
 
 [node name="CornerRightMenu" type="VBoxContainer" parent="."]
@@ -333,9 +335,9 @@ autowrap_mode = 2
 unique_name_in_owner = true
 anchors_preset = 0
 offset_left = 423.0
-offset_top = 1080.0
+offset_top = 1070.0
 offset_right = 1498.0
-offset_bottom = 1490.0
+offset_bottom = 1480.0
 
 [node name="Background" type="Panel" parent="HandBox"]
 layout_mode = 1
@@ -354,14 +356,15 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-horizontal_scroll_mode = 0
+vertical_scroll_mode = 0
 metadata/_edit_lock_ = true
 
 [node name="CardBox" type="HBoxContainer" parent="HandBox/CardClipper"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 alignment = 1
-metadata/_edit_lock_ = true
 
 [connection signal="mouse_entered" from="StatusBox" to="." method="on_is_mouse_in_ui" binds= [true]]
 [connection signal="mouse_exited" from="StatusBox" to="." method="on_is_mouse_in_ui" binds= [false]]

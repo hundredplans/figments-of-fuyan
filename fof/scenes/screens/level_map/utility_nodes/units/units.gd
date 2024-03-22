@@ -48,6 +48,7 @@ func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int
 	var Unit: UnitGD = UnitScene.instantiate()
 	Unit.Units = self
 	Unit.Vision = Vision
+	Unit.Tiles = Tiles
 	FieldedUnits.add_child(Unit)
 	Unit.on_create_unit(id, tool_id, effects, team, rot, tile)
 	Unit.Model.movement_finished.connect(on_movement_finished.bind(Unit))
@@ -140,6 +141,12 @@ func on_movement_finished(Unit: UnitGD) -> void:
 	
 	if event_queue.is_empty() and Unit.speed > 0:
 		PlayerManager._on_unit_selected(Unit)
+	on_event_queue_finished()
+
+func on_event_queue_finished() -> void:
+	if event_queue.is_empty():
+		if SpectateCamera.SpectateUnit != null: 
+			Tiles.on_set_tile_highest_material(SpectateCamera.SpectateUnit.Tile)
 
 func on_unit_enters_vision(Unit: UnitGD) -> void:
 	if Unit.team == 1: PlayerManager.on_enemy_unit_enters_vision(Unit)
@@ -152,14 +159,15 @@ func on_clear_event_queue() -> void:
 	active_event = []
 	event_queue = []
 	
+	on_event_queue_finished()
+	
 func on_unit_travel_finished(Unit: UnitGD) -> void:
 	on_force_resume_idle_animation_from_walk()
-	
+	active_event = []
 	if Unit.team == 0: PlayerManager.on_check_autopass(Unit)
-	elif Unit.team == 1: Tiles.on_set_tile_material(Unit.Tile, "EnemyOccupy")
-	
 	LevelMap.on_set_lock_inputs_event_queue(false)
 	SpectateCamera.on_end_track_unit()
+	Tiles.on_set_tile_highest_material(Unit.Tile)
 	
 func on_force_resume_idle_animation_from_walk() -> void:
 	if !active_event.is_empty() and active_event[0] == "MoveUnit":
@@ -198,6 +206,7 @@ func on_attack_finished(Unit: UnitGD) -> void:
 	
 	LevelMap.on_set_lock_inputs_event_queue(false)
 	if Unit.team == 0: PlayerManager.on_attack_finished(Unit)
+	on_event_queue_finished()
 	
 func _attack_target(_Unit: UnitGD, _Tile: TileGD) -> void:
 	pass
@@ -223,6 +232,8 @@ func on_death_finished(Unit: UnitGD) -> void:
 	
 	if Unit.Model.current_walk_stream_player != null:
 		AudioMaster.on_cutoff_sfx(Unit.Model.current_walk_stream_player)
+
+	on_event_queue_finished()
 
 func on_drop_calculate_damage(new_health: int, scale_time: float, Unit: UnitGD) -> void:
 	if new_health >= 0:

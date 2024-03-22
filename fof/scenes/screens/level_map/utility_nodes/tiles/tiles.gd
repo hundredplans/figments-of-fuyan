@@ -59,6 +59,10 @@ func _all_in_range(pos: Vector4, distance: int = 2, include_central: bool = fals
 		for _pos in _all_neighbours(pos, n, search_elevation, poses):
 			a.append(_pos)
 	return a
+	
+func getTposInRange(Tile: TileGD, i: int = 1, include_central: bool = false) -> Array:
+	return get_children().filter(func(x: TileGD): return range(1 - int(include_central), i + 1)\
+	.any(func(j: int): return is_neighbour(Tile, x, j))).map(func(y: TileGD): return y.tpos)
 
 func tiles_unique(tiles: Array, otiles: Array) -> Array:
 	return tiles.filter(is_tile_not_in_tiles.bind(otiles))
@@ -395,7 +399,7 @@ func on_path_hovered_tile_selected(Tile: TileGD) -> void:
 		else: Units.attack_enemy_or_target(Units.PlayerManager.UnitSelected, path_hovered_info.tiles[i])
 		if Tile == path_hovered_info.tiles[i]: break
 		
-	on_remove_tile_material(Units.PlayerManager.UnitSelected.Tile, "SpectatingUnit")
+	on_remove_tile_material(Units.PlayerManager.UnitSelected.Tile, "EmptyTile")
 	Units.PlayerManager._on_unit_deselected(Units.PlayerManager.UnitSelected, true)
 		
 func on_enemy_found_tile_selected(Tile: TileGD, Unit: UnitGD) -> void:
@@ -438,7 +442,7 @@ func on_remove_tile_material(Tile: TileGD, material_name: String = "") -> void:
 				if state in ["Greyscale", "AllyOccupy"] + unit_states:
 					new_state.append(state)
 			Tile.tile_state = new_state
-		"UnitChangeTile": Tile.tile_state = []
+		"EmptyTile": Tile.tile_state = []
 		_: Tile.tile_state.erase(material_name)
 	on_set_tile_highest_material(Tile, material_name)
 	
@@ -453,32 +457,32 @@ func on_set_tile_material(Tile: TileGD, material_name: String):
 	on_set_tile_highest_material(Tile)
 
 func on_set_tile_highest_material(Tile: TileGD, removed_material: String = "") -> void:
-	var is_greyscale: bool = Tile.tile_state.has("Greyscale")
-	var greyscale_override: bool = false
-	var highest: int = 0
-	
-	for state in Tile.tile_state:
-		var f: int = TILE_MATERIALS[state].priority
-		if TILE_MATERIALS[state].priority_over_greyscale: greyscale_override = true
-		if f > highest: highest = f
-	
-	if is_greyscale and !greyscale_override: highest = 1
-	var highest_tile_material: TileMaterial = getTileMaterialFromPriority(highest)
-	
-	var mat: ShaderMaterial
-	if highest_tile_material == null: mat = null
-	else: mat = highest_tile_material.material
-	
-	if removed_material == "Greyscale":
-		Tile.setMaterial(null, -2)
-		Tile.setMaterial(mat, 0)
-	elif (mat != null and highest_tile_material.material_name == "Greyscale"):
-		Tile.setMaterial(mat)
-	else:
-		Tile.setMaterial(mat, 0)
+	if Units.active_event.is_empty():
+		var is_greyscale: bool = Tile.tile_state.has("Greyscale")
+		var greyscale_override: bool = false
+		var highest: int = 0
 		
+		for state in Tile.tile_state:
+			var f: int = TILE_MATERIALS[state].priority
+			if TILE_MATERIALS[state].priority_over_greyscale: greyscale_override = true
+			if f > highest: highest = f
 		
-	Tile.Effects.on_manage_height_drop_label(Units.PlayerManager.UnitSelected)
+		if is_greyscale and !greyscale_override: highest = 1
+		var highest_tile_material: TileMaterial = getTileMaterialFromPriority(highest)
+		
+		var mat: ShaderMaterial
+		if highest_tile_material == null: mat = null
+		else: mat = highest_tile_material.material
+		
+		if removed_material == "Greyscale":
+			Tile.setMaterial(null, -2)
+			Tile.setMaterial(mat, 0)
+		elif (mat != null and highest_tile_material.material_name == "Greyscale"):
+			Tile.setMaterial(mat)
+		else:
+			Tile.setMaterial(mat, 0)
+			
+		Tile.Effects.on_manage_height_drop_label(Units.PlayerManager.UnitSelected)
 
 func getTileMaterialFromPriority(priority: int) -> TileMaterial:
 	for tile_material in TILE_MATERIALS.values():
@@ -525,3 +529,4 @@ func on_find_tile_by_raycast() -> TileGD:
 	if node:
 		node = node.get_node("../../..")
 	return node
+	

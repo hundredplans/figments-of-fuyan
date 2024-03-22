@@ -28,6 +28,7 @@ var attack_amount: int = 0
 var AudioDict: AudioDictGD
 var Vision: VisionGD
 var Units: UnitsGD
+var Tiles: TilesGD
 var TeamControl: Node
 
 var turn_status: int = 0 # 0 = turn active, 1 = turn inactive, 2 = turn used
@@ -57,6 +58,7 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	Model.rot = rot
 	Model.on_add_model()
 	
+	VisionRaycast.position.y = height.eye
 	UnitFieldStatus.Unit = self
 	UnitFieldStatus.SpectateCamera = Units.SpectateCamera
 	UnitFieldStatus.unit_set = true
@@ -66,20 +68,18 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	position = tile.position
 	position.y += 0.3
 	occupy_tile(tile)
-	Units.Tiles.on_set_tile_material(tile, "AllyOccupy" if team == 0 else "EnemyOccupy")
+	Tiles.on_set_tile_material(tile, "AllyOccupy" if team == 0 else "EnemyOccupy")
 	AudioDict = load("res://assets/base_game/cards/" + base_card.bgfn + "/audio.tres")
 
 func occupy_tile(_Tile: TileGD) -> void:
-	var old_tile_state: Array = []
+	var is_spectate_unit: bool = self == Units.SpectateCamera.SpectateUnit
 	if Tile != null: 
-		old_tile_state = Tile.tile_state.duplicate()
-		Units.Tiles.on_remove_tile_material(Tile, "UnitChangeTile")
-	
+		Tiles.on_remove_tile_material(Tile, "AllyOccupy" if team == 0 else "EnemyOccupy")
+		if is_spectate_unit: Tiles.on_remove_tile_material(Tile, "SpectatingUnit")
 	Tile = _Tile
-	Tile.tile_state = old_tile_state
-	Units.Tiles.on_set_tile_highest_material(Tile, "")
-
-	Vision.on_recalculate_vision()
+	Tiles.on_set_tile_material(Tile, "AllyOccupy" if team == 0 else "EnemyOccupy")
+	if is_spectate_unit: Tiles.on_set_tile_material(Tile, "SpectatingUnit")
+	Vision.on_recalculate_vision(self)
 
 var Killer: UnitGD
 func stats(stat_type: String, val: int, AppliedBy: Variant = "GameEvent", absolute: bool = false) -> void:
@@ -129,17 +129,16 @@ func on_arrive(in_vision: bool) -> void:
 	# can do regular arrive effects here
 
 func on_death() -> void:
-	Units.Tiles.on_remove_tile_material(Tile, "")
+	Tiles.on_remove_tile_material(Tile, "")
 	queue_free()
 
-var units_in_vision: Array
 func on_spectated_in_player_phase(state: bool) -> void:
 	UnitStatus.on_unit_spectated(state)
 	UnitFieldStatus.on_unit_spectated(state)
 	if state:
-		Units.Tiles.on_set_tile_material(Tile, "SpectatingUnit")
+		Tiles.on_set_tile_material(Tile, "SpectatingUnit")
 		Units.LevelUI.on_update_vision()
-	else: Units.Tiles.on_remove_tile_material(Tile, "SpectatingUnit")
+	else: Tiles.on_remove_tile_material(Tile, "SpectatingUnit")
 
 func on_set_turn_status() -> void:
 	UnitStatus.SlotOne.visible = turn_status == 2
@@ -150,4 +149,54 @@ func on_enemy_in_range(state: bool) -> void:
 	UnitStatus.SlotOne.visible = state
 	UnitFieldStatus.SlotOne.visible = state
 	if state:
-		Units.Tiles.on_set_tile_material(Tile, "EnemyInRange")
+		Tiles.on_set_tile_material(Tile, "EnemyInRange")
+
+var visible_tiles: Array
+var visible_units: Array
+@onready var VisionRaycast: Node3D = $VisionRaycast
+const RAY_COUNT: int = 100
+const RAY_DISTANCE: int = 50
+const VISION_RANGE: int = 5
+
+func onCircleRay() -> void:
+	visible_tiles = []
+	var vision_tposes: Array = Tiles.getTposInRange(Tile, VISION_RANGE, true)
+	for i in range(RAY_COUNT):
+		var phi: float = (i * (PI * 2)) / RAY_COUNT
+		var theta: float = 0
+		for j in range(RAY_COUNT):
+			theta = (j * PI) / RAY_COUNT
+			VisionRaycast.target_position = Vector3(sin(theta) * cos(phi), sin(theta) * sin(phi), cos(theta)) * RAY_DISTANCE
+			VisionRaycast.force_raycast_update()
+			
+			if VisionRaycast.is_colliding():
+				var _Tile: TileGD = VisionRaycast.get_collider().get_node("../../..")
+				if _Tile.tpos in vision_tposes:
+					onAddTileToVisibleTiles(_Tile)
+	onUnitsHeightAdjacentTiles()
+
+func onAddTileToVisibleTiles(_Tile: TileGD) -> void:
+	if _Tile not in visible_tiles:
+		for type in ["obj", "wdeco", "tdeco"]:
+			if _Tile[type].multi_tile.size() > 0:
+				if _Tile.solid_status == 1:
+					for __Tile in _Tile[type].multi_tile:
+						if __Tile not in visible_tiles:
+							_onAddTileToVisibleTiles(__Tile)
+		_onAddTileToVisibleTiles(_Tile)
+	
+func _onAddTileToVisibleTiles(_Tile: TileGD) -> void:
+	visible_tiles.append(_Tile)
+	for __Tile in _Tile.top_of_cliff_wall:
+		if __Tile not in visible_tiles:
+			visible_tiles.append(__Tile)
+	
+func onUnitsHeightAdjacentTiles() -> void:
+	if Tile.w > 0:
+		for direction in Tiles.cube_directions:
+			var pos: Vector3 = Tile.tpos + direction
+			for w in range(Tile.w - 1, -1, -1):
+				var _Tile: TileGD = Tiles.position_to_tile(Vector4(pos.x, pos.y, pos.z, w))
+				if _Tile != null and _Tile.tile.id > 0:
+					onAddTileToVisibleTiles(_Tile)
+					break
