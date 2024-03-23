@@ -379,7 +379,7 @@ func interact_button(flip: bool = false) -> String:
 	return ["RightClick", "MouseMiddle"][abs(Settings.interact_button - int(flip))]
 
 func on_timer_end(function: Callable, args: Array, delay: float):
-	var tween: Tween = create_tween()
+	var tween: Tween = get_tree().create_tween()
 	tween.tween_callback(function.bindv(args)).set_delay(delay)
 
 func create_base_game_id_dir(item_dict: Dictionary, file_loader_name: String) -> void:

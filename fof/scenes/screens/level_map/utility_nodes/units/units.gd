@@ -146,7 +146,10 @@ func on_movement_finished(Unit: UnitGD) -> void:
 func on_event_queue_finished() -> void:
 	if event_queue.is_empty():
 		if SpectateCamera.SpectateUnit != null: 
-			Tiles.on_set_tile_highest_material(SpectateCamera.SpectateUnit.Tile)
+			Tiles.on_set_tile_material(SpectateCamera.SpectateUnit.Tile, "SpectatingUnit")
+			
+		for Unit in all_units():
+			Tiles.on_set_tile_material(Unit.Tile, "AllyOccupy" if Unit.team == 0 else "EnemyOccupy")
 
 func on_unit_enters_vision(Unit: UnitGD) -> void:
 	if Unit.team == 1: PlayerManager.on_enemy_unit_enters_vision(Unit)
@@ -245,10 +248,10 @@ func on_drop_calculate_damage(new_health: int, scale_time: float, Unit: UnitGD) 
 
 const DROP_HEIGHT_SCALE_DOWN := Vector3(1, 0.05, 1)
 func on_descale_unit(Unit: UnitGD, scale_time: float) -> void:
-	var ScaleTween := get_tree().create_tween()
+	var ScaleTween := create_tween()
 	ScaleTween.tween_property(Unit, "scale", DROP_HEIGHT_SCALE_DOWN, scale_time)
 	ScaleTween.finished.connect(on_unscale_unit.bind(Unit, scale_time))
 
 func on_unscale_unit(Unit: UnitGD, scale_time: float) -> void:
-	var ScaleTween := get_tree().create_tween()
+	var ScaleTween := create_tween()
 	ScaleTween.tween_property(Unit, "scale", Vector3.ONE, scale_time)

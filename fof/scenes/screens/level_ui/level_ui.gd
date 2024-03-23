@@ -162,7 +162,7 @@ func on_unextend_hand_box() -> void:
 		on_move_hand_box(HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION)
 		
 func on_move_hand_box(to: int) -> void:
-	var MoveTween := get_tree().create_tween()
+	var MoveTween := create_tween()
 	MoveTween.tween_property(HandBox, "position:y", to, PANEL_MOVE_TWEEN_DURATION)
 	MoveTween.finished.connect(on_move_tween_finished)
 	is_hand_box_panel_moving = true
@@ -245,13 +245,13 @@ func on_tab_pressed() -> void:
 	if !is_status_box_moving:
 		is_status_box_moving = true
 		status_box_state = abs(status_box_state - 1)
-		var MoveTween := get_tree().create_tween()
+		var MoveTween := create_tween()
 		MoveTween.tween_property(StatusBox, "position:x", status_box_positions[status_box_state], STATUS_BOX_TRAVEL_TIME)
 		MoveTween.finished.connect(func(): is_status_box_moving = false; get_viewport().update_mouse_cursor_state())
 
 @onready var UnitStatusState: Control = %UnitStatusState
 func on_set_unit_turn_status(Unit: UnitGD, status: int) -> void:
-	UnitStatusState.on_set_state(Unit if status == 0 else null)
+	UnitStatusState.on_set_state(Unit, status == 0)
 
 func _on_vision_mode_set():
 	Vision.on_vision_mode_set(1 if Vision.vision_mode == 0 else 0)

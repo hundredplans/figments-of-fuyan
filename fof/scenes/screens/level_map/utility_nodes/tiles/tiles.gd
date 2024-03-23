@@ -88,6 +88,13 @@ func nonexistent_positions_above(Tile: TileGD) -> Array: #TASK: Optimise this
 func is_nonexistent_valid_pos(pos: Vector4) -> bool:
 	return pos.w < MAX_HEIGHT and pos not in get_children_positions()
 
+func onIsTileJumpableThrough(pos: Vector4) -> bool:
+	for _pos in get_children_positions():
+		if pos == _pos:
+			var Tile: TileGD = position_to_tile(pos)
+			return !(Tile.tile.id > 0 or Tile.solid_status > 0)
+	return true
+
 func position_to_tile(pos: Vector4) -> Node3D: 
 	var positions: Array = get_children_positions()
 	for i in range(positions.size()):
@@ -291,19 +298,30 @@ func on_create_movement_paths(Unit: UnitGD) -> void:
 			elif (Tile.obj.id in is_stair_object or Tile.tile.type == 2): # start on ramp
 				if on_can_ramp_connect(_Tile, Tile, hdiff):
 					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i.ZERO)
+			
 			elif Tile.tile.type == 1: # start on half tile
-				if hdiff in [-1, 1]:
-					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(3, 0))
-				elif hdiff == 0:
+				if hdiff in [-1, 1]: # half tile to regular (jump up / down)
+					if isValidJump(Tile, _Tile, Unit.height.top):
+						on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(3, 0))
+						
+				elif hdiff == 0: # half tile to half tile
 					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i.ZERO)
-				elif hdiff < 0 and is_valid_jump(Tile, _Tile): on_connect_points(astar, movement_types, Tile, _Tile, Vector3i(4, hdiff, 0))
-			elif hdiff == 1 and _Tile.tile.type == 1: # regular to half tile
-				on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(3, 0))
+				elif hdiff < 0 and is_valid_tall_jump(Tile, _Tile, Unit.height.top): 
+					on_connect_points(astar, movement_types, Tile, _Tile, Vector3i(4, hdiff, 0))
+					
+			elif hdiff == 1 and _Tile.tile.type == 1: # jump up from regular to half
+				if isValidJump(Tile, _Tile, Unit.height.top):
+					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(3, 0))
+					
+			elif hdiff < 0: # jump down from regular tile
+				if hdiff == -1:
+					if isValidJump(Tile, _Tile, Unit.height.top):
+						on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(3, 0))
+				elif is_valid_tall_jump(Tile, _Tile, Unit.height.top):
+					on_connect_points(astar, movement_types, Tile, _Tile, Vector3i(4, hdiff, 0))
+			
 			elif hdiff == 0: # movement between regular tiles
 				on_connect_points(astar, movement_types, Tile, _Tile, Vector2i.ZERO)
-			elif hdiff < 0: # jump down from regular tile
-				if hdiff == -1: on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(3, 0))
-				elif is_valid_jump(Tile, _Tile): on_connect_points(astar, movement_types, Tile, _Tile, Vector3i(4, hdiff, 0))
 	tiles_by_adjacent.erase(Unit.Tile)
 	
 	for Tile in tiles_by_adjacent.keys(): # disconnect all points that a unit can't get to
@@ -336,12 +354,29 @@ func on_calculate_drop_damage(_hdiff: int, current_health: int, top_height: floa
 		nhealth = max(current_health + nhealth, 0)
 	return Vector3i(4, _hdiff, nhealth)
 
-# 
-func is_valid_jump(From: TileGD, To: TileGD) -> bool:
-	var to_pos: Vector4 = To.onTTpos()
-	for Tile in range(to_pos.w + 1, From.w + 1).map(func(x: int): return position_to_tile(Vector4(to_pos.x, to_pos.y, to_pos.z, x))):
-		if !(Tile == null or Tile.solid_status == 1): return false
+const JUMP_OFFSET: float = 0.3
+func isValidJump(From: TileGD, To: TileGD, height: float) -> bool:
+	if From.w < To.w:
+		return onIsValidJumpTileAbove(height, From.onTTpos(From.w + ceil(height)))
+	elif From.w > To.w:
+		for w in range(From.w + 1 + int(From.tile.id == 1), From.w + floor(height) + 1):
+			if !onIsTileJumpableThrough(To.onTTpos(w)):
+				return false
+		return onIsValidJumpTileAbove(height, To.onTTpos(From.w + ceil(height)))
 	return true
+
+func onIsValidJumpTileAbove(height: float, ttpos: Vector4) -> bool:
+	if JUMP_OFFSET + height >= ceil(height):
+		return onIsTileJumpableThrough(ttpos)
+	return true
+
+func is_valid_tall_jump(From: TileGD, To: TileGD, height: int) -> bool:
+	if isValidJump(From, To, height):
+		var to_pos: Vector4 = To.onTTpos()
+		for Tile in range(to_pos.w + 1, From.w + 1).map(func(x: int): return position_to_tile(Vector4(to_pos.x, to_pos.y, to_pos.z, x))):
+			if !(Tile == null or Tile.solid_status == 1): return false
+		return true
+	return false
 
 func on_create_true_path(id_path: Array, movement_types: Array, Unit: UnitGD) -> Dictionary: # For eliminating Tiles
 	var current_health: int = Unit.health
@@ -444,7 +479,7 @@ func on_remove_tile_material(Tile: TileGD, material_name: String = "") -> void:
 			Tile.tile_state = new_state
 		"EmptyTile": Tile.tile_state = []
 		_: Tile.tile_state.erase(material_name)
-	on_set_tile_highest_material(Tile, material_name)
+	on_set_tile_highest_material(Tile, 1 if material_name == "Greyscale" else 0)
 	
 func on_set_tile_material(Tile: TileGD, material_name: String):
 	if !Tile.tile_state.has(material_name):
@@ -454,40 +489,29 @@ func on_set_tile_material(Tile: TileGD, material_name: String):
 			Tile.tile_state = Tile.tile_state.filter(func(x: String): return x not in unit_states)
 			Tile.tile_state.append(material_name)
 	
-	on_set_tile_highest_material(Tile)
+	on_set_tile_highest_material(Tile, 2 if material_name == "Greyscale" else 0)
 
-func on_set_tile_highest_material(Tile: TileGD, removed_material: String = "") -> void:
-	if Units.active_event.is_empty():
-		var is_greyscale: bool = Tile.tile_state.has("Greyscale")
-		var greyscale_override: bool = false
-		var highest: int = 0
+func on_set_tile_highest_material(Tile: TileGD, greyscale_state: int = 0) -> void: # 1 = removed, 2 = added
+	var highest: int = 0
+	for state in Tile.tile_state:
+		var f: int = TILE_MATERIALS[state].priority
+		if f > highest: highest = f
+	
+	if highest == 100 and "RegularInspected" in Tile.tile_state:
+		highest = 55
+	var mat: ShaderMaterial = getTileMaterialFromPriority(highest)
+	if greyscale_state == 1:
+		Tile.setMaterial(null, -2)
+	elif greyscale_state == 2:
+		Tile.setMaterial(TILE_MATERIALS["Greyscale"].material, -2)
 		
-		for state in Tile.tile_state:
-			var f: int = TILE_MATERIALS[state].priority
-			if TILE_MATERIALS[state].priority_over_greyscale: greyscale_override = true
-			if f > highest: highest = f
-		
-		if is_greyscale and !greyscale_override: highest = 1
-		var highest_tile_material: TileMaterial = getTileMaterialFromPriority(highest)
-		
-		var mat: ShaderMaterial
-		if highest_tile_material == null: mat = null
-		else: mat = highest_tile_material.material
-		
-		if removed_material == "Greyscale":
-			Tile.setMaterial(null, -2)
-			Tile.setMaterial(mat, 0)
-		elif (mat != null and highest_tile_material.material_name == "Greyscale"):
-			Tile.setMaterial(mat)
-		else:
-			Tile.setMaterial(mat, 0)
-			
-		Tile.Effects.on_manage_height_drop_label(Units.PlayerManager.UnitSelected)
+	Tile.setMaterial(mat, 0)
+	Tile.Effects.on_manage_height_drop_label(Units.PlayerManager.UnitSelected)
 
-func getTileMaterialFromPriority(priority: int) -> TileMaterial:
+func getTileMaterialFromPriority(priority: int) -> ShaderMaterial:
 	for tile_material in TILE_MATERIALS.values():
 		if tile_material.priority == priority:
-			return tile_material
+			return tile_material.material
 	return null
 
 func on_lock_inputs_changed(x: bool) -> void:

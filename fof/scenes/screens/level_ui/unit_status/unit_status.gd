@@ -72,7 +72,7 @@ func on_reset_stats(stat_changed: String) -> void:
 		
 	if !stat_changed.is_empty():
 		on_set_unit_field_status_stats(attack_modulate, health_modulate, speed_modulate)
-		var ScaleTween := get_tree().create_tween()
+		var ScaleTween := create_tween()
 		var StatLabel: Label = Stats.get_node(stat_changed + "/Label")
 		ScaleTween.tween_property(StatLabel, "scale:y", 0, NUMBER_SCALE_TIME)
 		ScaleTween.finished.connect(on_reset_stat_numbers.bind(attack_modulate, health_modulate, speed_modulate, stat_changed))
@@ -93,7 +93,7 @@ func on_reset_stat_numbers(attack_modulate: String, health_modulate: String, spe
 		get_node("HoverCard/Buffs/HBoxContainer/" + stat + "/Label").text = ("+" if val >= 0 else "") + str(val)
 	
 	var StatLabel: Label = Stats.get_node(stat_changed + "/Label")
-	var ScaleTween := get_tree().create_tween()
+	var ScaleTween := create_tween()
 	ScaleTween.tween_property(StatLabel, "scale:y", 1, NUMBER_SCALE_TIME)
 	
 func on_reset_status_effects() -> void:
@@ -154,7 +154,7 @@ signal queue_free_signal
 const DEATH_AFTER_MULTIPLIER: float = 2.0
 var on_rotate_queue_free: bool = false
 func onBeginUnitStatusDeath(DEATH_AFTER_DELAY: float) -> void:
-	var ScaleTween: Tween = get_tree().create_tween()
+	var ScaleTween: Tween = create_tween()
 	ScaleTween.tween_property(self, "scale", Vector2.ZERO, DEATH_AFTER_DELAY * DEATH_AFTER_MULTIPLIER)
 	on_rotate_queue_free = true
 	

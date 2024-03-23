@@ -129,7 +129,7 @@ func on_create_drop_jump(Tile: TileGD, hdiff: int, new_health: int) -> void:
 	.connect(func(): drop_calculate_damage.emit(new_health, (3 / AniPlayer.speed_scale) / 6))
 		
 func on_create_move_tween(Tile: TileGD, type: Vector2i) -> void:
-	var MoveTween: Tween = get_tree().create_tween()
+	var MoveTween: Tween = create_tween()
 	var half_position := Vector3(Tile.global_position + global_position) * 0.5
 	var climb_slope: float = 0.75 if Tile.tile.type == 1 else 0.3
 	if type.x == 2 and type.y == -1: climb_slope = 1.5
@@ -140,7 +140,7 @@ func on_create_move_tween(Tile: TileGD, type: Vector2i) -> void:
 	
 	MoveTween.finished.connect(on_create_second_move_tween.bind(Tile, type))
 func on_create_second_move_tween(Tile: TileGD, type: Vector2i) -> void:
-	var MoveTween: Tween = get_tree().create_tween()
+	var MoveTween: Tween = create_tween()
 	var climb_slope: float = 0.75 if Tile.tile.type == 1 else 0.3
 	if type.x == 2: climb_slope = 0.9
 	

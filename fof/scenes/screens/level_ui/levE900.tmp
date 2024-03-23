@@ -98,7 +98,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/separation = 0
+theme_override_constants/separation = 30
 
 [node name="CornerRightMenu" type="VBoxContainer" parent="."]
 unique_name_in_owner = true
@@ -116,7 +116,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
 size_flags_horizontal = 8
-mouse_filter = 1
+mouse_filter = 2
 
 [node name="Background" type="Panel" parent="CornerRightMenu/ChangePhase"]
 layout_mode = 1
@@ -144,7 +144,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 1
 
 [node name="VisionMode" type="Control" parent="CornerRightMenu"]
 unique_name_in_owner = true
@@ -159,7 +158,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 1
 theme = ExtResource("2_pmg4n")
 
 [node name="Button" type="Button" parent="CornerRightMenu/VisionMode"]
@@ -169,7 +167,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 1
 
 [node name="Label" type="Label" parent="CornerRightMenu/VisionMode"]
 modulate = Color(0.831373, 0.517647, 0.239216, 1)
@@ -274,11 +271,10 @@ anchor_left = 1.017
 anchor_top = 1.055
 anchor_right = 1.017
 anchor_bottom = 1.055
-offset_left = -368.086
+offset_left = -379.905
 offset_top = -208.065
-offset_right = -0.0859985
+offset_right = -12.905
 offset_bottom = -78.065
-mouse_filter = 1
 script = ExtResource("8_ape8n")
 
 [node name="Label" type="Label" parent="CornerRightMenu/CameraArrows/UnitStatusState"]
@@ -287,6 +283,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 12.0
+offset_right = 13.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "No unit's turn is active!"
@@ -372,14 +370,10 @@ alignment = 1
 [connection signal="mouse_exited" from="StatusBox" to="." method="on_is_mouse_in_ui" binds= [false]]
 [connection signal="item_selected" from="StatusBox/SortMenu/Buttons/TeamButton" to="." method="_on_team_button_item_selected"]
 [connection signal="item_selected" from="StatusBox/SortMenu/Buttons/VisionButton" to="." method="on_vision_selected"]
-[connection signal="mouse_entered" from="CornerRightMenu/ChangePhase" to="." method="on_is_mouse_in_ui" binds= [true]]
-[connection signal="mouse_exited" from="CornerRightMenu/ChangePhase" to="." method="on_is_mouse_in_ui" binds= [false]]
+[connection signal="mouse_entered" from="CornerRightMenu/ChangePhase/ChangePhaseHitbox" to="." method="on_is_mouse_in_ui" binds= [true]]
+[connection signal="mouse_exited" from="CornerRightMenu/ChangePhase/ChangePhaseHitbox" to="." method="on_is_mouse_in_ui" binds= [false]]
 [connection signal="pressed" from="CornerRightMenu/ChangePhase/ChangePhaseHitbox" to="." method="_on_change_phase_hitbox_pressed"]
-[connection signal="mouse_entered" from="CornerRightMenu/VisionMode" to="." method="on_is_mouse_in_ui" binds= [true]]
-[connection signal="mouse_exited" from="CornerRightMenu/VisionMode" to="." method="on_is_mouse_in_ui" binds= [false]]
 [connection signal="pressed" from="CornerRightMenu/VisionMode/Button" to="." method="_on_vision_mode_set"]
-[connection signal="mouse_entered" from="CornerRightMenu/PassUnitTurn" to="." method="on_is_mouse_in_ui" binds= [true]]
-[connection signal="mouse_exited" from="CornerRightMenu/PassUnitTurn" to="." method="on_is_mouse_in_ui" binds= [false]]
 [connection signal="pressed" from="CornerRightMenu/PassUnitTurn/PassUnitTurnButton" to="." method="_on_pass_unit_turn_button_pressed"]
 [connection signal="mouse_entered" from="CornerRightMenu/CameraArrows" to="." method="on_is_mouse_in_ui" binds= [true]]
 [connection signal="mouse_exited" from="CornerRightMenu/CameraArrows" to="." method="on_is_mouse_in_ui" binds= [false]]

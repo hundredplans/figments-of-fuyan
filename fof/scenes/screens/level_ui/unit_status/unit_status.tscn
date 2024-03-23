@@ -32,7 +32,7 @@ shadow_size = 10
 Panel/styles/panel = SubResource("StyleBoxFlat_i2ie0")
 
 [node name="UnitStatus" type="Control"]
-custom_minimum_size = Vector2(380, 100)
+custom_minimum_size = Vector2(380, 130)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 380.0
@@ -58,6 +58,7 @@ layout_mode = 0
 offset_left = -5.0
 offset_right = 355.0
 offset_bottom = 100.0
+mouse_filter = 1
 texture_normal = ExtResource("8_sa0gl")
 
 [node name="LightMask" type="Sprite2D" parent="Background"]

@@ -4,6 +4,5 @@ extends Resource
 @export var is_unit_state: bool
 @export var albedo: Color
 @export var priority: int
-@export var priority_over_greyscale: bool
 @export var unshaded: bool
 var material: ShaderMaterial

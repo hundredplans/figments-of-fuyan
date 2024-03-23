@@ -72,13 +72,13 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	AudioDict = load("res://assets/base_game/cards/" + base_card.bgfn + "/audio.tres")
 
 func occupy_tile(_Tile: TileGD) -> void:
-	var is_spectate_unit: bool = self == Units.SpectateCamera.SpectateUnit
-	if Tile != null: 
-		Tiles.on_remove_tile_material(Tile, "AllyOccupy" if team == 0 else "EnemyOccupy")
-		if is_spectate_unit: Tiles.on_remove_tile_material(Tile, "SpectatingUnit")
+	#var is_spectate_unit: bool = self == Units.SpectateCamera.SpectateUnit
+	#if Tile != null: 
+		#Tiles.on_remove_tile_material(Tile, "AllyOccupy" if team == 0 else "EnemyOccupy")
+		#if is_spectate_unit: Tiles.on_remove_tile_material(Tile, "SpectatingUnit")
 	Tile = _Tile
-	Tiles.on_set_tile_material(Tile, "AllyOccupy" if team == 0 else "EnemyOccupy")
-	if is_spectate_unit: Tiles.on_set_tile_material(Tile, "SpectatingUnit")
+	#Tiles.on_set_tile_material(Tile, "AllyOccupy" if team == 0 else "EnemyOccupy")
+	#if is_spectate_unit: Tiles.on_set_tile_material(Tile, "SpectatingUnit")
 	Vision.on_recalculate_vision(self)
 
 var Killer: UnitGD
@@ -122,7 +122,7 @@ func on_arrive(in_vision: bool) -> void:
 		Light.position.y = height.top * 1.2
 		Light.light_energy = ARRIVE_EFFECT_INITIAL_LIGHT_ENERGY
 		Light.light_color = Helper.rarity_colors[rarity]
-		var LightTween: Tween = get_tree().create_tween()
+		var LightTween: Tween = create_tween()
 		LightTween.tween_property(Light, "light_energy", 0, ARRIVE_EFFECT_LIGHT_DURATION)
 		LightTween.finished.connect(func(): Light.queue_free())
 		AudioMaster.play_sfx(AudioDict.ARRIVE)
@@ -195,8 +195,9 @@ func onUnitsHeightAdjacentTiles() -> void:
 	if Tile.w > 0:
 		for direction in Tiles.cube_directions:
 			var pos: Vector3 = Tile.tpos + direction
-			for w in range(Tile.w - 1, -1, -1):
-				var _Tile: TileGD = Tiles.position_to_tile(Vector4(pos.x, pos.y, pos.z, w))
-				if _Tile != null and _Tile.tile.id > 0:
-					onAddTileToVisibleTiles(_Tile)
-					break
+			if Tiles.position_to_tile(Vector4(pos.x, pos.y, pos.z, Tile.w)) == null:
+				for w in range(Tile.w - 1, -1, -1):
+					var _Tile: TileGD = Tiles.position_to_tile(Vector4(pos.x, pos.y, pos.z, w))
+					if _Tile != null and _Tile.tile.id > 0:
+						onAddTileToVisibleTiles(_Tile)
+						break

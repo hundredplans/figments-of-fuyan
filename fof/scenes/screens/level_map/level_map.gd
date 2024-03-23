@@ -34,7 +34,7 @@ func _ready() -> void:
 	on_load_world_history()
 	Deck.on_create_deck()
 	Deck.on_choose_champion()
-	Vision.on_recalculate_vision()
+	Vision.on_vision_mode_set(0)
 	
 func on_load_world_history() -> void:
 	pass
@@ -62,6 +62,7 @@ func on_change_game_phase(phase: String) -> void:
 			SpectateCamera.on_spectate("Spawn")
 			Hand.on_start_phase_start()
 			Units.on_start_phase_start()
+			Vision.on_start_phase_start()
 		"AfterStartPhase":
 			Deck.on_after_start_phase_start()
 		"HandPhase":
