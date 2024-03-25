@@ -111,41 +111,6 @@ mouse_filter = 2
 theme_override_constants/separation = 50
 alignment = 2
 
-[node name="ChangePhase" type="Control" parent="CornerRightMenu"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(150, 150)
-layout_mode = 2
-size_flags_horizontal = 8
-mouse_filter = 1
-
-[node name="Background" type="Panel" parent="CornerRightMenu/ChangePhase"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme = ExtResource("2_pmg4n")
-
-[node name="ChangePhaseSprite" type="Sprite2D" parent="CornerRightMenu/ChangePhase"]
-modulate = Color(0.607843, 0.380392, 0.176471, 1)
-texture_filter = 1
-position = Vector2(75, 75)
-scale = Vector2(3, 3)
-texture = ExtResource("4_uruhh")
-script = ExtResource("5_filg1")
-
-[node name="ChangePhaseHitbox" type="Button" parent="CornerRightMenu/ChangePhase"]
-modulate = Color(1, 1, 1, 0)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 1
-
 [node name="VisionMode" type="Control" parent="CornerRightMenu"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(152, 53)
@@ -295,6 +260,46 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
+[node name="ChangePhase" type="Control" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 2
+anchors_preset = 0
+offset_left = 1739.0
+offset_top = 459.0
+offset_right = 1889.0
+offset_bottom = 609.0
+size_flags_horizontal = 8
+mouse_filter = 1
+
+[node name="Background" type="Panel" parent="ChangePhase"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("2_pmg4n")
+
+[node name="ChangePhaseSprite" type="Sprite2D" parent="ChangePhase"]
+modulate = Color(0.607843, 0.380392, 0.176471, 1)
+texture_filter = 1
+position = Vector2(75, 75)
+scale = Vector2(3, 3)
+texture = ExtResource("4_uruhh")
+script = ExtResource("5_filg1")
+
+[node name="ChangePhaseHitbox" type="Button" parent="ChangePhase"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
 [node name="Energy" type="Control" parent="."]
 anchors_preset = 0
 offset_right = 120.0
@@ -372,9 +377,6 @@ alignment = 1
 [connection signal="mouse_exited" from="StatusBox" to="." method="on_is_mouse_in_ui" binds= [false]]
 [connection signal="item_selected" from="StatusBox/SortMenu/Buttons/TeamButton" to="." method="_on_team_button_item_selected"]
 [connection signal="item_selected" from="StatusBox/SortMenu/Buttons/VisionButton" to="." method="on_vision_selected"]
-[connection signal="mouse_entered" from="CornerRightMenu/ChangePhase" to="." method="on_is_mouse_in_ui" binds= [true]]
-[connection signal="mouse_exited" from="CornerRightMenu/ChangePhase" to="." method="on_is_mouse_in_ui" binds= [false]]
-[connection signal="pressed" from="CornerRightMenu/ChangePhase/ChangePhaseHitbox" to="." method="_on_change_phase_hitbox_pressed"]
 [connection signal="mouse_entered" from="CornerRightMenu/VisionMode" to="." method="on_is_mouse_in_ui" binds= [true]]
 [connection signal="mouse_exited" from="CornerRightMenu/VisionMode" to="." method="on_is_mouse_in_ui" binds= [false]]
 [connection signal="pressed" from="CornerRightMenu/VisionMode/Button" to="." method="_on_vision_mode_set"]
@@ -386,6 +388,9 @@ alignment = 1
 [connection signal="pressed" from="CornerRightMenu/CameraArrows/LeftArrow" to="." method="on_camera_arrow_pressed" binds= [-1]]
 [connection signal="pressed" from="CornerRightMenu/CameraArrows/RightArrow" to="." method="on_camera_arrow_pressed" binds= [1]]
 [connection signal="child_exiting_tree" from="CornerRightMenu/CameraArrows/UnitStatusState" to="CornerRightMenu/CameraArrows/UnitStatusState" method="_on_child_exiting_tree"]
+[connection signal="mouse_entered" from="ChangePhase" to="." method="on_is_mouse_in_ui" binds= [true]]
+[connection signal="mouse_exited" from="ChangePhase" to="." method="on_is_mouse_in_ui" binds= [false]]
+[connection signal="pressed" from="ChangePhase/ChangePhaseHitbox" to="." method="_on_change_phase_hitbox_pressed"]
 [connection signal="mouse_entered" from="Energy" to="." method="on_is_mouse_in_ui" binds= [true]]
 [connection signal="mouse_exited" from="Energy" to="." method="on_is_mouse_in_ui" binds= [false]]
 [connection signal="mouse_entered" from="HandBox" to="." method="on_extend_hand_box"]

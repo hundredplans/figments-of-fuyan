@@ -62,7 +62,7 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	UnitFieldStatus.Unit = self
 	UnitFieldStatus.SpectateCamera = Units.SpectateCamera
 	UnitFieldStatus.unit_set = true
-	UnitFieldStatus.position.y = height.top + 0.05
+	UnitFieldStatus.position.y = height.stat
 	UnitFieldStatus.on_set_unit()
 	
 	position = tile.position
@@ -72,13 +72,7 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	AudioDict = load("res://assets/base_game/cards/" + base_card.bgfn + "/audio.tres")
 
 func occupy_tile(_Tile: TileGD) -> void:
-	#var is_spectate_unit: bool = self == Units.SpectateCamera.SpectateUnit
-	#if Tile != null: 
-		#Tiles.on_remove_tile_material(Tile, "AllyOccupy" if team == 0 else "EnemyOccupy")
-		#if is_spectate_unit: Tiles.on_remove_tile_material(Tile, "SpectatingUnit")
 	Tile = _Tile
-	#Tiles.on_set_tile_material(Tile, "AllyOccupy" if team == 0 else "EnemyOccupy")
-	#if is_spectate_unit: Tiles.on_set_tile_material(Tile, "SpectatingUnit")
 	Vision.on_recalculate_vision(self)
 
 var Killer: UnitGD
@@ -130,6 +124,7 @@ func on_arrive(in_vision: bool) -> void:
 
 func on_death() -> void:
 	Tiles.on_remove_tile_material(Tile, "")
+	Vision.on_recalculate_vision()
 	queue_free()
 
 func on_spectated_in_player_phase(state: bool) -> void:

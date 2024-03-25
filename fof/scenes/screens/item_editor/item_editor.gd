@@ -81,13 +81,7 @@ func add_option_buttons(arr: Array) -> void:
 	
 	var x: int = 0
 	for i in arr:
-		var btn: Control
-		match i:
-			"Visibility":
-				btn = preload("res://scenes/ui_general/op_button/op_button.tscn").instantiate()
-				btn.options = ["Full-Vision", "Half-Vision", "Block"]
-			"Solidity", "MultiTile":
-				btn = preload("res://scenes/ui_general/binary_button/binary_button.tscn").instantiate()
+		var btn: Control = preload("res://scenes/ui_general/binary_button/binary_button.tscn").instantiate()
 		
 		if i != "MultiTile": btn.default = item_settings["0|0|0"][i.to_lower()]
 		else: btn.default = item_settings.multi_tile
@@ -298,10 +292,6 @@ func on_selected_tiles(tiles: Array) -> void:
 	for i in SELECTED_ITEM_X[selected_item.x] + ["Enabled"]:
 		var btn: Control
 		match i:
-			"Visibility":
-				btn = preload("res://scenes/ui_general/op_button/op_button.tscn").instantiate()
-				btn.options = ["Full-Vision", "Half-Vision", "Block"]
-				if tiles.size() == 1: btn.default = tiles[0].tile.visibility if tiles[0].tile.has("visibility") else 0
 			"Solidity":
 				btn = preload("res://scenes/ui_general/binary_button/binary_button.tscn").instantiate()
 				btn.ignore_repeat = false

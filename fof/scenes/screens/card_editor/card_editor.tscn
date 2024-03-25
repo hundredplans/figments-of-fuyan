@@ -287,6 +287,7 @@ offset_bottom = 795.0
 world_3d = SubResource("World3D_8b6j0")
 transparent_bg = true
 handle_input_locally = false
+scaling_3d_scale = 1.0
 size = Vector2i(631, 650)
 render_target_update_mode = 4
 
@@ -302,26 +303,50 @@ mouse_filter = 1
 [node name="EyeControl" parent="ModelArea/ModelViewer/SubViewport/HeightControls" instance=ExtResource("13_ik3kg")]
 unique_name_in_owner = true
 layout_mode = 1
+offset_left = -195.0
 offset_top = 437.0
-offset_right = 135.74
+offset_right = -59.26
 offset_bottom = 459.388
 label_name = "Eye"
 
 [node name="TopControl" parent="ModelArea/ModelViewer/SubViewport/HeightControls" instance=ExtResource("13_ik3kg")]
 unique_name_in_owner = true
 layout_mode = 1
+offset_left = -195.0
 offset_top = 395.0
-offset_right = 135.74
+offset_right = -59.26
 offset_bottom = 417.388
 label_name = "Top"
+
+[node name="StatControl" parent="ModelArea/ModelViewer/SubViewport/HeightControls" instance=ExtResource("13_ik3kg")]
+unique_name_in_owner = true
+layout_mode = 1
+offset_left = 20.0
+offset_top = 437.0
+offset_right = 155.74
+offset_bottom = 459.388
+label_name = "Stat"
 
 [node name="WeaponControl" parent="ModelArea/ModelViewer/SubViewport/HeightControls" instance=ExtResource("13_ik3kg")]
 unique_name_in_owner = true
 layout_mode = 1
+offset_left = 20.0
 offset_top = 395.0
-offset_right = 135.74
+offset_right = 155.74
 offset_bottom = 417.388
 label_name = "ATT"
+
+[node name="WeaponOffset" type="LineEdit" parent="ModelArea/ModelViewer/SubViewport/HeightControls/WeaponControl"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 150.0
+offset_top = -3.0
+offset_right = 270.0
+offset_bottom = 43.0
+theme = ExtResource("6_crlth")
+text = "0.1"
+placeholder_text = "Offset"
+alignment = 1
 
 [node name="ModelWorld" type="Node3D" parent="ModelArea/ModelViewer/SubViewport"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
@@ -336,21 +361,28 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0811731, 1.69899, 3.2611)
 [node name="HeightTracker" type="Node3D" parent="ModelArea/ModelViewer/SubViewport/ModelWorld"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 
-[node name="EyeArrow" type="CSGBox3D" parent="ModelArea/ModelViewer/SubViewport/ModelWorld/HeightTracker"]
+[node name="EyeArrow" type="CSGSphere3D" parent="ModelArea/ModelViewer/SubViewport/ModelWorld/HeightTracker"]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.823358, 0)
-size = Vector3(0.1, 0.1, 0.1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+radius = 0.05
 material = ExtResource("13_hxk1e")
 
-[node name="TopArrow" type="CSGBox3D" parent="ModelArea/ModelViewer/SubViewport/ModelWorld/HeightTracker"]
+[node name="WeaponArrow" type="CSGSphere3D" parent="ModelArea/ModelViewer/SubViewport/ModelWorld/HeightTracker"]
 unique_name_in_owner = true
-size = Vector3(0.1, 0.1, 0.1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+radius = 0.05
 material = ExtResource("13_hxk1e")
 
-[node name="WeaponArrow" type="CSGBox3D" parent="ModelArea/ModelViewer/SubViewport/ModelWorld/HeightTracker"]
+[node name="TopArrow" type="CSGSphere3D" parent="ModelArea/ModelViewer/SubViewport/ModelWorld/HeightTracker"]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.20093, 0)
-size = Vector3(0.1, 0.1, 0.1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+radius = 0.05
+material = ExtResource("13_hxk1e")
+
+[node name="StatArrow" type="CSGSphere3D" parent="ModelArea/ModelViewer/SubViewport/ModelWorld/HeightTracker"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+radius = 0.05
 material = ExtResource("13_hxk1e")
 
 [node name="Camera3D" type="Camera3D" parent="ModelArea/ModelViewer/SubViewport"]

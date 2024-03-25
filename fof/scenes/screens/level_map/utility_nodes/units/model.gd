@@ -109,7 +109,7 @@ func on_create_regular_jump(Tile: TileGD) -> void:
 	JUMP_TIME = 1
 	JUMP_HEIGHT = -4
 	jump_start = Unit.global_position
-	jump_end = Vector3(Tile.global_position.x, Tile.global_position.y + (0.75 if Tile.tile.type == 1 else 0.3), Tile.global_position.z)
+	jump_end = Vector3(Tile.global_position.x, Tile.global_position.y + (0.9 if Tile.tile.type == 1 else 0.3), Tile.global_position.z)
 	is_jump = true
 	AniPlayer.speed_scale = 2
 	
@@ -131,9 +131,8 @@ func on_create_drop_jump(Tile: TileGD, hdiff: int, new_health: int) -> void:
 func on_create_move_tween(Tile: TileGD, type: Vector2i) -> void:
 	var MoveTween: Tween = create_tween()
 	var half_position := Vector3(Tile.global_position + global_position) * 0.5
-	var climb_slope: float = 0.75 if Tile.tile.type == 1 else 0.3
-	if type.x == 2 and type.y == -1: climb_slope = 1.5
-		
+	var climb_slope: float = 0.9 if Tile.tile.type == 1 else (1.5 if (type.x == 2 and type.y == -1) else 0.3)
+	
 	MoveTween.tween_property(Unit, "global_position",
 	Vector3(half_position.x, Tile.global_position.y + climb_slope, half_position.z),
 	Unit.Units.WALK_TRAVEL_TIME * 0.5)
@@ -141,8 +140,7 @@ func on_create_move_tween(Tile: TileGD, type: Vector2i) -> void:
 	MoveTween.finished.connect(on_create_second_move_tween.bind(Tile, type))
 func on_create_second_move_tween(Tile: TileGD, type: Vector2i) -> void:
 	var MoveTween: Tween = create_tween()
-	var climb_slope: float = 0.75 if Tile.tile.type == 1 else 0.3
-	if type.x == 2: climb_slope = 0.9
+	var climb_slope: float = 0.9 if (type.x == 2 or Tile.tile.type == 1) else 0.3
 	
 	MoveTween.tween_property(Unit, "global_position",
 	Vector3(Tile.global_position.x, Tile.global_position.y + climb_slope, Tile.global_position.z),

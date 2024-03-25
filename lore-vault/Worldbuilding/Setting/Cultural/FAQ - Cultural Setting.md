@@ -1,0 +1,16 @@
+- Religion
+- Government
+- Economics
+- Gender roles
+- Food Lore
+- Borders
+- Fashion
+- History 
+- Rites of passage
+- Hierachy
+- Accents
+- Languages
+- Taboos/mores
+- Military
+- Greetings
+- Swear words

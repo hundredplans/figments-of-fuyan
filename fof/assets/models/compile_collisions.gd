@@ -5,6 +5,7 @@ var FOLDER_NAME_TO_TYPE: Dictionary = {
 	"tiles": "tile",
 	"walls": "wall",
 }
+
 func _ready() -> void:
 	var file_paths: Array = []
 	on_find_files(file_paths, "res://assets/models")

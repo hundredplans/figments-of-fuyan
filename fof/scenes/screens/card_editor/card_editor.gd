@@ -46,8 +46,8 @@ func _ready():
 	for child in $AISettings.get_children():
 		child.item_selected.connect(on_ai_settings_item_selected.bind(child.get_index()))
 		
-	height_arrows = [EyeArrow, TopArrow, WeaponArrow]
-	height_controls = [EyeControl, TopControl, WeaponControl]
+	height_arrows = [EyeArrow, TopArrow, WeaponArrow, StatArrow]
+	height_controls = [EyeControl, TopControl, WeaponControl, StatControl]
 	on_set_inital_height_controls()
 	for i in range(height_controls.size()):
 		height_controls[i].GrabButton.button_down.connect(on_move_height_control.bind(height_controls[i], height_arrows[i]))
@@ -102,7 +102,8 @@ func _on_save_card_pressed():
 		"raw": card_text,
 		"compiled": $TextProcessing.on_apply_text_processing(card_text)
 	}
-	height = {"eye": float(EyeControl.HeightLabel.text), "top": float(TopControl.HeightLabel.text), "weapon": float(WeaponControl.HeightLabel.text)}
+	height = {"eye": float(EyeControl.HeightLabel.text), "top": float(TopControl.HeightLabel.text),
+	 "weapon": float(WeaponControl.HeightLabel.text), "weapon_offset": float(WeaponOffset.text), "stat": float(StatControl.HeightLabel.text)}
 	
 	var contents: String = "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s"\
 	% [stats[0], stats[1], stats[2], stats[3], rarity, text, FlavorText.text.replace("\n", " "),
@@ -178,10 +179,13 @@ func on_item_selected(item_info: Dictionary, change_rarity: bool = true) -> void
 	
 	if typeof(item_info.height) == TYPE_DICTIONARY:
 		if !item_info.height.has("weapon"): item_info.height.weapon = 1.0
+		if !item_info.height.has("weapon_offset"): item_info.height.weapon_offset = 0.15
+		if !item_info.height.has("stat"): item_info.height.stat = 1.5
 		height = item_info.height
 		EyeArrow.position.y = height.eye
 		TopArrow.position.y = height.top
 		WeaponArrow.position.y = height.weapon
+		WeaponOffset.text = str(height.weapon_offset)
 		
 		on_set_inital_height_controls()
 
@@ -246,16 +250,19 @@ func _on_empty_card_pressed(): on_item_selected(EMPTY_INFO, false)
 @onready var WeaponControl: Control = %WeaponControl
 @onready var EyeControl: Control = %EyeControl
 @onready var TopControl: Control = %TopControl
+@onready var StatControl: Control = %StatControl
 
+@onready var StatArrow: Node3D = %StatArrow
+@onready var WeaponOffset: Control = %WeaponOffset
 @onready var WeaponArrow: Node3D = %WeaponArrow
 @onready var EyeArrow: Node3D = %EyeArrow
 @onready var TopArrow: Node3D = %TopArrow
 @onready var Camera: Camera3D = $ModelArea/ModelViewer/SubViewport/Camera3D
 
-var DEFAULT_HEIGHT_CONTROL_OFFSET: Vector2 = Vector2(20, -20)
+var DEFAULT_HEIGHT_CONTROL_OFFSET: Vector2 = Vector2(0, -20)
 func on_set_inital_height_controls() -> void:
 	for i in range(height_controls.size()):
-		height_controls[i].global_position = Camera.unproject_position(height_arrows[i].global_position)
+		height_controls[i].global_position.y = Camera.unproject_position(height_arrows[i].global_position).y
 		height_controls[i].global_position += DEFAULT_HEIGHT_CONTROL_OFFSET
 		height_controls[i].HeightLabel.text = str(snapped(height_arrows[i].position.y, 0.01))
 	

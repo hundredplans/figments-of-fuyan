@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://clu3y4b8xalfe"]
+
+[ext_resource type="PackedScene" uid="uid://dtcvu0mx30501" path="res://assets/base_game/cards/105 - Frederic the Fearless'0/model.glb" id="1_r3pc3"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7fqd1"]
+size = Vector3(0.938049, 1.92865, 0.617188)
+
+[node name="model" instance=ExtResource("1_r3pc3")]
+
+[node name="Skeleton3D" parent="FredericTheFearless" index="0"]
+bones/5/rotation = Quaternion(-0.00867973, 0.0124862, -0.821, 0.570725)
+bones/6/rotation = Quaternion(0.00607637, -0.00428993, 0.17694, 0.984194)
+bones/9/rotation = Quaternion(-0.00867973, -0.0124862, 0.821, 0.570725)
+bones/10/rotation = Quaternion(0.00607637, 0.00428993, -0.17694, 0.984194)
+bones/14/rotation = Quaternion(7.53798e-08, 0.0559208, 0.998435, 4.22191e-09)
+bones/15/rotation = Quaternion(-0.0721783, 1.18898e-07, 2.29425e-09, 0.997392)
+bones/16/rotation = Quaternion(0.625215, -9.30372e-08, -1.98731e-08, 0.780452)
+bones/17/rotation = Quaternion(-7.53798e-08, 0.0559208, 0.998435, -4.22191e-09)
+bones/18/rotation = Quaternion(-0.0721783, -1.18898e-07, -2.29425e-09, 0.997392)
+bones/19/rotation = Quaternion(0.625215, 9.30372e-08, 1.98731e-08, 0.780452)
+bones/21/rotation = Quaternion(-5.33851e-08, 0.707107, -0.707107, 5.33851e-08)
+bones/23/rotation = Quaternion(5.33851e-08, 0.707107, -0.707107, -5.33851e-08)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="FredericTheFearless/Skeleton3D" index="1"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FredericTheFearless/Skeleton3D/StaticBody3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00668335, 0.967865, 0.0439453)
+shape = SubResource("BoxShape3D_7fqd1")

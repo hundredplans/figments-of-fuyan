@@ -225,6 +225,9 @@ func on_death() -> void:
 @export var DEATH_AFTER_DELAY: float = 1.0
 func on_death_finished(Unit: UnitGD) -> void:
 	await get_tree().create_timer(DEATH_AFTER_DELAY).timeout
+	for _Unit in all_units():
+		_Unit.visible_units.erase(Unit)
+	
 	var deathee_index: int = on_unit_team_index(Unit)
 	Unit.UnitStatus._queue_free()
 	Unit.on_death()

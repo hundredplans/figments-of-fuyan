@@ -74,6 +74,7 @@ func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0) -> voi
 	spectate_type = type
 	match type:
 		"Spawn":
+			onUnspectateUnit()
 			var spawn_tiles: Array = Tiles.on_is_type_get_tiles("Spawn", "obj")
 			spawn_positions[spawn_spectate_id] = total_progress
 			
@@ -87,15 +88,9 @@ func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0) -> voi
 			on_camera_start_spectate(spawn_tiles[spawn_spectate_id].position, type)
 		"Unit":
 			if !(id >= 0 and id == unit_spectate_id):
-				if Units.PlayerManager.UnitSelected != null:
-					Units.PlayerManager._on_unit_deselected(Units.PlayerManager.UnitSelected)
-				
 				var units: Array = Units.on_units(0, "Ally")
-				if units.size() > unit_spectate_id:
-					var past_unit: UnitGD = units[unit_spectate_id]
-					unit_positions[unit_spectate_id] = total_progress
-					past_unit.on_spectated_in_player_phase(false)
-					
+				onUnspectateUnit(units)
+				
 				if id == -1: unit_spectate_id += direction
 				else: unit_spectate_id = id
 				
@@ -113,6 +108,15 @@ func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0) -> voi
 					if LevelMap.game_phase == "PlayerPhase":
 						Unit.on_spectated_in_player_phase(true)
 						Units.PlayerManager.on_spectated_in_player_phase(Unit)
+
+func onUnspectateUnit(units: Array = Units.on_units(0, "Ally")) -> void:
+	if Units.PlayerManager.UnitSelected != null:
+		Units.PlayerManager._on_unit_deselected(Units.PlayerManager.UnitSelected)
+	
+	if units.size() > unit_spectate_id:
+		var past_unit: UnitGD = units[unit_spectate_id]
+		unit_positions[unit_spectate_id] = total_progress
+		past_unit.on_spectated_in_player_phase(false)
 
 var SpectateUnit: UnitGD
 func on_select_spectate_camera_direction(i: int) -> void:
