@@ -74,6 +74,7 @@ func on_start_phase_start() -> void:
 	PlayerManager.LevelUI = LevelUI
 	PlayerManager.LevelMap = LevelMap
 	PlayerManager.Tiles = Tiles
+	PlayerManager.Vision = Vision
 	PlayerManager.SpectateCamera = SpectateCamera
 	
 	var enemy_tiles: Array = Tiles.on_is_type_get_tiles("Enemy", "obj")
@@ -145,7 +146,7 @@ func on_movement_finished(Unit: UnitGD) -> void:
 
 func on_event_queue_finished() -> void:
 	if event_queue.is_empty():
-		if SpectateCamera.SpectateUnit != null: 
+		if SpectateCamera.onSpectateUnitExistsTeam() == 0: 
 			Tiles.on_set_tile_material(SpectateCamera.SpectateUnit.Tile, "SpectatingUnit")
 			
 		for Unit in all_units():

@@ -18,6 +18,7 @@ signal mouse_in_ui
 }
 @export var CAMERA_ROTATION_SPEED: float = 3.0
 
+var Vision: VisionGD
 var LevelMap: LevelMapGD
 var Units: UnitsGD
 var Tiles: TilesGD
@@ -62,8 +63,12 @@ func on_set_camera_point_along_circle(progress: Vector2 = Vector2.ZERO) -> void:
 	look_at(central_point)
 	
 var spectate_type: String
+
+var enemy_spectate_id: int = -1
 var unit_spectate_id: int = 0
 var spawn_spectate_id: int = 0
+
+var enemy_unit_positions: Dictionary = {}
 var unit_positions: Array = []
 var spawn_positions: Array = []
 
@@ -87,9 +92,9 @@ func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0) -> voi
 			total_progress = spawn_positions[spawn_spectate_id]
 			on_camera_start_spectate(spawn_tiles[spawn_spectate_id].position, type)
 		"Unit":
-			if !(id >= 0 and id == unit_spectate_id):
+			if !(id == unit_spectate_id):
 				var units: Array = Units.on_units(0, "Ally")
-				onUnspectateUnit(units)
+				onUnspectateUnit()
 				
 				if id == -1: unit_spectate_id += direction
 				else: unit_spectate_id = id
@@ -98,6 +103,7 @@ func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0) -> voi
 				elif unit_spectate_id < 0: unit_spectate_id = units.size() - 1
 				
 				if units.size() > unit_spectate_id:
+					enemy_spectate_id = -1
 					var Unit: UnitGD = units[unit_spectate_id]
 					CAMERA_HEIGHT["Unit"] = Unit.height.top * CAMERA_UNIT_HEIGHT_MULTIPLIER
 					CAMERA_LOOK_AT_HEIGHT["Unit"] = Unit.height.top * LOOK_AT_UNIT_HEIGHT_MULTIPLIER
@@ -108,16 +114,49 @@ func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0) -> voi
 					if LevelMap.game_phase == "PlayerPhase":
 						Unit.on_spectated_in_player_phase(true)
 						Units.PlayerManager.on_spectated_in_player_phase(Unit)
+		"EnemyUnit":
+			if id != enemy_spectate_id:
+				var enemy_units: Array = Units.on_units(1)
+				onUnspectateUnit()
+				
+				if enemy_units.size() > enemy_spectate_id:
+					enemy_spectate_id = id
+					unit_spectate_id = -1
+					var Unit: UnitGD = enemy_units[enemy_spectate_id]
+					CAMERA_HEIGHT["Unit"] = Unit.height.top * CAMERA_UNIT_HEIGHT_MULTIPLIER
+					CAMERA_LOOK_AT_HEIGHT["Unit"] = Unit.height.top * LOOK_AT_UNIT_HEIGHT_MULTIPLIER
+					 
+					var instance_id: int = Unit.get_instance_id()
+					if !enemy_unit_positions.has(instance_id):
+						enemy_unit_positions[instance_id] = Vector2i.ZERO
+						
+					total_progress = enemy_unit_positions[instance_id]
+					on_camera_start_spectate(Unit.position, "Unit")
+					SpectateUnit = Unit
+					if LevelMap.game_phase == "PlayerPhase":
+						Unit.on_spectated_in_player_phase(true)
+					
+func onSpectateUnitExistsTeam() -> int:
+	return -1 if SpectateUnit == null else SpectateUnit.team
 
-func onUnspectateUnit(units: Array = Units.on_units(0, "Ally")) -> void:
+func onUnspectateUnit() -> void:
 	if Units.PlayerManager.UnitSelected != null:
 		Units.PlayerManager._on_unit_deselected(Units.PlayerManager.UnitSelected)
 	
-	if units.size() > unit_spectate_id:
-		var past_unit: UnitGD = units[unit_spectate_id]
-		unit_positions[unit_spectate_id] = total_progress
-		past_unit.on_spectated_in_player_phase(false)
-
+	if unit_spectate_id >= 0:
+		var units: Array = Units.on_units()
+		if units.size() > unit_spectate_id:
+			var past_unit: UnitGD = units[unit_spectate_id]
+			unit_positions[unit_spectate_id] = total_progress
+			past_unit.on_spectated_in_player_phase(false)
+			
+	elif enemy_spectate_id >= 0:
+		var units: Array = Units.on_units(1)
+		if units.size() > enemy_spectate_id:
+			var past_unit: UnitGD = units[enemy_spectate_id]
+			enemy_unit_positions[past_unit.get_instance_id()] = total_progress
+			past_unit.on_spectated_in_player_phase(false)
+			
 var SpectateUnit: UnitGD
 func on_select_spectate_camera_direction(i: int) -> void:
 	on_spectate(spectate_type, -1, i)
@@ -134,3 +173,9 @@ func on_track_unit() -> void:
 	
 func _process(_delta) -> void:
 	if TrackUnit != null: on_track_unit()
+
+func onSpectateEnemyOrAlly(Unit: UnitGD) -> void:
+	if Unit.team == 0:
+		on_spectate("Unit", Units.on_unit_team_index(Unit))
+	elif Unit.Tile in Vision.ally_vision:
+		on_spectate("EnemyUnit", Units.on_unit_team_index(Unit))

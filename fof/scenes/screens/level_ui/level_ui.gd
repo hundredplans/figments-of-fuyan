@@ -7,6 +7,7 @@ signal mouse_in_ui
 var Heroes: HeroesGD
 var Vision: VisionGD
 var SpectateCamera: Node3D
+var Units: UnitsGD
 
 @onready var VisionMode := %VisionMode
 @onready var PassUnitTurn := %PassUnitTurn
@@ -144,6 +145,7 @@ func on_add_unit_status_box(Unit: UnitGD) -> void:
 	Statuses.add_child(UnitStatus)
 	
 	UnitStatus.on_set_unit(Unit)
+	UnitStatus.ArtPop.pressed.connect(SpectateCamera.onSpectateEnemyOrAlly.bind(UnitStatus.Unit))
 	Unit.UnitStatus = UnitStatus
 	
 	if Unit.team == 0:
@@ -228,7 +230,7 @@ func on_vision_selected(x: int) -> void:
 func _on_vision_button_item_selected():
 	for child in Statuses.get_children():
 		if child.visible:
-			if vision_selected == 0:
+			if vision_selected == 0 and SpectateCamera.onSpectateUnitExistsTeam() == 0:
 				child.visible = Vision.is_unit_in_unit_vision(SpectateCamera.SpectateUnit, child.Unit, true)
 			elif child.Unit.team == 1:
 				child.visible = Vision.is_unit_in_vision(child.Unit)

@@ -6,6 +6,7 @@ var LevelMap: Node3D
 var LevelUI: LevelUIGD
 var SpectateCamera: Node3D
 var Units: UnitsGD
+var Vision: VisionGD
 
 func on_card_placed(hand_card: HandCardGD, Tile: TileGD) -> void:
 	var skip_result: bool = LevelMap.on_skip_hand_phase_result()
@@ -34,7 +35,7 @@ func on_select_active_unit(Unit: UnitGD) -> void:
 
 func on_pass_unit_turn_pressed() -> void:
 	if ActiveUnit == null:
-		if SpectateCamera.SpectateUnit in unpassed_turns:
+		if SpectateCamera.onSpectateUnitExistsTeam() == 0 and SpectateCamera.SpectateUnit in unpassed_turns:
 			on_select_active_unit(SpectateCamera.SpectateUnit)
 			on_pass_unit_turn()
 	else:
@@ -107,15 +108,12 @@ func on_spectate_unit(Unit: UnitGD) -> void:
 
 func on_occupied_tile_inspected(Tile: TileGD) -> void:
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
-	if Unit.team == 0:
-		match LevelMap.game_phase:
-			"PlayerPhase":
-				if Unit == SpectateCamera.SpectateUnit:
-					on_unit_selected(Unit)
-				elif UnitSelected == null:
-					SpectateCamera.on_spectate("Unit", Units.on_unit_team_index(Unit))
-	else:
-		pass
+	match LevelMap.game_phase:
+		"PlayerPhase":
+			if SpectateCamera.onSpectateUnitExistsTeam() == 0 and Unit == SpectateCamera.SpectateUnit:
+				on_unit_selected(Unit)
+			elif UnitSelected == null:
+				SpectateCamera.onSpectateEnemyOrAlly(Unit)
 
 var UnitSelected: UnitGD
 func on_unit_selected(Unit: UnitGD) -> void:

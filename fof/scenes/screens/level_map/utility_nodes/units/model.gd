@@ -20,12 +20,9 @@ func on_idle_rare_timer_timeout() -> void:
 	IdleRareTimer.start(Unit.Units.Random.RNG.randi_range(IDLE_RARE_MINIMUM, IDLE_RARE_MAXIMUM))
 
 func on_add_model() -> void:
-	var model_path: String = "res://assets/base_game/cards/card_ui/default_model.glb"
-	var card_model_path: String = "res://assets/base_game/cards/" + Unit.base_card.bgfn + "/model.glb"
-	if FileAccess.file_exists(card_model_path):
-		model_path = card_model_path
+	var card_model_path: String = "res://assets/base_game/cards/" + Unit.base_card.bgfn + "/model.tscn"
 		
-	UnitModel = load(model_path).instantiate()
+	UnitModel = load(card_model_path).instantiate()
 	AniPlayer = UnitModel.get_node("AnimationPlayer")
 	AniPlayer.animation_finished.connect(on_finish_animation)
 	

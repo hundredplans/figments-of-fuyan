@@ -102,13 +102,6 @@ func on_reset_status_effects() -> void:
 func on_reset_tool() -> void:
 	pass
 
-func _on_art_max_pressed():
-	var units: Array = Unit.Units.on_units()
-	for i in range(units.size()):
-		if units[i] == Unit:
-			Unit.Units.SpectateCamera.on_spectate("Unit", i)
-			break
-
 const HOVER_TIME_DELAY: float = 0.4
 var is_hover: bool = false
 func _on_art_max_mouse_entered(): on_initiate_hover_card(); is_hover = true

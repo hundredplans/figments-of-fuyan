@@ -130,10 +130,12 @@ func on_death() -> void:
 func on_spectated_in_player_phase(state: bool) -> void:
 	UnitStatus.on_unit_spectated(state)
 	UnitFieldStatus.on_unit_spectated(state)
-	if state:
-		Tiles.on_set_tile_material(Tile, "SpectatingUnit")
-		Units.LevelUI.on_update_vision()
-	else: Tiles.on_remove_tile_material(Tile, "SpectatingUnit")
+	Units.LevelUI.on_update_vision()
+	
+	if team == 0:
+		if state:
+			Tiles.on_set_tile_material(Tile, "SpectatingUnit")
+		else: Tiles.on_remove_tile_material(Tile, "SpectatingUnit")
 
 func on_set_turn_status() -> void:
 	UnitStatus.SlotOne.visible = turn_status == 2
@@ -165,9 +167,14 @@ func onCircleRay() -> void:
 			VisionRaycast.force_raycast_update()
 			
 			if VisionRaycast.is_colliding():
-				var _Tile: TileGD = VisionRaycast.get_collider().get_node("../../..")
-				if _Tile.tpos in vision_tposes:
-					onAddTileToVisibleTiles(_Tile)
+				var Collision: Node3D = VisionRaycast.get_collider().get_node("../../..")
+				if Collision is TileGD:
+					if Collision.tpos in vision_tposes:
+						onAddTileToVisibleTiles(Collision)
+				else:
+					Collision = Collision.get_parent().get_parent()
+					if Collision.Tile.tpos in vision_tposes:
+						onAddTileToVisibleTiles(Collision.Tile)
 	onUnitsHeightAdjacentTiles()
 
 func onAddTileToVisibleTiles(_Tile: TileGD) -> void:

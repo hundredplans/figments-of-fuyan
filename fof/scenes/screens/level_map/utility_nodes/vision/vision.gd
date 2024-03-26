@@ -10,8 +10,8 @@ var Tiles: TilesGD
 var GameState: Node
 const VISION_RANGE: int = 5
 
+var ally_vision: Array = []
 var spawn_vision: Array = []
-
 func on_recalculate_vision(Unit: UnitGD = null) -> void:
 	var visible_tiles: Array = []
 	var all_units: Array = Units.all_units()
@@ -21,41 +21,55 @@ func on_recalculate_vision(Unit: UnitGD = null) -> void:
 			if Unit != null:
 				Unit.onCircleRay()
 				for _Unit in all_units:
-					var was_visible: bool = _Unit in Unit.visible_units
-					var currently_visible: bool = Unit.visible_tiles.any(func(x: TileGD): return x == _Unit.Tile)
-					if was_visible and !currently_visible:
-						if _Unit.visible_units.size() == 1:
-							Units.on_unit_exits_vision(_Unit)
-							Unit.visible_units.erase(_Unit)
-							_Unit.visible_units.erase(Unit)
-							
-					elif !was_visible and currently_visible:
-						if _Unit.visible_units.is_empty():
-							Units.on_unit_enters_vision(_Unit)
-							Unit.visible_units.append(_Unit)
-							_Unit.visible_units.append(Unit)
-							
-							if Unit.Tile not in _Unit.visible_tiles:
-								_Unit.visible_tiles.append(Unit.Tile)
+					if _Unit != Unit:
+						var was_visible: bool = _Unit in Unit.visible_units
+						var currently_visible: bool = Unit.visible_tiles.any(func(x: TileGD): return x == _Unit.Tile)
+						if was_visible and !currently_visible:
+							if _Unit.visible_units.size() == 1:
+								Units.on_unit_exits_vision(_Unit)
+								Unit.visible_units.erase(_Unit)
+								_Unit.visible_units.erase(Unit)
+								
+						elif !was_visible and currently_visible:
+							if _Unit.visible_units.is_empty():
+								Units.on_unit_enters_vision(_Unit)
+								Unit.visible_units.append(_Unit)
+								_Unit.visible_units.append(Unit)
+								
+								if Unit.Tile not in _Unit.visible_tiles:
+									_Unit.visible_tiles.append(Unit.Tile)
 			
 			for Tile in Tiles.get_children():
 				if ally_units.any(func(x: UnitGD): return x.visible_tiles.any(func(y: TileGD): return Tile == y)):
 					visible_tiles.append(Tile)
+			ally_vision = visible_tiles.duplicate()
 		1:
-			if ActiveUnitVision == null:
-				visible_tiles = Tiles.movement_paths.tiles
-			else:
-				for Tile in Tiles.get_children():
-					if Tile in ActiveUnitVision.visible_tiles:
-						visible_tiles.append(Tile)
+			visible_tiles = Tiles.movement_paths.tiles.duplicate()
+			for _Unit in all_units:
+				match _Unit.team:
+					0: if _Unit.Tile not in visible_tiles: visible_tiles.append(_Unit.Tile)
+					1: if _Unit.Tile in ally_vision: visible_tiles.append(_Unit.Tile)
+						
+			if ActiveUnitVision != null:
+				match ActiveUnitVision.team:
+					0:
+						for Tile in Tiles.get_children():
+							if Tile in ActiveUnitVision.visible_tiles:
+								visible_tiles.append(Tile)
+					1:
+						ActiveUnitVision.onCircleRay() # can remove this later
+						for Tile in ally_vision:
+							if Tile in ActiveUnitVision.visible_tiles:
+								visible_tiles.append(Tile)
 		2:
 			visible_tiles = spawn_vision
 		3: # enemy vision
-			pass
-	
+			if Unit != null:
+				pass
+			
 	on_apply_visibility(visible_tiles)
 	LevelUI.on_update_vision()
-
+				
 func on_start_phase_start() -> void:
 	for Tile in Tiles.get_children():
 		if Tile.obj.id == 2:

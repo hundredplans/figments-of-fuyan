@@ -146,7 +146,7 @@ func admin_highlight_tiles(tiles: Array) -> void:
 	for tile in tiles: tile.visible = false
 
 func is_tile_occupied_by_units(Tile: TileGD) -> bool:
-	return Tile in Units.on_units().map(tile_by_unit)
+	return Tile in Units.all_units().map(tile_by_unit)
 
 func tile_by_unit(Unit: UnitGD) -> TileGD:
 	return Unit.Tile
@@ -482,7 +482,7 @@ func on_remove_tile_material(Tile: TileGD, material_name: String = "") -> void:
 		"":
 			var new_state: Array = []
 			for state in Tile.tile_state:
-				if state in ["Greyscale", "AllyOccupy"] + unit_states:
+				if state in ["Greyscale", "AllyOccupy", "EnemyOccupy"] + unit_states:
 					new_state.append(state)
 			Tile.tile_state = new_state
 		"EmptyTile": Tile.tile_state = []
