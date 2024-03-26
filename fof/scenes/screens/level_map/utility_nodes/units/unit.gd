@@ -157,7 +157,7 @@ const VISION_RANGE: int = 5
 
 func onCircleRay() -> void:
 	visible_tiles = []
-	var vision_tposes: Array = Tiles.getTposInRange(Tile, VISION_RANGE, true)
+	var vision_tposes: Array = Tiles.getTposInRange(Tile, VISION_RANGE)
 	for i in range(RAY_COUNT):
 		var phi: float = (i * (PI * 2)) / RAY_COUNT
 		var theta: float = 0

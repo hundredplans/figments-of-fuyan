@@ -18,8 +18,9 @@ func on_recalculate_vision(Unit: UnitGD = null) -> void:
 	var ally_units: Array = Units.on_units()
 	match vision_mode:
 		0:
+			var f: int = Time.get_ticks_msec()
 			if Unit != null:
-				Unit.onCircleRay()
+				Unit.onCircleRay() # Takes around 50msec
 				for _Unit in all_units:
 					if _Unit != Unit:
 						var was_visible: bool = _Unit in Unit.visible_units
@@ -38,7 +39,7 @@ func on_recalculate_vision(Unit: UnitGD = null) -> void:
 							
 							if Unit.Tile not in _Unit.visible_tiles:
 								_Unit.visible_tiles.append(Unit.Tile)
-			for Tile in Tiles.get_children():
+			for Tile in Tiles.get_children(): # Takes around 5 msec
 				if ally_units.any(func(x: UnitGD): return x.visible_tiles.any(func(y: TileGD): return Tile == y)):
 					visible_tiles.append(Tile)
 				
@@ -57,10 +58,11 @@ func on_recalculate_vision(Unit: UnitGD = null) -> void:
 							if Tile in ActiveUnitVision.visible_tiles:
 								visible_tiles.append(Tile)
 					1:
-						ActiveUnitVision.onCircleRay() # can remove this later
-						for Tile in ally_vision:
-							if Tile in ActiveUnitVision.visible_tiles:
-								visible_tiles.append(Tile)
+						if ActiveUnitVision.Tile in ally_vision:
+							ActiveUnitVision.onCircleRay() # can remove this later
+							for Tile in ally_vision:
+								if Tile in ActiveUnitVision.visible_tiles:
+									visible_tiles.append(Tile)
 		2:
 			visible_tiles = spawn_vision
 		3: # enemy vision
@@ -84,7 +86,12 @@ func on_apply_visibility(tiles: Array) -> void:
 func is_unit_in_vision(Unit: UnitGD) -> bool: # two diff visions for the two teams
 	return Units.on_units(Unit.team, "Enemy").any(func(x: UnitGD): return Unit in x.visible_units)
 
-func is_unit_in_unit_vision(VisionUnit: UnitGD, ObservedUnit: UnitGD, include_self: bool) -> bool:
+func isUnitInUnitVisionSafe(VisionUnit: UnitGD, ObservedUnit: UnitGD, include_self: bool) -> bool:
+	if VisionUnit.team == 0 or ObservedUnit.Tile in ally_vision: 
+		return isUnitInUnitVision(VisionUnit, ObservedUnit, include_self)
+	return false
+
+func isUnitInUnitVision(VisionUnit: UnitGD, ObservedUnit: UnitGD, include_self: bool) -> bool:
 	if VisionUnit != null and ObservedUnit != null:
 		if VisionUnit == ObservedUnit: return include_self
 		return ObservedUnit in VisionUnit.visible_units

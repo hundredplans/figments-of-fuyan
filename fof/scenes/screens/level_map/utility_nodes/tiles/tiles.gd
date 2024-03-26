@@ -60,9 +60,12 @@ func _all_in_range(pos: Vector4, distance: int = 2, include_central: bool = fals
 			a.append(_pos)
 	return a
 	
-func getTposInRange(Tile: TileGD, i: int = 1, include_central: bool = false) -> Array:
-	return get_children().filter(func(x: TileGD): return range(1 - int(include_central), i + 1)\
-	.any(func(j: int): return is_neighbour(Tile, x, j))).map(func(y: TileGD): return y.tpos)
+func getTposInRange(Tile: TileGD, i: int = 1) -> Array:
+	var tposes: Array = []
+	for x in range(-i, (i + 1)):
+		for y in range(max(-i, -x - i), min(i, -x + i) + 1):
+			tposes.append(Vector3(x, y, -x - y) + Tile.tpos)
+	return tposes
 
 func tiles_unique(tiles: Array, otiles: Array) -> Array:
 	return tiles.filter(is_tile_not_in_tiles.bind(otiles))

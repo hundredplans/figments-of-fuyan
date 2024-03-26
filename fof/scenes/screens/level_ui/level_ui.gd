@@ -236,8 +236,8 @@ func on_vision_selected(x: int) -> void:
 func _on_vision_button_item_selected():
 	for child in Statuses.get_children():
 		if child.visible:
-			if vision_selected == 0 and SpectateCamera.onSpectateUnitExistsTeam() >= 0:
-				child.visible = Vision.is_unit_in_unit_vision(SpectateCamera.SpectateUnit, child.Unit, true)
+			if vision_selected == 0 and SpectateCamera.onSpectateUnitExistsTeam() != -1:
+				child.visible = Vision.isUnitInUnitVisionSafe(SpectateCamera.SpectateUnit, child.Unit, true)
 			elif child.Unit.team == 1:
 				child.visible = Vision.is_unit_in_vision(child.Unit)
 
