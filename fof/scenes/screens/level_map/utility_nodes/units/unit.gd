@@ -151,11 +151,12 @@ func on_enemy_in_range(state: bool) -> void:
 var visible_tiles: Array
 var visible_units: Array
 @onready var VisionRaycast: Node3D = $VisionRaycast
-const RAY_COUNT: int = 100
+const RAY_COUNT: int = 20
 const RAY_DISTANCE: int = 50
 const VISION_RANGE: int = 5
 
 func onCircleRay() -> void:
+	var f: int = Time.get_ticks_msec()
 	visible_tiles = []
 	var vision_tposes: Array = Tiles.getTposInRange(Tile, VISION_RANGE)
 	for i in range(RAY_COUNT):
