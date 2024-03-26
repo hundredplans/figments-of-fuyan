@@ -69,13 +69,13 @@ var unit_spectate_id: int = 0
 var spawn_spectate_id: int = 0
 
 var enemy_unit_positions: Dictionary = {}
-var unit_positions: Array = []
+var unit_positions: Dictionary = {}
 var spawn_positions: Array = []
 
 func on_start_phase_start() -> void:
 	for i in range(Tiles.on_is_type_get_tiles("Spawn", "obj").size()): spawn_positions.append(Vector2.ZERO)
 
-func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0) -> void:
+func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0, override: bool = false) -> void:
 	spectate_type = type
 	match type:
 		"Spawn":
@@ -83,7 +83,7 @@ func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0) -> voi
 			var spawn_tiles: Array = Tiles.on_is_type_get_tiles("Spawn", "obj")
 			spawn_positions[spawn_spectate_id] = total_progress
 			
-			if id == -1: spawn_spectate_id += direction
+			if direction != 0: spawn_spectate_id += direction
 			else: spawn_spectate_id = id
 			
 			if spawn_spectate_id >= spawn_tiles.size(): spawn_spectate_id = 0
@@ -92,11 +92,11 @@ func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0) -> voi
 			total_progress = spawn_positions[spawn_spectate_id]
 			on_camera_start_spectate(spawn_tiles[spawn_spectate_id].position, type)
 		"Unit":
-			if !(id == unit_spectate_id):
-				var units: Array = Units.on_units(0, "Ally")
+			var units: Array = Units.on_units(0, "Ally")
+			if (!(id == unit_spectate_id) or override) and units.size() > 0:
 				onUnspectateUnit()
 				
-				if id == -1: unit_spectate_id += direction
+				if direction != 0: unit_spectate_id += direction
 				else: unit_spectate_id = id
 				
 				if unit_spectate_id == units.size(): unit_spectate_id = 0
@@ -108,12 +108,16 @@ func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0) -> voi
 					CAMERA_HEIGHT["Unit"] = Unit.height.top * CAMERA_UNIT_HEIGHT_MULTIPLIER
 					CAMERA_LOOK_AT_HEIGHT["Unit"] = Unit.height.top * LOOK_AT_UNIT_HEIGHT_MULTIPLIER
 					
-					total_progress = unit_positions[unit_spectate_id]
+					var instance_id: int = Unit.get_instance_id()
+					if !unit_positions.has(instance_id):
+						unit_positions[instance_id] = Vector2i.ZERO
+					total_progress = unit_positions[instance_id]
+					
 					on_camera_start_spectate(Unit.position, type)
 					SpectateUnit = Unit
 					if LevelMap.game_phase == "PlayerPhase":
 						Unit.on_spectated_in_player_phase(true)
-						Units.PlayerManager.on_spectated_in_player_phase(Unit)
+						Units.onSpectatedInPlayerPhase(Unit)
 		"EnemyUnit":
 			if id != enemy_spectate_id:
 				var enemy_units: Array = Units.on_units(1)
@@ -135,6 +139,7 @@ func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0) -> voi
 					SpectateUnit = Unit
 					if LevelMap.game_phase == "PlayerPhase":
 						Unit.on_spectated_in_player_phase(true)
+						Units.onSpectatedInPlayerPhase(Unit)
 					
 func onSpectateUnitExistsTeam() -> int:
 	return -1 if SpectateUnit == null else SpectateUnit.team
@@ -147,7 +152,7 @@ func onUnspectateUnit() -> void:
 		var units: Array = Units.on_units()
 		if units.size() > unit_spectate_id:
 			var past_unit: UnitGD = units[unit_spectate_id]
-			unit_positions[unit_spectate_id] = total_progress
+			unit_positions[past_unit.get_instance_id()] = total_progress
 			past_unit.on_spectated_in_player_phase(false)
 			
 	elif enemy_spectate_id >= 0:
@@ -159,7 +164,8 @@ func onUnspectateUnit() -> void:
 			
 var SpectateUnit: UnitGD
 func on_select_spectate_camera_direction(i: int) -> void:
-	on_spectate(spectate_type, -1, i)
+	if spectate_type == "EnemyUnit": spectate_type = "Unit"
+	on_spectate(spectate_type, -2, i)
 
 var TrackUnit: UnitGD
 func on_start_track_unit(Unit: UnitGD) -> void:
@@ -179,3 +185,12 @@ func onSpectateEnemyOrAlly(Unit: UnitGD) -> void:
 		on_spectate("Unit", Units.on_unit_team_index(Unit))
 	elif Unit.Tile in Vision.ally_vision:
 		on_spectate("EnemyUnit", Units.on_unit_team_index(Unit))
+
+func onDeathFinished(Unit: UnitGD) -> void:
+	if Unit.team == 0: unit_positions.erase(Unit.get_instance_id())
+	else: enemy_unit_positions.erase(Unit.get_instance_id())
+		
+func onPlayerEndTurnPhaseStart() -> void:
+	if spectate_type == "EnemyUnit":
+		spectate_type = "Unit"
+		on_spectate("Unit", 0)

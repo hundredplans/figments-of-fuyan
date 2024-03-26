@@ -145,9 +145,6 @@ func _is_diagonal(pos: Vector4, opos: Vector4, distance: int = 1, search_elevati
 func admin_highlight_tiles(tiles: Array) -> void:
 	for tile in tiles: tile.visible = false
 
-func is_tile_occupied_by_units(Tile: TileGD) -> bool:
-	return Tile in Units.all_units().map(tile_by_unit)
-
 func tile_by_unit(Unit: UnitGD) -> TileGD:
 	return Unit.Tile
 	
@@ -183,8 +180,11 @@ func tiles_by_tile_state(tile_state: String) -> Array:
 func _process(_delta: float) -> void:
 	if (!LevelMap.lock_inputs and !LevelUI.is_mouse_in_ui):
 		if active_tile != null and Input.is_action_just_released("LeftClick"):
-			if is_tile_occupied_by_units(active_tile):
-				Units.PlayerManager.on_occupied_tile_inspected(active_tile)
+			var Unit: UnitGD = Units.unit_by_tile(active_tile)
+			if Unit != null:
+				if "EnemyInRange" not in active_tile.tile_state:
+					Units.PlayerManager.on_occupied_tile_inspected(active_tile)
+				else: on_begin_unit_movement()
 			elif "PathHovered" in active_tile.tile_state:
 				on_begin_unit_movement()
 			elif on_find_tile_primary_type(active_tile) == "Spawn":

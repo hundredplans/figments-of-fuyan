@@ -33,15 +33,15 @@ func on_recalculate_vision(Unit: UnitGD = null) -> void:
 						elif !was_visible and currently_visible:
 							if _Unit.visible_units.is_empty():
 								Units.on_unit_enters_vision(_Unit)
-								Unit.visible_units.append(_Unit)
-								_Unit.visible_units.append(Unit)
-								
-								if Unit.Tile not in _Unit.visible_tiles:
-									_Unit.visible_tiles.append(Unit.Tile)
-			
+							Unit.visible_units.append(_Unit)
+							_Unit.visible_units.append(Unit)
+							
+							if Unit.Tile not in _Unit.visible_tiles:
+								_Unit.visible_tiles.append(Unit.Tile)
 			for Tile in Tiles.get_children():
 				if ally_units.any(func(x: UnitGD): return x.visible_tiles.any(func(y: TileGD): return Tile == y)):
 					visible_tiles.append(Tile)
+				
 			ally_vision = visible_tiles.duplicate()
 		1:
 			visible_tiles = Tiles.movement_paths.tiles.duplicate()
@@ -88,6 +88,7 @@ func is_unit_in_unit_vision(VisionUnit: UnitGD, ObservedUnit: UnitGD, include_se
 	if VisionUnit != null and ObservedUnit != null:
 		if VisionUnit == ObservedUnit: return include_self
 		return ObservedUnit in VisionUnit.visible_units
+		
 	return false
 
 var vision_mode: int = -1 # 0 = default, 1 = unit_vision, 2 = spawn_vision

@@ -123,7 +123,7 @@ func on_arrive(in_vision: bool) -> void:
 	# can do regular arrive effects here
 
 func on_death() -> void:
-	Tiles.on_remove_tile_material(Tile, "")
+	Tiles.on_remove_tile_material(Tile, "EmptyTile")
 	Vision.on_recalculate_vision()
 	queue_free()
 

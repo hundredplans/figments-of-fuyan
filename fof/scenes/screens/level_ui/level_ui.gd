@@ -88,11 +88,13 @@ func on_card_selected(GameCard: Control) -> void:
 		LevelMap.set_lock_inputs(false)
 		on_unpin_hand_box_panel()
 		Vision.on_vision_mode_set(2)
+		CameraArrows.visible = true
 	else: 
 		GameCardSelected = null
 		on_pin_hand_box_panel()
 		LevelMap.set_lock_inputs(true)
 		Vision.on_vision_mode_set(0)
+		CameraArrows.visible = false
 	LevelMap.Hand.on_card_selected(index)
 		
 func on_card_placed(index: int) -> void:
@@ -145,12 +147,16 @@ func on_add_unit_status_box(Unit: UnitGD) -> void:
 	Statuses.add_child(UnitStatus)
 	
 	UnitStatus.on_set_unit(Unit)
-	UnitStatus.ArtPop.pressed.connect(SpectateCamera.onSpectateEnemyOrAlly.bind(UnitStatus.Unit))
+	UnitStatus.ArtPop.pressed.connect(onSpectateEnemyOrAlly.bind(UnitStatus.Unit))
 	Unit.UnitStatus = UnitStatus
 	
 	if Unit.team == 0:
 		Statuses.move_child(UnitStatus, last_ally)
 		last_ally += 1
+	
+func onSpectateEnemyOrAlly(Unit: UnitGD) -> void:
+	if Units.event_queue.is_empty():
+		SpectateCamera.onSpectateEnemyOrAlly(Unit)
 	
 func on_unit_status_queue_free(UnitStatus: Control) -> void:
 	if last_ally > 0 and UnitStatus.get_index() == last_ally: last_ally -= 1
@@ -230,7 +236,7 @@ func on_vision_selected(x: int) -> void:
 func _on_vision_button_item_selected():
 	for child in Statuses.get_children():
 		if child.visible:
-			if vision_selected == 0 and SpectateCamera.onSpectateUnitExistsTeam() == 0:
+			if vision_selected == 0 and SpectateCamera.onSpectateUnitExistsTeam() >= 0:
 				child.visible = Vision.is_unit_in_unit_vision(SpectateCamera.SpectateUnit, child.Unit, true)
 			elif child.Unit.team == 1:
 				child.visible = Vision.is_unit_in_vision(child.Unit)
@@ -257,3 +263,6 @@ func on_set_unit_turn_status(Unit: UnitGD, status: int) -> void:
 
 func _on_vision_mode_set():
 	Vision.on_vision_mode_set(1 if Vision.vision_mode == 0 else 0)
+
+func onStartPhaseStart() -> void:
+	ChangePhase.visible = false

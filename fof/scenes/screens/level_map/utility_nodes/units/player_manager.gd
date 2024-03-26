@@ -59,9 +59,6 @@ func on_pass_unit_turn() -> void:
 			if Settings.autopass_turn: LevelMap.on_advance_game_phase()
 		else: SpectateCamera.on_spectate("Unit", Units.on_unit_team_index(unpassed_turns[0]))
 
-func on_spectated_in_player_phase(Unit: UnitGD) -> void:
-	LevelUI.on_pass_unit_turn_button_state(Unit in passed_turns)
-
 func on_player_phase_start() -> void:
 	LevelUI.PassUnitTurn.visible = true
 	unpassed_turns = Units.on_units()
@@ -114,7 +111,7 @@ func on_occupied_tile_inspected(Tile: TileGD) -> void:
 				on_unit_selected(Unit)
 			elif UnitSelected == null:
 				SpectateCamera.onSpectateEnemyOrAlly(Unit)
-
+				
 var UnitSelected: UnitGD
 func on_unit_selected(Unit: UnitGD) -> void:
 	if UnitSelected == Unit:
@@ -153,18 +150,14 @@ func _on_unit_selected(Unit: UnitGD) -> void:
 		UnitSelected = Unit
 		LevelUI.get_node("SkipReminder").visible = ActiveUnit != null and ActiveUnit != Unit
 
-func on_death_finished(Killer: String, Deathee: UnitGD, deathee_index: int) -> void:
+func on_death_finished(Killer: String, Deathee: UnitGD) -> void:
 	if Killer == "Unit" and Deathee.Killer.team == 0: on_check_autopass(Deathee.Killer)
 	if Deathee.team == 0:
-		SpectateCamera.unit_positions.remove_at(deathee_index)
 		on_remove_unit_turn(Deathee)
-		if !Settings.autopass_turn and unpassed_turns.is_empty() and !passed_turns.is_empty(): 
-			SpectateCamera.on_spectate("Unit", Units.on_unit_team_index(passed_turns[0]))
+		SpectateCamera.on_spectate("Unit", \
+		Units.on_unit_team_index(passed_turns[0]) if !passed_turns.is_empty() else 0, 0, true)
 		Units.Vision.on_recalculate_vision()
 	if Units.on_units().is_empty(): print("DIE")
-		
-func on_unit_awakened(_Unit: UnitGD) -> void:
-	SpectateCamera.unit_positions.append(SpectateCamera.total_progress)
 	
 func on_remove_unit_turn(Unit: UnitGD) -> void:
 	if Unit.team == 0:

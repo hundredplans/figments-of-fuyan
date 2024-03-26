@@ -56,8 +56,6 @@ func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int
 	Unit.Model.attack_finished.connect(on_attack_finished.bind(Unit))
 	Unit.Model.death_finished.connect(on_death_finished.bind(Unit))
 	
-	if team == 0: PlayerManager.on_unit_awakened(Unit)
-	
 	LevelUI.on_add_unit_status_box(Unit)
 	
 	var in_vision: bool = Vision.is_unit_in_vision(Unit)
@@ -102,7 +100,7 @@ func unit_by_tile(Tile: TileGD) -> UnitGD:
 	return null
 
 func all_units() -> Array:
-	return FieldedUnits.get_children()
+	return FieldedUnits.get_children().filter(func(x: UnitGD): return !x.is_queued_for_deletion())
 
 func on_units(team: int = 0, relation: String = "Ally") -> Array:
 	return FieldedUnits.get_children().filter(func(x: UnitGD): return !x.is_queued_for_deletion()).filter(on_match_team_relation.bind(team, relation))
@@ -229,11 +227,11 @@ func on_death_finished(Unit: UnitGD) -> void:
 	for _Unit in all_units():
 		_Unit.visible_units.erase(Unit)
 	
-	var deathee_index: int = on_unit_team_index(Unit)
 	Unit.UnitStatus._queue_free()
 	Unit.on_death()
 	LevelMap.on_set_lock_inputs_event_queue(false)
-	PlayerManager.on_death_finished(active_event[2], Unit, deathee_index)
+	SpectateCamera.onDeathFinished(Unit)
+	PlayerManager.on_death_finished(active_event[2], Unit)
 	Deck.on_draw_card()
 	active_event = []
 	
@@ -259,3 +257,6 @@ func on_descale_unit(Unit: UnitGD, scale_time: float) -> void:
 func on_unscale_unit(Unit: UnitGD, scale_time: float) -> void:
 	var ScaleTween := create_tween()
 	ScaleTween.tween_property(Unit, "scale", Vector3.ONE, scale_time)
+
+func onSpectatedInPlayerPhase(Unit: UnitGD) -> void:
+	LevelUI.on_pass_unit_turn_button_state(Unit.team == 1 or Unit in PlayerManager.passed_turns)
