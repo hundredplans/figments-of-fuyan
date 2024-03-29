@@ -19,7 +19,7 @@ func on_recalculate_vision(Unit: UnitGD = null) -> void:
 	match vision_mode:
 		0:
 			if Unit != null:
-				Unit._onCircleRay() # Takes around 50msec
+				Unit.onCircleRay()
 				for _Unit in all_units:
 					if _Unit != Unit:
 						var was_visible: bool = _Unit in Unit.visible_units
@@ -38,6 +38,7 @@ func on_recalculate_vision(Unit: UnitGD = null) -> void:
 							
 							if Unit.Tile not in _Unit.visible_tiles:
 								_Unit.visible_tiles.append(Unit.Tile)
+								
 			for Tile in Tiles.get_children(): # Takes around 5 msec
 				if ally_units.any(func(x: UnitGD): return x.visible_tiles.any(func(y: TileGD): return Tile == y)):
 					visible_tiles.append(Tile)

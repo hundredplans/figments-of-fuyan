@@ -53,6 +53,6 @@ func setCollisionState(state: bool) -> void:
 func _ready() -> void:
 	for point in collision_points:
 		var t = preload("res://assets/models/collision_point.tscn").instantiate()
-		t.position = point
 		add_child(t)
+		t.global_position = point
 			

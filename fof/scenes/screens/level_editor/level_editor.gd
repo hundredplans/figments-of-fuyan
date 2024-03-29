@@ -2039,24 +2039,31 @@ func on_create_tile(tile_info: Dictionary, owner_node: Node3D, area: int) -> Til
 						var object_scene: Node3D = load("res://assets/models/" + TILE_OBJECT_NAME_TO_FULL_NAME[obj_name] + \
 						"/" + tile_object_name + ".tscn").instantiate()
 						object_scene.position.y = 0.0 if obj_name == "tile" else 0.3
-						object_scene.rotation_degrees.y = tile_info[obj_name].rotation * 60
+						var point_rot: int = tile_info[obj_name].rotation * 60
+						object_scene.rotation_degrees.y = point_rot
 						LevelTile.ModelManager.add_child(object_scene)
 						for point in object_scene.collision_points: 
-							LevelTile.collision_points.append(point + object_scene.position)
+							LevelTile.collision_points.append(getRotationPoint(point, point_rot) + object_scene.global_position)
 				else:
 					LevelTile[obj_name].model = []
 					var object_scene: Resource = load("res://assets/models/walls/" + tile_object_name + ".tscn")
 					for n in range(4 - tile_info.wall.tile_wall):
 						var object_instance: Node3D = object_scene.instantiate()
 						LevelTile.ModelManager.add_child(object_instance)
+						var point_rot: int = tile_info[obj_name].rotation * 60
+						object_instance.rotation_degrees.y = point_rot
 						object_instance.position.y = (n * 0.3) + 0.3
 						for point in object_instance.collision_points: 
-							LevelTile.collision_points.append(point + object_instance.position)
+							LevelTile.collision_points.append(getRotationPoint(point, point_rot) + object_instance.global_position)
 		
 		for grandchild in LevelTile.ModelManager.get_children().filter(func(x: Node3D): return x.is_inside_tree() and !x.is_queued_for_deletion()):
 			grandchild.owner = owner_node
 		return LevelTile
 	return null
+
+func getRotationPoint(xyz: Vector3, rot: int) -> Vector3:
+	var r: float = deg_to_rad(rot)
+	return Vector3(xyz.x * (cos(r)) - xyz.z * (sin(r)), xyz.y, xyz.z * (cos(r)) + xyz.x * (sin(r)))
 
 func on_set_tile_solid_status(Tile: TileGD, tiles: Array, positions: Array) -> void:
 	var btab: int = 0

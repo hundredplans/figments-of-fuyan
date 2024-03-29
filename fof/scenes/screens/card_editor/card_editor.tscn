@@ -265,6 +265,14 @@ offset_right = -405.0
 offset_bottom = 156.0
 text = "New Card"
 
+[node name="BoxCreator" type="Button" parent="Buttons"]
+layout_mode = 0
+offset_left = -378.0
+offset_top = 8.0
+offset_right = -143.0
+offset_bottom = 156.0
+text = "Box Creator"
+
 [node name="ModelArea" type="Control" parent="."]
 anchors_preset = 0
 offset_right = 631.0
@@ -287,7 +295,6 @@ offset_bottom = 795.0
 world_3d = SubResource("World3D_8b6j0")
 transparent_bg = true
 handle_input_locally = false
-scaling_3d_scale = 1.0
 size = Vector2i(631, 650)
 render_target_update_mode = 4
 
@@ -410,5 +417,6 @@ shape = SubResource("RectangleShape2D_o4ixg")
 [connection signal="pressed" from="Buttons/LoadCard" to="." method="_on_load_card_pressed"]
 [connection signal="pressed" from="Buttons/DeleteCard" to="." method="_on_delete_card_pressed"]
 [connection signal="pressed" from="Buttons/NewCard" to="." method="_on_empty_card_pressed"]
+[connection signal="pressed" from="Buttons/BoxCreator" to="." method="_on_box_creator_pressed"]
 [connection signal="mouse_entered" from="ModelArea/ModelViewerControl" to="." method="_on_model_viewer_control_mouse_entered"]
 [connection signal="mouse_exited" from="ModelArea/ModelViewerControl" to="." method="_on_model_viewer_control_mouse_exited"]

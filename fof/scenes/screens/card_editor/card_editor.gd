@@ -192,12 +192,13 @@ func on_item_selected(item_info: Dictionary, change_rarity: bool = true) -> void
 func _on_delete_card_pressed():
 	Helper.on_delete_item(FILE_LOADER_NAME, str(ID), Internal, self, Settings.cards_can_delete_directory)
 
+var model_path: String = ""
 var _Roboto20: Theme = preload("res://assets/UI/roboto/roboto20.tres")
 func on_load_model(bgfn: String) -> void:
 	for child in ModelWorld.get_node("Model").get_children():
 		child.queue_free()
 		
-	var model_path: String = "res://assets/base_game/cards/card_ui/default_model.glb"
+	model_path = "res://assets/base_game/cards/card_ui/default_model.glb"
 	var card_model_path: String = "res://assets/base_game/cards/" + bgfn + "/model.glb"
 	if FileAccess.file_exists(card_model_path):
 		model_path = card_model_path
@@ -276,3 +277,15 @@ func on_move_height_control(HeightControl: Control, Arrow: Node3D) -> void:
 var is_mouse_in_model_viewer: bool = false
 func _on_model_viewer_control_mouse_entered(): is_mouse_in_model_viewer = true
 func _on_model_viewer_control_mouse_exited(): is_mouse_in_model_viewer = false
+
+func _on_box_creator_pressed():
+	get_tree().get_root().get_node("Main/UI").visible = false
+	get_tree().get_root().get_node("Main/World").visible = false
+	var CreateModelBox: Node3D = preload("res://scenes/screens/card_editor/create_model_box.tscn").instantiate()
+	CreateModelBox.path = model_path
+	get_tree().get_root().add_child(CreateModelBox)
+	CreateModelBox.escape.connect(onCreateModelBoxEscaped)
+
+func onCreateModelBoxEscaped() -> void:
+	get_tree().get_root().get_node("Main/UI").visible = true
+	get_tree().get_root().get_node("Main/World").visible = true

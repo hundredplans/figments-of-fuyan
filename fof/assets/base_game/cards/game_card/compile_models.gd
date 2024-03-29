@@ -7,6 +7,8 @@ func _ready() -> void:
 	for file in file_paths.filter(func(x: String): return !FileAccess.file_exists(x.left(-4) + ".tscn")):
 		# DONT REMOVE FILTER NO MATTER WHAT!!!
 		var glb: Node3D = load(file).instantiate()
+		glb.name = "Model"
+		glb.script = preload("res://scenes/screens/level_map/utility_nodes/units/model.gd")
 		if glb.get_child(0).has_node("Skeleton3D"):
 			var static_body := StaticBody3D.new()
 			static_body.collision_layer = 4
@@ -20,13 +22,12 @@ func _ready() -> void:
 			collision_shape.shape = BoxShape3D.new()
 			static_body.add_child(collision_shape)
 			collision_shape.owner = glb
-			
-			await get_tree().create_timer(0.001).timeout
-			print(file + " remember to resize their box!")
-			var packed_scene := PackedScene.new()
-			packed_scene.pack(glb)
-			ResourceSaver.save(packed_scene, file.left(-4) + ".tscn")
-	
+		
+		await get_tree().create_timer(0.001).timeout
+		print(file + " remember to resize their box!")
+		var packed_scene := PackedScene.new()
+		packed_scene.pack(glb)
+		ResourceSaver.save(packed_scene, file.left(-4) + ".tscn")
 	
 func on_find_files(file_paths: Array, dir: String) -> void:
 	for _dir in DirAccess.get_directories_at(dir):

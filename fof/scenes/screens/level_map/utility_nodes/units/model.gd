@@ -1,44 +1,43 @@
 extends Node3D
 
-@onready var Unit: UnitGD = get_parent()
-var UnitModel: Node3D
+var Unit: UnitGD
 var AniPlayer: AnimationPlayer
 signal movement_finished
 signal attack_finished
 signal death_finished
 signal drop_calculate_damage
 var rot: int
+@export var collision_points: PackedVector3Array
 
 var IdleRareTimer: Timer
 
 const IDLE_RARE_MINIMUM: int = 8
 const IDLE_RARE_MAXIMUM: int = 100
+const UNIT_ANIMATION_BLEND_TIME: float = 0.2
+const WALK_TRAVEL_TIME: float = 1.0
 
 func on_idle_rare_timer_timeout() -> void:
 	if AniPlayer.current_animation == "Idle" and AniPlayer.has_animation("IdleRare"):
 		on_play_animation("IdleRare")
 	IdleRareTimer.start(Unit.Units.Random.RNG.randi_range(IDLE_RARE_MINIMUM, IDLE_RARE_MAXIMUM))
 
-func on_add_model() -> void:
-	var card_model_path: String = "res://assets/base_game/cards/" + Unit.base_card.bgfn + "/model.tscn"
-		
-	UnitModel = load(card_model_path).instantiate()
-	AniPlayer = UnitModel.get_node("AnimationPlayer")
+func _ready() -> void:
+	AniPlayer = get_node("AnimationPlayer")
 	AniPlayer.animation_finished.connect(on_finish_animation)
 	
-	IdleRareTimer = Timer.new()
-	add_child(IdleRareTimer)
-	IdleRareTimer.timeout.connect(on_idle_rare_timer_timeout)
-	on_idle_rare_timer_timeout()
+	if Unit != null:
+		IdleRareTimer = Timer.new()
+		add_child(IdleRareTimer)
+		IdleRareTimer.timeout.connect(on_idle_rare_timer_timeout)
+		on_idle_rare_timer_timeout()
 	
 	on_play_animation("Idle")
-	add_child(UnitModel)
 	
 	rot = (rot + 2) % 6
 	on_set_rotation()
 
 func on_play_animation(ani_name: String) -> void:
-	AniPlayer.play(ani_name, Unit.Units.UNIT_ANIMATION_BLEND_TIME)
+	AniPlayer.play(ani_name, UNIT_ANIMATION_BLEND_TIME)
 	if ani_name == "Walk": on_play_walk_sfx()
 	
 var current_walk_stream_player: AudioStreamPlayer
@@ -132,7 +131,7 @@ func on_create_move_tween(Tile: TileGD, type: Vector2i) -> void:
 	
 	MoveTween.tween_property(Unit, "global_position",
 	Vector3(half_position.x, Tile.global_position.y + climb_slope, half_position.z),
-	Unit.Units.WALK_TRAVEL_TIME * 0.5)
+	WALK_TRAVEL_TIME * 0.5)
 	
 	MoveTween.finished.connect(on_create_second_move_tween.bind(Tile, type))
 func on_create_second_move_tween(Tile: TileGD, type: Vector2i) -> void:
@@ -141,7 +140,7 @@ func on_create_second_move_tween(Tile: TileGD, type: Vector2i) -> void:
 	
 	MoveTween.tween_property(Unit, "global_position",
 	Vector3(Tile.global_position.x, Tile.global_position.y + climb_slope, Tile.global_position.z),
-	Unit.Units.WALK_TRAVEL_TIME * 0.5)
+	WALK_TRAVEL_TIME * 0.5)
 	MoveTween.finished.connect(on_finish_animation.bind("Walk"))
 func _look_at(Tile: TileGD) -> void: #will rotate the object
 	rot = Unit.Units.Tiles.neighbour_rotation(Tile, Unit.Tile)

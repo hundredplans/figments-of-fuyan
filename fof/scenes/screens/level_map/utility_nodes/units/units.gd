@@ -11,9 +11,6 @@ var Tiles: TilesGD
 var LevelMap: Node3D
 var LevelUI: LevelUIGD
 
-@export var UNIT_ANIMATION_BLEND_TIME: float = 0.2
-@export var WALK_TRAVEL_TIME: float = 1.0
-
 @onready var BotManager: BotManagerGD = $BotManager
 @onready var PlayerManager: PlayerManagerGD = $PlayerManager
 @onready var FieldedUnits: Node3D = $FieldedUnits

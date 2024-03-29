@@ -22,7 +22,8 @@ script = ExtResource("4_84ynl")
 
 [node name="MouseRayCast" type="RayCast3D" parent="Vision"]
 collision_mask = 10
-debug_shape_thickness = 3
+debug_shape_custom_color = Color(0, 0, 0, 0)
+debug_shape_thickness = 1
 
 [node name="Units" type="Node3D" parent="."]
 script = ExtResource("3_2cmnp")

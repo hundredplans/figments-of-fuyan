@@ -8,12 +8,18 @@ var collision_object_points: Array
 @onready var PointRaycast: RayCast3D = %PointRaycast
 @onready var Camera: Camera3D = $Camera3D
 
-func _ready() -> void:
+func onInstantiatePackedObject() -> void:
 	TileObject = packed_object.instantiate()
 	add_child(TileObject)
 	collision_object_points = Array(TileObject.collision_points.duplicate())
 	for point in TileObject.collision_points:
 		onGenerateCollisionPoint(point)
+	print(TileObject)
+
+func _ready() -> void:
+	Camera.current = true
+	if get_parent() == get_tree().get_root():
+		onInstantiatePackedObject()
 
 func onGenerateCollisionPoint(point: Vector3) -> void: # Creates the 3D effect of point, doesn't add to collision_object_points
 	var CollisionPoint: Node3D = preload("res://assets/models/collision_point.tscn").instantiate()

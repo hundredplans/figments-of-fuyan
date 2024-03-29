@@ -34,7 +34,8 @@ var TeamControl: Node
 var turn_status: int = 0 # 0 = turn active, 1 = turn inactive, 2 = turn used
 
 @onready var UnitFieldStatus: Node3D = $UnitFieldStatus
-@onready var Model: Node3D = $Model
+@onready var Model: Node3D
+
 func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: int, tile: TileGD) -> void:
 	id = _id
 	tool_id = _tool_id
@@ -55,8 +56,11 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	TeamControl.Unit = self
 	add_child(TeamControl)
 	
+	var card_model_path: String = "res://assets/base_game/cards/" + base_card.bgfn + "/model.tscn"
+	Model = load(card_model_path).instantiate()
+	Model.Unit = self
 	Model.rot = rot
-	Model.on_add_model()
+	add_child(Model)
 	
 	VisionRaycast.position.y = height.eye
 	UnitFieldStatus.Unit = self
@@ -155,7 +159,7 @@ const RAY_COUNT: int = 20
 const RAY_DISTANCE: int = 50
 const VISION_RANGE: int = 5
 
-func _onCircleRay() -> void:
+func onCircleRay() -> void:
 	var f: int = Time.get_ticks_msec()
 	visible_tiles = []
 	var tiles: Array = Tiles.onTilesInVisionRange(Tile, VISION_RANGE)
@@ -165,7 +169,6 @@ func _onCircleRay() -> void:
 			VisionRaycast.target_position = point - VisionRaycast.global_position
 			VisionRaycast.force_raycast_update()
 			
-			await get_tree().create_timer(0.2).timeout
 			if VisionRaycast.is_colliding():
 				var Collision: Node3D = VisionRaycast.get_collider().get_node("../../..")
 				if Collision is TileGD:
@@ -179,7 +182,7 @@ func _onCircleRay() -> void:
 	onUnitsHeightAdjacentTiles()
 	print(Time.get_ticks_msec() - f)
 
-func onCircleRay() -> void:
+func _onCircleRay() -> void:
 	visible_tiles = []
 	var vision_tposes: Array = Tiles.getTposInRange(Tile, VISION_RANGE)
 	for i in range(RAY_COUNT):

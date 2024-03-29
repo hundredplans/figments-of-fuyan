@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://cvaiic583r132"]
+
+[ext_resource type="PackedScene" uid="uid://bkyfy7ih6ptpk" path="res://assets/models/compile_collision_points.tscn" id="1_mmjhj"]
+[ext_resource type="Script" path="res://scenes/screens/card_editor/create_model_box.gd" id="1_r3gaj"]
+
+[node name="CreateModelBox" type="Node3D"]
+script = ExtResource("1_r3gaj")
+
+[node name="CompileCollisionPoints" parent="." instance=ExtResource("1_mmjhj")]
+unique_name_in_owner = true
