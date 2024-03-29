@@ -6,6 +6,7 @@ extends Node3D
 
 var tile_state: Array
 var top_of_cliff_wall: Array
+@export var collision_points: PackedVector3Array
 @onready var types: Array = [tile, obj, wall, tdeco, wdeco]
 
 @export var tile: Dictionary
@@ -48,3 +49,10 @@ func setMaterial(mat: Material, btab: int = -1) -> void:
 func setCollisionState(state: bool) -> void:
 	for model in ModelManager.get_children():
 		model.body.collision_layer = 0 if !state else (10 if model.type == "Tile" else 8)
+
+func _ready() -> void:
+	for point in collision_points:
+		var t = preload("res://assets/models/collision_point.tscn").instantiate()
+		t.position = point
+		add_child(t)
+			

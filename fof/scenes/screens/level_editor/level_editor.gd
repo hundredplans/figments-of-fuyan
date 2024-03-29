@@ -454,7 +454,7 @@ func active_tile_check_deletion() -> void:
 	if active_tile != null and active_tile.is_queued_for_deletion(): active_tile = null
 	
 func create_tile(xy: Vector3) -> Node3D:
-	var tile: Node3D = preload("res://assets/models/tiles/editor_tile.tscn").instantiate()
+	var tile: Node3D = preload("res://assets/models/editor_tile.tscn").instantiate()
 	tile.position = Vector3((sqrt(3) * xy.x + sqrt(3) * xy.y * 0.5),
 	xy.z * 1.2,
 	xy.y * 3 / 2)
@@ -1966,6 +1966,7 @@ func _on_bake_level_pressed():
 		if FileAccess.file_exists("res://assets/base_game/levels/" + item_dict.bgfn + "/loaded_level.tscn"):
 			load_level_path = "res://assets/base_game/levels/" + item_dict.bgfn + "/loaded_level.tscn"
 			
+		get_parent().visible = false
 		var LoadedLevel: Node3D = load(load_level_path).instantiate()
 		for child in LoadedLevel.get_node("Tiles").get_children(): child.free()
 		add_child(LoadedLevel)
@@ -1990,6 +1991,7 @@ func _on_bake_level_pressed():
 		packed_scene.pack(LoadedLevel)
 		ResourceSaver.save(packed_scene, "res://assets/base_game/levels/" + item_dict.bgfn + "/loaded_level.tscn")
 		LoadedLevel.queue_free()
+		get_parent().visible = true
 	else:
 		AudioMaster.play_sfx("UnconfirmDefault")
 
@@ -2039,6 +2041,8 @@ func on_create_tile(tile_info: Dictionary, owner_node: Node3D, area: int) -> Til
 						object_scene.position.y = 0.0 if obj_name == "tile" else 0.3
 						object_scene.rotation_degrees.y = tile_info[obj_name].rotation * 60
 						LevelTile.ModelManager.add_child(object_scene)
+						for point in object_scene.collision_points: 
+							LevelTile.collision_points.append(point + object_scene.position)
 				else:
 					LevelTile[obj_name].model = []
 					var object_scene: Resource = load("res://assets/models/walls/" + tile_object_name + ".tscn")
@@ -2046,6 +2050,8 @@ func on_create_tile(tile_info: Dictionary, owner_node: Node3D, area: int) -> Til
 						var object_instance: Node3D = object_scene.instantiate()
 						LevelTile.ModelManager.add_child(object_instance)
 						object_instance.position.y = (n * 0.3) + 0.3
+						for point in object_instance.collision_points: 
+							LevelTile.collision_points.append(point + object_instance.position)
 		
 		for grandchild in LevelTile.ModelManager.get_children().filter(func(x: Node3D): return x.is_inside_tree() and !x.is_queued_for_deletion()):
 			grandchild.owner = owner_node

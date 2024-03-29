@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://b68grcpr0p0j2"]
+
+[ext_resource type="Script" path="res://assets/models/collision_point.gd" id="1_gq2gg"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hmukl"]
+shading_mode = 0
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_dk7r8"]
+material = SubResource("StandardMaterial3D_hmukl")
+size = Vector3(0.05, 0.05, 0.05)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vif2n"]
+size = Vector3(0.05, 0.05, 0.05)
+
+[node name="CollisionPoint" type="Node3D"]
+script = ExtResource("1_gq2gg")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_dk7r8")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("BoxShape3D_vif2n")
+
+[connection signal="mouse_entered" from="Area3D" to="." method="onChangeMouseState" binds= [true]]
+[connection signal="mouse_exited" from="Area3D" to="." method="onChangeMouseState" binds= [false]]

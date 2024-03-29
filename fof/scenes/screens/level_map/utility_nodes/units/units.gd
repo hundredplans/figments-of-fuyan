@@ -260,3 +260,4 @@ func on_unscale_unit(Unit: UnitGD, scale_time: float) -> void:
 
 func onSpectatedInPlayerPhase(Unit: UnitGD) -> void:
 	LevelUI.on_pass_unit_turn_button_state(Unit.team == 1 or Unit in PlayerManager.passed_turns)
+

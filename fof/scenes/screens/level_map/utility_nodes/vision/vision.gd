@@ -18,9 +18,8 @@ func on_recalculate_vision(Unit: UnitGD = null) -> void:
 	var ally_units: Array = Units.on_units()
 	match vision_mode:
 		0:
-			var f: int = Time.get_ticks_msec()
 			if Unit != null:
-				Unit.onCircleRay() # Takes around 50msec
+				Unit._onCircleRay() # Takes around 50msec
 				for _Unit in all_units:
 					if _Unit != Unit:
 						var was_visible: bool = _Unit in Unit.visible_units
@@ -51,18 +50,10 @@ func on_recalculate_vision(Unit: UnitGD = null) -> void:
 					0: if _Unit.Tile not in visible_tiles: visible_tiles.append(_Unit.Tile)
 					1: if _Unit.Tile in ally_vision: visible_tiles.append(_Unit.Tile)
 						
-			if ActiveUnitVision != null:
-				match ActiveUnitVision.team:
-					0:
-						for Tile in Tiles.get_children():
-							if Tile in ActiveUnitVision.visible_tiles:
-								visible_tiles.append(Tile)
-					1:
-						if ActiveUnitVision.Tile in ally_vision:
-							ActiveUnitVision.onCircleRay() # can remove this later
-							for Tile in ally_vision:
-								if Tile in ActiveUnitVision.visible_tiles:
-									visible_tiles.append(Tile)
+			if ActiveUnitVision != null and ActiveUnitVision.Tile in ally_vision:
+				onUnitVisionModeCalculateVision(ActiveUnitVision, visible_tiles)
+			elif SpectateCamera.SpectateUnit != null:
+				onUnitVisionModeCalculateVision(SpectateCamera.SpectateUnit, visible_tiles)
 		2:
 			visible_tiles = spawn_vision
 		3: # enemy vision
@@ -71,7 +62,19 @@ func on_recalculate_vision(Unit: UnitGD = null) -> void:
 			
 	on_apply_visibility(visible_tiles)
 	LevelUI.on_update_vision()
-				
+
+func onUnitVisionModeCalculateVision(Unit: UnitGD, visible_tiles: Array) -> void:
+	match Unit.team:
+		0:
+			for Tile in Tiles.get_children():
+				if Tile in Unit.visible_tiles:
+					visible_tiles.append(Tile)
+		1:
+			Unit.onCircleRay() # can remove this later
+			for Tile in ally_vision:
+				if Tile in Unit.visible_tiles:
+					visible_tiles.append(Tile)
+
 func on_start_phase_start() -> void:
 	for Tile in Tiles.get_children():
 		if Tile.obj.id == 2:

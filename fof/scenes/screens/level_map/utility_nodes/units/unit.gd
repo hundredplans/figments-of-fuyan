@@ -150,13 +150,36 @@ func on_enemy_in_range(state: bool) -> void:
 
 var visible_tiles: Array
 var visible_units: Array
-@onready var VisionRaycast: Node3D = $VisionRaycast
+@onready var VisionRaycast: RayCast3D = $VisionRaycast
 const RAY_COUNT: int = 20
 const RAY_DISTANCE: int = 50
 const VISION_RANGE: int = 5
 
-func onCircleRay() -> void:
+func _onCircleRay() -> void:
 	var f: int = Time.get_ticks_msec()
+	visible_tiles = []
+	var tiles: Array = Tiles.onTilesInVisionRange(Tile, VISION_RANGE)
+	
+	for _Tile in tiles:
+		for point in _Tile.collision_points:
+			VisionRaycast.target_position = point - VisionRaycast.global_position
+			VisionRaycast.force_raycast_update()
+			
+			await get_tree().create_timer(0.2).timeout
+			if VisionRaycast.is_colliding():
+				var Collision: Node3D = VisionRaycast.get_collider().get_node("../../..")
+				if Collision is TileGD:
+					if Collision in tiles:
+						onAddTileToVisibleTiles(Collision)
+						break
+					#else:
+						#Collision = Collision.get_parent().get_parent()
+						#if Collision.Tile.tpos in vision_tposes:
+							#onAddTileToVisibleTiles(Collision.Tile)
+	onUnitsHeightAdjacentTiles()
+	print(Time.get_ticks_msec() - f)
+
+func onCircleRay() -> void:
 	visible_tiles = []
 	var vision_tposes: Array = Tiles.getTposInRange(Tile, VISION_RANGE)
 	for i in range(RAY_COUNT):

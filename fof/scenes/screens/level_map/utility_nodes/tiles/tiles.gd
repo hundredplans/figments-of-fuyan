@@ -161,6 +161,10 @@ func tile_distance(Tile: TileGD, _Tile: TileGD) -> int:
 	var pos: Vector4 = Tile.onTTpos() - _Tile.onTTpos()
 	return (abs(pos.x) + abs(pos.y) + abs(pos.z)) / 2
 	
+func onTilesInVisionRange(Tile: TileGD, VISION_RANGE: int) -> Array:
+	var tposes: Array = getTposInRange(Tile, VISION_RANGE)
+	return get_children().filter(func(x: TileGD): return x.tpos in tposes)
+	
 # -----------------
 
 func _ready() -> void:
