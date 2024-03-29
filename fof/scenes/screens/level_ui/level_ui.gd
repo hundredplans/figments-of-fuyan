@@ -266,3 +266,8 @@ func _on_vision_mode_set():
 
 func onStartPhaseStart() -> void:
 	ChangePhase.visible = false
+
+
+func _on_card_clipper_child_entered_tree(node):
+	if node is HScrollBar:
+		node.mouse_filter = MOUSE_FILTER_PASS

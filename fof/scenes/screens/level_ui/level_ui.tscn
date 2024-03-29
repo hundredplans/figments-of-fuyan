@@ -397,3 +397,4 @@ alignment = 1
 [connection signal="mouse_entered" from="HandBox" to="." method="on_is_mouse_in_ui" binds= [true]]
 [connection signal="mouse_exited" from="HandBox" to="." method="on_unextend_hand_box"]
 [connection signal="mouse_exited" from="HandBox" to="." method="on_is_mouse_in_ui" binds= [false]]
+[connection signal="child_entered_tree" from="HandBox/CardClipper" to="." method="_on_card_clipper_child_entered_tree"]
