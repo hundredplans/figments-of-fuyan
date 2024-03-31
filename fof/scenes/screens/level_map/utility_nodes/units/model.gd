@@ -7,7 +7,7 @@ signal attack_finished
 signal death_finished
 signal drop_calculate_damage
 var rot: int
-@export var collision_points: PackedVector3Array
+@export var collision_points: PackedVector3Array # dont use these
 
 var IdleRareTimer: Timer
 
@@ -32,9 +32,10 @@ func _ready() -> void:
 		on_idle_rare_timer_timeout()
 	
 	on_play_animation("Idle")
-	
 	rot = (rot + 2) % 6
-	on_set_rotation()
+		
+	if Unit != null:
+		on_set_rotation()
 
 func on_play_animation(ani_name: String) -> void:
 	AniPlayer.play(ani_name, UNIT_ANIMATION_BLEND_TIME)
@@ -59,7 +60,7 @@ func on_finish_animation(ani_name: String) -> void:
 	AniPlayer.speed_scale = 1
 	match ani_name:
 		"Walk": movement_finished.emit()
-		"Attack": attack_finished.emit(); AudioMaster.play_sfx(Unit.AudioDict.ATTACK)
+		"Attack": attack_finished.emit(); if Unit != null: AudioMaster.play_sfx(Unit.AudioDict.ATTACK)
 		"Death": death_finished.emit()
 		"Jump": movement_finished.emit(); is_jump = false; jump_time = 0
 		
@@ -150,5 +151,13 @@ func on_death() -> void:
 	on_play_animation("Death")
 	AudioMaster.play_sfx(Unit.AudioDict.DEATH)
 
+func onGetAdjustedPoints() -> PackedVector3Array:
+	return Array(collision_points)\
+	.map(getRotationPoint.bind(deg_to_rad(-rotation_degrees.y), global_position))\
+	as PackedVector3Array
+
 func on_set_rotation() -> void:
 	rotation_degrees.y = 270 + (rot * 60)
+	
+func getRotationPoint(xyz: Vector3, r: float, pos: Vector3) -> Vector3:
+	return Vector3(xyz.x * (cos(r)) - xyz.z * (sin(r)), xyz.y, xyz.z * (cos(r)) + xyz.x * (sin(r))) + pos

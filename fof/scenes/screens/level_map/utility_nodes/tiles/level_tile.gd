@@ -50,9 +50,9 @@ func setCollisionState(state: bool) -> void:
 	for model in ModelManager.get_children():
 		model.body.collision_layer = 0 if !state else (10 if model.type == "Tile" else 8)
 
-func _ready() -> void:
-	for point in collision_points:
-		var t = preload("res://assets/models/collision_point.tscn").instantiate()
-		add_child(t)
-		t.global_position = point
+#func _ready() -> void:
+	#for point in collision_points:
+		#var t = preload("res://assets/models/collision_point.tscn").instantiate()
+		#add_child(t)
+		#t.global_position = point
 			

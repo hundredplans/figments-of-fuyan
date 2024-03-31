@@ -22,7 +22,7 @@ func _ready() -> void:
 		PlayAnimation.add_child(btn)
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("Exit"):
+	if event.is_action_pressed("Exit") or event.is_action_pressed("Escape"):
 		onEscape()
 
 func onEscape() -> void:
@@ -31,3 +31,15 @@ func onEscape() -> void:
 	
 func on_play_model_animation(ani: String) -> void:
 	AniPlayer.play(ani)
+
+func _on_mirror_button_pressed():
+	var add_points: Array = []
+	for point in CompileCollisionPoints.collision_object_points:
+		var new_point := Vector3(point.x, point.y, -point.z)
+		add_points.append(new_point)
+		CompileCollisionPoints.onGenerateCollisionPoint(new_point)
+	CompileCollisionPoints.collision_object_points += add_points
+
+func _on_h_slider_value_changed(value):
+	Model.rotation_degrees.y = value
+	Model.onGetAdjustedPoints()

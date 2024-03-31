@@ -6,14 +6,18 @@ signal pressed
 var past_is_hover: bool = false
 var is_hover: bool = false
 var Heroes: HeroesGD
+
+@export var EnergyLabel: Control
+@export var RegularStats: HBoxContainer
 @export var Art: Control
 @export var Text: Control
 @export var Stats: Control
 
 func set_info(_info: Dictionary) -> void:
 	info = _info
-	for stat in ["a", "h", "s", "e"]:
-		Stats.get_node(Helper.stat_ai_dict[stat] + "/Label").text = str(info[stat])
+	for stat in ["a", "h", "s"]:
+		RegularStats.get_node(Helper.stat_ai_dict[stat] + "Label").text = str(info[stat])
+	EnergyLabel.text = str(info["e"])
 	
 	Text.get_node("Text").text = info.text.compiled
 	Text.get_node("Name").text = info["sname"]

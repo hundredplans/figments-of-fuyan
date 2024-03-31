@@ -104,9 +104,9 @@ func match_search_item_selected(item_dict: Dictionary) -> bool:
 		12: return str(item_dict.aia) == SearchEdit.text
 		13: 
 			var contents: String = Helper.return_file_contents("res://scenes/editor/file_loader/card/abilities.txt")
-			var ltext: String = item_dict.text.to_lower()
+			var ltext: String = item_dict.text.raw.to_lower()
 			for i in contents.split("\n", false):
-				if i.begins_with(SearchEdit.text) and ltext.contains(i):
+				if i.to_lower().begins_with(SearchEdit.text) and ltext.contains(i.to_lower()):
 					return true
 		14:
 			var area: Dictionary = Helper.id_to_dict(int(SearchEdit.text), "Area")

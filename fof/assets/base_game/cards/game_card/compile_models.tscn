@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://xnepikiw72hp"]
+[gd_scene load_steps=3 format=3 uid="uid://xnepikiw72hp"]
 
 [ext_resource type="Script" path="res://assets/base_game/cards/game_card/compile_models.gd" id="1_ph6pt"]
+[ext_resource type="PackedScene" uid="uid://8prn84egw145" path="res://assets/base_game/cards/114 - Palmer/model.glb" id="2_eigbm"]
 
 [node name="CompileModels" type="Node"]
 script = ExtResource("1_ph6pt")
+Model = ExtResource("2_eigbm")

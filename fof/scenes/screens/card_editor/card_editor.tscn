@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dgjchsjrv72a3"]
+[gd_scene load_steps=17 format=3 uid="uid://dgjchsjrv72a3"]
 
 [ext_resource type="Script" path="res://static/game_info/heroes.gd" id="1_5aclk"]
 [ext_resource type="Script" path="res://scenes/screens/card_editor/card_editor.gd" id="1_hv8xs"]
@@ -15,6 +15,8 @@
 [ext_resource type="PackedScene" uid="uid://c42bnq7frgogc" path="res://assets/env/level_editor/height_control.tscn" id="13_ik3kg"]
 
 [sub_resource type="World3D" id="World3D_8b6j0"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_13u3b"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o4ixg"]
 size = Vector2(631, 795)
@@ -392,6 +394,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 radius = 0.05
 material = ExtResource("13_hxk1e")
 
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ModelArea/ModelViewer/SubViewport/ModelWorld"]
+mesh = SubResource("PlaneMesh_13u3b")
+
 [node name="Camera3D" type="Camera3D" parent="ModelArea/ModelViewer/SubViewport"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
 
@@ -408,6 +413,7 @@ theme_override_constants/separation = 0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ModelArea/ModelViewerControl"]
 position = Vector2(315.5, 397.5)
 shape = SubResource("RectangleShape2D_o4ixg")
+debug_color = Color(0, 0.6, 0.701961, 0)
 
 [connection signal="text_submitted" from="CardCreator/EditFileName" to="." method="_on_edit_file_name_text_submitted"]
 [connection signal="item_selected" from="CardCreator/ChooseRarity" to="." method="_on_choose_rarity_item_selected"]

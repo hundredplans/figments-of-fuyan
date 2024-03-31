@@ -79,10 +79,15 @@ func on_reset_stats(stat_changed: String) -> void:
 	
 	if UnitStatusExtra != null: UnitStatusExtra.on_reset_stats(stat_changed)
 	
+func onSetStatLabelText(StatLabel: Label, stat: int) -> void:
+	StatLabel.text = str(stat)
+	StatLabel.label_settings = preload("res://assets/UI/sixty_four/sixty_four_default.tres")\
+	if StatLabel.text.length() == 1 else preload("res://assets/UI/sixty_four/sixty_four_medium.tres")
+ 	
 func on_reset_stat_numbers(attack_modulate: String, health_modulate: String, speed_modulate: String, stat_changed: String) -> void:
-	AttackLabel.text = str(Unit.attack)
-	HealthLabel.text = str(Unit.health)
-	SpeedLabel.text = str(Unit.speed)
+	onSetStatLabelText(AttackLabel, Unit.attack)
+	onSetStatLabelText(HealthLabel, Unit.health)
+	onSetStatLabelText(SpeedLabel, Unit.speed)
 	
 	AttackLabel.modulate = Unit.Units.get(attack_modulate)
 	HealthLabel.modulate = Unit.Units.get(health_modulate)

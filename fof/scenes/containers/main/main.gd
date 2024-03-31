@@ -63,6 +63,7 @@ func on_menu_transition(screen: Control, old_screen: Control, is_enter: bool) ->
 	if move_screen_switch_length.has(old_screen.name): length = move_screen_switch_length[old_screen.name]
 	Helper.on_timer_end(on_move_screen_switch, [screen], length)
 	
+	
 	if length == 0.3:
 		await get_tree().create_timer(length).timeout
 		old_screen.visible = false

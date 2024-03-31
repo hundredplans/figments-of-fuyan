@@ -12,9 +12,9 @@ func onInstantiatePackedObject() -> void:
 	TileObject = packed_object.instantiate()
 	add_child(TileObject)
 	collision_object_points = Array(TileObject.collision_points.duplicate())
+	
 	for point in TileObject.collision_points:
 		onGenerateCollisionPoint(point)
-	print(TileObject)
 
 func _ready() -> void:
 	Camera.current = true
@@ -22,12 +22,13 @@ func _ready() -> void:
 		onInstantiatePackedObject()
 
 func onGenerateCollisionPoint(point: Vector3) -> void: # Creates the 3D effect of point, doesn't add to collision_object_points
-	var CollisionPoint: Node3D = preload("res://assets/models/collision_point.tscn").instantiate()
-	CollisionPoint.position = point
-	CollisionPoint.point = point
-	CollisionPoint.remove_collision_point.connect(onRemoveCollisionPoint)
-	CollisionPoints.add_child(CollisionPoint)
-	
+	pass
+	#var CollisionPoint: Node3D = preload("res://assets/models/collision_point.tscn").instantiate()
+	#CollisionPoint.position = point
+	#CollisionPoint.point = point
+	#CollisionPoint.remove_collision_point.connect(onRemoveCollisionPoint)
+	#CollisionPoints.add_child(CollisionPoint)
+	#
 var is_removed: bool = false
 func onRemoveCollisionPoint(point: Vector3) -> void:
 	collision_object_points.erase(point)

@@ -186,6 +186,7 @@ func on_item_selected(item_info: Dictionary, change_rarity: bool = true) -> void
 		TopArrow.position.y = height.top
 		WeaponArrow.position.y = height.weapon
 		WeaponOffset.text = str(height.weapon_offset)
+		StatArrow.position.y = height.stat
 		
 		on_set_inital_height_controls()
 
@@ -215,7 +216,29 @@ func on_load_model(bgfn: String) -> void:
 			btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			btn.theme = _Roboto20
 			btn.pressed.connect(on_play_model_animation.bind(ani_player, ani))
+			
+			if ani == "Attack": btn.pressed.connect(onAttackAnimationPlayed)
 			$ModelArea/ModelControls.add_child(btn)
+
+func onAttackAnimationPlayed() -> void:
+	var offset: float = float(WeaponOffset.text)
+	var pos: float = float(WeaponControl.HeightLabel.text)
+	if offset > 0.03:
+		var planes: Array = []
+		for i in range(2):
+			var csg := CSGSphere3D.new()
+			csg.radius = 0.05
+			
+			ModelWorld.add_child(csg)
+			csg.material = preload("res://assets/materials/on_top.tres")
+			planes.append(csg)
+			
+			csg.position.y = offset + pos if i == 0 else -offset + pos
+			csg.position.x -= 1.2
+			
+		await get_tree().create_timer(3).timeout
+		for plane in planes:
+			plane.queue_free()
 
 func on_play_model_animation(ani_player: AnimationPlayer, ani: String) -> void:
 	ani_player.play(ani)

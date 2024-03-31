@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://ccsnhg1yt1lia"]
+[gd_scene load_steps=16 format=3 uid="uid://ccsnhg1yt1lia"]
 
 [ext_resource type="Script" path="res://assets/base_game/cards/game_card/game_card.gd" id="1_pl2by"]
 [ext_resource type="Texture2D" uid="uid://b6q51hfsin88k" path="res://assets/base_game/cards/game_card/rarity/2.png" id="2_hayc4"]
@@ -8,7 +8,6 @@
 [ext_resource type="LabelSettings" uid="uid://qp0350v2j4ah" path="res://assets/UI/roboto/roboto32_outline.tres" id="4_56a35"]
 [ext_resource type="Texture2D" uid="uid://b0l6fop34q6ew" path="res://assets/base_game/cards/card_ui/stats/hp/hp.png" id="5_f4yyf"]
 [ext_resource type="Texture2D" uid="uid://ddob5qay4neya" path="res://assets/base_game/cards/card_ui/stats/spd/spd.png" id="6_raaxe"]
-[ext_resource type="LabelSettings" uid="uid://bp2u8sp36bt72" path="res://assets/UI/roboto/roboto_outline.tres" id="7_7oppy"]
 [ext_resource type="Texture2D" uid="uid://iucmlitjenwl" path="res://assets/base_game/cards/card_ui/stats/energy/energy.png" id="8_cgtck"]
 [ext_resource type="Texture2D" uid="uid://b74ndaaqnns1v" path="res://assets/base_game/cards/card_ui/tool/tool.png" id="9_3ul1s"]
 [ext_resource type="Theme" uid="uid://bsbktaxrkrggi" path="res://assets/UI/roboto/roboto12.tres" id="10_1dvl0"]
@@ -22,7 +21,7 @@ font_size = 12
 outline_size = 8
 outline_color = Color(0, 0, 0, 1)
 
-[node name="GameCard" type="Control" node_paths=PackedStringArray("Art", "Text", "Stats")]
+[node name="GameCard" type="Control" node_paths=PackedStringArray("EnergyLabel", "RegularStats", "Art", "Text", "Stats")]
 custom_minimum_size = Vector2(264, 397)
 layout_mode = 3
 anchors_preset = 0
@@ -31,6 +30,8 @@ offset_right = 264.0
 offset_bottom = 407.0
 mouse_filter = 2
 script = ExtResource("1_pl2by")
+EnergyLabel = NodePath("Stats/Energy/Label")
+RegularStats = NodePath("Stats/RegularStats")
 Art = NodePath("Art")
 Text = NodePath("Text")
 Stats = NodePath("Stats")
@@ -75,103 +76,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Attack" type="Control" parent="Stats"]
-layout_mode = 1
-anchor_top = -0.026
-anchor_bottom = -0.026
-offset_left = 25.0
-offset_top = 348.88
-offset_right = 89.0
-offset_bottom = 398.88
-mouse_filter = 2
-
-[node name="Sprite2D" type="Sprite2D" parent="Stats/Attack"]
-texture_filter = 1
-position = Vector2(39, 25)
-texture = ExtResource("3_l1qqa")
-metadata/_edit_lock_ = true
-
-[node name="Label" type="Label" parent="Stats/Attack"]
-modulate = Color(0.976471, 0.454902, 0.105882, 1)
-layout_mode = 1
-anchors_preset = -1
-anchor_left = -0.469
-anchor_top = -6.037
-anchor_right = -0.469
-anchor_bottom = -6.037
-offset_left = 7.016
-offset_top = 319.015
-offset_right = 47.016
-offset_bottom = 360.015
-text = "3"
-label_settings = ExtResource("4_56a35")
-horizontal_alignment = 2
-metadata/_edit_lock_ = true
-
-[node name="Health" type="Control" parent="Stats"]
-layout_mode = 1
-anchor_top = -0.026
-anchor_bottom = -0.026
-offset_left = 89.0
-offset_top = 348.88
-offset_right = 159.0
-offset_bottom = 398.88
-mouse_filter = 2
-
-[node name="Sprite2D" type="Sprite2D" parent="Stats/Health"]
-texture_filter = 1
-position = Vector2(45, 25)
-texture = ExtResource("5_f4yyf")
-metadata/_edit_lock_ = true
-
-[node name="Label" type="Label" parent="Stats/Health"]
-modulate = Color(1, 0, 0, 1)
-layout_mode = 1
-anchors_preset = -1
-anchor_left = -1.771
-anchor_top = -6.02
-anchor_right = -1.771
-anchor_bottom = -6.02
-offset_left = 97.97
-offset_top = 318.0
-offset_right = 147.97
-offset_bottom = 359.0
-text = "2"
-label_settings = ExtResource("4_56a35")
-horizontal_alignment = 2
-metadata/_edit_lock_ = true
-
-[node name="Speed" type="Control" parent="Stats"]
-layout_mode = 1
-anchor_top = -0.026
-anchor_bottom = -0.026
-offset_left = 194.0
-offset_top = 344.88
-offset_right = 250.0
-offset_bottom = 402.88
-mouse_filter = 2
-
-[node name="Sprite2D" type="Sprite2D" parent="Stats/Speed"]
-texture_filter = 1
-position = Vector2(15, 33)
-texture = ExtResource("6_raaxe")
-
-[node name="Label" type="Label" parent="Stats/Speed"]
-modulate = Color(0.282353, 0.678431, 0.113725, 1)
-layout_mode = 1
-anchors_preset = -1
-anchor_left = -2.535
-anchor_top = -0.001
-anchor_right = -2.535
-anchor_bottom = -0.001
-offset_left = 113.96
-offset_top = 23.058
-offset_right = 129.96
-offset_bottom = 59.058
-text = "3"
-label_settings = ExtResource("7_7oppy")
-horizontal_alignment = 1
-
 [node name="Energy" type="Control" parent="Stats"]
 anchors_preset = 0
 offset_left = 17.0
@@ -213,6 +117,67 @@ mouse_filter = 2
 position = Vector2(25, 25)
 texture = ExtResource("9_3ul1s")
 metadata/_edit_lock_ = true
+
+[node name="RegularStats" type="HBoxContainer" parent="Stats"]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 342.0
+offset_right = 244.0
+offset_bottom = 392.0
+
+[node name="AttackLabel" type="Label" parent="Stats/RegularStats"]
+modulate = Color(0.976471, 0.454902, 0.105882, 1)
+texture_filter = 1
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "2"
+label_settings = ExtResource("4_56a35")
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="AttackSprite" type="TextureRect" parent="Stats/RegularStats"]
+texture_filter = 1
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_l1qqa")
+stretch_mode = 2
+
+[node name="HealthLabel" type="Label" parent="Stats/RegularStats"]
+modulate = Color(1, 0, 0, 1)
+texture_filter = 1
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "2"
+label_settings = ExtResource("4_56a35")
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="HealthSprite" type="TextureRect" parent="Stats/RegularStats"]
+texture_filter = 1
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("5_f4yyf")
+stretch_mode = 2
+
+[node name="SpeedLabel" type="Label" parent="Stats/RegularStats"]
+modulate = Color(0.282353, 0.678431, 0.113725, 1)
+texture_filter = 1
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "2"
+label_settings = ExtResource("4_56a35")
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="SpeedSprite" type="TextureRect" parent="Stats/RegularStats"]
+texture_filter = 1
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("6_raaxe")
+stretch_mode = 2
 
 [node name="Text" type="Control" parent="."]
 layout_mode = 1

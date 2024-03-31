@@ -78,6 +78,7 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 func occupy_tile(_Tile: TileGD) -> void:
 	Tile = _Tile
 	Vision.on_recalculate_vision(self)
+	Model.onGetAdjustedPoints()
 
 var Killer: UnitGD
 func stats(stat_type: String, val: int, AppliedBy: Variant = "GameEvent", absolute: bool = false) -> void:
@@ -163,7 +164,6 @@ func onCircleRay() -> void:
 	var f: int = Time.get_ticks_msec()
 	visible_tiles = []
 	var tiles: Array = Tiles.onTilesInVisionRange(Tile, VISION_RANGE)
-	
 	for _Tile in tiles:
 		for point in _Tile.collision_points:
 			VisionRaycast.target_position = point - VisionRaycast.global_position
@@ -171,16 +171,25 @@ func onCircleRay() -> void:
 			
 			if VisionRaycast.is_colliding():
 				var Collision: Node3D = VisionRaycast.get_collider().get_node("../../..")
-				if Collision is TileGD:
-					if Collision in tiles:
-						onAddTileToVisibleTiles(Collision)
-						break
-					#else:
-						#Collision = Collision.get_parent().get_parent()
-						#if Collision.Tile.tpos in vision_tposes:
-							#onAddTileToVisibleTiles(Collision.Tile)
-	onUnitsHeightAdjacentTiles()
+				if Collision == _Tile:
+					onAddTileToVisibleTiles(Collision)
+					break
+	
 	print(Time.get_ticks_msec() - f)
+	
+	var units: Array = Units.all_units().filter(func(x: UnitGD): return x != self and x.Tile in tiles and x.Tile not in visible_tiles)
+	for Unit in units:
+		for point in Unit.Model.onGetAdjustedPoints():
+			VisionRaycast.target_position = point - VisionRaycast.global_position
+			VisionRaycast.force_raycast_update()
+			
+			if VisionRaycast.is_colliding():
+				var Collision: Node3D = VisionRaycast.get_collider().get_node("../../..")
+				if Collision == Unit.Tile:
+					onAddTileToVisibleTiles(Collision.Tile)
+					break
+	
+	onUnitsHeightAdjacentTiles()
 
 func _onCircleRay() -> void:
 	visible_tiles = []

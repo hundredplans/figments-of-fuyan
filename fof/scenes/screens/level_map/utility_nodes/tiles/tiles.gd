@@ -296,17 +296,18 @@ func on_create_movement_paths(Unit: UnitGD) -> void:
 			var EnemyUnit: UnitGD = Units.unit_by_tile(_Tile)
 			var hdiff: int = (_Tile.w * 2) + int(is_ramp_tile(_Tile)) - ((Tile.w * 2) + int(is_ramp_tile(Tile)))
 			if EnemyUnit != null:
-				var ally_unit_height: float = getUnitAdjustedHeight(Tile)
-				
-				var enemy_low_point: float = getUnitAdjustedHeight(EnemyUnit.Tile)
-				var enemy_high_point: float = enemy_low_point + EnemyUnit.height.top
-				var your_weapon_low_point: float = ally_unit_height + Unit.height.weapon - Unit.height.weapon_offset
-				var your_weapon_high_point: float = ally_unit_height + Unit.height.weapon + Unit.height.weapon_offset
-				
-				if hdiff == 0 or (enemy_low_point <= your_weapon_low_point and your_weapon_low_point <= enemy_high_point) or\
-				(enemy_low_point <= your_weapon_high_point and your_weapon_high_point <= enemy_high_point):
-				#(hdiff > 0 and your_weapon_point >= enemy_low_point) or (hdiff < 0 and enemy_high_point >= your_weapon_point):
-					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(1, 0))
+				if EnemyUnit.team == 1:
+					var ally_unit_height: float = getUnitAdjustedHeight(Tile)
+					
+					var enemy_low_point: float = getUnitAdjustedHeight(EnemyUnit.Tile)
+					var enemy_high_point: float = enemy_low_point + EnemyUnit.height.top
+					var your_weapon_low_point: float = ally_unit_height + Unit.height.weapon - Unit.height.weapon_offset
+					var your_weapon_high_point: float = ally_unit_height + Unit.height.weapon + Unit.height.weapon_offset
+					
+					if hdiff == 0 or (enemy_low_point <= your_weapon_low_point and your_weapon_low_point <= enemy_high_point) or\
+					(enemy_low_point <= your_weapon_high_point and your_weapon_high_point <= enemy_high_point):
+					#(hdiff > 0 and your_weapon_point >= enemy_low_point) or (hdiff < 0 and enemy_high_point >= your_weapon_point):
+						on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(1, 0))
 			elif (_Tile.obj.id in is_stair_object or _Tile.tile.type == 2):  # Move to ramp
 				if on_can_ramp_connect(Tile, _Tile, hdiff):
 					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(2, hdiff))
