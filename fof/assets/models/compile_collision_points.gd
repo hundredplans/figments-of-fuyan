@@ -22,13 +22,12 @@ func _ready() -> void:
 		onInstantiatePackedObject()
 
 func onGenerateCollisionPoint(point: Vector3) -> void: # Creates the 3D effect of point, doesn't add to collision_object_points
-	pass
-	#var CollisionPoint: Node3D = preload("res://assets/models/collision_point.tscn").instantiate()
-	#CollisionPoint.position = point
-	#CollisionPoint.point = point
-	#CollisionPoint.remove_collision_point.connect(onRemoveCollisionPoint)
-	#CollisionPoints.add_child(CollisionPoint)
-	#
+	var CollisionPoint: Node3D = preload("res://assets/models/collision_point.tscn").instantiate()
+	CollisionPoint.position = point
+	CollisionPoint.point = point
+	CollisionPoint.remove_collision_point.connect(onRemoveCollisionPoint)
+	CollisionPoints.add_child(CollisionPoint)
+	
 var is_removed: bool = false
 func onRemoveCollisionPoint(point: Vector3) -> void:
 	collision_object_points.erase(point)

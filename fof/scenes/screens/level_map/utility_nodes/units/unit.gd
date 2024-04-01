@@ -161,10 +161,9 @@ const RAY_DISTANCE: int = 50
 const VISION_RANGE: int = 5
 
 func onCircleRay() -> void:
-	var f: int = Time.get_ticks_msec()
 	visible_tiles = []
 	var tiles: Array = Tiles.onTilesInVisionRange(Tile, VISION_RANGE)
-	for _Tile in tiles:
+	for _Tile in tiles: # Takes between 20-30 msec
 		for point in _Tile.collision_points:
 			VisionRaycast.target_position = point - VisionRaycast.global_position
 			VisionRaycast.force_raycast_update()
@@ -175,8 +174,6 @@ func onCircleRay() -> void:
 					onAddTileToVisibleTiles(Collision)
 					break
 	
-	print(Time.get_ticks_msec() - f)
-	
 	var units: Array = Units.all_units().filter(func(x: UnitGD): return x != self and x.Tile in tiles and x.Tile not in visible_tiles)
 	for Unit in units:
 		for point in Unit.Model.onGetAdjustedPoints():
@@ -186,48 +183,26 @@ func onCircleRay() -> void:
 			if VisionRaycast.is_colliding():
 				var Collision: Node3D = VisionRaycast.get_collider().get_node("../../..")
 				if Collision == Unit.Tile:
-					onAddTileToVisibleTiles(Collision.Tile)
+					onAddTileToVisibleTiles(Collision)
 					break
-	
+					
+	visible_tiles = _visible_tiles.keys()
 	onUnitsHeightAdjacentTiles()
 
-func _onCircleRay() -> void:
-	visible_tiles = []
-	var vision_tposes: Array = Tiles.getTposInRange(Tile, VISION_RANGE)
-	for i in range(RAY_COUNT):
-		var phi: float = (i * (PI * 2)) / RAY_COUNT
-		var theta: float = 0
-		for j in range(RAY_COUNT):
-			theta = (j * PI) / RAY_COUNT
-			VisionRaycast.target_position = Vector3(sin(theta) * cos(phi), sin(theta) * sin(phi), cos(theta)) * RAY_DISTANCE
-			VisionRaycast.force_raycast_update()
-			
-			if VisionRaycast.is_colliding():
-				var Collision: Node3D = VisionRaycast.get_collider().get_node("../../..")
-				if Collision is TileGD:
-					if Collision.tpos in vision_tposes:
-						onAddTileToVisibleTiles(Collision)
-				else:
-					Collision = Collision.get_parent().get_parent()
-					if Collision.Tile.tpos in vision_tposes:
-						onAddTileToVisibleTiles(Collision.Tile)
-	onUnitsHeightAdjacentTiles()
+var _visible_tiles: Dictionary = {}
 
 func onAddTileToVisibleTiles(_Tile: TileGD) -> void:
-	if _Tile not in visible_tiles:
-		for type in ["obj", "wdeco", "tdeco"]:
-			if _Tile[type].multi_tile.size() > 0:
-				if _Tile.solid_status == 1:
-					for __Tile in _Tile[type].multi_tile:
-						if __Tile not in visible_tiles:
-							_onAddTileToVisibleTiles(__Tile)
-		_onAddTileToVisibleTiles(_Tile)
+	for type in ["obj", "wdeco", "tdeco"]:
+		if _Tile[type].multi_tile.size() > 0:
+			if _Tile.solid_status == 1:
+				for __Tile in _Tile[type].multi_tile:
+					_onAddTileToVisibleTiles(__Tile)
+	_onAddTileToVisibleTiles(_Tile)
 	
 func _onAddTileToVisibleTiles(_Tile: TileGD) -> void:
-	visible_tiles.append(_Tile)
+	_visible_tiles.merge({_Tile: null})
 	for __Tile in _Tile.top_of_cliff_wall:
-		if __Tile not in visible_tiles:
-			visible_tiles.append(__Tile)
+		_visible_tiles.merge({__Tile: null})
 	
 func onUnitsHeightAdjacentTiles() -> void:
 	if Tile.w > 0:

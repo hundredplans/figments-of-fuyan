@@ -319,7 +319,6 @@ func on_create_movement_paths(Unit: UnitGD) -> void:
 				if hdiff in [-1, 1]: # half tile to regular (jump up / down)
 					if isValidJump(Tile, _Tile, Unit.height.top):
 						on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(3, 0))
-						
 				elif hdiff == 0: # half tile to half tile
 					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i.ZERO)
 				elif hdiff < 0 and is_valid_tall_jump(Tile, _Tile, Unit.height.top): 
@@ -357,7 +356,7 @@ func on_create_movement_paths(Unit: UnitGD) -> void:
 	for Tile in tiles_by_adjacent.keys():
 		var path: Dictionary = on_create_true_path(Array(astar.get_id_path(Unit.Tile.get_instance_id(), Tile.get_instance_id()))\
 		.map(func(x: int): return instance_from_id(x)), movement_types, Unit) # Creates paths of [[Tile, vec2(id)], [Tile, vec2(id)]]
-		
+			
 		if path.size > 0 and path.size <= Unit.speed + int(path.types[path.size - 1].x == 1):
 			movement_paths[Tile] = path
 			movement_paths.tiles.append(Tile)

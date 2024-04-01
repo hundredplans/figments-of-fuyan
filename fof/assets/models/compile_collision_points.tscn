@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://bkyfy7ih6ptpk"]
+[gd_scene load_steps=8 format=3 uid="uid://bkyfy7ih6ptpk"]
 
 [ext_resource type="Script" path="res://assets/models/compile_collision_points.gd" id="1_i3aky"]
+[ext_resource type="PackedScene" path="res://assets/models/tiles/void.tscn" id="2_0588o"]
 [ext_resource type="Script" path="res://scenes/world/movement_camera.gd" id="2_q11yj"]
 [ext_resource type="Texture2D" uid="uid://babcdv6gnw330" path="res://assets/base_game/areas/10 - Ashbone Citadel/sky.hdr" id="4_lj05i"]
 
@@ -16,6 +17,7 @@ sky = SubResource("Sky_x1roh")
 
 [node name="CompileCollisionPoints" type="Node3D"]
 script = ExtResource("1_i3aky")
+packed_object = ExtResource("2_0588o")
 
 [node name="PointRaycast" type="RayCast3D" parent="."]
 unique_name_in_owner = true
