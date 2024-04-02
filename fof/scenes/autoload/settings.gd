@@ -30,7 +30,6 @@ var level_id: int = 0
 const clear_backup_files_array: Array = [0, 86400, 259200, 604800, 2592000, 1]
 
 var autopass_turn: int = 0
-var autopass_unit_turn: int = 0
 var autopass_handphase: int = 0
 var camera_distance: int = 0
 
@@ -142,8 +141,6 @@ func set_autopassturn(i: int):
 	autopass_turn = i
 func set_autopasshandphase(i: int):
 	autopass_handphase = i
-func set_autopassunitturn(i: int):
-	autopass_unit_turn = i
 func set_cameradistance(i: int):
 	camera_distance = i
 

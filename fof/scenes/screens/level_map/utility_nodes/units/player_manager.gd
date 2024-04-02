@@ -82,20 +82,19 @@ func on_player_end_turn_phase_start() -> void:
 	for Unit in Units.on_units():
 		Unit.UnitStatus.on_set_status_box_modulate("TurnUsed")
 
-func on_attack_finished(Unit: UnitGD) -> void:
+func on_hurt_finished(Unit: UnitGD) -> void:
 	on_check_autopass(Unit)
 
 func on_check_autopass(Unit: UnitGD) -> void:
 	if !Units.event_queue.is_empty(): return
 	if ActiveUnit != Unit: return
 	
-	if Settings.autopass_unit_turn:
-		if Unit.attack_amount == 0: on_pass_unit_turn(); return
-		else: 
-			Tiles.on_create_movement_paths(Unit)
-			if Tiles.movement_paths.tiles.is_empty() and Tiles.movement_paths.tiles.filter(func(x: TileGD): return Units.unit_by_tile_team_bool(x, 0)).is_empty(): 
-				on_pass_unit_turn()
-				return
+	if Unit.attack_amount == 0: on_pass_unit_turn(); return
+	else: 
+		Tiles.on_create_movement_paths(Unit)
+		if Tiles.movement_paths.tiles.is_empty() and Tiles.movement_paths.tiles.filter(func(x: TileGD): return Units.unit_by_tile_team_bool(x, 0)).is_empty(): 
+			on_pass_unit_turn()
+			return
 	
 	on_set_unit_turn_status(Unit, 0)
 	_on_unit_selected(Unit)

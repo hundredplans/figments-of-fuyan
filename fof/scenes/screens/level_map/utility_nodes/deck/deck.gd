@@ -1,7 +1,7 @@
 class_name DeckGD
 extends Node
 
-const AFTER_PHASE_START_DRAW_COUNT: int = 5
+const AFTER_PHASE_START_DRAW_COUNT: int = 15
 
 var LevelMap: Node3D
 var Heroes: HeroesGD

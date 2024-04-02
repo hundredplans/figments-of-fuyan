@@ -202,7 +202,6 @@ func on_attack_finished(Unit: UnitGD) -> void:
 	active_event = []
 	
 	LevelMap.on_set_lock_inputs_event_queue(false)
-	if Unit.team == 0: PlayerManager.on_attack_finished(Unit)
 	on_event_queue_finished()
 	
 func _attack_target(_Unit: UnitGD, _Tile: TileGD) -> void:
@@ -211,7 +210,7 @@ func _attack_target(_Unit: UnitGD, _Tile: TileGD) -> void:
 func kill_unit(Unit: UnitGD, Killer: String) -> void:
 	event_queue.append(["DeathUnit", Unit, Killer])
 
-func hurt_unit(Unit: UnitGD, Attacker: String) -> void:
+func hurt_unit(Unit: UnitGD, Attacker: Variant) -> void:
 	event_queue.append(["HurtUnit", Unit, Attacker])
 
 func on_death() -> void:
@@ -243,9 +242,11 @@ func on_death_finished(Unit: UnitGD) -> void:
 
 func on_hurt_finished(_Unit: UnitGD) -> void:
 	LevelMap.on_set_lock_inputs_event_queue(false)
+	
+	if active_event[2].team == 0: PlayerManager.on_hurt_finished(active_event[2])
 	active_event = []
 	on_event_queue_finished()
-	print(event_queue)
+
 
 func on_drop_calculate_damage(new_health: int, scale_time: float, Unit: UnitGD) -> void:
 	if new_health >= 0:

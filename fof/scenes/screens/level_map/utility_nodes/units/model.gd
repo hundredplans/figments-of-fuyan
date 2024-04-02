@@ -158,6 +158,7 @@ func on_hurt() -> void:
 		on_play_animation("Hurt")
 		AudioMaster.play_sfx(Unit.AudioDict.HURT)
 	else:
+		await get_tree().create_timer(0.1).timeout
 		hurt_finished.emit()
 
 func onGetAdjustedPoints() -> PackedVector3Array:
