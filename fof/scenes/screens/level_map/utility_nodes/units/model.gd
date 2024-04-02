@@ -5,6 +5,7 @@ var AniPlayer: AnimationPlayer
 signal movement_finished
 signal attack_finished
 signal death_finished
+signal hurt_finished
 signal drop_calculate_damage
 var rot: int
 @export var collision_points: PackedVector3Array # dont use these
@@ -63,6 +64,7 @@ func on_finish_animation(ani_name: String) -> void:
 		"Attack": attack_finished.emit(); if Unit != null: AudioMaster.play_sfx(Unit.AudioDict.ATTACK)
 		"Death": death_finished.emit()
 		"Jump": movement_finished.emit(); is_jump = false; jump_time = 0
+		"Hurt": hurt_finished.emit();
 		
 	if ani_name != "Walk" and ani_name != "Death" and (ani_name != "Jump"): on_play_animation("Idle")
 
@@ -150,6 +152,13 @@ func _look_at(Tile: TileGD) -> void: #will rotate the object
 func on_death() -> void:
 	on_play_animation("Death")
 	AudioMaster.play_sfx(Unit.AudioDict.DEATH)
+
+func on_hurt() -> void:
+	if AniPlayer.has_animation("Hurt"):
+		on_play_animation("Hurt")
+		AudioMaster.play_sfx(Unit.AudioDict.HURT)
+	else:
+		hurt_finished.emit()
 
 func onGetAdjustedPoints() -> PackedVector3Array:
 	return Array(collision_points)\

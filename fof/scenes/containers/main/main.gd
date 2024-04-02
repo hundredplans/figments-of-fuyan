@@ -54,10 +54,13 @@ func on_menu_transition(screen: Control, old_screen: Control, is_enter: bool) ->
 	var screen_path: String = "res://scenes/ui_general/move_screen.tres"
 	if move_screen_name_to_path.has(old_screen.name): screen_path = move_screen_name_to_path[old_screen.name]
 	MoveLibrary.add_animation(old_screen.name, load(screen_path))
-	if is_enter:
-		MoveScreen.play(old_screen.name)
-		screen_history.append(old_screen.scene_file_path)
-	else: MoveScreen.play_backwards(old_screen.name)
+	
+	if get_parent() == get_tree().get_root():
+		if is_enter:
+			MoveScreen.play(old_screen.name)
+			screen_history.append(old_screen.scene_file_path)
+		else: MoveScreen.play_backwards(old_screen.name)
+	else: _on_move_screen_animation_finished(old_screen.name)
 	
 	var length: float = 0.3
 	if move_screen_switch_length.has(old_screen.name): length = move_screen_switch_length[old_screen.name]

@@ -24,13 +24,15 @@ func _ready() -> void:
 		
 func on_move_screen_setup(btn_name: String) -> void:
 	AniItem.visible = true
-	var btn: Control = $MenuButtons.get_node(btn_name)
-	btn.visible = false
 	
-	AniItem.flip_h = btn.flip_h
-	if !AniItem.flip_h: AniItem.position = Vector2(btn.position.x - 116, btn.position.y - 435)
-	else: AniItem.position = Vector2(btn.position.x - 1078, btn.position.y - 435)
-	lerp_item = 1
+	if $MenuButtons.has_node(btn_name):
+		var btn: Control = $MenuButtons.get_node(btn_name)
+		btn.visible = false
+		
+		AniItem.flip_h = btn.flip_h
+		if !AniItem.flip_h: AniItem.position = Vector2(btn.position.x - 116, btn.position.y - 435)
+		else: AniItem.position = Vector2(btn.position.x - 1078, btn.position.y - 435)
+		lerp_item = 1
 	
 func _process(delta: float) -> void:
 	match lerp_item:

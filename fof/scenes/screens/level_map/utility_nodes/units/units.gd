@@ -52,6 +52,7 @@ func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int
 	Unit.Model.drop_calculate_damage.connect(on_drop_calculate_damage.bind(Unit))
 	Unit.Model.attack_finished.connect(on_attack_finished.bind(Unit))
 	Unit.Model.death_finished.connect(on_death_finished.bind(Unit))
+	Unit.Model.hurt_finished.connect(on_hurt_finished.bind(Unit))
 	
 	LevelUI.on_add_unit_status_box(Unit)
 	
@@ -125,6 +126,7 @@ func _process(_delta: float) -> void:
 					SpectateCamera.on_start_track_unit(active_event[1])
 				"AttackTarget": on_attack_enemy()
 				"DeathUnit": on_death()
+				"HurtUnit": on_hurt()
 			LevelMap.on_set_lock_inputs_event_queue(true)
 		
 func on_movement_finished(Unit: UnitGD) -> void:
@@ -193,12 +195,8 @@ func on_attack_enemy() -> void:
 	LevelMap.on_set_lock_inputs_event_queue(true)
 	# can do all the ui stuff here for attacking
 	
-@export var ATTACK_AFTER_DELAY: float = 0.5
 func on_attack_finished(Unit: UnitGD) -> void:
 	active_event[2].stats("health", -Unit.attack, Unit)
-	
-	if active_event[2].health > 0 and event_queue.is_empty():
-		await get_tree().create_timer(ATTACK_AFTER_DELAY).timeout
 	
 	Unit.attack_amount -= 1
 	active_event = []
@@ -213,10 +211,16 @@ func _attack_target(_Unit: UnitGD, _Tile: TileGD) -> void:
 func kill_unit(Unit: UnitGD, Killer: String) -> void:
 	event_queue.append(["DeathUnit", Unit, Killer])
 
+func hurt_unit(Unit: UnitGD, Attacker: String) -> void:
+	event_queue.append(["HurtUnit", Unit, Attacker])
+
 func on_death() -> void:
 	active_event[1].Model.on_death()
 	active_event[1].UnitStatus.onBeginUnitStatusDeath(DEATH_AFTER_DELAY)
 	LevelMap.on_set_lock_inputs_event_queue(true)
+	
+func on_hurt() -> void:
+	active_event[1].Model.on_hurt()
 	
 @export var DEATH_AFTER_DELAY: float = 1.0
 func on_death_finished(Unit: UnitGD) -> void:
@@ -236,6 +240,12 @@ func on_death_finished(Unit: UnitGD) -> void:
 		AudioMaster.on_cutoff_sfx(Unit.Model.current_walk_stream_player)
 
 	on_event_queue_finished()
+
+func on_hurt_finished(_Unit: UnitGD) -> void:
+	LevelMap.on_set_lock_inputs_event_queue(false)
+	active_event = []
+	on_event_queue_finished()
+	print(event_queue)
 
 func on_drop_calculate_damage(new_health: int, scale_time: float, Unit: UnitGD) -> void:
 	if new_health >= 0:

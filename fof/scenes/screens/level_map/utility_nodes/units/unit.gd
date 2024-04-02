@@ -103,10 +103,11 @@ func stats(stat_type: String, val: int, AppliedBy: Variant = "GameEvent", absolu
 			else: health = clamp(health + val, 0, 99)
 				
 	UnitStatus.on_reset_stats(stats_changed)
+	if typeof(AppliedBy) != TYPE_STRING: Killer = AppliedBy; AppliedBy = "Unit"
+	
 	if health == 0:
-		if typeof(AppliedBy) != TYPE_STRING: Killer = AppliedBy; AppliedBy = "Unit"
 		Units.kill_unit(self, AppliedBy)
-	elif health < current_health: AudioMaster.play_sfx(AudioDict.HURT)
+	elif health < current_health: Units.hurt_unit(self, AppliedBy)
 
 func status_effect() -> void:
 	pass

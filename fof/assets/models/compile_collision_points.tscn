@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://bkyfy7ih6ptpk"]
 
 [ext_resource type="Script" path="res://assets/models/compile_collision_points.gd" id="1_i3aky"]
-[ext_resource type="PackedScene" path="res://assets/models/walls/_wooden_wall.tscn" id="2_maysp"]
+[ext_resource type="PackedScene" uid="uid://bmgunpxxn06bq" path="res://assets/base_game/cards/113 - Palmy/model.glb" id="2_3uq01"]
 [ext_resource type="Script" path="res://scenes/world/movement_camera.gd" id="2_q11yj"]
 [ext_resource type="Texture2D" uid="uid://babcdv6gnw330" path="res://assets/base_game/areas/10 - Ashbone Citadel/sky.hdr" id="4_lj05i"]
 
@@ -17,7 +17,7 @@ sky = SubResource("Sky_x1roh")
 
 [node name="CompileCollisionPoints" type="Node3D"]
 script = ExtResource("1_i3aky")
-packed_object = ExtResource("2_maysp")
+packed_object = ExtResource("2_3uq01")
 
 [node name="PointRaycast" type="RayCast3D" parent="."]
 unique_name_in_owner = true
