@@ -6,7 +6,7 @@ var FOLDER_NAME_TO_TYPE: Dictionary = {
 	"walls": "wall",
 }
 
-func _ready() -> void:
+func _ready() -> void: # DON'T RUN THIS UNLESS ABSOLUTELY NECESSARY
 	var file_paths: Array = []
 	on_find_files(file_paths, "res://assets/models")
 	for file in file_paths:
@@ -21,6 +21,7 @@ func _ready() -> void:
 					folder_name += "/"
 					
 		var mesh: MeshInstance3D = glb.get_child(0)
+		
 		glb.script = preload("res://assets/models/model_type.gd")
 		glb.mesh = mesh
 		glb.type = FOLDER_NAME_TO_TYPE[folder_name.get_slice("/", 0)] if !folder_name.begins_with("decorations")\

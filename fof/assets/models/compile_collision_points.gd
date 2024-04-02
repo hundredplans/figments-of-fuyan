@@ -1,5 +1,11 @@
 extends Node3D
 
+var FOLDER_NAME_TO_TYPE: Dictionary = {
+	"objects": "obj",
+	"tiles": "tile",
+	"walls": "wall",
+}
+
 @export var packed_object: PackedScene
 var TileObject: Node3D
 
@@ -11,10 +17,40 @@ var collision_object_points: Array
 func onInstantiatePackedObject() -> void:
 	TileObject = packed_object.instantiate()
 	add_child(TileObject)
+	onCreateStaticBody()
 	collision_object_points = Array(TileObject.collision_points.duplicate())
 	
 	for point in TileObject.collision_points:
 		onGenerateCollisionPoint(point)
+
+func onCreateStaticBody() -> void:
+	if TileObject.scene_file_path.begins_with("res://assets/models/") and\
+	TileObject.scene_file_path.ends_with(".glb"):
+		var folder_array: Array = TileObject.scene_file_path.split("/")
+		var folder_name: String = ""
+		for i in range(folder_array.size()):
+			if i >= 4:
+				folder_name += folder_array[i]
+				if i != folder_array.size() - 1:
+					folder_name += "/"
+					
+		var mesh: MeshInstance3D = TileObject.get_child(0)
+		
+		TileObject.script = preload("res://assets/models/model_type.gd")
+		TileObject.mesh = mesh
+		TileObject.type = FOLDER_NAME_TO_TYPE[folder_name.get_slice("/", 0)] if !folder_name.begins_with("decorations")\
+		else ("tdeco" if folder_name.begins_with("decorations/tiles") else "wdeco")
+		
+		mesh.create_trimesh_collision()
+		
+		var body: StaticBody3D = mesh.get_child(0)
+		TileObject.body = body
+		
+		body.collision_layer = 8 if folder_name.begins_with("tiles") else 10
+		body.collision_mask = 0
+		body.reparent(TileObject)
+		body.owner = TileObject
+		body.get_child(0).owner = TileObject
 
 func _ready() -> void:
 	Camera.current = true
@@ -52,4 +88,7 @@ func _on_save_button_pressed():
 	TileObject.collision_points = PackedVector3Array(collision_object_points)
 	var packed_scene := PackedScene.new()
 	packed_scene.pack(TileObject)
-	ResourceSaver.save(packed_scene, TileObject.scene_file_path)
+	
+	var new_path: String = TileObject.scene_file_path
+	if TileObject.scene_file_path.ends_with(".glb"): new_path = new_path.left(-4) + ".tscn"
+	ResourceSaver.save(packed_scene, new_path)
