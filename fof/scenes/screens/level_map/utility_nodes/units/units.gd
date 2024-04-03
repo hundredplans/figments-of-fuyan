@@ -11,7 +11,7 @@ var Tiles: TilesGD
 var LevelMap: Node3D
 var LevelUI: LevelUIGD
 
-@onready var BotManager: BotManagerGD = $BotManager
+@onready var AIManager: AIManagerGD = $BotManager
 @onready var PlayerManager: PlayerManagerGD = $PlayerManager
 @onready var FieldedUnits: Node3D = $FieldedUnits
 
@@ -23,6 +23,7 @@ const DARK_RED: Color = Color("ff0000")
 const BRIGHT_GREEN: Color = Color("00ff00")
 const MEDIUM_GRAY: Color = Color("8c8c8c")
 const BASE: Color = Color("ffffff")
+var active_turn: int = 0
 	
 var unit_field_status_materials: Dictionary = {
 	"BASE": [], # [bot, top_level]
@@ -58,14 +59,16 @@ func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int
 	
 	var in_vision: bool = Vision.is_unit_in_vision(Unit)
 	Unit.on_arrive(team == 0 or in_vision)
+	AIManager.onUnitAwakened(Unit)
 	
 	if team == 1 and in_vision:
 		on_unit_enters_vision(Unit)
-		
+	
 	return Unit
 
 func on_start_phase_start() -> void:
-	BotManager.Units = self
+	AIManager.Units = self
+	AIManager.Tiles = Tiles
 	PlayerManager.Units = self
 	PlayerManager.LevelUI = LevelUI
 	PlayerManager.LevelMap = LevelMap
@@ -78,11 +81,8 @@ func on_start_phase_start() -> void:
 		on_unit_awakened(Tile.obj.obj_info[0], 0, [], 1, Tile.obj.rotation, Tile) # add Random.on_create_random_tool() here, maybe no args and it takes from GameState
 
 func on_player_phase_start() -> void:
+	active_turn = 0
 	PlayerManager.on_player_phase_start()
-	for Unit in on_units():
-		Unit.stats("speed", Unit.max_speed, "StartPlayerPhase", true)
-		Unit.attack_amount = 1
-		Unit.turn_status = 0
 
 func on_player_end_turn_phase_start() -> void:
 	PlayerManager.on_player_end_turn_phase_start()
@@ -148,6 +148,9 @@ func on_event_queue_finished() -> void:
 			
 		for Unit in all_units():
 			Tiles.on_set_tile_material(Unit.Tile, "AllyOccupy" if Unit.team == 0 else "EnemyOccupy")
+ 
+		if active_turn == 1:
+			LevelMap.on_change_game_phase("AIEndTurnPhase")
 
 func on_unit_enters_vision(Unit: UnitGD) -> void:
 	if Unit.team == 1: PlayerManager.on_enemy_unit_enters_vision(Unit)
@@ -232,6 +235,7 @@ func on_death_finished(Unit: UnitGD) -> void:
 	LevelMap.on_set_lock_inputs_event_queue(false)
 	SpectateCamera.onDeathFinished(Unit)
 	PlayerManager.on_death_finished(active_event[2], Unit)
+	AIManager.onDeathFinished(Unit)
 	Deck.on_draw_card()
 	active_event = []
 	
@@ -243,10 +247,10 @@ func on_death_finished(Unit: UnitGD) -> void:
 func on_hurt_finished(_Unit: UnitGD) -> void:
 	LevelMap.on_set_lock_inputs_event_queue(false)
 	
-	if active_event[2].team == 0: PlayerManager.on_hurt_finished(active_event[2])
+	if active_event[2] == "Height": PlayerManager.on_hurt_finished(active_event[1])
+	elif active_event[2].team == 0: PlayerManager.on_hurt_finished(active_event[2])
 	active_event = []
 	on_event_queue_finished()
-
 
 func on_drop_calculate_damage(new_health: int, scale_time: float, Unit: UnitGD) -> void:
 	if new_health >= 0:
@@ -269,3 +273,9 @@ func on_unscale_unit(Unit: UnitGD, scale_time: float) -> void:
 func onSpectatedInPlayerPhase(Unit: UnitGD) -> void:
 	LevelUI.on_pass_unit_turn_button_state(Unit.team == 1 or Unit in PlayerManager.passed_turns)
 
+func onAIPhaseStart() -> void:
+	active_turn = 1
+	AIManager.onAIPhaseStart()
+
+func onAIEndTurnPhaseStart() -> void:
+	AIManager.onAIEndTurnPhaseStart()

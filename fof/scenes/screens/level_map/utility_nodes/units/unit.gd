@@ -7,6 +7,7 @@ var tool_id: int = 0
 var effects: Array = []
 
 var base_card: Dictionary
+var ai: Dictionary
 
 var max_attack: int
 var attack: int
@@ -43,6 +44,7 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	team = _team
 	
 	base_card = Helper.id_to_dict(id, "Card")
+	ai = {"aic": base_card.aic, "aii": base_card.aii, "aiw": base_card.aiw, "ait": base_card.ait, "aia": base_card.aia}
 	attack = base_card.a
 	health = base_card.h
 	max_speed = base_card.s
@@ -51,10 +53,6 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	max_attack = base_card.a
 	rarity = base_card.r
 	height = base_card.height
-
-	TeamControl = load("res://scenes/screens/level_map/utility_nodes/units/Team" + str(team) + ".tscn").instantiate()
-	TeamControl.Unit = self
-	add_child(TeamControl)
 	
 	var card_model_path: String = "res://assets/base_game/cards/" + base_card.bgfn + "/model.tscn"
 	Model = load(card_model_path).instantiate()
@@ -163,6 +161,7 @@ const VISION_RANGE: int = 5
 
 func onCircleRay() -> void:
 	visible_tiles = []
+	_visible_tiles = {}
 	var tiles: Array = Tiles.onTilesInVisionRange(Tile, VISION_RANGE)
 	for _Tile in tiles: # Takes between 20-30 msec
 		for point in _Tile.collision_points:
@@ -190,9 +189,7 @@ func onCircleRay() -> void:
 	onUnitsHeightAdjacentTiles()
 	visible_tiles = _visible_tiles.keys()
 	
-
 var _visible_tiles: Dictionary = {}
-
 func onAddTileToVisibleTiles(_Tile: TileGD) -> void:
 	for type in ["obj", "wdeco", "tdeco"]:
 		if _Tile[type].multi_tile.size() > 0:

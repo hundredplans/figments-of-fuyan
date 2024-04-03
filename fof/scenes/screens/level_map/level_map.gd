@@ -68,6 +68,7 @@ func on_change_game_phase(phase: String) -> void:
 			Deck.on_after_start_phase_start()
 		"HandPhase":
 			set_lock_inputs(true)
+			SpectateCamera.onHandPhaseStart()
 			Hand.on_hand_phase_start()
 			var skip_hand_phase: bool = on_skip_hand_phase_result()
 			if play_ui: LevelUI.on_hand_phase_start(skip_hand_phase)
@@ -84,11 +85,14 @@ func on_change_game_phase(phase: String) -> void:
 			LevelUI.on_player_end_turn_phase_start()
 			Vision.on_player_end_turn_phase_start()
 			SpectateCamera.onPlayerEndTurnPhaseStart()
-			on_change_game_phase("HandPhase")
-		"BOTPhase":
-			pass
+			on_change_game_phase("AIPhase")
+		"AIPhase":
+			Units.onAIPhaseStart()
+		"AIEndTurnPhase":
+			Units.onAIEndTurnPhaseStart()
+			on_change_game_phase("PlayerStartTurnPhase")
 		"PlayerStartTurnPhase":
-			pass
+			on_change_game_phase("HandPhase")
 
 func on_advance_game_phase() -> void:
 	match game_phase:
@@ -100,7 +104,6 @@ func on_advance_game_phase() -> void:
 
 func on_set_lock_inputs_event_queue(x: bool) -> void:
 	if x or Units.event_queue.is_empty(): set_lock_inputs(x)
-	
 	
 func set_lock_inputs(x: bool) -> void:
 	lock_inputs = x

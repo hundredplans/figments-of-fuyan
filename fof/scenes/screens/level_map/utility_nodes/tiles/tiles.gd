@@ -267,9 +267,9 @@ func on_can_ramp_connect(Tile: TileGD, _Tile: TileGD, hdiff: int) -> bool:
 		return neirot == (stair_or_tile_rot + 1) % 6 or neirot == (stair_or_tile_rot + 4) % 6
 	return false
 
-func on_filter_in_range_tiles(x: TileGD):
+func on_filter_in_range_tiles(x: TileGD, team: int):
 	var Unit: UnitGD = Units.unit_by_tile(x)
-	return x.solid_status == 0 or (Unit != null and Unit.team == 1)
+	return x.solid_status == 0 or (Unit != null and Unit.team != team)
 
 func is_ramp_tile(Tile: TileGD) -> bool:
 	return Tile.obj.id in is_stair_object or Tile.tile.type > 0
@@ -283,8 +283,8 @@ func on_create_movement_paths(Unit: UnitGD) -> void:
 	var astar := AStar3D.new()
 	
 	var _enemy_tiles: Array = all_neighbours(Unit.Tile, Unit.speed + 1, true)\
-	.filter(func(x: TileGD): var _Unit: UnitGD = Units.unit_by_tile(x); return _Unit != null and _Unit.team == 1)
-	var _in_range_tiles: Array = all_in_range(Unit.Tile, Unit.speed, true, true).filter(on_filter_in_range_tiles)
+	.filter(func(x: TileGD): var _Unit: UnitGD = Units.unit_by_tile(x); return _Unit != null and _Unit.team != Unit.team)
+	var _in_range_tiles: Array = all_in_range(Unit.Tile, Unit.speed, true, true).filter(on_filter_in_range_tiles.bind(Unit.team))
 	
 	var full_tiles: Array = on_remove_tiles_blocked_by_height(_enemy_tiles + _in_range_tiles, Unit.height.top)
 	full_tiles.append(Unit.Tile)
@@ -296,7 +296,7 @@ func on_create_movement_paths(Unit: UnitGD) -> void:
 			var EnemyUnit: UnitGD = Units.unit_by_tile(_Tile)
 			var hdiff: int = (_Tile.w * 2) + int(is_ramp_tile(_Tile)) - ((Tile.w * 2) + int(is_ramp_tile(Tile)))
 			if EnemyUnit != null:
-				if EnemyUnit.team == 1:
+				if EnemyUnit.team != Unit.team:
 					var ally_unit_height: float = getUnitAdjustedHeight(Tile)
 					
 					var enemy_low_point: float = getUnitAdjustedHeight(EnemyUnit.Tile)
@@ -306,7 +306,6 @@ func on_create_movement_paths(Unit: UnitGD) -> void:
 					
 					if hdiff == 0 or (enemy_low_point <= your_weapon_low_point and your_weapon_low_point <= enemy_high_point) or\
 					(enemy_low_point <= your_weapon_high_point and your_weapon_high_point <= enemy_high_point):
-					#(hdiff > 0 and your_weapon_point >= enemy_low_point) or (hdiff < 0 and enemy_high_point >= your_weapon_point):
 						on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(1, 0))
 			elif (_Tile.obj.id in is_stair_object or _Tile.tile.type == 2):  # Move to ramp
 				if on_can_ramp_connect(Tile, _Tile, hdiff):

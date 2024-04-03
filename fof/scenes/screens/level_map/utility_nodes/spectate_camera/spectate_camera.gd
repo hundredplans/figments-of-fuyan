@@ -170,6 +170,7 @@ func on_select_spectate_camera_direction(i: int) -> void:
 var TrackUnit: UnitGD
 func on_start_track_unit(Unit: UnitGD) -> void:
 	TrackUnit = Unit
+	on_spectate("Unit" if Unit.team == 0 else "EnemyUnit", Units.on_unit_team_index(Unit))
 	
 func on_end_track_unit() -> void:
 	TrackUnit = null
@@ -194,3 +195,6 @@ func onPlayerEndTurnPhaseStart() -> void:
 	if spectate_type == "EnemyUnit":
 		spectate_type = "Unit"
 		on_spectate("Unit", 0)
+
+func onHandPhaseStart() -> void:
+	on_spectate("Unit", 0)
