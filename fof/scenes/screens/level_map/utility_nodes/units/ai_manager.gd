@@ -1,9 +1,11 @@
 class_name AIManagerGD
 extends Node
 
+var LevelMap: LevelMapGD
 var Tiles: TilesGD
 var Units: UnitsGD
 var movement_order: Array = []
+var active_movement_order: Array
 
 func onDeathFinished(Unit: UnitGD) -> void:
 	movement_order.erase(Unit)
@@ -18,24 +20,35 @@ func onAIPhaseStart() -> void:
 		Unit.attack_amount = 1
 		#Unit.turn_status = 0
 		
-	onMoveAIUnits()
+	onBeginMoveAIUnits()
+	
+@export var END_AI_PHASE_DELAY: float = 1
+@export var BEGIN_SPECTATE_AI_DELAY: float = 0.5
+func onBeginMoveAIUnits() -> void:
+	active_movement_order = movement_order.duplicate()
+	onMoveNextAIUnit()
 
-func onMoveAIUnits() -> void:
-	for Unit in movement_order:
+func onMoveNextAIUnit() -> void:
+	await get_tree().create_timer(BEGIN_SPECTATE_AI_DELAY).timeout
+	var Unit: UnitGD = active_movement_order.pop_front() 
+	if Unit != null:
 		Tiles.on_create_movement_paths(Unit)
-		print(Tiles.movement_paths.size())
 		var movement_paths: Array = []
 		for key in Tiles.movement_paths:
 			if typeof(key) != TYPE_STRING and Tiles.movement_paths[key].size == Unit.speed:
 				movement_paths.append(Tiles.movement_paths[key])
-		
-		print(movement_paths.size())
-		print()
+				
 		if movement_paths.size() > 0:
 			var chosen_path: Dictionary = movement_paths[randi() % movement_paths.size()]
 			if chosen_path.size > 0: Tiles.on_remove_tile_material(Unit.Tile, "EmptyTile")
+			
 			for i in range(chosen_path.size):
-				Units.move_to_tile(Unit, chosen_path.tiles[i], chosen_path.types[i])
+				if chosen_path.types[i].x != 1:
+					Units.move_to_tile(Unit, chosen_path.tiles[i], chosen_path.types[i])
+				else: Units.attack_enemy_or_target(Unit, chosen_path.tiles[i])
+	else:
+		await get_tree().create_timer(END_AI_PHASE_DELAY).timeout
+		LevelMap.on_change_game_phase("AIEndTurnPhase")
 
 func onUnitAwakened(Unit: UnitGD) -> void:
 	if Unit.team == 1:

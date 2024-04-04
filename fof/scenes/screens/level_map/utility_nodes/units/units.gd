@@ -46,6 +46,7 @@ func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int
 	var Unit: UnitGD = UnitScene.instantiate()
 	Unit.Units = self
 	Unit.Vision = Vision
+	Unit.SpectateCamera = SpectateCamera
 	Unit.Tiles = Tiles
 	FieldedUnits.add_child(Unit)
 	Unit.on_create_unit(id, tool_id, effects, team, rot, tile)
@@ -67,6 +68,7 @@ func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int
 	return Unit
 
 func on_start_phase_start() -> void:
+	AIManager.LevelMap = LevelMap
 	AIManager.Units = self
 	AIManager.Tiles = Tiles
 	PlayerManager.Units = self
@@ -121,17 +123,35 @@ func _process(_delta: float) -> void:
 			Vision.on_vision_mode_set(0)
 			active_event = event_queue.pop_front()
 			match active_event[0]:
-				"MoveUnit": 
-					active_event[1].Model.move_to_tile(active_event[2], active_event[3])
-					SpectateCamera.on_start_track_unit(active_event[1])
+				"MoveUnit": onMoveUnit()
 				"AttackTarget": on_attack_enemy()
 				"DeathUnit": on_death()
 				"HurtUnit": on_hurt()
 			LevelMap.on_set_lock_inputs_event_queue(true)
 		
+func onMoveUnit() -> void:
+	if active_event[2] in Vision.ally_vision:
+		active_event[1].Model.move_to_tile(active_event[2], active_event[3])
+		if active_event[1].team == 1 and active_event[2] in Vision.ally_vision:
+			SpectateCamera.on_start_track_unit(active_event[1])
+	else:
+		var end_position: Vector3 = active_event[1].Model.onCalculateEndPosition(active_event[2], active_event[3].x)
+		active_event[1].global_position = end_position
+		on_movement_finished(active_event[1])
+		
+func isUnitMoveIntoVision() -> bool:
+	return true
+	#for event in event_queue:
+		#print(event[0] == "MoveUnit" and event[1] == active_event[1])
+		#if event[0] == "MoveUnit" and event[1] == active_event[1] and event[2] in Vision.ally_vision:
+			#print("HERE")
+			#return true
+	#return false
+		
 func on_movement_finished(Unit: UnitGD) -> void:
 	Unit.stats("speed", -1, "MovementFinished")
 	Unit.occupy_tile(active_event[2])
+
 	if event_queue.is_empty() or event_queue[0][0] != "MoveUnit" or event_queue[0][1] != Unit:
 		on_unit_travel_finished(Unit)
 	else: Unit.Model.on_play_walk_sfx()
@@ -150,7 +170,7 @@ func on_event_queue_finished() -> void:
 			Tiles.on_set_tile_material(Unit.Tile, "AllyOccupy" if Unit.team == 0 else "EnemyOccupy")
  
 		if active_turn == 1:
-			LevelMap.on_change_game_phase("AIEndTurnPhase")
+			AIManager.onMoveNextAIUnit()
 
 func on_unit_enters_vision(Unit: UnitGD) -> void:
 	if Unit.team == 1: PlayerManager.on_enemy_unit_enters_vision(Unit)
@@ -246,8 +266,9 @@ func on_death_finished(Unit: UnitGD) -> void:
 
 func on_hurt_finished(_Unit: UnitGD) -> void:
 	LevelMap.on_set_lock_inputs_event_queue(false)
-	
-	if active_event[2] == "Height": PlayerManager.on_hurt_finished(active_event[1])
+	if typeof(active_event[2]) == TYPE_STRING:
+		if active_event[2] == "Height":
+			PlayerManager.on_hurt_finished(active_event[1])
 	elif active_event[2].team == 0: PlayerManager.on_hurt_finished(active_event[2])
 	active_event = []
 	on_event_queue_finished()

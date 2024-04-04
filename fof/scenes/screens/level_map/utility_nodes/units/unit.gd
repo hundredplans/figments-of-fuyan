@@ -28,6 +28,7 @@ var attack_amount: int = 0
 
 var AudioDict: AudioDictGD
 var Vision: VisionGD
+var SpectateCamera: Camera3D
 var Units: UnitsGD
 var Tiles: TilesGD
 var TeamControl: Node
