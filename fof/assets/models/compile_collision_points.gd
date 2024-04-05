@@ -51,6 +51,7 @@ func onCreateStaticBody() -> void:
 		body.reparent(TileObject)
 		body.owner = TileObject
 		body.get_child(0).owner = TileObject
+	
 
 func _ready() -> void:
 	Camera.current = true

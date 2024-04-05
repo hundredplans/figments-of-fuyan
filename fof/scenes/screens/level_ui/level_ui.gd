@@ -155,7 +155,7 @@ func on_add_unit_status_box(Unit: UnitGD) -> void:
 		last_ally += 1
 	
 func onSpectateEnemyOrAlly(Unit: UnitGD) -> void:
-	if Units.event_queue.is_empty():
+	if Units.unit_actions.is_empty():
 		SpectateCamera.onSpectateEnemyOrAlly(Unit)
 	
 func on_unit_status_queue_free(UnitStatus: Control) -> void:

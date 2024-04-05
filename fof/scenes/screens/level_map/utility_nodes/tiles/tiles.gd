@@ -278,13 +278,14 @@ func getUnitAdjustedHeight(Tile: TileGD) -> float:
 	return (Tile.w * 1.2) + (0.9 if is_ramp_tile(Tile) else 0.3)
 
 var movement_paths: Dictionary = {"tiles": []}
-func on_create_movement_paths(Unit: UnitGD) -> void:
+func onCreateMovementPaths(Unit: UnitGD, type: String = "Default") -> void:
+	var tiles: Array = get_children() if type == "Default" else Vision.ally_vision
 	movement_paths = {"tiles": []}
 	var astar := AStar3D.new()
 	
-	var _enemy_tiles: Array = all_neighbours(Unit.Tile, Unit.speed + 1, true)\
+	var _enemy_tiles: Array = all_neighbours(Unit.Tile, Unit.speed + 1, true, tiles)\
 	.filter(func(x: TileGD): var _Unit: UnitGD = Units.unit_by_tile(x); return _Unit != null and _Unit.team != Unit.team)
-	var _in_range_tiles: Array = all_in_range(Unit.Tile, Unit.speed, true, true).filter(on_filter_in_range_tiles.bind(Unit.team))
+	var _in_range_tiles: Array = all_in_range(Unit.Tile, Unit.speed, true, true, tiles).filter(on_filter_in_range_tiles.bind(Unit.team))
 	
 	var full_tiles: Array = on_remove_tiles_blocked_by_height(_enemy_tiles + _in_range_tiles, Unit.height.top)
 	full_tiles.append(Unit.Tile)

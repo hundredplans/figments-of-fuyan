@@ -70,6 +70,7 @@ func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int
 func on_start_phase_start() -> void:
 	AIManager.LevelMap = LevelMap
 	AIManager.Units = self
+	AIManager.Vision = Vision
 	AIManager.Tiles = Tiles
 	PlayerManager.Units = self
 	PlayerManager.LevelUI = LevelUI
@@ -111,58 +112,69 @@ func on_unit_team_index(Unit: UnitGD) -> int:
 func on_match_team_relation(unit: UnitGD, team: int, relation: String) -> bool:
 	return (unit.team == team and relation == "Ally") or (unit.team != team and relation == "Enemy")
 
-var active_event: Array
-var event_queue: Array = []
+var active_action: Array
+var unit_actions: Array = []
 
 func move_to_tile(Unit: UnitGD, Tile: TileGD, type: Variant) -> void:
-	event_queue.append(["MoveUnit", Unit, Tile, type])
+	unit_actions.append(["MoveUnit", Unit, Tile, type])
 	
 func _process(_delta: float) -> void:
-	if active_event.is_empty():
-		if !event_queue.is_empty():
+	if active_action.is_empty():
+		if !unit_actions.is_empty():
 			Vision.on_vision_mode_set(0)
-			active_event = event_queue.pop_front()
-			match active_event[0]:
+			active_action = unit_actions.pop_front()
+			match active_action[0]:
 				"MoveUnit": onMoveUnit()
 				"AttackTarget": on_attack_enemy()
 				"DeathUnit": on_death()
 				"HurtUnit": on_hurt()
-			LevelMap.on_set_lock_inputs_event_queue(true)
-		
+			LevelMap.on_set_lock_inputs_unit_actions(true)
+
+var movement_type: String = ""
 func onMoveUnit() -> void:
-	if active_event[2] in Vision.ally_vision:
-		active_event[1].Model.move_to_tile(active_event[2], active_event[3])
-		if active_event[1].team == 1 and active_event[2] in Vision.ally_vision:
-			SpectateCamera.on_start_track_unit(active_event[1])
+	var Unit: UnitGD = active_action[1]
+	var DestinationTile: TileGD = active_action[2]
+	
+	var destination_in_vision: bool = DestinationTile in Vision.ally_vision
+	var origin_in_vision: bool = Unit.Tile in Vision.ally_vision
+	
+	if Unit.team != 0:
+		if destination_in_vision:
+			if origin_in_vision: movement_type = "Regular"
+			else: movement_type = "IntoVision"
+		elif origin_in_vision: movement_type = "OutOfVision"
+		else: movement_type = "Invisible"
+	else: movement_type = "Regular"
+		
+	print(movement_type)
+	if movement_type != "Invisible":
+		Unit.Model.onMoveToTile(DestinationTile, active_action[3], movement_type)
+		SpectateCamera.on_start_track_unit(Unit)
 	else:
-		var end_position: Vector3 = active_event[1].Model.onCalculateEndPosition(active_event[2], active_event[3].x)
-		active_event[1].global_position = end_position
-		on_movement_finished(active_event[1])
+		Unit.global_position = Unit.Model.onCalculateEndPosition(DestinationTile, active_action[3].x)
+		on_movement_finished(Unit)
 		
-func isUnitMoveIntoVision() -> bool:
-	return true
-	#for event in event_queue:
-		#print(event[0] == "MoveUnit" and event[1] == active_event[1])
-		#if event[0] == "MoveUnit" and event[1] == active_event[1] and event[2] in Vision.ally_vision:
-			#print("HERE")
-			#return true
-	#return false
-		
+const OUT_OF_VISION_DELAY: float = 1
 func on_movement_finished(Unit: UnitGD) -> void:
 	Unit.stats("speed", -1, "MovementFinished")
-	Unit.occupy_tile(active_event[2])
+	Unit.occupy_tile(active_action[2])
 
-	if event_queue.is_empty() or event_queue[0][0] != "MoveUnit" or event_queue[0][1] != Unit:
-		on_unit_travel_finished(Unit)
-	else: Unit.Model.on_play_walk_sfx()
-	active_event = []
+	if movement_type == "OutOfVision":
+		await get_tree().create_timer(OUT_OF_VISION_DELAY).timeout
+		
+	if movement_type != "Invisible":
+		if unit_actions.is_empty() or unit_actions[0][0] != "MoveUnit" or unit_actions[0][1] != Unit:
+			on_unit_travel_finished(Unit)
+		else: Unit.Model.on_play_walk_sfx()
+	active_action = []
 	
-	if event_queue.is_empty() and Unit.speed > 0:
+	if Unit.team == 0 and unit_actions.is_empty() and Unit.speed > 0:
 		PlayerManager._on_unit_selected(Unit)
-	on_event_queue_finished()
+	onUnitActionsFinished()
+	movement_type = ""
 
-func on_event_queue_finished() -> void:
-	if event_queue.is_empty():
+func onUnitActionsFinished() -> void:
+	if unit_actions.is_empty():
 		if SpectateCamera.onSpectateUnitExistsTeam() == 0: 
 			Tiles.on_set_tile_material(SpectateCamera.SpectateUnit.Tile, "SpectatingUnit")
 			
@@ -178,26 +190,26 @@ func on_unit_enters_vision(Unit: UnitGD) -> void:
 func on_unit_exits_vision(Unit: UnitGD) -> void:
 	if Unit.team == 1: PlayerManager.on_enemy_unit_exits_vision(Unit)
 
-func on_clear_event_queue() -> void:
-	if !active_event.is_empty() and active_event[0] == "MoveUnit": on_unit_travel_finished(active_event[1])
-	active_event = []
-	event_queue = []
+func onClearUnitActions() -> void:
+	if !active_action.is_empty() and active_action[0] == "MoveUnit": on_unit_travel_finished(active_action[1])
+	active_action = []
+	unit_actions = []
 	
-	on_event_queue_finished()
+	onUnitActionsFinished()
 	
 func on_unit_travel_finished(Unit: UnitGD) -> void:
 	on_force_resume_idle_animation_from_walk()
-	active_event = []
+	active_action = []
 	if Unit.team == 0: PlayerManager.on_check_autopass(Unit)
-	LevelMap.on_set_lock_inputs_event_queue(false)
+	LevelMap.on_set_lock_inputs_unit_actions(false)
 	SpectateCamera.on_end_track_unit()
 	Tiles.on_set_tile_highest_material(Unit.Tile)
 	
 func on_force_resume_idle_animation_from_walk() -> void:
-	if !active_event.is_empty() and active_event[0] == "MoveUnit":
-		active_event[1].Model.on_play_animation("Idle")
-		if active_event[1].Model.current_walk_stream_player != null:
-			AudioMaster.on_cutoff_sfx(active_event[1].Model.current_walk_stream_player)
+	if !active_action.is_empty() and active_action[0] == "MoveUnit":
+		active_action[1].Model.on_play_animation("Idle")
+		if active_action[1].Model.current_walk_stream_player != null:
+			AudioMaster.on_cutoff_sfx(active_action[1].Model.current_walk_stream_player)
 
 func attack_enemy_or_target(Unit: UnitGD, Tile: TileGD) -> void:
 	if Unit.attack_amount > 0:
@@ -210,39 +222,39 @@ func attack_enemy_or_target(Unit: UnitGD, Tile: TileGD) -> void:
 		# if this check fails can check for attacks on objects and such here
 
 func _attack_enemy(Unit: UnitGD, _Unit: UnitGD, Tile: TileGD) -> void:
-	event_queue.append(["AttackTarget", Unit, _Unit, Tile])
+	unit_actions.append(["AttackTarget", Unit, _Unit, Tile])
 	
 func on_attack_enemy() -> void:
-	active_event[1].Model.attack_tile(active_event[3])
-	active_event[2].Model._look_at(active_event[1].Tile)
-	LevelMap.on_set_lock_inputs_event_queue(true)
+	active_action[1].Model.attack_tile(active_action[3])
+	active_action[2].Model._look_at(active_action[1].Tile)
+	LevelMap.on_set_lock_inputs_unit_actions(true)
 	# can do all the ui stuff here for attacking
 	
 func on_attack_finished(Unit: UnitGD) -> void:
-	active_event[2].stats("health", -Unit.attack, Unit)
+	active_action[2].stats("health", -Unit.attack, Unit)
 	
 	Unit.attack_amount -= 1
-	active_event = []
+	active_action = []
 	
-	LevelMap.on_set_lock_inputs_event_queue(false)
-	on_event_queue_finished()
+	LevelMap.on_set_lock_inputs_unit_actions(false)
+	onUnitActionsFinished()
 	
 func _attack_target(_Unit: UnitGD, _Tile: TileGD) -> void:
 	pass
 
 func kill_unit(Unit: UnitGD, Killer: String) -> void:
-	event_queue.append(["DeathUnit", Unit, Killer])
+	unit_actions.append(["DeathUnit", Unit, Killer])
 
 func hurt_unit(Unit: UnitGD, Attacker: Variant) -> void:
-	event_queue.append(["HurtUnit", Unit, Attacker])
+	unit_actions.append(["HurtUnit", Unit, Attacker])
 
 func on_death() -> void:
-	active_event[1].Model.on_death()
-	active_event[1].UnitStatus.onBeginUnitStatusDeath(DEATH_AFTER_DELAY)
-	LevelMap.on_set_lock_inputs_event_queue(true)
+	active_action[1].Model.on_death()
+	active_action[1].UnitStatus.onBeginUnitStatusDeath(DEATH_AFTER_DELAY)
+	LevelMap.on_set_lock_inputs_unit_actions(true)
 	
 func on_hurt() -> void:
-	active_event[1].Model.on_hurt()
+	active_action[1].Model.on_hurt()
 	
 @export var DEATH_AFTER_DELAY: float = 1.0
 func on_death_finished(Unit: UnitGD) -> void:
@@ -252,32 +264,32 @@ func on_death_finished(Unit: UnitGD) -> void:
 	
 	Unit.UnitStatus._queue_free()
 	Unit.on_death()
-	LevelMap.on_set_lock_inputs_event_queue(false)
+	LevelMap.on_set_lock_inputs_unit_actions(false)
 	SpectateCamera.onDeathFinished(Unit)
-	PlayerManager.on_death_finished(active_event[2], Unit)
+	PlayerManager.on_death_finished(active_action[2], Unit)
 	AIManager.onDeathFinished(Unit)
 	Deck.on_draw_card()
-	active_event = []
+	active_action = []
 	
 	if Unit.Model.current_walk_stream_player != null:
 		AudioMaster.on_cutoff_sfx(Unit.Model.current_walk_stream_player)
 
-	on_event_queue_finished()
+	onUnitActionsFinished()
 
 func on_hurt_finished(_Unit: UnitGD) -> void:
-	LevelMap.on_set_lock_inputs_event_queue(false)
-	if typeof(active_event[2]) == TYPE_STRING:
-		if active_event[2] == "Height":
-			PlayerManager.on_hurt_finished(active_event[1])
-	elif active_event[2].team == 0: PlayerManager.on_hurt_finished(active_event[2])
-	active_event = []
-	on_event_queue_finished()
+	LevelMap.on_set_lock_inputs_unit_actions(false)
+	if typeof(active_action[2]) == TYPE_STRING:
+		if active_action[2] == "Height":
+			PlayerManager.on_hurt_finished(active_action[1])
+	elif active_action[2].team == 0: PlayerManager.on_hurt_finished(active_action[2])
+	active_action = []
+	onUnitActionsFinished()
 
 func on_drop_calculate_damage(new_health: int, scale_time: float, Unit: UnitGD) -> void:
 	if new_health >= 0:
 		if new_health == 0:
-			active_event = []
-			event_queue = []
+			active_action = []
+			unit_actions = []
 		else: on_descale_unit(Unit, scale_time)
 		Unit.stats("health", new_health, "Height", true)
 

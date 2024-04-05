@@ -1,6 +1,7 @@
 class_name AIManagerGD
 extends Node
 
+var Vision: VisionGD
 var LevelMap: LevelMapGD
 var Tiles: TilesGD
 var Units: UnitsGD
@@ -22,33 +23,51 @@ func onAIPhaseStart() -> void:
 		
 	onBeginMoveAIUnits()
 	
-@export var END_AI_PHASE_DELAY: float = 1
-@export var BEGIN_SPECTATE_AI_DELAY: float = 0.5
+@export var BEGIN_SPECTATE_AI_DELAY: float = 1
 func onBeginMoveAIUnits() -> void:
 	active_movement_order = movement_order.duplicate()
-	onMoveNextAIUnit()
+	onMoveNextAIUnit(true)
 
-func onMoveNextAIUnit() -> void:
-	await get_tree().create_timer(BEGIN_SPECTATE_AI_DELAY).timeout
-	var Unit: UnitGD = active_movement_order.pop_front() 
+func onMoveNextAIUnit(override: bool = false) -> void:
+	if !override: await get_tree().create_timer(BEGIN_SPECTATE_AI_DELAY).timeout
+	var Unit: UnitGD = active_movement_order.pop_front()
 	if Unit != null:
-		Tiles.on_create_movement_paths(Unit)
-		var movement_paths: Array = []
-		for key in Tiles.movement_paths:
-			if typeof(key) != TYPE_STRING and Tiles.movement_paths[key].size == Unit.speed:
-				movement_paths.append(Tiles.movement_paths[key])
-				
-		if movement_paths.size() > 0:
-			var chosen_path: Dictionary = movement_paths[randi() % movement_paths.size()]
-			if chosen_path.size > 0: Tiles.on_remove_tile_material(Unit.Tile, "EmptyTile")
-			
-			for i in range(chosen_path.size):
-				if chosen_path.types[i].x != 1:
-					Units.move_to_tile(Unit, chosen_path.tiles[i], chosen_path.types[i])
-				else: Units.attack_enemy_or_target(Unit, chosen_path.tiles[i])
+		Tiles.onCreateMovementPaths(Unit)
+		var old_paths: Dictionary = Tiles.movement_paths.duplicate()
+		var visible_enemies: Array = Unit.getVisibleEnemies()
+		
+		if visible_enemies.is_empty(): onChooseRandomMovementPath(Unit)
+		else: onChaseEnemy(Unit, visible_enemies, old_paths)
 	else:
-		await get_tree().create_timer(END_AI_PHASE_DELAY).timeout
 		LevelMap.on_change_game_phase("AIEndTurnPhase")
+
+func onChaseEnemy(Unit: UnitGD, visible_enemies: Array, old_paths: Dictionary) -> void:
+	var EnemyUnit: UnitGD = visible_enemies[0]
+	if EnemyUnit.Tile in Tiles.movement_paths.keys(): # Directly chase onto tile
+		onChosenPathSelected(Unit, Tiles.movement_paths[EnemyUnit.Tile])
+	else: # Find way to get as close as possible to unit, has to know if it's even possible (astar?)
+		Tiles.onCreateMovementPaths(Unit, "AllyVision")
+		if EnemyUnit.Tile in Tiles.movement_paths.keys():
+			onChosenPathSelected(Unit, Tiles.movement_paths[EnemyUnit.Tile])
+		else:
+			Tiles.movement_paths = old_paths
+			onChooseRandomMovementPath(Unit)
+
+func onChooseRandomMovementPath(Unit: UnitGD) -> void:
+	var movement_paths: Array = []
+	for key in Tiles.movement_paths:
+		if typeof(key) != TYPE_STRING and Tiles.movement_paths[key].size == Unit.speed:
+			movement_paths.append(Tiles.movement_paths[key])
+	
+	if movement_paths.size() > 0:
+		onChosenPathSelected(Unit, movement_paths[randi() % movement_paths.size()])
+		
+func onChosenPathSelected(Unit: UnitGD, chosen_path: Dictionary) -> void:
+	if chosen_path.size > 0: Tiles.on_remove_tile_material(Unit.Tile, "EmptyTile")
+	for i in range(chosen_path.size):
+		if chosen_path.types[i].x != 1:
+			Units.move_to_tile(Unit, chosen_path.tiles[i], chosen_path.types[i])
+		else: Units.attack_enemy_or_target(Unit, chosen_path.tiles[i])
 
 func onUnitAwakened(Unit: UnitGD) -> void:
 	if Unit.team == 1:

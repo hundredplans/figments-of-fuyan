@@ -59,18 +59,22 @@ func on_find_walk_sfx(id: int) -> String:
 	
 func on_finish_animation(ani_name: String) -> void:
 	AniPlayer.speed_scale = 1
+	if ani_name != "Walk" and ani_name != "Death" and (ani_name != "Jump"): on_play_animation("Idle")
 	match ani_name:
 		"Walk": movement_finished.emit()
 		"Attack": attack_finished.emit(); if Unit != null: AudioMaster.play_sfx(Unit.AudioDict.ATTACK)
 		"Death": death_finished.emit()
 		"Jump": movement_finished.emit(); is_jump = false; jump_time = 0
 		"Hurt": hurt_finished.emit();
-		
-	if ani_name != "Walk" and ani_name != "Death" and (ani_name != "Jump"): on_play_animation("Idle")
 
 var walk_to_info: Array = []
-func move_to_tile(Tile: TileGD, type: Variant) -> void:
-	walk_to_info = [Tile, type]
+	
+func onMoveToTile(Tile: TileGD, type: Variant, movement_type: String) -> void:
+	walk_to_info = [Tile, type, movement_type]
+	if movement_type == "IntoVision":
+		Unit.global_position = Vector3(Tile.global_position + global_position) * 0.5
+		#Unit.global_position = onCalculateEndPosition(Tile, type.x)
+		Unit.visible = true
 	on_play_animation("Walk")
 	
 func attack_tile(Tile: TileGD) -> void:
@@ -98,9 +102,9 @@ func _process(delta: float) -> void:
 func on_begin_all_movement_between_tiles() -> void:
 	_look_at(walk_to_info[0])
 	match walk_to_info[1].x:
-		3: on_create_regular_jump(walk_to_info[0])
-		4: on_create_drop_jump(walk_to_info[0], walk_to_info[1].y, walk_to_info[1].z)
-		_: on_create_move_tween(walk_to_info[0], walk_to_info[1])
+		3: on_create_regular_jump(walk_to_info[0], walk_to_info[2])
+		4: on_create_drop_jump(walk_to_info[0], walk_to_info[1].y, walk_to_info[1].z, walk_to_info[2])
+		_: on_create_move_tween(walk_to_info[0], walk_to_info[1], walk_to_info[2])
 	walk_to_info = []
 		
 func onCalculateEndPosition(Tile: TileGD, type: int) -> Vector3:
@@ -114,56 +118,62 @@ func onCalculateEndPosition(Tile: TileGD, type: int) -> Vector3:
 			return Vector3(Tile.global_position.x, Tile.global_position.y + climb_slope, Tile.global_position.z)
 		
 var is_jump: bool = false
-func on_create_regular_jump(Tile: TileGD) -> void:
+func on_create_regular_jump(Tile: TileGD, move_type: String) -> void:
 	JUMP_TIME = 1
 	JUMP_HEIGHT = -4
 	jump_start = Unit.global_position
 	jump_end = onCalculateEndPosition(Tile, 3)
-	#Vector3(Tile.global_position.x, Tile.global_position.y + (0.9 if Tile.tile.type == 1 else 0.3), Tile.global_position.z)
 	is_jump = true
 	AniPlayer.speed_scale = 2
 	
 	on_play_animation("Jump")
 	
 const JUMP_HEIGHT_MULTIPLIER: float = 2.3
-func on_create_drop_jump(Tile: TileGD, hdiff: int, new_health: int) -> void:
+func on_create_drop_jump(Tile: TileGD, hdiff: int, new_health: int, move_type: String) -> void:
 	JUMP_TIME = 1 - (hdiff * 0.1)
 	JUMP_HEIGHT = -3 + (hdiff * JUMP_HEIGHT_MULTIPLIER)
 	jump_start = Unit.global_position
 	jump_end = onCalculateEndPosition(Tile, 4)
-	#Vector3(Tile.global_position.x, Tile.global_position.y + (0.75 if Tile.tile.type == 1 else 0.3), Tile.global_position.z)
 	is_jump = true
 	AniPlayer.speed_scale = 2.0 / JUMP_TIME
 	on_play_animation("Jump")
 	
 	get_tree().create_timer((3 / AniPlayer.speed_scale) / 1.5).timeout\
 	.connect(func(): drop_calculate_damage.emit(new_health, (3 / AniPlayer.speed_scale) / 6))
-func on_create_move_tween(Tile: TileGD, type: Vector2i) -> void:
-	var MoveTween: Tween = create_tween()
-	var half_position := Vector3(Tile.global_position + global_position) * 0.5
-	var climb_slope: float = 0.9 if Tile.tile.type == 1 else (1.5 if (type.x == 2 and type.y == -1) else 0.3)
-	MoveTween.tween_property(Unit, "global_position",
-	Vector3(half_position.x, Tile.global_position.y + climb_slope, half_position.z),
-	WALK_TRAVEL_TIME * 0.5)
+func on_create_move_tween(Tile: TileGD, type: Vector2i, move_type: String) -> void:
+	if move_type != "IntoVision":
+		var MoveTween: Tween = create_tween()
+		var half_position := Vector3(Tile.global_position + global_position) * 0.5
+		var climb_slope: float = 0.9 if Tile.tile.type == 1 else (1.5 if (type.x == 2 and type.y == -1) else 0.3)
+		MoveTween.tween_property(Unit, "global_position",
+		Vector3(half_position.x, Tile.global_position.y + climb_slope, half_position.z),
+		WALK_TRAVEL_TIME * 0.5)
+		MoveTween.finished.connect(on_create_second_move_tween.bind(Tile, type, move_type))
+	else: on_create_second_move_tween(Tile, type, move_type)
 	
-	MoveTween.finished.connect(on_create_second_move_tween.bind(Tile, type))
-func on_create_second_move_tween(Tile: TileGD, type: Vector2i) -> void:
-	onUnitMoveHalfway(Tile)
-	var MoveTween: Tween = create_tween()
+func on_create_second_move_tween(Tile: TileGD, type: Vector2i, move_type: String) -> void:
 	var end_position: Vector3 = onCalculateEndPosition(Tile, type.x)
-	MoveTween.tween_property(Unit, "global_position",
-	end_position,
-	WALK_TRAVEL_TIME * 0.5)
-	MoveTween.finished.connect(on_finish_animation.bind("Walk"))
+	if move_type != "OutOfVision":
+		onUnitMoveHalfway(Tile)
+		var MoveTween: Tween = create_tween()
+		MoveTween.tween_property(Unit, "global_position",
+		end_position,
+		WALK_TRAVEL_TIME * 0.5)
+		MoveTween.finished.connect(on_finish_animation.bind("Walk"))
+	else:
+		Unit.SpectateCamera.on_end_track_unit()
+		Unit.global_position = end_position
+		on_finish_animation("Walk")
 
 func onUnitMoveHalfway(Tile: TileGD) -> void:
-	if Unit.team == 1:
-		var ally_vision: Array = Unit.vision.ally_vision
-		if Unit.Tile in ally_vision and Tile not in ally_vision: # Goes out of vision
-			Unit.SpectateCamera.on_end_track_unit()
-			
-		elif Unit.Tile not in ally_vision and Tile in ally_vision: # Steps into vision
-			Unit.SpectateCamera.on_start_track_unit(Unit)
+	pass
+	#if Unit.team == 1:
+		#var ally_vision: Array = Unit.vision.ally_vision
+		#if Unit.Tile in ally_vision and Tile not in ally_vision: # Goes out of vision
+			#Unit.SpectateCamera.on_end_track_unit()
+			#
+		#elif Unit.Tile not in ally_vision and Tile in ally_vision: # Steps into vision
+			#Unit.SpectateCamera.on_start_track_unit(Unit)
 
 func _look_at(Tile: TileGD) -> void: #will rotate the object
 	rot = Unit.Units.Tiles.neighbour_rotation(Tile, Unit.Tile)

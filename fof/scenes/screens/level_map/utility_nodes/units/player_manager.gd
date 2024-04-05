@@ -17,7 +17,7 @@ func on_card_placed(hand_card: HandCardGD, Tile: TileGD) -> void:
 
 func on_enemy_unit_enters_vision(Unit: UnitGD) -> void:
 	Unit.UnitStatus.visible = true
-	Units.on_clear_event_queue()
+	Units.onClearUnitActions()
 
 func on_enemy_unit_exits_vision(Unit: UnitGD) -> void:
 	Unit.UnitStatus.visible = false
@@ -92,15 +92,16 @@ func on_hurt_finished(Unit: UnitGD) -> void:
 	on_check_autopass(Unit)
 
 func on_check_autopass(Unit: UnitGD) -> void:
-	if !Units.event_queue.is_empty(): return
-	if ActiveUnit != Unit: return
-	
-	if Unit.attack_amount == 0: on_pass_unit_turn(); return
-	else: 
-		Tiles.on_create_movement_paths(Unit)
-		if Tiles.movement_paths.tiles.is_empty() and Tiles.movement_paths.tiles.filter(func(x: TileGD): return Units.unit_by_tile_team_bool(x, 0)).is_empty(): 
-			on_pass_unit_turn()
-			return
+	if Unit.team == 0:
+		if !Units.unit_actions.is_empty(): return
+		if ActiveUnit != Unit: return
+		
+		if Unit.attack_amount == 0: on_pass_unit_turn(); return
+		else: 
+			Tiles.onCreateMovementPaths(Unit)
+			if Tiles.movement_paths.tiles.is_empty() and Tiles.movement_paths.tiles.filter(func(x: TileGD): return Units.unit_by_tile_team_bool(x, 0)).is_empty(): 
+				on_pass_unit_turn()
+				return
 	
 	on_set_unit_turn_status(Unit, 0)
 	_on_unit_selected(Unit)
@@ -142,7 +143,7 @@ func _on_unit_deselected(Unit: UnitGD, absolute: bool = false) -> void:
 	
 func _on_unit_selected(Unit: UnitGD) -> void:
 	if Unit.turn_status == 0 and Unit.team == 0:
-		Tiles.on_create_movement_paths(Unit)
+		Tiles.onCreateMovementPaths(Unit)
 		var enemy_units: Array = Units.on_units(1)
 		for Tile in Tiles.movement_paths.tiles:
 			if Unit.attack_amount > 0:

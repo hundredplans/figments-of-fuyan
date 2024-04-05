@@ -102,8 +102,8 @@ func on_advance_game_phase() -> void:
 		"BOTPhase": on_change_game_phase("PlayerStartTurnPhase")
 		"PlayerStartTurnPhase": on_change_game_phase("HandPhase")
 
-func on_set_lock_inputs_event_queue(x: bool) -> void:
-	if x or Units.event_queue.is_empty(): set_lock_inputs(x)
+func on_set_lock_inputs_unit_actions(x: bool) -> void:
+	if x or Units.unit_actions.is_empty(): set_lock_inputs(x)
 	
 func set_lock_inputs(x: bool) -> void:
 	lock_inputs = x

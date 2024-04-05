@@ -28,7 +28,7 @@ var attack_amount: int = 0
 
 var AudioDict: AudioDictGD
 var Vision: VisionGD
-var SpectateCamera: Camera3D
+var SpectateCamera: Node3D
 var Units: UnitsGD
 var Tiles: TilesGD
 var TeamControl: Node
@@ -214,3 +214,6 @@ func onUnitsHeightAdjacentTiles() -> void:
 					if _Tile != null and _Tile.tile.id > 0:
 						onAddTileToVisibleTiles(_Tile)
 						break
+
+func getVisibleEnemies() -> Array:
+	return visible_units.filter(Units.on_match_team_relation.bind(team, "Enemy"))
