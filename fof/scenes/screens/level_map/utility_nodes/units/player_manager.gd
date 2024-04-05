@@ -27,7 +27,7 @@ var unpassed_turns: Array
 var passed_turns: Array
 
 func on_select_active_unit(Unit: UnitGD) -> void:
-	if ActiveUnit != Unit:
+	if Unit.team == 0 and ActiveUnit != Unit:
 		if ActiveUnit != null: on_pass_unit_turn()
 		ActiveUnit = Unit
 		on_set_unit_turn_status(Unit, 0)

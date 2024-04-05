@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://2fgtoyy8wfah"]
+
+[ext_resource type="PackedScene" path="res://assets/base_game/cards/105 - Frederic the Fearless'0/model.tscn" id="1_jfx0q"]
+[ext_resource type="Material" uid="uid://c1mw7lnvcri1y" path="res://grey_test.tres" id="2_1fi6w"]
+
+[node name="Model" instance=ExtResource("1_jfx0q")]
+
+[node name="FredericTheFearless_007" parent="FredericTheFearless/Skeleton3D" index="0"]
+surface_material_override/0 = ExtResource("2_1fi6w")

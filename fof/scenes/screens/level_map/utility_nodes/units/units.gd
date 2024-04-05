@@ -146,10 +146,9 @@ func onMoveUnit() -> void:
 		else: movement_type = "Invisible"
 	else: movement_type = "Regular"
 		
-	print(movement_type)
 	if movement_type != "Invisible":
-		Unit.Model.onMoveToTile(DestinationTile, active_action[3], movement_type)
 		SpectateCamera.on_start_track_unit(Unit)
+		Unit.Model.onMoveToTile(DestinationTile, active_action[3], movement_type)
 	else:
 		Unit.global_position = Unit.Model.onCalculateEndPosition(DestinationTile, active_action[3].x)
 		on_movement_finished(Unit)
@@ -218,6 +217,7 @@ func attack_enemy_or_target(Unit: UnitGD, Tile: TileGD) -> void:
 			if Tile == _Unit.Tile:
 				PlayerManager.on_select_active_unit(Unit)
 				_attack_enemy(Unit, _Unit, Tile)
+				SpectateCamera.on_start_track_unit(Unit)
 				break
 		# if this check fails can check for attacks on objects and such here
 

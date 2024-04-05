@@ -279,7 +279,11 @@ func getUnitAdjustedHeight(Tile: TileGD) -> float:
 
 var movement_paths: Dictionary = {"tiles": []}
 func onCreateMovementPaths(Unit: UnitGD, type: String = "Default") -> void:
-	var tiles: Array = get_children() if type == "Default" else Vision.ally_vision
+	var tiles: Array = []
+	match type:
+		"Default": tiles = get_children()
+		"AllyVision": tiles = Vision.ally_vision
+		
 	movement_paths = {"tiles": []}
 	var astar := AStar3D.new()
 	

@@ -69,13 +69,18 @@ func on_finish_animation(ani_name: String) -> void:
 
 var walk_to_info: Array = []
 	
+const OUT_OF_VISION_DELAY: float = 1.5
 func onMoveToTile(Tile: TileGD, type: Variant, movement_type: String) -> void:
 	walk_to_info = [Tile, type, movement_type]
+	print(movement_type)
 	if movement_type == "IntoVision":
 		Unit.global_position = Vector3(Tile.global_position + global_position) * 0.5
 		#Unit.global_position = onCalculateEndPosition(Tile, type.x)
 		Unit.visible = true
-	on_play_animation("Walk")
+		await get_tree().create_timer(OUT_OF_VISION_DELAY).timeout
+		on_play_animation("Walk")
+	else:
+		on_play_animation("Walk")
 	
 func attack_tile(Tile: TileGD) -> void:
 	_look_at(Tile)
