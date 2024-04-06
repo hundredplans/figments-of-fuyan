@@ -10,6 +10,7 @@ var active_movement_order: Array
 
 func onDeathFinished(Unit: UnitGD) -> void:
 	movement_order.erase(Unit)
+	active_movement_order.erase(Unit)
 
 func onAIEndTurnPhaseStart() -> void:
 	for Unit in Units.on_units(1):
@@ -30,8 +31,9 @@ func onBeginMoveAIUnits() -> void:
 
 func onMoveNextAIUnit(override: bool = false) -> void:
 	if !override: await get_tree().create_timer(BEGIN_SPECTATE_AI_DELAY).timeout
-	var Unit: UnitGD = active_movement_order.pop_front()
-	if Unit != null:
+	
+	if active_movement_order.size() > 0:
+		var Unit: UnitGD = active_movement_order.pop_front()
 		Tiles.onCreateMovementPaths(Unit)
 		var old_paths: Dictionary = Tiles.movement_paths.duplicate()
 		var visible_enemies: Array = Unit.getVisibleEnemies()
@@ -87,3 +89,6 @@ func onSortMovementOrder(Unit: UnitGD) -> void: # Lower is higher priority
 						break
 				if !is_inserted: movement_order.append(Unit)
 			else: movement_order.insert(0, Unit)
+
+func onEnemyUnitEntersVision(Unit: UnitGD, _Unit: UnitGD) -> void:
+	Units.unit_actions.push_front(["Delay", 3])

@@ -34,6 +34,7 @@ var Tiles: TilesGD
 var TeamControl: Node
 
 var turn_status: int = 0 # 0 = turn active, 1 = turn inactive, 2 = turn used
+var finished_awakening: bool = false
 
 @onready var UnitFieldStatus: Node3D = $UnitFieldStatus
 @onready var Model: Node3D

@@ -72,10 +72,8 @@ var walk_to_info: Array = []
 const OUT_OF_VISION_DELAY: float = 1.5
 func onMoveToTile(Tile: TileGD, type: Variant, movement_type: String) -> void:
 	walk_to_info = [Tile, type, movement_type]
-	print(movement_type)
 	if movement_type == "IntoVision":
 		Unit.global_position = Vector3(Tile.global_position + global_position) * 0.5
-		#Unit.global_position = onCalculateEndPosition(Tile, type.x)
 		Unit.visible = true
 		await get_tree().create_timer(OUT_OF_VISION_DELAY).timeout
 		on_play_animation("Walk")
@@ -159,7 +157,6 @@ func on_create_move_tween(Tile: TileGD, type: Vector2i, move_type: String) -> vo
 func on_create_second_move_tween(Tile: TileGD, type: Vector2i, move_type: String) -> void:
 	var end_position: Vector3 = onCalculateEndPosition(Tile, type.x)
 	if move_type != "OutOfVision":
-		onUnitMoveHalfway(Tile)
 		var MoveTween: Tween = create_tween()
 		MoveTween.tween_property(Unit, "global_position",
 		end_position,
@@ -169,16 +166,6 @@ func on_create_second_move_tween(Tile: TileGD, type: Vector2i, move_type: String
 		Unit.SpectateCamera.on_end_track_unit()
 		Unit.global_position = end_position
 		on_finish_animation("Walk")
-
-func onUnitMoveHalfway(Tile: TileGD) -> void:
-	pass
-	#if Unit.team == 1:
-		#var ally_vision: Array = Unit.vision.ally_vision
-		#if Unit.Tile in ally_vision and Tile not in ally_vision: # Goes out of vision
-			#Unit.SpectateCamera.on_end_track_unit()
-			#
-		#elif Unit.Tile not in ally_vision and Tile in ally_vision: # Steps into vision
-			#Unit.SpectateCamera.on_start_track_unit(Unit)
 
 func _look_at(Tile: TileGD) -> void: #will rotate the object
 	rot = Unit.Units.Tiles.neighbour_rotation(Tile, Unit.Tile)

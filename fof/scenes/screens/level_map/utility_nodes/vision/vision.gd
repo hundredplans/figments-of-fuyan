@@ -25,16 +25,16 @@ func on_recalculate_vision(Unit: UnitGD = null) -> void:
 						var was_visible: bool = _Unit in Unit.visible_units
 						var currently_visible: bool = Unit.visible_tiles.any(func(x: TileGD): return x == _Unit.Tile)
 						if was_visible and !currently_visible:
-							if _Unit.visible_units.size() == 1:
-								Units.on_unit_exits_vision(_Unit)
-								Unit.visible_units.erase(_Unit)
-								_Unit.visible_units.erase(Unit)
+							Unit.visible_units.erase(_Unit)
+							_Unit.visible_units.erase(Unit)
+							
+							if _Unit.getVisibleEnemies().is_empty():
+								Units.onUnitExitsAllyVision(Unit, _Unit)
 								
 						elif !was_visible and currently_visible:
-							if _Unit.visible_units.is_empty():
-								Units.on_unit_enters_vision(_Unit)
 							Unit.visible_units.append(_Unit)
 							_Unit.visible_units.append(Unit)
+							Units.onUnitMovementEntersVision(Unit, _Unit)
 							
 							if Unit.Tile not in _Unit.visible_tiles:
 								_Unit.visible_tiles.append(Unit.Tile)
@@ -102,7 +102,7 @@ func isUnitInUnitVision(VisionUnit: UnitGD, ObservedUnit: UnitGD, include_self: 
 		
 	return false
 
-var vision_mode: int = -1 # 0 = default, 1 = unit_vision, 2 = spawn_vision
+var vision_mode: int = 0 # 0 = default, 1 = unit_vision, 2 = spawn_vision
 func on_vision_mode_set(x: int) -> void:
 	if x != vision_mode:
 		ActiveUnitVision = null

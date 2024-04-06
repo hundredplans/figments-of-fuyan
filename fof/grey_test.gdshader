@@ -10,12 +10,16 @@ uniform vec4 metallic_texture_channel;
 uniform sampler2D texture_roughness : hint_roughness_r,filter_linear_mipmap,repeat_enable;
 uniform float specular;
 uniform float metallic;
+uniform vec3 max_grey: source_color;
 
 void fragment() {
 	vec2 base_uv = UV;
 	vec4 albedo_tex = texture(texture_albedo,base_uv);
 	ALBEDO = albedo.rgb * albedo_tex.rgb;
-	ALBEDO = vec3(ALBEDO.r + ALBEDO.g + ALBEDO.b) / 3.0;
+	
+	float grey = dot(ALBEDO.rgb, max_grey);
+	ALBEDO = mix(ALBEDO, vec3(grey), clamp(sin(TIME), 0.0, 1.0));
+	
 	float metallic_tex = dot(texture(texture_metallic,base_uv),metallic_texture_channel);
 	METALLIC = metallic_tex * metallic;
 	vec4 roughness_texture_channel = vec4(1.0,0.0,0.0,0.0);

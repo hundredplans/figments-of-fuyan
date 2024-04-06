@@ -23,7 +23,6 @@ const DARK_RED: Color = Color("ff0000")
 const BRIGHT_GREEN: Color = Color("00ff00")
 const MEDIUM_GRAY: Color = Color("8c8c8c")
 const BASE: Color = Color("ffffff")
-var active_turn: int = 0
 	
 var unit_field_status_materials: Dictionary = {
 	"BASE": [], # [bot, top_level]
@@ -58,13 +57,9 @@ func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int
 	
 	LevelUI.on_add_unit_status_box(Unit)
 	
-	var in_vision: bool = Vision.is_unit_in_vision(Unit)
-	Unit.on_arrive(team == 0 or in_vision)
+	Unit.on_arrive(team == 0 or Unit.getVisibleEnemies().size() > 0)
 	AIManager.onUnitAwakened(Unit)
-	
-	if team == 1 and in_vision:
-		on_unit_enters_vision(Unit)
-	
+	Unit.finished_awakening = true
 	return Unit
 
 func on_start_phase_start() -> void:
@@ -84,7 +79,6 @@ func on_start_phase_start() -> void:
 		on_unit_awakened(Tile.obj.obj_info[0], 0, [], 1, Tile.obj.rotation, Tile) # add Random.on_create_random_tool() here, maybe no args and it takes from GameState
 
 func on_player_phase_start() -> void:
-	active_turn = 0
 	PlayerManager.on_player_phase_start()
 
 func on_player_end_turn_phase_start() -> void:
@@ -128,7 +122,12 @@ func _process(_delta: float) -> void:
 				"AttackTarget": on_attack_enemy()
 				"DeathUnit": on_death()
 				"HurtUnit": on_hurt()
+				"Delay": on_delay()
 			LevelMap.on_set_lock_inputs_unit_actions(true)
+
+func on_delay() -> void:
+	await get_tree().create_timer(active_action[1]).timeout
+	active_action = []
 
 var movement_type: String = ""
 func onMoveUnit() -> void:
@@ -180,14 +179,22 @@ func onUnitActionsFinished() -> void:
 		for Unit in all_units():
 			Tiles.on_set_tile_material(Unit.Tile, "AllyOccupy" if Unit.team == 0 else "EnemyOccupy")
  
-		if active_turn == 1:
+		if LevelMap.game_phase == "AIPhase":
 			AIManager.onMoveNextAIUnit()
 
-func on_unit_enters_vision(Unit: UnitGD) -> void:
-	if Unit.team == 1: PlayerManager.on_enemy_unit_enters_vision(Unit)
+func onUnitMovementEntersVision(Unit: UnitGD, _Unit: UnitGD) -> void:
+	if Unit.team != _Unit.team and Unit.finished_awakening:
+		AudioMaster.play_sfx("TrumpetKuba")
+	on_unit_enters_vision(Unit, _Unit)
+
+func on_unit_enters_vision(Unit: UnitGD, _Unit: UnitGD) -> void:
+	if Unit.team == 0 and _Unit.team == 1: 
+		PlayerManager.on_enemy_unit_enters_vision(_Unit)
+	elif Unit.team == 1 and _Unit.team == 0:
+		AIManager.onEnemyUnitEntersVision(Unit, _Unit)
 		
-func on_unit_exits_vision(Unit: UnitGD) -> void:
-	if Unit.team == 1: PlayerManager.on_enemy_unit_exits_vision(Unit)
+func onUnitExitsAllyVision(Unit: UnitGD, _Unit: UnitGD) -> void:
+	if Unit.team == 0 and _Unit.team == 1: PlayerManager.on_enemy_unit_exits_vision(_Unit)
 
 func onClearUnitActions() -> void:
 	if !active_action.is_empty() and active_action[0] == "MoveUnit": on_unit_travel_finished(active_action[1])
@@ -246,7 +253,7 @@ func kill_unit(Unit: UnitGD, Killer: String) -> void:
 	unit_actions.append(["DeathUnit", Unit, Killer])
 
 func hurt_unit(Unit: UnitGD, Attacker: Variant) -> void:
-	unit_actions.append(["HurtUnit", Unit, Attacker])
+	unit_actions.push_front(["HurtUnit", Unit, Attacker])
 
 func on_death() -> void:
 	active_action[1].Model.on_death()
@@ -307,7 +314,6 @@ func onSpectatedInPlayerPhase(Unit: UnitGD) -> void:
 	LevelUI.on_pass_unit_turn_button_state(Unit.team == 1 or Unit in PlayerManager.passed_turns)
 
 func onAIPhaseStart() -> void:
-	active_turn = 1
 	AIManager.onAIPhaseStart()
 
 func onAIEndTurnPhaseStart() -> void:
