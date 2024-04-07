@@ -182,7 +182,7 @@ func convert_item_pos_dict() -> Array:
 
 var void_tile: PackedScene = preload("res://assets/models/tiles/void.glb")
 var hover_tile: PackedScene = preload("res://assets/models/tiles/_hover.glb")
-var default_tile: PackedScene = preload("res://assets/models/tiles/_default_tile.glb")
+var default_tile: PackedScene = preload("res://assets/models/tiles/_default_tile.tscn")
 func create_tile(xy: Vector3) -> Node3D:
 	var tile: Node3D = preload("res://scenes/screens/item_editor/item_editor_tile.tscn").instantiate()
 	tile.position = Vector3((sqrt(3) * xy.x + sqrt(3) * xy.y * 0.5),

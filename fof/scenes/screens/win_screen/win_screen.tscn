@@ -1,0 +1,59 @@
+[gd_scene load_steps=6 format=3 uid="uid://b6d2g3maddnes"]
+
+[ext_resource type="Script" path="res://scenes/screens/win_screen/win_screen.gd" id="1_jj5pm"]
+[ext_resource type="Material" uid="uid://ft8je82hjek6" path="res://scenes/screens/level_ui/unit_status/move_slight.tres" id="2_6dim3"]
+[ext_resource type="Texture2D" uid="uid://b7e8q87hpuu77" path="res://assets/base_game/cards/122 - Palmita/art_pop.png" id="3_l1aen"]
+[ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="4_tkn54"]
+[ext_resource type="LabelSettings" uid="uid://b3fuc4s50fgra" path="res://assets/UI/roboto/roboto64.tres" id="5_gim7t"]
+
+[node name="WinScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_jj5pm")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = ExtResource("2_6dim3")
+position = Vector2(999, 937)
+scale = Vector2(5, 5)
+texture = ExtResource("3_l1aen")
+
+[node name="ContinueButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -165.0
+offset_top = 163.0
+offset_right = 165.0
+offset_bottom = 292.0
+grow_horizontal = 2
+theme = ExtResource("4_tkn54")
+text = "Continue"
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -474.0
+offset_top = 42.0
+offset_right = 474.0
+offset_bottom = 118.0
+grow_horizontal = 2
+text = "Good job! You beat the bad guys!"
+label_settings = ExtResource("5_gim7t")
+
+[connection signal="pressed" from="ContinueButton" to="." method="_on_continue_button_pressed"]

@@ -1,5 +1,7 @@
 extends Node3D
 
+var mesh: MeshInstance3D
+
 var Unit: UnitGD
 var AniPlayer: AnimationPlayer
 signal movement_finished
@@ -23,6 +25,8 @@ func on_idle_rare_timer_timeout() -> void:
 	IdleRareTimer.start(Unit.Units.Random.RNG.randi_range(IDLE_RARE_MINIMUM, IDLE_RARE_MAXIMUM))
 
 func _ready() -> void:
+	mesh = get_child(0).get_child(0).get_child(0)
+	onCreateTransformGreyMaterials()
 	AniPlayer = get_node("AnimationPlayer")
 	AniPlayer.animation_finished.connect(on_finish_animation)
 	
@@ -37,6 +41,9 @@ func _ready() -> void:
 		
 	if Unit != null:
 		on_set_rotation()
+
+	await get_tree().create_timer(2).timeout
+	onSetOverrideMaterial("TransformGrey")
 
 func on_play_animation(ani_name: String) -> void:
 	AniPlayer.play(ani_name, UNIT_ANIMATION_BLEND_TIME)
@@ -67,18 +74,34 @@ func on_finish_animation(ani_name: String) -> void:
 		"Jump": movement_finished.emit(); is_jump = false; jump_time = 0
 		"Hurt": hurt_finished.emit();
 
+func onCreateTransformGreyMaterials() -> void:
+	for i in mesh.get_surface_override_material_count():
+		var mat: Material = preload("res://assets/materials/transform_grey/transform_grey.tres")
+		mat.set_shader_parameter("texture_albedo", load(mesh.get_active_material(i).albedo_texture.resource_path))
+		transform_grey_materials.append(mat)
+
+var transform_grey_materials: Array
+func onSetOverrideMaterial(type: String) -> void:
+	for i in mesh.get_surface_override_material_count():
+		if type == "null":
+			mesh.set_surface_override_material(i, null)
+		else:
+			var start_value: float = 0.0 if type == "TransformGrey" else 1.0
+			mesh.set_surface_override_material(i, transform_grey_materials[i])
+			
+			var MaterialTween: Tween = create_tween()
+			MaterialTween.tween_method(onSetShaderParameter, start_value, 1.0 if type == "TransformGrey" else 0.0, WALK_TRAVEL_TIME)
+			MaterialTween.finished.connect(onSetOverrideMaterial.bind("null"))
+
+func onSetShaderParameter(value: float) -> void:
+	for mat in transform_grey_materials:
+		mat.set_shader_parameter("time_value", value)
+
 var walk_to_info: Array = []
-	
 const OUT_OF_VISION_DELAY: float = 1.5
 func onMoveToTile(Tile: TileGD, type: Variant, movement_type: String) -> void:
 	walk_to_info = [Tile, type, movement_type]
-	if movement_type == "IntoVision":
-		Unit.global_position = Vector3(Tile.global_position + global_position) * 0.5
-		Unit.visible = true
-		await get_tree().create_timer(OUT_OF_VISION_DELAY).timeout
-		on_play_animation("Walk")
-	else:
-		on_play_animation("Walk")
+	on_play_animation("Walk")
 	
 func attack_tile(Tile: TileGD) -> void:
 	_look_at(Tile)
@@ -104,12 +127,16 @@ func _process(delta: float) -> void:
 		
 func on_begin_all_movement_between_tiles() -> void:
 	_look_at(walk_to_info[0])
+	match walk_to_info[2]:
+		"OutOfVision": onSetOverrideMaterial("TransformGrey")
+		"IntoVision": onSetOverrideMaterial("TransformRegular")
+	
 	match walk_to_info[1].x:
-		3: on_create_regular_jump(walk_to_info[0], walk_to_info[2])
-		4: on_create_drop_jump(walk_to_info[0], walk_to_info[1].y, walk_to_info[1].z, walk_to_info[2])
-		_: on_create_move_tween(walk_to_info[0], walk_to_info[1], walk_to_info[2])
+		3: on_create_regular_jump(walk_to_info[0])
+		4: on_create_drop_jump(walk_to_info[0], walk_to_info[1].y, walk_to_info[1].z)
+		_: on_create_move_tween(walk_to_info[0], walk_to_info[1])
 	walk_to_info = []
-		
+	
 func onCalculateEndPosition(Tile: TileGD, type: int) -> Vector3:
 	match type:
 		3: 
@@ -121,7 +148,7 @@ func onCalculateEndPosition(Tile: TileGD, type: int) -> Vector3:
 			return Vector3(Tile.global_position.x, Tile.global_position.y + climb_slope, Tile.global_position.z)
 		
 var is_jump: bool = false
-func on_create_regular_jump(Tile: TileGD, move_type: String) -> void:
+func on_create_regular_jump(Tile: TileGD) -> void:
 	JUMP_TIME = 1
 	JUMP_HEIGHT = -4
 	jump_start = Unit.global_position
@@ -132,7 +159,7 @@ func on_create_regular_jump(Tile: TileGD, move_type: String) -> void:
 	on_play_animation("Jump")
 	
 const JUMP_HEIGHT_MULTIPLIER: float = 2.3
-func on_create_drop_jump(Tile: TileGD, hdiff: int, new_health: int, move_type: String) -> void:
+func on_create_drop_jump(Tile: TileGD, hdiff: int, new_health: int) -> void:
 	JUMP_TIME = 1 - (hdiff * 0.1)
 	JUMP_HEIGHT = -3 + (hdiff * JUMP_HEIGHT_MULTIPLIER)
 	jump_start = Unit.global_position
@@ -143,29 +170,22 @@ func on_create_drop_jump(Tile: TileGD, hdiff: int, new_health: int, move_type: S
 	
 	get_tree().create_timer((3 / AniPlayer.speed_scale) / 1.5).timeout\
 	.connect(func(): drop_calculate_damage.emit(new_health, (3 / AniPlayer.speed_scale) / 6))
-func on_create_move_tween(Tile: TileGD, type: Vector2i, move_type: String) -> void:
-	if move_type != "IntoVision":
-		var MoveTween: Tween = create_tween()
-		var half_position := Vector3(Tile.global_position + global_position) * 0.5
-		var climb_slope: float = 0.9 if Tile.tile.type == 1 else (1.5 if (type.x == 2 and type.y == -1) else 0.3)
-		MoveTween.tween_property(Unit, "global_position",
-		Vector3(half_position.x, Tile.global_position.y + climb_slope, half_position.z),
-		WALK_TRAVEL_TIME * 0.5)
-		MoveTween.finished.connect(on_create_second_move_tween.bind(Tile, type, move_type))
-	else: on_create_second_move_tween(Tile, type, move_type)
+func on_create_move_tween(Tile: TileGD, type: Vector2i) -> void:
+	var MoveTween: Tween = create_tween()
+	var half_position := Vector3(Tile.global_position + global_position) * 0.5
+	var climb_slope: float = 0.9 if Tile.tile.type == 1 else (1.5 if (type.x == 2 and type.y == -1) else 0.3)
+	MoveTween.tween_property(Unit, "global_position",
+	Vector3(half_position.x, Tile.global_position.y + climb_slope, half_position.z),
+	WALK_TRAVEL_TIME * 0.5)
+	MoveTween.finished.connect(on_create_second_move_tween.bind(Tile, type))
 	
-func on_create_second_move_tween(Tile: TileGD, type: Vector2i, move_type: String) -> void:
+func on_create_second_move_tween(Tile: TileGD, type: Vector2i) -> void:
 	var end_position: Vector3 = onCalculateEndPosition(Tile, type.x)
-	if move_type != "OutOfVision":
-		var MoveTween: Tween = create_tween()
-		MoveTween.tween_property(Unit, "global_position",
-		end_position,
-		WALK_TRAVEL_TIME * 0.5)
-		MoveTween.finished.connect(on_finish_animation.bind("Walk"))
-	else:
-		Unit.SpectateCamera.on_end_track_unit()
-		Unit.global_position = end_position
-		on_finish_animation("Walk")
+	var MoveTween: Tween = create_tween()
+	MoveTween.tween_property(Unit, "global_position",
+	end_position,
+	WALK_TRAVEL_TIME * 0.5)
+	MoveTween.finished.connect(on_finish_animation.bind("Walk"))
 
 func _look_at(Tile: TileGD) -> void: #will rotate the object
 	rot = Unit.Units.Tiles.neighbour_rotation(Tile, Unit.Tile)

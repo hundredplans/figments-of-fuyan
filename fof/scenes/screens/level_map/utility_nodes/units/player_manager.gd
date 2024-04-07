@@ -156,17 +156,16 @@ func _on_unit_selected(Unit: UnitGD) -> void:
 		UnitSelected = Unit
 		LevelUI.get_node("SkipReminder").visible = ActiveUnit != null and ActiveUnit != Unit
 
-func on_death_finished(Killer: String, Deathee: UnitGD) -> void:
-	if Killer == "Unit" and Deathee.Killer.team == 0:
-		if LevelMap.game_phase == "PlayerPhase":
+func onDeathFinished(Killer: String, Deathee: UnitGD, win_state: int) -> void:
+	if Killer == "Unit" and LevelMap.game_phase == "PlayerPhase":
+		if Deathee.team == 0 and Deathee.Killer.team == 1:
 			SpectateCamera.on_spectate("Unit", \
 			Units.on_unit_team_index(passed_turns[0]) if !passed_turns.is_empty() else 0, 0, true)
-			if Killer == "Unit": on_check_autopass(Deathee.Killer)
+		elif Deathee.team == 1 and Deathee.Killer.team == 0 and win_state == 0:
+			on_check_autopass(Deathee.Killer)
 			
 		on_remove_unit_turn(Deathee)
 		Units.Vision.on_recalculate_vision()
-		if Units.on_units().is_empty():
-			pass
 	
 func on_remove_unit_turn(Unit: UnitGD) -> void:
 	if Unit.team == 0:

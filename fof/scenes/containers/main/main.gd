@@ -80,7 +80,11 @@ func on_menu_button_pressed(i: Variant) -> void:
 	
 func _on_move_screen_animation_finished(animation_name: String):
 	var screen: Control = Screens.get_child(1)
-	if screen.has_method("_queue_free"): screen._queue_free()
+	if screen.has_method("_queue_free"):
+		if screen.name == "LevelUI":
+			screen._queue_free(Screens.get_child(0).name)
+		else:
+			screen._queue_free()
 	screen.queue_free()
 	
 	MoveScreen.current_animation = ""
@@ -106,10 +110,10 @@ func on_setup_screen(screen: Control) -> void:
 func before_ready_connect_screen(screen: Control):
 	if screen.get("equip_sky"): screen.equip_sky.connect(on_equip_sky)
 	match screen.name:
-		"MapMenu", "LevelUI": screen.GameState = GameState
+		"MapMenu", "LevelUI", "LoseScreen", "WinScreen": screen.GameState = GameState
 	
 	match screen.name:
-		"LevelEditor", "LoreBooksEditor", "ItemEditor", "MapMenu", "LevelUI": screen.load_world.connect(on_load_world)
+		"LevelEditor", "LoreBooksEditor", "ItemEditor", "MapMenu", "LevelUI", "LoseScreen", "WinScreen": screen.load_world.connect(on_load_world)
 	
 	match screen.name:
 		"TrinketEditor", "AreaEditor", "BoonEditor", "CardEditor", "LevelEditor", "MapEditor", "ToolEditor", "TaskEditor", "ChallengeEditor", "EncounterEditor": screen.fileloader_state.connect(on_change_fileloader_state)
@@ -154,24 +158,20 @@ func on_load_screen(screen_name: String, is_enter: bool) -> void:
 		var screen: Control = load(screen_name).instantiate()
 		on_menu_transition(screen, Screens.get_child(0), is_enter)
 
-var RETURN_EXTRA: Array = [
-	["play_menu.tscn", 2],
-	["continue_menu.tscn", 2],
-	["map_menu.tscn", 3],
-]
+var return_to_main_menu: Array = [
+	"play_menu.tscn",
+	"continue_menu.tscn",
+	"map_menu.tscn",
+	"win_screen.tscn",
+	"lose_screen.tscn",
+	]
 
 func on_trigger_screen_history() -> void:
 	match fileloader_state:
 		0:
 			if !screen_change_animation_active and screen_history.size() > 0:
 				var path: String = screen_history[screen_history.size() - 1]
-				for i in RETURN_EXTRA:
-					if path.ends_with(i[0]):
-						path = screen_history[screen_history.size() - i[1]]
-						on_load_screen(path, false)
-						screen_history.resize(screen_history.size() - i[1])
-						return
-				
+				if return_to_main_menu.any(func(x: String): return path.ends_with(x)): screen_history.resize(1); path = screen_history[0]
 				on_load_screen(path, false)
 				screen_history.resize(screen_history.size() - 1)
 					

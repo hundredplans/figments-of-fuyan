@@ -41,7 +41,7 @@ func on_connect_node(NodeSelector: Control) -> void:
 	NodeSelector.node_hovered.connect(on_node_hovered)
 	
 func _queue_free() -> void: 
-	if GameState.level_info.id == 0 and !Helper.settings_loaded:
+	if !Helper.settings_loaded:
 		GameState._queue_free()
 		load_world.emit(null)
 

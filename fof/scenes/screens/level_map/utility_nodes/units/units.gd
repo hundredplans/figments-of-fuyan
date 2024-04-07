@@ -151,9 +151,6 @@ const OUT_OF_VISION_DELAY: float = 1
 func on_movement_finished(Unit: UnitGD) -> void:
 	Unit.stats("speed", -1, "MovementFinished")
 	Unit.occupy_tile(active_action[2])
-
-	if movement_type == "OutOfVision":
-		await get_tree().create_timer(OUT_OF_VISION_DELAY).timeout
 		
 	if movement_type != "Invisible":
 		if unit_actions.is_empty() or unit_actions[0][0] != "MoveUnit" or unit_actions[0][1] != Unit:
@@ -261,12 +258,13 @@ func on_death_finished(Unit: UnitGD) -> void:
 	await get_tree().create_timer(DEATH_AFTER_DELAY).timeout
 	for _Unit in all_units():
 		_Unit.visible_units.erase(Unit)
-	
+		
 	Unit.UnitStatus._queue_free()
 	Unit.on_death()
+	var win_state: int = 1 if on_units(1).is_empty() else (2 if on_units().is_empty() else 0)
 	LevelMap.on_set_lock_inputs_unit_actions(false)
 	SpectateCamera.onDeathFinished(Unit)
-	PlayerManager.on_death_finished(active_action[2], Unit)
+	PlayerManager.onDeathFinished(active_action[2], Unit, win_state)
 	AIManager.onDeathFinished(Unit)
 	Deck.on_draw_card()
 	active_action = []
@@ -274,8 +272,11 @@ func on_death_finished(Unit: UnitGD) -> void:
 	if Unit.Model.current_walk_stream_player != null:
 		AudioMaster.on_cutoff_sfx(Unit.Model.current_walk_stream_player)
 
-	onUnitActionsFinished()
-
+	match win_state:
+		0: onUnitActionsFinished()
+		1: LevelUI.onWinGame()
+		2: LevelUI.onLoseGame()
+		
 func on_hurt_finished(_Unit: UnitGD) -> void:
 	LevelMap.on_set_lock_inputs_unit_actions(false)
 	if typeof(active_action[2]) == TYPE_STRING:

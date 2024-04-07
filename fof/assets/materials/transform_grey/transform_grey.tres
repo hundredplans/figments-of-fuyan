@@ -1,0 +1,17 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://c1mw7lnvcri1y"]
+
+[ext_resource type="Shader" path="res://assets/materials/transform_grey/transform_grey.gdshader" id="1_itxry"]
+[ext_resource type="Texture2D" uid="uid://ebuqqa5efmoi" path="res://assets/materials/base_materials/base_material.png" id="2_txydn"]
+
+[resource]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("1_itxry")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/roughness = null
+shader_parameter/metallic_texture_channel = null
+shader_parameter/specular = null
+shader_parameter/metallic = null
+shader_parameter/time_value = 0.0
+shader_parameter/max_grey = 0.5
+shader_parameter/texture_albedo = ExtResource("2_txydn")

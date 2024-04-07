@@ -1,0 +1,56 @@
+[gd_scene load_steps=4 format=3 uid="uid://6p67nmn8m2y1"]
+
+[ext_resource type="Script" path="res://scenes/screens/lose_screen/lose_screen.gd" id="1_ohgbh"]
+[ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="2_mhq1b"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_3vkub"]
+font_size = 80
+
+[node name="LoseScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ohgbh")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -88.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "You lost! :("
+label_settings = SubResource("LabelSettings_3vkub")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ContinueButton" type="Button" parent="."]
+custom_minimum_size = Vector2(500, 100)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -69.0
+offset_top = 91.0
+offset_right = 69.0
+offset_bottom = 137.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_mhq1b")
+text = "Continue"
+
+[connection signal="pressed" from="ContinueButton" to="." method="_on_continue_button_pressed"]

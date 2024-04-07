@@ -1,5 +1,7 @@
 class_name LevelUIGD
 extends Control
+
+signal screen_change_sig
 signal load_world
 signal equip_sky
 signal mouse_in_ui
@@ -55,8 +57,8 @@ func _ready() -> void:
 func setCornerRightVisibile(state: bool) -> void:
 	for child in CornerRightMenu.get_children(): child.visible = state
 
-func _queue_free() -> void:
-	if !Helper.settings_loaded:
+func _queue_free(screen_name: String) -> void:
+	if screen_name not in ["LoseScreen", "SettingsMenu", "WinScreen"]:
 		GameState._queue_free()
 		load_world.emit(null)
 
@@ -273,7 +275,14 @@ func onVisionModeSet() -> void:
 func onStartPhaseStart() -> void:
 	ChangePhase.visible = false
 
-
 func _on_card_clipper_child_entered_tree(node):
 	if node is HScrollBar:
 		node.mouse_filter = MOUSE_FILTER_PASS
+
+func onLoseGame() -> void:
+	if get_node("../../../..") == get_tree().get_root():
+		screen_change_sig.emit("res://scenes/screens/lose_screen/lose_screen.tscn")
+
+func onWinGame() -> void:
+	if get_node("../../../..") == get_tree().get_root():
+		screen_change_sig.emit("res://scenes/screens/win_screen/win_screen.tscn")
