@@ -23,10 +23,11 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_mmiwi")
 
-[node name="GreyScale" type="Panel" parent="."]
-visible = false
-modulate = Color(0, 0, 0, 1)
+[node name="GreyScale" type="ColorRect" parent="."]
+unique_name_in_owner = true
+modulate = Color(0, 0, 0, 0.196078)
 layout_mode = 0
+offset_left = 3.0
 offset_right = 1920.0
 offset_bottom = 1080.0
 mouse_filter = 2

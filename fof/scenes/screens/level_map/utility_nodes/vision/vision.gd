@@ -46,15 +46,21 @@ func on_recalculate_vision(Unit: UnitGD = null) -> void:
 			ally_vision = visible_tiles.duplicate()
 		1:
 			visible_tiles = Tiles.movement_paths.tiles.duplicate()
-			for _Unit in all_units:
-				match _Unit.team:
-					0: if _Unit.Tile not in visible_tiles: visible_tiles.append(_Unit.Tile)
-					1: if _Unit.Tile in ally_vision: visible_tiles.append(_Unit.Tile)
 						
 			if ActiveUnitVision != null and ActiveUnitVision.Tile in ally_vision:
 				onUnitVisionModeCalculateVision(ActiveUnitVision, visible_tiles)
 			elif SpectateCamera.SpectateUnit != null:
 				onUnitVisionModeCalculateVision(SpectateCamera.SpectateUnit, visible_tiles)
+			#else:
+				#for _Unit in Units.all_units():
+					#Tiles.on_set_tile_material(_Unit.Tile, \
+					#"AllyOccupy" if _Unit.team == 0 else "EnemyOccupy")
+			
+			for _Unit in all_units:
+				match _Unit.team:
+					0: if _Unit.Tile not in visible_tiles: visible_tiles.append(_Unit.Tile)
+					1: if _Unit.Tile in ally_vision: visible_tiles.append(_Unit.Tile)
+			
 		2:
 			visible_tiles = spawn_vision
 		3: # enemy vision
@@ -71,10 +77,14 @@ func onUnitVisionModeCalculateVision(Unit: UnitGD, visible_tiles: Array) -> void
 				if Tile in Unit.visible_tiles:
 					visible_tiles.append(Tile)
 		1:
-			Unit.onCircleRay() # can remove this later
 			for Tile in ally_vision:
 				if Tile in Unit.visible_tiles:
 					visible_tiles.append(Tile)
+	
+	#for _Unit in Units.all_units():
+		#if _Unit.Tile not in visible_tiles:
+			#print("Here")
+			#Tiles.on_remove_tile_material(_Unit.Tile, "AllyOccupy" if _Unit.team == 0 else "EnemyOccupy")
 
 func on_start_phase_start() -> void:
 	for Tile in Tiles.get_children():
@@ -105,8 +115,12 @@ func isUnitInUnitVision(VisionUnit: UnitGD, ObservedUnit: UnitGD, include_self: 
 var vision_mode: int = 0 # 0 = default, 1 = unit_vision, 2 = spawn_vision
 func on_vision_mode_set(x: int) -> void:
 	if x != vision_mode:
+		if vision_mode == 1:
+			for Unit in Units.all_units():
+				Tiles.on_set_tile_material(Unit.Tile, "AllyOccupy" if Unit.team == 0 else "EnemyOccupy")
 		ActiveUnitVision = null
 		vision_mode = x
+		LevelUI.onVisionModeSet()
 		on_recalculate_vision()
 
 var ActiveUnitVision: UnitGD

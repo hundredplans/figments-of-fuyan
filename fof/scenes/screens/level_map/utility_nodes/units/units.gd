@@ -122,12 +122,7 @@ func _process(_delta: float) -> void:
 				"AttackTarget": on_attack_enemy()
 				"DeathUnit": on_death()
 				"HurtUnit": on_hurt()
-				"Delay": on_delay()
 			LevelMap.on_set_lock_inputs_unit_actions(true)
-
-func on_delay() -> void:
-	await get_tree().create_timer(active_action[1]).timeout
-	active_action = []
 
 var movement_type: String = ""
 func onMoveUnit() -> void:
@@ -183,15 +178,13 @@ func onUnitActionsFinished() -> void:
 			AIManager.onMoveNextAIUnit()
 
 func onUnitMovementEntersVision(Unit: UnitGD, _Unit: UnitGD) -> void:
-	if Unit.team != _Unit.team and Unit.finished_awakening:
+	if Unit.team == 0 and _Unit.team == 1 and _Unit.getVisibleEnemies().size() == 1 and Unit.finished_awakening:
 		AudioMaster.play_sfx("TrumpetKuba")
 	on_unit_enters_vision(Unit, _Unit)
 
 func on_unit_enters_vision(Unit: UnitGD, _Unit: UnitGD) -> void:
 	if Unit.team == 0 and _Unit.team == 1: 
 		PlayerManager.on_enemy_unit_enters_vision(_Unit)
-	elif Unit.team == 1 and _Unit.team == 0:
-		AIManager.onEnemyUnitEntersVision(Unit, _Unit)
 		
 func onUnitExitsAllyVision(Unit: UnitGD, _Unit: UnitGD) -> void:
 	if Unit.team == 0 and _Unit.team == 1: PlayerManager.on_enemy_unit_exits_vision(_Unit)

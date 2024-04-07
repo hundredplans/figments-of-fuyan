@@ -201,15 +201,18 @@ func on_camera_panning(x: bool) -> void:
 func on_camera_arrow_pressed(direction: int) -> void:
 	LevelMap.SpectateCamera.on_select_spectate_camera_direction(direction)
 
+const greyscale_dark: float = 0.7
+const greyscale_light: float = 0.3
+@onready var GreyScale: ColorRect = %GreyScale
 func on_pin_hand_box_panel() -> void:
 	hand_box_pinned = true
 	on_extend_hand_box()
-	$GreyScale.visible = true
+	GreyScale.modulate.a = greyscale_dark
 
 func on_unpin_hand_box_panel() -> void:
 	hand_box_pinned = false
 	on_unextend_hand_box()
-	$GreyScale.visible = false
+	GreyScale.modulate.a = 0
 
 func on_ally_unit_awakened(skip_result: bool) -> void:
 	if !skip_result: on_pin_hand_box_panel()
@@ -263,6 +266,9 @@ func on_set_unit_turn_status(Unit: UnitGD, status: int) -> void:
 
 func _on_vision_mode_set():
 	Vision.on_vision_mode_set(1 if Vision.vision_mode == 0 else 0)
+
+func onVisionModeSet() -> void:
+	GreyScale.modulate.a = greyscale_light if Vision.vision_mode == 1 else 0.0
 
 func onStartPhaseStart() -> void:
 	ChangePhase.visible = false

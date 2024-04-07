@@ -19,6 +19,7 @@ void fragment() {
 	
 	float grey = dot(ALBEDO.rgb, max_grey);
 	ALBEDO = mix(ALBEDO, vec3(grey), clamp(sin(TIME), 0.0, 1.0));
+	ALPHA = ALBEDO.r * 0.5;
 	
 	float metallic_tex = dot(texture(texture_metallic,base_uv),metallic_texture_channel);
 	METALLIC = metallic_tex * metallic;

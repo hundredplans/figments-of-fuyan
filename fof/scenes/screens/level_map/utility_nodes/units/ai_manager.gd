@@ -89,6 +89,3 @@ func onSortMovementOrder(Unit: UnitGD) -> void: # Lower is higher priority
 						break
 				if !is_inserted: movement_order.append(Unit)
 			else: movement_order.insert(0, Unit)
-
-func onEnemyUnitEntersVision(Unit: UnitGD, _Unit: UnitGD) -> void:
-	Units.unit_actions.push_front(["Delay", 3])
