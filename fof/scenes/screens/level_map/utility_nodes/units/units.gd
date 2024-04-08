@@ -144,9 +144,12 @@ func onMoveUnit() -> void:
 		SpectateCamera.on_start_track_unit(Unit)
 		Unit.Model.onMoveToTile(DestinationTile, active_action[3], movement_type)
 	else:
+		await get_tree().create_timer(INVISIBLE_MOVEMENT_DELAY).timeout
+		SpectateCamera.on_end_track_unit()
 		Unit.global_position = Unit.Model.onCalculateEndPosition(DestinationTile, active_action[3].x)
 		on_movement_finished(Unit)
 		
+const INVISIBLE_MOVEMENT_DELAY: float = 1
 const OUT_OF_VISION_DELAY: float = 1
 func on_movement_finished(Unit: UnitGD) -> void:
 	Unit.stats("speed", -1, "MovementFinished")
@@ -167,9 +170,6 @@ func onUnitActionsFinished() -> void:
 	if unit_actions.is_empty():
 		if SpectateCamera.onSpectateUnitExistsTeam() == 0: 
 			Tiles.on_set_tile_material(SpectateCamera.SpectateUnit.Tile, "SpectatingUnit")
-			
-		for Unit in all_units():
-			Tiles.on_set_tile_material(Unit.Tile, "AllyOccupy" if Unit.team == 0 else "EnemyOccupy")
  
 		if LevelMap.game_phase == "AIPhase":
 			AIManager.onMoveNextAIUnit()
@@ -200,6 +200,9 @@ func on_unit_travel_finished(Unit: UnitGD) -> void:
 	LevelMap.on_set_lock_inputs_unit_actions(false)
 	SpectateCamera.on_end_track_unit()
 	Tiles.on_set_tile_highest_material(Unit.Tile)
+	
+	for _Unit in all_units():
+		Tiles.on_set_tile_material(_Unit.Tile, "AllyOccupy" if _Unit.team == 0 else "EnemyOccupy")
 	
 func on_force_resume_idle_animation_from_walk() -> void:
 	if !active_action.is_empty() and active_action[0] == "MoveUnit":

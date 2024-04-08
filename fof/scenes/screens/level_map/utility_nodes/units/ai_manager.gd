@@ -65,7 +65,8 @@ func onChooseRandomMovementPath(Unit: UnitGD) -> void:
 		onChosenPathSelected(Unit, movement_paths[randi() % movement_paths.size()])
 		
 func onChosenPathSelected(Unit: UnitGD, chosen_path: Dictionary) -> void:
-	if chosen_path.size > 0: Tiles.on_remove_tile_material(Unit.Tile, "EmptyTile")
+	if chosen_path.size > 0:
+		Tiles.on_remove_tile_material(Unit.Tile, "" if chosen_path.size == 1 and chosen_path.types[0].x == 1 else "EmptyTile")
 	for i in range(chosen_path.size):
 		if chosen_path.types[i].x != 1:
 			Units.move_to_tile(Unit, chosen_path.tiles[i], chosen_path.types[i])

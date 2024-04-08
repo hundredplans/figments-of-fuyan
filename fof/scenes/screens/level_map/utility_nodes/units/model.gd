@@ -42,9 +42,6 @@ func _ready() -> void:
 	if Unit != null:
 		on_set_rotation()
 
-	await get_tree().create_timer(2).timeout
-	onSetOverrideMaterial("TransformGrey")
-
 func on_play_animation(ani_name: String) -> void:
 	AniPlayer.play(ani_name, UNIT_ANIMATION_BLEND_TIME)
 	if ani_name == "Walk": on_play_walk_sfx()
@@ -75,23 +72,29 @@ func on_finish_animation(ani_name: String) -> void:
 		"Hurt": hurt_finished.emit();
 
 func onCreateTransformGreyMaterials() -> void:
-	for i in mesh.get_surface_override_material_count():
+	for i in mesh.mesh.get_surface_count():
 		var mat: Material = preload("res://assets/materials/transform_grey/transform_grey.tres")
 		mat.set_shader_parameter("texture_albedo", load(mesh.get_active_material(i).albedo_texture.resource_path))
 		transform_grey_materials.append(mat)
 
 var transform_grey_materials: Array
 func onSetOverrideMaterial(type: String) -> void:
-	for i in mesh.get_surface_override_material_count():
-		if type == "null":
-			mesh.set_surface_override_material(i, null)
-		else:
-			var start_value: float = 0.0 if type == "TransformGrey" else 1.0
-			mesh.set_surface_override_material(i, transform_grey_materials[i])
-			
-			var MaterialTween: Tween = create_tween()
-			MaterialTween.tween_method(onSetShaderParameter, start_value, 1.0 if type == "TransformGrey" else 0.0, WALK_TRAVEL_TIME)
+	print( )
+	if type != "null":
+		var start_value: float = 0.0 if type == "TransformGrey" else 1.0
+		var end_value: float = 1.0 if type == "TransformGrey" else 0.0
+		
+		var MaterialTween: Tween = create_tween()
+		MaterialTween.tween_method(onSetShaderParameter, start_value, end_value, WALK_TRAVEL_TIME)
+		
+		if type == "TransformRegular":
 			MaterialTween.finished.connect(onSetOverrideMaterial.bind("null"))
+		
+		for i in mesh.mesh.get_surface_count():
+			mesh.set_surface_override_material(i, transform_grey_materials[i])
+	else:
+		for i in mesh.mesh.get_surface_count():
+			mesh.set_surface_override_material(i, null)
 
 func onSetShaderParameter(value: float) -> void:
 	for mat in transform_grey_materials:
@@ -127,9 +130,11 @@ func _process(delta: float) -> void:
 		
 func on_begin_all_movement_between_tiles() -> void:
 	_look_at(walk_to_info[0])
-	match walk_to_info[2]:
-		"OutOfVision": onSetOverrideMaterial("TransformGrey")
-		"IntoVision": onSetOverrideMaterial("TransformRegular")
+	if Unit.team == 1:
+		match walk_to_info[2]:
+			"Regular": onSetOverrideMaterial("null")
+			"OutOfVision": onSetOverrideMaterial("TransformGrey")
+			"IntoVision": onSetOverrideMaterial("TransformRegular"); Unit.visible = true
 	
 	match walk_to_info[1].x:
 		3: on_create_regular_jump(walk_to_info[0])

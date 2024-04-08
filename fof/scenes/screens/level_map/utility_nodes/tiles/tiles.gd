@@ -453,7 +453,7 @@ func on_path_hovered_tile_selected(Tile: TileGD) -> void:
 		else: Units.attack_enemy_or_target(Units.PlayerManager.UnitSelected, path_hovered_info.tiles[i])
 		if Tile == path_hovered_info.tiles[i]: break
 		
-	on_remove_tile_material(Units.PlayerManager.UnitSelected.Tile, "EmptyTile")
+	on_remove_tile_material(Units.PlayerManager.UnitSelected.Tile, "" if path_hovered_info.tiles.size() == 1 and path_hovered_info.types[0].x == 1 else "EmptyTile")
 	Units.PlayerManager._on_unit_deselected(Units.PlayerManager.UnitSelected, true)
 		
 func on_enemy_found_tile_selected(Tile: TileGD, Unit: UnitGD) -> void:
