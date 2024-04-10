@@ -423,6 +423,12 @@ func on_connect_points(astar: AStar3D, movement_types: Array, Tile: TileGD, _Til
 	astar.connect_points(Tile.get_instance_id(), _Tile.get_instance_id(), false)
 	
 func on_tile_hovered(Tile: TileGD) -> void:
+	var Unit = Units.unit_by_tile(Tile)
+	if Unit != null:
+		print(Unit.base_card.iname)
+		print(Unit.visible_units.map(func(x: UnitGD): return x.base_card.iname))
+		print()
+	
 	if "RegularInspected" not in Tile.tile_state:
 		on_set_tile_material(Tile, "RegularInspected")
 		
@@ -497,7 +503,11 @@ func on_remove_tile_material(Tile: TileGD, material_name: String = "") -> void:
 					new_state.append(state)
 			Tile.tile_state = new_state
 		"EmptyTile": Tile.tile_state = []
+		"IgnoreGreyscale": 
+			if "Greyscale" in Tile.tile_state: Tile.tile_state = ["Greyscale"]
+			else: Tile.tile_state = []
 		_: Tile.tile_state.erase(material_name)
+		
 	on_set_tile_highest_material(Tile, 1 if material_name == "Greyscale" else 0)
 	
 func on_set_tile_material(Tile: TileGD, material_name: String):

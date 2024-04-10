@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://b0kr4uhvdhmq3"]
+[gd_scene load_steps=14 format=3 uid="uid://b0kr4uhvdhmq3"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_ui/level_ui.gd" id="1_mmiwi"]
 [ext_resource type="Texture2D" uid="uid://iucmlitjenwl" path="res://assets/base_game/cards/card_ui/stats/energy/energy.png" id="2_bww7p"]
@@ -12,6 +12,7 @@
 [ext_resource type="LabelSettings" uid="uid://qp0350v2j4ah" path="res://assets/UI/roboto/roboto32_outline.tres" id="8_dq43r"]
 [ext_resource type="PackedScene" uid="uid://bkbg8go87dqws" path="res://scenes/ui_general/arrow/ui_arrow.tscn" id="8_t3xo3"]
 [ext_resource type="LabelSettings" uid="uid://je535i1721un" path="res://assets/UI/sixty_four/sixty_four_default.tres" id="10_b7a03"]
+[ext_resource type="Texture2D" uid="uid://dl25aqsdhe6ju" path="res://scenes/screens/level_ui/phase_icon/HandPhase.png" id="13_48llv"]
 
 [node name="LevelUI" type="Control"]
 layout_mode = 3
@@ -25,7 +26,7 @@ script = ExtResource("1_mmiwi")
 
 [node name="GreyScale" type="ColorRect" parent="."]
 unique_name_in_owner = true
-modulate = Color(0, 0, 0, 0.196078)
+modulate = Color(1, 1, 1, 0)
 layout_mode = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
@@ -347,6 +348,7 @@ offset_right = 1498.0
 offset_bottom = 1480.0
 
 [node name="Background" type="Panel" parent="HandBox"]
+modulate = Color(1, 1, 1, 0.196078)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -373,6 +375,17 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
+
+[node name="PhaseIconControl" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PhaseIcon" type="Sprite2D" parent="PhaseIconControl"]
+unique_name_in_owner = true
+position = Vector2(1862, 57)
+scale = Vector2(2, 2)
+texture = ExtResource("13_48llv")
 
 [connection signal="mouse_entered" from="StatusBox" to="." method="on_is_mouse_in_ui" binds= [true]]
 [connection signal="mouse_exited" from="StatusBox" to="." method="on_is_mouse_in_ui" binds= [false]]

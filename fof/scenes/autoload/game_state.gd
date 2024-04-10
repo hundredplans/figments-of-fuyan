@@ -53,7 +53,7 @@ var player_deck: Array = [
 
 var player_boons: Array = []
 var admin: bool = true
-var save_file: int = 0
+var save_file: int = -1
 var area_info: Dictionary
 var map_info: Dictionary
 var level_info: Dictionary = {"id": 0}
@@ -87,24 +87,25 @@ func on_create_new_save_file() -> void:
 			break
 	
 func on_save_game_state() -> void:
-	var contents: String = ""
-	var array_contents: Array = [
-		save_file,
-		area_info.id,
-		map_info.id,
-		level_info.id,
-		[map_progress.x, map_progress.y],
-		shillings, 
-		hero_level, 
-		hero_id,
-		gseed,
-		player_deck,
-		]
+	if save_file != -1:
+		var contents: String = ""
+		var array_contents: Array = [
+			save_file,
+			area_info.id,
+			map_info.id,
+			level_info.id,
+			[map_progress.x, map_progress.y],
+			shillings, 
+			hero_level, 
+			hero_id,
+			gseed,
+			player_deck,
+			]
+			
+		for i in range(array_contents.size()):
+			contents += str(array_contents[i]) + ("\n" if i != array_contents.size() - 1 else "")
 		
-	for i in range(array_contents.size()):
-		contents += str(array_contents[i]) + ("\n" if i != array_contents.size() - 1 else "")
-	
-	Helper.write_to_file("user://save/save_files/", str(save_file), ".txt", contents, false)
+		Helper.write_to_file("user://save/save_files/", str(save_file), ".txt", contents, false)
 
 func on_load_new_area(world: int) -> void:
 	var areas: Array = Helper.on_item_dicts("Area").filter(func(x: Dictionary): return x.world == world)

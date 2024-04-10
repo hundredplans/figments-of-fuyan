@@ -48,7 +48,8 @@ func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int
 	Unit.SpectateCamera = SpectateCamera
 	Unit.Tiles = Tiles
 	FieldedUnits.add_child(Unit)
-	Unit.on_create_unit(id, tool_id, effects, team, rot, tile)
+	
+	Unit.on_create_unit(id, tool_id, effects, team, rot, tile) # Takes around 2.2 seconds
 	Unit.Model.movement_finished.connect(on_movement_finished.bind(Unit))
 	Unit.Model.drop_calculate_damage.connect(on_drop_calculate_damage.bind(Unit))
 	Unit.Model.attack_finished.connect(on_attack_finished.bind(Unit))
@@ -56,6 +57,7 @@ func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int
 	Unit.Model.hurt_finished.connect(on_hurt_finished.bind(Unit))
 	
 	LevelUI.on_add_unit_status_box(Unit)
+	SpectateCamera.onUnitAwakened(Unit)
 	
 	Unit.on_arrive(team == 0 or Unit.getVisibleEnemies().size() > 0)
 	AIManager.onUnitAwakened(Unit)
@@ -125,7 +127,7 @@ func _process(_delta: float) -> void:
 			LevelMap.on_set_lock_inputs_unit_actions(true)
 
 var movement_type: String = ""
-func onMoveUnit() -> void:
+func onMoveUnit(priority: int = -1) -> void: # priority is which movement of the unit it is (0 = first, -1 = invalid)
 	var Unit: UnitGD = active_action[1]
 	var DestinationTile: TileGD = active_action[2]
 	
@@ -141,11 +143,11 @@ func onMoveUnit() -> void:
 	else: movement_type = "Regular"
 		
 	if movement_type != "Invisible":
-		SpectateCamera.on_start_track_unit(Unit)
+		SpectateCamera.onStartTrackUnit(Unit)
 		Unit.Model.onMoveToTile(DestinationTile, active_action[3], movement_type)
 	else:
 		await get_tree().create_timer(INVISIBLE_MOVEMENT_DELAY).timeout
-		SpectateCamera.on_end_track_unit()
+		SpectateCamera.onEndTrackUnit()
 		Unit.global_position = Unit.Model.onCalculateEndPosition(DestinationTile, active_action[3].x)
 		on_movement_finished(Unit)
 		
@@ -168,8 +170,9 @@ func on_movement_finished(Unit: UnitGD) -> void:
 
 func onUnitActionsFinished() -> void:
 	if unit_actions.is_empty():
-		if SpectateCamera.onSpectateUnitExistsTeam() == 0: 
-			Tiles.on_set_tile_material(SpectateCamera.SpectateUnit.Tile, "SpectatingUnit")
+		var SpectateUnit: UnitGD = SpectateCamera.getSpectateUnit()
+		if SpectateUnit != null:
+			Tiles.on_set_tile_material(SpectateUnit.Tile, "SpectatingUnit")
  
 		if LevelMap.game_phase == "AIPhase":
 			AIManager.onMoveNextAIUnit()
@@ -198,7 +201,7 @@ func on_unit_travel_finished(Unit: UnitGD) -> void:
 	active_action = []
 	if Unit.team == 0: PlayerManager.on_check_autopass(Unit)
 	LevelMap.on_set_lock_inputs_unit_actions(false)
-	SpectateCamera.on_end_track_unit()
+	SpectateCamera.onEndTrackUnit()
 	Tiles.on_set_tile_highest_material(Unit.Tile)
 	
 	for _Unit in all_units():
@@ -217,7 +220,7 @@ func attack_enemy_or_target(Unit: UnitGD, Tile: TileGD) -> void:
 			if Tile == _Unit.Tile:
 				PlayerManager.on_select_active_unit(Unit)
 				_attack_enemy(Unit, _Unit, Tile)
-				SpectateCamera.on_start_track_unit(Unit)
+				SpectateCamera.onStartTrackUnit(Unit)
 				break
 		# if this check fails can check for attacks on objects and such here
 

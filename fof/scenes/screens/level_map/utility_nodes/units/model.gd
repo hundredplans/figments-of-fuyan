@@ -26,7 +26,7 @@ func on_idle_rare_timer_timeout() -> void:
 
 func _ready() -> void:
 	mesh = get_child(0).get_child(0).get_child(0)
-	onCreateTransformGreyMaterials()
+	onCreateGreyMaterials()
 	AniPlayer = get_node("AnimationPlayer")
 	AniPlayer.animation_finished.connect(on_finish_animation)
 	
@@ -71,27 +71,35 @@ func on_finish_animation(ani_name: String) -> void:
 		"Jump": movement_finished.emit(); is_jump = false; jump_time = 0
 		"Hurt": hurt_finished.emit();
 
-func onCreateTransformGreyMaterials() -> void:
+func onCreateGreyMaterials() -> void:
 	for i in mesh.mesh.get_surface_count():
-		var mat: Material = preload("res://assets/materials/transform_grey/transform_grey.tres")
-		mat.set_shader_parameter("texture_albedo", load(mesh.get_active_material(i).albedo_texture.resource_path))
-		transform_grey_materials.append(mat)
-
+		var transform_greyscale_mat: Material = preload("res://assets/materials/transform_grey/transform_grey.tres")
+		var black_instant_mat: Material = preload("res://assets/materials/black_instant/black_instant.tres")
+		#mat.set_shader_parameter("texture_albedo", load(mesh.get_active_material(i).albedo_texture.resource_path))
+		transform_grey_materials.append(transform_greyscale_mat)
+		black_instant_materials.append(black_instant_mat)
+		#TODO FIX THIS
+		
+var black_instant_materials: Array
 var transform_grey_materials: Array
 func onSetOverrideMaterial(type: String) -> void:
-	print( )
-	if type != "null":
-		var start_value: float = 0.0 if type == "TransformGrey" else 1.0
-		var end_value: float = 1.0 if type == "TransformGrey" else 0.0
-		
-		var MaterialTween: Tween = create_tween()
-		MaterialTween.tween_method(onSetShaderParameter, start_value, end_value, WALK_TRAVEL_TIME)
-		
-		if type == "TransformRegular":
-			MaterialTween.finished.connect(onSetOverrideMaterial.bind("null"))
+	if type.begins_with("Transform"):
+		if type != "TransformInstant":
+			var start_value: float = 0.0 if type == "TransformGrey" else 1.0
+			var end_value: float = 1.0 if type == "TransformGrey" else 0.0
+			
+			var MaterialTween: Tween = create_tween()
+			MaterialTween.tween_method(onSetShaderParameter, start_value, end_value, WALK_TRAVEL_TIME)
+			
+			if type == "TransformRegular":
+				MaterialTween.finished.connect(onSetOverrideMaterial.bind("null"))
 		
 		for i in mesh.mesh.get_surface_count():
 			mesh.set_surface_override_material(i, transform_grey_materials[i])
+	
+	elif type == "BlackInstant":
+		for i in mesh.mesh.get_surface_count():
+			mesh.set_surface_override_material(i, black_instant_materials[i])
 	else:
 		for i in mesh.mesh.get_surface_count():
 			mesh.set_surface_override_material(i, null)

@@ -63,8 +63,8 @@ func _queue_free(screen_name: String) -> void:
 		load_world.emit(null)
 
 func _input(_event: InputEvent) -> void:
-	if Input.is_action_just_pressed("SelectLeft") and !LevelMap.lock_inputs: LevelMap.SpectateCamera.on_select_spectate_camera_direction(-1)
-	elif Input.is_action_just_pressed("SelectRight") and !LevelMap.lock_inputs: LevelMap.SpectateCamera.on_select_spectate_camera_direction(1)
+	if Input.is_action_just_pressed("SelectLeft") and LevelMap.getSpectateLock(): LevelMap.SpectateCamera.onSpectate(-1)
+	elif Input.is_action_just_pressed("SelectRight") and LevelMap.getSpectateLock(): LevelMap.SpectateCamera.onSpectate(1)
 
 @onready var CardBox: HBoxContainer = %CardBox
 
@@ -89,13 +89,11 @@ func on_card_selected(GameCard: Control) -> void:
 		index = GameCard.get_index()
 		LevelMap.set_lock_inputs(false)
 		on_unpin_hand_box_panel()
-		Vision.on_vision_mode_set(2)
 		CameraArrows.visible = true
 	else: 
 		GameCardSelected = null
 		on_pin_hand_box_panel()
 		LevelMap.set_lock_inputs(true)
-		Vision.on_vision_mode_set(0)
 		CameraArrows.visible = false
 	LevelMap.Hand.on_card_selected(index)
 		
@@ -115,6 +113,7 @@ func on_player_end_turn_phase_start() -> void:
 func on_hand_phase_start(skip_hand_phase: bool) -> void:
 	if !skip_hand_phase: on_pin_hand_box_panel()
 	on_set_hand_box_cards_state()
+	Vision.on_vision_mode_set(2)
 	ChangePhase.visible = true
 
 var playable_cards: Array
@@ -135,6 +134,7 @@ func on_player_phase_start() -> void:
 	VisionMode.visible = true
 	on_set_hand_box_cards_state()
 	on_unpin_hand_box_panel()
+	Vision.on_vision_mode_set(0)
 
 func _on_change_phase_hitbox_pressed():
 	LevelMap.on_advance_game_phase()
@@ -158,7 +158,7 @@ func on_add_unit_status_box(Unit: UnitGD) -> void:
 	
 func onSpectateEnemyOrAlly(Unit: UnitGD) -> void:
 	if Units.unit_actions.is_empty():
-		SpectateCamera.onSpectateEnemyOrAlly(Unit)
+		SpectateCamera.onSpectate(Unit)
 	
 func on_unit_status_queue_free(UnitStatus: Control) -> void:
 	if last_ally > 0 and UnitStatus.get_index() == last_ally: last_ally -= 1
@@ -201,20 +201,18 @@ func on_camera_panning(x: bool) -> void:
 	if !absolute_mouse_in_ui: on_is_mouse_in_ui(x, false)
 
 func on_camera_arrow_pressed(direction: int) -> void:
-	LevelMap.SpectateCamera.on_select_spectate_camera_direction(direction)
+	if LevelMap.getSpectateLock():
+		LevelMap.SpectateCamera.onSpectate(direction)
 
-const greyscale_dark: float = 0.7
 const greyscale_light: float = 0.3
 @onready var GreyScale: ColorRect = %GreyScale
 func on_pin_hand_box_panel() -> void:
 	hand_box_pinned = true
 	on_extend_hand_box()
-	GreyScale.modulate.a = greyscale_dark
 
 func on_unpin_hand_box_panel() -> void:
 	hand_box_pinned = false
 	on_unextend_hand_box()
-	GreyScale.modulate.a = 0
 
 func on_ally_unit_awakened(skip_result: bool) -> void:
 	if !skip_result: on_pin_hand_box_panel()
@@ -241,8 +239,9 @@ func on_vision_selected(x: int) -> void:
 func _on_vision_button_item_selected():
 	for child in Statuses.get_children():
 		if child.visible:
-			if vision_selected == 0 and SpectateCamera.onSpectateUnitExistsTeam() != -1:
-				child.visible = Vision.isUnitInUnitVisionSafe(SpectateCamera.SpectateUnit, child.Unit, true)
+			var SpectateUnit: UnitGD = SpectateCamera.getSpectateUnit()
+			if vision_selected == 0 and SpectateUnit != null:
+				child.visible = Vision.isUnitInUnitVisionSafe(SpectateUnit, child.Unit, true)
 			elif child.Unit.team == 1:
 				child.visible = Vision.is_unit_in_vision(child.Unit)
 
@@ -286,3 +285,7 @@ func onLoseGame() -> void:
 func onWinGame() -> void:
 	if get_node("../../../..") == get_tree().get_root():
 		screen_change_sig.emit("res://scenes/screens/win_screen/win_screen.tscn")
+
+@onready var PhaseIcon: Sprite2D = %PhaseIcon
+func onChangePhaseIcon() -> void:
+	pass

@@ -10,6 +10,7 @@ func _ready() -> void:
 		hero_button.pressed.connect(on_select_hero)
 
 func on_select_hero(hid: int) -> void:
+	for hero_button in $SelectHero.get_children(): hero_button.setDisable()
 	if SeedSetter.text == "": gseed = randi()
 	else: gseed = SeedSetter.text.hash()
 	

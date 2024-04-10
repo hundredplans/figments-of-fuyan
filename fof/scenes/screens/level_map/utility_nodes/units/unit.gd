@@ -57,7 +57,8 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	height = base_card.height
 	
 	var card_model_path: String = "res://assets/base_game/cards/" + base_card.bgfn + "/model.tscn"
-	Model = load(card_model_path).instantiate()
+	
+	Model = load(card_model_path).instantiate() # Takes about 2.2seconds, not the ready function?
 	Model.Unit = self
 	Model.rot = rot
 	add_child(Model)
@@ -104,10 +105,14 @@ func stats(stat_type: String, val: int, AppliedBy: Variant = "GameEvent", absolu
 				
 	UnitStatus.on_reset_stats(stats_changed)
 	
+	var applied_by_string: String = ""
+	if typeof(AppliedBy) != TYPE_STRING: applied_by_string = "Unit"
+	else: applied_by_string = AppliedBy
+	
 	if health == 0:
-		if typeof(AppliedBy) != TYPE_STRING: Killer = AppliedBy; AppliedBy = "Unit"
-		Units.kill_unit(self, AppliedBy)
-	elif health < current_health: Units.hurt_unit(self, AppliedBy)
+		Killer = AppliedBy
+		Units.kill_unit(self, applied_by_string)
+	elif health < current_health and applied_by_string != "Height": Units.hurt_unit(self, AppliedBy)
 
 func status_effect() -> void:
 	pass

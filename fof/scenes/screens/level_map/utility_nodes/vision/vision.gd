@@ -27,6 +27,13 @@ func on_recalculate_vision(Unit: UnitGD = null) -> void:
 						if was_visible and !currently_visible:
 							Unit.visible_units.erase(_Unit)
 							_Unit.visible_units.erase(Unit)
+							print(Unit.base_card.iname)
+							print(Unit.visible_units.map(func(x: UnitGD): return x.base_card.iname))
+							print()
+							
+							print(_Unit.base_card.iname)
+							print(_Unit.visible_units.map(func(x: UnitGD): return x.base_card.iname))
+							print()
 							
 							if _Unit.getVisibleEnemies().is_empty():
 								Units.onUnitExitsAllyVision(Unit, _Unit)
@@ -42,19 +49,16 @@ func on_recalculate_vision(Unit: UnitGD = null) -> void:
 			for Tile in Tiles.get_children(): # Takes around 5 msec
 				if ally_units.any(func(x: UnitGD): return x.visible_tiles.any(func(y: TileGD): return Tile == y)):
 					visible_tiles.append(Tile)
-				
+			
 			ally_vision = visible_tiles.duplicate()
 		1:
 			visible_tiles = Tiles.movement_paths.tiles.duplicate()
-						
+			
+			var SpectateUnit: UnitGD = SpectateCamera.getSpectateUnit(["Ally", "Enemy"])
 			if ActiveUnitVision != null and ActiveUnitVision.Tile in ally_vision:
 				onUnitVisionModeCalculateVision(ActiveUnitVision, visible_tiles)
-			elif SpectateCamera.SpectateUnit != null:
-				onUnitVisionModeCalculateVision(SpectateCamera.SpectateUnit, visible_tiles)
-			#else:
-				#for _Unit in Units.all_units():
-					#Tiles.on_set_tile_material(_Unit.Tile, \
-					#"AllyOccupy" if _Unit.team == 0 else "EnemyOccupy")
+			elif SpectateUnit != null:
+				onUnitVisionModeCalculateVision(SpectateUnit, visible_tiles)
 			
 			for _Unit in all_units:
 				match _Unit.team:
@@ -81,15 +85,14 @@ func onUnitVisionModeCalculateVision(Unit: UnitGD, visible_tiles: Array) -> void
 				if Tile in Unit.visible_tiles:
 					visible_tiles.append(Tile)
 	
-	#for _Unit in Units.all_units():
-		#if _Unit.Tile not in visible_tiles:
-			#print("Here")
-			#Tiles.on_remove_tile_material(_Unit.Tile, "AllyOccupy" if _Unit.team == 0 else "EnemyOccupy")
+	for _Unit in Units.all_units():
+		_Unit.Model.onSetOverrideMaterial("null" if _Unit.Tile in visible_tiles else "BlackInstant")
 
 func on_start_phase_start() -> void:
 	for Tile in Tiles.get_children():
 		if Tile.obj.id == 2:
 			spawn_vision.append(Tile)
+	on_vision_mode_set(2)
 	
 func on_apply_visibility(tiles: Array) -> void:
 	for Tile in Tiles.get_children(): 
@@ -118,6 +121,7 @@ func on_vision_mode_set(x: int) -> void:
 		if vision_mode == 1:
 			for Unit in Units.all_units():
 				Tiles.on_set_tile_material(Unit.Tile, "AllyOccupy" if Unit.team == 0 else "EnemyOccupy")
+				Unit.Model.onSetOverrideMaterial("null")
 		ActiveUnitVision = null
 		vision_mode = x
 		LevelUI.onVisionModeSet()

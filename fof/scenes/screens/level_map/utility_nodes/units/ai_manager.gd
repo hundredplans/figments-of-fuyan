@@ -44,16 +44,18 @@ func onMoveNextAIUnit(override: bool = false) -> void:
 		LevelMap.on_change_game_phase("AIEndTurnPhase")
 
 func onChaseEnemy(Unit: UnitGD, visible_enemies: Array, old_paths: Dictionary) -> void:
-	var EnemyUnit: UnitGD = visible_enemies[0]
-	if EnemyUnit.Tile in Tiles.movement_paths.keys(): # Directly chase onto tile
-		onChosenPathSelected(Unit, Tiles.movement_paths[EnemyUnit.Tile])
-	else: # Find way to get as close as possible to unit, has to know if it's even possible (astar?)
-		Tiles.onCreateMovementPaths(Unit, "AllyVision")
-		if EnemyUnit.Tile in Tiles.movement_paths.keys():
+	for EnemyUnit in visible_enemies:
+		if EnemyUnit.Tile in Tiles.movement_paths.keys(): # Directly chase onto tile
 			onChosenPathSelected(Unit, Tiles.movement_paths[EnemyUnit.Tile])
+			return
 		else:
-			Tiles.movement_paths = old_paths
-			onChooseRandomMovementPath(Unit)
+			Tiles.onCreateMovementPaths(Unit, "AllyVision")
+			if EnemyUnit.Tile in Tiles.movement_paths.keys():
+				onChosenPathSelected(Unit, Tiles.movement_paths[EnemyUnit.Tile])
+				return
+				
+	Tiles.movement_paths = old_paths
+	onChooseRandomMovementPath(Unit)
 
 func onChooseRandomMovementPath(Unit: UnitGD) -> void:
 	var movement_paths: Array = []
@@ -66,7 +68,7 @@ func onChooseRandomMovementPath(Unit: UnitGD) -> void:
 		
 func onChosenPathSelected(Unit: UnitGD, chosen_path: Dictionary) -> void:
 	if chosen_path.size > 0:
-		Tiles.on_remove_tile_material(Unit.Tile, "" if chosen_path.size == 1 and chosen_path.types[0].x == 1 else "EmptyTile")
+		Tiles.on_remove_tile_material(Unit.Tile, "" if chosen_path.size == 1 and chosen_path.types[0].x == 1 else "IgnoreGreyscale")
 	for i in range(chosen_path.size):
 		if chosen_path.types[i].x != 1:
 			Units.move_to_tile(Unit, chosen_path.tiles[i], chosen_path.types[i])

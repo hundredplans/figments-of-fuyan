@@ -3,50 +3,45 @@ extends Node3D
 signal mouse_in_ui
 
 @onready var Camera = %Camera3D
+
 @export var LOOK_AT_UNIT_HEIGHT_MULTIPLIER: float = 0.8
 @export var CAMERA_UNIT_HEIGHT_MULTIPLIER: float = 1.2
+
 @export var CAMERA_RADIUS: float = 2.0 * (1 + (0.01 * Settings.camera_distance))
-
-@export var CAMERA_LOOK_AT_HEIGHT: Dictionary = {
-	"Spawn": 1.9, # This is always equal to a 2 height unit to make transitions as smoothless as possible
-	"Unit": 0.0,
-}
-
-@export var CAMERA_HEIGHT: Dictionary = {
-	"Spawn": 2.7, # This is always equal to a 2 height unit to make transitions as smoothless as possible
-	"Unit": 0.0,
-}
 @export var CAMERA_ROTATION_SPEED: float = 3.0
+
+@export var SPAWN_CAMERA_CENTRAL_POINT_HEIGHT: float = 2.4
+@export var SPAWN_CAMERA_LOOK_AT_HEIGHT: float = 1.7
+
+var spectates: Dictionary = {
+	"Spawn": {},
+	"Enemy": {},
+	"Ally": {},
+}
 
 var Vision: VisionGD
 var LevelMap: LevelMapGD
 var Units: UnitsGD
 var Tiles: TilesGD
 
+var spectate_type: String
+
 var central_point: Vector3
-func on_camera_start_spectate(pos: Vector3, type: String) -> void:
-	central_point = pos
-	central_point.y += CAMERA_LOOK_AT_HEIGHT[type]
-	position = Vector3(pos.x, pos.y + CAMERA_HEIGHT[type], pos.z)
-	
-	on_set_camera_point_along_circle()
-
-func _input(event: InputEvent) -> void:
-	if Input.is_action_just_pressed(Helper.interact_button(true)):
-		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-		get_viewport().update_mouse_cursor_state()
-		mouse_in_ui.emit(true)
-		
-	elif Input.is_action_just_released(Helper.interact_button(true)):
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-		mouse_in_ui.emit(false)
-			
-	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-		on_set_camera_point_along_circle((event.relative / 10000) * CAMERA_ROTATION_SPEED)
-
 var total_progress := Vector2.ZERO
 var Y_SPHERE_BLOCK: float = 0.3
-func on_set_camera_point_along_circle(progress: Vector2 = Vector2.ZERO) -> void:
+
+func onGetActiveSpectateVariant() -> Dictionary:
+	if !spectate_type.is_empty():
+		for key in spectates[spectate_type].keys():
+			if spectates[spectate_type][key].is_active:
+				return spectates[spectate_type][key]
+	return {}
+func onCameraStartSpectate(spectate_info: Dictionary) -> void:
+	central_point = spectate_info.object.global_position
+	central_point.y += spectate_info.central_point
+	position = Vector3(central_point.x, central_point.y + spectate_info.look_at, central_point.z)
+	setCameraPointAlongCircle()
+func setCameraPointAlongCircle(progress: Vector2 = Vector2.ZERO) -> void:
 	if progress != Vector2.ZERO:
 		total_progress.x = clampf(total_progress.x + progress.x, 0, 1)
 		if total_progress.x <= 0: total_progress.x = 1
@@ -61,140 +56,119 @@ func on_set_camera_point_along_circle(progress: Vector2 = Vector2.ZERO) -> void:
 	position.y = sin(phi) * CAMERA_RADIUS + central_point.y
 	position.z = cos(phi) * sin(theta) * CAMERA_RADIUS + central_point.z
 	look_at(central_point)
+func onStartPhaseStart() -> void:
+	var i: int = 0
+	for Tile in Tiles.on_is_type_get_tiles("Spawn", "obj"):
+		spectates.Spawn[Tile.get_instance_id()] = {
+			"progress": Vector2.ZERO,
+			"is_active": i == 0,
+			"look_at": SPAWN_CAMERA_LOOK_AT_HEIGHT,
+			"central_point": SPAWN_CAMERA_CENTRAL_POINT_HEIGHT,
+			"object": Tile,
+		}
+		i+= 1
+	onSpectate("Spawn")
+func onSpectate(type: Variant) -> void:
+	var old_spectate_info: Dictionary = onGetActiveSpectateVariant()
 	
-var spectate_type: String
-
-var enemy_spectate_id: int = -1
-var unit_spectate_id: int = 0
-var spawn_spectate_id: int = 0
-
-var enemy_unit_positions: Dictionary = {}
-var unit_positions: Dictionary = {}
-var spawn_positions: Array = []
-
-func on_start_phase_start() -> void:
-	for i in range(Tiles.on_is_type_get_tiles("Spawn", "obj").size()): spawn_positions.append(Vector2.ZERO)
-
-func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0, override: bool = false) -> void:
-	spectate_type = type
-	match type:
-		"Spawn":
-			onUnspectateUnit()
-			var spawn_tiles: Array = Tiles.on_is_type_get_tiles("Spawn", "obj")
-			spawn_positions[spawn_spectate_id] = total_progress
-			
-			if direction != 0: spawn_spectate_id += direction
-			else: spawn_spectate_id = id
-			
-			if spawn_spectate_id >= spawn_tiles.size(): spawn_spectate_id = 0
-			elif spawn_spectate_id < 0: spawn_spectate_id = spawn_tiles.size() - 1
-			
-			total_progress = spawn_positions[spawn_spectate_id]
-			on_camera_start_spectate(spawn_tiles[spawn_spectate_id].position, type)
-		"Unit":
-			var units: Array = Units.on_units(0, "Ally")
-			if (!(id == unit_spectate_id) or override) and units.size() > 0:
-				onUnspectateUnit()
-				
-				if direction != 0: unit_spectate_id += direction
-				else: unit_spectate_id = id
-				
-				if unit_spectate_id == units.size(): unit_spectate_id = 0
-				elif unit_spectate_id < 0: unit_spectate_id = units.size() - 1
-				
-				if units.size() > unit_spectate_id:
-					enemy_spectate_id = -1
-					var Unit: UnitGD = units[unit_spectate_id]
-					CAMERA_HEIGHT["Unit"] = Unit.height.top * CAMERA_UNIT_HEIGHT_MULTIPLIER
-					CAMERA_LOOK_AT_HEIGHT["Unit"] = Unit.height.top * LOOK_AT_UNIT_HEIGHT_MULTIPLIER
-					
-					var instance_id: int = Unit.get_instance_id()
-					if !unit_positions.has(instance_id):
-						unit_positions[instance_id] = Vector2i.ZERO
-					total_progress = unit_positions[instance_id]
-					
-					on_camera_start_spectate(Unit.position, type)
-					SpectateUnit = Unit
-					if LevelMap.game_phase == "PlayerPhase":
-						Unit.on_spectated_in_player_phase(true)
-						Units.onSpectatedInPlayerPhase(Unit)
-		"EnemyUnit":
-			if id != enemy_spectate_id:
-				var enemy_units: Array = Units.on_units(1)
-				onUnspectateUnit()
-				
-				if enemy_units.size() > enemy_spectate_id:
-					enemy_spectate_id = id
-					unit_spectate_id = -1
-					var Unit: UnitGD = enemy_units[enemy_spectate_id]
-					CAMERA_HEIGHT["Unit"] = Unit.height.top * CAMERA_UNIT_HEIGHT_MULTIPLIER
-					CAMERA_LOOK_AT_HEIGHT["Unit"] = Unit.height.top * LOOK_AT_UNIT_HEIGHT_MULTIPLIER
-					 
-					var instance_id: int = Unit.get_instance_id()
-					if !enemy_unit_positions.has(instance_id):
-						enemy_unit_positions[instance_id] = Vector2i.ZERO
-						
-					total_progress = enemy_unit_positions[instance_id]
-					on_camera_start_spectate(Unit.position, "Unit")
-					SpectateUnit = Unit
-					if LevelMap.game_phase == "PlayerPhase":
-						Unit.on_spectated_in_player_phase(true)
-						Units.onSpectatedInPlayerPhase(Unit)
-					
-func onSpectateUnitExistsTeam() -> int:
-	return -1 if SpectateUnit == null else SpectateUnit.team
-
-func onUnspectateUnit() -> void:
-	if Units.PlayerManager.UnitSelected != null:
-		Units.PlayerManager._on_unit_deselected(Units.PlayerManager.UnitSelected)
+	if !old_spectate_info.is_empty(): old_spectate_info.progress = total_progress
+	var old_spectate_type: String = spectate_type
 	
-	if unit_spectate_id >= 0:
-		var units: Array = Units.on_units()
-		if units.size() > unit_spectate_id:
-			var past_unit: UnitGD = units[unit_spectate_id]
-			unit_positions[past_unit.get_instance_id()] = total_progress
-			past_unit.on_spectated_in_player_phase(false)
-			
-	elif enemy_spectate_id >= 0:
-		var units: Array = Units.on_units(1)
-		if units.size() > enemy_spectate_id:
-			var past_unit: UnitGD = units[enemy_spectate_id]
-			enemy_unit_positions[past_unit.get_instance_id()] = total_progress
-			past_unit.on_spectated_in_player_phase(false)
-			
-var SpectateUnit: UnitGD
-func on_select_spectate_camera_direction(i: int) -> void:
-	if spectate_type == "EnemyUnit": spectate_type = "Unit"
-	on_spectate(spectate_type, -2, i)
-
-var TrackUnit: UnitGD
-func on_start_track_unit(Unit: UnitGD) -> void:
-	TrackUnit = Unit
-	on_spectate("Unit" if Unit.team == 0 else "EnemyUnit", Units.on_unit_team_index(Unit))
-	
-func on_end_track_unit() -> void:
-	TrackUnit = null
-	
-func on_track_unit() -> void:
-	on_camera_start_spectate(TrackUnit.global_position, "Unit")
-	
-func _process(_delta) -> void:
-	if TrackUnit != null: on_track_unit()
-
-func onSpectateEnemyOrAlly(Unit: UnitGD) -> void:
-	if Unit.team == 0:
-		on_spectate("Unit", Units.on_unit_team_index(Unit))
-	elif Unit.Tile in Vision.ally_vision:
-		on_spectate("EnemyUnit", Units.on_unit_team_index(Unit))
-
-func onDeathFinished(Unit: UnitGD) -> void:
-	if Unit.team == 0: unit_positions.erase(Unit.get_instance_id())
-	else: enemy_unit_positions.erase(Unit.get_instance_id())
+	if type is int: # Direction (-1, 1, uses current spectate_type)
+		var direction: int = type
+		var spectate_type_keys: Array = spectates[spectate_type].values()
+		var spectate_info: Dictionary = onGetActiveSpectateVariant()
 		
+		var new_index: int = 0
+		var index: int = -1
+		if spectate_info != null:
+			spectate_info.is_active = false
+			index = spectate_type_keys.map(func(x: Dictionary): return x.object).find(spectate_info.object)
+			
+		var max_size: int = spectate_type_keys.size()
+		
+		if index == 0 and direction == -1: new_index = max_size - 1
+		elif index == max_size - 1 and direction == 1: new_index = 0
+		else: new_index = index + direction
+		
+		var new_spectate_info: Dictionary = spectate_type_keys[new_index]
+		new_spectate_info.is_active = true
+		total_progress = new_spectate_info.progress
+		
+		onCameraStartSpectate(new_spectate_info)
+		onUnitSpectated(spectate_type, new_spectate_info, spectate_info)
+		
+	elif type is String: # This is like direction = 0, change to spectate type but not in any direction
+		if type != spectate_type:
+			spectate_type = type
+			var spectate_info: Dictionary = onGetActiveSpectateVariant()
+			total_progress = spectate_info.progress
+			onCameraStartSpectate(spectate_info)
+			onUnitSpectated(old_spectate_type, spectate_info, old_spectate_info)
+	else:
+		spectate_type = ("Ally" if type.team == 0 else "Enemy") if type is UnitGD else "Spawn"
+		
+		var spectate_info: Dictionary = onGetActiveSpectateVariant()
+		if spectate_info != {}: spectate_info.is_active = false
+		
+		print(spectates)
+		var new_spectate_info: Dictionary = spectates[spectate_type][type.get_instance_id()]
+		new_spectate_info.is_active = true
+	
+		onCameraStartSpectate(new_spectate_info)
+		onUnitSpectated(old_spectate_type, new_spectate_info, old_spectate_info)
+		
+func onUnitSpectated(old_spectate_type: String, spectate_info: Dictionary, old_spectate_info: Dictionary) -> void:
+	if spectate_type in ["Ally", "Enemy"] and LevelMap.game_phase == "PlayerPhase":
+		spectate_info.object.on_spectated_in_player_phase(true)
+		Units.onSpectatedInPlayerPhase(spectate_info.object)
+		
+	if old_spectate_type in ["Ally", "Enemy"]:
+		Units.PlayerManager._on_unit_deselected(Units.PlayerManager.UnitSelected)
+		old_spectate_info.object.on_spectated_in_player_phase(false)
+func onPlayerPhaseStart() -> void:
+	onSpectate("Ally")
 func onPlayerEndTurnPhaseStart() -> void:
-	if spectate_type == "EnemyUnit":
-		spectate_type = "Unit"
-		on_spectate("Unit", 0)
-
+	onSpectate("Ally")
 func onHandPhaseStart() -> void:
-	on_spectate("Unit", 0)
+	onSpectate("Ally")
+func _input(event: InputEvent) -> void:
+	if Input.is_action_just_pressed(Helper.interact_button(true)):
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		get_viewport().update_mouse_cursor_state()
+		mouse_in_ui.emit(true)
+		
+	elif Input.is_action_just_released(Helper.interact_button(true)):
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		mouse_in_ui.emit(false)
+			
+	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+		setCameraPointAlongCircle((event.relative / 10000) * CAMERA_ROTATION_SPEED)
+
+var track_unit_info: Dictionary
+func onStartTrackUnit(Unit: UnitGD) -> void:
+	track_unit_info = spectates["Ally" if Unit.team == 0 else "Enemy"][Unit.get_instance_id()].duplicate()
+	onSpectate(Unit)
+func onEndTrackUnit() -> void:
+	track_unit_info = {}
+func onTrackUnit() -> void:
+	onCameraStartSpectate(track_unit_info)
+func _process(_delta) -> void:
+	if !track_unit_info.is_empty(): onTrackUnit()
+
+func onUnitAwakened(Unit: UnitGD) -> void:
+	var team_spectate_type: String = "Ally" if Unit.team == 0 else "Enemy"
+	spectates[team_spectate_type][Unit.get_instance_id()] = {
+		"progress": Vector2.ZERO,
+		"is_active": false,
+		"look_at": Unit.height.top * CAMERA_UNIT_HEIGHT_MULTIPLIER,
+		"central_point": Unit.height.top * LOOK_AT_UNIT_HEIGHT_MULTIPLIER,
+		"object": Unit,
+	}
+func onDeathFinished(Unit: UnitGD) -> void:
+	spectates["Ally" if Unit.team == 0 else "Enemy"].erase(Unit)
+func getSpectateUnit(team: Array = ["Ally"]) -> UnitGD:
+	if spectate_type in team:
+		return onGetActiveSpectateVariant().object
+	return null
+

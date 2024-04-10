@@ -81,10 +81,10 @@ func on_menu_button_pressed(i: Variant) -> void:
 func _on_move_screen_animation_finished(animation_name: String):
 	var screen: Control = Screens.get_child(1)
 	if screen.has_method("_queue_free"):
-		if screen.name == "LevelUI":
+		if screen.name in ["LevelUI", "MapMenu"]:
 			screen._queue_free(Screens.get_child(0).name)
-		else:
-			screen._queue_free()
+		else: screen._queue_free()
+			
 	screen.queue_free()
 	
 	MoveScreen.current_animation = ""

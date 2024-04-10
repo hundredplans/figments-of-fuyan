@@ -34,7 +34,6 @@ func _ready() -> void:
 	on_load_world_history()
 	Deck.on_create_deck()
 	Deck.on_choose_champion()
-	Vision.on_vision_mode_set(0)
 	
 func on_load_world_history() -> void:
 	pass
@@ -58,8 +57,7 @@ func on_change_game_phase(phase: String) -> void:
 		"StartPhase":
 			set_lock_inputs(true)
 			Tiles.on_start_phase_start()
-			SpectateCamera.on_start_phase_start()
-			SpectateCamera.on_spectate("Spawn")
+			SpectateCamera.onStartPhaseStart()
 			Hand.on_start_phase_start()
 			Units.on_start_phase_start()
 			Vision.on_start_phase_start()
@@ -78,7 +76,7 @@ func on_change_game_phase(phase: String) -> void:
 			Hand.on_player_phase_start()
 			LevelUI.on_player_phase_start()
 			Units.on_player_phase_start()
-			SpectateCamera.on_spectate("Unit")
+			SpectateCamera.onPlayerPhaseStart()
 		"PlayerEndTurnPhase":
 			set_lock_inputs(true)
 			Units.on_player_end_turn_phase_start()
@@ -111,3 +109,10 @@ func set_lock_inputs(x: bool) -> void:
 
 func on_skip_hand_phase_result() -> bool: return game_phase == "HandPhase" and \
 Settings.autopass_handphase and Hand.on_playable_cards().is_empty()
+
+func getSpectateLock() -> bool:
+	# lock_inputs = true, game_phase = HandPhase = true
+	# lock_inputs = true, game_phase != HandPhase = false
+	# lock_inputs = false = false
+	# lock_inputs = false = false
+	return !lock_inputs or game_phase == "HandPhase"

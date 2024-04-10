@@ -67,5 +67,5 @@ func on_node_hovered(state: bool, index: int) -> void:
 		AudioMaster.play_sfx(AudioMaster.ID_TO_HOVER_SFX[NodeModel.node_type])
 		
 func on_champion_arrived() -> void:
-	var index: int = Nodes.get_child(GameState.map_progress.x).node_type
+	var index: int = Nodes.get_child(GameState.map_progress.x - 3 + Nodes.get_child_count()).node_type
 	champion_arrived.emit(index)

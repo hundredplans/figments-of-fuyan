@@ -11,8 +11,8 @@ var Vision: VisionGD
 func on_card_placed(hand_card: HandCardGD, Tile: TileGD) -> void:
 	var skip_result: bool = LevelMap.on_skip_hand_phase_result()
 	if LevelMap.game_phase == "HandPhase": LevelUI.on_ally_unit_awakened(skip_result)
-	Units.on_unit_awakened(hand_card.id, hand_card.tool_id, hand_card.effects, 0, Tile.obj.rotation, Tile)
-	SpectateCamera.on_spectate("Unit", Units.on_units().size() - 1)
+	var Unit: UnitGD = Units.on_unit_awakened(hand_card.id, hand_card.tool_id, hand_card.effects, 0, Tile.obj.rotation, Tile)
+	SpectateCamera.onSpectate(Unit)
 	if skip_result: LevelMap.on_advance_game_phase()
 
 func on_enemy_unit_enters_vision(Unit: UnitGD) -> void:
@@ -35,8 +35,9 @@ func on_select_active_unit(Unit: UnitGD) -> void:
 
 func on_pass_unit_turn_pressed() -> void:
 	if ActiveUnit == null:
-		if SpectateCamera.onSpectateUnitExistsTeam() == 0 and SpectateCamera.SpectateUnit in unpassed_turns:
-			on_select_active_unit(SpectateCamera.SpectateUnit)
+		var SpectateUnit: UnitGD = SpectateCamera.getSpectateUnit()
+		if SpectateUnit in unpassed_turns:
+			on_select_active_unit(SpectateUnit)
 			on_pass_unit_turn()
 	else:
 		on_pass_unit_turn()
@@ -57,7 +58,7 @@ func on_pass_unit_turn() -> void:
 		if unpassed_turns.is_empty():
 			LevelUI.on_pass_unit_turn_button_state(true)
 			if Settings.autopass_turn: LevelMap.on_advance_game_phase()
-		else: SpectateCamera.on_spectate("Unit", Units.on_unit_team_index(unpassed_turns[0]))
+		else: SpectateCamera.onSpectate(unpassed_turns[0])
 
 func on_player_phase_start() -> void:
 	LevelUI.PassUnitTurn.visible = true
@@ -113,10 +114,11 @@ func on_occupied_tile_inspected(Tile: TileGD) -> void:
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
 	match LevelMap.game_phase:
 		"PlayerPhase":
-			if SpectateCamera.onSpectateUnitExistsTeam() == 0 and Unit == SpectateCamera.SpectateUnit:
+			var SpectateUnit: UnitGD = SpectateCamera.getSpectateUnit()
+			if Unit == SpectateUnit:
 				on_unit_selected(Unit)
 			elif UnitSelected == null:
-				SpectateCamera.onSpectateEnemyOrAlly(Unit)
+				SpectateCamera.onSpectate(Unit)
 				
 var UnitSelected: UnitGD
 func on_unit_selected(Unit: UnitGD) -> void:
@@ -128,18 +130,19 @@ func on_unit_selected(Unit: UnitGD) -> void:
 	else: _on_unit_selected(Unit)
 
 func _on_unit_deselected(Unit: UnitGD, absolute: bool = false) -> void:
-	Tiles.on_remove_tile_material(Unit.Tile)
-	for Tile in Tiles.movement_paths.tiles:
-		if "EnemyInRange" in Tile.tile_state:
-			(Units.unit_by_tile(Tile)).on_enemy_in_range(false)
+	if Unit != null:
+		Tiles.on_remove_tile_material(Unit.Tile)
+		for Tile in Tiles.movement_paths.tiles:
+			if "EnemyInRange" in Tile.tile_state:
+				(Units.unit_by_tile(Tile)).on_enemy_in_range(false)
+				
+			Tiles.on_remove_tile_material(Tile)
+		Tiles.movement_paths = {"tiles": []}
+		if Unit == UnitSelected: UnitSelected = null
+		if !absolute:
+			Tiles.on_mouse_entered(Tiles.on_find_tile_by_raycast())
 			
-		Tiles.on_remove_tile_material(Tile)
-	Tiles.movement_paths = {"tiles": []}
-	if Unit == UnitSelected: UnitSelected = null
-	if !absolute:
-		Tiles.on_mouse_entered(Tiles.on_find_tile_by_raycast())
-		
-	LevelUI.get_node("SkipReminder").visible = false
+		LevelUI.get_node("SkipReminder").visible = false
 	
 func _on_unit_selected(Unit: UnitGD) -> void:
 	if Unit.turn_status == 0 and Unit.team == 0:
@@ -158,9 +161,8 @@ func _on_unit_selected(Unit: UnitGD) -> void:
 
 func onDeathFinished(Killer: String, Deathee: UnitGD, win_state: int) -> void:
 	if Killer == "Unit" and LevelMap.game_phase == "PlayerPhase":
-		if Deathee.team == 0 and Deathee.Killer.team == 1:
-			SpectateCamera.on_spectate("Unit", \
-			Units.on_unit_team_index(passed_turns[0]) if !passed_turns.is_empty() else 0, 0, true)
+		if Deathee.team == 0 and Deathee.Killer.team == 1 and SpectateCamera.spectate_type == "Ally":
+			SpectateCamera.onSpectate("Ally")
 		elif Deathee.team == 1 and Deathee.Killer.team == 0 and win_state == 0:
 			on_check_autopass(Deathee.Killer)
 			
