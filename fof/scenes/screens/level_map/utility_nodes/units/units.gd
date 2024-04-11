@@ -124,7 +124,7 @@ func _process(_delta: float) -> void:
 				"AttackTarget": on_attack_enemy()
 				"DeathUnit": on_death()
 				"HurtUnit": on_hurt()
-			LevelMap.on_set_lock_inputs_unit_actions(true)
+			LevelMap.setActionLock("UnitActionRegular")
 
 var movement_type: String = ""
 func onMoveUnit(priority: int = -1) -> void: # priority is which movement of the unit it is (0 = first, -1 = invalid)
@@ -200,7 +200,7 @@ func on_unit_travel_finished(Unit: UnitGD) -> void:
 	on_force_resume_idle_animation_from_walk()
 	active_action = []
 	if Unit.team == 0: PlayerManager.on_check_autopass(Unit)
-	LevelMap.on_set_lock_inputs_unit_actions(false)
+	LevelMap.setActionLock("UnitActionDisabled")
 	SpectateCamera.onEndTrackUnit()
 	Tiles.on_set_tile_highest_material(Unit.Tile)
 	
@@ -230,7 +230,7 @@ func _attack_enemy(Unit: UnitGD, _Unit: UnitGD, Tile: TileGD) -> void:
 func on_attack_enemy() -> void:
 	active_action[1].Model.attack_tile(active_action[3])
 	active_action[2].Model._look_at(active_action[1].Tile)
-	LevelMap.on_set_lock_inputs_unit_actions(true)
+	LevelMap.setActionLock("UnitActionRegular")
 	# can do all the ui stuff here for attacking
 	
 func on_attack_finished(Unit: UnitGD) -> void:
@@ -239,7 +239,7 @@ func on_attack_finished(Unit: UnitGD) -> void:
 	Unit.attack_amount -= 1
 	active_action = []
 	
-	LevelMap.on_set_lock_inputs_unit_actions(false)
+	LevelMap.setActionLock("UnitActionDisabled")
 	onUnitActionsFinished()
 	
 func _attack_target(_Unit: UnitGD, _Tile: TileGD) -> void:
@@ -254,7 +254,7 @@ func hurt_unit(Unit: UnitGD, Attacker: Variant) -> void:
 func on_death() -> void:
 	active_action[1].Model.on_death()
 	active_action[1].UnitStatus.onBeginUnitStatusDeath(DEATH_AFTER_DELAY)
-	LevelMap.on_set_lock_inputs_unit_actions(true)
+	LevelMap.setActionLock("UnitActionRegular")
 	
 func on_hurt() -> void:
 	active_action[1].Model.on_hurt()
@@ -268,7 +268,7 @@ func on_death_finished(Unit: UnitGD) -> void:
 	Unit.UnitStatus._queue_free()
 	Unit.on_death()
 	var win_state: int = 1 if on_units(1).is_empty() else (2 if on_units().is_empty() else 0)
-	LevelMap.on_set_lock_inputs_unit_actions(false)
+	LevelMap.setActionLock("UnitActionDisabled")
 	SpectateCamera.onDeathFinished(Unit)
 	PlayerManager.onDeathFinished(active_action[2], Unit, win_state)
 	AIManager.onDeathFinished(Unit)
@@ -284,7 +284,7 @@ func on_death_finished(Unit: UnitGD) -> void:
 		2: LevelUI.onLoseGame()
 		
 func on_hurt_finished(_Unit: UnitGD) -> void:
-	LevelMap.on_set_lock_inputs_unit_actions(false)
+	LevelMap.setActionLock("UnitActionDisabled")
 	if typeof(active_action[2]) == TYPE_STRING:
 		if active_action[2] == "Height":
 			PlayerManager.on_hurt_finished(active_action[1])

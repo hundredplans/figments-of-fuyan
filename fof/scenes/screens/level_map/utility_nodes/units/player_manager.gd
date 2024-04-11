@@ -9,11 +9,11 @@ var Units: UnitsGD
 var Vision: VisionGD
 
 func on_card_placed(hand_card: HandCardGD, Tile: TileGD) -> void:
-	var skip_result: bool = LevelMap.on_skip_hand_phase_result()
+	var skip_result: bool = LevelMap.on_skip_hand_phase_result(Tile)
 	if LevelMap.game_phase == "HandPhase": LevelUI.on_ally_unit_awakened(skip_result)
 	var Unit: UnitGD = Units.on_unit_awakened(hand_card.id, hand_card.tool_id, hand_card.effects, 0, Tile.obj.rotation, Tile)
-	SpectateCamera.onSpectate(Unit)
 	if skip_result: LevelMap.on_advance_game_phase()
+	SpectateCamera.onSpectate(Unit)
 
 func on_enemy_unit_enters_vision(Unit: UnitGD) -> void:
 	Unit.UnitStatus.visible = true
@@ -112,13 +112,11 @@ func on_spectate_unit(Unit: UnitGD) -> void:
 
 func on_occupied_tile_inspected(Tile: TileGD) -> void:
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
-	match LevelMap.game_phase:
-		"PlayerPhase":
-			var SpectateUnit: UnitGD = SpectateCamera.getSpectateUnit()
-			if Unit == SpectateUnit:
-				on_unit_selected(Unit)
-			elif UnitSelected == null:
-				SpectateCamera.onSpectate(Unit)
+	var SpectateUnit: UnitGD = SpectateCamera.getSpectateUnit()
+	if LevelMap.action_lock.is_empty() and Unit == SpectateUnit:
+		on_unit_selected(Unit)
+	elif LevelMap.action_lock in ["", "HandRegular"] and UnitSelected == null:
+		SpectateCamera.onSpectate(Unit)
 				
 var UnitSelected: UnitGD
 func on_unit_selected(Unit: UnitGD) -> void:
@@ -141,8 +139,7 @@ func _on_unit_deselected(Unit: UnitGD, absolute: bool = false) -> void:
 		if Unit == UnitSelected: UnitSelected = null
 		if !absolute:
 			Tiles.on_mouse_entered(Tiles.on_find_tile_by_raycast())
-			
-		LevelUI.get_node("SkipReminder").visible = false
+		LevelUI.setWarningText(false)
 	
 func _on_unit_selected(Unit: UnitGD) -> void:
 	if Unit.turn_status == 0 and Unit.team == 0:
@@ -157,7 +154,7 @@ func _on_unit_selected(Unit: UnitGD) -> void:
 			Tiles.on_set_tile_material(Tile, "MovementRange")
 			
 		UnitSelected = Unit
-		LevelUI.get_node("SkipReminder").visible = ActiveUnit != null and ActiveUnit != Unit
+		LevelUI.setWarningText(ActiveUnit != null and ActiveUnit != Unit, "SkipAction")
 
 func onDeathFinished(Killer: String, Deathee: UnitGD, win_state: int) -> void:
 	if Killer == "Unit" and LevelMap.game_phase == "PlayerPhase":

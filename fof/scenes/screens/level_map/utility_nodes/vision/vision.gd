@@ -10,8 +10,8 @@ var Tiles: TilesGD
 var GameState: Node
 const VISION_RANGE: int = 5
 
+var spawn_tiles: Array
 var ally_vision: Array = []
-var spawn_vision: Array = []
 func on_recalculate_vision(Unit: UnitGD = null) -> void:
 	var visible_tiles: Array = []
 	var all_units: Array = Units.all_units()
@@ -27,13 +27,13 @@ func on_recalculate_vision(Unit: UnitGD = null) -> void:
 						if was_visible and !currently_visible:
 							Unit.visible_units.erase(_Unit)
 							_Unit.visible_units.erase(Unit)
-							print(Unit.base_card.iname)
-							print(Unit.visible_units.map(func(x: UnitGD): return x.base_card.iname))
-							print()
-							
-							print(_Unit.base_card.iname)
-							print(_Unit.visible_units.map(func(x: UnitGD): return x.base_card.iname))
-							print()
+							#print(Unit.base_card.iname)
+							#print(Unit.visible_units.map(func(x: UnitGD): return x.base_card.iname))
+							#print()
+							#
+							#print(_Unit.base_card.iname)
+							#print(_Unit.visible_units.map(func(x: UnitGD): return x.base_card.iname))
+							#print()
 							
 							if _Unit.getVisibleEnemies().is_empty():
 								Units.onUnitExitsAllyVision(Unit, _Unit)
@@ -45,7 +45,8 @@ func on_recalculate_vision(Unit: UnitGD = null) -> void:
 							
 							if Unit.Tile not in _Unit.visible_tiles:
 								_Unit.visible_tiles.append(Unit.Tile)
-								
+			
+			visible_tiles = spawn_tiles.duplicate()
 			for Tile in Tiles.get_children(): # Takes around 5 msec
 				if ally_units.any(func(x: UnitGD): return x.visible_tiles.any(func(y: TileGD): return Tile == y)):
 					visible_tiles.append(Tile)
@@ -65,12 +66,6 @@ func on_recalculate_vision(Unit: UnitGD = null) -> void:
 					0: if _Unit.Tile not in visible_tiles: visible_tiles.append(_Unit.Tile)
 					1: if _Unit.Tile in ally_vision: visible_tiles.append(_Unit.Tile)
 			
-		2:
-			visible_tiles = spawn_vision
-		3: # enemy vision
-			if Unit != null:
-				pass
-			
 	on_apply_visibility(visible_tiles)
 	LevelUI.on_update_vision()
 
@@ -87,12 +82,6 @@ func onUnitVisionModeCalculateVision(Unit: UnitGD, visible_tiles: Array) -> void
 	
 	for _Unit in Units.all_units():
 		_Unit.Model.onSetOverrideMaterial("null" if _Unit.Tile in visible_tiles else "BlackInstant")
-
-func on_start_phase_start() -> void:
-	for Tile in Tiles.get_children():
-		if Tile.obj.id == 2:
-			spawn_vision.append(Tile)
-	on_vision_mode_set(2)
 	
 func on_apply_visibility(tiles: Array) -> void:
 	for Tile in Tiles.get_children(): 
@@ -151,3 +140,6 @@ func on_tile_unhovered(__: TileGD) -> void:
 
 func on_player_end_turn_phase_start() -> void:
 	on_vision_mode_set(0)
+
+func onStartPhaseStart() -> void:
+	spawn_tiles = Tiles.on_is_type_get_tiles("Spawn", "obj")

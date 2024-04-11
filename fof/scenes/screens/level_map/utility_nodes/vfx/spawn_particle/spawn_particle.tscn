@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://ct3g80bouiajk"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vfx/spawn_particle/spawn_particle.gd" id="1_7bss1"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hsr6d"]
+direction = Vector3(0, 1, 0)
+spread = 10.0
+initial_velocity_min = 1.0
+initial_velocity_max = 1.2
+gravity = Vector3(0, 0, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rcmqq"]
+shading_mode = 0
+albedo_color = Color(0, 1, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_lqhfu"]
+material = SubResource("StandardMaterial3D_rcmqq")
+size = Vector3(0.1, 0.1, 0.1)
+
+[node name="SpawnParticles" type="GPUParticles3D"]
+lifetime = 1.2
+speed_scale = 2.0
+explosiveness = 0.3
+visibility_aabb = AABB(-1.10289, -1.54378, -1.05412, 2.20578, 3.08756, 2.10824)
+process_material = SubResource("ParticleProcessMaterial_hsr6d")
+draw_pass_1 = SubResource("BoxMesh_lqhfu")
+script = ExtResource("1_7bss1")
