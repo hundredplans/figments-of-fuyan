@@ -4,6 +4,7 @@ extends Node
 const MAX_HAND_SIZE: int = 10
 var energy: int = 0
 var energy_cap: int = 0
+var ignore_first_hand_phase: bool = true
 
 var Tiles: TilesGD
 var Heroes: HeroesGD
@@ -18,7 +19,10 @@ func on_start_phase_start() -> void:
 
 func on_hand_phase_start() -> void:
 	card_selected_index = -1
-	on_change_energy(1)
+	
+	if !ignore_first_hand_phase:
+		on_change_energy(1)
+	ignore_first_hand_phase = false
 
 func on_playable_cards() -> Array:
 	return get_children().filter(on_is_card_playable).map(on_get_child_index)

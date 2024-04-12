@@ -20,7 +20,6 @@ func onAIPhaseStart() -> void:
 	for Unit in Units.on_units(1):
 		Unit.stats("speed", Unit.max_speed, "StartAIPhase", true)
 		Unit.attack_amount = 1
-		#Unit.turn_status = 0
 		
 	onBeginMoveAIUnits()
 	

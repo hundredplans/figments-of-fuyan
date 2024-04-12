@@ -50,6 +50,7 @@ func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int
 	FieldedUnits.add_child(Unit)
 	
 	Unit.on_create_unit(id, tool_id, effects, team, rot, tile) # Takes around 2.2 seconds
+	Vision.onUnitAwakened(Unit)
 	Unit.Model.movement_finished.connect(on_movement_finished.bind(Unit))
 	Unit.Model.drop_calculate_damage.connect(on_drop_calculate_damage.bind(Unit))
 	Unit.Model.attack_finished.connect(on_attack_finished.bind(Unit))

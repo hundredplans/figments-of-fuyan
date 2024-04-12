@@ -75,10 +75,9 @@ func onCreateGreyMaterials() -> void:
 	for i in mesh.mesh.get_surface_count():
 		var transform_greyscale_mat: Material = preload("res://assets/materials/transform_grey/transform_grey.tres")
 		var black_instant_mat: Material = preload("res://assets/materials/black_instant/black_instant.tres")
-		#mat.set_shader_parameter("texture_albedo", load(mesh.get_active_material(i).albedo_texture.resource_path))
+		transform_greyscale_mat.set_shader_parameter("texture_albedo", load(mesh.get_active_material(i).albedo_texture.resource_path))
 		transform_grey_materials.append(transform_greyscale_mat)
 		black_instant_materials.append(black_instant_mat)
-		#TODO FIX THIS
 		
 var black_instant_materials: Array
 var transform_grey_materials: Array
@@ -90,9 +89,7 @@ func onSetOverrideMaterial(type: String) -> void:
 			
 			var MaterialTween: Tween = create_tween()
 			MaterialTween.tween_method(onSetShaderParameter, start_value, end_value, WALK_TRAVEL_TIME)
-			
-			if type == "TransformRegular":
-				MaterialTween.finished.connect(onSetOverrideMaterial.bind("null"))
+			MaterialTween.finished.connect(onSetOverrideMaterial.bind("null"))
 		
 		for i in mesh.mesh.get_surface_count():
 			mesh.set_surface_override_material(i, transform_grey_materials[i])

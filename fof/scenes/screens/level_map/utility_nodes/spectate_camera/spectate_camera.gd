@@ -110,13 +110,14 @@ func onSpectate(type: Variant) -> void:
 			else: new_index = index + direction
 			
 			var new_spectate_info: Dictionary = spectate_type_keys[new_index]
-			new_spectate_info.is_active = true
-			total_progress = new_spectate_info.progress
 			
-			onCameraStartSpectate(new_spectate_info)
-			onUnitSpectated(spectate_type, new_spectate_info, spectate_info)
+			if new_spectate_info != old_spectate_info:
+				new_spectate_info.is_active = true
+				total_progress = new_spectate_info.progress
+				
+				onCameraStartSpectate(new_spectate_info)
+				onUnitSpectated(spectate_type, new_spectate_info, spectate_info)
 		else: spectate_type = old_spectate_type
-		
 	elif type is String: # This is like direction = 0, change to spectate type but not in any direction
 		if type != spectate_type:
 			spectate_type = type
@@ -129,14 +130,14 @@ func onSpectate(type: Variant) -> void:
 	else:
 		spectate_type = ("Ally" if type.team == 0 else "Enemy") if type is UnitGD else "Spawn"
 		var spectate_info: Dictionary = onGetActiveSpectateVariant()
-		
-		if spectate_info != {}: spectate_info.is_active = false
-		
 		var new_spectate_info: Dictionary = spectates[spectate_type][type.get_instance_id()]
-		new_spectate_info.is_active = true
-	
-		onCameraStartSpectate(new_spectate_info)
-		onUnitSpectated(old_spectate_type, new_spectate_info, old_spectate_info)
+		
+		if new_spectate_info != spectate_info:
+			new_spectate_info.is_active = true
+			if spectate_info != {}: spectate_info.is_active = false
+			
+			onCameraStartSpectate(new_spectate_info)
+			onUnitSpectated(old_spectate_type, new_spectate_info, old_spectate_info)
 		
 func getSpectateTypeKeys() -> Array:
 	if spectate_type == "Spawn":
@@ -150,6 +151,7 @@ func getSpectateTypeKeys() -> Array:
 func onUnitSpectated(old_spectate_type: String, spectate_info: Dictionary, old_spectate_info: Dictionary) -> void:
 	if spectate_type in ["Ally", "Enemy"] and LevelMap.game_phase == "PlayerPhase":
 		spectate_info.object.on_spectated_in_player_phase(true)
+		if Vision.vision_mode == 1: Vision.on_recalculate_vision(spectate_info.object)
 		Units.onSpectatedInPlayerPhase(spectate_info.object)
 		
 	if old_spectate_type in ["Ally", "Enemy"]:
@@ -198,5 +200,6 @@ func onDeathFinished(Unit: UnitGD) -> void:
 	spectates["Ally" if Unit.team == 0 else "Enemy"].erase(Unit)
 func getSpectateUnit(team: Array = ["Ally"]) -> UnitGD:
 	if spectate_type in team:
-		return onGetActiveSpectateVariant().object
+		var spectate_info: Dictionary = onGetActiveSpectateVariant()
+		if !spectate_info.is_empty(): return spectate_info.object
 	return null

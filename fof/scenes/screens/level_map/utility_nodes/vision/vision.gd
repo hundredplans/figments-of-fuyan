@@ -27,13 +27,6 @@ func on_recalculate_vision(Unit: UnitGD = null) -> void:
 						if was_visible and !currently_visible:
 							Unit.visible_units.erase(_Unit)
 							_Unit.visible_units.erase(Unit)
-							#print(Unit.base_card.iname)
-							#print(Unit.visible_units.map(func(x: UnitGD): return x.base_card.iname))
-							#print()
-							#
-							#print(_Unit.base_card.iname)
-							#print(_Unit.visible_units.map(func(x: UnitGD): return x.base_card.iname))
-							#print()
 							
 							if _Unit.getVisibleEnemies().is_empty():
 								Units.onUnitExitsAllyVision(Unit, _Unit)
@@ -45,7 +38,6 @@ func on_recalculate_vision(Unit: UnitGD = null) -> void:
 							
 							if Unit.Tile not in _Unit.visible_tiles:
 								_Unit.visible_tiles.append(Unit.Tile)
-			
 			visible_tiles = spawn_tiles.duplicate()
 			for Tile in Tiles.get_children(): # Takes around 5 msec
 				if ally_units.any(func(x: UnitGD): return x.visible_tiles.any(func(y: TileGD): return Tile == y)):
@@ -68,6 +60,13 @@ func on_recalculate_vision(Unit: UnitGD = null) -> void:
 			
 	on_apply_visibility(visible_tiles)
 	LevelUI.on_update_vision()
+
+func onUnitAwakened(Unit: UnitGD) -> void:
+	var all_units: Array = Units.all_units()
+	for _Unit in all_units.filter(func(x: UnitGD): return x != Unit and x not in Unit.visible_units and Unit.Tile in x.visible_tiles):
+		Unit.visible_units.append(_Unit)
+		_Unit.visible_units.append(Unit)
+		Unit.visible_tiles.append(_Unit.Tile)
 
 func onUnitVisionModeCalculateVision(Unit: UnitGD, visible_tiles: Array) -> void:
 	match Unit.team:
