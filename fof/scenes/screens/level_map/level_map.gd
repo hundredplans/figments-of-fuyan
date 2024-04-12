@@ -1,7 +1,7 @@
 class_name LevelMapGD
 extends Node3D
 
-signal lock_inputs_changed
+signal action_lock_changed
 var GameState: Node
 
 var LoadedLevel: Node3D
@@ -9,7 +9,6 @@ var Tiles: TilesGD
 var Lights: LightsGD
 var LevelUI: Control
 
-var lock_inputs: bool = false
 var play_ui: bool = true
 var game_phase: String
 
@@ -18,6 +17,7 @@ var game_phase: String
 @onready var Deck: DeckGD = $Deck
 @onready var Hand: HandGD = $Hand
 @onready var Units: UnitsGD = $Units
+@onready var VFX: VFXGD = $VFX
 
 @onready var SpectateCamera: Node3D = $SpectateCamera	
 @onready var Vision: VisionGD = $Vision
@@ -55,30 +55,34 @@ func on_change_game_phase(phase: String) -> void:
 	game_phase = phase
 	match phase:
 		"StartPhase":
-			set_lock_inputs(true)
+			setActionLock("HandRegular")
 			Tiles.on_start_phase_start()
+			Vision.onStartPhaseStart()
 			SpectateCamera.onStartPhaseStart()
 			Hand.on_start_phase_start()
 			Units.on_start_phase_start()
-			Vision.on_start_phase_start()
 			LevelUI.onStartPhaseStart()
+			VFX.onStartPhaseStart()
 		"AfterStartPhase":
+			LevelUI.onAfterStartPhaseStart()
 			Deck.on_after_start_phase_start()
 		"HandPhase":
-			set_lock_inputs(true)
+			setActionLock("HandRegular")
 			SpectateCamera.onHandPhaseStart()
 			Hand.on_hand_phase_start()
+			VFX.onHandPhaseStart()
 			var skip_hand_phase: bool = on_skip_hand_phase_result()
 			if play_ui: LevelUI.on_hand_phase_start(skip_hand_phase)
 			if skip_hand_phase: on_advance_game_phase()
 		"PlayerPhase":
-			set_lock_inputs(false)
+			setActionLock()
 			Hand.on_player_phase_start()
 			LevelUI.on_player_phase_start()
+			VFX.onPlayerPhaseStart()
 			Units.on_player_phase_start()
 			SpectateCamera.onPlayerPhaseStart()
 		"PlayerEndTurnPhase":
-			set_lock_inputs(true)
+			setActionLock("Regular")
 			Units.on_player_end_turn_phase_start()
 			LevelUI.on_player_end_turn_phase_start()
 			Vision.on_player_end_turn_phase_start()
@@ -86,6 +90,7 @@ func on_change_game_phase(phase: String) -> void:
 			on_change_game_phase("AIPhase")
 		"AIPhase":
 			Units.onAIPhaseStart()
+			LevelUI.onAIPhaseStart()
 		"AIEndTurnPhase":
 			Units.onAIEndTurnPhaseStart()
 			on_change_game_phase("PlayerStartTurnPhase")
@@ -100,19 +105,22 @@ func on_advance_game_phase() -> void:
 		"BOTPhase": on_change_game_phase("PlayerStartTurnPhase")
 		"PlayerStartTurnPhase": on_change_game_phase("HandPhase")
 
-func on_set_lock_inputs_unit_actions(x: bool) -> void:
-	if x or Units.unit_actions.is_empty(): set_lock_inputs(x)
-	
-func set_lock_inputs(x: bool) -> void:
-	lock_inputs = x
-	lock_inputs_changed.emit(x)
+var action_lock: String
+func setActionLock(x: String = "") -> void:
+	if (x == "UnitActionDisabled" and action_lock == "UnitActionRegular"):
+		if Units.unit_actions.is_empty():
+			x = ""
+			action_lock = x
+			action_lock_changed.emit(x)
+	else:
+		action_lock = x
+		action_lock_changed.emit(x)
 
-func on_skip_hand_phase_result() -> bool: return game_phase == "HandPhase" and \
-Settings.autopass_handphase and Hand.on_playable_cards().is_empty()
-
-func getSpectateLock() -> bool:
-	# lock_inputs = true, game_phase = HandPhase = true
-	# lock_inputs = true, game_phase != HandPhase = false
-	# lock_inputs = false = false
-	# lock_inputs = false = false
-	return !lock_inputs or game_phase == "HandPhase"
+func on_skip_hand_phase_result(Tile: TileGD = null) -> bool:
+	if game_phase == "HandPhase":
+		if Settings.autopass_handphase and Hand.on_playable_cards().is_empty(): return true
+		if Tiles.on_is_type_get_tiles("Spawn", "obj")\
+		.all(func(x: TileGD): return x == Tile or Units.unit_by_tile_bool(x)):
+			LevelUI.onHandPhaseNoSpawnTiles()
+			return true
+	return false

@@ -141,11 +141,11 @@ func _process(delta: float) -> void:
 		rotation_degrees += delta * ROTATION_DEATH_SPEED
 
 func _on_mouse_entered():
-	if !Unit.Units.LevelMap.lock_inputs and !Unit.Units.LevelUI.is_status_box_moving:
+	if Unit.Units.LevelMap.action_lock in ["", "HandRegular"] and !Unit.Units.LevelUI.is_status_box_moving:
 		Unit.Units.Tiles.on_set_tile_material(Unit.Tile, "UnitInspected")
 
 func _on_mouse_exited():
-	if !Unit.Units.LevelMap.lock_inputs and !Unit.Units.LevelUI.is_status_box_moving:
+	if Unit.Units.LevelMap.action_lock in ["", "HandRegular"] and !Unit.Units.LevelUI.is_status_box_moving:
 		Unit.Units.Tiles.on_remove_tile_material(Unit.Tile)
 
 signal queue_free_signal

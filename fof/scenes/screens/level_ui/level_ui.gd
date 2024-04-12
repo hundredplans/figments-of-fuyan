@@ -24,17 +24,18 @@ var GameState: Node
 
 @onready var VisionButton: Control = %VisionButton
 @onready var TeamButton: Control = %TeamButton
+@onready var WarningText: Label = %WarningText
 
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Tab"): on_tab_pressed()
 
 func _ready() -> void:
-	$SkipReminder.visible = false
+	setWarningText(false)
 	
 	LevelMap = _LevelMap.instantiate()
 	LevelMap.GameState = GameState
 	LevelMap.LevelUI = self
-	LevelMap.lock_inputs_changed.connect(on_lock_inputs_changed)
+	LevelMap.action_lock_changed.connect(onActionLockChanged)
 	
 	load_world.emit(LevelMap)
 	Heroes = LevelMap.Heroes
@@ -63,8 +64,8 @@ func _queue_free(screen_name: String) -> void:
 		load_world.emit(null)
 
 func _input(_event: InputEvent) -> void:
-	if Input.is_action_just_pressed("SelectLeft") and LevelMap.getSpectateLock(): LevelMap.SpectateCamera.onSpectate(-1)
-	elif Input.is_action_just_pressed("SelectRight") and LevelMap.getSpectateLock(): LevelMap.SpectateCamera.onSpectate(1)
+	if Input.is_action_just_pressed("SelectLeft") and LevelMap.action_lock in ["", "HandRegular", "SpawnVision"]: LevelMap.SpectateCamera.onSpectate(-1)
+	elif Input.is_action_just_pressed("SelectRight") and LevelMap.action_lock in ["", "HandRegular", "SpawnVision"]: LevelMap.SpectateCamera.onSpectate(1)
 
 @onready var CardBox: HBoxContainer = %CardBox
 
@@ -87,13 +88,13 @@ func on_card_selected(GameCard: Control) -> void:
 		GameCardSelected = GameCard
 		GameCardSelected.Art.get_node("CardButton").material = _card_selected_material
 		index = GameCard.get_index()
-		LevelMap.set_lock_inputs(false)
+		LevelMap.setActionLock("SpawnVision")
 		on_unpin_hand_box_panel()
 		CameraArrows.visible = true
 	else: 
 		GameCardSelected = null
 		on_pin_hand_box_panel()
-		LevelMap.set_lock_inputs(true)
+		LevelMap.setActionLock("HandRegular")
 		CameraArrows.visible = false
 	LevelMap.Hand.on_card_selected(index)
 		
@@ -110,11 +111,15 @@ func on_player_end_turn_phase_start() -> void:
 	on_pass_unit_turn_button_state(false)
 
 @onready var HandBox: Control = %HandBox
+
+func onAfterStartPhaseStart() -> void:
+	PhaseIcon.visible = true
+
 func on_hand_phase_start(skip_hand_phase: bool) -> void:
 	if !skip_hand_phase: on_pin_hand_box_panel()
 	on_set_hand_box_cards_state()
-	Vision.on_vision_mode_set(2)
 	ChangePhase.visible = true
+	onChangePhaseIcon("HandPhase")
 
 var playable_cards: Array
 func on_set_hand_box_cards_state() -> void:
@@ -122,8 +127,8 @@ func on_set_hand_box_cards_state() -> void:
 	for i in range(CardBox.get_child_count()):
 		CardBox.get_child(i).on_set_disabled(state or i not in playable_cards)
 
-func _on_hand_phase_hitbox_pressed():
-	LevelMap.on_change_game_phase("PlayerPhase")
+#func _on_hand_phase_hitbox_pressed():
+	#LevelMap.on_change_game_phase("PlayerPhase")
 	
 func on_player_phase_start() -> void:
 	if GameCardSelected != null:
@@ -135,6 +140,7 @@ func on_player_phase_start() -> void:
 	on_set_hand_box_cards_state()
 	on_unpin_hand_box_panel()
 	Vision.on_vision_mode_set(0)
+	onChangePhaseIcon("PlayerPhase")
 
 func _on_change_phase_hitbox_pressed():
 	LevelMap.on_advance_game_phase()
@@ -157,7 +163,7 @@ func on_add_unit_status_box(Unit: UnitGD) -> void:
 		last_ally += 1
 	
 func onSpectateEnemyOrAlly(Unit: UnitGD) -> void:
-	if Units.unit_actions.is_empty():
+	if Units.unit_actions.is_empty() and LevelMap.action_lock in ["", "HandRegular", "SpawnVision"]:
 		SpectateCamera.onSpectate(Unit)
 	
 func on_unit_status_queue_free(UnitStatus: Control) -> void:
@@ -179,16 +185,17 @@ func on_move_hand_box(to: int) -> void:
 	
 var PANEL_MOVE_TWEEN_DURATION: float = 0.1
 const HAND_BOX_PANEL_OFFSET: int = 405
-const HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION: int = 1070
+const HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION: int = 1075
 var hand_box_pinned: bool = true
 var is_hand_box_panel_moving: bool = false
 
 func on_move_tween_finished() -> void:
 	is_hand_box_panel_moving = false
 
-func on_lock_inputs_changed(x: bool) -> void:
+func onActionLockChanged(action_lock: String) -> void:
+	ChangePhase.visible = action_lock not in ["UnitActionRegular", "Regular"]
 	if LevelMap.game_phase == "PlayerPhase":
-		setCornerRightVisibile(!x)
+		setCornerRightVisibile(action_lock.is_empty())
 
 var absolute_mouse_in_ui: bool
 var is_mouse_in_ui: bool = false
@@ -201,8 +208,7 @@ func on_camera_panning(x: bool) -> void:
 	if !absolute_mouse_in_ui: on_is_mouse_in_ui(x, false)
 
 func on_camera_arrow_pressed(direction: int) -> void:
-	if LevelMap.getSpectateLock():
-		LevelMap.SpectateCamera.onSpectate(direction)
+	if LevelMap.action_lock in ["", "HandRegular", "SpawnVision"]: LevelMap.SpectateCamera.onSpectate(direction)
 
 const greyscale_light: float = 0.3
 @onready var GreyScale: ColorRect = %GreyScale
@@ -273,6 +279,7 @@ func onVisionModeSet() -> void:
 
 func onStartPhaseStart() -> void:
 	ChangePhase.visible = false
+	PhaseIcon.visible = false
 
 func _on_card_clipper_child_entered_tree(node):
 	if node is HScrollBar:
@@ -286,6 +293,34 @@ func onWinGame() -> void:
 	if get_node("../../../..") == get_tree().get_root():
 		screen_change_sig.emit("res://scenes/screens/win_screen/win_screen.tscn")
 
+func onAIPhaseStart() -> void:
+	ChangePhase.visible = false
+	onChangePhaseIcon("AIPhase")
+
+const PHASE_ICON_CHANGE_DURATION: float = 0.2
 @onready var PhaseIcon: Sprite2D = %PhaseIcon
-func onChangePhaseIcon() -> void:
-	pass
+func onChangePhaseIcon(phase: String) -> void:
+	var ScaleTween := create_tween()
+	ScaleTween.tween_property(PhaseIcon, "scale:y", 0, PHASE_ICON_CHANGE_DURATION)
+	ScaleTween.finished.connect(onFinishChangePhaseIcon.bind(phase))
+
+func onFinishChangePhaseIcon(phase: String) -> void:
+	var ScaleTween := create_tween()
+	ScaleTween.tween_property(PhaseIcon, "scale:y", 2, PHASE_ICON_CHANGE_DURATION)
+	PhaseIcon.texture = load("res://scenes/screens/level_ui/phase_icon/" + phase + ".png")
+
+const SKIP_HAND_TURN_DELAY: float = 1.2
+func onHandPhaseNoSpawnTiles() -> void:
+	setWarningText(true, "SkipHandTurn")
+	await get_tree().create_timer(SKIP_HAND_TURN_DELAY).timeout
+	setWarningText(false)
+
+var warning_texts: Dictionary = {
+	"SkipAction": "If you perform an action with this unit you will skip another unit's turn!",
+	"SkipHandTurn": "There are no valid spawn tiles! Skipping to the Player Phase"
+}
+
+func setWarningText(visibility: bool, text: String = "") -> void:
+	WarningText.visible = visibility
+	if visibility:
+		WarningText.text = warning_texts[text]

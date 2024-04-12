@@ -2,6 +2,7 @@ class_name TilesGD
 extends Node3D
 const MAX_HEIGHT: int = 11
 
+var VFX: VFXGD
 var SpectateCamera: Node3D
 var LevelUI: LevelUIGD
 var LevelMap: Node3D
@@ -169,7 +170,7 @@ func onTilesInVisionRange(Tile: TileGD, VISION_RANGE: int) -> Array:
 
 func _ready() -> void:
 	LevelUI.mouse_in_ui.connect(on_mouse_enters_ui)
-	LevelMap.lock_inputs_changed.connect(on_lock_inputs_changed)
+	LevelMap.action_lock_changed.connect(onActionLockChanged)
 	on_set_default_shader_parameters()
 
 var active_tile: TileGD
@@ -185,18 +186,23 @@ func tiles_by_tile_state(tile_state: String) -> Array:
 	return get_children().filter(func(x: TileGD): return tile_state in x.tile_state)
 
 func _process(_delta: float) -> void:
-	if (!LevelMap.lock_inputs and !LevelUI.is_mouse_in_ui):
+	if (!LevelUI.is_mouse_in_ui):
 		if active_tile != null and Input.is_action_just_released("LeftClick"):
 			var Unit: UnitGD = Units.unit_by_tile(active_tile)
 			if Unit != null:
 				if "EnemyInRange" not in active_tile.tile_state:
 					Units.PlayerManager.on_occupied_tile_inspected(active_tile)
-				else: on_begin_unit_movement()
-			elif "PathHovered" in active_tile.tile_state:
+				elif LevelMap.action_lock.is_empty(): on_begin_unit_movement()
+				return
+				
+			if LevelMap.action_lock.is_empty() and "PathHovered" in active_tile.tile_state: 
 				on_begin_unit_movement()
-			elif on_find_tile_primary_type(active_tile) == "Spawn":
+				return
+				
+			elif LevelMap.action_lock == "SpawnVision" and on_find_tile_primary_type(active_tile) == "Spawn":
+				VFX.onRemoveSpawnParticle(active_tile)
 				Hand.on_card_placed(active_tile)
-
+					
 func on_begin_unit_movement() -> void:
 	var enemy_is_in_range: bool = active_tile.tile_state.has("EnemyInRange")
 	var Unit: UnitGD = Units.PlayerManager.UnitSelected
@@ -424,10 +430,10 @@ func on_connect_points(astar: AStar3D, movement_types: Array, Tile: TileGD, _Til
 	
 func on_tile_hovered(Tile: TileGD) -> void:
 	var Unit = Units.unit_by_tile(Tile)
-	if Unit != null:
-		print(Unit.base_card.iname)
-		print(Unit.visible_units.map(func(x: UnitGD): return x.base_card.iname))
-		print()
+	#if Unit != null:
+		#print(Unit.base_card.iname)
+		#print(Unit.visible_units.map(func(x: UnitGD): return x.base_card.iname))
+		#print()
 	
 	if "RegularInspected" not in Tile.tile_state:
 		on_set_tile_material(Tile, "RegularInspected")
@@ -543,8 +549,8 @@ func getTileMaterialFromPriority(priority: int) -> ShaderMaterial:
 			return tile_material.material
 	return null
 
-func on_lock_inputs_changed(x: bool) -> void:
-	on_force_mouse_tile(x, 2)
+func onActionLockChanged(action_lock: String) -> void:
+	on_force_mouse_tile(!action_lock.is_empty(), 2)
 		
 var InputTile: TileGD
 func _input(event: InputEvent) -> void:
@@ -559,7 +565,7 @@ func on_force_mouse_tile(state: bool, override: int = 0) -> void:
 	else: on_mouse_entered(on_find_tile_by_raycast(), override)
 
 func on_mouse_entered(Tile: TileGD, override: int = 0) -> void:
-	if ((!LevelUI.is_mouse_in_ui or override == 1) and (!LevelMap.lock_inputs or override == 2)):
+	if ((!LevelUI.is_mouse_in_ui or override == 1) and (LevelMap.action_lock in ["", "SpawnVision", "HandRegular"] or override == 2)):
 		if InputTile != null and Tile != null and Tile != InputTile:
 			on_tile_mouse_exited(InputTile)
 			on_tile_mouse_entered(Tile)
@@ -582,4 +588,3 @@ func on_find_tile_by_raycast() -> TileGD:
 	if node:
 		node = node.get_node("../../..")
 	return node
-	

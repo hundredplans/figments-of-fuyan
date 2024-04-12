@@ -110,7 +110,7 @@ func stats(stat_type: String, val: int, AppliedBy: Variant = "GameEvent", absolu
 	else: applied_by_string = AppliedBy
 	
 	if health == 0:
-		Killer = AppliedBy
+		if applied_by_string == "Unit": Killer = AppliedBy
 		Units.kill_unit(self, applied_by_string)
 	elif health < current_health and applied_by_string != "Height": Units.hurt_unit(self, AppliedBy)
 
