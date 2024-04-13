@@ -86,7 +86,7 @@ func on_apply_visibility(tiles: Array) -> void:
 	for Tile in Tiles.get_children(): 
 		if Tile not in tiles: Tiles.on_set_tile_material(Tile, "Greyscale")
 		else: Tiles.on_remove_tile_material(Tile, "Greyscale")
-	for Unit in Units.on_units(0, "Enemy"): Unit.visible = Unit.Tile in tiles
+	for Unit in Units.on_units(0, "Enemy"): Unit.Model.setVisible(Unit.Tile in tiles)
 
 func is_unit_in_vision(Unit: UnitGD) -> bool: # two diff visions for the two teams
 	return Units.on_units(Unit.team, "Enemy").any(func(x: UnitGD): return Unit in x.visible_units)

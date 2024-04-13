@@ -112,7 +112,7 @@ func setActionLock(x: String = "") -> void:
 			x = ""
 			action_lock = x
 			action_lock_changed.emit(x)
-	else:
+	elif x != "UnitActionDisabled":
 		action_lock = x
 		action_lock_changed.emit(x)
 

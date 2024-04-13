@@ -87,57 +87,59 @@ func onStartPhaseStart() -> void:
 	onSpectate("Spawn")
 	
 func onSpectate(type: Variant) -> void:
-	var old_spectate_info: Dictionary = onGetActiveSpectateVariant() if spectate_type != "Spawn" else {}
-	if !old_spectate_info.is_empty(): old_spectate_info.progress = total_progress
-	var old_spectate_type: String = spectate_type
+	var spectate_info: Dictionary = onGetActiveSpectateVariant()
+	if !spectate_info.is_empty(): spectate_info.progress = total_progress
 	
-	if type is int: # Direction (-1, 1, uses current spectate_type)
+	if type is int: onSpectateDirection(spectate_info, spectate_type, type)
+	elif type is String: onSpectateNewType(spectate_info, type, spectate_type)
+	elif type is UnitGD or type is TileGD: onSpectateObject(type, spectate_info, spectate_type)
+			
+func onSpectateObject(Obj: Variant, _spectate_info: Dictionary, _spectate_type: String) -> void:
+	spectate_type = ("Ally" if Obj.team == 0 else "Enemy") if Obj is UnitGD else "Spawn"
+	var spectate_info: Dictionary = spectates[spectate_type][Obj.get_instance_id()]
+	if spectate_info != _spectate_info:
+		onClearIsActive(spectate_info, spectate_type)
+		onCameraStartSpectate(spectate_info)
+		onUnitSpectated(spectate_info, _spectate_info, _spectate_type)
+	
+func onSpectateNewType(_spectate_info: Dictionary, _spectate_type: String, old_spectate_type: String) -> void:
+	if spectate_type != _spectate_type:
+		spectate_type = _spectate_type
 		var spectate_info: Dictionary = onGetActiveSpectateVariant()
 		if !spectate_info.is_empty():
-			var direction: int = type
-			var spectate_type_keys: Array = getSpectateTypeKeys()
-			var new_index: int = 0
-			var index: int = -1
-			if spectate_info != null:
-				spectate_info.is_active = false
-				index = spectate_type_keys.map(func(x: Dictionary): return x.object).find(spectate_info.object)
-				
-			var max_size: int = spectate_type_keys.size()
-			
-			if index == -1: new_index = 0
-			elif index == 0 and direction == -1: new_index = max_size - 1
-			elif index == max_size - 1 and direction == 1: new_index = 0
-			else: new_index = index + direction
-			
-			var new_spectate_info: Dictionary = spectate_type_keys[new_index]
-			
-			if new_spectate_info != old_spectate_info:
-				new_spectate_info.is_active = true
-				total_progress = new_spectate_info.progress
-				
-				onCameraStartSpectate(new_spectate_info)
-				onUnitSpectated(spectate_type, new_spectate_info, spectate_info)
+			total_progress = spectate_info.progress
+			onCameraStartSpectate(spectate_info)
+			onUnitSpectated( spectate_info, _spectate_info, old_spectate_type)
 		else: spectate_type = old_spectate_type
-	elif type is String: # This is like direction = 0, change to spectate type but not in any direction
-		if type != spectate_type:
-			spectate_type = type
-			var spectate_info: Dictionary = onGetActiveSpectateVariant()
-			if !spectate_info.is_empty():
-				total_progress = spectate_info.progress
-				onCameraStartSpectate(spectate_info)
-				onUnitSpectated(old_spectate_type, spectate_info, old_spectate_info)
-			else: spectate_type = old_spectate_type
-	else:
-		spectate_type = ("Ally" if type.team == 0 else "Enemy") if type is UnitGD else "Spawn"
-		var spectate_info: Dictionary = onGetActiveSpectateVariant()
-		var new_spectate_info: Dictionary = spectates[spectate_type][type.get_instance_id()]
 		
-		if new_spectate_info != spectate_info:
-			new_spectate_info.is_active = true
-			if spectate_info != {}: spectate_info.is_active = false
+func onSpectateDirection(_spectate_info: Dictionary, _spectate_type: String, direction: int) -> void:
+	if !_spectate_info.is_empty():
+		var spectate_type_keys: Array = getSpectateTypeKeys()
+		var new_index: int = 0
+		var index: int = -1
+		
+		_spectate_info.is_active = false
+		index = spectate_type_keys.map(func(x: Dictionary): return x.object).find(_spectate_info.object)
+		var max_size: int = spectate_type_keys.size()
+		
+		if index == -1: new_index = 0
+		elif index == 0 and direction == -1: new_index = max_size - 1
+		elif index == max_size - 1 and direction == 1: new_index = 0
+		else: new_index = index + direction
+		
+		var spectate_info: Dictionary = spectate_type_keys[new_index]
+		
+		if spectate_info != _spectate_info:
+			spectate_info.is_active = true
+			total_progress = spectate_info.progress
 			
-			onCameraStartSpectate(new_spectate_info)
-			onUnitSpectated(old_spectate_type, new_spectate_info, old_spectate_info)
+			onCameraStartSpectate(spectate_info)
+			onUnitSpectated(spectate_info, _spectate_info, spectate_type)
+		
+func onClearIsActive(spectate_info: Dictionary, type: String) -> void:
+	for _spectate_info in spectates[type].values():
+		_spectate_info.is_active = false
+	spectate_info.is_active = true
 		
 func getSpectateTypeKeys() -> Array:
 	if spectate_type == "Spawn":
@@ -148,15 +150,16 @@ func getSpectateTypeKeys() -> Array:
 		return unoccupied_spawn_dicts
 	return spectates[spectate_type].values()
 		
-func onUnitSpectated(old_spectate_type: String, spectate_info: Dictionary, old_spectate_info: Dictionary) -> void:
-	if spectate_type in ["Ally", "Enemy"] and LevelMap.game_phase == "PlayerPhase":
+func onUnitSpectated(spectate_info: Dictionary, _spectate_info: Dictionary, _spectate_type: String) -> void:
+	if spectate_type in ["Ally", "Enemy"]:
 		spectate_info.object.on_spectated_in_player_phase(true)
 		if Vision.vision_mode == 1: Vision.on_recalculate_vision(spectate_info.object)
 		Units.onSpectatedInPlayerPhase(spectate_info.object)
 		
-	if old_spectate_type in ["Ally", "Enemy"]:
+	if _spectate_type in ["Ally", "Enemy"]:
 		Units.PlayerManager._on_unit_deselected(Units.PlayerManager.UnitSelected)
-		if !old_spectate_info.is_empty(): old_spectate_info.object.on_spectated_in_player_phase(false)
+		if !_spectate_info.is_empty(): _spectate_info.object.on_spectated_in_player_phase(false)
+		
 func onPlayerPhaseStart() -> void:
 	onSpectate("Ally")
 func onPlayerEndTurnPhaseStart() -> void:

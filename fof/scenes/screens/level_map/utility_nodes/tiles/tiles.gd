@@ -528,6 +528,7 @@ func on_set_tile_highest_material(Tile: TileGD, greyscale_state: int = 0) -> voi
 	
 	if highest == 100 and "RegularInspected" in Tile.tile_state:
 		highest = 55
+		
 	var mat: ShaderMaterial = getTileMaterialFromPriority(highest)
 	if greyscale_state == 1:
 		Tile.setMaterial(null, -2)
@@ -536,6 +537,7 @@ func on_set_tile_highest_material(Tile: TileGD, greyscale_state: int = 0) -> voi
 		
 	Tile.setMaterial(mat, 0)
 	Tile.Effects.on_manage_height_drop_label(Units.PlayerManager.UnitSelected)
+	
 
 func getTileMaterialFromPriority(priority: int) -> ShaderMaterial:
 	for tile_material in TILE_MATERIALS.values():

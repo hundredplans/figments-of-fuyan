@@ -17,7 +17,7 @@ var IdleRareTimer: Timer
 const IDLE_RARE_MINIMUM: int = 8
 const IDLE_RARE_MAXIMUM: int = 100
 const UNIT_ANIMATION_BLEND_TIME: float = 0.2
-const WALK_TRAVEL_TIME: float = 1.0
+const WALK_TRAVEL_TIME: float = 1.0 # 1.0
 
 func on_idle_rare_timer_timeout() -> void:
 	if AniPlayer.current_animation == "Idle" and AniPlayer.has_animation("IdleRare"):
@@ -73,7 +73,7 @@ func on_finish_animation(ani_name: String) -> void:
 
 func onCreateGreyMaterials() -> void:
 	for i in mesh.mesh.get_surface_count():
-		var transform_greyscale_mat: Material = preload("res://assets/materials/transform_grey/transform_grey.tres")
+		var transform_greyscale_mat: Material = load("res://assets/materials/transform_grey/transform_grey.tres").duplicate()
 		var black_instant_mat: Material = preload("res://assets/materials/black_instant/black_instant.tres")
 		transform_greyscale_mat.set_shader_parameter("texture_albedo", load(mesh.get_active_material(i).albedo_texture.resource_path))
 		transform_grey_materials.append(transform_greyscale_mat)
@@ -89,7 +89,8 @@ func onSetOverrideMaterial(type: String) -> void:
 			
 			var MaterialTween: Tween = create_tween()
 			MaterialTween.tween_method(onSetShaderParameter, start_value, end_value, WALK_TRAVEL_TIME)
-			MaterialTween.finished.connect(onSetOverrideMaterial.bind("null"))
+			MaterialTween.finished.connect(onRemoveTransformMaterial.bind(type))
+			if type == "TransformRegular": setVisible(true)
 		
 		for i in mesh.mesh.get_surface_count():
 			mesh.set_surface_override_material(i, transform_grey_materials[i])
@@ -100,6 +101,10 @@ func onSetOverrideMaterial(type: String) -> void:
 	else:
 		for i in mesh.mesh.get_surface_count():
 			mesh.set_surface_override_material(i, null)
+
+func onRemoveTransformMaterial(type: String) -> void:
+	if type == "TransformGrey": setVisible(false)
+	onSetOverrideMaterial("null")
 
 func onSetShaderParameter(value: float) -> void:
 	for mat in transform_grey_materials:
@@ -139,7 +144,7 @@ func on_begin_all_movement_between_tiles() -> void:
 		match walk_to_info[2]:
 			"Regular": onSetOverrideMaterial("null")
 			"OutOfVision": onSetOverrideMaterial("TransformGrey")
-			"IntoVision": onSetOverrideMaterial("TransformRegular"); Unit.visible = true
+			"IntoVision": onSetOverrideMaterial("TransformRegular")
 	
 	match walk_to_info[1].x:
 		3: on_create_regular_jump(walk_to_info[0])
@@ -223,3 +228,7 @@ func on_set_rotation() -> void:
 	
 func getRotationPoint(xyz: Vector3, r: float, pos: Vector3) -> Vector3:
 	return Vector3(xyz.x * (cos(r)) - xyz.z * (sin(r)), xyz.y, xyz.z * (cos(r)) + xyz.x * (sin(r))) + pos
+
+func setVisible(state: bool) -> void:
+	mesh.visible = state
+	Unit.UnitFieldStatus.visible = state

@@ -160,7 +160,7 @@ func on_movement_finished(Unit: UnitGD) -> void:
 		
 	if movement_type != "Invisible":
 		if unit_actions.is_empty() or unit_actions[0][0] != "MoveUnit" or unit_actions[0][1] != Unit:
-			on_unit_travel_finished(Unit)
+			on_unit_travel_finished()
 		else: Unit.Model.on_play_walk_sfx()
 	active_action = []
 	
@@ -172,11 +172,10 @@ func on_movement_finished(Unit: UnitGD) -> void:
 func onUnitActionsFinished() -> void:
 	if unit_actions.is_empty():
 		var SpectateUnit: UnitGD = SpectateCamera.getSpectateUnit()
-		if SpectateUnit != null:
-			Tiles.on_set_tile_material(SpectateUnit.Tile, "SpectatingUnit")
- 
+		if SpectateUnit != null: Tiles.on_set_tile_material(SpectateUnit.Tile, "SpectatingUnit")
 		if LevelMap.game_phase == "AIPhase":
 			AIManager.onMoveNextAIUnit()
+		else: LevelMap.setActionLock("UnitActionDisabled")
 
 func onUnitMovementEntersVision(Unit: UnitGD, _Unit: UnitGD) -> void:
 	if Unit.team == 0 and _Unit.team == 1 and _Unit.getVisibleEnemies().size() == 1 and Unit.finished_awakening:
@@ -191,22 +190,20 @@ func onUnitExitsAllyVision(Unit: UnitGD, _Unit: UnitGD) -> void:
 	if Unit.team == 0 and _Unit.team == 1: PlayerManager.on_enemy_unit_exits_vision(_Unit)
 
 func onClearUnitActions() -> void:
-	if !active_action.is_empty() and active_action[0] == "MoveUnit": on_unit_travel_finished(active_action[1])
+	on_unit_travel_finished()
 	active_action = []
 	unit_actions = []
-	
 	onUnitActionsFinished()
 	
-func on_unit_travel_finished(Unit: UnitGD) -> void:
-	on_force_resume_idle_animation_from_walk()
-	active_action = []
-	if Unit.team == 0: PlayerManager.on_check_autopass(Unit)
-	LevelMap.setActionLock("UnitActionDisabled")
-	SpectateCamera.onEndTrackUnit()
-	Tiles.on_set_tile_highest_material(Unit.Tile)
-	
-	for _Unit in all_units():
-		Tiles.on_set_tile_material(_Unit.Tile, "AllyOccupy" if _Unit.team == 0 else "EnemyOccupy")
+func on_unit_travel_finished() -> void:
+	if !active_action.is_empty() and active_action[0] == "MoveUnit":
+		on_force_resume_idle_animation_from_walk()
+		var Unit: UnitGD = active_action[1]
+		if Unit.team == 0: PlayerManager.on_check_autopass(Unit)
+		LevelMap.setActionLock("UnitActionDisabled")
+		SpectateCamera.onEndTrackUnit()
+		Tiles.on_set_tile_material(Unit.Tile, "AllyOccupy" if Unit.team == 0 else "EnemyOccupy")
+		active_action = []
 	
 func on_force_resume_idle_animation_from_walk() -> void:
 	if !active_action.is_empty() and active_action[0] == "MoveUnit":

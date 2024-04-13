@@ -144,8 +144,7 @@ func on_spectated_in_player_phase(state: bool) -> void:
 	Units.LevelUI.on_update_vision()
 	
 	if team == 0:
-		if state:
-			Tiles.on_set_tile_material(Tile, "SpectatingUnit")
+		if state: Tiles.on_set_tile_material(Tile, "SpectatingUnit")
 		else: Tiles.on_remove_tile_material(Tile, "SpectatingUnit")
 
 func on_set_turn_status() -> void:
@@ -189,8 +188,8 @@ func onCircleRay() -> void:
 			
 			if VisionRaycast.is_colliding():
 				var Collision: Node3D = VisionRaycast.get_collider().get_node("../../..")
-				if Collision == Unit.Tile:
-					onAddTileToVisibleTiles(Collision)
+				if Collision == Unit.Model:
+					onAddTileToVisibleTiles(Unit.Tile)
 					break
 	
 	onUnitsHeightAdjacentTiles()
@@ -223,3 +222,6 @@ func onUnitsHeightAdjacentTiles() -> void:
 
 func getVisibleEnemies() -> Array:
 	return visible_units.filter(Units.on_match_team_relation.bind(team, "Enemy"))
+
+func onSetVisible() -> void:
+	pass
