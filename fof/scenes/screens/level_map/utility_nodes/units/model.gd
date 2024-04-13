@@ -1,6 +1,7 @@
 extends Node3D
 
 var mesh: MeshInstance3D
+var collision_shape: CollisionShape3D
 
 var Unit: UnitGD
 var AniPlayer: AnimationPlayer
@@ -26,6 +27,7 @@ func on_idle_rare_timer_timeout() -> void:
 
 func _ready() -> void:
 	mesh = get_child(0).get_child(0).get_child(0)
+	collision_shape = get_child(0).get_child(0).get_child(1).get_child(0)
 	onCreateGreyMaterials()
 	AniPlayer = get_node("AnimationPlayer")
 	AniPlayer.animation_finished.connect(on_finish_animation)
@@ -111,7 +113,6 @@ func onSetShaderParameter(value: float) -> void:
 		mat.set_shader_parameter("time_value", value)
 
 var walk_to_info: Array = []
-const OUT_OF_VISION_DELAY: float = 1.5
 func onMoveToTile(Tile: TileGD, type: Variant, movement_type: String) -> void:
 	walk_to_info = [Tile, type, movement_type]
 	on_play_animation("Walk")
@@ -201,6 +202,10 @@ func on_create_second_move_tween(Tile: TileGD, type: Vector2i) -> void:
 	end_position,
 	WALK_TRAVEL_TIME * 0.5)
 	MoveTween.finished.connect(on_finish_animation.bind("Walk"))
+
+func onLookAtRelative(Tile: TileGD, _Tile: TileGD) -> void:
+	rot = Unit.Units.Tiles.neighbour_rotation(Tile, _Tile)
+	on_set_rotation()
 
 func _look_at(Tile: TileGD) -> void: #will rotate the object
 	rot = Unit.Units.Tiles.neighbour_rotation(Tile, Unit.Tile)

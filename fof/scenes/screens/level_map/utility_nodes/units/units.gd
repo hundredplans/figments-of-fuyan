@@ -112,8 +112,11 @@ func on_match_team_relation(unit: UnitGD, team: int, relation: String) -> bool:
 var active_action: Array
 var unit_actions: Array = []
 
-func move_to_tile(Unit: UnitGD, Tile: TileGD, type: Variant) -> void:
-	unit_actions.append(["MoveUnit", Unit, Tile, type])
+func onMoveToTileAI(Unit: UnitGD, Tile: TileGD, type: Variant, visibility_path: Array) -> void:
+	unit_actions.append(["MoveUnitAI", Unit, Tile, type, visibility_path])
+
+func move_to_tile(Unit: UnitGD, Tile: TileGD, type: Variant, delay: float = -1) -> void:
+	unit_actions.append(["MoveUnit", Unit, Tile, type, delay])
 	
 func _process(_delta: float) -> void:
 	if active_action.is_empty():
@@ -121,6 +124,7 @@ func _process(_delta: float) -> void:
 			Vision.on_vision_mode_set(0)
 			active_action = unit_actions.pop_front()
 			match active_action[0]:
+				"MoveUnitAI": onMoveUnitAI()
 				"MoveUnit": onMoveUnit()
 				"AttackTarget": on_attack_enemy()
 				"DeathUnit": on_death()
@@ -128,46 +132,65 @@ func _process(_delta: float) -> void:
 			LevelMap.setActionLock("UnitActionRegular")
 
 var movement_type: String = ""
-func onMoveUnit(priority: int = -1) -> void: # priority is which movement of the unit it is (0 = first, -1 = invalid)
+func onMoveUnit() -> void:
+	var Unit: UnitGD = active_action[1]
+	SpectateCamera.onStartTrackUnit(Unit)
+	movement_type = "Regular"
+	Unit.Model.onMoveToTile(active_action[2], active_action[3], movement_type)
+		
+func onMoveUnitAI() -> void:
 	var Unit: UnitGD = active_action[1]
 	var DestinationTile: TileGD = active_action[2]
-	
-	var destination_in_vision: bool = DestinationTile in Vision.ally_vision
-	var origin_in_vision: bool = Unit.Tile in Vision.ally_vision
-	
-	if Unit.team != 0:
-		if destination_in_vision:
-			if origin_in_vision: movement_type = "Regular"
-			else: movement_type = "IntoVision"
-		elif origin_in_vision: movement_type = "OutOfVision"
-		else: movement_type = "Invisible"
-	else: movement_type = "Regular"
+	movement_type = onCalculateMovementType(DestinationTile, Unit.Tile)
 		
 	if movement_type != "Invisible":
 		SpectateCamera.onStartTrackUnit(Unit)
 		Unit.Model.onMoveToTile(DestinationTile, active_action[3], movement_type)
-	else:
-		await get_tree().create_timer(INVISIBLE_MOVEMENT_DELAY).timeout
-		SpectateCamera.onEndTrackUnit()
-		Unit.global_position = Unit.Model.onCalculateEndPosition(DestinationTile, active_action[3].x)
-		on_movement_finished(Unit)
+		return
 		
-const INVISIBLE_MOVEMENT_DELAY: float = 1
-const OUT_OF_VISION_DELAY: float = 1
+	SpectateCamera.onEndTrackUnit()
+	Unit.global_position = Unit.Model.onCalculateEndPosition(DestinationTile, active_action[3].x)
+	on_movement_finished(Unit)
+		
+func onCalculateMovementType(Tile: TileGD, _Tile: TileGD) -> String:
+	var destination_in_vision: bool = Tile in Vision.ally_vision
+	var origin_in_vision: bool = _Tile in Vision.ally_vision
+	if destination_in_vision:
+		if origin_in_vision: return "Regular"
+		return "IntoVision"
+	elif origin_in_vision: return "OutOfVision"
+	return "Invisible"
+		
+const AFTER_MOVEMENT_DELAY: float = 0.8
 func on_movement_finished(Unit: UnitGD) -> void:
+	var Tile: TileGD = active_action[2]
 	Unit.stats("speed", -1, "MovementFinished")
-	Unit.occupy_tile(active_action[2])
-		
+	Unit.occupy_tile(Tile)
 	if movement_type != "Invisible":
-		if unit_actions.is_empty() or unit_actions[0][0] != "MoveUnit" or unit_actions[0][1] != Unit:
+		var action_type: String = active_action[0]
+		var visibility_path: Array = [] if action_type != "MoveUnitAI" else active_action[4]
+		
+		if unit_actions.is_empty() or !unit_actions[0][0].begins_with("MoveUnit") or unit_actions[0][1] != Unit:
 			on_unit_travel_finished()
 		else: Unit.Model.on_play_walk_sfx()
+		
+		if action_type == "MoveUnitAI" and isVisibilityPathLastPosition(Tile, visibility_path):
+			#print(Unit.base_card.icard)
+			await get_tree().create_timer(AFTER_MOVEMENT_DELAY).timeout
 	active_action = []
 	
 	if Unit.team == 0 and unit_actions.is_empty() and Unit.speed > 0:
 		PlayerManager._on_unit_selected(Unit)
 	onUnitActionsFinished()
 	movement_type = ""
+
+func isVisibilityPathLastPosition(Tile: TileGD, visibility_path: Array) -> bool:
+	var tick_once: int = 0
+	for info in visibility_path: # If it's the last visible movement
+		if (info[0] == Tile and info[1]) or (tick_once == 1 and info[1]): 
+			tick_once += 1
+	print(tick_once)
+	return tick_once == 1
 
 func onUnitActionsFinished() -> void:
 	if unit_actions.is_empty():
@@ -196,7 +219,7 @@ func onClearUnitActions() -> void:
 	onUnitActionsFinished()
 	
 func on_unit_travel_finished() -> void:
-	if !active_action.is_empty() and active_action[0] == "MoveUnit":
+	if !active_action.is_empty() and active_action[0].begins_with("MoveUnit"):
 		on_force_resume_idle_animation_from_walk()
 		var Unit: UnitGD = active_action[1]
 		if Unit.team == 0: PlayerManager.on_check_autopass(Unit)
@@ -206,7 +229,7 @@ func on_unit_travel_finished() -> void:
 		active_action = []
 	
 func on_force_resume_idle_animation_from_walk() -> void:
-	if !active_action.is_empty() and active_action[0] == "MoveUnit":
+	if !active_action.is_empty() and active_action[0].begins_with("MoveUnit"):
 		active_action[1].Model.on_play_animation("Idle")
 		if active_action[1].Model.current_walk_stream_player != null:
 			AudioMaster.on_cutoff_sfx(active_action[1].Model.current_walk_stream_player)

@@ -193,8 +193,8 @@ func on_move_tween_finished() -> void:
 	is_hand_box_panel_moving = false
 
 func onActionLockChanged(action_lock: String) -> void:
-	ChangePhase.visible = action_lock not in ["UnitActionRegular", "Regular"]
 	if LevelMap.game_phase == "PlayerPhase":
+		ChangePhase.visible = action_lock not in ["UnitActionRegular", "Regular"]
 		setCornerRightVisibile(action_lock.is_empty())
 
 var absolute_mouse_in_ui: bool

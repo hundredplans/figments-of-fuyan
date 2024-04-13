@@ -195,6 +195,17 @@ func onCircleRay() -> void:
 	onUnitsHeightAdjacentTiles()
 	visible_tiles = _visible_tiles.keys()
 	
+func onRayEnemyUnit(Unit: UnitGD) -> bool:
+	if Unit.Tile in visible_tiles: return true
+	for point in Unit.Model.onGetAdjustedPoints():
+		VisionRaycast.target_position = point - VisionRaycast.global_position
+		VisionRaycast.force_raycast_update()
+		
+		if VisionRaycast.is_colliding():
+			var Collision: Node3D = VisionRaycast.get_collider().get_node("../../..")
+			if Collision == Unit.Model or Collision == Unit.Tile: return true
+	return false
+	
 var _visible_tiles: Dictionary = {}
 func onAddTileToVisibleTiles(_Tile: TileGD) -> void:
 	for type in ["obj", "wdeco", "tdeco"]:
@@ -222,6 +233,3 @@ func onUnitsHeightAdjacentTiles() -> void:
 
 func getVisibleEnemies() -> Array:
 	return visible_units.filter(Units.on_match_team_relation.bind(team, "Enemy"))
-
-func onSetVisible() -> void:
-	pass

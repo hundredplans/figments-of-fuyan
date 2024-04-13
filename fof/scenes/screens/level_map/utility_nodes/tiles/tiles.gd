@@ -277,6 +277,11 @@ func on_filter_in_range_tiles(x: TileGD, team: int):
 	var Unit: UnitGD = Units.unit_by_tile(x)
 	return x.solid_status == 0 or (Unit != null and Unit.team != team)
 
+func getUnitPositionOnTile(Tile: TileGD):
+	var pos: Vector3 = Tile.global_position
+	pos.y += 0.6 if is_ramp_tile(Tile) else 0.0
+	return pos
+
 func is_ramp_tile(Tile: TileGD) -> bool:
 	return Tile.obj.id in is_stair_object or Tile.tile.type > 0
 
