@@ -159,7 +159,7 @@ func get_children_by_elevation(w: int = 0) -> Array:
 	return positions_to_tiles(positions)
 	
 func tile_distance(Tile: TileGD, _Tile: TileGD) -> int:
-	var pos: Vector4 = Tile.onTTpos() - _Tile.onTTpos()
+	var pos: Vector3 = Tile.tpos - _Tile.tpos
 	return (abs(pos.x) + abs(pos.y) + abs(pos.z)) / 2
 	
 func onTilesInVisionRange(Tile: TileGD, VISION_RANGE: int) -> Array:
@@ -434,6 +434,9 @@ func on_connect_points(astar: AStar3D, movement_types: Array, Tile: TileGD, _Til
 	astar.connect_points(Tile.get_instance_id(), _Tile.get_instance_id(), false)
 	
 func on_tile_hovered(Tile: TileGD) -> void:
+	var unit = Units.unit_by_tile(Tile)
+	if unit != null: print(unit.visible_units)
+	
 	if "RegularInspected" not in Tile.tile_state:
 		on_set_tile_material(Tile, "RegularInspected")
 		

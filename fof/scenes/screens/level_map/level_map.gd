@@ -68,6 +68,7 @@ func on_change_game_phase(phase: String) -> void:
 			Deck.on_after_start_phase_start()
 		"HandPhase":
 			setActionLock("HandRegular")
+			LevelUI.onHandPhaseStart()
 			SpectateCamera.onHandPhaseStart()
 			Hand.on_hand_phase_start()
 			VFX.onHandPhaseStart()

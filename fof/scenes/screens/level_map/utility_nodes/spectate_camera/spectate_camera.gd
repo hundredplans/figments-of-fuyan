@@ -201,6 +201,8 @@ func onUnitAwakened(Unit: UnitGD) -> void:
 	}
 func onDeathFinished(Unit: UnitGD) -> void:
 	spectates["Ally" if Unit.team == 0 else "Enemy"].erase(Unit)
+	if !track_unit_info.is_empty() and track_unit_info.object == Unit: onEndTrackUnit()
+	
 func getSpectateUnit(team: Array = ["Ally"]) -> UnitGD:
 	if spectate_type in team:
 		var spectate_info: Dictionary = onGetActiveSpectateVariant()

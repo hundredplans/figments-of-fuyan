@@ -315,6 +315,9 @@ func onHandPhaseNoSpawnTiles() -> void:
 	await get_tree().create_timer(SKIP_HAND_TURN_DELAY).timeout
 	setWarningText(false)
 
+func onHandPhaseStart() -> void:
+	ChangePhase.visible = true
+
 var warning_texts: Dictionary = {
 	"SkipAction": "If you perform an action with this unit you will skip another unit's turn!",
 	"SkipHandTurn": "There are no valid spawn tiles! Skipping to the Player Phase"

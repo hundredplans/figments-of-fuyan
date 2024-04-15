@@ -24,6 +24,7 @@ func onAIPhaseStart() -> void:
 	onBeginMoveAIUnits()
 	
 func onBeginMoveAIUnits() -> void:
+	invisible_movement_tracker = []
 	active_movement_order = movement_order.duplicate()
 	onMoveNextAIUnit()
 
@@ -37,8 +38,13 @@ func onMoveNextAIUnit() -> void:
 		if visible_enemies.is_empty(): onChooseRandomMovementPath(Unit)
 		else: onChaseEnemy(Unit, visible_enemies, old_paths)
 	else:
+		if invisible_movement_tracker.all(func(x: bool): return x):
+			await get_tree().create_timer(Units.AFTER_MOVEMENT_DELAY).timeout
+			
+		LevelMap.setActionLock("UnitActionDisabled")
 		LevelMap.on_change_game_phase("AIEndTurnPhase")
 
+var invisible_movement_tracker: Array = []
 func onChaseEnemy(Unit: UnitGD, visible_enemies: Array, old_paths: Dictionary) -> void:
 	for EnemyUnit in visible_enemies:
 		if EnemyUnit.Tile in Tiles.movement_paths.keys(): # Directly chase onto tile
@@ -61,18 +67,22 @@ func onChooseRandomMovementPath(Unit: UnitGD) -> void:
 	
 	if movement_paths.size() > 0:
 		onChosenPathSelected(Unit, movement_paths[randi() % movement_paths.size()])
-		
+	else: onMoveNextAIUnit()
+	
 func onChosenPathSelected(Unit: UnitGD, chosen_path: Dictionary) -> void:
 	if chosen_path.size > 0:
 		Tiles.on_remove_tile_material(Unit.Tile, "" if chosen_path.size == 1 and chosen_path.types[0].x == 1 else "IgnoreGreyscale")
 	
 	var visibility_path: Array = onCalculateVisibilityPath(Unit, chosen_path)
+	invisible_movement_tracker.append(\
+	visibility_path.any(func(x: Array): return x[1] == "Invisible") and visibility_path.all(func(x: Array): return x[1] == "Invisible"))
+	
 	for i in range(chosen_path.size):
 		if chosen_path.types[i].x != 1: Units.onMoveToTileAI(Unit, chosen_path.tiles[i], chosen_path.types[i], visibility_path)
 		else: Units.attack_enemy_or_target(Unit, chosen_path.tiles[i])
 
 func onCalculateVisibilityPath(Unit: UnitGD, chosen_path: Dictionary) -> Array:
-	var visibility_path: Array = []
+	var visibility_path: Array = [[Unit.Tile, Vision.is_unit_in_vision(Unit)]]
 	var default_position: Vector3 = Unit.global_position
 	var default_rot: int = Unit.Model.rot
 	var default_tile: TileGD = Unit.Tile
@@ -85,12 +95,23 @@ func onCalculateVisibilityPath(Unit: UnitGD, chosen_path: Dictionary) -> Array:
 			Unit.Model.onLookAtRelative(Tile, Unit.Tile)
 			visibility_path.append(onRayEnemyUnits(Unit))
 	
+	var movement_type_path: Array = []
+	for i in range(visibility_path.size() - 1):
+		movement_type_path.append([visibility_path[i + 1][0], onCalculateMovementType(visibility_path[i + 1][1], visibility_path[i][1])])
+	
 	onResetUnit(Unit, default_position, default_rot, default_tile)
-	return visibility_path
+	return movement_type_path
+	
+func onCalculateMovementType(destination_in_vision: bool, origin_in_vision: bool) -> String:
+	if destination_in_vision:
+		if origin_in_vision: return "Regular"
+		return "IntoVision"
+	elif origin_in_vision: return "OutOfVision"
+	return "Invisible"
 
 func onRayEnemyUnits(Unit: UnitGD) -> Array:
 	for _Unit in Units.on_units(0):
-		if _Unit.onRayEnemyUnit(Unit):
+		if Tiles.tile_distance(_Unit.Tile, Unit.Tile) <= 5 and _Unit.onRayEnemyUnit(Unit):
 			return [Unit.Tile, true]
 	return [Unit.Tile, false]
 

@@ -158,6 +158,19 @@ func on_enemy_in_range(state: bool) -> void:
 	if state:
 		Tiles.on_set_tile_material(Tile, "EnemyInRange")
 
+#func onAddUnitVisibleTile(Unit: UnitGD) -> void:
+	#unit_visible_tiles[Unit] = Unit.Tile
+	#
+	#if Unit.Tile not in visible_tiles:
+		#visible_tiles.append(Unit.Tile)
+#
+#func onEraseVisibleUnit(Unit: UnitGD) -> void:
+	#if unit_visible_tiles.has(Unit):
+		#unit_visible_tiles.erase(Unit)
+		#visible_tiles.erase(Unit.Tile)
+	#visible_units.erase(Unit)
+
+var unit_height_tiles: Array # Tiles that are only visible because of a Unit's height
 var visible_tiles: Array
 var visible_units: Array
 @onready var VisionRaycast: RayCast3D = $VisionRaycast
@@ -196,7 +209,7 @@ func onCircleRay() -> void:
 	visible_tiles = _visible_tiles.keys()
 	
 func onRayEnemyUnit(Unit: UnitGD) -> bool:
-	if Unit.Tile in visible_tiles: return true
+	if Unit.Tile in visible_tiles or Unit.Tile in Vision.spawn_tiles: return true
 	for point in Unit.Model.onGetAdjustedPoints():
 		VisionRaycast.target_position = point - VisionRaycast.global_position
 		VisionRaycast.force_raycast_update()

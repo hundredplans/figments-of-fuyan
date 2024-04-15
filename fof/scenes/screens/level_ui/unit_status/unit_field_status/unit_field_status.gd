@@ -32,7 +32,7 @@ func on_set_stats(att: int, hp: int, spd: int, att_mod: String, hp_mod: String, 
 			for i in range(stat_str.length()):
 				stat_array.append(int(stat_str[i]))
 			
-			if stat_info[1] == "speed" and spd == 0: on_move_boot(0, -1)
+			if stat_info[1] == "speed" and spd == 0: on_move_boot(0)
 			var ScaleTween := create_tween()
 			ScaleTween.tween_property(Numbers.get_node(stat_info[1]), "scale:y", 0, NUMBER_SCALE_TIME)
 			ScaleTween.finished.connect(on_create_new_stats.bind(stat_array, stat_info[1], stat_info[2], stat_info[3]))
@@ -61,17 +61,25 @@ func on_create_new_stats(stat_array: Array, stat_type: String, mod_type: String,
 			var ScaleTween := create_tween()
 			ScaleTween.tween_property(Numbers.get_node(stat_type), "scale:y", 1, NUMBER_SCALE_TIME)
 					
-			if stat_type == "speed" and original_stat == 0: on_move_boot(1, 1)
+			if stat_type == "speed" and original_stat == 0: on_move_boot(1)
 			Numbers.get_node(stat_type).on_sort_children()
 		on_set_number_materials(stat_type, spectate_state)
-		
-func on_move_boot(boot_scale: int, offset_multiplier: int) -> void:
+
+var STAT_POSITIONS: Dictionary = {
+	"attack": 0.5,
+	"health": 0.25,
+}
+func on_move_boot(boot_scale: int) -> void:
 	var GeneralTween := create_tween()
 	GeneralTween.tween_property(FloatingStats.get_node("speed"), "scale:y", boot_scale, NUMBER_SCALE_TIME)
 	for _stat in ["attack", "health"]:
-		for node in [FloatingStats.get_node(_stat), Numbers.get_node(_stat)]:
-			var NewTween := create_tween()
-			NewTween.tween_property(node, "position:y", node.position.y + (0.25 * offset_multiplier), NUMBER_SCALE_TIME)
+		var number_node: Node3D = Numbers.get_node(_stat)
+		var NewTween := create_tween()
+		NewTween.tween_property(number_node, "position:y", STAT_POSITIONS[_stat] + 0.125 + (-0.25 if boot_scale == 0 else 0.0), NUMBER_SCALE_TIME)
+		
+		var stat_node: Node3D = FloatingStats.get_node(_stat)
+		var _NewTween := create_tween()
+		_NewTween.tween_property(stat_node, "position:y", STAT_POSITIONS[_stat] + (-0.25 if boot_scale == 0 else 0.0), NUMBER_SCALE_TIME)
 	
 var spectate_state: bool = false
 func on_unit_spectated(state: bool) -> void:

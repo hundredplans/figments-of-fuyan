@@ -76,12 +76,16 @@ func on_finish_animation(ani_name: String) -> void:
 func onCreateGreyMaterials() -> void:
 	for i in mesh.mesh.get_surface_count():
 		var transform_greyscale_mat: Material = load("res://assets/materials/transform_grey/transform_grey.tres").duplicate()
-		var black_instant_mat: Material = preload("res://assets/materials/black_instant/black_instant.tres")
-		transform_greyscale_mat.set_shader_parameter("texture_albedo", load(mesh.get_active_material(i).albedo_texture.resource_path))
-		transform_grey_materials.append(transform_greyscale_mat)
-		black_instant_materials.append(black_instant_mat)
+		var grey_instant_mat: Material = load("res://assets/materials/grey_instant/grey_instant.tres").duplicate()
 		
-var black_instant_materials: Array
+		var tx: ImageTexture = load(mesh.get_active_material(i).albedo_texture.resource_path)
+		transform_greyscale_mat.set_shader_parameter("texture_albedo", tx)
+		grey_instant_mat.set_shader_parameter("texture_albedo", tx)
+		
+		transform_grey_materials.append(transform_greyscale_mat)
+		grey_instant_materials.append(grey_instant_mat)
+		
+var grey_instant_materials: Array
 var transform_grey_materials: Array
 func onSetOverrideMaterial(type: String) -> void:
 	if type.begins_with("Transform"):
@@ -97,9 +101,9 @@ func onSetOverrideMaterial(type: String) -> void:
 		for i in mesh.mesh.get_surface_count():
 			mesh.set_surface_override_material(i, transform_grey_materials[i])
 	
-	elif type == "BlackInstant":
+	elif type == "GreyInstant":
 		for i in mesh.mesh.get_surface_count():
-			mesh.set_surface_override_material(i, black_instant_materials[i])
+			mesh.set_surface_override_material(i, grey_instant_materials[i])
 	else:
 		for i in mesh.mesh.get_surface_count():
 			mesh.set_surface_override_material(i, null)
