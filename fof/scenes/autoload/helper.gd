@@ -225,8 +225,7 @@ func return_item_dict(item: String, _contents: String) -> Dictionary:
 		var contents: Array = _contents.split("\n")
 		var keys: Array[String] = ["id", "tid", "iname", "sname"]
 		match item:
-			"area": keys += ["pcolor", "acolor", "world", "cards"]
-			"card": keys += ["a", "h", "s", "e", "r", "text", "flavor", "aic", "aii", "aiw", "ait", "aia", "height"]
+			"oldcard": keys += ["a", "h", "s", "e", "r", "text", "flavor", "aic", "aii", "aiw", "ait", "aia", "height"]
 			"level": keys += ["area", "difficulty", "trinkets", "tiles", "level_size"]
 			"tool": keys += ["r", "text", "utext"]
 			"boon": keys += ["r", "text", "utext"]
@@ -500,3 +499,13 @@ const NUM_TO_STRING_NUM: Dictionary = {
 	8: "eight",
 	9: "nine",
 }
+
+func getAreaInfo(id: int) -> AreaInfoGD:
+	var DIR_PATH: String = "res://assets/base_game/areas/"
+	for dir in DirAccess.get_directories_at(DIR_PATH):
+		for file in DirAccess.get_files_at(DIR_PATH + dir):
+			print(file)
+			if file.begins_with("area_info"):
+				var area_info: AreaInfoGD = load(DIR_PATH + dir + "/" + file)
+				if area_info.id == id: return area_info
+	return null

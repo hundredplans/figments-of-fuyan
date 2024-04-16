@@ -1,0 +1,81 @@
+[gd_scene load_steps=4 format=3 uid="uid://ckupdmi2gxkq5"]
+
+[ext_resource type="Script" path="res://scenes/screens/play_menu/play_menu.gd" id="1_atqxs"]
+[ext_resource type="PackedScene" uid="uid://d0kmucxnl6ah3" path="res://scenes/screens/play_menu/hero_button.tscn" id="3_h80h1"]
+[ext_resource type="Theme" uid="uid://du2bpyvp41rdk" path="res://assets/UI/roboto/roboto20.tres" id="4_rhd58"]
+
+[node name="PlayMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_atqxs")
+
+[node name="Background" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Outside" type="ColorRect" parent="Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Inside" type="ColorRect" parent="Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="SelectHero" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HeroButton" parent="SelectHero" instance=ExtResource("3_h80h1")]
+layout_mode = 2
+hid = 1
+Heroes = Object(Node,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","script":Resource("res://static/game_info/heroes.gd"))
+
+
+[node name="SeedSetter" type="LineEdit" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.961
+anchor_right = 0.961
+offset_left = -131.12
+offset_top = 1018.0
+offset_right = 62.88
+offset_bottom = 1068.0
+theme = ExtResource("4_rhd58")
+placeholder_text = "Set Seed Here"
+alignment = 1
+max_length = 32
+
+[connection signal="text_submitted" from="SeedSetter" to="." method="_on_seed_setter_text_submitted"]

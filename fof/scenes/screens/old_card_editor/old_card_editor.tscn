@@ -1,0 +1,249 @@
+[gd_scene load_steps=11 format=3 uid="uid://dgjchsjrv72a3"]
+
+[ext_resource type="Script" path="res://static/game_info/heroes.gd" id="1_5aclk"]
+[ext_resource type="Script" path="res://scenes/screens/old_card_editor/old_card_editor.gd" id="1_hv8xs"]
+[ext_resource type="PackedScene" uid="uid://bdd0m6wbuerq5" path="res://scenes/editor/edit_file_name/edit_file_name.tscn" id="2_axojh"]
+[ext_resource type="Theme" uid="uid://c5rky1f5xs5if" path="res://assets/UI/lora/lora48.tres" id="2_q225b"]
+[ext_resource type="Script" path="res://assets/base_game/oldcards/card_ui/text_processing.gd" id="2_w7p2h"]
+[ext_resource type="Theme" uid="uid://c7y2qa3kssows" path="res://assets/UI/lora/lora.tres" id="3_vsycf"]
+[ext_resource type="PackedScene" uid="uid://bj3h1ak5dv73n" path="res://scenes/ui_general/op_button/op_button.tscn" id="4_nujyg"]
+[ext_resource type="PackedScene" uid="uid://65cqb6wug8it" path="res://scenes/ui_general/scale_button/scale_button.tscn" id="6_18pqn"]
+[ext_resource type="Texture2D" uid="uid://bgbyoyqx40n27" path="res://assets/base_game/oldcards/card_ui/default_art_max.png" id="6_036w2"]
+[ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="6_crlth"]
+
+[node name="OldCardEditor" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_hv8xs")
+
+[node name="TextProcessing" type="Node" parent="."]
+script = ExtResource("2_w7p2h")
+
+[node name="Heroes" type="Node" parent="."]
+script = ExtResource("1_5aclk")
+
+[node name="CardCreator" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 631.0
+offset_right = 1342.0
+offset_bottom = 916.0
+theme = ExtResource("2_q225b")
+
+[node name="RarityColor" type="ColorRect" parent="CardCreator"]
+layout_mode = 0
+offset_right = 711.0
+offset_bottom = 916.0
+color = Color(0.807843, 0.623529, 0.501961, 1)
+
+[node name="EditFileName" parent="CardCreator" instance=ExtResource("2_axojh")]
+offset_left = 5.0
+offset_top = 415.0
+offset_right = 690.0
+offset_bottom = 553.0
+ItemNAME = "Card"
+
+[node name="Stats" type="Control" parent="CardCreator"]
+anchors_preset = 0
+offset_right = 682.0
+offset_bottom = 414.0
+
+[node name="Attack" type="LineEdit" parent="CardCreator/Stats"]
+layout_mode = 0
+offset_top = 343.0
+offset_right = 192.0
+offset_bottom = 414.0
+placeholder_text = "ATT"
+alignment = 1
+max_length = 2
+
+[node name="Health" type="LineEdit" parent="CardCreator/Stats"]
+layout_mode = 0
+offset_left = 493.0
+offset_top = 343.0
+offset_right = 685.0
+offset_bottom = 414.0
+placeholder_text = "HP"
+alignment = 1
+max_length = 2
+
+[node name="Speed" type="LineEdit" parent="CardCreator/Stats"]
+layout_mode = 0
+offset_left = 493.0
+offset_right = 685.0
+offset_bottom = 71.0
+placeholder_text = "SPD"
+alignment = 1
+max_length = 2
+
+[node name="Energy" type="LineEdit" parent="CardCreator/Stats"]
+layout_mode = 0
+offset_right = 192.0
+offset_bottom = 71.0
+placeholder_text = "ENER"
+alignment = 1
+max_length = 2
+
+[node name="ChooseRarity" parent="CardCreator" instance=ExtResource("4_nujyg")]
+offset_left = 231.0
+offset_right = 255.0
+options = PackedStringArray("Neutral", "Scrap", "Common", "Rare", "Exalt", "Miniboss", "Boss", "Champion")
+default = 2
+
+[node name="CardText" type="TextEdit" parent="CardCreator"]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 555.0
+offset_right = 640.0
+offset_bottom = 892.0
+theme = ExtResource("6_crlth")
+placeholder_text = "                         Card Text"
+wrap_mode = 1
+
+[node name="FlavorText" type="TextEdit" parent="CardCreator"]
+layout_mode = 0
+offset_left = 725.0
+offset_top = 571.0
+offset_right = 1276.0
+offset_bottom = 1068.0
+theme = ExtResource("6_crlth")
+placeholder_text = "                     Flavor Text"
+wrap_mode = 1
+
+[node name="Art" type="Sprite2D" parent="CardCreator"]
+texture_filter = 1
+position = Vector2(341, 206)
+scale = Vector2(2, 2)
+texture = ExtResource("6_036w2")
+
+[node name="AISettings" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 1355.0
+offset_top = 60.0
+offset_right = 1729.0
+offset_bottom = 471.0
+
+[node name="ConfidenceButton" parent="AISettings" instance=ExtResource("6_18pqn")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -2.163
+anchor_right = -2.163
+offset_left = 808.962
+offset_top = 14.0
+offset_right = 1091.96
+offset_bottom = 67.0
+min_max = Vector2i(1, 7)
+steps = Vector2i(1, 3)
+default = 4
+label_text = "Confidence"
+snap_mode = true
+
+[node name="IntelligenceButton" parent="AISettings" instance=ExtResource("6_18pqn")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -2.163
+anchor_right = -2.163
+offset_left = 808.962
+offset_top = 95.0
+offset_right = 1091.96
+offset_bottom = 148.0
+min_max = Vector2i(1, 7)
+steps = Vector2i(1, 3)
+default = 4
+label_text = "Intelligence"
+snap_mode = true
+
+[node name="AwarenessButton" parent="AISettings" instance=ExtResource("6_18pqn")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -2.163
+anchor_right = -2.163
+offset_left = 808.962
+offset_top = 176.0
+offset_right = 1091.96
+offset_bottom = 229.0
+min_max = Vector2i(1, 7)
+steps = Vector2i(1, 3)
+default = 4
+label_text = "Awareness"
+snap_mode = true
+
+[node name="TeamworkButton" parent="AISettings" instance=ExtResource("6_18pqn")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -2.163
+anchor_right = -2.163
+offset_left = 808.962
+offset_top = 257.0
+offset_right = 1091.96
+offset_bottom = 310.0
+min_max = Vector2i(1, 7)
+steps = Vector2i(1, 3)
+default = 4
+label_text = "Teamwork"
+snap_mode = true
+
+[node name="AdventurousnessButton" parent="AISettings" instance=ExtResource("6_18pqn")]
+offset_top = 338.0
+offset_bottom = 391.0
+min_max = Vector2i(1, 7)
+steps = Vector2i(1, 3)
+default = 4
+label_text = "Adventurosness"
+snap_mode = true
+
+[node name="Buttons" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 631.0
+offset_top = 916.0
+offset_right = 1342.0
+offset_bottom = 1080.0
+theme = ExtResource("3_vsycf")
+
+[node name="LoadCard" type="Button" parent="Buttons"]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -124.5
+offset_top = 8.0
+offset_right = 107.5
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Load Card"
+
+[node name="DeleteCard" type="Button" parent="Buttons"]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 114.0
+offset_top = 8.0
+offset_right = 345.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Delete Card"
+
+[node name="NewCard" type="Button" parent="Buttons"]
+layout_mode = 0
+offset_top = 8.0
+offset_right = 219.0
+offset_bottom = 156.0
+text = "New Card"
+
+[connection signal="text_submitted" from="CardCreator/EditFileName" to="." method="_on_edit_file_name_text_submitted"]
+[connection signal="item_selected" from="CardCreator/ChooseRarity" to="." method="_on_choose_rarity_item_selected"]
+[connection signal="text_changed" from="CardCreator/CardText" to="." method="_on_card_text_changed"]
+[connection signal="text_changed" from="CardCreator/FlavorText" to="." method="_on_flavor_text_changed"]
+[connection signal="pressed" from="Buttons/LoadCard" to="." method="_on_load_card_pressed"]
+[connection signal="pressed" from="Buttons/DeleteCard" to="." method="_on_delete_card_pressed"]
+[connection signal="pressed" from="Buttons/NewCard" to="." method="_on_empty_card_pressed"]

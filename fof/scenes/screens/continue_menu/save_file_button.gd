@@ -5,15 +5,15 @@ var Heroes: Node
 var level_id: int = 0
 var can_press: bool = false
 
-func on_load_save_file(info: Dictionary, area_info: Dictionary) -> void:
-	$SaveInfo/Name.text = str(info.save_file) + "- " + str(area_info.sname)
+func on_load_save_file(info: Dictionary, area_info: AreaInfoGD) -> void:
+	$SaveInfo/Name.text = str(info.save_file) + "- " + str(area_info.folder_name)
 	for node in [$SaveInfo/Progress, $SaveInfo/Status, $SaveInfo/Name, $SaveInfo/Seed]:
-		node.modulate = area_info.acolor
+		node.modulate = area_info.accent_color
 		
 	$Background/Outside.color = area_info.acolor
 	$Background/Inside.color = area_info.pcolor
 	$SaveInfo/ShillingCounter.set_shilling_count(info.shillings)
-	$SaveInfo/HeroArt.texture = load("res://assets/base_game/cards/" + Helper.id_to_bgfn(Heroes.hid_to_base(info.hero_id), "Card") + "/art_max.png")
+	$SaveInfo/HeroArt.texture = load("res://assets/base_game/cards/cards/" + Helper.id_to_bgfn(Heroes.hid_to_base(info.hero_id), "Card") + "/art_max.png")
 	$SaveInfo/Progress.text = str(area_info.world) + "-" + str(abs(info.map_progress[1] - 10))
 	$SaveInfo/Seed.text = str(info.gseed)
 	

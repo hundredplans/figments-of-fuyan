@@ -19,7 +19,7 @@ var Unit: UnitGD
 @onready var SelectedMask: TextureButton = %SelectedMask 
 @onready var SlotOne: Sprite2D = %SlotOne
 
-var card_selected_material: Material = preload("res://assets/base_game/cards/card_ui/card_selected_material.tres")
+var card_selected_material: Material = preload("res://assets/base_game/cards/game_card/materials/card_selected_material.tres")
 func _ready() -> void:
 	Helper.create_button_clickmask(SelectedMask)
 	oHoverCard.visible = false

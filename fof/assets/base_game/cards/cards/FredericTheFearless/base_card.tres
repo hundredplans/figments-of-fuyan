@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="HeroCardGD" load_steps=3 format=3 uid="uid://b4dnt5vp7cdmq"]
+
+[ext_resource type="Resource" uid="uid://i7fssvdm607r" path="res://assets/base_game/cards/cards/FredericTheFearless/hero_levels/base_card0.tres" id="1_bxg2a"]
+[ext_resource type="Script" path="res://assets/base_game/cards/templates/hero_card.gd" id="2_j2pit"]
+
+[resource]
+script = ExtResource("2_j2pit")
+id = 1
+hero_id = 1
+area_id = 12
+base_cards = Array[Resource("res://assets/base_game/cards/templates/base_card.gd")]([ExtResource("1_bxg2a")])
+hero_level = 0
+description = "- Simple
+- Brawler
+- Individualist"
+primary_color = Color(0.219608, 0.419608, 0.235294, 1)
+accent_color = Color(0.807843, 0.556863, 0.403922, 1)

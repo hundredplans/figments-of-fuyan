@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="BaseCardGD" load_steps=2 format=3 uid="uid://uebqhtc1g4tx"]
+
+[ext_resource type="Script" path="res://assets/base_game/cards/templates/base_card.gd" id="1_vox8i"]
+
+[resource]
+script = ExtResource("1_vox8i")
+area_id = 1
+attack = 2
+health = 3
+speed = 2
+energy = 2
+rarity = 2
+raw_text = "On Hit: Heal a random injured ally in vision equal to your DMG dealt"
+flavor_text = ""
+text = "[center][b]On Hit[/b]: Heal a random injured ally in vision equal to your [b][color=navajo_white]DMG[/color][/b] dealt[/center]"
+aic = 5
+aii = 4
+aiw = 5
+ait = 6
+aia = 3
+weapon_offset = 0.15
+weapon = 1.0
+eye = 1.31
+top = 1.58
+stat = 1.89
+ability_names = Array[String]([])
+id = 9
+name = "Opalma"
+folder_name = "Opalma"

@@ -116,7 +116,7 @@ func before_ready_connect_screen(screen: Control):
 		"LevelEditor", "LoreBooksEditor", "ItemEditor", "MapMenu", "LevelUI", "LoseScreen", "WinScreen": screen.load_world.connect(on_load_world)
 	
 	match screen.name:
-		"TrinketEditor", "AreaEditor", "BoonEditor", "CardEditor", "LevelEditor", "MapEditor", "ToolEditor", "TaskEditor", "ChallengeEditor", "EncounterEditor": screen.fileloader_state.connect(on_change_fileloader_state)
+		"TrinketEditor", "AreaEditor", "BoonEditor", "OldCardEditor", "LevelEditor", "MapEditor", "ToolEditor", "TaskEditor", "ChallengeEditor", "EncounterEditor": screen.fileloader_state.connect(on_change_fileloader_state)
 	
 func after_ready_connect_screen(screen: Control):
 	if screen.name == "MainMenu" or Settings.hide_menu_gui == 2 or screen.name == "LoreBooksEditor" and Settings.hide_menu_gui == 1:

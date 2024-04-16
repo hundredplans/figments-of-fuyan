@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="BaseCardGD" load_steps=2 format=3 uid="uid://dnsytg8tguajl"]
+
+[ext_resource type="Script" path="res://assets/base_game/cards/templates/base_card.gd" id="1_nndc3"]
+
+[resource]
+script = ExtResource("1_nndc3")
+area_id = 1
+attack = 2
+health = 2
+speed = 2
+energy = 2
+rarity = 2
+raw_text = "ABILITY [2]: Heal adjacent allies [1] HEALTH"
+flavor_text = ""
+text = "[center][b]ABILITY [2][/b]: Heal adjacent allies [b][color=red][1] [img=14x14]res://assets/base_game/cards/game_card/art/bbcode/HEALTH.png[/img][/color][/b][/center]"
+aic = 6
+aii = 5
+aiw = 6
+ait = 6
+aia = 2
+weapon_offset = 0.1
+weapon = 0.5
+eye = 1.0
+top = 1.5
+stat = 2.0
+ability_names = Array[String]([])
+id = 10
+name = "Sellus Palmus"
+folder_name = "SellusPalmus"

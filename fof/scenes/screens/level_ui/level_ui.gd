@@ -79,7 +79,7 @@ func on_draw_card(HandCard: HandCardGD) -> void:
 	GameCard.pressed.connect(on_card_selected.bind(GameCard))
 	CardBox.add_child(GameCard)
 	
-var _card_selected_material: Resource = preload("res://assets/base_game/cards/card_ui/card_selected_material.tres")
+var _card_selected_material: Resource = preload("res://assets/base_game/cards/game_card/materials/card_selected_material.tres")
 var GameCardSelected: Control
 func on_card_selected(GameCard: Control) -> void:
 	var index: int = -1

@@ -1,0 +1,162 @@
+[gd_scene load_steps=9 format=3 uid="uid://da04y8ex3ym7m"]
+
+[ext_resource type="Script" path="res://scenes/screens/card_editor/model_area.gd" id="1_7kkfb"]
+[ext_resource type="PackedScene" uid="uid://c42bnq7frgogc" path="res://assets/env/level_editor/height_control.tscn" id="1_x5ub3"]
+[ext_resource type="Theme" uid="uid://du2bpyvp41rdk" path="res://assets/UI/roboto/roboto20.tres" id="3_s4kxh"]
+[ext_resource type="PackedScene" uid="uid://60bl7vlw3efv" path="res://assets/base_game/oldcards/card_ui/default_model.glb" id="4_ny3xd"]
+[ext_resource type="Material" uid="uid://byedqx8icr44y" path="res://assets/materials/on_top.tres" id="4_w6c85"]
+
+[sub_resource type="World3D" id="World3D_8b6j0"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_13u3b"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o4ixg"]
+size = Vector2(599, 795)
+
+[node name="ModelArea" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 600.0
+offset_bottom = 795.0
+mouse_filter = 1
+script = ExtResource("1_7kkfb")
+
+[node name="GreenScreen" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="ModelViewer" type="SubViewportContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+offset_right = 600.0
+offset_bottom = 795.0
+
+[node name="SubViewport" type="SubViewport" parent="ModelViewer"]
+world_3d = SubResource("World3D_8b6j0")
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(600, 650)
+render_target_update_mode = 4
+
+[node name="HeightControls" type="Control" parent="ModelViewer/SubViewport"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 331.0
+offset_top = 145.0
+offset_right = 506.0
+offset_bottom = 621.0
+mouse_filter = 1
+
+[node name="EyeControl" parent="ModelViewer/SubViewport/HeightControls" instance=ExtResource("1_x5ub3")]
+unique_name_in_owner = true
+layout_mode = 1
+offset_left = -220.0
+offset_top = 437.0
+offset_right = -84.26
+offset_bottom = 459.388
+label_name = "Eye"
+
+[node name="TopControl" parent="ModelViewer/SubViewport/HeightControls" instance=ExtResource("1_x5ub3")]
+unique_name_in_owner = true
+layout_mode = 1
+offset_left = -220.0
+offset_top = 395.0
+offset_right = -84.26
+offset_bottom = 417.388
+label_name = "Top"
+
+[node name="StatControl" parent="ModelViewer/SubViewport/HeightControls" instance=ExtResource("1_x5ub3")]
+unique_name_in_owner = true
+layout_mode = 1
+offset_left = 10.0
+offset_top = 437.0
+offset_right = 145.74
+offset_bottom = 459.388
+label_name = "Stat"
+
+[node name="WeaponControl" parent="ModelViewer/SubViewport/HeightControls" instance=ExtResource("1_x5ub3")]
+unique_name_in_owner = true
+layout_mode = 1
+offset_left = 10.0
+offset_top = 395.0
+offset_right = 145.74
+offset_bottom = 417.388
+label_name = "ATT"
+
+[node name="WeaponOffset" type="LineEdit" parent="ModelViewer/SubViewport/HeightControls/WeaponControl"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 150.0
+offset_top = -3.0
+offset_right = 250.0
+offset_bottom = 43.0
+theme = ExtResource("3_s4kxh")
+text = "0.1"
+placeholder_text = "Offset"
+alignment = 1
+
+[node name="ModelWorld" type="Node3D" parent="ModelViewer/SubViewport"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
+
+[node name="Model" type="Node3D" parent="ModelViewer/SubViewport/ModelWorld"]
+
+[node name="DefaultModel" parent="ModelViewer/SubViewport/ModelWorld/Model" instance=ExtResource("4_ny3xd")]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="ModelViewer/SubViewport/ModelWorld"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0811731, 1.69899, 3.2611)
+
+[node name="HeightTracker" type="Node3D" parent="ModelViewer/SubViewport/ModelWorld"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+
+[node name="EyeArrow" type="CSGSphere3D" parent="ModelViewer/SubViewport/ModelWorld/HeightTracker"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+radius = 0.05
+material = ExtResource("4_w6c85")
+
+[node name="WeaponArrow" type="CSGSphere3D" parent="ModelViewer/SubViewport/ModelWorld/HeightTracker"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+radius = 0.05
+material = ExtResource("4_w6c85")
+
+[node name="TopArrow" type="CSGSphere3D" parent="ModelViewer/SubViewport/ModelWorld/HeightTracker"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+radius = 0.05
+material = ExtResource("4_w6c85")
+
+[node name="StatArrow" type="CSGSphere3D" parent="ModelViewer/SubViewport/ModelWorld/HeightTracker"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+radius = 0.05
+material = ExtResource("4_w6c85")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ModelViewer/SubViewport/ModelWorld"]
+mesh = SubResource("PlaneMesh_13u3b")
+
+[node name="ModelCamera" type="Camera3D" parent="ModelViewer/SubViewport"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
+
+[node name="ModelControls" type="HBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_top = 715.0
+offset_right = 600.0
+offset_bottom = 795.0
+mouse_filter = 0
+theme_override_constants/separation = 0
+
+[node name="ModelViewerControl" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ModelViewerControl"]
+position = Vector2(299.5, 397.5)
+shape = SubResource("RectangleShape2D_o4ixg")
+debug_color = Color(0, 0.6, 0.701961, 0)

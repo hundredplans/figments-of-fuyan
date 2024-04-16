@@ -146,9 +146,6 @@ func onMoveUnitAI() -> void:
 	var DestinationTile: TileGD = active_action[2]
 	var visibility_path: Array = active_action[4].duplicate()
 	var movement_type: String = onFindVisibilityPathMovementType(DestinationTile, visibility_path)
-	print(visibility_path)
-	print(Unit.base_card.iname)
-	print()
 	if movement_type != "Invisible":
 		SpectateCamera.onStartTrackUnit(Unit)
 		Unit.Model.onMoveToTile(DestinationTile, active_action[3], movement_type)

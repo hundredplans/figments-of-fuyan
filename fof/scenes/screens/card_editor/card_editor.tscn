@@ -1,428 +1,180 @@
-[gd_scene load_steps=17 format=3 uid="uid://dgjchsjrv72a3"]
+[gd_scene load_steps=8 format=3 uid="uid://bvynvyfrpwe38"]
 
-[ext_resource type="Script" path="res://static/game_info/heroes.gd" id="1_5aclk"]
-[ext_resource type="Script" path="res://scenes/screens/card_editor/card_editor.gd" id="1_hv8xs"]
-[ext_resource type="PackedScene" uid="uid://bdd0m6wbuerq5" path="res://scenes/editor/edit_file_name/edit_file_name.tscn" id="2_axojh"]
-[ext_resource type="Theme" uid="uid://c5rky1f5xs5if" path="res://assets/UI/lora/lora48.tres" id="2_q225b"]
-[ext_resource type="Script" path="res://assets/base_game/cards/card_ui/text_processing.gd" id="2_w7p2h"]
-[ext_resource type="Theme" uid="uid://c7y2qa3kssows" path="res://assets/UI/lora/lora.tres" id="3_vsycf"]
-[ext_resource type="PackedScene" uid="uid://bj3h1ak5dv73n" path="res://scenes/ui_general/op_button/op_button.tscn" id="4_nujyg"]
-[ext_resource type="PackedScene" uid="uid://65cqb6wug8it" path="res://scenes/ui_general/scale_button/scale_button.tscn" id="6_18pqn"]
-[ext_resource type="Texture2D" uid="uid://bgbyoyqx40n27" path="res://assets/base_game/cards/card_ui/default_art_max.png" id="6_036w2"]
-[ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="6_crlth"]
-[ext_resource type="PackedScene" uid="uid://60bl7vlw3efv" path="res://assets/base_game/cards/card_ui/default_model.glb" id="9_cp3lr"]
-[ext_resource type="Material" uid="uid://byedqx8icr44y" path="res://assets/materials/on_top.tres" id="13_hxk1e"]
-[ext_resource type="PackedScene" uid="uid://c42bnq7frgogc" path="res://assets/env/level_editor/height_control.tscn" id="13_ik3kg"]
+[ext_resource type="Script" path="res://scenes/screens/card_editor/card_editor.gd" id="1_txieb"]
+[ext_resource type="PackedScene" uid="uid://da04y8ex3ym7m" path="res://scenes/screens/card_editor/model_area.tscn" id="2_bjtfj"]
+[ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="3_2lhne"]
+[ext_resource type="Script" path="res://scenes/screens/card_editor/card_fileloader.gd" id="4_b7v1v"]
+[ext_resource type="Script" path="res://scenes/screens/card_editor/display_card.gd" id="4_ebhib"]
+[ext_resource type="PackedScene" uid="uid://dmula87ma5w81" path="res://scenes/editor/file_finder/file_finder.tscn" id="6_3miwi"]
+[ext_resource type="PackedScene" uid="uid://ciohbercpl5c6" path="res://assets/base_game/cards/game_card/compilers/compile_game_card_text.tscn" id="7_ceu3r"]
 
-[sub_resource type="World3D" id="World3D_8b6j0"]
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_13u3b"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_o4ixg"]
-size = Vector2(631, 795)
-
-[node name="CardEditor" type="Control" node_paths=PackedStringArray("CardText", "FlavorText")]
+[node name="CardEditor" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 1
-script = ExtResource("1_hv8xs")
-CardText = NodePath("CardCreator/CardText")
-FlavorText = NodePath("CardCreator/FlavorText")
+script = ExtResource("1_txieb")
 
-[node name="TextProcessing" type="Node" parent="."]
-script = ExtResource("2_w7p2h")
-
-[node name="Heroes" type="Node" parent="."]
-script = ExtResource("1_5aclk")
-
-[node name="CardCreator" type="Control" parent="."]
-anchors_preset = 0
-offset_left = 631.0
-offset_right = 1342.0
-offset_bottom = 916.0
-theme = ExtResource("2_q225b")
-
-[node name="RarityColor" type="ColorRect" parent="CardCreator"]
-layout_mode = 0
-offset_right = 711.0
-offset_bottom = 916.0
-color = Color(0.807843, 0.623529, 0.501961, 1)
-
-[node name="EditFileName" parent="CardCreator" instance=ExtResource("2_axojh")]
-offset_left = 5.0
-offset_top = 415.0
-offset_right = 690.0
-offset_bottom = 553.0
-ItemNAME = "Card"
-
-[node name="Stats" type="Control" parent="CardCreator"]
-anchors_preset = 0
-offset_right = 682.0
-offset_bottom = 414.0
-
-[node name="Attack" type="LineEdit" parent="CardCreator/Stats"]
-layout_mode = 0
-offset_top = 343.0
-offset_right = 192.0
-offset_bottom = 414.0
-placeholder_text = "ATT"
-alignment = 1
-max_length = 2
-
-[node name="Health" type="LineEdit" parent="CardCreator/Stats"]
-layout_mode = 0
-offset_left = 493.0
-offset_top = 343.0
-offset_right = 685.0
-offset_bottom = 414.0
-placeholder_text = "HP"
-alignment = 1
-max_length = 2
-
-[node name="Speed" type="LineEdit" parent="CardCreator/Stats"]
-layout_mode = 0
-offset_left = 493.0
-offset_right = 685.0
-offset_bottom = 71.0
-placeholder_text = "SPD"
-alignment = 1
-max_length = 2
-
-[node name="Energy" type="LineEdit" parent="CardCreator/Stats"]
-layout_mode = 0
-offset_right = 192.0
-offset_bottom = 71.0
-placeholder_text = "ENER"
-alignment = 1
-max_length = 2
-
-[node name="ChooseRarity" parent="CardCreator" instance=ExtResource("4_nujyg")]
-offset_left = 231.0
-offset_right = 255.0
-options = PackedStringArray("Neutral", "Scrap", "Common", "Rare", "Exalt", "Miniboss", "Boss", "Champion")
-default = 2
-
-[node name="CardText" type="TextEdit" parent="CardCreator"]
-layout_mode = 0
-offset_left = 50.0
-offset_top = 555.0
-offset_right = 640.0
-offset_bottom = 892.0
-theme = ExtResource("6_crlth")
-placeholder_text = "                         Card Text"
-wrap_mode = 1
-
-[node name="FlavorText" type="TextEdit" parent="CardCreator"]
-layout_mode = 0
-offset_left = 725.0
-offset_top = 571.0
-offset_right = 1276.0
-offset_bottom = 1068.0
-theme = ExtResource("6_crlth")
-placeholder_text = "                     Flavor Text"
-wrap_mode = 1
-
-[node name="Art" type="Sprite2D" parent="CardCreator"]
-texture_filter = 1
-position = Vector2(341, 206)
-scale = Vector2(2, 2)
-texture = ExtResource("6_036w2")
-
-[node name="AISettings" type="Control" parent="."]
+[node name="Background" type="Control" parent="."]
 layout_mode = 1
-anchors_preset = 0
-offset_left = 1355.0
-offset_top = 60.0
-offset_right = 1729.0
-offset_bottom = 471.0
-
-[node name="ConfidenceButton" parent="AISettings" instance=ExtResource("6_18pqn")]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = -2.163
-anchor_right = -2.163
-offset_left = 808.962
-offset_top = 14.0
-offset_right = 1091.96
-offset_bottom = 67.0
-min_max = Vector2i(1, 7)
-steps = Vector2i(1, 3)
-default = 4
-label_text = "Confidence"
-snap_mode = true
-
-[node name="IntelligenceButton" parent="AISettings" instance=ExtResource("6_18pqn")]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = -2.163
-anchor_right = -2.163
-offset_left = 808.962
-offset_top = 95.0
-offset_right = 1091.96
-offset_bottom = 148.0
-min_max = Vector2i(1, 7)
-steps = Vector2i(1, 3)
-default = 4
-label_text = "Intelligence"
-snap_mode = true
-
-[node name="AwarenessButton" parent="AISettings" instance=ExtResource("6_18pqn")]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = -2.163
-anchor_right = -2.163
-offset_left = 808.962
-offset_top = 176.0
-offset_right = 1091.96
-offset_bottom = 229.0
-min_max = Vector2i(1, 7)
-steps = Vector2i(1, 3)
-default = 4
-label_text = "Awareness"
-snap_mode = true
-
-[node name="TeamworkButton" parent="AISettings" instance=ExtResource("6_18pqn")]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = -2.163
-anchor_right = -2.163
-offset_left = 808.962
-offset_top = 257.0
-offset_right = 1091.96
-offset_bottom = 310.0
-min_max = Vector2i(1, 7)
-steps = Vector2i(1, 3)
-default = 4
-label_text = "Teamwork"
-snap_mode = true
-
-[node name="AdventurousnessButton" parent="AISettings" instance=ExtResource("6_18pqn")]
-offset_top = 338.0
-offset_bottom = 391.0
-min_max = Vector2i(1, 7)
-steps = Vector2i(1, 3)
-default = 4
-label_text = "Adventurosness"
-snap_mode = true
-
-[node name="Buttons" type="Control" parent="."]
-anchors_preset = 0
-offset_left = 631.0
-offset_top = 916.0
-offset_right = 1342.0
-offset_bottom = 1080.0
-theme = ExtResource("3_vsycf")
-
-[node name="SaveCard" type="Button" parent="Buttons"]
-layout_mode = 1
-anchors_preset = 13
-anchor_left = 0.5
-anchor_right = 0.5
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -341.0
-offset_top = 8.0
-offset_right = -121.0
-offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Save Card"
 
-[node name="LoadCard" type="Button" parent="Buttons"]
+[node name="Outside" type="ColorRect" parent="Background"]
 layout_mode = 1
-anchors_preset = 13
-anchor_left = 0.5
-anchor_right = 0.5
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -113.0
-offset_top = 8.0
-offset_right = 107.0
-offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Load Card"
+color = Color(0.364706, 0.235294, 0.14902, 1)
 
-[node name="DeleteCard" type="Button" parent="Buttons"]
+[node name="Inside" type="ColorRect" parent="Background"]
 layout_mode = 1
-anchors_preset = 13
-anchor_left = 0.5
-anchor_right = 0.5
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 114.0
-offset_top = 8.0
-offset_right = 345.0
-offset_bottom = -8.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Delete Card"
-
-[node name="NewCard" type="Button" parent="Buttons"]
-layout_mode = 0
-offset_left = -624.0
-offset_top = 8.0
-offset_right = -405.0
-offset_bottom = 156.0
-text = "New Card"
-
-[node name="BoxCreator" type="Button" parent="Buttons"]
-layout_mode = 0
-offset_left = -378.0
-offset_top = 8.0
-offset_right = -143.0
-offset_bottom = 156.0
-text = "Box Creator"
-
-[node name="ModelArea" type="Control" parent="."]
-anchors_preset = 0
-offset_right = 631.0
-offset_bottom = 795.0
-mouse_filter = 1
-
-[node name="GreenScreen" type="ColorRect" parent="ModelArea"]
-layout_mode = 0
-offset_right = 631.0
-offset_bottom = 795.0
-color = Color(0, 0, 0, 1)
-
-[node name="ModelViewer" type="SubViewportContainer" parent="ModelArea"]
-layout_mode = 1
-anchors_preset = -1
-offset_right = 631.0
-offset_bottom = 795.0
-
-[node name="SubViewport" type="SubViewport" parent="ModelArea/ModelViewer"]
-world_3d = SubResource("World3D_8b6j0")
-transparent_bg = true
-handle_input_locally = false
-size = Vector2i(631, 650)
-render_target_update_mode = 4
-
-[node name="HeightControls" type="Control" parent="ModelArea/ModelViewer/SubViewport"]
-layout_mode = 3
-anchors_preset = 0
-offset_left = 331.0
-offset_top = 145.0
-offset_right = 506.0
-offset_bottom = 621.0
-mouse_filter = 1
-
-[node name="EyeControl" parent="ModelArea/ModelViewer/SubViewport/HeightControls" instance=ExtResource("13_ik3kg")]
-unique_name_in_owner = true
-layout_mode = 1
-offset_left = -195.0
-offset_top = 437.0
-offset_right = -59.26
-offset_bottom = 459.388
-label_name = "Eye"
-
-[node name="TopControl" parent="ModelArea/ModelViewer/SubViewport/HeightControls" instance=ExtResource("13_ik3kg")]
-unique_name_in_owner = true
-layout_mode = 1
-offset_left = -195.0
-offset_top = 395.0
-offset_right = -59.26
-offset_bottom = 417.388
-label_name = "Top"
-
-[node name="StatControl" parent="ModelArea/ModelViewer/SubViewport/HeightControls" instance=ExtResource("13_ik3kg")]
-unique_name_in_owner = true
-layout_mode = 1
 offset_left = 20.0
-offset_top = 437.0
-offset_right = 155.74
-offset_bottom = 459.388
-label_name = "Stat"
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.792157, 0.576471, 0.431373, 1)
 
-[node name="WeaponControl" parent="ModelArea/ModelViewer/SubViewport/HeightControls" instance=ExtResource("13_ik3kg")]
-unique_name_in_owner = true
-layout_mode = 1
-offset_left = 20.0
-offset_top = 395.0
-offset_right = 155.74
-offset_bottom = 417.388
-label_name = "ATT"
-
-[node name="WeaponOffset" type="LineEdit" parent="ModelArea/ModelViewer/SubViewport/HeightControls/WeaponControl"]
-unique_name_in_owner = true
+[node name="NodeManager" type="VBoxContainer" parent="."]
 layout_mode = 0
-offset_left = 150.0
-offset_top = -3.0
-offset_right = 270.0
-offset_bottom = 43.0
-theme = ExtResource("6_crlth")
-text = "0.1"
-placeholder_text = "Offset"
+offset_left = 38.0
+offset_top = 41.0
+offset_right = 1877.0
+offset_bottom = 1043.0
+theme_override_constants/separation = 21
+
+[node name="NodeManager" type="HBoxContainer" parent="NodeManager"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+
+[node name="ModelArea" parent="NodeManager/NodeManager" instance=ExtResource("2_bjtfj")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CardFileloader" type="Control" parent="NodeManager/NodeManager"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("4_b7v1v")
+
+[node name="DisplayBackground" type="ColorRect" parent="NodeManager/NodeManager/CardFileloader"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.694118, 0.482353, 0.341176, 1)
+
+[node name="NodeManager" type="VBoxContainer" parent="NodeManager/NodeManager/CardFileloader"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SearchMenu" type="HBoxContainer" parent="NodeManager/NodeManager/CardFileloader/NodeManager"]
+layout_mode = 2
+theme = ExtResource("3_2lhne")
+
+[node name="SearchText" type="LineEdit" parent="NodeManager/NodeManager/CardFileloader/NodeManager/SearchMenu"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Enter card name here..."
+
+[node name="AreaSelector" type="OptionButton" parent="NodeManager/NodeManager/CardFileloader/NodeManager/SearchMenu"]
+unique_name_in_owner = true
+layout_mode = 2
+item_count = 2
+selected = 0
+popup/item_0/text = "1"
+popup/item_0/id = 0
+popup/item_1/text = "12"
+popup/item_1/id = 1
+
+[node name="ScrollSorter" type="ScrollContainer" parent="NodeManager/NodeManager/CardFileloader/NodeManager"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="CardSorter" type="GridContainer" parent="NodeManager/NodeManager/CardFileloader/NodeManager/ScrollSorter"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 40
+columns = 2
+
+[node name="FileFinder" parent="NodeManager/NodeManager/CardFileloader" instance=ExtResource("6_3miwi")]
+unique_name_in_owner = true
+
+[node name="DisplayCard" type="Control" parent="NodeManager/NodeManager"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("4_ebhib")
+
+[node name="DisplayBackground" type="ColorRect" parent="NodeManager/NodeManager/DisplayCard"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.694118, 0.482353, 0.341176, 1)
+
+[node name="BaseButtons" type="HBoxContainer" parent="NodeManager"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.23
+theme = ExtResource("3_2lhne")
+theme_override_constants/separation = 15
 alignment = 1
 
-[node name="ModelWorld" type="Node3D" parent="ModelArea/ModelViewer/SubViewport"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
+[node name="SaveButton" type="Button" parent="NodeManager/BaseButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Save"
 
-[node name="Model" type="Node3D" parent="ModelArea/ModelViewer/SubViewport/ModelWorld"]
+[node name="CompileButton" type="Button" parent="NodeManager/BaseButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("3_2lhne")
+text = "Compile Text"
 
-[node name="DefaultModel" parent="ModelArea/ModelViewer/SubViewport/ModelWorld/Model" instance=ExtResource("9_cp3lr")]
+[node name="VisionButton" type="Button" parent="NodeManager/BaseButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("3_2lhne")
+text = "Compile Vision"
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="ModelArea/ModelViewer/SubViewport/ModelWorld"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0811731, 1.69899, 3.2611)
-
-[node name="HeightTracker" type="Node3D" parent="ModelArea/ModelViewer/SubViewport/ModelWorld"]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
-
-[node name="EyeArrow" type="CSGSphere3D" parent="ModelArea/ModelViewer/SubViewport/ModelWorld/HeightTracker"]
+[node name="CompileGameCardText" parent="." instance=ExtResource("7_ceu3r")]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
-radius = 0.05
-material = ExtResource("13_hxk1e")
 
-[node name="WeaponArrow" type="CSGSphere3D" parent="ModelArea/ModelViewer/SubViewport/ModelWorld/HeightTracker"]
-unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-radius = 0.05
-material = ExtResource("13_hxk1e")
-
-[node name="TopArrow" type="CSGSphere3D" parent="ModelArea/ModelViewer/SubViewport/ModelWorld/HeightTracker"]
-unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-radius = 0.05
-material = ExtResource("13_hxk1e")
-
-[node name="StatArrow" type="CSGSphere3D" parent="ModelArea/ModelViewer/SubViewport/ModelWorld/HeightTracker"]
-unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
-radius = 0.05
-material = ExtResource("13_hxk1e")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="ModelArea/ModelViewer/SubViewport/ModelWorld"]
-mesh = SubResource("PlaneMesh_13u3b")
-
-[node name="Camera3D" type="Camera3D" parent="ModelArea/ModelViewer/SubViewport"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
-
-[node name="ModelControls" type="HBoxContainer" parent="ModelArea"]
-layout_mode = 0
-offset_top = 715.0
-offset_right = 631.0
-offset_bottom = 795.0
-mouse_filter = 0
-theme_override_constants/separation = 0
-
-[node name="ModelViewerControl" type="Area2D" parent="ModelArea"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ModelArea/ModelViewerControl"]
-position = Vector2(315.5, 397.5)
-shape = SubResource("RectangleShape2D_o4ixg")
-debug_color = Color(0, 0.6, 0.701961, 0)
-
-[connection signal="text_submitted" from="CardCreator/EditFileName" to="." method="_on_edit_file_name_text_submitted"]
-[connection signal="item_selected" from="CardCreator/ChooseRarity" to="." method="_on_choose_rarity_item_selected"]
-[connection signal="text_changed" from="CardCreator/CardText" to="." method="_on_card_text_changed"]
-[connection signal="text_changed" from="CardCreator/FlavorText" to="." method="_on_flavor_text_changed"]
-[connection signal="pressed" from="Buttons/SaveCard" to="." method="_on_save_card_pressed"]
-[connection signal="pressed" from="Buttons/LoadCard" to="." method="_on_load_card_pressed"]
-[connection signal="pressed" from="Buttons/DeleteCard" to="." method="_on_delete_card_pressed"]
-[connection signal="pressed" from="Buttons/NewCard" to="." method="_on_empty_card_pressed"]
-[connection signal="pressed" from="Buttons/BoxCreator" to="." method="_on_box_creator_pressed"]
-[connection signal="mouse_entered" from="ModelArea/ModelViewerControl" to="." method="_on_model_viewer_control_mouse_entered"]
-[connection signal="mouse_exited" from="ModelArea/ModelViewerControl" to="." method="_on_model_viewer_control_mouse_exited"]
+[connection signal="game_card_pressed" from="NodeManager/NodeManager/CardFileloader" to="." method="_on_card_fileloader_game_card_pressed"]
+[connection signal="text_changed" from="NodeManager/NodeManager/CardFileloader/NodeManager/SearchMenu/SearchText" to="NodeManager/NodeManager/CardFileloader" method="_on_search_text_text_changed"]
+[connection signal="item_selected" from="NodeManager/NodeManager/CardFileloader/NodeManager/SearchMenu/AreaSelector" to="NodeManager/NodeManager/CardFileloader" method="_on_area_selector_item_selected"]
+[connection signal="pressed" from="NodeManager/BaseButtons/SaveButton" to="." method="_on_save_button_pressed"]
+[connection signal="pressed" from="NodeManager/BaseButtons/CompileButton" to="." method="_on_compile_button_pressed"]
+[connection signal="pressed" from="NodeManager/BaseButtons/VisionButton" to="." method="_on_vision_button_pressed"]

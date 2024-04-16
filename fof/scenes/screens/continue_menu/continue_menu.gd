@@ -11,7 +11,7 @@ func _ready() -> void:
 		else:
 			var SaveFileButton: Control = _SaveFileButton.instantiate()
 			SaveFileButton.Heroes = $Heroes
-			SaveFileButton.on_load_save_file(contents, Helper.id_to_dict(contents.area_id, "Area"))
+			SaveFileButton.on_load_save_file(contents, Helper.getAreaInfo(contents.area_id))
 			SaveFileButton.get_node("RemoveButton").pressed.connect(_on_remove_button_pressed.bind(i))
 			SaveFileButton.pressed.connect(on_save_file_pressed)
 			$SaveFiles.add_child(SaveFileButton)

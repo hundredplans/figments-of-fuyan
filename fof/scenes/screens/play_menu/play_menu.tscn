@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://ckupdmi2gxkq5"]
 
 [ext_resource type="Script" path="res://scenes/screens/play_menu/play_menu.gd" id="1_atqxs"]
-[ext_resource type="Script" path="res://static/game_info/heroes.gd" id="2_1luli"]
+[ext_resource type="Resource" uid="uid://b4dnt5vp7cdmq" path="res://assets/base_game/cards/cards/FredericTheFearless/base_card.tres" id="3_dx0ig"]
 [ext_resource type="PackedScene" uid="uid://d0kmucxnl6ah3" path="res://scenes/screens/play_menu/hero_button.tscn" id="3_h80h1"]
 [ext_resource type="Theme" uid="uid://du2bpyvp41rdk" path="res://assets/UI/roboto/roboto20.tres" id="4_rhd58"]
 
@@ -14,9 +14,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("1_atqxs")
-
-[node name="Heroes" type="Node" parent="."]
-script = ExtResource("2_1luli")
 
 [node name="Background" type="Control" parent="."]
 layout_mode = 1
@@ -62,10 +59,9 @@ offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HeroButton" parent="SelectHero" node_paths=PackedStringArray("Heroes") instance=ExtResource("3_h80h1")]
+[node name="HeroButton" parent="SelectHero" instance=ExtResource("3_h80h1")]
 layout_mode = 2
-Heroes = NodePath("../../Heroes")
-hid = 1
+hero_card = ExtResource("3_dx0ig")
 
 [node name="SeedSetter" type="LineEdit" parent="."]
 layout_mode = 1

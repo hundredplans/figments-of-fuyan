@@ -1,22 +1,22 @@
 [gd_scene load_steps=16 format=3 uid="uid://ccsnhg1yt1lia"]
 
-[ext_resource type="Script" path="res://assets/base_game/cards/game_card/game_card.gd" id="1_pl2by"]
-[ext_resource type="Texture2D" uid="uid://b6q51hfsin88k" path="res://assets/base_game/cards/game_card/rarity/2.png" id="2_hayc4"]
-[ext_resource type="Texture2D" uid="uid://1fasb544tbjl" path="res://assets/base_game/cards/game_card/area_background/1.png" id="2_md8b4"]
-[ext_resource type="Texture2D" uid="uid://dqj6m376wbhwo" path="res://assets/base_game/cards/card_ui/stats/att/att.png" id="3_l1qqa"]
-[ext_resource type="Texture2D" uid="uid://cb6nky7lu8ox1" path="res://assets/base_game/cards/118 - Palmsy Dumsy/art_pop.png" id="3_ugywk"]
-[ext_resource type="LabelSettings" uid="uid://qp0350v2j4ah" path="res://assets/UI/roboto/roboto32_outline.tres" id="4_56a35"]
-[ext_resource type="Texture2D" uid="uid://b0l6fop34q6ew" path="res://assets/base_game/cards/card_ui/stats/hp/hp.png" id="5_f4yyf"]
-[ext_resource type="Texture2D" uid="uid://ddob5qay4neya" path="res://assets/base_game/cards/card_ui/stats/spd/spd.png" id="6_raaxe"]
-[ext_resource type="Texture2D" uid="uid://iucmlitjenwl" path="res://assets/base_game/cards/card_ui/stats/energy/energy.png" id="8_cgtck"]
-[ext_resource type="Texture2D" uid="uid://b74ndaaqnns1v" path="res://assets/base_game/cards/card_ui/tool/tool.png" id="9_3ul1s"]
-[ext_resource type="Theme" uid="uid://bsbktaxrkrggi" path="res://assets/UI/roboto/roboto12.tres" id="10_1dvl0"]
-[ext_resource type="FontFile" uid="uid://7k4xd8s0oed2" path="res://assets/UI/roboto/roboto.ttf" id="11_h5fqx"]
-[ext_resource type="FontFile" uid="uid://bjgvp4yvesp1k" path="res://assets/UI/open_sans/OpenSans-ExtraBold.ttf" id="12_l4j2t"]
-[ext_resource type="FontFile" uid="uid://dnq2ul3ia4hy3" path="res://assets/UI/lora/Lora-Bold.ttf" id="13_0b1s6"]
+[ext_resource type="Script" path="res://assets/base_game/cards/game_card/game_card.gd" id="1_5oh34"]
+[ext_resource type="Texture2D" uid="uid://1fasb544tbjl" path="res://assets/base_game/cards/game_card/art/area_background/1.png" id="2_shb8o"]
+[ext_resource type="Texture2D" uid="uid://b6q51hfsin88k" path="res://assets/base_game/cards/game_card/art/rarity/2.png" id="3_qjsx7"]
+[ext_resource type="Texture2D" uid="uid://cb6nky7lu8ox1" path="res://assets/base_game/oldcards/118 - Palmsy Dumsy/art_pop.png" id="4_0aqdq"]
+[ext_resource type="Texture2D" uid="uid://iucmlitjenwl" path="res://assets/base_game/cards/game_card/art/stats/energy.png" id="5_vkqc1"]
+[ext_resource type="LabelSettings" uid="uid://qp0350v2j4ah" path="res://assets/UI/roboto/roboto32_outline.tres" id="6_lxkyv"]
+[ext_resource type="Texture2D" uid="uid://b74ndaaqnns1v" path="res://assets/base_game/cards/game_card/art/tool.png" id="7_seux0"]
+[ext_resource type="Texture2D" uid="uid://dqj6m376wbhwo" path="res://assets/base_game/cards/game_card/art/stats/att.png" id="8_14kk0"]
+[ext_resource type="Texture2D" uid="uid://b0l6fop34q6ew" path="res://assets/base_game/cards/game_card/art/stats/hp.png" id="9_ytouv"]
+[ext_resource type="Texture2D" uid="uid://ddob5qay4neya" path="res://assets/base_game/cards/game_card/art/stats/spd.png" id="10_4jp8r"]
+[ext_resource type="Theme" uid="uid://bsbktaxrkrggi" path="res://assets/UI/roboto/roboto12.tres" id="11_7c0km"]
+[ext_resource type="FontFile" uid="uid://7k4xd8s0oed2" path="res://assets/UI/roboto/roboto.ttf" id="12_6qxeh"]
+[ext_resource type="FontFile" uid="uid://bjgvp4yvesp1k" path="res://assets/UI/open_sans/OpenSans-ExtraBold.ttf" id="13_x6swl"]
+[ext_resource type="FontFile" uid="uid://dnq2ul3ia4hy3" path="res://assets/UI/lora/Lora-Bold.ttf" id="14_t8x33"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_23xl3"]
-font = ExtResource("13_0b1s6")
+font = ExtResource("14_t8x33")
 font_size = 12
 outline_size = 8
 outline_color = Color(0, 0, 0, 1)
@@ -29,7 +29,7 @@ offset_top = 10.0
 offset_right = 264.0
 offset_bottom = 407.0
 mouse_filter = 2
-script = ExtResource("1_pl2by")
+script = ExtResource("1_5oh34")
 EnergyLabel = NodePath("Stats/Energy/Label")
 RegularStats = NodePath("Stats/RegularStats")
 Art = NodePath("Art")
@@ -46,7 +46,7 @@ mouse_filter = 2
 [node name="AreaBackground" type="Sprite2D" parent="Art"]
 texture_filter = 1
 position = Vector2(132, 190)
-texture = ExtResource("2_md8b4")
+texture = ExtResource("2_shb8o")
 metadata/_edit_lock_ = true
 
 [node name="CardButton" type="TextureButton" parent="Art"]
@@ -58,13 +58,13 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
-texture_normal = ExtResource("2_hayc4")
+texture_normal = ExtResource("3_qjsx7")
 metadata/_edit_lock_ = true
 
 [node name="ArtPop" type="Sprite2D" parent="Art"]
 texture_filter = 1
 position = Vector2(132, 190)
-texture = ExtResource("3_ugywk")
+texture = ExtResource("4_0aqdq")
 metadata/_edit_lock_ = true
 
 [node name="Stats" type="Control" parent="."]
@@ -86,7 +86,7 @@ mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="Stats/Energy"]
 position = Vector2(24, 24)
-texture = ExtResource("8_cgtck")
+texture = ExtResource("5_vkqc1")
 metadata/_edit_lock_ = true
 
 [node name="Label" type="Label" parent="Stats/Energy"]
@@ -97,7 +97,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "5"
-label_settings = ExtResource("4_56a35")
+label_settings = ExtResource("6_lxkyv")
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_lock_ = true
@@ -115,7 +115,7 @@ mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="Stats/Tool"]
 position = Vector2(25, 25)
-texture = ExtResource("9_3ul1s")
+texture = ExtResource("7_seux0")
 metadata/_edit_lock_ = true
 
 [node name="RegularStats" type="HBoxContainer" parent="Stats"]
@@ -132,7 +132,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "2"
-label_settings = ExtResource("4_56a35")
+label_settings = ExtResource("6_lxkyv")
 horizontal_alignment = 2
 vertical_alignment = 1
 
@@ -140,7 +140,7 @@ vertical_alignment = 1
 texture_filter = 1
 layout_mode = 2
 size_flags_horizontal = 3
-texture = ExtResource("3_l1qqa")
+texture = ExtResource("8_14kk0")
 stretch_mode = 2
 
 [node name="HealthLabel" type="Label" parent="Stats/RegularStats"]
@@ -150,7 +150,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "2"
-label_settings = ExtResource("4_56a35")
+label_settings = ExtResource("6_lxkyv")
 horizontal_alignment = 2
 vertical_alignment = 1
 
@@ -158,7 +158,7 @@ vertical_alignment = 1
 texture_filter = 1
 layout_mode = 2
 size_flags_horizontal = 3
-texture = ExtResource("5_f4yyf")
+texture = ExtResource("9_ytouv")
 stretch_mode = 2
 
 [node name="SpeedLabel" type="Label" parent="Stats/RegularStats"]
@@ -168,7 +168,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "2"
-label_settings = ExtResource("4_56a35")
+label_settings = ExtResource("6_lxkyv")
 horizontal_alignment = 2
 vertical_alignment = 1
 
@@ -176,7 +176,7 @@ vertical_alignment = 1
 texture_filter = 1
 layout_mode = 2
 size_flags_horizontal = 3
-texture = ExtResource("6_raaxe")
+texture = ExtResource("10_4jp8r")
 stretch_mode = 2
 
 [node name="Text" type="Control" parent="."]
@@ -199,12 +199,12 @@ offset_bottom = 287.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme = ExtResource("10_1dvl0")
+theme = ExtResource("11_7c0km")
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/line_separation = 2
 theme_override_constants/outline_size = 6
-theme_override_fonts/normal_font = ExtResource("11_h5fqx")
-theme_override_fonts/bold_font = ExtResource("12_l4j2t")
+theme_override_fonts/normal_font = ExtResource("12_6qxeh")
+theme_override_fonts/bold_font = ExtResource("13_x6swl")
 theme_override_font_sizes/normal_font_size = 12
 theme_override_font_sizes/bold_font_size = 12
 bbcode_enabled = true

@@ -1,28 +1,26 @@
 extends Control
 
 signal pressed
-@export var Heroes: Node
-@export var hid: int
+@export var hero_card: HeroCardGD
 var can_press: bool = false
 var is_disabled: bool = false
 
 func _ready() -> void:
-	$Background/Inside.color = Heroes.hid_accent_color[hid]
-	$Background/HeroNameBackground.color = Heroes.hid_primary_color[hid]
-	$HeroDescription.text = Heroes.hid_description[hid]
+	$Background/Inside.color = hero_card.accent_color
+	$Background/HeroNameBackground.color = hero_card.primary_color
+	$HeroDescription.text = hero_card.description
 	
-	var card: Control = preload("res://assets/base_game/cards/card_ui/card_ui.tscn").instantiate()
-	card.Heroes = Heroes
-	card.set_info(Helper.id_to_dict(Heroes.hid_to_base(hid), "Card"))
-	card.position = Vector2(8, 700)
-	add_child(card)
+	var GameCard: GameCardGD = preload("res://assets/base_game/cards/game_card/game_card.tscn").instantiate()
+	GameCard.set_info(hero_card.base_cards[0])
+	GameCard.position = Vector2(-4, 650)
+	add_child(GameCard)
 	
-	$HeroName.text = card.info.sname
-	$HeroTexture.texture = load(card.get_node("Art/ArtMax").texture.resource_path)
+	$HeroName.text = GameCard.base_card.name
+	$HeroTexture.texture = load("res://assets/base_game/cards/cards/" + GameCard.base_card.folder_name + "/art_pop.png")
 
 func _on_mouse_entered(): modulate = Helper.DARK_GREY; can_press = true
 func _on_mouse_exited(): modulate = Helper.BASE; can_press = false
-func _input(_event: InputEvent) -> void: if can_press and Input.is_action_just_pressed("LeftClick") and !is_disabled: pressed.emit(hid)
+func _input(_event: InputEvent) -> void: if can_press and Input.is_action_just_pressed("LeftClick") and !is_disabled: pressed.emit(hero_card)
 
 func setDisable() -> void:
 	is_disabled = true
