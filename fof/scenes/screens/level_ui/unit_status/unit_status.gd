@@ -2,7 +2,6 @@ extends Control
 
 var UnitStatusExtra: Control
 var is_model: bool
-var Heroes: HeroesGD
 
 var Unit: UnitGD
 @onready var oHoverCard: Control = $HoverCard
@@ -43,8 +42,7 @@ func on_set_unit(_Unit: UnitGD) -> void:
 	on_reset_status_effects()
 	on_reset_tool()
 	
-	var hero_bgfn: String = Unit.base_card.bgfn if Unit.rarity != 7 else Helper.id_to_dict(Heroes.id_to_base(Unit.id), "Card").bgfn
-	var card_texture_path: String = "res://assets/base_game/cards/" + hero_bgfn + "/art_mini.png"
+	var card_texture_path: String = "res://assets/base_game/cards/cards/" + Unit.base_card.folder_name + "/art_mini.png"
 	ArtPop.texture_normal = load(card_texture_path)
 
 @onready var AttackLabel: Label = $Stats/Attack/Label
@@ -58,8 +56,8 @@ func on_reset_stats(stat_changed: String) -> void:
 	var health_modulate: String
 	var speed_modulate: String
 	
-	if Unit.attack < Unit.base_card.a: attack_modulate = "DARK_RED"
-	elif Unit.attack == Unit.base_card.a: attack_modulate = "BASE"
+	if Unit.attack < Unit.base_card.attack: attack_modulate = "DARK_RED"
+	elif Unit.attack == Unit.base_card.attack: attack_modulate = "BASE"
 	else: attack_modulate = "BRIGHT_GREEN" 
 	
 	if Unit.health < Unit.max_health: health_modulate = "DARK_RED"
@@ -94,7 +92,7 @@ func on_reset_stat_numbers(attack_modulate: String, health_modulate: String, spe
 	SpeedLabel.modulate = Unit.Units.get(speed_modulate)
 	
 	for stat in ["Attack", "Health", "Speed"]:
-		var val: int = Unit["max_" + stat.to_lower()] - Unit.base_card[stat[0].to_lower()]
+		var val: int = Unit["max_" + stat.to_lower()] - Unit.base_card[stat.to_lower()]
 		get_node("HoverCard/Buffs/HBoxContainer/" + stat + "/Label").text = ("+" if val >= 0 else "") + str(val)
 	
 	var StatLabel: Label = Stats.get_node(stat_changed + "/Label")
@@ -117,7 +115,6 @@ func on_initiate_hover_card() -> void:
 	await get_tree().create_timer(HOVER_TIME_DELAY).timeout
 	if is_hover and HoverCard == null:
 		var CardUI: Control = preload("res://assets/base_game/cards/game_card/game_card.tscn").instantiate()
-		CardUI.Heroes = Heroes
 		CardUI.set_info(Unit.base_card)
 		HoverCard = CardUI
 		oHoverCard.add_child(CardUI)

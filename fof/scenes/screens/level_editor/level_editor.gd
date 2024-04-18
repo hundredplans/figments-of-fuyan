@@ -80,18 +80,22 @@ func _ready() -> void:
 	setup_elevation()
 	set_heightbuttons_modulate()
 	
+func isLineEditsFocused() -> bool:
+	return [LevelName, FolderName, IDEdit].any(func(x: LineEdit): return x.has_focus())
+
 func _process(delta: float) -> void:
 	if spin_model:
 		ModelItem.rotation_degrees.y += delta * SPIN_MODEL_SPEED
 	
-	for input in [1,2,3,4,5,6,7]:
-		if max_item_types > 0 and Input.is_action_just_pressed("ShiftNumber" + str(input)):
-			on_type_button_pressed(input - 1)
-			reset_infos(true)
-			if active_tile: on_hover_tile(active_tile)
-		
-		elif input < 5 and Input.is_action_just_pressed("Number" + str(input)):
-			on_load_tab(input - 1)
+	if !isLineEditsFocused():
+		for input in [1,2,3,4,5,6,7]:
+			if max_item_types > 0 and Input.is_action_just_pressed("ShiftNumber" + str(input)):
+				on_type_button_pressed(input - 1)
+				reset_infos(true)
+				if active_tile: on_hover_tile(active_tile)
+			
+			elif input < 5 and Input.is_action_just_pressed("Number" + str(input)):
+				on_load_tab(input - 1)
 
 	if build_menu_is_moving == 0 and Input.is_action_just_pressed("Tab"):
 		build_menu_is_moving = -1 if BuildMenu.position.y > 1000 else 1
@@ -352,10 +356,11 @@ func on_area_selected(item: AreaInfoGD) -> void:
 	
 	for level_info in Helper.getAllLevelInfo():
 		if level_info.area == loaded_area: LoadLevel.add_item(level_info.folder_name)
+	LoadLevel.selected = -1
 	
 @onready var LoadLevel: OptionButton = %LoadLevel
 func on_load_level_pressed(index: int) -> void:
-	on_load_level(Helper.getLevelInfo(int(LoadLevel.get_item_text(index))))
+	on_load_level(Helper.getFofInfo(LoadLevel.get_item_text(index), "level", "folder_name"))
 	
 func on_load_level(info: LevelInfoGD) -> void:
 	on_clear_history()
@@ -379,7 +384,7 @@ func on_load_level(info: LevelInfoGD) -> void:
 		tile.load_tdeco(i.tdeco.id)
 		tile.load_wdeco(i.wdeco.id)
 	setup_elevation()
-	$InfoMenu/TrinketAmount.set_grabber_position()
+	onResetInfoMenu(info.name, info.folder_name, info.id, info.difficulty)
 	
 func on_load_empty_level(save_level: bool = true) -> void:
 	if loaded_area != null:
@@ -406,8 +411,17 @@ func on_load_empty_level(save_level: bool = true) -> void:
 					"wdeco": EMPTY_DATA[4].duplicate(true), 
 					"position": [x, y, -x-y, w]}
 					tile.load_tile(tile.info.tile.id)
+					
+		onResetInfoMenu()
 		loaded_level = true
 		setup_elevation()
+	
+@onready var DifficultySlider: HSlider = %DifficultySlider
+func onResetInfoMenu(level_name: String = "", folder_name: String = "", id: int = 0, difficulty: int = 0) -> void:
+	LevelName.text = level_name
+	FolderName.text = folder_name
+	IDEdit.text = str(id)
+	DifficultySlider.value = difficulty
 	
 func clear_world_tiles() -> void:
 	for child in World.get_node("Tiles").get_children():
@@ -451,10 +465,10 @@ func on_file_loader_queued() -> void:
 	reset_mblocker_rects()
 	file_loader_loaded = false
 
-@onready var IDEdit: LineEdit
-func _on_save_level_pressed() -> void:
+@onready var IDEdit: LineEdit = %IDEdit
+func _on_save_level_pressed() -> LevelInfoGD:
 	if loaded_level and !(LevelName.text.is_empty())\
-	and !(FolderName.text.is_empty()) and !(IDEdit.text.is_valid_int()):
+	and !(FolderName.text.is_empty()) and IDEdit.text.is_valid_int():
 		var children: Array = []
 		for child in World.get_node("Tiles").get_children():
 			for tile in child.get_children():
@@ -466,14 +480,21 @@ func _on_save_level_pressed() -> void:
 		level_info.folder_name = FolderName.text
 		level_info.difficulty = level_difficulty
 		level_info.level_size = level_size
+		level_info.area = loaded_area
 		level_info.tiles = children.map(func(x: Node3D): return x.info)
 		
 		var DIR_PATH: String = "res://assets/base_game/levels/levels/" + level_info.folder_name + "/"
 		DirAccess.make_dir_absolute(DIR_PATH)
-		ResourceSaver.save(level_info, DIR_PATH + level_info.name + ".tres")
+		ResourceSaver.save(level_info, DIR_PATH + "level_info.tres")
 		
+		for item in range(LoadLevel.item_count).map(func(x: int): return LoadLevel.get_item_text(x)):
+			if item == level_info.folder_name: return level_info
+		
+		LoadLevel.add_item(level_info.folder_name)
+		LoadLevel.selected = -1
+		return level_info
 	else: AudioMaster.play_sfx("UnconfirmDefault")
-	
+	return null
 func _queue_free() -> void:
 	_on_save_level_pressed()
 	load_world.emit(null)
@@ -1122,7 +1143,7 @@ func load_settings_mini_menu() -> void:
 		block_screen = true
 		reset_mblocker_rects()
 		var mini_menu: Control = preload("res://scenes/screens/level_editor/build_menu/settings_mini_menu.tscn").instantiate()
-		Helper.load_area_colors(mini_menu, loaded_area.pcolor, loaded_area.acolor)
+		Helper.load_area_colors(mini_menu, loaded_area.primary_color, loaded_area.accent_color)
 		add_child(mini_menu)
 		mini_menu.queued.connect(on_file_loader_queued)
 
@@ -1906,43 +1927,43 @@ func on_clear_history() -> void:
 	on_change_history_menu_page(0)
 
 var light_tester_gd: Script = preload("res://assets/base_game/levels/level/loaded_level_light_tester.gd")
-func _on_bake_level_pressed(): pass
-	#var item_dict: Dictionary = _on_save_level_pressed(true, 1)
-	#if item_dict:
-		#var packed_scene := PackedScene.new()
-		#
-		#var load_level_path: String = "res://assets/base_game/levels/level/loaded_level.tscn"
-		#if FileAccess.file_exists("res://assets/base_game/levels/" + item_dict.bgfn + "/loaded_level.tscn"):
-			#load_level_path = "res://assets/base_game/levels/" + item_dict.bgfn + "/loaded_level.tscn"
-			#
-		#get_parent().visible = false
-		#var LoadedLevel: Node3D = load(load_level_path).instantiate()
-		#for child in LoadedLevel.get_node("Tiles").get_children(): child.free()
-		#add_child(LoadedLevel)
-		#
-		#var tiles: Array = []
-		#var s: int = item_dict.tiles.size()
-		#var i: int = 0
-		#for tile_info in item_dict.tiles:
-			#tiles.append(on_create_tile(tile_info, LoadedLevel, item_dict.area))
-			#await get_tree().create_timer(0.001).timeout
-			#i += 1
-			#print(str(i) + "/" + str(s))
-		#
-		#tiles = tiles.filter(func(x: TileGD): return x != null)
-		#var positions: Array = tiles.map(func(x: TileGD): return x.onTTpos())
-		#for Tile in tiles:
-			#print(Tile.tile)
-			#on_set_tile_solid_status(Tile, tiles, positions)
-		#
-		#await get_tree().create_timer(0.02).timeout # absolutely necessary
-		#LoadedLevel.script = light_tester_gd
-		#packed_scene.pack(LoadedLevel)
-		#ResourceSaver.save(packed_scene, "res://assets/base_game/levels/" + item_dict.bgfn + "/loaded_level.tscn")
-		#LoadedLevel.queue_free()
-		#get_parent().visible = true
-	#else:
-		#AudioMaster.play_sfx("UnconfirmDefault")
+func _on_bake_level_pressed():
+	var level_info: LevelInfoGD = _on_save_level_pressed()
+	if level_info != null:
+		var packed_scene := PackedScene.new()
+		
+		var load_level_path: String = "res://assets/base_game/levels/level/loaded_level.tscn"
+		var alt_path: String = "res://assets/base_game/levels/levels/" + level_info.folder_name + "/loaded_level.tscn"
+		if FileAccess.file_exists(alt_path): load_level_path = alt_path
+			
+		get_parent().visible = false
+		var LoadedLevel: Node3D = load(load_level_path).instantiate()
+		for child in LoadedLevel.get_node("Tiles").get_children(): child.free()
+		add_child(LoadedLevel)
+		
+		var tiles: Array = []
+		var s: int = level_info.tiles.size()
+		var i: int = 0
+		for tile_info in level_info.tiles:
+			tiles.append(on_create_tile(tile_info, LoadedLevel, level_info.area.id))
+			await get_tree().create_timer(0.001).timeout
+			i += 1
+			print(str(i) + "/" + str(s))
+		
+		tiles = tiles.filter(func(x: TileGD): return x != null)
+		var positions: Array = tiles.map(func(x: TileGD): return x.onTTpos())
+		for Tile in tiles:
+			print(Tile.tile)
+			on_set_tile_solid_status(Tile, tiles, positions)
+		
+		await get_tree().create_timer(0.02).timeout # absolutely necessary
+		LoadedLevel.script = light_tester_gd
+		packed_scene.pack(LoadedLevel)
+		ResourceSaver.save(packed_scene, alt_path)
+		LoadedLevel.queue_free()
+		get_parent().visible = true
+	else:
+		AudioMaster.play_sfx("UnconfirmDefault")
 
 var _LevelTile: PackedScene = preload("res://scenes/screens/level_map/utility_nodes/tiles/level_tile.tscn")
 var item_properties: Array
@@ -2037,18 +2058,16 @@ func on_load_item_properties() -> void:
 	for line in data.split("\n", false):
 		item_properties.append(str_to_var(line))
 
-func _on_load_level_pressed():
-	pass # Replace with function body.
-
 @onready var LoadArea: OptionButton = %LoadArea
 func _on_load_area_item_selected(index):
-	on_area_selected(Helper.getAreaInfo(int(LoadArea.get_item_text(index))))
+	on_area_selected(Helper.getFofInfo(int(LoadArea.get_item_text(index)), "area"))
 
-@onready var LevelName: LineEdit = $InfoMenu/InfoContainer/LevelName
+@onready var LevelName: LineEdit = %LevelName
 @onready var FolderName: LineEdit = %FolderName
 func onLineEditTextSubmitted(__: String) -> void:
 	LevelName.release_focus()
 	FolderName.release_focus()
+	IDEdit.release_focus()
 
 func _on_h_slider_value_changed(value):
 	level_difficulty = value

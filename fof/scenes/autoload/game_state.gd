@@ -2,57 +2,53 @@ class_name GameStateGD
 extends Node
 
 var player_deck: Array = [
-	#{"id": 113,
-	#"tool_id": 0,
-	#"effects": []},
-	#
-	#{"id": 114,
-	#"tool_id": 0,
-	#"effects": []},
-	#
-	#{"id": 115,
-	#"tool_id": 0,
-	#"effects": []},
-	#
-	#{"id": 116,
-	#"tool_id": 0,
-	#"effects": []},
-	#
-	#{"id": 117,
-	#"tool_id": 0,
-	#"effects": []},
-	#
-	#{"id": 118,
-	#"tool_id": 0,
-	#"effects": []},
-	#
-	#{"id": 119,
-	#"tool_id": 0,
-	#"effects": []},
-	#
-	#{"id": 120,
-	#"tool_id": 0,
-	#"effects": []},
-	#
-	#{"id": 122,
-	#"tool_id": 0,
-	#"effects": []},
-	#
-	#{"id": 123,
-	#"tool_id": 0,
-	#"effects": []},
-	#
-	#{"id": 124,
-	#"tool_id": 0,
-	#"effects": []},
-#
-	#{"id": 125,
-	#"tool_id": 0,
-	#"effects": []},
-	#
-	#{"id": 126,
-	#"tool_id": 0,
-	#"effects": []},
+		{"id": 7,
+	"tool_id": 0,
+	"effects": []
+	},
+		{"id": 8,
+	"tool_id": 0,
+	"effects": []
+	},
+		{"id": 9,
+	"tool_id": 0,
+	"effects": []
+	},
+		{"id": 10,
+	"tool_id": 0,
+	"effects": []
+	},
+		{"id": 11,
+	"tool_id": 0,
+	"effects": []
+	},
+		{"id": 12,
+	"tool_id": 0,
+	"effects": []
+	},
+		{"id": 13,
+	"tool_id": 0,
+	"effects": []
+	},
+		{"id": 14,
+	"tool_id": 0,
+	"effects": []
+	},
+	
+		{"id": 16,
+	"tool_id": 0,
+	"effects": []
+	},
+	
+		{"id": 17,
+	"tool_id": 0,
+	"effects": []
+	},
+	
+		{"id": 18,
+	"tool_id": 0,
+	"effects": []
+	},
 ]
 
 var player_boons: Array = []
@@ -60,7 +56,7 @@ var admin: bool = true
 var save_file: int = -1
 var area_info: AreaInfoGD
 var map_info: Dictionary
-var level_info: Dictionary = {"id": 0}
+var level_info: LevelInfoGD
 var map_progress := Vector2(1, 10)
 var shillings: int = 0
 var hero_level: int = 0
@@ -69,9 +65,9 @@ var gseed: int = 0
 
 func on_set_info(info: Dictionary) -> void:
 	save_file = info.save_file
-	area_info = Helper.getAreaInfo(info.area_id)
+	area_info = Helper.getFofInfo(info.area_id, "area")
 	map_info = Helper.id_to_dict(info.map_id, "Map")
-	level_info = {"id": 0} if info.level_id == 0 else Helper.id_to_dict(info.level_id, "Level")
+	level_info =  null if info.level_id == 0 else Helper.getFofInfo(info.level_id, "level")
 	map_progress = Vector2(info.map_progress[0], info.map_progress[1])
 	shillings = info.shillings
 	hero_level = info.hero_level
@@ -97,7 +93,7 @@ func on_save_game_state() -> void:
 			save_file,
 			area_info.id,
 			map_info.id,
-			level_info.id,
+			level_info.id if level_info != null else 0,
 			[map_progress.x, map_progress.y],
 			shillings, 
 			hero_level, 
@@ -112,7 +108,7 @@ func on_save_game_state() -> void:
 		Helper.write_to_file("user://save/save_files/", str(save_file), ".txt", contents, false)
 
 func on_load_new_area(_world: int) -> void:
-	var areas: Array = [Helper.getAreaInfo(1)]
+	var areas: Array = [Helper.getFofInfo(1, "area")]
 	area_info = areas[0] # this is supposed to be randomised but will pick palms for now
 	on_load_new_map()
 	

@@ -2,17 +2,16 @@
 
 [ext_resource type="Resource" uid="uid://i7fssvdm607r" path="res://assets/base_game/cards/cards/FredericTheFearless/hero_levels/base_card0.tres" id="1_bxg2a"]
 [ext_resource type="Script" path="res://assets/base_game/cards/templates/hero_card.gd" id="2_j2pit"]
-[ext_resource type="Resource" uid="uid://bog0wddbd4dr5" path="res://assets/base_game/cards/cards/FredericTheFearless/hero_levels/base_card1.tres" id="2_w4pp4"]
-[ext_resource type="Resource" uid="uid://dpnj8jgfg1efo" path="res://assets/base_game/cards/cards/FredericTheFearless/hero_levels/base_card2.tres" id="3_exc6b"]
-[ext_resource type="Resource" uid="uid://cm45e8r873hp" path="res://assets/base_game/cards/cards/FredericTheFearless/hero_levels/base_card3.tres" id="4_naolg"]
-[ext_resource type="Resource" uid="uid://cgw5wv6glox33" path="res://assets/base_game/cards/cards/FredericTheFearless/hero_levels/base_card4.tres" id="5_5einr"]
-[ext_resource type="Resource" uid="uid://ccb76iq4he65g" path="res://assets/base_game/cards/cards/FredericTheFearless/hero_levels/base_card5.tres" id="6_i6qcd"]
-[ext_resource type="Resource" uid="uid://b75o7qj4hiv5n" path="res://assets/base_game/cards/cards/FredericTheFearless/hero_levels/base_card6.tres" id="7_6vx63"]
-[ext_resource type="Resource" uid="uid://cdqo7ws308gf4" path="res://assets/base_game/cards/cards/FredericTheFearless/hero_levels/base_card7.tres" id="8_fvtn4"]
+[ext_resource type="Resource" path="res://assets/base_game/cards/cards/FredericTheFearless/hero_levels/base_card1.tres" id="2_w4pp4"]
+[ext_resource type="Resource" path="res://assets/base_game/cards/cards/FredericTheFearless/hero_levels/base_card2.tres" id="3_exc6b"]
+[ext_resource type="Resource" path="res://assets/base_game/cards/cards/FredericTheFearless/hero_levels/base_card3.tres" id="4_naolg"]
+[ext_resource type="Resource" path="res://assets/base_game/cards/cards/FredericTheFearless/hero_levels/base_card4.tres" id="5_5einr"]
+[ext_resource type="Resource" path="res://assets/base_game/cards/cards/FredericTheFearless/hero_levels/base_card5.tres" id="6_i6qcd"]
+[ext_resource type="Resource" path="res://assets/base_game/cards/cards/FredericTheFearless/hero_levels/base_card6.tres" id="7_6vx63"]
+[ext_resource type="Resource" path="res://assets/base_game/cards/cards/FredericTheFearless/hero_levels/base_card7.tres" id="8_fvtn4"]
 
 [resource]
 script = ExtResource("2_j2pit")
-id = 1
 hero_id = 1
 area_id = 12
 base_cards = Array[Resource("res://assets/base_game/cards/templates/base_card.gd")]([ExtResource("1_bxg2a"), ExtResource("2_w4pp4"), ExtResource("3_exc6b"), ExtResource("4_naolg"), ExtResource("5_5einr"), ExtResource("6_i6qcd"), ExtResource("7_6vx63"), ExtResource("8_fvtn4")])
@@ -22,3 +21,6 @@ description = "- Simple
 - Individualist"
 primary_color = Color(0.219608, 0.419608, 0.235294, 1)
 accent_color = Color(0.807843, 0.556863, 0.403922, 1)
+id = 1
+name = "Frederic The Fearless"
+folder_name = "FredericTheFearless"

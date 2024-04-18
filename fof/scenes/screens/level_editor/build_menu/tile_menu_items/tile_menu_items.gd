@@ -8,8 +8,6 @@ func _ready() -> void:
 
 func load_independent() -> void:
 	match parent.item_name:
-		"Obj":
-			$Spawn.visible = (parent.tiles.size() == 1 and parent.tiles[0].info.obj.id in [1, 3])
 		"Wall":
 			for child in [$Unfill_Wall, $Fill_Wall, $Wall_Height]:
 				child.visible = parent.tiles.any(func(x: Node3D): return x.info.wall.id > 0)

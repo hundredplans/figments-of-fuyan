@@ -6,7 +6,6 @@ signal load_world
 signal equip_sky
 signal mouse_in_ui
 
-var Heroes: HeroesGD
 var Vision: VisionGD
 var SpectateCamera: Node3D
 var Units: UnitsGD
@@ -38,8 +37,6 @@ func _ready() -> void:
 	LevelMap.action_lock_changed.connect(onActionLockChanged)
 	
 	load_world.emit(LevelMap)
-	Heroes = LevelMap.Heroes
-	UnitStatusState.Heroes = Heroes
 	Vision = LevelMap.Vision
 	SpectateCamera = LevelMap.SpectateCamera
 	equip_sky.emit(GameState.area_info.id, false)
@@ -73,9 +70,8 @@ var _GameCard: PackedScene = preload("res://assets/base_game/cards/game_card/gam
 func on_draw_card(HandCard: HandCardGD) -> void:
 	var GameCard: Control = _GameCard.instantiate()
 	GameCard.is_hover = true
-	GameCard.Heroes = Heroes
 	GameCard.custom_minimum_size = Vector2(GameCard.size.x, 0)
-	GameCard.set_info(Helper.id_to_dict(HandCard.id, "Card"))
+	GameCard.set_info(Helper.getCard(HandCard.id))
 	GameCard.pressed.connect(on_card_selected.bind(GameCard))
 	CardBox.add_child(GameCard)
 	
@@ -150,7 +146,6 @@ var last_ally: int = 0
 @onready var Statuses: Control = %Statuses
 func on_add_unit_status_box(Unit: UnitGD) -> void:
 	var UnitStatus: Control = preload("res://scenes/screens/level_ui/unit_status/unit_status.tscn").instantiate()
-	UnitStatus.Heroes = Heroes
 	UnitStatus.queue_free_signal.connect(on_unit_status_queue_free)
 	Statuses.add_child(UnitStatus)
 	

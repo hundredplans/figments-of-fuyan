@@ -72,7 +72,7 @@ func add_item_btn() -> void:
 func on_set_item_btn() -> void:
 	if item_name != "General":
 		var first_time: bool = !ItemButton.is_inside_tree()
-		var area: Dictionary = parent.get_parent().loaded_area
+		var area: AreaInfoGD = parent.get_parent().loaded_area
 		if tiles.size() == 1 and area:
 			var variances: Array = range(1, 10)
 			var tile: Node3D = tiles[0]

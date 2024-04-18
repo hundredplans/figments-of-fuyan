@@ -1,7 +1,6 @@
 class_name HeroCardGD
-extends Resource
+extends FofInfoGD
 
-@export var id: int
 @export var hero_id: int
 @export var area_id: int
 @export var base_cards: Array[BaseCardGD]

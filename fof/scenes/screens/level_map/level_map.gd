@@ -38,7 +38,7 @@ func on_load_world_history() -> void:
 	pass
 	
 func on_load_default_world_state() -> void:
-	LoadedLevel = load("res://assets/base_game/levels/" + GameState.level_info.bgfn + "/loaded_level.tscn").instantiate()
+	LoadedLevel = load("res://assets/base_game/levels/levels/" + GameState.level_info.folder_name + "/loaded_level.tscn").instantiate()
 	LoadedLevel.script = null
 	
 	LoadedLevel.get_node("Tiles").script = preload("res://scenes/screens/level_map/utility_nodes/tiles/tiles.gd")

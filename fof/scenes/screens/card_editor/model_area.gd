@@ -42,7 +42,6 @@ func onCreateModel(_base_card: BaseCardGD) -> void:
 		onSetHeights()
 		
 func onSetHeights():
-	print(base_card.eye)
 	EyeArrow.position.y = base_card.eye
 	TopArrow.position.y = base_card.top
 	WeaponArrow.position.y = base_card.weapon

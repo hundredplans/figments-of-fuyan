@@ -195,6 +195,6 @@ func load_general_world() -> void:
 
 func on_equip_sky(value: int, is_theme: bool) -> void:
 	if is_theme: WorldEnv.environment = load("res://scenes/world/equipped_theme/" + str(value) + "/env.tres")
-	else: WorldEnv.environment = load("res://assets/base_game/areas/" + Helper.getAreaInfo(value).folder_name + "/env.tres")
+	else: WorldEnv.environment = load("res://assets/base_game/areas/" + Helper.getFofInfo(value, "area").folder_name + "/env.tres")
 
 var GameState: Node

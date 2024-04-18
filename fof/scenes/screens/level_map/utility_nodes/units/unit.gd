@@ -83,7 +83,7 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	position.y += 0.3
 	occupy_tile(tile)
 	Tiles.on_set_tile_material(tile, "AllyOccupy" if team == 0 else "EnemyOccupy")
-	AudioDict = load("res://assets/base_game/cards/" + base_card.bgfn + "/audio.tres")
+	AudioDict = load("res://assets/base_game/cards/cards/" + base_card.folder_name + "/audio.tres")
 
 func occupy_tile(_Tile: TileGD) -> void:
 	Tile = _Tile

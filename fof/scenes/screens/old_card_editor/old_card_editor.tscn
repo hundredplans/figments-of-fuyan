@@ -11,7 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://bgbyoyqx40n27" path="res://assets/base_game/oldcards/card_ui/default_art_max.png" id="6_036w2"]
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="6_crlth"]
 
-[node name="OldCardEditor" type="Control"]
+[node name="OldCardEditor" type="Control" node_paths=PackedStringArray("CardText", "FlavorText")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,6 +20,8 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("1_hv8xs")
+CardText = NodePath("CardCreator/CardText")
+FlavorText = NodePath("CardCreator/FlavorText")
 
 [node name="TextProcessing" type="Node" parent="."]
 script = ExtResource("2_w7p2h")

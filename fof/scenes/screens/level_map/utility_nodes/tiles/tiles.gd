@@ -434,9 +434,6 @@ func on_connect_points(astar: AStar3D, movement_types: Array, Tile: TileGD, _Til
 	astar.connect_points(Tile.get_instance_id(), _Tile.get_instance_id(), false)
 	
 func on_tile_hovered(Tile: TileGD) -> void:
-	var unit = Units.unit_by_tile(Tile)
-	if unit != null: print(unit.visible_units)
-	
 	if "RegularInspected" not in Tile.tile_state:
 		on_set_tile_material(Tile, "RegularInspected")
 		

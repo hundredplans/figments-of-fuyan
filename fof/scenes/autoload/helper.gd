@@ -498,22 +498,13 @@ const NUM_TO_STRING_NUM: Dictionary = {
 	9: "nine",
 }
 
-func getAreaInfo(id: int) -> AreaInfoGD:
-	var DIR_PATH: String = "res://assets/base_game/areas/"
-	for dir in DirAccess.get_directories_at(DIR_PATH):
-		for file in DirAccess.get_files_at(DIR_PATH + dir):
-			if file.begins_with("area_info"):
-				var area_info: AreaInfoGD = load(DIR_PATH + dir + "/" + file)
-				if area_info.id == id: return area_info
-	return null
-
 func getHeroCardInfo(hid: int) -> HeroCardGD:
 	var DIR_PATH: String = "res://assets/base_game/cards/cards/"
 	for dir in DirAccess.get_directories_at(DIR_PATH):
 		for file in DirAccess.get_files_at(DIR_PATH + dir):
 			if file.begins_with("base_card"):
-				var hero_card: HeroCardGD = load(DIR_PATH + dir + "/" + file)
-				if hero_card.hero_id == hid: return hero_card
+				var hero_card: FofInfoGD = load(DIR_PATH + dir + "/" + file)
+				if hero_card is HeroCardGD and hero_card.hero_id == hid: return hero_card
 	return null
 
 var cards: Array = []
@@ -537,7 +528,12 @@ func _ready() -> void:
 		cards.append(base_card)
 
 func getCard(id: int) -> BaseCardGD:
-	return cards[id]
+	if GameState == null: return cards[id]
+	else:
+		if cards[id] is HeroCardGD:
+			return cards[id].base_cards[GameState.hero_level]
+		return cards[id]
+	
 
 func getAllLevelInfo() -> Array:
 	var levels: Array = []
@@ -548,3 +544,24 @@ func getAllLevelInfo() -> Array:
 				levels.append(load(DIR_PATH + dir + "/" + file))
 	return levels
 	
+const FOF_INFO_DIR_PATHS: Dictionary = {
+	"level": "res://assets/base_game/levels/levels/",
+	"card": "res://assets/base_game/cards/cards/",
+	"area": "res://assets/base_game/areas/"
+}
+
+const FOF_INFO_BEGIN_BY: Dictionary = {
+	"level": "level_info",
+	"card": "base_card",
+	"area": "area_info",
+}
+
+func getFofInfo(condition: Variant, info_type: String = "card", match_by: String = "id") -> Variant:
+	var DIR_PATH: String = FOF_INFO_DIR_PATHS[info_type]
+	for dir in DirAccess.get_directories_at(DIR_PATH):
+		for file in DirAccess.get_files_at(DIR_PATH + dir):
+			if file.begins_with(FOF_INFO_BEGIN_BY[info_type]):
+				var info: Variant = load(DIR_PATH + dir + "/" + file)
+				if condition == info[match_by]:
+					return info
+	return null

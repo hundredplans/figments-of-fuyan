@@ -79,7 +79,7 @@ func refresh_search() -> void:
 	page = 0
 	on_reload_page(0)
 
-var areas: Array = Helper.on_item_dicts("Area")
+var areas: Array = []
 func match_search_item_selected(item_dict: Dictionary) -> bool:
 	match search_item_selected:
 		0: return item_dict.sname.to_lower().begins_with(SearchEdit.text.to_lower())
@@ -143,17 +143,20 @@ func on_reload_page(i: int) -> void:
 		var item_button: Control = _item_button.instantiate()
 		Items.add_child(item_button)
 		item_button.position = xy
-		if item_name == "card": 
-			item_button.get_node("Card").Heroes = $Heroes
+		if item_name == "oldcard": 
 			item_button.get_node("Card").is_hover = true
 			item_button.get_node("Card").pressed.connect(on_item_selected.bind(item_button, item_buttons[j]))
 		else:
 			item_button.get_node("PressedButton").pressed.connect(on_item_selected.bind(item_button, item_buttons[j]))
 		item_button.get_node("ID").text = str(item_buttons[j].id)
 		item_button.info = item_buttons[j]
-		item_button.apply_info()
+		if item_name == "oldcard":
+			item_button.apply_info(Heroes)
+		else: item_button.apply_info()
+		
 		
 		xy.x += 300
 		if xy.x == 1850:
 			xy.x = 50
 			xy.y += 400
+@onready var Heroes: HeroesGD = $Heroes

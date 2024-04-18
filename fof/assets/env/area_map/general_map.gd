@@ -8,7 +8,7 @@ var node_amount: int = 0
 var row_nodes: Array = []
 
 func _ready():
-	add_child(load("res://assets/base_game/areas/" + Helper.getAreaInfo(GameState.area_info.id).folder_name + "/area_map.tscn").instantiate())
+	add_child(load("res://assets/base_game/areas/" + Helper.getFofInfo(GameState.area_info.id, "area").folder_name + "/area_map.tscn").instantiate())
 	add_node_row()
 	
 	$Camera3D.position.z = Nodes.position.z + 4.5

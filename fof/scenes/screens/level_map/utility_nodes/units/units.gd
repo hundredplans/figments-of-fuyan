@@ -64,6 +64,7 @@ func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int
 	Unit.finished_awakening = true
 	return Unit
 
+var allowed_spawns: Array = range(7, 15) + range(16, 19)
 func on_start_phase_start() -> void:
 	AIManager.LevelMap = LevelMap
 	AIManager.Units = self
@@ -78,7 +79,7 @@ func on_start_phase_start() -> void:
 	
 	var enemy_tiles: Array = Tiles.on_is_type_get_tiles("Enemy", "obj")
 	for Tile in enemy_tiles:
-		on_unit_awakened(Tile.obj.obj_info[0], 0, [], 1, Tile.obj.rotation, Tile) # add Random.on_create_random_tool() here, maybe no args and it takes from GameState
+		on_unit_awakened(allowed_spawns[randi() % allowed_spawns.size()], 0, [], 1, Tile.obj.rotation, Tile)
 
 func on_player_phase_start() -> void:
 	PlayerManager.on_player_phase_start()

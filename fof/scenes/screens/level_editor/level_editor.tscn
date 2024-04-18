@@ -40,7 +40,7 @@ size = Vector2(95, 355)
 size = Vector2(95, 432)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6bgmu"]
-size = Vector2(1210, 66)
+size = Vector2(1676, 66)
 
 [node name="LevelEditor" type="Control"]
 modulate = Color(1, 1, 1, 0.784314)
@@ -580,7 +580,7 @@ texture_disabled = ExtResource("15_f5tsu")
 
 [node name="InfoMenu" type="Control" parent="."]
 anchors_preset = 0
-offset_right = 1205.0
+offset_right = 1671.0
 offset_bottom = 61.0
 
 [node name="Background" type="Control" parent="InfoMenu"]
@@ -648,6 +648,7 @@ layout_mode = 2
 text = "Empty"
 
 [node name="LevelName" type="LineEdit" parent="InfoMenu/InfoContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Level Name"
@@ -661,15 +662,17 @@ placeholder_text = "Folder Name"
 alignment = 1
 
 [node name="IDEdit" type="LineEdit" parent="InfoMenu/InfoContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 placeholder_text = "ID"
 alignment = 1
 
-[node name="DifficultySlider" type="VBoxContainer" parent="InfoMenu/InfoContainer"]
+[node name="DifficultySliderContainer" type="VBoxContainer" parent="InfoMenu/InfoContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HSlider" type="HSlider" parent="InfoMenu/InfoContainer/DifficultySlider"]
+[node name="DifficultySlider" type="HSlider" parent="InfoMenu/InfoContainer/DifficultySliderContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 min_value = 1.0
 max_value = 10.0
@@ -677,7 +680,7 @@ value = 1.0
 tick_count = 10
 ticks_on_borders = true
 
-[node name="Label" type="Label" parent="InfoMenu/InfoContainer/DifficultySlider"]
+[node name="Label" type="Label" parent="InfoMenu/InfoContainer/DifficultySliderContainer"]
 layout_mode = 2
 text = "Difficulty"
 horizontal_alignment = 1
@@ -710,7 +713,7 @@ position = Vector2(1872.5, 809)
 shape = SubResource("RectangleShape2D_qs7ar")
 
 [node name="InfoMenu" type="CollisionShape2D" parent="MouseBlockers"]
-position = Vector2(605, 33)
+position = Vector2(838, 33)
 shape = SubResource("RectangleShape2D_6bgmu")
 
 [node name="BufferPreviewTileTimer" type="Timer" parent="."]
@@ -729,10 +732,12 @@ one_shot = true
 [connection signal="pressed" from="InfoMenu/InfoContainer/SaveLevel" to="." method="_on_save_level_pressed"]
 [connection signal="item_selected" from="InfoMenu/InfoContainer/LoadLevel" to="." method="on_load_level_pressed"]
 [connection signal="item_selected" from="InfoMenu/InfoContainer/LoadArea" to="." method="_on_load_area_item_selected"]
+[connection signal="pressed" from="InfoMenu/InfoContainer/BakeLevel" to="." method="_on_bake_level_pressed"]
 [connection signal="pressed" from="InfoMenu/InfoContainer/EmptyLevel" to="." method="on_load_empty_level"]
 [connection signal="text_submitted" from="InfoMenu/InfoContainer/LevelName" to="." method="onLineEditTextSubmitted"]
 [connection signal="text_submitted" from="InfoMenu/InfoContainer/FolderName" to="." method="onLineEditTextSubmitted"]
-[connection signal="value_changed" from="InfoMenu/InfoContainer/DifficultySlider/HSlider" to="." method="_on_h_slider_value_changed"]
+[connection signal="text_submitted" from="InfoMenu/InfoContainer/IDEdit" to="." method="onLineEditTextSubmitted"]
+[connection signal="value_changed" from="InfoMenu/InfoContainer/DifficultySliderContainer/DifficultySlider" to="." method="_on_h_slider_value_changed"]
 [connection signal="mouse_entered" from="MouseBlockers" to="." method="on_mblocker_mouse_entered"]
 [connection signal="mouse_exited" from="MouseBlockers" to="." method="on_mblocker_mouse_exited"]
 [connection signal="timeout" from="BufferPreviewTileTimer" to="." method="_on_buffer_preview_tile_timer_timeout"]

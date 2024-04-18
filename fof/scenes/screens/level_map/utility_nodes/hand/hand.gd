@@ -46,7 +46,7 @@ func on_create_card(id: int, tool_id: int = 0, effects: Array = []) -> void:
 	add_child(card)
 	
 	card.on_create_card(id, tool_id, effects)
-	energy_cap = max(Helper.id_to_dict(id, "Card").e, energy_cap)
+	energy_cap = max(Helper.getCard(id).energy, energy_cap)
 	LevelUI.on_draw_card(card)
 
 var card_selected_index: int = -1
@@ -58,7 +58,7 @@ func on_card_placed(Tile: TileGD) -> void:
 	if card_selected_index > -1 and Tile.solid_status == 0:
 		var hand_card: HandCardGD = get_child(card_selected_index)
 		LevelUI.on_card_placed(card_selected_index)
-		on_change_energy(-Helper.id_to_dict(hand_card.id, "Card").e)
+		on_change_energy(-Helper.getCard(hand_card.id).energy)
 		Units.PlayerManager.on_card_placed(hand_card, Tile)
 		hand_card.queue_free()
 		card_selected_index = -1

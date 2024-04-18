@@ -11,4 +11,4 @@ func on_create_card(_id: int, _tool_id: int, _effects: Array) -> void:
 	tool_id = _tool_id
 	effects = _effects
 	
-	energy = Helper.id_to_dict(id, "Card").e
+	energy = Helper.getCard(id).energy
