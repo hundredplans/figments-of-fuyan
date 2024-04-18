@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="BaseCardGD" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://assets/base_game/cards/templates/base_card.gd" id="1_rrvhv"]
+
+[resource]
+script = ExtResource("1_rrvhv")
+area_id = 12
+attack = 2
+health = 4
+speed = 2
+energy = 3
+rarity = 7
+raw_text = "RAMPAGE: Gain [+0/1] and Heal [2] HEALTH"
+flavor_text = "A strong warrior indeed"
+text = "[center][b]RAMPAGE[/b]: Gain [b][color=red]+1 [img=14x14]res://assets/base_game/cards/game_card/art/bbcode/HEALTH.png[/img][/color][/b]  and Heal [b][color=red][2] [img=14x14]res://assets/base_game/cards/game_card/art/bbcode/HEALTH.png[/img][/color][/b][/center]"
+aic = 7
+aii = 5
+aiw = 6
+ait = 4
+aia = 5
+weapon_offset = 0.75
+weapon = 1.45
+eye = 1.76
+top = 1.94
+stat = 2.05
+ability_names = Array[String]([])
+id = 1
+name = "Frederic The Fearless"
+folder_name = "FredericTheFearless"

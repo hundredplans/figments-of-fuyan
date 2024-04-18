@@ -309,9 +309,7 @@ func on_item_dicts(item: String) -> Array:
 	
 func id_to_bgfn(i: int, item: String) -> String: return id_to_dict(i, item).bgfn
 	
-func load_area_colors(node: Node, _primary_color: String, _accent_color: String) -> void:
-	var primary_color: Color = Color(_primary_color)
-	var accent_color: Color = Color(_accent_color)
+func load_area_colors(node: Node, primary_color: Color, accent_color: Color) -> void:
 	for child in get_children_recursive(node):
 		if child.name.begins_with("PR"):
 			if child is ColorRect: child.color = primary_color
@@ -504,8 +502,49 @@ func getAreaInfo(id: int) -> AreaInfoGD:
 	var DIR_PATH: String = "res://assets/base_game/areas/"
 	for dir in DirAccess.get_directories_at(DIR_PATH):
 		for file in DirAccess.get_files_at(DIR_PATH + dir):
-			print(file)
 			if file.begins_with("area_info"):
 				var area_info: AreaInfoGD = load(DIR_PATH + dir + "/" + file)
 				if area_info.id == id: return area_info
 	return null
+
+func getHeroCardInfo(hid: int) -> HeroCardGD:
+	var DIR_PATH: String = "res://assets/base_game/cards/cards/"
+	for dir in DirAccess.get_directories_at(DIR_PATH):
+		for file in DirAccess.get_files_at(DIR_PATH + dir):
+			if file.begins_with("base_card"):
+				var hero_card: HeroCardGD = load(DIR_PATH + dir + "/" + file)
+				if hero_card.hero_id == hid: return hero_card
+	return null
+
+var cards: Array = []
+func _ready() -> void:
+	var DIR_PATH: String = "res://assets/base_game/cards/cards/"
+	
+	var base_cards: Array = []
+	for dir in DirAccess.get_directories_at(DIR_PATH):
+		for file in DirAccess.get_files_at(DIR_PATH + dir):
+			if file.begins_with("base_card"):
+				base_cards.append(load(DIR_PATH + dir + "/" + file))
+				
+	base_cards.sort_custom(func(x: Variant, y: Variant): return x.id < y.id)
+	
+	var i: int = 0
+	for base_card in base_cards:
+		while (base_card.id != i):
+			cards.append(null)
+			i += 1
+		i += 1
+		cards.append(base_card)
+
+func getCard(id: int) -> BaseCardGD:
+	return cards[id]
+
+func getAllLevelInfo() -> Array:
+	var levels: Array = []
+	var DIR_PATH: String = "res://assets/base_game/levels/levels/"
+	for dir in DirAccess.get_directories_at(DIR_PATH):
+		for file in DirAccess.get_files_at(DIR_PATH + dir):
+			if file.begins_with("level_info"):
+				levels.append(load(DIR_PATH + dir + "/" + file))
+	return levels
+	

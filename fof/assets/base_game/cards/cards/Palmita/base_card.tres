@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="BaseCardGD" load_steps=2 format=3 uid="uid://bla01iafdq8yl"]
+
+[ext_resource type="Script" path="res://assets/base_game/cards/templates/base_card.gd" id="1_fomdo"]
+
+[resource]
+script = ExtResource("1_fomdo")
+area_id = 1
+attack = 1
+health = 1
+speed = 2
+energy = 1
+rarity = 3
+raw_text = "ABILITY: Kill this to give an adjacent ally [+0/1]; When it RAMPAGES it gains [+0/1]"
+flavor_text = ""
+text = "[center][b]ABILITY[/b]: Kill this to give an adjacent ally [b][color=red][b][color=red]+1 [img=14x14]res://assets/base_game/cards/game_card/art/bbcode/HEALTH.png[/img][/color][/b][/color][/b] ; When it [b]RAMPAGE[/b]S it gains [b][color=red][b][color=red]+1 [img=14x14]res://assets/base_game/cards/game_card/art/bbcode/HEALTH.png[/img][/color][/b][/color][/b] [/center]"
+aic = 0
+aii = 3
+aiw = 3
+ait = 7
+aia = 2
+weapon_offset = 0.15
+weapon = 0.55
+eye = 0.18
+top = 0.42
+stat = 0.57
+ability_names = Array[String]([])
+id = 16
+name = "Palmita"
+folder_name = "Palmita"

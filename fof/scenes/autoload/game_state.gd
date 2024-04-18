@@ -111,7 +111,7 @@ func on_save_game_state() -> void:
 		
 		Helper.write_to_file("user://save/save_files/", str(save_file), ".txt", contents, false)
 
-func on_load_new_area(world: int) -> void:
+func on_load_new_area(_world: int) -> void:
 	var areas: Array = [Helper.getAreaInfo(1)]
 	area_info = areas[0] # this is supposed to be randomised but will pick palms for now
 	on_load_new_map()

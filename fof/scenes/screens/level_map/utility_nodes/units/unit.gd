@@ -6,7 +6,7 @@ var id: int = 0
 var tool_id: int = 0
 var effects: Array = []
 
-var base_card: Dictionary
+var base_card: BaseCardGD
 var ai: Dictionary
 
 var max_attack: int
@@ -45,18 +45,27 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	effects = _effects
 	team = _team
 	
-	base_card = Helper.id_to_dict(id, "Card")
+	var card: Variant = Helper.getCard(id)
+	if card is HeroCardGD: base_card = card.base_cards[Units.GameState.hero_level]
+	else: base_card = card
+	
 	ai = {"aic": base_card.aic, "aii": base_card.aii, "aiw": base_card.aiw, "ait": base_card.ait, "aia": base_card.aia}
-	attack = base_card.a
-	health = base_card.h
-	max_speed = base_card.s
+	attack = base_card.attack
+	health = base_card.health
+	max_speed = base_card.speed
 	
-	max_health = base_card.h
-	max_attack = base_card.a
-	rarity = base_card.r
-	height = base_card.height
+	max_health = base_card.health
+	max_attack = base_card.attack
+	rarity = base_card.rarity
+	height = {
+		"top": base_card.top,
+		"eye": base_card.eye,
+		"weapon_offset": base_card.weapon_offset,
+		"weapon": base_card.weapon,
+		"stat": base_card.stat
+	}
 	
-	var card_model_path: String = "res://assets/base_game/cards/" + base_card.bgfn + "/model.tscn"
+	var card_model_path: String = "res://assets/base_game/cards/cards/" + base_card.folder_name + "/model.tscn"
 	
 	Model = load(card_model_path).instantiate() # Takes about 2.2seconds, not the ready function?
 	Model.Unit = self

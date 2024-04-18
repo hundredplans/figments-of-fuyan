@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="BaseCardGD" load_steps=2 format=3 uid="uid://ddycm824188k"]
+
+[ext_resource type="Script" path="res://assets/base_game/cards/templates/base_card.gd" id="1_ym7hp"]
+
+[resource]
+script = ExtResource("1_ym7hp")
+area_id = 1
+attack = 1
+health = 3
+speed = 2
+energy = 2
+rarity = 2
+raw_text = "ARMOR [1]; BLOODTHIRST: Gain [+0/1] if the killer was a Palm"
+flavor_text = ""
+text = "[center][b]ARMOR [1][/b]; [b]BLOODTHIRST[/b]: Gain [b][color=red]+1 [img=14x14]res://assets/base_game/cards/game_card/art/bbcode/HEALTH.png[/img][/color][/b]  if the killer was a Palm[/center]"
+aic = 5
+aii = 3
+aiw = 4
+ait = 6
+aia = 3
+weapon_offset = 1.0
+weapon = 0.93
+eye = 1.54
+top = 2.04
+stat = 2.18
+ability_names = Array[String]([])
+id = 11
+name = "Palm Defender"
+folder_name = "PalmDefender"

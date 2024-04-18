@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="BaseCardGD" load_steps=2 format=3 uid="uid://t1y35jh0feu1"]
+
+[ext_resource type="Script" path="res://assets/base_game/cards/templates/base_card.gd" id="1_76ob4"]
+
+[resource]
+script = ExtResource("1_76ob4")
+area_id = 1
+attack = 2
+health = 3
+speed = 2
+energy = 3
+rarity = 3
+raw_text = "Every second hit: Deal [+2] DMG and gain [+1/1] after"
+flavor_text = ""
+text = "[center]Every second hit: Deal [+2] [b][color=navajo_white]DMG[/color][/b] and gain [b][color=orange]+1 [img=14x14]res://assets/base_game/cards/game_card/art/bbcode/ATTACK.png[/img][/color][/b] [b][color=red]+1 [img=14x14]res://assets/base_game/cards/game_card/art/bbcode/HEALTH.png[/img][/color][/b]  after[/center]"
+aic = 5
+aii = 4
+aiw = 7
+ait = 3
+aia = 5
+weapon_offset = 0.15
+weapon = 1.25
+eye = 1.77
+top = 1.91
+stat = 2.31
+ability_names = Array[String]([])
+id = 18
+name = "Swingus Palmus"
+folder_name = "SwingusPalmus"

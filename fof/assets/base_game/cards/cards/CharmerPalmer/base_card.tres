@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="BaseCardGD" load_steps=2 format=3 uid="uid://ddl32xn1imjo4"]
+
+[ext_resource type="Script" path="res://assets/base_game/cards/templates/base_card.gd" id="1_a0bk8"]
+
+[resource]
+script = ExtResource("1_a0bk8")
+area_id = 1
+attack = 1
+health = 3
+speed = 2
+energy = 3
+rarity = 3
+raw_text = "ABILITY [1]: Heal [1] HEALTH allies in vision; TRAUMA: Gain [+1/0] if a healed ally died"
+flavor_text = ""
+text = "[center][b]ABILITY [1][/b]: Heal [b][color=red][1] [img=14x14]res://assets/base_game/cards/game_card/art/bbcode/HEALTH.png[/img][/color][/b] allies in vision; [b]TRAUMA[/b]: Gain [b][color=orange]+1 [img=14x14]res://assets/base_game/cards/game_card/art/bbcode/ATTACK.png[/img][/color][/b]  if a healed ally died[/center]"
+aic = 4
+aii = 6
+aiw = 3
+ait = 6
+aia = 6
+weapon_offset = 0.1
+weapon = 0.5
+eye = 1.0
+top = 1.5
+stat = 2.0
+ability_names = Array[String]([])
+id = 20
+name = "Charmer Palmer"
+folder_name = "CharmerPalmer"

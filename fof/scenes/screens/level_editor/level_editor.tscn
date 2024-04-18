@@ -1,11 +1,8 @@
-[gd_scene load_steps=27 format=3 uid="uid://bauy3car7d8gx"]
+[gd_scene load_steps=23 format=3 uid="uid://bauy3car7d8gx"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_editor/level_editor.gd" id="1_c1ufw"]
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="3_hyt8o"]
 [ext_resource type="LabelSettings" uid="uid://c5h6tv2uhlrjf" path="res://assets/UI/lora/lora_outline.tres" id="4_5jaug"]
-[ext_resource type="PackedScene" uid="uid://bj3h1ak5dv73n" path="res://scenes/ui_general/op_button/op_button.tscn" id="4_lvhxm"]
-[ext_resource type="PackedScene" uid="uid://bdd0m6wbuerq5" path="res://scenes/editor/edit_file_name/edit_file_name.tscn" id="5_2x3tu"]
-[ext_resource type="PackedScene" uid="uid://65cqb6wug8it" path="res://scenes/ui_general/scale_button/scale_button.tscn" id="5_a6slm"]
 [ext_resource type="Texture2D" uid="uid://b8drk0oid8kdr" path="res://scenes/ui_general/arrow/arrow.png" id="5_c5gvh"]
 [ext_resource type="Texture2D" uid="uid://bhphpw6y0dli" path="res://scenes/ui_general/back_arrow/back_arrow.png" id="7_dwfvl"]
 [ext_resource type="Texture2D" uid="uid://dgd0htlk7lc78" path="res://scenes/screens/level_editor/build_menu/model_viewer_sprite.png" id="8_b8gpa"]
@@ -33,12 +30,6 @@ font_size = 64
 outline_size = 16
 outline_color = Color(0, 0, 0, 1)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_oppik"]
-size = Vector2(70, 823)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ayxxt"]
-size = Vector2(988, 175)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ncy6r"]
 size = Vector2(1444, 367)
 
@@ -48,198 +39,19 @@ size = Vector2(95, 355)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qs7ar"]
 size = Vector2(95, 432)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6bgmu"]
+size = Vector2(1210, 66)
+
 [node name="LevelEditor" type="Control"]
+modulate = Color(1, 1, 1, 0.784314)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_bottom = -700.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_c1ufw")
-
-[node name="LoadButtons" type="Control" parent="."]
-anchors_preset = 0
-offset_top = 213.0
-offset_right = 70.0
-offset_bottom = 1036.0
-mouse_filter = 1
-theme = ExtResource("3_hyt8o")
-
-[node name="Background" type="Control" parent="LoadButtons"]
-anchors_preset = 0
-offset_left = 70.0
-offset_right = 893.0
-offset_bottom = 70.0
-rotation = 1.5708
-mouse_filter = 1
-
-[node name="PROutside" type="ColorRect" parent="LoadButtons/Background"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 1
-color = Color(0.364706, 0.235294, 0.14902, 1)
-
-[node name="ACInside" type="ColorRect" parent="LoadButtons/Background"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 10.0
-offset_top = 10.0
-offset_right = -10.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 1
-color = Color(0.792157, 0.576471, 0.431373, 1)
-
-[node name="Buttons" type="Control" parent="LoadButtons"]
-anchors_preset = 0
-offset_left = 70.0
-offset_right = 893.0
-offset_bottom = 70.0
-rotation = 1.5708
-mouse_filter = 1
-
-[node name="LoadArea" type="Button" parent="LoadButtons/Buttons"]
-layout_mode = 1
-anchors_preset = -1
-offset_left = 10.0
-offset_top = 10.0
-offset_right = 173.0
-offset_bottom = 70.0
-mouse_filter = 1
-text = "Load Area"
-
-[node name="LoadLevel" type="Button" parent="LoadButtons/Buttons"]
-layout_mode = 1
-anchors_preset = -1
-offset_left = 207.0
-offset_top = 10.0
-offset_right = 370.0
-offset_bottom = 70.0
-mouse_filter = 1
-text = "Load Level"
-
-[node name="LoadEmpty" type="Button" parent="LoadButtons/Buttons"]
-layout_mode = 0
-offset_left = 421.0
-offset_top = 10.0
-offset_right = 599.0
-offset_bottom = 70.0
-mouse_filter = 1
-text = "Load Empty"
-
-[node name="SaveLevel" type="Button" parent="LoadButtons/Buttons"]
-layout_mode = 0
-offset_left = 639.0
-offset_top = 10.0
-offset_right = 813.0
-offset_bottom = 70.0
-mouse_filter = 1
-text = "Save Level"
-
-[node name="InfoMenu" type="Control" parent="."]
-anchors_preset = 0
-offset_right = 988.0
-offset_bottom = 175.0
-mouse_filter = 1
-
-[node name="Background" type="Control" parent="InfoMenu"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 1
-
-[node name="PROutside" type="ColorRect" parent="InfoMenu/Background"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-color = Color(0.364706, 0.235294, 0.14902, 1)
-
-[node name="ACInside" type="ColorRect" parent="InfoMenu/Background"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 10.0
-offset_top = 10.0
-offset_right = -10.0
-offset_bottom = -9.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-color = Color(0.792157, 0.576471, 0.431373, 1)
-
-[node name="LevelDifficulty" parent="InfoMenu" instance=ExtResource("4_lvhxm")]
-offset_left = 15.0
-offset_top = 21.0
-offset_right = 39.0
-offset_bottom = 84.0
-options = PackedStringArray("1", "2", "3", "4", "5", "6", "7", "8", "9", "10")
-label_text = "LD"
-
-[node name="PRArrow" type="TextureButton" parent="InfoMenu"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -95.0
-offset_top = 40.0
-offset_right = -15.0
-offset_bottom = 138.0
-grow_horizontal = 0
-texture_normal = ExtResource("5_c5gvh")
-
-[node name="PreviewButton" type="Button" parent="InfoMenu"]
-layout_mode = 0
-offset_left = 20.0
-offset_top = 100.0
-offset_right = 144.0
-offset_bottom = 146.0
-theme = ExtResource("3_hyt8o")
-text = "Preview"
-
-[node name="TrinketAmount" parent="InfoMenu" instance=ExtResource("5_a6slm")]
-offset_left = 170.0
-offset_top = 100.0
-offset_right = 453.0
-offset_bottom = 153.0
-scale = Vector2(0.8, 0.8)
-min_max = Vector2i(0, 10)
-steps = Vector2i(1, 3)
-label_text = "Trinket Amount"
-snap_mode = true
-
-[node name="EditFileName" parent="InfoMenu" instance=ExtResource("5_2x3tu")]
-layout_mode = 1
-offset_left = 169.0
-offset_top = 17.0
-offset_right = 847.0
-offset_bottom = 155.0
-mouse_filter = 2
-ItemNAME = "Level"
-
-[node name="BakeLevel" type="Button" parent="InfoMenu"]
-layout_mode = 0
-offset_left = 606.0
-offset_top = 100.0
-offset_right = 770.0
-offset_bottom = 146.0
-theme = ExtResource("3_hyt8o")
-text = "Bake Level"
 
 [node name="BuildMenu" type="Control" parent="."]
 anchors_preset = 0
@@ -766,12 +578,116 @@ disabled = true
 texture_normal = ExtResource("5_c5gvh")
 texture_disabled = ExtResource("15_f5tsu")
 
+[node name="InfoMenu" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 1205.0
+offset_bottom = 61.0
+
+[node name="Background" type="Control" parent="InfoMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_lock_ = true
+
+[node name="PROutside" type="ColorRect" parent="InfoMenu/Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 5.0
+offset_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.364706, 0.235294, 0.14902, 1)
+
+[node name="ACInside" type="ColorRect" parent="InfoMenu/Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.792157, 0.576471, 0.431373, 1)
+
+[node name="InfoContainer" type="HBoxContainer" parent="InfoMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 13.0
+offset_right = -11.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_hyt8o")
+theme_override_constants/separation = 10
+
+[node name="SaveLevel" type="Button" parent="InfoMenu/InfoContainer"]
+layout_mode = 2
+text = "Save"
+
+[node name="LoadLevel" type="OptionButton" parent="InfoMenu/InfoContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="LoadArea" type="OptionButton" parent="InfoMenu/InfoContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+item_count = 1
+popup/item_0/text = "1"
+popup/item_0/id = 0
+
+[node name="BakeLevel" type="Button" parent="InfoMenu/InfoContainer"]
+layout_mode = 2
+text = "Bake"
+
+[node name="EmptyLevel" type="Button" parent="InfoMenu/InfoContainer"]
+layout_mode = 2
+text = "Empty"
+
+[node name="LevelName" type="LineEdit" parent="InfoMenu/InfoContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Level Name"
+alignment = 1
+
+[node name="FolderName" type="LineEdit" parent="InfoMenu/InfoContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Folder Name"
+alignment = 1
+
+[node name="IDEdit" type="LineEdit" parent="InfoMenu/InfoContainer"]
+layout_mode = 2
+placeholder_text = "ID"
+alignment = 1
+
+[node name="DifficultySlider" type="VBoxContainer" parent="InfoMenu/InfoContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HSlider" type="HSlider" parent="InfoMenu/InfoContainer/DifficultySlider"]
+layout_mode = 2
+min_value = 1.0
+max_value = 10.0
+value = 1.0
+tick_count = 10
+ticks_on_borders = true
+
+[node name="Label" type="Label" parent="InfoMenu/InfoContainer/DifficultySlider"]
+layout_mode = 2
+text = "Difficulty"
+horizontal_alignment = 1
+
 [node name="ElevationNumber" type="Label" parent="."]
 layout_mode = 0
 offset_left = 1830.0
 offset_top = 88.0
 offset_right = 1920.0
-offset_bottom = 167.0
+offset_bottom = 164.0
 text = "1"
 label_settings = SubResource("LabelSettings_407vy")
 horizontal_alignment = 1
@@ -780,14 +696,6 @@ horizontal_alignment = 1
 collision_layer = 8
 collision_mask = 0
 collision_priority = 0.0
-
-[node name="LoadButtons" type="CollisionShape2D" parent="MouseBlockers"]
-position = Vector2(35, 624.5)
-shape = SubResource("RectangleShape2D_oppik")
-
-[node name="InfoMenu" type="CollisionShape2D" parent="MouseBlockers"]
-position = Vector2(494, 87.5)
-shape = SubResource("RectangleShape2D_ayxxt")
 
 [node name="BuildMenu" type="CollisionShape2D" parent="MouseBlockers"]
 position = Vector2(960, 896.5)
@@ -801,19 +709,14 @@ shape = SubResource("RectangleShape2D_pyln6")
 position = Vector2(1872.5, 809)
 shape = SubResource("RectangleShape2D_qs7ar")
 
+[node name="InfoMenu" type="CollisionShape2D" parent="MouseBlockers"]
+position = Vector2(605, 33)
+shape = SubResource("RectangleShape2D_6bgmu")
+
 [node name="BufferPreviewTileTimer" type="Timer" parent="."]
 wait_time = 0.1
 one_shot = true
 
-[connection signal="pressed" from="LoadButtons/Buttons/LoadArea" to="." method="_on_load_area_pressed"]
-[connection signal="pressed" from="LoadButtons/Buttons/LoadLevel" to="." method="_on_load_level_pressed"]
-[connection signal="pressed" from="LoadButtons/Buttons/LoadEmpty" to="." method="_on_load_empty_pressed"]
-[connection signal="pressed" from="LoadButtons/Buttons/SaveLevel" to="." method="_on_save_level_pressed"]
-[connection signal="item_selected" from="InfoMenu/LevelDifficulty" to="." method="_on_level_difficulty_item_selected"]
-[connection signal="pressed" from="InfoMenu/PRArrow" to="." method="_on_arrow_button_pressed"]
-[connection signal="item_selected" from="InfoMenu/TrinketAmount" to="." method="_on_trinket_amount_item_selected"]
-[connection signal="text_submitted" from="InfoMenu/EditFileName" to="." method="_on_save_level_pressed"]
-[connection signal="pressed" from="InfoMenu/BakeLevel" to="." method="_on_bake_level_pressed"]
 [connection signal="pressed" from="BuildMenu/Tabs/Tabs/TileTab" to="." method="on_load_tab" binds= [0]]
 [connection signal="pressed" from="BuildMenu/Tabs/Tabs/ObjectTab" to="." method="on_load_tab" binds= [1]]
 [connection signal="pressed" from="BuildMenu/Tabs/Tabs/WallTab" to="." method="on_load_tab" binds= [2]]
@@ -823,6 +726,13 @@ one_shot = true
 [connection signal="pressed" from="BuildMenu/LoadedMenu/PRRightArrow" to="." method="_on_change_page_pressed" binds= [1]]
 [connection signal="pressed" from="HistoryMenu/PRLeft" to="." method="on_change_history_menu_page" binds= [-1]]
 [connection signal="pressed" from="HistoryMenu/PRRight" to="." method="on_change_history_menu_page" binds= [1]]
+[connection signal="pressed" from="InfoMenu/InfoContainer/SaveLevel" to="." method="_on_save_level_pressed"]
+[connection signal="item_selected" from="InfoMenu/InfoContainer/LoadLevel" to="." method="on_load_level_pressed"]
+[connection signal="item_selected" from="InfoMenu/InfoContainer/LoadArea" to="." method="_on_load_area_item_selected"]
+[connection signal="pressed" from="InfoMenu/InfoContainer/EmptyLevel" to="." method="on_load_empty_level"]
+[connection signal="text_submitted" from="InfoMenu/InfoContainer/LevelName" to="." method="onLineEditTextSubmitted"]
+[connection signal="text_submitted" from="InfoMenu/InfoContainer/FolderName" to="." method="onLineEditTextSubmitted"]
+[connection signal="value_changed" from="InfoMenu/InfoContainer/DifficultySlider/HSlider" to="." method="_on_h_slider_value_changed"]
 [connection signal="mouse_entered" from="MouseBlockers" to="." method="on_mblocker_mouse_entered"]
 [connection signal="mouse_exited" from="MouseBlockers" to="." method="on_mblocker_mouse_exited"]
 [connection signal="timeout" from="BufferPreviewTileTimer" to="." method="_on_buffer_preview_tile_timer_timeout"]

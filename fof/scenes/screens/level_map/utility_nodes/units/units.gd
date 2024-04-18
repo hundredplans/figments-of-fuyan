@@ -1,7 +1,6 @@
 class_name UnitsGD
 extends Node3D
 
-var Heroes: HeroesGD
 var Deck: DeckGD
 var SpectateCamera: Node3D
 var GameState: GameStateGD

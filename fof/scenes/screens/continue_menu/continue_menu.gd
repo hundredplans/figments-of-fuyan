@@ -10,7 +10,6 @@ func _ready() -> void:
 			$SaveFiles.add_child(_CRect.instantiate())
 		else:
 			var SaveFileButton: Control = _SaveFileButton.instantiate()
-			SaveFileButton.Heroes = $Heroes
 			SaveFileButton.on_load_save_file(contents, Helper.getAreaInfo(contents.area_id))
 			SaveFileButton.get_node("RemoveButton").pressed.connect(_on_remove_button_pressed.bind(i))
 			SaveFileButton.pressed.connect(on_save_file_pressed)

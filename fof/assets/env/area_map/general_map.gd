@@ -3,13 +3,12 @@ extends Node3D
 signal champion_arrived
 @onready var Nodes: Node3D = $Nodes
 @onready var HeavenlyLight: SpotLight3D = $HeavenlyLight
-@onready var Heroes: Node = $Heroes
 var GameState: Node
 var node_amount: int = 0
 var row_nodes: Array = []
 
 func _ready():
-	add_child(load("res://assets/base_game/areas/" + Helper.id_to_dict(GameState.area_info.id, "Area").bgfn + "/area_map.tscn").instantiate())
+	add_child(load("res://assets/base_game/areas/" + Helper.getAreaInfo(GameState.area_info.id).folder_name + "/area_map.tscn").instantiate())
 	add_node_row()
 	
 	$Camera3D.position.z = Nodes.position.z + 4.5
@@ -42,8 +41,8 @@ func on_node_arrow_exists(node_info: Array) -> bool:
 
 var HeroModel: Node3D
 func on_load_base_hero() -> void:
-	var model: Node3D = load("res://assets/base_game/cards/" + \
-	Helper.id_to_dict(Heroes.hid_to_base(GameState.hero_id), "OldCard").bgfn + "/model.glb").instantiate()
+	var model: Node3D = load("res://assets/base_game/cards/cards/" + \
+	Helper.getHeroCardInfo(GameState.hero_id).base_cards[0].folder_name + "/model.glb").instantiate()
 	
 	model.script = preload("res://assets/base_game/cards/game_card/models/map_model.gd")
 	HeroModel = model

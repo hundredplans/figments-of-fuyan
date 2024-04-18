@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="BaseCardGD" load_steps=2 format=3 uid="uid://c8c2xj2aoea14"]
+
+[ext_resource type="Script" path="res://assets/base_game/cards/templates/base_card.gd" id="1_ol17w"]
+
+[resource]
+script = ExtResource("1_ol17w")
+area_id = 1
+attack = 1
+health = 1
+speed = 2
+energy = 1
+rarity = 3
+raw_text = "LAST WILL: AWAKEN a random [1] ENERGY unit on this tile"
+flavor_text = ""
+text = "[center][b]LAST WILL[/b]: [b]AWAKEN[/b] a random [b][color=yellow][1] [img=14x14]res://assets/base_game/cards/game_card/art/bbcode/ENERGY.png[/img][/color][/b] unit on this tile[/center]"
+aic = 3
+aii = 4
+aiw = 2
+ait = 7
+aia = 0
+weapon_offset = 0.1
+weapon = 0.5
+eye = 1.0
+top = 1.5
+stat = 2.0
+ability_names = Array[String]([])
+id = 15
+name = "Palmysitter"
+folder_name = "Palmysitter"

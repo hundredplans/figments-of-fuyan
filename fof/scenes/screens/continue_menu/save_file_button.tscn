@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://cjymm4y3qbwyj"]
+[gd_scene load_steps=8 format=3 uid="uid://cjymm4y3qbwyj"]
 
 [ext_resource type="LabelSettings" uid="uid://b3fuc4s50fgra" path="res://assets/UI/roboto/roboto64.tres" id="1_8vtqj"]
 [ext_resource type="Script" path="res://scenes/screens/continue_menu/save_file_button.gd" id="1_eipa7"]
+[ext_resource type="Texture2D" uid="uid://o2y0lth6qfc2" path="res://assets/base_game/cards/cards/FredericTheFearless/art_mini.png" id="3_micig"]
 [ext_resource type="PackedScene" uid="uid://q443a6em4irm" path="res://scenes/ui_general/shilling_counter/shilling_counter.tscn" id="4_ulade"]
 [ext_resource type="LabelSettings" uid="uid://qp0350v2j4ah" path="res://assets/UI/roboto/roboto32_outline.tres" id="5_sqs15"]
 [ext_resource type="LabelSettings" uid="uid://duy8g0fum2k06" path="res://assets/UI/roboto/roboto20_outline.tres" id="5_uae2b"]
@@ -47,10 +48,18 @@ color = Color(0.615686, 0.615686, 0.615686, 1)
 
 [node name="ArtBorder" type="ColorRect" parent="Background"]
 layout_mode = 0
-offset_left = 794.0
-offset_top = 7.0
-offset_right = 920.0
-offset_bottom = 133.0
+offset_left = 788.0
+offset_top = 10.0
+offset_right = 918.0
+offset_bottom = 140.0
+color = Color(0, 0, 0, 1)
+
+[node name="ArtBorderInside" type="ColorRect" parent="Background"]
+layout_mode = 0
+offset_left = 793.0
+offset_top = 15.0
+offset_right = 913.0
+offset_bottom = 135.0
 color = Color(0, 0, 0, 1)
 
 [node name="SaveInfo" type="Control" parent="."]
@@ -71,7 +80,9 @@ label_settings = ExtResource("1_8vtqj")
 vertical_alignment = 1
 
 [node name="HeroArt" type="Sprite2D" parent="SaveInfo"]
-position = Vector2(852, 65)
+position = Vector2(848, 70)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("3_micig")
 
 [node name="ShillingCounter" parent="SaveInfo" instance=ExtResource("4_ulade")]
 offset_left = 683.0
@@ -82,9 +93,9 @@ mouse_filter = 1
 
 [node name="Progress" type="Label" parent="SaveInfo"]
 layout_mode = 0
-offset_left = 626.0
+offset_left = 614.0
 offset_top = 52.0
-offset_right = 783.0
+offset_right = 771.0
 offset_bottom = 128.0
 label_settings = ExtResource("1_8vtqj")
 horizontal_alignment = 2

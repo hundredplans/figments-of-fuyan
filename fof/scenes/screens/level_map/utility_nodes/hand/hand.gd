@@ -7,7 +7,6 @@ var energy_cap: int = 0
 var ignore_first_hand_phase: bool = true
 
 var Tiles: TilesGD
-var Heroes: HeroesGD
 var LevelMap: Node3D
 var Units: UnitsGD
 var SpectateCamera: Node3D
@@ -15,7 +14,7 @@ var LevelUI: LevelUIGD
 var GameState: GameStateGD
 
 func on_start_phase_start() -> void:
-	on_change_energy(Helper.id_to_dict(Heroes.hid_to_id(GameState.hero_id, GameState.hero_level), "Card").e - 1)
+	on_change_energy(Helper.getHeroCardInfo(GameState.hero_id).base_cards[GameState.hero_level].energy - 1)
 
 func on_hand_phase_start() -> void:
 	card_selected_index = -1

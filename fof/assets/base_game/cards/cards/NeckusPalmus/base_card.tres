@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="BaseCardGD" load_steps=2 format=3 uid="uid://ckubdh1j8onrc"]
+
+[ext_resource type="Script" path="res://assets/base_game/cards/templates/base_card.gd" id="1_xvveg"]
+
+[resource]
+script = ExtResource("1_xvveg")
+area_id = 1
+attack = 3
+health = 6
+speed = 2
+energy = 4
+rarity = 2
+raw_text = "Whenever this is OVERHEALED: DAZE all units in vision"
+flavor_text = ""
+text = "[center]Whenever this is [b]OVERHEALED[/b]: [b]DAZE[/b] all units in vision[/center]"
+aic = 3
+aii = 5
+aiw = 3
+ait = 5
+aia = 4
+weapon_offset = 0.25
+weapon = 2.15
+eye = 2.55
+top = 2.72
+stat = 2.0
+ability_names = Array[String]([])
+id = 14
+name = "Neckus Palmus"
+folder_name = "NeckusPalmus"

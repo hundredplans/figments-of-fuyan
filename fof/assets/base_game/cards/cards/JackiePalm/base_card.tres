@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="BaseCardGD" load_steps=2 format=3 uid="uid://b4av2jokw6sp7"]
+
+[ext_resource type="Script" path="res://assets/base_game/cards/templates/base_card.gd" id="1_4eui5"]
+
+[resource]
+script = ExtResource("1_4eui5")
+area_id = 1
+attack = 2
+health = 4
+speed = 2
+energy = 3
+rarity = 2
+raw_text = "REVENGE: Heal [1] HEALTH if there's an ally Palm in vision"
+flavor_text = ""
+text = "[center][b]REVENGE[/b]: Heal [b][color=red][1] [img=14x14]res://assets/base_game/cards/game_card/art/bbcode/HEALTH.png[/img][/color][/b] if there's an ally Palm in vision[/center]"
+aic = 6
+aii = 5
+aiw = 2
+ait = 5
+aia = 6
+weapon_offset = 0.15
+weapon = 1.2
+eye = 1.69
+top = 2.02
+stat = 2.57
+ability_names = Array[String]([])
+id = 13
+name = "Jackie Palm"
+folder_name = "JackiePalm"

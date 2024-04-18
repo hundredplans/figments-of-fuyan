@@ -13,7 +13,6 @@ var play_ui: bool = true
 var game_phase: String
 
 @onready var BaseCards: BaseCardsGD = $BaseCards
-@onready var Heroes: HeroesGD = $Heroes
 @onready var Deck: DeckGD = $Deck
 @onready var Hand: HandGD = $Hand
 @onready var Units: UnitsGD = $Units

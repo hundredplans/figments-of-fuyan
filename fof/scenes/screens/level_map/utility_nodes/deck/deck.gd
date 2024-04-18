@@ -4,7 +4,6 @@ extends Node
 const AFTER_PHASE_START_DRAW_COUNT: int = 15
 
 var LevelMap: Node3D
-var Heroes: HeroesGD
 var BaseCards: BaseCardsGD
 var Hand: HandGD
 var GameState: Node

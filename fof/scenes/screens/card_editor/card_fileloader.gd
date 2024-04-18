@@ -16,7 +16,7 @@ func _on_area_selector_item_selected(index):
 func onResetSearch() -> void:
 	for child in CardSorter.get_children(): child.queue_free()
 	var base_cards: Array = FileFinder.onSearchCards(search, area_id)
-	base_cards.sort_custom(func(x: BaseCardGD, y: BaseCardGD): return x.id < y.id)
+	base_cards.sort_custom(func(x: Variant, y: Variant): return x.id < y.id)
 	for base_card in base_cards:
 		onCreateGameCard(base_card)
 
