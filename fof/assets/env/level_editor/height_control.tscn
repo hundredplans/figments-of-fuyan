@@ -11,6 +11,7 @@ anchor_bottom = 0.037
 offset_right = -0.76001
 offset_bottom = 0.0400009
 script = ExtResource("1_ig1uf")
+color = Color(1, 0, 0, 1)
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 0
@@ -36,10 +37,10 @@ horizontal_alignment = 1
 
 [node name="GrabButton" type="Button" parent="PanelContainer/HBoxContainer"]
 unique_name_in_owner = true
-modulate = Color(0.643137, 0, 0.0862745, 1)
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="PanelContainer/HBoxContainer/GrabButton"]
+[node name="GrabberBackground" type="ColorRect" parent="PanelContainer/HBoxContainer/GrabButton"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

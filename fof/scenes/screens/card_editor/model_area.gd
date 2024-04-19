@@ -24,22 +24,23 @@ func onCreateModel(_base_card: BaseCardGD) -> void:
 		for child in ModelWorld.get_node("Model").get_children():
 			child.queue_free()
 			
-		var model: Node3D = load(model_path).instantiate()
-		ModelWorld.get_node("Model").add_child(model)
-		
-		for button in ModelControls.get_children(): button.queue_free()
-		if model.has_node("AnimationPlayer"):
-			var ani_player: AnimationPlayer = model.get_node("AnimationPlayer")
-			for ani in ani_player.get_animation_library("").get_animation_list():
-				var btn := Button.new()
-				btn.text = ani
-				btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-				btn.theme = _Roboto20
-				btn.pressed.connect(on_play_model_animation.bind(ani_player, ani))
-				
-				if ani == "Attack": btn.pressed.connect(onAttackAnimationPlayed)
-				ModelControls.add_child(btn)
-		onSetHeights()
+		if FileAccess.file_exists(model_path):
+			var model: Node3D = load(model_path).instantiate()
+			ModelWorld.get_node("Model").add_child(model)
+			
+			for button in ModelControls.get_children(): button.queue_free()
+			if model.has_node("AnimationPlayer"):
+				var ani_player: AnimationPlayer = model.get_node("AnimationPlayer")
+				for ani in ani_player.get_animation_library("").get_animation_list():
+					var btn := Button.new()
+					btn.text = ani
+					btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+					btn.theme = _Roboto20
+					btn.pressed.connect(on_play_model_animation.bind(ani_player, ani))
+					
+					if ani == "Attack": btn.pressed.connect(onAttackAnimationPlayed)
+					ModelControls.add_child(btn)
+			onSetHeights()
 		
 func onSetHeights():
 	EyeArrow.position.y = base_card.eye

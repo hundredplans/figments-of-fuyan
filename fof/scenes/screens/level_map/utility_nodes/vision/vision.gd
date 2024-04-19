@@ -60,7 +60,7 @@ func onExitTile(Unit: UnitGD, OriginTile: TileGD, DestinationTile: TileGD) -> vo
 			if !(OriginTile in _Unit.height_adjacent_tiles)\
 			and !_Unit.onRayTile(OriginTile):
 				_Unit.visible_tiles.erase(OriginTile)
-		elif DestinationTile not in _Unit.visible_tiles:
+		elif DestinationTile not in _Unit.visible_tiles and Tiles.tile_distance(DestinationTile, _Unit.Tile) <= 5:
 			if _Unit.onRayTile(DestinationTile): _Unit.visible_tiles.append(DestinationTile)
 
 func setUnitVisionModeOccupy(Unit: UnitGD, state: bool) -> void:

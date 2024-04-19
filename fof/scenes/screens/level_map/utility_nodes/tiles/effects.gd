@@ -14,9 +14,7 @@ func on_manage_height_drop_label(UnitSelected: UnitGD) -> void:
 					HeightDropLabel.look_at(\
 					Vector3(UnitSelected.global_position.x, UnitSelected.global_position.y + UnitSelected.height.eye, UnitSelected.global_position.z))
 					
-					if hovered_type.z == 0:
-						HeightDropLabel.get_node("Sprite3D").texture = preload("res://scenes/screens/level_map/red_skull.png")
-						HeightDropLabel.get_node("Label3D").visible = false
-					else: HeightDropLabel.get_node("Label3D").text = str(hovered_type.z)
+					HeightDropLabel.get_node("SkullSprite").visible = hovered_type.z == 0
+					HeightDropLabel.get_node("Label3D").text = str(hovered_type.z)
 					return
 	else: HeightDropLabel.queue_free()

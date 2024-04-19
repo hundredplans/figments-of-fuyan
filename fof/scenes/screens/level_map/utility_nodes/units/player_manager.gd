@@ -115,7 +115,7 @@ func on_occupied_tile_inspected(Tile: TileGD) -> void:
 	var SpectateUnit: UnitGD = SpectateCamera.getSpectateUnit()
 	if LevelMap.action_lock.is_empty() and Unit == SpectateUnit:
 		on_unit_selected(Unit)
-	elif LevelMap.action_lock in ["", "HandRegular"] and UnitSelected == null:
+	elif LevelMap.action_lock in ["", "HandRegular"] and UnitSelected == null and Unit.Tile in Vision.ally_vision:
 		SpectateCamera.onSpectate(Unit)
 				
 var UnitSelected: UnitGD
