@@ -92,14 +92,14 @@ func onCalculateVisibilityPath(Unit: UnitGD, chosen_path: Dictionary) -> Array:
 			var Tile: TileGD = chosen_path.tiles[i]
 			Unit.global_position = Tiles.getUnitPositionOnTile(Tile)
 			Unit.Tile = Tile
-			Unit.Model.onLookAtRelative(Tile, Unit.Tile)
+			Unit.Model.onLookAtRelative(default_tile, Unit.Tile)
 			visibility_path.append(onRayEnemyUnits(Unit))
 	
 	var movement_type_path: Array = []
 	for i in range(visibility_path.size() - 1):
 		movement_type_path.append([visibility_path[i + 1][0], onCalculateMovementType(visibility_path[i + 1][1], visibility_path[i][1])])
 	
-	onResetUnit(Unit, default_position, default_rot, default_tile)
+	Unit.onResetUnit(default_position, default_rot, default_tile)
 	return movement_type_path
 	
 func onCalculateMovementType(destination_in_vision: bool, origin_in_vision: bool) -> String:
@@ -114,12 +114,6 @@ func onRayEnemyUnits(Unit: UnitGD) -> Array:
 		if Tiles.tile_distance(_Unit.Tile, Unit.Tile) <= 5 and _Unit.onRayEnemyUnit(Unit):
 			return [Unit.Tile, true]
 	return [Unit.Tile, false]
-
-func onResetUnit(Unit: UnitGD, default_position: Vector3, default_rot: int, default_tile: TileGD) -> void:
-	Unit.global_position = default_position
-	Unit.Model.rot = default_rot
-	Unit.Tile = default_tile
-	Unit.Model.on_set_rotation()
 
 func onUnitAwakened(Unit: UnitGD) -> void:
 	if Unit.team == 1:

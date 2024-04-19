@@ -86,6 +86,7 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	AudioDict = load("res://assets/base_game/cards/cards/" + base_card.folder_name + "/audio.tres")
 
 func occupy_tile(_Tile: TileGD) -> void:
+	Vision.onExitTile(self, Tile, _Tile)
 	Tile = _Tile
 	Vision.on_recalculate_vision(self)
 	Model.onGetAdjustedPoints()
@@ -167,40 +168,19 @@ func on_enemy_in_range(state: bool) -> void:
 	if state:
 		Tiles.on_set_tile_material(Tile, "EnemyInRange")
 
-#func onAddUnitVisibleTile(Unit: UnitGD) -> void:
-	#unit_visible_tiles[Unit] = Unit.Tile
-	#
-	#if Unit.Tile not in visible_tiles:
-		#visible_tiles.append(Unit.Tile)
-#
-#func onEraseVisibleUnit(Unit: UnitGD) -> void:
-	#if unit_visible_tiles.has(Unit):
-		#unit_visible_tiles.erase(Unit)
-		#visible_tiles.erase(Unit.Tile)
-	#visible_units.erase(Unit)
-
-var unit_height_tiles: Array # Tiles that are only visible because of a Unit's height
 var visible_tiles: Array
-var visible_units: Array
 @onready var VisionRaycast: RayCast3D = $VisionRaycast
 const RAY_COUNT: int = 20
 const RAY_DISTANCE: int = 50
 const VISION_RANGE: int = 5
 
+var height_adjacent_tiles: Array = []
 func onCircleRay() -> void:
 	visible_tiles = []
 	_visible_tiles = {}
 	var tiles: Array = Tiles.onTilesInVisionRange(Tile, VISION_RANGE)
 	for _Tile in tiles: # Takes between 20-30 msec
-		for point in _Tile.collision_points:
-			VisionRaycast.target_position = point - VisionRaycast.global_position
-			VisionRaycast.force_raycast_update()
-			
-			if VisionRaycast.is_colliding():
-				var Collision: Node3D = VisionRaycast.get_collider().get_node("../../..")
-				if Collision == _Tile:
-					onAddTileToVisibleTiles(Collision)
-					break
+		if onRayTile(_Tile): onAddTileToVisibleTiles(_Tile)
 	
 	var units: Array = Units.all_units().filter(func(x: UnitGD): return x != self and x.Tile in tiles and x.Tile not in visible_tiles)
 	for Unit in units:
@@ -214,6 +194,7 @@ func onCircleRay() -> void:
 					onAddTileToVisibleTiles(Unit.Tile)
 					break
 	
+	visible_tiles += Units.getCommutativeUnitsVision(self)
 	onUnitsHeightAdjacentTiles()
 	visible_tiles = _visible_tiles.keys()
 	
@@ -226,6 +207,16 @@ func onRayEnemyUnit(Unit: UnitGD) -> bool:
 		if VisionRaycast.is_colliding():
 			var Collision: Node3D = VisionRaycast.get_collider().get_node("../../..")
 			if Collision == Unit.Model or Collision == Unit.Tile: return true
+	return false
+	
+func onRayTile(_Tile: TileGD) -> bool:
+	for point in _Tile.collision_points:
+		VisionRaycast.target_position = point - VisionRaycast.global_position
+		VisionRaycast.force_raycast_update()
+		
+		if VisionRaycast.is_colliding():
+			var Collision: Node3D = VisionRaycast.get_collider().get_node("../../..")
+			if Collision == _Tile: return true
 	return false
 	
 var _visible_tiles: Dictionary = {}
@@ -243,6 +234,7 @@ func _onAddTileToVisibleTiles(_Tile: TileGD) -> void:
 		_visible_tiles.merge({__Tile: null})
 	
 func onUnitsHeightAdjacentTiles() -> void:
+	height_adjacent_tiles = []
 	if Tile.w > 0:
 		for direction in Tiles.cube_directions:
 			var pos: Vector3 = Tile.tpos + direction
@@ -250,8 +242,18 @@ func onUnitsHeightAdjacentTiles() -> void:
 				for w in range(Tile.w - 1, -1, -1):
 					var _Tile: TileGD = Tiles.position_to_tile(Vector4(pos.x, pos.y, pos.z, w))
 					if _Tile != null and _Tile.tile.id > 0:
+						height_adjacent_tiles.append(_Tile)
 						onAddTileToVisibleTiles(_Tile)
 						break
 
+func getVisibleUnits() -> Array:
+	return visible_tiles.map(func(x: TileGD): return Units.unit_by_tile(x)).filter(func(x: Variant): return x != null)
+
 func getVisibleEnemies() -> Array:
-	return visible_units.filter(Units.on_match_team_relation.bind(team, "Enemy"))
+	return getVisibleUnits().filter(Units.on_match_team_relation.bind(team, "Enemy"))
+
+func onResetUnit(default_position, default_rot, default_tile) -> void:
+	global_position = default_position
+	Model.rot = default_rot
+	Tile = default_tile
+	Model.on_set_rotation()

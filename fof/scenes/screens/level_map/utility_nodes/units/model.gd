@@ -2,6 +2,7 @@ extends Node3D
 
 var mesh: MeshInstance3D
 var collision_shape: CollisionShape3D
+var static_body: StaticBody3D
 
 var Unit: UnitGD
 var AniPlayer: AnimationPlayer
@@ -27,7 +28,9 @@ func on_idle_rare_timer_timeout() -> void:
 
 func _ready() -> void:
 	mesh = get_child(0).get_child(0).get_child(0)
-	collision_shape = get_child(0).get_child(0).get_child(1).get_child(0)
+	static_body = get_child(0).get_child(0).get_child(1)
+	collision_shape = static_body.get_child(0)
+	
 	onCreateGreyMaterials()
 	AniPlayer = get_node("AnimationPlayer")
 	AniPlayer.animation_finished.connect(on_finish_animation)
