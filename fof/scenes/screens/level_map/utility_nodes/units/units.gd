@@ -78,8 +78,8 @@ func on_start_phase_start() -> void:
 	
 	var enemy_tiles: Array = Tiles.on_is_type_get_tiles("Enemy", "obj")
 	for Tile in enemy_tiles:
-		on_unit_awakened(allowed_spawns[randi() % allowed_spawns.size()], 0, [], 1, Tile.obj.rotation, Tile)
-
+		#on_unit_awakened(allowed_spawns[randi() % allowed_spawns.size()], 0, [], 1, Tile.obj.rotation, Tile)
+		on_unit_awakened(16, 0, [], 1, Tile.obj.rotation, Tile)
 func on_player_phase_start() -> void:
 	PlayerManager.on_player_phase_start()
 
@@ -192,6 +192,7 @@ func on_movement_finished(Unit: UnitGD) -> void:
 	var visibility_path: Array = [] if action_type != "MoveUnitAI" else active_action.vis_path
 	Unit.stats("speed", -1, "MovementFinished")
 	Unit.occupy_tile(Tile)
+	await Unit.tile_occupied
 	
 	if action_type != "MoveUnitAI" or onFindVisibilityPathMovementType(Tile, visibility_path) != "Invisible":
 		if unit_actions.is_empty() or !unit_actions[0].action_type.begins_with("MoveUnit") or unit_actions[0].Unit != Unit:
@@ -212,7 +213,6 @@ func onPushFrontDelay(delay: float) -> void:
 			"action_type": "Delay",
 			"delay": delay
 		})
-	onUnitActionsFinished()
 
 func isVisibilityPathLastPosition(Tile: TileGD, visibility_path: Array) -> bool:
 	var flip: bool = false
@@ -326,9 +326,6 @@ func on_hurt() -> void:
 @export var DEATH_AFTER_DELAY: float = 1.0
 func on_death_finished(Unit: UnitGD) -> void:
 	await get_tree().create_timer(DEATH_AFTER_DELAY).timeout
-	for _Unit in all_units():
-		_Unit.visible_units.erase(Unit)
-		
 	Unit.UnitStatus._queue_free()
 	Unit.on_death()
 	
@@ -337,15 +334,31 @@ func on_death_finished(Unit: UnitGD) -> void:
 	PlayerManager.onDeathFinished(active_action.Killer, Unit, win_state)
 	AIManager.onDeathFinished(Unit)
 	Deck.on_draw_card()
-	active_action = {}
+	
 	
 	if Unit.Model.current_walk_stream_player != null:
 		AudioMaster.on_cutoff_sfx(Unit.Model.current_walk_stream_player)
 
 	match win_state:
-		0: onUnitActionsFinished()
+		0:
+			if active_action.Deather.Killer is UnitGD:
+				onRampage(active_action.Deather.Killer)
+			onUnitActionsFinished()
 		1: LevelUI.onWinGame()
 		2: LevelUI.onLoseGame()
+	active_action = {}
+	
+func onRampage(Unit: UnitGD) -> void:
+	var abilities: Array = onFindAbilities(Unit, "Rampage")
+	for ability in abilities:
+		ability.onRampage(Unit)
+		onPushFrontDelay(ability.RAMPAGE_DELAY)
+		
+func onFindAbilities(Unit: UnitGD, type: String) -> Array:
+	var abilities: Array = []
+	for ability in Unit.abilities:
+		if ability.type == type: abilities.append(ability)
+	return abilities
 		
 func on_hurt_finished(_Unit: UnitGD) -> void:
 	if typeof(active_action.Attacker) == TYPE_STRING:

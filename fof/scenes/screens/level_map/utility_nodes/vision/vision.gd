@@ -56,13 +56,11 @@ func onCalculateEnemyVisionUpdate(Unit: UnitGD, visible_tiles: Array, og_visible
 
 func onExitTile(Unit: UnitGD, OriginTile: TileGD, DestinationTile: TileGD) -> void:
 	for _Unit in Units.all_units(Unit):
-		if OriginTile in _Unit.visible_tiles:
-			if !(OriginTile in _Unit.height_adjacent_tiles)\
-			and !_Unit.onRayTile(OriginTile):
-				_Unit.visible_tiles.erase(OriginTile)
-		elif DestinationTile not in _Unit.visible_tiles and Tiles.tile_distance(DestinationTile, _Unit.Tile) <= 5:
-			if _Unit.onRayTile(DestinationTile): _Unit.visible_tiles.append(DestinationTile)
-
+		if OriginTile in _Unit.visible_tiles and !(OriginTile in _Unit.height_adjacent_tiles) and !_Unit.onRayTile(OriginTile):
+			_Unit.visible_tiles.erase(OriginTile)
+		if DestinationTile not in _Unit.visible_tiles and Tiles.tile_distance(DestinationTile, _Unit.Tile) <= 5:
+			if _Unit.onRayEnemyUnit(Unit, true): _Unit.visible_tiles.append(DestinationTile)
+	
 func setUnitVisionModeOccupy(Unit: UnitGD, state: bool) -> void:
 	if state:
 		Tiles.on_set_tile_material(Unit.Tile, "AllyOccupy" if Unit.team == 0 else "EnemyOccupy")

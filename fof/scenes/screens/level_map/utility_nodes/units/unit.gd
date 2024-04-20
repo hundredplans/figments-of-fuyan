@@ -1,11 +1,14 @@
 class_name UnitGD
 extends Node3D
 
+signal tile_occupied
+
 var UnitStatus: Control
 var id: int = 0
 var tool_id: int = 0
 var effects: Array = []
 
+var hero_card: HeroCardGD
 var base_card: BaseCardGD
 var ai: Dictionary
 
@@ -35,6 +38,7 @@ var TeamControl: Node
 
 var turn_status: int = 0 # 0 = turn active, 1 = turn inactive, 2 = turn used
 var finished_awakening: bool = false
+var abilities: Array = []
 
 @onready var UnitFieldStatus: Node3D = $UnitFieldStatus
 @onready var Model: Node3D
@@ -46,8 +50,7 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	team = _team
 	
 	var card: Variant = Helper.getCard(id)
-	if card is HeroCardGD: base_card = card.base_cards[Units.GameState.hero_level]
-	else: base_card = card
+	base_card = card
 	
 	ai = {"aic": base_card.aic, "aii": base_card.aii, "aiw": base_card.aiw, "ait": base_card.ait, "aia": base_card.aia}
 	attack = base_card.attack
@@ -84,12 +87,24 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	occupy_tile(tile)
 	Tiles.on_set_tile_material(tile, "AllyOccupy" if team == 0 else "EnemyOccupy")
 	AudioDict = load("res://assets/base_game/cards/cards/" + base_card.folder_name + "/audio.tres")
+	onCreateAbilities()
 
+func onCreateAbilities() -> void:
+	var DIR_PATH: String = "res://assets/base_game/cards/cards/" + base_card.folder_name + "/abilities/"
+	if DirAccess.dir_exists_absolute(DIR_PATH):
+		for file in DirAccess.get_files_at(DIR_PATH):
+			var ability_resource := Resource.new()
+			ability_resource.script = load(DIR_PATH + file)
+			abilities.append(ability_resource)
+		
 func occupy_tile(_Tile: TileGD) -> void:
-	Vision.onExitTile(self, Tile, _Tile)
+	var OGTile: TileGD = Tile
 	Tile = _Tile
+	
+	await get_tree().create_timer(0.01).timeout
+	Vision.onExitTile(self, OGTile, _Tile)
 	Vision.on_recalculate_vision(self)
-	Model.onGetAdjustedPoints()
+	tile_occupied.emit()
 
 var Killer: UnitGD
 func stats(stat_type: String, val: int, AppliedBy: Variant = "GameEvent", absolute: bool = false) -> void:
@@ -98,18 +113,18 @@ func stats(stat_type: String, val: int, AppliedBy: Variant = "GameEvent", absolu
 	if absolute: val = clamp(val, 0, 99)
 	match stat_type:
 		"speed":
-			if speed != val: stats_changed = stat_type
+			stats_changed = stat_type
 			if absolute:
 				speed = clamp(val, 0, 9)
 			else: speed = clamp(speed + val, 0, 9)
 		"attack":
-			if attack != val: stats_changed = stat_type
+			stats_changed = stat_type
 			if absolute:
 				attack = val
 			else: attack = clamp(attack + val, 0, 99)
 		"health":
-			if health != val: stats_changed = stat_type
-			if absolute: 
+			stats_changed = stat_type
+			if absolute:
 				health = val
 			else: health = clamp(health + val, 0, 99)
 				
@@ -198,8 +213,8 @@ func onCircleRay() -> void:
 	onUnitsHeightAdjacentTiles()
 	visible_tiles = _visible_tiles.keys()
 	
-func onRayEnemyUnit(Unit: UnitGD) -> bool:
-	if Unit.Tile in visible_tiles or Unit.Tile in Vision.spawn_tiles: return true
+func onRayEnemyUnit(Unit: UnitGD, override: bool = false) -> bool:
+	if !override and Unit.Tile in visible_tiles or Unit.Tile in Vision.spawn_tiles: return true
 	for point in Unit.Model.onGetAdjustedPoints():
 		VisionRaycast.target_position = point - VisionRaycast.global_position
 		VisionRaycast.force_raycast_update()

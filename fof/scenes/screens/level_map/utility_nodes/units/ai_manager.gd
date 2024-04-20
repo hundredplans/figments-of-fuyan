@@ -73,7 +73,9 @@ func onChosenPathSelected(Unit: UnitGD, chosen_path: Dictionary) -> void:
 	if chosen_path.size > 0:
 		Tiles.on_remove_tile_material(Unit.Tile, "" if chosen_path.size == 1 and chosen_path.types[0].x == 1 else "IgnoreGreyscale")
 	
-	var visibility_path: Array = onCalculateVisibilityPath(Unit, chosen_path)
+	var visibility_path: Array = []
+	await onCalculateVisibilityPath(Unit, chosen_path, visibility_path)
+	
 	invisible_movement_tracker.append(\
 	visibility_path.any(func(x: Array): return x[1] == "Invisible") and visibility_path.all(func(x: Array): return x[1] == "Invisible"))
 	
@@ -81,26 +83,28 @@ func onChosenPathSelected(Unit: UnitGD, chosen_path: Dictionary) -> void:
 		if chosen_path.types[i].x != 1: Units.onMoveToTileAI(Unit, chosen_path.tiles[i], chosen_path.types[i], visibility_path)
 		else: Units.attack_enemy_or_target(Unit, chosen_path.tiles[i])
 
-func onCalculateVisibilityPath(Unit: UnitGD, chosen_path: Dictionary) -> Array:
-	var visibility_path: Array = [[Unit.Tile, Vision.is_unit_in_vision(Unit)]]
-	var default_position: Vector3 = Unit.global_position
-	var default_rot: int = Unit.Model.rot
-	var default_tile: TileGD = Unit.Tile
-	
+func onChosenPathVisPath(chosen_path: Dictionary, Unit: UnitGD, default_tile: TileGD, visibility_path: Array) -> void:
 	for i in range(chosen_path.size):
 		if chosen_path.types[i].x != 1:
 			var Tile: TileGD = chosen_path.tiles[i]
 			Unit.global_position = Tiles.getUnitPositionOnTile(Tile)
 			Unit.Tile = Tile
 			Unit.Model.onLookAtRelative(default_tile, Unit.Tile)
+			await get_tree().create_timer(0.01).timeout
 			visibility_path.append(onRayEnemyUnits(Unit))
+			
+func onCalculateVisibilityPath(Unit: UnitGD, chosen_path: Dictionary, movement_type_path: Array) -> void:
+	var visibility_path = [[Unit.Tile, Vision.is_unit_in_vision(Unit)]]
+	var default_position: Vector3 = Unit.global_position
+	var default_rot: int = Unit.Model.rot
+	var default_tile: TileGD = Unit.Tile
 	
-	var movement_type_path: Array = []
+	await onChosenPathVisPath(chosen_path, Unit, default_tile, visibility_path)
+	
 	for i in range(visibility_path.size() - 1):
 		movement_type_path.append([visibility_path[i + 1][0], onCalculateMovementType(visibility_path[i + 1][1], visibility_path[i][1])])
 	
 	Unit.onResetUnit(default_position, default_rot, default_tile)
-	return movement_type_path
 	
 func onCalculateMovementType(destination_in_vision: bool, origin_in_vision: bool) -> String:
 	if destination_in_vision:
