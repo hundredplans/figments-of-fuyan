@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="BaseCardGD" load_steps=2 format=3 uid="uid://c3iksmkd3hwlu"]
+
+[ext_resource type="Script" path="res://assets/base_game/cards/templates/base_card.gd" id="1_7a2oo"]
+
+[resource]
+script = ExtResource("1_7a2oo")
+area_id = 1
+attack = 1
+health = 1
+speed = 2
+energy = 1
+rarity = 4
+raw_text = "Allies on [1] ATTACK gain [+1/0]"
+flavor_text = "has weird coat"
+text = "[center]Allies on [b][color=orange][1] [img=14x14]res://assets/base_game/cards/game_card/art/bbcode/ATTACK.png[/img][/color][/b] gain [b][color=orange]+1 [img=14x14]res://assets/base_game/cards/game_card/art/bbcode/ATTACK.png[/img][/color][/b] [/center]"
+aic = 2
+aii = 7
+aiw = 3
+ait = 6
+aia = 2
+weapon_offset = 0.1
+weapon = 0.5
+eye = 1.0
+top = 1.5
+stat = 2.0
+ability_names = Array[String]([])
+id = 21
+name = "Palmfessor"
+folder_name = "Palmfessor"
