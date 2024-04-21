@@ -134,12 +134,18 @@ func _process(_delta: float) -> void:
 		active_action = unit_actions.pop_front()
 		LevelMap.setActionLock("UnitActionRegular")
 		match active_action.action_type:
+			"AIMoveFinish": onAIMoveFinish()
 			"MoveUnitAI": onMoveUnitAI()
 			"MoveUnit": onMoveUnit()
 			"AttackTarget": on_attack_enemy()
 			"DeathUnit": on_death()
 			"HurtUnit": on_hurt()
 			"Delay": onDelay()
+
+func onAIMoveFinish() -> void: 
+	active_action = {}
+	onUnitActionsFinished()
+	AIManager.onMoveNextAIUnit()
 
 func onDelay() -> void:
 	await get_tree().create_timer(active_action.delay).timeout
@@ -226,8 +232,7 @@ func onUnitActionsFinished() -> void:
 		var SpectateUnit: UnitGD = SpectateCamera.getSpectateUnit()
 		if SpectateUnit != null: Tiles.on_set_tile_material(SpectateUnit.Tile, "SpectatingUnit")
 		
-		if LevelMap.game_phase == "AIPhase": AIManager.onMoveNextAIUnit()
-		else: LevelMap.setActionLock("UnitActionDisabled")
+		if LevelMap.game_phase != "AIPhase": LevelMap.setActionLock("UnitActionDisabled")
 
 func onEnemyUnitEntersAllyVision(Unit: UnitGD, _Unit: UnitGD) -> void:
 	if Unit.team == 0 and _Unit.team == 1:
@@ -400,3 +405,8 @@ func getCommutativeUnitsVision(Unit: UnitGD) -> Array:
 	for _Unit in all_units():
 		if Unit.Tile in _Unit.visible_tiles: tiles.append(_Unit.Tile)
 	return tiles
+
+func onAIMoveFinisher() -> void:
+	unit_actions.append({
+		"action_type": "AIMoveFinish"
+	})

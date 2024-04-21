@@ -283,10 +283,12 @@ func _on_card_clipper_child_entered_tree(node):
 func onLoseGame() -> void:
 	if get_node("../../../..") == get_tree().get_root():
 		screen_change_sig.emit("res://scenes/screens/lose_screen/lose_screen.tscn")
+	else: print_debug("You lost the game")
 
 func onWinGame() -> void:
 	if get_node("../../../..") == get_tree().get_root():
 		screen_change_sig.emit("res://scenes/screens/win_screen/win_screen.tscn")
+	else: print_debug("You won the game")
 
 func onAIPhaseStart() -> void:
 	ChangePhase.visible = false

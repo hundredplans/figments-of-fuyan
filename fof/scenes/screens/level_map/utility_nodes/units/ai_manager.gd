@@ -82,6 +82,7 @@ func onChosenPathSelected(Unit: UnitGD, chosen_path: Dictionary) -> void:
 	for i in range(chosen_path.size):
 		if chosen_path.types[i].x != 1: Units.onMoveToTileAI(Unit, chosen_path.tiles[i], chosen_path.types[i], visibility_path)
 		else: Units.attack_enemy_or_target(Unit, chosen_path.tiles[i])
+	Units.onAIMoveFinisher()
 
 func onChosenPathVisPath(chosen_path: Dictionary, Unit: UnitGD, default_tile: TileGD, visibility_path: Array) -> void:
 	for i in range(chosen_path.size):
@@ -90,7 +91,7 @@ func onChosenPathVisPath(chosen_path: Dictionary, Unit: UnitGD, default_tile: Ti
 			Unit.global_position = Tiles.getUnitPositionOnTile(Tile)
 			Unit.Tile = Tile
 			Unit.Model.onLookAtRelative(default_tile, Unit.Tile)
-			await get_tree().create_timer(0.01).timeout
+			await get_tree().create_timer(0.001).timeout
 			visibility_path.append(onRayEnemyUnits(Unit))
 			
 func onCalculateVisibilityPath(Unit: UnitGD, chosen_path: Dictionary, movement_type_path: Array) -> void:

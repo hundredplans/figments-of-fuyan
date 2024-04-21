@@ -137,7 +137,7 @@ func on_tile_unhovered(__: TileGD) -> void:
 		var keep_unit: UnitGD = ActiveUnitVision
 		ActiveUnitVision = null
 		
-		await get_tree().create_timer(0.02).timeout
+		await get_tree().create_timer(0.001).timeout
 		
 		if Tiles.active_tile == null or !("MovementRange" in Tiles.active_tile.tile_state):
 			on_recalculate_vision()

@@ -101,7 +101,7 @@ func occupy_tile(_Tile: TileGD) -> void:
 	var OGTile: TileGD = Tile
 	Tile = _Tile
 	
-	await get_tree().create_timer(0.01).timeout
+	await get_tree().create_timer(0.001).timeout
 	Vision.onExitTile(self, OGTile, _Tile)
 	Vision.on_recalculate_vision(self)
 	tile_occupied.emit()
