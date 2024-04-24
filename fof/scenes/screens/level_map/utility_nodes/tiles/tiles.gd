@@ -445,6 +445,31 @@ func on_tile_hovered(Tile: TileGD) -> void:
 			if path_hovered_info.types[i].x == 1:
 				on_set_tile_material(path_hovered_info.tiles[i], "EnemyInRange")
 	Vision.on_tile_hovered(Tile)
+	onTileHoveredDisplayCard(Tile)
+
+var TileHoveredGameCard: GameCardGD
+const TILE_HOVERED_DELAY: float = 0.6
+func onTileHoveredDisplayCard(Tile: TileGD) -> void:
+	if Tile in Vision.ally_vision:
+		var Unit: UnitGD = Units.unit_by_tile(Tile)
+		if Unit != null:
+			await get_tree().create_timer(TILE_HOVERED_DELAY).timeout
+			if TileHoveredGameCard == null and active_tile == Tile and Units.unit_by_tile_bool(Tile):
+				onCreateTileHoveredGameCard(Unit)
+
+func onCreateTileHoveredGameCard(Unit: UnitGD) -> void:
+	TileHoveredGameCard = preload("res://assets/base_game/cards/game_card/game_card.tscn").instantiate()
+	get_node("../..").add_child(TileHoveredGameCard)
+	TileHoveredGameCard.set_info(Unit.base_card)
+	onMoveTileHoveredGameCard()
+	
+var TILE_HOVERED_CARD_OFFSET := Vector2(-125, -400)
+func onMoveTileHoveredGameCard() -> void:
+	if TileHoveredGameCard != null and !(TileHoveredGameCard.is_queued_for_deletion()):
+		TileHoveredGameCard.position = get_viewport().get_mouse_position() + TILE_HOVERED_CARD_OFFSET
+	
+func onQueueTileHoveredGameCard() -> void:
+	if TileHoveredGameCard != null: TileHoveredGameCard.queue_free()
 
 func on_tile_unhovered(Tile: TileGD) -> void:
 	if "RegularInspected" in Tile.tile_state:
@@ -454,6 +479,7 @@ func on_tile_unhovered(Tile: TileGD) -> void:
 		for _Tile in tiles_by_tile_state("PathHovered"):
 			on_remove_tile_material(_Tile, "PathHovered")
 	Vision.on_tile_unhovered(Tile)
+	onQueueTileHoveredGameCard()
 
 var path_hovered_info: Dictionary = {"tiles": [], "size": 0}
 func on_path_hovered_tile_selected(Tile: TileGD) -> void:
@@ -557,6 +583,7 @@ var InputTile: TileGD
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		on_mouse_entered(on_find_tile_by_raycast())
+		onMoveTileHoveredGameCard()
 		
 func on_mouse_enters_ui(x: bool) -> void:
 	on_force_mouse_tile(x, 1)

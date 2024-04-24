@@ -16,11 +16,11 @@ func on_card_placed(hand_card: HandCardGD, Tile: TileGD) -> void:
 	SpectateCamera.onSpectate(Unit)
 
 func on_enemy_unit_enters_vision(Unit: UnitGD) -> void:
-	Unit.UnitStatus.visible = true
+	LevelUI.UnitStatusOverlord.onUpdateEnemyVision(Unit, true)
 	Units.onClearUnitActions()
 
 func on_enemy_unit_exits_vision(Unit: UnitGD) -> void:
-	Unit.UnitStatus.visible = false
+	LevelUI.UnitStatusOverlord.onUpdateEnemyVision(Unit, false)
 
 var ActiveUnit: UnitGD
 var unpassed_turns: Array
@@ -44,14 +44,12 @@ func on_pass_unit_turn_pressed() -> void:
 
 func on_set_unit_turn_status(Unit: UnitGD, status: int) -> void:
 	Unit.turn_status = status
-	Unit.on_set_turn_status()
-	LevelUI.on_set_unit_turn_status(Unit, status)
+	LevelUI.UnitStatusOverlord.onSetUnitStatusTurnStatus(Unit, status)
 
 func on_pass_unit_turn() -> void:
 	if ActiveUnit != null:
 		unpassed_turns.erase(ActiveUnit)
 		passed_turns.append(ActiveUnit)
-		ActiveUnit.UnitStatus.on_set_status_box_modulate("TurnUsed")
 		on_set_unit_turn_status(ActiveUnit, 2)
 		ActiveUnit = null
 		
@@ -64,13 +62,11 @@ func on_player_phase_start() -> void:
 	LevelUI.PassUnitTurn.visible = true
 	unpassed_turns = Units.on_units()
 	passed_turns = []
-	
-	var units: Array = Units.on_units()
-	for i in range(units.size()):
-		units[i].UnitStatus.on_set_status_box_modulate("TurnUnused")
 		
+	var AppliedBy := AppliedByGD.new()
+	AppliedBy.type = "StartPlayerPhase"
 	for Unit in Units.on_units():
-		Unit.stats("speed", Unit.max_speed, "StartPlayerPhase", true)
+		Unit.stats("active_speed", Unit.max_speed, AppliedBy, true)
 		Unit.attack_amount = 1
 		Unit.turn_status = 0
 	
@@ -85,9 +81,10 @@ func on_player_end_turn_phase_start() -> void:
 	passed_turns = []
 	ActiveUnit = null
 	
+	var AppliedBy := AppliedByGD.new()
+	AppliedBy.type = "PlayerEndTurnPhase"
 	for Unit in Units.on_units():
-		Unit.UnitStatus.on_set_status_box_modulate("TurnUsed")
-		Unit.stats("speed", 0, "PlayerEndTurnPhase", true)
+		Unit.stats("active_speed", Unit.max_speed, AppliedBy, true)
 
 func on_hurt_finished(Unit: UnitGD) -> void:
 	on_check_autopass(Unit)
@@ -156,13 +153,10 @@ func _on_unit_selected(Unit: UnitGD) -> void:
 		UnitSelected = Unit
 		LevelUI.setWarningText(ActiveUnit != null and ActiveUnit != Unit, "SkipAction")
 
-func onDeathFinished(Killer: String, Deathee: UnitGD, win_state: int) -> void:
-	if Killer == "Unit" and LevelMap.game_phase == "PlayerPhase":
+func onDeathFinished(Deathee: UnitGD) -> void:
+	if LevelMap.game_phase == "PlayerPhase":
 		if Deathee.team == 0 and Deathee.Killer.team == 1 and SpectateCamera.spectate_type == "Ally":
 			SpectateCamera.onSpectate("Ally")
-		elif Deathee.team == 1 and Deathee.Killer.team == 0 and win_state == 0:
-			on_check_autopass(Deathee.Killer)
-			
 		on_remove_unit_turn(Deathee)
 		Units.Vision.on_recalculate_vision()
 	

@@ -13,14 +13,18 @@ func onDeathFinished(Unit: UnitGD) -> void:
 	active_movement_order.erase(Unit)
 
 func onAIEndTurnPhaseStart() -> void:
+	var AppliedBy := AppliedByGD.new()
+	AppliedBy.type = "EndAIPhase"
 	for Unit in Units.on_units(1):
-		Unit.stats("speed", 0, "EndAIPhase", true)
+		Unit.stats("active_speed", Unit.max_speed, AppliedBy, true)
 
 func onAIPhaseStart() -> void:
+	var AppliedBy := AppliedByGD.new()
+	AppliedBy.type = "StartAIPhase"
 	for Unit in Units.on_units(1):
-		Unit.stats("speed", Unit.max_speed, "StartAIPhase", true)
+		Unit.stats("active_speed", Unit.max_speed, AppliedBy, true)
 		Unit.attack_amount = 1
-		
+			
 	onBeginMoveAIUnits()
 	
 func onBeginMoveAIUnits() -> void:
@@ -75,14 +79,13 @@ func onChosenPathSelected(Unit: UnitGD, chosen_path: Dictionary) -> void:
 	
 	var visibility_path: Array = []
 	await onCalculateVisibilityPath(Unit, chosen_path, visibility_path)
-	
 	invisible_movement_tracker.append(\
 	visibility_path.any(func(x: Array): return x[1] == "Invisible") and visibility_path.all(func(x: Array): return x[1] == "Invisible"))
 	
 	for i in range(chosen_path.size):
 		if chosen_path.types[i].x != 1: Units.onMoveToTileAI(Unit, chosen_path.tiles[i], chosen_path.types[i], visibility_path)
 		else: Units.attack_enemy_or_target(Unit, chosen_path.tiles[i])
-	Units.onAIMoveFinisher()
+	Units.onAIMoveFinisher(visibility_path)
 
 func onChosenPathVisPath(chosen_path: Dictionary, Unit: UnitGD, default_tile: TileGD, visibility_path: Array) -> void:
 	for i in range(chosen_path.size):
@@ -101,10 +104,8 @@ func onCalculateVisibilityPath(Unit: UnitGD, chosen_path: Dictionary, movement_t
 	var default_tile: TileGD = Unit.Tile
 	
 	await onChosenPathVisPath(chosen_path, Unit, default_tile, visibility_path)
-	
 	for i in range(visibility_path.size() - 1):
 		movement_type_path.append([visibility_path[i + 1][0], onCalculateMovementType(visibility_path[i + 1][1], visibility_path[i][1])])
-	
 	Unit.onResetUnit(default_position, default_rot, default_tile)
 	
 func onCalculateMovementType(destination_in_vision: bool, origin_in_vision: bool) -> String:
@@ -116,7 +117,7 @@ func onCalculateMovementType(destination_in_vision: bool, origin_in_vision: bool
 
 func onRayEnemyUnits(Unit: UnitGD) -> Array:
 	for _Unit in Units.on_units(0):
-		if Tiles.tile_distance(_Unit.Tile, Unit.Tile) <= 5 and _Unit.onRayEnemyUnit(Unit):
+		if Tiles.tile_distance(_Unit.Tile, Unit.Tile) <= 5 and (_Unit.onRayEnemyUnit(Unit) or Unit.onRayEnemyUnit(_Unit)):
 			return [Unit.Tile, true]
 	return [Unit.Tile, false]
 

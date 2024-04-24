@@ -18,11 +18,8 @@ func on_recalculate_vision(Unit: UnitGD = null) -> void:
 	var ally_units: Array = Units.on_units()
 	match vision_mode:
 		0:
-			if Unit != null:
-				var og_visible_tiles: Array = Unit.visible_tiles.duplicate()
-				Unit.onCircleRay()
-				onCalculateEnemyVisionUpdate(Unit, Unit.visible_tiles, og_visible_tiles)
-				
+			var og_ally_vision: Array = ally_vision.duplicate()
+			if Unit != null: Unit.onCircleRay()
 			visible_tiles += spawn_tiles.duplicate()
 			
 			for Tile in Tiles.get_children(): # Takes around 5 msec
@@ -30,6 +27,7 @@ func on_recalculate_vision(Unit: UnitGD = null) -> void:
 					visible_tiles.append(Tile)
 			
 			ally_vision = visible_tiles.duplicate()
+			onCalculateEnemyVisionUpdate(Unit, og_ally_vision)
 			on_apply_visibility(visible_tiles)
 		1:
 			visible_tiles = []
@@ -46,13 +44,14 @@ func on_recalculate_vision(Unit: UnitGD = null) -> void:
 			
 	LevelUI.on_update_vision()
 
-func onCalculateEnemyVisionUpdate(Unit: UnitGD, visible_tiles: Array, og_visible_tiles: Array) -> void:
-	for _Unit in Units.on_units(0, "Enemy"):
-		var was_visible: bool = _Unit.Tile in og_visible_tiles
-		var gain_visible: bool = _Unit.Tile in visible_tiles
-		if !(was_visible and gain_visible) or (was_visible and gain_visible):
-			if was_visible: Units.onEnemyUnitExitsAllyVision(Unit, _Unit)
-			elif gain_visible: Units.onEnemyUnitEntersAllyVision(Unit, _Unit)
+func onCalculateEnemyVisionUpdate(Unit: UnitGD, og_ally_vision: Array) -> void:
+	if Unit != null and Unit.team == 0:
+		for _Unit in Units.on_units(0, "Enemy"):
+			var was_visible: bool = _Unit.Tile in og_ally_vision
+			var gain_visible: bool = _Unit.Tile in ally_vision
+			if !(was_visible and gain_visible) or (was_visible and gain_visible):
+				if was_visible: Units.onEnemyUnitExitsAllyVision(Unit, _Unit)
+				elif gain_visible: Units.onEnemyUnitEntersAllyVision(Unit, _Unit)
 
 func onExitTile(Unit: UnitGD, OriginTile: TileGD, DestinationTile: TileGD) -> void:
 	for _Unit in Units.all_units(Unit):

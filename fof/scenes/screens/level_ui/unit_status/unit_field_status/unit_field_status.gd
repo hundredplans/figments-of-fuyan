@@ -1,17 +1,19 @@
 extends Node3D
 
-var SpectateCamera: Node3D
+const NUMBER_SCALE_TIME: float = 0.15
+var NUMBER_SHAKE_SPEED: int = 12
 
-var Unit: UnitGD
-@export var NUMBER_SCALE_TIME: float = 0.15
-@export var NUMBER_SHAKE_SPEED: int = 12
+var SpectateCamera: Node3D
+var type: String = "UnitFieldStatus"
+var unit_field_status_materials: Dictionary
+
+@onready var SlotOne: Sprite3D = %SlotOne
 @onready var FloatingStats: Node3D = %FloatingStats
 @onready var Numbers: Node3D = %Numbers
 @onready var Effects: Node3D = %Effects
 
-var unit_set: bool = false
 func _process(delta: float) -> void:
-	if visible and unit_set:
+	if visible:
 		for child in Numbers.get_children() + FloatingStats.get_children() + Effects.get_children():
 			child.rotation_degrees.z += NUMBER_SHAKE_SPEED * delta
 			
@@ -19,7 +21,9 @@ func _process(delta: float) -> void:
 		if child_zero.rotation_degrees.z < -10 or child_zero.rotation_degrees.z > 10: NUMBER_SHAKE_SPEED *= -1
 		
 		look_at(SpectateCamera.global_position)
-		
+func onUpdateStat(stat: int, stat_changed: String, color: String) -> void:
+	pass
+
 var attack: int = -1
 var health: int = -1
 var speed: int = -1
@@ -94,12 +98,11 @@ func on_set_number_materials(stat_type: String, state: bool) -> void:
 	for child in Numbers.get_node(stat_type).get_children():
 		for grandchild in child.get_children():
 			grandchild.set_surface_override_material(0, \
-			Unit.Units.unit_field_status_materials[stat_type_mod_types[stat_type]][int(state)])
+			unit_field_status_materials[stat_type_mod_types[stat_type]][int(state)])
 
 	SlotOne.no_depth_test = state
-
-@onready var SlotOne: Sprite3D = %SlotOne
-func on_set_unit() -> void:
+	
+func onSetUnit(Unit: UnitGD) -> void:
 	var path: String = "res://scenes/screens/level_ui/unit_status/unit_status_pieces/zzz.png" if\
 	Unit.team == 0 else "res://scenes/screens/level_ui/unit_status/unit_status_pieces/in_range.png"
 	SlotOne.texture = load(path)

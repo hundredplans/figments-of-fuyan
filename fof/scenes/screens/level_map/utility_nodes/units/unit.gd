@@ -3,7 +3,6 @@ extends Node3D
 
 signal tile_occupied
 
-var UnitStatus: Control
 var id: int = 0
 var tool_id: int = 0
 var effects: Array = []
@@ -40,9 +39,7 @@ var turn_status: int = 0 # 0 = turn active, 1 = turn inactive, 2 = turn used
 var finished_awakening: bool = false
 var abilities: Array = []
 
-@onready var UnitFieldStatus: Node3D = $UnitFieldStatus
 @onready var Model: Node3D
-
 func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: int, tile: TileGD) -> void:
 	id = _id
 	tool_id = _tool_id
@@ -55,6 +52,8 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	ai = {"aic": base_card.aic, "aii": base_card.aii, "aiw": base_card.aiw, "ait": base_card.ait, "aia": base_card.aia}
 	attack = base_card.attack
 	health = base_card.health
+	
+	speed = base_card.speed
 	max_speed = base_card.speed
 	
 	max_health = base_card.health
@@ -76,11 +75,6 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	add_child(Model)
 	
 	VisionRaycast.position.y = height.eye
-	UnitFieldStatus.Unit = self
-	UnitFieldStatus.SpectateCamera = Units.SpectateCamera
-	UnitFieldStatus.unit_set = true
-	UnitFieldStatus.position.y = height.stat
-	UnitFieldStatus.on_set_unit()
 	
 	position = tile.position
 	position.y += 0.3
@@ -95,6 +89,12 @@ func onCreateAbilities() -> void:
 		for file in DirAccess.get_files_at(DIR_PATH):
 			var ability_resource := Resource.new()
 			ability_resource.script = load(DIR_PATH + file)
+			
+			ability_resource.Units = Units
+			ability_resource.Tiles = Tiles
+			ability_resource.Vision = Vision
+			ability_resource.Combat = Units.Combat
+			
 			abilities.append(ability_resource)
 		
 func occupy_tile(_Tile: TileGD) -> void:
@@ -103,41 +103,64 @@ func occupy_tile(_Tile: TileGD) -> void:
 	
 	await get_tree().create_timer(0.001).timeout
 	Vision.onExitTile(self, OGTile, _Tile)
-	Vision.on_recalculate_vision(self)
+	Vision.on_recalculate_vision(self) # Takes up to 60msec, this gets stacked and it gets bad lag (threads?)
 	tile_occupied.emit()
 
 var Killer: UnitGD
-func stats(stat_type: String, val: int, AppliedBy: Variant = "GameEvent", absolute: bool = false) -> void:
+func stats(stat_type: String, val: int, AppliedBy := AppliedByGD.new(), absolute: bool = false) -> void:
 	var current_health: int = health
-	var stats_changed: String = ""
-	if absolute: val = clamp(val, 0, 99)
+	var current_speed: int = speed
+	var current_attack: int = attack
+	
+	var stats_changed: String = stat_type
 	match stat_type:
+		"damage": # Can't be absolute
+			stats_changed = "health"
+			health = clamp(health - val, 0, max_health)
 		"speed":
-			stats_changed = stat_type
 			if absolute:
 				speed = clamp(val, 0, 9)
-			else: speed = clamp(speed + val, 0, 9)
+				max_speed = speed
+			else:
+				max_speed = clamp(max_speed + val, 0, 9)
+				speed = clamp(speed + val, 0, max_speed)
 		"attack":
-			stats_changed = stat_type
 			if absolute:
-				attack = val
-			else: attack = clamp(attack + val, 0, 99)
+				attack = clamp(val, 0, 99)
+				max_attack = attack
+			else:
+				max_attack = clamp(max_attack + val, 0, 99)
+				attack = clamp(attack + val, 0, max_attack)
 		"health":
-			stats_changed = stat_type
 			if absolute:
-				health = val
-			else: health = clamp(health + val, 0, 99)
-				
-	UnitStatus.on_reset_stats(stats_changed)
+				health = clamp(val, 0, 99)
+				max_health = health
+			else:
+				max_health = clamp(max_health + val, 0, 99)
+				health = clamp(health + val, 0, max_health)
+		"active_speed":
+			stats_changed = "speed"
+			if absolute:
+				speed = clamp(val, 0, max_speed)
+			else: speed = clamp(speed + val, 0, max_speed)
+		"heal":
+			stats_changed = "health"
+			health += val
+			
+	var color := "BASE"
+	match stats_changed:
+		"health":
+			if health < max_health: color = "RED"
+			elif health > base_card.health: color = "GREEN"
+		"attack":
+			if attack < max_attack: color = "RED"
+			elif health > base_card.speed: color = "GREEN"
+		"speed":
+			if speed > base_card.speed: color = "GREEN"
+	Units.LevelUI.UnitStatusOverlord.onUpdateStats(self, stats_changed.capitalize(), color)
 	
-	var applied_by_string: String = ""
-	if typeof(AppliedBy) != TYPE_STRING: applied_by_string = "Unit"
-	else: applied_by_string = AppliedBy
-	
-	if health == 0:
-		if applied_by_string == "Unit": Killer = AppliedBy
-		Units.kill_unit(self, applied_by_string)
-	elif health < current_health and applied_by_string != "Height": Units.hurt_unit(self, AppliedBy)
+	if health == 0: Units.kill_unit(self, AppliedBy)
+	elif health < current_health and AppliedBy.type != "Height": Units.hurt_unit(self, AppliedBy)
 
 func status_effect() -> void:
 	pass
@@ -164,24 +187,16 @@ func on_death() -> void:
 	queue_free()
 
 func on_spectated_in_player_phase(state: bool) -> void:
-	UnitStatus.on_unit_spectated(state)
-	UnitFieldStatus.on_unit_spectated(state)
+	Units.LevelUI.UnitStatusOverlord.onUnitSpectated(self, state)
 	Units.LevelUI.on_update_vision()
 	
 	if team == 0:
 		if state: Tiles.on_set_tile_material(Tile, "SpectatingUnit")
 		else: Tiles.on_remove_tile_material(Tile, "SpectatingUnit")
-
-func on_set_turn_status() -> void:
-	UnitStatus.SlotOne.visible = turn_status == 2
-	UnitFieldStatus.SlotOne.visible = turn_status == 2
-	if turn_status == 0: UnitStatus.on_set_status_box_modulate("TurnActive")
 	
 func on_enemy_in_range(state: bool) -> void:
-	UnitStatus.SlotOne.visible = state
-	UnitFieldStatus.SlotOne.visible = state
-	if state:
-		Tiles.on_set_tile_material(Tile, "EnemyInRange")
+	Units.LevelUI.UnitStatusOverlord.onEnemyInRange(self, state)
+	if state: Tiles.on_set_tile_material(Tile, "EnemyInRange")
 
 var visible_tiles: Array
 @onready var VisionRaycast: RayCast3D = $VisionRaycast
@@ -262,13 +277,19 @@ func onUnitsHeightAdjacentTiles() -> void:
 						break
 
 func getVisibleUnits() -> Array:
-	return visible_tiles.map(func(x: TileGD): return Units.unit_by_tile(x)).filter(func(x: Variant): return x != null)
+	return visible_tiles.map(func(x: TileGD): return Units.unit_by_tile(x)).filter(func(x: Variant): return x != null and !x.is_queued_for_deletion() and x.health > 0)
 
 func getVisibleEnemies() -> Array:
 	return getVisibleUnits().filter(Units.on_match_team_relation.bind(team, "Enemy"))
+
+func getVisibleAllies() -> Array:
+	return getVisibleUnits().filter(Units.on_match_team_relation.bind(team, "Ally"))
 
 func onResetUnit(default_position, default_rot, default_tile) -> void:
 	global_position = default_position
 	Model.rot = default_rot
 	Tile = default_tile
 	Model.on_set_rotation()
+
+func isHealable() -> bool:
+	return health < max_health

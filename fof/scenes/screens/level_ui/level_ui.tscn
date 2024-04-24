@@ -8,11 +8,11 @@
 [ext_resource type="LabelSettings" uid="uid://x63q2nfy4si3" path="res://assets/UI/sixty_four/sixty_four_medium.tres" id="4_urhhi"]
 [ext_resource type="Texture2D" uid="uid://bhphpw6y0dli" path="res://scenes/ui_general/back_arrow/back_arrow.png" id="4_uruhh"]
 [ext_resource type="Script" path="res://scenes/screens/level_ui/hand_phase/hand_phase_sprite.gd" id="5_filg1"]
-[ext_resource type="Script" path="res://scenes/screens/level_ui/unit_status_state.gd" id="8_ape8n"]
 [ext_resource type="LabelSettings" uid="uid://qp0350v2j4ah" path="res://assets/UI/roboto/roboto32_outline.tres" id="8_dq43r"]
 [ext_resource type="PackedScene" uid="uid://bkbg8go87dqws" path="res://scenes/ui_general/arrow/ui_arrow.tscn" id="8_t3xo3"]
 [ext_resource type="LabelSettings" uid="uid://je535i1721un" path="res://assets/UI/sixty_four/sixty_four_default.tres" id="10_b7a03"]
 [ext_resource type="Texture2D" uid="uid://dl25aqsdhe6ju" path="res://scenes/screens/level_ui/phase_icon/HandPhase.png" id="13_48llv"]
+[ext_resource type="Script" path="res://scenes/screens/level_ui/unit_status/unit_status_overlord.gd" id="14_kfs5d"]
 
 [node name="LevelUI" type="Control"]
 layout_mode = 3
@@ -245,7 +245,6 @@ offset_top = -208.065
 offset_right = -0.0859985
 offset_bottom = -78.065
 mouse_filter = 1
-script = ExtResource("8_ape8n")
 
 [node name="Label" type="Label" parent="CornerRightMenu/CameraArrows/UnitStatusState"]
 modulate = Color(0.760784, 0.447059, 0.176471, 1)
@@ -388,6 +387,11 @@ position = Vector2(165, 60)
 scale = Vector2(2, 2)
 texture = ExtResource("13_48llv")
 
+[node name="UnitStatusOverlord" type="Node" parent="." node_paths=PackedStringArray("LevelUI")]
+unique_name_in_owner = true
+script = ExtResource("14_kfs5d")
+LevelUI = NodePath("..")
+
 [connection signal="mouse_entered" from="StatusBox" to="." method="on_is_mouse_in_ui" binds= [true]]
 [connection signal="mouse_exited" from="StatusBox" to="." method="on_is_mouse_in_ui" binds= [false]]
 [connection signal="item_selected" from="StatusBox/SortMenu/Buttons/TeamButton" to="." method="_on_team_button_item_selected"]
@@ -402,7 +406,6 @@ texture = ExtResource("13_48llv")
 [connection signal="mouse_exited" from="CornerRightMenu/CameraArrows" to="." method="on_is_mouse_in_ui" binds= [false]]
 [connection signal="pressed" from="CornerRightMenu/CameraArrows/LeftArrow" to="." method="on_camera_arrow_pressed" binds= [-1]]
 [connection signal="pressed" from="CornerRightMenu/CameraArrows/RightArrow" to="." method="on_camera_arrow_pressed" binds= [1]]
-[connection signal="child_exiting_tree" from="CornerRightMenu/CameraArrows/UnitStatusState" to="CornerRightMenu/CameraArrows/UnitStatusState" method="_on_child_exiting_tree"]
 [connection signal="mouse_entered" from="ChangePhase" to="." method="on_is_mouse_in_ui" binds= [true]]
 [connection signal="mouse_exited" from="ChangePhase" to="." method="on_is_mouse_in_ui" binds= [false]]
 [connection signal="pressed" from="ChangePhase/ChangePhaseHitbox" to="." method="_on_change_phase_hitbox_pressed"]

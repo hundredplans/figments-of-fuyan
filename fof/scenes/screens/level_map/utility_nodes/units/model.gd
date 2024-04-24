@@ -243,4 +243,4 @@ func getRotationPoint(xyz: Vector3, r: float, pos: Vector3) -> Vector3:
 
 func setVisible(state: bool) -> void:
 	mesh.visible = state
-	Unit.UnitFieldStatus.visible = state
+	Unit.Units.LevelUI.UnitStatusOverlord.setFieldStatusVisible(state)

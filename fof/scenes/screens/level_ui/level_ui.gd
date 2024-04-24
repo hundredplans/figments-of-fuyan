@@ -6,6 +6,7 @@ signal load_world
 signal equip_sky
 signal mouse_in_ui
 
+var Tiles: TilesGD
 var Vision: VisionGD
 var SpectateCamera: Node3D
 var Units: UnitsGD
@@ -142,27 +143,10 @@ func _on_change_phase_hitbox_pressed():
 	LevelMap.on_advance_game_phase()
 	ChangePhase.get_node("ChangePhaseSprite").on_hyperspeed()
 
-var last_ally: int = 0
 @onready var Statuses: Control = %Statuses
-func on_add_unit_status_box(Unit: UnitGD) -> void:
-	var UnitStatus: Control = preload("res://scenes/screens/level_ui/unit_status/unit_status.tscn").instantiate()
-	UnitStatus.queue_free_signal.connect(on_unit_status_queue_free)
-	Statuses.add_child(UnitStatus)
-	
-	UnitStatus.on_set_unit(Unit)
-	UnitStatus.ArtPop.pressed.connect(onSpectateEnemyOrAlly.bind(UnitStatus.Unit))
-	Unit.UnitStatus = UnitStatus
-	
-	if Unit.team == 0:
-		Statuses.move_child(UnitStatus, last_ally)
-		last_ally += 1
-	
 func onSpectateEnemyOrAlly(Unit: UnitGD) -> void:
 	if Units.unit_actions.is_empty() and LevelMap.action_lock in ["", "HandRegular", "SpawnVision"]:
 		SpectateCamera.onSpectate(Unit)
-	
-func on_unit_status_queue_free(UnitStatus: Control) -> void:
-	if last_ally > 0 and UnitStatus.get_index() == last_ally: last_ally -= 1
 
 func on_extend_hand_box() -> void:
 	if !is_hand_box_panel_moving and HandBox.position.y == HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION:
@@ -227,11 +211,11 @@ func on_pass_unit_turn_button_state(x: bool) -> void:
 
 var team_selected: int = 0
 var vision_selected: int = 0
-func _on_team_button_item_selected(x: int):
-	team_selected = x
-	for child in Statuses.get_children().filter(func(y: Control): return y.Unit != null):
-		child.visible = true if (x == 2) else x == child.Unit.team
-	_on_vision_button_item_selected()
+func _on_team_button_item_selected(x: int): pass
+	#team_selected = x
+	#for child in Statuses.get_children().filter(func(y: Control): return y.Unit != null):
+		#child.visible = true if (x == 2) else x == child.Unit.team
+	#_on_vision_button_item_selected()
 
 func on_vision_selected(x: int) -> void:
 	vision_selected = x
@@ -262,9 +246,7 @@ func on_tab_pressed() -> void:
 		MoveTween.tween_property(StatusBox, "position:x", status_box_positions[status_box_state], STATUS_BOX_TRAVEL_TIME)
 		MoveTween.finished.connect(func(): is_status_box_moving = false; get_viewport().update_mouse_cursor_state())
 
-@onready var UnitStatusState: Control = %UnitStatusState
-func on_set_unit_turn_status(Unit: UnitGD, status: int) -> void:
-	UnitStatusState.on_set_state(Unit, status == 0)
+@onready var UnitStatusOverlord: Node = %UnitStatusOverlord
 
 func _on_vision_mode_set():
 	Vision.on_vision_mode_set(1 if Vision.vision_mode == 0 else 0)
@@ -275,6 +257,10 @@ func onVisionModeSet() -> void:
 func onStartPhaseStart() -> void:
 	ChangePhase.visible = false
 	PhaseIcon.visible = false
+	
+	UnitStatusOverlord.SpectateCamera = SpectateCamera
+	UnitStatusOverlord.Tiles = Tiles
+	UnitStatusOverlord.LevelMap = LevelMap
 
 func _on_card_clipper_child_entered_tree(node):
 	if node is HScrollBar:

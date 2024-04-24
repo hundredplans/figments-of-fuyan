@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="LevelInfoGD" load_steps=3 format=3 uid="uid://bdphr1lsjhian"]
+[gd_resource type="Resource" script_class="LevelInfoGD" load_steps=3 format=3]
 
-[ext_resource type="Resource" uid="uid://ygfu7xp7684c" path="res://assets/base_game/areas/CoconutSprings/area_info.tres" id="1_mokub"]
+[ext_resource type="Resource" path="res://assets/base_game/areas/CoconutSprings/area_info.tres" id="1_mokub"]
 [ext_resource type="Script" path="res://assets/base_game/levels/level_info.gd" id="2_ai1x1"]
 
 [resource]
@@ -18,7 +18,7 @@ tiles = [{
 },
 "position": [-5, 0, 5, 0],
 "tdeco": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -52,7 +52,7 @@ tiles = [{
 },
 "position": [-5, 1, 4, 0],
 "tdeco": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -129,7 +129,7 @@ tiles = [{
 "id": 1,
 "multi_tile": [],
 "rotation": 0,
-"type": 0
+"type": 1
 },
 "wall": {
 "id": 0,
@@ -154,7 +154,7 @@ tiles = [{
 },
 "position": [-5, 4, 1, 0],
 "tdeco": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -180,7 +180,7 @@ tiles = [{
 }
 }, {
 "obj": {
-"id": 0,
+"id": 2,
 "multi_tile": [],
 "obj_info": [],
 "rotation": 0,
@@ -188,7 +188,7 @@ tiles = [{
 },
 "position": [-5, 5, 0, 0],
 "tdeco": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -222,7 +222,7 @@ tiles = [{
 },
 "position": [-4, -1, 5, 0],
 "tdeco": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -262,7 +262,7 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 1,
+"id": 3,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -296,7 +296,7 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 1,
+"id": 3,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -367,7 +367,7 @@ tiles = [{
 "id": 1,
 "multi_tile": [],
 "rotation": 0,
-"type": 0
+"type": 1
 },
 "wall": {
 "id": 0,
@@ -392,7 +392,7 @@ tiles = [{
 },
 "position": [-4, 4, 0, 0],
 "tdeco": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -426,7 +426,7 @@ tiles = [{
 },
 "position": [-4, 5, -1, 0],
 "tdeco": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -472,11 +472,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
+"id": 1,
+"multi_tile": [[-3, -2, 5, 0], [-3, -2, 5, 1]],
+"rotation": 5,
 "tile_wall": 0,
-"type": 0
+"type": 1
 },
 "wdeco": {
 "id": 0,
@@ -500,7 +500,7 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 1,
+"id": 3,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -534,17 +534,17 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 1,
+"id": 3,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[-3, 0, 3, 0], [-3, 0, 3, 1], [-3, 0, 3, 2]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -568,7 +568,7 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 1,
+"id": 3,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -596,9 +596,9 @@ tiles = [{
 },
 "position": [-3, 2, 1, 0],
 "tdeco": {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
+"id": 8,
+"multi_tile": [[-3, 2, 1, 0], [-3, 2, 1, 1], [-3, 2, 1, 2], [-3, 2, 1, 3]],
+"rotation": 5,
 "type": 0
 },
 "tile": {
@@ -639,7 +639,7 @@ tiles = [{
 "id": 1,
 "multi_tile": [],
 "rotation": 0,
-"type": 0
+"type": 1
 },
 "wall": {
 "id": 0,
@@ -673,7 +673,7 @@ tiles = [{
 "id": 1,
 "multi_tile": [],
 "rotation": 0,
-"type": 0
+"type": 1
 },
 "wall": {
 "id": 0,
@@ -707,7 +707,7 @@ tiles = [{
 "id": 1,
 "multi_tile": [],
 "rotation": 0,
-"type": 0
+"type": 1
 },
 "wall": {
 "id": 0,
@@ -778,8 +778,8 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[-2, -2, 4, 0], [-2, -2, 4, 1]],
 "rotation": 0,
 "tile_wall": 0,
 "type": 0
@@ -806,7 +806,7 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 1,
+"id": 3,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -840,7 +840,7 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 1,
+"id": 3,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -868,7 +868,7 @@ tiles = [{
 },
 "position": [-2, 1, 1, 0],
 "tdeco": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -982,11 +982,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[-2, 4, -2, 0], [-2, 4, -2, 1]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -1016,11 +1016,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[-2, 5, -3, 0], [-2, 5, -3, 1]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -1152,11 +1152,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 1,
-"multi_tile": [[-1, -1, 2, 0], [-1, -1, 2, 1], [-1, -1, 2, 2]],
+"id": 0,
+"multi_tile": [],
 "rotation": 0,
 "tile_wall": 0,
-"type": 2
+"type": 0
 },
 "wdeco": {
 "id": 0,
@@ -1174,9 +1174,9 @@ tiles = [{
 },
 "position": [-1, 0, 1, 0],
 "tdeco": {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
+"id": 8,
+"multi_tile": [[-1, 0, 1, 0], [-1, 0, 1, 1], [-1, 0, 1, 2], [-1, 0, 1, 3]],
+"rotation": 2,
 "type": 0
 },
 "tile": {
@@ -1186,11 +1186,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 1,
-"multi_tile": [[-1, 0, 1, 0], [-1, 0, 1, 1], [-1, 0, 1, 2]],
+"id": 0,
+"multi_tile": [],
 "rotation": 0,
 "tile_wall": 0,
-"type": 2
+"type": 0
 },
 "wdeco": {
 "id": 0,
@@ -1242,9 +1242,9 @@ tiles = [{
 },
 "position": [-1, 2, -1, 0],
 "tdeco": {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
+"id": 8,
+"multi_tile": [[-1, 2, -1, 0], [-1, 2, -1, 1], [-1, 2, -1, 2], [-1, 2, -1, 3]],
+"rotation": 5,
 "type": 0
 },
 "tile": {
@@ -1322,11 +1322,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[-1, 4, -3, 0], [-1, 4, -3, 1]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -1356,11 +1356,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[-1, 5, -4, 0], [-1, 5, -4, 1]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -1370,10 +1370,10 @@ tiles = [{
 }
 }, {
 "obj": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "obj_info": [],
-"rotation": 0,
+"rotation": 5,
 "type": 0
 },
 "position": [0, -5, 5, 0],
@@ -1493,10 +1493,10 @@ tiles = [{
 },
 "wall": {
 "id": 1,
-"multi_tile": [[0, -2, 2, 0], [0, -2, 2, 1], [0, -2, 2, 2]],
+"multi_tile": [[0, -2, 2, 0], [0, -2, 2, 1]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 2
+"type": 0
 },
 "wdeco": {
 "id": 0,
@@ -1560,11 +1560,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 1,
+"id": 0,
 "multi_tile": [],
 "rotation": 0,
-"tile_wall": 1,
-"type": 2
+"tile_wall": 0,
+"type": 0
 },
 "wdeco": {
 "id": 0,
@@ -1591,7 +1591,7 @@ tiles = [{
 "id": 1,
 "multi_tile": [],
 "rotation": 0,
-"type": 0
+"type": 1
 },
 "wall": {
 "id": 0,
@@ -1662,11 +1662,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[0, 3, -3, 0], [0, 3, -3, 1]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -1696,11 +1696,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[0, 4, -4, 0], [0, 4, -4, 1]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -1730,11 +1730,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[0, 5, -5, 0], [0, 5, -5, 1]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -1744,10 +1744,10 @@ tiles = [{
 }
 }, {
 "obj": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "obj_info": [],
-"rotation": 0,
+"rotation": 5,
 "type": 0
 },
 "position": [1, -5, 4, 0],
@@ -1867,10 +1867,10 @@ tiles = [{
 },
 "wall": {
 "id": 1,
-"multi_tile": [[1, -2, 1, 0], [1, -2, 1, 1], [1, -2, 1, 2]],
+"multi_tile": [[1, -2, 1, 0], [1, -2, 1, 1]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 2
+"type": 1
 },
 "wdeco": {
 "id": 0,
@@ -1931,14 +1931,14 @@ tiles = [{
 "id": 1,
 "multi_tile": [],
 "rotation": 0,
-"type": 0
+"type": 1
 },
 "wall": {
-"id": 1,
+"id": 0,
 "multi_tile": [],
 "rotation": 0,
-"tile_wall": 1,
-"type": 2
+"tile_wall": 0,
+"type": 0
 },
 "wdeco": {
 "id": 0,
@@ -1968,11 +1968,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
-"tile_wall": 0,
-"type": 0
+"tile_wall": 1,
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -2002,11 +2002,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
-"tile_wall": 0,
-"type": 0
+"tile_wall": 1,
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -2036,11 +2036,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[1, 3, -4, 0], [1, 3, -4, 1]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -2070,11 +2070,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[1, 4, -5, 0], [1, 4, -5, 1]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -2084,10 +2084,10 @@ tiles = [{
 }
 }, {
 "obj": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "obj_info": [],
-"rotation": 0,
+"rotation": 5,
 "type": 0
 },
 "position": [2, -5, 3, 0],
@@ -2138,11 +2138,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[2, -4, 2, 0], [2, -4, 2, 1], [2, -4, 2, 2], [2, -4, 2, 3]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -2172,11 +2172,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[2, -3, 1, 0], [2, -3, 1, 1], [2, -3, 1, 2], [2, -3, 1, 3]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -2206,11 +2206,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 1,
-"multi_tile": [[2, -2, 0, 0], [2, -2, 0, 1], [2, -2, 0, 2]],
+"id": 0,
+"multi_tile": [],
 "rotation": 0,
 "tile_wall": 0,
-"type": 2
+"type": 0
 },
 "wdeco": {
 "id": 0,
@@ -2271,14 +2271,14 @@ tiles = [{
 "id": 1,
 "multi_tile": [],
 "rotation": 0,
-"type": 0
+"type": 1
 },
 "wall": {
-"id": 1,
+"id": 0,
 "multi_tile": [],
 "rotation": 0,
-"tile_wall": 1,
-"type": 2
+"tile_wall": 0,
+"type": 0
 },
 "wdeco": {
 "id": 0,
@@ -2308,11 +2308,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
-"tile_wall": 0,
-"type": 0
+"tile_wall": 1,
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -2342,11 +2342,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
-"tile_wall": 0,
-"type": 0
+"tile_wall": 1,
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -2376,11 +2376,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
-"tile_wall": 0,
-"type": 0
+"tile_wall": 1,
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -2410,11 +2410,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[3, -5, 2, 0], [3, -5, 2, 1], [3, -5, 2, 2], [3, -5, 2, 3], [3, -5, 2, 4]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -2444,11 +2444,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[3, -4, 1, 0], [3, -4, 1, 1], [3, -4, 1, 2], [3, -4, 1, 3], [3, -4, 1, 4]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -2512,11 +2512,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 1,
-"multi_tile": [[3, -2, -1, 0], [3, -2, -1, 1], [3, -2, -1, 2]],
+"id": 0,
+"multi_tile": [],
 "rotation": 0,
 "tile_wall": 0,
-"type": 2
+"type": 0
 },
 "wdeco": {
 "id": 0,
@@ -2526,15 +2526,15 @@ tiles = [{
 }
 }, {
 "obj": {
-"id": 1,
+"id": 0,
 "multi_tile": [],
 "obj_info": [],
-"rotation": 5,
+"rotation": 0,
 "type": 0
 },
 "position": [3, -1, -2, 0],
 "tdeco": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -2577,14 +2577,14 @@ tiles = [{
 "id": 1,
 "multi_tile": [],
 "rotation": 0,
-"type": 0
+"type": 1
 },
 "wall": {
-"id": 1,
-"multi_tile": [[3, 0, -3, 0], [3, 0, -3, 1], [3, 0, -3, 2]],
+"id": 0,
+"multi_tile": [],
 "rotation": 0,
 "tile_wall": 0,
-"type": 2
+"type": 0
 },
 "wdeco": {
 "id": 0,
@@ -2614,11 +2614,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
-"tile_wall": 0,
-"type": 0
+"tile_wall": 1,
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -2648,11 +2648,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
-"tile_wall": 0,
-"type": 0
+"tile_wall": 1,
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -2682,11 +2682,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[4, -5, 1, 0], [4, -5, 1, 1], [4, -5, 1, 2], [4, -5, 1, 3], [4, -5, 1, 4]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -2716,11 +2716,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[4, -4, 0, 0], [4, -4, 0, 1], [4, -4, 0, 2], [4, -4, 0, 3], [4, -4, 0, 4]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -2772,7 +2772,7 @@ tiles = [{
 },
 "position": [4, -2, -2, 0],
 "tdeco": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -2784,11 +2784,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 1,
-"multi_tile": [[4, -2, -2, 0], [4, -2, -2, 1], [4, -2, -2, 2]],
+"id": 0,
+"multi_tile": [],
 "rotation": 0,
 "tile_wall": 0,
-"type": 2
+"type": 0
 },
 "wdeco": {
 "id": 0,
@@ -2818,11 +2818,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 1,
-"multi_tile": [[4, -1, -3, 0], [4, -1, -3, 1], [4, -1, -3, 2]],
+"id": 0,
+"multi_tile": [],
 "rotation": 0,
 "tile_wall": 0,
-"type": 2
+"type": 0
 },
 "wdeco": {
 "id": 0,
@@ -2849,7 +2849,7 @@ tiles = [{
 "id": 1,
 "multi_tile": [],
 "rotation": 0,
-"type": 0
+"type": 1
 },
 "wall": {
 "id": 0,
@@ -2883,7 +2883,7 @@ tiles = [{
 "id": 1,
 "multi_tile": [],
 "rotation": 0,
-"type": 0
+"type": 1
 },
 "wall": {
 "id": 0,
@@ -2920,11 +2920,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[5, -5, 0, 0], [5, -5, 0, 1], [5, -5, 0, 2], [5, -5, 0, 3], [5, -5, 0, 4]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -2954,11 +2954,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[5, -4, -1, 0], [5, -4, -1, 1], [5, -4, -1, 2], [5, -4, -1, 3]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -3044,7 +3044,7 @@ tiles = [{
 },
 "position": [5, -1, -4, 0],
 "tdeco": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -3566,11 +3566,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
+"id": 1,
+"multi_tile": [[-3, -2, 5, 0], [-3, -2, 5, 1]],
+"rotation": 5,
+"tile_wall": 1,
+"type": 1
 },
 "wdeco": {
 "id": 0,
@@ -3634,11 +3634,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[-3, 0, 3, 0], [-3, 0, 3, 1], [-3, 0, 3, 2]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -3691,7 +3691,7 @@ tiles = [{
 "position": [-3, 2, 1, 1],
 "tdeco": {
 "id": 0,
-"multi_tile": [],
+"multi_tile": [[-3, 2, 1, 0], [-3, 2, 1, 1], [-3, 2, 1, 2], [-3, 2, 1, 3]],
 "rotation": 0,
 "type": 0
 },
@@ -3872,10 +3872,10 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[-2, -2, 4, 0], [-2, -2, 4, 1]],
 "rotation": 0,
-"tile_wall": 0,
+"tile_wall": 1,
 "type": 0
 },
 "wdeco": {
@@ -4076,11 +4076,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[-2, 4, -2, 0], [-2, 4, -2, 1]],
 "rotation": 0,
-"tile_wall": 0,
-"type": 0
+"tile_wall": 1,
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -4110,11 +4110,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[-2, 5, -3, 0], [-2, 5, -3, 1]],
 "rotation": 0,
-"tile_wall": 0,
-"type": 0
+"tile_wall": 1,
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -4246,11 +4246,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 1,
-"multi_tile": [[-1, -1, 2, 0], [-1, -1, 2, 1], [-1, -1, 2, 2]],
+"id": 0,
+"multi_tile": [],
 "rotation": 0,
 "tile_wall": 0,
-"type": 2
+"type": 0
 },
 "wdeco": {
 "id": 0,
@@ -4269,7 +4269,7 @@ tiles = [{
 "position": [-1, 0, 1, 1],
 "tdeco": {
 "id": 0,
-"multi_tile": [],
+"multi_tile": [[-1, 0, 1, 0], [-1, 0, 1, 1], [-1, 0, 1, 2], [-1, 0, 1, 3]],
 "rotation": 0,
 "type": 0
 },
@@ -4280,11 +4280,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 1,
-"multi_tile": [[-1, 0, 1, 0], [-1, 0, 1, 1], [-1, 0, 1, 2]],
+"id": 0,
+"multi_tile": [],
 "rotation": 0,
 "tile_wall": 0,
-"type": 2
+"type": 0
 },
 "wdeco": {
 "id": 0,
@@ -4337,7 +4337,7 @@ tiles = [{
 "position": [-1, 2, -1, 1],
 "tdeco": {
 "id": 0,
-"multi_tile": [],
+"multi_tile": [[-1, 2, -1, 0], [-1, 2, -1, 1], [-1, 2, -1, 2], [-1, 2, -1, 3]],
 "rotation": 0,
 "type": 0
 },
@@ -4416,11 +4416,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[-1, 4, -3, 0], [-1, 4, -3, 1]],
 "rotation": 0,
-"tile_wall": 0,
-"type": 0
+"tile_wall": 1,
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -4450,11 +4450,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[-1, 5, -4, 0], [-1, 5, -4, 1]],
 "rotation": 0,
-"tile_wall": 0,
-"type": 0
+"tile_wall": 1,
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -4587,10 +4587,10 @@ tiles = [{
 },
 "wall": {
 "id": 1,
-"multi_tile": [[0, -2, 2, 0], [0, -2, 2, 1], [0, -2, 2, 2]],
+"multi_tile": [[0, -2, 2, 0], [0, -2, 2, 1]],
 "rotation": 0,
-"tile_wall": 0,
-"type": 2
+"tile_wall": 1,
+"type": 0
 },
 "wdeco": {
 "id": 0,
@@ -4648,7 +4648,7 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 1,
+"id": 0,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -4756,11 +4756,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[0, 3, -3, 0], [0, 3, -3, 1]],
 "rotation": 0,
-"tile_wall": 0,
-"type": 0
+"tile_wall": 1,
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -4790,11 +4790,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[0, 4, -4, 0], [0, 4, -4, 1]],
 "rotation": 0,
-"tile_wall": 0,
-"type": 0
+"tile_wall": 1,
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -4824,11 +4824,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[0, 5, -5, 0], [0, 5, -5, 1]],
 "rotation": 0,
-"tile_wall": 0,
-"type": 0
+"tile_wall": 1,
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -4961,10 +4961,10 @@ tiles = [{
 },
 "wall": {
 "id": 1,
-"multi_tile": [[1, -2, 1, 0], [1, -2, 1, 1], [1, -2, 1, 2]],
+"multi_tile": [[1, -2, 1, 0], [1, -2, 1, 1]],
 "rotation": 0,
-"tile_wall": 0,
-"type": 2
+"tile_wall": 1,
+"type": 1
 },
 "wdeco": {
 "id": 0,
@@ -5022,7 +5022,7 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 1,
+"id": 0,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -5050,13 +5050,13 @@ tiles = [{
 },
 "position": [1, 1, -2, 1],
 "tdeco": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
 },
 "tile": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -5090,10 +5090,10 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
-"type": 0
+"type": 1
 },
 "wall": {
 "id": 0,
@@ -5130,11 +5130,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[1, 3, -4, 0], [1, 3, -4, 1]],
 "rotation": 0,
-"tile_wall": 0,
-"type": 0
+"tile_wall": 1,
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -5164,11 +5164,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[1, 4, -5, 0], [1, 4, -5, 1]],
 "rotation": 0,
-"tile_wall": 0,
-"type": 0
+"tile_wall": 1,
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -5232,11 +5232,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[2, -4, 2, 0], [2, -4, 2, 1], [2, -4, 2, 2], [2, -4, 2, 3]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -5266,11 +5266,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[2, -3, 1, 0], [2, -3, 1, 1], [2, -3, 1, 2], [2, -3, 1, 3]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -5300,11 +5300,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 1,
-"multi_tile": [[2, -2, 0, 0], [2, -2, 0, 1], [2, -2, 0, 2]],
+"id": 0,
+"multi_tile": [],
 "rotation": 0,
 "tile_wall": 0,
-"type": 2
+"type": 0
 },
 "wdeco": {
 "id": 0,
@@ -5362,7 +5362,7 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 1,
+"id": 0,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -5396,7 +5396,7 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -5430,10 +5430,10 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
-"type": 0
+"type": 1
 },
 "wall": {
 "id": 0,
@@ -5464,10 +5464,10 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
-"type": 0
+"type": 1
 },
 "wall": {
 "id": 0,
@@ -5504,11 +5504,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[3, -5, 2, 0], [3, -5, 2, 1], [3, -5, 2, 2], [3, -5, 2, 3], [3, -5, 2, 4]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -5538,11 +5538,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[3, -4, 1, 0], [3, -4, 1, 1], [3, -4, 1, 2], [3, -4, 1, 3], [3, -4, 1, 4]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -5606,11 +5606,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 1,
-"multi_tile": [[3, -2, -1, 0], [3, -2, -1, 1], [3, -2, -1, 2]],
+"id": 0,
+"multi_tile": [],
 "rotation": 0,
 "tile_wall": 0,
-"type": 2
+"type": 0
 },
 "wdeco": {
 "id": 0,
@@ -5674,11 +5674,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 1,
-"multi_tile": [[3, 0, -3, 0], [3, 0, -3, 1], [3, 0, -3, 2]],
+"id": 0,
+"multi_tile": [],
 "rotation": 0,
 "tile_wall": 0,
-"type": 2
+"type": 0
 },
 "wdeco": {
 "id": 0,
@@ -5696,13 +5696,13 @@ tiles = [{
 },
 "position": [3, 1, -4, 1],
 "tdeco": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
 },
 "tile": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -5736,7 +5736,7 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -5776,11 +5776,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[4, -5, 1, 0], [4, -5, 1, 1], [4, -5, 1, 2], [4, -5, 1, 3], [4, -5, 1, 4]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -5810,11 +5810,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[4, -4, 0, 0], [4, -4, 0, 1], [4, -4, 0, 2], [4, -4, 0, 3], [4, -4, 0, 4]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -5878,11 +5878,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 1,
-"multi_tile": [[4, -2, -2, 0], [4, -2, -2, 1], [4, -2, -2, 2]],
+"id": 0,
+"multi_tile": [],
 "rotation": 0,
 "tile_wall": 0,
-"type": 2
+"type": 0
 },
 "wdeco": {
 "id": 0,
@@ -5912,11 +5912,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 1,
-"multi_tile": [[4, -1, -3, 0], [4, -1, -3, 1], [4, -1, -3, 2]],
+"id": 0,
+"multi_tile": [],
 "rotation": 0,
 "tile_wall": 0,
-"type": 2
+"type": 0
 },
 "wdeco": {
 "id": 0,
@@ -6014,11 +6014,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[5, -5, 0, 0], [5, -5, 0, 1], [5, -5, 0, 2], [5, -5, 0, 3], [5, -5, 0, 4]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -6048,11 +6048,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[5, -4, -1, 0], [5, -4, -1, 1], [5, -4, -1, 2], [5, -4, -1, 3]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -6728,11 +6728,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[-3, 0, 3, 0], [-3, 0, 3, 1], [-3, 0, 3, 2]],
 "rotation": 0,
-"tile_wall": 0,
-"type": 0
+"tile_wall": 1,
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -6785,7 +6785,7 @@ tiles = [{
 "position": [-3, 2, 1, 2],
 "tdeco": {
 "id": 0,
-"multi_tile": [],
+"multi_tile": [[-3, 2, 1, 0], [-3, 2, 1, 1], [-3, 2, 1, 2], [-3, 2, 1, 3]],
 "rotation": 0,
 "type": 0
 },
@@ -7164,7 +7164,7 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -7198,7 +7198,7 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -7340,11 +7340,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 1,
-"multi_tile": [[-1, -1, 2, 0], [-1, -1, 2, 1], [-1, -1, 2, 2]],
+"id": 0,
+"multi_tile": [],
 "rotation": 0,
-"tile_wall": 1,
-"type": 2
+"tile_wall": 0,
+"type": 0
 },
 "wdeco": {
 "id": 0,
@@ -7363,7 +7363,7 @@ tiles = [{
 "position": [-1, 0, 1, 2],
 "tdeco": {
 "id": 0,
-"multi_tile": [],
+"multi_tile": [[-1, 0, 1, 0], [-1, 0, 1, 1], [-1, 0, 1, 2], [-1, 0, 1, 3]],
 "rotation": 0,
 "type": 0
 },
@@ -7374,11 +7374,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 1,
-"multi_tile": [[-1, 0, 1, 0], [-1, 0, 1, 1], [-1, 0, 1, 2]],
+"id": 0,
+"multi_tile": [],
 "rotation": 0,
-"tile_wall": 1,
-"type": 2
+"tile_wall": 0,
+"type": 0
 },
 "wdeco": {
 "id": 0,
@@ -7431,7 +7431,7 @@ tiles = [{
 "position": [-1, 2, -1, 2],
 "tdeco": {
 "id": 0,
-"multi_tile": [],
+"multi_tile": [[-1, 2, -1, 0], [-1, 2, -1, 1], [-1, 2, -1, 2], [-1, 2, -1, 3]],
 "rotation": 0,
 "type": 0
 },
@@ -7499,12 +7499,12 @@ tiles = [{
 "position": [-1, 4, -3, 2],
 "tdeco": {
 "id": 0,
-"multi_tile": [],
+"multi_tile": [[0, 4, -4, 2], [-1, 4, -3, 2], [-1, 5, -4, 2], [0, 3, -3, 2], [0, 4, -4, 3], [0, 5, -5, 2], [1, 3, -4, 2], [1, 4, -5, 2]],
 "rotation": 0,
 "type": 0
 },
 "tile": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -7533,12 +7533,12 @@ tiles = [{
 "position": [-1, 5, -4, 2],
 "tdeco": {
 "id": 0,
-"multi_tile": [],
+"multi_tile": [[0, 4, -4, 2], [-1, 4, -3, 2], [-1, 5, -4, 2], [0, 3, -3, 2], [0, 4, -4, 3], [0, 5, -5, 2], [1, 3, -4, 2], [1, 4, -5, 2]],
 "rotation": 0,
 "type": 0
 },
 "tile": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -7680,11 +7680,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 1,
-"multi_tile": [[0, -2, 2, 0], [0, -2, 2, 1], [0, -2, 2, 2]],
+"id": 0,
+"multi_tile": [],
 "rotation": 0,
-"tile_wall": 1,
-"type": 2
+"tile_wall": 0,
+"type": 0
 },
 "wdeco": {
 "id": 0,
@@ -7839,12 +7839,12 @@ tiles = [{
 "position": [0, 3, -3, 2],
 "tdeco": {
 "id": 0,
-"multi_tile": [],
+"multi_tile": [[0, 4, -4, 2], [-1, 4, -3, 2], [-1, 5, -4, 2], [0, 3, -3, 2], [0, 4, -4, 3], [0, 5, -5, 2], [1, 3, -4, 2], [1, 4, -5, 2]],
 "rotation": 0,
 "type": 0
 },
 "tile": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -7872,13 +7872,13 @@ tiles = [{
 },
 "position": [0, 4, -4, 2],
 "tdeco": {
-"id": 0,
-"multi_tile": [],
+"id": 3,
+"multi_tile": [[0, 4, -4, 2], [-1, 4, -3, 2], [-1, 5, -4, 2], [0, 3, -3, 2], [0, 4, -4, 3], [0, 5, -5, 2], [1, 3, -4, 2], [1, 4, -5, 2]],
 "rotation": 0,
 "type": 0
 },
 "tile": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -7907,12 +7907,12 @@ tiles = [{
 "position": [0, 5, -5, 2],
 "tdeco": {
 "id": 0,
-"multi_tile": [],
+"multi_tile": [[0, 4, -4, 2], [-1, 4, -3, 2], [-1, 5, -4, 2], [0, 3, -3, 2], [0, 4, -4, 3], [0, 5, -5, 2], [1, 3, -4, 2], [1, 4, -5, 2]],
 "rotation": 0,
 "type": 0
 },
 "tile": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -8054,11 +8054,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 1,
-"multi_tile": [[1, -2, 1, 0], [1, -2, 1, 1], [1, -2, 1, 2]],
+"id": 0,
+"multi_tile": [],
 "rotation": 0,
-"tile_wall": 1,
-"type": 2
+"tile_wall": 0,
+"type": 0
 },
 "wdeco": {
 "id": 0,
@@ -8213,12 +8213,12 @@ tiles = [{
 "position": [1, 3, -4, 2],
 "tdeco": {
 "id": 0,
-"multi_tile": [],
+"multi_tile": [[0, 4, -4, 2], [-1, 4, -3, 2], [-1, 5, -4, 2], [0, 3, -3, 2], [0, 4, -4, 3], [0, 5, -5, 2], [1, 3, -4, 2], [1, 4, -5, 2]],
 "rotation": 0,
 "type": 0
 },
 "tile": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -8247,12 +8247,12 @@ tiles = [{
 "position": [1, 4, -5, 2],
 "tdeco": {
 "id": 0,
-"multi_tile": [],
+"multi_tile": [[0, 4, -4, 2], [-1, 4, -3, 2], [-1, 5, -4, 2], [0, 3, -3, 2], [0, 4, -4, 3], [0, 5, -5, 2], [1, 3, -4, 2], [1, 4, -5, 2]],
 "rotation": 0,
 "type": 0
 },
 "tile": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -8326,11 +8326,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[2, -4, 2, 0], [2, -4, 2, 1], [2, -4, 2, 2], [2, -4, 2, 3]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -8360,11 +8360,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[2, -3, 1, 0], [2, -3, 1, 1], [2, -3, 1, 2], [2, -3, 1, 3]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -8394,11 +8394,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 1,
-"multi_tile": [[2, -2, 0, 0], [2, -2, 0, 1], [2, -2, 0, 2]],
+"id": 0,
+"multi_tile": [],
 "rotation": 0,
-"tile_wall": 1,
-"type": 2
+"tile_wall": 0,
+"type": 0
 },
 "wdeco": {
 "id": 0,
@@ -8598,11 +8598,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[3, -5, 2, 0], [3, -5, 2, 1], [3, -5, 2, 2], [3, -5, 2, 3], [3, -5, 2, 4]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -8632,11 +8632,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[3, -4, 1, 0], [3, -4, 1, 1], [3, -4, 1, 2], [3, -4, 1, 3], [3, -4, 1, 4]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -8700,11 +8700,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 1,
-"multi_tile": [[3, -2, -1, 0], [3, -2, -1, 1], [3, -2, -1, 2]],
+"id": 0,
+"multi_tile": [],
 "rotation": 0,
-"tile_wall": 1,
-"type": 2
+"tile_wall": 0,
+"type": 0
 },
 "wdeco": {
 "id": 0,
@@ -8768,11 +8768,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 1,
-"multi_tile": [[3, 0, -3, 0], [3, 0, -3, 1], [3, 0, -3, 2]],
+"id": 0,
+"multi_tile": [],
 "rotation": 0,
-"tile_wall": 1,
-"type": 2
+"tile_wall": 0,
+"type": 0
 },
 "wdeco": {
 "id": 0,
@@ -8870,11 +8870,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[4, -5, 1, 0], [4, -5, 1, 1], [4, -5, 1, 2], [4, -5, 1, 3], [4, -5, 1, 4]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -8904,11 +8904,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[4, -4, 0, 0], [4, -4, 0, 1], [4, -4, 0, 2], [4, -4, 0, 3], [4, -4, 0, 4]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -8972,11 +8972,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 1,
-"multi_tile": [[4, -2, -2, 0], [4, -2, -2, 1], [4, -2, -2, 2]],
+"id": 0,
+"multi_tile": [],
 "rotation": 0,
-"tile_wall": 1,
-"type": 2
+"tile_wall": 0,
+"type": 0
 },
 "wdeco": {
 "id": 0,
@@ -9006,11 +9006,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 1,
-"multi_tile": [[4, -1, -3, 0], [4, -1, -3, 1], [4, -1, -3, 2]],
+"id": 0,
+"multi_tile": [],
 "rotation": 0,
-"tile_wall": 1,
-"type": 2
+"tile_wall": 0,
+"type": 0
 },
 "wdeco": {
 "id": 0,
@@ -9108,11 +9108,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[5, -5, 0, 0], [5, -5, 0, 1], [5, -5, 0, 2], [5, -5, 0, 3], [5, -5, 0, 4]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -9142,11 +9142,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[5, -4, -1, 0], [5, -4, -1, 1], [5, -4, -1, 2], [5, -4, -1, 3]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -9810,13 +9810,13 @@ tiles = [{
 },
 "position": [-3, 0, 3, 3],
 "tdeco": {
-"id": 0,
-"multi_tile": [],
+"id": 8,
+"multi_tile": [[-3, 0, 3, 3], [-3, 0, 3, 4], [-3, 0, 3, 5], [-3, 0, 3, 6]],
 "rotation": 0,
 "type": 0
 },
 "tile": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -9879,7 +9879,7 @@ tiles = [{
 "position": [-3, 2, 1, 3],
 "tdeco": {
 "id": 0,
-"multi_tile": [],
+"multi_tile": [[-3, 2, 1, 0], [-3, 2, 1, 1], [-3, 2, 1, 2], [-3, 2, 1, 3]],
 "rotation": 0,
 "type": 0
 },
@@ -10428,7 +10428,7 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 1,
+"id": 0,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -10457,12 +10457,12 @@ tiles = [{
 "position": [-1, 0, 1, 3],
 "tdeco": {
 "id": 0,
-"multi_tile": [],
+"multi_tile": [[-1, 0, 1, 0], [-1, 0, 1, 1], [-1, 0, 1, 2], [-1, 0, 1, 3]],
 "rotation": 0,
 "type": 0
 },
 "tile": {
-"id": 1,
+"id": 0,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -10525,7 +10525,7 @@ tiles = [{
 "position": [-1, 2, -1, 3],
 "tdeco": {
 "id": 0,
-"multi_tile": [],
+"multi_tile": [[-1, 2, -1, 0], [-1, 2, -1, 1], [-1, 2, -1, 2], [-1, 2, -1, 3]],
 "rotation": 0,
 "type": 0
 },
@@ -10768,7 +10768,7 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 1,
+"id": 0,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -10836,7 +10836,7 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 1,
+"id": 0,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -10967,7 +10967,7 @@ tiles = [{
 "position": [0, 4, -4, 3],
 "tdeco": {
 "id": 0,
-"multi_tile": [],
+"multi_tile": [[0, 4, -4, 2], [-1, 4, -3, 2], [-1, 5, -4, 2], [0, 3, -3, 2], [0, 4, -4, 3], [0, 5, -5, 2], [1, 3, -4, 2], [1, 4, -5, 2]],
 "rotation": 0,
 "type": 0
 },
@@ -11142,7 +11142,7 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 1,
+"id": 0,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -11210,7 +11210,7 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 1,
+"id": 0,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -11420,11 +11420,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[2, -4, 2, 0], [2, -4, 2, 1], [2, -4, 2, 2], [2, -4, 2, 3]],
 "rotation": 0,
-"tile_wall": 0,
-"type": 0
+"tile_wall": 1,
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -11454,11 +11454,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[2, -3, 1, 0], [2, -3, 1, 1], [2, -3, 1, 2], [2, -3, 1, 3]],
 "rotation": 0,
-"tile_wall": 0,
-"type": 0
+"tile_wall": 1,
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -11482,7 +11482,7 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 1,
+"id": 0,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -11550,7 +11550,7 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 1,
+"id": 0,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -11692,11 +11692,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[3, -5, 2, 0], [3, -5, 2, 1], [3, -5, 2, 2], [3, -5, 2, 3], [3, -5, 2, 4]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -11726,11 +11726,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[3, -4, 1, 0], [3, -4, 1, 1], [3, -4, 1, 2], [3, -4, 1, 3], [3, -4, 1, 4]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -11788,7 +11788,7 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 1,
+"id": 0,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -11856,7 +11856,7 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 1,
+"id": 0,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -11964,11 +11964,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[4, -5, 1, 0], [4, -5, 1, 1], [4, -5, 1, 2], [4, -5, 1, 3], [4, -5, 1, 4]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -11998,11 +11998,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[4, -4, 0, 0], [4, -4, 0, 1], [4, -4, 0, 2], [4, -4, 0, 3], [4, -4, 0, 4]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -12060,7 +12060,7 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 1,
+"id": 0,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -12094,7 +12094,7 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 1,
+"id": 0,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -12202,11 +12202,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[5, -5, 0, 0], [5, -5, 0, 1], [5, -5, 0, 2], [5, -5, 0, 3], [5, -5, 0, 4]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -12236,11 +12236,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[5, -4, -1, 0], [5, -4, -1, 1], [5, -4, -1, 2], [5, -4, -1, 3]],
 "rotation": 0,
-"tile_wall": 0,
-"type": 0
+"tile_wall": 1,
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -12905,7 +12905,7 @@ tiles = [{
 "position": [-3, 0, 3, 4],
 "tdeco": {
 "id": 0,
-"multi_tile": [],
+"multi_tile": [[-3, 0, 3, 3], [-3, 0, 3, 4], [-3, 0, 3, 5], [-3, 0, 3, 6]],
 "rotation": 0,
 "type": 0
 },
@@ -14508,10 +14508,10 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
-"type": 0
+"type": 1
 },
 "wall": {
 "id": 0,
@@ -14542,10 +14542,10 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
-"type": 0
+"type": 1
 },
 "wall": {
 "id": 0,
@@ -14786,11 +14786,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[3, -5, 2, 0], [3, -5, 2, 1], [3, -5, 2, 2], [3, -5, 2, 3], [3, -5, 2, 4]],
 "rotation": 0,
-"tile_wall": 0,
-"type": 0
+"tile_wall": 1,
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -14820,11 +14820,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[3, -4, 1, 0], [3, -4, 1, 1], [3, -4, 1, 2], [3, -4, 1, 3], [3, -4, 1, 4]],
 "rotation": 0,
-"tile_wall": 0,
-"type": 0
+"tile_wall": 1,
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -15058,11 +15058,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[4, -5, 1, 0], [4, -5, 1, 1], [4, -5, 1, 2], [4, -5, 1, 3], [4, -5, 1, 4]],
 "rotation": 0,
-"tile_wall": 0,
-"type": 0
+"tile_wall": 1,
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -15092,11 +15092,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[4, -4, 0, 0], [4, -4, 0, 1], [4, -4, 0, 2], [4, -4, 0, 3], [4, -4, 0, 4]],
 "rotation": 0,
-"tile_wall": 0,
-"type": 0
+"tile_wall": 1,
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -15296,11 +15296,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[5, -5, 0, 0], [5, -5, 0, 1], [5, -5, 0, 2], [5, -5, 0, 3], [5, -5, 0, 4]],
 "rotation": 0,
-"tile_wall": 0,
-"type": 0
+"tile_wall": 1,
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -15324,7 +15324,7 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -15999,7 +15999,7 @@ tiles = [{
 "position": [-3, 0, 3, 5],
 "tdeco": {
 "id": 0,
-"multi_tile": [],
+"multi_tile": [[-3, 0, 3, 3], [-3, 0, 3, 4], [-3, 0, 3, 5], [-3, 0, 3, 6]],
 "rotation": 0,
 "type": 0
 },
@@ -17868,13 +17868,13 @@ tiles = [{
 },
 "position": [3, -5, 2, 5],
 "tdeco": {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
+"id": 8,
+"multi_tile": [[3, -5, 2, 5], [3.0, -5.0, 2.0, 6.0], [3.0, -5.0, 2.0, 7.0], [3.0, -5.0, 2.0, 8.0]],
+"rotation": 5,
 "type": 0
 },
 "tile": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -17908,7 +17908,7 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -18146,10 +18146,10 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
-"type": 0
+"type": 1
 },
 "wall": {
 "id": 0,
@@ -18180,7 +18180,7 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -18378,13 +18378,13 @@ tiles = [{
 },
 "position": [5, -5, 0, 5],
 "tdeco": {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
+"id": 8,
+"multi_tile": [[5, -5, 0, 5], [5.0, -5.0, 0.0, 6.0], [5.0, -5.0, 0.0, 7.0], [5.0, -5.0, 0.0, 8.0]],
+"rotation": 2,
 "type": 0
 },
 "tile": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -18550,6 +18550,244 @@ tiles = [{
 "tdeco": {
 "id": 0,
 "multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}, {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": [3.0, -5.0, 2.0, 6.0],
+"tdeco": {
+"id": 0,
+"multi_tile": [[3, -5, 2, 5], [3.0, -5.0, 2.0, 6.0], [3.0, -5.0, 2.0, 7.0], [3.0, -5.0, 2.0, 8.0]],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}, {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": [5.0, -5.0, 0.0, 6.0],
+"tdeco": {
+"id": 0,
+"multi_tile": [[5, -5, 0, 5], [5.0, -5.0, 0.0, 6.0], [5.0, -5.0, 0.0, 7.0], [5.0, -5.0, 0.0, 8.0]],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}, {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": [-3.0, 0.0, 3.0, 6.0],
+"tdeco": {
+"id": 0,
+"multi_tile": [[-3, 0, 3, 3], [-3, 0, 3, 4], [-3, 0, 3, 5], [-3, 0, 3, 6]],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}, {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": [3.0, -5.0, 2.0, 7.0],
+"tdeco": {
+"id": 0,
+"multi_tile": [[3, -5, 2, 5], [3.0, -5.0, 2.0, 6.0], [3.0, -5.0, 2.0, 7.0], [3.0, -5.0, 2.0, 8.0]],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}, {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": [5.0, -5.0, 0.0, 7.0],
+"tdeco": {
+"id": 0,
+"multi_tile": [[5, -5, 0, 5], [5.0, -5.0, 0.0, 6.0], [5.0, -5.0, 0.0, 7.0], [5.0, -5.0, 0.0, 8.0]],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}, {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": [3.0, -5.0, 2.0, 8.0],
+"tdeco": {
+"id": 0,
+"multi_tile": [[3, -5, 2, 5], [3.0, -5.0, 2.0, 6.0], [3.0, -5.0, 2.0, 7.0], [3.0, -5.0, 2.0, 8.0]],
+"rotation": 0,
+"type": 0
+},
+"tile": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+},
+"wall": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+},
+"wdeco": {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+}, {
+"obj": {
+"id": 0,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 0,
+"type": 0
+},
+"position": [5.0, -5.0, 0.0, 8.0],
+"tdeco": {
+"id": 0,
+"multi_tile": [[5, -5, 0, 5], [5.0, -5.0, 0.0, 6.0], [5.0, -5.0, 0.0, 7.0], [5.0, -5.0, 0.0, 8.0]],
 "rotation": 0,
 "type": 0
 },

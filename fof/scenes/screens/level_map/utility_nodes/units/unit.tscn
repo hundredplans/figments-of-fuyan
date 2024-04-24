@@ -1,12 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://ddxx7fd8ku8th"]
+[gd_scene load_steps=2 format=3 uid="uid://ddxx7fd8ku8th"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/units/unit.gd" id="1_2slrp"]
-[ext_resource type="PackedScene" uid="uid://kipaaomw7to0" path="res://scenes/screens/level_ui/unit_status/unit_field_status/unit_field_status.tscn" id="3_sxnc0"]
 
 [node name="Unit" type="Node3D"]
 script = ExtResource("1_2slrp")
-
-[node name="UnitFieldStatus" parent="." instance=ExtResource("3_sxnc0")]
 
 [node name="VisionRaycast" type="RayCast3D" parent="."]
 collision_mask = 12

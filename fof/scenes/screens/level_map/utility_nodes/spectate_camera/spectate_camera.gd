@@ -97,6 +97,7 @@ func onSpectate(type: Variant) -> void:
 func onSpectateObject(Obj: Variant, _spectate_info: Dictionary, _spectate_type: String) -> void:
 	spectate_type = ("Ally" if Obj.team == 0 else "Enemy") if Obj is UnitGD else "Spawn"
 	var spectate_info: Dictionary = spectates[spectate_type][Obj.get_instance_id()]
+	
 	if spectate_info != _spectate_info:
 		onClearIsActive(spectate_info, spectate_type)
 		onCameraStartSpectate(spectate_info)
@@ -161,10 +162,13 @@ func onUnitSpectated(spectate_info: Dictionary, _spectate_info: Dictionary, _spe
 		if !_spectate_info.is_empty(): _spectate_info.object.on_spectated_in_player_phase(false)
 		
 func onPlayerPhaseStart() -> void:
+	onEndTrackUnit()
 	onSpectate("Ally")
 func onPlayerEndTurnPhaseStart() -> void:
+	onEndTrackUnit()
 	onSpectate("Ally")
 func onHandPhaseStart() -> void:
+	onEndTrackUnit()
 	onSpectate("Ally")
 func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed(Helper.interact_button(true)):
@@ -200,7 +204,7 @@ func onUnitAwakened(Unit: UnitGD) -> void:
 		"object": Unit,
 	}
 func onDeathFinished(Unit: UnitGD) -> void:
-	spectates["Ally" if Unit.team == 0 else "Enemy"].erase(Unit)
+	spectates["Ally" if Unit.team == 0 else "Enemy"].erase(Unit.get_instance_id())
 	if !track_unit_info.is_empty() and track_unit_info.object == Unit: onEndTrackUnit()
 	
 func getSpectateUnit(team: Array = ["Ally"]) -> UnitGD:

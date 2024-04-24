@@ -51,9 +51,6 @@ func on_load_default_world_state() -> void:
 	on_change_game_phase("StartPhase")
 				
 func on_change_game_phase(phase: String) -> void:
-	print_stack()
-	print(game_phase)
-	print()
 	game_phase = phase
 	match phase:
 		"StartPhase":
