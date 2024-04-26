@@ -3,25 +3,24 @@ extends Control
 const HOVER_TIME_DELAY: float = 0.4
 @export var HOVER_CARD_OFFSET := Vector2(50, -150)
 
-@onready var StatBox: HBoxContainer = %StatBox
-@onready var Buffs: Control = $Buffs
+@onready var Buffs: Control = $BuffManager
 @export var ArtPop: TextureButton
 
+var Unit: UnitGD
 var HoverCard: Control
-var base_card: BaseCardGD
-
 var is_hover: bool = false
 
 func _ready():
 	ArtPop.mouse_entered.connect(on_initiate_hover_card)
 	ArtPop.mouse_exited.connect(on_remove_hover_card)
+	Buffs.visible = false
 
 func on_initiate_hover_card() -> void:
 	is_hover = true
 	await get_tree().create_timer(HOVER_TIME_DELAY).timeout
 	if is_hover and HoverCard == null:
 		var GameCard: GameCardGD = preload("res://assets/base_game/cards/game_card/game_card.tscn").instantiate()
-		GameCard.set_info(base_card)
+		GameCard.set_info(Unit.base_card)
 		HoverCard = GameCard
 		add_child(GameCard)
 		global_position = get_global_mouse_position() + HOVER_CARD_OFFSET
@@ -38,6 +37,5 @@ func _process(_delta: float) -> void:
 	if HoverCard != null:
 		global_position = get_global_mouse_position() + HOVER_CARD_OFFSET
 
-func onUpdateStat(stat: int, stat_changed: String) -> void:
-	var stat_change: int = base_card[stat_changed.to_lower()] - stat
-	StatBox.get_node(stat_changed + "/Label").text = "+" if stat_change >= 0 else "" + str(stat_change)
+func onUpdateStat(_stat: int, stat_changed: String) -> void:
+	Buffs.onUpdateStat(stat_changed)

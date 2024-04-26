@@ -26,7 +26,7 @@ var height: Dictionary
 var Tile: TileGD
 
 var attack_range: int = 1
-var attack_amount: int = 0
+var attack_amount: int = 1
 
 var AudioDict: AudioDictGD
 var Vision: VisionGD
@@ -35,7 +35,7 @@ var Units: UnitsGD
 var Tiles: TilesGD
 var TeamControl: Node
 
-var turn_status: int = 0 # 0 = turn active, 1 = turn inactive, 2 = turn used
+var turn_status: String = "TurnUnused"
 var finished_awakening: bool = false
 var abilities: Array = []
 
@@ -90,6 +90,7 @@ func onCreateAbilities() -> void:
 			var ability_resource := Resource.new()
 			ability_resource.script = load(DIR_PATH + file)
 			
+			ability_resource.VFX = Units.VFX
 			ability_resource.Units = Units
 			ability_resource.Tiles = Tiles
 			ability_resource.Vision = Vision
@@ -111,8 +112,8 @@ func stats(stat_type: String, val: int, AppliedBy := AppliedByGD.new(), absolute
 	var current_health: int = health
 	var current_speed: int = speed
 	var current_attack: int = attack
-	
 	var stats_changed: String = stat_type
+	
 	match stat_type:
 		"damage": # Can't be absolute
 			stats_changed = "health"
@@ -147,20 +148,25 @@ func stats(stat_type: String, val: int, AppliedBy := AppliedByGD.new(), absolute
 			stats_changed = "health"
 			health += val
 			
+	var stat_updated: bool = false
 	var color := "BASE"
 	match stats_changed:
 		"health":
+			stat_updated = health != current_health
 			if health < max_health: color = "RED"
 			elif health > base_card.health: color = "GREEN"
 		"attack":
+			stat_updated = attack != current_attack
 			if attack < max_attack: color = "RED"
 			elif health > base_card.speed: color = "GREEN"
 		"speed":
+			stat_updated = speed != current_speed
 			if speed > base_card.speed: color = "GREEN"
-	Units.LevelUI.UnitStatusOverlord.onUpdateStats(self, stats_changed.capitalize(), color)
-	
-	if health == 0: Units.kill_unit(self, AppliedBy)
-	elif health < current_health and AppliedBy.type != "Height": Units.hurt_unit(self, AppliedBy)
+			
+	if stat_updated:
+		Units.LevelUI.UnitStatusOverlord.onUpdateStats(self, stats_changed.capitalize(), color)
+		if health == 0: Units.kill_unit(self, AppliedBy)
+		elif health < current_health and AppliedBy.type != "Height": Units.hurt_unit(self, AppliedBy)
 
 func status_effect() -> void:
 	pass
@@ -183,8 +189,8 @@ func on_arrive(in_vision: bool) -> void:
 
 func on_death() -> void:
 	Tiles.on_remove_tile_material(Tile, "EmptyTile")
-	Vision.on_recalculate_vision()
 	queue_free()
+	Vision.on_recalculate_vision()
 
 func on_spectated_in_player_phase(state: bool) -> void:
 	Units.LevelUI.UnitStatusOverlord.onUnitSpectated(self, state)

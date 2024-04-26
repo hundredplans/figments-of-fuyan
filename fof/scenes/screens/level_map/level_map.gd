@@ -55,12 +55,12 @@ func on_change_game_phase(phase: String) -> void:
 	match phase:
 		"StartPhase":
 			setActionLock("HandRegular")
-			Tiles.on_start_phase_start()
 			Vision.onStartPhaseStart()
+			Tiles.on_start_phase_start()
 			SpectateCamera.onStartPhaseStart()
 			Hand.on_start_phase_start()
-			Units.on_start_phase_start()
 			LevelUI.onStartPhaseStart()
+			Units.on_start_phase_start()
 			VFX.onStartPhaseStart()
 		"AfterStartPhase":
 			LevelUI.onAfterStartPhaseStart()
@@ -93,6 +93,7 @@ func on_change_game_phase(phase: String) -> void:
 			LevelUI.onAIPhaseStart()
 		"AIEndTurnPhase":
 			Units.onAIEndTurnPhaseStart()
+			LevelUI.onAIEndTurnPhaseStart()
 			on_change_game_phase("PlayerStartTurnPhase")
 		"PlayerStartTurnPhase":
 			on_change_game_phase("HandPhase")
@@ -124,3 +125,4 @@ func on_skip_hand_phase_result(Tile: TileGD = null) -> bool:
 			LevelUI.onHandPhaseNoSpawnTiles()
 			return true
 	return false
+

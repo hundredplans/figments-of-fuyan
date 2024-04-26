@@ -212,6 +212,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="HoverCard" parent="." node_paths=PackedStringArray("ArtPop") instance=ExtResource("13_m4is7")]
+HOVER_CARD_OFFSET = Vector2(50, -150)
 ArtPop = NodePath("../Background/ArtPop")
 
 [node name="Effects" type="Sprite2D" parent="."]

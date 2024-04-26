@@ -188,20 +188,23 @@ func tiles_by_tile_state(tile_state: String) -> Array:
 func _process(_delta: float) -> void:
 	if (!LevelUI.is_mouse_in_ui):
 		if active_tile != null and Input.is_action_just_released("LeftClick"):
-			var Unit: UnitGD = Units.unit_by_tile(active_tile)
-			if Unit != null:
-				if "EnemyInRange" not in active_tile.tile_state:
-					Units.PlayerManager.on_occupied_tile_inspected(active_tile)
-				elif LevelMap.action_lock.is_empty(): on_begin_unit_movement()
-				return
-				
-			if LevelMap.action_lock.is_empty() and "PathHovered" in active_tile.tile_state: 
-				on_begin_unit_movement()
-				return
-				
-			elif LevelMap.action_lock == "SpawnVision" and on_find_tile_primary_type(active_tile) == "Spawn":
-				VFX.onRemoveSpawnParticle(active_tile)
-				Hand.on_card_placed(active_tile)
+			if !select_console:
+				var Unit: UnitGD = Units.unit_by_tile(active_tile)
+				if Unit != null:
+					if "EnemyInRange" not in active_tile.tile_state:
+						Units.PlayerManager.on_occupied_tile_inspected(active_tile)
+					elif LevelMap.action_lock.is_empty(): on_begin_unit_movement()
+					return
+					
+				if LevelMap.action_lock.is_empty() and "PathHovered" in active_tile.tile_state: 
+					on_begin_unit_movement()
+					return
+					
+				elif LevelMap.action_lock == "SpawnVision" and on_find_tile_primary_type(active_tile) == "Spawn":
+					VFX.onRemoveSpawnParticle(active_tile)
+					Hand.on_card_placed(active_tile)
+			else:
+				console_sig.emit(active_tile)
 					
 func on_begin_unit_movement() -> void:
 	var enemy_is_in_range: bool = active_tile.tile_state.has("EnemyInRange")
@@ -376,13 +379,12 @@ func onCreateMovementPaths(Unit: UnitGD, type: String = "Default") -> void:
 			movement_paths[Tile] = path
 			movement_paths.tiles.append(Tile)
 
-func on_calculate_drop_damage(_hdiff: int, current_health: int, top_height: float) -> Vector3i:
+func on_calculate_drop_damage(_hdiff: int, top_height: float) -> Vector3i:
 	var hdiff: int = abs(_hdiff * 0.5)
-	var nhealth: int = -1
+	var dmg: int = 0
 	if hdiff > top_height:
-		nhealth = -((hdiff - floor(top_height))) * 2
-		nhealth = max(current_health + nhealth, 0)
-	return Vector3i(4, _hdiff, nhealth)
+		dmg = (hdiff - floor(top_height)) * 2
+	return Vector3i(4, _hdiff, dmg)
 
 const JUMP_OFFSET: float = 0.3
 func isValidJump(From: TileGD, To: TileGD, height: float) -> bool:
@@ -409,16 +411,16 @@ func is_valid_tall_jump(From: TileGD, To: TileGD, height: int) -> bool:
 	return false
 
 func on_create_true_path(id_path: Array, movement_types: Array, Unit: UnitGD) -> Dictionary: # For eliminating Tiles
-	var current_health: int = Unit.health
+	var stack_health: int = Unit.health
 	var true_path: Dictionary = {"tiles": [], "types": [], "size": 0}
 	for i in range(id_path.size()):
-		if current_health != 0:
+		if stack_health > 0:
 			if i > 0:
 				for tile_array in movement_types:
 					if tile_array[0] == id_path[i - 1] and tile_array[1] == id_path[i]:
 						if tile_array[2].x == 4:
-							tile_array[2] = on_calculate_drop_damage(tile_array[2].y, current_health, Unit.height.top)
-							current_health = tile_array[2].z
+							tile_array[2] = on_calculate_drop_damage(tile_array[2].y, Unit.height.top)
+							stack_health -= tile_array[2].z
 						true_path.tiles.append(tile_array[1])
 						true_path.types.append(tile_array[2])
 						break
@@ -447,29 +449,11 @@ func on_tile_hovered(Tile: TileGD) -> void:
 	Vision.on_tile_hovered(Tile)
 	onTileHoveredDisplayCard(Tile)
 
-var TileHoveredGameCard: GameCardGD
-const TILE_HOVERED_DELAY: float = 0.6
+
 func onTileHoveredDisplayCard(Tile: TileGD) -> void:
 	if Tile in Vision.ally_vision:
-		var Unit: UnitGD = Units.unit_by_tile(Tile)
-		if Unit != null:
-			await get_tree().create_timer(TILE_HOVERED_DELAY).timeout
-			if TileHoveredGameCard == null and active_tile == Tile and Units.unit_by_tile_bool(Tile):
-				onCreateTileHoveredGameCard(Unit)
-
-func onCreateTileHoveredGameCard(Unit: UnitGD) -> void:
-	TileHoveredGameCard = preload("res://assets/base_game/cards/game_card/game_card.tscn").instantiate()
-	get_node("../..").add_child(TileHoveredGameCard)
-	TileHoveredGameCard.set_info(Unit.base_card)
-	onMoveTileHoveredGameCard()
-	
-var TILE_HOVERED_CARD_OFFSET := Vector2(-125, -400)
-func onMoveTileHoveredGameCard() -> void:
-	if TileHoveredGameCard != null and !(TileHoveredGameCard.is_queued_for_deletion()):
-		TileHoveredGameCard.position = get_viewport().get_mouse_position() + TILE_HOVERED_CARD_OFFSET
-	
-func onQueueTileHoveredGameCard() -> void:
-	if TileHoveredGameCard != null: TileHoveredGameCard.queue_free()
+		LevelUI.onTileHoveredDisplayCard(Tile)
+		
 
 func on_tile_unhovered(Tile: TileGD) -> void:
 	if "RegularInspected" in Tile.tile_state:
@@ -479,7 +463,7 @@ func on_tile_unhovered(Tile: TileGD) -> void:
 		for _Tile in tiles_by_tile_state("PathHovered"):
 			on_remove_tile_material(_Tile, "PathHovered")
 	Vision.on_tile_unhovered(Tile)
-	onQueueTileHoveredGameCard()
+	LevelUI.onQueueTileHoveredGameCard()
 
 var path_hovered_info: Dictionary = {"tiles": [], "size": 0}
 func on_path_hovered_tile_selected(Tile: TileGD) -> void:
@@ -583,7 +567,6 @@ var InputTile: TileGD
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		on_mouse_entered(on_find_tile_by_raycast())
-		onMoveTileHoveredGameCard()
 		
 func on_mouse_enters_ui(x: bool) -> void:
 	on_force_mouse_tile(x, 1)
@@ -616,3 +599,18 @@ func on_find_tile_by_raycast() -> TileGD:
 	if node:
 		node = node.get_node("../../..")
 	return node
+
+var select_console: bool = false
+var console_sig: Signal
+func onSelectTileConsoleMode(sig: Signal) -> void:
+	console_sig = sig
+	select_console = true
+
+func onSelectTileFinish() -> void:
+	select_console = false
+
+func onFindUnitAdjacentTiles(Unit: UnitGD, distance: int) -> Array: #  Tiles based on unit's top height
+	var tiles: Array = []
+	for w in range(Unit.Tile.w, Unit.Tile.w + floor(Unit.height.top * 1.2) - 0.3):
+		for Tile in _all_neighbours(Unit.onTTpos(w), distance): tiles.append(Tile)
+	return tiles

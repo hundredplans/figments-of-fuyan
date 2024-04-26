@@ -1,0 +1,120 @@
+[gd_scene load_steps=8 format=3 uid="uid://c1pu12fh0fp1i"]
+
+[ext_resource type="LabelSettings" uid="uid://x63q2nfy4si3" path="res://assets/UI/sixty_four/sixty_four_medium.tres" id="1_1vt8d"]
+[ext_resource type="Script" path="res://scenes/screens/level_ui/unit_status/buff_manager.gd" id="1_jds23"]
+[ext_resource type="Texture2D" uid="uid://bq7oil2dvc6bs" path="res://assets/base_game/cards/game_card/art/bbcode/ATTACK.png" id="2_q4401"]
+[ext_resource type="Texture2D" uid="uid://cor7udw0x0ufw" path="res://assets/base_game/cards/game_card/art/bbcode/HEALTH.png" id="3_xsm3s"]
+[ext_resource type="Texture2D" uid="uid://dkdx58e2117h0" path="res://assets/base_game/cards/game_card/art/bbcode/SPEED.png" id="4_t2ayk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i2ie0"]
+bg_color = Color(0, 0, 0, 1)
+border_width_bottom = 1
+border_color = Color(0.592157, 0, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_color = Color(0.435294, 0, 0, 0.6)
+shadow_size = 10
+
+[sub_resource type="Theme" id="Theme_oao6c"]
+Panel/styles/panel = SubResource("StyleBoxFlat_i2ie0")
+
+[node name="BuffManager" type="Control"]
+layout_mode = 3
+anchor_top = 1.0
+anchor_right = 0.132
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 417.0
+offset_right = 248.0
+offset_bottom = 467.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+script = ExtResource("1_jds23")
+
+[node name="TopRim" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 240.0
+offset_bottom = 10.0
+mouse_filter = 2
+theme = SubResource("Theme_oao6c")
+
+[node name="StatBox" type="HBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -5.0
+offset_top = 25.0
+offset_right = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+
+[node name="Attack" type="Control" parent="StatBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="StatBox/Attack"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_right = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "+0"
+label_settings = ExtResource("1_1vt8d")
+
+[node name="Sprite2D" type="Sprite2D" parent="StatBox/Attack"]
+position = Vector2(69, 11)
+texture = ExtResource("2_q4401")
+
+[node name="Health" type="Control" parent="StatBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="StatBox/Health"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "+0"
+label_settings = ExtResource("1_1vt8d")
+
+[node name="Sprite2D" type="Sprite2D" parent="StatBox/Health"]
+position = Vector2(67, 11)
+texture = ExtResource("3_xsm3s")
+
+[node name="Speed" type="Control" parent="StatBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="StatBox/Speed"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_right = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "+0"
+label_settings = ExtResource("1_1vt8d")
+
+[node name="Sprite2D" type="Sprite2D" parent="StatBox/Speed"]
+position = Vector2(70, 11)
+texture = ExtResource("4_t2ayk")

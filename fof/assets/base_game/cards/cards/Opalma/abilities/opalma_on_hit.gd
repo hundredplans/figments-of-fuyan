@@ -14,7 +14,10 @@ func onHit(is_visible: bool, DMGInfo: DMGInfoGD) -> void:
 	healInfo.Healee = Healee
 	Combat.onHeal(healInfo)
 	
-	if is_visible: DMGInfo.AppliedBy.Applier.Model.on_play_animation("Ability")
+	if is_visible:
+		DMGInfo.AppliedBy.Applier.Model.on_play_animation("Ability")
+		if Healee.Tile in Vision.ally_vision:
+			VFX.onCreateOneShot("Heal", Healee.Tile, Healee.height.top / 2)
 
 func onHitCondition(DMGInfo: DMGInfoGD) -> bool:
 	return DMGInfo.AppliedBy.Applier.getVisibleAllies().any(func(x: UnitGD): return x.isHealable())

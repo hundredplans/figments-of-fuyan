@@ -1,6 +1,7 @@
 class_name Container3D
 extends Node3D
 
+var color: String = "BASE"
 @export var offset: float = 0.2
 	
 func on_sort_children() -> void:

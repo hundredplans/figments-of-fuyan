@@ -27,7 +27,10 @@ func _ready() -> void:
 	Rainbow.visible = false
 	Gem.visible = false
 	pivot_offset = size / 2
-func onSetUnit(Unit: UnitGD) -> void:
+	
+var Unit: UnitGD
+func setUnit(_Unit: UnitGD) -> void:
+	Unit = _Unit
 	ShiftingBackground.material = preload("res://scenes/screens/level_ui/unit_status/unit_status_pieces/shifting_background.tres").duplicate()
 	
 	var path: String = "res://scenes/screens/level_ui/unit_status/unit_status_pieces/zzz.png" if\
@@ -36,35 +39,44 @@ func onSetUnit(Unit: UnitGD) -> void:
 	
 	var card_texture_path: String = "res://assets/base_game/cards/cards/" + Unit.base_card.folder_name + "/art_mini.png"
 	ArtPop.texture_normal = load(card_texture_path)
-	HoverCard.base_card = Unit.base_card
+	HoverCard.Unit = Unit
+	HoverCard.Buffs.Unit = Unit
 	
-func onUpdateStat(stat: int, stat_changed: String, color: Color) -> void:
+	for stat in ["Attack", "Health", "Speed"]:
+		var StatLabel: Label = Stats.get_node(stat + "/Label")
+		StatLabel.text = str(Unit.get(stat.to_lower()))
+	
+func onUpdateStat(stat: int, stat_changed: String, color: String) -> void:
 	var ScaleTween := create_tween()
 	var StatLabel: Label = Stats.get_node(stat_changed + "/Label")
 	ScaleTween.tween_property(StatLabel, "scale:y", 0, NUMBER_SCALE_TIME)
 	ScaleTween.finished.connect(onUpdateStatBounceBack.bind(stat, stat_changed, color))
 	HoverCard.onUpdateStat(stat, stat_changed)
-func onUpdateStatBounceBack(stat: int, stat_changed: String, color: Color) -> void:
-	var StatLabel: Label = get(stat_changed + "Label")
+func onUpdateStatBounceBack(stat: int, stat_changed: String, color: String) -> void:
+	var StatLabel: Label = Stats.get_node(stat_changed + "/Label")
 	
 	StatLabel.text = str(stat)
 	StatLabel.label_settings = preload("res://assets/UI/sixty_four/sixty_four_default.tres")\
 	if StatLabel.text.length() == 1 else preload("res://assets/UI/sixty_four/sixty_four_medium.tres")
-	StatLabel.modulate = color
+	StatLabel.modulate = COLOR_INFO[color]
 	
 	var ScaleTween := create_tween()
 	ScaleTween.tween_property(StatLabel, "scale:y", 1, NUMBER_SCALE_TIME)
 	#get_node("HoverCard/Buffs/HBoxContainer/" + stat + "/Label").text = ("+" if val >= 0 else "") + str(val)
 
+var COLOR_INFO: Dictionary = {}
 var on_rotate_queue_free: bool = false
 func _process(delta: float) -> void:
 	if Rainbow.visible: Rainbow.rotation_degrees += RAINBOW_SPEED * delta
 	if on_rotate_queue_free: rotation_degrees += delta * ROTATION_DEATH_SPEED
-func onSetUnitStatusState(speed: float, color: Color, turn_active: bool) -> void:
-	ShiftingBackground.material.set_shader_parameter("speed", speed)
-	ShiftingBackground.material.set_shader_parameter("modulate", color)
-	Gem.visible = turn_active
-	SelectedMask.material = card_selected_material if turn_active else null
-func onSetLightMask(state: int) -> void:
+func setUnitStatusState(state_type: String) -> void:
+	ShiftingBackground.material.set_shader_parameter("speed", speeds[state_type])
+	ShiftingBackground.material.set_shader_parameter("modulate", modulates[state_type])
+	Gem.visible = state_type == "TurnActive"
+	SelectedMask.material = card_selected_material if state_type == "TurnActive" else null
+func setLightMask(state: bool) -> void:
 	for node in [In, ArtPop, AttackSprite, HealthSprite, SpeedSprite, SelectedMask]:
-		node.light_mask = state
+		node.light_mask = 32 if state else 0
+
+var speeds: Dictionary = {}
+var modulates: Dictionary = {}

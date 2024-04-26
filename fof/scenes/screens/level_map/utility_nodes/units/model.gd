@@ -31,7 +31,7 @@ func _ready() -> void:
 	static_body = get_child(0).get_child(0).get_child(1)
 	collision_shape = static_body.get_child(0)
 	
-	onCreateGreyMaterials()
+	onCreateBaseMaterials()
 	AniPlayer = get_node("AnimationPlayer")
 	AniPlayer.animation_finished.connect(on_finish_animation)
 	
@@ -46,6 +46,8 @@ func _ready() -> void:
 		
 	if Unit != null:
 		on_set_rotation()
+
+	onSetOverrideMaterial("null")
 
 func on_play_animation(ani_name: String) -> void:
 	AniPlayer.play(ani_name, UNIT_ANIMATION_BLEND_TIME)
@@ -76,7 +78,7 @@ func on_finish_animation(ani_name: String) -> void:
 		"Jump": movement_finished.emit(); is_jump = false; jump_time = 0
 		"Hurt": hurt_finished.emit();
 
-func onCreateGreyMaterials() -> void:
+func onCreateBaseMaterials() -> void:
 	for i in mesh.mesh.get_surface_count():
 		var transform_greyscale_mat: Material = load("res://assets/materials/transform_grey/transform_grey.tres").duplicate()
 		var grey_instant_mat: Material = load("res://assets/materials/grey_instant/grey_instant.tres").duplicate()
@@ -182,7 +184,7 @@ func on_create_regular_jump(Tile: TileGD) -> void:
 	on_play_animation("Jump")
 	
 const JUMP_HEIGHT_MULTIPLIER: float = 2.3
-func on_create_drop_jump(Tile: TileGD, hdiff: int, new_health: int) -> void:
+func on_create_drop_jump(Tile: TileGD, hdiff: int, dmg: int) -> void:
 	JUMP_TIME = 1 - (hdiff * 0.1)
 	JUMP_HEIGHT = -3 + (hdiff * JUMP_HEIGHT_MULTIPLIER)
 	jump_start = Unit.global_position
@@ -192,7 +194,7 @@ func on_create_drop_jump(Tile: TileGD, hdiff: int, new_health: int) -> void:
 	on_play_animation("Jump")
 	
 	get_tree().create_timer((3 / AniPlayer.speed_scale) / 1.5).timeout\
-	.connect(func(): drop_calculate_damage.emit(new_health, (3 / AniPlayer.speed_scale) / 6))
+	.connect(func(): drop_calculate_damage.emit(dmg, (3 / AniPlayer.speed_scale) / 6))
 func on_create_move_tween(Tile: TileGD, type: Vector2i) -> void:
 	var MoveTween: Tween = create_tween()
 	var half_position := Vector3(Tile.global_position + global_position) * 0.5
@@ -243,4 +245,4 @@ func getRotationPoint(xyz: Vector3, r: float, pos: Vector3) -> Vector3:
 
 func setVisible(state: bool) -> void:
 	mesh.visible = state
-	Unit.Units.LevelUI.UnitStatusOverlord.setFieldStatusVisible(state)
+	Unit.Units.LevelUI.UnitStatusOverlord.setUnitStatusVisible(Unit, state)

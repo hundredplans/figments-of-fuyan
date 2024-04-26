@@ -1,6 +1,7 @@
 class_name UnitsGD
 extends Node3D
 
+var VFX: VFXGD
 var Deck: DeckGD
 var SpectateCamera: Node3D
 var GameState: GameStateGD
@@ -54,7 +55,7 @@ func on_start_phase_start() -> void:
 	
 	var enemy_tiles: Array = Tiles.on_is_type_get_tiles("Enemy", "obj")
 	#var allowed_spawns: Array = range(7, 15) + range(16, 19)
-	var allowed_spawns: Array = range(7, 15) + range(16, 19)
+	var allowed_spawns: Array = range(11,12)
 	for Tile in enemy_tiles:
 		on_unit_awakened(allowed_spawns[randi() % allowed_spawns.size()], 0, [], 1, Tile.obj.rotation, Tile)
 func on_player_phase_start() -> void:
@@ -231,10 +232,14 @@ func isVisibilityPathLastPosition(Tile: TileGD, visibility_path: Array) -> bool:
 func onUnitActionsFinished() -> void:
 	if unit_actions.is_empty():
 		var SpectateUnit: UnitGD = SpectateCamera.getSpectateUnit()
+		SpectateCamera.onEndTrackUnit()
 		if SpectateUnit != null:
 			Tiles.on_set_tile_material(SpectateUnit.Tile, "SpectatingUnit")
 			if SpectateUnit.team == 0: PlayerManager.on_check_autopass(SpectateUnit)
 		if LevelMap.game_phase != "AIPhase": LevelMap.setActionLock("UnitActionDisabled")
+		
+		for ally in on_units():
+			Tiles.on_set_tile_material(ally.Tile, "AllyOccupy")
 
 func onEnemyUnitEntersAllyVision(Unit: UnitGD, _Unit: UnitGD) -> void:
 	if Unit.team == 0 and _Unit.team == 1:
@@ -368,15 +373,11 @@ func on_hurt_finished(_Unit: UnitGD) -> void:
 	active_action = {}
 	onUnitActionsFinished()
 
-func on_drop_calculate_damage(new_health: int, scale_time: float, Unit: UnitGD) -> void:
-	if new_health >= 0:
-		if new_health == 0:
-			active_action = {}
-			unit_actions = []
-		else: on_descale_unit(Unit, scale_time)
-		var AppliedBy := AppliedByGD.new()
-		AppliedBy.type = "Height"
-		Combat.onDMG(Unit, AppliedBy, new_health)
+func on_drop_calculate_damage(DMG: int, scale_time: float, Unit: UnitGD) -> void:
+	var AppliedBy := AppliedByGD.new()
+	AppliedBy.type = "Height"
+	Combat.onDMG(Unit, AppliedBy, DMG)
+	if DMG > 0: on_descale_unit(Unit, scale_time)
 
 const DROP_HEIGHT_SCALE_DOWN := Vector3(1, 0.05, 1)
 func on_descale_unit(Unit: UnitGD, scale_time: float) -> void:

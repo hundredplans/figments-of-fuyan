@@ -11,6 +11,7 @@ var Vision: VisionGD
 var SpectateCamera: Node3D
 var Units: UnitsGD
 
+@onready var Console := %Console
 @onready var VisionMode := %VisionMode
 @onready var PassUnitTurn := %PassUnitTurn
 
@@ -61,10 +62,14 @@ func _queue_free(screen_name: String) -> void:
 		GameState._queue_free()
 		load_world.emit(null)
 
-func _input(_event: InputEvent) -> void:
-	if Input.is_action_just_pressed("SelectLeft") and LevelMap.action_lock in ["", "HandRegular", "SpawnVision"]: LevelMap.SpectateCamera.onSpectate(-1)
-	elif Input.is_action_just_pressed("SelectRight") and LevelMap.action_lock in ["", "HandRegular", "SpawnVision"]: LevelMap.SpectateCamera.onSpectate(1)
-
+func _input(event: InputEvent) -> void:
+	if !Console.CommandLine.has_focus() and LevelMap.action_lock in ["", "HandRegular", "SpawnVision"]:
+		if Input.is_action_just_pressed("SelectLeft"): LevelMap.SpectateCamera.onSpectate(-1)
+		elif Input.is_action_just_pressed("SelectRight"): LevelMap.SpectateCamera.onSpectate(1)
+	
+	if event is InputEventMouseMotion:
+		onMoveTileHoveredGameCard()
+		
 @onready var CardBox: HBoxContainer = %CardBox
 
 var _GameCard: PackedScene = preload("res://assets/base_game/cards/game_card/game_card.tscn")
@@ -106,6 +111,7 @@ func on_change_energy(energy: int, is_energy_max: bool) -> void:
 func on_player_end_turn_phase_start() -> void:
 	setCornerRightVisibile(false)
 	on_pass_unit_turn_button_state(false)
+	UnitStatusOverlord.onPlayerEndTurnPhaseStart()
 
 @onready var HandBox: Control = %HandBox
 
@@ -123,9 +129,6 @@ func on_set_hand_box_cards_state() -> void:
 	var state: bool = LevelMap.game_phase != "HandPhase"
 	for i in range(CardBox.get_child_count()):
 		CardBox.get_child(i).on_set_disabled(state or i not in playable_cards)
-
-#func _on_hand_phase_hitbox_pressed():
-	#LevelMap.on_change_game_phase("PlayerPhase")
 	
 func on_player_phase_start() -> void:
 	if GameCardSelected != null:
@@ -138,6 +141,7 @@ func on_player_phase_start() -> void:
 	on_unpin_hand_box_panel()
 	Vision.on_vision_mode_set(0)
 	onChangePhaseIcon("PlayerPhase")
+	UnitStatusOverlord.onPlayerPhaseStart()
 
 func _on_change_phase_hitbox_pressed():
 	LevelMap.on_advance_game_phase()
@@ -211,11 +215,11 @@ func on_pass_unit_turn_button_state(x: bool) -> void:
 
 var team_selected: int = 0
 var vision_selected: int = 0
-func _on_team_button_item_selected(x: int): pass
-	#team_selected = x
-	#for child in Statuses.get_children().filter(func(y: Control): return y.Unit != null):
-		#child.visible = true if (x == 2) else x == child.Unit.team
-	#_on_vision_button_item_selected()
+func _on_team_button_item_selected(x: int):
+	team_selected = x
+	for child in Statuses.get_children():
+		child.visible = true if (x == 2) else x == child.Unit.team
+	_on_vision_button_item_selected()
 
 func on_vision_selected(x: int) -> void:
 	vision_selected = x
@@ -246,6 +250,7 @@ func on_tab_pressed() -> void:
 		MoveTween.tween_property(StatusBox, "position:x", status_box_positions[status_box_state], STATUS_BOX_TRAVEL_TIME)
 		MoveTween.finished.connect(func(): is_status_box_moving = false; get_viewport().update_mouse_cursor_state())
 
+@onready var UnitStatusState: Control = %UnitStatusState
 @onready var UnitStatusOverlord: Node = %UnitStatusOverlord
 
 func _on_vision_mode_set():
@@ -258,9 +263,16 @@ func onStartPhaseStart() -> void:
 	ChangePhase.visible = false
 	PhaseIcon.visible = false
 	
+	UnitStatusOverlord.Vision = Vision
 	UnitStatusOverlord.SpectateCamera = SpectateCamera
 	UnitStatusOverlord.Tiles = Tiles
 	UnitStatusOverlord.LevelMap = LevelMap
+	
+	Console.Units = Units
+	Console.LevelUI = self
+	Console.Tiles = Tiles
+	
+	UnitStatusOverlord.onStartPhaseStart()
 
 func _on_card_clipper_child_entered_tree(node):
 	if node is HScrollBar:
@@ -279,6 +291,7 @@ func onWinGame() -> void:
 func onAIPhaseStart() -> void:
 	ChangePhase.visible = false
 	onChangePhaseIcon("AIPhase")
+	UnitStatusOverlord.onAIPhaseStart()
 
 const PHASE_ICON_CHANGE_DURATION: float = 0.2
 @onready var PhaseIcon: Sprite2D = %PhaseIcon
@@ -303,10 +316,49 @@ func onHandPhaseStart() -> void:
 
 var warning_texts: Dictionary = {
 	"SkipAction": "If you perform an action with this unit you will skip another unit's turn!",
-	"SkipHandTurn": "There are no valid spawn tiles! Skipping to the Player Phase"
+	"SkipHandTurn": "There are no valid spawn tiles! Skipping to the Player Phase",
+	"ConsoleActive": "Select a Tile"
 }
 
 func setWarningText(visibility: bool, text: String = "") -> void:
 	WarningText.visible = visibility
 	if visibility:
 		WarningText.text = warning_texts[text]
+
+func onAIEndTurnPhaseStart() -> void:
+	UnitStatusOverlord.onAIEndTurnPhaseStart()
+
+var TileHoveredGameCard: Control
+const TILE_HOVERED_DELAY: float = 0.6
+
+func onTileHoveredDisplayCard(Tile: TileGD) -> void:
+	var Unit: UnitGD = Units.unit_by_tile(Tile)
+	if Unit != null:
+		await get_tree().create_timer(TILE_HOVERED_DELAY).timeout
+		if TileHoveredGameCard == null and Tiles.active_tile == Tile and Units.unit_by_tile_bool(Tile):
+			onCreateTileHoveredGameCard(Unit)
+			
+func onCreateTileHoveredGameCard(Unit: UnitGD) -> void:
+	TileHoveredGameCard = preload("res://scenes/screens/level_ui/tile_hovered_game_card.tscn").instantiate()
+	add_child(TileHoveredGameCard)
+	TileHoveredGameCard.setUnit(Unit)
+	UnitStatusOverlord.onCreateTileHoveredUnitStatus(Unit)
+	onMoveTileHoveredGameCard()
+	
+var TILE_HOVERED_CARD_OFFSET := Vector2(-175, -600)
+func onMoveTileHoveredGameCard() -> void:
+	if TileHoveredGameCard != null and !(TileHoveredGameCard.is_queued_for_deletion()):
+		TileHoveredGameCard.position = get_viewport().get_mouse_position() + TILE_HOVERED_CARD_OFFSET
+	
+func onQueueTileHoveredGameCard() -> void:
+	if TileHoveredGameCard != null:
+		TileHoveredGameCard.queue_free()
+		UnitStatusOverlord.onRemoveTileHoveredUnitStatus(TileHoveredGameCard.Unit)
+
+func onSelectTileConsoleMode(sig: Signal) -> void:
+	setWarningText(true, "ConsoleActive")
+	Tiles.onSelectTileConsoleMode(sig)
+	
+func onSelectTileFinish() -> void:
+	setWarningText(false, "ConsoleActive")
+	Tiles.onSelectTileFinish()

@@ -11,8 +11,13 @@ initial_velocity_max = 1.2
 gravity = Vector3(0, 0, 0)
 
 [node name="HealParticle" type="GPUParticles3D"]
+emitting = false
+amount = 18
 lifetime = 1.4
+one_shot = true
 explosiveness = 0.3
 process_material = SubResource("ParticleProcessMaterial_ympf5")
 draw_pass_1 = ExtResource("1_utidr")
 script = ExtResource("2_ycaf6")
+
+[connection signal="finished" from="." to="." method="_on_finished"]

@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://bag77s2v1afs4"]
+[gd_scene load_steps=3 format=3 uid="uid://bag77s2v1afs4"]
 
 [ext_resource type="FontFile" uid="uid://7k4xd8s0oed2" path="res://assets/UI/roboto/roboto.ttf" id="1_nwwxn"]
 [ext_resource type="Texture2D" uid="uid://cor7udw0x0ufw" path="res://assets/base_game/cards/game_card/art/bbcode/HEALTH.png" id="2_b4052"]
-[ext_resource type="Texture2D" uid="uid://br41vrd0yrmhv" path="res://scenes/screens/level_map/red_skull.png" id="3_d8fbx"]
 
 [node name="HeightDropLabel" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.063, 0.31, 0.027)
@@ -15,14 +14,8 @@ text = "2"
 font = ExtResource("1_nwwxn")
 font_size = 64
 
-[node name="HeartSprite" type="Sprite3D" parent="."]
+[node name="DMGSprite" type="Sprite3D" parent="."]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, -0.013)
 no_depth_test = true
 render_priority = 2
 texture = ExtResource("2_b4052")
-
-[node name="SkullSprite" type="Sprite3D" parent="."]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.363142, 0, 0)
-no_depth_test = true
-render_priority = 3
-texture = ExtResource("3_d8fbx")

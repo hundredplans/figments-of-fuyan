@@ -3,46 +3,62 @@ extends Node
 var SpectateCamera: Node3D
 var LevelMap: LevelMapGD
 var Tiles: TilesGD
+var Vision: VisionGD
 @export var LevelUI: LevelUIGD
 
 var units: Dictionary = {} # Dict of UnitGD: [UnitStatus, UnitFieldStatus, UnitStatus]
+
+func _ready() -> void:
+	onCreateUnitFieldStatusMaterials()
+
 func onUnitAwakened(Unit: UnitGD) -> void:
 	var UnitFieldStatus: Node3D = preload("res://scenes/screens/level_ui/unit_status/unit_field_status/unit_field_status.tscn").instantiate()
 	units[Unit] = [UnitFieldStatus]
+	UnitFieldStatus.SpectateCamera = SpectateCamera
 	Unit.add_child(UnitFieldStatus)
 	UnitFieldStatus.position.y = Unit.height.stat
-	UnitFieldStatus.SpectateCamera = SpectateCamera
 	UnitFieldStatus.unit_field_status_materials = unit_field_status_materials
-	UnitFieldStatus.onSetUnit(Unit)
+	UnitFieldStatus.setUnit(Unit)
 	onAddUnitStatus(Unit, "UnitStatusRegular")
 
 const speeds: Dictionary = {
+	"TurnInactive": 0.02,
 	"TurnUsed": 0.02,
 	"TurnUnused": 0.12,
 	"TurnActive": 0.2,}
 	
 const modulates: Dictionary = {
+	"TurnInactive": Color("8fbf8f"),
 	"TurnUsed": Color("8fbf8f"),
 	"TurnUnused": Color("43bf43"),
 	"TurnActive": Color("00bf00"),
-}
-
-const COLOR_INFO: Dictionary = {
-	"BASE": Color(1, 1, 1),
-	"RED": Color(1, 0, 0),
-	"GREEN": Color(0, 1, 0)
 }
 
 func onAddUnitStatus(Unit: UnitGD, type: String = "UnitStatusRegular") -> void:
 	var UnitStatus: Control = preload("res://scenes/screens/level_ui/unit_status/unit_status.tscn").instantiate()
 	UnitStatus.type = type
 	units[Unit].append(UnitStatus)
+	UnitStatus.speeds = speeds
+	UnitStatus.modulates = modulates
 	
 	match type:
-		"UnitStatusRegular": LevelUI.Statuses.add_child(UnitStatus)
-		"UnitStatusExtra": pass
-	UnitStatus.onSetUnit(Unit)
+		"UnitStatusRegular": 
+			LevelUI.Statuses.add_child(UnitStatus)
+			UnitStatus.setUnit(Unit)
+		"UnitStatusExtra": 
+			LevelUI.UnitStatusState.add_child(UnitStatus)
+			UnitStatus.setUnit(Unit)
+			UnitStatus.setUnitStatusState("TurnActive")
+		"TileHoveredUnitStatus":
+			LevelUI.TileHoveredGameCard.add_child(UnitStatus)
+			UnitStatus.setUnit(Unit)
+	
+	UnitStatus.COLOR_INFO = COLOR_INFO
 	UnitStatus.ArtPop.pressed.connect(LevelUI.onSpectateEnemyOrAlly.bind(Unit))
+	
+	UnitStatus.ArtPop.mouse_entered.connect(onUnitInspected.bind(Unit))
+	UnitStatus.ArtPop.mouse_exited.connect(onUnitUninspected.bind(Unit))
+	
 	UnitStatus.SelectedMask.mouse_entered.connect(onUnitInspected.bind(Unit))
 	UnitStatus.SelectedMask.mouse_exited.connect(onUnitUninspected.bind(Unit))
 	
@@ -51,62 +67,84 @@ func onAddUnitStatus(Unit: UnitGD, type: String = "UnitStatusRegular") -> void:
 	if Unit.team == 1: 
 		UnitStatus.ShiftingBackground.material.set_shader_parameter("speed", 0.02)
 
-func onFindRegularUnitStatus(Unit: UnitGD) -> Array:
+func onFindUnitStatus(Unit: UnitGD, type: String = "UnitStatus") -> Array:
 	var arr: Array = []
 	for UnitStatus in units[Unit]: 
-		if UnitStatus.type.begins_with("UnitStatus"):
+		if UnitStatus.type.begins_with(type):
 			arr.append(UnitStatus)
 	return arr
 
-func onSetUnitStatusTurnStatus(Unit: UnitGD, status: int) -> void:
-	pass
+func setUnitStatusTurnStatus(Unit: UnitGD, status: String) -> void:
+	var unit_statuses: Array = units[Unit].duplicate()
+	for UnitStatus in unit_statuses:
+		if Unit.team == 0:
+			setUnitStatusExtra(Unit, Unit.turn_status, status)
+			UnitStatus.SlotOne.visible = status == "TurnUsed"
+			if UnitStatus.type.begins_with("UnitStatus"):
+				UnitStatus.setUnitStatusState(status)
+	Unit.turn_status = status
 
-func onSetUnitStatusExtra(Unit: UnitGD, state: bool) -> void:
-	pass
+func setUnitStatusExtra(Unit: UnitGD, old_status: String, status: String) -> void:
+	var was_active: bool = old_status == "TurnActive"
+	var is_active: bool = status == "TurnActive"
+	if !was_active and is_active: onAddUnitStatus(Unit, "UnitStatusExtra")
+	elif was_active and !is_active:
+		for UnitStatus in onFindUnitStatus(Unit, "UnitStatusExtra"):
+			UnitStatus.queue_free()
+			units[Unit].erase(UnitStatus)
 
 func onDeathBegin(Unit: UnitGD, delay: float) -> void:
-	for UnitStatus in onFindRegularUnitStatus(Unit):
+	for UnitStatus in onFindUnitStatus(Unit):
 		var ScaleTween: Tween = create_tween()
-		ScaleTween.tween_property(self, "scale", Vector2.ZERO, delay * 2)
+		ScaleTween.tween_property(UnitStatus, "scale", Vector2.ZERO, delay * 2)
 		UnitStatus.on_rotate_queue_free = true
 
 func onDeathFinished(Unit: UnitGD) -> void:
-	for UnitStatus in onFindRegularUnitStatus(Unit):
+	for UnitStatus in onFindUnitStatus(Unit):
 		UnitStatus.queue_free()
 	units.erase(Unit)
 
 func onUpdateStats(Unit: UnitGD, stat_changed: String, color: String) -> void:
 	for UnitStatus in units[Unit]:
-		UnitStatus.onUpdateStat(Unit.get(stat_changed), stat_changed, COLOR_INFO[color])
+		UnitStatus.onUpdateStat(Unit.get(stat_changed.to_lower()), stat_changed, color)
 
 func onUnitSpectated(Unit: UnitGD, state: bool) -> void:
-	for UnitStatus in onFindRegularUnitStatus(Unit):
+	for UnitStatus in onFindUnitStatus(Unit, "UnitStatusRegular"):
 		UnitStatus.Rainbow.visible = state
-		UnitStatus.onSetLightMask(state)
-	
+		UnitStatus.setLightMask(state)
+		
+	for UnitStatus in onFindUnitStatus(Unit, "UnitFieldStatus"):
+		UnitStatus.onSetTopMaterial(state)
+		
 func onUpdateEnemyVision(Unit: UnitGD, state: bool) -> void:
-	pass
+	for UnitStatus in units[Unit]: UnitStatus.visible = state
+	
+func setAllRegularUnitStatus(team: int, state: String) -> void:
+	for Unit in units.keys():
+		if Unit.team == team: setUnitStatusTurnStatus(Unit, state)
 	
 func onStartPhaseStart() -> void: # Sets everyone to turn unused
-	pass
-	
+	setAllRegularUnitStatus(0, "TurnInactive")
+	setAllRegularUnitStatus(1, "TurnInactive")
+
 func onPlayerPhaseStart() -> void: # Sets allies to turn unused
-	pass
+	setAllRegularUnitStatus(0, "TurnUnused")
 	
-func onPlayerEndPhaseStart() -> void: # Sets allies to turn used
-	pass
+func onPlayerEndTurnPhaseStart() -> void: # Sets allies to turn used
+	setAllRegularUnitStatus(0, "TurnInactive")
 	
 func onAIPhaseStart() -> void: # Sets AI to turn unused
-	pass
+	setAllRegularUnitStatus(1, "TurnUnused")
 	
-func onAIEndPhaseStart() -> void: # Sets AI to turn used
-	pass
+func onAIEndTurnPhaseStart() -> void: # Sets AI to turn used
+	setAllRegularUnitStatus(0, "TurnInactive")
 	
-func setFieldStatusVisible(state: bool) -> void:
-	pass
+func setUnitStatusVisible(Unit: UnitGD, state: bool) -> void:
+	for UnitStatus in units[Unit]: UnitStatus.visible = state
 
 func onEnemyInRange(Unit: UnitGD, state: bool) -> void: # Changes slot one
-	pass
+	for UnitStatus in units[Unit]:
+		UnitStatus.SlotOne.visible = state
 
 func onUnitInspected(Unit: UnitGD) -> void:
 	if LevelMap.action_lock in ["", "HandRegular"] and !LevelUI.is_status_box_moving:
@@ -122,9 +160,15 @@ var unit_field_status_materials: Dictionary = {
 	"GREEN": [],
 }
 
+const COLOR_INFO: Dictionary = {
+	"BASE": Color(1, 1, 1),
+	"RED": Color(1, 0, 0),
+	"GREEN": Color(0, 1, 0)
+}
+
 func onCreateUnitFieldStatusMaterials():
 	for key in unit_field_status_materials:
-		var color: Color = get(key)
+		var color: Color = COLOR_INFO[key]
 		var bot_material: ShaderMaterial = preload("res://scenes/screens/level_map/floating_stats/color_materials/floating_number_material.tres").duplicate() 
 		bot_material.set_shader_parameter("albedo", color)
 		unit_field_status_materials[key].append(bot_material)
@@ -132,3 +176,10 @@ func onCreateUnitFieldStatusMaterials():
 		var top_material: ShaderMaterial = preload("res://scenes/screens/level_map/floating_stats/color_materials/floating_number_material_no_depth.tres").duplicate() 
 		top_material.set_shader_parameter("albedo", color)
 		unit_field_status_materials[key].append(top_material)
+
+func onRemoveTileHoveredUnitStatus(Unit: UnitGD) -> void:
+	for UnitStatus in onFindUnitStatus(Unit, "TileHoveredUnitStatus"):
+		units[Unit].erase(UnitStatus)
+
+func onCreateTileHoveredUnitStatus(Unit: UnitGD) -> void:
+	onAddUnitStatus(Unit, "TileHoveredUnitStatus")

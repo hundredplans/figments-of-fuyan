@@ -30,7 +30,7 @@ func on_select_active_unit(Unit: UnitGD) -> void:
 	if Unit.team == 0 and ActiveUnit != Unit:
 		if ActiveUnit != null: on_pass_unit_turn()
 		ActiveUnit = Unit
-		on_set_unit_turn_status(Unit, 0)
+		setUnitStatus(Unit, "TurnActive")
 		LevelUI.on_pass_unit_turn_button_state(false)
 
 func on_pass_unit_turn_pressed() -> void:
@@ -42,15 +42,14 @@ func on_pass_unit_turn_pressed() -> void:
 	else:
 		on_pass_unit_turn()
 
-func on_set_unit_turn_status(Unit: UnitGD, status: int) -> void:
-	Unit.turn_status = status
-	LevelUI.UnitStatusOverlord.onSetUnitStatusTurnStatus(Unit, status)
+func setUnitStatus(Unit: UnitGD, status: String) -> void:
+	LevelUI.UnitStatusOverlord.setUnitStatusTurnStatus(Unit, status)
 
 func on_pass_unit_turn() -> void:
 	if ActiveUnit != null:
 		unpassed_turns.erase(ActiveUnit)
 		passed_turns.append(ActiveUnit)
-		on_set_unit_turn_status(ActiveUnit, 2)
+		setUnitStatus(ActiveUnit, "TurnUsed")
 		ActiveUnit = null
 		
 		if unpassed_turns.is_empty():
@@ -68,14 +67,13 @@ func on_player_phase_start() -> void:
 	for Unit in Units.on_units():
 		Unit.stats("active_speed", Unit.max_speed, AppliedBy, true)
 		Unit.attack_amount = 1
-		Unit.turn_status = 0
 	
 func on_player_end_turn_phase_start() -> void:
 	if UnitSelected != null: _on_unit_deselected(UnitSelected, true)
 	LevelUI.PassUnitTurn.visible = false
 	for Unit in passed_turns + unpassed_turns:
 		Tiles.on_remove_tile_material(Unit.Tile, "")
-		on_set_unit_turn_status(Unit, 1)
+		setUnitStatus(Unit, "TurnUsed")
 	
 	unpassed_turns = []
 	passed_turns = []
@@ -95,13 +93,11 @@ func on_check_autopass(Unit: UnitGD) -> void:
 		if ActiveUnit != Unit: return
 		
 		if Unit.attack_amount == 0: on_pass_unit_turn(); return
-		else: 
+		else:
 			Tiles.onCreateMovementPaths(Unit)
 			if Tiles.movement_paths.tiles.is_empty() and Tiles.movement_paths.tiles.filter(func(x: TileGD): return Units.unit_by_tile_team_bool(x, 0)).is_empty(): 
 				on_pass_unit_turn()
 				return
-	
-	on_set_unit_turn_status(Unit, 0)
 	_on_unit_selected(Unit)
 
 func on_spectate_unit(Unit: UnitGD) -> void:
@@ -139,7 +135,7 @@ func _on_unit_deselected(Unit: UnitGD, absolute: bool = false) -> void:
 		LevelUI.setWarningText(false)
 	
 func _on_unit_selected(Unit: UnitGD) -> void:
-	if Unit.turn_status == 0 and Unit.team == 0:
+	if Unit.turn_status in ["TurnUnused", "TurnActive"] and Unit.team == 0:
 		Tiles.onCreateMovementPaths(Unit)
 		var enemy_units: Array = Units.on_units(1)
 		for Tile in Tiles.movement_paths.tiles:

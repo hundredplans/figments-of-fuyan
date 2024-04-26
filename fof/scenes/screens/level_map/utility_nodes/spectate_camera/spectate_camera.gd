@@ -120,7 +120,7 @@ func onSpectateDirection(_spectate_info: Dictionary, _spectate_type: String, dir
 		var index: int = -1
 		
 		_spectate_info.is_active = false
-		index = spectate_type_keys.map(func(x: Dictionary): return x.object).find(_spectate_info.object)
+		index = spectate_type_keys.map(func(x: Dictionary): return x.object.get_instance_id()).find(_spectate_info.object.get_instance_id())
 		var max_size: int = spectate_type_keys.size()
 		
 		if index == -1: new_index = 0
