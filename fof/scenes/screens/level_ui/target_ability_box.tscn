@@ -1,0 +1,63 @@
+[gd_scene load_steps=9 format=3 uid="uid://bntvcxh7eh0v"]
+
+[ext_resource type="Theme" uid="uid://bhyiyheobours" path="res://scenes/screens/level_ui/panel_theme.tres" id="1_7jnsk"]
+[ext_resource type="Texture2D" uid="uid://c5u34osfmn55f" path="res://scenes/screens/level_ui/target_ability_button.png" id="2_l8g5m"]
+[ext_resource type="Script" path="res://scenes/screens/level_ui/target_ability_box.gd" id="2_v0kos"]
+[ext_resource type="LabelSettings" uid="uid://b3ehbfjlj57iy" path="res://assets/UI/lora/lora_outline_20.tres" id="2_xyw8o"]
+[ext_resource type="Texture2D" uid="uid://dm3h6akvc6l0r" path="res://scenes/screens/level_ui/target_ability_button_hovered.png" id="3_em5ne"]
+[ext_resource type="Theme" uid="uid://bsbktaxrkrggi" path="res://assets/UI/roboto/roboto12.tres" id="4_du5aw"]
+[ext_resource type="FontFile" uid="uid://7k4xd8s0oed2" path="res://assets/UI/roboto/roboto.ttf" id="7_o783a"]
+[ext_resource type="FontFile" uid="uid://bjgvp4yvesp1k" path="res://assets/UI/open_sans/OpenSans-ExtraBold.ttf" id="8_dsm7l"]
+
+[node name="TargetAbilityBox" type="TextureButton"]
+custom_minimum_size = Vector2(180, 180)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1740.0
+offset_bottom = -900.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_7jnsk")
+texture_normal = ExtResource("2_l8g5m")
+texture_hover = ExtResource("3_em5ne")
+script = ExtResource("2_v0kos")
+
+[node name="Label" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+offset_top = 5.0
+offset_right = 184.0
+offset_bottom = 32.0
+size_flags_vertical = 6
+label_settings = ExtResource("2_xyw8o")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="RichTextLabel" parent="."]
+unique_name_in_owner = true
+clip_contents = false
+layout_mode = 1
+anchors_preset = -1
+offset_left = 30.0
+offset_top = 111.0
+offset_right = 148.0
+offset_bottom = 113.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 3.68
+mouse_filter = 2
+theme = ExtResource("4_du5aw")
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/line_separation = 2
+theme_override_constants/outline_size = 6
+theme_override_fonts/normal_font = ExtResource("7_o783a")
+theme_override_fonts/bold_font = ExtResource("8_dsm7l")
+theme_override_font_sizes/normal_font_size = 12
+theme_override_font_sizes/bold_font_size = 12
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+autowrap_mode = 2
+threaded = true

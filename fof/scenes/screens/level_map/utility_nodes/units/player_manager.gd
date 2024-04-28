@@ -67,6 +67,8 @@ func on_player_phase_start() -> void:
 	for Unit in Units.on_units():
 		Unit.stats("active_speed", Unit.max_speed, AppliedBy, true)
 		Unit.attack_amount = 1
+		
+	onUpdateTargetAbilities(false)
 	
 func on_player_end_turn_phase_start() -> void:
 	if UnitSelected != null: _on_unit_deselected(UnitSelected, true)
@@ -83,6 +85,7 @@ func on_player_end_turn_phase_start() -> void:
 	AppliedBy.type = "PlayerEndTurnPhase"
 	for Unit in Units.on_units():
 		Unit.stats("active_speed", Unit.max_speed, AppliedBy, true)
+	onUpdateTargetAbilities(true)
 
 func on_hurt_finished(Unit: UnitGD) -> void:
 	on_check_autopass(Unit)
@@ -122,31 +125,38 @@ func on_unit_selected(Unit: UnitGD) -> void:
 
 func _on_unit_deselected(Unit: UnitGD, absolute: bool = false) -> void:
 	if Unit != null:
-		Tiles.on_remove_tile_material(Unit.Tile)
-		for Tile in Tiles.movement_paths.tiles:
-			if "EnemyInRange" in Tile.tile_state:
-				(Units.unit_by_tile(Tile)).on_enemy_in_range(false)
-				
-			Tiles.on_remove_tile_material(Tile)
-		Tiles.movement_paths = {"tiles": []}
+		onRemoveMovementRange(Unit)
 		if Unit == UnitSelected: UnitSelected = null
 		if !absolute:
 			Tiles.on_mouse_entered(Tiles.on_find_tile_by_raycast())
 		LevelUI.setWarningText(false)
+		LevelUI.onExitUnitMode()
+			
+func onSetMovementRange(Unit: UnitGD) -> void:
+	Tiles.onCreateMovementPaths(Unit)
+	var enemy_units: Array = Units.on_units(1)
+	for Tile in Tiles.movement_paths.tiles:
+		if Unit.attack_amount > 0:
+			for _Unit in enemy_units:
+				if _Unit.Tile == Tile:
+					_Unit.on_enemy_in_range(true)
+					continue
+		Tiles.on_set_tile_material(Tile, "MovementRange")
+	
+func onRemoveMovementRange(Unit: UnitGD) -> void:
+	for Tile in Tiles.movement_paths.tiles:
+		if "EnemyInRange" in Tile.tile_state:
+			(Units.unit_by_tile(Tile)).on_enemy_in_range(false)
+			
+		Tiles.on_remove_tile_material(Tile)
+	Tiles.movement_paths = {"tiles": []}
 	
 func _on_unit_selected(Unit: UnitGD) -> void:
 	if Unit.turn_status in ["TurnUnused", "TurnActive"] and Unit.team == 0:
-		Tiles.onCreateMovementPaths(Unit)
-		var enemy_units: Array = Units.on_units(1)
-		for Tile in Tiles.movement_paths.tiles:
-			if Unit.attack_amount > 0:
-				for _Unit in enemy_units:
-					if _Unit.Tile == Tile:
-						_Unit.on_enemy_in_range(true)
-						continue
-			Tiles.on_set_tile_material(Tile, "MovementRange")
-			
+		SpectateCamera.onSpectate(Unit)
+		onSetMovementRange(Unit)
 		UnitSelected = Unit
+		LevelUI.onEnterUnitMode(Unit)
 		LevelUI.setWarningText(ActiveUnit != null and ActiveUnit != Unit, "SkipAction")
 
 func onDeathFinished(Deathee: UnitGD) -> void:
@@ -162,3 +172,47 @@ func on_remove_unit_turn(Unit: UnitGD) -> void:
 			on_pass_unit_turn()
 			passed_turns.erase(Unit)
 		else: unpassed_turns.erase(Unit); passed_turns.erase(Unit)
+
+var tability_tiles: Dictionary
+var TAbility: TargetAbilityGD
+var TAbilityUnit: UnitGD
+func onEnterTargetAbilityMode(Unit: UnitGD, ability: TargetAbilityGD) -> void:
+	onRemoveMovementRange(Unit)
+	onCreateAbilityRange(Unit, ability)
+	TAbilityUnit = Unit
+	TAbility = ability
+
+func onExitTargetAbilityMode() -> void: # if unit selected null doesnt reupdate, otherwise creates tiles
+	if TAbilityUnit != null:
+		onRemoveAbilityRange(TAbilityUnit, TAbility)
+		if UnitSelected != null:
+			onSetMovementRange(UnitSelected)
+			
+	TAbilityUnit = null
+	TAbility = null
+	tability_tiles = {}
+	
+func onCreateAbilityRange(Unit: UnitGD, ability: TargetAbilityGD) -> void:
+	tability_tiles = ability.onTargetAbilityCondition(Unit)
+	for Tile in tability_tiles["range"]:
+		Tiles.on_set_tile_material(Tile, "TargetRange")
+		
+	for Tile in tability_tiles["affect"]:
+		Tiles.on_set_tile_material(Tile, "TargetAffect")
+
+func onRemoveAbilityRange(Unit: UnitGD, ability: TargetAbilityGD) -> void:
+	tability_tiles = ability.onTargetAbilityCondition(Unit)
+	for Tile in tability_tiles["range"]:
+		Tiles.on_remove_tile_material(Tile, "TargetRange")
+		
+	for Tile in tability_tiles["affect"]:
+		Tiles.on_remove_tile_material(Tile, "TargetAffect")
+
+var target_abilities_used: bool = true
+func onPathHoveredTileSelected() -> void:
+	onUpdateTargetAbilities(true)
+
+func onUpdateTargetAbilities(state: bool) -> void:
+	if state != target_abilities_used:
+		target_abilities_used = state
+		LevelUI.onUpdateTargetAbilities(state)

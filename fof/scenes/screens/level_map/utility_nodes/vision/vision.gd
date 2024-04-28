@@ -13,6 +13,7 @@ const VISION_RANGE: int = 5
 var spawn_tiles: Array
 var ally_vision: Array = []
 func on_recalculate_vision(Unit: UnitGD = null) -> void:
+	print(Unit)
 	var visible_tiles: Array = []
 	var all_units: Array = Units.all_units()
 	var ally_units: Array = Units.on_units()
@@ -62,10 +63,8 @@ func onExitTile(Unit: UnitGD, OriginTile: TileGD, DestinationTile: TileGD) -> vo
 	
 func setUnitVisionModeOccupy(Unit: UnitGD, state: bool) -> void:
 	if state:
-		Tiles.on_set_tile_material(Unit.Tile, "AllyOccupy" if Unit.team == 0 else "EnemyOccupy")
 		Tiles.on_remove_tile_material(Unit.Tile, "Greyscale")
 	else:
-		Tiles.on_remove_tile_material(Unit.Tile, "AllyOccupy" if Unit.team == 0 else "EnemyOccupy")
 		Tiles.on_set_tile_material(Unit.Tile, "Greyscale")
 
 func onUnitVisionModeCalculateVision(Unit: UnitGD, visible_tiles: Array) -> void:

@@ -11,6 +11,8 @@ var Vision: VisionGD
 var SpectateCamera: Node3D
 var Units: UnitsGD
 
+@onready var AbilityLabel: Label = %AbilityLabel
+@onready var TargetAbilities: VBoxContainer = %TargetAbilities
 @onready var Console := %Console
 @onready var VisionMode := %VisionMode
 @onready var PassUnitTurn := %PassUnitTurn
@@ -263,6 +265,7 @@ func onStartPhaseStart() -> void:
 	ChangePhase.visible = false
 	PhaseIcon.visible = false
 	
+	UnitStatusOverlord.Units = Units
 	UnitStatusOverlord.Vision = Vision
 	UnitStatusOverlord.SpectateCamera = SpectateCamera
 	UnitStatusOverlord.Tiles = Tiles
@@ -362,3 +365,74 @@ func onSelectTileConsoleMode(sig: Signal) -> void:
 func onSelectTileFinish() -> void:
 	setWarningText(false, "ConsoleActive")
 	Tiles.onSelectTileFinish()
+
+func onEnterUnitMode(Unit: UnitGD) -> void:
+	SpectateCamera.onUpdateFOV("UNIT_MODE")
+	
+	if !target_abilities_used:
+		for ability in Unit.abilities:
+			if ability is TargetAbilityGD and !ability.used and ability.charges > 0:
+				var TargetAbilityBox: Control = preload("res://scenes/screens/level_ui/target_ability_box.tscn").instantiate()
+				TargetAbilities.add_child(TargetAbilityBox)
+				TargetAbilityBox.label.text = ability.ability_name
+				TargetAbilityBox.description.text = ability.ability_description
+				TargetAbilityBox.ability = ability
+				TargetAbilityBox.pressed.connect(onTargetAbilityBoxPressed.bind(Unit, ability, TargetAbilityBox))
+	
+func onExitUnitMode() -> void:
+	SpectateCamera.onUpdateFOV("REGULAR")
+	for child in TargetAbilities.get_children(): child.queue_free()
+	onExitTargetAbilityMode()
+
+func onTargetAbilityBoxPressed(Unit: UnitGD, ability: AbilityGD, TargetAbilityBox: Control) -> void:
+	if Units.PlayerManager.TAbility == ability:
+		onExitTargetAbilityMode()
+		TargetAbilityBox.modulate = Color(1, 1, 1)
+	else:
+		onEnterTargetAbilityMode(Unit, ability)
+		TargetAbilityBox.modulate = Color(0.6, 0.6, 0.6)
+
+func onTargetAbilityBtnPressed(Unit: UnitGD, ability: AbilityGD) -> void:
+	if Units.PlayerManager.UnitSelected == null:
+		Units.PlayerManager._on_unit_selected(Unit)
+	
+	var TargetAbilityBox: Control = TargetAbilities.get_children().filter(func(x: Control): return x.ability == ability)[0]
+	onTargetAbilityBoxPressed(Unit, ability, TargetAbilityBox)
+func onEnterTargetAbilityMode(Unit: UnitGD, ability: AbilityGD) -> void:
+	AbilityLabel.text = ability.ability_name
+	Units.PlayerManager.onEnterTargetAbilityMode(Unit, ability)
+func onExitTargetAbilityMode() -> void: # has to check if actually in target ability mode first
+	if Units.PlayerManager.TAbility != null:
+		AbilityLabel.text = ""
+		Units.PlayerManager.onExitTargetAbilityMode()
+
+func onUpdateTargetAbilityCharges(Unit: UnitGD, ability: AbilityGD) -> void:
+	ability.used = true
+	if ability.charges != -1:
+		var color: String = "BASE"
+		if ability.charges == 0: color = "GRAY"
+		elif ability.charges > ability.max_charges: color = "GREEN"
+		elif ability.charges < ability.max_charges: color = "YELLOW"
+		
+		if color != "BASE":
+			var new_text: String = Unit.base_text
+			new_text[ability.ability_index] = str(ability.charges)
+			new_text = new_text.insert(ability.ability_index + 1, "[/color]")
+			new_text = new_text.insert(ability.ability_index, "[color=" + color + "]")
+			Unit.base_card.text = new_text
+	onUpdateTargetAbility(Unit, ability, true)
+	
+var target_abilities_used: bool = true
+func onUpdateTargetAbilities(state: bool) -> void:
+	target_abilities_used = state
+	for Unit in Units.on_units():
+		for ability in Unit.abilities:
+			if ability is TargetAbilityGD:
+				ability.used = state
+				onUpdateTargetAbility(Unit, ability, target_abilities_used)
+	if !state:
+		for child in TargetAbilities.get_children():
+			child.queue_free()
+	
+func onUpdateTargetAbility(Unit: UnitGD, ability: TargetAbilityGD, disable_state: bool) -> void:
+	UnitStatusOverlord.onUpdateTargetAbility(Unit, ability, disable_state)

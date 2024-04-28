@@ -24,4 +24,4 @@ extends FofInfoGD
 @export var top: float = 1.5
 @export var stat: float = 2.0
 
-@export var ability_names: Array[String]
+@export var abilities: Array[String]

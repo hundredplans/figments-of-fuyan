@@ -212,3 +212,14 @@ func getSpectateUnit(team: Array = ["Ally"]) -> UnitGD:
 		var spectate_info: Dictionary = onGetActiveSpectateVariant()
 		if !spectate_info.is_empty(): return spectate_info.object
 	return null
+
+const FOV_TYPES: Dictionary = {
+	"UNIT_MODE": 100,
+	"REGULAR": 75,
+}
+
+const FOV_TWEEN_TIME: float = 0.2
+func onUpdateFOV(type: String) -> void:
+	if Camera.fov != FOV_TYPES[type]:
+		var FOVTween := create_tween()
+		FOVTween.tween_property(Camera, "fov", FOV_TYPES[type], FOV_TWEEN_TIME)

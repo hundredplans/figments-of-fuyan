@@ -1,9 +1,11 @@
 class_name CombatGD
 extends Node
 
+var VFX: VFXGD
 var Vision: VisionGD
 var Units: UnitsGD
 var SpectateCamera: Node3D
+var LevelUI: LevelUIGD
 
 func onDeathAbilities(Deather: UnitGD, AppliedBy: AppliedByGD) -> void:
 	onLastWill(Deather, AppliedBy)
@@ -13,25 +15,29 @@ func onDeathAbilities(Deather: UnitGD, AppliedBy: AppliedByGD) -> void:
 func onLastWill(_Deather: UnitGD, _AppliedBy: AppliedByGD) -> void:
 	pass
 	
+func onTargetAbility(Unit: UnitGD, ability: TargetAbilityGD, Tile: TileGD, tiles: Dictionary) -> void:
+	onTriggerAbilitySpectateDelay(Unit, ability, ability.onTargetAbility.bind(Unit, Tile, tiles), ability.TARGET_ABILITY_DELAY)
+	Units.PlayerManager._on_unit_deselected(Units.PlayerManager.UnitSelected)
+	
 func onHit(DMGInfo: DMGInfoGD) -> void:
 	var abilities: Array = onFindAbilities(DMGInfo.AppliedBy.Applier, "OnHit")
 	for ability in abilities:
 		if ability.onHitCondition(DMGInfo):
-			onTriggerAbilitySpectateDelay(DMGInfo.AppliedBy.Applier, ability.onHit.bind(DMGInfo), ability.ON_HIT_DELAY)
+			onTriggerAbilitySpectateDelay(DMGInfo.AppliedBy.Applier, ability, ability.onHit.bind(DMGInfo), ability.ON_HIT_DELAY)
 	
 func onTrauma(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	for _Unit in Unit.getVisibleAllies():
 		var abilities: Array = onFindAbilities(_Unit, "Trauma")
 		for ability in abilities:
 			if ability.onTraumaCondition():
-				onTriggerAbilitySpectateDelay(_Unit, ability.onTrauma.bind(_Unit, AppliedBy), ability.TRAUMA_DELAY)
+				onTriggerAbilitySpectateDelay(_Unit, ability, ability.onTrauma.bind(_Unit, AppliedBy), ability.TRAUMA_DELAY)
 	
 func onRampage(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	var abilities: Array = onFindAbilities(Unit, "Rampage")
 	for ability in abilities:
-		onTriggerAbilitySpectateDelay(Unit, ability.onRampage.bind(Unit, AppliedBy), ability.RAMPAGE_DELAY)
+		onTriggerAbilitySpectateDelay(Unit, ability, ability.onRampage.bind(Unit, AppliedBy), ability.RAMPAGE_DELAY)
 		
-func onTriggerAbilitySpectateDelay(Triggerer: UnitGD, ability: Callable, delay: float) -> void:
+func onTriggerAbilitySpectateDelay(Triggerer: UnitGD, ability: AbilityGD, callable: Callable, delay: float) -> void:
 	var vis: bool = Triggerer.team == 0 or Triggerer.Tile in Vision.ally_vision
 	if vis:
 		var SpectateUnit: UnitGD = SpectateCamera.getSpectateUnit(["Ally", "Enemy"])
@@ -39,16 +45,18 @@ func onTriggerAbilitySpectateDelay(Triggerer: UnitGD, ability: Callable, delay: 
 			SpectateCamera.onSpectate(Triggerer)
 			SpectateCamera.onEndTrackUnit()
 		
-		var begin_arguments: Dictionary = {"ability": ability, "vis": vis}
+		var begin_arguments: Dictionary = {"Triggerer": Triggerer, "callable": callable, "ability": ability, "vis": vis}
 		var end_arguments: Dictionary = {"Triggerer": Triggerer, "SpectateUnit": SpectateUnit}
 		
 		Units.onPushArgDelay(delay, onBeforeAbilityFrontDelay, onAfterAbilityFrontDelay, begin_arguments, end_arguments)
-	else: ability.call(vis)
+	else: onUseAbility(Triggerer, callable, ability, vis)
+		
+func onUseAbility(Unit: UnitGD, callable: Callable, ability: AbilityGD, vis: bool) -> void:
+	callable.call(vis)
+	LevelUI.onUpdateTargetAbilityCharges(Unit, ability)
 		
 func onBeforeAbilityFrontDelay(args: Dictionary) -> void:
-	var ability: Callable = args.ability
-	var vis: bool = args.vis
-	ability.call(vis)
+	onUseAbility(args.Triggerer, args.callable, args.ability, args.vis)
 		
 func onAfterAbilityFrontDelay(args: Dictionary) -> void:
 	var Triggerer: UnitGD = args.Triggerer
@@ -80,3 +88,6 @@ func onDMG(Damagee: UnitGD, AppliedBy: AppliedByGD, damage: int) -> DMGInfoGD:
 func onHeal(healInfo: HealInfoGD) -> void:
 	var heal_amount: int = min(healInfo.Healee.max_health - healInfo.Healee.health, healInfo.Healee.health + healInfo.heal)
 	healInfo.Healee.stats("heal", heal_amount, healInfo.AppliedBy)
+	
+	if healInfo.Healee.Tile in Vision.ally_vision and heal_amount > 0:
+		VFX.onCreateOneShot("Heal", healInfo.Healee.Tile, healInfo.Healee.height.top / 2)

@@ -85,7 +85,6 @@ func on_spectate(type: String = "Unit", id: int = -1, direction: int = 0) -> voi
 				if units.size() > unit_spectate_id:
 					var past_unit: UnitGD = units[unit_spectate_id]
 					unit_positions[unit_spectate_id] = total_progress
-					Tiles.on_remove_tile_material(past_unit.Tile, "SpectatingUnit")
 					past_unit.UnitStatus.on_unit_spectated(false)
 					
 				if id == -1: unit_spectate_id += direction

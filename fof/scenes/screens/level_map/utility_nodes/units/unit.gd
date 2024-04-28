@@ -38,6 +38,7 @@ var TeamControl: Node
 var turn_status: String = "TurnUnused"
 var finished_awakening: bool = false
 var abilities: Array = []
+var base_text: String
 
 @onready var Model: Node3D
 func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: int, tile: TileGD) -> void:
@@ -46,8 +47,9 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	effects = _effects
 	team = _team
 	
-	var card: Variant = Helper.getCard(id)
+	var card: BaseCardGD = Helper.getCard(id).duplicate()
 	base_card = card
+	base_text = base_card.text
 	
 	ai = {"aic": base_card.aic, "aii": base_card.aii, "aiw": base_card.aiw, "ait": base_card.ait, "aia": base_card.aia}
 	attack = base_card.attack
@@ -79,24 +81,18 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	position = tile.position
 	position.y += 0.3
 	occupy_tile(tile)
-	Tiles.on_set_tile_material(tile, "AllyOccupy" if team == 0 else "EnemyOccupy")
 	AudioDict = load("res://assets/base_game/cards/cards/" + base_card.folder_name + "/audio.tres")
 	onCreateAbilities()
 
 func onCreateAbilities() -> void:
-	var DIR_PATH: String = "res://assets/base_game/cards/cards/" + base_card.folder_name + "/abilities/"
-	if DirAccess.dir_exists_absolute(DIR_PATH):
-		for file in DirAccess.get_files_at(DIR_PATH):
-			var ability_resource := Resource.new()
-			ability_resource.script = load(DIR_PATH + file)
-			
-			ability_resource.VFX = Units.VFX
-			ability_resource.Units = Units
-			ability_resource.Tiles = Tiles
-			ability_resource.Vision = Vision
-			ability_resource.Combat = Units.Combat
-			
-			abilities.append(ability_resource)
+	for ability in base_card.abilities.map(\
+	func(x: String): return load("res://assets/base_game/cards/cards/" + base_card.folder_name + "/abilities/" + x + ".tres").duplicate()):
+		ability.VFX = Units.VFX
+		ability.Units = Units
+		ability.Tiles = Tiles
+		ability.Vision = Vision
+		ability.Combat = Units.Combat
+		abilities.append(ability)
 		
 func occupy_tile(_Tile: TileGD) -> void:
 	var OGTile: TileGD = Tile
@@ -195,10 +191,6 @@ func on_death() -> void:
 func on_spectated_in_player_phase(state: bool) -> void:
 	Units.LevelUI.UnitStatusOverlord.onUnitSpectated(self, state)
 	Units.LevelUI.on_update_vision()
-	
-	if team == 0:
-		if state: Tiles.on_set_tile_material(Tile, "SpectatingUnit")
-		else: Tiles.on_remove_tile_material(Tile, "SpectatingUnit")
 	
 func on_enemy_in_range(state: bool) -> void:
 	Units.LevelUI.UnitStatusOverlord.onEnemyInRange(self, state)

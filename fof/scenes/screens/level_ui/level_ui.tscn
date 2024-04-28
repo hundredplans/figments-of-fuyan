@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://b0kr4uhvdhmq3"]
+[gd_scene load_steps=17 format=3 uid="uid://b0kr4uhvdhmq3"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_ui/level_ui.gd" id="1_mmiwi"]
 [ext_resource type="Texture2D" uid="uid://iucmlitjenwl" path="res://assets/base_game/cards/game_card/art/stats/energy.png" id="2_bww7p"]
@@ -14,6 +14,14 @@
 [ext_resource type="Texture2D" uid="uid://dl25aqsdhe6ju" path="res://scenes/screens/level_ui/phase_icon/HandPhase.png" id="13_48llv"]
 [ext_resource type="Script" path="res://scenes/screens/level_ui/unit_status/unit_status_overlord.gd" id="14_kfs5d"]
 [ext_resource type="PackedScene" uid="uid://db4iwvndfcy84" path="res://scenes/screens/level_ui/console.tscn" id="14_q1hsx"]
+[ext_resource type="FontFile" uid="uid://bjgvp4yvesp1k" path="res://assets/UI/open_sans/OpenSans-ExtraBold.ttf" id="15_wcrhh"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_el0xh"]
+font = ExtResource("15_wcrhh")
+font_size = 100
+font_color = Color(1, 0.490196, 0, 1)
+outline_size = 20
+outline_color = Color(0, 0, 0, 1)
 
 [node name="LevelUI" type="Control"]
 layout_mode = 3
@@ -395,15 +403,53 @@ position = Vector2(165, 60)
 scale = Vector2(2, 2)
 texture = ExtResource("13_48llv")
 
+[node name="Console" parent="." instance=ExtResource("14_q1hsx")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+
 [node name="UnitStatusOverlord" type="Node" parent="." node_paths=PackedStringArray("LevelUI")]
 unique_name_in_owner = true
 script = ExtResource("14_kfs5d")
 LevelUI = NodePath("..")
 
-[node name="Console" parent="." instance=ExtResource("14_q1hsx")]
-unique_name_in_owner = true
-visible = false
+[node name="AbilityMode" type="Control" parent="."]
 layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TargetAbilitiesBox" type="Control" parent="AbilityMode"]
+anchors_preset = 0
+offset_left = 1498.0
+offset_top = 110.0
+offset_right = 1693.0
+offset_bottom = 812.0
+mouse_filter = 2
+
+[node name="TargetAbilities" type="VBoxContainer" parent="AbilityMode/TargetAbilitiesBox"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 40
+alignment = 2
+
+[node name="AbilityLabel" type="Label" parent="AbilityMode"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 3.0
+offset_right = 1920.0
+offset_bottom = 137.0
+label_settings = SubResource("LabelSettings_el0xh")
+horizontal_alignment = 1
 
 [connection signal="mouse_entered" from="StatusBox" to="." method="on_is_mouse_in_ui" binds= [true]]
 [connection signal="mouse_exited" from="StatusBox" to="." method="on_is_mouse_in_ui" binds= [false]]

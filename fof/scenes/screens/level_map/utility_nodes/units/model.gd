@@ -79,17 +79,28 @@ func on_finish_animation(ani_name: String) -> void:
 		"Hurt": hurt_finished.emit();
 
 func onCreateBaseMaterials() -> void:
+	var my_next_pass: ShaderMaterial = load("res://assets/materials/unit_outline/unit_outline.tres").duplicate()
+	
+	match Unit.team:
+		0: my_next_pass.set_shader_parameter("outline_color", Color("00ff00"))
+		1: my_next_pass.set_shader_parameter("outline_color", Color("ff0000"))
+	
 	for i in mesh.mesh.get_surface_count():
 		var transform_greyscale_mat: Material = load("res://assets/materials/transform_grey/transform_grey.tres").duplicate()
 		var grey_instant_mat: Material = load("res://assets/materials/grey_instant/grey_instant.tres").duplicate()
+		var unit_material: Material = load("res://assets/materials/unit_material/unit_material.tres").duplicate()
 		
 		var tx: ImageTexture = load(mesh.get_active_material(i).albedo_texture.resource_path)
-		transform_greyscale_mat.set_shader_parameter("texture_albedo", tx)
-		grey_instant_mat.set_shader_parameter("texture_albedo", tx)
+		
+		for material in [transform_greyscale_mat, grey_instant_mat, unit_material]:
+			material.set_shader_parameter("texture_albedo", tx)
+			material.next_pass = my_next_pass
 		
 		transform_grey_materials.append(transform_greyscale_mat)
 		grey_instant_materials.append(grey_instant_mat)
+		unit_materials.append(unit_material)
 		
+var unit_materials: Array
 var grey_instant_materials: Array
 var transform_grey_materials: Array
 func onSetOverrideMaterial(type: String) -> void:
@@ -111,7 +122,7 @@ func onSetOverrideMaterial(type: String) -> void:
 			mesh.set_surface_override_material(i, grey_instant_materials[i])
 	else:
 		for i in mesh.mesh.get_surface_count():
-			mesh.set_surface_override_material(i, null)
+			mesh.set_surface_override_material(i, unit_materials[i])
 
 func onRemoveTransformMaterial(type: String) -> void:
 	if type == "TransformGrey": setVisible(false)

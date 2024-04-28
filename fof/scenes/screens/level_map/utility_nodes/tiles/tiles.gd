@@ -2,6 +2,7 @@ class_name TilesGD
 extends Node3D
 const MAX_HEIGHT: int = 11
 
+var Combat: CombatGD
 var VFX: VFXGD
 var SpectateCamera: Node3D
 var LevelUI: LevelUIGD
@@ -188,24 +189,31 @@ func tiles_by_tile_state(tile_state: String) -> Array:
 func _process(_delta: float) -> void:
 	if (!LevelUI.is_mouse_in_ui):
 		if active_tile != null and Input.is_action_just_released("LeftClick"):
-			if !select_console:
-				var Unit: UnitGD = Units.unit_by_tile(active_tile)
-				if Unit != null:
-					if "EnemyInRange" not in active_tile.tile_state:
-						Units.PlayerManager.on_occupied_tile_inspected(active_tile)
-					elif LevelMap.action_lock.is_empty(): on_begin_unit_movement()
-					return
-					
-				if LevelMap.action_lock.is_empty() and "PathHovered" in active_tile.tile_state: 
-					on_begin_unit_movement()
-					return
-					
-				elif LevelMap.action_lock == "SpawnVision" and on_find_tile_primary_type(active_tile) == "Spawn":
-					VFX.onRemoveSpawnParticle(active_tile)
-					Hand.on_card_placed(active_tile)
-			else:
-				console_sig.emit(active_tile)
-					
+			onTilePressed()
+				
+func onTilePressed() -> void:
+	if !select_console:
+		var Unit: UnitGD = Units.unit_by_tile(active_tile)
+		if LevelMap.action_lock.is_empty() and "TargetAffect" in active_tile.tile_state:
+			onTargetAffectPressed()
+		
+		elif Unit != null:
+			if "EnemyInRange" not in active_tile.tile_state:
+				Units.PlayerManager.on_occupied_tile_inspected(active_tile)
+			elif LevelMap.action_lock.is_empty(): on_begin_unit_movement()
+			
+		elif LevelMap.action_lock.is_empty() and "PathHovered" in active_tile.tile_state: 
+			on_begin_unit_movement()
+			
+		elif LevelMap.action_lock == "SpawnVision" and on_find_tile_primary_type(active_tile) == "Spawn":
+			VFX.onRemoveSpawnParticle(active_tile)
+			Hand.on_card_placed(active_tile)
+	else:
+		console_sig.emit(active_tile)
+
+func onTargetAffectPressed() -> void:
+	Combat.onTargetAbility(Units.PlayerManager.TAbilityUnit, Units.PlayerManager.TAbility, active_tile, Units.PlayerManager.tability_tiles)
+
 func on_begin_unit_movement() -> void:
 	var enemy_is_in_range: bool = active_tile.tile_state.has("EnemyInRange")
 	var Unit: UnitGD = Units.PlayerManager.UnitSelected
@@ -467,6 +475,7 @@ func on_tile_unhovered(Tile: TileGD) -> void:
 
 var path_hovered_info: Dictionary = {"tiles": [], "size": 0}
 func on_path_hovered_tile_selected(Tile: TileGD) -> void:
+	Units.PlayerManager.onPathHoveredTileSelected()
 	Units.PlayerManager.on_select_active_unit(Units.PlayerManager.UnitSelected)
 	for i in range(path_hovered_info.tiles.size()):
 		if path_hovered_info.types[i].x != 1:
@@ -480,19 +489,9 @@ func on_path_hovered_tile_selected(Tile: TileGD) -> void:
 func on_enemy_found_tile_selected(Tile: TileGD, Unit: UnitGD) -> void:
 	Units.attack_enemy_or_target(Unit, Tile)
 
-func onCalculateUnitStates() -> void: 
-	for tile_material in TILE_MATERIALS.values():
-		if tile_material.is_unit_state: unit_states.append(tile_material.material_name)
-
-var unit_states: Array = []
 var color_material: Material = preload("res://assets/materials/tile_materials/color_material.tres")
 var TILE_MATERIALS: Dictionary
 
-func getUnitState(Tile: TileGD) -> String:
-	for _unit_state in Tile.tile_state:
-		if _unit_state in unit_states:
-			return _unit_state
-	return ""
 const TILE_MATERIAL_PATH: String = "res://assets/materials/tile_materials/tile_materials_resources/"
 func on_set_default_shader_parameters() -> void:
 	for file in DirAccess.get_files_at(TILE_MATERIAL_PATH):
@@ -506,17 +505,11 @@ func on_set_default_shader_parameters() -> void:
 			
 			match file.left(-5):
 				"greyscale": tile_material.material.set_shader_parameter("specular", 0.0)
-			
-	onCalculateUnitStates()
 	
 func on_remove_tile_material(Tile: TileGD, material_name: String = "") -> void:
 	match material_name:
 		"":
-			var new_state: Array = []
-			for state in Tile.tile_state:
-				if state in ["Greyscale", "AllyOccupy", "EnemyOccupy"] + unit_states:
-					new_state.append(state)
-			Tile.tile_state = new_state
+			Tile.tile_state = [] if !("Greyscale" in Tile.tile_state) else ["Greyscale"]
 		"EmptyTile": Tile.tile_state = []
 		"IgnoreGreyscale": 
 			if "Greyscale" in Tile.tile_state: Tile.tile_state = ["Greyscale"]
@@ -527,11 +520,9 @@ func on_remove_tile_material(Tile: TileGD, material_name: String = "") -> void:
 	
 func on_set_tile_material(Tile: TileGD, material_name: String):
 	if !Tile.tile_state.has(material_name):
-		if material_name not in unit_states:
 			Tile.tile_state.append(material_name)
-		else:
-			Tile.tile_state = Tile.tile_state.filter(func(x: String): return x not in unit_states)
-			Tile.tile_state.append(material_name)
+	else:
+		Tile.tile_state.append(material_name)
 	
 	on_set_tile_highest_material(Tile, 2 if material_name == "Greyscale" else 0)
 
@@ -555,9 +546,10 @@ func on_set_tile_highest_material(Tile: TileGD, greyscale_state: int = 0) -> voi
 	
 
 func getTileMaterialFromPriority(priority: int) -> ShaderMaterial:
-	for tile_material in TILE_MATERIALS.values():
-		if tile_material.priority == priority:
-			return tile_material.material
+	if priority > 0:
+		for tile_material in TILE_MATERIALS.values():
+			if tile_material.priority == priority:
+				return tile_material.material
 	return null
 
 func onActionLockChanged(action_lock: String) -> void:
@@ -612,5 +604,5 @@ func onSelectTileFinish() -> void:
 func onFindUnitAdjacentTiles(Unit: UnitGD, distance: int) -> Array: #  Tiles based on unit's top height
 	var tiles: Array = []
 	for w in range(Unit.Tile.w, Unit.Tile.w + floor(Unit.height.top * 1.2) - 0.3):
-		for Tile in _all_neighbours(Unit.onTTpos(w), distance): tiles.append(Tile)
+		for tpos in _all_neighbours(Unit.Tile.onTTpos(w), distance): tiles.append(position_to_tile(tpos))
 	return tiles

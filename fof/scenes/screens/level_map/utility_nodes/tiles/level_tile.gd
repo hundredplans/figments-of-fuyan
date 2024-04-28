@@ -25,12 +25,6 @@ var Tiles: TilesGD
 func getSolidState() -> bool: 
 	return Unit != null or solid_status > 0
 
-func getUnitState() -> String:
-	for state in tile_state:
-		if state in Tiles.unit_states:
-			return state
-	return ""
-
 func onTTpos(_w: int = w) -> Vector4:
 	return Vector4(tpos.x, tpos.y, tpos.z, _w)
 

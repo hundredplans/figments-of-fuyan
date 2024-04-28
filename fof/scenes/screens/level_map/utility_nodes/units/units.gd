@@ -234,12 +234,8 @@ func onUnitActionsFinished() -> void:
 		var SpectateUnit: UnitGD = SpectateCamera.getSpectateUnit()
 		SpectateCamera.onEndTrackUnit()
 		if SpectateUnit != null:
-			Tiles.on_set_tile_material(SpectateUnit.Tile, "SpectatingUnit")
 			if SpectateUnit.team == 0: PlayerManager.on_check_autopass(SpectateUnit)
 		if LevelMap.game_phase != "AIPhase": LevelMap.setActionLock("UnitActionDisabled")
-		
-		for ally in on_units():
-			Tiles.on_set_tile_material(ally.Tile, "AllyOccupy")
 
 func onEnemyUnitEntersAllyVision(Unit: UnitGD, _Unit: UnitGD) -> void:
 	if Unit.team == 0 and _Unit.team == 1:
@@ -262,7 +258,6 @@ func on_unit_travel_finished() -> void:
 		on_force_resume_idle_animation_from_walk()
 		var Unit: UnitGD = active_action.Unit
 		SpectateCamera.onEndTrackUnit()
-		Tiles.on_set_tile_material(Unit.Tile, "AllyOccupy" if Unit.team == 0 else "EnemyOccupy")
 		active_action = {}
 	
 func on_force_resume_idle_animation_from_walk() -> void:
@@ -409,3 +404,4 @@ func onAIMoveFinisher(vis_path: Array) -> void:
 		"action_type": "AIMoveFinish",
 		"vis_path": vis_path,
 	})
+

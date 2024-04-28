@@ -5,7 +5,7 @@ ARRIVE|
 LAST WILL|
 REVENGE|
 BLOODTHIRST|
-TRAUMA(\s+\[[0-9]])?|
+TRAUMA(\s+\[\$[a-zA-Z]*[0-9]])?|
 FATAL|
 MUTE|
 STUN|
@@ -13,7 +13,7 @@ STUN|
 KNOCKBACK(\s\[[0-9]\])?|
 MUTE|
 FERAL|
-ABILITY(\s\[[0-9]\])?|
+ABILITY(\s\[\$[a-zA-Z]*[0-9]\])?|
 On Hit(\s\[[0-9]\])?|
 BONES|
 BLIND|

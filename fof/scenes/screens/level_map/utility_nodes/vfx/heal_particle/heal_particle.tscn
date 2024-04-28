@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://bh3dygci1x18s"]
 
-[ext_resource type="ArrayMesh" uid="uid://bn0r4xxkdf4la" path="res://scenes/screens/level_map/utility_nodes/vfx/heal_particle/heal_particle.tres" id="1_utidr"]
+[ext_resource type="ArrayMesh" uid="uid://boc531oygg2ow" path="res://scenes/screens/level_map/utility_nodes/vfx/heal_particle/positive_one.tres" id="1_hs75c"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vfx/heal_particle/heal_particle.gd" id="2_ycaf6"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ympf5"]
@@ -17,7 +17,7 @@ lifetime = 1.4
 one_shot = true
 explosiveness = 0.3
 process_material = SubResource("ParticleProcessMaterial_ympf5")
-draw_pass_1 = ExtResource("1_utidr")
+draw_pass_1 = ExtResource("1_hs75c")
 script = ExtResource("2_ycaf6")
 
 [connection signal="finished" from="." to="." method="_on_finished"]

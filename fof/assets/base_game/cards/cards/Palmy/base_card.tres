@@ -4,16 +4,13 @@
 
 [resource]
 script = ExtResource("1_3trmv")
-id = 7
-name = "Palmy"
-folder_name = "Palmy"
 area_id = 1
 attack = 1
 health = 1
 speed = 3
 energy = 1
 rarity = 2
-raw_text = "TRAUMA [1]: Gain [+0/0/1]"
+raw_text = "TRAUMA [$PalmyTrauma1]: Gain [+0/0/1]"
 flavor_text = "scaredy cat"
 text = "[center][b]TRAUMA [1][/b]: Gain [b][color=green]+1 [img=14x14]res://assets/base_game/cards/game_card/art/bbcode/SPEED.png[/img][/color][/b] [/center]"
 aic = 2
@@ -26,4 +23,7 @@ weapon = 0.2
 eye = 0.27
 top = 0.42
 stat = 0.71
-ability_names = Array[String]([])
+abilities = Array[String](["palmy_trauma"])
+id = 7
+name = "Palmy"
+folder_name = "Palmy"

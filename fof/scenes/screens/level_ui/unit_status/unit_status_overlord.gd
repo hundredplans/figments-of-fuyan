@@ -4,6 +4,7 @@ var SpectateCamera: Node3D
 var LevelMap: LevelMapGD
 var Tiles: TilesGD
 var Vision: VisionGD
+var Units: UnitsGD
 @export var LevelUI: LevelUIGD
 
 var units: Dictionary = {} # Dict of UnitGD: [UnitStatus, UnitFieldStatus, UnitStatus]
@@ -45,6 +46,7 @@ func onAddUnitStatus(Unit: UnitGD, type: String = "UnitStatusRegular") -> void:
 		"UnitStatusRegular": 
 			LevelUI.Statuses.add_child(UnitStatus)
 			UnitStatus.setUnit(Unit)
+			UnitStatus.target_ability_pressed.connect(LevelUI.onTargetAbilityBtnPressed)
 		"UnitStatusExtra": 
 			LevelUI.UnitStatusState.add_child(UnitStatus)
 			UnitStatus.setUnit(Unit)
@@ -66,7 +68,7 @@ func onAddUnitStatus(Unit: UnitGD, type: String = "UnitStatusRegular") -> void:
 	("modulate", modulates["TurnUnused"] if Unit.team == 0 else Color("c11e00")) 
 	if Unit.team == 1: 
 		UnitStatus.ShiftingBackground.material.set_shader_parameter("speed", 0.02)
-
+	
 func onFindUnitStatus(Unit: UnitGD, type: String = "UnitStatus") -> Array:
 	var arr: Array = []
 	for UnitStatus in units[Unit]: 
@@ -183,3 +185,7 @@ func onRemoveTileHoveredUnitStatus(Unit: UnitGD) -> void:
 
 func onCreateTileHoveredUnitStatus(Unit: UnitGD) -> void:
 	onAddUnitStatus(Unit, "TileHoveredUnitStatus")
+	
+func onUpdateTargetAbility(Unit: UnitGD, ability: TargetAbilityGD, disable_state: bool) -> void:
+	for UnitStatus in onFindUnitStatus(Unit):
+		UnitStatus.onUpdateAbility(ability, disable_state)

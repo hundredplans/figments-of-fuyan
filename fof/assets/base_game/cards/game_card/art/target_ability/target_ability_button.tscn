@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3 uid="uid://e4qoo4uxb4b0"]
+
+[ext_resource type="Texture2D" uid="uid://cupi1c4h3ft7t" path="res://assets/base_game/cards/game_card/art/target_ability/ability.png" id="1_rwh6w"]
+[ext_resource type="Texture2D" uid="uid://wyu8rp8qlp5j" path="res://assets/base_game/cards/game_card/art/target_ability/ability_hover.png" id="2_00hfv"]
+[ext_resource type="Script" path="res://assets/base_game/cards/game_card/art/target_ability/target_ability_button.gd" id="2_v42yb"]
+[ext_resource type="LabelSettings" uid="uid://b3ehbfjlj57iy" path="res://assets/UI/lora/lora_outline_20.tres" id="3_cietw"]
+[ext_resource type="Texture2D" uid="uid://cg0gepq7q366q" path="res://assets/base_game/cards/game_card/art/target_ability/ability_disabled.png" id="3_gw77a"]
+
+[node name="TargetAbilityButton" type="TextureButton"]
+offset_right = 30.0
+offset_bottom = 30.0
+pivot_offset = Vector2(17, 17)
+texture_normal = ExtResource("1_rwh6w")
+texture_pressed = ExtResource("2_00hfv")
+texture_hover = ExtResource("2_00hfv")
+texture_disabled = ExtResource("3_gw77a")
+script = ExtResource("2_v42yb")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1.0
+offset_right = 34.0
+offset_bottom = 34.0
+text = "2"
+label_settings = ExtResource("3_cietw")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="pressed" from="." to="." method="_on_pressed"]

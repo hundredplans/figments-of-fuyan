@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://dj78a5vdxh0k6"]
+
+[ext_resource type="PackedScene" uid="uid://dtyyb68cnsceo" path="res://scenes/screens/level_map/utility_nodes/vfx/heal_particle/positive_one.glb" id="1_uq41f"]
+[ext_resource type="ArrayMesh" uid="uid://boc531oygg2ow" path="res://scenes/screens/level_map/utility_nodes/vfx/heal_particle/positive_one.tres" id="2_an5c1"]
+
+[node name="positive_one" instance=ExtResource("1_uq41f")]
+
+[node name="Cube" parent="." index="0"]
+mesh = ExtResource("2_an5c1")

@@ -6,6 +6,3 @@ func onTrauma(_is_visible: bool, Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	
 func onTraumaCondition() -> bool:
 	return charges > 0
-	
-func _init() -> void:
-	charges = 1

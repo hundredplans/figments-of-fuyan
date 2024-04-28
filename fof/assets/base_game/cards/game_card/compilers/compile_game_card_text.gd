@@ -8,7 +8,7 @@ func _ready() -> void:
 	
 func onSaveApplyTextProcessing() -> void:
 	if base_card != null:
-		base_card.text = on_apply_text_processing(base_card.raw_text)
+		base_card.text = on_apply_text_processing(base_card.raw_text, base_card)
 		ResourceSaver.save(base_card)
 
 func setBaseCardFromGameCard(GameCard: GameCardGD) -> void:
@@ -16,7 +16,7 @@ func setBaseCardFromGameCard(GameCard: GameCardGD) -> void:
 		base_card = GameCard.base_card
 		onSaveApplyTextProcessing()
 
-func on_apply_text_processing(text: String) -> String:
+func on_apply_text_processing(text: String, base_card: BaseCardGD) -> String:
 	text = on_replace_att_hp_spd(text)
 	text = on_color_words(text)
 	text = on_bold_caps_words(text)
@@ -28,6 +28,7 @@ func on_apply_text_processing(text: String) -> String:
 	for type in DirAccess.get_files_at("res://assets/base_game/cards/game_card/art/bbcode/"):
 		text = on_add_bbcode_image(text, type.left(-4))
 	
+	text = on_replace_ability_names(text, base_card)
 	return text
 
 func on_add_bbcode_image(text: String, type: String) ->  String:
@@ -76,6 +77,26 @@ func on_color_card_names(text: String) -> String:
 		
 		text = text.replace(on_replace, "[b][color=" + CARD_TEXT_TO_COLOR["CARD_NAME"] + "]" + \
 		on_replace.substr(1, on_replace.length() - 2) + "[/color][/b]")
+	return text
+
+func on_replace_ability_names(text: String, base_card: BaseCardGD) -> String:
+	var ability_indexes: Dictionary = {}
+	var total_removed: int = 0
+	var regex := RegEx.new()
+	regex.compile("\\$[a-zA-Z]*")
+	for result in regex.search_all(text):
+		var result_str: String = result.get_string()
+		var index: int = text.find(result_str) + result_str.length()
+		ability_indexes[result_str.substr(1)] = index
+		total_removed += result_str.length()
+		text = text.replace(result_str, "")
+	
+	for key in ability_indexes: ability_indexes[key] -= total_removed
+	for ability in base_card.abilities:
+		if ability.charges != -1:
+			ability.ability_index = ability_indexes[ability.ability_name]
+			ResourceSaver.save(ability)
+			
 	return text
 
 func on_replace_att_hp_spd(text: String) -> String:
