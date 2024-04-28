@@ -125,7 +125,7 @@ func on_unit_selected(Unit: UnitGD) -> void:
 
 func _on_unit_deselected(Unit: UnitGD, absolute: bool = false) -> void:
 	if Unit != null:
-		onRemoveMovementRange(Unit)
+		onRemoveMovementRange()
 		if Unit == UnitSelected: UnitSelected = null
 		if !absolute:
 			Tiles.on_mouse_entered(Tiles.on_find_tile_by_raycast())
@@ -143,7 +143,7 @@ func onSetMovementRange(Unit: UnitGD) -> void:
 					continue
 		Tiles.on_set_tile_material(Tile, "MovementRange")
 	
-func onRemoveMovementRange(Unit: UnitGD) -> void:
+func onRemoveMovementRange() -> void:
 	for Tile in Tiles.movement_paths.tiles:
 		if "EnemyInRange" in Tile.tile_state:
 			(Units.unit_by_tile(Tile)).on_enemy_in_range(false)
@@ -177,7 +177,7 @@ var tability_tiles: Dictionary
 var TAbility: TargetAbilityGD
 var TAbilityUnit: UnitGD
 func onEnterTargetAbilityMode(Unit: UnitGD, ability: TargetAbilityGD) -> void:
-	onRemoveMovementRange(Unit)
+	onRemoveMovementRange()
 	onCreateAbilityRange(Unit, ability)
 	TAbilityUnit = Unit
 	TAbility = ability

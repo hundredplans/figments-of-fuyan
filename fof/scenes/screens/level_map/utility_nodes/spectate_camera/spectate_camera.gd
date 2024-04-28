@@ -220,6 +220,5 @@ const FOV_TYPES: Dictionary = {
 
 const FOV_TWEEN_TIME: float = 0.2
 func onUpdateFOV(type: String) -> void:
-	if Camera.fov != FOV_TYPES[type]:
-		var FOVTween := create_tween()
-		FOVTween.tween_property(Camera, "fov", FOV_TYPES[type], FOV_TWEEN_TIME)
+	var FOVTween := create_tween()
+	FOVTween.tween_property(Camera, "fov", FOV_TYPES[type], FOV_TWEEN_TIME)

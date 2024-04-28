@@ -18,6 +18,7 @@ offset_right = -1740.0
 offset_bottom = -900.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset = Vector2(90, 90)
 theme = ExtResource("1_7jnsk")
 texture_normal = ExtResource("2_l8g5m")
 texture_hover = ExtResource("3_em5ne")
@@ -61,3 +62,16 @@ fit_content = true
 scroll_active = false
 autowrap_mode = 2
 threaded = true
+
+[node name="AbilityCharges" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 160.0
+offset_top = 151.0
+offset_right = 173.0
+offset_bottom = 178.0
+text = "0"
+label_settings = ExtResource("2_xyw8o")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

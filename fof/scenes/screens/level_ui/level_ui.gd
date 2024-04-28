@@ -374,6 +374,9 @@ func onEnterUnitMode(Unit: UnitGD) -> void:
 			if ability is TargetAbilityGD and !ability.used and ability.charges > 0:
 				var TargetAbilityBox: Control = preload("res://scenes/screens/level_ui/target_ability_box.tscn").instantiate()
 				TargetAbilities.add_child(TargetAbilityBox)
+				TargetAbilityBox.mouse_entered.connect(on_is_mouse_in_ui.bind(true))
+				TargetAbilityBox.mouse_exited.connect(on_is_mouse_in_ui.bind(false))
+				TargetAbilityBox.AbilityCharges.text = str(ability.charges)
 				TargetAbilityBox.label.text = ability.ability_name
 				TargetAbilityBox.description.text = ability.ability_description
 				TargetAbilityBox.ability = ability
@@ -393,10 +396,10 @@ func onTargetAbilityBoxPressed(Unit: UnitGD, ability: AbilityGD, TargetAbilityBo
 		TargetAbilityBox.modulate = Color(0.6, 0.6, 0.6)
 
 func onTargetAbilityBtnPressed(Unit: UnitGD, ability: AbilityGD) -> void:
-	if Units.PlayerManager.UnitSelected == null:
-		Units.PlayerManager._on_unit_selected(Unit)
+	if Units.PlayerManager.UnitSelected != Unit:
+		Units.PlayerManager.on_unit_selected(Unit)
 	
-	var TargetAbilityBox: Control = TargetAbilities.get_children().filter(func(x: Control): return x.ability == ability)[0]
+	var TargetAbilityBox: Control = TargetAbilities.get_children().filter(func(x: Control): return !x.is_queued_for_deletion() and x.ability == ability)[0]
 	onTargetAbilityBoxPressed(Unit, ability, TargetAbilityBox)
 func onEnterTargetAbilityMode(Unit: UnitGD, ability: AbilityGD) -> void:
 	AbilityLabel.text = ability.ability_name
@@ -407,7 +410,6 @@ func onExitTargetAbilityMode() -> void: # has to check if actually in target abi
 		Units.PlayerManager.onExitTargetAbilityMode()
 
 func onUpdateTargetAbilityCharges(Unit: UnitGD, ability: AbilityGD) -> void:
-	ability.used = true
 	if ability.charges != -1:
 		var color: String = "BASE"
 		if ability.charges == 0: color = "GRAY"
@@ -420,7 +422,10 @@ func onUpdateTargetAbilityCharges(Unit: UnitGD, ability: AbilityGD) -> void:
 			new_text = new_text.insert(ability.ability_index + 1, "[/color]")
 			new_text = new_text.insert(ability.ability_index, "[color=" + color + "]")
 			Unit.base_card.text = new_text
-	onUpdateTargetAbility(Unit, ability, true)
+			
+		if ability is TargetAbilityGD:
+			ability.used = true
+			onUpdateTargetAbility(Unit, ability, true)
 	
 var target_abilities_used: bool = true
 func onUpdateTargetAbilities(state: bool) -> void:

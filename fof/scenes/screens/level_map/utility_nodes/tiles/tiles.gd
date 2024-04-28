@@ -509,19 +509,15 @@ func on_set_default_shader_parameters() -> void:
 func on_remove_tile_material(Tile: TileGD, material_name: String = "") -> void:
 	match material_name:
 		"":
-			Tile.tile_state = [] if !("Greyscale" in Tile.tile_state) else ["Greyscale"]
-		"EmptyTile": Tile.tile_state = []
-		"IgnoreGreyscale": 
 			if "Greyscale" in Tile.tile_state: Tile.tile_state = ["Greyscale"]
 			else: Tile.tile_state = []
+		"EmptyTile": Tile.tile_state = []
 		_: Tile.tile_state.erase(material_name)
 		
 	on_set_tile_highest_material(Tile, 1 if material_name == "Greyscale" else 0)
 	
 func on_set_tile_material(Tile: TileGD, material_name: String):
 	if !Tile.tile_state.has(material_name):
-			Tile.tile_state.append(material_name)
-	else:
 		Tile.tile_state.append(material_name)
 	
 	on_set_tile_highest_material(Tile, 2 if material_name == "Greyscale" else 0)

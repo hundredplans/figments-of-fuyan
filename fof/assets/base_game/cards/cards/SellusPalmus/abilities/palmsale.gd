@@ -20,6 +20,6 @@ func onTargetAbility(is_visible: bool, Unit: UnitGD, Tile: TileGD, tiles: Dictio
 		
 		healInfo.Healee = Healee
 		Combat.onHeal(healInfo)
-		
+		Unit.Model._look_at(Tile)
 	if is_visible: Unit.Model.on_play_animation("Ability")
 	charges -= 1

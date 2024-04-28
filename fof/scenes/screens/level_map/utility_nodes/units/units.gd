@@ -256,7 +256,6 @@ func onClearUnitActions() -> void:
 func on_unit_travel_finished() -> void:
 	if !active_action.is_empty() and active_action.action_type.begins_with("MoveUnit"):
 		on_force_resume_idle_animation_from_walk()
-		var Unit: UnitGD = active_action.Unit
 		SpectateCamera.onEndTrackUnit()
 		active_action = {}
 	

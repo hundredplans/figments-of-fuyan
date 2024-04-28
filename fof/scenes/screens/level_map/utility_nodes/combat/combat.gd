@@ -11,6 +11,7 @@ func onDeathAbilities(Deather: UnitGD, AppliedBy: AppliedByGD) -> void:
 	onLastWill(Deather, AppliedBy)
 	if AppliedBy.type != "Height": onRampage(AppliedBy.Applier, AppliedBy)
 	onTrauma(Deather, AppliedBy)
+	onBloodthirst(Deather, AppliedBy)
 	
 func onLastWill(_Deather: UnitGD, _AppliedBy: AppliedByGD) -> void:
 	pass
@@ -24,6 +25,13 @@ func onHit(DMGInfo: DMGInfoGD) -> void:
 	for ability in abilities:
 		if ability.onHitCondition(DMGInfo):
 			onTriggerAbilitySpectateDelay(DMGInfo.AppliedBy.Applier, ability, ability.onHit.bind(DMGInfo), ability.ON_HIT_DELAY)
+	
+func onBloodthirst(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
+	for _Unit in Unit.getVisibleEnemies():
+		var abilities: Array = onFindAbilities(_Unit, "Bloodthirst")
+		for ability in abilities:
+			if ability.onBloodthirstCondition(Unit, AppliedBy, _Unit):
+				onTriggerAbilitySpectateDelay(_Unit, ability, ability.onBloodthirst.bind(_Unit, AppliedBy), ability.BLOODTHIRST_DELAY)
 	
 func onTrauma(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	for _Unit in Unit.getVisibleAllies():
@@ -79,11 +87,18 @@ func onDMG(Damagee: UnitGD, AppliedBy: AppliedByGD, damage: int) -> DMGInfoGD:
 	match AppliedBy.type:
 		"Attack":
 			var original_health: int = Damagee.health
+			damage = onArmor(Damagee, damage)
 			Damagee.stats("damage", damage, AppliedBy)
 			DMGInfo.HealthDMG = original_health - Damagee.health
 		"Height":
 			Damagee.stats("damage", damage, AppliedBy, true) # Fix this to not be absolute
 	return DMGInfo
+
+func onArmor(Unit: UnitGD, damage: int) -> int:
+	var abilities: Array = onFindAbilities(Unit, "Armor")
+	for ability in abilities:
+		damage = max(damage - ability.armor, 0)
+	return damage
 
 func onHeal(healInfo: HealInfoGD) -> void:
 	var heal_amount: int = min(healInfo.Healee.max_health - healInfo.Healee.health, healInfo.Healee.health + healInfo.heal)

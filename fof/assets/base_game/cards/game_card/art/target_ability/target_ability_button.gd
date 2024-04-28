@@ -5,6 +5,7 @@ const COLORS: Dictionary = {
 	"GREY": Color(0.3, 0.3, 0.3),
 	"GREEN": Color(0, 1, 0),
 	"YELLOW": Color(1, 1, 0),
+	"RED": Color(1, 0, 0)
 }
 
 var ability: AbilityGD
@@ -19,14 +20,16 @@ func onUpdateAbility(Unit: UnitGD, disable: bool) -> void:
 	
 	var text: String = str(charges) if charges > 50 else "∞"
 	label.text = str(charges)
-	
 	var color: String = "BASE"
 	if charges == 0 or disable: color = "GREY"; disable = true
 	elif charges > max_charges: color = "GREEN"
 	elif charges < max_charges: color = "YELLOW"
 	
 	label.modulate = COLORS[color]
-	disabled = disable
+		
+	if Unit.team == 0: disabled = disable
+	else: disabled = true
+		
 
 const GROW_SPEED: float = 0.1
 func _on_pressed():

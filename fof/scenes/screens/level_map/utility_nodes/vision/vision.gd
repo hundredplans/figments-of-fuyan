@@ -13,7 +13,6 @@ const VISION_RANGE: int = 5
 var spawn_tiles: Array
 var ally_vision: Array = []
 func on_recalculate_vision(Unit: UnitGD = null) -> void:
-	print(Unit)
 	var visible_tiles: Array = []
 	var all_units: Array = Units.all_units()
 	var ally_units: Array = Units.on_units()

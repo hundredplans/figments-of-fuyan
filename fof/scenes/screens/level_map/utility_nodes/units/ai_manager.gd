@@ -75,7 +75,7 @@ func onChooseRandomMovementPath(Unit: UnitGD) -> void:
 	
 func onChosenPathSelected(Unit: UnitGD, chosen_path: Dictionary) -> void:
 	if chosen_path.size > 0:
-		Tiles.on_remove_tile_material(Unit.Tile, "" if chosen_path.size == 1 and chosen_path.types[0].x == 1 else "IgnoreGreyscale")
+		Tiles.on_remove_tile_material(Unit.Tile, "")
 	
 	var visibility_path: Array = []
 	await onCalculateVisibilityPath(Unit, chosen_path, visibility_path)

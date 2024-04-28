@@ -85,8 +85,9 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	onCreateAbilities()
 
 func onCreateAbilities() -> void:
-	for ability in base_card.abilities.map(\
-	func(x: String): return load("res://assets/base_game/cards/cards/" + base_card.folder_name + "/abilities/" + x + ".tres").duplicate()):
+	var DIR_PATH: String = "res://assets/base_game/cards/cards/" + base_card.folder_name + "/abilities/"
+	for ability_name in Array(DirAccess.get_files_at(DIR_PATH)).filter(func(x: String): return x.ends_with(".tres")):
+		var ability: AbilityGD = load(DIR_PATH + 	ability_name).duplicate()
 		ability.VFX = Units.VFX
 		ability.Units = Units
 		ability.Tiles = Tiles

@@ -38,4 +38,4 @@ func onTileSelected(_Tile: TileGD) -> void:
 	LevelUI.onSelectTileFinish()
 	
 func onSpawnTileSet(Tile: TileGD) -> void:
-	var Unit: UnitGD = Units.on_unit_awakened(int(command_args[1]), 0, [], int(command_args[2]), 0, Tile)
+	Units.on_unit_awakened(int(command_args[1]), 0, [], int(command_args[2]), 0, Tile)

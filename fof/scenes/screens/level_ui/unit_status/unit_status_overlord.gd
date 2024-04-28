@@ -154,7 +154,7 @@ func onUnitInspected(Unit: UnitGD) -> void:
 	
 func onUnitUninspected(Unit: UnitGD) -> void:
 	if LevelMap.action_lock in ["", "HandRegular"] and !LevelUI.is_status_box_moving:
-		Tiles.on_remove_tile_material(Unit.Tile)
+		Tiles.on_remove_tile_material(Unit.Tile, "UnitInspected")
 	
 var unit_field_status_materials: Dictionary = {
 	"BASE": [], # [bot, top_level]
