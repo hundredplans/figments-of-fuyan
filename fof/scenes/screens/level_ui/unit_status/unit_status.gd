@@ -7,6 +7,7 @@ const NUMBER_SCALE_TIME: float = 0.15
 signal target_ability_pressed
 var type: String = "UnitStatusRegular"
 
+@onready var UnitFX: GridContainer = %UnitFX
 @onready var TargetAbilities: HBoxContainer = %TargetAbilities
 @onready var HoverCard: Control = $HoverCard
 @onready var Gem: Sprite2D = %Gem
@@ -49,6 +50,8 @@ func setUnit(_Unit: UnitGD) -> void:
 		StatLabel.text = str(Unit.get(stat.to_lower()))
 	
 	onCreateAbilities()
+	for fx in Unit.unit_fx:
+		onAddUnitFX(fx[0], fx[1])
 	
 func onCreateAbilities() -> void:
 	for ability in Unit.abilities:
@@ -101,3 +104,11 @@ var modulates: Dictionary = {}
 
 func onTargetAbilityBtnPressed(ability: TargetAbilityGD) -> void:
 	target_ability_pressed.emit(Unit, ability)
+
+func onAddUnitFX(fx_type: String, charges: int = -1) -> void:
+	if charges == -1:
+		pass
+	else:
+		var label_fx := preload("res://scenes/screens/level_ui/unit_status/unit_fx/label_fx/label_fx.tscn").instantiate()
+		UnitFX.add_child(label_fx)
+		label_fx.setFX(fx_type, charges)

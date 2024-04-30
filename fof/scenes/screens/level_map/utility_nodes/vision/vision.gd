@@ -78,7 +78,7 @@ func onUnitVisionModeCalculateVision(Unit: UnitGD, visible_tiles: Array) -> void
 					visible_tiles.append(Tile)
 	
 	for _Unit in Units.all_units():
-		_Unit.Model.onSetOverrideMaterial("null" if _Unit.Tile in visible_tiles else "GreyInstant")
+		_Unit.Model.onSetOverrideMaterial("Regular" if _Unit.Tile in visible_tiles else "GreyInstant")
 	
 func onApplyVisionModeVisibility(visible_tiles: Array) -> void:
 	on_apply_visibility(visible_tiles)
@@ -112,7 +112,7 @@ func on_vision_mode_set(x: int) -> void:
 		if vision_mode == 1:
 			for Unit in Units.all_units():
 				setUnitVisionModeOccupy(Unit, Unit.Tile in ally_vision)
-				Unit.Model.onSetOverrideMaterial("null")
+				Unit.Model.onSetOverrideMaterial("Regular")
 		ActiveUnitVision = null
 		vision_mode = x
 		LevelUI.onVisionModeSet()

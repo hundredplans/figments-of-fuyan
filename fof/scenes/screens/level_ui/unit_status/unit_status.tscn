@@ -211,31 +211,6 @@ label_settings = ExtResource("4_pk6wt")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HoverCard" parent="." node_paths=PackedStringArray("ArtPop") instance=ExtResource("13_m4is7")]
-ArtPop = NodePath("../Background/ArtPop")
-
-[node name="Effects" type="Sprite2D" parent="."]
-position = Vector2(14, 15)
-
-[node name="RainbowLight" type="PointLight2D" parent="Effects"]
-unique_name_in_owner = true
-visible = false
-position = Vector2(185, 70)
-scale = Vector2(0.75, 0.75)
-energy = 0.4
-blend_mode = 1
-range_item_cull_mask = 32
-texture = ExtResource("12_emc3m")
-texture_scale = 1.5
-
-[node name="SlotOne" type="Sprite2D" parent="Effects"]
-unique_name_in_owner = true
-visible = false
-texture_filter = 1
-material = ExtResource("7_mq0yb")
-position = Vector2(11, 10)
-texture = ExtResource("16_f48b4")
-
 [node name="TargetAbilities" type="HBoxContainer" parent="."]
 unique_name_in_owner = true
 layout_mode = 0
@@ -246,3 +221,37 @@ offset_bottom = 124.0
 scale = Vector2(1.2, 1.2)
 mouse_filter = 2
 theme_override_constants/separation = 0
+
+[node name="HoverCard" parent="." node_paths=PackedStringArray("ArtPop") instance=ExtResource("13_m4is7")]
+ArtPop = NodePath("../Background/ArtPop")
+
+[node name="UnitFX" type="GridContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 265.0
+offset_top = 23.0
+offset_right = 347.0
+offset_bottom = 105.0
+columns = 3
+
+[node name="ExtraEffects" type="Sprite2D" parent="."]
+position = Vector2(14, 15)
+
+[node name="RainbowLight" type="PointLight2D" parent="ExtraEffects"]
+unique_name_in_owner = true
+visible = false
+position = Vector2(185, 70)
+scale = Vector2(0.75, 0.75)
+energy = 0.4
+blend_mode = 1
+range_item_cull_mask = 32
+texture = ExtResource("12_emc3m")
+texture_scale = 1.5
+
+[node name="SlotOne" type="Sprite2D" parent="ExtraEffects"]
+unique_name_in_owner = true
+visible = false
+texture_filter = 1
+material = ExtResource("7_mq0yb")
+position = Vector2(11, 10)
+texture = ExtResource("16_f48b4")

@@ -1,7 +1,8 @@
 extends TraumaGD
 
-func onTrauma(_is_visible: bool, Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
-	onGainStats(Unit, "speed", 1, AppliedBy)
+@export var SPEED_BUFF: int = 1
+func onTrauma(a: Dictionary) -> void:
+	onGainStats(a.Unit, "speed", SPEED_BUFF, a.AppliedBy)
 	charges -= 1
 	
 func onTraumaCondition() -> bool:

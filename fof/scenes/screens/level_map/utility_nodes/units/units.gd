@@ -39,6 +39,7 @@ func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int
 	Unit.on_arrive(team == 0 or Unit.getVisibleEnemies().size() > 0)
 	AIManager.onUnitAwakened(Unit)
 	Unit.finished_awakening = true
+	Combat.onArrive(Unit)
 	return Unit
 
 func on_start_phase_start() -> void:
@@ -109,17 +110,18 @@ func move_to_tile(Unit: UnitGD, Tile: TileGD, type: Variant) -> void:
 func _process(_delta: float) -> void:
 	if active_action.is_empty() and !unit_actions.is_empty():
 		Vision.on_vision_mode_set(0)
-		active_action = unit_actions.pop_front()
 		LevelMap.setActionLock("UnitActionRegular")
-		match active_action.action_type:
-			"AIMoveFinish": onAIMoveFinish()
-			"MoveUnitAI": onMoveUnitAI()
-			"MoveUnit": onMoveUnit()
-			"AttackTarget": on_attack_enemy()
-			"DeathUnit": on_death()
-			"HurtUnit": on_hurt()
-			"Delay": onDelay()
-			"ArgDelay": onArgDelay()
+		if unit_actions[0].action_type != "ArgDelay":
+			active_action = unit_actions.pop_front()
+			match active_action.action_type:
+				"AIMoveFinish": onAIMoveFinish()
+				"MoveUnitAI": onMoveUnitAI()
+				"MoveUnit": onMoveUnit()
+				"AttackTarget": on_attack_enemy()
+				"DeathUnit": on_death()
+				"HurtUnit": on_hurt()
+				"Delay": onDelay()
+		else: onArgDelay()
 
 func onAIMoveFinish() -> void:
 	if !(active_action.vis_path.all(func(x: Array): return x[1] == "Invisible")):
@@ -129,12 +131,18 @@ func onAIMoveFinish() -> void:
 	AIManager.onMoveNextAIUnit()
 
 func onArgDelay() -> void:
-	active_action.begin_callable.call(active_action.begin_arguments)
-	await get_tree().create_timer(active_action.delay).timeout
-	active_action.end_callable.call(active_action.end_arguments)
-	
-	active_action = {}
-	onUnitActionsFinished()
+	var _active_action: Dictionary = unit_actions[0]
+	if !_active_action.triggered:
+		_active_action.begin_callable.call(_active_action.begin_arguments)
+		_active_action.triggered = true
+		
+	if unit_actions[0] == _active_action:
+		active_action = unit_actions.pop_front()
+		await get_tree().create_timer(active_action.delay).timeout
+		active_action.end_callable.call(active_action.end_arguments)
+		
+		active_action = {}
+		onUnitActionsFinished()
 	
 func onDelay() -> void:
 	await get_tree().create_timer(active_action.delay).timeout
@@ -206,8 +214,8 @@ func onPushFrontDelay(delay: float) -> void:
 			"delay": delay,
 		})
 
-func onPushArgDelayBegin(delay: float, begin_callable: Callable, begin_arguments: Dictionary) -> void:
-	onPushArgDelay(delay, begin_callable, Callable(), begin_arguments, {})
+func onPushArgDelayBegin(delay: float, append: Callable, begin_arguments: Dictionary) -> void:
+	onPushArgDelay(delay, append, Callable(), begin_arguments, {})
 	
 func onPushArgDelayEnd(delay: float, end_callable: Callable, end_arguments: Dictionary) -> void:
 	onPushArgDelay(delay, Callable(), end_callable, {}, end_arguments)
@@ -220,6 +228,7 @@ func onPushArgDelay(delay: float, begin_callable: Callable, end_callable: Callab
 			"begin_arguments": begin_arguments,
 			"end_arguments": end_arguments,
 			"delay": delay,
+			"triggered": false,
 		})
 
 func isVisibilityPathLastPosition(Tile: TileGD, visibility_path: Array) -> bool:

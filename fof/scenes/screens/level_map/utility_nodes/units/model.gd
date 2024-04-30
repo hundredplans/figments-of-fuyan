@@ -47,7 +47,7 @@ func _ready() -> void:
 	if Unit != null:
 		on_set_rotation()
 
-	onSetOverrideMaterial("null")
+	onSetOverrideMaterial("Regular")
 
 func on_play_animation(ani_name: String) -> void:
 	AniPlayer.play(ani_name, UNIT_ANIMATION_BLEND_TIME)
@@ -78,59 +78,51 @@ func on_finish_animation(ani_name: String) -> void:
 		"Jump": movement_finished.emit(); is_jump = false; jump_time = 0
 		"Hurt": hurt_finished.emit();
 
+var materials: Array = []
 func onCreateBaseMaterials() -> void:
-	var my_next_pass: ShaderMaterial = load("res://assets/materials/unit_outline/unit_outline.tres").duplicate()
-	
-	match Unit.team:
-		0: my_next_pass.set_shader_parameter("outline_color", Color("00ff00"))
-		1: my_next_pass.set_shader_parameter("outline_color", Color("ff0000"))
-	
+	var next_pass: Material = load("res://assets/materials/unit_material/unit_material_outline.tres").duplicate()
 	for i in mesh.mesh.get_surface_count():
-		var transform_greyscale_mat: Material = load("res://assets/materials/transform_grey/transform_grey.tres").duplicate()
-		var grey_instant_mat: Material = load("res://assets/materials/grey_instant/grey_instant.tres").duplicate()
 		var unit_material: Material = load("res://assets/materials/unit_material/unit_material.tres").duplicate()
-		
 		var tx: ImageTexture = load(mesh.get_active_material(i).albedo_texture.resource_path)
 		
-		for material in [transform_greyscale_mat, grey_instant_mat, unit_material]:
-			material.set_shader_parameter("texture_albedo", tx)
-			material.next_pass = my_next_pass
+		unit_material.next_pass = next_pass
+		unit_material.set_shader_parameter("texture_albedo", tx)
+		mesh.set_surface_override_material(i, unit_material)
+		materials.append(unit_material)
 		
-		transform_grey_materials.append(transform_greyscale_mat)
-		grey_instant_materials.append(grey_instant_mat)
-		unit_materials.append(unit_material)
+	onSetOutlineProperties(false)
 		
-var unit_materials: Array
-var grey_instant_materials: Array
-var transform_grey_materials: Array
+func onSetOutlineProperties(is_spectating_or_enemy_in_range: bool) -> void:
+	var team_color: Color
+	match Unit.team:
+		0: team_color = Color(0, 1, 0) if !is_spectating_or_enemy_in_range else Color("c5ffc5")
+		1: team_color = Color(1, 0, 0) if !is_spectating_or_enemy_in_range else (Color("ffc5c5"))
+		
+	for mat in materials: mat.next_pass.set_shader_parameter("albedo", team_color)
+		
 func onSetOverrideMaterial(type: String) -> void:
-	if type.begins_with("Transform"):
-		if type != "TransformInstant":
-			var start_value: float = 0.0 if type == "TransformGrey" else 1.0
-			var end_value: float = 1.0 if type == "TransformGrey" else 0.0
-			
+	match type:
+		"Regular": onSetShaderParameter(0)
+		"FromGrey", "IntoGrey":
+			var start_value: float = 0
+			var end_value: float = 0
+			match type:
+				"FromGrey": start_value = 1; end_value = 0
+				"IntoGrey": start_value = 0; end_value = 1
+				
 			var MaterialTween: Tween = create_tween()
 			MaterialTween.tween_method(onSetShaderParameter, start_value, end_value, WALK_TRAVEL_TIME)
 			MaterialTween.finished.connect(onRemoveTransformMaterial.bind(type))
-			if type == "TransformRegular": setVisible(true)
-		
-		for i in mesh.mesh.get_surface_count():
-			mesh.set_surface_override_material(i, transform_grey_materials[i])
-	
-	elif type == "GreyInstant":
-		for i in mesh.mesh.get_surface_count():
-			mesh.set_surface_override_material(i, grey_instant_materials[i])
-	else:
-		for i in mesh.mesh.get_surface_count():
-			mesh.set_surface_override_material(i, unit_materials[i])
+			if type == "FromGrey": setVisible(true)
+		"GreyInstant": onSetShaderParameter(0.5)
 
 func onRemoveTransformMaterial(type: String) -> void:
-	if type == "TransformGrey": setVisible(false)
-	onSetOverrideMaterial("null")
+	if type == "IntoGrey": setVisible(false)
 
 func onSetShaderParameter(value: float) -> void:
-	for mat in transform_grey_materials:
+	for mat in materials:
 		mat.set_shader_parameter("time_value", value)
+		mat.next_pass.set_shader_parameter("time_value", value)
 
 var walk_to_info: Array = []
 func onMoveToTile(Tile: TileGD, type: Variant, movement_type: String) -> void:
@@ -163,9 +155,9 @@ func on_begin_all_movement_between_tiles() -> void:
 	_look_at(walk_to_info[0])
 	if Unit.team == 1:
 		match walk_to_info[2]:
-			"Regular": onSetOverrideMaterial("null")
-			"OutOfVision": onSetOverrideMaterial("TransformGrey")
-			"IntoVision": onSetOverrideMaterial("TransformRegular")
+			"Regular": onSetOverrideMaterial("Regular")
+			"OutOfVision": onSetOverrideMaterial("FromGrey")
+			"IntoVision": onSetOverrideMaterial("IntoGrey")
 	
 	match walk_to_info[1].x:
 		3: on_create_regular_jump(walk_to_info[0])

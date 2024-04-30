@@ -475,6 +475,7 @@ func on_tile_unhovered(Tile: TileGD) -> void:
 
 var path_hovered_info: Dictionary = {"tiles": [], "size": 0}
 func on_path_hovered_tile_selected(Tile: TileGD) -> void:
+	var OriginalTile: TileGD = Units.PlayerManager.UnitSelected.Tile
 	Units.PlayerManager.onPathHoveredTileSelected()
 	Units.PlayerManager.on_select_active_unit(Units.PlayerManager.UnitSelected)
 	for i in range(path_hovered_info.tiles.size()):
@@ -483,7 +484,7 @@ func on_path_hovered_tile_selected(Tile: TileGD) -> void:
 		else: Units.attack_enemy_or_target(Units.PlayerManager.UnitSelected, path_hovered_info.tiles[i])
 		if Tile == path_hovered_info.tiles[i]: break
 		
-	on_remove_tile_material(Units.PlayerManager.UnitSelected.Tile, "" if path_hovered_info.tiles.size() == 1 and path_hovered_info.types[0].x == 1 else "EmptyTile")
+	on_remove_tile_material(OriginalTile, "" if path_hovered_info.tiles.size() == 1 and path_hovered_info.types[0].x == 1 else "EmptyTile")
 	Units.PlayerManager._on_unit_deselected(Units.PlayerManager.UnitSelected, true)
 		
 func on_enemy_found_tile_selected(Tile: TileGD, Unit: UnitGD) -> void:
@@ -599,6 +600,18 @@ func onSelectTileFinish() -> void:
 
 func onFindUnitAdjacentTiles(Unit: UnitGD, distance: int) -> Array: #  Tiles based on unit's top height
 	var tiles: Array = []
-	for w in range(Unit.Tile.w, Unit.Tile.w + floor(Unit.height.top * 1.2) - 0.3):
-		for tpos in _all_neighbours(Unit.Tile.onTTpos(w), distance): tiles.append(position_to_tile(tpos))
+	for w in range(0, 6):
+		for tpos in _all_neighbours(Unit.Tile.onTTpos(w), distance):
+			var Tile: TileGD = position_to_tile(tpos)
+			var height: float = getUnitAdjustedHeight(Unit.Tile) + Unit.height.top
+			if Tile != null:
+				if w >= Unit.Tile.w: # intentional double if
+					if getUnitAdjustedHeight(Tile) <= height:
+						tiles.append(Tile)
+				else:
+					var _Unit: UnitGD = Units.unit_by_tile(Tile)
+					if _Unit != null:
+						# Check if unit height aligns
+						if getUnitAdjustedHeight(_Unit.Tile) + _Unit.height.top >= height - Unit.height.top:
+							tiles.append(Tile)
 	return tiles

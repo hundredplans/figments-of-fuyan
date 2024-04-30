@@ -1,7 +1,7 @@
 extends RampageGD
 
-func onRampage(is_visible: bool, Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
+func onRampage(a: Dictionary) -> void:
 	match Units.GameState.hero_id:
 		1:
-			onGainStats(Unit, "health", 1, AppliedBy)
-			if is_visible: Unit.Model.on_play_animation("Ability")
+			onGainStats(a.Unit, "health", 1, a.AppliedBy)
+			if a.is_visible: a.Unit.Model.on_play_animation("Ability")

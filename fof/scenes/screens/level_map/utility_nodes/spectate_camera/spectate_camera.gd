@@ -149,7 +149,7 @@ func getSpectateTypeKeys() -> Array:
 			if !Units.unit_by_tile_bool(spawn_dict.object):
 				unoccupied_spawn_dicts.append(spawn_dict)
 		return unoccupied_spawn_dicts
-	return spectates[spectate_type].values()
+	return spectates[spectate_type].values().filter(func(x: Dictionary): return x.object.team == 0 or x.object.Tile in Vision.ally_vision)
 		
 func onUnitSpectated(spectate_info: Dictionary, _spectate_info: Dictionary, _spectate_type: String) -> void:
 	if spectate_type in ["Ally", "Enemy"]:

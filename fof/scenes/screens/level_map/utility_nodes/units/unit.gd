@@ -6,6 +6,7 @@ signal tile_occupied
 var id: int = 0
 var tool_id: int = 0
 var effects: Array = []
+var unit_fx: Array = []
 
 var hero_card: HeroCardGD
 var base_card: BaseCardGD
@@ -87,13 +88,19 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 func onCreateAbilities() -> void:
 	var DIR_PATH: String = "res://assets/base_game/cards/cards/" + base_card.folder_name + "/abilities/"
 	for ability_name in Array(DirAccess.get_files_at(DIR_PATH)).filter(func(x: String): return x.ends_with(".tres")):
-		var ability: AbilityGD = load(DIR_PATH + 	ability_name).duplicate()
+		var ability: AbilityGD = load(DIR_PATH + ability_name).duplicate()
 		ability.VFX = Units.VFX
 		ability.Units = Units
 		ability.Tiles = Tiles
 		ability.Vision = Vision
 		ability.Combat = Units.Combat
 		abilities.append(ability)
+		
+		if ability is ArmorGD:
+			onAddUnitFX("Armor", ability.armor)
+			
+func onAddUnitFX(type: String, charges: int = -1) -> void:
+	unit_fx.append([type, charges])
 		
 func occupy_tile(_Tile: TileGD) -> void:
 	var OGTile: TileGD = Tile
@@ -191,10 +198,12 @@ func on_death() -> void:
 
 func on_spectated_in_player_phase(state: bool) -> void:
 	Units.LevelUI.UnitStatusOverlord.onUnitSpectated(self, state)
+	Model.onSetOutlineProperties(state)
 	Units.LevelUI.on_update_vision()
 	
 func on_enemy_in_range(state: bool) -> void:
 	Units.LevelUI.UnitStatusOverlord.onEnemyInRange(self, state)
+	Model.onSetOutlineProperties(state)
 	if state: Tiles.on_set_tile_material(Tile, "EnemyInRange")
 
 var visible_tiles: Array
@@ -276,7 +285,7 @@ func onUnitsHeightAdjacentTiles() -> void:
 						break
 
 func getVisibleUnits() -> Array:
-	return visible_tiles.map(func(x: TileGD): return Units.unit_by_tile(x)).filter(func(x: Variant): return x != null and !x.is_queued_for_deletion() and x.health > 0)
+	return visible_tiles.map(func(x: TileGD): return Units.unit_by_tile(x)).filter(func(x: Variant): return x != null and !x.is_queued_for_deletion() and x != self and x.health > 0)
 
 func getVisibleEnemies() -> Array:
 	return getVisibleUnits().filter(Units.on_match_team_relation.bind(team, "Enemy"))

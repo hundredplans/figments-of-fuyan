@@ -48,19 +48,39 @@ func onSetTopMaterial(_is_top: bool) -> void:
 	SlotOne.no_depth_test = is_top
 	setFloatingStatMaterial()
 
-var BASE_MATERIAL_ON_TOP: BaseMaterial3D = preload("res://assets/materials/base_materials/base_material_on_top.tres")
+var BASE_MATERIAL_ON_TOP: BaseMaterial3D = preload("res://assets/materials/unit_field_status_materials/base_material_unshaded_on_top.tres")
+var BASE_MATERIAL_UNSHADED: BaseMaterial3D = preload("res://assets/materials/unit_field_status_materials/base_material_unshaded.tres")
+var GREY_HEART_UNSHADED: BaseMaterial3D = preload("res://assets/materials/unit_field_status_materials/grey_unshaded.tres")
+var GREY_HEART_UNSHADED_ON_TOP: BaseMaterial3D = preload("res://assets/materials/unit_field_status_materials/grey_unshaded_on_top.tres")
+
+var floating_stats_materials: Dictionary = {}
 func setFloatingStatMaterial() -> void:
 	for child in FloatingStats.get_children():
-		child.get_child(0).set_surface_override_material(0, BASE_MATERIAL_ON_TOP if is_top else null)
+		if !(child.name == "Health" and grey_heart):
+			if is_top:
+				child.get_child(0).set_surface_override_material(0, BASE_MATERIAL_ON_TOP)
+			else:
+				child.get_child(0).set_surface_override_material(0, BASE_MATERIAL_UNSHADED)
+		else:
+			if is_top:
+				child.get_child(0).set_surface_override_material(0, GREY_HEART_UNSHADED_ON_TOP)
+			else:
+				child.get_child(0).set_surface_override_material(0, GREY_HEART_UNSHADED)
 
 func setUnit(Unit: UnitGD) -> void:
 	var path: String = "res://scenes/screens/level_ui/unit_status/unit_status_pieces/zzz.png" if\
 	Unit.team == 0 else "res://scenes/screens/level_ui/unit_status/unit_status_pieces/in_range.png"
 	SlotOne.texture = load(path)
 	
+	for child in FloatingStats.get_children():
+		floating_stats_materials[child] = BASE_MATERIAL_UNSHADED
+	
 	onCreateBaseStat(Unit.attack, "Attack")
 	onCreateBaseStat(Unit.health, "Health")
 	onCreateBaseStat(Unit.speed, "Speed")
+	 
+	for fx in Unit.unit_fx:
+		onAddUnitFX(fx[0], fx[1])
 	
 func onCreateBaseStat(val: int, stat_changed: String, color: String = "BASE") -> void:
 	var NewNumber: Node3D = load("res://scenes/screens/level_map/floating_stats/numbers/" + Helper.NUM_TO_STRING_NUM[val] + ".glb").instantiate()
@@ -69,3 +89,10 @@ func onCreateBaseStat(val: int, stat_changed: String, color: String = "BASE") ->
 	StatNumber.color = color
 	setStatNumberMaterial(NewNumber, color)
 	StatNumber.on_sort_children()
+
+var grey_heart: bool = false
+func onAddUnitFX(fx_type: String, _charges: int = -1) -> void:
+	match fx_type:
+		"Armor":
+			grey_heart = true
+			setFloatingStatMaterial()
