@@ -29,6 +29,9 @@ func onTTpos(_w: int = w) -> Vector4:
 	return Vector4(tpos.x, tpos.y, tpos.z, _w)
 
 func setMaterial(mat: Material, btab: int = -1) -> void:
+	if mat == null:
+		print_stack()
+		print()
 	match btab:
 		-2: for i in range(1, 5): setMaterial(mat, i)
 		-1: for i in range(5): setMaterial(mat, i)

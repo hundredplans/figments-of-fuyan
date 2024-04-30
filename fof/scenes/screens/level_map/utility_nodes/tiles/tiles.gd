@@ -532,22 +532,22 @@ func on_set_tile_highest_material(Tile: TileGD, greyscale_state: int = 0) -> voi
 	if highest == 100 and "RegularInspected" in Tile.tile_state:
 		highest = 55
 		
-	var mat: ShaderMaterial = getTileMaterialFromPriority(highest)
+	var mat: Material = getTileMaterialFromPriority(highest)
 	if greyscale_state == 1:
-		Tile.setMaterial(null, -2)
+		Tile.setMaterial(base_tile_material, -2)
 	elif greyscale_state == 2:
 		Tile.setMaterial(TILE_MATERIALS["Greyscale"].material, -2)
 		
 	Tile.setMaterial(mat, 0)
 	Tile.Effects.on_manage_height_drop_label(Units.PlayerManager.UnitSelected)
-	
 
-func getTileMaterialFromPriority(priority: int) -> ShaderMaterial:
+const base_tile_material: StandardMaterial3D = preload("res://assets/materials/tile_materials/base_tile_material.tres")
+func getTileMaterialFromPriority(priority: int) -> Material:
 	if priority > 0:
 		for tile_material in TILE_MATERIALS.values():
 			if tile_material.priority == priority:
 				return tile_material.material
-	return null
+	return base_tile_material
 
 func onActionLockChanged(action_lock: String) -> void:
 	on_force_mouse_tile(!action_lock.is_empty(), 2)

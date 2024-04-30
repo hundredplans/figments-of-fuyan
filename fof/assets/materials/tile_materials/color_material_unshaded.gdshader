@@ -12,6 +12,8 @@ uniform float specular;
 uniform float metallic;
 uniform vec3 uv1_scale;
 uniform vec3 uv1_offset;
+uniform float distance_fade_min;
+uniform float distance_fade_max;
 
 
 void vertex() {
@@ -30,4 +32,12 @@ void fragment() {
 	float roughness_tex = dot(texture(texture_roughness,base_uv),roughness_texture_channel);
 	ROUGHNESS = roughness_tex * roughness;
 	SPECULAR = specular;
+	{
+		float fade_distance = length(VERTEX);
+		const vec3 magic = vec3(0.06711056f, 0.00583715f, 52.9829189f);
+		float fade = clamp(smoothstep(distance_fade_min, distance_fade_max, fade_distance), 0.0, 1.0);
+		if (fade < 0.001 || fade < fract(magic.z * fract(dot(FRAGCOORD.xy, magic.xy)))) {
+			discard;
+		}
+	}
 }

@@ -28,7 +28,8 @@ func onTargetAbility(Unit: UnitGD, ability: TargetAbilityGD, Tile: TileGD, tiles
 func onRevenge(Damagee: UnitGD, AppliedBy: AppliedByGD, DMGInfo: DMGInfoGD, damage: int):
 	var abilities: Array = onFindAbilities(Damagee, "Revenge")
 	for ability in abilities:
-		onTriggerAbilitySpectateDelay(Damagee, ability, ability.onRevenge.bind({"DMGInfo": DMGInfo, "Unit": Damagee, "damage": damage, "AppliedBy": AppliedBy}), ability.REVENGE_DELAY)
+		if ability.onRevengeCondition({"Unit": Damagee}):
+			onTriggerAbilitySpectateDelay(Damagee, ability, ability.onRevenge.bind({"DMGInfo": DMGInfo, "Unit": Damagee, "damage": damage, "AppliedBy": AppliedBy}), ability.REVENGE_DELAY)
 	
 func onHit(DMGInfo: DMGInfoGD) -> void:
 	var abilities: Array = onFindAbilities(DMGInfo.AppliedBy.Applier, "OnHit")
