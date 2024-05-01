@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://b3tkywnh2j0rj"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ympf5"]
+direction = Vector3(0, 1, 0)
+spread = 90.0
+initial_velocity_min = 1.0
+initial_velocity_max = 1.2
+gravity = Vector3(0, 0, 0)
+
+[node name="StatParticle" type="GPUParticles3D"]
+emitting = false
+amount = 18
+lifetime = 1.4
+one_shot = true
+explosiveness = 0.3
+process_material = SubResource("ParticleProcessMaterial_ympf5")

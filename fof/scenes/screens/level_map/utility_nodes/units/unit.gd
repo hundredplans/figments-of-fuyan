@@ -172,8 +172,12 @@ func stats(stat_type: String, val: int, AppliedBy := AppliedByGD.new(), absolute
 		if health == 0: Units.kill_unit(self, AppliedBy)
 		elif health < current_health and AppliedBy.type != "Height": Units.hurt_unit(self, AppliedBy)
 
-func status_effect() -> void:
-	pass
+		if Tile in Vision.ally_vision:
+			match stat_type:
+				"health": Units.VFX.onCreateStatParticle(current_health - health, "health", Tile)
+				"attack": Units.VFX.onCreateStatParticle(current_attack - attack, "attack", Tile)
+				"speed": Units.VFX.onCreateStatParticle(current_speed - speed, "speed", Tile)
+				"heal": Units.VFX.onCreateStatParticle(current_health - health, "heal", Tile)
 
 const ARRIVE_EFFECT_LIGHT_DURATION: float = 1.2
 const ARRIVE_EFFECT_INITIAL_LIGHT_ENERGY: float = 3

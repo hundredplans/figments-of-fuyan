@@ -496,6 +496,8 @@ const NUM_TO_STRING_NUM: Dictionary = {
 	7: "seven",
 	8: "eight",
 	9: "nine",
+	"+": "plus",
+	"-": "minus"
 }
 
 func getHeroCardInfo(hid: int) -> HeroCardGD:

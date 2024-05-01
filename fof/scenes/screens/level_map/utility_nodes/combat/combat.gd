@@ -135,6 +135,3 @@ func onHeal(healInfo: HealInfoGD) -> void:
 	if healInfo.heal > 0:
 		var heal_amount: int = min(healInfo.Healee.health + healInfo.heal, healInfo.Healee.max_health) - healInfo.Healee.health
 		healInfo.Healee.stats("heal", heal_amount, healInfo.AppliedBy)
-		
-		if healInfo.Healee.Tile in Vision.ally_vision and heal_amount > 0:
-			VFX.onCreateOneShot("Heal", healInfo.Healee.Tile, healInfo.Healee.height.top / 2)

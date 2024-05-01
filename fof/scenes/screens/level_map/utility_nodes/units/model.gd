@@ -94,11 +94,12 @@ func onCreateBaseMaterials() -> void:
 		
 func onSetOutlineProperties(is_spectating_or_enemy_in_range: bool) -> void:
 	var team_color: Color
-	match Unit.team:
-		0: team_color = Color(0, 1, 0) if !is_spectating_or_enemy_in_range else Color("c5ffc5")
-		1: team_color = Color(1, 0, 0) if !is_spectating_or_enemy_in_range else (Color("ffc5c5"))
-		
-	for mat in materials: mat.next_pass.set_shader_parameter("albedo", team_color)
+	if Unit != null:
+		match Unit.team:
+			0: team_color = Color(0, 1, 0) if !is_spectating_or_enemy_in_range else Color("c5ffc5")
+			1: team_color = Color(1, 0, 0) if !is_spectating_or_enemy_in_range else (Color("ffc5c5"))
+			
+		for mat in materials: mat.next_pass.set_shader_parameter("albedo", team_color)
 		
 func onSetOverrideMaterial(type: String) -> void:
 	match type:
