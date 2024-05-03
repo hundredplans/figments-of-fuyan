@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="BaseCardGD" load_steps=2 format=3 uid="uid://bns2xvrlhxhpx"]
+
+[ext_resource type="Script" path="res://assets/base_game/cards/templates/base_card.gd" id="1_nxyjm"]
+
+[resource]
+script = ExtResource("1_nxyjm")
+area_id = 1
+attack = 1
+health = 3
+speed = 2
+energy = 2
+rarity = 4
+raw_text = "ABILITY: If in enemy vision this Heals Allies in vision [1] HEALTH and debuffs them [-1/0] for [1] turn"
+flavor_text = ""
+text = ""
+aic = 5
+aii = 6
+aiw = 6
+ait = 7
+aia = 0
+weapon_offset = 0.1
+weapon = 0.5
+eye = 1.0
+top = 1.5
+stat = 2.0
+id = 23
+name = "Elder Palmer"
+folder_name = "Elder Palmer"
