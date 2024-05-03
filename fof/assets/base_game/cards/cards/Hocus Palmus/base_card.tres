@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="BaseCardGD" load_steps=2 format=3 uid="uid://dsyhoh3567jj3"]
+
+[ext_resource type="Script" path="res://assets/base_game/cards/templates/base_card.gd" id="1_ogngu"]
+
+[resource]
+script = ExtResource("1_ogngu")
+area_id = 1
+attack = 1
+health = 2
+speed = 2
+energy = 2
+rarity = 4
+raw_text = "ABILITY[1]: Heal the most injured ally on field [2] HEALTH; Gain an ability charge if they RAMPAGE"
+flavor_text = ""
+text = ""
+aic = 2
+aii = 6
+aiw = 6
+ait = 5
+aia = 6
+weapon_offset = 0.1
+weapon = 0.5
+eye = 1.0
+top = 1.5
+stat = 2.0
+id = 22
+name = "Hocus Palmus"
+folder_name = "Hocus Palmus"
