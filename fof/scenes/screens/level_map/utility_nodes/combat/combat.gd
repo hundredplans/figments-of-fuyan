@@ -81,7 +81,7 @@ func onBeforeAbilityFrontDelay(args: Dictionary) -> void:
 func onAfterAbilityFrontDelay(args: Dictionary) -> void:
 	var Triggerer: UnitGD = args.Triggerer
 	var Unit: UnitGD = args.SpectateUnit
-	if Triggerer != Unit and Unit != null and SpectateCamera.getSpectateUnit(["Ally", "Enemy"]) == Triggerer:
+	if !Units.isUnitActionsEmpty() and Triggerer != Unit and Unit != null and SpectateCamera.getSpectateUnit(["Ally", "Enemy"]) == Triggerer:
 		SpectateCamera.onSpectate(Unit)
 		
 func onFindAbilities(Unit: UnitGD, type: String) -> Array:
@@ -99,7 +99,6 @@ func onDMG(Damagee: UnitGD, AppliedBy: AppliedByGD, damage: int) -> DMGInfoGD:
 	
 	match AppliedBy.type:
 		"Attack":
-			
 			damage = onArmor(Damagee, damage)
 			Damagee.stats("damage", damage, AppliedBy)
 			DMGInfo.HealthDMG = original_health - Damagee.health

@@ -4,6 +4,8 @@ extends Node3D
 @onready var ModelManager: Node3D = $ModelManager
 @onready var Effects: Node3D = $Effects
 
+var path_hovered: bool = false
+var inspected: bool = false
 var tile_state: Array
 var top_of_cliff_wall: Array
 @export var collision_points: PackedVector3Array
@@ -29,9 +31,6 @@ func onTTpos(_w: int = w) -> Vector4:
 	return Vector4(tpos.x, tpos.y, tpos.z, _w)
 
 func setMaterial(mat: Material, btab: int = -1) -> void:
-	if mat == null:
-		print_stack()
-		print()
 	match btab:
 		-2: for i in range(1, 5): setMaterial(mat, i)
 		-1: for i in range(5): setMaterial(mat, i)
@@ -46,6 +45,9 @@ func setMaterial(mat: Material, btab: int = -1) -> void:
 func setCollisionState(state: bool) -> void:
 	for model in ModelManager.get_children():
 		model.body.collision_layer = 0 if !state else (10 if model.type == "Tile" else 8)
+
+func isOutline() -> bool:
+	return path_hovered or inspected
 
 #func _ready() -> void:
 	#for point in collision_points:

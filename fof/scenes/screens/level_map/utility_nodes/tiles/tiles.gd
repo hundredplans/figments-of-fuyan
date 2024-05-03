@@ -202,7 +202,7 @@ func onTilePressed() -> void:
 				Units.PlayerManager.on_occupied_tile_inspected(active_tile)
 			elif LevelMap.action_lock.is_empty(): on_begin_unit_movement()
 			
-		elif LevelMap.action_lock.is_empty() and "PathHovered" in active_tile.tile_state: 
+		elif LevelMap.action_lock.is_empty() and active_tile.path_hovered: 
 			on_begin_unit_movement()
 			
 		elif LevelMap.action_lock == "SpawnVision" and on_find_tile_primary_type(active_tile) == "Spawn":
@@ -444,32 +444,33 @@ func on_connect_points(astar: AStar3D, movement_types: Array, Tile: TileGD, _Til
 	astar.connect_points(Tile.get_instance_id(), _Tile.get_instance_id(), false)
 	
 func on_tile_hovered(Tile: TileGD) -> void:
-	if "RegularInspected" not in Tile.tile_state:
-		on_set_tile_material(Tile, "RegularInspected")
-		
+	onInspectTile(Tile, true)
 	if Units.PlayerManager.UnitSelected != null and movement_paths.has(Tile): # create hovered tiles
 		path_hovered_info = movement_paths[Tile]
 		for i in range(path_hovered_info.tiles.size()):
 			path_hovered_info.tiles[i].Effects.hovered_type = path_hovered_info.types[i]
-			on_set_tile_material(path_hovered_info.tiles[i], "PathHovered")
+			path_hovered_info.tiles[i].path_hovered = true
 			if path_hovered_info.types[i].x == 1:
 				on_set_tile_material(path_hovered_info.tiles[i], "EnemyInRange")
+			else: on_set_tile_highest_material(path_hovered_info.tiles[i])
 	Vision.on_tile_hovered(Tile)
 	onTileHoveredDisplayCard(Tile)
-
 
 func onTileHoveredDisplayCard(Tile: TileGD) -> void:
 	if Tile in Vision.ally_vision:
 		LevelUI.onTileHoveredDisplayCard(Tile)
 		
+var InspectTile: TileGD
+func onInspectTile(Tile: TileGD, state: bool) -> void:
+	Tile.inspected = state
+	on_set_tile_highest_material(Tile)
 
 func on_tile_unhovered(Tile: TileGD) -> void:
-	if "RegularInspected" in Tile.tile_state:
-		on_remove_tile_material(Tile, "RegularInspected")
-		
+	onInspectTile(Tile, false)
 	if Units.PlayerManager.UnitSelected != null:
-		for _Tile in tiles_by_tile_state("PathHovered"):
-			on_remove_tile_material(_Tile, "PathHovered")
+		for _Tile in get_children().filter(func(x: TileGD): return x.path_hovered):
+			_Tile.path_hovered = false
+			on_set_tile_highest_material(_Tile)
 	Vision.on_tile_unhovered(Tile)
 	LevelUI.onQueueTileHoveredGameCard()
 
@@ -490,22 +491,38 @@ func on_path_hovered_tile_selected(Tile: TileGD) -> void:
 func on_enemy_found_tile_selected(Tile: TileGD, Unit: UnitGD) -> void:
 	Units.attack_enemy_or_target(Unit, Tile)
 
-var color_material: Material = preload("res://assets/materials/tile_materials/color_material.tres")
+var BASE_MATERIALS: Array = [preload("res://assets/materials/tile_materials/base_tile_materials/base_tile_material.tres"), preload("res://assets/materials/tile_materials/base_tile_materials/base_tile_material_outline.tres")]
 var TILE_MATERIALS: Dictionary
-
 const TILE_MATERIAL_PATH: String = "res://assets/materials/tile_materials/tile_materials_resources/"
+
 func on_set_default_shader_parameters() -> void:
-	for file in DirAccess.get_files_at(TILE_MATERIAL_PATH):
-		if file.ends_with(".tres"):
-			var tile_material: TileMaterial = load(TILE_MATERIAL_PATH + file)
-			tile_material.material = color_material.duplicate()
-			tile_material.material.set_shader_parameter("albedo", Vector4(tile_material.albedo.r, tile_material.albedo.g, tile_material.albedo.b, 1))
-			if tile_material.unshaded:
-				tile_material.material.shader = preload("res://assets/materials/tile_materials/color_material_unshaded.gdshader")
-			TILE_MATERIALS.merge({tile_material.material_name: tile_material})
-			
-			match file.left(-5):
-				"greyscale": tile_material.material.set_shader_parameter("specular", 0.0)
+	var outline_color := Color(10, 10, 10)
+	var regular_shader := preload("res://assets/materials/tile_materials/color_materials/tile_regular.gdshader")
+	var regular_shader_unshaded := preload("res://assets/materials/tile_materials/color_materials/tile_regular_unshaded.gdshader")
+	var outline_shader := preload("res://assets/materials/tile_materials/color_materials/tile_outline.gdshader")
+	var outline_shader_unshaded := preload("res://assets/materials/tile_materials/color_materials/tile_outline_unshaded.gdshader")
+	
+	for file in Array(DirAccess.get_files_at(TILE_MATERIAL_PATH)).filter(func(x: String): return x.ends_with(".tres")):
+		var tile_material: TileMaterial = load(TILE_MATERIAL_PATH + file)
+		tile_material.material = load("res://assets/materials/tile_materials/color_materials/color_material.tres").duplicate()
+		tile_material.material.shader = regular_shader if !tile_material.unshaded else regular_shader_unshaded
+		tile_material.material.set_shader_parameter("albedo", tile_material.albedo)
+		tile_material.material.set_shader_parameter("texture_albedo", load("res://assets/materials/base_materials/base_material.png"))
+		
+		tile_material.material_outline = load("res://assets/materials/tile_materials/color_materials/color_material.tres").duplicate()
+		tile_material.material_outline.shader = outline_shader if !tile_material.unshaded else outline_shader_unshaded
+		tile_material.material_outline.set_shader_parameter("albedo", tile_material.albedo)
+		tile_material.material_outline.set_shader_parameter("outline_color", outline_color)
+		tile_material.material_outline.set_shader_parameter("texture_albedo", load("res://assets/materials/base_materials/base_material.png"))
+		
+		TILE_MATERIALS.merge({tile_material.material_name: tile_material})
+		match file.left(-5):
+			"greyscale":
+				tile_material.material.set_shader_parameter("specular", 0.0)
+				tile_material.material_outline.set_shader_parameter("specular", 0.0)
+	
+	for material in BASE_MATERIALS:
+		material.set_shader_parameter("outline_color", outline_color)
 	
 func on_remove_tile_material(Tile: TileGD, material_name: String = "") -> void:
 	match material_name:
@@ -528,26 +545,22 @@ func on_set_tile_highest_material(Tile: TileGD, greyscale_state: int = 0) -> voi
 	for state in Tile.tile_state:
 		var f: int = TILE_MATERIALS[state].priority
 		if f > highest: highest = f
+		
+	match greyscale_state:
+		1: Tile.setMaterial(BASE_MATERIALS[int(Tile.isOutline())], -2)
+		2: Tile.setMaterial(TILE_MATERIALS["Greyscale"].material if !Tile.isOutline() else TILE_MATERIALS["Greyscale"].material_outline, -2)
 	
-	if highest == 100 and "RegularInspected" in Tile.tile_state:
-		highest = 55
-		
-	var mat: Material = getTileMaterialFromPriority(highest)
-	if greyscale_state == 1:
-		Tile.setMaterial(base_tile_material, -2)
-	elif greyscale_state == 2:
-		Tile.setMaterial(TILE_MATERIALS["Greyscale"].material, -2)
-		
+	var mat: Material = getTileMaterialFromPriority(Tile, highest)
 	Tile.setMaterial(mat, 0)
 	Tile.Effects.on_manage_height_drop_label(Units.PlayerManager.UnitSelected)
-
-const base_tile_material: StandardMaterial3D = preload("res://assets/materials/tile_materials/base_tile_material.tres")
-func getTileMaterialFromPriority(priority: int) -> Material:
+	
+func getTileMaterialFromPriority(Tile: TileGD, priority: int) -> Material:
 	if priority > 0:
 		for tile_material in TILE_MATERIALS.values():
 			if tile_material.priority == priority:
+				if Tile.isOutline(): return tile_material.material_outline
 				return tile_material.material
-	return base_tile_material
+	return BASE_MATERIALS[int(Tile.isOutline())]
 
 func onActionLockChanged(action_lock: String) -> void:
 	on_force_mouse_tile(!action_lock.is_empty(), 2)

@@ -124,11 +124,17 @@ func _process(_delta: float) -> void:
 		else: onArgDelay()
 
 func onAIMoveFinish() -> void:
-	if !(active_action.vis_path.all(func(x: Array): return x[1] == "Invisible")):
-		await get_tree().create_timer(AFTER_MOVEMENT_DELAY).timeout
+	if unit_actions.is_empty():
+		if !(active_action.vis_path.all(func(x: Array): return x[1] == "Invisible")):
+			await get_tree().create_timer(AFTER_MOVEMENT_DELAY).timeout
+		active_action = {}
+		onUnitActionsFinished()
+		AIManager.onMoveNextAIUnit()
+	else: unit_actions.append(active_action)
 	active_action = {}
-	onUnitActionsFinished()
-	AIManager.onMoveNextAIUnit()
+
+func isUnitActionsEmpty() -> bool:
+	return unit_actions.is_empty() or (unit_actions.size() == 1 and unit_actions[0].action_type == "AIMoveFinish")
 
 func onArgDelay() -> void:
 	var _active_action: Dictionary = unit_actions[0]
@@ -221,15 +227,15 @@ func onPushArgDelayEnd(delay: float, end_callable: Callable, end_arguments: Dict
 	onPushArgDelay(delay, Callable(), end_callable, {}, end_arguments)
 
 func onPushArgDelay(delay: float, begin_callable: Callable, end_callable: Callable, begin_arguments: Dictionary, end_arguments: Dictionary) -> void:
-		unit_actions.push_front({
-			"action_type": "ArgDelay",
-			"begin_callable": begin_callable,
-			"end_callable": end_callable,
-			"begin_arguments": begin_arguments,
-			"end_arguments": end_arguments,
-			"delay": delay,
-			"triggered": false,
-		})
+	unit_actions.append({
+		"action_type": "ArgDelay",
+		"begin_callable": begin_callable,
+		"end_callable": end_callable,
+		"begin_arguments": begin_arguments,
+		"end_arguments": end_arguments,
+		"delay": delay,
+		"triggered": false,
+	})
 
 func isVisibilityPathLastPosition(Tile: TileGD, visibility_path: Array) -> bool:
 	var flip: bool = false
@@ -239,7 +245,7 @@ func isVisibilityPathLastPosition(Tile: TileGD, visibility_path: Array) -> bool:
 	return true
 
 func onUnitActionsFinished() -> void:
-	if unit_actions.is_empty():
+	if unit_actions.is_empty() and active_action.is_empty():
 		var SpectateUnit: UnitGD = SpectateCamera.getSpectateUnit()
 		SpectateCamera.onEndTrackUnit()
 		if SpectateUnit != null:

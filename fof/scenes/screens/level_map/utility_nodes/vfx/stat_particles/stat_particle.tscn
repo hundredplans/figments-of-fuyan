@@ -1,4 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://b3tkywnh2j0rj"]
+[gd_scene load_steps=3 format=3 uid="uid://b3tkywnh2j0rj"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vfx/stat_particles/stat_particle.gd" id="1_xf3t8"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ympf5"]
 direction = Vector3(0, 1, 0)
@@ -14,3 +16,8 @@ lifetime = 1.4
 one_shot = true
 explosiveness = 0.3
 process_material = SubResource("ParticleProcessMaterial_ympf5")
+draw_passes = 2
+draw_pass_2 = null
+script = ExtResource("1_xf3t8")
+
+[connection signal="finished" from="." to="." method="_on_finished"]

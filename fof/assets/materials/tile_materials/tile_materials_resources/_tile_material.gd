@@ -5,3 +5,4 @@ extends Resource
 @export var priority: int
 @export var unshaded: bool
 var material: ShaderMaterial
+var material_outline: ShaderMaterial

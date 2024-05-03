@@ -87,17 +87,18 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 
 func onCreateAbilities() -> void:
 	var DIR_PATH: String = "res://assets/base_game/cards/cards/" + base_card.folder_name + "/abilities/"
-	for ability_name in Array(DirAccess.get_files_at(DIR_PATH)).filter(func(x: String): return x.ends_with(".tres")):
-		var ability: AbilityGD = load(DIR_PATH + ability_name).duplicate()
-		ability.VFX = Units.VFX
-		ability.Units = Units
-		ability.Tiles = Tiles
-		ability.Vision = Vision
-		ability.Combat = Units.Combat
-		abilities.append(ability)
-		
-		if ability is ArmorGD:
-			onAddUnitFX("Armor", ability.armor)
+	if DirAccess.dir_exists_absolute(DIR_PATH):
+		for ability_name in Array(DirAccess.get_files_at(DIR_PATH)).filter(func(x: String): return x.ends_with(".tres")):
+			var ability: AbilityGD = load(DIR_PATH + ability_name).duplicate()
+			ability.VFX = Units.VFX
+			ability.Units = Units
+			ability.Tiles = Tiles
+			ability.Vision = Vision
+			ability.Combat = Units.Combat
+			abilities.append(ability)
+			
+			if ability is ArmorGD:
+				onAddUnitFX("Armor", ability.armor)
 			
 func onAddUnitFX(type: String, charges: int = -1) -> void:
 	unit_fx.append([type, charges])
@@ -171,13 +172,14 @@ func stats(stat_type: String, val: int, AppliedBy := AppliedByGD.new(), absolute
 		Units.LevelUI.UnitStatusOverlord.onUpdateStats(self, stats_changed.capitalize(), color)
 		if health == 0: Units.kill_unit(self, AppliedBy)
 		elif health < current_health and AppliedBy.type != "Height": Units.hurt_unit(self, AppliedBy)
-
+		
 		if Tile in Vision.ally_vision:
+			var y_offset: float = height.top / 2
 			match stat_type:
-				"health": Units.VFX.onCreateStatParticle(current_health - health, "health", Tile)
-				"attack": Units.VFX.onCreateStatParticle(current_attack - attack, "attack", Tile)
-				"speed": Units.VFX.onCreateStatParticle(current_speed - speed, "speed", Tile)
-				"heal": Units.VFX.onCreateStatParticle(current_health - health, "heal", Tile)
+				"health": Units.VFX.onCreateStatParticle(health - current_health, "health", Tile, y_offset)
+				"attack": Units.VFX.onCreateStatParticle(attack - current_attack, "attack", Tile, y_offset)
+				"speed": Units.VFX.onCreateStatParticle(speed - current_speed, "speed", Tile, y_offset)
+				"heal": Units.VFX.onCreateStatParticle(health - current_health, "heal", Tile, y_offset)
 
 const ARRIVE_EFFECT_LIGHT_DURATION: float = 1.2
 const ARRIVE_EFFECT_INITIAL_LIGHT_ENERGY: float = 3
