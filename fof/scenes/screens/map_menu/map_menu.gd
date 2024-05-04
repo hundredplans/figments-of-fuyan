@@ -60,7 +60,7 @@ func on_champion_arrived(index: int) -> void:
 	if index == 1:
 		#var levels: Array = Helper.on_item_dicts("Level").filter(on_is_level_valid)
 		#GameState.level_info = levels[randi() % levels.size()]
-		GameState.level_info = Helper.getFofInfo(2, "level")
+			GameState.level_info = Helper.getFofInfo(4, "level")
 	screen_change_sig.emit(INDEX_TO_SCREEN[index])
 
 func on_is_level_valid(level_info: Dictionary) -> bool:

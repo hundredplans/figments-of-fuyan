@@ -193,7 +193,7 @@ func onExitTargetAbilityMode() -> void: # if unit selected null doesnt reupdate,
 	tability_tiles = {}
 	
 func onCreateAbilityRange(Unit: UnitGD, ability: TargetAbilityGD) -> void:
-	tability_tiles = ability.onTargetAbilityCondition(Unit)
+	tability_tiles = ability.onTargetAbilityCondition({"Unit": Unit})
 	for Tile in tability_tiles["range"]:
 		Tiles.on_set_tile_material(Tile, "TargetRange")
 		
@@ -201,7 +201,7 @@ func onCreateAbilityRange(Unit: UnitGD, ability: TargetAbilityGD) -> void:
 		Tiles.on_set_tile_material(Tile, "TargetAffect")
 
 func onRemoveAbilityRange(Unit: UnitGD, ability: TargetAbilityGD) -> void:
-	tability_tiles = ability.onTargetAbilityCondition(Unit)
+	tability_tiles = ability.onTargetAbilityCondition({"Unit": Unit})
 	for Tile in tability_tiles["range"]:
 		Tiles.on_remove_tile_material(Tile, "TargetRange")
 		

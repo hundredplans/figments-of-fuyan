@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="BaseCardGD" load_steps=2 format=3 uid="uid://bns2xvrlhxhpx"]
+[gd_resource type="Resource" script_class="BaseCardGD" load_steps=2 format=3]
 
 [ext_resource type="Script" path="res://assets/base_game/cards/templates/base_card.gd" id="1_nxyjm"]
 
@@ -12,7 +12,7 @@ energy = 2
 rarity = 4
 raw_text = "ABILITY: If in enemy vision this Heals Allies in vision [1] HEALTH and debuffs them [-1/0] for [1] turn"
 flavor_text = ""
-text = ""
+text = "[center][b]ABILITY[/b]: If in enemy vision this Heals Allies in vision [b][color=red][1] [img=14x14]res://assets/base_game/cards/game_card/art/bbcode/HEALTH.png[/img][/color][/b] and debuffs them [b][color=orange]-1 [img=14x14]res://assets/base_game/cards/game_card/art/bbcode/ATTACK.png[/img][/color][/b]  for [1] turn[/center]"
 aic = 5
 aii = 6
 aiw = 6

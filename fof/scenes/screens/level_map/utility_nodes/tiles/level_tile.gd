@@ -4,8 +4,7 @@ extends Node3D
 @onready var ModelManager: Node3D = $ModelManager
 @onready var Effects: Node3D = $Effects
 
-var path_hovered: bool = false
-var inspected: bool = false
+var tile_outlines: Array
 var tile_state: Array
 var top_of_cliff_wall: Array
 @export var collision_points: PackedVector3Array
@@ -46,8 +45,9 @@ func setCollisionState(state: bool) -> void:
 	for model in ModelManager.get_children():
 		model.body.collision_layer = 0 if !state else (10 if model.type == "Tile" else 8)
 
-func isOutline() -> bool:
-	return path_hovered or inspected
+func setOutline(mat: Material) -> void:
+	if !types[0].model == null:
+		types[0].model.mesh.set_surface_override_material(1, mat)
 
 #func _ready() -> void:
 	#for point in collision_points:

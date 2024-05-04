@@ -93,12 +93,12 @@ func on_replace_ability_names(text: String, base_card: BaseCardGD) -> String:
 	
 	for key in ability_indexes: ability_indexes[key] -= total_removed
 	var DIR_PATH: String = "res://assets/base_game/cards/cards/" + base_card.folder_name + "/abilities/"
-	for ability_name in Array(DirAccess.get_files_at(DIR_PATH)).filter(func(x: String): return x.ends_with(".tres")):
-		var ability: AbilityGD = load(DIR_PATH + ability_name)
-		if ability.charges != -1:
-			ability.ability_index = ability_indexes[ability.ability_name]
-			ResourceSaver.save(ability)
-			
+	if DirAccess.dir_exists_absolute(DIR_PATH):
+		for ability_name in Array(DirAccess.get_files_at(DIR_PATH)).filter(func(x: String): return x.ends_with(".tres")):
+			var ability: AbilityGD = load(DIR_PATH + ability_name)
+			if ability.charges != -1:
+				ability.ability_index = ability_indexes[ability.ability_name]
+				ResourceSaver.save(ability)
 	return text
 
 func on_replace_att_hp_spd(text: String) -> String:

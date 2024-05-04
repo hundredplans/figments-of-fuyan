@@ -210,7 +210,7 @@ func on_spectated_in_player_phase(state: bool) -> void:
 func on_enemy_in_range(state: bool) -> void:
 	Units.LevelUI.UnitStatusOverlord.onEnemyInRange(self, state)
 	Model.onSetOutlineProperties(state)
-	if state: Tiles.on_set_tile_material(Tile, "EnemyInRange")
+	if state: Tiles.setTileOutline(Tile, "EnemyInRange")
 
 var visible_tiles: Array
 @onready var VisionRaycast: RayCast3D = $VisionRaycast

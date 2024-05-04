@@ -52,7 +52,6 @@ func onCreateStaticBody() -> void:
 		body.owner = TileObject
 		body.get_child(0).owner = TileObject
 	
-
 func _ready() -> void:
 	Camera.current = true
 	if get_parent() == get_tree().get_root():
