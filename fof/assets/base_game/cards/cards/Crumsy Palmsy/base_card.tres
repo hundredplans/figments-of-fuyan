@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="BaseCardGD" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://assets/base_game/cards/templates/base_card.gd" id="1_6u6li"]
+
+[resource]
+script = ExtResource("1_6u6li")
+area_id = 1
+attack = 2
+health = 2
+speed = 2
+energy = 3
+rarity = 4
+raw_text = "ABILITY [2]: Heal an ally in vision HEALTH equal to ability charges; TRAUMA: Gain an ability charge"
+flavor_text = ""
+text = "[center][b]ABILITY[/b] [2]: Heal an ally in vision [b][color=red][img=14x14]res://assets/base_game/cards/game_card/art/bbcode/HEALTH.png[/img][/color][/b] equal to ability charges; [b]TRAUMA[/b]: Gain an ability charge[/center]"
+aic = 3
+aii = 5
+aiw = 2
+ait = 6
+aia = 5
+weapon_offset = 0.1
+weapon = 0.5
+eye = 1.0
+top = 1.5
+stat = 2.0
+id = 24
+name = "Crumsy Palmsy"
+folder_name = "Crumsy Palmsy"
