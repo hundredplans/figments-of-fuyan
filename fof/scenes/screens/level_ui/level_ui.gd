@@ -144,6 +144,7 @@ func on_player_phase_start() -> void:
 	Vision.on_vision_mode_set(0)
 	onChangePhaseIcon("PlayerPhase")
 	UnitStatusOverlord.onPlayerPhaseStart()
+	GreyScale.modulate.a = 0
 
 func _on_change_phase_hitbox_pressed():
 	LevelMap.on_advance_game_phase()
@@ -276,6 +277,7 @@ func onStartPhaseStart() -> void:
 	Console.Tiles = Tiles
 	
 	UnitStatusOverlord.onStartPhaseStart()
+	GreyScale.modulate.a = greyscale_light
 
 func _on_card_clipper_child_entered_tree(node):
 	if node is HScrollBar:
@@ -316,6 +318,7 @@ func onHandPhaseNoSpawnTiles() -> void:
 
 func onHandPhaseStart() -> void:
 	ChangePhase.visible = true
+	GreyScale.modulate.a = greyscale_light
 
 var warning_texts: Dictionary = {
 	"SkipAction": "If you perform an action with this unit you will skip another unit's turn!",
@@ -371,7 +374,7 @@ func onEnterUnitMode(Unit: UnitGD) -> void:
 	
 	if !target_abilities_used:
 		for ability in Unit.abilities:
-			if ability is TargetAbilityGD and !ability.used and ability.charges > 0:
+			if ability is TargetAbilityGD and ability.can_affect and !ability.used and ability.charges > 0:
 				var TargetAbilityBox: Control = preload("res://scenes/screens/level_ui/target_ability_box.tscn").instantiate()
 				TargetAbilities.add_child(TargetAbilityBox)
 				TargetAbilityBox.mouse_entered.connect(on_is_mouse_in_ui.bind(true))
@@ -430,7 +433,7 @@ func onUpdateTargetAbilityCharges(Unit: UnitGD, ability: AbilityGD) -> void:
 var target_abilities_used: bool = true
 func onUpdateTargetAbilities(state: bool) -> void:
 	target_abilities_used = state
-	for Unit in Units.on_units():
+	for Unit in Units.on_units().filter(func(x: UnitGD): return x.turns_alive > 0):
 		for ability in Unit.abilities:
 			if ability is TargetAbilityGD:
 				ability.used = state
@@ -441,3 +444,6 @@ func onUpdateTargetAbilities(state: bool) -> void:
 	
 func onUpdateTargetAbility(Unit: UnitGD, ability: TargetAbilityGD, disable_state: bool) -> void:
 	UnitStatusOverlord.onUpdateTargetAbility(Unit, ability, disable_state)
+
+func on_camera_mode_pressed():
+	SpectateCamera.onChangeCameraMode(!SpectateCamera.is_unit_camera)

@@ -157,8 +157,8 @@ func on_begin_all_movement_between_tiles() -> void:
 	if Unit.team == 1:
 		match walk_to_info[2]:
 			"Regular": onSetOverrideMaterial("Regular")
-			"OutOfVision": onSetOverrideMaterial("FromGrey")
-			"IntoVision": onSetOverrideMaterial("IntoGrey")
+			"OutOfVision": onSetOverrideMaterial("IntoGrey")
+			"IntoVision": onSetOverrideMaterial("FromGrey")
 	
 	match walk_to_info[1].x:
 		3: on_create_regular_jump(walk_to_info[0])

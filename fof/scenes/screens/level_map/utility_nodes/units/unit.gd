@@ -36,6 +36,7 @@ var Units: UnitsGD
 var Tiles: TilesGD
 var TeamControl: Node
 
+var turns_alive: int = 0
 var turn_status: String = "TurnUnused"
 var finished_awakening: bool = false
 var abilities: Array = []
@@ -210,7 +211,7 @@ func on_spectated_in_player_phase(state: bool) -> void:
 func on_enemy_in_range(state: bool) -> void:
 	Units.LevelUI.UnitStatusOverlord.onEnemyInRange(self, state)
 	Model.onSetOutlineProperties(state)
-	if state: Tiles.setTileOutline(Tile, "EnemyInRange")
+	Tiles.setTileOutline(Tile, "EnemyInRange", !state)
 
 var visible_tiles: Array
 @onready var VisionRaycast: RayCast3D = $VisionRaycast

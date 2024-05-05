@@ -141,18 +141,21 @@ func onSetMovementRange(Unit: UnitGD) -> void:
 				if _Unit.Tile == Tile:
 					_Unit.on_enemy_in_range(true)
 					continue
-		Tiles.on_set_tile_material(Tile, "MovementRange")
+					
+		var index: int = Tiles.movement_paths[Tile].tiles.find(Tile)
+		if Tiles.movement_paths[Tile].types[index].x != 1:
+			Tiles.on_set_tile_material(Tile, "MovementRange")
 	
 func onRemoveMovementRange() -> void:
 	for Tile in Tiles.movement_paths.tiles:
-		if "EnemyInRange" in Tile.tile_state:
-			(Units.unit_by_tile(Tile)).on_enemy_in_range(false)
-			
+		if "EnemyInRange" in Tile.tile_outlines:
+			var Unit: UnitGD = Units.unit_by_tile(Tile)
+			Unit.on_enemy_in_range(false)
 		Tiles.on_remove_tile_material(Tile)
 	Tiles.movement_paths = {"tiles": []}
 	
 func _on_unit_selected(Unit: UnitGD) -> void:
-	if Unit.turn_status in ["TurnUnused", "TurnActive"] and Unit.team == 0:
+	if Unit.turn_status in ["TurnUnused", "TurnActive"] and Unit.team == 0 and Unit != UnitSelected:
 		SpectateCamera.onSpectate(Unit)
 		onSetMovementRange(Unit)
 		UnitSelected = Unit

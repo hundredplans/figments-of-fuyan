@@ -16,6 +16,12 @@ func onDeathAbilities(Deather: UnitGD, AppliedBy: AppliedByGD) -> void:
 func onLastWill(_Deather: UnitGD, _AppliedBy: AppliedByGD) -> void:
 	pass
 	
+func onWhenHealed(Healee: UnitGD, healInfo: HealInfoGD, heal_amount: int):
+	var abilities: Array = onFindAbilities(Healee, "WhenHealed")
+	print(abilities)
+	for ability in abilities:
+		onTriggerAbilitySpectateDelay(Healee, ability, ability.onWhenHealed.bind({"Unit": Healee, "healInfo": healInfo, "heal_amount": heal_amount}), ability.WHEN_HEALED_DELAY)
+	
 func onArrive(Unit: UnitGD) -> void:
 	var abilities: Array = onFindAbilities(Unit, "Arrive")
 	for ability in abilities:
@@ -39,10 +45,11 @@ func onHit(DMGInfo: DMGInfoGD) -> void:
 	
 func onBloodthirst(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	for _Unit in Unit.getVisibleEnemies():
-		var abilities: Array = onFindAbilities(_Unit, "Bloodthirst")
-		for ability in abilities:
-			if ability.onBloodthirstCondition({"Unit": Unit, "AppliedBy": AppliedBy}):
-				onTriggerAbilitySpectateDelay(_Unit, ability, ability.onBloodthirst.bind({"Unit": _Unit, "AppliedBy": AppliedBy}), ability.BLOODTHIRST_DELAY)
+		if _Unit != AppliedBy.Applier:
+			var abilities: Array = onFindAbilities(_Unit, "Bloodthirst")
+			for ability in abilities:
+				if ability.onBloodthirstCondition({"Unit": Unit, "AppliedBy": AppliedBy}):
+					onTriggerAbilitySpectateDelay(_Unit, ability, ability.onBloodthirst.bind({"Unit": _Unit, "AppliedBy": AppliedBy}), ability.BLOODTHIRST_DELAY)
 	
 func onTrauma(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	for _Unit in Unit.getVisibleAllies():
@@ -134,3 +141,15 @@ func onHeal(healInfo: HealInfoGD) -> void:
 	if healInfo.heal > 0:
 		var heal_amount: int = min(healInfo.Healee.health + healInfo.heal, healInfo.Healee.max_health) - healInfo.Healee.health
 		healInfo.Healee.stats("heal", heal_amount, healInfo.AppliedBy)
+		onWhenHealed(healInfo.Healee, healInfo, heal_amount)
+
+func onPlayerPhaseStart() -> void:
+	for Unit in Units.on_units().filter(func(x: UnitGD): return x.turns_alive > 0):
+		var abilities: Array = onFindAbilities(Unit, "TargetAbility")
+		for ability in abilities:
+			var tiles: Dictionary = ability.onTargetAbilityCondition({"Unit": Unit})
+			LevelUI.onUpdateTargetAbility(Unit, ability, tiles["affect"].is_empty())
+			ability.can_affect = !tiles["affect"].is_empty()
+
+func onStagger(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
+	pass

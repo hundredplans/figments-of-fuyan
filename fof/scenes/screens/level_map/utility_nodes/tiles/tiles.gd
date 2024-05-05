@@ -452,9 +452,7 @@ func on_tile_hovered(Tile: TileGD) -> void:
 		for i in range(path_hovered_info.tiles.size()):
 			path_hovered_info.tiles[i].Effects.hovered_type = path_hovered_info.types[i]
 			setTileOutline(path_hovered_info.tiles[i], "PathHovered")
-			if path_hovered_info.types[i].x == 1:
-				setTileOutline(path_hovered_info.tiles[i], "EnemyInRange")
-			else: on_set_tile_highest_material(path_hovered_info.tiles[i])
+			#on_set_tile_highest_material(path_hovered_info.tiles[i])
 	Vision.on_tile_hovered(Tile)
 	onTileHoveredDisplayCard(Tile)
 
@@ -473,8 +471,8 @@ func on_tile_unhovered(Tile: TileGD) -> void:
 	LevelUI.onQueueTileHoveredGameCard()
 
 const OUTLINE_INFO: Dictionary = {
-	"EnemyInRange": [3, preload("res://assets/materials/tile_materials/tile_outlines/light_red_tile_outline.tres")],
-	"PathHovered": [2, preload("res://assets/materials/tile_materials/tile_outlines/white_tile_outline.tres")],
+	"EnemyInRange": [2, preload("res://assets/materials/tile_materials/tile_outlines/light_red_tile_outline.tres")],
+	"PathHovered": [3, preload("res://assets/materials/tile_materials/tile_outlines/white_tile_outline.tres")],
 	"TileInspected": [0, preload("res://assets/materials/tile_materials/tile_outlines/white_tile_outline.tres")],
 	"AllyInspected": [1, preload("res://assets/materials/tile_materials/tile_outlines/green_tile_outline.tres")],
 	"EnemyInspected": [1, preload("res://assets/materials/tile_materials/tile_outlines/red_tile_outline.tres")],
@@ -495,7 +493,7 @@ func setTileOutline(Tile: TileGD, type: String, is_remove: bool = false) -> void
 
 	if highest == "TileInspected" and !is_remove:
 		var Unit: UnitGD = Units.unit_by_tile(Tile)
-		if Unit != null:
+		if Unit != null and (Unit.team == 0 or Unit in Vision.ally_vision):
 			match Unit.team:
 				0: highest = "AllyInspected"
 				1: highest = "EnemyInspected"
@@ -507,6 +505,7 @@ func on_path_hovered_tile_selected(Tile: TileGD) -> void:
 	Units.PlayerManager.onPathHoveredTileSelected()
 	Units.PlayerManager.on_select_active_unit(Units.PlayerManager.UnitSelected)
 	for i in range(path_hovered_info.tiles.size()):
+		Units.movement_outline_tiles.append(path_hovered_info.tiles[i])
 		if path_hovered_info.types[i].x != 1:
 			Units.move_to_tile(Units.PlayerManager.UnitSelected, path_hovered_info.tiles[i], path_hovered_info.types[i])
 		else: Units.attack_enemy_or_target(Units.PlayerManager.UnitSelected, path_hovered_info.tiles[i])
@@ -516,6 +515,7 @@ func on_path_hovered_tile_selected(Tile: TileGD) -> void:
 	Units.PlayerManager._on_unit_deselected(Units.PlayerManager.UnitSelected, true)
 		
 func on_enemy_found_tile_selected(Tile: TileGD, Unit: UnitGD) -> void:
+	Units.movement_outline_tiles.append(Tile)
 	Units.attack_enemy_or_target(Unit, Tile)
 
 var BASE_MATERIAL: Material = preload("res://assets/materials/tile_materials/base_tile_materials/base_tile_material.tres")
@@ -577,6 +577,7 @@ func getTileMaterialFromPriority(priority: int) -> Material:
 
 func onActionLockChanged(action_lock: String) -> void:
 	on_force_mouse_tile(!action_lock.is_empty(), 2)
+	SpectateCamera.onChangeCameraMode(true)
 		
 var InputTile: TileGD
 func _input(event: InputEvent) -> void:

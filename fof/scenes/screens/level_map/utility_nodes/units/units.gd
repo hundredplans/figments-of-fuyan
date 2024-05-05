@@ -268,11 +268,18 @@ func onClearUnitActions() -> void:
 	unit_actions = []
 	onUnitActionsFinished()
 	
+var movement_outline_tiles: Array = []
 func on_unit_travel_finished() -> void:
 	if !active_action.is_empty() and active_action.action_type.begins_with("MoveUnit"):
 		on_force_resume_idle_animation_from_walk()
 		SpectateCamera.onEndTrackUnit()
 		active_action = {}
+		onRemoveMovementOutlineTiles()
+	
+func onRemoveMovementOutlineTiles() -> void:
+	for Tile in movement_outline_tiles:
+		Tiles.setTileOutline(Tile, "PathHovered", true)
+	movement_outline_tiles = []
 	
 func on_force_resume_idle_animation_from_walk() -> void:
 	if !active_action.is_empty() and active_action.action_type.begins_with("MoveUnit"):
@@ -305,6 +312,7 @@ func on_attack_enemy() -> void:
 	active_action.Attacker.Model.attack_tile(active_action.Tile)
 	active_action.Defender.Model._look_at(active_action.Attacker.Tile)
 	LevelMap.setActionLock("UnitActionRegular")
+	onRemoveMovementOutlineTiles()
 	# can do all the ui stuff here for attacking
 	
 func on_attack_finished(Unit: UnitGD) -> void:
@@ -406,6 +414,8 @@ func onAIPhaseStart() -> void:
 
 func onAIEndTurnPhaseStart() -> void:
 	AIManager.onAIEndTurnPhaseStart()
+	for Unit in all_units():
+		Unit.turns_alive += 1
 		
 func getCommutativeUnitsVision(Unit: UnitGD) -> Array:
 	var tiles: Array = []

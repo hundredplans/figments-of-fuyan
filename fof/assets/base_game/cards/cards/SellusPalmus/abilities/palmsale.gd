@@ -2,7 +2,7 @@ extends TargetAbilityGD
 
 @export var HEAL: int = 1
 func onTargetAbilityCondition(a: Dictionary) -> Dictionary: # Returns valid Tiles
-	var tiles: Dictionary = {}
+	var tiles: Dictionary = {"range": [], "affect": []}
 	if charges > 0:
 		tiles["range"] = Tiles.onFindUnitAdjacentTiles(a.Unit, 1)
 		tiles["affect"] = tiles["range"].filter(func(x: TileGD): return Units.unit_by_tile_team_bool(x, a.Unit.team))

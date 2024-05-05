@@ -12,6 +12,7 @@ var LevelUI: Control
 var play_ui: bool = true
 var game_phase: String
 
+@onready var Combat: CombatGD = $Combat
 @onready var BaseCards: BaseCardsGD = $BaseCards
 @onready var Deck: DeckGD = $Deck
 @onready var Hand: HandGD = $Hand
@@ -81,6 +82,7 @@ func on_change_game_phase(phase: String) -> void:
 			VFX.onPlayerPhaseStart()
 			Units.on_player_phase_start()
 			SpectateCamera.onPlayerPhaseStart()
+			Combat.onPlayerPhaseStart()
 		"PlayerEndTurnPhase":
 			setActionLock("Regular")
 			Units.on_player_end_turn_phase_start()

@@ -18,7 +18,7 @@ func _process(delta: float) -> void:
 		for child in Numbers.get_children() + FloatingStats.get_children() + Effects.get_children():
 			child.rotation_degrees.z += NUMBER_SHAKE_SPEED * delta
 			
-		var child_zero: Node3D = Numbers.get_child(0)
+		var child_zero: Node3D = FloatingStats.get_child(0)
 		if child_zero.rotation_degrees.z < -10 or child_zero.rotation_degrees.z > 10: NUMBER_SHAKE_SPEED *= -1
 		
 		look_at(SpectateCamera.global_position)
