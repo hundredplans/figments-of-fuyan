@@ -1,6 +1,7 @@
 class_name UnitsGD
 extends Node3D
 
+var GameEffects: GameEffectsGD
 var VFX: VFXGD
 var Deck: DeckGD
 var SpectateCamera: Node3D

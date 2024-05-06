@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://oolv461paipv"]
+[gd_scene load_steps=14 format=3 uid="uid://oolv461paipv"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_map/level_map.gd" id="1_2p706"]
 [ext_resource type="PackedScene" uid="uid://cnk5eh0ojgtqs" path="res://scenes/screens/level_map/utility_nodes/spectate_camera/spectate_camera.tscn" id="2_jcp7i"]
@@ -12,6 +12,7 @@
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/random.gd" id="10_1t13j"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/combat/combat.gd" id="12_oh388"]
 [ext_resource type="PackedScene" uid="uid://bgdpty2dq6w3e" path="res://scenes/screens/level_map/utility_nodes/vfx/vfx.tscn" id="12_y2jm3"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/game_effects/game_effects.gd" id="13_185r7"]
 
 [node name="LevelMap" type="Node3D"]
 script = ExtResource("1_2p706")
@@ -53,6 +54,9 @@ script = ExtResource("10_1t13j")
 
 [node name="Combat" type="Node" parent="."]
 script = ExtResource("12_oh388")
+
+[node name="GameEffects" type="Node" parent="."]
+script = ExtResource("13_185r7")
 
 [node name="Trinkets" type="Node" parent="."]
 

@@ -1,6 +1,7 @@
 class_name CombatGD
 extends Node
 
+var GameEffects: GameEffectsGD
 var VFX: VFXGD
 var Vision: VisionGD
 var Units: UnitsGD
@@ -18,7 +19,6 @@ func onLastWill(_Deather: UnitGD, _AppliedBy: AppliedByGD) -> void:
 	
 func onWhenHealed(Healee: UnitGD, healInfo: HealInfoGD, heal_amount: int):
 	var abilities: Array = onFindAbilities(Healee, "WhenHealed")
-	print(abilities)
 	for ability in abilities:
 		onTriggerAbilitySpectateDelay(Healee, ability, ability.onWhenHealed.bind({"Unit": Healee, "healInfo": healInfo, "heal_amount": heal_amount}), ability.WHEN_HEALED_DELAY)
 	
@@ -42,6 +42,8 @@ func onHit(DMGInfo: DMGInfoGD) -> void:
 	for ability in abilities:
 		if ability.onHitCondition({"DMGInfo": DMGInfo}):
 			onTriggerAbilitySpectateDelay(DMGInfo.AppliedBy.Applier, ability, ability.onHit.bind({"DMGInfo": DMGInfo}), ability.ON_HIT_DELAY)
+	
+	GameEffects.onTriggerUnitGameFX(DMGInfo.AppliedBy.Applier, "OnHit", [DMGInfo.Defender, DMGInfo.AppliedBy])
 	
 func onBloodthirst(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	for _Unit in Unit.getVisibleEnemies():
@@ -152,4 +154,5 @@ func onPlayerPhaseStart() -> void:
 			ability.can_affect = !tiles["affect"].is_empty()
 
 func onStagger(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
-	pass
+	print(Unit)
+	print(AppliedBy)

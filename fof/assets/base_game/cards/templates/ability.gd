@@ -6,6 +6,7 @@ extends Resource
 @export var max_charges: int = -1
 @export var ability_index: int = -1
 
+var GameEffects: GameEffectsGD
 var Combat: CombatGD
 var Tiles: TilesGD
 var Units: UnitsGD

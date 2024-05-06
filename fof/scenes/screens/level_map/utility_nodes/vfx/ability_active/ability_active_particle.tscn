@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=3 uid="uid://wd08g0ig7hiq"]
+
+[ext_resource type="Material" uid="uid://pv4ko355dy4h" path="res://scenes/screens/level_map/utility_nodes/vfx/ability_active/ability_active.tres" id="1_g4nt3"]
+[ext_resource type="Material" uid="uid://bvwbu6c4alrlr" path="res://scenes/screens/level_map/utility_nodes/vfx/ability_active/ability_active_material.tres" id="2_uayb7"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vfx/ability_active/ability_active_particle.gd" id="3_un1d2"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_nfq2v"]
+material = ExtResource("2_uayb7")
+radius = 0.03
+height = 1.0
+
+[node name="AbilityActiveParticle" type="GPUParticles3D"]
+emitting = false
+amount = 16
+speed_scale = 1.5
+randomness = 1.0
+process_material = ExtResource("1_g4nt3")
+draw_pass_1 = SubResource("CapsuleMesh_nfq2v")
+script = ExtResource("3_un1d2")

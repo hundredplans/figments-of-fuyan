@@ -35,6 +35,7 @@ var SpectateCamera: Node3D
 var Units: UnitsGD
 var Tiles: TilesGD
 var TeamControl: Node
+var GameEffects: GameEffectsGD
 
 var turns_alive: int = 0
 var turn_status: String = "TurnUnused"
@@ -42,6 +43,7 @@ var finished_awakening: bool = false
 var abilities: Array = []
 var base_text: String
 
+@onready var UnitVFX: Node3D = $UnitVFX
 @onready var Model: Node3D
 func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: int, tile: TileGD) -> void:
 	id = _id
@@ -96,6 +98,7 @@ func onCreateAbilities() -> void:
 			ability.Tiles = Tiles
 			ability.Vision = Vision
 			ability.Combat = Units.Combat
+			ability.GameEffects = Units.GameEffects
 			abilities.append(ability)
 			
 			if ability is ArmorGD:

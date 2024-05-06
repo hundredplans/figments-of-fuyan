@@ -63,3 +63,21 @@ func onCreateStatParticle(stat: int, type: String, Tile: TileGD, y_offset: float
 	StatParticle.emitting = true
 	StatParticle.position = Tiles.getUnitPositionOnTile(Tile)
 	StatParticle.position.y += y_offset
+
+func onCreateAbilityActiveParticle(Unit: UnitGD) -> void:
+	var AbilityActiveParticle: GPUParticles3D = preload("res://scenes/screens/level_map/utility_nodes/vfx/ability_active/ability_active_particle.tscn").instantiate()
+	Unit.UnitVFX.add_child(AbilityActiveParticle)
+	AbilityActiveParticle.type = "AbilityActive"
+	AbilityActiveParticle.lifetime = Unit.height.top / 8
+
+func onRemoveAbilityActiveParticle(Unit: UnitGD) -> void:
+	if Unit != null:
+		for child in Unit.UnitVFX.get_children():
+			if child.type == "AbilityActive":
+				child.queue_free()
+
+func onCreateStaggerVFX(Unit: UnitGD) -> void:
+	pass
+	
+func onRemoveStaggerVFX(Unit: UnitGD) -> void:
+	pass

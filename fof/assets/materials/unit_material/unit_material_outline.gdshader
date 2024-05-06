@@ -18,4 +18,7 @@ void fragment() {
 	float grey = dot(ALBEDO.rgb, vec3(max_grey));
 	ALBEDO = mix(ALBEDO.rgb, vec3(grey), time_value);
 	ALPHA = 1.0 - time_value;
+	
+	//
+	
 }

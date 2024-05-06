@@ -1,0 +1,17 @@
+[gd_resource type="Shader" format=3 uid="uid://c7uu77obhw7wh"]
+
+[resource]
+code = "// NOTE: Shader automatically converted from Godot Engine 4.2.1.stable's StandardMaterial3D.
+
+shader_type spatial;
+render_mode blend_mix,depth_draw_opaque,cull_back,diffuse_burley,specular_schlick_ggx,unshaded;
+
+void vertex() {
+	VERTEX.x += sin(TIME * 2.0 + (VERTEX.y * 10.0)) * 0.02;
+}
+
+void fragment() {
+	ALBEDO *= COLOR.rgb;
+	ALPHA = COLOR.a;
+}
+"

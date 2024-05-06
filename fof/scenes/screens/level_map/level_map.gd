@@ -12,6 +12,7 @@ var LevelUI: Control
 var play_ui: bool = true
 var game_phase: String
 
+@onready var GameEffects: GameEffectsGD
 @onready var Combat: CombatGD = $Combat
 @onready var BaseCards: BaseCardsGD = $BaseCards
 @onready var Deck: DeckGD = $Deck
@@ -77,6 +78,7 @@ func on_change_game_phase(phase: String) -> void:
 			if skip_hand_phase: on_advance_game_phase()
 		"PlayerPhase":
 			setActionLock()
+			GameEffects.onPlayerPhaseStart()
 			Hand.on_player_phase_start()
 			LevelUI.on_player_phase_start()
 			VFX.onPlayerPhaseStart()
@@ -85,15 +87,18 @@ func on_change_game_phase(phase: String) -> void:
 			Combat.onPlayerPhaseStart()
 		"PlayerEndTurnPhase":
 			setActionLock("Regular")
+			GameEffects.onPlayerEndTurnPhaseStart()
 			Units.on_player_end_turn_phase_start()
 			LevelUI.on_player_end_turn_phase_start()
 			Vision.on_player_end_turn_phase_start()
 			SpectateCamera.onPlayerEndTurnPhaseStart()
 			on_change_game_phase("AIPhase")
 		"AIPhase":
+			GameEffects.onAIPhaseStart()
 			Units.onAIPhaseStart()
 			LevelUI.onAIPhaseStart()
 		"AIEndTurnPhase":
+			GameEffects.onAIEndTurnPhaseStart()
 			Units.onAIEndTurnPhaseStart()
 			LevelUI.onAIEndTurnPhaseStart()
 			on_change_game_phase("PlayerStartTurnPhase")
