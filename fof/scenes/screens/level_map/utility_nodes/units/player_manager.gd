@@ -164,7 +164,7 @@ func _on_unit_selected(Unit: UnitGD) -> void:
 
 func onDeathFinished(Deathee: UnitGD) -> void:
 	if LevelMap.game_phase == "PlayerPhase":
-		if Deathee.team == 0 and Deathee.Killer.team == 1 and SpectateCamera.spectate_type == "Ally":
+		if Deathee.team == 0 and SpectateCamera.spectate_type == "Ally":
 			SpectateCamera.onSpectate("Ally")
 		on_remove_unit_turn(Deathee)
 		Units.Vision.on_recalculate_vision()

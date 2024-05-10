@@ -17,18 +17,19 @@ func on_recalculate_vision(Unit: UnitGD = null) -> void:
 	var all_units: Array = Units.all_units()
 	var ally_units: Array = Units.on_units()
 	match vision_mode:
-		0:
+		0: # Takes around 20-30 msec to complete
 			var og_ally_vision: Array = ally_vision.duplicate()
 			if Unit != null: Unit.onCircleRay()
 			visible_tiles += spawn_tiles.duplicate()
-			
-			for Tile in Tiles.get_children(): # Takes around 5 msec
+			# Usually takes 10-30msec
+			for Tile in Tiles.get_children():
 				if ally_units.any(func(x: UnitGD): return x.visible_tiles.any(func(y: TileGD): return Tile == y)):
 					visible_tiles.append(Tile)
-			
+			# Usualy takes between 5-10msec
 			ally_vision = visible_tiles.duplicate()
 			onCalculateEnemyVisionUpdate(Unit, og_ally_vision)
 			on_apply_visibility(visible_tiles)
+			# Sometimes takes up to 50msec?
 		1:
 			visible_tiles = []
 			var SpectateUnit: UnitGD = SpectateCamera.getSpectateUnit(["Ally", "Enemy"])

@@ -107,8 +107,15 @@ func onTargetAbilityBtnPressed(ability: TargetAbilityGD) -> void:
 
 func onAddUnitFX(fx_type: String, charges: int = -1) -> void:
 	if charges == -1:
-		pass
+		var base_fx := preload("res://scenes/screens/level_ui/unit_status/unit_fx/base_fx/base_fx.tscn").instantiate()
+		base_fx.texture = load("res://scenes/screens/level_ui/unit_status/unit_fx/base_fx/" + fx_type.to_lower() + ".png")
+		base_fx.type = fx_type
+		UnitFX.add_child(base_fx)
 	else:
 		var label_fx := preload("res://scenes/screens/level_ui/unit_status/unit_fx/label_fx/label_fx.tscn").instantiate()
 		UnitFX.add_child(label_fx)
 		label_fx.setFX(fx_type, charges)
+
+func onRemoveUnitFX(fx_type: String) -> void:
+	for child in UnitFX.get_children():
+		if child.type == fx_type: child.queue_free()

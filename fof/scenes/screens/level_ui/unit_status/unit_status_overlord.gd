@@ -189,3 +189,11 @@ func onCreateTileHoveredUnitStatus(Unit: UnitGD) -> void:
 func onUpdateTargetAbility(Unit: UnitGD, ability: TargetAbilityGD, disable_state: bool) -> void:
 	for UnitStatus in onFindUnitStatus(Unit):
 		UnitStatus.onUpdateAbility(ability, disable_state)
+
+func onAddUnitFX(Unit: UnitGD, type: String) -> void:
+	for UnitStatus in onFindUnitStatus(Unit):
+		UnitStatus.onAddUnitFX(type)
+	
+func onRemoveUnitFX(Unit: UnitGD, type: String) -> void:
+	for UnitStatus in onFindUnitStatus(Unit):
+		UnitStatus.onRemoveUnitFX(type)

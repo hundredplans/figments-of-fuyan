@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://bqnrgq11fpjv5"]
+
+[ext_resource type="PackedScene" uid="uid://dl8l8gj7hmmmd" path="res://scenes/screens/level_map/utility_nodes/vfx/status_effects/stagger/stagger_status_effect.glb" id="1_hbsii"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vfx/status_effects/stagger/stagger_status_effect.gd" id="2_4qovp"]
+
+[node name="stagger_status_effect" instance=ExtResource("1_hbsii")]
+script = ExtResource("2_4qovp")

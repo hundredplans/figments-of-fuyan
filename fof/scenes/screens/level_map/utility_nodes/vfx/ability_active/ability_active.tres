@@ -1,15 +1,7 @@
-[gd_resource type="ParticleProcessMaterial" load_steps=7 format=3 uid="uid://pv4ko355dy4h"]
-
-[sub_resource type="Curve" id="Curve_orqtd"]
-max_value = 0.5
-_data = [Vector2(0.0518519, 0.104396), 0.0, 0.448959, 0, 0, Vector2(0.748148, 0.28022), 1.19822, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_e6ys7"]
-curve = SubResource("Curve_orqtd")
+[gd_resource type="ParticleProcessMaterial" load_steps=5 format=3 uid="uid://pv4ko355dy4h"]
 
 [sub_resource type="Gradient" id="Gradient_3t0d6"]
-offsets = PackedFloat32Array(0, 0.476636, 1)
+offsets = PackedFloat32Array(0, 0.140187, 1)
 colors = PackedColorArray(0, 0, 0, 1, 0.17757, 0.17757, 0.17757, 1, 1, 1, 1, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_43sdg"]
@@ -37,4 +29,3 @@ radial_accel_max = 3.0
 scale_min = 0.1
 scale_curve = SubResource("CurveTexture_l7kck")
 color_ramp = SubResource("GradientTexture1D_43sdg")
-alpha_curve = SubResource("CurveTexture_e6ys7")

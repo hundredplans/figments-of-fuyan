@@ -65,6 +65,8 @@ func onRampage(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	for ability in abilities:
 		onTriggerAbilitySpectateDelay(Unit, ability, ability.onRampage.bind({"Unit": Unit, "AppliedBy": AppliedBy}), ability.RAMPAGE_DELAY)
 		
+	GameEffects.onTriggerUnitGameFX(Unit, "Rampage", [Unit, AppliedBy])
+		
 func onTriggerAbilitySpectateDelay(Triggerer: UnitGD, ability: AbilityGD, callable: Callable, delay: float) -> void:
 	var vis: bool = Triggerer.team == 0 or Triggerer.Tile in Vision.ally_vision
 	if vis:
@@ -154,5 +156,20 @@ func onPlayerPhaseStart() -> void:
 			ability.can_affect = !tiles["affect"].is_empty()
 
 func onStagger(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
-	print(Unit)
-	print(AppliedBy)
+	GameEffects.onAddGameFX(Unit, "Stagger", {"AppliedBy": AppliedBy})
+	VFX.onCreateStaggerVFX(Unit)
+	LevelUI.UnitStatusOverlord.onAddUnitFX(Unit, "Stagger")
+
+func onRemoveStagger(GameFX: GameFXGD) -> void:
+	VFX.onRemoveStaggerVFX(GameFX.Unit)
+	LevelUI.UnitStatusOverlord.onRemoveUnitFX(GameFX.Unit, "Stagger")
+
+func onDaze(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
+	pass
+	
+func onStun(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
+	onStagger(Unit, AppliedBy)
+	onDaze(Unit, AppliedBy)
+
+func onDestroyUnit(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
+	Units.kill_unit(Unit, AppliedBy)

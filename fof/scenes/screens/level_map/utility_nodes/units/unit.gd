@@ -113,7 +113,8 @@ func occupy_tile(_Tile: TileGD) -> void:
 	
 	await get_tree().create_timer(0.001).timeout
 	Vision.onExitTile(self, OGTile, _Tile)
-	Vision.on_recalculate_vision(self) # Takes up to 60msec, this gets stacked and it gets bad lag (threads?)
+	
+	Vision.on_recalculate_vision(self)
 	tile_occupied.emit()
 
 var Killer: UnitGD
@@ -311,3 +312,8 @@ func onResetUnit(default_position, default_rot, default_tile) -> void:
 
 func isHealable() -> bool:
 	return health < max_health
+
+func getAttackAnimation() -> String:
+	if Units.GameEffects.onGameFXExists(self, "AbilityActive"):
+		return "AttackAbility"
+	return "Attack"

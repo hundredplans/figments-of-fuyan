@@ -1,6 +1,7 @@
 class_name GameEffectsGD
 extends Node
 
+var LevelUI: LevelUIGD
 var VFX: VFXGD
 var Combat: CombatGD
 var effects: Array = []
@@ -11,10 +12,10 @@ func onAddGameFX(Unit: UnitGD, type: String, a: Dictionary, triggers: Array = []
 		"Stagger": GameFX = onAddStaggerFX(Unit, a)
 		"AbilityActive": GameFX = onAddAbilityActive(Unit, a, triggers)
 		"IdleAbility": GameFX = onAddIdleAbility(Unit, a, triggers)
+		"HelpfulHelmet": GameFX = onAddHelpfulHelmet(Unit, a)
 	
 	GameFX.type = type
 	onTriggerGameFX(GameFX, "Instant")
-	print_debug("GameFX (" + type + ") added to Unit: " + str(Unit.base_card.name))
 		
 func onTriggerGameFX(GameFX: GameFXGD, type: String, bound_args: Array = []) -> void:
 	if GameFX != null:
@@ -22,13 +23,15 @@ func onTriggerGameFX(GameFX: GameFXGD, type: String, bound_args: Array = []) -> 
 		for trigger in GameFX.triggers:
 			if trigger.trigger == type:
 				if trigger.callable != null:
-					if !bound_args.is_empty(): trigger.callable = trigger.callable.bindv(bound_args)
+					if !bound_args.is_empty() and trigger.use_bound:
+						trigger.callable = trigger.callable.bindv(bound_args)
 					trigger.callable.call()
-				print_debug("GameFX triggered (" + str(type) + ") by Unit: " + str(GameFX.Unit.base_card.name))
 				remove_triggers.append(onRemoveTrigger.bind(GameFX, trigger))
-				
 		for trigger in remove_triggers: trigger.call()
 		
+func onActiveAbilityTriggered(Unit: UnitGD) -> void:
+	Unit.Model.onActivateIdleAbility()
+	
 func onRemoveTrigger(GameFX: GameFXGD, trigger: Dictionary) -> void:
 	if !trigger.remove_type.is_empty():
 		trigger.charges -= 1
@@ -43,8 +46,8 @@ func onRemoveTrigger(GameFX: GameFXGD, trigger: Dictionary) -> void:
 func onAddIdleAbility(Unit: UnitGD, a: Dictionary, triggers: Array) -> GameFXGD:
 	triggers[0] = onCreateTrigger(triggers[0], onAddGameFX.bind(Unit, "AbilityActive", a, a.AbilityActive), "RemoveFX")
 	var GameFX := onCreateGameFX(Unit, a, triggers)
-	onAppendTrigger(GameFX, "Remove", onRemoveIdleAbility.bind(GameFX))
-	# Play idleability animation here, have logic in model.gd that checks if this effect exists
+	onAppendTrigger(GameFX, "Remove", Unit.Model.onRemoveIdleAbility)
+	Unit.Model.onActivateIdleAbility()
 	return GameFX
 		
 func onAddAbilityActive(Unit: UnitGD, a: Dictionary, triggers: Array) -> GameFXGD:
@@ -55,30 +58,30 @@ func onAddAbilityActive(Unit: UnitGD, a: Dictionary, triggers: Array) -> GameFXG
 		
 func onRemoveAbilityActive(GameFX: GameFXGD) -> void:
 	VFX.onRemoveAbilityActiveParticle(GameFX.Unit)
-	
-func onRemoveIdleAbility(GameFX: GameFXGD) -> void:
-	pass
 		
-func onAppendTrigger(GameFX: GameFXGD, trigger: String, callable: Callable, remove_type: String = "", charges: int = 1) -> void:
-	GameFX.triggers.append(onCreateTrigger(trigger, callable, remove_type, charges))
-	print_debug("Trigger (" + trigger + ") appended to GameFX (" + GameFX.type + ") of Unit: " + GameFX.Unit.base_card.name)
+func onAppendTrigger(GameFX: GameFXGD, trigger: String, callable: Callable, remove_type: String = "", charges: int = 1, use_bound: bool = true) -> void:
+	GameFX.triggers.append(onCreateTrigger(trigger, callable, remove_type, charges, use_bound))
 	
-func onCreateTrigger(trigger: String, callable: Variant, remove_type: String = "", charges: int = 1) -> Dictionary:
+func onCreateTrigger(trigger: String, callable: Variant, remove_type: String = "", charges: int = 1, use_bound: bool = true) -> Dictionary:
 	return {
 		"trigger": trigger,
 		"callable": callable,
 		"remove_type": remove_type,
 		"charges": charges,
+		"use_bound": use_bound,
 	}
 		
-func onAddStaggerFX(Unit: UnitGD, a: Dictionary) -> GameFXGD:
+func onAddHelpfulHelmet(Unit: UnitGD, a: Dictionary) -> GameFXGD:
 	var GameFX := onCreateGameFX(Unit, a)
-	onAppendTrigger(GameFX, "NextTurn", onRemoveStaggerFX, "RemoveFX")
-	Combat.onStagger(Unit, a.AppliedBy)
+	onAppendTrigger(GameFX, "Rampage", Unit.stats.bind("health", 1), "", -1, a.use_bound)
+	LevelUI.UnitStatusOverlord.onAddUnitFX(Unit, "HelpfulHelmet")
+	VFX.onCreateHelpfulHelmet(Unit)
 	return GameFX
 	
-func onRemoveStaggerFX(_GameFX: Dictionary) -> void:
-	pass
+func onAddStaggerFX(Unit: UnitGD, a: Dictionary) -> GameFXGD:
+	var GameFX := onCreateGameFX(Unit, a)
+	onAppendTrigger(GameFX, "NextTurn", Combat.onRemoveStagger.bind(GameFX), "RemoveFX")
+	return GameFX
 	
 func onCreateGameFX(Unit: UnitGD, a: Dictionary, triggers: Array = []) -> GameFXGD:
 	var GameFX := GameFXGD.new()
@@ -86,7 +89,6 @@ func onCreateGameFX(Unit: UnitGD, a: Dictionary, triggers: Array = []) -> GameFX
 	GameFX.Unit = Unit
 	GameFX.info = a
 	GameFX.triggers = triggers
-	for trigger in triggers: print_debug("Trigger (" + trigger.trigger + ") added to GameFX (" + GameFX.type + ") of Unit: " + Unit.base_card.name)
 	return GameFX
 
 func onGameFXExists(Unit: UnitGD, type: String) -> bool:

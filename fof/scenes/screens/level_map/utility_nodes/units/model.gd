@@ -16,13 +16,15 @@ var rot: int
 
 var IdleRareTimer: Timer
 
+var death: String = "Death"
+var idle: String = "Idle"
 const IDLE_RARE_MINIMUM: int = 8
 const IDLE_RARE_MAXIMUM: int = 100
 const UNIT_ANIMATION_BLEND_TIME: float = 0.2
 const WALK_TRAVEL_TIME: float = 1.0 # 1.0
 
 func on_idle_rare_timer_timeout() -> void:
-	if AniPlayer.current_animation == "Idle" and AniPlayer.has_animation("IdleRare"):
+	if AniPlayer.current_animation == idle and AniPlayer.has_animation("IdleRare"):
 		on_play_animation("IdleRare")
 	IdleRareTimer.start(Unit.Units.Random.RNG.randi_range(IDLE_RARE_MINIMUM, IDLE_RARE_MAXIMUM))
 
@@ -41,7 +43,7 @@ func _ready() -> void:
 		IdleRareTimer.timeout.connect(on_idle_rare_timer_timeout)
 		on_idle_rare_timer_timeout()
 	
-	on_play_animation("Idle")
+	on_play_animation(idle)
 	rot = (rot + 2) % 6
 		
 	if Unit != null:
@@ -50,6 +52,7 @@ func _ready() -> void:
 	onSetOverrideMaterial("Regular")
 
 func on_play_animation(ani_name: String) -> void:
+	if ani_name == "Idle": ani_name = idle
 	AniPlayer.play(ani_name, UNIT_ANIMATION_BLEND_TIME)
 	if ani_name == "Walk": on_play_walk_sfx()
 	
@@ -70,11 +73,11 @@ func on_find_walk_sfx(id: int) -> String:
 	
 func on_finish_animation(ani_name: String) -> void:
 	AniPlayer.speed_scale = 1
-	if ani_name != "Walk" and ani_name != "Death" and (ani_name != "Jump"): on_play_animation("Idle")
+	if ani_name != "Walk" and ani_name not in ["Death", "DeathAbility"] and (ani_name != "Jump"): on_play_animation(idle)
 	match ani_name:
 		"Walk": movement_finished.emit()
-		"Attack": attack_finished.emit(); if Unit != null: AudioMaster.play_sfx(Unit.AudioDict.ATTACK)
-		"Death": death_finished.emit()
+		"Attack", "AttackAbility": attack_finished.emit(); if Unit != null: AudioMaster.play_sfx(Unit.AudioDict.ATTACK)
+		"Death", "DeathAbility": death_finished.emit()
 		"Jump": movement_finished.emit(); is_jump = false; jump_time = 0
 		"Hurt": hurt_finished.emit();
 
@@ -132,7 +135,7 @@ func onMoveToTile(Tile: TileGD, type: Variant, movement_type: String) -> void:
 	
 func attack_tile(Tile: TileGD) -> void:
 	_look_at(Tile)
-	on_play_animation("Attack")
+	on_play_animation(Unit.getAttackAnimation() if AniPlayer.has_animation("AttackAbility") else "Attack")
 
 var jump_start: Vector3
 var jump_end: Vector3
@@ -225,7 +228,7 @@ func _look_at(Tile: TileGD) -> void: #will rotate the object
 	on_set_rotation()
 
 func on_death() -> void:
-	on_play_animation("Death")
+	on_play_animation(death)
 	AudioMaster.play_sfx(Unit.AudioDict.DEATH)
 
 func on_hurt() -> void:
@@ -250,3 +253,16 @@ func getRotationPoint(xyz: Vector3, r: float, pos: Vector3) -> Vector3:
 func setVisible(state: bool) -> void:
 	mesh.visible = state
 	Unit.Units.LevelUI.UnitStatusOverlord.setUnitStatusVisible(Unit, state)
+
+var idle_array: Array = ["Idle", "IdleAbility", "IdleRare"]
+func onActivateIdleAbility() -> void:
+	if idle != "IdleAbility" and AniPlayer.has_animation("IdleAbility"):
+		idle = "IdleAbility"
+		if AniPlayer.current_animation in idle_array:
+			on_play_animation(idle)
+
+func onRemoveIdleAbility() -> void:
+	if idle != "Idle":
+		idle = "Idle"
+		if AniPlayer.current_animation in idle_array:
+			on_play_animation(idle)

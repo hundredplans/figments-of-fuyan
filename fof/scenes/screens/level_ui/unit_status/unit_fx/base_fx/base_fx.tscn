@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://bcyjd8vmhw70u"]
+
+[ext_resource type="Texture2D" uid="uid://cmawyie32g5c" path="res://scenes/screens/level_ui/unit_status/unit_fx/base_fx/daze.png" id="1_5h0v7"]
+[ext_resource type="Script" path="res://scenes/screens/level_ui/unit_status/unit_fx/base_fx/base_fx.gd" id="2_abxan"]
+
+[node name="StatusFX" type="TextureRect"]
+texture_filter = 1
+custom_minimum_size = Vector2(32, 32)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1870.0
+offset_bottom = -1030.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_5h0v7")
+script = ExtResource("2_abxan")

@@ -68,7 +68,7 @@ func onCreateAbilityActiveParticle(Unit: UnitGD) -> void:
 	var AbilityActiveParticle: GPUParticles3D = preload("res://scenes/screens/level_map/utility_nodes/vfx/ability_active/ability_active_particle.tscn").instantiate()
 	Unit.UnitVFX.add_child(AbilityActiveParticle)
 	AbilityActiveParticle.type = "AbilityActive"
-	AbilityActiveParticle.lifetime = Unit.height.top / 8
+	AbilityActiveParticle.lifetime = Unit.height.top / 6
 
 func onRemoveAbilityActiveParticle(Unit: UnitGD) -> void:
 	if Unit != null:
@@ -77,7 +77,29 @@ func onRemoveAbilityActiveParticle(Unit: UnitGD) -> void:
 				child.queue_free()
 
 func onCreateStaggerVFX(Unit: UnitGD) -> void:
-	pass
+	var StaggerVFX: Node3D = preload("res://scenes/screens/level_map/utility_nodes/vfx/status_effects/stagger/stagger_status_effect.tscn").instantiate()
+	Unit.UnitVFX.add_child(StaggerVFX)
+	StaggerVFX.type = "Stagger"
+	StaggerVFX.position.y = Tiles.getUnitAdjustedHeight(Unit.Tile) + Unit.height.top + 0.1
 	
 func onRemoveStaggerVFX(Unit: UnitGD) -> void:
-	pass
+	for child in Unit.UnitVFX.get_children():
+		if child.type == "Stagger":
+			child.queue_free()
+
+func onCreateDazeVFX(Unit: UnitGD) -> void:
+	var DazeVFX: Node3D = preload("res://scenes/screens/level_map/utility_nodes/vfx/status_effects/daze/daze_status_effect.tscn").instantiate()
+	Unit.UnitVFX.add_child(DazeVFX)
+	DazeVFX.type = "Daze"
+	DazeVFX.position.y = Tiles.getUnitAdjustedHeight(Unit.Tile) + Unit.height.top + 0.1
+	
+func onRemoveDazeVFX(Unit: UnitGD) -> void:
+	for child in Unit.UnitVFX.get_children():
+		if child.type == "Daze":
+			child.queue_free()
+
+func onCreateHelpfulHelmet(Unit: UnitGD) -> void:
+	var HelpfulHelmet: Node3D = preload("res://scenes/screens/level_map/utility_nodes/vfx/ability_effects/helpful_helmet/helpfulhelmet.tscn").instantiate()
+	Unit.UnitVFX.add_child(HelpfulHelmet)
+	HelpfulHelmet.type = "HelpfulHelmet"
+	HelpfulHelmet.position.y = Tiles.getUnitAdjustedHeight(Unit.Tile) + Unit.height.top
