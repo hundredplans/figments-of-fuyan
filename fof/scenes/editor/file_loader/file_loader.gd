@@ -51,7 +51,7 @@ func on_item_ready() -> void:
 	var search_options: PackedStringArray = []
 	match item_name:
 		"area": search_options = ["World"]
-		"card": search_options = ["Rarity", "Attack", "Health", "Speed", "Energy", "Confidence", "Intelligence", "Awareness", "Teamwork", "Adventurousness", "Ability", "Area"]
+		"oldcard": search_options = ["Rarity", "Attack", "Health", "Speed", "Energy", "Confidence", "Intelligence", "Awareness", "Teamwork", "Adventurousness", "Ability", "Area"]
 		"level": search_options = ["Area"]
 		"tool": search_options = ["Rarity"]
 		"boon": search_options = ["Rarity"]
@@ -88,7 +88,7 @@ func match_search_item_selected(item_dict: Dictionary) -> bool:
 		3: 
 			match item_name:
 				"area", "map": return item_dict.world.begins_with(SearchEdit.text)
-				"card", "tool", "boon": return str(item_dict.r) == SearchEdit.text
+				"oldcard", "tool", "boon": return str(item_dict.r) == SearchEdit.text
 				"level":
 					if str(item_dict.area).begins_with(SearchEdit.text): return true
 					var area_info: Dictionary = Helper.id_to_dict(item_dict.area, "Area")
@@ -103,7 +103,7 @@ func match_search_item_selected(item_dict: Dictionary) -> bool:
 		11: return str(item_dict.ait) == SearchEdit.text
 		12: return str(item_dict.aia) == SearchEdit.text
 		13: 
-			var contents: String = Helper.return_file_contents("res://scenes/editor/file_loader/card/abilities.txt")
+			var contents: String = Helper.return_file_contents("res://scenes/editor/file_loader/oldcard/abilities.txt")
 			var ltext: String = item_dict.text.raw.to_lower()
 			for i in contents.split("\n", false):
 				if i.to_lower().begins_with(SearchEdit.text) and ltext.contains(i.to_lower()):

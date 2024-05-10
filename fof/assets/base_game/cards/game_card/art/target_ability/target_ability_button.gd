@@ -18,8 +18,8 @@ func onUpdateAbility(Unit: UnitGD, disable: bool) -> void:
 	var charges: int = ability.charges
 	var max_charges: int = ability.max_charges
 	
-	var text: String = str(charges) if charges > 50 else "∞"
-	label.text = str(charges)
+	var text: String = str(charges) if charges >= 0 else "∞"
+	label.text = str(text)
 	var color: String = "BASE"
 	if charges == 0 or disable: color = "GREY"; disable = true
 	elif charges > max_charges: color = "GREEN"

@@ -5,6 +5,7 @@ extends Resource
 @export var charges: int = -1
 @export var max_charges: int = -1
 @export var ability_index: int = -1
+@export var ignore_ability_delay: bool = false
 
 var GameEffects: GameEffectsGD
 var Combat: CombatGD

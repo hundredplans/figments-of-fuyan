@@ -374,12 +374,12 @@ func onEnterUnitMode(Unit: UnitGD) -> void:
 	
 	if !target_abilities_used:
 		for ability in Unit.abilities:
-			if ability is TargetAbilityGD and ability.can_affect and !ability.used and ability.charges > 0:
+			if ability is TargetAbilityGD and ability.can_affect and !ability.used and ability.charges != 0:
 				var TargetAbilityBox: Control = preload("res://scenes/screens/level_ui/target_ability_box.tscn").instantiate()
 				TargetAbilities.add_child(TargetAbilityBox)
 				TargetAbilityBox.mouse_entered.connect(on_is_mouse_in_ui.bind(true))
 				TargetAbilityBox.mouse_exited.connect(on_is_mouse_in_ui.bind(false))
-				TargetAbilityBox.AbilityCharges.text = str(ability.charges)
+				TargetAbilityBox.AbilityCharges.text = str(ability.charges) if ability.charges >= 0 else "∞"
 				TargetAbilityBox.label.text = ability.ability_name
 				TargetAbilityBox.description.text = ability.ability_description
 				TargetAbilityBox.ability = ability

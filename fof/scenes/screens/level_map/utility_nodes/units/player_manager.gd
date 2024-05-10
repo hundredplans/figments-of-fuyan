@@ -165,7 +165,9 @@ func _on_unit_selected(Unit: UnitGD) -> void:
 func onDeathFinished(Deathee: UnitGD) -> void:
 	if LevelMap.game_phase == "PlayerPhase":
 		if Deathee.team == 0 and SpectateCamera.spectate_type == "Ally":
-			SpectateCamera.onSpectate("Ally")
+			var unit_distances: Array = Units.on_units().map(func(x: UnitGD): return {"Unit": x, "distance": Tiles.tile_distance(x.Tile, Deathee.Tile)})
+			unit_distances.sort_custom(func(x: Dictionary, y: Dictionary): return x.distance > y.distance)
+			SpectateCamera.onSpectate(unit_distances[0].Unit)
 		on_remove_unit_turn(Deathee)
 		Units.Vision.on_recalculate_vision()
 	

@@ -34,7 +34,7 @@ func onTargetAbility(Unit: UnitGD, ability: TargetAbilityGD, Tile: TileGD, tiles
 func onRevenge(Damagee: UnitGD, AppliedBy: AppliedByGD, DMGInfo: DMGInfoGD, damage: int):
 	var abilities: Array = onFindAbilities(Damagee, "Revenge")
 	for ability in abilities:
-		if ability.onRevengeCondition({"Unit": Damagee}):
+		if !(!ability.trigger_on_death and Damagee.health <= 0) and ability.onRevengeCondition({"Unit": Damagee}):
 			onTriggerAbilitySpectateDelay(Damagee, ability, ability.onRevenge.bind({"DMGInfo": DMGInfo, "Unit": Damagee, "damage": damage, "AppliedBy": AppliedBy}), ability.REVENGE_DELAY)
 	
 func onHit(DMGInfo: DMGInfoGD) -> void:
@@ -69,7 +69,7 @@ func onRampage(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 		
 func onTriggerAbilitySpectateDelay(Triggerer: UnitGD, ability: AbilityGD, callable: Callable, delay: float) -> void:
 	var vis: bool = Triggerer.team == 0 or Triggerer.Tile in Vision.ally_vision
-	if vis:
+	if vis and !ability.ignore_ability_delay:
 		var SpectateUnit: UnitGD = SpectateCamera.getSpectateUnit(["Ally", "Enemy"])
 		if SpectateUnit != Triggerer:
 			SpectateCamera.onSpectate(Triggerer)
@@ -173,3 +173,8 @@ func onStun(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 
 func onDestroyUnit(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	Units.kill_unit(Unit, AppliedBy)
+	
+func onHelpfulHelmetDelayed(a: Dictionary) -> void:
+	var Unit: UnitGD = Units.unit_by_tile(a.Tile)
+	GameEffects.onAddGameFX(Unit, "HelpfulHelmet", {"AppliedBy": a.AppliedBy, "use_bound": false})
+	Unit.stats("health", a.HEALTH, a.AppliedBy)

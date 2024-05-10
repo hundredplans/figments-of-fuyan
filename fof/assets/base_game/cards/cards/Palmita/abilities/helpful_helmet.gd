@@ -1,5 +1,6 @@
 extends TargetAbilityGD
 
+@export var HEALTH: int = 1
 func onTargetAbilityCondition(a: Dictionary) -> Dictionary:
 	var tiles: Dictionary = {"range": [], "affect": []}
 	tiles["range"] = Tiles.onFindUnitAdjacentTiles(a.Unit, 1)
@@ -7,14 +8,14 @@ func onTargetAbilityCondition(a: Dictionary) -> Dictionary:
 	return tiles
 
 func onTargetAbility(a: Dictionary) -> void:
-	var Unit: UnitGD = Units.unit_by_tile(a.Tile)
+	a.Unit.Model._look_at(a.Tile)
 	var AppliedBy := AppliedByGD.new()
 	AppliedBy.type = "Ability"
 	AppliedBy.Applier = a.Unit
-	GameEffects.onAddGameFX(Unit, "HelpfulHelmet", {"AppliedBy": AppliedBy, "use_bound": false})
-	onGainStats(Unit, "health", 1, AppliedBy)
+	a["AppliedBy"] = AppliedBy
 	
-	a.Unit.Model._look_at(a.Tile)
+	a.HEALTH = HEALTH
 	a.Unit.Model.death = "DeathAbility"
 	Combat.onDestroyUnit(a.Unit, AppliedBy)
+	Units.onAppendArgQueue(Combat.onHelpfulHelmetDelayed.bind(a))
 	

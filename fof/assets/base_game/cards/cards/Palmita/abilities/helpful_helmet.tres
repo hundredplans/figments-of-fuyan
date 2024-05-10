@@ -5,9 +5,11 @@
 [resource]
 resource_local_to_scene = true
 script = ExtResource("1_uyel8")
+HEALTH = 1
 ability_description = "[center][b]ABILITY[/b]: This dies to give an adjacent ally [b][color=red][b][color=red]+1 [img=14x14]res://assets/base_game/cards/game_card/art/bbcode/HEALTH.png[/img][/color][/b][/color][/b] 
 When it [b]RAMPAGE[/b]S it gains [b][color=red][b][color=red]+1 [img=14x14]res://assets/base_game/cards/game_card/art/bbcode/HEALTH.png[/img][/color][/b][/color][/b] [/center]"
 ability_name = "Helpful Helmet"
-charges = 1
-max_charges = 1
+charges = -1
+max_charges = -1
 ability_index = -1
+ignore_ability_delay = true

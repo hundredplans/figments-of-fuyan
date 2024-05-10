@@ -116,7 +116,7 @@ func onSpectateNewType(_spectate_info: Dictionary, _spectate_type: String, old_s
 		if !spectate_info.is_empty():
 			total_progress = spectate_info.progress
 			onCameraStartSpectate(spectate_info)
-			onUnitSpectated( spectate_info, _spectate_info, old_spectate_type)
+			onUnitSpectated(spectate_info, _spectate_info, old_spectate_type)
 		else: spectate_type = old_spectate_type
 		
 func onSpectateDirection(_spectate_info: Dictionary, _spectate_type: String, direction: int) -> void:

@@ -122,6 +122,7 @@ func _process(_delta: float) -> void:
 				"DeathUnit": on_death()
 				"HurtUnit": on_hurt()
 				"Delay": onDelay()
+				"ArgQueue": onArgQueue()
 		else: onArgDelay()
 
 func onAIMoveFinish() -> void:
@@ -136,6 +137,17 @@ func onAIMoveFinish() -> void:
 
 func isUnitActionsEmpty() -> bool:
 	return unit_actions.is_empty() or (unit_actions.size() == 1 and unit_actions[0].action_type == "AIMoveFinish")
+
+func onArgQueue() -> void:
+	active_action.callable.call()
+	active_action = {}
+	onUnitActionsFinished()
+
+func onAppendArgQueue(callable: Callable) -> void:
+	unit_actions.append({
+		"action_type": "ArgQueue",
+		"callable": callable,
+	})
 
 func onArgDelay() -> void:
 	var _active_action: Dictionary = unit_actions[0]

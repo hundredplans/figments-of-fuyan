@@ -515,7 +515,7 @@ func on_path_hovered_tile_selected(Tile: TileGD) -> void:
 	Units.PlayerManager._on_unit_deselected(Units.PlayerManager.UnitSelected, true)
 		
 func on_enemy_found_tile_selected(Tile: TileGD, Unit: UnitGD) -> void:
-	Units.movement_outline_tiles.append(Tile)
+	if Tile != null: Units.movement_outline_tiles.append(Tile)
 	Units.attack_enemy_or_target(Unit, Tile)
 
 var BASE_MATERIAL: Material = preload("res://assets/materials/tile_materials/base_tile_materials/base_tile_material.tres")
