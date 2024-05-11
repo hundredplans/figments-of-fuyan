@@ -60,7 +60,7 @@ func onCreateAbilities() -> void:
 			TargetAbilityBtn.ability = ability
 			TargetAbilityBtn.pressed.connect(onTargetAbilityBtnPressed.bind(ability))
 			TargetAbilities.add_child(TargetAbilityBtn)
-			onUpdateAbility(ability, true)
+			onUpdateAbility(ability)
 	
 func onUpdateStat(stat: int, stat_changed: String, color: String) -> void:
 	var ScaleTween := create_tween()
@@ -93,8 +93,8 @@ func setLightMask(state: bool) -> void:
 	for node in [In, ArtPop, AttackSprite, HealthSprite, SpeedSprite, SelectedMask]:
 		node.light_mask = 32 if state else 0
 
-func onUpdateAbility(ability: AbilityGD, disable_state: bool) -> void:
-	if !disable_state and Unit.Units.Combat.isStaggered(Unit): disable_state = true
+func onUpdateAbility(ability: AbilityGD) -> void:
+	var disable_state: bool = !Unit.Units.Combat.isAbilityEnabled(Unit, ability)
 	for AbilityButton in TargetAbilities.get_children():
 		if AbilityButton.ability == ability:
 			AbilityButton.onUpdateAbility(Unit, disable_state)

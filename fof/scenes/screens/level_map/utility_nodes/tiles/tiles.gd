@@ -325,7 +325,7 @@ func onCreateMovementPaths(Unit: UnitGD, type: String = "Default") -> void:
 			var EnemyUnit: UnitGD = Units.unit_by_tile(_Tile)
 			var hdiff: int = (_Tile.w * 2) + int(is_ramp_tile(_Tile)) - ((Tile.w * 2) + int(is_ramp_tile(Tile)))
 			if EnemyUnit != null:
-				if EnemyUnit.team != Unit.team:
+				if EnemyUnit.team != Unit.team and !Combat.isStaggered(Unit):
 					var ally_unit_height: float = getUnitAdjustedHeight(Tile)
 					
 					var enemy_low_point: float = getUnitAdjustedHeight(EnemyUnit.Tile)
@@ -452,7 +452,6 @@ func on_tile_hovered(Tile: TileGD) -> void:
 		for i in range(path_hovered_info.tiles.size()):
 			path_hovered_info.tiles[i].Effects.hovered_type = path_hovered_info.types[i]
 			setTileOutline(path_hovered_info.tiles[i], "PathHovered")
-			#on_set_tile_highest_material(path_hovered_info.tiles[i])
 	Vision.on_tile_hovered(Tile)
 	onTileHoveredDisplayCard(Tile)
 
@@ -493,7 +492,7 @@ func setTileOutline(Tile: TileGD, type: String, is_remove: bool = false) -> void
 
 	if highest == "TileInspected" and !is_remove:
 		var Unit: UnitGD = Units.unit_by_tile(Tile)
-		if Unit != null and (Unit.team == 0 or Unit in Vision.ally_vision):
+		if Unit != null and (Unit.team == 0 or Unit.Tile in Vision.ally_vision):
 			match Unit.team:
 				0: highest = "AllyInspected"
 				1: highest = "EnemyInspected"
@@ -505,18 +504,19 @@ func on_path_hovered_tile_selected(Tile: TileGD) -> void:
 	Units.PlayerManager.onPathHoveredTileSelected()
 	Units.PlayerManager.on_select_active_unit(Units.PlayerManager.UnitSelected)
 	for i in range(path_hovered_info.tiles.size()):
-		Units.movement_outline_tiles.append(path_hovered_info.tiles[i])
 		if path_hovered_info.types[i].x != 1:
+			Units.movement_outline_tiles.append(path_hovered_info.tiles[i])
 			Units.move_to_tile(Units.PlayerManager.UnitSelected, path_hovered_info.tiles[i], path_hovered_info.types[i])
-		else: Units.attack_enemy_or_target(Units.PlayerManager.UnitSelected, path_hovered_info.tiles[i])
+		elif Units.attack_enemy_or_target(Units.PlayerManager.UnitSelected, path_hovered_info.tiles[i]): 
+			Units.movement_outline_tiles.append(path_hovered_info.tiles[i])
 		if Tile == path_hovered_info.tiles[i]: break
 		
 	on_remove_tile_material(OriginalTile, "" if path_hovered_info.tiles.size() == 1 and path_hovered_info.types[0].x == 1 else "EmptyTile")
 	Units.PlayerManager._on_unit_deselected(Units.PlayerManager.UnitSelected, true)
 		
 func on_enemy_found_tile_selected(Tile: TileGD, Unit: UnitGD) -> void:
-	if Tile != null: Units.movement_outline_tiles.append(Tile)
-	Units.attack_enemy_or_target(Unit, Tile)
+	if Tile != null and Units.attack_enemy_or_target(Unit, Tile):
+		Units.movement_outline_tiles.append(Tile)
 
 var BASE_MATERIAL: Material = preload("res://assets/materials/tile_materials/base_tile_materials/base_tile_material.tres")
 var TILE_MATERIALS: Dictionary
@@ -614,6 +614,7 @@ func on_find_tile_by_raycast() -> TileGD:
 	var node: Node3D = ray.get_collider()
 	if node:
 		node = node.get_node("../../..")
+		if node.get_parent() is UnitGD: return node.get_parent().Tile
 	return node
 
 var select_console: bool = false

@@ -13,6 +13,7 @@ var LevelMap: Node3D
 var LevelUI: LevelUIGD
 var Combat: CombatGD
 
+var ability_state: bool = false
 @onready var AIManager: AIManagerGD = $BotManager
 @onready var PlayerManager: PlayerManagerGD = $PlayerManager
 @onready var FieldedUnits: Node3D = $FieldedUnits
@@ -41,6 +42,7 @@ func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int
 	AIManager.onUnitAwakened(Unit)
 	Unit.finished_awakening = true
 	Combat.onArrive(Unit)
+	PlayerManager.onSetupAllyPassedTurns(Unit)
 	return Unit
 
 func on_start_phase_start() -> void:
@@ -126,6 +128,7 @@ func _process(_delta: float) -> void:
 		else: onArgDelay()
 
 func onAIMoveFinish() -> void:
+	setUnitStatus(active_action.Unit, "TurnUsed")
 	if unit_actions.is_empty():
 		if !(active_action.vis_path.all(func(x: Array): return x[1] == "Invisible")):
 			await get_tree().create_timer(AFTER_MOVEMENT_DELAY).timeout
@@ -300,8 +303,8 @@ func on_force_resume_idle_animation_from_walk() -> void:
 		if active_action.Unit.Model.current_walk_stream_player != null:
 			AudioMaster.on_cutoff_sfx(active_action.Unit.Model.current_walk_stream_player)
 
-func attack_enemy_or_target(Unit: UnitGD, Tile: TileGD) -> void:
-	if Unit.attack_amount > 0:
+func attack_enemy_or_target(Unit: UnitGD, Tile: TileGD) -> bool:
+	if Unit.attack_amount > 0 and !Combat.isStaggered(Unit):
 		var enemies: Array = on_units(Unit.team, "Enemy")
 		for _Unit in enemies:
 			if Tile == _Unit.Tile:
@@ -309,8 +312,9 @@ func attack_enemy_or_target(Unit: UnitGD, Tile: TileGD) -> void:
 				_attack_enemy(Unit, _Unit, Tile)
 				SpectateCamera.onStartTrackUnit(Unit)
 				break
+		return true
 		# if this check fails can check for attacks on objects and such here
-
+	return false
 func _attack_enemy(Unit: UnitGD, _Unit: UnitGD, Tile: TileGD) -> void:
 	unit_actions.append(
 		{
@@ -392,6 +396,7 @@ func on_death_finished(Unit: UnitGD) -> void:
 		0: 
 			Combat.onDeathAbilities(Deather, AppliedBy)
 			PlayerManager.onDeathFinished(Unit)
+			GameEffects.onDeathFinished(Unit)
 			onUnitActionsFinished()
 		1: LevelUI.onWinGame()
 		2: LevelUI.onLoseGame()
@@ -436,9 +441,19 @@ func getCommutativeUnitsVision(Unit: UnitGD) -> Array:
 		if Unit.Tile in _Unit.visible_tiles: tiles.append(_Unit.Tile)
 	return tiles
 
-func onAIMoveFinisher(vis_path: Array) -> void:
+func onAIMoveFinisher(Unit: UnitGD, vis_path: Array) -> void:
 	unit_actions.append({
 		"action_type": "AIMoveFinish",
+		"Unit": Unit,
 		"vis_path": vis_path,
 	})
 
+func setAbilityState(state: bool) -> void:
+	if state != ability_state:
+		ability_state = state
+		LevelUI.onUpdateTargetAbilities()
+
+func setUnitStatus(Unit: UnitGD, status: String) -> void:
+	LevelUI.UnitStatusOverlord.setUnitStatusTurnStatus(Unit, status)
+	if status == "TurnUsed":
+		GameEffects.onTriggerUnitGameFX(Unit, "TurnPassed")

@@ -8,12 +8,21 @@ var SpectateCamera: Node3D
 var Units: UnitsGD
 var Vision: VisionGD
 
+func onSetupAllyPassedTurns(Unit: UnitGD) -> void:
+	if Unit.team == 0:
+		if Unit.rarity == 7:
+			unpassed_turns.append(Unit)
+		else:
+			passed_turns.append(Unit)
+			Units.setUnitStatus(Unit, "TurnUsed")
+			
 func on_card_placed(hand_card: HandCardGD, Tile: TileGD) -> void:
 	var skip_result: bool = LevelMap.on_skip_hand_phase_result(Tile)
 	if LevelMap.game_phase == "HandPhase": LevelUI.on_ally_unit_awakened(skip_result)
 	var Unit: UnitGD = Units.on_unit_awakened(hand_card.id, hand_card.tool_id, hand_card.effects, 0, Tile.obj.rotation, Tile)
 	if skip_result: LevelMap.on_advance_game_phase()
 	SpectateCamera.onSpectate(Unit)
+		
 
 func on_enemy_unit_enters_vision(Unit: UnitGD) -> void:
 	LevelUI.UnitStatusOverlord.onUpdateEnemyVision(Unit, true)
@@ -30,7 +39,7 @@ func on_select_active_unit(Unit: UnitGD) -> void:
 	if Unit.team == 0 and ActiveUnit != Unit:
 		if ActiveUnit != null: on_pass_unit_turn()
 		ActiveUnit = Unit
-		setUnitStatus(Unit, "TurnActive")
+		Units.setUnitStatus(Unit, "TurnActive")
 		LevelUI.on_pass_unit_turn_button_state(false)
 
 func on_pass_unit_turn_pressed() -> void:
@@ -42,21 +51,18 @@ func on_pass_unit_turn_pressed() -> void:
 	else:
 		on_pass_unit_turn()
 
-func setUnitStatus(Unit: UnitGD, status: String) -> void:
-	LevelUI.UnitStatusOverlord.setUnitStatusTurnStatus(Unit, status)
-
 func on_pass_unit_turn() -> void:
 	if ActiveUnit != null:
 		unpassed_turns.erase(ActiveUnit)
 		passed_turns.append(ActiveUnit)
-		setUnitStatus(ActiveUnit, "TurnUsed")
-		Units.GameEffects.onTriggerUnitGameFX(ActiveUnit, "TurnPassed")
+		Units.setUnitStatus(ActiveUnit, "TurnUsed")
 		ActiveUnit = null
-			
+		
 		if unpassed_turns.is_empty():
 			LevelUI.on_pass_unit_turn_button_state(true)
 			if Settings.autopass_turn: LevelMap.on_advance_game_phase()
 		elif LevelMap.game_phase == "PlayerPhase": SpectateCamera.onSpectate(unpassed_turns[0])
+	
 
 func on_player_phase_start() -> void:
 	LevelUI.PassUnitTurn.visible = true
@@ -68,8 +74,8 @@ func on_player_phase_start() -> void:
 	for Unit in Units.on_units():
 		Unit.stats("active_speed", Unit.max_speed, AppliedBy, true)
 		Unit.attack_amount = 1
-		
-	onUpdateTargetAbilities(false)
+	
+	Units.setAbilityState(true)
 	
 func on_player_end_turn_phase_start() -> void:
 	if UnitSelected != null: _on_unit_deselected(UnitSelected, true)
@@ -81,7 +87,7 @@ func on_player_end_turn_phase_start() -> void:
 	
 	for Unit in passed_turns:
 		Tiles.on_remove_tile_material(Unit.Tile, "")
-		setUnitStatus(Unit, "TurnUsed")
+		Units.setUnitStatus(Unit, "TurnUsed")
 	
 	unpassed_turns = []
 	passed_turns = []
@@ -91,7 +97,7 @@ func on_player_end_turn_phase_start() -> void:
 	AppliedBy.type = "PlayerEndTurnPhase"
 	for Unit in Units.on_units():
 		Unit.stats("active_speed", Unit.max_speed, AppliedBy, true)
-	onUpdateTargetAbilities(true)
+	Units.setAbilityState(false)
 
 func on_hurt_finished(Unit: UnitGD) -> void:
 	on_check_autopass(Unit)
@@ -137,16 +143,18 @@ func _on_unit_deselected(Unit: UnitGD, absolute: bool = false) -> void:
 			Tiles.on_mouse_entered(Tiles.on_find_tile_by_raycast())
 		LevelUI.setWarningText(false)
 		LevelUI.onExitUnitMode()
-			
+	
 func onSetMovementRange(Unit: UnitGD) -> void:
 	Tiles.onCreateMovementPaths(Unit)
 	var enemy_units: Array = Units.on_units(1)
+	var is_staggered: bool = Units.Combat.isStaggered(Unit)
 	for Tile in Tiles.movement_paths.tiles:
 		if Unit.attack_amount > 0:
 			for _Unit in enemy_units:
 				if _Unit.Tile == Tile:
-					_Unit.on_enemy_in_range(true)
-					continue
+					if !is_staggered:
+						_Unit.on_enemy_in_range(true)
+						continue
 					
 		var index: int = Tiles.movement_paths[Tile].tiles.find(Tile)
 		if Tiles.movement_paths[Tile].types[index].x != 1:
@@ -219,11 +227,5 @@ func onRemoveAbilityRange(Unit: UnitGD, ability: TargetAbilityGD) -> void:
 	for Tile in tability_tiles["affect"]:
 		Tiles.on_remove_tile_material(Tile, "TargetAffect")
 
-var target_abilities_used: bool = true
 func onPathHoveredTileSelected() -> void:
-	onUpdateTargetAbilities(true)
-
-func onUpdateTargetAbilities(state: bool) -> void:
-	if state != target_abilities_used:
-		target_abilities_used = state
-		LevelUI.onUpdateTargetAbilities(state)
+	Units.setAbilityState(false)

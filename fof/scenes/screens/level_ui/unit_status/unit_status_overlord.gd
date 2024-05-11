@@ -85,6 +85,7 @@ func setUnitStatusTurnStatus(Unit: UnitGD, status: String) -> void:
 			if UnitStatus.type.begins_with("UnitStatus"):
 				UnitStatus.setUnitStatusState(status)
 	Unit.turn_status = status
+	onUpdateUnitTargetAbilities(Unit)
 
 func setUnitStatusExtra(Unit: UnitGD, old_status: String, status: String) -> void:
 	var was_active: bool = old_status == "TurnActive"
@@ -186,9 +187,9 @@ func onRemoveTileHoveredUnitStatus(Unit: UnitGD) -> void:
 func onCreateTileHoveredUnitStatus(Unit: UnitGD) -> void:
 	onAddUnitStatus(Unit, "TileHoveredUnitStatus")
 	
-func onUpdateTargetAbility(Unit: UnitGD, ability: TargetAbilityGD, disable_state: bool) -> void:
+func onUpdateTargetAbility(Unit: UnitGD, ability: TargetAbilityGD) -> void:
 	for UnitStatus in onFindUnitStatus(Unit):
-		UnitStatus.onUpdateAbility(ability, disable_state)
+		UnitStatus.onUpdateAbility(ability)
 
 func onAddUnitFX(Unit: UnitGD, type: String) -> void:
 	for UnitStatus in onFindUnitStatus(Unit):
@@ -197,3 +198,8 @@ func onAddUnitFX(Unit: UnitGD, type: String) -> void:
 func onRemoveUnitFX(Unit: UnitGD, type: String) -> void:
 	for UnitStatus in onFindUnitStatus(Unit):
 		UnitStatus.onRemoveUnitFX(type)
+
+func onUpdateUnitTargetAbilities(Unit: UnitGD) -> void:
+	for ability in Unit.abilities:
+		if ability is TargetAbilityGD:
+			onUpdateTargetAbility(Unit, ability)

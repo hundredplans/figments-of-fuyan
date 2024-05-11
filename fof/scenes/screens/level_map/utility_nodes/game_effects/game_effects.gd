@@ -6,6 +6,11 @@ var VFX: VFXGD
 var Combat: CombatGD
 var effects: Array = []
 
+func onDeathFinished(Unit: UnitGD) -> void:
+	var _effects: Array = effects.duplicate()
+	for GameFX in _effects.filter(func(x: GameFXGD): return x.Unit == Unit):
+		effects.erase(Unit)
+
 func onAddGameFX(Unit: UnitGD, type: String, a: Dictionary, triggers: Array = []) -> void:
 	var GameFX: GameFXGD
 	match type:
@@ -83,8 +88,11 @@ func onOverrideGameFX(Unit: UnitGD, type: String) -> void:
 	for GameFX in effects.filter(func(x: GameFXGD): return x.Unit == Unit):
 		if GameFX.type == type:
 			effects.erase(GameFX)
+			match type:
+				"Daze": Combat.onRemoveDaze(GameFX)
+				"Stagger": Combat.onRemoveStagger(GameFX)
 			return
-	
+
 func onAddDazeFX(Unit: UnitGD, a: Dictionary) -> GameFXGD:
 	onOverrideGameFX(Unit, "Daze")
 	var GameFX := onCreateGameFX(Unit, a)

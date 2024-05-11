@@ -276,6 +276,7 @@ func onStartPhaseStart() -> void:
 	Console.Units = Units
 	Console.LevelUI = self
 	Console.Tiles = Tiles
+	Console.Combat = Combat
 	
 	UnitStatusOverlord.onStartPhaseStart()
 	GreyScale.modulate.a = greyscale_light
@@ -373,19 +374,18 @@ func onSelectTileFinish() -> void:
 func onEnterUnitMode(Unit: UnitGD) -> void:
 	SpectateCamera.onUpdateFOV("UNIT_MODE")
 	
-	if !target_abilities_used:
-		for ability in Unit.abilities:
-			if ability is TargetAbilityGD and ability.can_affect and !ability.used and ability.charges != 0 and !Combat.isStaggered(Unit):
-				var TargetAbilityBox: Control = preload("res://scenes/screens/level_ui/target_ability_box.tscn").instantiate()
-				TargetAbilities.add_child(TargetAbilityBox)
-				TargetAbilityBox.mouse_entered.connect(on_is_mouse_in_ui.bind(true))
-				TargetAbilityBox.mouse_exited.connect(on_is_mouse_in_ui.bind(false))
-				TargetAbilityBox.AbilityCharges.text = str(ability.charges) if ability.charges >= 0 else "∞"
-				TargetAbilityBox.label.text = ability.ability_name
-				TargetAbilityBox.description.text = ability.ability_description
-				TargetAbilityBox.ability = ability
-				TargetAbilityBox.pressed.connect(onTargetAbilityBoxPressed.bind(Unit, ability, TargetAbilityBox))
-	
+	for ability in Unit.abilities:
+		if ability is TargetAbilityGD and Combat.isAbilityEnabled(Unit, ability):
+			var TargetAbilityBox: Control = preload("res://scenes/screens/level_ui/target_ability_box.tscn").instantiate()
+			TargetAbilities.add_child(TargetAbilityBox)
+			TargetAbilityBox.mouse_entered.connect(on_is_mouse_in_ui.bind(true))
+			TargetAbilityBox.mouse_exited.connect(on_is_mouse_in_ui.bind(false))
+			TargetAbilityBox.AbilityCharges.text = str(ability.charges) if ability.charges >= 0 else "∞"
+			TargetAbilityBox.label.text = ability.ability_name
+			TargetAbilityBox.description.text = ability.ability_description
+			TargetAbilityBox.ability = ability
+			TargetAbilityBox.pressed.connect(onTargetAbilityBoxPressed.bind(Unit, ability, TargetAbilityBox))
+
 func onExitUnitMode() -> void:
 	SpectateCamera.onUpdateFOV("REGULAR")
 	for child in TargetAbilities.get_children(): child.queue_free()
@@ -405,6 +405,7 @@ func onTargetAbilityBtnPressed(Unit: UnitGD, ability: AbilityGD) -> void:
 	
 	var TargetAbilityBox: Control = TargetAbilities.get_children().filter(func(x: Control): return !x.is_queued_for_deletion() and x.ability == ability)[0]
 	onTargetAbilityBoxPressed(Unit, ability, TargetAbilityBox)
+	
 func onEnterTargetAbilityMode(Unit: UnitGD, ability: AbilityGD) -> void:
 	AbilityLabel.text = ability.ability_name
 	Units.PlayerManager.onEnterTargetAbilityMode(Unit, ability)
@@ -428,26 +429,16 @@ func onUpdateTargetAbilityCharges(Unit: UnitGD, ability: AbilityGD) -> void:
 			Unit.base_card.text = new_text
 			
 		if ability is TargetAbilityGD:
-			ability.used = true
-			onUpdateTargetAbility(Unit, ability, true)
+			onUpdateTargetAbility(Unit, ability)
 	
-var target_abilities_used: bool = true
-func onUpdateTargetAbilities(state: bool) -> void:
-	target_abilities_used = state
-	for Unit in Units.on_units().filter(func(x: UnitGD): return x.turns_alive > 0):
+func onUpdateTargetAbilities() -> void:
+	for Unit in Units.on_units():
 		for ability in Unit.abilities:
 			if ability is TargetAbilityGD:
-				ability.used = state
-				onUpdateTargetAbility(Unit, ability, target_abilities_used)
-	if !state:
-		for child in TargetAbilities.get_children():
-			child.queue_free()
+				onUpdateTargetAbility(Unit, ability)
 	
-func onUpdateUnitTargetAbilities(Unit: UnitGD, disable_state: bool) -> void:
-	pass
-	
-func onUpdateTargetAbility(Unit: UnitGD, ability: TargetAbilityGD, disable_state: bool) -> void:
-	UnitStatusOverlord.onUpdateTargetAbility(Unit, ability, disable_state)
+func onUpdateTargetAbility(Unit: UnitGD, ability: TargetAbilityGD) -> void:
+	UnitStatusOverlord.onUpdateTargetAbility(Unit, ability)
 
 func on_camera_mode_pressed():
 	SpectateCamera.onChangeCameraMode(!SpectateCamera.is_unit_camera)

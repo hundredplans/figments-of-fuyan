@@ -17,6 +17,8 @@ func onAIEndTurnPhaseStart() -> void:
 	AppliedBy.type = "EndAIPhase"
 	for Unit in Units.on_units(1):
 		Unit.stats("active_speed", Unit.max_speed, AppliedBy, true)
+		Units.setUnitStatus(Unit, "TurnUsed")
+	Units.setAbilityState(false)
 
 func onAIPhaseStart() -> void:
 	var AppliedBy := AppliedByGD.new()
@@ -24,8 +26,10 @@ func onAIPhaseStart() -> void:
 	for Unit in Units.on_units(1):
 		Unit.stats("active_speed", Unit.max_speed, AppliedBy, true)
 		Unit.attack_amount = 1
+		Units.setUnitStatus(Unit, "TurnUnused")
 			
 	onBeginMoveAIUnits()
+	Units.setAbilityState(true)
 	
 func onBeginMoveAIUnits() -> void:
 	invisible_movement_tracker = []
@@ -35,6 +39,7 @@ func onBeginMoveAIUnits() -> void:
 func onMoveNextAIUnit() -> void:
 	if active_movement_order.size() > 0:
 		var Unit: UnitGD = active_movement_order.pop_front()
+		Units.setUnitStatus(Unit, "TurnActive")
 		Tiles.onCreateMovementPaths(Unit)
 		var old_paths: Dictionary = Tiles.movement_paths.duplicate()
 		var visible_enemies: Array = Unit.getVisibleEnemies()
@@ -85,7 +90,7 @@ func onChosenPathSelected(Unit: UnitGD, chosen_path: Dictionary) -> void:
 	for i in range(chosen_path.size):
 		if chosen_path.types[i].x != 1: Units.onMoveToTileAI(Unit, chosen_path.tiles[i], chosen_path.types[i], visibility_path)
 		else: Units.attack_enemy_or_target(Unit, chosen_path.tiles[i])
-	Units.onAIMoveFinisher(visibility_path)
+	Units.onAIMoveFinisher(Unit, visibility_path)
 
 func onChosenPathVisPath(chosen_path: Dictionary, Unit: UnitGD, default_tile: TileGD, visibility_path: Array) -> void:
 	for i in range(chosen_path.size):

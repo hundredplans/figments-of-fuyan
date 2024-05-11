@@ -54,6 +54,8 @@ unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("3_32lgd")
 
-[connection signal="spawn_set" from="." to="." method="onSpawnTileSet"]
 [connection signal="spawn_set" from="." to="." method="onTileSelected"]
+[connection signal="spawn_set" from="." to="." method="onSpawnTileSet"]
+[connection signal="stagger_set" from="." to="." method="onTileSelected"]
+[connection signal="stagger_set" from="." to="." method="onStaggerSet"]
 [connection signal="text_submitted" from="Container/CommandLine" to="." method="_on_command_line_text_submitted"]

@@ -7,6 +7,7 @@ var Vision: VisionGD
 var Units: UnitsGD
 var SpectateCamera: Node3D
 var LevelUI: LevelUIGD
+var LevelMap: LevelMapGD
 
 func onDeathAbilities(Deather: UnitGD, AppliedBy: AppliedByGD) -> void:
 	onLastWill(Deather, AppliedBy)
@@ -26,15 +27,12 @@ func onArrive(Unit: UnitGD) -> void:
 	var abilities: Array = onFindAbilities(Unit, "Arrive")
 	for ability in abilities:
 		onTriggerAbilitySpectateDelay(Unit, ability, ability.onArrive.bind({"Unit": Unit}), ability.ARRIVE_DELAY)
-	var AppliedBy := AppliedByGD.new()
-	AppliedBy.type = "StunArrive"
-	
-	#if !Unit.rarity == 7:
-	onStun(Unit, AppliedBy)
 	
 func onTargetAbility(Unit: UnitGD, ability: TargetAbilityGD, Tile: TileGD, tiles: Dictionary) -> void:
 	onTriggerAbilitySpectateDelay(Unit, ability, ability.onTargetAbility.bind({"Unit": Unit, "Tile": Tile, "tiles": tiles}), ability.TARGET_ABILITY_DELAY)
 	Units.PlayerManager._on_unit_deselected(Units.PlayerManager.UnitSelected)
+	ability.used = true
+	LevelUI.onUpdateTargetAbility(Unit, ability)
 	
 func onRevenge(Damagee: UnitGD, AppliedBy: AppliedByGD, DMGInfo: DMGInfoGD, damage: int):
 	var abilities: Array = onFindAbilities(Damagee, "Revenge")
@@ -153,17 +151,18 @@ func onHeal(healInfo: HealInfoGD) -> void:
 		onWhenHealed(healInfo.Healee, healInfo, heal_amount)
 
 func onPlayerPhaseStart() -> void:
-	for Unit in Units.on_units().filter(func(x: UnitGD): return x.turns_alive > 0):
+	for Unit in Units.on_units():
 		var abilities: Array = onFindAbilities(Unit, "TargetAbility")
 		for ability in abilities:
 			var tiles: Dictionary = ability.onTargetAbilityCondition({"Unit": Unit})
-			LevelUI.onUpdateTargetAbility(Unit, ability, tiles["affect"].is_empty())
 			ability.can_affect = !tiles["affect"].is_empty()
+			LevelUI.onUpdateTargetAbility(Unit, ability)
 
 func onStagger(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	GameEffects.onAddGameFX(Unit, "Stagger", {"AppliedBy": AppliedBy})
 	VFX.onCreateStaggerVFX(Unit)
 	LevelUI.UnitStatusOverlord.onAddUnitFX(Unit, "Stagger")
+	LevelUI.UnitStatusOverlord.onUpdateUnitTargetAbilities(Unit)
 
 func onRemoveStagger(GameFX: GameFXGD) -> void:
 	VFX.onRemoveStaggerVFX(GameFX.Unit)
@@ -195,3 +194,8 @@ func isStaggered(Unit: UnitGD) -> bool:
 	
 func isDazed(Unit: UnitGD) -> bool:
 	return GameEffects.onGameFXExists(Unit, "Daze")
+
+func isAbilityEnabled(Unit: UnitGD, ability: TargetAbilityGD) -> bool:
+	return ability.can_affect and !ability.used and ability.charges != 0 and\
+	!isStaggered(Unit) and Unit.turn_status != "TurnUsed" and Units.ability_state\
+	and (LevelMap.game_phase == "PlayerPhase" and Unit.team == 0 or (LevelMap.game_phase == "AIPhase" and Unit.team == 1))
