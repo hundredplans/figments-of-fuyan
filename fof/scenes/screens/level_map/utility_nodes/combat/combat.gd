@@ -26,6 +26,11 @@ func onArrive(Unit: UnitGD) -> void:
 	var abilities: Array = onFindAbilities(Unit, "Arrive")
 	for ability in abilities:
 		onTriggerAbilitySpectateDelay(Unit, ability, ability.onArrive.bind({"Unit": Unit}), ability.ARRIVE_DELAY)
+	var AppliedBy := AppliedByGD.new()
+	AppliedBy.type = "StunArrive"
+	
+	#if !Unit.rarity == 7:
+	onStun(Unit, AppliedBy)
 	
 func onTargetAbility(Unit: UnitGD, ability: TargetAbilityGD, Tile: TileGD, tiles: Dictionary) -> void:
 	onTriggerAbilitySpectateDelay(Unit, ability, ability.onTargetAbility.bind({"Unit": Unit, "Tile": Tile, "tiles": tiles}), ability.TARGET_ABILITY_DELAY)
@@ -165,7 +170,13 @@ func onRemoveStagger(GameFX: GameFXGD) -> void:
 	LevelUI.UnitStatusOverlord.onRemoveUnitFX(GameFX.Unit, "Stagger")
 
 func onDaze(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
-	pass
+	GameEffects.onAddGameFX(Unit, "Daze", {"AppliedBy": AppliedBy})
+	VFX.onCreateDazeVFX(Unit)
+	LevelUI.UnitStatusOverlord.onAddUnitFX(Unit, "Daze")
+	
+func onRemoveDaze(GameFX: GameFXGD) -> void:
+	VFX.onRemoveDazeVFX(GameFX.Unit)
+	LevelUI.UnitStatusOverlord.onRemoveUnitFX(GameFX.Unit, "Daze")
 	
 func onStun(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	onStagger(Unit, AppliedBy)
@@ -178,3 +189,9 @@ func onHelpfulHelmetDelayed(a: Dictionary) -> void:
 	var Unit: UnitGD = Units.unit_by_tile(a.Tile)
 	GameEffects.onAddGameFX(Unit, "HelpfulHelmet", {"AppliedBy": a.AppliedBy, "use_bound": false})
 	Unit.stats("health", a.HEALTH, a.AppliedBy)
+
+func isStaggered(Unit: UnitGD) -> bool:
+	return GameEffects.onGameFXExists(Unit, "Stagger")
+	
+func isDazed(Unit: UnitGD) -> bool:
+	return GameEffects.onGameFXExists(Unit, "Daze")

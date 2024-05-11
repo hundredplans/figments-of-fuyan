@@ -6,6 +6,7 @@ signal load_world
 signal equip_sky
 signal mouse_in_ui
 
+var Combat: CombatGD
 var Tiles: TilesGD
 var Vision: VisionGD
 var SpectateCamera: Node3D
@@ -374,7 +375,7 @@ func onEnterUnitMode(Unit: UnitGD) -> void:
 	
 	if !target_abilities_used:
 		for ability in Unit.abilities:
-			if ability is TargetAbilityGD and ability.can_affect and !ability.used and ability.charges != 0:
+			if ability is TargetAbilityGD and ability.can_affect and !ability.used and ability.charges != 0 and !Combat.isStaggered(Unit):
 				var TargetAbilityBox: Control = preload("res://scenes/screens/level_ui/target_ability_box.tscn").instantiate()
 				TargetAbilities.add_child(TargetAbilityBox)
 				TargetAbilityBox.mouse_entered.connect(on_is_mouse_in_ui.bind(true))
@@ -441,6 +442,9 @@ func onUpdateTargetAbilities(state: bool) -> void:
 	if !state:
 		for child in TargetAbilities.get_children():
 			child.queue_free()
+	
+func onUpdateUnitTargetAbilities(Unit: UnitGD, disable_state: bool) -> void:
+	pass
 	
 func onUpdateTargetAbility(Unit: UnitGD, ability: TargetAbilityGD, disable_state: bool) -> void:
 	UnitStatusOverlord.onUpdateTargetAbility(Unit, ability, disable_state)

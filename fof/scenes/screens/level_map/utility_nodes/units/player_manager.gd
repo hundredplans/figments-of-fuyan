@@ -50,12 +50,13 @@ func on_pass_unit_turn() -> void:
 		unpassed_turns.erase(ActiveUnit)
 		passed_turns.append(ActiveUnit)
 		setUnitStatus(ActiveUnit, "TurnUsed")
+		Units.GameEffects.onTriggerUnitGameFX(ActiveUnit, "TurnPassed")
 		ActiveUnit = null
-		
+			
 		if unpassed_turns.is_empty():
 			LevelUI.on_pass_unit_turn_button_state(true)
 			if Settings.autopass_turn: LevelMap.on_advance_game_phase()
-		else: SpectateCamera.onSpectate(unpassed_turns[0])
+		elif LevelMap.game_phase == "PlayerPhase": SpectateCamera.onSpectate(unpassed_turns[0])
 
 func on_player_phase_start() -> void:
 	LevelUI.PassUnitTurn.visible = true
@@ -73,7 +74,12 @@ func on_player_phase_start() -> void:
 func on_player_end_turn_phase_start() -> void:
 	if UnitSelected != null: _on_unit_deselected(UnitSelected, true)
 	LevelUI.PassUnitTurn.visible = false
-	for Unit in passed_turns + unpassed_turns:
+	
+	for Unit in unpassed_turns:
+		on_select_active_unit(Unit)
+	on_pass_unit_turn()
+	
+	for Unit in passed_turns:
 		Tiles.on_remove_tile_material(Unit.Tile, "")
 		setUnitStatus(Unit, "TurnUsed")
 	

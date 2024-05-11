@@ -252,6 +252,7 @@ func getRotationPoint(xyz: Vector3, r: float, pos: Vector3) -> Vector3:
 
 func setVisible(state: bool) -> void:
 	mesh.visible = state
+	Unit.UnitVFX.visible = state
 	Unit.Units.LevelUI.UnitStatusOverlord.setUnitStatusVisible(Unit, state)
 
 var idle_array: Array = ["Idle", "IdleAbility", "IdleRare"]

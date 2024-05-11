@@ -9,6 +9,7 @@ var effects: Array = []
 func onAddGameFX(Unit: UnitGD, type: String, a: Dictionary, triggers: Array = []) -> void:
 	var GameFX: GameFXGD
 	match type:
+		"Daze": GameFX = onAddDazeFX(Unit, a)
 		"Stagger": GameFX = onAddStaggerFX(Unit, a)
 		"AbilityActive": GameFX = onAddAbilityActive(Unit, a, triggers)
 		"IdleAbility": GameFX = onAddIdleAbility(Unit, a, triggers)
@@ -78,9 +79,22 @@ func onAddHelpfulHelmet(Unit: UnitGD, a: Dictionary) -> GameFXGD:
 	VFX.onCreateHelpfulHelmet(Unit)
 	return GameFX
 	
-func onAddStaggerFX(Unit: UnitGD, a: Dictionary) -> GameFXGD:
+func onOverrideGameFX(Unit: UnitGD, type: String) -> void:
+	for GameFX in effects.filter(func(x: GameFXGD): return x.Unit == Unit):
+		if GameFX.type == type:
+			effects.erase(GameFX)
+			return
+	
+func onAddDazeFX(Unit: UnitGD, a: Dictionary) -> GameFXGD:
+	onOverrideGameFX(Unit, "Daze")
 	var GameFX := onCreateGameFX(Unit, a)
-	onAppendTrigger(GameFX, "NextTurn", Combat.onRemoveStagger.bind(GameFX), "RemoveFX")
+	onAppendTrigger(GameFX, "TurnPassed", Combat.onRemoveDaze.bind(GameFX), "RemoveFX")
+	return GameFX
+	
+func onAddStaggerFX(Unit: UnitGD, a: Dictionary) -> GameFXGD:
+	onOverrideGameFX(Unit, "Stagger")
+	var GameFX := onCreateGameFX(Unit, a)
+	onAppendTrigger(GameFX, "TurnPassed", Combat.onRemoveStagger.bind(GameFX), "RemoveFX")
 	return GameFX
 	
 func onCreateGameFX(Unit: UnitGD, a: Dictionary, triggers: Array = []) -> GameFXGD:
