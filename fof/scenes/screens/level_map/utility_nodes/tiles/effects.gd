@@ -6,7 +6,7 @@ var hovered_type: Variant = Vector2.ZERO
 
 func on_manage_height_drop_label(UnitSelected: UnitGD) -> void:
 	if HeightDropLabel == null or HeightDropLabel.is_queued_for_deletion():
-		if hovered_type.x == 4 and hovered_type.z != 0 and Tile.path_hovered:
+		if hovered_type.x == 4 and hovered_type.z != 0 and "PathHovered" in Tile.tile_outlines:
 			HeightDropLabel = preload("res://scenes/screens/level_map/height_drop_label.tscn").instantiate()
 			add_child(HeightDropLabel)
 			HeightDropLabel.look_at(\

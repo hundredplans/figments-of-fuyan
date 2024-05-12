@@ -203,3 +203,48 @@ func onUpdateUnitTargetAbilities(Unit: UnitGD) -> void:
 	for ability in Unit.abilities:
 		if ability is TargetAbilityGD:
 			onUpdateTargetAbility(Unit, ability)
+
+const BUFF_COLORS: Dictionary = {
+	-3: "a90002",
+	-2: "fe0002",
+	-1: "ff7a69",
+	1: "aeffa6",
+	2: "11ff00",
+	3: "0fc800",
+}
+
+func getBuffColorValue(value: int) -> String:
+	var color_value: int = 0
+	match abs(value):
+		1, 2, 4: color_value = 1
+		3, 5: color_value = 2
+		_: color_value = 3
+	return BUFF_COLORS[color_value * (clamp(value, -1, 1))]
+
+func onCreateBuffNextTurn(buff_info: BuffInfoGD) -> void:
+	for UnitStatus in onFindUnitStatus(buff_info.Unit):
+		UnitStatus.onCreateBuffNextTurn(buff_info.stat, buff_info.value, getBuffColorValue(buff_info.value))
+	
+	for UnitStatus in onFindUnitStatus(buff_info.Unit, "UnitFieldStatus"):
+		UnitStatus.onCreateBuffNextTurn(buff_info.stat, buff_info.value)
+	
+func onRemoveBuffNextTurn(buff_info: BuffInfoGD) -> void:
+	for UnitStatus in onFindUnitStatus(buff_info.Unit):
+		UnitStatus.onRemoveBuffNextTurn(buff_info.stat)
+
+	for UnitStatus in onFindUnitStatus(buff_info.Unit, "UnitFieldStatus"):
+		UnitStatus.onRemoveBuffNextTurn(buff_info.stat)
+
+func onCreateHealNextTurn(heal_info: HealInfoGD) -> void:
+	for UnitStatus in onFindUnitStatus(heal_info.Healee):
+		UnitStatus.onCreateHealNextTurn(getBuffColorValue(heal_info.heal))
+	
+	for UnitStatus in onFindUnitStatus(heal_info.Healee, "UnitFieldStatus"):
+		UnitStatus.onCreateHealNextTurn(heal_info.heal)
+	
+func onRemoveHealNextTurn(heal_info: HealInfoGD) -> void:
+	for UnitStatus in onFindUnitStatus(heal_info.Healee):
+		UnitStatus.onRemoveHealNextTurn()
+
+	for UnitStatus in onFindUnitStatus(heal_info.Healee, "UnitFieldStatus"):
+		UnitStatus.onRemoveHealNextTurn()

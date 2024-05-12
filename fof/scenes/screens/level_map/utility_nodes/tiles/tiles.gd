@@ -124,14 +124,13 @@ func from_center_concentric(distance: int = 1, otiles: Array = get_children(), e
 	return all_neighbours(position_to_tile(Vector4(0, 0, 0, elevation)), distance, search_elevation, otiles)
 
 func neighbour_rotation(Tile: TileGD, _Tile: TileGD) -> int:
-	if is_neighbour(Tile, _Tile, 1, true):
-		var direction: Variant = _Tile.onTTpos() - Tile.onTTpos()
-		
-		direction = Vector3(direction.x, direction.y, direction.z)
-		for i in range(cube_directions.size()):
-			if cube_directions[i] == direction:
-				return i
-	return -1
+	var direction: Variant = _Tile.onTTpos() - Tile.onTTpos()
+	
+	direction = Vector3(direction.x, direction.y, direction.z)
+	for i in range(cube_directions.size()):
+		if cube_directions[i] == direction:
+			return i
+	return 0
 
 func all_diagonals(Tile: TileGD, distance: int = 1, tiles: Array = get_children(), search_elevation: bool = false) -> Array:
 	return positions_to_tiles(_all_diagonals(Tile.onTTpos(), tiles_to_positions(tiles), distance, search_elevation))

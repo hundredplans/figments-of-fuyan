@@ -15,8 +15,11 @@ func onDeathAbilities(Deather: UnitGD, AppliedBy: AppliedByGD) -> void:
 	onTrauma(Deather, AppliedBy)
 	onBloodthirst(Deather, AppliedBy)
 	
-func onLastWill(_Deather: UnitGD, _AppliedBy: AppliedByGD) -> void:
-	pass
+func onLastWill(Deather: UnitGD, AppliedBy: AppliedByGD) -> void:
+	var abilities: Array = onFindAbilities(Deather, "LastWill")
+	for ability in abilities:
+		if ability.onLastWillCondition({}):
+			onTriggerAbilitySpectateDelay(Deather, ability, ability.onLastWill.bind({"Deather": Deather, "AppliedBy": AppliedBy}), ability.LAST_WILL_DELAY)
 	
 func onWhenHealed(Healee: UnitGD, healInfo: HealInfoGD, heal_amount: int):
 	var abilities: Array = onFindAbilities(Healee, "WhenHealed")
@@ -74,7 +77,7 @@ func onTriggerAbilitySpectateDelay(Triggerer: UnitGD, ability: AbilityGD, callab
 	var vis: bool = Triggerer.team == 0 or Triggerer.Tile in Vision.ally_vision
 	if vis and !ability.ignore_ability_delay:
 		var SpectateUnit: UnitGD = SpectateCamera.getSpectateUnit(["Ally", "Enemy"])
-		if SpectateUnit != Triggerer:
+		if SpectateUnit != Triggerer and !Triggerer.is_queued_for_deletion():
 			SpectateCamera.onSpectate(Triggerer)
 			SpectateCamera.onEndTrackUnit()
 		
@@ -157,6 +160,9 @@ func onPlayerPhaseStart() -> void:
 			var tiles: Dictionary = ability.onTargetAbilityCondition({"Unit": Unit})
 			ability.can_affect = !tiles["affect"].is_empty()
 			LevelUI.onUpdateTargetAbility(Unit, ability)
+			
+			if ability is TargetAbilityGD:
+				ability.used = false
 
 func onStagger(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	GameEffects.onAddGameFX(Unit, "Stagger", {"AppliedBy": AppliedBy})
@@ -199,3 +205,22 @@ func isAbilityEnabled(Unit: UnitGD, ability: TargetAbilityGD) -> bool:
 	return ability.can_affect and !ability.used and ability.charges != 0 and\
 	!isStaggered(Unit) and Unit.turn_status != "TurnUsed" and Units.ability_state\
 	and (LevelMap.game_phase == "PlayerPhase" and Unit.team == 0 or (LevelMap.game_phase == "AIPhase" and Unit.team == 1))
+
+func onBuffInfo(buff_info: BuffInfoGD) -> void:
+	buff_info.Unit.stats(buff_info.stat, buff_info.value, buff_info.AppliedBy, buff_info.absolute)
+
+func onRemoveBuffNextTurn(a: Dictionary) -> void:
+	onBuffInfo(a.buff_info)
+	LevelUI.UnitStatusOverlord.onRemoveBuffNextTurn(a.buff_info)
+
+func onApplyBuffNextTurn(buff_info: BuffInfoGD, triggers: Array = []) -> void:
+	onBuffInfo(buff_info)
+	buff_info.value *= -1
+	GameEffects.onAddGameFX(buff_info.Unit, "BuffNextTurn", {"buff_info": buff_info}, triggers)
+
+func onApplyHealNextTurn(heal_info: HealInfoGD, triggers: Array = []) -> void:
+	GameEffects.onAddGameFX(heal_info.Healee, "HealNextTurn", {"heal_info": heal_info}, triggers)
+
+func onRemoveHealNextTurn(heal_info: HealInfoGD) -> void:
+	LevelUI.UnitStatusOverlord.onRemoveHealNextTurn(heal_info)
+	onHeal(heal_info)

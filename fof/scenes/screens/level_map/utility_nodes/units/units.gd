@@ -21,29 +21,31 @@ var ability_state: bool = false
 var UnitScene: PackedScene = preload("res://scenes/screens/level_map/utility_nodes/units/unit.tscn")
 
 func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int, tile: TileGD) -> UnitGD:
-	var Unit: UnitGD = UnitScene.instantiate()
-	Unit.Units = self
-	Unit.Vision = Vision
-	Unit.SpectateCamera = SpectateCamera
-	Unit.Tiles = Tiles
-	FieldedUnits.add_child(Unit)
-	
-	Unit.on_create_unit(id, tool_id, effects, team, rot, tile) # Takes around 2.2 seconds
-	Unit.Model.movement_finished.connect(on_movement_finished.bind(Unit))
-	Unit.Model.drop_calculate_damage.connect(on_drop_calculate_damage.bind(Unit))
-	Unit.Model.attack_finished.connect(on_attack_finished.bind(Unit))
-	Unit.Model.death_finished.connect(on_death_finished.bind(Unit))
-	Unit.Model.hurt_finished.connect(on_hurt_finished.bind(Unit))
-	
-	LevelUI.UnitStatusOverlord.onUnitAwakened(Unit)
-	SpectateCamera.onUnitAwakened(Unit)
-	
-	Unit.on_arrive(team == 0 or Unit.getVisibleEnemies().size() > 0)
-	AIManager.onUnitAwakened(Unit)
-	Unit.finished_awakening = true
-	Combat.onArrive(Unit)
-	PlayerManager.onSetupAllyPassedTurns(Unit)
-	return Unit
+	if !unit_by_tile_bool(tile):
+		var Unit: UnitGD = UnitScene.instantiate()
+		Unit.Units = self
+		Unit.Vision = Vision
+		Unit.SpectateCamera = SpectateCamera
+		Unit.Tiles = Tiles
+		FieldedUnits.add_child(Unit)
+		
+		Unit.on_create_unit(id, tool_id, effects, team, rot, tile) # Takes around 2.2 seconds
+		Unit.Model.movement_finished.connect(on_movement_finished.bind(Unit))
+		Unit.Model.drop_calculate_damage.connect(on_drop_calculate_damage.bind(Unit))
+		Unit.Model.attack_finished.connect(on_attack_finished.bind(Unit))
+		Unit.Model.death_finished.connect(on_death_finished.bind(Unit))
+		Unit.Model.hurt_finished.connect(on_hurt_finished.bind(Unit))
+		
+		LevelUI.UnitStatusOverlord.onUnitAwakened(Unit)
+		SpectateCamera.onUnitAwakened(Unit)
+		
+		Unit.on_arrive(team == 0 or Unit.getVisibleEnemies().size() > 0)
+		AIManager.onUnitAwakened(Unit)
+		Unit.finished_awakening = true
+		Combat.onArrive(Unit)
+		PlayerManager.onSetupAllyPassedTurns(Unit)
+		return Unit
+	return null
 
 func on_start_phase_start() -> void:
 	AIManager.LevelMap = LevelMap

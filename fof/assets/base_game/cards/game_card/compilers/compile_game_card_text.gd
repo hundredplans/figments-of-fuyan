@@ -83,7 +83,7 @@ func on_replace_ability_names(text: String, base_card: BaseCardGD) -> String:
 	var ability_indexes: Dictionary = {}
 	var total_removed: int = 0
 	var regex := RegEx.new()
-	regex.compile("\\$[a-zA-Z]*")
+	regex.compile("\\$[a-zA-Z\\s]*")
 	for result in regex.search_all(text):
 		var result_str: String = result.get_string()
 		var index: int = text.find(result_str) + result_str.length()
@@ -97,6 +97,8 @@ func on_replace_ability_names(text: String, base_card: BaseCardGD) -> String:
 		for ability_name in Array(DirAccess.get_files_at(DIR_PATH)).filter(func(x: String): return x.ends_with(".tres")):
 			var ability: AbilityGD = load(DIR_PATH + ability_name)
 			if ability.charges != -1:
+				print(ability_indexes)
+				print(ability.ability_name)
 				ability.ability_index = ability_indexes[ability.ability_name]
 				ResourceSaver.save(ability)
 	return text

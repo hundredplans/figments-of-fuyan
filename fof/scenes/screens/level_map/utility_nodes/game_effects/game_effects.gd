@@ -14,6 +14,8 @@ func onDeathFinished(Unit: UnitGD) -> void:
 func onAddGameFX(Unit: UnitGD, type: String, a: Dictionary, triggers: Array = []) -> void:
 	var GameFX: GameFXGD
 	match type:
+		"HealNextTurn": GameFX = onAddHealNextTurn(Unit, a, triggers)
+		"BuffNextTurn": GameFX = onAddBuffNextTurn(Unit, a, triggers)
 		"Daze": GameFX = onAddDazeFX(Unit, a)
 		"Stagger": GameFX = onAddStaggerFX(Unit, a)
 		"AbilityActive": GameFX = onAddAbilityActive(Unit, a, triggers)
@@ -22,6 +24,18 @@ func onAddGameFX(Unit: UnitGD, type: String, a: Dictionary, triggers: Array = []
 	
 	GameFX.type = type
 	onTriggerGameFX(GameFX, "Instant")
+		
+func onAddBuffNextTurn(Unit: UnitGD, a: Dictionary, triggers: Array) -> GameFXGD:
+	var GameFX := onCreateGameFX(Unit, a, triggers)
+	onAppendTrigger(GameFX, "NextTurn", Combat.onRemoveBuffNextTurn.bind(a), "RemoveFX")
+	LevelUI.UnitStatusOverlord.onCreateBuffNextTurn(a.buff_info)
+	return GameFX
+	
+func onAddHealNextTurn(Unit: UnitGD, a: Dictionary, triggers: Array) -> GameFXGD:
+	var GameFX := onCreateGameFX(Unit, a, triggers)
+	onAppendTrigger(GameFX, "NextTurn", Combat.onRemoveHealNextTurn.bind(a.heal_info), "RemoveFX")
+	LevelUI.UnitStatusOverlord.onCreateHealNextTurn(a.heal_info)
+	return GameFX
 		
 func onTriggerGameFX(GameFX: GameFXGD, type: String, bound_args: Array = []) -> void:
 	if GameFX != null:
@@ -125,7 +139,7 @@ func onAIPhaseStart() -> void:
 	
 func onAIEndTurnPhaseStart() -> void:
 	for GameFX in effects.filter(func(x: GameFXGD): return x.Unit.team == 1):
-		onTriggerGameFX(GameFX, "NextTurn")
+		onTriggerGameFX(GameFX, "EndTurn")
 
 func onPlayerPhaseStart() -> void:
 	for GameFX in effects.filter(func(x: GameFXGD): return x.Unit.team == 0):

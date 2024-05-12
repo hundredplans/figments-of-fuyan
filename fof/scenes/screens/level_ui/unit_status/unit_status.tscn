@@ -1,20 +1,66 @@
-[gd_scene load_steps=16 format=3 uid="uid://c58jdx2o7cfwc"]
+[gd_scene load_steps=18 format=3 uid="uid://c58jdx2o7cfwc"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_ui/unit_status/unit_status.gd" id="1_32v7v"]
 [ext_resource type="Texture2D" uid="uid://bgts82p0ip45a" path="res://scenes/screens/level_ui/unit_status/unit_status_pieces/shifting_background.png" id="2_n604n"]
 [ext_resource type="Texture2D" uid="uid://dr4ojvlaol232" path="res://scenes/screens/level_ui/unit_status/unit_status_pieces/status_in.png" id="3_bwt2n"]
 [ext_resource type="Texture2D" uid="uid://bq7oil2dvc6bs" path="res://assets/base_game/cards/game_card/art/bbcode/ATTACK.png" id="3_sw1gj"]
-[ext_resource type="LabelSettings" uid="uid://je535i1721un" path="res://assets/UI/sixty_four/sixty_four_default.tres" id="4_pk6wt"]
 [ext_resource type="Texture2D" uid="uid://dqwa4ewr44mxc" path="res://scenes/screens/level_ui/unit_status/unit_status_pieces/status_gem.png" id="5_mw3jb"]
 [ext_resource type="Texture2D" uid="uid://cor7udw0x0ufw" path="res://assets/base_game/cards/game_card/art/bbcode/HEALTH.png" id="5_qsmdt"]
 [ext_resource type="Texture2D" uid="uid://dkdx58e2117h0" path="res://assets/base_game/cards/game_card/art/bbcode/SPEED.png" id="6_j12nd"]
 [ext_resource type="Material" uid="uid://ft8je82hjek6" path="res://scenes/screens/level_ui/unit_status/move_slight.tres" id="7_mq0yb"]
 [ext_resource type="Texture2D" uid="uid://dr6tmi3ckdsvk" path="res://scenes/screens/level_ui/unit_status/unit_status_pieces/light_mask.png" id="7_sc76b"]
 [ext_resource type="Texture2D" uid="uid://b0hfj23m52s2r" path="res://scenes/screens/level_ui/unit_status/unit_status_pieces/status_white.png" id="8_sa0gl"]
+[ext_resource type="LabelSettings" uid="uid://x63q2nfy4si3" path="res://assets/UI/sixty_four/sixty_four_medium.tres" id="10_xovku"]
 [ext_resource type="Texture2D" uid="uid://o2y0lth6qfc2" path="res://assets/base_game/cards/cards/FredericTheFearless/art_mini.png" id="11_int12"]
 [ext_resource type="Texture2D" uid="uid://bybmcf64yfglo" path="res://scenes/screens/level_ui/unit_status/unit_status_pieces/rainbow.png" id="12_emc3m"]
 [ext_resource type="PackedScene" uid="uid://dimwtppnu0iwf" path="res://scenes/screens/level_ui/unit_status/hover_card.tscn" id="13_m4is7"]
 [ext_resource type="Texture2D" uid="uid://c887ujblogwhg" path="res://scenes/screens/level_ui/unit_status/unit_status_pieces/zzz.png" id="16_f48b4"]
+
+[sub_resource type="Animation" id="Animation_ix7td"]
+resource_name = "ScaleStatSlight"
+length = 5.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Stats/Attack/AttackSprite:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2.5, 5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.1, 1.1), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Stats/Health/HealthSprite:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2.5, 5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.1, 1.1), Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Stats/Speed/SpeedSprite:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 2.5, 5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.1, 1.1), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_iq8mx"]
+_data = {
+"ScaleStatSlight": SubResource("Animation_ix7td")
+}
 
 [node name="UnitStatus" type="Control"]
 custom_minimum_size = Vector2(380, 130)
@@ -98,26 +144,44 @@ unique_name_in_owner = true
 material = ExtResource("7_mq0yb")
 layout_mode = 1
 anchors_preset = 0
-offset_left = 109.0
-offset_top = 28.0
-offset_right = 262.0
-offset_bottom = 108.0
+offset_left = 110.0
+offset_top = 31.0
+offset_right = 263.0
+offset_bottom = 111.0
 mouse_filter = 2
 
 [node name="Attack" type="Control" parent="Stats"]
 use_parent_material = true
 layout_mode = 2
 anchors_preset = 0
-offset_right = 45.0
-offset_bottom = 80.0
+offset_left = -1.0
+offset_top = 2.0
+offset_right = 44.0
+offset_bottom = 82.0
 size_flags_horizontal = 3
 mouse_filter = 2
+
+[node name="NextTurnStats" type="HBoxContainer" parent="Stats/Attack"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = -7.0
+offset_right = 41.0
+offset_bottom = 9.0
+mouse_filter = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="Attack" type="TextureRect" parent="Stats/Attack/NextTurnStats"]
+visible = false
+texture_filter = 1
+layout_mode = 2
 
 [node name="AttackSprite" type="Sprite2D" parent="Stats/Attack"]
 unique_name_in_owner = true
 texture_filter = 1
 use_parent_material = true
-position = Vector2(20, 22)
+position = Vector2(20, 26.2084)
+scale = Vector2(1.08241, 1.08241)
 texture = ExtResource("3_sw1gj")
 
 [node name="Label" type="Label" parent="Stats/Attack"]
@@ -137,7 +201,7 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(35, 20)
 text = "1"
-label_settings = ExtResource("4_pk6wt")
+label_settings = ExtResource("10_xovku")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -146,16 +210,38 @@ use_parent_material = true
 layout_mode = 2
 anchors_preset = 0
 offset_left = 53.0
+offset_top = 5.0
 offset_right = 99.0
-offset_bottom = 80.0
+offset_bottom = 85.0
 size_flags_horizontal = 3
 mouse_filter = 2
+
+[node name="NextTurnStats" type="HBoxContainer" parent="Stats/Health"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = -10.0
+offset_right = 39.0
+offset_bottom = 6.0
+mouse_filter = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="Health" type="TextureRect" parent="Stats/Health/NextTurnStats"]
+visible = false
+texture_filter = 1
+layout_mode = 2
+
+[node name="Heal" type="TextureRect" parent="Stats/Health/NextTurnStats"]
+visible = false
+texture_filter = 1
+layout_mode = 2
 
 [node name="HealthSprite" type="Sprite2D" parent="Stats/Health"]
 unique_name_in_owner = true
 texture_filter = 1
 use_parent_material = true
-position = Vector2(21, 19)
+position = Vector2(21, 23.2084)
+scale = Vector2(1.08241, 1.08241)
 texture = ExtResource("5_qsmdt")
 
 [node name="Label" type="Label" parent="Stats/Health"]
@@ -163,15 +249,15 @@ texture_filter = 1
 use_parent_material = true
 layout_mode = 1
 anchors_preset = -1
-offset_left = -12.0
+offset_left = -14.0
 offset_top = 36.0
-offset_right = 58.0
+offset_right = 56.0
 offset_bottom = 76.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(35, 20)
 text = "2"
-label_settings = ExtResource("4_pk6wt")
+label_settings = ExtResource("10_xovku")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -180,16 +266,33 @@ use_parent_material = true
 layout_mode = 2
 anchors_preset = 0
 offset_left = 107.0
+offset_top = 3.0
 offset_right = 153.0
-offset_bottom = 80.0
+offset_bottom = 83.0
 size_flags_horizontal = 3
 mouse_filter = 2
+
+[node name="NextTurnStats" type="HBoxContainer" parent="Stats/Speed"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = -8.0
+offset_right = 37.0
+offset_bottom = 8.0
+mouse_filter = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="Speed" type="TextureRect" parent="Stats/Speed/NextTurnStats"]
+visible = false
+texture_filter = 1
+layout_mode = 2
 
 [node name="SpeedSprite" type="Sprite2D" parent="Stats/Speed"]
 unique_name_in_owner = true
 texture_filter = 1
 use_parent_material = true
-position = Vector2(20, 20)
+position = Vector2(20, 24.2084)
+scale = Vector2(1.08241, 1.08241)
 texture = ExtResource("6_j12nd")
 
 [node name="Label" type="Label" parent="Stats/Speed"]
@@ -207,7 +310,7 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(35, 20)
 text = "2"
-label_settings = ExtResource("4_pk6wt")
+label_settings = ExtResource("10_xovku")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -257,3 +360,8 @@ texture_filter = 1
 material = ExtResource("7_mq0yb")
 position = Vector2(11, 10)
 texture = ExtResource("16_f48b4")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_iq8mx")
+}

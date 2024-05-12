@@ -12,7 +12,6 @@ var hero_card: HeroCardGD
 var base_card: BaseCardGD
 var ai: Dictionary
 
-var max_attack: int
 var attack: int
 
 var max_speed: int
@@ -63,7 +62,6 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	max_speed = base_card.speed
 	
 	max_health = base_card.health
-	max_attack = base_card.attack
 	rarity = base_card.rarity
 	height = {
 		"top": base_card.top,
@@ -136,12 +134,8 @@ func stats(stat_type: String, val: int, AppliedBy := AppliedByGD.new(), absolute
 				max_speed = clamp(max_speed + val, 0, 9)
 				speed = clamp(speed + val, 0, max_speed)
 		"attack":
-			if absolute:
-				attack = clamp(val, 0, 99)
-				max_attack = attack
-			else:
-				max_attack = clamp(max_attack + val, 0, 99)
-				attack = clamp(attack + val, 0, max_attack)
+			if absolute: attack = clamp(val, 0, 99)
+			else: attack = clamp(attack + val, 0, 99)
 		"health":
 			if absolute:
 				health = clamp(val, 0, 99)
@@ -167,8 +161,8 @@ func stats(stat_type: String, val: int, AppliedBy := AppliedByGD.new(), absolute
 			elif health > base_card.health: color = "GREEN"
 		"attack":
 			stat_updated = attack != current_attack
-			if attack < max_attack: color = "RED"
-			elif health > base_card.speed: color = "GREEN"
+			if attack < base_card.attack: color = "RED"
+			elif attack > base_card.attack: color = "GREEN"
 		"speed":
 			stat_updated = speed != current_speed
 			if speed > base_card.speed: color = "GREEN"
@@ -317,3 +311,6 @@ func getAttackAnimation() -> String:
 	if Units.GameEffects.onGameFXExists(self, "AbilityActive"):
 		return "AttackAbility"
 	return "Attack"
+	
+func getVisibleTiles() -> Array: # Removes tile unit is on
+	return visible_tiles.filter(func(x: TileGD): return x != Tile)

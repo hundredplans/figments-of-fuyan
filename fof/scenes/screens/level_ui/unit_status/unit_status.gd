@@ -23,6 +23,7 @@ var type: String = "UnitStatusRegular"
 
 @onready var SelectedMask: TextureButton = %SelectedMask 
 @onready var SlotOne: Sprite2D = %SlotOne
+@onready var AniPlayer: AnimationPlayer = $AnimationPlayer
 
 var card_selected_material: Material = preload("res://assets/base_game/cards/game_card/materials/card_selected_material.tres")
 func _ready() -> void:
@@ -30,6 +31,7 @@ func _ready() -> void:
 	Rainbow.visible = false
 	Gem.visible = false
 	pivot_offset = size / 2
+	AniPlayer.play("ScaleStatSlight")
 	
 var Unit: UnitGD
 func setUnit(_Unit: UnitGD) -> void:
@@ -72,8 +74,7 @@ func onUpdateStatBounceBack(stat: int, stat_changed: String, color: String) -> v
 	var StatLabel: Label = Stats.get_node(stat_changed + "/Label")
 	
 	StatLabel.text = str(stat)
-	StatLabel.label_settings = preload("res://assets/UI/sixty_four/sixty_four_default.tres")\
-	if StatLabel.text.length() == 1 else preload("res://assets/UI/sixty_four/sixty_four_medium.tres")
+	StatLabel.label_settings = preload("res://assets/UI/sixty_four/sixty_four_medium.tres")
 	StatLabel.modulate = COLOR_INFO[color]
 	
 	var ScaleTween := create_tween()
@@ -120,3 +121,31 @@ func onAddUnitFX(fx_type: String, charges: int = -1) -> void:
 func onRemoveUnitFX(fx_type: String) -> void:
 	for child in UnitFX.get_children():
 		if child.type == fx_type: child.queue_free()
+
+func onCreateBuffNextTurn(stat: String, value: int, color: Color) -> void:
+	var prefix: String = "down" if value < 0 else "up"
+	var arrow_value: int = 0
+	match abs(value):
+		1: arrow_value = 1
+		2, 3: arrow_value = 2
+		_: arrow_value = 3
+	
+	var stat_node: TextureRect = Stats.get_node(stat.capitalize() + "/NextTurnStats/" + stat.capitalize())
+	stat_node.texture = load("res://scenes/screens/level_ui/next_turn_buffs/" + prefix + str(arrow_value) + ".png")
+	stat_node.modulate = color
+	stat_node.visible = true
+
+func onRemoveBuffNextTurn(stat: String) -> void:
+	var stat_node: TextureRect = Stats.get_node(stat.capitalize() + "/NextTurnStats/" + stat.capitalize())
+	stat_node.texture = null
+	stat_node.visible = false
+
+func onCreateHealNextTurn(color: Color) -> void:
+	var stat_node: TextureRect = Stats.get_node("Health/NextTurnStats/Heal")
+	stat_node.texture = preload("res://scenes/screens/level_ui/next_turn_buffs/up_heal.png")
+	stat_node.modulate = color
+	stat_node.visible = true
+
+func onRemoveHealNextTurn() -> void:
+	Stats.get_node("Health/NextTurnStats/Heal").texture = null
+	Stats.get_node("Health/NextTurnStats/Heal").visible = false
