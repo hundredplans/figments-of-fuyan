@@ -45,7 +45,7 @@ func onTriggerGameFX(GameFX: GameFXGD, type: String, bound_args: Array = []) -> 
 				if trigger.callable != null:
 					if !bound_args.is_empty() and trigger.use_bound:
 						trigger.callable = trigger.callable.bindv(bound_args)
-					trigger.callable.call()
+					else: trigger.callable.call()
 				remove_triggers.append(onRemoveTrigger.bind(GameFX, trigger))
 		for trigger in remove_triggers: trigger.call()
 		
@@ -53,7 +53,7 @@ func onActiveAbilityTriggered(Unit: UnitGD) -> void:
 	Unit.Model.onActivateIdleAbility()
 	
 func onRemoveTrigger(GameFX: GameFXGD, trigger: Dictionary) -> void:
-	if !trigger.remove_type.is_empty():
+	if !trigger.remove_type.is_empty() and !(trigger.remove_type == "RemoveFX" and GameFX not in effects):
 		trigger.charges -= 1
 		if trigger.charges <= 0:
 			match trigger.remove_type:
@@ -64,7 +64,6 @@ func onRemoveTrigger(GameFX: GameFXGD, trigger: Dictionary) -> void:
 					GameFX.triggers.erase(trigger)
 		
 func onAddIdleAbility(Unit: UnitGD, a: Dictionary, triggers: Array) -> GameFXGD:
-	triggers[0] = onCreateTrigger(triggers[0], onAddGameFX.bind(Unit, "AbilityActive", a, a.AbilityActive), "RemoveFX")
 	var GameFX := onCreateGameFX(Unit, a, triggers)
 	onAppendTrigger(GameFX, "Remove", Unit.Model.onRemoveIdleAbility)
 	Unit.Model.onActivateIdleAbility()

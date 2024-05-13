@@ -3,6 +3,7 @@ extends Node3D
 
 signal tile_occupied
 
+var is_dead: bool = false
 var id: int = 0
 var tool_id: int = 0
 var effects: Array = []
@@ -167,7 +168,7 @@ func stats(stat_type: String, val: int, AppliedBy := AppliedByGD.new(), absolute
 			stat_updated = speed != current_speed
 			if speed > base_card.speed: color = "GREEN"
 			
-	if stat_updated:
+	if stat_updated and current_health > 0:
 		Units.LevelUI.UnitStatusOverlord.onUpdateStats(self, stats_changed.capitalize(), color)
 		if health == 0: Units.kill_unit(self, AppliedBy)
 		elif health < current_health and AppliedBy.type != "Height": Units.hurt_unit(self, AppliedBy)
@@ -198,9 +199,12 @@ func on_arrive(in_vision: bool) -> void:
 
 func on_death() -> void:
 	Tiles.on_remove_tile_material(Tile, "EmptyTile")
-	queue_free()
+	reparent(Units.Postmortem)
 	Vision.on_recalculate_vision()
-
+	visible = false
+	is_dead = true
+	global_position = Vector3(1024, 1024, 1024)
+	
 func on_spectated_in_player_phase(state: bool) -> void:
 	Units.LevelUI.UnitStatusOverlord.onUnitSpectated(self, state)
 	Model.onSetOutlineProperties(state)

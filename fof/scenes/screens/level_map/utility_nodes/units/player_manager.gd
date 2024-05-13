@@ -55,7 +55,8 @@ func on_pass_unit_turn() -> void:
 	if ActiveUnit != null:
 		unpassed_turns.erase(ActiveUnit)
 		passed_turns.append(ActiveUnit)
-		Units.setUnitStatus(ActiveUnit, "TurnUsed")
+		
+		if !ActiveUnit.is_dead: Units.setUnitStatus(ActiveUnit, "TurnUsed")
 		ActiveUnit = null
 		
 		if unpassed_turns.is_empty():
@@ -74,8 +75,6 @@ func on_player_phase_start() -> void:
 	for Unit in Units.on_units():
 		Unit.stats("active_speed", Unit.max_speed, AppliedBy, true)
 		Unit.attack_amount = 1
-	
-	Units.setAbilityState(true)
 	
 func on_player_end_turn_phase_start() -> void:
 	if UnitSelected != null: _on_unit_deselected(UnitSelected, true)
@@ -97,7 +96,6 @@ func on_player_end_turn_phase_start() -> void:
 	AppliedBy.type = "PlayerEndTurnPhase"
 	for Unit in Units.on_units():
 		Unit.stats("active_speed", Unit.max_speed, AppliedBy, true)
-	Units.setAbilityState(false)
 
 func on_hurt_finished(Unit: UnitGD) -> void:
 	on_check_autopass(Unit)
@@ -227,5 +225,3 @@ func onRemoveAbilityRange(Unit: UnitGD, ability: TargetAbilityGD) -> void:
 	for Tile in tability_tiles["affect"]:
 		Tiles.on_remove_tile_material(Tile, "TargetAffect")
 
-func onPathHoveredTileSelected() -> void:
-	Units.setAbilityState(false)

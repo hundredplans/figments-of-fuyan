@@ -18,7 +18,6 @@ func onAIEndTurnPhaseStart() -> void:
 	for Unit in Units.on_units(1):
 		Unit.stats("active_speed", Unit.max_speed, AppliedBy, true)
 		Units.setUnitStatus(Unit, "TurnUsed")
-	Units.setAbilityState(false)
 
 func onAIPhaseStart() -> void:
 	var AppliedBy := AppliedByGD.new()
@@ -29,7 +28,6 @@ func onAIPhaseStart() -> void:
 		Units.setUnitStatus(Unit, "TurnUnused")
 			
 	onBeginMoveAIUnits()
-	Units.setAbilityState(true)
 	
 func onBeginMoveAIUnits() -> void:
 	invisible_movement_tracker = []

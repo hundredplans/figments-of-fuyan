@@ -70,11 +70,13 @@ func onAddUnitStatus(Unit: UnitGD, type: String = "UnitStatusRegular") -> void:
 		UnitStatus.ShiftingBackground.material.set_shader_parameter("speed", 0.02)
 	
 func onFindUnitStatus(Unit: UnitGD, type: String = "UnitStatus") -> Array:
-	var arr: Array = []
-	for UnitStatus in units[Unit]: 
-		if UnitStatus.type.begins_with(type):
-			arr.append(UnitStatus)
-	return arr
+	if !Unit.is_dead:
+		var arr: Array = []
+		for UnitStatus in units[Unit]:
+			if UnitStatus.type.begins_with(type):
+				arr.append(UnitStatus)
+		return arr
+	return []
 
 func setUnitStatusTurnStatus(Unit: UnitGD, status: String) -> void:
 	var unit_statuses: Array = units[Unit].duplicate()

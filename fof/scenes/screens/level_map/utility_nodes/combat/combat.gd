@@ -44,10 +44,11 @@ func onRevenge(Damagee: UnitGD, AppliedBy: AppliedByGD, DMGInfo: DMGInfoGD, dama
 			onTriggerAbilitySpectateDelay(Damagee, ability, ability.onRevenge.bind({"DMGInfo": DMGInfo, "Unit": Damagee, "damage": damage, "AppliedBy": AppliedBy}), ability.REVENGE_DELAY)
 	
 func onHit(DMGInfo: DMGInfoGD) -> void:
-	var abilities: Array = onFindAbilities(DMGInfo.AppliedBy.Applier, "OnHit")
+	var Unit: UnitGD = DMGInfo.AppliedBy.Applier
+	var abilities: Array = onFindAbilities(Unit, "OnHit")
 	for ability in abilities:
 		if ability.onHitCondition({"DMGInfo": DMGInfo}):
-			onTriggerAbilitySpectateDelay(DMGInfo.AppliedBy.Applier, ability, ability.onHit.bind({"DMGInfo": DMGInfo}), ability.ON_HIT_DELAY)
+			onTriggerAbilitySpectateDelay(Unit, ability, ability.onHit.bind({"DMGInfo": DMGInfo, "Unit": Unit}), ability.ON_HIT_DELAY)
 	
 	GameEffects.onTriggerUnitGameFX(DMGInfo.AppliedBy.Applier, "OnHit", [DMGInfo.Defender, DMGInfo.AppliedBy])
 	
@@ -77,13 +78,13 @@ func onTriggerAbilitySpectateDelay(Triggerer: UnitGD, ability: AbilityGD, callab
 	var vis: bool = Triggerer.team == 0 or Triggerer.Tile in Vision.ally_vision
 	if vis and !ability.ignore_ability_delay:
 		var SpectateUnit: UnitGD = SpectateCamera.getSpectateUnit(["Ally", "Enemy"])
-		if SpectateUnit != Triggerer and !Triggerer.is_queued_for_deletion():
+		if SpectateUnit != Triggerer and !Triggerer.is_dead:
 			SpectateCamera.onSpectate(Triggerer)
 			SpectateCamera.onEndTrackUnit()
 		
 		var begin_arguments: Dictionary = {"Triggerer": Triggerer, "callable": callable, "ability": ability, "vis": vis}
 		var end_arguments: Dictionary = {"Triggerer": Triggerer, "SpectateUnit": SpectateUnit}
-		
+		 
 		Units.onPushArgDelay(delay, onBeforeAbilityFrontDelay, onAfterAbilityFrontDelay, begin_arguments, end_arguments)
 	else: onUseAbility(Triggerer, callable, ability, vis)
 		
@@ -108,26 +109,28 @@ func onFindAbilities(Unit: UnitGD, type: String) -> Array:
 	return abilities
 
 func onDMG(Damagee: UnitGD, AppliedBy: AppliedByGD, damage: int) -> DMGInfoGD:
-	var DMGInfo := DMGInfoGD.new()
-	var original_health: int = Damagee.health
-	DMGInfo.AppliedBy = AppliedBy
-	DMGInfo.BaseDMG = damage
-	DMGInfo.Defender = Damagee
-	
-	match AppliedBy.type:
-		"Attack":
-			damage = onArmor(Damagee, damage)
-			Damagee.stats("damage", damage, AppliedBy)
-			DMGInfo.HealthDMG = original_health - Damagee.health
-		"Height":
-			Damagee.stats("damage", damage, AppliedBy) # Fix this to not be absolute
-		"Ability":
-			damage = onArmor(Damagee, damage)
-			Damagee.stats("damage", damage, AppliedBy)
-			DMGInfo.HealthDMG = original_health - Damagee.health
-			
-	if DMGInfo.HealthDMG > 0: onRevenge(Damagee, AppliedBy, DMGInfo, damage)
-	return DMGInfo
+	if !Damagee.is_dead and Damagee.health > 0:
+		var DMGInfo := DMGInfoGD.new()
+		var original_health: int = Damagee.health
+		DMGInfo.AppliedBy = AppliedBy
+		DMGInfo.BaseDMG = damage
+		DMGInfo.Defender = Damagee
+		
+		match AppliedBy.type:
+			"Attack":
+				damage = onArmor(Damagee, damage)
+				Damagee.stats("damage", damage, AppliedBy)
+				DMGInfo.HealthDMG = original_health - Damagee.health
+			"Height":
+				Damagee.stats("damage", damage, AppliedBy) # Fix this to not be absolute
+			"Ability":
+				damage = onArmor(Damagee, damage)
+				Damagee.stats("damage", damage, AppliedBy)
+				DMGInfo.HealthDMG = original_health - Damagee.health
+				
+		if DMGInfo.HealthDMG > 0: onRevenge(Damagee, AppliedBy, DMGInfo, damage)
+		return DMGInfo
+	return null
 
 func onArmor(Unit: UnitGD, damage: int) -> int:
 	var abilities: Array = onFindAbilities(Unit, "Armor")
@@ -203,7 +206,7 @@ func isDazed(Unit: UnitGD) -> bool:
 
 func isAbilityEnabled(Unit: UnitGD, ability: TargetAbilityGD) -> bool:
 	return ability.can_affect and !ability.used and ability.charges != 0 and\
-	!isStaggered(Unit) and Unit.turn_status != "TurnUsed" and Units.ability_state\
+	!isStaggered(Unit) and Unit.turn_status == "TurnUnused"\
 	and (LevelMap.game_phase == "PlayerPhase" and Unit.team == 0 or (LevelMap.game_phase == "AIPhase" and Unit.team == 1))
 
 func onBuffInfo(buff_info: BuffInfoGD) -> void:

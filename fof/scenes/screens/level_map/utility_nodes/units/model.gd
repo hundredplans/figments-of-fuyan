@@ -136,6 +136,7 @@ func onMoveToTile(Tile: TileGD, type: Variant, movement_type: String) -> void:
 	
 func attack_tile(Tile: TileGD) -> void:
 	_look_at(Tile)
+	
 	on_play_animation(Unit.getAttackAnimation() if AniPlayer.has_animation("AttackAbility") else "Attack")
 
 var jump_start: Vector3
@@ -175,7 +176,7 @@ func onCalculateEndPosition(Tile: TileGD, type: int) -> Vector3:
 		3: 
 			return Vector3(Tile.global_position.x, Tile.global_position.y + (0.9 if Tile.tile.type == 1 else 0.3), Tile.global_position.z)
 		4:
-			return Vector3(Tile.global_position.x, Tile.global_position.y + (0.75 if Tile.tile.type == 1 else 0.3), Tile.global_position.z)
+			return Vector3(Tile.global_position.x, Tile.global_position.y + (0.9 if Tile.Tiles.is_ramp_tile(Tile) else 0.3), Tile.global_position.z)
 		_:
 			var climb_slope: float = 0.9 if (type == 2 or Tile.tile.type == 1) else 0.3
 			return Vector3(Tile.global_position.x, Tile.global_position.y + climb_slope, Tile.global_position.z)

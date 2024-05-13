@@ -125,11 +125,21 @@ func from_center_concentric(distance: int = 1, otiles: Array = get_children(), e
 
 func neighbour_rotation(Tile: TileGD, _Tile: TileGD) -> int:
 	var direction: Variant = _Tile.onTTpos() - Tile.onTTpos()
+	var distance: int = tile_distance(Tile, _Tile)
 	
-	direction = Vector3(direction.x, direction.y, direction.z)
-	for i in range(cube_directions.size()):
-		if cube_directions[i] == direction:
-			return i
+	if distance == 1:
+		direction = Vector3(direction.x, direction.y, direction.z)
+		for i in range(cube_directions.size()):
+			if cube_directions[i] == direction:
+				return i
+	elif distance > 1:
+		var each_tile_distance: Array = []
+		for i in range(cube_directions.size()):
+			var new_pos: Vector3 = cube_directions[i] + Tile.tpos
+			each_tile_distance.append([i, _tile_distance(_Tile.tpos - new_pos)])
+		each_tile_distance.sort_custom(func(x: Array, y: Array): return x[1] < y[1])
+		return each_tile_distance[0][0]
+			
 	return 0
 
 func all_diagonals(Tile: TileGD, distance: int = 1, tiles: Array = get_children(), search_elevation: bool = false) -> Array:
@@ -158,9 +168,11 @@ func get_children_by_elevation(w: int = 0) -> Array:
 		if pos.w == w: positions.append(pos)
 	return positions_to_tiles(positions)
 	
-func tile_distance(Tile: TileGD, _Tile: TileGD) -> int:
-	var pos: Vector3 = Tile.tpos - _Tile.tpos
+func _tile_distance(pos: Vector3) -> int:
 	return (abs(pos.x) + abs(pos.y) + abs(pos.z)) / 2
+	
+func tile_distance(Tile: TileGD, _Tile: TileGD) -> int:
+	return _tile_distance(Tile.tpos - _Tile.tpos)
 	
 func onTilesInVisionRange(Tile: TileGD, VISION_RANGE: int) -> Array:
 	var tposes: Array = getTposInRange(Tile, VISION_RANGE)
@@ -496,16 +508,17 @@ func setTileOutline(Tile: TileGD, type: String, is_remove: bool = false) -> void
 				0: highest = "AllyInspected"
 				1: highest = "EnemyInspected"
 	Tile.setOutline(OUTLINE_INFO[highest][1])
+	Tile.Effects.onManageHeightDropLabel(Units.PlayerManager.UnitSelected)
 
 var path_hovered_info: Dictionary = {"tiles": [], "size": 0}
 func on_path_hovered_tile_selected(Tile: TileGD) -> void:
 	var OriginalTile: TileGD = Units.PlayerManager.UnitSelected.Tile
-	Units.PlayerManager.onPathHoveredTileSelected()
 	Units.PlayerManager.on_select_active_unit(Units.PlayerManager.UnitSelected)
 	for i in range(path_hovered_info.tiles.size()):
 		if path_hovered_info.types[i].x != 1:
 			Units.movement_outline_tiles.append(path_hovered_info.tiles[i])
 			Units.move_to_tile(Units.PlayerManager.UnitSelected, path_hovered_info.tiles[i], path_hovered_info.types[i])
+			Tile.Effects.onManageHeightDropLabel(Units.PlayerManager.UnitSelected)
 		elif Units.attack_enemy_or_target(Units.PlayerManager.UnitSelected, path_hovered_info.tiles[i]): 
 			Units.movement_outline_tiles.append(path_hovered_info.tiles[i])
 		if Tile == path_hovered_info.tiles[i]: break
@@ -565,7 +578,6 @@ func on_set_tile_highest_material(Tile: TileGD, greyscale_state: int = 0) -> voi
 	
 	var mat: Material = getTileMaterialFromPriority(highest)
 	Tile.setMaterial(mat, 0)
-	Tile.Effects.on_manage_height_drop_label(Units.PlayerManager.UnitSelected)
 	
 func getTileMaterialFromPriority(priority: int) -> Material:
 	if priority > 0:

@@ -10,5 +10,7 @@ func onWhenHealed(a: Dictionary) -> void:
 		a["AbilityActive"] = []
 		a["AbilityActive"].append(GameEffects.onCreateTrigger("EndTurn", null, "RemoveFX"))
 		a["AbilityActive"].append(GameEffects.onCreateTrigger("OnHit", Combat.onStagger, "RemoveFX"))
-		GameEffects.onAddGameFX(a.Unit, "IdleAbility", a, ["NextTurn"])
+		
+		var trigger: Dictionary = GameEffects.onCreateTrigger("NextTurn", GameEffects.onAddGameFX.bind(a.Unit, "AbilityActive", a, a.AbilityActive), "RemoveFX")
+		GameEffects.onAddGameFX(a.Unit, "IdleAbility", a, [trigger])
 		print_debug("Neckus idle ability added")
