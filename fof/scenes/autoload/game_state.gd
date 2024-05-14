@@ -34,6 +34,10 @@ var player_deck: Array = [
 	"tool_id": 0,
 	"effects": []
 	},
+		{"id": 15,
+	"tool_id": 0,
+	"effects": []
+	},
 	
 		{"id": 16,
 	"tool_id": 0,
@@ -46,6 +50,10 @@ var player_deck: Array = [
 	},
 	
 		{"id": 18,
+	"tool_id": 0,
+	"effects": []
+	},
+		{"id": 24,
 	"tool_id": 0,
 	"effects": []
 	},
