@@ -61,7 +61,7 @@ func on_start_phase_start() -> void:
 	PlayerManager.SpectateCamera = SpectateCamera
 	
 	var enemy_tiles: Array = Tiles.on_is_type_get_tiles("Enemy", "obj")
-	var allowed_spawns: Array = range(7, 15) + range(16, 19)
+	var allowed_spawns: Array = range(7, 19) + range(24, 25)
 	#var allowed_spawns: Array = range(11,12)
 	for Tile in enemy_tiles:
 		on_unit_awakened(allowed_spawns[randi() % allowed_spawns.size()], 0, [], 1, Tile.obj.rotation, Tile)
