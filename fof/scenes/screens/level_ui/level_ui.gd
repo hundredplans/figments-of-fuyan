@@ -144,7 +144,6 @@ func on_player_phase_start() -> void:
 	on_unpin_hand_box_panel()
 	Vision.on_vision_mode_set(0)
 	onChangePhaseIcon("PlayerPhase")
-	UnitStatusOverlord.onPlayerPhaseStart()
 	GreyScale.modulate.a = 0
 
 func _on_change_phase_hitbox_pressed():

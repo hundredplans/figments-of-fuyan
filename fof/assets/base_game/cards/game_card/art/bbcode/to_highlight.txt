@@ -1,10 +1,10 @@
-RAMPAGE|
+RAMPAGE(\s+\[\$[a-zA-Z]*[0-9]])?|
 START OF TURN(\s+[0-9])?|
 END OF TURN(\s+[0-9])?|
 ARRIVE|
 LAST WILL|
 REVENGE|
-BLOODTHIRST|
+BLOODTHIRST(\s+\[\$[a-zA-Z]*[0-9]])?|
 TRAUMA(\s+\[\$[a-zA-Z]*[0-9]])?|
 FATAL|
 MUTE|

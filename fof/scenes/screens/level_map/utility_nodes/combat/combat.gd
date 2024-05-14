@@ -199,7 +199,6 @@ func onDestroyUnit(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 func onHelpfulHelmetDelayed(a: Dictionary) -> void:
 	var Unit: UnitGD = Units.unit_by_tile(a.Tile)
 	GameEffects.onAddGameFX(Unit, "HelpfulHelmet", {"AppliedBy": a.AppliedBy, "use_bound": false})
-	Unit.stats("health", a.HEALTH, a.AppliedBy)
 
 func isStaggered(Unit: UnitGD) -> bool:
 	return GameEffects.onGameFXExists(Unit, "Stagger")

@@ -73,6 +73,7 @@ func on_change_game_phase(phase: String) -> void:
 			SpectateCamera.onHandPhaseStart()
 			Hand.on_hand_phase_start()
 			VFX.onHandPhaseStart()
+			LevelUI.UnitStatusOverlord.onHandPhaseStart()
 			var skip_hand_phase: bool = on_skip_hand_phase_result()
 			if play_ui: LevelUI.on_hand_phase_start(skip_hand_phase)
 			if skip_hand_phase: on_advance_game_phase()

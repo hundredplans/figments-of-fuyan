@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://b0kr4uhvdhmq3"]
+[gd_scene load_steps=16 format=3 uid="uid://b0kr4uhvdhmq3"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_ui/level_ui.gd" id="1_mmiwi"]
 [ext_resource type="Texture2D" uid="uid://iucmlitjenwl" path="res://assets/base_game/cards/game_card/art/stats/energy.png" id="2_bww7p"]
@@ -10,7 +10,6 @@
 [ext_resource type="Script" path="res://scenes/screens/level_ui/hand_phase/hand_phase_sprite.gd" id="5_filg1"]
 [ext_resource type="LabelSettings" uid="uid://qp0350v2j4ah" path="res://assets/UI/roboto/roboto32_outline.tres" id="8_dq43r"]
 [ext_resource type="PackedScene" uid="uid://bkbg8go87dqws" path="res://scenes/ui_general/arrow/ui_arrow.tscn" id="8_t3xo3"]
-[ext_resource type="LabelSettings" uid="uid://je535i1721un" path="res://assets/UI/sixty_four/sixty_four_default.tres" id="10_b7a03"]
 [ext_resource type="Texture2D" uid="uid://dl25aqsdhe6ju" path="res://scenes/screens/level_ui/phase_icon/HandPhase.png" id="13_48llv"]
 [ext_resource type="Script" path="res://scenes/screens/level_ui/unit_status/unit_status_overlord.gd" id="14_kfs5d"]
 [ext_resource type="PackedScene" uid="uid://db4iwvndfcy84" path="res://scenes/screens/level_ui/console.tscn" id="14_q1hsx"]
@@ -196,45 +195,6 @@ label_settings = ExtResource("4_urhhi")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PassUnitTurn" type="Control" parent="CornerRightMenu"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(152, 53)
-layout_mode = 2
-size_flags_horizontal = 8
-
-[node name="Panel" type="Panel" parent="CornerRightMenu/PassUnitTurn"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme = ExtResource("2_pmg4n")
-metadata/_edit_lock_ = true
-
-[node name="PassUnitTurnButton" type="Button" parent="CornerRightMenu/PassUnitTurn"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 1
-
-[node name="Label" type="Label" parent="CornerRightMenu/PassUnitTurn"]
-modulate = Color(0.831373, 0.517647, 0.239216, 1)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Pass"
-label_settings = ExtResource("10_b7a03")
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="CameraArrows" type="Control" parent="CornerRightMenu"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(358, 183)
@@ -319,9 +279,9 @@ custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
 anchors_preset = 0
 offset_left = 1739.0
-offset_top = 353.0
+offset_top = 460.0
 offset_right = 1889.0
-offset_bottom = 503.0
+offset_bottom = 610.0
 size_flags_horizontal = 8
 mouse_filter = 1
 
@@ -498,9 +458,6 @@ horizontal_alignment = 1
 [connection signal="mouse_entered" from="CornerRightMenu/VisionMode" to="." method="on_is_mouse_in_ui" binds= [true]]
 [connection signal="mouse_exited" from="CornerRightMenu/VisionMode" to="." method="on_is_mouse_in_ui" binds= [false]]
 [connection signal="pressed" from="CornerRightMenu/VisionMode/Button" to="." method="_on_vision_mode_set"]
-[connection signal="mouse_entered" from="CornerRightMenu/PassUnitTurn" to="." method="on_is_mouse_in_ui" binds= [true]]
-[connection signal="mouse_exited" from="CornerRightMenu/PassUnitTurn" to="." method="on_is_mouse_in_ui" binds= [false]]
-[connection signal="pressed" from="CornerRightMenu/PassUnitTurn/PassUnitTurnButton" to="." method="_on_pass_unit_turn_button_pressed"]
 [connection signal="mouse_entered" from="CornerRightMenu/CameraArrows" to="." method="on_is_mouse_in_ui" binds= [true]]
 [connection signal="mouse_exited" from="CornerRightMenu/CameraArrows" to="." method="on_is_mouse_in_ui" binds= [false]]
 [connection signal="pressed" from="CornerRightMenu/CameraArrows/LeftArrow" to="." method="on_camera_arrow_pressed" binds= [-1]]

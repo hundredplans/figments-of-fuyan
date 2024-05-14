@@ -44,6 +44,7 @@ const CARD_TEXT_TO_COLOR: Dictionary = {
 	"ATTACK": "orange",
 	"HEALTH": "red",
 	"SPEED": "green",
+	"Spawn Tile": "green",
 	"ENERGY": "yellow",
 }
 
@@ -61,11 +62,13 @@ func on_bold_caps_words(text: String) -> String:
 
 func on_color_words(text: String) -> String:
 	var regex := RegEx.new()
-	regex.compile("((\\[[[0-9]\\]\\s)|[+-][0-9][\\s\\n])?(ENERGY|HEALTH|ATTACK|SPEED|DMG|GBONE|RANGED|BLOCK)(\\s\\[[0-9](-[0-9])?\\])?")
+	regex.compile("((\\[[[0-9]\\]\\s)|[+-][0-9][\\s\\n])?(ENERGY|HEALTH|ATTACK|SPEED|DMG|GBONE|RANGED|BLOCK|Spawn Tile)(\\s\\[[0-9](-[0-9])?\\])?")
 	for result in regex.search_all(text):
 		var on_replace: String = result.get_string()
-		var replacement: String = "[b][color=" + CARD_TEXT_TO_COLOR[on_replace.get_slice(" ", 1 if !(on_replace.contains("RANGED") or on_replace.contains("BLOCK")) else 0)] \
-		+ "]" + on_replace + "[/color][/b]"
+		var to_replace: String = on_replace
+		if to_replace != "Spawn Tile":
+			to_replace = on_replace.get_slice(" ", 1 if !(on_replace.contains("RANGED") or on_replace.contains("BLOCK")) else 0)
+		var replacement: String = "[b][color=" + CARD_TEXT_TO_COLOR[to_replace]+ "]" + on_replace + "[/color][/b]"
 		text = text.replace(on_replace, replacement)
 	return text
 	
@@ -96,7 +99,7 @@ func on_replace_ability_names(text: String, base_card: BaseCardGD) -> String:
 	if DirAccess.dir_exists_absolute(DIR_PATH):
 		for ability_name in Array(DirAccess.get_files_at(DIR_PATH)).filter(func(x: String): return x.ends_with(".tres")):
 			var ability: AbilityGD = load(DIR_PATH + ability_name)
-			if ability.charges != -1:
+			if ability.max_charges != -1:
 				print(ability_indexes)
 				print(ability.ability_name)
 				ability.ability_index = ability_indexes[ability.ability_name]

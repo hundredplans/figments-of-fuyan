@@ -18,6 +18,3 @@ var VFX: VFXGD
 func onGainStats(Unit: UnitGD, stat_type: String, val: int, AppliedBy: AppliedByGD) -> void:
 	if val > 0: Unit.stats(stat_type, val, AppliedBy)
 	else: print_debug("You are gaining negative stats!")
-
-func _init() -> void:
-	charges = max_charges

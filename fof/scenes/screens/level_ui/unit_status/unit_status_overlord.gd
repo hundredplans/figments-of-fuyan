@@ -132,7 +132,7 @@ func onStartPhaseStart() -> void: # Sets everyone to turn unused
 	setAllRegularUnitStatus(0, "TurnInactive")
 	setAllRegularUnitStatus(1, "TurnInactive")
 
-func onPlayerPhaseStart() -> void: # Sets allies to turn unused
+func onHandPhaseStart() -> void: # Sets allies to turn unused
 	setAllRegularUnitStatus(0, "TurnUnused")
 	
 func onPlayerEndTurnPhaseStart() -> void: # Sets allies to turn used

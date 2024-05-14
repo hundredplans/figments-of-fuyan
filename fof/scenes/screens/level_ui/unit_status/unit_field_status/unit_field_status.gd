@@ -15,15 +15,8 @@ var unit_field_status_materials: Dictionary
 
 var is_top: bool
 
-func _process(delta: float) -> void:
-	if visible:
-		for child in Numbers.get_children() + FloatingStats.get_children() + Effects.get_children():
-			child.rotation_degrees.z += NUMBER_SHAKE_SPEED * delta
-			
-		var child_zero: Node3D = FloatingStats.get_child(0)
-		if child_zero.rotation_degrees.z < -10 or child_zero.rotation_degrees.z > 10: NUMBER_SHAKE_SPEED *= -1
-		
-		look_at(SpectateCamera.global_position)
+func _process(_delta: float) -> void:
+	if visible: look_at(SpectateCamera.global_position)
 		
 func onUpdateStat(stat: int, stat_changed: String, color: String) -> void:
 	var StatNumber: Node3D = Numbers.get_node(stat_changed)
@@ -162,3 +155,5 @@ func onSortHealth() -> void:
 	match amount:
 		1: HealNode.position.x = 0; HealthNode.position.x = 0
 		2: HealNode.position.x = -0.1; HealthNode.position.x = 0.1
+
+func _ready() -> void: $AnimationPlayer.play("Animation")

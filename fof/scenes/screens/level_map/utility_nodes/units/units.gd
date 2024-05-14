@@ -267,8 +267,6 @@ func onUnitActionsFinished() -> void:
 	if unit_actions.is_empty() and active_action.is_empty():
 		var SpectateUnit: UnitGD = SpectateCamera.getSpectateUnit()
 		SpectateCamera.onEndTrackUnit()
-		if SpectateUnit != null:
-			if SpectateUnit.team == 0: PlayerManager.on_check_autopass(SpectateUnit)
 		if LevelMap.game_phase != "AIPhase": LevelMap.setActionLock("UnitActionDisabled")
 
 func onEnemyUnitEntersAllyVision(Unit: UnitGD, _Unit: UnitGD) -> void:
@@ -389,7 +387,8 @@ func on_death_finished(Unit: UnitGD) -> void:
 	var win_state: int = 1 if on_units(1).is_empty() else (2 if on_units().is_empty() else 0)
 	
 	AIManager.onDeathFinished(Unit)
-	Deck.on_draw_card()
+	
+	if Unit.team == 1: Deck.on_draw_card()
 	
 	if Unit.Model.current_walk_stream_player != null:
 		AudioMaster.on_cutoff_sfx(Unit.Model.current_walk_stream_player)
@@ -405,9 +404,6 @@ func on_death_finished(Unit: UnitGD) -> void:
 		2: LevelUI.onLoseGame()
 		
 func on_hurt_finished(_Unit: UnitGD) -> void:
-	match active_action.AppliedBy.type:
-		"Height": PlayerManager.on_hurt_finished(active_action.Hurter)
-		_: PlayerManager.on_hurt_finished(active_action.AppliedBy.Applier)
 	active_action = {}
 	onUnitActionsFinished()
 

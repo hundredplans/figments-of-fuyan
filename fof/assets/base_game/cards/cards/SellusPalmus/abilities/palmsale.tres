@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=2 format=3]
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dpp4ti0vng17q"]
 
 [ext_resource type="Script" path="res://assets/base_game/cards/cards/SellusPalmus/abilities/palmsale.gd" id="1_3jmhy"]
 
@@ -8,7 +8,6 @@ script = ExtResource("1_3jmhy")
 HEAL = 1
 ability_description = "[center]Heal adjacent allies [b][color=red][1] [img=14x14]res://assets/base_game/cards/game_card/art/bbcode/HEALTH.png[/img][/color][/b][/center]"
 ability_name = "Palmsale"
-charges = 2
 max_charges = 2
 ability_index = 20
-ignore_ability_delay = false
+delay = 2.0

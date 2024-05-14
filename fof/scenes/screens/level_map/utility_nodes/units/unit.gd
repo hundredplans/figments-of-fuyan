@@ -99,6 +99,7 @@ func onCreateAbilities() -> void:
 			ability.Vision = Vision
 			ability.Combat = Units.Combat
 			ability.GameEffects = Units.GameEffects
+			ability.charges = ability.max_charges
 			abilities.append(ability)
 			
 			if ability is ArmorGD:

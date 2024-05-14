@@ -1,6 +1,5 @@
 extends TargetAbilityGD
 
-@export var HEALTH: int = 1
 func onTargetAbilityCondition(a: Dictionary) -> Dictionary:
 	var tiles: Dictionary = {"range": [], "affect": []}
 	tiles["range"] = Tiles.onFindUnitAdjacentTiles(a.Unit, 1)
@@ -14,7 +13,6 @@ func onTargetAbility(a: Dictionary) -> void:
 	AppliedBy.Applier = a.Unit
 	a["AppliedBy"] = AppliedBy
 	
-	a.HEALTH = HEALTH
 	a.Unit.Model.death = "DeathAbility"
 	Combat.onDestroyUnit(a.Unit, AppliedBy)
 	Units.onAppendArgQueue(Combat.onHelpfulHelmetDelayed.bind(a))

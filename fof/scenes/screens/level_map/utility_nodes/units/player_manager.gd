@@ -61,18 +61,19 @@ func on_pass_unit_turn() -> void:
 		
 		if unpassed_turns.is_empty():
 			LevelUI.on_pass_unit_turn_button_state(true)
-			if Settings.autopass_turn: LevelMap.on_advance_game_phase()
+			LevelMap.on_advance_game_phase()
 		elif LevelMap.game_phase == "PlayerPhase": SpectateCamera.onSpectate(unpassed_turns[0])
-	
 
 func on_player_phase_start() -> void:
 	LevelUI.PassUnitTurn.visible = true
-	unpassed_turns = Units.on_units()
+	
 	passed_turns = []
-		
+	unpassed_turns = []
 	var AppliedBy := AppliedByGD.new()
 	AppliedBy.type = "StartPlayerPhase"
 	for Unit in Units.on_units():
+		if Unit.turn_status == "TurnUnused": unpassed_turns.append(Unit)
+		else: passed_turns.append(Unit)
 		Unit.stats("active_speed", Unit.max_speed, AppliedBy, true)
 		Unit.attack_amount = 1
 	
@@ -96,22 +97,6 @@ func on_player_end_turn_phase_start() -> void:
 	AppliedBy.type = "PlayerEndTurnPhase"
 	for Unit in Units.on_units():
 		Unit.stats("active_speed", Unit.max_speed, AppliedBy, true)
-
-func on_hurt_finished(Unit: UnitGD) -> void:
-	on_check_autopass(Unit)
-
-func on_check_autopass(Unit: UnitGD) -> void:
-	if Unit.team == 0:
-		if !Units.unit_actions.is_empty(): return
-		if ActiveUnit != Unit: return
-		
-		if Unit.attack_amount == 0: on_pass_unit_turn(); return
-		else:
-			Tiles.onCreateMovementPaths(Unit)
-			if Tiles.movement_paths.tiles.is_empty() and Tiles.movement_paths.tiles.filter(func(x: TileGD): return Units.unit_by_tile_team_bool(x, 0)).is_empty(): 
-				on_pass_unit_turn()
-				return
-	_on_unit_selected(Unit)
 
 func on_spectate_unit(Unit: UnitGD) -> void:
 	LevelUI.on_pass_unit_turn_button_state(Unit in passed_turns or Unit != ActiveUnit)
