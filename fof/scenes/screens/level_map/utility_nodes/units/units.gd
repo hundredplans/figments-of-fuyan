@@ -340,7 +340,6 @@ func on_attack_finished(Unit: UnitGD) -> void:
 	AppliedBy.type = "Attack"
 	AppliedBy.Applier = Unit
 	var DMGInfo: DMGInfoGD = Combat.onDMG(active_action.Defender, AppliedBy, Unit.attack)
-	GameEffects.onTriggerUnitGameFX(Unit, "OnAttack")
 	Unit.attack_amount -= 1
 	if Unit.attack_amount == 0: Unit.stats("active_speed", 0, AppliedBy, true)
 	Combat.onHit(DMGInfo)

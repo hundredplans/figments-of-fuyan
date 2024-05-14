@@ -26,6 +26,7 @@ var team: int
 var height: Dictionary
 var Tile: TileGD
 
+var extra_damage: int = 0
 var attack_range: int = 1
 var attack_amount: int = 1
 
@@ -318,3 +319,6 @@ func getAttackAnimation() -> String:
 	
 func getVisibleTiles() -> Array: # Removes tile unit is on
 	return visible_tiles.filter(func(x: TileGD): return x != Tile)
+
+func setExtraDamage(x: int = 0) -> void:
+	extra_damage = x

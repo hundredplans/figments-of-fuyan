@@ -19,20 +19,20 @@ func onLastWill(Deather: UnitGD, AppliedBy: AppliedByGD) -> void:
 	var abilities: Array = onFindAbilities(Deather, "LastWill")
 	for ability in abilities:
 		if ability.onLastWillCondition({}):
-			onTriggerAbilitySpectateDelay(Deather, ability, ability.onLastWill.bind({"Deather": Deather, "AppliedBy": AppliedBy}), ability.LAST_WILL_DELAY)
+			onTriggerAbilitySpectateDelay(Deather, ability, ability.onLastWill.bind({"Deather": Deather, "AppliedBy": AppliedBy}),)
 	
 func onWhenHealed(Healee: UnitGD, healInfo: HealInfoGD, heal_amount: int):
 	var abilities: Array = onFindAbilities(Healee, "WhenHealed")
 	for ability in abilities:
-		onTriggerAbilitySpectateDelay(Healee, ability, ability.onWhenHealed.bind({"Unit": Healee, "healInfo": healInfo, "heal_amount": heal_amount}), ability.WHEN_HEALED_DELAY)
+		onTriggerAbilitySpectateDelay(Healee, ability, ability.onWhenHealed.bind({"Unit": Healee, "healInfo": healInfo, "heal_amount": heal_amount}))
 	
 func onArrive(Unit: UnitGD) -> void:
 	var abilities: Array = onFindAbilities(Unit, "Arrive")
 	for ability in abilities:
-		onTriggerAbilitySpectateDelay(Unit, ability, ability.onArrive.bind({"Unit": Unit}), ability.ARRIVE_DELAY)
+		onTriggerAbilitySpectateDelay(Unit, ability, ability.onArrive.bind({"Unit": Unit}))
 	
 func onTargetAbility(Unit: UnitGD, ability: TargetAbilityGD, Tile: TileGD, tiles: Dictionary) -> void:
-	onTriggerAbilitySpectateDelay(Unit, ability, ability.onTargetAbility.bind({"Unit": Unit, "Tile": Tile, "tiles": tiles}), ability.TARGET_ABILITY_DELAY)
+	onTriggerAbilitySpectateDelay(Unit, ability, ability.onTargetAbility.bind({"Unit": Unit, "Tile": Tile, "tiles": tiles}))
 	Units.PlayerManager._on_unit_deselected(Units.PlayerManager.UnitSelected)
 	ability.used = true
 	LevelUI.onUpdateTargetAbility(Unit, ability)
@@ -41,14 +41,14 @@ func onRevenge(Damagee: UnitGD, AppliedBy: AppliedByGD, DMGInfo: DMGInfoGD, dama
 	var abilities: Array = onFindAbilities(Damagee, "Revenge")
 	for ability in abilities:
 		if !(!ability.trigger_on_death and Damagee.health <= 0) and ability.onRevengeCondition({"Unit": Damagee}):
-			onTriggerAbilitySpectateDelay(Damagee, ability, ability.onRevenge.bind({"DMGInfo": DMGInfo, "Unit": Damagee, "damage": damage, "AppliedBy": AppliedBy}), ability.REVENGE_DELAY)
+			onTriggerAbilitySpectateDelay(Damagee, ability, ability.onRevenge.bind({"DMGInfo": DMGInfo, "Unit": Damagee, "damage": damage, "AppliedBy": AppliedBy}))
 	
 func onHit(DMGInfo: DMGInfoGD) -> void:
 	var Unit: UnitGD = DMGInfo.AppliedBy.Applier
 	var abilities: Array = onFindAbilities(Unit, "OnHit")
 	for ability in abilities:
 		if ability.onHitCondition({"DMGInfo": DMGInfo}):
-			onTriggerAbilitySpectateDelay(Unit, ability, ability.onHit.bind({"DMGInfo": DMGInfo, "Unit": Unit}), ability.ON_HIT_DELAY)
+			onTriggerAbilitySpectateDelay(Unit, ability, ability.onHit.bind({"DMGInfo": DMGInfo, "Unit": Unit}))
 	
 	GameEffects.onTriggerUnitGameFX(DMGInfo.AppliedBy.Applier, "OnHit", [DMGInfo.Defender, DMGInfo.AppliedBy])
 	
@@ -58,25 +58,25 @@ func onBloodthirst(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 			var abilities: Array = onFindAbilities(_Unit, "Bloodthirst")
 			for ability in abilities:
 				if ability.onBloodthirstCondition({"Unit": Unit, "AppliedBy": AppliedBy}):
-					onTriggerAbilitySpectateDelay(_Unit, ability, ability.onBloodthirst.bind({"Unit": _Unit, "AppliedBy": AppliedBy}), ability.BLOODTHIRST_DELAY)
+					onTriggerAbilitySpectateDelay(_Unit, ability, ability.onBloodthirst.bind({"Unit": _Unit, "AppliedBy": AppliedBy}))
 	
 func onTrauma(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	for _Unit in Unit.getVisibleAllies():
 		var abilities: Array = onFindAbilities(_Unit, "Trauma")
 		for ability in abilities:
 			if ability.onTraumaCondition():
-				onTriggerAbilitySpectateDelay(_Unit, ability, ability.onTrauma.bind({"Unit": _Unit, "AppliedBy": AppliedBy}), ability.TRAUMA_DELAY)
+				onTriggerAbilitySpectateDelay(_Unit, ability, ability.onTrauma.bind({"Unit": _Unit, "AppliedBy": AppliedBy}))
 	
 func onRampage(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	var abilities: Array = onFindAbilities(Unit, "Rampage")
 	for ability in abilities:
-		onTriggerAbilitySpectateDelay(Unit, ability, ability.onRampage.bind({"Unit": Unit, "AppliedBy": AppliedBy}), ability.RAMPAGE_DELAY)
+		onTriggerAbilitySpectateDelay(Unit, ability, ability.onRampage.bind({"Unit": Unit, "AppliedBy": AppliedBy}))
 		
 	GameEffects.onTriggerUnitGameFX(Unit, "Rampage", [Unit, AppliedBy])
 		
-func onTriggerAbilitySpectateDelay(Triggerer: UnitGD, ability: AbilityGD, callable: Callable, delay: float) -> void:
+func onTriggerAbilitySpectateDelay(Triggerer: UnitGD, ability: AbilityGD, callable: Callable) -> void:
 	var vis: bool = Triggerer.team == 0 or Triggerer.Tile in Vision.ally_vision
-	if vis and !ability.ignore_ability_delay:
+	if vis and ability.delay > 0:
 		var SpectateUnit: UnitGD = SpectateCamera.getSpectateUnit(["Ally", "Enemy"])
 		if SpectateUnit != Triggerer and !Triggerer.is_dead:
 			SpectateCamera.onSpectate(Triggerer)
@@ -85,7 +85,7 @@ func onTriggerAbilitySpectateDelay(Triggerer: UnitGD, ability: AbilityGD, callab
 		var begin_arguments: Dictionary = {"Triggerer": Triggerer, "callable": callable, "ability": ability, "vis": vis}
 		var end_arguments: Dictionary = {"Triggerer": Triggerer, "SpectateUnit": SpectateUnit}
 		 
-		Units.onPushArgDelay(delay, onBeforeAbilityFrontDelay, onAfterAbilityFrontDelay, begin_arguments, end_arguments)
+		Units.onPushArgDelay(ability.delay, onBeforeAbilityFrontDelay, onAfterAbilityFrontDelay, begin_arguments, end_arguments)
 	else: onUseAbility(Triggerer, callable, ability, vis)
 		
 func onUseAbility(Unit: UnitGD, callable: Callable, ability: AbilityGD, vis: bool) -> void:
@@ -118,9 +118,12 @@ func onDMG(Damagee: UnitGD, AppliedBy: AppliedByGD, damage: int) -> DMGInfoGD:
 		
 		match AppliedBy.type:
 			"Attack":
-				damage = onArmor(Damagee, damage)
+				var Attacker: UnitGD = AppliedBy.Applier
+				GameEffects.onTriggerUnitGameFX(Attacker, "OnAttack")
+				damage = onArmor(Damagee, damage + Attacker.extra_damage)
 				Damagee.stats("damage", damage, AppliedBy)
 				DMGInfo.HealthDMG = original_health - Damagee.health
+				GameEffects.onTriggerUnitGameFX(Attacker, "OnAfterAttack")
 			"Height":
 				Damagee.stats("damage", damage, AppliedBy) # Fix this to not be absolute
 			"Ability":

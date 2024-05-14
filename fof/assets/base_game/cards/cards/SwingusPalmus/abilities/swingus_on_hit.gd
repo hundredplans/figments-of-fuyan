@@ -9,12 +9,14 @@ func onHit(a: Dictionary) -> void:
 		onGainStats(a.Unit, "attack", ATTACK, a.DMGInfo.AppliedBy)
 		onGainStats(a.Unit, "health", HEALTH, a.DMGInfo.AppliedBy)
 		is_second_hit = false
+		delay = 1
 	else:
-		var _trigger: Dictionary = GameEffects.onCreateTrigger("OnAttack", Combat.onDMG.bind(a.DMGInfo.Defender, a.DMGInfo.AppliedBy, DAMAGE), "RemoveFX")
-		GameEffects.onAddGameFX(a.Unit, "AbilityActive", a, [_trigger])
-		
+		var attack_trigger: Dictionary = GameEffects.onCreateTrigger("OnAttack", a.Unit.setExtraDamage.bind(DAMAGE))
+		var after_attack_trigger: Dictionary = GameEffects.onCreateTrigger("OnAfterAttack", a.Unit.setExtraDamage, "RemoveFX")
 		var trigger: Dictionary = GameEffects.onCreateTrigger("OnHit", null, "RemoveFX")
-		GameEffects.onAddGameFX(a.Unit, "IdleAbility", a, [trigger])
+		GameEffects.onAddGameFX(a.Unit, "AbilityActive", a, [trigger])
+		GameEffects.onAddGameFX(a.Unit, "IdleAbility", a, [attack_trigger, after_attack_trigger])
 		is_second_hit = true
+		delay = 2
 		
 func onHitCondition(_a: Dictionary) -> bool: return true

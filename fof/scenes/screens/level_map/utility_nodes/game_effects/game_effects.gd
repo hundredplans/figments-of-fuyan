@@ -81,13 +81,14 @@ func onRemoveAbilityActive(GameFX: GameFXGD) -> void:
 func onAppendTrigger(GameFX: GameFXGD, trigger: String, callable: Callable, remove_type: String = "", charges: int = 1, use_bound: bool = true) -> void:
 	GameFX.triggers.append(onCreateTrigger(trigger, callable, remove_type, charges, use_bound))
 	
-func onCreateTrigger(trigger: String, callable: Variant, remove_type: String = "", charges: int = 1, use_bound: bool = true) -> Dictionary:
+func onCreateTrigger(trigger: String, callable: Variant, remove_type: String = "", charges: int = 1, use_bound: bool = true, take_camera: bool = false) -> Dictionary:
 	return {
 		"trigger": trigger,
 		"callable": callable,
 		"remove_type": remove_type,
 		"charges": charges,
 		"use_bound": use_bound,
+		"take_camera": take_camera,
 	}
 		
 func onAddHelpfulHelmet(Unit: UnitGD, a: Dictionary) -> GameFXGD:
