@@ -18,8 +18,10 @@ func on_recalculate_vision(Unit: UnitGD = null) -> void:
 	var ally_units: Array = Units.on_units()
 	match vision_mode:
 		0: # Takes around 20-30 msec to complete
+			#var f: float = Time.get_ticks_msec()
 			var og_ally_vision: Array = ally_vision.duplicate()
 			if Unit != null: Unit.onCircleRay()
+			
 			visible_tiles += spawn_tiles.duplicate()
 			# Usually takes 10-30msec
 			for Tile in Tiles.get_children():

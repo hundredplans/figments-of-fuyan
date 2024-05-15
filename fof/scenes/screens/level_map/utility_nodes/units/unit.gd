@@ -211,6 +211,7 @@ func on_spectated_in_player_phase(state: bool) -> void:
 	Units.LevelUI.UnitStatusOverlord.onUnitSpectated(self, state)
 	Model.onSetOutlineProperties(state)
 	Units.LevelUI.on_update_vision()
+	if turn_status == "TurnUsed": Units.setPastPath(self, !state)
 	
 func on_enemy_in_range(state: bool) -> void:
 	Units.LevelUI.UnitStatusOverlord.onEnemyInRange(self, state)
@@ -223,13 +224,19 @@ const RAY_COUNT: int = 20
 const RAY_DISTANCE: int = 50
 const VISION_RANGE: int = 5
 
+var past_path_set: bool = false
+var past_path_info: Dictionary = {} # TileGD: [rot, [nums]]
+var past_path_counter: int = 0
 var height_adjacent_tiles: Array = []
 func onCircleRay() -> void:
+	
 	visible_tiles = []
 	_visible_tiles = {}
 	var tiles: Array = Tiles.onTilesInVisionRange(Tile, VISION_RANGE)
-	for _Tile in tiles: # Takes between 20-30 msec
-		if onRayTile(_Tile): onAddTileToVisibleTiles(_Tile)
+	
+	for _Tile in tiles:
+		if onRayTile(_Tile):
+			onAddTileToVisibleTiles(_Tile)
 	
 	var units: Array = Units.all_units().filter(func(x: UnitGD): return x != self and x.Tile in tiles and x.Tile not in visible_tiles)
 	for Unit in units:
@@ -323,3 +330,10 @@ func getVisibleTiles() -> Array: # Removes tile unit is on
 
 func setExtraDamage(x: int = 0) -> void:
 	extra_damage = x
+
+func onAddToPastPath(_Tile: TileGD) -> void:
+	print(Tile)
+	past_path_counter += 1
+	if !past_path_info.has(Tile):
+		past_path_info[Tile] = [Units.Tiles.neighbour_rotation(Tile, _Tile), [past_path_counter]]
+	else: past_path_info[Tile][1].append(past_path_counter)

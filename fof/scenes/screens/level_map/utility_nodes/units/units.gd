@@ -192,7 +192,7 @@ func onMoveUnitAI() -> void:
 				if active_action.Tile == info[0]:
 					Tiles.on_remove_tile_material(Unit.Tile, "Greyscale")
 		return
-		
+	
 	if onFindVisibilityPathReentersVision(active_action.Tile, active_action.vis_path): 
 		await get_tree().create_timer(AFTER_MOVEMENT_DELAY).timeout
 	
@@ -451,3 +451,12 @@ func setUnitStatus(Unit: UnitGD, status: String) -> void:
 	LevelUI.UnitStatusOverlord.setUnitStatusTurnStatus(Unit, status)
 	if status == "TurnUsed":
 		GameEffects.onTriggerUnitGameFX(Unit, "TurnPassed")
+
+func setPastPath(Unit: UnitGD, state: bool) -> void:
+	print(Unit.past_path_info)
+	for Tile in Unit.past_path_info:
+		Tiles.setTileOutline(Tile, "PastPath", state)
+		
+		if state: Tile.Effects.onPastPath(Unit.past_path_info[Tile][0], Unit.past_path_info[Tile][1])
+		else: Tile.Effects.onRemovePastPath()
+	Unit.past_path_set = state

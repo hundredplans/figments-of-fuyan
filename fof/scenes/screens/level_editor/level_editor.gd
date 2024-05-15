@@ -2023,8 +2023,10 @@ func on_create_tile(tile_info: Dictionary, owner_node: Node3D, area: int) -> Til
 						var point_rot: int = tile_info[obj_name].rotation * 60
 						object_instance.rotation_degrees.y = point_rot
 						object_instance.position.y = (n * 0.3) + 0.3
-						for point in object_instance.collision_points: 
-							LevelTile.collision_points.append(getRotationPoint(point, point_rot) + object_instance.global_position)
+						
+						if n == 1:
+							for point in object_instance.collision_points: 
+								LevelTile.collision_points.append(getRotationPoint(point, point_rot) + object_instance.global_position)
 		
 		for grandchild in LevelTile.ModelManager.get_children().filter(func(x: Node3D): return x.is_inside_tree() and !x.is_queued_for_deletion()):
 			grandchild.owner = owner_node

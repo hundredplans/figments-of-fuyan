@@ -65,8 +65,6 @@ func on_pass_unit_turn() -> void:
 		elif LevelMap.game_phase == "PlayerPhase": SpectateCamera.onSpectate(unpassed_turns[0])
 
 func on_player_phase_start() -> void:
-	LevelUI.PassUnitTurn.visible = true
-	
 	passed_turns = []
 	unpassed_turns = []
 	var AppliedBy := AppliedByGD.new()
@@ -79,8 +77,6 @@ func on_player_phase_start() -> void:
 	
 func on_player_end_turn_phase_start() -> void:
 	if UnitSelected != null: _on_unit_deselected(UnitSelected, true)
-	LevelUI.PassUnitTurn.visible = false
-	
 	for Unit in unpassed_turns:
 		on_select_active_unit(Unit)
 	on_pass_unit_turn()
@@ -97,6 +93,10 @@ func on_player_end_turn_phase_start() -> void:
 	AppliedBy.type = "PlayerEndTurnPhase"
 	for Unit in Units.on_units():
 		Unit.stats("active_speed", Unit.max_speed, AppliedBy, true)
+		if Unit.past_path_set:
+			Units.setPastPath(Unit, false)
+		Unit.past_path_info = {}
+		Unit.past_path_counter = 0
 
 func on_spectate_unit(Unit: UnitGD) -> void:
 	LevelUI.on_pass_unit_turn_button_state(Unit in passed_turns or Unit != ActiveUnit)

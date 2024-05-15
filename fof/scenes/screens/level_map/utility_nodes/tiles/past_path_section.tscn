@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://c3n7fvfayf7oq"]
+
+[ext_resource type="FontFile" uid="uid://7k4xd8s0oed2" path="res://assets/UI/roboto/roboto.ttf" id="1_4fpva"]
+[ext_resource type="Texture2D" uid="uid://cpqvv1f512c35" path="res://scenes/screens/level_map/utility_nodes/tiles/arrow.png" id="2_nc3uk"]
+
+[node name="PastPathSection" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+
+[node name="Label3D" type="Label3D" parent="."]
+modulate = Color(1, 1, 0, 1)
+text = "1, 5"
+font = ExtResource("1_4fpva")
+font_size = 20
+outline_size = 8
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0.30723, 0)
+modulate = Color(1, 1, 0, 1)
+pixel_size = 0.005
+texture = ExtResource("2_nc3uk")

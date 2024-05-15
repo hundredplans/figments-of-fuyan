@@ -200,6 +200,14 @@ func onEndTrackUnit() -> void:
 	track_unit_info = {}
 func onTrackUnit() -> void:
 	onCameraStartSpectate(track_unit_info)
+	
+var thread: Thread
+func _ready() -> void:
+	thread = Thread.new()
+	
+func onUpdateFreelookThread(delta: float) -> void:
+	onUpdateFreelookCamera(delta)
+	
 func _process(delta: float) -> void:
 	if !track_unit_info.is_empty(): onTrackUnit()
 	onUpdateFreelookCamera(delta)

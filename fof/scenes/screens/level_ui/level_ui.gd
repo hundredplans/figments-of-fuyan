@@ -16,8 +16,8 @@ var Units: UnitsGD
 @onready var TargetAbilities: VBoxContainer = %TargetAbilities
 @onready var Console := %Console
 @onready var VisionMode := %VisionMode
-@onready var PassUnitTurn := %PassUnitTurn
 
+@onready var PassUnitTurn: TextureButton = %PassUnitTurn
 @onready var ChangePhase: Control = %ChangePhase
 @onready var StatusBox: Control = %StatusBox
 @onready var CameraArrows: Control = %CameraArrows
@@ -138,7 +138,6 @@ func on_player_phase_start() -> void:
 		GameCardSelected.Art.get_node("CardButton").material = null
 		GameCardSelected = null
 		
-	PassUnitTurn.visible = true
 	VisionMode.visible = true
 	on_set_hand_box_cards_state()
 	on_unpin_hand_box_panel()
@@ -146,9 +145,11 @@ func on_player_phase_start() -> void:
 	onChangePhaseIcon("PlayerPhase")
 	GreyScale.modulate.a = 0
 
-func _on_change_phase_hitbox_pressed():
-	LevelMap.on_advance_game_phase()
-	ChangePhase.get_node("ChangePhaseSprite").on_hyperspeed()
+func onPassUnitTurnButtonPressed():
+	if Units.PlayerManager.unpassed_turns.is_empty():
+		LevelMap.on_advance_game_phase()
+	else:
+		LevelMap.Units.PlayerManager.on_pass_unit_turn_pressed()
 
 @onready var Statuses: Control = %Statuses
 func onSpectateEnemyOrAlly(Unit: UnitGD) -> void:
@@ -209,12 +210,8 @@ func on_unpin_hand_box_panel() -> void:
 func on_ally_unit_awakened(skip_result: bool) -> void:
 	if !skip_result: on_pin_hand_box_panel()
 
-func _on_pass_unit_turn_button_pressed():
-	LevelMap.Units.PlayerManager.on_pass_unit_turn_pressed()
-
 func on_pass_unit_turn_button_state(x: bool) -> void:
-	PassUnitTurn.modulate = Helper.BASE if !x else Helper.LIGHT_GREY
-	PassUnitTurn.get_node("PassUnitTurnButton").disabled = x
+	PassUnitTurn.disabled = x
 
 var team_selected: int = 0
 var vision_selected: int = 0

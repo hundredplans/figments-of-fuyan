@@ -21,3 +21,14 @@ func onManageHeightDropLabel(Unit: UnitGD) -> void:
 				
 				HeightDropLabel.get_node("Label3D").text = str(hovered_type.z)
 		else: HeightDropLabel.queue_free()
+		
+var PastPath: Node3D
+func onPastPath(rot: int, nums: Array) -> void:
+	PastPath = preload("res://scenes/screens/level_map/utility_nodes/tiles/past_path.tscn").instantiate()
+	add_child(PastPath)
+	PastPath.Tile = Tile
+	PastPath.onCreatePastPath(rot, nums)
+	
+func onRemovePastPath() -> void:
+	if PastPath != null:
+		PastPath.queue_free()
