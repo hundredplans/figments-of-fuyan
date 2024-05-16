@@ -331,9 +331,9 @@ func getVisibleTiles() -> Array: # Removes tile unit is on
 func setExtraDamage(x: int = 0) -> void:
 	extra_damage = x
 
-func onAddToPastPath(_Tile: TileGD) -> void:
-	print(Tile)
-	past_path_counter += 1
-	if !past_path_info.has(Tile):
-		past_path_info[Tile] = [Units.Tiles.neighbour_rotation(Tile, _Tile), [past_path_counter]]
-	else: past_path_info[Tile][1].append(past_path_counter)
+func onAddToPastPath(_Tile: TileGD) -> void: pass
+	#past_path_counter += 1
+	#if !past_path_info.has(Tile.get_instance_id()):
+		#past_path_info[Tile.get_instance_id()] = [Units.Tiles.neighbour_rotation(Tile, _Tile), [past_path_counter]]
+	#else: past_path_info[Tile.get_insstance_id()][1].append(past_path_counter)
+	#print(past_path_info)

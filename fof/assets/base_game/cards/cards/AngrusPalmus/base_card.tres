@@ -1,18 +1,22 @@
-[gd_resource type="Resource" script_class="BaseCardGD" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="BaseCardGD" load_steps=2 format=3 uid="uid://mq1ayodmi4xv"]
 
 [ext_resource type="Script" path="res://assets/base_game/cards/templates/base_card.gd" id="1_sjr6f"]
 
 [resource]
 script = ExtResource("1_sjr6f")
 area_id = 1
-attack = 4
-health = 6
-speed = 3
+attack = 3
+health = 5
+speed = 2
 energy = 4
 rarity = 3
-raw_text = "ARRIVE: Gain FERAL; Gains control for [3] Turns when Healed"
+raw_text = "RAMPAGE: The
+next Heal on 
+this is doubled"
 flavor_text = ""
-text = "[center][b]ARRIVE[/b]: Gain [b]FERAL[/b]; Gains control for [3] Turns when Healed[/center]"
+text = "[center][b]RAMPAGE[/b]: The
+next Heal on 
+this is doubled[/center]"
 aic = 5
 aii = 4
 aiw = 5

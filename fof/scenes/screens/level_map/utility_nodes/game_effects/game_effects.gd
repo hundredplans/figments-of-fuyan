@@ -21,6 +21,7 @@ func onAddGameFX(Unit: UnitGD, type: String, a: Dictionary, triggers: Array = []
 		"AbilityActive": GameFX = onAddAbilityActive(Unit, a, triggers)
 		"IdleAbility": GameFX = onAddIdleAbility(Unit, a, triggers)
 		"HelpfulHelmet": GameFX = onAddHelpfulHelmet(Unit, a)
+		"CharmingStance": GameFX = onAddCharmingStance(Unit, a)
 	
 	GameFX.type = type
 	onTriggerGameFX(GameFX, "Instant")
@@ -96,6 +97,10 @@ func onAddHelpfulHelmet(Unit: UnitGD, a: Dictionary) -> GameFXGD:
 	onAppendTrigger(GameFX, "Rampage", Unit.stats.bind("health", 1), "", -1, a.use_bound)
 	LevelUI.UnitStatusOverlord.onAddUnitFX(Unit, "HelpfulHelmet")
 	VFX.onCreateHelpfulHelmet(Unit)
+	return GameFX
+	
+func onAddCharmingStance(Unit: UnitGD, a: Dictionary) -> GameFXGD:
+	var GameFX := onCreateGameFX(Unit, a)
 	return GameFX
 	
 func onOverrideGameFX(Unit: UnitGD, type: String) -> void:
