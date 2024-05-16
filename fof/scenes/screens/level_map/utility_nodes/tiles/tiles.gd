@@ -481,12 +481,12 @@ func on_tile_unhovered(Tile: TileGD) -> void:
 	LevelUI.onQueueTileHoveredGameCard()
 
 const OUTLINE_INFO: Dictionary = {
-	"EnemyInRange": [2, preload("res://assets/materials/tile_materials/tile_outlines/light_red_tile_outline.tres")],
-	"PathHovered": [3, preload("res://assets/materials/tile_materials/tile_outlines/white_tile_outline.tres")],
-	"TileInspected": [0, preload("res://assets/materials/tile_materials/tile_outlines/white_tile_outline.tres")],
-	"AllyInspected": [1, preload("res://assets/materials/tile_materials/tile_outlines/green_tile_outline.tres")],
-	"EnemyInspected": [1, preload("res://assets/materials/tile_materials/tile_outlines/red_tile_outline.tres")],
-	"PastPath": [4, preload("res://assets/materials/tile_materials/tile_outlines/yellow_tile_outline.tres")],
+	"EnemyInRange": [3, preload("res://assets/materials/tile_materials/tile_outlines/light_red_tile_outline.tres")],
+	"PathHovered": [4, preload("res://assets/materials/tile_materials/tile_outlines/white_tile_outline.tres")],
+	"TileInspected": [1, preload("res://assets/materials/tile_materials/tile_outlines/white_tile_outline.tres")],
+	"AllyInspected": [2, preload("res://assets/materials/tile_materials/tile_outlines/green_tile_outline.tres")],
+	"EnemyInspected": [2, preload("res://assets/materials/tile_materials/tile_outlines/red_tile_outline.tres")],
+	"PastPath": [0, preload("res://assets/materials/tile_materials/tile_outlines/yellow_tile_outline.tres")],
 	"": [-1, preload("res://assets/materials/tile_materials/tile_outlines/black_tile_outline.tres")],
 }
 
@@ -517,7 +517,6 @@ func on_path_hovered_tile_selected(Tile: TileGD) -> void:
 	for i in range(path_hovered_info.tiles.size()):
 		if path_hovered_info.types[i].x != 1:
 			Units.movement_outline_tiles.append(path_hovered_info.tiles[i])
-			Units.PlayerManager.UnitSelected.onAddToPastPath(path_hovered_info.tiles[i])
 			Units.move_to_tile(Units.PlayerManager.UnitSelected, path_hovered_info.tiles[i], path_hovered_info.types[i])
 			Tile.Effects.onManageHeightDropLabel(Units.PlayerManager.UnitSelected)
 		elif Units.attack_enemy_or_target(Units.PlayerManager.UnitSelected, path_hovered_info.tiles[i]): 

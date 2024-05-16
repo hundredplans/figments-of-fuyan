@@ -218,19 +218,23 @@ func on_movement_finished(Unit: UnitGD) -> void:
 	var Tile: TileGD = active_action.Tile
 	var action_type: String = active_action.action_type
 	
+	if Unit.team == 0:
+		Unit.onAddToPastPath(Tile)
+	
 	var AppliedBy := AppliedByGD.new()
 	AppliedBy.type = "MovementFinished"
 	Unit.stats("active_speed", -1, AppliedBy)
 	Unit.occupy_tile(Tile)
 	await Unit.tile_occupied
-	
 	if unit_actions.is_empty() or !(unit_actions[0].action_type.begins_with("MoveUnit")):
 		on_unit_travel_finished()
 	else: Unit.Model.on_play_walk_sfx()
 	
+	if Unit.team == 0:
+		if unit_actions.is_empty() and Unit.speed > 0:
+			PlayerManager._on_unit_selected(Unit)
+	
 	active_action = {}
-	if Unit.team == 0 and unit_actions.is_empty() and Unit.speed > 0:
-		PlayerManager._on_unit_selected(Unit)
 	onUnitActionsFinished()
 
 func onPushFrontDelay(delay: float) -> void:
@@ -453,9 +457,8 @@ func setUnitStatus(Unit: UnitGD, status: String) -> void:
 		GameEffects.onTriggerUnitGameFX(Unit, "TurnPassed")
 
 func setPastPath(Unit: UnitGD, state: bool) -> void:
-	print(Unit.past_path_info)
 	for Tile in Unit.past_path_info:
-		Tiles.setTileOutline(Tile, "PastPath", state)
+		Tiles.setTileOutline(Tile, "PastPath", !state)
 		
 		if state: Tile.Effects.onPastPath(Unit.past_path_info[Tile][0], Unit.past_path_info[Tile][1])
 		else: Tile.Effects.onRemovePastPath()

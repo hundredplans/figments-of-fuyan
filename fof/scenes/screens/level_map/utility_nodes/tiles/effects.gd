@@ -23,11 +23,17 @@ func onManageHeightDropLabel(Unit: UnitGD) -> void:
 		else: HeightDropLabel.queue_free()
 		
 var PastPath: Node3D
-func onPastPath(rot: int, nums: Array) -> void:
-	PastPath = preload("res://scenes/screens/level_map/utility_nodes/tiles/past_path.tscn").instantiate()
-	add_child(PastPath)
-	PastPath.Tile = Tile
-	PastPath.onCreatePastPath(rot, nums)
+func onPastPath(rots: Array, nums: Array) -> void:
+	if Tile.tile.type in [0, 1]:
+		PastPath = preload("res://scenes/screens/level_map/utility_nodes/tiles/past_path.tscn").instantiate()
+		add_child(PastPath)
+		PastPath.Tile = Tile
+		PastPath.onCreatePastPath(rots, nums)
+	else:
+		PastPath = preload("res://scenes/screens/level_map/utility_nodes/tiles/past_path_ramp.tscn").instantiate()
+		add_child(PastPath)
+		PastPath.Tile = Tile
+		PastPath.onCreatePastPath(rots, nums)
 	
 func onRemovePastPath() -> void:
 	if PastPath != null:
