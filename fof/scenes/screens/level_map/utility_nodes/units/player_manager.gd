@@ -23,10 +23,9 @@ func on_card_placed(hand_card: HandCardGD, Tile: TileGD) -> void:
 	if skip_result: LevelMap.on_advance_game_phase()
 	SpectateCamera.onSpectate(Unit)
 		
-
 func on_enemy_unit_enters_vision(Unit: UnitGD) -> void:
 	LevelUI.UnitStatusOverlord.onUpdateEnemyVision(Unit, true)
-	Units.onClearUnitActions()
+	Units.onEnemyDiscoveredClearUnitActions()
 
 func on_enemy_unit_exits_vision(Unit: UnitGD) -> void:
 	LevelUI.UnitStatusOverlord.onUpdateEnemyVision(Unit, false)

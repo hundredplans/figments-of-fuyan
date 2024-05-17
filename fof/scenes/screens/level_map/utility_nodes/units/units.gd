@@ -269,7 +269,6 @@ func isVisibilityPathLastPosition(Tile: TileGD, visibility_path: Array) -> bool:
 
 func onUnitActionsFinished() -> void:
 	if unit_actions.is_empty() and active_action.is_empty():
-		var SpectateUnit: UnitGD = SpectateCamera.getSpectateUnit()
 		SpectateCamera.onEndTrackUnit()
 		if LevelMap.game_phase != "AIPhase": LevelMap.setActionLock("UnitActionDisabled")
 
@@ -283,10 +282,10 @@ func onEnemyUnitExitsAllyVision(Unit: UnitGD, _Unit: UnitGD) -> void:
 	if Unit.team == 0 and _Unit.team == 1:
 		PlayerManager.on_enemy_unit_exits_vision(_Unit)
 
-func onClearUnitActions() -> void:
+func onEnemyDiscoveredClearUnitActions() -> void:
 	on_unit_travel_finished()
 	active_action = {}
-	unit_actions = []
+	unit_actions = unit_actions.filter(func(x: Dictionary): return x.action_type == "DeathUnit")
 	onUnitActionsFinished()
 	
 var movement_outline_tiles: Array = []
@@ -398,6 +397,7 @@ func on_death_finished(Unit: UnitGD) -> void:
 		AudioMaster.on_cutoff_sfx(Unit.Model.current_walk_stream_player)
 
 	active_action = {}
+	win_state = 0 #TODO REMOVE
 	match win_state:
 		0: 
 			Combat.onDeathAbilities(Deather, AppliedBy)

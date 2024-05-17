@@ -11,7 +11,7 @@ var LevelMap: LevelMapGD
 
 func onDeathAbilities(Deather: UnitGD, AppliedBy: AppliedByGD) -> void:
 	onLastWill(Deather, AppliedBy)
-	if AppliedBy.type != "Height": onRampage(AppliedBy.Applier, AppliedBy)
+	if AppliedBy.Applier != null and AppliedBy.Applier is UnitGD: onRampage(AppliedBy.Applier, AppliedBy)
 	onTrauma(Deather, AppliedBy)
 	onBloodthirst(Deather, AppliedBy)
 	
@@ -20,6 +20,7 @@ func onLastWill(Deather: UnitGD, AppliedBy: AppliedByGD) -> void:
 	for ability in abilities:
 		if ability.onLastWillCondition({}):
 			onTriggerAbilitySpectateDelay(Deather, ability, ability.onLastWill.bind({"Deather": Deather, "AppliedBy": AppliedBy}),)
+	GameEffects.onTriggerUnitGameFX(Deather, "RemoveAbility") # Works for mute aswell
 	
 func onWhenHealed(Healee: UnitGD, healInfo: HealInfoGD, heal_amount: int):
 	var abilities: Array = onFindAbilities(Healee, "WhenHealed")
@@ -50,7 +51,7 @@ func onHit(DMGInfo: DMGInfoGD) -> void:
 		if ability.onHitCondition({"DMGInfo": DMGInfo}):
 			onTriggerAbilitySpectateDelay(Unit, ability, ability.onHit.bind({"DMGInfo": DMGInfo, "Unit": Unit}))
 	
-	GameEffects.onTriggerUnitGameFX(DMGInfo.AppliedBy.Applier, "OnHit", [DMGInfo.Defender, DMGInfo.AppliedBy])
+	GameEffects.onTriggerUnitGameFX(Unit, "OnHit", [DMGInfo.Defender, DMGInfo.AppliedBy])
 	
 func onBloodthirst(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	for _Unit in Unit.getVisibleEnemies():
@@ -64,7 +65,7 @@ func onTrauma(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	for _Unit in Unit.getVisibleAllies():
 		var abilities: Array = onFindAbilities(_Unit, "Trauma")
 		for ability in abilities:
-			if ability.onTraumaCondition():
+			if ability.onTraumaCondition({"Deather": _Unit}):
 				onTriggerAbilitySpectateDelay(_Unit, ability, ability.onTrauma.bind({"Unit": _Unit, "AppliedBy": AppliedBy}))
 	
 func onRampage(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
@@ -108,6 +109,12 @@ func onFindAbilities(Unit: UnitGD, type: String) -> Array:
 		if ability.type == type: abilities.append(ability)
 	return abilities
 
+func onFindAbility(Unit: UnitGD, ability_name: String) -> AbilityGD:
+	for ability in Unit.abilities:
+		if ability.ability_name == ability_name:
+			return ability
+	return null
+
 func onDMG(Damagee: UnitGD, AppliedBy: AppliedByGD, damage: int) -> DMGInfoGD:
 	if !Damagee.is_dead and Damagee.health > 0:
 		var DMGInfo := DMGInfoGD.new()
@@ -141,7 +148,7 @@ func onArmor(Unit: UnitGD, damage: int) -> int:
 		damage = max(damage - ability.armor, 0)
 	return damage
 
-func onHealAbility(Healee: UnitGD, Healer: UnitGD, heal: int) -> void:
+func onHealAbility(Healee: UnitGD, Healer: UnitGD, heal: int) -> bool:
 	var healInfo := HealInfoGD.new()
 	healInfo.heal = heal
 	
@@ -151,24 +158,25 @@ func onHealAbility(Healee: UnitGD, Healer: UnitGD, heal: int) -> void:
 	healInfo.AppliedBy = AppliedBy
 	
 	healInfo.Healee = Healee
-	onHeal(healInfo)
+	return onHeal(healInfo)
 
-func onHeal(healInfo: HealInfoGD) -> void:
-	if healInfo.heal > 0:
+func onHeal(healInfo: HealInfoGD) -> bool:
+	if healInfo.heal > 0 and healInfo.Healee.isHealable():
 		var heal_amount: int = min(healInfo.Healee.health + healInfo.heal, healInfo.Healee.max_health) - healInfo.Healee.health
 		healInfo.Healee.stats("heal", heal_amount, healInfo.AppliedBy)
 		onWhenHealed(healInfo.Healee, healInfo, heal_amount)
+		return true
+	return false
 
 func onPlayerPhaseStart() -> void:
 	for Unit in Units.on_units():
 		var abilities: Array = onFindAbilities(Unit, "TargetAbility")
 		for ability in abilities:
+			ability.used = false
 			var tiles: Dictionary = ability.onTargetAbilityCondition({"Unit": Unit})
 			ability.can_affect = !tiles["affect"].is_empty()
 			LevelUI.onUpdateTargetAbility(Unit, ability)
-			
-			if ability is TargetAbilityGD:
-				ability.used = false
+				
 
 func onStagger(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	GameEffects.onAddGameFX(Unit, "Stagger", {"AppliedBy": AppliedBy})
@@ -215,8 +223,8 @@ func onBuffInfo(buff_info: BuffInfoGD) -> void:
 	buff_info.Unit.stats(buff_info.stat, buff_info.value, buff_info.AppliedBy, buff_info.absolute)
 
 func onRemoveBuffNextTurn(a: Dictionary) -> void:
-	onBuffInfo(a.buff_info)
-	LevelUI.UnitStatusOverlord.onRemoveBuffNextTurn(a.buff_info)
+	for buff_info in a.buff_info_array.array: onBuffInfo(buff_info)
+	LevelUI.UnitStatusOverlord.onRemoveBuffNextTurn(a.buff_info_array)
 
 func onApplyBuffNextTurn(buff_info: BuffInfoGD, triggers: Array = []) -> void:
 	onBuffInfo(buff_info)
@@ -226,6 +234,35 @@ func onApplyBuffNextTurn(buff_info: BuffInfoGD, triggers: Array = []) -> void:
 func onApplyHealNextTurn(heal_info: HealInfoGD, triggers: Array = []) -> void:
 	GameEffects.onAddGameFX(heal_info.Healee, "HealNextTurn", {"heal_info": heal_info}, triggers)
 
-func onRemoveHealNextTurn(heal_info: HealInfoGD) -> void:
-	LevelUI.UnitStatusOverlord.onRemoveHealNextTurn(heal_info)
-	onHeal(heal_info)
+func onRemoveHealNextTurn(heal_info_array: HealInfoArrayGD) -> void:
+	LevelUI.UnitStatusOverlord.onRemoveHealNextTurn(heal_info_array)
+	for heal_info in heal_info_array.array: onHeal(heal_info)
+	
+func onCreateBuffInfoArray(array: Array) -> BuffInfoArrayGD:
+	var BuffInfoArray := BuffInfoArrayGD.new()
+	BuffInfoArray.stat = array[0].stat
+	BuffInfoArray.Unit = array[0].Unit
+	BuffInfoArray.array =array
+	
+	var total: int = 0
+	for buff_info in array: total += buff_info.value
+	BuffInfoArray.value = total
+	return BuffInfoArray
+
+func onAddToBuffInfoArray(buff_info_array: BuffInfoArrayGD, buff_info: BuffInfoGD) -> void:
+	buff_info_array.array.append(buff_info)
+	buff_info_array.value += buff_info.value
+
+func onCreateHealInfoArray(array: Array) -> HealInfoArrayGD:
+	var heal_info_array := HealInfoArrayGD.new()
+	heal_info_array.Healee = array[0].Healee
+	heal_info_array.array = array
+	
+	var total: int = 0
+	for heal_info in heal_info_array.array: total += heal_info.heal
+	heal_info_array.heal = total
+	return heal_info_array
+
+func onAddToHealInfoArray(heal_info_array: HealInfoArrayGD, heal_info: HealInfoGD) -> void:
+	heal_info_array.array.append(heal_info)
+	heal_info_array.heal += heal_info.heal

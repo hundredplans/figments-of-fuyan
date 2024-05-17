@@ -303,7 +303,8 @@ func onUnitsHeightAdjacentTiles() -> void:
 						break
 
 func getVisibleUnits() -> Array:
-	return visible_tiles.map(func(x: TileGD): return Units.unit_by_tile(x)).filter(func(x: Variant): return x != null and !x.is_queued_for_deletion() and x != self and x.health > 0)
+	var visible_units: Array = visible_tiles.map(func(x: TileGD): return Units.unit_by_tile(x))
+	return visible_units.filter(func(x: Variant): return x != null and !x.is_queued_for_deletion() and x != self and x.health > 0)
 
 func getVisibleEnemies() -> Array:
 	return getVisibleUnits().filter(Units.on_match_team_relation.bind(team, "Enemy"))

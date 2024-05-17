@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://assets/base_game/levels/level/loaded_level_light_tester.gd" id="1_w87ru"]
 [ext_resource type="PackedScene" path="res://scenes/screens/level_map/utility_nodes/tiles/level_tile.tscn" id="2_0bbyw"]
@@ -6,8 +6,6 @@
 [ext_resource type="PackedScene" path="res://assets/models/tiles/1tile.tscn" id="4_bwi5i"]
 [ext_resource type="Script" path="res://assets/models/model_type.gd" id="5_qrsaj"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/tiles/effects.gd" id="6_o6d3m"]
-[ext_resource type="PackedScene" path="res://assets/models/walls/1wall2.tscn" id="7_nj812"]
-[ext_resource type="PackedScene" path="res://assets/models/tiles/1tile2.tscn" id="9_w3se0"]
 
 [node name="LoadedLevel" type="Node3D"]
 script = ExtResource("1_w87ru")
@@ -19,757 +17,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, 0)
 
 [node name="Tiles" type="Node3D" parent="."]
 
-[node name="2988034578" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.66025, 0, 0)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(-9.08071, 0.13406, 0.757243, -9.52625, 0.135911, -0.000868961, -9.08188, 0.147891, -0.756569, -8.23522, 0.154557, -0.754596, -7.79425, 0.145449, 0.00420916, -8.2377, 0.148722, 0.756031, -8.52391, 5.96046e-08, -0.021358, -8.66365, 0.3, 0.0070028)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(-5, 0, 5)
-
-[node name="1tile" type="Node3D" parent="Tiles/2988034578/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/2988034578" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="2135840140" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.79423, 0, 1.5)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(-8.21468, 0.13406, 2.25724, -8.66023, 0.135911, 1.49913, -8.21585, 0.147891, 0.743431, -7.36919, 0.154557, 0.745404, -6.92823, 0.145449, 1.50421, -7.37167, 0.148722, 2.25603, -7.65789, 5.96046e-08, 1.47864, -7.79762, 0.3, 1.507)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(-5, 1, 4)
-
-[node name="1tile" type="Node3D" parent="Tiles/2135840140/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/2135840140" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="1685488749" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.9282, 0, 3)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(-7.34866, 0.13406, 3.75724, -7.7942, 0.135911, 2.99913, -7.34982, 0.147891, 2.24343, -6.50316, 0.154557, 2.2454, -6.0622, 0.145449, 3.00421, -6.50565, 0.148722, 3.75603, -6.79186, 5.96046e-08, 2.97864, -6.93159, 0.3, 3.007)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(-5, 2, 3)
-
-[node name="1tile" type="Node3D" parent="Tiles/1685488749/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/1685488749" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="3702881164" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.06218, 0, 4.5)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(-6.48263, 0.13406, 5.25724, -6.92818, 0.135911, 4.49913, -6.4838, 0.147891, 3.74343, -5.63714, 0.154557, 3.7454, -5.19618, 0.145449, 4.50421, -5.63962, 0.148722, 5.25603, -5.92584, 5.96046e-08, 4.47864, -6.06557, 0.3, 4.507)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(-5, 3, 2)
-
-[node name="1tile" type="Node3D" parent="Tiles/3702881164/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/3702881164" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="3763845158" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.19615, 0, 6)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(-5.61661, 0.13406, 6.75724, -6.06215, 0.135911, 5.99913, -5.61777, 0.147891, 5.24343, -4.77111, 0.154557, 5.2454, -4.33015, 0.145449, 6.00421, -4.7736, 0.148722, 6.75603, -5.05981, 5.96046e-08, 5.97864, -5.19954, 0.3, 6.007)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(-5, 4, 1)
-
-[node name="1tile" type="Node3D" parent="Tiles/3763845158/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/3763845158" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="1764705226" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 0, 7.5)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(-4.75058, 0.13406, 8.25724, -5.19613, 0.135911, 7.49913, -4.75175, 0.147891, 6.74343, -3.90509, 0.154557, 6.7454, -3.46413, 0.145449, 7.50421, -3.90757, 0.148722, 8.25603, -4.19379, 5.96046e-08, 7.47864, -4.33352, 0.3, 7.507)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(-5, 5, 0)
-
-[node name="1tile" type="Node3D" parent="Tiles/1764705226/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/1764705226" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="4272377227" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.79423, 0, -1.5)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(-8.21468, 0.13406, -0.742757, -8.66023, 0.135911, -1.50087, -8.21585, 0.147891, -2.25657, -7.36919, 0.154557, -2.2546, -6.92823, 0.145449, -1.49579, -7.37167, 0.148722, -0.743969, -7.65789, 5.96046e-08, -1.52136, -7.79762, 0.3, -1.493)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(-4, -1, 5)
-
-[node name="1tile" type="Node3D" parent="Tiles/4272377227/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/4272377227" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="370403585" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.9282, 0, 0)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(-7.34866, 0.13406, 0.757243, -7.7942, 0.135911, -0.000868961, -7.34982, 0.147891, -0.756569, -6.50316, 0.154557, -0.754596, -6.0622, 0.145449, 0.00420916, -6.50565, 0.148722, 0.756031, -6.79186, 5.96046e-08, -0.021358, -6.93159, 0.3, 0.0070028)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(-4, 0, 4)
-
-[node name="1tile" type="Node3D" parent="Tiles/370403585/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/370403585" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="1379596452" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.06218, 0, 1.5)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(-6.48263, 0.13406, 2.25724, -6.92818, 0.135911, 1.49913, -6.4838, 0.147891, 0.743431, -5.63714, 0.154557, 0.745404, -5.19618, 0.145449, 1.50421, -5.63962, 0.148722, 2.25603, -5.92584, 5.96046e-08, 1.47864, -6.06557, 0.3, 1.507)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(-4, 1, 3)
-
-[node name="1tile" type="Node3D" parent="Tiles/1379596452/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/1379596452" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="700608802" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.19615, 0, 3)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(-5.61661, 0.13406, 3.75724, -6.06215, 0.135911, 2.99913, -5.61777, 0.147891, 2.24343, -4.77111, 0.154557, 2.2454, -4.33015, 0.145449, 3.00421, -4.7736, 0.148722, 3.75603, -5.05981, 5.96046e-08, 2.97864, -5.19954, 0.3, 3.007)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(-4, 2, 2)
-
-[node name="1tile" type="Node3D" parent="Tiles/700608802/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/700608802" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="482397725" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 0, 4.5)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(-4.75058, 0.13406, 5.25724, -5.19613, 0.135911, 4.49913, -4.75175, 0.147891, 3.74343, -3.90509, 0.154557, 3.7454, -3.46413, 0.145449, 4.50421, -3.90757, 0.148722, 5.25603, -4.19379, 5.96046e-08, 4.47864, -4.33352, 0.3, 4.507)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(-4, 3, 1)
-
-[node name="1tile" type="Node3D" parent="Tiles/482397725/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/482397725" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="4278000407" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641, 0, 6)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(-3.88456, 0.13406, 6.75724, -4.3301, 0.135911, 5.99913, -3.88572, 0.147891, 5.24343, -3.03906, 0.154557, 5.2454, -2.5981, 0.145449, 6.00421, -3.04155, 0.148722, 6.75603, -3.32776, 5.96046e-08, 5.97864, -3.46749, 0.3, 6.007)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(-4, 4, 0)
-
-[node name="1tile" type="Node3D" parent="Tiles/4278000407/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/4278000407" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="634925975" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 0, 7.5)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(-3.01853, 0.13406, 8.25724, -3.46408, 0.135911, 7.49913, -3.0197, 0.147891, 6.74343, -2.17304, 0.154557, 6.7454, -1.73208, 0.145449, 7.50421, -2.17552, 0.148722, 8.25603, -2.46173, 5.96046e-08, 7.47864, -2.60147, 0.3, 7.507)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(-4, 5, -1)
-
-[node name="1tile" type="Node3D" parent="Tiles/634925975/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/634925975" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="1160829075" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.9282, 0, -3)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(-7.34866, 0.13406, -2.24276, -7.7942, 0.135911, -3.00087, -7.34982, 0.147891, -3.75657, -6.50316, 0.154557, -3.7546, -6.0622, 0.145449, -2.99579, -6.50565, 0.148722, -2.24397, -6.79186, 5.96046e-08, -3.02136, -6.93159, 0.3, -2.993)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(-3, -2, 5)
-
-[node name="1tile" type="Node3D" parent="Tiles/1160829075/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/1160829075" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="3253004848" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.06218, 0, -1.5)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(-6.48263, 0.13406, -0.742757, -6.92818, 0.135911, -1.50087, -6.4838, 0.147891, -2.25657, -5.63714, 0.154557, -2.2546, -5.19618, 0.145449, -1.49579, -5.63962, 0.148722, -0.743969, -5.92584, 5.96046e-08, -1.52136, -6.06557, 0.3, -1.493)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(-3, -1, 4)
-
-[node name="1tile" type="Node3D" parent="Tiles/3253004848/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/3253004848" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="2689263578" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="1995686279" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.19615, 0, 0)
 script = ExtResource("3_8fghi")
 collision_points = PackedVector3Array(-5.61661, 0.13406, 0.757243, -6.06215, 0.135911, -0.000868961, -5.61777, 0.147891, -0.756569, -4.77111, 0.154557, -0.754596, -4.33015, 0.145449, 0.00420916, -4.7736, 0.148722, 0.756031, -5.05981, 5.96046e-08, -0.021358, -5.19954, 0.3, 0.0070028)
@@ -809,17 +57,17 @@ solid_status = 0
 w = 0
 tpos = Vector3(-3, 0, 3)
 
-[node name="1tile" type="Node3D" parent="Tiles/2689263578/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
+[node name="1tile" type="Node3D" parent="Tiles/1995686279/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
 body = NodePath("PalmTile_col")
 mesh = NodePath("PalmTile")
 type = "tile"
 collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/2689263578" index="1"]
+[node name="Effects" parent="Tiles/1995686279" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="2207180710" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="2189336865" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 0, 1.5)
 script = ExtResource("3_8fghi")
 collision_points = PackedVector3Array(-4.75058, 0.13406, 2.25724, -5.19613, 0.135911, 1.49913, -4.75175, 0.147891, 0.743431, -3.90509, 0.154557, 0.745404, -3.46413, 0.145449, 1.50421, -3.90757, 0.148722, 2.25603, -4.19379, 5.96046e-08, 1.47864, -4.33352, 0.3, 1.507)
@@ -859,17 +107,17 @@ solid_status = 0
 w = 0
 tpos = Vector3(-3, 1, 2)
 
-[node name="1tile" type="Node3D" parent="Tiles/2207180710/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
+[node name="1tile" type="Node3D" parent="Tiles/2189336865/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
 body = NodePath("PalmTile_col")
 mesh = NodePath("PalmTile")
 type = "tile"
 collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/2207180710" index="1"]
+[node name="Effects" parent="Tiles/2189336865" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="1798158412" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="3869980218" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641, 0, 3)
 script = ExtResource("3_8fghi")
 collision_points = PackedVector3Array(-3.88456, 0.13406, 3.75724, -4.3301, 0.135911, 2.99913, -3.88572, 0.147891, 2.24343, -3.03906, 0.154557, 2.2454, -2.5981, 0.145449, 3.00421, -3.04155, 0.148722, 3.75603, -3.32776, 5.96046e-08, 2.97864, -3.46749, 0.3, 3.007)
@@ -909,17 +157,17 @@ solid_status = 0
 w = 0
 tpos = Vector3(-3, 2, 1)
 
-[node name="1tile" type="Node3D" parent="Tiles/1798158412/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
+[node name="1tile" type="Node3D" parent="Tiles/3869980218/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
 body = NodePath("PalmTile_col")
 mesh = NodePath("PalmTile")
 type = "tile"
 collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/1798158412" index="1"]
+[node name="Effects" parent="Tiles/3869980218" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="2093507375" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="870327243" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 0, 4.5)
 script = ExtResource("3_8fghi")
 collision_points = PackedVector3Array(-3.01853, 0.13406, 5.25724, -3.46408, 0.135911, 4.49913, -3.0197, 0.147891, 3.74343, -2.17304, 0.154557, 3.7454, -1.73208, 0.145449, 4.50421, -2.17552, 0.148722, 5.25603, -2.46173, 5.96046e-08, 4.47864, -2.60147, 0.3, 4.507)
@@ -959,217 +207,17 @@ solid_status = 0
 w = 0
 tpos = Vector3(-3, 3, 0)
 
-[node name="1tile" type="Node3D" parent="Tiles/2093507375/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
+[node name="1tile" type="Node3D" parent="Tiles/870327243/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
 body = NodePath("PalmTile_col")
 mesh = NodePath("PalmTile")
 type = "tile"
 collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/2093507375" index="1"]
+[node name="Effects" parent="Tiles/870327243" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="3591509716" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.73205, 0, 6)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(-2.15251, 0.13406, 6.75724, -2.59805, 0.135911, 5.99913, -2.15367, 0.147891, 5.24343, -1.30701, 0.154557, 5.2454, -0.866051, 0.145449, 6.00421, -1.3095, 0.148722, 6.75603, -1.59571, 5.96046e-08, 5.97864, -1.73544, 0.3, 6.007)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(-3, 4, -1)
-
-[node name="1tile" type="Node3D" parent="Tiles/3591509716/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/3591509716" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="2156640623" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 0, 7.5)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(-1.28648, 0.13406, 8.25724, -1.73203, 0.135911, 7.49913, -1.28765, 0.147891, 6.74343, -0.440986, 0.154557, 6.7454, -2.53916e-05, 0.145449, 7.50421, -0.44347, 0.148722, 8.25603, -0.729683, 5.96046e-08, 7.47864, -0.869417, 0.3, 7.507)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(-3, 5, -2)
-
-[node name="1tile" type="Node3D" parent="Tiles/2156640623/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/2156640623" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="110985541" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.06218, 0, -4.5)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(-6.48263, 0.13406, -3.74276, -6.92818, 0.135911, -4.50087, -6.4838, 0.147891, -5.25657, -5.63714, 0.154557, -5.2546, -5.19618, 0.145449, -4.49579, -5.63962, 0.148722, -3.74397, -5.92584, 5.96046e-08, -4.52136, -6.06557, 0.3, -4.493)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(-2, -3, 5)
-
-[node name="1tile" type="Node3D" parent="Tiles/110985541/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/110985541" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="2683421934" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.19615, 0, -3)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(-5.61661, 0.13406, -2.24276, -6.06215, 0.135911, -3.00087, -5.61777, 0.147891, -3.75657, -4.77111, 0.154557, -3.7546, -4.33015, 0.145449, -2.99579, -4.7736, 0.148722, -2.24397, -5.05981, 5.96046e-08, -3.02136, -5.19954, 0.3, -2.993)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(-2, -2, 4)
-
-[node name="1tile" type="Node3D" parent="Tiles/2683421934/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/2683421934" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="131807915" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="914629759" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 0, -1.5)
 script = ExtResource("3_8fghi")
 collision_points = PackedVector3Array(-4.75058, 0.13406, -0.742757, -5.19613, 0.135911, -1.50087, -4.75175, 0.147891, -2.25657, -3.90509, 0.154557, -2.2546, -3.46413, 0.145449, -1.49579, -3.90757, 0.148722, -0.743969, -4.19379, 5.96046e-08, -1.52136, -4.33352, 0.3, -1.493)
@@ -1209,17 +257,17 @@ solid_status = 0
 w = 0
 tpos = Vector3(-2, -1, 3)
 
-[node name="1tile" type="Node3D" parent="Tiles/131807915/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
+[node name="1tile" type="Node3D" parent="Tiles/914629759/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
 body = NodePath("PalmTile_col")
 mesh = NodePath("PalmTile")
 type = "tile"
 collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/131807915" index="1"]
+[node name="Effects" parent="Tiles/914629759" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="533517838" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="2614259706" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641, 0, 0)
 script = ExtResource("3_8fghi")
 collision_points = PackedVector3Array(-3.88456, 0.13406, 0.757243, -4.3301, 0.135911, -0.000868961, -3.88572, 0.147891, -0.756569, -3.03906, 0.154557, -0.754596, -2.5981, 0.145449, 0.00420916, -3.04155, 0.148722, 0.756031, -3.32776, 5.96046e-08, -0.021358, -3.46749, 0.3, 0.0070028)
@@ -1259,17 +307,17 @@ solid_status = 0
 w = 0
 tpos = Vector3(-2, 0, 2)
 
-[node name="1tile" type="Node3D" parent="Tiles/533517838/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
+[node name="1tile" type="Node3D" parent="Tiles/2614259706/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
 body = NodePath("PalmTile_col")
 mesh = NodePath("PalmTile")
 type = "tile"
 collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/533517838" index="1"]
+[node name="Effects" parent="Tiles/2614259706" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="3128369343" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="807969230" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 0, 1.5)
 script = ExtResource("3_8fghi")
 collision_points = PackedVector3Array(-3.01853, 0.13406, 2.25724, -3.46408, 0.135911, 1.49913, -3.0197, 0.147891, 0.743431, -2.17304, 0.154557, 0.745404, -1.73208, 0.145449, 1.50421, -2.17552, 0.148722, 2.25603, -2.46173, 5.96046e-08, 1.47864, -2.60147, 0.3, 1.507)
@@ -1309,17 +357,17 @@ solid_status = 0
 w = 0
 tpos = Vector3(-2, 1, 1)
 
-[node name="1tile" type="Node3D" parent="Tiles/3128369343/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
+[node name="1tile" type="Node3D" parent="Tiles/807969230/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
 body = NodePath("PalmTile_col")
 mesh = NodePath("PalmTile")
 type = "tile"
 collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/3128369343" index="1"]
+[node name="Effects" parent="Tiles/807969230" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="253929524" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="3759516326" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.73205, 0, 3)
 script = ExtResource("3_8fghi")
 collision_points = PackedVector3Array(-2.15251, 0.13406, 3.75724, -2.59805, 0.135911, 2.99913, -2.15367, 0.147891, 2.24343, -1.30701, 0.154557, 2.2454, -0.866051, 0.145449, 3.00421, -1.3095, 0.148722, 3.75603, -1.59571, 5.96046e-08, 2.97864, -1.73544, 0.3, 3.007)
@@ -1359,17 +407,17 @@ solid_status = 0
 w = 0
 tpos = Vector3(-2, 2, 0)
 
-[node name="1tile" type="Node3D" parent="Tiles/253929524/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
+[node name="1tile" type="Node3D" parent="Tiles/3759516326/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
 body = NodePath("PalmTile_col")
 mesh = NodePath("PalmTile")
 type = "tile"
 collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/253929524" index="1"]
+[node name="Effects" parent="Tiles/3759516326" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="191989334" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="520916150" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 0, 4.5)
 script = ExtResource("3_8fghi")
 collision_points = PackedVector3Array(-1.28648, 0.13406, 5.25724, -1.73203, 0.135911, 4.49913, -1.28765, 0.147891, 3.74343, -0.440986, 0.154557, 3.7454, -2.53916e-05, 0.145449, 4.50421, -0.44347, 0.148722, 5.25603, -0.729683, 5.96046e-08, 4.47864, -0.869417, 0.3, 4.507)
@@ -1409,217 +457,17 @@ solid_status = 0
 w = 0
 tpos = Vector3(-2, 3, -1)
 
-[node name="1tile" type="Node3D" parent="Tiles/191989334/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
+[node name="1tile" type="Node3D" parent="Tiles/520916150/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
 body = NodePath("PalmTile_col")
 mesh = NodePath("PalmTile")
 type = "tile"
 collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/191989334" index="1"]
+[node name="Effects" parent="Tiles/520916150" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="1458045399" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(-0.420455, 0.13406, 6.75724, -0.866, 0.135911, 5.99913, -0.421621, 0.147891, 5.24343, 0.425039, 0.154557, 5.2454, 0.866, 0.145449, 6.00421, 0.422555, 0.148722, 6.75603, 0.136342, 5.96046e-08, 5.97864, -0.00339174, 0.3, 6.007)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(-2, 4, -2)
-
-[node name="1tile" type="Node3D" parent="Tiles/1458045399/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/1458045399" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="1153466213" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 0, 7.5)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(0.44557, 0.13406, 8.25724, 2.53916e-05, 0.135911, 7.49913, 0.444404, 0.147891, 6.74343, 1.29106, 0.154557, 6.7454, 1.73203, 0.145449, 7.50421, 1.28858, 0.148722, 8.25603, 1.00237, 5.96046e-08, 7.47864, 0.862634, 0.3, 7.507)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(-2, 5, -3)
-
-[node name="1tile" type="Node3D" parent="Tiles/1153466213/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/1153466213" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="1093837558" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.19615, 0, -6)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(-5.61661, 0.13406, -5.24276, -6.06215, 0.135911, -6.00087, -5.61777, 0.147891, -6.75657, -4.77111, 0.154557, -6.7546, -4.33015, 0.145449, -5.99579, -4.7736, 0.148722, -5.24397, -5.05981, 5.96046e-08, -6.02136, -5.19954, 0.3, -5.993)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(-1, -4, 5)
-
-[node name="1tile" type="Node3D" parent="Tiles/1093837558/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/1093837558" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="1231813117" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 0, -4.5)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(-4.75058, 0.13406, -3.74276, -5.19613, 0.135911, -4.50087, -4.75175, 0.147891, -5.25657, -3.90509, 0.154557, -5.2546, -3.46413, 0.145449, -4.49579, -3.90757, 0.148722, -3.74397, -4.19379, 5.96046e-08, -4.52136, -4.33352, 0.3, -4.493)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(-1, -3, 4)
-
-[node name="1tile" type="Node3D" parent="Tiles/1231813117/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/1231813117" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="464930768" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="3968501878" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641, 0, -3)
 script = ExtResource("3_8fghi")
 collision_points = PackedVector3Array(-3.88456, 0.13406, -2.24276, -4.3301, 0.135911, -3.00087, -3.88572, 0.147891, -3.75657, -3.03906, 0.154557, -3.7546, -2.5981, 0.145449, -2.99579, -3.04155, 0.148722, -2.24397, -3.32776, 5.96046e-08, -3.02136, -3.46749, 0.3, -2.993)
@@ -1659,17 +507,17 @@ solid_status = 0
 w = 0
 tpos = Vector3(-1, -2, 3)
 
-[node name="1tile" type="Node3D" parent="Tiles/464930768/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
+[node name="1tile" type="Node3D" parent="Tiles/3968501878/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
 body = NodePath("PalmTile_col")
 mesh = NodePath("PalmTile")
 type = "tile"
 collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/464930768" index="1"]
+[node name="Effects" parent="Tiles/3968501878" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="1458870295" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="987380218" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 0, -1.5)
 script = ExtResource("3_8fghi")
 collision_points = PackedVector3Array(-3.01853, 0.13406, -0.742757, -3.46408, 0.135911, -1.50087, -3.0197, 0.147891, -2.25657, -2.17304, 0.154557, -2.2546, -1.73208, 0.145449, -1.49579, -2.17552, 0.148722, -0.743969, -2.46173, 5.96046e-08, -1.52136, -2.60147, 0.3, -1.493)
@@ -1709,17 +557,17 @@ solid_status = 0
 w = 0
 tpos = Vector3(-1, -1, 2)
 
-[node name="1tile" type="Node3D" parent="Tiles/1458870295/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
+[node name="1tile" type="Node3D" parent="Tiles/987380218/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
 body = NodePath("PalmTile_col")
 mesh = NodePath("PalmTile")
 type = "tile"
 collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/1458870295" index="1"]
+[node name="Effects" parent="Tiles/987380218" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="1106367317" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="1396686508" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.73205, 0, 0)
 script = ExtResource("3_8fghi")
 collision_points = PackedVector3Array(-2.15251, 0.13406, 0.757243, -2.59805, 0.135911, -0.000868961, -2.15367, 0.147891, -0.756569, -1.30701, 0.154557, -0.754596, -0.866051, 0.145449, 0.00420916, -1.3095, 0.148722, 0.756031, -1.59571, 5.96046e-08, -0.021358, -1.73544, 0.3, 0.0070028)
@@ -1759,17 +607,17 @@ solid_status = 0
 w = 0
 tpos = Vector3(-1, 0, 1)
 
-[node name="1tile" type="Node3D" parent="Tiles/1106367317/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
+[node name="1tile" type="Node3D" parent="Tiles/1396686508/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
 body = NodePath("PalmTile_col")
 mesh = NodePath("PalmTile")
 type = "tile"
 collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/1106367317" index="1"]
+[node name="Effects" parent="Tiles/1396686508" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="676758240" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="1999542528" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 0, 1.5)
 script = ExtResource("3_8fghi")
 collision_points = PackedVector3Array(-1.28648, 0.13406, 2.25724, -1.73203, 0.135911, 1.49913, -1.28765, 0.147891, 0.743431, -0.440986, 0.154557, 0.745404, -2.53916e-05, 0.145449, 1.50421, -0.44347, 0.148722, 2.25603, -0.729683, 5.96046e-08, 1.47864, -0.869417, 0.3, 1.507)
@@ -1809,17 +657,17 @@ solid_status = 0
 w = 0
 tpos = Vector3(-1, 1, 0)
 
-[node name="1tile" type="Node3D" parent="Tiles/676758240/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
+[node name="1tile" type="Node3D" parent="Tiles/1999542528/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
 body = NodePath("PalmTile_col")
 mesh = NodePath("PalmTile")
 type = "tile"
 collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/676758240" index="1"]
+[node name="Effects" parent="Tiles/1999542528" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="1652394231" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="2857195480" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
 script = ExtResource("3_8fghi")
 collision_points = PackedVector3Array(-0.420455, 0.13406, 3.75724, -0.866, 0.135911, 2.99913, -0.421621, 0.147891, 2.24343, 0.425039, 0.154557, 2.2454, 0.866, 0.145449, 3.00421, 0.422555, 0.148722, 3.75603, 0.136342, 5.96046e-08, 2.97864, -0.00339174, 0.3, 3.007)
@@ -1859,17 +707,17 @@ solid_status = 0
 w = 0
 tpos = Vector3(-1, 2, -1)
 
-[node name="1tile" type="Node3D" parent="Tiles/1652394231/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
+[node name="1tile" type="Node3D" parent="Tiles/2857195480/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
 body = NodePath("PalmTile_col")
 mesh = NodePath("PalmTile")
 type = "tile"
 collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/1652394231" index="1"]
+[node name="Effects" parent="Tiles/2857195480" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="3766425082" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="4117592856" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 0, 4.5)
 script = ExtResource("3_8fghi")
 collision_points = PackedVector3Array(0.44557, 0.13406, 5.25724, 2.53916e-05, 0.135911, 4.49913, 0.444404, 0.147891, 3.74343, 1.29106, 0.154557, 3.7454, 1.73203, 0.145449, 4.50421, 1.28858, 0.148722, 5.25603, 1.00237, 5.96046e-08, 4.47864, 0.862634, 0.3, 4.507)
@@ -1909,217 +757,17 @@ solid_status = 0
 w = 0
 tpos = Vector3(-1, 3, -2)
 
-[node name="1tile" type="Node3D" parent="Tiles/3766425082/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
+[node name="1tile" type="Node3D" parent="Tiles/4117592856/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
 body = NodePath("PalmTile_col")
 mesh = NodePath("PalmTile")
 type = "tile"
 collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/3766425082" index="1"]
+[node name="Effects" parent="Tiles/4117592856" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="983753663" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.73205, 0, 6)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(1.3116, 0.13406, 6.75724, 0.866051, 0.135911, 5.99913, 1.31043, 0.147891, 5.24343, 2.15709, 0.154557, 5.2454, 2.59805, 0.145449, 6.00421, 2.15461, 0.148722, 6.75603, 1.86839, 5.96046e-08, 5.97864, 1.72866, 0.3, 6.007)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(-1, 4, -3)
-
-[node name="1tile" type="Node3D" parent="Tiles/983753663/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/983753663" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="2101666421" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.59808, 0, 7.5)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(2.17762, 0.13406, 8.25724, 1.73208, 0.135911, 7.49913, 2.17646, 0.147891, 6.74343, 3.02312, 0.154557, 6.7454, 3.46408, 0.145449, 7.50421, 3.02063, 0.148722, 8.25603, 2.73442, 5.96046e-08, 7.47864, 2.59468, 0.3, 7.507)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(-1, 5, -4)
-
-[node name="1tile" type="Node3D" parent="Tiles/2101666421/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/2101666421" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="327946690" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.33013, 0, -7.5)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(-4.75058, 0.13406, -6.74276, -5.19613, 0.135911, -7.50087, -4.75175, 0.147891, -8.25657, -3.90509, 0.154557, -8.2546, -3.46413, 0.145449, -7.49579, -3.90757, 0.148722, -6.74397, -4.19379, 5.96046e-08, -7.52136, -4.33352, 0.3, -7.493)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(0, -5, 5)
-
-[node name="1tile" type="Node3D" parent="Tiles/327946690/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/327946690" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="4049667424" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641, 0, -6)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(-3.88456, 0.13406, -5.24276, -4.3301, 0.135911, -6.00087, -3.88572, 0.147891, -6.75657, -3.03906, 0.154557, -6.7546, -2.5981, 0.145449, -5.99579, -3.04155, 0.148722, -5.24397, -3.32776, 5.96046e-08, -6.02136, -3.46749, 0.3, -5.993)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(0, -4, 4)
-
-[node name="1tile" type="Node3D" parent="Tiles/4049667424/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/4049667424" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="902669377" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="3337324942" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 0, -4.5)
 script = ExtResource("3_8fghi")
 collision_points = PackedVector3Array(-3.01853, 0.13406, -3.74276, -3.46408, 0.135911, -4.50087, -3.0197, 0.147891, -5.25657, -2.17304, 0.154557, -5.2546, -1.73208, 0.145449, -4.49579, -2.17552, 0.148722, -3.74397, -2.46173, 5.96046e-08, -4.52136, -2.60147, 0.3, -4.493)
@@ -2159,17 +807,17 @@ solid_status = 0
 w = 0
 tpos = Vector3(0, -3, 3)
 
-[node name="1tile" type="Node3D" parent="Tiles/902669377/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
+[node name="1tile" type="Node3D" parent="Tiles/3337324942/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
 body = NodePath("PalmTile_col")
 mesh = NodePath("PalmTile")
 type = "tile"
 collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/902669377" index="1"]
+[node name="Effects" parent="Tiles/3337324942" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="7490636" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="3754103502" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.73205, 0, -3)
 script = ExtResource("3_8fghi")
 collision_points = PackedVector3Array(-2.15251, 0.13406, -2.24276, -2.59805, 0.135911, -3.00087, -2.15367, 0.147891, -3.75657, -1.30701, 0.154557, -3.7546, -0.866051, 0.145449, -2.99579, -1.3095, 0.148722, -2.24397, -1.59571, 5.96046e-08, -3.02136, -1.73544, 0.3, -2.993)
@@ -2209,17 +857,17 @@ solid_status = 0
 w = 0
 tpos = Vector3(0, -2, 2)
 
-[node name="1tile" type="Node3D" parent="Tiles/7490636/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
+[node name="1tile" type="Node3D" parent="Tiles/3754103502/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
 body = NodePath("PalmTile_col")
 mesh = NodePath("PalmTile")
 type = "tile"
 collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/7490636" index="1"]
+[node name="Effects" parent="Tiles/3754103502" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="1465921530" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="2441460164" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 0, -1.5)
 script = ExtResource("3_8fghi")
 collision_points = PackedVector3Array(-1.28648, 0.13406, -0.742757, -1.73203, 0.135911, -1.50087, -1.28765, 0.147891, -2.25657, -0.440986, 0.154557, -2.2546, -2.53916e-05, 0.145449, -1.49579, -0.44347, 0.148722, -0.743969, -0.729683, 5.96046e-08, -1.52136, -0.869417, 0.3, -1.493)
@@ -2259,17 +907,17 @@ solid_status = 0
 w = 0
 tpos = Vector3(0, -1, 1)
 
-[node name="1tile" type="Node3D" parent="Tiles/1465921530/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
+[node name="1tile" type="Node3D" parent="Tiles/2441460164/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
 body = NodePath("PalmTile_col")
 mesh = NodePath("PalmTile")
 type = "tile"
 collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/1465921530" index="1"]
+[node name="Effects" parent="Tiles/2441460164" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="2739113655" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="3398161884" parent="Tiles" instance=ExtResource("2_0bbyw")]
 script = ExtResource("3_8fghi")
 collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 tile = {
@@ -2308,17 +956,17 @@ solid_status = 0
 w = 0
 tpos = Vector3(0, 0, 0)
 
-[node name="1tile" type="Node3D" parent="Tiles/2739113655/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
+[node name="1tile" type="Node3D" parent="Tiles/3398161884/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
 body = NodePath("PalmTile_col")
 mesh = NodePath("PalmTile")
 type = "tile"
 collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/2739113655" index="1"]
+[node name="Effects" parent="Tiles/3398161884" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="3283658572" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="4111193404" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 0, 1.5)
 script = ExtResource("3_8fghi")
 collision_points = PackedVector3Array(0.44557, 0.13406, 2.25724, 2.53916e-05, 0.135911, 1.49913, 0.444404, 0.147891, 0.743431, 1.29106, 0.154557, 0.745404, 1.73203, 0.145449, 1.50421, 1.28858, 0.148722, 2.25603, 1.00237, 5.96046e-08, 1.47864, 0.862634, 0.3, 1.507)
@@ -2358,17 +1006,17 @@ solid_status = 0
 w = 0
 tpos = Vector3(0, 1, -1)
 
-[node name="1tile" type="Node3D" parent="Tiles/3283658572/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
+[node name="1tile" type="Node3D" parent="Tiles/4111193404/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
 body = NodePath("PalmTile_col")
 mesh = NodePath("PalmTile")
 type = "tile"
 collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/3283658572" index="1"]
+[node name="Effects" parent="Tiles/4111193404" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="1872386045" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="1874274281" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.73205, 0, 3)
 script = ExtResource("3_8fghi")
 collision_points = PackedVector3Array(1.3116, 0.13406, 3.75724, 0.866051, 0.135911, 2.99913, 1.31043, 0.147891, 2.24343, 2.15709, 0.154557, 2.2454, 2.59805, 0.145449, 3.00421, 2.15461, 0.148722, 3.75603, 1.86839, 5.96046e-08, 2.97864, 1.72866, 0.3, 3.007)
@@ -2391,10 +1039,10 @@ tdeco = {
 "type": 0
 }
 obj = {
-"id": 0,
+"id": 2,
 "multi_tile": [],
 "obj_info": [],
-"rotation": 0,
+"rotation": 4,
 "type": 0
 }
 wall = {
@@ -2408,17 +1056,17 @@ solid_status = 0
 w = 0
 tpos = Vector3(0, 2, -2)
 
-[node name="1tile" type="Node3D" parent="Tiles/1872386045/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
+[node name="1tile" type="Node3D" parent="Tiles/1874274281/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
 body = NodePath("PalmTile_col")
 mesh = NodePath("PalmTile")
 type = "tile"
 collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/1872386045" index="1"]
+[node name="Effects" parent="Tiles/1874274281" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="2468537657" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="2191016009" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.59808, 0, 4.5)
 script = ExtResource("3_8fghi")
 collision_points = PackedVector3Array(2.17762, 0.13406, 5.25724, 1.73208, 0.135911, 4.49913, 2.17646, 0.147891, 3.74343, 3.02312, 0.154557, 3.7454, 3.46408, 0.145449, 4.50421, 3.02063, 0.148722, 5.25603, 2.73442, 5.96046e-08, 4.47864, 2.59468, 0.3, 4.507)
@@ -2458,217 +1106,17 @@ solid_status = 0
 w = 0
 tpos = Vector3(0, 3, -3)
 
-[node name="1tile" type="Node3D" parent="Tiles/2468537657/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
+[node name="1tile" type="Node3D" parent="Tiles/2191016009/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
 body = NodePath("PalmTile_col")
 mesh = NodePath("PalmTile")
 type = "tile"
 collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/2468537657" index="1"]
+[node name="Effects" parent="Tiles/2191016009" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="1846141317" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641, 0, 6)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(3.04365, 0.13406, 6.75724, 2.5981, 0.135911, 5.99913, 3.04248, 0.147891, 5.24343, 3.88914, 0.154557, 5.2454, 4.3301, 0.145449, 6.00421, 3.88666, 0.148722, 6.75603, 3.60044, 5.96046e-08, 5.97864, 3.46071, 0.3, 6.007)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(0, 4, -4)
-
-[node name="1tile" type="Node3D" parent="Tiles/1846141317/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/1846141317" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="1625686311" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.33013, 0, 7.5)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(3.90967, 0.13406, 8.25724, 3.46413, 0.135911, 7.49913, 3.90851, 0.147891, 6.74343, 4.75517, 0.154557, 6.7454, 5.19613, 0.145449, 7.50421, 4.75268, 0.148722, 8.25603, 4.46647, 5.96046e-08, 7.47864, 4.32674, 0.3, 7.507)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(0, 5, -5)
-
-[node name="1tile" type="Node3D" parent="Tiles/1625686311/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/1625686311" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="3762453718" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.59808, 0, -7.5)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(-3.01853, 0.13406, -6.74276, -3.46408, 0.135911, -7.50087, -3.0197, 0.147891, -8.25657, -2.17304, 0.154557, -8.2546, -1.73208, 0.145449, -7.49579, -2.17552, 0.148722, -6.74397, -2.46173, 5.96046e-08, -7.52136, -2.60147, 0.3, -7.493)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(1, -5, 4)
-
-[node name="1tile" type="Node3D" parent="Tiles/3762453718/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/3762453718" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="441526737" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.73205, 0, -6)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(-2.15251, 0.13406, -5.24276, -2.59805, 0.135911, -6.00087, -2.15367, 0.147891, -6.75657, -1.30701, 0.154557, -6.7546, -0.866051, 0.145449, -5.99579, -1.3095, 0.148722, -5.24397, -1.59571, 5.96046e-08, -6.02136, -1.73544, 0.3, -5.993)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(1, -4, 3)
-
-[node name="1tile" type="Node3D" parent="Tiles/441526737/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/441526737" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="3831569824" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="3413933200" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 0, -4.5)
 script = ExtResource("3_8fghi")
 collision_points = PackedVector3Array(-1.28648, 0.13406, -3.74276, -1.73203, 0.135911, -4.50087, -1.28765, 0.147891, -5.25657, -0.440986, 0.154557, -5.2546, -2.53916e-05, 0.145449, -4.49579, -0.44347, 0.148722, -3.74397, -0.729683, 5.96046e-08, -4.52136, -0.869417, 0.3, -4.493)
@@ -2708,17 +1156,17 @@ solid_status = 0
 w = 0
 tpos = Vector3(1, -3, 2)
 
-[node name="1tile" type="Node3D" parent="Tiles/3831569824/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
+[node name="1tile" type="Node3D" parent="Tiles/3413933200/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
 body = NodePath("PalmTile_col")
 mesh = NodePath("PalmTile")
 type = "tile"
 collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/3831569824" index="1"]
+[node name="Effects" parent="Tiles/3413933200" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="3055367859" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="2496209368" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3)
 script = ExtResource("3_8fghi")
 collision_points = PackedVector3Array(-0.420455, 0.13406, -2.24276, -0.866, 0.135911, -3.00087, -0.421621, 0.147891, -3.75657, 0.425039, 0.154557, -3.7546, 0.866, 0.145449, -2.99579, 0.422555, 0.148722, -2.24397, 0.136342, 5.96046e-08, -3.02136, -0.00339174, 0.3, -2.993)
@@ -2758,25 +1206,25 @@ solid_status = 0
 w = 0
 tpos = Vector3(1, -2, 1)
 
-[node name="1tile" type="Node3D" parent="Tiles/3055367859/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
+[node name="1tile" type="Node3D" parent="Tiles/2496209368/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
 body = NodePath("PalmTile_col")
 mesh = NodePath("PalmTile")
 type = "tile"
 collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/3055367859" index="1"]
+[node name="Effects" parent="Tiles/2496209368" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="3556438302" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="3156044394" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 0, -1.5)
 script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(1.28904, 0.134108, -0.744234, 0.392352, 0.148632, -0.773505, 5.66244e-06, 0.137454, -1.53825, 0.473075, 0.143656, -2.27312, 1.32078, 0.134353, -2.23742, 1.73205, 0.131598, -1.44537, 1.22429, 0.398319, -0.870716, 0.531877, 1.33642, -2.03444)
+collision_points = PackedVector3Array(0.44557, 0.13406, -0.742757, 2.53916e-05, 0.135911, -1.50087, 0.444404, 0.147891, -2.25657, 1.29106, 0.154557, -2.2546, 1.73203, 0.145449, -1.49579, 1.28858, 0.148722, -0.743969, 1.00237, 5.96046e-08, -1.52136, 0.862634, 0.3, -1.493)
 tile = {
 "id": 1,
 "multi_tile": [],
-"rotation": 5,
-"type": 2
+"rotation": 0,
+"type": 0
 }
 wdeco = {
 "id": 0,
@@ -2808,26 +1256,25 @@ solid_status = 0
 w = 0
 tpos = Vector3(1, -1, 0)
 
-[node name="1tile2" type="Node3D" parent="Tiles/3556438302/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("9_w3se0")]
-transform = Transform3D(0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, 0.5, 0, 0, 0)
+[node name="1tile" type="Node3D" parent="Tiles/3156044394/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
-body = NodePath("PalmStairTile_col")
-mesh = NodePath("PalmStairTile")
+body = NodePath("PalmTile_col")
+mesh = NodePath("PalmTile")
 type = "tile"
-collision_points = PackedVector3Array(-0.443007, 0.134108, 0.744222, -0.866, 0.148632, -0.046966, -0.399881, 0.137454, -0.769122, 0.473069, 0.143656, -0.726866, 0.866, 0.134353, 0.0251217, 0.385701, 0.131598, 0.777309, -0.365843, 0.398319, 0.62491, 0.295763, 1.33642, -0.5566)
+collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/3556438302" index="1"]
+[node name="Effects" parent="Tiles/3156044394" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="3834172824" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="1717655694" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.73205, 0, 0)
 script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(1.28904, 0.134108, 0.744222, 0.866051, 0.148632, -0.046966, 1.33217, 0.137454, -0.769122, 2.20512, 0.143656, -0.726866, 2.59805, 0.134353, 0.0251217, 2.11775, 0.131598, 0.777309, 1.36621, 0.398319, 0.62491, 2.02781, 1.33642, -0.5566)
+collision_points = PackedVector3Array(1.3116, 0.13406, 0.757243, 0.866051, 0.135911, -0.000868961, 1.31043, 0.147891, -0.756569, 2.15709, 0.154557, -0.754596, 2.59805, 0.145449, 0.00420916, 2.15461, 0.148722, 0.756031, 1.86839, 5.96046e-08, -0.021358, 1.72866, 0.3, 0.0070028)
 tile = {
 "id": 1,
 "multi_tile": [],
 "rotation": 0,
-"type": 2
+"type": 0
 }
 wdeco = {
 "id": 0,
@@ -2859,17 +1306,17 @@ solid_status = 0
 w = 0
 tpos = Vector3(1, 0, -1)
 
-[node name="1tile2" type="Node3D" parent="Tiles/3834172824/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("9_w3se0")]
+[node name="1tile" type="Node3D" parent="Tiles/1717655694/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
-body = NodePath("PalmStairTile_col")
-mesh = NodePath("PalmStairTile")
+body = NodePath("PalmTile_col")
+mesh = NodePath("PalmTile")
 type = "tile"
-collision_points = PackedVector3Array(-0.443007, 0.134108, 0.744222, -0.866, 0.148632, -0.046966, -0.399881, 0.137454, -0.769122, 0.473069, 0.143656, -0.726866, 0.866, 0.134353, 0.0251217, 0.385701, 0.131598, 0.777309, -0.365843, 0.398319, 0.62491, 0.295763, 1.33642, -0.5566)
+collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/3834172824" index="1"]
+[node name="Effects" parent="Tiles/1717655694" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="3523421095" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="2127380652" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.59808, 0, 1.5)
 script = ExtResource("3_8fghi")
 collision_points = PackedVector3Array(2.17762, 0.13406, 2.25724, 1.73208, 0.135911, 1.49913, 2.17646, 0.147891, 0.743431, 3.02312, 0.154557, 0.745404, 3.46408, 0.145449, 1.50421, 3.02063, 0.148722, 2.25603, 2.73442, 5.96046e-08, 1.47864, 2.59468, 0.3, 1.507)
@@ -2892,10 +1339,10 @@ tdeco = {
 "type": 0
 }
 obj = {
-"id": 0,
+"id": 2,
 "multi_tile": [],
 "obj_info": [],
-"rotation": 0,
+"rotation": 4,
 "type": 0
 }
 wall = {
@@ -2909,17 +1356,17 @@ solid_status = 0
 w = 0
 tpos = Vector3(1, 1, -2)
 
-[node name="1tile" type="Node3D" parent="Tiles/3523421095/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
+[node name="1tile" type="Node3D" parent="Tiles/2127380652/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
 body = NodePath("PalmTile_col")
 mesh = NodePath("PalmTile")
 type = "tile"
 collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/3523421095" index="1"]
+[node name="Effects" parent="Tiles/2127380652" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="3215860212" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="487112979" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641, 0, 3)
 script = ExtResource("3_8fghi")
 collision_points = PackedVector3Array(3.04365, 0.13406, 3.75724, 2.5981, 0.135911, 2.99913, 3.04248, 0.147891, 2.24343, 3.88914, 0.154557, 2.2454, 4.3301, 0.145449, 3.00421, 3.88666, 0.148722, 3.75603, 3.60044, 5.96046e-08, 2.97864, 3.46071, 0.3, 3.007)
@@ -2959,217 +1406,17 @@ solid_status = 0
 w = 0
 tpos = Vector3(1, 2, -3)
 
-[node name="1tile" type="Node3D" parent="Tiles/3215860212/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
+[node name="1tile" type="Node3D" parent="Tiles/487112979/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
 body = NodePath("PalmTile_col")
 mesh = NodePath("PalmTile")
 type = "tile"
 collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/3215860212" index="1"]
+[node name="Effects" parent="Tiles/487112979" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="1829390154" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.33013, 0, 4.5)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(3.90967, 0.13406, 5.25724, 3.46413, 0.135911, 4.49913, 3.90851, 0.147891, 3.74343, 4.75517, 0.154557, 3.7454, 5.19613, 0.145449, 4.50421, 4.75268, 0.148722, 5.25603, 4.46647, 5.96046e-08, 4.47864, 4.32674, 0.3, 4.507)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(1, 3, -4)
-
-[node name="1tile" type="Node3D" parent="Tiles/1829390154/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/1829390154" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="3458464541" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.19615, 0, 6)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(4.7757, 0.13406, 6.75724, 4.33015, 0.135911, 5.99913, 4.77453, 0.147891, 5.24343, 5.62119, 0.154557, 5.2454, 6.06215, 0.145449, 6.00421, 5.61871, 0.148722, 6.75603, 5.33249, 5.96046e-08, 5.97864, 5.19276, 0.3, 6.007)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(1, 4, -5)
-
-[node name="1tile" type="Node3D" parent="Tiles/3458464541/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/3458464541" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="4006648561" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866025, 0, -7.5)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(-1.28648, 0.13406, -6.74276, -1.73203, 0.135911, -7.50087, -1.28765, 0.147891, -8.25657, -0.440986, 0.154557, -8.2546, -2.53916e-05, 0.145449, -7.49579, -0.44347, 0.148722, -6.74397, -0.729683, 5.96046e-08, -7.52136, -0.869417, 0.3, -7.493)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(2, -5, 3)
-
-[node name="1tile" type="Node3D" parent="Tiles/4006648561/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/4006648561" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="2243912114" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -6)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(-0.420455, 0.13406, -5.24276, -0.866, 0.135911, -6.00087, -0.421621, 0.147891, -6.75657, 0.425039, 0.154557, -6.7546, 0.866, 0.145449, -5.99579, 0.422555, 0.148722, -5.24397, 0.136342, 5.96046e-08, -6.02136, -0.00339174, 0.3, -5.993)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(2, -4, 2)
-
-[node name="1tile" type="Node3D" parent="Tiles/2243912114/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/2243912114" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="825748471" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="758455076" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 0, -4.5)
 script = ExtResource("3_8fghi")
 collision_points = PackedVector3Array(0.44557, 0.13406, -3.74276, 2.53916e-05, 0.135911, -4.50087, 0.444404, 0.147891, -5.25657, 1.29106, 0.154557, -5.2546, 1.73203, 0.145449, -4.49579, 1.28858, 0.148722, -3.74397, 1.00237, 5.96046e-08, -4.52136, 0.862634, 0.3, -4.493)
@@ -3209,25 +1456,25 @@ solid_status = 0
 w = 0
 tpos = Vector3(2, -3, 1)
 
-[node name="1tile" type="Node3D" parent="Tiles/825748471/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
+[node name="1tile" type="Node3D" parent="Tiles/758455076/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
 body = NodePath("PalmTile_col")
 mesh = NodePath("PalmTile")
 type = "tile"
 collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/825748471" index="1"]
+[node name="Effects" parent="Tiles/758455076" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="4012008451" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="3037690031" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.73205, 0, -3)
 script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(2.59807, 0.134108, -2.98846, 2.12438, 0.148632, -2.22654, 1.26591, 0.137454, -2.26913, 0.866032, 0.143656, -3.04626, 1.32081, 0.134353, -3.76254, 2.21237, 0.131598, -3.72268, 2.45616, 0.398319, -2.99563, 1.10214, 1.33642, -2.97784)
+collision_points = PackedVector3Array(1.3116, 0.13406, -2.24276, 0.866051, 0.135911, -3.00087, 1.31043, 0.147891, -3.75657, 2.15709, 0.154557, -3.7546, 2.59805, 0.145449, -2.99579, 2.15461, 0.148722, -2.24397, 1.86839, 5.96046e-08, -3.02136, 1.72866, 0.3, -2.993)
 tile = {
 "id": 1,
 "multi_tile": [],
-"rotation": 4,
-"type": 2
+"rotation": 0,
+"type": 0
 }
 wdeco = {
 "id": 0,
@@ -3259,102 +1506,25 @@ solid_status = 0
 w = 0
 tpos = Vector3(2, -2, 0)
 
-[node name="1tile2" type="Node3D" parent="Tiles/4012008451/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("9_w3se0")]
-transform = Transform3D(-0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, -0.5, 0, 0, 0)
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmStairTile_col")
-mesh = NodePath("PalmStairTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.443007, 0.134108, 0.744222, -0.866, 0.148632, -0.046966, -0.399881, 0.137454, -0.769122, 0.473069, 0.143656, -0.726866, 0.866, 0.134353, 0.0251217, 0.385701, 0.131598, 0.777309, -0.365843, 0.398319, 0.62491, 0.295763, 1.33642, -0.5566)
-
-[node name="Effects" parent="Tiles/4012008451" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="3467911693" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.59808, 0, -1.5)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(3.01853, 0.13406, -2.25724, 3.46408, 0.135911, -1.49913, 3.0197, 0.147891, -0.743431, 2.17304, 0.154557, -0.745404, 1.73208, 0.145449, -1.50421, 2.17552, 0.148722, -2.25603, 2.46173, 5.96046e-08, -1.47864, 2.60147, 0.3, -1.507, 2.18995, 0.75485, -0.735639, 1.73208, 0.744906, -1.49886, 2.18751, 0.736909, -2.26295, 3.0491, 0.738625, -2.23959, 3.46408, 0.73731, -1.50671, 3.03636, 0.751109, -0.753048)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 3,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 1,
-"model": [],
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 1,
-"type": 2
-}
-solid_status = 1
-w = 0
-tpos = Vector3(2, -1, -1)
-
-[node name="1tile" type="Node3D" parent="Tiles/3467911693/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+[node name="1tile" type="Node3D" parent="Tiles/3037690031/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
 body = NodePath("PalmTile_col")
 mesh = NodePath("PalmTile")
 type = "tile"
 collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="1wall2" type="Node3D" parent="Tiles/3467911693/ModelManager" index="1" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("7_nj812")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
-script = ExtResource("5_qrsaj")
-body = NodePath("Cliff1_col")
-mesh = NodePath("Cliff1")
-type = "wall"
-collision_points = PackedVector3Array(-0.408128, 0.15485, 0.764361, -0.866, 0.144906, 0.00114202, -0.410565, 0.136909, -0.762954, 0.451026, 0.138625, -0.739593, 0.866, 0.13731, -0.00671141, 0.43828, 0.151109, 0.746952)
-
-[node name="@Node3D@1972" type="Node3D" parent="Tiles/3467911693/ModelManager" index="2" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("7_nj812")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-script = ExtResource("5_qrsaj")
-body = NodePath("Cliff1_col")
-mesh = NodePath("Cliff1")
-type = "wall"
-collision_points = PackedVector3Array(-0.408128, 0.15485, 0.764361, -0.866, 0.144906, 0.00114202, -0.410565, 0.136909, -0.762954, 0.451026, 0.138625, -0.739593, 0.866, 0.13731, -0.00671141, 0.43828, 0.151109, 0.746952)
-
-[node name="@Node3D@1973" type="Node3D" parent="Tiles/3467911693/ModelManager" index="3" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("7_nj812")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
-script = ExtResource("5_qrsaj")
-body = NodePath("Cliff1_col")
-mesh = NodePath("Cliff1")
-type = "wall"
-collision_points = PackedVector3Array(-0.408128, 0.15485, 0.764361, -0.866, 0.144906, 0.00114202, -0.410565, 0.136909, -0.762954, 0.451026, 0.138625, -0.739593, 0.866, 0.13731, -0.00671141, 0.43828, 0.151109, 0.746952)
-
-[node name="Effects" parent="Tiles/3467911693" index="1"]
+[node name="Effects" parent="Tiles/3037690031" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="122976761" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641, 0, 0)
+[node name="2102790245" parent="Tiles" instance=ExtResource("2_0bbyw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.59808, 0, -1.5)
 script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(2.59808, 0.134108, -0.0115443, 3.07178, 0.148632, -0.773461, 3.93024, 0.137454, -0.730868, 4.33012, 0.143656, 0.0462568, 3.87535, 0.134353, 0.762539, 2.98378, 0.131598, 0.722681, 2.73999, 0.398319, -0.00437433, 4.09401, 1.33642, -0.0221617)
+collision_points = PackedVector3Array(2.17762, 0.13406, -0.742757, 1.73208, 0.135911, -1.50087, 2.17646, 0.147891, -2.25657, 3.02312, 0.154557, -2.2546, 3.46408, 0.145449, -1.49579, 3.02063, 0.148722, -0.743969, 2.73442, 5.96046e-08, -1.52136, 2.59468, 0.3, -1.493)
 tile = {
 "id": 1,
 "multi_tile": [],
-"rotation": 1,
-"type": 2
+"rotation": 0,
+"type": 0
 }
 wdeco = {
 "id": 0,
@@ -3384,20 +1554,69 @@ wall = {
 }
 solid_status = 0
 w = 0
-tpos = Vector3(2, 0, -2)
+tpos = Vector3(2, -1, -1)
 
-[node name="1tile2" type="Node3D" parent="Tiles/122976761/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("9_w3se0")]
-transform = Transform3D(0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, 0, 0, 0)
+[node name="1tile" type="Node3D" parent="Tiles/2102790245/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
-body = NodePath("PalmStairTile_col")
-mesh = NodePath("PalmStairTile")
+body = NodePath("PalmTile_col")
+mesh = NodePath("PalmTile")
 type = "tile"
-collision_points = PackedVector3Array(-0.443007, 0.134108, 0.744222, -0.866, 0.148632, -0.046966, -0.399881, 0.137454, -0.769122, 0.473069, 0.143656, -0.726866, 0.866, 0.134353, 0.0251217, 0.385701, 0.131598, 0.777309, -0.365843, 0.398319, 0.62491, 0.295763, 1.33642, -0.5566)
+collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/122976761" index="1"]
+[node name="Effects" parent="Tiles/2102790245" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="1427090183" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="2143265954" parent="Tiles" instance=ExtResource("2_0bbyw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641, 0, 0)
+script = ExtResource("3_8fghi")
+collision_points = PackedVector3Array(3.04365, 0.13406, 0.757243, 2.5981, 0.135911, -0.000868961, 3.04248, 0.147891, -0.756569, 3.88914, 0.154557, -0.754596, 4.3301, 0.145449, 0.00420916, 3.88666, 0.148722, 0.756031, 3.60044, 5.96046e-08, -0.021358, 3.46071, 0.3, 0.0070028)
+tile = {
+"id": 1,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+wdeco = {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+tdeco = {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"type": 0
+}
+obj = {
+"id": 2,
+"multi_tile": [],
+"obj_info": [],
+"rotation": 4,
+"type": 0
+}
+wall = {
+"id": 0,
+"multi_tile": [],
+"rotation": 0,
+"tile_wall": 0,
+"type": 0
+}
+solid_status = 0
+w = 0
+tpos = Vector3(2, 0, -2)
+
+[node name="1tile" type="Node3D" parent="Tiles/2143265954/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
+script = ExtResource("5_qrsaj")
+body = NodePath("PalmTile_col")
+mesh = NodePath("PalmTile")
+type = "tile"
+collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
+
+[node name="Effects" parent="Tiles/2143265954" index="1"]
+script = ExtResource("6_o6d3m")
+
+[node name="2289678881" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.33013, 0, 1.5)
 script = ExtResource("3_8fghi")
 collision_points = PackedVector3Array(3.90967, 0.13406, 2.25724, 3.46413, 0.135911, 1.49913, 3.90851, 0.147891, 0.743431, 4.75517, 0.154557, 0.745404, 5.19613, 0.145449, 1.50421, 4.75268, 0.148722, 2.25603, 4.46647, 5.96046e-08, 1.47864, 4.32674, 0.3, 1.507)
@@ -3437,217 +1656,17 @@ solid_status = 0
 w = 0
 tpos = Vector3(2, 1, -3)
 
-[node name="1tile" type="Node3D" parent="Tiles/1427090183/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
+[node name="1tile" type="Node3D" parent="Tiles/2289678881/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
 body = NodePath("PalmTile_col")
 mesh = NodePath("PalmTile")
 type = "tile"
 collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/1427090183" index="1"]
+[node name="Effects" parent="Tiles/2289678881" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="2828720691" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.19615, 0, 3)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(4.7757, 0.13406, 3.75724, 4.33015, 0.135911, 2.99913, 4.77453, 0.147891, 2.24343, 5.62119, 0.154557, 2.2454, 6.06215, 0.145449, 3.00421, 5.61871, 0.148722, 3.75603, 5.33249, 5.96046e-08, 2.97864, 5.19276, 0.3, 3.007)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(2, 2, -4)
-
-[node name="1tile" type="Node3D" parent="Tiles/2828720691/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/2828720691" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="149740346" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.06218, 0, 4.5)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(5.64172, 0.13406, 5.25724, 5.19618, 0.135911, 4.49913, 5.64056, 0.147891, 3.74343, 6.48722, 0.154557, 3.7454, 6.92818, 0.145449, 4.50421, 6.48473, 0.148722, 5.25603, 6.19852, 5.96046e-08, 4.47864, 6.05879, 0.3, 4.507)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(2, 3, -5)
-
-[node name="1tile" type="Node3D" parent="Tiles/149740346/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/149740346" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="2908104389" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.866025, 0, -7.5)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(0.44557, 0.13406, -6.74276, 2.53916e-05, 0.135911, -7.50087, 0.444404, 0.147891, -8.25657, 1.29106, 0.154557, -8.2546, 1.73203, 0.145449, -7.49579, 1.28858, 0.148722, -6.74397, 1.00237, 5.96046e-08, -7.52136, 0.862634, 0.3, -7.493)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(3, -5, 2)
-
-[node name="1tile" type="Node3D" parent="Tiles/2908104389/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/2908104389" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="2565545454" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.73205, 0, -6)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(1.3116, 0.13406, -5.24276, 0.866051, 0.135911, -6.00087, 1.31043, 0.147891, -6.75657, 2.15709, 0.154557, -6.7546, 2.59805, 0.145449, -5.99579, 2.15461, 0.148722, -5.24397, 1.86839, 5.96046e-08, -6.02136, 1.72866, 0.3, -5.993)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(3, -4, 1)
-
-[node name="1tile" type="Node3D" parent="Tiles/2565545454/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/2565545454" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="608219849" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="1700663934" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.59808, 0, -4.5)
 script = ExtResource("3_8fghi")
 collision_points = PackedVector3Array(2.17762, 0.13406, -3.74276, 1.73208, 0.135911, -4.50087, 2.17646, 0.147891, -5.25657, 3.02312, 0.154557, -5.2546, 3.46408, 0.145449, -4.49579, 3.02063, 0.148722, -3.74397, 2.73442, 5.96046e-08, -4.52136, 2.59468, 0.3, -4.493)
@@ -3687,25 +1706,25 @@ solid_status = 0
 w = 0
 tpos = Vector3(3, -3, 0)
 
-[node name="1tile" type="Node3D" parent="Tiles/608219849/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
+[node name="1tile" type="Node3D" parent="Tiles/1700663934/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
 body = NodePath("PalmTile_col")
 mesh = NodePath("PalmTile")
 type = "tile"
 collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/608219849" index="1"]
+[node name="Effects" parent="Tiles/1700663934" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="904845358" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="3240486334" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641, 0, -3)
 script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(3.90711, 0.134108, -3.74422, 4.3301, 0.148632, -2.95303, 3.86398, 0.137454, -2.23088, 2.99103, 0.143656, -2.27313, 2.5981, 0.134353, -3.02512, 3.0784, 0.131598, -3.77731, 3.82994, 0.398319, -3.62491, 3.16834, 1.33642, -2.4434)
+collision_points = PackedVector3Array(3.04365, 0.13406, -2.24276, 2.5981, 0.135911, -3.00087, 3.04248, 0.147891, -3.75657, 3.88914, 0.154557, -3.7546, 4.3301, 0.145449, -2.99579, 3.88666, 0.148722, -2.24397, 3.60044, 5.96046e-08, -3.02136, 3.46071, 0.3, -2.993)
 tile = {
 "id": 1,
 "multi_tile": [],
-"rotation": 3,
-"type": 2
+"rotation": 0,
+"type": 0
 }
 wdeco = {
 "id": 0,
@@ -3737,26 +1756,25 @@ solid_status = 0
 w = 0
 tpos = Vector3(3, -2, -1)
 
-[node name="1tile2" type="Node3D" parent="Tiles/904845358/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("9_w3se0")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+[node name="1tile" type="Node3D" parent="Tiles/3240486334/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
-body = NodePath("PalmStairTile_col")
-mesh = NodePath("PalmStairTile")
+body = NodePath("PalmTile_col")
+mesh = NodePath("PalmTile")
 type = "tile"
-collision_points = PackedVector3Array(-0.443007, 0.134108, 0.744222, -0.866, 0.148632, -0.046966, -0.399881, 0.137454, -0.769122, 0.473069, 0.143656, -0.726866, 0.866, 0.134353, 0.0251217, 0.385701, 0.131598, 0.777309, -0.365843, 0.398319, 0.62491, 0.295763, 1.33642, -0.5566)
+collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/904845358" index="1"]
+[node name="Effects" parent="Tiles/3240486334" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="4195202815" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="3765633400" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.33013, 0, -1.5)
 script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(3.90712, 0.134108, -2.25577, 4.8038, 0.148632, -2.2265, 5.19615, 0.137454, -1.46175, 4.72308, 0.143656, -0.726877, 3.87537, 0.134353, -0.762583, 3.46411, 0.131598, -1.55463, 3.97186, 0.398319, -2.12928, 4.66428, 1.33642, -0.965562)
+collision_points = PackedVector3Array(3.90967, 0.13406, -0.742757, 3.46413, 0.135911, -1.50087, 3.90851, 0.147891, -2.25657, 4.75517, 0.154557, -2.2546, 5.19613, 0.145449, -1.49579, 4.75268, 0.148722, -0.743969, 4.46647, 5.96046e-08, -1.52136, 4.32674, 0.3, -1.493)
 tile = {
 "id": 1,
 "multi_tile": [],
-"rotation": 2,
-"type": 2
+"rotation": 0,
+"type": 0
 }
 wdeco = {
 "id": 0,
@@ -3788,18 +1806,17 @@ solid_status = 0
 w = 0
 tpos = Vector3(3, -1, -2)
 
-[node name="1tile2" type="Node3D" parent="Tiles/4195202815/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("9_w3se0")]
-transform = Transform3D(-0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, -0.5, 0, 0, 0)
+[node name="1tile" type="Node3D" parent="Tiles/3765633400/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
-body = NodePath("PalmStairTile_col")
-mesh = NodePath("PalmStairTile")
+body = NodePath("PalmTile_col")
+mesh = NodePath("PalmTile")
 type = "tile"
-collision_points = PackedVector3Array(-0.443007, 0.134108, 0.744222, -0.866, 0.148632, -0.046966, -0.399881, 0.137454, -0.769122, 0.473069, 0.143656, -0.726866, 0.866, 0.134353, 0.0251217, 0.385701, 0.131598, 0.777309, -0.365843, 0.398319, 0.62491, 0.295763, 1.33642, -0.5566)
+collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/4195202815" index="1"]
+[node name="Effects" parent="Tiles/3765633400" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="2183963432" parent="Tiles" instance=ExtResource("2_0bbyw")]
+[node name="2190113932" parent="Tiles" instance=ExtResource("2_0bbyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.19615, 0, 0)
 script = ExtResource("3_8fghi")
 collision_points = PackedVector3Array(4.7757, 0.13406, 0.757243, 4.33015, 0.135911, -0.000868961, 4.77453, 0.147891, -0.756569, 5.62119, 0.154557, -0.754596, 6.06215, 0.145449, 0.00420916, 5.61871, 0.148722, 0.756031, 5.33249, 5.96046e-08, -0.021358, 5.19276, 0.3, 0.0070028)
@@ -3839,905 +1856,50 @@ solid_status = 0
 w = 0
 tpos = Vector3(3, 0, -3)
 
-[node name="1tile" type="Node3D" parent="Tiles/2183963432/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
+[node name="1tile" type="Node3D" parent="Tiles/2190113932/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
 script = ExtResource("5_qrsaj")
 body = NodePath("PalmTile_col")
 mesh = NodePath("PalmTile")
 type = "tile"
 collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
 
-[node name="Effects" parent="Tiles/2183963432" index="1"]
+[node name="Effects" parent="Tiles/2190113932" index="1"]
 script = ExtResource("6_o6d3m")
 
-[node name="1709556834" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.06218, 0, 1.5)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(5.64172, 0.13406, 2.25724, 5.19618, 0.135911, 1.49913, 5.64056, 0.147891, 0.743431, 6.48722, 0.154557, 0.745404, 6.92818, 0.145449, 1.50421, 6.48473, 0.148722, 2.25603, 6.19852, 5.96046e-08, 1.47864, 6.05879, 0.3, 1.507)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(3, 1, -4)
-
-[node name="1tile" type="Node3D" parent="Tiles/1709556834/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/1709556834" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="3216230861" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.9282, 0, 3)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(6.50775, 0.13406, 3.75724, 6.0622, 0.135911, 2.99913, 6.50658, 0.147891, 2.24343, 7.35324, 0.154557, 2.2454, 7.7942, 0.145449, 3.00421, 7.35076, 0.148722, 3.75603, 7.06455, 5.96046e-08, 2.97864, 6.92481, 0.3, 3.007)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(3, 2, -5)
-
-[node name="1tile" type="Node3D" parent="Tiles/3216230861/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/3216230861" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="160599772" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.59808, 0, -7.5)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(2.17762, 0.13406, -6.74276, 1.73208, 0.135911, -7.50087, 2.17646, 0.147891, -8.25657, 3.02312, 0.154557, -8.2546, 3.46408, 0.145449, -7.49579, 3.02063, 0.148722, -6.74397, 2.73442, 5.96046e-08, -7.52136, 2.59468, 0.3, -7.493)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(4, -5, 1)
-
-[node name="1tile" type="Node3D" parent="Tiles/160599772/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/160599772" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="1576817212" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641, 0, -6)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(3.04365, 0.13406, -5.24276, 2.5981, 0.135911, -6.00087, 3.04248, 0.147891, -6.75657, 3.88914, 0.154557, -6.7546, 4.3301, 0.145449, -5.99579, 3.88666, 0.148722, -5.24397, 3.60044, 5.96046e-08, -6.02136, 3.46071, 0.3, -5.993)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(4, -4, 0)
-
-[node name="1tile" type="Node3D" parent="Tiles/1576817212/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/1576817212" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="2676810701" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.33013, 0, -4.5)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(3.90967, 0.13406, -3.74276, 3.46413, 0.135911, -4.50087, 3.90851, 0.147891, -5.25657, 4.75517, 0.154557, -5.2546, 5.19613, 0.145449, -4.49579, 4.75268, 0.148722, -3.74397, 4.46647, 5.96046e-08, -4.52136, 4.32674, 0.3, -4.493)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 2,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 5,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(4, -3, -1)
-
-[node name="1tile" type="Node3D" parent="Tiles/2676810701/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/2676810701" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="3172533386" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.19615, 0, -3)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(4.7757, 0.13406, -2.24276, 4.33015, 0.135911, -3.00087, 4.77453, 0.147891, -3.75657, 5.62119, 0.154557, -3.7546, 6.06215, 0.145449, -2.99579, 5.61871, 0.148722, -2.24397, 5.33249, 5.96046e-08, -3.02136, 5.19276, 0.3, -2.993)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(4, -2, -2)
-
-[node name="1tile" type="Node3D" parent="Tiles/3172533386/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/3172533386" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="2274044351" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.06218, 0, -1.5)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(5.64172, 0.13406, -0.742757, 5.19618, 0.135911, -1.50087, 5.64056, 0.147891, -2.25657, 6.48722, 0.154557, -2.2546, 6.92818, 0.145449, -1.49579, 6.48473, 0.148722, -0.743969, 6.19852, 5.96046e-08, -1.52136, 6.05879, 0.3, -1.493)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 2,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 4,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(4, -1, -3)
-
-[node name="1tile" type="Node3D" parent="Tiles/2274044351/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/2274044351" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="1793619841" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.9282, 0, 0)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(6.50775, 0.13406, 0.757243, 6.0622, 0.135911, -0.000868961, 6.50658, 0.147891, -0.756569, 7.35324, 0.154557, -0.754596, 7.7942, 0.145449, 0.00420916, 7.35076, 0.148722, 0.756031, 7.06455, 5.96046e-08, -0.021358, 6.92481, 0.3, 0.0070028)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(4, 0, -4)
-
-[node name="1tile" type="Node3D" parent="Tiles/1793619841/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/1793619841" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="991584797" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.79423, 0, 1.5)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(7.37377, 0.13406, 2.25724, 6.92823, 0.135911, 1.49913, 7.37261, 0.147891, 0.743431, 8.21927, 0.154557, 0.745404, 8.66023, 0.145449, 1.50421, 8.21678, 0.148722, 2.25603, 7.93057, 5.96046e-08, 1.47864, 7.79084, 0.3, 1.507)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(4, 1, -5)
-
-[node name="1tile" type="Node3D" parent="Tiles/991584797/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/991584797" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="2248369805" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.33013, 0, -7.5)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(3.90967, 0.13406, -6.74276, 3.46413, 0.135911, -7.50087, 3.90851, 0.147891, -8.25657, 4.75517, 0.154557, -8.2546, 5.19613, 0.145449, -7.49579, 4.75268, 0.148722, -6.74397, 4.46647, 5.96046e-08, -7.52136, 4.32674, 0.3, -7.493)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(5, -5, 0)
-
-[node name="1tile" type="Node3D" parent="Tiles/2248369805/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/2248369805" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="2716958411" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.19615, 0, -6)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(4.7757, 0.13406, -5.24276, 4.33015, 0.135911, -6.00087, 4.77453, 0.147891, -6.75657, 5.62119, 0.154557, -6.7546, 6.06215, 0.145449, -5.99579, 5.61871, 0.148722, -5.24397, 5.33249, 5.96046e-08, -6.02136, 5.19276, 0.3, -5.993)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(5, -4, -1)
-
-[node name="1tile" type="Node3D" parent="Tiles/2716958411/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/2716958411" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="3483044942" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.06218, 0, -4.5)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(5.64172, 0.13406, -3.74276, 5.19618, 0.135911, -4.50087, 5.64056, 0.147891, -5.25657, 6.48722, 0.154557, -5.2546, 6.92818, 0.145449, -4.49579, 6.48473, 0.148722, -3.74397, 6.19852, 5.96046e-08, -4.52136, 6.05879, 0.3, -4.493)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(5, -3, -2)
-
-[node name="1tile" type="Node3D" parent="Tiles/3483044942/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/3483044942" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="4046909770" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.9282, 0, -3)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(6.50775, 0.13406, -2.24276, 6.0622, 0.135911, -3.00087, 6.50658, 0.147891, -3.75657, 7.35324, 0.154557, -3.7546, 7.7942, 0.145449, -2.99579, 7.35076, 0.148722, -2.24397, 7.06455, 5.96046e-08, -3.02136, 6.92481, 0.3, -2.993)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(5, -2, -3)
-
-[node name="1tile" type="Node3D" parent="Tiles/4046909770/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/4046909770" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="659555941" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.79423, 0, -1.5)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(7.37377, 0.13406, -0.742757, 6.92823, 0.135911, -1.50087, 7.37261, 0.147891, -2.25657, 8.21927, 0.154557, -2.2546, 8.66023, 0.145449, -1.49579, 8.21678, 0.148722, -0.743969, 7.93057, 5.96046e-08, -1.52136, 7.79084, 0.3, -1.493)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(5, -1, -4)
-
-[node name="1tile" type="Node3D" parent="Tiles/659555941/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/659555941" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="2128896552" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.66025, 0, 0)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(8.2398, 0.13406, 0.757243, 7.79425, 0.135911, -0.000868961, 8.23863, 0.147891, -0.756569, 9.08529, 0.154557, -0.754596, 9.52625, 0.145449, 0.00420916, 9.08281, 0.148722, 0.756031, 8.7966, 5.96046e-08, -0.021358, 8.65686, 0.3, 0.0070028)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 0
-tpos = Vector3(5, 0, -5)
-
-[node name="1tile" type="Node3D" parent="Tiles/2128896552/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/2128896552" index="1"]
-script = ExtResource("6_o6d3m")
-
-[node name="1230334427" parent="Tiles" instance=ExtResource("2_0bbyw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.59808, 1.2, -1.5)
-script = ExtResource("3_8fghi")
-collision_points = PackedVector3Array(2.17762, 1.33406, -0.742757, 1.73208, 1.33591, -1.50087, 2.17646, 1.34789, -2.25657, 3.02312, 1.35456, -2.2546, 3.46408, 1.34545, -1.49579, 3.02063, 1.34872, -0.743969, 2.73442, 1.2, -1.52136, 2.59468, 1.5, -1.493)
-tile = {
-"id": 1,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-wdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-tdeco = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"type": 0
-}
-obj = {
-"id": 0,
-"multi_tile": [],
-"obj_info": [],
-"rotation": 0,
-"type": 0
-}
-wall = {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
-}
-solid_status = 0
-w = 1
-tpos = Vector3(2, -1, -1)
-
-[node name="1tile" type="Node3D" parent="Tiles/1230334427/ModelManager" index="0" node_paths=PackedStringArray("body", "mesh") instance=ExtResource("4_bwi5i")]
-script = ExtResource("5_qrsaj")
-body = NodePath("PalmTile_col")
-mesh = NodePath("PalmTile")
-type = "tile"
-collision_points = PackedVector3Array(-0.420455, 0.13406, 0.757243, -0.866, 0.135911, -0.000868961, -0.421621, 0.147891, -0.756569, 0.425039, 0.154557, -0.754596, 0.866, 0.145449, 0.00420916, 0.422555, 0.148722, 0.756031, 0.136342, 5.96046e-08, -0.021358, -0.00339174, 0.3, 0.0070028)
-
-[node name="Effects" parent="Tiles/1230334427" index="1"]
-script = ExtResource("6_o6d3m")
-
-[editable path="Tiles/2988034578"]
-[editable path="Tiles/2135840140"]
-[editable path="Tiles/1685488749"]
-[editable path="Tiles/3702881164"]
-[editable path="Tiles/3763845158"]
-[editable path="Tiles/1764705226"]
-[editable path="Tiles/4272377227"]
-[editable path="Tiles/370403585"]
-[editable path="Tiles/1379596452"]
-[editable path="Tiles/700608802"]
-[editable path="Tiles/482397725"]
-[editable path="Tiles/4278000407"]
-[editable path="Tiles/634925975"]
-[editable path="Tiles/1160829075"]
-[editable path="Tiles/3253004848"]
-[editable path="Tiles/2689263578"]
-[editable path="Tiles/2207180710"]
-[editable path="Tiles/1798158412"]
-[editable path="Tiles/2093507375"]
-[editable path="Tiles/3591509716"]
-[editable path="Tiles/2156640623"]
-[editable path="Tiles/110985541"]
-[editable path="Tiles/2683421934"]
-[editable path="Tiles/131807915"]
-[editable path="Tiles/533517838"]
-[editable path="Tiles/3128369343"]
-[editable path="Tiles/253929524"]
-[editable path="Tiles/191989334"]
-[editable path="Tiles/1458045399"]
-[editable path="Tiles/1153466213"]
-[editable path="Tiles/1093837558"]
-[editable path="Tiles/1231813117"]
-[editable path="Tiles/464930768"]
-[editable path="Tiles/1458870295"]
-[editable path="Tiles/1106367317"]
-[editable path="Tiles/676758240"]
-[editable path="Tiles/1652394231"]
-[editable path="Tiles/3766425082"]
-[editable path="Tiles/983753663"]
-[editable path="Tiles/2101666421"]
-[editable path="Tiles/327946690"]
-[editable path="Tiles/4049667424"]
-[editable path="Tiles/902669377"]
-[editable path="Tiles/7490636"]
-[editable path="Tiles/1465921530"]
-[editable path="Tiles/2739113655"]
-[editable path="Tiles/3283658572"]
-[editable path="Tiles/1872386045"]
-[editable path="Tiles/2468537657"]
-[editable path="Tiles/1846141317"]
-[editable path="Tiles/1625686311"]
-[editable path="Tiles/3762453718"]
-[editable path="Tiles/441526737"]
-[editable path="Tiles/3831569824"]
-[editable path="Tiles/3055367859"]
-[editable path="Tiles/3556438302"]
-[editable path="Tiles/3834172824"]
-[editable path="Tiles/3523421095"]
-[editable path="Tiles/3215860212"]
-[editable path="Tiles/1829390154"]
-[editable path="Tiles/3458464541"]
-[editable path="Tiles/4006648561"]
-[editable path="Tiles/2243912114"]
-[editable path="Tiles/825748471"]
-[editable path="Tiles/4012008451"]
-[editable path="Tiles/3467911693"]
-[editable path="Tiles/122976761"]
-[editable path="Tiles/1427090183"]
-[editable path="Tiles/2828720691"]
-[editable path="Tiles/149740346"]
-[editable path="Tiles/2908104389"]
-[editable path="Tiles/2565545454"]
-[editable path="Tiles/608219849"]
-[editable path="Tiles/904845358"]
-[editable path="Tiles/4195202815"]
-[editable path="Tiles/2183963432"]
-[editable path="Tiles/1709556834"]
-[editable path="Tiles/3216230861"]
-[editable path="Tiles/160599772"]
-[editable path="Tiles/1576817212"]
-[editable path="Tiles/2676810701"]
-[editable path="Tiles/3172533386"]
-[editable path="Tiles/2274044351"]
-[editable path="Tiles/1793619841"]
-[editable path="Tiles/991584797"]
-[editable path="Tiles/2248369805"]
-[editable path="Tiles/2716958411"]
-[editable path="Tiles/3483044942"]
-[editable path="Tiles/4046909770"]
-[editable path="Tiles/659555941"]
-[editable path="Tiles/2128896552"]
-[editable path="Tiles/1230334427"]
+[editable path="Tiles/1995686279"]
+[editable path="Tiles/2189336865"]
+[editable path="Tiles/3869980218"]
+[editable path="Tiles/870327243"]
+[editable path="Tiles/914629759"]
+[editable path="Tiles/2614259706"]
+[editable path="Tiles/807969230"]
+[editable path="Tiles/3759516326"]
+[editable path="Tiles/520916150"]
+[editable path="Tiles/3968501878"]
+[editable path="Tiles/987380218"]
+[editable path="Tiles/1396686508"]
+[editable path="Tiles/1999542528"]
+[editable path="Tiles/2857195480"]
+[editable path="Tiles/4117592856"]
+[editable path="Tiles/3337324942"]
+[editable path="Tiles/3754103502"]
+[editable path="Tiles/2441460164"]
+[editable path="Tiles/3398161884"]
+[editable path="Tiles/4111193404"]
+[editable path="Tiles/1874274281"]
+[editable path="Tiles/2191016009"]
+[editable path="Tiles/3413933200"]
+[editable path="Tiles/2496209368"]
+[editable path="Tiles/3156044394"]
+[editable path="Tiles/1717655694"]
+[editable path="Tiles/2127380652"]
+[editable path="Tiles/487112979"]
+[editable path="Tiles/758455076"]
+[editable path="Tiles/3037690031"]
+[editable path="Tiles/2102790245"]
+[editable path="Tiles/2143265954"]
+[editable path="Tiles/2289678881"]
+[editable path="Tiles/1700663934"]
+[editable path="Tiles/3240486334"]
+[editable path="Tiles/3765633400"]
+[editable path="Tiles/2190113932"]

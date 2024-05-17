@@ -1,5 +1,7 @@
 extends Control
 
+signal heal_set
+signal damage_set
 signal stagger_set
 signal spawn_set
 
@@ -30,10 +32,24 @@ func onProcessCommand(command: String) -> void:
 	
 	elif command.begins_with("stagger"):
 		onStaggerUnit()
+		
+	elif command.begins_with("damage"):
+		onDamageUnit(command.split(" "))
+
+	elif command.begins_with("heal"):
+		onHealUnit(command.split(" "))
 
 var command_args: Array = []
 func onSpawnUnit(args: Array) -> void:
 	onSelectTile(spawn_set)
+	command_args = args
+	
+func onDamageUnit(args: Array) -> void:
+	onSelectTile(damage_set)
+	command_args = args
+	
+func onHealUnit(args: Array) -> void:
+	onSelectTile(heal_set)
 	command_args = args
 	
 func onStaggerUnit() -> void:
@@ -55,3 +71,24 @@ func onStaggerSet(Tile: TileGD):
 	var AppliedBy := AppliedByGD.new()
 	AppliedBy.type = "Console"
 	Combat.onStagger(Unit, AppliedBy)
+
+func onDamageSet(Tile: TileGD) -> void:
+	var Unit: UnitGD = Units.unit_by_tile(Tile)
+	
+	var AppliedBy := AppliedByGD.new()
+	AppliedBy.type = "Ability"
+	
+	Combat.onDMG(Unit, AppliedBy, int(command_args[1]))
+	
+func onHealSet(Tile: TileGD) -> void:
+	var Unit: UnitGD = Units.unit_by_tile(Tile)
+	
+	var AppliedBy := AppliedByGD.new()
+	AppliedBy.type = "Ability"
+	
+	var healInfo := HealInfoGD.new()
+	healInfo.AppliedBy = AppliedBy
+	healInfo.Healee = Unit
+	healInfo.heal = int(command_args[1])
+	
+	Combat.onHeal(healInfo)

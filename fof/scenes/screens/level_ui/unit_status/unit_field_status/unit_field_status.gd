@@ -121,6 +121,8 @@ func onCreateBuffNextTurn(stat: String, value: int) -> void:
 		_: color_value = 3
 		
 	buff_colors[stat.capitalize()] = prefix + str(color_value)
+	if BuffNextTurn.get_node(stat.capitalize()).get_child_count() > 0:
+		for child in BuffNextTurn.get_node(stat.capitalize()).get_children(): child.queue_free()
 	var Arrow: Node3D = load("res://scenes/screens/level_map/utility_nodes/vfx/next_turn_buffs/" + prefix + str(arrow_value) + ".glb").instantiate()
 	BuffNextTurn.get_node(stat.capitalize()).add_child(Arrow)
 	setFloatingStatMaterial()
@@ -139,6 +141,9 @@ func onCreateHealNextTurn(heal: int) -> void:
 		_: color_value = 3
 		
 	buff_colors["Heal"] = "up" + str(color_value)
+	if BuffNextTurn.get_node("Heal").get_child_count() > 0:
+		for child in BuffNextTurn.get_node("Heal").get_children(): child.queue_free()
+		
 	var Arrow: Node3D = preload("res://scenes/screens/level_map/utility_nodes/vfx/next_turn_buffs/up_heal.glb").instantiate()
 	BuffNextTurn.get_node("Heal").add_child(Arrow)
 	setFloatingStatMaterial()
@@ -151,9 +156,10 @@ func onRemoveHealNextTurn() -> void:
 func onSortHealth() -> void:
 	var HealNode: Node3D = BuffNextTurn.get_node("Heal")
 	var HealthNode: Node3D = BuffNextTurn.get_node("Health")
-	var amount: int = HealNode.get_child_count() + HealthNode.get_child_count()
+	var amount: int = HealNode.get_children().filter(isValid).size() + HealthNode.get_children().filter(isValid).size()
 	match amount:
 		1: HealNode.position.x = 0; HealthNode.position.x = 0
 		2: HealNode.position.x = -0.1; HealthNode.position.x = 0.1
 
 func _ready() -> void: $AnimationPlayer.play("Animation")
+func isValid(x: Node) -> bool: return !x.is_queued_for_deletion()
