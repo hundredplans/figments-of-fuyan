@@ -329,7 +329,7 @@ var _id_to: Array = [
 	
 	["null", "wall", "wooden_wall"],
 	
-	["null", "shrub", "tree", "rock", "skeletons/skull", "skeletons/graveyard_fence", "skeletons/graveyard_gate", "skeletons/pumpkin", "palms/palm_tree", "palms/palmrock"],
+	["null", "shrub", "tree", "rock", "skeletons/skull", "skeletons/graveyard_fence", "skeletons/graveyard_gate", "skeletons/pumpkin", "palms/palm_tree", "palms/palmrock", "palms/coconut_pile", "palms/coconut_pile_big"],
 	
 	["null", "lamp"]]
 	
