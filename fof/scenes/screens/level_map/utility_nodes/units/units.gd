@@ -91,7 +91,7 @@ func on_unit_team_index(Unit: UnitGD) -> int:
 	return on_units(Unit.team).find(Unit)
 
 func on_match_team_relation(unit: UnitGD, team: int, relation: String) -> bool:
-	return (unit.team == team and relation == "Ally") or (unit.team != team and relation == "Enemy")
+	return (unit.team == team and relation == "Ally") or (unit.team != team and relation == "Enemy") or relation == "Any"
 
 var active_action: Dictionary = {}
 var unit_actions: Array = []
@@ -157,6 +157,8 @@ func onAppendArgQueue(callable: Callable) -> void:
 
 func onArgDelay() -> void:
 	var _active_action: Dictionary = unit_actions[0]
+	SpectateCamera.onSpectate(_active_action.Triggerer)
+	SpectateCamera.onEndTrackUnit()
 	if !_active_action.triggered:
 		_active_action.begin_callable.call(_active_action.begin_arguments)
 		_active_action.triggered = true
@@ -243,13 +245,7 @@ func onPushFrontDelay(delay: float) -> void:
 			"delay": delay,
 		})
 
-func onPushArgDelayBegin(delay: float, append: Callable, begin_arguments: Dictionary) -> void:
-	onPushArgDelay(delay, append, Callable(), begin_arguments, {})
-	
-func onPushArgDelayEnd(delay: float, end_callable: Callable, end_arguments: Dictionary) -> void:
-	onPushArgDelay(delay, Callable(), end_callable, {}, end_arguments)
-
-func onPushArgDelay(delay: float, begin_callable: Callable, end_callable: Callable, begin_arguments: Dictionary, end_arguments: Dictionary) -> void:
+func onPushArgDelay(Triggerer: UnitGD, delay: float, begin_callable: Callable, end_callable: Callable, begin_arguments: Dictionary, end_arguments: Dictionary) -> void:
 	unit_actions.append({
 		"action_type": "ArgDelay",
 		"begin_callable": begin_callable,
@@ -258,6 +254,7 @@ func onPushArgDelay(delay: float, begin_callable: Callable, end_callable: Callab
 		"end_arguments": end_arguments,
 		"delay": delay,
 		"triggered": false,
+		"Triggerer": Triggerer,
 	})
 
 func isVisibilityPathLastPosition(Tile: TileGD, visibility_path: Array) -> bool:
@@ -384,7 +381,7 @@ func on_death_finished(Unit: UnitGD) -> void:
 	var AppliedBy: AppliedByGD = active_action.AppliedBy
 	
 	LevelUI.UnitStatusOverlord.onDeathFinished(Unit)
-	Unit.on_death()
+	await Unit.on_death()
 	
 	SpectateCamera.onDeathFinished(Unit)
 	var win_state: int = 1 if on_units(1).is_empty() else (2 if on_units().is_empty() else 0)
@@ -395,6 +392,9 @@ func on_death_finished(Unit: UnitGD) -> void:
 	
 	if Unit.Model.current_walk_stream_player != null:
 		AudioMaster.on_cutoff_sfx(Unit.Model.current_walk_stream_player)
+
+	for _Unit in Deather.getVisibleUnits():
+		Vision.on_recalculate_vision(_Unit)
 
 	active_action = {}
 	win_state = 0 #TODO REMOVE
@@ -463,3 +463,12 @@ func setPastPath(Unit: UnitGD, state: bool) -> void:
 		if state: Tile.Effects.onPastPath(Unit.past_path_info[Tile][0], Unit.past_path_info[Tile][1])
 		else: Tile.Effects.onRemovePastPath()
 	Unit.past_path_set = state
+
+func onFindClosestAdjacentUnit(Unit: UnitGD, relation: String = "Ally") -> UnitGD:
+	var units: Array = on_units(Unit.team, relation)
+	units.erase(Unit)
+	units.sort_custom(sortUnitsByDistance.bind(Unit))
+	return units[0]
+
+func sortUnitsByDistance(Unit: UnitGD, _Unit: UnitGD, __Unit: UnitGD) -> bool:
+	return Tiles.tile_distance(Unit.Tile, __Unit.Tile) < Tiles.tile_distance(_Unit.Tile, __Unit.Tile)

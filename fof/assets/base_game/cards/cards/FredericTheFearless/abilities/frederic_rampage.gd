@@ -1,5 +1,6 @@
 extends RampageGD
 
+func onRampageCondition(_a: Dictionary) -> bool: return true
 func onRampage(a: Dictionary) -> void:
 	match Units.GameState.hero_id:
 		1:

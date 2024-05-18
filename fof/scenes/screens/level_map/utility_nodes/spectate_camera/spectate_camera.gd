@@ -102,7 +102,10 @@ func onSpectateOldSpectateType(spectate_info: Dictionary, _spectate_info: Dictio
 			
 func onSpectateObject(Obj: Variant, _spectate_info: Dictionary, _spectate_type: String) -> void:
 	spectate_type = ("Ally" if Obj.team == 0 else "Enemy") if Obj is UnitGD else "Spawn"
-	var spectate_info: Dictionary = spectates[spectate_type][Obj.get_instance_id()]
+	var spectate_info: Dictionary = {}
+	if Obj is UnitGD and Obj.is_dead:
+		spectate_info = spectates[spectate_type][Units.onFindClosestAdjacentUnit(Obj).get_instance_id()]
+	else: spectate_info = spectates[spectate_type][Obj.get_instance_id()]
 	
 	if spectate_info != _spectate_info:
 		onClearIsActive(spectate_info, spectate_type)
@@ -162,10 +165,8 @@ func onUnitSpectated(spectate_info: Dictionary, _spectate_info: Dictionary, _spe
 		spectate_info.object.on_spectated_in_player_phase(true)
 		if Vision.vision_mode == 1: Vision.on_recalculate_vision(spectate_info.object)
 		Units.onSpectatedInPlayerPhase(spectate_info.object)
-		
-	if _spectate_type in ["Ally", "Enemy"]:
-		Units.PlayerManager._on_unit_deselected(Units.PlayerManager.UnitSelected)
-		if !_spectate_info.is_empty(): _spectate_info.object.on_spectated_in_player_phase(false)
+		#Units.PlayerManager._on_unit_deselected(Units.PlayerManager.UnitSelected)
+		if !_spectate_info.is_empty() and _spectate_info.object is UnitGD: _spectate_info.object.on_spectated_in_player_phase(false)
 		
 func onPlayerPhaseStart() -> void:
 	onEndTrackUnit()
@@ -241,13 +242,14 @@ func onUpdateFOV(type: String) -> void:
 	var FOVTween := create_tween()
 	FOVTween.tween_property(Camera, "fov", FOV_TYPES[type], FOV_TWEEN_TIME)
 
-var last_spectate: Dictionary
+var last_spectate: Dictionary	
 var is_unit_camera: bool = true
 func onChangeCameraMode(state: bool, type: Variant = "") -> void:
 	if is_unit_camera != state:
 		is_unit_camera = state
 		if is_unit_camera:
 			if type == "": # Change camera mode and go back to last spectate
+				print_debug(last_spectate)
 				onSpectate(last_spectate)
 				last_spectate = {}
 			else: # Change camera mode and go to specified spectate

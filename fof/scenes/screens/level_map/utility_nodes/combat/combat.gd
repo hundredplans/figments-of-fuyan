@@ -8,13 +8,32 @@ var Units: UnitsGD
 var SpectateCamera: Node3D
 var LevelUI: LevelUIGD
 var LevelMap: LevelMapGD
+var Tiles: TilesGD
 
+var OriginalSpectateUnit: UnitGD
+var ability_chain: Array = []
 func onDeathAbilities(Deather: UnitGD, AppliedBy: AppliedByGD) -> void:
 	onLastWill(Deather, AppliedBy)
 	if AppliedBy.Applier != null and AppliedBy.Applier is UnitGD: onRampage(AppliedBy.Applier, AppliedBy)
-	onTrauma(Deather, AppliedBy)
-	onBloodthirst(Deather, AppliedBy)
+	onOtherUnitDeathAbilities(Deather, AppliedBy)
 	
+func onOtherUnitDeathAbilities(Deather: UnitGD, AppliedBy: AppliedByGD) -> void:
+	var units: Array = Deather.getVisibleUnits().filter(func(x: UnitGD): return x != Deather and x != AppliedBy.Applier)
+	units.sort_custom(Units.sortUnitsByDistance.bind(Deather))
+	units.sort_custom(func(x: UnitGD, y: UnitGD): return x.team == Deather.team)
+	for Unit in units:
+		if Unit.team != Deather.team: # Trigger bloodthirst
+			var abilities: Array = onFindAbilities(Unit, "Bloodthirst")
+			for ability in abilities:
+				if ability.onBloodthirstCondition({"AppliedBy": AppliedBy}):
+					onTriggerAbilitySpectateDelay(Unit, ability, ability.onBloodthirst.bind({"Unit": Unit, "AppliedBy": AppliedBy, "Deather": Deather}))
+		else: # Trigger trauma
+			var abilities: Array = onFindAbilities(Unit, "Trauma")
+			for ability in abilities:
+				if ability.onTraumaCondition({"Deather": Deather}):
+					onTriggerAbilitySpectateDelay(Unit, ability, ability.onTrauma.bind({"Unit": Unit, "AppliedBy": AppliedBy, "Deather": Deather}))
+			
+
 func onLastWill(Deather: UnitGD, AppliedBy: AppliedByGD) -> void:
 	var abilities: Array = onFindAbilities(Deather, "LastWill")
 	for ability in abilities:
@@ -53,55 +72,38 @@ func onHit(DMGInfo: DMGInfoGD) -> void:
 	
 	GameEffects.onTriggerUnitGameFX(Unit, "OnHit", [DMGInfo.Defender, DMGInfo.AppliedBy])
 	
-func onBloodthirst(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
-	for _Unit in Unit.getVisibleEnemies():
-		if _Unit != AppliedBy.Applier:
-			var abilities: Array = onFindAbilities(_Unit, "Bloodthirst")
-			for ability in abilities:
-				if ability.onBloodthirstCondition({"Unit": Unit, "AppliedBy": AppliedBy}):
-					onTriggerAbilitySpectateDelay(_Unit, ability, ability.onBloodthirst.bind({"Unit": _Unit, "AppliedBy": AppliedBy}))
-	
-func onTrauma(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
-	for _Unit in Unit.getVisibleAllies():
-		var abilities: Array = onFindAbilities(_Unit, "Trauma")
-		for ability in abilities:
-			if ability.onTraumaCondition({"Deather": _Unit}):
-				onTriggerAbilitySpectateDelay(_Unit, ability, ability.onTrauma.bind({"Unit": _Unit, "AppliedBy": AppliedBy}))
-	
 func onRampage(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	var abilities: Array = onFindAbilities(Unit, "Rampage")
 	for ability in abilities:
-		onTriggerAbilitySpectateDelay(Unit, ability, ability.onRampage.bind({"Unit": Unit, "AppliedBy": AppliedBy}))
-		
+		if ability.onRampageCondition({}):
+			onTriggerAbilitySpectateDelay(Unit, ability, ability.onRampage.bind({"Unit": Unit, "AppliedBy": AppliedBy}))
 	GameEffects.onTriggerUnitGameFX(Unit, "Rampage", [Unit, AppliedBy])
 		
 func onTriggerAbilitySpectateDelay(Triggerer: UnitGD, ability: AbilityGD, callable: Callable) -> void:
 	var vis: bool = Triggerer.team == 0 or Triggerer.Tile in Vision.ally_vision
 	if vis and ability.delay > 0:
-		var SpectateUnit: UnitGD = SpectateCamera.getSpectateUnit(["Ally", "Enemy"])
-		if SpectateUnit != Triggerer and !Triggerer.is_dead:
-			SpectateCamera.onSpectate(Triggerer)
-			SpectateCamera.onEndTrackUnit()
-		
 		var begin_arguments: Dictionary = {"Triggerer": Triggerer, "callable": callable, "ability": ability, "vis": vis}
-		var end_arguments: Dictionary = {"Triggerer": Triggerer, "SpectateUnit": SpectateUnit}
-		 
-		Units.onPushArgDelay(ability.delay, onBeforeAbilityFrontDelay, onAfterAbilityFrontDelay, begin_arguments, end_arguments)
+		var end_arguments: Dictionary = {"Triggerer": Triggerer, "ability": ability}
+		
+		if ability_chain.is_empty():
+			OriginalSpectateUnit = SpectateCamera.getSpectateUnit(["Ally", "Enemy"])
+		ability_chain.append(ability)
+		Units.onPushArgDelay(Triggerer, ability.delay, onBeforeAbilityFrontDelay, onAfterAbilityFrontDelay, begin_arguments, end_arguments)
 	else: onUseAbility(Triggerer, callable, ability, vis)
 		
-func onUseAbility(Unit: UnitGD, callable: Callable, ability: AbilityGD, vis: bool) -> void:
+func onUseAbility(Unit: UnitGD, callable: Callable, _ability: AbilityGD, vis: bool) -> void:
 	callable.get_bound_arguments()[0]["is_visible"] = vis
 	callable.call()
-	LevelUI.onUpdateTargetAbilityCharges(Unit, ability)
+	LevelUI.onUpdateAbilityCharges(Unit)
 		
 func onBeforeAbilityFrontDelay(args: Dictionary) -> void:
 	onUseAbility(args.Triggerer, args.callable, args.ability, args.vis)
 		
 func onAfterAbilityFrontDelay(args: Dictionary) -> void:
-	var Triggerer: UnitGD = args.Triggerer
-	var Unit: UnitGD = args.SpectateUnit
-	if !Units.isUnitActionsEmpty() and Triggerer != Unit and Unit != null and SpectateCamera.getSpectateUnit(["Ally", "Enemy"]) == Triggerer:
-		SpectateCamera.onSpectate(Unit)
+	ability_chain.erase(args.ability)
+	if ability_chain.is_empty() and Units.isUnitActionsEmpty():
+		Units.onAppendArgQueue(SpectateCamera.onSpectate.bind(OriginalSpectateUnit))
+		OriginalSpectateUnit = null
 		
 func onFindAbilities(Unit: UnitGD, type: String) -> Array:
 	var abilities: Array = []

@@ -118,6 +118,8 @@ func on_unit_selected(Unit: UnitGD) -> void:
 	else: _on_unit_selected(Unit)
 
 func _on_unit_deselected(Unit: UnitGD, absolute: bool = false) -> void:
+	print_stack()
+	print()
 	if Unit != null:
 		onRemoveMovementRange()
 		if Unit == UnitSelected: UnitSelected = null
