@@ -410,22 +410,30 @@ func onExitTargetAbilityMode() -> void: # has to check if actually in target abi
 		AbilityLabel.text = ""
 		Units.PlayerManager.onExitTargetAbilityMode()
 
-func onUpdateTargetAbilityCharges(Unit: UnitGD, ability: AbilityGD) -> void:
-	if ability.charges != -1:
+func onUpdateAbilityCharges(Unit: UnitGD) -> void:
+	var charge_abilities: Array = []
+	for ability in Unit.abilities:
+		if ability.charges != -1: 
+			charge_abilities.append([ability, ability.ability_index])
+	charge_abilities.sort_custom(func(x: Array, y: Array): return x[1] > y[1])
+	
+	var ability_color_replace: Array = []
+	for ability in charge_abilities.map(func(x: Array): return x[0]):
 		var color: String = "BASE"
 		if ability.charges == 0: color = "GRAY"
 		elif ability.charges > ability.max_charges: color = "GREEN"
 		elif ability.charges < ability.max_charges: color = "YELLOW"
-		
-		if color != "BASE":
-			var new_text: String = Unit.base_text
-			new_text[ability.ability_index] = str(ability.charges)
-			new_text = new_text.insert(ability.ability_index + 1, "[/color]")
-			new_text = new_text.insert(ability.ability_index, "[color=" + color + "]")
-			Unit.base_card.text = new_text
-			
+		if color != "BASE": ability_color_replace.append([ability.ability_index, color, ability.charges])
 		if ability is TargetAbilityGD:
 			onUpdateTargetAbility(Unit, ability)
+	
+	var new_text: String = Unit.base_text
+	for info in ability_color_replace:
+		new_text[info[0]] = str(info[2])
+		Unit.base_text = new_text
+		new_text = new_text.insert(info[0] + 1, "[/color]")
+		new_text = new_text.insert(info[0], "[color=" + info[1] + "]")
+		Unit.base_card.text = new_text
 	
 func onUpdateTargetAbilities() -> void:
 	for Unit in Units.on_units():

@@ -8,7 +8,4 @@ func onBloodthirst(a: Dictionary) -> void:
 	onGainStats(a.Unit, "health", HEALTH, a.AppliedBy)
 
 func onBloodthirstCondition(a: Dictionary) -> bool:
-	if a.AppliedBy.type != "Height":
-		if a.AppliedBy.Applier != a.Unit and a.AppliedBy.Applier.base_card.area_id == 1:
-			return true
-	return false
+	return a.AppliedBy.Applier != null and a.AppliedBy.Applier.base_card.area_id == 1

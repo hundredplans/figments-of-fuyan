@@ -109,6 +109,7 @@ func onAddUnitFX(type: String, charges: int = -1) -> void:
 	unit_fx.append([type, charges])
 		
 func occupy_tile(_Tile: TileGD) -> void:
+	var is_first: bool = Tile == null
 	var OGTile: TileGD = Tile
 	Tile = _Tile
 	
@@ -117,6 +118,10 @@ func occupy_tile(_Tile: TileGD) -> void:
 	
 	Vision.on_recalculate_vision(self)
 	tile_occupied.emit()
+	
+	if is_first:
+		for _Unit in getVisibleUnits():
+			Units.Vision.on_recalculate_vision(_Unit)
 
 var Killer: UnitGD
 func stats(stat_type: String, val: int, AppliedBy := AppliedByGD.new(), absolute: bool = false) -> void:
@@ -206,6 +211,7 @@ func on_death() -> void:
 	visible = false
 	is_dead = true
 	global_position = Vector3(1024, 1024, 1024)
+	await get_tree().create_timer(0.001).timeout
 	
 func on_spectated_in_player_phase(state: bool) -> void:
 	Units.LevelUI.UnitStatusOverlord.onUnitSpectated(self, state)

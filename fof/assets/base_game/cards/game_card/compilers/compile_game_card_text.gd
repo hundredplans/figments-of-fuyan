@@ -8,7 +8,7 @@ func _ready() -> void:
 	
 func onSaveApplyTextProcessing() -> void:
 	if base_card != null:
-		base_card.text = on_apply_text_processing(base_card.raw_text, base_card)
+		base_card.text = on_apply_text_processing(base_card.raw_text)
 		ResourceSaver.save(base_card)
 
 func setBaseCardFromGameCard(GameCard: GameCardGD) -> void:
@@ -16,7 +16,7 @@ func setBaseCardFromGameCard(GameCard: GameCardGD) -> void:
 		base_card = GameCard.base_card
 		onSaveApplyTextProcessing()
 
-func on_apply_text_processing(text: String, base_card: BaseCardGD) -> String:
+func on_apply_text_processing(text: String) -> String:
 	text = on_replace_att_hp_spd(text)
 	text = on_color_words(text)
 	text = on_bold_caps_words(text)
@@ -28,7 +28,7 @@ func on_apply_text_processing(text: String, base_card: BaseCardGD) -> String:
 	for type in DirAccess.get_files_at("res://assets/base_game/cards/game_card/art/bbcode/"):
 		text = on_add_bbcode_image(text, type.left(-4))
 	
-	text = on_replace_ability_names(text, base_card)
+	text = on_replace_ability_names(text)
 	return text
 
 func on_add_bbcode_image(text: String, type: String) ->  String:
@@ -82,21 +82,17 @@ func on_color_card_names(text: String) -> String:
 		on_replace.substr(1, on_replace.length() - 2) + "[/color][/b]")
 	return text
 
-func on_replace_ability_names(text: String, base_card: BaseCardGD) -> String:
+func on_replace_ability_names(text: String) -> String:
 	var ability_indexes: Dictionary = {}
-	var total_removed: int = 0
 	var regex := RegEx.new()
 	regex.compile("\\$[a-zA-Z\\s]*")
+	
 	for result in regex.search_all(text):
 		var result_str: String = result.get_string()
 		var index: int = text.find(result_str) + result_str.length()
-		ability_indexes[result_str.substr(1)] = index
-		total_removed += result_str.length()
+		ability_indexes[result_str.substr(1)] = index - result_str.length()
 		text = text.replace(result_str, "")
 	
-	print(ability_indexes)
-	print(total_removed)
-	for key in ability_indexes: ability_indexes[key] -= total_removed
 	var DIR_PATH: String = "res://assets/base_game/cards/cards/" + base_card.folder_name + "/abilities/"
 	if DirAccess.dir_exists_absolute(DIR_PATH):
 		for ability_name in Array(DirAccess.get_files_at(DIR_PATH)).filter(func(x: String): return x.ends_with(".tres")):
