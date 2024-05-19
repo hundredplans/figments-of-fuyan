@@ -45,17 +45,13 @@ const PARTICLE_VFX_MATERIALS: Dictionary = {
 @onready var StatParticles: Node3D = %StatParticles
 func onCreateStatParticle(stat: int, type: String, Tile: TileGD, y_offset: float) -> void:
 	var StatParticle := preload("res://scenes/screens/level_map/utility_nodes/vfx/stat_particles/stat_particle.tscn").instantiate()
-	var stat_string: String = str(abs(stat))
-	var stat_array: Array = []
-	
-	for c in stat_string: stat_array.append(int(c))
-	
 	var i: int = 1
-	for mesh in (["+" if stat > 0 else "-"] + stat_array).map(func(x: Variant):\
+	for mesh in (["+" if stat > 0 else "-"] + [stat]).map(func(x: Variant):\
 	return load("res://scenes/screens/level_map/utility_nodes/vfx/stat_particles/stat_particle/"\
-	+ Helper.NUM_TO_STRING_NUM[x] + ".tres").duplicate()):
+	+ Helper.onStatParticleStrNum(x) + ".tres").duplicate()):
 		mesh.surface_set_material(0, PARTICLE_VFX_MATERIALS[type])
 		StatParticle["draw_pass_" + str(i)] = mesh
+		
 		i+= 1
 		
 	add_child(StatParticle)

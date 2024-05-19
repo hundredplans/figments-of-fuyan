@@ -84,11 +84,12 @@ func setUnit(Unit: UnitGD) -> void:
 		onAddUnitFX(fx[0], fx[1])
 	
 func onCreateBaseStat(val: int, stat_changed: String, color: String = "BASE") -> void:
-	var NewNumber: Node3D = load("res://scenes/screens/level_map/floating_stats/numbers/" + Helper.NUM_TO_STRING_NUM[val] + ".glb").instantiate()
 	var StatNumber: Node3D = Numbers.get_node(stat_changed)
-	StatNumber.add_child(NewNumber)
 	StatNumber.color = color
-	setStatNumberMaterial(NewNumber, color)
+	for num in str(val):
+		var NewNumber: Node3D = load("res://scenes/screens/level_map/floating_stats/numbers/" + Helper.NUM_TO_STRING_NUM[int(num)] + ".glb").instantiate()
+		StatNumber.add_child(NewNumber)
+		setStatNumberMaterial(NewNumber, color)
 	StatNumber.on_sort_children()
 
 var grey_heart: bool = false

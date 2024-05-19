@@ -12,6 +12,7 @@ var Vision: VisionGD
 var SpectateCamera: Node3D
 var Units: UnitsGD
 
+@onready var DrawCard: Control = %DrawCard
 @onready var AbilityLabel: Label = %AbilityLabel
 @onready var TargetAbilities: VBoxContainer = %TargetAbilities
 @onready var Console := %Console
@@ -77,11 +78,21 @@ func _input(event: InputEvent) -> void:
 
 var _GameCard: PackedScene = preload("res://assets/base_game/cards/game_card/game_card.tscn")
 func on_draw_card(HandCard: HandCardGD) -> void:
+	if HandCard.id not in range(1, 7)	: # fix this it's so dodgy
+		var GameCard: Control = _GameCard.instantiate()
+		GameCard.set_info(Helper.getCard(HandCard.id))
+		DrawCard.add_child(GameCard)
+		if LevelMap.game_phase == "PlayerPhase": GameCard.on_set_disabled(true)
+		onTweenDrawCard(GameCard, HandCard)
+	else: onDrawCard(HandCard)
+	
+func onDrawCard(HandCard: HandCardGD) -> void:
 	var GameCard: Control = _GameCard.instantiate()
 	GameCard.is_hover = true
 	GameCard.custom_minimum_size = Vector2(GameCard.size.x, 0)
 	GameCard.set_info(Helper.getCard(HandCard.id))
 	GameCard.pressed.connect(on_card_selected.bind(GameCard))
+	if LevelMap.game_phase == "PlayerPhase": GameCard.on_set_disabled(true)
 	CardBox.add_child(GameCard)
 	
 var _card_selected_material: Resource = preload("res://assets/base_game/cards/game_card/materials/card_selected_material.tres")
@@ -431,6 +442,8 @@ func onUpdateAbilityCharges(Unit: UnitGD) -> void:
 	for info in ability_color_replace:
 		new_text[info[0]] = str(info[2])
 		Unit.base_text = new_text
+		
+	for info in ability_color_replace:
 		new_text = new_text.insert(info[0] + 1, "[/color]")
 		new_text = new_text.insert(info[0], "[color=" + info[1] + "]")
 		Unit.base_card.text = new_text
@@ -446,3 +459,24 @@ func onUpdateTargetAbility(Unit: UnitGD, ability: TargetAbilityGD) -> void:
 
 func on_camera_mode_pressed():
 	SpectateCamera.onChangeCameraMode(!SpectateCamera.is_unit_camera)
+
+const DRAW_CARD_ORIGINAL_Y: int = -430
+const DRAW_CARD_FINAL_Y: int = 1100
+const DRAW_CARD_FALL_TIME: float = 1.6
+func onTweenDrawCard(GameCard: GameCardGD, HandCard: HandCardGD) -> void:
+	GameCard.position.y = DRAW_CARD_ORIGINAL_Y
+	GameCard.position.x = randi_range(400, 1200)
+	var pos_tween := create_tween()
+	var rot_tween := create_tween()
+	pos_tween.tween_property(GameCard, "position:y", DRAW_CARD_FINAL_Y, DRAW_CARD_FALL_TIME)
+	rot_tween.tween_property(GameCard, "rotation", TAU, DRAW_CARD_FALL_TIME).as_relative()
+	pos_tween.finished.connect(onTweenDrawCardFinished.bind(HandCard))
+
+func onTweenDrawCardFinished(HandCard: HandCardGD) -> void:
+	for child in DrawCard.get_children(): child.queue_free()
+	onDrawCard(HandCard)
+
+@onready var ChangePhaseAniPlayer := $ChangePhaseManager/AnimationPlayer
+func onPlayHoverChangePhase(state: bool = true):
+	if state: ChangePhaseAniPlayer.play("ChangePhaseHover")
+	else: ChangePhaseAniPlayer.play("RESET")

@@ -500,6 +500,22 @@ const NUM_TO_STRING_NUM: Dictionary = {
 	"-": "minus"
 }
 
+func onStatParticleStrNum(x: Variant) -> String:
+	match x:
+		0: return "zero"
+		1: return "one"
+		2: return "two"
+		3: return "three"
+		4: return "four"
+		5: return "five"
+		6: return "six"
+		7: return "seven"
+		8: return "eight"
+		9: return "nine"
+		"+": return "plus"
+		"-": return "minus"
+		_: return "exclamation_mark"
+	
 func getHeroCardInfo(hid: int) -> HeroCardGD:
 	var DIR_PATH: String = "res://assets/base_game/cards/cards/"
 	for dir in DirAccess.get_directories_at(DIR_PATH):
@@ -528,7 +544,8 @@ func _ready() -> void:
 			i += 1
 		i += 1
 		cards.append(base_card)
-
+	
+	
 func getCard(id: int) -> BaseCardGD:
 	if GameState == null: return cards[id]
 	else:

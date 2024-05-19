@@ -197,6 +197,14 @@ func onAddUnitFX(Unit: UnitGD, type: String) -> void:
 	for UnitStatus in onFindUnitStatus(Unit):
 		UnitStatus.onAddUnitFX(type)
 	
+func onAddAbilityActiveFX(Unit: UnitGD, type: String) -> void:
+	if FileAccess.file_exists("res://scenes/screens/level_ui/unit_status/unit_fx/base_fx/" + type + ".png"):
+		onAddUnitFX(Unit, type)
+	
+func onRemoveAbilityActiveFX(Unit: UnitGD, type: String) -> void:
+	if FileAccess.file_exists("res://scenes/screens/level_ui/unit_status/unit_fx/base_fx/" + type + ".png"):
+		onRemoveUnitFX(Unit, type)
+	
 func onRemoveUnitFX(Unit: UnitGD, type: String) -> void:
 	for UnitStatus in onFindUnitStatus(Unit):
 		UnitStatus.onRemoveUnitFX(type)

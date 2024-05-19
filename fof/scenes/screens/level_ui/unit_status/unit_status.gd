@@ -13,6 +13,7 @@ var type: String = "UnitStatusRegular"
 @onready var Gem: Sprite2D = %Gem
 @onready var ShiftingBackground: Sprite2D = %ShiftingBackground
 
+@onready var PageArrows: Control = %PageArrows
 @onready var Rainbow = %RainbowLight
 @onready var Stats: Control = %Stats
 @onready var In: Sprite2D = %In
@@ -28,6 +29,9 @@ var type: String = "UnitStatusRegular"
 var card_selected_material: Material = preload("res://assets/base_game/cards/game_card/materials/card_selected_material.tres")
 func _ready() -> void:
 	Helper.create_button_clickmask(SelectedMask)
+	for child in PageArrows.get_children():
+		Helper.create_button_clickmask(child)
+		child.visible = false
 	Rainbow.visible = false
 	Gem.visible = false
 	pivot_offset = size / 2
@@ -117,10 +121,12 @@ func onAddUnitFX(fx_type: String, charges: int = -1) -> void:
 		var label_fx := preload("res://scenes/screens/level_ui/unit_status/unit_fx/label_fx/label_fx.tscn").instantiate()
 		UnitFX.add_child(label_fx)
 		label_fx.setFX(fx_type, charges)
+	onChangePage(0)
 
 func onRemoveUnitFX(fx_type: String) -> void:
 	for child in UnitFX.get_children():
 		if child.type == fx_type: child.queue_free()
+	onChangePage(0)
 
 func onCreateBuffNextTurn(stat: String, value: int, color: Color) -> void:
 	var prefix: String = "down" if value < 0 else "up"
@@ -149,3 +155,25 @@ func onCreateHealNextTurn(color: Color) -> void:
 func onRemoveHealNextTurn() -> void:
 	Stats.get_node("Health/NextTurnStats/Heal").texture = null
 	Stats.get_node("Health/NextTurnStats/Heal").visible = false
+
+var page: int = 0
+func onSortUnitFXChildren() -> void:
+	@warning_ignore("integer_division")
+	var max_page: int = UnitFX.get_child_count() / 9
+	for child in PageArrows.get_children(): child.visible = max_page > 1
+	
+	var vis_range: Array = range(page * 9, (page + 1) * 9)
+	for i in range(UnitFX.get_child_count()):
+		UnitFX.get_child(i).visible = i in vis_range
+
+func onChangePage(i: int) -> void:
+	var old_page: int = page
+	@warning_ignore("integer_division")
+	var max_page: int = UnitFX.get_child_count() / 9
+	page = clamp(page + i, 0, max_page)
+	
+	onSortUnitFXChildren()
+	if max_page > 1:
+		PageArrows.get_child(0).disabled = page == 0
+		PageArrows.get_child(1).disabled = page == max_page
+	

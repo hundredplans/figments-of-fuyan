@@ -4,6 +4,7 @@ signal heal_set
 signal damage_set
 signal stagger_set
 signal spawn_set
+signal stat_set
 
 var Combat: CombatGD
 var LevelUI: LevelUIGD
@@ -39,6 +40,9 @@ func onProcessCommand(command: String) -> void:
 	elif command.begins_with("heal"):
 		onHealUnit(command.split(" "))
 
+	elif command.begins_with("stat"):
+		onStatUnit(command.split(" "))
+
 var command_args: Array = []
 func onSpawnUnit(args: Array) -> void:
 	onSelectTile(spawn_set)
@@ -54,6 +58,10 @@ func onHealUnit(args: Array) -> void:
 	
 func onStaggerUnit() -> void:
 	onSelectTile(stagger_set)
+
+func onStatUnit(args: Array) -> void:
+	onSelectTile(stat_set)
+	command_args = args
 	
 func onSelectTile(sig: Signal) -> void:
 	visible = false
@@ -92,3 +100,14 @@ func onHealSet(Tile: TileGD) -> void:
 	healInfo.heal = int(command_args[1])
 	
 	Combat.onHeal(healInfo)
+
+func onStatSet(Tile: TileGD) -> void:
+	var Unit: UnitGD = Units.unit_by_tile(Tile)
+	var buff_info := BuffInfoGD.new()
+	var AppliedBy := AppliedByGD.new()
+	AppliedBy.type = "Console"
+	buff_info.AppliedBy = AppliedBy
+	buff_info.Unit = Unit
+	buff_info.stat = command_args[1]
+	buff_info.value = int(command_args[2])
+	Combat.onBuffInfo(buff_info)
