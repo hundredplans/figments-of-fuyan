@@ -447,6 +447,11 @@ offset_bottom = 137.0
 label_settings = SubResource("LabelSettings_el0xh")
 horizontal_alignment = 1
 
+[node name="DrawCard" type="Control" parent="."]
+unique_name_in_owner = true
+anchors_preset = 0
+mouse_filter = 1
+
 [connection signal="mouse_entered" from="StatusBox" to="." method="on_is_mouse_in_ui" binds= [true]]
 [connection signal="mouse_exited" from="StatusBox" to="." method="on_is_mouse_in_ui" binds= [false]]
 [connection signal="item_selected" from="StatusBox/SortMenu/Buttons/TeamButton" to="." method="_on_team_button_item_selected"]
