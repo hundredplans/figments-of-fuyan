@@ -14,6 +14,8 @@ func onHit(a: Dictionary) -> void:
 		var attack_trigger: Dictionary = GameEffects.onCreateTrigger("OnAttack", a.Unit.setExtraDamage.bind(DAMAGE))
 		var after_attack_trigger: Dictionary = GameEffects.onCreateTrigger("OnAfterAttack", a.Unit.setExtraDamage, "RemoveFX")
 		var trigger: Dictionary = GameEffects.onCreateTrigger("OnHit", null, "RemoveFX")
+		
+		a.ability = self
 		GameEffects.onAddGameFX(a.Unit, "AbilityActive", a, [trigger])
 		GameEffects.onAddGameFX(a.Unit, "IdleAbility", a, [attack_trigger, after_attack_trigger])
 		is_second_hit = true

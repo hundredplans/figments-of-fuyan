@@ -20,7 +20,7 @@ func onDeathAbilities(Deather: UnitGD, AppliedBy: AppliedByGD) -> void:
 func onOtherUnitDeathAbilities(Deather: UnitGD, AppliedBy: AppliedByGD) -> void:
 	var units: Array = Deather.getVisibleUnits().filter(func(x: UnitGD): return x != Deather and x != AppliedBy.Applier)
 	units.sort_custom(Units.sortUnitsByDistance.bind(Deather))
-	units.sort_custom(func(x: UnitGD, y: UnitGD): return x.team == Deather.team)
+	units.sort_custom(func(x: UnitGD, _y: UnitGD): return x.team == Deather.team)
 	for Unit in units:
 		if Unit.team != Deather.team: # Trigger bloodthirst
 			var abilities: Array = onFindAbilities(Unit, "Bloodthirst")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://b0kr4uhvdhmq3"]
+[gd_scene load_steps=21 format=3 uid="uid://b0kr4uhvdhmq3"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_ui/level_ui.gd" id="1_mmiwi"]
 [ext_resource type="Texture2D" uid="uid://iucmlitjenwl" path="res://assets/base_game/cards/game_card/art/stats/energy.png" id="2_bww7p"]
@@ -23,6 +23,104 @@ font_size = 100
 font_color = Color(1, 0.490196, 0, 1)
 outline_size = 20
 outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Animation" id="Animation_xamna"]
+resource_name = "ChangePhaseHover"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("%ChangePhase:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(-20, 0), Vector2(0, 0), Vector2(20, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("%ChangePhase:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.1, 1.1), Vector2(1, 1), Vector2(1.1, 1.1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("%ChangePhase:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, -0.174533, 0.0, 0.174533]
+}
+
+[sub_resource type="Animation" id="Animation_6a225"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("%ChangePhase:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("%ChangePhase:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("%ChangePhase:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("%ChangePhase/Label:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6v38x"]
+_data = {
+"ChangePhaseHover": SubResource("Animation_xamna"),
+"RESET": SubResource("Animation_6a225")
+}
 
 [node name="LevelUI" type="Control"]
 layout_mode = 3
@@ -275,43 +373,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="ChangePhase" type="Control" parent="."]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(150, 150)
-layout_mode = 2
-anchors_preset = 0
-offset_left = 1743.0
-offset_top = 460.0
-offset_right = 1893.0
-offset_bottom = 610.0
-size_flags_horizontal = 8
-mouse_filter = 1
-
-[node name="PassUnitTurn" type="TextureButton" parent="ChangePhase"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture_normal = ExtResource("7_vn3bx")
-texture_hover = ExtResource("8_l8h11")
-texture_disabled = ExtResource("9_d3rdq")
-
-[node name="Label" type="Label" parent="ChangePhase"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = -4.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Pass"
-label_settings = ExtResource("9_4ndix")
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="Energy" type="Control" parent="."]
 anchors_preset = 0
 offset_right = 120.0
@@ -447,6 +508,56 @@ offset_bottom = 137.0
 label_settings = SubResource("LabelSettings_el0xh")
 horizontal_alignment = 1
 
+[node name="ChangePhaseManager" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 1740.0
+offset_top = 474.0
+offset_right = 1890.0
+offset_bottom = 624.0
+mouse_filter = 2
+
+[node name="ChangePhase" type="Control" parent="ChangePhaseManager"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 1
+anchors_preset = 0
+offset_right = 150.0
+offset_bottom = 150.0
+pivot_offset = Vector2(75, 75)
+size_flags_horizontal = 8
+mouse_filter = 1
+
+[node name="PassUnitTurn" type="TextureButton" parent="ChangePhaseManager/ChangePhase"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+texture_normal = ExtResource("7_vn3bx")
+texture_hover = ExtResource("8_l8h11")
+texture_disabled = ExtResource("9_d3rdq")
+
+[node name="Label" type="Label" parent="ChangePhaseManager/ChangePhase"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Pass"
+label_settings = ExtResource("9_4ndix")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="ChangePhaseManager"]
+libraries = {
+"": SubResource("AnimationLibrary_6v38x")
+}
+speed_scale = 0.5
+
 [node name="DrawCard" type="Control" parent="."]
 unique_name_in_owner = true
 anchors_preset = 0
@@ -466,9 +577,6 @@ mouse_filter = 1
 [connection signal="mouse_exited" from="CornerRightMenu/CameraArrows" to="." method="on_is_mouse_in_ui" binds= [false]]
 [connection signal="pressed" from="CornerRightMenu/CameraArrows/LeftArrow" to="." method="on_camera_arrow_pressed" binds= [-1]]
 [connection signal="pressed" from="CornerRightMenu/CameraArrows/RightArrow" to="." method="on_camera_arrow_pressed" binds= [1]]
-[connection signal="mouse_entered" from="ChangePhase" to="." method="on_is_mouse_in_ui" binds= [true]]
-[connection signal="mouse_exited" from="ChangePhase" to="." method="on_is_mouse_in_ui" binds= [false]]
-[connection signal="pressed" from="ChangePhase/PassUnitTurn" to="." method="onPassUnitTurnButtonPressed"]
 [connection signal="mouse_entered" from="Energy" to="." method="on_is_mouse_in_ui" binds= [true]]
 [connection signal="mouse_exited" from="Energy" to="." method="on_is_mouse_in_ui" binds= [false]]
 [connection signal="mouse_entered" from="HandBox" to="." method="on_extend_hand_box"]
@@ -476,3 +584,8 @@ mouse_filter = 1
 [connection signal="mouse_exited" from="HandBox" to="." method="on_unextend_hand_box"]
 [connection signal="mouse_exited" from="HandBox" to="." method="on_is_mouse_in_ui" binds= [false]]
 [connection signal="child_entered_tree" from="HandBox/CardClipper" to="." method="_on_card_clipper_child_entered_tree"]
+[connection signal="mouse_entered" from="ChangePhaseManager/ChangePhase" to="." method="onPlayHoverChangePhase"]
+[connection signal="mouse_entered" from="ChangePhaseManager/ChangePhase" to="." method="on_is_mouse_in_ui" binds= [true]]
+[connection signal="mouse_exited" from="ChangePhaseManager/ChangePhase" to="." method="on_is_mouse_in_ui" binds= [false]]
+[connection signal="mouse_exited" from="ChangePhaseManager/ChangePhase" to="." method="onPlayHoverChangePhase" binds= [false]]
+[connection signal="pressed" from="ChangePhaseManager/ChangePhase/PassUnitTurn" to="." method="onPassUnitTurnButtonPressed"]

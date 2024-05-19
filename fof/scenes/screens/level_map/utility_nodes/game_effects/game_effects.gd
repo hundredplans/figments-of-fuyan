@@ -90,10 +90,12 @@ func onAddAbilityActive(Unit: UnitGD, a: Dictionary, triggers: Array) -> GameFXG
 	var GameFX := onCreateGameFX(Unit, a, triggers)
 	onAppendTrigger(GameFX, "Remove", onRemoveAbilityActive.bind(GameFX))
 	VFX.onCreateAbilityActiveParticle(Unit)
+	LevelUI.UnitStatusOverlord.onAddAbilityActiveFX(Unit, a.ability.ability_name)
 	return GameFX
 		
 func onRemoveAbilityActive(GameFX: GameFXGD) -> void:
 	VFX.onRemoveAbilityActiveParticle(GameFX.Unit)
+	LevelUI.UnitStatusOverlord.onRemoveAbilityActiveFX(GameFX.Unit, GameFX.info.ability.ability_name)
 		
 func onAppendTrigger(GameFX: GameFXGD, trigger: String, callable: Callable, remove_type: String = "", charges: int = 1, use_bound: bool = true) -> void:
 	GameFX.triggers.append(onCreateTrigger(trigger, callable, remove_type, charges, use_bound))

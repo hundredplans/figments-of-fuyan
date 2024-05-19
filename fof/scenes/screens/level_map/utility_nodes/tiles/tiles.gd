@@ -52,15 +52,9 @@ func all_neighbours_tiles(tiles: Array, otiles: Array = get_children(), distance
 func tiles_intersection(tiles: Array, otiles: Array) -> Array:
 	return tiles.filter(is_tile_in_tiles.bind(otiles))
 
-func all_in_range(Tile: TileGD, distance: int = 2, include_central: bool = false, search_elevation: bool = false, tiles: Array = get_children()) -> Array:
-	return positions_to_tiles(_all_in_range(Tile.onTTpos(), distance, include_central, search_elevation, tiles_to_positions(tiles)))
-
-func _all_in_range(pos: Vector4, distance: int = 2, include_central: bool = false, search_elevation: bool = false, poses: Array = get_children_positions()) -> Array:
-	var a: Array = []
-	for n in range(1 - int(include_central), distance + 1):
-		for _pos in _all_neighbours(pos, n, search_elevation, poses):
-			a.append(_pos)
-	return a
+func all_in_range(Tile: TileGD, distance: int = 2, include_central: bool = false, tiles: Array = get_children()) -> Array:
+	if !include_central: tiles.erase(Tile)
+	return tiles.filter(func(x: TileGD): return tile_distance(Tile, x) <= distance)
 	
 func getTposInRange(Tile: TileGD, i: int = 1) -> Array:
 	var tposes: Array = []
@@ -286,9 +280,19 @@ func _on_remove_tiles_blocked_by_height(Tile: TileGD, height: float) -> bool:
 		if _Tile == null: free_tile_space += 1.2
 		else: break
 	return free_tile_space >= height
-
-func on_remove_tiles_blocked_by_height(tiles: Array, height: float) -> Array:
-	return tiles.filter(func(x: TileGD): return _on_remove_tiles_blocked_by_height(x, height))
+	
+func onRemoveTileBlockedByHeight(Tile: TileGD, height: float) -> bool:
+	# 1 = 1.2 (the bottom)
+	# 2 = 2.4 (the bottom)
+	var bot_range: float = getUnitPositionOnTile(Tile).y
+	var top_range: float = bot_range + height
+	for w in range(Tile.w + 1, ceil(top_range / 1.2)):
+		var _Tile: TileGD = position_to_tile(Tile.onTTpos(w))
+		if _Tile != null: return false
+	return true
+	
+func onRemoveTilesBlockedByHeight(tiles: Array, Unit: UnitGD) -> Array:
+	return tiles.filter(onRemoveTileBlockedByHeight.bind(Unit.height.top))
 
 func on_can_ramp_connect(Tile: TileGD, _Tile: TileGD, hdiff: int) -> bool:
 	if abs(hdiff) == 1: # ensures it's from a regular tile
@@ -296,10 +300,6 @@ func on_can_ramp_connect(Tile: TileGD, _Tile: TileGD, hdiff: int) -> bool:
 		var neirot: int = neighbour_rotation(Tile, _Tile) 
 		return neirot == (stair_or_tile_rot + 1) % 6 or neirot == (stair_or_tile_rot + 4) % 6
 	return false
-
-func on_filter_in_range_tiles(x: TileGD, team: int):
-	var Unit: UnitGD = Units.unit_by_tile(x)
-	return x.solid_status == 0 or (Unit != null and Unit.team != team)
 
 func getUnitPositionOnTile(Tile: TileGD):
 	var pos: Vector3 = Tile.global_position
@@ -312,8 +312,12 @@ func is_ramp_tile(Tile: TileGD) -> bool:
 func getUnitAdjustedHeight(Tile: TileGD) -> float:
 	return (Tile.w * 1.2) + (0.9 if is_ramp_tile(Tile) else 0.3)
 
+func onFindMovementRangeTiles() -> void:
+	pass
+
 var movement_paths: Dictionary = {"tiles": []}
 func onCreateMovementPaths(Unit: UnitGD, type: String = "Default") -> void:
+	var f: float = Time.get_ticks_msec()
 	var tiles: Array = []
 	match type:
 		"Default": tiles = get_children()
@@ -321,16 +325,19 @@ func onCreateMovementPaths(Unit: UnitGD, type: String = "Default") -> void:
 		
 	movement_paths = {"tiles": []}
 	var astar := AStar3D.new()
+	var _enemy_tiles: Array = Units.on_units(Unit.team, "Enemy").filter(func(x: UnitGD): return tile_distance(x.Tile, Unit.Tile) <= Unit.speed + 1).map(func(x: UnitGD): return x.Tile)
+	var _in_range_tiles: Array = all_in_range(Unit.Tile, Unit.speed, true, tiles).filter(func(x: TileGD): return x.solid_status == 0)
+	for Tile in Units.all_units().map(func(x: UnitGD): return x.Tile): _in_range_tiles.erase(Tile)
 	
-	var _enemy_tiles: Array = all_neighbours(Unit.Tile, Unit.speed + 1, true, tiles)\
-	.filter(func(x: TileGD): var _Unit: UnitGD = Units.unit_by_tile(x); return _Unit != null and _Unit.team != Unit.team)
-	var _in_range_tiles: Array = all_in_range(Unit.Tile, Unit.speed, true, true, tiles).filter(on_filter_in_range_tiles.bind(Unit.team))
-	
-	var full_tiles: Array = on_remove_tiles_blocked_by_height(_enemy_tiles + _in_range_tiles, Unit.height.top)
+	var full_tiles: Array = onRemoveTilesBlockedByHeight(_enemy_tiles + _in_range_tiles, Unit)
 	full_tiles.append(Unit.Tile)
 	
 	var tiles_by_adjacent: Dictionary = on_tiles_by_adjacent(full_tiles, astar)
 	var movement_types: Array = []
+	# Takes roughly 7 msec
+	# Takes around 40msec in total
+	print(Time.get_ticks_msec() - f)
+	print()
 	for Tile in tiles_by_adjacent.keys():
 		for _Tile in tiles_by_adjacent[Tile]:
 			var EnemyUnit: UnitGD = Units.unit_by_tile(_Tile)
@@ -391,7 +398,6 @@ func onCreateMovementPaths(Unit: UnitGD, type: String = "Default") -> void:
 					for point in astar.get_point_connections(id):
 						if point != id_path_tiles[i - 1].get_instance_id():
 							astar.disconnect_points(id, point)
-				
 	for Tile in tiles_by_adjacent.keys():
 		var path: Dictionary = on_create_true_path(Array(astar.get_id_path(Unit.Tile.get_instance_id(), Tile.get_instance_id()))\
 		.map(func(x: int): return instance_from_id(x)), movement_types, Unit) # Creates paths of [[Tile, vec2(id)], [Tile, vec2(id)]]
@@ -399,7 +405,6 @@ func onCreateMovementPaths(Unit: UnitGD, type: String = "Default") -> void:
 		if path.size > 0 and path.size <= Unit.speed + int(path.types[path.size - 1].x == 1):
 			movement_paths[Tile] = path
 			movement_paths.tiles.append(Tile)
-
 func on_calculate_drop_damage(_hdiff: int, top_height: float) -> Vector3i:
 	var hdiff: int = abs(_hdiff * 0.5)
 	var dmg: int = 0

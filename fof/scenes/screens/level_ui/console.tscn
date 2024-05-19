@@ -56,10 +56,12 @@ theme = ExtResource("3_32lgd")
 
 [connection signal="damage_set" from="." to="." method="onTileSelected"]
 [connection signal="damage_set" from="." to="." method="onDamageSet"]
-[connection signal="heal_set" from="." to="." method="onTileSelected"]
 [connection signal="heal_set" from="." to="." method="onHealSet"]
+[connection signal="heal_set" from="." to="." method="onTileSelected"]
 [connection signal="spawn_set" from="." to="." method="onSpawnTileSet"]
 [connection signal="spawn_set" from="." to="." method="onTileSelected"]
 [connection signal="stagger_set" from="." to="." method="onStaggerSet"]
 [connection signal="stagger_set" from="." to="." method="onTileSelected"]
+[connection signal="stat_set" from="." to="." method="onStatSet"]
+[connection signal="stat_set" from="." to="." method="onTileSelected"]
 [connection signal="text_submitted" from="Container/CommandLine" to="." method="_on_command_line_text_submitted"]
