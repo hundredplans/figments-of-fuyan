@@ -26,6 +26,8 @@ var team: int
 var height: Dictionary
 var Tile: TileGD
 
+var heal_multiplier: int = 1
+var extra_heal: int = 0
 var extra_damage: int = 0
 var attack_range: int = 1
 var attack_amount: int = 1
@@ -339,6 +341,9 @@ func getVisibleTiles() -> Array: # Removes tile unit is on
 
 func setExtraDamage(x: int = 0) -> void:
 	extra_damage = x
+
+func setHealMultiplier(x: int = 1) -> void:
+	heal_multiplier = x
 
 func onAddToPastPath(_Tile: TileGD) -> void:
 	past_path_counter += 1

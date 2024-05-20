@@ -467,3 +467,7 @@ func onFindClosestAdjacentUnit(Unit: UnitGD, relation: String = "Ally") -> UnitG
 
 func sortUnitsByDistance(Unit: UnitGD, _Unit: UnitGD, __Unit: UnitGD) -> bool:
 	return Tiles.tile_distance(Unit.Tile, __Unit.Tile) < Tiles.tile_distance(_Unit.Tile, __Unit.Tile)
+
+func onHoverUnitPressed(Unit: UnitGD) -> void:
+	if !Unit.is_dead and Unit.Tile in Vision.ally_vision:
+		pass
