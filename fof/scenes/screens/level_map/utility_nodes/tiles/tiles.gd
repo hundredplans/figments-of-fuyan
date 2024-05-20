@@ -230,11 +230,14 @@ func on_begin_unit_movement() -> void:
 	on_path_hovered_tile_selected(active_tile)
 	if enemy_is_in_range: on_enemy_found_tile_selected(active_tile, Unit)
 
+func allNeighboursFast(Tile: TileGD, distance: int, tiles: Array) -> Array:
+	return tiles.filter(func(x: TileGD): return tile_distance(x, Tile) == distance)
+
 var is_stair_object: Array = [5]
 func on_tiles_by_adjacent(tiles: Array = get_children(), astar: AStar3D = null) -> Dictionary:
 	var by_adjacent: Dictionary = {}
 	for Tile in tiles:
-		by_adjacent[Tile] = all_neighbours(Tile, 1, true, tiles)
+		by_adjacent[Tile] = allNeighboursFast(Tile, 1, tiles)
 		astar.add_point(Tile.get_instance_id(), Tile.position)
 	return by_adjacent
 
@@ -336,8 +339,7 @@ func onCreateMovementPaths(Unit: UnitGD, type: String = "Default") -> void:
 	var movement_types: Array = []
 	# Takes roughly 7 msec
 	# Takes around 40msec in total
-	print(Time.get_ticks_msec() - f)
-	print()
+
 	for Tile in tiles_by_adjacent.keys():
 		for _Tile in tiles_by_adjacent[Tile]:
 			var EnemyUnit: UnitGD = Units.unit_by_tile(_Tile)
@@ -405,6 +407,8 @@ func onCreateMovementPaths(Unit: UnitGD, type: String = "Default") -> void:
 		if path.size > 0 and path.size <= Unit.speed + int(path.types[path.size - 1].x == 1):
 			movement_paths[Tile] = path
 			movement_paths.tiles.append(Tile)
+			
+	print(Time.get_ticks_msec() - f)
 func on_calculate_drop_damage(_hdiff: int, top_height: float) -> Vector3i:
 	var hdiff: int = abs(_hdiff * 0.5)
 	var dmg: int = 0
