@@ -1,11 +1,11 @@
 [gd_resource type="Resource" script_class="InfoFXGD" load_steps=3 format=3 uid="uid://eyl64en7284k"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_ui/unit_status/unit_fx/info_fx.gd" id="1_42e53"]
-[ext_resource type="Texture2D" uid="uid://cw5ejgpvf87ns" path="res://scenes/screens/level_ui/unit_status/unit_fx/textures/palmfessor_in_vision.png" id="2_ymnrd"]
+[ext_resource type="Texture2D" uid="uid://cw5ejgpvf87ns" path="res://scenes/screens/level_ui/unit_status/unit_fx/textures/Palmfessor_in_vision.png" id="2_ymnrd"]
 
 [resource]
 script = ExtResource("1_42e53")
 texture = ExtResource("2_ymnrd")
-tooltip = ""
+tooltip = "This unit gains +1/0 as it is on 1 ATTACK."
 fx_type = "PalmfessorInVision"
 can_hover = false
