@@ -136,9 +136,9 @@ func onAddHelpfulHelmet(Unit: UnitGD, a: Dictionary) -> GameFXGD:
 func onAddCharmingStance(Unit: UnitGD, a: Dictionary) -> GameFXGD:
 	var GameFX := onCreateGameFX(Unit, a)
 	onAppendUnitTrigger(GameFX, a.Unit, "RemoveAbility", LevelUI.UnitStatusOverlord.onRemoveUnitFX.bind(Unit, "CharmingStance"))
-	LevelUI.UnitStatusOverlord.onAddUnitFX(Unit, "CharmingStance")
+	LevelUI.UnitStatusOverlord.onAddUnitFX(Unit, "CharmingStance", AppliedByGD.new("Ability", a.Unit))
 	return GameFX
-	
+		
 func onOverrideGameFX(Unit: UnitGD, type: String) -> void:
 	for GameFX in effects.filter(func(x: GameFXGD): return x.Unit == Unit):
 		if GameFX.type == type:

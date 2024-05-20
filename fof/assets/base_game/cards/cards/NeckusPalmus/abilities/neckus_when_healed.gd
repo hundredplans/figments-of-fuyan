@@ -3,10 +3,7 @@ extends WhenHealedGD
 func onWhenHealed(a: Dictionary) -> void:
 	if !GameEffects.onGameFXExists(a.Unit, "IdleAbility"):
 		if a.is_visible: a.Unit.Model.on_play_animation("Ability")
-		var AppliedBy := AppliedByGD.new()
-		AppliedBy.Applier = a.Unit
-		AppliedBy.type = "Ability"
-		
+		var AppliedBy := AppliedByGD.new("Ability", a.Unit)
 		a["AbilityActive"] = []
 		a["AbilityActive"].append(GameEffects.onCreateTrigger("EndTurn", null, "RemoveFX"))
 		a["AbilityActive"].append(GameEffects.onCreateTrigger("OnHit", Combat.onStagger, "RemoveFX"))

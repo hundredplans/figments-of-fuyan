@@ -353,35 +353,37 @@ material = ExtResource("7_mq0yb")
 position = Vector2(11, 10)
 texture = ExtResource("16_f48b4")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_iq8mx")
-}
-
 [node name="StatusZone" type="Control" parent="."]
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 266.0
+offset_top = 24.0
+offset_right = 347.0
+offset_bottom = 134.0
 mouse_filter = 1
 
 [node name="UnitFX" type="GridContainer" parent="StatusZone"]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 266.0
-offset_top = 24.0
-offset_right = 347.0
-offset_bottom = 105.0
+offset_right = 81.0
+offset_bottom = 81.0
 theme_override_constants/h_separation = 3
 theme_override_constants/v_separation = 3
 columns = 3
 
 [node name="PageArrows" type="Control" parent="StatusZone"]
 unique_name_in_owner = true
-anchors_preset = 0
-offset_left = 289.0
-offset_top = 109.0
-offset_right = 376.0
-offset_bottom = 155.0
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -23.5
+offset_top = -25.0
+offset_right = 63.5
+offset_bottom = 21.0
+grow_horizontal = 2
+grow_vertical = 0
 scale = Vector2(0.5, 0.5)
 mouse_filter = 1
 
@@ -416,6 +418,11 @@ grow_vertical = 2
 texture_normal = ExtResource("14_qflpm")
 texture_hover = ExtResource("15_t801l")
 texture_disabled = ExtResource("19_clkg2")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_iq8mx")
+}
 
 [connection signal="pressed" from="StatusZone/PageArrows/PageArrowLeft" to="." method="onChangePage" binds= [-1]]
 [connection signal="pressed" from="StatusZone/PageArrows/PageArrowRight" to="." method="onChangePage" binds= [1]]

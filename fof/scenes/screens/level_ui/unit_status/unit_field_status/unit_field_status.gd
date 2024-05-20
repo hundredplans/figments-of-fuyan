@@ -80,8 +80,7 @@ func setUnit(Unit: UnitGD) -> void:
 	onCreateBaseStat(Unit.health, "Health")
 	onCreateBaseStat(Unit.speed, "Speed")
 	 
-	for fx in Unit.unit_fx:
-		onAddUnitFX(fx[0], fx[1])
+	for fx in Unit.unit_fx: onAddUnitFX(fx)
 	
 func onCreateBaseStat(val: int, stat_changed: String, color: String = "BASE") -> void:
 	var StatNumber: Node3D = Numbers.get_node(stat_changed)
@@ -93,8 +92,8 @@ func onCreateBaseStat(val: int, stat_changed: String, color: String = "BASE") ->
 	StatNumber.on_sort_children()
 
 var grey_heart: bool = false
-func onAddUnitFX(fx_type: String, _charges: int = -1) -> void:
-	match fx_type:
+func onAddUnitFX(info_fx: InfoFXGD) -> void:
+	match info_fx.fx_type:
 		"Armor":
 			grey_heart = true
 			setFloatingStatMaterial()

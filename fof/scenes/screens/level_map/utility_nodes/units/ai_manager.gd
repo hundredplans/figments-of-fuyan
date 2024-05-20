@@ -13,15 +13,13 @@ func onDeathFinished(Unit: UnitGD) -> void:
 	active_movement_order.erase(Unit)
 
 func onAIEndTurnPhaseStart() -> void:
-	var AppliedBy := AppliedByGD.new()
-	AppliedBy.type = "EndAIPhase"
+	var AppliedBy := AppliedByGD.new("EndAIPhase")
 	for Unit in Units.on_units(1):
 		Unit.stats("active_speed", Unit.max_speed, AppliedBy, true)
 		Units.setUnitStatus(Unit, "TurnUsed")
 
 func onAIPhaseStart() -> void:
-	var AppliedBy := AppliedByGD.new()
-	AppliedBy.type = "StartAIPhase"
+	var AppliedBy := AppliedByGD.new("StartAIPhase")
 	for Unit in Units.on_units(1):
 		Unit.stats("active_speed", Unit.max_speed, AppliedBy, true)
 		Unit.attack_amount = 1

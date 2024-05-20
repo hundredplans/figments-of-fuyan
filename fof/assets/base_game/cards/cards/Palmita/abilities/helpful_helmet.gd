@@ -8,9 +8,7 @@ func onTargetAbilityCondition(a: Dictionary) -> Dictionary:
 
 func onTargetAbility(a: Dictionary) -> void:
 	a.Unit.Model._look_at(a.Tile)
-	var AppliedBy := AppliedByGD.new()
-	AppliedBy.type = "Ability"
-	AppliedBy.Applier = a.Unit
+	var AppliedBy := AppliedByGD.new("Ability", a.Unit)
 	a["AppliedBy"] = AppliedBy
 	
 	a.Unit.Model.death = "DeathAbility"

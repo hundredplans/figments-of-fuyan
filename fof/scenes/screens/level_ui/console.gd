@@ -76,38 +76,20 @@ func onSpawnTileSet(Tile: TileGD) -> void:
 func onStaggerSet(Tile: TileGD):
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
 	
-	var AppliedBy := AppliedByGD.new()
-	AppliedBy.type = "Console"
+	var AppliedBy := AppliedByGD.new("Console")
 	Combat.onStagger(Unit, AppliedBy)
 
 func onDamageSet(Tile: TileGD) -> void:
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
 	
-	var AppliedBy := AppliedByGD.new()
-	AppliedBy.type = "Ability"
+	var AppliedBy := AppliedByGD.new("Ability")
 	
 	Combat.onDMG(Unit, AppliedBy, int(command_args[1]))
 	
 func onHealSet(Tile: TileGD) -> void:
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
-	
-	var AppliedBy := AppliedByGD.new()
-	AppliedBy.type = "Ability"
-	
-	var healInfo := HealInfoGD.new()
-	healInfo.AppliedBy = AppliedBy
-	healInfo.Healee = Unit
-	healInfo.heal = int(command_args[1])
-	
-	Combat.onHeal(healInfo)
+	Combat.onHeal(HealInfoGD.new(Unit, AppliedByGD.new("Ability"), int(command_args[1])))
 
 func onStatSet(Tile: TileGD) -> void:
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
-	var buff_info := BuffInfoGD.new()
-	var AppliedBy := AppliedByGD.new()
-	AppliedBy.type = "Console"
-	buff_info.AppliedBy = AppliedBy
-	buff_info.Unit = Unit
-	buff_info.stat = command_args[1]
-	buff_info.value = int(command_args[2])
-	Combat.onBuffInfo(buff_info)
+	Combat.onBuffInfo(BuffInfoGD.new(Unit, AppliedByGD.new("Console"), command_args[1], int(command_args[2])))

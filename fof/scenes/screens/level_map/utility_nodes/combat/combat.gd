@@ -119,12 +119,8 @@ func onFindAbility(Unit: UnitGD, ability_name: String) -> AbilityGD:
 
 func onDMG(Damagee: UnitGD, AppliedBy: AppliedByGD, damage: int) -> DMGInfoGD:
 	if !Damagee.is_dead and Damagee.health > 0:
-		var DMGInfo := DMGInfoGD.new()
+		var DMGInfo := DMGInfoGD.new(Damagee, AppliedBy, damage)
 		var original_health: int = Damagee.health
-		DMGInfo.AppliedBy = AppliedBy
-		DMGInfo.BaseDMG = damage
-		DMGInfo.Defender = Damagee
-		
 		match AppliedBy.type:
 			"Attack":
 				var Attacker: UnitGD = AppliedBy.Applier
@@ -151,16 +147,7 @@ func onArmor(Unit: UnitGD, damage: int) -> int:
 	return damage
 
 func onHealAbility(Healee: UnitGD, Healer: UnitGD, heal: int) -> bool:
-	var healInfo := HealInfoGD.new()
-	healInfo.heal = heal
-	
-	var AppliedBy := AppliedByGD.new()
-	AppliedBy.type = "Ability"
-	AppliedBy.Applier = Healer
-	healInfo.AppliedBy = AppliedBy
-	
-	healInfo.Healee = Healee
-	return onHeal(healInfo)
+	return onHeal(HealInfoGD.new(Healee, AppliedByGD.new("Ability", Healer), heal))
 
 func onHeal(healInfo: HealInfoGD) -> bool:
 	if healInfo.heal > 0 and healInfo.Healee.isHealable():
@@ -241,29 +228,18 @@ func onRemoveHealNextTurn(heal_info_array: HealInfoArrayGD) -> void:
 	for heal_info in heal_info_array.array: onHeal(heal_info)
 	
 func onCreateBuffInfoArray(array: Array) -> BuffInfoArrayGD:
-	var BuffInfoArray := BuffInfoArrayGD.new()
-	BuffInfoArray.stat = array[0].stat
-	BuffInfoArray.Unit = array[0].Unit
-	BuffInfoArray.array =array
-	
 	var total: int = 0
 	for buff_info in array: total += buff_info.value
-	BuffInfoArray.value = total
-	return BuffInfoArray
+	return BuffInfoArrayGD.new(array[0].Unit, array[0].stat, total, array)
 
 func onAddToBuffInfoArray(buff_info_array: BuffInfoArrayGD, buff_info: BuffInfoGD) -> void:
 	buff_info_array.array.append(buff_info)
 	buff_info_array.value += buff_info.value
 
 func onCreateHealInfoArray(array: Array) -> HealInfoArrayGD:
-	var heal_info_array := HealInfoArrayGD.new()
-	heal_info_array.Healee = array[0].Healee
-	heal_info_array.array = array
-	
 	var total: int = 0
-	for heal_info in heal_info_array.array: total += heal_info.heal
-	heal_info_array.heal = total
-	return heal_info_array
+	for heal_info in array: total += heal_info.heal
+	return HealInfoArrayGD.new(array[0].Healee, total, array)
 
 func onAddToHealInfoArray(heal_info_array: HealInfoArrayGD, heal_info: HealInfoGD) -> void:
 	heal_info_array.array.append(heal_info)

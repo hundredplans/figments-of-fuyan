@@ -56,8 +56,7 @@ func setUnit(_Unit: UnitGD) -> void:
 		StatLabel.text = str(Unit.get(stat.to_lower()))
 	
 	onCreateAbilities()
-	for fx in Unit.unit_fx:
-		onAddUnitFX(fx[0], fx[1])
+	for info_fx in Unit.unit_fx: onAddUnitFX(info_fx)
 	
 func onCreateAbilities() -> void:
 	for ability in Unit.abilities:
@@ -111,21 +110,16 @@ var modulates: Dictionary = {}
 func onTargetAbilityBtnPressed(ability: TargetAbilityGD) -> void:
 	target_ability_pressed.emit(Unit, ability)
 
-func onAddUnitFX(fx_type: String, charges: int = -1) -> void:
-	if charges == -1:
-		var base_fx := preload("res://scenes/screens/level_ui/unit_status/unit_fx/base_fx/base_fx.tscn").instantiate()
-		base_fx.texture = load("res://scenes/screens/level_ui/unit_status/unit_fx/base_fx/" + fx_type.to_lower() + ".png")
-		base_fx.type = fx_type
-		UnitFX.add_child(base_fx)
-	else:
-		var label_fx := preload("res://scenes/screens/level_ui/unit_status/unit_fx/label_fx/label_fx.tscn").instantiate()
-		UnitFX.add_child(label_fx)
-		label_fx.setFX(fx_type, charges)
+func onAddUnitFX(info_fx: InfoFXGD) -> void:
+	var base_fx := preload("res://scenes/screens/level_ui/unit_status/unit_fx/base_fx.tscn").instantiate()
+	base_fx.setInfoFX(info_fx)
+	UnitFX.add_child(base_fx)
 	onChangePage(0)
 
-func onRemoveUnitFX(fx_type: String) -> void:
+func onRemoveUnitFX(fx_type: String, AppliedBy: AppliedByGD) -> void:
 	for child in UnitFX.get_children():
-		if child.type == fx_type: child.queue_free()
+		if child.info_fx.fx_type == fx_type and (AppliedBy.Applier == child.info_fx.Unit):
+			child.queue_free()
 	onChangePage(0)
 
 func onCreateBuffNextTurn(stat: String, value: int, color: Color) -> void:
@@ -167,7 +161,6 @@ func onSortUnitFXChildren() -> void:
 		UnitFX.get_child(i).visible = i in vis_range
 
 func onChangePage(i: int) -> void:
-	var old_page: int = page
 	@warning_ignore("integer_division")
 	var max_page: int = UnitFX.get_child_count() / 9
 	page = clamp(page + i, 0, max_page)

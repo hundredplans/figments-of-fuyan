@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="InfoFXGD" load_steps=3 format=3 uid="uid://dt1ho67d1icjo"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_ui/unit_status/unit_fx/info_fx.gd" id="1_08g2n"]
+[ext_resource type="Texture2D" uid="uid://dxr7k68j2nx4t" path="res://scenes/screens/level_ui/unit_status/unit_fx/textures/armor.png" id="2_087pt"]
+
+[resource]
+script = ExtResource("1_08g2n")
+texture = ExtResource("2_087pt")
+tooltip = "blocky blocky"
+fx_type = "Armor"
+display_applier = false

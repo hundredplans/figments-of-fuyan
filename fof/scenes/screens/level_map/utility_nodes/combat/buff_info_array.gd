@@ -6,3 +6,9 @@ var Unit: UnitGD
 @export var value: int = 1
 @export var stat: String
 @export var array: Array # List of BuffInfo's and their respective values
+
+func _init(_Unit: UnitGD = null, _stat: String = "attack", _value: int = 1, _array: Array = []) -> void:
+	Unit = _Unit
+	stat = _stat
+	value = _value
+	array = _array

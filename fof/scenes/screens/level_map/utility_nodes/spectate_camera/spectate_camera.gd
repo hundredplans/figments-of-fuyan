@@ -248,13 +248,9 @@ func onChangeCameraMode(state: bool, type: Variant = "") -> void:
 	if is_unit_camera != state:
 		is_unit_camera = state
 		if is_unit_camera:
-			if type == "": # Change camera mode and go back to last spectate
-				print_debug(last_spectate)
-				onSpectate(last_spectate)
-				last_spectate = {}
-			else: # Change camera mode and go to specified spectate
+			if type != "":
 				onSpectate(type)
-				last_spectate = {}
+			last_spectate = {}
 			setCameraPointAlongCircle(total_progress)
 		else:
 			_total_pitch = 0

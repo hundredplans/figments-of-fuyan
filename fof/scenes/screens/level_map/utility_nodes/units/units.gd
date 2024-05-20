@@ -223,9 +223,7 @@ func on_movement_finished(Unit: UnitGD) -> void:
 	if Unit.team == 0:
 		Unit.onAddToPastPath(Tile)
 	
-	var AppliedBy := AppliedByGD.new()
-	AppliedBy.type = "MovementFinished"
-	Unit.stats("active_speed", -1, AppliedBy)
+	Unit.stats("active_speed", -1, AppliedByGD.new("MovementFinished"))
 	Unit.occupy_tile(Tile)
 	await Unit.tile_occupied
 	if unit_actions.is_empty() or !(unit_actions[0].action_type.begins_with("MoveUnit")):
@@ -334,9 +332,7 @@ func on_attack_enemy() -> void:
 	# can do all the ui stuff here for attacking
 	
 func on_attack_finished(Unit: UnitGD) -> void:
-	var AppliedBy := AppliedByGD.new()
-	AppliedBy.type = "Attack"
-	AppliedBy.Applier = Unit
+	var AppliedBy := AppliedByGD.new("Attack", Unit)
 	var DMGInfo: DMGInfoGD = Combat.onDMG(active_action.Defender, AppliedBy, Unit.attack)
 	Unit.attack_amount -= 1
 	if Unit.attack_amount == 0: Unit.stats("active_speed", 0, AppliedBy, true)
@@ -412,8 +408,7 @@ func on_hurt_finished(_Unit: UnitGD) -> void:
 	onUnitActionsFinished()
 
 func on_drop_calculate_damage(DMG: int, scale_time: float, Unit: UnitGD) -> void:
-	var AppliedBy := AppliedByGD.new()
-	AppliedBy.type = "Height"
+	var AppliedBy := AppliedByGD.new("Height")
 	Combat.onDMG(Unit, AppliedBy, DMG)
 	if DMG > 0: on_descale_unit(Unit, scale_time)
 

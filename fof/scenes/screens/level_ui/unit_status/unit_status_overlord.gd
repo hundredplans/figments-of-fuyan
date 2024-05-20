@@ -11,6 +11,7 @@ var units: Dictionary = {} # Dict of UnitGD: [UnitStatus, UnitFieldStatus, UnitS
 
 func _ready() -> void:
 	onCreateUnitFieldStatusMaterials()
+	onStoreAllInfoFX()
 
 func onUnitAwakened(Unit: UnitGD) -> void:
 	var UnitFieldStatus: Node3D = preload("res://scenes/screens/level_ui/unit_status/unit_field_status/unit_field_status.tscn").instantiate()
@@ -193,21 +194,30 @@ func onUpdateTargetAbility(Unit: UnitGD, ability: TargetAbilityGD) -> void:
 	for UnitStatus in onFindUnitStatus(Unit):
 		UnitStatus.onUpdateAbility(ability)
 
-func onAddUnitFX(Unit: UnitGD, type: String) -> void:
+var all_info_fx: Dictionary
+func onStoreAllInfoFX() -> void:
+	const DIR_PATH: String = "res://scenes/screens/level_ui/unit_status/unit_fx/info_fx/"
+	for file_path in DirAccess.get_files_at(DIR_PATH):
+		var info_fx := load(DIR_PATH + file_path)
+		all_info_fx[info_fx.fx_type] = DIR_PATH + file_path
+
+func onAddUnitFX(Unit: UnitGD, type: String, AppliedBy := AppliedByGD.new()) -> void:
+	var info_fx := load(all_info_fx[type])
+	info_fx.Unit = AppliedBy.Applier
 	for UnitStatus in onFindUnitStatus(Unit):
-		UnitStatus.onAddUnitFX(type)
+		UnitStatus.onAddUnitFX(info_fx)
 	
-func onAddAbilityActiveFX(Unit: UnitGD, type: String) -> void:
-	if FileAccess.file_exists("res://scenes/screens/level_ui/unit_status/unit_fx/base_fx/" + type + ".png"):
+func onAddAbilityActiveFX(Unit: UnitGD, type: String, AppliedBy := AppliedByGD.new()) -> void:
+	if all_info_fx.has(type):
 		onAddUnitFX(Unit, type)
 	
 func onRemoveAbilityActiveFX(Unit: UnitGD, type: String) -> void:
-	if FileAccess.file_exists("res://scenes/screens/level_ui/unit_status/unit_fx/base_fx/" + type + ".png"):
+	if all_info_fx.has(type):
 		onRemoveUnitFX(Unit, type)
 	
-func onRemoveUnitFX(Unit: UnitGD, type: String) -> void:
+func onRemoveUnitFX(Unit: UnitGD, type: String, AppliedBy := AppliedByGD.new()) -> void:
 	for UnitStatus in onFindUnitStatus(Unit):
-		UnitStatus.onRemoveUnitFX(type)
+		UnitStatus.onRemoveUnitFX(type, AppliedBy)
 
 func onUpdateUnitTargetAbilities(Unit: UnitGD) -> void:
 	for ability in Unit.abilities:

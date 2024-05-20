@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="InfoFXGD" load_steps=3 format=3 uid="uid://btvvroms50ky4"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_ui/unit_status/unit_fx/info_fx.gd" id="1_tsral"]
+[ext_resource type="Texture2D" uid="uid://dabq7kr2tnmo1" path="res://scenes/screens/level_ui/unit_status/unit_fx/textures/angrus_rampage.png" id="2_7eikm"]
+
+[resource]
+script = ExtResource("1_tsral")
+texture = ExtResource("2_7eikm")
+tooltip = ""
+fx_type = "AngrusRampage"
+can_hover = false

@@ -408,7 +408,6 @@ func onCreateMovementPaths(Unit: UnitGD, type: String = "Default") -> void:
 			movement_paths[Tile] = path
 			movement_paths.tiles.append(Tile)
 			
-	print(Time.get_ticks_msec() - f)
 func on_calculate_drop_damage(_hdiff: int, top_height: float) -> Vector3i:
 	var hdiff: int = abs(_hdiff * 0.5)
 	var dmg: int = 0

@@ -106,7 +106,9 @@ func onCreateAbilities() -> void:
 				onAddUnitFX("Armor", ability.armor)
 			
 func onAddUnitFX(type: String, charges: int = -1) -> void:
-	unit_fx.append([type, charges])
+	var info_fx: InfoFXGD = load(Units.LevelUI.UnitStatusOverlord.all_info_fx[type])
+	info_fx.charges = charges
+	unit_fx.append(info_fx)
 		
 func occupy_tile(_Tile: TileGD) -> void:
 	var is_first: bool = Tile == null
@@ -124,7 +126,7 @@ func occupy_tile(_Tile: TileGD) -> void:
 			Units.Vision.on_recalculate_vision(_Unit)
 
 var Killer: UnitGD
-func stats(stat_type: String, val: int, AppliedBy := AppliedByGD.new(), absolute: bool = false) -> void:
+func stats(stat_type: String, val: int, AppliedBy := AppliedByGD.new("GameEvent"), absolute: bool = false) -> void:
 	var current_health: int = health
 	var current_speed: int = speed
 	var current_attack: int = attack

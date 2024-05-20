@@ -10,24 +10,10 @@ func onTargetAbilityCondition(a: Dictionary) -> Dictionary:
 	return tiles
 
 func onTargetAbility(a: Dictionary) -> void:
-	var buff_info := BuffInfoGD.new()
-	var AppliedBy := AppliedByGD.new()
-	AppliedBy.type = "Ability"
-	AppliedBy.Applier = a.Unit
-	
 	var Unit: UnitGD = Units.unit_by_tile(a.Tile)
-	buff_info.Unit = Unit
-	buff_info.value = ATTACK
-	buff_info.stat = "attack"
-	buff_info.AppliedBy = AppliedBy
-	
-	var heal_info := HealInfoGD.new()
-	heal_info.heal = HEAL
-	heal_info.Healee = Unit
-	heal_info.AppliedBy = AppliedBy
-	
-	Combat.onApplyBuffNextTurn(buff_info)
-	Combat.onApplyHealNextTurn(heal_info)
+	var AppliedBy := AppliedByGD.new("Ability", a.Unit)
+	Combat.onApplyBuffNextTurn(BuffInfoGD.new(Unit, AppliedBy, "attack", ATTACK))
+	Combat.onApplyHealNextTurn(HealInfoGD.new(Unit, AppliedBy, HEAL))
 	
 	if a.is_visible: a.Unit.Model.on_play_animation("Ability")
 	a.Unit.Model._look_at(a.Tile)

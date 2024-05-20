@@ -66,8 +66,7 @@ func on_pass_unit_turn() -> void:
 func on_player_phase_start() -> void:
 	passed_turns = []
 	unpassed_turns = []
-	var AppliedBy := AppliedByGD.new()
-	AppliedBy.type = "StartPlayerPhase"
+	var AppliedBy := AppliedByGD.new("StartPlayerPhase")
 	for Unit in Units.on_units():
 		if Unit.turn_status == "TurnUnused": unpassed_turns.append(Unit)
 		else: passed_turns.append(Unit)
@@ -88,8 +87,7 @@ func on_player_end_turn_phase_start() -> void:
 	passed_turns = []
 	ActiveUnit = null
 	
-	var AppliedBy := AppliedByGD.new()
-	AppliedBy.type = "PlayerEndTurnPhase"
+	var AppliedBy := AppliedByGD.new("PlayerEndTurnPhase")
 	for Unit in Units.on_units():
 		Unit.stats("active_speed", Unit.max_speed, AppliedBy, true)
 		if Unit.past_path_set:
