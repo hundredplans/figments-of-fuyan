@@ -110,11 +110,12 @@ var modulates: Dictionary = {}
 func onTargetAbilityBtnPressed(ability: TargetAbilityGD) -> void:
 	target_ability_pressed.emit(Unit, ability)
 
-func onAddUnitFX(info_fx: InfoFXGD) -> void:
+func onAddUnitFX(info_fx: InfoFXGD) -> Control:
 	var base_fx := preload("res://scenes/screens/level_ui/unit_status/unit_fx/base_fx.tscn").instantiate()
 	base_fx.setInfoFX(info_fx)
 	UnitFX.add_child(base_fx)
 	onChangePage(0)
+	return base_fx
 
 func onRemoveUnitFX(fx_type: String, AppliedBy: AppliedByGD) -> void:
 	for child in UnitFX.get_children():

@@ -45,6 +45,7 @@ func onWhenHealed(Healee: UnitGD, healInfo: HealInfoGD, heal_amount: int):
 	var abilities: Array = onFindAbilities(Healee, "WhenHealed")
 	for ability in abilities:
 		onTriggerAbilitySpectateDelay(Healee, ability, ability.onWhenHealed.bind({"Unit": Healee, "healInfo": healInfo, "heal_amount": heal_amount}))
+	GameEffects.onTriggerUnitGameFX(Healee, "Heal")
 	
 func onArrive(Unit: UnitGD) -> void:
 	var abilities: Array = onFindAbilities(Unit, "Arrive")
@@ -75,7 +76,7 @@ func onHit(DMGInfo: DMGInfoGD) -> void:
 func onRampage(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	var abilities: Array = onFindAbilities(Unit, "Rampage")
 	for ability in abilities:
-		if ability.onRampageCondition({}):
+		if ability.onRampageCondition({"Unit": Unit}):
 			onTriggerAbilitySpectateDelay(Unit, ability, ability.onRampage.bind({"Unit": Unit, "AppliedBy": AppliedBy}))
 	GameEffects.onTriggerUnitGameFX(Unit, "Rampage", [Unit, AppliedBy])
 		
@@ -151,7 +152,7 @@ func onHealAbility(Healee: UnitGD, Healer: UnitGD, heal: int) -> bool:
 
 func onHeal(healInfo: HealInfoGD) -> bool:
 	if healInfo.heal > 0 and healInfo.Healee.isHealable():
-		var heal_amount: int = min(healInfo.Healee.health + healInfo.heal, healInfo.Healee.max_health) - healInfo.Healee.health
+		var heal_amount: int = min(healInfo.Healee.health + (healInfo.heal * healInfo.Healee.heal_multiplier), healInfo.Healee.max_health) - healInfo.Healee.health
 		healInfo.Healee.stats("heal", heal_amount, healInfo.AppliedBy)
 		onWhenHealed(healInfo.Healee, healInfo, heal_amount)
 		return true
