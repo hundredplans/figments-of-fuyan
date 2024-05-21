@@ -164,22 +164,8 @@ func stats(stat_type: String, val: int, AppliedBy := AppliedByGD.new("GameEvent"
 			stats_changed = "health"
 			health += val
 			
-	var stat_updated: bool = false
-	var color := "BASE"
-	match stats_changed:
-		"health":
-			stat_updated = health != current_health
-			if health < max_health: color = "RED"
-			elif health > base_card.health: color = "GREEN"
-		"attack":
-			stat_updated = attack != current_attack
-			if attack < base_card.attack: color = "RED"
-			elif attack > base_card.attack: color = "GREEN"
-		"speed":
-			stat_updated = speed != current_speed
-			if speed > base_card.speed: color = "GREEN"
-			
-	if stat_updated and current_health > 0:
+	var color: String = onFindStatColor(stats_changed, current_health, current_attack, current_speed)
+	if color != "NULL" and current_health > 0:
 		Units.LevelUI.UnitStatusOverlord.onUpdateStats(self, stats_changed.capitalize(), color)
 		if health == 0: Units.kill_unit(self, AppliedBy)
 		elif health < current_health and AppliedBy.type != "Height": Units.hurt_unit(self, AppliedBy)
@@ -191,22 +177,30 @@ func stats(stat_type: String, val: int, AppliedBy := AppliedByGD.new("GameEvent"
 				"attack": Units.VFX.onCreateStatParticle(attack - current_attack, "attack", Tile, y_offset)
 				"speed": Units.VFX.onCreateStatParticle(speed - current_speed, "speed", Tile, y_offset)
 				"heal": Units.VFX.onCreateStatParticle(health - current_health, "heal", Tile, y_offset)
-
-const ARRIVE_EFFECT_LIGHT_DURATION: float = 1.2
-const ARRIVE_EFFECT_INITIAL_LIGHT_ENERGY: float = 3
-
+			
+func onFindStatColor(stat_changed: String, chp: int = -1, catt: int = -1, cspd: int = -1) -> String:
+	var color := "BASE"
+	match stat_changed:
+		"health":
+			if health == chp: return "NULL"
+			if health < max_health: color = "RED"
+			elif health > base_card.health: color = "GREEN"
+		"attack":
+			if attack == catt: return "NULL"
+			if attack < base_card.attack: color = "RED"
+			elif attack > base_card.attack: color = "GREEN"
+		"speed":
+			if speed == cspd: return "NULL"
+			if speed > base_card.speed: color = "GREEN"
+	return color
+	
+var is_arrive_rotate: bool = false
 func on_arrive(in_vision: bool) -> void:
 	if in_vision:
-		var Light := OmniLight3D.new()
-		add_child(Light)
-		Light.position.y = height.top * 1.2
-		Light.light_energy = ARRIVE_EFFECT_INITIAL_LIGHT_ENERGY
-		Light.light_color = Helper.rarity_colors[rarity]
-		var LightTween: Tween = create_tween()
-		LightTween.tween_property(Light, "light_energy", 0, ARRIVE_EFFECT_LIGHT_DURATION)
-		LightTween.finished.connect(func(): Light.queue_free())
+		var RotateTween := create_tween()
+		RotateTween.tween_property(self, "rotation:y", 2 * TAU, Units.ARRIVE_EFFECT_DELAY_DURATION * 1.2)\
+		.as_relative().set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
 		AudioMaster.play_sfx(AudioDict.ARRIVE)
-	# can do regular arrive effects here
 
 func on_death() -> void:
 	Tiles.on_remove_tile_material(Tile, "EmptyTile")
@@ -222,6 +216,7 @@ func on_spectated_in_player_phase(state: bool) -> void:
 	Model.onSetOutlineProperties(state)
 	Units.LevelUI.on_update_vision()
 	if turn_status == "TurnUsed": Units.setPastPath(self, state)
+	Model.static_body.collision_layer = 0 if state else 4
 	
 func on_enemy_in_range(state: bool) -> void:
 	Units.LevelUI.UnitStatusOverlord.onEnemyInRange(self, state)

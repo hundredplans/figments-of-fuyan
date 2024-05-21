@@ -53,7 +53,9 @@ func setUnit(_Unit: UnitGD) -> void:
 	
 	for stat in ["Attack", "Health", "Speed"]:
 		var StatLabel: Label = Stats.get_node(stat + "/Label")
-		StatLabel.text = str(Unit.get(stat.to_lower()))
+		var value: int = Unit.get(stat.to_lower())
+		StatLabel.text = str(value)
+		setStatColorSize(StatLabel, value, Unit.onFindStatColor(stat.to_lower()))
 	
 	onCreateAbilities()
 	for info_fx in Unit.unit_fx: onAddUnitFX(info_fx)
@@ -75,13 +77,14 @@ func onUpdateStat(stat: int, stat_changed: String, color: String) -> void:
 	HoverCard.onUpdateStat(stat, stat_changed)
 func onUpdateStatBounceBack(stat: int, stat_changed: String, color: String) -> void:
 	var StatLabel: Label = Stats.get_node(stat_changed + "/Label")
-	
+	setStatColorSize(StatLabel, stat, color)
+	var ScaleTween := create_tween()
+	ScaleTween.tween_property(StatLabel, "scale:y", 1, NUMBER_SCALE_TIME)
+
+func setStatColorSize(StatLabel: Label, stat: int, color: String) -> void:
 	StatLabel.text = str(stat)
 	StatLabel.label_settings = preload("res://assets/UI/sixty_four/sixty_four_medium.tres")
 	StatLabel.modulate = COLOR_INFO[color]
-	
-	var ScaleTween := create_tween()
-	ScaleTween.tween_property(StatLabel, "scale:y", 1, NUMBER_SCALE_TIME)
 
 var COLOR_INFO: Dictionary = {}
 var on_rotate_queue_free: bool = false

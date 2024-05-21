@@ -9,7 +9,7 @@ func _ready() -> void:
 			# DONT REMOVE FILTER NO MATTER WHAT
 			onCompileUnit(file)
 	elif Model.resource_path.ends_with(".glb"):
-		onCompileUnit(Model.resource_path)	
+		onCompileUnit(Model.resource_path)
 	
 func on_find_files(file_paths: Array, dir: String) -> void:
 	for _dir in DirAccess.get_directories_at(dir):

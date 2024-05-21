@@ -42,6 +42,7 @@ func onAddUnitStatus(Unit: UnitGD, type: String = "UnitStatusRegular") -> void:
 	units[Unit].append(UnitStatus)
 	UnitStatus.speeds = speeds
 	UnitStatus.modulates = modulates
+	UnitStatus.COLOR_INFO = COLOR_INFO
 	
 	match type:
 		"UnitStatusRegular": 
@@ -56,7 +57,6 @@ func onAddUnitStatus(Unit: UnitGD, type: String = "UnitStatusRegular") -> void:
 			LevelUI.TileHoveredGameCard.add_child(UnitStatus)
 			UnitStatus.setUnit(Unit)
 	
-	UnitStatus.COLOR_INFO = COLOR_INFO
 	UnitStatus.ArtPop.pressed.connect(LevelUI.onSpectateEnemyOrAlly.bind(Unit))
 	
 	UnitStatus.ArtPop.mouse_entered.connect(onUnitInspected.bind(Unit))

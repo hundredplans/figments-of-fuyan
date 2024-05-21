@@ -79,6 +79,9 @@ func _input(event: InputEvent) -> void:
 		elif !ActiveHeightControl.is_empty(): 
 			on_align_height_control(ActiveHeightControl[0], ActiveHeightControl[1], event.relative.y)
 
+	if Input.is_action_just_pressed("MouseMiddle") and is_mouse_inside:
+		add_child(preload("res://scenes/screens/card_editor/model_area_marker.tscn").instantiate())
+
 func on_align_height_control(HeightControl: Control, Arrow: Node3D, y_offset: float) -> void:
 	HeightControl.position.y += y_offset
 	Arrow.position.y = Camera.project_position(HeightControl.global_position + Vector2(0, -260), 3).y
@@ -119,3 +122,7 @@ func onAttackAnimationPlayed() -> void:
 
 func on_play_model_animation(ani_player: AnimationPlayer, ani: String) -> void:
 	ani_player.play(ani)
+
+var is_mouse_inside: bool = false
+func _on_mouse_entered(): is_mouse_inside = true
+func _on_mouse_exited(): is_mouse_inside = false

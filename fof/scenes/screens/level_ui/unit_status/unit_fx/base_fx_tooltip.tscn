@@ -1,8 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://dyl40ms8esuys"]
+[gd_scene load_steps=5 format=3 uid="uid://dyl40ms8esuys"]
 
 [ext_resource type="Theme" uid="uid://bhyiyheobours" path="res://scenes/screens/level_ui/panel_theme.tres" id="1_8db78"]
 [ext_resource type="Script" path="res://scenes/screens/level_ui/unit_status/unit_fx/base_fx_tooltip.gd" id="1_tmlqh"]
-[ext_resource type="LabelSettings" uid="uid://duy8g0fum2k06" path="res://assets/UI/roboto/roboto20_outline.tres" id="2_jocgw"]
+[ext_resource type="FontFile" uid="uid://7k4xd8s0oed2" path="res://assets/UI/roboto/roboto.ttf" id="3_shk6d"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_vq3w7"]
+font = ExtResource("3_shk6d")
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
 
 [node name="BaseFxTooltip" type="Control"]
 top_level = true
@@ -11,7 +16,7 @@ y_sort_enabled = true
 layout_mode = 3
 anchors_preset = 0
 offset_right = 232.0
-offset_bottom = 86.0
+offset_bottom = 92.0
 mouse_filter = 2
 script = ExtResource("1_tmlqh")
 
@@ -31,7 +36,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-label_settings = ExtResource("2_jocgw")
+label_settings = SubResource("LabelSettings_vq3w7")
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2

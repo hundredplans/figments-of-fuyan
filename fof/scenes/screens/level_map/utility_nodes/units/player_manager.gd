@@ -22,7 +22,10 @@ func on_card_placed(hand_card: HandCardGD, Tile: TileGD) -> void:
 	var Unit: UnitGD = Units.on_unit_awakened(hand_card.id, hand_card.tool_id, hand_card.effects, 0, Tile.obj.rotation, Tile)
 	if skip_result: LevelMap.on_advance_game_phase()
 	SpectateCamera.onSpectate(Unit)
-		
+	if Unit.rarity != 7:
+		Units.onPushArgDelay(Unit, Units.ARRIVE_EFFECT_DELAY_DURATION, SpectateCamera.onSpectate.bind(Units.onFindClosestAdjacentUnit(Unit)))
+	else: Units.onPushFrontDelay(Units.ARRIVE_EFFECT_DELAY_DURATION)
+	
 func on_enemy_unit_enters_vision(Unit: UnitGD) -> void:
 	LevelUI.UnitStatusOverlord.onUpdateEnemyVision(Unit, true)
 	Units.onEnemyDiscoveredClearUnitActions()
@@ -56,13 +59,13 @@ func on_pass_unit_turn() -> void:
 		passed_turns.append(ActiveUnit)
 		
 		if !ActiveUnit.is_dead: Units.setUnitStatus(ActiveUnit, "TurnUsed")
-		ActiveUnit = null
-		
 		if unpassed_turns.is_empty():
+			ActiveUnit = null
 			LevelUI.on_pass_unit_turn_button_state(true)
 			LevelMap.on_advance_game_phase()
-		elif LevelMap.game_phase == "PlayerPhase": SpectateCamera.onSpectate(unpassed_turns[0])
-
+		elif LevelMap.game_phase == "PlayerPhase":
+			SpectateCamera.onSpectate(Units.onFindClosestUnitFromUnits(ActiveUnit, unpassed_turns))
+			ActiveUnit = null
 func on_player_phase_start() -> void:
 	passed_turns = []
 	unpassed_turns = []

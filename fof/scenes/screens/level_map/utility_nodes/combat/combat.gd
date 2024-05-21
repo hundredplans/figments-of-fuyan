@@ -89,7 +89,7 @@ func onTriggerAbilitySpectateDelay(Triggerer: UnitGD, ability: AbilityGD, callab
 		if ability_chain.is_empty():
 			OriginalSpectateUnit = SpectateCamera.getSpectateUnit(["Ally", "Enemy"])
 		ability_chain.append(ability)
-		Units.onPushArgDelay(Triggerer, ability.delay, onBeforeAbilityFrontDelay, onAfterAbilityFrontDelay, begin_arguments, end_arguments)
+		Units.onPushArgDelay(Triggerer, ability.delay, onAfterAbilityFrontDelay.bind(end_arguments), onBeforeAbilityFrontDelay.bind(begin_arguments))
 	else: onUseAbility(Triggerer, callable, ability, vis)
 		
 func onUseAbility(Unit: UnitGD, callable: Callable, _ability: AbilityGD, vis: bool) -> void:

@@ -9,4 +9,4 @@ func onDisplayCard(GameCard: GameCardGD) -> void:
 	CardDisplayed = GameCard
 	
 	add_child(GameCard)
-	GameCard.position += Vector2(30, -10)
+	GameCard.position = Vector2(170, 201)

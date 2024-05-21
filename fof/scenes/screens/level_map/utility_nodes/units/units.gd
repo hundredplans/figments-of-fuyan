@@ -21,6 +21,7 @@ var Combat: CombatGD
 
 var UnitScene: PackedScene = preload("res://scenes/screens/level_map/utility_nodes/units/unit.tscn")
 
+const ARRIVE_EFFECT_DELAY_DURATION: float = 2
 func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int, tile: TileGD) -> UnitGD:
 	if !unit_by_tile_bool(tile):
 		var Unit: UnitGD = UnitScene.instantiate()
@@ -47,6 +48,7 @@ func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int
 		PlayerManager.onSetupAllyPassedTurns(Unit)
 		return Unit
 	return null
+		
 
 func on_start_phase_start() -> void:
 	AIManager.LevelMap = LevelMap
@@ -95,6 +97,7 @@ func on_match_team_relation(unit: UnitGD, team: int, relation: String) -> bool:
 
 var active_action: Dictionary = {}
 var unit_actions: Array = []
+var unit_actions_after: Array = []
 
 func onMoveToTileAI(Unit: UnitGD, Tile: TileGD, type: Variant, visibility_path: Array) -> void:
 	unit_actions.append({
@@ -160,13 +163,15 @@ func onArgDelay() -> void:
 	SpectateCamera.onSpectate(_active_action.Triggerer)
 	SpectateCamera.onEndTrackUnit()
 	if !_active_action.triggered:
-		_active_action.begin_callable.call(_active_action.begin_arguments)
+		if !_active_action.begin_callable.is_null():
+			_active_action.begin_callable.call()
 		_active_action.triggered = true
 		
 	if unit_actions[0] == _active_action:
 		active_action = unit_actions.pop_front()
 		await get_tree().create_timer(active_action.delay).timeout
-		active_action.end_callable.call(active_action.end_arguments)
+		if !_active_action.end_callable.is_null():
+			active_action.end_callable.call()
 		
 		active_action = {}
 		onUnitActionsFinished()
@@ -243,13 +248,11 @@ func onPushFrontDelay(delay: float) -> void:
 			"delay": delay,
 		})
 
-func onPushArgDelay(Triggerer: UnitGD, delay: float, begin_callable: Callable, end_callable: Callable, begin_arguments: Dictionary, end_arguments: Dictionary) -> void:
+func onPushArgDelay(Triggerer: UnitGD, delay: float, end_callable: Callable = Callable(), begin_callable: Callable = Callable()) -> void:
 	unit_actions.append({
 		"action_type": "ArgDelay",
 		"begin_callable": begin_callable,
 		"end_callable": end_callable,
-		"begin_arguments": begin_arguments,
-		"end_arguments": end_arguments,
 		"delay": delay,
 		"triggered": false,
 		"Triggerer": Triggerer,
@@ -266,6 +269,8 @@ func onUnitActionsFinished() -> void:
 	if unit_actions.is_empty() and active_action.is_empty():
 		SpectateCamera.onEndTrackUnit()
 		if LevelMap.game_phase != "AIPhase": LevelMap.setActionLock("UnitActionDisabled")
+		for callable in unit_actions_after: callable.call()
+		unit_actions_after = []
 
 func onEnemyUnitEntersAllyVision(Unit: UnitGD, _Unit: UnitGD) -> void:
 	if Unit.team == 0 and _Unit.team == 1:
@@ -288,6 +293,7 @@ func on_unit_travel_finished() -> void:
 	if !active_action.is_empty() and active_action.action_type.begins_with("MoveUnit"):
 		on_force_resume_idle_animation_from_walk()
 		SpectateCamera.onEndTrackUnit()
+		onCreateIncentiviseAction(active_action.Unit)
 		active_action = {}
 		onRemoveMovementOutlineTiles()
 	
@@ -331,12 +337,17 @@ func on_attack_enemy() -> void:
 	onRemoveMovementOutlineTiles()
 	# can do all the ui stuff here for attacking
 	
+func onCreateIncentiviseAction(Unit: UnitGD) -> void:
+	if Unit.team == 0 and LevelMap.game_phase == "PlayerPhase":
+		unit_actions_after.append(LevelUI.onIncentivisePassTurn.bind(Unit))
+	
 func on_attack_finished(Unit: UnitGD) -> void:
 	var AppliedBy := AppliedByGD.new("Attack", Unit)
 	var DMGInfo: DMGInfoGD = Combat.onDMG(active_action.Defender, AppliedBy, Unit.attack)
 	Unit.attack_amount -= 1
 	if Unit.attack_amount == 0: Unit.stats("active_speed", 0, AppliedBy, true)
 	Combat.onHit(DMGInfo)
+	onCreateIncentiviseAction(Unit)
 	active_action = {}
 	onUnitActionsFinished()
 	
@@ -393,7 +404,8 @@ func on_death_finished(Unit: UnitGD) -> void:
 		Vision.on_recalculate_vision(_Unit)
 
 	active_action = {}
-	win_state = 0 #TODO REMOVE
+	var dev := preload("res://static/dev/dev.tres")
+	if !dev.win_enabled: win_state = 0
 	match win_state:
 		0: 
 			Combat.onDeathAbilities(Deather, AppliedBy)
@@ -459,11 +471,14 @@ func setPastPath(Unit: UnitGD, state: bool) -> void:
 		else: Tile.Effects.onRemovePastPath()
 	Unit.past_path_set = state
 
-func onFindClosestAdjacentUnit(Unit: UnitGD, relation: String = "Ally") -> UnitGD:
-	var units: Array = on_units(Unit.team, relation)
+func onFindClosestUnitFromUnits(Unit: UnitGD, units: Array) -> UnitGD:
 	units.erase(Unit)
 	units.sort_custom(sortUnitsByDistance.bind(Unit))
-	return units[0]
+	if units.size() > 0: return units[0]
+	return null
+
+func onFindClosestAdjacentUnit(Unit: UnitGD, relation: String = "Ally") -> UnitGD:
+	return onFindClosestUnitFromUnits(Unit, on_units(Unit.team, relation))
 
 func sortUnitsByDistance(Unit: UnitGD, _Unit: UnitGD, __Unit: UnitGD) -> bool:
 	return Tiles.tile_distance(Unit.Tile, __Unit.Tile) < Tiles.tile_distance(_Unit.Tile, __Unit.Tile)

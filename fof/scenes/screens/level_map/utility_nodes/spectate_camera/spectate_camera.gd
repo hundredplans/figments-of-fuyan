@@ -87,18 +87,14 @@ func onStartPhaseStart() -> void:
 	onSpectate("Spawn")
 	
 func onSpectate(type: Variant) -> void:
-	var spectate_info: Dictionary = onGetActiveSpectateVariant()
-	if !spectate_info.is_empty(): spectate_info.progress = total_progress
-	
-	if type is int: onSpectateDirection(spectate_info, spectate_type, type)
-	elif type is String: onSpectateNewType(spectate_info, type, spectate_type)
-	elif type is UnitGD or type is TileGD: onSpectateObject(type, spectate_info, spectate_type)
-	elif type is Dictionary: onSpectateOldSpectateType(type, spectate_info)
-	onChangeCameraMode(true)
-			
-func onSpectateOldSpectateType(spectate_info: Dictionary, _spectate_info: Dictionary) -> void:
-	if spectate_info == _spectate_info:
-		pass
+	if type != null:
+		var spectate_info: Dictionary = onGetActiveSpectateVariant()
+		if !spectate_info.is_empty(): spectate_info.progress = total_progress
+		
+		if type is int: onSpectateDirection(spectate_info, spectate_type, type)
+		elif type is String: onSpectateNewType(spectate_info, type, spectate_type)
+		elif type is UnitGD or type is TileGD: onSpectateObject(type, spectate_info, spectate_type)
+		onChangeCameraMode(true)
 			
 func onSpectateObject(Obj: Variant, _spectate_info: Dictionary, _spectate_type: String) -> void:
 	spectate_type = ("Ally" if Obj.team == 0 else "Enemy") if Obj is UnitGD else "Spawn"

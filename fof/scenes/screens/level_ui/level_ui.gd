@@ -67,7 +67,7 @@ func _queue_free(screen_name: String) -> void:
 		load_world.emit(null)
 
 func _input(event: InputEvent) -> void:
-	if !Console.CommandLine.has_focus() and LevelMap.action_lock in ["", "HandRegular", "SpawnVision"]:
+	if !Console.CommandLine.has_focus() and LevelMap != null and LevelMap.action_lock in ["", "HandRegular", "SpawnVision"]:
 		if Input.is_action_just_pressed("SelectLeft"): LevelMap.SpectateCamera.onSpectate(-1)
 		elif Input.is_action_just_pressed("SelectRight"): LevelMap.SpectateCamera.onSpectate(1)
 	
@@ -364,6 +364,7 @@ var TILE_HOVERED_CARD_OFFSET := Vector2(-175, -600)
 func onMoveTileHoveredGameCard() -> void:
 	if TileHoveredGameCard != null and !(TileHoveredGameCard.is_queued_for_deletion()):
 		TileHoveredGameCard.position = get_viewport().get_mouse_position() + TILE_HOVERED_CARD_OFFSET
+		TileHoveredGameCard.position.y = max(TileHoveredGameCard.position.y, -15)
 	
 func onQueueTileHoveredGameCard() -> void:
 	if TileHoveredGameCard != null:
@@ -480,3 +481,14 @@ func onTweenDrawCardFinished(HandCard: HandCardGD) -> void:
 func onPlayHoverChangePhase(state: bool = true):
 	if state: ChangePhaseAniPlayer.play("ChangePhaseHover")
 	else: ChangePhaseAniPlayer.play("RESET")
+
+const INCENTIVISE_DURATION: float = 1.6
+var is_incentivise: bool = false
+func onIncentivisePassTurn(Unit: UnitGD) -> void:
+	Tiles.onCreateMovementPaths(Unit)
+	if !is_incentivise and (Unit.attack_amount == 0 or \
+	(Unit.speed == 0 and Units.on_units(0, "Enemy").all(func(x: UnitGD): return x.Tile not in Tiles.movement_paths))):
+		is_incentivise = true
+		var RotateTween := create_tween()
+		RotateTween.tween_property(ChangePhase, "rotation", TAU, INCENTIVISE_DURATION).as_relative().set_trans(Tween.TRANS_ELASTIC)
+		RotateTween.finished.connect(func(): is_incentivise = false)
