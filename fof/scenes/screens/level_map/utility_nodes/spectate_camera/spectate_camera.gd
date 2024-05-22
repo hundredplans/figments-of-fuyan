@@ -304,6 +304,8 @@ func onFreelookCamera(event: InputEvent) -> void:
 					_a = event.pressed
 				KEY_D:
 					_d = event.pressed
+			Tiles.on_mouse_entered(Tiles.on_find_tile_by_raycast())
+					
 func onUpdateFreelookCamera(delta: float) -> void:
 	if !is_unit_camera:
 		_update_mouselook()

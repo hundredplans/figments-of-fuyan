@@ -167,6 +167,8 @@ func onDeathFinished(Deathee: UnitGD) -> void:
 			SpectateCamera.onSpectate(unit_distances[0].Unit)
 		on_remove_unit_turn(Deathee)
 		Units.Vision.on_recalculate_vision()
+		if Deathee.team == 0 and unpassed_turns.is_empty():
+			Units.unit_actions_after.append(LevelMap.on_advance_game_phase)
 	
 func on_remove_unit_turn(Unit: UnitGD) -> void:
 	if Unit.team == 0:
@@ -175,7 +177,6 @@ func on_remove_unit_turn(Unit: UnitGD) -> void:
 			passed_turns.erase(Unit)
 		else: unpassed_turns.erase(Unit); passed_turns.erase(Unit)
 
-var tability_tiles: Dictionary
 var TAbility: TargetAbilityGD
 var TAbilityUnit: UnitGD
 func onEnterTargetAbilityMode(Unit: UnitGD, ability: TargetAbilityGD) -> void:
@@ -192,21 +193,20 @@ func onExitTargetAbilityMode() -> void: # if unit selected null doesnt reupdate,
 			
 	TAbilityUnit = null
 	TAbility = null
-	tability_tiles = {}
 	
-func onCreateAbilityRange(Unit: UnitGD, ability: TargetAbilityGD) -> void:
-	tability_tiles = ability.onTargetAbilityCondition({"Unit": Unit})
-	for Tile in tability_tiles["range"]:
+func onCreateAbilityRange(_Unit: UnitGD, ability: TargetAbilityGD) -> void:
+	ability.onTargetAbilityCondition()
+	for Tile in ability.tiles["range"]:
 		Tiles.on_set_tile_material(Tile, "TargetRange")
 		
-	for Tile in tability_tiles["affect"]:
+	for Tile in ability.tiles["affect"]:
 		Tiles.on_set_tile_material(Tile, "TargetAffect")
 
-func onRemoveAbilityRange(Unit: UnitGD, ability: TargetAbilityGD) -> void:
-	tability_tiles = ability.onTargetAbilityCondition({"Unit": Unit})
-	for Tile in tability_tiles["range"]:
+func onRemoveAbilityRange(_Unit: UnitGD, ability: TargetAbilityGD) -> void:
+	ability.onTargetAbilityCondition()
+	for Tile in ability.tiles["range"]:
 		Tiles.on_remove_tile_material(Tile, "TargetRange")
 		
-	for Tile in tability_tiles["affect"]:
+	for Tile in ability.tiles["affect"]:
 		Tiles.on_remove_tile_material(Tile, "TargetAffect")
 

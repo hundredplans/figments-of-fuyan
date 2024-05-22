@@ -1152,7 +1152,7 @@ func setup_elevation() -> void:
 	for child in World.get_node("Tiles").get_children():
 		var p: bool = child.name == str(Settings.level_editor_elevation)
 		for tile in child.get_children(): 
-			tile.get_node("DetectMouse").collision_layer = 2 if p else 0
+			tile.get_node("DetectMouse").collision_layer = 64 if p else 0
 
 func set_heightbuttons_modulate() -> void:
 	for btn in HeightButtons.get_children():
@@ -1927,6 +1927,12 @@ func on_clear_history() -> void:
 	on_change_history_menu_page(0)
 
 var light_tester_gd: Script = preload("res://assets/base_game/levels/level/loaded_level_light_tester.gd")
+
+func onBakeLevelPressed() -> void:
+	var level_info: LevelInfoGD = _on_save_level_pressed()
+	if level_info != null:
+		pass
+
 func _on_bake_level_pressed():
 	var level_info: LevelInfoGD = _on_save_level_pressed()
 	if level_info != null:

@@ -134,11 +134,7 @@ func onRemoveBuffNextTurn(stat: String) -> void:
 	if stat == "Health": onSortHealth()
 
 func onCreateHealNextTurn(heal: int) -> void:
-	var color_value: int = 0
-	match abs(heal):
-		1, 2, 4: color_value = 1
-		3, 5: color_value = 2
-		_: color_value = 3
+	var color_value: int = min(abs(heal), 3)
 		
 	buff_colors["Heal"] = "up" + str(color_value)
 	if BuffNextTurn.get_node("Heal").get_child_count() > 0:

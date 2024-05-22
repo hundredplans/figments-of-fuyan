@@ -321,17 +321,16 @@ func load_area_colors(node: Node, primary_color: Color, accent_color: Color) -> 
 var exclude_fill: Array = []
 
 var _id_to: Array = [
-	["null", "ground", "_hover", "water/shallow_water", "water/deep_water", "void", "_default_tile", "palms/sand_tile", "palms/beach_tile", "palms/sand_road_tile"],
+	["null", "ground", "_hover", "water/shallow_water", "water/deep_water", "_default_tile", "palms/sand_tile", "palms/beach_tile", "palms/sand_road_tile"],
 	
 	["null", "spawns/spawn_enemy", "spawns/spawn_ally", "spawns/spawn_neutral", 
-	"spawns/spawn_trinket", "stairs/wooden_stair", "doors/wooden_door", "windows/wooden_window",
-	"skeletons/grave"],
+	"spawns/spawn_trinket", ],
 	
 	["null", "wall", "wooden_wall"],
 	
-	["null", "shrub", "tree", "rock", "skeletons/skull", "skeletons/graveyard_fence", "skeletons/graveyard_gate", "skeletons/pumpkin", "palms/palm_tree", "palms/palmrock", "palms/coconut_pile", "palms/coconut_pile_big", "palms/coconut_floor"],
+	["null", "general/shrub", "general/rock", "palms/palm_tree", "palms/palmrock", "palms/coconut_pile", "palms/coconut_pile_big", "palms/coconut_floor"],
 	
-	["null", "lamp"]]
+	["null"]]
 	
 func wid_to(id: int, area: int = 0, type: int = 0) -> String:
 	var contents: Array = _id_to[2][id].split("/")

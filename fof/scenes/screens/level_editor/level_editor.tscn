@@ -732,7 +732,7 @@ one_shot = true
 [connection signal="pressed" from="InfoMenu/InfoContainer/SaveLevel" to="." method="_on_save_level_pressed"]
 [connection signal="item_selected" from="InfoMenu/InfoContainer/LoadLevel" to="." method="on_load_level_pressed"]
 [connection signal="item_selected" from="InfoMenu/InfoContainer/LoadArea" to="." method="_on_load_area_item_selected"]
-[connection signal="pressed" from="InfoMenu/InfoContainer/BakeLevel" to="." method="_on_bake_level_pressed"]
+[connection signal="pressed" from="InfoMenu/InfoContainer/BakeLevel" to="." method="onBakeLevelPressed"]
 [connection signal="pressed" from="InfoMenu/InfoContainer/EmptyLevel" to="." method="on_load_empty_level"]
 [connection signal="text_submitted" from="InfoMenu/InfoContainer/LevelName" to="." method="onLineEditTextSubmitted"]
 [connection signal="text_submitted" from="InfoMenu/InfoContainer/FolderName" to="." method="onLineEditTextSubmitted"]

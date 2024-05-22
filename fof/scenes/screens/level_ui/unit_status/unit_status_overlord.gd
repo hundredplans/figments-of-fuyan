@@ -59,11 +59,9 @@ func onAddUnitStatus(Unit: UnitGD, type: String = "UnitStatusRegular") -> void:
 	
 	UnitStatus.ArtPop.pressed.connect(LevelUI.onSpectateEnemyOrAlly.bind(Unit))
 	
-	UnitStatus.ArtPop.mouse_entered.connect(onUnitInspected.bind(Unit))
-	UnitStatus.ArtPop.mouse_exited.connect(onUnitUninspected.bind(Unit))
-	
-	UnitStatus.SelectedMask.mouse_entered.connect(onUnitInspected.bind(Unit))
-	UnitStatus.SelectedMask.mouse_exited.connect(onUnitUninspected.bind(Unit))
+	for child in [UnitStatus.ArtPop, UnitStatus.SelectedMask]:
+		child.mouse_entered.connect(onUnitInspected.bind(Unit))
+		child.mouse_exited.connect(onUnitUninspected.bind(Unit))
 	
 	UnitStatus.ShiftingBackground.material.set_shader_parameter\
 	("modulate", modulates["TurnUnused"] if Unit.team == 0 else Color("c11e00")) 
@@ -208,7 +206,7 @@ func onAddUnitFX(Unit: UnitGD, type: String, AppliedBy := AppliedByGD.new()) -> 
 		var base_fx: Control = UnitStatus.onAddUnitFX(info_fx)
 		base_fx.hover_unit_pressed.connect(LevelUI.onSpectateEnemyOrAlly)
 	
-func onAddAbilityActiveFX(Unit: UnitGD, type: String, AppliedBy := AppliedByGD.new()) -> void:
+func onAddAbilityActiveFX(Unit: UnitGD, type: String, _AppliedBy := AppliedByGD.new()) -> void:
 	if all_info_fx.has(type):
 		onAddUnitFX(Unit, type)
 	
@@ -242,6 +240,10 @@ func getBuffColorValue(value: int) -> String:
 		_: color_value = 3
 	return BUFF_COLORS[color_value * (clamp(value, -1, 1))]
 
+func getHealNextTurnColorValue(value: int) -> String:
+	var color_value: int = clamp(value, -3, 3)
+	return BUFF_COLORS[color_value * (clamp(value, -1, 1))]
+
 func onCreateBuffNextTurn(buff_info_array: BuffInfoArrayGD) -> void:
 	for UnitStatus in onFindUnitStatus(buff_info_array.Unit):
 		UnitStatus.onCreateBuffNextTurn(buff_info_array.stat, buff_info_array.value, getBuffColorValue(buff_info_array.value))
@@ -258,7 +260,7 @@ func onRemoveBuffNextTurn(buff_info_array: BuffInfoArrayGD) -> void:
 
 func onCreateHealNextTurn(heal_info_array: HealInfoArrayGD) -> void:
 	for UnitStatus in onFindUnitStatus(heal_info_array.Healee):
-		UnitStatus.onCreateHealNextTurn(getBuffColorValue(heal_info_array.heal))
+		UnitStatus.onCreateHealNextTurn(getHealNextTurnColorValue(heal_info_array.heal))
 	
 	for UnitStatus in onFindUnitStatus(heal_info_array.Healee, "UnitFieldStatus"):
 		UnitStatus.onCreateHealNextTurn(heal_info_array.heal)

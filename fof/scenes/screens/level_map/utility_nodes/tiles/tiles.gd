@@ -217,7 +217,7 @@ func onTilePressed() -> void:
 		console_sig.emit(active_tile)
 
 func onTargetAffectPressed() -> void:
-	Combat.onTargetAbility(Units.PlayerManager.TAbilityUnit, Units.PlayerManager.TAbility, active_tile, Units.PlayerManager.tability_tiles)
+	Combat.onTargetAbility(Units.PlayerManager.TAbilityUnit, Units.PlayerManager.TAbility, active_tile)
 
 func on_begin_unit_movement() -> void:
 	var enemy_is_in_range: bool = "EnemyInRange" in active_tile.tile_outlines
@@ -314,9 +314,6 @@ func is_ramp_tile(Tile: TileGD) -> bool:
 
 func getUnitAdjustedHeight(Tile: TileGD) -> float:
 	return (Tile.w * 1.2) + (0.9 if is_ramp_tile(Tile) else 0.3)
-
-func onFindMovementRangeTiles() -> void:
-	pass
 
 var movement_paths: Dictionary = {"tiles": []}
 func onCreateMovementPaths(Unit: UnitGD, type: String = "Default") -> void:
@@ -632,8 +629,8 @@ func on_find_tile_by_raycast() -> TileGD:
 	
 	var node: Node3D = ray.get_collider()
 	if node:
-		node = node.get_node("../../..")
-		if node.get_parent() is UnitGD: return node.get_parent().Tile
+		node = node.get_node("../../../..")
+		if node is UnitGD: return node.Tile
 	return node
 
 var select_console: bool = false

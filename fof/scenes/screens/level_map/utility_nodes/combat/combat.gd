@@ -25,35 +25,41 @@ func onOtherUnitDeathAbilities(Deather: UnitGD, AppliedBy: AppliedByGD) -> void:
 		if Unit.team != Deather.team: # Trigger bloodthirst
 			var abilities: Array = onFindAbilities(Unit, "Bloodthirst")
 			for ability in abilities:
-				if ability.onBloodthirstCondition({"AppliedBy": AppliedBy}):
-					onTriggerAbilitySpectateDelay(Unit, ability, ability.onBloodthirst.bind({"Unit": Unit, "AppliedBy": AppliedBy, "Deather": Deather}))
+				ability.setInfo(Unit, AppliedBy, Deather)
+				if ability.onBloodthirstCondition():
+					onTriggerAbilitySpectateDelay(Unit, ability, ability.onBloodthirst)
 		else: # Trigger trauma
 			var abilities: Array = onFindAbilities(Unit, "Trauma")
 			for ability in abilities:
-				if ability.onTraumaCondition({"Deather": Deather}):
-					onTriggerAbilitySpectateDelay(Unit, ability, ability.onTrauma.bind({"Unit": Unit, "AppliedBy": AppliedBy, "Deather": Deather}))
+				ability.setInfo(Unit, Deather, AppliedBy)
+				if ability.onTraumaCondition():
+					onTriggerAbilitySpectateDelay(Unit, ability, ability.onTrauma)
 			
 
 func onLastWill(Deather: UnitGD, AppliedBy: AppliedByGD) -> void:
 	var abilities: Array = onFindAbilities(Deather, "LastWill")
 	for ability in abilities:
-		if ability.onLastWillCondition({}):
-			onTriggerAbilitySpectateDelay(Deather, ability, ability.onLastWill.bind({"Deather": Deather, "AppliedBy": AppliedBy}),)
+		ability.setInfo(Deather, AppliedBy)
+		if ability.onLastWillCondition():
+			onTriggerAbilitySpectateDelay(Deather, ability, ability.onLastWill)
 	GameEffects.onTriggerUnitGameFX(Deather, "RemoveAbility") # Works for mute aswell
 	
 func onWhenHealed(Healee: UnitGD, healInfo: HealInfoGD, heal_amount: int):
 	var abilities: Array = onFindAbilities(Healee, "WhenHealed")
 	for ability in abilities:
-		onTriggerAbilitySpectateDelay(Healee, ability, ability.onWhenHealed.bind({"Unit": Healee, "healInfo": healInfo, "heal_amount": heal_amount}))
+		ability.setInfo(Healee, healInfo, heal_amount)
+		onTriggerAbilitySpectateDelay(Healee, ability, ability.onWhenHealed)
 	GameEffects.onTriggerUnitGameFX(Healee, "Heal")
 	
 func onArrive(Unit: UnitGD) -> void:
 	var abilities: Array = onFindAbilities(Unit, "Arrive")
 	for ability in abilities:
-		onTriggerAbilitySpectateDelay(Unit, ability, ability.onArrive.bind({"Unit": Unit}))
+		ability.setInfo(Unit)
+		onTriggerAbilitySpectateDelay(Unit, ability, ability.onArrive)
 	
-func onTargetAbility(Unit: UnitGD, ability: TargetAbilityGD, Tile: TileGD, tiles: Dictionary) -> void:
-	onTriggerAbilitySpectateDelay(Unit, ability, ability.onTargetAbility.bind({"Unit": Unit, "Tile": Tile, "tiles": tiles}))
+func onTargetAbility(Unit: UnitGD, ability: TargetAbilityGD, Tile: TileGD) -> void:
+	ability.setInfo(Unit, Tile)
+	onTriggerAbilitySpectateDelay(Unit, ability, ability.onTargetAbility)
 	Units.PlayerManager._on_unit_deselected(Units.PlayerManager.UnitSelected)
 	ability.used = true
 	LevelUI.onUpdateTargetAbility(Unit, ability)
@@ -61,23 +67,26 @@ func onTargetAbility(Unit: UnitGD, ability: TargetAbilityGD, Tile: TileGD, tiles
 func onRevenge(Damagee: UnitGD, AppliedBy: AppliedByGD, DMGInfo: DMGInfoGD, damage: int):
 	var abilities: Array = onFindAbilities(Damagee, "Revenge")
 	for ability in abilities:
-		if !(!ability.trigger_on_death and Damagee.health <= 0) and ability.onRevengeCondition({"Unit": Damagee}):
-			onTriggerAbilitySpectateDelay(Damagee, ability, ability.onRevenge.bind({"DMGInfo": DMGInfo, "Unit": Damagee, "damage": damage, "AppliedBy": AppliedBy}))
+		ability.setInfo(Damagee, DMGInfo, AppliedBy, damage)
+		if !(!ability.trigger_on_death and Damagee.health <= 0) and ability.onRevengeCondition():
+			onTriggerAbilitySpectateDelay(Damagee, ability, ability.onRevenge)
 	
 func onHit(DMGInfo: DMGInfoGD) -> void:
 	var Unit: UnitGD = DMGInfo.AppliedBy.Applier
 	var abilities: Array = onFindAbilities(Unit, "OnHit")
 	for ability in abilities:
-		if ability.onHitCondition({"DMGInfo": DMGInfo}):
-			onTriggerAbilitySpectateDelay(Unit, ability, ability.onHit.bind({"DMGInfo": DMGInfo, "Unit": Unit}))
+		ability.setInfo(Unit, DMGInfo)
+		if ability.onHitCondition():
+			onTriggerAbilitySpectateDelay(Unit, ability, ability.onHit)
 	
 	GameEffects.onTriggerUnitGameFX(Unit, "OnHit", [DMGInfo.Defender, DMGInfo.AppliedBy])
 	
 func onRampage(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	var abilities: Array = onFindAbilities(Unit, "Rampage")
 	for ability in abilities:
-		if ability.onRampageCondition({"Unit": Unit}):
-			onTriggerAbilitySpectateDelay(Unit, ability, ability.onRampage.bind({"Unit": Unit, "AppliedBy": AppliedBy}))
+		ability.setInfo(Unit, AppliedBy)
+		if ability.onRampageCondition():
+			onTriggerAbilitySpectateDelay(Unit, ability, ability.onRampage)
 	GameEffects.onTriggerUnitGameFX(Unit, "Rampage", [Unit, AppliedBy])
 		
 func onTriggerAbilitySpectateDelay(Triggerer: UnitGD, ability: AbilityGD, callable: Callable) -> void:
@@ -92,8 +101,8 @@ func onTriggerAbilitySpectateDelay(Triggerer: UnitGD, ability: AbilityGD, callab
 		Units.onPushArgDelay(Triggerer, ability.delay, onAfterAbilityFrontDelay.bind(end_arguments), onBeforeAbilityFrontDelay.bind(begin_arguments))
 	else: onUseAbility(Triggerer, callable, ability, vis)
 		
-func onUseAbility(Unit: UnitGD, callable: Callable, _ability: AbilityGD, vis: bool) -> void:
-	callable.get_bound_arguments()[0]["is_visible"] = vis
+func onUseAbility(Unit: UnitGD, callable: Callable, ability: AbilityGD, vis: bool) -> void:
+	ability.is_visible = vis
 	callable.call()
 	LevelUI.onUpdateAbilityCharges(Unit)
 		
@@ -162,11 +171,11 @@ func onPlayerPhaseStart() -> void:
 	for Unit in Units.on_units():
 		var abilities: Array = onFindAbilities(Unit, "TargetAbility")
 		for ability in abilities:
+			ability.setInfo(Unit)
 			ability.used = false
-			var tiles: Dictionary = ability.onTargetAbilityCondition({"Unit": Unit})
-			ability.can_affect = !tiles["affect"].is_empty()
+			ability.onTargetAbilityCondition()
+			ability.can_affect = !ability.tiles["affect"].is_empty()
 			LevelUI.onUpdateTargetAbility(Unit, ability)
-				
 
 func onStagger(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	GameEffects.onAddGameFX(Unit, "Stagger", {"AppliedBy": AppliedBy})

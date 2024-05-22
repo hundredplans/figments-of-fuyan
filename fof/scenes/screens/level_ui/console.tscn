@@ -54,14 +54,26 @@ unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("3_32lgd")
 
+[node name="PlaceholderLabel" type="Label" parent="."]
+unique_name_in_owner = true
+modulate = Color(0.501961, 0.501961, 0.501961, 1)
+layout_mode = 0
+offset_left = 4.0
+offset_top = 330.0
+offset_right = 741.0
+offset_bottom = 376.0
+theme = ExtResource("3_32lgd")
+vertical_alignment = 1
+
 [connection signal="damage_set" from="." to="." method="onTileSelected"]
 [connection signal="damage_set" from="." to="." method="onDamageSet"]
 [connection signal="heal_set" from="." to="." method="onHealSet"]
 [connection signal="heal_set" from="." to="." method="onTileSelected"]
-[connection signal="spawn_set" from="." to="." method="onSpawnTileSet"]
 [connection signal="spawn_set" from="." to="." method="onTileSelected"]
-[connection signal="stagger_set" from="." to="." method="onStaggerSet"]
+[connection signal="spawn_set" from="." to="." method="onSpawnTileSet"]
 [connection signal="stagger_set" from="." to="." method="onTileSelected"]
+[connection signal="stagger_set" from="." to="." method="onStaggerSet"]
 [connection signal="stat_set" from="." to="." method="onStatSet"]
 [connection signal="stat_set" from="." to="." method="onTileSelected"]
+[connection signal="text_changed" from="Container/CommandLine" to="." method="_on_command_line_text_changed"]
 [connection signal="text_submitted" from="Container/CommandLine" to="." method="_on_command_line_text_submitted"]

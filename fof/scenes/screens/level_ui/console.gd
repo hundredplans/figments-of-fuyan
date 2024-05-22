@@ -28,20 +28,7 @@ func _on_command_line_text_submitted(command: String):
 	PastCommandsLabel.text += command + "\n"
 
 func onProcessCommand(command: String) -> void:
-	if command.begins_with("spawn"):
-		onSpawnUnit(command.split(" "))
-	
-	elif command.begins_with("stagger"):
-		onStaggerUnit()
-		
-	elif command.begins_with("damage"):
-		onDamageUnit(command.split(" "))
-
-	elif command.begins_with("heal"):
-		onHealUnit(command.split(" "))
-
-	elif command.begins_with("stat"):
-		onStatUnit(command.split(" "))
+	call("on" + command.get_slice(" ", 0).capitalize() + "Unit", command.split(" "))
 
 var command_args: Array = []
 func onSpawnUnit(args: Array) -> void:
@@ -56,7 +43,7 @@ func onHealUnit(args: Array) -> void:
 	onSelectTile(heal_set)
 	command_args = args
 	
-func onStaggerUnit() -> void:
+func onStaggerUnit(_args: Array) -> void:
 	onSelectTile(stagger_set)
 
 func onStatUnit(args: Array) -> void:
@@ -93,3 +80,12 @@ func onHealSet(Tile: TileGD) -> void:
 func onStatSet(Tile: TileGD) -> void:
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
 	Combat.onBuffInfo(BuffInfoGD.new(Unit, AppliedByGD.new("Console"), command_args[1], int(command_args[2])))
+
+@onready var PlaceholderLabel: Label = %PlaceholderLabel
+func _on_command_line_text_changed(text: String):
+	match text:
+		"spawn": PlaceholderLabel.text = "spawn id team"
+		"damage": PlaceholderLabel.text = "damage value"
+		"heal": PlaceholderLabel.text = "heal value"
+		"stat": PlaceholderLabel.text = "stat type value"
+		_: PlaceholderLabel.text = ""

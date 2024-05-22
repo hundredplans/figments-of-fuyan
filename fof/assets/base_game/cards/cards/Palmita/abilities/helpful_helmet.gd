@@ -1,17 +1,14 @@
 extends TargetAbilityGD
 
-func onTargetAbilityCondition(a: Dictionary) -> Dictionary:
-	var tiles: Dictionary = {"range": [], "affect": []}
-	tiles["range"] = Tiles.onFindUnitAdjacentTiles(a.Unit, 1)
-	tiles["affect"] = tiles["range"].filter(func(x: TileGD): return Units.unit_by_tile_team_bool(x, a.Unit.team))
-	return tiles
+func onTargetAbilityCondition() -> void:
+	tiles = {"range": [], "affect": []}
+	tiles["range"] = Tiles.onFindUnitAdjacentTiles(Unit, 1)
+	tiles["affect"] = tiles["range"].filter(func(x: TileGD): return Units.unit_by_tile_team_bool(x, Unit.team))
 
-func onTargetAbility(a: Dictionary) -> void:
-	a.Unit.Model._look_at(a.Tile)
-	var AppliedBy := AppliedByGD.new("Ability", a.Unit)
-	a["AppliedBy"] = AppliedBy
-	
-	a.Unit.Model.death = "DeathAbility"
-	Combat.onDestroyUnit(a.Unit, AppliedBy)
-	Units.onAppendArgQueue(Combat.onHelpfulHelmetDelayed.bind(a))
+func onTargetAbility() -> void:
+	Unit.Model._look_at(Tile)
+	var AppliedBy := AppliedByGD.new("Ability", Unit)
+	Unit.Model.death = "DeathAbility"
+	Combat.onDestroyUnit(Unit, AppliedBy)
+	Units.onAppendArgQueue(Combat.onHelpfulHelmetDelayed.bind({"Tile": Tile, "AppliedBy": AppliedBy}))
 	

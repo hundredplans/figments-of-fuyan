@@ -8,12 +8,12 @@
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_lfe8o"]
 panorama = ExtResource("4_lj05i")
 
-[sub_resource type="Sky" id="Sky_x1roh"]
+[sub_resource type="Sky" id="Sky_gtcxy"]
 sky_material = SubResource("PanoramaSkyMaterial_lfe8o")
 
 [sub_resource type="Environment" id="Environment_oc05e"]
 background_mode = 2
-sky = SubResource("Sky_x1roh")
+sky = SubResource("Sky_gtcxy")
 
 [node name="CompileCollisionPoints" type="Node3D"]
 script = ExtResource("1_i3aky")

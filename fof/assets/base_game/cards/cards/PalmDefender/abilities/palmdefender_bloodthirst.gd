@@ -1,8 +1,8 @@
 extends BloodthirstGD
 
 @export var HEALTH: int = 1
-func onBloodthirst(a: Dictionary) -> void:
-	onGainStats(a.Unit, "health", HEALTH, a.AppliedBy)
+func onBloodthirst() -> void:
+	onGainStats(Unit, "health", HEALTH, AppliedBy)
 
-func onBloodthirstCondition(a: Dictionary) -> bool:
-	return a.AppliedBy.Applier != null and a.AppliedBy.Applier.base_card.area_id == 1
+func onBloodthirstCondition() -> bool:
+	return AppliedBy.Applier != null and AppliedBy.Applier.base_card.area_id == 1

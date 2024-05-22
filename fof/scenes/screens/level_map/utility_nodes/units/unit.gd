@@ -276,7 +276,7 @@ func onRayTile(_Tile: TileGD) -> bool:
 		VisionRaycast.force_raycast_update()
 		
 		if VisionRaycast.is_colliding():
-			var Collision: Node3D = VisionRaycast.get_collider().get_node("../../..")
+			var Collision: Node3D = VisionRaycast.get_collider().get_node("../../../..")
 			if Collision == _Tile: return true
 	return false
 	

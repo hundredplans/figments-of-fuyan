@@ -4,21 +4,20 @@ extends OnHitGD
 @export var ATTACK: int = 1
 @export var HEALTH: int = 1
 @export var is_second_hit: bool = false
-func onHit(a: Dictionary) -> void:
+func onHit() -> void:
 	if is_second_hit:
-		onGainStats(a.Unit, "attack", ATTACK, a.DMGInfo.AppliedBy)
-		onGainStats(a.Unit, "health", HEALTH, a.DMGInfo.AppliedBy)
+		onGainStats(Unit, "attack", ATTACK, DMGInfo.AppliedBy)
+		onGainStats(Unit, "health", HEALTH, DMGInfo.AppliedBy)
 		is_second_hit = false
 		delay = 1
 	else:
-		var attack_trigger: Dictionary = GameEffects.onCreateTrigger("OnAttack", a.Unit.setExtraDamage.bind(DAMAGE))
-		var after_attack_trigger: Dictionary = GameEffects.onCreateTrigger("OnAfterAttack", a.Unit.setExtraDamage, "RemoveFX")
+		var attack_trigger: Dictionary = GameEffects.onCreateTrigger("OnAttack", Unit.setExtraDamage.bind(DAMAGE))
+		var after_attack_trigger: Dictionary = GameEffects.onCreateTrigger("OnAfterAttack", Unit.setExtraDamage, "RemoveFX")
 		var trigger: Dictionary = GameEffects.onCreateTrigger("OnHit", null, "RemoveFX")
 		
-		a.ability = self
-		GameEffects.onAddGameFX(a.Unit, "AbilityActive", a, [trigger])
-		GameEffects.onAddGameFX(a.Unit, "IdleAbility", a, [attack_trigger, after_attack_trigger])
+		GameEffects.onAddGameFX(Unit, "AbilityActive", {"ability": self}, [trigger])
+		GameEffects.onAddGameFX(Unit, "IdleAbility", {"ability": self}, [attack_trigger, after_attack_trigger])
 		is_second_hit = true
 		delay = 2
 		
-func onHitCondition(_a: Dictionary) -> bool: return true
+func onHitCondition() -> bool: return true
