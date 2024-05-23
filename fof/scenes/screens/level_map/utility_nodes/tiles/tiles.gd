@@ -317,7 +317,6 @@ func getUnitAdjustedHeight(Tile: TileGD) -> float:
 
 var movement_paths: Dictionary = {"tiles": []}
 func onCreateMovementPaths(Unit: UnitGD, type: String = "Default") -> void:
-	var f: float = Time.get_ticks_msec()
 	var tiles: Array = []
 	match type:
 		"Default": tiles = get_children()
@@ -513,7 +512,9 @@ func setTileOutline(Tile: TileGD, type: String, is_remove: bool = false) -> void
 				0: highest = "AllyInspected"
 				1: highest = "EnemyInspected"
 	Tile.setOutline(OUTLINE_INFO[highest][1])
-	Tile.Effects.onManageHeightDropLabel(Units.PlayerManager.UnitSelected)
+	
+	if highest == "PathHovered":
+		Tile.Effects.onManageHeightDropLabel(Units.PlayerManager.UnitSelected)
 
 var path_hovered_info: Dictionary = {"tiles": [], "size": 0}
 func on_path_hovered_tile_selected(Tile: TileGD) -> void:
@@ -523,7 +524,7 @@ func on_path_hovered_tile_selected(Tile: TileGD) -> void:
 		if path_hovered_info.types[i].x != 1:
 			Units.movement_outline_tiles.append(path_hovered_info.tiles[i])
 			Units.move_to_tile(Units.PlayerManager.UnitSelected, path_hovered_info.tiles[i], path_hovered_info.types[i])
-			Tile.Effects.onManageHeightDropLabel(Units.PlayerManager.UnitSelected)
+			path_hovered_info.tiles[i].Effects.onManageHeightDropLabel(Units.PlayerManager.UnitSelected)
 		elif Units.attack_enemy_or_target(Units.PlayerManager.UnitSelected, path_hovered_info.tiles[i]): 
 			Units.movement_outline_tiles.append(path_hovered_info.tiles[i])
 		if Tile == path_hovered_info.tiles[i]: break

@@ -180,7 +180,7 @@ func convert_item_pos_dict() -> Array:
 	
 	return [poses, settings]
 
-var void_tile: PackedScene = preload("res://assets/models/tiles/void.glb")
+var void_tile: PackedScene = preload("res://assets/models/tiles/1tile.glb")
 var hover_tile: PackedScene = preload("res://assets/models/tiles/_hover.glb")
 var default_tile: PackedScene = preload("res://assets/models/tiles/_default_tile.tscn")
 func create_tile(xy: Vector3) -> Node3D:

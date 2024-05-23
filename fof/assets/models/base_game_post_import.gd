@@ -4,7 +4,8 @@ extends EditorScenePostImport
 var REMOVE_COLLISION: Array = [
 	"shrub",
 	"coconut_floor",
-	"palmrock"
+	"palmrock",
+	"spawn"
 ]
 
 var FOLDER_NAME_BEGINS_WITH: Dictionary = {
@@ -29,7 +30,7 @@ func _post_import(scene: Node) -> Node:
 			scene.type = key
 	
 	for i in REMOVE_COLLISION:
-		if scene.name.begins_with(i): scene.mesh.shape = null
+		if scene.name.begins_with(i): scene.body.get_child(0).shape = null
 		
 	if FileAccess.file_exists(scene_path):
 		var loaded_scene: Node = load(scene_path).instantiate()
@@ -38,4 +39,5 @@ func _post_import(scene: Node) -> Node:
 	var packed_scene := PackedScene.new()
 	packed_scene.pack(scene)
 	ResourceSaver.save(packed_scene, scene_path)
+		
 	return scene

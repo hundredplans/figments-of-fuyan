@@ -26,7 +26,6 @@ func onUpdateAbility(Unit: UnitGD, disable: bool) -> void:
 	elif charges < max_charges: color = "YELLOW"
 	
 	label.modulate = COLORS[color]
-		
 	if Unit.team == 0: disabled = disable
 	else: disabled = true
 		

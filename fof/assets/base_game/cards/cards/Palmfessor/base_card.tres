@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="BaseCardGD" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="BaseCardGD" load_steps=2 format=3 uid="uid://d1hw07kiihf8u"]
 
 [ext_resource type="Script" path="res://assets/base_game/cards/templates/base_card.gd" id="1_7a2oo"]
 
@@ -10,9 +10,11 @@ health = 1
 speed = 2
 energy = 1
 rarity = 4
-raw_text = "Allies on [1] ATTACK gain [+1/0]"
+raw_text = "Allies in vision on
+[1] ATTACK gain [+1/0]"
 flavor_text = "has weird coat"
-text = "[center]Allies on [b][color=orange][1] [img=14x14]res://assets/base_game/cards/game_card/art/bbcode/ATTACK.png[/img][/color][/b] gain [b][color=orange]+1 [img=14x14]res://assets/base_game/cards/game_card/art/bbcode/ATTACK.png[/img][/color][/b] [/center]"
+text = "[center]Allies in vision on
+[b][color=orange][1] [img=14x14]res://assets/base_game/cards/game_card/art/bbcode/ATTACK.png[/img][/color][/b] gain [b][color=orange]+1 [img=14x14]res://assets/base_game/cards/game_card/art/bbcode/ATTACK.png[/img][/color][/b] [/center]"
 aic = 2
 aii = 7
 aiw = 3

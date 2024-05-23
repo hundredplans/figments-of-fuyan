@@ -18,9 +18,10 @@ func on_recalculate_vision(Unit: UnitGD = null) -> void:
 	var ally_units: Array = Units.on_units()
 	match vision_mode:
 		0: # Takes around 20-30 msec to complete
-			#var f: float = Time.get_ticks_msec()
-			var og_ally_vision: Array = ally_vision.duplicate()
-			if Unit != null: Unit.onCircleRay()
+			var og_unit_vision: Array = [] 
+			if Unit != null: 
+				Unit.onCircleRay()
+				og_unit_vision = Unit.visible_tiles.duplicate()
 			
 			visible_tiles += spawn_tiles.duplicate()
 			# Usually takes 10-30msec
@@ -29,7 +30,7 @@ func on_recalculate_vision(Unit: UnitGD = null) -> void:
 					visible_tiles.append(Tile)
 			# Usualy takes between 5-10msec
 			ally_vision = visible_tiles.duplicate()
-			onCalculateEnemyVisionUpdate(Unit, og_ally_vision)
+			onCalculateVisionUpdate(Unit, og_unit_vision)
 			on_apply_visibility(visible_tiles)
 			# Sometimes takes up to 50msec?
 		1:
@@ -47,14 +48,14 @@ func on_recalculate_vision(Unit: UnitGD = null) -> void:
 			
 	LevelUI.on_update_vision()
 
-func onCalculateEnemyVisionUpdate(Unit: UnitGD, og_ally_vision: Array) -> void:
-	if Unit != null and Unit.team == 0:
-		for _Unit in Units.on_units(0, "Enemy"):
-			var was_visible: bool = _Unit.Tile in og_ally_vision
-			var gain_visible: bool = _Unit.Tile in ally_vision
+func onCalculateVisionUpdate(Unit: UnitGD, og_unit_vision: Array) -> void:
+	if Unit != null:
+		for _Unit in Units.all_units(Unit):
+			var was_visible: bool = _Unit.Tile in og_unit_vision
+			var gain_visible: bool = _Unit.Tile in Unit.visible_tiles
 			if !(was_visible and gain_visible) or (was_visible and gain_visible):
-				if was_visible: Units.onEnemyUnitExitsAllyVision(Unit, _Unit)
-				elif gain_visible: Units.onEnemyUnitEntersAllyVision(Unit, _Unit)
+				if was_visible: Units.onUnitExitsVision(Unit, _Unit)
+				elif gain_visible: Units.onUnitEntersVision(Unit, _Unit)
 
 func onExitTile(Unit: UnitGD, OriginTile: TileGD, DestinationTile: TileGD) -> void:
 	for _Unit in Units.all_units(Unit):

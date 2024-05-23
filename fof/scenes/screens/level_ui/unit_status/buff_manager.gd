@@ -9,4 +9,7 @@ func onUpdateStat(stat_changed: String) -> void:
 		stat_change = Unit.attack - Unit.base_card.attack
 	else:
 		stat_change = Unit.get("max_" + stat_changed.to_lower()) - Unit.base_card[stat_changed.to_lower()]
-	StatBox.get_node(stat_changed + "/Label").text = ("+" if stat_change >= 0 else "") + str(stat_change)
+	var label: Label = StatBox.get_node(stat_changed + "/Label")
+	label.text = ("+" if stat_change >= 0 else "") + str(stat_change)
+	if label.text.length() > 2: label.label_settings = preload("res://assets/UI/sixty_four/sixty_four_small.tres")
+	else: label.label_settings = preload("res://assets/UI/sixty_four/sixty_four_medium.tres")

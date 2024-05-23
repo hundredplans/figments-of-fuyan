@@ -383,7 +383,7 @@ func onEnterUnitMode(Unit: UnitGD) -> void:
 	SpectateCamera.onUpdateFOV("UNIT_MODE")
 	
 	for ability in Unit.abilities:
-		if ability is TargetAbilityGD and Combat.isAbilityEnabled(Unit, ability):
+		if ability is TargetAbilityGD:
 			var TargetAbilityBox: Control = preload("res://scenes/screens/level_ui/target_ability_box.tscn").instantiate()
 			TargetAbilities.add_child(TargetAbilityBox)
 			TargetAbilityBox.mouse_entered.connect(on_is_mouse_in_ui.bind(true))
@@ -393,6 +393,7 @@ func onEnterUnitMode(Unit: UnitGD) -> void:
 			TargetAbilityBox.description.text = ability.ability_description
 			TargetAbilityBox.ability = ability
 			TargetAbilityBox.pressed.connect(onTargetAbilityBoxPressed.bind(Unit, ability, TargetAbilityBox))
+			TargetAbilityBox.disabled = !Combat.isAbilityEnabled(Unit, ability)
 
 func onExitUnitMode() -> void:
 	SpectateCamera.onUpdateFOV("REGULAR")
@@ -408,11 +409,12 @@ func onTargetAbilityBoxPressed(Unit: UnitGD, ability: AbilityGD, TargetAbilityBo
 		TargetAbilityBox.modulate = Color(0.6, 0.6, 0.6)
 
 func onTargetAbilityBtnPressed(Unit: UnitGD, ability: AbilityGD) -> void:
-	if Units.PlayerManager.UnitSelected != Unit:
-		Units.PlayerManager.on_unit_selected(Unit)
-	
-	var TargetAbilityBox: Control = TargetAbilities.get_children().filter(func(x: Control): return !x.is_queued_for_deletion() and x.ability == ability)[0]
-	onTargetAbilityBoxPressed(Unit, ability, TargetAbilityBox)
+	if LevelMap.action_lock.is_empty():
+		if Units.PlayerManager.UnitSelected != Unit:
+			Units.PlayerManager.on_unit_selected(Unit)
+		
+		var TargetAbilityBox: Control = TargetAbilities.get_children().filter(func(x: Control): return !x.is_queued_for_deletion() and x.ability == ability)[0]
+		onTargetAbilityBoxPressed(Unit, ability, TargetAbilityBox)
 	
 func onEnterTargetAbilityMode(Unit: UnitGD, ability: AbilityGD) -> void:
 	AbilityLabel.text = ability.ability_name

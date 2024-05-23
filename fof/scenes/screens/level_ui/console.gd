@@ -5,6 +5,7 @@ signal damage_set
 signal stagger_set
 signal spawn_set
 signal stat_set
+signal fatigue_set
 
 var Combat: CombatGD
 var LevelUI: LevelUIGD
@@ -28,27 +29,27 @@ func _on_command_line_text_submitted(command: String):
 	PastCommandsLabel.text += command + "\n"
 
 func onProcessCommand(command: String) -> void:
-	call("on" + command.get_slice(" ", 0).capitalize() + "Unit", command.split(" "))
-
+	call("on" + command.get_slice(" ", 0).capitalize() + "Unit")
+	command_args = command.split(" ")
+	
 var command_args: Array = []
-func onSpawnUnit(args: Array) -> void:
+func onSpawnUnit() -> void:
 	onSelectTile(spawn_set)
-	command_args = args
 	
-func onDamageUnit(args: Array) -> void:
+func onDamageUnit() -> void:
 	onSelectTile(damage_set)
-	command_args = args
 	
-func onHealUnit(args: Array) -> void:
+func onFatigueUnit() -> void:
+	onSelectTile(fatigue_set)
+	
+func onHealUnit() -> void:
 	onSelectTile(heal_set)
-	command_args = args
 	
-func onStaggerUnit(_args: Array) -> void:
+func onStaggerUnit() -> void:
 	onSelectTile(stagger_set)
 
-func onStatUnit(args: Array) -> void:
+func onStatUnit() -> void:
 	onSelectTile(stat_set)
-	command_args = args
 	
 func onSelectTile(sig: Signal) -> void:
 	visible = false
@@ -59,7 +60,10 @@ func onTileSelected(_Tile: TileGD) -> void:
 	
 func onSpawnTileSet(Tile: TileGD) -> void:
 	Units.on_unit_awakened(int(command_args[1]), 0, [], int(command_args[2]), 0, Tile)
-
+	var Unit: UnitGD = Units.unit_by_tile(Tile)
+	Units.PlayerManager.passed_turns.erase(Unit)
+	Units.PlayerManager.on_select_active_unit(Unit)
+	
 func onStaggerSet(Tile: TileGD):
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
 	
@@ -89,3 +93,8 @@ func _on_command_line_text_changed(text: String):
 		"heal": PlaceholderLabel.text = "heal value"
 		"stat": PlaceholderLabel.text = "stat type value"
 		_: PlaceholderLabel.text = ""
+
+func onFatigueSet(Tile: TileGD):
+	var Unit: UnitGD = Units.unit_by_tile(Tile)
+	Units.PlayerManager.passed_turns.erase(Unit)
+	Units.PlayerManager.on_select_active_unit(Unit)

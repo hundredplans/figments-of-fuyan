@@ -19,8 +19,10 @@ func _ready():
 
 var copy_points: Array
 var scene: Node3D
+var file_path: String 
 func onBtnPressed(file: String) -> void:
 	onSave()
+	file_path = file
 	if scene != null: scene.queue_free()
 	scene = load(file).instantiate()
 	LoadedItem.add_child(scene)
@@ -33,7 +35,7 @@ func onSave() -> void:
 		scene.collision_points = PackedVector3Array(CollisionPoints.get_children().map(func(x: Node3D): return x.position))
 		var packed_scene := PackedScene.new()
 		packed_scene.pack(scene)
-		ResourceSaver.save(packed_scene, scene.scene_file_path)
+		ResourceSaver.save(packed_scene, file_path)
 	
 func _on_search_text_changed(new_text):
 	for btn in ButtonContainer.get_children():

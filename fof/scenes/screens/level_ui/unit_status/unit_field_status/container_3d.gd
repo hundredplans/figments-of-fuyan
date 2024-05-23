@@ -2,7 +2,8 @@ class_name Container3D
 extends Node3D
 
 var color: String = "BASE"
-@export var offset: float = 0.2
+@export var offset: float = 0.17
+	
 	
 func on_sort_children() -> void:
 	var children: Array = get_children().filter(func(x: Node3D): return !x.is_queued_for_deletion() and x.is_inside_tree())

@@ -82,7 +82,7 @@ func on_player_end_turn_phase_start() -> void:
 		on_select_active_unit(Unit)
 	on_pass_unit_turn()
 	
-	for Unit in passed_turns:
+	for Unit in passed_turns.filter(func(x: UnitGD): return !x.is_dead):
 		Tiles.on_remove_tile_material(Unit.Tile, "")
 		Units.setUnitStatus(Unit, "TurnUsed")
 	
@@ -129,7 +129,7 @@ func _on_unit_deselected(Unit: UnitGD, absolute: bool = false) -> void:
 	
 func onSetMovementRange(Unit: UnitGD) -> void:
 	Tiles.onCreateMovementPaths(Unit)
-	var enemy_units: Array = Units.on_units(1)
+	var enemy_units: Array = Units.on_units(1).filter(func(x: UnitGD): return x.Tile in Vision.ally_vision)
 	var is_staggered: bool = Units.Combat.isStaggered(Unit)
 	for Tile in Tiles.movement_paths.tiles:
 		if Unit.attack_amount > 0:
@@ -164,7 +164,8 @@ func onDeathFinished(Deathee: UnitGD) -> void:
 		if Deathee.team == 0 and SpectateCamera.spectate_type == "Ally":
 			var unit_distances: Array = Units.on_units().map(func(x: UnitGD): return {"Unit": x, "distance": Tiles.tile_distance(x.Tile, Deathee.Tile)})
 			unit_distances.sort_custom(func(x: Dictionary, y: Dictionary): return x.distance > y.distance)
-			SpectateCamera.onSpectate(unit_distances[0].Unit)
+			if unit_distances.size() > 0:
+				SpectateCamera.onSpectate(unit_distances[0].Unit)
 		on_remove_unit_turn(Deathee)
 		Units.Vision.on_recalculate_vision()
 		if Deathee.team == 0 and unpassed_turns.is_empty():

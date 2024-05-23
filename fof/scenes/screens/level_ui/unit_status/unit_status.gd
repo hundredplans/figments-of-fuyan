@@ -83,7 +83,9 @@ func onUpdateStatBounceBack(stat: int, stat_changed: String, color: String) -> v
 
 func setStatColorSize(StatLabel: Label, stat: int, color: String) -> void:
 	StatLabel.text = str(stat)
-	StatLabel.label_settings = preload("res://assets/UI/sixty_four/sixty_four_medium.tres")
+	
+	if StatLabel.text.length() > 1: StatLabel.label_settings = preload("res://assets/UI/sixty_four/sixty_four_small.tres")
+	else: StatLabel.label_settings = preload("res://assets/UI/sixty_four/sixty_four_medium.tres")
 	StatLabel.modulate = COLOR_INFO[color]
 
 var COLOR_INFO: Dictionary = {}

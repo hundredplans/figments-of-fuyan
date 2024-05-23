@@ -1928,12 +1928,12 @@ func on_clear_history() -> void:
 
 var light_tester_gd: Script = preload("res://assets/base_game/levels/level/loaded_level_light_tester.gd")
 
-func onBakeLevelPressed() -> void:
+func _onBakeLevelPressed() -> void:
 	var level_info: LevelInfoGD = _on_save_level_pressed()
 	if level_info != null:
 		pass
 
-func _on_bake_level_pressed():
+func onBakeLevelPressed():
 	var level_info: LevelInfoGD = _on_save_level_pressed()
 	if level_info != null:
 		var packed_scene := PackedScene.new()

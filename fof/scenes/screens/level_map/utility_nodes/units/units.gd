@@ -46,6 +46,7 @@ func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int
 		Unit.finished_awakening = true
 		Combat.onArrive(Unit)
 		PlayerManager.onSetupAllyPassedTurns(Unit)
+		Combat.onRecalculateTargetAbilities()
 		return Unit
 	return null
 		
@@ -63,8 +64,7 @@ func on_start_phase_start() -> void:
 	PlayerManager.SpectateCamera = SpectateCamera
 	
 	var enemy_tiles: Array = Tiles.on_is_type_get_tiles("Enemy", "obj")
-	var allowed_spawns: Array = range(7, 22) + range(24, 25)
-	#var allowed_spawns: Array = range(11,12)
+	var allowed_spawns: Array = range(7, 23) + range(24, 25)
 	for Tile in enemy_tiles:
 		on_unit_awakened(allowed_spawns[randi() % allowed_spawns.size()], 0, [], 1, Tile.obj.rotation, Tile)
 func on_player_phase_start() -> void:
@@ -271,17 +271,20 @@ func onUnitActionsFinished() -> void:
 		if LevelMap.game_phase != "AIPhase": LevelMap.setActionLock("UnitActionDisabled")
 		for callable in unit_actions_after: callable.call()
 		unit_actions_after = []
+		Combat.onRecalculateTargetAbilities()
 
-func onEnemyUnitEntersAllyVision(Unit: UnitGD, _Unit: UnitGD) -> void:
+func onUnitEntersVision(Unit: UnitGD, _Unit: UnitGD) -> void:
 	if Unit.team == 0 and _Unit.team == 1:
 		if Unit.finished_awakening:
 			AudioMaster.play_sfx("TrumpetKuba")
 		PlayerManager.on_enemy_unit_enters_vision(_Unit)
+	Combat.onAura(_Unit, "EnterVision")
 	
-func onEnemyUnitExitsAllyVision(Unit: UnitGD, _Unit: UnitGD) -> void:
+func onUnitExitsVision(Unit: UnitGD, _Unit: UnitGD) -> void:
 	if Unit.team == 0 and _Unit.team == 1:
 		PlayerManager.on_enemy_unit_exits_vision(_Unit)
-
+	Combat.onAura(_Unit, "ExitVision")
+	
 func onEnemyDiscoveredClearUnitActions() -> void:
 	on_unit_travel_finished()
 	active_action = {}
@@ -422,7 +425,7 @@ func on_hurt_finished(_Unit: UnitGD) -> void:
 func on_drop_calculate_damage(DMG: int, scale_time: float, Unit: UnitGD) -> void:
 	var AppliedBy := AppliedByGD.new("Height")
 	Combat.onDMG(Unit, AppliedBy, DMG)
-	if DMG > 0: on_descale_unit(Unit, scale_time)
+	if Unit.health > 0: on_descale_unit(Unit, scale_time)
 
 const DROP_HEIGHT_SCALE_DOWN := Vector3(1, 0.05, 1)
 func on_descale_unit(Unit: UnitGD, scale_time: float) -> void:

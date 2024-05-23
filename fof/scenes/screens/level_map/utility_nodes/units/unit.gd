@@ -100,12 +100,15 @@ func onCreateAbilities() -> void:
 			ability.Tiles = Tiles
 			ability.Vision = Vision
 			ability.Combat = Units.Combat
+			ability.LevelUI = Units.LevelUI
 			ability.GameEffects = Units.GameEffects
 			ability.charges = ability.max_charges
 			abilities.append(ability)
 			
 			if ability is ArmorGD:
 				onAddUnitFX("Armor", ability.armor)
+				
+			elif ability is TargetAbilityGD or ability is AuraGD: ability.setInfo(self)
 			
 func onAddUnitFX(type: String, charges: int = -1) -> void:
 	var info_fx: InfoFXGD = load(Units.LevelUI.UnitStatusOverlord.all_info_fx[type])

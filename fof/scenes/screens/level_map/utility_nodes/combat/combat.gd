@@ -43,6 +43,7 @@ func onLastWill(Deather: UnitGD, AppliedBy: AppliedByGD) -> void:
 		if ability.onLastWillCondition():
 			onTriggerAbilitySpectateDelay(Deather, ability, ability.onLastWill)
 	GameEffects.onTriggerUnitGameFX(Deather, "RemoveAbility") # Works for mute aswell
+	onAura(Deather, "UnitDeath")
 	
 func onWhenHealed(Healee: UnitGD, healInfo: HealInfoGD, heal_amount: int):
 	var abilities: Array = onFindAbilities(Healee, "WhenHealed")
@@ -63,6 +64,7 @@ func onTargetAbility(Unit: UnitGD, ability: TargetAbilityGD, Tile: TileGD) -> vo
 	Units.PlayerManager._on_unit_deselected(Units.PlayerManager.UnitSelected)
 	ability.used = true
 	LevelUI.onUpdateTargetAbility(Unit, ability)
+	Units.PlayerManager.on_select_active_unit(Unit)
 	
 func onRevenge(Damagee: UnitGD, AppliedBy: AppliedByGD, DMGInfo: DMGInfoGD, damage: int):
 	var abilities: Array = onFindAbilities(Damagee, "Revenge")
@@ -147,6 +149,7 @@ func onDMG(Damagee: UnitGD, AppliedBy: AppliedByGD, damage: int) -> DMGInfoGD:
 				DMGInfo.HealthDMG = original_health - Damagee.health
 				
 		if DMGInfo.HealthDMG > 0: onRevenge(Damagee, AppliedBy, DMGInfo, damage)
+		onRecalculateTargetAbilities()
 		return DMGInfo
 	return null
 
@@ -168,11 +171,16 @@ func onHeal(healInfo: HealInfoGD) -> bool:
 	return false
 
 func onPlayerPhaseStart() -> void:
+	onRecalculateTargetAbilities()
 	for Unit in Units.on_units():
 		var abilities: Array = onFindAbilities(Unit, "TargetAbility")
 		for ability in abilities:
-			ability.setInfo(Unit)
 			ability.used = false
+
+func onRecalculateTargetAbilities() -> void:
+	for Unit in Units.on_units():
+		var abilities: Array = onFindAbilities(Unit, "TargetAbility")
+		for ability in abilities:
 			ability.onTargetAbilityCondition()
 			ability.can_affect = !ability.tiles["affect"].is_empty()
 			LevelUI.onUpdateTargetAbility(Unit, ability)
@@ -254,3 +262,10 @@ func onCreateHealInfoArray(array: Array) -> HealInfoArrayGD:
 func onAddToHealInfoArray(heal_info_array: HealInfoArrayGD, heal_info: HealInfoGD) -> void:
 	heal_info_array.array.append(heal_info)
 	heal_info_array.heal += heal_info.heal
+
+func onAura(Unit: UnitGD, type: String, args: Array = []) -> void:
+	for _Unit in Units.all_units():
+		var abilities: Array = onFindAbilities(_Unit, "Aura")
+		for ability in abilities:
+			if ability.onAuraCondition(Unit, type, args):
+				onTriggerAbilitySpectateDelay(_Unit, ability, ability.onAura)

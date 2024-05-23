@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bntvcxh7eh0v"]
+[gd_scene load_steps=10 format=3 uid="uid://bntvcxh7eh0v"]
 
 [ext_resource type="Theme" uid="uid://bhyiyheobours" path="res://scenes/screens/level_ui/panel_theme.tres" id="1_7jnsk"]
 [ext_resource type="Texture2D" uid="uid://c5u34osfmn55f" path="res://scenes/screens/level_ui/target_ability_button.png" id="2_l8g5m"]
@@ -6,6 +6,7 @@
 [ext_resource type="LabelSettings" uid="uid://b3ehbfjlj57iy" path="res://assets/UI/lora/lora_outline_20.tres" id="2_xyw8o"]
 [ext_resource type="Texture2D" uid="uid://dm3h6akvc6l0r" path="res://scenes/screens/level_ui/target_ability_button_hovered.png" id="3_em5ne"]
 [ext_resource type="Theme" uid="uid://bsbktaxrkrggi" path="res://assets/UI/roboto/roboto12.tres" id="4_du5aw"]
+[ext_resource type="Texture2D" uid="uid://crckm2nuu78p6" path="res://scenes/screens/level_ui/target_ability_button_disabled.png" id="4_jrqgq"]
 [ext_resource type="FontFile" uid="uid://7k4xd8s0oed2" path="res://assets/UI/roboto/roboto.ttf" id="7_o783a"]
 [ext_resource type="FontFile" uid="uid://bjgvp4yvesp1k" path="res://assets/UI/open_sans/OpenSans-ExtraBold.ttf" id="8_dsm7l"]
 
@@ -22,6 +23,7 @@ pivot_offset = Vector2(90, 90)
 theme = ExtResource("1_7jnsk")
 texture_normal = ExtResource("2_l8g5m")
 texture_hover = ExtResource("3_em5ne")
+texture_disabled = ExtResource("4_jrqgq")
 script = ExtResource("2_v0kos")
 
 [node name="Label" type="Label" parent="."]

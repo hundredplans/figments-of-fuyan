@@ -44,14 +44,10 @@ theme = SubResource("Theme_oao6c")
 [node name="StatBox" type="HBoxContainer" parent="."]
 unique_name_in_owner = true
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
 offset_left = -5.0
 offset_top = 25.0
-offset_right = -5.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_right = 240.0
+offset_bottom = 50.0
 mouse_filter = 2
 theme_override_constants/separation = 10
 
@@ -72,6 +68,7 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "+0"
 label_settings = ExtResource("1_1vt8d")
+vertical_alignment = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="StatBox/Attack"]
 position = Vector2(69, 11)

@@ -70,6 +70,11 @@ var player_deck: Array = [
 	"tool_id": 0,
 	"effects": []
 	},
+	
+		{"id": 22,
+	"tool_id": 0,
+	"effects": []
+	},
 ]
 
 var player_boons: Array = []
