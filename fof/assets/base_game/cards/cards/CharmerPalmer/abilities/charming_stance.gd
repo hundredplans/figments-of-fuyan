@@ -16,6 +16,6 @@ func onTargetAbility() -> void:
 	for _Unit in healed_allies:
 		Unit.Model._look_at(Tile)
 		if Combat.onHealAbility(_Unit, Unit, HEAL):
-			GameEffects.onAddGameFX(_Unit, "CharmingStance", {"Unit": Unit})
+			GameEffects.onAddGameFX(_Unit, GameFXGD.CHARMING_STANCE, {"Unit": Unit})
 	if is_visible: Unit.Model.on_play_animation("Ability")
 	charges -= 1

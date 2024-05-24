@@ -1,7 +1,16 @@
 class_name GameFXGD
 extends Resource
 
-var type: String
+var type: int
 var info: Dictionary
-@export var triggers: Array = []
+var triggers: Array = []
 var Unit: UnitGD
+
+enum {HEAL_NEXT_TURN, BUFF_NEXT_TURN, DAZE, STAGGER, ABILITY_ACTIVE, HELPFUL_HELMET, CHARMING_STANCE}
+
+func _init(_Unit: UnitGD = null, _type: int = -1, _info: Dictionary = {}, _triggers: Array = []) -> void:
+	if _type == -1: push_error("Your game_fx type is invalid!")
+	Unit = _Unit
+	type = _type
+	info = _info
+	triggers = _triggers

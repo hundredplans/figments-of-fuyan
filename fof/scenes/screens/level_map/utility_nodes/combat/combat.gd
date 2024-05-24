@@ -42,7 +42,7 @@ func onLastWill(Deather: UnitGD, AppliedBy: AppliedByGD) -> void:
 		ability.setInfo(Deather, AppliedBy)
 		if ability.onLastWillCondition():
 			onTriggerAbilitySpectateDelay(Deather, ability, ability.onLastWill)
-	GameEffects.onTriggerUnitGameFX(Deather, "RemoveAbility") # Works for mute aswell
+	GameEffects.onTriggerUnitGameFX(Deather, TriggerGD.REMOVE_ABILITY) # Works for mute aswell
 	onAura(Deather, "UnitDeath")
 	
 func onWhenHealed(Healee: UnitGD, healInfo: HealInfoGD, heal_amount: int):
@@ -50,7 +50,7 @@ func onWhenHealed(Healee: UnitGD, healInfo: HealInfoGD, heal_amount: int):
 	for ability in abilities:
 		ability.setInfo(Healee, healInfo, heal_amount)
 		onTriggerAbilitySpectateDelay(Healee, ability, ability.onWhenHealed)
-	GameEffects.onTriggerUnitGameFX(Healee, "Heal")
+	GameEffects.onTriggerUnitGameFX(Healee, TriggerGD.HEAL)
 	
 func onArrive(Unit: UnitGD) -> void:
 	var abilities: Array = onFindAbilities(Unit, "Arrive")
@@ -81,7 +81,7 @@ func onHit(DMGInfo: DMGInfoGD) -> void:
 		if ability.onHitCondition():
 			onTriggerAbilitySpectateDelay(Unit, ability, ability.onHit)
 	
-	GameEffects.onTriggerUnitGameFX(Unit, "OnHit", [DMGInfo.Defender, DMGInfo.AppliedBy])
+	GameEffects.onTriggerUnitGameFX(Unit, TriggerGD.ON_HIT, [DMGInfo.Defender, DMGInfo.AppliedBy])
 	
 func onRampage(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	var abilities: Array = onFindAbilities(Unit, "Rampage")
@@ -89,7 +89,7 @@ func onRampage(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 		ability.setInfo(Unit, AppliedBy)
 		if ability.onRampageCondition():
 			onTriggerAbilitySpectateDelay(Unit, ability, ability.onRampage)
-	GameEffects.onTriggerUnitGameFX(Unit, "Rampage", [Unit, AppliedBy])
+	GameEffects.onTriggerUnitGameFX(Unit, TriggerGD.RAMPAGE, [Unit, AppliedBy])
 		
 func onTriggerAbilitySpectateDelay(Triggerer: UnitGD, ability: AbilityGD, callable: Callable) -> void:
 	var vis: bool = Triggerer.team == 0 or Triggerer.Tile in Vision.ally_vision
@@ -136,11 +136,11 @@ func onDMG(Damagee: UnitGD, AppliedBy: AppliedByGD, damage: int) -> DMGInfoGD:
 		match AppliedBy.type:
 			"Attack":
 				var Attacker: UnitGD = AppliedBy.Applier
-				GameEffects.onTriggerUnitGameFX(Attacker, "OnAttack")
+				GameEffects.onTriggerUnitGameFX(Attacker, TriggerGD.ON_ATTACK)
 				damage = onArmor(Damagee, damage + Attacker.extra_damage)
 				Damagee.stats("damage", damage, AppliedBy)
 				DMGInfo.HealthDMG = original_health - Damagee.health
-				GameEffects.onTriggerUnitGameFX(Attacker, "OnAfterAttack")
+				GameEffects.onTriggerUnitGameFX(Attacker, TriggerGD.ON_AFTER_ATTACK)
 			"Height":
 				Damagee.stats("damage", damage, AppliedBy) # Fix this to not be absolute
 			"Ability":
@@ -186,7 +186,7 @@ func onRecalculateTargetAbilities() -> void:
 			LevelUI.onUpdateTargetAbility(Unit, ability)
 
 func onStagger(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
-	GameEffects.onAddGameFX(Unit, "Stagger", {"AppliedBy": AppliedBy})
+	GameEffects.onAddGameFX(Unit, GameFXGD.STAGGER, {"AppliedBy": AppliedBy})
 	VFX.onCreateStaggerVFX(Unit)
 	LevelUI.UnitStatusOverlord.onAddUnitFX(Unit, "Stagger")
 	LevelUI.UnitStatusOverlord.onUpdateUnitTargetAbilities(Unit)
@@ -196,7 +196,7 @@ func onRemoveStagger(GameFX: GameFXGD) -> void:
 	LevelUI.UnitStatusOverlord.onRemoveUnitFX(GameFX.Unit, "Stagger")
 
 func onDaze(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
-	GameEffects.onAddGameFX(Unit, "Daze", {"AppliedBy": AppliedBy})
+	GameEffects.onAddGameFX(Unit, GameFXGD.DAZE, {"AppliedBy": AppliedBy})
 	VFX.onCreateDazeVFX(Unit)
 	LevelUI.UnitStatusOverlord.onAddUnitFX(Unit, "Daze")
 	
@@ -213,7 +213,7 @@ func onDestroyUnit(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	
 func onHelpfulHelmetDelayed(a: Dictionary) -> void:
 	var Unit: UnitGD = Units.unit_by_tile(a.Tile)
-	GameEffects.onAddGameFX(Unit, "HelpfulHelmet", {"AppliedBy": a.AppliedBy, "use_bound": false})
+	GameEffects.onAddGameFX(Unit, GameFXGD.HELPFUL_HELMET, {"AppliedBy": a.AppliedBy, "use_bound": false})
 
 func isStaggered(Unit: UnitGD) -> bool:
 	return GameEffects.onGameFXExists(Unit, "Stagger")
@@ -236,10 +236,10 @@ func onRemoveBuffNextTurn(a: Dictionary) -> void:
 func onApplyBuffNextTurn(buff_info: BuffInfoGD, triggers: Array = []) -> void:
 	onBuffInfo(buff_info)
 	buff_info.value *= -1
-	GameEffects.onAddGameFX(buff_info.Unit, "BuffNextTurn", {"buff_info": buff_info}, triggers)
+	GameEffects.onAddGameFX(buff_info.Unit, GameFXGD.BUFF_NEXT_TURN, {"buff_info": buff_info}, triggers)
 
 func onApplyHealNextTurn(heal_info: HealInfoGD, triggers: Array = []) -> void:
-	GameEffects.onAddGameFX(heal_info.Healee, "HealNextTurn", {"heal_info": heal_info}, triggers)
+	GameEffects.onAddGameFX(heal_info.Healee, GameFXGD.HEAL_NEXT_TURN, {"heal_info": heal_info}, triggers)
 
 func onRemoveHealNextTurn(heal_info_array: HealInfoArrayGD) -> void:
 	LevelUI.UnitStatusOverlord.onRemoveHealNextTurn(heal_info_array)

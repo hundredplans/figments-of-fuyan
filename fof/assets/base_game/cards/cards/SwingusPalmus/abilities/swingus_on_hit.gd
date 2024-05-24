@@ -11,12 +11,11 @@ func onHit() -> void:
 		is_second_hit = false
 		delay = 1
 	else:
-		var attack_trigger: Dictionary = GameEffects.onCreateTrigger("OnAttack", Unit.setExtraDamage.bind(DAMAGE))
-		var after_attack_trigger: Dictionary = GameEffects.onCreateTrigger("OnAfterAttack", Unit.setExtraDamage, "RemoveFX")
-		var trigger: Dictionary = GameEffects.onCreateTrigger("OnHit", null, "RemoveFX")
+		var AttackTrigger := TriggerGD.new(null, Unit, Unit.setExtraDamage.bind(DAMAGE), TriggerGD.ON_ATTACK)
+		var AfterAttackTrigger := TriggerGD.new(null, Unit, Unit.setExtraDamage, TriggerGD.ON_AFTER_ATTACK, TriggerGD.REMOVE_FX)
+		var OnHitTrigger := TriggerGD.new(null, Unit, Callable(), TriggerGD.ON_HIT, TriggerGD.REMOVE_FX)
+		GameEffects.onAddGameFX(Unit, GameFXGD.ABILITY_ACTIVE, {"ability": self}, [OnHitTrigger, AttackTrigger, AfterAttackTrigger])
 		
-		GameEffects.onAddGameFX(Unit, "AbilityActive", {"ability": self}, [trigger])
-		GameEffects.onAddGameFX(Unit, "IdleAbility", {"ability": self}, [attack_trigger, after_attack_trigger])
 		is_second_hit = true
 		delay = 2
 		

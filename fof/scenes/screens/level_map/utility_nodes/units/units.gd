@@ -464,7 +464,7 @@ func onAIMoveFinisher(Unit: UnitGD, vis_path: Array) -> void:
 func setUnitStatus(Unit: UnitGD, status: String) -> void:
 	LevelUI.UnitStatusOverlord.setUnitStatusTurnStatus(Unit, status)
 	if status == "TurnUsed":
-		GameEffects.onTriggerUnitGameFX(Unit, "TurnPassed")
+		GameEffects.onTriggerUnitGameFX(Unit, TriggerGD.TURN_PASSED)
 
 func setPastPath(Unit: UnitGD, state: bool) -> void:
 	for Tile in Unit.past_path_info:

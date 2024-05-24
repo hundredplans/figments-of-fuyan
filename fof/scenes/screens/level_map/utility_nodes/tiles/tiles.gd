@@ -276,20 +276,12 @@ func onConvertMultiTilePositions() -> void:
 			.map(func(x: Array): return position_to_tile(Vector4(x[0], x[1], x[2], x[3])))\
 			.filter(func(x: TileGD): return x != null)
 	
-func _on_remove_tiles_blocked_by_height(Tile: TileGD, height: float) -> bool:
-	var free_tile_space: float = 0.3 if is_ramp_tile(Tile) else 0.9
-	for i in range(Tile.w + 1, Tile.w + 7):
-		var _Tile: TileGD = position_to_tile(Tile.onTTpos(Tile.w + i))
-		if _Tile == null: free_tile_space += 1.2
-		else: break
-	return free_tile_space >= height
-	
 func onRemoveTileBlockedByHeight(Tile: TileGD, height: float) -> bool:
 	# 1 = 1.2 (the bottom)
 	# 2 = 2.4 (the bottom)
 	var bot_range: float = getUnitPositionOnTile(Tile).y
 	var top_range: float = bot_range + height
-	for w in range(Tile.w + 1, ceil(top_range / 1.2)):
+	for w in range(Tile.w + 1, ceil(top_range / 1.2) + 1):
 		var _Tile: TileGD = position_to_tile(Tile.onTTpos(w))
 		if _Tile != null: return false
 	return true
@@ -384,18 +376,8 @@ func onCreateMovementPaths(Unit: UnitGD, type: String = "Default") -> void:
 	tiles_by_adjacent.erase(Unit.Tile)
 	
 	for Tile in tiles_by_adjacent.keys(): # disconnect all points that a unit can't get to
-		var id_path_tiles: Array = Array(astar.get_id_path(Unit.Tile.get_instance_id(), Tile.get_instance_id()))\
-		.map(func(x: int): return instance_from_id(x))
-		var size: int = id_path_tiles.size()
+		onCalculateOptimalPath(Tile, Unit, astar, movement_types)
 		
-		for i in range(size):
-			if i > 0 and i == size - 1:
-				var EnemyUnit: UnitGD = Units.unit_by_tile(id_path_tiles[i])
-				if EnemyUnit != null:
-					var id: int = id_path_tiles[i].get_instance_id()
-					for point in astar.get_point_connections(id):
-						if point != id_path_tiles[i - 1].get_instance_id():
-							astar.disconnect_points(id, point)
 	for Tile in tiles_by_adjacent.keys():
 		var path: Dictionary = on_create_true_path(Array(astar.get_id_path(Unit.Tile.get_instance_id(), Tile.get_instance_id()))\
 		.map(func(x: int): return instance_from_id(x)), movement_types, Unit) # Creates paths of [[Tile, vec2(id)], [Tile, vec2(id)]]
@@ -403,6 +385,32 @@ func onCreateMovementPaths(Unit: UnitGD, type: String = "Default") -> void:
 		if path.size > 0 and path.size <= Unit.speed + int(path.types[path.size - 1].x == 1):
 			movement_paths[Tile] = path
 			movement_paths.tiles.append(Tile)
+			
+func onCalculateOptimalPath(Tile: TileGD, Unit: UnitGD, astar: AStar3D, movement_types: Array) -> void:
+	var path: Array = Array(astar.get_id_path(Unit.Tile.get_instance_id(), Tile.get_instance_id()))
+	var tile_path: Array = path.map(func(x: int): return instance_from_id(x))
+	var size: int = tile_path.size()
+	
+	for i in range(size):
+		if i > 0 and i == size - 1:
+			var EnemyUnit: UnitGD = Units.unit_by_tile(tile_path[i])
+			if EnemyUnit != null:
+				var id: int = tile_path[i].get_instance_id()
+				for point in astar.get_point_connections(id):
+					if point != tile_path[i - 1].get_instance_id():
+						astar.disconnect_points(id, point)
+						
+	var total_damage: int = 0
+	#if size > 2:
+	for i in range(size):
+		if i < tile_path.size() - 1:
+			for tile_array in movement_types:
+				if tile_array[0] == tile_path[i - 1] and tile_array[1] == tile_path[i] and tile_array[2].x == 4:
+					total_damage += on_calculate_drop_damage(tile_array[2].y, Unit.height.top).z
+					if total_damage >= Unit.health:
+						astar.disconnect_points(tile_path[i].get_instance_id(), tile_path[i + 1].get_instance_id())
+						onCalculateOptimalPath(Tile, Unit, astar, movement_types)
+						return
 			
 func on_calculate_drop_damage(_hdiff: int, top_height: float) -> Vector3i:
 	var hdiff: int = abs(_hdiff * 0.5)
@@ -450,8 +458,6 @@ func on_create_true_path(id_path: Array, movement_types: Array, Unit: UnitGD) ->
 						true_path.types.append(tile_array[2])
 						break
 		else: return {"tiles": [], "types": [], "size": 0}
-			
-					
 	true_path.size = true_path.tiles.size()
 	return true_path
 	
