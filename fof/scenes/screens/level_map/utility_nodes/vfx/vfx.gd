@@ -77,6 +77,7 @@ func onCreateStaggerVFX(Unit: UnitGD) -> void:
 	Unit.UnitVFX.add_child(StaggerVFX)
 	StaggerVFX.type = "Stagger"
 	StaggerVFX.position.y = Tiles.getUnitAdjustedHeight(Unit.Tile) + Unit.height.top + 0.1
+	print("HERE")
 	
 func onRemoveStaggerVFX(Unit: UnitGD) -> void:
 	for child in Unit.UnitVFX.get_children():

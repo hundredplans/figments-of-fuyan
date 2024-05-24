@@ -29,7 +29,7 @@ func onAddBuffNextTurn(Unit: UnitGD, a: Dictionary, triggers: Array) -> GameFXGD
 		a.buff_info_array = Combat.onCreateBuffInfoArray([a.buff_info])
 		a.erase("buff_info")
 		
-		var GameFX := onCreateGameFX(Unit, a, triggers)
+		var GameFX := onCreateGameFX(Unit, GameFXGD.BUFF_NEXT_TURN, a, triggers)
 		onAppendTrigger(TriggerGD.new(GameFX, Unit, Combat.onRemoveBuffNextTurn.bind(a), TriggerGD.NEXT_TURN, TriggerGD.REMOVE_FX))
 		
 		LevelUI.UnitStatusOverlord.onCreateBuffNextTurn(a.buff_info_array)
@@ -43,7 +43,7 @@ func onAddHealNextTurn(Unit: UnitGD, a: Dictionary, triggers: Array) -> GameFXGD
 		a.heal_info_array = Combat.onCreateHealInfoArray([a.heal_info])
 		a.erase("heal_info")
 		
-		var GameFX := onCreateGameFX(Unit, a, triggers)
+		var GameFX := onCreateGameFX(Unit, GameFXGD.HEAL_NEXT_TURN, a, triggers)
 		onAppendTrigger(TriggerGD.new(GameFX, Unit, Combat.onRemoveHealNextTurn.bind(a.heal_info_array), TriggerGD.NEXT_TURN, TriggerGD.REMOVE_FX))
 		LevelUI.UnitStatusOverlord.onCreateHealNextTurn(a.heal_info_array)
 		return GameFX
@@ -74,7 +74,7 @@ func onRemoveTrigger(GameFX: GameFXGD, Trigger: TriggerGD) -> void:
 				effects.erase(GameFX)
 		
 func onAddAbilityActive(Unit: UnitGD, a: Dictionary, triggers: Array) -> GameFXGD:
-	var GameFX := onCreateGameFX(Unit, a, triggers)
+	var GameFX := onCreateGameFX(Unit, GameFXGD.ABILITY_ACTIVE, a, triggers)
 	onAppendTrigger(TriggerGD.new(GameFX, Unit, onRemoveAbilityActive.bind(GameFX), TriggerGD.REMOVE))
 	onAppendTrigger(TriggerGD.new(GameFX, Unit, Unit.Model.onRemoveIdleAbility, TriggerGD.REMOVE))
 	Unit.Model.onActivateIdleAbility()
@@ -90,14 +90,14 @@ func onAppendTrigger(Trigger: TriggerGD) -> void:
 	Trigger.GameFX.triggers.append(Trigger)
 	
 func onAddHelpfulHelmet(Unit: UnitGD, a: Dictionary) -> GameFXGD:
-	var GameFX := onCreateGameFX(Unit, a)
+	var GameFX := onCreateGameFX(Unit, GameFXGD.HELPFUL_HELMET, a)
 	onAppendTrigger(TriggerGD.new(GameFX, Unit, Unit.stats.bind("health", 1), TriggerGD.RAMPAGE, a.use_bound))
 	LevelUI.UnitStatusOverlord.onAddUnitFX(Unit, "HelpfulHelmet")
 	VFX.onCreateHelpfulHelmet(Unit)
 	return GameFX
 	
 func onAddCharmingStance(Unit: UnitGD, a: Dictionary) -> GameFXGD:
-	var GameFX := onCreateGameFX(Unit, a)
+	var GameFX := onCreateGameFX(Unit, GameFXGD.CHARMING_STANCE, a)
 	onAppendTrigger(TriggerGD.new(GameFX, a.Unit, LevelUI.UnitStatusOverlord.onRemoveUnitFX.bind(Unit, "CharmingStance"), TriggerGD.REMOVE_ABILITY, TriggerGD.REMOVE_FX))
 	LevelUI.UnitStatusOverlord.onAddUnitFX(Unit, "CharmingStance", AppliedByGD.new("Ability", a.Unit))
 	return GameFX
@@ -113,22 +113,19 @@ func onOverrideGameFX(Unit: UnitGD, type: int) -> void:
 
 func onAddDazeFX(Unit: UnitGD, a: Dictionary) -> GameFXGD:
 	onOverrideGameFX(Unit, GameFXGD.DAZE)
-	var GameFX := onCreateGameFX(Unit, a)
+	var GameFX := onCreateGameFX(Unit, GameFXGD.DAZE, a)
 	onAppendTrigger(TriggerGD.new(GameFX, Unit, Combat.onRemoveDaze.bind(GameFX), TriggerGD.TURN_PASSED, TriggerGD.REMOVE_FX))
 	return GameFX
 	
 func onAddStaggerFX(Unit: UnitGD, a: Dictionary) -> GameFXGD:
 	onOverrideGameFX(Unit, GameFXGD.STAGGER)
-	var GameFX := onCreateGameFX(Unit, a)
+	var GameFX := onCreateGameFX(Unit, GameFXGD.STAGGER, a)
 	onAppendTrigger(TriggerGD.new(GameFX, Unit, Combat.onRemoveStagger.bind(GameFX), TriggerGD.TURN_PASSED, TriggerGD.REMOVE_FX))
 	return GameFX
 	
-func onCreateGameFX(Unit: UnitGD, a: Dictionary, triggers: Array = []) -> GameFXGD:
-	var GameFX := GameFXGD.new()
+func onCreateGameFX(Unit: UnitGD, type: int, a: Dictionary, triggers: Array = []) -> GameFXGD:
+	var GameFX := GameFXGD.new(Unit, type, a, triggers)
 	effects.append(GameFX)
-	GameFX.Unit = Unit
-	GameFX.info = a
-	GameFX.triggers = triggers
 	for trigger in triggers: trigger.GameFX = GameFX
 	return GameFX
 

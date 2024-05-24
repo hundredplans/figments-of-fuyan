@@ -1,15 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://p786qi6om8am"]
+[gd_scene load_steps=3 format=3 uid="uid://bqnrgq11fpjv5"]
 
-[ext_resource type="PackedScene" uid="uid://51k4nu3ur0qq" path="res://scenes/screens/level_map/utility_nodes/vfx/status_effects/daze/daze_status_effect.glb" id="1_l54n5"]
+[ext_resource type="PackedScene" uid="uid://dl8l8gj7hmmmd" path="res://scenes/screens/level_map/utility_nodes/vfx/status_effects/daze/daze_status_effect.glb" id="1_l54n5"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vfx/status_effects/daze/daze_status_effect.gd" id="2_er7yw"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qvkdj"]
-shading_mode = 0
-albedo_color = Color(0.560784, 0.560784, 0.560784, 1)
-
 [node name="daze_status_effect" instance=ExtResource("1_l54n5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 script = ExtResource("2_er7yw")
-
-[node name="Plane" parent="." index="0"]
-surface_material_override/0 = SubResource("StandardMaterial3D_qvkdj")

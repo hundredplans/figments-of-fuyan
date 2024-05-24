@@ -424,8 +424,8 @@ func on_hurt_finished(_Unit: UnitGD) -> void:
 
 func on_drop_calculate_damage(DMG: int, scale_time: float, Unit: UnitGD) -> void:
 	var AppliedBy := AppliedByGD.new("Height")
-	Combat.onDMG(Unit, AppliedBy, DMG)
-	if Unit.health > 0: on_descale_unit(Unit, scale_time)
+	var DMGInfo := Combat.onDMG(Unit, AppliedBy, DMG)
+	if Unit.health > 0 and DMGInfo.HealthDMG > 0: on_descale_unit(Unit, scale_time)
 
 const DROP_HEIGHT_SCALE_DOWN := Vector3(1, 0.05, 1)
 func on_descale_unit(Unit: UnitGD, scale_time: float) -> void:

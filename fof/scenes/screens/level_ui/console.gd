@@ -66,7 +66,6 @@ func onSpawnTileSet(Tile: TileGD) -> void:
 	
 func onStaggerSet(Tile: TileGD):
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
-	
 	var AppliedBy := AppliedByGD.new("Console")
 	Combat.onStagger(Unit, AppliedBy)
 
