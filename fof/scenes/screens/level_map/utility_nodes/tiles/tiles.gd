@@ -334,12 +334,10 @@ func onCreateMovementPaths(Unit: UnitGD, type: String = "Default") -> void:
 			var hdiff: int = (_Tile.w * 2) + int(is_ramp_tile(_Tile)) - ((Tile.w * 2) + int(is_ramp_tile(Tile)))
 			if EnemyUnit != null:
 				if EnemyUnit.team != Unit.team and !Combat.isStaggered(Unit):
-					var ally_unit_height: float = getUnitAdjustedHeight(Tile)
-					
 					var enemy_low_point: float = getUnitAdjustedHeight(EnemyUnit.Tile)
 					var enemy_high_point: float = enemy_low_point + EnemyUnit.height.top
-					var your_weapon_low_point: float = ally_unit_height + Unit.height.weapon - Unit.height.weapon_offset
-					var your_weapon_high_point: float = ally_unit_height + Unit.height.weapon + Unit.height.weapon_offset
+					var your_weapon_low_point: float = getUnitAdjustedHeight(Tile)
+					var your_weapon_high_point: float = your_weapon_low_point + Unit.height.top
 					
 					if hdiff == 0 or (enemy_low_point <= your_weapon_low_point and your_weapon_low_point <= enemy_high_point) or\
 					(enemy_low_point <= your_weapon_high_point and your_weapon_high_point <= enemy_high_point):

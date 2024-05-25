@@ -159,9 +159,9 @@ func _on_unit_selected(Unit: UnitGD) -> void:
 		LevelUI.onEnterUnitMode(Unit)
 		LevelUI.setWarningText(ActiveUnit != null and ActiveUnit != Unit, "SkipAction")
 
-func onDeathFinished(Deathee: UnitGD) -> void:
+func onDeathFinished(Deathee: UnitGD, AppliedBy: AppliedByGD) -> void:
 	if LevelMap.game_phase == "PlayerPhase":
-		if Deathee.team == 0 and SpectateCamera.spectate_type == "Ally":
+		if Deathee.team == 0 and SpectateCamera.spectate_type == "Ally" and AppliedBy.type != "HelpfulHelmet":
 			var unit_distances: Array = Units.on_units().map(func(x: UnitGD): return {"Unit": x, "distance": Tiles.tile_distance(x.Tile, Deathee.Tile)})
 			unit_distances.sort_custom(func(x: Dictionary, y: Dictionary): return x.distance > y.distance)
 			if unit_distances.size() > 0:

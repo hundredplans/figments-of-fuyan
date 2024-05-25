@@ -1,6 +1,7 @@
 class_name GameEffectsGD
 extends Node
 
+var SpectateCamera: Node3D
 var LevelUI: LevelUIGD
 var VFX: VFXGD
 var Combat: CombatGD
@@ -67,16 +68,17 @@ func onActiveAbilityTriggered(Unit: UnitGD) -> void:
 func onRemoveTrigger(GameFX: GameFXGD, Trigger: TriggerGD) -> void:
 	match Trigger.remove_type:
 		TriggerGD.REMOVE_FX:
-			GameFX.triggers.erase(Trigger)
-		TriggerGD.REMOVE_TRIGGER:
 			if GameFX in effects:
 				onTriggerGameFX(GameFX, TriggerGD.REMOVE)
 				effects.erase(GameFX)
+		TriggerGD.REMOVE_TRIGGER:
+			GameFX.triggers.erase(Trigger)
+				
 		
 func onAddAbilityActive(Unit: UnitGD, a: Dictionary, triggers: Array) -> GameFXGD:
 	var GameFX := onCreateGameFX(Unit, GameFXGD.ABILITY_ACTIVE, a, triggers)
-	onAppendTrigger(TriggerGD.new(GameFX, Unit, onRemoveAbilityActive.bind(GameFX), TriggerGD.REMOVE))
-	onAppendTrigger(TriggerGD.new(GameFX, Unit, Unit.Model.onRemoveIdleAbility, TriggerGD.REMOVE))
+	onAppendTrigger(TriggerGD.new(GameFX, Unit, onRemoveAbilityActive.bind(GameFX), TriggerGD.REMOVE, TriggerGD.NULL))
+	onAppendTrigger(TriggerGD.new(GameFX, Unit, Unit.Model.onRemoveIdleAbility, TriggerGD.REMOVE, TriggerGD.NULL))
 	Unit.Model.onActivateIdleAbility()
 	VFX.onCreateAbilityActiveParticle(Unit)
 	LevelUI.UnitStatusOverlord.onAddAbilityActiveFX(Unit, a.ability.ability_name)
@@ -93,6 +95,7 @@ func onAddHelpfulHelmet(Unit: UnitGD, a: Dictionary) -> GameFXGD:
 	var GameFX := onCreateGameFX(Unit, GameFXGD.HELPFUL_HELMET, a)
 	onAppendTrigger(TriggerGD.new(GameFX, Unit, Unit.stats.bind("health", 1), TriggerGD.RAMPAGE, a.use_bound))
 	LevelUI.UnitStatusOverlord.onAddUnitFX(Unit, "HelpfulHelmet")
+	if Unit.team == 0: SpectateCamera.onSpectate(Unit)
 	VFX.onCreateHelpfulHelmet(Unit)
 	return GameFX
 	
@@ -129,7 +132,7 @@ func onCreateGameFX(Unit: UnitGD, type: int, a: Dictionary, triggers: Array = []
 	for trigger in triggers: trigger.GameFX = GameFX
 	return GameFX
 
-func onGameFXExists(Unit: UnitGD, type: String) -> bool:
+func onGameFXExists(Unit: UnitGD, type: int) -> bool:
 	for GameFX in effects.filter(func(x: GameFXGD): return x.Unit == Unit):
 		if GameFX.type == type:
 			return true
@@ -159,3 +162,6 @@ func onFindFirstGameFX(Unit: UnitGD, type: int) -> GameFXGD:
 	for GameFX in effects.filter(func(x: GameFXGD): return x.Unit == Unit):
 		if GameFX.type == type: return GameFX
 	return null
+
+func onFindAllGameFX(Unit: UnitGD, type: int) -> Array:
+	return effects.filter(func(x: GameFXGD): return x.Unit == Unit and x.type == type)

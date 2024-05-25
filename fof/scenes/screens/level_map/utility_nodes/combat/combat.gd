@@ -43,7 +43,7 @@ func onLastWill(Deather: UnitGD, AppliedBy: AppliedByGD) -> void:
 		if ability.onLastWillCondition():
 			onTriggerAbilitySpectateDelay(Deather, ability, ability.onLastWill)
 	GameEffects.onTriggerUnitGameFX(Deather, TriggerGD.REMOVE_ABILITY) # Works for mute aswell
-	onAura(Deather, "UnitDeath")
+	onOngoingAbility(Deather, "UnitDeath")
 	
 func onWhenHealed(Healee: UnitGD, healInfo: HealInfoGD, heal_amount: int):
 	var abilities: Array = onFindAbilities(Healee, "WhenHealed")
@@ -216,10 +216,10 @@ func onHelpfulHelmetDelayed(a: Dictionary) -> void:
 	GameEffects.onAddGameFX(Unit, GameFXGD.HELPFUL_HELMET, {"AppliedBy": a.AppliedBy, "use_bound": false})
 
 func isStaggered(Unit: UnitGD) -> bool:
-	return GameEffects.onGameFXExists(Unit, "Stagger")
+	return GameEffects.onGameFXExists(Unit, GameFXGD.STAGGER)
 	
 func isDazed(Unit: UnitGD) -> bool:
-	return GameEffects.onGameFXExists(Unit, "Daze")
+	return GameEffects.onGameFXExists(Unit, GameFXGD.DAZE)
 
 func isAbilityEnabled(Unit: UnitGD, ability: TargetAbilityGD) -> bool:
 	return ability.can_affect and !ability.used and ability.charges != 0 and\
@@ -263,9 +263,9 @@ func onAddToHealInfoArray(heal_info_array: HealInfoArrayGD, heal_info: HealInfoG
 	heal_info_array.array.append(heal_info)
 	heal_info_array.heal += heal_info.heal
 
-func onAura(Unit: UnitGD, type: String, args: Array = []) -> void:
-	for _Unit in Units.all_units():
-		var abilities: Array = onFindAbilities(_Unit, "Aura")
+func onOngoingAbility(Unit: UnitGD, type: String, args: Array = []) -> void:
+	for _Unit in Units.all_units(Unit) + [Unit]:
+		var abilities: Array = onFindAbilities(_Unit, "OngoingAbility")
 		for ability in abilities:
-			if ability.onAuraCondition(Unit, type, args):
-				onTriggerAbilitySpectateDelay(_Unit, ability, ability.onAura)
+			if ability.onOngoingAbilityCondition(Unit, type, args):
+				onTriggerAbilitySpectateDelay(_Unit, ability, ability.onOngoingAbility)

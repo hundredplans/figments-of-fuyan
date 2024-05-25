@@ -4,7 +4,7 @@ var type: String = "Daze"
 const SCALE_MAX := Vector3(1.2, 1.2, 1.2)
 const SCALE_MIN := Vector3(0.8, 0.8, 0.8)
 const SCALE_DURATION: float = 2.6
-const STAGGER_ROTATION_SPEED: int = 15
+const DAZE_ROTATION_SPEED: int = 15
 
 func _ready() -> void:
 	onCreateScaleTween(SCALE_MAX)
@@ -15,4 +15,4 @@ func onCreateScaleTween(new_scale: Vector3) -> void:
 	ScaleTween.finished.connect(onCreateScaleTween.bind(SCALE_MAX if new_scale == SCALE_MIN else SCALE_MIN))
 
 func _process(delta):
-	rotation_degrees.y += STAGGER_ROTATION_SPEED * delta
+	rotation_degrees.y += DAZE_ROTATION_SPEED * delta

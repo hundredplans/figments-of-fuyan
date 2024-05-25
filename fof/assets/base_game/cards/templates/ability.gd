@@ -18,5 +18,4 @@ var VFX: VFXGD
 var LevelUI: LevelUIGD
 
 func onGainStats(Unit: UnitGD, stat_type: String, val: int, AppliedBy: AppliedByGD) -> void:
-	if val > 0: Unit.stats(stat_type, val, AppliedBy)
-	else: print_debug("You are gaining negative stats!")
+	Unit.stats(stat_type, val, AppliedBy)

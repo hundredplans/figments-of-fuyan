@@ -5,13 +5,11 @@ code = "// NOTE: Shader automatically converted from Godot Engine 4.2.1.stable's
 
 shader_type spatial;
 render_mode blend_mix,depth_draw_opaque,cull_back,diffuse_burley,specular_schlick_ggx,unshaded;
-
+uniform vec3 albedo_color: source_color;
 void vertex() {
-	VERTEX.x += sin(TIME * 2.0 + (VERTEX.y * 10.0)) * 0.02;
+	VERTEX.y += sin(TIME * 3.0 + (VERTEX.x * 15.0)) * 0.15;
 }
 
-void fragment() {
-	ALBEDO *= COLOR.rgb;
-	ALPHA = COLOR.a;
-}
-"
+void fragment(){
+	ALBEDO = albedo_color;
+}"

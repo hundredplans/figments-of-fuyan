@@ -278,12 +278,14 @@ func onUnitEntersVision(Unit: UnitGD, _Unit: UnitGD) -> void:
 		if Unit.finished_awakening:
 			AudioMaster.play_sfx("TrumpetKuba")
 		PlayerManager.on_enemy_unit_enters_vision(_Unit)
-	Combat.onAura(_Unit, "EnterVision")
+	Combat.onOngoingAbility(Unit, "EnterVision")
+	Combat.onOngoingAbility(_Unit, "EnterVision")
 	
 func onUnitExitsVision(Unit: UnitGD, _Unit: UnitGD) -> void:
 	if Unit.team == 0 and _Unit.team == 1:
 		PlayerManager.on_enemy_unit_exits_vision(_Unit)
-	Combat.onAura(_Unit, "ExitVision")
+	Combat.onOngoingAbility(Unit, "ExitVision")
+	Combat.onOngoingAbility(_Unit, "ExitVision")
 	
 func onEnemyDiscoveredClearUnitActions() -> void:
 	on_unit_travel_finished()
@@ -412,7 +414,7 @@ func on_death_finished(Unit: UnitGD) -> void:
 	match win_state:
 		0: 
 			Combat.onDeathAbilities(Deather, AppliedBy)
-			PlayerManager.onDeathFinished(Unit)
+			PlayerManager.onDeathFinished(Unit, AppliedBy)
 			GameEffects.onDeathFinished(Unit)
 			onUnitActionsFinished()
 		1: LevelUI.onWinGame()

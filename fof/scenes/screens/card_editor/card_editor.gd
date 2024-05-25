@@ -45,7 +45,5 @@ func _on_save_button_pressed():
 	if GameCard != null:
 		GameCard.base_card.eye = float(ModelArea.EyeControl.HeightLabel.text)
 		GameCard.base_card.top = float(ModelArea.TopControl.HeightLabel.text)
-		GameCard.base_card.weapon = float(ModelArea.WeaponControl.HeightLabel.text)
-		GameCard.base_card.weapon_offset = float(ModelArea.WeaponOffset.text)
 		GameCard.base_card.stat = float(ModelArea.StatControl.HeightLabel.text)
 		ResourceSaver.save(GameCard.base_card)

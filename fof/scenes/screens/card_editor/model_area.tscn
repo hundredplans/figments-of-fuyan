@@ -1,8 +1,7 @@
-[gd_scene load_steps=13 format=3 uid="uid://da04y8ex3ym7m"]
+[gd_scene load_steps=11 format=3 uid="uid://da04y8ex3ym7m"]
 
 [ext_resource type="Script" path="res://scenes/screens/card_editor/model_area.gd" id="1_7kkfb"]
 [ext_resource type="PackedScene" uid="uid://c42bnq7frgogc" path="res://assets/env/level_editor/height_control.tscn" id="1_x5ub3"]
-[ext_resource type="Theme" uid="uid://du2bpyvp41rdk" path="res://assets/UI/roboto/roboto20.tres" id="3_s4kxh"]
 [ext_resource type="PackedScene" uid="uid://60bl7vlw3efv" path="res://assets/base_game/oldcards/card_ui/default_model.glb" id="4_ny3xd"]
 [ext_resource type="PackedScene" uid="uid://bjppe5fo688y5" path="res://scenes/screens/card_editor/floating_model_ball.tscn" id="5_r8ovx"]
 
@@ -18,10 +17,6 @@ resource_local_to_scene = true
 no_depth_test = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lo7yk"]
-resource_local_to_scene = true
-no_depth_test = true
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fo2fn"]
 resource_local_to_scene = true
 no_depth_test = true
 
@@ -102,30 +97,6 @@ mouse_filter = 1
 color = Color(0.882353, 0, 0.811765, 1)
 label_name = "Stat"
 
-[node name="WeaponControl" parent="ModelViewer/SubViewport/HeightControls" instance=ExtResource("1_x5ub3")]
-unique_name_in_owner = true
-layout_mode = 1
-offset_left = 10.0
-offset_top = 395.0
-offset_right = 145.74
-offset_bottom = 417.388
-mouse_filter = 1
-color = Color(0.847059, 0.376471, 0, 1)
-label_name = "ATT"
-
-[node name="WeaponOffset" type="LineEdit" parent="ModelViewer/SubViewport/HeightControls/WeaponControl"]
-unique_name_in_owner = true
-layout_mode = 0
-offset_left = 150.0
-offset_top = -3.0
-offset_right = 250.0
-offset_bottom = 43.0
-mouse_filter = 1
-theme = ExtResource("3_s4kxh")
-text = "0.1"
-placeholder_text = "Offset"
-alignment = 1
-
 [node name="ModelWorld" type="Node3D" parent="ModelViewer/SubViewport"]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
@@ -156,12 +127,6 @@ unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 material = SubResource("StandardMaterial3D_lo7yk")
 color = Color(0.372549, 0.611765, 0, 1)
-
-[node name="WeaponArrow" parent="ModelViewer/SubViewport/ModelWorld/HeightTracker" instance=ExtResource("5_r8ovx")]
-unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-material = SubResource("StandardMaterial3D_fo2fn")
-color = Color(0.847059, 0.376471, 0, 1)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="ModelViewer/SubViewport/ModelWorld"]
 mesh = SubResource("PlaneMesh_13u3b")

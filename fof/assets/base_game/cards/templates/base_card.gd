@@ -18,8 +18,6 @@ extends FofInfoGD
 @export_range(1, 7) var ait: int
 @export_range(1, 7) var aia: int
 
-@export var weapon_offset: float = 0.1
-@export var weapon: float = 0.5
 @export var eye: float = 1.0
 @export var top: float = 1.5
 @export var stat: float = 2.0

@@ -70,8 +70,6 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	height = {
 		"top": base_card.top,
 		"eye": base_card.eye,
-		"weapon_offset": base_card.weapon_offset,
-		"weapon": base_card.weapon,
 		"stat": base_card.stat
 	}
 	
@@ -108,7 +106,7 @@ func onCreateAbilities() -> void:
 			if ability is ArmorGD:
 				onAddUnitFX("Armor", ability.armor)
 				
-			elif ability is TargetAbilityGD or ability is AuraGD: ability.setInfo(self)
+			elif ability is TargetAbilityGD or ability is OngoingAbilityGD: ability.setInfo(self)
 			
 func onAddUnitFX(type: String, charges: int = -1) -> void:
 	var info_fx: InfoFXGD = load(Units.LevelUI.UnitStatusOverlord.all_info_fx[type])
@@ -167,6 +165,7 @@ func stats(stat_type: String, val: int, AppliedBy := AppliedByGD.new("GameEvent"
 			stats_changed = "health"
 			health += val
 			
+	Units.Combat.onOngoingAbility(self, "ChangeStat", [AppliedBy, stats_changed])
 	var color: String = onFindStatColor(stats_changed, current_health, current_attack, current_speed)
 	if color != "NULL" and current_health > 0:
 		Units.LevelUI.UnitStatusOverlord.onUpdateStats(self, stats_changed.capitalize(), color)
@@ -330,7 +329,7 @@ func isHealable() -> bool:
 	return health < max_health
 
 func getAttackAnimation() -> String:
-	if Units.GameEffects.onGameFXExists(self, "AbilityActive"):
+	if Units.GameEffects.onGameFXExists(self, GameFXGD.ABILITY_ACTIVE):
 		return "AttackAbility"
 	return "Attack"
 	

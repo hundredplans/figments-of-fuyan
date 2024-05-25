@@ -1,13 +1,10 @@
 extends Control
 
-@onready var WeaponControl: Control = %WeaponControl
 @onready var EyeControl: Control = %EyeControl
 @onready var TopControl: Control = %TopControl
 @onready var StatControl: Control = %StatControl
 
 @onready var StatArrow: Node3D = %StatArrow
-@onready var WeaponOffset: Control = %WeaponOffset
-@onready var WeaponArrow: Node3D = %WeaponArrow
 @onready var EyeArrow: Node3D = %EyeArrow
 @onready var TopArrow: Node3D = %TopArrow
 @onready var Camera: Camera3D = %ModelCamera
@@ -38,15 +35,12 @@ func onCreateModel(_base_card: BaseCardGD) -> void:
 					btn.theme = _Roboto20
 					btn.pressed.connect(on_play_model_animation.bind(ani_player, ani))
 					
-					if ani == "Attack": btn.pressed.connect(onAttackAnimationPlayed)
 					ModelControls.add_child(btn)
 			onSetHeights()
 		
 func onSetHeights():
 	EyeArrow.position.y = base_card.eye
 	TopArrow.position.y = base_card.top
-	WeaponArrow.position.y = base_card.weapon
-	WeaponOffset.text = str(base_card.weapon_offset)
 	StatArrow.position.y = base_card.stat
 	
 	on_set_inital_height_controls()
@@ -93,32 +87,12 @@ var height_arrows: Array = []
 var height_controls: Array = []
 
 func _ready() -> void:
-	height_arrows = [EyeArrow, TopArrow, WeaponArrow, StatArrow]
-	height_controls = [EyeControl, TopControl, WeaponControl, StatControl]
+	height_arrows = [EyeArrow, TopArrow, StatArrow]
+	height_controls = [EyeControl, TopControl, StatControl]
 	on_set_inital_height_controls()
 	for i in range(height_controls.size()):
 		height_controls[i].GrabButton.button_down.connect(on_move_height_control.bind(height_controls[i], height_arrows[i]))
 		height_controls[i].GrabButton.button_up.connect(on_height_control_inactive)
-
-func onAttackAnimationPlayed() -> void:
-	var offset: float = float(WeaponOffset.text)
-	var pos: float = float(WeaponControl.HeightLabel.text)
-	if offset > 0.03:
-		var planes: Array = []
-		for i in range(2):
-			var csg := CSGSphere3D.new()
-			csg.radius = 0.05
-			
-			ModelWorld.add_child(csg)
-			csg.material = preload("res://assets/materials/on_top.tres")
-			planes.append(csg)
-			
-			csg.position.y = offset + pos if i == 0 else -offset + pos
-			csg.position.x -= 1.2
-			
-		await get_tree().create_timer(3).timeout
-		for plane in planes:
-			plane.queue_free()
 
 func on_play_model_animation(ani_player: AnimationPlayer, ani: String) -> void:
 	ani_player.play(ani)

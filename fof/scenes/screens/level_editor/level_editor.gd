@@ -1957,6 +1957,8 @@ func onBakeLevelPressed():
 			print(str(i) + "/" + str(s))
 		
 		tiles = tiles.filter(func(x: TileGD): return x != null)
+		for Tile in tiles: onSortTileCollisions(Tile, tiles)
+		
 		var positions: Array = tiles.map(func(x: TileGD): return x.onTTpos())
 		for Tile in tiles:
 			print(Tile.tile)
@@ -1971,6 +1973,18 @@ func onBakeLevelPressed():
 	else:
 		AudioMaster.play_sfx("UnconfirmDefault")
 
+func onSortTileCollisions(Tile: TileGD, tiles: Array) -> void: pass
+	#if Tile.tile.id != 0 and Tile.tile.type != 2:
+		#var adjacent_tiles: Array = getAdjacentTiles(Tile, tiles)
+		#for _Tile in adjacent_tiles: if _Tile.tile.type == Tile: _Tile
+
+func getAdjacentTiles(Tile: TileGD, tiles: Array) -> Array:
+	var keep_tiles: Array = []
+	for _Tile in tiles:
+		if Tile.w == _Tile.w:
+			var pos: Vector3 = Tile.tpos - _Tile.tpos
+			if ((abs(pos.x) + abs(pos.y) + abs(pos.z)) / 2) == 1: keep_tiles.append(_Tile)
+	return keep_tiles
 var _LevelTile: PackedScene = preload("res://scenes/screens/level_map/utility_nodes/tiles/level_tile.tscn")
 var item_properties: Array
 

@@ -1,81 +1,7 @@
 class_name GameStateGD
 extends Node
 
-var player_deck: Array = [
-		{"id": 7,
-	"tool_id": 0,
-	"effects": []
-	},
-		{"id": 8,
-	"tool_id": 0,
-	"effects": []
-	},
-		{"id": 9,
-	"tool_id": 0,
-	"effects": []
-	},
-		{"id": 10,
-	"tool_id": 0,
-	"effects": []
-	},
-		{"id": 11,
-	"tool_id": 0,
-	"effects": []
-	},
-		{"id": 12,
-	"tool_id": 0,
-	"effects": []
-	},
-		{"id": 13,
-	"tool_id": 0,
-	"effects": []
-	},
-		{"id": 14,
-	"tool_id": 0,
-	"effects": []
-	},
-		{"id": 15,
-	"tool_id": 0,
-	"effects": []
-	},
-	
-		{"id": 16,
-	"tool_id": 0,
-	"effects": []
-	},
-	
-		{"id": 17,
-	"tool_id": 0,
-	"effects": []
-	},
-	
-		{"id": 18,
-	"tool_id": 0,
-	"effects": []
-	},
-		{"id": 24,
-	"tool_id": 0,
-	"effects": []
-	},
-		{"id": 19,
-	"tool_id": 0,
-	"effects": []
-	},
-		{"id": 20,
-	"tool_id": 0,
-	"effects": []
-	},
-	
-		{"id": 21,
-	"tool_id": 0,
-	"effects": []
-	},
-	
-		{"id": 22,
-	"tool_id": 0,
-	"effects": []
-	},
-]
+var player_deck: Array = []
 
 var player_boons: Array = []
 var admin: bool = true
@@ -89,6 +15,13 @@ var hero_level: int = 0
 var hero_id: int = 0
 var gseed: int = 0
 
+func _ready(): ready_admin()
+func ready_admin():
+	player_deck.append({"id": 1, "tool_id": 0, "effects": []})
+	for i in range(6):
+		var random_unit_id: int = randi_range(7, 22)
+		player_deck.append({"id": random_unit_id, "tool_id": 0, "effects": []})
+
 func on_set_info(info: Dictionary) -> void:
 	save_file = info.save_file
 	area_info = Helper.getFofInfo(info.area_id, "area")
@@ -99,7 +32,7 @@ func on_set_info(info: Dictionary) -> void:
 	hero_level = info.hero_level
 	hero_id = info.hero_id
 	gseed = info.gseed
-	player_deck = info.player_deck
+	#player_deck = info.player_deck
 	
 func _queue_free() -> void:
 	on_save_game_state()

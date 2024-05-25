@@ -1,15 +1,8 @@
 extends WhenHealedGD
 
 func onWhenHealed() -> void:
-	pass
-	#if !GameEffects.onGameFXExists(Unit, "IdleAbility"):
-		#if is_visible: Unit.Model.on_play_animation("Ability")
-		#var a: Dictionary = {}
-		#a["AbilityActive"] = []
-		#a["AbilityActive"].append(GameEffects.onCreateTrigger("EndTurn", null, "RemoveFX"))
-		#a["AbilityActive"].append(GameEffects.onCreateTrigger("OnHit", Combat.onStagger, "RemoveFX"))
-		#
-		#a.ability = self
-		#var Trigger := TriggerGD.new(null, Unit, )
-		#var trigger: Dictionary = GameEffects.onCreateTrigger("NextTurn", GameEffects.onAddGameFX.bind(Unit, "AbilityActive", a, a.AbilityActive), "RemoveFX")
-		#GameEffects.onAddGameFX(Unit, "IdleAbility", a, [trigger])
+	if !GameEffects.onGameFXExists(Unit, GameFXGD.ABILITY_ACTIVE):
+		if is_visible: Unit.Model.on_play_animation("Ability")
+		var OnHit := TriggerGD.new(null, Unit, Combat.onStagger, TriggerGD.ON_HIT, TriggerGD.REMOVE_FX)
+		var a: Dictionary = {"ability": self}
+		GameEffects.onAddGameFX(Unit, GameFXGD.ABILITY_ACTIVE, a, [OnHit])

@@ -19,9 +19,9 @@ func on_recalculate_vision(Unit: UnitGD = null) -> void:
 	match vision_mode:
 		0: # Takes around 20-30 msec to complete
 			var og_unit_vision: Array = [] 
-			if Unit != null: 
-				Unit.onCircleRay()
+			if Unit != null:
 				og_unit_vision = Unit.visible_tiles.duplicate()
+				Unit.onCircleRay()
 			
 			visible_tiles += spawn_tiles.duplicate()
 			# Usually takes 10-30msec
@@ -53,7 +53,7 @@ func onCalculateVisionUpdate(Unit: UnitGD, og_unit_vision: Array) -> void:
 		for _Unit in Units.all_units(Unit):
 			var was_visible: bool = _Unit.Tile in og_unit_vision
 			var gain_visible: bool = _Unit.Tile in Unit.visible_tiles
-			if !(was_visible and gain_visible) or (was_visible and gain_visible):
+			if (was_visible and not gain_visible) or (gain_visible and not was_visible):
 				if was_visible: Units.onUnitExitsVision(Unit, _Unit)
 				elif gain_visible: Units.onUnitEntersVision(Unit, _Unit)
 
