@@ -17,6 +17,7 @@ var gseed: int = 0
 
 func _ready(): ready_admin()
 func ready_admin():
+	player_deck.append({"id": 1, "tool_id": 0, "effects": []})
 	for i in range(6):
 		var random_unit_id: int = randi_range(7, 22)
 		player_deck.append({"id": random_unit_id, "tool_id": 0, "effects": []})

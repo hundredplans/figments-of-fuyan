@@ -237,26 +237,27 @@ var past_path_info: Dictionary = {} # TileGD: [rot, [nums]]
 var past_path_counter: int = 0
 var height_adjacent_tiles: Array = []
 func onCircleRay() -> void:
-	
 	visible_tiles = []
 	_visible_tiles = {}
 	var tiles: Array = Tiles.onTilesInVisionRange(Tile, VISION_RANGE)
+	var units: Array = Units.all_units().filter(func(x: UnitGD): return x != self and x.Tile in tiles)
+	var collision_points: Array = []
 	
 	for _Tile in tiles:
-		if onRayTile(_Tile):
-			onAddTileToVisibleTiles(_Tile)
-	
-	var units: Array = Units.all_units().filter(func(x: UnitGD): return x != self and x.Tile in tiles and x.Tile not in visible_tiles)
+		for point in _Tile.collision_points:
+			collision_points.append(point)
+			
 	for Unit in units:
 		for point in Unit.Model.onGetAdjustedPoints():
-			VisionRaycast.target_position = point - VisionRaycast.global_position
-			VisionRaycast.force_raycast_update()
-			
-			if VisionRaycast.is_colliding():
-				var Collision: Node3D = VisionRaycast.get_collider().get_node("../../..")
-				if Collision == Unit.Model:
-					onAddTileToVisibleTiles(Unit.Tile)
-					break
+			collision_points.append(point)
+	
+	for point in collision_points:
+		VisionRaycast.target_position = point - VisionRaycast.global_position
+		VisionRaycast.force_raycast_update()
+		if VisionRaycast.is_colliding():
+			var Collision: Node3D = VisionRaycast.get_collider().get_node("../../../..")
+			if Collision is TileGD: onAddTileToVisibleTiles(Collision)
+			elif Collision is UnitGD: onAddTileToVisibleTiles(Collision.Tile)
 	
 	visible_tiles += Units.getCommutativeUnitsVision(self)
 	onUnitsHeightAdjacentTiles()
@@ -270,7 +271,7 @@ func onRayEnemyUnit(Unit: UnitGD, override: bool = false) -> bool:
 		
 		if VisionRaycast.is_colliding():
 			var Collision: Node3D = VisionRaycast.get_collider().get_node("../../..")
-			if Collision == Unit.Model or Collision == Unit.Tile: return true
+			if Collision == Unit.Model: return true
 	return false
 	
 func onRayTile(_Tile: TileGD) -> bool:
