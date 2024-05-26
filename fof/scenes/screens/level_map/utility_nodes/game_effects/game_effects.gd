@@ -23,7 +23,7 @@ func onAddGameFX(Unit: UnitGD, type: int, a: Dictionary, triggers: Array = []) -
 		GameFXGD.HELPFUL_HELMET: GameFX = onAddHelpfulHelmet(Unit, a)
 		GameFXGD.CHARMING_STANCE: GameFX = onAddCharmingStance(Unit, a)
 	if GameFX != null: GameFX.type = type
-		
+	
 func onAddBuffNextTurn(Unit: UnitGD, a: Dictionary, triggers: Array) -> GameFXGD:
 	var _GameFX := onFindFirstGameFX(Unit, GameFXGD.BUFF_NEXT_TURN)
 	if _GameFX == null or _GameFX.info.buff_info_array.stat != a.buff_info.stat:

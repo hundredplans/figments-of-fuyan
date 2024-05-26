@@ -34,6 +34,7 @@ func onOngoingAbility() -> void:
 		var _Unit: UnitGD = info[0]
 		if info[1]:
 			LevelUI.UnitStatusOverlord.onAddUnitFX(_Unit, "PalmfessorOngoingAbility", AppliedBy)
+			
 			onGainStats(_Unit, "attack", ATTACK, AppliedBy)
 			affected_units.append(_Unit)
 		else:

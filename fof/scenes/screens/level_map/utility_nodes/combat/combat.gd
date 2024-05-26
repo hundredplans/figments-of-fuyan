@@ -57,10 +57,11 @@ func onArrive(Unit: UnitGD) -> void:
 	for ability in abilities:
 		ability.setInfo(Unit)
 		onTriggerAbilitySpectateDelay(Unit, ability, ability.onArrive)
+	onOngoingAbility(Unit, "Arrive")
 	
 func onTargetAbility(Unit: UnitGD, ability: TargetAbilityGD, Tile: TileGD) -> void:
 	ability.setInfo(Unit, Tile)
-	onTriggerAbilitySpectateDelay(Unit, ability, ability.onTargetAbility)
+	onTriggerAbilitySpectateDelay(Unit if (!ability.teleport_to_target) else Units.unit_by_tile(Tile), ability, ability.onTargetAbility)
 	Units.PlayerManager._on_unit_deselected(Units.PlayerManager.UnitSelected)
 	ability.used = true
 	LevelUI.onUpdateTargetAbility(Unit, ability)
@@ -269,3 +270,10 @@ func onOngoingAbility(Unit: UnitGD, type: String, args: Array = []) -> void:
 		for ability in abilities:
 			if ability.onOngoingAbilityCondition(Unit, type, args):
 				onTriggerAbilitySpectateDelay(_Unit, ability, ability.onOngoingAbility)
+
+func onTeleport(Unit: UnitGD, Tile: TileGD) -> void:
+	Unit.position = Unit.Model.onCalculateEndPosition(Tile, 0)
+	Unit.occupy_tile(Tile)
+
+func onCocusPocus() -> void:
+	pass

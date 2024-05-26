@@ -98,3 +98,42 @@ func onCreateHelpfulHelmet(Unit: UnitGD) -> void:
 	Unit.UnitVFX.add_child(HelpfulHelmet)
 	HelpfulHelmet.type = "HelpfulHelmet"
 	HelpfulHelmet.position.y = Unit.height.stat + 0.1
+
+func onCreateCocusPocus(Unit: UnitGD) -> void:
+	var CocusPocus: Node3D = preload("res://scenes/screens/level_map/utility_nodes/vfx/ability_effects/cocus_pocus/cocus_pocus.tscn").instantiate()
+	Unit.UnitVFX.add_child(CocusPocus)
+	CocusPocus.type = "CocusPocus"
+	CocusPocus.position.y = Unit.height.stat + 0.85
+
+func onRemoveCocusPocus(Unit: UnitGD) -> void:
+	for child in Unit.UnitVFX.get_children():
+		if child.type == "CocusPocus":
+			child.queue_free()
+
+func onUpscaleCocusPocus(Unit: UnitGD, upscale: Vector3, duration: float, unit_size: float, delay_duration: float, callable: Callable) -> void:
+	for child in Unit.UnitVFX.get_children():
+		if child.type == "CocusPocus":
+			var ScaleTween := create_tween()
+			ScaleTween.tween_property(child, "scale", upscale, duration)
+			
+			var PosTween := create_tween()
+			PosTween.tween_property(child, "position:y", 0, duration)
+			
+			var ScaleUnitTween := create_tween()
+			ScaleUnitTween.tween_property(Unit.Model, "scale:y", unit_size, duration)
+			ScaleUnitTween.finished.connect(func(): await get_tree().create_timer(delay_duration).timeout; callable.call())
+			return
+
+func onDownscaleCocusPocus(Unit: UnitGD, duration: float, callable: Callable) -> void:
+	for child in Unit.UnitVFX.get_children():
+		if child.type == "CocusPocus":
+			var ScaleTween := create_tween()
+			ScaleTween.tween_property(child, "scale", Vector3.ZERO, duration)
+			
+			var PosTween := create_tween()
+			PosTween.tween_property(child, "position:y", Unit.height.stat + 0.85, duration)
+			
+			var ScaleUnitTween := create_tween()
+			ScaleUnitTween.tween_property(Unit.Model, "scale:y", 1, duration)
+			ScaleUnitTween.finished.connect(callable)
+			return

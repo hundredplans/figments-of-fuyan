@@ -3,10 +3,13 @@
 [ext_resource type="Script" path="res://assets/base_game/cards/cards/HocusPalmus/abilities/cocus_pocus.gd" id="1_p3jxm"]
 
 [resource]
+resource_local_to_scene = true
 script = ExtResource("1_p3jxm")
-ability_description = "[center][b]Heal the most injured ally on field [b][color=red][2] [img=14x14]res://assets/base_game/cards/game_card/art/bbcode/HEALTH.png[/img][/color][/b] and [b]TELEPORT[/b] them 
-to a [b][color=green]Spawn Tile[/color][/b][/center]"
-ability_name = ""
-max_charges = -1
-ability_index = -1
-delay = 2.0
+HEAL = 2
+ability_description = "[center]Heal the most injured ally on field [b][color=red][2] [img=14x14]res://assets/base_game/cards/game_card/art/bbcode/HEALTH.png[/img][/color][/b] and [b]TELEPORT[b] them to a[b] [color=green]Spawn Tile[/color][/b]"
+teleport_to_target = true
+global_camera = true
+ability_name = "Cocus Pocus"
+max_charges = 1
+ability_index = 20
+delay = 3.0

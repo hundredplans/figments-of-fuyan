@@ -185,6 +185,14 @@ func onEnterTargetAbilityMode(Unit: UnitGD, ability: TargetAbilityGD) -> void:
 	onCreateAbilityRange(Unit, ability)
 	TAbilityUnit = Unit
 	TAbility = ability
+	
+	if ability.global_camera and SpectateCamera.is_unit_camera:
+		SpectateCamera.onChangeCameraMode(false)
+		var _Unit: UnitGD = Units.unit_by_tile(ability.tiles["affect"][0])
+		
+		for key in SpectateCamera.spectates['Ally']:
+			if SpectateCamera.spectates['Ally'][key].object == _Unit:
+				SpectateCamera.onCameraStartSpectate(SpectateCamera.spectates['Ally'][key])
 
 func onExitTargetAbilityMode() -> void: # if unit selected null doesnt reupdate, otherwise creates tiles
 	if TAbilityUnit != null:
@@ -193,6 +201,11 @@ func onExitTargetAbilityMode() -> void: # if unit selected null doesnt reupdate,
 			onSetMovementRange(UnitSelected)
 			
 	TAbilityUnit = null
+	
+	
+	if TAbility.global_camera and !SpectateCamera.is_unit_camera:
+		SpectateCamera.onChangeCameraMode(true)
+	
 	TAbility = null
 	
 func onCreateAbilityRange(_Unit: UnitGD, ability: TargetAbilityGD) -> void:
