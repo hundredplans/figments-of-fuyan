@@ -439,7 +439,7 @@ func on_start_new_game(hid: int, id: int, gseed: int) -> void:
 	GameState.on_load_new_area(1)
 	GameState.gseed = gseed
 	GameState.hero_id = hid
-	GameState.on_add_card_to_player_deck(id)
+	#GameState.on_add_card_to_player_deck(id) #TODO DONT KEEP THIS THE SAME!!!
 	GameState.on_create_new_save_file()
 	
 func on_load_game_state(save_file: int) -> void:

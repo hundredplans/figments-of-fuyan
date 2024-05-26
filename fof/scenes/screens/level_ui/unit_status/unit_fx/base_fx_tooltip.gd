@@ -1,6 +1,7 @@
 extends Control
 
-func setTooltip(text: String) -> void:
+func setTooltip(text: String, charges: int) -> void:
+	if charges != -1: text = text.replace("[X]", '[' + str(charges) + ']')
 	$Label.text = text
 
 func setPosition() -> void:

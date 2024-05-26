@@ -24,7 +24,7 @@ func _on_mouse_entered():
 		await get_tree().create_timer(tooltip_delay).timeout
 		if mouse_state and tooltip == null:
 			tooltip = preload("res://scenes/screens/level_ui/unit_status/unit_fx/base_fx_tooltip.tscn").instantiate()
-			tooltip.setTooltip(info_fx.tooltip)
+			tooltip.setTooltip(info_fx.tooltip, info_fx.charges)
 			add_child(tooltip)
 			tooltip.setPosition()
 
