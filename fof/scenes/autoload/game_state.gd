@@ -19,7 +19,7 @@ func _ready(): ready_admin()
 func ready_admin():
 	player_deck.append({"id": 1, "tool_id": 0, "effects": []})
 	for i in range(6):
-		var random_unit_id: int = randi_range(7, 22)
+		var random_unit_id: int = randi_range(7, 24)
 		player_deck.append({"id": random_unit_id, "tool_id": 0, "effects": []})
 
 func on_set_info(info: Dictionary) -> void:

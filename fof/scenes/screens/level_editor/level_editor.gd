@@ -1951,13 +1951,13 @@ func onBakeLevelPressed():
 		var s: int = level_info.tiles.size()
 		var i: int = 0
 		for tile_info in level_info.tiles:
-			tiles.append(on_create_tile(tile_info, LoadedLevel, level_info.area.id))
+			tiles.append(on_create_tile(tile_info, LoadedLevel))
 			await get_tree().create_timer(0.001).timeout
 			i += 1
 			print(str(i) + "/" + str(s))
 		
 		tiles = tiles.filter(func(x: TileGD): return x != null)
-		for Tile in tiles: onSortTileCollisions(Tile, tiles)
+		for Tile in tiles: onSortTileCollisions(Tile, tiles, level_info.area.id)
 		
 		var positions: Array = tiles.map(func(x: TileGD): return x.onTTpos())
 		for Tile in tiles:
@@ -1973,10 +1973,48 @@ func onBakeLevelPressed():
 	else:
 		AudioMaster.play_sfx("UnconfirmDefault")
 
-func onSortTileCollisions(Tile: TileGD, tiles: Array) -> void: pass
-	#if Tile.tile.id != 0 and Tile.tile.type != 2:
-		#var adjacent_tiles: Array = getAdjacentTiles(Tile, tiles)
-		#for _Tile in adjacent_tiles: if _Tile.tile.type == Tile: _Tile
+func onSortTileCollisions(Tile: TileGD, tiles: Array, area: int) -> void:
+	for obj_name in TILE_OBJECT_NAMES:
+		var scene_path: String = "null"
+		match obj_name:
+			"tile": scene_path = Helper.tid_to(Tile[obj_name].id, area, Tile[obj_name].type)
+			"wall": scene_path = Helper.wid_to(Tile[obj_name].id, area, Tile[obj_name].type)
+			_: scene_path = Helper.editor_id_to(Helper.TYPE_TO_BTAB[obj_name], Tile[obj_name].id, Tile[obj_name].type)
+	
+		if scene_path != "null":
+			match obj_name:
+				"wall":
+					var packed_wall: PackedScene = load("res://assets/models/walls/" + scene_path + ".tscn")
+					for n in range(4 - Tile['wall'].tile_wall):
+						var scene: Node3D = packed_wall.instantiate()
+						Tile.ModelManager.add_child(scene)
+						scene.rotation_degrees.y = Tile['wall'].rotation * 60
+						scene.position.y = (n * 0.3) + 0.3
+						if n == 1: onCreateCollisionPoints(Tile, tiles, scene.global_position, Tile['wall'].rotation * 60, scene.collision_points, 'wall')
+				_: 
+					if !(obj_name == "obj" and Tile['obj'].id in range(1, 5)):
+						var scene: Node3D = load("res://assets/models/" + TILE_OBJECT_NAME_TO_FULL_NAME[obj_name] + "/" + scene_path + ".tscn").instantiate()
+						Tile.ModelManager.add_child(scene)
+						scene.position.y = 0.0 if obj_name == "tile" else 0.3
+						scene.rotation_degrees.y = Tile[obj_name].rotation * 60
+						onCreateCollisionPoints(Tile, tiles, scene.global_position, Tile[obj_name].rotation * 60,  scene.collision_points, obj_name)
+		
+	for grandchild in Tile.ModelManager.get_children():
+		grandchild.owner = Tile.owner
+
+func onCreateCollisionPoints(Tile: TileGD, tiles: Array, pos: Vector3, p_rot: int, points: Array, type: String) -> void:
+	if points.size() > 0:
+		match type:
+			"tile":
+				var match_type: int = Tile['tile'].type
+				if match_type != 2 and getAdjacentTiles(Tile, tiles).all(func(x: TileGD): return x['tile'].type == match_type):
+					for i in range(6 + int(Tile.w == 0)): points.remove_at(7)
+			"wall":
+				if Tile['wall'].type == 2 and getAdjacentTiles(Tile, tiles).all(func(x: TileGD): return x['wall'].type == 2):
+					points = []
+			
+		for point in points:
+			Tile.collision_points.append(getRotationPoint(point, p_rot) + pos)
 
 func getAdjacentTiles(Tile: TileGD, tiles: Array) -> Array:
 	var keep_tiles: Array = []
@@ -1996,7 +2034,7 @@ var TILE_OBJECT_NAME_TO_FULL_NAME: Dictionary = {
 	"wall": "walls",
 }
 var TILE_OBJECT_NAMES: Array = ["tile", "wall", "obj", "tdeco", "wdeco"]
-func on_create_tile(tile_info: Dictionary, owner_node: Node3D, area: int) -> TileGD:
+func on_create_tile(tile_info: Dictionary, owner_node: Node3D) -> TileGD:
 	if TILE_OBJECT_NAMES.any(func(x: String): return tile_info[x].id > 0):
 		var LevelTile: Node3D = _LevelTile.instantiate()
 	
@@ -2016,40 +2054,6 @@ func on_create_tile(tile_info: Dictionary, owner_node: Node3D, area: int) -> Til
 			LevelTile[obj_name] = tile_info[obj_name]
 			LevelTile.w = tile_info.position[3]
 			LevelTile.tpos = Vector3(tile_info.position[0], tile_info.position[1], tile_info.position[2])
-			
-			var tile_object_name: String = "null"
-			match obj_name:
-				"tile": tile_object_name = Helper.tid_to(tile_info[obj_name].id, area, tile_info[obj_name].type)
-				"wall": tile_object_name = Helper.wid_to(tile_info[obj_name].id, area, tile_info[obj_name].type)
-				_: tile_object_name = Helper.editor_id_to(Helper.TYPE_TO_BTAB[obj_name], tile_info[obj_name].id, tile_info[obj_name].type)
-				
-			if tile_object_name != "null":
-				if obj_name != "wall":
-					if !(obj_name == "obj" and LevelTile[obj_name].id in range(1, 5)):
-						var object_scene: Node3D = load("res://assets/models/" + TILE_OBJECT_NAME_TO_FULL_NAME[obj_name] + \
-						"/" + tile_object_name + ".tscn").instantiate()
-						object_scene.position.y = 0.0 if obj_name == "tile" else 0.3
-						var point_rot: int = tile_info[obj_name].rotation * 60
-						object_scene.rotation_degrees.y = point_rot
-						LevelTile.ModelManager.add_child(object_scene)
-						for point in object_scene.collision_points: 
-							LevelTile.collision_points.append(getRotationPoint(point, point_rot) + object_scene.global_position)
-				else:
-					LevelTile[obj_name].model = []
-					var object_scene: Resource = load("res://assets/models/walls/" + tile_object_name + ".tscn")
-					for n in range(4 - tile_info.wall.tile_wall):
-						var object_instance: Node3D = object_scene.instantiate()
-						LevelTile.ModelManager.add_child(object_instance)
-						var point_rot: int = tile_info[obj_name].rotation * 60
-						object_instance.rotation_degrees.y = point_rot
-						object_instance.position.y = (n * 0.3) + 0.3
-						
-						if n == 1:
-							for point in object_instance.collision_points: 
-								LevelTile.collision_points.append(getRotationPoint(point, point_rot) + object_instance.global_position)
-		
-		for grandchild in LevelTile.ModelManager.get_children().filter(func(x: Node3D): return x.is_inside_tree() and !x.is_queued_for_deletion()):
-			grandchild.owner = owner_node
 		return LevelTile
 	return null
 

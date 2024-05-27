@@ -173,11 +173,11 @@ func onHeal(healInfo: HealInfoGD) -> bool:
 	return false
 
 func onPlayerPhaseStart() -> void:
-	onRecalculateTargetAbilities()
 	for Unit in Units.on_units():
 		var abilities: Array = onFindAbilities(Unit, "TargetAbility")
 		for ability in abilities:
 			ability.used = false
+	onRecalculateTargetAbilities()
 
 func onRecalculateTargetAbilities() -> void:
 	for Unit in Units.on_units():
@@ -267,10 +267,13 @@ func onAddToHealInfoArray(heal_info_array: HealInfoArrayGD, heal_info: HealInfoG
 
 func onOngoingAbility(Unit: UnitGD, type: String, args: Array = []) -> void:
 	for _Unit in Units.all_units(Unit) + [Unit]:
-		var abilities: Array = onFindAbilities(_Unit, "OngoingAbility")
-		for ability in abilities:
-			if ability.onOngoingAbilityCondition(Unit, type, args):
-				onTriggerAbilitySpectateDelay(_Unit, ability, ability.onOngoingAbility)
+		onOngoingAbilityUnit(Unit, _Unit, type, args)
+
+func onOngoingAbilityUnit(Unit: UnitGD, _Unit: UnitGD, type: String, args: Array = []) -> void:
+	var abilities: Array = onFindAbilities(_Unit, "OngoingAbility")
+	for ability in abilities:
+		if ability.onOngoingAbilityCondition(Unit, type, args):
+			onTriggerAbilitySpectateDelay(_Unit, ability, ability.onOngoingAbility)
 
 func onTeleport(Unit: UnitGD, Tile: TileGD) -> void:
 	Unit.position = Unit.Model.onCalculateEndPosition(Tile, 0)

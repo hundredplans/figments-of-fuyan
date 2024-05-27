@@ -59,7 +59,7 @@ func onChaseEnemy(Unit: UnitGD, visible_enemies: Array, old_paths: Dictionary) -
 		else:
 			var old_speed: int = Unit.speed
 			Unit.speed = 5
-			Tiles.onCreateMovementPaths(Unit, "UnitVision")
+			Tiles.onCreateMovementPaths(Unit, "EnemyVision")
 			Unit.speed = old_speed
 			if EnemyUnit.Tile in Tiles.movement_paths.keys():
 				Tiles.movement_paths[EnemyUnit.Tile].size = Unit.speed

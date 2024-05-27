@@ -45,9 +45,9 @@ func setOutline(mat: Material) -> void:
 	if !types[0].model == null:
 		types[0].model.mesh.set_surface_override_material(1, mat)
 
-#func _ready() -> void:
-	#for point in collision_points:
-		#var t = preload("res://assets/models/collision_point.tscn").instantiate()
-		#add_child(t)
-		#t.global_position = point
+func _ready() -> void:
+	for point in collision_points:
+		var t = preload("res://assets/models/collision_point.tscn").instantiate()
+		add_child(t)
+		t.global_position = point
 			

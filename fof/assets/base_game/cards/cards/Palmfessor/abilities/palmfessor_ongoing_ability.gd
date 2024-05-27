@@ -9,7 +9,7 @@ func UnitDeath() -> bool: # has to unapply buff, which will in turn apply any ot
 	return false
 	
 func EnterVision() -> bool: # check if the new unit has to be buffed
-	if TriggerUnit.attack == ATTACK_TO_BUFF and TriggerUnit != Unit and TriggerUnit.team == 0 and TriggerUnit not in affected_units:
+	if TriggerUnit.attack == ATTACK_TO_BUFF and TriggerUnit != Unit and TriggerUnit.team == Unit.team and TriggerUnit not in affected_units:
 		trigger_info.append([TriggerUnit, true])
 		return true
 	return false
@@ -22,7 +22,7 @@ func ExitVision() -> bool: # debuff the unit if it's already been buffed
 	
 func ChangeStat(AppliedBy: AppliedByGD, stat: String) -> bool: # weird one, fucks with debuffs and buffs, has to not trigger when palmfessor applies buff?
 	if stat == "attack" and AppliedBy.Applier != Unit and TriggerUnit != Unit\
-	and TriggerUnit.Tile in Unit.visible_tiles:
+	and TriggerUnit.Tile in Unit.visible_tiles and TriggerUnit.team == Unit.team:
 		if TriggerUnit in affected_units: trigger_info.append([TriggerUnit, false])
 		elif TriggerUnit.attack == ATTACK_TO_BUFF: trigger_info.append([TriggerUnit, true])
 		return true
@@ -34,7 +34,6 @@ func onOngoingAbility() -> void:
 		var _Unit: UnitGD = info[0]
 		if info[1]:
 			LevelUI.UnitStatusOverlord.onAddUnitFX(_Unit, "PalmfessorOngoingAbility", AppliedBy)
-			
 			onGainStats(_Unit, "attack", ATTACK, AppliedBy)
 			affected_units.append(_Unit)
 		else:

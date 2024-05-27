@@ -316,7 +316,7 @@ func onCreateMovementPaths(Unit: UnitGD, type: String = "Default") -> void:
 	var tiles: Array = []
 	match type:
 		"Default": tiles = get_children()
-		"UnitVision": tiles = Unit.visible_tiles
+		"EnemyVision": tiles = Vision.enemy_vision
 		
 	movement_paths = {"tiles": []}
 	var astar := AStar3D.new()

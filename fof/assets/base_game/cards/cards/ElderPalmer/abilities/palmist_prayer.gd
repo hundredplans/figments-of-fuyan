@@ -6,7 +6,7 @@ func onTargetAbilityCondition() -> void:
 	tiles = {"range": [], "affect": []}
 	if Units.on_units(Unit.team, "Enemy").any(func(x: UnitGD): return x.Tile in Unit.visible_tiles):
 		tiles["range"] = Unit.getVisibleTiles()
-		tiles["affect"] = Unit.visible_tiles.filter(func(x: TileGD): return Units.unit_by_tile_team_bool(x, Unit.team))
+		tiles["affect"] = tiles["range"].filter(func(x: TileGD): return Units.unit_by_tile_team_bool(x, Unit.team))
 		
 func onTargetAbility() -> void:
 	var AppliedBy := AppliedByGD.new("Ability", Unit)

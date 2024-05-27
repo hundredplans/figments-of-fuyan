@@ -64,7 +64,7 @@ func on_start_phase_start() -> void:
 	PlayerManager.SpectateCamera = SpectateCamera
 	
 	var enemy_tiles: Array = Tiles.on_is_type_get_tiles("Enemy", "obj")
-	var allowed_spawns: Array = range(7, 23) + range(24, 25)
+	var allowed_spawns: Array = range(7, 25)
 	for Tile in enemy_tiles:
 		on_unit_awakened(allowed_spawns[randi() % allowed_spawns.size()], 0, [], 1, Tile.obj.rotation, Tile)
 func on_player_phase_start() -> void:
@@ -278,14 +278,14 @@ func onUnitEntersVision(Unit: UnitGD, _Unit: UnitGD) -> void:
 		if Unit.finished_awakening:
 			AudioMaster.play_sfx("TrumpetKuba")
 		PlayerManager.on_enemy_unit_enters_vision(_Unit)
-	Combat.onOngoingAbility(Unit, "EnterVision")
-	Combat.onOngoingAbility(_Unit, "EnterVision")
+	Combat.onOngoingAbilityUnit(Unit, _Unit, "EnterVision")
+	Combat.onOngoingAbilityUnit(_Unit, Unit, "EnterVision")
 	
 func onUnitExitsVision(Unit: UnitGD, _Unit: UnitGD) -> void:
 	if Unit.team == 0 and _Unit.team == 1:
 		PlayerManager.on_enemy_unit_exits_vision(_Unit)
-	Combat.onOngoingAbility(Unit, "ExitVision")
-	Combat.onOngoingAbility(_Unit, "ExitVision")
+	Combat.onOngoingAbilityUnit(Unit, _Unit, "ExitVision")
+	Combat.onOngoingAbilityUnit(_Unit, Unit, "ExitVision")
 	
 func onEnemyDiscoveredClearUnitActions() -> void:
 	on_unit_travel_finished()

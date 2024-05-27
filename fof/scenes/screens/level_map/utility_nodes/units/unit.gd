@@ -166,7 +166,7 @@ func stats(stat_type: String, val: int, AppliedBy := AppliedByGD.new("GameEvent"
 			stats_changed = "health"
 			health += val
 			
-	Units.Combat.onOngoingAbility(self, "ChangeStat", [AppliedBy, stats_changed])
+	
 	var color: String = onFindStatColor(stats_changed, current_health, current_attack, current_speed)
 	if color != "NULL" and current_health > 0:
 		Units.LevelUI.UnitStatusOverlord.onUpdateStats(self, stats_changed.capitalize(), color)
@@ -180,7 +180,7 @@ func stats(stat_type: String, val: int, AppliedBy := AppliedByGD.new("GameEvent"
 				"attack": Units.VFX.onCreateStatParticle(attack - current_attack, "attack", Tile, y_offset)
 				"speed": Units.VFX.onCreateStatParticle(speed - current_speed, "speed", Tile, y_offset)
 				"heal": Units.VFX.onCreateStatParticle(health - current_health, "heal", Tile, y_offset)
-			
+	Units.Combat.onOngoingAbility(self, "ChangeStat", [AppliedBy, stats_changed])
 func onFindStatColor(stat_changed: String, chp: int = -1, catt: int = -1, cspd: int = -1) -> String:
 	var color := "BASE"
 	match stat_changed:

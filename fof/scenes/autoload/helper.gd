@@ -324,7 +324,7 @@ var _id_to: Array = [
 	["null", "ground", "_hover", "water/shallow_water", "water/deep_water", "_default_tile", "palms/sand_tile", "palms/beach_tile", "palms/sand_road_tile"],
 	
 	["null", "spawns/spawn_enemy", "spawns/spawn_ally", "spawns/spawn_neutral", 
-	"spawns/spawn_trinket", ],
+	"spawns/spawn_trinket"],
 	
 	["null", "wall", "wooden_wall"],
 	
