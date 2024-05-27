@@ -53,16 +53,25 @@ var invisible_movement_tracker: Array = []
 func onChaseEnemy(Unit: UnitGD, visible_enemies: Array, old_paths: Dictionary) -> void:
 	for EnemyUnit in visible_enemies:
 		if EnemyUnit.Tile in Tiles.movement_paths.keys(): # Directly chase onto tile
-			onChosenPathSelected(Unit, Tiles.movement_paths[EnemyUnit.Tile])
-			return
-		else:
-			Tiles.onCreateMovementPaths(Unit, "AllyVision")
-			if EnemyUnit.Tile in Tiles.movement_paths.keys():
+			if isPathSafe(Tiles.movement_paths[EnemyUnit.Tile]):
 				onChosenPathSelected(Unit, Tiles.movement_paths[EnemyUnit.Tile])
 				return
+		else:
+			var old_speed: int = Unit.speed
+			Unit.speed = 5
+			Tiles.onCreateMovementPaths(Unit, "UnitVision")
+			Unit.speed = old_speed
+			if EnemyUnit.Tile in Tiles.movement_paths.keys():
+				Tiles.movement_paths[EnemyUnit.Tile].size = Unit.speed
+				if isPathSafe(Tiles.movement_paths[EnemyUnit.Tile]):
+					onChosenPathSelected(Unit, Tiles.movement_paths[EnemyUnit.Tile])
+					return
 				
 	Tiles.movement_paths = old_paths
 	onChooseRandomMovementPath(Unit)
+
+func isPathSafe(tile_path: Dictionary) -> bool:
+	return tile_path['types'].all(func(x: Variant): return x.x != 4)
 
 func onChooseRandomMovementPath(Unit: UnitGD) -> void:
 	var movement_paths: Array = []
@@ -70,6 +79,7 @@ func onChooseRandomMovementPath(Unit: UnitGD) -> void:
 		if typeof(key) != TYPE_STRING and Tiles.movement_paths[key].size == Unit.speed:
 			movement_paths.append(Tiles.movement_paths[key])
 	
+	movement_paths = movement_paths.filter(isPathSafe)
 	if movement_paths.size() > 0:
 		onChosenPathSelected(Unit, movement_paths[randi() % movement_paths.size()])
 	else: onMoveNextAIUnit()

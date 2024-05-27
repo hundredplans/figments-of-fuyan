@@ -202,13 +202,14 @@ func onTilePressed() -> void:
 		if LevelMap.action_lock.is_empty() and "TargetAffect" in active_tile.tile_state:
 			onTargetAffectPressed()
 		
-		elif Unit != null:
+		
+		if LevelMap.action_lock.is_empty() and "PathHovered" in active_tile.tile_outlines: 
+			on_begin_unit_movement()
+			
+		elif Unit != null and Unit.Tile in Vision.ally_vision:
 			if "EnemyInRange" not in active_tile.tile_outlines:
 				Units.PlayerManager.on_occupied_tile_inspected(active_tile)
 			elif LevelMap.action_lock.is_empty(): on_begin_unit_movement()
-			
-		elif LevelMap.action_lock.is_empty() and "PathHovered" in active_tile.tile_outlines: 
-			on_begin_unit_movement()
 			
 		elif LevelMap.action_lock == "SpawnVision" and on_find_tile_primary_type(active_tile) == "Spawn":
 			VFX.onRemoveSpawnParticle(active_tile)
@@ -268,6 +269,9 @@ func onSetupTiles() -> void:
 			else: Tile["wall"].model.append(model)
 		
 		setTileOutline(Tile, "")
+		if Tile.solid_status == 1:
+			for child in Tile.ModelManager.get_children().filter(func(x: Node3D): return x.type not in ["tile", "wall"]):
+				child.body.collision_layer = 16
 	
 func onConvertMultiTilePositions() -> void:
 	for Tile in get_children():
@@ -312,13 +316,13 @@ func onCreateMovementPaths(Unit: UnitGD, type: String = "Default") -> void:
 	var tiles: Array = []
 	match type:
 		"Default": tiles = get_children()
-		"AllyVision": tiles = Vision.ally_vision
+		"UnitVision": tiles = Unit.visible_tiles
 		
 	movement_paths = {"tiles": []}
 	var astar := AStar3D.new()
-	var _enemy_tiles: Array = Units.on_units(Unit.team, "Enemy").filter(func(x: UnitGD): return tile_distance(x.Tile, Unit.Tile) <= Unit.speed + 1).map(func(x: UnitGD): return x.Tile)
+	var _enemy_tiles: Array = Units.on_units(Unit.team, "Enemy").filter(func(x: UnitGD): return x.Tile in Vision.ally_vision and tile_distance(x.Tile, Unit.Tile) <= Unit.speed + 1).map(func(x: UnitGD): return x.Tile)
 	var _in_range_tiles: Array = all_in_range(Unit.Tile, Unit.speed, true, tiles).filter(func(x: TileGD): return x.solid_status == 0)
-	for Tile in Units.all_units().map(func(x: UnitGD): return x.Tile): _in_range_tiles.erase(Tile)
+	for Tile in Units.all_units().filter(func(x: UnitGD): return x.Tile in Vision.ally_vision).map(func(x: UnitGD): return x.Tile): _in_range_tiles.erase(Tile)
 	
 	var full_tiles: Array = onRemoveTilesBlockedByHeight(_enemy_tiles + _in_range_tiles, Unit)
 	full_tiles.append(Unit.Tile)
@@ -332,7 +336,7 @@ func onCreateMovementPaths(Unit: UnitGD, type: String = "Default") -> void:
 		for _Tile in tiles_by_adjacent[Tile]:
 			var EnemyUnit: UnitGD = Units.unit_by_tile(_Tile)
 			var hdiff: int = (_Tile.w * 2) + int(is_ramp_tile(_Tile)) - ((Tile.w * 2) + int(is_ramp_tile(Tile)))
-			if EnemyUnit != null:
+			if EnemyUnit != null and EnemyUnit.Tile in Vision.ally_vision:
 				if EnemyUnit.team != Unit.team and !Combat.isStaggered(Unit):
 					var enemy_low_point: float = getUnitAdjustedHeight(EnemyUnit.Tile)
 					var enemy_high_point: float = enemy_low_point + EnemyUnit.height.top
@@ -342,7 +346,9 @@ func onCreateMovementPaths(Unit: UnitGD, type: String = "Default") -> void:
 					if hdiff == 0 or (enemy_low_point <= your_weapon_low_point and your_weapon_low_point <= enemy_high_point) or\
 					(enemy_low_point <= your_weapon_high_point and your_weapon_high_point <= enemy_high_point):
 						on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(1, 0))
-			elif (_Tile.obj.id in is_stair_object or _Tile.tile.type == 2):  # Move to ramp
+				continue
+					
+			if (_Tile.obj.id in is_stair_object or _Tile.tile.type == 2):  # Move to ramp
 				if on_can_ramp_connect(Tile, _Tile, hdiff):
 					on_connect_points(astar, movement_types, Tile, _Tile, Vector2i(2, hdiff))
 			elif (Tile.obj.id in is_stair_object or Tile.tile.type == 2): # start on ramp
@@ -392,7 +398,7 @@ func onCalculateOptimalPath(Tile: TileGD, Unit: UnitGD, astar: AStar3D, movement
 	for i in range(size):
 		if i > 0 and i == size - 1:
 			var EnemyUnit: UnitGD = Units.unit_by_tile(tile_path[i])
-			if EnemyUnit != null:
+			if EnemyUnit != null and EnemyUnit.Tile in Vision.ally_vision:
 				var id: int = tile_path[i].get_instance_id()
 				for point in astar.get_point_connections(id):
 					if point != tile_path[i - 1].get_instance_id():
@@ -516,9 +522,7 @@ func setTileOutline(Tile: TileGD, type: String, is_remove: bool = false) -> void
 				0: highest = "AllyInspected"
 				1: highest = "EnemyInspected"
 	Tile.setOutline(OUTLINE_INFO[highest][1])
-	
-	if highest == "PathHovered":
-		Tile.Effects.onManageHeightDropLabel(Units.PlayerManager.UnitSelected)
+	Tile.Effects.onManageHeightDropLabel(Units.PlayerManager.UnitSelected)
 
 var path_hovered_info: Dictionary = {"tiles": [], "size": 0}
 func on_path_hovered_tile_selected(Tile: TileGD) -> void:

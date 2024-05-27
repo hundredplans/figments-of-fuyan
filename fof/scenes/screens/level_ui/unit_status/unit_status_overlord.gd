@@ -204,7 +204,11 @@ func onAddUnitFX(Unit: UnitGD, type: String, AppliedBy := AppliedByGD.new()) -> 
 	info_fx.Unit = AppliedBy.Applier
 	for UnitStatus in onFindUnitStatus(Unit):
 		var base_fx: Control = UnitStatus.onAddUnitFX(info_fx)
-		base_fx.hover_unit_pressed.connect(LevelUI.onSpectateEnemyOrAlly)
+		base_fx.hover_unit_pressed.connect(onHoverUnitPressed)
+	
+func onHoverUnitPressed(Unit: UnitGD) -> void:
+	if Unit != null and Unit in Vision.ally_vision:
+		LevelUI.onSpectateEnemyOrAlly(Unit)
 	
 func onAddAbilityActiveFX(Unit: UnitGD, type: String, _AppliedBy := AppliedByGD.new()) -> void:
 	if all_info_fx.has(type):

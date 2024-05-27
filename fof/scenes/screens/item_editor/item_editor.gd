@@ -199,14 +199,10 @@ func create_tile(xy: Vector3) -> Node3D:
 func on_tile_mouse_entered(tile: Node3D) -> void:
 	if !(tile.tile.position.x == 0 and tile.tile.position.y == 0 and tile.tile.position.z == 0) and SelectionBox == null and !selected_tiles:
 		if !blockers.any(func(x: Rect2): return x.has_point(get_viewport().get_mouse_position())):
-			if tile not in enabled_tiles:
-				tile.get_node("Tile").add_child(default_tile.instantiate())
 			active_tile = tile
 	
 func on_tile_mouse_exited(tile: Node3D) -> void:
 	if !(tile.tile.position.x == 0 and tile.tile.position.y == 0 and tile.tile.position.z == 0) and SelectionBox == null and !selected_tiles:
-		if tile not in enabled_tiles:
-			for child in tile.get_node("Tile").get_children(): child.queue_free()
 		active_tile = null
 func _queue_free() -> void:
 	_on_save_button_pressed()

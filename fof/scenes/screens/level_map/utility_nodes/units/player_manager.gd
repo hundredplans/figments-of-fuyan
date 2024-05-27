@@ -64,6 +64,7 @@ func on_pass_unit_turn() -> void:
 			LevelUI.on_pass_unit_turn_button_state(true)
 			LevelMap.on_advance_game_phase()
 		elif LevelMap.game_phase == "PlayerPhase":
+			if ActiveUnit == UnitSelected: _on_unit_deselected(ActiveUnit)
 			SpectateCamera.onSpectate(Units.onFindClosestUnitFromUnits(ActiveUnit, unpassed_turns))
 			ActiveUnit = null
 func on_player_phase_start() -> void:

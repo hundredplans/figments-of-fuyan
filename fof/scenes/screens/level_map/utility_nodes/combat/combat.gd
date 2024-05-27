@@ -144,6 +144,7 @@ func onDMG(Damagee: UnitGD, AppliedBy: AppliedByGD, damage: int) -> DMGInfoGD:
 				GameEffects.onTriggerUnitGameFX(Attacker, TriggerGD.ON_AFTER_ATTACK)
 			"Height":
 				Damagee.stats("damage", damage, AppliedBy)
+				DMGInfo.HealthDMG = original_health - Damagee.health
 			"Ability":
 				damage = onArmor(Damagee, damage)
 				Damagee.stats("damage", damage, AppliedBy)

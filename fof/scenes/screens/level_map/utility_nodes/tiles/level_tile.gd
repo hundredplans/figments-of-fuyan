@@ -41,10 +41,6 @@ func setMaterial(mat: Material, btab: int = -1) -> void:
 			if !types[btab].model == null:
 				types[btab].model.mesh.set_surface_override_material(0, mat)
 
-func setCollisionState(state: bool) -> void:
-	for model in ModelManager.get_children():
-		model.body.collision_layer = 0 if !state else (10 if model.type == "Tile" else 8)
-
 func setOutline(mat: Material) -> void:
 	if !types[0].model == null:
 		types[0].model.mesh.set_surface_override_material(1, mat)
