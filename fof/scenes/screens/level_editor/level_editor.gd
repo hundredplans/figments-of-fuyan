@@ -2010,8 +2010,10 @@ func onCreateCollisionPoints(Tile: TileGD, tiles: Array, pos: Vector3, p_rot: in
 				if match_type != 2 and getAdjacentTiles(Tile, tiles).all(func(x: TileGD): return x['tile'].type == match_type):
 					for i in range(6 + int(Tile.w == 0)): points.remove_at(7)
 			"wall":
-				if Tile['wall'].type == 2 and getAdjacentTiles(Tile, tiles).all(func(x: TileGD): return x['wall'].type == 2):
-					points = []
+				if Tile['wall'].type == 2:
+					var _tiles: Array = getAdjacentTiles(Tile, tiles)
+					if _tiles.size() == 6 and _tiles.all(func(x: TileGD): return x['wall'].type == 2):
+						points = []
 			
 		for point in points:
 			Tile.collision_points.append(getRotationPoint(point, p_rot) + pos)

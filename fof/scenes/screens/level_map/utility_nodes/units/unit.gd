@@ -252,13 +252,14 @@ func onCircleRay() -> void:
 			collision_points.append(point)
 	
 	for point in collision_points:
-		VisionRaycast.target_position = point - VisionRaycast.global_position
+		VisionRaycast.target_position = (point - VisionRaycast.global_position) * 1.05
 		VisionRaycast.force_raycast_update()
 		if VisionRaycast.is_colliding():
 			var Collision: Node3D = VisionRaycast.get_collider().get_node("../../../..")
-			if Collision is TileGD: onAddTileToVisibleTiles(Collision)
-			elif Collision is UnitGD: onAddTileToVisibleTiles(Collision.Tile)
-	
+			var _Tile: TileGD = Collision if Collision is TileGD else Collision.Tile
+			if _Tile not in _visible_tiles.keys():
+				onAddTileToVisibleTiles(_Tile)
+		
 	visible_tiles += Units.getCommutativeUnitsVision(self)
 	onUnitsHeightAdjacentTiles()
 	visible_tiles = _visible_tiles.keys()
@@ -266,7 +267,7 @@ func onCircleRay() -> void:
 func onRayEnemyUnit(Unit: UnitGD, override: bool = false) -> bool:
 	if !override and Unit.Tile in visible_tiles or Unit.Tile in Vision.spawn_tiles: return true
 	for point in Unit.Model.onGetAdjustedPoints():
-		VisionRaycast.target_position = point - VisionRaycast.global_position
+		VisionRaycast.target_position = (point - VisionRaycast.global_position) * 1.05
 		VisionRaycast.force_raycast_update()
 		
 		if VisionRaycast.is_colliding():
@@ -276,7 +277,7 @@ func onRayEnemyUnit(Unit: UnitGD, override: bool = false) -> bool:
 	
 func onRayTile(_Tile: TileGD) -> bool:
 	for point in _Tile.collision_points:
-		VisionRaycast.target_position = point - VisionRaycast.global_position
+		VisionRaycast.target_position = (point - VisionRaycast.global_position) * 1.05
 		VisionRaycast.force_raycast_update()
 		
 		if VisionRaycast.is_colliding():

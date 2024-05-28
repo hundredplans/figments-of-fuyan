@@ -86,7 +86,9 @@ func onCreateBaseStat(val: int, stat_changed: String, color: String = "BASE") ->
 	var StatNumber: Node3D = Numbers.get_node(stat_changed)
 	StatNumber.color = color
 	for num in str(val):
-		var NewNumber: Node3D = load("res://scenes/screens/level_map/floating_stats/numbers/" + Helper.NUM_TO_STRING_NUM[int(num)] + ".glb").instantiate()
+		var NewNumber: Node3D = load("res://scenes/screens/level_map/utility_nodes/vfx/stat_particles/stat_particle/" + Helper.NUM_TO_STRING_NUM[int(num)] + ".glb").instantiate()
+		NewNumber.scale = Vector3(1.4, 1.4, 1.4)
+		NewNumber.rotation_degrees.y += 180
 		StatNumber.add_child(NewNumber)
 		setStatNumberMaterial(NewNumber, color)
 	StatNumber.on_sort_children()
