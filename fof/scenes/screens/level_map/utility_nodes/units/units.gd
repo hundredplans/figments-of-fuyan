@@ -39,7 +39,6 @@ func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int
 		Unit.Model.hurt_finished.connect(on_hurt_finished.bind(Unit))
 		
 		LevelUI.UnitStatusOverlord.onUnitAwakened(Unit)
-		SpectateCamera.onUnitAwakened(Unit)
 		
 		Unit.on_arrive(team == 0 or Unit.getVisibleEnemies().size() > 0)
 		AIManager.onUnitAwakened(Unit)
@@ -160,19 +159,17 @@ func onAppendArgQueue(callable: Callable) -> void:
 
 func onArgDelay() -> void:
 	var _active_action: Dictionary = unit_actions[0]
-	SpectateCamera.onSpectate(_active_action.Triggerer)
-	SpectateCamera.onEndTrackUnit()
+	SpectateCamera.onSpectate(_active_action.InitialTeleport)
 	if !_active_action.triggered:
-		if !_active_action.begin_callable.is_null():
+		if _active_action.begin_callable.is_valid():
 			_active_action.begin_callable.call()
 		_active_action.triggered = true
 		
 	if unit_actions[0] == _active_action:
 		active_action = unit_actions.pop_front()
 		await get_tree().create_timer(active_action.delay).timeout
-		if !_active_action.end_callable.is_null():
+		if _active_action.end_callable.is_valid():
 			active_action.end_callable.call()
-		
 		active_action = {}
 		onUnitActionsFinished()
 	
@@ -183,14 +180,14 @@ func onDelay() -> void:
 
 func onMoveUnit() -> void:
 	var Unit: UnitGD = active_action.Unit
-	SpectateCamera.onStartTrackUnit(Unit)
+	SpectateCamera.onSpectate(Unit)
 	Unit.Model.onMoveToTile(active_action.Tile, active_action.type, "Regular")
 	
 func onMoveUnitAI() -> void:
 	var Unit: UnitGD = active_action.Unit
 	var movement_type: String = onFindVisibilityPathMovementType(active_action.Tile, active_action.vis_path)
 	if movement_type != "Invisible":
-		SpectateCamera.onStartTrackUnit(Unit)
+		SpectateCamera.onSpectate(Unit)
 		Unit.Model.onMoveToTile(active_action.Tile, active_action.type, movement_type)
 		
 		if movement_type == "Regular" and Unit.Tile not in Vision.ally_vision:
@@ -203,7 +200,6 @@ func onMoveUnitAI() -> void:
 	if onFindVisibilityPathReentersVision(active_action.Tile, active_action.vis_path): 
 		await get_tree().create_timer(AFTER_MOVEMENT_DELAY).timeout
 	
-	SpectateCamera.onEndTrackUnit()
 	Unit.global_position = Unit.Model.onCalculateEndPosition(active_action.Tile, active_action.type.x)
 	on_movement_finished(Unit)
 				
@@ -248,7 +244,7 @@ func onPushFrontDelay(delay: float) -> void:
 			"delay": delay,
 		})
 
-func onPushArgDelay(Triggerer: UnitGD, delay: float, end_callable: Callable = Callable(), begin_callable: Callable = Callable()) -> void:
+func onPushArgDelay(Triggerer: UnitGD, delay: float, end_callable: Callable = Callable(), begin_callable: Callable = Callable(), InitialTeleport: UnitGD = null) -> void:
 	unit_actions.append({
 		"action_type": "ArgDelay",
 		"begin_callable": begin_callable,
@@ -256,7 +252,11 @@ func onPushArgDelay(Triggerer: UnitGD, delay: float, end_callable: Callable = Ca
 		"delay": delay,
 		"triggered": false,
 		"Triggerer": Triggerer,
+		"InitialTeleport": Triggerer if InitialTeleport == null else InitialTeleport
 	})
+	
+	if unit_actions.size() == 1:
+		onArgDelay()
 
 func isVisibilityPathLastPosition(Tile: TileGD, visibility_path: Array) -> bool:
 	var flip: bool = false
@@ -267,7 +267,6 @@ func isVisibilityPathLastPosition(Tile: TileGD, visibility_path: Array) -> bool:
 
 func onUnitActionsFinished() -> void:
 	if unit_actions.is_empty() and active_action.is_empty():
-		SpectateCamera.onEndTrackUnit()
 		if LevelMap.game_phase != "AIPhase": LevelMap.setActionLock("UnitActionDisabled")
 		for callable in unit_actions_after: callable.call()
 		unit_actions_after = []
@@ -277,7 +276,7 @@ func onUnitEntersVision(Unit: UnitGD, _Unit: UnitGD) -> void:
 	if Unit.team == 0 and _Unit.team == 1:
 		if Unit.finished_awakening:
 			AudioMaster.play_sfx("TrumpetKuba")
-		PlayerManager.on_enemy_unit_enters_vision(_Unit)
+		PlayerManager.on_enemy_unit_enters_vision(_Unit, Unit)
 	Combat.onOngoingAbilityUnit(Unit, _Unit, "EnterVision")
 	Combat.onOngoingAbilityUnit(_Unit, Unit, "EnterVision")
 	
@@ -297,7 +296,6 @@ var movement_outline_tiles: Array = []
 func on_unit_travel_finished() -> void:
 	if !active_action.is_empty() and active_action.action_type.begins_with("MoveUnit"):
 		on_force_resume_idle_animation_from_walk()
-		SpectateCamera.onEndTrackUnit()
 		onCreateIncentiviseAction(active_action.Unit)
 		active_action = {}
 		onRemoveMovementOutlineTiles()
@@ -320,7 +318,7 @@ func attack_enemy_or_target(Unit: UnitGD, Tile: TileGD) -> bool:
 			if Tile == _Unit.Tile:
 				PlayerManager.on_select_active_unit(Unit)
 				_attack_enemy(Unit, _Unit, Tile)
-				SpectateCamera.onStartTrackUnit(Unit)
+				SpectateCamera.onSpectate(Unit)
 				break
 		return true
 		# if this check fails can check for attacks on objects and such here
@@ -395,7 +393,6 @@ func on_death_finished(Unit: UnitGD) -> void:
 	LevelUI.UnitStatusOverlord.onDeathFinished(Unit)
 	await Unit.on_death()
 	
-	SpectateCamera.onDeathFinished(Unit)
 	var win_state: int = 1 if on_units(1).is_empty() else (2 if on_units().is_empty() else 0)
 	
 	AIManager.onDeathFinished(Unit)

@@ -26,9 +26,10 @@ func on_card_placed(hand_card: HandCardGD, Tile: TileGD) -> void:
 		Units.onPushArgDelay(Unit, Units.ARRIVE_EFFECT_DELAY_DURATION, SpectateCamera.onSpectate.bind(Units.onFindClosestAdjacentUnit(Unit)))
 	else: Units.onPushFrontDelay(Units.ARRIVE_EFFECT_DELAY_DURATION)
 	
-func on_enemy_unit_enters_vision(Unit: UnitGD) -> void:
+func on_enemy_unit_enters_vision(Unit: UnitGD, _Unit: UnitGD) -> void:
 	LevelUI.UnitStatusOverlord.onUpdateEnemyVision(Unit, true)
 	Units.onEnemyDiscoveredClearUnitActions()
+	LevelUI.onEnemySpotted(Unit, _Unit)
 
 func on_enemy_unit_exits_vision(Unit: UnitGD) -> void:
 	LevelUI.UnitStatusOverlord.onUpdateEnemyVision(Unit, false)
@@ -46,7 +47,7 @@ func on_select_active_unit(Unit: UnitGD) -> void:
 
 func on_pass_unit_turn_pressed() -> void:
 	if ActiveUnit == null:
-		var SpectateUnit: UnitGD = SpectateCamera.getSpectateUnit()
+		var SpectateUnit: UnitGD = SpectateCamera.SpectateUnit
 		if SpectateUnit in unpassed_turns:
 			on_select_active_unit(SpectateUnit)
 			on_pass_unit_turn()
@@ -104,8 +105,8 @@ func on_spectate_unit(Unit: UnitGD) -> void:
 
 func on_occupied_tile_inspected(Tile: TileGD) -> void:
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
-	var SpectateUnit: UnitGD = SpectateCamera.getSpectateUnit()
-	if LevelMap.action_lock.is_empty() and Unit == SpectateUnit:
+	var SpectateUnit: UnitGD = SpectateCamera.SpectateUnit
+	if LevelMap.action_lock.is_empty() and Unit.team == 0 and Unit == SpectateUnit:
 		on_unit_selected(Unit)
 	elif LevelMap.action_lock in ["", "HandRegular"] and UnitSelected == null and Unit.Tile in Vision.ally_vision:
 		SpectateCamera.onSpectate(Unit)
@@ -142,7 +143,7 @@ func onSetMovementRange(Unit: UnitGD) -> void:
 					
 		var index: int = Tiles.movement_paths[Tile].tiles.find(Tile)
 		if Tiles.movement_paths[Tile].types[index].x != 1:
-			Tiles.on_set_tile_material(Tile, "MovementRange")
+			Tiles.setTileOutline(Tile, "MovementRange")
 	
 func onRemoveMovementRange() -> void:
 	for Tile in Tiles.movement_paths.tiles:
@@ -150,6 +151,7 @@ func onRemoveMovementRange() -> void:
 			var Unit: UnitGD = Units.unit_by_tile(Tile)
 			Unit.on_enemy_in_range(false)
 		Tiles.on_remove_tile_material(Tile)
+		Tiles.setTileOutline(Tile, "MovementRange", true)
 	Tiles.movement_paths = {"tiles": []}
 	
 func _on_unit_selected(Unit: UnitGD) -> void:
@@ -187,26 +189,17 @@ func onEnterTargetAbilityMode(Unit: UnitGD, ability: TargetAbilityGD) -> void:
 	TAbilityUnit = Unit
 	TAbility = ability
 	
-	if ability.global_camera and SpectateCamera.is_unit_camera:
-		SpectateCamera.onChangeCameraMode(false)
-		var _Unit: UnitGD = Units.unit_by_tile(ability.tiles["affect"][0])
-		
-		for key in SpectateCamera.spectates['Ally']:
-			if SpectateCamera.spectates['Ally'][key].object == _Unit:
-				SpectateCamera.onCameraStartSpectate(SpectateCamera.spectates['Ally'][key])
+	if ability.change_camera:
+		SpectateCamera.onSpectate(Units.unit_by_tile(ability.tiles["affect"][0]))
 
 func onExitTargetAbilityMode() -> void: # if unit selected null doesnt reupdate, otherwise creates tiles
 	if TAbilityUnit != null:
 		onRemoveAbilityRange(TAbilityUnit, TAbility)
 		if UnitSelected != null:
 			onSetMovementRange(UnitSelected)
-			
+	
+	if TAbility.change_camera: SpectateCamera.onSpectate(TAbilityUnit)
 	TAbilityUnit = null
-	
-	
-	if TAbility.global_camera and !SpectateCamera.is_unit_camera:
-		SpectateCamera.onChangeCameraMode(true)
-	
 	TAbility = null
 	
 func onCreateAbilityRange(_Unit: UnitGD, ability: TargetAbilityGD) -> void:
@@ -218,7 +211,6 @@ func onCreateAbilityRange(_Unit: UnitGD, ability: TargetAbilityGD) -> void:
 		Tiles.on_set_tile_material(Tile, "TargetAffect")
 
 func onRemoveAbilityRange(_Unit: UnitGD, ability: TargetAbilityGD) -> void:
-	ability.onTargetAbilityCondition()
 	for Tile in ability.tiles["range"]:
 		Tiles.on_remove_tile_material(Tile, "TargetRange")
 		

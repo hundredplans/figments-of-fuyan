@@ -52,7 +52,9 @@ func on_create_card(id: int, tool_id: int = 0, effects: Array = []) -> void:
 var card_selected_index: int = -1
 func on_card_selected(index: int) -> void:
 	card_selected_index = index
-	if Units.on_units().size() > 0: SpectateCamera.onSpectate("Spawn" if index > -1 else "Ally")
+	if Units.on_units().size() > 0:
+		SpectateCamera.is_spectate_spawn = index != -1
+		SpectateCamera.onSpectate("AllySelf")
 
 func on_card_placed(Tile: TileGD) -> void:
 	if card_selected_index > -1 and Tile.solid_status == 0:

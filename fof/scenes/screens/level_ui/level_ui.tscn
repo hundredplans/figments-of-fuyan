@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://b0kr4uhvdhmq3"]
+[gd_scene load_steps=23 format=3 uid="uid://b0kr4uhvdhmq3"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_ui/level_ui.gd" id="1_mmiwi"]
 [ext_resource type="Texture2D" uid="uid://iucmlitjenwl" path="res://assets/base_game/cards/game_card/art/stats/energy.png" id="2_bww7p"]
@@ -13,6 +13,7 @@
 [ext_resource type="LabelSettings" uid="uid://bxpqp1at73s47" path="res://assets/UI/jacquard/jacquard_huge_grey_outline.tres" id="9_4ndix"]
 [ext_resource type="Texture2D" uid="uid://b72ifh2nd1wc8" path="res://scenes/screens/level_ui/change_phase/change_phase_disabled.png" id="9_d3rdq"]
 [ext_resource type="Texture2D" uid="uid://dl25aqsdhe6ju" path="res://scenes/screens/level_ui/phase_icon/HandPhase.png" id="13_48llv"]
+[ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="13_v5lxp"]
 [ext_resource type="Script" path="res://scenes/screens/level_ui/unit_status/unit_status_overlord.gd" id="14_kfs5d"]
 [ext_resource type="PackedScene" uid="uid://db4iwvndfcy84" path="res://scenes/screens/level_ui/console.tscn" id="14_q1hsx"]
 [ext_resource type="FontFile" uid="uid://bjgvp4yvesp1k" path="res://assets/UI/open_sans/OpenSans-ExtraBold.ttf" id="15_wcrhh"]
@@ -21,6 +22,13 @@
 font = ExtResource("15_wcrhh")
 font_size = 100
 font_color = Color(1, 0.490196, 0, 1)
+outline_size = 20
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ig1jx"]
+font = ExtResource("15_wcrhh")
+font_size = 100
+font_color = Color(0, 0.792157, 0.133333, 1)
 outline_size = 20
 outline_color = Color(0, 0, 0, 1)
 
@@ -367,7 +375,8 @@ offset_top = -130.0
 offset_right = -4.0
 grow_horizontal = 0
 grow_vertical = 0
-text = "No unit's turn is active!"
+text = "You aren't spectating
+anyone!"
 label_settings = ExtResource("8_dq43r")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -508,6 +517,25 @@ offset_bottom = 137.0
 label_settings = SubResource("LabelSettings_el0xh")
 horizontal_alignment = 1
 
+[node name="UnitNameLabel" type="Label" parent="AbilityMode"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 3.0
+offset_right = 1920.0
+offset_bottom = 137.0
+label_settings = SubResource("LabelSettings_ig1jx")
+horizontal_alignment = 1
+
+[node name="AbilityDescription" type="RichTextLabel" parent="AbilityMode"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 654.0
+offset_top = 134.0
+offset_right = 1230.0
+offset_bottom = 302.0
+theme = ExtResource("13_v5lxp")
+bbcode_enabled = true
+
 [node name="ChangePhaseManager" type="Control" parent="."]
 anchors_preset = 0
 offset_left = 1740.0
@@ -562,6 +590,16 @@ speed_scale = 0.5
 unique_name_in_owner = true
 anchors_preset = 0
 mouse_filter = 1
+
+[node name="EnemySpottedArrows" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
 [connection signal="mouse_entered" from="StatusBox" to="." method="on_is_mouse_in_ui" binds= [true]]
 [connection signal="mouse_exited" from="StatusBox" to="." method="on_is_mouse_in_ui" binds= [false]]

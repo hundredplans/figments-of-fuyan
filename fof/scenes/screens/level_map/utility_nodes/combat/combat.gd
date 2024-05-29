@@ -61,7 +61,8 @@ func onArrive(Unit: UnitGD) -> void:
 	
 func onTargetAbility(Unit: UnitGD, ability: TargetAbilityGD, Tile: TileGD) -> void:
 	ability.setInfo(Unit, Tile)
-	onTriggerAbilitySpectateDelay(Unit if (!ability.teleport_to_target) else Units.unit_by_tile(Tile), ability, ability.onTargetAbility)
+	var InitialTeleport: UnitGD = Units.unit_by_tile(Tile) if (ability.teleport_to_target) else null
+	onTriggerAbilitySpectateDelay(Unit, ability, ability.onTargetAbility, InitialTeleport)
 	Units.PlayerManager._on_unit_deselected(Units.PlayerManager.UnitSelected)
 	ability.used = true
 	LevelUI.onUpdateTargetAbility(Unit, ability)
@@ -92,16 +93,18 @@ func onRampage(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 			onTriggerAbilitySpectateDelay(Unit, ability, ability.onRampage)
 	GameEffects.onTriggerUnitGameFX(Unit, TriggerGD.RAMPAGE, [Unit, AppliedBy])
 		
-func onTriggerAbilitySpectateDelay(Triggerer: UnitGD, ability: AbilityGD, callable: Callable) -> void:
+func onTriggerAbilitySpectateDelay(Triggerer: UnitGD, ability: AbilityGD, callable: Callable, InitialTeleport: UnitGD = null) -> void:
 	var vis: bool = Triggerer.team == 0 or Triggerer.Tile in Vision.ally_vision
 	if vis and ability.delay > 0:
 		var begin_arguments: Dictionary = {"Triggerer": Triggerer, "callable": callable, "ability": ability, "vis": vis}
 		var end_arguments: Dictionary = {"Triggerer": Triggerer, "ability": ability}
 		
 		if ability_chain.is_empty():
-			OriginalSpectateUnit = SpectateCamera.getSpectateUnit(["Ally", "Enemy"])
+			if ability is TargetAbilityGD and ability.teleport_to_target: OriginalSpectateUnit = Triggerer
+			else: OriginalSpectateUnit = SpectateCamera.SpectateUnit
+			
 		ability_chain.append(ability)
-		Units.onPushArgDelay(Triggerer, ability.delay, onAfterAbilityFrontDelay.bind(end_arguments), onBeforeAbilityFrontDelay.bind(begin_arguments))
+		Units.onPushArgDelay(Triggerer, ability.delay, onAfterAbilityFrontDelay.bind(end_arguments), onBeforeAbilityFrontDelay.bind(begin_arguments), InitialTeleport)
 	else: onUseAbility(Triggerer, callable, ability, vis)
 		
 func onUseAbility(Unit: UnitGD, callable: Callable, ability: AbilityGD, vis: bool) -> void:
@@ -114,6 +117,7 @@ func onBeforeAbilityFrontDelay(args: Dictionary) -> void:
 		
 func onAfterAbilityFrontDelay(args: Dictionary) -> void:
 	ability_chain.erase(args.ability)
+	
 	if ability_chain.is_empty() and Units.isUnitActionsEmpty():
 		Units.onAppendArgQueue(SpectateCamera.onSpectate.bind(OriginalSpectateUnit))
 		OriginalSpectateUnit = null

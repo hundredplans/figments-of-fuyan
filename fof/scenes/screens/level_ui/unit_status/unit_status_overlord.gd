@@ -52,7 +52,6 @@ func onAddUnitStatus(Unit: UnitGD, type: String = "UnitStatusRegular") -> void:
 		"UnitStatusExtra": 
 			LevelUI.UnitStatusState.add_child(UnitStatus)
 			UnitStatus.setUnit(Unit)
-			UnitStatus.setUnitStatusState("TurnActive")
 		"TileHoveredUnitStatus":
 			LevelUI.TileHoveredGameCard.add_child(UnitStatus)
 			UnitStatus.setUnit(Unit)
@@ -81,21 +80,18 @@ func setUnitStatusTurnStatus(Unit: UnitGD, status: String) -> void:
 	var unit_statuses: Array = units[Unit].duplicate()
 	for UnitStatus in unit_statuses:
 		if Unit.team == 0:
-			setUnitStatusExtra(Unit, Unit.turn_status, status)
 			UnitStatus.SlotOne.visible = status == "TurnUsed"
 			if UnitStatus.type.begins_with("UnitStatus"):
 				UnitStatus.setUnitStatusState(status)
 	Unit.turn_status = status
 	onUpdateUnitTargetAbilities(Unit)
 
-func setUnitStatusExtra(Unit: UnitGD, old_status: String, status: String) -> void:
-	var was_active: bool = old_status == "TurnActive"
-	var is_active: bool = status == "TurnActive"
-	if !was_active and is_active: onAddUnitStatus(Unit, "UnitStatusExtra")
-	elif was_active and !is_active:
+func setUnitStatusExtra(Unit: UnitGD, state: bool) -> void:
+	if !state:
 		for UnitStatus in onFindUnitStatus(Unit, "UnitStatusExtra"):
 			UnitStatus.queue_free()
 			units[Unit].erase(UnitStatus)
+	else: onAddUnitStatus(Unit, "UnitStatusExtra")
 
 func onDeathBegin(Unit: UnitGD, delay: float) -> void:
 	for UnitStatus in onFindUnitStatus(Unit):
@@ -119,6 +115,8 @@ func onUnitSpectated(Unit: UnitGD, state: bool) -> void:
 		
 	for UnitStatus in onFindUnitStatus(Unit, "UnitFieldStatus"):
 		UnitStatus.onSetTopMaterial(state)
+	
+	setUnitStatusExtra(Unit, state)
 		
 func onUpdateEnemyVision(Unit: UnitGD, state: bool) -> void:
 	for UnitStatus in units[Unit]: UnitStatus.visible = state

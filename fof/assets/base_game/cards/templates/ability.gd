@@ -9,6 +9,7 @@ var charges: int = -1
 @export var delay: float = 2.0
 var is_visible: bool = false
 
+var LevelMap: LevelMapGD
 var SpectateCamera: Node3D
 var GameEffects: GameEffectsGD
 var Combat: CombatGD

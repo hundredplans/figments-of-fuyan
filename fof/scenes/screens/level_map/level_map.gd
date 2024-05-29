@@ -92,7 +92,6 @@ func on_change_game_phase(phase: String) -> void:
 			Units.on_player_end_turn_phase_start()
 			LevelUI.on_player_end_turn_phase_start()
 			Vision.on_player_end_turn_phase_start()
-			SpectateCamera.onPlayerEndTurnPhaseStart()
 			on_change_game_phase("AIPhase")
 		"AIPhase":
 			GameEffects.onAIPhaseStart()

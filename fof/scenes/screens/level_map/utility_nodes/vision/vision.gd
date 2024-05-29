@@ -39,7 +39,7 @@ func on_recalculate_vision(Unit: UnitGD = null) -> void:
 			# Sometimes takes up to 50msec?
 		1:
 			var visible_tiles: Array = []
-			var SpectateUnit: UnitGD = SpectateCamera.getSpectateUnit(["Ally", "Enemy"])
+			var SpectateUnit: UnitGD = SpectateCamera.SpectateUnits
 			if ActiveUnitVision != null and ActiveUnitVision.Tile in ally_vision:
 				onUnitVisionModeCalculateVision(ActiveUnitVision, visible_tiles)
 			elif SpectateUnit != null:
@@ -144,7 +144,7 @@ func on_tile_unhovered(__: TileGD) -> void:
 		
 		await get_tree().create_timer(0.001).timeout
 		
-		if Tiles.active_tile == null or !("MovementRange" in Tiles.active_tile.tile_state):
+		if Tiles.active_tile == null or !("MovementRange" in Tiles.active_tile.tile_outlines):
 			on_recalculate_vision()
 		else: ActiveUnitVision = keep_unit
 

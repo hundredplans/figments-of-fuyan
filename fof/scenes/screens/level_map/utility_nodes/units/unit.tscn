@@ -7,7 +7,8 @@ script = ExtResource("1_2slrp")
 
 [node name="VisionRaycast" type="RayCast3D" parent="."]
 collision_mask = 20
-hit_from_inside = true
 
 [node name="UnitVFX" type="Node3D" parent="."]
 unique_name_in_owner = true
+
+[node name="LookAtSlave" type="Node3D" parent="."]

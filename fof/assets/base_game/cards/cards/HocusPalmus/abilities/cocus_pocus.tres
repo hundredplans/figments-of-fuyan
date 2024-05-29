@@ -5,10 +5,10 @@
 [resource]
 resource_local_to_scene = true
 script = ExtResource("1_p3jxm")
-HEAL = 2
+HEAL = null
 ability_description = "[center]Heal the most injured ally on field [b][color=red][2] [img=14x14]res://assets/base_game/cards/game_card/art/bbcode/HEALTH.png[/img][/color][/b] and [b]TELEPORT[b] them to a[b] [color=green]Spawn Tile[/color][/b]"
 teleport_to_target = true
-global_camera = true
+change_camera = true
 ability_name = "Cocus Pocus"
 max_charges = 1
 ability_index = 20

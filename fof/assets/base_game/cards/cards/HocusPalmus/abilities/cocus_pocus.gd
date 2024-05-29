@@ -24,6 +24,8 @@ func onTargetAbility() -> void:
 	Unit.Model._look_at(Tile)
 	if is_visible: Unit.Model.on_play_animation("Ability")
 	call_deferred("onCocusPocus", _Unit)
+	change_camera = false
+	LevelMap.setActionLock("UnitActionRegular")
 		
 const DELAY_DURATION: float = 0.5
 const SCALE_FINAL_DURATION: float = 0.75
@@ -37,8 +39,8 @@ func onCocusPocus(_Unit: UnitGD) -> void:
 func onCocusPocusInitialFinished(_Unit: UnitGD) -> void:
 	var _tiles: Array = onFindSpawnTiles()
 	Combat.onTeleport(_Unit, _tiles[randi() % _tiles.size()])
-	SpectateCamera.onStartTrackUnit(_Unit)
 	VFX.onDownscaleCocusPocus(_Unit, SCALE_FINAL_DURATION, onCocusPocusFinished.bind(_Unit))
 	
 func onCocusPocusFinished(_Unit: UnitGD) -> void:
 	Combat.onHealAbility(_Unit, Unit, HEAL)
+	change_camera = true

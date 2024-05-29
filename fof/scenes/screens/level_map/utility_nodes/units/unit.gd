@@ -83,7 +83,7 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	VisionRaycast.position.y = height.eye
 	
 	position = tile.position
-	position.y += 0.3
+	position.y += 0.3 if !Units.Tiles.is_ramp_tile(tile) else 0.9
 	occupy_tile(tile)
 	AudioDict = load("res://assets/base_game/cards/cards/" + base_card.folder_name + "/audio.tres")
 	onCreateAbilities()
@@ -102,6 +102,7 @@ func onCreateAbilities() -> void:
 			ability.LevelUI = Units.LevelUI
 			ability.GameEffects = Units.GameEffects
 			ability.charges = ability.max_charges
+			ability.LevelMap = Units.LevelMap
 			abilities.append(ability)
 			
 			if ability is ArmorGD:
@@ -117,7 +118,9 @@ func onAddUnitFX(type: String, charges: int = -1) -> void:
 func occupy_tile(_Tile: TileGD) -> void:
 	var is_first: bool = Tile == null
 	var OGTile: TileGD = Tile
+	if OGTile != null: OGTile.Unit = null
 	Tile = _Tile
+	Tile.Unit = self
 	
 	await get_tree().create_timer(0.001).timeout
 	Vision.onExitTile(self, OGTile, _Tile)
@@ -128,7 +131,7 @@ func occupy_tile(_Tile: TileGD) -> void:
 	if is_first:
 		for _Unit in getVisibleUnits():
 			Units.Vision.on_recalculate_vision(_Unit)
-
+	
 var Killer: UnitGD
 func stats(stat_type: String, val: int, AppliedBy := AppliedByGD.new("GameEvent"), absolute: bool = false) -> void:
 	var current_health: int = health
@@ -259,7 +262,7 @@ func onCircleRay() -> void:
 			var _Tile: TileGD = Collision if Collision is TileGD else Collision.Tile
 			if _Tile not in _visible_tiles.keys():
 				onAddTileToVisibleTiles(_Tile)
-		
+				
 	visible_tiles += Units.getCommutativeUnitsVision(self)
 	onUnitsHeightAdjacentTiles()
 	visible_tiles = _visible_tiles.keys()

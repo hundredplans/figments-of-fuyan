@@ -202,18 +202,18 @@ func onTilePressed() -> void:
 		if LevelMap.action_lock.is_empty() and "TargetAffect" in active_tile.tile_state:
 			onTargetAffectPressed()
 		
-		
-		if LevelMap.action_lock.is_empty() and "PathHovered" in active_tile.tile_outlines: 
-			on_begin_unit_movement()
-			
-		elif Unit != null and Unit.Tile in Vision.ally_vision:
-			if "EnemyInRange" not in active_tile.tile_outlines:
-				Units.PlayerManager.on_occupied_tile_inspected(active_tile)
-			elif LevelMap.action_lock.is_empty(): on_begin_unit_movement()
-			
-		elif LevelMap.action_lock == "SpawnVision" and on_find_tile_primary_type(active_tile) == "Spawn":
-			VFX.onRemoveSpawnParticle(active_tile)
-			Hand.on_card_placed(active_tile)
+		if active_tile != null:
+			if LevelMap.action_lock.is_empty() and "PathHovered" in active_tile.tile_outlines: 
+				on_begin_unit_movement()
+				
+			elif Unit != null and Unit.Tile in Vision.ally_vision:
+				if "EnemyInRange" not in active_tile.tile_outlines:
+					Units.PlayerManager.on_occupied_tile_inspected(active_tile)
+				elif LevelMap.action_lock.is_empty(): on_begin_unit_movement()
+				
+			elif LevelMap.action_lock == "SpawnVision" and on_find_tile_primary_type(active_tile) == "Spawn":
+				VFX.onRemoveSpawnParticle(active_tile)
+				Hand.on_card_placed(active_tile)
 	else:
 		console_sig.emit(active_tile)
 
@@ -495,12 +495,13 @@ func on_tile_unhovered(Tile: TileGD) -> void:
 	LevelUI.onQueueTileHoveredGameCard()
 
 const OUTLINE_INFO: Dictionary = {
-	"EnemyInRange": [3, preload("res://assets/materials/tile_materials/tile_outlines/light_red_tile_outline.tres")],
-	"PathHovered": [4, preload("res://assets/materials/tile_materials/tile_outlines/white_tile_outline.tres")],
+	"EnemyInRange": [4, preload("res://assets/materials/tile_materials/tile_outlines/light_red_tile_outline.tres")],
+	"PathHovered": [5, preload("res://assets/materials/tile_materials/tile_outlines/white_tile_outline.tres")],
+	"MovementRange": [3, preload("res://assets/materials/tile_materials/tile_outlines/movement_range_tile_outline.tres")],
 	"TileInspected": [1, preload("res://assets/materials/tile_materials/tile_outlines/white_tile_outline.tres")],
 	"AllyInspected": [2, preload("res://assets/materials/tile_materials/tile_outlines/green_tile_outline.tres")],
 	"EnemyInspected": [2, preload("res://assets/materials/tile_materials/tile_outlines/red_tile_outline.tres")],
-	"PastPath": [0, preload("res://assets/materials/tile_materials/tile_outlines/yellow_tile_outline.tres")],
+	"PastPath": [0, preload("res://assets/materials/tile_materials/tile_outlines/purple_tile_outline.tres")],
 	"": [-1, preload("res://assets/materials/tile_materials/tile_outlines/black_tile_outline.tres")],
 }
 

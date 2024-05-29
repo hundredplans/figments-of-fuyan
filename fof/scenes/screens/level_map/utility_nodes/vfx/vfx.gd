@@ -128,7 +128,7 @@ func onDownscaleCocusPocus(Unit: UnitGD, duration: float, callable: Callable) ->
 	for child in Unit.UnitVFX.get_children():
 		if child.type == "CocusPocus":
 			var ScaleTween := create_tween()
-			ScaleTween.tween_property(child, "scale", Vector3.ZERO, duration)
+			ScaleTween.tween_property(child, "scale", Vector3(0.001, 0.001, 0.001), duration)
 			
 			var PosTween := create_tween()
 			PosTween.tween_property(child, "position:y", Unit.height.stat + 0.85, duration)
