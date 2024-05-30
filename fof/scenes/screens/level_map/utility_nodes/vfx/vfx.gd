@@ -101,14 +101,22 @@ func onCreateHelpfulHelmet(Unit: UnitGD) -> void:
 
 func onCreateCocusPocus(Unit: UnitGD) -> void:
 	var CocusPocus: Node3D = preload("res://scenes/screens/level_map/utility_nodes/vfx/ability_effects/cocus_pocus/cocus_pocus.tscn").instantiate()
+	CocusPocus.visible = Unit.UnitVFX.get_children().all(func(x: Node3D): return x.type != "CocusPocus")
 	Unit.UnitVFX.add_child(CocusPocus)
 	CocusPocus.type = "CocusPocus"
 	CocusPocus.position.y = Unit.height.stat + 0.85
 
 func onRemoveCocusPocus(Unit: UnitGD) -> void:
+	var is_remove: bool = true
 	for child in Unit.UnitVFX.get_children():
 		if child.type == "CocusPocus":
-			child.queue_free()
+			if is_remove:
+				child.queue_free()
+				is_remove = false
+			else:
+				child.visible = true
+				return
+		
 
 func onUpscaleCocusPocus(Unit: UnitGD, upscale: Vector3, duration: float, unit_size: float, delay_duration: float, callable: Callable) -> void:
 	for child in Unit.UnitVFX.get_children():

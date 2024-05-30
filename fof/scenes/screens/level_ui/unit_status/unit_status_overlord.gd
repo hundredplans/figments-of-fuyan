@@ -52,6 +52,7 @@ func onAddUnitStatus(Unit: UnitGD, type: String = "UnitStatusRegular") -> void:
 		"UnitStatusExtra": 
 			LevelUI.UnitStatusState.add_child(UnitStatus)
 			UnitStatus.setUnit(Unit)
+			UnitStatus.target_ability_pressed.connect(LevelUI.onTargetAbilityBtnPressed)
 		"TileHoveredUnitStatus":
 			LevelUI.TileHoveredGameCard.add_child(UnitStatus)
 			UnitStatus.setUnit(Unit)

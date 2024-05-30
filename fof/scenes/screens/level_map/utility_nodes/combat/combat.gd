@@ -63,10 +63,10 @@ func onTargetAbility(Unit: UnitGD, ability: TargetAbilityGD, Tile: TileGD) -> vo
 	ability.setInfo(Unit, Tile)
 	var InitialTeleport: UnitGD = Units.unit_by_tile(Tile) if (ability.teleport_to_target) else null
 	onTriggerAbilitySpectateDelay(Unit, ability, ability.onTargetAbility, InitialTeleport)
-	Units.PlayerManager._on_unit_deselected(Units.PlayerManager.UnitSelected)
 	ability.used = true
 	LevelUI.onUpdateTargetAbility(Unit, ability)
 	Units.PlayerManager.on_select_active_unit(Unit)
+	Units.PlayerManager._on_unit_deselected(Unit)
 	
 func onRevenge(Damagee: UnitGD, AppliedBy: AppliedByGD, DMGInfo: DMGInfoGD, damage: int):
 	var abilities: Array = onFindAbilities(Damagee, "Revenge")

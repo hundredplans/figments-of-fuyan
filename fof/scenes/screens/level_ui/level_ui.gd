@@ -400,7 +400,7 @@ func onEnterUnitMode(Unit: UnitGD) -> void:
 func onExitUnitMode() -> void:
 	UnitNameLabel.text = ""
 	for child in TargetAbilities.get_children(): child.queue_free()
-	onExitTargetAbilityMode()
+	onExitTargetAbilityMode(true)
 
 func onTargetAbilityBoxPressed(Unit: UnitGD, ability: AbilityGD, TargetAbilityBox: Control) -> void:
 	if Units.PlayerManager.TAbility == ability:
@@ -423,11 +423,12 @@ func onEnterTargetAbilityMode(Unit: UnitGD, ability: AbilityGD) -> void:
 	UnitNameLabel.text = ""
 	AbilityDescription.text = ability.ability_description
 	Units.PlayerManager.onEnterTargetAbilityMode(Unit, ability)
-func onExitTargetAbilityMode() -> void: # has to check if actually in target ability mode first
+	
+func onExitTargetAbilityMode(exit_unit: bool = false) -> void: # has to check if actually in target ability mode first
 	if Units.PlayerManager.TAbility != null:
 		AbilityLabel.text = ""
 		AbilityDescription.text = ""
-		UnitNameLabel.text = Units.PlayerManager.TAbilityUnit.base_card.name
+		if !exit_unit: UnitNameLabel.text = Units.PlayerManager.TAbilityUnit.base_card.name
 		Units.PlayerManager.onExitTargetAbilityMode()
 
 func onUpdateAbilityCharges(Unit: UnitGD) -> void:
@@ -501,11 +502,7 @@ func onIncentivisePassTurn(Unit: UnitGD) -> void:
 		RotateTween.tween_property(ChangePhase, "rotation", TAU, INCENTIVISE_DURATION).as_relative().set_trans(Tween.TRANS_ELASTIC)
 		RotateTween.finished.connect(func(): is_incentivise = false)
 
-func onEnemySpotted(Unit: UnitGD, Spotter: UnitGD) -> void: pass
-	#Spotter.get_node("LookAtSlave").look_at(Unit.global_position)
-	#var arrow: Control = preload("res://scenes/screens/level_ui/unit_status/enemy_spotted_arrow/enemy_spotted_arrow.tscn").instantiate()
-	#arrow.setInfo(Unit)
-	#arrow.rotation_degrees = Spotter.get_node("LookAtSlave").rotation_degrees.y
-	#arrow.position = Vector2(960, 400)
-	#EnemySpottedArrows.add_child(arrow)
-	#print(Unit.base_card.name)
+func onEnemySpotted(Unit: UnitGD, _Spotter: UnitGD) -> void:
+	var arrow: Node2D = preload("res://scenes/screens/level_ui/unit_status/enemy_spotted_arrow/enemy_spotted_arrow.tscn").instantiate()
+	EnemySpottedArrows.add_child(arrow)
+	arrow.setInfo(Unit, SpectateCamera.Camera, Unit.global_position)

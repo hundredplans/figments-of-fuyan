@@ -1,6 +1,7 @@
 class_name AIManagerGD
 extends Node
 
+var SpectateCamera: SpectateCameraGD
 var Vision: VisionGD
 var LevelMap: LevelMapGD
 var Tiles: TilesGD
@@ -84,6 +85,7 @@ func onChooseRandomMovementPath(Unit: UnitGD) -> void:
 		onChosenPathSelected(Unit, movement_paths[randi() % movement_paths.size()])
 	else: onMoveNextAIUnit()
 	
+const FIRST_MOVE_DELAY: float = 0.3
 func onChosenPathSelected(Unit: UnitGD, chosen_path: Dictionary) -> void:
 	if chosen_path.size > 0:
 		Tiles.on_remove_tile_material(Unit.Tile, "")
@@ -93,7 +95,11 @@ func onChosenPathSelected(Unit: UnitGD, chosen_path: Dictionary) -> void:
 	invisible_movement_tracker.append(\
 	visibility_path.any(func(x: Array): return x[1] == "Invisible") and visibility_path.all(func(x: Array): return x[1] == "Invisible"))
 	
+	var pushed_delay: bool = false
 	for i in range(chosen_path.size):
+		if !pushed_delay and visibility_path[i][1] != "Invisible":
+			Units.onPushArgDelay(Unit, FIRST_MOVE_DELAY, Callable(), SpectateCamera.onSpectate.bind(Unit))
+			pushed_delay = true
 		if chosen_path.types[i].x != 1: Units.onMoveToTileAI(Unit, chosen_path.tiles[i], chosen_path.types[i], visibility_path)
 		else: Units.attack_enemy_or_target(Unit, chosen_path.tiles[i])
 	Units.onAIMoveFinisher(Unit, visibility_path)

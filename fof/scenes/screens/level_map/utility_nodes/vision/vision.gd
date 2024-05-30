@@ -39,12 +39,12 @@ func on_recalculate_vision(Unit: UnitGD = null) -> void:
 			# Sometimes takes up to 50msec?
 		1:
 			var visible_tiles: Array = []
-			var SpectateUnit: UnitGD = SpectateCamera.SpectateUnits
+			var SpectateUnit: UnitGD = SpectateCamera.SpectateUnit
 			if ActiveUnitVision != null and ActiveUnitVision.Tile in ally_vision:
 				onUnitVisionModeCalculateVision(ActiveUnitVision, visible_tiles)
 			elif SpectateUnit != null:
 				onUnitVisionModeCalculateVision(SpectateUnit, visible_tiles)
-			
+				
 			for _Unit in all_units:
 				setUnitVisionModeOccupy(_Unit, _Unit.Tile in visible_tiles)
 					

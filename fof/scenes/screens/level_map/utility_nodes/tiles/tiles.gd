@@ -501,7 +501,7 @@ const OUTLINE_INFO: Dictionary = {
 	"TileInspected": [1, preload("res://assets/materials/tile_materials/tile_outlines/white_tile_outline.tres")],
 	"AllyInspected": [2, preload("res://assets/materials/tile_materials/tile_outlines/green_tile_outline.tres")],
 	"EnemyInspected": [2, preload("res://assets/materials/tile_materials/tile_outlines/red_tile_outline.tres")],
-	"PastPath": [0, preload("res://assets/materials/tile_materials/tile_outlines/purple_tile_outline.tres")],
+	"PastPath": [0, preload("res://assets/materials/tile_materials/tile_outlines/yellow_tile_outline.tres")],
 	"": [-1, preload("res://assets/materials/tile_materials/tile_outlines/black_tile_outline.tres")],
 }
 
@@ -633,7 +633,7 @@ func on_find_tile_by_raycast() -> TileGD:
 	var to: Vector3 = SpectateCamera.Camera.project_ray_normal(get_viewport().get_mouse_position()) * RAY_LENGTH
 	var ray: RayCast3D = Vision.MouseRayCast
 	
-	ray.position = SpectateCamera.position
+	ray.position = SpectateCamera.Camera.position
 	ray.target_position = to
 	ray.force_raycast_update()
 	

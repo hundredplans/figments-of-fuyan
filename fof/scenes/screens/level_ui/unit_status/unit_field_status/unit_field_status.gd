@@ -16,7 +16,7 @@ var unit_field_status_materials: Dictionary
 var is_top: bool
 
 func _process(_delta: float) -> void:
-	if visible: look_at(SpectateCamera.global_position)
+	if visible: look_at(SpectateCamera.Camera.position)
 		
 func onUpdateStat(stat: int, stat_changed: String, color: String) -> void:
 	var StatNumber: Node3D = Numbers.get_node(stat_changed)

@@ -1,3 +1,4 @@
+class_name SpectateCameraGD
 extends Node3D
 
 signal mouse_in_ui
@@ -102,7 +103,7 @@ func onSpectateUnit(type: Variant) -> void:
 func onCameraStartSpectate(Obj: Variant) -> void:
 	central_point = Obj.global_position
 	central_point.y += SPAWN_CAMERA_CENTRAL_POINT_HEIGHT if Obj is TileGD else (Obj.height.top * CAMERA_UNIT_HEIGHT_MULTIPLIER)
-	position = Vector3(central_point.x, central_point.y +\
+	Camera.position = Vector3(central_point.x, central_point.y +\
 	SPAWN_CAMERA_LOOK_AT_HEIGHT if Obj is TileGD else (Obj.height.top * LOOK_AT_UNIT_HEIGHT_MULTIPLIER),\
 	central_point.z)
 	
@@ -119,10 +120,10 @@ func setCameraPointAlongCircle(progress: Vector2 = Vector2.ZERO) -> void:
 	var theta: float = total_progress.x * 2 * PI
 	var phi: float = total_progress.y * PI
 
-	position.x = cos(phi) * cos(theta) * CAMERA_RADIUS + central_point.x
-	position.y = sin(phi) * CAMERA_RADIUS + central_point.y
-	position.z = cos(phi) * sin(theta) * CAMERA_RADIUS + central_point.z
-	look_at(central_point)
+	Camera.position.x = cos(phi) * cos(theta) * CAMERA_RADIUS + central_point.x
+	Camera.position.y = sin(phi) * CAMERA_RADIUS + central_point.y
+	Camera.position.z = cos(phi) * sin(theta) * CAMERA_RADIUS + central_point.z
+	Camera.look_at(central_point)
 	
 func onStartPhaseStart() -> void:
 	is_spectate_spawn = true

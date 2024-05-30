@@ -55,6 +55,7 @@ func on_start_phase_start() -> void:
 	AIManager.Units = self
 	AIManager.Vision = Vision
 	AIManager.Tiles = Tiles
+	AIManager.SpectateCamera = SpectateCamera
 	PlayerManager.Units = self
 	PlayerManager.LevelUI = LevelUI
 	PlayerManager.LevelMap = LevelMap
@@ -168,7 +169,7 @@ func onArgDelay() -> void:
 	if unit_actions[0] == _active_action:
 		active_action = unit_actions.pop_front()
 		await get_tree().create_timer(active_action.delay).timeout
-		if _active_action.end_callable.is_valid():
+		if _active_action.end_callable.is_valid() and !_active_action.end_callable.is_null():
 			active_action.end_callable.call()
 		active_action = {}
 		onUnitActionsFinished()
@@ -187,7 +188,6 @@ func onMoveUnitAI() -> void:
 	var Unit: UnitGD = active_action.Unit
 	var movement_type: String = onFindVisibilityPathMovementType(active_action.Tile, active_action.vis_path)
 	if movement_type != "Invisible":
-		SpectateCamera.onSpectate(Unit)
 		Unit.Model.onMoveToTile(active_action.Tile, active_action.type, movement_type)
 		
 		if movement_type == "Regular" and Unit.Tile not in Vision.ally_vision:

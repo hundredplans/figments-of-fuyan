@@ -4,19 +4,19 @@
 [ext_resource type="Texture2D" uid="uid://cpqvv1f512c35" path="res://scenes/screens/level_map/utility_nodes/tiles/arrow.png" id="1_k88jd"]
 [ext_resource type="Texture2D" uid="uid://mxl2xmyvwjsx" path="res://assets/base_game/cards/cards/AngrusPalmus/art_mini.png" id="2_bjfr1"]
 
-[node name="EnemySpottedArrow" type="Control"]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 80.0
-offset_bottom = 126.0
+[node name="EnemySpottedArrow" type="Node2D"]
 script = ExtResource("1_iugmc")
 
-[node name="Arrow" type="Sprite2D" parent="."]
-modulate = Color(1, 0, 0, 1)
-position = Vector2(40, 20)
-rotation = -1.5708
-texture = ExtResource("1_k88jd")
-
 [node name="ArtMini" type="Sprite2D" parent="."]
-position = Vector2(40, 86)
+unique_name_in_owner = true
+position = Vector2(40, 40)
 texture = ExtResource("2_bjfr1")
+
+[node name="Pivot" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(40, 40)
+
+[node name="Arrow" type="Sprite2D" parent="Pivot"]
+modulate = Color(1, 0, 0, 1)
+position = Vector2(80, 0)
+texture = ExtResource("1_k88jd")
