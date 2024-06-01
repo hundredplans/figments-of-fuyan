@@ -266,7 +266,7 @@ func on_map_selected(map_info: Dictionary) -> void:
 	for node_info in map_info.nodes:
 		on_node_texture_pressed(Nodes.get_child(node_info[1]).get_child(node_info[2]), node_info[0])
 
-	await get_tree().create_timer(0.02).timeout
+	await get_tree().process_frame
 	on_map_selected_arrows(map_info)
 
 const ARROW_DIFFERENT_CONVERSION: Dictionary = {

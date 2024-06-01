@@ -19,7 +19,7 @@ func onSetupAllyPassedTurns(Unit: UnitGD) -> void:
 func on_card_placed(hand_card: HandCardGD, Tile: TileGD) -> void:
 	var skip_result: bool = LevelMap.on_skip_hand_phase_result(Tile)
 	if LevelMap.game_phase == "HandPhase": LevelUI.on_ally_unit_awakened(skip_result)
-	var Unit: UnitGD = Units.on_unit_awakened(hand_card.id, hand_card.tool_id, hand_card.effects, 0, Tile.obj.rotation, Tile)
+	var Unit: UnitGD = await Units.on_unit_awakened(hand_card.id, hand_card.tool_id, hand_card.effects, 0, Tile.obj.rotation, Tile)
 	if skip_result: LevelMap.on_advance_game_phase()
 	SpectateCamera.onSpectate(Unit)
 	if Unit.rarity != 7:
@@ -108,7 +108,7 @@ func on_occupied_tile_inspected(Tile: TileGD) -> void:
 	var SpectateUnit: UnitGD = SpectateCamera.SpectateUnit
 	if LevelMap.action_lock.is_empty() and Unit.team == 0 and Unit == SpectateUnit:
 		on_unit_selected(Unit)
-	elif LevelMap.action_lock in ["", "HandRegular"] and UnitSelected == null and Unit.Tile in Vision.ally_vision:
+	elif LevelMap.action_lock in ["", "HandRegular"] and UnitSelected == null and Unit.Tile in Vision.getTeamVision():
 		SpectateCamera.onSpectate(Unit)
 				
 var UnitSelected: UnitGD
@@ -131,7 +131,8 @@ func _on_unit_deselected(Unit: UnitGD, absolute: bool = false) -> void:
 	
 func onSetMovementRange(Unit: UnitGD) -> void:
 	Tiles.onCreateMovementPaths(Unit)
-	var enemy_units: Array = Units.on_units(1).filter(func(x: UnitGD): return x.Tile in Vision.ally_vision)
+	var ally_vision: Array = Vision.getTeamVision()
+	var enemy_units: Array = Units.on_units(TeamRelationGD.new(1)).filter(func(x: UnitGD): return x.Tile in ally_vision)
 	var is_staggered: bool = Units.Combat.isStaggered(Unit)
 	for Tile in Tiles.movement_paths.tiles:
 		if Unit.attack_amount > 0:
@@ -165,12 +166,11 @@ func _on_unit_selected(Unit: UnitGD) -> void:
 func onDeathFinished(Deathee: UnitGD, AppliedBy: AppliedByGD) -> void:
 	if LevelMap.game_phase == "PlayerPhase":
 		if Deathee.team == 0 and SpectateCamera.SpectateUnit != null and SpectateCamera.SpectateUnit.team == 0 and AppliedBy.type != "HelpfulHelmet":
-			var unit_distances: Array = Units.on_units().map(func(x: UnitGD): return {"Unit": x, "distance": Tiles.tile_distance(x.Tile, Deathee.Tile)})
+			var unit_distances: Array = Units.on_awakened_units().map(func(x: UnitGD): return {"Unit": x, "distance": Tiles.tile_distance(x.Tile, Deathee.Tile)})
 			unit_distances.sort_custom(func(x: Dictionary, y: Dictionary): return x.distance > y.distance)
 			if unit_distances.size() > 0:
 				SpectateCamera.onSpectate(unit_distances[0].Unit)
 		on_remove_unit_turn(Deathee)
-		Units.Vision.on_recalculate_vision()
 		if Deathee.team == 0 and unpassed_turns.is_empty():
 			Units.unit_actions_after.append(LevelMap.on_advance_game_phase)
 	

@@ -46,7 +46,7 @@ func onPickMostInjured() -> bool:
 		else:
 			highest_injury = affected_units[0].max_health - affected_units[0].health
 		
-	for _Unit in Units.on_units(Unit.team).filter(func(x: UnitGD): return x.health > 0):
+	for _Unit in Units.on_units(TeamRelationGD.new(Unit.team)).filter(func(x: UnitGD): return x.health > 0):
 		if _Unit.max_health - _Unit.health > highest_injury:
 			if affected_units.size() == 1 and !triggered:
 				trigger_info.append([affected_units[0], false])

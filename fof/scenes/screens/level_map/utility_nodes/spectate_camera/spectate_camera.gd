@@ -33,7 +33,7 @@ var SpectateTile: TileGD
 var is_spectate_spawn: bool = false
 
 func onSpectate(Obj: Variant) -> void:
-	if Obj != null:
+	if Obj != null and (!Obj is UnitGD or !Obj.is_dead):
 		if is_spectate_spawn: onSpectateSpawnTile(Obj)
 		else: onSpectateUnit(Obj)
 		onChangeCameraMode(true)
@@ -42,7 +42,8 @@ func onSpectate(Obj: Variant) -> void:
 	SpectateUnit = null
 
 func getUnoccupiedSpawnTiles() -> Array:
-	return spawn_tiles.filter(func(x: TileGD): return x.Unit == null)
+	var unit_tiles: Array = Units.all_units().map(func(x: UnitGD): return x.Tile)
+	return spawn_tiles.filter(func(x: TileGD): return x not in unit_tiles)
 
 func onSpectateSpawnTile(type: Variant) -> void:
 	var Tile: TileGD
@@ -77,10 +78,10 @@ func onSpectateUnit(type: Variant) -> void:
 				Unit = Units.onFindClosestAdjacentUnit(SpectateUnit, relation)
 		else:
 			if type == "AllySelf": type = "Ally"
-			var units: Array = Units.on_units(0, type)
+			var units: Array = Units.on_units(TeamRelationGD.new(0, type))
 			if units.size() > 0: Unit = units[0]
 	elif type is int and SpectateUnit != null:
-		var units: Array = Units.on_units(SpectateUnit.team)
+		var units: Array = Units.on_units(TeamRelationGD.new(SpectateUnit.team))
 		if units.size() > 1:
 			var index: int = units.find(SpectateUnit)
 			index = clamp(index + type, -1, units.size())
@@ -93,11 +94,12 @@ func onSpectateUnit(type: Variant) -> void:
 	if Unit != null:
 		if SpectateUnit != null: SpectateUnit.on_spectated_in_player_phase(false)
 		if SpectateTile != null: SpectateTile = null
+		SpectateUnit = Unit
 		Unit.on_spectated_in_player_phase(true)
 		Units.onSpectatedInPlayerPhase(Unit)
 		
-		if Vision.vision_mode == 1: Vision.on_recalculate_vision(Unit)
-		SpectateUnit = Unit
+		if Vision.vision_mode == 1: Vision.setActiveUnitVision(Unit)
+		
 		onCameraStartSpectate(SpectateUnit)
 	
 func onCameraStartSpectate(Obj: Variant) -> void:
@@ -162,7 +164,7 @@ func _input(event: InputEvent) -> void:
 	onFreelookCamera(event)
 	
 func _process(delta: float) -> void:
-	if SpectateUnit != null: onCameraStartSpectate(SpectateUnit)
+	if SpectateUnit != null and is_unit_camera: onCameraStartSpectate(SpectateUnit)
 	onUpdateFreelookCamera(delta)
 
 var OldSpectateUnit: UnitGD
@@ -172,7 +174,7 @@ func onChangeCameraMode(state: bool) -> void:
 		is_unit_camera = state
 		@warning_ignore("incompatible_ternary")
 		if is_unit_camera: onSpectate(OldSpectateUnit if OldSpectateUnit != null else "Ally")
-		else: OldSpectateUnit = SpectateUnit; _total_pitch = 0; onSpectate(null)
+		else: OldSpectateUnit = SpectateUnit; _total_pitch = 0; onSpectate(null); LevelUI._on_team_button_item_selected(LevelUI.team_selected)
 	
 # Modifier keys' speed multiplier
 const SHIFT_MULTIPLIER = 2.5
@@ -257,7 +259,7 @@ func _update_movement(delta):
 		_velocity.y = clamp(_velocity.y + offset.y, -_vel_multiplier, _vel_multiplier)
 		_velocity.z = clamp(_velocity.z + offset.z, -_vel_multiplier, _vel_multiplier)
 	
-		translate(_velocity * delta * speed_multi)
+		Camera.translate(_velocity * delta * speed_multi)
 func _update_mouselook():
 	# Only rotates mouse if the mouse is captured
 	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
@@ -270,6 +272,6 @@ func _update_mouselook():
 		pitch = clamp(pitch, -90 - _total_pitch, 90 - _total_pitch)
 		_total_pitch += pitch
 	
-		rotate_y(deg_to_rad(-yaw))
-		rotate_object_local(Vector3(1,0,0), deg_to_rad(-pitch))
+		Camera.rotate_y(deg_to_rad(-yaw))
+		Camera.rotate_object_local(Vector3(1,0,0), deg_to_rad(-pitch))
 

@@ -20,11 +20,7 @@ var top_of_cliff_wall: Array
 @export var w: int
 @export var tpos: Vector3
 
-var Unit: UnitGD
 var Tiles: TilesGD
-
-func getSolidState() -> bool: 
-	return Unit != null or solid_status > 0
 
 func onTTpos(_w: int = w) -> Vector4:
 	return Vector4(tpos.x, tpos.y, tpos.z, _w)

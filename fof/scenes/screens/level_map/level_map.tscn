@@ -25,18 +25,12 @@ script = ExtResource("1_2p706")
 script = ExtResource("4_84ynl")
 
 [node name="MouseRayCast" type="RayCast3D" parent="Vision"]
-collision_mask = 12
+collision_mask = 40
 debug_shape_custom_color = Color(0, 0, 0, 0)
 debug_shape_thickness = 1
 
 [node name="Units" type="Node3D" parent="."]
 script = ExtResource("3_2cmnp")
-
-[node name="BotManager" type="Node" parent="Units"]
-script = ExtResource("5_03qrj")
-
-[node name="PlayerManager" type="Node" parent="Units"]
-script = ExtResource("4_j0l8t")
 
 [node name="FieldedUnits" type="Node3D" parent="Units"]
 
@@ -63,3 +57,9 @@ script = ExtResource("13_185r7")
 [node name="Trinkets" type="Node" parent="."]
 
 [node name="Boons" type="Node" parent="."]
+
+[node name="AIManager" type="Node" parent="."]
+script = ExtResource("5_03qrj")
+
+[node name="PlayerManager" type="Node" parent="."]
+script = ExtResource("4_j0l8t")

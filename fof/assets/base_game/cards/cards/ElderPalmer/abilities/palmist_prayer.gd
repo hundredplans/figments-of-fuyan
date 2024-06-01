@@ -4,7 +4,7 @@ extends TargetAbilityGD
 @export var HEAL: int = 1
 func onTargetAbilityCondition() -> void:
 	tiles = {"range": [], "affect": []}
-	if Units.on_units(Unit.team, "Enemy").any(func(x: UnitGD): return x.Tile in Unit.visible_tiles):
+	if Units.on_units(TeamRelationGD.new(Unit.team, "Enemy")).any(func(x: UnitGD): return x.Tile in Unit.visible_tiles):
 		tiles["range"] = Unit.getVisibleTiles()
 		tiles["affect"] = tiles["range"].filter(func(x: TileGD): return Units.unit_by_tile_team_bool(x, Unit.team))
 		

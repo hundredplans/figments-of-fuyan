@@ -18,6 +18,7 @@ func onUnitAwakened(Unit: UnitGD) -> void:
 	units[Unit] = [UnitFieldStatus]
 	UnitFieldStatus.SpectateCamera = SpectateCamera
 	Unit.add_child(UnitFieldStatus)
+	UnitFieldStatus.visible = Unit.Tile in Vision.getTeamVision()
 	UnitFieldStatus.position.y = Unit.height.stat
 	UnitFieldStatus.unit_field_status_materials = unit_field_status_materials
 	UnitFieldStatus.setUnit(Unit)
@@ -143,7 +144,8 @@ func onAIEndTurnPhaseStart() -> void: # Sets AI to turn used
 	setAllRegularUnitStatus(0, "TurnInactive")
 	
 func setUnitStatusVisible(Unit: UnitGD, state: bool) -> void:
-	for UnitStatus in units[Unit]: UnitStatus.visible = state
+	if units.has(Unit):
+		for UnitStatus in units[Unit]: UnitStatus.visible = state
 
 func onEnemyInRange(Unit: UnitGD, state: bool) -> void: # Changes slot one
 	for UnitStatus in units[Unit]:
@@ -206,7 +208,7 @@ func onAddUnitFX(Unit: UnitGD, type: String, AppliedBy := AppliedByGD.new()) -> 
 		base_fx.hover_unit_pressed.connect(onHoverUnitPressed)
 	
 func onHoverUnitPressed(Unit: UnitGD) -> void:
-	if Unit != null and Unit.Tile in Vision.ally_vision:
+	if Unit != null and Unit.Tile in Vision.getTeamVision():
 		LevelUI.onSpectateEnemyOrAlly(Unit)
 	
 func onAddAbilityActiveFX(Unit: UnitGD, type: String, _AppliedBy := AppliedByGD.new()) -> void:

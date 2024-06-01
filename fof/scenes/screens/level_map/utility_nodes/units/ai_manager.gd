@@ -15,13 +15,13 @@ func onDeathFinished(Unit: UnitGD) -> void:
 
 func onAIEndTurnPhaseStart() -> void:
 	var AppliedBy := AppliedByGD.new("EndAIPhase")
-	for Unit in Units.on_units(1):
+	for Unit in Units.on_units(TeamRelationGD.new(1)):
 		Unit.stats("active_speed", Unit.max_speed, AppliedBy, true)
 		Units.setUnitStatus(Unit, "TurnUsed")
 
 func onAIPhaseStart() -> void:
 	var AppliedBy := AppliedByGD.new("StartAIPhase")
-	for Unit in Units.on_units(1):
+	for Unit in Units.on_units(TeamRelationGD.new(1)):
 		Unit.stats("active_speed", Unit.max_speed, AppliedBy, true)
 		Unit.attack_amount = 1
 		Units.setUnitStatus(Unit, "TurnUnused")
@@ -90,53 +90,69 @@ func onChosenPathSelected(Unit: UnitGD, chosen_path: Dictionary) -> void:
 	if chosen_path.size > 0:
 		Tiles.on_remove_tile_material(Unit.Tile, "")
 	
-	var visibility_path: Array = []
-	await onCalculateVisibilityPath(Unit, chosen_path, visibility_path)
-	invisible_movement_tracker.append(\
-	visibility_path.any(func(x: Array): return x[1] == "Invisible") and visibility_path.all(func(x: Array): return x[1] == "Invisible"))
-	
+	var vis_array: Array = []
+	await onCalculateVisibilityPath(Unit, chosen_path, vis_array)
 	var pushed_delay: bool = false
+	var j: int = 0
 	for i in range(chosen_path.size):
-		if !pushed_delay and visibility_path[i][1] != "Invisible":
-			Units.onPushArgDelay(Unit, FIRST_MOVE_DELAY, Callable(), SpectateCamera.onSpectate.bind(Unit))
+		if !pushed_delay and vis_array.size() > 0 and vis_array[i].vis_path != "Invisible":
+			var lambda: Callable = (func(): Unit.Model._look_at(chosen_path.tiles[i]); SpectateCamera.onSpectate(Unit))
+			Units.onPushArgDelay(Unit, FIRST_MOVE_DELAY, SpectateCamera.onSpectate.bind(Unit), lambda)
 			pushed_delay = true
-		if chosen_path.types[i].x != 1: Units.onMoveToTileAI(Unit, chosen_path.tiles[i], chosen_path.types[i], visibility_path)
+		if chosen_path.types[i].x != 1: Units.onMoveToTileAI(Unit, chosen_path.tiles[i], chosen_path.types[i], vis_array, j); j += 1
 		else: Units.attack_enemy_or_target(Unit, chosen_path.tiles[i])
-	Units.onAIMoveFinisher(Unit, visibility_path)
+	Units.onAIMoveFinisher(Unit, vis_array)
 
-func onChosenPathVisPath(chosen_path: Dictionary, Unit: UnitGD, default_tile: TileGD, visibility_path: Array) -> void:
+func onChosenPathVisPath(chosen_path: Dictionary, Unit: UnitGD, default_tile: TileGD, vision_path: Array, default_body_pos: Vector3, default_ray_pos: Vector3) -> void:
+	var visions: Array = Units.all_units().map(func(x: UnitGD): return [x, x.visible_tiles.duplicate()])
 	for i in range(chosen_path.size):
 		if chosen_path.types[i].x != 1:
 			var Tile: TileGD = chosen_path.tiles[i]
-			Unit.global_position = Tiles.getUnitPositionOnTile(Tile)
+			var global: Vector3 = Tiles.getUnitPositionOnTile(Tile)
+			Unit.Model.static_body.global_position = global + default_body_pos
+			Unit.VisionRaycast.global_position = global + default_ray_pos
+			Unit.Model._look_at_body(Tile)
 			Unit.Tile = Tile
-			Unit.Model.onLookAtRelative(default_tile, Unit.Tile)
-			await get_tree().create_timer(0.001).timeout
-			visibility_path.append(onRayEnemyUnits(Unit))
-			
-func onCalculateVisibilityPath(Unit: UnitGD, chosen_path: Dictionary, movement_type_path: Array) -> void:
-	var visibility_path = [[Unit.Tile, Vision.is_unit_in_vision(Unit)]]
-	var default_position: Vector3 = Unit.global_position
+			await get_tree().process_frame
+			var vision_info: Dictionary = Unit.onCalculateVisionInfo()
+			Unit.visible_tiles = vision_info.visible_tiles
+			Vision.onProcessUnitVision(Unit, vision_info.unit_vision, [], false)
+			vision_path.append(vision_info)
+	
+	for info in visions:
+		info[0].visible_tiles = info[1]
+	
+func onCalculateVisibilityPath(Unit: UnitGD, chosen_path: Dictionary, vis_array: Array = []) -> void:
 	var default_rot: int = Unit.Model.rot
 	var default_tile: TileGD = Unit.Tile
+	var default_body_pos: Vector3 = Unit.Model.static_body.position
+	var default_ray_pos: Vector3 = Unit.VisionRaycast.position
 	
-	await onChosenPathVisPath(chosen_path, Unit, default_tile, visibility_path)
-	for i in range(visibility_path.size() - 1):
-		movement_type_path.append([visibility_path[i + 1][0], onCalculateMovementType(visibility_path[i + 1][1], visibility_path[i][1])])
-	Unit.onResetUnit(default_position, default_rot, default_tile)
-	
-func onCalculateMovementType(destination_in_vision: bool, origin_in_vision: bool) -> String:
-	if destination_in_vision:
-		if origin_in_vision: return "Regular"
-		return "IntoVision"
-	elif origin_in_vision: return "OutOfVision"
-	return "Invisible"
+	await onChosenPathVisPath(chosen_path, Unit, default_tile, vis_array, default_body_pos, default_ray_pos)
+	onCreateVisPath(vis_array)
+	invisible_movement_tracker.append(onFindNonInvisibleMove(vis_array))
+	Unit.onResetUnit(default_body_pos, default_ray_pos, default_rot, default_tile)
 
-func onRayEnemyUnits(Unit: UnitGD) -> Array:
-	for _Unit in Units.on_units(0):
-		if Tiles.tile_distance(_Unit.Tile, Unit.Tile) <= 5 and (_Unit.onRayEnemyUnit(Unit) or Unit.onRayEnemyUnit(_Unit)):
-			return [Unit.Tile, true]
-	return [Unit.Tile, false]
+func onCreateVisPath(vis_array: Array) -> void:
+	for vis_info in vis_array:
+		var ally_intents: Array = vis_info.unit_vision.keys().filter(func(x: UnitGD): return x.team == 0).map(func(x: UnitGD): return vis_info.unit_vision[x])
+		var path: String = "Invisible"
+		if ally_intents.any(func(x: String): return x == "Regular"): path = "Regular"
+		else:
+			var any_enter: bool = ally_intents.any(func(x: String): return x == "Enter")
+			var any_exit: bool = ally_intents.any(func(x: String): return x == "Exit")
+			if any_exit and any_enter: path = "Regular"
+			elif any_exit: path = "Exit"
+			elif any_enter: path = "Enter"
+		
+		vis_info['vis_path'] = path
+
+func onFindNonInvisibleMove(vis_array: Array) -> bool:
+	for vision_info in vis_array:
+		for _Unit in vision_info.unit_vision:
+				if _Unit.team == 0 and vision_info.vis_path != "Invisible":
+					return false
+	return true
 
 func onUnitAwakened(Unit: UnitGD) -> void:
 	if Unit.team == 1:

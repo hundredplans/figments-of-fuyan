@@ -57,12 +57,12 @@ func on_change_game_phase(phase: String) -> void:
 	match phase:
 		"StartPhase":
 			setActionLock("HandRegular")
-			Vision.onStartPhaseStart()
 			Tiles.on_start_phase_start()
+			Vision.onStartPhaseStart()
 			SpectateCamera.onStartPhaseStart()
 			Hand.on_start_phase_start()
+			await Units.on_start_phase_start()
 			LevelUI.onStartPhaseStart()
-			Units.on_start_phase_start()
 			VFX.onStartPhaseStart()
 		"AfterStartPhase":
 			LevelUI.onAfterStartPhaseStart()

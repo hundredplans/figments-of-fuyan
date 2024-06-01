@@ -9,6 +9,7 @@ var SpectateCamera: Node3D
 var LevelUI: LevelUIGD
 var LevelMap: LevelMapGD
 var Tiles: TilesGD
+var PlayerManager: PlayerManagerGD
 
 var OriginalSpectateUnit: UnitGD
 var ability_chain: Array = []
@@ -65,8 +66,8 @@ func onTargetAbility(Unit: UnitGD, ability: TargetAbilityGD, Tile: TileGD) -> vo
 	onTriggerAbilitySpectateDelay(Unit, ability, ability.onTargetAbility, InitialTeleport)
 	ability.used = true
 	LevelUI.onUpdateTargetAbility(Unit, ability)
-	Units.PlayerManager.on_select_active_unit(Unit)
-	Units.PlayerManager._on_unit_deselected(Unit)
+	PlayerManager.on_select_active_unit(Unit)
+	PlayerManager._on_unit_deselected(Unit)
 	
 func onRevenge(Damagee: UnitGD, AppliedBy: AppliedByGD, DMGInfo: DMGInfoGD, damage: int):
 	var abilities: Array = onFindAbilities(Damagee, "Revenge")
@@ -94,7 +95,7 @@ func onRampage(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	GameEffects.onTriggerUnitGameFX(Unit, TriggerGD.RAMPAGE, [Unit, AppliedBy])
 		
 func onTriggerAbilitySpectateDelay(Triggerer: UnitGD, ability: AbilityGD, callable: Callable, InitialTeleport: UnitGD = null) -> void:
-	var vis: bool = Triggerer.team == 0 or Triggerer.Tile in Vision.ally_vision
+	var vis: bool = Triggerer.team == 0 or Triggerer.Tile in Vision.getTeamVision()
 	if vis and ability.delay > 0:
 		var begin_arguments: Dictionary = {"Triggerer": Triggerer, "callable": callable, "ability": ability, "vis": vis}
 		var end_arguments: Dictionary = {"Triggerer": Triggerer, "ability": ability}

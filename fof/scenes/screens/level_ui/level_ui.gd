@@ -11,6 +11,7 @@ var Tiles: TilesGD
 var Vision: VisionGD
 var SpectateCamera: Node3D
 var Units: UnitsGD
+var PlayerManager: PlayerManagerGD
 
 @onready var EnemySpottedArrows: Control = %EnemySpottedArrows
 @onready var DrawCard: Control = %DrawCard
@@ -59,6 +60,12 @@ func _ready() -> void:
 	
 	vision_selected = VisionButton.default
 	team_selected = TeamButton.default
+	
+	UnitStatusOverlord.Units = Units
+	UnitStatusOverlord.Vision = Vision
+	UnitStatusOverlord.SpectateCamera = SpectateCamera
+	UnitStatusOverlord.Tiles = Tiles
+	UnitStatusOverlord.LevelMap = LevelMap
 
 @onready var CornerRightMenu = %CornerRightMenu
 func setCornerRightVisibile(state: bool) -> void:
@@ -155,15 +162,14 @@ func on_player_phase_start() -> void:
 	VisionMode.visible = true
 	on_set_hand_box_cards_state()
 	on_unpin_hand_box_panel()
-	Vision.on_vision_mode_set(0)
 	onChangePhaseIcon("PlayerPhase")
 	GreyScale.modulate.a = 0
 
 func onPassUnitTurnButtonPressed():
-	if Units.PlayerManager.unpassed_turns.is_empty():
+	if PlayerManager.unpassed_turns.is_empty():
 		LevelMap.on_advance_game_phase()
 	else:
-		LevelMap.Units.PlayerManager.on_pass_unit_turn_pressed()
+		PlayerManager.on_pass_unit_turn_pressed()
 
 @onready var Statuses: Control = %Statuses
 func onSpectateEnemyOrAlly(Unit: UnitGD) -> void:
@@ -240,13 +246,19 @@ func on_vision_selected(x: int) -> void:
 	_on_team_button_item_selected(team_selected)
 
 func _on_vision_button_item_selected():
-	for child in Statuses.get_children():
-		if child.visible:
-			var SpectateUnit: UnitGD = SpectateCamera.SpectateUnit
-			if vision_selected == 0 and SpectateUnit != null:
-				child.visible = Vision.isUnitInUnitVisionSafe(SpectateUnit, child.Unit, true)
-			elif child.Unit.team == 1:
-				child.visible = Vision.is_unit_in_vision(child.Unit)
+	var SpectateUnit: UnitGD = SpectateCamera.SpectateUnit
+	if SpectateUnit != null:
+		for child in Statuses.get_children():
+			if child.visible:
+				if vision_selected == 0:
+					child.visible = Vision.isUnitInUnitVisionSafe(SpectateUnit, child.Unit)
+				elif child.Unit.team == 1:
+					child.visible = child.Unit.Tile in Vision.getTeamVision()
+	elif vision_selected == 0:
+		for child in Statuses.get_children(): child.visible = false
+	elif vision_selected == 1:
+		for child in Statuses.get_children():
+			if child.Unit.team == 1: child.visible = child.Unit.Tile in Vision.getTeamVision()
 
 func on_update_vision() -> void:
 	_on_team_button_item_selected(team_selected)
@@ -272,24 +284,20 @@ func _on_vision_mode_set():
 
 func onVisionModeSet() -> void:
 	GreyScale.modulate.a = greyscale_light if Vision.vision_mode == 1 else 0.0
-
+	
 func onStartPhaseStart() -> void:
 	ChangePhase.visible = false
 	PhaseIcon.visible = false
-	
-	UnitStatusOverlord.Units = Units
-	UnitStatusOverlord.Vision = Vision
-	UnitStatusOverlord.SpectateCamera = SpectateCamera
-	UnitStatusOverlord.Tiles = Tiles
-	UnitStatusOverlord.LevelMap = LevelMap
 	
 	Console.Units = Units
 	Console.LevelUI = self
 	Console.Tiles = Tiles
 	Console.Combat = Combat
+	Console.PlayerManager = PlayerManager
 	
 	UnitStatusOverlord.onStartPhaseStart()
 	GreyScale.modulate.a = greyscale_light
+	_on_team_button_item_selected(team_selected)
 
 func _on_card_clipper_child_entered_tree(node):
 	if node is HScrollBar:
@@ -403,7 +411,7 @@ func onExitUnitMode() -> void:
 	onExitTargetAbilityMode(true)
 
 func onTargetAbilityBoxPressed(Unit: UnitGD, ability: AbilityGD, TargetAbilityBox: Control) -> void:
-	if Units.PlayerManager.TAbility == ability:
+	if PlayerManager.TAbility == ability:
 		onExitTargetAbilityMode()
 		TargetAbilityBox.modulate = Color(1, 1, 1)
 	else:
@@ -412,8 +420,8 @@ func onTargetAbilityBoxPressed(Unit: UnitGD, ability: AbilityGD, TargetAbilityBo
 
 func onTargetAbilityBtnPressed(Unit: UnitGD, ability: AbilityGD) -> void:
 	if LevelMap.action_lock.is_empty():
-		if Units.PlayerManager.UnitSelected != Unit:
-			Units.PlayerManager.on_unit_selected(Unit)
+		if PlayerManager.UnitSelected != Unit:
+			PlayerManager.on_unit_selected(Unit)
 		
 		var TargetAbilityBox: Control = TargetAbilities.get_children().filter(func(x: Control): return !x.is_queued_for_deletion() and x.ability == ability)[0]
 		onTargetAbilityBoxPressed(Unit, ability, TargetAbilityBox)
@@ -422,14 +430,14 @@ func onEnterTargetAbilityMode(Unit: UnitGD, ability: AbilityGD) -> void:
 	AbilityLabel.text = ability.ability_name
 	UnitNameLabel.text = ""
 	AbilityDescription.text = ability.ability_description
-	Units.PlayerManager.onEnterTargetAbilityMode(Unit, ability)
+	PlayerManager.onEnterTargetAbilityMode(Unit, ability)
 	
 func onExitTargetAbilityMode(exit_unit: bool = false) -> void: # has to check if actually in target ability mode first
-	if Units.PlayerManager.TAbility != null:
+	if PlayerManager.TAbility != null:
 		AbilityLabel.text = ""
 		AbilityDescription.text = ""
-		if !exit_unit: UnitNameLabel.text = Units.PlayerManager.TAbilityUnit.base_card.name
-		Units.PlayerManager.onExitTargetAbilityMode()
+		if !exit_unit: UnitNameLabel.text = PlayerManager.TAbilityUnit.base_card.name
+		PlayerManager.onExitTargetAbilityMode()
 
 func onUpdateAbilityCharges(Unit: UnitGD) -> void:
 	var charge_abilities: Array = []
@@ -496,7 +504,7 @@ var is_incentivise: bool = false
 func onIncentivisePassTurn(Unit: UnitGD) -> void:
 	Tiles.onCreateMovementPaths(Unit)
 	if !is_incentivise and (Unit.attack_amount == 0 or \
-	(Unit.speed == 0 and Units.on_units(0, "Enemy").all(func(x: UnitGD): return x.Tile not in Tiles.movement_paths))):
+	(Unit.speed == 0 and Units.on_units(TeamRelationGD.new(1)).all(func(x: UnitGD): return x.Tile not in Tiles.movement_paths))):
 		is_incentivise = true
 		var RotateTween := create_tween()
 		RotateTween.tween_property(ChangePhase, "rotation", TAU, INCENTIVISE_DURATION).as_relative().set_trans(Tween.TRANS_ELASTIC)

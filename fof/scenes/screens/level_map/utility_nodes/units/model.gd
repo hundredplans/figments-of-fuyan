@@ -162,8 +162,8 @@ func on_begin_all_movement_between_tiles() -> void:
 	if Unit.team == 1:
 		match walk_to_info[2]:
 			"Regular": onSetOverrideMaterial("Regular")
-			"OutOfVision": onSetOverrideMaterial("IntoGrey")
-			"IntoVision": onSetOverrideMaterial("FromGrey")
+			"Exit": onSetOverrideMaterial("IntoGrey")
+			"Enter": onSetOverrideMaterial("FromGrey")
 	
 	match walk_to_info[1].x:
 		3: on_create_regular_jump(walk_to_info[0])
@@ -221,13 +221,13 @@ func on_create_second_move_tween(Tile: TileGD, type: Vector2i) -> void:
 	WALK_TRAVEL_TIME * 0.5)
 	MoveTween.finished.connect(on_finish_animation.bind("Walk"))
 
-func onLookAtRelative(Tile: TileGD, _Tile: TileGD) -> void:
-	rot = Unit.Units.Tiles.neighbour_rotation(Tile, _Tile)
-	on_set_rotation()
-
 func _look_at(Tile: TileGD) -> void: #will rotate the object
 	rot = Unit.Units.Tiles.neighbour_rotation(Tile, Unit.Tile)
 	on_set_rotation()
+
+func _look_at_body(Tile: TileGD) -> void:
+	rot = Unit.Units.Tiles.neighbour_rotation(Tile, Unit.Tile)
+	onSetCollisionRotation()
 
 func on_death() -> void:
 	on_play_animation(death)
@@ -249,6 +249,9 @@ func onGetAdjustedPoints() -> PackedVector3Array:
 func on_set_rotation() -> void:
 	rotation_degrees.y = 270 + (rot * 60)
 	
+func onSetCollisionRotation() -> void:
+	static_body.global_rotation_degrees.y = 270 + (rot * 60)
+	
 func getRotationPoint(xyz: Vector3, r: float, pos: Vector3) -> Vector3:
 	return Vector3(xyz.x * (cos(r)) - xyz.z * (sin(r)), xyz.y, xyz.z * (cos(r)) + xyz.x * (sin(r))) + pos
 
@@ -256,6 +259,7 @@ func setVisible(state: bool) -> void:
 	mesh.visible = state
 	Unit.UnitVFX.visible = state
 	Unit.Units.LevelUI.UnitStatusOverlord.setUnitStatusVisible(Unit, state)
+	onSetShaderParameter(0)
 
 var idle_array: Array = ["Idle", "IdleAbility", "IdleRare"]
 func onActivateIdleAbility() -> void:

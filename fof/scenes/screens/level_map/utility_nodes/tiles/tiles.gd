@@ -11,6 +11,7 @@ var Vision: VisionGD
 var Units: UnitsGD
 var Lights: LightsGD
 var Hand: HandGD
+var PlayerManager: PlayerManagerGD
 
 var cube_directions: Array[Vector3] = [
 Vector3(1, 0, -1),
@@ -206,9 +207,9 @@ func onTilePressed() -> void:
 			if LevelMap.action_lock.is_empty() and "PathHovered" in active_tile.tile_outlines: 
 				on_begin_unit_movement()
 				
-			elif Unit != null and Unit.Tile in Vision.ally_vision:
+			elif Unit != null and Unit.Tile in Vision.getTeamVision():
 				if "EnemyInRange" not in active_tile.tile_outlines:
-					Units.PlayerManager.on_occupied_tile_inspected(active_tile)
+					PlayerManager.on_occupied_tile_inspected(active_tile)
 				elif LevelMap.action_lock.is_empty(): on_begin_unit_movement()
 				
 			elif LevelMap.action_lock == "SpawnVision" and on_find_tile_primary_type(active_tile) == "Spawn":
@@ -218,11 +219,11 @@ func onTilePressed() -> void:
 		console_sig.emit(active_tile)
 
 func onTargetAffectPressed() -> void:
-	Combat.onTargetAbility(Units.PlayerManager.TAbilityUnit, Units.PlayerManager.TAbility, active_tile)
+	Combat.onTargetAbility(PlayerManager.TAbilityUnit, PlayerManager.TAbility, active_tile)
 
 func on_begin_unit_movement() -> void:
 	var enemy_is_in_range: bool = "EnemyInRange" in active_tile.tile_outlines
-	var Unit: UnitGD = Units.PlayerManager.UnitSelected
+	var Unit: UnitGD = PlayerManager.UnitSelected
 	if enemy_is_in_range: 
 		var active_index: int = path_hovered_info.tiles.find(active_tile)
 		if active_index > -1:
@@ -316,13 +317,14 @@ func onCreateMovementPaths(Unit: UnitGD, type: String = "Default") -> void:
 	var tiles: Array = []
 	match type:
 		"Default": tiles = get_children()
-		"EnemyVision": tiles = Vision.enemy_vision
+		"EnemyVision": tiles = Vision.getTeamVision(TeamRelationGD.new(1))
 		
 	movement_paths = {"tiles": []}
+	var ally_vision: Array = Vision.getTeamVision()
 	var astar := AStar3D.new()
-	var _enemy_tiles: Array = Units.on_units(Unit.team, "Enemy").filter(func(x: UnitGD): return x.Tile in Vision.ally_vision and tile_distance(x.Tile, Unit.Tile) <= Unit.speed + 1).map(func(x: UnitGD): return x.Tile)
+	var _enemy_tiles: Array = Units.on_units(TeamRelationGD.new(Unit.team, "Enemy")).filter(func(x: UnitGD): return x.Tile in ally_vision and tile_distance(x.Tile, Unit.Tile) <= Unit.speed + 1).map(func(x: UnitGD): return x.Tile)
 	var _in_range_tiles: Array = all_in_range(Unit.Tile, Unit.speed, true, tiles).filter(func(x: TileGD): return x.solid_status == 0)
-	for Tile in Units.all_units().filter(func(x: UnitGD): return x.Tile in Vision.ally_vision).map(func(x: UnitGD): return x.Tile): _in_range_tiles.erase(Tile)
+	for Tile in Units.all_units().filter(func(x: UnitGD): return x.Tile in ally_vision).map(func(x: UnitGD): return x.Tile): _in_range_tiles.erase(Tile)
 	
 	var full_tiles: Array = onRemoveTilesBlockedByHeight(_enemy_tiles + _in_range_tiles, Unit)
 	full_tiles.append(Unit.Tile)
@@ -336,7 +338,7 @@ func onCreateMovementPaths(Unit: UnitGD, type: String = "Default") -> void:
 		for _Tile in tiles_by_adjacent[Tile]:
 			var EnemyUnit: UnitGD = Units.unit_by_tile(_Tile)
 			var hdiff: int = (_Tile.w * 2) + int(is_ramp_tile(_Tile)) - ((Tile.w * 2) + int(is_ramp_tile(Tile)))
-			if EnemyUnit != null and EnemyUnit.Tile in Vision.ally_vision:
+			if EnemyUnit != null and EnemyUnit.Tile in Vision.getTeamVision():
 				if EnemyUnit.team != Unit.team and !Combat.isStaggered(Unit):
 					var enemy_low_point: float = getUnitAdjustedHeight(EnemyUnit.Tile)
 					var enemy_high_point: float = enemy_low_point + EnemyUnit.height.top
@@ -395,10 +397,11 @@ func onCalculateOptimalPath(Tile: TileGD, Unit: UnitGD, astar: AStar3D, movement
 	var tile_path: Array = path.map(func(x: int): return instance_from_id(x))
 	var size: int = tile_path.size()
 	
+	var ally_vision: Array = Vision.getTeamVision()
 	for i in range(size):
 		if i > 0 and i == size - 1:
 			var EnemyUnit: UnitGD = Units.unit_by_tile(tile_path[i])
-			if EnemyUnit != null and EnemyUnit.Tile in Vision.ally_vision:
+			if EnemyUnit != null and EnemyUnit.Tile in ally_vision:
 				var id: int = tile_path[i].get_instance_id()
 				for point in astar.get_point_connections(id):
 					if point != tile_path[i - 1].get_instance_id():
@@ -472,26 +475,26 @@ func on_connect_points(astar: AStar3D, movement_types: Array, Tile: TileGD, _Til
 	
 func on_tile_hovered(Tile: TileGD) -> void:
 	setTileOutline(Tile, "TileInspected")
-	if Units.PlayerManager.UnitSelected != null and movement_paths.has(Tile): # create hovered tiles
+	if PlayerManager.UnitSelected != null and movement_paths.has(Tile): # create hovered tiles
 		path_hovered_info = movement_paths[Tile]
 		for i in range(path_hovered_info.tiles.size()):
 			path_hovered_info.tiles[i].Effects.hovered_type = path_hovered_info.types[i]
 			setTileOutline(path_hovered_info.tiles[i], "PathHovered")
-	Vision.on_tile_hovered(Tile)
+	Vision.onTileHovered(Tile)
 	onTileHoveredDisplayCard(Tile)
 
 func onTileHoveredDisplayCard(Tile: TileGD) -> void:
-	if Tile in Vision.ally_vision:
+	if Tile in Vision.getTeamVision():
 		LevelUI.onTileHoveredDisplayCard(Tile)
 		
 var InspectTile: TileGD
 
 func on_tile_unhovered(Tile: TileGD) -> void:
 	setTileOutline(Tile, "TileInspected", true)
-	if Units.PlayerManager.UnitSelected != null:
+	if PlayerManager.UnitSelected != null:
 		for _Tile in get_children().filter(func(x: TileGD): return "PathHovered" in x.tile_outlines):
 			setTileOutline(_Tile, "PathHovered", true)
-	Vision.on_tile_unhovered(Tile)
+	Vision.onTileUnhovered(Tile)
 	LevelUI.onQueueTileHoveredGameCard()
 
 const OUTLINE_INFO: Dictionary = {
@@ -518,28 +521,28 @@ func setTileOutline(Tile: TileGD, type: String, is_remove: bool = false) -> void
 
 	if highest == "TileInspected" and !is_remove:
 		var Unit: UnitGD = Units.unit_by_tile(Tile)
-		if Unit != null and (Unit.team == 0 or Unit.Tile in Vision.ally_vision):
+		if Unit != null and (Unit.team == 0 or Unit.Tile in Vision.getTeamVision()):
 			match Unit.team:
 				0: highest = "AllyInspected"
 				1: highest = "EnemyInspected"
 	Tile.setOutline(OUTLINE_INFO[highest][1])
-	Tile.Effects.onManageHeightDropLabel(Units.PlayerManager.UnitSelected)
+	Tile.Effects.onManageHeightDropLabel(PlayerManager.UnitSelected)
 
 var path_hovered_info: Dictionary = {"tiles": [], "size": 0}
 func on_path_hovered_tile_selected(Tile: TileGD) -> void:
-	var OriginalTile: TileGD = Units.PlayerManager.UnitSelected.Tile
-	Units.PlayerManager.on_select_active_unit(Units.PlayerManager.UnitSelected)
+	var OriginalTile: TileGD = PlayerManager.UnitSelected.Tile
+	PlayerManager.on_select_active_unit(PlayerManager.UnitSelected)
 	for i in range(path_hovered_info.tiles.size()):
 		if path_hovered_info.types[i].x != 1:
 			Units.movement_outline_tiles.append(path_hovered_info.tiles[i])
-			Units.move_to_tile(Units.PlayerManager.UnitSelected, path_hovered_info.tiles[i], path_hovered_info.types[i])
-			path_hovered_info.tiles[i].Effects.onManageHeightDropLabel(Units.PlayerManager.UnitSelected)
-		elif Units.attack_enemy_or_target(Units.PlayerManager.UnitSelected, path_hovered_info.tiles[i]): 
+			Units.move_to_tile(PlayerManager.UnitSelected, path_hovered_info.tiles[i], path_hovered_info.types[i])
+			path_hovered_info.tiles[i].Effects.onManageHeightDropLabel(PlayerManager.UnitSelected)
+		elif Units.attack_enemy_or_target(PlayerManager.UnitSelected, path_hovered_info.tiles[i]): 
 			Units.movement_outline_tiles.append(path_hovered_info.tiles[i])
 		if Tile == path_hovered_info.tiles[i]: break
 		
 	on_remove_tile_material(OriginalTile, "" if path_hovered_info.tiles.size() == 1 and path_hovered_info.types[0].x == 1 else "EmptyTile")
-	Units.PlayerManager._on_unit_deselected(Units.PlayerManager.UnitSelected, true)
+	PlayerManager._on_unit_deselected(PlayerManager.UnitSelected, true)
 		
 func on_enemy_found_tile_selected(Tile: TileGD, Unit: UnitGD) -> void:
 	if Tile != null and Units.attack_enemy_or_target(Unit, Tile):

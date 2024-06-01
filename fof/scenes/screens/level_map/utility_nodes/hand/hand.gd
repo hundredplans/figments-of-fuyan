@@ -12,6 +12,7 @@ var Units: UnitsGD
 var SpectateCamera: Node3D
 var LevelUI: LevelUIGD
 var GameState: GameStateGD
+var PlayerManager: PlayerManagerGD
 
 func on_start_phase_start() -> void:
 	on_change_energy(Helper.getHeroCardInfo(GameState.hero_id).base_cards[GameState.hero_level].energy - 1)
@@ -61,7 +62,7 @@ func on_card_placed(Tile: TileGD) -> void:
 		var hand_card: HandCardGD = get_child(card_selected_index)
 		LevelUI.on_card_placed(card_selected_index)
 		on_change_energy(-Helper.getCard(hand_card.id).energy)
-		Units.PlayerManager.on_card_placed(hand_card, Tile)
+		await PlayerManager.on_card_placed(hand_card, Tile)
 		hand_card.queue_free()
 		card_selected_index = -1
 		

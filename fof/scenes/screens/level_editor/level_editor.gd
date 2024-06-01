@@ -1952,7 +1952,7 @@ func onBakeLevelPressed():
 		var i: int = 0
 		for tile_info in level_info.tiles:
 			tiles.append(on_create_tile(tile_info, LoadedLevel))
-			await get_tree().create_timer(0.001).timeout
+			await get_tree().process_frame
 			i += 1
 			print(str(i) + "/" + str(s))
 		
@@ -1964,7 +1964,7 @@ func onBakeLevelPressed():
 			print(Tile.tile)
 			on_set_tile_solid_status(Tile, tiles, positions)
 		
-		await get_tree().create_timer(0.02).timeout # absolutely necessary
+		await get_tree().process_frame # absolutely necessary
 		LoadedLevel.script = light_tester_gd
 		packed_scene.pack(LoadedLevel)
 		ResourceSaver.save(packed_scene, alt_path)

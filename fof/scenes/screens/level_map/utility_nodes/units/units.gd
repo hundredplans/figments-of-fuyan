@@ -12,11 +12,10 @@ var Tiles: TilesGD
 var LevelMap: Node3D
 var LevelUI: LevelUIGD
 var Combat: CombatGD
-
+var AIManager: AIManagerGD
+var PlayerManager: PlayerManagerGD
 
 @onready var Postmortem: Node3D = $Postmortem
-@onready var AIManager: AIManagerGD = $BotManager
-@onready var PlayerManager: PlayerManagerGD = $PlayerManager
 @onready var FieldedUnits: Node3D = $FieldedUnits
 
 var UnitScene: PackedScene = preload("res://scenes/screens/level_map/utility_nodes/units/unit.tscn")
@@ -31,19 +30,21 @@ func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int
 		Unit.Tiles = Tiles
 		FieldedUnits.add_child(Unit)
 		
-		Unit.on_create_unit(id, tool_id, effects, team, rot, tile) # Takes around 2.2 seconds
+		await Unit.on_create_unit(id, tool_id, effects, team, rot, tile) # Takes around 2.2 seconds
+		Vision.onUnitAwakened(Unit)
+		
 		Unit.Model.movement_finished.connect(on_movement_finished.bind(Unit))
 		Unit.Model.drop_calculate_damage.connect(on_drop_calculate_damage.bind(Unit))
 		Unit.Model.attack_finished.connect(on_attack_finished.bind(Unit))
 		Unit.Model.death_finished.connect(on_death_finished.bind(Unit))
 		Unit.Model.hurt_finished.connect(on_hurt_finished.bind(Unit))
 		
-		LevelUI.UnitStatusOverlord.onUnitAwakened(Unit)
-		
 		Unit.on_arrive(team == 0 or Unit.getVisibleEnemies().size() > 0)
 		AIManager.onUnitAwakened(Unit)
 		Unit.finished_awakening = true
+		LevelUI.UnitStatusOverlord.onUnitAwakened(Unit)
 		Combat.onArrive(Unit)
+		
 		PlayerManager.onSetupAllyPassedTurns(Unit)
 		Combat.onRecalculateTargetAbilities()
 		return Unit
@@ -51,22 +52,10 @@ func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int
 		
 
 func on_start_phase_start() -> void:
-	AIManager.LevelMap = LevelMap
-	AIManager.Units = self
-	AIManager.Vision = Vision
-	AIManager.Tiles = Tiles
-	AIManager.SpectateCamera = SpectateCamera
-	PlayerManager.Units = self
-	PlayerManager.LevelUI = LevelUI
-	PlayerManager.LevelMap = LevelMap
-	PlayerManager.Tiles = Tiles
-	PlayerManager.Vision = Vision
-	PlayerManager.SpectateCamera = SpectateCamera
-	
 	var enemy_tiles: Array = Tiles.on_is_type_get_tiles("Enemy", "obj")
 	var allowed_spawns: Array = range(7, 25)
 	for Tile in enemy_tiles:
-		on_unit_awakened(allowed_spawns[randi() % allowed_spawns.size()], 0, [], 1, Tile.obj.rotation, Tile)
+		await on_unit_awakened(allowed_spawns[randi() % allowed_spawns.size()], 0, [], 1, Tile.obj.rotation, Tile)
 func on_player_phase_start() -> void:
 	PlayerManager.on_player_phase_start()
 
@@ -84,13 +73,13 @@ func unit_by_tile(Tile: TileGD) -> UnitGD:
 	return null
 
 func all_units(exclude: UnitGD = null) -> Array:
-	return FieldedUnits.get_children().filter(func(x: UnitGD): return !x.is_queued_for_deletion() and x != exclude)
+	return FieldedUnits.get_children().filter(func(x: UnitGD): return !x.is_dead and x != exclude )
 
-func on_units(team: int = 0, relation: String = "Ally") -> Array:
-	return FieldedUnits.get_children().filter(func(x: UnitGD): return !x.is_queued_for_deletion()).filter(on_match_team_relation.bind(team, relation))
+func on_units(team_relation: TeamRelationGD = TeamRelationGD.new(0, "Ally")) -> Array:
+	return FieldedUnits.get_children().filter(func(x: UnitGD): return !x.is_dead and x.team == team_relation.onTeam())
 
-func on_unit_team_index(Unit: UnitGD) -> int:
-	return on_units(Unit.team).find(Unit)
+func on_awakened_units(team_relation: TeamRelationGD = TeamRelationGD.new(0, "Ally")) -> Array:
+	return on_units(team_relation).filter(func(x: UnitGD): return x.finished_awakening)
 
 func on_match_team_relation(unit: UnitGD, team: int, relation: String) -> bool:
 	return (unit.team == team and relation == "Ally") or (unit.team != team and relation == "Enemy") or relation == "Any"
@@ -99,13 +88,14 @@ var active_action: Dictionary = {}
 var unit_actions: Array = []
 var unit_actions_after: Array = []
 
-func onMoveToTileAI(Unit: UnitGD, Tile: TileGD, type: Variant, visibility_path: Array) -> void:
+func onMoveToTileAI(Unit: UnitGD, Tile: TileGD, type: Variant, vis_array: Array, count: int) -> void:
 	unit_actions.append({
 		"action_type": "MoveUnitAI",
 		"Unit": Unit,
 		"Tile": Tile,
 		"type": type,
-		"vis_path": visibility_path,
+		"vis_array": vis_array,
+		"count": count,
 		})
 
 func move_to_tile(Unit: UnitGD, Tile: TileGD, type: Variant) -> void:
@@ -136,7 +126,7 @@ func _process(_delta: float) -> void:
 func onAIMoveFinish() -> void:
 	setUnitStatus(active_action.Unit, "TurnUsed")
 	if unit_actions.is_empty():
-		if !(active_action.vis_path.all(func(x: Array): return x[1] == "Invisible")):
+		if !(active_action.vis_array.all(func(x: Dictionary): return x.vis_path == "Invisible")):
 			await get_tree().create_timer(AFTER_MOVEMENT_DELAY).timeout
 		active_action = {}
 		onUnitActionsFinished()
@@ -170,7 +160,7 @@ func onArgDelay() -> void:
 		active_action = unit_actions.pop_front()
 		await get_tree().create_timer(active_action.delay).timeout
 		if _active_action.end_callable.is_valid() and !_active_action.end_callable.is_null():
-			active_action.end_callable.call()
+			_active_action.end_callable.call()
 		active_action = {}
 		onUnitActionsFinished()
 	
@@ -186,36 +176,26 @@ func onMoveUnit() -> void:
 	
 func onMoveUnitAI() -> void:
 	var Unit: UnitGD = active_action.Unit
-	var movement_type: String = onFindVisibilityPathMovementType(active_action.Tile, active_action.vis_path)
-	if movement_type != "Invisible":
-		Unit.Model.onMoveToTile(active_action.Tile, active_action.type, movement_type)
-		
-		if movement_type == "Regular" and Unit.Tile not in Vision.ally_vision:
-			Unit.Model.setVisible(true)
-			for info in active_action.vis_path:
-				if active_action.Tile == info[0]:
-					Tiles.on_remove_tile_material(Unit.Tile, "Greyscale")
+	var vision_info: Dictionary =  active_action.vis_array[active_action.count]
+	var vis_path: String = vision_info.vis_path
+	Unit.vision_info_array.append(vision_info)
+	if vis_path != "Invisible":
+		Unit.Model.onMoveToTile(active_action.Tile, active_action.type, vis_path)
 		return
 	
-	if onFindVisibilityPathReentersVision(active_action.Tile, active_action.vis_path): 
+	if onFindVisibilityPathReentersVision(active_action.vis_array, active_action.count): 
 		await get_tree().create_timer(AFTER_MOVEMENT_DELAY).timeout
 	
 	Unit.global_position = Unit.Model.onCalculateEndPosition(active_action.Tile, active_action.type.x)
+	Unit.Model._look_at(active_action.Tile)
 	on_movement_finished(Unit)
 				
-func onFindVisibilityPathReentersVision(Tile: TileGD, visibility_path: Array) -> bool:
-	var index: int = visibility_path.map(func(x: Array): return x[0]).find(Tile)
-	if index > 0 and index < visibility_path.size() - 1 and visibility_path[index - 1][1] == "OutOfVision":
-		for i in range(index + 1, visibility_path.size()):
-			if visibility_path[i][1] == "IntoVision": return true
+func onFindVisibilityPathReentersVision(vis_array: Array, count: int) -> bool:
+	for key in range(count + 1, vis_array.size()):
+		if vis_array[key].vis_path != "Invisible":
+			return true
 	return false
 		
-func onFindVisibilityPathMovementType(Tile: TileGD, visibility_path: Array) -> String:
-	for info in visibility_path:
-		if Tile == info[0]:
-			return info[1]
-	return ""
-	
 const AFTER_MOVEMENT_DELAY: float = 0.8
 func on_movement_finished(Unit: UnitGD) -> void:
 	var Tile: TileGD = active_action.Tile
@@ -226,7 +206,7 @@ func on_movement_finished(Unit: UnitGD) -> void:
 	
 	Unit.stats("active_speed", -1, AppliedByGD.new("MovementFinished"))
 	Unit.occupy_tile(Tile)
-	await Unit.tile_occupied
+	
 	if unit_actions.is_empty() or !(unit_actions[0].action_type.begins_with("MoveUnit")):
 		on_unit_travel_finished()
 	else: Unit.Model.on_play_walk_sfx()
@@ -272,10 +252,9 @@ func onUnitActionsFinished() -> void:
 		unit_actions_after = []
 		Combat.onRecalculateTargetAbilities()
 
-func onUnitEntersVision(Unit: UnitGD, _Unit: UnitGD) -> void:
-	if Unit.team == 0 and _Unit.team == 1:
-		if Unit.finished_awakening:
-			AudioMaster.play_sfx("TrumpetKuba")
+func onUnitEntersVision(Unit: UnitGD, _Unit: UnitGD, old_ally_vision: Array) -> void:
+	if Unit.team == 0 and _Unit.team == 1 and _Unit.Tile not in old_ally_vision:
+		if Unit.finished_awakening: AudioMaster.play_sfx("TrumpetKuba")
 		PlayerManager.on_enemy_unit_enters_vision(_Unit, Unit)
 	Combat.onOngoingAbilityUnit(Unit, _Unit, "EnterVision")
 	Combat.onOngoingAbilityUnit(_Unit, Unit, "EnterVision")
@@ -313,7 +292,7 @@ func on_force_resume_idle_animation_from_walk() -> void:
 
 func attack_enemy_or_target(Unit: UnitGD, Tile: TileGD) -> bool:
 	if Unit.attack_amount > 0 and !Combat.isStaggered(Unit):
-		var enemies: Array = on_units(Unit.team, "Enemy")
+		var enemies: Array = on_units(TeamRelationGD.new(Unit.team, "Enemy"))
 		for _Unit in enemies:
 			if Tile == _Unit.Tile:
 				PlayerManager.on_select_active_unit(Unit)
@@ -393,7 +372,7 @@ func on_death_finished(Unit: UnitGD) -> void:
 	LevelUI.UnitStatusOverlord.onDeathFinished(Unit)
 	await Unit.on_death()
 	
-	var win_state: int = 1 if on_units(1).is_empty() else (2 if on_units().is_empty() else 0)
+	var win_state: int = 1 if on_units(TeamRelationGD.new(1)).is_empty() else (2 if on_units().is_empty() else 0)
 	
 	AIManager.onDeathFinished(Unit)
 	
@@ -402,14 +381,12 @@ func on_death_finished(Unit: UnitGD) -> void:
 	if Unit.Model.current_walk_stream_player != null:
 		AudioMaster.on_cutoff_sfx(Unit.Model.current_walk_stream_player)
 
-	for _Unit in Deather.getVisibleUnits():
-		Vision.on_recalculate_vision(_Unit)
-
 	active_action = {}
 	var dev := preload("res://static/dev/dev.tres")
 	if !dev.win_enabled: win_state = 0
 	match win_state:
 		0: 
+			Vision.onDeathFinished(Unit)
 			Combat.onDeathAbilities(Deather, AppliedBy)
 			PlayerManager.onDeathFinished(Unit, AppliedBy)
 			GameEffects.onDeathFinished(Unit)
@@ -446,18 +423,12 @@ func onAIEndTurnPhaseStart() -> void:
 	AIManager.onAIEndTurnPhaseStart()
 	for Unit in all_units():
 		Unit.turns_alive += 1
-		
-func getCommutativeUnitsVision(Unit: UnitGD) -> Array:
-	var tiles: Array = []
-	for _Unit in all_units():
-		if Unit.Tile in _Unit.visible_tiles: tiles.append(_Unit.Tile)
-	return tiles
 
-func onAIMoveFinisher(Unit: UnitGD, vis_path: Array) -> void:
+func onAIMoveFinisher(Unit: UnitGD, vis_array: Array) -> void:
 	unit_actions.append({
 		"action_type": "AIMoveFinish",
 		"Unit": Unit,
-		"vis_path": vis_path,
+		"vis_array": vis_array,
 	})
 
 func setUnitStatus(Unit: UnitGD, status: String) -> void:
@@ -480,11 +451,7 @@ func onFindClosestUnitFromUnits(Unit: UnitGD, units: Array) -> UnitGD:
 	return null
 
 func onFindClosestAdjacentUnit(Unit: UnitGD, relation: String = "Ally") -> UnitGD:
-	return onFindClosestUnitFromUnits(Unit, on_units(Unit.team, relation))
+	return onFindClosestUnitFromUnits(Unit, on_units(TeamRelationGD.new(Unit.team, relation)))
 
 func sortUnitsByDistance(Unit: UnitGD, _Unit: UnitGD, __Unit: UnitGD) -> bool:
 	return Tiles.tile_distance(Unit.Tile, __Unit.Tile) < Tiles.tile_distance(_Unit.Tile, __Unit.Tile)
-
-func onHoverUnitPressed(Unit: UnitGD) -> void:
-	if !Unit.is_dead and Unit.Tile in Vision.ally_vision:
-		pass

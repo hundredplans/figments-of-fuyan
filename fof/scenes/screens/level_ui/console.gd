@@ -11,6 +11,7 @@ var Combat: CombatGD
 var LevelUI: LevelUIGD
 var Units: UnitsGD
 var Tiles: TilesGD
+var PlayerManager: PlayerManagerGD
 
 @onready var CommandLine: LineEdit = %CommandLine
 @onready var PastCommandsLabel: Label = %PastCommandsLabel
@@ -59,10 +60,10 @@ func onTileSelected(_Tile: TileGD) -> void:
 	LevelUI.onSelectTileFinish()
 	
 func onSpawnTileSet(Tile: TileGD) -> void:
-	Units.on_unit_awakened(int(command_args[1]), 0, [], int(command_args[2]), 0, Tile)
+	await Units.on_unit_awakened(int(command_args[1]), 0, [], int(command_args[2]), 0, Tile)
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
-	Units.PlayerManager.passed_turns.erase(Unit)
-	Units.PlayerManager.on_select_active_unit(Unit)
+	PlayerManager.passed_turns.erase(Unit)
+	PlayerManager.on_select_active_unit(Unit)
 	
 func onStaggerSet(Tile: TileGD):
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
@@ -95,5 +96,5 @@ func _on_command_line_text_changed(text: String):
 
 func onFatigueSet(Tile: TileGD):
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
-	Units.PlayerManager.passed_turns.erase(Unit)
-	Units.PlayerManager.on_select_active_unit(Unit)
+	PlayerManager.passed_turns.erase(Unit)
+	PlayerManager.on_select_active_unit(Unit)

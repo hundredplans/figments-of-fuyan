@@ -1,8 +1,6 @@
 class_name UnitGD
 extends Node3D
 
-signal tile_occupied
-
 var is_dead: bool = false
 var id: int = 0
 var tool_id: int = 0
@@ -84,6 +82,8 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	
 	position = tile.position
 	position.y += 0.3 if !Units.Tiles.is_ramp_tile(tile) else 0.9
+	
+	await get_tree().process_frame
 	occupy_tile(tile)
 	AudioDict = load("res://assets/base_game/cards/cards/" + base_card.folder_name + "/audio.tres")
 	onCreateAbilities()
@@ -115,22 +115,11 @@ func onAddUnitFX(type: String, charges: int = -1) -> void:
 	info_fx.charges = charges
 	unit_fx.append(info_fx)
 		
+var vision_info_array: Array = []
 func occupy_tile(_Tile: TileGD) -> void:
-	var is_first: bool = Tile == null
-	var OGTile: TileGD = Tile
-	if OGTile != null: OGTile.Unit = null
 	Tile = _Tile
-	Tile.Unit = self
-	
-	await get_tree().create_timer(0.001).timeout
-	Vision.onExitTile(self, OGTile, _Tile)
-	
-	Vision.on_recalculate_vision(self)
-	tile_occupied.emit()
-	
-	if is_first:
-		for _Unit in getVisibleUnits():
-			Units.Vision.on_recalculate_vision(_Unit)
+	if vision_info_array.is_empty(): Vision.onRecalculateVision(self)
+	else: Vision.onRecalculateVisionPrecalculated(self, vision_info_array.pop_front())
 	
 var Killer: UnitGD
 func stats(stat_type: String, val: int, AppliedBy := AppliedByGD.new("GameEvent"), absolute: bool = false) -> void:
@@ -176,7 +165,7 @@ func stats(stat_type: String, val: int, AppliedBy := AppliedByGD.new("GameEvent"
 		if health == 0: Units.kill_unit(self, AppliedBy)
 		elif health < current_health and AppliedBy.type != "Height": Units.hurt_unit(self, AppliedBy)
 		
-		if Tile in Vision.ally_vision:
+		if Tile in Vision.getTeamVision():
 			var y_offset: float = height.top / 2
 			match stat_type:
 				"health": Units.VFX.onCreateStatParticle(health - current_health, "health", Tile, y_offset)
@@ -211,18 +200,17 @@ func on_arrive(in_vision: bool) -> void:
 func on_death() -> void:
 	Tiles.on_remove_tile_material(Tile, "EmptyTile")
 	reparent(Units.Postmortem)
-	Vision.on_recalculate_vision()
 	visible = false
 	is_dead = true
 	global_position = Vector3(1024, 1024, 1024)
-	await get_tree().create_timer(0.001).timeout
+	await get_tree().process_frame
 	
 func on_spectated_in_player_phase(state: bool) -> void:
 	Units.LevelUI.UnitStatusOverlord.onUnitSpectated(self, state)
 	Model.onSetOutlineProperties(state)
 	Units.LevelUI.on_update_vision()
 	if turn_status == "TurnUsed": Units.setPastPath(self, state)
-	Model.static_body.collision_layer = 0 if state else 4
+	Model.static_body.collision_layer = 4 if state else 36
 	
 func on_enemy_in_range(state: bool) -> void:
 	Units.LevelUI.UnitStatusOverlord.onEnemyInRange(self, state)
@@ -231,93 +219,82 @@ func on_enemy_in_range(state: bool) -> void:
 
 var visible_tiles: Array
 @onready var VisionRaycast: RayCast3D = $VisionRaycast
-const RAY_COUNT: int = 20
-const RAY_DISTANCE: int = 50
 const VISION_RANGE: int = 5
 
 var past_path_set: bool = false
 var past_path_info: Dictionary = {} # TileGD: [rot, [nums]]
 var past_path_counter: int = 0
-var height_adjacent_tiles: Array = []
-func onCircleRay() -> void:
-	visible_tiles = []
-	_visible_tiles = {}
-	var tiles: Array = Tiles.onTilesInVisionRange(Tile, VISION_RANGE)
-	var units: Array = Units.all_units().filter(func(x: UnitGD): return x != self and x.Tile in tiles)
-	var collision_points: Array = []
-	
-	for _Tile in tiles:
-		for point in _Tile.collision_points:
-			collision_points.append(point)
-			
-	for Unit in units:
-		for point in Unit.Model.onGetAdjustedPoints():
-			collision_points.append(point)
-	
-	for point in collision_points:
-		VisionRaycast.target_position = (point - VisionRaycast.global_position) * 1.05
-		VisionRaycast.force_raycast_update()
-		if VisionRaycast.is_colliding():
-			var Collision: Node3D = VisionRaycast.get_collider().get_node("../../../..")
-			var _Tile: TileGD = Collision if Collision is TileGD else Collision.Tile
-			if _Tile not in _visible_tiles.keys():
-				onAddTileToVisibleTiles(_Tile)
-				
-	visible_tiles += Units.getCommutativeUnitsVision(self)
-	onUnitsHeightAdjacentTiles()
-	visible_tiles = _visible_tiles.keys()
-	
-func onRayEnemyUnit(Unit: UnitGD, override: bool = false) -> bool:
-	if !override and Unit.Tile in visible_tiles or Unit.Tile in Vision.spawn_tiles: return true
-	for point in Unit.Model.onGetAdjustedPoints():
-		VisionRaycast.target_position = (point - VisionRaycast.global_position) * 1.05
-		VisionRaycast.force_raycast_update()
+
+func onCalculateVisionInfo() -> Dictionary:
+	var _visible_tiles: Array = []
+	if !is_dead:
+		var tiles: Array = Tiles.onTilesInVisionRange(Tile, VISION_RANGE)
+		var current_units: Array = Units.all_units(self).filter(func(x: UnitGD): return x.Tile in tiles)
+		var collision_infos: Array = []
 		
-		if VisionRaycast.is_colliding():
-			var Collision: Node3D = VisionRaycast.get_collider().get_node("../../..")
-			if Collision == Unit.Model: return true
-	return false
+		for _Tile in tiles: collision_infos.append([_Tile, _Tile.collision_points])
+		for Unit in current_units: collision_infos.append([Unit, Unit.Model.onGetAdjustedPoints()])
+
+		for info in collision_infos:
+			var potential_collision: Node3D = info[0]
+			for point in info[1]:
+				VisionRaycast.target_position = (point - VisionRaycast.global_position) * 1.05
+				VisionRaycast.force_raycast_update()
+				if VisionRaycast.is_colliding():
+					var Collision: Node3D = VisionRaycast.get_collider().get_node("../../../..")
+					var _Tile: TileGD = Collision if Collision is TileGD else Collision.Tile
+					onAppendTileToVisibleTiles(_visible_tiles, _Tile)
+					if Collision == potential_collision: break
+		onRemoveNonCommutativeUnits(_visible_tiles)
+		onUnitsHeightAdjacentTiles(_visible_tiles)
 	
-func onRayTile(_Tile: TileGD) -> bool:
-	for point in _Tile.collision_points:
+	return {"visible_tiles": _visible_tiles, "unit_vision": onCalculateUnitVision(_visible_tiles)}
+	
+func onCalculateEnemyUnitCommutative(Unit: UnitGD) -> bool:
+	for point in Unit.Model.onGetAdjustedPoints() + Unit.Tile.collision_points:
 		VisionRaycast.target_position = (point - VisionRaycast.global_position) * 1.05
 		VisionRaycast.force_raycast_update()
 		
 		if VisionRaycast.is_colliding():
 			var Collision: Node3D = VisionRaycast.get_collider().get_node("../../../..")
-			if Collision == _Tile: return true
+			if Collision == Unit: return true
 	return false
-	
-var _visible_tiles: Dictionary = {}
-func onAddTileToVisibleTiles(_Tile: TileGD) -> void:
+
+func onRemoveNonCommutativeUnits(_visible_tiles: Array) -> void:
+	for Unit in Units.all_units(self):
+		if Unit.Tile in _visible_tiles and Unit.Tile not in Vision.spawn_tiles and !(Unit.onCalculateEnemyUnitCommutative(self)):
+			_visible_tiles.erase(Unit.Tile)
+
+func onCalculateUnitVision(_visible_tiles: Array = []) -> Dictionary:
+	var intent: Dictionary = {}
+	for _Unit in Units.all_units(self):
+		var isvisible: bool = _Unit.Tile in _visible_tiles
+		var wasvisible: bool = _Unit.Tile in visible_tiles
+		if (isvisible and !wasvisible): intent[_Unit] = "Enter"
+		elif (wasvisible and !isvisible): intent[_Unit] = "Exit"
+		elif (!isvisible and !wasvisible): intent[_Unit] = "Invisible"
+		else: intent[_Unit] = "Regular"
+	return intent
+
+func onAppendTileToVisibleTiles(_visible_tiles: Array, _Tile: TileGD) -> void:
+	if _Tile not in _visible_tiles: _visible_tiles.append(_Tile)
+	for __Tile in _Tile.top_of_cliff_wall: if __Tile not in _visible_tiles: _visible_tiles.append(__Tile)
 	for type in ["obj", "wdeco", "tdeco"]:
-		if _Tile[type].multi_tile.size() > 0:
-			if _Tile.solid_status == 1:
-				for __Tile in _Tile[type].multi_tile:
-					_onAddTileToVisibleTiles(__Tile)
-	_onAddTileToVisibleTiles(_Tile)
+		for __Tile in _Tile[type].multi_tile:
+			if __Tile not in _visible_tiles: _visible_tiles.append(__Tile)
 	
-func _onAddTileToVisibleTiles(_Tile: TileGD) -> void:
-	_visible_tiles.merge({_Tile: null})
-	for __Tile in _Tile.top_of_cliff_wall:
-		_visible_tiles.merge({__Tile: null})
-	
-func onUnitsHeightAdjacentTiles() -> void:
-	height_adjacent_tiles = []
-	if Tile.w > 0:
-		for direction in Tiles.cube_directions:
+func onUnitsHeightAdjacentTiles(_visible_tiles: Array) -> void:
+	for direction in Tiles.cube_directions:
+		for w in range(Tile.w - 1, -1, -1):
 			var pos: Vector3 = Tile.tpos + direction
-			if Tiles.position_to_tile(Vector4(pos.x, pos.y, pos.z, Tile.w)) == null:
-				for w in range(Tile.w - 1, -1, -1):
-					var _Tile: TileGD = Tiles.position_to_tile(Vector4(pos.x, pos.y, pos.z, w))
-					if _Tile != null and _Tile.tile.id > 0:
-						height_adjacent_tiles.append(_Tile)
-						onAddTileToVisibleTiles(_Tile)
-						break
+			var _Tile: TileGD = Tiles.position_to_tile(Vector4(pos.x, pos.y, pos.z, w))
+			if _Tile != null and _Tile.tile.id > 0:
+				onAppendTileToVisibleTiles(_visible_tiles, _Tile)
+				break
 
 func getVisibleUnits() -> Array:
 	var visible_units: Array = visible_tiles.map(func(x: TileGD): return Units.unit_by_tile(x))
-	return visible_units.filter(func(x: Variant): return x != null and !x.is_queued_for_deletion() and x != self and x.health > 0)
+	return visible_units.filter(func(x: Variant): return x != null and !x.is_dead and x != self and x.health > 0)
 
 func getVisibleEnemies() -> Array:
 	return getVisibleUnits().filter(Units.on_match_team_relation.bind(team, "Enemy"))
@@ -325,11 +302,12 @@ func getVisibleEnemies() -> Array:
 func getVisibleAllies() -> Array:
 	return getVisibleUnits().filter(Units.on_match_team_relation.bind(team, "Ally"))
 
-func onResetUnit(default_position, default_rot, default_tile) -> void:
-	global_position = default_position
+func onResetUnit(default_body_pos: Vector3, default_ray_pos: Vector3, default_rot: int, default_tile: TileGD) -> void:
+	Model.static_body.position = default_body_pos
+	VisionRaycast.position = default_ray_pos
 	Model.rot = default_rot
 	Tile = default_tile
-	Model.on_set_rotation()
+	Model.onSetCollisionRotation()
 
 func isHealable() -> bool:
 	return health < max_health
