@@ -45,14 +45,17 @@ func onPickMostInjured() -> bool:
 			triggered = true
 		else:
 			highest_injury = affected_units[0].max_health - affected_units[0].health
-		
+			if highest_injury == 0:
+				trigger_info.append([affected_units[0], false])
+				triggered = true
+			
 	for _Unit in Units.on_units(TeamRelationGD.new(Unit.team)).filter(func(x: UnitGD): return x.health > 0):
 		if _Unit.max_health - _Unit.health > highest_injury:
 			if affected_units.size() == 1 and !triggered:
 				trigger_info.append([affected_units[0], false])
 			trigger_info.append([_Unit, true])
 			return true
-	return false
+	return triggered
 
 func onOngoingAbility() -> void:
 	var AppliedBy := AppliedByGD.new("Ability", Unit)
@@ -60,7 +63,7 @@ func onOngoingAbility() -> void:
 		var _Unit: UnitGD = info[0]
 		if info[1]:
 			LevelUI.UnitStatusOverlord.onAddUnitFX(_Unit, "CocusPocus", AppliedBy)
-			VFX.onCreateCocusPocus(_Unit)
+			VFX.onCreateCocusPocus(_Unit, self)
 			affected_units.append(_Unit)
 		else:
 			LevelUI.UnitStatusOverlord.onRemoveUnitFX(_Unit, "CocusPocus", AppliedBy)

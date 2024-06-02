@@ -31,7 +31,7 @@ const DELAY_DURATION: float = 0.5
 const SCALE_FINAL_DURATION: float = 0.75
 const SCALE_INITIAL_DURATION: float = 0.75
 const SCALE_INITIAL_SIZE := Vector3(2,2,2)
-const SCALE_UNIT_INITIAL_SIZE: float = 0.001
+const SCALE_UNIT_INITIAL_SIZE: float = 0.01
 
 func onCocusPocus(_Unit: UnitGD) -> void:
 	VFX.onUpscaleCocusPocus(_Unit, SCALE_INITIAL_SIZE, SCALE_INITIAL_DURATION, SCALE_UNIT_INITIAL_SIZE, DELAY_DURATION, onCocusPocusInitialFinished.bind(_Unit))

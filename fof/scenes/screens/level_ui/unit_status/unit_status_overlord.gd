@@ -148,8 +148,9 @@ func setUnitStatusVisible(Unit: UnitGD, state: bool) -> void:
 		for UnitStatus in units[Unit]: UnitStatus.visible = state
 
 func onEnemyInRange(Unit: UnitGD, state: bool) -> void: # Changes slot one
-	for UnitStatus in units[Unit]:
-		UnitStatus.SlotOne.visible = state
+	if units.has(Unit):
+		for UnitStatus in units[Unit]:
+			UnitStatus.SlotOne.visible = state
 
 func onUnitInspected(Unit: UnitGD) -> void:
 	if LevelMap.action_lock in ["", "HandRegular"] and !LevelUI.is_status_box_moving:

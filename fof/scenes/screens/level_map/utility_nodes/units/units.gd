@@ -30,21 +30,19 @@ func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int
 		Unit.Tiles = Tiles
 		FieldedUnits.add_child(Unit)
 		
-		await Unit.on_create_unit(id, tool_id, effects, team, rot, tile) # Takes around 2.2 seconds
+		await Unit.onUnitAwakened(id, tool_id, effects, team, rot, tile) # Takes around 2.2 seconds
 		Vision.onUnitAwakened(Unit)
+		LevelUI.UnitStatusOverlord.onUnitAwakened(Unit)
 		
 		Unit.Model.movement_finished.connect(on_movement_finished.bind(Unit))
 		Unit.Model.drop_calculate_damage.connect(on_drop_calculate_damage.bind(Unit))
 		Unit.Model.attack_finished.connect(on_attack_finished.bind(Unit))
 		Unit.Model.death_finished.connect(on_death_finished.bind(Unit))
 		Unit.Model.hurt_finished.connect(on_hurt_finished.bind(Unit))
-		
 		Unit.on_arrive(team == 0 or Unit.getVisibleEnemies().size() > 0)
-		AIManager.onUnitAwakened(Unit)
 		Unit.finished_awakening = true
-		LevelUI.UnitStatusOverlord.onUnitAwakened(Unit)
+		AIManager.onUnitAwakened(Unit)
 		Combat.onArrive(Unit)
-		
 		PlayerManager.onSetupAllyPassedTurns(Unit)
 		Combat.onRecalculateTargetAbilities()
 		return Unit
@@ -185,6 +183,7 @@ func onMoveUnitAI() -> void:
 	
 	if onFindVisibilityPathReentersVision(active_action.vis_array, active_action.count): 
 		await get_tree().create_timer(AFTER_MOVEMENT_DELAY).timeout
+	else: SpectateCamera.invisible_unit_stop_track = true
 	
 	Unit.global_position = Unit.Model.onCalculateEndPosition(active_action.Tile, active_action.type.x)
 	Unit.Model._look_at(active_action.Tile)
@@ -450,8 +449,8 @@ func onFindClosestUnitFromUnits(Unit: UnitGD, units: Array) -> UnitGD:
 	if units.size() > 0: return units[0]
 	return null
 
-func onFindClosestAdjacentUnit(Unit: UnitGD, relation: String = "Ally") -> UnitGD:
-	return onFindClosestUnitFromUnits(Unit, on_units(TeamRelationGD.new(Unit.team, relation)))
+func onFindClosestAdjacentUnit(Unit: UnitGD, team_relation: TeamRelationGD) -> UnitGD:
+	return onFindClosestUnitFromUnits(Unit, on_units(team_relation))
 
 func sortUnitsByDistance(Unit: UnitGD, _Unit: UnitGD, __Unit: UnitGD) -> bool:
 	return Tiles.tile_distance(Unit.Tile, __Unit.Tile) < Tiles.tile_distance(_Unit.Tile, __Unit.Tile)

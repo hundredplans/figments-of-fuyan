@@ -23,7 +23,8 @@ func on_card_placed(hand_card: HandCardGD, Tile: TileGD) -> void:
 	if skip_result: LevelMap.on_advance_game_phase()
 	SpectateCamera.onSpectate(Unit)
 	if Unit.rarity != 7:
-		Units.onPushArgDelay(Unit, Units.ARRIVE_EFFECT_DELAY_DURATION, SpectateCamera.onSpectate.bind(Units.onFindClosestAdjacentUnit(Unit)))
+		Units.onPushArgDelay(Unit, Units.ARRIVE_EFFECT_DELAY_DURATION, 
+		SpectateCamera.onSpectate.bind(Units.onFindClosestAdjacentUnit(Unit, TeamRelationGD.new(Unit.team, "Ally"))))
 	else: Units.onPushFrontDelay(Units.ARRIVE_EFFECT_DELAY_DURATION)
 	
 func on_enemy_unit_enters_vision(Unit: UnitGD, _Unit: UnitGD) -> void:

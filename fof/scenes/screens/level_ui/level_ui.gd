@@ -18,6 +18,7 @@ var PlayerManager: PlayerManagerGD
 @onready var AbilityDescription: RichTextLabel = %AbilityDescription
 @onready var AbilityLabel: Label = %AbilityLabel
 @onready var UnitNameLabel: Label = %UnitNameLabel
+@onready var LabelBackground: PanelContainer = %LabelBackground
 @onready var TargetAbilities: VBoxContainer = %TargetAbilities
 @onready var Console := %Console
 @onready var VisionMode := %VisionMode
@@ -39,6 +40,7 @@ func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Tab"): on_tab_pressed()
 
 func _ready() -> void:
+	setUnitModeText("")
 	setWarningText(false)
 	
 	LevelMap = _LevelMap.instantiate()
@@ -61,12 +63,6 @@ func _ready() -> void:
 	vision_selected = VisionButton.default
 	team_selected = TeamButton.default
 	
-	UnitStatusOverlord.Units = Units
-	UnitStatusOverlord.Vision = Vision
-	UnitStatusOverlord.SpectateCamera = SpectateCamera
-	UnitStatusOverlord.Tiles = Tiles
-	UnitStatusOverlord.LevelMap = LevelMap
-
 @onready var CornerRightMenu = %CornerRightMenu
 func setCornerRightVisibile(state: bool) -> void:
 	for child in CornerRightMenu.get_children(): child.visible = state
@@ -391,7 +387,7 @@ func onSelectTileFinish() -> void:
 	Tiles.onSelectTileFinish()
 
 func onEnterUnitMode(Unit: UnitGD) -> void:
-	UnitNameLabel.text = Unit.base_card.name
+	setUnitModeText(Unit.base_card.name)
 	for ability in Unit.abilities:
 		if ability is TargetAbilityGD:
 			var TargetAbilityBox: Control = preload("res://scenes/screens/level_ui/target_ability_box.tscn").instantiate()
@@ -406,7 +402,7 @@ func onEnterUnitMode(Unit: UnitGD) -> void:
 			TargetAbilityBox.disabled = !Combat.isAbilityEnabled(Unit, ability)
 
 func onExitUnitMode() -> void:
-	UnitNameLabel.text = ""
+	setUnitModeText("")
 	for child in TargetAbilities.get_children(): child.queue_free()
 	onExitTargetAbilityMode(true)
 
@@ -426,17 +422,18 @@ func onTargetAbilityBtnPressed(Unit: UnitGD, ability: AbilityGD) -> void:
 		var TargetAbilityBox: Control = TargetAbilities.get_children().filter(func(x: Control): return !x.is_queued_for_deletion() and x.ability == ability)[0]
 		onTargetAbilityBoxPressed(Unit, ability, TargetAbilityBox)
 	
+func setUnitModeText(text: String, description: String = "") -> void:
+	if description == "": UnitNameLabel.text = text; AbilityDescription.text = ""; AbilityLabel.text = ""
+	else: AbilityLabel.text = text; AbilityDescription.text = description; UnitNameLabel.text = ""
+	LabelBackground.visible = !(UnitNameLabel.text == "" and AbilityLabel.text == "")
+	
 func onEnterTargetAbilityMode(Unit: UnitGD, ability: AbilityGD) -> void:
-	AbilityLabel.text = ability.ability_name
-	UnitNameLabel.text = ""
-	AbilityDescription.text = ability.ability_description
+	setUnitModeText(ability.ability_name, ability.ability_description)
 	PlayerManager.onEnterTargetAbilityMode(Unit, ability)
 	
 func onExitTargetAbilityMode(exit_unit: bool = false) -> void: # has to check if actually in target ability mode first
 	if PlayerManager.TAbility != null:
-		AbilityLabel.text = ""
-		AbilityDescription.text = ""
-		if !exit_unit: UnitNameLabel.text = PlayerManager.TAbilityUnit.base_card.name
+		setUnitModeText(PlayerManager.TAbilityUnit.base_card.name if !exit_unit else "")
 		PlayerManager.onExitTargetAbilityMode()
 
 func onUpdateAbilityCharges(Unit: UnitGD) -> void:
@@ -513,4 +510,9 @@ func onIncentivisePassTurn(Unit: UnitGD) -> void:
 func onEnemySpotted(Unit: UnitGD, _Spotter: UnitGD) -> void:
 	var arrow: Node2D = preload("res://scenes/screens/level_ui/unit_status/enemy_spotted_arrow/enemy_spotted_arrow.tscn").instantiate()
 	EnemySpottedArrows.add_child(arrow)
-	arrow.setInfo(Unit, SpectateCamera.Camera, Unit.global_position)
+	arrow.setInfo(SpectateCamera.Camera, Unit.global_position)
+	arrow.destroy_arrow.connect(onDestroySpottedArrow.bind(Unit))
+	Unit.Model.setRedMultiply(true)
+	
+func onDestroySpottedArrow(Unit: UnitGD) -> void:
+	Unit.Model.setRedMultiply(false)

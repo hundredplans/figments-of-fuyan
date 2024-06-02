@@ -338,8 +338,8 @@ func onCreateMovementPaths(Unit: UnitGD, type: String = "Default") -> void:
 		for _Tile in tiles_by_adjacent[Tile]:
 			var EnemyUnit: UnitGD = Units.unit_by_tile(_Tile)
 			var hdiff: int = (_Tile.w * 2) + int(is_ramp_tile(_Tile)) - ((Tile.w * 2) + int(is_ramp_tile(Tile)))
-			if EnemyUnit != null and EnemyUnit.Tile in Vision.getTeamVision():
-				if EnemyUnit.team != Unit.team and !Combat.isStaggered(Unit):
+			if EnemyUnit != null:
+				if EnemyUnit.team != Unit.team and !Combat.isStaggered(Unit) and EnemyUnit.Tile in Unit.visible_tiles:
 					var enemy_low_point: float = getUnitAdjustedHeight(EnemyUnit.Tile)
 					var enemy_high_point: float = enemy_low_point + EnemyUnit.height.top
 					var your_weapon_low_point: float = getUnitAdjustedHeight(Tile)

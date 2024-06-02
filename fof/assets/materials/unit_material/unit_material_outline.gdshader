@@ -7,6 +7,7 @@ uniform float grow;
 
 uniform float time_value;
 uniform float max_grey;
+uniform float red_multiply;
 
 void vertex() {
 	VERTEX+=NORMAL*grow;
@@ -18,7 +19,7 @@ void fragment() {
 	float grey = dot(ALBEDO.rgb, vec3(max_grey));
 	ALBEDO = mix(ALBEDO.rgb, vec3(grey), time_value);
 	ALPHA = 1.0 - time_value;
-	
+	ALBEDO.r *= red_multiply;
 	//
 	
 }

@@ -1,10 +1,13 @@
-[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://c7e5wm46rkprb"]
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://dvx30ti6jjn8x"]
 
 [ext_resource type="Texture2D" uid="uid://ebuqqa5efmoi" path="res://assets/materials/base_materials/base_material.png" id="1_8og1w"]
+[ext_resource type="Shader" uid="uid://trgnco53x1ua" path="res://assets/materials/unit_field_status_materials/field_status_material_on_top.tres" id="1_s6hro"]
 
 [resource]
 render_priority = 10
-no_depth_test = true
-shading_mode = 0
-albedo_color = Color(0.25098, 0.25098, 0.25098, 1)
-albedo_texture = ExtResource("1_8og1w")
+shader = ExtResource("1_s6hro")
+shader_parameter/albedo = Color(0.25098, 0.25098, 0.25098, 1)
+shader_parameter/distance_fade_min = 0.5
+shader_parameter/distance_fade_max = 2.0
+shader_parameter/specular = 0.5
+shader_parameter/texture_albedo = ExtResource("1_8og1w")

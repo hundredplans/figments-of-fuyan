@@ -31,8 +31,10 @@ var spawn_tiles: Array = []
 var SpectateUnit: UnitGD
 var SpectateTile: TileGD
 var is_spectate_spawn: bool = false
+var invisible_unit_stop_track: bool = false
 
 func onSpectate(Obj: Variant) -> void:
+	invisible_unit_stop_track = false
 	if Obj != null and (!Obj is UnitGD or !Obj.is_dead):
 		if is_spectate_spawn: onSpectateSpawnTile(Obj)
 		else: onSpectateUnit(Obj)
@@ -67,21 +69,23 @@ func onSpectateSpawnTile(type: Variant) -> void:
 	
 func onSpectateUnit(type: Variant) -> void:
 	var Unit: UnitGD
+	var ally_vision: Array = Vision.getTeamVision()
 	if type is String:
 		if SpectateUnit != null:
 			if type == "AllySelf" and SpectateUnit.team == 0:
 				Unit = SpectateUnit
 			else:
-				var relation: String = "Enemy"
-				if (type == "Ally" and SpectateUnit.team == 0) or (type == "Enemy" and SpectateUnit.team == 1):
-					relation = "Ally"
-				Unit = Units.onFindClosestAdjacentUnit(SpectateUnit, relation)
+				var relation := TeamRelationGD.new(SpectateUnit.team, type)
+				var units: Array = Units.on_units(relation)
+				if relation.onTeam() == 1: units = units.filter(func(x: UnitGD): return x.Tile in ally_vision)
+				Unit = Units.onFindClosestUnitFromUnits(SpectateUnit, units)
 		else:
 			if type == "AllySelf": type = "Ally"
 			var units: Array = Units.on_units(TeamRelationGD.new(0, type))
 			if units.size() > 0: Unit = units[0]
 	elif type is int and SpectateUnit != null:
 		var units: Array = Units.on_units(TeamRelationGD.new(SpectateUnit.team))
+		if SpectateUnit.team == 1: units = units.filter(func(x: UnitGD): return x.Tile in ally_vision)
 		if units.size() > 1:
 			var index: int = units.find(SpectateUnit)
 			index = clamp(index + type, -1, units.size())
@@ -164,7 +168,8 @@ func _input(event: InputEvent) -> void:
 	onFreelookCamera(event)
 	
 func _process(delta: float) -> void:
-	if SpectateUnit != null and is_unit_camera: onCameraStartSpectate(SpectateUnit)
+	if SpectateUnit != null and is_unit_camera and !invisible_unit_stop_track:
+		onCameraStartSpectate(SpectateUnit)
 	onUpdateFreelookCamera(delta)
 
 var OldSpectateUnit: UnitGD

@@ -43,10 +43,10 @@ func onSetTopMaterial(_is_top: bool) -> void:
 	SlotOne.no_depth_test = is_top
 	setFloatingStatMaterial()
 
-var BASE_MATERIAL_ON_TOP: BaseMaterial3D = preload("res://assets/materials/unit_field_status_materials/base_material_unshaded_on_top.tres")
-var BASE_MATERIAL_UNSHADED: BaseMaterial3D = preload("res://assets/materials/unit_field_status_materials/base_material_unshaded.tres")
-var GREY_HEART_UNSHADED: BaseMaterial3D = preload("res://assets/materials/unit_field_status_materials/grey_unshaded.tres")
-var GREY_HEART_UNSHADED_ON_TOP: BaseMaterial3D = preload("res://assets/materials/unit_field_status_materials/grey_unshaded_on_top.tres")
+var BASE_MATERIAL_ON_TOP: ShaderMaterial = preload("res://assets/materials/unit_field_status_materials/base_material_unshaded_on_top.tres")
+var BASE_MATERIAL_UNSHADED: ShaderMaterial = preload("res://assets/materials/unit_field_status_materials/base_material_unshaded.tres")
+var GREY_HEART_UNSHADED: ShaderMaterial = preload("res://assets/materials/unit_field_status_materials/grey_unshaded.tres")
+var GREY_HEART_UNSHADED_ON_TOP: ShaderMaterial = preload("res://assets/materials/unit_field_status_materials/grey_unshaded_on_top.tres")
 
 var floating_stats_materials: Dictionary = {}
 func setFloatingStatMaterial() -> void:

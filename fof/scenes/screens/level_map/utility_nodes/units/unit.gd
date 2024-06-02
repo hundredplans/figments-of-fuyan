@@ -6,6 +6,8 @@ var id: int = 0
 var tool_id: int = 0
 var effects: Array = []
 var unit_fx: Array = []
+var is_spectated: bool = false
+var visible_state: bool = false
 
 var hero_card: HeroCardGD
 var base_card: BaseCardGD
@@ -46,7 +48,7 @@ var base_text: String
 
 @onready var UnitVFX: Node3D = $UnitVFX
 @onready var Model: Node3D
-func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: int, tile: TileGD) -> void:
+func onUnitAwakened(_id: int, _tool_id: int, _effects: Array, _team: int, rot: int, tile: TileGD) -> void:
 	id = _id
 	tool_id = _tool_id
 	effects = _effects
@@ -82,11 +84,11 @@ func on_create_unit(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	
 	position = tile.position
 	position.y += 0.3 if !Units.Tiles.is_ramp_tile(tile) else 0.9
-	
-	await get_tree().process_frame
-	occupy_tile(tile)
+	if team == 1: Model.setVisible(false)
 	AudioDict = load("res://assets/base_game/cards/cards/" + base_card.folder_name + "/audio.tres")
 	onCreateAbilities()
+	await get_tree().process_frame
+	occupy_tile(tile)
 
 func onCreateAbilities() -> void:
 	var DIR_PATH: String = "res://assets/base_game/cards/cards/" + base_card.folder_name + "/abilities/"
@@ -116,6 +118,7 @@ func onAddUnitFX(type: String, charges: int = -1) -> void:
 	unit_fx.append(info_fx)
 		
 var vision_info_array: Array = []
+
 func occupy_tile(_Tile: TileGD) -> void:
 	Tile = _Tile
 	if vision_info_array.is_empty(): Vision.onRecalculateVision(self)
@@ -210,7 +213,11 @@ func on_spectated_in_player_phase(state: bool) -> void:
 	Model.onSetOutlineProperties(state)
 	Units.LevelUI.on_update_vision()
 	if turn_status == "TurnUsed": Units.setPastPath(self, state)
-	Model.static_body.collision_layer = 4 if state else 36
+	is_spectated = state
+	setCollisionLayerSpectated()
+	
+func setCollisionLayerSpectated() -> void:
+	Model.static_body.collision_layer = 4 if (is_spectated or !visible_state) else 36
 	
 func on_enemy_in_range(state: bool) -> void:
 	Units.LevelUI.UnitStatusOverlord.onEnemyInRange(self, state)
@@ -251,6 +258,7 @@ func onCalculateVisionInfo() -> Dictionary:
 	return {"visible_tiles": _visible_tiles, "unit_vision": onCalculateUnitVision(_visible_tiles)}
 	
 func onCalculateEnemyUnitCommutative(Unit: UnitGD) -> bool:
+	if Unit.Tile in visible_tiles: return true
 	for point in Unit.Model.onGetAdjustedPoints() + Unit.Tile.collision_points:
 		VisionRaycast.target_position = (point - VisionRaycast.global_position) * 1.05
 		VisionRaycast.force_raycast_update()
@@ -285,7 +293,7 @@ func onAppendTileToVisibleTiles(_visible_tiles: Array, _Tile: TileGD) -> void:
 	
 func onUnitsHeightAdjacentTiles(_visible_tiles: Array) -> void:
 	for direction in Tiles.cube_directions:
-		for w in range(Tile.w - 1, -1, -1):
+		for w in range(Tile.w, -1, -1):
 			var pos: Vector3 = Tile.tpos + direction
 			var _Tile: TileGD = Tiles.position_to_tile(Vector4(pos.x, pos.y, pos.z, w))
 			if _Tile != null and _Tile.tile.id > 0:
@@ -322,6 +330,7 @@ func getVisibleTiles() -> Array: # Removes tile unit is on
 
 func setExtraDamage(x: int = 0) -> void:
 	extra_damage = x
+	print(x)
 
 func setHealMultiplier(x: int = 1) -> void:
 	heal_multiplier = x
@@ -331,3 +340,7 @@ func onAddToPastPath(_Tile: TileGD) -> void:
 	if !past_path_info.has(Tile): past_path_info[Tile] = [[], []]
 	past_path_info[Tile][0].append(Units.Tiles.neighbour_rotation(_Tile, Tile))
 	past_path_info[Tile][1].append(past_path_counter)
+
+func setVisibleState(state: bool) -> void:
+	visible_state = state
+	setCollisionLayerSpectated()

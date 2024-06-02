@@ -59,11 +59,15 @@ func onApplyGreyscale() -> void:
 	for Unit in Units.on_units(TeamRelationGD.new(1)): Unit.Model.setVisible(Unit.Tile in ally_vision)
 func onApplyVisionModeGreyscale(Unit: UnitGD) -> void:
 	if Unit != null:
+		var ally_vision_crossover: Array = Unit.visible_tiles
+		if Unit.team == 1:
+			var ally_vision: Array = getTeamVision()
+			ally_vision_crossover = ally_vision_crossover.filter(func(x: TileGD): return x in ally_vision)
 		for _Unit in Units.all_units():
-			setUnitVisionModeOccupy(_Unit, _Unit.Tile in Unit.visible_tiles)
+			setUnitVisionModeOccupy(_Unit, _Unit.Tile in ally_vision_crossover)
 		
 		for Tile in Tiles.get_children():
-			if Tile in Unit.visible_tiles: Tiles.on_remove_tile_material(Tile, "Greyscale")
+			if Tile in ally_vision_crossover: Tiles.on_remove_tile_material(Tile, "Greyscale")
 			else: Tiles.on_set_tile_material(Tile, "Greyscale")
 	else:
 		for _Unit in Units.all_units(): setUnitVisionModeOccupy(_Unit, false)

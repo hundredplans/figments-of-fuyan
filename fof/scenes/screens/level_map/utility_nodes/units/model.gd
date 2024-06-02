@@ -259,7 +259,9 @@ func setVisible(state: bool) -> void:
 	mesh.visible = state
 	Unit.UnitVFX.visible = state
 	Unit.Units.LevelUI.UnitStatusOverlord.setUnitStatusVisible(Unit, state)
+	Unit.setVisibleState(state)
 	onSetShaderParameter(0)
+	
 
 var idle_array: Array = ["Idle", "IdleAbility", "IdleRare"]
 func onActivateIdleAbility() -> void:
@@ -273,3 +275,7 @@ func onRemoveIdleAbility() -> void:
 		idle = "Idle"
 		if AniPlayer.current_animation in idle_array:
 			on_play_animation(idle)
+
+func setRedMultiply(state: bool) -> void:
+	var val: float = 1.0 if (!state) else 15.0
+	for mat in materials: mat.next_pass.set_shader_parameter("red_multiply", val)

@@ -282,7 +282,7 @@ func onOngoingAbilityUnit(Unit: UnitGD, _Unit: UnitGD, type: String, args: Array
 
 func onTeleport(Unit: UnitGD, Tile: TileGD) -> void:
 	Unit.position = Unit.Model.onCalculateEndPosition(Tile, 0)
-	Unit.occupy_tile(Tile)
+	Unit.call_deferred("occupy_tile", Tile)
 
 func onCocusPocus() -> void:
 	pass

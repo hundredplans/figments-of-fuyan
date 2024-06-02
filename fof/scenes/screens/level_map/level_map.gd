@@ -24,7 +24,7 @@ var game_phase: String
 @onready var Vision: VisionGD = $Vision
 
 func on_set_utility_nodes_paths() -> void:
-	var new_children: Array = get_children() + [GameState, Tiles, LevelUI, Lights, self]
+	var new_children: Array = get_children() + [GameState, Tiles, LevelUI, LevelUI.UnitStatusOverlord, Lights, self]
 	for child in new_children:
 		for _child in new_children:
 			if child != _child and _child.name in child:
