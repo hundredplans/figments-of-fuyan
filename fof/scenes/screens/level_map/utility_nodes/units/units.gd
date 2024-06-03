@@ -21,7 +21,12 @@ var PlayerManager: PlayerManagerGD
 var UnitScene: PackedScene = preload("res://scenes/screens/level_map/utility_nodes/units/unit.tscn")
 
 const ARRIVE_EFFECT_DELAY_DURATION: float = 2
-func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int, tile: TileGD) -> UnitGD:
+func onUnitAwakened(id: int, tool_id: int, effects: Array, team: int, rot: int, tile: TileGD) -> UnitGD:
+	var Unit: UnitGD = onUnitAwakenedLoad(id, tool_id, effects, team, rot, tile)
+	if Unit != null: await onUnitAwakenedProcess(Unit, tile)
+	return Unit
+
+func onUnitAwakenedLoad(id: int, tool_id: int, effects: Array, team: int, rot: int, tile: TileGD) -> UnitGD:
 	if !unit_by_tile_bool(tile):
 		var Unit: UnitGD = UnitScene.instantiate()
 		Unit.Units = self
@@ -29,31 +34,43 @@ func on_unit_awakened(id: int, tool_id: int, effects: Array, team: int, rot: int
 		Unit.SpectateCamera = SpectateCamera
 		Unit.Tiles = Tiles
 		FieldedUnits.add_child(Unit)
-		
-		await Unit.onUnitAwakened(id, tool_id, effects, team, rot, tile) # Takes around 2.2 seconds
-		Vision.onUnitAwakened(Unit)
-		LevelUI.UnitStatusOverlord.onUnitAwakened(Unit)
-		
+		Unit.onUnitAwakened(id, tool_id, effects, team, rot, tile)
 		Unit.Model.movement_finished.connect(on_movement_finished.bind(Unit))
 		Unit.Model.drop_calculate_damage.connect(on_drop_calculate_damage.bind(Unit))
 		Unit.Model.attack_finished.connect(on_attack_finished.bind(Unit))
 		Unit.Model.death_finished.connect(on_death_finished.bind(Unit))
 		Unit.Model.hurt_finished.connect(on_hurt_finished.bind(Unit))
-		Unit.on_arrive(team == 0 or Unit.getVisibleEnemies().size() > 0)
-		Unit.finished_awakening = true
-		AIManager.onUnitAwakened(Unit)
-		Combat.onArrive(Unit)
-		PlayerManager.onSetupAllyPassedTurns(Unit)
-		Combat.onRecalculateTargetAbilities()
+		LevelUI.UnitStatusOverlord.onUnitAwakened(Unit)
+		Unit.Tile = tile
 		return Unit
 	return null
-		
+	
+func onUnitAwakenedProcess(Unit: UnitGD, Tile: TileGD) -> void:
+	Vision.onUnitAwakened(Unit)
+	Unit.on_arrive(Unit.team == 0 or Unit.getVisibleEnemies().size() > 0)
+	Unit.finished_awakening = true
+	AIManager.onUnitAwakened(Unit)
+	Combat.onArrive(Unit)
+	PlayerManager.onSetupAllyPassedTurns(Unit)
+	Combat.onRecalculateTargetAbilities()
+	await get_tree().process_frame
+	Unit.occupy_tile(Tile)
+
+func onMassUnitsAwakened(tiles: Array, enemy_ids: Array) -> void:
+	var units: Array = []
+	for i in range(tiles.size()):
+		units.append(onUnitAwakenedLoad(enemy_ids[i], 0, [], 1, tiles[i].obj.rotation, tiles[i]))
+	for i in range(tiles.size()): onUnitAwakenedProcess(units[i], tiles[i])
 
 func on_start_phase_start() -> void:
-	var enemy_tiles: Array = Tiles.on_is_type_get_tiles("Enemy", "obj")
 	var allowed_spawns: Array = range(7, 25)
-	for Tile in enemy_tiles:
-		await on_unit_awakened(allowed_spawns[randi() % allowed_spawns.size()], 0, [], 1, Tile.obj.rotation, Tile)
+	var enemy_tiles: Array = Tiles.on_is_type_get_tiles("Enemy", "obj")
+	var enemy_spawns: Array = []
+	
+	for i in range(enemy_tiles.size()):
+		enemy_spawns.append(allowed_spawns[randi() % allowed_spawns.size()])
+	onMassUnitsAwakened(enemy_tiles, enemy_spawns)
+	
 func on_player_phase_start() -> void:
 	PlayerManager.on_player_phase_start()
 

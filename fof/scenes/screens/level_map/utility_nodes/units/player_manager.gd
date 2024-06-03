@@ -19,8 +19,10 @@ func onSetupAllyPassedTurns(Unit: UnitGD) -> void:
 func on_card_placed(hand_card: HandCardGD, Tile: TileGD) -> void:
 	var skip_result: bool = LevelMap.on_skip_hand_phase_result(Tile)
 	if LevelMap.game_phase == "HandPhase": LevelUI.on_ally_unit_awakened(skip_result)
-	var Unit: UnitGD = await Units.on_unit_awakened(hand_card.id, hand_card.tool_id, hand_card.effects, 0, Tile.obj.rotation, Tile)
+	
+	var Unit: UnitGD = await Units.onUnitAwakened(hand_card.id, hand_card.tool_id, hand_card.effects, 0, Tile.obj.rotation, Tile)
 	if skip_result: LevelMap.on_advance_game_phase()
+	
 	SpectateCamera.onSpectate(Unit)
 	if Unit.rarity != 7:
 		Units.onPushArgDelay(Unit, Units.ARRIVE_EFFECT_DELAY_DURATION, 

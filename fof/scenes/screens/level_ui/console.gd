@@ -60,7 +60,7 @@ func onTileSelected(_Tile: TileGD) -> void:
 	LevelUI.onSelectTileFinish()
 	
 func onSpawnTileSet(Tile: TileGD) -> void:
-	await Units.on_unit_awakened(int(command_args[1]), 0, [], int(command_args[2]), 0, Tile)
+	await Units.onUnitAwakened(int(command_args[1]), 0, [], int(command_args[2]), 0, Tile)
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
 	PlayerManager.passed_turns.erase(Unit)
 	PlayerManager.on_select_active_unit(Unit)

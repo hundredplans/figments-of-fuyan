@@ -87,8 +87,6 @@ func onUnitAwakened(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	if team == 1: Model.setVisible(false)
 	AudioDict = load("res://assets/base_game/cards/cards/" + base_card.folder_name + "/audio.tres")
 	onCreateAbilities()
-	await get_tree().process_frame
-	occupy_tile(tile)
 
 func onCreateAbilities() -> void:
 	var DIR_PATH: String = "res://assets/base_game/cards/cards/" + base_card.folder_name + "/abilities/"
@@ -103,13 +101,11 @@ func onCreateAbilities() -> void:
 			ability.Combat = Units.Combat
 			ability.LevelUI = Units.LevelUI
 			ability.GameEffects = Units.GameEffects
-			ability.charges = ability.max_charges
 			ability.LevelMap = Units.LevelMap
+			ability.charges = ability.max_charges
 			abilities.append(ability)
 			
-			if ability is ArmorGD:
-				onAddUnitFX("Armor", ability.armor)
-				
+			if ability is ArmorGD: onAddUnitFX("Armor", ability.armor)
 			elif ability is TargetAbilityGD or ability is OngoingAbilityGD: ability.setInfo(self)
 			
 func onAddUnitFX(type: String, charges: int = -1) -> void:
