@@ -82,9 +82,12 @@ func on_finish_animation(ani_name: String) -> void:
 		"Hurt": hurt_finished.emit();
 
 var materials: Array = []
+const DEFAULT_MULT_VALUE: float = 5
 func onCreateBaseMaterials() -> void:
 	if Unit != null:
 		var next_pass: Material = load("res://assets/materials/unit_material/unit_material_outline.tres").duplicate()
+		if Unit.team == 0: next_pass.set_shader_parameter("green_multiply", DEFAULT_MULT_VALUE)
+		else: next_pass.set_shader_parameter("red_multiply", DEFAULT_MULT_VALUE)
 		for i in mesh.mesh.get_surface_count():
 			var unit_material: Material = load("res://assets/materials/unit_material/unit_material.tres").duplicate()
 			var tx: ImageTexture = load(mesh.get_active_material(i).albedo_texture.resource_path)
@@ -277,5 +280,5 @@ func onRemoveIdleAbility() -> void:
 			on_play_animation(idle)
 
 func setRedMultiply(state: bool) -> void:
-	var val: float = 1.0 if (!state) else 15.0
+	var val: float = DEFAULT_MULT_VALUE if (!state) else 15.0
 	for mat in materials: mat.next_pass.set_shader_parameter("red_multiply", val)

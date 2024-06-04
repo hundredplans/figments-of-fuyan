@@ -1,6 +1,13 @@
 extends OngoingAbilityGD
 
 var on_delay_remove: bool = false
+
+func onFindCocusPocus() -> AbilityGD:
+	for ability in Unit.abilities:
+		if ability.ability_name == "Cocus Pocus":
+			return ability
+	return null
+	
 func onCocusCharges() -> String:
 	for ability in Unit.abilities:
 		if ability.ability_name == "Cocus Pocus" and ability.charges == 0:
@@ -63,15 +70,15 @@ func onOngoingAbility() -> void:
 		var _Unit: UnitGD = info[0]
 		if info[1]:
 			LevelUI.UnitStatusOverlord.onAddUnitFX(_Unit, "CocusPocus", AppliedBy)
-			VFX.onCreateCocusPocus(_Unit, self)
+			VFX.onCreateCocusPocus(_Unit, Unit)
 			affected_units.append(_Unit)
 		else:
 			LevelUI.UnitStatusOverlord.onRemoveUnitFX(_Unit, "CocusPocus", AppliedBy)
 			affected_units.erase(_Unit)
 			
-			if !on_delay_remove: VFX.onRemoveCocusPocus(_Unit)
+			if !on_delay_remove: VFX.onRemoveCocusPocus(_Unit, Unit)
 			else:
 				on_delay_remove = false
 				await Units.get_tree().create_timer(2.5).timeout
-				VFX.onRemoveCocusPocus(_Unit)
+				VFX.onRemoveCocusPocus(_Unit, Unit)
 	trigger_info = []

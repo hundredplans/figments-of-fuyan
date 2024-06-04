@@ -14,3 +14,15 @@ func onTargetAbility() -> void:
 	for _Unit in tiles["affect"].map(func(x: TileGD): return Units.unit_by_tile(x)):
 		Combat.onApplyBuffNextTurn(BuffInfoGD.new(_Unit, AppliedBy, "attack", ATTACK))
 		Combat.onHealAbility(_Unit, Unit, HEAL)
+
+@export var AI_HEAL_COUNT: int = 2
+func onTargetAbilityConditionAI() -> TileGD:
+	var heal_count: int = 0
+	for _Tile in tiles["affect"]:
+		var _Unit: UnitGD = Units.unit_by_tile(_Tile)
+		if _Unit.isHealable(): heal_count += 1
+		
+	if heal_count >= AI_HEAL_COUNT:
+		return tiles["affect"][randi() % tiles["affect"].size()]
+		
+	return null

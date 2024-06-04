@@ -61,7 +61,7 @@ func on_change_game_phase(phase: String) -> void:
 			Vision.onStartPhaseStart()
 			SpectateCamera.onStartPhaseStart()
 			Hand.on_start_phase_start()
-			await Units.on_start_phase_start()
+			Units.on_start_phase_start()
 			LevelUI.onStartPhaseStart()
 			VFX.onStartPhaseStart()
 		"AfterStartPhase":
@@ -94,6 +94,7 @@ func on_change_game_phase(phase: String) -> void:
 			Vision.on_player_end_turn_phase_start()
 			on_change_game_phase("AIPhase")
 		"AIPhase":
+			Combat.onAIPhaseStart()
 			GameEffects.onAIPhaseStart()
 			Units.onAIPhaseStart()
 			LevelUI.onAIPhaseStart()

@@ -2,7 +2,10 @@ class_name TargetAbilityGD
 extends AbilityGD
 
 @export_multiline var ability_description: String
+@export_multiline var ability_description_big: String
+# Spectate the affected target when ability is triggered
 @export var teleport_to_target: bool = false
+# Spectate the first affected unit when ability mode is triggered
 @export var change_camera: bool = false
 
 const type: String = "TargetAbility"

@@ -93,7 +93,7 @@ func onAppendTrigger(Trigger: TriggerGD) -> void:
 	
 func onAddHelpfulHelmet(Unit: UnitGD, a: Dictionary) -> GameFXGD:
 	var GameFX := onCreateGameFX(Unit, GameFXGD.HELPFUL_HELMET, a)
-	onAppendTrigger(TriggerGD.new(GameFX, Unit, Unit.stats.bind("health", 1), TriggerGD.RAMPAGE, a.use_bound))
+	onAppendTrigger(TriggerGD.new(GameFX, Unit, Unit.stats.bind("health", 1), TriggerGD.RAMPAGE, a.use_bound, TriggerGD.NULL))
 	LevelUI.UnitStatusOverlord.onAddUnitFX(Unit, "HelpfulHelmet")
 	if Unit.team == 0: SpectateCamera.onSpectate(Unit)
 	VFX.onCreateHelpfulHelmet(Unit)

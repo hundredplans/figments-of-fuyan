@@ -16,7 +16,8 @@ func onTargetAbilityCondition() -> bool:
 	return false
 	
 func onFindSpawnTiles() -> Array:
-	return Tiles.get_children().filter(func(x: TileGD): return Tiles.on_find_tile_primary_type(x) == "Spawn").filter(func(x: TileGD): return !Units.unit_by_tile_bool(x))
+	var _tiles: Array = Tiles.onSpawnTiles(TeamRelationGD.new(Unit.team))
+	return _tiles.filter(func(x: TileGD): return !Units.unit_by_tile_bool(x))
 	
 func onTargetAbility() -> void:
 	charges -= 1
@@ -35,12 +36,23 @@ const SCALE_UNIT_INITIAL_SIZE: float = 0.01
 
 func onCocusPocus(_Unit: UnitGD) -> void:
 	VFX.onUpscaleCocusPocus(_Unit, SCALE_INITIAL_SIZE, SCALE_INITIAL_DURATION, SCALE_UNIT_INITIAL_SIZE, DELAY_DURATION, onCocusPocusInitialFinished.bind(_Unit))
+	if !is_visible: # Check if eventually will be visible here
+		Units.onPushFrontDelay(delay)
 
 func onCocusPocusInitialFinished(_Unit: UnitGD) -> void:
 	var _tiles: Array = onFindSpawnTiles()
-	Combat.onTeleport(_Unit, _tiles[randi() % _tiles.size()])
+	await Combat.onTeleport(_Unit, _tiles[randi() % _tiles.size()])
+	if _Unit.team == 1 and _Unit.Tile in Vision.getTeamVision(): SpectateCamera.onSpectate(_Unit)
 	VFX.onDownscaleCocusPocus(_Unit, SCALE_FINAL_DURATION, onCocusPocusFinished.bind(_Unit))
 	
 func onCocusPocusFinished(_Unit: UnitGD) -> void:
 	Combat.onHealAbility(_Unit, Unit, HEAL)
 	change_camera = true
+
+func onTargetAbilityConditionAI() -> TileGD:
+	#if tiles["affect"].size() > 0: return tiles["affect"][0]
+	if tiles["affect"].size() > 0:
+		var _Unit: UnitGD = Units.unit_by_tile(tiles["affect"][0])
+		if _Unit.turn_status == "TurnUsed" and Combat.onCanBeAttackedAtFullSpeed(_Unit):
+			return tiles["affect"][0]
+	return null

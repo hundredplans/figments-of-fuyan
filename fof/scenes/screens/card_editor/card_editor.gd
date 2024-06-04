@@ -6,11 +6,20 @@ var model_path: String
 @onready var DisplayCard: Control = %DisplayCard
 @onready var CardFileloader: Control = %CardFileloader
 
+@onready var ait: Control = %ait
+@onready var aic: Control = %aic
+@onready var aiw: Control = %aiw
+@onready var aia: Control = %aia
+@onready var aii: Control = %aii
+
 func _on_card_fileloader_game_card_pressed(__GameCard: GameCardGD):
 	var _GameCard: GameCardGD = preload("res://assets/base_game/cards/game_card/game_card.tscn").instantiate()
 	GameCard = _GameCard
 	GameCard.set_info(__GameCard.base_card)
 	DisplayCard.onDisplayCard(GameCard)
+	
+	for ai_stat in ["ait", "aia", "aic", "aii", "aiw"]:
+		get(ai_stat).setAIStat(__GameCard.base_card[ai_stat])
 	
 	ModelArea.onCreateModel(GameCard.base_card)
 	model_path = ModelArea.model_path

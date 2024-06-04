@@ -156,14 +156,14 @@ func _input(event: InputEvent) -> void:
 	if is_unit_camera:
 		if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 			setCameraPointAlongCircle((event.relative / 10000) * CAMERA_ROTATION_SPEED)
-
-		if Input.is_action_just_released("ScrollUp"):
-			CAMERA_RADIUS = max(CAMERA_RADIUS - CAMERA_RADIUS_INCREMENT, CAMERA_RADIUS_LOWER_BOUND)
-			setCameraPointAlongCircle()
-			
-		elif Input.is_action_just_released("ScrollDown"):
-			CAMERA_RADIUS = min(CAMERA_RADIUS + CAMERA_RADIUS_INCREMENT, CAMERA_RADIUS_UPPER_BOUND)
-			setCameraPointAlongCircle()
+		if !LevelUI.is_mouse_in_ui:
+			if Input.is_action_just_released("ScrollUp"):
+				CAMERA_RADIUS = max(CAMERA_RADIUS - CAMERA_RADIUS_INCREMENT, CAMERA_RADIUS_LOWER_BOUND)
+				setCameraPointAlongCircle()
+				
+			elif Input.is_action_just_released("ScrollDown"):
+				CAMERA_RADIUS = min(CAMERA_RADIUS + CAMERA_RADIUS_INCREMENT, CAMERA_RADIUS_UPPER_BOUND)
+				setCameraPointAlongCircle()
 
 	onFreelookCamera(event)
 	

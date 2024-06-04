@@ -139,22 +139,24 @@ func _process(_delta: float) -> void:
 		else: onArgDelay()
 
 func onAIMoveFinish() -> void:
-	setUnitStatus(active_action.Unit, "TurnUsed")
+	if !active_action.Unit.is_dead: setUnitStatus(active_action.Unit, "TurnUsed")
 	if unit_actions.is_empty():
 		if !(active_action.vis_array.all(func(x: Dictionary): return x.vis_path == "Invisible")):
 			await get_tree().create_timer(AFTER_MOVEMENT_DELAY).timeout
-		active_action = {}
+		resetActiveAction()
 		onUnitActionsFinished()
 		AIManager.onMoveNextAIUnit()
-	else: unit_actions.append(active_action)
-	active_action = {}
+	else: unit_actions.append(active_action); resetActiveAction()
 
 func isUnitActionsEmpty() -> bool:
 	return unit_actions.is_empty() or (unit_actions.size() == 1 and unit_actions[0].action_type == "AIMoveFinish")
 
+func resetActiveAction() -> void:
+	active_action = {}
+
 func onArgQueue() -> void:
 	active_action.callable.call()
-	active_action = {}
+	resetActiveAction()
 	onUnitActionsFinished()
 
 func onAppendArgQueue(callable: Callable) -> void:
@@ -172,16 +174,17 @@ func onArgDelay() -> void:
 		_active_action.triggered = true
 		
 	if unit_actions[0] == _active_action:
+		
 		active_action = unit_actions.pop_front()
 		await get_tree().create_timer(active_action.delay).timeout
 		if _active_action.end_callable.is_valid() and !_active_action.end_callable.is_null():
 			_active_action.end_callable.call()
-		active_action = {}
+		resetActiveAction()
 		onUnitActionsFinished()
 	
 func onDelay() -> void:
 	await get_tree().create_timer(active_action.delay).timeout
-	active_action = {}
+	resetActiveAction()
 	onUnitActionsFinished()
 
 func onMoveUnit() -> void:
@@ -231,7 +234,7 @@ func on_movement_finished(Unit: UnitGD) -> void:
 		if unit_actions.is_empty() and Unit.speed > 0:
 			PlayerManager._on_unit_selected(Unit)
 	
-	active_action = {}
+	resetActiveAction()
 	onUnitActionsFinished()
 
 func onPushFrontDelay(delay: float) -> void:
@@ -248,10 +251,10 @@ func onPushArgDelay(Triggerer: UnitGD, delay: float, end_callable: Callable = Ca
 		"delay": delay,
 		"triggered": false,
 		"Triggerer": Triggerer,
-		"InitialTeleport": Triggerer if InitialTeleport == null else InitialTeleport
+		"InitialTeleport": InitialTeleport
 	})
 	
-	if unit_actions.size() == 1:
+	if unit_actions.size() == 1 and active_action.is_empty():
 		onArgDelay()
 
 func isVisibilityPathLastPosition(Tile: TileGD, visibility_path: Array) -> bool:
@@ -283,7 +286,7 @@ func onUnitExitsVision(Unit: UnitGD, _Unit: UnitGD) -> void:
 	
 func onEnemyDiscoveredClearUnitActions() -> void:
 	on_unit_travel_finished()
-	active_action = {}
+	resetActiveAction()
 	unit_actions = unit_actions.filter(func(x: Dictionary): return x.action_type == "DeathUnit")
 	onUnitActionsFinished()
 	
@@ -292,7 +295,7 @@ func on_unit_travel_finished() -> void:
 	if !active_action.is_empty() and active_action.action_type.begins_with("MoveUnit"):
 		on_force_resume_idle_animation_from_walk()
 		onCreateIncentiviseAction(active_action.Unit)
-		active_action = {}
+		resetActiveAction()
 		onRemoveMovementOutlineTiles()
 	
 func onRemoveMovementOutlineTiles() -> void:
@@ -346,7 +349,7 @@ func on_attack_finished(Unit: UnitGD) -> void:
 	if Unit.attack_amount == 0: Unit.stats("active_speed", 0, AppliedBy, true)
 	Combat.onHit(DMGInfo)
 	onCreateIncentiviseAction(Unit)
-	active_action = {}
+	resetActiveAction()
 	onUnitActionsFinished()
 	
 func _attack_target(_Unit: UnitGD, _Tile: TileGD) -> void:
@@ -384,6 +387,7 @@ func on_death_finished(Unit: UnitGD) -> void:
 	
 	var Deather: UnitGD = active_action.Deather
 	var AppliedBy: AppliedByGD = active_action.AppliedBy
+	SpectateCamera.invisible_unit_stop_track = true
 	
 	LevelUI.UnitStatusOverlord.onDeathFinished(Unit)
 	await Unit.on_death()
@@ -397,7 +401,7 @@ func on_death_finished(Unit: UnitGD) -> void:
 	if Unit.Model.current_walk_stream_player != null:
 		AudioMaster.on_cutoff_sfx(Unit.Model.current_walk_stream_player)
 
-	active_action = {}
+	resetActiveAction()
 	var dev := preload("res://static/dev/dev.tres")
 	if !dev.win_enabled: win_state = 0
 	match win_state:
@@ -411,7 +415,7 @@ func on_death_finished(Unit: UnitGD) -> void:
 		2: LevelUI.onLoseGame()
 		
 func on_hurt_finished(_Unit: UnitGD) -> void:
-	active_action = {}
+	resetActiveAction()
 	onUnitActionsFinished()
 
 func on_drop_calculate_damage(DMG: int, scale_time: float, Unit: UnitGD) -> void:

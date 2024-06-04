@@ -18,7 +18,6 @@ var PlayerManager: PlayerManagerGD
 @onready var AbilityDescription: RichTextLabel = %AbilityDescription
 @onready var AbilityLabel: Label = %AbilityLabel
 @onready var UnitNameLabel: Label = %UnitNameLabel
-@onready var LabelBackground: PanelContainer = %LabelBackground
 @onready var TargetAbilities: VBoxContainer = %TargetAbilities
 @onready var Console := %Console
 @onready var VisionMode := %VisionMode
@@ -31,9 +30,6 @@ var PlayerManager: PlayerManagerGD
 var _LevelMap: PackedScene = preload("res://scenes/screens/level_map/level_map.tscn")
 var LevelMap: Node3D
 var GameState: Node
-
-@onready var VisionButton: Control = %VisionButton
-@onready var TeamButton: Control = %TeamButton
 @onready var WarningText: Label = %WarningText
 
 func _process(_delta: float) -> void:
@@ -59,9 +55,6 @@ func _ready() -> void:
 	PANEL_MOVE_TWEEN_DURATION = 0
 	on_pin_hand_box_panel()
 	PANEL_MOVE_TWEEN_DURATION = old
-	
-	vision_selected = VisionButton.default
-	team_selected = TeamButton.default
 	
 @onready var CornerRightMenu = %CornerRightMenu
 func setCornerRightVisibile(state: bool) -> void:
@@ -425,10 +418,9 @@ func onTargetAbilityBtnPressed(Unit: UnitGD, ability: AbilityGD) -> void:
 func setUnitModeText(text: String, description: String = "") -> void:
 	if description == "": UnitNameLabel.text = text; AbilityDescription.text = ""; AbilityLabel.text = ""
 	else: AbilityLabel.text = text; AbilityDescription.text = description; UnitNameLabel.text = ""
-	LabelBackground.visible = !(UnitNameLabel.text == "" and AbilityLabel.text == "")
 	
 func onEnterTargetAbilityMode(Unit: UnitGD, ability: AbilityGD) -> void:
-	setUnitModeText(ability.ability_name, ability.ability_description)
+	setUnitModeText(ability.ability_name, ability.ability_description_big)
 	PlayerManager.onEnterTargetAbilityMode(Unit, ability)
 	
 func onExitTargetAbilityMode(exit_unit: bool = false) -> void: # has to check if actually in target ability mode first

@@ -63,6 +63,8 @@ func onArrive(Unit: UnitGD) -> void:
 func onTargetAbility(Unit: UnitGD, ability: TargetAbilityGD, Tile: TileGD) -> void:
 	ability.setInfo(Unit, Tile)
 	var InitialTeleport: UnitGD = Units.unit_by_tile(Tile) if (ability.teleport_to_target) else null
+	if InitialTeleport != null and InitialTeleport.team == 1 and InitialTeleport.Tile not in Vision.getTeamVision():
+		InitialTeleport = null
 	onTriggerAbilitySpectateDelay(Unit, ability, ability.onTargetAbility, InitialTeleport)
 	ability.used = true
 	LevelUI.onUpdateTargetAbility(Unit, ability)
@@ -97,14 +99,18 @@ func onRampage(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 func onTriggerAbilitySpectateDelay(Triggerer: UnitGD, ability: AbilityGD, callable: Callable, InitialTeleport: UnitGD = null) -> void:
 	var vis: bool = Triggerer.team == 0 or Triggerer.Tile in Vision.getTeamVision()
 	if vis and ability.delay > 0:
+		var ai_action: bool = Triggerer.team == 1
 		var begin_arguments: Dictionary = {"Triggerer": Triggerer, "callable": callable, "ability": ability, "vis": vis}
 		var end_arguments: Dictionary = {"Triggerer": Triggerer, "ability": ability}
 		
-		if ability_chain.is_empty():
-			if ability is TargetAbilityGD and ability.teleport_to_target: OriginalSpectateUnit = Triggerer
-			else: OriginalSpectateUnit = SpectateCamera.SpectateUnit
+		if Triggerer.team == 0:
+			if ability_chain.is_empty():
+				if ability is TargetAbilityGD and ability.teleport_to_target: OriginalSpectateUnit = Triggerer
+				else: OriginalSpectateUnit = SpectateCamera.SpectateUnit
 			
-		ability_chain.append(ability)
+			ability_chain.append(ability)
+			
+		if InitialTeleport == null and !ai_action: InitialTeleport = Triggerer
 		Units.onPushArgDelay(Triggerer, ability.delay, onAfterAbilityFrontDelay.bind(end_arguments), onBeforeAbilityFrontDelay.bind(begin_arguments), InitialTeleport)
 	else: onUseAbility(Triggerer, callable, ability, vis)
 		
@@ -176,6 +182,12 @@ func onHeal(healInfo: HealInfoGD) -> bool:
 		onWhenHealed(healInfo.Healee, healInfo, heal_amount)
 		return true
 	return false
+
+func onAIPhaseStart() -> void:
+	for Unit in Units.on_units(TeamRelationGD.new(1)):
+		var abilities: Array = onFindAbilities(Unit, "TargetAbility")
+		for ability in abilities:
+			ability.used = false
 
 func onPlayerPhaseStart() -> void:
 	for Unit in Units.on_units():
@@ -282,7 +294,18 @@ func onOngoingAbilityUnit(Unit: UnitGD, _Unit: UnitGD, type: String, args: Array
 
 func onTeleport(Unit: UnitGD, Tile: TileGD) -> void:
 	Unit.position = Unit.Model.onCalculateEndPosition(Tile, 0)
-	Unit.call_deferred("occupy_tile", Tile)
+	await get_tree().process_frame
+	Unit.occupy_tile(Tile)
+	if Unit.team == 1 and !(Unit.Tile in Vision.getTeamVision()):
+		SpectateCamera.invisible_unit_stop_track = true
 
-func onCocusPocus() -> void:
-	pass
+func onCanBeAttackedAtFullSpeed(Unit: UnitGD) -> bool:
+	for _Unit in Unit.getVisibleEnemies():
+		var preserve_speed: int = _Unit.speed
+		_Unit.speed = _Unit.max_speed
+		Tiles.onCreateMovementPaths(_Unit)
+		_Unit.speed = preserve_speed
+		print(Tiles.movement_paths)
+		#if Tiles.movement_paths:
+			#pass
+	return true

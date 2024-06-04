@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bvynvyfrpwe38"]
+[gd_scene load_steps=15 format=3 uid="uid://bvynvyfrpwe38"]
 
 [ext_resource type="Script" path="res://scenes/screens/card_editor/card_editor.gd" id="1_txieb"]
 [ext_resource type="PackedScene" uid="uid://da04y8ex3ym7m" path="res://scenes/screens/card_editor/model_area.tscn" id="2_bjtfj"]
@@ -6,7 +6,14 @@
 [ext_resource type="Script" path="res://scenes/screens/card_editor/card_fileloader.gd" id="4_b7v1v"]
 [ext_resource type="Script" path="res://scenes/screens/card_editor/display_card.gd" id="4_ebhib"]
 [ext_resource type="PackedScene" uid="uid://dmula87ma5w81" path="res://scenes/editor/file_finder/file_finder.tscn" id="6_3miwi"]
+[ext_resource type="PackedScene" uid="uid://dg1wf0pg3hbod" path="res://scenes/screens/card_editor/ai_icons/ai_icon.tscn" id="7_503my"]
 [ext_resource type="PackedScene" uid="uid://ciohbercpl5c6" path="res://assets/base_game/cards/game_card/compilers/compile_game_card_text.tscn" id="7_ceu3r"]
+[ext_resource type="Theme" uid="uid://bhyiyheobours" path="res://scenes/screens/level_ui/panel_theme.tres" id="7_mtfl4"]
+[ext_resource type="Texture2D" uid="uid://dnm8qvhla6lnq" path="res://scenes/screens/card_editor/ai_icons/teamwork.png" id="9_s5q3m"]
+[ext_resource type="Texture2D" uid="uid://jx1wqlmgcltt" path="res://scenes/screens/card_editor/ai_icons/Advent.png" id="10_4ee1o"]
+[ext_resource type="Texture2D" uid="uid://bohsqxx6876rh" path="res://scenes/screens/card_editor/ai_icons/Confidence.png" id="11_8fv6s"]
+[ext_resource type="Texture2D" uid="uid://dsh4g1ys0c28t" path="res://scenes/screens/card_editor/ai_icons/Intelligrace.png" id="12_y2clc"]
+[ext_resource type="Texture2D" uid="uid://r4t4lu6eo167" path="res://scenes/screens/card_editor/ai_icons/Awarenes.png" id="13_q0880"]
 
 [node name="CardEditor" type="Control"]
 layout_mode = 3
@@ -172,6 +179,77 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource("3_2lhne")
 text = "Compile Vision"
+
+[node name="Control" type="Control" parent="NodeManager/BaseButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Panel" type="Panel" parent="NodeManager/BaseButtons/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 8.0
+offset_right = -14.0
+offset_bottom = -13.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("7_mtfl4")
+
+[node name="AIStats" type="VBoxContainer" parent="NodeManager/BaseButtons/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+
+[node name="BoxOne" type="HBoxContainer" parent="NodeManager/BaseButtons/Control/AIStats"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="SpaceHolder" type="Control" parent="NodeManager/BaseButtons/Control/AIStats/BoxOne"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.3
+
+[node name="ait" parent="NodeManager/BaseButtons/Control/AIStats/BoxOne" instance=ExtResource("7_503my")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+icon = ExtResource("9_s5q3m")
+
+[node name="aia" parent="NodeManager/BaseButtons/Control/AIStats/BoxOne" instance=ExtResource("7_503my")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+icon = ExtResource("10_4ee1o")
+
+[node name="BoxTwo" type="HBoxContainer" parent="NodeManager/BaseButtons/Control/AIStats"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="aic" parent="NodeManager/BaseButtons/Control/AIStats/BoxTwo" instance=ExtResource("7_503my")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+icon = ExtResource("11_8fv6s")
+
+[node name="aii" parent="NodeManager/BaseButtons/Control/AIStats/BoxTwo" instance=ExtResource("7_503my")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+icon = ExtResource("12_y2clc")
+
+[node name="aiw" parent="NodeManager/BaseButtons/Control/AIStats/BoxTwo" instance=ExtResource("7_503my")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+icon = ExtResource("13_q0880")
 
 [node name="CompileGameCardText" parent="." instance=ExtResource("7_ceu3r")]
 unique_name_in_owner = true

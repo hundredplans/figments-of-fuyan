@@ -248,7 +248,7 @@ func onCalculateVisionInfo() -> Dictionary:
 					var _Tile: TileGD = Collision if Collision is TileGD else Collision.Tile
 					onAppendTileToVisibleTiles(_visible_tiles, _Tile)
 					if Collision == potential_collision: break
-		onRemoveNonCommutativeUnits(_visible_tiles)
+		onAddNonCommutativeUnits(_visible_tiles)
 		onUnitsHeightAdjacentTiles(_visible_tiles)
 	
 	return {"visible_tiles": _visible_tiles, "unit_vision": onCalculateUnitVision(_visible_tiles)}
@@ -264,10 +264,13 @@ func onCalculateEnemyUnitCommutative(Unit: UnitGD) -> bool:
 			if Collision == Unit: return true
 	return false
 
-func onRemoveNonCommutativeUnits(_visible_tiles: Array) -> void:
+func onAddNonCommutativeUnits(_visible_tiles: Array) -> void:
 	for Unit in Units.all_units(self):
-		if Unit.Tile in _visible_tiles and Unit.Tile not in Vision.spawn_tiles and !(Unit.onCalculateEnemyUnitCommutative(self)):
-			_visible_tiles.erase(Unit.Tile)
+		if Tiles.tile_distance(Unit.Tile, Tile) <= Vision.VISION_RANGE and Unit.Tile not in _visible_tiles and Unit.onCalculateEnemyUnitCommutative(self):
+			_visible_tiles.append(Unit.Tile)
+	#for Unit in Units.all_units(self):
+		#if Unit.Tile in _visible_tiles and Unit.Tile not in Vision.spawn_tiles and !(Unit.onCalculateEnemyUnitCommutative(self)):
+			#_visible_tiles.erase(Unit.Tile)
 
 func onCalculateUnitVision(_visible_tiles: Array = []) -> Dictionary:
 	var intent: Dictionary = {}
@@ -326,7 +329,6 @@ func getVisibleTiles() -> Array: # Removes tile unit is on
 
 func setExtraDamage(x: int = 0) -> void:
 	extra_damage = x
-	print(x)
 
 func setHealMultiplier(x: int = 1) -> void:
 	heal_multiplier = x

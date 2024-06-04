@@ -7,6 +7,7 @@ var LevelMap: LevelMapGD
 var Tiles: TilesGD
 var Units: UnitsGD
 var movement_order: Array = []
+var Combat: CombatGD
 var active_movement_order: Array
 
 func onDeathFinished(Unit: UnitGD) -> void:
@@ -36,6 +37,17 @@ func onBeginMoveAIUnits() -> void:
 func onMoveNextAIUnit() -> void:
 	if active_movement_order.size() > 0:
 		var Unit: UnitGD = active_movement_order.pop_front()
+		var wait: bool = onUseTargetAbilities(Unit)
+		if !wait: onAfterTargetAbility(Unit, Unit.Tile)
+	else:
+		if invisible_movement_tracker.all(func(x: bool): return x):
+			await get_tree().create_timer(Units.AFTER_MOVEMENT_DELAY).timeout
+			
+		LevelMap.setActionLock("UnitActionDisabled")
+		LevelMap.on_change_game_phase("AIEndTurnPhase")
+
+func onAfterTargetAbility(Unit: UnitGD, Tile: TileGD) -> void:
+	if !Unit.is_dead:
 		Units.setUnitStatus(Unit, "TurnActive")
 		Tiles.onCreateMovementPaths(Unit)
 		var old_paths: Dictionary = Tiles.movement_paths.duplicate()
@@ -44,12 +56,23 @@ func onMoveNextAIUnit() -> void:
 		if visible_enemies.is_empty(): onChooseRandomMovementPath(Unit)
 		else: onChaseEnemy(Unit, visible_enemies, old_paths)
 	else:
-		if invisible_movement_tracker.all(func(x: bool): return x):
-			await get_tree().create_timer(Units.AFTER_MOVEMENT_DELAY).timeout
-			
-		LevelMap.setActionLock("UnitActionDisabled")
-		LevelMap.on_change_game_phase("AIEndTurnPhase")
+		Units.onAIMoveFinisher(Unit, [{"vis_path": "Regular" if (Tile in Vision.getTeamVision()) else "Invisible"}])
 
+func onUseTargetAbilities(Unit: UnitGD) -> bool:
+	var wait: bool = false
+	for ability in Unit.abilities:
+		if ability is TargetAbilityGD:
+			ability.onTargetAbilityCondition()
+			ability.can_affect = !(ability.tiles["affect"].is_empty())
+			if Combat.isAbilityEnabled(Unit, ability):
+				var Tile: TileGD = ability.onTargetAbilityConditionAI()
+				if Tile != null:
+					if !wait and Unit.Tile in Vision.getTeamVision(): SpectateCamera.onSpectate(Unit)
+					Combat.onTargetAbility(Unit, ability, Tile)
+					if !wait: Units.onAppendArgQueue(onAfterTargetAbility.bind(Unit, Unit.Tile))
+					wait = true
+	return wait
+	
 var invisible_movement_tracker: Array = []
 func onChaseEnemy(Unit: UnitGD, visible_enemies: Array, old_paths: Dictionary) -> void:
 	for EnemyUnit in visible_enemies:
@@ -103,7 +126,7 @@ func onChosenPathSelected(Unit: UnitGD, chosen_path: Dictionary) -> void:
 		else: Units.attack_enemy_or_target(Unit, chosen_path.tiles[i])
 	Units.onAIMoveFinisher(Unit, vis_array)
 
-func onChosenPathVisPath(chosen_path: Dictionary, Unit: UnitGD, default_tile: TileGD, vision_path: Array, default_body_pos: Vector3, default_ray_pos: Vector3) -> void:
+func onChosenPathVisPath(chosen_path: Dictionary, Unit: UnitGD, vision_path: Array, default_body_pos: Vector3, default_ray_pos: Vector3) -> void:
 	var visions: Array = Units.all_units().map(func(x: UnitGD): return [x, x.visible_tiles.duplicate()])
 	for i in range(chosen_path.size):
 		if chosen_path.types[i].x != 1:
@@ -128,7 +151,7 @@ func onCalculateVisibilityPath(Unit: UnitGD, chosen_path: Dictionary, vis_array:
 	var default_body_pos: Vector3 = Unit.Model.static_body.position
 	var default_ray_pos: Vector3 = Unit.VisionRaycast.position
 	
-	await onChosenPathVisPath(chosen_path, Unit, default_tile, vis_array, default_body_pos, default_ray_pos)
+	await onChosenPathVisPath(chosen_path, Unit, vis_array, default_body_pos, default_ray_pos)
 	onCreateVisPath(vis_array)
 	invisible_movement_tracker.append(onFindNonInvisibleMove(vis_array))
 	Unit.onResetUnit(default_body_pos, default_ray_pos, default_rot, default_tile)

@@ -19,3 +19,15 @@ func onTargetAbility() -> void:
 			GameEffects.onAddGameFX(_Unit, GameFXGD.CHARMING_STANCE, {"Unit": Unit})
 	if is_visible: Unit.Model.on_play_animation("Ability")
 	charges -= 1
+
+@export var GUARANTEE_HEAL: int = 2
+func onTargetAbilityConditionAI() -> TileGD:
+	var healable_units: Array = []
+	for _Tile in tiles["affect"]:
+		var _Unit: UnitGD = Units.unit_by_tile(_Tile)
+		if _Unit.isHealable():
+			healable_units.append(_Unit)
+	
+	if healable_units.size() >= GUARANTEE_HEAL:
+		return healable_units[randi() % healable_units.size()].Tile
+	return null

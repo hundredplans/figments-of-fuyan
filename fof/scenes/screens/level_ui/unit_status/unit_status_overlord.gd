@@ -119,9 +119,6 @@ func onUnitSpectated(Unit: UnitGD, state: bool) -> void:
 		UnitStatus.onSetTopMaterial(state)
 	
 	setUnitStatusExtra(Unit, state)
-		
-func onUpdateEnemyVision(Unit: UnitGD, state: bool) -> void:
-	for UnitStatus in units[Unit]: UnitStatus.visible = state
 	
 func setAllRegularUnitStatus(team: int, state: String) -> void:
 	for Unit in units.keys():
@@ -201,12 +198,26 @@ func onStoreAllInfoFX() -> void:
 		var info_fx := load(DIR_PATH + file_path)
 		all_info_fx[info_fx.fx_type] = DIR_PATH + file_path
 
+func onUpdateEnemyVision(Unit: UnitGD, state: bool) -> void:
+	for UnitStatus in units[Unit]:
+		UnitStatus.visible = state
+		
+	if Unit.team == 1: # Eventually implement as a specific type of base_fx that checks whether the applier is in vision
+		for _Unit in Units.on_units(TeamRelationGD.new(1)):
+			for UnitStatus in onFindUnitStatus(_Unit):
+				for base_fx in UnitStatus.UnitFX.get_children():
+					if base_fx.info_fx.fx_type == "CocusPocus":
+						base_fx.visible = base_fx.info_fx.Unit.Tile in Vision.getTeamVision()
+
 func onAddUnitFX(Unit: UnitGD, type: String, AppliedBy := AppliedByGD.new()) -> void:
 	var info_fx := load(all_info_fx[type])
 	info_fx.Unit = AppliedBy.Applier
 	for UnitStatus in onFindUnitStatus(Unit):
 		var base_fx: Control = UnitStatus.onAddUnitFX(info_fx)
 		base_fx.hover_unit_pressed.connect(onHoverUnitPressed)
+		
+		if type == "CocusPocus": # Eventually implement this as a specific type of base_fx
+			base_fx.visible = info_fx.Unit in Vision.getTeamVision()
 	
 func onHoverUnitPressed(Unit: UnitGD) -> void:
 	if Unit != null and Unit.Tile in Vision.getTeamVision():

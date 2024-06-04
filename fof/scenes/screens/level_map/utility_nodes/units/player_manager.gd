@@ -7,6 +7,7 @@ var LevelUI: LevelUIGD
 var SpectateCamera: Node3D
 var Units: UnitsGD
 var Vision: VisionGD
+var VFX: VFXGD
 
 func onSetupAllyPassedTurns(Unit: UnitGD) -> void:
 	if Unit.team == 0:
@@ -33,9 +34,11 @@ func on_enemy_unit_enters_vision(Unit: UnitGD, _Unit: UnitGD) -> void:
 	LevelUI.UnitStatusOverlord.onUpdateEnemyVision(Unit, true)
 	Units.onEnemyDiscoveredClearUnitActions()
 	LevelUI.onEnemySpotted(Unit, _Unit)
+	VFX.onUpdateVFXVision(Unit, true)
 
 func on_enemy_unit_exits_vision(Unit: UnitGD) -> void:
 	LevelUI.UnitStatusOverlord.onUpdateEnemyVision(Unit, false)
+	VFX.onUpdateVFXVision(Unit, false)
 
 var ActiveUnit: UnitGD
 var unpassed_turns: Array
@@ -124,7 +127,7 @@ func on_unit_selected(Unit: UnitGD) -> void:
 	else: _on_unit_selected(Unit)
 
 func _on_unit_deselected(Unit: UnitGD, absolute: bool = false) -> void:
-	if Unit != null:
+	if Unit != null and Unit.team == 0:
 		onRemoveMovementRange()
 		if Unit == UnitSelected: UnitSelected = null
 		if !absolute:

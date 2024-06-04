@@ -4,7 +4,8 @@ extends Node3D
 @onready var SpawnParticles: Node3D = %SpawnParticles
 var Tiles: TilesGD
 var Units: UnitsGD
-var SpectateCamera: Node3D
+var SpectateCamera: SpectateCameraGD
+var Vision: VisionGD
 
 func onStartPhaseStart() -> void:
 	onGenerateSpawnParticles()
@@ -99,24 +100,26 @@ func onCreateHelpfulHelmet(Unit: UnitGD) -> void:
 	HelpfulHelmet.type = "HelpfulHelmet"
 	HelpfulHelmet.position.y = Unit.height.stat + 0.1
 
-func onCreateCocusPocus(Unit: UnitGD, ability: AbilityGD) -> void:
+func onCreateCocusPocus(Unit: UnitGD, _Unit: UnitGD) -> void:
 	var CocusPocus: Node3D = preload("res://scenes/screens/level_map/utility_nodes/vfx/ability_effects/cocus_pocus/cocus_pocus.tscn").instantiate()
-	CocusPocus.visible = Unit.UnitVFX.get_children().all(func(x: Node3D): return x.type != "CocusPocus")
-	Unit.UnitVFX.add_child(CocusPocus)
-	CocusPocus.type = "CocusPocus"
-	CocusPocus.ability = ability
-	CocusPocus.position.y = Unit.height.stat + 0.85
+	var previous_cocus: Array = Unit.UnitVFX.get_children().filter(func(x: Node3D): return x.type == "CocusPocus")
+	if previous_cocus.size() == 0:
+		Unit.UnitVFX.add_child(CocusPocus)
+		CocusPocus.Vision = Vision
+		CocusPocus.type = "CocusPocus"
+		CocusPocus.units.append(_Unit)
+		CocusPocus.position.y = Unit.height.stat + 0.85
+		CocusPocus.cocus_count = 1
+		CocusPocus.setVisible()
+	else: previous_cocus[0].cocus_count += 1; CocusPocus.units.append(_Unit)
 
-func onRemoveCocusPocus(Unit: UnitGD) -> void:
-	var is_remove: bool = true
+func onRemoveCocusPocus(Unit: UnitGD, _Unit: UnitGD) -> void:
 	for child in Unit.UnitVFX.get_children():
 		if child.type == "CocusPocus":
-			if is_remove:
-				child.queue_free()
-				is_remove = false
-			else:
-				child.visible = Unit in child.ability.affected_units
-				return
+			child.cocus_count -= 1
+			child.units.append(_Unit)
+			if child.cocus_count == 0: child.queue_free()
+			else: child.setVisible()
 
 func onUpscaleCocusPocus(Unit: UnitGD, upscale: Vector3, duration: float, unit_size: float, delay_duration: float, callable: Callable) -> void:
 	for child in Unit.UnitVFX.get_children():
@@ -145,3 +148,10 @@ func onDownscaleCocusPocus(Unit: UnitGD, duration: float, callable: Callable) ->
 			ScaleUnitTween.tween_property(Unit.Model, "scale:y", 1, duration)
 			ScaleUnitTween.finished.connect(callable)
 			return
+
+func onUpdateVFXVision(Unit: UnitGD, _state: bool) -> void:
+	if Unit.base_card.id == 22:
+		for _Unit in Units.on_units(TeamRelationGD.new(1)):
+			for VFX in _Unit.UnitVFX.get_children():
+				if VFX.type == "CocusPocus":
+					VFX.setVisible()

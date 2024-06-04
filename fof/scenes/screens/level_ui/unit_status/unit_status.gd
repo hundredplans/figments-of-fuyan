@@ -37,6 +37,7 @@ func _ready() -> void:
 	pivot_offset = size / 2
 	AniPlayer.play("ScaleStatSlight")
 	
+	
 var Unit: UnitGD
 func setUnit(_Unit: UnitGD) -> void:
 	Unit = _Unit
@@ -59,6 +60,7 @@ func setUnit(_Unit: UnitGD) -> void:
 	
 	onCreateAbilities()
 	for info_fx in Unit.unit_fx: onAddUnitFX(info_fx)
+	if type == "UnitStatusRegular": visible = false
 	
 func onCreateAbilities() -> void:
 	for ability in Unit.abilities:

@@ -95,8 +95,17 @@ func on_replace_ability_names(text: String) -> String:
 	
 	var DIR_PATH: String = "res://assets/base_game/cards/cards/" + base_card.folder_name + "/abilities/"
 	if DirAccess.dir_exists_absolute(DIR_PATH):
+		var ability_regex := RegEx.new()
+		ability_regex.compile("\\[img=[0-9][0-9]x[0-9][0-9]\\]")
 		for ability_name in Array(DirAccess.get_files_at(DIR_PATH)).filter(func(x: String): return x.ends_with(".tres")):
 			var ability: AbilityGD = load(DIR_PATH + ability_name)
+			if ability is TargetAbilityGD and !ability.ability_description.is_empty():
+				var ability_description_big: String = ability.ability_description
+				for result in ability_regex.search_all(ability_description_big):
+					ability_description_big = ability_description_big.replace(result.get_string(), "[img=28x28]")
+				ability.ability_description_big = ability_description_big
+				ResourceSaver.save(ability)
+				
 			if ability.max_charges != -1:
 				ability.ability_index = ability_indexes[ability.ability_name]
 				ResourceSaver.save(ability)

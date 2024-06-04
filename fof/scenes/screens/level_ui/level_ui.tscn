@@ -1,9 +1,8 @@
-[gd_scene load_steps=23 format=3 uid="uid://b0kr4uhvdhmq3"]
+[gd_scene load_steps=22 format=3 uid="uid://b0kr4uhvdhmq3"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_ui/level_ui.gd" id="1_mmiwi"]
 [ext_resource type="Texture2D" uid="uid://iucmlitjenwl" path="res://assets/base_game/cards/game_card/art/stats/energy.png" id="2_bww7p"]
 [ext_resource type="Theme" uid="uid://bhyiyheobours" path="res://scenes/screens/level_ui/panel_theme.tres" id="2_pmg4n"]
-[ext_resource type="PackedScene" uid="uid://bj3h1ak5dv73n" path="res://scenes/ui_general/op_button/op_button.tscn" id="3_1rebl"]
 [ext_resource type="LabelSettings" uid="uid://b3fuc4s50fgra" path="res://assets/UI/roboto/roboto64.tres" id="3_7ly33"]
 [ext_resource type="LabelSettings" uid="uid://x63q2nfy4si3" path="res://assets/UI/sixty_four/sixty_four_medium.tres" id="4_urhhi"]
 [ext_resource type="Texture2D" uid="uid://burfnpstfolbo" path="res://scenes/screens/level_ui/change_phase/change_phase.png" id="7_vn3bx"]
@@ -183,26 +182,45 @@ offset_bottom = -7.30499
 [node name="Buttons" type="Control" parent="StatusBox/SortMenu"]
 layout_mode = 2
 size_flags_vertical = 3
+theme = ExtResource("13_v5lxp")
 
-[node name="TeamButton" parent="StatusBox/SortMenu/Buttons" instance=ExtResource("3_1rebl")]
-unique_name_in_owner = true
-layout_mode = 2
-offset_right = 355.0
-offset_bottom = 64.0
-size_flags_vertical = 3
-options = PackedStringArray("Ally", "Enemy", "Both")
-default = 2
-label_text = "Team"
+[node name="TeamContainer" type="HBoxContainer" parent="StatusBox/SortMenu/Buttons"]
+layout_mode = 0
+offset_right = 382.0
+offset_bottom = 63.0
+theme_override_constants/separation = 20
 
-[node name="VisionButton" parent="StatusBox/SortMenu/Buttons" instance=ExtResource("3_1rebl")]
-unique_name_in_owner = true
+[node name="TeamButtonAlly" type="Button" parent="StatusBox/SortMenu/Buttons/TeamContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+text = "Ally"
+
+[node name="TeamButtonEnemy" type="Button" parent="StatusBox/SortMenu/Buttons/TeamContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Enemy"
+
+[node name="TeamButtonBoth" type="Button" parent="StatusBox/SortMenu/Buttons/TeamContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Both"
+
+[node name="VisionContainer" type="HBoxContainer" parent="StatusBox/SortMenu/Buttons"]
+layout_mode = 0
 offset_top = 72.0
-offset_right = 355.0
-offset_bottom = 136.0
-size_flags_vertical = 3
-options = PackedStringArray("Vision", "Everyone")
-label_text = "Show for"
+offset_right = 382.0
+offset_bottom = 135.0
+theme_override_constants/separation = 20
+
+[node name="VisionButtonVision" type="Button" parent="StatusBox/SortMenu/Buttons/VisionContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Vision"
+
+[node name="VisionButtonEveryone" type="Button" parent="StatusBox/SortMenu/Buttons/VisionContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Everyone"
 
 [node name="StatusClipper" type="ScrollContainer" parent="StatusBox/SortMenu"]
 custom_minimum_size = Vector2(0, 696)
@@ -507,43 +525,46 @@ mouse_filter = 2
 theme_override_constants/separation = 40
 alignment = 2
 
-[node name="LabelBackground" type="PanelContainer" parent="AbilityMode"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_left = 948.0
-offset_top = -17.0
-offset_right = -961.0
-offset_bottom = 130.0
-grow_horizontal = 2
-mouse_filter = 1
-theme = ExtResource("2_pmg4n")
-
-[node name="AbilityLabel" type="Label" parent="AbilityMode/LabelBackground"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 1
-label_settings = SubResource("LabelSettings_el0xh")
-horizontal_alignment = 1
-
-[node name="UnitNameLabel" type="Label" parent="AbilityMode/LabelBackground"]
-unique_name_in_owner = true
-layout_mode = 2
-label_settings = SubResource("LabelSettings_ig1jx")
-horizontal_alignment = 1
-
 [node name="AbilityDescription" type="RichTextLabel" parent="AbilityMode"]
 unique_name_in_owner = true
-layout_mode = 0
-offset_left = 666.0
-offset_top = 156.0
-offset_right = 1242.0
-offset_bottom = 324.0
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -556.5
+offset_top = 125.0
+offset_right = 556.5
+offset_bottom = 293.0
+grow_horizontal = 2
 theme = ExtResource("13_v5lxp")
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 12
 bbcode_enabled = true
+
+[node name="AbilityLabel" type="Label" parent="AbilityMode"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -594.0
+offset_top = -12.0
+offset_right = 594.0
+offset_bottom = 125.0
+grow_horizontal = 2
+size_flags_vertical = 1
+label_settings = SubResource("LabelSettings_el0xh")
+horizontal_alignment = 1
+
+[node name="UnitNameLabel" type="Label" parent="AbilityMode"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 366.0
+offset_top = -12.0
+offset_right = 1554.0
+offset_bottom = 125.0
+label_settings = SubResource("LabelSettings_ig1jx")
+horizontal_alignment = 1
 
 [node name="ChangePhaseManager" type="Control" parent="."]
 anchors_preset = 0
@@ -612,8 +633,11 @@ mouse_filter = 2
 
 [connection signal="mouse_entered" from="StatusBox" to="." method="on_is_mouse_in_ui" binds= [true]]
 [connection signal="mouse_exited" from="StatusBox" to="." method="on_is_mouse_in_ui" binds= [false]]
-[connection signal="item_selected" from="StatusBox/SortMenu/Buttons/TeamButton" to="." method="_on_team_button_item_selected"]
-[connection signal="item_selected" from="StatusBox/SortMenu/Buttons/VisionButton" to="." method="on_vision_selected"]
+[connection signal="pressed" from="StatusBox/SortMenu/Buttons/TeamContainer/TeamButtonAlly" to="." method="_on_team_button_item_selected" binds= [0]]
+[connection signal="pressed" from="StatusBox/SortMenu/Buttons/TeamContainer/TeamButtonEnemy" to="." method="_on_team_button_item_selected" binds= [1]]
+[connection signal="pressed" from="StatusBox/SortMenu/Buttons/TeamContainer/TeamButtonBoth" to="." method="_on_team_button_item_selected" binds= [2]]
+[connection signal="pressed" from="StatusBox/SortMenu/Buttons/VisionContainer/VisionButtonVision" to="." method="on_vision_selected" binds= [0]]
+[connection signal="pressed" from="StatusBox/SortMenu/Buttons/VisionContainer/VisionButtonEveryone" to="." method="on_vision_selected" binds= [1]]
 [connection signal="mouse_entered" from="CornerRightMenu/GlobalCamera" to="." method="on_is_mouse_in_ui" binds= [true]]
 [connection signal="mouse_exited" from="CornerRightMenu/GlobalCamera" to="." method="on_is_mouse_in_ui" binds= [false]]
 [connection signal="pressed" from="CornerRightMenu/GlobalCamera/Button" to="." method="on_camera_mode_pressed"]
