@@ -55,7 +55,8 @@ func onUnitAwakenedProcess(Unit: UnitGD, Tile: TileGD) -> void:
 	Combat.onRecalculateTargetAbilities()
 	await get_tree().process_frame
 	Unit.occupy_tile(Tile)
-
+	Combat.onCanBeAttackedAtFullSpeed(Unit)
+	
 func onMassUnitsAwakened(tiles: Array, enemy_ids: Array) -> void:
 	var units: Array = []
 	for i in range(tiles.size()):

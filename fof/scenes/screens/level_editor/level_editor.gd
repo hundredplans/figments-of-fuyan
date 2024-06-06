@@ -1957,7 +1957,7 @@ func onBakeLevelPressed():
 			print(str(i) + "/" + str(s))
 		
 		tiles = tiles.filter(func(x: TileGD): return x != null)
-		for Tile in tiles: onSortTileCollisions(Tile, tiles, level_info.area.id)
+		for Tile in tiles: onSortTileCollisions(Tile, tiles, level_info.area.id); onCreateUnitHeight(Tile, tiles)
 		
 		var positions: Array = tiles.map(func(x: TileGD): return x.onTTpos())
 		for Tile in tiles:
@@ -1972,6 +1972,15 @@ func onBakeLevelPressed():
 		get_parent().visible = true
 	else:
 		AudioMaster.play_sfx("UnconfirmDefault")
+
+func onCreateUnitHeight(Tile: TileGD, tiles: Array) -> void:
+	var unit_height: float = Tile.getLocalHeight()
+	for w in range(Tile.w, Tile.w + 6):
+		pass
+	#for _Tile in tiles:
+		#if Tile.tpos == _Tile.tpos and _Tile.w > Tile.w and Tile != _Tile:
+			#if Tile.solid_status == 1 or Tile.tile.id != 0:
+				#unit_height += 1.2
 
 func onSortTileCollisions(Tile: TileGD, tiles: Array, area: int) -> void:
 	for obj_name in TILE_OBJECT_NAMES:

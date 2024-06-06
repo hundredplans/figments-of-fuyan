@@ -113,6 +113,13 @@ func onCreateCocusPocus(Unit: UnitGD, _Unit: UnitGD) -> void:
 		CocusPocus.setVisible()
 	else: previous_cocus[0].cocus_count += 1; CocusPocus.units.append(_Unit)
 
+func onFindVFX(Unit: UnitGD, type: String) -> Array:
+	return Unit.UnitVFX.get_children().filter(func(x: Node3D): return x.type == type)
+
+func onVisibleCocusPocus(Unit: UnitGD) -> void:
+	for child in onFindVFX(Unit, "CocusPocus"):
+		child.setVisible()
+
 func onRemoveCocusPocus(Unit: UnitGD, _Unit: UnitGD) -> void:
 	for child in Unit.UnitVFX.get_children():
 		if child.type == "CocusPocus":

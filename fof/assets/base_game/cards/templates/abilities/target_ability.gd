@@ -18,3 +18,7 @@ var tiles: Dictionary
 func setInfo(_Unit: UnitGD = null, _Tile: TileGD = null) -> void:
 	Unit = _Unit
 	Tile = _Tile
+
+func onAffectedUnits() -> Array:
+	return tiles["affect"].map(func(x: TileGD): return Units.unit_by_tile(x))
+	

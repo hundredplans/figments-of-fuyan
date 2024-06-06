@@ -17,3 +17,14 @@ func onTargetAbility() -> void:
 	if is_visible: Unit.Model.on_play_animation("Ability")
 	Unit.Model._look_at(Tile)
 	charges -= 1
+
+func onTargetAbilityConditionAI() -> TileGD:
+	var affected_units: Array = onAffectedUnits().filter(func(x: UnitGD): return x.turn_status == "TurnUnused" and x.team == Unit.team)
+	var affectable_units: Array = []
+	for _Unit in affected_units:
+		if _Unit.isHealable():
+			var units: Array = Combat.onFindEnemiesInMovementPaths(_Unit)
+			units = units.filter(func(x: UnitGD): return Combat.onCalculateDamage(x, Unit.attack) <= x.health)
+			if units.size() > 0: affectable_units.append(_Unit)
+	if affectable_units.size() > 0: return affectable_units[randi() % affectable_units.size()].Tile
+	return null

@@ -66,7 +66,6 @@ func onUnitAwakened(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	max_speed = base_card.speed
 	
 	max_health = base_card.health
-	rarity = base_card.rarity
 	height = {
 		"top": base_card.top,
 		"eye": base_card.eye,

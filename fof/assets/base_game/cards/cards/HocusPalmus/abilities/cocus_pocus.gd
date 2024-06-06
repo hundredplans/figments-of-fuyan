@@ -42,6 +42,7 @@ func onCocusPocus(_Unit: UnitGD) -> void:
 func onCocusPocusInitialFinished(_Unit: UnitGD) -> void:
 	var _tiles: Array = onFindSpawnTiles()
 	await Combat.onTeleport(_Unit, _tiles[randi() % _tiles.size()])
+	VFX.onVisibleCocusPocus(_Unit)
 	if _Unit.team == 1 and _Unit.Tile in Vision.getTeamVision(): SpectateCamera.onSpectate(_Unit)
 	VFX.onDownscaleCocusPocus(_Unit, SCALE_FINAL_DURATION, onCocusPocusFinished.bind(_Unit))
 	
@@ -50,7 +51,6 @@ func onCocusPocusFinished(_Unit: UnitGD) -> void:
 	change_camera = true
 
 func onTargetAbilityConditionAI() -> TileGD:
-	#if tiles["affect"].size() > 0: return tiles["affect"][0]
 	if tiles["affect"].size() > 0:
 		var _Unit: UnitGD = Units.unit_by_tile(tiles["affect"][0])
 		if _Unit.turn_status == "TurnUsed" and Combat.onCanBeAttackedAtFullSpeed(_Unit):

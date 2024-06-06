@@ -52,10 +52,12 @@ func onProcessUnitVision(Unit: UnitGD, unit_vision: Dictionary, old_ally_vision:
 				_Unit.visible_tiles.erase(Unit.Tile)
 				Unit.visible_tiles.erase(_Unit.Tile)
 func onApplyGreyscale() -> void:
+	var dev := preload("res://static/dev/dev.tres")
 	var ally_vision: Array = getTeamVision()
-	for Tile in Tiles.get_children():
-		if Tile in ally_vision: Tiles.on_remove_tile_material(Tile, "Greyscale")
-		else: Tiles.on_set_tile_material(Tile, "Greyscale")
+	if !dev.perma_vision:
+		for Tile in Tiles.get_children():
+			if Tile in ally_vision: Tiles.on_remove_tile_material(Tile, "Greyscale")
+			else: Tiles.on_set_tile_material(Tile, "Greyscale")
 	for Unit in Units.on_units(TeamRelationGD.new(1)): Unit.Model.setVisible(Unit.Tile in ally_vision)
 func onApplyVisionModeGreyscale(Unit: UnitGD) -> void:
 	if Unit != null:

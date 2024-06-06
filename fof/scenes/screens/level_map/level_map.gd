@@ -53,6 +53,7 @@ func on_load_default_world_state() -> void:
 	on_change_game_phase("StartPhase")
 				
 func on_change_game_phase(phase: String) -> void:
+	var dev := preload("res://static/dev/dev.tres")
 	game_phase = phase
 	match phase:
 		"StartPhase":
@@ -64,9 +65,16 @@ func on_change_game_phase(phase: String) -> void:
 			Units.on_start_phase_start()
 			LevelUI.onStartPhaseStart()
 			VFX.onStartPhaseStart()
+			if dev.god_start:
+				on_change_game_phase("AfterStartPhase")
 		"AfterStartPhase":
 			LevelUI.onAfterStartPhaseStart()
 			Deck.on_after_start_phase_start()
+			if dev.god_start:
+				var Unit: UnitGD = await Units.onUnitAwakened(1, 0, [], 0, 0, Tiles.onSpawnTiles()[0])
+				Unit.stats("health", 50)
+				Unit.stats("attack", 50)
+				Unit.stats("speed", 5)
 		"HandPhase":
 			setActionLock("HandRegular")
 			LevelUI.onHandPhaseStart()
@@ -77,6 +85,7 @@ func on_change_game_phase(phase: String) -> void:
 			var skip_hand_phase: bool = on_skip_hand_phase_result()
 			if play_ui: LevelUI.on_hand_phase_start(skip_hand_phase)
 			if skip_hand_phase: on_advance_game_phase()
+			if dev.god_start: on_advance_game_phase()
 		"PlayerPhase":
 			setActionLock()
 			GameEffects.onPlayerPhaseStart()
@@ -114,16 +123,18 @@ func on_advance_game_phase() -> void:
 		"BOTPhase": on_change_game_phase("PlayerStartTurnPhase")
 		"PlayerStartTurnPhase": on_change_game_phase("HandPhase")
 
-var action_lock: String
+var action_lock: String = ""
 func setActionLock(x: String = "") -> void:
-	if (x == "UnitActionDisabled" and action_lock == "UnitActionRegular"):
-		if Units.unit_actions.is_empty():
-			x = ""
+	var dev := preload("res://static/dev/dev.tres")
+	if !dev.remove_action_lock:
+		if (x == "UnitActionDisabled" and action_lock == "UnitActionRegular"):
+			if Units.unit_actions.is_empty():
+				x = ""
+				action_lock = x
+				action_lock_changed.emit(x)
+		elif x != "UnitActionDisabled":
 			action_lock = x
 			action_lock_changed.emit(x)
-	elif x != "UnitActionDisabled":
-		action_lock = x
-		action_lock_changed.emit(x)
 
 func on_skip_hand_phase_result(Tile: TileGD = null) -> bool:
 	if game_phase == "HandPhase":

@@ -28,6 +28,7 @@ func _on_command_line_text_submitted(command: String):
 	CommandLine.release_focus()
 	onProcessCommand(command)
 	PastCommandsLabel.text += command + "\n"
+	last_commands.append([command])
 
 func onProcessCommand(command: String) -> void:
 	call("on" + command.get_slice(" ", 0).capitalize() + "Unit")
@@ -55,8 +56,12 @@ func onStatUnit() -> void:
 func onSelectTile(sig: Signal) -> void:
 	visible = false
 	LevelUI.onSelectTileConsoleMode(sig)
+	active_sig = sig
 	
-func onTileSelected(_Tile: TileGD) -> void:
+var active_sig: Signal
+var last_commands: Array = []
+func onTileSelected(Tile: TileGD) -> void:
+	last_commands[last_commands.size() - 1].append(Tile.onTTpos())
 	LevelUI.onSelectTileFinish()
 	
 func onSpawnTileSet(Tile: TileGD) -> void:
@@ -98,3 +103,17 @@ func onFatigueSet(Tile: TileGD):
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
 	PlayerManager.passed_turns.erase(Unit)
 	PlayerManager.on_select_active_unit(Unit)
+
+
+func _on_copy_button_pressed():
+	var commands := preload("res://static/dev/commands.tres")
+	commands.last_commands = last_commands
+	ResourceSaver.save(commands)
+
+
+func _on_paste_button_pressed():
+	var commands := preload("res://static/dev/commands.tres")
+	for command in commands.last_commands:
+		_on_command_line_text_submitted(command[0])
+		var Tile: TileGD = Tiles.position_to_tile(command[1])
+		active_sig.emit(Tile)

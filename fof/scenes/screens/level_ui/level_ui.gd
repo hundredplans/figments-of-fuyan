@@ -48,6 +48,7 @@ func _ready() -> void:
 	Vision = LevelMap.Vision
 	SpectateCamera = LevelMap.SpectateCamera
 	equip_sky.emit(GameState.area_info.id, false)
+	var dev := preload("res://static/dev/dev.tres")
 	setCornerRightVisibile(false)
 	LevelMap.SpectateCamera.mouse_in_ui.connect(on_camera_panning)
 	
@@ -58,6 +59,8 @@ func _ready() -> void:
 	
 @onready var CornerRightMenu = %CornerRightMenu
 func setCornerRightVisibile(state: bool) -> void:
+	var dev := preload("res://static/dev/dev.tres")
+	if dev.remove_action_lock: state = true
 	for child in CornerRightMenu.get_children(): child.visible = state
 
 func _queue_free(screen_name: String) -> void:
@@ -166,8 +169,10 @@ func onSpectateEnemyOrAlly(Unit: UnitGD) -> void:
 		SpectateCamera.onSpectate(Unit)
 
 func on_extend_hand_box() -> void:
-	if !is_hand_box_panel_moving and HandBox.position.y == HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION:
-		on_move_hand_box(HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION - HAND_BOX_PANEL_OFFSET)
+	var dev := preload("res://static/dev/dev.tres")
+	if !dev.god_start:
+		if !is_hand_box_panel_moving and HandBox.position.y == HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION:
+			on_move_hand_box(HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION - HAND_BOX_PANEL_OFFSET)
 	
 func on_unextend_hand_box() -> void:
 	if !is_hand_box_panel_moving and !hand_box_pinned and HandBox.position.y == HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION - HAND_BOX_PANEL_OFFSET:

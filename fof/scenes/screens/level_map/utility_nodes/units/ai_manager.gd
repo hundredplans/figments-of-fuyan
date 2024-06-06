@@ -50,14 +50,62 @@ func onAfterTargetAbility(Unit: UnitGD, Tile: TileGD) -> void:
 	if !Unit.is_dead:
 		Units.setUnitStatus(Unit, "TurnActive")
 		Tiles.onCreateMovementPaths(Unit)
-		var old_paths: Dictionary = Tiles.movement_paths.duplicate()
-		var visible_enemies: Array = Unit.getVisibleEnemies()
+		onBeginUnitMovement(Unit)
+	else: Units.onAIMoveFinisher(Unit, [{"vis_path": "Regular" if (Tile in Vision.getTeamVision()) else "Invisible"}])
 		
-		if visible_enemies.is_empty(): onChooseRandomMovementPath(Unit)
-		else: onChaseEnemy(Unit, visible_enemies, old_paths)
-	else:
-		Units.onAIMoveFinisher(Unit, [{"vis_path": "Regular" if (Tile in Vision.getTeamVision()) else "Invisible"}])
+enum MoveStates {
+	NULL,
+	RANDOM,
+	EXPLORE,
+	RUN_AT,
+	RUN_AWAY,
+	TEAMWORK
+}
 
+var mstate: int = MoveStates.NULL
+func onBeginUnitMovement(Unit: UnitGD) -> void:
+	mstate = MoveStates.NULL
+	var Tile: TileGD = Unit.Tile
+	var movements: int = 0
+	var in_enemy_vision: bool = !(Unit.getVisibleEnemies().is_empty())
+	var tiles: Array = [] # Create movement path out of these tiles?
+	while(movements <= Unit.max_speed and onUseNextMovementSpeed(movements)):
+		if in_enemy_vision or !(Unit.getVisibleEnemies().is_empty()):
+			in_enemy_vision = true
+			# Implement this later for now focus out of vision
+		else: # When movement is out of vision
+			var teamwork_adv_roll: bool = onTeamworkAdventureRoll(Unit)
+			if teamwork_adv_roll: onTeamworkMovement(Unit)
+			else:
+				var adventure_roll: bool = randf() <= (Unit.ai.aia / float(7))
+				if adventure_roll: onExploreMovement(Unit)
+				else: onRandomMovement(Unit)
+		movements += 1
+	Unit.Tile = Tile
+	
+func onTeamworkAdventureRoll(Unit: UnitGD) -> bool:
+	var total_ai_stats: int = pow(Unit.ai.ait, 2) + pow(Unit.ai.aia, 2)
+	var segment: float = 1 / total_ai_stats
+	return randf() <= segment * pow(Unit.ai.ait, 2)
+ 
+func onExploreMovement(Unit: UnitGD) -> void:
+	mstate = MoveStates.EXPLORE
+	# Finds the direction of the most unoccupied (non solid tiles) in vision range that are out of vision and goes there
+	Combat.onCalculateMovementPathSpeed(Unit, 1)
+	
+func onRandomMovement(Unit: UnitGD) -> void:
+	mstate = MoveStates.RANDOM
+
+func onTeamworkMovement(Unit: UnitGD) -> void:
+	mstate = MoveStates.TEAMWORK
+
+func onUseNextMovementSpeed(movements: int) -> bool:
+	match mstate:
+		MoveStates.NULL, MoveStates.EXPLORE, MoveStates.RUN_AWAY: return true
+		MoveStates.RANDOM: return randf() < 1 - (movements * 0.1)
+		MoveStates.TEAMWORK: return true # Has to decide if it's close enough
+		MoveStates.RUN_AT: return true # Has to decide if unit is attackable
+		_: return false
 func onUseTargetAbilities(Unit: UnitGD) -> bool:
 	var wait: bool = false
 	for ability in Unit.abilities:

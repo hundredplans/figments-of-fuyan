@@ -166,6 +166,9 @@ func onDMG(Damagee: UnitGD, AppliedBy: AppliedByGD, damage: int) -> DMGInfoGD:
 		return DMGInfo
 	return null
 
+func onCalculateDamage(Unit: UnitGD, damage: int) -> int:
+	return onArmor(Unit, damage)
+
 func onArmor(Unit: UnitGD, damage: int) -> int:
 	var abilities: Array = onFindAbilities(Unit, "Armor")
 	for ability in abilities:
@@ -301,11 +304,28 @@ func onTeleport(Unit: UnitGD, Tile: TileGD) -> void:
 
 func onCanBeAttackedAtFullSpeed(Unit: UnitGD) -> bool:
 	for _Unit in Unit.getVisibleEnemies():
-		var preserve_speed: int = _Unit.speed
-		_Unit.speed = _Unit.max_speed
-		Tiles.onCreateMovementPaths(_Unit)
-		_Unit.speed = preserve_speed
-		print(Tiles.movement_paths)
-		#if Tiles.movement_paths:
-			#pass
-	return true
+		onCalculateMovementPathSpeed(_Unit, _Unit.max_speed)
+		for key in Tiles.movement_paths.keys().filter(func(x: Variant): return x is TileGD):
+			for i in range(Tiles.movement_paths[key].size):
+				if Tiles.movement_paths[key].types[i].x == 1 and Units.unit_by_tile_team_bool(Tiles.movement_paths[key].tiles[i], abs(_Unit.team - 1)):
+					return true
+	return false
+	
+func onCalculateMovementPathSpeed(Unit: UnitGD, speed: int = -1) -> void:
+	var old_speed: int = Unit.speed
+	if speed != -1: Unit.speed = speed
+	Tiles.onCreateMovementPaths(Unit)
+	
+func onFindEnemiesInMovementPaths(Unit: UnitGD, speed: int = -1) -> Array:
+	onCalculateMovementPathSpeed(Unit, speed)
+	var units: Array = []
+	for key in Tiles.movement_paths.keys().filter(func(x: Variant): return x is TileGD):
+		for i in range(Tiles.movement_paths[key].size):
+			if Tiles.movement_paths[key].types[i].x == 1:
+				var Tile: TileGD = Tiles.movement_paths[key].tiles[i]
+				var EnemyUnit: UnitGD = Units.unit_by_tile(Tile)
+				if EnemyUnit.team != Unit.team and Tile in Unit.visible_tiles:
+					units.append(EnemyUnit)
+	return units
+	
+	

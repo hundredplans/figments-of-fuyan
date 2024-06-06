@@ -65,17 +65,38 @@ offset_bottom = 376.0
 theme = ExtResource("3_32lgd")
 vertical_alignment = 1
 
+[node name="VBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 551.5
+offset_top = 284.0
+offset_right = 737.5
+offset_bottom = 324.0
+
+[node name="CopyButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Copy"
+
+[node name="PasteButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Paste"
+
 [connection signal="damage_set" from="." to="." method="onTileSelected"]
 [connection signal="damage_set" from="." to="." method="onDamageSet"]
 [connection signal="fatigue_set" from="." to="." method="onTileSelected"]
 [connection signal="fatigue_set" from="." to="." method="onFatigueSet"]
 [connection signal="heal_set" from="." to="." method="onTileSelected"]
 [connection signal="heal_set" from="." to="." method="onHealSet"]
-[connection signal="spawn_set" from="." to="." method="onTileSelected"]
 [connection signal="spawn_set" from="." to="." method="onSpawnTileSet"]
-[connection signal="stagger_set" from="." to="." method="onTileSelected"]
+[connection signal="spawn_set" from="." to="." method="onTileSelected"]
 [connection signal="stagger_set" from="." to="." method="onStaggerSet"]
+[connection signal="stagger_set" from="." to="." method="onTileSelected"]
 [connection signal="stat_set" from="." to="." method="onTileSelected"]
 [connection signal="stat_set" from="." to="." method="onStatSet"]
 [connection signal="text_changed" from="Container/CommandLine" to="." method="_on_command_line_text_changed"]
 [connection signal="text_submitted" from="Container/CommandLine" to="." method="_on_command_line_text_submitted"]
+[connection signal="pressed" from="VBoxContainer/CopyButton" to="." method="_on_copy_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/PasteButton" to="." method="_on_paste_button_pressed"]
