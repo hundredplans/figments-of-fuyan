@@ -1,0 +1,55 @@
+[gd_scene load_steps=6 format=3 uid="uid://djrfqf5gbs71b"]
+
+[ext_resource type="PackedScene" uid="uid://bj1yaairxxaqs" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/ability_effects/helpful_helmet/helpfulhelmet.glb" id="1_phxhi"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/ability_effects/helpful_helmet/helpfulhelmet.gd" id="2_jehdp"]
+
+[sub_resource type="Animation" id="Animation_sr4oe"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation:z")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_3yurx"]
+resource_name = "TiltHelmet"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation:z")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0.0872665, -0.25, 0, 0.25, 0, -0.0872665, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1rbxp"]
+_data = {
+"RESET": SubResource("Animation_sr4oe"),
+"TiltHelmet": SubResource("Animation_3yurx")
+}
+
+[node name="helpfulhelmet" instance=ExtResource("1_phxhi")]
+script = ExtResource("2_jehdp")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.175397, 0)
+light_color = Color(0.521569, 0.372549, 0, 1)
+light_energy = 2.0
+omni_range = 1.0
+omni_attenuation = 2.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="2"]
+libraries = {
+"": SubResource("AnimationLibrary_1rbxp")
+}

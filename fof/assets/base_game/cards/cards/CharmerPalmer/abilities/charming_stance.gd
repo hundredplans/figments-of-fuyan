@@ -20,6 +20,7 @@ func onTargetAbility() -> void:
 	if is_visible: Unit.Model.on_play_animation("Ability")
 	charges -= 1
 
+@export var SINGLE_HEAL_ODDS: float = 0.1
 @export var GUARANTEE_HEAL: int = 2
 func onTargetAbilityConditionAI() -> TileGD:
 	var healable_units: Array = []
@@ -28,6 +29,6 @@ func onTargetAbilityConditionAI() -> TileGD:
 		if _Unit.isHealable():
 			healable_units.append(_Unit)
 	
-	if healable_units.size() >= GUARANTEE_HEAL:
+	if healable_units.size() >= GUARANTEE_HEAL or (healable_units.size() == 1 and randf() < SINGLE_HEAL_ODDS):
 		return healable_units[randi() % healable_units.size()].Tile
 	return null

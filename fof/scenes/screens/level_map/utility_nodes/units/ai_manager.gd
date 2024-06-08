@@ -37,8 +37,16 @@ func onBeginMoveAIUnits() -> void:
 func onMoveNextAIUnit() -> void:
 	if active_movement_order.size() > 0:
 		var Unit: UnitGD = active_movement_order.pop_front()
-		var wait: bool = onUseTargetAbilities(Unit)
-		if !wait: onAfterTargetAbility(Unit, Unit.Tile)
+		
+		Units.setUnitStatus(Unit, "TurnActive")
+		Tiles.onCreateMovementPaths(Unit)
+		var old_paths: Dictionary = Tiles.movement_paths.duplicate()
+		var visible_enemies: Array = Unit.getVisibleEnemies()
+		
+		if visible_enemies.is_empty(): onChooseRandomMovementPath(Unit)
+		else: onChaseEnemy(Unit, visible_enemies, old_paths)
+		#var wait: bool = onUseTargetAbilities(Unit)
+		#if !wait: onAfterTargetAbility(Unit, Unit.Tile)
 	else:
 		if invisible_movement_tracker.all(func(x: bool): return x):
 			await get_tree().create_timer(Units.AFTER_MOVEMENT_DELAY).timeout
@@ -190,6 +198,7 @@ func onChosenPathVisPath(chosen_path: Dictionary, Unit: UnitGD, vision_path: Arr
 			Vision.onProcessUnitVision(Unit, vision_info.unit_vision, [], false)
 			vision_path.append(vision_info)
 	
+	for key in vision_path: print(key.unit_vision)
 	for info in visions:
 		info[0].visible_tiles = info[1]
 	

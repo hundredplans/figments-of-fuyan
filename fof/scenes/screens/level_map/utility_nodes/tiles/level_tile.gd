@@ -20,7 +20,10 @@ var top_of_cliff_wall: Array
 @export var w: int
 @export var tpos: Vector3
 @export var unit_height: float
+@export var fneighbours: Array
+@export var id: int
 
+var Unit: UnitGD
 var Tiles: TilesGD
 
 func onTTpos(_w: int = w) -> Vector4:
@@ -41,10 +44,6 @@ func setMaterial(mat: Material, btab: int = -1) -> void:
 func setOutline(mat: Material) -> void:
 	if !types[0].model == null:
 		types[0].model.mesh.set_surface_override_material(1, mat)
-
-func getLocalHeight() -> float:
-	if tile.type in [1, 2]: return 0.6
-	return 0
 	
 func getTrueHeight() -> float:
-	return 0.3 + (w * 1.2) + getLocalHeight()
+	return 0.3 + (w * 1.2) + (0.6 if tile.type in [1, 2] else 0.0)

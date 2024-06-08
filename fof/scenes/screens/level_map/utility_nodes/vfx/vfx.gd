@@ -9,6 +9,7 @@ var Vision: VisionGD
 
 func onStartPhaseStart() -> void:
 	onGenerateSpawnParticles()
+	onCreateUnitVFXKeeper()
 
 func onGenerateSpawnParticles() -> void:
 	for SpawnParticle in SpawnParticles.get_children(): SpawnParticle.queue_free()
@@ -61,57 +62,40 @@ func onCreateStatParticle(stat: int, type: String, Tile: TileGD, y_offset: float
 	StatParticle.position = Tiles.getUnitPositionOnTile(Tile)
 	StatParticle.position.y += y_offset
 
-func onCreateAbilityActiveParticle(Unit: UnitGD) -> void:
-	var AbilityActiveParticle: GPUParticles3D = preload("res://scenes/screens/level_map/utility_nodes/vfx/ability_active/ability_active_particle.tscn").instantiate()
-	Unit.UnitVFX.add_child(AbilityActiveParticle)
-	AbilityActiveParticle.type = "AbilityActive"
+var unit_vfx_keeper: Dictionary = {}
+func onCreateUnitVFXKeeper() -> void:
+	const DIR_PATH: String = "res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/unit_vfx/"
+	for file in Array(DirAccess.get_files_at(DIR_PATH))\
+	.filter(func(x: String): return x.ends_with(".tres")):
+		var vfx_gd: UnitVFXGD = load(DIR_PATH + file)
+		unit_vfx_keeper[vfx_gd.name] = vfx_gd
 
-func onRemoveAbilityActiveParticle(Unit: UnitGD) -> void:
-	if Unit != null:
-		for child in Unit.UnitVFX.get_children():
-			if child.type == "AbilityActive":
-				child.queue_free()
-
-func onCreateStaggerVFX(Unit: UnitGD) -> void:
-	var StaggerVFX: Node3D = preload("res://scenes/screens/level_map/utility_nodes/vfx/status_effects/stagger/stagger_status_effect.tscn").instantiate()
-	Unit.UnitVFX.add_child(StaggerVFX)
-	StaggerVFX.type = "Stagger"
-	StaggerVFX.position.y = Unit.height.stat + 0.1
+func onCreateUnitVFX(Unit: UnitGD, type: String, set_info_args: Array = []) -> Node3D:
+	var vfx_gd: UnitVFXGD = unit_vfx_keeper[type]
+	var unit_vfx: Node3D = vfx_gd.model.instantiate()
 	
-func onRemoveStaggerVFX(Unit: UnitGD) -> void:
-	for child in Unit.UnitVFX.get_children():
-		if child.type == "Stagger":
-			child.queue_free()
-
-func onCreateDazeVFX(Unit: UnitGD) -> void:
-	var DazeVFX: Node3D = preload("res://scenes/screens/level_map/utility_nodes/vfx/status_effects/daze/daze_status_effect.tscn").instantiate()
-	Unit.UnitVFX.add_child(DazeVFX)
-	DazeVFX.type = "Daze"
-	DazeVFX.position.y = Unit.height.stat + 0.1
+	if vfx_gd.is_height_absolute: unit_vfx.position.y = vfx_gd.height
+	else: unit_vfx.position.y = Unit.height.stat + vfx_gd.height
+	unit_vfx.type = vfx_gd.name
 	
-func onRemoveDazeVFX(Unit: UnitGD) -> void:
-	for child in Unit.UnitVFX.get_children():
-		if child.type == "Daze":
-			child.queue_free()
-
-func onCreateHelpfulHelmet(Unit: UnitGD) -> void:
-	var HelpfulHelmet: Node3D = preload("res://scenes/screens/level_map/utility_nodes/vfx/ability_effects/helpful_helmet/helpfulhelmet.tscn").instantiate()
-	Unit.UnitVFX.add_child(HelpfulHelmet)
-	HelpfulHelmet.type = "HelpfulHelmet"
-	HelpfulHelmet.position.y = Unit.height.stat + 0.1
+	Unit.UnitVFX.add_child(unit_vfx)
+	if set_info_args.size() > 0 and unit_vfx.has_method("setInfo"):
+		unit_vfx.callv("setInfo", set_info_args)
+	return unit_vfx
+	
+func onUnitVFXExists(Unit: UnitGD, type: String):
+	return Unit.UnitVFX.get_children().any(func(x: Node3D): return type == x.type)
+	
+func onRemoveUnitVFX(Unit: UnitGD, type: String) -> void:
+	for child in Unit.UnitVFX.get_children().filter(func(x: Node3D): return x.type == type): child.queue_free()
 
 func onCreateCocusPocus(Unit: UnitGD, _Unit: UnitGD) -> void:
-	var CocusPocus: Node3D = preload("res://scenes/screens/level_map/utility_nodes/vfx/ability_effects/cocus_pocus/cocus_pocus.tscn").instantiate()
-	var previous_cocus: Array = Unit.UnitVFX.get_children().filter(func(x: Node3D): return x.type == "CocusPocus")
+	var previous_cocus: Array = onUnitVFXExists(Unit, "CocusPocus")
 	if previous_cocus.size() == 0:
-		Unit.UnitVFX.add_child(CocusPocus)
-		CocusPocus.Vision = Vision
-		CocusPocus.type = "CocusPocus"
-		CocusPocus.units.append(_Unit)
-		CocusPocus.position.y = Unit.height.stat + 0.85
-		CocusPocus.cocus_count = 1
-		CocusPocus.setVisible()
-	else: previous_cocus[0].cocus_count += 1; CocusPocus.units.append(_Unit)
+		onCreateUnitVFX(Unit, "CocusPocus", [Vision, _Unit])
+	else:
+		previous_cocus[0].cocus_count += 1
+		previous_cocus[0].units.append(_Unit)
 
 func onFindVFX(Unit: UnitGD, type: String) -> Array:
 	return Unit.UnitVFX.get_children().filter(func(x: Node3D): return x.type == type)
@@ -121,12 +105,11 @@ func onVisibleCocusPocus(Unit: UnitGD) -> void:
 		child.setVisible()
 
 func onRemoveCocusPocus(Unit: UnitGD, _Unit: UnitGD) -> void:
-	for child in Unit.UnitVFX.get_children():
-		if child.type == "CocusPocus":
-			child.cocus_count -= 1
-			child.units.append(_Unit)
-			if child.cocus_count == 0: child.queue_free()
-			else: child.setVisible()
+	for child in onFindVFX(Unit, "CocusPocus"):
+		child.cocus_count -= 1
+		child.units.append(_Unit)
+		if child.cocus_count == 0: child.queue_free()
+		else: child.setVisible()
 
 func onUpscaleCocusPocus(Unit: UnitGD, upscale: Vector3, duration: float, unit_size: float, delay_duration: float, callable: Callable) -> void:
 	for child in Unit.UnitVFX.get_children():

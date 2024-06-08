@@ -11,6 +11,8 @@ var Tiles: TilesGD
 var Vision: VisionGD
 var SpectateCamera: Node3D
 var Units: UnitsGD
+var Hand: HandGD
+var Deck: DeckGD
 var PlayerManager: PlayerManagerGD
 
 @onready var EnemySpottedArrows: Control = %EnemySpottedArrows
@@ -282,12 +284,6 @@ func onVisionModeSet() -> void:
 func onStartPhaseStart() -> void:
 	ChangePhase.visible = false
 	PhaseIcon.visible = false
-	
-	Console.Units = Units
-	Console.LevelUI = self
-	Console.Tiles = Tiles
-	Console.Combat = Combat
-	Console.PlayerManager = PlayerManager
 	
 	UnitStatusOverlord.onStartPhaseStart()
 	GreyScale.modulate.a = greyscale_light

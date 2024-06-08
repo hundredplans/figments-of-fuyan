@@ -14,12 +14,12 @@ var PlayerManager: PlayerManagerGD
 var OriginalSpectateUnit: UnitGD
 var ability_chain: Array = []
 func onDeathAbilities(Deather: UnitGD, AppliedBy: AppliedByGD) -> void:
+	var units: Array = Deather.getVisibleUnits().filter(func(x: UnitGD): return x != Deather and x != AppliedBy.Applier)
 	onLastWill(Deather, AppliedBy)
 	if AppliedBy.Applier != null and AppliedBy.Applier is UnitGD: onRampage(AppliedBy.Applier, AppliedBy)
-	onOtherUnitDeathAbilities(Deather, AppliedBy)
+	onOtherUnitDeathAbilities(Deather, AppliedBy, units)
 	
-func onOtherUnitDeathAbilities(Deather: UnitGD, AppliedBy: AppliedByGD) -> void:
-	var units: Array = Deather.getVisibleUnits().filter(func(x: UnitGD): return x != Deather and x != AppliedBy.Applier)
+func onOtherUnitDeathAbilities(Deather: UnitGD, AppliedBy: AppliedByGD, units: Array) -> void:
 	units.sort_custom(Units.sortUnitsByDistance.bind(Deather))
 	units.sort_custom(func(x: UnitGD, _y: UnitGD): return x.team == Deather.team)
 	for Unit in units:
@@ -166,8 +166,8 @@ func onDMG(Damagee: UnitGD, AppliedBy: AppliedByGD, damage: int) -> DMGInfoGD:
 		return DMGInfo
 	return null
 
-func onCalculateDamage(Unit: UnitGD, damage: int) -> int:
-	return onArmor(Unit, damage)
+func onCalculateDamage(Damagee: UnitGD, Attacker: UnitGD) -> int:
+	return onArmor(Damagee, Attacker.attack + Attacker.extra_damage)
 
 func onArmor(Unit: UnitGD, damage: int) -> int:
 	var abilities: Array = onFindAbilities(Unit, "Armor")
@@ -209,21 +209,21 @@ func onRecalculateTargetAbilities() -> void:
 
 func onStagger(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	GameEffects.onAddGameFX(Unit, GameFXGD.STAGGER, {"AppliedBy": AppliedBy})
-	VFX.onCreateStaggerVFX(Unit)
+	VFX.onCreateUnitVFX(Unit, "Stagger")
 	LevelUI.UnitStatusOverlord.onAddUnitFX(Unit, "Stagger")
 	LevelUI.UnitStatusOverlord.onUpdateUnitTargetAbilities(Unit)
 
 func onRemoveStagger(GameFX: GameFXGD) -> void:
-	VFX.onRemoveStaggerVFX(GameFX.Unit)
+	VFX.onRemoveUnitVFX(GameFX.Unit, "Stagger")
 	LevelUI.UnitStatusOverlord.onRemoveUnitFX(GameFX.Unit, "Stagger")
 
 func onDaze(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	GameEffects.onAddGameFX(Unit, GameFXGD.DAZE, {"AppliedBy": AppliedBy})
-	VFX.onCreateDazeVFX(Unit)
+	VFX.onCreateUnitVFX(Unit, "Daze")
 	LevelUI.UnitStatusOverlord.onAddUnitFX(Unit, "Daze")
 	
 func onRemoveDaze(GameFX: GameFXGD) -> void:
-	VFX.onRemoveDazeVFX(GameFX.Unit)
+	VFX.onRemoveUnitVFX(GameFX.Unit, "Daze")
 	LevelUI.UnitStatusOverlord.onRemoveUnitFX(GameFX.Unit, "Daze")
 	
 func onStun(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
@@ -302,14 +302,25 @@ func onTeleport(Unit: UnitGD, Tile: TileGD) -> void:
 	if Unit.team == 1 and !(Unit.Tile in Vision.getTeamVision()):
 		SpectateCamera.invisible_unit_stop_track = true
 
-func onCanBeAttackedAtFullSpeed(Unit: UnitGD) -> bool:
+func onCanKillAtFullSpeed(Unit: UnitGD) -> bool:
+	onCalculateMovementPathSpeed(Unit, Unit.max_speed)
+	for _Unit in Unit.getVisibleEnemies():
+		if onFindTotalDamageFromMovement(_Unit, Unit) > _Unit.health: return true
+	return false
+
+func onCanBeKilledAtFullSpeed(Unit: UnitGD) -> bool:
+	var total_damage: int = 0
 	for _Unit in Unit.getVisibleEnemies():
 		onCalculateMovementPathSpeed(_Unit, _Unit.max_speed)
-		for key in Tiles.movement_paths.keys().filter(func(x: Variant): return x is TileGD):
-			for i in range(Tiles.movement_paths[key].size):
-				if Tiles.movement_paths[key].types[i].x == 1 and Units.unit_by_tile_team_bool(Tiles.movement_paths[key].tiles[i], abs(_Unit.team - 1)):
-					return true
-	return false
+		total_damage += onFindTotalDamageFromMovement(Unit, _Unit)
+	return total_damage >= Unit.health
+	
+func onFindTotalDamageFromMovement(Unit: UnitGD, _Unit: UnitGD) -> int:
+	for key in Tiles.movement_paths.keys().filter(func(x: Variant): return x is TileGD):
+		for i in range(Tiles.movement_paths[key].size):
+			if Tiles.movement_paths[key].types[i].x == 1:
+				return onCalculateDamage(Unit, _Unit)
+	return 0
 	
 func onCalculateMovementPathSpeed(Unit: UnitGD, speed: int = -1) -> void:
 	var old_speed: int = Unit.speed
@@ -327,5 +338,6 @@ func onFindEnemiesInMovementPaths(Unit: UnitGD, speed: int = -1) -> Array:
 				if EnemyUnit.team != Unit.team and Tile in Unit.visible_tiles:
 					units.append(EnemyUnit)
 	return units
-	
-	
+
+func isFallDamageLethal(Unit: UnitGD, fall_damage: int) -> bool:
+	return fall_damage >= Unit.health

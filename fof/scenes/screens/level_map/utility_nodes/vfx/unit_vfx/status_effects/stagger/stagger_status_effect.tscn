@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://p786qi6om8am"]
+
+[ext_resource type="PackedScene" uid="uid://51k4nu3ur0qq" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/status_effects/stagger/stagger_status_effect.glb" id="1_hbsii"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/status_effects/stagger/stagger_status_effect.gd" id="2_4qovp"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qvkdj"]
+shading_mode = 0
+albedo_color = Color(0.560784, 0.560784, 0.560784, 1)
+
+[node name="stagger_status_effect" instance=ExtResource("1_hbsii")]
+script = ExtResource("2_4qovp")
+
+[node name="Plane" parent="." index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_qvkdj")

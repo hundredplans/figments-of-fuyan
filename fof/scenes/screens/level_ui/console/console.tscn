@@ -1,0 +1,90 @@
+[gd_scene load_steps=5 format=3 uid="uid://db4iwvndfcy84"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_ui/console/console.gd" id="1_4ypeo"]
+[ext_resource type="Theme" uid="uid://bhyiyheobours" path="res://scenes/screens/level_ui/panel_theme.tres" id="2_oeirl"]
+[ext_resource type="LabelSettings" uid="uid://duy8g0fum2k06" path="res://assets/UI/roboto/roboto20_outline.tres" id="3_7b37v"]
+[ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="3_32lgd"]
+
+[node name="Console" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -369.5
+offset_top = -188.0
+offset_right = 369.5
+offset_bottom = 188.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_4ypeo")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_oeirl")
+
+[node name="Container" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Container"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PastCommandsLabel" type="Label" parent="Container/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+label_settings = ExtResource("3_7b37v")
+
+[node name="CommandLine" type="LineEdit" parent="Container"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("3_32lgd")
+
+[node name="PlaceholderLabel" type="Label" parent="."]
+unique_name_in_owner = true
+modulate = Color(0.501961, 0.501961, 0.501961, 1)
+layout_mode = 0
+offset_left = 4.0
+offset_top = 330.0
+offset_right = 741.0
+offset_bottom = 376.0
+theme = ExtResource("3_32lgd")
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 551.5
+offset_top = 284.0
+offset_right = 737.5
+offset_bottom = 324.0
+
+[node name="CopyButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Copy"
+
+[node name="PasteButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Paste"
+
+[connection signal="text_changed" from="Container/CommandLine" to="." method="_on_command_line_text_changed"]
+[connection signal="text_submitted" from="Container/CommandLine" to="." method="_on_command_line_text_submitted"]
+[connection signal="pressed" from="VBoxContainer/CopyButton" to="." method="_on_copy_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/PasteButton" to="." method="_on_paste_button_pressed"]

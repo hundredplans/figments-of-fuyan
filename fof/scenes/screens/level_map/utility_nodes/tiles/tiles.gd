@@ -256,6 +256,7 @@ func on_start_phase_start() -> void:
 	onConvertMultiTilePositions()
 	onCreateTopOfCliffWall()
 	onSetupTiles()
+	onSetFneighbourTiles()
 	
 func onCreateTopOfCliffWall() -> void:
 	for Tile in get_children():
@@ -318,6 +319,147 @@ func is_ramp_tile(Tile: TileGD) -> bool:
 
 func getUnitAdjustedHeight(Tile: TileGD) -> float:
 	return (Tile.w * 1.2) + (0.9 if is_ramp_tile(Tile) else 0.3)
+
+func getTileById(id: int, tiles: Array = get_children()) -> TileGD:
+	for Tile in tiles: if Tile.id == id: return Tile
+	return null
+			
+func onSetFneighbourTiles() -> void:
+	for Tile in get_children():
+		for fneighbour in Tile.fneighbours:
+			fneighbour.Tile = getTileById(fneighbour.id)
+			
+func onConnectPoints(Tile: TileGD, fneighbour: FneighbourGD, astar: AStar3D) -> void:
+	if !(fneighbour.is_solid or fneighbour.movement_type == FneighbourGD.UNPASSABLE):
+		astar.connect_points(Tile.id, fneighbour.Tile.id, false)
+			
+func _onCreateMovementPaths(Unit: UnitGD,  speed: int = -1) -> Array: # Returns array of movement paths
+	var f: float = Time.get_ticks_msec()
+	if speed == -1: speed = Unit.speed
+	var all_tiles: Dictionary = onCreateAllTiles(Unit, speed)
+	var astar: AStar3D = onCreateAStar(all_tiles.full_tiles)
+	var movement_paths: Array = onCreateOptimalPaths(Unit, all_tiles, astar)
+	print(movement_paths)
+	print(abs(f - Time.get_ticks_msec()))
+	print()
+	return movement_paths
+
+func onCreateAStar(full_tiles: Array) -> AStar3D:
+	var astar := AStar3D.new()
+	var unit_tiles: Array = Units.all_units().map(func(x: UnitGD): return x.Tile)
+	for Tile in full_tiles: astar.add_point(Tile.id, Tile.position)
+	for Tile in full_tiles:
+		for fneighbour in Tile.fneighbours:
+			fneighbour.Tile = getTileById(fneighbour.id)
+			onConnectPoints(Tile, fneighbour, astar)
+	return astar
+
+func onCreateOptimalPaths(Unit: UnitGD, all_tiles: Dictionary, astar: AStar3D) -> Array:
+	var movement_paths: Array = []
+	for Tile in all_tiles.full_tiles:
+		var movement_path := MovementPathGD.new(Unit.Tile)
+		var valid_path: bool = false
+		var reconnections: Array = [] # [[p1, p2], [p1, p2]]
+		while(!valid_path):
+			var fall_damages: Dictionary = {}
+			var tile_path: Array = Array(astar.get_id_path(Unit.Tile.id, Tile.id)).map(func(x: int): return getTileById(x))
+			if tile_path.size() <= 1: break
+			var fn_path: Array = onCreateFneighbourTilePath(Unit.Tile, tile_path)
+			valid_path = onFneighbourPathValid(Unit, fn_path, astar, fall_damages, reconnections, movement_path)
+		
+			if valid_path:
+				movement_path.DestinationTile = fn_path[fn_path.size() - 1].Tile
+				movement_path.fall_damages = fall_damages
+				movement_path.fneighbours = fn_path
+				movement_paths.append(movement_path)
+				
+		for points in reconnections: astar.connect_points(points[0], points[1], false)
+	return movement_paths
+
+func onFneighbourPathValid(Unit: UnitGD, fn_path: Array, astar: AStar3D, fall_damages: Dictionary, reconnections: Array, movement_path: MovementPathGD) -> bool:
+	if onFneighbourPathValidUnitHeightHigh(Unit, fn_path, astar, reconnections):
+		if onFneighbourPathValidFallDamage(Unit, fn_path, astar, fall_damages, reconnections):
+			if onFneighbourPathValidEnemy(Unit, fn_path, astar, reconnections, movement_path):
+				return true
+	return false
+
+func onFneighbourPathValidEnemy(Unit: UnitGD, fn_path: Array, astar: AStar3D, reconnections: Array, movement_path: MovementPathGD) -> bool:
+	for i in range(fn_path.size()):
+		if fn_path[i].Tile.Unit != null: # if this can have ally units add a check for the team
+			if i == fn_path.size() - 1:
+				var EnemyUnit: UnitGD = fn_path[i].Tile.Unit
+				var a: float = getUnitAdjustedHeight(fn_path[i].Tile)
+				var b: float = a + EnemyUnit.height.top
+				var c: float = getUnitAdjustedHeight(Unit.Tile)
+				var d: float = c + Unit.height.top
+				
+				if onCalculateHdiff(Unit.Tile, fn_path[i].Tile) == 0 or (a <= d and c <= b):
+					return true
+			return onDisconnectReconnect(Unit, fn_path, i, reconnections, astar)
+	return true
+
+func onCalculateHdiff(Tile: TileGD, _Tile: TileGD) -> int:
+	var h_one: int = abs(Tile.w * 2)
+	if (Tile.tile.type in [1, 2]): h_one += 1
+	var h_two: int = abs(_Tile.w * 2)
+	if (_Tile.tile.type in [1, 2]): h_two += 1
+	return abs(h_one - h_two)
+
+func onDisconnectReconnect(Unit: UnitGD, fn_path: Array, i: int, reconnections: Array, astar: AStar3D) -> bool:
+	var Tile: TileGD = fn_path[i - 1].Tile if i > 0 else Unit.Tile
+	astar.disconnect_points(Tile.id, fn_path[i].id, false)
+	reconnections.append([Tile.id, fn_path[i].id])
+	return false
+	
+func onFneighbourPathValidUnitHeightHigh(Unit: UnitGD, fn_path: Array, astar: AStar3D, reconnections: Array) -> bool:
+	for i in range(fn_path.size()):
+		if fn_path[i].unit_height < Unit.Tile.unit_height or fn_path[i].movement_type == FneighbourGD.HIGH:
+			if !(i == fn_path.size() - 1 and fn_path[i].Tile.Unit != null):
+				return onDisconnectReconnect(Unit, fn_path, i, reconnections, astar)
+			return true
+	return true
+	
+func onFneighbourPathValidFallDamage(Unit: UnitGD, fn_path: Array, astar: AStar3D, fall_damages: Dictionary, reconnections: Array) -> bool:
+	var fall_damage: int = 0
+	for i in range(fn_path.size()):
+		fall_damage += onCalculateFallDamage(Unit, fn_path[i], fall_damages)
+		if Combat.isFallDamageLethal(Unit, fall_damage):
+			if !(i == fn_path.size() - 1):
+				return onDisconnectReconnect(Unit, fn_path, i, reconnections, astar)
+			return true
+	return true
+
+func onCalculateFallDamage(Unit: UnitGD, fn: FneighbourGD, fall_damages: Dictionary) -> int:
+	var hdiff: int = abs(fn.hdiff * 0.5)
+	var dmg: int = 0
+	if hdiff > Unit.height.top: dmg = (hdiff - floor(Unit.height.top)) * 2
+	fall_damages[fn.Tile] = dmg
+	return dmg
+
+func onCreateFneighbourTilePath(Tile: TileGD, tile_path: Array) -> Array:
+	var fn_path: Array = []
+	var CurrentTile: TileGD = Tile
+	for i in range(1, tile_path.size()):
+		for fn in CurrentTile.fneighbours:
+			if fn.Tile == tile_path[i]:
+				CurrentTile = fn.Tile
+				fn_path.append(fn)
+				break
+	return fn_path
+
+func onCreateAllTiles(Unit: UnitGD, speed: int) -> Dictionary:
+	var ally_vision: Array = Vision.getTeamVision()
+	var in_speed_tiles: Array = all_in_range(Unit.Tile, speed, true)
+	var enemy_tiles: Array = Units.on_units(TeamRelationGD.new(Unit.team, "Enemy")).map(func(x: UnitGD): return x.Tile)\
+	.filter(func(x: TileGD): return x in ally_vision and tile_distance(x, Unit.Tile) <= Unit.speed + 1)
+	
+	for Tile in Units.all_units().map(func(x: UnitGD): return x.Tile):
+		in_speed_tiles.erase(Tile)
+	in_speed_tiles.append(Unit.Tile)
+	return {"full_tiles": enemy_tiles + in_speed_tiles, "enemy_tiles": enemy_tiles, "unit_tiles": Units.all_units().map(func(x: UnitGD): return x.Tile)}
+
+func onUnits(team_relation: TeamRelationGD) -> Array:
+	return Units.on_units(team_relation).map(func(x: UnitGD): return x.Tile)
 
 var movement_paths: Dictionary = {"tiles": []}
 func onCreateMovementPaths(Unit: UnitGD, type: String = "Default") -> void:

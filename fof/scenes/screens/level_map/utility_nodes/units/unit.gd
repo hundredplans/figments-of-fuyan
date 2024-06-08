@@ -61,6 +61,7 @@ func onUnitAwakened(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	ai = {"aic": base_card.aic, "aii": base_card.aii, "aiw": base_card.aiw, "ait": base_card.ait, "aia": base_card.aia}
 	attack = base_card.attack
 	health = base_card.health
+	rarity = base_card.rarity
 	
 	speed = base_card.speed
 	max_speed = base_card.speed
@@ -114,8 +115,13 @@ func onAddUnitFX(type: String, charges: int = -1) -> void:
 		
 var vision_info_array: Array = []
 
+func onCanAttack() -> bool:
+	return attack_amount > 0 and !Units.Combat.isStaggered(self)
+
 func occupy_tile(_Tile: TileGD) -> void:
+	if Tile != null: Tile.Unit = null
 	Tile = _Tile
+	Tile.Unit = self
 	if vision_info_array.is_empty(): Vision.onRecalculateVision(self)
 	else: Vision.onRecalculateVisionPrecalculated(self, vision_info_array.pop_front())
 	

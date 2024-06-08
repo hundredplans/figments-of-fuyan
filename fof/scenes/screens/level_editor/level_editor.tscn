@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://bauy3car7d8gx"]
+[gd_scene load_steps=24 format=3 uid="uid://bauy3car7d8gx"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_editor/level_editor.gd" id="1_c1ufw"]
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="3_hyt8o"]
@@ -12,6 +12,7 @@
 [ext_resource type="Theme" uid="uid://du2bpyvp41rdk" path="res://assets/UI/roboto/roboto20.tres" id="13_b5jku"]
 [ext_resource type="LabelSettings" uid="uid://duy8g0fum2k06" path="res://assets/UI/roboto/roboto20_outline.tres" id="13_i5pda"]
 [ext_resource type="Theme" uid="uid://bsbktaxrkrggi" path="res://assets/UI/roboto/roboto12.tres" id="14_37qlv"]
+[ext_resource type="Script" path="res://scenes/screens/level_editor/bake_level.gd" id="14_k6vi7"]
 [ext_resource type="Texture2D" uid="uid://bj8qaug3a4at1" path="res://scenes/ui_general/arrow/arrow_disabled.png" id="15_f5tsu"]
 
 [sub_resource type="Environment" id="Environment_550hv"]
@@ -719,6 +720,10 @@ shape = SubResource("RectangleShape2D_6bgmu")
 [node name="BufferPreviewTileTimer" type="Timer" parent="."]
 wait_time = 0.1
 one_shot = true
+
+[node name="BakeLevel" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("14_k6vi7")
 
 [connection signal="pressed" from="BuildMenu/Tabs/Tabs/TileTab" to="." method="on_load_tab" binds= [0]]
 [connection signal="pressed" from="BuildMenu/Tabs/Tabs/ObjectTab" to="." method="on_load_tab" binds= [1]]

@@ -18,13 +18,22 @@ func onTargetAbility() -> void:
 	Unit.Model._look_at(Tile)
 	charges -= 1
 
+@export var HEAL_UNIT_BEFORE_ODDS: float = 0.3
 func onTargetAbilityConditionAI() -> TileGD:
-	var affected_units: Array = onAffectedUnits().filter(func(x: UnitGD): return x.turn_status == "TurnUnused" and x.team == Unit.team)
+	var units: Array = onAffectedUnits().filter(func(x: UnitGD): return x.turn_status == "TurnUnused")
+	var _Tile: TileGD = onCanHealUnitsAI(units)
+	if _Tile != null: return _Tile
+	elif randf() < HEAL_UNIT_BEFORE_ODDS:
+		units = onAffectedUnits().filter(func(x: UnitGD): return x.turn_status == "TurnUsed")
+		return onCanHealUnitsAI(units)
+	return null
+
+func onCanHealUnitsAI(affected_units: Array) -> TileGD:
 	var affectable_units: Array = []
 	for _Unit in affected_units:
 		if _Unit.isHealable():
 			var units: Array = Combat.onFindEnemiesInMovementPaths(_Unit)
-			units = units.filter(func(x: UnitGD): return Combat.onCalculateDamage(x, Unit.attack) <= x.health)
+			units = units.filter(func(x: UnitGD): return Combat.onCalculateDamage(x, Unit) <= x.health)
 			if units.size() > 0: affectable_units.append(_Unit)
 	if affectable_units.size() > 0: return affectable_units[randi() % affectable_units.size()].Tile
 	return null

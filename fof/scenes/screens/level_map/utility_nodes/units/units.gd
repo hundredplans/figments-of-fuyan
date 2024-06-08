@@ -55,7 +55,6 @@ func onUnitAwakenedProcess(Unit: UnitGD, Tile: TileGD) -> void:
 	Combat.onRecalculateTargetAbilities()
 	await get_tree().process_frame
 	Unit.occupy_tile(Tile)
-	Combat.onCanBeAttackedAtFullSpeed(Unit)
 	
 func onMassUnitsAwakened(tiles: Array, enemy_ids: Array) -> void:
 	var units: Array = []
@@ -234,7 +233,7 @@ func on_movement_finished(Unit: UnitGD) -> void:
 	if Unit.team == 0:
 		if unit_actions.is_empty() and Unit.speed > 0:
 			PlayerManager._on_unit_selected(Unit)
-	
+		
 	resetActiveAction()
 	onUnitActionsFinished()
 
@@ -242,7 +241,7 @@ func onPushFrontDelay(delay: float) -> void:
 	unit_actions.push_front({
 			"action_type": "Delay",
 			"delay": delay,
-		})
+	})
 
 func onPushArgDelay(Triggerer: UnitGD, delay: float, end_callable: Callable = Callable(), begin_callable: Callable = Callable(), InitialTeleport: UnitGD = null) -> void:
 	unit_actions.append({
@@ -256,6 +255,8 @@ func onPushArgDelay(Triggerer: UnitGD, delay: float, end_callable: Callable = Ca
 	})
 	
 	if unit_actions.size() == 1 and active_action.is_empty():
+		Vision.on_vision_mode_set(0)
+		LevelMap.setActionLock("UnitActionRegular")
 		onArgDelay()
 
 func isVisibilityPathLastPosition(Tile: TileGD, visibility_path: Array) -> bool:

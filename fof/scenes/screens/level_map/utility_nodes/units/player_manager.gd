@@ -113,7 +113,7 @@ func on_spectate_unit(Unit: UnitGD) -> void:
 func on_occupied_tile_inspected(Tile: TileGD) -> void:
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
 	var SpectateUnit: UnitGD = SpectateCamera.SpectateUnit
-	if LevelMap.action_lock.is_empty() and Unit.team == 0 and Unit == SpectateUnit:
+	if LevelMap.action_lock.is_empty() and Unit.team == 0 and (Unit == SpectateUnit or Unit == UnitSelected):
 		on_unit_selected(Unit)
 	elif LevelMap.action_lock in ["", "HandRegular"] and UnitSelected == null and Unit.Tile in Vision.getTeamVision():
 		SpectateCamera.onSpectate(Unit)
@@ -137,6 +137,13 @@ func _on_unit_deselected(Unit: UnitGD, absolute: bool = false) -> void:
 		LevelUI.onExitUnitMode()
 	
 func onSetMovementRange(Unit: UnitGD) -> void:
+	#var movement_paths: Array = Tiles._onCreateMovementPaths(Unit)
+	#var can_attack: bool = Unit.onCanAttack()
+	#for movement_path in movement_paths:
+		#if movement_path.DestinationTile.Unit != null:
+			#if can_attack: movement_path.DestinationTile.Unit.on_enemy_in_range(true)
+		#Tiles.setTileOutline(movement_path.DestinationTile, "MovementRange")
+	
 	Tiles.onCreateMovementPaths(Unit)
 	var ally_vision: Array = Vision.getTeamVision()
 	var enemy_units: Array = Units.on_units(TeamRelationGD.new(1)).filter(func(x: UnitGD): return x.Tile in ally_vision)

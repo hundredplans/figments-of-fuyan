@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="UnitVFXGD" load_steps=3 format=3 uid="uid://c3auhwpmey4qs"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/unit_vfx/unit_vfx.gd" id="1_7wm60"]
+[ext_resource type="PackedScene" uid="uid://wd08g0ig7hiq" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/ability_active/ability_active_particle.tscn" id="1_tnyb2"]
+
+[resource]
+script = ExtResource("1_7wm60")
+model = ExtResource("1_tnyb2")
+is_height_absolute = true
+height = 0.0
+name = "AbilityActive"

@@ -80,12 +80,12 @@ func onAddAbilityActive(Unit: UnitGD, a: Dictionary, triggers: Array) -> GameFXG
 	onAppendTrigger(TriggerGD.new(GameFX, Unit, onRemoveAbilityActive.bind(GameFX), TriggerGD.REMOVE, TriggerGD.NULL))
 	onAppendTrigger(TriggerGD.new(GameFX, Unit, Unit.Model.onRemoveIdleAbility, TriggerGD.REMOVE, TriggerGD.NULL))
 	Unit.Model.onActivateIdleAbility()
-	VFX.onCreateAbilityActiveParticle(Unit)
+	VFX.onCreateUnitVFX(Unit, "AbilityActive")
 	LevelUI.UnitStatusOverlord.onAddAbilityActiveFX(Unit, a.ability.ability_name)
 	return GameFX
 		
 func onRemoveAbilityActive(GameFX: GameFXGD) -> void:
-	VFX.onRemoveAbilityActiveParticle(GameFX.Unit)
+	VFX.onRemoveUnitVFX(GameFX.Unit, "AbilityActive")
 	LevelUI.UnitStatusOverlord.onRemoveAbilityActiveFX(GameFX.Unit, GameFX.info.ability.ability_name)
 		
 func onAppendTrigger(Trigger: TriggerGD) -> void:
@@ -96,7 +96,7 @@ func onAddHelpfulHelmet(Unit: UnitGD, a: Dictionary) -> GameFXGD:
 	onAppendTrigger(TriggerGD.new(GameFX, Unit, Unit.stats.bind("health", 1), TriggerGD.RAMPAGE, a.use_bound, TriggerGD.NULL))
 	LevelUI.UnitStatusOverlord.onAddUnitFX(Unit, "HelpfulHelmet")
 	if Unit.team == 0: SpectateCamera.onSpectate(Unit)
-	VFX.onCreateHelpfulHelmet(Unit)
+	VFX.onCreateUnitVFX(Unit, "HelpfulHelmet")
 	return GameFX
 	
 func onAddCharmingStance(Unit: UnitGD, a: Dictionary) -> GameFXGD:

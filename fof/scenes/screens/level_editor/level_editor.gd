@@ -59,7 +59,6 @@ var keep_rotation: Array = [0, 0, 0, 0]
 var old_mpos: Vector2
 
 func _ready() -> void:
-	on_load_item_properties()
 	on_load_favorites()
 	for i in [["DefaultWallHeight", HeightButtons.get_children()], ["LevelEditorElevation", ElevationButtons.get_children()]]:
 		for btn in i[1]:
@@ -1926,174 +1925,14 @@ func on_clear_history() -> void:
 	mtree = []
 	on_change_history_menu_page(0)
 
-var light_tester_gd: Script = preload("res://assets/base_game/levels/level/loaded_level_light_tester.gd")
-
-func _onBakeLevelPressed() -> void:
-	var level_info: LevelInfoGD = _on_save_level_pressed()
-	if level_info != null:
-		pass
-
+@onready var BakeLevel: Node = %BakeLevel
 func onBakeLevelPressed():
 	var level_info: LevelInfoGD = _on_save_level_pressed()
 	if level_info != null:
-		var packed_scene := PackedScene.new()
-		
-		var load_level_path: String = "res://assets/base_game/levels/level/loaded_level.tscn"
-		var alt_path: String = "res://assets/base_game/levels/levels/" + level_info.folder_name + "/loaded_level.tscn"
-		if FileAccess.file_exists(alt_path): load_level_path = alt_path
-			
 		get_parent().visible = false
-		var LoadedLevel: Node3D = load(load_level_path).instantiate()
-		for child in LoadedLevel.get_node("Tiles").get_children(): child.free()
-		add_child(LoadedLevel)
-		
-		var tiles: Array = []
-		var s: int = level_info.tiles.size()
-		var i: int = 0
-		for tile_info in level_info.tiles:
-			tiles.append(on_create_tile(tile_info, LoadedLevel))
-			await get_tree().process_frame
-			i += 1
-			print(str(i) + "/" + str(s))
-		
-		tiles = tiles.filter(func(x: TileGD): return x != null)
-		for Tile in tiles: onSortTileCollisions(Tile, tiles, level_info.area.id); onCreateUnitHeight(Tile, tiles)
-		
-		var positions: Array = tiles.map(func(x: TileGD): return x.onTTpos())
-		for Tile in tiles:
-			print(Tile.tile)
-			on_set_tile_solid_status(Tile, tiles, positions)
-		
-		await get_tree().process_frame # absolutely necessary
-		LoadedLevel.script = light_tester_gd
-		packed_scene.pack(LoadedLevel)
-		ResourceSaver.save(packed_scene, alt_path)
-		LoadedLevel.queue_free()
+		BakeLevel.onBakeLevel(level_info)
 		get_parent().visible = true
-	else:
-		AudioMaster.play_sfx("UnconfirmDefault")
-
-func onCreateUnitHeight(Tile: TileGD, tiles: Array) -> void:
-	var unit_height: float = Tile.getLocalHeight()
-	for w in range(Tile.w, Tile.w + 6):
-		pass
-	#for _Tile in tiles:
-		#if Tile.tpos == _Tile.tpos and _Tile.w > Tile.w and Tile != _Tile:
-			#if Tile.solid_status == 1 or Tile.tile.id != 0:
-				#unit_height += 1.2
-
-func onSortTileCollisions(Tile: TileGD, tiles: Array, area: int) -> void:
-	for obj_name in TILE_OBJECT_NAMES:
-		var scene_path: String = "null"
-		match obj_name:
-			"tile": scene_path = Helper.tid_to(Tile[obj_name].id, area, Tile[obj_name].type)
-			"wall": scene_path = Helper.wid_to(Tile[obj_name].id, area, Tile[obj_name].type)
-			_: scene_path = Helper.editor_id_to(Helper.TYPE_TO_BTAB[obj_name], Tile[obj_name].id, Tile[obj_name].type)
-	
-		if scene_path != "null":
-			match obj_name:
-				"wall":
-					var packed_wall: PackedScene = load("res://assets/models/walls/" + scene_path + ".tscn")
-					for n in range(4 - Tile['wall'].tile_wall):
-						var scene: Node3D = packed_wall.instantiate()
-						Tile.ModelManager.add_child(scene)
-						scene.rotation_degrees.y = Tile['wall'].rotation * 60
-						scene.position.y = (n * 0.3) + 0.3
-						if n == 1: onCreateCollisionPoints(Tile, tiles, scene.global_position, Tile['wall'].rotation * 60, scene.collision_points, 'wall')
-				_: 
-					if !(obj_name == "obj" and Tile['obj'].id in range(1, 5)):
-						var scene: Node3D = load("res://assets/models/" + TILE_OBJECT_NAME_TO_FULL_NAME[obj_name] + "/" + scene_path + ".tscn").instantiate()
-						Tile.ModelManager.add_child(scene)
-						scene.position.y = 0.0 if obj_name == "tile" else 0.3
-						scene.rotation_degrees.y = Tile[obj_name].rotation * 60
-						onCreateCollisionPoints(Tile, tiles, scene.global_position, Tile[obj_name].rotation * 60,  scene.collision_points, obj_name)
-		
-	for grandchild in Tile.ModelManager.get_children():
-		grandchild.owner = Tile.owner
-
-func onCreateCollisionPoints(Tile: TileGD, tiles: Array, pos: Vector3, p_rot: int, points: Array, type: String) -> void:
-	if points.size() > 0:
-		match type:
-			"tile":
-				var match_type: int = Tile['tile'].type
-				if match_type != 2 and getAdjacentTiles(Tile, tiles).all(func(x: TileGD): return x['tile'].type == match_type):
-					for i in range(6 + int(Tile.w == 0)): points.remove_at(7)
-			"wall":
-				if Tile['wall'].type == 2:
-					var _tiles: Array = getAdjacentTiles(Tile, tiles)
-					if _tiles.size() == 6 and _tiles.all(func(x: TileGD): return x['wall'].type == 2):
-						points = []
-			
-		for point in points:
-			Tile.collision_points.append(getRotationPoint(point, p_rot) + pos)
-
-func getAdjacentTiles(Tile: TileGD, tiles: Array) -> Array:
-	var keep_tiles: Array = []
-	for _Tile in tiles:
-		if Tile.w == _Tile.w:
-			var pos: Vector3 = Tile.tpos - _Tile.tpos
-			if ((abs(pos.x) + abs(pos.y) + abs(pos.z)) / 2) == 1: keep_tiles.append(_Tile)
-	return keep_tiles
-var _LevelTile: PackedScene = preload("res://scenes/screens/level_map/utility_nodes/tiles/level_tile.tscn")
-var item_properties: Array
-
-var TILE_OBJECT_NAME_TO_FULL_NAME: Dictionary = {
-	"tile": "tiles",
-	"wdeco": "decorations/walls",
-	"tdeco": "decorations/tiles",
-	"obj": "objects",
-	"wall": "walls",
-}
-var TILE_OBJECT_NAMES: Array = ["tile", "wall", "obj", "tdeco", "wdeco"]
-func on_create_tile(tile_info: Dictionary, owner_node: Node3D) -> TileGD:
-	if TILE_OBJECT_NAMES.any(func(x: String): return tile_info[x].id > 0):
-		var LevelTile: Node3D = _LevelTile.instantiate()
-	
-		LevelTile.name = str(randi())
-		owner_node.get_node("Tiles").add_child(LevelTile)
-		owner_node.set_editable_instance(LevelTile, true)
-		LevelTile.owner = owner_node
-		
-		var temp_vec: Vector4 = Vector4(tile_info.position[0], tile_info.position[1], tile_info.position[2], tile_info.position[3])
-		LevelTile.position = Vector3(
-		(sqrt(3) * temp_vec.x + sqrt(3) * temp_vec.y * 0.5),
-		temp_vec.w * 1.2,
-		temp_vec.y * 3 / 2)
-		
-		for child in LevelTile.ModelManager.get_children(): child.queue_free()
-		for obj_name in TILE_OBJECT_NAMES:
-			LevelTile[obj_name] = tile_info[obj_name]
-			LevelTile.w = tile_info.position[3]
-			LevelTile.tpos = Vector3(tile_info.position[0], tile_info.position[1], tile_info.position[2])
-		return LevelTile
-	return null
-
-func getRotationPoint(xyz: Vector3, rot: int) -> Vector3:
-	var r: float = deg_to_rad(rot)
-	return Vector3(xyz.x * (cos(r)) - xyz.z * (sin(r)), xyz.y, xyz.z * (cos(r)) + xyz.x * (sin(r)))
-
-func on_set_tile_solid_status(Tile: TileGD, tiles: Array, positions: Array) -> void:
-	var btab: int = 0
-	for tile_object in Helper.BTAB_TO_TYPE[-1]:
-		if tile_object != "tile":
-			if Tile[tile_object].id > 0:
-				for info in item_properties:
-					if info.id[0] == btab and info.id[1] == Tile[tile_object].id:
-						var abs_positions: Array = positions.map(func(x: Vector4): return Vector3(Tile.tpos.x - x.x,\
-						Tile.tpos.y - x.y, Tile.w - x.w))
-						for key in info:
-							if key.contains("|"):
-								var pos: Vector3 = Vector3(int(key.get_slice("|", 0)), int(key.get_slice("|", 1)), int(key.get_slice("|", 2)))
-								for i in range(abs_positions.size()):
-									if abs_positions[i] == pos:
-										if tiles[i].solid_status < 1 and info[key].solidity > 0:
-											tiles[i].solid_status = 1
-		btab += 1
-	
-func on_load_item_properties() -> void:
-	var data: String = Helper.return_file_contents("res://static/game_info/item_properties.txt")
-	for line in data.split("\n", false):
-		item_properties.append(str_to_var(line))
+	else: AudioMaster.play_sfx("UnconfirmDefault")
 
 @onready var LoadArea: OptionButton = %LoadArea
 func _on_load_area_item_selected(index):

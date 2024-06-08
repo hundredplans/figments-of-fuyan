@@ -1,0 +1,32 @@
+[gd_scene load_steps=8 format=3 uid="uid://luwgrq33mk0y"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/status_effects/ai_stats/ai_stats_status_effect.gd" id="1_ye77n"]
+[ext_resource type="PackedScene" uid="uid://dswtk8mft624a" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/status_effects/ai_stats/ai_stats_single.tscn" id="2_3apa4"]
+[ext_resource type="Texture2D" uid="uid://dsh4g1ys0c28t" path="res://scenes/screens/card_editor/ai_icons/Intelligrace.png" id="3_sw1ei"]
+[ext_resource type="Texture2D" uid="uid://bohsqxx6876rh" path="res://scenes/screens/card_editor/ai_icons/Confidence.png" id="4_50ytp"]
+[ext_resource type="Texture2D" uid="uid://r4t4lu6eo167" path="res://scenes/screens/card_editor/ai_icons/Awarenes.png" id="5_cbnj7"]
+[ext_resource type="Texture2D" uid="uid://jx1wqlmgcltt" path="res://scenes/screens/card_editor/ai_icons/Advent.png" id="6_cbjmy"]
+[ext_resource type="Texture2D" uid="uid://dnm8qvhla6lnq" path="res://scenes/screens/card_editor/ai_icons/teamwork.png" id="7_dawob"]
+
+[node name="AIStatsStatusEffect" type="Node3D"]
+script = ExtResource("1_ye77n")
+
+[node name="aii" parent="." instance=ExtResource("2_3apa4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0498933, -0.059159, 0)
+texture = ExtResource("3_sw1ei")
+
+[node name="aic" parent="." instance=ExtResource("2_3apa4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.714427, -0.059159, 0)
+texture = ExtResource("4_50ytp")
+
+[node name="aiw" parent="." instance=ExtResource("2_3apa4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.848656, -0.059159, 0)
+texture = ExtResource("5_cbnj7")
+
+[node name="aia" parent="." instance=ExtResource("2_3apa4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.466745, 0.53243, 0)
+texture = ExtResource("6_cbjmy")
+
+[node name="ait" parent="." instance=ExtResource("2_3apa4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.320964, 0.527501, 0)
+texture = ExtResource("7_dawob")

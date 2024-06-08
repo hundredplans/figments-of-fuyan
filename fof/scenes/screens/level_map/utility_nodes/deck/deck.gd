@@ -11,13 +11,14 @@ var GameState: Node
 func on_create_deck() -> void:
 	for card in GameState.player_deck: on_create_card(card.id, card.tool_id, card.effects)
 
-func on_create_card(id: int, tool_id: int = 0, effects: Array = []) -> void:
+func on_create_card(id: int, tool_id: int = 0, effects: Array = []) -> DeckCardGD:
 	var card := DeckCardGD.new()
 	card.name = str(randi())
 	card.script = preload("res://scenes/screens/level_map/utility_nodes/deck/deck_card.gd")
 	add_child(card)
 	move_child(card, randi() % get_child_count() - 1)
 	card.on_create_card(id, tool_id, effects)
+	return card
 	
 func on_choose_champion() -> void: # make this work for multiple champions eventually
 	on_force_draw_card(_get_children().filter(predicate_by_property.bind("rarity", 7, "=="))[0])

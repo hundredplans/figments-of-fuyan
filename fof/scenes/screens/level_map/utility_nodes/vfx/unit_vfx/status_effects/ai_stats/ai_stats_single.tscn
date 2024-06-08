@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://dswtk8mft624a"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/status_effects/ai_stats/ai_stats_single.gd" id="1_xjddj"]
+[ext_resource type="Texture2D" uid="uid://bohsqxx6876rh" path="res://scenes/screens/card_editor/ai_icons/Confidence.png" id="2_uft40"]
+[ext_resource type="FontFile" uid="uid://bnuw8icxtgffv" path="res://test/simulation/assets/fonts/Roboto-Black.ttf" id="3_7u7rd"]
+
+[node name="AIStatsSingle" type="Node3D"]
+script = ExtResource("1_xjddj")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.354783, 0.00447819, 1.55081e-08)
+texture_filter = 0
+texture = ExtResource("2_uft40")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.0346535, 0, -1.55081e-08)
+text = "3"
+font = ExtResource("3_7u7rd")
+font_size = 72
+outline_size = 20

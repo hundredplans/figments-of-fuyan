@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://cqm7e2b3jt8ve"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_editor/bake_level.gd" id="1_im4f6"]
+[ext_resource type="Resource" uid="uid://i2ycgxa5lbnd" path="res://assets/base_game/levels/levels/PalmLevelOne/level_info.tres" id="2_6lxgv"]
+
+[node name="BakeLevel" type="Node"]
+script = ExtResource("1_im4f6")
+_level_info = ExtResource("2_6lxgv")

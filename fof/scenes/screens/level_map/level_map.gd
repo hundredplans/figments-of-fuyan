@@ -24,7 +24,7 @@ var game_phase: String
 @onready var Vision: VisionGD = $Vision
 
 func on_set_utility_nodes_paths() -> void:
-	var new_children: Array = get_children() + [GameState, Tiles, LevelUI, LevelUI.UnitStatusOverlord, Lights, self]
+	var new_children: Array = get_children() + [GameState, Tiles, LevelUI, LevelUI.UnitStatusOverlord, LevelUI.Console, Lights, self]
 	for child in new_children:
 		for _child in new_children:
 			if child != _child and _child.name in child:
@@ -75,6 +75,7 @@ func on_change_game_phase(phase: String) -> void:
 				Unit.stats("health", 50)
 				Unit.stats("attack", 50)
 				Unit.stats("speed", 5)
+				on_advance_game_phase()
 		"HandPhase":
 			setActionLock("HandRegular")
 			LevelUI.onHandPhaseStart()
@@ -85,9 +86,8 @@ func on_change_game_phase(phase: String) -> void:
 			var skip_hand_phase: bool = on_skip_hand_phase_result()
 			if play_ui: LevelUI.on_hand_phase_start(skip_hand_phase)
 			if skip_hand_phase: on_advance_game_phase()
-			if dev.god_start: on_advance_game_phase()
 		"PlayerPhase":
-			setActionLock()
+			setActionLock("PlayerPhase")
 			GameEffects.onPlayerPhaseStart()
 			Hand.on_player_phase_start()
 			LevelUI.on_player_phase_start()
@@ -127,6 +127,7 @@ var action_lock: String = ""
 func setActionLock(x: String = "") -> void:
 	var dev := preload("res://static/dev/dev.tres")
 	if !dev.remove_action_lock:
+		if (x == "PlayerPhase" and action_lock == "UnitActionRegular"): return
 		if (x == "UnitActionDisabled" and action_lock == "UnitActionRegular"):
 			if Units.unit_actions.is_empty():
 				x = ""

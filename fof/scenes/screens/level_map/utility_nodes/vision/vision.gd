@@ -51,6 +51,9 @@ func onProcessUnitVision(Unit: UnitGD, unit_vision: Dictionary, old_ally_vision:
 				if trigger_ui: Units.onUnitExitsVision(Unit, _Unit)
 				_Unit.visible_tiles.erase(Unit.Tile)
 				Unit.visible_tiles.erase(_Unit.Tile)
+			"Regular":
+				if Unit.Tile not in _Unit.visible_tiles:
+					_Unit.visible_tiles.append(Unit.Tile)
 func onApplyGreyscale() -> void:
 	var dev := preload("res://static/dev/dev.tres")
 	var ally_vision: Array = getTeamVision()
@@ -131,3 +134,8 @@ func onRecalculateOthersVision(Unit: UnitGD) -> void:
 	for _Unit in Units.all_units(Unit).filter(func(x: UnitGD): return x.Tile in Unit.visible_tiles):
 		onRecalculateVision(_Unit, false)
 	onApplyGreyscale()
+
+func onUnits(team_relation: TeamRelationGD) -> Array:
+	var ally_vision: Array = getTeamVision()
+	return Units.on_units(team_relation).filter(func(x: UnitGD): return x.Tile in ally_vision)
+	
