@@ -90,7 +90,7 @@ func onRemoveUnitVFX(Unit: UnitGD, type: String) -> void:
 	for child in Unit.UnitVFX.get_children().filter(func(x: Node3D): return x.type == type): child.queue_free()
 
 func onCreateCocusPocus(Unit: UnitGD, _Unit: UnitGD) -> void:
-	var previous_cocus: Array = onUnitVFXExists(Unit, "CocusPocus")
+	var previous_cocus: Array = onFindVFX(Unit, "CocusPocus")
 	if previous_cocus.size() == 0:
 		onCreateUnitVFX(Unit, "CocusPocus", [Vision, _Unit])
 	else:

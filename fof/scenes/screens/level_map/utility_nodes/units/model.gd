@@ -132,9 +132,9 @@ func onSetShaderParameter(value: float) -> void:
 		mat.set_shader_parameter("time_value", value)
 		mat.next_pass.set_shader_parameter("time_value", value)
 
-var walk_to_info: Array = []
-func onMoveToTile(Tile: TileGD, type: Variant, movement_type: String) -> void:
-	walk_to_info = [Tile, type, movement_type]
+var walk_to_info: Dictionary = {}
+func onMoveToTile(fneighbour: FneighbourGD, movement_path: MovementPathGD, movement_type: String) -> void:
+	walk_to_info = {"fneighbour": fneighbour, "movement_type": movement_type, "movement_path": movement_path}
 	on_play_animation("Walk")
 	
 func attack_tile(Tile: TileGD) -> void:
@@ -151,7 +151,7 @@ var JUMP_TIME: float = 1
 var jump_time: float = 0.0
 
 func _process(delta: float) -> void:
-	if !walk_to_info.is_empty(): on_begin_all_movement_between_tiles()
+	if !walk_to_info.is_empty(): onBeginMovingToTile()
 	if is_jump:
 		jump_time += delta
 		if jump_time <= JUMP_TIME:
@@ -160,64 +160,61 @@ func _process(delta: float) -> void:
 		else:
 			Unit.global_position = jump_end
 		
-func on_begin_all_movement_between_tiles() -> void:
-	_look_at(walk_to_info[0])
+func onBeginMovingToTile() -> void:
+	var fneighbour: FneighbourGD = walk_to_info.fneighbour
+	var movement_type: String = walk_to_info.movement_type
+	var movement_path: MovementPathGD = walk_to_info.movement_path
+	_look_at(fneighbour.Tile)
 	if Unit.team == 1:
-		match walk_to_info[2]:
+		match movement_type:
 			"Regular": onSetOverrideMaterial("Regular")
 			"Exit": onSetOverrideMaterial("IntoGrey")
 			"Enter": onSetOverrideMaterial("FromGrey")
 	
-	match walk_to_info[1].x:
-		3: on_create_regular_jump(walk_to_info[0])
-		4: on_create_drop_jump(walk_to_info[0], walk_to_info[1].y, walk_to_info[1].z)
-		_: on_create_move_tween(walk_to_info[0], walk_to_info[1])
-	walk_to_info = []
+	match fneighbour.movement_type:
+		FneighbourGD.JUMP: onCreateJump(fneighbour.Tile)
+		FneighbourGD.FALL: onCreateFall(fneighbour.Tile, fneighbour.hdiff, movement_path.fall_damages[fneighbour.Tile])
+		_: onCreateMoveTween(fneighbour.Tile)
+	walk_to_info = {}
 	
-func onCalculateEndPosition(Tile: TileGD, type: int) -> Vector3:
-	match type:
-		3: 
-			return Vector3(Tile.global_position.x, Tile.global_position.y + (0.9 if Tile.tile.type == 1 else 0.3), Tile.global_position.z)
-		4:
-			return Vector3(Tile.global_position.x, Tile.global_position.y + (0.9 if Tile.Tiles.is_ramp_tile(Tile) else 0.3), Tile.global_position.z)
-		_:
-			var climb_slope: float = 0.9 if (type == 2 or Tile.tile.type == 1) else 0.3
-			return Vector3(Tile.global_position.x, Tile.global_position.y + climb_slope, Tile.global_position.z)
-		
+func onCalculateEndPosition(Tile: TileGD) -> Vector3:
+	var climb_slope: float = 0.9 if (Tile.tile.type in [1, 2]) else 0.3
+	return Vector3(Tile.global_position.x, Tile.global_position.y + climb_slope, Tile.global_position.z)
+
 var is_jump: bool = false
-func on_create_regular_jump(Tile: TileGD) -> void:
+func onCreateJump(Tile: TileGD) -> void:
 	JUMP_TIME = 1
 	JUMP_HEIGHT = -4
 	jump_start = Unit.global_position
-	jump_end = onCalculateEndPosition(Tile, 3)
+	jump_end = onCalculateEndPosition(Tile)
 	is_jump = true
 	AniPlayer.speed_scale = 2
 	
 	on_play_animation("Jump")
 	
 const JUMP_HEIGHT_MULTIPLIER: float = 2.3
-func on_create_drop_jump(Tile: TileGD, hdiff: int, dmg: int) -> void:
+func onCreateFall(Tile: TileGD, hdiff: int, dmg: int) -> void:
 	JUMP_TIME = 1 - (hdiff * 0.1)
 	JUMP_HEIGHT = -3 + (hdiff * JUMP_HEIGHT_MULTIPLIER)
 	jump_start = Unit.global_position
-	jump_end = onCalculateEndPosition(Tile, 4)
+	jump_end = onCalculateEndPosition(Tile)
 	is_jump = true
 	AniPlayer.speed_scale = 2.0 / JUMP_TIME
 	on_play_animation("Jump")
 	
 	get_tree().create_timer((3 / AniPlayer.speed_scale) / 1.5).timeout\
 	.connect(func(): drop_calculate_damage.emit(dmg, (3 / AniPlayer.speed_scale) / 6))
-func on_create_move_tween(Tile: TileGD, type: Vector2i) -> void:
+func onCreateMoveTween(Tile: TileGD) -> void:
 	var MoveTween: Tween = create_tween()
 	var half_position := Vector3(Tile.global_position + global_position) * 0.5
-	var climb_slope: float = 0.9 if Tile.tile.type == 1 else (1.5 if (type.x == 2 and type.y == -1) else 0.3)
+	var climb_slope: float = 0.9 if Tile.tile.type == 1 else (1.5 if (Tile.tile.type == 2 and Tile.w != Unit.Tile.w) else 0.3)
 	MoveTween.tween_property(Unit, "global_position",
 	Vector3(half_position.x, Tile.global_position.y + climb_slope, half_position.z),
 	WALK_TRAVEL_TIME * 0.5)
-	MoveTween.finished.connect(on_create_second_move_tween.bind(Tile, type))
+	MoveTween.finished.connect(onCreateSecondMoveTween.bind(Tile))
 	
-func on_create_second_move_tween(Tile: TileGD, type: Vector2i) -> void:
-	var end_position: Vector3 = onCalculateEndPosition(Tile, type.x)
+func onCreateSecondMoveTween(Tile: TileGD) -> void:
+	var end_position: Vector3 = onCalculateEndPosition(Tile)
 	var MoveTween: Tween = create_tween()
 	MoveTween.tween_property(Unit, "global_position",
 	end_position,

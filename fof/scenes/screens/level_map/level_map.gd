@@ -127,7 +127,10 @@ var action_lock: String = ""
 func setActionLock(x: String = "") -> void:
 	var dev := preload("res://static/dev/dev.tres")
 	if !dev.remove_action_lock:
-		if (x == "PlayerPhase" and action_lock == "UnitActionRegular"): return
+		if x == "PlayerPhase":
+			if action_lock == "UnitActionRegular": return
+			x = ""
+			
 		if (x == "UnitActionDisabled" and action_lock == "UnitActionRegular"):
 			if Units.unit_actions.is_empty():
 				x = ""

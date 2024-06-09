@@ -35,7 +35,7 @@ func onUnitAwakenedLoad(id: int, tool_id: int, effects: Array, team: int, rot: i
 		Unit.Tiles = Tiles
 		FieldedUnits.add_child(Unit)
 		Unit.onUnitAwakened(id, tool_id, effects, team, rot, tile)
-		Unit.Model.movement_finished.connect(on_movement_finished.bind(Unit))
+		Unit.Model.movement_finished.connect(onUnitMovementFinished.bind(Unit))
 		Unit.Model.drop_calculate_damage.connect(on_drop_calculate_damage.bind(Unit))
 		Unit.Model.attack_finished.connect(on_attack_finished.bind(Unit))
 		Unit.Model.death_finished.connect(on_death_finished.bind(Unit))
@@ -113,12 +113,12 @@ func onMoveToTileAI(Unit: UnitGD, Tile: TileGD, type: Variant, vis_array: Array,
 		"count": count,
 		})
 
-func move_to_tile(Unit: UnitGD, Tile: TileGD, type: Variant) -> void:
+func onMoveToTile(Unit: UnitGD, fneighbour: FneighbourGD, movement_path: MovementPathGD) -> void:
 	unit_actions.append({
 		"action_type": "MoveUnit",
 		"Unit": Unit,
-		"Tile": Tile,
-		"type": type,
+		"fneighbour": fneighbour,
+		"movement_path": movement_path,
 	})
 	
 func _process(_delta: float) -> void:
@@ -190,7 +190,7 @@ func onDelay() -> void:
 func onMoveUnit() -> void:
 	var Unit: UnitGD = active_action.Unit
 	SpectateCamera.onSpectate(Unit)
-	Unit.Model.onMoveToTile(active_action.Tile, active_action.type, "Regular")
+	Unit.Model.onMoveToTile(active_action.fneighbour, active_action.movement_path, "Regular")
 	
 func onMoveUnitAI() -> void:
 	var Unit: UnitGD = active_action.Unit
@@ -207,7 +207,7 @@ func onMoveUnitAI() -> void:
 	
 	Unit.global_position = Unit.Model.onCalculateEndPosition(active_action.Tile, active_action.type.x)
 	Unit.Model._look_at(active_action.Tile)
-	on_movement_finished(Unit)
+	onUnitMovementFinished(Unit)
 				
 func onFindVisibilityPathReentersVision(vis_array: Array, count: int) -> bool:
 	for key in range(count + 1, vis_array.size()):
@@ -216,9 +216,8 @@ func onFindVisibilityPathReentersVision(vis_array: Array, count: int) -> bool:
 	return false
 		
 const AFTER_MOVEMENT_DELAY: float = 0.8
-func on_movement_finished(Unit: UnitGD) -> void:
-	var Tile: TileGD = active_action.Tile
-	var action_type: String = active_action.action_type
+func onUnitMovementFinished(Unit: UnitGD) -> void:
+	var Tile: TileGD = active_action.fneighbour.Tile
 	
 	if Unit.team == 0:
 		Unit.onAddToPastPath(Tile)
@@ -311,7 +310,7 @@ func on_force_resume_idle_animation_from_walk() -> void:
 		if active_action.Unit.Model.current_walk_stream_player != null:
 			AudioMaster.on_cutoff_sfx(active_action.Unit.Model.current_walk_stream_player)
 
-func attack_enemy_or_target(Unit: UnitGD, Tile: TileGD) -> bool:
+func onAttackEnemy(Unit: UnitGD, Tile: TileGD) -> bool:
 	if Unit.attack_amount > 0 and !Combat.isStaggered(Unit):
 		var enemies: Array = on_units(TeamRelationGD.new(Unit.team, "Enemy"))
 		for _Unit in enemies:

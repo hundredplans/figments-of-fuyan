@@ -303,41 +303,27 @@ func onTeleport(Unit: UnitGD, Tile: TileGD) -> void:
 		SpectateCamera.invisible_unit_stop_track = true
 
 func onCanKillAtFullSpeed(Unit: UnitGD) -> bool:
-	onCalculateMovementPathSpeed(Unit, Unit.max_speed)
+	var movement_paths: Array = Tiles.onCreateMovementPaths(Unit, Unit.max_speed)
 	for _Unit in Unit.getVisibleEnemies():
-		if onFindTotalDamageFromMovement(_Unit, Unit) > _Unit.health: return true
+		if onFindTotalDamageFromMovement(_Unit, Unit, movement_paths) > _Unit.health: return true
 	return false
 
 func onCanBeKilledAtFullSpeed(Unit: UnitGD) -> bool:
 	var total_damage: int = 0
 	for _Unit in Unit.getVisibleEnemies():
-		onCalculateMovementPathSpeed(_Unit, _Unit.max_speed)
-		total_damage += onFindTotalDamageFromMovement(Unit, _Unit)
+		var movement_paths: Array = Tiles.onCreateMovementPaths(_Unit, _Unit.max_speed)
+		total_damage += onFindTotalDamageFromMovement(Unit, _Unit, movement_paths)
 	return total_damage >= Unit.health
 	
-func onFindTotalDamageFromMovement(Unit: UnitGD, _Unit: UnitGD) -> int:
-	for key in Tiles.movement_paths.keys().filter(func(x: Variant): return x is TileGD):
-		for i in range(Tiles.movement_paths[key].size):
-			if Tiles.movement_paths[key].types[i].x == 1:
-				return onCalculateDamage(Unit, _Unit)
+func onFindTotalDamageFromMovement(Unit: UnitGD, _Unit: UnitGD, movement_paths: Array) -> int: 
+	if PlayerManager.onMovementPathByDestinationTile(Unit.Tile, movement_paths) != null:
+		return onCalculateDamage(Unit, _Unit)
 	return 0
 	
-func onCalculateMovementPathSpeed(Unit: UnitGD, speed: int = -1) -> void:
-	var old_speed: int = Unit.speed
-	if speed != -1: Unit.speed = speed
-	Tiles.onCreateMovementPaths(Unit)
-	
 func onFindEnemiesInMovementPaths(Unit: UnitGD, speed: int = -1) -> Array:
-	onCalculateMovementPathSpeed(Unit, speed)
-	var units: Array = []
-	for key in Tiles.movement_paths.keys().filter(func(x: Variant): return x is TileGD):
-		for i in range(Tiles.movement_paths[key].size):
-			if Tiles.movement_paths[key].types[i].x == 1:
-				var Tile: TileGD = Tiles.movement_paths[key].tiles[i]
-				var EnemyUnit: UnitGD = Units.unit_by_tile(Tile)
-				if EnemyUnit.team != Unit.team and Tile in Unit.visible_tiles:
-					units.append(EnemyUnit)
-	return units
+	var movement_paths: Array = Tiles.onCreateMovementPaths(Unit, speed)
+	return Vision.onUnitsTiles(TeamRelationGD.new(Unit.team, "Enemy"))\
+	.filter(func(x: TileGD): return PlayerManager.onMovementPathByDestinationTile(x, movement_paths) != null)
 
 func isFallDamageLethal(Unit: UnitGD, fall_damage: int) -> bool:
 	return fall_damage >= Unit.health

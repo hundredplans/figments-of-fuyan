@@ -136,38 +136,24 @@ func _on_unit_deselected(Unit: UnitGD, absolute: bool = false) -> void:
 		LevelUI.setWarningText(false)
 		LevelUI.onExitUnitMode()
 	
-func onSetMovementRange(Unit: UnitGD) -> void:
-	#var movement_paths: Array = Tiles._onCreateMovementPaths(Unit)
-	#var can_attack: bool = Unit.onCanAttack()
-	#for movement_path in movement_paths:
-		#if movement_path.DestinationTile.Unit != null:
-			#if can_attack: movement_path.DestinationTile.Unit.on_enemy_in_range(true)
-		#Tiles.setTileOutline(movement_path.DestinationTile, "MovementRange")
+func onMovementPathByDestinationTile(Tile: TileGD, movement_paths: Array = unit_movement_paths) -> MovementPathGD:
+	for movement_path in movement_paths: if movement_path.DestinationTile == Tile: return movement_path
+	return null
 	
-	Tiles.onCreateMovementPaths(Unit)
-	var ally_vision: Array = Vision.getTeamVision()
-	var enemy_units: Array = Units.on_units(TeamRelationGD.new(1)).filter(func(x: UnitGD): return x.Tile in ally_vision)
-	var is_staggered: bool = Units.Combat.isStaggered(Unit)
-	for Tile in Tiles.movement_paths.tiles:
-		if Unit.attack_amount > 0:
-			for _Unit in enemy_units:
-				if _Unit.Tile == Tile:
-					if !is_staggered:
-						_Unit.on_enemy_in_range(true)
-						continue
-					
-		var index: int = Tiles.movement_paths[Tile].tiles.find(Tile)
-		if Tiles.movement_paths[Tile].types[index].x != 1:
-			Tiles.setTileOutline(Tile, "MovementRange")
+var unit_movement_paths: Array = []
+func onSetMovementRange(Unit: UnitGD) -> void:
+	unit_movement_paths = Tiles.onCreateMovementPaths(Unit)
+	var can_attack: bool = Unit.onCanAttack()
+	for movement_path in unit_movement_paths:
+		if movement_path.DestinationTile.Unit != null:
+			if can_attack: movement_path.DestinationTile.Unit.on_enemy_in_range(true)
+		Tiles.setTileOutline(movement_path.DestinationTile, "MovementRange")
 	
 func onRemoveMovementRange() -> void:
-	for Tile in Tiles.movement_paths.tiles:
-		if "EnemyInRange" in Tile.tile_outlines:
-			var Unit: UnitGD = Units.unit_by_tile(Tile)
-			Unit.on_enemy_in_range(false)
-		Tiles.on_remove_tile_material(Tile)
-		Tiles.setTileOutline(Tile, "MovementRange", true)
-	Tiles.movement_paths = {"tiles": []}
+	for movement_path in unit_movement_paths:
+		if movement_path.DestinationTile.Unit != null:
+			movement_path.DestinationTile.Unit.on_enemy_in_range(false)
+		Tiles.setTileOutline(movement_path.DestinationTile, "MovementRange", true)
 	
 func _on_unit_selected(Unit: UnitGD) -> void:
 	if Unit.turn_status in ["TurnUnused", "TurnActive"] and Unit.team == 0 and Unit != UnitSelected:
@@ -231,3 +217,13 @@ func onRemoveAbilityRange(_Unit: UnitGD, ability: TargetAbilityGD) -> void:
 	for Tile in ability.tiles["affect"]:
 		Tiles.on_remove_tile_material(Tile, "TargetAffect")
 
+func onBeginUnitMovement(DestinationTile: TileGD) -> void:
+	var movement_path := onMovementPathByDestinationTile(DestinationTile)
+	for fneighbour in movement_path.fneighbours:
+		Units.movement_outline_tiles.append(fneighbour.Tile)
+		if !fneighbour.Tile.Unit != null:
+			Units.onMoveToTile(UnitSelected, fneighbour, movement_path)
+			fneighbour.Tile.Effects.onManageHeightDropLabel(UnitSelected)
+		else: Units.onAttackEnemy(UnitSelected, fneighbour.Tile)
+	_on_unit_deselected(UnitSelected, true)
+		

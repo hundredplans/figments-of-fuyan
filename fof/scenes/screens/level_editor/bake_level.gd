@@ -160,18 +160,23 @@ func isJump(Tile: TileGD, _Tile: TileGD, fn: Dictionary) -> bool:
 		return true
 	return false
 	
-func isRamp(Tile: TileGD, _Tile: TileGD, fn: Dictionary) -> bool:
-	if _Tile.tile.type == 2: # Do check if this is even allowed
-		var stair_or_tile_rot: int = _Tile.tile.rotation
-		var neirot: int = onNeighbourRotation(Tile, _Tile)
-		
-		if (neirot == (stair_or_tile_rot + 1) % 6 or neirot == (stair_or_tile_rot + 4) % 6): fn.movement_type = FneighbourGD.RAMP
-		else: fn.movement_type = FneighbourGD.UNPASSABLE
-		
-		fn.unit_height = min(Tile.unit_height, _Tile.unit_height)
-		return true
-	return false
+func isRampCalculate(RampTile: TileGD, Tile: TileGD, fn: Dictionary) -> bool:
+	var ramp_rot: int = RampTile.tile.rotation
+	var neirot: int = onNeighbourRotation(RampTile, Tile)
 	
+	if neirot == (ramp_rot + 1) % 6 or neirot == (ramp_rot + 4) % 6:
+		fn.movement_type = FneighbourGD.RAMP
+	else: fn.movement_type = FneighbourGD.UNPASSABLE
+	fn.unit_height = min(RampTile.unit_height, Tile.unit_height)
+	return true
+	
+func isRamp(Tile: TileGD, _Tile: TileGD, fn: Dictionary) -> bool:
+	var is_ramp: bool = Tile.tile.type == 2
+	var _is_ramp: bool = _Tile.tile.type == 2
+	if (is_ramp and !_is_ramp): return isRampCalculate(Tile, _Tile, fn)
+	elif (!is_ramp and _is_ramp): return isRampCalculate(_Tile, Tile, fn)
+	return false
+		
 func onNeighbourRotation(Tile: TileGD, _Tile: TileGD) -> int:
 	var direction: Variant = _Tile.onTTpos() - Tile.onTTpos()
 	direction = Vector3(direction.x, direction.y, direction.z)

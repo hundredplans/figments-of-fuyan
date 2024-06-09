@@ -50,7 +50,6 @@ func _ready() -> void:
 	Vision = LevelMap.Vision
 	SpectateCamera = LevelMap.SpectateCamera
 	equip_sky.emit(GameState.area_info.id, false)
-	var dev := preload("res://static/dev/dev.tres")
 	setCornerRightVisibile(false)
 	LevelMap.SpectateCamera.mouse_in_ui.connect(on_camera_panning)
 	
@@ -288,6 +287,7 @@ func onStartPhaseStart() -> void:
 	UnitStatusOverlord.onStartPhaseStart()
 	GreyScale.modulate.a = greyscale_light
 	_on_team_button_item_selected(team_selected)
+	Tiles.console_tile_selected.connect(onSelectTileFinish)
 
 func _on_card_clipper_child_entered_tree(node):
 	if node is HScrollBar:
@@ -372,13 +372,14 @@ func onQueueTileHoveredGameCard() -> void:
 		TileHoveredGameCard.queue_free()
 		UnitStatusOverlord.onRemoveTileHoveredUnitStatus(TileHoveredGameCard.Unit)
 
-func onSelectTileConsoleMode(sig: Signal) -> void:
+func onSelectTileConsoleMode() -> void:
 	setWarningText(true, "ConsoleActive")
-	Tiles.onSelectTileConsoleMode(sig)
+	Tiles.onSelectTileConsoleMode()
 	
-func onSelectTileFinish() -> void:
+func onSelectTileFinish(Tile: TileGD) -> void:
 	setWarningText(false, "ConsoleActive")
 	Tiles.onSelectTileFinish()
+	Console.onTileSelected(Tile)
 
 func onEnterUnitMode(Unit: UnitGD) -> void:
 	setUnitModeText(Unit.base_card.name)
@@ -492,9 +493,8 @@ func onPlayHoverChangePhase(state: bool = true):
 const INCENTIVISE_DURATION: float = 1.6
 var is_incentivise: bool = false
 func onIncentivisePassTurn(Unit: UnitGD) -> void:
-	Tiles.onCreateMovementPaths(Unit)
-	if !is_incentivise and (Unit.attack_amount == 0 or \
-	(Unit.speed == 0 and Units.on_units(TeamRelationGD.new(1)).all(func(x: UnitGD): return x.Tile not in Tiles.movement_paths))):
+	var enemy_tiles: Array = Tiles.onUnits(TeamRelationGD.new(1))
+	if !is_incentivise and (!Unit.onCanAttack() or (Unit.speed == 0 and enemy_tiles.all(func(x: TileGD): return PlayerManager.onMovementPathByDestinationTile(x) == null))):
 		is_incentivise = true
 		var RotateTween := create_tween()
 		RotateTween.tween_property(ChangePhase, "rotation", TAU, INCENTIVISE_DURATION).as_relative().set_trans(Tween.TRANS_ELASTIC)

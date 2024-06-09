@@ -13,10 +13,24 @@ var SpectateCamera: SpectateCameraGD
 
 @onready var CommandLine: LineEdit = %CommandLine
 @onready var PastCommandsLabel: Label = %PastCommandsLabel
+@onready var DisplayCommands: VBoxContainer = %DisplayCommands
 
+var active_command: CommandGD
+var command_args: Array = []
+var last_commands: Array = []
 var command_keeper: Dictionary = {}
+
 func _ready() -> void:
 	onCreateCommandKeeper()
+	onCreateDisplayCommands()
+	
+func onCreateDisplayCommands() -> void:
+	for command in command_keeper.values():
+		var label := preload("res://scenes/screens/level_ui/console/display_command_label.tscn").instantiate()
+		label.get_node("Label").text = command.name + " "
+		label.get_node("Placeholder").text = command.placeholder
+		DisplayCommands.add_child(label)
+	
 func onCreateCommandKeeper() -> void:
 	const DIR_PATH: String = "res://scenes/screens/level_ui/console/commands/"
 	for file in Array(DirAccess.get_files_at(DIR_PATH))\
@@ -31,30 +45,35 @@ func onConsolePressed() -> void:
 	if visible: CommandLine.call_deferred("grab_focus")
 func _on_command_line_text_submitted(command: String):
 	CommandLine.release_focus()
-	last_commands.append([command])
+	last_commands.append({"text": command, "ttpos": null})
 	onProcessCommand(command)
 	PastCommandsLabel.text += command + "\n"
-
+	
 func onProcessCommand(command: String) -> void:
 	var command_gd: CommandGD = command_keeper[command.get_slice(" ", 0)]
 	command_args = command.split(" ")
 	command_args.remove_at(0)
-	#if command_gd.unit_command: pass
-	#else: onCommandSelected(command_gd)
+	active_command = command_gd
 	
-func onTileSelected(Tile: TileGD, command_gd: CommandGD) -> void:
-	command_args.push_front(Tile.Unit)
-	#last_commands.append()
+	if command_gd.unit_command: LevelUI.onSelectTileConsoleMode(); visible = false
+	else: onCommandSelected(command_gd)
+func onTileSelected(Tile: TileGD) -> void:
+	command_args.push_front(Tile)
+	last_commands[last_commands.size() - 1].ttpos = Tile.onTTpos()
+	onCommandSelected(active_command)
 	
-func onCommandSelected() -> void: pass
-	#if commands_args.size() > 0 and commands_args[0] is UnitGD: last_commands.append(commands_args[0].Tile)
-	#else: last_commands.append(null)
+func onCommandSelected(command: CommandGD) -> void:
+	callv("on" + command.name.capitalize(), command_args.map(onTransformArg))
+
+func onTransformArg(x: Variant) -> Variant:
+	if typeof(x) == TYPE_STRING and x.is_valid_int():
+		return int(x)
+	return x
 	
-func onAdvanceUnit() -> void:
+func onAdvance() -> void:
 	LevelMap.on_advance_game_phase()
-	onTriggerNonUnit()
 	
-func onHandUnit() -> void:
+func onHand() -> void:
 	var card_options: Array = range(7, 25)
 	for i in range(Hand.get_children().size()):
 		Hand.get_child(i).queue_free()
@@ -62,68 +81,50 @@ func onHandUnit() -> void:
 	for i in range(3):
 		var deck_card: DeckCardGD = Deck.on_create_card(card_options[randi() % card_options.size()], 0, [])
 		Deck.on_force_draw_card(deck_card)
-	onTriggerNonUnit()
 	
-func onTriggerNonUnit() -> void:
-	last_commands[last_commands.size() - 1].append(null)
-	
-var command_args: Array = []
-	
-func onSelectTile(sig: Signal) -> void:
-	visible = false
-	LevelUI.onSelectTileConsoleMode(sig)
-	active_sig = sig
-	
-var active_sig: Signal
-var last_commands: Array = []
-#func onTileSelected(Tile: TileGD) -> void:
-	#last_commands[last_commands.size() - 1].append(Tile.onTTpos())
-	#LevelUI.onSelectTileFinish()
-	
-func onSpawnTileSet(Tile: TileGD) -> void:
-	await Units.onUnitAwakened(int(command_args[1]), 0, [], int(command_args[2]), 0, Tile)
+func onFatigue(Tile: TileGD):
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
 	PlayerManager.passed_turns.erase(Unit)
 	PlayerManager.on_select_active_unit(Unit)
 	
-func onStaggerSet(Tile: TileGD):
+func onSpawn(Tile: TileGD, id: int, team: int) -> void:
+	await Units.onUnitAwakened(id, 0, [], team, 0, Tile)
+	var Unit: UnitGD = Units.unit_by_tile(Tile)
+	PlayerManager.passed_turns.erase(Unit)
+	PlayerManager.on_select_active_unit(Unit)
+	
+func onStagger(Tile: TileGD):
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
 	var AppliedBy := AppliedByGD.new("Console")
 	Combat.onStagger(Unit, AppliedBy)
 
-func onDamageSet(Tile: TileGD) -> void:
+func onDamage(Tile: TileGD, damage: int) -> void:
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
 	var AppliedBy := AppliedByGD.new("Ability")
-	Combat.onDMG(Unit, AppliedBy, int(command_args[1]))
+	Combat.onDMG(Unit, AppliedBy, damage)
 	
-func onAIStatsSet(Tile: TileGD) -> void:
+func onAistats(Tile: TileGD) -> void:
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
 	if VFX.onUnitVFXExists(Unit, "AIStats"):
 		VFX.onRemoveUnitVFX(Unit, "AIStats")
 	else: VFX.onCreateUnitVFX(Unit, "AIStats", [Unit, SpectateCamera.Camera])
 	
-func onHealSet(Tile: TileGD) -> void:
+func onHeal(Tile: TileGD, heal: int) -> void:
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
-	Combat.onHeal(HealInfoGD.new(Unit, AppliedByGD.new("Ability"), int(command_args[1])))
+	Combat.onHeal(HealInfoGD.new(Unit, AppliedByGD.new("Ability"), heal))
 
-func onStatSet(Tile: TileGD) -> void:
+func onStat(Tile: TileGD, type: String, value: int) -> void:
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
-	Combat.onBuffInfo(BuffInfoGD.new(Unit, AppliedByGD.new("Console"), command_args[1], int(command_args[2])))
+	Combat.onBuffInfo(BuffInfoGD.new(Unit, AppliedByGD.new("Console"), type, value))
 
 @onready var PlaceholderLabel: Label = %PlaceholderLabel
 func _on_command_line_text_changed(text: String):
-	match text:
-		"spawn": PlaceholderLabel.text = "spawn id team"
-		"damage": PlaceholderLabel.text = "damage value"
-		"heal": PlaceholderLabel.text = "heal value"
-		"stat": PlaceholderLabel.text = "stat type value"
-		_: PlaceholderLabel.text = ""
-
-func onFatigueSet(Tile: TileGD):
-	var Unit: UnitGD = Units.unit_by_tile(Tile)
-	PlayerManager.passed_turns.erase(Unit)
-	PlayerManager.on_select_active_unit(Unit)
-
+	if text.is_empty(): PlaceholderLabel.text = ""; return
+	for command_name in command_keeper:
+		if command_name.begins_with(text):
+			PlaceholderLabel.text = command_name + " " + command_keeper[command_name].placeholder
+			return
+	PlaceholderLabel.text = ""
 
 func _on_copy_button_pressed():
 	var commands := preload("res://static/dev/commands.tres")
@@ -133,7 +134,7 @@ func _on_copy_button_pressed():
 func _on_paste_button_pressed():
 	var commands := preload("res://static/dev/commands.tres")
 	for command in commands.last_commands:
-		_on_command_line_text_submitted(command[0])
-		if command[1] != null:
-			var Tile: TileGD = Tiles.position_to_tile(command[1])
-			active_sig.emit(Tile)
+		_on_command_line_text_submitted(command.text)
+		if command.ttpos != null:
+			var Tile: TileGD = Tiles.position_to_tile(command.ttpos)
+			LevelUI.onSelectTileFinish(Tile)

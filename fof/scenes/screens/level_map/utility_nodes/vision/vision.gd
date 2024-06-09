@@ -139,3 +139,6 @@ func onUnits(team_relation: TeamRelationGD) -> Array:
 	var ally_vision: Array = getTeamVision()
 	return Units.on_units(team_relation).filter(func(x: UnitGD): return x.Tile in ally_vision)
 	
+func onUnitsTiles(team_relation: TeamRelationGD) -> Array:
+	var ally_vision: Array = getTeamVision()
+	return Tiles.onUnits(team_relation).filter(func(x: TileGD): return x in ally_vision)
