@@ -7,3 +7,4 @@ func onTraumaCondition() -> bool:
 	
 func onTrauma() -> void:
 	onGainStats(Unit, "attack", ATTACK, AppliedBy)
+	Unit.onChangeAIStat("aic", 1)

@@ -13,11 +13,12 @@ func onTargetAbility() -> void:
 	Units.onAppendArgQueue(Combat.onHelpfulHelmetDelayed.bind({"Tile": Tile, "AppliedBy": AppliedBy}))
 	
 func onTargetAbilityConditionAI() -> TileGD:
-	var tiles_in_ai_list: Array = []
-	for _Tile in tiles["affect"]:
-		var _Unit: UnitGD = Units.unit_by_tile(_Tile)
-		if _Unit.base_card.id in AI_LIST.map(func(x: BaseCardGD): return x.id): tiles_in_ai_list.append(_Tile)
-	
-	if !tiles_in_ai_list.is_empty():
-		return tiles_in_ai_list[randi() % tiles_in_ai_list.size()]
+	if Unit.Tile in Vision.getTeamVision():
+		var tiles_in_ai_list: Array = []
+		for _Tile in tiles["affect"]:
+			var _Unit: UnitGD = Units.unit_by_tile(_Tile)
+			if _Unit.base_card.id in AI_LIST.map(func(x: BaseCardGD): return x.id): tiles_in_ai_list.append(_Tile)
+		
+		if !tiles_in_ai_list.is_empty():
+			return tiles_in_ai_list[randi() % tiles_in_ai_list.size()]
 	return null

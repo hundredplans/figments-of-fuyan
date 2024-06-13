@@ -371,8 +371,10 @@ func id_to_editor(btab: int, item: String) -> int:
 
 	return 1 if btab in [0, 2] else 0
 	
-func interact_button(flip: bool = false) -> String:
-	return ["RightClick", "MouseMiddle"][abs(Settings.interact_button - int(flip))]
+func flip(x: bool): return !x
+	
+func interact_button(_flip: bool = false) -> String:
+	return ["RightClick", "MouseMiddle"][abs(Settings.interact_button - int(_flip))]
 
 func on_timer_end(function: Callable, args: Array, delay: float):
 	var tween: Tween = get_tree().create_tween()
@@ -434,7 +436,7 @@ func flatten(arr: Array, remove_duplicates: bool) -> Array:
 var _GameState: PackedScene = preload("res://scenes/autoload/game_state.tscn")
 var GameState: Node
 
-func on_start_new_game(hid: int, id: int, gseed: int) -> void:
+func on_start_new_game(hid: int, _id: int, gseed: int) -> void:
 	Helper.on_load_game_state(0)
 	GameState.on_load_new_area(1)
 	GameState.gseed = gseed

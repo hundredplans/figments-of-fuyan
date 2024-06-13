@@ -133,7 +133,7 @@ func onSetShaderParameter(value: float) -> void:
 		mat.next_pass.set_shader_parameter("time_value", value)
 
 var walk_to_info: Dictionary = {}
-func onMoveToTile(fneighbour: FneighbourGD, movement_path: MovementPathGD, movement_type: String) -> void:
+func onMoveToTile(fneighbour: FneighbourGD, movement_path: MovementPathGD, movement_type: int = VisInfoGD.REGULAR) -> void:
 	walk_to_info = {"fneighbour": fneighbour, "movement_type": movement_type, "movement_path": movement_path}
 	on_play_animation("Walk")
 	
@@ -162,14 +162,14 @@ func _process(delta: float) -> void:
 		
 func onBeginMovingToTile() -> void:
 	var fneighbour: FneighbourGD = walk_to_info.fneighbour
-	var movement_type: String = walk_to_info.movement_type
+	var movement_type: int = walk_to_info.movement_type
 	var movement_path: MovementPathGD = walk_to_info.movement_path
 	_look_at(fneighbour.Tile)
 	if Unit.team == 1:
 		match movement_type:
-			"Regular": onSetOverrideMaterial("Regular")
-			"Exit": onSetOverrideMaterial("IntoGrey")
-			"Enter": onSetOverrideMaterial("FromGrey")
+			VisInfoGD.REGULAR: onSetOverrideMaterial("Regular")
+			VisInfoGD.EXIT: onSetOverrideMaterial("IntoGrey")
+			VisInfoGD.ENTER: onSetOverrideMaterial("FromGrey")
 	
 	match fneighbour.movement_type:
 		FneighbourGD.JUMP: onCreateJump(fneighbour.Tile)
@@ -189,11 +189,11 @@ func onCreateJump(Tile: TileGD) -> void:
 	jump_end = onCalculateEndPosition(Tile)
 	is_jump = true
 	AniPlayer.speed_scale = 2
-	
 	on_play_animation("Jump")
 	
 const JUMP_HEIGHT_MULTIPLIER: float = 2.3
 func onCreateFall(Tile: TileGD, hdiff: int, dmg: int) -> void:
+	hdiff *= -1
 	JUMP_TIME = 1 - (hdiff * 0.1)
 	JUMP_HEIGHT = -3 + (hdiff * JUMP_HEIGHT_MULTIPLIER)
 	jump_start = Unit.global_position

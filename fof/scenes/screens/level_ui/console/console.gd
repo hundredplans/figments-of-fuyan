@@ -23,6 +23,9 @@ var command_keeper: Dictionary = {}
 func _ready() -> void:
 	onCreateCommandKeeper()
 	onCreateDisplayCommands()
+	var dev := preload("res://static/dev/dev.tres")
+	move_state_state = dev.move_states_visible
+	ai_stats_state = dev.ai_stats_visible
 	
 func onCreateDisplayCommands() -> void:
 	for command in command_keeper.values():
@@ -103,12 +106,18 @@ func onDamage(Tile: TileGD, damage: int) -> void:
 	var AppliedBy := AppliedByGD.new("Ability")
 	Combat.onDMG(Unit, AppliedBy, damage)
 	
-func onAistats(Tile: TileGD) -> void:
-	var Unit: UnitGD = Units.unit_by_tile(Tile)
-	if VFX.onUnitVFXExists(Unit, "AIStats"):
-		VFX.onRemoveUnitVFX(Unit, "AIStats")
-	else: VFX.onCreateUnitVFX(Unit, "AIStats", [Unit, SpectateCamera.Camera])
+func onAistats() -> void:
+	ai_stats_state = !ai_stats_state
+	for Unit in Units.on_units(TeamRelationGD.new(1)):
+		VFX.onUpdateAiStats(Unit)
 	
+var ai_stats_state: bool = false
+var move_state_state: bool = false
+func onMoveStates() -> void:
+	move_state_state = !move_state_state
+	for Unit in Units.on_units(TeamRelationGD.new(1)):
+		VFX.onUpdateMoveState(Unit)
+		
 func onHeal(Tile: TileGD, heal: int) -> void:
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
 	Combat.onHeal(HealInfoGD.new(Unit, AppliedByGD.new("Ability"), heal))

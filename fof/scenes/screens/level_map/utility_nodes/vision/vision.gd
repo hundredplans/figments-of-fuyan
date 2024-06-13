@@ -29,12 +29,12 @@ func getTeamVision(team_relation: TeamRelationGD = TeamRelationGD.new(0, "Ally")
 	return vis_tiles
 func onRecalculateVision(Unit: UnitGD, apply_greyscale: bool = true) -> void:
 	onRecalculateVisionPrecalculated(Unit, Unit.onCalculateVisionInfo(), apply_greyscale)
-func onRecalculateVisionPrecalculated(Unit: UnitGD, vision_info: Dictionary, apply_greyscale: bool = true) -> void:
+func onRecalculateVisionPrecalculated(Unit: UnitGD, vis_info: VisInfoGD, apply_greyscale: bool = true) -> void:
 	match vision_mode:
 		0:
 			var old_ally_vision: Array = getTeamVision()
-			Unit.visible_tiles = vision_info.visible_tiles
-			onProcessUnitVision(Unit, vision_info.unit_vision, old_ally_vision)
+			Unit.visible_tiles = vis_info.tiles
+			onProcessUnitVision(Unit, vis_info.unit_vision, old_ally_vision)
 			if apply_greyscale: onApplyGreyscale()
 		1:
 			onApplyVisionModeGreyscale(ActiveUnitVision)
@@ -43,15 +43,15 @@ func onRecalculateVisionPrecalculated(Unit: UnitGD, vision_info: Dictionary, app
 func onProcessUnitVision(Unit: UnitGD, unit_vision: Dictionary, old_ally_vision: Array = [], trigger_ui: bool = true) -> void:
 	for _Unit in unit_vision.keys():
 		match unit_vision[_Unit]:
-			"Enter":
+			VisInfoGD.ENTER:
 				if trigger_ui: Units.onUnitEntersVision(Unit, _Unit, old_ally_vision)
 				if Unit.Tile not in _Unit.visible_tiles:
 					_Unit.visible_tiles.append(Unit.Tile)
-			"Exit":
+			VisInfoGD.EXIT:
 				if trigger_ui: Units.onUnitExitsVision(Unit, _Unit)
 				_Unit.visible_tiles.erase(Unit.Tile)
 				Unit.visible_tiles.erase(_Unit.Tile)
-			"Regular":
+			VisInfoGD.REGULAR:
 				if Unit.Tile not in _Unit.visible_tiles:
 					_Unit.visible_tiles.append(Unit.Tile)
 func onApplyGreyscale() -> void:

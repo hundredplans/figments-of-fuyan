@@ -494,7 +494,7 @@ const INCENTIVISE_DURATION: float = 1.6
 var is_incentivise: bool = false
 func onIncentivisePassTurn(Unit: UnitGD) -> void:
 	var enemy_tiles: Array = Tiles.onUnits(TeamRelationGD.new(1))
-	if !is_incentivise and (!Unit.onCanAttack() or (Unit.speed == 0 and enemy_tiles.all(func(x: TileGD): return PlayerManager.onMovementPathByDestinationTile(x) == null))):
+	if !is_incentivise and (!Unit.onCanAttack() or (Unit.speed == 0 and enemy_tiles.all(func(x: TileGD): return MovementPathGD.onFindTile(x, PlayerManager.unit_movement_paths) == null))):
 		is_incentivise = true
 		var RotateTween := create_tween()
 		RotateTween.tween_property(ChangePhase, "rotation", TAU, INCENTIVISE_DURATION).as_relative().set_trans(Tween.TRANS_ELASTIC)

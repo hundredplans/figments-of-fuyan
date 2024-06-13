@@ -7,9 +7,11 @@ var Units: UnitsGD
 var SpectateCamera: SpectateCameraGD
 var Vision: VisionGD
 
+func _ready() -> void:
+	onCreateUnitVFXKeeper()
+
 func onStartPhaseStart() -> void:
 	onGenerateSpawnParticles()
-	onCreateUnitVFXKeeper()
 
 func onGenerateSpawnParticles() -> void:
 	for SpawnParticle in SpawnParticles.get_children(): SpawnParticle.queue_free()
@@ -145,3 +147,15 @@ func onUpdateVFXVision(Unit: UnitGD, _state: bool) -> void:
 			for VFX in _Unit.UnitVFX.get_children():
 				if VFX.type == "CocusPocus":
 					VFX.setVisible()
+
+func onUpdateMoveState(Unit: UnitGD) -> void:
+	if onUnitVFXExists(Unit, "MoveState"):
+		onRemoveUnitVFX(Unit, "MoveState")
+	else: onCreateUnitVFX(Unit, "MoveState", [Unit.ai_info])
+
+func onUpdateAiStats(Unit: UnitGD) -> void:
+	if onUnitVFXExists(Unit, "AIStats"):
+		onRemoveUnitVFX(Unit, "AIStats")
+	else:
+		var unit_vfx: Node3D = onCreateUnitVFX(Unit, "AIStats", [Unit, SpectateCamera.Camera])
+		Unit.update_ai_stat.connect(unit_vfx.setAIStats)

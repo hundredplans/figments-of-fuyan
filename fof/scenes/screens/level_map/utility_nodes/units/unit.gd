@@ -1,6 +1,7 @@
 class_name UnitGD
 extends Node3D
 
+signal update_ai_stat
 var is_dead: bool = false
 var id: int = 0
 var tool_id: int = 0
@@ -22,7 +23,7 @@ var max_health: int
 var health: int
 
 var rarity: int
-var team: int
+var team: int = 0
 var height: Dictionary
 var Tile: TileGD
 
@@ -45,6 +46,8 @@ var turn_status: String = "TurnUnused"
 var finished_awakening: bool = false
 var abilities: Array = []
 var base_text: String
+
+var ai_info: AIInfoGD
 
 @onready var UnitVFX: Node3D = $UnitVFX
 @onready var Model: Node3D
@@ -84,7 +87,18 @@ func onUnitAwakened(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	
 	position = tile.position
 	position.y += 0.3 if !Units.Tiles.is_ramp_tile(tile) else 0.9
-	if team == 1: Model.setVisible(false)
+	ai_info = AIInfoGD.new()
+	if team == 1:
+		Model.setVisible(false)
+		if Units.LevelUI.Console.move_state_state:
+			Units.VFX.onUpdateMoveState(self)
+			
+		if Units.LevelUI.Console.ai_stats_state:
+			Units.VFX.onUpdateAiStats(self)
+			
+	ai_info.danger = base_card.default_danger
+	ai_info.safety = base_card.default_safety
+	
 	AudioDict = load("res://assets/base_game/cards/cards/" + base_card.folder_name + "/audio.tres")
 	onCreateAbilities()
 
@@ -118,10 +132,13 @@ var vision_info_array: Array = []
 func onCanAttack() -> bool:
 	return attack_amount > 0 and !Units.Combat.isStaggered(self)
 
-func occupy_tile(_Tile: TileGD) -> void:
+func onChangeTile(_Tile: TileGD) -> void:
 	if Tile != null: Tile.Unit = null
 	Tile = _Tile
 	Tile.Unit = self
+
+func occupy_tile(_Tile: TileGD) -> void:
+	onChangeTile(_Tile)
 	if vision_info_array.is_empty(): Vision.onRecalculateVision(self)
 	else: Vision.onRecalculateVisionPrecalculated(self, vision_info_array.pop_front())
 	
@@ -202,6 +219,7 @@ func on_arrive(in_vision: bool) -> void:
 		AudioMaster.play_sfx(AudioDict.ARRIVE)
 
 func on_death() -> void:
+	Tile.Unit = null
 	Tiles.on_remove_tile_material(Tile, "EmptyTile")
 	reparent(Units.Postmortem)
 	visible = false
@@ -233,7 +251,7 @@ var past_path_set: bool = false
 var past_path_info: Dictionary = {} # TileGD: [rot, [nums]]
 var past_path_counter: int = 0
 
-func onCalculateVisionInfo() -> Dictionary:
+func onCalculateVisionInfo() -> VisInfoGD:
 	var _visible_tiles: Array = []
 	if !is_dead:
 		var tiles: Array = Tiles.onTilesInVisionRange(Tile, VISION_RANGE)
@@ -256,7 +274,7 @@ func onCalculateVisionInfo() -> Dictionary:
 		onAddNonCommutativeUnits(_visible_tiles)
 		onUnitsHeightAdjacentTiles(_visible_tiles)
 	
-	return {"visible_tiles": _visible_tiles, "unit_vision": onCalculateUnitVision(_visible_tiles)}
+	return VisInfoGD.new(_visible_tiles, onCalculateUnitVision(_visible_tiles))
 	
 func onCalculateEnemyUnitCommutative(Unit: UnitGD) -> bool:
 	if Unit.Tile in visible_tiles: return true
@@ -273,19 +291,16 @@ func onAddNonCommutativeUnits(_visible_tiles: Array) -> void:
 	for Unit in Units.all_units(self):
 		if Tiles.tile_distance(Unit.Tile, Tile) <= Vision.VISION_RANGE and Unit.Tile not in _visible_tiles and Unit.onCalculateEnemyUnitCommutative(self):
 			_visible_tiles.append(Unit.Tile)
-	#for Unit in Units.all_units(self):
-		#if Unit.Tile in _visible_tiles and Unit.Tile not in Vision.spawn_tiles and !(Unit.onCalculateEnemyUnitCommutative(self)):
-			#_visible_tiles.erase(Unit.Tile)
 
 func onCalculateUnitVision(_visible_tiles: Array = []) -> Dictionary:
 	var intent: Dictionary = {}
 	for _Unit in Units.all_units(self):
 		var isvisible: bool = _Unit.Tile in _visible_tiles
 		var wasvisible: bool = _Unit.Tile in visible_tiles
-		if (isvisible and !wasvisible): intent[_Unit] = "Enter"
-		elif (wasvisible and !isvisible): intent[_Unit] = "Exit"
-		elif (!isvisible and !wasvisible): intent[_Unit] = "Invisible"
-		else: intent[_Unit] = "Regular"
+		if (isvisible and !wasvisible): intent[_Unit] = VisInfoGD.ENTER
+		elif (wasvisible and !isvisible): intent[_Unit] = VisInfoGD.EXIT
+		elif (!isvisible and !wasvisible): intent[_Unit] = VisInfoGD.INVISIBLE
+		else: intent[_Unit] = VisInfoGD.REGULAR
 	return intent
 
 func onAppendTileToVisibleTiles(_visible_tiles: Array, _Tile: TileGD) -> void:
@@ -318,7 +333,7 @@ func onResetUnit(default_body_pos: Vector3, default_ray_pos: Vector3, default_ro
 	Model.static_body.position = default_body_pos
 	VisionRaycast.position = default_ray_pos
 	Model.rot = default_rot
-	Tile = default_tile
+	onChangeTile(default_tile)
 	Model.onSetCollisionRotation()
 
 func isHealable() -> bool:
@@ -347,3 +362,11 @@ func onAddToPastPath(_Tile: TileGD) -> void:
 func setVisibleState(state: bool) -> void:
 	visible_state = state
 	setCollisionLayerSpectated()
+
+func onChangeAIStat(ai_stat: String, val: int) -> void:
+	ai[ai_stat] = clamp(ai[ai_stat] + val, 1, 7)
+	update_ai_stat.emit(self)
+	
+func onResetAIStat(ai_stat: String) -> void:
+	ai[ai_stat] = base_card[ai_stat]
+	update_ai_stat.emit(self)

@@ -136,18 +136,15 @@ func _on_unit_deselected(Unit: UnitGD, absolute: bool = false) -> void:
 		LevelUI.setWarningText(false)
 		LevelUI.onExitUnitMode()
 	
-func onMovementPathByDestinationTile(Tile: TileGD, movement_paths: Array = unit_movement_paths) -> MovementPathGD:
-	for movement_path in movement_paths: if movement_path.DestinationTile == Tile: return movement_path
-	return null
-	
 var unit_movement_paths: Array = []
 func onSetMovementRange(Unit: UnitGD) -> void:
 	unit_movement_paths = Tiles.onCreateMovementPaths(Unit)
 	var can_attack: bool = Unit.onCanAttack()
 	for movement_path in unit_movement_paths:
-		if movement_path.DestinationTile.Unit != null:
+		if movement_path.is_attack:
 			if can_attack: movement_path.DestinationTile.Unit.on_enemy_in_range(true)
-		Tiles.setTileOutline(movement_path.DestinationTile, "MovementRange")
+		else:
+			Tiles.setTileOutline(movement_path.DestinationTile, "MovementRange")
 	
 func onRemoveMovementRange() -> void:
 	for movement_path in unit_movement_paths:
@@ -218,7 +215,7 @@ func onRemoveAbilityRange(_Unit: UnitGD, ability: TargetAbilityGD) -> void:
 		Tiles.on_remove_tile_material(Tile, "TargetAffect")
 
 func onBeginUnitMovement(DestinationTile: TileGD) -> void:
-	var movement_path := onMovementPathByDestinationTile(DestinationTile)
+	var movement_path := MovementPathGD.onFindTile(DestinationTile, unit_movement_paths)
 	for fneighbour in movement_path.fneighbours:
 		Units.movement_outline_tiles.append(fneighbour.Tile)
 		if !fneighbour.Tile.Unit != null:

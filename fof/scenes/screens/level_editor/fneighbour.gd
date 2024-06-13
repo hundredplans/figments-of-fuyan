@@ -24,4 +24,3 @@ func _init(_id: int = 0, _movement_type: int = UNPASSABLE, _unit_height: float =
 	unit_height = _unit_height
 	hdiff = _hdiff
 	is_solid = _is_solid
-	

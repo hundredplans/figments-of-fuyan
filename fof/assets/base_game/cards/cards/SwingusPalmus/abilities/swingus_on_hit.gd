@@ -10,6 +10,7 @@ func onHit() -> void:
 		onGainStats(Unit, "health", HEALTH, DMGInfo.AppliedBy)
 		is_second_hit = false
 		delay = 1
+		Unit.onChangeAIStat("aic", -1)
 	else:
 		var AttackTrigger := TriggerGD.new(null, Unit, Unit.setExtraDamage.bind(DAMAGE), TriggerGD.ON_ATTACK, TriggerGD.REMOVE_TRIGGER)
 		var AfterAttackTrigger := TriggerGD.new(null, Unit, Unit.setExtraDamage, TriggerGD.ON_AFTER_ATTACK, TriggerGD.REMOVE_FX)
@@ -17,5 +18,6 @@ func onHit() -> void:
 		
 		is_second_hit = true
 		delay = 2
+		Unit.onChangeAIStat("aic", 1)
 		
 func onHitCondition() -> bool: return true

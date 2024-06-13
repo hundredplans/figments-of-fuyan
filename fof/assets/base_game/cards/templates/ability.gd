@@ -21,3 +21,7 @@ var LevelUI: LevelUIGD
 
 func onGainStats(Unit: UnitGD, stat_type: String, val: int, AppliedBy: AppliedByGD) -> void:
 	Unit.stats(stat_type, val, AppliedBy)
+	
+func onAbilityDelay(callable: Callable, delay: float = 2) -> void:
+	await Units.get_tree().create_timer(delay).timeout
+	callable.call()

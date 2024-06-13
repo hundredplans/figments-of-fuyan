@@ -41,7 +41,7 @@ func onUnitAwakenedLoad(id: int, tool_id: int, effects: Array, team: int, rot: i
 		Unit.Model.death_finished.connect(on_death_finished.bind(Unit))
 		Unit.Model.hurt_finished.connect(on_hurt_finished.bind(Unit))
 		LevelUI.UnitStatusOverlord.onUnitAwakened(Unit)
-		Unit.Tile = tile
+		Unit.onChangeTile(tile)
 		return Unit
 	return null
 	
@@ -49,12 +49,12 @@ func onUnitAwakenedProcess(Unit: UnitGD, Tile: TileGD) -> void:
 	Vision.onUnitAwakened(Unit)
 	Unit.on_arrive(Unit.team == 0 or Unit.getVisibleEnemies().size() > 0)
 	Unit.finished_awakening = true
-	AIManager.onUnitAwakened(Unit)
 	Combat.onArrive(Unit)
 	PlayerManager.onSetupAllyPassedTurns(Unit)
 	Combat.onRecalculateTargetAbilities()
 	await get_tree().process_frame
 	Unit.occupy_tile(Tile)
+	AIManager.getDangerList(Unit, all_units())
 	
 func onMassUnitsAwakened(tiles: Array, enemy_ids: Array) -> void:
 	var units: Array = []
@@ -103,14 +103,12 @@ var active_action: Dictionary = {}
 var unit_actions: Array = []
 var unit_actions_after: Array = []
 
-func onMoveToTileAI(Unit: UnitGD, Tile: TileGD, type: Variant, vis_array: Array, count: int) -> void:
+func onMoveToTileAI(Unit: UnitGD, fneighbour: FneighbourGD, movement_path: MovementPathGD) -> void:
 	unit_actions.append({
 		"action_type": "MoveUnitAI",
 		"Unit": Unit,
-		"Tile": Tile,
-		"type": type,
-		"vis_array": vis_array,
-		"count": count,
+		"fneighbour": fneighbour,
+		"movement_path": movement_path,
 		})
 
 func onMoveToTile(Unit: UnitGD, fneighbour: FneighbourGD, movement_path: MovementPathGD) -> void:
@@ -141,7 +139,8 @@ func _process(_delta: float) -> void:
 func onAIMoveFinish() -> void:
 	if !active_action.Unit.is_dead: setUnitStatus(active_action.Unit, "TurnUsed")
 	if unit_actions.is_empty():
-		if !(active_action.vis_array.all(func(x: Dictionary): return x.vis_path == "Invisible")):
+		if active_action.movement_path == null or !active_action.movement_path.vis_array\
+		.all(func(x: VisInfoGD): return x.total_vision == VisInfoGD.INVISIBLE):
 			await get_tree().create_timer(AFTER_MOVEMENT_DELAY).timeout
 		resetActiveAction()
 		onUnitActionsFinished()
@@ -174,13 +173,17 @@ func onArgDelay() -> void:
 		_active_action.triggered = true
 		
 	if unit_actions[0] == _active_action:
-		
 		active_action = unit_actions.pop_front()
-		await get_tree().create_timer(active_action.delay).timeout
+		await onVisDelay(active_action.Triggerer.Tile, active_action.delay)
 		if _active_action.end_callable.is_valid() and !_active_action.end_callable.is_null():
 			_active_action.end_callable.call()
 		resetActiveAction()
 		onUnitActionsFinished()
+	
+func onVisDelay(Tile: TileGD, delay: float) -> void:
+	if Tile in Vision.getTeamVision():
+		await get_tree().create_timer(delay).timeout
+	else: await get_tree().process_frame
 	
 func onDelay() -> void:
 	await get_tree().create_timer(active_action.delay).timeout
@@ -190,29 +193,39 @@ func onDelay() -> void:
 func onMoveUnit() -> void:
 	var Unit: UnitGD = active_action.Unit
 	SpectateCamera.onSpectate(Unit)
-	Unit.Model.onMoveToTile(active_action.fneighbour, active_action.movement_path, "Regular")
+	Unit.Model.onMoveToTile(active_action.fneighbour, active_action.movement_path)
+	
+func onVisInfoByFneighbour(movement_path: MovementPathGD, fneighbour: FneighbourGD) -> VisInfoGD:
+	for i in range(movement_path.fneighbours.size()):
+		if fneighbour == movement_path.fneighbours[i]:
+			return movement_path.vis_array[i]
+	return VisInfoGD.new()
 	
 func onMoveUnitAI() -> void:
 	var Unit: UnitGD = active_action.Unit
-	var vision_info: Dictionary =  active_action.vis_array[active_action.count]
-	var vis_path: String = vision_info.vis_path
-	Unit.vision_info_array.append(vision_info)
-	if vis_path != "Invisible":
-		Unit.Model.onMoveToTile(active_action.Tile, active_action.type, vis_path)
+	var movement_path: MovementPathGD = active_action.movement_path
+	var fneighbour: FneighbourGD = active_action.fneighbour
+	var vis_info: VisInfoGD = onVisInfoByFneighbour(movement_path, fneighbour)
+	var total_vision: int = vis_info.total_vision
+	Unit.vision_info_array.append(vis_info)
+	
+	if total_vision != VisInfoGD.INVISIBLE:
+		Unit.Model.onMoveToTile(fneighbour, movement_path, total_vision)
 		return
 	
-	if onFindVisibilityPathReentersVision(active_action.vis_array, active_action.count): 
+	if onFindVisibilityPathReentersVision(movement_path, vis_info): 
 		await get_tree().create_timer(AFTER_MOVEMENT_DELAY).timeout
 	else: SpectateCamera.invisible_unit_stop_track = true
 	
-	Unit.global_position = Unit.Model.onCalculateEndPosition(active_action.Tile, active_action.type.x)
-	Unit.Model._look_at(active_action.Tile)
+	Unit.global_position = Unit.Model.onCalculateEndPosition(fneighbour.Tile)
+	Unit.Model._look_at(fneighbour.Tile)
 	onUnitMovementFinished(Unit)
 				
-func onFindVisibilityPathReentersVision(vis_array: Array, count: int) -> bool:
-	for key in range(count + 1, vis_array.size()):
-		if vis_array[key].vis_path != "Invisible":
-			return true
+func onFindVisibilityPathReentersVision(movement_path: MovementPathGD, vis_info: VisInfoGD) -> bool:
+	var begin_count: bool = false
+	for key in movement_path.vis_array:
+		if key == vis_info: begin_count = true
+		elif begin_count and key.total_vision != VisInfoGD.INVISIBLE: return true
 	return false
 		
 const AFTER_MOVEMENT_DELAY: float = 0.8
@@ -257,13 +270,6 @@ func onPushArgDelay(Triggerer: UnitGD, delay: float, end_callable: Callable = Ca
 		Vision.on_vision_mode_set(0)
 		LevelMap.setActionLock("UnitActionRegular")
 		onArgDelay()
-
-func isVisibilityPathLastPosition(Tile: TileGD, visibility_path: Array) -> bool:
-	var flip: bool = false
-	for info in visibility_path:
-		if flip and info[1] != "Invisible": return false
-		if info[0] == Tile: flip = true
-	return true
 
 func onUnitActionsFinished() -> void:
 	if unit_actions.is_empty() and active_action.is_empty():
@@ -445,11 +451,11 @@ func onAIEndTurnPhaseStart() -> void:
 	for Unit in all_units():
 		Unit.turns_alive += 1
 
-func onAIMoveFinisher(Unit: UnitGD, vis_array: Array) -> void:
+func onAIMoveFinisher(Unit: UnitGD, movement_path: MovementPathGD = null) -> void:
 	unit_actions.append({
 		"action_type": "AIMoveFinish",
 		"Unit": Unit,
-		"vis_array": vis_array,
+		"movement_path": movement_path
 	})
 
 func setUnitStatus(Unit: UnitGD, status: String) -> void:

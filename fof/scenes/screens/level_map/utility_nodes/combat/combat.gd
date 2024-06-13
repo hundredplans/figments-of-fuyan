@@ -296,34 +296,35 @@ func onOngoingAbilityUnit(Unit: UnitGD, _Unit: UnitGD, type: String, args: Array
 			onTriggerAbilitySpectateDelay(_Unit, ability, ability.onOngoingAbility)
 
 func onTeleport(Unit: UnitGD, Tile: TileGD) -> void:
-	Unit.position = Unit.Model.onCalculateEndPosition(Tile, 0)
+	Unit.position = Unit.Model.onCalculateEndPosition(Tile)
 	await get_tree().process_frame
 	Unit.occupy_tile(Tile)
 	if Unit.team == 1 and !(Unit.Tile in Vision.getTeamVision()):
 		SpectateCamera.invisible_unit_stop_track = true
 
-func onCanKillAtFullSpeed(Unit: UnitGD) -> bool:
-	var movement_paths: Array = Tiles.onCreateMovementPaths(Unit, Unit.max_speed)
+func onCanKillAtFullSpeed(Unit: UnitGD, movement_paths: Array = Tiles.onCreateMovementPaths(Unit, Unit.speed)) -> bool:
 	for _Unit in Unit.getVisibleEnemies():
-		if onFindTotalDamageFromMovement(_Unit, Unit, movement_paths) > _Unit.health: return true
+		if onFindTotalDamageFromMovement(_Unit, Unit, movement_paths) >= _Unit.health:
+			return true
 	return false
 
 func onCanBeKilledAtFullSpeed(Unit: UnitGD) -> bool:
 	var total_damage: int = 0
 	for _Unit in Unit.getVisibleEnemies():
-		var movement_paths: Array = Tiles.onCreateMovementPaths(_Unit, _Unit.max_speed)
+		var movement_paths: Array = Tiles.onCreateMovementPaths(_Unit)
 		total_damage += onFindTotalDamageFromMovement(Unit, _Unit, movement_paths)
 	return total_damage >= Unit.health
 	
 func onFindTotalDamageFromMovement(Unit: UnitGD, _Unit: UnitGD, movement_paths: Array) -> int: 
-	if PlayerManager.onMovementPathByDestinationTile(Unit.Tile, movement_paths) != null:
+	if MovementPathGD.onFindTile(Unit.Tile, movement_paths) != null:
 		return onCalculateDamage(Unit, _Unit)
 	return 0
 	
 func onFindEnemiesInMovementPaths(Unit: UnitGD, speed: int = -1) -> Array:
 	var movement_paths: Array = Tiles.onCreateMovementPaths(Unit, speed)
+	
 	return Vision.onUnitsTiles(TeamRelationGD.new(Unit.team, "Enemy"))\
-	.filter(func(x: TileGD): return PlayerManager.onMovementPathByDestinationTile(x, movement_paths) != null)
+	.filter(func(x: TileGD): return MovementPathGD.onFindTile(x, movement_paths) != null)
 
 func isFallDamageLethal(Unit: UnitGD, fall_damage: int) -> bool:
 	return fall_damage >= Unit.health

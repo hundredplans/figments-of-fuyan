@@ -9,10 +9,16 @@ func onTargetAbilityCondition() -> void: # Returns valid Tiles
 	
 func onTargetAbility() -> void:
 	Unit.Model._look_at(Tile)
+	
+	if is_visible:
+		Unit.Model.on_play_animation("Ability")
+		onAbilityDelay(onAbilityDelayFinished)
+	else: onAbilityDelayFinished()
+	charges -= 1
+
+func onAbilityDelayFinished() -> void:
 	for _Unit in tiles["affect"].map(func(x: TileGD): return Units.unit_by_tile(x)):
 		Combat.onHealAbility(_Unit, Unit, HEAL)
-	if is_visible: Unit.Model.on_play_animation("Ability")
-	charges -= 1
 
 @export var GUARANTEE_HEAL: int = 2
 @export var TEAMWORK_MULT: float = 0.13

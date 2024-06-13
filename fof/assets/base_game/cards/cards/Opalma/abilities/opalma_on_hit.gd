@@ -6,11 +6,11 @@ func onHit() -> void:
 	
 	if is_visible:
 		DMGInfo.AppliedBy.Applier.Model.on_play_animation("Ability")
-		DMGInfo.AppliedBy.Applier.Model.AniPlayer.animation_finished.connect(onHealDelayed.bind(Combat.onHealAbility.bind(Healee, DMGInfo.AppliedBy.Applier, DMGInfo.HealthDMG)))
-	else: Combat.onHealAbility(Healee, DMGInfo.AppliedBy.Applier, DMGInfo.HealthDMG)
+		onAbilityDelay(onAbilityDelayFinished.bind(Healee))
+	else: onAbilityDelayFinished(Healee)
 	
 func onHitCondition() -> bool:
 	return DMGInfo.AppliedBy.Applier.getVisibleAllies().any(func(x: UnitGD): return x.isHealable())
 
-func onHealDelayed(ani_name: String, callable: Callable) -> void:
-	if ani_name == "Ability": callable.call()
+func onAbilityDelayFinished(Healee: UnitGD) -> void:
+	Combat.onHealAbility(Healee, DMGInfo.AppliedBy.Applier, DMGInfo.HealthDMG)

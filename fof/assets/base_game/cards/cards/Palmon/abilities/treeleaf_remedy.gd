@@ -9,12 +9,10 @@ func onTargetAbilityCondition() -> void:
 		tiles["affect"] = tiles["range"].filter(func(x: TileGD): return Units.unit_by_tile_team_bool(x, Unit.team)) 
 
 func onTargetAbility() -> void:
-	var _Unit: UnitGD = Units.unit_by_tile(Tile)
-	var AppliedBy := AppliedByGD.new("Ability", Unit)
-	Combat.onApplyBuffNextTurn(BuffInfoGD.new(_Unit, AppliedBy, "attack", ATTACK))
-	Combat.onApplyHealNextTurn(HealInfoGD.new(_Unit, AppliedBy, HEAL))
-	
-	if is_visible: Unit.Model.on_play_animation("Ability")
+	if is_visible:
+		Unit.Model.on_play_animation("Ability")
+		onAbilityDelay(onAbilityDelayFinished)
+	else: onAbilityDelayFinished()
 	Unit.Model._look_at(Tile)
 	charges -= 1
 
@@ -37,3 +35,9 @@ func onCanHealUnitsAI(affected_units: Array) -> TileGD:
 			if units.size() > 0: affectable_units.append(_Unit)
 	if affectable_units.size() > 0: return affectable_units[randi() % affectable_units.size()].Tile
 	return null
+	
+func onAbilityDelayFinished() -> void:
+	var _Unit: UnitGD = Units.unit_by_tile(Tile)
+	var AppliedBy := AppliedByGD.new("Ability", Unit)
+	Combat.onApplyBuffNextTurn(BuffInfoGD.new(_Unit, AppliedBy, "attack", ATTACK))
+	Combat.onApplyHealNextTurn(HealInfoGD.new(_Unit, AppliedBy, HEAL))

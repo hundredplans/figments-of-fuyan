@@ -164,7 +164,8 @@ func isRampCalculate(RampTile: TileGD, Tile: TileGD, fn: Dictionary) -> bool:
 	var ramp_rot: int = RampTile.tile.rotation
 	var neirot: int = onNeighbourRotation(RampTile, Tile)
 	
-	if neirot == (ramp_rot + 1) % 6 or neirot == (ramp_rot + 4) % 6:
+	if (neirot == (ramp_rot + 1) % 6 and RampTile.w + 1 == Tile.w) \
+	or (neirot == (ramp_rot + 4) % 6 and RampTile.w == Tile.w):
 		fn.movement_type = FneighbourGD.RAMP
 	else: fn.movement_type = FneighbourGD.UNPASSABLE
 	fn.unit_height = min(RampTile.unit_height, Tile.unit_height)

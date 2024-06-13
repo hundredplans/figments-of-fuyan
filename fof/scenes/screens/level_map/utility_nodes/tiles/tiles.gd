@@ -324,7 +324,7 @@ func onConnectPoints(Tile: TileGD, fneighbour: FneighbourGD, astar: AStar3D) -> 
 	if !(fneighbour.is_solid or fneighbour.movement_type == FneighbourGD.UNPASSABLE):
 		astar.connect_points(Tile.id, fneighbour.Tile.id, false)
 			
-func onCreateMovementPaths(Unit: UnitGD,  speed: int = -1) -> Array: # Returns array of movement paths
+func onCreateMovementPaths(Unit: UnitGD,  speed: int = -1) -> Array: # Returns array of movement path
 	if speed == -1: speed = Unit.speed
 	var all_tiles: Dictionary = onCreateAllTiles(Unit, speed)
 	var astar: AStar3D = onCreateAStar(all_tiles)
@@ -333,38 +333,52 @@ func onCreateMovementPaths(Unit: UnitGD,  speed: int = -1) -> Array: # Returns a
 
 func onCreateAStar(all_tiles: Dictionary) -> AStar3D:
 	var astar := AStar3D.new()
-	for Tile in all_tiles.extra_tiles: astar.add_point(Tile.id, Tile.position)
+	for Tile in all_tiles.full_tiles:
+		for fneighbour in Tile.fneighbours:
+			astar.add_point(fneighbour.Tile.id, fneighbour.Tile.position)
+		astar.add_point(Tile.id, Tile.position)
+		
 	for Tile in all_tiles.full_tiles:
 		for fneighbour in Tile.fneighbours:
 			onConnectPoints(Tile, fneighbour, astar)
+			
 	return astar
+
+func onKillMovementPaths(Unit: UnitGD, movement_paths: Array) -> Array:
+	return movement_paths.filter(func(x: MovementPathGD):\
+	return x.DestinationTile.Unit != null and Combat.onCalculateDamage(x.DestinationTile.Unit, Unit) >= x.DestinationTile.Unit.health)
 
 func onCreateOptimalPaths(Unit: UnitGD, all_tiles: Dictionary, astar: AStar3D, speed: int) -> Array:
 	var movement_paths: Array = []
+	var ally_vision: Array = Vision.getTeamVision()
 	for Tile in all_tiles.full_tiles:
 		var movement_path := MovementPathGD.new(Unit.Tile)
 		var valid_path: bool = false
 		var reconnections: Array = [] # [[p1, p2], [p1, p2]]
+		var f: int = Time.get_ticks_msec()
 		while(!valid_path):
 			var fall_damages: Dictionary = {}
 			var tile_path: Array = Array(astar.get_id_path(Unit.Tile.id, Tile.id)).map(func(x: int): return getTileById(x))
+			if tile_path.size() > 1 and tile_path.size() - 2 > speed:
+				onDisconnectReconnectTiles(tile_path[tile_path.size() - 2], tile_path[tile_path.size() - 1]\
+				,reconnections, astar)
+				continue
 			if tile_path.size() <= 1: break
 			var fn_path: Array = onCreateFneighbourTilePath(Unit.Tile, tile_path)
-			valid_path = onFneighbourPathValid(Unit, fn_path, astar, fall_damages, reconnections, speed)
-		
+			
+			valid_path = onFneighbourPathValid(Unit, fn_path, astar, fall_damages, reconnections, speed, movement_path, ally_vision)
 			if valid_path:
 				movement_path.DestinationTile = fn_path[fn_path.size() - 1].Tile
 				movement_path.fall_damages = fall_damages
 				movement_path.fneighbours = fn_path
 				movement_paths.append(movement_path)
-				
 		for points in reconnections: astar.connect_points(points[0], points[1], false)
 	return movement_paths
 
-func onFneighbourPathValid(Unit: UnitGD, fn_path: Array, astar: AStar3D, fall_damages: Dictionary, reconnections: Array, speed: int) -> bool:
+func onFneighbourPathValid(Unit: UnitGD, fn_path: Array, astar: AStar3D, fall_damages: Dictionary, reconnections: Array, speed: int, movement_path: MovementPathGD, ally_vision: Array) -> bool:
 	if onFneighbourPathValidUnitHeightHigh(Unit, fn_path, astar, reconnections):
 		if onFneighbourPathValidFallDamage(Unit, fn_path, astar, fall_damages, reconnections):
-			if onFneighbourPathValidEnemy(Unit, fn_path, astar, reconnections):
+			if onFneighbourPathValidEnemy(Unit, fn_path, astar, reconnections, movement_path, ally_vision):
 				if onFneighbourPathValidDistance(Unit, fn_path, astar, reconnections, speed):
 					return true
 	return false
@@ -375,17 +389,19 @@ func onFneighbourPathValidDistance(Unit: UnitGD, fn_path: Array, astar: AStar3D,
 	else: onDisconnectReconnect(Unit, fn_path, fn_path.size() - 1, reconnections, astar)
 	return false
 
-func onFneighbourPathValidEnemy(Unit: UnitGD, fn_path: Array, astar: AStar3D, reconnections: Array) -> bool:
+func onFneighbourPathValidEnemy(Unit: UnitGD, fn_path: Array, astar: AStar3D, reconnections: Array, movement_path: MovementPathGD, ally_vision: Array) -> bool:
 	for i in range(fn_path.size()):
 		if fn_path[i].Tile.Unit != null: # if this can have ally units add a check for the team
-			if i == fn_path.size() - 1:
-				var EnemyUnit: UnitGD = fn_path[i].Tile.Unit
-				var a: float = getUnitAdjustedHeight(fn_path[i].Tile)
+			var fneighbour: FneighbourGD = fn_path[i]
+			if i == fn_path.size() - 1 and (fneighbour.Tile.Unit.team == 0 or fneighbour.Tile in ally_vision):
+				var EnemyUnit: UnitGD = fneighbour.Tile.Unit
+				var a: float = getUnitAdjustedHeight(fneighbour.Tile)
 				var b: float = a + EnemyUnit.height.top
 				var c: float = getUnitAdjustedHeight(Unit.Tile)
 				var d: float = c + Unit.height.top
 				
-				if onCalculateHdiff(Unit.Tile, fn_path[i].Tile) == 0 or (a <= d and c <= b):
+				if onCalculateHdiff(Unit.Tile, fneighbour.Tile) == 0 or (a <= d and c <= b):
+					movement_path.is_attack = true
 					return true
 			return onDisconnectReconnect(Unit, fn_path, i, reconnections, astar)
 	return true
@@ -397,15 +413,18 @@ func onCalculateHdiff(Tile: TileGD, _Tile: TileGD) -> int:
 	if (_Tile.tile.type in [1, 2]): h_two += 1
 	return abs(h_one - h_two)
 
+func onDisconnectReconnectTiles(Tile: TileGD, _Tile: TileGD, reconnections: Array, astar: AStar3D) -> void:
+	astar.disconnect_points(Tile.id, _Tile.id, false)
+	reconnections.append([Tile.id, _Tile.id])
+
 func onDisconnectReconnect(Unit: UnitGD, fn_path: Array, i: int, reconnections: Array, astar: AStar3D) -> bool:
 	var Tile: TileGD = fn_path[i - 1].Tile if i > 0 else Unit.Tile
-	astar.disconnect_points(Tile.id, fn_path[i].id, false)
-	reconnections.append([Tile.id, fn_path[i].id])
+	onDisconnectReconnectTiles(Tile, fn_path[i].Tile, reconnections, astar)
 	return false
 	
 func onFneighbourPathValidUnitHeightHigh(Unit: UnitGD, fn_path: Array, astar: AStar3D, reconnections: Array) -> bool:
 	for i in range(fn_path.size()):
-		if fn_path[i].unit_height < Unit.Tile.unit_height or fn_path[i].movement_type == FneighbourGD.HIGH:
+		if fn_path[i].unit_height < Unit.Tile.getTrueHeight() + Unit.height.top or fn_path[i].movement_type == FneighbourGD.HIGH:
 			if !(i == fn_path.size() - 1 and fn_path[i].Tile.Unit != null):
 				return onDisconnectReconnect(Unit, fn_path, i, reconnections, astar)
 			return true
@@ -424,7 +443,9 @@ func onFneighbourPathValidFallDamage(Unit: UnitGD, fn_path: Array, astar: AStar3
 func onCalculateFallDamage(Unit: UnitGD, fn: FneighbourGD, fall_damages: Dictionary) -> int:
 	var hdiff: int = abs(fn.hdiff * 0.5)
 	var dmg: int = 0
-	if hdiff > Unit.height.top: dmg = (hdiff - floor(Unit.height.top)) * 2
+	if fn.hdiff > 2:
+		if hdiff > Unit.height.top: dmg = (hdiff - floor(Unit.height.top)) * 2
+	
 	fall_damages[fn.Tile] = dmg
 	return dmg
 
@@ -442,22 +463,22 @@ func onCreateFneighbourTilePath(Tile: TileGD, tile_path: Array) -> Array:
 func onCreateAllTiles(Unit: UnitGD, speed: int) -> Dictionary:
 	var ally_vision: Array = Vision.getTeamVision()
 	var in_speed_tiles: Array = all_in_range(Unit.Tile, speed, true)
-	var extra_tiles: Array = all_in_range(Unit.Tile, speed + 1, true)
 	var enemy_tiles: Array = Units.on_units(TeamRelationGD.new(Unit.team, "Enemy")).map(func(x: UnitGD): return x.Tile)\
 	.filter(func(x: TileGD): return x in ally_vision and tile_distance(x, Unit.Tile) <= Unit.speed + 1)
 	
-	for Tile in Units.all_units().map(func(x: UnitGD): return x.Tile):
-		in_speed_tiles.erase(Tile)
+	for _Unit in Units.all_units():
+		if !(Unit.team == 0 and _Unit.team == 1 and _Unit.Tile not in ally_vision):
+			in_speed_tiles.erase(_Unit.Tile)
 	in_speed_tiles.append(Unit.Tile)
-	return {"extra_tiles": extra_tiles, "full_tiles": enemy_tiles + in_speed_tiles, "enemy_tiles": enemy_tiles, "unit_tiles": Units.all_units().map(func(x: UnitGD): return x.Tile)}
+	return {"full_tiles": enemy_tiles + in_speed_tiles, "enemy_tiles": enemy_tiles, "unit_tiles": Units.all_units().map(func(x: UnitGD): return x.Tile)}
 
 func onUnits(team_relation: TeamRelationGD) -> Array:
 	return Units.on_units(team_relation).map(func(x: UnitGD): return x.Tile)
 	
 func onTileHovered(Tile: TileGD) -> void:
 	setTileOutline(Tile, "TileInspected")
-	if "MovementRange" in Tile.tile_outlines:
-		var movement_path: MovementPathGD = PlayerManager.onMovementPathByDestinationTile(Tile)
+	if "MovementRange" in Tile.tile_outlines or "EnemyInRange" in Tile.tile_outlines:
+		var movement_path := MovementPathGD.onFindTile(Tile, PlayerManager.unit_movement_paths)
 		for fneighbour in movement_path.fneighbours:
 			fneighbour.Tile.Effects.onSetHeightDropInfo(movement_path, fneighbour)
 			setTileOutline(fneighbour.Tile, "PathHovered")
