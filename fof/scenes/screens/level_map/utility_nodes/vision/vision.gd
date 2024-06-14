@@ -15,6 +15,7 @@ var spawn_tiles: Array = []
 func onStartPhaseStart() -> void:
 	spawn_tiles = Tiles.on_is_type_get_tiles("Spawn", "obj")
 	onApplyGreyscale()
+	
 func getTeamVision(team_relation: TeamRelationGD = TeamRelationGD.new(0, "Ally")) -> Array:
 	var _vis_tiles: Array = []
 	if team_relation.onTeam() == 0:
@@ -124,7 +125,7 @@ func onTileUnhovered(Tile: TileGD) -> void:
 		if Tiles.active_tile == null or ("MovementRange" not in Tiles.active_tile.tile_outlines and !Units.unit_by_tile(Tiles.active_tile)):
 			setActiveUnitVision(null)
 
-func on_player_end_turn_phase_start() -> void:
+func onPlayerEndTurnPhaseStart() -> void:
 	on_vision_mode_set(0)
 func onUnitAwakened(Unit: UnitGD) -> void:
 	onRecalculateOthersVision(Unit)

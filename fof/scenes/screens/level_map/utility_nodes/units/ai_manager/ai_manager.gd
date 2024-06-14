@@ -19,14 +19,12 @@ func onAIEndTurnPhaseStart() -> void:
 	var AppliedBy := AppliedByGD.new("EndAIPhase")
 	for Unit in Units.on_units(TeamRelationGD.new(1)):
 		Unit.stats("active_speed", Unit.max_speed, AppliedBy, true)
-		Units.setUnitStatus(Unit, "TurnUsed")
 
 func onAIPhaseStart() -> void:
 	var AppliedBy := AppliedByGD.new("StartAIPhase")
 	for Unit in Units.on_units(TeamRelationGD.new(1)):
 		Unit.stats("active_speed", Unit.max_speed, AppliedBy, true)
 		Unit.attack_amount = 1
-		Units.setUnitStatus(Unit, "TurnUnused")
 	onBeginMoveAIUnits()
 	
 func onBeginMoveAIUnits() -> void:
@@ -58,12 +56,11 @@ func onMoveNextAIUnit() -> void:
 
 func onAfterTargetAbility(Unit: UnitGD) -> void:
 	if !Unit.is_dead:
-		Units.setUnitStatus(Unit, "TurnActive")
+		Units.setUnitStatus(Unit, UnitGD.TURN_ACTIVE)
 		onBeginUnitMovement(Unit)
 	else: Units.onAIMoveFinisher(Unit)
 
 func onBeginUnitMovement(Unit: UnitGD) -> void:
-	var f: int = Time.get_ticks_msec()
 	var movement_path: MovementPathGD
 	var visible_enemies: Array = Unit.getVisibleEnemies()
 	
@@ -73,6 +70,7 @@ func onBeginUnitMovement(Unit: UnitGD) -> void:
 
 func onMoveUnitAI(Unit: UnitGD, movement_path: MovementPathGD) -> void:
 	if movement_path != null:
+		Units.setUnitStatus(Unit, UnitGD.TURN_ACTIVE)
 		Tiles.on_remove_tile_material(Unit.Tile, "")
 		invisible_movement_tracker.append(movement_path.isVisArrayInvis())
 		var start_delay: bool = false
@@ -115,15 +113,16 @@ func onRollEnemyInVisionMovement(Unit: UnitGD, visible_enemies: Array) -> Moveme
 	return null
 	
 func onConfidenceRoll(Unit: UnitGD, amount: int) -> bool:
+	var plus_amount: int = Unit.getVisibleAllies().size()
 	var confidence: float = Unit.ai.aic
-	confidence = clamp(confidence + 1 - amount, 1, 7) # lose 1 confience per enemy unit in vision
+	confidence = clamp(confidence + 1 - amount + plus_amount, 1, 7)
 	return randf() <= ((confidence * 8) + 1) / float(50)
 	
 func onTeamworkConfidenceRoll(Unit: UnitGD) -> bool:
-	var cf: int = pow(Unit.ai.aic, 2) 
-	var tw: int = pow(Unit.ai.ait, 2)
+	var cf: int = int(pow(Unit.ai.aic, 2))
+	var tw: int = int(pow(Unit.ai.ait, 2))
 	var total: int = cf + tw
-	return randf() < tw / total
+	return randf() < tw / float(total)
 	
 func onRemoveLethalMovementPaths(Unit: UnitGD, movement_paths: Array) -> Array:
 	return movement_paths.filter(isMovementPathNonLethal.bind(Unit))

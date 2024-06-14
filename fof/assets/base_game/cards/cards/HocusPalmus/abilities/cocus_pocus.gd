@@ -54,7 +54,7 @@ func onTargetAbilityConditionAI() -> TileGD:
 	if tiles["affect"].size() > 0:
 		var _Unit: UnitGD = Units.unit_by_tile(tiles["affect"][0])
 		if Combat.onCanBeKilledAtFullSpeed(_Unit):
-			if _Unit.turn_status == "TurnUsed": return tiles["affect"][0]
-			elif _Unit.turn_status == "TurnUnused" and !Combat.onCanKillAtFullSpeed(_Unit):
+			if _Unit.turn_status == UnitGD.TURN_USED: return tiles["affect"][0]
+			elif _Unit.turn_status == UnitGD.TURN_UNUSED and !Combat.onCanKillAtFullSpeed(_Unit):
 				return tiles["affect"][0]
 	return null

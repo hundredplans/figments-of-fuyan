@@ -73,7 +73,7 @@ func onTransformArg(x: Variant) -> Variant:
 		return int(x)
 	return x
 	
-func onAdvance() -> void:
+func onPhase() -> void:
 	LevelMap.on_advance_game_phase()
 	
 func onHand() -> void:
@@ -100,6 +100,11 @@ func onStagger(Tile: TileGD):
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
 	var AppliedBy := AppliedByGD.new("Console")
 	Combat.onStagger(Unit, AppliedBy)
+
+func onDraw(id: int) -> void:
+	var deck_card := DeckCardGD.new()
+	deck_card.on_create_card(id, 0, [])
+	Deck.on_force_draw_card(deck_card)
 
 func onDamage(Tile: TileGD, damage: int) -> void:
 	var Unit: UnitGD = Units.unit_by_tile(Tile)

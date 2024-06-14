@@ -5,6 +5,7 @@ var SpectateCamera: Node3D
 var LevelUI: LevelUIGD
 var VFX: VFXGD
 var Combat: CombatGD
+var StatusManager: StatusManagerGD
 var effects: Array = []
 
 func onDeathFinished(Unit: UnitGD) -> void:
@@ -33,10 +34,10 @@ func onAddBuffNextTurn(Unit: UnitGD, a: Dictionary, triggers: Array) -> GameFXGD
 		var GameFX := onCreateGameFX(Unit, GameFXGD.BUFF_NEXT_TURN, a, triggers)
 		onAppendTrigger(TriggerGD.new(GameFX, Unit, Combat.onRemoveBuffNextTurn.bind(a), TriggerGD.NEXT_TURN, TriggerGD.REMOVE_FX))
 		
-		LevelUI.UnitStatusOverlord.onCreateBuffNextTurn(a.buff_info_array)
+		StatusManager.onCreateBuffNextTurn(a.buff_info_array)
 		return GameFX
 	Combat.onAddToBuffInfoArray(_GameFX.info.buff_info_array, a.buff_info)
-	LevelUI.UnitStatusOverlord.onCreateBuffNextTurn(_GameFX.info.buff_info_array)
+	StatusManager.onCreateBuffNextTurn(_GameFX.info.buff_info_array)
 	return null
 func onAddHealNextTurn(Unit: UnitGD, a: Dictionary, triggers: Array) -> GameFXGD:
 	var _GameFX := onFindFirstGameFX(Unit, GameFXGD.HEAL_NEXT_TURN)
@@ -46,10 +47,10 @@ func onAddHealNextTurn(Unit: UnitGD, a: Dictionary, triggers: Array) -> GameFXGD
 		
 		var GameFX := onCreateGameFX(Unit, GameFXGD.HEAL_NEXT_TURN, a, triggers)
 		onAppendTrigger(TriggerGD.new(GameFX, Unit, Combat.onRemoveHealNextTurn.bind(a.heal_info_array), TriggerGD.NEXT_TURN, TriggerGD.REMOVE_FX))
-		LevelUI.UnitStatusOverlord.onCreateHealNextTurn(a.heal_info_array)
+		StatusManager.onCreateHealNextTurn(a.heal_info_array)
 		return GameFX
 	Combat.onAddToHealInfoArray(_GameFX.info.heal_info_array, a.heal_info)
-	LevelUI.UnitStatusOverlord.onCreateHealNextTurn(_GameFX.info.heal_info_array)
+	StatusManager.onCreateHealNextTurn(_GameFX.info.heal_info_array)
 	return null
 		
 func onTriggerGameFX(GameFX: GameFXGD, type: int, Unit: UnitGD = null, bound_args: Array = []) -> void:
@@ -81,12 +82,12 @@ func onAddAbilityActive(Unit: UnitGD, a: Dictionary, triggers: Array) -> GameFXG
 	onAppendTrigger(TriggerGD.new(GameFX, Unit, Unit.Model.onRemoveIdleAbility, TriggerGD.REMOVE, TriggerGD.NULL))
 	Unit.Model.onActivateIdleAbility()
 	VFX.onCreateUnitVFX(Unit, "AbilityActive")
-	LevelUI.UnitStatusOverlord.onAddAbilityActiveFX(Unit, a.ability.ability_name)
+	StatusManager.onAddAbilityActiveFX(Unit, a.ability.ability_name)
 	return GameFX
 		
 func onRemoveAbilityActive(GameFX: GameFXGD) -> void:
 	VFX.onRemoveUnitVFX(GameFX.Unit, "AbilityActive")
-	LevelUI.UnitStatusOverlord.onRemoveAbilityActiveFX(GameFX.Unit, GameFX.info.ability.ability_name)
+	StatusManager.onRemoveAbilityActiveFX(GameFX.Unit, GameFX.info.ability.ability_name)
 		
 func onAppendTrigger(Trigger: TriggerGD) -> void:
 	Trigger.GameFX.triggers.append(Trigger)
@@ -94,15 +95,15 @@ func onAppendTrigger(Trigger: TriggerGD) -> void:
 func onAddHelpfulHelmet(Unit: UnitGD, a: Dictionary) -> GameFXGD:
 	var GameFX := onCreateGameFX(Unit, GameFXGD.HELPFUL_HELMET, a)
 	onAppendTrigger(TriggerGD.new(GameFX, Unit, Unit.stats.bind("health", 1), TriggerGD.RAMPAGE, a.use_bound, TriggerGD.NULL))
-	LevelUI.UnitStatusOverlord.onAddUnitFX(Unit, "HelpfulHelmet")
+	StatusManager.onAddUnitFX(Unit, "HelpfulHelmet")
 	if Unit.team == 0: SpectateCamera.onSpectate(Unit)
 	VFX.onCreateUnitVFX(Unit, "HelpfulHelmet")
 	return GameFX
 	
 func onAddCharmingStance(Unit: UnitGD, a: Dictionary) -> GameFXGD:
 	var GameFX := onCreateGameFX(Unit, GameFXGD.CHARMING_STANCE, a)
-	onAppendTrigger(TriggerGD.new(GameFX, a.Unit, LevelUI.UnitStatusOverlord.onRemoveUnitFX.bind(Unit, "CharmingStance"), TriggerGD.REMOVE_ABILITY, TriggerGD.REMOVE_FX))
-	LevelUI.UnitStatusOverlord.onAddUnitFX(Unit, "CharmingStance", AppliedByGD.new("Ability", a.Unit))
+	onAppendTrigger(TriggerGD.new(GameFX, a.Unit, StatusManager.onRemoveUnitFX.bind(Unit, "CharmingStance"), TriggerGD.REMOVE_ABILITY, TriggerGD.REMOVE_FX))
+	StatusManager.onAddUnitFX(Unit, "CharmingStance", AppliedByGD.new("Ability", a.Unit))
 	return GameFX
 		
 func onOverrideGameFX(Unit: UnitGD, type: int) -> void:

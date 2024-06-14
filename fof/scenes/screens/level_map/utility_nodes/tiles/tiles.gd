@@ -243,7 +243,7 @@ func on_tiles_by_adjacent(tiles: Array = get_children(), astar: AStar3D = null) 
 
 # ----------------- Tiles UI
 
-func on_start_phase_start() -> void:
+func onStartPhaseStart() -> void:
 	onConvertMultiTilePositions()
 	onCreateTopOfCliffWall()
 	onSetupTiles()
@@ -355,17 +355,17 @@ func onCreateOptimalPaths(Unit: UnitGD, all_tiles: Dictionary, astar: AStar3D, s
 		var movement_path := MovementPathGD.new(Unit.Tile)
 		var valid_path: bool = false
 		var reconnections: Array = [] # [[p1, p2], [p1, p2]]
-		var f: int = Time.get_ticks_msec()
 		while(!valid_path):
 			var fall_damages: Dictionary = {}
 			var tile_path: Array = Array(astar.get_id_path(Unit.Tile.id, Tile.id)).map(func(x: int): return getTileById(x))
+			
 			if tile_path.size() > 1 and tile_path.size() - 2 > speed:
 				onDisconnectReconnectTiles(tile_path[tile_path.size() - 2], tile_path[tile_path.size() - 1]\
 				,reconnections, astar)
 				continue
+				
 			if tile_path.size() <= 1: break
 			var fn_path: Array = onCreateFneighbourTilePath(Unit.Tile, tile_path)
-			
 			valid_path = onFneighbourPathValid(Unit, fn_path, astar, fall_damages, reconnections, speed, movement_path, ally_vision)
 			if valid_path:
 				movement_path.DestinationTile = fn_path[fn_path.size() - 1].Tile
@@ -424,7 +424,7 @@ func onDisconnectReconnect(Unit: UnitGD, fn_path: Array, i: int, reconnections: 
 	
 func onFneighbourPathValidUnitHeightHigh(Unit: UnitGD, fn_path: Array, astar: AStar3D, reconnections: Array) -> bool:
 	for i in range(fn_path.size()):
-		if fn_path[i].unit_height < Unit.Tile.getTrueHeight() + Unit.height.top or fn_path[i].movement_type == FneighbourGD.HIGH:
+		if fn_path[i].unit_height + Unit.Tile.getTrueHeight() < Unit.Tile.getTrueHeight() + Unit.height.top or fn_path[i].movement_type == FneighbourGD.HIGH:
 			if !(i == fn_path.size() - 1 and fn_path[i].Tile.Unit != null):
 				return onDisconnectReconnect(Unit, fn_path, i, reconnections, astar)
 			return true
@@ -528,7 +528,8 @@ func setTileOutline(Tile: TileGD, type: String, is_remove: bool = false) -> void
 				0: highest = "AllyInspected"
 				1: highest = "EnemyInspected"
 	Tile.setOutline(OUTLINE_INFO[highest][1])
-	Tile.Effects.onManageHeightDropLabel(PlayerManager.UnitSelected)
+	
+	Tile.Effects.onManageHeightDropLabel(PlayerManager.UnitSelected, type, is_remove)
 
 var BASE_MATERIAL: Material = preload("res://assets/materials/tile_materials/base_tile_materials/base_tile_material.tres")
 var TILE_MATERIALS: Dictionary

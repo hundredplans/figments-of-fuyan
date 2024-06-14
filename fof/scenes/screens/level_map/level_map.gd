@@ -9,7 +9,6 @@ var Tiles: TilesGD
 var Lights: LightsGD
 var LevelUI: Control
 
-var play_ui: bool = true
 var game_phase: String
 
 @onready var GameEffects: GameEffectsGD
@@ -20,15 +19,9 @@ var game_phase: String
 @onready var Units: UnitsGD = $Units
 @onready var VFX: VFXGD = $VFX
 
-@onready var SpectateCamera: Node3D = $SpectateCamera	
+@onready var SpectateCamera: Node3D = $SpectateCamera
 @onready var Vision: VisionGD = $Vision
-
-func on_set_utility_nodes_paths() -> void:
-	var new_children: Array = get_children() + [GameState, Tiles, LevelUI, LevelUI.UnitStatusOverlord, LevelUI.Console, Lights, self]
-	for child in new_children:
-		for _child in new_children:
-			if child != _child and _child.name in child:
-				child[_child.name] = _child
+@onready var StatusManager: StatusManagerGD = $StatusManager
 
 func _ready() -> void:
 	on_load_default_world_state()
@@ -45,83 +38,57 @@ func on_load_default_world_state() -> void:
 	
 	LoadedLevel.get_node("Tiles").script = preload("res://scenes/screens/level_map/utility_nodes/tiles/tiles.gd")
 	LoadedLevel.get_node("Lights").script = preload("res://scenes/screens/level_map/utility_nodes/lights/lights.gd")
+	
 	Tiles = LoadedLevel.get_node("Tiles")
 	Lights = LoadedLevel.get_node("Lights")
 	
-	on_set_utility_nodes_paths()
+	var references: Array = get_children() + [GameState, Tiles, LevelUI, LevelUI.Console, Lights, self]
+	Helper.setUtilityNodesPaths(references)
 	add_child(LoadedLevel)
 	on_change_game_phase("StartPhase")
-				
+
+var phase_ordering: Dictionary = {
+	"StartPhase": ["Tiles", "Vision", "SpectateCamera", "Hand", "Units", "LevelUI", "VFX", "StatusManager"],
+	"AfterStartPhase": ["LevelUI", "Deck"],
+	"HandPhase": ["SpectateCamera", "Hand", "VFX", "StatusManager", "LevelUI"],
+	"PlayerPhase": ["GameEffects", "Hand", "LevelUI", "VFX", "Units", "SpectateCamera", "Combat"],
+	"PlayerEndTurnPhase": ["GameEffects", "Units", "LevelUI", "Vision", "StatusManager"],
+	"AIPhase": ["Combat", "GameEffects", "Units", "LevelUI", "StatusManager"],
+	"AIEndTurnPhase": ["GameEffects", "Units", "StatusManager"]
+}
+func onTriggerPhaseStart(phase: String) -> void:
+	var nodes: Array = phase_ordering[phase].map(func(x: String): \
+	return Helper.references[Helper.references.map(func(y: Node): return y.name).find(x)])
+	phase = phase.insert(0, "on")
+	phase += "Start"
+	for node in nodes: node.call(phase)
+
 func on_change_game_phase(phase: String) -> void:
 	var dev := preload("res://static/dev/dev.tres")
 	game_phase = phase
+	onTriggerPhaseStart(phase)
 	match phase:
-		"StartPhase":
-			setActionLock("HandRegular")
-			Tiles.on_start_phase_start()
-			Vision.onStartPhaseStart()
-			SpectateCamera.onStartPhaseStart()
-			Hand.on_start_phase_start()
-			Units.on_start_phase_start()
-			LevelUI.onStartPhaseStart()
-			VFX.onStartPhaseStart()
-			if dev.god_start:
-				on_change_game_phase("AfterStartPhase")
+		"StartPhase": setActionLock("HandRegular"); if dev.god_start: on_advance_game_phase()
 		"AfterStartPhase":
-			LevelUI.onAfterStartPhaseStart()
-			Deck.on_after_start_phase_start()
 			if dev.god_start:
 				var Unit: UnitGD = await Units.onUnitAwakened(1, 0, [], 0, 0, Tiles.onSpawnTiles()[0])
 				Unit.stats("health", 50)
 				Unit.stats("attack", 50)
 				Unit.stats("speed", 5)
 				on_advance_game_phase()
-		"HandPhase":
-			setActionLock("HandRegular")
-			LevelUI.onHandPhaseStart()
-			SpectateCamera.onHandPhaseStart()
-			Hand.on_hand_phase_start()
-			VFX.onHandPhaseStart()
-			LevelUI.UnitStatusOverlord.onHandPhaseStart()
-			var skip_hand_phase: bool = on_skip_hand_phase_result()
-			if play_ui: LevelUI.on_hand_phase_start(skip_hand_phase)
-			if skip_hand_phase: on_advance_game_phase()
-		"PlayerPhase":
-			setActionLock("PlayerPhase")
-			GameEffects.onPlayerPhaseStart()
-			Hand.on_player_phase_start()
-			LevelUI.on_player_phase_start()
-			VFX.onPlayerPhaseStart()
-			Units.on_player_phase_start()
-			SpectateCamera.onPlayerPhaseStart()
-			Combat.onPlayerPhaseStart()
-		"PlayerEndTurnPhase":
-			setActionLock("Regular")
-			GameEffects.onPlayerEndTurnPhaseStart()
-			Units.on_player_end_turn_phase_start()
-			LevelUI.on_player_end_turn_phase_start()
-			Vision.on_player_end_turn_phase_start()
-			on_change_game_phase("AIPhase")
-		"AIPhase":
-			Combat.onAIPhaseStart()
-			GameEffects.onAIPhaseStart()
-			Units.onAIPhaseStart()
-			LevelUI.onAIPhaseStart()
-		"AIEndTurnPhase":
-			GameEffects.onAIEndTurnPhaseStart()
-			Units.onAIEndTurnPhaseStart()
-			LevelUI.onAIEndTurnPhaseStart()
-			on_change_game_phase("PlayerStartTurnPhase")
-		"PlayerStartTurnPhase":
-			on_change_game_phase("HandPhase")
+		"PlayerPhase": setActionLock("PlayerPhase")
+		"PlayerEndTurnPhase": setActionLock("Regular"); on_advance_game_phase()
+		"AIEndTurnPhase": on_advance_game_phase()
+			
 
 func on_advance_game_phase() -> void:
 	match game_phase:
+		"StartPhase": on_change_game_phase("AfterStartPhase")
 		"HandPhase": on_change_game_phase("PlayerPhase")
 		"PlayerPhase": on_change_game_phase("PlayerEndTurnPhase")
-		"PlayerEndTurnPhase": on_change_game_phase("BOTPhase")
-		"BOTPhase": on_change_game_phase("PlayerStartTurnPhase")
-		"PlayerStartTurnPhase": on_change_game_phase("HandPhase")
+		"PlayerEndTurnPhase": on_change_game_phase("AIPhase")
+		"AIPhase": on_change_game_phase("AIEndTurnPhase")
+		"AIEndTurnPhase": on_change_game_phase("HandPhase")
 
 var action_lock: String = ""
 func setActionLock(x: String = "") -> void:

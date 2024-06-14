@@ -8,14 +8,14 @@ var SpectateCamera: Node3D
 var Units: UnitsGD
 var Vision: VisionGD
 var VFX: VFXGD
+var StatusManager: StatusManagerGD
 
 func onSetupAllyPassedTurns(Unit: UnitGD) -> void:
 	if Unit.team == 0:
-		if Unit.rarity == 7:
-			unpassed_turns.append(Unit)
+		if Unit.rarity == 7: unpassed_turns.append(Unit)
 		else:
 			passed_turns.append(Unit)
-			Units.setUnitStatus(Unit, "TurnUsed")
+			Units.setUnitStatus(Unit, UnitGD.TURN_USED)
 			
 func on_card_placed(hand_card: HandCardGD, Tile: TileGD) -> void:
 	var skip_result: bool = LevelMap.on_skip_hand_phase_result(Tile)
@@ -32,13 +32,13 @@ func on_card_placed(hand_card: HandCardGD, Tile: TileGD) -> void:
 		Units.onPushFrontDelay(Units.ARRIVE_EFFECT_DELAY_DURATION)
 	
 func on_enemy_unit_enters_vision(Unit: UnitGD, _Unit: UnitGD) -> void:
-	LevelUI.UnitStatusOverlord.onUpdateEnemyVision(Unit, true)
+	StatusManager.onUpdateEnemyVision(Unit, true)
 	Units.onEnemyDiscoveredClearUnitActions()
 	LevelUI.onEnemySpotted(Unit, _Unit)
 	VFX.onUpdateVFXVision(Unit, true)
 
 func on_enemy_unit_exits_vision(Unit: UnitGD) -> void:
-	LevelUI.UnitStatusOverlord.onUpdateEnemyVision(Unit, false)
+	StatusManager.onUpdateEnemyVision(Unit, false)
 	VFX.onUpdateVFXVision(Unit, false)
 
 var ActiveUnit: UnitGD
@@ -49,7 +49,7 @@ func on_select_active_unit(Unit: UnitGD) -> void:
 	if Unit.team == 0 and ActiveUnit != Unit:
 		if ActiveUnit != null: on_pass_unit_turn()
 		ActiveUnit = Unit
-		Units.setUnitStatus(Unit, "TurnActive")
+		Units.setUnitStatus(Unit, UnitGD.TURN_ACTIVE)
 		LevelUI.on_pass_unit_turn_button_state(false)
 
 func on_pass_unit_turn_pressed() -> void:
@@ -66,7 +66,7 @@ func on_pass_unit_turn() -> void:
 		unpassed_turns.erase(ActiveUnit)
 		passed_turns.append(ActiveUnit)
 		
-		if !ActiveUnit.is_dead: Units.setUnitStatus(ActiveUnit, "TurnUsed")
+		if !ActiveUnit.is_dead: Units.setUnitStatus(ActiveUnit, UnitGD.TURN_USED)
 		if unpassed_turns.is_empty():
 			ActiveUnit = null
 			LevelUI.on_pass_unit_turn_button_state(true)
@@ -80,7 +80,7 @@ func on_player_phase_start() -> void:
 	unpassed_turns = []
 	var AppliedBy := AppliedByGD.new("StartPlayerPhase")
 	for Unit in Units.on_units():
-		if Unit.turn_status == "TurnUnused": unpassed_turns.append(Unit)
+		if Unit.turn_status == UnitGD.TURN_UNUSED: unpassed_turns.append(Unit)
 		else: passed_turns.append(Unit)
 		Unit.stats("active_speed", Unit.max_speed, AppliedBy, true)
 		Unit.attack_amount = 1
@@ -93,7 +93,7 @@ func on_player_end_turn_phase_start() -> void:
 	
 	for Unit in passed_turns.filter(func(x: UnitGD): return !x.is_dead):
 		Tiles.on_remove_tile_material(Unit.Tile, "")
-		Units.setUnitStatus(Unit, "TurnUsed")
+		Units.setUnitStatus(Unit, UnitGD.TURN_USED)
 	
 	unpassed_turns = []
 	passed_turns = []
@@ -143,8 +143,7 @@ func onSetMovementRange(Unit: UnitGD) -> void:
 	for movement_path in unit_movement_paths:
 		if movement_path.is_attack:
 			if can_attack: movement_path.DestinationTile.Unit.on_enemy_in_range(true)
-		else:
-			Tiles.setTileOutline(movement_path.DestinationTile, "MovementRange")
+		Tiles.setTileOutline(movement_path.DestinationTile, "MovementRange")
 	
 func onRemoveMovementRange() -> void:
 	for movement_path in unit_movement_paths:
@@ -153,7 +152,7 @@ func onRemoveMovementRange() -> void:
 		Tiles.setTileOutline(movement_path.DestinationTile, "MovementRange", true)
 	
 func _on_unit_selected(Unit: UnitGD) -> void:
-	if Unit.turn_status in ["TurnUnused", "TurnActive"] and Unit.team == 0 and Unit != UnitSelected:
+	if Unit.turn_status in [UnitGD.TURN_UNUSED, UnitGD.TURN_ACTIVE] and Unit.team == 0 and Unit != UnitSelected:
 		SpectateCamera.onSpectate(Unit)
 		onSetMovementRange(Unit)
 		UnitSelected = Unit
@@ -216,11 +215,12 @@ func onRemoveAbilityRange(_Unit: UnitGD, ability: TargetAbilityGD) -> void:
 
 func onBeginUnitMovement(DestinationTile: TileGD) -> void:
 	var movement_path := MovementPathGD.onFindTile(DestinationTile, unit_movement_paths)
+	on_select_active_unit(UnitSelected)
 	for fneighbour in movement_path.fneighbours:
 		Units.movement_outline_tiles.append(fneighbour.Tile)
-		if !fneighbour.Tile.Unit != null:
+		if fneighbour.Tile.Unit == null:
 			Units.onMoveToTile(UnitSelected, fneighbour, movement_path)
-			fneighbour.Tile.Effects.onManageHeightDropLabel(UnitSelected)
+			fneighbour.Tile.Effects.onRemoveHeightDropLabel()
 		else: Units.onAttackEnemy(UnitSelected, fneighbour.Tile)
 	_on_unit_deselected(UnitSelected, true)
 		

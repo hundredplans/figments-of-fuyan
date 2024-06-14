@@ -33,24 +33,37 @@ var extra_damage: int = 0
 var attack_range: int = 1
 var attack_amount: int = 1
 
-var AudioDict: AudioDictGD
-var Vision: VisionGD
-var SpectateCamera: Node3D
-var Units: UnitsGD
-var Tiles: TilesGD
-var TeamControl: Node
-var GameEffects: GameEffectsGD
-
 var turns_alive: int = 0
-var turn_status: String = "TurnUnused"
+var turn_status: int = TURN_UNUSED
 var finished_awakening: bool = false
 var abilities: Array = []
 var base_text: String
 
 var ai_info: AIInfoGD
 
+enum {
+	TURN_ACTIVE, # Unit is actively moving / selected
+	TURN_INACTIVE, # Phase where unit can't be selected
+	TURN_USED, # It's the unit's phase and he's already moved
+	TURN_UNUSED, # It's the unit's phase and he hasn't moved yet
+}
+
 @onready var UnitVFX: Node3D = $UnitVFX
 @onready var Model: Node3D
+
+var VFX: VFXGD
+var Tiles: TilesGD
+var Combat: CombatGD
+var AudioDict: AudioDictGD
+var Vision: VisionGD
+var SpectateCamera: SpectateCameraGD
+var Units: UnitsGD
+var GameEffects: GameEffectsGD
+var LevelUI: LevelUIGD
+var StatusManager: StatusManagerGD
+
+func _ready() -> void: Helper.onCreateChildReferences(self)
+
 func onUnitAwakened(_id: int, _tool_id: int, _effects: Array, _team: int, rot: int, tile: TileGD) -> void:
 	id = _id
 	tool_id = _tool_id
@@ -86,15 +99,15 @@ func onUnitAwakened(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	VisionRaycast.position.y = height.eye
 	
 	position = tile.position
-	position.y += 0.3 if !Units.Tiles.is_ramp_tile(tile) else 0.9
+	position.y += 0.3 if !Tiles.is_ramp_tile(tile) else 0.9
 	ai_info = AIInfoGD.new()
 	if team == 1:
 		Model.setVisible(false)
-		if Units.LevelUI.Console.move_state_state:
-			Units.VFX.onUpdateMoveState(self)
+		if LevelUI.Console.move_state_state:
+			VFX.onUpdateMoveState(self)
 			
-		if Units.LevelUI.Console.ai_stats_state:
-			Units.VFX.onUpdateAiStats(self)
+		if LevelUI.Console.ai_stats_state:
+			VFX.onUpdateAiStats(self)
 			
 	ai_info.danger = base_card.default_danger
 	ai_info.safety = base_card.default_safety
@@ -107,30 +120,21 @@ func onCreateAbilities() -> void:
 	if DirAccess.dir_exists_absolute(DIR_PATH):
 		for ability_name in Array(DirAccess.get_files_at(DIR_PATH)).filter(func(x: String): return x.ends_with(".tres")):
 			var ability: AbilityGD = load(DIR_PATH + ability_name).duplicate()
-			ability.VFX = Units.VFX
-			ability.SpectateCamera = Units.SpectateCamera
-			ability.Units = Units
-			ability.Tiles = Tiles
-			ability.Vision = Vision
-			ability.Combat = Units.Combat
-			ability.LevelUI = Units.LevelUI
-			ability.GameEffects = Units.GameEffects
-			ability.LevelMap = Units.LevelMap
 			ability.charges = ability.max_charges
 			abilities.append(ability)
 			
-			if ability is ArmorGD: onAddUnitFX("Armor", ability.armor)
-			elif ability is TargetAbilityGD or ability is OngoingAbilityGD: ability.setInfo(self)
+			if ability is TargetAbilityGD or ability is OngoingAbilityGD: ability.setInfo(self)
 			
-func onAddUnitFX(type: String, charges: int = -1) -> void:
-	var info_fx: InfoFXGD = load(Units.LevelUI.UnitStatusOverlord.all_info_fx[type])
-	info_fx.charges = charges
+func onAddUnitFX(info_fx: InfoFXGD) -> void:
 	unit_fx.append(info_fx)
+		
+func onRemoveUnitFX(info_fx: InfoFXGD) -> void:
+	unit_fx.erase(info_fx)
 		
 var vision_info_array: Array = []
 
 func onCanAttack() -> bool:
-	return attack_amount > 0 and !Units.Combat.isStaggered(self)
+	return attack_amount > 0 and !Combat.isStaggered(self)
 
 func onChangeTile(_Tile: TileGD) -> void:
 	if Tile != null: Tile.Unit = null
@@ -182,18 +186,18 @@ func stats(stat_type: String, val: int, AppliedBy := AppliedByGD.new("GameEvent"
 	
 	var color: String = onFindStatColor(stats_changed, current_health, current_attack, current_speed)
 	if color != "NULL" and current_health > 0:
-		Units.LevelUI.UnitStatusOverlord.onUpdateStats(self, stats_changed.capitalize(), color)
+		StatusManager.onUpdateStats(self, stats_changed.capitalize(), color)
 		if health == 0: Units.kill_unit(self, AppliedBy)
-		elif health < current_health and AppliedBy.type != "Height": Units.hurt_unit(self, AppliedBy)
+		elif health < current_health and AppliedBy.type not in ["Height", "DumsyPalmsyArrive"]: Units.hurt_unit(self, AppliedBy)
 		
 		if Tile in Vision.getTeamVision():
 			var y_offset: float = height.top / 2
 			match stat_type:
-				"health": Units.VFX.onCreateStatParticle(health - current_health, "health", Tile, y_offset)
-				"attack": Units.VFX.onCreateStatParticle(attack - current_attack, "attack", Tile, y_offset)
-				"speed": Units.VFX.onCreateStatParticle(speed - current_speed, "speed", Tile, y_offset)
-				"heal": Units.VFX.onCreateStatParticle(health - current_health, "heal", Tile, y_offset)
-	Units.Combat.onOngoingAbility(self, "ChangeStat", [AppliedBy, stats_changed])
+				"health": VFX.onCreateStatParticle(health - current_health, "health", Tile, y_offset)
+				"attack": VFX.onCreateStatParticle(attack - current_attack, "attack", Tile, y_offset)
+				"speed": VFX.onCreateStatParticle(speed - current_speed, "speed", Tile, y_offset)
+				"heal": VFX.onCreateStatParticle(health - current_health, "heal", Tile, y_offset)
+	Combat.onOngoingAbility(self, "ChangeStat", [AppliedBy, stats_changed])
 func onFindStatColor(stat_changed: String, chp: int = -1, catt: int = -1, cspd: int = -1) -> String:
 	var color := "BASE"
 	match stat_changed:
@@ -228,10 +232,10 @@ func on_death() -> void:
 	await get_tree().process_frame
 	
 func on_spectated_in_player_phase(state: bool) -> void:
-	Units.LevelUI.UnitStatusOverlord.onUnitSpectated(self, state)
+	StatusManager.onUnitSpectated(self, state)
 	Model.onSetOutlineProperties(state)
-	Units.LevelUI.on_update_vision()
-	if turn_status == "TurnUsed": Units.setPastPath(self, state)
+	LevelUI.on_update_vision()
+	if turn_status == UnitGD.TURN_USED: Units.setPastPath(self, state)
 	is_spectated = state
 	setCollisionLayerSpectated()
 	
@@ -239,7 +243,7 @@ func setCollisionLayerSpectated() -> void:
 	Model.static_body.collision_layer = 4 if (is_spectated or !visible_state) else 36
 	
 func on_enemy_in_range(state: bool) -> void:
-	Units.LevelUI.UnitStatusOverlord.onEnemyInRange(self, state)
+	StatusManager.onEnemyInRange(self, state)
 	Model.onSetOutlineProperties(state)
 	Tiles.setTileOutline(Tile, "EnemyInRange", !state)
 
@@ -340,7 +344,7 @@ func isHealable() -> bool:
 	return health < max_health
 
 func getAttackAnimation() -> String:
-	if Units.GameEffects.onGameFXExists(self, GameFXGD.ABILITY_ACTIVE):
+	if GameEffects.onGameFXExists(self, GameFXGD.ABILITY_ACTIVE):
 		return "AttackAbility"
 	return "Attack"
 	
@@ -356,7 +360,7 @@ func setHealMultiplier(x: int = 1) -> void:
 func onAddToPastPath(_Tile: TileGD) -> void:
 	past_path_counter += 1
 	if !past_path_info.has(Tile): past_path_info[Tile] = [[], []]
-	past_path_info[Tile][0].append(Units.Tiles.neighbour_rotation(_Tile, Tile))
+	past_path_info[Tile][0].append(Tiles.neighbour_rotation(_Tile, Tile))
 	past_path_info[Tile][1].append(past_path_counter)
 
 func setVisibleState(state: bool) -> void:

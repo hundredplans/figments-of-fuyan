@@ -14,10 +14,10 @@ var LevelUI: LevelUIGD
 var GameState: GameStateGD
 var PlayerManager: PlayerManagerGD
 
-func on_start_phase_start() -> void:
+func onStartPhaseStart() -> void:
 	on_change_energy(Helper.getHeroCardInfo(GameState.hero_id).base_cards[GameState.hero_level].energy - 1)
 
-func on_hand_phase_start() -> void:
+func onHandPhaseStart() -> void:
 	card_selected_index = -1
 	
 	if !ignore_first_hand_phase:
@@ -33,7 +33,7 @@ func on_is_card_playable(hand_card: HandCardGD) -> bool:
 func on_get_child_index(child: Node) -> int:
 	return child.get_index()
 
-func on_player_phase_start() -> void:
+func onPlayerPhaseStart() -> void:
 	card_selected_index = -1
 
 func on_draw_card(deck_card: DeckCardGD) -> void:

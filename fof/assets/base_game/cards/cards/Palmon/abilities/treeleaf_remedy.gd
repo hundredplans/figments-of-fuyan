@@ -18,11 +18,11 @@ func onTargetAbility() -> void:
 
 @export var HEAL_UNIT_BEFORE_ODDS: float = 0.3
 func onTargetAbilityConditionAI() -> TileGD:
-	var units: Array = onAffectedUnits().filter(func(x: UnitGD): return x.turn_status == "TurnUnused")
+	var units: Array = onAffectedUnits().filter(func(x: UnitGD): return x.turn_status == UnitGD.TURN_UNUSED)
 	var _Tile: TileGD = onCanHealUnitsAI(units)
 	if _Tile != null: return _Tile
 	elif randf() < HEAL_UNIT_BEFORE_ODDS:
-		units = onAffectedUnits().filter(func(x: UnitGD): return x.turn_status == "TurnUsed")
+		units = onAffectedUnits().filter(func(x: UnitGD): return x.turn_status == UnitGD.TURN_USED)
 		return onCanHealUnitsAI(units)
 	return null
 

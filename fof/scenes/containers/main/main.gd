@@ -190,7 +190,9 @@ func on_load_world(world: Node3D) -> void:
 		World.get_node("Scene").add_child(world)
 
 func load_general_world() -> void:
-	$World/General.add_child(load("res://assets/env/main_menu/" + str(Settings.equipped_theme) + ".tscn").instantiate())
+	var DIR_PATH: String = "res://assets/env/main_menu/" + str(Settings.equipped_theme) + ".tscn"
+	var world: Node3D = load(DIR_PATH).instantiate()
+	$World/General.add_child(world)
 	on_equip_sky(Settings.equipped_theme, true)
 
 func on_equip_sky(value: int, is_theme: bool) -> void:

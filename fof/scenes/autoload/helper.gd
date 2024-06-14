@@ -585,3 +585,12 @@ func getFofInfo(condition: Variant, info_type: String = "card", match_by: String
 				if condition == info[match_by]:
 					return info
 	return null
+
+var references: Array = []
+func setUtilityNodesPaths(_references: Array) -> void:
+	references = _references
+	for child in references: onCreateChildReferences(child)
+	
+func onCreateChildReferences(obj: Object) -> void:
+	for child in references.filter(func(x: Node): return x.name in obj):
+		if child != obj: obj[child.name] = child

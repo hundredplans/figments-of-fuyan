@@ -1,0 +1,426 @@
+[gd_scene load_steps=21 format=3 uid="uid://c58jdx2o7cfwc"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/unit_status.gd" id="1_q5ivk"]
+[ext_resource type="Texture2D" uid="uid://b0hfj23m52s2r" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/unit_status_pieces/status_white.png" id="2_atxq7"]
+[ext_resource type="Texture2D" uid="uid://dr6tmi3ckdsvk" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/unit_status_pieces/light_mask.png" id="3_t47qj"]
+[ext_resource type="Texture2D" uid="uid://bgts82p0ip45a" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/unit_status_pieces/shifting_background.png" id="4_gqfdn"]
+[ext_resource type="Texture2D" uid="uid://o2y0lth6qfc2" path="res://assets/base_game/cards/cards/FredericTheFearless/art_mini.png" id="5_iaha4"]
+[ext_resource type="Texture2D" uid="uid://dr4ojvlaol232" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/unit_status_pieces/status_in.png" id="6_ca4k8"]
+[ext_resource type="Texture2D" uid="uid://dqwa4ewr44mxc" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/unit_status_pieces/status_gem.png" id="7_fq42n"]
+[ext_resource type="Material" uid="uid://ft8je82hjek6" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/move_slight.tres" id="8_vdk02"]
+[ext_resource type="Texture2D" uid="uid://bq7oil2dvc6bs" path="res://assets/base_game/cards/game_card/art/bbcode/ATTACK.png" id="9_w8xwc"]
+[ext_resource type="LabelSettings" uid="uid://x63q2nfy4si3" path="res://assets/UI/sixty_four/sixty_four_medium.tres" id="10_icn1k"]
+[ext_resource type="Texture2D" uid="uid://cor7udw0x0ufw" path="res://assets/base_game/cards/game_card/art/bbcode/HEALTH.png" id="11_5rrr1"]
+[ext_resource type="Texture2D" uid="uid://dkdx58e2117h0" path="res://assets/base_game/cards/game_card/art/bbcode/SPEED.png" id="12_83knw"]
+[ext_resource type="PackedScene" uid="uid://dimwtppnu0iwf" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/hover_card.tscn" id="13_nt1ss"]
+[ext_resource type="Texture2D" uid="uid://bybmcf64yfglo" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/unit_status_pieces/rainbow.png" id="14_63ie2"]
+[ext_resource type="Texture2D" uid="uid://c887ujblogwhg" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/unit_status_pieces/zzz.png" id="15_mkbwo"]
+[ext_resource type="Texture2D" uid="uid://c5djmy1cuho42" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/page_arrow/arrow.png" id="16_mgl7r"]
+[ext_resource type="Texture2D" uid="uid://cmmd50dj6o80a" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/page_arrow/arrow_hover.png" id="17_hw875"]
+[ext_resource type="Texture2D" uid="uid://mll08lhop3e4" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/page_arrow/arrow_disabled.png" id="18_qytf8"]
+
+[sub_resource type="Animation" id="Animation_ix7td"]
+resource_name = "ScaleStatSlight"
+length = 5.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Stats/Attack/AttackSprite:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2.5, 5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.1, 1.1), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Stats/Health/HealthSprite:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2.5, 5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.1, 1.1), Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Stats/Speed/SpeedSprite:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 2.5, 5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.1, 1.1), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_iq8mx"]
+_data = {
+"ScaleStatSlight": SubResource("Animation_ix7td")
+}
+
+[node name="UnitStatus" type="Control"]
+custom_minimum_size = Vector2(380, 130)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 380.0
+offset_bottom = 120.0
+mouse_filter = 2
+script = ExtResource("1_q5ivk")
+
+[node name="Background" type="Control" parent="."]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 0
+offset_left = 19.0
+offset_top = 15.0
+offset_right = 372.0
+offset_bottom = 115.0
+mouse_filter = 2
+
+[node name="SelectedMask" type="TextureButton" parent="Background"]
+unique_name_in_owner = true
+light_mask = 32
+texture_filter = 1
+layout_mode = 0
+offset_left = -5.0
+offset_right = 355.0
+offset_bottom = 100.0
+mouse_filter = 1
+texture_normal = ExtResource("2_atxq7")
+
+[node name="LightMask" type="Sprite2D" parent="Background"]
+clip_children = 2
+texture_filter = 1
+position = Vector2(175, 50)
+texture = ExtResource("3_t47qj")
+region_enabled = true
+region_rect = Rect2(-0.328911, -0.118393, 360.329, 100.118)
+
+[node name="ShiftingBackground" type="Sprite2D" parent="Background/LightMask"]
+unique_name_in_owner = true
+light_mask = 0
+visibility_layer = 2
+texture_filter = 1
+texture_repeat = 2
+position = Vector2(4, 0)
+texture = ExtResource("4_gqfdn")
+
+[node name="ArtPop" type="TextureButton" parent="Background"]
+unique_name_in_owner = true
+texture_filter = 1
+use_parent_material = true
+clip_contents = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.017
+anchor_top = -0.056
+anchor_right = 1.017
+anchor_bottom = -0.056
+offset_left = -354.001
+offset_top = 15.6
+offset_right = -274.001
+offset_bottom = 95.6
+mouse_filter = 1
+texture_normal = ExtResource("5_iaha4")
+
+[node name="In" type="Sprite2D" parent="Background"]
+unique_name_in_owner = true
+texture_filter = 1
+position = Vector2(175, 50)
+texture = ExtResource("6_ca4k8")
+
+[node name="Gem" type="Sprite2D" parent="Background"]
+unique_name_in_owner = true
+use_parent_material = true
+position = Vector2(340, 49)
+texture = ExtResource("7_fq42n")
+
+[node name="Stats" type="Control" parent="."]
+unique_name_in_owner = true
+material = ExtResource("8_vdk02")
+layout_mode = 1
+anchors_preset = 0
+offset_left = 110.0
+offset_top = 31.0
+offset_right = 263.0
+offset_bottom = 111.0
+mouse_filter = 2
+
+[node name="Attack" type="Control" parent="Stats"]
+use_parent_material = true
+layout_mode = 2
+anchors_preset = 0
+offset_left = -1.0
+offset_top = 2.0
+offset_right = 44.0
+offset_bottom = 82.0
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="NextTurnStats" type="HBoxContainer" parent="Stats/Attack"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = -7.0
+offset_right = 41.0
+offset_bottom = 9.0
+mouse_filter = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="Attack" type="TextureRect" parent="Stats/Attack/NextTurnStats"]
+visible = false
+texture_filter = 1
+layout_mode = 2
+
+[node name="AttackSprite" type="Sprite2D" parent="Stats/Attack"]
+unique_name_in_owner = true
+texture_filter = 1
+use_parent_material = true
+position = Vector2(20, 26.2084)
+scale = Vector2(1.08241, 1.08241)
+texture = ExtResource("9_w8xwc")
+
+[node name="Label" type="Label" parent="Stats/Attack"]
+texture_filter = 1
+use_parent_material = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.006
+anchor_right = 0.1
+anchor_bottom = 0.006
+offset_left = -17.5
+offset_top = 37.52
+offset_right = 52.5
+offset_bottom = 77.52
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(35, 20)
+text = "1"
+label_settings = ExtResource("10_icn1k")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Health" type="Control" parent="Stats"]
+use_parent_material = true
+layout_mode = 2
+anchors_preset = 0
+offset_left = 53.0
+offset_top = 5.0
+offset_right = 99.0
+offset_bottom = 85.0
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="NextTurnStats" type="HBoxContainer" parent="Stats/Health"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = -10.0
+offset_right = 39.0
+offset_bottom = 6.0
+mouse_filter = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="Health" type="TextureRect" parent="Stats/Health/NextTurnStats"]
+visible = false
+texture_filter = 1
+layout_mode = 2
+
+[node name="Heal" type="TextureRect" parent="Stats/Health/NextTurnStats"]
+visible = false
+texture_filter = 1
+layout_mode = 2
+
+[node name="HealthSprite" type="Sprite2D" parent="Stats/Health"]
+unique_name_in_owner = true
+texture_filter = 1
+use_parent_material = true
+position = Vector2(21, 23.2084)
+scale = Vector2(1.08241, 1.08241)
+texture = ExtResource("11_5rrr1")
+
+[node name="Label" type="Label" parent="Stats/Health"]
+texture_filter = 1
+use_parent_material = true
+layout_mode = 1
+anchors_preset = -1
+offset_left = -14.0
+offset_top = 36.0
+offset_right = 56.0
+offset_bottom = 76.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(35, 20)
+text = "2"
+label_settings = ExtResource("10_icn1k")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Speed" type="Control" parent="Stats"]
+use_parent_material = true
+layout_mode = 2
+anchors_preset = 0
+offset_left = 107.0
+offset_top = 3.0
+offset_right = 153.0
+offset_bottom = 83.0
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="NextTurnStats" type="HBoxContainer" parent="Stats/Speed"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = -8.0
+offset_right = 37.0
+offset_bottom = 8.0
+mouse_filter = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="Speed" type="TextureRect" parent="Stats/Speed/NextTurnStats"]
+visible = false
+texture_filter = 1
+layout_mode = 2
+
+[node name="SpeedSprite" type="Sprite2D" parent="Stats/Speed"]
+unique_name_in_owner = true
+texture_filter = 1
+use_parent_material = true
+position = Vector2(20, 24.2084)
+scale = Vector2(1.08241, 1.08241)
+texture = ExtResource("12_83knw")
+
+[node name="Label" type="Label" parent="Stats/Speed"]
+texture_filter = 1
+use_parent_material = true
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.006
+anchor_bottom = 0.006
+offset_left = -14.0
+offset_top = 37.52
+offset_right = 56.0
+offset_bottom = 77.52
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(35, 20)
+text = "2"
+label_settings = ExtResource("10_icn1k")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TargetAbilities" type="HBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 0.999998
+offset_top = 90.0
+offset_right = 117.0
+offset_bottom = 124.0
+scale = Vector2(1.2, 1.2)
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="HoverCard" parent="." node_paths=PackedStringArray("ArtPop") instance=ExtResource("13_nt1ss")]
+ArtPop = NodePath("../Background/ArtPop")
+
+[node name="ExtraEffects" type="Sprite2D" parent="."]
+position = Vector2(14, 15)
+
+[node name="RainbowLight" type="PointLight2D" parent="ExtraEffects"]
+unique_name_in_owner = true
+visible = false
+position = Vector2(185, 70)
+scale = Vector2(0.75, 0.75)
+energy = 0.4
+blend_mode = 1
+range_item_cull_mask = 32
+texture = ExtResource("14_63ie2")
+texture_scale = 1.5
+
+[node name="SlotOne" type="Sprite2D" parent="ExtraEffects"]
+unique_name_in_owner = true
+visible = false
+texture_filter = 1
+material = ExtResource("8_vdk02")
+position = Vector2(11, 10)
+texture = ExtResource("15_mkbwo")
+
+[node name="StatusZone" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 266.0
+offset_top = 24.0
+offset_right = 347.0
+offset_bottom = 134.0
+mouse_filter = 2
+
+[node name="UnitFX" type="GridContainer" parent="StatusZone"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 81.0
+offset_bottom = 81.0
+mouse_filter = 2
+theme_override_constants/h_separation = 3
+theme_override_constants/v_separation = 3
+columns = 3
+
+[node name="PageArrows" type="Control" parent="StatusZone"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -23.5
+offset_top = -25.0
+offset_right = 63.5
+offset_bottom = 21.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(0.5, 0.5)
+mouse_filter = 1
+
+[node name="PageArrowLeft" type="TextureButton" parent="StatusZone/PageArrows"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -20.0
+offset_right = 40.0
+offset_bottom = 20.0
+grow_vertical = 2
+texture_normal = ExtResource("16_mgl7r")
+texture_hover = ExtResource("17_hw875")
+texture_disabled = ExtResource("18_qytf8")
+flip_h = true
+
+[node name="PageArrowRight" type="TextureButton" parent="StatusZone/PageArrows"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -20.0
+offset_bottom = 20.0
+grow_horizontal = 0
+grow_vertical = 2
+texture_normal = ExtResource("16_mgl7r")
+texture_hover = ExtResource("17_hw875")
+texture_disabled = ExtResource("18_qytf8")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_iq8mx")
+}

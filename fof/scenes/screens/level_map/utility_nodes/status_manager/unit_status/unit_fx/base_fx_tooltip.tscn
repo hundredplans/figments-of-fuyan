@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://dyl40ms8esuys"]
+
+[ext_resource type="Theme" uid="uid://bhyiyheobours" path="res://scenes/screens/level_ui/panel_theme.tres" id="1_8db78"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/unit_fx/base_fx_tooltip.gd" id="1_tmlqh"]
+[ext_resource type="FontFile" uid="uid://7k4xd8s0oed2" path="res://assets/UI/roboto/roboto.ttf" id="3_shk6d"]
+[ext_resource type="Script" path="res://assets/base_game/oldcards/card_ui/text_processing.gd" id="3_uu37c"]
+
+[node name="BaseFxTooltip" type="PanelContainer"]
+top_level = true
+z_index = 99
+y_sort_enabled = true
+offset_right = 190.0
+offset_bottom = 60.0
+mouse_filter = 2
+theme = ExtResource("1_8db78")
+script = ExtResource("1_tmlqh")
+
+[node name="Label" type="RichTextLabel" parent="." node_paths=PackedStringArray("RichText")]
+custom_minimum_size = Vector2(180, 50)
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("3_shk6d")
+theme_override_font_sizes/normal_font_size = 14
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+autowrap_mode = 2
+script = ExtResource("3_uu37c")
+RichText = NodePath(".")

@@ -14,6 +14,7 @@ var Units: UnitsGD
 var Hand: HandGD
 var Deck: DeckGD
 var PlayerManager: PlayerManagerGD
+var StatusManager: StatusManagerGD
 
 @onready var EnemySpottedArrows: Control = %EnemySpottedArrows
 @onready var DrawCard: Control = %DrawCard
@@ -125,21 +126,14 @@ func on_change_energy(energy: int, is_energy_max: bool) -> void:
 	$Energy/Label.text = str(max(energy, 0))
 	$Energy/Label.modulate = Helper.BASE if !is_energy_max else Helper.YELLOW
 
-func on_player_end_turn_phase_start() -> void:
+func onPlayerEndTurnPhaseStart() -> void:
 	setCornerRightVisibile(false)
 	on_pass_unit_turn_button_state(false)
-	UnitStatusOverlord.onPlayerEndTurnPhaseStart()
 
 @onready var HandBox: Control = %HandBox
 
 func onAfterStartPhaseStart() -> void:
 	PhaseIcon.visible = true
-
-func on_hand_phase_start(skip_hand_phase: bool) -> void:
-	if !skip_hand_phase: on_pin_hand_box_panel()
-	on_set_hand_box_cards_state()
-	ChangePhase.visible = true
-	onChangePhaseIcon("HandPhase")
 
 var playable_cards: Array
 func on_set_hand_box_cards_state() -> void:
@@ -147,7 +141,7 @@ func on_set_hand_box_cards_state() -> void:
 	for i in range(CardBox.get_child_count()):
 		CardBox.get_child(i).on_set_disabled(state or i not in playable_cards)
 	
-func on_player_phase_start() -> void:
+func onPlayerPhaseStart() -> void:
 	if GameCardSelected != null:
 		GameCardSelected.Art.get_node("CardButton").material = null
 		GameCardSelected = null
@@ -272,7 +266,6 @@ func on_tab_pressed() -> void:
 		MoveTween.finished.connect(func(): is_status_box_moving = false; get_viewport().update_mouse_cursor_state())
 
 @onready var UnitStatusState: Control = %UnitStatusState
-@onready var UnitStatusOverlord: Node = %UnitStatusOverlord
 
 func _on_vision_mode_set():
 	Vision.on_vision_mode_set(1 if Vision.vision_mode == 0 else 0)
@@ -284,7 +277,6 @@ func onStartPhaseStart() -> void:
 	ChangePhase.visible = false
 	PhaseIcon.visible = false
 	
-	UnitStatusOverlord.onStartPhaseStart()
 	GreyScale.modulate.a = greyscale_light
 	_on_team_button_item_selected(team_selected)
 	Tiles.console_tile_selected.connect(onSelectTileFinish)
@@ -306,7 +298,6 @@ func onWinGame() -> void:
 func onAIPhaseStart() -> void:
 	ChangePhase.visible = false
 	onChangePhaseIcon("AIPhase")
-	UnitStatusOverlord.onAIPhaseStart()
 
 const PHASE_ICON_CHANGE_DURATION: float = 0.2
 @onready var PhaseIcon: Sprite2D = %PhaseIcon
@@ -327,8 +318,13 @@ func onHandPhaseNoSpawnTiles() -> void:
 	setWarningText(false)
 
 func onHandPhaseStart() -> void:
+	var skip_hand_phase: bool = LevelMap.on_skip_hand_phase_result()
 	ChangePhase.visible = true
 	GreyScale.modulate.a = greyscale_light
+	
+	on_set_hand_box_cards_state()
+	if !skip_hand_phase: on_pin_hand_box_panel(); LevelMap.setActionLock("HandRegular")
+	else: LevelMap.on_advance_game_phase()
 
 var warning_texts: Dictionary = {
 	"SkipAction": "If you perform an action with this unit you will skip another unit's turn!",
@@ -340,9 +336,6 @@ func setWarningText(visibility: bool, text: String = "") -> void:
 	WarningText.visible = visibility
 	if visibility:
 		WarningText.text = warning_texts[text]
-
-func onAIEndTurnPhaseStart() -> void:
-	UnitStatusOverlord.onAIEndTurnPhaseStart()
 
 var TileHoveredGameCard: Control
 const TILE_HOVERED_DELAY: float = 0.6
@@ -358,7 +351,7 @@ func onCreateTileHoveredGameCard(Unit: UnitGD) -> void:
 	TileHoveredGameCard = preload("res://scenes/screens/level_ui/tile_hovered_game_card.tscn").instantiate()
 	add_child(TileHoveredGameCard)
 	TileHoveredGameCard.setUnit(Unit)
-	UnitStatusOverlord.onCreateTileHoveredUnitStatus(Unit)
+	StatusManager.onCreateTileHoveredUnitStatus(Unit)
 	onMoveTileHoveredGameCard()
 	
 var TILE_HOVERED_CARD_OFFSET := Vector2(-175, -600)
@@ -370,7 +363,7 @@ func onMoveTileHoveredGameCard() -> void:
 func onQueueTileHoveredGameCard() -> void:
 	if TileHoveredGameCard != null:
 		TileHoveredGameCard.queue_free()
-		UnitStatusOverlord.onRemoveTileHoveredUnitStatus(TileHoveredGameCard.Unit)
+		StatusManager.onRemoveTileHoveredUnitStatus(TileHoveredGameCard.Unit)
 
 func onSelectTileConsoleMode() -> void:
 	setWarningText(true, "ConsoleActive")
@@ -445,7 +438,7 @@ func onUpdateAbilityCharges(Unit: UnitGD) -> void:
 		elif ability.charges < ability.max_charges: color = "YELLOW"
 		if color != "BASE": ability_color_replace.append([ability.ability_index, color, ability.charges])
 		if ability is TargetAbilityGD:
-			onUpdateTargetAbility(Unit, ability)
+			StatusManager.onUpdateTargetAbility(Unit, ability)
 	
 	var new_text: String = Unit.base_text
 	for info in ability_color_replace:
@@ -461,10 +454,7 @@ func onUpdateTargetAbilities() -> void:
 	for Unit in Units.on_units():
 		for ability in Unit.abilities:
 			if ability is TargetAbilityGD:
-				onUpdateTargetAbility(Unit, ability)
-	
-func onUpdateTargetAbility(Unit: UnitGD, ability: TargetAbilityGD) -> void:
-	UnitStatusOverlord.onUpdateTargetAbility(Unit, ability)
+				StatusManager.onUpdateTargetAbility(Unit, ability)
 
 func on_camera_mode_pressed():
 	SpectateCamera.onChangeCameraMode(!SpectateCamera.is_unit_camera)
@@ -501,7 +491,7 @@ func onIncentivisePassTurn(Unit: UnitGD) -> void:
 		RotateTween.finished.connect(func(): is_incentivise = false)
 
 func onEnemySpotted(Unit: UnitGD, _Spotter: UnitGD) -> void:
-	var arrow: Node2D = preload("res://scenes/screens/level_ui/unit_status/enemy_spotted_arrow/enemy_spotted_arrow.tscn").instantiate()
+	var arrow: Node2D = preload("res://scenes/screens/level_ui/enemy_spotted_arrow/enemy_spotted_arrow.tscn").instantiate()
 	EnemySpottedArrows.add_child(arrow)
 	arrow.setInfo(SpectateCamera.Camera, Unit.global_position)
 	arrow.destroy_arrow.connect(onDestroySpottedArrow.bind(Unit))

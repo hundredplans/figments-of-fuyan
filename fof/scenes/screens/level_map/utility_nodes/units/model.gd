@@ -82,7 +82,7 @@ func on_finish_animation(ani_name: String) -> void:
 		"Hurt": hurt_finished.emit();
 
 var materials: Array = []
-const DEFAULT_MULT_VALUE: float = 5
+const DEFAULT_MULT_VALUE: float = 1
 func onCreateBaseMaterials() -> void:
 	if Unit != null:
 		var next_pass: Material = load("res://assets/materials/unit_material/unit_material_outline.tres").duplicate()
@@ -258,7 +258,7 @@ func getRotationPoint(xyz: Vector3, r: float, pos: Vector3) -> Vector3:
 func setVisible(state: bool) -> void:
 	mesh.visible = state
 	Unit.UnitVFX.visible = state
-	Unit.Units.LevelUI.UnitStatusOverlord.setUnitStatusVisible(Unit, state)
+	Unit.StatusManager.setUnitStatusVisible(Unit, state)
 	Unit.setVisibleState(state)
 	onSetShaderParameter(0)
 	

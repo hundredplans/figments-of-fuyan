@@ -1,0 +1,23 @@
+body {
+    background-color: sienna;
+}
+
+#classes{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-template-rows: auto auto;
+    gap: 2vw;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+}
+
+#classes > div > button {
+    color: white;
+    font-size: 3vw;
+    width: 30vw;
+    background-color: sandybrown;
+    border-width: 0.3vw;
+    border-radius: 1vw;
+    border-color: saddlebrown;
+}

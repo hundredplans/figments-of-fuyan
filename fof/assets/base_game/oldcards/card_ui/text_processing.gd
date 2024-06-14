@@ -1,6 +1,8 @@
 extends Node
+@export var RichText: RichTextLabel
 
-@export var CardUI: Control
+func _ready() -> void:
+	if RichText: RichText.text = on_apply_text_processing(RichText.text)
 
 func on_apply_text_processing(text: String) -> String:
 	text = on_replace_att_hp_spd(text)

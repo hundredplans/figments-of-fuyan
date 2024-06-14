@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://b0kr4uhvdhmq3"]
+[gd_scene load_steps=21 format=3 uid="uid://b0kr4uhvdhmq3"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_ui/level_ui.gd" id="1_mmiwi"]
 [ext_resource type="Texture2D" uid="uid://iucmlitjenwl" path="res://assets/base_game/cards/game_card/art/stats/energy.png" id="2_bww7p"]
@@ -13,7 +13,6 @@
 [ext_resource type="Texture2D" uid="uid://b72ifh2nd1wc8" path="res://scenes/screens/level_ui/change_phase/change_phase_disabled.png" id="9_d3rdq"]
 [ext_resource type="Texture2D" uid="uid://dl25aqsdhe6ju" path="res://scenes/screens/level_ui/phase_icon/HandPhase.png" id="13_48llv"]
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="13_v5lxp"]
-[ext_resource type="Script" path="res://scenes/screens/level_ui/unit_status/unit_status_overlord.gd" id="14_kfs5d"]
 [ext_resource type="PackedScene" uid="uid://db4iwvndfcy84" path="res://scenes/screens/level_ui/console/console.tscn" id="14_q1hsx"]
 [ext_resource type="FontFile" uid="uid://bjgvp4yvesp1k" path="res://assets/UI/open_sans/OpenSans-ExtraBold.ttf" id="15_wcrhh"]
 
@@ -491,11 +490,6 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 1
 
-[node name="UnitStatusOverlord" type="Node" parent="." node_paths=PackedStringArray("LevelUI")]
-unique_name_in_owner = true
-script = ExtResource("14_kfs5d")
-LevelUI = NodePath("..")
-
 [node name="AbilityMode" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -631,32 +625,10 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[connection signal="mouse_entered" from="StatusBox" to="." method="on_is_mouse_in_ui" binds= [true]]
-[connection signal="mouse_exited" from="StatusBox" to="." method="on_is_mouse_in_ui" binds= [false]]
-[connection signal="pressed" from="StatusBox/SortMenu/Buttons/TeamContainer/TeamButtonAlly" to="." method="_on_team_button_item_selected" binds= [0]]
-[connection signal="pressed" from="StatusBox/SortMenu/Buttons/TeamContainer/TeamButtonEnemy" to="." method="_on_team_button_item_selected" binds= [1]]
-[connection signal="pressed" from="StatusBox/SortMenu/Buttons/TeamContainer/TeamButtonBoth" to="." method="_on_team_button_item_selected" binds= [2]]
-[connection signal="pressed" from="StatusBox/SortMenu/Buttons/VisionContainer/VisionButtonVision" to="." method="on_vision_selected" binds= [0]]
-[connection signal="pressed" from="StatusBox/SortMenu/Buttons/VisionContainer/VisionButtonEveryone" to="." method="on_vision_selected" binds= [1]]
-[connection signal="mouse_entered" from="CornerRightMenu/GlobalCamera" to="." method="on_is_mouse_in_ui" binds= [true]]
-[connection signal="mouse_exited" from="CornerRightMenu/GlobalCamera" to="." method="on_is_mouse_in_ui" binds= [false]]
 [connection signal="pressed" from="CornerRightMenu/GlobalCamera/Button" to="." method="on_camera_mode_pressed"]
-[connection signal="mouse_entered" from="CornerRightMenu/VisionMode" to="." method="on_is_mouse_in_ui" binds= [true]]
-[connection signal="mouse_exited" from="CornerRightMenu/VisionMode" to="." method="on_is_mouse_in_ui" binds= [false]]
 [connection signal="pressed" from="CornerRightMenu/VisionMode/Button" to="." method="_on_vision_mode_set"]
-[connection signal="mouse_entered" from="CornerRightMenu/CameraArrows" to="." method="on_is_mouse_in_ui" binds= [true]]
-[connection signal="mouse_exited" from="CornerRightMenu/CameraArrows" to="." method="on_is_mouse_in_ui" binds= [false]]
-[connection signal="pressed" from="CornerRightMenu/CameraArrows/LeftArrow" to="." method="on_camera_arrow_pressed" binds= [-1]]
-[connection signal="pressed" from="CornerRightMenu/CameraArrows/RightArrow" to="." method="on_camera_arrow_pressed" binds= [1]]
-[connection signal="mouse_entered" from="Energy" to="." method="on_is_mouse_in_ui" binds= [true]]
-[connection signal="mouse_exited" from="Energy" to="." method="on_is_mouse_in_ui" binds= [false]]
 [connection signal="mouse_entered" from="HandBox" to="." method="on_extend_hand_box"]
-[connection signal="mouse_entered" from="HandBox" to="." method="on_is_mouse_in_ui" binds= [true]]
 [connection signal="mouse_exited" from="HandBox" to="." method="on_unextend_hand_box"]
-[connection signal="mouse_exited" from="HandBox" to="." method="on_is_mouse_in_ui" binds= [false]]
 [connection signal="child_entered_tree" from="HandBox/CardClipper" to="." method="_on_card_clipper_child_entered_tree"]
 [connection signal="mouse_entered" from="ChangePhaseManager/ChangePhase" to="." method="onPlayHoverChangePhase"]
-[connection signal="mouse_entered" from="ChangePhaseManager/ChangePhase" to="." method="on_is_mouse_in_ui" binds= [true]]
-[connection signal="mouse_exited" from="ChangePhaseManager/ChangePhase" to="." method="on_is_mouse_in_ui" binds= [false]]
-[connection signal="mouse_exited" from="ChangePhaseManager/ChangePhase" to="." method="onPlayHoverChangePhase" binds= [false]]
 [connection signal="pressed" from="ChangePhaseManager/ChangePhase/PassUnitTurn" to="." method="onPassUnitTurnButtonPressed"]

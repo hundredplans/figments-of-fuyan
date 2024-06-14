@@ -1,7 +1,6 @@
 extends OngoingAbilityGD
 
 var on_delay_remove: bool = false
-
 func onFindCocusPocus() -> AbilityGD:
 	for ability in Unit.abilities:
 		if ability.ability_name == "Cocus Pocus":
@@ -69,11 +68,11 @@ func onOngoingAbility() -> void:
 	for info in trigger_info:
 		var _Unit: UnitGD = info[0]
 		if info[1]:
-			LevelUI.UnitStatusOverlord.onAddUnitFX(_Unit, "CocusPocus", AppliedBy)
+			StatusManager.onAddUnitFX(_Unit, "CocusPocus", AppliedBy)
 			VFX.onCreateCocusPocus(_Unit, Unit)
 			affected_units.append(_Unit)
 		else:
-			LevelUI.UnitStatusOverlord.onRemoveUnitFX(_Unit, "CocusPocus", AppliedBy)
+			StatusManager.onRemoveUnitFX(_Unit, "CocusPocus", AppliedBy)
 			affected_units.erase(_Unit)
 			
 			if !on_delay_remove: VFX.onRemoveCocusPocus(_Unit, Unit)

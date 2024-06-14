@@ -14,6 +14,7 @@ var LevelUI: LevelUIGD
 var Combat: CombatGD
 var AIManager: AIManagerGD
 var PlayerManager: PlayerManagerGD
+var StatusManager: StatusManagerGD
 
 @onready var Postmortem: Node3D = $Postmortem
 @onready var FieldedUnits: Node3D = $FieldedUnits
@@ -29,10 +30,6 @@ func onUnitAwakened(id: int, tool_id: int, effects: Array, team: int, rot: int, 
 func onUnitAwakenedLoad(id: int, tool_id: int, effects: Array, team: int, rot: int, tile: TileGD) -> UnitGD:
 	if !unit_by_tile_bool(tile):
 		var Unit: UnitGD = UnitScene.instantiate()
-		Unit.Units = self
-		Unit.Vision = Vision
-		Unit.SpectateCamera = SpectateCamera
-		Unit.Tiles = Tiles
 		FieldedUnits.add_child(Unit)
 		Unit.onUnitAwakened(id, tool_id, effects, team, rot, tile)
 		Unit.Model.movement_finished.connect(onUnitMovementFinished.bind(Unit))
@@ -40,7 +37,7 @@ func onUnitAwakenedLoad(id: int, tool_id: int, effects: Array, team: int, rot: i
 		Unit.Model.attack_finished.connect(on_attack_finished.bind(Unit))
 		Unit.Model.death_finished.connect(on_death_finished.bind(Unit))
 		Unit.Model.hurt_finished.connect(on_hurt_finished.bind(Unit))
-		LevelUI.UnitStatusOverlord.onUnitAwakened(Unit)
+		StatusManager.onUnitAwakened(Unit)
 		Unit.onChangeTile(tile)
 		return Unit
 	return null
@@ -50,11 +47,17 @@ func onUnitAwakenedProcess(Unit: UnitGD, Tile: TileGD) -> void:
 	Unit.on_arrive(Unit.team == 0 or Unit.getVisibleEnemies().size() > 0)
 	Unit.finished_awakening = true
 	Combat.onArrive(Unit)
+	onArrive(Unit)
 	PlayerManager.onSetupAllyPassedTurns(Unit)
 	Combat.onRecalculateTargetAbilities()
 	await get_tree().process_frame
 	Unit.occupy_tile(Tile)
 	AIManager.getDangerList(Unit, all_units())
+	
+func onArrive(Unit: UnitGD) -> void:
+	for ability in Unit.abilities:
+		if ability is ArmorGD:
+			StatusManager.onAddUnitFX(Unit, "Armor", AppliedByGD.new("Ability"), ability.armor)
 	
 func onMassUnitsAwakened(tiles: Array, enemy_ids: Array) -> void:
 	var units: Array = []
@@ -62,7 +65,7 @@ func onMassUnitsAwakened(tiles: Array, enemy_ids: Array) -> void:
 		units.append(onUnitAwakenedLoad(enemy_ids[i], 0, [], 1, tiles[i].obj.rotation, tiles[i]))
 	for i in range(tiles.size()): onUnitAwakenedProcess(units[i], tiles[i])
 
-func on_start_phase_start() -> void:
+func onStartPhaseStart() -> void:
 	var allowed_spawns: Array = range(7, 25)
 	var enemy_tiles: Array = Tiles.on_is_type_get_tiles("Enemy", "obj")
 	var enemy_spawns: Array = []
@@ -71,10 +74,10 @@ func on_start_phase_start() -> void:
 		enemy_spawns.append(allowed_spawns[randi() % allowed_spawns.size()])
 	onMassUnitsAwakened(enemy_tiles, enemy_spawns)
 	
-func on_player_phase_start() -> void:
+func onPlayerPhaseStart() -> void:
 	PlayerManager.on_player_phase_start()
 
-func on_player_end_turn_phase_start() -> void:
+func onPlayerEndTurnPhaseStart() -> void:
 	PlayerManager.on_player_end_turn_phase_start()
 
 func unit_by_tile_team_bool(Tile: TileGD, team: int) -> bool:
@@ -137,7 +140,7 @@ func _process(_delta: float) -> void:
 		else: onArgDelay()
 
 func onAIMoveFinish() -> void:
-	if !active_action.Unit.is_dead: setUnitStatus(active_action.Unit, "TurnUsed")
+	if !active_action.Unit.is_dead: setUnitStatus(active_action.Unit, UnitGD.TURN_USED)
 	if unit_actions.is_empty():
 		if active_action.movement_path == null or !active_action.movement_path.vis_array\
 		.all(func(x: VisInfoGD): return x.total_vision == VisInfoGD.INVISIBLE):
@@ -321,7 +324,6 @@ func onAttackEnemy(Unit: UnitGD, Tile: TileGD) -> bool:
 		var enemies: Array = on_units(TeamRelationGD.new(Unit.team, "Enemy"))
 		for _Unit in enemies:
 			if Tile == _Unit.Tile:
-				PlayerManager.on_select_active_unit(Unit)
 				_attack_enemy(Unit, _Unit, Tile)
 				SpectateCamera.onSpectate(Unit)
 				break
@@ -382,7 +384,7 @@ func hurt_unit(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	
 func on_death() -> void:
 	active_action.Deather.Model.on_death()
-	LevelUI.UnitStatusOverlord.onDeathBegin(active_action.Deather, DEATH_AFTER_DELAY)
+	StatusManager.onDeathBegin(active_action.Deather, DEATH_AFTER_DELAY)
 	LevelMap.setActionLock("UnitActionRegular")
 	
 func on_hurt() -> void:
@@ -396,7 +398,7 @@ func on_death_finished(Unit: UnitGD) -> void:
 	var AppliedBy: AppliedByGD = active_action.AppliedBy
 	SpectateCamera.invisible_unit_stop_track = true
 	
-	LevelUI.UnitStatusOverlord.onDeathFinished(Unit)
+	StatusManager.onDeathFinished(Unit)
 	await Unit.on_death()
 	
 	var win_state: int = 1 if on_units(TeamRelationGD.new(1)).is_empty() else (2 if on_units().is_empty() else 0)
@@ -458,9 +460,9 @@ func onAIMoveFinisher(Unit: UnitGD, movement_path: MovementPathGD = null) -> voi
 		"movement_path": movement_path
 	})
 
-func setUnitStatus(Unit: UnitGD, status: String) -> void:
-	LevelUI.UnitStatusOverlord.setUnitStatusTurnStatus(Unit, status)
-	if status == "TurnUsed":
+func setUnitStatus(Unit: UnitGD, status: int) -> void:
+	StatusManager.setUnitStatusTurnStatus(Unit, status)
+	if status == UnitGD.TURN_USED:
 		GameEffects.onTriggerUnitGameFX(Unit, TriggerGD.TURN_PASSED)
 
 func setPastPath(Unit: UnitGD, state: bool) -> void:

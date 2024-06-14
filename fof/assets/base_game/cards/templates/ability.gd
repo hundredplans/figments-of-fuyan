@@ -18,10 +18,13 @@ var Units: UnitsGD
 var Vision: VisionGD
 var VFX: VFXGD
 var LevelUI: LevelUIGD
+var StatusManager: StatusManagerGD
+
+func _init() -> void: Helper.onCreateChildReferences(self)
 
 func onGainStats(Unit: UnitGD, stat_type: String, val: int, AppliedBy: AppliedByGD) -> void:
 	Unit.stats(stat_type, val, AppliedBy)
 	
-func onAbilityDelay(callable: Callable, delay: float = 2) -> void:
-	await Units.get_tree().create_timer(delay).timeout
+func onAbilityDelay(callable: Callable, _delay: float = 2) -> void:
+	await Units.get_tree().create_timer(_delay).timeout
 	callable.call()

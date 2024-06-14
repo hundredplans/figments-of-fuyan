@@ -10,6 +10,7 @@ var LevelUI: LevelUIGD
 var LevelMap: LevelMapGD
 var Tiles: TilesGD
 var PlayerManager: PlayerManagerGD
+var StatusManager: StatusManagerGD
 
 var OriginalSpectateUnit: UnitGD
 var ability_chain: Array = []
@@ -67,7 +68,7 @@ func onTargetAbility(Unit: UnitGD, ability: TargetAbilityGD, Tile: TileGD) -> vo
 		InitialTeleport = null
 	onTriggerAbilitySpectateDelay(Unit, ability, ability.onTargetAbility, InitialTeleport)
 	ability.used = true
-	LevelUI.onUpdateTargetAbility(Unit, ability)
+	StatusManager.onUpdateTargetAbility(Unit, ability)
 	PlayerManager.on_select_active_unit(Unit)
 	PlayerManager._on_unit_deselected(Unit)
 	
@@ -205,26 +206,26 @@ func onRecalculateTargetAbilities() -> void:
 		for ability in abilities:
 			ability.onTargetAbilityCondition()
 			ability.can_affect = !ability.tiles["affect"].is_empty()
-			LevelUI.onUpdateTargetAbility(Unit, ability)
+			StatusManager.onUpdateTargetAbility(Unit, ability)
 
 func onStagger(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	GameEffects.onAddGameFX(Unit, GameFXGD.STAGGER, {"AppliedBy": AppliedBy})
 	VFX.onCreateUnitVFX(Unit, "Stagger")
-	LevelUI.UnitStatusOverlord.onAddUnitFX(Unit, "Stagger")
-	LevelUI.UnitStatusOverlord.onUpdateUnitTargetAbilities(Unit)
+	StatusManager.onAddUnitFX(Unit, "Stagger")
+	StatusManager.onUpdateUnitTargetAbilities(Unit)
 
 func onRemoveStagger(GameFX: GameFXGD) -> void:
 	VFX.onRemoveUnitVFX(GameFX.Unit, "Stagger")
-	LevelUI.UnitStatusOverlord.onRemoveUnitFX(GameFX.Unit, "Stagger")
+	StatusManager.onRemoveUnitFX(GameFX.Unit, "Stagger")
 
 func onDaze(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	GameEffects.onAddGameFX(Unit, GameFXGD.DAZE, {"AppliedBy": AppliedBy})
 	VFX.onCreateUnitVFX(Unit, "Daze")
-	LevelUI.UnitStatusOverlord.onAddUnitFX(Unit, "Daze")
+	StatusManager.onAddUnitFX(Unit, "Daze")
 	
 func onRemoveDaze(GameFX: GameFXGD) -> void:
 	VFX.onRemoveUnitVFX(GameFX.Unit, "Daze")
-	LevelUI.UnitStatusOverlord.onRemoveUnitFX(GameFX.Unit, "Daze")
+	StatusManager.onRemoveUnitFX(GameFX.Unit, "Daze")
 	
 func onStun(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	onStagger(Unit, AppliedBy)
@@ -245,7 +246,7 @@ func isDazed(Unit: UnitGD) -> bool:
 
 func isAbilityEnabled(Unit: UnitGD, ability: TargetAbilityGD) -> bool:
 	return ability.can_affect and !ability.used and ability.charges != 0 and\
-	!isStaggered(Unit) and Unit.turn_status == "TurnUnused"\
+	!isStaggered(Unit) and Unit.turn_status == UnitGD.TURN_UNUSED\
 	and (LevelMap.game_phase == "PlayerPhase" and Unit.team == 0 or (LevelMap.game_phase == "AIPhase" and Unit.team == 1))
 
 func onBuffInfo(buff_info: BuffInfoGD) -> void:
@@ -253,7 +254,7 @@ func onBuffInfo(buff_info: BuffInfoGD) -> void:
 
 func onRemoveBuffNextTurn(a: Dictionary) -> void:
 	for buff_info in a.buff_info_array.array: onBuffInfo(buff_info)
-	LevelUI.UnitStatusOverlord.onRemoveBuffNextTurn(a.buff_info_array)
+	StatusManager.onRemoveBuffNextTurn(a.buff_info_array)
 
 func onApplyBuffNextTurn(buff_info: BuffInfoGD, triggers: Array = []) -> void:
 	onBuffInfo(buff_info)
@@ -264,7 +265,7 @@ func onApplyHealNextTurn(heal_info: HealInfoGD, triggers: Array = []) -> void:
 	GameEffects.onAddGameFX(heal_info.Healee, GameFXGD.HEAL_NEXT_TURN, {"heal_info": heal_info}, triggers)
 
 func onRemoveHealNextTurn(heal_info_array: HealInfoArrayGD) -> void:
-	LevelUI.UnitStatusOverlord.onRemoveHealNextTurn(heal_info_array)
+	StatusManager.onRemoveHealNextTurn(heal_info_array)
 	for heal_info in heal_info_array.array: onHeal(heal_info)
 	
 func onCreateBuffInfoArray(array: Array) -> BuffInfoArrayGD:

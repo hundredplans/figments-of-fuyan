@@ -33,11 +33,11 @@ func onOngoingAbility() -> void:
 	for info in trigger_info: # [0] = Unit, [1] = apply buff / debuff
 		var _Unit: UnitGD = info[0]
 		if info[1]:
-			LevelUI.UnitStatusOverlord.onAddUnitFX(_Unit, "PalmfessorOngoingAbility", AppliedBy)
+			StatusManager.onAddUnitFX(_Unit, "PalmfessorOngoingAbility", AppliedBy)
 			onGainStats(_Unit, "attack", ATTACK, AppliedBy)
 			affected_units.append(_Unit)
 		else:
-			LevelUI.UnitStatusOverlord.onRemoveUnitFX(_Unit, "PalmfessorOngoingAbility", AppliedBy)
+			StatusManager.onRemoveUnitFX(_Unit, "PalmfessorOngoingAbility", AppliedBy)
 			onGainStats(_Unit, "attack", ATTACK * -1, AppliedBy)
 			affected_units.erase(_Unit)
 		
