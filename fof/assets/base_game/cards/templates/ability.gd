@@ -19,6 +19,7 @@ var Vision: VisionGD
 var VFX: VFXGD
 var LevelUI: LevelUIGD
 var StatusManager: StatusManagerGD
+var AIManager: AIManagerGD
 
 func _init() -> void: Helper.onCreateChildReferences(self)
 

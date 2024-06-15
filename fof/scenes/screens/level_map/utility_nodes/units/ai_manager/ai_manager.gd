@@ -99,30 +99,20 @@ func onEnemyInVisionMovement(Unit: UnitGD, visible_enemies: Array = Unit.getVisi
 	
 func onRollEnemyInVisionMovement(Unit: UnitGD, visible_enemies: Array) -> MovementPathGD:
 	var movement_paths: Array = onRemoveLethalMovementPaths(Unit, Tiles.onCreateMovementPaths(Unit))
-	var visible_allies: Array = Unit.getVisibleAllies()
 	if movement_paths.size() > 0:
 		if Combat.onCanKillAtFullSpeed(Unit, movement_paths): return onKillMovement(Unit, movement_paths)
 		movement_paths = onRemoveFallMovementPaths(movement_paths)
 		if movement_paths.size() > 0:
-			var is_teamwork: bool = false
-			if visible_allies.size() > 0: is_teamwork = onTeamworkConfidenceRoll(Unit)
-			
-			if is_teamwork: return onTeamworkMovement(Unit, true, movement_paths)
 			if onConfidenceRoll(Unit, visible_enemies.size()): return onRunAtEnemyMovement(Unit, movement_paths, visible_enemies)
 			return onRunAwayMovement(Unit, movement_paths, visible_enemies)
 	return null
 	
 func onConfidenceRoll(Unit: UnitGD, amount: int) -> bool:
+	var can_be_killed: int = -1 if Combat.onCanBeKilledAtFullSpeed(Unit) else 1
 	var plus_amount: int = Unit.getVisibleAllies().size()
 	var confidence: float = Unit.ai.aic
-	confidence = clamp(confidence + 1 - amount + plus_amount, 1, 7)
+	confidence = clamp(confidence + 1 - amount + plus_amount + can_be_killed, 1, 7)
 	return randf() <= ((confidence * 8) + 1) / float(50)
-	
-func onTeamworkConfidenceRoll(Unit: UnitGD) -> bool:
-	var cf: int = int(pow(Unit.ai.aic, 2))
-	var tw: int = int(pow(Unit.ai.ait, 2))
-	var total: int = cf + tw
-	return randf() < tw / float(total)
 	
 func onRemoveLethalMovementPaths(Unit: UnitGD, movement_paths: Array) -> Array:
 	return movement_paths.filter(isMovementPathNonLethal.bind(Unit))
@@ -159,9 +149,12 @@ func onAwarenessRoll(Unit: UnitGD) -> bool:
 	
 func onAwarenessMovementPaths(Unit: UnitGD, movement_paths: Array, visible_enemies: Array) -> Array:
 	var awareness_roll: bool = onAwarenessRoll(Unit)
-	if awareness_roll:
-		var new_paths: Array = movement_paths.filter(onAwarenessTileDistanceToEnemies.bind(visible_enemies))
-		if new_paths.size() > 0: return new_paths
+	if awareness_roll: return onCreateAwarenessPaths(movement_paths, visible_enemies)
+	return movement_paths
+	
+func onCreateAwarenessPaths(movement_paths: Array, visible_enemies: Array) -> Array:
+	var new_paths: Array = movement_paths.filter(onAwarenessTileDistanceToEnemies.bind(visible_enemies))
+	if new_paths.size() > 0: return new_paths
 	return movement_paths
 	
 func onAwarenessTileDistanceToEnemies(movement_path: MovementPathGD, visible_enemies: Array) -> bool:
@@ -170,21 +163,23 @@ func onAwarenessTileDistanceToEnemies(movement_path: MovementPathGD, visible_ene
 			return false
 	return true
 	
-func onTeamworkMovement(Unit: UnitGD, enemy_movement: bool, movement_paths: Array = onRemoveFallMovementPaths(Tiles.onCreateMovementPaths(Unit))) -> MovementPathGD:
-	if enemy_movement: movement_paths = onAwarenessMovementPaths(Unit, movement_paths, Unit.getVisibleEnemies())
+func onTeamworkMovement(Unit: UnitGD, movement_paths: Array = onRemoveFallMovementPaths(Tiles.onCreateMovementPaths(Unit))) -> MovementPathGD:
 	setMoveState(Unit, "TEAMWORK")
 	var visible_allies: Array = Unit.getVisibleAllies()
-	var random_ally: UnitGD = visible_allies[randi() % visible_allies.size()]
 	
-	var paths_with_distance: Dictionary = onLevelMovementPaths(random_ally, movement_paths)
+	var attack_paths: Array = MovementPathGD.onFindAttackPath(movement_paths)
+	attack_paths = attack_paths.filter(onRemoveInvalidAttackPath.bind(visible_allies))
+	if attack_paths.size() > 0: return onIntelligenceAttackPath(Unit, attack_paths)
+	
+	var paths_with_distance: Dictionary = onLevelMovementPaths(visible_allies, movement_paths)
 	var distance: int = onFindTeamworkDistance(Unit)
 	for i in range(7):
 		if distance == i:
 			if paths_with_distance[i].is_empty():
 				distance += 1
 				if distance == 6: return null
-			else:
-				break
+				continue
+			break
 	return paths_with_distance[distance][randi() % paths_with_distance[distance].size()]
 	
 	
@@ -220,35 +215,114 @@ func onRandomMovement(Unit: UnitGD) -> MovementPathGD:
 func onKillMovement(Unit: UnitGD, movement_paths: Array) -> MovementPathGD:
 	setMoveState(Unit, "KILL")
 	var attack_paths: Array = Tiles.onKillMovementPaths(Unit, movement_paths)
-	return attack_paths[randi() % attack_paths.size()]
+	return onIntelligenceAttackPath(Unit, attack_paths)
 	
+enum {
+	OFFENSE,
+	CAUTIOUS,
+	CHARGE
+}
+
+func onRunAtRoll(Unit: UnitGD) -> int:
+	var roll: float = randf()
+	var cautious: int = int(pow(Unit.ai.aiw, 2))
+	var charge: int = int(pow(Unit.ai.aic, 2))
+	var total: int = cautious + charge
+	if Unit.getVisibleAllies().size() > 0:
+		# trifecta between offense (teamwork), cautious (awareness) and charge (confidence)
+		var offense: int = int(pow(Unit.ai.ait, 2))
+		total += offense
+		var segment: float = 1.0 / total
+	
+		if roll < segment * cautious: return CAUTIOUS
+		elif roll < (segment * charge) + (segment * cautious): return CHARGE
+		return OFFENSE
+	return CAUTIOUS if (roll < float(cautious) / total) else CHARGE
 	
 func onRunAtEnemyMovement(Unit: UnitGD, movement_paths: Array, visible_enemies: Array) -> MovementPathGD:
-	movement_paths = onAwarenessMovementPaths(Unit, movement_paths, visible_enemies)
-	setMoveState(Unit, "RUN AT")
+	var run_at_roll: int = onRunAtRoll(Unit)
+	match run_at_roll:
+		OFFENSE: return onOffenseEnemyMovement(Unit, movement_paths, visible_enemies)
+		CAUTIOUS: return onCautiousEnemyMovement(Unit, movement_paths, visible_enemies)
+		_: return onChargeEnemyMovement(Unit, movement_paths, visible_enemies)
+	
+func onRemoveInvalidAttackPath(movement_path: MovementPathGD, visible_allies: Array) -> bool:
+	if visible_allies.size() > 0:
+		visible_allies = visible_allies.map(func(x: UnitGD): return {"distance": Tiles.tile_distance(x.Tile, movement_path.DestinationTile), "Unit": x})
+		visible_allies.sort_custom(func(x: Dictionary, y: Dictionary): return x.distance < y.distance)
+		var closest_ally_info: Dictionary = visible_allies[0]
+		return closest_ally_info.distance <= closest_ally_info.Unit.max_speed
+	return false
+	
+func onIntelligenceAttackPath(Unit: UnitGD, attack_paths: Array) -> MovementPathGD:
+	var danger_list: Array = getDangerList(Unit, MovementPathGD.onFindEnemyInAttackPaths(attack_paths))
+	return MovementPathGD.onFindTile(danger_list[0].Unit.Tile, attack_paths)
+	
+func onOffenseEnemyMovement(Unit: UnitGD, movement_paths: Array, visible_enemies: Array) -> MovementPathGD:
+	setMoveState(Unit, "OFFENSE")
+	var visible_allies: Array = Unit.getVisibleAllies()
+	
+	var attack_paths: Array = MovementPathGD.onFindAttackPath(movement_paths)
+	attack_paths = attack_paths.filter(onRemoveInvalidAttackPath.bind(visible_allies))
+	if attack_paths.size() > 0: return onIntelligenceAttackPath(Unit, attack_paths)
+	
+	var enemy_distances: Array = onCreateAverageDistanceToUnits(movement_paths, visible_enemies)
+	enemy_distances.sort_custom(func(x: Dictionary, y: Dictionary): return x.distance < y.distance)
+	
+	var ally_distances: Array = onCreateAverageDistanceToUnits(movement_paths, visible_allies)
+	ally_distances.sort_custom(func(x: Dictionary, y: Dictionary): return x.distance < y.distance)
+	
+	var total_distances: Array = []
+	for info in ally_distances:
+		for _info in enemy_distances:
+			if _info.movement_path == info.movement_path:
+				total_distances.append({"movement_path": info.movement_path, "distance": info.distance + _info.distance})
+				break
+				
+	total_distances.sort_custom(func(x: Dictionary, y: Dictionary): return x.distance < y.distance)
+	return total_distances[0].movement_path
+	
+func onChargeEnemyMovement(Unit: UnitGD, movement_paths: Array, visible_enemies: Array) -> MovementPathGD:
+	setMoveState(Unit, "CHARGE")
 	var woundable_enemy_paths: Array = []
 	for _Unit in visible_enemies:
 		var movement_path := MovementPathGD.onFindTile(_Unit.Tile, movement_paths)
 		if movement_path != null: woundable_enemy_paths.append(movement_path)
 		
 	if woundable_enemy_paths.size() > 0:
-		return woundable_enemy_paths[randi() % woundable_enemy_paths.size()]
+		return onIntelligenceAttackPath(Unit, woundable_enemy_paths)
 		
 	var tile_distances: Array = onCreateAverageDistanceToUnits(movement_paths, visible_enemies)
 	tile_distances.sort_custom(func(x: Dictionary, y: Dictionary): return x.distance < y.distance)
 	return tile_distances[0].movement_path
 	
+func onCautiousEnemyMovement(Unit: UnitGD, movement_paths: Array, visible_enemies: Array) -> MovementPathGD:
+	setMoveState(Unit, "CAUTIOUS")
+	movement_paths = onCreateAwarenessPaths(movement_paths, visible_enemies)
+	
+	var tile_distances: Array = onCreateAverageDistanceToUnits(movement_paths, visible_enemies)
+	tile_distances.sort_custom(func(x: Dictionary, y: Dictionary): return x.distance < y.distance)
+	return tile_distances[0].movement_path
 	
 func onRunAwayMovement(Unit: UnitGD, movement_paths: Array, visible_enemies: Array) -> MovementPathGD:
-	movement_paths = onAwarenessMovementPaths(Unit, movement_paths, visible_enemies)
-	setMoveState(Unit, "RUN AWAY")
+	if Unit.getVisibleAllies().size() == 0 or onDistanceMovementRoll(Unit): return onDistanceMovement(Unit, movement_paths, visible_enemies)
+	return onTeamworkMovement(Unit, movement_paths)
+	
+func onDistanceMovementRoll(Unit: UnitGD) -> bool:
+	return randf() > int(pow(Unit.ai.ait, 2)) / float(50)
+	
+func onDistanceMovement(Unit: UnitGD, movement_paths: Array, visible_enemies: Array) -> MovementPathGD:
+	setMoveState(Unit, "DISTANCE")
 	var tile_distances: Array = onCreateAverageDistanceToUnits(movement_paths, visible_enemies)
 	tile_distances.sort_custom(func(x: Dictionary, y: Dictionary): return x.distance > y.distance)
+	
+	for _Unit in visible_enemies:
+		if Tiles.tile_distance(_Unit.Tile, tile_distances[0].movement_path.DestinationTile) <= _Unit.max_speed + 1:
+			return onChargeEnemyMovement(Unit, movement_paths, visible_enemies)
 	
 	if tile_distances[0].distance <= onFindAverageDistanceToUnits(Unit.Tile, visible_enemies):
 		return null
 	return tile_distances[0].movement_path
-	
 	
 func setMoveState(Unit: UnitGD, type: String) -> void:
 	Unit.ai_info.setMoveState(type)
@@ -268,20 +342,30 @@ func onFindTeamworkDistance(Unit: UnitGD) -> int:
 		return 3
 	return 1
 	
-func onLevelMovementPaths(_Unit: UnitGD, movement_paths: Array) -> Dictionary:
-	var paths_with_distance: Dictionary = {1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: []}
-	for movement_path in movement_paths:
-		paths_with_distance[Tiles.tile_distance(movement_path.DestinationTile, _Unit.Tile)].append(movement_path)
+func onLevelMovementPaths(visible_allies: Array, movement_paths: Array) -> Dictionary:
+	var paths_with_distance: Dictionary = {1: [], 2: [], 3: [], 4: [], 5: []}
+	if visible_allies.size() > 0:
+		for movement_path in movement_paths:
+			var total_distance: int = 0
+			for Unit in visible_allies: total_distance += Tiles.tile_distance(movement_path.DestinationTile, Unit.Tile)
+			total_distance /= visible_allies.size()
+			if total_distance < 6: paths_with_distance[total_distance].append(movement_path)
 	return paths_with_distance
 	
 func onRollNoneInVisionMovement(Unit: UnitGD) -> MovementPathGD:
 	var visible_allies: Array = Unit.getVisibleAllies()
 	var is_teamwork: bool = false
-	if visible_allies.size() > 0: is_teamwork = onTeamworkConfidenceRoll(Unit)
+	if visible_allies.size() > 0: is_teamwork = onTeamworkAwarenessRoll(Unit)
 
-	if is_teamwork: return onTeamworkMovement(Unit, false)
+	if is_teamwork: return onTeamworkMovement(Unit)
 	if onAdventureRoll(Unit): return onExploreMovement(Unit)
 	return onRandomMovement(Unit)
+
+func onTeamworkAwarenessRoll(Unit: UnitGD) -> bool:
+	var aw: int = int(pow(Unit.ai.aiw, 2))
+	var tw: int = int(pow(Unit.ai.ait, 2))
+	var total: int = aw + tw
+	return randf() < aw / float(total)
 
 func onAdventureRoll(Unit: UnitGD) -> bool:
 	return randf() <= (Unit.ai.aia / float(7))
@@ -412,32 +496,59 @@ func onUseTargetAbilities(Unit: UnitGD) -> bool:
 	
 func getDangerList(Unit: UnitGD, units: Array = []) -> Array:
 	var danger_list: Array = [] # Array of DangerInfoGD's
-	var int_to_middle: int = 16 - (Unit.ai.aii * 2)
+	var int_away_middle: int = 16 - (Unit.ai.aii * 2)
 	var int_either_side: int = 10 - (Unit.ai.aii)
-	#print(Unit.ai.aii)
+	var reg_away_mult: int = 3 if Unit.ai.aii <= 3 else (2 if Unit.ai.aii <= 5 else 1)
 	for _Unit in units:
-		var danger_value: int = _Unit.ai_info.danger
+		var danger_value: int = _Unit.ai_info.danger + onDangerListNewStats(_Unit)
 		var top_cap: int = 50 if danger_value < 50 else danger_value
-		var regular_to_middle: int = floor(abs(danger_value - 25) / float(5))
+		var regular_away_middle: int = floor(abs(danger_value - 25) / float(5)) * reg_away_mult
 		
 		var lower_bound: int = danger_value - int_either_side
 		var upper_bound: int = danger_value + int_either_side
 		
-		if danger_value > 25:
-			upper_bound = max(upper_bound - (regular_to_middle + int_to_middle), 25)
-		else:
-			lower_bound = min(lower_bound + regular_to_middle + int_to_middle, 25)
+		if danger_value - 25 < 25 - danger_value: upper_bound += regular_away_middle + int_away_middle
+		else: lower_bound -= regular_away_middle + int_away_middle
 		
 		lower_bound = clamp(lower_bound, 1, top_cap)
 		upper_bound = clamp(upper_bound, 1, top_cap)
 		var new_danger_value: int = randi_range(lower_bound, upper_bound)
-		#print(danger_value)
-		#print(lower_bound)
-		#print(upper_bound)
-		#print(new_danger_value)
 		danger_list.append(DangerInfoGD.new(_Unit, new_danger_value))
-	#print()
+	danger_list.sort_custom(func(x: DangerInfoGD, y: DangerInfoGD): return x.danger > y.danger)
 	return danger_list
 	
-func getAllyList() -> Array:
-	return []
+func getSafetyList(Unit: UnitGD, units: Array) -> Array:
+	var safety_list: Array = []
+	var tw_away_middle: int = 16 - (Unit.ai.ait * 2)
+	var tw_either_side: int = 8 - Unit.ai.ait
+	for _Unit in units:
+		var safety_value: int = _Unit.ai_info.safety + onSafetyListNewStats(_Unit)
+		var top_cap: int = 50 if safety_value < 50 else safety_value
+		var regular_away_middle: int = floor(abs(safety_value - 25) / float(5))
+		
+		var lower_bound: int = safety_value - tw_either_side
+		var upper_bound: int = safety_value + tw_either_side
+		
+		if safety_value - 25 < 25 - safety_value: upper_bound += regular_away_middle + tw_away_middle
+		else: lower_bound -= regular_away_middle + tw_away_middle
+		
+		lower_bound = clamp(lower_bound, 1, top_cap)
+		upper_bound = clamp(upper_bound, 1, top_cap)
+		var new_safety_value: int = randi_range(lower_bound, upper_bound)
+		safety_list.append(SafetyInfoGD.new(_Unit, new_safety_value))
+	safety_list.sort_custom(func(x: SafetyInfoGD, y: SafetyInfoGD): return x.safety > y.safety)
+	return safety_list
+	
+func onSafetyListNewStats(Unit: UnitGD) -> int:
+	var total: int = 0
+	total += (Unit.attack - Unit.base_card.attack) * 2
+	total += (Unit.max_health - Unit.base_card.health) * 2
+	total += (Unit.max_heath - Unit.health) * 2
+	total += (Unit.max_speed - Unit.speed) * 4
+	return total
+
+func onDangerListNewStats(Unit: UnitGD) -> int: # speed = 8, att = 2 per
+	var total: int = 0
+	total += (Unit.max_speed - Unit.base_card.speed) * 8
+	total += (Unit.attack - Unit.base_card.attack) * 2
+	return total

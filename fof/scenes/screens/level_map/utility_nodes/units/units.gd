@@ -15,6 +15,7 @@ var Combat: CombatGD
 var AIManager: AIManagerGD
 var PlayerManager: PlayerManagerGD
 var StatusManager: StatusManagerGD
+var Hand: HandGD
 
 @onready var Postmortem: Node3D = $Postmortem
 @onready var FieldedUnits: Node3D = $FieldedUnits
@@ -404,8 +405,7 @@ func on_death_finished(Unit: UnitGD) -> void:
 	var win_state: int = 1 if on_units(TeamRelationGD.new(1)).is_empty() else (2 if on_units().is_empty() else 0)
 	
 	AIManager.onDeathFinished(Unit)
-	
-	if Unit.team == 1: Deck.on_draw_card()
+	Hand.onGainDeathEnergy(Deather, AppliedBy)
 	
 	if Unit.Model.current_walk_stream_player != null:
 		AudioMaster.on_cutoff_sfx(Unit.Model.current_walk_stream_player)

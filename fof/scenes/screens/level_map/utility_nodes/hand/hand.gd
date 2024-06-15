@@ -3,8 +3,7 @@ extends Node
 
 const MAX_HAND_SIZE: int = 10
 var energy: int = 0
-var energy_cap: int = 0
-var ignore_first_hand_phase: bool = true
+var energy_cap: int = 5
 
 var Tiles: TilesGD
 var LevelMap: Node3D
@@ -13,16 +12,15 @@ var SpectateCamera: Node3D
 var LevelUI: LevelUIGD
 var GameState: GameStateGD
 var PlayerManager: PlayerManagerGD
+var Deck: DeckGD
 
 func onStartPhaseStart() -> void:
-	on_change_energy(Helper.getHeroCardInfo(GameState.hero_id).base_cards[GameState.hero_level].energy - 1)
+	on_change_energy(5)
 
 func onHandPhaseStart() -> void:
 	card_selected_index = -1
-	
-	if !ignore_first_hand_phase:
-		on_change_energy(1)
-	ignore_first_hand_phase = false
+	if get_children().size() < 4: Deck.on_draw_card()
+	setLevelUIEnergy()
 
 func on_playable_cards() -> Array:
 	return get_children().filter(on_is_card_playable).map(on_get_child_index)
@@ -47,7 +45,6 @@ func on_create_card(id: int, tool_id: int = 0, effects: Array = []) -> void:
 	add_child(card)
 	
 	card.on_create_card(id, tool_id, effects)
-	energy_cap = max(Helper.getCard(id).energy, energy_cap)
 	LevelUI.on_draw_card(card)
 
 var card_selected_index: int = -1
@@ -72,5 +69,12 @@ func on_card_placed(Tile: TileGD) -> void:
 func on_change_energy(delta: int) -> void:
 	energy = clamp(energy + delta, 0, energy_cap)
 	LevelUI.on_change_energy(energy, energy == energy_cap)
+	setLevelUIEnergy()
+	
+func setLevelUIEnergy() -> void:
 	LevelUI.playable_cards = on_playable_cards()
 	LevelUI.on_set_hand_box_cards_state()
+	
+func onGainDeathEnergy(Deather: UnitGD, AppliedBy: AppliedByGD) -> void:
+	if AppliedBy.Applier != null and AppliedBy.Applier.team == 0 and Deather.team == 1:
+		on_change_energy(Deather.base_card.energy)

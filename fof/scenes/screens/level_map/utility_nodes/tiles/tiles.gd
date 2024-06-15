@@ -424,7 +424,7 @@ func onDisconnectReconnect(Unit: UnitGD, fn_path: Array, i: int, reconnections: 
 	
 func onFneighbourPathValidUnitHeightHigh(Unit: UnitGD, fn_path: Array, astar: AStar3D, reconnections: Array) -> bool:
 	for i in range(fn_path.size()):
-		if fn_path[i].unit_height + Unit.Tile.getTrueHeight() < Unit.Tile.getTrueHeight() + Unit.height.top or fn_path[i].movement_type == FneighbourGD.HIGH:
+		if fn_path[i].unit_height <= Unit.height.top or fn_path[i].movement_type == FneighbourGD.HIGH:
 			if !(i == fn_path.size() - 1 and fn_path[i].Tile.Unit != null):
 				return onDisconnectReconnect(Unit, fn_path, i, reconnections, astar)
 			return true

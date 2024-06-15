@@ -26,3 +26,9 @@ static func onFneighboursTiles(_fneighbours: Array):
 
 func isVisArrayInvis() -> bool:
 	return vis_array.all(func(x: VisInfoGD): return x.isNull() or x.total_vision == VisInfoGD.INVISIBLE)
+	
+static func onFindAttackPath(movement_paths: Array) -> Array:
+	return movement_paths.filter(func(x: MovementPathGD): return x.is_attack)
+
+static func onFindEnemyInAttackPaths(attack_paths: Array) -> Array:
+	return attack_paths.map(func(x: MovementPathGD): return x.DestinationTile.Unit)

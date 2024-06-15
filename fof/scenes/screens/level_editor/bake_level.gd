@@ -136,7 +136,7 @@ func isHigh(Tile: TileGD, _Tile: TileGD, fn: Dictionary) -> bool:
 	
 func isFall(Tile: TileGD, _Tile: TileGD, fn: Dictionary) -> bool: # Non ramp fall
 	if _Tile.w < Tile.w or (Tile.tile.type == 1 and _Tile.tile.type == 0):
-		fn.unit_height = min(Tile.unit_height - 0.6, _Tile.unit_height - Tile.getTrueHeight())
+		fn.unit_height = min(Tile.unit_height, _Tile.unit_height)
 		fn.hdiff = onCalculateHdiff(Tile, _Tile)
 		fn.movement_type = FneighbourGD.FALL
 		return true
@@ -155,7 +155,7 @@ func isRegular(Tile: TileGD, _Tile: TileGD, fn: Dictionary) -> void:
 	
 func isJump(Tile: TileGD, _Tile: TileGD, fn: Dictionary) -> bool:
 	if (_Tile.tile.type == 1 and Tile.tile.type == 0 and abs(Tile.w - _Tile.w) == 0) or (Tile.tile.type == 1 and _Tile.tile.type == 0 and abs(Tile.w - _Tile.w) == 1):
-		fn.unit_height = min(Tile.unit_height - 0.6, _Tile.unit_height)
+		fn.unit_height = min(Tile.unit_height, _Tile.unit_height)
 		fn.movement_type = FneighbourGD.JUMP
 		return true
 	return false

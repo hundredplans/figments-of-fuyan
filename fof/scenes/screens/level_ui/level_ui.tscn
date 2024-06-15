@@ -181,6 +181,7 @@ offset_bottom = -7.30499
 [node name="Buttons" type="Control" parent="StatusBox/SortMenu"]
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 2
 theme = ExtResource("13_v5lxp")
 
 [node name="TeamContainer" type="HBoxContainer" parent="StatusBox/SortMenu/Buttons"]
@@ -192,16 +193,19 @@ theme_override_constants/separation = 20
 [node name="TeamButtonAlly" type="Button" parent="StatusBox/SortMenu/Buttons/TeamContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 1
 text = "Ally"
 
 [node name="TeamButtonEnemy" type="Button" parent="StatusBox/SortMenu/Buttons/TeamContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 1
 text = "Enemy"
 
 [node name="TeamButtonBoth" type="Button" parent="StatusBox/SortMenu/Buttons/TeamContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 1
 text = "Both"
 
 [node name="VisionContainer" type="HBoxContainer" parent="StatusBox/SortMenu/Buttons"]
@@ -214,11 +218,13 @@ theme_override_constants/separation = 20
 [node name="VisionButtonVision" type="Button" parent="StatusBox/SortMenu/Buttons/VisionContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 1
 text = "Vision"
 
 [node name="VisionButtonEveryone" type="Button" parent="StatusBox/SortMenu/Buttons/VisionContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 1
 text = "Everyone"
 
 [node name="StatusClipper" type="ScrollContainer" parent="StatusBox/SortMenu"]
@@ -625,10 +631,22 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[connection signal="mouse_entered" from="StatusBox" to="." method="on_is_mouse_in_ui" binds= [true]]
+[connection signal="mouse_exited" from="StatusBox" to="." method="on_is_mouse_in_ui" binds= [false]]
+[connection signal="mouse_entered" from="CornerRightMenu/GlobalCamera" to="." method="on_is_mouse_in_ui" binds= [true]]
+[connection signal="mouse_exited" from="CornerRightMenu/GlobalCamera" to="." method="on_is_mouse_in_ui" binds= [false]]
 [connection signal="pressed" from="CornerRightMenu/GlobalCamera/Button" to="." method="on_camera_mode_pressed"]
+[connection signal="mouse_entered" from="CornerRightMenu/VisionMode" to="." method="on_is_mouse_in_ui" binds= [true]]
+[connection signal="mouse_exited" from="CornerRightMenu/VisionMode" to="." method="on_is_mouse_in_ui" binds= [false]]
 [connection signal="pressed" from="CornerRightMenu/VisionMode/Button" to="." method="_on_vision_mode_set"]
+[connection signal="mouse_entered" from="CornerRightMenu/CameraArrows" to="." method="on_is_mouse_in_ui" binds= [true]]
+[connection signal="mouse_exited" from="CornerRightMenu/CameraArrows" to="." method="on_is_mouse_in_ui" binds= [false]]
 [connection signal="mouse_entered" from="HandBox" to="." method="on_extend_hand_box"]
+[connection signal="mouse_entered" from="HandBox" to="." method="on_is_mouse_in_ui" binds= [true]]
 [connection signal="mouse_exited" from="HandBox" to="." method="on_unextend_hand_box"]
+[connection signal="mouse_exited" from="HandBox" to="." method="on_is_mouse_in_ui" binds= [false]]
 [connection signal="child_entered_tree" from="HandBox/CardClipper" to="." method="_on_card_clipper_child_entered_tree"]
 [connection signal="mouse_entered" from="ChangePhaseManager/ChangePhase" to="." method="onPlayHoverChangePhase"]
+[connection signal="mouse_entered" from="ChangePhaseManager/ChangePhase/PassUnitTurn" to="." method="on_is_mouse_in_ui" binds= [true]]
+[connection signal="mouse_exited" from="ChangePhaseManager/ChangePhase/PassUnitTurn" to="." method="on_is_mouse_in_ui" binds= [false]]
 [connection signal="pressed" from="ChangePhaseManager/ChangePhase/PassUnitTurn" to="." method="onPassUnitTurnButtonPressed"]
