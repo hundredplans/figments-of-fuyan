@@ -12,12 +12,68 @@ body {
     text-align: center;
 }
 
-#classes > div > button {
+.btn_disabled {
+    color: darkgrey;
+    background-color: dimgrey;
+    border-color: black;
+}
+
+.btn_regular {
     color: white;
+    background-color: sandybrown;
+    border-color: saddlebrown;
+}
+
+.btn_regular, .btn_disabled {
     font-size: 3vw;
     width: 30vw;
-    background-color: sandybrown;
     border-width: 0.3vw;
     border-radius: 1vw;
+}
+
+img {
+    width: 11vw;
+    height: 11vw;
+}
+
+
+#selected_classes {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: burlywood;
+    width: fit-content;
+    margin-top: 0.5vw;
+    padding: 1vw;
+    border-style: solid;
+    border-radius: 2vw;
+    border-width: 0.3vw;
+}
+
+h1 {
+    text-align: center;
+    color: sandybrown;
+    font-size: 2vw;
+}
+
+.large_button {
+    width: 10vw;
+    height: 5vw;
+    font-size: 1vw;
+    background-color: sandybrown;
+    color: white;
     border-color: saddlebrown;
+    border-radius: 1vw;
+    border-width: 0.3vw;
+    margin-left: 0.5vw;
+    margin-right: 0.5vw;
+}
+
+#bottom_side {
+    display: inline-flex;
+    align-items: center;
 }
