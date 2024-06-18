@@ -11,6 +11,7 @@ var LevelMap: LevelMapGD
 var Tiles: TilesGD
 var PlayerManager: PlayerManagerGD
 var StatusManager: StatusManagerGD
+var ActionManager: ActionManagerGD
 
 var OriginalSpectateUnit: UnitGD
 var ability_chain: Array = []
@@ -100,9 +101,8 @@ func onRampage(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 func onTriggerAbilitySpectateDelay(Triggerer: UnitGD, ability: AbilityGD, callable: Callable, InitialTeleport: UnitGD = null) -> void:
 	var vis: bool = Triggerer.team == 0 or Triggerer.Tile in Vision.getTeamVision()
 	if vis and ability.delay > 0:
-		var ai_action: bool = Triggerer.team == 1
-		var begin_arguments: Dictionary = {"Triggerer": Triggerer, "callable": callable, "ability": ability, "vis": vis}
-		var end_arguments: Dictionary = {"Triggerer": Triggerer, "ability": ability}
+		var begin_arguments: Dictionary = {"Triggerer": Triggerer, "callable": callable, "ability": ability, "vis": vis, "InitialTeleport": Triggerer if InitialTeleport == null else InitialTeleport}
+		var end_arguments: Dictionary = {"Triggerer": Triggerer, "ability": ability, "vis": vis}
 		
 		if Triggerer.team == 0:
 			if ability_chain.is_empty():
@@ -110,9 +110,8 @@ func onTriggerAbilitySpectateDelay(Triggerer: UnitGD, ability: AbilityGD, callab
 				else: OriginalSpectateUnit = SpectateCamera.SpectateUnit
 			
 			ability_chain.append(ability)
-			
-		if InitialTeleport == null and !ai_action: InitialTeleport = Triggerer
-		Units.onPushArgDelay(Triggerer, ability.delay, onAfterAbilityFrontDelay.bind(end_arguments), onBeforeAbilityFrontDelay.bind(begin_arguments), InitialTeleport)
+		
+		ActionManager.onAddAction(ArgDelayActionGD.new(onBeforeAbilityFrontDelay.bind(begin_arguments), onAfterAbilityFrontDelay.bind(end_arguments), vis, DelayGD.new(ability.delay)), ActionManagerGD.PUSH)
 	else: onUseAbility(Triggerer, callable, ability, vis)
 		
 func onUseAbility(Unit: UnitGD, callable: Callable, ability: AbilityGD, vis: bool) -> void:
@@ -122,12 +121,13 @@ func onUseAbility(Unit: UnitGD, callable: Callable, ability: AbilityGD, vis: boo
 		
 func onBeforeAbilityFrontDelay(args: Dictionary) -> void:
 	onUseAbility(args.Triggerer, args.callable, args.ability, args.vis)
-		
+	if args.vis: SpectateCamera.onSpectate(args.InitialTeleport)
+	
 func onAfterAbilityFrontDelay(args: Dictionary) -> void:
 	ability_chain.erase(args.ability)
 	
-	if ability_chain.is_empty() and Units.isUnitActionsEmpty():
-		Units.onAppendArgQueue(SpectateCamera.onSpectate.bind(OriginalSpectateUnit))
+	if args.vis and ability_chain.is_empty() and ActionManager.unit_actions.is_empty():
+		ActionManager.onAddAction(DelayActionGD.new(SpectateCamera.onSpectate.bind(OriginalSpectateUnit), true))
 		OriginalSpectateUnit = null
 		
 func onFindAbilities(Unit: UnitGD, type: String) -> Array:
@@ -232,7 +232,8 @@ func onStun(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	onDaze(Unit, AppliedBy)
 
 func onDestroyUnit(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
-	Units.kill_unit(Unit, AppliedBy)
+	var vis: bool = Unit.team == 0 or Unit.Tile in Vision.getTeamVision()
+	ActionManager.onAddAction(DeathActionGD.new(Unit, AppliedBy, vis))
 	
 func onHelpfulHelmetDelayed(a: Dictionary) -> void:
 	var Unit: UnitGD = Units.unit_by_tile(a.Tile)

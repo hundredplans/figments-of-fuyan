@@ -15,6 +15,7 @@ var Hand: HandGD
 var Deck: DeckGD
 var PlayerManager: PlayerManagerGD
 var StatusManager: StatusManagerGD
+var ActionManager: ActionManagerGD
 
 @onready var EnemySpottedArrows: Control = %EnemySpottedArrows
 @onready var DrawCard: Control = %DrawCard
@@ -160,7 +161,7 @@ func onPassUnitTurnButtonPressed():
 
 @onready var Statuses: Control = %Statuses
 func onSpectateEnemyOrAlly(Unit: UnitGD) -> void:
-	if Units.unit_actions.is_empty() and LevelMap.action_lock in ["", "HandRegular", "SpawnVision"]:
+	if ActionManager.unit_actions.is_empty() and LevelMap.action_lock in ["", "HandRegular", "SpawnVision"]:
 		SpectateCamera.onSpectate(Unit)
 
 func on_extend_hand_box() -> void:

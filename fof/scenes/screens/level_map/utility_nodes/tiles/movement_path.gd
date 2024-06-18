@@ -32,3 +32,16 @@ static func onFindAttackPath(movement_paths: Array) -> Array:
 
 static func onFindEnemyInAttackPaths(attack_paths: Array) -> Array:
 	return attack_paths.map(func(x: MovementPathGD): return x.DestinationTile.Unit)
+
+func onVisInfoByFneighbour(fneighbour: FneighbourGD) -> VisInfoGD:
+	for i in range(fneighbours.size()):
+		if fneighbour == fneighbours[i]:
+			return vis_array[i]
+	return VisInfoGD.new()
+
+func onReentersVision(vis_info: VisInfoGD) -> bool:
+	var begin_count: bool = false
+	for key in vis_array:
+		if key == vis_info: begin_count = true
+		elif begin_count and key.total_vision != VisInfoGD.INVISIBLE: return true
+	return false

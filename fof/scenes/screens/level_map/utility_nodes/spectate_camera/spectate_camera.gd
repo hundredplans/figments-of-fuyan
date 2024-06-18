@@ -280,3 +280,4 @@ func _update_mouselook():
 		Camera.rotate_y(deg_to_rad(-yaw))
 		Camera.rotate_object_local(Vector3(1,0,0), deg_to_rad(-pitch))
 
+func onStopTrack(state: bool = true) -> void: invisible_unit_stop_track = state

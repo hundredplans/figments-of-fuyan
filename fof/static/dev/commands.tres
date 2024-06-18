@@ -5,15 +5,21 @@
 [resource]
 script = ExtResource("1_mcuun")
 last_commands = [{
-"text": "spawn 14 0",
-"ttpos": Vector4(-2, 2, 0, 0)
-}, {
-"text": "damage 1",
+"text": "stat health 50",
 "ttpos": Vector4(-3, 3, 0, 0)
 }, {
-"text": "damage 5",
-"ttpos": Vector4(-2, 2, 0, 0)
+"text": "spawn 19 1",
+"ttpos": Vector4(0, -2, 2, 0)
 }, {
-"text": "spawn 7 1",
-"ttpos": Vector4(-3, 1, 2, 0)
+"text": "spawn 14 1",
+"ttpos": Vector4(0, -3, 3, 0)
+}, {
+"text": "spawn 14 1",
+"ttpos": Vector4(-1, -2, 3, 0)
+}, {
+"text": "damage 1",
+"ttpos": Vector4(0, -3, 3, 0)
+}, {
+"text": "damage 1",
+"ttpos": Vector4(-1, -2, 3, 0)
 }]

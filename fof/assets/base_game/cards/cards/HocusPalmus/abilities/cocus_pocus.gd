@@ -36,9 +36,8 @@ const SCALE_UNIT_INITIAL_SIZE: float = 0.01
 
 func onCocusPocus(_Unit: UnitGD) -> void:
 	VFX.onUpscaleCocusPocus(_Unit, SCALE_INITIAL_SIZE, SCALE_INITIAL_DURATION, SCALE_UNIT_INITIAL_SIZE, DELAY_DURATION, onCocusPocusInitialFinished.bind(_Unit))
-	if !is_visible: # Check if eventually will be visible here
-		Units.onPushFrontDelay(delay)
-
+	ActionManager.onAddAction(DelayActionGD.new(Callable(), is_visible, DelayGD.new(delay)), ActionManagerGD.PUSH)
+	
 func onCocusPocusInitialFinished(_Unit: UnitGD) -> void:
 	var _tiles: Array = onFindSpawnTiles()
 	await Combat.onTeleport(_Unit, _tiles[randi() % _tiles.size()])

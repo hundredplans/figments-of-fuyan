@@ -9,12 +9,12 @@ func onTargetAbility() -> void:
 	var AppliedBy := AppliedByGD.new("HelpfulHelmet", Unit)
 	Unit.Model.death = "DeathAbility"
 	Combat.onDestroyUnit(Unit, AppliedBy)
-	Units.onAppendArgQueue(Combat.onHelpfulHelmetDelayed.bind({"Tile": Tile, "AppliedBy": AppliedBy}))
+	var is_vis: bool = Unit.team == 0 or Unit.Tile in Vision.getTeamVision()
+	ActionManager.onAddAction(DelayActionGD.new(Combat.onHelpfulHelmetDelayed.bind({"Tile": Tile, "AppliedBy": AppliedBy}), is_vis))
 	
 @export var DANGER_LIST_MIN: int = 37
 func onTargetAbilityConditionAI() -> TileGD:
 	if Unit.Tile in Vision.getTeamVision():
-		var tiles_in_ai_list: Array = []
 		var danger_list: Array = AIManager.getDangerList(Unit, onAffectedUnits())
 		if danger_list.size() > 0 and danger_list[0].danger >= DANGER_LIST_MIN:
 			return danger_list[0].Unit.Tile

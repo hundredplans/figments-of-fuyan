@@ -22,6 +22,7 @@ var game_phase: String
 @onready var SpectateCamera: Node3D = $SpectateCamera
 @onready var Vision: VisionGD = $Vision
 @onready var StatusManager: StatusManagerGD = $StatusManager
+@onready var ActionManager: ActionManagerGD = $ActionManager
 
 func _ready() -> void:
 	on_load_default_world_state()
@@ -42,7 +43,7 @@ func on_load_default_world_state() -> void:
 	Tiles = LoadedLevel.get_node("Tiles")
 	Lights = LoadedLevel.get_node("Lights")
 	
-	var references: Array = get_children() + [GameState, Tiles, LevelUI, LevelUI.Console, Lights, self]
+	var references: Array = get_children() + [GameState, Tiles, LevelUI, LevelUI.Console, Lights, ActionManager, self]
 	Helper.setUtilityNodesPaths(references)
 	add_child(LoadedLevel)
 	on_change_game_phase("StartPhase")
@@ -99,7 +100,7 @@ func setActionLock(x: String = "") -> void:
 			x = ""
 			
 		if (x == "UnitActionDisabled" and action_lock == "UnitActionRegular"):
-			if Units.unit_actions.is_empty():
+			if ActionManager.unit_actions.is_empty():
 				x = ""
 				action_lock = x
 				action_lock_changed.emit(x)

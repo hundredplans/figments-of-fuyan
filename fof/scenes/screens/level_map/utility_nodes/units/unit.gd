@@ -61,6 +61,7 @@ var Units: UnitsGD
 var GameEffects: GameEffectsGD
 var LevelUI: LevelUIGD
 var StatusManager: StatusManagerGD
+var ActionManager: ActionManagerGD
 
 func _ready() -> void: Helper.onCreateChildReferences(self)
 
@@ -186,9 +187,11 @@ func stats(stat_type: String, val: int, AppliedBy := AppliedByGD.new("GameEvent"
 	
 	var color: String = onFindStatColor(stats_changed, current_health, current_attack, current_speed)
 	if color != "NULL" and current_health > 0:
+		var vis: bool = team == 0 or Tile in Vision.getTeamVision()
 		StatusManager.onUpdateStats(self, stats_changed.capitalize(), color)
-		if health == 0: Units.kill_unit(self, AppliedBy)
-		elif health < current_health and AppliedBy.type not in ["Height", "DumsyPalmsyArrive"]: Units.hurt_unit(self, AppliedBy)
+		if health == 0: ActionManager.onAddAction(DeathActionGD.new(self, AppliedBy, vis))
+		elif health < current_health and AppliedBy.type not in ["Height", "DumsyPalmsyArrive"]:
+			ActionManager.onAddAction(HurtActionGD.new(self, AppliedBy, vis))
 		
 		if Tile in Vision.getTeamVision():
 			var y_offset: float = height.top / 2

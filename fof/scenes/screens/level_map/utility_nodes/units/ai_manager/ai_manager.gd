@@ -7,6 +7,7 @@ var LevelMap: LevelMapGD
 var Tiles: TilesGD
 var Units: UnitsGD
 var Combat: CombatGD
+var ActionManager: ActionManagerGD
 
 var active_movement_order: Array = []
 var invisible_movement_tracker: Array = []
@@ -49,7 +50,7 @@ func onMoveNextAIUnit() -> void:
 		if !wait: onAfterTargetAbility(Unit)
 	else:
 		if invisible_movement_tracker.all(func(x: bool): return x):
-			await get_tree().create_timer(Units.AFTER_MOVEMENT_DELAY).timeout
+			await get_tree().create_timer(0.8).timeout
 			
 		LevelMap.setActionLock("UnitActionDisabled")
 		LevelMap.on_change_game_phase("AIEndTurnPhase")
@@ -72,19 +73,25 @@ func onMoveUnitAI(Unit: UnitGD, movement_path: MovementPathGD) -> void:
 	if movement_path != null:
 		Units.setUnitStatus(Unit, UnitGD.TURN_ACTIVE)
 		Tiles.on_remove_tile_material(Unit.Tile, "")
-		invisible_movement_tracker.append(movement_path.isVisArrayInvis())
+		var is_vis: bool = movement_path.isVisArrayInvis()
+		invisible_movement_tracker.append(is_vis)
 		var start_delay: bool = false
 		for i in range(movement_path.fneighbours.size()):
 			var fneighbour: FneighbourGD = movement_path.fneighbours[i]
 			var vis_info: VisInfoGD = movement_path.vis_array[i] if movement_path.vis_array.size() > i else {}
 			var Tile: TileGD = fneighbour.Tile
 			if !start_delay and (vis_info.isNull() or vis_info.total_vision != VisInfoGD.INVISIBLE):
-				Units.onPushArgDelay(Unit, FIRST_MOVE_DELAY, SpectateCamera.onSpectate.bind(Unit), onStartDelay.bind(Unit, Tile))
+				ActionManager.onAddAction(DelayActionGD.new(onStartDelay.bind(Unit, Tile), true, DelayGD.new(FIRST_MOVE_DELAY)), ActionManagerGD.PUSH)
 				start_delay = true
 			
-			if !(i == movement_path.fneighbours.size() - 1 and movement_path.is_attack): Units.onMoveToTileAI(Unit, fneighbour, movement_path)
-			elif Unit.onCanAttack(): Units.onAttackEnemy(Unit, Tile)
-	Units.onAIMoveFinisher(Unit, movement_path)
+			if !(i == movement_path.fneighbours.size() - 1 and movement_path.is_attack):
+				ActionManager.onAddAction(MoveActionGD.new(Unit, fneighbour, movement_path, vis_info.total_vision != VisInfoGD.INVISIBLE, null))
+			else:
+				var vis: bool = false
+				if i > 0: vis = movement_path.vis_array[i - 1].total_vision != VisInfoGD.INVISIBLE
+				else: vis = Unit.Tile in Vision.getTeamVision()
+				ActionManager.onAddAction(AttackActionGD.new(Unit, Tile, vis))
+		ActionManager.onAddAction(MoveFinishActionGD.new(Unit, movement_path, !is_vis, DelayGD.new(0.8)), ActionManagerGD.APPEND_MF)
 
 func onStartDelay(Unit: UnitGD, Tile: TileGD) -> void:
 	Unit.Model._look_at(Tile)
@@ -171,8 +178,10 @@ func onTeamworkMovement(Unit: UnitGD, movement_paths: Array = onRemoveFallMoveme
 	attack_paths = attack_paths.filter(onRemoveInvalidAttackPath.bind(visible_allies))
 	if attack_paths.size() > 0: return onIntelligenceAttackPath(Unit, attack_paths)
 	
-	var paths_with_distance: Dictionary = onLevelMovementPaths(visible_allies, movement_paths)
+	var safety_list: Array = getSafetyList(Unit, visible_allies)
+	var paths_with_distance: Dictionary = onLevelMovementPaths(safety_list[0].Unit, movement_paths)
 	var distance: int = onFindTeamworkDistance(Unit)
+	
 	for i in range(7):
 		if distance == i:
 			if paths_with_distance[i].is_empty():
@@ -269,26 +278,25 @@ func onOffenseEnemyMovement(Unit: UnitGD, movement_paths: Array, visible_enemies
 	var enemy_distances: Array = onCreateAverageDistanceToUnits(movement_paths, visible_enemies)
 	enemy_distances.sort_custom(func(x: Dictionary, y: Dictionary): return x.distance < y.distance)
 	
-	var ally_distances: Array = onCreateAverageDistanceToUnits(movement_paths, visible_allies)
-	ally_distances.sort_custom(func(x: Dictionary, y: Dictionary): return x.distance < y.distance)
+	var safety_list: Array = getSafetyList(Unit, visible_allies)
+	var safest_unit: UnitGD = safety_list[0].Unit
+	var safest_unit_movement_paths: Array = Tiles.onCreateMovementPaths(safest_unit, safest_unit.max_speed)
 	
-	var total_distances: Array = []
-	for info in ally_distances:
-		for _info in enemy_distances:
-			if _info.movement_path == info.movement_path:
-				total_distances.append({"movement_path": info.movement_path, "distance": info.distance + _info.distance})
-				break
-				
-	total_distances.sort_custom(func(x: Dictionary, y: Dictionary): return x.distance < y.distance)
-	return total_distances[0].movement_path
+	var danger_list: Array = getDangerList(Unit, visible_enemies)
+	var distances: Array = []
+	for movement_path in movement_paths:
+		for _movement_path in safest_unit_movement_paths:
+			if movement_path.DestinationTile == _movement_path.DestinationTile:
+				distances.append({"movement_path": movement_path, "distance": Tiles.tile_distance(movement_path.DestinationTile, danger_list[danger_list.size() - 1].Unit.Tile)})
+	
+	if distances.size() > 0:
+		distances.sort_custom((func(x: Dictionary, y: Dictionary): return x.distance < y.distance))
+		return distances[0].movement_path
+	return onRunAwayMovement(Unit, movement_paths, visible_enemies)
 	
 func onChargeEnemyMovement(Unit: UnitGD, movement_paths: Array, visible_enemies: Array) -> MovementPathGD:
 	setMoveState(Unit, "CHARGE")
-	var woundable_enemy_paths: Array = []
-	for _Unit in visible_enemies:
-		var movement_path := MovementPathGD.onFindTile(_Unit.Tile, movement_paths)
-		if movement_path != null: woundable_enemy_paths.append(movement_path)
-		
+	var woundable_enemy_paths: Array = MovementPathGD.onFindAttackPath(movement_paths)
 	if woundable_enemy_paths.size() > 0:
 		return onIntelligenceAttackPath(Unit, woundable_enemy_paths)
 		
@@ -342,14 +350,11 @@ func onFindTeamworkDistance(Unit: UnitGD) -> int:
 		return 3
 	return 1
 	
-func onLevelMovementPaths(visible_allies: Array, movement_paths: Array) -> Dictionary:
+func onLevelMovementPaths(Unit: UnitGD, movement_paths: Array) -> Dictionary:
 	var paths_with_distance: Dictionary = {1: [], 2: [], 3: [], 4: [], 5: []}
-	if visible_allies.size() > 0:
-		for movement_path in movement_paths:
-			var total_distance: int = 0
-			for Unit in visible_allies: total_distance += Tiles.tile_distance(movement_path.DestinationTile, Unit.Tile)
-			total_distance /= visible_allies.size()
-			if total_distance < 6: paths_with_distance[total_distance].append(movement_path)
+	for movement_path in movement_paths:
+		var total_distance: int = Tiles.tile_distance(movement_path.DestinationTile, Unit.Tile)
+		if total_distance < 6: paths_with_distance[total_distance].append(movement_path)
 	return paths_with_distance
 	
 func onRollNoneInVisionMovement(Unit: UnitGD) -> MovementPathGD:
@@ -490,7 +495,8 @@ func onUseTargetAbilities(Unit: UnitGD) -> bool:
 				if Tile != null:
 					if !wait and Unit.Tile in Vision.getTeamVision(): SpectateCamera.onSpectate(Unit)
 					Combat.onTargetAbility(Unit, ability, Tile)
-					if !wait: Units.onAppendArgQueue(onAfterTargetAbility.bind(Unit))
+					var vis: bool = Unit.Tile in Vision.getTeamVision()
+					if !wait: ActionManager.onAddAction(DelayActionGD.new(onAfterTargetAbility.bind(Unit), vis))
 					wait = true
 	return wait
 	
@@ -523,6 +529,7 @@ func getSafetyList(Unit: UnitGD, units: Array) -> Array:
 	var tw_either_side: int = 8 - Unit.ai.ait
 	for _Unit in units:
 		var safety_value: int = _Unit.ai_info.safety + onSafetyListNewStats(_Unit)
+		if Unit.id == 19: safety_value *= int(onCharmerSafetyMultiplier(Unit, _Unit))
 		var top_cap: int = 50 if safety_value < 50 else safety_value
 		var regular_away_middle: int = floor(abs(safety_value - 25) / float(5))
 		
@@ -535,15 +542,23 @@ func getSafetyList(Unit: UnitGD, units: Array) -> Array:
 		lower_bound = clamp(lower_bound, 1, top_cap)
 		upper_bound = clamp(upper_bound, 1, top_cap)
 		var new_safety_value: int = randi_range(lower_bound, upper_bound)
+		
 		safety_list.append(SafetyInfoGD.new(_Unit, new_safety_value))
 	safety_list.sort_custom(func(x: SafetyInfoGD, y: SafetyInfoGD): return x.safety > y.safety)
 	return safety_list
+	
+const CHARMER_MULT: float = 1.5
+func onCharmerSafetyMultiplier(Unit: UnitGD, _Unit: UnitGD) -> float:
+	for ability in Unit.abilities:
+		if ability.ability_name == "CharmerTrauma" and _Unit in ability.healed_allies:
+			return CHARMER_MULT
+	return 1.0
 	
 func onSafetyListNewStats(Unit: UnitGD) -> int:
 	var total: int = 0
 	total += (Unit.attack - Unit.base_card.attack) * 2
 	total += (Unit.max_health - Unit.base_card.health) * 2
-	total += (Unit.max_heath - Unit.health) * 2
+	total += (Unit.max_health - Unit.health) * 2
 	total += (Unit.max_speed - Unit.speed) * 4
 	return total
 

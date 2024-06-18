@@ -6,10 +6,6 @@ var static_body: StaticBody3D
 
 var Unit: UnitGD
 var AniPlayer: AnimationPlayer
-signal movement_finished
-signal attack_finished
-signal death_finished
-signal hurt_finished
 signal drop_calculate_damage
 var rot: int
 @export var collision_points: PackedVector3Array # dont use these
@@ -21,7 +17,7 @@ var idle: String = "Idle"
 const IDLE_RARE_MINIMUM: int = 8
 const IDLE_RARE_MAXIMUM: int = 100
 const UNIT_ANIMATION_BLEND_TIME: float = 0.2
-const WALK_TRAVEL_TIME: float = 1.0 # 1.0
+const WALK_TRAVEL_TIME: float = 1.0
 
 func on_idle_rare_timer_timeout() -> void:
 	if AniPlayer.current_animation == idle and AniPlayer.has_animation("IdleRare"):
@@ -75,11 +71,8 @@ func on_finish_animation(ani_name: String) -> void:
 	AniPlayer.speed_scale = 1
 	if ani_name != "Walk" and ani_name not in ["Death", "DeathAbility"] and (ani_name != "Jump"): on_play_animation(idle)
 	match ani_name:
-		"Walk": movement_finished.emit()
-		"Attack", "AttackAbility": attack_finished.emit(); if Unit != null: AudioMaster.play_sfx(Unit.AudioDict.ATTACK)
-		"Death", "DeathAbility": death_finished.emit()
-		"Jump": movement_finished.emit(); is_jump = false; jump_time = 0
-		"Hurt": hurt_finished.emit();
+		"Attack", "AttackAbility": if Unit != null: AudioMaster.play_sfx(Unit.AudioDict.ATTACK)
+		"Jump": is_jump = false; jump_time = 0
 
 var materials: Array = []
 const DEFAULT_MULT_VALUE: float = 1
@@ -139,7 +132,6 @@ func onMoveToTile(fneighbour: FneighbourGD, movement_path: MovementPathGD, movem
 	
 func attack_tile(Tile: TileGD) -> void:
 	_look_at(Tile)
-	
 	on_play_animation(Unit.getAttackAnimation() if AniPlayer.has_animation("AttackAbility") else "Attack")
 
 var jump_start: Vector3
@@ -237,9 +229,6 @@ func on_hurt() -> void:
 	if AniPlayer.has_animation("Hurt"):
 		on_play_animation("Hurt")
 		AudioMaster.play_sfx(Unit.AudioDict.HURT)
-	else:
-		await get_tree().create_timer(0.1).timeout
-		hurt_finished.emit()
 
 func onGetAdjustedPoints() -> PackedVector3Array:
 	return Array(collision_points)\

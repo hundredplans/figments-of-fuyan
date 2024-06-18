@@ -9,6 +9,7 @@ var Units: UnitsGD
 var Vision: VisionGD
 var VFX: VFXGD
 var StatusManager: StatusManagerGD
+var ActionManager: ActionManagerGD
 
 func onSetupAllyPassedTurns(Unit: UnitGD) -> void:
 	if Unit.team == 0:
@@ -26,14 +27,14 @@ func on_card_placed(hand_card: HandCardGD, Tile: TileGD) -> void:
 	
 	SpectateCamera.onSpectate(Unit)
 	if Unit.rarity != 7:
-		Units.onPushArgDelay(Unit, Units.ARRIVE_EFFECT_DELAY_DURATION, 
-		SpectateCamera.onSpectate.bind(Units.onFindClosestAdjacentUnit(Unit, TeamRelationGD.new(Unit.team, "Ally"))))
+		var callable: Callable = SpectateCamera.onSpectate.bind(Units.onFindClosestAdjacentUnit(Unit, TeamRelationGD.new(Unit.team, "Ally")))
+		ActionManager.onAddAction(ArgDelayActionGD.new(Callable(), callable, true, DelayGD.new(Units.ARRIVE_EFFECT_DELAY_DURATION)), ActionManagerGD.PUSH)
 	else:
-		Units.onPushFrontDelay(Units.ARRIVE_EFFECT_DELAY_DURATION)
+		ActionManager.onAddAction(DelayActionGD.new(Callable(), true, DelayGD.new(Units.ARRIVE_EFFECT_DELAY_DURATION)), ActionManagerGD.PUSH)
 	
 func on_enemy_unit_enters_vision(Unit: UnitGD, _Unit: UnitGD) -> void:
 	StatusManager.onUpdateEnemyVision(Unit, true)
-	Units.onEnemyDiscoveredClearUnitActions()
+	ActionManager.onEnemyDiscovered()
 	LevelUI.onEnemySpotted(Unit, _Unit)
 	VFX.onUpdateVFXVision(Unit, true)
 
@@ -152,7 +153,7 @@ func onRemoveMovementRange() -> void:
 		Tiles.setTileOutline(movement_path.DestinationTile, "MovementRange", true)
 	
 func _on_unit_selected(Unit: UnitGD) -> void:
-	if Unit.turn_status in [UnitGD.TURN_UNUSED, UnitGD.TURN_ACTIVE] and Unit.team == 0 and Unit != UnitSelected:
+	if Unit.turn_status in [UnitGD.TURN_UNUSED, UnitGD.TURN_ACTIVE] and Unit.team == 0 and Unit != UnitSelected and LevelMap.action_lock.is_empty():
 		SpectateCamera.onSpectate(Unit)
 		onSetMovementRange(Unit)
 		UnitSelected = Unit
@@ -168,7 +169,7 @@ func onDeathFinished(Deathee: UnitGD, AppliedBy: AppliedByGD) -> void:
 				SpectateCamera.onSpectate(unit_distances[0].Unit)
 		on_remove_unit_turn(Deathee)
 		if Deathee.team == 0 and unpassed_turns.is_empty():
-			Units.unit_actions_after.append(LevelMap.on_advance_game_phase)
+			ActionManager.onAddAction(DelayActionGD.new(LevelMap.on_advance_game_phase, false))
 	
 func on_remove_unit_turn(Unit: UnitGD) -> void:
 	if Unit.team == 0:
@@ -219,8 +220,8 @@ func onBeginUnitMovement(DestinationTile: TileGD) -> void:
 	for fneighbour in movement_path.fneighbours:
 		Units.movement_outline_tiles.append(fneighbour.Tile)
 		if fneighbour.Tile.Unit == null:
-			Units.onMoveToTile(UnitSelected, fneighbour, movement_path)
+			ActionManager.onAddAction(MoveActionGD.new(UnitSelected, fneighbour, movement_path, true))
 			fneighbour.Tile.Effects.onRemoveHeightDropLabel()
-		else: Units.onAttackEnemy(UnitSelected, fneighbour.Tile)
+		else: ActionManager.onAddAction(AttackActionGD.new(UnitSelected, fneighbour.Tile, true, null))
+	ActionManager.onAddAction(MoveFinishActionGD.new(UnitSelected, movement_path, true), ActionManagerGD.APPEND_MF)
 	_on_unit_deselected(UnitSelected, true)
-		

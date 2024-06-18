@@ -328,7 +328,7 @@ var _id_to: Array = [
 	
 	["null", "wall", "wooden_wall"],
 	
-	["null", "general/shrub", "general/rock", "palms/palm_tree", "palms/palmrock", "palms/coconut_pile", "palms/coconut_pile_big", "palms/coconut_floor"],
+	["null", "general/shrub", "general/rock", "palms/palm_tree", "palms/palmrock", "palms/coconut_pile", "palms/coconut_pile_big", "palms/coconut_floor", "palms/coconut_effigy"],
 	
 	["null"]]
 	

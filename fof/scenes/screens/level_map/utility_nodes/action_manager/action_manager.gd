@@ -1,0 +1,90 @@
+class_name ActionManagerGD
+extends Node
+
+var Vision: VisionGD
+var LevelMap: LevelMapGD
+var Combat: CombatGD
+var SpectateCamera: SpectateCameraGD
+
+var unit_actions: Array = []
+enum {
+	MOVE_UNIT, # 0
+	MOVE_FINISH, # 1
+	ATTACK, # 2
+	HURT, # 3
+	DEATH, # 4
+	DELAY, # 5
+	ARG_DELAY, # 6
+}
+
+enum {
+	APPEND,
+	PUSH,
+	APPEND_MF,
+}
+
+var ENUM_TO_STRING: Dictionary = {
+	0: "MOVE_UNIT",
+	1: "MOVE_FINISH",
+	2: "ATTACK",
+	3: "HURT",
+	4: "DEATH",
+	5: "DELAY",
+	6: "ARG_DELAY",
+}
+
+func onEnemyDiscovered() -> void:
+	var remove_actions: Array = []
+	for action in unit_actions:
+		if action.type in [MOVE_UNIT, ATTACK]:
+			remove_actions.append(action)
+	for action in remove_actions: unit_actions.erase(action)
+
+func onAddAction(action: ActionGD, type: int = 0) -> void:
+	match type:
+		APPEND: onAppendAction(action)
+		PUSH: onPushAction(action)
+		APPEND_MF: onAppendMoveFinishAction(action)
+
+func onAppendAction(action: ActionGD) -> void:
+	if !action.has_method("onCondition") or action.onCondition():
+		unit_actions.append(action)
+		if unit_actions.size() == 1: onTriggerNextAction(action)
+
+func onPushAction(action: ActionGD) -> void:
+	if !action.has_method("onCondition") or action.onCondition():
+		unit_actions.push_front(action)
+		if !is_triggered: onTriggerNextAction(action)
+
+func onAppendMoveFinishAction(action: MoveFinishActionGD) -> void:
+	for i in range(unit_actions.size() - 1, -1, -1):
+		if unit_actions[i].type in [MOVE_UNIT, ATTACK]:
+			unit_actions.insert(i + 1, action)
+			return
+	unit_actions.insert(unit_actions.size(), action)
+
+var is_triggered: bool = false
+func onTriggerNextAction(action: ActionGD) -> void:
+	is_triggered = true
+	if action.delay.start_delay > 0 and action.is_visible: await get_tree().create_timer(action.delay.start_delay).timeout
+	
+	Vision.on_vision_mode_set(0)
+	LevelMap.setActionLock("UnitActionRegular")
+	action.onTrigger()
+	
+	if action.delay.delay > 0 and action.is_visible: await get_tree().create_timer(action.delay.delay).timeout
+	
+	unit_actions.erase(action)
+	Combat.onRecalculateTargetAbilities()
+	SpectateCamera.onStopTrack(false)
+	if action.has_method("onAfterTrigger"): await action.onAfterTrigger()
+	if unit_actions.is_empty() and LevelMap.game_phase != "AIPhase":
+		LevelMap.setActionLock("UnitActionDisabled")
+		
+	if action.delay.end_delay > 0 and action.is_visible: await get_tree().create_timer(action.delay.end_delay).timeout
+		
+	is_triggered = false
+	if !(unit_actions.is_empty()): onTriggerNextAction(unit_actions[0])
+
+func onDeath(Unit: UnitGD) -> void:
+	unit_actions = unit_actions.filter(func(x: ActionGD): return x.Unit != Unit)
