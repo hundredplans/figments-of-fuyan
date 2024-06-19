@@ -5,6 +5,7 @@ var Vision: VisionGD
 var LevelMap: LevelMapGD
 var Combat: CombatGD
 var SpectateCamera: SpectateCameraGD
+var AIManager: AIManagerGD
 
 var unit_actions: Array = []
 enum {
@@ -49,11 +50,13 @@ func onAddAction(action: ActionGD, type: int = 0) -> void:
 func onAppendAction(action: ActionGD) -> void:
 	if !action.has_method("onCondition") or action.onCondition():
 		unit_actions.append(action)
-		if unit_actions.size() == 1: onTriggerNextAction(action)
+		await get_tree().process_frame
+		if !is_triggered: onTriggerNextAction(action)
 
 func onPushAction(action: ActionGD) -> void:
 	if !action.has_method("onCondition") or action.onCondition():
 		unit_actions.push_front(action)
+		await get_tree().process_frame
 		if !is_triggered: onTriggerNextAction(action)
 
 func onAppendMoveFinishAction(action: MoveFinishActionGD) -> void:
@@ -76,7 +79,6 @@ func onTriggerNextAction(action: ActionGD) -> void:
 	
 	unit_actions.erase(action)
 	Combat.onRecalculateTargetAbilities()
-	SpectateCamera.onStopTrack(false)
 	if action.has_method("onAfterTrigger"): await action.onAfterTrigger()
 	if unit_actions.is_empty() and LevelMap.game_phase != "AIPhase":
 		LevelMap.setActionLock("UnitActionDisabled")
@@ -85,6 +87,7 @@ func onTriggerNextAction(action: ActionGD) -> void:
 		
 	is_triggered = false
 	if !(unit_actions.is_empty()): onTriggerNextAction(unit_actions[0])
+	elif LevelMap.game_phase == "AIPhase": AIManager.onMoveNextAIUnit()
 
 func onDeath(Unit: UnitGD) -> void:
 	unit_actions = unit_actions.filter(func(x: ActionGD): return x.Unit != Unit)

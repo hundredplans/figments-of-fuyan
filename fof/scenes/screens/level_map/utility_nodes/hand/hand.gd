@@ -26,7 +26,7 @@ func on_playable_cards() -> Array:
 	return get_children().filter(on_is_card_playable).map(on_get_child_index)
 
 func on_is_card_playable(hand_card: HandCardGD) -> bool:
-	return energy >= hand_card.energy
+	return !hand_card.is_queued_for_deletion() and energy >= hand_card.energy
 
 func on_get_child_index(child: Node) -> int:
 	return child.get_index()
@@ -60,11 +60,8 @@ func on_card_placed(Tile: TileGD) -> void:
 		LevelUI.on_card_placed(card_selected_index)
 		on_change_energy(-Helper.getCard(hand_card.id).energy)
 		await PlayerManager.on_card_placed(hand_card, Tile)
-		hand_card.queue_free()
+		hand_card.free()
 		card_selected_index = -1
-		
-		if LevelMap.game_phase == "StartPhase":
-			LevelMap.on_change_game_phase("AfterStartPhase")
 
 func on_change_energy(delta: int) -> void:
 	energy = clamp(energy + delta, 0, energy_cap)

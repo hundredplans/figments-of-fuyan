@@ -30,13 +30,19 @@ func on_card_placed(hand_card: HandCardGD, Tile: TileGD) -> void:
 		var callable: Callable = SpectateCamera.onSpectate.bind(Units.onFindClosestAdjacentUnit(Unit, TeamRelationGD.new(Unit.team, "Ally")))
 		ActionManager.onAddAction(ArgDelayActionGD.new(Callable(), callable, true, DelayGD.new(Units.ARRIVE_EFFECT_DELAY_DURATION)), ActionManagerGD.PUSH)
 	else:
-		ActionManager.onAddAction(DelayActionGD.new(Callable(), true, DelayGD.new(Units.ARRIVE_EFFECT_DELAY_DURATION)), ActionManagerGD.PUSH)
+		ActionManager.onAddAction(ArgDelayActionGD.new(Callable(), onAfterChampionPlaced, true, DelayGD.new(Units.ARRIVE_EFFECT_DELAY_DURATION)), ActionManagerGD.PUSH)
+	
+func onAfterChampionPlaced() -> void:
+	if LevelMap.game_phase == "StartPhase":
+		LevelMap.on_change_game_phase("AfterStartPhase")
 	
 func on_enemy_unit_enters_vision(Unit: UnitGD, _Unit: UnitGD) -> void:
 	StatusManager.onUpdateEnemyVision(Unit, true)
 	ActionManager.onEnemyDiscovered()
-	LevelUI.onEnemySpotted(Unit, _Unit)
 	VFX.onUpdateVFXVision(Unit, true)
+		
+	if LevelMap.game_phase == "PlayerPhase":
+		LevelUI.onEnemySpotted(Unit, _Unit)
 
 func on_enemy_unit_exits_vision(Unit: UnitGD) -> void:
 	StatusManager.onUpdateEnemyVision(Unit, false)
@@ -80,6 +86,7 @@ func on_player_phase_start() -> void:
 	passed_turns = []
 	unpassed_turns = []
 	var AppliedBy := AppliedByGD.new("StartPlayerPhase")
+	
 	for Unit in Units.on_units():
 		if Unit.turn_status == UnitGD.TURN_UNUSED: unpassed_turns.append(Unit)
 		else: passed_turns.append(Unit)
@@ -144,7 +151,7 @@ func onSetMovementRange(Unit: UnitGD) -> void:
 	for movement_path in unit_movement_paths:
 		if movement_path.is_attack:
 			if can_attack: movement_path.DestinationTile.Unit.on_enemy_in_range(true)
-		Tiles.setTileOutline(movement_path.DestinationTile, "MovementRange")
+		else: Tiles.setTileOutline(movement_path.DestinationTile, "MovementRange")
 	
 func onRemoveMovementRange() -> void:
 	for movement_path in unit_movement_paths:
@@ -221,7 +228,7 @@ func onBeginUnitMovement(DestinationTile: TileGD) -> void:
 		Units.movement_outline_tiles.append(fneighbour.Tile)
 		if fneighbour.Tile.Unit == null:
 			ActionManager.onAddAction(MoveActionGD.new(UnitSelected, fneighbour, movement_path, true))
-			fneighbour.Tile.Effects.onRemoveHeightDropLabel()
+			fneighbour.Tile.Effects.onRemoveDeathPathLabel()
 		else: ActionManager.onAddAction(AttackActionGD.new(UnitSelected, fneighbour.Tile, true, null))
 	ActionManager.onAddAction(MoveFinishActionGD.new(UnitSelected, movement_path, true), ActionManagerGD.APPEND_MF)
 	_on_unit_deselected(UnitSelected, true)

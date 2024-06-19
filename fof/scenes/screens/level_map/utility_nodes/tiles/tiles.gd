@@ -14,6 +14,7 @@ var Units: UnitsGD
 var Lights: LightsGD
 var Hand: HandGD
 var PlayerManager: PlayerManagerGD
+var GameEffects: GameEffectsGD
 
 var cube_directions: Array[Vector3] = [
 Vector3(1, 0, -1),
@@ -377,17 +378,22 @@ func onCreateOptimalPaths(Unit: UnitGD, all_tiles: Dictionary, astar: AStar3D, s
 
 func onFneighbourPathValid(Unit: UnitGD, fn_path: Array, astar: AStar3D, fall_damages: Dictionary, reconnections: Array, speed: int, movement_path: MovementPathGD, ally_vision: Array) -> bool:
 	if onFneighbourPathValidUnitHeightHigh(Unit, fn_path, astar, reconnections):
-		if onFneighbourPathValidFallDamage(Unit, fn_path, astar, fall_damages, reconnections):
+		if onFneighbourPathValidDeath(Unit, fn_path, astar, fall_damages, reconnections):
 			if onFneighbourPathValidEnemy(Unit, fn_path, astar, reconnections, movement_path, ally_vision):
 				if onFneighbourPathValidDistance(Unit, fn_path, astar, reconnections, speed):
 					return true
 	return false
 
+func onFnPathHasDeepWater(fn_path: Array) -> bool:
+	for i in range(fn_path.size() - 1):
+		if fn_path[i].Tile.isDeepWater(): return true
+	return false
+
 func onFneighbourPathValidDistance(Unit: UnitGD, fn_path: Array, astar: AStar3D, reconnections: Array, speed: int) -> bool:
+	if !Unit.Tile.isDeepWater() and onFnPathHasDeepWater(fn_path): speed -= 1
 	if fn_path.size() <= speed or (fn_path.size() <= speed + 1 and fn_path[fn_path.size() - 1].Tile.Unit != null):
 		return true
-	else: onDisconnectReconnect(Unit, fn_path, fn_path.size() - 1, reconnections, astar)
-	return false
+	return onDisconnectReconnect(Unit, fn_path, fn_path.size() - 1, reconnections, astar)
 
 func onFneighbourPathValidEnemy(Unit: UnitGD, fn_path: Array, astar: AStar3D, reconnections: Array, movement_path: MovementPathGD, ally_vision: Array) -> bool:
 	for i in range(fn_path.size()):
@@ -430,11 +436,11 @@ func onFneighbourPathValidUnitHeightHigh(Unit: UnitGD, fn_path: Array, astar: AS
 			return true
 	return true
 	
-func onFneighbourPathValidFallDamage(Unit: UnitGD, fn_path: Array, astar: AStar3D, fall_damages: Dictionary, reconnections: Array) -> bool:
+func onFneighbourPathValidDeath(Unit: UnitGD, fn_path: Array, astar: AStar3D, fall_damages: Dictionary, reconnections: Array) -> bool:
 	var fall_damage: int = 0
 	for i in range(fn_path.size()):
 		fall_damage += onCalculateFallDamage(Unit, fn_path[i], fall_damages)
-		if Combat.isFallDamageLethal(Unit, fall_damage):
+		if Combat.isFallDamageLethal(Unit, fall_damage) or (fn_path[i].Tile.isDeepWater() and onCanDrown(Unit)):
 			if !(i == fn_path.size() - 1):
 				return onDisconnectReconnect(Unit, fn_path, i, reconnections, astar)
 			return true
@@ -445,7 +451,9 @@ func onCalculateFallDamage(Unit: UnitGD, fn: FneighbourGD, fall_damages: Diction
 	var dmg: int = 0
 	if fn.hdiff > 2:
 		if hdiff > Unit.height.top: dmg = (hdiff - floor(Unit.height.top)) * 2
-	
+		if dmg > 0:
+			if fn.Tile.isShallowWater(): dmg /= 2
+			elif fn.Tile.isDeepWater(): dmg = 0
 	fall_damages[fn.Tile] = dmg
 	return dmg
 
@@ -527,9 +535,10 @@ func setTileOutline(Tile: TileGD, type: String, is_remove: bool = false) -> void
 			match Unit.team:
 				0: highest = "AllyInspected"
 				1: highest = "EnemyInspected"
+				
+	if highest == "PathHovered": LevelUI.setTargetAbilityBoxCrossedOut(!is_remove)
 	Tile.setOutline(OUTLINE_INFO[highest][1])
-	
-	Tile.Effects.onManageHeightDropLabel(PlayerManager.UnitSelected, type, is_remove)
+	Tile.Effects.onManageDeathPathLabel(PlayerManager.UnitSelected, type, is_remove)
 
 var BASE_MATERIAL: Material = preload("res://assets/materials/tile_materials/base_tile_materials/base_tile_material.tres")
 var TILE_MATERIALS: Dictionary
@@ -653,3 +662,15 @@ func onFindUnitAdjacentTiles(Unit: UnitGD, distance: int) -> Array: #  Tiles bas
 						if getUnitAdjustedHeight(_Unit.Tile) + _Unit.height.top >= height - Unit.height.top:
 							tiles.append(Tile)
 	return tiles
+
+func onTileEffects(Unit: UnitGD, PreviousTile: TileGD) -> void:
+	var is_water: bool = Unit.Tile.isDeepWater()
+	var was_water: bool = PreviousTile.isDeepWater()
+	
+	if (is_water and !was_water): GameEffects.onAddGameFX(Unit, GameFXGD.DEEP_WATER)
+	elif (!is_water and was_water): GameEffects.onFindRemoveFX(Unit, GameFXGD.DEEP_WATER)
+
+func onDeepWaterRemoved(Unit: UnitGD) -> void:
+	Unit.stats("speed", 1, AppliedByGD.new("DeepWater"))
+	
+func onCanDrown(Unit: UnitGD) -> bool: return Unit.height.top < 1

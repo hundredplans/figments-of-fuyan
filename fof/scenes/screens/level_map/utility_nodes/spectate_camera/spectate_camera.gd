@@ -34,7 +34,7 @@ var is_spectate_spawn: bool = false
 var invisible_unit_stop_track: bool = false
 
 func onSpectate(Obj: Variant) -> void:
-	invisible_unit_stop_track = false
+	onStopTrack(false)
 	if Obj != null and (!Obj is UnitGD or !Obj.is_dead):
 		if is_spectate_spawn: onSpectateSpawnTile(Obj)
 		else: onSpectateUnit(Obj)
@@ -240,9 +240,9 @@ func onUpdateFreelookCamera(delta: float) -> void:
 		_update_movement(delta)
 func _update_movement(delta):
 	# Computes desired direction from key states
-	_direction = Vector3((_d as float) - (_a as float), 
-						(_e as float) - (_q as float), 
-						(_s as float) - (_w as float))
+	_direction = Vector3((_d as float) - (_a as float),
+		(_e as float) - (_q as float),
+		(_s as float) - (_w as float))
 	
 	# Computes the change in velocity due to desired direction and "drag"
 	# The "drag" is a constant acceleration on the camera to bring it's velocity to 0
@@ -280,4 +280,5 @@ func _update_mouselook():
 		Camera.rotate_y(deg_to_rad(-yaw))
 		Camera.rotate_object_local(Vector3(1,0,0), deg_to_rad(-pitch))
 
-func onStopTrack(state: bool = true) -> void: invisible_unit_stop_track = state
+func onStopTrack(state: bool = true) -> void:
+	invisible_unit_stop_track = state

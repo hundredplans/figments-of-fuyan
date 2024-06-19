@@ -69,14 +69,14 @@ func on_change_game_phase(phase: String) -> void:
 	game_phase = phase
 	onTriggerPhaseStart(phase)
 	match phase:
-		"StartPhase": setActionLock("HandRegular"); if dev.god_start: on_advance_game_phase()
+		"StartPhase": if dev.god_start: on_advance_game_phase()
 		"AfterStartPhase":
 			if dev.god_start:
 				var Unit: UnitGD = await Units.onUnitAwakened(1, 0, [], 0, 0, Tiles.onSpawnTiles()[0])
 				Unit.stats("health", 50)
 				Unit.stats("attack", 50)
 				Unit.stats("speed", 5)
-				on_advance_game_phase()
+				SpectateCamera.onSpectate(Unit)
 		"PlayerPhase": setActionLock("PlayerPhase")
 		"PlayerEndTurnPhase": setActionLock("Regular"); on_advance_game_phase()
 		"AIEndTurnPhase": on_advance_game_phase()

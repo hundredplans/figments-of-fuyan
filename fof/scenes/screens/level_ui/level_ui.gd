@@ -83,7 +83,7 @@ func _input(event: InputEvent) -> void:
 
 var _GameCard: PackedScene = preload("res://assets/base_game/cards/game_card/game_card.tscn")
 func on_draw_card(HandCard: HandCardGD) -> void:
-	if HandCard.id not in range(1, 7)	: # fix this it's so dodgy
+	if LevelMap.game_phase == "HandPhase": # fix this it's so dodgy
 		var GameCard: Control = _GameCard.instantiate()
 		GameCard.set_info(Helper.getCard(HandCard.id))
 		DrawCard.add_child(GameCard)
@@ -111,12 +111,10 @@ func on_card_selected(GameCard: Control) -> void:
 		index = GameCard.get_index()
 		LevelMap.setActionLock("SpawnVision")
 		on_unpin_hand_box_panel()
-		CameraArrows.visible = true
 	else: 
 		GameCardSelected = null
 		on_pin_hand_box_panel()
 		LevelMap.setActionLock("HandRegular")
-		CameraArrows.visible = false
 	LevelMap.Hand.on_card_selected(index)
 		
 func on_card_placed(index: int) -> void:
@@ -147,14 +145,13 @@ func onPlayerPhaseStart() -> void:
 		GameCardSelected.Art.get_node("CardButton").material = null
 		GameCardSelected = null
 		
-	VisionMode.visible = true
 	on_set_hand_box_cards_state()
 	on_unpin_hand_box_panel()
 	onChangePhaseIcon("PlayerPhase")
 	GreyScale.modulate.a = 0
 
 func onPassUnitTurnButtonPressed():
-	if PlayerManager.unpassed_turns.is_empty():
+	if PlayerManager.unpassed_turns.is_empty() or LevelMap.game_phase == "HandPhase":
 		LevelMap.on_advance_game_phase()
 	else:
 		PlayerManager.on_pass_unit_turn_pressed()
@@ -320,11 +317,10 @@ func onHandPhaseNoSpawnTiles() -> void:
 
 func onHandPhaseStart() -> void:
 	var skip_hand_phase: bool = LevelMap.on_skip_hand_phase_result()
-	ChangePhase.visible = true
 	GreyScale.modulate.a = greyscale_light
 	
 	on_set_hand_box_cards_state()
-	if !skip_hand_phase: on_pin_hand_box_panel(); LevelMap.setActionLock("HandRegular")
+	if !skip_hand_phase: on_pin_hand_box_panel(); LevelMap.setActionLock("HandRegular"); ChangePhase.visible = true
 	else: LevelMap.on_advance_game_phase()
 
 var warning_texts: Dictionary = {
@@ -500,3 +496,7 @@ func onEnemySpotted(Unit: UnitGD, _Spotter: UnitGD) -> void:
 	
 func onDestroySpottedArrow(Unit: UnitGD) -> void:
 	Unit.Model.setRedMultiply(false)
+
+func setTargetAbilityBoxCrossedOut(state: bool) -> void:
+	for box in TargetAbilities.get_children():
+		box.CrossedOut.visible = state

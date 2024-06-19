@@ -5,7 +5,7 @@ $classes_info = file_get_contents('../../static/classes/classes_info.json');
 $classes_info = json_decode($classes_info, true);
 $classes_info = $classes_info["classes_info"];
 
-function getSelectedClasses($mysqli): array {
+function getSelectedClassIds($mysqli): array {
     $select_query = "SELECT class_id FROM SavesClasses WHERE save_id = '1'";
     $result = $mysqli -> query($select_query);
     $class_ids = array();
@@ -15,6 +15,18 @@ function getSelectedClasses($mysqli): array {
         }
     }
     return $class_ids;
+}
+
+function getHeroesInfo($mysqli): array {
+   $select_query = "SELECT class_id, att, hp, mana FROM SavesClasses WHERE save_id = '1'";
+   $result = $mysqli -> query($select_query);
+   $info = array();
+   if ($result -> num_rows > 0) {
+       while ($row = $result -> fetch_assoc()) {
+           array_push($info, $row);
+       }
+   }
+   return $info;
 }
 
 function getClassInfo($id): array {

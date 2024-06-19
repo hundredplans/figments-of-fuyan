@@ -2,7 +2,10 @@ extends TextureButton
 @onready var label: Label = %Label
 @onready var description: RichTextLabel = %Description
 @onready var AbilityCharges: Label = %AbilityCharges
+@onready var CrossedOut: Control = $CrossedOut
 var ability: AbilityGD
+
+func _ready() -> void: CrossedOut.visible = false
 
 const SCALE_TWEEN_TIME: float = 0.1
 func _on_mouse_entered():

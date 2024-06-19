@@ -47,3 +47,7 @@ func setOutline(mat: Material) -> void:
 	
 func getTrueHeight() -> float:
 	return 0.3 + (w * 1.2) + (0.6 if tile.type in [1, 2] else 0.0)
+
+func isDeepWater() -> bool: return tile.id == 4
+func isWater() -> bool: return tile.id in [3, 4]
+func isShallowWater() -> bool: return tile.id == 3

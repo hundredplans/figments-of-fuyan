@@ -1,32 +1,43 @@
 extends Node3D
 
 @onready var Tile: TileGD = get_parent()
-var HeightDropLabel: Node3D = null
+var DeathPathLabel: Node3D
 var fall_damage: int = 0
 
-func onRemoveHeightDropLabel() -> void:
-	if HeightDropLabel != null: HeightDropLabel.queue_free()
+func onRemoveDeathPathLabel() -> void:
+	if DeathPathLabel != null: DeathPathLabel.queue_free()
 
-func onManageHeightDropLabel(Unit: UnitGD, type: String, is_remove: bool) -> void:
+func onManageDeathPathLabel(Unit: UnitGD, type: String, is_remove: bool) -> void:
 	if Unit != null:
-		if HeightDropLabel != null:
+		if DeathPathLabel != null:
 			if is_remove and type in ["PathHovered", "MovementRange"]:
-				HeightDropLabel.queue_free()
+				DeathPathLabel.queue_free()
 			return
-		elif fall_damage > 0 and "PathHovered" in Tile.tile_outlines:
-			HeightDropLabel = preload("res://scenes/screens/level_map/height_drop_label.tscn").instantiate()
-			add_child(HeightDropLabel)
-			HeightDropLabel.position.y += (0.6 if Tile.Tiles.is_ramp_tile(Tile) else 0.0)
-			HeightDropLabel.look_at(\
-			Vector3(Unit.global_position.x, Unit.global_position.y + Unit.height.eye, Unit.global_position.z))
-			
-			HeightDropLabel.get_node("DMGSprite").texture = \
-			preload("res://assets/base_game/cards/game_card/art/bbcode/HEALTH.png")\
-			if Unit.health - fall_damage > 0 else\
-			preload("res://scenes/screens/level_map/red_skull.png")
-			
-			HeightDropLabel.get_node("Label3D").text = str(fall_damage)
+		elif "PathHovered" in Tile.tile_outlines:
+			if fall_damage > 0:
+				onTriggerDeathPathLabel(Unit, fall_damage, FALL)
+			elif Tile.isDeepWater() and Tile.Tiles.onCanDrown(Unit):
+				onTriggerDeathPathLabel(Unit, 0, DROWN)
 		
+enum {
+	DROWN,
+	FALL,
+}
+		
+func onTriggerDeathPathLabel(Unit: UnitGD, damage: int, type: int) -> void:
+	DeathPathLabel = preload("res://scenes/screens/level_map/death_path_label.tscn").instantiate()
+	add_child(DeathPathLabel)
+	DeathPathLabel.position.y += (0.6 if Tile.Tiles.is_ramp_tile(Tile) else 0.0)
+	DeathPathLabel.look_at(\
+	Vector3(Unit.global_position.x, Unit.global_position.y + Unit.height.eye, Unit.global_position.z))
+	
+	DeathPathLabel.get_node("DMGSprite").texture = \
+	preload("res://assets/base_game/cards/game_card/art/bbcode/HEALTH.png")\
+	if (Unit.health - damage > 0 and type == FALL) else\
+	preload("res://scenes/screens/level_map/red_skull.png")
+	
+	if type == FALL: DeathPathLabel.get_node("Label3D").text = str(fall_damage)
+	else: DeathPathLabel.get_node("Label3D").text = ""
 		
 var PastPath: Node3D
 func onPastPath(rots: Array, nums: Array) -> void:

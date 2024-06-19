@@ -72,7 +72,7 @@ func on_finish_animation(ani_name: String) -> void:
 	if ani_name != "Walk" and ani_name not in ["Death", "DeathAbility"] and (ani_name != "Jump"): on_play_animation(idle)
 	match ani_name:
 		"Attack", "AttackAbility": if Unit != null: AudioMaster.play_sfx(Unit.AudioDict.ATTACK)
-		"Jump": is_jump = false; jump_time = 0
+		"Jump": is_jump = false
 
 var materials: Array = []
 const DEFAULT_MULT_VALUE: float = 1
@@ -171,7 +171,8 @@ func onBeginMovingToTile() -> void:
 	
 func onCalculateEndPosition(Tile: TileGD) -> Vector3:
 	var climb_slope: float = 0.9 if (Tile.tile.type in [1, 2]) else 0.3
-	return Vector3(Tile.global_position.x, Tile.global_position.y + climb_slope, Tile.global_position.z)
+	var water_deslope: float = 0.1 if Tile.isWater() else 0
+	return Vector3(Tile.global_position.x, Tile.global_position.y + climb_slope - water_deslope, Tile.global_position.z)
 
 var is_jump: bool = false
 func onCreateJump(Tile: TileGD) -> void:
@@ -181,6 +182,7 @@ func onCreateJump(Tile: TileGD) -> void:
 	jump_end = onCalculateEndPosition(Tile)
 	is_jump = true
 	AniPlayer.speed_scale = 2
+	jump_time = 0
 	on_play_animation("Jump")
 	
 const JUMP_HEIGHT_MULTIPLIER: float = 2.3
@@ -192,16 +194,19 @@ func onCreateFall(Tile: TileGD, hdiff: int, dmg: int) -> void:
 	jump_end = onCalculateEndPosition(Tile)
 	is_jump = true
 	AniPlayer.speed_scale = 2.0 / JUMP_TIME
+	jump_time = 0
 	on_play_animation("Jump")
 	
 	get_tree().create_timer((3 / AniPlayer.speed_scale) / 1.5).timeout\
 	.connect(func(): drop_calculate_damage.emit(dmg, (3 / AniPlayer.speed_scale) / 6))
+	
 func onCreateMoveTween(Tile: TileGD) -> void:
 	var MoveTween: Tween = create_tween()
 	var half_position := Vector3(Tile.global_position + global_position) * 0.5
 	var climb_slope: float = 0.9 if Tile.tile.type == 1 else (1.5 if (Tile.tile.type == 2 and Tile.w != Unit.Tile.w) else 0.3)
+	var water_deslope: float = 0.1 if Tile.isWater() else 0
 	MoveTween.tween_property(Unit, "global_position",
-	Vector3(half_position.x, Tile.global_position.y + climb_slope, half_position.z),
+	Vector3(half_position.x, Tile.global_position.y + climb_slope - water_deslope, half_position.z),
 	WALK_TRAVEL_TIME * 0.5)
 	MoveTween.finished.connect(onCreateSecondMoveTween.bind(Tile))
 	

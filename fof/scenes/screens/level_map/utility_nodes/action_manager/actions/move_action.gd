@@ -20,8 +20,8 @@ func _init(_Unit: UnitGD = null, _fneighbour: FneighbourGD = null, _movement_pat
 func onCreateDelay() -> void:
 	if is_visible:
 		var regular_delay: float = 1.0
-		if fneighbour.movement_type == FneighbourGD.FALL and fneighbour.hdiff > 0:
-			regular_delay = 1 + (fneighbour.hdiff * 0.1)
+		if fneighbour.movement_type == FneighbourGD.FALL or fneighbour.movement_type == FneighbourGD.JUMP:
+			regular_delay = 1 + (fneighbour.hdiff * 0.1) + 0.4	
 		delay = DelayGD.new(regular_delay)
 	else: delay = DelayGD.new()
 	
@@ -31,7 +31,11 @@ func onTrigger() -> void:
 	var vis_info: VisInfoGD = movement_path.onVisInfoByFneighbour(fneighbour)
 	Unit.vision_info_array.append(vis_info)
 	
-	if vis_info.total_vision != VisInfoGD.INVISIBLE: return onAllyTrigger(vis_info.total_vision)
+	if vis_info.total_vision != VisInfoGD.INVISIBLE:
+		if vis_info.total_vision == VisInfoGD.EXIT: SpectateCamera.onStopTrack()
+		else: SpectateCamera.onSpectate(Unit)
+		Unit.Model.onMoveToTile(fneighbour, movement_path, vis_info.total_vision)
+		return
 	if movement_path.onReentersVision(vis_info): delay.end_delay += REENTER_VISION_DELAY
 	else: SpectateCamera.onStopTrack()
 	
@@ -44,7 +48,9 @@ func onAllyTrigger(total_vision: int = VisInfoGD.REGULAR) -> void:
 	
 func onAfterTrigger() -> void:
 	Unit.stats("active_speed", -1, AppliedByGD.new("MovementFinished"))
+	var PreviousTile: TileGD = Unit.Tile
 	Unit.occupy_tile(fneighbour.Tile)
+	Tiles.onTileEffects(Unit, PreviousTile)
 	
 	if Unit.team == 0:
 		Unit.onAddToPastPath(fneighbour.Tile)

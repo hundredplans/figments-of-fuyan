@@ -222,7 +222,8 @@ func onAddUnitFX(Unit: UnitGD, type: String, AppliedBy := AppliedByGD.new(), cha
 		
 		if type == "CocusPocus": # Eventually implement this as a specific type of base_fx
 			base_fx.visible = info_fx.Unit in Vision.getTeamVision()
-			
+	
+	for UnitStatus in onFindUnitStatus(Unit, "UnitFieldStatus"): UnitStatus.onAddUnitFX(info_fx)
 	Unit.onAddUnitFX(info_fx)
 	
 func onHoverUnitPressed(Unit: UnitGD) -> void:

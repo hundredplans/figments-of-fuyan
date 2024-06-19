@@ -36,6 +36,7 @@ var attack_amount: int = 1
 var turns_alive: int = 0
 var turn_status: int = TURN_UNUSED
 var finished_awakening: bool = false
+var traits: Array = []
 var abilities: Array = []
 var base_text: String
 
@@ -115,11 +116,20 @@ func onUnitAwakened(_id: int, _tool_id: int, _effects: Array, _team: int, rot: i
 	
 	AudioDict = load("res://assets/base_game/cards/cards/" + base_card.folder_name + "/audio.tres")
 	onCreateAbilities()
+	onCreateTraits()
+	
+func onCreateTraits() -> void:
+	var DIR_PATH: String = "res://assets/base_game/cards/cards/" + base_card.folder_name + "/traits/"
+	if DirAccess.dir_exists_absolute(DIR_PATH):
+		for trait_name in DirAccess.get_files_at(DIR_PATH):
+			var Trait: TraitGD = load(DIR_PATH + trait_name).duplicate()
+			traits.append(Trait)
 
 func onCreateAbilities() -> void:
 	var DIR_PATH: String = "res://assets/base_game/cards/cards/" + base_card.folder_name + "/abilities/"
 	if DirAccess.dir_exists_absolute(DIR_PATH):
 		for ability_name in Array(DirAccess.get_files_at(DIR_PATH)).filter(func(x: String): return x.ends_with(".tres")):
+			
 			var ability: AbilityGD = load(DIR_PATH + ability_name).duplicate()
 			ability.charges = ability.max_charges
 			abilities.append(ability)
@@ -164,7 +174,7 @@ func stats(stat_type: String, val: int, AppliedBy := AppliedByGD.new("GameEvent"
 				max_speed = speed
 			else:
 				max_speed = clamp(max_speed + val, 0, 9)
-				speed = clamp(speed + val, 0, max_speed)
+				speed = clamp(speed, 0, max_speed)
 		"attack":
 			if absolute: attack = clamp(val, 0, 99)
 			else: attack = clamp(attack + val, 0, 99)

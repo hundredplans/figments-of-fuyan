@@ -6,6 +6,7 @@ var LevelUI: LevelUIGD
 var VFX: VFXGD
 var Combat: CombatGD
 var StatusManager: StatusManagerGD
+var Tiles: TilesGD
 var effects: Array = []
 
 func onDeathFinished(Unit: UnitGD) -> void:
@@ -13,7 +14,7 @@ func onDeathFinished(Unit: UnitGD) -> void:
 	for GameFX in _effects.filter(func(x: GameFXGD): return x.Unit == Unit):
 		effects.erase(Unit)
 
-func onAddGameFX(Unit: UnitGD, type: int, a: Dictionary, triggers: Array = []) -> void:
+func onAddGameFX(Unit: UnitGD, type: int, a: Dictionary = {}, triggers: Array = []) -> void:
 	var GameFX: GameFXGD 
 	match type:
 		GameFXGD.HEAL_NEXT_TURN: GameFX = onAddHealNextTurn(Unit, a, triggers)
@@ -23,7 +24,20 @@ func onAddGameFX(Unit: UnitGD, type: int, a: Dictionary, triggers: Array = []) -
 		GameFXGD.ABILITY_ACTIVE: GameFX = onAddAbilityActive(Unit, a, triggers)
 		GameFXGD.HELPFUL_HELMET: GameFX = onAddHelpfulHelmet(Unit, a)
 		GameFXGD.CHARMING_STANCE: GameFX = onAddCharmingStance(Unit, a)
+		GameFXGD.DEEP_WATER: GameFX = onAddDeepWater(Unit)
 	if GameFX != null: GameFX.type = type
+	
+func onAddDeepWater(Unit: UnitGD) -> GameFXGD:
+	var GameFX := onCreateGameFX(Unit, GameFXGD.DEEP_WATER)
+	
+	var AppliedBy := AppliedByGD.new("DeepWater")
+	if !Tiles.onCanDrown(Unit):
+		Unit.stats("active_speed", -1, AppliedBy)
+		Unit.stats("speed", -1, AppliedBy)
+	else: Combat.onDestroyUnit(Unit, AppliedBy)
+	
+	onAppendTrigger(TriggerGD.new(GameFX, Unit, Tiles.onDeepWaterRemoved.bind(Unit), TriggerGD.REMOVE, TriggerGD.NULL))
+	return GameFX
 	
 func onAddBuffNextTurn(Unit: UnitGD, a: Dictionary, triggers: Array) -> GameFXGD:
 	var _GameFX := onFindFirstGameFX(Unit, GameFXGD.BUFF_NEXT_TURN)
@@ -68,13 +82,18 @@ func onActiveAbilityTriggered(Unit: UnitGD) -> void:
 	
 func onRemoveTrigger(GameFX: GameFXGD, Trigger: TriggerGD) -> void:
 	match Trigger.remove_type:
-		TriggerGD.REMOVE_FX:
-			if GameFX in effects:
-				onTriggerGameFX(GameFX, TriggerGD.REMOVE)
-				effects.erase(GameFX)
+		TriggerGD.REMOVE_FX: onRemoveFX(GameFX)
 		TriggerGD.REMOVE_TRIGGER:
 			GameFX.triggers.erase(Trigger)
 				
+func onFindRemoveFX(Unit: UnitGD, type: int) -> void:
+	var GameFX: GameFXGD = onFindFirstGameFX(Unit, type)
+	onRemoveFX(GameFX)
+				
+func onRemoveFX(GameFX: GameFXGD) -> void:
+	if GameFX in effects:
+		onTriggerGameFX(GameFX, TriggerGD.REMOVE)
+		effects.erase(GameFX)
 		
 func onAddAbilityActive(Unit: UnitGD, a: Dictionary, triggers: Array) -> GameFXGD:
 	var GameFX := onCreateGameFX(Unit, GameFXGD.ABILITY_ACTIVE, a, triggers)
@@ -127,7 +146,7 @@ func onAddStaggerFX(Unit: UnitGD, a: Dictionary) -> GameFXGD:
 	onAppendTrigger(TriggerGD.new(GameFX, Unit, Combat.onRemoveStagger.bind(GameFX), TriggerGD.TURN_PASSED, TriggerGD.REMOVE_FX))
 	return GameFX
 	
-func onCreateGameFX(Unit: UnitGD, type: int, a: Dictionary, triggers: Array = []) -> GameFXGD:
+func onCreateGameFX(Unit: UnitGD, type: int, a: Dictionary = {}, triggers: Array = []) -> GameFXGD:
 	var GameFX := GameFXGD.new(Unit, type, a, triggers)
 	effects.append(GameFX)
 	for trigger in triggers: trigger.GameFX = GameFX

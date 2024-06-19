@@ -1,0 +1,90 @@
+#world_map_img {
+    width: 45vw;
+    height: 45vw;
+    border: solid 1vw sandybrown;
+    margin-top: 0.5vw;
+}
+
+#selected_heroes, #items {
+    width: 26.5vw;
+    text-align: center;
+}
+
+#world_map {
+    width: fit-content;
+}
+
+html, body {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-color: saddlebrown;
+}
+
+#main {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    column-gap: 0;
+}
+
+h1 {
+    font-family: 'Roboto Thin', serif;
+    color: sandybrown;
+    font-size: 8vw;
+    margin-top: 0;
+    border-bottom: solid 1vw sandybrown;
+    width: 100%;
+    margin-bottom: 1vw;
+}
+
+#heroes_info {
+    width: fit-content;
+    margin: 0;
+    padding: 0;
+}
+
+.hero_info {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    font-size: 1.5em;
+    text-align: start;
+    margin-left: 10px;
+    height: fit-content;
+}
+
+.hero_info_left > text {
+    font-family: 'Roboto Thin', serif;
+    color: navajowhite;
+}
+
+.hero_info_left > img {
+    width: 4vw;
+    height: 4vw;
+    background-color: skyblue;
+    border: 0.3vw solid black;
+    margin-top: 0.5vw;
+    margin-bottom: 0.5vw;
+}
+
+.hero_info_stats > img {
+    margin-top: 1vw;
+}
+
+.hero_info_stats > text {
+    color: wheat;
+    font-size: 1.5vw;
+    font-family: 'Roboto Light', fantasy;
+}
+
+.hero_info_stats {
+    margin-left: 0.5vw;
+    display: grid;
+    grid-template-columns: auto auto auto;
+}
+
+.hero_info_single {
+    display: grid;
+    grid-template-columns: auto auto;
+}

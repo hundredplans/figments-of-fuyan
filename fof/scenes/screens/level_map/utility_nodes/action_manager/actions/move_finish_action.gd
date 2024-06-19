@@ -26,7 +26,3 @@ func onResumeIdleAnimation() -> void:
 	Unit.Model.on_play_animation("Idle")
 	if Unit.Model.current_walk_stream_player != null:
 		AudioMaster.on_cutoff_sfx(Unit.Model.current_walk_stream_player)
-
-func onAfterTrigger() -> void:
-	if Unit.team == 1:
-		AIManager.onMoveNextAIUnit()

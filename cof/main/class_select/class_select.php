@@ -6,13 +6,28 @@ onCreateTables($mysqli);
 $class_select = isset($_GET['class_select']);
 $remove_class = isset($_GET['remove_class']);
 $main_menu = isset($_GET['main_menu']);
+$play = isset($_GET['play']);
 if ($class_select) {onClassSelected($mysqli);}
 if ($remove_class) {onClassRemoved($mysqli);}
+if ($play) {onPlayPressed($mysqli);}
 if ($class_select or $remove_class) {
     header("Location: http://$_SERVER[HTTP_HOST]/cof/main/class_select/class_select.php");
 }
 elseif ($main_menu) {
     header("Location: http://$_SERVER[HTTP_HOST]/cof/main/main_menu/main_menu.php");
+}
+function onPlayPressed($mysqli) {
+    $heroes = getSelectedClassIds($mysqli);
+    foreach ($heroes as $hero_info) {
+        $class_info = getClassInfo($hero_info);
+        $id = $class_info['id'];
+        $att = $class_info['att'];
+        $hp = $class_info['hp'];
+        $mana = $class_info['mana'];
+        $update_query = "UPDATE SavesClasses SET att='$att', hp='$hp', mana='$mana' WHERE save_id = 1 AND class_id='$id'";
+        $mysqli -> query($update_query);
+    }
+    header("Location: http://$_SERVER[HTTP_HOST]/cof/main/world_map/world_map.php");
 }
 function onCreateTables($mysqli) {
     $create_saves_query = "CREATE TABLE IF NOT EXISTS Saves(
@@ -25,6 +40,9 @@ function onCreateTables($mysqli) {
     $create_saves_classes_query = "CREATE TABLE IF NOT EXISTS SavesClasses(
     save_id INT NOT NULL,
     class_id INT NOT NULL,
+    att INT,
+    hp INT,
+    mana INT,
     PRIMARY KEY (save_id, class_id))";
 
     $mysqli -> query($create_saves_query);
@@ -40,7 +58,7 @@ function onAccessDatabase(): mysqli
     return new mysqli($dbhost, $dbuser, $dbpass, $dbname);
 }
 function onCreateClassButtons($mysqli): void {
-    $disabled_classes = getSelectedClasses($mysqli);
+    $disabled_classes = getSelectedClassIds($mysqli);
     $size = sizeof($disabled_classes);
     foreach ($GLOBALS['classes_info'] as $info) {
         $name = $info["name"];
@@ -56,8 +74,8 @@ function onCreateClassButtons($mysqli): void {
 }
 
 function onClassSelected($mysqli) {
-    print_r(sizeof(getSelectedClasses($mysqli)));
-    if (sizeof(getSelectedClasses($mysqli)) < $GLOBALS['MAX_CLASS_COUNT']){
+    print_r(sizeof(getSelectedClassIds($mysqli)));
+    if (sizeof(getSelectedClassIds($mysqli)) < $GLOBALS['MAX_CLASS_COUNT']){
         $class_id = $_GET['class_select'];
         $insert_query = "INSERT INTO SavesClasses(class_id, save_id) VALUES ('$class_id', 1)";
         $mysqli->query($insert_query);
@@ -65,7 +83,7 @@ function onClassSelected($mysqli) {
 }
 
 function onCreateSelectedClasses($mysqli) {
-    $class_ids = getSelectedClasses($mysqli);
+    $class_ids = getSelectedClassIds($mysqli);
 
     if (sizeof($class_ids) > 0) {
         echo "<div id='selected_classes'>";
@@ -76,7 +94,7 @@ function onCreateSelectedClasses($mysqli) {
     }
     echo "</div>";
     if (sizeof($class_ids) == 4) {
-        echo "<button type='submit' class='large_button'> Play </button>";
+        echo "<button type='submit' class='bottom_button' name='play'> Play </button>";
     }
 }
 
@@ -87,7 +105,7 @@ function onClassRemoved($mysqli) {
 }
 
 function onCreateClassesHeader($mysqli) {
-   $classes = getSelectedClasses($mysqli);
+   $classes = getSelectedClassIds($mysqli);
    if (sizeof($classes) > 0) {echo '<h1> Press below to remove a class (MAX = 4) </h1>';}
    else {echo '<h1> Press above to add a class (MAX = 4) </h1>';}
 }
@@ -102,7 +120,7 @@ function onCreateClassesHeader($mysqli) {
 
     <?php onCreateClassesHeader($mysqli) ?>
     <div id="bottom_side">
-        <button type="submit" class="large_button" name="main_menu"> Main Menu </button>
+        <button type="submit" class="bottom_button" name="main_menu"> Main Menu </button>
         <?php onCreateSelectedClasses($mysqli); ?>
     </div>
 </form>

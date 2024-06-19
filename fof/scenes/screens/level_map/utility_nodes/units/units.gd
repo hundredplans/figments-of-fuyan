@@ -52,9 +52,8 @@ func onUnitAwakenedProcess(Unit: UnitGD, Tile: TileGD) -> void:
 	AIManager.getDangerList(Unit, all_units())
 	
 func onArrive(Unit: UnitGD) -> void:
-	for ability in Unit.abilities:
-		if ability is ArmorGD:
-			StatusManager.onAddUnitFX(Unit, "Armor", AppliedByGD.new("Ability"), ability.armor)
+	var armor: TraitGD = Combat.onFindTrait(Unit, TraitGD.ARMOR)
+	if armor != null: StatusManager.onAddUnitFX(Unit, "Armor", AppliedByGD.new("Trait"), armor.armor)
 	
 func onMassUnitsAwakened(tiles: Array, enemy_ids: Array) -> void:
 	var units: Array = []

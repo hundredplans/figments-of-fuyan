@@ -13,6 +13,7 @@ var Hand: HandGD
 var Vision: VisionGD
 var GameEffects: GameEffectsGD
 var ActionManager: ActionManagerGD
+var Tiles: TilesGD
 
 var Unit: UnitGD
 var is_visible: bool

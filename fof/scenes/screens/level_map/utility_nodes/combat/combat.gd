@@ -130,6 +130,11 @@ func onAfterAbilityFrontDelay(args: Dictionary) -> void:
 		ActionManager.onAddAction(DelayActionGD.new(SpectateCamera.onSpectate.bind(OriginalSpectateUnit), true))
 		OriginalSpectateUnit = null
 		
+func onFindTrait(Unit: UnitGD, type: int) -> TraitGD:
+	for Trait in Unit.traits:
+		if Trait.type == type: return Trait
+	return null
+		
 func onFindAbilities(Unit: UnitGD, type: String) -> Array:
 	var abilities: Array = []
 	for ability in Unit.abilities:
@@ -171,9 +176,8 @@ func onCalculateDamage(Damagee: UnitGD, Attacker: UnitGD) -> int:
 	return onArmor(Damagee, Attacker.attack + Attacker.extra_damage)
 
 func onArmor(Unit: UnitGD, damage: int) -> int:
-	var abilities: Array = onFindAbilities(Unit, "Armor")
-	for ability in abilities:
-		damage = max(damage - ability.armor, 0)
+	var armor: TraitGD = onFindTrait(Unit, TraitGD.ARMOR)
+	if armor != null: damage = max(damage - armor.armor, 0)
 	return damage
 
 func onHealAbility(Healee: UnitGD, Healer: UnitGD, heal: int) -> bool:
@@ -302,7 +306,7 @@ func onTeleport(Unit: UnitGD, Tile: TileGD) -> void:
 	await get_tree().process_frame
 	Unit.occupy_tile(Tile)
 	if Unit.team == 1 and !(Unit.Tile in Vision.getTeamVision()):
-		SpectateCamera.invisible_unit_stop_track = true
+		SpectateCamera.onStopTrack(true)
 
 func onCanKillAtFullSpeed(Unit: UnitGD, movement_paths: Array = Tiles.onCreateMovementPaths(Unit, Unit.speed)) -> bool:
 	for _Unit in Unit.getVisibleEnemies():

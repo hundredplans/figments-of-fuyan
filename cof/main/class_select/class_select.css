@@ -6,7 +6,7 @@ body {
     display: grid;
     grid-template-columns: auto auto auto;
     grid-template-rows: auto auto;
-    gap: 2vw;
+    gap: 1.8vw;
     margin-right: auto;
     margin-left: auto;
     text-align: center;
@@ -25,7 +25,7 @@ body {
 }
 
 .btn_regular, .btn_disabled {
-    font-size: 3vw;
+    font-size: 2vw;
     width: 30vw;
     border-width: 0.3vw;
     border-radius: 1vw;
@@ -34,6 +34,9 @@ body {
 img {
     width: 11vw;
     height: 11vw;
+    background-color: skyblue;
+    border: 0.5vw solid black;
+    margin-top: 0.8vw;
 }
 
 
@@ -43,8 +46,6 @@ img {
     align-items: center;
     text-align: center;
     justify-content: center;
-    margin-left: auto;
-    margin-right: auto;
     background-color: burlywood;
     width: fit-content;
     margin-top: 0.5vw;
@@ -60,7 +61,7 @@ h1 {
     font-size: 2vw;
 }
 
-.large_button {
+.large_button, .bottom_button {
     width: 10vw;
     height: 5vw;
     font-size: 1vw;
@@ -73,7 +74,12 @@ h1 {
     margin-right: 0.5vw;
 }
 
+.bottom_button {
+    margin-top: 2vw;
+}
+
 #bottom_side {
-    display: inline-flex;
-    align-items: center;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    column-gap: 15vw;
 }
