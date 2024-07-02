@@ -50,11 +50,12 @@ func onAddUnitStatus(Unit: UnitGD, type: String = "UnitStatusRegular") -> void:
 		"UnitStatusRegular": 
 			LevelUI.Statuses.add_child(UnitStatus)
 			UnitStatus.setUnit(Unit)
-			UnitStatus.target_ability_pressed.connect(LevelUI.onTargetAbilityBtnPressed)
+			#UnitStatus.target_ability_pressed.connect(LevelUI.onTargetAbilityBtnPressed)
 		"UnitStatusExtra": 
-			LevelUI.UnitStatusState.add_child(UnitStatus)
+			LevelUI.UnitStatusState.get_node("Control").add_child(UnitStatus)
+			LevelUI.UnitStatusState.get_node("Control/DefaultStatus").visible = false
 			UnitStatus.setUnit(Unit)
-			UnitStatus.target_ability_pressed.connect(LevelUI.onTargetAbilityBtnPressed)
+			#UnitStatus.target_ability_pressed.connect(LevelUI.onTargetAbilityBtnPressed)
 		"TileHoveredUnitStatus":
 			LevelUI.TileHoveredGameCard.add_child(UnitStatus)
 			UnitStatus.setUnit(Unit)
@@ -92,6 +93,7 @@ func setUnitStatusTurnStatus(Unit: UnitGD, status: int) -> void:
 
 func setUnitStatusExtra(Unit: UnitGD, state: bool) -> void:
 	if !state:
+		LevelUI.UnitStatusState.get_node("Control/DefaultStatus").visible = true
 		for UnitStatus in onFindUnitStatus(Unit, "UnitStatusExtra"):
 			UnitStatus.queue_free()
 			units[Unit].erase(UnitStatus)
@@ -152,11 +154,11 @@ func onEnemyInRange(Unit: UnitGD, state: bool) -> void: # Changes slot one
 			UnitStatus.SlotOne.visible = state
 
 func onUnitInspected(Unit: UnitGD) -> void:
-	if LevelMap.action_lock in ["", "HandRegular"] and !LevelUI.is_status_box_moving:
+	if LevelMap.verifyLock(LevelMap.INSPECT_UNIT) and !LevelUI.is_status_box_moving:
 		Tiles.on_set_tile_material(Unit.Tile, "UnitInspected")
 	
 func onUnitUninspected(Unit: UnitGD) -> void:
-	if LevelMap.action_lock in ["", "HandRegular"] and !LevelUI.is_status_box_moving:
+	if LevelMap.verifyLock(LevelMap.INSPECT_UNIT) and !LevelUI.is_status_box_moving:
 		Tiles.on_remove_tile_material(Unit.Tile, "UnitInspected")
 	
 var unit_field_status_materials: Dictionary = {

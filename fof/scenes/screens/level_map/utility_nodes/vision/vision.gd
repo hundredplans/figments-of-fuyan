@@ -116,7 +116,7 @@ func onTileHovered(Tile: TileGD) -> void:
 	if vision_mode == 1:
 		var Unit: UnitGD = Units.unit_by_tile(Tile)
 		if Unit == null and "MovementRange" in Tile.tile_outlines:
-			Unit = PlayerManager.UnitSelected
+			Unit = SpectateCamera.SpectateUnit
 		if Unit != null: setActiveUnitVision(Unit)
 			
 func onTileUnhovered(Tile: TileGD) -> void:

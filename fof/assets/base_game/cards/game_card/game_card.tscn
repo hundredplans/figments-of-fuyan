@@ -21,7 +21,7 @@ font_size = 12
 outline_size = 8
 outline_color = Color(0, 0, 0, 1)
 
-[node name="GameCard" type="Control" node_paths=PackedStringArray("EnergyLabel", "RegularStats", "Art", "Text", "Stats")]
+[node name="GameCard" type="Control" node_paths=PackedStringArray("EnergyLabel", "RegularStats", "Art", "Text", "Stats", "CardButton")]
 custom_minimum_size = Vector2(264, 397)
 layout_mode = 3
 anchors_preset = 0
@@ -36,12 +36,11 @@ RegularStats = NodePath("Stats/RegularStats")
 Art = NodePath("Art")
 Text = NodePath("Text")
 Stats = NodePath("Stats")
+CardButton = NodePath("Art/CardButton")
 
 [node name="Art" type="Control" parent="."]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 0
-offset_right = 264.0
-offset_bottom = 397.0
 mouse_filter = 2
 
 [node name="AreaBackground" type="Sprite2D" parent="Art"]
@@ -56,11 +55,12 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = 264.0
+offset_bottom = 380.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 texture_normal = ExtResource("3_qjsx7")
-metadata/_edit_lock_ = true
 
 [node name="ArtPop" type="Sprite2D" parent="Art"]
 texture_filter = 1

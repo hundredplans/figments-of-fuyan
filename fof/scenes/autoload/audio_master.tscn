@@ -8,6 +8,7 @@
 script = ExtResource("1_23n64")
 
 [node name="MusicStream" type="AudioStreamPlayer" parent="."]
+volume_db = -15.0
 bus = &"Music"
 
 [node name="SFXContainer" type="Node" parent="."]

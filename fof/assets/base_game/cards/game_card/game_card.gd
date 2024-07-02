@@ -11,6 +11,7 @@ var is_hover: bool = false
 @export var Art: Control
 @export var Text: Control
 @export var Stats: Control
+@export var CardButton: TextureButton
 
 func setText(text: String) -> void:
 	Text.get_node("Text").text = base_card.text
@@ -40,3 +41,4 @@ func on_set_disabled(state: bool) -> void:
 	Art.get_node("CardButton").disabled = state
 	modulate = Helper.BASE if !state else Helper.DARK_GREY
 	is_hover = !state
+

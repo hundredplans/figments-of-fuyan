@@ -1,5 +1,7 @@
 body {
     background-color: sienna;
+    height: 100%;
+    overflow: hidden;
 }
 
 #classes{
@@ -22,6 +24,10 @@ body {
     color: white;
     background-color: sandybrown;
     border-color: saddlebrown;
+}
+
+.btn_regular:hover {
+    background-color: #77390F
 }
 
 .btn_regular, .btn_disabled {
@@ -72,6 +78,10 @@ h1 {
     border-width: 0.3vw;
     margin-left: 0.5vw;
     margin-right: 0.5vw;
+}
+
+.large_button:hover, .bottom_button:hover{
+    background-color: #77390F;
 }
 
 .bottom_button {

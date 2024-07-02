@@ -21,7 +21,9 @@ func on_create_card(id: int, tool_id: int = 0, effects: Array = []) -> DeckCardG
 	return card
 	
 func on_choose_champion() -> void: # make this work for multiple champions eventually
-	on_force_draw_card(_get_children().filter(predicate_by_property.bind("rarity", 7, "=="))[0])
+	var dev := preload("res://static/dev/dev.tres")
+	if !dev.god_start:
+		on_force_draw_card(_get_children().filter(predicate_by_property.bind("rarity", 7, "=="))[0])
 
 func predicate_by_property(deck_card: DeckCardGD, property: String, value: int, operation: String) -> bool:
 	return BaseCards.predicate_by_property(deck_card.id, property, value, operation)

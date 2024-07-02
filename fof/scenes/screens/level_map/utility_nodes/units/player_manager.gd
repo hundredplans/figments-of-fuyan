@@ -2,7 +2,7 @@ class_name PlayerManagerGD
 extends Node
 
 var Tiles: TilesGD
-var LevelMap: Node3D
+var LevelMap: LevelMapGD
 var LevelUI: LevelUIGD
 var SpectateCamera: Node3D
 var Units: UnitsGD
@@ -10,6 +10,8 @@ var Vision: VisionGD
 var VFX: VFXGD
 var StatusManager: StatusManagerGD
 var ActionManager: ActionManagerGD
+
+var graveyard_cards: Array = []
 
 func onSetupAllyPassedTurns(Unit: UnitGD) -> void:
 	if Unit.team == 0:
@@ -22,6 +24,7 @@ func on_card_placed(hand_card: HandCardGD, Tile: TileGD) -> void:
 	var skip_result: bool = LevelMap.on_skip_hand_phase_result(Tile)
 	if LevelMap.game_phase == "HandPhase": LevelUI.on_ally_unit_awakened(skip_result)
 	
+	LevelMap.setInputLock(LevelMapGD.UNIT_ACTION)
 	var Unit: UnitGD = await Units.onUnitAwakened(hand_card.id, hand_card.tool_id, hand_card.effects, 0, Tile.obj.rotation, Tile)
 	if skip_result: LevelMap.on_advance_game_phase()
 	
@@ -52,18 +55,17 @@ var ActiveUnit: UnitGD
 var unpassed_turns: Array
 var passed_turns: Array
 
-func on_select_active_unit(Unit: UnitGD) -> void:
-	if Unit.team == 0 and ActiveUnit != Unit:
-		if ActiveUnit != null: on_pass_unit_turn()
-		ActiveUnit = Unit
-		Units.setUnitStatus(Unit, UnitGD.TURN_ACTIVE)
-		LevelUI.on_pass_unit_turn_button_state(false)
+func onSelectActiveUnit(Unit: UnitGD) -> void:
+	if ActiveUnit != null: on_pass_unit_turn()
+	ActiveUnit = Unit
+	Units.setUnitStatus(Unit, UnitGD.TURN_ACTIVE)
+	LevelUI.on_pass_unit_turn_button_state(false)
 
 func on_pass_unit_turn_pressed() -> void:
 	if ActiveUnit == null:
 		var SpectateUnit: UnitGD = SpectateCamera.SpectateUnit
 		if SpectateUnit in unpassed_turns:
-			on_select_active_unit(SpectateUnit)
+			onSelectActiveUnit(SpectateUnit)
 			on_pass_unit_turn()
 	else:
 		on_pass_unit_turn()
@@ -79,7 +81,6 @@ func on_pass_unit_turn() -> void:
 			LevelUI.on_pass_unit_turn_button_state(true)
 			LevelMap.on_advance_game_phase()
 		elif LevelMap.game_phase == "PlayerPhase":
-			if ActiveUnit == UnitSelected: _on_unit_deselected(ActiveUnit)
 			SpectateCamera.onSpectate(Units.onFindClosestUnitFromUnits(ActiveUnit, unpassed_turns))
 			ActiveUnit = null
 func on_player_phase_start() -> void:
@@ -93,10 +94,11 @@ func on_player_phase_start() -> void:
 		Unit.stats("active_speed", Unit.max_speed, AppliedBy, true)
 		Unit.attack_amount = 1
 	
+	LevelMap.setInputLock()
+	
 func on_player_end_turn_phase_start() -> void:
-	if UnitSelected != null: _on_unit_deselected(UnitSelected, true)
 	for Unit in unpassed_turns:
-		on_select_active_unit(Unit)
+		onSelectActiveUnit(Unit)
 	on_pass_unit_turn()
 	
 	for Unit in passed_turns.filter(func(x: UnitGD): return !x.is_dead):
@@ -115,57 +117,35 @@ func on_player_end_turn_phase_start() -> void:
 		Unit.past_path_info = {}
 		Unit.past_path_counter = 0
 
+	onAllySpectated(getUnitSelected(), false)
+	LevelMap.setInputLock(LevelMap.AI_PHASE)
+
 func on_spectate_unit(Unit: UnitGD) -> void:
 	LevelUI.on_pass_unit_turn_button_state(Unit in passed_turns or Unit != ActiveUnit)
 
 func on_occupied_tile_inspected(Tile: TileGD) -> void:
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
 	var SpectateUnit: UnitGD = SpectateCamera.SpectateUnit
-	if LevelMap.action_lock.is_empty() and Unit.team == 0 and (Unit == SpectateUnit or Unit == UnitSelected):
-		on_unit_selected(Unit)
-	elif LevelMap.action_lock in ["", "HandRegular"] and UnitSelected == null and Unit.Tile in Vision.getTeamVision():
-		SpectateCamera.onSpectate(Unit)
-				
-var UnitSelected: UnitGD
-func on_unit_selected(Unit: UnitGD) -> void:
-	if UnitSelected == Unit:
-		_on_unit_deselected(Unit)
-	elif UnitSelected != null:
-		_on_unit_deselected(UnitSelected)
-		_on_unit_selected(Unit)
-	else: _on_unit_selected(Unit)
-
-func _on_unit_deselected(Unit: UnitGD, absolute: bool = false) -> void:
-	if Unit != null and Unit.team == 0:
-		onRemoveMovementRange()
-		if Unit == UnitSelected: UnitSelected = null
-		if !absolute:
-			Tiles.on_mouse_entered(Tiles.on_find_tile_by_raycast())
-		LevelUI.setWarningText(false)
-		LevelUI.onExitUnitMode()
 	
+	if Unit != SpectateUnit and LevelMap.verifyLock(LevelMap.SPECTATE_TILE) and Unit.Tile in Vision.getTeamVision():
+		SpectateCamera.onSpectate(Unit)
+	
+var PreviousUnitSelected: UnitGD
 var unit_movement_paths: Array = []
 func onSetMovementRange(Unit: UnitGD) -> void:
 	unit_movement_paths = Tiles.onCreateMovementPaths(Unit)
 	var can_attack: bool = Unit.onCanAttack()
 	for movement_path in unit_movement_paths:
-		if movement_path.is_attack:
-			if can_attack: movement_path.DestinationTile.Unit.on_enemy_in_range(true)
-		else: Tiles.setTileOutline(movement_path.DestinationTile, "MovementRange")
+		if "MovementPath" not in movement_path.DestinationTile.tile_outlines:
+			if movement_path.is_attack:
+				if can_attack: movement_path.DestinationTile.Unit.on_enemy_in_range(true)
+			else: Tiles.setTileOutline(movement_path.DestinationTile, "MovementRange")
 	
 func onRemoveMovementRange() -> void:
 	for movement_path in unit_movement_paths:
 		if movement_path.DestinationTile.Unit != null:
 			movement_path.DestinationTile.Unit.on_enemy_in_range(false)
 		Tiles.setTileOutline(movement_path.DestinationTile, "MovementRange", true)
-	
-func _on_unit_selected(Unit: UnitGD) -> void:
-	if Unit.turn_status in [UnitGD.TURN_UNUSED, UnitGD.TURN_ACTIVE] and Unit.team == 0 and Unit != UnitSelected and LevelMap.action_lock.is_empty():
-		SpectateCamera.onSpectate(Unit)
-		onSetMovementRange(Unit)
-		UnitSelected = Unit
-		LevelUI.onEnterUnitMode(Unit)
-		LevelUI.setWarningText(ActiveUnit != null and ActiveUnit != Unit, "SkipAction")
 
 func onDeathFinished(Deathee: UnitGD, AppliedBy: AppliedByGD) -> void:
 	if LevelMap.game_phase == "PlayerPhase":
@@ -177,6 +157,8 @@ func onDeathFinished(Deathee: UnitGD, AppliedBy: AppliedByGD) -> void:
 		on_remove_unit_turn(Deathee)
 		if Deathee.team == 0 and unpassed_turns.is_empty():
 			ActionManager.onAddAction(DelayActionGD.new(LevelMap.on_advance_game_phase, false))
+			
+	if Deathee.team == 0: graveyard_cards.append(Deathee.base_card)
 	
 func on_remove_unit_turn(Unit: UnitGD) -> void:
 	if Unit.team == 0:
@@ -188,6 +170,7 @@ func on_remove_unit_turn(Unit: UnitGD) -> void:
 var TAbility: TargetAbilityGD
 var TAbilityUnit: UnitGD
 func onEnterTargetAbilityMode(Unit: UnitGD, ability: TargetAbilityGD) -> void:
+	print(unit_movement_paths.size())
 	onRemoveMovementRange()
 	onCreateAbilityRange(Unit, ability)
 	TAbilityUnit = Unit
@@ -199,8 +182,8 @@ func onEnterTargetAbilityMode(Unit: UnitGD, ability: TargetAbilityGD) -> void:
 func onExitTargetAbilityMode() -> void: # if unit selected null doesnt reupdate, otherwise creates tiles
 	if TAbilityUnit != null:
 		onRemoveAbilityRange(TAbilityUnit, TAbility)
-		if UnitSelected != null:
-			onSetMovementRange(UnitSelected)
+		var UnitSelected := getUnitSelected()
+		if UnitSelected != null: onSetMovementRange(UnitSelected)
 	
 	if TAbility.change_camera: SpectateCamera.onSpectate(TAbilityUnit)
 	TAbilityUnit = null
@@ -223,12 +206,29 @@ func onRemoveAbilityRange(_Unit: UnitGD, ability: TargetAbilityGD) -> void:
 
 func onBeginUnitMovement(DestinationTile: TileGD) -> void:
 	var movement_path := MovementPathGD.onFindTile(DestinationTile, unit_movement_paths)
-	on_select_active_unit(UnitSelected)
+	onSelectActiveUnit(SpectateCamera.SpectateUnit)
+	LevelUI.setWarningText(false)
 	for fneighbour in movement_path.fneighbours:
 		Units.movement_outline_tiles.append(fneighbour.Tile)
 		if fneighbour.Tile.Unit == null:
-			ActionManager.onAddAction(MoveActionGD.new(UnitSelected, fneighbour, movement_path, true))
+			ActionManager.onAddAction(MoveActionGD.new(ActiveUnit, fneighbour, movement_path, true))
 			fneighbour.Tile.Effects.onRemoveDeathPathLabel()
-		else: ActionManager.onAddAction(AttackActionGD.new(UnitSelected, fneighbour.Tile, true, null))
-	ActionManager.onAddAction(MoveFinishActionGD.new(UnitSelected, movement_path, true), ActionManagerGD.APPEND_MF)
-	_on_unit_deselected(UnitSelected, true)
+		else: ActionManager.onAddAction(AttackActionGD.new(ActiveUnit, fneighbour.Tile, true, null))
+	ActionManager.onAddAction(MoveFinishActionGD.new(ActiveUnit, movement_path, true), ActionManagerGD.APPEND_MF)
+
+func onAllySpectated(Unit: UnitGD, state: bool) -> void:
+	if Unit != null and Unit.team == 0 and LevelMap.game_phase in ["PlayerPhase", "PlayerEndTurnPhase"]:
+		if state and PreviousUnitSelected != Unit:
+			if Unit.turn_status != UnitGD.TURN_USED:
+				onSetMovementRange(Unit)
+			LevelUI.onEnterUnitMode(Unit)
+			PreviousUnitSelected = Unit
+		elif !state and Unit == PreviousUnitSelected:
+			onRemoveMovementRange()
+			LevelUI.onExitUnitMode()
+			PreviousUnitSelected = null
+
+func getUnitSelected() -> UnitGD:
+	if LevelMap.game_phase in ["PlayerPhase", "PlayerEndTurnPhase"] and SpectateCamera.SpectateUnit != null and SpectateCamera.SpectateUnit.team == 0:
+		return SpectateCamera.SpectateUnit
+	return null

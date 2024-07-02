@@ -52,6 +52,4 @@ func onAfterTrigger() -> void:
 	Unit.occupy_tile(fneighbour.Tile)
 	Tiles.onTileEffects(Unit, PreviousTile)
 	
-	if Unit.team == 0:
-		Unit.onAddToPastPath(fneighbour.Tile)
-		if Unit.speed > 0: PlayerManager._on_unit_selected(Unit)
+	if Unit.team == 0: Unit.onAddToPastPath(PreviousTile)

@@ -1,51 +1,60 @@
 [gd_scene load_steps=10 format=3 uid="uid://bntvcxh7eh0v"]
 
 [ext_resource type="Theme" uid="uid://bhyiyheobours" path="res://scenes/screens/level_ui/panel_theme.tres" id="1_7jnsk"]
-[ext_resource type="Texture2D" uid="uid://c5u34osfmn55f" path="res://scenes/screens/level_ui/target_ability_button.png" id="2_l8g5m"]
 [ext_resource type="Script" path="res://scenes/screens/level_ui/target_ability_box.gd" id="2_v0kos"]
 [ext_resource type="LabelSettings" uid="uid://b3ehbfjlj57iy" path="res://assets/UI/lora/lora_outline_20.tres" id="2_xyw8o"]
-[ext_resource type="Texture2D" uid="uid://dm3h6akvc6l0r" path="res://scenes/screens/level_ui/target_ability_button_hovered.png" id="3_em5ne"]
+[ext_resource type="PackedScene" uid="uid://cvw1ymuw2xy64" path="res://scenes/screens/level_ui/top_bar/top_bar_button/top_bar_button.tscn" id="3_tbdx5"]
 [ext_resource type="Theme" uid="uid://bsbktaxrkrggi" path="res://assets/UI/roboto/roboto12.tres" id="4_du5aw"]
-[ext_resource type="Texture2D" uid="uid://crckm2nuu78p6" path="res://scenes/screens/level_ui/target_ability_button_disabled.png" id="4_jrqgq"]
+[ext_resource type="Texture2D" uid="uid://q6ns27k86c7x" path="res://scenes/screens/level_ui/target_ability_box.png" id="4_newvc"]
+[ext_resource type="LabelSettings" uid="uid://c5h6tv2uhlrjf" path="res://assets/UI/lora/lora_outline.tres" id="5_pxick"]
 [ext_resource type="FontFile" uid="uid://7k4xd8s0oed2" path="res://assets/UI/roboto/roboto.ttf" id="7_o783a"]
 [ext_resource type="FontFile" uid="uid://bjgvp4yvesp1k" path="res://assets/UI/open_sans/OpenSans-ExtraBold.ttf" id="8_dsm7l"]
 
-[node name="TargetAbilityBox" type="TextureButton"]
-custom_minimum_size = Vector2(180, 180)
+[node name="TargetAbilityBox" type="Control"]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -1740.0
-offset_bottom = -900.0
+offset_right = -1620.0
+offset_bottom = -780.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(90, 90)
+pivot_offset = Vector2(150, 150)
+mouse_filter = 1
 theme = ExtResource("1_7jnsk")
-texture_normal = ExtResource("2_l8g5m")
-texture_hover = ExtResource("3_em5ne")
-texture_disabled = ExtResource("4_jrqgq")
 script = ExtResource("2_v0kos")
+
+[node name="Button" parent="." instance=ExtResource("3_tbdx5")]
+unique_name_in_owner = true
+layout_mode = 0
+mouse_filter = 1
+texture_normal = ExtResource("4_newvc")
+texture = ExtResource("4_newvc")
 
 [node name="Label" type="Label" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
-offset_top = 5.0
-offset_right = 184.0
-offset_bottom = 32.0
+offset_left = 34.0
+offset_top = 11.0
+offset_right = 267.0
+offset_bottom = 103.0
 size_flags_vertical = 6
-label_settings = ExtResource("2_xyw8o")
+text = "Palmleaf Remedy"
+label_settings = ExtResource("5_pxick")
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 2
 
 [node name="Description" type="RichTextLabel" parent="."]
 unique_name_in_owner = true
 clip_contents = false
 layout_mode = 1
 anchors_preset = -1
-offset_left = 30.0
-offset_top = 111.0
-offset_right = 148.0
-offset_bottom = 113.0
+offset_left = 34.0
+offset_top = 165.0
+offset_right = 263.0
+offset_bottom = 167.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
@@ -57,8 +66,8 @@ theme_override_constants/line_separation = 2
 theme_override_constants/outline_size = 6
 theme_override_fonts/normal_font = ExtResource("7_o783a")
 theme_override_fonts/bold_font = ExtResource("8_dsm7l")
-theme_override_font_sizes/normal_font_size = 12
-theme_override_font_sizes/bold_font_size = 12
+theme_override_font_sizes/normal_font_size = 18
+theme_override_font_sizes/bold_font_size = 18
 bbcode_enabled = true
 fit_content = true
 scroll_active = false
@@ -68,39 +77,13 @@ threaded = true
 [node name="AbilityCharges" type="Label" parent="."]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 160.0
-offset_top = 151.0
-offset_right = 173.0
-offset_bottom = 178.0
-text = "0"
+offset_left = 10.0
+offset_top = 245.0
+offset_right = 289.0
+offset_bottom = 272.0
+text = "Charges: 0/2"
 label_settings = ExtResource("2_xyw8o")
-
-[node name="CrossedOut" type="Control" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-
-[node name="ColorRect" type="ColorRect" parent="CrossedOut"]
-layout_mode = 0
-offset_left = -12.0
-offset_top = 162.0
-offset_right = 238.0
-offset_bottom = 202.0
-rotation = -0.785397
-color = Color(0.541176, 0, 0, 1)
-
-[node name="ColorRect2" type="ColorRect" parent="CrossedOut"]
-layout_mode = 0
-offset_left = 12.0
-offset_top = -14.0
-offset_right = 262.0
-offset_bottom = 26.0
-rotation = 0.785397
-color = Color(0.541176, 0, 0, 1)
+horizontal_alignment = 1
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

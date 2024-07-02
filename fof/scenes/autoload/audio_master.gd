@@ -37,6 +37,6 @@ func on_cutoff_sfx(stream_player: AudioStreamPlayer) -> void:
 func is_playing_sfx(player: AudioStreamPlayer, sfx: String) -> bool:
 	return player.playing_sfx != sfx
 
-func play_music(music: AudioStreamWAV) -> void:
+func onPlayMusic(music: AudioStreamWAV) -> void:
 	music_stream.stream = music
-	$MusicStream.play()
+	#$MusicStream.play()

@@ -7,7 +7,7 @@
 script = ExtResource("2_cfie2")
 area = ExtResource("1_t3ia5")
 difficulty = 1
-level_size = 7
+level_size = 5
 tiles = [{
 "obj": {
 "id": 1,
@@ -2512,11 +2512,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[-1, 4, -3, 0], [-1, 4, -3, 1], [-1, 4, -3, 2]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -2546,11 +2546,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
+"id": 2,
+"multi_tile": [[-1, 5, -4, 0], [-1, 5, -4, 1]],
+"rotation": 4,
 "tile_wall": 0,
-"type": 0
+"type": 1
 },
 "wdeco": {
 "id": 0,
@@ -2580,11 +2580,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
+"id": 2,
+"multi_tile": [[-1, 6, -5, 0], [-1, 6, -5, 1]],
+"rotation": 5,
 "tile_wall": 0,
-"type": 0
+"type": 1
 },
 "wdeco": {
 "id": 0,
@@ -2988,11 +2988,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[0, 3, -3, 0], [0, 3, -3, 1], [0, 3, -3, 2]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -3090,8 +3090,8 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 2,
+"multi_tile": [[0, 6, -6, 0], [0, 6, -6, 1]],
 "rotation": 0,
 "tile_wall": 0,
 "type": 0
@@ -8258,11 +8258,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[-1, 4, -3, 0], [-1, 4, -3, 1], [-1, 4, -3, 2]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -8292,11 +8292,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
+"id": 2,
+"multi_tile": [[-1, 5, -4, 0], [-1, 5, -4, 1]],
+"rotation": 4,
+"tile_wall": 1,
+"type": 1
 },
 "wdeco": {
 "id": 0,
@@ -8326,11 +8326,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
-"rotation": 0,
-"tile_wall": 0,
-"type": 0
+"id": 2,
+"multi_tile": [[-1, 6, -5, 0], [-1, 6, -5, 1]],
+"rotation": 5,
+"tile_wall": 1,
+"type": 1
 },
 "wdeco": {
 "id": 0,
@@ -8734,11 +8734,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[0, 3, -3, 0], [0, 3, -3, 1], [0, 3, -3, 2]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -8836,10 +8836,10 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 2,
+"multi_tile": [[0, 6, -6, 0], [0, 6, -6, 1]],
 "rotation": 0,
-"tile_wall": 0,
+"tile_wall": 1,
 "type": 0
 },
 "wdeco": {
@@ -14004,11 +14004,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[-1, 4, -3, 0], [-1, 4, -3, 1], [-1, 4, -3, 2]],
 "rotation": 0,
-"tile_wall": 0,
-"type": 0
+"tile_wall": 1,
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -14480,11 +14480,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[0, 3, -3, 0], [0, 3, -3, 1], [0, 3, -3, 2]],
 "rotation": 0,
-"tile_wall": 0,
-"type": 0
+"tile_wall": 1,
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -19744,7 +19744,7 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0
@@ -20220,10 +20220,10 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
-"type": 0
+"type": 1
 },
 "wall": {
 "id": 0,
@@ -32154,7 +32154,7 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
 "type": 0

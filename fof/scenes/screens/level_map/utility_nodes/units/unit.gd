@@ -63,6 +63,7 @@ var GameEffects: GameEffectsGD
 var LevelUI: LevelUIGD
 var StatusManager: StatusManagerGD
 var ActionManager: ActionManagerGD
+var PlayerManager: PlayerManagerGD
 
 func _ready() -> void: Helper.onCreateChildReferences(self)
 
@@ -251,6 +252,7 @@ func on_spectated_in_player_phase(state: bool) -> void:
 	if turn_status == UnitGD.TURN_USED: Units.setPastPath(self, state)
 	is_spectated = state
 	setCollisionLayerSpectated()
+	PlayerManager.onAllySpectated(self, state)
 	
 func setCollisionLayerSpectated() -> void:
 	Model.static_body.collision_layer = 4 if (is_spectated or !visible_state) else 36

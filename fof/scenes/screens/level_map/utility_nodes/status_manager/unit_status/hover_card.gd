@@ -36,7 +36,7 @@ func on_remove_hover_card() -> void:
 func _process(_delta: float) -> void:
 	if HoverCard != null:
 		global_position = get_global_mouse_position() + HOVER_CARD_OFFSET
-		global_position.y = min(global_position.y, 600)
+		global_position.y = clamp(global_position.y, -25, 600)
 
 func onUpdateStat(_stat: int, stat_changed: String) -> void:
 	Buffs.onUpdateStat(stat_changed)

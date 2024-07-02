@@ -43,7 +43,6 @@ func onCreateMovementOrder() -> Array:
 	return movement_order.map(func(x: Dictionary): return x.Unit)
 
 func onMoveNextAIUnit() -> void:
-	LevelMap.setActionLock("UnitActionDisabled")
 	if active_movement_order.size() > 0:
 		var Unit: UnitGD = active_movement_order.pop_front()
 		var wait: bool = onUseTargetAbilities(Unit)
@@ -51,8 +50,6 @@ func onMoveNextAIUnit() -> void:
 	else:
 		if invisible_movement_tracker.all(func(x: bool): return x):
 			await get_tree().create_timer(0.8).timeout
-			
-		LevelMap.setActionLock("UnitActionDisabled")
 		LevelMap.on_change_game_phase("AIEndTurnPhase")
 
 func onAfterTargetAbility(Unit: UnitGD) -> void:

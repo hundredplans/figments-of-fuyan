@@ -26,7 +26,7 @@ func onTargetAbility() -> void:
 	if is_visible: Unit.Model.on_play_animation("Ability")
 	call_deferred("onCocusPocus", _Unit)
 	change_camera = false
-	LevelMap.setActionLock("UnitActionRegular")
+	LevelMap.setInputLock(LevelMap.UNIT_ACTION)
 		
 const DELAY_DURATION: float = 0.5
 const SCALE_FINAL_DURATION: float = 0.75

@@ -45,7 +45,7 @@ func on_create_card(id: int, tool_id: int = 0, effects: Array = []) -> void:
 	add_child(card)
 	
 	card.on_create_card(id, tool_id, effects)
-	LevelUI.on_draw_card(card)
+	LevelUI.onDrawCardAnimation(card)
 
 var card_selected_index: int = -1
 func on_card_selected(index: int) -> void:
@@ -65,7 +65,7 @@ func on_card_placed(Tile: TileGD) -> void:
 
 func on_change_energy(delta: int) -> void:
 	energy = clamp(energy + delta, 0, energy_cap)
-	LevelUI.on_change_energy(energy, energy == energy_cap)
+	LevelUI.setEnergy(energy)
 	setLevelUIEnergy()
 	
 func setLevelUIEnergy() -> void:

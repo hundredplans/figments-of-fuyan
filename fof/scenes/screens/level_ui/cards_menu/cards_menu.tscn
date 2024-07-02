@@ -1,0 +1,80 @@
+[gd_scene load_steps=3 format=3 uid="uid://72vmhrcq5mul"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_ui/cards_menu/cards_menu.gd" id="1_62ijb"]
+[ext_resource type="Theme" uid="uid://bhyiyheobours" path="res://scenes/screens/level_ui/panel_theme.tres" id="1_rbp6m"]
+
+[node name="CardsMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_62ijb")
+
+[node name="Background" type="Panel" parent="."]
+self_modulate = Color(1, 1, 1, 0.501961)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_rbp6m")
+
+[node name="Buttons" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 10.0
+offset_bottom = 123.0
+grow_horizontal = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="DeckButton" type="Button" parent="Buttons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+theme = ExtResource("1_rbp6m")
+theme_override_font_sizes/font_size = 64
+text = "Deck"
+
+[node name="GraveyardButton" type="Button" parent="Buttons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+theme = ExtResource("1_rbp6m")
+theme_override_font_sizes/font_size = 64
+text = "Graveyard"
+
+[node name="ExitButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1783.0
+offset_top = 10.0
+offset_right = 1912.0
+offset_bottom = 130.0
+theme = ExtResource("1_rbp6m")
+theme_override_font_sizes/font_size = 80
+text = "X"
+
+[node name="CardsScroller" type="ScrollContainer" parent="."]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 123.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+horizontal_scroll_mode = 0
+
+[node name="CardsHolder" type="GridContainer" parent="CardsScroller"]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 7
+
+[connection signal="pressed" from="Buttons/DeckButton" to="." method="onLoadDeck"]
+[connection signal="pressed" from="Buttons/GraveyardButton" to="." method="onLoadGraveyard"]
+[connection signal="pressed" from="ExitButton" to="." method="_on_exit_button_pressed"]

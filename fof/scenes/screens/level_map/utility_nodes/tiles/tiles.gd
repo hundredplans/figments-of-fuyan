@@ -181,7 +181,7 @@ func onTilesInVisionRange(Tile: TileGD, VISION_RANGE: int) -> Array:
 
 func _ready() -> void:
 	LevelUI.mouse_in_ui.connect(on_mouse_enters_ui)
-	LevelMap.action_lock_changed.connect(onActionLockChanged)
+	LevelMap.input_lock_updated.connect(onInputLockUpdated)
 	on_set_default_shader_parameters()
 
 var active_tile: TileGD
@@ -204,19 +204,19 @@ func _process(_delta: float) -> void:
 func onTilePressed() -> void:
 	if !select_console:
 		var Unit: UnitGD = Units.unit_by_tile(active_tile)
-		if LevelMap.action_lock.is_empty() and "TargetAffect" in active_tile.tile_state:
+		if LevelMap.verifyLock() and "TargetAffect" in active_tile.tile_state:
 			onTargetAffectPressed()
 		
 		if active_tile != null:
-			if LevelMap.action_lock.is_empty() and "PathHovered" in active_tile.tile_outlines: 
+			if LevelMap.verifyLock() and "PathHovered" in active_tile.tile_outlines: 
 				PlayerManager.onBeginUnitMovement(active_tile)
 				
-			elif Unit != null and Unit.Tile in Vision.getTeamVision():
+			elif Unit != null and Unit.Tile in Vision.getTeamVision() and PlayerManager.TAbility == null:
 				if "EnemyInRange" not in active_tile.tile_outlines:
 					PlayerManager.on_occupied_tile_inspected(active_tile)
-				elif LevelMap.action_lock.is_empty(): PlayerManager.onBeginUnitMovement(active_tile)
+				elif LevelMap.verifyLock(): PlayerManager.onBeginUnitMovement(active_tile)
 				
-			elif LevelMap.action_lock == "SpawnVision" and on_find_tile_primary_type(active_tile) == "Spawn":
+			elif LevelMap.verifyLock(LevelMap.HAND_EXCLUSIVE) and on_find_tile_primary_type(active_tile) == "Spawn":
 				VFX.onRemoveSpawnParticle(active_tile)
 				Hand.on_card_placed(active_tile)
 	else:
@@ -447,13 +447,11 @@ func onFneighbourPathValidDeath(Unit: UnitGD, fn_path: Array, astar: AStar3D, fa
 	return true
 
 func onCalculateFallDamage(Unit: UnitGD, fn: FneighbourGD, fall_damages: Dictionary) -> int:
-	var hdiff: int = abs(fn.hdiff * 0.5)
 	var dmg: int = 0
-	if fn.hdiff > 2:
-		if hdiff > Unit.height.top: dmg = (hdiff - floor(Unit.height.top)) * 2
-		if dmg > 0:
-			if fn.Tile.isShallowWater(): dmg /= 2
-			elif fn.Tile.isDeepWater(): dmg = 0
+	if fn.hdiff >= 4:
+		dmg = fn.hdiff - 3
+		if fn.Tile.isShallowWater(): dmg /= 2
+		elif fn.Tile.isDeepWater(): dmg = 0
 	fall_damages[fn.Tile] = dmg
 	return dmg
 
@@ -492,6 +490,10 @@ func onTileHovered(Tile: TileGD) -> void:
 			setTileOutline(fneighbour.Tile, "PathHovered")
 	Vision.onTileHovered(Tile)
 	onTileHoveredDisplayCard(Tile)
+	
+	if PlayerManager.ActiveUnit != null and SpectateCamera.SpectateUnit != PlayerManager.ActiveUnit and "MovementRange" in Tile.tile_outlines:
+		LevelUI.setWarningText(true, "SkipAction")
+	else: LevelUI.setWarningText()
 
 func onTileHoveredDisplayCard(Tile: TileGD) -> void:
 	if Tile in Vision.getTeamVision():
@@ -501,7 +503,7 @@ var InspectTile: TileGD
 
 func on_tile_unhovered(Tile: TileGD) -> void:
 	setTileOutline(Tile, "TileInspected", true)
-	if PlayerManager.UnitSelected != null:
+	if PlayerManager.getUnitSelected() != null:
 		for _Tile in get_children().filter(func(x: TileGD): return "PathHovered" in x.tile_outlines):
 			setTileOutline(_Tile, "PathHovered", true)
 	Vision.onTileUnhovered(Tile)
@@ -536,9 +538,8 @@ func setTileOutline(Tile: TileGD, type: String, is_remove: bool = false) -> void
 				0: highest = "AllyInspected"
 				1: highest = "EnemyInspected"
 				
-	if highest == "PathHovered": LevelUI.setTargetAbilityBoxCrossedOut(!is_remove)
 	Tile.setOutline(OUTLINE_INFO[highest][1])
-	Tile.Effects.onManageDeathPathLabel(PlayerManager.UnitSelected, type, is_remove)
+	Tile.Effects.onManageDeathPathLabel(PlayerManager.getUnitSelected(), type, is_remove)
 
 var BASE_MATERIAL: Material = preload("res://assets/materials/tile_materials/base_tile_materials/base_tile_material.tres")
 var TILE_MATERIALS: Dictionary
@@ -596,8 +597,8 @@ func getTileMaterialFromPriority(priority: int) -> Material:
 				return tile_material.material
 	return BASE_MATERIAL
 
-func onActionLockChanged(action_lock: String) -> void:
-	on_force_mouse_tile(!action_lock.is_empty(), 2)
+func onInputLockUpdated() -> void:
+	on_force_mouse_tile(!LevelMap.verifyLock(), 2)
 	SpectateCamera.onChangeCameraMode(true)
 		
 var InputTile: TileGD
@@ -613,7 +614,7 @@ func on_force_mouse_tile(state: bool, override: int = 0) -> void:
 	else: on_mouse_entered(on_find_tile_by_raycast(), override)
 
 func on_mouse_entered(Tile: TileGD, override: int = 0) -> void:
-	if ((!LevelUI.is_mouse_in_ui or override == 1) and (LevelMap.action_lock in ["", "SpawnVision", "HandRegular"] or override == 2)):
+	if ((!LevelUI.is_mouse_in_ui or override == 1) and (LevelMap.verifyLock(LevelMap.TILE_HOVER) or override == 2)):
 		if InputTile != null and Tile != null and Tile != InputTile:
 			on_tile_mouse_exited(InputTile)
 			on_tile_mouse_entered(Tile)

@@ -81,6 +81,7 @@ func onHand() -> void:
 	for i in range(Hand.get_children().size()):
 		Hand.get_child(i).queue_free()
 		LevelUI.CardBox.get_child(i).queue_free()
+		
 	for i in range(3):
 		var deck_card: DeckCardGD = Deck.on_create_card(card_options[randi() % card_options.size()], 0, [])
 		Deck.on_force_draw_card(deck_card)
@@ -88,13 +89,13 @@ func onHand() -> void:
 func onFatigue(Tile: TileGD):
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
 	PlayerManager.passed_turns.erase(Unit)
-	PlayerManager.on_select_active_unit(Unit)
+	PlayerManager.onSelectActiveUnit(Unit)
 	
 func onSpawn(Tile: TileGD, id: int, team: int) -> void:
 	await Units.onUnitAwakened(id, 0, [], team, 0, Tile)
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
 	PlayerManager.passed_turns.erase(Unit)
-	PlayerManager.on_select_active_unit(Unit)
+	PlayerManager.onSelectActiveUnit(Unit)
 	
 func onStagger(Tile: TileGD):
 	var Unit: UnitGD = Units.unit_by_tile(Tile)

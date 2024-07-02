@@ -1,0 +1,249 @@
+[gd_scene load_steps=9 format=3 uid="uid://chb1tui7fpsu6"]
+
+[ext_resource type="Script" path="res://test/task_creator/ptask_manager.gd" id="1_josne"]
+[ext_resource type="Theme" uid="uid://bhyiyheobours" path="res://scenes/screens/level_ui/panel_theme.tres" id="2_d0eov"]
+[ext_resource type="LabelSettings" uid="uid://b3fuc4s50fgra" path="res://assets/UI/roboto/roboto64.tres" id="3_dexot"]
+[ext_resource type="LabelSettings" uid="uid://qp0350v2j4ah" path="res://assets/UI/roboto/roboto32_outline.tres" id="4_2mq7a"]
+[ext_resource type="FontFile" uid="uid://7k4xd8s0oed2" path="res://assets/UI/roboto/roboto.ttf" id="4_54bu5"]
+[ext_resource type="Script" path="res://test/task_creator/ptask_scene.gd" id="6_1abw8"]
+[ext_resource type="PackedScene" uid="uid://cd7ekeifrj6tq" path="res://test/task_creator/ptask_current.tscn" id="6_sttap"]
+[ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="7_fxckn"]
+
+[node name="PTaskManager" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 30
+script = ExtResource("1_josne")
+
+[node name="PTaskCreator" type="Control" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Background" type="Panel" parent="PTaskCreator"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_d0eov")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PTaskCreator"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="Title" type="Label" parent="PTaskCreator/VBoxContainer"]
+layout_mode = 2
+text = "Task Creator"
+label_settings = ExtResource("3_dexot")
+horizontal_alignment = 1
+
+[node name="Categories" type="HBoxContainer" parent="PTaskCreator/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="PTaskCreator/VBoxContainer/Categories"]
+layout_mode = 2
+text = "Categories: "
+label_settings = ExtResource("4_2mq7a")
+
+[node name="CategoriesButton" type="OptionButton" parent="PTaskCreator/VBoxContainer/Categories"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_54bu5")
+theme_override_font_sizes/font_size = 32
+
+[node name="Types" type="HBoxContainer" parent="PTaskCreator/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="PTaskCreator/VBoxContainer/Types"]
+layout_mode = 2
+text = "Types: "
+label_settings = ExtResource("4_2mq7a")
+
+[node name="TypeButton" type="OptionButton" parent="PTaskCreator/VBoxContainer/Types"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_54bu5")
+theme_override_font_sizes/font_size = 32
+
+[node name="DescriptionLabel" type="Label" parent="PTaskCreator/VBoxContainer"]
+layout_mode = 2
+text = "Description:"
+label_settings = ExtResource("4_2mq7a")
+horizontal_alignment = 1
+
+[node name="DescriptionText" type="TextEdit" parent="PTaskCreator/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("4_54bu5")
+theme_override_font_sizes/font_size = 32
+wrap_mode = 1
+
+[node name="EDT" type="HBoxContainer" parent="PTaskCreator/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="PTaskCreator/VBoxContainer/EDT"]
+layout_mode = 2
+text = "EDT: "
+label_settings = ExtResource("4_2mq7a")
+
+[node name="EDTText" type="LineEdit" parent="PTaskCreator/VBoxContainer/EDT"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_54bu5")
+theme_override_font_sizes/font_size = 32
+
+[node name="Necessity" type="HBoxContainer" parent="PTaskCreator/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="PTaskCreator/VBoxContainer/Necessity"]
+layout_mode = 2
+text = "Necessity:"
+label_settings = ExtResource("4_2mq7a")
+
+[node name="NecessityButton" type="OptionButton" parent="PTaskCreator/VBoxContainer/Necessity"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_54bu5")
+theme_override_font_sizes/font_size = 32
+item_count = 6
+popup/item_0/text = "0"
+popup/item_0/id = 0
+popup/item_1/text = "1"
+popup/item_1/id = 1
+popup/item_2/text = "2"
+popup/item_2/id = 2
+popup/item_3/text = "3"
+popup/item_3/id = 3
+popup/item_4/text = "4"
+popup/item_4/id = 4
+popup/item_5/text = "5"
+popup/item_5/id = 5
+
+[node name="Button" type="Button" parent="PTaskCreator/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_54bu5")
+theme_override_font_sizes/font_size = 48
+text = "Submit"
+
+[node name="PTaskCurrent" parent="PTaskCreator" instance=ExtResource("6_sttap")]
+layout_mode = 1
+offset_left = 9.0
+offset_top = 124.0
+offset_right = -631.0
+offset_bottom = -656.0
+scale = Vector2(3, 3)
+is_hide = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 15
+
+[node name="SorterTitle" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "SORTER"
+label_settings = ExtResource("4_2mq7a")
+horizontal_alignment = 1
+
+[node name="SorterContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("7_fxckn")
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="SortID" type="Button" parent="VBoxContainer/SorterContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Sort by ID"
+
+[node name="SortEDT" type="Button" parent="VBoxContainer/SorterContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Sort by EDT"
+
+[node name="SortNecessity" type="Button" parent="VBoxContainer/SorterContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Sort by Necessity"
+
+[node name="FilterTitle" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "FILTER"
+label_settings = ExtResource("4_2mq7a")
+horizontal_alignment = 1
+
+[node name="FilterContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("7_fxckn")
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="RefreshFilter" type="Button" parent="VBoxContainer/FilterContainer"]
+layout_mode = 2
+text = "Refresh"
+
+[node name="TypeContainer" type="HBoxContainer" parent="VBoxContainer/FilterContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="TypeLabel" type="Label" parent="VBoxContainer/FilterContainer/TypeContainer"]
+layout_mode = 2
+text = "Type: "
+
+[node name="TypeFilter" type="OptionButton" parent="VBoxContainer/FilterContainer/TypeContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="CategoryContainer" type="HBoxContainer" parent="VBoxContainer/FilterContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="CategoryLabel" type="Label" parent="VBoxContainer/FilterContainer/CategoryContainer"]
+layout_mode = 2
+text = "Category: "
+
+[node name="CategoryFilter" type="OptionButton" parent="VBoxContainer/FilterContainer/CategoryContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="PTaskViewer" type="ScrollContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="PTaskContainer" type="GridContainer" parent="VBoxContainer/PTaskViewer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/h_separation = 15
+theme_override_constants/v_separation = 15
+columns = 3
+script = ExtResource("6_1abw8")
+
+[connection signal="pressed" from="PTaskCreator/VBoxContainer/Button" to="." method="onSubmit"]
+[connection signal="pressed" from="VBoxContainer/SorterContainer/SortID" to="." method="onSortIDPressed"]
+[connection signal="pressed" from="VBoxContainer/SorterContainer/SortEDT" to="." method="onSortEDTPressed"]
+[connection signal="pressed" from="VBoxContainer/SorterContainer/SortNecessity" to="." method="onSortNecessity"]
+[connection signal="pressed" from="VBoxContainer/FilterContainer/RefreshFilter" to="." method="_on_refresh_filter_pressed"]
+[connection signal="item_selected" from="VBoxContainer/FilterContainer/TypeContainer/TypeFilter" to="." method="_on_type_filter_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/FilterContainer/CategoryContainer/CategoryFilter" to="." method="_on_category_filter_item_selected"]

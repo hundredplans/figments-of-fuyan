@@ -24,25 +24,38 @@ function onPlayPressed($mysqli) {
         $att = $class_info['att'];
         $hp = $class_info['hp'];
         $mana = $class_info['mana'];
-        $update_query = "UPDATE SavesClasses SET att='$att', hp='$hp', mana='$mana' WHERE save_id = 1 AND class_id='$id'";
+        $update_query = "UPDATE SavesClasses SET max_att='$att', max_hp='$hp', max_mana='$mana' WHERE save_id = 1 AND class_id='$id'";
         $mysqli -> query($update_query);
     }
+
+    $dq = "DELETE FROM Saves";
+    $mysqli -> query($dq);
+
+    $iq = "INSERT INTO Saves(save_id, level_id) VALUES (1, 1)";
+    $mysqli -> query($iq);
     header("Location: http://$_SERVER[HTTP_HOST]/cof/main/world_map/world_map.php");
 }
 function onCreateTables($mysqli) {
+//    $sq = "DROP TABLE IF EXISTS Saves";
+//    $mysqli -> query($sq);
     $create_saves_query = "CREATE TABLE IF NOT EXISTS Saves(
         save_id INT NOT NULL AUTO_INCREMENT,
         level_id INT NOT NULL DEFAULT '1',
-        in_map INT NOT NULL DEFAULT '0',
         PRIMARY KEY (save_id))";
     # in_map oscillates between 0 and 1 depending on if you're in level or not
 
+//    $dq = "DROP TABLE IF EXISTS SavesClasses";
+//    $mysqli -> query($dq);
     $create_saves_classes_query = "CREATE TABLE IF NOT EXISTS SavesClasses(
     save_id INT NOT NULL,
     class_id INT NOT NULL,
     att INT,
     hp INT,
     mana INT,
+    max_hp INT,
+    max_att INT,
+    max_mana INT,
+    level_id INT DEFAULT '1',
     PRIMARY KEY (save_id, class_id))";
 
     $mysqli -> query($create_saves_query);

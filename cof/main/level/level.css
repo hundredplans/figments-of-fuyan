@@ -1,0 +1,168 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    height: 100%;
+    overflow: hidden;
+    background-color: saddlebrown;
+}
+
+#top_side {
+    height: 22.1vw;
+    display: grid;
+    grid-template-columns: auto auto;
+    flex-direction: column;
+    margin-bottom: 1vw;
+}
+
+
+.moves_box {
+    background-color: wheat;
+    width: 18.8vw;
+    height: 88%;
+    border: solid black;
+    text-align: center;
+}
+
+#ally_moves {
+    border-width: 0 0 0.3vw 0.3vw;
+    border-bottom-left-radius: 1vw;
+}
+
+#enemy_moves {
+    border-width: 0 0.3vw 0.3vw 0;
+    border-bottom-right-radius: 1vw;
+}
+
+
+#ally_buttons {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    align-content: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero_div {
+    width: fit-content;
+}
+
+.hero_image_button {
+    all: unset;
+}
+
+.hero_image_button:hover {
+    filter: brightness(50%);
+}
+
+.moves_buttons {
+    width: 10vw;
+    background-color: sandybrown;
+    color: white;
+    height: 2vw;
+}
+
+.moves_buttons, .attack_pass_buttons {
+    margin-bottom: 0.5vw;
+    margin-left: 0.5vw;
+    border: 0.2vw solid black;
+    border-radius: 0.2vw;
+    font-size: 1vw;
+}
+
+.moves_buttons:hover {
+    background-color: #77390F;
+}
+
+.attack_pass_buttons:hover {
+    background-color: #77390F;
+}
+
+.moves_header {
+    text-align: center;
+}
+
+.moves_header > h2 {
+    padding-top: 0.3vw;
+    padding-bottom: 0.3vw;
+    margin-top: 0;
+    margin-bottom: 0.5vw;
+    background-color: black;
+    color: wheat;
+}
+
+.moves_div {
+    height: 15vw;
+}
+
+.attack_pass_buttons {
+    width: 8.5vw;
+    background-color: sandybrown;
+    color: white;
+    height: 3vw;
+}
+
+.single_move_div > img {
+    width: 1.3vw;
+    height: 1.3vw;
+}
+
+.single_move_div {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    width: fit-content;
+    column-gap: 0.2vw;
+}
+
+.attack_pass_buttons:disabled {
+    background-color: darkslategrey;
+}
+
+.description_div {
+    margin-left: 0.3vw;
+    width: 18vw;
+}
+
+#enemies {
+    height: 100%;
+    width: 81vw;
+    margin-left: auto;
+    margin-right: auto;
+    display: grid;
+    grid-template-columns: 0 100vw;
+    gap: 0;
+}
+
+#enemy_sprites {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    justify-content: center;
+}
+
+.enemy_div > img {
+    width: 14vw;
+    height: 14vw;
+}
+
+.enemy_div > h2 {
+    margin: 1vw 0 0.5vw 0;
+    background-color: black;
+    padding: 1vw;
+    color: wheat;
+    border-radius: 1vw;
+}
+
+.enemy_div {
+    width: fit-content;
+    text-align: center;
+    margin-left: 1vw;
+    margin-right: 1vw;
+}
+
+#enemy_turn_text {
+    font-size: 3vw;
+}

@@ -6,6 +6,9 @@ signal load_world
 signal equip_sky
 signal mouse_in_ui
 
+const GREY_LIGHT: float = 0.3
+const BASE_MODULATE: float = 0
+
 var Combat: CombatGD
 var Tiles: TilesGD
 var Vision: VisionGD
@@ -19,17 +22,31 @@ var ActionManager: ActionManagerGD
 
 @onready var EnemySpottedArrows: Control = %EnemySpottedArrows
 @onready var DrawCard: Control = %DrawCard
-@onready var AbilityDescription: RichTextLabel = %AbilityDescription
 @onready var AbilityLabel: Label = %AbilityLabel
 @onready var UnitNameLabel: Label = %UnitNameLabel
-@onready var TargetAbilities: VBoxContainer = %TargetAbilities
+@onready var TargetAbilities: Container = %TargetAbilities
 @onready var Console := %Console
-@onready var VisionMode := %VisionMode
+@onready var VisionMode := %EyeButton
+@onready var EnergyLabels := %EnergyLabels
 
 @onready var PassUnitTurn: TextureButton = %PassUnitTurn
 @onready var ChangePhase: Control = %ChangePhase
 @onready var StatusBox: Control = %StatusBox
-@onready var CameraArrows: Control = %CameraArrows
+@onready var HeroName := %HeroName
+@onready var HeroPortrait := %HeroPortrait
+@onready var SeedInfo := %SeedInfo
+@onready var MapInfo := %MapInfo
+@onready var LevelInfo := %LevelInfo
+@onready var BrownParticles := %BrownParticles
+@onready var StatusBoxBackground := %StatusBoxBackground
+
+@onready var LeftCameraArrow := %LeftCameraArrow
+@onready var RightCameraArrow := %RightCameraArrow
+
+@onready var DeckButton := %DeckButton
+@onready var GraveyardButton := %GraveyardButton
+@onready var CameraButton := %CameraButton
+@onready var PassUnitTurnLabel := %PassUnitTurnLabel
 
 var _LevelMap: PackedScene = preload("res://scenes/screens/level_map/level_map.tscn")
 var LevelMap: Node3D
@@ -37,34 +54,49 @@ var GameState: Node
 @onready var WarningText: Label = %WarningText
 
 func _process(_delta: float) -> void:
-	if Input.is_action_just_pressed("Tab"): on_tab_pressed()
+	if BrownParticles.amount_ratio == 1:
+		BrownParticles.global_position.y = get_viewport().get_mouse_position().y
 
 func _ready() -> void:
-	setUnitModeText("")
+	setGameInfo()
+	
+	setUnitNameLabel()
+	setAbilityLabels()
 	setWarningText(false)
 	
 	LevelMap = _LevelMap.instantiate()
 	LevelMap.GameState = GameState
 	LevelMap.LevelUI = self
-	LevelMap.action_lock_changed.connect(onActionLockChanged)
+	LevelMap.input_lock_updated.connect(onInputLockUpdated)
 	
 	load_world.emit(LevelMap)
 	Vision = LevelMap.Vision
 	SpectateCamera = LevelMap.SpectateCamera
 	equip_sky.emit(GameState.area_info.id, false)
-	setCornerRightVisibile(false)
+	
+	setTopBarDisabled(true)
 	LevelMap.SpectateCamera.mouse_in_ui.connect(on_camera_panning)
 	
 	var old: float = PANEL_MOVE_TWEEN_DURATION
 	PANEL_MOVE_TWEEN_DURATION = 0
-	on_pin_hand_box_panel()
 	PANEL_MOVE_TWEEN_DURATION = old
 	
-@onready var CornerRightMenu = %CornerRightMenu
-func setCornerRightVisibile(state: bool) -> void:
 	var dev := preload("res://static/dev/dev.tres")
-	if dev.remove_action_lock: state = true
-	for child in CornerRightMenu.get_children(): child.visible = state
+	if !dev.god_start: on_pin_hand_box_panel()
+	
+func setGameInfo() -> void:
+	var hero_card: BaseCardGD = Helper.getCard(GameState.hero_id)
+	HeroName.text = hero_card.name
+	var area_info: AreaInfoGD = GameState.area_info
+	HeroPortrait.get_node("InsideBorder").color = area_info.accent_color
+	HeroPortrait.get_node("HeroArt").texture = load("res://assets/base_game/cards/cards/" + hero_card.folder_name + "/art_mini.png") 
+	SeedInfo.text = str(GameState.gseed)
+	MapInfo.text = str(area_info.world_id) + "-" + str(abs(GameState.map_progress.y - 10))
+	LevelInfo.text = GameState.level_info.name
+
+func setTopBarDisabled(state: bool) -> void:
+	for child in [PassUnitTurn, LeftCameraArrow, RightCameraArrow, DeckButton, VisionMode, CameraButton, GraveyardButton]:
+		child.setDisabled(state)
 
 func _queue_free(screen_name: String) -> void:
 	if screen_name not in ["LoseScreen", "SettingsMenu", "WinScreen"]:
@@ -72,7 +104,7 @@ func _queue_free(screen_name: String) -> void:
 		load_world.emit(null)
 
 func _input(event: InputEvent) -> void:
-	if !Console.CommandLine.has_focus() and LevelMap != null and LevelMap.action_lock in ["", "HandRegular", "SpawnVision"]:
+	if !Console.CommandLine.has_focus() and LevelMap != null and LevelMap.verifyLock(LevelMap.CHANGE_SPECTATE):
 		if Input.is_action_just_pressed("SelectLeft"): LevelMap.SpectateCamera.onSpectate(-1)
 		elif Input.is_action_just_pressed("SelectRight"): LevelMap.SpectateCamera.onSpectate(1)
 	
@@ -82,20 +114,19 @@ func _input(event: InputEvent) -> void:
 @onready var CardBox: HBoxContainer = %CardBox
 
 var _GameCard: PackedScene = preload("res://assets/base_game/cards/game_card/game_card.tscn")
-func on_draw_card(HandCard: HandCardGD) -> void:
-	if LevelMap.game_phase == "HandPhase": # fix this it's so dodgy
-		var GameCard: Control = _GameCard.instantiate()
-		GameCard.set_info(Helper.getCard(HandCard.id))
-		DrawCard.add_child(GameCard)
-		if LevelMap.game_phase == "PlayerPhase": GameCard.on_set_disabled(true)
-		onTweenDrawCard(GameCard, HandCard)
-	else: onDrawCard(HandCard)
+func onDrawCardAnimation(HandCard: HandCardGD) -> void:
+	onDrawCard(HandCard)
 	
 func onDrawCard(HandCard: HandCardGD) -> void:
 	var GameCard: Control = _GameCard.instantiate()
 	GameCard.is_hover = true
 	GameCard.custom_minimum_size = Vector2(GameCard.size.x, 0)
 	GameCard.set_info(Helper.getCard(HandCard.id))
+	#var GameCardDraggable := preload("res://scenes/screens/level_ui/game_card_draggable.tscn").instantiate()
+	#GameCardDraggable.setInfo(GameCard)
+	#GameCard.add_child(GameCardDraggable)
+	#GameCardDraggable.drag_start.connect(on_card_selected.bind(GameCard))
+	#GameCardDraggable.drag_release.connect(on_card_selected.bind(GameCard))
 	GameCard.pressed.connect(on_card_selected.bind(GameCard))
 	if LevelMap.game_phase == "PlayerPhase": GameCard.on_set_disabled(true)
 	CardBox.add_child(GameCard)
@@ -109,24 +140,24 @@ func on_card_selected(GameCard: Control) -> void:
 		GameCardSelected = GameCard
 		GameCardSelected.Art.get_node("CardButton").material = _card_selected_material
 		index = GameCard.get_index()
-		LevelMap.setActionLock("SpawnVision")
 		on_unpin_hand_box_panel()
+		#LevelMap.setActionLock("SpawnVision")
 	else: 
 		GameCardSelected = null
 		on_pin_hand_box_panel()
-		LevelMap.setActionLock("HandRegular")
+		#LevelMap.setActionLock("HandRegular")
+	LevelMap.setInputLock(LevelMap.HAND_LOCK)
 	LevelMap.Hand.on_card_selected(index)
 		
 func on_card_placed(index: int) -> void:
 	CardBox.get_child(index).queue_free()
 	Vision.on_vision_mode_set(0)
 
-func on_change_energy(energy: int, is_energy_max: bool) -> void:
-	$Energy/Label.text = str(max(energy, 0))
-	$Energy/Label.modulate = Helper.BASE if !is_energy_max else Helper.YELLOW
+func setEnergy(energy: int) -> void:
+	EnergyLabels.setEnergy(energy)
 
 func onPlayerEndTurnPhaseStart() -> void:
-	setCornerRightVisibile(false)
+	setTopBarDisabled(true)
 	on_pass_unit_turn_button_state(false)
 
 @onready var HandBox: Control = %HandBox
@@ -148,7 +179,10 @@ func onPlayerPhaseStart() -> void:
 	on_set_hand_box_cards_state()
 	on_unpin_hand_box_panel()
 	onChangePhaseIcon("PlayerPhase")
-	GreyScale.modulate.a = 0
+	setSelfModulate(BASE_MODULATE)
+
+func setSelfModulate(mod: float) -> void:
+	self_modulate.a = mod
 
 func onPassUnitTurnButtonPressed():
 	if PlayerManager.unpassed_turns.is_empty() or LevelMap.game_phase == "HandPhase":
@@ -158,14 +192,12 @@ func onPassUnitTurnButtonPressed():
 
 @onready var Statuses: Control = %Statuses
 func onSpectateEnemyOrAlly(Unit: UnitGD) -> void:
-	if ActionManager.unit_actions.is_empty() and LevelMap.action_lock in ["", "HandRegular", "SpawnVision"]:
+	if ActionManager.unit_actions.is_empty() and LevelMap.verifyLock(LevelMap.CHANGE_SPECTATE):
 		SpectateCamera.onSpectate(Unit)
 
 func on_extend_hand_box() -> void:
-	var dev := preload("res://static/dev/dev.tres")
-	if !dev.god_start:
-		if !is_hand_box_panel_moving and HandBox.position.y == HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION:
-			on_move_hand_box(HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION - HAND_BOX_PANEL_OFFSET)
+	if !is_hand_box_panel_moving and HandBox.position.y == HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION:
+		on_move_hand_box(HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION - HAND_BOX_PANEL_OFFSET)
 	
 func on_unextend_hand_box() -> void:
 	if !is_hand_box_panel_moving and !hand_box_pinned and HandBox.position.y == HAND_BOX_INITIAL_PANEL_CONTAINER_POSITION - HAND_BOX_PANEL_OFFSET:
@@ -186,10 +218,9 @@ var is_hand_box_panel_moving: bool = false
 func on_move_tween_finished() -> void:
 	is_hand_box_panel_moving = false
 
-func onActionLockChanged(action_lock: String) -> void:
+func onInputLockUpdated() -> void:
 	if LevelMap.game_phase == "PlayerPhase":
-		ChangePhase.visible = action_lock not in ["UnitActionRegular", "Regular"]
-		setCornerRightVisibile(action_lock.is_empty())
+		setTopBarDisabled(LevelMap.verifyLock(LevelMap.IN_ACTION))
 
 var absolute_mouse_in_ui: bool
 var is_mouse_in_ui: bool = false
@@ -201,11 +232,9 @@ func on_is_mouse_in_ui(x: bool, absolute_change: bool = true) -> void:
 func on_camera_panning(x: bool) -> void:
 	if !absolute_mouse_in_ui: on_is_mouse_in_ui(x, false)
 
-func on_camera_arrow_pressed(direction: int) -> void:
-	if LevelMap.action_lock in ["", "HandRegular", "SpawnVision"]: LevelMap.SpectateCamera.onSpectate(direction)
+func onCameraArrowPressed(direction: int) -> void:
+	LevelMap.SpectateCamera.onSpectate(direction)
 
-const greyscale_light: float = 0.3
-@onready var GreyScale: ColorRect = %GreyScale
 func on_pin_hand_box_panel() -> void:
 	hand_box_pinned = true
 	on_extend_hand_box()
@@ -218,7 +247,7 @@ func on_ally_unit_awakened(skip_result: bool) -> void:
 	if !skip_result: on_pin_hand_box_panel()
 
 func on_pass_unit_turn_button_state(x: bool) -> void:
-	PassUnitTurn.disabled = x
+	PassUnitTurn.setDisabled(x)
 
 var team_selected: int = 0
 var vision_selected: int = 0
@@ -255,7 +284,7 @@ var status_box_positions: Array = [0, -400]
 var status_box_state: int = 1
 var is_status_box_moving: bool
 
-func on_tab_pressed() -> void:
+func onOpenStatusBox() -> void:
 	if !is_status_box_moving:
 		is_status_box_moving = true
 		status_box_state = abs(status_box_state - 1)
@@ -265,17 +294,14 @@ func on_tab_pressed() -> void:
 
 @onready var UnitStatusState: Control = %UnitStatusState
 
-func _on_vision_mode_set():
+func onEyeButtonPressed():
 	Vision.on_vision_mode_set(1 if Vision.vision_mode == 0 else 0)
 
 func onVisionModeSet() -> void:
-	GreyScale.modulate.a = greyscale_light if Vision.vision_mode == 1 else 0.0
+	setSelfModulate(GREY_LIGHT if Vision.vision_mode == 1 else BASE_MODULATE)
 	
 func onStartPhaseStart() -> void:
-	ChangePhase.visible = false
-	PhaseIcon.visible = false
-	
-	GreyScale.modulate.a = greyscale_light
+	setSelfModulate(GREY_LIGHT)
 	_on_team_button_item_selected(team_selected)
 	Tiles.console_tile_selected.connect(onSelectTileFinish)
 
@@ -294,8 +320,9 @@ func onWinGame() -> void:
 	else: print_debug("You won the game")
 
 func onAIPhaseStart() -> void:
-	ChangePhase.visible = false
+	on_pass_unit_turn_button_state(true)
 	onChangePhaseIcon("AIPhase")
+	onFlipPassButton("ENEMY")
 
 const PHASE_ICON_CHANGE_DURATION: float = 0.2
 @onready var PhaseIcon: Sprite2D = %PhaseIcon
@@ -317,11 +344,21 @@ func onHandPhaseNoSpawnTiles() -> void:
 
 func onHandPhaseStart() -> void:
 	var skip_hand_phase: bool = LevelMap.on_skip_hand_phase_result()
-	GreyScale.modulate.a = greyscale_light
+	setSelfModulate(GREY_LIGHT)
 	
 	on_set_hand_box_cards_state()
-	if !skip_hand_phase: on_pin_hand_box_panel(); LevelMap.setActionLock("HandRegular"); ChangePhase.visible = true
+	if !skip_hand_phase:
+		on_pin_hand_box_panel()
+		LevelMap.setInputLock(LevelMap.HAND_LOCK)
+		on_pass_unit_turn_button_state(false)
 	else: LevelMap.on_advance_game_phase()
+	onChangePhaseIcon("HandPhase")
+	onFlipPassButton("PASS")
+
+func onFlipPassButton(text: String) -> void:
+	ChangePhaseAniPlayer.play("ChangePhaseChanged")
+	await get_tree().create_timer(0.08).timeout
+	onChangePassButtonText(text)
 
 var warning_texts: Dictionary = {
 	"SkipAction": "If you perform an action with this unit you will skip another unit's turn!",
@@ -329,7 +366,7 @@ var warning_texts: Dictionary = {
 	"ConsoleActive": "Select a Tile"
 }
 
-func setWarningText(visibility: bool, text: String = "") -> void:
+func setWarningText(visibility: bool = false, text: String = "") -> void:
 	WarningText.visible = visibility
 	if visibility:
 		WarningText.text = warning_texts[text]
@@ -372,52 +409,47 @@ func onSelectTileFinish(Tile: TileGD) -> void:
 	Console.onTileSelected(Tile)
 
 func onEnterUnitMode(Unit: UnitGD) -> void:
-	setUnitModeText(Unit.base_card.name)
+	setUnitNameLabel(Unit.base_card.name)
 	for ability in Unit.abilities:
 		if ability is TargetAbilityGD:
 			var TargetAbilityBox: Control = preload("res://scenes/screens/level_ui/target_ability_box.tscn").instantiate()
 			TargetAbilities.add_child(TargetAbilityBox)
-			TargetAbilityBox.mouse_entered.connect(on_is_mouse_in_ui.bind(true))
-			TargetAbilityBox.mouse_exited.connect(on_is_mouse_in_ui.bind(false))
-			TargetAbilityBox.AbilityCharges.text = str(ability.charges) if ability.charges >= 0 else "∞"
+			var charges_text: String = "Charges: " + ((str(ability.charges) + "/" + str(ability.max_charges)) if ability.charges >= 0 else "∞")
+			TargetAbilityBox.AbilityCharges.text = charges_text
 			TargetAbilityBox.label.text = ability.ability_name
 			TargetAbilityBox.description.text = ability.ability_description
 			TargetAbilityBox.ability = ability
 			TargetAbilityBox.pressed.connect(onTargetAbilityBoxPressed.bind(Unit, ability, TargetAbilityBox))
-			TargetAbilityBox.disabled = !Combat.isAbilityEnabled(Unit, ability)
-
+			TargetAbilityBox.setDisabled(!Combat.isAbilityEnabled(Unit, ability))
+			TargetAbilityBox.mouse_in_ui.connect(on_is_mouse_in_ui)
+			
 func onExitUnitMode() -> void:
-	setUnitModeText("")
+	setUnitNameLabel()
 	for child in TargetAbilities.get_children(): child.queue_free()
 	onExitTargetAbilityMode(true)
-
+#
 func onTargetAbilityBoxPressed(Unit: UnitGD, ability: AbilityGD, TargetAbilityBox: Control) -> void:
-	if PlayerManager.TAbility == ability:
-		onExitTargetAbilityMode()
-		TargetAbilityBox.modulate = Color(1, 1, 1)
-	else:
-		onEnterTargetAbilityMode(Unit, ability)
-		TargetAbilityBox.modulate = Color(0.6, 0.6, 0.6)
+	if PlayerManager.TAbility == ability: onExitTargetAbilityMode()
+	else: onEnterTargetAbilityMode(Unit, ability)
 
 func onTargetAbilityBtnPressed(Unit: UnitGD, ability: AbilityGD) -> void:
-	if LevelMap.action_lock.is_empty():
-		if PlayerManager.UnitSelected != Unit:
-			PlayerManager.on_unit_selected(Unit)
-		
+	if LevelMap.verifyLock():
 		var TargetAbilityBox: Control = TargetAbilities.get_children().filter(func(x: Control): return !x.is_queued_for_deletion() and x.ability == ability)[0]
 		onTargetAbilityBoxPressed(Unit, ability, TargetAbilityBox)
 	
-func setUnitModeText(text: String, description: String = "") -> void:
-	if description == "": UnitNameLabel.text = text; AbilityDescription.text = ""; AbilityLabel.text = ""
-	else: AbilityLabel.text = text; AbilityDescription.text = description; UnitNameLabel.text = ""
+func setAbilityLabels(text: String = "") -> void:
+	AbilityLabel.text = text
+	
+func setUnitNameLabel(text: String = "") -> void:
+	UnitNameLabel.text = text
 	
 func onEnterTargetAbilityMode(Unit: UnitGD, ability: AbilityGD) -> void:
-	setUnitModeText(ability.ability_name, ability.ability_description_big)
+	setAbilityLabels(ability.ability_name)
 	PlayerManager.onEnterTargetAbilityMode(Unit, ability)
 	
 func onExitTargetAbilityMode(exit_unit: bool = false) -> void: # has to check if actually in target ability mode first
 	if PlayerManager.TAbility != null:
-		setUnitModeText(PlayerManager.TAbilityUnit.base_card.name if !exit_unit else "")
+		setAbilityLabels()
 		PlayerManager.onExitTargetAbilityMode()
 
 func onUpdateAbilityCharges(Unit: UnitGD) -> void:
@@ -453,29 +485,26 @@ func onUpdateTargetAbilities() -> void:
 			if ability is TargetAbilityGD:
 				StatusManager.onUpdateTargetAbility(Unit, ability)
 
-func on_camera_mode_pressed():
+func onCameraButtonPressed():
 	SpectateCamera.onChangeCameraMode(!SpectateCamera.is_unit_camera)
 
 const DRAW_CARD_ORIGINAL_Y: int = -430
 const DRAW_CARD_FINAL_Y: int = 1100
 const DRAW_CARD_FALL_TIME: float = 1.6
-func onTweenDrawCard(GameCard: GameCardGD, HandCard: HandCardGD) -> void:
-	GameCard.position.y = DRAW_CARD_ORIGINAL_Y
-	GameCard.position.x = randi_range(400, 1200)
-	var pos_tween := create_tween()
-	var rot_tween := create_tween()
-	pos_tween.tween_property(GameCard, "position:y", DRAW_CARD_FINAL_Y, DRAW_CARD_FALL_TIME)
-	rot_tween.tween_property(GameCard, "rotation", TAU, DRAW_CARD_FALL_TIME).as_relative()
-	pos_tween.finished.connect(onTweenDrawCardFinished.bind(HandCard))
+#func onTweenDrawCard(GameCard: GameCardGD, HandCard: HandCardGD) -> void:
+	#GameCard.position.y = DRAW_CARD_ORIGINAL_Y
+	#GameCard.position.x = randi_range(400, 1200)
+	#var pos_tween := create_tween()
+	#var rot_tween := create_tween()
+	#pos_tween.tween_property(GameCard, "position:y", DRAW_CARD_FINAL_Y, DRAW_CARD_FALL_TIME)
+	#rot_tween.tween_property(GameCard, "rotation", TAU, DRAW_CARD_FALL_TIME).as_relative()
+	#pos_tween.finished.connect(onTweenDrawCardFinished.bind(HandCard))
+#
+#func onTweenDrawCardFinished(HandCard: HandCardGD) -> void:
+	#for child in DrawCard.get_children(): child.queue_free()
+	#onDrawCard(HandCard)
 
-func onTweenDrawCardFinished(HandCard: HandCardGD) -> void:
-	for child in DrawCard.get_children(): child.queue_free()
-	onDrawCard(HandCard)
-
-@onready var ChangePhaseAniPlayer := $ChangePhaseManager/AnimationPlayer
-func onPlayHoverChangePhase(state: bool = true):
-	if state: ChangePhaseAniPlayer.play("ChangePhaseHover")
-	else: ChangePhaseAniPlayer.play("RESET")
+@onready var ChangePhaseAniPlayer := %ChangePhaseAnimationPlayer
 
 const INCENTIVISE_DURATION: float = 1.6
 var is_incentivise: bool = false
@@ -497,6 +526,27 @@ func onEnemySpotted(Unit: UnitGD, _Spotter: UnitGD) -> void:
 func onDestroySpottedArrow(Unit: UnitGD) -> void:
 	Unit.Model.setRedMultiply(false)
 
-func setTargetAbilityBoxCrossedOut(state: bool) -> void:
-	for box in TargetAbilities.get_children():
-		box.CrossedOut.visible = state
+func onStatusBoxMouseEntered():
+	BrownParticles.amount_ratio = 1
+	StatusBoxBackground.modulate = Color(1, 1, 0)
+
+func onStatusBoxMouseExited():
+	BrownParticles.amount_ratio = 0
+	StatusBoxBackground.modulate = Color(1, 1, 1)
+
+func onDeckButtonPressed():
+	var CardsMenu: Control = preload("res://scenes/screens/level_ui/cards_menu/cards_menu.tscn").instantiate()
+	add_child(CardsMenu)
+	
+	CardsMenu.setInfo(PlayerManager.graveyard_cards, Deck.get_children())
+	CardsMenu.onLoadDeck()
+
+func onGraveyardButtonPressed():
+	var CardsMenu: Control = preload("res://scenes/screens/level_ui/cards_menu/cards_menu.tscn").instantiate()
+	add_child(CardsMenu)
+	
+	CardsMenu.setInfo(PlayerManager.graveyard_cards, Deck.get_children())
+	CardsMenu.onLoadGraveyard()
+
+func onChangePassButtonText(text: String) -> void:
+	PassUnitTurnLabel.text = text

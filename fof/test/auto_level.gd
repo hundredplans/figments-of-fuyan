@@ -7,3 +7,4 @@ func _ready():
 	Main.on_menu_button_pressed("res://scenes/screens/level_ui/level_ui.tscn")
 	
 	
+	

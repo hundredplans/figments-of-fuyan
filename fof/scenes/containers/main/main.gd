@@ -119,7 +119,7 @@ func before_ready_connect_screen(screen: Control):
 		"TrinketEditor", "AreaEditor", "BoonEditor", "OldCardEditor", "LevelEditor", "MapEditor", "ToolEditor", "TaskEditor", "ChallengeEditor", "EncounterEditor": screen.fileloader_state.connect(on_change_fileloader_state)
 	
 func after_ready_connect_screen(screen: Control):
-	if screen.name == "MainMenu" or Settings.hide_menu_gui == 2 or screen.name == "LoreBooksEditor" and Settings.hide_menu_gui == 1:
+	if screen.name == "LevelUI" or screen.name == "MainMenu" or Settings.hide_menu_gui == 2 or (screen.name == "LoreBooksEditor" and Settings.hide_menu_gui == 1):
 		BackArrow.visible = false
 		SettingCog.visible = false
 	else: 
@@ -153,6 +153,8 @@ func _process(_delta: float) -> void:
 		on_trigger_screen_history()
 		
 func on_load_screen(screen_name: String, is_enter: bool) -> void:
+	BackArrow.visible = screen_name != "LevelMap"
+	SettingCog.visible = screen_name != "LevelMap"
 	if !screen_change_animation_active:
 		fileloader_state = 0
 		var screen: Control = load(screen_name).instantiate()

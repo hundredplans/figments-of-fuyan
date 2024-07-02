@@ -1,7 +1,6 @@
 class_name LevelMapGD
 extends Node3D
 
-signal action_lock_changed
 var GameState: Node
 
 var LoadedLevel: Node3D
@@ -29,6 +28,7 @@ func _ready() -> void:
 	on_load_world_history()
 	Deck.on_create_deck()
 	Deck.on_choose_champion()
+	AudioMaster.onPlayMusic(preload("res://assets/music/palm_main_theme.wav"))
 	
 func on_load_world_history() -> void:
 	pass
@@ -77,8 +77,7 @@ func on_change_game_phase(phase: String) -> void:
 				Unit.stats("attack", 50)
 				Unit.stats("speed", 5)
 				SpectateCamera.onSpectate(Unit)
-		"PlayerPhase": setActionLock("PlayerPhase")
-		"PlayerEndTurnPhase": setActionLock("Regular"); on_advance_game_phase()
+		"PlayerEndTurnPhase": on_advance_game_phase()
 		"AIEndTurnPhase": on_advance_game_phase()
 			
 
@@ -91,22 +90,45 @@ func on_advance_game_phase() -> void:
 		"AIPhase": on_change_game_phase("AIEndTurnPhase")
 		"AIEndTurnPhase": on_change_game_phase("HandPhase")
 
-var action_lock: String = ""
-func setActionLock(x: String = "") -> void:
-	var dev := preload("res://static/dev/dev.tres")
-	if !dev.remove_action_lock:
-		if x == "PlayerPhase":
-			if action_lock == "UnitActionRegular": return
-			x = ""
-			
-		if (x == "UnitActionDisabled" and action_lock == "UnitActionRegular"):
-			if ActionManager.unit_actions.is_empty():
-				x = ""
-				action_lock = x
-				action_lock_changed.emit(x)
-		elif x != "UnitActionDisabled":
-			action_lock = x
-			action_lock_changed.emit(x)
+enum { # Enum for the different types of lock
+	NULL_LOCK,
+	HAND_LOCK, # During hand phase
+	UNIT_ACTION, # When a unit is in the middle of an action
+	UNIT_ACTION_DISABLE, # When a unit wishes to conclude it's actions
+}
+
+enum { # Enum for the different types of verifications
+	NULL_VERIFY,
+	INSPECT_UNIT,
+	IN_ACTION,
+	AI_PHASE,
+	SPECTATE_TILE,
+	HAND_EXCLUSIVE,
+	TILE_HOVER,
+	CHANGE_SPECTATE,
+}
+
+var verify_lock: Dictionary = {
+	NULL_VERIFY: [NULL_LOCK],
+	INSPECT_UNIT: [NULL_LOCK, HAND_LOCK],
+	SPECTATE_TILE: [NULL_LOCK, HAND_LOCK],
+	TILE_HOVER: [NULL_LOCK, HAND_LOCK],
+	CHANGE_SPECTATE: [NULL_LOCK, HAND_LOCK],
+	IN_ACTION: [UNIT_ACTION],
+	HAND_EXCLUSIVE: [HAND_LOCK]
+}
+var input_lock: int = 0
+signal input_lock_updated
+
+func setInputLock(_input_lock: int = NULL_LOCK) -> void:
+	if _input_lock != input_lock:
+		if (input_lock == UNIT_ACTION and _input_lock == UNIT_ACTION_DISABLE) or input_lock != UNIT_ACTION:
+			if _input_lock == UNIT_ACTION_DISABLE: _input_lock = NULL_LOCK
+			input_lock = _input_lock
+			input_lock_updated.emit()
+
+func verifyLock(type: int = NULL_VERIFY) -> bool:
+	return input_lock in verify_lock[type]
 
 func on_skip_hand_phase_result(Tile: TileGD = null) -> bool:
 	if game_phase == "HandPhase":

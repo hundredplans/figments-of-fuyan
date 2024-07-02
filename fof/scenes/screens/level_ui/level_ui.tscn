@@ -1,73 +1,57 @@
-[gd_scene load_steps=21 format=3 uid="uid://b0kr4uhvdhmq3"]
+[gd_scene load_steps=33 format=3 uid="uid://b0kr4uhvdhmq3"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_ui/level_ui.gd" id="1_mmiwi"]
 [ext_resource type="Texture2D" uid="uid://iucmlitjenwl" path="res://assets/base_game/cards/game_card/art/stats/energy.png" id="2_bww7p"]
 [ext_resource type="Theme" uid="uid://bhyiyheobours" path="res://scenes/screens/level_ui/panel_theme.tres" id="2_pmg4n"]
-[ext_resource type="LabelSettings" uid="uid://b3fuc4s50fgra" path="res://assets/UI/roboto/roboto64.tres" id="3_7ly33"]
-[ext_resource type="LabelSettings" uid="uid://x63q2nfy4si3" path="res://assets/UI/sixty_four/sixty_four_medium.tres" id="4_urhhi"]
-[ext_resource type="Texture2D" uid="uid://burfnpstfolbo" path="res://scenes/screens/level_ui/change_phase/change_phase.png" id="7_vn3bx"]
+[ext_resource type="LabelSettings" uid="uid://du8wsu8ebr2a0" path="res://assets/UI/lora/lora16.tres" id="4_8w3e7"]
+[ext_resource type="Texture2D" uid="uid://5lneadq0ah6k" path="res://scenes/screens/level_ui/brown_particle.png" id="4_gmrht"]
+[ext_resource type="Texture2D" uid="uid://o2y0lth6qfc2" path="res://assets/base_game/cards/cards/FredericTheFearless/art_mini.png" id="5_h365k"]
+[ext_resource type="Script" path="res://scenes/screens/level_ui/top_bar/energy_labels.gd" id="6_bg05c"]
+[ext_resource type="Texture2D" uid="uid://cnykim4ihwroj" path="res://assets/game_sprites/shilling.png" id="6_jgm8m"]
+[ext_resource type="LabelSettings" uid="uid://c5h6tv2uhlrjf" path="res://assets/UI/lora/lora_outline.tres" id="8_8k4pv"]
 [ext_resource type="LabelSettings" uid="uid://qp0350v2j4ah" path="res://assets/UI/roboto/roboto32_outline.tres" id="8_dq43r"]
-[ext_resource type="Texture2D" uid="uid://bpv3310yxdfg1" path="res://scenes/screens/level_ui/change_phase/change_phase_hover.png" id="8_l8h11"]
-[ext_resource type="PackedScene" uid="uid://bkbg8go87dqws" path="res://scenes/ui_general/arrow/ui_arrow.tscn" id="8_t3xo3"]
+[ext_resource type="LabelSettings" uid="uid://bhkk0ykdiowad" path="res://assets/UI/label_settings/lora/lora_tiny.tres" id="8_lfle3"]
 [ext_resource type="LabelSettings" uid="uid://bxpqp1at73s47" path="res://assets/UI/jacquard/jacquard_huge_grey_outline.tres" id="9_4ndix"]
-[ext_resource type="Texture2D" uid="uid://b72ifh2nd1wc8" path="res://scenes/screens/level_ui/change_phase/change_phase_disabled.png" id="9_d3rdq"]
 [ext_resource type="Texture2D" uid="uid://dl25aqsdhe6ju" path="res://scenes/screens/level_ui/phase_icon/HandPhase.png" id="13_48llv"]
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="13_v5lxp"]
 [ext_resource type="PackedScene" uid="uid://db4iwvndfcy84" path="res://scenes/screens/level_ui/console/console.tscn" id="14_q1hsx"]
 [ext_resource type="FontFile" uid="uid://bjgvp4yvesp1k" path="res://assets/UI/open_sans/OpenSans-ExtraBold.ttf" id="15_wcrhh"]
+[ext_resource type="PackedScene" uid="uid://cvw1ymuw2xy64" path="res://scenes/screens/level_ui/top_bar/top_bar_button/top_bar_button.tscn" id="17_b5anv"]
+[ext_resource type="Texture2D" uid="uid://lbru01w3ej6y" path="res://scenes/screens/level_ui/top_bar/top_bar_button/left_camera_arrow.png" id="17_w8028"]
+[ext_resource type="Texture2D" uid="uid://gcw1obnq5ofn" path="res://scenes/screens/level_ui/top_bar/top_bar_button/right_camera_arrow.png" id="18_anip6"]
+[ext_resource type="Texture2D" uid="uid://gl05bxq5dlnl" path="res://scenes/screens/level_ui/top_bar/top_bar_button/deck.png" id="18_bcoaq"]
+[ext_resource type="Texture2D" uid="uid://b62t17d1v1n12" path="res://scenes/screens/level_ui/top_bar/top_bar_button/pass_button.png" id="18_jwd3n"]
+[ext_resource type="Texture2D" uid="uid://cr18pybqquo7f" path="res://scenes/screens/level_ui/top_bar/top_bar_button/graveyard.png" id="19_c6dwe"]
+[ext_resource type="Texture2D" uid="uid://b0hfj23m52s2r" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/unit_status_pieces/status_white.png" id="22_jdt2t"]
+[ext_resource type="Texture2D" uid="uid://blifphxm7kkhn" path="res://scenes/screens/level_ui/top_bar/top_bar_button/vision_mode.png" id="22_n4ug1"]
+[ext_resource type="Texture2D" uid="uid://cyu547jk2ynkr" path="res://scenes/screens/level_ui/top_bar/top_bar_button/camera.png" id="23_1m0mv"]
+[ext_resource type="Texture2D" uid="uid://dr4ojvlaol232" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/unit_status_pieces/status_in.png" id="23_g3jx8"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_el0xh"]
-font = ExtResource("15_wcrhh")
-font_size = 100
-font_color = Color(1, 0.490196, 0, 1)
-outline_size = 30
-outline_color = Color(0, 0, 0, 1)
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_q13sk"]
+particle_flag_disable_z = true
+spread = 98.333
+initial_velocity_min = 10.0
+initial_velocity_max = 30.0
+angular_velocity_max = 120.0
+radial_velocity_min = 200.0
+radial_velocity_max = 300.0
+gravity = Vector3(200, 0, 0)
 
-[sub_resource type="LabelSettings" id="LabelSettings_ig1jx"]
-font = ExtResource("15_wcrhh")
-font_size = 100
-outline_size = 20
-outline_color = Color(0, 0, 0, 1)
-
-[sub_resource type="Animation" id="Animation_xamna"]
-resource_name = "ChangePhaseHover"
-length = 0.8
-loop_mode = 1
+[sub_resource type="Animation" id="Animation_b6dxu"]
+resource_name = "ChangePhaseChanged"
+length = 0.16
+step = 0.08
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("%ChangePhase:position")
+tracks/0/path = NodePath("TopBar/CenterBar/ChangePhase:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.08, 0.16),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(0, 0), Vector2(-20, 0), Vector2(0, 0), Vector2(20, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("%ChangePhase:scale")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(1, 1), Vector2(1.1, 1.1), Vector2(1, 1), Vector2(1.1, 1.1)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("%ChangePhase:rotation")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [0.0, -0.174533, 0.0, 0.174533]
+"values": [Vector2(1, 1), Vector2(1, 1e-05), Vector2(1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_6a225"]
@@ -75,57 +59,34 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("%ChangePhase:position")
+tracks/0/path = NodePath("TopBar/CenterBar/ChangePhase:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(0, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("%ChangePhase:scale")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
 "values": [Vector2(1, 1)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("%ChangePhase:rotation")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("%ChangePhase/Label:visible")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_6v38x"]
 _data = {
-"ChangePhaseHover": SubResource("Animation_xamna"),
+"ChangePhaseChanged": SubResource("Animation_b6dxu"),
 "RESET": SubResource("Animation_6a225")
 }
+
+[sub_resource type="LabelSettings" id="LabelSettings_ig1jx"]
+font = ExtResource("15_wcrhh")
+font_size = 60
+outline_size = 20
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_el0xh"]
+font = ExtResource("15_wcrhh")
+font_size = 50
+font_color = Color(1, 0.490196, 0, 1)
+outline_size = 12
+outline_color = Color(0, 0, 0, 1)
 
 [node name="LevelUI" type="Control"]
 layout_mode = 3
@@ -137,25 +98,17 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_mmiwi")
 
-[node name="GreyScale" type="ColorRect" parent="."]
-unique_name_in_owner = true
-modulate = Color(0, 0, 0, 0)
-layout_mode = 0
-offset_right = 1920.0
-offset_bottom = 1080.0
-mouse_filter = 2
-
 [node name="StatusBox" type="Control" parent="."]
 unique_name_in_owner = true
 anchors_preset = 0
 offset_left = -400.0
-offset_top = 144.0
+offset_top = 182.0
 offset_right = 3.0
 offset_bottom = 1005.0
 
-[node name="Background" type="Panel" parent="StatusBox"]
+[node name="StatusBoxBackground" type="Panel" parent="StatusBox"]
+unique_name_in_owner = true
 self_modulate = Color(1, 1, 1, 0.196078)
-light_mask = 4
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -167,6 +120,7 @@ theme = ExtResource("2_pmg4n")
 metadata/_edit_lock_ = true
 
 [node name="SortMenu" type="VBoxContainer" parent="StatusBox"]
+light_mask = 4
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.025
@@ -208,6 +162,12 @@ size_flags_horizontal = 3
 mouse_filter = 1
 text = "Both"
 
+[node name="PinStatusButton" type="Button" parent="StatusBox/SortMenu/Buttons/TeamContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+text = "Pin"
+
 [node name="VisionContainer" type="HBoxContainer" parent="StatusBox/SortMenu/Buttons"]
 layout_mode = 0
 offset_top = 72.0
@@ -239,209 +199,13 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 0
 
-[node name="CornerRightMenu" type="VBoxContainer" parent="."]
+[node name="BrownParticles" type="GPUParticles2D" parent="StatusBox"]
 unique_name_in_owner = true
-layout_mode = 0
-offset_left = 1531.0
-offset_top = 657.0
-offset_right = 1889.0
-offset_bottom = 1048.0
-mouse_filter = 2
-theme_override_constants/separation = 50
-alignment = 2
-
-[node name="GlobalCamera" type="Control" parent="CornerRightMenu"]
-custom_minimum_size = Vector2(152, 53)
-layout_mode = 2
-size_flags_horizontal = 8
-
-[node name="Panel" type="Panel" parent="CornerRightMenu/GlobalCamera"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 1
-theme = ExtResource("2_pmg4n")
-
-[node name="Button" type="Button" parent="CornerRightMenu/GlobalCamera"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 1
-
-[node name="Label" type="Label" parent="CornerRightMenu/GlobalCamera"]
-modulate = Color(0.831373, 0.517647, 0.239216, 1)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Camera"
-label_settings = ExtResource("4_urhhi")
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="VisionMode" type="Control" parent="CornerRightMenu"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(152, 53)
-layout_mode = 2
-size_flags_horizontal = 8
-
-[node name="Panel" type="Panel" parent="CornerRightMenu/VisionMode"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 1
-theme = ExtResource("2_pmg4n")
-
-[node name="Button" type="Button" parent="CornerRightMenu/VisionMode"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 1
-
-[node name="Label" type="Label" parent="CornerRightMenu/VisionMode"]
-modulate = Color(0.831373, 0.517647, 0.239216, 1)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Vision"
-label_settings = ExtResource("4_urhhi")
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="CameraArrows" type="Control" parent="CornerRightMenu"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(358, 183)
-layout_mode = 2
-size_flags_horizontal = 8
-mouse_filter = 1
-
-[node name="Panel" type="Panel" parent="CornerRightMenu/CameraArrows"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 1
-theme = ExtResource("2_pmg4n")
-
-[node name="LeftArrow" parent="CornerRightMenu/CameraArrows" instance=ExtResource("8_t3xo3")]
-modulate = Color(0.411765, 0.254902, 0.117647, 1)
-layout_mode = 1
-anchors_preset = -1
-anchor_top = -0.011
-anchor_bottom = -0.011
-offset_left = 80.0
-offset_top = 97.013
-offset_right = 160.0
-offset_bottom = 195.013
-grow_horizontal = 0
-mouse_filter = 1
-flip_h = true
-
-[node name="RightArrow" parent="CornerRightMenu/CameraArrows" instance=ExtResource("8_t3xo3")]
-modulate = Color(0.411765, 0.254902, 0.117647, 1)
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -154.0
-offset_top = 95.946
-offset_right = -74.0
-offset_bottom = 193.946
-grow_horizontal = 0
-mouse_filter = 1
-
-[node name="UnitStatusState" type="Control" parent="CornerRightMenu/CameraArrows"]
-unique_name_in_owner = true
-layout_mode = 1
-anchor_left = 1.017
-anchor_top = 1.055
-anchor_right = 1.017
-anchor_bottom = 1.055
-offset_left = -375.086
-offset_top = -208.065
-offset_right = -2.086
-offset_bottom = -78.065
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 1
-
-[node name="Label" type="Label" parent="CornerRightMenu/CameraArrows/UnitStatusState"]
-modulate = Color(0.760784, 0.447059, 0.176471, 1)
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -362.0
-offset_top = -130.0
-offset_right = -4.0
-grow_horizontal = 0
-grow_vertical = 0
-text = "You aren't spectating
-anyone!"
-label_settings = ExtResource("8_dq43r")
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-
-[node name="Energy" type="Control" parent="."]
-anchors_preset = 0
-offset_right = 120.0
-offset_bottom = 120.0
-
-[node name="Sprite2D" type="Sprite2D" parent="Energy"]
-scale = Vector2(2, 2)
-texture = ExtResource("2_bww7p")
-centered = false
-
-[node name="Label" type="Label" parent="Energy"]
-layout_mode = 0
-offset_right = 120.0
-offset_bottom = 120.0
-label_settings = ExtResource("3_7ly33")
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="WarningText" type="Label" parent="."]
-unique_name_in_owner = true
-modulate = Color(1, 0.278431, 0.278431, 0.501961)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -204.0
-offset_top = -117.0
-offset_right = 204.0
-offset_bottom = 117.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "If you perform an action with this unit you will skip another unit's turn!"
-label_settings = ExtResource("8_dq43r")
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
+position = Vector2(392, 415)
+amount = 16
+amount_ratio = 0.0
+process_material = SubResource("ParticleProcessMaterial_q13sk")
+texture = ExtResource("4_gmrht")
 
 [node name="HandBox" type="Control" parent="."]
 unique_name_in_owner = true
@@ -479,17 +243,358 @@ size_flags_vertical = 3
 mouse_filter = 2
 alignment = 1
 
-[node name="PhaseIconControl" type="Control" parent="."]
+[node name="TopBar" type="Control" parent="."]
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 1920.0
+offset_bottom = 125.0
+mouse_filter = 1
 
-[node name="PhaseIcon" type="Sprite2D" parent="PhaseIconControl"]
+[node name="Background" type="Panel" parent="TopBar"]
+self_modulate = Color(1, 1, 1, 0.501961)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("2_pmg4n")
+
+[node name="LeftBar" type="HBoxContainer" parent="TopBar"]
+layout_mode = 0
+offset_left = 8.0
+offset_right = 850.0
+offset_bottom = 125.0
+mouse_filter = 2
+
+[node name="GameInfoManager" type="Control" parent="TopBar/LeftBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="HeroName" type="Label" parent="TopBar/LeftBar/GameInfoManager"]
+unique_name_in_owner = true
+layout_mode = 1
+offset_top = 7.0
+offset_right = 161.0
+offset_bottom = 29.0
+text = "Frederic the Fearless"
+label_settings = ExtResource("4_8w3e7")
+
+[node name="HeroPortrait" type="Control" parent="TopBar/LeftBar/GameInfoManager"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -90.0
+offset_top = 14.0
+offset_bottom = 104.0
+grow_horizontal = 0
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="OutsideBorder" type="ColorRect" parent="TopBar/LeftBar/GameInfoManager/HeroPortrait"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="InsideBorder" type="ColorRect" parent="TopBar/LeftBar/GameInfoManager/HeroPortrait"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = -5.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HeroArt" type="Sprite2D" parent="TopBar/LeftBar/GameInfoManager/HeroPortrait"]
+position = Vector2(45, 45)
+texture = ExtResource("5_h365k")
+
+[node name="ShillingCounter" type="Control" parent="TopBar/LeftBar/GameInfoManager"]
+anchors_preset = 0
+offset_left = 81.0
+offset_top = 36.0
+offset_right = 148.0
+offset_bottom = 76.0
+mouse_filter = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="TopBar/LeftBar/GameInfoManager/ShillingCounter"]
+texture = ExtResource("6_jgm8m")
+centered = false
+
+[node name="Label" type="Label" parent="TopBar/LeftBar/GameInfoManager/ShillingCounter"]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 1.0
+offset_right = 84.0
+offset_bottom = 39.0
+text = "0"
+label_settings = ExtResource("8_dq43r")
+
+[node name="MapInfo" type="Label" parent="TopBar/LeftBar/GameInfoManager"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_top = 33.0
+offset_right = 81.0
+offset_bottom = 75.0
+text = "1-2"
+label_settings = ExtResource("8_8k4pv")
+horizontal_alignment = 1
+
+[node name="LevelInfo" type="Label" parent="TopBar/LeftBar/GameInfoManager"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_top = 85.0
+offset_right = 161.0
+offset_bottom = 108.0
+text = "Palmtest Level 1"
+label_settings = ExtResource("4_8w3e7")
+horizontal_alignment = 1
+
+[node name="SeedInfo" type="Label" parent="TopBar/LeftBar/GameInfoManager"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_top = 110.0
+offset_right = 132.0
+offset_bottom = 133.0
+text = "123123129381"
+label_settings = ExtResource("8_lfle3")
+
+[node name="EnergyManager" type="Control" parent="TopBar/LeftBar"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_stretch_ratio = 0.6
+
+[node name="Sprite2D" type="Sprite2D" parent="TopBar/LeftBar/EnergyManager"]
+scale = Vector2(2, 2)
+texture = ExtResource("2_bww7p")
+centered = false
+
+[node name="EnergyLabels" type="Control" parent="TopBar/LeftBar/EnergyManager"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("6_bg05c")
+
+[node name="Top" type="Label" parent="TopBar/LeftBar/EnergyManager/EnergyLabels"]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 9.0
+offset_right = 61.0
+offset_bottom = 74.0
+text = "3"
+label_settings = ExtResource("9_4ndix")
+
+[node name="Mid" type="Label" parent="TopBar/LeftBar/EnergyManager/EnergyLabels"]
+layout_mode = 0
+offset_left = 46.0
+offset_top = 31.0
+offset_right = 86.0
+offset_bottom = 96.0
+text = "/"
+label_settings = ExtResource("9_4ndix")
+
+[node name="Bottom" type="Label" parent="TopBar/LeftBar/EnergyManager/EnergyLabels"]
+layout_mode = 0
+offset_left = 69.0
+offset_top = 28.0
+offset_right = 109.0
+offset_bottom = 93.0
+text = "5"
+label_settings = ExtResource("9_4ndix")
+
+[node name="PhaseIconManager" type="Control" parent="TopBar/LeftBar"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_stretch_ratio = 0.6
+
+[node name="PhaseIcon" type="Sprite2D" parent="TopBar/LeftBar/PhaseIconManager"]
 unique_name_in_owner = true
 texture_filter = 1
-position = Vector2(165, 60)
+position = Vector2(66, 62)
 scale = Vector2(2, 2)
 texture = ExtResource("13_48llv")
+
+[node name="BoonManager" type="Control" parent="TopBar/LeftBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Boonlabel" type="Label" parent="TopBar/LeftBar/BoonManager"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Boons"
+label_settings = ExtResource("8_8k4pv")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CenterBar" type="Control" parent="TopBar"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -109.0
+offset_right = 115.0
+offset_bottom = 224.0
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="LeftCameraArrow" parent="TopBar/CenterBar" instance=ExtResource("17_b5anv")]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 58.0
+offset_right = 108.0
+offset_bottom = 50.0
+texture_normal = ExtResource("17_w8028")
+texture = ExtResource("17_w8028")
+
+[node name="RightCameraArrow" parent="TopBar/CenterBar" instance=ExtResource("17_b5anv")]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 114.0
+offset_right = 164.0
+offset_bottom = 50.0
+texture_normal = ExtResource("18_anip6")
+texture = ExtResource("18_anip6")
+
+[node name="ChangePhase" type="Control" parent="TopBar/CenterBar"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 1
+anchors_preset = 0
+offset_left = 15.0
+offset_top = 51.0
+offset_right = 215.0
+offset_bottom = 207.0
+pivot_offset = Vector2(100, 78)
+size_flags_horizontal = 8
+mouse_filter = 1
+
+[node name="PassUnitTurn" parent="TopBar/CenterBar/ChangePhase" instance=ExtResource("17_b5anv")]
+unique_name_in_owner = true
+layout_mode = 0
+texture_normal = ExtResource("18_jwd3n")
+texture = ExtResource("18_jwd3n")
+
+[node name="PassUnitTurnLabel" type="Label" parent="TopBar/CenterBar/ChangePhase"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "PASS"
+label_settings = ExtResource("8_8k4pv")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="ChangePhaseAnimationPlayer" type="AnimationPlayer" parent="TopBar/CenterBar/ChangePhase"]
+unique_name_in_owner = true
+root_node = NodePath("../../../..")
+libraries = {
+"": SubResource("AnimationLibrary_6v38x")
+}
+speed_scale = 0.5
+
+[node name="RightBar" type="HBoxContainer" parent="TopBar"]
+layout_mode = 0
+offset_left = 1083.0
+offset_top = 9.0
+offset_right = 1901.0
+offset_bottom = 125.0
+
+[node name="DeckButton" parent="TopBar/RightBar" instance=ExtResource("17_b5anv")]
+unique_name_in_owner = true
+layout_mode = 2
+texture_normal = ExtResource("18_bcoaq")
+texture = ExtResource("18_bcoaq")
+
+[node name="GraveyardButton" parent="TopBar/RightBar" instance=ExtResource("17_b5anv")]
+unique_name_in_owner = true
+layout_mode = 2
+texture_normal = ExtResource("19_c6dwe")
+texture = ExtResource("19_c6dwe")
+
+[node name="EyeButton" parent="TopBar/RightBar" instance=ExtResource("17_b5anv")]
+unique_name_in_owner = true
+layout_mode = 2
+texture_normal = ExtResource("22_n4ug1")
+texture = ExtResource("22_n4ug1")
+
+[node name="CameraButton" parent="TopBar/RightBar" instance=ExtResource("17_b5anv")]
+unique_name_in_owner = true
+layout_mode = 2
+texture_normal = ExtResource("23_1m0mv")
+texture = ExtResource("23_1m0mv")
+
+[node name="UnitStatusState" type="Control" parent="TopBar/RightBar"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+
+[node name="Control" type="Control" parent="TopBar/RightBar/UnitStatusState"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -12.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DefaultStatus" type="Control" parent="TopBar/RightBar/UnitStatusState/Control"]
+modulate = Color(0.180392, 0.180392, 0.180392, 1)
+custom_minimum_size = Vector2(380, 130)
+layout_mode = 1
+anchor_bottom = 0.141
+offset_right = 380.0
+offset_bottom = 124.36
+
+[node name="TextureRect" type="TextureRect" parent="TopBar/RightBar/UnitStatusState/Control/DefaultStatus"]
+modulate = Color(0, 1, 0, 1)
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_top = 15.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("22_jdt2t")
+stretch_mode = 2
+
+[node name="TextureRect2" type="TextureRect" parent="TopBar/RightBar/UnitStatusState/Control/DefaultStatus"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_top = 15.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("23_g3jx8")
+stretch_mode = 2
 
 [node name="Console" parent="." instance=ExtResource("14_q1hsx")]
 unique_name_in_owner = true
@@ -507,114 +612,47 @@ mouse_filter = 2
 
 [node name="TargetAbilitiesBox" type="Control" parent="AbilityMode"]
 anchors_preset = 0
-offset_left = 1498.0
-offset_top = 110.0
-offset_right = 1693.0
-offset_bottom = 812.0
+offset_left = 1718.0
+offset_top = 307.0
+offset_right = 1913.0
+offset_bottom = 1009.0
 mouse_filter = 2
-
-[node name="TargetAbilities" type="VBoxContainer" parent="AbilityMode/TargetAbilitiesBox"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/separation = 40
-alignment = 2
-
-[node name="AbilityDescription" type="RichTextLabel" parent="AbilityMode"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -556.5
-offset_top = 125.0
-offset_right = 556.5
-offset_bottom = 293.0
-grow_horizontal = 2
-theme = ExtResource("13_v5lxp")
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 12
-bbcode_enabled = true
-
-[node name="AbilityLabel" type="Label" parent="AbilityMode"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -594.0
-offset_top = -12.0
-offset_right = 594.0
-offset_bottom = 125.0
-grow_horizontal = 2
-size_flags_vertical = 1
-label_settings = SubResource("LabelSettings_el0xh")
-horizontal_alignment = 1
 
 [node name="UnitNameLabel" type="Label" parent="AbilityMode"]
 unique_name_in_owner = true
 layout_mode = 2
-offset_left = 366.0
-offset_top = -12.0
-offset_right = 1554.0
-offset_bottom = 125.0
+offset_left = 1054.0
+offset_top = 144.0
+offset_right = 1901.0
+offset_bottom = 227.0
+text = "Frederic the Fearless"
 label_settings = SubResource("LabelSettings_ig1jx")
-horizontal_alignment = 1
+horizontal_alignment = 2
 
-[node name="ChangePhaseManager" type="Control" parent="."]
-anchors_preset = 0
-offset_left = 1740.0
-offset_top = 474.0
-offset_right = 1890.0
-offset_bottom = 624.0
+[node name="AbilityContainer" type="VBoxContainer" parent="AbilityMode"]
+layout_mode = 0
+offset_left = 1075.0
+offset_top = 227.0
+offset_right = 1901.0
+offset_bottom = 1056.0
 mouse_filter = 2
 
-[node name="ChangePhase" type="Control" parent="ChangePhaseManager"]
+[node name="AbilityLabel" type="Label" parent="AbilityMode/AbilityContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(150, 150)
-layout_mode = 1
-anchors_preset = 0
-offset_right = 150.0
-offset_bottom = 150.0
-pivot_offset = Vector2(75, 75)
+layout_mode = 2
 size_flags_horizontal = 8
-mouse_filter = 1
+size_flags_vertical = 0
+text = "Palmist Prayer"
+label_settings = SubResource("LabelSettings_el0xh")
+horizontal_alignment = 2
 
-[node name="PassUnitTurn" type="TextureButton" parent="ChangePhaseManager/ChangePhase"]
+[node name="TargetAbilities" type="VBoxContainer" parent="AbilityMode/AbilityContainer"]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 1
-texture_normal = ExtResource("7_vn3bx")
-texture_hover = ExtResource("8_l8h11")
-texture_disabled = ExtResource("9_d3rdq")
-
-[node name="Label" type="Label" parent="ChangePhaseManager/ChangePhase"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Pass"
-label_settings = ExtResource("9_4ndix")
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="ChangePhaseManager"]
-libraries = {
-"": SubResource("AnimationLibrary_6v38x")
-}
-speed_scale = 0.5
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 3
+mouse_filter = 2
+alignment = 2
 
 [node name="DrawCard" type="Control" parent="."]
 unique_name_in_owner = true
@@ -627,26 +665,56 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = 159.0
+offset_bottom = -739.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[node name="WarningText" type="Label" parent="."]
+unique_name_in_owner = true
+visible = false
+modulate = Color(1, 0.278431, 0.278431, 0.501961)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -204.0
+offset_top = -117.0
+offset_right = 204.0
+offset_bottom = 117.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "If you perform an action with this unit you will skip another unit's turn!"
+label_settings = ExtResource("8_dq43r")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[connection signal="mouse_entered" from="StatusBox" to="." method="onStatusBoxMouseEntered"]
 [connection signal="mouse_entered" from="StatusBox" to="." method="on_is_mouse_in_ui" binds= [true]]
+[connection signal="mouse_exited" from="StatusBox" to="." method="onStatusBoxMouseExited"]
 [connection signal="mouse_exited" from="StatusBox" to="." method="on_is_mouse_in_ui" binds= [false]]
-[connection signal="mouse_entered" from="CornerRightMenu/GlobalCamera" to="." method="on_is_mouse_in_ui" binds= [true]]
-[connection signal="mouse_exited" from="CornerRightMenu/GlobalCamera" to="." method="on_is_mouse_in_ui" binds= [false]]
-[connection signal="pressed" from="CornerRightMenu/GlobalCamera/Button" to="." method="on_camera_mode_pressed"]
-[connection signal="mouse_entered" from="CornerRightMenu/VisionMode" to="." method="on_is_mouse_in_ui" binds= [true]]
-[connection signal="mouse_exited" from="CornerRightMenu/VisionMode" to="." method="on_is_mouse_in_ui" binds= [false]]
-[connection signal="pressed" from="CornerRightMenu/VisionMode/Button" to="." method="_on_vision_mode_set"]
-[connection signal="mouse_entered" from="CornerRightMenu/CameraArrows" to="." method="on_is_mouse_in_ui" binds= [true]]
-[connection signal="mouse_exited" from="CornerRightMenu/CameraArrows" to="." method="on_is_mouse_in_ui" binds= [false]]
 [connection signal="mouse_entered" from="HandBox" to="." method="on_extend_hand_box"]
 [connection signal="mouse_entered" from="HandBox" to="." method="on_is_mouse_in_ui" binds= [true]]
 [connection signal="mouse_exited" from="HandBox" to="." method="on_unextend_hand_box"]
 [connection signal="mouse_exited" from="HandBox" to="." method="on_is_mouse_in_ui" binds= [false]]
 [connection signal="child_entered_tree" from="HandBox/CardClipper" to="." method="_on_card_clipper_child_entered_tree"]
-[connection signal="mouse_entered" from="ChangePhaseManager/ChangePhase" to="." method="onPlayHoverChangePhase"]
-[connection signal="mouse_entered" from="ChangePhaseManager/ChangePhase/PassUnitTurn" to="." method="on_is_mouse_in_ui" binds= [true]]
-[connection signal="mouse_exited" from="ChangePhaseManager/ChangePhase/PassUnitTurn" to="." method="on_is_mouse_in_ui" binds= [false]]
-[connection signal="pressed" from="ChangePhaseManager/ChangePhase/PassUnitTurn" to="." method="onPassUnitTurnButtonPressed"]
+[connection signal="mouse_entered" from="TopBar" to="." method="on_is_mouse_in_ui" binds= [true]]
+[connection signal="mouse_exited" from="TopBar" to="." method="on_is_mouse_in_ui" binds= [false]]
+[connection signal="mouse_in_ui" from="TopBar/CenterBar/LeftCameraArrow" to="." method="on_is_mouse_in_ui"]
+[connection signal="pressed" from="TopBar/CenterBar/LeftCameraArrow" to="." method="onCameraArrowPressed" binds= [-1]]
+[connection signal="mouse_in_ui" from="TopBar/CenterBar/RightCameraArrow" to="." method="on_is_mouse_in_ui"]
+[connection signal="pressed" from="TopBar/CenterBar/RightCameraArrow" to="." method="onCameraArrowPressed" binds= [1]]
+[connection signal="mouse_in_ui" from="TopBar/CenterBar/ChangePhase/PassUnitTurn" to="." method="on_is_mouse_in_ui"]
+[connection signal="pressed" from="TopBar/CenterBar/ChangePhase/PassUnitTurn" to="." method="onPassUnitTurnButtonPressed"]
+[connection signal="mouse_in_ui" from="TopBar/RightBar/DeckButton" to="." method="on_is_mouse_in_ui"]
+[connection signal="pressed" from="TopBar/RightBar/DeckButton" to="." method="onDeckButtonPressed"]
+[connection signal="mouse_in_ui" from="TopBar/RightBar/GraveyardButton" to="." method="on_is_mouse_in_ui"]
+[connection signal="pressed" from="TopBar/RightBar/GraveyardButton" to="." method="onGraveyardButtonPressed"]
+[connection signal="mouse_in_ui" from="TopBar/RightBar/EyeButton" to="." method="on_is_mouse_in_ui"]
+[connection signal="pressed" from="TopBar/RightBar/EyeButton" to="." method="onEyeButtonPressed"]
+[connection signal="mouse_in_ui" from="TopBar/RightBar/CameraButton" to="." method="on_is_mouse_in_ui"]
+[connection signal="pressed" from="TopBar/RightBar/CameraButton" to="." method="onCameraButtonPressed"]

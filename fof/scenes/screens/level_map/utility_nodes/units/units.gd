@@ -33,7 +33,7 @@ func onUnitAwakenedLoad(id: int, tool_id: int, effects: Array, team: int, rot: i
 		var Unit: UnitGD = UnitScene.instantiate()
 		FieldedUnits.add_child(Unit)
 		Unit.onUnitAwakened(id, tool_id, effects, team, rot, tile)
-		Unit.Model.drop_calculate_damage.connect(on_drop_calculate_damage.bind(Unit))
+		Unit.Model.unit_fell.connect(onUnitFell.bind(Unit))
 		StatusManager.onUnitAwakened(Unit)
 		Unit.onChangeTile(tile)
 		return Unit
@@ -118,7 +118,7 @@ func onRemoveMovementOutlineTiles() -> void:
 		Tiles.setTileOutline(Tile, "PathHovered", true)
 	movement_outline_tiles = []
 
-func on_drop_calculate_damage(DMG: int, scale_time: float, Unit: UnitGD) -> void:
+func onUnitFell(DMG: int, scale_time: float, Unit: UnitGD) -> void:
 	var AppliedBy := AppliedByGD.new("Height")
 	var DMGInfo := Combat.onDMG(Unit, AppliedBy, DMG)
 	if Unit.health > 0 and DMGInfo.HealthDMG > 0: on_descale_unit(Unit, scale_time)
@@ -155,6 +155,7 @@ func setPastPath(Unit: UnitGD, state: bool) -> void:
 		
 		if state: Tile.Effects.onPastPath(Unit.past_path_info[Tile][0], Unit.past_path_info[Tile][1])
 		else: Tile.Effects.onRemovePastPath()
+		
 	Unit.past_path_set = state
 
 func onFindClosestUnitFromUnits(Unit: UnitGD, units: Array) -> UnitGD:

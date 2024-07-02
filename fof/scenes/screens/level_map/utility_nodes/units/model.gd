@@ -6,7 +6,7 @@ var static_body: StaticBody3D
 
 var Unit: UnitGD
 var AniPlayer: AnimationPlayer
-signal drop_calculate_damage
+signal unit_fell
 var rot: int
 @export var collision_points: PackedVector3Array # dont use these
 
@@ -31,7 +31,6 @@ func _ready() -> void:
 	
 	onCreateBaseMaterials()
 	AniPlayer = get_node("AnimationPlayer")
-	AniPlayer.animation_finished.connect(on_finish_animation)
 	
 	if Unit != null:
 		IdleRareTimer = Timer.new()
@@ -46,11 +45,16 @@ func _ready() -> void:
 		on_set_rotation()
 
 	onSetOverrideMaterial("Regular")
+	AniPlayer.playback_default_blend_time = UNIT_ANIMATION_BLEND_TIME
 
-func on_play_animation(ani_name: String) -> void:
-	if ani_name == "Idle": ani_name = idle
-	AniPlayer.play(ani_name, UNIT_ANIMATION_BLEND_TIME)
-	if ani_name == "Walk": on_play_walk_sfx()
+func on_play_animation(ani_name: String, finish_processed: bool = false) -> void:
+	match ani_name:
+		"Attack": ani_name = Unit.getAttackAnimation() if AniPlayer.has_animation("AttackAbility") else "Attack"
+		"Idle": ani_name = idle
+		"Walk": on_play_walk_sfx()
+		
+	if !finish_processed: onAnimationFinished(AniPlayer.current_animation, true)
+	AniPlayer.play(ani_name)
 	
 var current_walk_stream_player: AudioStreamPlayer
 func on_play_walk_sfx() -> void:
@@ -67,9 +71,11 @@ func on_find_walk_sfx(id: int) -> String:
 		3,4: sfx = "WaterWalk"
 	return sfx
 	
-func on_finish_animation(ani_name: String) -> void:
+func onAnimationFinished(ani_name: String, play_processed: bool = false) -> void:
 	AniPlayer.speed_scale = 1
-	if ani_name != "Walk" and ani_name not in ["Death", "DeathAbility"] and (ani_name != "Jump"): on_play_animation(idle)
+	if !play_processed and ani_name not in ["Death", "DeathAbility", "Walk", "Jump"]:
+		on_play_animation(idle, true)
+		
 	match ani_name:
 		"Attack", "AttackAbility": if Unit != null: AudioMaster.play_sfx(Unit.AudioDict.ATTACK)
 		"Jump": is_jump = false
@@ -132,7 +138,7 @@ func onMoveToTile(fneighbour: FneighbourGD, movement_path: MovementPathGD, movem
 	
 func attack_tile(Tile: TileGD) -> void:
 	_look_at(Tile)
-	on_play_animation(Unit.getAttackAnimation() if AniPlayer.has_animation("AttackAbility") else "Attack")
+	on_play_animation("Attack")
 
 var jump_start: Vector3
 var jump_end: Vector3
@@ -171,7 +177,7 @@ func onBeginMovingToTile() -> void:
 	
 func onCalculateEndPosition(Tile: TileGD) -> Vector3:
 	var climb_slope: float = 0.9 if (Tile.tile.type in [1, 2]) else 0.3
-	var water_deslope: float = 0.1 if Tile.isWater() else 0
+	var water_deslope: float = 0.1 if Tile.isWater() else 0.0
 	return Vector3(Tile.global_position.x, Tile.global_position.y + climb_slope - water_deslope, Tile.global_position.z)
 
 var is_jump: bool = false
@@ -198,13 +204,13 @@ func onCreateFall(Tile: TileGD, hdiff: int, dmg: int) -> void:
 	on_play_animation("Jump")
 	
 	get_tree().create_timer((3 / AniPlayer.speed_scale) / 1.5).timeout\
-	.connect(func(): drop_calculate_damage.emit(dmg, (3 / AniPlayer.speed_scale) / 6))
+	.connect(func(): unit_fell.emit(dmg, (3 / AniPlayer.speed_scale) / 6))
 	
 func onCreateMoveTween(Tile: TileGD) -> void:
 	var MoveTween: Tween = create_tween()
 	var half_position := Vector3(Tile.global_position + global_position) * 0.5
 	var climb_slope: float = 0.9 if Tile.tile.type == 1 else (1.5 if (Tile.tile.type == 2 and Tile.w != Unit.Tile.w) else 0.3)
-	var water_deslope: float = 0.1 if Tile.isWater() else 0
+	var water_deslope: float = 0.1 if Tile.isWater() else 0.0
 	MoveTween.tween_property(Unit, "global_position",
 	Vector3(half_position.x, Tile.global_position.y + climb_slope - water_deslope, half_position.z),
 	WALK_TRAVEL_TIME * 0.5)
@@ -216,7 +222,7 @@ func onCreateSecondMoveTween(Tile: TileGD) -> void:
 	MoveTween.tween_property(Unit, "global_position",
 	end_position,
 	WALK_TRAVEL_TIME * 0.5)
-	MoveTween.finished.connect(on_finish_animation.bind("Walk"))
+	MoveTween.finished.connect(onAnimationFinished.bind("Walk"))
 
 func _look_at(Tile: TileGD) -> void: #will rotate the object
 	rot = Unit.Units.Tiles.neighbour_rotation(Tile, Unit.Tile)

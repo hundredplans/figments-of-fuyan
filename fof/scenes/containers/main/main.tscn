@@ -39,6 +39,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="BackArrow" type="TextureButton" parent="UI"]
+visible = false
 layout_mode = 2
 offset_left = 1768.0
 offset_top = 8.0
@@ -51,6 +52,7 @@ texture_hover = ExtResource("5_fjqpq")
 texture_disabled = ExtResource("4_qr5ib")
 
 [node name="SettingCog" type="TextureButton" parent="UI"]
+visible = false
 texture_filter = 1
 layout_mode = 2
 offset_left = 1829.0
