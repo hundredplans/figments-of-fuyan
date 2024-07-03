@@ -28,7 +28,7 @@ func _ready() -> void:
 	on_load_world_history()
 	Deck.on_create_deck()
 	Deck.on_choose_champion()
-	AudioMaster.onPlayMusic(preload("res://assets/music/palm_main_theme.wav"))
+	AudioMaster.onPlayMusic(preload("res://assets/music/BossfightPAlm.wav"))
 	
 func on_load_world_history() -> void:
 	pass
