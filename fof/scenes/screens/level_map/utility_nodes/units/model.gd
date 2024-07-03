@@ -46,14 +46,15 @@ func _ready() -> void:
 
 	onSetOverrideMaterial("Regular")
 	AniPlayer.playback_default_blend_time = UNIT_ANIMATION_BLEND_TIME
+	AniPlayer.animation_finished.connect(func(__: String): on_play_animation("Idle"))
 
-func on_play_animation(ani_name: String, finish_processed: bool = false) -> void:
+func on_play_animation(ani_name: String) -> void:
 	match ani_name:
 		"Attack": ani_name = Unit.getAttackAnimation() if AniPlayer.has_animation("AttackAbility") else "Attack"
 		"Idle": ani_name = idle
 		"Walk": on_play_walk_sfx()
 		
-	if !finish_processed: onAnimationFinished(AniPlayer.current_animation, true)
+	if AniPlayer.is_playing(): onAnimationFinished(AniPlayer.current_animation)
 	AniPlayer.play(ani_name)
 	
 var current_walk_stream_player: AudioStreamPlayer
@@ -71,11 +72,8 @@ func on_find_walk_sfx(id: int) -> String:
 		3,4: sfx = "WaterWalk"
 	return sfx
 	
-func onAnimationFinished(ani_name: String, play_processed: bool = false) -> void:
+func onAnimationFinished(ani_name: String) -> void:
 	AniPlayer.speed_scale = 1
-	if !play_processed and ani_name not in ["Death", "DeathAbility", "Walk", "Jump"]:
-		on_play_animation(idle, true)
-		
 	match ani_name:
 		"Attack", "AttackAbility": if Unit != null: AudioMaster.play_sfx(Unit.AudioDict.ATTACK)
 		"Jump": is_jump = false

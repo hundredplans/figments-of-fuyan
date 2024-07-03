@@ -40,8 +40,7 @@ func onSpectate(Obj: Variant) -> void:
 		else: onSpectateUnit(Obj)
 		onChangeCameraMode(true)
 		return
-	if SpectateUnit != null: SpectateUnit.on_spectated_in_player_phase(false)
-	SpectateUnit = null
+	onSpectateUnitPlayerPhase()
 
 func getUnoccupiedSpawnTiles() -> Array:
 	var unit_tiles: Array = Units.all_units().map(func(x: UnitGD): return x.Tile)
@@ -64,8 +63,14 @@ func onSpectateSpawnTile(type: Variant) -> void:
 	
 	if Tile != null:
 		SpectateTile = Tile
-		if SpectateUnit != null: SpectateUnit.on_spectated_in_player_phase(false); SpectateUnit = null
+		onSpectateUnitPlayerPhase()
 		onCameraStartSpectate(SpectateTile)
+	
+func onSpectateUnitPlayerPhase() -> void:
+	if SpectateUnit != null:
+		var Unit: UnitGD = SpectateUnit
+		SpectateUnit = null
+		Unit.onSpectatedPlayerPhase(false)
 	
 func onSpectateUnit(type: Variant) -> void:
 	var Unit: UnitGD
@@ -96,10 +101,10 @@ func onSpectateUnit(type: Variant) -> void:
 	elif type is UnitGD: if type != SpectateUnit: Unit = type
 	
 	if Unit != null:
-		if SpectateUnit != null: SpectateUnit.on_spectated_in_player_phase(false)
+		onSpectateUnitPlayerPhase()
 		if SpectateTile != null: SpectateTile = null
 		SpectateUnit = Unit
-		Unit.on_spectated_in_player_phase(true)
+		Unit.onSpectatedPlayerPhase(true)
 		Units.onSpectatedInPlayerPhase(Unit)
 		
 		if Vision.vision_mode == 1: Vision.setActiveUnitVision(Unit)

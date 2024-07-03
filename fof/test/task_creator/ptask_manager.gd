@@ -65,7 +65,7 @@ func onRefreshPTasks() -> void:
 	for child in PTaskContainer.get_children(): child.queue_free()
 	
 	var ptasks: Array = []
-	for file in DirAccess.get_files_at(DIR_PATH): ptasks.append(load(DIR_PATH + file))
+	for file in DirAccess.get_files_at(DIR_PATH): if !file.begins_with("0"): ptasks.append(load(DIR_PATH + file))
 	
 	match sorter:
 		SORT_EDT: ptasks.sort_custom(func(x: PTaskGD, y: PTaskGD): return x.EDT < y.EDT)

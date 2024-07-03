@@ -14,8 +14,7 @@ signal delete
 func _ready():
 	if owner != get_tree().edited_scene_root and is_hide: visible = false
 	if FileAccess.file_exists("user://save/ptasks/0.tres"):
-		var ptask: PTaskGD = load("user://save/ptasks/0.tres")
-		setInfo(ptask)
+		setInfo(load("user://save/ptasks/0.tres"))
 
 func setInfo(_ptask: PTaskGD) -> void:
 	ptask = _ptask

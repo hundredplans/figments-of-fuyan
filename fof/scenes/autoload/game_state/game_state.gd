@@ -15,6 +15,8 @@ var hero_level: int = 0
 var hero_id: int = 0
 var gseed: int = 0
 
+var save_info: SaveInfoGD
+
 func _ready(): ready_admin()
 func ready_admin():
 	player_deck.append({"id": 1, "tool_id": 0, "effects": []})
@@ -35,14 +37,21 @@ func on_set_info(info: Dictionary) -> void:
 	#player_deck = info.player_deck
 	
 func _queue_free() -> void:
-	on_save_game_state()
+	onSave()
 	queue_free()
+	
+func onCreateSaveInfo(hid: int, gseed: int) -> void:
+	for i in range(1, 6):
+		if !FileAccess.file_exists("user://save/save_files/" + str(i) + ".tres"):
+			var save_info := SaveInfoGD.new(i, 0, )
+			onSave()
+			break
 	
 func on_create_new_save_file() -> void:
 	for i in range(1, 6):
 		if !FileAccess.file_exists("user://save/save_files/" + str(i) + ".txt"):
 			save_file = i
-			on_save_game_state()
+			onSave()
 			break
 	
 func on_save_game_state() -> void:
@@ -65,7 +74,13 @@ func on_save_game_state() -> void:
 			contents += str(array_contents[i]) + ("\n" if i != array_contents.size() - 1 else "")
 		
 		Helper.write_to_file("user://save/save_files/", str(save_file), ".txt", contents, false)
-
+	
+func onSave() -> void:
+	if save_file != -1:
+		var save_info := SaveInfoGD.new(save_file, area_info.id, map_info.id, level_info.id if level_info != null else 0,\
+		map_progress, shillings, hero_level, hero_id, gseed, player_deck)
+		ResourceSaver.save(save_info, "user://save/save_files/" + str(save_file) + "save_info.tres")
+		
 func on_load_new_area(_world: int) -> void:
 	var areas: Array = [Helper.getFofInfo(1, "area")]
 	area_info = areas[0] # this is supposed to be randomised but will pick palms for now

@@ -69,12 +69,6 @@ func onStartPhaseStart() -> void:
 	for i in range(enemy_tiles.size()):
 		enemy_spawns.append(allowed_spawns[randi() % allowed_spawns.size()])
 	onMassUnitsAwakened(enemy_tiles, enemy_spawns)
-	
-func onPlayerPhaseStart() -> void:
-	PlayerManager.on_player_phase_start()
-
-func onPlayerEndTurnPhaseStart() -> void:
-	PlayerManager.on_player_end_turn_phase_start()
 
 func unit_by_tile_team_bool(Tile: TileGD, team: int) -> bool:
 	return FieldedUnits.get_children().any(func(x: UnitGD): return x.Tile == Tile and x.team == team)

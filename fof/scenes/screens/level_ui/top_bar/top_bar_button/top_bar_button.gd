@@ -7,7 +7,8 @@ const DISABLED_COLOR := Color(0.6, 0.6, 0.6)
 
 func _ready() -> void:
 	texture_normal = texture
-	Helper.create_button_clickmask(self)
+	if owner != get_tree().edited_scene_root:
+		Helper.create_button_clickmask(self)
 
 func _on_mouse_entered():
 	mouse_in_ui.emit(true)

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BoonInfoGD" load_steps=3 format=3 uid="uid://ddgi2paif3owx"]
+
+[ext_resource type="Script" path="res://assets/base_game/boons/boon_info.gd" id="1_c0vie"]
+[ext_resource type="Texture2D" uid="uid://dpnruj02umows" path="res://assets/base_game/boons/boons/CaffeineBoon/icon.png" id="1_ro1t6"]
+
+[resource]
+script = ExtResource("1_c0vie")
+icon = ExtResource("1_ro1t6")
+description = "Ally units gain [1] SPEED when AWAKENED"
+ascended_description = "Ally units gain [2] SPEED when AWAKENED"
+rarity = 3
+id = 1
+name = "Caffeine Boon"
+folder_name = "CaffeineBoon"

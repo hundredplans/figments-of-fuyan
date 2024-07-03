@@ -22,8 +22,10 @@ func _post_import(scene: Node) -> Node:
 	var scene_path: String = get_source_file().left(-4) + ".tscn"
 	var dir_path: String = get_source_file()
 	
-	scene.mesh = scene.get_child(0)
-	scene.body = scene.get_child(0).get_child(0)
+	if scene.get_child(0).name != "Skeleton3D": scene.mesh = scene.get_child(0); scene.body = scene.get_child(0).get_child(0)
+	else: scene.mesh = scene.get_child(0).get_child(0); scene.body = scene.get_child(0).get_child(0).get_child(0)
+		
+	
 	
 	for key in FOLDER_NAME_BEGINS_WITH:
 		if dir_path.begins_with(FOLDER_NAME_BEGINS_WITH[key]):

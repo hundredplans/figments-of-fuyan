@@ -9,6 +9,7 @@ func onTargetAbilityCondition() -> void:
 		tiles["affect"] = tiles["range"].filter(func(x: TileGD): return Units.unit_by_tile_team_bool(x, Unit.team)) 
 	
 func onTargetAbility() -> void:
+	Unit.Model._look_at(Tile)
 	if is_visible:
 		Unit.Model.on_play_animation("Ability")
 		onAbilityDelay(onAbilityDelayFinished)
@@ -33,6 +34,5 @@ func onAbilityDelayFinished() -> void:
 	var trauma_ability: AbilityGD = Combat.onFindAbility(Unit, "CharmerTrauma")
 	if trauma_ability != null: trauma_ability.healed_allies += healed_allies
 	for _Unit in healed_allies:
-		Unit.Model._look_at(Tile)
 		if Combat.onHealAbility(_Unit, Unit, HEAL):
 			GameEffects.onAddGameFX(_Unit, GameFXGD.CHARMING_STANCE, {"Unit": Unit})

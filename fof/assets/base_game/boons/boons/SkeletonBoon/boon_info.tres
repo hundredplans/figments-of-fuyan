@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BoonInfoGD" load_steps=3 format=3 uid="uid://dh46awxrrdxbd"]
+
+[ext_resource type="Texture2D" uid="uid://dpnruj02umows" path="res://assets/base_game/boons/boons/CaffeineBoon/icon.png" id="1_mhuln"]
+[ext_resource type="Script" path="res://assets/base_game/boons/boon_info.gd" id="1_xsda4"]
+
+[resource]
+script = ExtResource("1_xsda4")
+icon = ExtResource("1_mhuln")
+description = "When you first ally dies AWAKEN a 1/1 Skeleton"
+ascended_description = "When you first ally dies AWAKEN a 2/2 Skeleton"
+rarity = 1
+id = 5
+name = "Skeleton Boon"
+folder_name = "SkeletonBoon"

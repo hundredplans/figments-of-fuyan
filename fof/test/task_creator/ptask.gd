@@ -2,9 +2,8 @@ class_name PTaskGD
 extends Resource
 
 enum Category {
-	UNIT_MODE,
-	ANIMATION,
-	UI,
+	BOONS,
+	OTHER,
 }
 
 enum Type {

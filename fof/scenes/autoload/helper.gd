@@ -433,7 +433,7 @@ func flatten(arr: Array, remove_duplicates: bool) -> Array:
 		narr += a
 	return narr
 
-var _GameState: PackedScene = preload("res://scenes/autoload/game_state.tscn")
+var _GameState: PackedScene = preload("res://scenes/autoload/game_state/game_state.tscn")
 var GameState: Node
 
 func on_start_new_game(hid: int, _id: int, gseed: int) -> void:
@@ -442,7 +442,7 @@ func on_start_new_game(hid: int, _id: int, gseed: int) -> void:
 	GameState.gseed = gseed
 	GameState.hero_id = hid
 	#GameState.on_add_card_to_player_deck(id) #TODO DONT KEEP THIS THE SAME!!!
-	GameState.on_create_new_save_file()
+	GameState.on_save_game_state()
 	
 func on_load_game_state(save_file: int) -> void:
 	GameState = _GameState.instantiate()

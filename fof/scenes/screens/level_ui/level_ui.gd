@@ -6,6 +6,7 @@ signal load_world
 signal equip_sky
 signal mouse_in_ui
 
+var is_first_hand_phase: bool = true
 const GREY_LIGHT: float = 0.3
 const BASE_MODULATE: float = 0
 
@@ -352,8 +353,11 @@ func onHandPhaseStart() -> void:
 		LevelMap.setInputLock(LevelMap.HAND_LOCK)
 		on_pass_unit_turn_button_state(false)
 	else: LevelMap.on_advance_game_phase()
-	onChangePhaseIcon("HandPhase")
-	onFlipPassButton("PASS")
+	
+	if !is_first_hand_phase:
+		onChangePhaseIcon("HandPhase")
+		onFlipPassButton("PASS")
+	is_first_hand_phase = false
 
 func onFlipPassButton(text: String) -> void:
 	ChangePhaseAniPlayer.play("ChangePhaseChanged")
@@ -419,23 +423,21 @@ func onEnterUnitMode(Unit: UnitGD) -> void:
 			TargetAbilityBox.label.text = ability.ability_name
 			TargetAbilityBox.description.text = ability.ability_description
 			TargetAbilityBox.ability = ability
-			TargetAbilityBox.pressed.connect(onTargetAbilityBoxPressed.bind(Unit, ability, TargetAbilityBox))
+			TargetAbilityBox.pressed.connect(onTargetAbilityBoxPressed.bind(Unit, ability))
 			TargetAbilityBox.setDisabled(!Combat.isAbilityEnabled(Unit, ability))
 			TargetAbilityBox.mouse_in_ui.connect(on_is_mouse_in_ui)
 			
 func onExitUnitMode() -> void:
 	setUnitNameLabel()
 	for child in TargetAbilities.get_children(): child.queue_free()
-	onExitTargetAbilityMode(true)
+	onExitTargetAbilityMode(PlayerManager.EXIT_TARGET_ABILITY_OTHER)
 #
-func onTargetAbilityBoxPressed(Unit: UnitGD, ability: AbilityGD, TargetAbilityBox: Control) -> void:
-	if PlayerManager.TAbility == ability: onExitTargetAbilityMode()
+func onTargetAbilityBoxPressed(Unit: UnitGD, ability: AbilityGD) -> void:
+	if PlayerManager.TAbility == ability: onExitTargetAbilityMode(PlayerManager.EXIT_TARGET_ABILITY_BUTTON)
 	else: onEnterTargetAbilityMode(Unit, ability)
 
 func onTargetAbilityBtnPressed(Unit: UnitGD, ability: AbilityGD) -> void:
-	if LevelMap.verifyLock():
-		var TargetAbilityBox: Control = TargetAbilities.get_children().filter(func(x: Control): return !x.is_queued_for_deletion() and x.ability == ability)[0]
-		onTargetAbilityBoxPressed(Unit, ability, TargetAbilityBox)
+	if LevelMap.verifyLock(): onTargetAbilityBoxPressed(Unit, ability)
 	
 func setAbilityLabels(text: String = "") -> void:
 	AbilityLabel.text = text
@@ -447,10 +449,10 @@ func onEnterTargetAbilityMode(Unit: UnitGD, ability: AbilityGD) -> void:
 	setAbilityLabels(ability.ability_name)
 	PlayerManager.onEnterTargetAbilityMode(Unit, ability)
 	
-func onExitTargetAbilityMode(exit_unit: bool = false) -> void: # has to check if actually in target ability mode first
+func onExitTargetAbilityMode(exit_type: int = 0) -> void: # has to check if actually in target ability mode first
 	if PlayerManager.TAbility != null:
 		setAbilityLabels()
-		PlayerManager.onExitTargetAbilityMode()
+		PlayerManager.onExitTargetAbilityMode(exit_type)
 
 func onUpdateAbilityCharges(Unit: UnitGD) -> void:
 	var charge_abilities: Array = []

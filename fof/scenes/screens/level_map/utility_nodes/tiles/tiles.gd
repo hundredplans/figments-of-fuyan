@@ -439,14 +439,14 @@ func onFneighbourPathValidUnitHeightHigh(Unit: UnitGD, fn_path: Array, astar: AS
 func onFneighbourPathValidDeath(Unit: UnitGD, fn_path: Array, astar: AStar3D, fall_damages: Dictionary, reconnections: Array) -> bool:
 	var fall_damage: int = 0
 	for i in range(fn_path.size()):
-		fall_damage += onCalculateFallDamage(Unit, fn_path[i], fall_damages)
+		fall_damage += onCalculateFallDamage(fn_path[i], fall_damages)
 		if Combat.isFallDamageLethal(Unit, fall_damage) or (fn_path[i].Tile.isDeepWater() and onCanDrown(Unit)):
 			if !(i == fn_path.size() - 1):
 				return onDisconnectReconnect(Unit, fn_path, i, reconnections, astar)
 			return true
 	return true
 
-func onCalculateFallDamage(Unit: UnitGD, fn: FneighbourGD, fall_damages: Dictionary) -> int:
+func onCalculateFallDamage(fn: FneighbourGD, fall_damages: Dictionary) -> int:
 	var dmg: int = 0
 	if fn.hdiff >= 4:
 		dmg = fn.hdiff - 3

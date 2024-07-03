@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BoonInfoGD" load_steps=3 format=3 uid="uid://bo8j6nmgdget7"]
+
+[ext_resource type="Texture2D" uid="uid://dpnruj02umows" path="res://assets/base_game/boons/boons/CaffeineBoon/icon.png" id="1_vw63d"]
+[ext_resource type="Script" path="res://assets/base_game/boons/boon_info.gd" id="1_yy8bv"]
+
+[resource]
+script = ExtResource("1_yy8bv")
+icon = ExtResource("1_vw63d")
+description = "Your first stat-buff is doubled"
+ascended_description = "Your first two stat-buffs are doubled"
+rarity = 2
+id = 3
+name = "Double-Buff Boon"
+folder_name = "DoubleBuffBoon"

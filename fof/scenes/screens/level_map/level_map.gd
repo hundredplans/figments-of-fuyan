@@ -52,8 +52,8 @@ var phase_ordering: Dictionary = {
 	"StartPhase": ["Tiles", "Vision", "SpectateCamera", "Hand", "Units", "LevelUI", "VFX", "StatusManager"],
 	"AfterStartPhase": ["LevelUI", "Deck"],
 	"HandPhase": ["SpectateCamera", "Hand", "VFX", "StatusManager", "LevelUI"],
-	"PlayerPhase": ["GameEffects", "Hand", "LevelUI", "VFX", "Units", "SpectateCamera", "Combat"],
-	"PlayerEndTurnPhase": ["GameEffects", "Units", "LevelUI", "Vision", "StatusManager"],
+	"PlayerPhase": ["GameEffects", "Hand", "LevelUI", "VFX", "SpectateCamera", "Combat", "PlayerManager"],
+	"PlayerEndTurnPhase": ["GameEffects", "LevelUI", "Vision", "StatusManager", "PlayerManager"],
 	"AIPhase": ["Combat", "GameEffects", "Units", "LevelUI", "StatusManager"],
 	"AIEndTurnPhase": ["GameEffects", "Units", "StatusManager"]
 }
@@ -120,12 +120,15 @@ var verify_lock: Dictionary = {
 var input_lock: int = 0
 signal input_lock_updated
 
-func setInputLock(_input_lock: int = NULL_LOCK) -> void:
+func setInputLock(_input_lock: int = NULL_LOCK, frame_delay: bool = false) -> void:
 	if _input_lock != input_lock:
 		if (input_lock == UNIT_ACTION and _input_lock == UNIT_ACTION_DISABLE) or input_lock != UNIT_ACTION:
 			if _input_lock == UNIT_ACTION_DISABLE: _input_lock = NULL_LOCK
 			input_lock = _input_lock
+			
+			if frame_delay: await get_tree().process_frame
 			input_lock_updated.emit()
+			
 
 func verifyLock(type: int = NULL_VERIFY) -> bool:
 	return input_lock in verify_lock[type]

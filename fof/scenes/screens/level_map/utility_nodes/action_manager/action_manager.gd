@@ -7,6 +7,8 @@ var Combat: CombatGD
 var SpectateCamera: SpectateCameraGD
 var AIManager: AIManagerGD
 var PlayerManager: PlayerManagerGD
+var Tiles: TilesGD
+var LevelUI: LevelUIGD
 
 var unit_actions: Array = []
 enum {
@@ -72,9 +74,7 @@ func onTriggerNextAction(action: ActionGD) -> void:
 	is_triggered = true
 	if action.delay.start_delay > 0 and action.is_visible: await get_tree().create_timer(action.delay.start_delay).timeout
 	
-	if LevelMap.game_phase == "PlayerPhase":
-		PlayerManager.onAllySpectated(PlayerManager.getUnitSelected(), false)
-		
+	if LevelMap.game_phase == "PlayerPhase": PlayerManager.onUnitMode()
 	if LevelMap.game_phase != "AIPhase":
 		LevelMap.setInputLock(LevelMap.UNIT_ACTION)
 		
@@ -86,15 +86,22 @@ func onTriggerNextAction(action: ActionGD) -> void:
 	unit_actions.erase(action)
 	Combat.onRecalculateTargetAbilities()
 	if action.has_method("onAfterTrigger"): await action.onAfterTrigger()
-	if unit_actions.is_empty() and LevelMap.game_phase != "AIPhase":
-		LevelMap.setInputLock(LevelMap.UNIT_ACTION_DISABLE)
-		
 	if action.delay.end_delay > 0 and action.is_visible: await get_tree().create_timer(action.delay.end_delay).timeout
 		
 	is_triggered = false
 	if !(unit_actions.is_empty()): onTriggerNextAction(unit_actions[0])
 	elif LevelMap.game_phase == "AIPhase": AIManager.onMoveNextAIUnit()
-	elif LevelMap.game_phase == "PlayerPhase": PlayerManager.onAllySpectated(PlayerManager.getUnitSelected(), true)
+	else:
+		var Unit: UnitGD = PlayerManager.getUnitSelected()
+		LevelMap.setInputLock(LevelMap.UNIT_ACTION_DISABLE, true)
+		PlayerManager.onUnitMode(Unit, true)
+		
+		if Unit != null and Unit.speed == 0 and Unit.team == 0:
+			onCreateIncentiviseAction(Unit)
 
 func onDeath(Unit: UnitGD) -> void:
 	unit_actions = unit_actions.filter(func(x: ActionGD): return x.Unit != Unit)
+
+func onCreateIncentiviseAction(Unit: UnitGD) -> void:
+	if LevelMap.game_phase == "PlayerPhase":
+		LevelUI.onIncentivisePassTurn(Unit)

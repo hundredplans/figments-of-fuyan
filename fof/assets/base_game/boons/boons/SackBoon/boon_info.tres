@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BoonInfoGD" load_steps=3 format=3 uid="uid://cfiqe6wy82kar"]
+
+[ext_resource type="Script" path="res://assets/base_game/boons/boon_info.gd" id="1_ni6kk"]
+[ext_resource type="Texture2D" uid="uid://dpnruj02umows" path="res://assets/base_game/boons/boons/CaffeineBoon/icon.png" id="1_r8q3u"]
+
+[resource]
+script = ExtResource("1_ni6kk")
+icon = ExtResource("1_r8q3u")
+description = "Gain [1] Energy if you played [2] units in the same turn"
+ascended_description = "Gain [2] Energy if you played [2] units in the same turn"
+rarity = 1
+id = 2
+name = "Sack Boon"
+folder_name = "SackBoon"

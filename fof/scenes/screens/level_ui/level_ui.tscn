@@ -431,18 +431,24 @@ texture = ExtResource("13_48llv")
 [node name="BoonManager" type="Control" parent="TopBar/LeftBar"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 2
 
-[node name="Boonlabel" type="Label" parent="TopBar/LeftBar/BoonManager"]
+[node name="BoonContainer" type="GridContainer" parent="TopBar/LeftBar/BoonManager"]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -147.5
+offset_top = -25.5
+offset_right = 148.5
+offset_bottom = 857.5
 grow_horizontal = 2
 grow_vertical = 2
-text = "Boons"
-label_settings = ExtResource("8_8k4pv")
-horizontal_alignment = 1
-vertical_alignment = 1
+mouse_filter = 2
+theme_override_constants/h_separation = 8
+columns = 5
 
 [node name="CenterBar" type="Control" parent="TopBar"]
 layout_mode = 1

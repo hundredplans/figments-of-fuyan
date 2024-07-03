@@ -13,14 +13,9 @@ func _init(_Unit: UnitGD = null, _movement_path: MovementPathGD = null, _is_visi
 
 func onTrigger() -> void:
 	onResumeIdleAnimation()
-	onCreateIncentiviseAction()
 	Units.onRemoveMovementOutlineTiles()
 	
 	if Unit.team == 1 and !Unit.is_dead: Units.setUnitStatus(Unit, UnitGD.TURN_USED)
-	
-func onCreateIncentiviseAction() -> void:
-	if Unit.team == 0 and LevelMap.game_phase == "PlayerPhase":
-		LevelUI.onIncentivisePassTurn(Unit)
 
 func onResumeIdleAnimation() -> void:
 	Unit.Model.on_play_animation("Idle")
