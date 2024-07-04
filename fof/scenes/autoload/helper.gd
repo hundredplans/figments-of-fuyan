@@ -434,11 +434,11 @@ func flatten(arr: Array, remove_duplicates: bool) -> Array:
 	return narr
 
 var _GameState: PackedScene = preload("res://scenes/autoload/game_state/game_state.tscn")
-var GameState: Node
+var GameState: GameStateGD
 
 func on_start_new_game(hid: int, _id: int, gseed: int) -> void:
 	Helper.on_load_game_state(0)
-	GameState.on_load_new_area(1)
+	GameState.onCreateArea(1)
 	GameState.gseed = gseed
 	GameState.hero_id = hid
 	#GameState.on_add_card_to_player_deck(id) #TODO DONT KEEP THIS THE SAME!!!
@@ -446,27 +446,10 @@ func on_start_new_game(hid: int, _id: int, gseed: int) -> void:
 	
 func on_load_game_state(save_file: int) -> void:
 	GameState = _GameState.instantiate()
-	if save_file != 0: GameState.on_set_info(on_save_file_contents(save_file))
+	if save_file != 0:
+		GameState.save_info = load("user://save/save_files/" + str(save_file) + ".tres")
 	add_child(GameState)
 	main.GameState = GameState
-	
-var save_file_keys: Array = [
-	"save_file",
-	"area_id",
-	"map_id",
-	"level_id",
-	"map_progress",
-	"shillings",
-	"hero_level",
-	"hero_id",
-	"gseed",
-	"player_deck",
-]
-func on_save_file_contents(i: int) -> Dictionary:
-	var contents: Array = return_file_contents("user://save/save_files/" + str(i) + ".txt").split("\n", false)
-	if contents.size() > 0:
-		return on_convert_type(save_file_keys, contents)
-	return {}
 
 var settings_loaded: bool = false
 const TYPE_TO_BTAB: Dictionary = {

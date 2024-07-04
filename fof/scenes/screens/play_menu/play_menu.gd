@@ -15,6 +15,7 @@ func on_select_hero(HeroCard: HeroCardGD) -> void:
 	
 	seed(gseed)
 	Helper.on_start_new_game(HeroCard.hero_id, HeroCard.base_cards[0].id, gseed)
+	
 	screen_change_sig.emit("res://scenes/screens/map_menu/map_menu.tscn")
 
 func _on_seed_setter_text_submitted(__: String): SeedSetter.release_focus()

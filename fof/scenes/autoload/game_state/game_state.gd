@@ -1,40 +1,8 @@
 class_name GameStateGD
 extends Node
 
-var player_deck: Array = []
-
-var player_boons: Array = []
 var admin: bool = true
-var save_file: int = -1
-var area_info: AreaInfoGD
-var map_info: Dictionary
-var level_info: LevelInfoGD
-var map_progress := Vector2(1, 10)
-var shillings: int = 0
-var hero_level: int = 0
-var hero_id: int = 0
-var gseed: int = 0
-
 var save_info: SaveInfoGD
-
-func _ready(): ready_admin()
-func ready_admin():
-	player_deck.append({"id": 1, "tool_id": 0, "effects": []})
-	for i in range(6):
-		var random_unit_id: int = randi_range(7, 24)
-		player_deck.append({"id": random_unit_id, "tool_id": 0, "effects": []})
-
-func on_set_info(info: Dictionary) -> void:
-	save_file = info.save_file
-	area_info = Helper.getFofInfo(info.area_id, "area")
-	map_info = Helper.id_to_dict(info.map_id, "Map")
-	level_info =  null if info.level_id == 0 else Helper.getFofInfo(info.level_id, "level")
-	map_progress = Vector2(info.map_progress[0], info.map_progress[1])
-	shillings = info.shillings
-	hero_level = info.hero_level
-	hero_id = info.hero_id
-	gseed = info.gseed
-	#player_deck = info.player_deck
 	
 func _queue_free() -> void:
 	onSave()
@@ -43,52 +11,29 @@ func _queue_free() -> void:
 func onCreateSaveInfo(hid: int, gseed: int) -> void:
 	for i in range(1, 6):
 		if !FileAccess.file_exists("user://save/save_files/" + str(i) + ".tres"):
-			var save_info := SaveInfoGD.new(i, 0, )
+			var save_info := SaveInfoGD.new(i)
+			save_info.resource_path = "user://save/save_files/" + str(i) + "save_info.tres"
 			onSave()
 			break
-	
-func on_create_new_save_file() -> void:
-	for i in range(1, 6):
-		if !FileAccess.file_exists("user://save/save_files/" + str(i) + ".txt"):
-			save_file = i
-			onSave()
-			break
-	
-func on_save_game_state() -> void:
-	if save_file != -1:
-		var contents: String = ""
-		var array_contents: Array = [
-			save_file,
-			area_info.id,
-			map_info.id,
-			level_info.id if level_info != null else 0,
-			[map_progress.x, map_progress.y],
-			shillings, 
-			hero_level, 
-			hero_id,
-			gseed,
-			player_deck,
-			]
-			
-		for i in range(array_contents.size()):
-			contents += str(array_contents[i]) + ("\n" if i != array_contents.size() - 1 else "")
-		
-		Helper.write_to_file("user://save/save_files/", str(save_file), ".txt", contents, false)
 	
 func onSave() -> void:
-	if save_file != -1:
-		var save_info := SaveInfoGD.new(save_file, area_info.id, map_info.id, level_info.id if level_info != null else 0,\
-		map_progress, shillings, hero_level, hero_id, gseed, player_deck)
-		ResourceSaver.save(save_info, "user://save/save_files/" + str(save_file) + "save_info.tres")
+	if save_info != null: ResourceSaver.save(save_info)
 		
-func on_load_new_area(_world: int) -> void:
+func onCreateArea(_world: int) -> void:
 	var areas: Array = [Helper.getFofInfo(1, "area")]
-	area_info = areas[0] # this is supposed to be randomised but will pick palms for now
-	on_load_new_map()
+	save_info.area_info = areas[0] # this is supposed to be randomised but will pick palms for now
+	onCreateMap()
+	onAdminLoadCards()
 	
-func on_load_new_map() -> void:
-	var maps: Array = Helper.on_item_dicts("Map").filter(func(x: Dictionary): return x.world == area_info.world_id)
-	map_info = maps[randi() % maps.size()]
+func onAdminLoadCards() -> void:
+	save_info.deck.append({"id": 1, "tool_id": 0, "effects": []})
+	for i in range(6):
+		var random_unit_id: int = randi_range(7, 24)
+		save_info.deck.append({"id": random_unit_id, "tool_id": 0, "effects": []})
+	
+func onCreateMap() -> void:
+	var maps: Array = Helper.on_item_dicts("Map").filter(func(x: Dictionary): return x.world == save_info.area_info.world_id)
+	save_info.map_info = maps[randi() % maps.size()]
 
 func on_add_card_to_player_deck(id: int, tool_id: int = 0, effects: Array = []) -> void:
-	player_deck.append({"id": id, "tool_id": tool_id, "effects": effects})
+	save_info.deck.append({"id": id, "tool_id": tool_id, "effects": effects})

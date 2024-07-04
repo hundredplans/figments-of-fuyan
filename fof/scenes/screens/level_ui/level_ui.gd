@@ -438,7 +438,7 @@ func onTargetAbilityBoxPressed(Unit: UnitGD, ability: AbilityGD) -> void:
 
 func onTargetAbilityBtnPressed(Unit: UnitGD, ability: AbilityGD) -> void:
 	if LevelMap.verifyLock(): onTargetAbilityBoxPressed(Unit, ability)
-	
+		
 func setAbilityLabels(text: String = "") -> void:
 	AbilityLabel.text = text
 	
