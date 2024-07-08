@@ -9,7 +9,7 @@ var Hand: HandGD
 var GameState: Node
 
 func on_create_deck() -> void:
-	for card in GameState.player_deck: on_create_card(card.id, card.tool_id, card.effects)
+	for card in GameState.save_info.deck: on_create_card(card.id, card.tool_id, card.effects)
 
 func on_create_card(id: int, tool_id: int = 0, effects: Array = []) -> DeckCardGD:
 	var card := DeckCardGD.new()

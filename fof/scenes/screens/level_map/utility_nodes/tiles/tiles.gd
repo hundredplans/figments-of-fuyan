@@ -327,6 +327,7 @@ func onConnectPoints(Tile: TileGD, fneighbour: FneighbourGD, astar: AStar3D) -> 
 			
 func onCreateMovementPaths(Unit: UnitGD,  speed: int = -1) -> Array: # Returns array of movement path
 	if speed == -1: speed = Unit.speed
+	if GameEffects.onGameFXExists(Unit, GameFXGD.DAZE): speed = 0
 	var all_tiles: Dictionary = onCreateAllTiles(Unit, speed)
 	var astar: AStar3D = onCreateAStar(all_tiles)
 	var movement_paths: Array = onCreateOptimalPaths(Unit, all_tiles, astar, speed)
@@ -668,10 +669,7 @@ func onTileEffects(Unit: UnitGD, PreviousTile: TileGD) -> void:
 	var is_water: bool = Unit.Tile.isDeepWater()
 	var was_water: bool = PreviousTile.isDeepWater()
 	
-	if (is_water and !was_water): GameEffects.onAddGameFX(Unit, GameFXGD.DEEP_WATER)
+	if (is_water and !was_water): GameEffects.addGFX(Unit, GameFXGD.DEEP_WATER)
 	elif (!is_water and was_water): GameEffects.onFindRemoveFX(Unit, GameFXGD.DEEP_WATER)
-
-func onDeepWaterRemoved(Unit: UnitGD) -> void:
-	Unit.stats("speed", 1, AppliedByGD.new("DeepWater"))
 	
 func onCanDrown(Unit: UnitGD) -> bool: return Unit.height.top < 1

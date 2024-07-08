@@ -1,8 +1,7 @@
-extends Node3D
+extends UnitVFXBase
 
 var Vision: VisionGD
 var units: Array
-var type: String
 var cocus_count: int = 1
 
 func _ready() -> void:

@@ -1,6 +1,5 @@
-extends Node3D
+extends UnitVFXBase
 const ROTATION_SPEED: int = 20
-var type: String
 
 func _process(delta):
 	rotation_degrees.y += ROTATION_SPEED * delta

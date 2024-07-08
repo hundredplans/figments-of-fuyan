@@ -39,4 +39,4 @@ func is_playing_sfx(player: AudioStreamPlayer, sfx: String) -> bool:
 
 func onPlayMusic(music: AudioStreamWAV) -> void:
 	music_stream.stream = music
-	$MusicStream.play()
+	#$MusicStream.play()

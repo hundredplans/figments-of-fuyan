@@ -35,4 +35,4 @@ func onAbilityDelayFinished() -> void:
 	if trauma_ability != null: trauma_ability.healed_allies += healed_allies
 	for _Unit in healed_allies:
 		if Combat.onHealAbility(_Unit, Unit, HEAL):
-			GameEffects.onAddGameFX(_Unit, GameFXGD.CHARMING_STANCE, {"Unit": Unit})
+			GameEffects.addGFX(_Unit, GameFXGD.CHARMING_STANCE, {"TargetUnit": Unit})

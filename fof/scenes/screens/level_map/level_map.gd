@@ -8,6 +8,7 @@ var Tiles: TilesGD
 var Lights: LightsGD
 var LevelUI: Control
 
+var turns: int = 0
 var game_phase: String
 
 @onready var GameEffects: GameEffectsGD
@@ -34,7 +35,7 @@ func on_load_world_history() -> void:
 	pass
 	
 func on_load_default_world_state() -> void:
-	LoadedLevel = load("res://assets/base_game/levels/levels/" + GameState.level_info.folder_name + "/loaded_level.tscn").instantiate()
+	LoadedLevel = load("res://assets/base_game/levels/levels/" + GameState.save_info.level_info.folder_name + "/loaded_level.tscn").instantiate()
 	LoadedLevel.script = null
 	
 	LoadedLevel.get_node("Tiles").script = preload("res://scenes/screens/level_map/utility_nodes/tiles/tiles.gd")
@@ -49,13 +50,13 @@ func on_load_default_world_state() -> void:
 	on_change_game_phase("StartPhase")
 
 var phase_ordering: Dictionary = {
-	"StartPhase": ["Tiles", "Vision", "SpectateCamera", "Hand", "Units", "LevelUI", "VFX", "StatusManager"],
+	"StartPhase": ["Tiles", "Vision", "SpectateCamera", "Hand", "Units", "LevelUI", "VFX", "StatusManager", "Boons"],
 	"AfterStartPhase": ["LevelUI", "Deck"],
-	"HandPhase": ["SpectateCamera", "Hand", "VFX", "StatusManager", "LevelUI"],
-	"PlayerPhase": ["GameEffects", "Hand", "LevelUI", "VFX", "SpectateCamera", "Combat", "PlayerManager"],
-	"PlayerEndTurnPhase": ["GameEffects", "LevelUI", "Vision", "StatusManager", "PlayerManager"],
-	"AIPhase": ["Combat", "GameEffects", "Units", "LevelUI", "StatusManager"],
-	"AIEndTurnPhase": ["GameEffects", "Units", "StatusManager"]
+	"HandPhase": ["SpectateCamera", "Hand", "VFX", "StatusManager", "LevelUI", "TriggerManager"],
+	"PlayerPhase": ["Hand", "LevelUI", "VFX", "SpectateCamera", "Combat", "PlayerManager"],
+	"PlayerEndTurnPhase": ["TriggerManager", "LevelUI", "Vision", "StatusManager", "PlayerManager"],
+	"AIPhase": ["Combat", "TriggerManager", "Units", "LevelUI", "StatusManager"],
+	"AIEndTurnPhase": ["TriggerManager", "Units", "StatusManager"]
 }
 func onTriggerPhaseStart(phase: String) -> void:
 	var nodes: Array = phase_ordering[phase].map(func(x: String): \
@@ -77,7 +78,9 @@ func on_change_game_phase(phase: String) -> void:
 				Unit.stats("attack", 50)
 				Unit.stats("speed", 5)
 				SpectateCamera.onSpectate(Unit)
+		"HandPhase": turns += 1
 		"PlayerEndTurnPhase": on_advance_game_phase()
+		"AIPhase": turns += 1
 		"AIEndTurnPhase": on_advance_game_phase()
 			
 

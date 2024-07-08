@@ -1,7 +1,6 @@
-extends Node3D
+extends UnitVFXBase
 
 var Camera: Camera3D
-var type: String
 func setInfo(Unit: UnitGD, _Camera: Camera3D) -> void:
 	Camera = _Camera
 	setAIStats(Unit)

@@ -67,11 +67,12 @@ func onBeginUnitMovement(Unit: UnitGD) -> void:
 	onMoveUnitAI(Unit, movement_path)
 
 func onMoveUnitAI(Unit: UnitGD, movement_path: MovementPathGD) -> void:
+	var is_vis: bool = Unit.getVisibleEnemies().size() > 0
+	Units.setUnitStatus(Unit, UnitGD.TURN_ACTIVE)
 	if movement_path != null:
-		Units.setUnitStatus(Unit, UnitGD.TURN_ACTIVE)
 		Tiles.on_remove_tile_material(Unit.Tile, "")
-		var is_vis: bool = movement_path.isVisArrayInvis()
-		invisible_movement_tracker.append(is_vis)
+		is_vis = movement_path.isVisArrayInvis()
+		
 		var start_delay: bool = false
 		for i in range(movement_path.fneighbours.size()):
 			var fneighbour: FneighbourGD = movement_path.fneighbours[i]
@@ -88,7 +89,9 @@ func onMoveUnitAI(Unit: UnitGD, movement_path: MovementPathGD) -> void:
 				if i > 0: vis = movement_path.vis_array[i - 1].total_vision != VisInfoGD.INVISIBLE
 				else: vis = Unit.Tile in Vision.getTeamVision()
 				ActionManager.onAddAction(AttackActionGD.new(Unit, Tile, vis))
-		ActionManager.onAddAction(MoveFinishActionGD.new(Unit, movement_path, !is_vis, DelayGD.new(0.8)), ActionManagerGD.APPEND_MF)
+				
+	invisible_movement_tracker.append(is_vis)
+	ActionManager.onAddAction(MoveFinishActionGD.new(Unit, movement_path, !is_vis, DelayGD.new(0.8)), ActionManagerGD.APPEND_MF)
 
 func onStartDelay(Unit: UnitGD, Tile: TileGD) -> void:
 	Unit.Model._look_at(Tile)

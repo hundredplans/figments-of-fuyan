@@ -19,6 +19,8 @@ const IDLE_RARE_MAXIMUM: int = 100
 const UNIT_ANIMATION_BLEND_TIME: float = 0.2
 const WALK_TRAVEL_TIME: float = 1.0
 
+var idle_speedup: float = 1
+
 func on_idle_rare_timer_timeout() -> void:
 	if AniPlayer.current_animation == idle and AniPlayer.has_animation("IdleRare"):
 		on_play_animation("IdleRare")
@@ -49,9 +51,12 @@ func _ready() -> void:
 	AniPlayer.animation_finished.connect(func(__: String): on_play_animation("Idle"))
 
 func on_play_animation(ani_name: String) -> void:
+	AniPlayer.speed_scale = 1
 	match ani_name:
 		"Attack": ani_name = Unit.getAttackAnimation() if AniPlayer.has_animation("AttackAbility") else "Attack"
-		"Idle": ani_name = idle
+		"Idle":
+			ani_name = idle
+			AniPlayer.speed_scale = idle_speedup
 		"Walk": on_play_walk_sfx()
 		
 	if AniPlayer.is_playing(): onAnimationFinished(AniPlayer.current_animation)
@@ -68,12 +73,11 @@ func on_play_walk_sfx() -> void:
 func on_find_walk_sfx(id: int) -> String:
 	var sfx: String
 	match id:
-		1: sfx = Helper.area_to_default_ground[Unit.Units.GameState.area_info.id]
+		1: sfx = Helper.area_to_default_ground[Unit.Units.GameState.save_info.area_info.id]
 		3,4: sfx = "WaterWalk"
 	return sfx
 	
 func onAnimationFinished(ani_name: String) -> void:
-	AniPlayer.speed_scale = 1
 	match ani_name:
 		"Attack", "AttackAbility": if Unit != null: AudioMaster.play_sfx(Unit.AudioDict.ATTACK)
 		"Jump": is_jump = false
@@ -246,6 +250,7 @@ func onGetAdjustedPoints() -> PackedVector3Array:
 
 func on_set_rotation() -> void:
 	rotation_degrees.y = 270 + (rot * 60)
+	Unit.VFX.setUnitVFXRot(Unit)
 	
 func onSetCollisionRotation() -> void:
 	static_body.global_rotation_degrees.y = 270 + (rot * 60)

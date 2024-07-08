@@ -11,15 +11,16 @@ func _queue_free() -> void:
 func onCreateSaveInfo(hid: int, gseed: int) -> void:
 	for i in range(1, 6):
 		if !FileAccess.file_exists("user://save/save_files/" + str(i) + ".tres"):
-			var save_info := SaveInfoGD.new(i)
-			save_info.resource_path = "user://save/save_files/" + str(i) + "save_info.tres"
+			save_info = SaveInfoGD.new(i, hid, gseed)
+			save_info.resource_path = "user://save/save_files/" + str(i) + ".tres"
 			onSave()
+			onCreateArea()
 			break
 	
 func onSave() -> void:
 	if save_info != null: ResourceSaver.save(save_info)
 		
-func onCreateArea(_world: int) -> void:
+func onCreateArea() -> void:
 	var areas: Array = [Helper.getFofInfo(1, "area")]
 	save_info.area_info = areas[0] # this is supposed to be randomised but will pick palms for now
 	onCreateMap()
@@ -33,6 +34,7 @@ func onAdminLoadCards() -> void:
 	
 func onCreateMap() -> void:
 	var maps: Array = Helper.on_item_dicts("Map").filter(func(x: Dictionary): return x.world == save_info.area_info.world_id)
+	save_info.map_progress = Vector2(1, 10)
 	save_info.map_info = maps[randi() % maps.size()]
 
 func on_add_card_to_player_deck(id: int, tool_id: int = 0, effects: Array = []) -> void:

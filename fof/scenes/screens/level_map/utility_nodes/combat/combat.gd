@@ -12,6 +12,7 @@ var Tiles: TilesGD
 var PlayerManager: PlayerManagerGD
 var StatusManager: StatusManagerGD
 var ActionManager: ActionManagerGD
+var TriggerManager: TriggerManagerGD
 
 var OriginalSpectateUnit: UnitGD
 var ability_chain: Array = []
@@ -45,7 +46,8 @@ func onLastWill(Deather: UnitGD, AppliedBy: AppliedByGD) -> void:
 		ability.setInfo(Deather, AppliedBy)
 		if ability.onLastWillCondition():
 			onTriggerAbilitySpectateDelay(Deather, ability, ability.onLastWill)
-	GameEffects.onTriggerUnitGameFX(Deather, TriggerGD.REMOVE_ABILITY) # Works for mute aswell
+	
+	TriggerManager.onUnitTrigger(Deather, TriggerGD.REMOVE_ABILITY) # works for mute aswell
 	onOngoingAbility(Deather, "UnitDeath")
 	
 func onWhenHealed(Healee: UnitGD, healInfo: HealInfoGD, heal_amount: int):
@@ -53,7 +55,7 @@ func onWhenHealed(Healee: UnitGD, healInfo: HealInfoGD, heal_amount: int):
 	for ability in abilities:
 		ability.setInfo(Healee, healInfo, heal_amount)
 		onTriggerAbilitySpectateDelay(Healee, ability, ability.onWhenHealed)
-	GameEffects.onTriggerUnitGameFX(Healee, TriggerGD.HEAL)
+	TriggerManager.onUnitTrigger(Healee, TriggerGD.HEAL)
 	
 func onArrive(Unit: UnitGD) -> void:
 	var abilities: Array = onFindAbilities(Unit, "Arrive")
@@ -87,7 +89,7 @@ func onHit(DMGInfo: DMGInfoGD) -> void:
 		if ability.onHitCondition():
 			onTriggerAbilitySpectateDelay(Unit, ability, ability.onHit)
 	
-	GameEffects.onTriggerUnitGameFX(Unit, TriggerGD.ON_HIT, [DMGInfo.Defender, DMGInfo.AppliedBy])
+	TriggerManager.onUnitTrigger(Unit, TriggerGD.ON_HIT, [DMGInfo.Defender, DMGInfo.AppliedBy])
 	
 func onRampage(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	var abilities: Array = onFindAbilities(Unit, "Rampage")
@@ -95,7 +97,7 @@ func onRampage(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 		ability.setInfo(Unit, AppliedBy)
 		if ability.onRampageCondition():
 			onTriggerAbilitySpectateDelay(Unit, ability, ability.onRampage)
-	GameEffects.onTriggerUnitGameFX(Unit, TriggerGD.RAMPAGE, [Unit, AppliedBy])
+	TriggerManager.onUnitTrigger(Unit, TriggerGD.RAMPAGE, [Unit, AppliedBy])
 		
 func onTriggerAbilitySpectateDelay(Triggerer: UnitGD, ability: AbilityGD, callable: Callable, InitialTeleport: UnitGD = null) -> void:
 	var vis: bool = Triggerer.team == 0 or Triggerer.Tile in Vision.getTeamVision()
@@ -153,11 +155,11 @@ func onDMG(Damagee: UnitGD, AppliedBy: AppliedByGD, damage: int) -> DMGInfoGD:
 		match AppliedBy.type:
 			"Attack":
 				var Attacker: UnitGD = AppliedBy.Applier
-				GameEffects.onTriggerUnitGameFX(Attacker, TriggerGD.ON_ATTACK)
+				TriggerManager.onUnitTrigger(Attacker, TriggerGD.ON_ATTACK)
 				damage = onArmor(Damagee, damage + Attacker.extra_damage)
 				Damagee.stats("damage", damage, AppliedBy)
 				DMGInfo.HealthDMG = original_health - Damagee.health
-				GameEffects.onTriggerUnitGameFX(Attacker, TriggerGD.ON_AFTER_ATTACK)
+				TriggerManager.onUnitTrigger(Attacker, TriggerGD.ON_AFTER_ATTACK)
 			"Height":
 				Damagee.stats("damage", damage, AppliedBy)
 				DMGInfo.HealthDMG = original_health - Damagee.health
@@ -211,36 +213,13 @@ func onRecalculateTargetAbilities() -> void:
 			ability.can_affect = !ability.tiles["affect"].is_empty()
 			StatusManager.onUpdateTargetAbility(Unit, ability)
 
-func onStagger(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
-	GameEffects.onAddGameFX(Unit, GameFXGD.STAGGER, {"AppliedBy": AppliedBy})
-	VFX.onCreateUnitVFX(Unit, "Stagger")
-	StatusManager.onAddUnitFX(Unit, "Stagger")
-	StatusManager.onUpdateUnitTargetAbilities(Unit)
-
-func onRemoveStagger(GameFX: GameFXGD) -> void:
-	VFX.onRemoveUnitVFX(GameFX.Unit, "Stagger")
-	StatusManager.onRemoveUnitFX(GameFX.Unit, "Stagger")
-
-func onDaze(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
-	GameEffects.onAddGameFX(Unit, GameFXGD.DAZE, {"AppliedBy": AppliedBy})
-	VFX.onCreateUnitVFX(Unit, "Daze")
-	StatusManager.onAddUnitFX(Unit, "Daze")
-	
-func onRemoveDaze(GameFX: GameFXGD) -> void:
-	VFX.onRemoveUnitVFX(GameFX.Unit, "Daze")
-	StatusManager.onRemoveUnitFX(GameFX.Unit, "Daze")
-	
-func onStun(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
-	onStagger(Unit, AppliedBy)
-	onDaze(Unit, AppliedBy)
-
 func onDestroyUnit(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	var vis: bool = Unit.team == 0 or Unit.Tile in Vision.getTeamVision()
 	ActionManager.onAddAction(DeathActionGD.new(Unit, AppliedBy, vis))
 	
 func onHelpfulHelmetDelayed(a: Dictionary) -> void:
 	var Unit: UnitGD = Units.unit_by_tile(a.Tile)
-	GameEffects.onAddGameFX(Unit, GameFXGD.HELPFUL_HELMET, {"AppliedBy": a.AppliedBy, "use_bound": false})
+	GameEffects.addGFX(Unit, GameFXGD.HELPFUL_HELMET, {"AppliedBy": a.AppliedBy})
 
 func isStaggered(Unit: UnitGD) -> bool:
 	return GameEffects.onGameFXExists(Unit, GameFXGD.STAGGER)
@@ -256,39 +235,23 @@ func isAbilityEnabled(Unit: UnitGD, ability: TargetAbilityGD) -> bool:
 func onBuffInfo(buff_info: BuffInfoGD) -> void:
 	buff_info.Unit.stats(buff_info.stat, buff_info.value, buff_info.AppliedBy, buff_info.absolute)
 
-func onRemoveBuffNextTurn(a: Dictionary) -> void:
-	for buff_info in a.buff_info_array.array: onBuffInfo(buff_info)
-	StatusManager.onRemoveBuffNextTurn(a.buff_info_array)
-
 func onApplyBuffNextTurn(buff_info: BuffInfoGD, triggers: Array = []) -> void:
 	onBuffInfo(buff_info)
 	buff_info.value *= -1
-	GameEffects.onAddGameFX(buff_info.Unit, GameFXGD.BUFF_NEXT_TURN, {"buff_info": buff_info}, triggers)
+	GameEffects.addGFX(buff_info.Unit, GameFXGD.BUFF_NEXT_TURN, {"buff_info": buff_info}, triggers)
 
 func onApplyHealNextTurn(heal_info: HealInfoGD, triggers: Array = []) -> void:
-	GameEffects.onAddGameFX(heal_info.Healee, GameFXGD.HEAL_NEXT_TURN, {"heal_info": heal_info}, triggers)
-
-func onRemoveHealNextTurn(heal_info_array: HealInfoArrayGD) -> void:
-	StatusManager.onRemoveHealNextTurn(heal_info_array)
-	for heal_info in heal_info_array.array: onHeal(heal_info)
+	GameEffects.addGFX(heal_info.Healee, GameFXGD.HEAL_NEXT_TURN, {"heal_info": heal_info}, triggers)
 	
 func onCreateBuffInfoArray(array: Array) -> BuffInfoArrayGD:
 	var total: int = 0
 	for buff_info in array: total += buff_info.value
 	return BuffInfoArrayGD.new(array[0].Unit, array[0].stat, total, array)
 
-func onAddToBuffInfoArray(buff_info_array: BuffInfoArrayGD, buff_info: BuffInfoGD) -> void:
-	buff_info_array.array.append(buff_info)
-	buff_info_array.value += buff_info.value
-
 func onCreateHealInfoArray(array: Array) -> HealInfoArrayGD:
 	var total: int = 0
 	for heal_info in array: total += heal_info.heal
 	return HealInfoArrayGD.new(array[0].Healee, total, array)
-
-func onAddToHealInfoArray(heal_info_array: HealInfoArrayGD, heal_info: HealInfoGD) -> void:
-	heal_info_array.array.append(heal_info)
-	heal_info_array.heal += heal_info.heal
 
 func onOngoingAbility(Unit: UnitGD, type: String, args: Array = []) -> void:
 	for _Unit in Units.all_units(Unit) + [Unit]:

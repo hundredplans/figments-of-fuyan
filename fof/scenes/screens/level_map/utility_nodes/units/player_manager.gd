@@ -10,6 +10,7 @@ var Vision: VisionGD
 var VFX: VFXGD
 var StatusManager: StatusManagerGD
 var ActionManager: ActionManagerGD
+var TriggerManager: TriggerManagerGD
 
 var graveyard_cards: Array = []
 
@@ -26,6 +27,8 @@ func on_card_placed(hand_card: HandCardGD, Tile: TileGD) -> void:
 	
 	LevelMap.setInputLock(LevelMapGD.UNIT_ACTION)
 	var Unit: UnitGD = await Units.onUnitAwakened(hand_card.id, hand_card.tool_id, hand_card.effects, 0, Tile.obj.rotation, Tile)
+	Unit.was_placed = true
+	TriggerManager.onUnitTrigger(Unit, TriggerGD.CARD_PLACED, [hand_card])
 	if skip_result: LevelMap.on_advance_game_phase()
 	
 	SpectateCamera.onSpectate(Unit)
@@ -232,6 +235,12 @@ func onUnitMode(Unit: UnitGD = getUnitSelected(), enter: bool = false) -> void:
 			onRemoveMovementRange()
 			LevelUI.onExitUnitMode()
 			PreviousUnitSelected = null
+
+func onRefreshMovementRange() -> void:
+	var Unit: UnitGD = getUnitSelected()
+	if Unit != null:
+		onRemoveMovementRange()
+		onSetMovementRange(Unit)
 
 func getUnitSelected() -> UnitGD:
 	if LevelMap.game_phase in ["PlayerPhase", "PlayerEndTurnPhase"] and SpectateCamera.SpectateUnit != null and SpectateCamera.SpectateUnit.team == 0:

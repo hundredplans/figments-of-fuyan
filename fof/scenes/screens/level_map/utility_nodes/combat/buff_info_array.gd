@@ -12,3 +12,7 @@ func _init(_Unit: UnitGD = null, _stat: String = "attack", _value: int = 1, _arr
 	stat = _stat
 	value = _value
 	array = _array
+	
+func onCombine(buff_info: BuffInfoGD) -> void:
+	array.append(buff_info)
+	value += buff_info.value

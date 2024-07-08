@@ -5,15 +5,15 @@ var _CRect: PackedScene = preload("res://scenes/screens/continue_menu/save_file_
 var _SaveFileButton: PackedScene = preload("res://scenes/screens/continue_menu/save_file_button.tscn")
 func _ready() -> void:
 	for i in range(1, 6):
-		var contents: Dictionary = Helper.on_save_file_contents(i)
-		if contents.is_empty():
-			$SaveFiles.add_child(_CRect.instantiate())
-		else:
+		var DIR_PATH: String = "user://save/save_files/" + str(i) + ".tres"
+		if FileAccess.file_exists(DIR_PATH):
+			var save_info: SaveInfoGD = load(DIR_PATH)
 			var SaveFileButton: Control = _SaveFileButton.instantiate()
-			SaveFileButton.on_load_save_file(contents, Helper.getFofInfo(contents.area_id, "area"))
+			SaveFileButton.setInfo(save_info)
 			SaveFileButton.get_node("RemoveButton").pressed.connect(_on_remove_button_pressed.bind(i))
 			SaveFileButton.pressed.connect(on_save_file_pressed)
 			$SaveFiles.add_child(SaveFileButton)
+		else: $SaveFiles.add_child(_CRect.instantiate())
 
 func on_save_file_pressed(index: int) -> void:
 	Helper.on_load_game_state(index)

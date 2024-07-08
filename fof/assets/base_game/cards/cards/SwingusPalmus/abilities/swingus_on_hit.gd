@@ -14,7 +14,7 @@ func onHit() -> void:
 	else:
 		var AttackTrigger := TriggerGD.new(null, Unit, Unit.setExtraDamage.bind(DAMAGE), TriggerGD.ON_ATTACK, TriggerGD.REMOVE_TRIGGER)
 		var AfterAttackTrigger := TriggerGD.new(null, Unit, Unit.setExtraDamage, TriggerGD.ON_AFTER_ATTACK, TriggerGD.REMOVE_FX)
-		GameEffects.onAddGameFX(Unit, GameFXGD.ABILITY_ACTIVE, {"ability": self}, [AttackTrigger, AfterAttackTrigger])
+		GameEffects.addGFX(Unit, GameFXGD.ABILITY_ACTIVE, {"ability": self}, [AttackTrigger, AfterAttackTrigger])
 		
 		is_second_hit = true
 		delay = 2

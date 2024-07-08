@@ -1,7 +1,6 @@
-extends Label3D
+extends UnitVFXBase
 
-var type: String
 func setInfo(ai_info: AIInfoGD) -> void:
 	ai_info.update_move_state.connect(setText)
 
-func setText(_text: String) -> void: text = _text
+func setText(_text: String) -> void: $Label.text = _text

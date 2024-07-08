@@ -6,3 +6,4 @@ extends Resource
 @export var is_height_absolute: bool = false
 @export var height: float = 0.1
 @export var name: String
+@export var inherit_rotation: bool = false

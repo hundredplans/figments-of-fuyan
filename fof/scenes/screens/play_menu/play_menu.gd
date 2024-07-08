@@ -14,7 +14,7 @@ func on_select_hero(HeroCard: HeroCardGD) -> void:
 	else: gseed = SeedSetter.text.hash()
 	
 	seed(gseed)
-	Helper.on_start_new_game(HeroCard.hero_id, HeroCard.base_cards[0].id, gseed)
+	Helper.onStartNewGame(HeroCard.hero_id, gseed)
 	
 	screen_change_sig.emit("res://scenes/screens/map_menu/map_menu.tscn")
 

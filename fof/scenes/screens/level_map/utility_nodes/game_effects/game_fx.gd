@@ -1,16 +1,31 @@
 class_name GameFXGD
-extends Resource
+extends Node
 
-var type: int
-var info: Dictionary
-var triggers: Array = []
 var Unit: UnitGD
+var type: int
+var triggers: Array = []
+var custom_triggers: Array = []
 
-enum {HEAL_NEXT_TURN, BUFF_NEXT_TURN, DAZE, STAGGER, ABILITY_ACTIVE, HELPFUL_HELMET, CHARMING_STANCE, DEEP_WATER}
+var Combat: CombatGD
+var VFX: VFXGD
+var StatusManager: StatusManagerGD
+var SpectateCamera: SpectateCameraGD
+var Tiles: TilesGD
+var PlayerManager: PlayerManagerGD
 
-func _init(_Unit: UnitGD = null, _type: int = -1, _info: Dictionary = {}, _triggers: Array = []) -> void:
-	if _type == -1: push_error("Your game_fx type is invalid!")
+enum {HEAL_NEXT_TURN, BUFF_NEXT_TURN, DAZE, STAGGER, ABILITY_ACTIVE, HELPFUL_HELMET, CHARMING_STANCE, DEEP_WATER,
+	ENERGIZED_BOON}
+
+func _init() -> void:
+	Helper.onCreateChildReferences(self)
+
+func setInfo(_Unit: UnitGD, _type: int, _triggers: Array, a: Dictionary) -> void:
 	Unit = _Unit
 	type = _type
-	info = _info
 	triggers = _triggers
+	for key in a: set(key, a[key])
+
+func onAfterCreateGFX() -> void:
+	triggers += custom_triggers
+	for trigger in triggers: trigger.GameFX = self
+	custom_triggers = []

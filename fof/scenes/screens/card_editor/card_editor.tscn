@@ -115,12 +115,14 @@ placeholder_text = "Enter card name here..."
 [node name="AreaSelector" type="OptionButton" parent="NodeManager/NodeManager/CardFileloader/NodeManager/SearchMenu"]
 unique_name_in_owner = true
 layout_mode = 2
-item_count = 2
+item_count = 3
 selected = 0
 popup/item_0/text = "1"
 popup/item_0/id = 0
-popup/item_1/text = "12"
-popup/item_1/id = 1
+popup/item_1/text = "2"
+popup/item_1/id = 2
+popup/item_2/text = "12"
+popup/item_2/id = 3
 
 [node name="ScrollSorter" type="ScrollContainer" parent="NodeManager/NodeManager/CardFileloader/NodeManager"]
 layout_mode = 2

@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/status_effects/move_state/move_state.gd" id="1_okion"]
 
-[node name="MoveState" type="Label3D"]
-billboard = 2
+[node name="MoveState" type="Node3D"]
 script = ExtResource("1_okion")
+
+[node name="Label" type="Label3D" parent="."]
+billboard = 2

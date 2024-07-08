@@ -1,4 +1,5 @@
 extends Control
+signal mouse_in_ui
 
 var VFX: VFXGD
 var Combat: CombatGD
@@ -10,6 +11,8 @@ var LevelMap: LevelMapGD
 var Hand: HandGD
 var Deck: DeckGD
 var SpectateCamera: SpectateCameraGD
+var Boons: BoonsGD
+var GameEffects: GameEffectsGD
 
 @onready var CommandLine: LineEdit = %CommandLine
 @onready var PastCommandsLabel: Label = %PastCommandsLabel
@@ -86,6 +89,13 @@ func onHand() -> void:
 		var deck_card: DeckCardGD = Deck.on_create_card(card_options[randi() % card_options.size()], 0, [])
 		Deck.on_force_draw_card(deck_card)
 	
+func onCboon(id: int) -> void:
+	var boon_info: BoonInfoGD = Boons.onFindAllBoon(id)
+	Boons.onCreateBoon(boon_info)
+	
+func onRboon(id: int) -> void:
+	Boons.onRemoveBoon(id)
+	
 func onFatigue(Tile: TileGD):
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
 	PlayerManager.passed_turns.erase(Unit)
@@ -99,8 +109,11 @@ func onSpawn(Tile: TileGD, id: int, team: int) -> void:
 	
 func onStagger(Tile: TileGD):
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
-	var AppliedBy := AppliedByGD.new("Console")
-	Combat.onStagger(Unit, AppliedBy)
+	GameEffects.addGFX(Unit, GameFXGD.STAGGER)
+
+func onDaze(Tile: TileGD) -> void:
+	var Unit: UnitGD = Units.unit_by_tile(Tile)
+	GameEffects.addGFX(Unit, GameFXGD.DAZE)
 
 func onDraw(id: int) -> void:
 	var deck_card := DeckCardGD.new()
@@ -153,3 +166,5 @@ func _on_paste_button_pressed():
 		if command.ttpos != null:
 			var Tile: TileGD = Tiles.position_to_tile(command.ttpos)
 			LevelUI.onSelectTileFinish(Tile)
+
+func onMouseInUI(state: bool) -> void: mouse_in_ui.emit(state)

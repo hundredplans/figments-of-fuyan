@@ -1,14 +1,15 @@
 [gd_resource type="Resource" script_class="BoonInfoGD" load_steps=3 format=3 uid="uid://dx61y3rfdfjcb"]
 
 [ext_resource type="Script" path="res://assets/base_game/boons/boon_info.gd" id="1_8i4uv"]
-[ext_resource type="Texture2D" uid="uid://dpnruj02umows" path="res://assets/base_game/boons/boons/CaffeineBoon/icon.png" id="1_s5arr"]
+[ext_resource type="Texture2D" uid="uid://bx427nku87u7r" path="res://assets/base_game/boons/icons/fear.png" id="1_whikg"]
 
 [resource]
 script = ExtResource("1_8i4uv")
-icon = ExtResource("1_s5arr")
+icon = ExtResource("1_whikg")
 description = "Enemies are stunned for the first turn"
 ascended_description = "Enemies are stunned for the first two turns"
 rarity = 1
+script_name = "fear_boon"
 id = 4
 name = "Fear Boon"
 folder_name = "FearBoon"

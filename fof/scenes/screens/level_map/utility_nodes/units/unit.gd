@@ -13,6 +13,7 @@ var visible_state: bool = false
 var hero_card: HeroCardGD
 var base_card: BaseCardGD
 var ai: Dictionary
+var was_placed: bool = false
 
 var attack: int
 
@@ -52,6 +53,7 @@ enum {
 @onready var UnitVFX: Node3D = $UnitVFX
 @onready var Model: Node3D
 
+var Boons: BoonsGD
 var VFX: VFXGD
 var Tiles: TilesGD
 var Combat: CombatGD
@@ -166,6 +168,9 @@ func stats(stat_type: String, val: int, AppliedBy := AppliedByGD.new("GameEvent"
 	var current_attack: int = attack
 	var stats_changed: String = stat_type
 	
+	if !absolute and stat_type not in ["active_speed", "heal"] and team == 0:
+		var boon: BoonGD = Boons.onFindBoon(Boons.onFindAllBoon(3))
+		if boon != null: val = boon.onCustomTrigger(val)
 	match stat_type:
 		"damage": # Can't be absolute
 			stats_changed = "health"
@@ -195,7 +200,14 @@ func stats(stat_type: String, val: int, AppliedBy := AppliedByGD.new("GameEvent"
 		"heal":
 			stats_changed = "health"
 			health += val
-			
+		"full_speed":
+			stats_changed = "speed"
+			if absolute:
+				max_speed = clamp(val, 0, 9)
+				speed = clamp(val, 0, 9)
+			else: 
+				max_speed = clamp(max_speed + val, 0, 9)
+				speed = clamp(speed + val, 0, max_speed)
 	
 	var color: String = onFindStatColor(stats_changed, current_health, current_attack, current_speed)
 	if color != "NULL" and current_health > 0:
@@ -213,6 +225,7 @@ func stats(stat_type: String, val: int, AppliedBy := AppliedByGD.new("GameEvent"
 				"speed": VFX.onCreateStatParticle(speed - current_speed, "speed", Tile, y_offset)
 				"heal": VFX.onCreateStatParticle(health - current_health, "heal", Tile, y_offset)
 	Combat.onOngoingAbility(self, "ChangeStat", [AppliedBy, stats_changed])
+	
 func onFindStatColor(stat_changed: String, chp: int = -1, catt: int = -1, cspd: int = -1) -> String:
 	var color := "BASE"
 	match stat_changed:

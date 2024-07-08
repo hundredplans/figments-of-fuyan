@@ -424,7 +424,7 @@ size_flags_stretch_ratio = 0.6
 [node name="PhaseIcon" type="Sprite2D" parent="TopBar/LeftBar/PhaseIconManager"]
 unique_name_in_owner = true
 texture_filter = 1
-position = Vector2(66, 62)
+position = Vector2(51, 62)
 scale = Vector2(2, 2)
 texture = ExtResource("13_48llv")
 
@@ -434,21 +434,23 @@ size_flags_horizontal = 3
 mouse_filter = 2
 
 [node name="BoonContainer" type="GridContainer" parent="TopBar/LeftBar/BoonManager"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -147.5
-offset_top = -25.5
-offset_right = 148.5
+offset_left = -149.5
+offset_top = -41.5
+offset_right = 150.5
 offset_bottom = 857.5
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_constants/h_separation = 8
-columns = 5
+theme_override_constants/h_separation = 30
+theme_override_constants/v_separation = 50
+columns = 3
 
 [node name="CenterBar" type="Control" parent="TopBar"]
 layout_mode = 1
@@ -724,3 +726,4 @@ autowrap_mode = 2
 [connection signal="pressed" from="TopBar/RightBar/EyeButton" to="." method="onEyeButtonPressed"]
 [connection signal="mouse_in_ui" from="TopBar/RightBar/CameraButton" to="." method="on_is_mouse_in_ui"]
 [connection signal="pressed" from="TopBar/RightBar/CameraButton" to="." method="onCameraButtonPressed"]
+[connection signal="mouse_in_ui" from="Console" to="." method="on_is_mouse_in_ui"]

@@ -7,65 +7,54 @@ var VFX: VFXGD
 var Combat: CombatGD
 var StatusManager: StatusManagerGD
 var Tiles: TilesGD
-var effects: Array = []
+
+var gfx: Array = []
+
+const GAME_FX_INFO: Dictionary = {
+	GameFXGD.DAZE: "daze",
+	GameFXGD.STAGGER: "stagger",
+	GameFXGD.HEAL_NEXT_TURN: "heal_next_turn",
+	GameFXGD.BUFF_NEXT_TURN: "buff_next_turn",
+	GameFXGD.ABILITY_ACTIVE: "ability_active",
+	GameFXGD.HELPFUL_HELMET: "helpful_helmet",
+	GameFXGD.CHARMING_STANCE: "charming_stance",
+	GameFXGD.DEEP_WATER: "deep_water",
+	GameFXGD.ENERGIZED_BOON: "energized_boon",
+}
+
+var GAME_FX_OVERRIDE: Array = [GameFXGD.DAZE, GameFXGD.STAGGER]
+var GAME_FX_COMBINE: Array = [GameFXGD.HEAL_NEXT_TURN, GameFXGD.BUFF_NEXT_TURN]
+
+func getUnitGFX(Unit: UnitGD) -> Array:
+	return gfx.filter(func(x: GameFXGD): return x.Unit == Unit)
+
+func onOverrideGFX(Unit: UnitGD, type: int) -> void:
+	if type in GAME_FX_OVERRIDE and onGameFXExists(Unit, type):
+		for GameFX in getUnitGFX(Unit).filter(func(x: GameFXGD): return x.type == type):
+			onRemoveFX(GameFX)
+
+func onCombineGFX(Unit: UnitGD, type: int, a: Dictionary) -> GameFXGD:
+	if type in GAME_FX_COMBINE and onGameFXExists(Unit, type):
+		var GameFX := onFindFirstGameFX(Unit, type)
+		return GameFX.onCombine(a)
+	return null
+
+func addGFX(Unit: UnitGD, type: int, a: Dictionary = {}, custom_triggers: Array = []) -> void:
+	onOverrideGFX(Unit, type)
+	if !onCombineGFX(Unit, type, a):
+		var GameFX := Node.new()
+		GameFX.script = load("res://scenes/screens/level_map/utility_nodes/game_effects/game_effects/" + GAME_FX_INFO[type] + "_gfx.gd")
+		add_child(GameFX)
+		
+		GameFX.setInfo(Unit, type, custom_triggers, a)
+		GameFX.onCreateGFX()
+		GameFX.onAfterCreateGFX()
+		gfx.append(GameFX)
 
 func onDeathFinished(Unit: UnitGD) -> void:
-	var _effects: Array = effects.duplicate()
-	for GameFX in _effects.filter(func(x: GameFXGD): return x.Unit == Unit):
-		effects.erase(Unit)
-
-func onAddGameFX(Unit: UnitGD, type: int, a: Dictionary = {}, triggers: Array = []) -> void:
-	var GameFX: GameFXGD 
-	match type:
-		GameFXGD.HEAL_NEXT_TURN: GameFX = onAddHealNextTurn(Unit, a, triggers)
-		GameFXGD.BUFF_NEXT_TURN: GameFX = onAddBuffNextTurn(Unit, a, triggers)
-		GameFXGD.DAZE: GameFX = onAddDazeFX(Unit, a)
-		GameFXGD.STAGGER: GameFX = onAddStaggerFX(Unit, a)
-		GameFXGD.ABILITY_ACTIVE: GameFX = onAddAbilityActive(Unit, a, triggers)
-		GameFXGD.HELPFUL_HELMET: GameFX = onAddHelpfulHelmet(Unit, a)
-		GameFXGD.CHARMING_STANCE: GameFX = onAddCharmingStance(Unit, a)
-		GameFXGD.DEEP_WATER: GameFX = onAddDeepWater(Unit)
-	if GameFX != null: GameFX.type = type
-	
-func onAddDeepWater(Unit: UnitGD) -> GameFXGD:
-	var GameFX := onCreateGameFX(Unit, GameFXGD.DEEP_WATER)
-	
-	var AppliedBy := AppliedByGD.new("DeepWater")
-	if !Tiles.onCanDrown(Unit):
-		Unit.stats("active_speed", -1, AppliedBy)
-		Unit.stats("speed", -1, AppliedBy)
-	else: Combat.onDestroyUnit(Unit, AppliedBy)
-	
-	onAppendTrigger(TriggerGD.new(GameFX, Unit, Tiles.onDeepWaterRemoved.bind(Unit), TriggerGD.REMOVE, TriggerGD.NULL))
-	return GameFX
-	
-func onAddBuffNextTurn(Unit: UnitGD, a: Dictionary, triggers: Array) -> GameFXGD:
-	var _GameFX := onFindFirstGameFX(Unit, GameFXGD.BUFF_NEXT_TURN)
-	if _GameFX == null or _GameFX.info.buff_info_array.stat != a.buff_info.stat:
-		a.buff_info_array = Combat.onCreateBuffInfoArray([a.buff_info])
-		a.erase("buff_info")
-		
-		var GameFX := onCreateGameFX(Unit, GameFXGD.BUFF_NEXT_TURN, a, triggers)
-		onAppendTrigger(TriggerGD.new(GameFX, Unit, Combat.onRemoveBuffNextTurn.bind(a), TriggerGD.NEXT_TURN, TriggerGD.REMOVE_FX))
-		
-		StatusManager.onCreateBuffNextTurn(a.buff_info_array)
-		return GameFX
-	Combat.onAddToBuffInfoArray(_GameFX.info.buff_info_array, a.buff_info)
-	StatusManager.onCreateBuffNextTurn(_GameFX.info.buff_info_array)
-	return null
-func onAddHealNextTurn(Unit: UnitGD, a: Dictionary, triggers: Array) -> GameFXGD:
-	var _GameFX := onFindFirstGameFX(Unit, GameFXGD.HEAL_NEXT_TURN)
-	if _GameFX == null:
-		a.heal_info_array = Combat.onCreateHealInfoArray([a.heal_info])
-		a.erase("heal_info")
-		
-		var GameFX := onCreateGameFX(Unit, GameFXGD.HEAL_NEXT_TURN, a, triggers)
-		onAppendTrigger(TriggerGD.new(GameFX, Unit, Combat.onRemoveHealNextTurn.bind(a.heal_info_array), TriggerGD.NEXT_TURN, TriggerGD.REMOVE_FX))
-		StatusManager.onCreateHealNextTurn(a.heal_info_array)
-		return GameFX
-	Combat.onAddToHealInfoArray(_GameFX.info.heal_info_array, a.heal_info)
-	StatusManager.onCreateHealNextTurn(_GameFX.info.heal_info_array)
-	return null
+	var erase: Array = []
+	for GameFX in getUnitGFX(Unit): erase.append(GameFX)
+	for GameFX in erase: gfx.erase(GameFX)
 		
 func onTriggerGameFX(GameFX: GameFXGD, type: int, Unit: UnitGD = null, bound_args: Array = []) -> void:
 	if GameFX != null:
@@ -76,9 +65,6 @@ func onTriggerGameFX(GameFX: GameFXGD, type: int, Unit: UnitGD = null, bound_arg
 					Trigger.callable.callv(bound_args if Trigger.use_bound else [])
 				remove_triggers.append(onRemoveTrigger.bind(GameFX, Trigger))
 		for remove_callable in remove_triggers: remove_callable.call()
-		
-func onActiveAbilityTriggered(Unit: UnitGD) -> void:
-	Unit.Model.onActivateIdleAbility()
 	
 func onRemoveTrigger(GameFX: GameFXGD, Trigger: TriggerGD) -> void:
 	match Trigger.remove_type:
@@ -91,97 +77,26 @@ func onFindRemoveFX(Unit: UnitGD, type: int) -> void:
 	onRemoveFX(GameFX)
 				
 func onRemoveFX(GameFX: GameFXGD) -> void:
-	if GameFX in effects:
+	if GameFX in gfx:
 		onTriggerGameFX(GameFX, TriggerGD.REMOVE)
-		effects.erase(GameFX)
-		
-func onAddAbilityActive(Unit: UnitGD, a: Dictionary, triggers: Array) -> GameFXGD:
-	var GameFX := onCreateGameFX(Unit, GameFXGD.ABILITY_ACTIVE, a, triggers)
-	onAppendTrigger(TriggerGD.new(GameFX, Unit, onRemoveAbilityActive.bind(GameFX), TriggerGD.REMOVE, TriggerGD.NULL))
-	onAppendTrigger(TriggerGD.new(GameFX, Unit, Unit.Model.onRemoveIdleAbility, TriggerGD.REMOVE, TriggerGD.NULL))
-	Unit.Model.onActivateIdleAbility()
-	VFX.onCreateUnitVFX(Unit, "AbilityActive")
-	StatusManager.onAddAbilityActiveFX(Unit, a.ability.ability_name)
-	return GameFX
-		
-func onRemoveAbilityActive(GameFX: GameFXGD) -> void:
-	VFX.onRemoveUnitVFX(GameFX.Unit, "AbilityActive")
-	StatusManager.onRemoveAbilityActiveFX(GameFX.Unit, GameFX.info.ability.ability_name)
+		gfx.erase(GameFX)
 		
 func onAppendTrigger(Trigger: TriggerGD) -> void:
 	Trigger.GameFX.triggers.append(Trigger)
-	
-func onAddHelpfulHelmet(Unit: UnitGD, a: Dictionary) -> GameFXGD:
-	var GameFX := onCreateGameFX(Unit, GameFXGD.HELPFUL_HELMET, a)
-	onAppendTrigger(TriggerGD.new(GameFX, Unit, Unit.stats.bind("health", 1), TriggerGD.RAMPAGE, a.use_bound, TriggerGD.NULL))
-	StatusManager.onAddUnitFX(Unit, "HelpfulHelmet")
-	if Unit.team == 0: SpectateCamera.onSpectate(Unit)
-	VFX.onCreateUnitVFX(Unit, "HelpfulHelmet")
-	return GameFX
-	
-func onAddCharmingStance(Unit: UnitGD, a: Dictionary) -> GameFXGD:
-	var GameFX := onCreateGameFX(Unit, GameFXGD.CHARMING_STANCE, a)
-	onAppendTrigger(TriggerGD.new(GameFX, a.Unit, StatusManager.onRemoveUnitFX.bind(Unit, "CharmingStance"), TriggerGD.REMOVE_ABILITY, TriggerGD.REMOVE_FX))
-	StatusManager.onAddUnitFX(Unit, "CharmingStance", AppliedByGD.new("Ability", a.Unit))
-	return GameFX
-		
-func onOverrideGameFX(Unit: UnitGD, type: int) -> void:
-	for GameFX in effects.filter(func(x: GameFXGD): return x.Unit == Unit):
-		if GameFX.type == type:
-			effects.erase(GameFX)
-			match type:
-				"Daze": Combat.onRemoveDaze(GameFX)
-				"Stagger": Combat.onRemoveStagger(GameFX)
-			return
-
-func onAddDazeFX(Unit: UnitGD, a: Dictionary) -> GameFXGD:
-	onOverrideGameFX(Unit, GameFXGD.DAZE)
-	var GameFX := onCreateGameFX(Unit, GameFXGD.DAZE, a)
-	onAppendTrigger(TriggerGD.new(GameFX, Unit, Combat.onRemoveDaze.bind(GameFX), TriggerGD.TURN_PASSED, TriggerGD.REMOVE_FX))
-	return GameFX
-	
-func onAddStaggerFX(Unit: UnitGD, a: Dictionary) -> GameFXGD:
-	onOverrideGameFX(Unit, GameFXGD.STAGGER)
-	var GameFX := onCreateGameFX(Unit, GameFXGD.STAGGER, a)
-	onAppendTrigger(TriggerGD.new(GameFX, Unit, Combat.onRemoveStagger.bind(GameFX), TriggerGD.TURN_PASSED, TriggerGD.REMOVE_FX))
-	return GameFX
-	
-func onCreateGameFX(Unit: UnitGD, type: int, a: Dictionary = {}, triggers: Array = []) -> GameFXGD:
-	var GameFX := GameFXGD.new(Unit, type, a, triggers)
-	effects.append(GameFX)
-	for trigger in triggers: trigger.GameFX = GameFX
-	return GameFX
 
 func onGameFXExists(Unit: UnitGD, type: int) -> bool:
-	for GameFX in effects.filter(func(x: GameFXGD): return x.Unit == Unit):
-		if GameFX.type == type:
-			return true
+	for GameFX in getUnitGFX(Unit):
+		if GameFX.type == type: return true
 	return false
 
-func onAIPhaseStart() -> void:
-	for GameFX in effects.filter(func(x: GameFXGD): return x.Unit.team == 1):
-		onTriggerGameFX(GameFX, TriggerGD.NEXT_TURN)
-	
-func onAIEndTurnPhaseStart() -> void:
-	for GameFX in effects.filter(func(x: GameFXGD): return x.Unit.team == 1):
-		onTriggerGameFX(GameFX, TriggerGD.END_TURN)
-
-func onPlayerPhaseStart() -> void:
-	for GameFX in effects.filter(func(x: GameFXGD): return x.Unit.team == 0):
-		onTriggerGameFX(GameFX, TriggerGD.NEXT_TURN)
-
-func onPlayerEndTurnPhaseStart() -> void:
-	for GameFX in effects.filter(func(x: GameFXGD): return x.Unit.team == 0):
-		onTriggerGameFX(GameFX, TriggerGD.END_TURN)
-
 func onTriggerUnitGameFX(Unit: UnitGD, type: int, bound_args: Array = []) -> void:
-	for GameFX in effects.filter(func(x: GameFXGD): return x.Unit == Unit):
+	for GameFX in gfx.filter(func(x: GameFXGD): return x.Unit == Unit):
 		onTriggerGameFX(GameFX, type, Unit, bound_args)
 
 func onFindFirstGameFX(Unit: UnitGD, type: int) -> GameFXGD:
-	for GameFX in effects.filter(func(x: GameFXGD): return x.Unit == Unit):
+	for GameFX in gfx.filter(func(x: GameFXGD): return x.Unit == Unit):
 		if GameFX.type == type: return GameFX
 	return null
 
 func onFindAllGameFX(Unit: UnitGD, type: int) -> Array:
-	return effects.filter(func(x: GameFXGD): return x.Unit == Unit and x.type == type)
+	return getUnitGFX(Unit).filter(func(x: GameFXGD): return x.type == type)

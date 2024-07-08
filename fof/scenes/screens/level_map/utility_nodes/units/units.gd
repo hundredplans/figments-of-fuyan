@@ -15,7 +15,9 @@ var Combat: CombatGD
 var AIManager: AIManagerGD
 var PlayerManager: PlayerManagerGD
 var StatusManager: StatusManagerGD
+var TriggerManager: TriggerManagerGD
 var Hand: HandGD
+
 
 @onready var Postmortem: Node3D = $Postmortem
 @onready var FieldedUnits: Node3D = $FieldedUnits
@@ -50,6 +52,7 @@ func onUnitAwakenedProcess(Unit: UnitGD, Tile: TileGD) -> void:
 	await get_tree().process_frame
 	Unit.occupy_tile(Tile)
 	AIManager.getDangerList(Unit, all_units())
+	TriggerManager.onUnitTrigger(Unit, TriggerGD.AWAKEN)
 	
 func onArrive(Unit: UnitGD) -> void:
 	var armor: TraitGD = Combat.onFindTrait(Unit, TraitGD.ARMOR)
@@ -141,7 +144,8 @@ func onAIEndTurnPhaseStart() -> void:
 func setUnitStatus(Unit: UnitGD, status: int) -> void:
 	StatusManager.setUnitStatusTurnStatus(Unit, status)
 	if status == UnitGD.TURN_USED:
-		GameEffects.onTriggerUnitGameFX(Unit, TriggerGD.TURN_PASSED)
+		TriggerManager.onUnitTrigger(Unit, TriggerGD.TURN_PASSED)
+		
 
 func setPastPath(Unit: UnitGD, state: bool) -> void:
 	for Tile in Unit.past_path_info:

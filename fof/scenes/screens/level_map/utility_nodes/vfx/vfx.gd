@@ -27,7 +27,7 @@ func onPlayerPhaseStart() -> void:
 
 const SPAWN_PARTICLE_OFFSET: float = 0.3
 func onCreateSpawnParticle(Tile: TileGD) -> void:
-	var SpawnParticle: GPUParticles3D = preload("res://scenes/screens/level_map/utility_nodes/vfx/spawn_particle/spawn_particle.tscn").instantiate()
+	var SpawnParticle: GPUParticles3D = preload("res://scenes/screens/level_map/utility_nodes/vfx/default_particles/spawn_particle.tscn").instantiate()
 	SpawnParticles.add_child(SpawnParticle)
 	SpawnParticle.position = Tile.position
 	SpawnParticle.position.y += SPAWN_PARTICLE_OFFSET
@@ -79,10 +79,13 @@ func onCreateUnitVFX(Unit: UnitGD, type: String, set_info_args: Array = []) -> N
 	if vfx_gd.is_height_absolute: unit_vfx.position.y = vfx_gd.height
 	else: unit_vfx.position.y = Unit.height.stat + vfx_gd.height
 	unit_vfx.type = vfx_gd.name
+	unit_vfx.vfx_gd = vfx_gd
 	
 	Unit.UnitVFX.add_child(unit_vfx)
 	if set_info_args.size() > 0 and unit_vfx.has_method("setInfo"):
 		unit_vfx.callv("setInfo", set_info_args)
+		
+	setUnitVFXRot(Unit)
 	return unit_vfx
 	
 func onUnitVFXExists(Unit: UnitGD, type: String):
@@ -159,3 +162,7 @@ func onUpdateAiStats(Unit: UnitGD) -> void:
 	else:
 		var unit_vfx: Node3D = onCreateUnitVFX(Unit, "AIStats", [Unit, SpectateCamera.Camera])
 		Unit.update_ai_stat.connect(unit_vfx.setAIStats)
+
+func setUnitVFXRot(Unit: UnitGD) -> void:
+	for child in Unit.UnitVFX.get_children():
+		if child.vfx_gd.inherit_rotation: child.rotation_degrees.y = 270 + (60 * Unit.Model.rot)

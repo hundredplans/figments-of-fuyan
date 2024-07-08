@@ -18,15 +18,15 @@ const NodeSelectVariations: Array = [
 var _NodeSelectorBox: PackedScene = preload("res://scenes/screens/map_menu/node_select_box.tscn")
 func _ready() -> void:
 	$MiniMap.on_load_minimap(GameState)
-	$SeedLabel.text = str(GameState.gseed)
-	$ShillingCounter.set_shilling_count(GameState.shillings)
+	$SeedLabel.text = str(GameState.save_info.gseed)
+	$ShillingCounter.set_shilling_count(GameState.save_info.shillings)
 	
 	if !Helper.settings_loaded:
 		GeneralMap = _GeneralMap.instantiate()
 		GeneralMap.champion_arrived.connect(on_champion_arrived)
 		GeneralMap.GameState = GameState
 		load_world.emit(GeneralMap)
-		equip_sky.emit(GameState.area_info.id, false)
+		equip_sky.emit(GameState.save_info.area_info.id, false)
 	else: GeneralMap = get_tree().get_root().get_node("Main/World/Scene").get_child(0)
 		
 	for i in range(GeneralMap.node_amount):
@@ -61,8 +61,8 @@ func on_champion_arrived(index: int) -> void:
 		#var levels: Array = Helper.on_item_dicts("Level").filter(on_is_level_valid)
 		#GameState.level_info = levels[randi() % levels.size()]
 		var dev := preload("res://static/dev/dev.tres")
-		GameState.level_info = Helper.getFofInfo(dev.new_level_id, "level")
+		GameState.save_info.level_info = Helper.getFofInfo(dev.new_level_id, "level")
 	screen_change_sig.emit(INDEX_TO_SCREEN[index])
 
 func on_is_level_valid(level_info: Dictionary) -> bool:
-	return level_info.area == GameState.area_info.id and level_info.difficulty == abs(GameState.map_progress.y - GameState.map_info.map_size)
+	return level_info.area == GameState.save_info.area_info.id and level_info.difficulty == abs(GameState.save_info.map_progress.y - GameState.save_info.map_info.map_size)

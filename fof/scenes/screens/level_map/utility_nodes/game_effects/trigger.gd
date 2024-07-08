@@ -16,7 +16,8 @@ var delay: float
 # Whether to use the bound arguments provided
 var use_bound: bool
 enum {NULL, REMOVE_TRIGGER, REMOVE_FX, CHARGES}
-enum {REMOVE, END_TURN, ON_HIT, NEXT_TURN, ON_ATTACK, ON_AFTER_ATTACK, HEAL, RAMPAGE, TURN_PASSED, REMOVE_ABILITY}
+enum {REMOVE, END_TURN, ON_HIT, NEXT_TURN, ON_ATTACK, ON_AFTER_ATTACK, HEAL, RAMPAGE, TURN_PASSED,
+	REMOVE_ABILITY, AWAKEN, CARD_PLACED, END_TURN_GLOBAL, START_TURN_GLOBAL}
 
 func _init(_GameFX: GameFXGD = null, _Unit: UnitGD = null, _callable: Callable = Callable(), _type: int = -1, _remove_type: int = 2, _use_bound: bool = true, _delay: float = 0):
 	if _type == -1: push_error("Your trigger value is unset!")

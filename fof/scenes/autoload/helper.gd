@@ -436,18 +436,13 @@ func flatten(arr: Array, remove_duplicates: bool) -> Array:
 var _GameState: PackedScene = preload("res://scenes/autoload/game_state/game_state.tscn")
 var GameState: GameStateGD
 
-func on_start_new_game(hid: int, _id: int, gseed: int) -> void:
+func onStartNewGame(hid: int, gseed: int) -> void:
 	Helper.on_load_game_state(0)
-	GameState.onCreateArea(1)
-	GameState.gseed = gseed
-	GameState.hero_id = hid
-	#GameState.on_add_card_to_player_deck(id) #TODO DONT KEEP THIS THE SAME!!!
-	GameState.on_save_game_state()
+	GameState.onCreateSaveInfo(hid, gseed)
 	
 func on_load_game_state(save_file: int) -> void:
 	GameState = _GameState.instantiate()
-	if save_file != 0:
-		GameState.save_info = load("user://save/save_files/" + str(save_file) + ".tres")
+	if save_file != 0: GameState.save_info = load("user://save/save_files/" + str(save_file) + ".tres")
 	add_child(GameState)
 	main.GameState = GameState
 
@@ -534,7 +529,7 @@ func getCard(id: int) -> BaseCardGD:
 	if GameState == null: return cards[id]
 	else:
 		if cards[id] is HeroCardGD:
-			return cards[id].base_cards[GameState.hero_level]
+			return cards[id].base_cards[GameState.save_info.hero_level]
 		return cards[id]
 	
 

@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://ct3g80bouiajk"]
 
-[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vfx/spawn_particle/spawn_particle.gd" id="1_7bss1"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vfx/default_particles/default_particle.gd" id="1_7dxju"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hsr6d"]
 direction = Vector3(0, 1, 0)
@@ -24,4 +24,4 @@ explosiveness = 0.3
 visibility_aabb = AABB(-1.10289, -1.54378, -1.05412, 2.20578, 3.08756, 2.10824)
 process_material = SubResource("ParticleProcessMaterial_hsr6d")
 draw_pass_1 = SubResource("BoxMesh_lqhfu")
-script = ExtResource("1_7bss1")
+script = ExtResource("1_7dxju")

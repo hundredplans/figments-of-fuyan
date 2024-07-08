@@ -19,13 +19,14 @@ offset_right = 576.0
 offset_bottom = 188.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
+mouse_filter = 1
 script = ExtResource("1_4ypeo")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1
 offset_right = 739.0
 offset_bottom = 376.0
+mouse_filter = 1
 theme = ExtResource("2_oeirl")
 
 [node name="PlaceholderLabel" type="Label" parent="."]
@@ -35,6 +36,7 @@ offset_left = 4.0
 offset_top = 330.0
 offset_right = 741.0
 offset_bottom = 376.0
+mouse_filter = 1
 theme = ExtResource("3_32lgd")
 vertical_alignment = 1
 
@@ -52,11 +54,13 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 1
 label_settings = ExtResource("3_7b37v")
 
 [node name="CommandLine" type="LineEdit" parent="Container"]
 unique_name_in_owner = true
 layout_mode = 2
+mouse_filter = 1
 theme = ExtResource("3_32lgd")
 
 [node name="VBoxContainer" type="HBoxContainer" parent="."]
@@ -92,7 +96,13 @@ offset_bottom = 376.0
 unique_name_in_owner = true
 layout_mode = 2
 
+[connection signal="mouse_entered" from="." to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="." to="." method="onMouseInUI" binds= [false]]
 [connection signal="text_changed" from="Container/CommandLine" to="." method="_on_command_line_text_changed"]
 [connection signal="text_submitted" from="Container/CommandLine" to="." method="_on_command_line_text_submitted"]
+[connection signal="mouse_entered" from="VBoxContainer/CopyButton" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="VBoxContainer/CopyButton" to="." method="onMouseInUI" binds= [false]]
 [connection signal="pressed" from="VBoxContainer/CopyButton" to="." method="_on_copy_button_pressed"]
+[connection signal="mouse_entered" from="VBoxContainer/PasteButton" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="VBoxContainer/PasteButton" to="." method="onMouseInUI" binds= [false]]
 [connection signal="pressed" from="VBoxContainer/PasteButton" to="." method="_on_paste_button_pressed"]

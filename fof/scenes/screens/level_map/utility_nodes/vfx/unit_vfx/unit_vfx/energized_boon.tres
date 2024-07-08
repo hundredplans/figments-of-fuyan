@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="UnitVFXGD" load_steps=3 format=3 uid="uid://ce17atjgnioe5"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/unit_vfx/unit_vfx.gd" id="1_6fuwu"]
+[ext_resource type="PackedScene" uid="uid://d2aldruh3wtiy" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/energized_boon/energized_vfx.tscn" id="1_jv8qn"]
+
+[resource]
+script = ExtResource("1_6fuwu")
+model = ExtResource("1_jv8qn")
+is_height_absolute = true
+height = 0.0
+name = "EnergizedBoon"
+inherit_rotation = true

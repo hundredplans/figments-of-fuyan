@@ -49,6 +49,8 @@ var ActionManager: ActionManagerGD
 @onready var CameraButton := %CameraButton
 @onready var PassUnitTurnLabel := %PassUnitTurnLabel
 
+@onready var BoonContainer := %BoonContainer
+
 var _LevelMap: PackedScene = preload("res://scenes/screens/level_map/level_map.tscn")
 var LevelMap: Node3D
 var GameState: Node
@@ -73,7 +75,7 @@ func _ready() -> void:
 	load_world.emit(LevelMap)
 	Vision = LevelMap.Vision
 	SpectateCamera = LevelMap.SpectateCamera
-	equip_sky.emit(GameState.area_info.id, false)
+	equip_sky.emit(GameState.save_info.area_info.id, false)
 	
 	setTopBarDisabled(true)
 	LevelMap.SpectateCamera.mouse_in_ui.connect(on_camera_panning)
@@ -86,14 +88,14 @@ func _ready() -> void:
 	if !dev.god_start: on_pin_hand_box_panel()
 	
 func setGameInfo() -> void:
-	var hero_card: BaseCardGD = Helper.getCard(GameState.hero_id)
+	var hero_card: BaseCardGD = Helper.getCard(GameState.save_info.hero_id)
 	HeroName.text = hero_card.name
-	var area_info: AreaInfoGD = GameState.area_info
+	var area_info: AreaInfoGD = GameState.save_info.area_info
 	HeroPortrait.get_node("InsideBorder").color = area_info.accent_color
 	HeroPortrait.get_node("HeroArt").texture = load("res://assets/base_game/cards/cards/" + hero_card.folder_name + "/art_mini.png") 
-	SeedInfo.text = str(GameState.gseed)
-	MapInfo.text = str(area_info.world_id) + "-" + str(abs(GameState.map_progress.y - 10))
-	LevelInfo.text = GameState.level_info.name
+	SeedInfo.text = str(GameState.save_info.gseed)
+	MapInfo.text = str(area_info.world_id) + "-" + str(abs(GameState.save_info.map_progress.y - 10))
+	LevelInfo.text = GameState.save_info.level_info.name
 
 func setTopBarDisabled(state: bool) -> void:
 	for child in [PassUnitTurn, LeftCameraArrow, RightCameraArrow, DeckButton, VisionMode, CameraButton, GraveyardButton]:
@@ -552,3 +554,22 @@ func onGraveyardButtonPressed():
 
 func onChangePassButtonText(text: String) -> void:
 	PassUnitTurnLabel.text = text
+
+func onCreateBoon(boon: BoonGD) -> void:
+	var BoonUI := preload("res://scenes/screens/level_ui/boon_manager/boon_ui/boon_ui.tscn").instantiate()
+	BoonUI.setInfo(boon)
+	BoonUI.mouse_in_ui.connect(on_is_mouse_in_ui)
+	BoonContainer.add_child(BoonUI)
+
+func onAscendBoon(boon: BoonGD) -> void:
+	var boon_ui: Control = onFindBoonUI(boon)
+	boon_ui.onAscendBoon()
+
+func onRemoveBoon(boon: BoonGD) -> void:
+	var boon_ui: Control = onFindBoonUI(boon)
+	boon_ui.queue_free()
+
+func onFindBoonUI(boon: BoonGD) -> Control:
+	for boon_ui in BoonContainer.get_children():
+		if boon_ui.boon == boon: return boon_ui
+	return null

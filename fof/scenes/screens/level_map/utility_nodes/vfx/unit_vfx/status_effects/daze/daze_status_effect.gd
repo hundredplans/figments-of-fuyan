@@ -1,10 +1,9 @@
-extends Node3D
+extends UnitVFXBase
 
 const SCALE_MAX := Vector3(1.2, 1.2, 1.2)
 const SCALE_MIN := Vector3(0.8, 0.8, 0.8)
 const SCALE_DURATION: float = 2.6
 const DAZE_ROTATION_SPEED: int = 15
-var type: String
 
 func _ready() -> void:
 	onCreateScaleTween(SCALE_MAX)

@@ -18,7 +18,7 @@ var lerp_item: int = 0
 
 func _ready() -> void:
 	AniItem.visible = false
-	var save_files_size: int = Array(DirAccess.get_files_at("user://save/save_files")).filter(func(x: String): return int(x[0]) in range(1, 6) and x.ends_with(".txt") and x.length() == 5).size()
+	var save_files_size: int = Array(DirAccess.get_files_at("user://save/save_files")).filter(func(x: String): return int(x[0]) in range(1, 6) and x.ends_with(".tres")).size()
 	$MenuButtons/ContinueMenu/Button.disabled = save_files_size == 0
 	$MenuButtons/PlayMenu/Button.disabled = save_files_size == 5
 		

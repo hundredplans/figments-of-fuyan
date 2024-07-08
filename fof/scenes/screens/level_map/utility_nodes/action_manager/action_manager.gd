@@ -67,7 +67,7 @@ func onAppendMoveFinishAction(action: MoveFinishActionGD) -> void:
 		if unit_actions[i].type in [MOVE_UNIT, ATTACK]:
 			unit_actions.insert(i + 1, action)
 			return
-	unit_actions.insert(unit_actions.size(), action)
+	unit_actions.append(action)
 
 var is_triggered: bool = false
 func onTriggerNextAction(action: ActionGD) -> void:

@@ -1,14 +1,24 @@
-[gd_scene format=3 uid="uid://cp7b0xwgbrxu7"]
+[gd_scene load_steps=4 format=3 uid="uid://cp7b0xwgbrxu7"]
 
-[node name="BoonUITooltip" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[ext_resource type="Theme" uid="uid://bhyiyheobours" path="res://scenes/screens/level_ui/panel_theme.tres" id="1_35p3k"]
+[ext_resource type="Script" path="res://scenes/screens/level_ui/boon_manager/boon_ui/boon_ui_tooltip.gd" id="1_rw1i1"]
+[ext_resource type="Script" path="res://assets/base_game/oldcards/card_ui/text_processing.gd" id="3_8ky30"]
 
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="BoonUITooltip" type="PanelContainer"]
+z_index = 98
+y_sort_enabled = true
+offset_right = 190.0
+offset_bottom = 60.0
+mouse_filter = 2
+theme = ExtResource("1_35p3k")
+script = ExtResource("1_rw1i1")
+
+[node name="Label" type="RichTextLabel" parent="." node_paths=PackedStringArray("RichText")]
+custom_minimum_size = Vector2(180, 50)
+layout_mode = 2
+mouse_filter = 2
+bbcode_enabled = true
+fit_content = true
+autowrap_mode = 2
+script = ExtResource("3_8ky30")
+RichText = NodePath(".")

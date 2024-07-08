@@ -4,8 +4,9 @@ signal pressed
 var level_id: int = 0
 var can_press: bool = false
 
-func on_load_save_file(info: Dictionary, area_info: AreaInfoGD) -> void:
-	$SaveInfo/Name.text = str(info.save_file) + "- " + str(area_info.folder_name)
+func setInfo(save_info: SaveInfoGD) -> void:
+	var area_info: AreaInfoGD = save_info.area_info
+	$SaveInfo/Name.text = str(save_info.id) + "- " + str(area_info.folder_name)
 	for node in [$SaveInfo/Progress, $SaveInfo/Status, $SaveInfo/Name, $SaveInfo/Seed]:
 		node.modulate = area_info.accent_color
 		
@@ -14,15 +15,14 @@ func on_load_save_file(info: Dictionary, area_info: AreaInfoGD) -> void:
 	
 	$Background/ArtBorderInside.color = area_info.primary_color
 	
-	$SaveInfo/ShillingCounter.set_shilling_count(info.shillings)
-	$SaveInfo/HeroArt.texture = load("res://assets/base_game/cards/cards/" + Helper.getHeroCardInfo(info.hero_id)\
-	.base_cards[info.hero_level].folder_name + "/art_mini.png")
+	$SaveInfo/ShillingCounter.set_shilling_count(save_info.shillings)
+	$SaveInfo/HeroArt.texture = load("res://assets/base_game/cards/cards/" + Helper.getHeroCardInfo(save_info.hero_id)\
+	.base_cards[save_info.hero_level].folder_name + "/art_mini.png")
 	
-	$SaveInfo/Progress.text = str(area_info.world_id) + "-" + str(abs(info.map_progress[1] - 10))
-	$SaveInfo/Seed.text = str(info.gseed)
+	$SaveInfo/Progress.text = str(area_info.world_id) + "-" + str(abs(save_info.map_progress[1] - 10))
+	$SaveInfo/Seed.text = str(save_info.gseed)
 	
-	level_id = info.level_id
-	match info.level_id:
+	match save_info.getLevelID():
 		0: $SaveInfo/Status.text = "World Map"
 		_: $SaveInfo/Status.text = "In Battle"
 

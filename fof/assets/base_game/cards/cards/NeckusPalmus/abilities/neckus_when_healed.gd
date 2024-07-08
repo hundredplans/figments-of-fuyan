@@ -5,9 +5,9 @@ func onWhenHealed() -> void:
 		if is_visible: Unit.Model.on_play_animation("Ability")
 		var OnHit := TriggerGD.new(null, Unit, onNeckusHit, TriggerGD.ON_HIT, TriggerGD.REMOVE_FX)
 		var a: Dictionary = {"ability": self}
-		GameEffects.onAddGameFX(Unit, GameFXGD.ABILITY_ACTIVE, a, [OnHit])
+		GameEffects.addGFX(Unit, GameFXGD.ABILITY_ACTIVE, a, [OnHit])
 		Unit.onChangeAIStat("aic", 2)
 
 func onNeckusHit(Defender: UnitGD, AppliedBy: AppliedByGD) -> void:
-	Combat.onStagger(Defender, AppliedBy)
+	GameEffects.addGFX(Defender, GameFXGD.STAGGER)
 	Unit.onResetAIStat("aic")

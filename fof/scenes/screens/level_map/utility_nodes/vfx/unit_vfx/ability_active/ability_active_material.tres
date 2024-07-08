@@ -1,7 +1,8 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bvwbu6c4alrlr"]
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://kx03bjuqo0ya"]
 
-[ext_resource type="Shader" uid="uid://c7uu77obhw7wh" path="res://scenes/screens/level_map/utility_nodes/vfx/ability_active/ability_active_material_shader.tres" id="1_no8oj"]
+[ext_resource type="Shader" uid="uid://buk5kjsrp4k7o" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/ability_active/ability_active_material_shader.tres" id="1_m2023"]
 
 [resource]
 render_priority = 0
-shader = ExtResource("1_no8oj")
+shader = ExtResource("1_m2023")
+shader_parameter/albedo_color = Color(1, 1, 1, 1)
