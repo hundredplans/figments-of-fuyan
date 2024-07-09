@@ -428,29 +428,18 @@ position = Vector2(51, 62)
 scale = Vector2(2, 2)
 texture = ExtResource("13_48llv")
 
-[node name="BoonManager" type="Control" parent="TopBar/LeftBar"]
+[node name="BoonManager" type="ScrollContainer" parent="TopBar/LeftBar"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.1
 mouse_filter = 2
 
-[node name="BoonContainer" type="GridContainer" parent="TopBar/LeftBar/BoonManager"]
+[node name="BoonContainer" type="HBoxContainer" parent="TopBar/LeftBar/BoonManager"]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -149.5
-offset_top = -41.5
-offset_right = 150.5
-offset_bottom = 857.5
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
 mouse_filter = 2
-theme_override_constants/h_separation = 30
-theme_override_constants/v_separation = 50
-columns = 3
 
 [node name="CenterBar" type="Control" parent="TopBar"]
 layout_mode = 1
@@ -701,6 +690,18 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
+[node name="GreyOut" type="ColorRect" parent="."]
+unique_name_in_owner = true
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
 [connection signal="mouse_entered" from="StatusBox" to="." method="onStatusBoxMouseEntered"]
 [connection signal="mouse_entered" from="StatusBox" to="." method="on_is_mouse_in_ui" binds= [true]]
 [connection signal="mouse_exited" from="StatusBox" to="." method="onStatusBoxMouseExited"]
@@ -712,6 +713,7 @@ autowrap_mode = 2
 [connection signal="child_entered_tree" from="HandBox/CardClipper" to="." method="_on_card_clipper_child_entered_tree"]
 [connection signal="mouse_entered" from="TopBar" to="." method="on_is_mouse_in_ui" binds= [true]]
 [connection signal="mouse_exited" from="TopBar" to="." method="on_is_mouse_in_ui" binds= [false]]
+[connection signal="child_entered_tree" from="TopBar/LeftBar/BoonManager" to="." method="_on_boon_manager_child_entered_tree"]
 [connection signal="mouse_in_ui" from="TopBar/CenterBar/LeftCameraArrow" to="." method="on_is_mouse_in_ui"]
 [connection signal="pressed" from="TopBar/CenterBar/LeftCameraArrow" to="." method="onCameraArrowPressed" binds= [-1]]
 [connection signal="mouse_in_ui" from="TopBar/CenterBar/RightCameraArrow" to="." method="on_is_mouse_in_ui"]

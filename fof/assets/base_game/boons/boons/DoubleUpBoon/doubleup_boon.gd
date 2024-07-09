@@ -7,5 +7,6 @@ func onArrive() -> void:
 func onCustomTrigger(val: int) -> int:
 	if charges > 0 and val > 0:
 		charges -= 1
+		LevelUI.setBoonDisabled(self, charges == 0)
 		return val * 2
 	return val

@@ -50,6 +50,7 @@ var ActionManager: ActionManagerGD
 @onready var PassUnitTurnLabel := %PassUnitTurnLabel
 
 @onready var BoonContainer := %BoonContainer
+@onready var GreyOut := %GreyOut
 
 var _LevelMap: PackedScene = preload("res://scenes/screens/level_map/level_map.tscn")
 var LevelMap: Node3D
@@ -100,6 +101,7 @@ func setGameInfo() -> void:
 func setTopBarDisabled(state: bool) -> void:
 	for child in [PassUnitTurn, LeftCameraArrow, RightCameraArrow, DeckButton, VisionMode, CameraButton, GraveyardButton]:
 		child.setDisabled(state)
+	get_viewport().update_mouse_cursor_state()
 
 func _queue_free(screen_name: String) -> void:
 	if screen_name not in ["LoseScreen", "SettingsMenu", "WinScreen"]:
@@ -185,7 +187,7 @@ func onPlayerPhaseStart() -> void:
 	setSelfModulate(BASE_MODULATE)
 
 func setSelfModulate(mod: float) -> void:
-	self_modulate.a = mod
+	GreyOut.self_modulate.a = mod
 
 func onPassUnitTurnButtonPressed():
 	if PlayerManager.unpassed_turns.is_empty() or LevelMap.game_phase == "HandPhase":
@@ -573,3 +575,10 @@ func onFindBoonUI(boon: BoonGD) -> Control:
 	for boon_ui in BoonContainer.get_children():
 		if boon_ui.boon == boon: return boon_ui
 	return null
+
+func setBoonDisabled(boon: BoonGD, x: bool) -> void:
+	var boon_ui: Control = onFindBoonUI(boon)
+	boon_ui.setDisabled(x)
+
+func _on_boon_manager_child_entered_tree(node):
+	node.mouse_filter = MouseFilter.MOUSE_FILTER_PASS

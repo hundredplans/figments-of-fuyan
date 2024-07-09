@@ -91,6 +91,9 @@ func onHit(DMGInfo: DMGInfoGD) -> void:
 	
 	TriggerManager.onUnitTrigger(Unit, TriggerGD.ON_HIT, [DMGInfo.Defender, DMGInfo.AppliedBy])
 	
+func onTriggerOnHit() -> void:
+	pass
+	
 func onRampage(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	var abilities: Array = onFindAbilities(Unit, "Rampage")
 	for ability in abilities:

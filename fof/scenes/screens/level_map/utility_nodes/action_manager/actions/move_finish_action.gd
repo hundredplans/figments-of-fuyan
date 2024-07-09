@@ -15,9 +15,10 @@ func onTrigger() -> void:
 	onResumeIdleAnimation()
 	Units.onRemoveMovementOutlineTiles()
 	
-	if Unit.team == 1 and !Unit.is_dead: Units.setUnitStatus(Unit, UnitGD.TURN_USED)
+	if Unit != null and Unit.team == 1 and !Unit.is_dead: Units.setUnitStatus(Unit, UnitGD.TURN_USED)
 
 func onResumeIdleAnimation() -> void:
-	Unit.Model.on_play_animation("Idle")
-	if Unit.Model.current_walk_stream_player != null:
-		AudioMaster.on_cutoff_sfx(Unit.Model.current_walk_stream_player)
+	if Unit != null:
+		Unit.Model.on_play_animation("Idle")
+		if Unit.Model.current_walk_stream_player != null:
+			AudioMaster.on_cutoff_sfx(Unit.Model.current_walk_stream_player)

@@ -25,6 +25,7 @@ enum {
 	APPEND,
 	PUSH,
 	APPEND_MF,
+	AFTER_HURT,
 }
 
 var ENUM_TO_STRING: Dictionary = {
@@ -49,6 +50,15 @@ func onAddAction(action: ActionGD, type: int = 0) -> void:
 		APPEND: onAppendAction(action)
 		PUSH: onPushAction(action)
 		APPEND_MF: onAppendMoveFinishAction(action)
+		AFTER_HURT: onAfterHurtAction(action)
+
+func onAfterHurtAction(action: ActionGD) -> void:
+	for i in range(unit_actions.size() - 1, -1, -1):
+		if unit_actions[i].type == ATTACK:
+			unit_actions.insert(i + 1, action)
+			return
+	unit_actions.append(action)
+	if !is_triggered: onTriggerNextAction(action)
 
 func onAppendAction(action: ActionGD) -> void:
 	if !action.has_method("onCondition") or action.onCondition():
@@ -68,6 +78,7 @@ func onAppendMoveFinishAction(action: MoveFinishActionGD) -> void:
 			unit_actions.insert(i + 1, action)
 			return
 	unit_actions.append(action)
+	if !is_triggered: onTriggerNextAction(action)
 
 var is_triggered: bool = false
 func onTriggerNextAction(action: ActionGD) -> void:

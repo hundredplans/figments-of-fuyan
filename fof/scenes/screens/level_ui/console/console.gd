@@ -13,6 +13,7 @@ var Deck: DeckGD
 var SpectateCamera: SpectateCameraGD
 var Boons: BoonsGD
 var GameEffects: GameEffectsGD
+var ActionManager: ActionManagerGD
 
 @onready var CommandLine: LineEdit = %CommandLine
 @onready var PastCommandsLabel: Label = %PastCommandsLabel
@@ -140,6 +141,12 @@ func onMoveStates() -> void:
 func onHeal(Tile: TileGD, heal: int) -> void:
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
 	Combat.onHeal(HealInfoGD.new(Unit, AppliedByGD.new("Ability"), heal))
+
+func onForceAi() -> void:
+	if ActionManager.unit_actions.size() > 0: ActionManager.onTriggerNextAction(ActionManager.unit_actions[0])
+	else: ActionManager.onAddAction(MoveFinishActionGD.new(), ActionManagerGD.APPEND_MF)
+		
+	
 
 func onStat(Tile: TileGD, type: String, value: int) -> void:
 	var Unit: UnitGD = Units.unit_by_tile(Tile)

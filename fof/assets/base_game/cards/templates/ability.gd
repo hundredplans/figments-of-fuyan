@@ -28,5 +28,7 @@ func onGainStats(Unit: UnitGD, stat_type: String, val: int, AppliedBy: AppliedBy
 	Unit.stats(stat_type, val, AppliedBy)
 	
 func onAbilityDelay(callable: Callable, _delay: float = 2) -> void:
-	await Units.get_tree().create_timer(_delay).timeout
+	ActionManager.onAddAction(DelayActionGD.new(onCall.bind(callable), is_visible, DelayGD.new(_delay)), ActionManagerGD.PUSH)
+
+func onCall(callable: Callable) -> void:
 	callable.call()

@@ -19,6 +19,10 @@ func setInfo(_boon: BoonGD) -> void:
 func onAscendBoon() -> void:
 	BoonBox.texture = preload("res://assets/base_game/boons/base_boon/boon_box_ascended.png")
 
+func setDisabled(x: bool) -> void:
+	button.setDisabled(x)
+	BoonBox.modulate = button.DISABLED_COLOR if x else Color(1,1,1,1)
+
 func _on_button_mouse_in_ui(x: bool):
 	mouse_state = x
 	mouse_in_ui.emit(x)

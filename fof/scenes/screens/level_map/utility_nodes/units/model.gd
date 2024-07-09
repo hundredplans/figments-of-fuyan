@@ -50,17 +50,20 @@ func _ready() -> void:
 	AniPlayer.playback_default_blend_time = UNIT_ANIMATION_BLEND_TIME
 	AniPlayer.animation_finished.connect(func(__: String): on_play_animation("Idle"))
 
+var previous_ani: String
 func on_play_animation(ani_name: String) -> void:
-	AniPlayer.speed_scale = 1
-	match ani_name:
-		"Attack": ani_name = Unit.getAttackAnimation() if AniPlayer.has_animation("AttackAbility") else "Attack"
-		"Idle":
-			ani_name = idle
-			AniPlayer.speed_scale = idle_speedup
-		"Walk": on_play_walk_sfx()
-		
-	if AniPlayer.is_playing(): onAnimationFinished(AniPlayer.current_animation)
-	AniPlayer.play(ani_name)
+	if !previous_ani == "Death":
+		previous_ani = ani_name
+		if ani_name not in ["Idle", "Jump"]: AniPlayer.speed_scale = 1
+		match ani_name:
+			"Attack": ani_name = Unit.getAttackAnimation() if AniPlayer.has_animation("AttackAbility") else "Attack"
+			"Idle":
+				ani_name = idle
+				AniPlayer.speed_scale = idle_speedup
+			"Walk": on_play_walk_sfx()
+			
+		if AniPlayer.is_playing(): onAnimationFinished(AniPlayer.current_animation)
+		AniPlayer.play(ani_name)
 	
 var current_walk_stream_player: AudioStreamPlayer
 func on_play_walk_sfx() -> void:
@@ -189,8 +192,8 @@ func onCreateJump(Tile: TileGD) -> void:
 	jump_start = Unit.global_position
 	jump_end = onCalculateEndPosition(Tile)
 	is_jump = true
-	AniPlayer.speed_scale = 2
 	jump_time = 0
+	AniPlayer.speed_scale = 2
 	on_play_animation("Jump")
 	
 const JUMP_HEIGHT_MULTIPLIER: float = 2.3

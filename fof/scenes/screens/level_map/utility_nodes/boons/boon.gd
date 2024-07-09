@@ -1,6 +1,12 @@
 class_name BoonGD
 extends Node
 
+var GameEffects: GameEffectsGD
+var Units: UnitsGD
+var LevelUI: LevelUIGD
+var LevelMap: LevelMapGD
+var Hand: HandGD
+
 var boon_info: BoonInfoGD
 var is_ascended: bool = false
 
