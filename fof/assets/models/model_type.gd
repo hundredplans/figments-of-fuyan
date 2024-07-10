@@ -4,3 +4,6 @@ extends Node
 @export var mesh: MeshInstance3D
 @export var type: String
 @export var collision_points: PackedVector3Array
+
+@export var bodies: Array
+@export var meshes: Array

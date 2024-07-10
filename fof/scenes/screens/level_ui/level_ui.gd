@@ -582,3 +582,7 @@ func setBoonDisabled(boon: BoonGD, x: bool) -> void:
 
 func _on_boon_manager_child_entered_tree(node):
 	node.mouse_filter = MouseFilter.MOUSE_FILTER_PASS
+
+func onTrackBoonCharges(boon: BoonGD) -> void:
+	var boon_ui: Control = onFindBoonUI(boon)
+	boon_ui.onTrackCharges(boon.charges)

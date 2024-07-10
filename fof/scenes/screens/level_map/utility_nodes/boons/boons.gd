@@ -57,4 +57,6 @@ func onRemoveBoon(id: int) -> void:
 func onTrigger(Unit: UnitGD, trigger: int, args: Array) -> void:
 	for boon in get_children().filter(func(x: BoonGD): return x.has_method("onTrigger")):
 		boon.onTrigger(Unit, trigger, args)
+		if boon.boon_info.track_charges:
+			LevelUI.onTrackBoonCharges(boon)
 		

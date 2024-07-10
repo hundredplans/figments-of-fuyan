@@ -8,13 +8,18 @@ var tooltip: Control
 
 @export var BoonBox: Sprite2D
 @export var button: TextureButton
+@export var TrackChargesLabel: Label
+@export var Outline: Sprite2D
 
-var boon: Node
+var boon: BoonGD
 func setInfo(_boon: BoonGD) -> void:
 	boon = _boon
 	button.texture = boon.boon_info.icon
 	if !boon.is_ascended: BoonBox.texture = preload("res://assets/base_game/boons/base_boon/boon_box_regular.png")
 	else: BoonBox.texture = preload("res://assets/base_game/boons/base_boon/boon_box_ascended.png")
+	
+	TrackChargesLabel.visible = boon.boon_info.track_charges
+	Outline.modulate = Helper.rarity_colors[boon.boon_info.rarity + 1]
 	
 func onAscendBoon() -> void:
 	BoonBox.texture = preload("res://assets/base_game/boons/base_boon/boon_box_ascended.png")
@@ -43,3 +48,6 @@ func onRemoveTooltip() -> void:
 
 func _process(_delta: float) -> void:
 	if tooltip != null: tooltip.setPosition()
+
+func onTrackCharges(charges: int) -> void:
+	TrackChargesLabel.text = str(charges)

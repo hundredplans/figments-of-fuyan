@@ -6,6 +6,7 @@ extends FofInfoGD
 @export_multiline var ascended_description: String
 @export var rarity: RARITIES
 @export var script_name: String
+@export var track_charges: bool
 
 enum RARITIES {
 	SCRAP,

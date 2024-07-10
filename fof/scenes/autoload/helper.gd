@@ -32,14 +32,14 @@ const stat_ai_dict: Dictionary = {
 }
 
 const rarity_colors: Dictionary = {
-	0: "5b3a24",
-	1: "606060",
-	2: "ce9f80",
-	3: "00946d",
-	4: "f7ce00",
-	5: "7300a8",
-	6: "ad0000",
-	7: "5f91e1",
+	0: "5b3a24", # Neutral
+	1: "606060", # Scrap
+	2: "ce9f80", # Common
+	3: "00946d", # Rare
+	4: "f7ce00", # Exalt
+	5: "7300a8", # Mini-boss
+	6: "ad0000", # Boss
+	7: "5f91e1", # Champion
 }
 	
 const rarity_accent_colors: Dictionary = {
