@@ -4,6 +4,7 @@ extends Node3D
 @onready var ModelManager: Node3D = $ModelManager
 @onready var Effects: Node3D = $Effects
 
+var interactable_tiles: Array
 var tile_outlines: Array
 var tile_state: Array
 var top_of_cliff_wall: Array
@@ -25,6 +26,8 @@ var top_of_cliff_wall: Array
 
 var Unit: UnitGD
 var Tiles: TilesGD
+var LevelMap: LevelMapGD
+var LevelUI: LevelUIGD
 
 func onTTpos(_w: int = w) -> Vector4:
 	return Vector4(tpos.x, tpos.y, tpos.z, _w)
@@ -36,14 +39,17 @@ func setMaterial(mat: Material, btab: int = -1) -> void:
 		2: 
 			if !(wall.model.is_empty()):
 				for model in wall.model:
-					model.mesh.set_surface_override_material(0, mat)
+					for mesh in model.meshes:
+						mesh.set_surface_override_material(0, mat)
 		_:
 			if !types[btab].model == null:
-				types[btab].model.mesh.set_surface_override_material(0, mat)
+				for mesh in types[btab].model.meshes:
+					mesh.set_surface_override_material(0, mat)
 
 func setOutline(mat: Material) -> void:
 	if !types[0].model == null:
-		types[0].model.mesh.set_surface_override_material(1, mat)
+		for mesh in types[0].model.meshes:
+			mesh.set_surface_override_material(1, mat)
 	
 func getTrueHeight() -> float:
 	return 0.3 + (w * 1.2) + (0.6 if tile.type in [1, 2] else 0.0)
@@ -51,3 +57,24 @@ func getTrueHeight() -> float:
 func isDeepWater() -> bool: return tile.id == 4
 func isWater() -> bool: return tile.id in [3, 4]
 func isShallowWater() -> bool: return tile.id == 3
+
+func setObjectHighlight() -> void:
+	if !types[1].model == null and !Tiles.LevelUI.is_mouse_in_ui and LevelMap.verifyLock(LevelMap.HIGHLIGHT_OBJ):
+		var mat: ShaderMaterial = null if !(mouse_entered_tile or mouse_entered_obj) else preload("res://assets/materials/tile_materials/object_outline_material/object_material.tres")
+		for mesh in types[1].model.meshes: mesh.set_surface_override_material(0, mat)
+			
+func onSetupObjectHighlight() -> void:
+	if !types[1].model == null:
+		for body in types[1].model.bodies:
+			body.mouse_entered.connect(isMouseInObj.bind(true))
+			body.mouse_exited.connect(isMouseInObj.bind(false))
+
+var mouse_entered_obj: bool = false
+var mouse_entered_tile: bool = false
+func isMouseInObj(x: bool) -> void:
+	mouse_entered_obj = x
+	setObjectHighlight()
+
+func isMouseInTile(x: bool) -> void:
+	mouse_entered_tile = x
+	setObjectHighlight()

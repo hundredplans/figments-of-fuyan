@@ -72,8 +72,8 @@ func _on_search_text_changed(new_text):
 		
 func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_released("LeftClick"):
-		CheckCollision.position = Camera.position
-		CheckCollision.target_position = (Camera.project_ray_normal(get_viewport().get_mouse_position()) * 100) - CheckCollision.position
+		CheckCollision.position = Camera.global_position
+		CheckCollision.target_position = (Camera.project_ray_normal(get_viewport().get_mouse_position()) * 1000) - CheckCollision.position
 		CheckCollision.force_raycast_update()
 		if CheckCollision.is_colliding():
 			var collider_parent: Node = CheckCollision.get_collider().get_parent()

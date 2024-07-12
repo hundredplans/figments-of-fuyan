@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://oolv461paipv"]
+[gd_scene load_steps=19 format=3 uid="uid://oolv461paipv"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_map/level_map.gd" id="1_2p706"]
 [ext_resource type="PackedScene" uid="uid://cnk5eh0ojgtqs" path="res://scenes/screens/level_map/utility_nodes/spectate_camera/spectate_camera.tscn" id="2_jcp7i"]
@@ -17,6 +17,7 @@
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/status_manager/status_manager.gd" id="14_qxfql"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/action_manager/action_manager.gd" id="15_qbbni"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/trigger_manager/trigger_manager.gd" id="17_xilwm"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/object_manager.gd" id="18_8nphx"]
 
 [node name="LevelMap" type="Node3D"]
 script = ExtResource("1_2p706")
@@ -77,3 +78,6 @@ script = ExtResource("15_qbbni")
 
 [node name="TriggerManager" type="Node" parent="."]
 script = ExtResource("17_xilwm")
+
+[node name="ObjectManager" type="Node" parent="."]
+script = ExtResource("18_8nphx")

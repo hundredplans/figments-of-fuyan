@@ -187,7 +187,7 @@ enum {
 	EXIT_TARGET_ABILITY_OTHER,
 }
 
-func onExitTargetAbilityMode(exit_type: int = 0) -> void: # if unit selected null doesnt reupdate, otherwise creates tiles
+func onExitUnitBoxMode(exit_type: int = 0) -> void: # if unit selected null doesnt reupdate, otherwise creates tiles
 	if TAbilityUnit != null:
 		onRemoveAbilityRange(TAbilityUnit, TAbility)
 		var UnitSelected := getUnitSelected()

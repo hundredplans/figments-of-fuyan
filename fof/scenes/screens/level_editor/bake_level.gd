@@ -93,8 +93,6 @@ func getFirstFneighbours(Tile: TileGD, tiles: Array) -> Array:
 		var direction: Vector3 = cube_directions[i]
 		var neighbour_tiles: Array = tiles.filter(func(x: TileGD): return x.tpos == direction + Tile.tpos and x.tile.id != 0 and x.solid_status == 0)
 		neighbour_tiles.sort_custom(func(x: TileGD, y: TileGD): return x.w > y.w)
-		var is_non_regular_tile: bool = Tile.tile.type in [1, 2]
-		var tile_below_accessable: bool = false
 		for _Tile in neighbour_tiles:
 			Tile.fneighbours.append({"Tile": _Tile})
 			if _Tile.w <= Tile.w: break
@@ -235,6 +233,11 @@ func onSortTileCollisions(Tile: TileGD, tiles: Array, area: int) -> void:
 						scene.position.y = 0.0 if obj_name == "tile" else 0.3
 						scene.rotation_degrees.y = Tile[obj_name].rotation * 60
 						onCreateCollisionPoints(Tile, tiles, scene.global_position, Tile[obj_name].rotation * 60,  scene.collision_points, obj_name)
+						
+						if obj_name == "tile":
+							if Tile['tile'].id == 9: scene.get_node("CrabArmArmature").visible = false
+							elif Tile['tile'].id == 10: scene.get_node("CoconutPile").visible = false
+							
 		
 	for grandchild in Tile.ModelManager.get_children():
 		grandchild.owner = Tile.owner

@@ -600,7 +600,7 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 1
 
-[node name="AbilityMode" type="Control" parent="."]
+[node name="UnitMode" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -609,15 +609,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="TargetAbilitiesBox" type="Control" parent="AbilityMode"]
-anchors_preset = 0
-offset_left = 1718.0
-offset_top = 307.0
-offset_right = 1913.0
-offset_bottom = 1009.0
-mouse_filter = 2
-
-[node name="UnitNameLabel" type="Label" parent="AbilityMode"]
+[node name="UnitNameLabel" type="Label" parent="UnitMode"]
 unique_name_in_owner = true
 layout_mode = 2
 offset_left = 1054.0
@@ -628,7 +620,7 @@ text = "Frederic the Fearless"
 label_settings = SubResource("LabelSettings_ig1jx")
 horizontal_alignment = 2
 
-[node name="AbilityContainer" type="VBoxContainer" parent="AbilityMode"]
+[node name="UnitModeContainer" type="VBoxContainer" parent="UnitMode"]
 layout_mode = 0
 offset_left = 1075.0
 offset_top = 227.0
@@ -636,7 +628,7 @@ offset_right = 1901.0
 offset_bottom = 1056.0
 mouse_filter = 2
 
-[node name="AbilityLabel" type="Label" parent="AbilityMode/AbilityContainer"]
+[node name="UnitModeLabel" type="Label" parent="UnitMode/UnitModeContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
@@ -645,7 +637,7 @@ text = "Palmist Prayer"
 label_settings = SubResource("LabelSettings_el0xh")
 horizontal_alignment = 2
 
-[node name="TargetAbilities" type="VBoxContainer" parent="AbilityMode/AbilityContainer"]
+[node name="UnitModeBoxes" type="VBoxContainer" parent="UnitMode/UnitModeContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8

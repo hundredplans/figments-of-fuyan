@@ -130,7 +130,7 @@ const MODEL_BASE_PATHS: Dictionary = {
 	4: "res://assets/models/decorations/walls/",
 }
 
-const MULTI_TILE_SIZE: int = 6
+const MULTI_TILE_SIZE: int = 8
 func load_single_tile() -> void:
 	if selected_item:
 		for child in Model.get_children(): child.queue_free()

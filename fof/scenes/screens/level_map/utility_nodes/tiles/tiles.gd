@@ -8,13 +8,14 @@ var Combat: CombatGD
 var VFX: VFXGD
 var SpectateCamera: Node3D
 var LevelUI: LevelUIGD
-var LevelMap: Node3D
+var LevelMap: LevelMapGD
 var Vision: VisionGD
 var Units: UnitsGD
 var Lights: LightsGD
 var Hand: HandGD
 var PlayerManager: PlayerManagerGD
 var GameEffects: GameEffectsGD
+var ObjectManager: ObjectManagerGD
 
 var cube_directions: Array[Vector3] = [
 Vector3(1, 0, -1),
@@ -98,7 +99,7 @@ func onIsTileJumpableThrough(pos: Vector4) -> bool:
 			return !(Tile.tile.id > 0 or Tile.solid_status > 0)
 	return true
 
-func position_to_tile(pos: Vector4) -> Node3D: 
+func position_to_tile(pos: Vector4) -> Node3D:
 	var positions: Array = get_children_positions()
 	for i in range(positions.size()):
 		if positions[i] == pos: return get_child(i)
@@ -248,7 +249,13 @@ func onStartPhaseStart() -> void:
 	onConvertMultiTilePositions()
 	onCreateTopOfCliffWall()
 	onSetupTiles()
+	onSetupObjectHighlight()
 	onSetFneighbourTiles()
+	
+func onSetupObjectHighlight() -> void:
+	for Tile in get_children():
+		Tile.onSetupObjectHighlight()
+		ObjectManager.onAddInteractableObj(Tile)
 	
 func onCreateTopOfCliffWall() -> void:
 	for Tile in get_children():
@@ -260,7 +267,7 @@ func onCreateTopOfCliffWall() -> void:
 	
 func onSetupTiles() -> void:
 	for Tile in get_children():
-		Tile.Tiles = self
+		Helper.onCreateChildReferences(Tile)
 		for type in Helper.BTAB_TO_TYPE[-1]:
 			@warning_ignore("incompatible_ternary")
 			Tile[type].model = null if type != "wall" else []
@@ -271,8 +278,9 @@ func onSetupTiles() -> void:
 		
 		setTileOutline(Tile, "")
 		if Tile.solid_status == 1:
-			for child in Tile.ModelManager.get_children().filter(func(x: Node3D): return x.type not in ["tile", "wall"]):
-				child.body.collision_layer = 16
+			for child in Tile.ModelManager.get_children().filter(func(x: Node3D): return x.type not in ["tile", "wall", "obj"]):
+				for body in child.bodies:
+					body.collision_layer = 16
 	
 func onConvertMultiTilePositions() -> void:
 	for Tile in get_children():
@@ -495,6 +503,7 @@ func onTileHovered(Tile: TileGD) -> void:
 	if PlayerManager.ActiveUnit != null and SpectateCamera.SpectateUnit != PlayerManager.ActiveUnit and "MovementRange" in Tile.tile_outlines:
 		LevelUI.setWarningText(true, "SkipAction")
 	else: LevelUI.setWarningText()
+	Tile.isMouseInTile(true)
 
 func onTileHoveredDisplayCard(Tile: TileGD) -> void:
 	if Tile in Vision.getTeamVision():
@@ -509,6 +518,7 @@ func on_tile_unhovered(Tile: TileGD) -> void:
 			setTileOutline(_Tile, "PathHovered", true)
 	Vision.onTileUnhovered(Tile)
 	LevelUI.onQueueTileHoveredGameCard()
+	Tile.isMouseInTile(false)
 
 const OUTLINE_INFO: Dictionary = {
 	"EnemyInRange": [4, preload("res://assets/materials/tile_materials/tile_outlines/light_red_tile_outline.tres")],
@@ -671,5 +681,6 @@ func onTileEffects(Unit: UnitGD, PreviousTile: TileGD) -> void:
 	
 	if (is_water and !was_water): GameEffects.addGFX(Unit, GameFXGD.DEEP_WATER)
 	elif (!is_water and was_water): GameEffects.onFindRemoveFX(Unit, GameFXGD.DEEP_WATER)
+	
 	
 func onCanDrown(Unit: UnitGD) -> bool: return Unit.height.top < 1

@@ -285,3 +285,12 @@ func onRemoveIdleAbility() -> void:
 func setRedMultiply(state: bool) -> void:
 	var val: float = DEFAULT_MULT_VALUE if (!state) else 15.0
 	for mat in materials: mat.next_pass.set_shader_parameter("red_multiply", val)
+
+func getZiplineHeight() -> float:
+	return 2.85 - Unit.height.top
+	
+func onZipline() -> void:
+	Unit.global_position.y += getZiplineHeight()
+
+func onZiplineFinished() -> void:
+	Unit.global_position.y -= getZiplineHeight()

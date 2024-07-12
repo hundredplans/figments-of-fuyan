@@ -321,10 +321,11 @@ func load_area_colors(node: Node, primary_color: Color, accent_color: Color) -> 
 var exclude_fill: Array = []
 
 var _id_to: Array = [
-	["null", "ground", "_hover", "water/shallow_water", "water/deep_water", "_default_tile", "palms/sand_tile", "palms/beach_tile", "palms/sand_road_tile"],
+	["null", "ground", "_hover", "water/shallow_water", "water/deep_water", "_default_tile", "palms/sand_tile", "palms/beach_tile", "palms/sand_road_tile",
+	"palms/sand_tile_trapped", "palms/sand_tile_reward"],
 	
 	["null", "spawns/spawn_enemy", "spawns/spawn_ally", "spawns/spawn_neutral", 
-	"spawns/spawn_trinket"],
+	"spawns/spawn_trinket", "palms/ziplines/palm_zipline_equal_long"],
 	
 	["null", "wall", "wooden_wall"],
 	

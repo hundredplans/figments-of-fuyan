@@ -109,6 +109,7 @@ enum { # Enum for the different types of verifications
 	HAND_EXCLUSIVE,
 	TILE_HOVER,
 	CHANGE_SPECTATE,
+	HIGHLIGHT_OBJ,
 }
 
 var verify_lock: Dictionary = {
@@ -118,7 +119,8 @@ var verify_lock: Dictionary = {
 	TILE_HOVER: [NULL_LOCK, HAND_LOCK],
 	CHANGE_SPECTATE: [NULL_LOCK, HAND_LOCK],
 	IN_ACTION: [UNIT_ACTION],
-	HAND_EXCLUSIVE: [HAND_LOCK]
+	HAND_EXCLUSIVE: [HAND_LOCK],
+	HIGHLIGHT_OBJ: [NULL_LOCK],
 }
 var input_lock: int = 0
 signal input_lock_updated

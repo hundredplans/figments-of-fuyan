@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ObjectInteractTilesGD" load_steps=3 format=3 uid="uid://d08yew1ps5fuo"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/object_interact_tiles/object_interact_tiles.gd" id="1_0udmo"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/iobjects/palm_zipline.gd" id="1_mkqor"]
+
+[resource]
+script = ExtResource("1_0udmo")
+id = 5
+name = "Zipline"
+tiles = Array[Vector4]([Vector4(1, 0, -1, 0), Vector4(5, 0, -5, 0)])
+description = "[center]Use the zipline to get to the other side![/center]"
+max_charges = -1
+iobject_script = ExtResource("1_mkqor")
+select_tiles = false

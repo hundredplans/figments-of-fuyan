@@ -20,12 +20,13 @@ var Deck: DeckGD
 var PlayerManager: PlayerManagerGD
 var StatusManager: StatusManagerGD
 var ActionManager: ActionManagerGD
+var ObjectManager: ObjectManagerGD
 
 @onready var EnemySpottedArrows: Control = %EnemySpottedArrows
 @onready var DrawCard: Control = %DrawCard
-@onready var AbilityLabel: Label = %AbilityLabel
+@onready var UnitModeLabel: Label = %UnitModeLabel
 @onready var UnitNameLabel: Label = %UnitNameLabel
-@onready var TargetAbilities: Container = %TargetAbilities
+@onready var UnitModeBoxes: Container = %UnitModeBoxes
 @onready var Console := %Console
 @onready var VisionMode := %EyeButton
 @onready var EnergyLabels := %EnergyLabels
@@ -65,7 +66,7 @@ func _ready() -> void:
 	setGameInfo()
 	
 	setUnitNameLabel()
-	setAbilityLabels()
+	setUnitModeLabel()
 	setWarningText(false)
 	
 	LevelMap = _LevelMap.instantiate()
@@ -416,47 +417,59 @@ func onSelectTileFinish(Tile: TileGD) -> void:
 	Tiles.onSelectTileFinish()
 	Console.onTileSelected(Tile)
 
+func onAddUnitModeBox(trigger: Object, charges: int, max_charges: int, text: String, desc: String, pressed: Callable, is_disabled: bool) -> Control:
+	var UnitModeBox: Control = preload("res://scenes/screens/level_ui/unit_mode_box.tscn").instantiate()
+	UnitModeBoxes.add_child(UnitModeBox)
+	var charges_text: String = "Charges: " + ((str(charges) + "/" + str(max_charges)) if charges >= 0 else "∞")
+	UnitModeBox.ChargesLabel.text = charges_text
+	UnitModeBox.mouse_in_ui.connect(on_is_mouse_in_ui)
+	UnitModeBox.trigger = trigger
+	UnitModeBox.label.text = text
+	UnitModeBox.description.text = desc
+	UnitModeBox.pressed.connect(pressed)
+	UnitModeBox.setDisabled(is_disabled)
+	return UnitModeBox
+
 func onEnterUnitMode(Unit: UnitGD) -> void:
 	setUnitNameLabel(Unit.base_card.name)
-	for ability in Unit.abilities:
-		if ability is TargetAbilityGD:
-			var TargetAbilityBox: Control = preload("res://scenes/screens/level_ui/target_ability_box.tscn").instantiate()
-			TargetAbilities.add_child(TargetAbilityBox)
-			var charges_text: String = "Charges: " + ((str(ability.charges) + "/" + str(ability.max_charges)) if ability.charges >= 0 else "∞")
-			TargetAbilityBox.AbilityCharges.text = charges_text
-			TargetAbilityBox.label.text = ability.ability_name
-			TargetAbilityBox.description.text = ability.ability_description
-			TargetAbilityBox.ability = ability
-			TargetAbilityBox.pressed.connect(onTargetAbilityBoxPressed.bind(Unit, ability))
-			TargetAbilityBox.setDisabled(!Combat.isAbilityEnabled(Unit, ability))
-			TargetAbilityBox.mouse_in_ui.connect(on_is_mouse_in_ui)
+	for ability in Unit.abilities.filter(func(x: AbilityGD): return x is TargetAbilityGD):
+		onAddUnitModeBox(ability, ability.charges, ability.max_charges, ability.ability_name,\
+		ability.ability_description, onTargetAbilityBoxPressed.bind(Unit, ability), !Combat.isAbilityEnabled(Unit, ability))
+			
+	for iobject in ObjectManager.getInteractableObjects(Unit):
+		onAddUnitModeBox(iobject, iobject.charges, iobject.info.max_charges, iobject.info.name,\
+		iobject.info.description, onIObjectBoxPressed.bind(Unit, iobject), iobject.getDisabled(Unit))
 			
 func onExitUnitMode() -> void:
 	setUnitNameLabel()
-	for child in TargetAbilities.get_children(): child.queue_free()
-	onExitTargetAbilityMode(PlayerManager.EXIT_TARGET_ABILITY_OTHER)
-#
+	for child in UnitModeBoxes.get_children(): child.queue_free()
+	onExitUnitBoxMode(PlayerManager.EXIT_TARGET_ABILITY_OTHER)
+
+func onIObjectBoxPressed(Unit: UnitGD, iobject: IObjectGD) -> void:
+	if !iobject.info.select_tiles:
+		iobject.onTrigger(Unit)
+
 func onTargetAbilityBoxPressed(Unit: UnitGD, ability: AbilityGD) -> void:
-	if PlayerManager.TAbility == ability: onExitTargetAbilityMode(PlayerManager.EXIT_TARGET_ABILITY_BUTTON)
+	if PlayerManager.TAbility == ability: onExitUnitBoxMode(PlayerManager.EXIT_TARGET_ABILITY_BUTTON)
 	else: onEnterTargetAbilityMode(Unit, ability)
 
 func onTargetAbilityBtnPressed(Unit: UnitGD, ability: AbilityGD) -> void:
 	if LevelMap.verifyLock(): onTargetAbilityBoxPressed(Unit, ability)
 		
-func setAbilityLabels(text: String = "") -> void:
-	AbilityLabel.text = text
+func setUnitModeLabel(text: String = "") -> void:
+	UnitModeLabel.text = text
 	
 func setUnitNameLabel(text: String = "") -> void:
 	UnitNameLabel.text = text
 	
 func onEnterTargetAbilityMode(Unit: UnitGD, ability: AbilityGD) -> void:
-	setAbilityLabels(ability.ability_name)
+	setUnitModeLabel(ability.ability_name)
 	PlayerManager.onEnterTargetAbilityMode(Unit, ability)
 	
-func onExitTargetAbilityMode(exit_type: int = 0) -> void: # has to check if actually in target ability mode first
+func onExitUnitBoxMode(exit_type: int = 0) -> void: # has to check if actually in target ability mode first
 	if PlayerManager.TAbility != null:
-		setAbilityLabels()
-		PlayerManager.onExitTargetAbilityMode(exit_type)
+		setUnitModeLabel()
+		PlayerManager.onExitUnitBoxMode(exit_type)
 
 func onUpdateAbilityCharges(Unit: UnitGD) -> void:
 	var charge_abilities: Array = []
