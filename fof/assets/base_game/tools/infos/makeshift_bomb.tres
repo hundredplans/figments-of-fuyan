@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ToolInfoGD" load_steps=4 format=3 uid="uid://h5qockuxe4yw"]
+
+[ext_resource type="Texture2D" uid="uid://dwxjr5gl007ry" path="res://assets/base_game/tools/icons/Makeshift Bomb.png" id="1_uulrc"]
+[ext_resource type="Script" path="res://assets/base_game/tools/tool_info.gd" id="2_yg81b"]
+[ext_resource type="Script" path="res://assets/base_game/tools/scripts/makeshift_bomb.gd" id="3_ryigx"]
+
+[resource]
+script = ExtResource("2_yg81b")
+id = 2
+icon = ExtResource("1_uulrc")
+rarity = 2
+tool_script = ExtResource("3_ryigx")
+display_name = "Makeshift Bomb"
+description = "LAST WILL: Deal [1] DMG to adjacent units"
+ascended_description = "LAST WILL: Deal [1] DMG to enemies in a [2] Tile range"
+tool_abilities = Array[Resource("res://assets/base_game/tools/tool_ability_info.gd")]([])

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ToolInfoGD" load_steps=4 format=3 uid="uid://u5psxgohvgok"]
+
+[ext_resource type="Texture2D" uid="uid://dpllp7ysw3sku" path="res://assets/base_game/tools/icons/Wooden Buckler.png" id="1_3x4q0"]
+[ext_resource type="Script" path="res://assets/base_game/tools/tool_info.gd" id="1_l2jg4"]
+[ext_resource type="Script" path="res://assets/base_game/tools/scripts/wooden_buckler.gd" id="3_5smjb"]
+
+[resource]
+script = ExtResource("1_l2jg4")
+id = 5
+icon = ExtResource("1_3x4q0")
+rarity = 3
+tool_script = ExtResource("3_5smjb")
+display_name = "Wooden Buckler"
+description = "Gain [+1/0] when struck by an enemy"
+ascended_description = "REVENGE: Gain [+1/0]"
+tool_abilities = Array[Resource("res://assets/base_game/tools/tool_ability_info.gd")]([])

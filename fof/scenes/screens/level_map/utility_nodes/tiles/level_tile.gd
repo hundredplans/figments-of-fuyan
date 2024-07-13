@@ -48,7 +48,7 @@ func setMaterial(mat: Material, btab: int = -1) -> void:
 
 func setOutline(mat: Material) -> void:
 	if !types[0].model == null:
-		for mesh in types[0].model.meshes:
+		for mesh in types[0].model.meshes.filter(func(x: MeshInstance3D): return x.get_surface_override_material_count() > 1):
 			mesh.set_surface_override_material(1, mat)
 	
 func getTrueHeight() -> float:

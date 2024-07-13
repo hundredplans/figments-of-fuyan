@@ -59,7 +59,9 @@ func onAddUnitStatus(Unit: UnitGD, type: String = "UnitStatusRegular") -> void:
 		"TileHoveredUnitStatus":
 			LevelUI.TileHoveredGameCard.add_child(UnitStatus)
 			UnitStatus.setUnit(Unit)
-	
+			
+	UnitStatus.onEquipTool(Unit.Tool)
+	UnitStatus.mouse_in_ui.connect(LevelUI.on_is_mouse_in_ui)
 	UnitStatus.ArtPop.pressed.connect(LevelUI.onSpectateEnemyOrAlly.bind(Unit))
 	
 	for child in [UnitStatus.ArtPop, UnitStatus.SelectedMask]:

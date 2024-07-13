@@ -136,6 +136,8 @@ func onDrawCard(HandCard: HandCardGD) -> void:
 	GameCard.pressed.connect(on_card_selected.bind(GameCard))
 	if LevelMap.game_phase == "PlayerPhase": GameCard.on_set_disabled(true)
 	CardBox.add_child(GameCard)
+	GameCard.onEquipTool(HandCard.tool)
+	GameCard.mouse_in_ui.connect(on_is_mouse_in_ui)
 	
 var _card_selected_material: Resource = preload("res://assets/base_game/cards/game_card/materials/card_selected_material.tres")
 var GameCardSelected: Control
@@ -423,9 +425,9 @@ func onAddUnitModeBox(trigger: Object, charges: int, max_charges: int, text: Str
 	var charges_text: String = "Charges: " + ((str(charges) + "/" + str(max_charges)) if charges >= 0 else "∞")
 	UnitModeBox.ChargesLabel.text = charges_text
 	UnitModeBox.mouse_in_ui.connect(on_is_mouse_in_ui)
-	UnitModeBox.trigger = trigger
 	UnitModeBox.label.text = text
 	UnitModeBox.description.text = desc
+	UnitModeBox.setInfo(trigger)
 	UnitModeBox.pressed.connect(pressed)
 	UnitModeBox.setDisabled(is_disabled)
 	return UnitModeBox
@@ -439,11 +441,22 @@ func onEnterUnitMode(Unit: UnitGD) -> void:
 	for iobject in ObjectManager.getInteractableObjects(Unit):
 		onAddUnitModeBox(iobject, iobject.charges, iobject.info.max_charges, iobject.info.name,\
 		iobject.info.description, onIObjectBoxPressed.bind(Unit, iobject), iobject.getDisabled(Unit))
+		
+	for tool_ability in Unit.Tool.getToolAbilities():
+		print(tool_ability.charges)
+		print(tool_ability.max_charges)
+		onAddUnitModeBox(Unit.Tool, tool_ability.charges, tool_ability.max_charges, Unit.Tool.tool_info.display_name,\
+		Unit.Tool.getAbilityDescription(tool_ability), onToolPressed.bind(Unit, tool_ability), Combat.isToolAbilityEnabled(Unit, tool_ability))
 			
 func onExitUnitMode() -> void:
 	setUnitNameLabel()
 	for child in UnitModeBoxes.get_children(): child.queue_free()
 	onExitUnitBoxMode(PlayerManager.EXIT_TARGET_ABILITY_OTHER)
+
+func onToolPressed(Unit: UnitGD, tool_ability: ToolAbilityInfoGD) -> void:
+	ActionManager.onAddAction(DelayActionGD.new(Callable(), true, DelayGD.new(tool_ability.delay)), ActionManagerGD.APPEND)
+	Unit.Tool.onAbilityTrigger(tool_ability)
+	tool_ability.used = true
 
 func onIObjectBoxPressed(Unit: UnitGD, iobject: IObjectGD) -> void:
 	if !iobject.info.select_tiles:

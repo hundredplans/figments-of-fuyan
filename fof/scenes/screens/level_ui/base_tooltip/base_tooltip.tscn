@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://cp7b0xwgbrxu7"]
+
+[ext_resource type="Theme" uid="uid://bhyiyheobours" path="res://scenes/screens/level_ui/panel_theme.tres" id="1_p84db"]
+[ext_resource type="Script" path="res://scenes/screens/level_ui/base_tooltip/base_tooltip.gd" id="2_wvtrn"]
+[ext_resource type="Script" path="res://assets/base_game/oldcards/card_ui/text_processing.gd" id="3_ryth4"]
+
+[node name="BaseTooltip" type="PanelContainer"]
+top_level = true
+z_index = 98
+y_sort_enabled = true
+offset_right = 190.0
+offset_bottom = 60.0
+mouse_filter = 2
+theme = ExtResource("1_p84db")
+script = ExtResource("2_wvtrn")
+
+[node name="Label" type="RichTextLabel" parent="." node_paths=PackedStringArray("RichText")]
+custom_minimum_size = Vector2(180, 50)
+layout_mode = 2
+mouse_filter = 2
+bbcode_enabled = true
+fit_content = true
+autowrap_mode = 2
+script = ExtResource("3_ryth4")
+RichText = NodePath(".")

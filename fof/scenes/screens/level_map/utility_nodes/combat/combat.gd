@@ -230,7 +230,11 @@ func isStaggered(Unit: UnitGD) -> bool:
 func isDazed(Unit: UnitGD) -> bool:
 	return GameEffects.onGameFXExists(Unit, GameFXGD.DAZE)
 
-func isAbilityEnabled(Unit: UnitGD, ability: TargetAbilityGD) -> bool:
+func isToolAbilityEnabled(Unit: UnitGD, tool_ability: ToolAbilityInfoGD) ->  bool:
+	return Unit.Tool.getCanAffect(tool_ability) and !tool_ability.used and tool_ability.charges != 0 and !isStaggered(Unit) and\
+	Unit.turn_status == UnitGD.TURN_UNUSED and ((LevelMap.game_phase == "PlayerPhase" and Unit.team == 0) or (LevelMap.game_phase == "AIPhase" and Unit.team == 1))
+
+func isAbilityEnabled(Unit: UnitGD, ability: AbilityGD) -> bool:
 	return ability.can_affect and !ability.used and ability.charges != 0 and\
 	!isStaggered(Unit) and Unit.turn_status == UnitGD.TURN_UNUSED\
 	and (LevelMap.game_phase == "PlayerPhase" and Unit.team == 0 or (LevelMap.game_phase == "AIPhase" and Unit.team == 1))

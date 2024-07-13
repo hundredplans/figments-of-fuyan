@@ -14,3 +14,8 @@ func _ready() -> void:
 func setDisabled(x: bool) -> void:
 	button.setDisabled(x)
 
+func setInfo(_trigger: Object) -> void:
+	trigger = _trigger
+	if trigger is ToolGD or IObjectGD:
+		description.script = preload("res://assets/base_game/oldcards/card_ui/text_processing.gd")
+		description.text = description.on_apply_text_processing(description.text)

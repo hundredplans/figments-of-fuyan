@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://c58jdx2o7cfwc"]
+[gd_scene load_steps=22 format=3 uid="uid://c58jdx2o7cfwc"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/unit_status.gd" id="1_q5ivk"]
 [ext_resource type="Texture2D" uid="uid://b0hfj23m52s2r" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/unit_status_pieces/status_white.png" id="2_atxq7"]
@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://dimwtppnu0iwf" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/hover_card.tscn" id="13_nt1ss"]
 [ext_resource type="Texture2D" uid="uid://bybmcf64yfglo" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/unit_status_pieces/rainbow.png" id="14_63ie2"]
 [ext_resource type="Texture2D" uid="uid://c887ujblogwhg" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/unit_status_pieces/zzz.png" id="15_mkbwo"]
+[ext_resource type="PackedScene" uid="uid://b30b2u7lpn57k" path="res://assets/base_game/tools/base_tool/tool_ui.tscn" id="16_h0j8n"]
 [ext_resource type="Texture2D" uid="uid://c5djmy1cuho42" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/page_arrow/arrow.png" id="16_mgl7r"]
 [ext_resource type="Texture2D" uid="uid://cmmd50dj6o80a" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/page_arrow/arrow_hover.png" id="17_hw875"]
 [ext_resource type="Texture2D" uid="uid://mll08lhop3e4" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/page_arrow/arrow_disabled.png" id="18_qytf8"]
@@ -331,7 +332,7 @@ theme_override_constants/separation = 0
 [node name="HoverCard" parent="." node_paths=PackedStringArray("ArtPop") instance=ExtResource("13_nt1ss")]
 ArtPop = NodePath("../Background/ArtPop")
 
-[node name="ExtraEffects" type="Sprite2D" parent="."]
+[node name="ExtraEffects" type="Node2D" parent="."]
 position = Vector2(14, 15)
 
 [node name="RainbowLight" type="PointLight2D" parent="ExtraEffects"]
@@ -352,6 +353,12 @@ texture_filter = 1
 material = ExtResource("8_vdk02")
 position = Vector2(11, 10)
 texture = ExtResource("15_mkbwo")
+
+[node name="ToolUI" parent="ExtraEffects" instance=ExtResource("16_h0j8n")]
+offset_left = -19.0
+offset_top = -19.0
+offset_right = 31.0
+offset_bottom = 31.0
 
 [node name="StatusZone" type="Control" parent="."]
 anchors_preset = 0
@@ -379,9 +386,9 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -23.5
+offset_left = -20.5
 offset_top = -25.0
-offset_right = 63.5
+offset_right = 66.5
 offset_bottom = 21.0
 grow_horizontal = 2
 grow_vertical = 0
@@ -424,3 +431,7 @@ texture_disabled = ExtResource("18_qytf8")
 libraries = {
 "": SubResource("AnimationLibrary_iq8mx")
 }
+
+[connection signal="mouse_entered" from="Background/SelectedMask" to="." method="onIsMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="Background/SelectedMask" to="." method="onIsMouseInUI" binds= [false]]
+[connection signal="mouse_in_ui" from="ExtraEffects/ToolUI" to="." method="onIsMouseInUI"]

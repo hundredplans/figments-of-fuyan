@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cb6nky7lu8ox1" path="res://assets/base_game/cards/cards/DumsyPalmsy/art_pop.png" id="4_0aqdq"]
 [ext_resource type="Texture2D" uid="uid://iucmlitjenwl" path="res://assets/base_game/cards/game_card/art/stats/energy.png" id="5_vkqc1"]
 [ext_resource type="LabelSettings" uid="uid://qp0350v2j4ah" path="res://assets/UI/roboto/roboto32_outline.tres" id="6_lxkyv"]
-[ext_resource type="Texture2D" uid="uid://b74ndaaqnns1v" path="res://assets/base_game/cards/game_card/art/tool.png" id="7_seux0"]
+[ext_resource type="PackedScene" uid="uid://b30b2u7lpn57k" path="res://assets/base_game/tools/base_tool/tool_ui.tscn" id="7_0x1cq"]
 [ext_resource type="Texture2D" uid="uid://dqj6m376wbhwo" path="res://assets/base_game/cards/game_card/art/stats/att.png" id="8_14kk0"]
 [ext_resource type="Texture2D" uid="uid://b0l6fop34q6ew" path="res://assets/base_game/cards/game_card/art/stats/hp.png" id="9_ytouv"]
 [ext_resource type="Texture2D" uid="uid://ddob5qay4neya" path="res://assets/base_game/cards/game_card/art/stats/spd.png" id="10_4jp8r"]
@@ -21,7 +21,7 @@ font_size = 12
 outline_size = 8
 outline_color = Color(0, 0, 0, 1)
 
-[node name="GameCard" type="Control" node_paths=PackedStringArray("EnergyLabel", "RegularStats", "Art", "Text", "Stats", "CardButton")]
+[node name="GameCard" type="Control" node_paths=PackedStringArray("EnergyLabel", "RegularStats", "Art", "Text", "Stats", "CardButton", "ToolUI")]
 custom_minimum_size = Vector2(264, 397)
 layout_mode = 3
 anchors_preset = 0
@@ -37,6 +37,7 @@ Art = NodePath("Art")
 Text = NodePath("Text")
 Stats = NodePath("Stats")
 CardButton = NodePath("Art/CardButton")
+ToolUI = NodePath("Stats/ToolUI")
 
 [node name="Art" type="Control" parent="."]
 layout_mode = 3
@@ -103,21 +104,12 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_lock_ = true
 
-[node name="Tool" type="Control" parent="Stats"]
-visible = false
+[node name="ToolUI" parent="Stats" instance=ExtResource("7_0x1cq")]
 layout_mode = 1
-anchor_top = -0.026
-anchor_bottom = -0.026
-offset_left = 186.0
-offset_top = 190.88
-offset_right = 236.0
-offset_bottom = 240.88
-mouse_filter = 2
-
-[node name="Sprite2D" type="Sprite2D" parent="Stats/Tool"]
-position = Vector2(25, 25)
-texture = ExtResource("7_seux0")
-metadata/_edit_lock_ = true
+offset_left = 201.0
+offset_top = 228.322
+offset_right = 251.0
+offset_bottom = 278.322
 
 [node name="RegularStats" type="HBoxContainer" parent="Stats"]
 layout_mode = 0
@@ -125,6 +117,7 @@ offset_left = 17.0
 offset_top = 342.0
 offset_right = 244.0
 offset_bottom = 392.0
+mouse_filter = 2
 
 [node name="AttackLabel" type="Label" parent="Stats/RegularStats"]
 modulate = Color(0.976471, 0.454902, 0.105882, 1)
@@ -141,6 +134,7 @@ vertical_alignment = 1
 texture_filter = 1
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 2
 texture = ExtResource("8_14kk0")
 stretch_mode = 2
 
@@ -159,6 +153,7 @@ vertical_alignment = 1
 texture_filter = 1
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 2
 texture = ExtResource("9_ytouv")
 stretch_mode = 2
 
@@ -177,6 +172,7 @@ vertical_alignment = 1
 texture_filter = 1
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 2
 texture = ExtResource("10_4jp8r")
 stretch_mode = 2
 

@@ -214,6 +214,7 @@ offset_left = 423.0
 offset_top = 1075.0
 offset_right = 1498.0
 offset_bottom = 1490.0
+mouse_filter = 1
 
 [node name="Background" type="Panel" parent="HandBox"]
 modulate = Color(1, 1, 1, 0.196078)
@@ -695,6 +696,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
+metadata/_edit_lock_ = true
 
 [connection signal="mouse_entered" from="StatusBox" to="." method="onStatusBoxMouseEntered"]
 [connection signal="mouse_entered" from="StatusBox" to="." method="on_is_mouse_in_ui" binds= [true]]

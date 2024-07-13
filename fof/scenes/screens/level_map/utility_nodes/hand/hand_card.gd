@@ -3,12 +3,11 @@ extends Node
 
 var id: int = 0
 var energy: int = 0
-var tool_id: int = 0
-var effects: Array = []
+var tool: ToolGD
 
-func on_create_card(_id: int, _tool_id: int, _effects: Array) -> void:
+func on_create_card(_id: int) -> void:
 	id = _id
-	tool_id = _tool_id
-	effects = _effects
-	
 	energy = Helper.getCard(id).energy
+
+func onEquipTool(_tool: ToolGD) -> void:
+	tool = _tool

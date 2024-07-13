@@ -52,10 +52,10 @@ func on_load_default_world_state() -> void:
 var phase_ordering: Dictionary = {
 	"StartPhase": ["Tiles", "Vision", "SpectateCamera", "Hand", "Units", "LevelUI", "VFX", "StatusManager", "Boons"],
 	"AfterStartPhase": ["LevelUI", "Deck"],
-	"HandPhase": ["SpectateCamera", "Hand", "VFX", "StatusManager", "LevelUI", "TriggerManager"],
+	"HandPhase": ["SpectateCamera", "Hand", "VFX", "StatusManager", "LevelUI", "TriggerManager", "Tools"],
 	"PlayerPhase": ["Hand", "LevelUI", "VFX", "SpectateCamera", "Combat", "PlayerManager"],
 	"PlayerEndTurnPhase": ["TriggerManager", "LevelUI", "Vision", "StatusManager", "PlayerManager"],
-	"AIPhase": ["Combat", "TriggerManager", "Units", "LevelUI", "StatusManager"],
+	"AIPhase": ["Combat", "TriggerManager", "Units", "LevelUI", "StatusManager", "Tools"],
 	"AIEndTurnPhase": ["TriggerManager", "Units", "StatusManager"]
 }
 func onTriggerPhaseStart(phase: String) -> void:
@@ -73,7 +73,7 @@ func on_change_game_phase(phase: String) -> void:
 		"StartPhase": if dev.god_start: on_advance_game_phase()
 		"AfterStartPhase":
 			if dev.god_start:
-				var Unit: UnitGD = await Units.onUnitAwakened(1, 0, [], 0, 0, Tiles.onSpawnTiles()[0])
+				var Unit: UnitGD = await Units.onUnitAwakened(1, 0, 0, Tiles.onSpawnTiles()[0])
 				Unit.stats("health", 50)
 				Unit.stats("attack", 50)
 				Unit.stats("speed", 5)

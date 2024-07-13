@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="ToolInfoGD" load_steps=6 format=3 uid="uid://bgj4i6ouh7i2c"]
+
+[ext_resource type="Texture2D" uid="uid://dewoeovkvsks0" path="res://assets/base_game/tools/icons/Fire Pendant.png" id="1_n1lc5"]
+[ext_resource type="Script" path="res://assets/base_game/tools/tool_info.gd" id="1_y8dii"]
+[ext_resource type="Script" path="res://assets/base_game/tools/tool_ability_info.gd" id="3_3a1hl"]
+[ext_resource type="Script" path="res://assets/base_game/tools/scripts/fire_pendant.gd" id="3_exekw"]
+
+[sub_resource type="Resource" id="Resource_ifwa2"]
+resource_local_to_scene = true
+script = ExtResource("3_3a1hl")
+ability_type = 0
+ascended_ability_type = 1
+delay = 1.0
+max_charges = 1
+description = ""
+ascended_description = "Gain [+1/0] for [1] Turn"
+
+[resource]
+script = ExtResource("1_y8dii")
+id = 4
+icon = ExtResource("1_n1lc5")
+rarity = 3
+tool_script = ExtResource("3_exekw")
+display_name = "Fire Pendant"
+description = "Gain [+1/0]"
+ascended_description = "Gain [+1/0]
+ABILITY [1]: Gain [+1/0] for [1] Turn"
+tool_abilities = Array[ExtResource("3_3a1hl")]([SubResource("Resource_ifwa2")])

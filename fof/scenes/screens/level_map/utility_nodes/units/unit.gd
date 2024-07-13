@@ -4,8 +4,6 @@ extends Node3D
 signal update_ai_stat
 var is_dead: bool = false
 var id: int = 0
-var tool_id: int = 0
-var effects: Array = []
 var unit_fx: Array = []
 var is_spectated: bool = false
 var visible_state: bool = false
@@ -68,12 +66,14 @@ var ActionManager: ActionManagerGD
 var PlayerManager: PlayerManagerGD
 var LevelMap: LevelMapGD
 
+var Tool: ToolGD
+
 func _ready() -> void: Helper.onCreateChildReferences(self)
 
-func onUnitAwakened(_id: int, _tool_id: int, _effects: Array, _team: int, rot: int, tile: TileGD) -> void:
+func onUnitAwakened(_id: int, _team: int, rot: int, tile: TileGD, _Tool: ToolGD = null) -> void:
+	Tool = _Tool
+	if Tool != null: Tool.onUnitAwakened(self)
 	id = _id
-	tool_id = _tool_id
-	effects = _effects
 	team = _team
 	
 	var card: BaseCardGD = Helper.getCard(id).duplicate()
@@ -251,6 +251,7 @@ func on_arrive(in_vision: bool) -> void:
 		AudioMaster.play_sfx(AudioDict.ARRIVE)
 
 func on_death() -> void:
+	if Tool != null: Tool.queue_free()
 	Tile.Unit = null
 	Tiles.on_remove_tile_material(Tile, "EmptyTile")
 	reparent(Units.Postmortem)

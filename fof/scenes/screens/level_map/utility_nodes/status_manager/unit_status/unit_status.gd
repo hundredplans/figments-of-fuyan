@@ -4,6 +4,7 @@ const ROTATION_DEATH_SPEED: int = 300
 const RAINBOW_SPEED: int = 300
 const NUMBER_SCALE_TIME: float = 0.15
 
+signal mouse_in_ui
 signal target_ability_pressed
 var type: String = "UnitStatusRegular"
 
@@ -25,6 +26,7 @@ var type: String = "UnitStatusRegular"
 @onready var SelectedMask: TextureButton = %SelectedMask 
 @onready var SlotOne: Sprite2D = %SlotOne
 @onready var AniPlayer: AnimationPlayer = $AnimationPlayer
+@onready var ToolUI: Control = $ExtraEffects/ToolUI
 
 var Combat: CombatGD
 
@@ -182,3 +184,6 @@ func onChangePage(i: int) -> void:
 		PageArrows.get_child(0).disabled = page == 0
 		PageArrows.get_child(1).disabled = page == max_page
 	
+func onIsMouseInUI(x: bool) -> void: mouse_in_ui.emit(x)
+func onEquipTool(tool: ToolGD) -> void:
+	ToolUI.setInfo(tool)

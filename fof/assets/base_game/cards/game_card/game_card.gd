@@ -2,7 +2,9 @@ class_name GameCardGD
 extends Control
 var base_card: BaseCardGD
 
+signal mouse_in_ui
 signal pressed
+
 var past_is_hover: bool = false
 var is_hover: bool = false
 
@@ -12,6 +14,9 @@ var is_hover: bool = false
 @export var Text: Control
 @export var Stats: Control
 @export var CardButton: TextureButton
+@export var ToolUI: Control
+
+var tool: ToolGD
 
 func setText(text: String) -> void:
 	Text.get_node("Text").text = base_card.text
@@ -30,11 +35,14 @@ func set_info(_base_card: Resource) -> void:
 			
 	$Art/ArtPop.texture = load("res://assets/base_game/cards/cards/" + base_card.folder_name + "/art_pop.png")
 
-func set_tool(_tool_id: int) -> void:
-	pass
-
-func _on_front_card_mouse_entered(): if is_hover: modulate = Helper.LIGHT_GREY
-func _on_front_card_mouse_exited(): if is_hover: modulate = Helper.BASE
+func _on_front_card_mouse_entered():
+	if is_hover: modulate = Helper.LIGHT_GREY
+	onIsMouseInUI(true)
+	
+func _on_front_card_mouse_exited():
+	if is_hover: modulate = Helper.BASE
+	onIsMouseInUI(false)
+	
 func _on_front_card_pressed(): pressed.emit()
 
 func on_set_disabled(state: bool) -> void:
@@ -42,3 +50,9 @@ func on_set_disabled(state: bool) -> void:
 	modulate = Helper.BASE if !state else Helper.DARK_GREY
 	is_hover = !state
 
+func onEquipTool(_tool: ToolGD) -> void:
+	tool = _tool
+	ToolUI.setInfo(tool)
+	
+func onIsMouseInUI(x: bool) -> void:
+	mouse_in_ui.emit(x)

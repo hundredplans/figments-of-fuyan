@@ -20,7 +20,7 @@ func onStartPhaseStart() -> void:
 func onCreateBoon(boon_info: BoonInfoGD, ascend: bool = false) -> void:
 	if !onBoonExists(boon_info):
 		var boon := Node.new()
-		boon.script = load("res://assets/base_game/boons/boons/" + boon_info.folder_name + "/" + boon_info.script_name + ".gd")
+		boon.script = boon_info.boon_script
 		boon.setInfo(boon_info, ascend)
 		add_child(boon)
 		LevelUI.onCreateBoon(boon)

@@ -103,7 +103,7 @@ func onFatigue(Tile: TileGD):
 	PlayerManager.onSelectActiveUnit(Unit)
 	
 func onSpawn(Tile: TileGD, id: int, team: int) -> void:
-	await Units.onUnitAwakened(id, 0, [], team, 0, Tile)
+	await Units.onUnitAwakened(id, team, 0, Tile)
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
 	PlayerManager.passed_turns.erase(Unit)
 	PlayerManager.onSelectActiveUnit(Unit)

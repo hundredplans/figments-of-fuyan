@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="ToolInfoGD" load_steps=6 format=3 uid="uid://bu6c3b0vqmmnv"]
+
+[ext_resource type="Texture2D" uid="uid://y46nf16rtt2s" path="res://assets/base_game/tools/icons/Life Pendant.png" id="1_snu12"]
+[ext_resource type="Script" path="res://assets/base_game/tools/tool_info.gd" id="2_dem4m"]
+[ext_resource type="Script" path="res://assets/base_game/tools/tool_ability_info.gd" id="3_cdc3b"]
+[ext_resource type="Script" path="res://assets/base_game/tools/scripts/life_pendant.gd" id="3_rsqhi"]
+
+[sub_resource type="Resource" id="Resource_cfxka"]
+resource_local_to_scene = true
+script = ExtResource("3_cdc3b")
+ability_type = 0
+ascended_ability_type = 1
+delay = 1.0
+max_charges = 1
+description = ""
+ascended_description = "Heal [1] HEALTH"
+
+[resource]
+script = ExtResource("2_dem4m")
+id = 1
+icon = ExtResource("1_snu12")
+rarity = 2
+tool_script = ExtResource("3_rsqhi")
+display_name = "Life Pendant"
+description = "Gain [+0/1]"
+ascended_description = "Gain [+0/1]
+ABILITY [1]: Heal [1] HEALTH"
+tool_abilities = Array[ExtResource("3_cdc3b")]([SubResource("Resource_cfxka")])

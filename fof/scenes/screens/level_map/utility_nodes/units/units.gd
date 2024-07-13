@@ -25,16 +25,16 @@ var Hand: HandGD
 var UnitScene: PackedScene = preload("res://scenes/screens/level_map/utility_nodes/units/unit.tscn")
 
 const ARRIVE_EFFECT_DELAY_DURATION: float = 2
-func onUnitAwakened(id: int, tool_id: int, effects: Array, team: int, rot: int, tile: TileGD) -> UnitGD:
-	var Unit: UnitGD = onUnitAwakenedLoad(id, tool_id, effects, team, rot, tile)
+func onUnitAwakened(id: int, team: int, rot: int, tile: TileGD, tool: ToolGD = null) -> UnitGD:
+	var Unit: UnitGD = onUnitAwakenedLoad(id, team, rot, tile, tool)
 	if Unit != null: await onUnitAwakenedProcess(Unit, tile)
 	return Unit
 
-func onUnitAwakenedLoad(id: int, tool_id: int, effects: Array, team: int, rot: int, tile: TileGD) -> UnitGD:
+func onUnitAwakenedLoad(id: int, team: int, rot: int, tile: TileGD, tool: ToolGD = null) -> UnitGD:
 	if !unit_by_tile_bool(tile):
 		var Unit: UnitGD = UnitScene.instantiate()
 		FieldedUnits.add_child(Unit)
-		Unit.onUnitAwakened(id, tool_id, effects, team, rot, tile)
+		Unit.onUnitAwakened(id, team, rot, tile, tool)
 		Unit.Model.unit_fell.connect(onUnitFell.bind(Unit))
 		StatusManager.onUnitAwakened(Unit)
 		Unit.onChangeTile(tile)
@@ -61,7 +61,7 @@ func onArrive(Unit: UnitGD) -> void:
 func onMassUnitsAwakened(tiles: Array, enemy_ids: Array) -> void:
 	var units: Array = []
 	for i in range(tiles.size()):
-		units.append(onUnitAwakenedLoad(enemy_ids[i], 0, [], 1, tiles[i].obj.rotation, tiles[i]))
+		units.append(onUnitAwakenedLoad(enemy_ids[i], 1, tiles[i].obj.rotation, tiles[i]))
 	for i in range(tiles.size()): onUnitAwakenedProcess(units[i], tiles[i])
 
 func onStartPhaseStart() -> void:

@@ -29,7 +29,8 @@ func on_load_wall_get_area(id: int, area: int) -> void:
 	for n in range(4 - info.wall.tile_wall):
 		var wall: Node3D = create_wall(wall_short)
 		wall.position.y = (n * 0.3)
-		wall.get_child(0).get_child(0).collision_layer = 0
+		for body in Helper.get_children_recursive(wall).filter(func(x: Node3D): return x is StaticBody3D):
+			body.collision_layer = 0
 	emit_set_tile_material(2)
 	
 func create_wall(wall_scene: PackedScene) -> Node3D:
@@ -44,7 +45,8 @@ func load_tdeco(id: int) -> void:
 	if id > 0:
 		var decoration: Node3D = load("res://assets/models/decorations/tiles/" + Helper.editor_id_to(3, id, info.tdeco.type) + ".glb").instantiate()
 		TileDecoration.add_child(decoration)
-		decoration.get_child(0).get_child(0).collision_layer = 0
+		for body in Helper.get_children_recursive(decoration).filter(func(x: Node3D): return x is StaticBody3D):
+			body.collision_layer = 0
 		TileDecoration.rotation_degrees.y = info.tdeco.rotation * 60
 		emit_set_tile_material(3)
 	
@@ -57,7 +59,9 @@ func load_wdeco(id: int) -> void:
 	if id > 0:
 		var decoration: Node3D = load("res://assets/models/decorations/walls/" + Helper.editor_id_to(4, id, info.wdeco.type) + ".glb").instantiate()
 		TileWallDecoration.add_child(decoration)
-		TileWallDecoration.get_child(0).get_child(0).collision_layer = 0
+		for body in Helper.get_children_recursive(TileWallDecoration).filter(func(x: Node3D): return x is StaticBody3D):
+			body.collision_layer = 0
+			
 		TileWallDecoration.rotation_degrees.y = info.wdeco.rotation * 60
 		emit_set_tile_material(4)
 		
@@ -68,7 +72,9 @@ func load_obj(id: int) -> void:
 		if !(id in [1, 3] and info.obj.obj_info != []):
 			var object: Node3D = load("res://assets/models/objects/" + Helper.editor_id_to(1, id, info.obj.type) + ".glb").instantiate()
 			TileObject.add_child(object)
-			object.get_child(0).get_child(0).collision_layer = 0
+			
+			for body in Helper.get_children_recursive(object).filter(func(x: Node3D): return x is StaticBody3D):
+				body.collision_layer = 0
 			TileObject.rotation_degrees.y = info.obj.rotation * 60
 		else:
 			load_obj_get_area.emit(id, self)
@@ -97,7 +103,8 @@ func on_load_tile_get_area(id: int, area: int) -> void:
 	Tile.add_child(tile)
 	
 	if id != 2:
-		tile.get_child(0).get_child(0).collision_layer = 0
+		for body in Helper.get_children_recursive(tile).filter(func(x: Node3D): return x is StaticBody3D):
+			body.collision_layer = 0
 	Tile.rotation_degrees.y = info.tile.rotation * 60
 	emit_set_tile_material(0)
 	

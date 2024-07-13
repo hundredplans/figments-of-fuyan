@@ -19,7 +19,7 @@ func setInfo(_boon: BoonGD) -> void:
 	else: BoonBox.texture = preload("res://assets/base_game/boons/base_boon/boon_box_ascended.png")
 	
 	TrackChargesLabel.visible = boon.boon_info.track_charges
-	Outline.modulate = Helper.rarity_colors[boon.boon_info.rarity + 1]
+	Outline.modulate = Helper.rarity_boon_tool_colors[boon.boon_info.rarity]
 	
 func onAscendBoon() -> void:
 	BoonBox.texture = preload("res://assets/base_game/boons/base_boon/boon_box_ascended.png")
@@ -37,7 +37,7 @@ func _on_button_mouse_in_ui(x: bool):
 func onCreateTooltip() -> void:
 	await get_tree().create_timer(TOOLTIP_DELAY).timeout
 	if mouse_state and tooltip == null:
-		tooltip = preload("res://scenes/screens/level_ui/boon_manager/boon_ui/boon_ui_tooltip.tscn").instantiate()
+		tooltip = preload("res://scenes/screens/level_ui/base_tooltip/base_tooltip.tscn").instantiate()
 		var text: String = boon.boon_info.name + ": " + boon.getDescription()
 		tooltip.setInfo(text)
 		add_child(tooltip)

@@ -31,6 +31,15 @@ const stat_ai_dict: Dictionary = {
 	"r": "Rarity",
 }
 
+const rarity_boon_tool_colors: Dictionary = {
+	0: "606060", # Mini
+	1: "606060", # Scrap
+	2: "ce9f80", # Common
+	3: "00946d", # Rare
+	4: "f7ce00", # Exalt
+	5: "ad0000", # Boss
+}
+
 const rarity_colors: Dictionary = {
 	0: "5b3a24", # Neutral
 	1: "606060", # Scrap
@@ -325,7 +334,8 @@ var _id_to: Array = [
 	"palms/sand_tile_trapped", "palms/sand_tile_reward"],
 	
 	["null", "spawns/spawn_enemy", "spawns/spawn_ally", "spawns/spawn_neutral", 
-	"spawns/spawn_trinket", "palms/ziplines/palm_zipline_equal_long"],
+	"spawns/spawn_trinket", "palms/ziplines/palm_zipline_equal_long", "palms/ziplines/palm_zipline_equal_short",
+	"palms/ziplines/palm_zipline_high_long", "palms/ziplines/palm_zipline_high_short", "palms/palm_fireplace"],
 	
 	["null", "wall", "wooden_wall"],
 	

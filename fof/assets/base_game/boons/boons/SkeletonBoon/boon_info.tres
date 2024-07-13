@@ -1,15 +1,17 @@
-[gd_resource type="Resource" script_class="BoonInfoGD" load_steps=3 format=3 uid="uid://dh46awxrrdxbd"]
+[gd_resource type="Resource" script_class="BoonInfoGD" load_steps=4 format=3 uid="uid://dh46awxrrdxbd"]
 
 [ext_resource type="Texture2D" uid="uid://onmy8jaly3ub" path="res://assets/base_game/boons/icons/skeleton.png" id="1_bb1ng"]
 [ext_resource type="Script" path="res://assets/base_game/boons/boon_info.gd" id="1_xsda4"]
+[ext_resource type="Script" path="res://assets/base_game/boons/boons/SkeletonBoon/skeleton_boon.gd" id="1_ygggm"]
 
 [resource]
 script = ExtResource("1_xsda4")
 icon = ExtResource("1_bb1ng")
 description = "When your first ally dies AWAKEN a 1/1 Skeleton"
 ascended_description = "When your first ally dies AWAKEN a 2/2 Skeleton"
-rarity = 1
-script_name = "skeleton_boon"
+rarity = 2
+boon_script = ExtResource("1_ygggm")
+track_charges = false
 id = 5
 name = "Skeleton Boon"
 folder_name = "SkeletonBoon"

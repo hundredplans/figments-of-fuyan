@@ -26,7 +26,7 @@ func on_card_placed(hand_card: HandCardGD, Tile: TileGD) -> void:
 	if LevelMap.game_phase == "HandPhase": LevelUI.on_ally_unit_awakened(skip_result)
 	
 	LevelMap.setInputLock(LevelMapGD.UNIT_ACTION)
-	var Unit: UnitGD = await Units.onUnitAwakened(hand_card.id, hand_card.tool_id, hand_card.effects, 0, Tile.obj.rotation, Tile)
+	var Unit: UnitGD = await Units.onUnitAwakened(hand_card.id, 0, Tile.obj.rotation, Tile, hand_card.tool)
 	Unit.was_placed = true
 	TriggerManager.onUnitTrigger(Unit, TriggerGD.CARD_PLACED, [hand_card])
 	if skip_result: LevelMap.on_advance_game_phase()

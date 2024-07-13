@@ -13,6 +13,7 @@ var LevelUI: LevelUIGD
 var GameState: GameStateGD
 var PlayerManager: PlayerManagerGD
 var Deck: DeckGD
+var Tools: ToolsGD
 
 func onStartPhaseStart() -> void:
 	on_change_energy(5)
@@ -36,15 +37,16 @@ func onPlayerPhaseStart() -> void:
 
 func on_draw_card(deck_card: DeckCardGD) -> void:
 	if get_child_count() < MAX_HAND_SIZE:
-		on_create_card(deck_card.id, deck_card.tool_id, deck_card.effects)
+		on_create_card(deck_card.id)
 
-func on_create_card(id: int, tool_id: int = 0, effects: Array = []) -> void:
+func on_create_card(id: int) -> void:
 	var card := HandCardGD.new()
 	card.name = str(randi())
 	card.script = preload("res://scenes/screens/level_map/utility_nodes/hand/hand_card.gd")
 	add_child(card)
 	
-	card.on_create_card(id, tool_id, effects)
+	card.on_create_card(id)
+	Tools.onEquipTool(card, randi_range(1, 7), true)
 	LevelUI.onDrawCardAnimation(card)
 
 var card_selected_index: int = -1
