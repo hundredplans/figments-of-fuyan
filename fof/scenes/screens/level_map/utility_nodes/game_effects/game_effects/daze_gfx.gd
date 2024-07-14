@@ -6,7 +6,6 @@ func onCreateGFX() -> void:
 	]
 	VFX.onCreateUnitVFX(Unit, "Daze")
 	StatusManager.onAddUnitFX(Unit, "Daze")
-	StatusManager.onUpdateUnitTargetAbilities(Unit)
 	PlayerManager.onRefreshMovementRange()
 	
 func onRemove() -> void:

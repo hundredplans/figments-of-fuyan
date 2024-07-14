@@ -62,18 +62,8 @@ func setUnit(_Unit: UnitGD) -> void:
 		StatLabel.text = str(value)
 		setStatColorSize(StatLabel, value, Unit.onFindStatColor(stat.to_lower()))
 	
-	onCreateAbilities()
 	for info_fx in Unit.unit_fx: onAddUnitFX(info_fx)
 	if type == "UnitStatusRegular": visible = false
-	
-func onCreateAbilities() -> void:
-	for ability in Unit.abilities:
-		if ability is TargetAbilityGD:
-			var TargetAbilityBtn: Control = preload("res://assets/base_game/cards/game_card/art/target_ability/target_ability_button.tscn").instantiate()
-			TargetAbilityBtn.ability = ability
-			TargetAbilityBtn.pressed.connect(onTargetAbilityBtnPressed.bind(ability))
-			TargetAbilities.add_child(TargetAbilityBtn)
-			onUpdateAbility(ability)
 	
 func onUpdateStat(stat: int, stat_changed: String, color: String) -> void:
 	var ScaleTween := create_tween()
@@ -108,13 +98,6 @@ func setUnitStatusState(state_type: int) -> void:
 func setLightMask(state: bool) -> void:
 	for node in [In, ArtPop, AttackSprite, HealthSprite, SpeedSprite, SelectedMask]:
 		node.light_mask = 32 if state else 0
-
-func onUpdateAbility(ability: AbilityGD) -> void:
-	var disable_state: bool = !Combat.isAbilityEnabled(Unit, ability)
-	for AbilityButton in TargetAbilities.get_children():
-		if AbilityButton.ability == ability:
-			AbilityButton.onUpdateAbility(Unit, disable_state)
-			break
 			
 var speeds: Dictionary = {}
 var modulates: Dictionary = {}

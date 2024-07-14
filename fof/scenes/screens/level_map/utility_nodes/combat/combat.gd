@@ -48,6 +48,7 @@ func onLastWill(Deather: UnitGD, AppliedBy: AppliedByGD) -> void:
 			onTriggerAbilitySpectateDelay(Deather, ability, ability.onLastWill)
 	
 	TriggerManager.onUnitTrigger(Deather, TriggerGD.REMOVE_ABILITY) # works for mute aswell
+	TriggerManager.onUnitTrigger(Deather, TriggerGD.LAST_WILL)
 	onOngoingAbility(Deather, "UnitDeath")
 	
 func onWhenHealed(Healee: UnitGD, healInfo: HealInfoGD, heal_amount: int):
@@ -71,7 +72,6 @@ func onTargetAbility(Unit: UnitGD, ability: TargetAbilityGD, Tile: TileGD) -> vo
 		InitialTeleport = null
 	onTriggerAbilitySpectateDelay(Unit, ability, ability.onTargetAbility, InitialTeleport)
 	ability.used = true
-	StatusManager.onUpdateTargetAbility(Unit, ability)
 	PlayerManager.onSelectActiveUnit(Unit)
 	
 func onRevenge(Damagee: UnitGD, AppliedBy: AppliedByGD, DMGInfo: DMGInfoGD, damage: int):
@@ -163,6 +163,9 @@ func onDMG(Damagee: UnitGD, AppliedBy: AppliedByGD, damage: int) -> DMGInfoGD:
 				Damagee.stats("damage", damage, AppliedBy)
 				DMGInfo.HealthDMG = original_health - Damagee.health
 				TriggerManager.onUnitTrigger(Attacker, TriggerGD.ON_AFTER_ATTACK)
+				if DMGInfo.HealthDMG > 0:
+					TriggerManager.onUnitTrigger(Damagee, TriggerGD.WHEN_STRUCK, [Attacker, AppliedBy])
+					
 			"Height":
 				Damagee.stats("damage", damage, AppliedBy)
 				DMGInfo.HealthDMG = original_health - Damagee.health
@@ -171,7 +174,10 @@ func onDMG(Damagee: UnitGD, AppliedBy: AppliedByGD, damage: int) -> DMGInfoGD:
 				Damagee.stats("damage", damage, AppliedBy)
 				DMGInfo.HealthDMG = original_health - Damagee.health
 				
-		if DMGInfo.HealthDMG > 0: onRevenge(Damagee, AppliedBy, DMGInfo, damage)
+		if DMGInfo.HealthDMG > 0:
+			onRevenge(Damagee, AppliedBy, DMGInfo, damage)
+			TriggerManager.onUnitTrigger(Damagee, TriggerGD.REVENGE, [AppliedBy])
+			
 		onRecalculateTargetAbilities()
 		return DMGInfo
 	return null
@@ -214,7 +220,6 @@ func onRecalculateTargetAbilities() -> void:
 		for ability in abilities:
 			ability.onTargetAbilityCondition()
 			ability.can_affect = !ability.tiles["affect"].is_empty()
-			StatusManager.onUpdateTargetAbility(Unit, ability)
 
 func onDestroyUnit(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	var vis: bool = Unit.team == 0 or Unit.Tile in Vision.getTeamVision()

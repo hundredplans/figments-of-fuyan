@@ -46,7 +46,7 @@ func on_create_card(id: int) -> void:
 	add_child(card)
 	
 	card.on_create_card(id)
-	Tools.onEquipTool(card, randi_range(1, 7), true)
+	Tools.onEquipTool(card, randi_range(1, 7), randf() > 0.5)
 	LevelUI.onDrawCardAnimation(card)
 
 var card_selected_index: int = -1

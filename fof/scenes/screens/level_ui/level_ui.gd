@@ -442,11 +442,10 @@ func onEnterUnitMode(Unit: UnitGD) -> void:
 		onAddUnitModeBox(iobject, iobject.charges, iobject.info.max_charges, iobject.info.name,\
 		iobject.info.description, onIObjectBoxPressed.bind(Unit, iobject), iobject.getDisabled(Unit))
 		
-	for tool_ability in Unit.Tool.getToolAbilities():
-		print(tool_ability.charges)
-		print(tool_ability.max_charges)
-		onAddUnitModeBox(Unit.Tool, tool_ability.charges, tool_ability.max_charges, Unit.Tool.tool_info.display_name,\
-		Unit.Tool.getAbilityDescription(tool_ability), onToolPressed.bind(Unit, tool_ability), Combat.isToolAbilityEnabled(Unit, tool_ability))
+	if Unit.Tool != null:
+		for tool_ability in Unit.Tool.getToolAbilities():
+			onAddUnitModeBox(Unit.Tool, tool_ability.charges, tool_ability.max_charges, Unit.Tool.tool_info.display_name,\
+			Unit.Tool.getAbilityDescription(tool_ability), onToolPressed.bind(Unit, tool_ability), !Combat.isToolAbilityEnabled(Unit, tool_ability))
 			
 func onExitUnitMode() -> void:
 	setUnitNameLabel()
@@ -454,7 +453,9 @@ func onExitUnitMode() -> void:
 	onExitUnitBoxMode(PlayerManager.EXIT_TARGET_ABILITY_OTHER)
 
 func onToolPressed(Unit: UnitGD, tool_ability: ToolAbilityInfoGD) -> void:
-	ActionManager.onAddAction(DelayActionGD.new(Callable(), true, DelayGD.new(tool_ability.delay)), ActionManagerGD.APPEND)
+	var callable: Callable = Unit.Tool.onAfterDelay if Unit.Tool.has_method("onAfterDelay") else Callable()
+	print(tool_ability.delay)
+	ActionManager.onAddAction(ArgDelayActionGD.new(Callable(), callable, true, DelayGD.new(tool_ability.delay)), ActionManagerGD.APPEND)
 	Unit.Tool.onAbilityTrigger(tool_ability)
 	tool_ability.used = true
 
@@ -498,8 +499,6 @@ func onUpdateAbilityCharges(Unit: UnitGD) -> void:
 		elif ability.charges > ability.max_charges: color = "GREEN"
 		elif ability.charges < ability.max_charges: color = "YELLOW"
 		if color != "BASE": ability_color_replace.append([ability.ability_index, color, ability.charges])
-		if ability is TargetAbilityGD:
-			StatusManager.onUpdateTargetAbility(Unit, ability)
 	
 	var new_text: String = Unit.base_text
 	for info in ability_color_replace:
@@ -510,12 +509,6 @@ func onUpdateAbilityCharges(Unit: UnitGD) -> void:
 		new_text = new_text.insert(info[0] + 1, "[/color]")
 		new_text = new_text.insert(info[0], "[color=" + info[1] + "]")
 		Unit.base_card.text = new_text
-	
-func onUpdateTargetAbilities() -> void:
-	for Unit in Units.on_units():
-		for ability in Unit.abilities:
-			if ability is TargetAbilityGD:
-				StatusManager.onUpdateTargetAbility(Unit, ability)
 
 func onCameraButtonPressed():
 	SpectateCamera.onChangeCameraMode(!SpectateCamera.is_unit_camera)

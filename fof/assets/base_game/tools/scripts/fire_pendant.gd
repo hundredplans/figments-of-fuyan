@@ -2,7 +2,7 @@ extends ToolGD
 
 const ATTACK: int = 1
 
-func onTrigger(_Unit: UnitGD, trigger: int, args: Array) -> void:
+func onTrigger(_Unit: UnitGD, trigger: int, _args: Array) -> void:
 	if _Unit == Unit and trigger == TriggerGD.AWAKEN:
 		Unit.stats("attack", ATTACK, AppliedByGD.new("Tool", Unit))
 
@@ -12,3 +12,7 @@ func getDisabled(tool_ability_info: ToolAbilityInfoGD) -> bool:
 func onAbilityTrigger(tool_ability_info: ToolAbilityInfoGD) -> void:
 	Combat.onApplyBuffNextTurn(BuffInfoGD.new(Unit, AppliedByGD.new("Tool", Unit), "attack", ATTACK))
 	tool_ability_info.charges -= 1
+	VFX.onCreateUnitVFX(Unit, "Pendant", [4])
+	
+func onAfterDelay() -> void:
+	VFX.onRemoveUnitVFX(Unit, "Pendant")

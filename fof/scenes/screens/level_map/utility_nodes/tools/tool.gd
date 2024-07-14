@@ -5,7 +5,10 @@ var Unit: UnitGD
 var tool_info: ToolInfoGD
 var is_ascended: bool
 
+var Tiles: TilesGD
 var Combat: CombatGD
+var Units: UnitsGD
+var VFX: VFXGD
 
 func setInfo(_tool_info: ToolInfoGD = null, _is_ascended: bool = false) -> void:
 	tool_info = _tool_info
