@@ -91,7 +91,6 @@ func setUnitStatusTurnStatus(Unit: UnitGD, status: int) -> void:
 				UnitStatus.setUnitStatusState(status)
 	
 	Unit.turn_status = status
-	onUpdateUnitTargetAbilities(Unit)
 
 func setUnitStatusExtra(Unit: UnitGD, state: bool) -> void:
 	if !state:
@@ -127,8 +126,8 @@ func onUnitSpectated(Unit: UnitGD, state: bool) -> void:
 	setUnitStatusExtra(Unit, state)
 	
 func setAllRegularUnitStatus(team: int, state: int) -> void:
-	for Unit in units.keys():
-		if Unit.team == team: setUnitStatusTurnStatus(Unit, state)
+	for Unit in units.keys().filter(func(x: UnitGD): return x.team == team and x.turn_status != state):
+		setUnitStatusTurnStatus(Unit, state)
 	
 func onStartPhaseStart() -> void: # Sets everyone to turn unused
 	setAllRegularUnitStatus(0, UnitGD.TURN_INACTIVE)
@@ -192,10 +191,6 @@ func onRemoveTileHoveredUnitStatus(Unit: UnitGD) -> void:
 
 func onCreateTileHoveredUnitStatus(Unit: UnitGD) -> void:
 	onAddUnitStatus(Unit, "TileHoveredUnitStatus")
-	
-func onUpdateTargetAbility(Unit: UnitGD, ability: TargetAbilityGD) -> void:
-	for UnitStatus in onFindUnitStatus(Unit):
-		UnitStatus.onUpdateAbility(ability)
 
 var all_info_fx: Dictionary
 func onStoreAllInfoFX() -> void:
@@ -246,11 +241,6 @@ func onRemoveUnitFX(Unit: UnitGD, type: String, AppliedBy := AppliedByGD.new()) 
 	for UnitStatus in onFindUnitStatus(Unit):
 		UnitStatus.onRemoveUnitFX(type, AppliedBy)
 	#Unit.onRemoveUnitFX(type)
-
-func onUpdateUnitTargetAbilities(Unit: UnitGD) -> void:
-	for ability in Unit.abilities:
-		if ability is TargetAbilityGD:
-			onUpdateTargetAbility(Unit, ability)
 
 const BUFF_COLORS: Dictionary = {
 	-3: "a90002",

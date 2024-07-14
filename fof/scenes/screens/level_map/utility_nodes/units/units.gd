@@ -167,3 +167,7 @@ func onFindClosestAdjacentUnit(Unit: UnitGD, team_relation: TeamRelationGD) -> U
 
 func sortUnitsByDistance(Unit: UnitGD, _Unit: UnitGD, __Unit: UnitGD) -> bool:
 	return Tiles.tile_distance(Unit.Tile, __Unit.Tile) < Tiles.tile_distance(_Unit.Tile, __Unit.Tile)
+
+func onFindAdjacentUnits(Unit: UnitGD, distance: int) -> Array:
+	return Tiles.onFindUnitAdjacentTiles(Unit, distance).filter(func(x: TileGD): return unit_by_tile_team_bool(x, Unit.team)).map(func(x: TileGD): return x.Unit)
+	

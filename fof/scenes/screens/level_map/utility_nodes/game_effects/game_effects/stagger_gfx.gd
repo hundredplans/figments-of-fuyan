@@ -6,7 +6,6 @@ func onCreateGFX() -> void:
 	]
 	VFX.onCreateUnitVFX(Unit, "Stagger")
 	StatusManager.onAddUnitFX(Unit, "Stagger")
-	StatusManager.onUpdateUnitTargetAbilities(Unit)
 
 func onRemove() -> void:
 	VFX.onRemoveUnitVFX(Unit, "Stagger")

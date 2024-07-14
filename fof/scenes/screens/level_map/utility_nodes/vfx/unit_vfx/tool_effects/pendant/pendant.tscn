@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=3 uid="uid://dr00vsrr1lrid"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/tool_effects/pendant/pendant.gd" id="1_7wrco"]
+
+[sub_resource type="Animation" id="Animation_sd5oj"]
+resource_name = "Idle"
+length = 0.7
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pendant:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.156933, 0.147063, 0), Vector3(-0.156933, 0.353825, 0), Vector3(0.0212499, 0.531625, 0), Vector3(0.317228, 0.487841, 0), Vector3(0.441909, 0.306539, -0.00910425), Vector3(0.326311, 0.106641, -0.00910425), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_qjo5i"]
+length = 0.001
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_pjtce"]
+_data = {
+"Idle": SubResource("Animation_sd5oj"),
+"RESET": SubResource("Animation_qjo5i")
+}
+
+[node name="Pendant" type="Node3D"]
+script = ExtResource("1_7wrco")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_pjtce")
+}
+
+[node name="Pendant" type="Node3D" parent="."]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Pendant"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.235382, 0)
+light_energy = 1.5

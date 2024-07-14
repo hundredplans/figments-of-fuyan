@@ -3,7 +3,7 @@ extends Resource
 
 @export var ability_type: ABILITY_TYPES
 @export var ascended_ability_type: ABILITY_TYPES
-@export var delay: float = 1
+@export var delay: float
 @export var max_charges: int
 @export_multiline var description: String
 @export_multiline var ascended_description: String
