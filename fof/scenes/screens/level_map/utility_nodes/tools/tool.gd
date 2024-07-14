@@ -9,6 +9,7 @@ var Tiles: TilesGD
 var Combat: CombatGD
 var Units: UnitsGD
 var VFX: VFXGD
+var ActionManager: ActionManagerGD
 
 func setInfo(_tool_info: ToolInfoGD = null, _is_ascended: bool = false) -> void:
 	tool_info = _tool_info

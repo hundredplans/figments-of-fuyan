@@ -6,6 +6,7 @@ var Units: UnitsGD
 var LevelUI: LevelUIGD
 var LevelMap: LevelMapGD
 var Hand: HandGD
+var ActionManager: ActionManagerGD
 
 var boon_info: BoonInfoGD
 var is_ascended: bool = false

@@ -1,0 +1,75 @@
+[gd_scene load_steps=6 format=3 uid="uid://bx7e3pxbf1oo0"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/tool_effects/wooden_buckler/wooden_buckler.gd" id="1_8lbwg"]
+[ext_resource type="PackedScene" uid="uid://bfs6x6bo4fpi0" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/tool_effects/wooden_buckler/wooden_buckler.glb" id="1_m0psm"]
+
+[sub_resource type="Animation" id="Animation_x7kkn"]
+resource_name = "Idle"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("wooden_buckler:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.3, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0.0548827, 0.374664), Vector3(0, 0.0548827, 0.813144), Vector3(0, 0.0548827, 0.518041), Vector3(0, 0.0548827, 0.0400636)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("wooden_buckler:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.8, 1.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.349066, 0, 0), Vector3(-0.218184, 0, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_83p5m"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("wooden_buckler:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("wooden_buckler:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nhlya"]
+_data = {
+"Idle": SubResource("Animation_x7kkn"),
+"RESET": SubResource("Animation_83p5m")
+}
+
+[node name="WoodenBuckler" type="Node3D"]
+script = ExtResource("1_8lbwg")
+
+[node name="wooden_buckler" parent="." instance=ExtResource("1_m0psm")]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_nhlya")
+}

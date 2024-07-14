@@ -9,8 +9,8 @@ func _ready() -> void:
 	all_boons = Array(DirAccess.get_directories_at(DIR_PATH)).map(func(x: String): return load(DIR_PATH + x + "/boon_info.tres"))
 
 func onStartPhaseStart() -> void:
-	const ASCEND_CHANCE: float = 0.1 # 0.1
-	const CHANCE_AT_BOON: float = 1#0.5 
+	const ASCEND_CHANCE: float = 0.1
+	const CHANCE_AT_BOON: float = 0.5
 	for i in range(all_boons.size()):
 		var roll: bool = randf() < CHANCE_AT_BOON
 		if roll:

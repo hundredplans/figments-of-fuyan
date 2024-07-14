@@ -39,5 +39,9 @@ libraries = {
 [node name="Pendant" type="Node3D" parent="."]
 
 [node name="OmniLight3D" type="OmniLight3D" parent="Pendant"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.235382, 0)
-light_energy = 1.5
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.19, 0.5)
+light_energy = 0.5
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="Pendant"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.19, -0.5)
+light_energy = 0.5
