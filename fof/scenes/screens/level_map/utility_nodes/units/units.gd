@@ -26,22 +26,22 @@ var UnitScene: PackedScene = preload("res://scenes/screens/level_map/utility_nod
 
 const ARRIVE_EFFECT_DELAY_DURATION: float = 2
 func onUnitAwakened(id: int, team: int, rot: int, tile: TileGD, tool: ToolGD = null) -> UnitGD:
-	var Unit: UnitGD = onUnitAwakenedLoad(id, team, rot, tile, tool)
-	if Unit != null: await onUnitAwakenedProcess(Unit, tile)
+	var Unit: UnitGD = onUnitAwakenedLoad(id, team, rot, tile)
+	if Unit != null: await onUnitAwakenedProcess(Unit, tile, tool)
 	return Unit
 
-func onUnitAwakenedLoad(id: int, team: int, rot: int, tile: TileGD, tool: ToolGD = null) -> UnitGD:
+func onUnitAwakenedLoad(id: int, team: int, rot: int, tile: TileGD) -> UnitGD:
 	if !unit_by_tile_bool(tile):
 		var Unit: UnitGD = UnitScene.instantiate()
 		FieldedUnits.add_child(Unit)
-		Unit.onUnitAwakened(id, team, rot, tile, tool)
+		Unit.onUnitAwakened(id, team, rot, tile)
 		Unit.Model.unit_fell.connect(onUnitFell.bind(Unit))
 		StatusManager.onUnitAwakened(Unit)
 		Unit.onChangeTile(tile)
 		return Unit
 	return null
 	
-func onUnitAwakenedProcess(Unit: UnitGD, Tile: TileGD) -> void:
+func onUnitAwakenedProcess(Unit: UnitGD, Tile: TileGD, Tool: ToolGD = null) -> void:
 	Vision.onUnitAwakened(Unit)
 	Unit.on_arrive(Unit.team == 0 or Unit.getVisibleEnemies().size() > 0)
 	Unit.finished_awakening = true
@@ -52,6 +52,7 @@ func onUnitAwakenedProcess(Unit: UnitGD, Tile: TileGD) -> void:
 	await get_tree().process_frame
 	Unit.occupy_tile(Tile)
 	AIManager.getDangerList(Unit, all_units())
+	Unit.onEquipTool(Tool)
 	TriggerManager.onUnitTrigger(Unit, TriggerGD.AWAKEN)
 	
 func onArrive(Unit: UnitGD) -> void:
@@ -169,5 +170,5 @@ func sortUnitsByDistance(Unit: UnitGD, _Unit: UnitGD, __Unit: UnitGD) -> bool:
 	return Tiles.tile_distance(Unit.Tile, __Unit.Tile) < Tiles.tile_distance(_Unit.Tile, __Unit.Tile)
 
 func onFindAdjacentUnits(Unit: UnitGD, distance: int) -> Array:
-	return Tiles.onFindUnitAdjacentTiles(Unit, distance).filter(func(x: TileGD): return unit_by_tile_team_bool(x, Unit.team)).map(func(x: TileGD): return x.Unit)
+	return Tiles.onFindUnitAdjacentTiles(Unit, distance).filter(func(x: TileGD): return x.Unit != null).map(func(x: TileGD): return x.Unit)
 	

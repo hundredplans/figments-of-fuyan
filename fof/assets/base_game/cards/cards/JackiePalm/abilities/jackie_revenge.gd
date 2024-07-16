@@ -2,7 +2,6 @@ extends RevengeGD
 
 @export var HEAL: int = 1
 func onRevenge() -> void:
-	
 	if is_visible:
 		Unit.Model.on_play_animation("Ability")
 		onAbilityDelay(onAbilityDelayFinished)

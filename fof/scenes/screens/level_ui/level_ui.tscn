@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://b0kr4uhvdhmq3"]
+[gd_scene load_steps=34 format=3 uid="uid://b0kr4uhvdhmq3"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_ui/level_ui.gd" id="1_mmiwi"]
 [ext_resource type="Texture2D" uid="uid://iucmlitjenwl" path="res://assets/base_game/cards/game_card/art/stats/energy.png" id="2_bww7p"]
@@ -26,6 +26,7 @@
 [ext_resource type="Texture2D" uid="uid://blifphxm7kkhn" path="res://scenes/screens/level_ui/top_bar/top_bar_button/vision_mode.png" id="22_n4ug1"]
 [ext_resource type="Texture2D" uid="uid://cyu547jk2ynkr" path="res://scenes/screens/level_ui/top_bar/top_bar_button/camera.png" id="23_1m0mv"]
 [ext_resource type="Texture2D" uid="uid://dr4ojvlaol232" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/unit_status_pieces/status_in.png" id="23_g3jx8"]
+[ext_resource type="Script" path="res://scenes/screens/level_ui/unit_mode_boxes.gd" id="27_bffhk"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_q13sk"]
 particle_flag_disable_z = true
@@ -621,29 +622,37 @@ text = "Frederic the Fearless"
 label_settings = SubResource("LabelSettings_ig1jx")
 horizontal_alignment = 2
 
-[node name="UnitModeContainer" type="VBoxContainer" parent="UnitMode"]
-layout_mode = 0
-offset_left = 1075.0
-offset_top = 227.0
-offset_right = 1901.0
-offset_bottom = 1056.0
-mouse_filter = 2
-
-[node name="UnitModeLabel" type="Label" parent="UnitMode/UnitModeContainer"]
+[node name="UnitModeLabel" type="Label" parent="UnitMode"]
 unique_name_in_owner = true
 layout_mode = 2
+offset_left = 1523.0
+offset_top = 227.0
+offset_right = 1901.0
+offset_bottom = 296.0
 size_flags_horizontal = 8
 size_flags_vertical = 0
 text = "Palmist Prayer"
 label_settings = SubResource("LabelSettings_el0xh")
 horizontal_alignment = 2
 
-[node name="UnitModeBoxes" type="VBoxContainer" parent="UnitMode/UnitModeContainer"]
+[node name="UnitModeBoxes" type="VBoxContainer" parent="UnitMode"]
 unique_name_in_owner = true
+layout_mode = 0
+offset_left = 1012.0
+offset_top = 371.0
+offset_right = 1920.0
+offset_bottom = 975.0
+alignment = 1
+script = ExtResource("27_bffhk")
+
+[node name="ContainerOne" type="HBoxContainer" parent="UnitMode/UnitModeBoxes"]
 layout_mode = 2
-size_flags_horizontal = 8
 size_flags_vertical = 3
-mouse_filter = 2
+alignment = 2
+
+[node name="ContainerTwo" type="HBoxContainer" parent="UnitMode/UnitModeBoxes"]
+layout_mode = 2
+size_flags_vertical = 3
 alignment = 2
 
 [node name="DrawCard" type="Control" parent="."]

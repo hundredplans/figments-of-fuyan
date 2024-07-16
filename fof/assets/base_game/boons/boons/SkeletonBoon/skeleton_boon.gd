@@ -1,8 +1,8 @@
 extends BoonGD
 
 var charges: int
-func onTrigger(Unit: UnitGD, trigger: int, _args: Array) -> void:
-	if trigger == TriggerGD.LAST_WILL and Unit.team == 0:
+func onTrigger(Unit: UnitGD, trigger: int, _args: TriggerInfoGD) -> void:
+	if trigger == TriggerGD.LAST_WILL and Unit.team == 0 and charges > 0:
 		ActionManager.onAddAction(DelayActionGD.new(onDelayFinished.bind(Unit), true))
 		
 func onDelayFinished(Unit: UnitGD) -> void:

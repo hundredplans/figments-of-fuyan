@@ -15,6 +15,7 @@ func _init(_Unit: UnitGD = null, _AppliedBy: AppliedByGD = null, _is_visible: bo
 func onTrigger() -> void:
 	Unit.Model.on_death()
 	StatusManager.onDeathBegin(Unit, delay.delay)
+	TriggerManager.onUnitTrigger(Unit, TriggerGD.BEGIN_DEATH)
 
 func onAfterTrigger() -> void:
 	SpectateCamera.onStopTrack()

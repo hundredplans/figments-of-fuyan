@@ -1,11 +1,10 @@
 extends BoonGD
 
 var charges: int = 0
-func onTrigger(_Unit: UnitGD, trigger: int, args: Array) -> void:
-	if trigger == TriggerGD.START_TURN_GLOBAL and args[0].onTeam() == 0 and charges > 0:
+func onTrigger(_Unit: UnitGD, trigger: int, args: TriggerInfoGD) -> void:
+	if trigger == TriggerGD.START_TURN_GLOBAL and args.team_relation.onTeam() == 0 and charges > 0:
 		for Unit in Units.on_units(TeamRelationGD.new(1)):
-			GameEffects.addGFX(Unit, GameFXGD.DAZE)
-			GameEffects.addGFX(Unit, GameFXGD.STAGGER)
+			GameEffects.onDefaultStun(Unit)
 		charges -= 1
 		LevelUI.setBoonDisabled(self, charges == 0)
 		

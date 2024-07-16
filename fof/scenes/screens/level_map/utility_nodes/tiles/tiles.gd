@@ -281,6 +281,13 @@ func onSetupTiles() -> void:
 			for child in Tile.ModelManager.get_children().filter(func(x: Node3D): return x.type not in ["tile", "wall", "obj"]):
 				for body in child.bodies:
 					body.collision_layer = 16
+					
+		Tile.highlight_obj.connect(ObjectManager.onHighlightObj.bind(Tile))
+	
+func onRemovePathHovered() -> void:
+	if PlayerManager.getUnitSelected() != null:
+		for _Tile in get_children().filter(func(x: TileGD): return "PathHovered" in x.tile_outlines):
+			setTileOutline(_Tile, "PathHovered", true)
 	
 func onConvertMultiTilePositions() -> void:
 	for Tile in get_children():
@@ -490,13 +497,16 @@ func onCreateAllTiles(Unit: UnitGD, speed: int) -> Dictionary:
 func onUnits(team_relation: TeamRelationGD) -> Array:
 	return Units.on_units(team_relation).map(func(x: UnitGD): return x.Tile)
 	
-func onTileHovered(Tile: TileGD) -> void:
-	setTileOutline(Tile, "TileInspected")
+func onCreatePathHovered(Tile: TileGD) -> void:
 	if "MovementRange" in Tile.tile_outlines or "EnemyInRange" in Tile.tile_outlines:
 		var movement_path := MovementPathGD.onFindTile(Tile, PlayerManager.unit_movement_paths)
 		for fneighbour in movement_path.fneighbours:
 			fneighbour.Tile.Effects.onSetHeightDropInfo(movement_path, fneighbour)
 			setTileOutline(fneighbour.Tile, "PathHovered")
+	
+func onTileHovered(Tile: TileGD) -> void:
+	setTileOutline(Tile, "TileInspected")
+	onCreatePathHovered(Tile)
 	Vision.onTileHovered(Tile)
 	onTileHoveredDisplayCard(Tile)
 	
@@ -513,17 +523,15 @@ var InspectTile: TileGD
 
 func on_tile_unhovered(Tile: TileGD) -> void:
 	setTileOutline(Tile, "TileInspected", true)
-	if PlayerManager.getUnitSelected() != null:
-		for _Tile in get_children().filter(func(x: TileGD): return "PathHovered" in x.tile_outlines):
-			setTileOutline(_Tile, "PathHovered", true)
+	onRemovePathHovered()
 	Vision.onTileUnhovered(Tile)
 	LevelUI.onQueueTileHoveredGameCard()
 	Tile.isMouseInTile(false)
 
 const OUTLINE_INFO: Dictionary = {
 	"EnemyInRange": [4, preload("res://assets/materials/tile_materials/tile_outlines/light_red_tile_outline.tres")],
-	"PathHovered": [5, preload("res://assets/materials/tile_materials/tile_outlines/white_tile_outline.tres")],
-	"MovementRange": [3, preload("res://assets/materials/tile_materials/tile_outlines/movement_range_tile_outline.tres")],
+	"PathHovered": [5, preload("res://assets/materials/tile_materials/tile_outlines/lgrey_tile_outline.tres")],
+	"MovementRange": [3, preload("res://assets/materials/tile_materials/tile_outlines/grey_tile_outline.tres")],
 	"TileInspected": [1, preload("res://assets/materials/tile_materials/tile_outlines/white_tile_outline.tres")],
 	"AllyInspected": [2, preload("res://assets/materials/tile_materials/tile_outlines/green_tile_outline.tres")],
 	"EnemyInspected": [2, preload("res://assets/materials/tile_materials/tile_outlines/red_tile_outline.tres")],

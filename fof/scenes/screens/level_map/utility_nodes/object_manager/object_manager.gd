@@ -2,6 +2,7 @@ class_name ObjectManagerGD
 extends Node
 
 var Tiles: TilesGD
+var PlayerManager: PlayerManagerGD
 
 const OBJECT_INTERACT_TILES: String = "res://scenes/screens/level_map/utility_nodes/object_manager/object_interact_tiles/"
 var interactable_obj_resources: Array
@@ -21,5 +22,23 @@ func onAddInteractableObj(Tile: TileGD) -> void:
 			iobject.setInfo(Tile, tiles, object_interactables)
 			return
 	
-func getInteractableObjects(Unit: UnitGD) -> Array:
+func onFindOccupiedIObjects(Unit: UnitGD) -> Array:
 	return interactables.filter(func(x: IObjectGD): return x.onCondition(Unit))
+
+func onFindIObject(Tile: TileGD) -> IObjectGD:
+	for iobj in interactables:
+		if iobj.BaseTile == Tile: return iobj
+	return null
+
+func onHighlightObj(state: bool, Tile: TileGD) -> void:
+	var Unit: UnitGD = PlayerManager.getUnitSelected()
+	if Unit != null:
+		if state:
+			var iobj: IObjectGD = onFindIObject(Tile)
+			if iobj != null and Unit.Tile not in iobj.interactable_tiles:
+				var tiles: Array = iobj.interactable_tiles.filter(func(x: TileGD): return x.Unit == null)
+				tiles.sort_custom(func(x: TileGD, y: TileGD): return Tiles.tile_distance(x, Unit.Tile) < Tiles.tile_distance(y, Unit.Tile))
+				if tiles.size() > 0:
+					Tiles.onCreatePathHovered(tiles[0])
+		else:
+			Tiles.onRemovePathHovered()

@@ -44,3 +44,6 @@ func getCanAffect(tool_ability: ToolAbilityInfoGD) -> bool:
 	tool_ability.ascended_ability_type == ToolAbilityInfoGD.ABILITY_TYPES.ABILITY:
 		return true
 	return false
+
+func onRemoveSelf() -> void:
+	queue_free()

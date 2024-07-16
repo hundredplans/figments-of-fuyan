@@ -421,7 +421,7 @@ func onSelectTileFinish(Tile: TileGD) -> void:
 
 func onAddUnitModeBox(trigger: Object, charges: int, max_charges: int, text: String, desc: String, pressed: Callable, is_disabled: bool) -> Control:
 	var UnitModeBox: Control = preload("res://scenes/screens/level_ui/unit_mode_box.tscn").instantiate()
-	UnitModeBoxes.add_child(UnitModeBox)
+	UnitModeBoxes._add_child(UnitModeBox)
 	var charges_text: String = "Charges: " + ((str(charges) + "/" + str(max_charges)) if charges >= 0 else "∞")
 	UnitModeBox.ChargesLabel.text = charges_text
 	UnitModeBox.mouse_in_ui.connect(on_is_mouse_in_ui)
@@ -438,9 +438,10 @@ func onEnterUnitMode(Unit: UnitGD) -> void:
 		onAddUnitModeBox(ability, ability.charges, ability.max_charges, ability.ability_name,\
 		ability.ability_description, onTargetAbilityBoxPressed.bind(Unit, ability), !Combat.isAbilityEnabled(Unit, ability))
 			
-	for iobject in ObjectManager.getInteractableObjects(Unit):
-		onAddUnitModeBox(iobject, iobject.charges, iobject.info.max_charges, iobject.info.name,\
-		iobject.info.description, onIObjectBoxPressed.bind(Unit, iobject), iobject.getDisabled(Unit))
+	for iobject in ObjectManager.onFindOccupiedIObjects(Unit):
+		for ability in iobject.info.abilities:
+			onAddUnitModeBox(iobject, ability.charges, ability.max_charges, ability.name,\
+			ability.description, onIObjectBoxPressed.bind(Unit, iobject, ability), !Combat.isIObjectAbilityEnabled(Unit, iobject, ability))
 		
 	if Unit.Tool != null:
 		for tool_ability in Unit.Tool.getToolAbilities():
@@ -449,19 +450,18 @@ func onEnterUnitMode(Unit: UnitGD) -> void:
 			
 func onExitUnitMode() -> void:
 	setUnitNameLabel()
-	for child in UnitModeBoxes.get_children(): child.queue_free()
+	for child in UnitModeBoxes._get_children(): child.queue_free()
 	onExitUnitBoxMode(PlayerManager.EXIT_TARGET_ABILITY_OTHER)
 
 func onToolPressed(Unit: UnitGD, tool_ability: ToolAbilityInfoGD) -> void:
 	var callable: Callable = Unit.Tool.onAfterDelay if Unit.Tool.has_method("onAfterDelay") else Callable()
-	print(tool_ability.delay)
 	ActionManager.onAddAction(ArgDelayActionGD.new(Callable(), callable, true, DelayGD.new(tool_ability.delay)), ActionManagerGD.APPEND)
 	Unit.Tool.onAbilityTrigger(tool_ability)
 	tool_ability.used = true
 
-func onIObjectBoxPressed(Unit: UnitGD, iobject: IObjectGD) -> void:
-	if !iobject.info.select_tiles:
-		iobject.onTrigger(Unit)
+func onIObjectBoxPressed(Unit: UnitGD, iobject: IObjectGD, ability: IObjectAbilityInfoGD) -> void:
+	ActionManager.onAddAction(DelayActionGD.new(Callable(), true, DelayGD.new(ability.delay)), ActionManagerGD.APPEND)
+	if !ability.select_tiles: iobject.onAbilityTrigger(Unit, ability)
 
 func onTargetAbilityBoxPressed(Unit: UnitGD, ability: AbilityGD) -> void:
 	if PlayerManager.TAbility == ability: onExitUnitBoxMode(PlayerManager.EXIT_TARGET_ABILITY_BUTTON)

@@ -1,0 +1,43 @@
+[gd_resource type="Resource" script_class="ObjectInteractTilesGD" load_steps=7 format=3 uid="uid://76dbepup0af8"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/object_interact_tiles/object_interact_tiles.gd" id="1_jyino"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/object_interact_tiles/iobject_ability_info.gd" id="1_pql3d"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/iobjects/palm_fireplace.gd" id="2_whq7e"]
+
+[sub_resource type="Resource" id="Resource_yik5x"]
+resource_local_to_scene = true
+script = ExtResource("1_pql3d")
+name = "A Spring of Palms"
+description = "Allies in a [2] Tile range gain [+0/0/1] for [1] Turn"
+max_charges = 1
+select_tiles = false
+ability_type = 1
+delay = 4.0
+
+[sub_resource type="Resource" id="Resource_d2186"]
+resource_local_to_scene = true
+script = ExtResource("1_pql3d")
+name = "A Night of Palms"
+description = "Allies in a [2] Tile range gain [+1/0] for [2] Turns"
+max_charges = 1
+select_tiles = false
+ability_type = 1
+delay = 4.0
+
+[sub_resource type="Resource" id="Resource_rh82g"]
+resource_local_to_scene = true
+script = ExtResource("1_pql3d")
+name = "A Rain of Palms"
+description = "Allies in a [2] Tile range Heal [1] HEALTH"
+max_charges = 1
+select_tiles = false
+ability_type = 1
+delay = 4.0
+
+[resource]
+script = ExtResource("1_jyino")
+id = 9
+name = "Fireplace"
+tiles = Array[Vector4]([Vector4(1, 0, -1, 0), Vector4(1, -1, 0, 0), Vector4(0, -1, 1, 0), Vector4(-1, 0, 1, 0), Vector4(-1, 1, 0, 0), Vector4(0, 1, -1, 0)])
+abilities = Array[ExtResource("1_pql3d")]([SubResource("Resource_yik5x"), SubResource("Resource_d2186"), SubResource("Resource_rh82g")])
+iobject_script = ExtResource("2_whq7e")

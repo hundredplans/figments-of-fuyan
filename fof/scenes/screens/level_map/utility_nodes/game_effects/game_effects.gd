@@ -56,13 +56,13 @@ func onDeathFinished(Unit: UnitGD) -> void:
 	for GameFX in getUnitGFX(Unit): erase.append(GameFX)
 	for GameFX in erase: gfx.erase(GameFX)
 		
-func onTriggerGameFX(GameFX: GameFXGD, type: int, Unit: UnitGD = null, bound_args: Array = []) -> void:
+func onTriggerGameFX(GameFX: GameFXGD, type: int, Unit: UnitGD = null, args: TriggerInfoGD = null) -> void:
 	if GameFX != null:
 		var remove_triggers: Array = []
 		for Trigger in GameFX.triggers:
 			if Trigger.type == type and (Unit == null or Trigger.Unit == Unit):
-				if !Trigger.callable.is_null():
-					Trigger.callable.callv(bound_args if Trigger.use_bound else [])
+				if args != null: Trigger.callable.call(args)
+				else: Trigger.callable.call()
 				remove_triggers.append(onRemoveTrigger.bind(GameFX, Trigger))
 		for remove_callable in remove_triggers: remove_callable.call()
 	
@@ -89,9 +89,9 @@ func onGameFXExists(Unit: UnitGD, type: int) -> bool:
 		if GameFX.type == type: return true
 	return false
 
-func onTriggerUnitGameFX(Unit: UnitGD, type: int, bound_args: Array = []) -> void:
+func onTriggerUnitGameFX(Unit: UnitGD, type: int, args: TriggerInfoGD) -> void:
 	for GameFX in gfx.filter(func(x: GameFXGD): return x.Unit == Unit):
-		onTriggerGameFX(GameFX, type, Unit, bound_args)
+		onTriggerGameFX(GameFX, type, Unit, args)
 
 func onFindFirstGameFX(Unit: UnitGD, type: int) -> GameFXGD:
 	for GameFX in gfx.filter(func(x: GameFXGD): return x.Unit == Unit):
@@ -100,3 +100,7 @@ func onFindFirstGameFX(Unit: UnitGD, type: int) -> GameFXGD:
 
 func onFindAllGameFX(Unit: UnitGD, type: int) -> Array:
 	return getUnitGFX(Unit).filter(func(x: GameFXGD): return x.type == type)
+
+func onDefaultStun(Unit: UnitGD) -> void:
+	addGFX(Unit, GameFXGD.DAZE)
+	addGFX(Unit, GameFXGD.STAGGER)

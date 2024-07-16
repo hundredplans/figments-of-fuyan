@@ -73,7 +73,7 @@ func load_obj(id: int) -> void:
 			var object: Node3D = load("res://assets/models/objects/" + Helper.editor_id_to(1, id, info.obj.type) + ".glb").instantiate()
 			TileObject.add_child(object)
 			
-			for body in Helper.get_children_recursive(object).filter(func(x: Node3D): return x is StaticBody3D):
+			for body in Helper.get_children_recursive(object).filter(func(x: Node): return x is StaticBody3D):
 				body.collision_layer = 0
 			TileObject.rotation_degrees.y = info.obj.rotation * 60
 		else:

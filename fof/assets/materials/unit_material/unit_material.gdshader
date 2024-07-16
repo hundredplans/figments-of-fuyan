@@ -7,6 +7,11 @@ uniform sampler2D texture_albedo : source_color,filter_linear_mipmap,repeat_enab
 
 uniform float time_value;
 uniform float max_grey;
+uniform float grow;
+
+void vertex() {
+	VERTEX+=NORMAL*grow;
+}
 
 void fragment() {
 	vec2 base_uv = UV;

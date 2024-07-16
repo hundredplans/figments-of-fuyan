@@ -14,6 +14,7 @@ var Vision: VisionGD
 var GameEffects: GameEffectsGD
 var ActionManager: ActionManagerGD
 var Tiles: TilesGD
+var TriggerManager: TriggerManagerGD
 
 var Unit: UnitGD
 var is_visible: bool

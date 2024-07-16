@@ -28,7 +28,7 @@ func on_card_placed(hand_card: HandCardGD, Tile: TileGD) -> void:
 	LevelMap.setInputLock(LevelMapGD.UNIT_ACTION)
 	var Unit: UnitGD = await Units.onUnitAwakened(hand_card.id, 0, Tile.obj.rotation, Tile, hand_card.tool)
 	Unit.was_placed = true
-	TriggerManager.onUnitTrigger(Unit, TriggerGD.CARD_PLACED, [hand_card])
+	TriggerManager.onUnitTrigger(Unit, TriggerGD.CARD_PLACED, CardPlacedTriggerInfoGD.new(hand_card))
 	if skip_result: LevelMap.on_advance_game_phase()
 	
 	SpectateCamera.onSpectate(Unit)

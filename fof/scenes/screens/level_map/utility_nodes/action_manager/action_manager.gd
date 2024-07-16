@@ -51,6 +51,9 @@ func onAddAction(action: ActionGD, type: int = 0) -> void:
 		PUSH: onPushAction(action)
 		APPEND_MF: onAppendMoveFinishAction(action)
 		AFTER_HURT: onAfterHurtAction(action)
+	
+func onUnitActionsToString() -> void:
+	print(unit_actions.map(func(x: ActionGD): return ENUM_TO_STRING[x.type]))
 
 func onAfterHurtAction(action: ActionGD) -> void:
 	for i in range(unit_actions.size() - 1, -1, -1):

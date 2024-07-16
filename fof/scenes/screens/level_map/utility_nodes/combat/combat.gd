@@ -89,7 +89,7 @@ func onHit(DMGInfo: DMGInfoGD) -> void:
 		if ability.onHitCondition():
 			onTriggerAbilitySpectateDelay(Unit, ability, ability.onHit)
 	
-	TriggerManager.onUnitTrigger(Unit, TriggerGD.ON_HIT, [DMGInfo.Defender, DMGInfo.AppliedBy])
+	TriggerManager.onUnitTrigger(Unit, TriggerGD.ON_HIT, OnHitTriggerInfoGD.new(DMGInfo.Defender, DMGInfo.AppliedBy))
 	
 func onTriggerOnHit() -> void:
 	pass
@@ -100,7 +100,7 @@ func onRampage(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 		ability.setInfo(Unit, AppliedBy)
 		if ability.onRampageCondition():
 			onTriggerAbilitySpectateDelay(Unit, ability, ability.onRampage)
-	TriggerManager.onUnitTrigger(Unit, TriggerGD.RAMPAGE, [Unit, AppliedBy])
+	TriggerManager.onUnitTrigger(Unit, TriggerGD.RAMPAGE, RampageTriggerInfoGD.new(AppliedBy))
 		
 func onTriggerAbilitySpectateDelay(Triggerer: UnitGD, ability: AbilityGD, callable: Callable, InitialTeleport: UnitGD = null) -> void:
 	var vis: bool = Triggerer.team == 0 or Triggerer.Tile in Vision.getTeamVision()
@@ -164,7 +164,7 @@ func onDMG(Damagee: UnitGD, AppliedBy: AppliedByGD, damage: int) -> DMGInfoGD:
 				DMGInfo.HealthDMG = original_health - Damagee.health
 				TriggerManager.onUnitTrigger(Attacker, TriggerGD.ON_AFTER_ATTACK)
 				if DMGInfo.HealthDMG > 0:
-					TriggerManager.onUnitTrigger(Damagee, TriggerGD.WHEN_STRUCK, [Attacker, AppliedBy])
+					TriggerManager.onUnitTrigger(Damagee, TriggerGD.WHEN_STRUCK, WhenStruckTriggerInfoGD.new(Attacker, AppliedBy))
 					
 			"Height":
 				Damagee.stats("damage", damage, AppliedBy)
@@ -176,7 +176,7 @@ func onDMG(Damagee: UnitGD, AppliedBy: AppliedByGD, damage: int) -> DMGInfoGD:
 				
 		if DMGInfo.HealthDMG > 0:
 			onRevenge(Damagee, AppliedBy, DMGInfo, damage)
-			TriggerManager.onUnitTrigger(Damagee, TriggerGD.REVENGE, [AppliedBy])
+			TriggerManager.onUnitTrigger(Damagee, TriggerGD.REVENGE, RevengeTriggerInfoGD.new(AppliedBy))
 			
 		onRecalculateTargetAbilities()
 		return DMGInfo
@@ -234,6 +234,10 @@ func isStaggered(Unit: UnitGD) -> bool:
 	
 func isDazed(Unit: UnitGD) -> bool:
 	return GameEffects.onGameFXExists(Unit, GameFXGD.DAZE)
+
+func isIObjectAbilityEnabled(Unit: UnitGD, _iobject: IObjectGD, ability: IObjectAbilityInfoGD) -> bool:
+	return !ability.used and ability.charges != 0 and Unit.turn_status in [UnitGD.TURN_UNUSED, UnitGD.TURN_ACTIVE] and \
+	((LevelMap.game_phase == "PlayerPhase" and Unit.team == 0) or (LevelMap.game_phase == "AIPhase" and Unit.team == 1))
 
 func isToolAbilityEnabled(Unit: UnitGD, tool_ability: ToolAbilityInfoGD) ->  bool:
 	return Unit.Tool.getCanAffect(tool_ability) and !tool_ability.used and tool_ability.charges != 0 and !isStaggered(Unit) and\

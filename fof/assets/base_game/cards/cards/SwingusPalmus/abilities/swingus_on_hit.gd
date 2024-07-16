@@ -19,5 +19,6 @@ func onHit() -> void:
 		is_second_hit = true
 		delay = 2
 		Unit.onChangeAIStat("aic", 1)
+		print(Unit.extra_damage)
 		
 func onHitCondition() -> bool: return true

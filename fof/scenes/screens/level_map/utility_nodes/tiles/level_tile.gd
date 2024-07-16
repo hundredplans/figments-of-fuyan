@@ -1,6 +1,8 @@
 class_name TileGD
 extends Node3D
 
+signal highlight_obj
+
 @onready var ModelManager: Node3D = $ModelManager
 @onready var Effects: Node3D = $Effects
 
@@ -62,9 +64,11 @@ func setObjectHighlight() -> void:
 	if !types[1].model == null and !Tiles.LevelUI.is_mouse_in_ui and LevelMap.verifyLock(LevelMap.HIGHLIGHT_OBJ):
 		var mat: ShaderMaterial = null if !(mouse_entered_tile or mouse_entered_obj) else preload("res://assets/materials/tile_materials/object_outline_material/object_material.tres")
 		for mesh in types[1].model.meshes: mesh.set_surface_override_material(0, mat)
-			
+		highlight_obj.emit(mat != null)
+	
 func onSetupObjectHighlight() -> void:
 	if !types[1].model == null:
+		print(types[1].model.bodies)
 		for body in types[1].model.bodies:
 			body.mouse_entered.connect(isMouseInObj.bind(true))
 			body.mouse_exited.connect(isMouseInObj.bind(false))

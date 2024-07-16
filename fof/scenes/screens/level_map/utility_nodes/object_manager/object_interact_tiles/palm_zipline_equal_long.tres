@@ -1,14 +1,21 @@
-[gd_resource type="Resource" script_class="ObjectInteractTilesGD" load_steps=3 format=3 uid="uid://d08yew1ps5fuo"]
+[gd_resource type="Resource" script_class="ObjectInteractTilesGD" load_steps=5 format=3 uid="uid://d08yew1ps5fuo"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/object_interact_tiles/object_interact_tiles.gd" id="1_0udmo"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/object_interact_tiles/iobject_ability_info.gd" id="1_e121q"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/iobjects/palm_zipline.gd" id="1_mkqor"]
+
+[sub_resource type="Resource" id="Resource_pe56l"]
+script = ExtResource("1_e121q")
+name = "Zipline"
+description = "Use the zipline to get across!"
+max_charges = -1
+select_tiles = false
+ability_type = 1
 
 [resource]
 script = ExtResource("1_0udmo")
 id = 5
 name = "Zipline"
 tiles = Array[Vector4]([Vector4(1, 0, -1, 0), Vector4(5, 0, -5, 0)])
-description = "[center]Use the zipline to get to the other side![/center]"
-max_charges = -1
+abilities = Array[ExtResource("1_e121q")]([SubResource("Resource_pe56l")])
 iobject_script = ExtResource("1_mkqor")
-select_tiles = false

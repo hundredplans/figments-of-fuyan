@@ -14,6 +14,8 @@ var SpectateCamera: SpectateCameraGD
 var Boons: BoonsGD
 var GameEffects: GameEffectsGD
 var ActionManager: ActionManagerGD
+var Tools: ToolsGD
+var StatusManager: StatusManagerGD
 
 @onready var CommandLine: LineEdit = %CommandLine
 @onready var PastCommandsLabel: Label = %PastCommandsLabel
@@ -101,6 +103,14 @@ func onFatigue(Tile: TileGD):
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
 	PlayerManager.passed_turns.erase(Unit)
 	PlayerManager.onSelectActiveUnit(Unit)
+	
+func onTool(Tile: TileGD, id: int) -> void:
+	var Unit: UnitGD = Units.unit_by_tile(Tile)
+	Tools.onEquipTool(Unit, id, false)
+	
+func onToola(Tile: TileGD, id: int) -> void:
+	var Unit: UnitGD = Units.unit_by_tile(Tile)
+	Tools.onEquipTool(Unit, id, true)
 	
 func onSpawn(Tile: TileGD, id: int, team: int) -> void:
 	await Units.onUnitAwakened(id, team, 0, Tile)

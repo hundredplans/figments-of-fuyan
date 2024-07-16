@@ -65,14 +65,25 @@ var StatusManager: StatusManagerGD
 var ActionManager: ActionManagerGD
 var PlayerManager: PlayerManagerGD
 var LevelMap: LevelMapGD
+var TriggerManager: TriggerManagerGD
 
 var Tool: ToolGD
 
 func _ready() -> void: Helper.onCreateChildReferences(self)
 
-func onUnitAwakened(_id: int, _team: int, rot: int, tile: TileGD, _Tool: ToolGD = null) -> void:
+
+func onEquipTool(_Tool: ToolGD) -> void:
+	if Tool != null:
+		TriggerManager.onUnitTrigger(self, TriggerGD.UNEQUIP_TOOL, UnequipToolTriggerInfoGD.new(_Tool, Tool))
+		Tool.onRemoveSelf()
+	
 	Tool = _Tool
-	if Tool != null: Tool.onUnitAwakened(self)
+	
+	if Tool != null:
+		Tool.onUnitAwakened(self)
+		TriggerManager.onUnitTrigger(self, TriggerGD.EQUIP_TOOL, EquipToolTriggerInfoGD.new(Tool))
+
+func onUnitAwakened(_id: int, _team: int, rot: int, tile: TileGD) -> void:
 	id = _id
 	team = _team
 	
@@ -251,7 +262,7 @@ func on_arrive(in_vision: bool) -> void:
 		AudioMaster.play_sfx(AudioDict.ARRIVE)
 
 func on_death() -> void:
-	if Tool != null: Tool.queue_free()
+	if Tool != null: Tool.onRemoveSelf()
 	Tile.Unit = null
 	Tiles.on_remove_tile_material(Tile, "EmptyTile")
 	reparent(Units.Postmortem)

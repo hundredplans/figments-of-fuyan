@@ -74,17 +74,22 @@ func onAddUnitStatus(Unit: UnitGD, type: String = "UnitStatusRegular") -> void:
 		UnitStatus.ShiftingBackground.material.set_shader_parameter("speed", 0.02)
 	
 func onFindUnitStatus(Unit: UnitGD, type: String = "UnitStatus") -> Array:
-	if !Unit.is_dead:
-		var arr: Array = []
-		for UnitStatus in units[Unit]:
-			if UnitStatus.type.begins_with(type):
-				arr.append(UnitStatus)
-		return arr
+	if units.has(Unit):
+		if !Unit.is_dead:
+			var arr: Array = []
+			for UnitStatus in units[Unit]:
+				if UnitStatus.type.begins_with(type):
+					arr.append(UnitStatus)
+			return arr
+	else: print_debug("Missing unit dependency in status manager")
 	return []
-
+	
+func onEquipTool(Unit: UnitGD) -> void:
+	for UnitStatus in onFindUnitStatus(Unit):
+		UnitStatus.onEquipTool(Unit.Tool)
+	
 func setUnitStatusTurnStatus(Unit: UnitGD, status: int) -> void:
-	var unit_statuses: Array = units[Unit].duplicate()
-	for UnitStatus in unit_statuses:
+	for UnitStatus in onFindUnitStatus(Unit, "Unit"):
 		if Unit.team == 0:
 			UnitStatus.SlotOne.visible = status == UnitGD.TURN_USED
 			if UnitStatus.type.begins_with("UnitStatus"):
@@ -112,7 +117,7 @@ func onDeathFinished(Unit: UnitGD) -> void:
 	units.erase(Unit)
 
 func onUpdateStats(Unit: UnitGD, stat_changed: String, color: String) -> void:
-	for UnitStatus in units[Unit]:
+	for UnitStatus in onFindUnitStatus(Unit, "Unit"):
 		UnitStatus.onUpdateStat(Unit.get(stat_changed.to_lower()), stat_changed, color)
 
 func onUnitSpectated(Unit: UnitGD, state: bool) -> void:
@@ -146,13 +151,11 @@ func onAIEndTurnPhaseStart() -> void:
 	setAllRegularUnitStatus(0, UnitGD.TURN_INACTIVE)
 	
 func setUnitStatusVisible(Unit: UnitGD, state: bool) -> void:
-	if units.has(Unit):
-		for UnitStatus in units[Unit]: UnitStatus.visible = state
+	for UnitStatus in onFindUnitStatus(Unit, "Unit"): UnitStatus.visible = state
 
 func onEnemyInRange(Unit: UnitGD, state: bool) -> void: # Changes slot one
-	if units.has(Unit):
-		for UnitStatus in units[Unit]:
-			UnitStatus.SlotOne.visible = state
+	for UnitStatus in onFindUnitStatus(Unit, "Unit"):
+		UnitStatus.SlotOne.visible = state
 
 func onUnitInspected(Unit: UnitGD) -> void:
 	if LevelMap.verifyLock(LevelMap.INSPECT_UNIT) and !LevelUI.is_status_box_moving:
@@ -200,7 +203,7 @@ func onStoreAllInfoFX() -> void:
 		all_info_fx[info_fx.fx_type] = DIR_PATH + file_path
 
 func onUpdateEnemyVision(Unit: UnitGD, state: bool) -> void:
-	for UnitStatus in units[Unit]:
+	for UnitStatus in onFindUnitStatus(Unit, "Unit"):
 		UnitStatus.visible = state
 		
 	if Unit.team == 1: # Eventually implement as a specific type of base_fx that checks whether the applier is in vision

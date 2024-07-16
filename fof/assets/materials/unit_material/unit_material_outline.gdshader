@@ -22,6 +22,4 @@ void fragment() {
 	ALPHA = 1.0 - time_value;
 	ALBEDO.r *= red_multiply;
 	ALBEDO.g *= green_multiply;
-	//
-	
 }
