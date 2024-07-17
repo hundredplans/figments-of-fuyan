@@ -42,3 +42,7 @@ func onHighlightObj(state: bool, Tile: TileGD) -> void:
 					Tiles.onCreatePathHovered(tiles[0])
 		else:
 			Tiles.onRemovePathHovered()
+
+func onTrigger(Unit: UnitGD, trigger: int, args: TriggerInfoGD) -> void:
+	for iobj in interactables.filter(func(x: IObjectGD): return x.has_method("onTrigger")):
+		iobj.onTrigger(Unit, trigger, args)

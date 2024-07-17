@@ -9,10 +9,10 @@
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/base_cards.gd" id="5_juu21"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/hand/hand.gd" id="6_0ftum"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/deck/deck.gd" id="6_pxoii"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/combat/combat.gd" id="9_l7gyj"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/random.gd" id="10_1t13j"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/boons/boons.gd" id="12_hl0m8"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/tools/tools.gd" id="12_nuon7"]
-[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/combat/combat.gd" id="12_oh388"]
 [ext_resource type="PackedScene" uid="uid://bgdpty2dq6w3e" path="res://scenes/screens/level_map/utility_nodes/vfx/vfx.tscn" id="12_y2jm3"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/game_effects/game_effects.gd" id="13_185r7"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/status_manager/status_manager.gd" id="14_qxfql"]
@@ -52,7 +52,7 @@ script = ExtResource("6_pxoii")
 script = ExtResource("10_1t13j")
 
 [node name="Combat" type="Node" parent="."]
-script = ExtResource("12_oh388")
+script = ExtResource("9_l7gyj")
 
 [node name="GameEffects" type="Node" parent="."]
 script = ExtResource("13_185r7")

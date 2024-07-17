@@ -16,6 +16,7 @@ var AIManager: AIManagerGD
 var PlayerManager: PlayerManagerGD
 var StatusManager: StatusManagerGD
 var TriggerManager: TriggerManagerGD
+var ActionManager: ActionManagerGD
 var Hand: HandGD
 
 
@@ -172,3 +173,42 @@ func sortUnitsByDistance(Unit: UnitGD, _Unit: UnitGD, __Unit: UnitGD) -> bool:
 func onFindAdjacentUnits(Unit: UnitGD, distance: int) -> Array:
 	return Tiles.onFindUnitAdjacentTiles(Unit, distance).filter(func(x: TileGD): return x.Unit != null).map(func(x: TileGD): return x.Unit)
 	
+func changeStats(stats: StatsGD) -> void:
+	var array: Array = []
+	for stat_info in stats.array.filter(func(x: StatInfoGD): return !x.Unit.is_dead):
+		Helper.onCreateChildReferences(stat_info)
+		stat_info.onApplyModifiers()
+		var diff: int = stat_info.Unit.changeStats(stat_info)
+		if diff != 0: array.append({"stat_info": stat_info, "diff": diff})
+	
+	for item in array:
+		var stat_info: StatInfoGD = item.stat_info
+		var Unit: UnitGD = stat_info.Unit
+		var diff: int = item.diff
+		var color: String = getStatColor(stat_info)
+		var stat_name: String = item.stat_info.getStatName()
+		
+		StatusManager.onUpdateStats(Unit, stat_name, color)
+		var vis: bool = Unit.team == 0 or Unit.Tile in Vision.getTeamVision()
+		if !stat_info.absolute and stat_info.stat_type in [StatsGD.HEALTH, StatsGD.BOTH_HEALTH] and diff < 0:
+			
+			if Unit.health == 0: ActionManager.onAddAction(DeathActionGD.new(Unit, stat_info.AppliedBy, vis))
+			else: ActionManager.onAddAction(HurtActionGD.new(Unit, stat_info.AppliedBy, vis))
+			
+		if vis: VFX.onCreateStatParticle(diff, stat_name.to_lower(), Unit.Tile, Unit.height.top / 2)
+		TriggerManager.onUnitTrigger(Unit, TriggerGD.STAT_CHANGE, StatChangeTriggerInfoGD.new(stat_info))
+	
+# This is the color of the stat not the buff
+func getStatColor(stat_info: StatInfoGD) -> String:
+	var Unit: UnitGD = stat_info.Unit
+	match stat_info.stat_type:
+		StatsGD.ATTACK:
+			if Unit.attack > Unit.base_card.attack: return "GREEN"
+			elif Unit.attack < Unit.base_card.attack: return "RED"
+		StatsGD.HEALTH, StatsGD.MAX_HEALTH, StatsGD.BOTH_HEALTH:
+			if Unit.health < Unit.max_health: return "RED"
+			elif Unit.health > Unit.base_card.health: return "GREEN"
+		StatsGD.CURRENT_SPEED, StatsGD.MAX_SPEED, StatsGD.BOTH_SPEED:
+			if Unit.max_speed < Unit.base_card.speed: return "RED"
+			elif Unit.speed > Unit.base_card.speed: return "GREEN"
+	return "BASE"

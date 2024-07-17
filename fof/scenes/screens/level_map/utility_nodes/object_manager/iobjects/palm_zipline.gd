@@ -14,8 +14,9 @@ func getDisabled(Unit: UnitGD) -> bool:
 	if interactable_tiles.all(func(x: TileGD): return Units.unit_by_tile_bool(x)): return true
 	return Unit.turn_status == Unit.TURN_USED
 
-func onTrigger(Unit: UnitGD) -> void:
-	ActionManager.onAddAction(ArgDelayActionGD.new(onTriggerStarted.bind(Unit), onTriggerFinished.bind(Unit), true, DelayGD.new(ZIPLINE_DELAY)), ActionManager.APPEND)
+func onTrigger(Unit: UnitGD, trigger: int, args: TriggerInfoGD) -> void:
+	pass
+	#ActionManager.onAddAction(ArgDelayActionGD.new(onTriggerStarted.bind(Unit), onTriggerFinished.bind(Unit), true, DelayGD.new(ZIPLINE_DELAY)), ActionManager.APPEND)
 
 func onTriggerStarted(Unit: UnitGD) -> void:
 	for Tile in interactable_tiles.filter(func(x: TileGD): return x != Unit.Tile):

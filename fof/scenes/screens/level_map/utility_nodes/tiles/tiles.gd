@@ -500,9 +500,10 @@ func onUnits(team_relation: TeamRelationGD) -> Array:
 func onCreatePathHovered(Tile: TileGD) -> void:
 	if "MovementRange" in Tile.tile_outlines or "EnemyInRange" in Tile.tile_outlines:
 		var movement_path := MovementPathGD.onFindTile(Tile, PlayerManager.unit_movement_paths)
-		for fneighbour in movement_path.fneighbours:
-			fneighbour.Tile.Effects.onSetHeightDropInfo(movement_path, fneighbour)
-			setTileOutline(fneighbour.Tile, "PathHovered")
+		if movement_path != null:
+			for fneighbour in movement_path.fneighbours:
+				fneighbour.Tile.Effects.onSetHeightDropInfo(movement_path, fneighbour)
+				setTileOutline(fneighbour.Tile, "PathHovered")
 	
 func onTileHovered(Tile: TileGD) -> void:
 	setTileOutline(Tile, "TileInspected")

@@ -172,86 +172,35 @@ func occupy_tile(_Tile: TileGD) -> void:
 	if vision_info_array.is_empty(): Vision.onRecalculateVision(self)
 	else: Vision.onRecalculateVisionPrecalculated(self, vision_info_array.pop_front())
 	
+func changeStats(stat_info: StatInfoGD) -> int:
+	var diff: int = stat_info.value
+	match stat_info.stat_type:
+		StatsGD.ATTACK:
+			if stat_info.absolute: diff = stat_info.value - attack; attack = clamp(stat_info.value, 0, 99)
+			else: attack = clamp(attack + stat_info.value, 0, 99)
+		StatsGD.HEALTH:
+			if stat_info.absolute: diff = stat_info.value - health; health = clamp(stat_info.value, 0, max_health)
+			else: health = clamp(health + stat_info.value, 0, max_health)
+		StatsGD.MAX_HEALTH:
+			if stat_info.absolute: diff = stat_info.value - max_health; max_health = clamp(stat_info.value, 0, 99)
+			else: max_health = clamp(max_health + stat_info.value, 0, 99)
+		StatsGD.BOTH_HEALTH:
+			if stat_info.absolute: diff = stat_info.value - health; max_health = clamp(stat_info.value, 0, 99); health = max_health
+			else: max_health = clamp(max_health + stat_info.value, 0, 99); health = clamp(health + stat_info.value, 0, max_health)
+		StatsGD.CURRENT_SPEED:
+			if stat_info.absolute: diff = stat_info.value - speed; speed = clamp(stat_info.value, 0, max_speed)
+			else: speed = clamp(speed + stat_info.value, 0, max_speed)
+		StatsGD.MAX_SPEED:
+			if stat_info.absolute: diff = stat_info.value - max_speed; max_speed = clamp(stat_info.value, 0, 9)
+			else: max_speed = clamp(max_speed + stat_info.value, 0, 9)
+		StatsGD.BOTH_SPEED:
+			if stat_info.absolute: diff = stat_info.value - speed; max_speed = clamp(stat_info.value, 0, 9); speed = max_speed
+			else: max_speed = clamp(max_speed + stat_info.value, 1, 9); speed = clamp(speed + stat_info.value, 1, max_speed)
+	return diff
+	
 var Killer: UnitGD
 func stats(stat_type: String, val: int, AppliedBy := AppliedByGD.new("GameEvent"), absolute: bool = false) -> void:
-	var current_health: int = health
-	var current_speed: int = speed
-	var current_attack: int = attack
-	var stats_changed: String = stat_type
-	
-	if !absolute and stat_type not in ["active_speed", "heal"] and team == 0:
-		var boon: BoonGD = Boons.onFindBoon(Boons.onFindAllBoon(3))
-		if boon != null: val = boon.onCustomTrigger(val)
-	match stat_type:
-		"damage": # Can't be absolute
-			stats_changed = "health"
-			health = clamp(health - val, 0, max_health)
-		"speed":
-			if absolute:
-				speed = clamp(val, 0, 9)
-				max_speed = speed
-			else:
-				max_speed = clamp(max_speed + val, 0, 9)
-				speed = clamp(speed, 0, max_speed)
-		"attack":
-			if absolute: attack = clamp(val, 0, 99)
-			else: attack = clamp(attack + val, 0, 99)
-		"health":
-			if absolute:
-				health = clamp(val, 0, 99)
-				max_health = health
-			else:
-				max_health = clamp(max_health + val, 0, 99)
-				health = clamp(health + val, 0, max_health)
-		"active_speed":
-			stats_changed = "speed"
-			if absolute:
-				speed = clamp(val, 0, max_speed)
-			else: speed = clamp(speed + val, 0, max_speed)
-		"heal":
-			stats_changed = "health"
-			health += val
-		"full_speed":
-			stats_changed = "speed"
-			if absolute:
-				max_speed = clamp(val, 0, 9)
-				speed = clamp(val, 0, 9)
-			else: 
-				max_speed = clamp(max_speed + val, 0, 9)
-				speed = clamp(speed + val, 0, max_speed)
-	
-	var color: String = onFindStatColor(stats_changed, current_health, current_attack, current_speed)
-	if color != "NULL" and current_health > 0:
-		var vis: bool = team == 0 or Tile in Vision.getTeamVision()
-		StatusManager.onUpdateStats(self, stats_changed.capitalize(), color)
-		if health == 0: ActionManager.onAddAction(DeathActionGD.new(self, AppliedBy, vis))
-		elif health < current_health and AppliedBy.type not in ["Height", "DumsyPalmsyArrive"]:
-			ActionManager.onAddAction(HurtActionGD.new(self, AppliedBy, vis))
-		
-		if Tile in Vision.getTeamVision():
-			var y_offset: float = height.top / 2
-			match stat_type:
-				"health": VFX.onCreateStatParticle(health - current_health, "health", Tile, y_offset)
-				"attack": VFX.onCreateStatParticle(attack - current_attack, "attack", Tile, y_offset)
-				"speed": VFX.onCreateStatParticle(speed - current_speed, "speed", Tile, y_offset)
-				"heal": VFX.onCreateStatParticle(health - current_health, "heal", Tile, y_offset)
-	Combat.onOngoingAbility(self, "ChangeStat", [AppliedBy, stats_changed])
-	
-func onFindStatColor(stat_changed: String, chp: int = -1, catt: int = -1, cspd: int = -1) -> String:
-	var color := "BASE"
-	match stat_changed:
-		"health":
-			if health == chp: return "NULL"
-			if health < max_health: color = "RED"
-			elif health > base_card.health: color = "GREEN"
-		"attack":
-			if attack == catt: return "NULL"
-			if attack < base_card.attack: color = "RED"
-			elif attack > base_card.attack: color = "GREEN"
-		"speed":
-			if speed == cspd: return "NULL"
-			if speed > base_card.speed: color = "GREEN"
-	return color
+	pass
 	
 var is_arrive_rotate: bool = false
 func on_arrive(in_vision: bool) -> void:

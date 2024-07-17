@@ -68,7 +68,6 @@ func setObjectHighlight() -> void:
 	
 func onSetupObjectHighlight() -> void:
 	if !types[1].model == null:
-		print(types[1].model.bodies)
 		for body in types[1].model.bodies:
 			body.mouse_entered.connect(isMouseInObj.bind(true))
 			body.mouse_exited.connect(isMouseInObj.bind(false))

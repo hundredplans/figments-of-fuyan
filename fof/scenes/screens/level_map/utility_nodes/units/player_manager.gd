@@ -4,7 +4,7 @@ extends Node
 var Tiles: TilesGD
 var LevelMap: LevelMapGD
 var LevelUI: LevelUIGD
-var SpectateCamera: Node3D
+var SpectateCamera: SpectateCameraGD
 var Units: UnitsGD
 var Vision: VisionGD
 var VFX: VFXGD
@@ -99,6 +99,7 @@ func onPlayerPhaseStart() -> void:
 		Unit.attack_amount = 1
 	
 	LevelMap.setInputLock()
+	onUnitMode(SpectateCamera.SpectateUnit, true)
 	
 func onPlayerEndTurnPhaseStart() -> void:
 	for Unit in unpassed_turns:
@@ -140,7 +141,7 @@ func onSetMovementRange(Unit: UnitGD) -> void:
 	unit_movement_paths = Tiles.onCreateMovementPaths(Unit)
 	var can_attack: bool = Unit.onCanAttack()
 	for movement_path in unit_movement_paths:
-		if "MovementPath" not in movement_path.DestinationTile.tile_outlines:
+		if "MovementRange" not in movement_path.DestinationTile.tile_outlines:
 			if movement_path.is_attack:
 				if can_attack: movement_path.DestinationTile.Unit.on_enemy_in_range(true)
 			else: Tiles.setTileOutline(movement_path.DestinationTile, "MovementRange")
@@ -150,6 +151,7 @@ func onRemoveMovementRange() -> void:
 		if movement_path.DestinationTile.Unit != null:
 			movement_path.DestinationTile.Unit.on_enemy_in_range(false)
 		Tiles.setTileOutline(movement_path.DestinationTile, "MovementRange", true)
+		print(movement_path.DestinationTile.tile_outlines)
 
 func onDeathFinished(Deathee: UnitGD, AppliedBy: AppliedByGD) -> void:
 	if LevelMap.game_phase == "PlayerPhase":

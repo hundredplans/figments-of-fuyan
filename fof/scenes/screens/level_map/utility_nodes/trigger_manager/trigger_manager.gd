@@ -5,15 +5,18 @@ var GameEffects: GameEffectsGD
 var Boons: BoonsGD
 var Units: UnitsGD
 var Tools: ToolsGD
+var ObjectManager: ObjectManagerGD
 
 func onUnitTrigger(Unit: UnitGD, trigger: int, args: TriggerInfoGD = null) -> void:
 	GameEffects.onTriggerUnitGameFX(Unit, trigger, args)
 	Boons.onTrigger(Unit, trigger, args)
 	Tools.onTrigger(Unit, trigger, args)
+	ObjectManager.onTrigger(Unit, trigger, args)
 
 func onGlobalTrigger(trigger: int, args: TriggerInfoGD) -> void:
 	Boons.onTrigger(null, trigger, args)
 	Tools.onTrigger(null, trigger, args)
+	ObjectManager.onTrigger(null, trigger, args)
 
 func onHandPhaseStart() -> void:
 	for Unit in Units.on_units(TeamRelationGD.new(0)).filter(func(x: UnitGD): return !(x.was_placed and x.turns_alive == 0)):
