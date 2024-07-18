@@ -178,34 +178,29 @@ func changeStats(stat_info: StatInfoGD) -> int:
 	match stat_info.stat_type:
 		StatsGD.ATTACK:
 			if stat_info.absolute: diff = stat_info.value - attack; attack = clamp(stat_info.value, 0, 99)
-			else: attack = clamp(attack + stat_info.value, 0, 99)
+			else: var oattack: int = attack; attack = clamp(attack + stat_info.value, 0, 99); diff = attack - oattack
 		StatsGD.HEALTH:
 			if stat_info.absolute: diff = stat_info.value - health; health = clamp(stat_info.value, 0, max_health)
-			else: health = clamp(health + stat_info.value, 0, max_health)
+			else: var ohealth: int = health; health = clamp(health + stat_info.value, 0, max_health); diff = health - ohealth
 		StatsGD.MAX_HEALTH:
 			if stat_info.absolute: diff = stat_info.value - max_health; max_health = clamp(stat_info.value, 0, 99)
-			else: max_health = clamp(max_health + stat_info.value, 0, 99)
+			else: var omax_health: int = max_health; max_health = clamp(max_health + stat_info.value, 0, 99); diff = max_health - omax_health
 		StatsGD.BOTH_HEALTH:
 			if stat_info.absolute: diff = stat_info.value - health; max_health = clamp(stat_info.value, 0, 99); health = max_health
-			else: max_health = clamp(max_health + stat_info.value, 0, 99); health = clamp(health + stat_info.value, 0, max_health)
+			else: var ohealth: int = health; max_health = clamp(max_health + stat_info.value, 0, 99); health = clamp(health + stat_info.value, 0, max_health); diff = health - ohealth
 		StatsGD.CURRENT_SPEED:
 			if stat_info.absolute: diff = stat_info.value - speed; speed = clamp(stat_info.value, 0, max_speed)
-			else: speed = clamp(speed + stat_info.value, 0, max_speed)
+			else: var ospeed: int = speed; speed = clamp(speed + stat_info.value, 0, max_speed); diff = speed - ospeed
 		StatsGD.MAX_SPEED:
 			if stat_info.absolute: diff = stat_info.value - max_speed; max_speed = clamp(stat_info.value, 0, 9)
-			else: max_speed = clamp(max_speed + stat_info.value, 0, 9)
+			else: var omax_speed: int = max_speed; max_speed = clamp(max_speed + stat_info.value, 0, 9); diff = max_speed - omax_speed
 		StatsGD.BOTH_SPEED:
 			if stat_info.absolute: diff = stat_info.value - speed; max_speed = clamp(stat_info.value, 0, 9); speed = max_speed
-			else: max_speed = clamp(max_speed + stat_info.value, 1, 9); speed = clamp(speed + stat_info.value, 1, max_speed)
+			else: var ospeed: int = speed; max_speed = clamp(max_speed + stat_info.value, 1, 9); speed = clamp(speed + stat_info.value, 1, max_speed); diff = speed - ospeed
 	return diff
 	
 func onAddToStatHistory(stat_info: StatInfoGD) -> void:
 	stat_history.append(stat_info)
-	# removes itself when it reaches 0 turns
-	
-var Killer: UnitGD
-func stats(stat_type: String, val: int, AppliedBy := AppliedByGD.new(), absolute: bool = false) -> void:
-	pass
 	
 var is_arrive_rotate: bool = false
 func on_arrive(in_vision: bool) -> void:
@@ -268,7 +263,12 @@ func onCalculateVisionInfo() -> VisInfoGD:
 				VisionRaycast.force_raycast_update()
 				if VisionRaycast.is_colliding():
 					var Collision: Node3D = VisionRaycast.get_collider().get_node("../../../..")
-					var _Tile: TileGD = Collision if Collision is TileGD else Collision.Tile
+					
+					var _Tile: TileGD
+					if Collision is TileGD: _Tile = Collision
+					elif Collision is UnitGD: _Tile = Collision.Tile
+					else: _Tile = Collision.get_node("../..")
+					
 					onAppendTileToVisibleTiles(_visible_tiles, _Tile)
 					if Collision == potential_collision: break
 		onAddNonCommutativeUnits(_visible_tiles)

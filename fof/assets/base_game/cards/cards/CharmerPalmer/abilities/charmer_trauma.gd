@@ -6,5 +6,5 @@ func onTraumaCondition() -> bool:
 	return Deather in healed_allies
 	
 func onTrauma() -> void:
-	onGainStats(Unit, "attack", ATTACK, AppliedBy)
+	Units.changeStats(StatInfoGD.new(Unit, AppliedBy, StatsGD.ATTACK, ATTACK))
 	Unit.onChangeAIStat("aic", 1)

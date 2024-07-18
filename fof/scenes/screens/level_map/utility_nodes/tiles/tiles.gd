@@ -116,9 +116,6 @@ func on_find_tile_primary_type(Tile: TileGD) -> String:
 		1: return "SpawnEnemy"
 		2: return "Spawn"
 	return "Regular"
-	
-func outside_neighbours(tiles: Array, otiles: Array = get_children(), distance: int = 1, search_elevation: bool = false) -> Array:
-	return tiles_unique(all_neighbours_tiles(tiles, otiles, distance, search_elevation), tiles)
 
 func from_center_concentric(distance: int = 1, otiles: Array = get_children(), elevation: int = 0, search_elevation: bool = false):
 	return all_neighbours(position_to_tile(Vector4(0, 0, 0, elevation)), distance, search_elevation, otiles)
@@ -653,11 +650,14 @@ func on_find_tile_by_raycast() -> TileGD:
 	ray.target_position = to
 	ray.force_raycast_update()
 	
-	var node: Node3D = ray.get_collider()
-	if node:
-		node = node.get_node("../../../..")
-		if node is UnitGD: return node.Tile
-	return node
+	if ray.is_colliding():
+		var Collision: Node3D = ray.get_collider().get_node("../../../..")
+		var _Tile: TileGD
+		if Collision is TileGD: _Tile = Collision
+		elif Collision is UnitGD: _Tile = Collision.Tile
+		else: _Tile = Collision.get_node("../..")
+		return _Tile
+	return null
 
 var select_console: bool = false
 func onSelectTileConsoleMode() -> void:
@@ -693,3 +693,8 @@ func onTileEffects(Unit: UnitGD, PreviousTile: TileGD) -> void:
 	
 	
 func onCanDrown(Unit: UnitGD) -> bool: return Unit.height.top < 1
+
+func getAdjacentTiles(Tile: TileGD, distance: int = 1, search_elevation: bool = false, tiles: Array = get_children()) -> Array:
+	var arr: Array = []
+	for i in range(1, distance + 1): arr += all_neighbours(Tile, i, search_elevation, tiles)
+	return arr

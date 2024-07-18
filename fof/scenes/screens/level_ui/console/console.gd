@@ -150,7 +150,7 @@ func onMoveStates() -> void:
 		
 func onHeal(Tile: TileGD, heal: int) -> void:
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
-	Combat.onHeal(HealInfoGD.new(Unit,  AppliedByGD.new(AppliedByGD.ABILITY), heal))
+	Combat.onHeal(HealInfoGD.new(Unit, heal, AppliedByGD.new(AppliedByGD.ABILITY)))
 
 func onForceAi() -> void:
 	if ActionManager.unit_actions.size() > 0: ActionManager.onTriggerNextAction(ActionManager.unit_actions[0])

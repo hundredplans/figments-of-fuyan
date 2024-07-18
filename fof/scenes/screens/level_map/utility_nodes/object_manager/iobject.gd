@@ -5,6 +5,8 @@ var Units: UnitsGD
 var ActionManager: ActionManagerGD
 var GameEffects: GameEffectsGD
 var Combat: CombatGD
+var Tiles: TilesGD
+var StatusManager: StatusManagerGD
 
 var BaseTile: TileGD
 var interactable_tiles: Array

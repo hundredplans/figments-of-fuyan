@@ -10,4 +10,4 @@ func onTrauma() -> void:
 	charges -= 1
 
 func onAbilityDelayFinished() -> void:
-	onGainStats(Unit, "health", HEALTH, AppliedBy)
+	Units.changeStats(StatInfoGD.new(Unit, AppliedBy, StatsGD.BOTH_HEALTH, HEALTH))

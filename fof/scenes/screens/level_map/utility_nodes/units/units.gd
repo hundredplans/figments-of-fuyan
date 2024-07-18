@@ -9,7 +9,7 @@ var GameState: GameStateGD
 var Vision: VisionGD
 var Random: RandomGD
 var Tiles: TilesGD
-var LevelMap: Node3D
+var LevelMap: LevelMapGD
 var LevelUI: LevelUIGD
 var Combat: CombatGD
 var AIManager: AIManagerGD
@@ -77,6 +77,7 @@ func onStartPhaseStart() -> void:
 
 func unit_by_tile_team_bool(Tile: TileGD, team: int) -> bool:
 	return FieldedUnits.get_children().any(func(x: UnitGD): return x.Tile == Tile and x.team == team)
+	
 func unit_by_tile_bool(Tile: TileGD) -> bool:
 	return FieldedUnits.get_children().any(func(x: UnitGD): return x.Tile == Tile)
 
@@ -167,14 +168,12 @@ func onFindClosestAdjacentUnit(Unit: UnitGD, team_relation: TeamRelationGD) -> U
 func sortUnitsByDistance(Unit: UnitGD, _Unit: UnitGD, __Unit: UnitGD) -> bool:
 	return Tiles.tile_distance(Unit.Tile, __Unit.Tile) < Tiles.tile_distance(_Unit.Tile, __Unit.Tile)
 
-func onFindAdjacentUnits(Unit: UnitGD, distance: int) -> Array:
-	return Tiles.onFindUnitAdjacentTiles(Unit, distance).filter(func(x: TileGD): return x.Unit != null).map(func(x: TileGD): return x.Unit)
+func onFindAdjacentUnits(Obj: Variant, distance: int) -> Array:
+	return Tiles.onFindUnitAdjacentTiles(Obj, distance).filter(func(x: TileGD): return x.Unit != null).map(func(x: TileGD): return x.Unit)
 	
-func changeStats(_stats: Variant) -> void:
-	var stats: StatsGD
-	if _stats is StatInfoGD: stats = StatsGD.new(stats)
-	elif _stats is StatsGD: stats = _stats
-	
+func changeStats(info: Variant) -> void:
+	# Pass in either an array of StatInfoGD or StatInfoGD
+	var stats: StatsGD = StatsGD.new(info)
 	var array: Array = []
 	for stat_info in stats.array.filter(func(x: StatInfoGD): return !x.Unit.is_dead):
 		Helper.onCreateChildReferences(stat_info)
@@ -182,25 +181,28 @@ func changeStats(_stats: Variant) -> void:
 		var diff: int = stat_info.Unit.changeStats(stat_info)
 		if diff != 0: array.append({"stat_info": stat_info, "diff": diff})
 	
+	var next_turn_stats_units: Array = []
 	for item in array:
 		var stat_info: StatInfoGD = item.stat_info
 		var Unit: UnitGD = stat_info.Unit
+		if stat_info.turns == 1 and Unit not in next_turn_stats_units: next_turn_stats_units.append(Unit)
 		var diff: int = item.diff
-		var color: String = getStatColor(stat_info)
+		var color: String = getStatColor(Unit, stat_info.stat_type)
 		var stat_name: String = item.stat_info.getStatName()
 		
 		StatusManager.onUpdateStats(Unit, stat_name, color)
 		var vis: bool = Unit.team == 0 or Unit.Tile in Vision.getTeamVision()
 		if !stat_info.absolute and stat_info.stat_type in [StatsGD.HEALTH, StatsGD.BOTH_HEALTH] and diff < 0:
-			
 			if Unit.health == 0: ActionManager.onAddAction(DeathActionGD.new(Unit, stat_info.AppliedBy, vis))
 			else: ActionManager.onAddAction(HurtActionGD.new(Unit, stat_info.AppliedBy, vis))
 			
-		if vis: VFX.onCreateStatParticle(diff, stat_name.to_lower(), Unit.Tile, Unit.height.top / 2)
+		if vis and stat_info.show_change: VFX.onCreateStatParticle(diff, stat_name.to_lower(), Unit.Tile, Unit.height.top / 2)
 		TriggerManager.onUnitTrigger(Unit, TriggerGD.STAT_CHANGE, StatChangeTriggerInfoGD.new(stat_info))
 		
 		Unit.onAddToStatHistory(stat_info)
-		if stat_name == "Speed" and Unit == PlayerManager.getUnitSelected(): PlayerManager.onRefreshMovementRange()
+		if stat_name == "Speed" and LevelMap.verifyLock(LevelMap.NULL_VERIFY) and Unit == PlayerManager.getUnitSelected(): PlayerManager.onRefreshMovementRange()
+	
+	for Unit in next_turn_stats_units: onNextTurnStats(Unit)
 	
 func onHandPhaseStart() -> void:
 	for Unit in on_units():
@@ -212,25 +214,32 @@ func onAIPhaseStart() -> void:
 	
 func onStatTurnPassed(Unit: UnitGD) -> void:
 	# 0's are not removed but are not accounted for either, they are treated as gone, -1 is infinite
-	var array: Array = []
-	for stat_info in Unit.stat_history.filter(func(x: StatInfoGD): return x.turns > 0):
+	var stat_history: Array = Unit.stat_history.filter(func(x: StatInfoGD): return x.turns > 0)
+	for stat_info in stat_history:
 		stat_info.turns -= 1
-		StatusManager.onRemoveBuffNextTurn(stat_info)
-		array.append(stat_info)
-		
+		if stat_info.turns == 0:
+			changeStats(stat_info.getReverse())
+			StatusManager.onRemoveBuffNextTurn(stat_info)
+			
+	onNextTurnStats(Unit)
+	
+func onNextTurnStats(Unit: UnitGD) -> void:
 	var AppliedBy := AppliedByGD.new()
-	var stats: Dictionary = {"Attack": null, "Health": null, "Speed": null}
-	for stat_info in array:
-		if stats[stat_info.getStatName()] == null:
-			#stats[stat_info.getStatName()] = StatInfoGD.new(stat_info.Unit, AppliedBy, StatsGD.)
-			pass
-			# has to somehow reverse from the statName to the stats and then apply all at once or something idk
-		else: pass
+	var stats: Dictionary = {StatsGD.ATTACK: null, StatsGD.HEALTH: null, StatsGD.BOTH_HEALTH: null, StatsGD.BOTH_SPEED: null}
+	
+	for stat_info in Unit.stat_history.filter(func(x: StatInfoGD): return x.turns == 1):
+		if stats.has(stat_info.stat_type):
+			if stats[stat_info.stat_type] == null: StatInfoGD.new(stat_info.Unit, AppliedBy, stat_info.stat_type, stat_info.value, 1)
+			else: stats[stat_info.stat_type].add(stat_info.value)
+		else: print_debug("You are trying to temporarily add to an illegal stat!")
+		
+	for stat_info in stats.values().filter(func(x: StatInfoGD): return x != null):
+		StatusManager.onRemoveBuffNextTurn(stat_info)
+		StatusManager.onCreateBuffNextTurn(stat_info)
 	
 # This is the color of the stat not the buff
-func getStatColor(stat_info: StatInfoGD) -> String:
-	var Unit: UnitGD = stat_info.Unit
-	match stat_info.stat_type:
+func getStatColor(Unit: UnitGD, stat_type: int) -> String:
+	match stat_type:
 		StatsGD.ATTACK:
 			if Unit.attack > Unit.base_card.attack: return "GREEN"
 			elif Unit.attack < Unit.base_card.attack: return "RED"
@@ -241,3 +250,7 @@ func getStatColor(stat_info: StatInfoGD) -> String:
 			if Unit.max_speed < Unit.base_card.speed: return "RED"
 			elif Unit.speed > Unit.base_card.speed: return "GREEN"
 	return "BASE"
+
+func getAdjacentUnits(Tile: TileGD, distance: int = 1, search_elevation: bool = false, tiles: Array = Tiles.get_children()) -> Array:
+	return Tiles.getAdjacentTiles(Tile, distance, search_elevation, tiles).map(func(x: TileGD): return x.Unit).filter(func(y: UnitGD): return y != null)
+	

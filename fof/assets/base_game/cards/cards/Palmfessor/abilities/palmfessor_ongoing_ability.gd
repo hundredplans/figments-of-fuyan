@@ -34,11 +34,12 @@ func onOngoingAbility() -> void:
 		var _Unit: UnitGD = info[0]
 		if info[1]:
 			StatusManager.onAddUnitFX(_Unit, "PalmfessorOngoingAbility", AppliedBy)
-			onGainStats(_Unit, "attack", ATTACK, AppliedBy)
+			Units.changeStats(StatInfoGD.new(Unit, AppliedBy, StatsGD.ATTACK, ATTACK))
+			Units.changeStats(StatInfoGD.new(Unit, AppliedBy, StatsGD.ATTACK, ATTACK))
 			affected_units.append(_Unit)
 		else:
 			StatusManager.onRemoveUnitFX(_Unit, "PalmfessorOngoingAbility", AppliedBy)
-			onGainStats(_Unit, "attack", ATTACK * -1, AppliedBy)
+			Units.changeStats(StatInfoGD.new(Unit, AppliedBy, StatsGD.ATTACK, ATTACK * -1))
 			affected_units.erase(_Unit)
 		
 	trigger_info = []

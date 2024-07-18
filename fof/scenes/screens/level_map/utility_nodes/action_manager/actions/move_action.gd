@@ -47,7 +47,7 @@ func onAllyTrigger(total_vision: int = VisInfoGD.REGULAR) -> void:
 	Unit.Model.onMoveToTile(fneighbour, movement_path, total_vision)
 	
 func onAfterTrigger() -> void:
-	Unit.stats("active_speed", -1, AppliedByGD.new(AppliedByGD.MOVEMENT_FINISHED))
+	Units.changeStats(StatInfoGD.new(Unit, AppliedByGD.new(AppliedByGD.MOVEMENT_FINISHED), StatsGD.CURRENT_SPEED, -1, -1, false, false))
 	var PreviousTile: TileGD = Unit.Tile
 	Unit.occupy_tile(fneighbour.Tile)
 	Tiles.onTileEffects(Unit, PreviousTile)

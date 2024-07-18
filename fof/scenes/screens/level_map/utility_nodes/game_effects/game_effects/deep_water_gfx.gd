@@ -7,8 +7,8 @@ func onCreateGFX() -> void:
 	
 	var AppliedBy := AppliedByGD.new(AppliedByGD.DEEP_WATER)
 	if !Tiles.onCanDrown(Unit):
-		Unit.stats("full_speed", -1, AppliedBy)
+		Units.changeStats(StatInfoGD.new(Unit, AppliedBy, StatsGD.BOTH_SPEED, -1))
 	else: Combat.onDestroyUnit(Unit, AppliedBy)
 
 func onRemoved() -> void:
-	Unit.stats("speed", 1, AppliedByGD.new(AppliedByGD.DEEP_WATER))
+	Units.changeStats(StatInfoGD.new(Unit, AppliedByGD.new(AppliedByGD.DEEP_WATER), StatsGD.BOTH_SPEED, 1))

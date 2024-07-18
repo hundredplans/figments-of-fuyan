@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="InfoFXGD" load_steps=3 format=3 uid="uid://c3dh0sviqdkpw"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/unit_fx/info_fx.gd" id="1_t8eon"]
+[ext_resource type="Texture2D" uid="uid://c5mm5mn0kcaei" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/unit_fx/textures/palm_fireplace.png" id="2_gu2n4"]
+
+[resource]
+script = ExtResource("1_t8eon")
+texture = ExtResource("2_gu2n4")
+tooltip = "This unit has [+1/0] for [X] Turns"
+fx_type = "PalmFireplace"
+can_hover = false

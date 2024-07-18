@@ -74,9 +74,10 @@ func on_change_game_phase(phase: String) -> void:
 		"AfterStartPhase":
 			if dev.god_start:
 				var Unit: UnitGD = await Units.onUnitAwakened(1, 0, 0, Tiles.onSpawnTiles()[0])
-				Unit.stats("health", 50)
-				Unit.stats("attack", 50)
-				Unit.stats("speed", 5)
+				var AppliedBy := AppliedByGD.new()
+				Units.changeStats(StatInfoGD.new(Unit, AppliedBy, StatsGD.BOTH_HEALTH, 50))
+				Units.changeStats(StatInfoGD.new(Unit, AppliedBy, StatsGD.ATTACK, 50))
+				Units.changeStats(StatInfoGD.new(Unit, AppliedBy, StatsGD.BOTH_SPEED, 5))
 				SpectateCamera.onSpectate(Unit)
 		"HandPhase": turns += 1
 		"PlayerEndTurnPhase": on_advance_game_phase()

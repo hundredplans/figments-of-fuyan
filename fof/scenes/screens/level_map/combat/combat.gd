@@ -160,17 +160,17 @@ func onDMG(Damagee: UnitGD, AppliedBy: AppliedByGD, damage: int) -> DMGInfoGD:
 				var Attacker: UnitGD = AppliedBy.Applier
 				TriggerManager.onUnitTrigger(Attacker, TriggerGD.ON_ATTACK)
 				damage = onArmor(Damagee, damage + Attacker.extra_damage)
-				Damagee.stats("damage", damage, AppliedBy)
+				Units.changeStats(StatInfoGD.new(Damagee, AppliedBy, StatsGD.HEALTH, -damage))
 				DMGInfo.HealthDMG = original_health - Damagee.health
 				TriggerManager.onUnitTrigger(Attacker, TriggerGD.ON_AFTER_ATTACK)
 				if DMGInfo.HealthDMG > 0:
 					TriggerManager.onUnitTrigger(Damagee, TriggerGD.WHEN_STRUCK, WhenStruckTriggerInfoGD.new(Attacker, AppliedBy))
 			AppliedByGD.HEIGHT:
-				Damagee.stats("damage", damage, AppliedBy)
+				Units.changeStats(StatInfoGD.new(Damagee, AppliedBy, StatsGD.HEALTH, -damage))
 				DMGInfo.HealthDMG = original_health - Damagee.health
 			_:
 				damage = onArmor(Damagee, damage)
-				Damagee.stats("damage", damage, AppliedBy)
+				Units.changeStats(StatInfoGD.new(Damagee, AppliedBy, StatsGD.HEALTH, -damage))
 				DMGInfo.HealthDMG = original_health - Damagee.health
 				
 		if DMGInfo.HealthDMG > 0:
@@ -190,13 +190,14 @@ func onArmor(Unit: UnitGD, damage: int) -> int:
 	return damage
 
 func onHealAbility(Healee: UnitGD, Healer: UnitGD, heal: int) -> bool:
-	return onHeal(HealInfoGD.new(Healee, AppliedByGD.new(AppliedByGD.ABILITY, Healer), heal))
+	return onHeal(HealInfoGD.new(Healee, heal, AppliedByGD.new(AppliedByGD.ABILITY, Healer)))
 
-func onHeal(healInfo: HealInfoGD) -> bool:
-	if healInfo.heal > 0 and healInfo.Healee.isHealable():
-		var heal_amount: int = min(healInfo.Healee.health + (healInfo.heal * healInfo.Healee.heal_multiplier), healInfo.Healee.max_health) - healInfo.Healee.health
-		healInfo.Healee.stats("heal", heal_amount, healInfo.AppliedBy)
-		onWhenHealed(healInfo.Healee, healInfo, heal_amount)
+func onHeal(HealInfo: HealInfoGD) -> bool:
+	if HealInfo.heal > 0 and HealInfo.Healee.isHealable():
+		var health: int = HealInfo.Healee.health
+		Units.changeStats(StatInfoGD.new(HealInfo.Healee, HealInfo.AppliedBy, StatsGD.HEALTH, HealInfo.heal))
+		var diff: int = HealInfo.Healee.Health - health
+		onWhenHealed(HealInfo.Healee, HealInfo, diff)
 		return true
 	return false
 

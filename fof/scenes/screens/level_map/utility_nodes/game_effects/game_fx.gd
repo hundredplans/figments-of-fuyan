@@ -12,6 +12,7 @@ var StatusManager: StatusManagerGD
 var SpectateCamera: SpectateCameraGD
 var Tiles: TilesGD
 var PlayerManager: PlayerManagerGD
+var Units: UnitsGD
 
 enum {DAZE, STAGGER, ABILITY_ACTIVE, HELPFUL_HELMET, CHARMING_STANCE, DEEP_WATER, ENERGIZED_BOON}
 

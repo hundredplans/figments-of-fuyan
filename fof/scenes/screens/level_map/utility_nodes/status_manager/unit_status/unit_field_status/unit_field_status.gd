@@ -132,8 +132,9 @@ func onCreateBuffNextTurn(stat: String, value: int) -> void:
 
 func onRemoveBuffNextTurn(stat: String) -> void:
 	stat = stat.capitalize()
-	BuffNextTurn.get_node(stat).get_child(0).queue_free()
-	if stat == "Health": onSortHealth()
+	if BuffNextTurn.get_node(stat).get_child_count() > 0:
+		BuffNextTurn.get_node(stat).get_child(0).queue_free()
+		if stat == "Health": onSortHealth()
 
 func onCreateHealNextTurn(heal: int) -> void:
 	var color_value: int = min(abs(heal), 3)

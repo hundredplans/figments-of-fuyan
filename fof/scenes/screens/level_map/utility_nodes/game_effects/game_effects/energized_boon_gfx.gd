@@ -10,11 +10,9 @@ func onCreateGFX() -> void:
 	VFX.onCreateUnitVFX(Unit, "EnergizedBoon")
 	Unit.Model.idle_speedup = IDLE_SPEEDUP_MULT
 	Unit.Model.on_play_animation("Idle")
-	Unit.stats("full_speed", speed, AppliedBy)
+	Units.changeStats(StatInfoGD.new(Unit, AppliedBy, StatsGD.BOTH_SPEED, speed, 1))
 
 func onRemove() -> void:
-	var AppliedBy := AppliedByGD.new(AppliedByGD.BOON)
 	VFX.onRemoveUnitVFX(Unit, "EnergizedBoon")
-	Unit.stats("full_speed", -speed, AppliedBy)
 	Unit.Model.idle_speedup = 1
 	Unit.Model.on_play_animation("Idle")

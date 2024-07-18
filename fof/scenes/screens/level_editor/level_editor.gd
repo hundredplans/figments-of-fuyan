@@ -946,7 +946,7 @@ func on_set_tile_material(tile: Node3D, highlights: Array, set_override: bool = 
 	for i in highlights:
 		for child in tile.get_node(BTAB_TO_STR[i]).get_children():
 			if !child.is_queued_for_deletion():
-				for mesh_instance in Helper.get_children_recursive(child).filter(func(x: Node3D): return x is MeshInstance3D):
+				for mesh_instance in Helper.get_children_recursive(child).filter(func(x: Object): return x is MeshInstance3D):
 					mesh_instance.set_surface_override_material(0, preload("res://assets/materials/base_materials/base_material_half_transparent.tres") if set_override else null)
 func on_tile_select() -> void:
 	if move_tile == null:

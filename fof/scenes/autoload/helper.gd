@@ -335,7 +335,8 @@ var _id_to: Array = [
 	
 	["null", "spawns/spawn_enemy", "spawns/spawn_ally", "spawns/spawn_neutral", 
 	"spawns/spawn_trinket", "palms/ziplines/palm_zipline_equal_long", "palms/ziplines/palm_zipline_equal_short",
-	"palms/ziplines/palm_zipline_high_long", "palms/ziplines/palm_zipline_high_short", "palms/palm_fireplace"],
+	"palms/ziplines/palm_zipline_high_long", "palms/ziplines/palm_zipline_high_short", "palms/palm_fireplace", 
+	"palms/doors/palm_door", "palms/doors/palm_door_short"],
 	
 	["null", "wall", "wooden_wall"],
 	

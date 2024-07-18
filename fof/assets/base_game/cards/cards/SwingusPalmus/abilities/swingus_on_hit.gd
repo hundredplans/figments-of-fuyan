@@ -6,8 +6,8 @@ extends OnHitGD
 @export var is_second_hit: bool = false
 func onHit() -> void:
 	if is_second_hit:
-		onGainStats(Unit, "attack", ATTACK, DMGInfo.AppliedBy)
-		onGainStats(Unit, "health", HEALTH, DMGInfo.AppliedBy)
+		Units.changeStats(StatInfoGD.new(Unit, DMGInfo.AppliedBy, StatsGD.ATTACK, ATTACK))
+		Units.changeStats(StatInfoGD.new(Unit, DMGInfo.AppliedBy, StatsGD.BOTH_HEALTH, HEALTH))
 		is_second_hit = false
 		delay = 1
 		Unit.onChangeAIStat("aic", -1)
@@ -19,6 +19,5 @@ func onHit() -> void:
 		is_second_hit = true
 		delay = 2
 		Unit.onChangeAIStat("aic", 1)
-		print(Unit.extra_damage)
 		
 func onHitCondition() -> bool: return true

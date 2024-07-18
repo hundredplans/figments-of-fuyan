@@ -30,5 +30,5 @@ func onAfterTrigger() -> void:
 	if TargetTile.Unit != null:
 		var DMGInfo: DMGInfoGD = Combat.onDMG(TargetTile.Unit, AppliedBy, Unit.attack)
 		Unit.attack_amount -= 1
-		if Unit.attack_amount == 0: Unit.stats("active_speed", 0, AppliedBy, true)
+		if Unit.attack_amount == 0: Units.changeStats(StatInfoGD.new(Unit, AppliedBy, StatsGD.CURRENT_SPEED, 0, -1, true, false))
 		ActionManager.onAddAction(DelayActionGD.new(Combat.onHit.bind(DMGInfo), is_visible), ActionManagerGD.AFTER_HURT)

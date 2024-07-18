@@ -29,6 +29,7 @@ var type: String = "UnitStatusRegular"
 @onready var ToolUI: Control = $ExtraEffects/ToolUI
 
 var Combat: CombatGD
+var Units: UnitsGD
 
 var card_selected_material: Material = preload("res://assets/base_game/cards/game_card/materials/card_selected_material.tres")
 func _ready() -> void:
@@ -60,7 +61,7 @@ func setUnit(_Unit: UnitGD) -> void:
 		var StatLabel: Label = Stats.get_node(stat + "/Label")
 		var value: int = Unit.get(stat.to_lower())
 		StatLabel.text = str(value)
-		setStatColorSize(StatLabel, value, Unit.onFindStatColor(stat.to_lower()))
+		setStatColorSize(StatLabel, value, Units.getStatColor(Unit, StatInfoGD.getStatTypeStatic(stat)))
 	
 	for info_fx in Unit.unit_fx: onAddUnitFX(info_fx)
 	if type == "UnitStatusRegular": visible = false

@@ -95,7 +95,7 @@ func onPlayerPhaseStart() -> void:
 	for Unit in Units.on_units():
 		if Unit.turn_status == UnitGD.TURN_UNUSED: unpassed_turns.append(Unit)
 		else: passed_turns.append(Unit)
-		Unit.stats("active_speed", Unit.max_speed, AppliedBy, true)
+		Units.changeStats(StatInfoGD.new(Unit, AppliedBy, StatsGD.CURRENT_SPEED, Unit.max_speed, -1, true, false))
 		Unit.attack_amount = 1
 	
 	LevelMap.setInputLock()
@@ -116,7 +116,7 @@ func onPlayerEndTurnPhaseStart() -> void:
 	
 	var AppliedBy := AppliedByGD.new(AppliedByGD.END_PLAYER_PHASE)
 	for Unit in Units.on_units():
-		Unit.stats("active_speed", Unit.max_speed, AppliedBy, true)
+		Units.changeStats(StatInfoGD.new(Unit, AppliedBy, StatsGD.CURRENT_SPEED, Unit.max_speed, -1, true, false))
 		if Unit.past_path_set:
 			Units.setPastPath(Unit, false)
 		Unit.past_path_info = {}
@@ -147,11 +147,9 @@ func onSetMovementRange(Unit: UnitGD) -> void:
 			else: Tiles.setTileOutline(movement_path.DestinationTile, "MovementRange")
 	
 func onRemoveMovementRange() -> void:
-	for movement_path in unit_movement_paths:
-		if movement_path.DestinationTile.Unit != null:
-			movement_path.DestinationTile.Unit.on_enemy_in_range(false)
-		Tiles.setTileOutline(movement_path.DestinationTile, "MovementRange", true)
-		print(movement_path.DestinationTile.tile_outlines)
+	for Tile in Tiles.get_children().filter(func(x: TileGD): return "MovementRange" in x.tile_outlines):
+		if Tile.Unit != null: Tile.Unit.on_enemy_in_range(false)
+		Tiles.setTileOutline(Tile, "MovementRange", true)
 
 func onDeathFinished(Deathee: UnitGD, AppliedBy: AppliedByGD) -> void:
 	if LevelMap.game_phase == "PlayerPhase":

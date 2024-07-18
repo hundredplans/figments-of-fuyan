@@ -19,12 +19,12 @@ func onDeathFinished(Unit: UnitGD) -> void:
 func onAIEndTurnPhaseStart() -> void:
 	var AppliedBy := AppliedByGD.new(AppliedByGD.END_AI_PHASE)
 	for Unit in Units.on_units(TeamRelationGD.new(1)):
-		Unit.stats("active_speed", Unit.max_speed, AppliedBy, true)
+		Units.changeStats(StatInfoGD.new(Unit, AppliedBy, StatsGD.CURRENT_SPEED, Unit.max_speed, -1, true, false))
 
 func onAIPhaseStart() -> void:
 	var AppliedBy := AppliedByGD.new(AppliedByGD.START_AI_PHASE)
 	for Unit in Units.on_units(TeamRelationGD.new(1)):
-		Unit.stats("active_speed", Unit.max_speed, AppliedBy, true)
+		Units.changeStats(StatInfoGD.new(Unit, AppliedBy, StatsGD.CURRENT_SPEED, Unit.max_speed, -1, true, false))
 		Unit.attack_amount = 1
 	onBeginMoveAIUnits()
 	

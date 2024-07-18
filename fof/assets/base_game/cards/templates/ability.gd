@@ -23,9 +23,6 @@ var AIManager: AIManagerGD
 var ActionManager: ActionManagerGD
 
 func _init() -> void: Helper.onCreateChildReferences(self)
-
-func onGainStats(Unit: UnitGD, stat_type: String, val: int, AppliedBy: AppliedByGD) -> void:
-	Unit.stats(stat_type, val, AppliedBy)
 	
 func onAbilityDelay(callable: Callable, _delay: float = 2) -> void:
 	ActionManager.onAddAction(DelayActionGD.new(onCall.bind(callable), is_visible, DelayGD.new(_delay)), ActionManagerGD.PUSH)

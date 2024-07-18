@@ -4,11 +4,10 @@ const SPEED: int = 1
 
 func onTrigger(_Unit: UnitGD, trigger: int, args: TriggerInfoGD) -> void:
 	if _Unit == Unit:
-		var AppliedBy := AppliedByGD.new(AppliedByGD.TOOL, self)
 		if trigger == TriggerGD.EQUIP_TOOL and args.Tool == self:
-			Unit.stats("full_speed", SPEED, AppliedBy)
+			Units.changeStats(StatInfoGD.new(Unit, AppliedByGD.new(AppliedByGD.TOOL, self), StatsGD.BOTH_SPEED, SPEED))
 		elif trigger == TriggerGD.UNEQUIP_TOOL and args.Tool == self:
-			Unit.stats("full_speed", -SPEED, AppliedBy)
+			Units.changeStats(StatInfoGD.new(Unit, AppliedByGD.new(AppliedByGD.TOOL, self), StatsGD.BOTH_SPEED, -SPEED))
 
 func getDisabled(tool_ability_info: ToolAbilityInfoGD) -> bool:
 	return tool_ability_info.charges == 0
