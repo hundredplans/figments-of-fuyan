@@ -13,8 +13,7 @@ var SpectateCamera: SpectateCameraGD
 var Tiles: TilesGD
 var PlayerManager: PlayerManagerGD
 
-enum {HEAL_NEXT_TURN, BUFF_NEXT_TURN, DAZE, STAGGER, ABILITY_ACTIVE, HELPFUL_HELMET, CHARMING_STANCE, DEEP_WATER,
-	ENERGIZED_BOON}
+enum {DAZE, STAGGER, ABILITY_ACTIVE, HELPFUL_HELMET, CHARMING_STANCE, DEEP_WATER, ENERGIZED_BOON}
 
 func _init() -> void:
 	Helper.onCreateChildReferences(self)

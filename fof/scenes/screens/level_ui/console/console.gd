@@ -133,7 +133,7 @@ func onDraw(id: int) -> void:
 
 func onDamage(Tile: TileGD, damage: int) -> void:
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
-	var AppliedBy := AppliedByGD.new("Ability")
+	var AppliedBy := AppliedByGD.new(AppliedByGD.ABILITY)
 	Combat.onDMG(Unit, AppliedBy, damage)
 	
 func onAistats() -> void:
@@ -150,7 +150,7 @@ func onMoveStates() -> void:
 		
 func onHeal(Tile: TileGD, heal: int) -> void:
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
-	Combat.onHeal(HealInfoGD.new(Unit, AppliedByGD.new("Ability"), heal))
+	Combat.onHeal(HealInfoGD.new(Unit,  AppliedByGD.new(AppliedByGD.ABILITY), heal))
 
 func onForceAi() -> void:
 	if ActionManager.unit_actions.size() > 0: ActionManager.onTriggerNextAction(ActionManager.unit_actions[0])
@@ -159,8 +159,14 @@ func onForceAi() -> void:
 	
 
 func onStat(Tile: TileGD, type: String, value: int) -> void:
+	var stat_type: int
+	match type:
+		"attack": stat_type = StatsGD.ATTACK
+		"health": stat_type = StatsGD.BOTH_HEALTH
+		"speed": stat_type = StatsGD.BOTH_SPEED
+	
 	var Unit: UnitGD = Units.unit_by_tile(Tile)
-	Combat.onBuffInfo(BuffInfoGD.new(Unit, AppliedByGD.new("Console"), type, value))
+	Units.changeStats(StatInfoGD.new(Unit, AppliedByGD.new(AppliedByGD.CONSOLE), stat_type, value))
 
 @onready var PlaceholderLabel: Label = %PlaceholderLabel
 func _on_command_line_text_changed(text: String):

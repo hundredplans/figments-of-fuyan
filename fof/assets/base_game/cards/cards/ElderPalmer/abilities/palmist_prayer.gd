@@ -28,7 +28,7 @@ func onTargetAbilityConditionAI() -> TileGD:
 	return null
 
 func onAbilityDelayFinished() -> void:
-	var AppliedBy := AppliedByGD.new("Ability", Unit)
+	var AppliedBy := AppliedByGD.new(AppliedByGD.ABILITY, Unit)
 	for _Unit in tiles["affect"].map(func(x: TileGD): return Units.unit_by_tile(x)):
-		Combat.onApplyBuffNextTurn(BuffInfoGD.new(_Unit, AppliedBy, "attack", ATTACK))
+		Units.changeStats(StatInfoGD.new(_Unit, AppliedBy, StatsGD.ATTACK, ATTACK, 1))
 		Combat.onHealAbility(_Unit, Unit, HEAL)

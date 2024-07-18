@@ -58,7 +58,7 @@ func onUnitAwakenedProcess(Unit: UnitGD, Tile: TileGD, Tool: ToolGD = null) -> v
 	
 func onArrive(Unit: UnitGD) -> void:
 	var armor: TraitGD = Combat.onFindTrait(Unit, TraitGD.ARMOR)
-	if armor != null: StatusManager.onAddUnitFX(Unit, "Armor", AppliedByGD.new("Trait"), armor.armor)
+	if armor != null: StatusManager.onAddUnitFX(Unit, "Armor", AppliedByGD.new(AppliedByGD.TRAIT), armor.armor)
 	
 func onMassUnitsAwakened(tiles: Array, enemy_ids: Array) -> void:
 	var units: Array = []
@@ -118,7 +118,7 @@ func onRemoveMovementOutlineTiles() -> void:
 	movement_outline_tiles = []
 
 func onUnitFell(DMG: int, scale_time: float, Unit: UnitGD) -> void:
-	var AppliedBy := AppliedByGD.new("Height")
+	var AppliedBy := AppliedByGD.new(AppliedByGD.HEIGHT)
 	var DMGInfo := Combat.onDMG(Unit, AppliedBy, DMG)
 	if Unit.health > 0 and DMGInfo.HealthDMG > 0: on_descale_unit(Unit, scale_time)
 
@@ -134,9 +134,6 @@ func on_unscale_unit(Unit: UnitGD, scale_time: float) -> void:
 
 func onSpectatedInPlayerPhase(Unit: UnitGD) -> void:
 	LevelUI.on_pass_unit_turn_button_state(Unit.team == 1 or Unit in PlayerManager.passed_turns)
-
-func onAIPhaseStart() -> void:
-	AIManager.onAIPhaseStart()
 
 func onAIEndTurnPhaseStart() -> void:
 	AIManager.onAIEndTurnPhaseStart()
@@ -173,7 +170,11 @@ func sortUnitsByDistance(Unit: UnitGD, _Unit: UnitGD, __Unit: UnitGD) -> bool:
 func onFindAdjacentUnits(Unit: UnitGD, distance: int) -> Array:
 	return Tiles.onFindUnitAdjacentTiles(Unit, distance).filter(func(x: TileGD): return x.Unit != null).map(func(x: TileGD): return x.Unit)
 	
-func changeStats(stats: StatsGD) -> void:
+func changeStats(_stats: Variant) -> void:
+	var stats: StatsGD
+	if _stats is StatInfoGD: stats = StatsGD.new(stats)
+	elif _stats is StatsGD: stats = _stats
+	
 	var array: Array = []
 	for stat_info in stats.array.filter(func(x: StatInfoGD): return !x.Unit.is_dead):
 		Helper.onCreateChildReferences(stat_info)
@@ -197,6 +198,34 @@ func changeStats(stats: StatsGD) -> void:
 			
 		if vis: VFX.onCreateStatParticle(diff, stat_name.to_lower(), Unit.Tile, Unit.height.top / 2)
 		TriggerManager.onUnitTrigger(Unit, TriggerGD.STAT_CHANGE, StatChangeTriggerInfoGD.new(stat_info))
+		
+		Unit.onAddToStatHistory(stat_info)
+		if stat_name == "Speed" and Unit == PlayerManager.getUnitSelected(): PlayerManager.onRefreshMovementRange()
+	
+func onHandPhaseStart() -> void:
+	for Unit in on_units():
+		onStatTurnPassed(Unit)
+	
+func onAIPhaseStart() -> void:
+	for Unit in on_units(TeamRelationGD.new(1)):
+		onStatTurnPassed(Unit)
+	
+func onStatTurnPassed(Unit: UnitGD) -> void:
+	# 0's are not removed but are not accounted for either, they are treated as gone, -1 is infinite
+	var array: Array = []
+	for stat_info in Unit.stat_history.filter(func(x: StatInfoGD): return x.turns > 0):
+		stat_info.turns -= 1
+		StatusManager.onRemoveBuffNextTurn(stat_info)
+		array.append(stat_info)
+		
+	var AppliedBy := AppliedByGD.new()
+	var stats: Dictionary = {"Attack": null, "Health": null, "Speed": null}
+	for stat_info in array:
+		if stats[stat_info.getStatName()] == null:
+			#stats[stat_info.getStatName()] = StatInfoGD.new(stat_info.Unit, AppliedBy, StatsGD.)
+			pass
+			# has to somehow reverse from the statName to the stats and then apply all at once or something idk
+		else: pass
 	
 # This is the color of the stat not the buff
 func getStatColor(stat_info: StatInfoGD) -> String:

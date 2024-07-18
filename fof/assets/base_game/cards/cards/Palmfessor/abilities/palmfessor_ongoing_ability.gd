@@ -29,7 +29,7 @@ func ChangeStat(AppliedBy: AppliedByGD, stat: String) -> bool: # weird one, fuck
 	return false
 	
 func onOngoingAbility() -> void:
-	var AppliedBy := AppliedByGD.new("Ability", Unit)
+	var AppliedBy := AppliedByGD.new(AppliedByGD.ABILITY, Unit)
 	for info in trigger_info: # [0] = Unit, [1] = apply buff / debuff
 		var _Unit: UnitGD = info[0]
 		if info[1]:

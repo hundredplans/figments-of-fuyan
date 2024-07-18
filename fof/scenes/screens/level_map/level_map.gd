@@ -52,10 +52,10 @@ func on_load_default_world_state() -> void:
 var phase_ordering: Dictionary = {
 	"StartPhase": ["Tiles", "Vision", "SpectateCamera", "Hand", "Units", "LevelUI", "VFX", "StatusManager", "Boons"],
 	"AfterStartPhase": ["LevelUI", "Deck"],
-	"HandPhase": ["SpectateCamera", "Hand", "VFX", "StatusManager", "LevelUI", "TriggerManager", "Tools"],
+	"HandPhase": ["SpectateCamera", "Hand", "VFX", "StatusManager", "LevelUI", "TriggerManager", "Tools", "Units"],
 	"PlayerPhase": ["Hand", "LevelUI", "VFX", "SpectateCamera", "Combat", "PlayerManager"],
 	"PlayerEndTurnPhase": ["TriggerManager", "LevelUI", "Vision", "StatusManager", "PlayerManager"],
-	"AIPhase": ["Combat", "TriggerManager", "Units", "LevelUI", "StatusManager", "Tools"],
+	"AIPhase": ["Combat", "TriggerManager", "Units", "LevelUI", "StatusManager", "Tools", "AIManager"],
 	"AIEndTurnPhase": ["TriggerManager", "Units", "StatusManager"]
 }
 func onTriggerPhaseStart(phase: String) -> void:

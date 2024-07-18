@@ -68,6 +68,7 @@ var LevelMap: LevelMapGD
 var TriggerManager: TriggerManagerGD
 
 var Tool: ToolGD
+var stat_history: Array[StatInfoGD] = []
 
 func _ready() -> void: Helper.onCreateChildReferences(self)
 
@@ -198,8 +199,12 @@ func changeStats(stat_info: StatInfoGD) -> int:
 			else: max_speed = clamp(max_speed + stat_info.value, 1, 9); speed = clamp(speed + stat_info.value, 1, max_speed)
 	return diff
 	
+func onAddToStatHistory(stat_info: StatInfoGD) -> void:
+	stat_history.append(stat_info)
+	# removes itself when it reaches 0 turns
+	
 var Killer: UnitGD
-func stats(stat_type: String, val: int, AppliedBy := AppliedByGD.new("GameEvent"), absolute: bool = false) -> void:
+func stats(stat_type: String, val: int, AppliedBy := AppliedByGD.new(), absolute: bool = false) -> void:
 	pass
 	
 var is_arrive_rotate: bool = false

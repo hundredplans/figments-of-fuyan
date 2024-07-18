@@ -38,6 +38,7 @@ func onCanHealUnitsAI(affected_units: Array) -> TileGD:
 	
 func onAbilityDelayFinished() -> void:
 	var _Unit: UnitGD = Units.unit_by_tile(Tile)
-	var AppliedBy := AppliedByGD.new("Ability", Unit)
-	Combat.onApplyBuffNextTurn(BuffInfoGD.new(_Unit, AppliedBy, "attack", ATTACK))
-	Combat.onApplyHealNextTurn(HealInfoGD.new(_Unit, AppliedBy, HEAL))
+	var AppliedBy := AppliedByGD.new(AppliedByGD.ABILITY, Unit)
+	Units.changeStats(StatInfoGD.new(_Unit, AppliedBy, StatsGD.ATTACK, ATTACK, 1))
+	Units.changeStats(StatInfoGD.new(_Unit, AppliedBy, StatsGD.HEALTH, HEAL, 1))
+	

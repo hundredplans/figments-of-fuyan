@@ -156,7 +156,7 @@ func onDMG(Damagee: UnitGD, AppliedBy: AppliedByGD, damage: int) -> DMGInfoGD:
 		var DMGInfo := DMGInfoGD.new(Damagee, AppliedBy, damage)
 		var original_health: int = Damagee.health
 		match AppliedBy.type:
-			"Attack":
+			AppliedByGD.ATTACK:
 				var Attacker: UnitGD = AppliedBy.Applier
 				TriggerManager.onUnitTrigger(Attacker, TriggerGD.ON_ATTACK)
 				damage = onArmor(Damagee, damage + Attacker.extra_damage)
@@ -165,8 +165,7 @@ func onDMG(Damagee: UnitGD, AppliedBy: AppliedByGD, damage: int) -> DMGInfoGD:
 				TriggerManager.onUnitTrigger(Attacker, TriggerGD.ON_AFTER_ATTACK)
 				if DMGInfo.HealthDMG > 0:
 					TriggerManager.onUnitTrigger(Damagee, TriggerGD.WHEN_STRUCK, WhenStruckTriggerInfoGD.new(Attacker, AppliedBy))
-					
-			"Height":
+			AppliedByGD.HEIGHT:
 				Damagee.stats("damage", damage, AppliedBy)
 				DMGInfo.HealthDMG = original_health - Damagee.health
 			_:
@@ -191,7 +190,7 @@ func onArmor(Unit: UnitGD, damage: int) -> int:
 	return damage
 
 func onHealAbility(Healee: UnitGD, Healer: UnitGD, heal: int) -> bool:
-	return onHeal(HealInfoGD.new(Healee, AppliedByGD.new("Ability", Healer), heal))
+	return onHeal(HealInfoGD.new(Healee, AppliedByGD.new(AppliedByGD.ABILITY, Healer), heal))
 
 func onHeal(healInfo: HealInfoGD) -> bool:
 	if healInfo.heal > 0 and healInfo.Healee.isHealable():
@@ -247,27 +246,6 @@ func isAbilityEnabled(Unit: UnitGD, ability: AbilityGD) -> bool:
 	return ability.can_affect and !ability.used and ability.charges != 0 and\
 	!isStaggered(Unit) and Unit.turn_status == UnitGD.TURN_UNUSED\
 	and (LevelMap.game_phase == "PlayerPhase" and Unit.team == 0 or (LevelMap.game_phase == "AIPhase" and Unit.team == 1))
-
-func onBuffInfo(buff_info: BuffInfoGD) -> void:
-	buff_info.Unit.stats(buff_info.stat, buff_info.value, buff_info.AppliedBy, buff_info.absolute)
-
-func onApplyBuffNextTurn(buff_info: BuffInfoGD, triggers: Array = []) -> void:
-	onBuffInfo(buff_info)
-	buff_info.value *= -1
-	GameEffects.addGFX(buff_info.Unit, GameFXGD.BUFF_NEXT_TURN, {"buff_info": buff_info}, triggers)
-
-func onApplyHealNextTurn(heal_info: HealInfoGD, triggers: Array = []) -> void:
-	GameEffects.addGFX(heal_info.Healee, GameFXGD.HEAL_NEXT_TURN, {"heal_info": heal_info}, triggers)
-	
-func onCreateBuffInfoArray(array: Array) -> BuffInfoArrayGD:
-	var total: int = 0
-	for buff_info in array: total += buff_info.value
-	return BuffInfoArrayGD.new(array[0].Unit, array[0].stat, total, array)
-
-func onCreateHealInfoArray(array: Array) -> HealInfoArrayGD:
-	var total: int = 0
-	for heal_info in array: total += heal_info.heal
-	return HealInfoArrayGD.new(array[0].Healee, total, array)
 
 func onOngoingAbility(Unit: UnitGD, type: String, args: Array = []) -> void:
 	for _Unit in Units.all_units(Unit) + [Unit]:

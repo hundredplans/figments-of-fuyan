@@ -266,30 +266,34 @@ func getHealNextTurnColorValue(value: int) -> String:
 	var color_value: int = clamp(value, -3, 3)
 	return BUFF_COLORS[color_value * (clamp(value, -1, 1))]
 
-func onCreateBuffNextTurn(buff_info_array: BuffInfoArrayGD) -> void:
-	for UnitStatus in onFindUnitStatus(buff_info_array.Unit):
-		UnitStatus.onCreateBuffNextTurn(buff_info_array.stat, buff_info_array.value, getBuffColorValue(buff_info_array.value))
+func onCreateBuffNextTurn(stat_info: StatInfoGD) -> void:
+	if stat_info.stat_type != StatsGD.HEALTH:
+		for UnitStatus in onFindUnitStatus(stat_info.Unit):
+			UnitStatus.onCreateBuffNextTurn(stat_info.getStatName(), stat_info.value, getBuffColorValue(stat_info.value))
+		
+		for UnitStatus in onFindUnitStatus(stat_info.Unit, "UnitFieldStatus"):
+			UnitStatus.onCreateBuffNextTurn(stat_info.getStatName(), stat_info.value)
+	else: onCreateHealNextTurn(stat_info)
 	
-	for UnitStatus in onFindUnitStatus(buff_info_array.Unit, "UnitFieldStatus"):
-		UnitStatus.onCreateBuffNextTurn(buff_info_array.stat, buff_info_array.value)
-	
-func onRemoveBuffNextTurn(buff_info_array: BuffInfoArrayGD) -> void:
-	for UnitStatus in onFindUnitStatus(buff_info_array.Unit):
-		UnitStatus.onRemoveBuffNextTurn(buff_info_array.stat)
+func onRemoveBuffNextTurn(stat_info: StatInfoGD) -> void:
+	if stat_info.stat_type != StatsGD.HEALTH:
+		for UnitStatus in onFindUnitStatus(stat_info.Unit):
+			UnitStatus.onRemoveBuffNextTurn(stat_info.getStatName())
 
-	for UnitStatus in onFindUnitStatus(buff_info_array.Unit, "UnitFieldStatus"):
-		UnitStatus.onRemoveBuffNextTurn(buff_info_array.stat)
+		for UnitStatus in onFindUnitStatus(stat_info.Unit, "UnitFieldStatus"):
+			UnitStatus.onRemoveBuffNextTurn(stat_info.getStatName())
+	else: onRemoveHealNextTurn(stat_info)
 
-func onCreateHealNextTurn(heal_info_array: HealInfoArrayGD) -> void:
-	for UnitStatus in onFindUnitStatus(heal_info_array.Healee):
-		UnitStatus.onCreateHealNextTurn(getHealNextTurnColorValue(heal_info_array.heal))
+func onCreateHealNextTurn(stat_info: StatInfoGD) -> void:
+	for UnitStatus in onFindUnitStatus(stat_info.Unit):
+		UnitStatus.onCreateHealNextTurn(getHealNextTurnColorValue(stat_info.value))
 	
-	for UnitStatus in onFindUnitStatus(heal_info_array.Healee, "UnitFieldStatus"):
-		UnitStatus.onCreateHealNextTurn(heal_info_array.heal)
+	for UnitStatus in onFindUnitStatus(stat_info.Unit, "UnitFieldStatus"):
+		UnitStatus.onCreateHealNextTurn(stat_info.value)
 	
-func onRemoveHealNextTurn(heal_info_array: HealInfoArrayGD) -> void:
-	for UnitStatus in onFindUnitStatus(heal_info_array.Healee):
+func onRemoveHealNextTurn(stat_info: StatInfoGD) -> void:
+	for UnitStatus in onFindUnitStatus(stat_info.Unit):
 		UnitStatus.onRemoveHealNextTurn()
 
-	for UnitStatus in onFindUnitStatus(heal_info_array.Healee, "UnitFieldStatus"):
+	for UnitStatus in onFindUnitStatus(stat_info.Unit, "UnitFieldStatus"):
 		UnitStatus.onRemoveHealNextTurn()

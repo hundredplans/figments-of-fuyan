@@ -20,11 +20,11 @@ func onTrigger(Unit: UnitGD, trigger: int, args: TriggerInfoGD) -> void:
 func onCondition(Unit: UnitGD) -> bool: return Unit.Tile in interactable_tiles
 func onAbilityTrigger(Unit: UnitGD, ability: IObjectAbilityInfoGD) -> void:
 	var units: Array = Units.onFindAdjacentUnits(Unit, 2).filter(func(x: UnitGD): return x.team == Unit.team)
-	var AppliedBy := AppliedByGD.new("IObject", Unit)
+	var AppliedBy := AppliedByGD.new(AppliedByGD.IOBJECT, self)
 	for _Unit in units:
 		match info.abilities.find(ability):
-			0: Combat.onApplyBuffNextTurn(BuffInfoGD.new(_Unit, AppliedBy, "speed", 1))
-			1: Combat.onApplyBuffNextTurn(BuffInfoGD.new(_Unit, AppliedBy, "attack", 1))
+			0: Units.changeStats(StatInfoGD.new(_Unit, AppliedBy, StatsGD.BOTH_SPEED, 1, 1))
+			1: Units.changeStats(StatInfoGD.new(_Unit, AppliedBy, StatsGD.ATTACK, 1, 2))
 			2: Combat.onHeal(HealInfoGD.new(_Unit, AppliedBy, 1))
 	
 	GameEffects.onDefaultStun(Unit)

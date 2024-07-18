@@ -13,8 +13,6 @@ var gfx: Array = []
 const GAME_FX_INFO: Dictionary = {
 	GameFXGD.DAZE: "daze",
 	GameFXGD.STAGGER: "stagger",
-	GameFXGD.HEAL_NEXT_TURN: "heal_next_turn",
-	GameFXGD.BUFF_NEXT_TURN: "buff_next_turn",
 	GameFXGD.ABILITY_ACTIVE: "ability_active",
 	GameFXGD.HELPFUL_HELMET: "helpful_helmet",
 	GameFXGD.CHARMING_STANCE: "charming_stance",
@@ -23,7 +21,6 @@ const GAME_FX_INFO: Dictionary = {
 }
 
 var GAME_FX_OVERRIDE: Array = [GameFXGD.DAZE, GameFXGD.STAGGER]
-var GAME_FX_COMBINE: Array = [GameFXGD.HEAL_NEXT_TURN, GameFXGD.BUFF_NEXT_TURN]
 
 func getUnitGFX(Unit: UnitGD) -> Array:
 	return gfx.filter(func(x: GameFXGD): return x.Unit == Unit)
@@ -33,23 +30,16 @@ func onOverrideGFX(Unit: UnitGD, type: int) -> void:
 		for GameFX in getUnitGFX(Unit).filter(func(x: GameFXGD): return x.type == type):
 			onRemoveFX(GameFX)
 
-func onCombineGFX(Unit: UnitGD, type: int, a: Dictionary) -> GameFXGD:
-	if type in GAME_FX_COMBINE and onGameFXExists(Unit, type):
-		var GameFX := onFindFirstGameFX(Unit, type)
-		return GameFX.onCombine(a)
-	return null
-
 func addGFX(Unit: UnitGD, type: int, a: Dictionary = {}, custom_triggers: Array = []) -> void:
 	onOverrideGFX(Unit, type)
-	if !onCombineGFX(Unit, type, a):
-		var GameFX := Node.new()
-		GameFX.script = load("res://scenes/screens/level_map/utility_nodes/game_effects/game_effects/" + GAME_FX_INFO[type] + "_gfx.gd")
-		add_child(GameFX)
-		
-		GameFX.setInfo(Unit, type, custom_triggers, a)
-		GameFX.onCreateGFX()
-		GameFX.onAfterCreateGFX()
-		gfx.append(GameFX)
+	var GameFX := Node.new()
+	GameFX.script = load("res://scenes/screens/level_map/utility_nodes/game_effects/game_effects/" + GAME_FX_INFO[type] + "_gfx.gd")
+	add_child(GameFX)
+	
+	GameFX.setInfo(Unit, type, custom_triggers, a)
+	GameFX.onCreateGFX()
+	GameFX.onAfterCreateGFX()
+	gfx.append(GameFX)
 
 func onDeathFinished(Unit: UnitGD) -> void:
 	var erase: Array = []

@@ -26,7 +26,7 @@ func onTrigger() -> void:
 		TargetTile.Unit.Model._look_at(Unit.Tile)
 	
 func onAfterTrigger() -> void:
-	var AppliedBy := AppliedByGD.new("Attack", Unit)
+	var AppliedBy := AppliedByGD.new(AppliedByGD.ATTACK, Unit)
 	if TargetTile.Unit != null:
 		var DMGInfo: DMGInfoGD = Combat.onDMG(TargetTile.Unit, AppliedBy, Unit.attack)
 		Unit.attack_amount -= 1

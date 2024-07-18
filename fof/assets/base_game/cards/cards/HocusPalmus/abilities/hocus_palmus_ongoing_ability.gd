@@ -64,7 +64,7 @@ func onPickMostInjured() -> bool:
 	return triggered
 
 func onOngoingAbility() -> void:
-	var AppliedBy := AppliedByGD.new("Ability", Unit)
+	var AppliedBy := AppliedByGD.new(AppliedByGD.ABILITY, Unit)
 	for info in trigger_info:
 		var _Unit: UnitGD = info[0]
 		if info[1]:

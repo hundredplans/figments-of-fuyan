@@ -71,6 +71,7 @@ func onUpdateStat(stat: int, stat_changed: String, color: String) -> void:
 	ScaleTween.tween_property(StatLabel, "scale:y", 0, NUMBER_SCALE_TIME)
 	ScaleTween.finished.connect(onUpdateStatBounceBack.bind(stat, stat_changed, color))
 	HoverCard.onUpdateStat(stat, stat_changed)
+	
 func onUpdateStatBounceBack(stat: int, stat_changed: String, color: String) -> void:
 	var StatLabel: Label = Stats.get_node(stat_changed + "/Label")
 	setStatColorSize(StatLabel, stat, color)
@@ -111,7 +112,7 @@ func onAddUnitFX(info_fx: InfoFXGD) -> Control:
 	UnitFX.add_child(base_fx)
 	onChangePage(0)
 	return base_fx
-
+	
 func onRemoveUnitFX(fx_type: String, AppliedBy: AppliedByGD) -> void:
 	for child in UnitFX.get_children():
 		if child.info_fx.fx_type == fx_type and (AppliedBy.Applier == child.info_fx.Unit):

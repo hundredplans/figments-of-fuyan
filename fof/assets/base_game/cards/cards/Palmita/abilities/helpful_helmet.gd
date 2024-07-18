@@ -6,7 +6,7 @@ func onTargetAbilityCondition() -> void:
 
 func onTargetAbility() -> void:
 	Unit.Model._look_at(Tile)
-	var AppliedBy := AppliedByGD.new("HelpfulHelmet", Unit)
+	var AppliedBy := AppliedByGD.new(AppliedByGD.HELPFUL_HELMET, Unit)
 	Unit.Model.death = "DeathAbility"
 	Combat.onDestroyUnit(Unit, AppliedBy)
 	var is_vis: bool = Unit.team == 0 or Unit.Tile in Vision.getTeamVision()

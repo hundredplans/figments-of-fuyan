@@ -1,18 +1,18 @@
 class_name AppliedByGD
 extends Resource
 
-var type: String = "GameEvent"
+var type: int
 
 # Can be an IObject, Unit, Tool, Boon, Tile
 var Applier: Variant
 
-func _init(_type: String = "GameEvent", _Applier: Variant = null) -> void:
+func _init(_type: int = 0, _Applier: Variant = null) -> void:
 	Applier = _Applier
 	type = _type
 
 enum {
+	GAME_EVENT,
 	ABILITY,
-	DUMSY_PALMSY_ARRIVE,
 	TOOL,
 	MOVEMENT_FINISHED,
 	ATTACK,
@@ -23,7 +23,8 @@ enum {
 	END_AI_PHASE,
 	TRAIT,
 	HEIGHT,
-	GAME_EVENT,
 	START_PLAYER_PHASE,
-	END_PLAYER_PHASE
+	END_PLAYER_PHASE,
+	HELPFUL_HELMET,
+	CONSOLE,
 }

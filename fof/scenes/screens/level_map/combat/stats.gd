@@ -17,3 +17,6 @@ enum {
 func _init(info: Variant) -> void:
 	if info is Array: array = info
 	elif info is StatInfoGD: array.append(info)
+
+func add(stat_info: StatInfoGD) -> void:
+	array.append(stat_info)
