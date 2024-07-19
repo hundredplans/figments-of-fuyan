@@ -10,9 +10,6 @@ func onReady() -> void:
 	is_equal_height = info.id in [5, 6]
 	
 func onCondition(Unit: UnitGD) -> bool: return Unit.Tile in interactable_tiles
-func getDisabled(Unit: UnitGD) -> bool:
-	if interactable_tiles.all(func(x: TileGD): return Units.unit_by_tile_bool(x)): return true
-	return Unit.turn_status == Unit.TURN_USED
 
 func onTrigger(_Unit: UnitGD, _trigger: int, _args: TriggerInfoGD) -> void:
 	pass

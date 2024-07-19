@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="UniqueTileInfoGD" load_steps=3 format=3 uid="uid://gf7wh23ypi00"]
+
+[ext_resource type="Script" path="res://assets/base_game/unique_tiles/unique_tile_info.gd" id="1_6wc2n"]
+[ext_resource type="Script" path="res://assets/base_game/unique_tiles/scripts/shallow_water.gd" id="2_yybya"]
+
+[resource]
+script = ExtResource("1_6wc2n")
+id = 3
+tile_script = ExtResource("2_yybya")

@@ -642,17 +642,20 @@ offset_left = 1012.0
 offset_top = 371.0
 offset_right = 1920.0
 offset_bottom = 975.0
+mouse_filter = 2
 alignment = 1
 script = ExtResource("27_bffhk")
 
 [node name="ContainerOne" type="HBoxContainer" parent="UnitMode/UnitModeBoxes"]
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 2
 alignment = 2
 
 [node name="ContainerTwo" type="HBoxContainer" parent="UnitMode/UnitModeBoxes"]
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 2
 alignment = 2
 
 [node name="DrawCard" type="Control" parent="."]

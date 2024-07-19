@@ -218,10 +218,14 @@ func onStatTurnPassed(Unit: UnitGD) -> void:
 	for stat_info in stat_history:
 		stat_info.turns -= 1
 		if stat_info.turns == 0:
-			changeStats(stat_info.getReverse())
+			changeStats(stat_info.getReverse() if !stat_info.is_delayed else stat_info.getDelayed())
 			StatusManager.onRemoveBuffNextTurn(stat_info)
 			
 	onNextTurnStats(Unit)
+	
+func onDelayedStats(stat_info: StatInfoGD) -> void:
+	stat_info.Unit.onAddToStatHistory(stat_info)
+	onNextTurnStats(stat_info.Unit)
 	
 func onNextTurnStats(Unit: UnitGD) -> void:
 	var AppliedBy := AppliedByGD.new()
@@ -229,7 +233,7 @@ func onNextTurnStats(Unit: UnitGD) -> void:
 	
 	for stat_info in Unit.stat_history.filter(func(x: StatInfoGD): return x.turns == 1):
 		if stats.has(stat_info.stat_type):
-			if stats[stat_info.stat_type] == null: StatInfoGD.new(stat_info.Unit, AppliedBy, stat_info.stat_type, stat_info.value, 1)
+			if stats[stat_info.stat_type] == null: stats[stat_info.stat_type] = StatInfoGD.new(stat_info.Unit, AppliedBy, stat_info.stat_type, stat_info.value, 1)
 			else: stats[stat_info.stat_type].add(stat_info.value)
 		else: print_debug("You are trying to temporarily add to an illegal stat!")
 		

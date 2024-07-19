@@ -269,10 +269,10 @@ func getHealNextTurnColorValue(value: int) -> String:
 func onCreateBuffNextTurn(stat_info: StatInfoGD) -> void:
 	if stat_info.stat_type != StatsGD.HEALTH:
 		for UnitStatus in onFindUnitStatus(stat_info.Unit):
-			UnitStatus.onCreateBuffNextTurn(stat_info.getStatName(), stat_info.value, getBuffColorValue(stat_info.value))
+			UnitStatus.onCreateBuffNextTurn(stat_info.getStatName(), stat_info.value * -1, getBuffColorValue(stat_info.value * -1))
 		
 		for UnitStatus in onFindUnitStatus(stat_info.Unit, "UnitFieldStatus"):
-			UnitStatus.onCreateBuffNextTurn(stat_info.getStatName(), stat_info.value)
+			UnitStatus.onCreateBuffNextTurn(stat_info.getStatName(), stat_info.value * -1)
 	else: onCreateHealNextTurn(stat_info)
 	
 func onRemoveBuffNextTurn(stat_info: StatInfoGD) -> void:

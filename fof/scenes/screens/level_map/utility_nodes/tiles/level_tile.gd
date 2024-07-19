@@ -81,3 +81,4 @@ func isMouseInObj(x: bool) -> void:
 func isMouseInTile(x: bool) -> void:
 	mouse_entered_tile = x
 	setObjectHighlight()
+

@@ -50,6 +50,6 @@ func onAfterTrigger() -> void:
 	Units.changeStats(StatInfoGD.new(Unit, AppliedByGD.new(AppliedByGD.MOVEMENT_FINISHED), StatsGD.CURRENT_SPEED, -1, -1, false, false))
 	var PreviousTile: TileGD = Unit.Tile
 	Unit.occupy_tile(fneighbour.Tile)
-	Tiles.onTileEffects(Unit, PreviousTile)
+	TriggerManager.onUnitTrigger(Unit, TriggerGD.MOVE, MoveTriggerInfoGD.new(PreviousTile))
 	
 	if Unit.team == 0: Unit.onAddToPastPath(PreviousTile)

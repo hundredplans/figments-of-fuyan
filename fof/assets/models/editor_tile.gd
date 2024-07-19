@@ -103,7 +103,7 @@ func on_load_tile_get_area(id: int, area: int) -> void:
 	Tile.add_child(tile)
 	
 	if id != 2:
-		for body in Helper.get_children_recursive(tile).filter(func(x: Node3D): return x is StaticBody3D):
+		for body in Helper.get_children_recursive(tile).filter(func(x: Node): return x is StaticBody3D):
 			body.collision_layer = 0
 	Tile.rotation_degrees.y = info.tile.rotation * 60
 	emit_set_tile_material(0)

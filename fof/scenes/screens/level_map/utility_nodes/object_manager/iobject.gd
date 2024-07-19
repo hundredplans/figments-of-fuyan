@@ -24,3 +24,7 @@ func setInfo(_BaseTile: TileGD = null, _interactable_tiles: Array = [], _info: O
 
 func _init() -> void:
 	Helper.onCreateChildReferences(self)
+
+# func onTrigger(Unit, trigger, args) -> Triggers when any trigger occurs
+# func onReady() -> Called when initialized
+# func onCondition() -> Finds whether to display all the unit mode boxes

@@ -294,3 +294,6 @@ func onZipline() -> void:
 
 func onZiplineFinished() -> void:
 	Unit.global_position.y -= getZiplineHeight()
+
+func onMarioJump() -> void:
+	pass

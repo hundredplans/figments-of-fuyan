@@ -826,7 +826,7 @@ tiles = [{
 }
 }, {
 "obj": {
-"id": 10,
+"id": 0,
 "multi_tile": [],
 "obj_info": [],
 "rotation": 0,
@@ -880,11 +880,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[-5, 6, -1, 0], [-5, 6, -1, 1]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -1220,11 +1220,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 1,
-"multi_tile": [[-4, 5, -1, 0], [-4, 5, -1, 1]],
+"id": 0,
+"multi_tile": [],
 "rotation": 0,
 "tile_wall": 0,
-"type": 2
+"type": 0
 },
 "wdeco": {
 "id": 0,
@@ -1608,10 +1608,10 @@ tiles = [{
 }
 }, {
 "obj": {
-"id": 11,
+"id": 0,
 "multi_tile": [],
 "obj_info": [],
-"rotation": 3,
+"rotation": 0,
 "type": 0
 },
 "position": [-3, 5, -2, 0],
@@ -6626,11 +6626,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[-5, 6, -1, 0], [-5, 6, -1, 1]],
 "rotation": 0,
-"tile_wall": 0,
-"type": 0
+"tile_wall": 1,
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -6966,11 +6966,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 1,
-"multi_tile": [[-4, 5, -1, 0], [-4, 5, -1, 1]],
+"id": 0,
+"multi_tile": [],
 "rotation": 0,
-"tile_wall": 1,
-"type": 2
+"tile_wall": 0,
+"type": 0
 },
 "wdeco": {
 "id": 0,
@@ -12366,10 +12366,10 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
-"type": 0
+"type": 1
 },
 "wall": {
 "id": 0,
@@ -12706,10 +12706,10 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 1,
+"id": 0,
 "multi_tile": [],
 "rotation": 0,
-"type": 1
+"type": 0
 },
 "wall": {
 "id": 0,

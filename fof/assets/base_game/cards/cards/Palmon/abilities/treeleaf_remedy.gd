@@ -40,5 +40,5 @@ func onAbilityDelayFinished() -> void:
 	var _Unit: UnitGD = Units.unit_by_tile(Tile)
 	var AppliedBy := AppliedByGD.new(AppliedByGD.ABILITY, Unit)
 	Units.changeStats(StatInfoGD.new(_Unit, AppliedBy, StatsGD.ATTACK, ATTACK, 1))
-	Units.changeStats(StatInfoGD.new(_Unit, AppliedBy, StatsGD.HEALTH, HEAL, 1))
+	Units.onDelayedStats(StatInfoGD.new(_Unit, AppliedBy, StatsGD.HEALTH, HEAL, 1, false, true, true))
 	

@@ -196,7 +196,7 @@ func onHeal(HealInfo: HealInfoGD) -> bool:
 	if HealInfo.heal > 0 and HealInfo.Healee.isHealable():
 		var health: int = HealInfo.Healee.health
 		Units.changeStats(StatInfoGD.new(HealInfo.Healee, HealInfo.AppliedBy, StatsGD.HEALTH, HealInfo.heal))
-		var diff: int = HealInfo.Healee.Health - health
+		var diff: int = HealInfo.Healee.health - health
 		onWhenHealed(HealInfo.Healee, HealInfo, diff)
 		return true
 	return false

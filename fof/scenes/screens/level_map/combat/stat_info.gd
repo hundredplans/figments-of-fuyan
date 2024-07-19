@@ -15,8 +15,10 @@ var absolute: bool
 # True for reverse buffs that return the value exactly
 var unmodifiable: bool
 var show_change: bool
+# Doesn't reverse the buff when it reaches 0 turns
+var is_delayed: bool
 
-func _init(_Unit: UnitGD = null, _AppliedBy: AppliedByGD = null, _stat_type: int = 0, _value: int = 0, _turns: int = -1, _absolute: bool = false, _show_change: bool = true) -> void:
+func _init(_Unit: UnitGD = null, _AppliedBy: AppliedByGD = null, _stat_type: int = 0, _value: int = 0, _turns: int = -1, _absolute: bool = false, _show_change: bool = true, _is_delayed: bool = false) -> void:
 	Unit = _Unit
 	AppliedBy = _AppliedBy
 	stat_type = _stat_type
@@ -24,6 +26,7 @@ func _init(_Unit: UnitGD = null, _AppliedBy: AppliedByGD = null, _stat_type: int
 	turns = _turns
 	absolute = _absolute
 	show_change = _show_change
+	is_delayed = _is_delayed
 
 func onApplyModifiers() -> void:
 	if !unmodifiable and Unit.team == 0 and value > 0 and !absolute:
@@ -51,6 +54,9 @@ func add(_value: int) -> void:
 	value += _value
 	
 func getReverse() -> StatInfoGD:
-	var stat_info := StatInfoGD.new(Unit, AppliedBy, stat_type, value * -1, turns)
+	var stat_info := StatInfoGD.new(Unit, AppliedBy, stat_type, value * -1, turns, absolute, show_change)
 	stat_info.unmodifiable = true
 	return stat_info
+
+func getDelayed() -> StatInfoGD:
+	return StatInfoGD.new(Unit, AppliedBy, stat_type, value, turns, absolute, show_change)

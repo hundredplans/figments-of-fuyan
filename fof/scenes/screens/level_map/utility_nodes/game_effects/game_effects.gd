@@ -16,7 +16,6 @@ const GAME_FX_INFO: Dictionary = {
 	GameFXGD.ABILITY_ACTIVE: "ability_active",
 	GameFXGD.HELPFUL_HELMET: "helpful_helmet",
 	GameFXGD.CHARMING_STANCE: "charming_stance",
-	GameFXGD.DEEP_WATER: "deep_water",
 	GameFXGD.ENERGIZED_BOON: "energized_boon",
 }
 

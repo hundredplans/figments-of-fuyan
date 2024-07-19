@@ -1,5 +1,7 @@
 extends Node
 
+@onready var progress_bar: ProgressBar = $ProgressBar
+
 var item_properties: Array = []
 var TILE_OBJECT_NAME_TO_FULL_NAME: Dictionary = {
 	"tile": "tiles",
@@ -22,11 +24,15 @@ Vector3(0, 1, -1)
 
 @export var _level_info: LevelInfoGD
 func _ready() -> void:
+	progress_bar.visible = false
+	progress_bar.max_value = 6
 	onLoadItemProperties()
 	if _level_info != null: onBakeLevel(_level_info)
 
 func onBakeLevel(level_info: LevelInfoGD) -> void:
-	print("Beginning baking")
+	progress_bar.visible = true
+	progress_bar.value = 0
+	await get_tree().process_frame
 	var packed_scene := PackedScene.new()
 	var load_level_path: String = "res://assets/base_game/levels/level/loaded_level.tscn"
 	var alt_path: String = "res://assets/base_game/levels/levels/" + level_info.folder_name + "/loaded_level.tscn"
@@ -35,11 +41,12 @@ func onBakeLevel(level_info: LevelInfoGD) -> void:
 	var LoadedLevel: Node3D = load(load_level_path).instantiate()
 	for child in LoadedLevel.get_node("Tiles").get_children(): child.free()
 	add_child(LoadedLevel)
-	print("Old tiles removed")
+	progress_bar.value += 1
+	await get_tree().process_frame
 	var tiles: Array = []
 	for tile_info in level_info.tiles:
 		tiles.append(onCreateTile(tile_info, LoadedLevel))
-	print("New tiles created")
+	progress_bar.value += 1
 	await get_tree().process_frame
 	tiles = tiles.filter(func(x: TileGD): return x != null)
 	var id: int = 1
@@ -49,21 +56,24 @@ func onBakeLevel(level_info: LevelInfoGD) -> void:
 		Tile.id = id
 		id += 1
 	
-	print("Collision points and unit height assigned")
+	progress_bar.value += 1
+	await get_tree().process_frame
 	for Tile in tiles:
 		setTileSolidStatus(Tile, tiles)
 	
-	print("Solid status to tiles assigned")
+	progress_bar.value += 1
+	await get_tree().process_frame
 	for Tile in tiles:
 		onCreateFneighbours(Tile, tiles)
-	print("Neighbour relationships created for tiles")
+	progress_bar.value += 1
 	
 	await get_tree().process_frame # absolutely necessary
 	LoadedLevel.script = light_tester_gd
 	packed_scene.pack(LoadedLevel)
 	ResourceSaver.save(packed_scene, alt_path)
 	LoadedLevel.queue_free()
-	print("Finished")
+	progress_bar.value += 1
+	progress_bar.visible = false
 
 func onCreateTile(tile_info: Dictionary, owner_node: Node3D) -> TileGD:
 	if TILE_OBJECT_NAMES.any(func(x: String): return tile_info[x].id > 0):
@@ -233,11 +243,6 @@ func onSortTileCollisions(Tile: TileGD, tiles: Array, area: int) -> void:
 						scene.position.y = 0.0 if obj_name == "tile" else 0.3
 						scene.rotation_degrees.y = Tile[obj_name].rotation * 60
 						onCreateCollisionPoints(Tile, tiles, scene.global_position, Tile[obj_name].rotation * 60,  scene.collision_points, obj_name)
-						
-						if obj_name == "tile":
-							if Tile['tile'].id == 9: scene.get_node("CrabArmArmature").visible = false
-							elif Tile['tile'].id == 10: scene.get_node("CoconutPile").visible = false
-							
 		
 	for grandchild in Tile.ModelManager.get_children():
 		grandchild.owner = Tile.owner

@@ -11,8 +11,8 @@
 [ext_resource type="FontFile" uid="uid://7k4xd8s0oed2" path="res://assets/UI/roboto/roboto.ttf" id="12_i56tg"]
 [ext_resource type="Theme" uid="uid://du2bpyvp41rdk" path="res://assets/UI/roboto/roboto20.tres" id="13_b5jku"]
 [ext_resource type="LabelSettings" uid="uid://duy8g0fum2k06" path="res://assets/UI/roboto/roboto20_outline.tres" id="13_i5pda"]
+[ext_resource type="PackedScene" uid="uid://cqm7e2b3jt8ve" path="res://scenes/screens/level_editor/bake_level.tscn" id="14_3dupv"]
 [ext_resource type="Theme" uid="uid://bsbktaxrkrggi" path="res://assets/UI/roboto/roboto12.tres" id="14_37qlv"]
-[ext_resource type="Script" path="res://scenes/screens/level_editor/bake_level.gd" id="14_k6vi7"]
 [ext_resource type="Texture2D" uid="uid://bj8qaug3a4at1" path="res://scenes/ui_general/arrow/arrow_disabled.png" id="15_f5tsu"]
 
 [sub_resource type="Environment" id="Environment_550hv"]
@@ -721,9 +721,8 @@ shape = SubResource("RectangleShape2D_6bgmu")
 wait_time = 0.1
 one_shot = true
 
-[node name="BakeLevel" type="Node" parent="."]
+[node name="BakeLevel" parent="." instance=ExtResource("14_3dupv")]
 unique_name_in_owner = true
-script = ExtResource("14_k6vi7")
 
 [connection signal="pressed" from="BuildMenu/Tabs/Tabs/TileTab" to="." method="on_load_tab" binds= [0]]
 [connection signal="pressed" from="BuildMenu/Tabs/Tabs/ObjectTab" to="." method="on_load_tab" binds= [1]]

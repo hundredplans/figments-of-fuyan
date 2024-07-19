@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="UniqueTileInfoGD" load_steps=3 format=3 uid="uid://bifvojcvuile5"]
+
+[ext_resource type="Script" path="res://assets/base_game/unique_tiles/unique_tile_info.gd" id="1_d4aip"]
+[ext_resource type="Script" path="res://assets/base_game/unique_tiles/scripts/sand_tile_trapped.gd" id="2_kcjee"]
+
+[resource]
+script = ExtResource("1_d4aip")
+id = 9
+tile_script = ExtResource("2_kcjee")

@@ -16,6 +16,7 @@ var Hand: HandGD
 var PlayerManager: PlayerManagerGD
 var GameEffects: GameEffectsGD
 var ObjectManager: ObjectManagerGD
+var UniqueTiles: UniqueTilesGD
 
 var cube_directions: Array[Vector3] = [
 Vector3(1, 0, -1),
@@ -263,6 +264,7 @@ func onCreateTopOfCliffWall() -> void:
 				else: break
 	
 func onSetupTiles() -> void:
+	var unique_tile_ids: Array = UniqueTiles.all_tiles.map(func(x: UniqueTileInfoGD): return x.id)
 	for Tile in get_children():
 		Helper.onCreateChildReferences(Tile)
 		for type in Helper.BTAB_TO_TYPE[-1]:
@@ -280,6 +282,7 @@ func onSetupTiles() -> void:
 					body.collision_layer = 16
 					
 		Tile.highlight_obj.connect(ObjectManager.onHighlightObj.bind(Tile))
+		if Tile.tile.id in unique_tile_ids: UniqueTiles.onAddUniqueTile(Tile)
 	
 func onRemovePathHovered() -> void:
 	if PlayerManager.getUnitSelected() != null:
@@ -683,14 +686,6 @@ func onFindUnitAdjacentTiles(Unit: UnitGD, distance: int) -> Array: #  Tiles bas
 						if getUnitAdjustedHeight(_Unit.Tile) + _Unit.height.top >= height - Unit.height.top:
 							tiles.append(Tile)
 	return tiles
-
-func onTileEffects(Unit: UnitGD, PreviousTile: TileGD) -> void:
-	var is_water: bool = Unit.Tile.isDeepWater()
-	var was_water: bool = PreviousTile.isDeepWater()
-	
-	if (is_water and !was_water): GameEffects.addGFX(Unit, GameFXGD.DEEP_WATER)
-	elif (!is_water and was_water): GameEffects.onFindRemoveFX(Unit, GameFXGD.DEEP_WATER)
-	
 	
 func onCanDrown(Unit: UnitGD) -> bool: return Unit.height.top < 1
 
