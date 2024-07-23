@@ -31,15 +31,17 @@ func onIsMouseInUI(x: bool):
 	else: onRemoveTooltip()
 	mouse_in_ui.emit(x)
 
-func setInfo(_tool: ToolGD) -> void:
+func setInfo(_tool: ToolGD = null) -> void:
 	tool = _tool
 	visible = tool != null
 	if visible:
-		ToolBoxOutline.visible = tool.tool_info.rarity != tool.tool_info.RARITIES.MINI
-		if tool.is_ascended: ToolBox.texture = preload("res://assets/base_game/tools/base_tool/tool_box_ascended.png")
-		elif tool.tool_info.rarity == tool.tool_info.RARITIES.MINI:
+		if tool.tool_info.rarity == tool.tool_info.RARITIES.MINI:
+			ToolBoxOutline.texture = preload("res://assets/base_game/tools/base_tool/tool_box_mini.png")
 			ToolBox.texture = preload("res://assets/base_game/tools/base_tool/tool_box_mini.png")
-		else: ToolBox.texture = preload("res://assets/base_game/tools/base_tool/tool_box_regular.png")
+		else:
+			ToolBoxOutline.texture = preload("res://assets/base_game/tools/base_tool/tool_box_outline.png")
+			if tool.is_ascended: ToolBox.texture = preload("res://assets/base_game/tools/base_tool/tool_box_ascended.png")
+			else: ToolBox.texture = preload("res://assets/base_game/tools/base_tool/tool_box_regular.png")
 
 		ToolBoxOutline.modulate = Helper.rarity_boon_tool_colors[tool.tool_info.rarity]
 		ToolIcon.texture = tool.tool_info.icon

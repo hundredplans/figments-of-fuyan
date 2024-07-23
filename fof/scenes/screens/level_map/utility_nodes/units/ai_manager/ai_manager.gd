@@ -8,6 +8,7 @@ var Tiles: TilesGD
 var Units: UnitsGD
 var Combat: CombatGD
 var ActionManager: ActionManagerGD
+var PlayerManager: PlayerManagerGD
 
 var active_movement_order: Array = []
 var invisible_movement_tracker: Array = []
@@ -488,8 +489,7 @@ func onUseTargetAbilities(Unit: UnitGD) -> bool:
 	var wait: bool = false
 	for ability in Unit.abilities:
 		if ability is TargetAbilityGD:
-			ability.onTargetAbilityCondition()
-			ability.can_affect = !(ability.tiles["affect"].is_empty())
+			PlayerManager.onRefreshAbility(Unit, ability)
 			if Combat.isAbilityEnabled(Unit, ability):
 				var Tile: TileGD = ability.onTargetAbilityConditionAI()
 				if Tile != null:

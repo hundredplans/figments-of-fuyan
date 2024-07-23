@@ -15,7 +15,6 @@ func on_apply_text_processing(text: String) -> String:
 	
 	for type in DirAccess.get_files_at("res://assets/base_game/cards/game_card/art/bbcode/"):
 		text = on_add_bbcode_image(text, type.left(-4))
-	
 	return text
 
 func on_add_bbcode_image(text: String, type: String) ->  String:

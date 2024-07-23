@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ToolInfoGD" load_steps=4 format=3 uid="uid://b134okmylykg0"]
+
+[ext_resource type="Texture2D" uid="uid://k0rkm5sthrih" path="res://assets/base_game/tools/icons/Sand Larva.png" id="1_iodtb"]
+[ext_resource type="Script" path="res://assets/base_game/tools/tool_info.gd" id="1_mb0oo"]
+[ext_resource type="Script" path="res://assets/base_game/tools/scripts/sand_larva.gd" id="3_gxpjh"]
+
+[resource]
+script = ExtResource("1_mb0oo")
+id = 11
+icon = ExtResource("1_iodtb")
+rarity = 0
+tool_script = ExtResource("3_gxpjh")
+display_name = "Sand Larva"
+description = "LAST WILL: Awaken a neutral Sand Larva"
+ascended_description = ""
+tool_abilities = Array[Resource("res://assets/base_game/tools/tool_ability_info.gd")]([])

@@ -4,7 +4,6 @@ extends Node3D
 signal update_ai_stat
 var is_dead: bool = false
 var id: int = 0
-var unit_fx: Array = []
 var is_spectated: bool = false
 var visible_state: bool = false
 
@@ -38,6 +37,7 @@ var finished_awakening: bool = false
 var traits: Array = []
 var abilities: Array = []
 var base_text: String
+var status_fx_array: Array = []
 
 var ai_info: AIInfoGD
 
@@ -74,15 +74,19 @@ func _ready() -> void: Helper.onCreateChildReferences(self)
 
 
 func onEquipTool(_Tool: ToolGD) -> void:
-	if Tool != null:
-		TriggerManager.onUnitTrigger(self, TriggerGD.UNEQUIP_TOOL, UnequipToolTriggerInfoGD.new(_Tool, Tool))
-		Tool.onRemoveSelf()
+	if Tool != null: onUnequipTool(_Tool)
 	
 	Tool = _Tool
-	
 	if Tool != null:
 		Tool.onUnitAwakened(self)
 		TriggerManager.onUnitTrigger(self, TriggerGD.EQUIP_TOOL, EquipToolTriggerInfoGD.new(Tool))
+
+
+func onUnequipTool(_NewTool: ToolGD = null) -> void:
+	TriggerManager.onUnitTrigger(self, TriggerGD.UNEQUIP_TOOL, UnequipToolTriggerInfoGD.new(_NewTool, Tool))
+	Tool.onRemoveSelf()
+	StatusManager.onUnequipTool(self)
+	Tool = null
 
 func onUnitAwakened(_id: int, _team: int, rot: int, tile: TileGD) -> void:
 	id = _id
@@ -152,11 +156,7 @@ func onCreateAbilities() -> void:
 			
 			if ability is TargetAbilityGD or ability is OngoingAbilityGD: ability.setInfo(self)
 			
-func onAddUnitFX(info_fx: InfoFXGD) -> void:
-	unit_fx.append(info_fx)
-		
-func onRemoveUnitFX(info_fx: InfoFXGD) -> void:
-	unit_fx.erase(info_fx)
+func onAddStatusFX(status_fx: StatusFXGD) -> void: status_fx_array.append(status_fx)
 		
 var vision_info_array: Array = []
 
@@ -210,15 +210,18 @@ func on_arrive(in_vision: bool) -> void:
 		.as_relative().set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
 		AudioMaster.play_sfx(AudioDict.ARRIVE)
 
-func on_death() -> void:
-	if Tool != null: Tool.onRemoveSelf()
+func onDeath() -> void:
 	Tile.Unit = null
 	Tiles.on_remove_tile_material(Tile, "EmptyTile")
+	
 	reparent(Units.Postmortem)
 	visible = false
 	is_dead = true
 	global_position = Vector3(1024, 1024, 1024)
 	await get_tree().process_frame
+	
+func onAfterDeath() -> void:
+	if Tool != null: Tool.onRemoveSelf()
 	
 func onSpectatedPlayerPhase(state: bool) -> void:
 	if LevelMap.game_phase == "PlayerPhase":
@@ -233,7 +236,7 @@ func onSpectatedPlayerPhase(state: bool) -> void:
 func setCollisionLayerSpectated() -> void:
 	Model.static_body.collision_layer = 4 if (is_spectated or !visible_state) else 36
 	
-func on_enemy_in_range(state: bool) -> void:
+func onEnemyInRange(state: bool) -> void:
 	StatusManager.onEnemyInRange(self, state)
 	Model.onSetOutlineProperties(state)
 	Tiles.setTileOutline(Tile, "EnemyInRange", !state)
@@ -370,3 +373,8 @@ func onChangeAIStat(ai_stat: String, val: int) -> void:
 func onResetAIStat(ai_stat: String) -> void:
 	ai[ai_stat] = base_card[ai_stat]
 	update_ai_stat.emit(self)
+
+func isVis() -> bool: return team == 0 or Tile in Vision.getTeamVision()
+func getToolAbilities() -> Array:
+	if Tool != null: return Tool.getToolAbilities()
+	return []

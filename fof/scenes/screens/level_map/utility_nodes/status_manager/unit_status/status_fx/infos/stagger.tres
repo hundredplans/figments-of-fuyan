@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="StatusFXInfoGD" load_steps=4 format=3 uid="uid://csj1h6globju3"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/status_fx_info.gd" id="1_y8b4v"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/scripts/status_fx_empty.gd" id="2_gw7xw"]
+[ext_resource type="Texture2D" uid="uid://ch2vl7jf5tmso" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/icons/stagger.png" id="2_kaq5p"]
+
+[resource]
+script = ExtResource("1_y8b4v")
+id = 0
+texture = ExtResource("2_kaq5p")
+tooltip = "This unit cannot attack or use abilites on its current or next turn."
+status_fx_script = ExtResource("2_gw7xw")

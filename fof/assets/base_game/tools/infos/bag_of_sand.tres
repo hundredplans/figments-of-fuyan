@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="ToolInfoGD" load_steps=6 format=3 uid="uid://clucee0sy2t84"]
+
+[ext_resource type="Script" path="res://assets/base_game/tools/tool_info.gd" id="1_7ay81"]
+[ext_resource type="Texture2D" uid="uid://b5kkedi42hbpi" path="res://assets/base_game/tools/icons/Bag of Sand.png" id="1_pe1x7"]
+[ext_resource type="Script" path="res://assets/base_game/tools/scripts/bag_of_sand.gd" id="3_d2po5"]
+[ext_resource type="Script" path="res://assets/base_game/tools/tool_ability_info.gd" id="3_k0w5k"]
+
+[sub_resource type="Resource" id="Resource_wjjy1"]
+script = ExtResource("3_k0w5k")
+name = "Sand Toss"
+ability_type = 2
+ascended_ability_type = 0
+delay = 2.0
+max_charges = 1
+description = "STAGGER an adjacent enemy with [2] or less ATTACK"
+ascended_description = ""
+
+[resource]
+resource_local_to_scene = true
+script = ExtResource("1_7ay81")
+id = 12
+icon = ExtResource("1_pe1x7")
+rarity = 0
+tool_script = ExtResource("3_d2po5")
+display_name = "Bag of Sand"
+description = "ABILITY [1]: STAGGER an adjacent enemy with [2] or less ATTACK"
+ascended_description = ""
+tool_abilities = Array[ExtResource("3_k0w5k")]([SubResource("Resource_wjjy1")])

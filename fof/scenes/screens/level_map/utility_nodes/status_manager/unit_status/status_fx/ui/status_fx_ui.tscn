@@ -1,0 +1,25 @@
+[gd_scene load_steps=2 format=3 uid="uid://brgl4el0jxgnq"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/ui/status_fx_ui.gd" id="1_utqot"]
+
+[node name="StatusFXUI" type="Control"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1895.0
+offset_bottom = -1055.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_utqot")
+
+[node name="IconButton" type="TextureButton" parent="."]
+layout_mode = 0
+offset_right = 25.0
+offset_bottom = 25.0
+
+[connection signal="mouse_entered" from="IconButton" to="." method="onIsMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="IconButton" to="." method="onIsMouseInUI" binds= [false]]
+[connection signal="pressed" from="IconButton" to="." method="_on_icon_button_pressed"]

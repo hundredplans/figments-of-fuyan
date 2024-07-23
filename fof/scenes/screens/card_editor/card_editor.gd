@@ -20,7 +20,6 @@ func _on_card_fileloader_game_card_pressed(__GameCard: GameCardGD):
 	
 	for ai_stat in ["ait", "aia", "aic", "aii", "aiw"]:
 		get(ai_stat).setAIStat(__GameCard.base_card[ai_stat])
-	
 	ModelArea.onCreateModel(GameCard.base_card)
 	model_path = ModelArea.model_path
 

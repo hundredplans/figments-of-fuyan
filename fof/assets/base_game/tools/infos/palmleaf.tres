@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ToolInfoGD" load_steps=4 format=3 uid="uid://dcwacuy3kmrry"]
+
+[ext_resource type="Script" path="res://assets/base_game/tools/tool_info.gd" id="1_c737b"]
+[ext_resource type="Texture2D" uid="uid://bkwgirle4kd8o" path="res://assets/base_game/tools/icons/Palmleaf.png" id="1_chrsp"]
+[ext_resource type="Script" path="res://assets/base_game/tools/scripts/palmleaf.gd" id="3_3nljp"]
+
+[resource]
+script = ExtResource("1_c737b")
+id = 10
+icon = ExtResource("1_chrsp")
+rarity = 0
+tool_script = ExtResource("3_3nljp")
+display_name = "Palmleaf"
+description = "EQUIPPED: Gain [+0/0/1] if no enemies are in vision for [2] Turns"
+ascended_description = ""
+tool_abilities = Array[Resource("res://assets/base_game/tools/tool_ability_info.gd")]([])

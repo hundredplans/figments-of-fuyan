@@ -28,17 +28,18 @@ func ChangeStat(AppliedBy: AppliedByGD, stat: String) -> bool: # weird one, fuck
 		return true
 	return false
 	
+var status_fxs: Array[StatusFXGD] = []
 func onOngoingAbility() -> void:
 	var AppliedBy := AppliedByGD.new(AppliedByGD.ABILITY, Unit)
 	for info in trigger_info: # [0] = Unit, [1] = apply buff / debuff
 		var _Unit: UnitGD = info[0]
 		if info[1]:
-			StatusManager.onAddUnitFX(_Unit, "PalmfessorOngoingAbility", AppliedBy)
+			status_fxs.append(StatusManager.onCreateStatusFX(_Unit, StatusFXInfoGD.IDS.PALMFESSOR_AURA, AppliedBy, Unit))
 			Units.changeStats(StatInfoGD.new(Unit, AppliedBy, StatsGD.ATTACK, ATTACK))
 			Units.changeStats(StatInfoGD.new(Unit, AppliedBy, StatsGD.ATTACK, ATTACK))
 			affected_units.append(_Unit)
 		else:
-			StatusManager.onRemoveUnitFX(_Unit, "PalmfessorOngoingAbility", AppliedBy)
+			StatusManager.onRemoveStatusFX(onFindStatusFXS(_Unit, status_fxs))
 			Units.changeStats(StatInfoGD.new(Unit, AppliedBy, StatsGD.ATTACK, ATTACK * -1))
 			affected_units.erase(_Unit)
 		

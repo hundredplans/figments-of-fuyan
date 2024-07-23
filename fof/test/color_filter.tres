@@ -1,0 +1,13 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://38n5ovfedwkr"]
+
+[ext_resource type="Shader" path="res://test/color_filter.gdshader" id="1_no24y"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_4ob51"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_dwlbj"]
+seamless = true
+noise = SubResource("FastNoiseLite_4ob51")
+
+[resource]
+shader = ExtResource("1_no24y")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_dwlbj")

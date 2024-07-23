@@ -45,6 +45,13 @@ func onEnemyDiscovered() -> void:
 			remove_actions.append(action)
 	for action in remove_actions: unit_actions.erase(action)
 
+func onRemoveActions(action_types: Array) -> void:
+	var remove_actions: Array = []
+	for action in unit_actions:
+		if action.type in action_types:
+			remove_actions.append(action)
+	for action in remove_actions: unit_actions.erase(action)
+
 func onAddAction(action: ActionGD, type: int = 0) -> void:
 	match type:
 		APPEND: onAppendAction(action)
@@ -98,7 +105,7 @@ func onTriggerNextAction(action: ActionGD) -> void:
 	if action.delay.delay > 0 and action.is_visible: await get_tree().create_timer(action.delay.delay).timeout
 	
 	unit_actions.erase(action)
-	Combat.onRecalculateTargetAbilities()
+	PlayerManager.onRefreshAbilitySelect()
 	if action.has_method("onAfterTrigger"): await action.onAfterTrigger()
 	if action.delay.end_delay > 0 and action.is_visible: await get_tree().create_timer(action.delay.end_delay).timeout
 		

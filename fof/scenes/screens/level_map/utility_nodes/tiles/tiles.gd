@@ -203,32 +203,29 @@ func _process(_delta: float) -> void:
 func onTilePressed() -> void:
 	if !select_console:
 		var Unit: UnitGD = Units.unit_by_tile(active_tile)
-		if LevelMap.verifyLock() and "TargetAffect" in active_tile.tile_state:
-			onTargetAffectPressed()
-		
 		if active_tile != null:
-			if LevelMap.verifyLock() and "PathHovered" in active_tile.tile_outlines: 
-				PlayerManager.onBeginUnitMovement(active_tile)
+			if LevelMap.verifyLock():
+				if "TargetAffect" in active_tile.tile_state:
+					PlayerManager.onAbilitySelectTileSelected(active_tile)
 				
-			elif Unit != null and Unit.Tile in Vision.getTeamVision() and PlayerManager.TAbility == null:
-				if "EnemyInRange" not in active_tile.tile_outlines:
-					PlayerManager.on_occupied_tile_inspected(active_tile)
-				elif LevelMap.verifyLock(): PlayerManager.onBeginUnitMovement(active_tile)
+				elif PlayerManager.AbilitySelected == null:
+					if "PathHovered" in active_tile.tile_outlines: 
+						PlayerManager.onBeginUnitMovement(active_tile)
+				
+					elif Unit != null and Unit.Tile in Vision.getTeamVision():
+						if "EnemyInRange" not in active_tile.tile_outlines: PlayerManager.on_occupied_tile_inspected(active_tile)
+						else: PlayerManager.onBeginUnitMovement(active_tile)
 				
 			elif LevelMap.verifyLock(LevelMap.HAND_EXCLUSIVE) and on_find_tile_primary_type(active_tile) == "Spawn":
 				VFX.onRemoveSpawnParticle(active_tile)
 				Hand.on_card_placed(active_tile)
-	else:
-		console_tile_selected.emit(active_tile)
+	else: console_tile_selected.emit(active_tile)
 
 func onSpawnTiles(team_relation := TeamRelationGD.new()) -> Array:
 	match team_relation.onTeam():
 		0: return get_children().filter(func(x: TileGD): return on_find_tile_primary_type(x) == "Spawn")
 		1: return get_children().filter(func(x: TileGD): return on_find_tile_primary_type(x) == "SpawnEnemy")
 	return []
-
-func onTargetAffectPressed() -> void:
-	Combat.onTargetAbility(PlayerManager.TAbilityUnit, PlayerManager.TAbility, active_tile)
 
 func allNeighboursFast(Tile: TileGD, distance: int, tiles: Array) -> Array:
 	return tiles.filter(func(x: TileGD): return tile_distance(x, Tile) == distance)
@@ -670,22 +667,20 @@ func onSelectTileFinish() -> void:
 	select_console = false
 
 func onFindUnitAdjacentTiles(Unit: UnitGD, distance: int) -> Array: #  Tiles based on unit's top height
-	var tiles: Array = []
-	for w in range(0, 6):
-		for tpos in _all_neighbours(Unit.Tile.onTTpos(w), distance):
-			var Tile: TileGD = position_to_tile(tpos)
-			var height: float = getUnitAdjustedHeight(Unit.Tile) + Unit.height.top
-			if Tile != null:
-				if w >= Unit.Tile.w: # intentional double if
-					if getUnitAdjustedHeight(Tile) <= height:
-						tiles.append(Tile)
-				else:
-					var _Unit: UnitGD = Units.unit_by_tile(Tile)
-					if _Unit != null:
-						# Check if unit height aligns
-						if getUnitAdjustedHeight(_Unit.Tile) + _Unit.height.top >= height - Unit.height.top:
-							tiles.append(Tile)
-	return tiles
+	return getAdjacentTiles(Unit.Tile, distance, true).filter(_onFindUnitAdjacentTiles.bind(Unit))
+	
+func _onFindUnitAdjacentTiles(Tile: TileGD, Unit: UnitGD) -> bool:
+	if Tile != null:
+		var low_height: float = getUnitAdjustedHeight(Unit.Tile)
+		var top_height: float = low_height + Unit.height.top
+		var _Unit: UnitGD = Tile.Unit
+		
+		var low_other_height: float = getUnitAdjustedHeight(Tile)
+		if _Unit != null:
+			var top_other_height: float = low_other_height + _Unit.height.top
+			return max(low_height, low_other_height) <= min(top_height, top_other_height)
+		return low_other_height >= low_height and low_other_height < top_height
+	return false
 	
 func onCanDrown(Unit: UnitGD) -> bool: return Unit.height.top < 1
 

@@ -80,7 +80,7 @@ func setUnit(Unit: UnitGD) -> void:
 	onCreateBaseStat(Unit.health, "Health")
 	onCreateBaseStat(Unit.speed, "Speed")
 	 
-	for fx in Unit.unit_fx: onAddUnitFX(fx)
+	for status_fx in Unit.status_fx_array: onCreateStatusFX(status_fx)
 	
 func onCreateBaseStat(val: int, stat_changed: String, color: String = "BASE") -> void:
 	var StatNumber: Node3D = Numbers.get_node(stat_changed)
@@ -94,11 +94,15 @@ func onCreateBaseStat(val: int, stat_changed: String, color: String = "BASE") ->
 	StatNumber.on_sort_children()
 
 var grey_heart: bool = false
-func onAddUnitFX(info_fx: InfoFXGD) -> void:
-	match info_fx.fx_type:
-		"Armor":
-			grey_heart = true
-			setFloatingStatMaterial()
+func onCreateStatusFX(status_fx: StatusFXGD) -> void:
+	if status_fx.info.id == StatusFXInfoGD.IDS.ARMOR:
+		grey_heart = true
+		setFloatingStatMaterial()
+
+func onRemoveStatusFX(status_fx: StatusFXGD) -> void:
+	if status_fx.info.id == StatusFXInfoGD.IDS.ARMOR:
+		grey_heart = false
+		setFloatingStatMaterial()
 
 var buff_colors: Dictionary = {
 	"Attack": "",

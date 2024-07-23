@@ -1,23 +1,14 @@
 extends TargetAbilityGD
 
 @export var HEAL: int = 2
-func onTargetAbilityCondition() -> bool:
-	tiles = {"range": [], "affect": []}
-	if charges > 0:
-		for ability in Unit.abilities:
-			if ability.ability_name == "HocusPalmusOngoingAbility":
-				if ability.affected_units.size() > 0:
-					tiles["range"] = [ability.affected_units[0].Tile]
-					
-					if onFindSpawnTiles().size() > 0:
-						tiles["affect"] = [ability.affected_units[0].Tile]
-					return true
-				else: tiles["affect"] = []; return false
-	return false
+func onRefreshAbility() -> void:
+	for ability in Unit.abilities.filter(func(x: AbilityGD): return x.ability_name == "HocusPalmusOngoingAbility"):
+		if ability.affected_units.size() > 0 and !onFindSpawnTiles().is_empty():
+			AbilityTiles.can_affect = [ability.affected_units[0].Tile]
 	
 func onFindSpawnTiles() -> Array:
-	var _tiles: Array = Tiles.onSpawnTiles(TeamRelationGD.new(Unit.team))
-	return _tiles.filter(func(x: TileGD): return !Units.unit_by_tile_bool(x))
+	var tiles: Array = Tiles.onSpawnTiles(TeamRelationGD.new(Unit.team))
+	return tiles.filter(func(x: TileGD): return !Units.unit_by_tile_bool(x))
 	
 func onTargetAbility() -> void:
 	charges -= 1
@@ -25,7 +16,6 @@ func onTargetAbility() -> void:
 	Unit.Model._look_at(Tile)
 	if is_visible: Unit.Model.on_play_animation("Ability")
 	call_deferred("onCocusPocus", _Unit)
-	change_camera = false
 	LevelMap.setInputLock(LevelMap.UNIT_ACTION)
 		
 const DELAY_DURATION: float = 0.5
@@ -47,13 +37,13 @@ func onCocusPocusInitialFinished(_Unit: UnitGD) -> void:
 	
 func onCocusPocusFinished(_Unit: UnitGD) -> void:
 	Combat.onHealAbility(_Unit, Unit, HEAL)
-	change_camera = true
 
 func onTargetAbilityConditionAI() -> TileGD:
-	if tiles["affect"].size() > 0:
-		var _Unit: UnitGD = Units.unit_by_tile(tiles["affect"][0])
+	if !AbilityTiles.can_affect.is_empty():
+		var Tile: TileGD = AbilityTiles.can_affect[0]
+		var _Unit: UnitGD = Units.unit_by_tile(Tile)
 		if Combat.onCanBeKilledAtFullSpeed(_Unit):
-			if _Unit.turn_status == UnitGD.TURN_USED: return tiles["affect"][0]
+			if _Unit.turn_status == UnitGD.TURN_USED: return Tile
 			elif _Unit.turn_status == UnitGD.TURN_UNUSED and !Combat.onCanKillAtFullSpeed(_Unit):
-				return tiles["affect"][0]
+				return Tile
 	return null

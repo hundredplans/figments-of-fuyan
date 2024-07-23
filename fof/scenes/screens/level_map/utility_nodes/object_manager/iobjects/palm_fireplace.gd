@@ -7,8 +7,7 @@ func onTrigger(_Unit: UnitGD, trigger: int, args: TriggerInfoGD) -> void:
 	if wood_count < 10 and trigger == TriggerGD.START_TURN_GLOBAL and args.team_relation.onTeam() == 0:
 		if attack_turns > 0:
 			attack_turns -= 1
-			if attack_turns == 0:
-				for Unit in attack_buffed_units: StatusManager.onRemoveUnitFX(Unit, "PalmFireplace")
+			
 		if wood_count < 10:
 			var i: int = abs(wood_count - 10)
 			var obj_model: Node3D = BaseTile.types[1].model
@@ -35,7 +34,8 @@ func onAbilityTrigger(Unit: UnitGD, ability: IObjectAbilityInfoGD) -> void:
 			1:
 				attack_turns = 2
 				Units.changeStats(StatInfoGD.new(_Unit, AppliedBy, StatsGD.ATTACK, 1, 2))
-				StatusManager.onAddUnitFX(Unit, "PalmFireplace", AppliedBy, attack_turns)
+				var status_fx: StatusFXGD = StatusManager.onCreateStatusFX(Unit, StatusFXInfoGD.IDS.PALM_FIREPLACE, AppliedBy)
+				status_fx.onAfterSetInfo(attack_turns)
 				attack_buffed_units.append(Unit)
 			2: Combat.onHeal(HealInfoGD.new(_Unit, 1, AppliedBy))
 	

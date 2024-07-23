@@ -1,6 +1,12 @@
 class_name UniqueTileGD
 extends Node
 
+var Units: UnitsGD
+var Combat: CombatGD
+var Tiles: TilesGD
+var GameEffects: GameEffectsGD
+var ActionManager: ActionManagerGD
+
 var info: UniqueTileInfoGD
 var Tile: TileGD
 

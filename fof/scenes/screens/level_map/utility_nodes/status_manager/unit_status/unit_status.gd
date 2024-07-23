@@ -1,9 +1,11 @@
+class_name UnitStatusGD
 extends Control
 
 const ROTATION_DEATH_SPEED: int = 300
 const RAINBOW_SPEED: int = 300
 const NUMBER_SCALE_TIME: float = 0.15
 
+signal highlight_unit
 signal mouse_in_ui
 signal target_ability_pressed
 var type: String = "UnitStatusRegular"
@@ -63,7 +65,7 @@ func setUnit(_Unit: UnitGD) -> void:
 		StatLabel.text = str(value)
 		setStatColorSize(StatLabel, value, Units.getStatColor(Unit, StatInfoGD.getStatTypeStatic(stat)))
 	
-	for info_fx in Unit.unit_fx: onAddUnitFX(info_fx)
+	for status_fx in Unit.status_fx_array: onCreateStatusFX(status_fx)
 	if type == "UnitStatusRegular": visible = false
 	
 func onUpdateStat(stat: int, stat_changed: String, color: String) -> void:
@@ -91,6 +93,7 @@ var on_rotate_queue_free: bool = false
 func _process(delta: float) -> void:
 	if Rainbow.visible: Rainbow.rotation_degrees += RAINBOW_SPEED * delta
 	if on_rotate_queue_free: rotation_degrees += delta * ROTATION_DEATH_SPEED
+	
 func setUnitStatusState(state_type: int) -> void:
 	ShiftingBackground.material.set_shader_parameter("speed", speeds[state_type])
 	ShiftingBackground.material.set_shader_parameter("modulate", modulates[state_type])
@@ -104,21 +107,16 @@ func setLightMask(state: bool) -> void:
 var speeds: Dictionary = {}
 var modulates: Dictionary = {}
 
-func onTargetAbilityBtnPressed(ability: TargetAbilityGD) -> void:
-	target_ability_pressed.emit(Unit, ability)
-
-func onAddUnitFX(info_fx: InfoFXGD) -> Control:
-	var base_fx := preload("res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/unit_fx/base_fx.tscn").instantiate()
-	base_fx.setInfoFX(info_fx)
-	UnitFX.add_child(base_fx)
+func onCreateStatusFX(status_fx: StatusFXGD) -> void:
+	var status_fx_ui: Control = preload("res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/ui/status_fx_ui.tscn").instantiate()
+	UnitFX.add_child(status_fx_ui)
+	status_fx_ui.setInfo(status_fx)
+	status_fx_ui.highlight_unit.connect(func(x: StatusFXGD): highlight_unit.emit(x))
 	onChangePage(0)
-	return base_fx
 	
-func onRemoveUnitFX(fx_type: String, AppliedBy: AppliedByGD) -> void:
+func onRemoveStatusFX(status_fx: StatusFXGD) -> void:
 	for child in UnitFX.get_children():
-		if child.info_fx.fx_type == fx_type and (AppliedBy.Applier == child.info_fx.Unit):
-			Unit.unit_fx.erase(child.info_fx)
-			child.queue_free()
+		if child.status_fx == status_fx: child.queue_free(); break
 	onChangePage(0)
 
 func onCreateBuffNextTurn(stat: String, value: int, color: Color) -> void:
@@ -172,3 +170,6 @@ func onChangePage(i: int) -> void:
 func onIsMouseInUI(x: bool) -> void: mouse_in_ui.emit(x)
 func onEquipTool(tool: ToolGD) -> void:
 	ToolUI.setInfo(tool)
+
+func onUnequipTool() -> void:
+	ToolUI.setInfo()

@@ -1,3 +1,4 @@
+@tool
 class_name ToolInfoGD
 extends Resource
 
@@ -21,3 +22,6 @@ enum RARITIES {
 	EXALT,
 	BOSS,
 }
+
+func _init() -> void:
+	if id == 0: id = DirAccess.get_files_at("res://assets/base_game/tools/infos/").size() + 1

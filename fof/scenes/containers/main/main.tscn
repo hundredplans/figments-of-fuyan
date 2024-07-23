@@ -1,6 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://bnoei7u0kxl25"]
+[gd_scene load_steps=11 format=3 uid="uid://bnoei7u0kxl25"]
 
 [ext_resource type="Script" path="res://scenes/containers/main/main.gd" id="1_10ydf"]
+[ext_resource type="Material" uid="uid://dw0gyxchu2dt3" path="res://test/fish_eye_something.tres" id="2_fve42"]
 [ext_resource type="Texture2D" uid="uid://cj8j06xypgaw7" path="res://assets/UI/back_arrow/back_arrow.png" id="3_cu6v7"]
 [ext_resource type="Texture2D" uid="uid://svbsdkqet370" path="res://assets/UI/back_arrow/back_arrow_darker.png" id="4_qr5ib"]
 [ext_resource type="Texture2D" uid="uid://bak0pucgtak0b" path="res://assets/UI/back_arrow/back_arrow_dark.png" id="5_fjqpq"]
@@ -16,12 +17,21 @@ script = ExtResource("1_10ydf")
 SettingCog = NodePath("UI/SettingCog")
 BackArrow = NodePath("UI/BackArrow")
 
-[node name="UI" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 1920.0
-offset_bottom = 1080.0
+[node name="PostProcessing" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="PostProcessing"]
+visible = false
+material = ExtResource("2_fve42")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="UI" type="CanvasLayer" parent="."]
+layer = 2
 
 [node name="MoveScreen" type="AnimationPlayer" parent="UI"]
 root_node = NodePath("../..")
@@ -30,7 +40,7 @@ libraries = {
 }
 
 [node name="Screens" type="Control" parent="UI"]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -40,7 +50,6 @@ mouse_filter = 2
 
 [node name="BackArrow" type="TextureButton" parent="UI"]
 visible = false
-layout_mode = 2
 offset_left = 1768.0
 offset_top = 8.0
 offset_right = 1968.0
@@ -54,7 +63,6 @@ texture_disabled = ExtResource("4_qr5ib")
 [node name="SettingCog" type="TextureButton" parent="UI"]
 visible = false
 texture_filter = 1
-layout_mode = 2
 offset_left = 1829.0
 offset_top = -4.0
 offset_right = 1889.0
@@ -68,7 +76,6 @@ texture_disabled = ExtResource("7_dwuio")
 [node name="TemporaryScreenCover" type="ColorRect" parent="UI"]
 modulate = Color(0, 0, 0, 1)
 z_index = 5
-layout_mode = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
 mouse_filter = 2

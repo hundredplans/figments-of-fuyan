@@ -2,11 +2,10 @@ extends TargetAbilityGD
 
 @export var ATTACK: int = 1
 @export var HEAL: int = 1
-func onTargetAbilityCondition() -> void:
-	tiles = {"range": [], "affect": []}
-	if charges > 0:
-		tiles["range"] = Unit.getVisibleTiles()
-		tiles["affect"] = tiles["range"].filter(func(x: TileGD): return Units.unit_by_tile_team_bool(x, Unit.team)) 
+
+func onRefreshAbility() -> void:
+	var in_range: Array = Unit.getVisibleTiles()
+	AbilityTiles.setInfo(in_range, in_range.filter(func(x: TileGD): return Units.unit_by_tile_team_bool(x, Unit.team)))
 
 func onTargetAbility() -> void:
 	if is_visible:

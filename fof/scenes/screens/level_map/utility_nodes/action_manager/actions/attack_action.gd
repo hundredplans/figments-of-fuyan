@@ -28,7 +28,7 @@ func onTrigger() -> void:
 func onAfterTrigger() -> void:
 	var AppliedBy := AppliedByGD.new(AppliedByGD.ATTACK, Unit)
 	if TargetTile.Unit != null:
-		var DMGInfo: DMGInfoGD = Combat.onDMG(TargetTile.Unit, AppliedBy, Unit.attack)
+		var DMGInfos: Dictionary = Combat.onDMG(TargetTile.Unit, AppliedBy, Unit.attack)
 		Unit.attack_amount -= 1
 		if Unit.attack_amount == 0: Units.changeStats(StatInfoGD.new(Unit, AppliedBy, StatsGD.CURRENT_SPEED, 0, -1, true, false))
-		ActionManager.onAddAction(DelayActionGD.new(Combat.onHit.bind(DMGInfo), is_visible), ActionManagerGD.AFTER_HURT)
+		ActionManager.onAddAction(DelayActionGD.new(Combat.onHit.bind(DMGInfos[TargetTile.Unit]), is_visible), ActionManagerGD.AFTER_HURT)

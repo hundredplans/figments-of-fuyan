@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="BaseCardGD" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://assets/base_game/cards/templates/base_card.gd" id="1_j66hh"]
+
+[resource]
+script = ExtResource("1_j66hh")
+area_id = 1
+attack = 0
+health = 1
+speed = 2
+energy = 1
+rarity = 1
+raw_text = "Only sees [3] Tiles around; The team that AWAKENED this has it's vision"
+flavor_text = "Has random walk and runaway"
+text = "[center]Only sees [3] Tiles around; The team that [b]AWAKENED[/b] this has it's vision[/center]"
+aic = 2
+aii = 1
+aiw = 5
+ait = 0
+aia = 2
+eye = 1.0
+top = 1.5
+stat = 2.0
+default_danger = 0
+default_safety = 0
+id = 26
+name = "Sand Larva"
+folder_name = "SandLarva"

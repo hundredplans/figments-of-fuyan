@@ -279,9 +279,12 @@ func return_bitwise(i: int, total: Vector2i) -> bool:
 
 func create_button_clickmask(button: TextureButton) -> void:
 	var img: Image = load(button.texture_normal.resource_path.left(-4) + "_image.png")
+	button.texture_click_mask = onCreateClickmask(img)
+
+static func onCreateClickmask(image: Image) -> BitMap:
 	var bitmap := BitMap.new()
-	bitmap.create_from_image_alpha(img)
-	button.texture_click_mask = bitmap
+	bitmap.create_from_image_alpha(image)
+	return bitmap
 
 func on_delete_item(item: String, ID: String, Internal: LineEdit, node: Control, can_del_dir: int) -> void:
 	item = item.to_lower() + "s/"

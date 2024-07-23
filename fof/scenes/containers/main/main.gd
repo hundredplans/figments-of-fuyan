@@ -29,7 +29,6 @@ const move_screen_name_to_path: Dictionary = {
 func _ready() -> void:
 	Helper.main = self
 	load_general_world()
-	$UI.z_index = 10
 	for screen in Screens.get_children(): screen.free()
 	BackArrow.visible = false
 	SettingCog.visible = false

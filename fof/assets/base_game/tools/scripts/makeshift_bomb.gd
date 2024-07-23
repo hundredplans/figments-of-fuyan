@@ -1,20 +1,20 @@
 extends ToolGD
 
+var adjacent_units: Array = []
 const MAX_GROW: float = 100
 const GROW_STOP: float = 0.5
 func onTrigger(_Unit: UnitGD, trigger: int, _args: TriggerInfoGD) -> void:
 	if trigger == TriggerGD.LAST_WILL and Unit == _Unit:
-		if !is_ascended:
-			for __Unit in Units.onFindAdjacentUnits(Unit, 1):
-				Combat.onDMG(__Unit, AppliedByGD.new(AppliedByGD.TOOL, self), 1)
-		else:
-			for __Unit in Units.onFindAdjacentUnits(Unit, 2).filter(func(x: UnitGD): return x.team != Unit.team):
-				Combat.onDMG(__Unit, AppliedByGD.new(AppliedByGD.TOOL, self), 1)
+		if !is_ascended: Combat.onDMG(adjacent_units, AppliedByGD.new(AppliedByGD.TOOL, self), 1)
+		else: Combat.onDMG(adjacent_units, AppliedByGD.new(AppliedByGD.TOOL, self), 1)
 		
 	if trigger == TriggerGD.BEGIN_DEATH and Unit == _Unit:
 		var tween := create_tween()
 		tween.tween_method(onExplode, 0.0, MAX_GROW, GROW_STOP)
 		tween.finished.connect(onExplodeFinished)
+		
+		if !is_ascended: adjacent_units = Units.onFindAdjacentUnits(Unit, 1)
+		else: adjacent_units = Units.onFindAdjacentUnits(Unit, 2).filter(func(x: UnitGD): return x.team != Unit.team)
 
 func onExplode(val: float) -> void:
 	for mat in Unit.Model.materials:

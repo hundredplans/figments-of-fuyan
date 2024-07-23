@@ -63,16 +63,19 @@ func onPickMostInjured() -> bool:
 			return true
 	return triggered
 
+var status_fxs: Array[StatusFXGD] = []
 func onOngoingAbility() -> void:
 	var AppliedBy := AppliedByGD.new(AppliedByGD.ABILITY, Unit)
 	for info in trigger_info:
 		var _Unit: UnitGD = info[0]
 		if info[1]:
-			StatusManager.onAddUnitFX(_Unit, "CocusPocus", AppliedBy)
+			var status_fx: StatusFXGD = StatusManager.onCreateStatusFX(_Unit, StatusFXInfoGD.IDS.COCUS_POCUS, AppliedBy, Unit)
+			status_fxs.append(status_fx)
+			status_fx.onAfterSetInfo()
 			VFX.onCreateCocusPocus(_Unit, Unit)
 			affected_units.append(_Unit)
 		else:
-			StatusManager.onRemoveUnitFX(_Unit, "CocusPocus", AppliedBy)
+			StatusManager.onRemoveStatusFX(onFindStatusFXS(_Unit, status_fxs))
 			affected_units.erase(_Unit)
 			
 			if !on_delay_remove: VFX.onRemoveCocusPocus(_Unit, Unit)

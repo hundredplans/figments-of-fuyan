@@ -11,6 +11,7 @@ var VFX: VFXGD
 var StatusManager: StatusManagerGD
 var ActionManager: ActionManagerGD
 var TriggerManager: TriggerManagerGD
+var Combat: CombatGD
 
 var graveyard_cards: Array = []
 
@@ -140,16 +141,17 @@ var unit_movement_paths: Array = []
 func onSetMovementRange(Unit: UnitGD) -> void:
 	unit_movement_paths = Tiles.onCreateMovementPaths(Unit)
 	var can_attack: bool = Unit.onCanAttack()
+	var can_move: bool = !Combat.isDazed(Unit)
 	for movement_path in unit_movement_paths:
-		if "MovementRange" not in movement_path.DestinationTile.tile_outlines:
-			if movement_path.is_attack:
-				if can_attack: movement_path.DestinationTile.Unit.on_enemy_in_range(true)
-			else: Tiles.setTileOutline(movement_path.DestinationTile, "MovementRange")
+		if can_attack and movement_path.is_attack and "EnemyInRange" not in movement_path.DestinationTile.tile_outlines:
+			movement_path.DestinationTile.Unit.onEnemyInRange(true)
+		elif can_move and "MovementRange" not in movement_path.DestinationTile.tile_outlines:
+			Tiles.setTileOutline(movement_path.DestinationTile, "MovementRange")
 	
 func onRemoveMovementRange() -> void:
-	for Tile in Tiles.get_children().filter(func(x: TileGD): return "MovementRange" in x.tile_outlines):
-		if Tile.Unit != null: Tile.Unit.on_enemy_in_range(false)
-		Tiles.setTileOutline(Tile, "MovementRange", true)
+	for Tile in Tiles.get_children():
+		if "MovementRange" in Tile.tile_outlines: Tiles.setTileOutline(Tile, "MovementRange", true)
+		elif "EnemyInRange" in Tile.tile_outlines: Tile.Unit.onEnemyInRange(false)
 
 func onDeathFinished(Deathee: UnitGD, AppliedBy: AppliedByGD) -> void:
 	if LevelMap.game_phase == "PlayerPhase":
@@ -171,46 +173,67 @@ func on_remove_unit_turn(Unit: UnitGD) -> void:
 			passed_turns.erase(Unit)
 		else: unpassed_turns.erase(Unit); passed_turns.erase(Unit)
 
-var TAbility: TargetAbilityGD
-var TAbilityUnit: UnitGD
-func onEnterTargetAbilityMode(Unit: UnitGD, ability: TargetAbilityGD) -> void:
+#region AbilitySelect
+var AbilitySelected: Variant # Can be Tool, IObject, TargetAbility
+var AbilityUnit: UnitGD
+func isAbilitySelected() -> bool: return AbilitySelected != null
+
+
+func onEnterAbilitySelect(Unit: UnitGD, _AbilitySelected: Variant) -> void:
+	AbilitySelected = _AbilitySelected
+	AbilityUnit = Unit
 	onRemoveMovementRange()
-	onCreateAbilityRange(Unit, ability)
-	TAbilityUnit = Unit
-	TAbility = ability
+	onCreateAbilityRange(Unit, AbilitySelected)
 	
-	if ability.change_camera:
-		SpectateCamera.onSpectate(Units.unit_by_tile(ability.tiles["affect"][0]))
-
-enum {
-	EXIT_TARGET_ABILITY_BUTTON,
-	EXIT_TARGET_ABILITY_OTHER,
-}
-
-func onExitUnitBoxMode(exit_type: int = 0) -> void: # if unit selected null doesnt reupdate, otherwise creates tiles
-	if TAbilityUnit != null:
-		onRemoveAbilityRange(TAbilityUnit, TAbility)
-		var UnitSelected := getUnitSelected()
-		if UnitSelected != null and exit_type == EXIT_TARGET_ABILITY_BUTTON: onSetMovementRange(UnitSelected)
+func onExitAbilitySelect() -> void:
+	onRemoveAbilityRange(AbilitySelected)
+	onRefreshMovementRange(AbilityUnit)
 	
-	if TAbility.change_camera: SpectateCamera.onSpectate(TAbilityUnit)
-	TAbilityUnit = null
-	TAbility = null
+	AbilityUnit = null
+	AbilitySelected = null
 	
-func onCreateAbilityRange(_Unit: UnitGD, ability: TargetAbilityGD) -> void:
-	ability.onTargetAbilityCondition()
-	for Tile in ability.tiles["range"]:
+func onRefreshAbility(Unit: UnitGD, ability: Variant) -> void:
+	ability.AbilityTiles.onReset()
+	if ability.charges > 0:
+		if ability is TargetAbilityGD: ability.onRefreshAbility()
+		elif ability is ToolAbilityInfoGD and Unit.Tool.has_method("onRefreshAbility"):
+			Unit.Tool.onRefreshAbility(ability)
+		elif ability is IObjectAbilityInfoGD: pass
+	ability.can_affect = !ability.AbilityTiles.can_affect.is_empty()
+	
+func onCreateAbilityRange(Unit: UnitGD, ability: Variant) -> void:
+	onRefreshAbility(Unit, ability)
+	for Tile in ability.AbilityTiles.in_range:
 		Tiles.on_set_tile_material(Tile, "TargetRange")
 		
-	for Tile in ability.tiles["affect"]:
+	for Tile in ability.AbilityTiles.can_affect:
 		Tiles.on_set_tile_material(Tile, "TargetAffect")
 
-func onRemoveAbilityRange(_Unit: UnitGD, ability: TargetAbilityGD) -> void:
-	for Tile in ability.tiles["range"]:
+func onRemoveAbilityRange(ability: Variant) -> void:
+	for Tile in ability.AbilityTiles.in_range:
 		Tiles.on_remove_tile_material(Tile, "TargetRange")
 		
-	for Tile in ability.tiles["affect"]:
+	for Tile in ability.AbilityTiles.can_affect:
 		Tiles.on_remove_tile_material(Tile, "TargetAffect")
+	
+func onAbilitySelectTileSelected(Tile: TileGD) -> void:
+	onSelectActiveUnit(AbilityUnit)
+	AbilitySelected.used = true
+	
+	if AbilitySelected is TargetAbilityGD: Combat.onTargetAbility(AbilityUnit, AbilitySelected, Tile)
+	else:
+		ActionManager.onAddAction(DelayActionGD.new(Callable(), AbilityUnit.isVis(), DelayGD.new(AbilitySelected.delay)))
+		AbilitySelected.Tile = Tile
+		if AbilitySelected is ToolAbilityInfoGD: AbilityUnit.Tool.onAbilityTrigger(AbilitySelected)
+		elif AbilitySelected is IObjectAbilityInfoGD: pass
+		
+func onRefreshAbilitySelect() -> void:
+	for Unit in Units.on_units():
+		var abilities: Array = Combat.onFindAbilities(Unit, "TargetAbility")
+		for ability in abilities + Unit.getToolAbilities():
+			onRefreshAbility(Unit, ability)
+
+#endregion
 
 func onBeginUnitMovement(DestinationTile: TileGD) -> void:
 	var movement_path := MovementPathGD.onFindTile(DestinationTile, unit_movement_paths)
@@ -225,8 +248,8 @@ func onBeginUnitMovement(DestinationTile: TileGD) -> void:
 	ActionManager.onAddAction(MoveFinishActionGD.new(ActiveUnit, movement_path, true), ActionManagerGD.APPEND_MF)
 
 func onUnitMode(Unit: UnitGD = getUnitSelected(), enter: bool = false) -> void:
-	if Unit != null and Unit.team == 0 and LevelMap.game_phase in ["PlayerPhase", "PlayerEndTurnPhase"] and LevelMap.verifyLock(LevelMapGD.NULL_VERIFY):
-		if enter and PreviousUnitSelected != Unit:
+	if Unit != null and Unit.team == 0 :
+		if enter and PreviousUnitSelected != Unit and LevelMap.game_phase in ["PlayerPhase", "PlayerEndTurnPhase"] and LevelMap.verifyLock(LevelMapGD.NULL_VERIFY):
 			if Unit.turn_status != UnitGD.TURN_USED: onSetMovementRange(Unit)
 			LevelUI.onEnterUnitMode(Unit)
 			PreviousUnitSelected = Unit
@@ -236,12 +259,11 @@ func onUnitMode(Unit: UnitGD = getUnitSelected(), enter: bool = false) -> void:
 			LevelUI.onExitUnitMode()
 			PreviousUnitSelected = null
 
-func onRefreshMovementRange() -> void:
+func onRefreshMovementRange(_Unit: UnitGD = null) -> void:
+	onRemoveMovementRange()
 	var Unit: UnitGD = getUnitSelected()
-	if Unit != null:
-		onRemoveMovementRange()
-		onSetMovementRange(Unit)
-
+	if Unit != null and (_Unit == null or Unit == _Unit): onSetMovementRange(Unit)
+	
 func getUnitSelected() -> UnitGD:
 	if LevelMap.game_phase in ["PlayerPhase", "PlayerEndTurnPhase"] and SpectateCamera.SpectateUnit != null and SpectateCamera.SpectateUnit.team == 0:
 		return SpectateCamera.SpectateUnit

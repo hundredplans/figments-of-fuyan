@@ -9,6 +9,8 @@ var ObjectManager: ObjectManagerGD
 var UniqueTiles: UniqueTilesGD
 
 func onUnitTrigger(Unit: UnitGD, trigger: int, args: TriggerInfoGD = null) -> void:
+	if trigger == TriggerGD.LAST_WILL:
+		print()
 	GameEffects.onTriggerUnitGameFX(Unit, trigger, args)
 	Boons.onTrigger(Unit, trigger, args)
 	Tools.onTrigger(Unit, trigger, args)

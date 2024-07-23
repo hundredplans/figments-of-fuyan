@@ -36,9 +36,10 @@ func addGFX(Unit: UnitGD, type: int, a: Dictionary = {}, custom_triggers: Array 
 	add_child(GameFX)
 	
 	GameFX.setInfo(Unit, type, custom_triggers, a)
+	gfx.append(GameFX)
 	GameFX.onCreateGFX()
 	GameFX.onAfterCreateGFX()
-	gfx.append(GameFX)
+	
 
 func onDeathFinished(Unit: UnitGD) -> void:
 	var erase: Array = []

@@ -49,7 +49,7 @@ func onUnitAwakenedProcess(Unit: UnitGD, Tile: TileGD, Tool: ToolGD = null) -> v
 	Combat.onArrive(Unit)
 	onArrive(Unit)
 	PlayerManager.onSetupAllyPassedTurns(Unit)
-	Combat.onRecalculateTargetAbilities()
+	PlayerManager.onRefreshAbilitySelect()
 	await get_tree().process_frame
 	Unit.occupy_tile(Tile)
 	AIManager.getDangerList(Unit, all_units())
@@ -58,8 +58,10 @@ func onUnitAwakenedProcess(Unit: UnitGD, Tile: TileGD, Tool: ToolGD = null) -> v
 	
 func onArrive(Unit: UnitGD) -> void:
 	var armor: TraitGD = Combat.onFindTrait(Unit, TraitGD.ARMOR)
-	if armor != null: StatusManager.onAddUnitFX(Unit, "Armor", AppliedByGD.new(AppliedByGD.TRAIT), armor.armor)
-	
+	if armor != null:
+		var status_fx: StatusFXGD = StatusManager.onCreateStatusFX(Unit, StatusFXInfoGD.IDS.ARMOR, AppliedByGD.new(AppliedByGD.TRAIT))
+		status_fx.onAfterSetInfo(armor.armor)
+		
 func onMassUnitsAwakened(tiles: Array, enemy_ids: Array) -> void:
 	var units: Array = []
 	for i in range(tiles.size()):
@@ -120,8 +122,8 @@ func onRemoveMovementOutlineTiles() -> void:
 
 func onUnitFell(DMG: int, scale_time: float, Unit: UnitGD) -> void:
 	var AppliedBy := AppliedByGD.new(AppliedByGD.HEIGHT)
-	var DMGInfo := Combat.onDMG(Unit, AppliedBy, DMG)
-	if Unit.health > 0 and DMGInfo.HealthDMG > 0: on_descale_unit(Unit, scale_time)
+	var DMGInfos: Dictionary = Combat.onDMG(Unit, AppliedBy, DMG)
+	if Unit.health > 0 and DMGInfos[Unit].HealthDMG > 0: on_descale_unit(Unit, scale_time)
 
 const DROP_HEIGHT_SCALE_DOWN := Vector3(1, 0.05, 1)
 func on_descale_unit(Unit: UnitGD, scale_time: float) -> void:
@@ -191,16 +193,12 @@ func changeStats(info: Variant) -> void:
 		var stat_name: String = item.stat_info.getStatName()
 		
 		StatusManager.onUpdateStats(Unit, stat_name, color)
-		var vis: bool = Unit.team == 0 or Unit.Tile in Vision.getTeamVision()
-		if !stat_info.absolute and stat_info.stat_type in [StatsGD.HEALTH, StatsGD.BOTH_HEALTH] and diff < 0:
-			if Unit.health == 0: ActionManager.onAddAction(DeathActionGD.new(Unit, stat_info.AppliedBy, vis))
-			else: ActionManager.onAddAction(HurtActionGD.new(Unit, stat_info.AppliedBy, vis))
-			
-		if vis and stat_info.show_change: VFX.onCreateStatParticle(diff, stat_name.to_lower(), Unit.Tile, Unit.height.top / 2)
+		var vis: bool = Unit.isVis()
 		TriggerManager.onUnitTrigger(Unit, TriggerGD.STAT_CHANGE, StatChangeTriggerInfoGD.new(stat_info))
+		if vis and stat_info.show_change: VFX.onCreateStatParticle(diff, stat_name.to_lower(), Unit.Tile, Unit.height.top / 2)
 		
 		Unit.onAddToStatHistory(stat_info)
-		if stat_name == "Speed" and LevelMap.verifyLock(LevelMap.NULL_VERIFY) and Unit == PlayerManager.getUnitSelected(): PlayerManager.onRefreshMovementRange()
+		if stat_name == "Speed" and LevelMap.verifyLock(LevelMap.NULL_VERIFY): PlayerManager.onRefreshMovementRange(Unit)
 	
 	for Unit in next_turn_stats_units: onNextTurnStats(Unit)
 	
@@ -227,6 +225,7 @@ func onDelayedStats(stat_info: StatInfoGD) -> void:
 	stat_info.Unit.onAddToStatHistory(stat_info)
 	onNextTurnStats(stat_info.Unit)
 	
+var next_turn_stats: Array = []
 func onNextTurnStats(Unit: UnitGD) -> void:
 	var AppliedBy := AppliedByGD.new()
 	var stats: Dictionary = {StatsGD.ATTACK: null, StatsGD.HEALTH: null, StatsGD.BOTH_HEALTH: null, StatsGD.BOTH_SPEED: null}
@@ -237,7 +236,9 @@ func onNextTurnStats(Unit: UnitGD) -> void:
 			else: stats[stat_info.stat_type].add(stat_info.value)
 		else: print_debug("You are trying to temporarily add to an illegal stat!")
 		
-	for stat_info in stats.values().filter(func(x: StatInfoGD): return x != null):
+	next_turn_stats = stats.values().filter(func(x: StatInfoGD): return x != null and x.value != 0)
+	StatusManager.onRefreshNextTurnStats(next_turn_stats)
+	for stat_info in next_turn_stats:
 		StatusManager.onRemoveBuffNextTurn(stat_info)
 		StatusManager.onCreateBuffNextTurn(stat_info)
 	

@@ -5,3 +5,6 @@ extends Node
 
 @export var bodies: Array[Node3D]
 @export var meshes: Array[Node3D]
+
+func playAnimation(ani_name: String) -> void:
+	$AnimationPlayer.play(ani_name)

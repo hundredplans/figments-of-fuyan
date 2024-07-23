@@ -50,16 +50,15 @@ func onAddUnitStatus(Unit: UnitGD, type: String = "UnitStatusRegular") -> void:
 		"UnitStatusRegular": 
 			LevelUI.Statuses.add_child(UnitStatus)
 			UnitStatus.setUnit(Unit)
-			#UnitStatus.target_ability_pressed.connect(LevelUI.onTargetAbilityBtnPressed)
 		"UnitStatusExtra": 
 			LevelUI.UnitStatusState.get_node("Control").add_child(UnitStatus)
 			LevelUI.UnitStatusState.get_node("Control/DefaultStatus").visible = false
 			UnitStatus.setUnit(Unit)
-			#UnitStatus.target_ability_pressed.connect(LevelUI.onTargetAbilityBtnPressed)
 		"TileHoveredUnitStatus":
 			LevelUI.TileHoveredGameCard.add_child(UnitStatus)
 			UnitStatus.setUnit(Unit)
 			
+	UnitStatus.highlight_unit.connect(onHighlightUnit)
 	UnitStatus.onEquipTool(Unit.Tool)
 	UnitStatus.mouse_in_ui.connect(LevelUI.on_is_mouse_in_ui)
 	UnitStatus.ArtPop.pressed.connect(LevelUI.onSpectateEnemyOrAlly.bind(Unit))
@@ -72,6 +71,8 @@ func onAddUnitStatus(Unit: UnitGD, type: String = "UnitStatusRegular") -> void:
 	("modulate", modulates[UnitGD.TURN_UNUSED] if Unit.team == 0 else Color("c11e00")) 
 	if Unit.team == 1: 
 		UnitStatus.ShiftingBackground.material.set_shader_parameter("speed", 0.02)
+	
+	for stat_info in Units.next_turn_stats: onCreateStatNextTurn(UnitStatus, stat_info)
 	
 func onFindUnitStatus(Unit: UnitGD, type: String = "UnitStatus") -> Array:
 	if units.has(Unit):
@@ -195,55 +196,52 @@ func onRemoveTileHoveredUnitStatus(Unit: UnitGD) -> void:
 func onCreateTileHoveredUnitStatus(Unit: UnitGD) -> void:
 	onAddUnitStatus(Unit, "TileHoveredUnitStatus")
 
-var all_info_fx: Dictionary
+#func onUpdateEnemyVision(Unit: UnitGD, state: bool) -> void:
+	#for UnitStatus in onFindUnitStatus(Unit, "Unit"):
+		#UnitStatus.visible = state
+		#
+	#if Unit.team == 1: # Eventually implement as a specific type of base_fx that checks whether the applier is in vision
+		#for _Unit in Units.on_units(TeamRelationGD.new(1)):
+			#for UnitStatus in onFindUnitStatus(_Unit):
+				#for base_fx in UnitStatus.UnitFX.get_children():
+					#if base_fx.info_fx.fx_type == "CocusPocus":
+						#base_fx.visible = base_fx.info_fx.Unit.Tile in Vision.getTeamVision()
+#region StatusFX
+var all_status_info_fx: Array
 func onStoreAllInfoFX() -> void:
-	const DIR_PATH: String = "res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/unit_fx/info_fx/"
-	for file_path in DirAccess.get_files_at(DIR_PATH):
-		var info_fx := load(DIR_PATH + file_path)
-		all_info_fx[info_fx.fx_type] = DIR_PATH + file_path
+	const DIR_PATH: String = "res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/infos/"
+	all_status_info_fx = Array(DirAccess.get_files_at(DIR_PATH)).map(func(x: String): return load(DIR_PATH + x))
+	
+func onFindStatusInfo(id: int) -> StatusFXInfoGD:
+	return all_status_info_fx.filter(func(x: StatusFXInfoGD): return x.id == id)[0]
 
-func onUpdateEnemyVision(Unit: UnitGD, state: bool) -> void:
-	for UnitStatus in onFindUnitStatus(Unit, "Unit"):
-		UnitStatus.visible = state
-		
-	if Unit.team == 1: # Eventually implement as a specific type of base_fx that checks whether the applier is in vision
-		for _Unit in Units.on_units(TeamRelationGD.new(1)):
-			for UnitStatus in onFindUnitStatus(_Unit):
-				for base_fx in UnitStatus.UnitFX.get_children():
-					if base_fx.info_fx.fx_type == "CocusPocus":
-						base_fx.visible = base_fx.info_fx.Unit.Tile in Vision.getTeamVision()
+func onCreateStatusFX(Unit: UnitGD, id: int, AppliedBy := AppliedByGD.new()) -> StatusFXGD:
+	var status_info: StatusFXInfoGD = onFindStatusInfo(id)
+	var status_fx := Node.new()
+	status_fx.script = status_info.status_fx_script
+	status_fx.setInfo(Unit, status_info, AppliedBy)
+	add_child(status_fx)
+	
+	Unit.onAddStatusFX(status_fx)
+	for UnitStatus in onFindUnitStatus(Unit, "UnitFieldStatus"): UnitStatus.onCreateStatusFX(status_fx)
+	for UnitStatus in onFindUnitStatus(Unit): UnitStatus.onCreateStatusFX(status_fx)
+	return status_fx
+	
+func onRemoveStatusFX(status_fx: StatusFXGD) -> void:
+	for UnitStatus in onFindUnitStatus(status_fx.Unit, "Unit"): UnitStatus.onRemoveStatusFX(status_fx)
+	
+	get_tree().remove_child(status_fx)
+	status_fx.queue_free()
+	status_fx.Unit.all_status_fx.erase(status_fx)
+	
+func onRefreshUnitStatus(Unit: UnitGD) -> void:
+	for UnitStatus in onFindUnitStatus(Unit, "Unit"): UnitStatus.onRefresh()
+#endregion
 
-func onAddUnitFX(Unit: UnitGD, type: String, AppliedBy := AppliedByGD.new(), charges: int = -1) -> void:
-	var info_fx := load(all_info_fx[type])
-	info_fx.Unit = AppliedBy.Applier
-	info_fx.charges = charges
-	
-	for UnitStatus in onFindUnitStatus(Unit):
-		var base_fx: Control = UnitStatus.onAddUnitFX(info_fx)
-		base_fx.hover_unit_pressed.connect(onHoverUnitPressed)
-		
-		if type == "CocusPocus": # Eventually implement this as a specific type of base_fx
-			base_fx.visible = info_fx.Unit in Vision.getTeamVision()
-	
-	for UnitStatus in onFindUnitStatus(Unit, "UnitFieldStatus"): UnitStatus.onAddUnitFX(info_fx)
-	Unit.onAddUnitFX(info_fx)
-	
-func onHoverUnitPressed(Unit: UnitGD) -> void:
+func onHighlightUnit(status_fx: StatusFXGD) -> void:
+	var Unit: UnitGD = status_fx.HighlightUnit
 	if Unit != null and Unit.Tile in Vision.getTeamVision():
 		LevelUI.onSpectateEnemyOrAlly(Unit)
-	
-func onAddAbilityActiveFX(Unit: UnitGD, type: String, _AppliedBy := AppliedByGD.new()) -> void:
-	if all_info_fx.has(type):
-		onAddUnitFX(Unit, type)
-	
-func onRemoveAbilityActiveFX(Unit: UnitGD, type: String) -> void:
-	if all_info_fx.has(type):
-		onRemoveUnitFX(Unit, type)
-	
-func onRemoveUnitFX(Unit: UnitGD, type: String, AppliedBy := AppliedByGD.new()) -> void:
-	for UnitStatus in onFindUnitStatus(Unit):
-		UnitStatus.onRemoveUnitFX(type, AppliedBy)
-	#Unit.onRemoveUnitFX(type)
 
 const BUFF_COLORS: Dictionary = {
 	-3: "a90002",
@@ -269,7 +267,7 @@ func getHealNextTurnColorValue(value: int) -> String:
 func onCreateBuffNextTurn(stat_info: StatInfoGD) -> void:
 	if stat_info.stat_type != StatsGD.HEALTH:
 		for UnitStatus in onFindUnitStatus(stat_info.Unit):
-			UnitStatus.onCreateBuffNextTurn(stat_info.getStatName(), stat_info.value * -1, getBuffColorValue(stat_info.value * -1))
+			onCreateStatNextTurn(UnitStatus, stat_info)
 		
 		for UnitStatus in onFindUnitStatus(stat_info.Unit, "UnitFieldStatus"):
 			UnitStatus.onCreateBuffNextTurn(stat_info.getStatName(), stat_info.value * -1)
@@ -297,3 +295,15 @@ func onRemoveHealNextTurn(stat_info: StatInfoGD) -> void:
 
 	for UnitStatus in onFindUnitStatus(stat_info.Unit, "UnitFieldStatus"):
 		UnitStatus.onRemoveHealNextTurn()
+
+func onUnequipTool(Unit: UnitGD) -> void:
+	for UnitStatus in onFindUnitStatus(Unit):
+		UnitStatus.onUnequipTool()
+
+func onRefreshNextTurnStats(stats: Array) -> void:
+	for stat_info in stats:
+		onRemoveBuffNextTurn(stat_info)
+		onCreateBuffNextTurn(stat_info)
+		
+func onCreateStatNextTurn(UnitStatus: UnitStatusGD, stat_info: StatInfoGD) -> void:
+	UnitStatus.onCreateBuffNextTurn(stat_info.getStatName(), stat_info.value * -1, getBuffColorValue(stat_info.value * -1))

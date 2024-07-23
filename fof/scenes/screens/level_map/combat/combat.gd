@@ -67,12 +67,7 @@ func onArrive(Unit: UnitGD) -> void:
 	
 func onTargetAbility(Unit: UnitGD, ability: TargetAbilityGD, Tile: TileGD) -> void:
 	ability.setInfo(Unit, Tile)
-	var InitialTeleport: UnitGD = Units.unit_by_tile(Tile) if (ability.teleport_to_target) else null
-	if InitialTeleport != null and InitialTeleport.team == 1 and InitialTeleport.Tile not in Vision.getTeamVision():
-		InitialTeleport = null
-	onTriggerAbilitySpectateDelay(Unit, ability, ability.onTargetAbility, InitialTeleport)
-	ability.used = true
-	PlayerManager.onSelectActiveUnit(Unit)
+	onTriggerAbilitySpectateDelay(Unit, ability, ability.onTargetAbility)
 	
 func onRevenge(Damagee: UnitGD, AppliedBy: AppliedByGD, DMGInfo: DMGInfoGD, damage: int):
 	var abilities: Array = onFindAbilities(Damagee, "Revenge")
@@ -91,9 +86,6 @@ func onHit(DMGInfo: DMGInfoGD) -> void:
 	
 	TriggerManager.onUnitTrigger(Unit, TriggerGD.ON_HIT, OnHitTriggerInfoGD.new(DMGInfo.Defender, DMGInfo.AppliedBy))
 	
-func onTriggerOnHit() -> void:
-	pass
-	
 func onRampage(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	var abilities: Array = onFindAbilities(Unit, "Rampage")
 	for ability in abilities:
@@ -102,17 +94,14 @@ func onRampage(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 			onTriggerAbilitySpectateDelay(Unit, ability, ability.onRampage)
 	TriggerManager.onUnitTrigger(Unit, TriggerGD.RAMPAGE, RampageTriggerInfoGD.new(AppliedBy))
 		
-func onTriggerAbilitySpectateDelay(Triggerer: UnitGD, ability: AbilityGD, callable: Callable, InitialTeleport: UnitGD = null) -> void:
+func onTriggerAbilitySpectateDelay(Triggerer: UnitGD, ability: AbilityGD, callable: Callable) -> void:
 	var vis: bool = Triggerer.team == 0 or Triggerer.Tile in Vision.getTeamVision()
 	if vis and ability.delay > 0:
-		var begin_arguments: Dictionary = {"Triggerer": Triggerer, "callable": callable, "ability": ability, "vis": vis, "InitialTeleport": Triggerer if InitialTeleport == null else InitialTeleport}
+		var begin_arguments: Dictionary = {"Triggerer": Triggerer, "callable": callable, "ability": ability, "vis": vis}
 		var end_arguments: Dictionary = {"Triggerer": Triggerer, "ability": ability, "vis": vis}
 		
 		if Triggerer.team == 0:
-			if ability_chain.is_empty():
-				if ability is TargetAbilityGD and ability.teleport_to_target: OriginalSpectateUnit = Triggerer
-				else: OriginalSpectateUnit = SpectateCamera.SpectateUnit
-			
+			if ability_chain.is_empty(): OriginalSpectateUnit = SpectateCamera.SpectateUnit
 			ability_chain.append(ability)
 		
 		ActionManager.onAddAction(ArgDelayActionGD.new(onBeforeAbilityFrontDelay.bind(begin_arguments), onAfterAbilityFrontDelay.bind(end_arguments), vis, DelayGD.new(ability.delay)), ActionManagerGD.PUSH)
@@ -125,7 +114,7 @@ func onUseAbility(Unit: UnitGD, callable: Callable, ability: AbilityGD, vis: boo
 		
 func onBeforeAbilityFrontDelay(args: Dictionary) -> void:
 	onUseAbility(args.Triggerer, args.callable, args.ability, args.vis)
-	if args.vis: SpectateCamera.onSpectate(args.InitialTeleport)
+	if args.vis: SpectateCamera.onSpectate(args.Triggerer)
 	
 func onAfterAbilityFrontDelay(args: Dictionary) -> void:
 	ability_chain.erase(args.ability)
@@ -151,35 +140,43 @@ func onFindAbility(Unit: UnitGD, ability_name: String) -> AbilityGD:
 			return ability
 	return null
 
-func onDMG(Damagee: UnitGD, AppliedBy: AppliedByGD, damage: int) -> DMGInfoGD:
-	if !Damagee.is_dead and Damagee.health > 0:
-		var DMGInfo := DMGInfoGD.new(Damagee, AppliedBy, damage)
-		var original_health: int = Damagee.health
+func onDMG(UnitA: Variant, AppliedBy: AppliedByGD, damage: int) -> Dictionary:
+	var units: Array = UnitA if UnitA is Array else [UnitA]
+	var damage_infos: Dictionary = {}
+	for Unit in units.filter(func(x: UnitGD): return !x.is_dead and x.health > 0):
+		var DMGInfo := DMGInfoGD.new(Unit, AppliedBy, damage)
+		var original_health: int = Unit.health
 		match AppliedBy.type:
 			AppliedByGD.ATTACK:
 				var Attacker: UnitGD = AppliedBy.Applier
 				TriggerManager.onUnitTrigger(Attacker, TriggerGD.ON_ATTACK)
-				damage = onArmor(Damagee, damage + Attacker.extra_damage)
-				Units.changeStats(StatInfoGD.new(Damagee, AppliedBy, StatsGD.HEALTH, -damage))
-				DMGInfo.HealthDMG = original_health - Damagee.health
+				damage = onArmor(Unit, damage + Attacker.extra_damage)
+				Units.changeStats(StatInfoGD.new(Unit, AppliedBy, StatsGD.HEALTH, -damage))
+				DMGInfo.HealthDMG = original_health - Unit.health
 				TriggerManager.onUnitTrigger(Attacker, TriggerGD.ON_AFTER_ATTACK)
 				if DMGInfo.HealthDMG > 0:
-					TriggerManager.onUnitTrigger(Damagee, TriggerGD.WHEN_STRUCK, WhenStruckTriggerInfoGD.new(Attacker, AppliedBy))
+					TriggerManager.onUnitTrigger(Unit, TriggerGD.WHEN_STRUCK, WhenStruckTriggerInfoGD.new(Attacker, AppliedBy))
 			AppliedByGD.HEIGHT:
-				Units.changeStats(StatInfoGD.new(Damagee, AppliedBy, StatsGD.HEALTH, -damage))
-				DMGInfo.HealthDMG = original_health - Damagee.health
+				Units.changeStats(StatInfoGD.new(Unit, AppliedBy, StatsGD.HEALTH, -damage))
+				DMGInfo.HealthDMG = original_health - Unit.health
 			_:
-				damage = onArmor(Damagee, damage)
-				Units.changeStats(StatInfoGD.new(Damagee, AppliedBy, StatsGD.HEALTH, -damage))
-				DMGInfo.HealthDMG = original_health - Damagee.health
-				
-		if DMGInfo.HealthDMG > 0:
-			onRevenge(Damagee, AppliedBy, DMGInfo, damage)
-			TriggerManager.onUnitTrigger(Damagee, TriggerGD.REVENGE, RevengeTriggerInfoGD.new(AppliedBy))
+				damage = onArmor(Unit, damage)
+				Units.changeStats(StatInfoGD.new(Unit, AppliedBy, StatsGD.HEALTH, -damage))
+				DMGInfo.HealthDMG = original_health - Unit.health
+		damage_infos[Unit] = DMGInfo
+	
+	ActionManager.onAddAction(HurtActionGD.new(damage_infos.keys().filter(func(x: UnitGD): return x.health != 0), AppliedBy))
+	for Unit in damage_infos:
+		if Unit.health == 0:
+			var vis: bool = Unit.isVis()
+			ActionManager.onAddAction(DeathActionGD.new(Unit, AppliedBy, vis))
 			
-		onRecalculateTargetAbilities()
-		return DMGInfo
-	return null
+		elif damage_infos[Unit].HealthDMG > 0:
+			onRevenge(Unit, AppliedBy, damage_infos[Unit], damage)
+			TriggerManager.onUnitTrigger(Unit, TriggerGD.REVENGE, RevengeTriggerInfoGD.new(AppliedBy))
+			
+	PlayerManager.onRefreshAbilitySelect()
+	return damage_infos
 
 func onCalculateDamage(Damagee: UnitGD, Attacker: UnitGD) -> int:
 	return onArmor(Damagee, Attacker.attack + Attacker.extra_damage)
@@ -212,14 +209,7 @@ func onPlayerPhaseStart() -> void:
 		var abilities: Array = onFindAbilities(Unit, "TargetAbility")
 		for ability in abilities:
 			ability.used = false
-	onRecalculateTargetAbilities()
-
-func onRecalculateTargetAbilities() -> void:
-	for Unit in Units.on_units():
-		var abilities: Array = onFindAbilities(Unit, "TargetAbility")
-		for ability in abilities:
-			ability.onTargetAbilityCondition()
-			ability.can_affect = !ability.tiles["affect"].is_empty()
+	PlayerManager.onRefreshAbilitySelect()
 
 func onDestroyUnit(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	var vis: bool = Unit.team == 0 or Unit.Tile in Vision.getTeamVision()

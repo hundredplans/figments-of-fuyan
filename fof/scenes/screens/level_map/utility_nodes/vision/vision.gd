@@ -16,7 +16,7 @@ func onStartPhaseStart() -> void:
 	spawn_tiles = Tiles.on_is_type_get_tiles("Spawn", "obj")
 	onApplyGreyscale()
 	
-func getTeamVision(team_relation: TeamRelationGD = TeamRelationGD.new(0, "Ally")) -> Array:
+func getTeamVision(team_relation := TeamRelationGD.new(0, "Ally")) -> Array:
 	var _vis_tiles: Array = []
 	if team_relation.onTeam() == 0:
 		_vis_tiles.append_array(spawn_tiles)

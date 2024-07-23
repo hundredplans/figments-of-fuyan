@@ -2,11 +2,9 @@ extends TargetAbilityGD
 
 @export var HEAL: int = 1
 
-func onTargetAbilityCondition() -> void:
-	tiles = {"range": [], "affect": []}
-	if charges > 0:
-		tiles["range"] = Unit.getVisibleTiles()
-		tiles["affect"] = tiles["range"].filter(func(x: TileGD): return Units.unit_by_tile_team_bool(x, Unit.team)) 
+func onRefreshAbility() -> void:
+	var in_range: Array = Unit.getVisibleTiles()
+	AbilityTiles.setInfo(in_range, in_range.filter(func(x: TileGD): return Units.unit_by_tile_team_bool(x, Unit.team)) )
 	
 func onTargetAbility() -> void:
 	Unit.Model._look_at(Tile)
@@ -20,7 +18,7 @@ func onTargetAbility() -> void:
 @export var GUARANTEE_HEAL: int = 2
 func onTargetAbilityConditionAI() -> TileGD:
 	var healable_units: Array = []
-	for _Tile in tiles["affect"]:
+	for _Tile in AbilityTiles.can_affect:
 		var _Unit: UnitGD = Units.unit_by_tile(_Tile)
 		if _Unit.isHealable():
 			healable_units.append(_Unit)
@@ -30,7 +28,7 @@ func onTargetAbilityConditionAI() -> TileGD:
 	return null
 
 func onAbilityDelayFinished() -> void:
-	var healed_allies: Array = tiles["affect"].map(func(x: TileGD): return Units.unit_by_tile(x))
+	var healed_allies: Array = AbilityTiles.can_affect.map(func(x: TileGD): return Units.unit_by_tile(x))
 	var trauma_ability: AbilityGD = Combat.onFindAbility(Unit, "CharmerTrauma")
 	if trauma_ability != null: trauma_ability.healed_allies += healed_allies
 	for _Unit in healed_allies:

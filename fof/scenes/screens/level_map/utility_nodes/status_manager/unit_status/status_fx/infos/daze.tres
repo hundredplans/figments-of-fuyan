@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="StatusFXInfoGD" load_steps=4 format=3 uid="uid://sn0jpm0wflmh"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/status_fx_info.gd" id="1_c4c6d"]
+[ext_resource type="Texture2D" uid="uid://cmawyie32g5c" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/icons/daze.png" id="2_24jwd"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/scripts/status_fx_empty.gd" id="2_auy2f"]
+
+[resource]
+resource_local_to_scene = true
+script = ExtResource("1_c4c6d")
+id = 1
+texture = ExtResource("2_24jwd")
+tooltip = "This unit cannot move on its current or next turn."
+status_fx_script = ExtResource("2_auy2f")

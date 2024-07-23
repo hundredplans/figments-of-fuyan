@@ -50,9 +50,10 @@ func _ready() -> void:
 	AniPlayer.playback_default_blend_time = UNIT_ANIMATION_BLEND_TIME
 	AniPlayer.animation_finished.connect(func(__: String): on_play_animation("Idle"))
 
+var is_vfx_ani_playing: bool = false
 var previous_ani: String
 func on_play_animation(ani_name: String) -> void:
-	if !previous_ani == "Death":
+	if previous_ani != "Death" and !is_vfx_ani_playing:
 		previous_ani = ani_name
 		if ani_name not in ["Idle", "Jump"]: AniPlayer.speed_scale = 1
 		match ani_name:
@@ -295,5 +296,21 @@ func onZipline() -> void:
 func onZiplineFinished() -> void:
 	Unit.global_position.y -= getZiplineHeight()
 
-func onMarioJump() -> void:
-	pass
+func onVFXAnimation(ani: Animation) -> void:
+	var lib: AnimationLibrary = AniPlayer.get_animation_library("")
+	var ani_name: String = ani.resource_name
+	lib.add_animation(ani_name, ani)
+		
+	on_play_animation(ani_name)
+	is_vfx_ani_playing = true
+	await AniPlayer.animation_finished
+	onVFXAnimationFinished(ani)
+	
+func onVFXAnimationFinished(ani: Animation) -> void:
+	rotation_degrees.x = 0
+	is_vfx_ani_playing = false
+	var lib: AnimationLibrary = AniPlayer.get_animation_library("")
+	AniPlayer.current_animation = ""
+	lib.remove_animation(ani.resource_name)
+	on_play_animation("Idle")
+	

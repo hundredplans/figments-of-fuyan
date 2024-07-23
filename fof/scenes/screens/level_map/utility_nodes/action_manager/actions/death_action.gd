@@ -19,7 +19,7 @@ func onTrigger() -> void:
 
 func onAfterTrigger() -> void:
 	SpectateCamera.onStopTrack()
-	await Unit.on_death()
+	await Unit.onDeath()
 	StatusManager.onDeathFinished(Unit)
 	Hand.onGainDeathEnergy(Unit, AppliedBy)
 	AIManager.onDeathFinished(Unit)
@@ -39,5 +39,6 @@ func onCalculateWinState() -> void:
 			PlayerManager.onDeathFinished(Unit, AppliedBy)
 			GameEffects.onDeathFinished(Unit)
 			ActionManager.onDeath(Unit)
+			Unit.onAfterDeath()
 		1: LevelUI.onWinGame()
 		2: LevelUI.onLoseGame()

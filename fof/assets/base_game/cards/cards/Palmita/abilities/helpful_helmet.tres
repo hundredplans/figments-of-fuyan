@@ -1,23 +1,14 @@
-[gd_resource type="Resource" load_steps=9 format=3 uid="uid://csrlxqa6oagu6"]
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://csrlxqa6oagu6"]
 
 [ext_resource type="Script" path="res://assets/base_game/cards/cards/Palmita/abilities/helpful_helmet.gd" id="1_uyel8"]
-[ext_resource type="Resource" uid="uid://bwud4so2h88xo" path="res://assets/base_game/cards/cards/AngrusPalmus/base_card.tres" id="1_weniy"]
-[ext_resource type="Resource" uid="uid://dv2k74p3libm5" path="res://assets/base_game/cards/cards/CharmerPalmer/base_card.tres" id="2_fqnoq"]
-[ext_resource type="Resource" uid="uid://cblssp1ot05hn" path="res://assets/base_game/cards/cards/CrumsyPalmsy/base_card.tres" id="3_agige"]
-[ext_resource type="Resource" uid="uid://r1kvovwxkhq1" path="res://assets/base_game/cards/cards/JackiePalm/base_card.tres" id="4_vp1ox"]
-[ext_resource type="Resource" uid="uid://bt4cenkk51ghg" path="res://assets/base_game/cards/cards/NeckusPalmus/base_card.tres" id="5_jylnr"]
-[ext_resource type="Resource" uid="uid://bbaclnlmfr8v0" path="res://assets/base_game/cards/cards/DumsyPalmsy/base_card.tres" id="6_ey7ag"]
-[ext_resource type="Resource" uid="uid://d1k6m1j36au23" path="res://assets/base_game/cards/cards/SwingusPalmus/base_card.tres" id="7_rachy"]
 
 [resource]
 resource_local_to_scene = true
 script = ExtResource("1_uyel8")
-AI_LIST = Array[Resource("res://assets/base_game/cards/templates/base_card.gd")]([ExtResource("1_weniy"), ExtResource("2_fqnoq"), ExtResource("3_agige"), ExtResource("4_vp1ox"), ExtResource("5_jylnr"), ExtResource("6_ey7ag"), ExtResource("7_rachy")])
+DANGER_LIST_MIN = 37
 ability_description = "[center]This dies to give an adjacent ally [b][color=red]+1 [img=14x14]res://assets/base_game/cards/game_card/art/bbcode/HEALTH.png[/img][/color][/b]  when it [b]RAMPAGE[/b]S[/center]"
 ability_description_big = "[center]This dies to give an adjacent ally [b][color=red]+1 [img=28x28]res://assets/base_game/cards/game_card/art/bbcode/HEALTH.png[/img][/color][/b]  when it [b]RAMPAGE[/b]S[/center]"
-teleport_to_target = null
-change_camera = null
 ability_name = "Helpful Helmet"
-max_charges = null
-ability_index = null
-delay = 0.0
+max_charges = 1
+ability_index = 0
+delay = 2.0

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="StatusFXInfoGD" load_steps=3 format=3 uid="uid://cbbd77qli2yrl"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/status_fx_info.gd" id="1_kbxu6"]
+[ext_resource type="Texture2D" uid="uid://c1fb7rdkd0oso" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/icons/neckus_when_healed.png" id="2_afggp"]
+
+[resource]
+resource_local_to_scene = true
+script = ExtResource("1_kbxu6")
+id = 9
+texture = ExtResource("2_afggp")
+tooltip = "This unit's next attack STAGGERS."
+highlight_on_hover = false
+max_turns = -1
+max_charges = 1

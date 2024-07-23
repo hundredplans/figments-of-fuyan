@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="ToolInfoGD" load_steps=6 format=3 uid="uid://y68e8uxqky8m"]
+
+[ext_resource type="Texture2D" uid="uid://dehext2547x5a" path="res://assets/base_game/tools/icons/Half-eaten Coconut.png" id="1_fvt3f"]
+[ext_resource type="Script" path="res://assets/base_game/tools/tool_info.gd" id="1_ydsft"]
+[ext_resource type="Script" path="res://assets/base_game/tools/tool_ability_info.gd" id="3_55iuq"]
+[ext_resource type="Script" path="res://assets/base_game/tools/scripts/halfeaten_coconut.gd" id="4_pjca7"]
+
+[sub_resource type="Resource" id="Resource_iuvwj"]
+resource_local_to_scene = true
+script = ExtResource("3_55iuq")
+name = "Healthy Bite"
+ability_type = 2
+ascended_ability_type = 0
+delay = 2.0
+max_charges = 1
+description = "Heal this unit and an adjacent ally [1] HEALTH"
+ascended_description = ""
+
+[resource]
+script = ExtResource("1_ydsft")
+id = 9
+icon = ExtResource("1_fvt3f")
+rarity = 0
+tool_script = ExtResource("4_pjca7")
+display_name = "Half-eaten Coconut"
+description = "ABILITY [1]: Heal this unit and an adjacent ally [1] HEALTH"
+ascended_description = ""
+tool_abilities = Array[ExtResource("3_55iuq")]([SubResource("Resource_iuvwj")])

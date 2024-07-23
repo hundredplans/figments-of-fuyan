@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="StatusFXInfoGD" load_steps=4 format=3 uid="uid://btvvroms50ky4"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/status_fx_info.gd" id="1_i5d74"]
+[ext_resource type="Texture2D" uid="uid://dabq7kr2tnmo1" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/icons/angrus_rampage.png" id="2_7eikm"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/scripts/status_fx_empty.gd" id="2_mns6y"]
+
+[resource]
+resource_local_to_scene = true
+script = ExtResource("1_i5d74")
+id = 7
+texture = ExtResource("2_7eikm")
+tooltip = "When Healed next this unit will Heal double the amount."
+status_fx_script = ExtResource("2_mns6y")

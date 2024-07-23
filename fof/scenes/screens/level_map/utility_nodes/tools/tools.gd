@@ -1,8 +1,10 @@
 class_name ToolsGD
 extends Node
 
+var LevelUI: LevelUIGD
 var StatusManager: StatusManagerGD
 var all_tools: Array
+
 func _ready() -> void:
 	const DIR_PATH: String = "res://assets/base_game/tools/infos/"
 	all_tools = Array(DirAccess.get_files_at(DIR_PATH)).map(func(x: String): return load(DIR_PATH + x))
@@ -18,6 +20,7 @@ func onEquipTool(Obj: Variant, id: int, is_ascended: bool = false) -> void:
 	
 	if Obj is UnitGD:
 		StatusManager.onEquipTool(Obj)
+		LevelUI.onRefreshUnitModeBoxes()
 
 func onFindToolInfo(id: int) -> ToolInfoGD:
 	return all_tools.filter(func(x: ToolInfoGD): return x.id == id)[0]
@@ -31,3 +34,6 @@ func onHandPhaseStart() -> void:
 	
 func onAIPhaseStart() -> void:
 	for tool in get_children(): tool.onStartTurnTrigger(1)
+
+func onBreak(Tool: ToolGD) -> void:
+	Tool.Unit.onUnequipTool()

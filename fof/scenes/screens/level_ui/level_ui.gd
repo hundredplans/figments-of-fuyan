@@ -432,11 +432,11 @@ func onAddUnitModeBox(trigger: Object, charges: int, max_charges: int, text: Str
 	UnitModeBox.setDisabled(is_disabled)
 	return UnitModeBox
 
-func onEnterUnitMode(Unit: UnitGD) -> void:
-	setUnitNameLabel(Unit.base_card.name)
+func onRefreshUnitModeBoxes(Unit: UnitGD = PlayerManager.getUnitSelected()) -> void:
+	for child in UnitModeBoxes._get_children(): child.queue_free()
 	for ability in Unit.abilities.filter(func(x: AbilityGD): return x is TargetAbilityGD):
 		onAddUnitModeBox(ability, ability.charges, ability.max_charges, ability.ability_name,\
-		ability.ability_description, onTargetAbilityBoxPressed.bind(Unit, ability), !Combat.isAbilityEnabled(Unit, ability))
+		ability.ability_description, onAbilitySelectPressed.bind(Unit, ability), !Combat.isAbilityEnabled(Unit, ability))
 			
 	for iobject in ObjectManager.onFindOccupiedIObjects(Unit):
 		for ability in iobject.info.abilities:
@@ -445,45 +445,51 @@ func onEnterUnitMode(Unit: UnitGD) -> void:
 		
 	if Unit.Tool != null:
 		for tool_ability in Unit.Tool.getToolAbilities():
-			onAddUnitModeBox(Unit.Tool, tool_ability.charges, tool_ability.max_charges, Unit.Tool.tool_info.display_name,\
+			onAddUnitModeBox(Unit.Tool, tool_ability.charges, tool_ability.max_charges, tool_ability.name,\
 			Unit.Tool.getAbilityDescription(tool_ability), onToolPressed.bind(Unit, tool_ability), !Combat.isToolAbilityEnabled(Unit, tool_ability))
-			
+
+func onEnterUnitMode(Unit: UnitGD) -> void:
+	setUnitNameLabel(Unit.base_card.name)
+	onRefreshUnitModeBoxes(Unit)
+	
 func onExitUnitMode() -> void:
 	setUnitNameLabel()
 	for child in UnitModeBoxes._get_children(): child.queue_free()
-	onExitUnitBoxMode(PlayerManager.EXIT_TARGET_ABILITY_OTHER)
+	onExitAbilitySelect()
 
 func onToolPressed(Unit: UnitGD, tool_ability: ToolAbilityInfoGD) -> void:
-	var callable: Callable = Unit.Tool.onAfterDelay if Unit.Tool.has_method("onAfterDelay") else Callable()
-	ActionManager.onAddAction(ArgDelayActionGD.new(Callable(), callable, true, DelayGD.new(tool_ability.delay)), ActionManagerGD.APPEND)
-	Unit.Tool.onAbilityTrigger(tool_ability)
-	tool_ability.used = true
+	if Unit.Tool.getAbilityType(tool_ability) == tool_ability.ABILITY_TYPES.ABILITY:
+		var callable: Callable = Unit.Tool.onAfterDelay if Unit.Tool.has_method("onAfterDelay") else Callable()
+		ActionManager.onAddAction(ArgDelayActionGD.new(Callable(), callable, true, DelayGD.new(tool_ability.delay)), ActionManagerGD.APPEND)
+		Unit.Tool.onAbilityTrigger(tool_ability)
+		tool_ability.used = true
+		
+	elif Unit.Tool.getAbilityType(tool_ability) == tool_ability.ABILITY_TYPES.ABILITY_SELECT:
+		onAbilitySelectPressed(Unit, tool_ability)
 
 func onIObjectBoxPressed(Unit: UnitGD, iobject: IObjectGD, ability: IObjectAbilityInfoGD) -> void:
 	ActionManager.onAddAction(DelayActionGD.new(Callable(), true, DelayGD.new(ability.delay)), ActionManagerGD.APPEND)
 	if !ability.select_tiles: iobject.onAbilityTrigger(Unit, ability)
 
-func onTargetAbilityBoxPressed(Unit: UnitGD, ability: AbilityGD) -> void:
-	if PlayerManager.TAbility == ability: onExitUnitBoxMode(PlayerManager.EXIT_TARGET_ABILITY_BUTTON)
-	else: onEnterTargetAbilityMode(Unit, ability)
+#region AbilitySelect
+func onAbilitySelectPressed(Unit: UnitGD, ability_selected: Variant) -> void:
+	if PlayerManager.AbilitySelected == ability_selected: onExitAbilitySelect()
+	else: onEnterAbilitySelect(Unit, ability_selected)
 
-func onTargetAbilityBtnPressed(Unit: UnitGD, ability: AbilityGD) -> void:
-	if LevelMap.verifyLock(): onTargetAbilityBoxPressed(Unit, ability)
+func onEnterAbilitySelect(Unit: UnitGD, ability_selected: Variant) -> void:
+	setUnitModeLabel(ability_selected.ability_name if ability_selected is TargetAbilityGD else ability_selected.name)
+	PlayerManager.onEnterAbilitySelect(Unit, ability_selected)
+
+func onExitAbilitySelect() -> void:
+	if PlayerManager.isAbilitySelected():
+		setUnitModeLabel()
+		PlayerManager.onExitAbilitySelect()
+#endregion
 		
 func setUnitModeLabel(text: String = "") -> void:
 	UnitModeLabel.text = text
-	
 func setUnitNameLabel(text: String = "") -> void:
 	UnitNameLabel.text = text
-	
-func onEnterTargetAbilityMode(Unit: UnitGD, ability: AbilityGD) -> void:
-	setUnitModeLabel(ability.ability_name)
-	PlayerManager.onEnterTargetAbilityMode(Unit, ability)
-	
-func onExitUnitBoxMode(exit_type: int = 0) -> void: # has to check if actually in target ability mode first
-	if PlayerManager.TAbility != null:
-		setUnitModeLabel()
-		PlayerManager.onExitUnitBoxMode(exit_type)
 
 func onUpdateAbilityCharges(Unit: UnitGD) -> void:
 	var charge_abilities: Array = []
