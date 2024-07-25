@@ -38,6 +38,7 @@ var traits: Array = []
 var abilities: Array = []
 var base_text: String
 var status_fx_array: Array = []
+var finished_last_will: bool = false
 
 var ai_info: AIInfoGD
 
@@ -48,8 +49,9 @@ enum {
 	TURN_UNUSED, # It's the unit's phase and he hasn't moved yet
 }
 
-@onready var UnitVFX: Node3D = $UnitVFX
+@onready var UnitVFX: Node3D = %UnitVFX
 @onready var Model: Node3D
+@onready var LocalPosition: Node3D = %LocalPosition
 
 var Boons: BoonsGD
 var VFX: VFXGD
@@ -80,12 +82,13 @@ func onEquipTool(_Tool: ToolGD) -> void:
 	if Tool != null:
 		Tool.onUnitAwakened(self)
 		TriggerManager.onUnitTrigger(self, TriggerGD.EQUIP_TOOL, EquipToolTriggerInfoGD.new(Tool))
-
+		LevelUI.onSpawnText(EquipToolTempTextInfoGD.new(Tool))
 
 func onUnequipTool(_NewTool: ToolGD = null) -> void:
 	TriggerManager.onUnitTrigger(self, TriggerGD.UNEQUIP_TOOL, UnequipToolTriggerInfoGD.new(_NewTool, Tool))
 	Tool.onRemoveSelf()
 	StatusManager.onUnequipTool(self)
+	LevelUI.onSpawnText(UnequipToolTempTextInfoGD.new(Tool))
 	Tool = null
 
 func onUnitAwakened(_id: int, _team: int, rot: int, tile: TileGD) -> void:
@@ -116,7 +119,7 @@ func onUnitAwakened(_id: int, _team: int, rot: int, tile: TileGD) -> void:
 	Model = load(card_model_path).instantiate() # Takes about 2.2seconds, not the ready function?
 	Model.Unit = self
 	Model.rot = rot
-	add_child(Model)
+	LocalPosition.add_child(Model)
 	
 	VisionRaycast.position.y = height.eye
 	
@@ -149,13 +152,20 @@ func onCreateAbilities() -> void:
 	var DIR_PATH: String = "res://assets/base_game/cards/cards/" + base_card.folder_name + "/abilities/"
 	if DirAccess.dir_exists_absolute(DIR_PATH):
 		for ability_name in Array(DirAccess.get_files_at(DIR_PATH)).filter(func(x: String): return x.ends_with(".tres")):
+			onCreateAbility(load(DIR_PATH + ability_name))
 			
-			var ability: AbilityGD = load(DIR_PATH + ability_name).duplicate()
-			ability.charges = ability.max_charges
-			abilities.append(ability)
+func onCreateAbility(_ability: AbilityGD) -> AbilityGD:
+	var ability: AbilityGD = _ability.duplicate()
+	ability.charges = ability.max_charges
+	abilities.append(ability)
+	if ability is TargetAbilityGD or ability is AuraGD: ability.setInfo(self)
+	TriggerManager.onUnitTrigger(self, TriggerGD.ADD_ABILITY, AddAbilityTriggerInfoGD.new(ability))
+	return ability
 			
-			if ability is TargetAbilityGD or ability is OngoingAbilityGD: ability.setInfo(self)
-			
+func onRemoveAbility(ability: AbilityGD) -> void:
+	TriggerManager.onUnitTrigger(self, TriggerGD.REMOVE_ABILITY, RemoveAbilityTriggerInfoGD.new(ability))
+	abilities.erase(ability)
+	
 func onAddStatusFX(status_fx: StatusFXGD) -> void: status_fx_array.append(status_fx)
 		
 var vision_info_array: Array = []
@@ -221,7 +231,7 @@ func onDeath() -> void:
 	await get_tree().process_frame
 	
 func onAfterDeath() -> void:
-	if Tool != null: Tool.onRemoveSelf()
+	if Tool != null: onUnequipTool()
 	
 func onSpectatedPlayerPhase(state: bool) -> void:
 	if LevelMap.game_phase == "PlayerPhase":
@@ -260,20 +270,13 @@ func onCalculateVisionInfo() -> VisInfoGD:
 		for Unit in current_units: collision_infos.append([Unit, Unit.Model.onGetAdjustedPoints()])
 
 		for info in collision_infos:
-			var potential_collision: Node3D = info[0]
 			for point in info[1]:
 				VisionRaycast.target_position = (point - VisionRaycast.global_position) * 1.05
 				VisionRaycast.force_raycast_update()
 				if VisionRaycast.is_colliding():
-					var Collision: Node3D = VisionRaycast.get_collider().get_node("../../../..")
-					
-					var _Tile: TileGD
-					if Collision is TileGD: _Tile = Collision
-					elif Collision is UnitGD: _Tile = Collision.Tile
-					else: _Tile = Collision.get_node("../..")
-					
+					var _Tile: TileGD = Helper.getTileFromCollision(VisionRaycast.get_collider())
 					onAppendTileToVisibleTiles(_visible_tiles, _Tile)
-					if Collision == potential_collision: break
+					if _Tile == info[0]: break
 		onAddNonCommutativeUnits(_visible_tiles)
 		onUnitsHeightAdjacentTiles(_visible_tiles)
 	
@@ -286,8 +289,7 @@ func onCalculateEnemyUnitCommutative(Unit: UnitGD) -> bool:
 		VisionRaycast.force_raycast_update()
 		
 		if VisionRaycast.is_colliding():
-			var Collision: Node3D = VisionRaycast.get_collider().get_node("../../../..")
-			if Collision == Unit: return true
+			return Helper.getUnitFromCollision(VisionRaycast.get_collider()) == Unit.Tile
 	return false
 
 func onAddNonCommutativeUnits(_visible_tiles: Array) -> void:
@@ -378,3 +380,6 @@ func isVis() -> bool: return team == 0 or Tile in Vision.getTeamVision()
 func getToolAbilities() -> Array:
 	if Tool != null: return Tool.getToolAbilities()
 	return []
+	
+func isInjured() -> bool:
+	return health < max_health

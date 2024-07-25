@@ -66,6 +66,11 @@ func onTriggerPhaseStart(phase: String) -> void:
 	for node in nodes: node.call(phase)
 
 func on_change_game_phase(phase: String) -> void:
+	if phase != "StartPhase":
+		ActionManager.onAddAction(DelayActionGD.new(onChangeGamePhaseAfterDelay.bind(phase), true), ActionManagerGD.APPEND)
+	else: onChangeGamePhaseAfterDelay(phase)
+	
+func onChangeGamePhaseAfterDelay(phase: String) -> void:
 	var dev := preload("res://static/dev/dev.tres")
 	game_phase = phase
 	onTriggerPhaseStart(phase)
@@ -83,7 +88,6 @@ func on_change_game_phase(phase: String) -> void:
 		"PlayerEndTurnPhase": on_advance_game_phase()
 		"AIPhase": turns += 1
 		"AIEndTurnPhase": on_advance_game_phase()
-			
 
 func on_advance_game_phase() -> void:
 	match game_phase:

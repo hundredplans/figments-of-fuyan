@@ -6,6 +6,7 @@ var Combat: CombatGD
 var Tiles: TilesGD
 var GameEffects: GameEffectsGD
 var ActionManager: ActionManagerGD
+var Tools: ToolsGD
 
 var info: UniqueTileInfoGD
 var Tile: TileGD

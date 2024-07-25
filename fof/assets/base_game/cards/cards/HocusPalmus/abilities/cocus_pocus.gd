@@ -2,7 +2,7 @@ extends TargetAbilityGD
 
 @export var HEAL: int = 2
 func onRefreshAbility() -> void:
-	for ability in Unit.abilities.filter(func(x: AbilityGD): return x.ability_name == "HocusPalmusOngoingAbility"):
+	for ability in Unit.abilities.filter(func(x: AbilityGD): return x.ability_name == "HocusPalmusAura"):
 		if ability.affected_units.size() > 0 and !onFindSpawnTiles().is_empty():
 			AbilityTiles.can_affect = [ability.affected_units[0].Tile]
 	

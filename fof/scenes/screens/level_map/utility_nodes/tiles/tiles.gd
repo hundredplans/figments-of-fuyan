@@ -651,12 +651,7 @@ func on_find_tile_by_raycast() -> TileGD:
 	ray.force_raycast_update()
 	
 	if ray.is_colliding():
-		var Collision: Node3D = ray.get_collider().get_node("../../../..")
-		var _Tile: TileGD
-		if Collision is TileGD: _Tile = Collision
-		elif Collision is UnitGD: _Tile = Collision.Tile
-		else: _Tile = Collision.get_node("../..")
-		return _Tile
+		return Helper.getTileFromCollision(ray.get_collider())
 	return null
 
 var select_console: bool = false

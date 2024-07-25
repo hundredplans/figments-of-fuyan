@@ -8,5 +8,8 @@ script = ExtResource("1_2slrp")
 [node name="VisionRaycast" type="RayCast3D" parent="."]
 collision_mask = 20
 
-[node name="UnitVFX" type="Node3D" parent="."]
+[node name="LocalPosition" type="Node3D" parent="."]
+unique_name_in_owner = true
+
+[node name="UnitVFX" type="Node3D" parent="LocalPosition"]
 unique_name_in_owner = true

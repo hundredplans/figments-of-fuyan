@@ -59,3 +59,5 @@ func onRemoveSelf() -> void:
 func getAbilityType(tool_ability: ToolAbilityInfoGD) -> int:
 	if is_ascended: return tool_ability.ascended_ability_type
 	else: return tool_ability.ability_type
+
+func onCondition(_ability: ToolAbilityInfoGD) -> bool: return true

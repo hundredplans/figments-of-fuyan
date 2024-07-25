@@ -22,7 +22,7 @@ enum {NULL, REMOVE_TRIGGER, REMOVE_FX, CHARGES}
 # WHEN_STRUCK = Directly after taking dmg
 enum {REMOVE, END_TURN, ON_HIT, NEXT_TURN, ON_ATTACK, ON_AFTER_ATTACK, HEAL, RAMPAGE, TURN_PASSED,
 	REMOVE_ABILITY, AWAKEN, CARD_PLACED, END_TURN_GLOBAL, START_TURN_GLOBAL, WHEN_STRUCK, REVENGE, LAST_WILL,
-	EQUIP_TOOL, UNEQUIP_TOOL, BEGIN_DEATH, STAT_CHANGE, MOVE}
+	EQUIP_TOOL, UNEQUIP_TOOL, BEGIN_DEATH, STAT_CHANGE, MOVE, ENTER_VISION, EXIT_VISION, ADD_ABILITY}
 
 func _init(_GameFX: GameFXGD = null, _Unit: UnitGD = null, _callable: Callable = Callable(), _type: int = -1, _remove_type: int = 2, _use_bound: bool = true, _delay: float = 0, _trigger_info: TriggerInfoGD = null):
 	if _type == -1: push_error("Your trigger value is unset!")

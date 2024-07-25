@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://b0kr4uhvdhmq3"]
+[gd_scene load_steps=36 format=3 uid="uid://b0kr4uhvdhmq3"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_ui/level_ui.gd" id="1_mmiwi"]
 [ext_resource type="Texture2D" uid="uid://iucmlitjenwl" path="res://assets/base_game/cards/game_card/art/stats/energy.png" id="2_bww7p"]
@@ -27,6 +27,8 @@
 [ext_resource type="Texture2D" uid="uid://cyu547jk2ynkr" path="res://scenes/screens/level_ui/top_bar/top_bar_button/camera.png" id="23_1m0mv"]
 [ext_resource type="Texture2D" uid="uid://dr4ojvlaol232" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/unit_status_pieces/status_in.png" id="23_g3jx8"]
 [ext_resource type="Script" path="res://scenes/screens/level_ui/unit_mode_boxes.gd" id="27_bffhk"]
+[ext_resource type="Script" path="res://scenes/screens/level_ui/temp_text_spawner/temp_text_spawner.gd" id="28_6r5u2"]
+[ext_resource type="PackedScene" uid="uid://odl0t427yp3b" path="res://scenes/screens/level_ui/temp_text_spawner/temp_text_label.tscn" id="29_60e30"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_q13sk"]
 particle_flag_disable_z = true
@@ -675,6 +677,25 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[node name="TempTextSpawner" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 574.0
+offset_right = -524.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("28_6r5u2")
+label_packed = ExtResource("29_60e30")
+
+[node name="Timer" type="Timer" parent="TempTextSpawner"]
+wait_time = 0.1
+autostart = true
+
 [node name="WarningText" type="Label" parent="."]
 unique_name_in_owner = true
 visible = false
@@ -728,3 +749,4 @@ metadata/_edit_lock_ = true
 [connection signal="pressed" from="TopBar/RightBar/EyeButton" to="." method="onEyeButtonPressed"]
 [connection signal="mouse_in_ui" from="TopBar/RightBar/CameraButton" to="." method="on_is_mouse_in_ui"]
 [connection signal="pressed" from="TopBar/RightBar/CameraButton" to="." method="onCameraButtonPressed"]
+[connection signal="timeout" from="TempTextSpawner/Timer" to="TempTextSpawner" method="_on_timer_timeout"]

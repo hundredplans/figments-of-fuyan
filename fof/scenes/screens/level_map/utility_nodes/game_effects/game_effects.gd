@@ -17,6 +17,7 @@ const GAME_FX_INFO: Dictionary = {
 	GameFXGD.HELPFUL_HELMET: "helpful_helmet",
 	GameFXGD.CHARMING_STANCE: "charming_stance",
 	GameFXGD.ENERGIZED_BOON: "energized_boon",
+	GameFXGD.SUGORI_KNIFE: "sugori_knife",
 }
 
 var GAME_FX_OVERRIDE: Array = [GameFXGD.DAZE, GameFXGD.STAGGER]
@@ -29,7 +30,7 @@ func onOverrideGFX(Unit: UnitGD, type: int) -> void:
 		for GameFX in getUnitGFX(Unit).filter(func(x: GameFXGD): return x.type == type):
 			onRemoveFX(GameFX)
 
-func addGFX(Unit: UnitGD, type: int, a: Dictionary = {}, custom_triggers: Array = []) -> void:
+func addGFX(Unit: UnitGD, type: int, a: Dictionary = {}, custom_triggers: Array = []) -> GameFXGD:
 	onOverrideGFX(Unit, type)
 	var GameFX := Node.new()
 	GameFX.script = load("res://scenes/screens/level_map/utility_nodes/game_effects/game_effects/" + GAME_FX_INFO[type] + "_gfx.gd")
@@ -39,7 +40,7 @@ func addGFX(Unit: UnitGD, type: int, a: Dictionary = {}, custom_triggers: Array 
 	gfx.append(GameFX)
 	GameFX.onCreateGFX()
 	GameFX.onAfterCreateGFX()
-	
+	return GameFX
 
 func onDeathFinished(Unit: UnitGD) -> void:
 	var erase: Array = []

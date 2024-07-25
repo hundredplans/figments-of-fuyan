@@ -185,9 +185,9 @@ func onEnterAbilitySelect(Unit: UnitGD, _AbilitySelected: Variant) -> void:
 	onRemoveMovementRange()
 	onCreateAbilityRange(Unit, AbilitySelected)
 	
-func onExitAbilitySelect() -> void:
+func onExitAbilitySelect(refresh: bool = false) -> void:
 	onRemoveAbilityRange(AbilitySelected)
-	onRefreshMovementRange(AbilityUnit)
+	if refresh: onRefreshMovementRange(AbilityUnit)
 	
 	AbilityUnit = null
 	AbilitySelected = null

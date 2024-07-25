@@ -88,6 +88,8 @@ func unit_by_tile(Tile: TileGD) -> UnitGD:
 		if Tile == Unit.Tile: return Unit
 	return null
 
+func getAliveDyingUnits() -> Array: return FieldedUnits.get_children() + Postmortem.get_children().filter(func(x: UnitGD): return !x.finished_last_will)
+
 func all_units(exclude: UnitGD = null) -> Array:
 	return FieldedUnits.get_children().filter(func(x: UnitGD): return !x.is_dead and x != exclude )
 
@@ -101,17 +103,20 @@ func on_match_team_relation(unit: UnitGD, team: int, relation: String) -> bool:
 	return (unit.team == team and relation == "Ally") or (unit.team != team and relation == "Enemy") or relation == "Any"
 
 func onUnitEntersVision(Unit: UnitGD, _Unit: UnitGD, old_ally_vision: Array) -> void:
-	if Unit.team == 0 and _Unit.team == 1 and _Unit.Tile not in old_ally_vision:
-		if Unit.finished_awakening: AudioMaster.play_sfx("TrumpetKuba")
-		PlayerManager.on_enemy_unit_enters_vision(_Unit, Unit)
-	Combat.onOngoingAbilityUnit(Unit, _Unit, "EnterVision")
-	Combat.onOngoingAbilityUnit(_Unit, Unit, "EnterVision")
+	if !Unit.is_dead or _Unit.is_dead:
+		if Unit.team == 0 and _Unit.team == 1 and _Unit.Tile not in old_ally_vision:
+			if Unit.finished_awakening: AudioMaster.play_sfx("TrumpetKuba")
+			PlayerManager.on_enemy_unit_enters_vision(_Unit, Unit)
+		TriggerManager.onUnitTrigger(Unit, TriggerGD.ENTER_VISION, VisionTriggerInfoGD.new(_Unit))
+		TriggerManager.onUnitTrigger(_Unit, TriggerGD.ENTER_VISION, VisionTriggerInfoGD.new(Unit))
 	
 func onUnitExitsVision(Unit: UnitGD, _Unit: UnitGD) -> void:
-	if Unit.team == 0 and _Unit.team == 1:
-		PlayerManager.on_enemy_unit_exits_vision(_Unit)
-	Combat.onOngoingAbilityUnit(Unit, _Unit, "ExitVision")
-	Combat.onOngoingAbilityUnit(_Unit, Unit, "ExitVision")
+	if !Unit.is_dead or _Unit.is_dead:
+		if Unit.team == 0 and _Unit.team == 1:
+			PlayerManager.on_enemy_unit_exits_vision(_Unit)
+			
+		TriggerManager.onUnitTrigger(Unit, TriggerGD.EXIT_VISION, VisionTriggerInfoGD.new(_Unit))
+		TriggerManager.onUnitTrigger(_Unit, TriggerGD.EXIT_VISION, VisionTriggerInfoGD.new(Unit))
 	
 var movement_outline_tiles: Array = []
 	

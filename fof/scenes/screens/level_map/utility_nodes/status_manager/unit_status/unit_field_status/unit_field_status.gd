@@ -91,7 +91,9 @@ func onCreateBaseStat(val: int, stat_changed: String, color: String = "BASE") ->
 		NewNumber.rotation_degrees.y += 180
 		StatNumber.add_child(NewNumber)
 		setStatNumberMaterial(NewNumber, color)
+		
 	StatNumber.on_sort_children()
+	BuffNextTurn.get_node(stat_changed).position.x = 0.0 if str(val).length() == 1 else -0.2
 
 var grey_heart: bool = false
 func onCreateStatusFX(status_fx: StatusFXGD) -> void:

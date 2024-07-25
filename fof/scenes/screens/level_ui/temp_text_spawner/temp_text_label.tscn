@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://odl0t427yp3b"]
+
+[ext_resource type="FontFile" uid="uid://7k4xd8s0oed2" path="res://assets/UI/roboto/roboto.ttf" id="1_ki54w"]
+
+[node name="Label" type="RichTextLabel"]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -130.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/normal_font = ExtResource("1_ki54w")
+theme_override_font_sizes/normal_font_size = 32
+bbcode_enabled = true
+text = "You equipped Coconut Staff"

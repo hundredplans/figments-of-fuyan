@@ -38,12 +38,11 @@ var ENUM_TO_STRING: Dictionary = {
 	6: "ARG_DELAY",
 }
 
+func onInterruptMovement() -> void:
+	onRemoveActions([MOVE_UNIT, ATTACK])
+
 func onEnemyDiscovered() -> void:
-	var remove_actions: Array = []
-	for action in unit_actions:
-		if action.type in [MOVE_UNIT, ATTACK]:
-			remove_actions.append(action)
-	for action in remove_actions: unit_actions.erase(action)
+	onInterruptMovement()
 
 func onRemoveActions(action_types: Array) -> void:
 	var remove_actions: Array = []

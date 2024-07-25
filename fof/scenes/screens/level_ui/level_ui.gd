@@ -52,6 +52,7 @@ var ObjectManager: ObjectManagerGD
 
 @onready var BoonContainer := %BoonContainer
 @onready var GreyOut := %GreyOut
+@onready var TempTextSpawner := %TempTextSpawner
 
 var _LevelMap: PackedScene = preload("res://scenes/screens/level_map/level_map.tscn")
 var LevelMap: Node3D
@@ -433,20 +434,21 @@ func onAddUnitModeBox(trigger: Object, charges: int, max_charges: int, text: Str
 	return UnitModeBox
 
 func onRefreshUnitModeBoxes(Unit: UnitGD = PlayerManager.getUnitSelected()) -> void:
-	for child in UnitModeBoxes._get_children(): child.queue_free()
-	for ability in Unit.abilities.filter(func(x: AbilityGD): return x is TargetAbilityGD):
-		onAddUnitModeBox(ability, ability.charges, ability.max_charges, ability.ability_name,\
-		ability.ability_description, onAbilitySelectPressed.bind(Unit, ability), !Combat.isAbilityEnabled(Unit, ability))
+	if Unit != null:
+		for child in UnitModeBoxes._get_children(): child.queue_free()
+		for ability in Unit.abilities.filter(func(x: AbilityGD): return x is TargetAbilityGD):
+			onAddUnitModeBox(ability, ability.charges, ability.max_charges, ability.ability_name,\
+			ability.ability_description, onAbilitySelectPressed.bind(Unit, ability), !Combat.isAbilityEnabled(Unit, ability))
+				
+		for iobject in ObjectManager.onFindOccupiedIObjects(Unit):
+			for ability in iobject.info.abilities:
+				onAddUnitModeBox(iobject, ability.charges, ability.max_charges, ability.name,\
+				ability.description, onIObjectBoxPressed.bind(Unit, iobject, ability), !Combat.isIObjectAbilityEnabled(Unit, iobject, ability))
 			
-	for iobject in ObjectManager.onFindOccupiedIObjects(Unit):
-		for ability in iobject.info.abilities:
-			onAddUnitModeBox(iobject, ability.charges, ability.max_charges, ability.name,\
-			ability.description, onIObjectBoxPressed.bind(Unit, iobject, ability), !Combat.isIObjectAbilityEnabled(Unit, iobject, ability))
-		
-	if Unit.Tool != null:
-		for tool_ability in Unit.Tool.getToolAbilities():
-			onAddUnitModeBox(Unit.Tool, tool_ability.charges, tool_ability.max_charges, tool_ability.name,\
-			Unit.Tool.getAbilityDescription(tool_ability), onToolPressed.bind(Unit, tool_ability), !Combat.isToolAbilityEnabled(Unit, tool_ability))
+		if Unit.Tool != null:
+			for tool_ability in Unit.Tool.getToolAbilities():
+				onAddUnitModeBox(Unit.Tool, tool_ability.charges, tool_ability.max_charges, tool_ability.name,\
+				Unit.Tool.getAbilityDescription(tool_ability), onToolPressed.bind(Unit, tool_ability), !Combat.isToolAbilityEnabled(Unit, tool_ability))
 
 func onEnterUnitMode(Unit: UnitGD) -> void:
 	setUnitNameLabel(Unit.base_card.name)
@@ -457,10 +459,13 @@ func onExitUnitMode() -> void:
 	for child in UnitModeBoxes._get_children(): child.queue_free()
 	onExitAbilitySelect()
 
+func onToolAbilityUsed(Unit: UnitGD, delay: float) -> void:
+	StatusManager.onToolAbilityUsed(Unit, delay)
+
 func onToolPressed(Unit: UnitGD, tool_ability: ToolAbilityInfoGD) -> void:
 	if Unit.Tool.getAbilityType(tool_ability) == tool_ability.ABILITY_TYPES.ABILITY:
 		var callable: Callable = Unit.Tool.onAfterDelay if Unit.Tool.has_method("onAfterDelay") else Callable()
-		ActionManager.onAddAction(ArgDelayActionGD.new(Callable(), callable, true, DelayGD.new(tool_ability.delay)), ActionManagerGD.APPEND)
+		ActionManager.onAddAction(ArgDelayActionGD.new(onToolAbilityUsed.bind(Unit, tool_ability.delay), callable, true, DelayGD.new(tool_ability.delay)), ActionManagerGD.APPEND)
 		Unit.Tool.onAbilityTrigger(tool_ability)
 		tool_ability.used = true
 		
@@ -473,17 +478,17 @@ func onIObjectBoxPressed(Unit: UnitGD, iobject: IObjectGD, ability: IObjectAbili
 
 #region AbilitySelect
 func onAbilitySelectPressed(Unit: UnitGD, ability_selected: Variant) -> void:
-	if PlayerManager.AbilitySelected == ability_selected: onExitAbilitySelect()
+	if PlayerManager.AbilitySelected == ability_selected: onExitAbilitySelect(true)
 	else: onEnterAbilitySelect(Unit, ability_selected)
 
 func onEnterAbilitySelect(Unit: UnitGD, ability_selected: Variant) -> void:
 	setUnitModeLabel(ability_selected.ability_name if ability_selected is TargetAbilityGD else ability_selected.name)
 	PlayerManager.onEnterAbilitySelect(Unit, ability_selected)
 
-func onExitAbilitySelect() -> void:
+func onExitAbilitySelect(refresh: bool = false) -> void:
 	if PlayerManager.isAbilitySelected():
 		setUnitModeLabel()
-		PlayerManager.onExitAbilitySelect()
+		PlayerManager.onExitAbilitySelect(refresh)
 #endregion
 		
 func setUnitModeLabel(text: String = "") -> void:
@@ -611,3 +616,5 @@ func _on_boon_manager_child_entered_tree(node):
 func onTrackBoonCharges(boon: BoonGD) -> void:
 	var boon_ui: Control = onFindBoonUI(boon)
 	boon_ui.onTrackCharges(boon.charges)
+
+func onSpawnText(temp_text_info: TempTextInfoGD) -> void: TempTextSpawner.onSpawn(temp_text_info)

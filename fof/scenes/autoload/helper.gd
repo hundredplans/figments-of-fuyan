@@ -277,6 +277,11 @@ func return_bitwise(i: int, total: Vector2i) -> bool:
 		k += 1
 	return false
 
+func getTileFromCollision(collision: Node) -> TileGD:
+	collision = collision.get_node("../../../..")
+	if collision is TileGD: return collision
+	return collision.get_node("..").Tile
+
 func create_button_clickmask(button: TextureButton) -> void:
 	var img: Image = load(button.texture_normal.resource_path.left(-4) + "_image.png")
 	button.texture_click_mask = onCreateClickmask(img)

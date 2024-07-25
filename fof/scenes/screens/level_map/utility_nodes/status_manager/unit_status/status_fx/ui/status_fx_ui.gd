@@ -39,6 +39,5 @@ func _process(_delta: float) -> void:
 	if tooltip != null: tooltip.setPosition()
 	
 #endregion
-
 func _on_icon_button_pressed():
 	highlight_unit.emit(status_fx)

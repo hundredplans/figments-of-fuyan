@@ -1,8 +1,20 @@
-[gd_resource type="Resource" script_class="ToolInfoGD" load_steps=4 format=3 uid="uid://bpsqk7rd6p514"]
+[gd_resource type="Resource" script_class="ToolInfoGD" load_steps=6 format=3 uid="uid://bpsqk7rd6p514"]
 
 [ext_resource type="Texture2D" uid="uid://de0b5and3pjne" path="res://assets/base_game/tools/icons/Coconut Staff.png" id="1_hm7mf"]
 [ext_resource type="Script" path="res://assets/base_game/tools/tool_info.gd" id="2_khbyc"]
+[ext_resource type="Script" path="res://assets/base_game/tools/tool_ability_info.gd" id="3_0ynvl"]
 [ext_resource type="Script" path="res://assets/base_game/tools/scripts/coconut_staff.gd" id="3_ryc3s"]
+
+[sub_resource type="Resource" id="Resource_8ohqs"]
+resource_local_to_scene = true
+script = ExtResource("3_0ynvl")
+name = "Coconuty Prayer"
+ability_type = 1
+ascended_ability_type = 1
+delay = 2.0
+max_charges = -1
+description = "Heal adjacent allies [1] HEALTH. Each ally can only be healed once"
+ascended_description = "Heal allies in vision [1] HEALTH. Each ally can only be healed once"
 
 [resource]
 script = ExtResource("2_khbyc")
@@ -12,5 +24,5 @@ rarity = 4
 tool_script = ExtResource("3_ryc3s")
 display_name = "Coconut Staff"
 description = "ABILITY: Heal adjacent allies [1] HEALTH. Each ally can only be healed once"
-ascended_description = "Heal allies in vision [1] HEALTH. Each ally can only be healed once"
-tool_abilities = Array[Resource("res://assets/base_game/tools/tool_ability_info.gd")]([])
+ascended_description = "ABILITY: Heal allies in vision [1] HEALTH. Each ally can only be healed once"
+tool_abilities = Array[ExtResource("3_0ynvl")]([SubResource("Resource_8ohqs")])

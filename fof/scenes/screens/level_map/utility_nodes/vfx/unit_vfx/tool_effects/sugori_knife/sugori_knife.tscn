@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://214aa5x8u1v5"]
+
+[ext_resource type="PackedScene" uid="uid://botdo3v1oql1l" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/tool_effects/sugori_knife/sugori_knife.glb" id="1_m8xt5"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/tool_effects/sugori_knife/sugori_knife.gd" id="1_sw5rj"]
+
+[node name="SugoriKnife" type="Node3D"]
+script = ExtResource("1_sw5rj")
+
+[node name="Dagger" parent="." instance=ExtResource("1_m8xt5")]
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.6
+autostart = true

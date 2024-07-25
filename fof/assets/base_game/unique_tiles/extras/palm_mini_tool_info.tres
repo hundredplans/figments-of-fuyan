@@ -1,0 +1,18 @@
+[gd_resource type="Resource" load_steps=12 format=3 uid="uid://dhadhwdslj1yd"]
+
+[ext_resource type="Resource" uid="uid://csev1gb8u4evn" path="res://assets/base_game/tools/infos/stick.tres" id="1_7quqs"]
+[ext_resource type="Resource" uid="uid://y68e8uxqky8m" path="res://assets/base_game/tools/infos/halfeaten_coconut.tres" id="2_krntc"]
+[ext_resource type="Resource" uid="uid://dcwacuy3kmrry" path="res://assets/base_game/tools/infos/palmleaf.tres" id="3_43oj2"]
+[ext_resource type="Resource" uid="uid://b134okmylykg0" path="res://assets/base_game/tools/infos/sand_larva.tres" id="4_vxrxs"]
+[ext_resource type="Resource" uid="uid://clucee0sy2t84" path="res://assets/base_game/tools/infos/bag_of_sand.tres" id="5_1olw3"]
+[ext_resource type="PackedScene" uid="uid://dbeh7g6jn7wrj" path="res://assets/base_game/tools/extras/palm_mini_tool_models/stick.glb" id="6_q5iwx"]
+[ext_resource type="PackedScene" uid="uid://c030ykwu5txro" path="res://assets/base_game/tools/extras/palm_mini_tool_models/halfeaten_coconut.glb" id="7_l1qks"]
+[ext_resource type="PackedScene" uid="uid://4ajwmn0upsmh" path="res://assets/base_game/tools/extras/palm_mini_tool_models/palmleaf.glb" id="8_kg8b7"]
+[ext_resource type="PackedScene" uid="uid://doly3pekkpukg" path="res://assets/base_game/tools/extras/palm_mini_tool_models/sand_larva.glb" id="9_luihr"]
+[ext_resource type="PackedScene" uid="uid://cnqe3khuxkp3" path="res://assets/base_game/tools/extras/palm_mini_tool_models/bag_of_sand.glb" id="10_e0uxb"]
+[ext_resource type="Script" path="res://assets/base_game/unique_tiles/extras/palm_mini_tool_info.gd" id="11_fv8ni"]
+
+[resource]
+script = ExtResource("11_fv8ni")
+mini_tool_info = Array[Resource("res://assets/base_game/tools/tool_info.gd")]([ExtResource("1_7quqs"), ExtResource("2_krntc"), ExtResource("3_43oj2"), ExtResource("4_vxrxs"), ExtResource("5_1olw3")])
+models = Array[PackedScene]([ExtResource("6_q5iwx"), ExtResource("7_l1qks"), ExtResource("8_kg8b7"), ExtResource("9_luihr"), ExtResource("10_e0uxb")])

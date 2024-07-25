@@ -307,7 +307,6 @@ func onVFXAnimation(ani: Animation) -> void:
 	onVFXAnimationFinished(ani)
 	
 func onVFXAnimationFinished(ani: Animation) -> void:
-	rotation_degrees.x = 0
 	is_vfx_ani_playing = false
 	var lib: AnimationLibrary = AniPlayer.get_animation_library("")
 	AniPlayer.current_animation = ""

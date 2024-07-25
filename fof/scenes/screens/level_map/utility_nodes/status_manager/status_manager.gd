@@ -228,11 +228,12 @@ func onCreateStatusFX(Unit: UnitGD, id: int, AppliedBy := AppliedByGD.new()) -> 
 	return status_fx
 	
 func onRemoveStatusFX(status_fx: StatusFXGD) -> void:
-	for UnitStatus in onFindUnitStatus(status_fx.Unit, "Unit"): UnitStatus.onRemoveStatusFX(status_fx)
-	
-	get_tree().remove_child(status_fx)
-	status_fx.queue_free()
-	status_fx.Unit.all_status_fx.erase(status_fx)
+	if status_fx != null:
+		for UnitStatus in onFindUnitStatus(status_fx.Unit, "Unit"): UnitStatus.onRemoveStatusFX(status_fx)
+		
+		status_fx.get_parent().remove_child(status_fx)
+		status_fx.queue_free()
+		status_fx.Unit.status_fx_array.erase(status_fx)
 	
 func onRefreshUnitStatus(Unit: UnitGD) -> void:
 	for UnitStatus in onFindUnitStatus(Unit, "Unit"): UnitStatus.onRefresh()
@@ -307,3 +308,8 @@ func onRefreshNextTurnStats(stats: Array) -> void:
 		
 func onCreateStatNextTurn(UnitStatus: UnitStatusGD, stat_info: StatInfoGD) -> void:
 	UnitStatus.onCreateBuffNextTurn(stat_info.getStatName(), stat_info.value * -1, getBuffColorValue(stat_info.value * -1))
+
+func onToolAbilityUsed(Unit: UnitGD, delay: float) -> void:
+	for UnitStatus in onFindUnitStatus(Unit):
+		UnitStatus.onToolAbilityUsed(delay)
+		

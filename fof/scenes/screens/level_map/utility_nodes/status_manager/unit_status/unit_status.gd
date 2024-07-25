@@ -173,3 +173,5 @@ func onEquipTool(tool: ToolGD) -> void:
 
 func onUnequipTool() -> void:
 	ToolUI.setInfo()
+
+func onToolAbilityUsed(delay: float) -> void: ToolUI.onToolAbilityUsed(delay)

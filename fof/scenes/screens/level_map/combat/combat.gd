@@ -47,9 +47,10 @@ func onLastWill(Deather: UnitGD, AppliedBy: AppliedByGD) -> void:
 		if ability.onLastWillCondition():
 			onTriggerAbilitySpectateDelay(Deather, ability, ability.onLastWill)
 	
-	TriggerManager.onUnitTrigger(Deather, TriggerGD.REMOVE_ABILITY) # works for mute aswell
+	for ability in Deather.abilities.duplicate():
+		Deather.onRemoveAbility(ability)
 	TriggerManager.onUnitTrigger(Deather, TriggerGD.LAST_WILL)
-	onOngoingAbility(Deather, "UnitDeath")
+	Deather.finished_last_will = true
 	
 func onWhenHealed(Healee: UnitGD, healInfo: HealInfoGD, heal_amount: int):
 	var abilities: Array = onFindAbilities(Healee, "WhenHealed")
@@ -63,7 +64,6 @@ func onArrive(Unit: UnitGD) -> void:
 	for ability in abilities:
 		ability.setInfo(Unit)
 		onTriggerAbilitySpectateDelay(Unit, ability, ability.onArrive)
-	onOngoingAbility(Unit, "Arrive")
 	
 func onTargetAbility(Unit: UnitGD, ability: TargetAbilityGD, Tile: TileGD) -> void:
 	ability.setInfo(Unit, Tile)
@@ -149,7 +149,7 @@ func onDMG(UnitA: Variant, AppliedBy: AppliedByGD, damage: int) -> Dictionary:
 		match AppliedBy.type:
 			AppliedByGD.ATTACK:
 				var Attacker: UnitGD = AppliedBy.Applier
-				TriggerManager.onUnitTrigger(Attacker, TriggerGD.ON_ATTACK)
+				TriggerManager.onUnitTrigger(Attacker, TriggerGD.ON_ATTACK, OnAttackTriggerInfoGD.new(Unit))
 				damage = onArmor(Unit, damage + Attacker.extra_damage)
 				Units.changeStats(StatInfoGD.new(Unit, AppliedBy, StatsGD.HEALTH, -damage))
 				DMGInfo.HealthDMG = original_health - Unit.health
@@ -230,23 +230,13 @@ func isIObjectAbilityEnabled(Unit: UnitGD, _iobject: IObjectGD, ability: IObject
 	((LevelMap.game_phase == "PlayerPhase" and Unit.team == 0) or (LevelMap.game_phase == "AIPhase" and Unit.team == 1))
 
 func isToolAbilityEnabled(Unit: UnitGD, tool_ability: ToolAbilityInfoGD) ->  bool:
-	return Unit.Tool.getCanAffect(tool_ability) and !tool_ability.used and tool_ability.charges != 0 and !isStaggered(Unit) and\
+	return Unit.Tool.getCanAffect(tool_ability) and !tool_ability.used and tool_ability.charges != 0 and !isStaggered(Unit) and Unit.Tool.onCondition(tool_ability) and\
 	Unit.turn_status == UnitGD.TURN_UNUSED and ((LevelMap.game_phase == "PlayerPhase" and Unit.team == 0) or (LevelMap.game_phase == "AIPhase" and Unit.team == 1))
 
 func isAbilityEnabled(Unit: UnitGD, ability: AbilityGD) -> bool:
 	return ability.can_affect and !ability.used and ability.charges != 0 and\
 	!isStaggered(Unit) and Unit.turn_status == UnitGD.TURN_UNUSED\
 	and (LevelMap.game_phase == "PlayerPhase" and Unit.team == 0 or (LevelMap.game_phase == "AIPhase" and Unit.team == 1))
-
-func onOngoingAbility(Unit: UnitGD, type: String, args: Array = []) -> void:
-	for _Unit in Units.all_units(Unit) + [Unit]:
-		onOngoingAbilityUnit(Unit, _Unit, type, args)
-
-func onOngoingAbilityUnit(Unit: UnitGD, _Unit: UnitGD, type: String, args: Array = []) -> void:
-	var abilities: Array = onFindAbilities(_Unit, "OngoingAbility")
-	for ability in abilities:
-		if ability.onOngoingAbilityCondition(Unit, type, args):
-			onTriggerAbilitySpectateDelay(_Unit, ability, ability.onOngoingAbility)
 
 func onTeleport(Unit: UnitGD, Tile: TileGD) -> void:
 	Unit.position = Unit.Model.onCalculateEndPosition(Tile)
@@ -281,3 +271,12 @@ func onFindEnemiesInMovementPaths(Unit: UnitGD, speed: int = -1) -> Array:
 
 func isFallDamageLethal(Unit: UnitGD, fall_damage: int) -> bool:
 	return fall_damage >= Unit.health
+
+func onAura(_Unit: UnitGD, trigger: int, args: TriggerInfoGD) -> void:
+	for Unit in Units.getAliveDyingUnits():
+		var abilities: Array = onFindAbilities(Unit, "Aura")
+		for ability in abilities:
+			ability.onTrigger(_Unit, trigger, args)
+
+func onTrigger(Unit: UnitGD, trigger: int, args: TriggerInfoGD = null) -> void:
+	onAura(Unit, trigger, args)
