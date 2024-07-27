@@ -62,11 +62,12 @@ func onArrive(Unit: UnitGD) -> void:
 		var status_fx: StatusFXGD = StatusManager.onCreateStatusFX(Unit, StatusFXInfoGD.IDS.ARMOR, AppliedByGD.new(AppliedByGD.TRAIT))
 		status_fx.onAfterSetInfo(armor.armor)
 		
-func onMassUnitsAwakened(tiles: Array, enemy_ids: Array) -> void:
+func onMassUnitsAwakened(tiles: Array, enemy_ids: Array) -> Array:
 	var units: Array = []
 	for i in range(tiles.size()):
 		units.append(onUnitAwakenedLoad(enemy_ids[i], 1, tiles[i].obj.rotation, tiles[i]))
 	for i in range(tiles.size()): onUnitAwakenedProcess(units[i], tiles[i])
+	return units
 
 func onStartPhaseStart() -> void:
 	var allowed_spawns: Array = range(7, 25)

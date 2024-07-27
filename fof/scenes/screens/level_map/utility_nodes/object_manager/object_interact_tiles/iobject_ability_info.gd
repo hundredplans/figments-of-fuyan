@@ -4,7 +4,6 @@ extends Resource
 @export var name: String
 @export_multiline var description: String
 @export var max_charges: int
-@export var select_tiles: bool
 @export var ability_type: ABILITY_TYPES
 @export var delay: float
 var charges: int

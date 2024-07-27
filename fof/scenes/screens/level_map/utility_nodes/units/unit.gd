@@ -253,7 +253,7 @@ func onEnemyInRange(state: bool) -> void:
 
 var visible_tiles: Array
 @onready var VisionRaycast: RayCast3D = $VisionRaycast
-const VISION_RANGE: int = 5
+var VISION_RANGE: int = 5
 
 var past_path_set: bool = false
 var past_path_info: Dictionary = {} # TileGD: [rot, [nums]]

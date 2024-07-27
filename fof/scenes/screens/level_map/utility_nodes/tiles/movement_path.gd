@@ -45,3 +45,6 @@ func onReentersVision(vis_info: VisInfoGD) -> bool:
 		if key == vis_info: begin_count = true
 		elif begin_count and key.total_vision != VisInfoGD.INVISIBLE: return true
 	return false
+
+func getTiles() -> Array:
+	return fneighbours.map(func(x: FneighbourGD): return x.Tile)

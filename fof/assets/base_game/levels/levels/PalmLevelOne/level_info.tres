@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="LevelInfoGD" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="LevelInfoGD" load_steps=3 format=3 uid="uid://ds0ljsjkcpjkd"]
 
-[ext_resource type="Resource" path="res://assets/base_game/areas/CoconutSprings/area_info.tres" id="1_qkfhj"]
+[ext_resource type="Resource" uid="uid://ygfu7xp7684c" path="res://assets/base_game/areas/CoconutSprings/area_info.tres" id="1_qkfhj"]
 [ext_resource type="Script" path="res://assets/base_game/levels/level_info.gd" id="2_dts64"]
 
 [resource]
@@ -826,7 +826,7 @@ tiles = [{
 }
 }, {
 "obj": {
-"id": 0,
+"id": 10,
 "multi_tile": [],
 "obj_info": [],
 "rotation": 0,
@@ -880,11 +880,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 1,
-"multi_tile": [[-5, 6, -1, 0], [-5, 6, -1, 1]],
+"id": 0,
+"multi_tile": [],
 "rotation": 0,
 "tile_wall": 0,
-"type": 2
+"type": 0
 },
 "wdeco": {
 "id": 0,
@@ -1220,11 +1220,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[-4, 5, -1, 0], [-4, 5, -1, 1]],
 "rotation": 0,
 "tile_wall": 0,
-"type": 0
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -6626,11 +6626,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 1,
-"multi_tile": [[-5, 6, -1, 0], [-5, 6, -1, 1]],
+"id": 0,
+"multi_tile": [],
 "rotation": 0,
-"tile_wall": 1,
-"type": 2
+"tile_wall": 0,
+"type": 0
 },
 "wdeco": {
 "id": 0,
@@ -6966,11 +6966,11 @@ tiles = [{
 "type": 0
 },
 "wall": {
-"id": 0,
-"multi_tile": [],
+"id": 1,
+"multi_tile": [[-4, 5, -1, 0], [-4, 5, -1, 1]],
 "rotation": 0,
-"tile_wall": 0,
-"type": 0
+"tile_wall": 1,
+"type": 2
 },
 "wdeco": {
 "id": 0,
@@ -12366,10 +12366,10 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 1,
+"id": 0,
 "multi_tile": [],
 "rotation": 0,
-"type": 1
+"type": 0
 },
 "wall": {
 "id": 0,
@@ -12706,10 +12706,10 @@ tiles = [{
 "type": 0
 },
 "tile": {
-"id": 0,
+"id": 1,
 "multi_tile": [],
 "rotation": 0,
-"type": 0
+"type": 1
 },
 "wall": {
 "id": 0,

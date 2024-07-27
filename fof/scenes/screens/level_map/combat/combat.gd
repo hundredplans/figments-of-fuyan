@@ -225,8 +225,9 @@ func isStaggered(Unit: UnitGD) -> bool:
 func isDazed(Unit: UnitGD) -> bool:
 	return GameEffects.onGameFXExists(Unit, GameFXGD.DAZE)
 
-func isIObjectAbilityEnabled(Unit: UnitGD, _iobject: IObjectGD, ability: IObjectAbilityInfoGD) -> bool:
-	return !ability.used and ability.charges != 0 and Unit.turn_status in [UnitGD.TURN_UNUSED, UnitGD.TURN_ACTIVE] and \
+func isIObjectAbilityEnabled(Unit: UnitGD, iobject: IObjectGD, ability: IObjectAbilityInfoGD) -> bool:
+	return !ability.used and ability.charges != 0 and Unit.turn_status in [UnitGD.TURN_UNUSED, UnitGD.TURN_ACTIVE]\
+	and (!iobject.has_method("onAbilityCondition") or iobject.onAbilityCondition(Unit, ability) != 1) and\
 	((LevelMap.game_phase == "PlayerPhase" and Unit.team == 0) or (LevelMap.game_phase == "AIPhase" and Unit.team == 1))
 
 func isToolAbilityEnabled(Unit: UnitGD, tool_ability: ToolAbilityInfoGD) ->  bool:

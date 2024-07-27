@@ -93,7 +93,7 @@ layout_mode = 0
 offset_left = -5.0
 offset_right = 355.0
 offset_bottom = 100.0
-mouse_filter = 1
+mouse_filter = 2
 texture_normal = ExtResource("2_atxq7")
 
 [node name="LightMask" type="Sprite2D" parent="Background"]
@@ -128,7 +128,6 @@ offset_left = -354.001
 offset_top = 15.6
 offset_right = -274.001
 offset_bottom = 95.6
-mouse_filter = 1
 texture_normal = ExtResource("5_iaha4")
 
 [node name="In" type="Sprite2D" parent="Background"]
@@ -179,6 +178,7 @@ alignment = 1
 visible = false
 texture_filter = 1
 layout_mode = 2
+mouse_filter = 2
 
 [node name="AttackSprite" type="Sprite2D" parent="Stats/Attack"]
 unique_name_in_owner = true
@@ -234,11 +234,13 @@ alignment = 1
 visible = false
 texture_filter = 1
 layout_mode = 2
+mouse_filter = 2
 
 [node name="Heal" type="TextureRect" parent="Stats/Health/NextTurnStats"]
 visible = false
 texture_filter = 1
 layout_mode = 2
+mouse_filter = 2
 
 [node name="HealthSprite" type="Sprite2D" parent="Stats/Health"]
 unique_name_in_owner = true
@@ -290,6 +292,7 @@ alignment = 1
 visible = false
 texture_filter = 1
 layout_mode = 2
+mouse_filter = 2
 
 [node name="SpeedSprite" type="Sprite2D" parent="Stats/Speed"]
 unique_name_in_owner = true
@@ -393,7 +396,7 @@ offset_bottom = 21.0
 grow_horizontal = 2
 grow_vertical = 0
 scale = Vector2(0.5, 0.5)
-mouse_filter = 1
+mouse_filter = 2
 
 [node name="PageArrowLeft" type="TextureButton" parent="StatusZone/PageArrows"]
 texture_filter = 1
@@ -405,6 +408,7 @@ offset_top = -20.0
 offset_right = 40.0
 offset_bottom = 20.0
 grow_vertical = 2
+mouse_filter = 2
 texture_normal = ExtResource("16_mgl7r")
 texture_hover = ExtResource("17_hw875")
 texture_disabled = ExtResource("18_qytf8")
@@ -423,6 +427,7 @@ offset_top = -20.0
 offset_bottom = 20.0
 grow_horizontal = 0
 grow_vertical = 2
+mouse_filter = 2
 texture_normal = ExtResource("16_mgl7r")
 texture_hover = ExtResource("17_hw875")
 texture_disabled = ExtResource("18_qytf8")
@@ -432,6 +437,6 @@ libraries = {
 "": SubResource("AnimationLibrary_iq8mx")
 }
 
-[connection signal="mouse_entered" from="Background/SelectedMask" to="." method="onIsMouseInUI" binds= [true]]
-[connection signal="mouse_exited" from="Background/SelectedMask" to="." method="onIsMouseInUI" binds= [false]]
+[connection signal="mouse_entered" from="Background/ArtPop" to="." method="onIsMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="Background/ArtPop" to="." method="onIsMouseInUI" binds= [false]]
 [connection signal="mouse_in_ui" from="ExtraEffects/ToolUI" to="." method="onIsMouseInUI"]

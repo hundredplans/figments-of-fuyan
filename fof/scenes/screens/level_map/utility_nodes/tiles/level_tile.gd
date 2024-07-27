@@ -2,6 +2,7 @@ class_name TileGD
 extends Node3D
 
 signal highlight_obj
+signal multi_tile_obj_hovered
 
 @onready var ModelManager: Node3D = $ModelManager
 @onready var Effects: Node3D = $Effects
@@ -61,10 +62,11 @@ func isWater() -> bool: return tile.id in [3, 4]
 func isShallowWater() -> bool: return tile.id == 3
 
 func setObjectHighlight() -> void:
-	if !types[1].model == null and !Tiles.LevelUI.is_mouse_in_ui and LevelMap.verifyLock(LevelMap.HIGHLIGHT_OBJ):
-		var mat: ShaderMaterial = null if !(mouse_entered_tile or mouse_entered_obj) else preload("res://assets/materials/tile_materials/object_outline_material/object_material.tres")
-		for mesh in types[1].model.meshes: mesh.set_surface_override_material(0, mat)
-		highlight_obj.emit(mat != null)
+	if LevelMap.verifyLock(LevelMap.HIGHLIGHT_OBJ) and !LevelUI.is_mouse_in_ui:
+		var state: bool = mouse_entered_tile or mouse_entered_obj
+		if !types[1].model == null:
+			highlight_obj.emit(state)
+		elif obj.multi_tile.size() > 0 and tile.id > 0: multi_tile_obj_hovered.emit(state)
 	
 func onSetupObjectHighlight() -> void:
 	if !types[1].model == null:

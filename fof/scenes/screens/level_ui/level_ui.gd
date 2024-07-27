@@ -53,6 +53,7 @@ var ObjectManager: ObjectManagerGD
 @onready var BoonContainer := %BoonContainer
 @onready var GreyOut := %GreyOut
 @onready var TempTextSpawner := %TempTextSpawner
+@onready var ThanosTimerLabel := %ThanosTimerLabel
 
 var _LevelMap: PackedScene = preload("res://scenes/screens/level_map/level_map.tscn")
 var LevelMap: Node3D
@@ -441,7 +442,7 @@ func onRefreshUnitModeBoxes(Unit: UnitGD = PlayerManager.getUnitSelected()) -> v
 			ability.ability_description, onAbilitySelectPressed.bind(Unit, ability), !Combat.isAbilityEnabled(Unit, ability))
 				
 		for iobject in ObjectManager.onFindOccupiedIObjects(Unit):
-			for ability in iobject.info.abilities:
+			for ability in iobject.info.abilities.filter(onAbilityConditionIObject.bind(Unit, iobject)):
 				onAddUnitModeBox(iobject, ability.charges, ability.max_charges, ability.name,\
 				ability.description, onIObjectBoxPressed.bind(Unit, iobject, ability), !Combat.isIObjectAbilityEnabled(Unit, iobject, ability))
 			
@@ -449,6 +450,9 @@ func onRefreshUnitModeBoxes(Unit: UnitGD = PlayerManager.getUnitSelected()) -> v
 			for tool_ability in Unit.Tool.getToolAbilities():
 				onAddUnitModeBox(Unit.Tool, tool_ability.charges, tool_ability.max_charges, tool_ability.name,\
 				Unit.Tool.getAbilityDescription(tool_ability), onToolPressed.bind(Unit, tool_ability), !Combat.isToolAbilityEnabled(Unit, tool_ability))
+
+func onAbilityConditionIObject(ability: IObjectAbilityInfoGD, Unit: UnitGD, IObject: IObjectGD) -> bool:
+	return !IObject.has_method("onAbilityCondition") or IObject.onAbilityCondition(Unit, ability) != 2
 
 func onEnterUnitMode(Unit: UnitGD) -> void:
 	setUnitNameLabel(Unit.base_card.name)
@@ -465,7 +469,7 @@ func onToolAbilityUsed(Unit: UnitGD, delay: float) -> void:
 func onToolPressed(Unit: UnitGD, tool_ability: ToolAbilityInfoGD) -> void:
 	if Unit.Tool.getAbilityType(tool_ability) == tool_ability.ABILITY_TYPES.ABILITY:
 		var callable: Callable = Unit.Tool.onAfterDelay if Unit.Tool.has_method("onAfterDelay") else Callable()
-		ActionManager.onAddAction(ArgDelayActionGD.new(onToolAbilityUsed.bind(Unit, tool_ability.delay), callable, true, DelayGD.new(tool_ability.delay)), ActionManagerGD.APPEND)
+		ActionManager.onAddAction(ArgDelayActionGD.new(onToolAbilityUsed.bind(Unit, tool_ability.delay), callable, Unit.isVis(), DelayGD.new(tool_ability.delay)), ActionManagerGD.APPEND)
 		Unit.Tool.onAbilityTrigger(tool_ability)
 		tool_ability.used = true
 		
@@ -473,8 +477,9 @@ func onToolPressed(Unit: UnitGD, tool_ability: ToolAbilityInfoGD) -> void:
 		onAbilitySelectPressed(Unit, tool_ability)
 
 func onIObjectBoxPressed(Unit: UnitGD, iobject: IObjectGD, ability: IObjectAbilityInfoGD) -> void:
-	ActionManager.onAddAction(DelayActionGD.new(Callable(), true, DelayGD.new(ability.delay)), ActionManagerGD.APPEND)
-	if !ability.select_tiles: iobject.onAbilityTrigger(Unit, ability)
+	if ability.ability_type == IObjectAbilityInfoGD.ABILITY_TYPES.ABILITY:
+		var callable: Callable = iobject.onAfterDelay if iobject.has_method("onAfterDelay") else Callable()
+		ActionManager.onAddAction(ArgDelayActionGD.new(iobject.onAbilityTrigger.bind(Unit, ability), callable, Unit.isVis(), DelayGD.new(ability.delay)), ActionManagerGD.APPEND)
 
 #region AbilitySelect
 func onAbilitySelectPressed(Unit: UnitGD, ability_selected: Variant) -> void:
@@ -618,3 +623,9 @@ func onTrackBoonCharges(boon: BoonGD) -> void:
 	boon_ui.onTrackCharges(boon.charges)
 
 func onSpawnText(temp_text_info: TempTextInfoGD) -> void: TempTextSpawner.onSpawn(temp_text_info)
+func setThanosTimerLabel(time: int) -> void:
+	var seconds: int = time % 60
+	@warning_ignore("integer_division")
+	var minutes: int = (time / 60) % 60
+	ThanosTimerLabel.text = "%02d:%02d" % [minutes, seconds]
+func onThanosTimerTimeout() -> void: ThanosTimerLabel.modulate = Color(1, 0, 0)

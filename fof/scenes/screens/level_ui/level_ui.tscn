@@ -305,6 +305,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 color = Color(0, 0, 0, 1)
 
 [node name="InsideBorder" type="ColorRect" parent="TopBar/LeftBar/GameInfoManager/HeroPortrait"]
@@ -318,6 +319,7 @@ offset_right = -5.0
 offset_bottom = -5.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 
 [node name="HeroArt" type="Sprite2D" parent="TopBar/LeftBar/GameInfoManager/HeroPortrait"]
 position = Vector2(45, 45)
@@ -377,6 +379,7 @@ label_settings = ExtResource("8_lfle3")
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 size_flags_stretch_ratio = 0.6
+mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="TopBar/LeftBar/EnergyManager"]
 scale = Vector2(2, 2)
@@ -391,6 +394,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("6_bg05c")
 
 [node name="Top" type="Label" parent="TopBar/LeftBar/EnergyManager/EnergyLabels"]
@@ -424,6 +428,7 @@ label_settings = ExtResource("9_4ndix")
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 size_flags_stretch_ratio = 0.6
+mouse_filter = 2
 
 [node name="PhaseIcon" type="Sprite2D" parent="TopBar/LeftBar/PhaseIconManager"]
 unique_name_in_owner = true
@@ -458,10 +463,10 @@ mouse_filter = 2
 
 [node name="CameraArrows" type="HBoxContainer" parent="TopBar/CenterBar"]
 layout_mode = 0
-offset_left = 15.0
-offset_right = 215.0
+offset_left = 7.0
+offset_right = 226.0
 offset_bottom = 51.0
-theme_override_constants/separation = 100
+theme_override_constants/separation = 10
 alignment = 1
 
 [node name="LeftCameraArrow" parent="TopBar/CenterBar/CameraArrows" instance=ExtResource("17_b5anv")]
@@ -469,6 +474,13 @@ unique_name_in_owner = true
 layout_mode = 2
 texture_normal = ExtResource("17_w8028")
 texture = ExtResource("17_w8028")
+
+[node name="ThanosTimerLabel" type="Label" parent="TopBar/CenterBar/CameraArrows"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+label_settings = ExtResource("8_dq43r")
+horizontal_alignment = 1
 
 [node name="RightCameraArrow" parent="TopBar/CenterBar/CameraArrows" instance=ExtResource("17_b5anv")]
 unique_name_in_owner = true
@@ -523,6 +535,7 @@ offset_left = 1083.0
 offset_top = 9.0
 offset_right = 1901.0
 offset_bottom = 125.0
+mouse_filter = 2
 
 [node name="DeckButton" parent="TopBar/RightBar" instance=ExtResource("17_b5anv")]
 unique_name_in_owner = true
@@ -552,7 +565,7 @@ texture = ExtResource("23_1m0mv")
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-mouse_filter = 1
+mouse_filter = 2
 
 [node name="Control" type="Control" parent="TopBar/RightBar/UnitStatusState"]
 layout_mode = 1
@@ -563,6 +576,7 @@ offset_top = -12.0
 offset_bottom = -12.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="DefaultStatus" type="Control" parent="TopBar/RightBar/UnitStatusState/Control"]
 modulate = Color(0.180392, 0.180392, 0.180392, 1)
@@ -571,6 +585,7 @@ layout_mode = 1
 anchor_bottom = 0.141
 offset_right = 380.0
 offset_bottom = 124.36
+mouse_filter = 2
 
 [node name="TextureRect" type="TextureRect" parent="TopBar/RightBar/UnitStatusState/Control/DefaultStatus"]
 modulate = Color(0, 1, 0, 1)
@@ -583,6 +598,7 @@ offset_left = 14.0
 offset_top = 15.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 texture = ExtResource("22_jdt2t")
 stretch_mode = 2
 
@@ -596,6 +612,7 @@ offset_left = 14.0
 offset_top = 15.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 texture = ExtResource("23_g3jx8")
 stretch_mode = 2
 
@@ -736,6 +753,8 @@ metadata/_edit_lock_ = true
 [connection signal="mouse_entered" from="HandBox" to="." method="on_extend_hand_box"]
 [connection signal="mouse_exited" from="HandBox" to="." method="on_unextend_hand_box"]
 [connection signal="child_entered_tree" from="HandBox/CardClipper" to="." method="_on_card_clipper_child_entered_tree"]
+[connection signal="mouse_entered" from="TopBar" to="." method="on_is_mouse_in_ui" binds= [true]]
+[connection signal="mouse_exited" from="TopBar" to="." method="on_is_mouse_in_ui" binds= [false]]
 [connection signal="child_entered_tree" from="TopBar/LeftBar/BoonManager" to="." method="_on_boon_manager_child_entered_tree"]
 [connection signal="mouse_in_ui" from="TopBar/CenterBar/CameraArrows/LeftCameraArrow" to="." method="on_is_mouse_in_ui"]
 [connection signal="mouse_in_ui" from="TopBar/CenterBar/CameraArrows/RightCameraArrow" to="." method="on_is_mouse_in_ui"]

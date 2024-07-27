@@ -34,6 +34,9 @@ const IS_TYPE: Dictionary = {
 func cube_directions_by_distance(x: Vector3, distance: int) -> Vector3:
 	return x * distance
 
+func onRotateAroundCenter(x: Vector4) -> Vector4:
+	return Vector4(-x.y, -x.z, -x.x, x.w)
+
 # This class always takes tiles not positions and return you the tiles but works with positions internally
 func is_neighbour(Tile: TileGD, _Tile: TileGD, distance: int = 1, search_elevation: bool = false) -> bool:
 	return _is_neighbour(Tile.onTTpos(), _Tile.onTTpos(), distance, search_elevation)
@@ -244,8 +247,8 @@ func onStartPhaseStart() -> void:
 	onConvertMultiTilePositions()
 	onCreateTopOfCliffWall()
 	onSetupTiles()
-	onSetupObjectHighlight()
 	onSetFneighbourTiles()
+	onSetupObjectHighlight()
 	
 func onSetupObjectHighlight() -> void:
 	for Tile in get_children():
@@ -279,12 +282,12 @@ func onSetupTiles() -> void:
 					body.collision_layer = 16
 					
 		Tile.highlight_obj.connect(ObjectManager.onHighlightObj.bind(Tile))
+		Tile.multi_tile_obj_hovered.connect(ObjectManager.onMultitileObjHovered.bind(Tile))
 		if Tile.tile.id in unique_tile_ids: UniqueTiles.onAddUniqueTile(Tile)
 	
-func onRemovePathHovered() -> void:
+func onRemovePathHovered(tiles: Array = get_children().filter(func(x: TileGD): return "PathHovered" in x.tile_outlines)) -> void:
 	if PlayerManager.getUnitSelected() != null:
-		for _Tile in get_children().filter(func(x: TileGD): return "PathHovered" in x.tile_outlines):
-			setTileOutline(_Tile, "PathHovered", true)
+		for _Tile in tiles: setTileOutline(_Tile, "PathHovered", true)
 	
 func onConvertMultiTilePositions() -> void:
 	for Tile in get_children():
@@ -494,14 +497,15 @@ func onCreateAllTiles(Unit: UnitGD, speed: int) -> Dictionary:
 func onUnits(team_relation: TeamRelationGD) -> Array:
 	return Units.on_units(team_relation).map(func(x: UnitGD): return x.Tile)
 	
-func onCreatePathHovered(Tile: TileGD) -> void:
+func onCreatePathHovered(Tile: TileGD) -> MovementPathGD:
 	if "MovementRange" in Tile.tile_outlines or "EnemyInRange" in Tile.tile_outlines:
 		var movement_path := MovementPathGD.onFindTile(Tile, PlayerManager.unit_movement_paths)
 		if movement_path != null:
 			for fneighbour in movement_path.fneighbours:
 				fneighbour.Tile.Effects.onSetHeightDropInfo(movement_path, fneighbour)
 				setTileOutline(fneighbour.Tile, "PathHovered")
-	
+		return movement_path
+	return null
 func onTileHovered(Tile: TileGD) -> void:
 	setTileOutline(Tile, "TileInspected")
 	onCreatePathHovered(Tile)
@@ -625,6 +629,7 @@ func _input(event: InputEvent) -> void:
 		
 func on_mouse_enters_ui(x: bool) -> void:
 	on_force_mouse_tile(x, 1)
+	ObjectManager.onMouseEntersUI(x)
 
 func on_force_mouse_tile(state: bool, override: int = 0) -> void:
 	if state: on_mouse_entered(null, override)

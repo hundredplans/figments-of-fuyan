@@ -60,3 +60,10 @@ func getReverse() -> StatInfoGD:
 
 func getDelayed() -> StatInfoGD:
 	return StatInfoGD.new(Unit, AppliedBy, stat_type, value, turns, absolute, show_change)
+
+func getGeneralStatType() -> int:
+	match stat_type:
+		StatsGD.ATTACK: return StatsGD.ATTACK
+		StatsGD.HEALTH, StatsGD.BOTH_HEALTH, StatsGD.MAX_HEALTH: return StatsGD.BOTH_HEALTH
+		StatsGD.CURRENT_SPEED, StatsGD.BOTH_SPEED, StatsGD.MAX_SPEED: return StatsGD.BOTH_SPEED
+	return -1

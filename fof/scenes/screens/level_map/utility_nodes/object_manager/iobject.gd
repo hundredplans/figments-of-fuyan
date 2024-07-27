@@ -7,6 +7,7 @@ var GameEffects: GameEffectsGD
 var Combat: CombatGD
 var Tiles: TilesGD
 var StatusManager: StatusManagerGD
+var Vision: VisionGD
 
 var BaseTile: TileGD
 var interactable_tiles: Array

@@ -15,6 +15,8 @@ var Combat: CombatGD
 
 var graveyard_cards: Array = []
 
+@onready var ThanosTimer: Timer = $ThanosTimer
+
 func onSetupAllyPassedTurns(Unit: UnitGD) -> void:
 	if Unit.team == 0:
 		if Unit.rarity == 7: unpassed_turns.append(Unit)
@@ -268,3 +270,22 @@ func getUnitSelected() -> UnitGD:
 	if LevelMap.game_phase in ["PlayerPhase", "PlayerEndTurnPhase"] and SpectateCamera.SpectateUnit != null and SpectateCamera.SpectateUnit.team == 0:
 		return SpectateCamera.SpectateUnit
 	return null
+
+func _on_thanos_timer_timeout():
+	var enemy_tiles: Array = Tiles.on_is_type_get_tiles("Enemy", "obj")
+	var enemy_spawns: Array = []
+	
+	for i in range(min(enemy_tiles.size(), 5)).filter(func(x: int): return enemy_tiles[x].Unit == null):
+		enemy_spawns.append(enemy_tiles[1])
+	
+	var enemy_ids: Array = []
+	enemy_ids.resize(enemy_spawns.size())
+	enemy_ids.fill(11)
+	var units: Array = Units.onMassUnitsAwakened(enemy_spawns, enemy_ids)
+	var AppliedBy := AppliedByGD.new()
+	for Unit in units:
+		Units.changeStats(StatsGD.new([
+			StatInfoGD.new(Unit, AppliedBy, StatsGD.ATTACK, 99, -1, false, false),
+			StatInfoGD.new(Unit, AppliedBy, StatsGD.BOTH_HEALTH, 99, -1, false, false)]))
+	
+func _process(_delta: float) -> void: LevelUI.setThanosTimerLabel(ThanosTimer.time_left)

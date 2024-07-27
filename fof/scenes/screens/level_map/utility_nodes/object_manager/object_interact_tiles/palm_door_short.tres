@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="ObjectInteractTilesGD" load_steps=6 format=3 uid="uid://ce5bh6wdh3r2i"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/object_interact_tiles/iobject_ability_info.gd" id="1_nobeg"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/iobjects/palm_door.gd" id="2_jovc1"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/object_interact_tiles/object_interact_tiles.gd" id="3_cp5ck"]
+
+[sub_resource type="Resource" id="Resource_40ut3"]
+resource_local_to_scene = true
+script = ExtResource("1_nobeg")
+name = "Open Door"
+description = "Open the door"
+max_charges = -1
+select_tiles = false
+ability_type = 1
+delay = 2.0
+
+[sub_resource type="Resource" id="Resource_iyfcl"]
+resource_local_to_scene = true
+script = ExtResource("1_nobeg")
+name = "Close Door"
+description = "Closes the door"
+max_charges = -1
+select_tiles = false
+ability_type = 1
+delay = 2.0
+
+[resource]
+script = ExtResource("3_cp5ck")
+id = 11
+name = "DoorShort"
+tiles = Array[Vector4]([Vector4(1, -1, 0, 0), Vector4(0, -1, 1, 0), Vector4(0, 1, -1, 0), Vector4(-1, 1, 0, 0)])
+abilities = Array[ExtResource("1_nobeg")]([SubResource("Resource_40ut3"), SubResource("Resource_iyfcl")])
+iobject_script = ExtResource("2_jovc1")

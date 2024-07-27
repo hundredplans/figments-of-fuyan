@@ -75,6 +75,11 @@ script = ExtResource("5_03qrj")
 [node name="PlayerManager" type="Node" parent="."]
 script = ExtResource("4_j0l8t")
 
+[node name="ThanosTimer" type="Timer" parent="PlayerManager"]
+wait_time = 1200.0
+one_shot = true
+autostart = true
+
 [node name="StatusManager" type="Node" parent="."]
 script = ExtResource("14_qxfql")
 
@@ -89,3 +94,5 @@ script = ExtResource("18_8nphx")
 
 [node name="UniqueTiles" type="Node" parent="."]
 script = ExtResource("20_lpfi5")
+
+[connection signal="timeout" from="PlayerManager/ThanosTimer" to="PlayerManager" method="_on_thanos_timer_timeout"]

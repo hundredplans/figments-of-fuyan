@@ -2,7 +2,7 @@ extends Control
 
 @export var start_position: int = 950
 @export var end_position: int = 150
-@export var travel_time: float = 2.0
+@export var travel_time: float = 3.0
 @export var delay_between_spawn: float = 0.1
 @export var label_packed: PackedScene
 

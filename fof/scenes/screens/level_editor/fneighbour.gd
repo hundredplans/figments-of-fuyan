@@ -24,3 +24,8 @@ func _init(_id: int = 0, _movement_type: int = UNPASSABLE, _unit_height: float =
 	unit_height = _unit_height
 	hdiff = _hdiff
 	is_solid = _is_solid
+
+func changeIsSolid(x: bool) -> void:
+	if !x: movement_type = REGULAR
+	else: movement_type = UNPASSABLE
+	is_solid = x

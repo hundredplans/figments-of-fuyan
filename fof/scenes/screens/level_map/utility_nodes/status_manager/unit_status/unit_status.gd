@@ -167,7 +167,10 @@ func onChangePage(i: int) -> void:
 		PageArrows.get_child(0).disabled = page == 0
 		PageArrows.get_child(1).disabled = page == max_page
 	
-func onIsMouseInUI(x: bool) -> void: mouse_in_ui.emit(x)
+func onIsMouseInUI(x: bool) -> void:
+	mouse_in_ui.emit(x)
+	#if x: modulate = Color(1, 0, 0)
+	#else: modulate = Color(0, 0, 1)
 func onEquipTool(tool: ToolGD) -> void:
 	ToolUI.setInfo(tool)
 

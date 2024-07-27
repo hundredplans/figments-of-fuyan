@@ -143,3 +143,7 @@ func onUnits(team_relation: TeamRelationGD) -> Array:
 func onUnitsTiles(team_relation: TeamRelationGD) -> Array:
 	var ally_vision: Array = getTeamVision()
 	return Tiles.onUnits(team_relation).filter(func(x: TileGD): return x in ally_vision)
+
+func onRecalculateVisionUnitsInRangeOfTile(Tile: TileGD) -> void:
+	for Unit in Units.all_units().filter(func(x: UnitGD): return Tiles.tile_distance(x.Tile, Tile) <= x.VISION_RANGE):
+		onRecalculateVision(Unit)

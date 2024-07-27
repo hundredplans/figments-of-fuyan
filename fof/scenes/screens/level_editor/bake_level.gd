@@ -101,7 +101,7 @@ func onCreateTile(tile_info: Dictionary, owner_node: Node3D) -> TileGD:
 func getFirstFneighbours(Tile: TileGD, tiles: Array) -> Array:
 	for i in range(cube_directions.size()):
 		var direction: Vector3 = cube_directions[i]
-		var neighbour_tiles: Array = tiles.filter(func(x: TileGD): return x.tpos == direction + Tile.tpos and x.tile.id != 0 and x.solid_status == 0)
+		var neighbour_tiles: Array = tiles.filter(func(x: TileGD): return x.tpos == direction + Tile.tpos and x.tile.id != 0)
 		neighbour_tiles.sort_custom(func(x: TileGD, y: TileGD): return x.w > y.w)
 		for _Tile in neighbour_tiles:
 			Tile.fneighbours.append({"Tile": _Tile})
@@ -117,18 +117,20 @@ func onCreateFneighbours(Tile: TileGD, tiles: Array) -> void:
 		fn.movement_type = FneighbourGD.UNPASSABLE
 		var _Tile: TileGD = fn.Tile
 		fn.id = fn.Tile.id
-		if _Tile.w == Tile.w: # Regular movement
-			if !isRamp(Tile, _Tile, fn):
-				if !isJump(Tile, _Tile, fn):
-					if !isFall(Tile, _Tile, fn):
-						isRegular(Tile, _Tile, fn)
-		elif _Tile.w > Tile.w: # Half jump up / ramp ascension
-			if !isRamp(Tile, _Tile, fn):
-				if !isHigh(Tile, _Tile, fn):
-					isJump(Tile, _Tile, fn)
-		else: # Jump down
-			if !isRamp(Tile, _Tile, fn):
-				isFall(Tile, _Tile, fn)
+		
+		if _Tile.solid_status == 0: # I want non solid objects to generate unpassable fn's
+			if _Tile.w == Tile.w: # Regular movement
+				if !isRamp(Tile, _Tile, fn):
+					if !isJump(Tile, _Tile, fn):
+						if !isFall(Tile, _Tile, fn):
+							isRegular(Tile, _Tile, fn)
+			elif _Tile.w > Tile.w: # Half jump up / ramp ascension
+				if !isRamp(Tile, _Tile, fn):
+					if !isHigh(Tile, _Tile, fn):
+						isJump(Tile, _Tile, fn)
+			else: # Jump down
+				if !isRamp(Tile, _Tile, fn):
+					isFall(Tile, _Tile, fn)
 				
 		if fn.unit_height >= 0:
 			real_fneighbours.append(FneighbourGD.new(fn.id, fn.movement_type, fn.unit_height, fn.hdiff, _Tile.solid_status == 1))
