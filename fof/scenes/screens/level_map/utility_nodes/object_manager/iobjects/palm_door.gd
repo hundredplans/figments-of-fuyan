@@ -1,5 +1,6 @@
 extends IObjectGD
 
+var original_materials: Array = []
 var ObjModel: Node3D
 var StaticBody: StaticBody3D
 var is_tall: bool = false
@@ -19,13 +20,10 @@ func onReady() -> void:
 	ObjModel = BaseTile.types[1].model
 	is_tall = info.id == 10
 	
-	if is_tall: StaticBody = preload("res://scenes/screens/level_map/utility_nodes/object_manager/extras/palm_door_static_body.tscn").instantiate()
-	else: StaticBody = preload("res://scenes/screens/level_map/utility_nodes/object_manager/extras/palm_door_short_static_body.tscn").instantiate()
-	
-	ObjModel.bodies.append(StaticBody)
-	ObjModel.add_child(StaticBody)
+	addStaticBody()
 	AniPlayer = ObjModel.get_node("AnimationPlayer")
 	AniPlayer.animation_finished.connect(onAnimationFinished)
+	
 	onPlayIdleAnimation()
 	setFneighboursUnitHeight()
 	
@@ -56,23 +54,37 @@ func onCloseDoor() -> void:
 	AniPlayer.play_backwards("Ability")
 	is_open = false
 	setFneighbours(true)
-	StaticBody.get_child(0).disabled = false
+	addStaticBody()
+	
+func addStaticBody() -> void:
+	if StaticBody != null: StaticBody.queue_free(); ObjModel.bodies.erase(StaticBody)
+	var path: String = "res://scenes/screens/level_map/utility_nodes/object_manager/extras/"
+	if is_open:
+		if is_tall: path += "palm_door_static_body_open"
+		else: path += "palm_door_short_static_body_open"
+	else:
+		if is_tall: path += "palm_door_static_body"
+		else: path += "palm_door_short_static_body"
+	path += ".tscn"
+	StaticBody = load(path).instantiate()
+	ObjModel.add_child(StaticBody)
+	ObjModel.bodies.append(StaticBody)
 	
 func onOpenDoor() -> void:
 	AniPlayer.play("Ability")
 	is_open = true
 	setFneighbours(false)
-	StaticBody.get_child(0).disabled = true
+	addStaticBody()
 			
 func setFneighbours(is_solid: bool) -> void:
 	for Tile in interactable_tiles:
 		for fneighbour in Tile.fneighbours:
-			if fneighbour.Tile == BaseTile:
+			if fneighbour.Tile == BaseTile and Tile.solid_status == 0:
 				fneighbour.changeIsSolid(is_solid)
 				
 func setFneighboursUnitHeight() -> void:
 	for Tile in interactable_tiles:
 		for fneighbour in Tile.fneighbours:
-			if fneighbour.Tile == BaseTile:
+			if fneighbour.Tile == BaseTile and Tile.solid_status == 0:
 				fneighbour.unit_height = 3 if is_tall else 1
 				
