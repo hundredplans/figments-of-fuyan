@@ -16,11 +16,11 @@ func _ready() -> void:
 func onAddInteractableObj(Tile: TileGD) -> void:
 	for object_interactables in interactable_obj_resources:
 		if object_interactables.id == Tile.obj.id:
-			print(Tile.obj.rotation)
+			var tiles: Array = object_interactables.tiles
 			for i in range(Tile.obj.rotation):
-				object_interactables = object_interactables.tiles.map(func(x: Vector4): return Tiles.onRotateAroundCenter(x))
+				tiles = tiles.map(func(x: Vector4): return Tiles.onRotateAroundCenter(x))
 				
-			var tiles: Array = object_interactables.tiles.map(func(x: Vector4): return Tiles.position_to_tile(x + Tile.onTTpos()))
+			tiles = tiles.map(func(x: Vector4): return Tiles.position_to_tile(x + Tile.onTTpos()))
 			tiles = tiles.filter(func(x: TileGD): return x.solid_status == 0)
 			#Tiles.admin_highlight_tiles(tiles)
 			var iobject: IObjectGD = object_interactables.iobject_script.new()
@@ -40,9 +40,10 @@ var ActiveTile: TileGD
 var object_highlight_movement_path: MovementPathGD
 
 func setGlowMaterial(mat: Material) -> void:
-	for mesh in ActiveTile.types[1].model.meshes:
-		for surface in range(mesh.get_surface_override_material_count()):
-			mesh.set_surface_override_material(surface, mat)
+	if ActiveTile.types[1].model != null:
+		for mesh in ActiveTile.types[1].model.meshes:
+			for surface in range(mesh.get_surface_override_material_count()):
+				mesh.set_surface_override_material(surface, mat)
 
 func onHighlightObj(state: bool, Tile: TileGD) -> void:
 	if state and ActiveTile == null:
@@ -77,3 +78,9 @@ func onMouseEntersUI(state: bool) -> void:
 func onTrigger(Unit: UnitGD, trigger: int, args: TriggerInfoGD) -> void:
 	for iobj in interactables.filter(func(x: IObjectGD): return x.has_method("onTrigger")):
 		iobj.onTrigger(Unit, trigger, args)
+
+func onRemoveIObject(iobject: IObjectGD) -> void:
+	interactables.erase(iobject)
+	iobject.BaseTile.obj.id = 0
+	iobject.BaseTile.types[1].model = null
+	if "ObjModel" in iobject: iobject.ObjModel.queue_free()

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ObjectInteractTilesGD" load_steps=3 format=3 uid="uid://bnwnekh1m44yq"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/object_interact_tiles/object_interact_tiles.gd" id="1_jabk4"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/iobjects/heal_coconut.gd" id="1_u2w16"]
+
+[resource]
+script = ExtResource("1_jabk4")
+id = 12
+name = "Heal Coconut"
+tiles = Array[Vector4]([])
+abilities = Array[Resource("res://scenes/screens/level_map/utility_nodes/object_manager/object_interact_tiles/iobject_ability_info.gd")]([])
+iobject_script = ExtResource("1_u2w16")

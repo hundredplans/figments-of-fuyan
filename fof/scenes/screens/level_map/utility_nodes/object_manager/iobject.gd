@@ -8,6 +8,7 @@ var Combat: CombatGD
 var Tiles: TilesGD
 var StatusManager: StatusManagerGD
 var Vision: VisionGD
+var ObjectManager: ObjectManagerGD
 
 var BaseTile: TileGD
 var interactable_tiles: Array
@@ -25,6 +26,8 @@ func setInfo(_BaseTile: TileGD = null, _interactable_tiles: Array = [], _info: O
 
 func _init() -> void:
 	Helper.onCreateChildReferences(self)
+
+func onCondition(_Unit: UnitGD) -> bool: return false
 
 # func onTrigger(Unit, trigger, args) -> Triggers when any trigger occurs
 # func onReady() -> Called when initialized

@@ -64,7 +64,7 @@ func isShallowWater() -> bool: return tile.id == 3
 func setObjectHighlight() -> void:
 	if LevelMap.verifyLock(LevelMap.HIGHLIGHT_OBJ) and !LevelUI.is_mouse_in_ui:
 		var state: bool = mouse_entered_tile or mouse_entered_obj
-		if !types[1].model == null:
+		if types[1].model != null:
 			highlight_obj.emit(state)
 		elif obj.multi_tile.size() > 0 and tile.id > 0: multi_tile_obj_hovered.emit(state)
 	

@@ -289,7 +289,7 @@ func onCalculateEnemyUnitCommutative(Unit: UnitGD) -> bool:
 		VisionRaycast.force_raycast_update()
 		
 		if VisionRaycast.is_colliding():
-			return Helper.getUnitFromCollision(VisionRaycast.get_collider()) == Unit.Tile
+			return Helper.getTileFromCollision(VisionRaycast.get_collider()) == Unit.Tile
 	return false
 
 func onAddNonCommutativeUnits(_visible_tiles: Array) -> void:

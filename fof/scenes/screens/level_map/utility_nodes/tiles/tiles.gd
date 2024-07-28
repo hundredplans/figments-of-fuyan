@@ -35,7 +35,7 @@ func cube_directions_by_distance(x: Vector3, distance: int) -> Vector3:
 	return x * distance
 
 func onRotateAroundCenter(x: Vector4) -> Vector4:
-	return Vector4(-x.y, -x.z, -x.x, x.w)
+	return Vector4(-x.z, -x.x, -x.y, x.w)
 
 # This class always takes tiles not positions and return you the tiles but works with positions internally
 func is_neighbour(Tile: TileGD, _Tile: TileGD, distance: int = 1, search_elevation: bool = false) -> bool:

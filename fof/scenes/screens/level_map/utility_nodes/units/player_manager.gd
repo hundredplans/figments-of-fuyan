@@ -288,4 +288,4 @@ func _on_thanos_timer_timeout():
 			StatInfoGD.new(Unit, AppliedBy, StatsGD.ATTACK, 99, -1, false, false),
 			StatInfoGD.new(Unit, AppliedBy, StatsGD.BOTH_HEALTH, 99, -1, false, false)]))
 	
-func _process(_delta: float) -> void: LevelUI.setThanosTimerLabel(ThanosTimer.time_left)
+func _process(_delta: float) -> void: LevelUI.setThanosTimerLabel(int(ThanosTimer.time_left))

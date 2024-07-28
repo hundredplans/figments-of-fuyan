@@ -723,6 +723,7 @@ one_shot = true
 
 [node name="BakeLevel" parent="." instance=ExtResource("14_3dupv")]
 unique_name_in_owner = true
+_level_info = null
 
 [connection signal="pressed" from="BuildMenu/Tabs/Tabs/TileTab" to="." method="on_load_tab" binds= [0]]
 [connection signal="pressed" from="BuildMenu/Tabs/Tabs/ObjectTab" to="." method="on_load_tab" binds= [1]]

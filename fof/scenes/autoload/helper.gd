@@ -289,7 +289,7 @@ func create_button_clickmask(button: TextureButton) -> void:
 	var img: Image = load(button.texture_normal.resource_path.left(-4) + "_image.png")
 	button.texture_click_mask = onCreateClickmask(img)
 
-static func onCreateClickmask(image: Image) -> BitMap:
+func onCreateClickmask(image: Image) -> BitMap:
 	var bitmap := BitMap.new()
 	bitmap.create_from_image_alpha(image)
 	return bitmap
@@ -347,7 +347,7 @@ var _id_to: Array = [
 	["null", "spawns/spawn_enemy", "spawns/spawn_ally", "spawns/spawn_neutral", 
 	"spawns/spawn_trinket", "palms/ziplines/palm_zipline_equal_long", "palms/ziplines/palm_zipline_equal_short",
 	"palms/ziplines/palm_zipline_high_long", "palms/ziplines/palm_zipline_high_short", "palms/palm_fireplace", 
-	"palms/doors/palm_door", "palms/doors/palm_door_short"],
+	"palms/doors/palm_door", "palms/doors/palm_door_short", "palms/heal_coconut"],
 	
 	["null", "wall", "wooden_wall"],
 	

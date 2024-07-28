@@ -9,7 +9,7 @@ func onReady() -> void:
 	var model: Node3D = Tile.types[0].model.get_node("CoconutPile")
 	model.visible = false
 	
-func onTrigger(_Unit: UnitGD, trigger: int, args: TriggerInfoGD) -> void:
+func onTrigger(_Unit: UnitGD, trigger: int, _args: TriggerInfoGD) -> void:
 	if trigger == TriggerGD.END_TURN_GLOBAL and Tile.Unit != null and !has_sprung:
 		var Unit: UnitGD = Tile.Unit
 		has_sprung = true
