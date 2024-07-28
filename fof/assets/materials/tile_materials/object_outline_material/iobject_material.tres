@@ -1,0 +1,16 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://cgqhmgh8l8kch"]
+
+[ext_resource type="Shader" path="res://assets/materials/tile_materials/base_tile_materials/base_tile_material.gdshader" id="1_2qwxi"]
+[ext_resource type="Material" uid="uid://40bt0dlg70bf" path="res://assets/materials/tile_materials/object_outline_material/iobject_outline_material.tres" id="1_qro0y"]
+[ext_resource type="Texture2D" uid="uid://ebuqqa5efmoi" path="res://assets/materials/base_materials/base_material.png" id="2_xqxx1"]
+
+[resource]
+resource_local_to_scene = true
+render_priority = 0
+next_pass = ExtResource("1_qro0y")
+shader = ExtResource("1_2qwxi")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/distance_fade_min = 0.5
+shader_parameter/distance_fade_max = 2.0
+shader_parameter/specular = 0.5
+shader_parameter/texture_albedo = ExtResource("2_xqxx1")

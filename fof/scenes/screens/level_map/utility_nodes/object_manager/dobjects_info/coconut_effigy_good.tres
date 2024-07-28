@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="DObjectInfoGD" load_steps=3 format=3 uid="uid://dg8yu4w8sie13"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/dobjects/coconut_effigy_good.gd" id="1_etnma"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/dobject_info.gd" id="1_fl0nu"]
+
+[resource]
+script = ExtResource("1_fl0nu")
+id = 15
+name = "CoconutEffigyGood"
+dobject_script = ExtResource("1_etnma")
+health = 1
+cap_damage_at_one = true

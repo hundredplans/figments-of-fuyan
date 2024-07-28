@@ -254,7 +254,7 @@ func onSetupObjectHighlight() -> void:
 	for Tile in get_children():
 		Tile.onSetupObjectHighlight()
 		ObjectManager.onAddInteractableObj(Tile)
-	
+		ObjectManager.setDestructableObj(Tile)
 func onCreateTopOfCliffWall() -> void:
 	for Tile in get_children():
 		if Tile.tile.id > 0:

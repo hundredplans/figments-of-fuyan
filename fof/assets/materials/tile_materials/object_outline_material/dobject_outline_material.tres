@@ -1,0 +1,14 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dgmwq7321w5tw"]
+
+[ext_resource type="Shader" path="res://assets/materials/unit_material/unit_material_outline.gdshader" id="1_aerbi"]
+
+[resource]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("1_aerbi")
+shader_parameter/albedo = Color(1, 0, 0, 1)
+shader_parameter/grow = 0.02
+shader_parameter/time_value = 0.0
+shader_parameter/max_grey = 0.5
+shader_parameter/red_multiply = 1.0
+shader_parameter/green_multiply = 1.0
