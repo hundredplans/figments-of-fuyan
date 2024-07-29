@@ -83,13 +83,13 @@ func onMoveUnitAI(Unit: UnitGD, movement_path: MovementPathGD) -> void:
 				ActionManager.onAddAction(DelayActionGD.new(onStartDelay.bind(Unit, Tile), true, DelayGD.new(FIRST_MOVE_DELAY)), ActionManagerGD.PUSH)
 				start_delay = true
 			
-			if !(i == movement_path.fneighbours.size() - 1 and movement_path.is_attack):
+			if !(i == movement_path.fneighbours.size() - 1 and movement_path.isAttack()):
 				ActionManager.onAddAction(MoveActionGD.new(Unit, fneighbour, movement_path, vis_info.total_vision != VisInfoGD.INVISIBLE, null))
 			else:
 				var vis: bool = false
 				if i > 0: vis = movement_path.vis_array[i - 1].total_vision != VisInfoGD.INVISIBLE
 				else: vis = Unit.Tile in Vision.getTeamVision()
-				ActionManager.onAddAction(AttackActionGD.new(Unit, Tile, vis))
+				ActionManager.onAddAction(AttackActionGD.new(Unit, Tile, fneighbour.AttackTarget, vis))
 				
 	invisible_movement_tracker.append(is_vis)
 	ActionManager.onAddAction(MoveFinishActionGD.new(Unit, movement_path, !is_vis, DelayGD.new(0.8)), ActionManagerGD.APPEND_MF)
@@ -448,7 +448,7 @@ func onCreateVisPath(vis_array: Array) -> void:
 func onChosenPathVisPath(Unit: UnitGD, movement_path: MovementPathGD, default_body_pos: Vector3, default_ray_pos: Vector3, visions: Array) -> void:
 	visions = Units.all_units().map(func(x: UnitGD): return [x, x.visible_tiles.duplicate()])
 	for i in range(movement_path.fneighbours.size()):
-		if !(i == movement_path.fneighbours.size() - 1 and movement_path.is_attack):
+		if !(i == movement_path.fneighbours.size() - 1 and movement_path.isAttack()):
 			var fneighbour: FneighbourGD = movement_path.fneighbours[i]
 			var Tile: TileGD = fneighbour.Tile
 			onChosenPathSetupUnit(Unit, Tile, Tiles.getUnitPositionOnTile(Tile), default_body_pos, default_ray_pos)

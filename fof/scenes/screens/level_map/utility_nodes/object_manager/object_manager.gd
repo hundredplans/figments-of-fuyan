@@ -115,3 +115,6 @@ func onRemoveIObject(iobject: IObjectGD) -> void:
 	iobject.BaseTile.obj.id = 0
 	iobject.BaseTile.types[1].model = null
 	if "ObjModel" in iobject: iobject.ObjModel.queue_free()
+
+func onCreateIObject(Tile: TileGD, id: int) -> void:
+	pass

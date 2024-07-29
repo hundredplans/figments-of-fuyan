@@ -1,7 +1,6 @@
 extends UniqueTileGD
 
 var palm_mini_tool_info: Resource = preload("res://assets/base_game/unique_tiles/extras/palm_mini_tool_info.tres")
-@export var models: Array
 @export var delay: float = 2
 
 var has_sprung: bool = false
@@ -22,14 +21,9 @@ func onDelay(Unit: UnitGD) -> void:
 	var model: Node3D = packed_scene.instantiate()
 	model.rotation_degrees.y = randi_range(0, 360)
 	Tile.Effects.add_child(model)
+	palm_mini_tool_info.onCreateEquipModelAnimation(Tile, model, delay, onTweenDelayFinished.bind(Unit, model, index))
 	
-	var shorter_delay: float = (delay - 0.2) / 3.0
-	var tween := create_tween()
-	tween.tween_property(model, "position:y", Tile.Unit.height.stat + 0.3, shorter_delay)
-	tween.tween_property(model, "rotation:y", TAU, shorter_delay).as_relative()
-	tween.tween_property(model, "scale", Vector3(0.01, 0.01, 0.01), shorter_delay)
-	
-	await tween.finished
+func onTweenDelayFinished(Unit: UnitGD, model: Node3D, index: int) -> void:
 	model.queue_free()
 	Tools.onEquipTool(Unit, palm_mini_tool_info.mini_tool_info[index].id)
 	

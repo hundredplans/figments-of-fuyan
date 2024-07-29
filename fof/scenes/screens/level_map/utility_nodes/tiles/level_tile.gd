@@ -31,6 +31,7 @@ var Unit: UnitGD
 var Tiles: TilesGD
 var LevelMap: LevelMapGD
 var LevelUI: LevelUIGD
+var ObjectManager: ObjectManagerGD
 
 func onTTpos(_w: int = w) -> Vector4:
 	return Vector4(tpos.x, tpos.y, tpos.z, _w)
@@ -84,3 +85,5 @@ func isMouseInTile(x: bool) -> void:
 	mouse_entered_tile = x
 	setObjectHighlight()
 
+func hasOutline(type: String): return type in tile_outlines
+func isTileFree() -> bool: return solid_status == 0 and Unit == null

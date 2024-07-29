@@ -383,3 +383,7 @@ func getToolAbilities() -> Array:
 	
 func isInjured() -> bool:
 	return health < max_health
+
+func hasTrait(trait_id: int) -> bool:
+	return traits.any(func(x: TraitGD): return x.type == trait_id)
+	

@@ -2,7 +2,6 @@
 extends EditorScenePostImport
 
 var REMOVE_COLLISION: Array = [
-	"shrub",
 	"coconut_floor",
 	"palmrock",
 	"spawn"

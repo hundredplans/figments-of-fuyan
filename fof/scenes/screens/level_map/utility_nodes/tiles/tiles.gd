@@ -368,6 +368,7 @@ func onKillMovementPaths(Unit: UnitGD, movement_paths: Array) -> Array:
 func onCreateOptimalPaths(Unit: UnitGD, all_tiles: Dictionary, astar: AStar3D, speed: int) -> Array:
 	var movement_paths: Array = []
 	var ally_vision: Array = Vision.getTeamVision()
+	
 	for Tile in all_tiles.full_tiles:
 		var movement_path := MovementPathGD.new(Unit.Tile)
 		var valid_path: bool = false
@@ -383,6 +384,7 @@ func onCreateOptimalPaths(Unit: UnitGD, all_tiles: Dictionary, astar: AStar3D, s
 				
 			if tile_path.size() <= 1: break
 			var fn_path: Array = onCreateFneighbourTilePath(Unit.Tile, tile_path)
+			
 			valid_path = onFneighbourPathValid(Unit, fn_path, astar, fall_damages, reconnections, speed, movement_path, ally_vision)
 			if valid_path:
 				movement_path.DestinationTile = fn_path[fn_path.size() - 1].Tile
@@ -413,8 +415,8 @@ func onFneighbourPathValidDistance(Unit: UnitGD, fn_path: Array, astar: AStar3D,
 
 func onFneighbourPathValidEnemy(Unit: UnitGD, fn_path: Array, astar: AStar3D, reconnections: Array, movement_path: MovementPathGD, ally_vision: Array) -> bool:
 	for i in range(fn_path.size()):
-		if fn_path[i].Tile.Unit != null: # if this can have ally units add a check for the team
-			var fneighbour: FneighbourGD = fn_path[i]
+		var fneighbour: FneighbourGD = fn_path[i]
+		if fneighbour.Tile.Unit != null: # if this can have ally units add a check for the team
 			if i == fn_path.size() - 1 and (fneighbour.Tile.Unit.team == 0 or fneighbour.Tile in ally_vision):
 				var EnemyUnit: UnitGD = fneighbour.Tile.Unit
 				var a: float = getUnitAdjustedHeight(fneighbour.Tile)
@@ -423,9 +425,14 @@ func onFneighbourPathValidEnemy(Unit: UnitGD, fn_path: Array, astar: AStar3D, re
 				var d: float = c + Unit.height.top
 				
 				if onCalculateHdiff(Unit.Tile, fneighbour.Tile) == 0 or (a <= d and c <= b):
-					movement_path.is_attack = true
+					fneighbour.AttackTarget = EnemyUnit
 					return true
 			return onDisconnectReconnect(Unit, fn_path, i, reconnections, astar)
+		elif fneighbour.movement_type == FneighbourGD.ATTACK_DOBJECT:
+			var DObject: DObjectGD = ObjectManager.onFindDObject(fneighbour.Tile)
+			if DObject != null and (!DObject.info.need_destructive or Unit.hasTrait(TraitGD.DESTRUCTIVE)):
+				fneighbour.AttackTarget = DObject
+				return true
 	return true
 
 func onCalculateHdiff(Tile: TileGD, _Tile: TileGD) -> int:
@@ -688,3 +695,17 @@ func getAdjacentTiles(Tile: TileGD, distance: int = 1, search_elevation: bool = 
 	var arr: Array = []
 	for i in range(1, distance + 1): arr += all_neighbours(Tile, i, search_elevation, tiles)
 	return arr
+	
+# Returns the tiles at the top
+func getTopTiles(tiles: Array) -> Array:
+	var heights: Dictionary = {}
+	for Tile in tiles:
+		if !heights.has(Tile.tpos): heights[Tile.tpos] = [Tile]
+		else: heights[Tile.tpos].append(Tile)
+	
+	var return_tiles: Array = []
+	for height_tiles in heights.values():
+		height_tiles.sort_custom(func(x: TileGD, y: TileGD): return x.w > y.w)
+		return_tiles.append(height_tiles[0])
+	return return_tiles
+	

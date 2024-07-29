@@ -8,6 +8,9 @@ var Tile: TileGD
 @export var hdiff: int
 @export var is_solid: bool = false
 
+# Can be a Unit or a DObjectGD, handled differently in each case
+var AttackTarget: Variant
+
 enum {
 	UNPASSABLE,
 	REGULAR,
@@ -15,6 +18,7 @@ enum {
 	JUMP,
 	FALL,
 	HIGH,
+	ATTACK_DOBJECT,
 }
 
 
@@ -29,3 +33,5 @@ func changeIsSolid(x: bool) -> void:
 	if !x: movement_type = REGULAR
 	else: movement_type = UNPASSABLE
 	is_solid = x
+
+func isAttack() -> bool: return AttackTarget != null

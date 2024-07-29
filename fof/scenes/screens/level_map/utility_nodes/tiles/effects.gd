@@ -58,5 +58,5 @@ func onRemovePastPath() -> void:
 
 func onSetHeightDropInfo(movement_path: MovementPathGD, fneighbour: FneighbourGD) -> void:
 	fall_damage = 0
-	if movement_path.fall_damages.has(fneighbour.Tile) and !(movement_path.is_attack and fneighbour.Tile == movement_path.DestinationTile):
+	if movement_path.fall_damages.has(fneighbour.Tile) and !(movement_path.isAttack() and fneighbour.Tile == movement_path.DestinationTile):
 		fall_damage = movement_path.fall_damages[fneighbour.Tile]

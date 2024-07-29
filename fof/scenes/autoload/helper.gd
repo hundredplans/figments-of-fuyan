@@ -348,7 +348,8 @@ var _id_to: Array = [
 	"spawns/spawn_trinket", "palms/ziplines/palm_zipline_equal_long", "palms/ziplines/palm_zipline_equal_short",
 	"palms/ziplines/palm_zipline_high_long", "palms/ziplines/palm_zipline_high_short", "palms/palm_fireplace", 
 	"palms/doors/palm_door", "palms/doors/palm_door_short", "palms/heal_coconut", "palms/coconut_tree",
-	"palms/coconut_effigy_bad", "palms/coconut_effigy_good"],
+	"palms/coconut_effigy_bad", "palms/coconut_effigy_good", "palms/stick", "palms/halfeaten_coconut", "palms/palmleaf",
+	"palms/sand_larva", "palms/bag_of_sand"],
 	
 	["null", "wall", "wooden_wall"],
 	

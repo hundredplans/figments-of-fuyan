@@ -77,14 +77,15 @@ func onRevenge(Damagee: UnitGD, AppliedBy: AppliedByGD, DMGInfo: DMGInfoGD, dama
 			onTriggerAbilitySpectateDelay(Damagee, ability, ability.onRevenge)
 	
 func onHit(DMGInfo: DMGInfoGD) -> void:
-	var Unit: UnitGD = DMGInfo.AppliedBy.Applier
-	var abilities: Array = onFindAbilities(Unit, "OnHit")
-	for ability in abilities:
-		ability.setInfo(Unit, DMGInfo)
-		if ability.onHitCondition():
-			onTriggerAbilitySpectateDelay(Unit, ability, ability.onHit)
-	
-	TriggerManager.onUnitTrigger(Unit, TriggerGD.ON_HIT, OnHitTriggerInfoGD.new(DMGInfo.Defender, DMGInfo.AppliedBy))
+	if DMGInfo.Defender is UnitGD:
+		var Unit: UnitGD = DMGInfo.AppliedBy.Applier
+		var abilities: Array = onFindAbilities(Unit, "OnHit")
+		for ability in abilities:
+			ability.setInfo(Unit, DMGInfo)
+			if ability.onHitCondition():
+				onTriggerAbilitySpectateDelay(Unit, ability, ability.onHit)
+		
+		TriggerManager.onUnitTrigger(Unit, TriggerGD.ON_HIT, OnHitTriggerInfoGD.new(DMGInfo.Defender, DMGInfo.AppliedBy))
 	
 func onRampage(Unit: UnitGD, AppliedBy: AppliedByGD) -> void:
 	var abilities: Array = onFindAbilities(Unit, "Rampage")
@@ -140,40 +141,46 @@ func onFindAbility(Unit: UnitGD, ability_name: String) -> AbilityGD:
 			return ability
 	return null
 
-func onDMG(UnitA: Variant, AppliedBy: AppliedByGD, damage: int) -> Dictionary:
-	var units: Array = UnitA if UnitA is Array else [UnitA]
+func onDMG(Targets: Variant, AppliedBy: AppliedByGD, damage: int) -> Dictionary:
+	var defenders: Array = Targets if Targets is Array else [Targets]
 	var damage_infos: Dictionary = {}
-	for Unit in units.filter(func(x: UnitGD): return !x.is_dead and x.health > 0):
-		var DMGInfo := DMGInfoGD.new(Unit, AppliedBy, damage)
-		var original_health: int = Unit.health
+	for Defender in defenders.filter(func(x: Variant): return !x.is_dead and x.health != 0):
+		var DMGInfo := DMGInfoGD.new(Defender, AppliedBy, damage)
+		var original_health: int = Defender.health
+		
 		match AppliedBy.type:
 			AppliedByGD.ATTACK:
-				var Attacker: UnitGD = AppliedBy.Applier
-				TriggerManager.onUnitTrigger(Attacker, TriggerGD.ON_ATTACK, OnAttackTriggerInfoGD.new(Unit))
-				damage = onArmor(Unit, damage + Attacker.extra_damage)
-				Units.changeStats(StatInfoGD.new(Unit, AppliedBy, StatsGD.HEALTH, -damage))
-				DMGInfo.HealthDMG = original_health - Unit.health
-				TriggerManager.onUnitTrigger(Attacker, TriggerGD.ON_AFTER_ATTACK)
-				if DMGInfo.HealthDMG > 0:
-					TriggerManager.onUnitTrigger(Unit, TriggerGD.WHEN_STRUCK, WhenStruckTriggerInfoGD.new(Attacker, AppliedBy))
-			AppliedByGD.HEIGHT:
-				Units.changeStats(StatInfoGD.new(Unit, AppliedBy, StatsGD.HEALTH, -damage))
-				DMGInfo.HealthDMG = original_health - Unit.health
-			_:
-				damage = onArmor(Unit, damage)
-				Units.changeStats(StatInfoGD.new(Unit, AppliedBy, StatsGD.HEALTH, -damage))
-				DMGInfo.HealthDMG = original_health - Unit.health
-		damage_infos[Unit] = DMGInfo
-	
-	ActionManager.onAddAction(HurtActionGD.new(damage_infos.keys().filter(func(x: UnitGD): return x.health != 0), AppliedBy))
-	for Unit in damage_infos:
-		if Unit.health == 0:
-			var vis: bool = Unit.isVis()
-			ActionManager.onAddAction(DeathActionGD.new(Unit, AppliedBy, vis))
+				var Attacker: Variant = AppliedBy.Applier
+				if Defender is UnitGD:
+					TriggerManager.onDefenderTrigger(Attacker, TriggerGD.ON_ATTACK, OnAttackTriggerInfoGD.new(Defender))
+					damage = onArmor(Defender, damage + Attacker.extra_damage)
+					Units.changeStats(StatInfoGD.new(Defender, AppliedBy, StatsGD.HEALTH, -damage))
+				elif Defender is DObjectGD: Defender._onAttacked(DMGInfo); Defender.onAttacked(DMGInfo)
+				
+				DMGInfo.HealthDMG = original_health - Defender.health
+				
+				if Defender is UnitGD:
+					TriggerManager.onDefenderTrigger(Attacker, TriggerGD.ON_AFTER_ATTACK)
+					if DMGInfo.HealthDMG > 0:
+						TriggerManager.onDefenderTrigger(Defender, TriggerGD.WHEN_STRUCK, WhenStruckTriggerInfoGD.new(Attacker, AppliedBy))
 			
-		elif damage_infos[Unit].HealthDMG > 0:
-			onRevenge(Unit, AppliedBy, damage_infos[Unit], damage)
-			TriggerManager.onUnitTrigger(Unit, TriggerGD.REVENGE, RevengeTriggerInfoGD.new(AppliedBy))
+			AppliedByGD.HEIGHT:
+				Units.changeStats(StatInfoGD.new(Defender, AppliedBy, StatsGD.HEALTH, -damage))
+				DMGInfo.HealthDMG = original_health - Defender.health
+			_:
+				damage = onArmor(Defender, damage)
+				Units.changeStats(StatInfoGD.new(Defender, AppliedBy, StatsGD.HEALTH, -damage))
+				DMGInfo.HealthDMG = original_health - Defender.health
+		damage_infos[Defender] = DMGInfo
+	
+	ActionManager.onAddAction(HurtActionGD.new(damage_infos.keys().filter(func(x: Variant): return x is UnitGD and x.health != 0), AppliedBy))
+	for Defender in damage_infos:
+		if Defender.health == 0:
+			var vis: bool = Defender.isVis()
+			ActionManager.onAddAction(DeathActionGD.new(Defender, AppliedBy, vis))
+		elif damage_infos[Defender].HealthDMG > 0:
+			onRevenge(Defender, AppliedBy, damage_infos[Defender], damage)
+			TriggerManager.onUnitTrigger(Defender, TriggerGD.REVENGE, RevengeTriggerInfoGD.new(AppliedBy))
 			
 	PlayerManager.onRefreshAbilitySelect()
 	return damage_infos

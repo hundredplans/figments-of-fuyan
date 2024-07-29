@@ -6,7 +6,6 @@ var DestinationTile: TileGD
 var fneighbours: Array # Array of fneighbour, fall dmg
 var fall_damages: Dictionary # Dictionary that associates each tile to a specific fall dmg
 var vis_array: Array = []
-var is_attack: bool = false
 
 func _init(_Tile: TileGD) -> void:
 	OriginTile = _Tile
@@ -48,3 +47,7 @@ func onReentersVision(vis_info: VisInfoGD) -> bool:
 
 func getTiles() -> Array:
 	return fneighbours.map(func(x: FneighbourGD): return x.Tile)
+
+func isAttack() -> bool: return fneighbours.any(func(x: FneighbourGD): return x.AttackTarget != null)
+func isAttackTargetUnit() -> bool: return fneighbours.any(func(x: FneighbourGD): return x.AttackTarget != null and x.AttackTarget is UnitGD)
+

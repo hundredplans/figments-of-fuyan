@@ -145,10 +145,11 @@ func onSetMovementRange(Unit: UnitGD) -> void:
 	var can_attack: bool = Unit.onCanAttack()
 	var can_move: bool = !Combat.isDazed(Unit)
 	for movement_path in unit_movement_paths:
-		if can_attack and movement_path.is_attack and "EnemyInRange" not in movement_path.DestinationTile.tile_outlines:
-			movement_path.DestinationTile.Unit.onEnemyInRange(true)
-		elif can_move and "MovementRange" not in movement_path.DestinationTile.tile_outlines:
-			Tiles.setTileOutline(movement_path.DestinationTile, "MovementRange")
+		var Tile: TileGD = movement_path.DestinationTile
+		if can_attack and !Tile.hasOutline("EnemyInRange") and movement_path.isAttack() and movement_path.isAttackTargetUnit():
+			Tile.Unit.onEnemyInRange(true)
+		elif can_move and !Tile.hasOutline("MovementRange"):
+			Tiles.setTileOutline(Tile, "MovementRange")
 	
 func onRemoveMovementRange() -> void:
 	for Tile in Tiles.get_children():
@@ -243,10 +244,10 @@ func onBeginUnitMovement(DestinationTile: TileGD) -> void:
 	LevelUI.setWarningText(false)
 	for fneighbour in movement_path.fneighbours:
 		Units.movement_outline_tiles.append(fneighbour.Tile)
-		if fneighbour.Tile.Unit == null:
+		if !fneighbour.isAttack():
 			ActionManager.onAddAction(MoveActionGD.new(ActiveUnit, fneighbour, movement_path, true))
 			fneighbour.Tile.Effects.onRemoveDeathPathLabel()
-		else: ActionManager.onAddAction(AttackActionGD.new(ActiveUnit, fneighbour.Tile, true, null))
+		else: ActionManager.onAddAction(AttackActionGD.new(ActiveUnit, fneighbour.Tile, fneighbour.AttackTarget, true, null))
 	ActionManager.onAddAction(MoveFinishActionGD.new(ActiveUnit, movement_path, true), ActionManagerGD.APPEND_MF)
 
 func onUnitMode(Unit: UnitGD = getUnitSelected(), enter: bool = false) -> void:

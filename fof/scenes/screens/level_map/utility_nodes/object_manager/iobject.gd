@@ -9,6 +9,7 @@ var Tiles: TilesGD
 var StatusManager: StatusManagerGD
 var Vision: VisionGD
 var ObjectManager: ObjectManagerGD
+var Tools: ToolsGD
 
 var BaseTile: TileGD
 var interactable_tiles: Array
