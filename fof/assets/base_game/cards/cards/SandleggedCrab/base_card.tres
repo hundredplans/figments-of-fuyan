@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="BaseCardGD" load_steps=2 format=3 uid="uid://dskaisffulpuo"]
+
+[ext_resource type="Script" path="res://assets/base_game/cards/templates/base_card.gd" id="1_1hiso"]
+
+[resource]
+script = ExtResource("1_1hiso")
+area_id = 1
+attack = 2
+health = 3
+speed = 2
+energy = 2
+rarity = 1
+raw_text = "HOSTILE; ABILITY: Gain ARMOR [1] for [1] Turn"
+flavor_text = ""
+text = "[center][b]HOSTILE[/b]; [b]ABILITY[/b]: Gain [b]ARMOR [1][/b] for [1] Turn[/center]"
+aic = 4
+aii = 3
+aiw = 5
+ait = 2
+aia = 5
+eye = 1.0
+top = 1.5
+stat = 2.0
+default_danger = 0
+default_safety = 0
+id = 29
+name = "Sand-legged Crab"
+folder_name = "SandleggedCrab"

@@ -3,7 +3,7 @@ extends DObjectGD
 var palm_mini_tool_info: Resource = preload("res://assets/base_game/unique_tiles/extras/palm_mini_tool_info.tres")
 var ObjModel: Node3D
 const DROP_ODDS: Dictionary = {
-	"COCONUT": 0.23, # 5% chance it's a lobster
+	"COCONUT": 0.23,
 	"MINI-TOOL": 0.05,
 	"PALMY": 0.02,
 }
@@ -29,5 +29,5 @@ func onAttacked(DMGInfo: DMGInfoGD) -> void:
 				var mini_tool_id: int = palm_mini_tool_info.mini_tool_info[index].id
 				if Tile == AttackerTile:
 					Tools.onEquipTool(Attacker, palm_mini_tool_info.mini_tool_info[index].id)
-				else: ObjectManager.onCreateIObject(palm_mini_tool_info.getIObjectID(mini_tool_id))
+				else: ObjectManager.onCreateIObject(Tile, palm_mini_tool_info.getIObjectID(mini_tool_id))
 			"PALMY": pass
