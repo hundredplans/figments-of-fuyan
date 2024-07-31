@@ -23,7 +23,9 @@ func onAttacked(DMGInfo: DMGInfoGD) -> void:
 		var roll: String = random_key_gen.onRoll()
 		
 		match roll:
-			"COCONUT": pass
+			"COCONUT":
+				if Tile == AttackerTile:
+					pass
 			"MINI-TOOL":
 				var index: int = randi_range(0, palm_mini_tool_info.mini_tool_info.size() - 1)
 				var mini_tool_id: int = palm_mini_tool_info.mini_tool_info[index].id
