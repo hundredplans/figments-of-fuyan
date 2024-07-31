@@ -256,6 +256,10 @@ func on_set_rotation() -> void:
 	rotation_degrees.y = 270 + (rot * 60)
 	Unit.VFX.setUnitVFXRot(Unit)
 	
+func setCustomRotation(radians: float) -> void:
+	rotation.y = radians
+	Unit.VFX.setUnitVFXRot(Unit)
+	
 func onSetCollisionRotation() -> void:
 	static_body.global_rotation_degrees.y = 270 + (rot * 60)
 	
@@ -286,15 +290,6 @@ func onRemoveIdleAbility() -> void:
 func setRedMultiply(state: bool) -> void:
 	var val: float = DEFAULT_MULT_VALUE if (!state) else 15.0
 	for mat in materials: mat.next_pass.set_shader_parameter("red_multiply", val)
-
-func getZiplineHeight() -> float:
-	return 2.85 - Unit.height.top
-	
-func onZipline() -> void:
-	Unit.global_position.y += getZiplineHeight()
-
-func onZiplineFinished() -> void:
-	Unit.global_position.y -= getZiplineHeight()
 
 func onVFXAnimation(ani: Animation) -> void:
 	var lib: AnimationLibrary = AniPlayer.get_animation_library("")

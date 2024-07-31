@@ -78,14 +78,14 @@ func onHighlightObj(state: bool, Tile: TileGD) -> void:
 		var dobj: DObjectGD = onFindDObject(Tile)
 		
 		var material: ShaderMaterial
-		if iobj != null and Unit != null and Unit.Tile not in iobj.interactable_tiles:
+		if iobj != null:
 			material = iobject_material
-			var tiles: Array = iobj.interactable_tiles.filter(func(x: TileGD): return x.Unit == null)
-			tiles.sort_custom(func(x: TileGD, y: TileGD): return Tiles.tile_distance(x, Unit.Tile) < Tiles.tile_distance(y, Unit.Tile))
-			
-			if tiles.size() > 0: object_highlight_movement_path = Tiles.onCreatePathHovered(tiles[0])
+			if Unit != null and Unit.Tile not in iobj.interactable_tiles:
+				var tiles: Array = iobj.interactable_tiles.filter(func(x: TileGD): return x.Unit == null)
+				tiles.sort_custom(func(x: TileGD, y: TileGD): return Tiles.tile_distance(x, Unit.Tile) < Tiles.tile_distance(y, Unit.Tile))
+				
+				if tiles.size() > 0: object_highlight_movement_path = Tiles.onCreatePathHovered(tiles[0])
 		elif dobj != null: material = dobject_material
-			
 		if material != null: ActiveTile = Tile; setGlowMaterial(material)
 		
 	elif !state and ActiveTile != null and Tile == ActiveTile:

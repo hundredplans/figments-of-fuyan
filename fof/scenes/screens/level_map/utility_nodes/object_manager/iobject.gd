@@ -10,6 +10,7 @@ var StatusManager: StatusManagerGD
 var Vision: VisionGD
 var ObjectManager: ObjectManagerGD
 var Tools: ToolsGD
+var SpectateCamera: SpectateCameraGD
 
 var BaseTile: TileGD
 var interactable_tiles: Array

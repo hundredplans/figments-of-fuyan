@@ -98,7 +98,8 @@ func onSpectateUnit(type: Variant) -> void:
 			elif index == -1: index = units.size() -1
 			
 			Unit = units[index]
-	elif type is UnitGD: if type != SpectateUnit: Unit = type
+	elif type is UnitGD:
+		if type != SpectateUnit: Unit = type
 	
 	if Unit != null:
 		onSpectateUnitPlayerPhase()
