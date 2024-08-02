@@ -16,4 +16,6 @@ func onCreateEquipModelAnimation(Tile: TileGD, model: Node3D, delay: float, call
 	tween.tween_property(model, "position:y", Tile.Unit.height.stat + 0.3, shorter_delay)
 	tween.tween_property(model, "rotation:y", TAU, shorter_delay).as_relative()
 	tween.tween_property(model, "scale", Vector3(0.01, 0.01, 0.01), shorter_delay)
-	tween.finished.connect(callable)
+	
+	if !callable.is_null(): tween.finished.connect(callable)
+	

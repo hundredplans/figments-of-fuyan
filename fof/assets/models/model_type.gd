@@ -8,3 +8,4 @@ extends Node
 
 func playAnimation(ani_name: String) -> void:
 	$AnimationPlayer.play(ani_name)
+	

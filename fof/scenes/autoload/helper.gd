@@ -278,6 +278,7 @@ func return_bitwise(i: int, total: Vector2i) -> bool:
 	return false
 
 func getTileFromCollision(collision: Node) -> TileGD:
+	var save_colllision: Node3D = collision
 	collision = collision.get_node("../../..")
 	while(true):
 		if collision is TileGD: return collision
@@ -348,8 +349,8 @@ var _id_to: Array = [
 	"spawns/spawn_trinket", "palms/ziplines/palm_zipline_equal_long", "palms/ziplines/palm_zipline_equal_short",
 	"palms/ziplines/palm_zipline_high_long", "palms/ziplines/palm_zipline_high_short", "palms/palm_fireplace", 
 	"palms/doors/palm_door", "palms/doors/palm_door_short", "palms/heal_coconut", "palms/coconut_tree",
-	"palms/coconut_effigy_bad", "palms/coconut_effigy_good", "palms/stick", "palms/halfeaten_coconut", "palms/palmleaf",
-	"palms/sand_larva", "palms/bag_of_sand"],
+	"palms/coconut_effigy_bad", "palms/coconut_effigy_good", "palms/mini_tools/stick", "palms/mini_tools/halfeaten_coconut", "palms/mini_tools/palmleaf",
+	"palms/mini_tools/sand_larva", "palms/mini_tools/bag_of_sand", "palms/sneaky_bush"],
 	
 	["null", "wall", "wooden_wall"],
 	

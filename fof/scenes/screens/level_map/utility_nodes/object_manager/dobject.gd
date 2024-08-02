@@ -6,6 +6,10 @@ var Tools: ToolsGD
 var Tiles: TilesGD
 var BaseTile: TileGD
 var info: DObjectInfoGD
+var Units: UnitsGD
+var Combat: CombatGD
+var ActionManager: ActionManagerGD
+var Vision: VisionGD
 
 var health: int = 0
 var is_dead: bool = false

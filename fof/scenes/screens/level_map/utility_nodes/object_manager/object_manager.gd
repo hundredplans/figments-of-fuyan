@@ -110,11 +110,24 @@ func onTrigger(Unit: UnitGD, trigger: int, args: TriggerInfoGD) -> void:
 	for iobj in interactables.filter(func(x: IObjectGD): return x.has_method("onTrigger")):
 		iobj.onTrigger(Unit, trigger, args)
 
+	for dobj in destructables.filter(func(x: DObjectGD): return x.has_method("onTrigger")):
+		dobj.onTrigger(Unit, trigger, args)
+
 func onRemoveIObject(iobject: IObjectGD) -> void:
-	interactables.erase(iobject)
-	iobject.BaseTile.obj.id = 0
-	iobject.BaseTile.types[1].model = null
-	if "ObjModel" in iobject: iobject.ObjModel.queue_free()
+	if iobject != null:
+		interactables.erase(iobject)
+		iobject.BaseTile.obj.id = 0
+		iobject.BaseTile.types[1].model = null
+		if "ObjModel" in iobject: iobject.ObjModel.queue_free()
 
 func onCreateIObject(Tile: TileGD, id: int) -> void:
-	pass
+	if isTileObj(Tile): onRemoveIObject(onFindIObject(Tile))
+	Tile.obj.id = id
+	var model_path: String = "res://assets/models/objects/" + Helper._id_to[1][id] + ".tscn"
+	var model: Node3D = load(model_path).instantiate()
+	Tile.ModelManager.add_child(model)
+	model.position.y += 0.9 if Tiles.is_ramp_tile(Tile) else 0.3
+	Tile.types[1].model = model
+	onAddInteractableObj(Tile)
+
+func isTileObj(Tile: TileGD) -> bool: return Tile.obj.id > 0

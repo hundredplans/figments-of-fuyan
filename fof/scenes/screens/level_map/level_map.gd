@@ -68,11 +68,12 @@ func onTriggerPhaseStart(phase: String) -> void:
 func on_change_game_phase(phase: String) -> void:
 	if phase != "StartPhase":
 		ActionManager.onAddAction(DelayActionGD.new(onChangeGamePhaseAfterDelay.bind(phase), true), ActionManagerGD.APPEND)
-	else: onChangeGamePhaseAfterDelay(phase)
+	else:
+		onChangeGamePhaseAfterDelay(phase)
 	
 func onChangeGamePhaseAfterDelay(phase: String) -> void:
-	var dev := preload("res://static/dev/dev.tres")
 	game_phase = phase
+	var dev := preload("res://static/dev/dev.tres")
 	onTriggerPhaseStart(phase)
 	match phase:
 		"StartPhase": if dev.god_start: on_advance_game_phase()

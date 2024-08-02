@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://c6o02abt14bvg"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/status_effects/blind/blind_status_effect.gd" id="1_06b2d"]
+
+[sub_resource type="TorusMesh" id="TorusMesh_xgoep"]
+rings = 16
+ring_segments = 8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sy34e"]
+albedo_color = Color(0.270588, 0.243137, 0.223529, 1)
+
+[node name="BlindStatusEffect" type="Node3D"]
+script = ExtResource("1_06b2d")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.616891, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("TorusMesh_xgoep")
+surface_material_override/0 = SubResource("StandardMaterial3D_sy34e")

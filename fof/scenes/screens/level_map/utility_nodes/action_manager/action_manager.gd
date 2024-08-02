@@ -19,6 +19,7 @@ enum {
 	DEATH, # 4
 	DELAY, # 5
 	ARG_DELAY, # 6
+	SIGNAL_DELAY, # 7
 }
 
 enum {
@@ -36,6 +37,7 @@ var ENUM_TO_STRING: Dictionary = {
 	4: "DEATH",
 	5: "DELAY",
 	6: "ARG_DELAY",
+	7: "SIGNAL_DELAY",
 }
 
 func onInterruptMovement() -> void:
@@ -101,7 +103,9 @@ func onTriggerNextAction(action: ActionGD) -> void:
 	Vision.on_vision_mode_set(0)
 	action.onTrigger()
 	
-	if action.delay.delay > 0 and action.is_visible: await get_tree().create_timer(action.delay.delay).timeout
+	if action.is_visible:
+		if action.delay.delay > 0: await get_tree().create_timer(action.delay.delay).timeout
+		elif action is SignalDelayActionGD and !action.sig.is_null() and !action.already_emit: await action.sig
 	
 	unit_actions.erase(action)
 	PlayerManager.onRefreshAbilitySelect()

@@ -5,7 +5,6 @@ var wood_count: int = 10
 
 func onTrigger(_Unit: UnitGD, trigger: int, args: TriggerInfoGD) -> void:
 	if wood_count < 10 and trigger == TriggerGD.START_TURN_GLOBAL and args.team_relation.onTeam() == 0:
-		print(wood_count)
 		if attack_turns > 0:
 			attack_turns -= 1
 			

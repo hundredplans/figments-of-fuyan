@@ -1,3 +1,4 @@
+class_name ModelGD
 extends Node3D
 
 var mesh: MeshInstance3D
@@ -49,6 +50,8 @@ func _ready() -> void:
 	onSetOverrideMaterial("Regular")
 	AniPlayer.playback_default_blend_time = UNIT_ANIMATION_BLEND_TIME
 	AniPlayer.animation_finished.connect(func(__: String): on_play_animation("Idle"))
+
+func setDisabled(x: bool) -> void: collision_shape.disabled = x
 
 var is_vfx_ani_playing: bool = false
 var previous_ani: String

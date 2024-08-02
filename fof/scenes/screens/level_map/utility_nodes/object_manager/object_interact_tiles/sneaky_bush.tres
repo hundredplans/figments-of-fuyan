@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="ObjectInteractTilesGD" load_steps=5 format=3 uid="uid://qdheej3rs0dt"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/iobjects/sneaky_bush.gd" id="1_1uaog"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/object_interact_tiles/iobject_ability_info.gd" id="1_d4toa"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/object_interact_tiles/object_interact_tiles.gd" id="1_i42gf"]
+
+[sub_resource type="Resource" id="Resource_0veth"]
+script = ExtResource("1_d4toa")
+name = "Anti Bush Agenda"
+description = "Destroy this bush"
+max_charges = 1
+ability_type = 1
+delay = 2.0
+tiles = Array[Vector4]([])
+
+[resource]
+script = ExtResource("1_i42gf")
+id = 21
+name = "Sneaky Bush"
+tiles = Array[Vector4]([Vector4(0, 0, 0, 0)])
+abilities = Array[ExtResource("1_d4toa")]([SubResource("Resource_0veth")])
+iobject_script = ExtResource("1_1uaog")

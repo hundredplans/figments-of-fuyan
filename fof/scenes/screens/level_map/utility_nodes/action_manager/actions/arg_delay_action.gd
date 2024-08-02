@@ -17,4 +17,3 @@ func onTrigger() -> void:
 	
 func onAfterTrigger() -> void:
 	if !after_callable.is_null(): after_callable.call()
-	#await onVisDelay(active_action.Triggerer.Tile, active_action.delay)

@@ -152,17 +152,19 @@ func onDMG(Targets: Variant, AppliedBy: AppliedByGD, damage: int) -> Dictionary:
 			AppliedByGD.ATTACK:
 				var Attacker: Variant = AppliedBy.Applier
 				if Defender is UnitGD:
-					TriggerManager.onDefenderTrigger(Attacker, TriggerGD.ON_ATTACK, OnAttackTriggerInfoGD.new(Defender))
+					TriggerManager.onUnitTrigger(Attacker, TriggerGD.ON_ATTACK, OnAttackTriggerInfoGD.new(Defender))
 					damage = onArmor(Defender, damage + Attacker.extra_damage)
 					Units.changeStats(StatInfoGD.new(Defender, AppliedBy, StatsGD.HEALTH, -damage))
-				elif Defender is DObjectGD: Defender._onAttacked(DMGInfo); Defender.onAttacked(DMGInfo)
+				elif Defender is DObjectGD:
+					Defender._onAttacked(DMGInfo)
+					Defender.onAttacked(DMGInfo)
 				
 				DMGInfo.HealthDMG = original_health - Defender.health
 				
 				if Defender is UnitGD:
-					TriggerManager.onDefenderTrigger(Attacker, TriggerGD.ON_AFTER_ATTACK)
+					TriggerManager.onUnitTrigger(Attacker, TriggerGD.ON_AFTER_ATTACK)
 					if DMGInfo.HealthDMG > 0:
-						TriggerManager.onDefenderTrigger(Defender, TriggerGD.WHEN_STRUCK, WhenStruckTriggerInfoGD.new(Attacker, AppliedBy))
+						TriggerManager.onUnitTrigger(Defender, TriggerGD.WHEN_STRUCK, WhenStruckTriggerInfoGD.new(Attacker, AppliedBy))
 			
 			AppliedByGD.HEIGHT:
 				Units.changeStats(StatInfoGD.new(Defender, AppliedBy, StatsGD.HEALTH, -damage))

@@ -163,7 +163,7 @@ var return_to_main_menu: Array = [
 	"play_menu.tscn",
 	"continue_menu.tscn",
 	"map_menu.tscn",
-	"win_screen.tscn",	
+	"win_screen.tscn",
 	"lose_screen.tscn",
 	]
 
