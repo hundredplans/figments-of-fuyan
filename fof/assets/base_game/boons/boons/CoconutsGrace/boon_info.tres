@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="BoonInfoGD" load_steps=4 format=3 uid="uid://b3t50v4cvleib"]
+
+[ext_resource type="Script" path="res://assets/base_game/boons/boons/CoconutsGrace/coconuts_grace.gd" id="1_bjv70"]
+[ext_resource type="Script" path="res://assets/base_game/boons/boon_info.gd" id="1_lcugq"]
+[ext_resource type="Texture2D" uid="uid://2e5atgfkkwvo" path="res://assets/base_game/boons/icons/coconut_effigy.png" id="2_y478s"]
+
+[resource]
+script = ExtResource("1_lcugq")
+icon = ExtResource("2_y478s")
+description = "Your next two heals are doubled"
+ascended_description = ""
+rarity = 0
+boon_script = ExtResource("1_bjv70")
+track_charges = true
+id = 6
+name = "Coconut's Grace"
+folder_name = "CoconutsGrace"

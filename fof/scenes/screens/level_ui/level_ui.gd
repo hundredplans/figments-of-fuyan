@@ -441,7 +441,7 @@ func onRefreshUnitModeBoxes(Unit: UnitGD = PlayerManager.getUnitSelected()) -> v
 			onAddUnitModeBox(ability, ability.charges, ability.max_charges, ability.ability_name,\
 			ability.ability_description, onAbilitySelectPressed.bind(Unit, ability), !Combat.isAbilityEnabled(Unit, ability))
 				
-		for iobject in ObjectManager.onFindOccupiedIObjects(Unit):
+		for iobject in ObjectManager.interactables:
 			for ability in iobject.info.abilities.filter(onAbilityConditionIObject.bind(Unit, iobject)):
 				onAddUnitModeBox(iobject, ability.charges, ability.max_charges, ability.name,\
 				ability.description, onIObjectBoxPressed.bind(Unit, iobject, ability), !Combat.isIObjectAbilityEnabled(Unit, iobject, ability))
@@ -452,7 +452,7 @@ func onRefreshUnitModeBoxes(Unit: UnitGD = PlayerManager.getUnitSelected()) -> v
 				Unit.Tool.getAbilityDescription(tool_ability), onToolPressed.bind(Unit, tool_ability), !Combat.isToolAbilityEnabled(Unit, tool_ability))
 
 func onAbilityConditionIObject(ability: IObjectAbilityInfoGD, Unit: UnitGD, IObject: IObjectGD) -> bool:
-	return !IObject.has_method("onAbilityCondition") or IObject.onAbilityCondition(Unit, ability) != 2
+	return IObject.onAbilityCondition(Unit, ability) != 2
 
 func onEnterUnitMode(Unit: UnitGD) -> void:
 	setUnitNameLabel(Unit.base_card.name)

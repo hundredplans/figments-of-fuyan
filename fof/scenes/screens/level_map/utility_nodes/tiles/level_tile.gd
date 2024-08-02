@@ -7,7 +7,6 @@ signal multi_tile_obj_hovered
 @onready var ModelManager: Node3D = $ModelManager
 @onready var Effects: Node3D = $Effects
 
-var interactable_tiles: Array
 var tile_outlines: Array
 var tile_state: Array
 var top_of_cliff_wall: Array

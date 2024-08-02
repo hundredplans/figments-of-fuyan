@@ -2,7 +2,6 @@ extends DObjectGD
 
 signal action_sig
 var palm_mini_tool_info: Resource = preload("res://assets/base_game/unique_tiles/extras/palm_mini_tool_info.tres")
-var ObjModel: Node3D
 const DROP_ODDS: Dictionary = {
 	"COCONUT": 0.23,
 	"MINI-TOOL": 0.05,
@@ -10,9 +9,6 @@ const DROP_ODDS: Dictionary = {
 }
 
 var recharge: int = 0
-
-func onReady() -> void:
-	ObjModel = BaseTile.types[1].model
 
 func onTrigger(_Unit: UnitGD, trigger: int, args: TriggerInfoGD) -> void:
 	if trigger == TriggerGD.START_TURN_GLOBAL and args.team_relation.onTeam() == 0 and recharge > 0:

@@ -11,12 +11,12 @@ description = "Destroy this bush"
 max_charges = 1
 ability_type = 1
 delay = 2.0
-tiles = Array[Vector4]([])
+tiles = Array[Vector4]([Vector4(0, 0, 0, 0)])
 
 [resource]
 script = ExtResource("1_i42gf")
 id = 21
 name = "Sneaky Bush"
-tiles = Array[Vector4]([Vector4(0, 0, 0, 0)])
+tiles = Array[Vector4]([])
 abilities = Array[ExtResource("1_d4toa")]([SubResource("Resource_0veth")])
 iobject_script = ExtResource("1_1uaog")

@@ -1,10 +1,6 @@
 extends IObjectGD
 
-var ObjModel: Node3D
 @export var delay: float = 1.5
-
-func onReady() -> void:
-	ObjModel = BaseTile.types[1].model
 
 func onTrigger(Unit: UnitGD, trigger: int, _args: TriggerInfoGD) -> void:
 	if trigger == TriggerGD.MOVE and Unit.Tile == BaseTile:

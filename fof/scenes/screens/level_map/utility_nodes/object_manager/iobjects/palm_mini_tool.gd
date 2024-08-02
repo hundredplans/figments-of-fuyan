@@ -1,13 +1,11 @@
 extends IObjectGD
 
 var id: int
-var ObjModel: Node3D
 var palm_mini_tool_info: Resource = preload("res://assets/base_game/unique_tiles/extras/palm_mini_tool_info.tres")
 @export var delay: float = 2
 
 func onReady() -> void:
 	id = info.id
-	ObjModel = BaseTile.types[1].model
 
 func onTrigger(Unit: UnitGD, trigger: int, _args: TriggerInfoGD) -> void:
 	if trigger == TriggerGD.MOVE and Unit.Tile == BaseTile:

@@ -1,23 +1,20 @@
 extends IObjectGD
 
 var original_materials: Array = []
-var ObjModel: Node3D
 var StaticBody: StaticBody3D
 var is_tall: bool = false
 var is_open: bool = false
 var AniPlayer: AnimationPlayer
 # Returns 0 if enabled, 1 for disabled, 2 for invisible
 func onAbilityCondition(Unit: UnitGD, ability: IObjectAbilityInfoGD) -> int:
-	if is_open and ability.name == "Open Door": return 2
-	elif !is_open and ability.name == "Close Door": return 2
-	if Unit in used_list: return 1
-	return 0
-
-func onCondition(Unit: UnitGD) -> bool:
-	return Unit.Tile in interactable_tiles
-
+	if Unit.Tile in ability.tiles:
+		if is_open and ability.name == "Open Door": return 2
+		elif !is_open and ability.name == "Close Door": return 2
+		if Unit in used_list: return 1
+		return 0
+	return 2
+	
 func onReady() -> void:
-	ObjModel = BaseTile.types[1].model
 	is_tall = info.id == 10
 	
 	addStaticBody()
@@ -77,13 +74,13 @@ func onOpenDoor() -> void:
 	addStaticBody()
 			
 func setFneighbours(is_solid: bool) -> void:
-	for Tile in interactable_tiles:
+	for Tile in total_tiles:
 		for fneighbour in Tile.fneighbours:
 			if fneighbour.Tile == BaseTile and Tile.solid_status == 0:
 				fneighbour.changeIsSolid(is_solid)
 				
 func setFneighboursUnitHeight() -> void:
-	for Tile in interactable_tiles:
+	for Tile in total_tiles:
 		for fneighbour in Tile.fneighbours:
 			if fneighbour.Tile == BaseTile and Tile.solid_status == 0:
 				fneighbour.unit_height = 3 if is_tall else 1

@@ -15,8 +15,11 @@ var boon: BoonGD
 func setInfo(_boon: BoonGD) -> void:
 	boon = _boon
 	button.texture = boon.boon_info.icon
-	if !boon.is_ascended: BoonBox.texture = preload("res://assets/base_game/boons/base_boon/boon_box_regular.png")
-	else: BoonBox.texture = preload("res://assets/base_game/boons/base_boon/boon_box_ascended.png")
+	
+	if boon.boon_info.rarity != boon.boon_info.RARITIES.MINI:
+		if !boon.is_ascended: BoonBox.texture = preload("res://assets/base_game/boons/base_boon/boon_box_regular.png")
+		else: BoonBox.texture = preload("res://assets/base_game/boons/base_boon/boon_box_ascended.png")
+	else: BoonBox.texture = preload("res://assets/base_game/boons/base_boon/boon_box_mini.png")
 	
 	TrackChargesLabel.visible = boon.boon_info.track_charges
 	Outline.modulate = Helper.rarity_boon_tool_colors[boon.boon_info.rarity]

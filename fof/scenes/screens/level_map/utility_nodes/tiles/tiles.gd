@@ -430,9 +430,11 @@ func onFneighbourPathValidEnemy(Unit: UnitGD, fn_path: Array, astar: AStar3D, re
 			return onDisconnectReconnect(Unit, fn_path, i, reconnections, astar)
 		elif fneighbour.movement_type == FneighbourGD.ATTACK_DOBJECT:
 			var DObject: DObjectGD = ObjectManager.onFindDObject(fneighbour.Tile)
-			if DObject != null and (!DObject.info.need_destructive or Unit.hasTrait(TraitGD.DESTRUCTIVE)):
-				fneighbour.AttackTarget = DObject
-				return true
+			if DObject != null:
+				if !DObject.info.need_destructive or Unit.hasTrait(TraitGD.DESTRUCTIVE):
+					fneighbour.AttackTarget = DObject
+					return true
+				return onDisconnectReconnect(Unit, fn_path, i, reconnections, astar)
 	return true
 
 func onCalculateHdiff(Tile: TileGD, _Tile: TileGD) -> int:
@@ -709,3 +711,10 @@ func getTopTiles(tiles: Array) -> Array:
 		return_tiles.append(height_tiles[0])
 	return return_tiles
 	
+func onRotatePositionLeft(vec: Vector4, rotate_amount: int = 1) -> Vector4:
+	for i in range(rotate_amount):
+		vec = onRotateAroundCenter(vec)
+	return vec
+	
+func onRotateTileLeft(Tile: TileGD, rotate_amount: int = 1) -> TileGD:
+	return position_to_tile(onRotatePositionLeft(Tile.onTTpos(), rotate_amount))

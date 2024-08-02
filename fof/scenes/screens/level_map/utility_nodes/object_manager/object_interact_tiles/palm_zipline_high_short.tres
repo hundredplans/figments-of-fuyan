@@ -11,12 +11,12 @@ name = "Zipline"
 description = "Use the zipline to get across!"
 max_charges = -1
 ability_type = 1
-delay = 0.0
+delay = 3.2
+tiles = [Vector4(4, 0, -4, 2)]
 
 [resource]
 script = ExtResource("3_1ikcs")
 id = 8
 name = "ZiplineHighShort"
-tiles = Array[Vector4]([Vector4(4, 0, -4, 2)])
 abilities = Array[ExtResource("1_2o45e")]([SubResource("Resource_pe56l")])
 iobject_script = ExtResource("2_bv11e")

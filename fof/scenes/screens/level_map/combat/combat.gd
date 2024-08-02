@@ -144,6 +144,8 @@ func onFindAbility(Unit: UnitGD, ability_name: String) -> AbilityGD:
 func onDMG(Targets: Variant, AppliedBy: AppliedByGD, damage: int) -> Dictionary:
 	var defenders: Array = Targets if Targets is Array else [Targets]
 	var damage_infos: Dictionary = {}
+	var dobject_attacked_info: Array = []
+	
 	for Defender in defenders.filter(func(x: Variant): return !x.is_dead and x.health != 0):
 		var DMGInfo := DMGInfoGD.new(Defender, AppliedBy, damage)
 		var original_health: int = Defender.health
@@ -157,10 +159,9 @@ func onDMG(Targets: Variant, AppliedBy: AppliedByGD, damage: int) -> Dictionary:
 					Units.changeStats(StatInfoGD.new(Defender, AppliedBy, StatsGD.HEALTH, -damage))
 				elif Defender is DObjectGD:
 					Defender._onAttacked(DMGInfo)
-					Defender.onAttacked(DMGInfo)
+					dobject_attacked_info.append({"dobject": Defender,  "DMGInfo": DMGInfo})
 				
 				DMGInfo.HealthDMG = original_health - Defender.health
-				
 				if Defender is UnitGD:
 					TriggerManager.onUnitTrigger(Attacker, TriggerGD.ON_AFTER_ATTACK)
 					if DMGInfo.HealthDMG > 0:
@@ -174,15 +175,27 @@ func onDMG(Targets: Variant, AppliedBy: AppliedByGD, damage: int) -> Dictionary:
 				Units.changeStats(StatInfoGD.new(Defender, AppliedBy, StatsGD.HEALTH, -damage))
 				DMGInfo.HealthDMG = original_health - Defender.health
 		damage_infos[Defender] = DMGInfo
-	
-	ActionManager.onAddAction(HurtActionGD.new(damage_infos.keys().filter(func(x: Variant): return x is UnitGD and x.health != 0), AppliedBy))
+			
+	for info in dobject_attacked_info:
+		var dobject: DObjectGD = info.dobject
+		var DMGInfo: DMGInfoGD = info.DMGInfo
+		var callable: Callable = dobject.onAttacked.bind(DMGInfo) if !dobject.is_dead else dobject.onDeath
+		var after_callable: Callable = dobject.onAfterAttacked.bind(DMGInfo) if !dobject.is_dead else dobject.onAfterDeath
+		var delay: float = dobject.info.attack_delay if !dobject.is_dead else dobject.info.death_delay
+		ActionManager.onAddAction(ArgDelayActionGD.new(callable, after_callable, DMGInfo.getAttacker().isVis(), DelayGD.new(delay)))
+		
+	var attacked_units: Array = damage_infos.keys().filter(func(x: Variant): return x is UnitGD and x.health != 0)
+	if !attacked_units.is_empty():
+		ActionManager.onAddAction(HurtActionGD.new(attacked_units, AppliedBy))
+		
 	for Defender in damage_infos:
-		if Defender.health == 0:
-			var vis: bool = Defender.isVis()
-			ActionManager.onAddAction(DeathActionGD.new(Defender, AppliedBy, vis))
-		elif damage_infos[Defender].HealthDMG > 0:
-			onRevenge(Defender, AppliedBy, damage_infos[Defender], damage)
-			TriggerManager.onUnitTrigger(Defender, TriggerGD.REVENGE, RevengeTriggerInfoGD.new(AppliedBy))
+		if Defender is UnitGD:
+			if Defender.health == 0:
+				var vis: bool = Defender.isVis()
+				ActionManager.onAddAction(DeathActionGD.new(Defender, AppliedBy, vis))
+			elif damage_infos[Defender].HealthDMG > 0:
+				onRevenge(Defender, AppliedBy, damage_infos[Defender], damage)
+				TriggerManager.onUnitTrigger(Defender, TriggerGD.REVENGE, RevengeTriggerInfoGD.new(AppliedBy))
 			
 	PlayerManager.onRefreshAbilitySelect()
 	return damage_infos
@@ -236,7 +249,7 @@ func isDazed(Unit: UnitGD) -> bool:
 
 func isIObjectAbilityEnabled(Unit: UnitGD, iobject: IObjectGD, ability: IObjectAbilityInfoGD) -> bool:
 	return !ability.used and ability.charges != 0 and Unit.turn_status in [UnitGD.TURN_UNUSED, UnitGD.TURN_ACTIVE]\
-	and (!iobject.has_method("onAbilityCondition") or iobject.onAbilityCondition(Unit, ability) != 1) and\
+	and iobject.onAbilityCondition(Unit, ability) != 1 and\
 	((LevelMap.game_phase == "PlayerPhase" and Unit.team == 0) or (LevelMap.game_phase == "AIPhase" and Unit.team == 1))
 
 func isToolAbilityEnabled(Unit: UnitGD, tool_ability: ToolAbilityInfoGD) ->  bool:

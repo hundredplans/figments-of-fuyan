@@ -12,14 +12,16 @@ var ObjectManager: ObjectManagerGD
 var Tools: ToolsGD
 var SpectateCamera: SpectateCameraGD
 
+var ObjModel: Node3D
 var BaseTile: TileGD
-var interactable_tiles: Array
 var info: ObjectInteractTilesGD
+# All interactable tiles, used to show path when hovered
+@export var total_tiles: Array = []
 
-func setInfo(_BaseTile: TileGD = null, _interactable_tiles: Array = [], _info: ObjectInteractTilesGD = null) -> void:
+func setInfo(_BaseTile: TileGD = null, _info: ObjectInteractTilesGD = null) -> void:
 	BaseTile = _BaseTile
-	interactable_tiles = _interactable_tiles
 	info = _info
+	ObjModel = BaseTile.types[1].model
 	
 	for ability in info.abilities:
 		ability.charges = ability.max_charges
@@ -29,8 +31,12 @@ func setInfo(_BaseTile: TileGD = null, _interactable_tiles: Array = [], _info: O
 func _init() -> void:
 	Helper.onCreateChildReferences(self)
 
-func onCondition(_Unit: UnitGD) -> bool: return false
+func onAbilityCondition(Unit: UnitGD, ability: IObjectAbilityInfoGD) -> int:
+	return 0 if Unit.Tile in ability.tiles else 2
 
+	
 # func onTrigger(Unit, trigger, args) -> Triggers when any trigger occurs
 # func onReady() -> Called when initialized
-# func onCondition() -> Finds whether to display all the unit mode boxes
+# func onAbilityCondition() -> Return 0, 1, 2 (Enabled, Disabled, Invisible) for the unit mode boxes dependant on ability
+# func onAbilityTrigger() -> Called when an ability is triggered
+# func onAfterDelay() -> Called after the argdelay of an ability is done

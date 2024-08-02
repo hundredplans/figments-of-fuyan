@@ -6,7 +6,7 @@ extends Resource
 @export var max_charges: int
 @export var ability_type: ABILITY_TYPES
 @export var delay: float
-@export var tiles: Array[Vector4]
+@export var tiles: Array
 var charges: int
 var used: bool
 

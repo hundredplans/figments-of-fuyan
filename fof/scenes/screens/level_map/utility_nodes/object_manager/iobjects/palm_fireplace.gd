@@ -22,8 +22,7 @@ func onTrigger(_Unit: UnitGD, trigger: int, args: TriggerInfoGD) -> void:
 
 var attack_buffed_units: Array = []
 var attack_turns: int = 0
-	
-func onCondition(Unit: UnitGD) -> bool: return Unit.Tile in interactable_tiles
+
 func onAbilityTrigger(Unit: UnitGD, ability: IObjectAbilityInfoGD) -> void:
 	attack_buffed_units = []
 	var units: Array = Units.getAdjacentUnits(BaseTile, 2).filter(func(y: UnitGD): return y.team == Unit.team)

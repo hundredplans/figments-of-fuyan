@@ -33,26 +33,27 @@ func setDestructableObj(Tile: TileGD) -> void:
 		dobject.setInfo(Tile, info)
 
 func onAddInteractableObj(Tile: TileGD) -> void:
-	for object_interactables in interactable_obj_resources:
-		if object_interactables.id == Tile.obj.id:
-			var tiles: Array = object_interactables.tiles
-			for i in range(Tile.obj.rotation):
-				tiles = tiles.map(func(x: Vector4): return Tiles.onRotateAroundCenter(x))
-				
-			tiles = tiles.map(func(x: Vector4): return Tiles.position_to_tile(x + Tile.onTTpos()))
-			tiles = tiles.filter(func(x: TileGD): return x.solid_status == 0)
-			#Tiles.admin_highlight_tiles(tiles)
-			var iobject: IObjectGD = object_interactables.iobject_script.new()
-			interactables.append(iobject)
-			iobject.setInfo(Tile, tiles, object_interactables)
-			return
+	var info: ObjectInteractTilesGD = onFindIObjectInfo(Tile.obj.id)
+	if info == null: return
 	
-func onFindOccupiedIObjects(Unit: UnitGD) -> Array:
-	return interactables.filter(func(x: IObjectGD): return x.onCondition(Unit))
+	var iobject: IObjectGD = info.iobject_script.new()
+	for ability in info.abilities:
+		ability.tiles = ability.tiles.map(func(x: Vector4): return Tiles.onRotatePositionLeft(x, Tile.obj.rotation))
+		ability.tiles = ability.tiles.map(func(x: Vector4): return Tiles.position_to_tile(x + Tile.onTTpos()))
+		ability.tiles = ability.tiles.filter(func(x: TileGD): return x.solid_status == 0)
+		for _Tile in ability.tiles: if _Tile not in iobject.total_tiles: iobject.total_tiles.append(_Tile)
+		
+	interactables.append(iobject)
+	iobject.setInfo(Tile, info)
 
 func onFindIObject(Tile: TileGD) -> IObjectGD:
 	for iobj in interactables:
 		if iobj.BaseTile == Tile: return iobj
+	return null
+
+func onFindIObjectInfo(id: int) -> ObjectInteractTilesGD:
+	for info in interactable_obj_resources:
+		if info.id == id: return info
 	return null
 
 func onFindDObject(Tile: TileGD) -> DObjectGD:
@@ -80,8 +81,8 @@ func onHighlightObj(state: bool, Tile: TileGD) -> void:
 		var material: ShaderMaterial
 		if iobj != null:
 			material = iobject_material
-			if Unit != null and Unit.Tile not in iobj.interactable_tiles:
-				var tiles: Array = iobj.interactable_tiles.filter(func(x: TileGD): return x.Unit == null)
+			if Unit != null and Unit.Tile not in iobj.total_tiles:
+				var tiles: Array = iobj.total_tiles.filter(func(x: TileGD): return x.Unit == null)
 				tiles.sort_custom(func(x: TileGD, y: TileGD): return Tiles.tile_distance(x, Unit.Tile) < Tiles.tile_distance(y, Unit.Tile))
 				
 				if tiles.size() > 0: object_highlight_movement_path = Tiles.onCreatePathHovered(tiles[0])
@@ -119,6 +120,14 @@ func onRemoveIObject(iobject: IObjectGD) -> void:
 		iobject.BaseTile.obj.id = 0
 		iobject.BaseTile.types[1].model = null
 		if "ObjModel" in iobject: iobject.ObjModel.queue_free()
+
+func onRemoveDObject(dobject: DObjectGD) -> void:
+	if dobject != null:
+		destructables.erase(dobject)
+		dobject.BaseTile.obj.id = 0
+		dobject.BaseTile.types[1].model = null
+		dobject.onDestroyed()
+		if "ObjModel" in dobject: dobject.ObjModel.queue_free() 
 
 func onCreateIObject(Tile: TileGD, id: int) -> void:
 	if isTileObj(Tile): onRemoveIObject(onFindIObject(Tile))

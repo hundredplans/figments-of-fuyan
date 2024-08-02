@@ -12,7 +12,7 @@ description = "Allies in a [2] Tile range gain [+0/0/1] for [1] Turn"
 max_charges = 1
 ability_type = 1
 delay = 4.0
-tiles = Array[Vector4]([])
+tiles = [Vector4(1, 0, -1, 0), Vector4(1, -1, 0, 0), Vector4(0, -1, 1, 0), Vector4(-1, 0, 1, 0), Vector4(-1, 1, 0, 0), Vector4(0, 1, -1, 0)]
 
 [sub_resource type="Resource" id="Resource_d2186"]
 resource_local_to_scene = true
@@ -22,7 +22,7 @@ description = "Allies in a [2] Tile range gain [+1/0] for [2] Turns"
 max_charges = 1
 ability_type = 1
 delay = 4.0
-tiles = Array[Vector4]([])
+tiles = [Vector4(1, 0, -1, 0), Vector4(1, -1, 0, 0), Vector4(0, -1, 1, 0), Vector4(-1, 0, 1, 0), Vector4(-1, 1, 0, 0), Vector4(0, 1, -1, 0)]
 
 [sub_resource type="Resource" id="Resource_rh82g"]
 resource_local_to_scene = true
@@ -32,12 +32,11 @@ description = "Allies in a [2] Tile range Heal [1] HEALTH"
 max_charges = 1
 ability_type = 1
 delay = 4.0
-tiles = Array[Vector4]([])
+tiles = [Vector4(1, 0, -1, 0), Vector4(1, -1, 0, 0), Vector4(0, -1, 1, 0), Vector4(-1, 0, 1, 0), Vector4(-1, 1, 0, 0), Vector4(0, 1, -1, 0)]
 
 [resource]
 script = ExtResource("1_jyino")
 id = 9
 name = "Fireplace"
-tiles = Array[Vector4]([Vector4(1, 0, -1, 0), Vector4(1, -1, 0, 0), Vector4(0, -1, 1, 0), Vector4(-1, 0, 1, 0), Vector4(-1, 1, 0, 0), Vector4(0, 1, -1, 0)])
 abilities = Array[ExtResource("1_pql3d")]([SubResource("Resource_yik5x"), SubResource("Resource_d2186"), SubResource("Resource_rh82g")])
 iobject_script = ExtResource("2_whq7e")

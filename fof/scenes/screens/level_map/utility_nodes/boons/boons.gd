@@ -11,11 +11,14 @@ func _ready() -> void:
 func onStartPhaseStart() -> void:
 	const ASCEND_CHANCE: float = 0.1
 	const CHANCE_AT_BOON: float = 0.5
-	for i in range(all_boons.size()):
+	for i in range(1, 5):
 		var roll: bool = randf() < CHANCE_AT_BOON
 		if roll:
 			var ascend: bool = randf() < ASCEND_CHANCE
-			onCreateBoon(all_boons[i], ascend)
+			onCreateBoon(onFindAllBoon(i), ascend)
+
+func onCreateBoonByID(id: int, ascend: bool = false) -> void:
+	onCreateBoon(onFindAllBoon(id), ascend)
 
 func onCreateBoon(boon_info: BoonInfoGD, ascend: bool = false) -> void:
 	if !onBoonExists(boon_info):
