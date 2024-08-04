@@ -23,6 +23,7 @@ func setInfo(_boon: BoonGD) -> void:
 	
 	TrackChargesLabel.visible = boon.boon_info.track_charges
 	Outline.modulate = Helper.rarity_boon_tool_colors[boon.boon_info.rarity]
+	if boon.boon_info.track_charges: onTrackCharges(boon.charges)
 	
 func onAscendBoon() -> void:
 	BoonBox.texture = preload("res://assets/base_game/boons/base_boon/boon_box_ascended.png")

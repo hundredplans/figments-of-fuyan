@@ -1,5 +1,7 @@
 extends BoonGD
 
 var charges: int = 2
-func onTrigger(Unit: UnitGD, trigger: int, _args: TriggerInfoGD) -> void:
-	pass
+func onCustomTrigger(val: int) -> int:
+	charges -= 1
+	if charges == 0: Boons.onRemoveBoon(6)
+	return val * 2

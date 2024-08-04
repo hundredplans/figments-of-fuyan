@@ -7,6 +7,7 @@ var LevelUI: LevelUIGD
 var LevelMap: LevelMapGD
 var Hand: HandGD
 var ActionManager: ActionManagerGD
+var Boons: BoonsGD
 
 var boon_info: BoonInfoGD
 var is_ascended: bool = false
@@ -19,3 +20,8 @@ func setInfo(_boon_info: BoonInfoGD, _is_ascended: bool = false) -> void:
 func getDescription() -> String:
 	if !is_ascended: return boon_info.description
 	else: return boon_info.ascended_description
+
+func _onCustomTrigger(args: Array) -> Variant:
+	var x: Variant = self.onCustomTrigger.callv(args)
+	LevelUI.onTrackBoonCharges(self)
+	return x

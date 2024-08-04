@@ -11,6 +11,7 @@ var Combat: CombatGD
 
 func onUnitTrigger(Unit: UnitGD, trigger: int, args: TriggerInfoGD = null) -> void:
 	GameEffects.onTriggerUnitGameFX(Unit, trigger, args)
+	GameEffects.onTrigger(Unit, trigger, args)
 	Boons.onTrigger(Unit, trigger, args)
 	Tools.onTrigger(Unit, trigger, args)
 	ObjectManager.onTrigger(Unit, trigger, args)
@@ -18,6 +19,7 @@ func onUnitTrigger(Unit: UnitGD, trigger: int, args: TriggerInfoGD = null) -> vo
 	Combat.onTrigger(Unit, trigger, args)
 
 func onGlobalTrigger(trigger: int, args: TriggerInfoGD) -> void:
+	GameEffects.onTrigger(null, trigger, args)
 	Boons.onTrigger(null, trigger, args)
 	Tools.onTrigger(null, trigger, args)
 	ObjectManager.onTrigger(null, trigger, args)

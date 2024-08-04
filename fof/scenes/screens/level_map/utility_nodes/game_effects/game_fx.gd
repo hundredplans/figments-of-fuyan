@@ -5,6 +5,7 @@ var Unit: UnitGD
 var type: int
 var triggers: Array = []
 var custom_triggers: Array = []
+var removed: bool = false
 
 var Combat: CombatGD
 var VFX: VFXGD
@@ -15,8 +16,10 @@ var PlayerManager: PlayerManagerGD
 var Units: UnitsGD
 var GameEffects: GameEffectsGD
 var ActionManager: ActionManagerGD
+var Vision: VisionGD
 
-enum {DAZE, STAGGER, ABILITY_ACTIVE, HELPFUL_HELMET, CHARMING_STANCE, ENERGIZED_BOON, SUGORI_KNIFE}
+enum {DAZE, STAGGER, ABILITY_ACTIVE, HELPFUL_HELMET, CHARMING_STANCE, ENERGIZED_BOON, SUGORI_KNIFE,
+	BLIND, INVISIBLE, TRINKET}
 
 func _init() -> void:
 	Helper.onCreateChildReferences(self)

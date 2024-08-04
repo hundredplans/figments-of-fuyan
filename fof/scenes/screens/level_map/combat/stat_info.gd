@@ -32,7 +32,10 @@ func onApplyModifiers() -> void:
 	if !unmodifiable and Unit.team == 0 and value > 0 and !absolute:
 		if stat_type not in [StatsGD.HEALTH, StatsGD.CURRENT_SPEED]:
 			var boon: BoonGD = Boons.onFindBoon(Boons.onFindAllBoon(3))
-			if boon != null: value = boon.onCustomTrigger(value)
+			if boon != null: value = boon._onCustomTrigger([value])
+		elif stat_type == StatsGD.HEALTH:
+			var boon: BoonGD = Boons.onFindBoon(Boons.onFindAllBoon(6))
+			if boon != null: value = boon._onCustomTrigger([value])
 			
 		if stat_type == StatsGD.HEALTH: value *= Unit.heal_multiplier
 

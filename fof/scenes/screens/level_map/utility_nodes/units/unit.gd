@@ -72,8 +72,8 @@ var TriggerManager: TriggerManagerGD
 var Tool: ToolGD
 var stat_history: Array[StatInfoGD] = []
 
-func _ready() -> void: Helper.onCreateChildReferences(self)
-
+func _ready() -> void:
+	Helper.onCreateChildReferences(self)
 
 func onEquipTool(_Tool: ToolGD) -> void:
 	if Tool != null: onUnequipTool(_Tool)
@@ -122,6 +122,7 @@ func onUnitAwakened(_id: int, _team: int, rot: int, tile: TileGD) -> void:
 	LocalPosition.add_child(Model)
 	
 	VisionRaycast.position.y = height.eye
+	VisionRaycast.collision_mask = 16 + ((64 if team == 0 else 128) if team != 2 else 256)
 	
 	position = tile.position
 	position.y += 0.3 if !Tiles.is_ramp_tile(tile) else 0.9
@@ -140,6 +141,7 @@ func onUnitAwakened(_id: int, _team: int, rot: int, tile: TileGD) -> void:
 	AudioDict = load("res://assets/base_game/cards/cards/" + base_card.folder_name + "/audio.tres")
 	onCreateAbilities()
 	onCreateTraits()
+	setCollisionLayer()
 	
 func onCreateTraits() -> void:
 	var DIR_PATH: String = "res://assets/base_game/cards/cards/" + base_card.folder_name + "/traits/"
@@ -240,11 +242,32 @@ func onSpectatedPlayerPhase(state: bool) -> void:
 		LevelUI.on_update_vision()
 		if turn_status == UnitGD.TURN_USED: Units.setPastPath(self, state)
 		is_spectated = state
-		setCollisionLayerSpectated()
+		setCollisionLayer()
 		PlayerManager.onUnitMode(self, state)
 	
-func setCollisionLayerSpectated() -> void:
-	Model.static_body.collision_layer = 4 if (is_spectated or !visible_state) else 36
+func setCollisionLayer() -> void:
+	var mouse_over_unit: int = 0 if (is_spectated or !visible_state) else 32
+	var is_invisible: int = getInvisibleLayer()
+	if base_card.id == 1:
+		print(mouse_over_unit + is_invisible)
+	Model.static_body.collision_layer = mouse_over_unit + is_invisible
+	
+var is_invisible: bool = false
+func getInvisibleLayer() -> int:
+	var game_fx: GameFXGD = GameEffects.onFindFirstGameFX(self, GameFXGD.INVISIBLE)
+	if isInvisible():
+		if !is_invisible: Vision.onRecalculateOthersVision(self)
+		is_invisible = true
+		return (64 if team == 0 else 128) if team != 2 else 256
+		
+	if is_invisible: Vision.onRecalculateOthersVision(self)
+	is_invisible = false
+	return 448
+	
+func isInvisible() -> bool:
+	var game_fx: GameFXGD = GameEffects.onFindFirstGameFX(self, GameFXGD.INVISIBLE)
+	return game_fx != null and !game_fx.removed and Tiles.onFindUnitAdjacentTiles(self, 1).\
+	filter(func(x: TileGD): return x.Unit != null and x.Unit.team != team).is_empty()
 	
 func onEnemyInRange(state: bool) -> void:
 	StatusManager.onEnemyInRange(self, state)
@@ -366,7 +389,7 @@ func onAddToPastPath(_Tile: TileGD) -> void:
 
 func setVisibleState(state: bool) -> void:
 	visible_state = state
-	setCollisionLayerSpectated()
+	setCollisionLayer()
 
 func onChangeAIStat(ai_stat: String, val: int) -> void:
 	ai[ai_stat] = clamp(ai[ai_stat] + val, 1, 7)
@@ -386,4 +409,3 @@ func isInjured() -> bool:
 
 func hasTrait(trait_id: int) -> bool:
 	return traits.any(func(x: TraitGD): return x.type == trait_id)
-	

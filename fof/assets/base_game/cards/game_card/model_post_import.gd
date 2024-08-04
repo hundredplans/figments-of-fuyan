@@ -24,7 +24,7 @@ func _post_import(scene: Node) -> Node:
 
 func onCreateScene(scene: Node) -> void:
 	var static_body := StaticBody3D.new()
-	static_body.collision_layer = 36
+	static_body.collision_layer = 480
 	static_body.collision_mask = 0
 	static_body.position.y += 1
 	

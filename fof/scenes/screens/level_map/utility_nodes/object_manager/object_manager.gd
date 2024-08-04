@@ -3,6 +3,8 @@ extends Node
 
 var Tiles: TilesGD
 var PlayerManager: PlayerManagerGD
+var Vision: VisionGD
+var LevelMap: LevelMapGD
 
 const OBJECT_INTERACT_TILES: String = "res://scenes/screens/level_map/utility_nodes/object_manager/object_interact_tiles/"
 const DESTRUCTABLES_INFOS_PATH: String = "res://scenes/screens/level_map/utility_nodes/object_manager/dobjects_info/"
@@ -20,6 +22,9 @@ func _ready() -> void:
 	all_destructables_info = Array(DirAccess.get_files_at(DESTRUCTABLES_INFOS_PATH))\
 	.filter(func(x: String): return x.ends_with("tres")).map(func(y: String):\
 	return load(DESTRUCTABLES_INFOS_PATH + y))
+
+func onStartPhaseStart() -> void:
+	LevelMap.input_lock_updated.connect(onInputLockUpdated)
 
 func onFindDestructableInfo(id: int) -> DObjectInfoGD:
 	for info in all_destructables_info: if info.id == id: return info
@@ -64,6 +69,12 @@ func onFindDObject(Tile: TileGD) -> DObjectGD:
 var ActiveTile: TileGD
 var object_highlight_movement_path: MovementPathGD
 
+func onInputLockUpdated() -> void:
+	var state: bool = LevelMap.verifyLock(LevelMapGD.HIGHLIGHT_OBJ)
+	if !state: onHighlightObj(false, ActiveTile)
+	else: onHighlightObj(true, HoveredObjectTile)
+	
+
 func setGlowMaterial(mat: Material) -> void:
 	if ActiveTile.types[1].model != null:
 		for mesh in ActiveTile.types[1].model.meshes:
@@ -72,8 +83,10 @@ func setGlowMaterial(mat: Material) -> void:
 
 var dobject_material: ShaderMaterial = preload("res://assets/materials/tile_materials/object_outline_material/dobject_material.tres")
 var iobject_material: ShaderMaterial = preload("res://assets/materials/tile_materials/object_outline_material/iobject_material.tres")
+var HoveredObjectTile: Node3D
 func onHighlightObj(state: bool, Tile: TileGD) -> void:
-	if state and ActiveTile == null:
+	HoveredObjectTile = Tile
+	if state and ActiveTile == null and Tile in Vision.getTeamVision():
 		var Unit: UnitGD = PlayerManager.getUnitSelected()
 		var iobj: IObjectGD = onFindIObject(Tile)
 		var dobj: DObjectGD = onFindDObject(Tile)

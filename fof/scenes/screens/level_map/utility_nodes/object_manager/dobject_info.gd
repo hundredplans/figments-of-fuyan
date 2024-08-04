@@ -10,3 +10,5 @@ extends Resource
 @export var need_destructive: bool = true
 @export var death_delay: float = 2
 @export var attack_delay: float = 2
+# The top most vertex point
+@export var top_point: float = 0

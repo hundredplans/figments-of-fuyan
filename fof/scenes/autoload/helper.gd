@@ -346,15 +346,17 @@ var _id_to: Array = [
 	"palms/sand_tile_trapped", "palms/sand_tile_reward"],
 	
 	["null", "spawns/spawn_enemy", "spawns/spawn_ally", "spawns/spawn_neutral", 
-	"spawns/spawn_trinket", "palms/ziplines/palm_zipline_equal_long", "palms/ziplines/palm_zipline_equal_short",
+	"palms/sneaky_bush", "palms/ziplines/palm_zipline_equal_long", "palms/ziplines/palm_zipline_equal_short",
 	"palms/ziplines/palm_zipline_high_long", "palms/ziplines/palm_zipline_high_short", "palms/palm_fireplace", 
 	"palms/doors/palm_door", "palms/doors/palm_door_short", "palms/heal_coconut", "palms/coconut_tree",
 	"palms/coconut_effigy_bad", "palms/coconut_effigy_good", "palms/mini_tools/stick", "palms/mini_tools/halfeaten_coconut", "palms/mini_tools/palmleaf",
-	"palms/mini_tools/sand_larva", "palms/mini_tools/bag_of_sand", "palms/sneaky_bush"],
+	"palms/mini_tools/sand_larva", "palms/mini_tools/bag_of_sand", "trinkets/offensive_trinket", "trinkets/defensive_trinket",
+	"trinkets/misc_trinket", "trinkets/debuff_trinket", "trinkets/support_trinket"],
 	
 	["null", "wall", "wooden_wall"],
 	
-	["null", "general/shrub", "general/rock", "palms/palm_tree", "palms/palmrock", "palms/coconut_pile", "palms/coconut_pile_big", "palms/coconut_floor"],
+	["null", "general/shrub", "general/rock", "palms/palm_tree", "palms/palmrock", "palms/coconut_pile", "palms/coconut_pile_big", "palms/coconut_floor",
+	"palms/pebbles", "general/long_rock", "general/circle_rock"],
 	
 	["null"]]
 	

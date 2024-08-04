@@ -50,7 +50,7 @@ func on_load_default_world_state() -> void:
 	on_change_game_phase("StartPhase")
 
 var phase_ordering: Dictionary = {
-	"StartPhase": ["Tiles", "Vision", "SpectateCamera", "Hand", "Units", "LevelUI", "VFX", "StatusManager", "Boons"],
+	"StartPhase": ["Tiles", "Vision", "SpectateCamera", "Hand", "Units", "LevelUI", "VFX", "StatusManager", "Boons", "ObjectManager"],
 	"AfterStartPhase": ["LevelUI", "Deck"],
 	"HandPhase": ["SpectateCamera", "Hand", "VFX", "StatusManager", "LevelUI", "Tools", "Units", "TriggerManager"],
 	"PlayerPhase": ["Hand", "LevelUI", "VFX", "SpectateCamera", "Combat", "PlayerManager"],

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ObjectInteractTilesGD" load_steps=3 format=3 uid="uid://etehfkpfvrrs"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/iobjects/trinket.gd" id="1_7hn2j"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/object_interact_tiles/object_interact_tiles.gd" id="1_yvm7u"]
+
+[resource]
+script = ExtResource("1_yvm7u")
+id = 21
+name = "Offensive Trinket"
+abilities = Array[Resource("res://scenes/screens/level_map/utility_nodes/object_manager/object_interact_tiles/iobject_ability_info.gd")]([])
+iobject_script = ExtResource("1_7hn2j")

@@ -55,6 +55,7 @@ func onProcessUnitVision(Unit: UnitGD, unit_vision: Dictionary, old_ally_vision:
 			VisInfoGD.REGULAR:
 				if Unit.Tile not in _Unit.visible_tiles:
 					_Unit.visible_tiles.append(Unit.Tile)
+					
 func onApplyGreyscale() -> void:
 	var dev := preload("res://static/dev/dev.tres")
 	var ally_vision: Array = getTeamVision()
@@ -62,7 +63,8 @@ func onApplyGreyscale() -> void:
 		for Tile in Tiles.get_children():
 			if Tile in ally_vision: Tiles.on_remove_tile_material(Tile, "Greyscale")
 			else: Tiles.on_set_tile_material(Tile, "Greyscale")
-	for Unit in Units.on_units(TeamRelationGD.new(1)): Unit.Model.setVisible(Unit.Tile in ally_vision)
+	for Unit in Units.on_units(TeamRelationGD.new(1)):
+		Unit.Model.setVisible(!Unit.isInvisible() and Unit.Tile in ally_vision)
 func onApplyVisionModeGreyscale(Unit: UnitGD) -> void:
 	if Unit != null:
 		var ally_vision_crossover: Array = Unit.visible_tiles
@@ -70,7 +72,8 @@ func onApplyVisionModeGreyscale(Unit: UnitGD) -> void:
 			var ally_vision: Array = getTeamVision()
 			ally_vision_crossover = ally_vision_crossover.filter(func(x: TileGD): return x in ally_vision)
 		for _Unit in Units.all_units():
-			setUnitVisionModeOccupy(_Unit, _Unit.Tile in ally_vision_crossover)
+			setUnitVisionModeOccupy(_Unit, (!_Unit.isInvisible() or Unit.team == _Unit.team)\
+			and _Unit.Tile in ally_vision_crossover)
 		
 		for Tile in Tiles.get_children():
 			if Tile in ally_vision_crossover: Tiles.on_remove_tile_material(Tile, "Greyscale")
@@ -132,7 +135,7 @@ func onUnitAwakened(Unit: UnitGD) -> void:
 func onDeathFinished(Unit: UnitGD) -> void:
 	onRecalculateOthersVision(Unit)
 func onRecalculateOthersVision(Unit: UnitGD) -> void:
-	for _Unit in Units.all_units(Unit).filter(func(x: UnitGD): return x.Tile in Unit.visible_tiles):
+	for _Unit in Units.all_units(Unit).filter(func(x: UnitGD): return Tiles.tile_distance(Unit.Tile, x.Tile) <= x.VISION_RANGE):
 		onRecalculateVision(_Unit, false)
 	onApplyGreyscale()
 

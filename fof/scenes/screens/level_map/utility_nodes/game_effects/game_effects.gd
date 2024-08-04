@@ -18,6 +18,9 @@ const GAME_FX_INFO: Dictionary = {
 	GameFXGD.CHARMING_STANCE: "charming_stance",
 	GameFXGD.ENERGIZED_BOON: "energized_boon",
 	GameFXGD.SUGORI_KNIFE: "sugori_knife",
+	GameFXGD.BLIND: "blind",
+	GameFXGD.INVISIBLE: "invisible",
+	GameFXGD.TRINKET: "trinket",
 }
 
 var GAME_FX_OVERRIDE: Array = [GameFXGD.DAZE, GameFXGD.STAGGER]
@@ -52,8 +55,9 @@ func onTriggerGameFX(GameFX: GameFXGD, type: int, Unit: UnitGD = null, args: Tri
 		var remove_triggers: Array = []
 		for Trigger in GameFX.triggers:
 			if Trigger.type == type and (Unit == null or Trigger.Unit == Unit):
-				if args != null: Trigger.callable.call(args)
-				else: Trigger.callable.call()
+				if !Trigger.callable.is_null():
+					if args != null and Trigger.use_bound: Trigger.callable.call(args)
+					else: Trigger.callable.call()
 				remove_triggers.append(onRemoveTrigger.bind(GameFX, Trigger))
 		for remove_callable in remove_triggers: remove_callable.call()
 	
@@ -69,6 +73,7 @@ func onFindRemoveFX(Unit: UnitGD, type: int) -> void:
 				
 func onRemoveFX(GameFX: GameFXGD) -> void:
 	if GameFX in gfx:
+		GameFX.removed = true
 		onTriggerGameFX(GameFX, TriggerGD.REMOVE)
 		gfx.erase(GameFX)
 		
@@ -95,3 +100,7 @@ func onFindAllGameFX(Unit: UnitGD, type: int) -> Array:
 func onDefaultStun(Unit: UnitGD) -> void:
 	addGFX(Unit, GameFXGD.DAZE)
 	addGFX(Unit, GameFXGD.STAGGER)
+
+func onTrigger(Unit: UnitGD, trigger: int, args: TriggerInfoGD) -> void:
+	for GameFX in gfx.filter(func(x: GameFXGD): return x.has_method("onTrigger")):
+		GameFX.onTrigger(Unit, trigger, args)

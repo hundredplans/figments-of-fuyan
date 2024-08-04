@@ -46,7 +46,7 @@ func onAfterChampionPlaced() -> void:
 		LevelMap.on_change_game_phase("AfterStartPhase")
 	
 func on_enemy_unit_enters_vision(Unit: UnitGD, _Unit: UnitGD) -> void:
-	StatusManager.onUpdateEnemyVision(Unit, true)
+	#StatusManager.onUpdateEnemyVision(Unit, true)
 	ActionManager.onEnemyDiscovered()
 	VFX.onUpdateVFXVision(Unit, true)
 		
@@ -54,7 +54,7 @@ func on_enemy_unit_enters_vision(Unit: UnitGD, _Unit: UnitGD) -> void:
 		LevelUI.onEnemySpotted(Unit, _Unit)
 
 func on_enemy_unit_exits_vision(Unit: UnitGD) -> void:
-	StatusManager.onUpdateEnemyVision(Unit, false)
+	#StatusManager.onUpdateEnemyVision(Unit, false)
 	VFX.onUpdateVFXVision(Unit, false)
 
 var ActiveUnit: UnitGD

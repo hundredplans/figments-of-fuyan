@@ -428,13 +428,19 @@ func onFneighbourPathValidEnemy(Unit: UnitGD, fn_path: Array, astar: AStar3D, re
 					fneighbour.AttackTarget = EnemyUnit
 					return true
 			return onDisconnectReconnect(Unit, fn_path, i, reconnections, astar)
+			
 		elif fneighbour.movement_type == FneighbourGD.ATTACK_DOBJECT:
 			var DObject: DObjectGD = ObjectManager.onFindDObject(fneighbour.Tile)
-			if DObject != null:
-				if !DObject.info.need_destructive or Unit.hasTrait(TraitGD.DESTRUCTIVE):
+			if DObject != null and (!DObject.info.need_destructive or Unit.hasTrait(TraitGD.DESTRUCTIVE))\
+			and i == fn_path.size() - 1:
+				var a: float = getUnitAdjustedHeight(fneighbour.Tile)
+				var b: float = a + DObject.info.top_point
+				var c: float = getUnitAdjustedHeight(Unit.Tile)
+				var d: float = c + Unit.height.top
+				if onCalculateHdiff(Unit.Tile, fneighbour.Tile) == 0 or (a <= d and c <= b):
 					fneighbour.AttackTarget = DObject
 					return true
-				return onDisconnectReconnect(Unit, fn_path, i, reconnections, astar)
+			return onDisconnectReconnect(Unit, fn_path, i, reconnections, astar)
 	return true
 
 func onCalculateHdiff(Tile: TileGD, _Tile: TileGD) -> int:
