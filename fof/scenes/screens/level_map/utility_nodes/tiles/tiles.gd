@@ -431,7 +431,7 @@ func onFneighbourPathValidEnemy(Unit: UnitGD, fn_path: Array, astar: AStar3D, re
 			
 		elif fneighbour.movement_type == FneighbourGD.ATTACK_DOBJECT:
 			var DObject: DObjectGD = ObjectManager.onFindDObject(fneighbour.Tile)
-			if DObject != null and (!DObject.info.need_destructive or Unit.hasTrait(TraitGD.DESTRUCTIVE))\
+			if DObject != null and (!DObject.info.need_destructive or Unit.hasTrait(TraitInfoGD.ID.DESTRUCTIVE))\
 			and i == fn_path.size() - 1:
 				var a: float = getUnitAdjustedHeight(fneighbour.Tile)
 				var b: float = a + DObject.info.top_point
@@ -724,3 +724,7 @@ func onRotatePositionLeft(vec: Vector4, rotate_amount: int = 1) -> Vector4:
 	
 func onRotateTileLeft(Tile: TileGD, rotate_amount: int = 1) -> TileGD:
 	return position_to_tile(onRotatePositionLeft(Tile.onTTpos(), rotate_amount))
+
+func onFindSpawnTiles(team: int) -> Array:
+	var tiles: Array = onSpawnTiles(TeamRelationGD.new(team))
+	return tiles.filter(func(x: TileGD): return !Units.unit_by_tile_bool(x))

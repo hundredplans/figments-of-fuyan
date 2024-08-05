@@ -142,13 +142,6 @@ func onUnitAwakened(_id: int, _team: int, rot: int, tile: TileGD) -> void:
 	onCreateAbilities()
 	onCreateTraits()
 	setCollisionLayer()
-	
-func onCreateTraits() -> void:
-	var DIR_PATH: String = "res://assets/base_game/cards/cards/" + base_card.folder_name + "/traits/"
-	if DirAccess.dir_exists_absolute(DIR_PATH):
-		for trait_name in DirAccess.get_files_at(DIR_PATH):
-			var Trait: TraitGD = load(DIR_PATH + trait_name).duplicate()
-			traits.append(Trait)
 
 func onCreateAbilities() -> void:
 	var DIR_PATH: String = "res://assets/base_game/cards/cards/" + base_card.folder_name + "/abilities/"
@@ -248,8 +241,6 @@ func onSpectatedPlayerPhase(state: bool) -> void:
 func setCollisionLayer() -> void:
 	var mouse_over_unit: int = 0 if (is_spectated or !visible_state) else 32
 	var is_invisible: int = getInvisibleLayer()
-	if base_card.id == 1:
-		print(mouse_over_unit + is_invisible)
 	Model.static_body.collision_layer = mouse_over_unit + is_invisible
 	
 var is_invisible: bool = false
@@ -407,5 +398,42 @@ func getToolAbilities() -> Array:
 func isInjured() -> bool:
 	return health < max_health
 
+#region Traits
 func hasTrait(trait_id: int) -> bool:
-	return traits.any(func(x: TraitGD): return x.type == trait_id)
+	return traits.any(func(x: TraitGD): return x.info.id == trait_id)
+
+func onFindTrait(trait_id: int) -> TraitGD:
+	for Trait in traits: if Trait.info.id == trait_id: return Trait
+	return null
+
+func onRemoveTrait(trait_id: int) -> void:
+	var Trait: TraitGD = onFindTrait(trait_id)
+	if Trait != null:
+		traits.erase(Trait)
+		GameEffects.onRemoveFX(Trait.GameFX)
+	
+func onCreateTraits() -> void:
+	var DIR_PATH: String = "res://assets/base_game/cards/cards/" + base_card.folder_name + "/traits/"
+	if DirAccess.dir_exists_absolute(DIR_PATH):
+		for trait_init in Array(DirAccess.get_files_at(DIR_PATH)).map(func(x: String): return load(DIR_PATH + x)):
+			onAddTrait(trait_init)
+
+func onFindTraitInfo(id: int) -> TraitInfoGD:
+	const DIR_PATH: String = "res://assets/base_game/cards/templates/traits/info/"
+	for trait_info in Array(DirAccess.get_files_at(DIR_PATH)).map(func(x: String): return load(DIR_PATH + x)):
+		if trait_info.id == id: return trait_info
+	return null
+
+func onAddTrait(trait_init: TraitInitGD) -> TraitGD:
+	var trait_info: TraitInfoGD = onFindTraitInfo(trait_init.id)
+	if trait_info != null:
+		var resource := Resource.new()
+		resource.script = trait_info.trait_script
+		
+		traits.append(resource)
+		resource.onReady(trait_init)
+		var GameFX: GameFXGD = GameEffects.addGFX(self, trait_info.gfx_id, {"Trait": resource})
+		resource.setInfo(trait_info, GameFX)
+		return resource
+	return null
+#endregion

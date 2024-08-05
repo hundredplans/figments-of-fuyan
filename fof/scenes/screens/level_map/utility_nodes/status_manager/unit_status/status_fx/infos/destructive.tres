@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="StatusFXInfoGD" load_steps=4 format=3 uid="uid://i7tven8y8ex"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/status_fx_info.gd" id="1_w75vt"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/scripts/status_fx_empty.gd" id="2_cmy8p"]
+[ext_resource type="Texture2D" uid="uid://bq4ljc2xa47ew" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/icons/destructive.png" id="3_v7jf1"]
+
+[resource]
+script = ExtResource("1_w75vt")
+id = 15
+texture = ExtResource("3_v7jf1")
+tooltip = "This unit can now destroy certain objects"
+status_fx_script = ExtResource("2_cmy8p")

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="StatusFXInfoGD" load_steps=3 format=3 uid="uid://d3c4pap01g7x3"]
+
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/status_fx_info.gd" id="1_lihyw"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/scripts/trinket_fx.gd" id="2_fv8om"]
+
+[resource]
+resource_local_to_scene = true
+script = ExtResource("1_lihyw")
+id = 14
+tooltip = ""
+status_fx_script = ExtResource("2_fv8om")

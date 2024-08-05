@@ -221,6 +221,7 @@ func onCreateStatusFX(Unit: UnitGD, id: int, AppliedBy := AppliedByGD.new()) -> 
 	status_fx.script = status_info.status_fx_script
 	status_fx.setInfo(Unit, status_info, AppliedBy)
 	add_child(status_fx)
+	status_fx.onReady()
 	
 	Unit.onAddStatusFX(status_fx)
 	for UnitStatus in onFindUnitStatus(Unit, "UnitFieldStatus"): UnitStatus.onCreateStatusFX(status_fx)

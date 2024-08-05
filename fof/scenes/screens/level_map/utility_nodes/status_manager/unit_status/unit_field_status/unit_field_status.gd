@@ -45,22 +45,14 @@ func onSetTopMaterial(_is_top: bool) -> void:
 
 var BASE_MATERIAL_ON_TOP: ShaderMaterial = preload("res://assets/materials/unit_field_status_materials/base_material_unshaded_on_top.tres")
 var BASE_MATERIAL_UNSHADED: ShaderMaterial = preload("res://assets/materials/unit_field_status_materials/base_material_unshaded.tres")
-var GREY_HEART_UNSHADED: ShaderMaterial = preload("res://assets/materials/unit_field_status_materials/grey_unshaded.tres")
-var GREY_HEART_UNSHADED_ON_TOP: ShaderMaterial = preload("res://assets/materials/unit_field_status_materials/grey_unshaded_on_top.tres")
 
 var floating_stats_materials: Dictionary = {}
 func setFloatingStatMaterial() -> void:
 	for child in FloatingStats.get_children():
-		if !(child.name == "Health" and grey_heart):
-			if is_top:
-				child.get_child(0).set_surface_override_material(0, BASE_MATERIAL_ON_TOP)
-			else:
-				child.get_child(0).set_surface_override_material(0, BASE_MATERIAL_UNSHADED)
+		if is_top:
+			child.get_child(0).set_surface_override_material(0, BASE_MATERIAL_ON_TOP)
 		else:
-			if is_top:
-				child.get_child(0).set_surface_override_material(0, GREY_HEART_UNSHADED_ON_TOP)
-			else:
-				child.get_child(0).set_surface_override_material(0, GREY_HEART_UNSHADED)
+			child.get_child(0).set_surface_override_material(0, BASE_MATERIAL_UNSHADED)
 
 	for child in BuffNextTurn.get_children():
 		for grandchild in child.get_children():
@@ -95,16 +87,29 @@ func onCreateBaseStat(val: int, stat_changed: String, color: String = "BASE") ->
 	StatNumber.on_sort_children()
 	BuffNextTurn.get_node(stat_changed).position.x = 0.0 if str(val).length() == 1 else -0.2
 
-var grey_heart: bool = false
 func onCreateStatusFX(status_fx: StatusFXGD) -> void:
 	if status_fx.info.id == StatusFXInfoGD.IDS.ARMOR:
-		grey_heart = true
-		setFloatingStatMaterial()
+		var armor_heart: Node3D = preload("res://scenes/screens/level_map/floating_stats/armor_health.glb").instantiate()
+		onReplaceStat(armor_heart, FloatingStats.get_node("Health"))
+	elif status_fx.info.id == StatusFXInfoGD.IDS.DESTRUCTIVE:
+		var attack_hammer: Node3D = preload("res://scenes/screens/level_map/floating_stats/attack_hammer.glb").instantiate()
+		onReplaceStat(attack_hammer, FloatingStats.get_node("Attack"))
+
+func onReplaceStat(new_stat_model: Node3D, old_stat_model: Node3D) -> void:
+	new_stat_model.position = old_stat_model.position
+	old_stat_model.queue_free()
+	FloatingStats.remove_child(old_stat_model)
+	new_stat_model.name = old_stat_model.name
+	FloatingStats.add_child(new_stat_model)
+	setFloatingStatMaterial()
 
 func onRemoveStatusFX(status_fx: StatusFXGD) -> void:
 	if status_fx.info.id == StatusFXInfoGD.IDS.ARMOR:
-		grey_heart = false
-		setFloatingStatMaterial()
+		var heart: Node3D = preload("res://scenes/screens/level_map/floating_stats/health.glb").instantiate()
+		onReplaceStat(heart, FloatingStats.get_node("Health"))
+	elif status_fx.info.id == StatusFXInfoGD.IDS.DESTRUCTIVE:
+		var attack: Node3D = preload("res://scenes/screens/level_map/floating_stats/attack.glb").instantiate()
+		onReplaceStat(attack, FloatingStats.get_node("Attack"))
 
 var buff_colors: Dictionary = {
 	"Attack": "",

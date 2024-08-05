@@ -101,7 +101,7 @@ func onTriggerNextAction(action: ActionGD) -> void:
 		LevelMap.setInputLock(LevelMap.UNIT_ACTION)
 		
 	Vision.on_vision_mode_set(0)
-	action.onTrigger()
+	await action.onTrigger()
 	
 	if action.is_visible:
 		if action.delay.delay > 0: await get_tree().create_timer(action.delay.delay).timeout

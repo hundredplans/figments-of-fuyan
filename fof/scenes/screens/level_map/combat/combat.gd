@@ -124,9 +124,9 @@ func onAfterAbilityFrontDelay(args: Dictionary) -> void:
 		ActionManager.onAddAction(DelayActionGD.new(SpectateCamera.onSpectate.bind(OriginalSpectateUnit), true))
 		OriginalSpectateUnit = null
 		
-func onFindTrait(Unit: UnitGD, type: int) -> TraitGD:
+func onFindTrait(Unit: UnitGD, id: int) -> TraitGD:
 	for Trait in Unit.traits:
-		if Trait.type == type: return Trait
+		if Trait.info.id == id: return Trait
 	return null
 		
 func onFindAbilities(Unit: UnitGD, type: String) -> Array:
@@ -204,8 +204,8 @@ func onCalculateDamage(Damagee: UnitGD, Attacker: UnitGD) -> int:
 	return onArmor(Damagee, Attacker.attack + Attacker.extra_damage)
 
 func onArmor(Unit: UnitGD, damage: int) -> int:
-	var armor: TraitGD = onFindTrait(Unit, TraitGD.ARMOR)
-	if armor != null: damage = max(damage - armor.armor, 0)
+	var armor: TraitGD = onFindTrait(Unit, TraitInfoGD.ID.ARMOR)
+	if armor != null: damage = max(damage - armor.armor, 0); armor.damage_blocked.emit()
 	return damage
 
 func onHealAbility(Healee: UnitGD, Healer: UnitGD, heal: int) -> bool:
@@ -303,3 +303,4 @@ func onAura(_Unit: UnitGD, trigger: int, args: TriggerInfoGD) -> void:
 
 func onTrigger(Unit: UnitGD, trigger: int, args: TriggerInfoGD = null) -> void:
 	onAura(Unit, trigger, args)
+	

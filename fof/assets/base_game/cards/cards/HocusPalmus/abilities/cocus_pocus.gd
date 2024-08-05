@@ -3,12 +3,8 @@ extends TargetAbilityGD
 @export var HEAL: int = 2
 func onRefreshAbility() -> void:
 	for ability in Unit.abilities.filter(func(x: AbilityGD): return x.ability_name == "HocusPalmusAura"):
-		if ability.affected_units.size() > 0 and !onFindSpawnTiles().is_empty():
+		if ability.affected_units.size() > 0 and !Tiles.onFindSpawnTiles(Unit.team).is_empty():
 			AbilityTiles.can_affect = [ability.affected_units[0].Tile]
-	
-func onFindSpawnTiles() -> Array:
-	var tiles: Array = Tiles.onSpawnTiles(TeamRelationGD.new(Unit.team))
-	return tiles.filter(func(x: TileGD): return !Units.unit_by_tile_bool(x))
 	
 func onTargetAbility() -> void:
 	charges -= 1
@@ -29,7 +25,7 @@ func onCocusPocus(_Unit: UnitGD) -> void:
 	ActionManager.onAddAction(DelayActionGD.new(Callable(), is_visible, DelayGD.new(delay)), ActionManagerGD.PUSH)
 	
 func onCocusPocusInitialFinished(_Unit: UnitGD) -> void:
-	var _tiles: Array = onFindSpawnTiles()
+	var _tiles: Array = Tiles.onFindSpawnTiles(Unit.team)
 	await Combat.onTeleport(_Unit, _tiles[randi() % _tiles.size()])
 	VFX.onVisibleCocusPocus(_Unit)
 	if _Unit.team == 1 and _Unit.Tile in Vision.getTeamVision(): SpectateCamera.onSpectate(_Unit)
@@ -40,10 +36,10 @@ func onCocusPocusFinished(_Unit: UnitGD) -> void:
 
 func onTargetAbilityConditionAI() -> TileGD:
 	if !AbilityTiles.can_affect.is_empty():
-		var Tile: TileGD = AbilityTiles.can_affect[0]
+		var _Tile: TileGD = AbilityTiles.can_affect[0]
 		var _Unit: UnitGD = Units.unit_by_tile(Tile)
 		if Combat.onCanBeKilledAtFullSpeed(_Unit):
-			if _Unit.turn_status == UnitGD.TURN_USED: return Tile
+			if _Unit.turn_status == UnitGD.TURN_USED: return _Tile
 			elif _Unit.turn_status == UnitGD.TURN_UNUSED and !Combat.onCanKillAtFullSpeed(_Unit):
-				return Tile
+				return _Tile
 	return null

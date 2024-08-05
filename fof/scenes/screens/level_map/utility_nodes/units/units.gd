@@ -47,7 +47,6 @@ func onUnitAwakenedProcess(Unit: UnitGD, Tile: TileGD, Tool: ToolGD = null) -> v
 	Unit.on_arrive(Unit.team == 0 or Unit.getVisibleEnemies().size() > 0)
 	Unit.finished_awakening = true
 	Combat.onArrive(Unit)
-	onArrive(Unit)
 	PlayerManager.onSetupAllyPassedTurns(Unit)
 	PlayerManager.onRefreshAbilitySelect()
 	await get_tree().process_frame
@@ -55,12 +54,6 @@ func onUnitAwakenedProcess(Unit: UnitGD, Tile: TileGD, Tool: ToolGD = null) -> v
 	AIManager.getDangerList(Unit, all_units())
 	Unit.onEquipTool(Tool)
 	TriggerManager.onUnitTrigger(Unit, TriggerGD.AWAKEN)
-	
-func onArrive(Unit: UnitGD) -> void:
-	var armor: TraitGD = Combat.onFindTrait(Unit, TraitGD.ARMOR)
-	if armor != null:
-		var status_fx: StatusFXGD = StatusManager.onCreateStatusFX(Unit, StatusFXInfoGD.IDS.ARMOR, AppliedByGD.new(AppliedByGD.TRAIT))
-		status_fx.onAfterSetInfo(armor.armor)
 		
 func onMassUnitsAwakened(tiles: Array, enemy_ids: Array) -> Array:
 	var units: Array = []
