@@ -21,6 +21,8 @@ const GAME_FX_INFO: Dictionary = {
 	GameFXGD.BLIND: "blind",
 	GameFXGD.INVISIBLE: "invisible",
 	GameFXGD.TRINKET: "trinket",
+	GameFXGD.ARMOR: "armor",
+	GameFXGD.DESTRUCTIVE: "destructive",
 }
 
 var GAME_FX_OVERRIDE: Array = [GameFXGD.DAZE, GameFXGD.STAGGER]

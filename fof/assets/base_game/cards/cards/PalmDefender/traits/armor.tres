@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="ArmorGD" load_steps=2 format=3 uid="uid://ca6um8hu30q6m"]
+[gd_resource type="Resource" script_class="ArmorInitGD" load_steps=2 format=3 uid="uid://bfjfqbwqvw4kb"]
 
-[ext_resource type="Script" path="res://assets/base_game/cards/templates/traits/armor.gd" id="1_kpayp"]
+[ext_resource type="Script" path="res://assets/base_game/cards/templates/traits/init/armor_init.gd" id="1_n1ogn"]
 
 [resource]
-resource_local_to_scene = true
-script = ExtResource("1_kpayp")
+script = ExtResource("1_n1ogn")
 armor = 1
+id = 0
+gfx_id = 0

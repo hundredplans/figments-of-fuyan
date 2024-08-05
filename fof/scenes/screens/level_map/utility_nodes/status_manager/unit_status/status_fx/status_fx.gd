@@ -25,3 +25,5 @@ func _onAfterSetInfo() -> void:
 	StatusManager.onRefreshUnitStatus(Unit)
 
 func onRemoveSelf() -> void: StatusManager.onRemoveStatusFX(self)
+func getIcon() -> Texture2D: return info.texture
+func onReady() -> void: pass

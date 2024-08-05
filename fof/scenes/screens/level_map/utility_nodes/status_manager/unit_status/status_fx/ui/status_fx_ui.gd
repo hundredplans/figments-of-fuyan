@@ -15,7 +15,7 @@ func onIsMouseInUI(x: bool) -> void:
 	
 func setInfo(_status_fx: StatusFXGD) -> void:
 	status_fx = _status_fx
-	IconButton.texture_normal = status_fx.info.texture
+	IconButton.texture_normal = status_fx.getIcon() 
 	setHighlightUnit(status_fx.HighlightUnit)
 
 func setHighlightUnit(Unit: UnitGD) -> void: HighlightUnit = Unit

@@ -135,7 +135,6 @@ func after_ready_connect_screen(screen: Control):
 	
 func on_change_fileloader_state(i: int) -> void: fileloader_state = i
 
-
 func on_screen_change_animation_state(x: bool) -> void:
 	screen_change_animation_active = x
 	BackArrow.disabled = x
