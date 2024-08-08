@@ -30,7 +30,10 @@ func _post_import(scene: Node) -> Node:
 		scene.rotation_degrees = loaded_scene.rotation_degrees
 		
 	for child in getChildrenRecursive(scene):
-		if child is MeshInstance3D: scene.meshes.append(child)
+		if child is MeshInstance3D:
+			scene.meshes.append(child)
+			child.mesh.owner
+			child.mesh.surface_set_material(0, preload("res://assets/materials/base_materials/base_material.tres"))
 		elif child is StaticBody3D: scene.bodies.append(child)
 	
 	for key in FOLDER_NAME_BEGINS_WITH:

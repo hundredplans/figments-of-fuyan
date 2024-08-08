@@ -9,6 +9,7 @@ func onReady() -> void:
 		var id: int = Unit.base_card.id
 		var action := ArgDelayActionGD.new(Units.onUnitAwakened.bind(id, Unit.team, SpawnTile.tile.rotation, SpawnTile), onAfterDelay, Unit.isVis(), DelayGD.new(), true)
 		ActionManager.onAddAction(action, ActionManagerGD.PUSH)
+	onRemoveGameFX()
 
 func onAfterDelay(_Unit: UnitGD) -> void:
 	if _Unit != null:
@@ -17,5 +18,5 @@ func onAfterDelay(_Unit: UnitGD) -> void:
 		var AppliedBy := AppliedByGD.new(AppliedByGD.TRINKET, self)
 		var attack := StatInfoGD.new(_Unit, AppliedBy, StatsGD.ATTACK, 1, -1, true, false)
 		var health := StatInfoGD.new(_Unit, AppliedBy, StatsGD.BOTH_HEALTH, 1, -1, true, false)
-		Units.changeStats(StatsGD.new([attack, health]))
+		Units.changeStats([attack, health])
 		

@@ -80,7 +80,7 @@ func onTransformArg(x: Variant) -> Variant:
 	return x
 	
 func onPhase() -> void:
-	LevelMap.on_advance_game_phase()
+	LevelMap.onAdvanceGamePhase()
 	
 func onHand() -> void:
 	var card_options: Array = range(7, 25)
@@ -91,6 +91,10 @@ func onHand() -> void:
 	for i in range(3):
 		var deck_card: DeckCardGD = Deck.on_create_card(card_options[randi() % card_options.size()], 0, [])
 		Deck.on_force_draw_card(deck_card)
+	
+func onMute(Tile: TileGD) -> void:
+	var Unit: UnitGD = Units.unit_by_tile(Tile)
+	GameEffects.addGFX(Unit, GameFXGD.MUTE	)
 	
 func onCboon(id: int) -> void:
 	var boon_info: BoonInfoGD = Boons.onFindAllBoon(id)

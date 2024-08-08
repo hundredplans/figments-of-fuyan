@@ -92,20 +92,23 @@ func onAnimationFinished(ani_name: String) -> void:
 var materials: Array = []
 const DEFAULT_MULT_VALUE: float = 1
 func onCreateBaseMaterials() -> void:
-	if Unit != null:
-		var next_pass: Material = load("res://assets/materials/unit_material/unit_material_outline.tres").duplicate()
-		if Unit.team == 0: next_pass.set_shader_parameter("green_multiply", DEFAULT_MULT_VALUE)
-		else: next_pass.set_shader_parameter("red_multiply", DEFAULT_MULT_VALUE)
-		for i in mesh.mesh.get_surface_count():
-			var unit_material: Material = load("res://assets/materials/unit_material/unit_material.tres").duplicate()
-			var tx: ImageTexture = load(mesh.get_active_material(i).albedo_texture.resource_path)
-			
-			unit_material.next_pass = next_pass
-			unit_material.set_shader_parameter("texture_albedo", tx)
-			mesh.set_surface_override_material(i, unit_material)
-			materials.append(unit_material)
-			
-		onSetOutlineProperties(false)
+	pass
+	#if Unit != null:
+		#var next_pass: Material = load("res://assets/materials/unit_material/unit_material_outline.tres").duplicate()
+		#if Unit.team == 0: next_pass.set_shader_parameter("green_multiply", DEFAULT_MULT_VALUE)
+		#else: next_pass.set_shader_parameter("red_multiply", DEFAULT_MULT_VALUE)
+		#for i in mesh.mesh.get_surface_count():
+			#var unit_material: Material = load("res://assets/materials/unit_material/unit_material.tres").duplicate()
+		#
+			#var img: Image = ImageTexture.create_from_image(img)
+			#var tx: ImageTexture = load(mesh.get_active_material(i).albedo_texture.resource_path)
+			#
+			#unit_material.next_pass = next_pass
+			#unit_material.set_shader_parameter("texture_albedo", tx)
+			#mesh.set_surface_override_material(i, unit_material)
+			#materials.append(unit_material)
+			#
+		#onSetOutlineProperties(false)
 		
 func onSetOutlineProperties(is_spectating_or_enemy_in_range: bool) -> void:
 	var team_color: Color

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://ccsnhg1yt1lia"]
+[gd_scene load_steps=17 format=3 uid="uid://ccsnhg1yt1lia"]
 
 [ext_resource type="Script" path="res://assets/base_game/cards/game_card/game_card.gd" id="1_5oh34"]
 [ext_resource type="Texture2D" uid="uid://1fasb544tbjl" path="res://assets/base_game/cards/game_card/art/area_background/1.png" id="2_shb8o"]
@@ -14,6 +14,7 @@
 [ext_resource type="FontFile" uid="uid://7k4xd8s0oed2" path="res://assets/UI/roboto/roboto.ttf" id="12_6qxeh"]
 [ext_resource type="FontFile" uid="uid://bjgvp4yvesp1k" path="res://assets/UI/open_sans/OpenSans-ExtraBold.ttf" id="13_x6swl"]
 [ext_resource type="FontFile" uid="uid://dnq2ul3ia4hy3" path="res://assets/UI/lora/Lora-Bold.ttf" id="14_t8x33"]
+[ext_resource type="Texture2D" uid="uid://xx64pdo8niug" path="res://assets/base_game/cards/game_card/art/text/cross_out.png" id="15_cb2u0"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_23xl3"]
 font = ExtResource("14_t8x33")
@@ -220,6 +221,11 @@ offset_bottom = 227.0
 label_settings = SubResource("LabelSettings_23xl3")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="MuteSprite" type="Sprite2D" parent="Text"]
+visible = false
+position = Vector2(131, 287)
+texture = ExtResource("15_cb2u0")
 
 [connection signal="mouse_entered" from="Art/CardButton" to="." method="_on_front_card_mouse_entered"]
 [connection signal="mouse_exited" from="Art/CardButton" to="." method="_on_front_card_mouse_exited"]

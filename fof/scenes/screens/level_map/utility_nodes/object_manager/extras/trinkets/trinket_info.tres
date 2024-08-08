@@ -1,7 +1,8 @@
-[gd_resource type="Resource" load_steps=10 format=3 uid="uid://d0837npwkvwe1"]
+[gd_resource type="Resource" load_steps=12 format=3 uid="uid://d0837npwkvwe1"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/extras/trinkets/offensive/offensive_trinket1.gd" id="1_07mw7"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/extras/trinkets/trinket_info.gd" id="1_eumr2"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/extras/trinkets/debuff/debuff_trinket1.gd" id="1_iv061"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/extras/trinkets/defensive/defensive_trinket1.gd" id="1_siw6n"]
 [ext_resource type="Texture2D" uid="uid://fcq1aigmd4rl" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/icons/OffensiveTrinket.png" id="1_yr7kh"]
 [ext_resource type="Texture2D" uid="uid://b3vq4dqds4wtu" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/icons/DefensiveTrinket.png" id="2_pvuic"]
@@ -9,12 +10,13 @@
 [ext_resource type="Texture2D" uid="uid://do6nbx1xcfxkk" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/icons/DebuffTrinket.png" id="4_8oewb"]
 [ext_resource type="Texture2D" uid="uid://rn1vxtp26768" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/icons/SupportTrinket.png" id="5_sci0c"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/extras/trinkets/misc/misc_trinket1.gd" id="7_lt014"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/extras/trinkets/support/support_trinket1.gd" id="10_u6807"]
 
 [resource]
 script = ExtResource("1_eumr2")
 offensive_trinkets = Array[GDScript]([ExtResource("1_07mw7")])
 defensive_trinkets = Array[GDScript]([ExtResource("1_siw6n")])
 misc_trinkets = Array[GDScript]([ExtResource("7_lt014")])
-debuff_trinkets = Array[GDScript]([])
-support_trinkets = Array[GDScript]([])
+debuff_trinkets = Array[GDScript]([ExtResource("1_iv061")])
+support_trinkets = Array[GDScript]([ExtResource("10_u6807")])
 icons = Array[Texture2D]([ExtResource("1_yr7kh"), ExtResource("2_pvuic"), ExtResource("3_y4mog"), ExtResource("4_8oewb"), ExtResource("5_sci0c")])

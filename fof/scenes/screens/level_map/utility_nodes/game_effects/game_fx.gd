@@ -19,7 +19,7 @@ var ActionManager: ActionManagerGD
 var Vision: VisionGD
 
 enum {DAZE, STAGGER, ABILITY_ACTIVE, HELPFUL_HELMET, CHARMING_STANCE, ENERGIZED_BOON, SUGORI_KNIFE,
-	BLIND, INVISIBLE, TRINKET, ARMOR, DESTRUCTIVE}
+	BLIND, INVISIBLE, TRINKET, ARMOR, DESTRUCTIVE, MUTE}
 
 func _init() -> void:
 	Helper.onCreateChildReferences(self)

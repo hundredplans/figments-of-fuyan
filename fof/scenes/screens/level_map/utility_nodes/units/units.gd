@@ -18,7 +18,7 @@ var StatusManager: StatusManagerGD
 var TriggerManager: TriggerManagerGD
 var ActionManager: ActionManagerGD
 var Hand: HandGD
-
+var NeutralManager: NeutralManagerGD
 
 @onready var Postmortem: Node3D = $Postmortem
 @onready var FieldedUnits: Node3D = $FieldedUnits
@@ -39,6 +39,7 @@ func onUnitAwakenedLoad(id: int, team: int, rot: int, tile: TileGD) -> UnitGD:
 		Unit.Model.unit_fell.connect(onUnitFell.bind(Unit))
 		StatusManager.onUnitAwakened(Unit)
 		Unit.onChangeTile(tile)
+		NeutralManager.onUnitAwakened(Unit)
 		return Unit
 	return null
 	
@@ -55,10 +56,10 @@ func onUnitAwakenedProcess(Unit: UnitGD, Tile: TileGD, Tool: ToolGD = null) -> v
 	Unit.onEquipTool(Tool)
 	TriggerManager.onUnitTrigger(Unit, TriggerGD.AWAKEN)
 		
-func onMassUnitsAwakened(tiles: Array, enemy_ids: Array) -> Array:
+func onMassUnitsAwakened(tiles: Array, enemy_ids: Array, team: int = 1) -> Array:
 	var units: Array = []
 	for i in range(tiles.size()):
-		units.append(onUnitAwakenedLoad(enemy_ids[i], 1, tiles[i].obj.rotation, tiles[i]))
+		units.append(onUnitAwakenedLoad(enemy_ids[i], team, tiles[i].obj.rotation, tiles[i]))
 	for i in range(tiles.size()): onUnitAwakenedProcess(units[i], tiles[i])
 	return units
 
@@ -70,6 +71,14 @@ func onStartPhaseStart() -> void:
 	for i in range(enemy_tiles.size()):
 		enemy_spawns.append(allowed_spawns[randi() % allowed_spawns.size()])
 	onMassUnitsAwakened(enemy_tiles, enemy_spawns)
+	
+	var neutral_tiles: Array = Tiles.on_is_type_get_tiles("Neutral", "obj")
+	var neutral_spawns: Array = []
+	allowed_spawns = range(27, 30)
+	
+	for i in range(neutral_tiles.size()):
+		neutral_spawns.append(allowed_spawns[randi() % allowed_spawns.size()])
+	onMassUnitsAwakened(neutral_tiles, neutral_spawns, 2)
 
 func unit_by_tile_team_bool(Tile: TileGD, team: int) -> bool:
 	return FieldedUnits.get_children().any(func(x: UnitGD): return x.Tile == Tile and x.team == team)

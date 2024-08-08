@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://oolv461paipv"]
+[gd_scene load_steps=22 format=3 uid="uid://oolv461paipv"]
 
 [ext_resource type="Script" path="res://scenes/screens/level_map/level_map.gd" id="1_2p706"]
 [ext_resource type="PackedScene" uid="uid://cnk5eh0ojgtqs" path="res://scenes/screens/level_map/utility_nodes/spectate_camera/spectate_camera.tscn" id="2_jcp7i"]
@@ -20,6 +20,7 @@
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/trigger_manager/trigger_manager.gd" id="17_xilwm"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/object_manager.gd" id="18_8nphx"]
 [ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/unique_tiles/unique_tiles.gd" id="20_lpfi5"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/neutral_manager.gd" id="21_rn1l8"]
 
 [node name="LevelMap" type="Node3D"]
 script = ExtResource("1_2p706")
@@ -58,8 +59,6 @@ script = ExtResource("9_l7gyj")
 [node name="GameEffects" type="Node" parent="."]
 script = ExtResource("13_185r7")
 
-[node name="Trinkets" type="Node" parent="."]
-
 [node name="Boons" type="Node" parent="."]
 script = ExtResource("12_hl0m8")
 
@@ -91,6 +90,9 @@ script = ExtResource("17_xilwm")
 
 [node name="ObjectManager" type="Node" parent="."]
 script = ExtResource("18_8nphx")
+
+[node name="NeutralManager" type="Node" parent="."]
+script = ExtResource("21_rn1l8")
 
 [node name="UniqueTiles" type="Node" parent="."]
 script = ExtResource("20_lpfi5")

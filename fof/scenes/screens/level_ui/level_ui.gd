@@ -21,6 +21,7 @@ var PlayerManager: PlayerManagerGD
 var StatusManager: StatusManagerGD
 var ActionManager: ActionManagerGD
 var ObjectManager: ObjectManagerGD
+var GameEffects: GameEffectsGD
 
 @onready var EnemySpottedArrows: Control = %EnemySpottedArrows
 @onready var DrawCard: Control = %DrawCard
@@ -196,7 +197,7 @@ func setSelfModulate(mod: float) -> void:
 
 func onPassUnitTurnButtonPressed():
 	if PlayerManager.unpassed_turns.is_empty() or LevelMap.game_phase == "HandPhase":
-		LevelMap.on_advance_game_phase()
+		LevelMap.onAdvanceGamePhase()
 	else:
 		PlayerManager.on_pass_unit_turn_pressed()
 
@@ -361,7 +362,7 @@ func onHandPhaseStart() -> void:
 		on_pin_hand_box_panel()
 		LevelMap.setInputLock(LevelMap.HAND_LOCK)
 		on_pass_unit_turn_button_state(false)
-	else: LevelMap.on_advance_game_phase()
+	else: LevelMap.onAdvanceGamePhase()
 	
 	if !is_first_hand_phase:
 		onChangePhaseIcon("HandPhase")
@@ -398,6 +399,7 @@ func onCreateTileHoveredGameCard(Unit: UnitGD) -> void:
 	TileHoveredGameCard = preload("res://scenes/screens/level_ui/tile_hovered_game_card.tscn").instantiate()
 	add_child(TileHoveredGameCard)
 	TileHoveredGameCard.setUnit(Unit)
+	TileHoveredGameCard.GameCard.setMute(GameEffects.onGameFXExists(Unit, GameFXGD.MUTE))
 	StatusManager.onCreateTileHoveredUnitStatus(Unit)
 	onMoveTileHoveredGameCard()
 	

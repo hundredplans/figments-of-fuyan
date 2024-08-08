@@ -32,7 +32,8 @@ func onAIPhaseStart() -> void:
 func onBeginMoveAIUnits() -> void:
 	active_movement_order = onCreateMovementOrder()
 	invisible_movement_tracker = []
-	onMoveNextAIUnit()
+	
+	if !active_movement_order.is_empty(): onMoveNextAIUnit()
 
 func onCreateMovementOrder() -> Array:
 	var units: Array = Units.on_units(TeamRelationGD.new(1))
@@ -51,7 +52,7 @@ func onMoveNextAIUnit() -> void:
 	else:
 		if invisible_movement_tracker.all(func(x: bool): return x):
 			await get_tree().create_timer(0.8).timeout
-		LevelMap.on_change_game_phase("AIEndTurnPhase")
+		LevelMap.onAdvanceGamePhase()
 
 func onAfterTargetAbility(Unit: UnitGD) -> void:
 	if !Unit.is_dead:

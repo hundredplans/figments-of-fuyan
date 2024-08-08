@@ -27,6 +27,8 @@ func setInfo(_BaseTile: TileGD = null, _info: ObjectInteractTilesGD = null) -> v
 		ability.charges = ability.max_charges
 	
 	if has_method("onReady"): call("onReady")
+	if ObjModel.has_node("AnimationPlayer"):
+		ObjModel.get_node("AnimationPlayer").play("Idle")
 
 func _init() -> void:
 	Helper.onCreateChildReferences(self)

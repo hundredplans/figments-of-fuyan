@@ -24,6 +24,9 @@ func setInfo(_BaseTile: TileGD, _info: DObjectInfoGD) -> void:
 	info = _info
 	health = info.max_health
 	ObjModel = BaseTile.types[1].model
+	if ObjModel.has_node("AnimationPlayer"):
+		var ani_player: AnimationPlayer = ObjModel.get_node("AnimationPlayer")
+		ani_player.play("Idle")
 	
 	onEnableAdjacentAttacks()
 	
@@ -40,13 +43,12 @@ func onEnableAdjacentAttacks() -> void:
 				fneighbour.is_solid = false
 
 func onDestroyed() -> void:
-	for info in original_fneighbours:
-		var ofn = info.old_fneighbour
-		info.old_fneighbour.AttackTarget = info.fneighbour.AttackTarget
-		info.old_fneighbour.Tile = info.fneighbour.Tile
+	for _info in original_fneighbours:
+		_info.old_fneighbour.AttackTarget = _info.fneighbour.AttackTarget
+		_info.old_fneighbour.Tile = _info.fneighbour.Tile
 		
-		info.Tile.fneighbours.erase(info.fneighbour)
-		info.Tile.fneighbours.append(info.old_fneighbour)
+		_info.Tile.fneighbours.erase(_info.fneighbour)
+		_info.Tile.fneighbours.append(_info.old_fneighbour)
 
 func _onAttacked(DMGInfo: DMGInfoGD) -> void:
 	if health != -1 and !is_dead:

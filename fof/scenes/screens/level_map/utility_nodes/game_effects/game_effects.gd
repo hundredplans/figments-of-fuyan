@@ -23,6 +23,7 @@ const GAME_FX_INFO: Dictionary = {
 	GameFXGD.TRINKET: "trinket",
 	GameFXGD.ARMOR: "armor",
 	GameFXGD.DESTRUCTIVE: "destructive",
+	GameFXGD.MUTE: "mute",
 }
 
 var GAME_FX_OVERRIDE: Array = [GameFXGD.DAZE, GameFXGD.STAGGER]

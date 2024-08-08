@@ -1,19 +1,17 @@
-[gd_scene load_steps=4 format=3 uid="uid://8md20kxsrfbh"]
+[gd_scene load_steps=3 format=3 uid="uid://8md20kxsrfbh"]
 
-[ext_resource type="PackedScene" uid="uid://b3j0h5w386yi" path="res://assets/base_game/cards/cards/SellusPalmus/model.tscn" id="1_4gq47"]
-[ext_resource type="PackedScene" uid="uid://c6wgmukwxbcef" path="res://assets/models/tiles/palms/sand_tile.tscn" id="2_u4ypr"]
+[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/trinket_vfx/trinket_vfx.gd" id="1_scbew"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_on44y"]
-
-[node name="TrinketVFX" type="Node3D"]
-
-[node name="Model" parent="." instance=ExtResource("1_4gq47")]
-
-[node name="CSGSphere3D" type="CSGSphere3D" parent="."]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 1, 0.643349, 0)
+[sub_resource type="SphereMesh" id="SphereMesh_gds5e"]
+radius = 0.1
+height = 0.2
 radial_segments = 8
 rings = 4
-smooth_faces = false
-material = SubResource("StandardMaterial3D_on44y")
 
-[node name="sand_tile" parent="." instance=ExtResource("2_u4ypr")]
+[node name="TrinketVFX" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+script = ExtResource("1_scbew")
+
+[node name="Sphere" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.85, 0, 0)
+mesh = SubResource("SphereMesh_gds5e")

@@ -12,8 +12,8 @@ func onReady() -> void:
 	else: onRemoveGameFX()
 
 func getDescription() -> String:
-	var description: String = super()
-	return description.replace("[X]", "[" + str(charges) + "]")
+	var desc: String = super()
+	return desc.replace("[X]", "[" + str(charges) + "]")
 
 func onDamageBlocked() -> void:
 	charges -= 1

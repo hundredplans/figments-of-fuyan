@@ -19,6 +19,7 @@ func getTrinketScript(id: int) -> TrinketEffectGD:
 	var random: int = randi() % arr.size()
 	var Trinket := TrinketEffectGD.new(id, random)
 	Trinket.script = arr[random]
+	Trinket.trinket_id = id
 	return Trinket
 
 func getIcon(id: int) -> Texture2D:

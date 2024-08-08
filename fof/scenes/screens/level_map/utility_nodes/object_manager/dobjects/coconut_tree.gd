@@ -28,7 +28,6 @@ func onAttackedBegin(DMGInfo: DMGInfoGD) -> void:
 	var adjacent_tiles: Array = Tiles.getAdjacentTiles(BaseTile, 1, true)
 	adjacent_tiles = adjacent_tiles.filter(func(x: TileGD): return BaseTile.w + 3 >= x.w)
 	var top_tiles: Array = Tiles.getTopTiles(adjacent_tiles)
-	var Attacker: UnitGD = DMGInfo.getAttacker()
 	
 	fell_count = 0
 	for Tile in top_tiles.filter(func(x: TileGD): return x.solid_status == 0):

@@ -29,6 +29,7 @@ Vector3(0, 1, -1)
 const IS_TYPE: Dictionary = {
 	"Enemy": 1,
 	"Spawn": 2,
+	"Neutral": 3,
 }
 
 func cube_directions_by_distance(x: Vector3, distance: int) -> Vector3:
@@ -413,7 +414,7 @@ func onFneighbourPathValidDistance(Unit: UnitGD, fn_path: Array, astar: AStar3D,
 		return true
 	return onDisconnectReconnect(Unit, fn_path, fn_path.size() - 1, reconnections, astar)
 
-func onFneighbourPathValidEnemy(Unit: UnitGD, fn_path: Array, astar: AStar3D, reconnections: Array, movement_path: MovementPathGD, ally_vision: Array) -> bool:
+func onFneighbourPathValidEnemy(Unit: UnitGD, fn_path: Array, astar: AStar3D, reconnections: Array, _movement_path: MovementPathGD, ally_vision: Array) -> bool:
 	for i in range(fn_path.size()):
 		var fneighbour: FneighbourGD = fn_path[i]
 		if fneighbour.Tile.Unit != null: # if this can have ally units add a check for the team

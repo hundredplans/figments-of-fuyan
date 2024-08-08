@@ -47,7 +47,7 @@ func on_load_default_world_state() -> void:
 	var references: Array = get_children() + [GameState, Tiles, LevelUI, LevelUI.Console, Lights, ActionManager, self]
 	Helper.setUtilityNodesPaths(references)
 	add_child(LoadedLevel)
-	on_change_game_phase("StartPhase")
+	onChangeGamePhaseAfterDelay("StartPhase")
 
 var phase_ordering: Dictionary = {
 	"StartPhase": ["Tiles", "Vision", "SpectateCamera", "Hand", "Units", "LevelUI", "VFX", "StatusManager", "Boons", "ObjectManager"],
@@ -56,27 +56,31 @@ var phase_ordering: Dictionary = {
 	"PlayerPhase": ["Hand", "LevelUI", "VFX", "SpectateCamera", "Combat", "PlayerManager"],
 	"PlayerEndTurnPhase": ["TriggerManager", "LevelUI", "Vision", "StatusManager", "PlayerManager"],
 	"AIPhase": ["Combat", "TriggerManager", "Units", "LevelUI", "StatusManager", "Tools", "AIManager"],
-	"AIEndTurnPhase": ["TriggerManager", "Units", "StatusManager"]
+	"AIEndTurnPhase": ["TriggerManager", "Units", "StatusManager"],
+	"NeutralPhase": ["NeutralManager"],
+	"NeutralEndTurnPhase": [],
 }
 func onTriggerPhaseStart(phase: String) -> void:
 	var nodes: Array = phase_ordering[phase].map(func(x: String): \
 	return Helper.references[Helper.references.map(func(y: Node): return y.name).find(x)])
 	phase = phase.insert(0, "on")
 	phase += "Start"
-	for node in nodes: node.call(phase)
+	
+	for node in nodes:
+		node.call(phase)
 
-func on_change_game_phase(phase: String) -> void:
-	if phase != "StartPhase":
-		ActionManager.onAddAction(DelayActionGD.new(onChangeGamePhaseAfterDelay.bind(phase), true), ActionManagerGD.APPEND)
-	else:
-		onChangeGamePhaseAfterDelay(phase)
+var loading_phase: String
+var phase_queue: Array = []
+func onStartChangePhase(phase: String) -> void:
+	loading_phase = phase
+	ActionManager.onAddAction(DelayActionGD.new(onChangeGamePhaseAfterDelay.bind(phase), true, DelayGD.new(0.01)), ActionManagerGD.APPEND)
 	
 func onChangeGamePhaseAfterDelay(phase: String) -> void:
 	game_phase = phase
 	var dev := preload("res://static/dev/dev.tres")
 	onTriggerPhaseStart(phase)
 	match phase:
-		"StartPhase": if dev.god_start: on_advance_game_phase()
+		"StartPhase": if dev.god_start: onStartChangePhase("AfterStartPhase")
 		"AfterStartPhase":
 			if dev.god_start:
 				var Unit: UnitGD = await Units.onUnitAwakened(1, 0, 0, Tiles.onSpawnTiles()[0])
@@ -85,19 +89,21 @@ func onChangeGamePhaseAfterDelay(phase: String) -> void:
 				Units.changeStats(StatInfoGD.new(Unit, AppliedBy, StatsGD.ATTACK, 50))
 				Units.changeStats(StatInfoGD.new(Unit, AppliedBy, StatsGD.BOTH_SPEED, 5))
 				SpectateCamera.onSpectate(Unit)
+			onStartChangePhase("HandPhase")
 		"HandPhase": turns += 1
-		"PlayerEndTurnPhase": on_advance_game_phase()
+		"PlayerEndTurnPhase": onAdvanceGamePhase()
 		"AIPhase": turns += 1
-		"AIEndTurnPhase": on_advance_game_phase()
+		"AIEndTurnPhase": onAdvanceGamePhase()
+		"NeutralPhase": pass
+		"NeutralEndTurnPhase": onAdvanceGamePhase()
 
-func on_advance_game_phase() -> void:
-	match game_phase:
-		"StartPhase": on_change_game_phase("AfterStartPhase")
-		"HandPhase": on_change_game_phase("PlayerPhase")
-		"PlayerPhase": on_change_game_phase("PlayerEndTurnPhase")
-		"PlayerEndTurnPhase": on_change_game_phase("AIPhase")
-		"AIPhase": on_change_game_phase("AIEndTurnPhase")
-		"AIEndTurnPhase": on_change_game_phase("HandPhase")
+var phase_order: Array = ["HandPhase", "PlayerPhase", "PlayerEndTurnPhase", "AIPhase", "AIEndTurnPhase", "NeutralPhase", "NeutralEndTurnPhase"]
+func onAdvanceGamePhase() -> void:
+	var index: int = phase_order.find(game_phase)
+	if index != -1:
+		if index == phase_order.size() - 1: index = 0
+		else: index += 1
+		onStartChangePhase(phase_order[index])
 
 enum { # Enum for the different types of lock
 	NULL_LOCK,

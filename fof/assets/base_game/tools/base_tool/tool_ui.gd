@@ -18,9 +18,8 @@ func onCreateTooltip() -> void:
 	if mouse_state and tooltip == null:
 		tooltip = preload("res://scenes/screens/level_ui/base_tooltip/base_tooltip.tscn").instantiate()
 		var text: String = tool.tool_info.display_name + ": " + tool.getDescription()
-		tooltip.setInfo(text)
 		add_child(tooltip)
-		tooltip.setPosition()
+		tooltip.setInfo(text)
 		
 func onRemoveTooltip() -> void:
 	if tooltip != null: tooltip.queue_free()

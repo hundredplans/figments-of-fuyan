@@ -49,7 +49,7 @@ func onLastWill(Deather: UnitGD, AppliedBy: AppliedByGD) -> void:
 	
 	for ability in Deather.abilities.duplicate():
 		Deather.onRemoveAbility(ability)
-	TriggerManager.onUnitTrigger(Deather, TriggerGD.LAST_WILL)
+	TriggerManager.onUnitTrigger(Deather, TriggerGD.LAST_WILL, DeathTriggerInfoGD.new(AppliedBy))
 	Deather.finished_last_will = true
 	
 func onWhenHealed(Healee: UnitGD, healInfo: HealInfoGD, heal_amount: int):

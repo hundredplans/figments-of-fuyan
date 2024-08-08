@@ -114,7 +114,7 @@ func onTriggerNextAction(action: ActionGD) -> void:
 		
 	is_triggered = false
 	if !(unit_actions.is_empty()): onTriggerNextAction(unit_actions[0])
-	elif LevelMap.game_phase == "AIPhase": AIManager.onMoveNextAIUnit()
+	elif LevelMap.loading_phase == "AIPhase": AIManager.onMoveNextAIUnit()
 	else:
 		var Unit: UnitGD = PlayerManager.getUnitSelected()
 		LevelMap.setInputLock(LevelMap.UNIT_ACTION_DISABLE, true)

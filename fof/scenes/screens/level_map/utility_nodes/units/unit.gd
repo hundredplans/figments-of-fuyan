@@ -240,12 +240,11 @@ func onSpectatedPlayerPhase(state: bool) -> void:
 	
 func setCollisionLayer() -> void:
 	var mouse_over_unit: int = 0 if (is_spectated or !visible_state) else 32
-	var is_invisible: int = getInvisibleLayer()
-	Model.static_body.collision_layer = mouse_over_unit + is_invisible
+	var is_invis: int = getInvisibleLayer()
+	Model.static_body.collision_layer = mouse_over_unit + is_invis
 	
 var is_invisible: bool = false
 func getInvisibleLayer() -> int:
-	var game_fx: GameFXGD = GameEffects.onFindFirstGameFX(self, GameFXGD.INVISIBLE)
 	if isInvisible():
 		if !is_invisible: Vision.onRecalculateOthersVision(self)
 		is_invisible = true
@@ -418,22 +417,29 @@ func onCreateTraits() -> void:
 		for trait_init in Array(DirAccess.get_files_at(DIR_PATH)).map(func(x: String): return load(DIR_PATH + x)):
 			onAddTrait(trait_init)
 
-func onFindTraitInfo(id: int) -> TraitInfoGD:
+func onFindTraitInfo(_id: int) -> TraitInfoGD:
 	const DIR_PATH: String = "res://assets/base_game/cards/templates/traits/info/"
 	for trait_info in Array(DirAccess.get_files_at(DIR_PATH)).map(func(x: String): return load(DIR_PATH + x)):
-		if trait_info.id == id: return trait_info
+		if trait_info.id == _id: return trait_info
 	return null
 
+func onQuickAddTrait(_id: int) -> void:
+	var trait_init := TraitInitGD.new()
+	@warning_ignore("int_as_enum_without_cast")
+	trait_init.id = _id
+	onAddTrait(trait_init)
+
 func onAddTrait(trait_init: TraitInitGD) -> TraitGD:
-	var trait_info: TraitInfoGD = onFindTraitInfo(trait_init.id)
-	if trait_info != null:
-		var resource := Resource.new()
-		resource.script = trait_info.trait_script
-		
-		traits.append(resource)
-		resource.onReady(trait_init)
-		var GameFX: GameFXGD = GameEffects.addGFX(self, trait_info.gfx_id, {"Trait": resource})
-		resource.setInfo(trait_info, GameFX)
-		return resource
+	if !onFindTrait(trait_init.id):
+		var trait_info: TraitInfoGD = onFindTraitInfo(trait_init.id)
+		if trait_info != null:
+			var resource := Resource.new()
+			resource.script = trait_info.trait_script
+			
+			traits.append(resource)
+			resource.onReady(trait_init)
+			var GameFX: GameFXGD = GameEffects.addGFX(self, trait_info.gfx_id, {"Trait": resource})
+			resource.setInfo(trait_info, GameFX)
+			return resource
 	return null
 #endregion

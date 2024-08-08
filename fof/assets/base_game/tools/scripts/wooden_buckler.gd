@@ -1,5 +1,6 @@
 extends ToolGD
 
+var vfx: Node3D
 func onTrigger(_Unit: UnitGD, trigger: int, _args: TriggerInfoGD) -> void:
 	if _Unit == Unit and (!is_ascended and trigger == TriggerGD.WHEN_STRUCK) or (is_ascended and trigger == TriggerGD.REVENGE and _Unit == Unit):
 		Units.changeStats(StatInfoGD.new(Unit, AppliedByGD.new(AppliedByGD.TOOL, self), StatsGD.ATTACK, 1))

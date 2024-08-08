@@ -29,7 +29,6 @@ func onCreateTooltip() -> void:
 	if mouse_state and tooltip == null:
 		tooltip = preload("res://scenes/screens/level_ui/base_tooltip/base_tooltip.tscn").instantiate()
 		add_child(tooltip)
-		tooltip.setPosition()
 		tooltip.setInfo(status_fx.getTooltip())
 		
 func onRemoveTooltip() -> void:

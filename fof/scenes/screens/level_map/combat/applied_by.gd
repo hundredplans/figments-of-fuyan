@@ -10,6 +10,10 @@ func _init(_type: int = 0, _Applier: Variant = null) -> void:
 	Applier = _Applier
 	type = _type
 
+func getUnit() -> UnitGD:
+	if Applier is UnitGD: return Applier
+	return null
+
 enum {
 	GAME_EVENT,
 	ABILITY,

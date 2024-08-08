@@ -47,4 +47,3 @@ func is_not_queued_for_deletion(deck_card: DeckCardGD) -> bool: return !deck_car
 
 func onAfterStartPhaseStart() -> void:
 	for i in range(AFTER_PHASE_START_DRAW_COUNT): on_draw_card()
-	LevelMap.on_change_game_phase("HandPhase")

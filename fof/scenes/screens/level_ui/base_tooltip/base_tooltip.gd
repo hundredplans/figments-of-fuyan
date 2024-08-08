@@ -2,7 +2,8 @@ extends Control
 
 var OFFSET: Vector2 = Vector2(30, -43)
 func setInfo(text: String) -> void:
-	$Label.text = text
+	$Label.text = $Label.on_apply_text_processing(text)
+	setPosition()
 	if global_position.y < 50: OFFSET.y += 50
 	if global_position.x > 1700: OFFSET.x -= (size.x + 50)
 

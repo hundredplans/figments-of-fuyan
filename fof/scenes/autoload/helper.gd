@@ -278,7 +278,6 @@ func return_bitwise(i: int, total: Vector2i) -> bool:
 	return false
 
 func getTileFromCollision(collision: Node) -> TileGD:
-	var save_colllision: Node3D = collision
 	collision = collision.get_node("../../..")
 	while(true):
 		if collision is TileGD: return collision

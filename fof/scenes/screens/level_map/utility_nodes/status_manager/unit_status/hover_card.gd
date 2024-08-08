@@ -10,10 +10,13 @@ var Unit: UnitGD
 var HoverCard: Control
 var is_hover: bool = false
 
+var GameEffects: GameEffectsGD
+
 func _ready():
 	ArtPop.mouse_entered.connect(on_initiate_hover_card)
 	ArtPop.mouse_exited.connect(on_remove_hover_card)
 	Buffs.visible = false
+	Helper.onCreateChildReferences(self)
 
 func on_initiate_hover_card() -> void:
 	is_hover = true
@@ -23,6 +26,7 @@ func on_initiate_hover_card() -> void:
 		GameCard.set_info(Unit.base_card)
 		HoverCard = GameCard
 		add_child(GameCard)
+		GameCard.setMute(GameEffects.onGameFXExists(Unit, GameFXGD.MUTE))
 		global_position = get_global_mouse_position() + HOVER_CARD_OFFSET
 		Buffs.visible = true
 	

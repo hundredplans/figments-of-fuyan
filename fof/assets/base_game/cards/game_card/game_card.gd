@@ -16,6 +16,9 @@ var is_hover: bool = false
 @export var CardButton: TextureButton
 @export var ToolUI: Control
 
+@onready var MuteSprite: Sprite2D = $Text/MuteSprite
+@onready var GameEffects: GameEffectsGD
+
 var tool: ToolGD
 
 func setText(text: String) -> void:
@@ -32,7 +35,7 @@ func set_info(_base_card: Resource) -> void:
 	
 	Art.get_node("CardButton").texture_normal = load("res://assets/base_game/cards/game_card/art/rarity/" + str(base_card.rarity) + ".png")
 	Helper.create_button_clickmask(Art.get_node("CardButton"))
-			
+	
 	$Art/ArtPop.texture = load("res://assets/base_game/cards/cards/" + base_card.folder_name + "/art_pop.png")
 
 func _on_front_card_mouse_entered():
@@ -56,3 +59,6 @@ func onEquipTool(_tool: ToolGD) -> void:
 	
 func onIsMouseInUI(x: bool) -> void:
 	mouse_in_ui.emit(x)
+
+func setMute(state: bool) -> void:
+	MuteSprite.visible = state

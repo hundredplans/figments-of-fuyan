@@ -32,7 +32,7 @@ func on_card_placed(hand_card: HandCardGD, Tile: TileGD) -> void:
 	var Unit: UnitGD = await Units.onUnitAwakened(hand_card.id, 0, Tile.obj.rotation, Tile, hand_card.tool)
 	Unit.was_placed = true
 	TriggerManager.onUnitTrigger(Unit, TriggerGD.CARD_PLACED, CardPlacedTriggerInfoGD.new(hand_card))
-	if skip_result: LevelMap.on_advance_game_phase()
+	if skip_result: LevelMap.onAdvanceGamePhase()
 	
 	SpectateCamera.onSpectate(Unit)
 	if Unit.rarity != 7:
@@ -43,7 +43,7 @@ func on_card_placed(hand_card: HandCardGD, Tile: TileGD) -> void:
 	
 func onAfterChampionPlaced() -> void:
 	if LevelMap.game_phase == "StartPhase":
-		LevelMap.on_change_game_phase("AfterStartPhase")
+		LevelMap.onStartChangePhase("AfterStartPhase")
 	
 func on_enemy_unit_enters_vision(Unit: UnitGD, _Unit: UnitGD) -> void:
 	#StatusManager.onUpdateEnemyVision(Unit, true)
@@ -86,7 +86,7 @@ func on_pass_unit_turn() -> void:
 		if unpassed_turns.is_empty():
 			ActiveUnit = null
 			LevelUI.on_pass_unit_turn_button_state(true)
-			LevelMap.on_advance_game_phase()
+			LevelMap.onAdvanceGamePhase()
 		elif LevelMap.game_phase == "PlayerPhase":
 			SpectateCamera.onSpectate(Units.onFindClosestUnitFromUnits(ActiveUnit, unpassed_turns))
 			ActiveUnit = null
@@ -165,7 +165,7 @@ func onDeathFinished(Deathee: UnitGD, AppliedBy: AppliedByGD) -> void:
 				SpectateCamera.onSpectate(unit_distances[0].Unit)
 		on_remove_unit_turn(Deathee)
 		if Deathee.team == 0 and unpassed_turns.is_empty():
-			ActionManager.onAddAction(DelayActionGD.new(LevelMap.on_advance_game_phase, false))
+			ActionManager.onAddAction(DelayActionGD.new(LevelMap.onAdvanceGamePhase, false))
 			
 	if Deathee.team == 0: graveyard_cards.append(Deathee.base_card)
 	
