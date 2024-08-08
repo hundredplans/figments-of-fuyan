@@ -1,0 +1,48 @@
+[gd_scene load_steps=7 format=3 uid="uid://cjw212umfin4s"]
+
+[ext_resource type="Script" path="res://scenes/globals/main/main.gd" id="1_vaj5h"]
+[ext_resource type="PackedScene" uid="uid://6pss8e1ltd03" path="res://scenes/menus/main_menu/main_menu_ui.tscn" id="2_2t13x"]
+[ext_resource type="PackedScene" uid="uid://co50h3m1exlnk" path="res://scenes/menus/main_menu/main_menu_world.tscn" id="3_ra6ly"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_aunax"]
+sky_top_color = Color(0.454902, 0.670588, 1, 1)
+sky_horizon_color = Color(0.964706, 0.976471, 1, 1)
+ground_bottom_color = Color(0.454902, 0.670588, 1, 1)
+ground_horizon_color = Color(0.964706, 0.976471, 1, 1)
+
+[sub_resource type="Sky" id="Sky_f74i4"]
+sky_material = SubResource("ProceduralSkyMaterial_aunax")
+
+[sub_resource type="Environment" id="Environment_kttxm"]
+background_mode = 2
+sky = SubResource("Sky_f74i4")
+ssr_enabled = true
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_read_sky_light = false
+glow_enabled = true
+glow_blend_mode = 0
+
+[node name="Main" type="Node"]
+script = ExtResource("1_vaj5h")
+main_menu_ui_path = ExtResource("2_2t13x")
+main_menu_world_path = ExtResource("3_ra6ly")
+
+[node name="World" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="World"]
+environment = SubResource("Environment_kttxm")
+
+[node name="MainMenuWorld" parent="World" instance=ExtResource("3_ra6ly")]
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="MainMenuUI" parent="UI" instance=ExtResource("2_2t13x")]
+layout_mode = 1
