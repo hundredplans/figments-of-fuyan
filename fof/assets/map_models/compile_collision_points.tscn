@@ -1,0 +1,46 @@
+[gd_scene load_steps=8 format=3 uid="uid://bkyfy7ih6ptpk"]
+
+[ext_resource type="Script" path="res://assets/map_models/compile_collision_points.gd" id="1_i3aky"]
+[ext_resource type="Script" path="res://scenes/world/movement_camera.gd" id="2_q11yj"]
+[ext_resource type="PackedScene" uid="uid://0jw2kop4gosk" path="res://assets/map_models/decorations/tiles/palms/coconut_floor.glb" id="2_uhox1"]
+[ext_resource type="Texture2D" uid="uid://babcdv6gnw330" path="res://base_game/areas/AshboneCitadel/sky.hdr" id="4_lj05i"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_lfe8o"]
+panorama = ExtResource("4_lj05i")
+
+[sub_resource type="Sky" id="Sky_gtcxy"]
+sky_material = SubResource("PanoramaSkyMaterial_lfe8o")
+
+[sub_resource type="Environment" id="Environment_oc05e"]
+background_mode = 2
+sky = SubResource("Sky_gtcxy")
+
+[node name="CompileCollisionPoints" type="Node3D"]
+script = ExtResource("1_i3aky")
+packed_object = ExtResource("2_uhox1")
+
+[node name="PointRaycast" type="RayCast3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.17427, 2.31072)
+collision_mask = 12
+debug_shape_custom_color = Color(0, 0, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
+script = ExtResource("2_q11yj")
+
+[node name="CollisionPoints" type="Node3D" parent="."]
+unique_name_in_owner = true
+
+[node name="SaveButton" type="Button" parent="."]
+offset_left = 1536.0
+offset_top = 904.0
+offset_right = 1908.0
+offset_bottom = 1065.0
+theme_override_font_sizes/font_size = 80
+text = "Save"
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_oc05e")
+
+[connection signal="pressed" from="SaveButton" to="." method="_on_save_button_pressed"]
