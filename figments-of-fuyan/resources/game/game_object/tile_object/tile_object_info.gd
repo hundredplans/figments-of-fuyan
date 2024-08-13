@@ -1,30 +1,17 @@
 @tool
-class_name TileObjectInfo
-extends Resource
-
-@export var id: int
-@export var name: String
+class_name TileObjectInfoGD
+extends GameObjectInfoGD
 
 # Locks the rotation to the 6 base axis
 @export var lock_rotation: bool
 # Locks to only be placeable on tiles
 @export var lock_tile: bool
-
-@export_group("Scripts")
-# The base script to generate data
-@export var data: GDScript
-# The script for the logic
-@export var gdscript: GDScript
-@export_group("")
-
-@export var models: Array[PackedScene]
-@export var points: Array[Array]
 @export var solids: Array[bool]
 
 #region SettingID
 func _init() -> void:
 	if Engine.is_editor_hint():
-		var DIR_PATH: String = "res://resources/game/tile_object/info/"
+		var DIR_PATH: String = "res://resources/game/game_object/tile_object/info/"
 		var tile_object_infos: Array = Array(DirAccess.get_files_at(DIR_PATH)).\
 		filter(func(x: String): return x.ends_with(".tres")).\
 		map(func(x: String): return load(DIR_PATH + x).id)
@@ -46,14 +33,14 @@ func getNonConsecutive(arr: Array) -> int:
 #endregion
 #region Data
 
-func createData() -> TileObjectData:
+func createData() -> TileObjectDataGD:
 	var resource := Resource.new()
 	resource.script = data
 	resource.id = id
 	return resource
 #endregion
 #region Models
-func getModel(loaded_data: TileObjectData = createData()) -> TileObjectGD:
+func getModel(loaded_data: TileObjectDataGD = createData()) -> TileObjectGD:
 	var variation: int = loaded_data.variation
 	var packed_scene: PackedScene = models[variation]
 	var _model: Node3D = packed_scene.instantiate()

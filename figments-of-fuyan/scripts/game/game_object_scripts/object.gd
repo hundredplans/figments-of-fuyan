@@ -14,8 +14,8 @@ func onCoordsToPosition(coords: Vector4i) -> Vector3:
 func setMapPosition(_position: Vector3) -> void:
 	position = _position
 
-func setPosition(coords := Vector4i.ZERO, point := Vector3.ZERO) -> void:
-	if info.lock_tile: setMapPosition(onCoordsToPosition(coords))
+func setPosition(coords := Vector4i.ZERO, point := Vector3.ZERO, force_tile_lock: bool = false) -> void:
+	if info.lock_tile or force_tile_lock: setMapPosition(onCoordsToPosition(coords))
 	else: position = point
 	data.position = position
 	data.height = coords.w

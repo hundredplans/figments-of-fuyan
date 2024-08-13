@@ -1,14 +1,14 @@
 class_name TileObjectGD
-extends Node3D
+extends GameObjectGD
 
 # Lower = faster
 const SLOW_ROTATE_SPEED: int = 50
 const FAST_ROTATE_SPEED: int = 15
 
-var info: TileObjectInfo
-var data: TileObjectData
+var info: TileObjectInfoGD
+var data: TileObjectDataGD
 
-func setInfo(_info: TileObjectInfo, _data: TileObjectData) -> void:
+func setInfo(_info: TileObjectInfoGD, _data: TileObjectDataGD) -> void:
 	info = _info
 	data = _data
 	setDefaultCollisionLayers()

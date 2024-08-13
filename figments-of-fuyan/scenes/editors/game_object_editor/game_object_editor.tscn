@@ -1,0 +1,62 @@
+[gd_scene load_steps=7 format=3 uid="uid://drkpi0yj8xo4l"]
+
+[ext_resource type="Script" path="res://scenes/editors/game_object_editor/game_object_editor.gd" id="1_k2f2p"]
+[ext_resource type="Script" path="res://scripts/addons/movement_camera.gd" id="2_h88la"]
+[ext_resource type="Script" path="res://scenes/editors/game_object_editor/points_editor.gd" id="3_80wr2"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_s2aal"]
+sky_top_color = Color(0.454902, 0.670588, 1, 1)
+sky_horizon_color = Color(0.964706, 0.976471, 1, 1)
+ground_bottom_color = Color(0.454902, 0.670588, 1, 1)
+ground_horizon_color = Color(0.964706, 0.976471, 1, 1)
+
+[sub_resource type="Sky" id="Sky_f74i4"]
+sky_material = SubResource("ProceduralSkyMaterial_s2aal")
+
+[sub_resource type="Environment" id="Environment_im38j"]
+background_mode = 2
+sky = SubResource("Sky_f74i4")
+ssr_enabled = true
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_read_sky_light = false
+glow_enabled = true
+glow_blend_mode = 0
+
+[node name="GameObjectEditor" type="Node"]
+script = ExtResource("1_k2f2p")
+TILE_OBJECTS_PATH = "res://resources/game/game_object/tile_object/info/"
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 14.0
+offset_right = 304.0
+offset_bottom = 1070.0
+
+[node name="GameObjectsContainer" type="VBoxContainer" parent="UI/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="World" type="Node3D" parent="."]
+
+[node name="FreeLookCamera" type="Camera3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 5)
+script = ExtResource("2_h88la")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="World"]
+environment = SubResource("Environment_im38j")
+
+[node name="PointsEditor" type="Node3D" parent="World"]
+script = ExtResource("3_80wr2")
+
+[node name="Ray" type="RayCast3D" parent="World/PointsEditor"]
+collision_mask = 504

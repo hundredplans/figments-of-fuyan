@@ -1,21 +1,23 @@
-@tool
-class_name LevelInfo
+class_name LevelInfoGD
 extends Resource
 
+@export_group("Automatic")
 @export var id: int
 @export var name: String
 @export var area_id: int
-@export var data: Array[TileObjectData]
+@export var data: Array[TileObjectDataGD]
+@export_group("")
 
 # Timeout in seconds
+@export var trinket_amount: int = 0
+@export var enemy_spawn_amount: int = 0
+@export var ally_spawn_amount: int = 0
 @export_range(0, 10000, 60) var timeout: int = 1200
 
 #region SettingID
 func setAutoID() -> void:
 	var DIR_PATH: String = "res://resources/game/levels/"
-	var tile_object_infos: Array = Array(DirAccess.get_files_at(DIR_PATH)).\
-	filter(func(x: String): return x.ends_with(".tres")).\
-	map(func(x: String): return load(DIR_PATH + x).id)
+	var tile_object_infos: Array = Helper.getResourcesRecursive(DIR_PATH, LevelInfoGD).map(func(x: LevelInfoGD): return x.id)
 	
 	tile_object_infos.sort_custom(func(x: int, y: int): return x < y)
 	
@@ -24,7 +26,7 @@ func setAutoID() -> void:
 	else: id += 1
 	notify_property_list_changed()
 		
-func setInfo(_name: String = "", _area_id: int = 1, _data: Array[TileObjectData] = [], _id: int = 0) -> void:
+func setInfo(_name: String = "", _area_id: int = 1, _data: Array[TileObjectDataGD] = [], _id: int = 0) -> void:
 	id = _id
 	if id == 0: setAutoID()
 	name = _name

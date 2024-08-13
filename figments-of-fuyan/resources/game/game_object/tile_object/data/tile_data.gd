@@ -1,11 +1,11 @@
 class_name TileDataGD
-extends TileObjectData
+extends TileObjectDataGD
 
 @export var coords: Vector4i
 # The bottom height for Tile Fill
 @export var tile_fill: bool = false
 
-func getDuplicate() -> TileObjectData:
+func getDuplicate() -> TileObjectDataGD:
 	return TileDataGD.new(id, coords, variation, rotation)
 
 func _init(_id: int = 0, _coords := Vector4i.ZERO, _variation: int = 0, _rotation: float = 0) -> void:
@@ -14,7 +14,7 @@ func _init(_id: int = 0, _coords := Vector4i.ZERO, _variation: int = 0, _rotatio
 	variation = _variation
 	rotation = _rotation
 
-func onLoad(parent: Node3D = null, info: TileObjectInfo = Helper.getResourcesRecursiveID(INFO_PATH, TileInfo, id)) -> TileGD:
+func onLoad(parent: Node3D = null, info: TileObjectInfoGD = Helper.getResourcesRecursiveID(INFO_PATH, TileObjectInfoGD, id)) -> TileGD:
 	var model: TileGD = info.getModel(self)
 	model.setRotation(rotation)
 	model.setCoords(coords)

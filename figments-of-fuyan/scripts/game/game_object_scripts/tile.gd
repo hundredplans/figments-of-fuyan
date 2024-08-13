@@ -21,7 +21,7 @@ func setCoords(coords: Vector4i) -> void:
 	data.coords = coords
 	setMapPosition()
 
-func setPosition(coords: Vector4i, __: Vector3) -> void:
+func setPosition(coords: Vector4i, __ := Vector3.ZERO, ___ := false) -> void:
 	setCoords(coords)
 
 func setMapPosition() -> void:

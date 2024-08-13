@@ -1,8 +1,8 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=8 format=3 uid="uid://my6oyoblnuvm"]
+[gd_resource type="Resource" script_class="ObjectInfoGD" load_steps=8 format=3 uid="uid://my6oyoblnuvm"]
 
-[ext_resource type="Script" path="res://resources/game/tile_object/data/object_data.gd" id="1_2t4li"]
-[ext_resource type="Script" path="res://scripts/game/tile_object_scripts/object.gd" id="1_4p8m5"]
-[ext_resource type="Script" path="res://resources/game/tile_object/object_info.gd" id="1_kbahc"]
+[ext_resource type="Script" path="res://resources/game/game_object/tile_object/data/object_data.gd" id="1_2t4li"]
+[ext_resource type="Script" path="res://scripts/game/game_object_scripts/object.gd" id="1_4p8m5"]
+[ext_resource type="Script" path="res://resources/game/game_object/tile_object/object_info.gd" id="1_kbahc"]
 [ext_resource type="PackedScene" uid="uid://bnj05m017ae8a" path="res://assets/models/game/objects/spawns/spawn_ally.glb" id="2_t0w0g"]
 [ext_resource type="PackedScene" uid="uid://beha0dd3k3ait" path="res://assets/models/game/objects/spawns/spawn_enemy.glb" id="4_g8i4p"]
 [ext_resource type="PackedScene" uid="uid://dbssvvp82qfme" path="res://assets/models/game/objects/spawns/spawn_neutral.glb" id="5_cmsye"]
@@ -11,8 +11,6 @@
 [resource]
 script = ExtResource("1_kbahc")
 tile_coords = Array[Array]([])
-id = 2
-name = "Spawn"
 lock_rotation = false
 lock_tile = true
 data = ExtResource("1_2t4li")
@@ -20,3 +18,8 @@ gdscript = ExtResource("1_4p8m5")
 models = Array[PackedScene]([ExtResource("2_t0w0g"), ExtResource("4_g8i4p"), ExtResource("5_cmsye"), ExtResource("6_s4xnr")])
 points = Array[Array]([])
 solids = Array[bool]([false, false, false, false])
+id = 2
+name = "Spawn"
+models = Array[PackedScene]([ExtResource("2_t0w0g"), ExtResource("4_g8i4p"), ExtResource("5_cmsye"), ExtResource("6_s4xnr")])
+points = Array[Array]([])
+gdscript = ExtResource("1_4p8m5")

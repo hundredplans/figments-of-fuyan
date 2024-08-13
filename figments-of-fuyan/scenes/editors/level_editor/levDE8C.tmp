@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://dppiux7bnao8g"]
+[gd_scene load_steps=8 format=3 uid="uid://dppiux7bnao8g"]
 
 [ext_resource type="Script" path="res://scenes/editors/level_editor/level_editor.gd" id="1_d12w1"]
 [ext_resource type="PackedScene" uid="uid://bydj1x1wtvu8y" path="res://scenes/editors/level_editor/tile_static_body.tscn" id="2_bfkth"]
 [ext_resource type="Script" path="res://scripts/addons/movement_camera.gd" id="2_voor8"]
+[ext_resource type="PackedScene" uid="uid://cdqn1uxp33d4h" path="res://scenes/editors/common/points_editor/points_editor.tscn" id="4_7qpnw"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_w412d"]
 sky_top_color = Color(0.454902, 0.670588, 1, 1)
@@ -25,7 +26,6 @@ glow_blend_mode = 0
 
 [node name="LevelEditor" type="Node"]
 script = ExtResource("1_d12w1")
-TILE_OBJECTS_PATH = "res://resources/game/game_object/tile_object/info/"
 tile_static_body = ExtResource("2_bfkth")
 
 [node name="UI" type="Control" parent="."]
@@ -224,6 +224,9 @@ unique_name_in_owner = true
 [node name="TileObjectRay" type="RayCast3D" parent="World"]
 unique_name_in_owner = true
 collision_mask = 24
+
+[node name="PointsEditor" parent="World" node_paths=PackedStringArray("Camera") instance=ExtResource("4_7qpnw")]
+Camera = NodePath("../Camera3D")
 
 [connection signal="focus_entered" from="UI/TopBar/SearchTileObject" to="." method="_on_search_tile_object_focus_entered"]
 [connection signal="text_changed" from="UI/TopBar/SearchTileObject" to="." method="_on_search_tile_object_text_changed"]

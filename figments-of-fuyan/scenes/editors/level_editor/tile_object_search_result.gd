@@ -2,8 +2,8 @@ extends Button
 
 signal custom_pressed
 
-var info: TileObjectInfo
-func setInfo(_info: TileObjectInfo) -> void:
+var info: TileObjectInfoGD
+func setInfo(_info: TileObjectInfoGD) -> void:
 	info = _info
 	text = _info.name
 
