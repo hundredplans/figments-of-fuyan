@@ -7,6 +7,11 @@ render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_s
 uniform sampler2D tx_attributes;
 uniform sampler2D tx_color;
 uniform sampler2D tx_emission;
+
+uniform float distance_fade_min = 0.5;
+uniform float distance_fade_max = 2;
+uniform float specular = 0.5;
+
 uniform float EmissionStrength : hint_range(0, 20) = 3;
 
 
@@ -33,7 +38,6 @@ void fragment() {
 	float n_out7p0 = n_out6p0.x;
 	float n_out7p1 = n_out6p0.y;
 	float n_out7p2 = n_out6p0.z;
-	float n_out7p3 = n_out6p0.w;
 
 
 // FloatOp:4
@@ -79,6 +83,14 @@ void fragment() {
 	ROUGHNESS = n_out12p0;
 	EMISSION = vec3(n_out15p0.xyz);
 
+	SPECULAR = specular;
+	{
+		float fade_distance = length(VERTEX);
+		const vec3 magic = vec3(0.06711056f, 0.00583715f, 52.9829189f);		float fade = clamp(smoothstep(distance_fade_min, distance_fade_max, fade_distance), 0.0, 1.0);
+		if (fade < 0.001 || fade < fract(magic.z * fract(dot(FRAGCOORD.xy, magic.xy)))) {
+			discard;
+		}
+	}
 
 }
 "

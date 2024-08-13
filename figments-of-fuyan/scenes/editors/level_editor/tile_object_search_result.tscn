@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://bq7o6lgr5wu2k"]
+
+[ext_resource type="Script" path="res://scenes/editors/level_editor/tile_object_search_result.gd" id="1_aedav"]
+
+[node name="TileObjectSearchResult" type="Button"]
+custom_minimum_size = Vector2(0, 40)
+size_flags_vertical = 2
+script = ExtResource("1_aedav")
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]

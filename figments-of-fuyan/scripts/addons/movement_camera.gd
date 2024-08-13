@@ -1,5 +1,5 @@
 class_name FreeLookCamera extends Camera3D
-
+signal camera_panning
 # Modifier keys' speed multiplier
 const SHIFT_MULTIPLIER = 2.5
 const ALT_MULTIPLIER = 1.0 / SHIFT_MULTIPLIER
@@ -38,6 +38,7 @@ func _input(event):
 	if event is InputEventMouseButton:
 		match event.button_index:
 			ANTI_INTERACT_BUTTON: # Only allows rotation if right click down
+				camera_panning.emit(event.is_pressed())
 				Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED if event.pressed else Input.MOUSE_MODE_VISIBLE)
 			MOUSE_BUTTON_WHEEL_UP: # Increases max velocity
 				_vel_multiplier = clamp(_vel_multiplier * 1.1, 0.2, 20)

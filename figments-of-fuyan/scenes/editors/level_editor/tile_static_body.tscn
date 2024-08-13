@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bydj1x1wtvu8y"]
+
+[ext_resource type="Script" path="res://scenes/editors/level_editor/tile_static_body.gd" id="1_wxwx8"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_x7b3m"]
+points = PackedVector3Array(0.85, 0, -0.5, -0.85, 0, 0.5, 0.85, 0, 0.5, -0.85, 0, -0.5, 0, 0, 1, 0, 0, -1, -0.85, 0.3, 0.5, 0.85, 0.3, 0.5, -0.85, 0.3, -0.5, 0, 0.3, 1, 0, 0.3, -1, 0.85, 0.3, -0.5)
+
+[node name="TileStaticBody" type="StaticBody3D" groups=["TileStaticBody"]]
+collision_layer = 1024
+collision_mask = 0
+script = ExtResource("1_wxwx8")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
+shape = SubResource("ConvexPolygonShape3D_x7b3m")

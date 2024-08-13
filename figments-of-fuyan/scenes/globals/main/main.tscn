@@ -10,12 +10,12 @@ sky_horizon_color = Color(0.964706, 0.976471, 1, 1)
 ground_bottom_color = Color(0.454902, 0.670588, 1, 1)
 ground_horizon_color = Color(0.964706, 0.976471, 1, 1)
 
-[sub_resource type="Sky" id="Sky_f74i4"]
+[sub_resource type="Sky" id="Sky_ia7ie"]
 sky_material = SubResource("ProceduralSkyMaterial_aunax")
 
 [sub_resource type="Environment" id="Environment_kttxm"]
 background_mode = 2
-sky = SubResource("Sky_f74i4")
+sky = SubResource("Sky_ia7ie")
 ssr_enabled = true
 ssao_enabled = true
 ssil_enabled = true

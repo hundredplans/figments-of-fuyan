@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="TileInfo" load_steps=7 format=3 uid="uid://bx0l32wljf0jw"]
+
+[ext_resource type="Script" path="res://resources/game/tile_object/data/tile_data.gd" id="1_et8fx"]
+[ext_resource type="Script" path="res://scripts/game/tile_object_scripts/tile.gd" id="1_hdft4"]
+[ext_resource type="PackedScene" uid="uid://v7v4k14rugns" path="res://assets/models/game/tiles/palm_tile.glb" id="2_0icd3"]
+[ext_resource type="Script" path="res://resources/game/tile_object/tile_info.gd" id="3_ujb7r"]
+[ext_resource type="PackedScene" uid="uid://bdbo62nysy026" path="res://assets/models/game/tiles/palm_tile_stair.glb" id="4_wrhe2"]
+[ext_resource type="PackedScene" uid="uid://bb6rd8ea31ga" path="res://assets/models/game/tiles/palm_tile_fill.glb" id="6_8b5b1"]
+
+[resource]
+script = ExtResource("3_ujb7r")
+tile_fill = ExtResource("6_8b5b1")
+id = 1
+name = "Palm Tile"
+lock_rotation = true
+lock_tile = false
+data = ExtResource("1_et8fx")
+gdscript = ExtResource("1_hdft4")
+models = Array[PackedScene]([ExtResource("2_0icd3"), ExtResource("4_wrhe2")])
+points = Array[Array]([])
+solids = Array[bool]([false, false])
