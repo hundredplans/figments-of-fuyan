@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://bkegww7sftfq6"]
+
+[ext_resource type="Script" path="res://scenes/editors/game_object_editor/point.gd" id="1_dt0xt"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7d1u8"]
+shading_mode = 0
+
+[sub_resource type="BoxMesh" id="BoxMesh_c6uqc"]
+material = SubResource("StandardMaterial3D_7d1u8")
+size = Vector3(0.05, 0.05, 0.05)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1ql3o"]
+size = Vector3(0.05, 0.05, 0.05)
+
+[node name="Point" type="MeshInstance3D" groups=["Points"]]
+mesh = SubResource("BoxMesh_c6uqc")
+script = ExtResource("1_dt0xt")
+
+[node name="PointBody" type="StaticBody3D" parent="."]
+collision_layer = 512
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PointBody"]
+shape = SubResource("BoxShape3D_1ql3o")

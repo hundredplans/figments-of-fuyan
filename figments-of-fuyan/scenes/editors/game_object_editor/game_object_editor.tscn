@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://drkpi0yj8xo4l"]
+[gd_scene load_steps=8 format=3 uid="uid://drkpi0yj8xo4l"]
 
 [ext_resource type="Script" path="res://scenes/editors/game_object_editor/game_object_editor.gd" id="1_k2f2p"]
+[ext_resource type="PackedScene" uid="uid://bydj1x1wtvu8y" path="res://scenes/editors/common/tile_static_body/tile_static_body.tscn" id="2_3sgsp"]
 [ext_resource type="Script" path="res://scripts/addons/movement_camera.gd" id="2_h88la"]
 [ext_resource type="Script" path="res://scenes/editors/game_object_editor/points_editor.gd" id="3_80wr2"]
 
@@ -26,6 +27,7 @@ glow_blend_mode = 0
 [node name="GameObjectEditor" type="Node"]
 script = ExtResource("1_k2f2p")
 TILE_OBJECTS_PATH = "res://resources/game/game_object/tile_object/info/"
+tile_static_body = ExtResource("2_3sgsp")
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
@@ -34,6 +36,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="ScrollContainer" type="ScrollContainer" parent="UI"]
 layout_mode = 0
@@ -41,14 +44,36 @@ offset_left = 10.0
 offset_top = 14.0
 offset_right = 304.0
 offset_bottom = 1070.0
+mouse_filter = 2
 
 [node name="GameObjectsContainer" type="VBoxContainer" parent="UI/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
+[node name="VBoxContainer" type="VBoxContainer" parent="UI"]
+layout_mode = 0
+offset_left = 1596.0
+offset_top = 980.0
+offset_right = 1909.0
+offset_bottom = 1068.0
+mouse_filter = 2
+alignment = 2
+
+[node name="BaseElevationLabel" type="Label" parent="UI/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Elevation: 0"
+horizontal_alignment = 2
+
+[node name="EditTileCoords" type="CheckBox" parent="UI/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Edit Tile Coords: [T]"
+
 [node name="World" type="Node3D" parent="."]
 
-[node name="FreeLookCamera" type="Camera3D" parent="World"]
+[node name="Camera" type="Camera3D" parent="World"]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 5)
 script = ExtResource("2_h88la")
 
@@ -59,4 +84,14 @@ environment = SubResource("Environment_im38j")
 script = ExtResource("3_80wr2")
 
 [node name="Ray" type="RayCast3D" parent="World/PointsEditor"]
-collision_mask = 504
+unique_name_in_owner = true
+collision_mask = 1000
+
+[node name="TileRay" type="RayCast3D" parent="World/PointsEditor"]
+unique_name_in_owner = true
+collision_mask = 8
+
+[connection signal="mouse_entered" from="UI/VBoxContainer/EditTileCoords" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="UI/VBoxContainer/EditTileCoords" to="." method="onMouseInUI" binds= [false]]
+[connection signal="toggled" from="UI/VBoxContainer/EditTileCoords" to="." method="onEditTileCoordsPressed"]
+[connection signal="camera_panning" from="World/Camera" to="." method="_on_camera_camera_panning"]

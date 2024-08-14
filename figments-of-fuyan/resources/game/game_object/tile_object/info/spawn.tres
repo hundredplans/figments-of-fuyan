@@ -10,16 +10,13 @@
 
 [resource]
 script = ExtResource("1_kbahc")
-tile_coords = Array[Array]([])
+tile_coords = Array[Array]([[], [], [], []])
 lock_rotation = false
 lock_tile = true
-data = ExtResource("1_2t4li")
-gdscript = ExtResource("1_4p8m5")
-models = Array[PackedScene]([ExtResource("2_t0w0g"), ExtResource("4_g8i4p"), ExtResource("5_cmsye"), ExtResource("6_s4xnr")])
-points = Array[Array]([])
 solids = Array[bool]([false, false, false, false])
 id = 2
 name = "Spawn"
 models = Array[PackedScene]([ExtResource("2_t0w0g"), ExtResource("4_g8i4p"), ExtResource("5_cmsye"), ExtResource("6_s4xnr")])
-points = Array[Array]([])
+points = Array[Array]([[], [], [], []])
 gdscript = ExtResource("1_4p8m5")
+data = ExtResource("1_2t4li")

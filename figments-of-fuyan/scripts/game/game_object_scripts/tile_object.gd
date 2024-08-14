@@ -5,9 +5,6 @@ extends GameObjectGD
 const SLOW_ROTATE_SPEED: int = 50
 const FAST_ROTATE_SPEED: int = 15
 
-var info: TileObjectInfoGD
-var data: TileObjectDataGD
-
 func setInfo(_info: TileObjectInfoGD, _data: TileObjectDataGD) -> void:
 	info = _info
 	data = _data

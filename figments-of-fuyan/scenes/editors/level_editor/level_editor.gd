@@ -29,18 +29,13 @@ func onFindTile(coords: Vector4i) -> TileGD:
 		if Tile != HoverModel and Tile.getCoords() == coords: return Tile
 	return null
 	
-const RAY_LENGTH: int = 5000
 @onready var TileObjectRay: RayCast3D = %TileObjectRay
 func onFindMouseTileObject() -> TileObjectGD:
-	TileObjectRay.position = Camera.position
-	TileObjectRay.target_position = Camera.project_ray_normal(get_viewport().get_mouse_position()) * RAY_LENGTH
-	TileObjectRay.force_raycast_update()
+	Helper.setCameraRay(TileObjectRay, Camera)
 	return Helper.getCollision(TileObjectRay.get_collider(), TileObjectGD)
 
 func onFindMousePoint() -> Vector3:
-	TileObjectRay.position = Camera.position
-	TileObjectRay.target_position = Camera.project_ray_normal(get_viewport().get_mouse_position()) * RAY_LENGTH
-	TileObjectRay.force_raycast_update()
+	Helper.setCameraRay(TileObjectRay, Camera)
 	if TileObjectRay.is_colliding(): return TileObjectRay.get_collision_point()
 	return Vector3.ZERO
 
@@ -60,6 +55,11 @@ func getTilesBelow(Tile: TileGD) -> Array[TileGD]:
 
 #endregion
 #region Base Functions
+
+func _notification(what):
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		_on_save_button_pressed()
+
 func _ready() -> void:
 	setBaseElevation(0)
 	all_tile_objects = Helper.getResourcesRecursive(TILE_OBJECTS_PATH, TileObjectInfoGD)
@@ -238,16 +238,13 @@ func onPlaceBaseTile(coords: Vector4i, info: TileObjectInfoGD = onFindTileObject
 	
 #endregion
 #region Elevation
-@onready var TilePlaneElevation: Node3D = %TilePlaneElevation
+
 @onready var BaseElevationLabel: Label = %BaseElevationLabel
 func setBaseElevation(_base_elevation: int) -> void:
 	if _base_elevation != base_elevation:
 		base_elevation = clamp(_base_elevation, 0, MAX_ELEVATION)
 		BaseElevationLabel.text = "Elevation: " + str(base_elevation)
-	
-		for child in TilePlaneElevation.get_children():
-			TilePlaneElevation.remove_child(child)
-			child.queue_free()
+		get_tree().call_group("TileStaticBody", "queue_free")
 		
 		for x in range(-MAX_LEVEL_SIZE, (MAX_LEVEL_SIZE + 1)):
 			for y in range(max(-MAX_LEVEL_SIZE, -x - MAX_LEVEL_SIZE), min(MAX_LEVEL_SIZE, -x + MAX_LEVEL_SIZE) + 1):
@@ -261,7 +258,7 @@ func onPlaceTileStaticBody(coords: Vector4i) -> void:
 	TileStaticBody.coords = coords
 	TileStaticBody.mouse_exited.connect(onMouseExitTileStaticBody)
 	TileStaticBody.mouse_entered.connect(onMouseEnterTileStaticBody.bind(TileStaticBody))
-	TilePlaneElevation.add_child(TileStaticBody)
+	add_child(TileStaticBody)
 
 func onFindTileStaticBody(coords: Vector4i) -> StaticBody3D:
 	for StaticBody in get_tree().get_nodes_in_group("TileStaticBody"):
@@ -362,6 +359,11 @@ func onChangeTileLockButtonState() -> void:
 const LEVEL_PATH: String = "res://resources/game/levels/"
 @onready var SaveLineEdit: LineEdit = %SaveLineEdit
 @onready var AreaLineEdit: LineEdit = %AreaLineEdit
+
+var AREA_TO_LEVEL_INFO: Dictionary = {
+	1: PalmLevelInfoGD
+}
+
 func _on_save_button_pressed():
 	var level_name: String = SaveLineEdit.text
 	if !level_name.is_empty():
@@ -370,11 +372,12 @@ func _on_save_button_pressed():
 		
 		var valid_name: String = await getValidLevelName(level_name) + ".tres"
 		var path: String = LEVEL_PATH + valid_name
-		var level_info := LevelInfoGD.new()
+		var area_id: int = int(AreaLineEdit.text)
+		var level_info: LevelInfoGD = AREA_TO_LEVEL_INFO[area_id].new()
 		
 		var id: int = 0 if !FileAccess.file_exists(path) else load(path).id
 		
-		level_info.setInfo(level_name, int(AreaLineEdit.text), data, id)
+		level_info.setInfo(level_name, area_id, data, id)
 		
 		if level_name.is_empty(): level_name = valid_name
 		ResourceSaver.save(level_info, path)

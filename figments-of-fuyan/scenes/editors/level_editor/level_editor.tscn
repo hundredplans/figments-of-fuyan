@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://dppiux7bnao8g"]
 
 [ext_resource type="Script" path="res://scenes/editors/level_editor/level_editor.gd" id="1_d12w1"]
-[ext_resource type="PackedScene" uid="uid://bydj1x1wtvu8y" path="res://scenes/editors/level_editor/tile_static_body.tscn" id="2_bfkth"]
+[ext_resource type="PackedScene" uid="uid://bydj1x1wtvu8y" path="res://scenes/editors/common/tile_static_body/tile_static_body.tscn" id="2_bfkth"]
 [ext_resource type="Script" path="res://scripts/addons/movement_camera.gd" id="2_voor8"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_w412d"]
@@ -10,12 +10,12 @@ sky_horizon_color = Color(0.964706, 0.976471, 1, 1)
 ground_bottom_color = Color(0.454902, 0.670588, 1, 1)
 ground_horizon_color = Color(0.964706, 0.976471, 1, 1)
 
-[sub_resource type="Sky" id="Sky_t3t8f"]
+[sub_resource type="Sky" id="Sky_2xyd2"]
 sky_material = SubResource("ProceduralSkyMaterial_w412d")
 
 [sub_resource type="Environment" id="Environment_hffsp"]
 background_mode = 2
-sky = SubResource("Sky_t3t8f")
+sky = SubResource("Sky_2xyd2")
 ssr_enabled = true
 ssao_enabled = true
 ssil_enabled = true

@@ -13,6 +13,7 @@ extends Resource
 @export var enemy_spawn_amount: int = 0
 @export var ally_spawn_amount: int = 0
 @export_range(0, 10000, 60) var timeout: int = 1200
+@export var lights: Array[LightInfo]
 
 #region SettingID
 func setAutoID() -> void:

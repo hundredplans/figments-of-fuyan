@@ -6,6 +6,12 @@ func getChildrenRecursive(node: Node, children := []) -> Array:
 		children = getChildrenRecursive(child, children)
 	return children
 
+const MOUSE_RAY_LENGTH: int = 5000
+func setCameraRay(Ray: RayCast3D, Camera: Camera3D) -> void:
+	Ray.position = Camera.position
+	Ray.target_position = Camera.project_ray_normal(get_viewport().get_mouse_position()) * MOUSE_RAY_LENGTH
+	Ray.force_raycast_update()
+
 func getCollision(collider: Node, type: Variant) -> Variant:
 	if collider != null:
 		while (true):
