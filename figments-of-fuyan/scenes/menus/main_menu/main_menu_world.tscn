@@ -1,13 +1,132 @@
-[gd_scene load_steps=3 format=3 uid="uid://co50h3m1exlnk"]
+[gd_scene load_steps=8 format=3 uid="uid://co50h3m1exlnk"]
 
 [ext_resource type="Script" path="res://scenes/menus/main_menu/main_menu_world.gd" id="1_34k6w"]
 [ext_resource type="PackedScene" uid="uid://jbo36kl5xxtf" path="res://scenes/menus/main_menu/main_menu_environment.tscn" id="3_r5o52"]
+
+[sub_resource type="Animation" id="Animation_lmjyn"]
+resource_name = "Gate"
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(5.62037, 4.04071, -3.24731), Vector3(5.62037, 4.04071, -2.02965), Vector3(5.62037, 3.59605, -0.69983), Vector3(5.62037, 3.07493, 1.78795), Vector3(4.52539, 3.07493, 3.07122), Vector3(3.81714, 2.60035, 4.79383)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(-0.10821, 2.28638, 0), Vector3(-0.10821, 2.79024, 4.91678e-09), Vector3(-0.240352, 2.78158, 0.0497965), Vector3(-0.240352, 2.78158, 0.0497965), Vector3(-0.240352, 2.84279, 0.0497965), Vector3(-0.240352, 3.1037, 0.0497965)]
+}
+
+[sub_resource type="Animation" id="Animation_ndl54"]
+resource_name = "PlayTable"
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(5.62037, 4.04071, -3.24731), Vector3(5.62, 4.041, -2), Vector3(5.62, 3, -1), Vector3(5, 3, 0), Vector3(5, 3, 1), Vector3(5, 3, 2)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(-0.10821, 2.28638, 0), Vector3(-0.10821, 2.0944, 0), Vector3(-0.10821, 1.91986, 0), Vector3(-0.10821, 1.74533, 0), Vector3(0, 1.5708, 0), Vector3(0, 1.5708, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_nixx0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(5.62037, 4.04071, -3.24731)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.10821, 2.28638, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_avrkl"]
+resource_name = "SettingsDoor"
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(5.62037, 4.04071, -3.24731), Vector3(4.34977, 3.74185, -3.24731), Vector3(2.85655, 3.55674, -3.24731), Vector3(1.33138, 3.0959, -3.24731), Vector3(0.334119, 3.16867, -2.72434), Vector3(-1.82805, 3.0969, -2.72434)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(-0.10821, 2.28638, 0), Vector3(-0.10821, 1.68548, 4.91678e-09), Vector3(-0.10821, 1.45815, 4.98981e-09), Vector3(-0.10821, 1.45815, 4.98981e-09), Vector3(-0.10821, 1.40373, 4.98981e-09), Vector3(-0.10821, 1.34127, 6.28743e-09)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_q3vyu"]
+_data = {
+"Gate": SubResource("Animation_lmjyn"),
+"PlayTable": SubResource("Animation_ndl54"),
+"RESET": SubResource("Animation_nixx0"),
+"SettingsDoor": SubResource("Animation_avrkl")
+}
 
 [node name="MainMenuWorld" type="Node3D"]
 script = ExtResource("1_34k6w")
 
 [node name="Camera" type="Camera3D" parent="."]
-transform = Transform3D(-0.656059, -0.0815082, 0.750295, 0, 0.994151, 0.107999, -0.75471, 0.0708539, -0.652222, 5.62037, 4.04071, -3.24731)
+transform = Transform3D(-0.656058, -0.0815079, 0.750296, 0, 0.994151, 0.107999, -0.754711, 0.0708536, -0.65222, 5.62037, 4.04071, -3.24731)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.431987, -0.899773, -0.0616039, 0.541056, -0.313202, 0.780489, -0.721558, 0.30383, 0.622126, 0, 2.11466, 0)
@@ -15,5 +134,10 @@ shadow_enabled = true
 directional_shadow_max_distance = 40.4
 
 [node name="main_menu_environment" parent="." instance=ExtResource("3_r5o52")]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_q3vyu")
+}
 
 [connection signal="mesh_pressed" from="main_menu_environment" to="." method="_on_main_menu_environment_mesh_pressed"]

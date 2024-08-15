@@ -5,17 +5,17 @@ extends Resource
 @export var id: int
 @export var name: String
 @export var area_id: int
-@export var data: Array[TileObjectDataGD]
+@export var data: Array
 @export_group("")
 
 # Timeout in seconds
-@export var trinket_amount: int = 0
-@export var enemy_spawn_amount: int = 0
-@export var ally_spawn_amount: int = 0
+@export var trinket_amount: int = -1
+@export var enemy_spawn_amount: int = -1
+@export var ally_spawn_amount: int = -1
 @export_range(0, 10000, 60) var timeout: int = 1200
 @export var lights: Array[LightInfo]
 
-#region SettingID
+#region Setting Values
 func setAutoID() -> void:
 	var DIR_PATH: String = "res://resources/game/levels/"
 	var tile_object_infos: Array = Helper.getResourcesRecursive(DIR_PATH, LevelInfoGD).map(func(x: LevelInfoGD): return x.id)
@@ -41,4 +41,15 @@ func getNonConsecutive(arr: Array) -> int:
 			return arr[i - 1]
 		i += 1
 	return -1
+func setSpawnPropertiesAutoValues(tile_objects: Array) -> void:
+	if ally_spawn_amount == -1: ally_spawn_amount  = tile_objects.filter(func(x: TileObjectGD): return x.isIDVariation(2, 0)).size()
+	if enemy_spawn_amount == -1: enemy_spawn_amount = tile_objects.filter(func(x: TileObjectGD): return x.isIDVariation(2, 1)).size()
+	if trinket_amount == -1: trinket_amount = tile_objects.filter(func(x: TileObjectGD): return x.isIDVariation(2, 3)).size()
+
+func setPreviousLevelInfoValues(level_info: LevelInfoGD) -> void:
+	ally_spawn_amount = level_info.ally_spawn_amount
+	enemy_spawn_amount = level_info.enemy_spawn_amount
+	trinket_amount = level_info.trinket_amount
+	timeout = level_info.timeout
+	lights = level_info.lights
 #endregion

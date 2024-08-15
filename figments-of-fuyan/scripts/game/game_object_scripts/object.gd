@@ -7,7 +7,7 @@ func _ready():
 	add_to_group("TileObjects")
 
 func _enter_tree():
-	setMapPosition(data.position)
+	if data != null: setMapPosition(data.position)
 #endregion
 
 #region Positions

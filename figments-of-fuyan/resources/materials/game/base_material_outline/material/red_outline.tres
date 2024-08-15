@@ -10,6 +10,9 @@
 render_priority = 0
 next_pass = ExtResource("1_aygkj")
 shader = ExtResource("2_xy25j")
+shader_parameter/distance_fade_min = 0.5
+shader_parameter/distance_fade_max = 2.0
+shader_parameter/specular = 0.5
 shader_parameter/EmissionStrength = 3.0
 shader_parameter/tx_attributes = ExtResource("3_rj0lt")
 shader_parameter/tx_color = ExtResource("4_noeeb")

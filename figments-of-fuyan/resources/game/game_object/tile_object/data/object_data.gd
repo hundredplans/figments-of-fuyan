@@ -13,7 +13,7 @@ func _init(_id: int = 0, _position := Vector3.ZERO, _variation: int = 0, _rotati
 	variation = _variation
 	rotation = _rotation
 
-func onLoad(parent: Node3D = null, info: TileObjectInfoGD = Helper.getResourcesRecursiveID(INFO_PATH, ObjectInfoGD, id)) -> ObjectGD:
+func onLoad(parent: Node3D = null, info: TileObjectInfoGD = Helper.getResourcesRecursiveID(INFO_PATH, ObjectInfoGD, id)) -> TileObjectGD:
 	var model: ObjectGD = info.getModel(self)
 	model.setRotation(rotation)
 	model.setMapPosition(position)

@@ -30,10 +30,10 @@ main_menu_world_path = ExtResource("3_ra6ly")
 
 [node name="World" type="Node3D" parent="."]
 
+[node name="MainMenuWorld" parent="World" instance=ExtResource("3_ra6ly")]
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="World"]
 environment = SubResource("Environment_kttxm")
-
-[node name="MainMenuWorld" parent="World" instance=ExtResource("3_ra6ly")]
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3

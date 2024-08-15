@@ -14,7 +14,7 @@ func _init(_id: int = 0, _coords := Vector4i.ZERO, _variation: int = 0, _rotatio
 	variation = _variation
 	rotation = _rotation
 
-func onLoad(parent: Node3D = null, info: TileObjectInfoGD = Helper.getResourcesRecursiveID(INFO_PATH, TileObjectInfoGD, id)) -> TileGD:
+func onLoad(parent: Node3D = null, info: TileObjectInfoGD = Helper.getResourcesRecursiveID(INFO_PATH, TileObjectInfoGD, id)) -> TileObjectGD:
 	var model: TileGD = info.getModel(self)
 	model.setRotation(rotation)
 	model.setCoords(coords)

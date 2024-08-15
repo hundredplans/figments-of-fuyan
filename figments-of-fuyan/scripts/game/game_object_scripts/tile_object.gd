@@ -52,6 +52,8 @@ func getStaticBodies() -> Array[StaticBody3D]:
 	return arr
 	
 func setVisible(state: bool) -> void: visible = state
+func isIDVariation(id: int, variation: int) -> bool: return info.id == id and data.variation == variation
+
 #endregion
 #region Rotation
 func onLockRotateDirection(direction: int) -> void:

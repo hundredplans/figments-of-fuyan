@@ -21,6 +21,9 @@ var HoverStaticBody: StaticBody3D
 var HoverModel: TileObjectGD
 #endregion
 #region Helper Functions
+func onFilterTileObjects() -> void:
+	pass
+
 func onConvertCoords(coords: Vector4i) -> Vector3:
 	return Vector3((sqrt(3) * coords.x + sqrt(3) * coords.y * 0.5), coords.w * 0.6, coords.y * (3 / 2.0))
 	
@@ -375,7 +378,12 @@ func _on_save_button_pressed():
 		var area_id: int = int(AreaLineEdit.text)
 		var level_info: LevelInfoGD = AREA_TO_LEVEL_INFO[area_id].new()
 		
-		var id: int = 0 if !FileAccess.file_exists(path) else load(path).id
+		var id: int = 0
+		if FileAccess.file_exists(path):
+			var _level_info: LevelInfoGD = load(path)
+			id = _level_info.id
+			level_info.setPreviousLevelInfoValues(_level_info)
+		else: level_info.setSpawnPropertiesAutoValues(get_tree().get_nodes_in_group("TileObjects"))
 		
 		level_info.setInfo(level_name, area_id, data, id)
 		

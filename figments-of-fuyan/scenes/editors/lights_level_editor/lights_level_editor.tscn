@@ -1,7 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://b4no8y2ws5xcl"]
+[gd_scene load_steps=5 format=3 uid="uid://b4no8y2ws5xcl"]
 
-[ext_resource type="Script" path="res://scenes/editors/level_lights_editor/level_lights_editor.gd" id="1_p5r5a"]
-[ext_resource type="Resource" uid="uid://daqc2dgbc8dyt" path="res://resources/game/levels/new_walahi.tres" id="2_hleww"]
+[ext_resource type="Script" path="res://scenes/editors/lights_level_editor/lights_level_editor.gd" id="1_c51r5"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_31sqj"]
 sky_top_color = Color(0.454902, 0.670588, 1, 1)
@@ -22,17 +21,14 @@ sdfgi_read_sky_light = false
 glow_enabled = true
 glow_blend_mode = 0
 
-[node name="LevelLightsEditor" type="Node3D"]
-script = ExtResource("1_p5r5a")
-LevelInfo = ExtResource("2_hleww")
-
-[node name="World" type="Node3D" parent="."]
-unique_name_in_owner = true
+[node name="LightsLevelEditor" type="Node3D"]
+script = ExtResource("1_c51r5")
 
 [node name="Lights" type="Node3D" parent="."]
 unique_name_in_owner = true
 
+[node name="World" type="Node3D" parent="."]
+unique_name_in_owner = true
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_26c3m")
-
-[connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
