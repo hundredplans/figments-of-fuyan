@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://b1bl225al4ejk"]
+
+[node name="NewGameUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 1095.0
+offset_top = 59.0
+offset_right = 1858.0
+offset_bottom = 1028.0
+
+[node name="Label" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 30.0
+offset_right = 64.0
+offset_bottom = 68.0

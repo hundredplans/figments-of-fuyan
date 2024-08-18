@@ -1,6 +1,18 @@
-[gd_resource type="Theme" load_steps=2 format=3 uid="uid://dcbv431prk86r"]
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://dcbv431prk86r"]
 
 [ext_resource type="FontFile" uid="uid://dpk4daccj6hwv" path="res://assets/fonts/roboto.ttf" id="1_8d2p5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uollv"]
+bg_color = Color(0.995353, 0.859809, 0.594934, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.998127, 0.921254, 0.77727, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
 [resource]
 default_font = ExtResource("1_8d2p5")
@@ -13,3 +25,4 @@ Label/font_sizes/font_size = 32
 LargeLabel/base_type = &"Label"
 LargeLabel/constants/outline_size = 24
 LargeLabel/font_sizes/font_size = 64
+Panel/styles/panel = SubResource("StyleBoxFlat_uollv")

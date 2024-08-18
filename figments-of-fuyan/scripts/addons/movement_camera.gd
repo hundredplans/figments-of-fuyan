@@ -27,7 +27,14 @@ var _e = false
 var _shift = false
 var _alt = false
 
+@export var disable_movement: bool = false
+@export var disable_freelook: bool = false
 var ANTI_INTERACT_BUTTON: int = MOUSE_BUTTON_RIGHT
+
+func setDisableFreelook(state: bool) -> void:
+	disable_freelook = state
+	if disable_freelook:
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 func _input(event):
 	# Receives mouse motion
@@ -35,7 +42,7 @@ func _input(event):
 		_mouse_position = event.relative
 	
 	# Receives mouse button input
-	if event is InputEventMouseButton:
+	if !disable_freelook and event is InputEventMouseButton:
 		match event.button_index:
 			ANTI_INTERACT_BUTTON: # Only allows rotation if right click down
 				camera_panning.emit(event.is_pressed())
@@ -46,7 +53,7 @@ func _input(event):
 				_vel_multiplier = clamp(_vel_multiplier / 1.1, 0.2, 20)
 
 	# Receives key input
-	if event is InputEventKey and !(get_viewport().gui_get_focus_owner() as LineEdit):
+	if !disable_movement and event is InputEventKey and !(get_viewport().gui_get_focus_owner() as LineEdit):
 		match event.keycode:
 			KEY_W:
 				_w = event.pressed

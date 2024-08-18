@@ -2,7 +2,7 @@
 extends EditorScenePostImport
 
 func _post_import(scene: Node) -> Node:
-	var base_material: ShaderMaterial = preload("res://resources/materials/game/base_material.tres")
+	var base_material: ShaderMaterial = preload("res://resources/materials/game/base_material_specular.tres")
 	var outline_material: Material = preload("res://resources/materials/colors/unshaded/black.tres")
 	for child in getChildrenRecursive(scene):
 		if child is MeshInstance3D:

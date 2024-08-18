@@ -4,7 +4,6 @@ extends TileObjectGD
 #region Base Functions
 func _ready() -> void:
 	add_to_group("Tiles")
-	add_to_group("TileObjects")
 	
 func _enter_tree():
 	if data != null: setMapPosition()

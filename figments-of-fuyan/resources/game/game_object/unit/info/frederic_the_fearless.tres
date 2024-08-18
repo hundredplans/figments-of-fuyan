@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="UnitInfoGD" load_steps=7 format=3 uid="uid://d3oj4n6r0jwut"]
+
+[ext_resource type="Script" path="res://resources/game/game_object/unit/unit_stat_info.gd" id="1_kekcj"]
+[ext_resource type="Script" path="res://resources/game/game_object/unit/unit_info.gd" id="1_ynm11"]
+[ext_resource type="Script" path="res://resources/game/game_object/unit/data/unit_data.gd" id="2_kb8rg"]
+[ext_resource type="Script" path="res://scripts/game/game_object_scripts/unit/unit.gd" id="3_lquep"]
+[ext_resource type="PackedScene" uid="uid://bd2esqpmo73tk" path="res://assets/models/game/units/varoma/Frederic_the_Fearless.glb" id="4_6hkuy"]
+
+[sub_resource type="Resource" id="Resource_21c73"]
+script = ExtResource("1_kekcj")
+attack = 2
+health = 2
+speed = 2
+energy = 2
+
+[resource]
+script = ExtResource("1_ynm11")
+base_stats = SubResource("Resource_21c73")
+rarity = 6
+id = 1
+name = "Frederic the Fearless"
+models = Array[PackedScene]([ExtResource("4_6hkuy")])
+points = Array[Array]([])
+gdscript = ExtResource("3_lquep")
+data = ExtResource("2_kb8rg")

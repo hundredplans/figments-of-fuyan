@@ -370,8 +370,10 @@ var AREA_TO_LEVEL_INFO: Dictionary = {
 func _on_save_button_pressed():
 	var level_name: String = SaveLineEdit.text
 	if !level_name.is_empty():
-		var data: Array[TileObjectDataGD] = []
-		data.assign(get_tree().get_nodes_in_group("TileObjects").map(func(x: TileObjectGD): return x.data))
+		var _data: Array[GameObjectDataGD] = []
+		get_tree().call_group("Loadables", "onSave", _data)
+		var data: Array[TileObjectDataGD]
+		data.assign(_data)
 		
 		var valid_name: String = await getValidLevelName(level_name) + ".tres"
 		var path: String = LEVEL_PATH + valid_name
@@ -383,7 +385,7 @@ func _on_save_button_pressed():
 			var _level_info: LevelInfoGD = load(path)
 			id = _level_info.id
 			level_info.setPreviousLevelInfoValues(_level_info)
-		else: level_info.setSpawnPropertiesAutoValues(get_tree().get_nodes_in_group("TileObjects"))
+		else: level_info.setSpawnPropertiesAutoValues(get_tree().get_nodes_in_group("Loadables"))
 		
 		level_info.setInfo(level_name, area_id, data, id)
 		
@@ -428,7 +430,8 @@ func onLoadLevel(level_info: LevelInfoGD) -> void:
 	SaveLineEdit.text = level_info.name
 	AreaLineEdit.text = str(level_info.area_id)
 	
-	for tile_object in get_tree().get_nodes_in_group("TileObjects"): tile_object.queue_free()
+	for tile_object in get_tree().get_nodes_in_group("Loadables"):
+		tile_object.onClear()
 	
 	for tile_object_data in level_info.data:
 		tile_object_data.onLoad(World)

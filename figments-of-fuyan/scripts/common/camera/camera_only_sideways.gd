@@ -1,0 +1,2 @@
+extends Camera3D
+signal camera_panning

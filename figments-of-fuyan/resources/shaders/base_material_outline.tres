@@ -8,23 +8,11 @@ render_mode blend_mix,depth_prepass_alpha,cull_front,unshaded, specular_schlick_
 uniform vec4 albedo : source_color;
 uniform float grow;
 
-uniform float distance_fade_min = 0.5;
-uniform float distance_fade_max = 2;
-uniform float specular = 0.5;
-
 void vertex() {
 	VERTEX+=NORMAL*grow;
 }
 
 void fragment() {
 	ALBEDO = albedo.rgb;
-	SPECULAR = specular;
-	{
-		float fade_distance = length(VERTEX);
-		const vec3 magic = vec3(0.06711056f, 0.00583715f, 52.9829189f);		float fade = clamp(smoothstep(distance_fade_min, distance_fade_max, fade_distance), 0.0, 1.0);
-		if (fade < 0.001 || fade < fract(magic.z * fract(dot(FRAGCOORD.xy, magic.xy)))) {
-			discard;
-		}
-	}
 }
 "

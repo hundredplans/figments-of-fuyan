@@ -23,3 +23,22 @@ static func getFilesRecursive(DIR_PATH: String) -> Array:
 			if !dir.current_is_dir(): files.append(file_name)
 			file_name = dir.get_next()
 	return files
+
+static func onAutoIncrementID(DIR_PATH: String, type: Variant, _id: int) -> int:
+	if Engine.is_editor_hint():
+		var id: int = _id
+		var resources: Array = getResourcesRecursive(DIR_PATH, type)
+		resources.sort_custom(func(x: GameObjectInfoGD, y: GameObjectInfoGD): return x.id < y.id)
+		
+		id = getNonConsecutive(resources)
+		if id == -1: return resources.size() + 1
+		return id + 1
+	return _id
+
+static func getNonConsecutive(arr: Array) -> int:
+	var i: int = 1
+	for x in arr:
+		if i < arr.size() and arr[i] - arr[i-1] != 1:
+			return arr[i - 1]
+		i += 1
+	return -1

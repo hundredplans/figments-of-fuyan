@@ -17,7 +17,7 @@ void fragment() {
 	vec2 base_uv = UV;
 	vec4 albedo_tex = texture(texture_albedo,base_uv);
 	ALBEDO = albedo.rgb * albedo_tex.rgb;
-	
+
 	float grey = dot(ALBEDO.rgb, vec3(max_grey));
 	ALBEDO = mix(ALBEDO.rgb, vec3(grey), time_value);
 	ALPHA = 1.0 - time_value;

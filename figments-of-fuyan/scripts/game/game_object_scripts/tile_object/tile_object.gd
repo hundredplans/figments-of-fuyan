@@ -5,13 +5,9 @@ extends GameObjectGD
 const SLOW_ROTATE_SPEED: int = 50
 const FAST_ROTATE_SPEED: int = 15
 
-func setInfo(_info: TileObjectInfoGD, _data: TileObjectDataGD) -> void:
-	info = _info
-	data = _data
-	setDefaultCollisionLayers()
-	rotation.y = data.rotation
-	setRayPickable(false)
-
+#region Base Functions
+func _ready() -> void:
+	add_to_group("Loadables")
 #region Material Updates
 var half_transparent_base_material: ShaderMaterial = preload("res://resources/materials/game/base_material_half_transparent.tres")
 func setHalfTransparent() -> void:
@@ -35,41 +31,11 @@ func setEmptyCollisionLayers() -> void:
 	for body in getStaticBodies():
 		body.collision_layer = 0
 		
-func setRayPickable(state: bool) -> void:
-	for body in getStaticBodies():
-		body.input_ray_pickable = state
-#endregion
-
-#region Helper Functions
-func getMeshes() -> Array[MeshInstance3D]:
-	var arr: Array[MeshInstance3D] = []
-	arr.assign(Helper.getChildrenRecursive(self).filter(func(x: Node): return x is MeshInstance3D))
-	return arr
-
-func getStaticBodies() -> Array[StaticBody3D]:
-	var arr: Array[StaticBody3D] = []
-	arr.assign(Helper.getChildrenRecursive(self).filter(func(x: Node): return x is StaticBody3D))
-	return arr
-	
-func setVisible(state: bool) -> void: visible = state
-func isIDVariation(id: int, variation: int) -> bool: return info.id == id and data.variation == variation
-
 #endregion
 #region Rotation
-func onLockRotateDirection(direction: int) -> void:
-	setClampRotation(direction * (PI / 3))
-	
-func setClampRotation(val: float) -> void:
-	rotation.y += val
-	if rotation.y > 2 * PI: rotation.y -= 2 * PI
-	elif rotation.y < 0: rotation.y += 2 * PI
-	data.rotation = rotation.y
-	
 func onRotateDirection(direction: int, is_slow_speed: bool = true) -> void:
 	var divisor: int = SLOW_ROTATE_SPEED if is_slow_speed else FAST_ROTATE_SPEED
 	setClampRotation(direction * (PI / divisor))
-	
-func setRotation(rot: float) -> void: rotation.y = rot; data.rotation = rot
 #endregion
 #region Variations
 func clampVariation(i: int) -> void:
