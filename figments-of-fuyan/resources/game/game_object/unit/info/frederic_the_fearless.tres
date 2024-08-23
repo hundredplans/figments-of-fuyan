@@ -1,25 +1,54 @@
-[gd_resource type="Resource" script_class="UnitInfoGD" load_steps=7 format=3 uid="uid://d3oj4n6r0jwut"]
+[gd_resource type="Resource" script_class="ChampionUnitInfoGD" load_steps=12 format=3 uid="uid://d3oj4n6r0jwut"]
 
-[ext_resource type="Script" path="res://resources/game/game_object/unit/unit_stat_info.gd" id="1_kekcj"]
-[ext_resource type="Script" path="res://resources/game/game_object/unit/unit_info.gd" id="1_ynm11"]
-[ext_resource type="Script" path="res://resources/game/game_object/unit/data/unit_data.gd" id="2_kb8rg"]
+[ext_resource type="Image" uid="uid://b86c6f1uyjyd6" path="res://assets/sprites/game/cards/art_pop/frederic_the_fearless.png" id="2_gy5rc"]
+[ext_resource type="Script" path="res://resources/game/game_object/unit/info_template/extra/unit_audio_info.gd" id="2_skni1"]
 [ext_resource type="Script" path="res://scripts/game/game_object_scripts/unit/unit.gd" id="3_lquep"]
-[ext_resource type="PackedScene" uid="uid://bd2esqpmo73tk" path="res://assets/models/game/units/varoma/Frederic_the_Fearless.glb" id="4_6hkuy"]
+[ext_resource type="Script" path="res://resources/game/game_object/unit/info_template/extra/unit_stat_info.gd" id="3_sui0q"]
+[ext_resource type="PackedScene" uid="uid://bd2esqpmo73tk" path="res://assets/models/game/units/varoma/frederic_the_fearless.glb" id="4_6hkuy"]
+[ext_resource type="Script" path="res://resources/game/game_object/unit/info_template/extra/unit_height_info.gd" id="6_cfyly"]
+[ext_resource type="Script" path="res://resources/game/game_object/unit/info_template/extends/champion_unit_info.gd" id="7_x4sol"]
 
-[sub_resource type="Resource" id="Resource_21c73"]
-script = ExtResource("1_kekcj")
+[sub_resource type="Resource" id="Resource_mqrx7"]
+script = ExtResource("3_sui0q")
 attack = 2
 health = 2
 speed = 2
 energy = 2
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_g5jrq"]
+size = Vector3(0.676819, 1.94261, 0.675537)
+
+[sub_resource type="PackedScene" id="PackedScene_bwrs8"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00546265, 0.971992, 0.0455322), SubResource("BoxShape3D_g5jrq")],
+"version": 3
+}
+
+[sub_resource type="Resource" id="Resource_omp3l"]
+script = ExtResource("6_cfyly")
+top_height = 1.8
+stat_height = 2.0
+eye_height = 1.6
+
 [resource]
-script = ExtResource("1_ynm11")
-base_stats = SubResource("Resource_21c73")
-rarity = 6
+script = ExtResource("7_x4sol")
+associated_color = Color(0, 0.635294, 0, 1)
+rarity = 7
+art_mini_coordinate = Vector2i(0, 0)
+art_pop = Array[Image]([ExtResource("2_gy5rc")])
+collision_shape = SubResource("PackedScene_bwrs8")
+base_stats = Array[ExtResource("3_sui0q")]([SubResource("Resource_mqrx7")])
+heights = Array[ExtResource("6_cfyly")]([SubResource("Resource_omp3l")])
+audio = Array[ExtResource("2_skni1")]([])
 id = 1
 name = "Frederic the Fearless"
+gdscript = ExtResource("3_lquep")
 models = Array[PackedScene]([ExtResource("4_6hkuy")])
 points = Array[Array]([])
-gdscript = ExtResource("3_lquep")
-data = ExtResource("2_kb8rg")

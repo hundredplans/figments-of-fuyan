@@ -102,11 +102,6 @@ layout_mode = 2
 text = "Tile Lock: [L]"
 horizontal_alignment = 2
 
-[node name="Label6" type="Label" parent="UI/KeybindHints"]
-layout_mode = 2
-text = "Fast Rotate: [Shift + Q/E]"
-horizontal_alignment = 2
-
 [node name="Label8" type="Label" parent="UI/KeybindHints"]
 layout_mode = 2
 text = "Place: [LMB]"
@@ -151,12 +146,9 @@ offset_bottom = 1065.0
 mouse_filter = 2
 theme_override_constants/separation = 20
 
-[node name="AreaLineEdit" type="LineEdit" parent="UI/BottomBar"]
+[node name="AreaOptionButton" type="OptionButton" parent="UI/BottomBar"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "1"
-placeholder_text = "Area ID"
-alignment = 1
 
 [node name="LoadButton" type="Button" parent="UI/BottomBar"]
 layout_mode = 2
@@ -226,10 +218,27 @@ unique_name_in_owner = true
 collision_mask = 24
 
 [connection signal="focus_entered" from="UI/TopBar/SearchTileObject" to="." method="_on_search_tile_object_focus_entered"]
+[connection signal="mouse_entered" from="UI/TopBar/SearchTileObject" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="UI/TopBar/SearchTileObject" to="." method="onMouseInUI" binds= [false]]
 [connection signal="text_changed" from="UI/TopBar/SearchTileObject" to="." method="_on_search_tile_object_text_changed"]
+[connection signal="mouse_entered" from="UI/TopBar/TileFillButton" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="UI/TopBar/TileFillButton" to="." method="onMouseInUI" binds= [false]]
 [connection signal="pressed" from="UI/TopBar/TileFillButton" to="." method="onTileFillButtonPressed"]
+[connection signal="mouse_entered" from="UI/TopBar/TileLockButton" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="UI/TopBar/TileLockButton" to="." method="onMouseInUI" binds= [false]]
 [connection signal="pressed" from="UI/TopBar/TileLockButton" to="." method="onTileLockButtonPressed"]
+[connection signal="mouse_entered" from="UI/BottomBar/AreaOptionButton" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="UI/BottomBar/AreaOptionButton" to="." method="onMouseInUI" binds= [false]]
+[connection signal="mouse_entered" from="UI/BottomBar/LoadButton" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="UI/BottomBar/LoadButton" to="." method="onMouseInUI" binds= [false]]
 [connection signal="pressed" from="UI/BottomBar/LoadButton" to="." method="_on_load_button_pressed"]
+[connection signal="mouse_entered" from="UI/BottomBar/SaveButton" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="UI/BottomBar/SaveButton" to="." method="onMouseInUI" binds= [false]]
 [connection signal="pressed" from="UI/BottomBar/SaveButton" to="." method="_on_save_button_pressed"]
+[connection signal="mouse_entered" from="UI/BottomBar/SaveLineEdit" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="UI/BottomBar/SaveLineEdit" to="." method="onMouseInUI" binds= [false]]
+[connection signal="mouse_entered" from="UI/LoadLevels/HBoxContainer/HideLoadLevelButton" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="UI/LoadLevels/HBoxContainer/HideLoadLevelButton" to="." method="onMouseInUI" binds= [false]]
 [connection signal="pressed" from="UI/LoadLevels/HBoxContainer/HideLoadLevelButton" to="." method="_on_hide_load_level_button_pressed"]
+[connection signal="camera_panning" from="World/Camera3D" to="." method="onMouseInUI"]
 [connection signal="camera_panning" from="World/Camera3D" to="." method="_on_camera_3d_camera_panning"]

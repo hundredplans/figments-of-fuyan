@@ -1,6 +1,5 @@
-[gd_resource type="Resource" script_class="ObjectInfoGD" load_steps=5 format=3 uid="uid://u4n8l6ejtb3k"]
+[gd_resource type="Resource" script_class="ObjectInfoGD" load_steps=4 format=3 uid="uid://u4n8l6ejtb3k"]
 
-[ext_resource type="Script" path="res://resources/game/game_object/tile_object/data/object_data.gd" id="1_4fgf2"]
 [ext_resource type="Script" path="res://resources/game/game_object/tile_object/object_info.gd" id="1_7sxyk"]
 [ext_resource type="Script" path="res://scripts/game/game_object_scripts/tile_object/object.gd" id="1_g61an"]
 [ext_resource type="PackedScene" uid="uid://rkjfqnikp5px" path="res://assets/models/game/objects/palms/coconut_tree.glb" id="2_qnftx"]
@@ -13,7 +12,6 @@ lock_tile = false
 solids = Array[bool]([true])
 id = 3
 name = "Coconut Tree"
+gdscript = ExtResource("1_g61an")
 models = Array[PackedScene]([ExtResource("2_qnftx")])
 points = Array[Array]([[Vector3(0.0674333, 1.11662, 0.254421), Vector3(-0.283044, 0.128252, -0.0179081)]])
-gdscript = ExtResource("1_g61an")
-data = ExtResource("1_4fgf2")

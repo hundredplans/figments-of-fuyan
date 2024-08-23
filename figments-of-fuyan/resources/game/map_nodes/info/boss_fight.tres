@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MapNodeInfoGD" load_steps=4 format=3 uid="uid://bbju101vhgekv"]
+
+[ext_resource type="Script" path="res://scripts/game/map/map_node/boss_fight_node.gd" id="1_y4e38"]
+[ext_resource type="Image" uid="uid://bvk82knjw4jy7" path="res://assets/sprites/game/map_nodes/icon/Boss.png" id="2_qpkqm"]
+[ext_resource type="Script" path="res://resources/game/map_nodes/map_node_info.gd" id="3_w00c8"]
+
+[resource]
+script = ExtResource("3_w00c8")
+id = 9
+name = "Boss"
+icon = ExtResource("2_qpkqm")
+gdscript = ExtResource("1_y4e38")
+is_unique_node = false

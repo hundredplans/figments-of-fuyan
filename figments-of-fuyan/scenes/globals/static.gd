@@ -1,6 +1,12 @@
 class_name StaticHelper
 extends Resource
 
+static func getChildrenRecursive(node: Node, children := []) -> Array:
+	children.append(node)
+	for child in node.get_children():
+		children = getChildrenRecursive(child, children)
+	return children
+
 static func getResourcesRecursive(DIR_PATH: String, type: Variant) -> Array:
 	var files: Array = getFilesRecursive(DIR_PATH)
 	files = files.filter(func(x: String): return x.ends_with(".tres"))
@@ -24,11 +30,11 @@ static func getFilesRecursive(DIR_PATH: String) -> Array:
 			file_name = dir.get_next()
 	return files
 
-static func onAutoIncrementID(DIR_PATH: String, type: Variant, _id: int) -> int:
+static func onAutoIncrementID(type: Variant, _id: int) -> int:
 	if Engine.is_editor_hint():
 		var id: int = _id
-		var resources: Array = getResourcesRecursive(DIR_PATH, type)
-		resources.sort_custom(func(x: GameObjectInfoGD, y: GameObjectInfoGD): return x.id < y.id)
+		var resources: Array = getResourcesRecursive(type.INFO_PATH, type)
+		resources.sort_custom(func(x: Resource, y: Resource): return x.id < y.id)
 		
 		id = getNonConsecutive(resources)
 		if id == -1: return resources.size() + 1
@@ -38,7 +44,7 @@ static func onAutoIncrementID(DIR_PATH: String, type: Variant, _id: int) -> int:
 static func getNonConsecutive(arr: Array) -> int:
 	var i: int = 1
 	for x in arr:
-		if i < arr.size() and arr[i] - arr[i-1] != 1:
-			return arr[i - 1]
+		if i < arr.size() and arr[i].id - arr[i-1].id != 1:
+			return arr[i - 1].id
 		i += 1
 	return -1

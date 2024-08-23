@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://b6j81bywbv24n"]
+
+[ext_resource type="Script" path="res://scenes/game/map/map_world.gd" id="1_0di2n"]
+[ext_resource type="Environment" uid="uid://g3ihmrpunr2b" path="res://resources/environments/main_menu_environment.tres" id="2_uinh7"]
+
+[node name="MapWorld" type="Node3D"]
+script = ExtResource("1_0di2n")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+unique_name_in_owner = true
+environment = ExtResource("2_uinh7")
+
+[node name="Camera3D" type="Camera3D" parent="."]

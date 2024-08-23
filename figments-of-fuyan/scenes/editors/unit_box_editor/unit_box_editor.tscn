@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://dnnfw86w6scfm"]
+
+[ext_resource type="Script" path="res://scenes/editors/unit_box_editor/unit_box_editor.gd" id="1_yppjx"]
+
+[node name="UnitBoxEditor" type="Node"]
+script = ExtResource("1_yppjx")
+
+[node name="World" type="Node3D" parent="."]
+
+[node name="PlaceCollisionShapeHere" type="Node3D" parent="."]

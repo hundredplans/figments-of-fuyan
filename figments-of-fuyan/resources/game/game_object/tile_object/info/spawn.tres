@@ -1,6 +1,5 @@
-[gd_resource type="Resource" script_class="ObjectInfoGD" load_steps=8 format=3 uid="uid://5yx20nytaes6"]
+[gd_resource type="Resource" script_class="ObjectInfoGD" load_steps=7 format=3 uid="uid://5yx20nytaes6"]
 
-[ext_resource type="Script" path="res://resources/game/game_object/tile_object/data/object_data.gd" id="1_2t4li"]
 [ext_resource type="Script" path="res://scripts/game/game_object_scripts/tile_object/object.gd" id="1_4p8m5"]
 [ext_resource type="Script" path="res://resources/game/game_object/tile_object/object_info.gd" id="1_kbahc"]
 [ext_resource type="PackedScene" uid="uid://bnj05m017ae8a" path="res://assets/models/game/objects/spawns/spawn_ally.glb" id="2_t0w0g"]
@@ -10,13 +9,12 @@
 
 [resource]
 script = ExtResource("1_kbahc")
-tile_coords = Array[Array]([[], [], [], []])
+tile_coords = Array[Array]([[Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)]])
 lock_rotation = false
 lock_tile = true
 solids = Array[bool]([false, false, false, false])
 id = 2
 name = "Spawn"
+gdscript = ExtResource("1_4p8m5")
 models = Array[PackedScene]([ExtResource("2_t0w0g"), ExtResource("4_g8i4p"), ExtResource("5_cmsye"), ExtResource("6_s4xnr")])
 points = Array[Array]([[], [], [], []])
-gdscript = ExtResource("1_4p8m5")
-data = ExtResource("1_2t4li")

@@ -56,4 +56,3 @@ func getChildrenRecursive(node: Node, children := []):
 	for child in node.get_children():
 		children = getChildrenRecursive(child, children)
 	return children
-
