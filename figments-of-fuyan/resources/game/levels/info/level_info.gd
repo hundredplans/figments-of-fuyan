@@ -1,6 +1,7 @@
 class_name LevelInfoGD
 extends Resource
 
+static var INFO_PATH: String = "res://resources/game/levels/"
 @export_group("Automatic")
 @export var id: int
 @export var name: String
@@ -13,12 +14,11 @@ extends Resource
 @export var enemy_spawn_amount: int = -1
 @export var ally_spawn_amount: int = -1
 @export_range(0, 10000, 60) var timeout: int = 1200
-@export var lights: Array[LightInfo]
+@export var lights: Array[PackedScene]
 
 #region Setting Values
 func setAutoID() -> void:
-	var DIR_PATH: String = "res://resources/game/levels/"
-	var tile_object_infos: Array = Helper.getResourcesRecursive(DIR_PATH, LevelInfoGD).map(func(x: LevelInfoGD): return x.id)
+	var tile_object_infos: Array = Helper.getResourcesRecursive(LevelInfoGD).map(func(x: LevelInfoGD): return x.id)
 	
 	tile_object_infos.sort_custom(func(x: int, y: int): return x < y)
 	
@@ -27,7 +27,7 @@ func setAutoID() -> void:
 	else: id += 1
 	notify_property_list_changed()
 		
-func setInfo(_name: String = "", _area_id: int = 1, _data: Array[TileObjectDataGD] = [], _id: int = 0) -> void:
+func setInfo(_name: String = "", _area_id: int = 1, _data: Array[SavedData] = [], _id: int = 0) -> void:
 	id = _id
 	if id == 0: setAutoID()
 	name = _name

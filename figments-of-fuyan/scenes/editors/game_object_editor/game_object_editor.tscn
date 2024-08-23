@@ -1,9 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://drkpi0yj8xo4l"]
+[gd_scene load_steps=7 format=3 uid="uid://drkpi0yj8xo4l"]
 
 [ext_resource type="Script" path="res://scenes/editors/game_object_editor/game_object_editor.gd" id="1_k2f2p"]
 [ext_resource type="PackedScene" uid="uid://bydj1x1wtvu8y" path="res://scenes/editors/common/tile_static_body/tile_static_body.tscn" id="2_3sgsp"]
 [ext_resource type="Script" path="res://scripts/addons/movement_camera.gd" id="2_h88la"]
-[ext_resource type="Script" path="res://scenes/editors/game_object_editor/points_editor.gd" id="3_80wr2"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_s2aal"]
 sky_top_color = Color(0.454902, 0.670588, 1, 1)
@@ -26,7 +25,6 @@ glow_blend_mode = 0
 
 [node name="GameObjectEditor" type="Node"]
 script = ExtResource("1_k2f2p")
-TILE_OBJECTS_PATH = "res://resources/game/game_object/tile_object/info/"
 tile_static_body = ExtResource("2_3sgsp")
 
 [node name="UI" type="Control" parent="."]
@@ -81,7 +79,6 @@ script = ExtResource("2_h88la")
 environment = SubResource("Environment_im38j")
 
 [node name="PointsEditor" type="Node3D" parent="World"]
-script = ExtResource("3_80wr2")
 
 [node name="Ray" type="RayCast3D" parent="World/PointsEditor"]
 unique_name_in_owner = true
@@ -91,7 +88,5 @@ collision_mask = 1000
 unique_name_in_owner = true
 collision_mask = 8
 
-[connection signal="mouse_entered" from="UI/VBoxContainer/EditTileCoords" to="." method="onMouseInUI" binds= [true]]
-[connection signal="mouse_exited" from="UI/VBoxContainer/EditTileCoords" to="." method="onMouseInUI" binds= [false]]
 [connection signal="toggled" from="UI/VBoxContainer/EditTileCoords" to="." method="onEditTileCoordsPressed"]
 [connection signal="camera_panning" from="World/Camera" to="." method="_on_camera_camera_panning"]

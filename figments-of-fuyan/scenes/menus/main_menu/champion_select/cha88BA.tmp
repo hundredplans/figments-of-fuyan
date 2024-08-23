@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://ck4m8j45epneb"]
+
+[ext_resource type="Script" path="res://scenes/menus/main_menu/champion_select/champion_select.gd" id="1_lk8o8"]
+[ext_resource type="PackedScene" uid="uid://86q5rpijhpb5" path="res://scenes/menus/main_menu/champion_select/champion_pedestal.tscn" id="2_o6kaj"]
+[ext_resource type="PackedScene" uid="uid://biqjbt5cxeo7k" path="res://scenes/common/saver_loader.tscn" id="3_v7ep7"]
+
+[node name="ChampionSelect" type="Node3D"]
+script = ExtResource("1_lk8o8")
+UNIT_INFO_PATH = "res://resources/game/game_object/unit/info/"
+PedestalPacked = ExtResource("2_o6kaj")
+
+[node name="SaverLoader" parent="." instance=ExtResource("3_v7ep7")]
+unique_name_in_owner = true

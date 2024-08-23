@@ -6,7 +6,7 @@ extends Node
 @export var MAX_LEVEL_SIZE: int = 30
 @export var SCROLL_DELAY: float = 0.2
 @export var ROTATION_LOCK_DELAY: float = 0.15
-@export var TILE_OBJECTS_PATH: String = "res://resources/game/tile_object/info/"
+@export_dir var TILE_OBJECTS_PATH: String
 @onready var UI: Control = $UI
 @onready var World: Node3D = %World
 @onready var Camera: Camera3D = %Camera3D
@@ -19,11 +19,9 @@ var base_elevation: int = -1
 
 var HoverStaticBody: StaticBody3D
 var HoverModel: TileObjectGD
+
 #endregion
 #region Helper Functions
-func onFilterTileObjects() -> void:
-	pass
-
 func onConvertCoords(coords: Vector4i) -> Vector3:
 	return Vector3((sqrt(3) * coords.x + sqrt(3) * coords.y * 0.5), coords.w * 0.6, coords.y * (3 / 2.0))
 	
@@ -58,15 +56,15 @@ func getTilesBelow(Tile: TileGD) -> Array[TileGD]:
 
 #endregion
 #region Base Functions
-
 func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		_on_save_button_pressed()
 
 func _ready() -> void:
 	setBaseElevation(0)
-	all_tile_objects = Helper.getResourcesRecursive(TILE_OBJECTS_PATH, TileObjectInfoGD)
+	all_tile_objects = Helper.getResourcesRecursive(TileObjectInfoGD)
 	onPlaceStartingTiles()
+	setAreaOptionButtonItems()
 		
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
@@ -120,14 +118,7 @@ func _input(event: InputEvent) -> void:
 						setBaseElevation(num)
 				
 			if !is_rotation_disabled:
-				if Input.is_action_pressed("FastRotateLeft"):
-					if HoverModel != null: onRotate(HoverModel, -1, false)
-					else: onRotate(onFindMouseTileObject(), -1, false)
-				elif Input.is_action_pressed("FastRotateRight"):
-					if HoverModel != null: onRotate(HoverModel, 1, false)
-					else: onRotate(onFindMouseTileObject(), 1, false)
-				
-				elif Input.is_action_pressed("RotateLeft"):
+				if Input.is_action_pressed("RotateLeft"):
 					if HoverModel != null: onRotate(HoverModel, -1)
 					else: onRotate(onFindMouseTileObject(), -1)
 					
@@ -135,7 +126,6 @@ func _input(event: InputEvent) -> void:
 					if HoverModel != null: onRotate(HoverModel, 1)
 					else: onRotate(onFindMouseTileObject(), 1)
 					
-				
 			if !is_scroll_disabled:
 				if Input.is_action_just_pressed("ChangeVariationDown"):
 					if HoverModel != null: onChangeHoverModelVariation(-1)
@@ -165,13 +155,14 @@ func _on_search_tile_object_text_changed(text: String):
 			button.mouse_exited.connect(onMouseInUI.bind(false))
 			button.custom_pressed.connect(onTileObjectInfoSelected)
 
-func onTileObjectInfoSelected(info: TileObjectInfoGD, data: TileObjectDataGD = info.createData(), remove_last: bool = true) -> void:
+func onTileObjectInfoSelected(saved_data: SavedData, remove_last: bool = true) -> void:
 	if remove_last and HoverModel != null: HoverModel.queue_free()
 	
-	HoverModel = data.onLoad(World, info)
+	HoverModel = saved_data.onLoad(World)
 	HoverModel.setRayPickable(true)
 	HoverModel.position = Vector3(0, 10000, 0)
 	HoverModel.setEmptyCollisionLayers()
+	HoverModel.setHalfTransparent()
 	
 	var coords := Vector4i.ZERO
 	if HoverModel is TileGD and HoverStaticBody != null: coords = HoverStaticBody.coords
@@ -179,18 +170,18 @@ func onTileObjectInfoSelected(info: TileObjectInfoGD, data: TileObjectDataGD = i
 		var Tile: TileGD = onFindMouseTile()
 		if Tile != null: coords = Tile.getCoords()
 		
-	if coords != Vector4i.ZERO: HoverModel.setPosition(coords, onFindMousePoint())
-	
-	last_selected_info = LastSelectedInfo.new(HoverModel.info.id, HoverModel.data)
-	HoverModel.setHalfTransparent()
+	if coords != Vector4i.ZERO:
+		if HoverModel is TileGD: HoverModel.setCoords(coords)
+		elif HoverModel is ObjectGD: HoverModel.setPosition(coords, onFindMousePoint(), tile_lock_force)
+	LastSelectedData = HoverModel.onSave()
 	
 func onSearchTileObjectReleaseFocus() -> void:
 	SearchTileObject.release_focus()
 	if SearchResultsContainer.get_child_count() > 0:
-		onTileObjectInfoSelected(SearchResultsContainer.get_child(0).info)
+		onTileObjectInfoSelected(SearchResultsContainer.get_child(0).info.getBaseData())
 #endregion
 #region Hovering & Placing TileObjects
-var last_selected_info: LastSelectedInfo
+var LastSelectedData: SavedData
 func onMouseExitTileStaticBody() -> void:
 	HoverStaticBody = null
 
@@ -200,12 +191,12 @@ func onMouseEnterTileStaticBody(_HoverStaticBody: StaticBody3D) -> void:
 		HoverModel.setCoords(HoverStaticBody.coords)
 
 func onLastHoverModelSelected() -> void:
-	if last_selected_info != null:
-		onTileObjectInfoSelected(onFindTileObjectInfo(last_selected_info.id), last_selected_info.data)
+	if LastSelectedData != null:
+		onTileObjectInfoSelected(LastSelectedData)
 
 func onHoverModelDeselected() -> void:
 	if HoverModel != null:
-		last_selected_info = LastSelectedInfo.new(HoverModel.info.id, HoverModel.data)
+		LastSelectedData = HoverModel.onSave()
 		HoverModel.queue_free()
 		HoverModel = null
 		
@@ -225,19 +216,18 @@ func onHoverModelPlaced() -> void:
 	if HoverModel is TileGD and tile_fill_enabled:
 		onTileFill(HoverModel)
 	
-	onTileObjectInfoSelected(HoverModel.info, HoverModel.data.getDuplicate(), false)
+	var save_data: SavedData = HoverModel.onSave()
+	if save_data is SavedDataTile: save_data.tile_fill = false
+	
+	onTileObjectInfoSelected(save_data, false)
 		
 func onPlaceStartingTiles() -> void:
-	var info: TileObjectInfoGD = onFindTileObjectInfo(1)
 	for x in range(-DEFAULT_LEVEL_SIZE, (DEFAULT_LEVEL_SIZE + 1)):
 		for y in range(max(-DEFAULT_LEVEL_SIZE, -x - DEFAULT_LEVEL_SIZE), min(DEFAULT_LEVEL_SIZE, -x + DEFAULT_LEVEL_SIZE) + 1):
-			onPlaceBaseTile(Vector4i(x, y, -x-y, 0), info)
+			onPlaceBaseTile(Vector4i(x, y, -x-y, 0))
 
-func onPlaceBaseTile(coords: Vector4i, info: TileObjectInfoGD = onFindTileObjectInfo(1)) -> TileGD:
-	var data := TileDataGD.new(1, coords)
-	var Model: TileGD = data.onLoad(World, info)
-	Model.setRegularMaterial()
-	return Model
+func onPlaceBaseTile(coords: Vector4i) -> TileGD:
+	return SavedDataTile.new(1, 0, coords, 0, false).onLoad(World)
 	
 #endregion
 #region Elevation
@@ -276,16 +266,16 @@ func _on_camera_3d_camera_panning(_is_camera_panning: bool):
 var is_scroll_disabled: bool = false
 func onChangeHoverModelVariation(direction: int) -> void:
 	HoverModel.clampVariation(direction)
-	onTileObjectInfoSelected(HoverModel.info, HoverModel.data, true)
+	onTileObjectInfoSelected(HoverModel.onSave(), true)
 	
 func onChangeMouseTileObjectVariation(direction: int) -> void:
 	var TileObject: TileObjectGD = onFindMouseTileObject()
 	if TileObject != null:
-		var data: TileObjectDataGD = TileObject.data
-		var info: TileObjectInfoGD = TileObject.info
 		TileObject.clampVariation(direction)
 		TileObject.queue_free()
-		data.onLoad(World, info)
+		
+		var saved_data: SavedData = TileObject.onSave()
+		saved_data.onLoad(World)
 		
 func onDisableScroll() -> void:
 	is_scroll_disabled = true
@@ -298,7 +288,7 @@ var deletion_elevation: int = -1
 func onDeleteTileObject(TileObject: TileObjectGD) -> void:
 	if TileObject != null:
 		TileObject.queue_free()
-		if TileObject is TileGD and TileObject.data.tile_fill:
+		if TileObject is TileGD and TileObject.tile_fill:
 			var coords: Vector4i = TileObject.getCoords()
 			coords.w = 0
 			onPlaceBaseTile(coords)
@@ -314,24 +304,23 @@ func onInputDeleteMouseTileObject() -> void:
 #endregion
 #region Rotating
 var is_rotation_disabled: bool = false
-func onRotate(TileObject: TileObjectGD, direction: int, is_slow_rotate_speed: bool = true) -> void:
+func onRotate(TileObject: TileObjectGD, direction: int) -> void:
 	if TileObject != null:
-		if TileObject.info.lock_rotation:
-			TileObject.onLockRotateDirection(direction)
-			onDisableRotation()
-		else: TileObject.onRotateDirection(direction, is_slow_rotate_speed)
+		if TileObject.getLockRotation(): onDisableRotation()
+		TileObject.onRotateDirection(direction)
 	
 func onDisableRotation() -> void:
 	is_rotation_disabled = true
 	await get_tree().create_timer(ROTATION_LOCK_DELAY).timeout
 	is_rotation_disabled = false
+	
 #endregion
 #region TileFill
 var tile_fill_enabled: bool = true
 @onready var TileFillButton: CheckBox = %TileFillButton
 
-func onTileFill(Tile: TileGD) -> void:
-	var action: String = Tile.onCreateTileFill(!Tile.data.tile_fill)
+func onTileFill(Tile: TileGD, state: bool = !Tile.tile_fill) -> void:
+	var action: String = Tile.onCreateTileFill(state)
 	match action:
 		"CREATE":
 			var coords: Vector4i = Tile.getCoords()
@@ -361,7 +350,7 @@ func onChangeTileLockButtonState() -> void:
 #region Saving
 const LEVEL_PATH: String = "res://resources/game/levels/"
 @onready var SaveLineEdit: LineEdit = %SaveLineEdit
-@onready var AreaLineEdit: LineEdit = %AreaLineEdit
+@onready var AreaOptionButton: OptionButton = %AreaOptionButton
 
 var AREA_TO_LEVEL_INFO: Dictionary = {
 	1: PalmLevelInfoGD
@@ -370,14 +359,13 @@ var AREA_TO_LEVEL_INFO: Dictionary = {
 func _on_save_button_pressed():
 	var level_name: String = SaveLineEdit.text
 	if !level_name.is_empty():
-		var _data: Array[GameObjectDataGD] = []
-		get_tree().call_group("Loadables", "onSave", _data)
-		var data: Array[TileObjectDataGD]
-		data.assign(_data)
+		var data: Array[SavedData] = []
+		for child in get_tree().get_nodes_in_group("Loadables"):
+			data.append(child.onSave())
 		
 		var valid_name: String = await getValidLevelName(level_name) + ".tres"
 		var path: String = LEVEL_PATH + valid_name
-		var area_id: int = int(AreaLineEdit.text)
+		var area_id: int = AreaOptionButton.get_selected_id()
 		var level_info: LevelInfoGD = AREA_TO_LEVEL_INFO[area_id].new()
 		
 		var id: int = 0
@@ -388,7 +376,6 @@ func _on_save_button_pressed():
 		else: level_info.setSpawnPropertiesAutoValues(get_tree().get_nodes_in_group("Loadables"))
 		
 		level_info.setInfo(level_name, area_id, data, id)
-		
 		if level_name.is_empty(): level_name = valid_name
 		ResourceSaver.save(level_info, path)
 	
@@ -409,7 +396,7 @@ func _on_load_button_pressed():
 		SearchTileObject.text = ""
 		SearchTileObject.text_changed.emit("")
 		onHoverModelDeselected()
-		var levels: Array = Helper.getResourcesRecursive(LEVEL_PATH, LevelInfoGD)
+		var levels: Array = Helper.getResourcesRecursive(LevelInfoGD)
 		for level in levels:
 			var button := Button.new()
 			button.alignment = HORIZONTAL_ALIGNMENT_LEFT
@@ -428,7 +415,12 @@ func onLoadLevel(level_info: LevelInfoGD) -> void:
 	onHoverModelDeselected()
 	
 	SaveLineEdit.text = level_info.name
-	AreaLineEdit.text = str(level_info.area_id)
+	
+	var area_id: int = level_info.area_id
+	for idx in range(AreaOptionButton.item_count):
+		if AreaOptionButton.get_item_id(idx) == area_id:
+			AreaOptionButton.select(idx)
+			break
 	
 	for tile_object in get_tree().get_nodes_in_group("Loadables"):
 		tile_object.onClear()
@@ -447,4 +439,10 @@ func onMouseInUI(state: bool) -> void:
 		onHoverModelDeselected()
 	else:
 		if was_last_selected: onLastHoverModelSelected()
+#endregion
+
+#region Area Option Button
+func setAreaOptionButtonItems() -> void:
+	for area_info in Helper.getResourcesRecursive(AreaInfoGD):
+		AreaOptionButton.add_item(area_info.name, area_info.id)
 #endregion

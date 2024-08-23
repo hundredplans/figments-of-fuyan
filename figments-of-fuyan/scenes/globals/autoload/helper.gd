@@ -1,5 +1,9 @@
 extends Node
 
+func _ready() -> void:
+	var world_info: WorldInfo = Helper.getResourcesRecursiveID(WorldInfo, 1)
+	world_info.onGenerateBaseMapNodes(null, null, null)
+
 func getChildrenRecursive(node: Node, children := []) -> Array:
 	children.append(node)
 	for child in node.get_children():
@@ -22,14 +26,14 @@ func getCollision(collider: Node, type: Variant) -> Variant:
 func getRayParentMultiple(_collider: StaticBody3D, _type_array: Array) -> Variant:
 	return null
 
-func getResourcesRecursive(DIR_PATH: String, type: Variant) -> Array:
+func getResourcesRecursive(type: Variant, DIR_PATH: String = type.INFO_PATH) -> Array:
 	var files: Array = getFilesRecursive(DIR_PATH)
 	files = files.filter(func(x: String): return x.ends_with(".tres"))
 	files = files.map(func(x: String): return load(DIR_PATH + x))
 	return files.filter(func(x: Resource): return is_instance_of(x, type))
 	
-func getResourcesRecursiveID(DIR_PATH: String, type: Variant, id: int) -> Variant:
-	var arr: Array = getResourcesRecursive(DIR_PATH, type)
+func getResourcesRecursiveID(type: Variant, id: int, DIR_PATH: String = type.INFO_PATH) -> Variant:
+	var arr: Array = getResourcesRecursive(type, DIR_PATH)
 	for info in arr:
 		if info.id == id: return info
 	return null

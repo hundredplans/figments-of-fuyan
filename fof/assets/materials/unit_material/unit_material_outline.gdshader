@@ -16,7 +16,7 @@ void vertex() {
 
 void fragment() {
 	ALBEDO = albedo.rgb;
-	
+
 	float grey = dot(ALBEDO.rgb, vec3(max_grey));
 	ALBEDO = mix(ALBEDO.rgb, vec3(grey), time_value);
 	ALPHA = 1.0 - time_value;

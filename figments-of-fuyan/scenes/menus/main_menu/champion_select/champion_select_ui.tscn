@@ -1,0 +1,64 @@
+[gd_scene load_steps=2 format=3 uid="uid://cbt3ofougwb5l"]
+
+[ext_resource type="Script" path="res://scenes/menus/main_menu/champion_select/champion_select_ui.gd" id="1_5whd0"]
+
+[node name="ChampionSelectUI" type="Control"]
+layout_mode = 3
+anchor_left = 0.507
+anchor_top = 0.053
+anchor_right = 0.974
+anchor_bottom = 0.959
+offset_left = -0.440063
+offset_top = -0.240002
+offset_right = -0.0800781
+offset_bottom = 0.279907
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5whd0")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"DarkPanel"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 13.0
+offset_right = 883.0
+offset_bottom = 968.0
+
+[node name="ChampionNameLabel" type="Label" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"LargeLabel"
+text = "Frederic the Fearless"
+horizontal_alignment = 1
+
+[node name="CardSpot" type="Control" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 10.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 40
+
+[node name="StartButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Start"
+
+[node name="CancelButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Cancel"
+
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

@@ -29,6 +29,8 @@ var _alt = false
 
 @export var disable_movement: bool = false
 @export var disable_freelook: bool = false
+@export_range(-90, 0) var freelook_clamp_bottom: int = -90
+@export_range(0, 90) var freelook_clamp_top: int = 90
 var ANTI_INTERACT_BUTTON: int = MOUSE_BUTTON_RIGHT
 
 func setDisableFreelook(state: bool) -> void:
@@ -108,7 +110,7 @@ func _update_mouselook():
 		_mouse_position = Vector2(0, 0)
 		
 		# Prevents looking up/down too far
-		pitch = clamp(pitch, -90 - _total_pitch, 90 - _total_pitch)
+		pitch = clamp(pitch, freelook_clamp_bottom - _total_pitch, freelook_clamp_top - _total_pitch)
 		_total_pitch += pitch
 	
 		rotate_y(deg_to_rad(-yaw))

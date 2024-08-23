@@ -13,20 +13,34 @@ extends Node3D
 #endregion
 #region Base
 func _ready() -> void:
-	if !Engine.is_editor_hint():
+	if !Engine.is_editor_hint() and LevelInfo != null:
+		Lights = get_node_or_null("Lights")
 		for child in World.get_children() + Lights.get_children(): child.free()
-		for data in LevelInfo.data: data.onLoad(World).owner = self
-		for light_info in LevelInfo.lights: light_info.onLoad(Lights).owner = self
+		for data in LevelInfo.data:
+			var model: Node3D = data.onLoad(World)
+			model.setOwner(self)
 		
-		var packed := PackedScene.new()
-		packed.pack(self)
-		ResourceSaver.save(packed, scene_file_path)
+		for packed in LevelInfo.lights:
+			var light: Light3D = packed.instantiate()
+			Lights.add_child(light)
+			light.owner = self
+			
+		var packed_scene := PackedScene.new()
+		packed_scene.pack(self)
+		ResourceSaver.save(packed_scene, scene_file_path)
+		
 #endregion
 #region Lights
 func onLevelInfoChanged(_LevelInfo: LevelInfoGD) -> void:
-	if World != null:
-		if _LevelInfo == null and LevelInfo != null:
-			LevelInfo.lights = Lights.get_children().map(LightInfo.onConvertNode)
-			ResourceSaver.save(LevelInfo)
-			for child in World.get_children() + Lights.get_children(): child.free()
+	if _LevelInfo == null and LevelInfo != null:
+		var lights_array: Array[PackedScene] = []
+		for light in Lights.get_children():
+			var packed_scene := PackedScene.new()
+			packed_scene.pack(light)
+			lights_array.append(packed_scene)
+			
+		LevelInfo.lights = lights_array
+		ResourceSaver.save(LevelInfo)
+		
+		for child in World.get_children() + Lights.get_children(): child.free()
 #endregion

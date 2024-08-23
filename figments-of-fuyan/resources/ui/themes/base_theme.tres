@@ -1,6 +1,18 @@
-[gd_resource type="Theme" load_steps=3 format=3 uid="uid://dcbv431prk86r"]
+[gd_resource type="Theme" load_steps=4 format=3 uid="uid://dcbv431prk86r"]
 
 [ext_resource type="FontFile" uid="uid://dpk4daccj6hwv" path="res://assets/fonts/roboto.ttf" id="1_8d2p5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wbjoi"]
+bg_color = Color(0.383237, 0.281528, 0.0291746, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.205264, 0.143779, 0.00748614, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uollv"]
 bg_color = Color(0.995353, 0.859809, 0.594934, 1)
@@ -19,6 +31,8 @@ default_font = ExtResource("1_8d2p5")
 default_font_size = 32
 CheckBox/colors/font_outline_color = Color(0, 0, 0, 1)
 CheckBox/constants/outline_size = 8
+DarkPanel/base_type = &"Panel"
+DarkPanel/styles/panel = SubResource("StyleBoxFlat_wbjoi")
 Label/colors/font_outline_color = Color(0, 0, 0, 1)
 Label/constants/outline_size = 8
 Label/font_sizes/font_size = 32

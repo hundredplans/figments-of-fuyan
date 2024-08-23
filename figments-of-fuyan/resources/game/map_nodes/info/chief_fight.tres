@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MapNodeInfoGD" load_steps=4 format=3 uid="uid://bju5x5qqfuvsm"]
+
+[ext_resource type="Script" path="res://scripts/game/map/map_node/chief_fight_node.gd" id="1_c11js"]
+[ext_resource type="Script" path="res://resources/game/map_nodes/map_node_info.gd" id="1_v22uy"]
+[ext_resource type="Image" uid="uid://lpa7xtf44lm1" path="res://assets/sprites/game/map_nodes/icon/Crown.png" id="2_ikypf"]
+
+[resource]
+script = ExtResource("1_v22uy")
+id = 5
+name = "Chief Fight"
+icon = ExtResource("2_ikypf")
+gdscript = ExtResource("1_c11js")
+is_unique_node = false

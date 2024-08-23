@@ -13,11 +13,11 @@ void fragment() {
 	vec2 base_uv = UV;
 	vec4 albedo_tex = texture(texture_albedo,base_uv);
 	ALBEDO = albedo.rgb * albedo_tex.rgb;
-	
+
 	if (ALBEDO.r + ALBEDO.g + ALBEDO.b <= 0.01) {
 		ALBEDO = outline_color;
 	}
-	
+
 	SPECULAR = specular;
 	{
 		float fade_distance = length(VERTEX);
@@ -27,4 +27,3 @@ void fragment() {
 		}
 	}
 }
-

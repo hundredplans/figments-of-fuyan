@@ -158,4 +158,3 @@ func on_skip_hand_phase_result(Tile: TileGD = null) -> bool:
 			LevelUI.onHandPhaseNoSpawnTiles()
 			return true
 	return false
-

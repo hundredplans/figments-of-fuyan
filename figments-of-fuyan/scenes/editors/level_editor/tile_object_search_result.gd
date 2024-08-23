@@ -8,4 +8,4 @@ func setInfo(_info: TileObjectInfoGD) -> void:
 	text = _info.name
 
 func _on_pressed():
-	custom_pressed.emit(info)
+	custom_pressed.emit(info.getBaseData())

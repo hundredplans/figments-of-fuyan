@@ -4,11 +4,14 @@ extends Node3D
 @export var black_environment: Environment
 @export var base_environment: Environment
 @export var ChampionSelectPacked: PackedScene
+@export var START_GAME_FADE_OUT_TIME: float = 1.5
 #endregion
 
 #region Globals
+signal champion_pressed
 signal begin_travel
 signal end_travel
+signal start
 
 var UI: Control
 var main_menu_mesh_name: String
@@ -23,6 +26,7 @@ var main_menu_mesh_name: String
 func _ready() -> void:
 	ani_player.animation_finished.connect(onAnimationFinished)
 	setMapLights(false)
+	UI.start.connect(onStart)
 
 func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("Back"): onBack()
@@ -40,7 +44,6 @@ func onAnimationFinished(mesh_name: String) -> void:
 		travelling_mesh_name = ""
 		if !is_exit: history.append(mesh_name)
 		
-	
 func onMeshChosen(ani_name: String) -> void:
 	if !ani_player.is_playing():
 		is_exit = false
@@ -70,10 +73,19 @@ func onNewGameHideFrame() -> void:
 	Camera.setDisableFreelook(!is_enter)
 	if is_enter:
 		ChampionSelect = ChampionSelectPacked.instantiate()
+		ChampionSelect.champion_pressed.connect(onChampionPressed)
 		add_child(ChampionSelect)
 	else: ChampionSelect.queue_free()
 	
 func setMapLights(is_enter: bool) -> void:
 	env.environment = black_environment if is_enter else base_environment
 	map_light.light_color = Color(0, 0, 0) if is_enter else Color(1, 1, 1)
+	
+func onChampionPressed(Unit: UnitGD) -> void:
+	champion_pressed.emit(Unit)
+
+func onStart(Unit: UnitGD) -> void:
+	onMeshChosen("StartGame")
+	await ani_player.animation_finished
+	start.emit(Unit)
 #endregion

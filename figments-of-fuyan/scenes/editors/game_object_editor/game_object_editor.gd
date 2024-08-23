@@ -4,7 +4,6 @@ extends Node
 @export var MAX_LEVEL_SIZE: int = 10
 @export var MAX_ELEVATION: int = 10
 @export var SCROLL_DELAY: float = 0.2
-@export var TILE_OBJECTS_PATH: String = "res://resources/game/tile_object/info/"
 #endregion
 #region Globals
 var all_tile_objects: Array = []
@@ -33,7 +32,7 @@ func onFindTileObjectInfo(id: int) -> TileObjectInfoGD:
 #endregion
 #region Base Functions
 func _ready() -> void:
-	all_tile_objects = Helper.getResourcesRecursive(TILE_OBJECTS_PATH, TileObjectInfoGD)
+	all_tile_objects = Helper.getResourcesRecursive(TileObjectInfoGD)
 	all_tile_objects.sort_custom(func(x: TileObjectInfoGD, y: TileObjectInfoGD): return x.id < y.id)
 	
 	all_game_objects = all_tile_objects
@@ -44,9 +43,9 @@ func _ready() -> void:
 		button.mouse_filter = Control.MOUSE_FILTER_STOP
 		button.mouse_entered.connect(onMouseInUI.bind(true))
 		button.mouse_exited.connect(onMouseInUI.bind(false))
-		button.pressed.connect(onGameObjectInfoSelected.bind(info))
+		button.pressed.connect(onGameObjectInfoSelected.bind(info.getBaseData()))
 		GameObjectsContainer.add_child(button)
-	onGameObjectInfoSelected(all_game_objects[0])
+	onGameObjectInfoSelected(all_game_objects[0].getBaseData())
 	
 func _input(_event: InputEvent) -> void:
 	if !is_camera_panning:
@@ -77,10 +76,10 @@ func _input(_event: InputEvent) -> void:
 #endregion
 #region Selecting Info
 var SelectedModel: GameObjectGD
-func onGameObjectInfoSelected(info: GameObjectInfoGD, data: GameObjectDataGD = info.createData()) -> void:
+func onGameObjectInfoSelected(data: SavedData) -> void:
 	if SelectedModel != null: SelectedModel.queue_free()
 	get_tree().call_group("Tiles", "queue_free")
-	SelectedModel = data.onLoad(World, info)
+	SelectedModel = data.onLoad(World)
 	onLoadPoints()
 	onUpdateEditTileCoordsEnabled()
 	
@@ -94,7 +93,7 @@ var is_scroll_disabled: bool = false
 func onChangeVariation(direction: int) -> void:
 	if !is_scroll_disabled:
 		SelectedModel.clampVariation(direction)
-		onGameObjectInfoSelected(SelectedModel.info, SelectedModel.data)
+		onGameObjectInfoSelected(SelectedModel.onSave())
 		onDisableScroll()
 	
 func onDisableScroll() -> void:
@@ -181,12 +180,7 @@ func onMouseEnterTileStaticBody(_HoverStaticBody: StaticBody3D) -> void:
 	
 func onPlaceTile() -> void:
 	if !onFindTile(HoverStaticBody.coords) and !mouse_in_ui:
-		var info: TileInfoGD = onFindTileObjectInfo(1)
-		var data: TileDataGD = info.createData()
-		var Tile: TileGD = data.onLoad(World, info)
-		
-		Tile.setRayPickable(false)
-		Tile.setPosition(HoverStaticBody.coords)
+		var Tile: TileGD = SavedDataTile.new(1, 0, HoverStaticBody.coords).onLoad(World)
 		Tile.setHalfTransparent()
 		SelectedModel.onSaveTile(Tile.getCoords())
 #endregion

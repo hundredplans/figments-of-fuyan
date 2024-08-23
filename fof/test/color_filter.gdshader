@@ -15,4 +15,3 @@ void fragment() { // SCREEN_UV = current pixel
 	color.g *= 1.2;
 	COLOR.rgb = color;
 }
-
