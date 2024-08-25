@@ -6,6 +6,7 @@ static var INFO_PATH: String = "res://resources/game/game_object/unit/info/"
 const CARD_UI_SCENE_PATH: String = "res://scenes/game/units/cards/card_ui.tscn"
 #region Exports
 @export var rarity: RARITIES
+@export_multiline var flavor_text: String
 #endregion
 
 #region Enums

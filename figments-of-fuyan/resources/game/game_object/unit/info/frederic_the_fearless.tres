@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ChampionUnitInfoGD" load_steps=12 format=3 uid="uid://d3oj4n6r0jwut"]
+[gd_resource type="Resource" script_class="ChampionUnitInfoGD" load_steps=14 format=3 uid="uid://d3oj4n6r0jwut"]
 
 [ext_resource type="Image" uid="uid://b86c6f1uyjyd6" path="res://assets/sprites/game/cards/art_pop/frederic_the_fearless.png" id="2_gy5rc"]
 [ext_resource type="Script" path="res://resources/game/game_object/unit/info_template/extra/unit_audio_info.gd" id="2_skni1"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bd2esqpmo73tk" path="res://assets/models/game/units/varoma/frederic_the_fearless.glb" id="4_6hkuy"]
 [ext_resource type="Script" path="res://resources/game/game_object/unit/info_template/extra/unit_height_info.gd" id="6_cfyly"]
 [ext_resource type="Script" path="res://resources/game/game_object/unit/info_template/extends/champion_unit_info.gd" id="7_x4sol"]
+[ext_resource type="Script" path="res://resources/game/game_object/unit/info_template/extra/ultimate_info.gd" id="8_y2dro"]
 
 [sub_resource type="Resource" id="Resource_mqrx7"]
 script = ExtResource("3_sui0q")
@@ -37,10 +38,20 @@ top_height = 1.8
 stat_height = 2.0
 eye_height = 1.6
 
+[sub_resource type="Resource" id="Resource_bic1t"]
+script = ExtResource("8_y2dro")
+name = "Ogre Mode"
+description = "RAMPAGE 4x to Heal to full HEALTH and cleanse any negative effects"
+
 [resource]
 script = ExtResource("7_x4sol")
 associated_color = Color(0, 0.635294, 0, 1)
+unique_nodes_id = Array[int]([])
+epithet = "The Brute"
+description = Array[String](["Regular and enhanced fights are more common", "Gets stronger the more fights he triumphs over"])
+ultimate_info = SubResource("Resource_bic1t")
 rarity = 7
+flavor_text = ""
 art_mini_coordinate = Vector2i(0, 0)
 art_pop = Array[Image]([ExtResource("2_gy5rc")])
 collision_shape = SubResource("PackedScene_bwrs8")

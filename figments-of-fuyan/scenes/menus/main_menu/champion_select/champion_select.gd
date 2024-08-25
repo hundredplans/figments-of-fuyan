@@ -3,7 +3,7 @@ extends Node3D
 signal champion_pressed
 #region Exports
 @export var THETA_INCREMENT: int = 60
-@export var PEDESTAL_RADIUS: float = 1
+@export var PEDESTAL_RADIUS: float = 0.5
 @export var UNIT_INFO_PATH: String
 @export var starter_position: Vector3 = Vector3(1.25, 1.25, 2.9)
 @export var PedestalPacked: PackedScene

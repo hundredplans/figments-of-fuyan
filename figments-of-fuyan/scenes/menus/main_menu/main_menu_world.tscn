@@ -219,7 +219,7 @@ ChampionSelectPacked = ExtResource("4_obvmh")
 
 [node name="Camera" type="Camera3D" parent="."]
 unique_name_in_owner = true
-transform = Transform3D(-0.656058, -0.081508, 0.750295, 0, 0.994152, 0.107999, -0.75471, 0.0708537, -0.65222, 5.62037, 4.04071, -3.24731)
+transform = Transform3D(-0.656058, -0.081508, 0.750295, 0, 0.994152, 0.107999, -0.75471, 0.0708536, -0.65222, 5.62037, 4.04071, -3.24731)
 script = ExtResource("5_ceah1")
 disable_movement = true
 disable_freelook = true
@@ -247,7 +247,6 @@ environment = ExtResource("3_8tce8")
 [node name="SpotLight3D" type="SpotLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 1.00555, 3.77323, 2.59068)
 light_color = Color(0.901961, 0.784314, 0, 1)
-light_energy = 0.15
 spot_range = 30.0
 
 [connection signal="begin_travel" from="." to="MapModel" method="_on_main_menu_world_begin_travel"]

@@ -1,8 +1,8 @@
 extends Node
 
-func _ready() -> void:
-	var world_info: WorldInfo = Helper.getResourcesRecursiveID(WorldInfo, 1)
-	world_info.onGenerateBaseMapNodes(null, null, null)
+func _ready() -> void: pass
+	#var world_info: WorldInfo = Helper.getResourcesRecursiveID(WorldInfo, 1)
+	#world_info.onGenerateBaseMapNodes(null, null, null)
 
 func getChildrenRecursive(node: Node, children := []) -> Array:
 	children.append(node)

@@ -1,26 +1,90 @@
-[gd_resource type="Theme" load_steps=4 format=3 uid="uid://dcbv431prk86r"]
+[gd_resource type="Theme" load_steps=10 format=3 uid="uid://dcbv431prk86r"]
 
 [ext_resource type="FontFile" uid="uid://dpk4daccj6hwv" path="res://assets/fonts/roboto.ttf" id="1_8d2p5"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wbjoi"]
-bg_color = Color(0.383237, 0.281528, 0.0291746, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j6kt4"]
+bg_color = Color(0.532874, 0.659392, 1.92523e-07, 1)
 border_width_left = 10
 border_width_top = 10
 border_width_right = 10
 border_width_bottom = 10
-border_color = Color(0.205264, 0.143779, 0.00748614, 1)
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_scw7j"]
+bg_color = Color(0.381661, 0.459669, 0, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ki0ao"]
+bg_color = Color(0.756747, 0.567647, 0.0929413, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 1)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uollv"]
-bg_color = Color(0.995353, 0.859809, 0.594934, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jf53r"]
+bg_color = Color(0.756747, 0.567647, 0.0929413, 1)
 border_width_left = 10
 border_width_top = 10
 border_width_right = 10
 border_width_bottom = 10
-border_color = Color(0.998127, 0.921254, 0.77727, 1)
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xycu3"]
+bg_color = Color(0.731843, 0.29657, 1, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vyaib"]
+bg_color = Color(1, 0.21268, 0.159696, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ycnox"]
+bg_color = Color(0.997771, 0.921575, 0.775806, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cklyw"]
+bg_color = Color(0.956863, 0.788235, 0.207843, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 1)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
@@ -29,14 +93,21 @@ corner_radius_bottom_left = 10
 [resource]
 default_font = ExtResource("1_8d2p5")
 default_font_size = 32
+Button/constants/outline_size = 8
+Button/styles/normal = SubResource("StyleBoxFlat_j6kt4")
+Button/styles/pressed = SubResource("StyleBoxFlat_scw7j")
 CheckBox/colors/font_outline_color = Color(0, 0, 0, 1)
 CheckBox/constants/outline_size = 8
-DarkPanel/base_type = &"Panel"
-DarkPanel/styles/panel = SubResource("StyleBoxFlat_wbjoi")
 Label/colors/font_outline_color = Color(0, 0, 0, 1)
 Label/constants/outline_size = 8
 Label/font_sizes/font_size = 32
-LargeLabel/base_type = &"Label"
-LargeLabel/constants/outline_size = 24
-LargeLabel/font_sizes/font_size = 64
-Panel/styles/panel = SubResource("StyleBoxFlat_uollv")
+Panel/styles/panel = SubResource("StyleBoxFlat_ki0ao")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_jf53r")
+PurplePanelContainer/base_type = &"PanelContainer"
+PurplePanelContainer/styles/panel = SubResource("StyleBoxFlat_xycu3")
+RedPanelContainer/base_type = &"PanelContainer"
+RedPanelContainer/styles/panel = SubResource("StyleBoxFlat_vyaib")
+WhitePanelContainer/base_type = &"PanelContainer"
+WhitePanelContainer/styles/panel = SubResource("StyleBoxFlat_ycnox")
+YellowPanelContainer/base_type = &"PanelContainer"
+YellowPanelContainer/styles/panel = SubResource("StyleBoxFlat_cklyw")

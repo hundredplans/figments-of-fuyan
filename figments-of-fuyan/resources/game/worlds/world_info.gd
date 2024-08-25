@@ -178,8 +178,8 @@ func setEmptySpotsIDS(empty_spots: Array, unique_node_ids: Array[int], map_node_
 		match empty_spot.progress:
 			-1: empty_spot.id = 1; continue
 			0: empty_spot.id = 1 if id > 1 else 2; continue # Gildred
-			5: empty_spot.id = 8; continue
-			10: empty_spot.id = 9; continue
+			5: empty_spot.id = 9; continue
+			10: empty_spot.id = 10; continue
 			_:
 				if extra_unique_node_segment_one and empty_spot.progress < 5:
 					extra_unique_node_segment_one = false
@@ -189,7 +189,7 @@ func setEmptySpotsIDS(empty_spots: Array, unique_node_ids: Array[int], map_node_
 					empty_spot.id = unique_node_ids.pick_random()
 			
 		if !guarantee_shop and map_node_odds[empty_spot.progress].shop > 0:
-			empty_spot.id = 7
+			empty_spot.id = 8
 			continue
 		elif guarantee_unique_node.size() > 0:
 			var index: int = 0
@@ -207,8 +207,8 @@ func setEmptySpotsIDS(empty_spots: Array, unique_node_ids: Array[int], map_node_
 		var roll: String = Random.getRandomKey(map_node_odds_rollable)
 		match roll:
 			"fight": empty_spot.id = 3; continue
-			"shop": empty_spot.id = 7; continue
-			"encounter": empty_spot.id = 6; continue
+			"shop": empty_spot.id = 8; continue
+			"encounter": empty_spot.id = 7; continue
 		
 #endregion
 
@@ -218,8 +218,8 @@ func setEliteChiefFights(empty_spots: Array, map_node_odds: Dictionary) -> void:
 		var upgrade: bool = Random.rollFloat(map_node_odds[empty_spot.progress].upgrade_regular_fight / 100)
 		if upgrade:
 			var upgrade_to_elite: bool = Random.getBool()
-			if upgrade_to_elite: empty_spot.id = 4
-			else: empty_spot.id = 5
+			if upgrade_to_elite: empty_spot.id = 5
+			else: empty_spot.id = 6
 #endregion
 
 #region Getters

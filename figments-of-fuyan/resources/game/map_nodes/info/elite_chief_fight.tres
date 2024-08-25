@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MapNodeInfoGD" load_steps=4 format=3 uid="uid://bkmvfywnyo1gv"]
+
+[ext_resource type="Script" path="res://resources/game/map_nodes/map_node_info.gd" id="1_2sq5v"]
+[ext_resource type="Script" path="res://scripts/game/map/map_node/elite_chief_fight_node.gd" id="1_fn1v0"]
+[ext_resource type="Image" uid="uid://cbihlvpwk43w1" path="res://assets/sprites/game/map_nodes/icon/Fight.png" id="1_o4dkq"]
+
+[resource]
+script = ExtResource("1_2sq5v")
+id = 6
+name = "Elite Chief Fight"
+icon = ExtResource("1_o4dkq")
+gdscript = ExtResource("1_fn1v0")
+is_unique_node = false
