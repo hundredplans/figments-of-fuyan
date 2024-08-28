@@ -10,6 +10,7 @@ extends Node
 @onready var UI: Control = $UI
 @onready var World: Node3D = %World
 @onready var Camera: Camera3D = %Camera3D
+@onready var OverworldButton: Button = %OverworldButton
 #endregion
 #region Globals
 var is_camera_panning: bool = false
@@ -65,6 +66,7 @@ func _ready() -> void:
 	all_tile_objects = Helper.getResourcesRecursive(TileObjectInfoGD)
 	onPlaceStartingTiles()
 	setAreaOptionButtonItems()
+	OverworldButton.visible = false
 		
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
@@ -90,6 +92,9 @@ func _input(event: InputEvent) -> void:
 			
 		elif Input.is_action_just_pressed("TileLock"):
 			onChangeTileLockButtonState()
+			
+		elif Input.is_action_just_pressed("ShowOverworldButton"):
+			OverworldButton.visible = !OverworldButton.visible
 			
 		if Input.is_action_just_released("Delete"): deletion_elevation = -1; object_delete = false
 			
@@ -158,7 +163,7 @@ func _on_search_tile_object_text_changed(text: String):
 func onTileObjectInfoSelected(saved_data: SavedData, remove_last: bool = true) -> void:
 	if remove_last and HoverModel != null: HoverModel.queue_free()
 	
-	HoverModel = saved_data.onLoad(World)
+	HoverModel = saved_data.onLoadModel(World)
 	HoverModel.setRayPickable(true)
 	HoverModel.position = Vector3(0, 10000, 0)
 	HoverModel.setEmptyCollisionLayers()
@@ -227,7 +232,7 @@ func onPlaceStartingTiles() -> void:
 			onPlaceBaseTile(Vector4i(x, y, -x-y, 0))
 
 func onPlaceBaseTile(coords: Vector4i) -> TileGD:
-	return SavedDataTile.new(1, 0, coords, 0, false).onLoad(World)
+	return SavedDataTile.new(1, 0, coords, 0, false).onLoadModel(World)
 	
 #endregion
 #region Elevation
@@ -275,7 +280,7 @@ func onChangeMouseTileObjectVariation(direction: int) -> void:
 		TileObject.queue_free()
 		
 		var saved_data: SavedData = TileObject.onSave()
-		saved_data.onLoad(World)
+		saved_data.onLoadModel(World)
 		
 func onDisableScroll() -> void:
 	is_scroll_disabled = true
@@ -366,14 +371,15 @@ func _on_save_button_pressed():
 		var valid_name: String = await getValidLevelName(level_name) + ".tres"
 		var path: String = LEVEL_PATH + valid_name
 		var area_id: int = AreaOptionButton.get_selected_id()
-		var level_info: LevelInfoGD = AREA_TO_LEVEL_INFO[area_id].new()
+		var level_info: LevelInfoGD = AREA_TO_LEVEL_INFO[area_id].new() if !is_overworld else OverworldLevelInfoGD.new()
 		
 		var id: int = 0
+		
 		if FileAccess.file_exists(path):
 			var _level_info: LevelInfoGD = load(path)
 			id = _level_info.id
 			level_info.setPreviousLevelInfoValues(_level_info)
-		else: level_info.setSpawnPropertiesAutoValues(get_tree().get_nodes_in_group("Loadables"))
+		elif !is_overworld: level_info.setSpawnPropertiesAutoValues(get_tree().get_nodes_in_group("Loadables"))
 		
 		level_info.setInfo(level_name, area_id, data, id)
 		if level_name.is_empty(): level_name = valid_name
@@ -413,6 +419,7 @@ func _on_hide_load_level_button_pressed():
 func onLoadLevel(level_info: LevelInfoGD) -> void:
 	_on_save_button_pressed()
 	onHoverModelDeselected()
+	is_overworld = level_info is OverworldLevelInfoGD
 	
 	SaveLineEdit.text = level_info.name
 	
@@ -426,7 +433,7 @@ func onLoadLevel(level_info: LevelInfoGD) -> void:
 		tile_object.onClear()
 	
 	for tile_object_data in level_info.data:
-		tile_object_data.onLoad(World)
+		tile_object_data.onLoadModel(World)
 		
 func _on_search_tile_object_focus_entered():
 	LoadLevels.visible = false
@@ -445,4 +452,21 @@ func onMouseInUI(state: bool) -> void:
 func setAreaOptionButtonItems() -> void:
 	for area_info in Helper.getResourcesRecursive(AreaInfoGD):
 		AreaOptionButton.add_item(area_info.name, area_info.id)
+	AreaOptionButton.select(2)
+	
+#endregion
+
+#region Overworld
+var is_overworld: bool = false
+func _on_overworld_button_pressed() -> void:
+	for tile_object in get_tree().get_nodes_in_group("Loadables"):
+		tile_object.onClear()
+		
+	var OVERWORLD_MAP_SIZE: int = 3
+	for x in range(-OVERWORLD_MAP_SIZE, (OVERWORLD_MAP_SIZE + 1)):
+		for y in range(max(-OVERWORLD_MAP_SIZE, -x -OVERWORLD_MAP_SIZE), min(OVERWORLD_MAP_SIZE, -x + OVERWORLD_MAP_SIZE) + 1):
+			var model: TileGD = onPlaceBaseTile(Vector4i(x, y, -x-y, 0))
+			model.variation = -1
+	is_overworld = true
+	
 #endregion

@@ -9,8 +9,7 @@ func getRandomKey(odds: Dictionary) -> String:
 	for key in odds:
 		if roll < odds[key] + total: return key
 		total += odds[key]
-	assert(false, "Your random numbers don't add up to one!")
-	return ""
+	return odds[odds.size() - 1]
 
 func getBool() -> bool:
 	return randf() > 0.5

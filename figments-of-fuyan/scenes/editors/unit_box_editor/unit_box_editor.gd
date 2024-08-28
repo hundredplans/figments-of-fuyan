@@ -16,7 +16,7 @@ extends Node
 func _ready() -> void:
 	if !Engine.is_editor_hint() and UnitInfo != null:
 		for child in World.get_children() + ColShapeHolder.get_children(): child.free()
-		var model: UnitGD = UnitInfo.getBaseData().onLoad(World)
+		var model: UnitGD = UnitInfo.getBaseData().onLoadModel(World)
 		model.setOwner(self)
 		model.position = Vector3.ZERO
 		

@@ -3,11 +3,14 @@ extends Node3D
 #region Exports
 @export var main_menu_meshes: Array[MeshToMaterial]
 @export var play_table_meshes: Array[MeshToMaterial]
+@export var camera_item_array: Array[CameraItem]
 #endregion
 
 #region Base Functions
 func _ready() -> void:
-	_on_main_menu_world_end_travel()
+	for body in getStaticBodies(main_menu_meshes): body.input_ray_pickable = true
+	for body in getStaticBodies(play_table_meshes): body.input_ray_pickable = false
+	
 	for mesh in getMeshes(main_menu_meshes + play_table_meshes):
 		var StaticBody: StaticBody3D = mesh.get_child(0)
 		StaticBody.mouse_entered.connect(onMouseEnteredMesh.bind(mesh))
@@ -15,7 +18,7 @@ func _ready() -> void:
 		
 func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("MainInput"):
-		if ActiveMesh: mesh_chosen.emit(ActiveMesh.name)
+		if ActiveMesh: mesh_chosen.emit(CameraItem.getCameraItemInArray(camera_item_array, ActiveMesh.name))
 #endregion
 
 #region Helper Functions
@@ -51,13 +54,11 @@ func onNewGameHideFrame(state: bool) -> void:
 #endregion
 
 #region Travel
-func _on_main_menu_world_begin_travel(__: String, ___: bool) -> void:
-	for body in getStaticBodies(main_menu_meshes + play_table_meshes): body.input_ray_pickable = false
-
-func _on_main_menu_world_end_travel(mesh_name: String = "", is_exit: bool = true) -> void:
+func onTravelStateChanged(travel_info: CameraTravelInfo) -> void:
+	print()
 	for body in getStaticBodies(main_menu_meshes):
-		body.input_ray_pickable = is_exit and !mesh_name == "NewGame"
-	
+		body.input_ray_pickable = travel_info.end.name == "MainMenu" and !travel_info.is_start
+
 	for body in getStaticBodies(play_table_meshes):
-		body.input_ray_pickable = (!is_exit and mesh_name == "PlayTable") or (is_exit and mesh_name == "NewGame")
+		body.input_ray_pickable = travel_info.end.name == "PlayTable" and !travel_info.is_start
 #endregion

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="AreaInfoGD" load_steps=4 format=3 uid="uid://byhgj4vcjas0t"]
+
+[ext_resource type="Script" path="res://scripts/game/_template/info/base/area_info.gd" id="1_fk6oi"]
+[ext_resource type="Script" path="res://scripts/game/_template/info/unit/unit_info.gd" id="2_28lu5"]
+[ext_resource type="Resource" uid="uid://vxskl5qwiw3l" path="res://resources/game/units/quickdraw_quentin.tres" id="3_kmdg5"]
+
+[resource]
+script = ExtResource("1_fk6oi")
+id = 2
+name = "Cactus Canyon"
+units = Array[ExtResource("2_28lu5")]([ExtResource("3_kmdg5")])

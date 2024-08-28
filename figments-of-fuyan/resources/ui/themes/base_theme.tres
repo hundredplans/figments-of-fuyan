@@ -1,6 +1,14 @@
-[gd_resource type="Theme" load_steps=10 format=3 uid="uid://dcbv431prk86r"]
+[gd_resource type="Theme" load_steps=11 format=3 uid="uid://dcbv431prk86r"]
 
 [ext_resource type="FontFile" uid="uid://dpk4daccj6hwv" path="res://assets/fonts/roboto.ttf" id="1_8d2p5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6bojs"]
+bg_color = Color(0.381661, 0.459669, 0, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j6kt4"]
 bg_color = Color(0.532874, 0.659392, 1.92523e-07, 1)
@@ -94,6 +102,7 @@ corner_radius_bottom_left = 10
 default_font = ExtResource("1_8d2p5")
 default_font_size = 32
 Button/constants/outline_size = 8
+Button/styles/hover = SubResource("StyleBoxFlat_6bojs")
 Button/styles/normal = SubResource("StyleBoxFlat_j6kt4")
 Button/styles/pressed = SubResource("StyleBoxFlat_scw7j")
 CheckBox/colors/font_outline_color = Color(0, 0, 0, 1)

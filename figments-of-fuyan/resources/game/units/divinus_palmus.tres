@@ -1,0 +1,76 @@
+[gd_resource type="Resource" script_class="ChampionUnitInfoGD" load_steps=18 format=3 uid="uid://chyfugogep330"]
+
+[ext_resource type="Image" uid="uid://crmdn6pdw7trc" path="res://assets/sprites/game/cards/art_pop/divinus_palmus.png" id="1_bsxwt"]
+[ext_resource type="Script" path="res://scripts/game/_template/info/unit/extra/ability_info.gd" id="1_f3dxq"]
+[ext_resource type="Script" path="res://scripts/game/_template/info/unit/extra/unit_audio_info.gd" id="1_ioa0r"]
+[ext_resource type="Script" path="res://scripts/game/_template/info/unit/extra/unit_stat_info.gd" id="2_5pe71"]
+[ext_resource type="Resource" uid="uid://hommkky4kkh3" path="res://resources/game/boons/divine_aura.tres" id="3_0hbw5"]
+[ext_resource type="Script" path="res://scripts/game/_template/info/unit/extra/unit_height_info.gd" id="3_tbgco"]
+[ext_resource type="Script" path="res://scripts/game/_template/info/unit/champion_unit_info.gd" id="4_cy8c8"]
+[ext_resource type="Script" path="res://scripts/game/_template/unit/unit.gd" id="4_gurlq"]
+[ext_resource type="Script" path="res://scripts/game/_template/info/unit/extra/ultimate_info.gd" id="5_s7ycs"]
+[ext_resource type="Script" path="res://scripts/common/data_structures/pos_rot.gd" id="6_u4gwp"]
+[ext_resource type="PackedScene" uid="uid://bd2esqpmo73tk" path="res://assets/models/game/units/frederic_the_fearless.glb" id="7_4q4li"]
+
+[sub_resource type="Resource" id="Resource_e22no"]
+script = ExtResource("2_5pe71")
+attack = 1
+health = 3
+speed = 2
+energy = 2
+
+[sub_resource type="Resource" id="Resource_vv4mh"]
+script = ExtResource("6_u4gwp")
+pos = Vector3(0.5, 1.6, 1)
+rot = Vector3(0, 20, -20)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_g5jrq"]
+size = Vector3(0.676819, 1.94261, 0.675537)
+
+[sub_resource type="PackedScene" id="PackedScene_mmgnw"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00546265, 0.971992, 0.0455322), SubResource("BoxShape3D_g5jrq")],
+"version": 3
+}
+
+[sub_resource type="Resource" id="Resource_61rkh"]
+script = ExtResource("3_tbgco")
+top_height = 2.0
+stat_height = 2.35
+eye_height = 2.0
+
+[sub_resource type="Resource" id="Resource_00rhk"]
+script = ExtResource("5_s7ycs")
+name = "Divine Reward"
+description = "[0/10]: Heal [2] HP and give INVULNERABLE for [1] Turn to allies in vision. Heal allies to gain [1] point, [2] if they were previously healed"
+
+[resource]
+script = ExtResource("4_cy8c8")
+associated_color = Color(0.962656, 0.960607, 0.662404, 1)
+unique_nodes_id = Array[int]([12])
+epithet = "The Devout"
+description = Array[String](["Can temporarily buff units at campfires", "More likely to get boons from rewards", "Weakens if diverged from the Holy Path"])
+ultimate_info = SubResource("Resource_00rhk")
+boon_info = ExtResource("3_0hbw5")
+champion_select_posrot = SubResource("Resource_vv4mh")
+rarity = 7
+flavor_text = "His beleaf can't be questioned"
+abilities = Array[ExtResource("1_f3dxq")]([])
+art_mini_coordinate = Vector2i(0, 0)
+art_pop = Array[Image]([ExtResource("1_bsxwt")])
+collision_shape = SubResource("PackedScene_mmgnw")
+base_stats = Array[ExtResource("2_5pe71")]([SubResource("Resource_e22no")])
+heights = Array[ExtResource("3_tbgco")]([SubResource("Resource_61rkh")])
+audio = Array[ExtResource("1_ioa0r")]([])
+id = 3
+name = "Divinus Palmus"
+gdscript = ExtResource("4_gurlq")
+models = Array[PackedScene]([ExtResource("7_4q4li")])
+points = Array[Array]([])

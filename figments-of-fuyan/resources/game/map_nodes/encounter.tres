@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MapNodeInfoGD" load_steps=4 format=3 uid="uid://dlwsy5weweapm"]
+
+[ext_resource type="Script" path="res://scripts/game/map_node/encounter_node.gd" id="1_c17um"]
+[ext_resource type="Script" path="res://scripts/game/_template/info/map_node/map_node_info.gd" id="1_y36ia"]
+[ext_resource type="PackedScene" uid="uid://dqlurjtxoifoe" path="res://assets/models/game/map_nodes/encounter_node.glb" id="2_c73bo"]
+
+[resource]
+script = ExtResource("1_y36ia")
+id = 7
+name = "Encounter"
+model = ExtResource("2_c73bo")
+gdscript = ExtResource("1_c17um")
+is_unique_node = false

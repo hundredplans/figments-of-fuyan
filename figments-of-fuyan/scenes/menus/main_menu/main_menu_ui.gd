@@ -1,6 +1,7 @@
 extends Control
 
 #region Globals
+signal cancel_champion_selected
 signal start
 var World: Node3D
 @onready var GoBackLabel: Label = %GoBackLabel
@@ -14,17 +15,15 @@ var World: Node3D
 func _ready() -> void:
 	GoBackLabel.visible = false
 	if World != null:
-		World.begin_travel.connect(onBeginTravel)
-		World.end_travel.connect(onEndTravel)
+		World.travel.connect(onTravelStateChanged)
 		World.champion_pressed.connect(onChampionPressed)
 #endregion
 
-func onBeginTravel(__: String, ___: bool) -> void:
-	GoBackLabel.visible = false
-	onClearChampionUI()
-
-func onEndTravel(__: String, ___: bool) -> void:
-	GoBackLabel.visible = true
+#region Travelling
+func onTravelStateChanged(travel_info: CameraTravelInfo) -> void:
+	GoBackLabel.visible = !travel_info.is_start
+	if travel_info.start.name == "ChampionPressed": onClearChampionUI()
+#endregion
 
 #region Champion Selected
 var ChampionSelectUI: Control
@@ -34,6 +33,7 @@ func onChampionPressed(Unit: UnitGD) -> void:
 	add_child(ChampionSelectUI)
 	ChampionSelectUI.setInfo(Unit)
 	ChampionSelectUI.start.connect(onStart.bind(Unit))
+	ChampionSelectUI.cancel.connect(func(): cancel_champion_selected.emit())
 	
 func onClearChampionUI() -> void:
 	if ChampionSelectUI != null: ChampionSelectUI.queue_free()

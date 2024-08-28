@@ -1,22 +1,22 @@
 extends Node3D
 
 #region Globals
-var area_info: AreaInfoGD
 var save_file: SaveFile
+var overworld_level: OverworldLevelGD
 var UI: Control
 @onready var WorldEnv: WorldEnvironment = %WorldEnvironment
-
-var map_location: MapLocation
 #endregion
 
 #region Base Functions
-func onLoad(_save_file: SaveFile) -> void:
+func onLoad(_save_file: SaveFile, Unit: UnitGD) -> void:
 	save_file = _save_file
-	area_info = Helper.getResourcesRecursiveID(AreaInfoGD, save_file.map_location.area)
-	map_location = save_file.map_location
+	overworld_level = save_file.overworld_level_data.onLoadModel(self)
+	overworld_level.onGenerateBaseMapNodes(Unit)
 	setEnvironment()
 #endregion
 
 #region Setters
 func setEnvironment() -> void:
-	WorldEnv.environment = area_info.base_environment if !map_location.isAfterMiniboss() else area_info.late_environment
+	WorldEnv.environment = overworld_level.area_info.base_environment\
+	if !overworld_level.map_location.isAfterMiniboss() else overworld_level.area_info.late_environment
+#endregion

@@ -1,9 +1,5 @@
 extends Node
 
-func _ready() -> void: pass
-	#var world_info: WorldInfo = Helper.getResourcesRecursiveID(WorldInfo, 1)
-	#world_info.onGenerateBaseMapNodes(null, null, null)
-
 func getChildrenRecursive(node: Node, children := []) -> Array:
 	children.append(node)
 	for child in node.get_children():

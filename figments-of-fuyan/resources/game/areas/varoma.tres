@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="AreaInfoGD" load_steps=5 format=3 uid="uid://bp852xt0fg1qy"]
+
+[ext_resource type="Image" uid="uid://c2cuf22wj0rnf" path="res://assets/sprites/game/cards/common/art_background/varoma_background.png" id="1_lh5x4"]
+[ext_resource type="Script" path="res://scripts/game/_template/info/base/area_info.gd" id="1_w5tfe"]
+[ext_resource type="Script" path="res://scripts/game/_template/info/unit/unit_info.gd" id="2_dsknt"]
+[ext_resource type="Resource" uid="uid://d3oj4n6r0jwut" path="res://resources/game/units/frederic_the_fearless.tres" id="4_ow461"]
+
+[resource]
+script = ExtResource("1_w5tfe")
+id = 3
+name = "Varoma"
+card_background = ExtResource("1_lh5x4")
+units = Array[ExtResource("2_dsknt")]([ExtResource("4_ow461")])
