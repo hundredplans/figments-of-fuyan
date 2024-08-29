@@ -7,13 +7,13 @@ static func getChildrenRecursive(node: Node, children := []) -> Array:
 		children = getChildrenRecursive(child, children)
 	return children
 
-static func getResourcesRecursive(DIR_PATH: String, type: Variant) -> Array:
+static func getResourcesRecursive(DIR_PATH: String, type: GDScript) -> Array:
 	var files: Array = getFilesRecursive(DIR_PATH)
 	files = files.filter(func(x: String): return x.ends_with(".tres"))
 	files = files.map(func(x: String): return load(DIR_PATH + x))
 	return files.filter(func(x: Resource): return is_instance_of(x, type))
 	
-static func getResourcesRecursiveID(DIR_PATH: String, type: Variant, id: int) -> Variant:
+static func getResourcesRecursiveID(DIR_PATH: String, type: GDScript, id: int) -> Variant:
 	var arr: Array = getResourcesRecursive(DIR_PATH, type)
 	for info in arr:
 		if info.id == id: return info
@@ -33,7 +33,7 @@ static func getFilesRecursive(DIR_PATH: String) -> Array:
 static func onAutoIncrementID(type: Variant, _id: int) -> int:
 	if Engine.is_editor_hint():
 		var id: int = _id
-		var resources: Array = getResourcesRecursive(type.INFO_PATH, type)
+		var resources: Array = getResourcesRecursive(type.getInfoPath(), type)
 		resources.sort_custom(func(x: Resource, y: Resource): return x.id < y.id)
 		
 		id = getNonConsecutive(resources)

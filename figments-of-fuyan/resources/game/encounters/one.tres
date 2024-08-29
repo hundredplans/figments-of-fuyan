@@ -1,35 +1,35 @@
-[gd_resource type="Resource" script_class="EncounterInfoGD" load_steps=7 format=3 uid="uid://c860lmki36lph"]
+[gd_resource type="Resource" script_class="EncounterInfo" load_steps=7 format=3 uid="uid://c860lmki36lph"]
 
-[ext_resource type="Script" path="res://scripts/game/_template/info/encounter/branch_info.gd" id="1_be4hh"]
-[ext_resource type="Script" path="res://scripts/game/_template/info/encounter/encounter_info.gd" id="1_ygbcl"]
+[ext_resource type="Script" path="res://scripts/fof_info/encounter/branch_datastore.gd" id="1_k4bfd"]
+[ext_resource type="Script" path="res://scripts/fof_info/encounter/encounter_info.gd" id="2_joy0v"]
 
 [sub_resource type="Resource" id="Resource_rjk13"]
-script = ExtResource("1_be4hh")
+script = ExtResource("1_k4bfd")
 text = "[Bless]: Ascend a BOON"
-options = Array[ExtResource("1_be4hh")]([])
+options = Array[Resource]([])
 can_skip = false
 
 [sub_resource type="Resource" id="Resource_j3xc6"]
-script = ExtResource("1_be4hh")
+script = ExtResource("1_k4bfd")
 text = "[Bestow]:: Ascend a TOOL"
-options = Array[ExtResource("1_be4hh")]([])
+options = Array[Resource]([])
 can_skip = false
 
 [sub_resource type="Resource" id="Resource_5582e"]
-script = ExtResource("1_be4hh")
+script = ExtResource("1_k4bfd")
 text = "[Unite]: Combine two duplicates units into an ascended one"
-options = Array[ExtResource("1_be4hh")]([])
+options = Array[Resource]([])
 can_skip = true
 
 [sub_resource type="Resource" id="Resource_pooc0"]
-script = ExtResource("1_be4hh")
+script = ExtResource("1_k4bfd")
 text = "A Palm Elder stops you on your travails and wishes to assist you"
-options = Array[ExtResource("1_be4hh")]([SubResource("Resource_rjk13"), SubResource("Resource_j3xc6"), SubResource("Resource_5582e")])
+options = [SubResource("Resource_rjk13"), SubResource("Resource_j3xc6"), SubResource("Resource_5582e")]
 can_skip = true
 
 [resource]
-script = ExtResource("1_ygbcl")
-id = 1
-name = "Assisting Approach"
+script = ExtResource("2_joy0v")
 branch = SubResource("Resource_pooc0")
 can_occur_randomly = false
+id = 1
+name = "Assisting Approach"

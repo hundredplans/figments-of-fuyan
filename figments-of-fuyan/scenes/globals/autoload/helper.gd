@@ -22,13 +22,13 @@ func getCollision(collider: Node, type: Variant) -> Variant:
 func getRayParentMultiple(_collider: StaticBody3D, _type_array: Array) -> Variant:
 	return null
 
-func getResourcesRecursive(type: Variant, DIR_PATH: String = type.INFO_PATH) -> Array:
+func getResourcesRecursive(type: GDScript, DIR_PATH: String = type.getInfoPath()) -> Array:
 	var files: Array = getFilesRecursive(DIR_PATH)
 	files = files.filter(func(x: String): return x.ends_with(".tres"))
 	files = files.map(func(x: String): return load(DIR_PATH + x))
 	return files.filter(func(x: Resource): return is_instance_of(x, type))
 	
-func getResourcesRecursiveID(type: Variant, id: int, DIR_PATH: String = type.INFO_PATH) -> Variant:
+func getResourcesRecursiveID(type: GDScript, id: int, DIR_PATH: String = type.getInfoPath()) -> Variant:
 	var arr: Array = getResourcesRecursive(type, DIR_PATH)
 	for info in arr:
 		if info.id == id: return info

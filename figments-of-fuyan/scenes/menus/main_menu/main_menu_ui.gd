@@ -20,7 +20,7 @@ func _ready() -> void:
 #endregion
 
 #region Travelling
-func onTravelStateChanged(travel_info: CameraTravelInfo) -> void:
+func onTravelStateChanged(travel_info: CameraTravelDatastore) -> void:
 	GoBackLabel.visible = !travel_info.is_start
 	if travel_info.start.name == "ChampionPressed": onClearChampionUI()
 #endregion

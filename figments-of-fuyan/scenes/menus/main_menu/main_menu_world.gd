@@ -40,7 +40,7 @@ func _input(_event: InputEvent) -> void:
 
 #region Animation / Mesh Travelling
 var active_camera_item := CameraItem.new("MainMenu")
-var active_travel_info: CameraTravelInfo
+var active_travel_info: CameraTravelDatastore
 
 func onFinishTravel() -> void:
 	active_travel_info.is_start = false
@@ -57,7 +57,7 @@ func onAnimationFinished(__: String) -> void:
 		
 func onMeshChosen(camera_item: CameraItem) -> void:
 	if active_travel_info == null:
-		active_travel_info = CameraTravelInfo.new(active_camera_item, camera_item, onAnimationTravel)
+		active_travel_info = CameraTravelDatastore.new(active_camera_item, camera_item, onAnimationTravel)
 		active_travel_info.travel_callable.call()
 #endregion
 		
@@ -93,12 +93,12 @@ func setMapLights(is_enter: bool) -> void:
 	
 func onChampionPressed(Unit: UnitGD) -> void:
 	setUnitsPickable(false)
-	active_travel_info = CameraTravelInfo.new(active_camera_item, CameraItem.new("ChampionPressed"),\
+	active_travel_info = CameraTravelDatastore.new(active_camera_item, CameraItem.new("ChampionPressed"),\
 	onChampionTweenTravel.bind(Unit, PosRot.new(Camera.position, Camera.rotation_degrees)))
 	active_travel_info.travel_callable.call()
 	
 func onStart(Unit: UnitGD) -> void:
-	active_travel_info = CameraTravelInfo.new(active_camera_item, CameraItem.new("StartGame"), onStartTravel.bind(Unit))
+	active_travel_info = CameraTravelDatastore.new(active_camera_item, CameraItem.new("StartGame"), onStartTravel.bind(Unit))
 	active_travel_info.travel_callable.call()
 	
 func onStartTravel(Unit: UnitGD) -> void:
@@ -114,7 +114,7 @@ func onStartTravel(Unit: UnitGD) -> void:
 
 #region Travelling
 var is_travelling: bool = false
-func onTravelStateChanged(travel_info: CameraTravelInfo) -> void:
+func onTravelStateChanged(travel_info: CameraTravelDatastore) -> void:
 	is_travelling = travel_info.is_start
 	
 func onAnimationTravel() -> void:
