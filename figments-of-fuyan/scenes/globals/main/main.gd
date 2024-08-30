@@ -38,9 +38,9 @@ func onLoadWorld(packed_scene: PackedScene) -> void:
 	match packed_scene:
 		main_menu_world: ActiveWorld.start.connect(onStartGame)
 	
-func onStartGame(Unit: UnitGD) -> void:
+func onStartGame(Card: CardGD) -> void:
 	var save_file := SaveFile.new()
 	var scenes: Dictionary = onLoadScreenWorld(map_ui, map_world)
 	scenes.ui.onLoad(save_file)
-	scenes.world.onLoad(save_file, Unit)
+	scenes.world.onLoad(save_file, Card)
 #endregion

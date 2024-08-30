@@ -24,7 +24,7 @@ var UI: Control
 
 #region Helpers
 func setUnitsPickable(state: bool) -> void:
-	get_tree().call_group("Units", "setRayPickable", state)
+	get_tree().call_group("CardsGD", "setRayPickable", state)
 #endregion
 
 #region Base Functions
@@ -91,17 +91,17 @@ func setMapLights(is_enter: bool) -> void:
 	env.environment = black_environment if is_enter else base_environment
 	map_light.light_color = Color(0, 0, 0) if is_enter else Color(1, 1, 1)
 	
-func onChampionPressed(Unit: UnitGD) -> void:
+func onChampionPressed(Card: CardGD) -> void:
 	setUnitsPickable(false)
 	active_travel_info = CameraTravelDatastore.new(active_camera_item, CameraItem.new("ChampionPressed"),\
-	onChampionTweenTravel.bind(Unit, PosRot.new(Camera.position, Camera.rotation_degrees)))
+	onChampionTweenTravel.bind(Card, PosRot.new(Camera.position, Camera.rotation_degrees)))
 	active_travel_info.travel_callable.call()
 	
-func onStart(Unit: UnitGD) -> void:
-	active_travel_info = CameraTravelDatastore.new(active_camera_item, CameraItem.new("StartGame"), onStartTravel.bind(Unit))
+func onStart(Card: CardGD) -> void:
+	active_travel_info = CameraTravelDatastore.new(active_camera_item, CameraItem.new("StartGame"), onStartTravel.bind(Card))
 	active_travel_info.travel_callable.call()
 	
-func onStartTravel(Unit: UnitGD) -> void:
+func onStartTravel(Card: CardGD) -> void:
 	var rot_tween := get_tree().create_tween()
 	rot_tween.tween_property(Camera, "rotation_degrees", Vector3(-90, 90, 0), START_GAME_FADE_OUT_TIME)
 	
@@ -109,7 +109,7 @@ func onStartTravel(Unit: UnitGD) -> void:
 	light_tween.tween_property(spotlight, "light_color", Color(0, 0, 0), START_GAME_FADE_OUT_TIME)
 	travel.emit(active_travel_info)
 	await light_tween.finished
-	start.emit(Unit)
+	start.emit(Card)
 #endregion
 
 #region Travelling
@@ -122,14 +122,14 @@ func onAnimationTravel() -> void:
 	else: ani_player.play_backwards(active_travel_info.start.name)
 	travel.emit(active_travel_info)
 	
-func onChampionTweenTravel(Unit: UnitGD, camera_pos_rot: PosRot) -> void:
+func onChampionTweenTravel(Card: CardGD, camera_pos_rot: PosRot) -> void:
 	var travel_posrot: PosRot = camera_pos_rot
 	if !active_travel_info.is_history:
 		var node := Node3D.new()
-		Unit.add_child(node)
-		node.position = Unit.info.champion_select_posrot.pos
+		Card.add_child(node)
+		node.position = Card.info.champion_select_posrot.pos
 		
-		var posrot := PosRot.new(node.global_position, Unit.info.champion_select_posrot.rot)
+		var posrot := PosRot.new(node.global_position, Card.info.champion_select_posrot.rot)
 		posrot.rot.y += node.global_rotation_degrees.y
 		node.queue_free()
 		travel_posrot = posrot
@@ -143,7 +143,7 @@ func onChampionTweenTravel(Unit: UnitGD, camera_pos_rot: PosRot) -> void:
 	travel.emit(active_travel_info)
 	
 	await pos_tween.finished
-	if !active_travel_info.is_history: champion_pressed.emit(Unit)
+	if !active_travel_info.is_history: champion_pressed.emit(Card)
 	else: setUnitsPickable(true)
 	onFinishTravel()
 #endregion

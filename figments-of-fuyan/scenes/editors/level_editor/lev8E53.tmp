@@ -1,0 +1,244 @@
+[gd_scene load_steps=7 format=3 uid="uid://dppiux7bnao8g"]
+
+[ext_resource type="Script" path="res://scenes/editors/level_editor/level_editor.gd" id="1_d12w1"]
+[ext_resource type="PackedScene" uid="uid://bydj1x1wtvu8y" path="res://scenes/editors/common/tile_static_body/tile_static_body.tscn" id="2_bfkth"]
+[ext_resource type="Script" path="res://scripts/addons/movement_camera.gd" id="2_voor8"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_w412d"]
+sky_top_color = Color(0.454902, 0.670588, 1, 1)
+sky_horizon_color = Color(0.964706, 0.976471, 1, 1)
+ground_bottom_color = Color(0.454902, 0.670588, 1, 1)
+ground_horizon_color = Color(0.964706, 0.976471, 1, 1)
+
+[sub_resource type="Sky" id="Sky_2xyd2"]
+sky_material = SubResource("ProceduralSkyMaterial_w412d")
+
+[sub_resource type="Environment" id="Environment_hffsp"]
+background_mode = 2
+sky = SubResource("Sky_2xyd2")
+ssr_enabled = true
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_read_sky_light = false
+glow_enabled = true
+glow_blend_mode = 0
+
+[node name="LevelEditor" type="Node"]
+script = ExtResource("1_d12w1")
+TILE_OBJECTS_PATH = "res://resources/game/game_object/tile_object/info/"
+tile_static_body = ExtResource("2_bfkth")
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TopBar" type="HBoxContainer" parent="UI"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 1920.0
+offset_bottom = 81.0
+mouse_filter = 2
+theme_override_constants/separation = 30
+
+[node name="SearchTileObject" type="LineEdit" parent="UI/TopBar"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+
+[node name="BaseElevationLabel" type="Label" parent="UI/TopBar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Elevation: 0"
+
+[node name="TileFillButton" type="CheckBox" parent="UI/TopBar"]
+unique_name_in_owner = true
+layout_mode = 2
+button_pressed = true
+text = "Tile Fill"
+
+[node name="TileLockButton" type="CheckBox" parent="UI/TopBar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Tile Lock"
+
+[node name="SearchResults" type="ScrollContainer" parent="UI"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 86.0
+offset_right = 405.0
+offset_bottom = 961.0
+mouse_filter = 2
+
+[node name="SearchResultsContainer" type="VBoxContainer" parent="UI/SearchResults"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = 5
+
+[node name="KeybindHints" type="VBoxContainer" parent="UI"]
+layout_mode = 0
+offset_left = 1316.0
+offset_top = 24.0
+offset_right = 1909.0
+offset_bottom = 1072.0
+mouse_filter = 2
+theme_override_constants/separation = 10
+alignment = 2
+
+[node name="Label5" type="Label" parent="UI/KeybindHints"]
+layout_mode = 2
+text = "Rotate: [Q/E]"
+horizontal_alignment = 2
+
+[node name="Label10" type="Label" parent="UI/KeybindHints"]
+layout_mode = 2
+text = "Tile Lock: [L]"
+horizontal_alignment = 2
+
+[node name="Label8" type="Label" parent="UI/KeybindHints"]
+layout_mode = 2
+text = "Place: [LMB]"
+horizontal_alignment = 2
+
+[node name="Label4" type="Label" parent="UI/KeybindHints"]
+layout_mode = 2
+text = "Delete: [X]"
+horizontal_alignment = 2
+
+[node name="Label2" type="Label" parent="UI/KeybindHints"]
+layout_mode = 2
+text = "Search: [Enter]"
+horizontal_alignment = 2
+
+[node name="Label9" type="Label" parent="UI/KeybindHints"]
+layout_mode = 2
+text = "Tile Fill: [F]"
+horizontal_alignment = 2
+
+[node name="Label" type="Label" parent="UI/KeybindHints"]
+layout_mode = 2
+text = "Select / Deselect: [Z]"
+horizontal_alignment = 2
+
+[node name="Label3" type="Label" parent="UI/KeybindHints"]
+layout_mode = 2
+text = " Change Variation: [MWD/MWU]"
+horizontal_alignment = 2
+
+[node name="Label7" type="Label" parent="UI/KeybindHints"]
+layout_mode = 2
+text = "Change Elevation: [0-9 / ↑ / ↓ / LMB]"
+horizontal_alignment = 2
+
+[node name="Label6" type="Label" parent="UI/KeybindHints"]
+layout_mode = 2
+text = "Show Overworld Button [O]"
+horizontal_alignment = 2
+
+[node name="BottomBar" type="HBoxContainer" parent="UI"]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 989.0
+offset_right = 651.0
+offset_bottom = 1065.0
+mouse_filter = 2
+theme_override_constants/separation = 20
+
+[node name="AreaOptionButton" type="OptionButton" parent="UI/BottomBar"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="LoadButton" type="Button" parent="UI/BottomBar"]
+layout_mode = 2
+text = "Load"
+
+[node name="SaveButton" type="Button" parent="UI/BottomBar"]
+layout_mode = 2
+text = "Save"
+
+[node name="NewButton" type="Button" parent="UI/BottomBar"]
+layout_mode = 2
+text = "New"
+
+[node name="OverworldButton" type="Button" parent="UI/BottomBar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Overworld"
+
+[node name="SaveLineEdit" type="LineEdit" parent="UI/BottomBar"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+placeholder_text = "Level Name"
+alignment = 1
+
+[node name="LoadLevels" type="Control" parent="UI"]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 0
+offset_left = 15.0
+offset_top = 103.0
+offset_right = 405.0
+offset_bottom = 969.0
+mouse_filter = 2
+
+[node name="HBoxContainer" type="VBoxContainer" parent="UI/LoadLevels"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="HideLoadLevelButton" type="Button" parent="UI/LoadLevels/HBoxContainer"]
+layout_mode = 2
+text = "Hide"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/LoadLevels/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="LoadLevelContainer" type="VBoxContainer" parent="UI/LoadLevels/HBoxContainer/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+alignment = 2
+
+[node name="World" type="Node3D" parent="."]
+unique_name_in_owner = true
+
+[node name="Camera3D" type="Camera3D" parent="World"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 5)
+script = ExtResource("2_voor8")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="World"]
+environment = SubResource("Environment_hffsp")
+
+[node name="TilePlaneElevation" type="Node3D" parent="World"]
+unique_name_in_owner = true
+
+[node name="TileObjectRay" type="RayCast3D" parent="World"]
+unique_name_in_owner = true
+collision_mask = 24
+
+[connection signal="focus_entered" from="UI/TopBar/SearchTileObject" to="." method="_on_search_tile_object_focus_entered"]
+[connection signal="text_changed" from="UI/TopBar/SearchTileObject" to="." method="_on_search_tile_object_text_changed"]
+[connection signal="pressed" from="UI/TopBar/TileFillButton" to="." method="onTileFillButtonPressed"]
+[connection signal="pressed" from="UI/TopBar/TileLockButton" to="." method="onTileLockButtonPressed"]
+[connection signal="pressed" from="UI/BottomBar/LoadButton" to="." method="_on_load_button_pressed"]
+[connection signal="pressed" from="UI/BottomBar/SaveButton" to="." method="_on_save_button_pressed"]
+[connection signal="pressed" from="UI/BottomBar/NewButton" to="." method="_on_new_button_pressed"]
+[connection signal="pressed" from="UI/BottomBar/OverworldButton" to="." method="_on_overworld_button_pressed"]
+[connection signal="pressed" from="UI/LoadLevels/HBoxContainer/HideLoadLevelButton" to="." method="_on_hide_load_level_button_pressed"]
+[connection signal="camera_panning" from="World/Camera3D" to="." method="_on_camera_3d_camera_panning"]
+[connection signal="camera_panning" from="World/Camera3D" to="." method="onMouseInUI"]

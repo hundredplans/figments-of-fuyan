@@ -7,7 +7,7 @@ class_name SaveFile extends Resource
 
 func _init() -> void:
 	save_slot = getSaveSlotCount() + 1
-	overworld_level_data = Helper.getResourcesRecursive(OverworldLevelInfoGD)[0].getBaseData()
+	overworld_level_data = Helper.getResourcesRecursive(OverworldLevelInfo)[0].getBaseData()
 	overworld_level_data.map_location = MapLocation.new(0, 0, 1, 1)
 	my_seed = randi()
 	Random.setSeed(my_seed)

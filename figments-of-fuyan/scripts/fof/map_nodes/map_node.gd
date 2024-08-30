@@ -22,6 +22,6 @@ func onLoadData(data: SavedData) -> void:
 #endregion
 
 #region Transformers
-func getPositionFromMapLocation(map_location: MapLocation) -> Vector3:
-	return Vector3(map_location.progress * 3, 0.6, map_location.lane * 2)
+func getPositionFromMapLocation(_map_location: MapLocation) -> Vector3:
+	return Vector3(_map_location.progress * 3, 0.6, _map_location.lane * 2)
 #endregion

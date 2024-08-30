@@ -9,8 +9,7 @@ static func getChildrenRecursive(node: Node, children := []) -> Array:
 
 static func getResourcesRecursive(DIR_PATH: String, type: GDScript) -> Array:
 	var files: Array = getFilesRecursive(DIR_PATH)
-	files = files.filter(func(x: String): return x.ends_with(".tres"))
-	files = files.map(func(x: String): return load(DIR_PATH + x))
+	files = files.map(func(x: String): return load(x))
 	return files.filter(func(x: Resource): return is_instance_of(x, type))
 	
 static func getResourcesRecursiveID(DIR_PATH: String, type: GDScript, id: int) -> Variant:
@@ -19,16 +18,11 @@ static func getResourcesRecursiveID(DIR_PATH: String, type: GDScript, id: int) -
 		if info.id == id: return info
 	return null
 
-static func getFilesRecursive(DIR_PATH: String) -> Array:
-	var files: Array = []
-	var dir = DirAccess.open(DIR_PATH)
-	if dir:
-		dir.list_dir_begin()
-		var file_name = dir.get_next()
-		while file_name != "":
-			if !dir.current_is_dir(): files.append(file_name)
-			file_name = dir.get_next()
-	return files
+static func getFilesRecursive(DIR_PATH: String, contents := []) -> Array:
+	contents += Array(DirAccess.get_files_at(DIR_PATH)).map(func(x: String): return DIR_PATH + "/" + x)
+	for dir in DirAccess.get_directories_at(DIR_PATH):
+		contents = getFilesRecursive(DIR_PATH + "/" + dir, contents)
+	return contents
 
 static func onAutoIncrementID(type: Variant, _id: int) -> int:
 	if Engine.is_editor_hint():

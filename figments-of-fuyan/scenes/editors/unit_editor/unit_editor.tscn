@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://dnnfw86w6scfm"]
+
+[ext_resource type="Script" path="res://scenes/editors/unit_editor/unit_editor.gd" id="1_yppjx"]
+[ext_resource type="Material" uid="uid://dps10m73p80xv" path="res://resources/materials/colors/top_unshaded/white.tres" id="2_rxdja"]
+[ext_resource type="Material" uid="uid://bl76cu5hicepy" path="res://resources/materials/colors/top_unshaded/red.tres" id="3_rthp2"]
+[ext_resource type="Script" path="res://scenes/editors/unit_editor/height_box.gd" id="3_s2cdb"]
+[ext_resource type="Material" uid="uid://dwwfjm1wwygh" path="res://resources/materials/colors/top_unshaded/green.tres" id="4_1x4m4"]
+
+[node name="UnitEditor" type="Node"]
+script = ExtResource("1_yppjx")
+
+[node name="World" type="Node3D" parent="."]
+
+[node name="PlaceCollisionShapeHere" type="Node3D" parent="."]
+
+[node name="Heights" type="Node3D" parent="."]
+unique_name_in_owner = true
+
+[node name="StatHeight" type="CSGBox3D" parent="Heights"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0, 0)
+size = Vector3(0.05, 0.05, 0.05)
+material = ExtResource("2_rxdja")
+script = ExtResource("3_s2cdb")
+default_x = -0.3
+stat = "stat"
+
+[node name="EyeHeight" type="CSGBox3D" parent="Heights"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0, 0)
+size = Vector3(0.05, 0.05, 0.05)
+material = ExtResource("3_rthp2")
+script = ExtResource("3_s2cdb")
+default_x = 0.3
+stat = "eye"
+
+[node name="TopHeight" type="CSGBox3D" parent="Heights"]
+size = Vector3(0.05, 0.05, 0.05)
+material = ExtResource("4_1x4m4")
+script = ExtResource("3_s2cdb")
+stat = "top"
+
+[node name="ChampionCamera" type="Camera3D" parent="."]
+unique_name_in_owner = true
+current = true

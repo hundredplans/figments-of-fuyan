@@ -8,4 +8,4 @@ class_name FofInfo extends Resource
 func _init() -> void:
 	id = StaticHelper.onAutoIncrementID(get_script(), id)
 
-static func getInfoPath() -> String: return "res://resources/fof/"
+static func getInfoPath() -> String: return "res://resources/fof"

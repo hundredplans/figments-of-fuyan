@@ -15,26 +15,27 @@ signal cancel
 @onready var UltimateLabel: Label = %UltimateLabel
 @onready var FlavorLabel: Label = %FlavorLabel
 #endregion
-func setInfo(Unit: UnitGD) -> void:
-	ChampionNameLabel.text = Unit.info.name
+func setInfo(Card: CardGD) -> void:
+	var area: AreaInfo = Card.getArea()
+	ChampionNameLabel.text = Card.info.name
 	CardSpot.get_child(0).queue_free()
-	Unit.onCreateCardUI(CardSpot).set_anchors_preset(PRESET_CENTER)
-	AreaNameLabel.text = Unit.getArea().name
-	ChampionEpithetLabel.text = Unit.info.epithet
+	Card.onCreateCardUI(CardSpot).set_anchors_preset(PRESET_CENTER)
+	AreaNameLabel.text = area.name
+	ChampionEpithetLabel.text = Card.info.epithet
 	
 	for child in DescriptionContainer.get_children(): DescriptionContainer.remove_child(child); child.queue_free()
 	DescriptionContainer.add_child(Control.new())
-	for description_text in Unit.info.description:
+	for description_text in Card.info.description:
 		var label := Label.new()
 		label.text = "- " + description_text
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		DescriptionContainer.add_child(label)
 		
-	ChampionBoonTitleLabel.text = Unit.info.boon_info.name
-	ChampionBoonLabel.text = Unit.info.boon_info.description
-	UltimateTitleLabel.text = Unit.info.ultimate_info.name
-	UltimateLabel.text = Unit.info.ultimate_info.description
-	FlavorLabel.text = "\"" + Unit.info.flavor_text + "\" "
+	ChampionBoonTitleLabel.text = Card.info.boon_info.name
+	ChampionBoonLabel.text = Card.info.boon_info.description
+	UltimateTitleLabel.text = Card.info.ultimate_datastore.name
+	UltimateLabel.text = Card.info.ultimate_datastore.description
+	FlavorLabel.text = "\"" + Card.info.flavor_text + "\" "
 
 func _on_cancel_button_pressed() -> void:
 	queue_free()

@@ -27,7 +27,7 @@ func onConvertCoords(coords: Vector4i) -> Vector3:
 	return Vector3((sqrt(3) * coords.x + sqrt(3) * coords.y * 0.5), coords.w * 0.6, coords.y * (3 / 2.0))
 	
 func onFindTile(coords: Vector4i) -> TileGD:
-	for Tile in get_tree().get_nodes_in_group("Tiles"):
+	for Tile in get_tree().get_nodes_in_group("TilesGD"):
 		if Tile != HoverModel and Tile.getCoords() == coords: return Tile
 	return null
 	
@@ -63,9 +63,10 @@ func _notification(what):
 
 func _ready() -> void:
 	setBaseElevation(0)
-	all_tile_objects = Helper.getResourcesRecursive(TileObjectInfoGD)
-	onPlaceStartingTiles()
+	all_tile_objects = Helper.getResourcesRecursive(TileObjectInfo)
 	setAreaOptionButtonItems()
+	_on_new_button_pressed()
+	
 	OverworldButton.visible = false
 		
 func _input(event: InputEvent) -> void:
@@ -145,13 +146,13 @@ func _input(event: InputEvent) -> void:
 #region Search + Select Tile Object Info
 @onready var SearchTileObject: LineEdit = %SearchTileObject
 @onready var SearchResultsContainer: VBoxContainer = %SearchResultsContainer
-func onFindTileObjectInfo(id: int) -> TileObjectInfoGD:
-	return all_tile_objects.filter(func(x: TileObjectInfoGD): return x.id == id)[0]
+func onFindTileObjectInfo(id: int) -> TileObjectInfo:
+	return all_tile_objects.filter(func(x: TileObjectInfo): return x.id == id)[0]
 	
 func _on_search_tile_object_text_changed(text: String):
 	for button in SearchResultsContainer.get_children(): button.queue_free()
 	if !text.is_empty():
-		for info in all_tile_objects.filter(func(x: TileObjectInfoGD): return x.name.to_lower().begins_with(text.to_lower())):
+		for info in all_tile_objects.filter(func(x: TileObjectInfo): return x.name.to_lower().begins_with(text.to_lower())):
 			var button: Button = preload("res://scenes/editors/level_editor/tile_object_search_result.tscn").instantiate()
 			SearchResultsContainer.add_child(button)
 			button.setInfo(info)
@@ -160,10 +161,10 @@ func _on_search_tile_object_text_changed(text: String):
 			button.mouse_exited.connect(onMouseInUI.bind(false))
 			button.custom_pressed.connect(onTileObjectInfoSelected)
 
-func onTileObjectInfoSelected(saved_data: SavedData, remove_last: bool = true) -> void:
+func onTileObjectInfoSelected(data: SavedData, remove_last: bool = true) -> void:
 	if remove_last and HoverModel != null: HoverModel.queue_free()
 	
-	HoverModel = saved_data.onLoadModel(World)
+	HoverModel = SavedData.onLoadModel(data, World)
 	HoverModel.setRayPickable(true)
 	HoverModel.position = Vector3(0, 10000, 0)
 	HoverModel.setEmptyCollisionLayers()
@@ -183,7 +184,7 @@ func onTileObjectInfoSelected(saved_data: SavedData, remove_last: bool = true) -
 func onSearchTileObjectReleaseFocus() -> void:
 	SearchTileObject.release_focus()
 	if SearchResultsContainer.get_child_count() > 0:
-		onTileObjectInfoSelected(SearchResultsContainer.get_child(0).info.getBaseData())
+		onTileObjectInfoSelected(SearchResultsContainer.get_child(0).getData())
 #endregion
 #region Hovering & Placing TileObjects
 var LastSelectedData: SavedData
@@ -213,7 +214,7 @@ func onHoverModelHovered() -> void:
 func onHoverModelPlaced() -> void:
 	if HoverModel is TileGD:
 		onDeleteTileObject(onFindTile(HoverModel.getCoords()))
-		
+	
 	HoverModel.setRayPickable(false)
 	HoverModel.setDefaultCollisionLayers()
 	HoverModel.setRegularMaterial()
@@ -225,14 +226,9 @@ func onHoverModelPlaced() -> void:
 	if save_data is SavedDataTile: save_data.tile_fill = false
 	
 	onTileObjectInfoSelected(save_data, false)
-		
-func onPlaceStartingTiles() -> void:
-	for x in range(-DEFAULT_LEVEL_SIZE, (DEFAULT_LEVEL_SIZE + 1)):
-		for y in range(max(-DEFAULT_LEVEL_SIZE, -x - DEFAULT_LEVEL_SIZE), min(DEFAULT_LEVEL_SIZE, -x + DEFAULT_LEVEL_SIZE) + 1):
-			onPlaceBaseTile(Vector4i(x, y, -x-y, 0))
 
 func onPlaceBaseTile(coords: Vector4i) -> TileGD:
-	return SavedDataTile.new(1, 0, coords, 0, false).onLoadModel(World)
+	return SavedData.onLoadModel(SavedDataTile.new(1, coords, 0, 0, false), World)
 	
 #endregion
 #region Elevation
@@ -277,10 +273,7 @@ func onChangeMouseTileObjectVariation(direction: int) -> void:
 	var TileObject: TileObjectGD = onFindMouseTileObject()
 	if TileObject != null:
 		TileObject.clampVariation(direction)
-		TileObject.queue_free()
-		
-		var saved_data: SavedData = TileObject.onSave()
-		saved_data.onLoadModel(World)
+		TileObject.onLoadModel()
 		
 func onDisableScroll() -> void:
 	is_scroll_disabled = true
@@ -352,45 +345,48 @@ func onChangeTileLockButtonState() -> void:
 	tile_lock_force = !tile_lock_force
 	TileLockButton.set_pressed_no_signal(tile_lock_force)
 #endregion
-#region Saving
-const LEVEL_PATH: String = "res://resources/game/levels/"
+#region Saving / Loading
+const LEVEL_PATH: String = "res://resources/fof/levels/"
 @onready var SaveLineEdit: LineEdit = %SaveLineEdit
 @onready var AreaOptionButton: OptionButton = %AreaOptionButton
 
 var AREA_TO_LEVEL_INFO: Dictionary = {
-	1: PalmLevelInfoGD
+	1: PalmLevelInfo,
 }
+
+var loaded_level: LevelInfo
+func _on_new_button_pressed() -> void:
+	_on_save_button_pressed()
+	SaveLineEdit.text = ""
+	for tile_object in get_tree().get_nodes_in_group("TileObjectsGD"):
+		tile_object.onClear()
+		
+	if is_overworld: loaded_level = OverworldLevelInfo.new()
+	else: loaded_level = AREA_TO_LEVEL_INFO[AreaOptionButton.get_selected_id()].new()
+	
+	for x in range(-DEFAULT_LEVEL_SIZE, (DEFAULT_LEVEL_SIZE + 1)):
+		for y in range(max(-DEFAULT_LEVEL_SIZE, -x - DEFAULT_LEVEL_SIZE), min(DEFAULT_LEVEL_SIZE, -x + DEFAULT_LEVEL_SIZE) + 1):
+			onPlaceBaseTile(Vector4i(x, y, -x-y, 0))
 
 func _on_save_button_pressed():
 	var level_name: String = SaveLineEdit.text
 	if !level_name.is_empty():
-		var data: Array[SavedData] = []
-		for child in get_tree().get_nodes_in_group("Loadables"):
-			data.append(child.onSave())
+		loaded_level.data = []
+		for child in get_tree().get_nodes_in_group("TileObjectsGD"):
+			loaded_level.data.append(child.onSave())
+			
+		if level_name == loaded_level.name:
+			ResourceSaver.save(loaded_level)
+			return
+		elif !level_name.is_empty():
+			loaded_level = loaded_level.duplicate(true)
+
+		loaded_level.setInfo(level_name, AreaOptionButton.get_selected_id())
+		if loaded_level is RegularLevelInfo:
+			loaded_level.setSpawnPropertiesAutoValues(get_tree().get_nodes_in_group("TileObjectsGD"))
+		var path: String = LEVEL_PATH + level_name.to_snake_case() + ".tres"
+		ResourceSaver.save(loaded_level, path)
 		
-		var valid_name: String = await getValidLevelName(level_name) + ".tres"
-		var path: String = LEVEL_PATH + valid_name
-		var area_id: int = AreaOptionButton.get_selected_id()
-		var level_info: LevelInfoGD = AREA_TO_LEVEL_INFO[area_id].new() if !is_overworld else OverworldLevelInfoGD.new()
-		
-		var id: int = 0
-		
-		if FileAccess.file_exists(path):
-			var _level_info: LevelInfoGD = load(path)
-			id = _level_info.id
-			level_info.setPreviousLevelInfoValues(_level_info)
-		elif !is_overworld: level_info.setSpawnPropertiesAutoValues(get_tree().get_nodes_in_group("Loadables"))
-		
-		level_info.setInfo(level_name, area_id, data, id)
-		if level_name.is_empty(): level_name = valid_name
-		ResourceSaver.save(level_info, path)
-	
-func getValidLevelName(text: String) -> String:
-	if !text.is_valid_filename() and !text.is_empty(): 
-		UI.modulate = Color(1, 0, 0)
-		await get_tree().create_timer(1).timeout
-		UI.modulate = Color(1, 1, 1)
-	return text.to_snake_case()
 #endregion
 #region Loading
 @onready var LoadLevelContainer: Container = %LoadLevelContainer
@@ -402,12 +398,12 @@ func _on_load_button_pressed():
 		SearchTileObject.text = ""
 		SearchTileObject.text_changed.emit("")
 		onHoverModelDeselected()
-		var levels: Array = Helper.getResourcesRecursive(LevelInfoGD)
-		for level in levels:
+		var levels: Array = Helper.getResourcesRecursive(LevelInfo)
+		for level_info in levels:
 			var button := Button.new()
 			button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-			button.text = level.name
-			button.pressed.connect(onLoadLevel.bind(level))
+			button.text = level_info.name
+			button.pressed.connect(onLoadLevel.bind(level_info))
 			button.mouse_filter = Control.MOUSE_FILTER_STOP
 			button.mouse_entered.connect(onMouseInUI.bind(true))
 			button.mouse_exited.connect(onMouseInUI.bind(false))
@@ -416,11 +412,11 @@ func _on_load_button_pressed():
 func _on_hide_load_level_button_pressed():
 	LoadLevels.visible = false
 
-func onLoadLevel(level_info: LevelInfoGD) -> void:
+func onLoadLevel(level_info: LevelInfo) -> void:
 	_on_save_button_pressed()
+	loaded_level = level_info
 	onHoverModelDeselected()
-	is_overworld = level_info is OverworldLevelInfoGD
-	
+	is_overworld = level_info is OverworldLevelInfo
 	SaveLineEdit.text = level_info.name
 	
 	var area_id: int = level_info.area_id
@@ -429,11 +425,10 @@ func onLoadLevel(level_info: LevelInfoGD) -> void:
 			AreaOptionButton.select(idx)
 			break
 	
-	for tile_object in get_tree().get_nodes_in_group("Loadables"):
+	for tile_object in get_tree().get_nodes_in_group("TileObjectsGD"):
 		tile_object.onClear()
 	
-	for tile_object_data in level_info.data:
-		tile_object_data.onLoadModel(World)
+	for data in level_info.data: SavedData.onLoadModel(data, World)
 		
 func _on_search_tile_object_focus_entered():
 	LoadLevels.visible = false
@@ -450,7 +445,7 @@ func onMouseInUI(state: bool) -> void:
 
 #region Area Option Button
 func setAreaOptionButtonItems() -> void:
-	for area_info in Helper.getResourcesRecursive(AreaInfoGD):
+	for area_info in Helper.getResourcesRecursive(AreaInfo):
 		AreaOptionButton.add_item(area_info.name, area_info.id)
 	AreaOptionButton.select(2)
 	
@@ -459,7 +454,8 @@ func setAreaOptionButtonItems() -> void:
 #region Overworld
 var is_overworld: bool = false
 func _on_overworld_button_pressed() -> void:
-	for tile_object in get_tree().get_nodes_in_group("Loadables"):
+	_on_save_button_pressed()
+	for tile_object in get_tree().get_nodes_in_group("TileObjectsGD"):
 		tile_object.onClear()
 		
 	var OVERWORLD_MAP_SIZE: int = 3
@@ -470,3 +466,8 @@ func _on_overworld_button_pressed() -> void:
 	is_overworld = true
 	
 #endregion
+
+#region 
+func _on_area_option_button_item_selected(_index: int) -> void:
+	_on_save_button_pressed()
+	_on_new_button_pressed()

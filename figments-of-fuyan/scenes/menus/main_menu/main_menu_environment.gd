@@ -55,7 +55,6 @@ func onNewGameHideFrame(state: bool) -> void:
 
 #region Travel
 func onTravelStateChanged(travel_info: CameraTravelDatastore) -> void:
-	print()
 	for body in getStaticBodies(main_menu_meshes):
 		body.input_ray_pickable = travel_info.end.name == "MainMenu" and !travel_info.is_start
 

@@ -1,6 +1,6 @@
 extends Node
 
-func setSeed(my_seed: int) -> void:
+func setSeed(_my_seed: int) -> void:
 	seed(1)
 
 func getRandomKey(odds: Dictionary) -> String:

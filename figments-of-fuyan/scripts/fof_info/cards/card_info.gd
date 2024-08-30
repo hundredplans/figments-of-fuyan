@@ -1,6 +1,8 @@
 @tool
 class_name CardInfo extends GameObjectInfo
 
+const CARD_UI_SCENE_PATH: String = "res://scenes/game/fof/units/ui/card_ui.tscn"
+
 @export_multiline var flavor_text: String
 @export var model: PackedScene
 @export var points: Array
@@ -14,4 +16,4 @@ class_name CardInfo extends GameObjectInfo
 @export var audio: CardAudioDatastore
 
 enum RARITIES {SCRAP, NEUTRAL, COMMON, RARE, EXALT, MINIBOSS, BOSS, CHAMPION}
-static func getInfoPath() -> String: return "res://resources/fof/cards/"
+static func getInfoPath() -> String: return "res://resources/fof/cards"

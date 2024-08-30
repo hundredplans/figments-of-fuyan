@@ -1,0 +1,74 @@
+[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=17 format=3 uid="uid://dlwf2r78qfyiy"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/ability_datastore.gd" id="1_hmy8x"]
+[ext_resource type="Image" uid="uid://b86c6f1uyjyd6" path="res://assets/sprites/game/cards/art_pop/frederic_the_fearless.png" id="2_d16dl"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/champion_card_info.gd" id="2_y17s3"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_stat_datastore.gd" id="3_m5drr"]
+[ext_resource type="Resource" uid="uid://dhiqm4mrd7qpb" path="res://resources/fof/boons/bold_aura.tres" id="4_f5cwk"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_height_datastore.gd" id="4_ixc7s"]
+[ext_resource type="Script" path="res://scripts/common/data_structures/pos_rot.gd" id="5_j2m8k"]
+[ext_resource type="Script" path="res://scripts/fof/cards/frederic_the_fearless.gd" id="5_jvipk"]
+[ext_resource type="PackedScene" uid="uid://bd2esqpmo73tk" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_ks7mj"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/ultimate_datastore.gd" id="8_f344f"]
+
+[sub_resource type="Resource" id="Resource_4q5dm"]
+script = ExtResource("3_m5drr")
+attack = 2
+health = 2
+speed = 2
+energy = 2
+
+[sub_resource type="Resource" id="Resource_ii0u0"]
+script = ExtResource("5_j2m8k")
+pos = Vector3(0.8, 1.6, 0.8)
+rot = Vector3(-8.2529e-06, 30, -20)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
+size = Vector3(0.663147, 1.94543, 0.526978)
+
+[sub_resource type="PackedScene" id="PackedScene_bw08d"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00845337, 0.973806, 0.0105591), SubResource("BoxShape3D_ex838")],
+"version": 3
+}
+
+[sub_resource type="Resource" id="Resource_xsnw7"]
+script = ExtResource("4_ixc7s")
+top = 1.94734
+stat = 2.05826
+eye = 1.7876
+
+[sub_resource type="Resource" id="Resource_pi74n"]
+script = ExtResource("8_f344f")
+name = "Ogre Mode"
+description = "[0/4]: Heal to full HP and cleanse any negative effects. RAMPAGE to gain [1] point"
+
+[resource]
+script = ExtResource("2_y17s3")
+description = Array[String](["Regular and enhanced fights are more common", "Gets stronger the more fights he triumphs over"])
+associated_color = Color(1, 0, 0, 1)
+unique_nodes_id = Array[int]([])
+epithet = "The Brute"
+ultimate_datastore = SubResource("Resource_pi74n")
+boon_info = ExtResource("4_f5cwk")
+champion_select_posrot = SubResource("Resource_ii0u0")
+flavor_text = "A thug on the streets, a monster in the sheets"
+model = ExtResource("5_ks7mj")
+points = []
+rarity = 7
+abilities = Array[ExtResource("1_hmy8x")]([])
+art_mini_coordinate = Vector2i(0, 0)
+art_pop = ExtResource("2_d16dl")
+collision_shape = SubResource("PackedScene_bw08d")
+base_stats = SubResource("Resource_4q5dm")
+height = SubResource("Resource_xsnw7")
+id = 1
+name = "Frederic the Fearless"
+gdscript = ExtResource("5_jvipk")

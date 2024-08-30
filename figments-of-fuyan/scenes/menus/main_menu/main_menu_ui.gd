@@ -27,16 +27,16 @@ func onTravelStateChanged(travel_info: CameraTravelDatastore) -> void:
 
 #region Champion Selected
 var ChampionSelectUI: Control
-func onChampionPressed(Unit: UnitGD) -> void:
+func onChampionPressed(Card: CardGD) -> void:
 	onClearChampionUI()
 	ChampionSelectUI = ChampionSelectUIPacked.instantiate()
 	add_child(ChampionSelectUI)
-	ChampionSelectUI.setInfo(Unit)
-	ChampionSelectUI.start.connect(onStart.bind(Unit))
+	ChampionSelectUI.setInfo(Card)
+	ChampionSelectUI.start.connect(onStart.bind(Card))
 	ChampionSelectUI.cancel.connect(func(): cancel_champion_selected.emit())
 	
 func onClearChampionUI() -> void:
 	if ChampionSelectUI != null: ChampionSelectUI.queue_free()
 	
-func onStart(Unit: UnitGD) -> void: start.emit(Unit)
+func onStart(Card: CardGD) -> void: start.emit(Card)
 #endregion

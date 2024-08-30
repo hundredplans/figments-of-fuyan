@@ -20,14 +20,14 @@ class_name WorldDatastore extends Resource
 #endregion
 
 #region Map Nodes
-func onGenerateBaseMapNodes(parent: Node3D, base_map_location: MapLocation, Unit: UnitGD) -> void:
+func onGenerateBaseMapNodes(parent: Node3D, base_map_location: MapLocation, Card: CardGD) -> void:
 	var empty_spots: Array[EmptyMapNode] = generateEmptyMapSpots()
 	generateMapLinks(empty_spots)
 	var map_node_odds: Dictionary = getMapNodeOdds()
-	var unique_node_id: Array = Unit.info.unique_nodes_id
+	var unique_node_id: Array = Card.info.unique_nodes_id
 	
 	setEmptySpotsIDS(empty_spots, unique_node_id, map_node_odds)
-	setEliteChiefFights(empty_spots, map_node_odds, Unit)
+	setEliteChiefFights(empty_spots, map_node_odds, Card)
 	onLoadMapNodes(empty_spots, parent, base_map_location)
 	
 #endregion
@@ -35,7 +35,7 @@ func onGenerateBaseMapNodes(parent: Node3D, base_map_location: MapLocation, Unit
 #region Generators
 func generateEmptyMapSpots() -> Array[EmptyMapNode]:
 	var empty_spots: Array[EmptyMapNode] = []
-	if id == 1: empty_spots.append(EmptyMapNode.new(-1, 0))
+	if world == 1: empty_spots.append(EmptyMapNode.new(-1, 0))
 	empty_spots.append(EmptyMapNode.new(0, 0))
 	
 	var last_two_lane_value: int = 0
@@ -169,7 +169,7 @@ func setEmptySpotsIDS(empty_spots: Array, unique_node_ids: Array, map_node_odds:
 	for empty_spot in empty_spots:
 		match empty_spot.progress:
 			-1: empty_spot.id = 1; continue
-			0: empty_spot.id = 1 if id > 1 else 2; continue # Gildred
+			0: empty_spot.id = 1 if world > 1 else 2; continue # Gildred
 			5: empty_spot.id = 9; continue
 			10: empty_spot.id = 10; continue
 			_:
@@ -206,7 +206,7 @@ func setEmptySpotsIDS(empty_spots: Array, unique_node_ids: Array, map_node_odds:
 #endregion
 
 #region Elites
-func setEliteChiefFights(empty_spots: Array, map_node_odds: Dictionary, Unit: UnitGD) -> void:
+func setEliteChiefFights(empty_spots: Array, map_node_odds: Dictionary, Card: CardGD) -> void:
 	var guarantee_chief: bool = true
 	var guarantee_elite: bool = true
 	for empty_spot in empty_spots.filter(func(x: EmptyMapNode): return x.id == 3):
@@ -214,7 +214,7 @@ func setEliteChiefFights(empty_spots: Array, map_node_odds: Dictionary, Unit: Un
 		if odds > 0:
 			if guarantee_elite: empty_spot.id = 4; guarantee_elite = false; continue
 			elif guarantee_chief: empty_spot.id = 5; guarantee_chief = false; continue
-		odds += getExtraEliteChiefOdds(Unit)
+		odds += getExtraEliteChiefOdds(Card)
 		var upgrade: bool = Random.rollFloat(odds / 100)
 		var upgrade_extra: bool = Random.rollFloat(odds / 100)
 		if upgrade and upgrade_extra: empty_spot.id = 6
@@ -230,8 +230,8 @@ func getMapNodeOdds() -> Dictionary:
 	for odds in data: map_node_odds[odds.progress] = odds
 	return map_node_odds
 	
-func getExtraEliteChiefOdds(Unit: UnitGD) -> float:
-	if Unit.info.id == 1: return Unit.extra_elite_chief_odds
+func getExtraEliteChiefOdds(Card: CardGD) -> float:
+	if Card.info.id == 1: return Card.extra_elite_chief_odds
 	return 0
 #endregion
 
@@ -239,12 +239,10 @@ func getExtraEliteChiefOdds(Unit: UnitGD) -> float:
 func onLoadMapNodes(empty_spots: Array, parent: Node3D, base_location: MapLocation) -> void:
 	for empty_spot in empty_spots:
 		var map_location := MapLocation.new(empty_spot.progress, empty_spot.lane, base_location.world, base_location.area, false)
-		var saved_data: SavedDataMapNode = Helper.getResourcesRecursiveID(MapNodeInfoGD, empty_spot.id).getBaseData() 
-		saved_data.map_location = map_location
-		
 		var links: Array[MapLocation]
 		var _links: Array =  empty_spot.links.map(func(x: EmptyMapNode): return MapLocation.new(x.progress, x.lane, base_location.world, base_location.area))
 		links.assign(_links)
-		saved_data.links = links
-		saved_data.onLoadModel(parent)
+		
+		var saved_data: SavedDataMapNode = MapNodeInfo.getDataFromID(empty_spot.id).new(empty_spot.id, map_location, links)
+		SavedData.onLoadModel(saved_data, parent)
 #endregion

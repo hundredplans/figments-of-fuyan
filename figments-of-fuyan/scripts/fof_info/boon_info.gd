@@ -7,4 +7,4 @@ class_name BoonInfo extends FofInfo
 enum RARITIES {SCRAP, MINI, COMMON, RARE, EXALT, MINIBOSS, BOSS, CHAMPION}
 
 
-static func getInfoPath() -> String: return "res://resources/fof/boons/"
+static func getInfoPath() -> String: return "res://resources/fof/boons"

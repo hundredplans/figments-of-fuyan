@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MapNodeInfoGD" load_steps=4 format=3 uid="uid://c2odit6usmpey"]
+
+[ext_resource type="Script" path="res://scripts/fof/map_nodes/shop_node.gd" id="1_8v87d"]
+[ext_resource type="Script" path="res://scripts/fof_info/map_nodes/map_node_info.gd" id="1_fdpsf"]
+[ext_resource type="PackedScene" uid="uid://bbhu33eque7at" path="res://assets/models/fof/map_nodes/shop_node.glb" id="2_jjrfs"]
+
+[resource]
+script = ExtResource("1_fdpsf")
+id = 8
+name = "Shop"
+model = ExtResource("2_jjrfs")
+gdscript = ExtResource("1_8v87d")
+is_unique_node = false

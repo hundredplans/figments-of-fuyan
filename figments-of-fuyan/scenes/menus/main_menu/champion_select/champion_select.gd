@@ -13,11 +13,11 @@ signal champion_pressed
 #region Base Functions
 func _ready() -> void:
 	position = starter_position
-	var champions: Array = Helper.getResourcesRecursive(UnitInfoGD).filter(func(x: UnitInfoGD): return x.rarity == x.RARITIES.CHAMPION)
+	var champions: Array = Helper.getResourcesRecursive(ChampionCardInfo)
 	@warning_ignore("narrowing_conversion")
 	var theta: int = 162
 	for i in range(20):
-		var champion: UnitInfoGD = champions[i] if i < champions.size() else null
+		var champion: CardInfo = champions[i] if i < champions.size() else null
 		var pedestal: Node3D = PedestalPacked.instantiate()
 		var _theta: float = deg_to_rad(theta)
 		pedestal.position.x = PEDESTAL_RADIUS * cos(_theta)
@@ -26,7 +26,9 @@ func _ready() -> void:
 		add_child(pedestal)
 		
 		if champion != null:
-			pedestal.setInfo(champion.getBaseData().onLoadModel(pedestal))
+			var card: CardGD = SavedData.onLoadModel(SavedDataCard.new(champion.id), pedestal)
+			card.onCreateModel()
+			pedestal.setInfo(card)
 			
 			pedestal.champion_hovered.connect(onChampionHovered)
 			pedestal.champion_unhovered.connect(onChampionUnhovered)
@@ -37,22 +39,22 @@ func _ready() -> void:
 #region Hovered
 var ChampionTitle: Node3D
 var ChampionSpotlight: SpotLight3D
-func onChampionHovered(Unit: UnitGD) -> void:
+func onChampionHovered(Card: CardGD) -> void:
 	ChampionSpotlight = SpotLight3D.new()
-	ChampionSpotlight.light_color = Unit.info.associated_color
+	ChampionSpotlight.light_color = Card.info.associated_color
 	ChampionSpotlight.light_energy = 2
-	ChampionSpotlight.position.y = Unit.getHeightInfo().stat_height
+	ChampionSpotlight.position.y = Card.info.height.stat
 	
 	ChampionTitle = ChampionTitlePacked.instantiate()
-	Unit.add_child(ChampionTitle)
-	ChampionTitle.setInfo(Unit)
+	Card.add_child(ChampionTitle)
+	ChampionTitle.setInfo(Card)
 	
-	Unit.add_child(ChampionSpotlight)
+	Card.add_child(ChampionSpotlight)
 	
-func onChampionUnhovered(_Unit: UnitGD) -> void:
+func onChampionUnhovered(_Card: CardGD) -> void:
 	if ChampionSpotlight != null: ChampionSpotlight.queue_free()
 	if ChampionTitle != null: ChampionTitle.queue_free()
 	
-func onChampionPressed(Unit: UnitGD) -> void:
-	champion_pressed.emit(Unit)
+func onChampionPressed(Card: CardGD) -> void:
+	champion_pressed.emit(Card)
 #endregion

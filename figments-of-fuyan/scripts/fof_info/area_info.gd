@@ -7,4 +7,4 @@ class_name AreaInfo extends FofInfo
 @export var base_environment: Environment
 @export var late_environment: Environment
 
-static func getInfoPath() -> String: return "res://resources/fof/areas/"
+static func getInfoPath() -> String: return "res://resources/fof/areas"

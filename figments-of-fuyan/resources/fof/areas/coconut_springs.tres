@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="AreaInfo" load_steps=5 format=3 uid="uid://divjktvvya1ee"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="1_5w5ic"]
+[ext_resource type="Image" uid="uid://crmlvrqh52rb8" path="res://assets/sprites/game/cards/common/art_background/palm_background.png" id="1_xwfqh"]
+[ext_resource type="Script" path="res://scripts/fof_info/area_info.gd" id="2_omppq"]
+[ext_resource type="Resource" uid="uid://bcetk1atul6wp" path="res://resources/fof/cards/divinus_palmus.tres" id="2_yrs7d"]
+
+[resource]
+script = ExtResource("2_omppq")
+card_background = ExtResource("1_xwfqh")
+cards = Array[ExtResource("1_5w5ic")]([ExtResource("2_yrs7d")])
+id = 1
+name = "Coconut Springs"

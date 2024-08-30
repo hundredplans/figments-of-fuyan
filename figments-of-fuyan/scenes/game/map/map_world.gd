@@ -8,10 +8,10 @@ var UI: Control
 #endregion
 
 #region Base Functions
-func onLoad(_save_file: SaveFile, Unit: UnitGD) -> void:
+func onLoad(_save_file: SaveFile, Card: CardGD) -> void:
 	save_file = _save_file
-	overworld_level = save_file.overworld_level_data.onLoadModel(self)
-	overworld_level.onGenerateBaseMapNodes(Unit)
+	overworld_level = SavedData.onLoadModel(save_file.overworld_level_data, self)
+	overworld_level.onGenerateBaseMapNodes(Card)
 	setEnvironment()
 #endregion
 

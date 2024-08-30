@@ -5,22 +5,22 @@ signal champion_unhovered
 signal champion_pressed
 const UNIT_SCALE: float = 0.15
 
-func setInfo(Unit: UnitGD) -> void:
-	Unit.position = Vector3.ZERO
-	Unit.setRayPickable(true)
-	Unit.setScaleUniform(UNIT_SCALE)
-	Unit.onIdle()
+func setInfo(Card: CardGD) -> void:
+	Card.position = Vector3.ZERO
+	Card.setRayPickable(true)
+	Card.setScaleUniform(UNIT_SCALE)
+	Card.onIdle()
 	
-	Unit.mouse_entered.connect(onUnitMouseEntered)
-	Unit.mouse_exited.connect(onUnitMouseExited)
+	Card.mouse_entered.connect(onUnitMouseEntered)
+	Card.mouse_exited.connect(onUnitMouseExited)
 	
-var ChampionHovered: UnitGD
-func onUnitMouseEntered(Unit: UnitGD) -> void:
-	champion_hovered.emit(Unit)
-	ChampionHovered = Unit
+var ChampionHovered: CardGD
+func onUnitMouseEntered(Card: CardGD) -> void:
+	champion_hovered.emit(Card)
+	ChampionHovered = Card
 
-func onUnitMouseExited(Unit: UnitGD) -> void:
-	champion_unhovered.emit(Unit)
+func onUnitMouseExited(Card: CardGD) -> void:
+	champion_unhovered.emit(Card)
 	ChampionHovered = null
 	
 func _input(_event: InputEvent) -> void:
