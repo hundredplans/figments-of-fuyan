@@ -1,1 +1,2 @@
+@tool
 class_name OverworldLevelInfo extends LevelInfo

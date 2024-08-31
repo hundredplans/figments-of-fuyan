@@ -59,13 +59,13 @@ func getTilesBelow(Tile: TileGD) -> Array[TileGD]:
 #region Base Functions
 func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
-		_on_save_button_pressed()
+		onSaveLevel()
 
 func _ready() -> void:
 	setBaseElevation(0)
 	all_tile_objects = Helper.getResourcesRecursive(TileObjectInfo)
 	setAreaOptionButtonItems()
-	_on_new_button_pressed()
+	onNewEmptyLevel()
 	
 	OverworldButton.visible = false
 		
@@ -353,39 +353,6 @@ const LEVEL_PATH: String = "res://resources/fof/levels/"
 var AREA_TO_LEVEL_INFO: Dictionary = {
 	1: PalmLevelInfo,
 }
-
-var loaded_level: LevelInfo
-func _on_new_button_pressed() -> void:
-	_on_save_button_pressed()
-	SaveLineEdit.text = ""
-	for tile_object in get_tree().get_nodes_in_group("TileObjectsGD"):
-		tile_object.onClear()
-		
-	if is_overworld: loaded_level = OverworldLevelInfo.new()
-	else: loaded_level = AREA_TO_LEVEL_INFO[AreaOptionButton.get_selected_id()].new()
-	
-	for x in range(-DEFAULT_LEVEL_SIZE, (DEFAULT_LEVEL_SIZE + 1)):
-		for y in range(max(-DEFAULT_LEVEL_SIZE, -x - DEFAULT_LEVEL_SIZE), min(DEFAULT_LEVEL_SIZE, -x + DEFAULT_LEVEL_SIZE) + 1):
-			onPlaceBaseTile(Vector4i(x, y, -x-y, 0))
-
-func _on_save_button_pressed():
-	var level_name: String = SaveLineEdit.text
-	if !level_name.is_empty():
-		loaded_level.data = []
-		for child in get_tree().get_nodes_in_group("TileObjectsGD"):
-			loaded_level.data.append(child.onSave())
-			
-		if level_name == loaded_level.name:
-			ResourceSaver.save(loaded_level)
-			return
-		elif !level_name.is_empty():
-			loaded_level = loaded_level.duplicate(true)
-
-		loaded_level.setInfo(level_name, AreaOptionButton.get_selected_id())
-		if loaded_level is RegularLevelInfo:
-			loaded_level.setSpawnPropertiesAutoValues(get_tree().get_nodes_in_group("TileObjectsGD"))
-		var path: String = LEVEL_PATH + level_name.to_snake_case() + ".tres"
-		ResourceSaver.save(loaded_level, path)
 		
 #endregion
 #region Loading
@@ -411,24 +378,6 @@ func _on_load_button_pressed():
 
 func _on_hide_load_level_button_pressed():
 	LoadLevels.visible = false
-
-func onLoadLevel(level_info: LevelInfo) -> void:
-	_on_save_button_pressed()
-	loaded_level = level_info
-	onHoverModelDeselected()
-	is_overworld = level_info is OverworldLevelInfo
-	SaveLineEdit.text = level_info.name
-	
-	var area_id: int = level_info.area_id
-	for idx in range(AreaOptionButton.item_count):
-		if AreaOptionButton.get_item_id(idx) == area_id:
-			AreaOptionButton.select(idx)
-			break
-	
-	for tile_object in get_tree().get_nodes_in_group("TileObjectsGD"):
-		tile_object.onClear()
-	
-	for data in level_info.data: SavedData.onLoadModel(data, World)
 		
 func _on_search_tile_object_focus_entered():
 	LoadLevels.visible = false
@@ -454,20 +403,78 @@ func setAreaOptionButtonItems() -> void:
 #region Overworld
 var is_overworld: bool = false
 func _on_overworld_button_pressed() -> void:
-	_on_save_button_pressed()
+	is_overworld = !is_overworld
+	onNewEmptyLevel()
+#endregion
+
+#region Level Shenaningans
+var loaded_level: LevelInfo
+func onNewEmptyLevel() -> void:
+	onSaveLevel()
+	SaveLineEdit.text = ""
 	for tile_object in get_tree().get_nodes_in_group("TileObjectsGD"):
 		tile_object.onClear()
 		
-	var OVERWORLD_MAP_SIZE: int = 3
-	for x in range(-OVERWORLD_MAP_SIZE, (OVERWORLD_MAP_SIZE + 1)):
-		for y in range(max(-OVERWORLD_MAP_SIZE, -x -OVERWORLD_MAP_SIZE), min(OVERWORLD_MAP_SIZE, -x + OVERWORLD_MAP_SIZE) + 1):
-			var model: TileGD = onPlaceBaseTile(Vector4i(x, y, -x-y, 0))
-			model.variation = -1
-	is_overworld = true
+	if is_overworld:
+		loaded_level = OverworldLevelInfo.new()
+		var OVERWORLD_MAP_SIZE: int = 3
+		for x in range(-OVERWORLD_MAP_SIZE, (OVERWORLD_MAP_SIZE + 1)):
+			for y in range(max(-OVERWORLD_MAP_SIZE, -x -OVERWORLD_MAP_SIZE), min(OVERWORLD_MAP_SIZE, -x + OVERWORLD_MAP_SIZE) + 1):
+				onPlaceBaseTile(Vector4i(x, y, -x-y, 0))
+		return
+		
+		
+	loaded_level = AREA_TO_LEVEL_INFO[AreaOptionButton.get_selected_id()].new()
+	for x in range(-DEFAULT_LEVEL_SIZE, (DEFAULT_LEVEL_SIZE + 1)):
+		for y in range(max(-DEFAULT_LEVEL_SIZE, -x - DEFAULT_LEVEL_SIZE), min(DEFAULT_LEVEL_SIZE, -x + DEFAULT_LEVEL_SIZE) + 1):
+			onPlaceBaseTile(Vector4i(x, y, -x-y, 0))
 	
-#endregion
+func onSaveLevel() -> void:
+	var level_name: String = SaveLineEdit.text
+	if !level_name.is_empty():
+		if level_name != loaded_level.name:
+			var new_level: LevelInfo = onFindLevelByName(level_name)
+			if new_level != null: loaded_level = new_level
+			else: loaded_level = loaded_level.get_script().new()
 
-#region 
+		loaded_level.data = []
+		for child in get_tree().get_nodes_in_group("TileObjectsGD"):
+			loaded_level.data.append(child.onSave())
+
+		if level_name == loaded_level.name:
+			ResourceSaver.save(loaded_level)
+			return
+		
+		loaded_level.setInfo(level_name, AreaOptionButton.get_selected_id())
+		if loaded_level is RegularLevelInfo:
+			loaded_level.setSpawnPropertiesAutoValues(get_tree().get_nodes_in_group("TileObjectsGD"))
+		var path: String = LEVEL_PATH + level_name.to_snake_case() + ".tres"
+		loaded_level.resource_path = path
+		ResourceSaver.save(loaded_level)
+	
+func onLoadLevel(level_info: LevelInfo) -> void:
+	onSaveLevel()
+	loaded_level = level_info
+	onHoverModelDeselected()
+	is_overworld = level_info is OverworldLevelInfo
+	SaveLineEdit.text = level_info.name
+	
+	var area_id: int = level_info.area_id
+	for idx in range(AreaOptionButton.item_count):
+		if AreaOptionButton.get_item_id(idx) == area_id:
+			AreaOptionButton.select(idx)
+			break
+	
+	for tile_object in get_tree().get_nodes_in_group("TileObjectsGD"):
+		tile_object.onClear()
+	
+	for data in level_info.data: SavedData.onLoadModel(data, World)
+	
 func _on_area_option_button_item_selected(_index: int) -> void:
-	_on_save_button_pressed()
-	_on_new_button_pressed()
+	onNewEmptyLevel()
+	
+func onFindLevelByName(level_name: String) -> LevelInfo:
+	for level in Helper.getResourcesRecursive(LevelInfo):
+		if level.name == level_name: return level
+	return null
+#region 

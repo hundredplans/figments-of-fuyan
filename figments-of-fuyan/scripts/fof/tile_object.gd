@@ -35,8 +35,8 @@ func onRemovePoint(point: Vector3) -> void:
 func onLoadData(data: SavedData) -> void:
 	coords = data.coords
 	tile_rotation = data.tile_rotation
+	variation = data.variation
 	
-	onLoadModel()
 	add_to_group("TileObjectsGD")
 	super(data)
 	
@@ -48,9 +48,6 @@ func onLoadModel() -> void:
 		
 	Model = info.getModel(variation).instantiate()
 	add_child(Model)
-	
-	setCoords(coords)
-	setTileRotation(tile_rotation)
 	
 	call("setDefaultCollisionLayers")
 	setRayPickable(ray_pickable)

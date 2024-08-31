@@ -38,3 +38,22 @@ func getFilesRecursive(DIR_PATH: String, contents := []) -> Array:
 	for dir in DirAccess.get_directories_at(DIR_PATH):
 		contents = getFilesRecursive(DIR_PATH + "/" + dir, contents)
 	return contents
+
+func onAutoIncrementID(type: Variant, _id: int) -> int:
+	if Engine.is_editor_hint():
+		var id: int = _id
+		var resources: Array = getResourcesRecursive(type.getInfoPath(), type)
+		resources.sort_custom(func(x: Resource, y: Resource): return x.id < y.id)
+		
+		id = getNonConsecutive(resources)
+		if id == -1: return resources.size() + 1
+		return id + 1
+	return _id
+
+func getNonConsecutive(arr: Array) -> int:
+	var i: int = 1
+	for x in arr:
+		if i < arr.size() and arr[i].id - arr[i-1].id != 1:
+			return arr[i - 1].id
+		i += 1
+	return -1

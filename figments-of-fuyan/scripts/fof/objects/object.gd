@@ -71,6 +71,7 @@ func onLoadData(data: SavedData) -> void:
 	map_rotation = rotation.y
 	height = data.height
 	
+	onLoadModel()
 	add_to_group("ObjectsGD")
 #endregion
 

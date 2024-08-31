@@ -2,7 +2,8 @@ class_name MapNodeGD extends FofGD
 
 #region Globals
 var map_location: MapLocation
-var links: Array[MapLocation]
+var links: Array
+var Model: Node3D
 #endregion
 
 #region Save / Load
@@ -13,15 +14,16 @@ func onLoadData(data: SavedData) -> void:
 	super(data)
 	map_location = data.map_location
 	links = data.links
+	add_to_group("MapNodesGD")
 	
-	var model: Node3D = info.model.instantiate()
-	add_child(model)
-	position = getPositionFromMapLocation(map_location)
+func onCreateModel(map_locations: Array) -> void:
+	Model = load(info.MAP_NODE_MODEL_PATH).instantiate()
+	add_child(Model)
+	Model.setInfo(self, map_locations, info.model)
 	
-	add_to_group("MapNodeGD")
-#endregion
-
-#region Transformers
-func getPositionFromMapLocation(_map_location: MapLocation) -> Vector3:
-	return Vector3(_map_location.progress * 3, 0.6, _map_location.lane * 2)
+func onCreateLinks(map_location_to_node: Dictionary) -> void:
+	Model.onCreateLinks(links, map_location, map_location_to_node)
+	
+func getPosition() -> Vector3:
+	return Model.position
 #endregion

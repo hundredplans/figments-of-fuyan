@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://cjmu542inuvej"]
+
+[ext_resource type="Script" path="res://scenes/game/map_node/map_node_model.gd" id="1_a4vcw"]
+[ext_resource type="PackedScene" uid="uid://dgjiv4s0c2ynf" path="res://scenes/game/map_node/map_node_link.tscn" id="2_84gel"]
+
+[node name="MapNodeModel" type="Node3D"]
+script = ExtResource("1_a4vcw")
+MAP_NODE_LINK = ExtResource("2_84gel")

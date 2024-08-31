@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="SaveFileInfo" load_steps=3 format=3 uid="uid://0efibaqmw7lm"]
+
+[ext_resource type="Script" path="res://scripts/fof/save_file/save_file.gd" id="1_kkioy"]
+[ext_resource type="Script" path="res://scripts/fof_info/save_file_info.gd" id="1_lrpio"]
+
+[resource]
+script = ExtResource("1_lrpio")
+id = 1
+name = "SaveFileOne"
+gdscript = ExtResource("1_kkioy")

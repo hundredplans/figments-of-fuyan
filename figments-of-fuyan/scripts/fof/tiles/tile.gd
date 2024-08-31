@@ -41,6 +41,12 @@ func onSave() -> SavedDataGameObject:
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
+	onLoadModel()
 	onCreateTileFill(data.tile_fill)
 	add_to_group("TilesGD")
+	
+func onLoadModel() -> void:
+	super()
+	setCoords(coords)
+	setTileRotation(tile_rotation)
 #endregion

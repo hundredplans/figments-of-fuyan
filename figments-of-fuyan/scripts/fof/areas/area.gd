@@ -1,26 +1,29 @@
-class_name WorldDatastore extends Resource
+class_name AreaGD extends FofGD
 
-#region Exports
-@export var world: int
-@export var data: Array[MapNodeOddsDatastore]
-@export_range(0, 100, 0.1) var elite_increase_after_shop_or_encounter: float
-
-@export_group("Start of Generation")
-@export_range(0, 100, 0.1) var unique_node_segment_one_odds: float
-@export_range(0, 100, 0.1)  var unique_node_segment_two_odds: float
-@export_group("")
-
-@export_group("Constants across Worlds")
-@export var LANE_ODDS: Dictionary = {
-	"2": 0.25,
-	"3": 0.7,
-	"4": 0.05, 
-}
-@export var REMOVE_RANDOM_EDGES: float = 0.5
+#region Global
+var map_location_to_node: Dictionary
+var map_location: MapLocation
+var overworld_level: OverworldLevelGD
 #endregion
 
-#region Map Nodes
-func onGenerateBaseMapNodes(parent: Node3D, base_map_location: MapLocation, Card: CardGD) -> void:
+#region Save / Load
+func onSave() -> SavedDataArea:
+	var map_nodes_data: Array[SavedDataMapNode] = []
+	for map_node in get_tree().get_nodes_in_group("MapNodesGD"):
+		map_nodes_data.append(map_node.onSave())
+		
+	return SavedDataArea.new(info.id, overworld_level.info.id, map_location, map_nodes_data)
+	
+func onLoadData(data: SavedData) -> void:
+	super(data)
+	map_location = data.map_location
+	overworld_level = SavedData.onLoadModel(SavedDataOverworldLevel.new(data.overworld_level_id), self)
+	for map_node_data in data.map_nodes_data: SavedData.onLoadModel(map_node_data, self)
+	add_to_group("AreasGD")
+#endregion
+	
+#region Create Map Nodes
+func onCreateMapNodes(Card: CardGD) -> void:
 	var empty_spots: Array[EmptyMapNode] = generateEmptyMapSpots()
 	generateMapLinks(empty_spots)
 	var map_node_odds: Dictionary = getMapNodeOdds()
@@ -28,14 +31,12 @@ func onGenerateBaseMapNodes(parent: Node3D, base_map_location: MapLocation, Card
 	
 	setEmptySpotsIDS(empty_spots, unique_node_id, map_node_odds)
 	setEliteChiefFights(empty_spots, map_node_odds, Card)
-	onLoadMapNodes(empty_spots, parent, base_map_location)
-	
-#endregion
-	
+	onLoadMapNodes(empty_spots)
+
 #region Generators
 func generateEmptyMapSpots() -> Array[EmptyMapNode]:
 	var empty_spots: Array[EmptyMapNode] = []
-	if world == 1: empty_spots.append(EmptyMapNode.new(-1, 0))
+	if info.world.world == 1: empty_spots.append(EmptyMapNode.new(-1, 0))
 	empty_spots.append(EmptyMapNode.new(0, 0))
 	
 	var last_two_lane_value: int = 0
@@ -76,7 +77,7 @@ func generateEmptySpotsByProgress(empty_spots: Array) -> Dictionary:
 	return empty_spots_by_progress
 
 func onGenerateLaneCount() -> int:
-	return int(Random.getRandomKey(LANE_ODDS))
+	return int(Random.getRandomKey(info.world.LANE_ODDS))
 	
 func generateMapNodeOddsRollable(map_node_odds: Dictionary) -> Dictionary:
 	var map_node_odds_rollable: Dictionary = {}
@@ -134,7 +135,7 @@ func onRemoveEdgesAtRandom(empty_spots_by_progress: Dictionary) -> void:
 		for empty_spot in batch.filter(func(x: EmptyMapNode): return x.links.size() > 1):
 			var erase_array: Array = []
 			for link in empty_spot.links.filter(func(y: EmptyMapNode): return y in next_batch):
-				var remove_link: bool = Random.rollFloat(REMOVE_RANDOM_EDGES)
+				var remove_link: bool = Random.rollFloat(info.world.REMOVE_RANDOM_EDGES)
 				if remove_link:
 					erase_array.append(link)
 					next_batch.erase(link)
@@ -163,13 +164,13 @@ func setEmptySpotsIDS(empty_spots: Array, unique_node_ids: Array, map_node_odds:
 	var extra_unique_node_segment_one: bool = false
 	var extra_unique_node_segment_two: bool = false
 	if !unique_node_ids.is_empty():
-		extra_unique_node_segment_one = Random.rollFloat(unique_node_segment_one_odds / 100)
-		extra_unique_node_segment_two = Random.rollFloat(unique_node_segment_two_odds / 100)
+		extra_unique_node_segment_one = Random.rollFloat(info.world.unique_node_segment_one_odds / 100)
+		extra_unique_node_segment_two = Random.rollFloat(info.world.unique_node_segment_two_odds / 100)
 		
 	for empty_spot in empty_spots:
 		match empty_spot.progress:
 			-1: empty_spot.id = 1; continue
-			0: empty_spot.id = 1 if world > 1 else 2; continue # Gildred
+			0: empty_spot.id = 1 if info.world.world > 1 else 2; continue # Gildred
 			5: empty_spot.id = 9; continue
 			10: empty_spot.id = 10; continue
 			_:
@@ -227,7 +228,7 @@ func setEliteChiefFights(empty_spots: Array, map_node_odds: Dictionary, Card: Ca
 #region Getters
 func getMapNodeOdds() -> Dictionary:
 	var map_node_odds: Dictionary = {}
-	for odds in data: map_node_odds[odds.progress] = odds
+	for odds in info.world.data: map_node_odds[odds.progress] = odds
 	return map_node_odds
 	
 func getExtraEliteChiefOdds(Card: CardGD) -> float:
@@ -236,13 +237,18 @@ func getExtraEliteChiefOdds(Card: CardGD) -> float:
 #endregion
 
 #region Map Nodes
-func onLoadMapNodes(empty_spots: Array, parent: Node3D, base_location: MapLocation) -> void:
+func onLoadMapNodes(empty_spots: Array) -> void:
+	for empty_spot in empty_spots: empty_spot.map_location = MapLocation.new(empty_spot.progress, empty_spot.lane, map_location.area, false)
+	var map_locations: Array = empty_spots.map(func(x: EmptyMapNode): return x.map_location)
+	
 	for empty_spot in empty_spots:
-		var map_location := MapLocation.new(empty_spot.progress, empty_spot.lane, base_location.world, base_location.area, false)
-		var links: Array[MapLocation]
-		var _links: Array =  empty_spot.links.map(func(x: EmptyMapNode): return MapLocation.new(x.progress, x.lane, base_location.world, base_location.area))
-		links.assign(_links)
+		var links: Array = empty_spot.links.map(func(x: EmptyMapNode): return x.map_location)
+		var saved_data: SavedDataMapNode = MapNodeInfo.getDataFromID(empty_spot.id).new(empty_spot.id, empty_spot.map_location, links)
+		var map_node: MapNodeGD = SavedData.onLoadModel(saved_data, self)
+		map_node.onCreateModel(map_locations)
+		map_location_to_node[map_node.map_location] = map_node
 		
-		var saved_data: SavedDataMapNode = MapNodeInfo.getDataFromID(empty_spot.id).new(empty_spot.id, map_location, links)
-		SavedData.onLoadModel(saved_data, parent)
+	for map_node in get_tree().get_nodes_in_group("MapNodesGD"):
+		map_node.onCreateLinks(map_location_to_node)
+#endregion
 #endregion

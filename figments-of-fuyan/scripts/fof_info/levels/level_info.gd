@@ -7,6 +7,6 @@ class_name LevelInfo extends FofInfo
 func setInfo(_name: String = "", _area_id: int = 1) -> void:
 	name = _name
 	area_id = _area_id
-	id = StaticHelper.onAutoIncrementID(LevelInfo, id)
+	id = Helper.onAutoIncrementID(LevelInfo, id)
 	
 static func getInfoPath() -> String: return "res://resources/fof/levels"

@@ -9,4 +9,6 @@ func onClear() -> void:
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
-	add_to_group("LevelGD")
+	for tile_object_data in info.data:
+		SavedData.onLoadModel(tile_object_data, self)
+	add_to_group("LevelsGD")
