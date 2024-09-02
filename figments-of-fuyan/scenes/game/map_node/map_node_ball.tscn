@@ -1,13 +1,26 @@
 [gd_scene load_steps=3 format=3 uid="uid://cjejml4esueol"]
 
-[ext_resource type="Material" uid="uid://dqs86kl42o4rm" path="res://resources/materials/colors/unshaded/black.tres" id="1_6bq5g"]
+[ext_resource type="Script" path="res://scenes/game/map_node/map_node_ball.gd" id="1_2014h"]
 
-[sub_resource type="SphereMesh" id="SphereMesh_fljwb"]
-material = ExtResource("1_6bq5g")
-radius = 0.1
-height = 0.2
-radial_segments = 16
-rings = 8
+[sub_resource type="SphereMesh" id="SphereMesh_yno8h"]
+radius = 0.05
+height = 0.1
 
 [node name="MapNodeBall" type="MeshInstance3D"]
-mesh = SubResource("SphereMesh_fljwb")
+script = ExtResource("1_2014h")
+
+[node name="RegularBall" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_yno8h")
+
+[node name="RegularBall2" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_yno8h")
+
+[node name="RegularBall3" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_yno8h")
+
+[node name="RegularBall4" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_yno8h")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0357714, 0.187444, 0.250224)
+light_energy = 9.195

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="EncounterInfoGD" load_steps=6 format=3 uid="uid://dcsx7jvrfu7tj"]
+[gd_resource type="Resource" script_class="EncounterInfo" load_steps=6 format=3 uid="uid://dcsx7jvrfu7tj"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/encounters/branch_datastore.gd" id="1_2sg2r"]
 [ext_resource type="Script" path="res://scripts/fof_info/encounters/encounter_info.gd" id="1_c5yd8"]
@@ -23,7 +23,7 @@ can_skip = false
 
 [resource]
 script = ExtResource("1_c5yd8")
-id = 2
-name = "Suspicious Salesman"
 branch = SubResource("Resource_o4nbu")
 can_occur_randomly = false
+id = 2
+name = "Suspicious Salesman"

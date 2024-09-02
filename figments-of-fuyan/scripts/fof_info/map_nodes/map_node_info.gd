@@ -7,7 +7,7 @@ class_name MapNodeInfo extends FofInfo
 #endregion
 
 #region Globals
-const MAP_NODE_MODEL_PATH: String = "res://scenes/game/map_node/map_node_model.tscn"
+const MAP_NODE_LINK_PATH: String = "res://scenes/game/map_node/map_node_link.tscn"
 #endregion
 
 static func getInfoPath() -> String: return "res://resources/fof/map_nodes"

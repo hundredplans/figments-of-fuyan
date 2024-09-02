@@ -1,14 +1,33 @@
 extends Node3D
 
-@export var map_node_ball: PackedScene
+@export var ball_holy_path_material: Material
+@export var ball_default_material: Material
 @export var BALL_COUNT: int = 5
 @export var BALL_Y: float = 1
+var vector: Vector3
 
-func setInfo(other_location: MapLocation, map_location: MapLocation, map_location_to_node: Dictionary) -> void:
-	var vector: Vector3 = map_location_to_node[other_location].getPosition() - map_location_to_node[map_location].getPosition()
+func setInfo(_vector: Vector3) -> void:
+	vector = _vector
+	position.y = BALL_Y
+	onCreateLink(map_node_big_ball)
+
+func onCreateLink(big_ball_mesh: Mesh) -> void:
+	for ball in get_children(): ball.queue_free()
 	var progress: float = 0
 	for i in range(BALL_COUNT):
 		progress += 1.0 / float((BALL_COUNT + 1))
-		var ball: Node3D = map_node_ball.instantiate()
-		add_child(ball)
-		ball.position = Vector3(vector.x * progress, BALL_Y, vector	.z * progress)
+		
+		var mesh_node := MeshInstance3D.new()
+		add_child(mesh_node)
+		
+		var mesh: Mesh
+		if i == 2: mesh = big_ball_mesh
+		else: mesh = ball; mesh_node.script = 
+		
+		mesh_node.mesh = mesh
+		
+		
+		mesh.position = Vector3(vector.x * progress, 0, vector.z * progress)
+
+func onMapNodeSelected() -> void:
+	onCreateLink(map_node_massive_ball)

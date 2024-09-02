@@ -1,9 +1,18 @@
 class_name AreaGD extends FofGD
 
 #region Global
+signal map_node_selected
 var map_location_to_node: Dictionary
 var map_location: MapLocation
 var overworld_level: OverworldLevelGD
+#endregion
+
+#region Helper
+func onFindMapLocation(progress: int, lane: int) -> MapLocation:
+	for _map_location in map_location_to_node:
+		if _map_location.progress == progress and _map_location.lane == lane: return _map_location
+	return null
+
 #endregion
 
 #region Save / Load
@@ -250,5 +259,14 @@ func onLoadMapNodes(empty_spots: Array) -> void:
 		
 	for map_node in get_tree().get_nodes_in_group("MapNodesGD"):
 		map_node.onCreateLinks(map_location_to_node)
+		
+	onSelectMapNode(onFindMapLocation(map_location.progress, map_location.lane))
 #endregion
 #endregion
+
+
+func onSelectMapNode(_map_location: MapLocation) -> void:
+	map_location = _map_location
+	var map_node: MapNodeGD = map_location_to_node[map_location]
+	map_node.onSelected()
+	map_node_selected.emit(map_node, false)

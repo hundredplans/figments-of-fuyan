@@ -28,9 +28,17 @@ var _shift = false
 var _alt = false
 
 @export var disable_movement: bool = false
+@export_group("Sideways")
+@export var enable_only_sideways: bool = false
+@export var X_MIN: float = 0
+@export var X_MAX: float = 0
+@export_group("")
+
+@export_group("Freelook")
 @export var disable_freelook: bool = false
 @export_range(-90, 0) var freelook_clamp_bottom: int = -90
 @export_range(0, 90) var freelook_clamp_top: int = 90
+@export_group("")
 var ANTI_INTERACT_BUTTON: int = MOUSE_BUTTON_RIGHT
 
 func setDisableFreelook(state: bool) -> void:
@@ -77,7 +85,8 @@ func _update_movement(delta):
 	_direction = Vector3((_d as float) - (_a as float), 
 						(_e as float) - (_q as float), 
 						(_s as float) - (_w as float))
-	
+						
+	if enable_only_sideways: _direction.y = 0; _direction.z = 0
 	# Computes the change in velocity due to desired direction and "drag"
 	# The "drag" is a constant acceleration on the camera to bring it's velocity to 0
 	var offset = _direction.normalized() * _acceleration * _vel_multiplier * delta \
@@ -99,6 +108,7 @@ func _update_movement(delta):
 		_velocity.z = clamp(_velocity.z + offset.z, -_vel_multiplier, _vel_multiplier)
 	
 		translate(_velocity * delta * speed_multi)
+		if X_MIN != 0 and X_MAX != 0: position.x = clamp(position.x, X_MIN, X_MAX)
 
 # Updates mouse look 
 func _update_mouselook():
@@ -115,3 +125,6 @@ func _update_mouselook():
 	
 		rotate_y(deg_to_rad(-yaw))
 		rotate_object_local(Vector3(1,0,0), deg_to_rad(-pitch))
+
+func onEnableMovement(state: bool) -> void:
+	disable_movement = !state

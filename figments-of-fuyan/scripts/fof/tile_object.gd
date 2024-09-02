@@ -54,7 +54,8 @@ func onLoadModel() -> void:
 	
 #region Variations
 func clampVariation(i: int) -> void:
-	variation += i
-	if variation >= info.models.size(): variation = 0
-	elif variation < 0: variation = info.models.size() - 1
+	if variation >= 0:
+		variation += i
+		if variation >= info.models.size(): variation = 0
+		elif variation < 0: variation = info.models.size() - 1
 #endregion

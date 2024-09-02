@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="BaseTileInfo" load_steps=7 format=3 uid="uid://bx0l32wljf0jw"]
 
-[ext_resource type="Script" path="res://scripts/fof/tiles/tile.gd" id="1_hdft4"]
+[ext_resource type="Script" path="res://scripts/fof/tiles/base_tile.gd" id="1_sqwab"]
 [ext_resource type="PackedScene" uid="uid://v7v4k14rugns" path="res://assets/models/fof/tiles/palm_tile.glb" id="2_0icd3"]
 [ext_resource type="Script" path="res://scripts/fof_info/game_objects/base_tile_info.gd" id="3_6bjs2"]
 [ext_resource type="PackedScene" uid="uid://dw5aaldmheh01" path="res://assets/models/fof/tiles/palm_overworld_tile.glb" id="4_bgba3"]
@@ -15,4 +15,4 @@ models = Array[PackedScene]([ExtResource("2_0icd3"), ExtResource("4_wrhe2")])
 points = Array[Array]([[Vector3(0.336923, 0.3, -0.565905), Vector3(0.640117, 0.3, 0.0403821), Vector3(0.338527, 0.3, 0.607477), Vector3(-0.323771, 0.3, 0.612843), Vector3(-0.671147, 0.3, 0.014121), Vector3(-0.287396, 0.3, -0.534879), Vector3(-0.00402427, 0.3, 0.00124598)], [Vector3(0.269048, 1.24547, -0.420444), Vector3(-0.186197, 0.627595, 0.346507), Vector3(0.683017, 0.872144, 0.128873), Vector3(-0.467465, 0.852261, -0.511899), Vector3(0.427777, 0.855173, -0.753021)]])
 id = 1
 name = "Palm Tile"
-gdscript = ExtResource("1_hdft4")
+gdscript = ExtResource("1_sqwab")

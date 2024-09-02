@@ -2,15 +2,23 @@
 
 [ext_resource type="Script" path="res://scenes/game/map/map_world.gd" id="1_0di2n"]
 [ext_resource type="Environment" uid="uid://g3ihmrpunr2b" path="res://assets/environments/main_menu_environment.tres" id="2_uinh7"]
-[ext_resource type="Script" path="res://scripts/addons/movement_camera.gd" id="3_8vafa"]
+[ext_resource type="Script" path="res://addons/movement_camera.gd" id="3_8vafa"]
 
 [node name="MapWorld" type="Node3D"]
 script = ExtResource("1_0di2n")
+CAMERA_OFFSET = Vector3(0, 7, 6)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 unique_name_in_owner = true
 environment = ExtResource("2_uinh7")
 
-[node name="FreeLookCamera" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 4)
+[node name="MovementCamera" type="Camera3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 0, 0)
 script = ExtResource("3_8vafa")
+enable_only_sideways = true
+X_MIN = -18.0
+X_MAX = 15.0
+disable_freelook = true
+
+[connection signal="action_lock" from="." to="MovementCamera" method="onEnableMovement"]

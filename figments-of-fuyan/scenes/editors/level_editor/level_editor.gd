@@ -228,7 +228,7 @@ func onHoverModelPlaced() -> void:
 	onTileObjectInfoSelected(save_data, false)
 
 func onPlaceBaseTile(coords: Vector4i) -> TileGD:
-	return SavedData.onLoadModel(SavedDataTile.new(1, coords, 0, 0, false), World)
+	return SavedData.onLoadModel(SavedDataTile.new(1, coords, 0, int(is_overworld) * -1, false), World)
 	
 #endregion
 #region Elevation
@@ -417,10 +417,11 @@ func onNewEmptyLevel() -> void:
 		
 	if is_overworld:
 		loaded_level = OverworldLevelInfo.new()
-		var OVERWORLD_MAP_SIZE: int = 3
+		var OVERWORLD_MAP_SIZE: int = 12
+		var Y_MAX: int = 7
 		for x in range(-OVERWORLD_MAP_SIZE, (OVERWORLD_MAP_SIZE + 1)):
-			for y in range(max(-OVERWORLD_MAP_SIZE, -x -OVERWORLD_MAP_SIZE), min(OVERWORLD_MAP_SIZE, -x + OVERWORLD_MAP_SIZE) + 1):
-				onPlaceBaseTile(Vector4i(x, y, -x-y, 0))
+			for y in range(max(-OVERWORLD_MAP_SIZE, -x - OVERWORLD_MAP_SIZE), min(OVERWORLD_MAP_SIZE, -x + OVERWORLD_MAP_SIZE) + 1):
+				if abs(y) <= Y_MAX: onPlaceBaseTile(Vector4i(x, y, -x-y, 0))
 		return
 		
 		
