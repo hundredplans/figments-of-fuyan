@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="BoonInfoGD" load_steps=2 format=3 uid="uid://c427cbie2arvi"]
+[gd_resource type="Resource" script_class="ChampionBoonInfo" load_steps=2 format=3 uid="uid://c427cbie2arvi"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/boon_info.gd" id="1_07oqv"]
+[ext_resource type="Script" path="res://scripts/fof_info/boons/champion_boon_info.gd" id="1_twgqe"]
 
 [resource]
-script = ExtResource("1_07oqv")
+script = ExtResource("1_twgqe")
+champion_id = 3
+description = "Allies gain +1 SPD after killing an enemy in a Duel"
+RARITY = 7
 id = 3
 name = "Agile Aura"
-description = "Allies gain [1] SPD for [1] Turn after killing an enemy in a Duel"
-RARITY = 7

@@ -23,7 +23,7 @@ func on_add_bbcode_image(text: String, type: String) ->  String:
 var STAT_TO_INDEX: Array = ["ATTACK", "HEALTH", "SPEED"]
 const CARD_TEXT_TO_COLOR: Dictionary = {
 	"DMG": "navajo_white",
-	"RANGED": "brown",
+	"RANGED": "brown",	
 	"GBONE": "papaya_whip",
 	"BLOCK": "gray",
 	"CARD_NAME": "slate_gray",

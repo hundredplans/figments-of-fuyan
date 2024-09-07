@@ -106,7 +106,7 @@ func _input(event: InputEvent) -> void:
 					elif Input.is_action_just_pressed("MainInput"): onHoverModelPlaced()
 				elif Input.is_action_just_pressed("MainInput"):
 					var TileObject: TileObjectGD = onFindMouseTileObject()
-					if TileObject != null:
+					if TileObject != null and TileObject is TileGD:
 						setBaseElevation(TileObject.getHeight())
 				
 			elif Input.is_action_pressed("Delete"):
@@ -417,7 +417,7 @@ func onNewEmptyLevel() -> void:
 		
 	if is_overworld:
 		loaded_level = OverworldLevelInfo.new()
-		var OVERWORLD_MAP_SIZE: int = 12
+		var OVERWORLD_MAP_SIZE: int = 26
 		var Y_MAX: int = 7
 		for x in range(-OVERWORLD_MAP_SIZE, (OVERWORLD_MAP_SIZE + 1)):
 			for y in range(max(-OVERWORLD_MAP_SIZE, -x - OVERWORLD_MAP_SIZE), min(OVERWORLD_MAP_SIZE, -x + OVERWORLD_MAP_SIZE) + 1):

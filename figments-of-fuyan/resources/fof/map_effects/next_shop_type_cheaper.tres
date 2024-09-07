@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="MapEffectInfo" load_steps=3 format=3 uid="uid://bm7pysadctoy7"]
+
+[ext_resource type="Script" path="res://scripts/fof/map_effects/next_shop_type_cheaper.gd" id="1_wmbw7"]
+[ext_resource type="Script" path="res://scripts/fof_info/map_effects/map_effect_info.gd" id="2_kl8bu"]
+
+[resource]
+script = ExtResource("2_kl8bu")
+description = "[X] cost [Y]% less in your next shop"
+id = 3
+name = "NextShopTypeCheaper"
+gdscript = ExtResource("1_wmbw7")

@@ -43,7 +43,7 @@ func onChampionHovered(Card: CardGD) -> void:
 	ChampionSpotlight = SpotLight3D.new()
 	ChampionSpotlight.light_color = Card.info.associated_color
 	ChampionSpotlight.light_energy = 2
-	ChampionSpotlight.position.y = Card.info.height.stat
+	ChampionSpotlight.position.y = Card.info.stat
 	
 	ChampionTitle = ChampionTitlePacked.instantiate()
 	Card.add_child(ChampionTitle)

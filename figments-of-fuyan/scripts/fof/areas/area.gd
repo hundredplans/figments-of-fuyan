@@ -2,9 +2,13 @@ class_name AreaGD extends FofGD
 
 #region Global
 signal map_node_selected
+signal map_nodes_loaded
+signal map_node_entered
+signal map_node_finished
 var map_location_to_node: Dictionary
 var map_location: MapLocation
 var overworld_level: OverworldLevelGD
+
 #endregion
 
 #region Helper
@@ -26,7 +30,12 @@ func onSave() -> SavedDataArea:
 func onLoadData(data: SavedData) -> void:
 	super(data)
 	map_location = data.map_location
-	overworld_level = SavedData.onLoadModel(SavedDataOverworldLevel.new(data.overworld_level_id), self)
+	
+	var overworld_level_id: int
+	if !Helper.admin: overworld_level_id = data.overworld_level_id
+	else: overworld_level_id = 99999
+	
+	overworld_level = SavedData.onLoadModel(SavedDataOverworldLevel.new(overworld_level_id), self)
 	for map_node_data in data.map_nodes_data: SavedData.onLoadModel(map_node_data, self)
 	add_to_group("AreasGD")
 #endregion
@@ -247,26 +256,72 @@ func getExtraEliteChiefOdds(Card: CardGD) -> float:
 
 #region Map Nodes
 func onLoadMapNodes(empty_spots: Array) -> void:
-	for empty_spot in empty_spots: empty_spot.map_location = MapLocation.new(empty_spot.progress, empty_spot.lane, map_location.area, false)
+	for empty_spot in empty_spots: empty_spot.map_location = MapLocation.new(empty_spot.progress, empty_spot.lane, map_location.area)
 	var map_locations: Array = empty_spots.map(func(x: EmptyMapNode): return x.map_location)
 	
 	for empty_spot in empty_spots:
-		var links: Array = empty_spot.links.map(func(x: EmptyMapNode): return x.map_location)
+		var links: Array = empty_spot.links.map(func(x: EmptyMapNode): return MapLink.new(x.map_location, false))
 		var saved_data: SavedDataMapNode = MapNodeInfo.getDataFromID(empty_spot.id).new(empty_spot.id, empty_spot.map_location, links)
 		var map_node: MapNodeGD = SavedData.onLoadModel(saved_data, self)
 		map_node.onCreateModel(map_locations)
+		map_node.onFofInit()
 		map_location_to_node[map_node.map_location] = map_node
 		
 	for map_node in get_tree().get_nodes_in_group("MapNodesGD"):
 		map_node.onCreateLinks(map_location_to_node)
+		map_node.hovered.connect(onMapNodeHovered)
+		map_node.pressed.connect(onMapNodePressed)
+		map_node.entered.connect(onMapNodeEntered)
+	
+	map_nodes_loaded.emit()
+	onSelectMapNode(onFindMapLocation(map_location.progress, map_location.lane), true)
+#endregion
+#endregion
+
+#region Map Noodes
+const SELECTED_SPEED: float = 1
+func getSelectedMapNode() -> MapNodeGD:
+	return map_location_to_node[map_location]
+
+func onSelectMapNode(_map_location: MapLocation, is_initial_load_select: bool = false) -> void:
+	if !is_initial_load_select:
+		var selected_map_node: MapNodeGD = getSelectedMapNode()
+		selected_map_node.onDeselected(SELECTED_SPEED)
 		
-	onSelectMapNode(onFindMapLocation(map_location.progress, map_location.lane))
-#endregion
-#endregion
-
-
-func onSelectMapNode(_map_location: MapLocation) -> void:
 	map_location = _map_location
 	var map_node: MapNodeGD = map_location_to_node[map_location]
-	map_node.onSelected()
-	map_node_selected.emit(map_node, false)
+	map_node.onSelected(SELECTED_SPEED)
+	map_node_selected.emit(map_node, SELECTED_SPEED, is_initial_load_select)
+	
+func onMapNodeHovered(map_node: MapNodeGD, state: bool) -> void:
+	var selected_map_node: MapNodeGD = getSelectedMapNode()
+	if !state or map_node != selected_map_node:
+		var is_walkable: bool = selected_map_node.isMapNodeLink(map_node)
+		map_node.onStaticBodyHovered(is_walkable, state)
+	
+func onMapNodePressed(map_node: MapNodeGD) -> void:
+	var selected_map_node: MapNodeGD = getSelectedMapNode()
+	if selected_map_node.isMapNodeLink(map_node):
+		onSelectMapNode(map_node.map_location)
+		
+func onMapNodeEntered(map_node: MapNodeGD) -> void:
+	if map_node == getSelectedMapNode():
+		map_node_entered.emit(map_node)
+			
+func onMapNodeFinished() -> void:
+	var sel: MapNodeGD = getSelectedMapNode()
+	map_node_finished.emit(getSelectedMapNode())
+#endregion
+
+#region Getters
+func getBossMapNode() -> MapNodeGD:
+	return getNodeByID(10)
+	
+func getStartMapNode() -> MapNodeGD:
+	return getNodeByID(1)
+	
+func getNodeByID(id: int) -> MapNodeGD:
+	for map_node in get_tree().get_nodes_in_group("MapNodesGD"):
+		if map_node.info.id == id: return map_node
+	return null
+#endregion

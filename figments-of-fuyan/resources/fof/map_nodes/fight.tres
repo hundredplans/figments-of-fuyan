@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="MapNodeInfoGD" load_steps=4 format=3 uid="uid://pd80k3gg8th0"]
+[gd_resource type="Resource" script_class="MapNodeInfo" load_steps=4 format=3 uid="uid://pd80k3gg8th0"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/map_nodes/map_node_info.gd" id="1_hvbhr"]
 [ext_resource type="Script" path="res://scripts/fof/map_nodes/fight_node.gd" id="1_mbg5f"]
@@ -6,8 +6,8 @@
 
 [resource]
 script = ExtResource("1_hvbhr")
+model = ExtResource("2_jbm8o")
+is_unique_node = false
 id = 3
 name = "Fight"
-model = ExtResource("2_jbm8o")
 gdscript = ExtResource("1_mbg5f")
-is_unique_node = false

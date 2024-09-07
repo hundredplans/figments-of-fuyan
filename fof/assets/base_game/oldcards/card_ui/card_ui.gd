@@ -29,7 +29,7 @@ func set_info(_info: Dictionary) -> void:
 	front_card.texture_normal = load("res://assets/base_game/oldcards/card_ui/rarity/" + str(info.r) + ".png")
 	$Art/BlackCard.texture = ImageTexture.create_from_image(load("res://assets/base_game/oldcards/card_ui/rarity/" + str(info.r) + "_image.png"))
 	
-	$Stats/Tool.visible = show_tool
+	$Stats/Tool.visible = show_tool	
 	Helper.create_button_clickmask(front_card)
 	if !is_hover: front_card.mouse_filter = MOUSE_FILTER_PASS
 

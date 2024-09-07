@@ -1,0 +1,45 @@
+[gd_scene load_steps=5 format=3 uid="uid://ddpd64bnmddvi"]
+
+[ext_resource type="Texture2D" uid="uid://6w4c0qgt30g6" path="res://assets/sprites/character_art/gildred.png" id="1_6s86w"]
+[ext_resource type="Script" path="res://scenes/game/map_nodes/screens/gildred_screen/gildred_screen.gd" id="1_xjv3h"]
+[ext_resource type="PackedScene" uid="uid://cl7nth5tbap3b" path="res://scenes/game/map_nodes/screens/gildred_screen/gildred_blessing_button.tscn" id="3_3014v"]
+[ext_resource type="LabelSettings" uid="uid://baxopkmeda53x" path="res://resources/ui/label_settings/roboto_huge.tres" id="3_igry6"]
+
+[node name="GildredScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xjv3h")
+gildred_blessing_label_packed = ExtResource("3_3014v")
+
+[node name="MapEffectContainer" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 26.0
+offset_top = -478.0
+offset_right = 808.0
+offset_bottom = 467.0
+grow_vertical = 2
+theme_override_constants/separation = 50
+
+[node name="Label" type="Label" parent="MapEffectContainer"]
+layout_mode = 2
+text = "Gildred's Blessings (Choose One)"
+label_settings = ExtResource("3_igry6")
+horizontal_alignment = 2
+autowrap_mode = 3
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 2
+offset_left = 865.0
+offset_top = 25.0
+offset_right = 1377.0
+offset_bottom = 537.0
+scale = Vector2(2, 2)
+texture = ExtResource("1_6s86w")

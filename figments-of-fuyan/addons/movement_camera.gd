@@ -126,5 +126,5 @@ func _update_mouselook():
 		rotate_y(deg_to_rad(-yaw))
 		rotate_object_local(Vector3(1,0,0), deg_to_rad(-pitch))
 
-func onEnableMovement(state: bool) -> void:
-	disable_movement = !state
+func onDisableMovement(state: bool) -> void:
+	disable_movement = state

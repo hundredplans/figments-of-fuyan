@@ -1,14 +1,13 @@
 @tool
 class_name CardInfo extends GameObjectInfo
 
-const CARD_UI_SCENE_PATH: String = "res://scenes/game/fof/units/ui/card_ui.tscn"
-
+const CARD_UI_SCENE_PATH: String = "res://scenes/game/cards/ui/card_ui.tscn"
 @export_group("Card")
 @export var attack: int
 @export var health: int
 @export var speed: int
 @export var energy: int
-@export var rarity: RARITIES
+@export var rarity: Game.Rarities
 @export_multiline var flavor_text: String
 @export_group("")
 
@@ -30,9 +29,10 @@ const CARD_UI_SCENE_PATH: String = "res://scenes/game/fof/units/ui/card_ui.tscn"
 @export_group("")
 
 @export var abilities: Array[AbilityDatastore]
-@export var base_stats: CardStatDatastore
-@export var height: CardHeightDatastore
-@export var audio: CardAudioDatastore
 
-enum RARITIES {SCRAP, NEUTRAL, COMMON, RARE, EXALT, MINIBOSS, BOSS, CHAMPION}
 static func getInfoPath() -> String: return "res://resources/fof/cards"
+
+static func getFofName() -> String: return "Card"
+
+func getIcon() -> Texture2D:
+	return load("res://assets/sprites/text/icons/block_icon.png")

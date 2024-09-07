@@ -1,6 +1,7 @@
 extends CardGD
 
 #region Constants
+
 const extra_elite_chief_odds: float = 0.03
 #endregion
 

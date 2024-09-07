@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="BoonInfoGD" load_steps=2 format=3 uid="uid://hommkky4kkh3"]
+[gd_resource type="Resource" script_class="ChampionBoonInfo" load_steps=2 format=3 uid="uid://hommkky4kkh3"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/boon_info.gd" id="1_utv7h"]
+[ext_resource type="Script" path="res://scripts/fof_info/boons/champion_boon_info.gd" id="1_5k5bp"]
 
 [resource]
-script = ExtResource("1_utv7h")
+script = ExtResource("1_5k5bp")
+champion_id = 2
+description = "Every 4th unit with an ability charge gains an extra ability charge when AWAKENED"
+RARITY = 0
 id = 2
 name = "Divine Aura"
-description = "Every 4th unit with an ability charge gains an extra ability charge when AWAKENED"
-RARITY = 7

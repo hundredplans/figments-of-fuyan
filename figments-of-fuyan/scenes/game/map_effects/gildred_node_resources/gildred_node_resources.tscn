@@ -1,0 +1,39 @@
+[gd_scene load_steps=12 format=3 uid="uid://b6qtw7omt8f7b"]
+
+[ext_resource type="Script" path="res://scenes/game/map_effects/gildred_node_resources/gildred_node_resources.gd" id="1_wyd4g"]
+[ext_resource type="Script" path="res://scripts/fof_info/map_effects/datastore/map_effect_datastore.gd" id="2_erbxk"]
+[ext_resource type="Script" path="res://scripts/fof_info/map_effects/datastore/gain_fof_object_datastore.gd" id="2_j1uyk"]
+[ext_resource type="Script" path="res://scripts/fof_info/map_effects/datastore/gain_shillings_datastore.gd" id="3_f8b0f"]
+[ext_resource type="Script" path="res://scripts/fof_info/map_effects/datastore/next_shop_type_cheaper_datastore.gd" id="6_nqgwx"]
+[ext_resource type="Script" path="res://scripts/fof_info/map_effects/datastore/map_effect_basic_datastore.gd" id="6_wtdux"]
+
+[sub_resource type="Resource" id="Resource_uubwm"]
+script = ExtResource("2_j1uyk")
+rarity = 3
+type = 0
+randomise = false
+
+[sub_resource type="Resource" id="Resource_234qd"]
+script = ExtResource("3_f8b0f")
+shillings = 15
+randomise = false
+
+[sub_resource type="Resource" id="Resource_r6vqa"]
+script = ExtResource("6_nqgwx")
+cheaper_percentage = 0.5
+type = 0
+randomise = true
+
+[sub_resource type="Resource" id="Resource_rg5o6"]
+script = ExtResource("6_wtdux")
+id = 4
+randomise = false
+
+[sub_resource type="Resource" id="Resource_hl85r"]
+script = ExtResource("6_wtdux")
+id = 5
+randomise = false
+
+[node name="GildredNodeResources" type="Node3D"]
+script = ExtResource("1_wyd4g")
+map_effects = Array[ExtResource("2_erbxk")]([SubResource("Resource_uubwm"), SubResource("Resource_234qd"), SubResource("Resource_r6vqa"), SubResource("Resource_rg5o6"), SubResource("Resource_hl85r")])

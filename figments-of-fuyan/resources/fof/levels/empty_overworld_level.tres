@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="OverworldLevelInfo" load_steps=3 format=3 uid="uid://dh1fhhsfy8n16"]
+
+[ext_resource type="Script" path="res://scripts/fof/levels/overworld_level.gd" id="1_7vk00"]
+[ext_resource type="Script" path="res://scripts/fof_info/levels/overworld_level_info.gd" id="1_25j7f"]
+
+[resource]
+script = ExtResource("1_25j7f")
+area_id = 0
+data = []
+lights = Array[PackedScene]([])
+id = 99999
+name = "EmptyOverworldLevel"
+gdscript = ExtResource("1_7vk00")

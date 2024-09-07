@@ -9,8 +9,8 @@ signal cancel
 @onready var ChampionEpithetLabel: Label = %ChampionEpithetLabel
 @onready var AreaNameLabel: Label = %AreaNameLabel
 @onready var DescriptionContainer: VBoxContainer = %DescriptionContainer
-@onready var ChampionBoonTitleLabel: Label = %ChampionBoonTitleLabel
-@onready var UltimateTitleLabel: Label = %UltimateTitleLabel
+@onready var ChampionBoonTitleLabel: FancyTextLabel = %ChampionBoonTitleLabel
+@onready var UltimateTitleLabel: FancyTextLabel = %UltimateTitleLabel
 @onready var ChampionBoonLabel: Label = %ChampionBoonLabel
 @onready var UltimateLabel: Label = %UltimateLabel
 @onready var FlavorLabel: Label = %FlavorLabel
@@ -31,10 +31,10 @@ func setInfo(Card: CardGD) -> void:
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		DescriptionContainer.add_child(label)
 		
-	ChampionBoonTitleLabel.text = Card.info.boon_info.name
+	ChampionBoonTitleLabel.setText(Card.info.boon_info.getFancyIconText() + ": " + Card.info.boon_info.name)
 	ChampionBoonLabel.text = Card.info.boon_info.description
-	UltimateTitleLabel.text = Card.info.ultimate_datastore.name
-	UltimateLabel.text = Card.info.ultimate_datastore.description
+	UltimateTitleLabel.setText("ULT: " + Card.info.ultimate_name)
+	UltimateLabel.text = Card.info.ultimate_description
 	FlavorLabel.text = "\"" + Card.info.flavor_text + "\" "
 
 func _on_cancel_button_pressed() -> void:

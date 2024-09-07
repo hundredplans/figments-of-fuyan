@@ -1,0 +1,73 @@
+[gd_resource type="Resource" script_class="FancyText" load_steps=20 format=3 uid="uid://c3aw38hh46yj6"]
+
+[ext_resource type="Script" path="res://scripts/common/fancy_text/ability_fancy_text.gd" id="1_tbnr7"]
+[ext_resource type="Script" path="res://scripts/fof_info/boons/boon_info.gd" id="3_bopw1"]
+[ext_resource type="Script" path="res://scripts/common/fancy_text/fof_icon_fancy_text.gd" id="3_r3qjm"]
+[ext_resource type="Script" path="res://scripts/common/fancy_text/fancy_text.gd" id="4_j7rpx"]
+[ext_resource type="Script" path="res://scripts/common/fancy_text/image_fancy_text.gd" id="5_7iob1"]
+[ext_resource type="Texture2D" uid="uid://dudcknuimetns" path="res://assets/sprites/text/icons/health_icon.png" id="5_rsp8r"]
+[ext_resource type="Texture2D" uid="uid://cdytprbjsv0ah" path="res://assets/sprites/text/icons/attack_icon.png" id="6_bfeej"]
+[ext_resource type="Texture2D" uid="uid://c0vlcqcjuo47p" path="res://assets/sprites/text/icons/speed_icon.png" id="7_g6kjq"]
+[ext_resource type="Texture2D" uid="uid://byqpgk7qtluhe" path="res://assets/sprites/ui/shilling.png" id="8_srdud"]
+[ext_resource type="Texture2D" uid="uid://oae0nwgo3lfh" path="res://assets/sprites/text/icons/energy_icon.png" id="9_0faqv"]
+[ext_resource type="Texture2D" uid="uid://chno2lamv2rri" path="res://assets/sprites/ui/ultimate.png" id="10_8hn1a"]
+
+[sub_resource type="Resource" id="Resource_p0dpw"]
+script = ExtResource("1_tbnr7")
+capture = "RAMPAGE"
+capture_numbers = true
+is_bold = true
+color = ""
+
+[sub_resource type="Resource" id="Resource_ppbve"]
+script = ExtResource("3_r3qjm")
+name = "boon"
+fof_type = ExtResource("3_bopw1")
+
+[sub_resource type="Resource" id="Resource_7631x"]
+script = ExtResource("5_7iob1")
+name = "HP"
+tx = ExtResource("5_rsp8r")
+capture_preceding_number_plus = true
+color = "red"
+
+[sub_resource type="Resource" id="Resource_ty3wq"]
+script = ExtResource("5_7iob1")
+name = "ATT"
+tx = ExtResource("6_bfeej")
+capture_preceding_number_plus = true
+color = "orange"
+
+[sub_resource type="Resource" id="Resource_5fvdb"]
+script = ExtResource("5_7iob1")
+name = "SPD"
+tx = ExtResource("7_g6kjq")
+capture_preceding_number_plus = true
+color = "green"
+
+[sub_resource type="Resource" id="Resource_66f0b"]
+script = ExtResource("5_7iob1")
+name = "ENE"
+tx = ExtResource("9_0faqv")
+capture_preceding_number_plus = true
+color = "yellow"
+
+[sub_resource type="Resource" id="Resource_oacu5"]
+script = ExtResource("5_7iob1")
+name = "SH"
+tx = ExtResource("8_srdud")
+capture_preceding_number_plus = true
+color = "silver"
+
+[sub_resource type="Resource" id="Resource_6le3q"]
+script = ExtResource("5_7iob1")
+name = "ULT"
+tx = ExtResource("10_8hn1a")
+capture_preceding_number_plus = false
+color = ""
+
+[resource]
+script = ExtResource("4_j7rpx")
+icons = Array[ExtResource("3_r3qjm")]([SubResource("Resource_ppbve")])
+images = Array[ExtResource("5_7iob1")]([SubResource("Resource_7631x"), SubResource("Resource_ty3wq"), SubResource("Resource_5fvdb"), SubResource("Resource_66f0b"), SubResource("Resource_oacu5"), SubResource("Resource_6le3q")])
+abilities = Array[ExtResource("1_tbnr7")]([SubResource("Resource_p0dpw")])

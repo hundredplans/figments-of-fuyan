@@ -7,13 +7,16 @@ extends Node
 @export var map_ui: PackedScene
 @export var map_world: PackedScene
 
+@export var SHILLING_START_COUNT: int = 10
+
 #region Base Functions
 func _ready():
-	onLoadScreenWorld(map_ui, map_world)
-	
-	var node := Node3D.new()
-	add_child(node)
-	onStartGame(SavedData.onLoadModel(SavedDataCard.new(1), node))
+	if !Helper.admin: onLoadScreenWorld(main_menu_ui, main_menu_world)
+	else:
+		onLoadScreenWorld(map_ui, map_world)
+		var node := Node3D.new()
+		add_child(node)
+		onStartGame(SavedData.onLoadModel(SavedDataCard.new(2), node))
 #endregion
 
 #region Load Screen + World
@@ -42,17 +45,18 @@ func onLoadWorld(packed_scene: PackedScene) -> void:
 	match packed_scene:
 		main_menu_world: ActiveWorld.start.connect(onStartGame)
 	
-func onStartGame(Card: CardGD) -> void:
+func onStartGame(_Card: CardGD) -> void:
 	var scenes: Dictionary = onLoadScreenWorld(map_ui, map_world)
 	var area_id: int = 1
 		
 	var area_info: AreaInfo = Helper.getResourcesRecursiveID(AreaInfo, area_id)
 	var area: AreaGD = SavedData.onLoadModel(SavedDataArea.new(area_id, area_info.overworld_info.id, MapLocation.new(-1, 0, area_id)), scenes.world)
 	
-	var save_file_data := SavedDataSaveFile.new(getFirstEmptySaveSlotID(), randi(), area.onSave())
+	var save_file_data := SavedDataSaveFile.new(getFirstEmptySaveSlotID(), randi(), area.onSave(), SHILLING_START_COUNT)
 	var save_file: SaveFileGD = SavedData.onLoadModel(save_file_data, scenes.world)
 	save_file.area = area
 	
+	var Card: CardGD = SavedData.onLoadModel(SavedDataCard.new(_Card.info.id), scenes.world)
 	scenes.ui.onLoad(save_file)
 	scenes.world.onLoad(save_file, Card)
 	

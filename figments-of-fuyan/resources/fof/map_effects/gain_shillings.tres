@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="MapEffectInfo" load_steps=3 format=3 uid="uid://cqiwb4avmo1to"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/map_effects/map_effect_info.gd" id="1_47ndq"]
+[ext_resource type="Script" path="res://scripts/fof/map_effects/gain_shillings.gd" id="1_ls5xp"]
+
+[resource]
+script = ExtResource("1_47ndq")
+description = "Gain [X] SH"
+id = 2
+name = "GainShillings"
+gdscript = ExtResource("1_ls5xp")

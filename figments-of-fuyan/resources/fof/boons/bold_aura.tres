@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="BoonInfoGD" load_steps=2 format=3 uid="uid://dhiqm4mrd7qpb"]
+[gd_resource type="Resource" script_class="ChampionBoonInfo" load_steps=2 format=3 uid="uid://dhiqm4mrd7qpb"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/boon_info.gd" id="1_bw3gd"]
+[ext_resource type="Script" path="res://scripts/fof_info/boons/champion_boon_info.gd" id="1_3bsiu"]
 
 [resource]
-script = ExtResource("1_bw3gd")
-id = 1
-name = "Bold Aura"
+script = ExtResource("1_3bsiu")
+champion_id = 1
 description = "Your first non-Frederic kill gains [+0/1]"
 RARITY = 7
+id = 1
+name = "Bold Aura"

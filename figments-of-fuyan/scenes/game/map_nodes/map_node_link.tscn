@@ -1,0 +1,16 @@
+[gd_scene load_steps=7 format=3 uid="uid://dgjiv4s0c2ynf"]
+
+[ext_resource type="Script" path="res://scenes/game/map_nodes/map_node_link.gd" id="1_ithsl"]
+[ext_resource type="PackedScene" uid="uid://cjejml4esueol" path="res://scenes/game/map_nodes/map_node_ball.tscn" id="2_8po0c"]
+[ext_resource type="PackedScene" uid="uid://cq3i7v6uy2s6a" path="res://scenes/game/map_nodes/map_node_big_ball.tscn" id="3_xk0jq"]
+[ext_resource type="SphereMesh" uid="uid://dk2jaqcvmoqlk" path="res://resources/game/map/default/map_node_ball_mesh.tres" id="4_ii2ow"]
+[ext_resource type="SphereMesh" uid="uid://cptvj3ih4v268" path="res://resources/game/map/default/map_node_big_ball_mesh.tres" id="5_v3flf"]
+[ext_resource type="SphereMesh" uid="uid://bk85phu5m6ok6" path="res://resources/game/map/default/map_node_massive_mesh.tres" id="6_gpgeb"]
+
+[node name="MapNodeLink" type="Node3D"]
+script = ExtResource("1_ithsl")
+default_ball = ExtResource("2_8po0c")
+big_ball = ExtResource("3_xk0jq")
+default_ball_mesh = ExtResource("4_ii2ow")
+big_ball_mesh = ExtResource("5_v3flf")
+massive_ball_mesh = ExtResource("6_gpgeb")

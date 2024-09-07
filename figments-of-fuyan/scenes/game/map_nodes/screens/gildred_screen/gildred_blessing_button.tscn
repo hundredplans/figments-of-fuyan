@@ -1,0 +1,41 @@
+[gd_scene load_steps=4 format=3 uid="uid://cl7nth5tbap3b"]
+
+[ext_resource type="Script" path="res://scenes/game/map_nodes/screens/gildred_screen/gildred_blessing_button.gd" id="1_ftqpu"]
+[ext_resource type="Resource" uid="uid://cd4sbguneyj71" path="res://resources/ui/fancy_text/fancy_text_label_settings_medium.tres" id="3_0i51h"]
+[ext_resource type="PackedScene" uid="uid://6nf3mir2i2rk" path="res://scenes/common/fancy_text/fancy_text_label.tscn" id="4_fbiuo"]
+
+[node name="GildredBlessingButton" type="Button"]
+custom_minimum_size = Vector2(0, 60)
+offset_right = 21.0
+offset_bottom = 100.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_type_variation = &"WhitePanelContainer"
+script = ExtResource("1_ftqpu")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Control" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Label" parent="VBoxContainer" instance=ExtResource("4_fbiuo")]
+unique_name_in_owner = true
+layout_mode = 2
+settings = ExtResource("3_0i51h")
+
+[node name="Control2" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="MapEffectInfo" load_steps=3 format=3 uid="uid://cymuynr557qmp"]
+
+[ext_resource type="Script" path="res://scripts/fof/map_effects/map_effect.gd" id="1_hefo7"]
+[ext_resource type="Script" path="res://scripts/fof_info/map_effects/map_effect_info.gd" id="1_ym1j5"]
+
+[resource]
+script = ExtResource("1_ym1j5")
+description = "Lose 10 Shillings. Your champion starts with a random Common Tool"
+id = 4
+name = "LoseShillingsChampionGainTool"
+gdscript = ExtResource("1_hefo7")

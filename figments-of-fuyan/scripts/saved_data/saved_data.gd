@@ -17,3 +17,7 @@ static func onLoadModel(data: SavedData, parent: Node3D) -> FofGD:
 	return model
 	
 func getInfoType() -> GDScript: return FofInfo
+static func onSaveGroup(nodes: Array, save_data: Array = []) -> Array:
+	for node in nodes.filter(func(x: FofGD): return x.save):
+		save_data.append(node.onSave())
+	return save_data

@@ -1,5 +1,6 @@
 extends Node
 
+var admin: bool = true
 func getChildrenRecursive(node: Node, children := []) -> Array:
 	children.append(node)
 	for child in node.get_children():
@@ -57,3 +58,12 @@ func getNonConsecutive(arr: Array) -> int:
 			return arr[i - 1].id
 		i += 1
 	return -1
+	
+func getNodeTypeRecursive(parent: Node3D, script_type: Variant):
+	return Helper.getChildrenRecursive(parent).filter(func(x: Node): return is_instance_of(x, script_type))
+
+var replacement_letters: Array = ["X", "Y", "Z"]
+func getDescription(text: String, array: Array) -> String:
+	for i in range(array.size()):
+		text = text.replacen("[" + replacement_letters[i] + "]", str(array[i]))
+	return text

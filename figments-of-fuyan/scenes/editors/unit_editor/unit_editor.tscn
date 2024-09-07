@@ -16,7 +16,7 @@ script = ExtResource("1_yppjx")
 [node name="Heights" type="Node3D" parent="."]
 unique_name_in_owner = true
 
-[node name="StatHeight" type="CSGBox3D" parent="Heights"]
+[node name="Stat" type="CSGBox3D" parent="Heights"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0, 0)
 size = Vector3(0.05, 0.05, 0.05)
 material = ExtResource("2_rxdja")
@@ -24,7 +24,7 @@ script = ExtResource("3_s2cdb")
 default_x = -0.3
 stat = "stat"
 
-[node name="EyeHeight" type="CSGBox3D" parent="Heights"]
+[node name="Eye" type="CSGBox3D" parent="Heights"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0, 0)
 size = Vector3(0.05, 0.05, 0.05)
 material = ExtResource("3_rthp2")
@@ -32,7 +32,7 @@ script = ExtResource("3_s2cdb")
 default_x = 0.3
 stat = "eye"
 
-[node name="TopHeight" type="CSGBox3D" parent="Heights"]
+[node name="Top" type="CSGBox3D" parent="Heights"]
 size = Vector3(0.05, 0.05, 0.05)
 material = ExtResource("4_1x4m4")
 script = ExtResource("3_s2cdb")

@@ -4,6 +4,10 @@ class_name CardGD extends GameObjectGD
 var team: int
 #endregion
 
+#region Globals
+const DEFAULT_ANIMATION_BLEND_TIME: float = 0.2
+#endregion
+
 #region Signals
 signal mouse_entered
 signal mouse_exited
@@ -35,14 +39,17 @@ func getArea() -> AreaInfo:
 	return null
 	
 func getStatHeightPosition() -> Vector3:
-	return Vector3(position.x, info.height.stat_height, position.z)
+	return Vector3(position.x, info.stat, position.z)
 #endregion
 
 #region Animation
 
 func setAniPlayer() -> void:
 	for child in Helper.getChildrenRecursive(self):
-		if child is AnimationPlayer: AniPlayer = child; return
+		if child is AnimationPlayer:
+			AniPlayer = child
+			AniPlayer.playback_default_blend_time = DEFAULT_ANIMATION_BLEND_TIME
+			return
 
 var AniPlayer: AnimationPlayer
 func onIdle() -> void:
@@ -81,3 +88,19 @@ func onCreateModel() -> void:
 	setDefaultCollisionLayers()
 	setAniPlayer()
 #endregion
+
+#region Walk
+func onWalkTo(pos: Vector3, walk_speed: float) -> void:
+	AniPlayer.play("Walk")
+	var tween := get_tree().create_tween()
+	tween.tween_property(self, "position", pos, walk_speed)
+	await tween.finished
+	onIdle()
+	
+#endregion
+
+#region look at
+func onLookAtObjectOnlyY(node: Node) -> void:
+	var old_rotation: Vector3 = rotation
+	look_at(node.position, Vector3(0, 1, 0), true)
+	rotation = Vector3(old_rotation.x, rotation.y, old_rotation.z)

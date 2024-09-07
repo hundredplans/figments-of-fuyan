@@ -28,9 +28,8 @@ func _ready() -> void:
 			ColShapeHolder.add_child(col_shape)
 			col_shape.owner = self
 		
-		if card.info.height == null: card.info.height = CardHeightDatastore.new()
 		for box in Heights.get_children():
-			box.position.y = card.info.height[box.stat]
+			box.position.y = card.info[box.stat]
 			box.position.x = box.default_x
 		
 		if card.info is ChampionCardInfo:
@@ -55,7 +54,7 @@ func onUnitChanged(_card_info: CardInfo) -> void:
 		Camera.position = Vector3.ZERO
 		Camera.rotation_degrees = Vector3.ZERO
 		for box in Heights.get_children():
-			if box.position.y > 0: card_info.height[box.stat] = box.position.y
+			if box.position.y > 0: card_info[box.stat] = box.position.y
 			box.position.y = 0
 			box.position.x = box.default_x
 			

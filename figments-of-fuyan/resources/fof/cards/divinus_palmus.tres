@@ -1,32 +1,22 @@
-[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=17 format=3 uid="uid://bcetk1atul6wp"]
+[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=11 format=3 uid="uid://bcetk1atul6wp"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/ability_datastore.gd" id="1_ugo1s"]
 [ext_resource type="Resource" uid="uid://hommkky4kkh3" path="res://resources/fof/boons/divine_aura.tres" id="2_4ivuh"]
 [ext_resource type="Script" path="res://scripts/fof/cards/divinus_palmus.gd" id="2_7n28t"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/champion_card_info.gd" id="2_qu6p4"]
 [ext_resource type="Image" uid="uid://crmdn6pdw7trc" path="res://assets/sprites/game/cards/art_pop/divinus_palmus.png" id="2_rqcgn"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_stat_datastore.gd" id="3_75pj4"]
 [ext_resource type="PackedScene" uid="uid://w83kn76qjgqx" path="res://assets/models/fof/cards/divinus_palmus.glb" id="3_pmwws"]
 [ext_resource type="Script" path="res://scripts/common/data_structures/pos_rot.gd" id="3_yh5yn"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_height_datastore.gd" id="7_658ft"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/ultimate_datastore.gd" id="7_ud4r7"]
 
-[sub_resource type="Resource" id="Resource_fjf63"]
-script = ExtResource("3_75pj4")
-attack = 1
-health = 3
-speed = 2
-energy = 2
-
-[sub_resource type="Resource" id="Resource_chbuq"]
+[sub_resource type="Resource" id="Resource_pys33"]
 script = ExtResource("3_yh5yn")
 pos = Vector3(0.776389, 1.84813, 0.963616)
-rot = Vector3(-7.63718, 22.5327, -3.15596)
+rot = Vector3(-7.63717, 22.5327, -3.15596)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_80h08"]
 size = Vector3(0.527344, 2.00391, 0.309814)
 
-[sub_resource type="PackedScene" id="PackedScene_msk70"]
+[sub_resource type="PackedScene" id="PackedScene_m6d60"]
 _bundled = {
 "conn_count": 0,
 "conns": PackedInt32Array(),
@@ -39,43 +29,31 @@ _bundled = {
 "version": 3
 }
 
-[sub_resource type="Resource" id="Resource_ruktp"]
-script = ExtResource("7_658ft")
-top = 2.01255
-stat = 2.267
-eye = 1.84136
-
-[sub_resource type="Resource" id="Resource_yl2pa"]
-script = ExtResource("7_ud4r7")
-name = "Divine Reward"
-description = "[0/10]: Heal [2] HP and give INVULNERABLE for [1] Turn to allies in vision. Heal allies to gain [1] point, [2] if they were healed previously"
-
 [resource]
 script = ExtResource("2_qu6p4")
 description = Array[String](["Can temporarily buff units at campfires", "More likely to get boons from card rewards", "Weakens if diverged from the Holy Path"])
 associated_color = Color(0.890196, 0.890196, 0.792157, 1)
-unique_nodes_id = Array[int]([12])
 epithet = "The Devout"
-ultimate_datastore = SubResource("Resource_yl2pa")
+champion_select_posrot = SubResource("Resource_pys33")
+unique_nodes_id = Array[int]([12])
+ultimate_name = "Divine Reward"
+ultimate_description = "[0/10]: Heal [2] HP and give INVULNERABLE for [1] Turn to allies in vision. Heal allies to gain [1] point, [2] if they were healed previously"
 boon_info = ExtResource("2_4ivuh")
-champion_select_posrot = SubResource("Resource_chbuq")
 attack = 1
 health = 3
 speed = 2
 energy = 2
-rarity = 7
+rarity = 8
 flavor_text = "His beleaf can't be questioned"
 art_mini_coordinate = Vector2i(0, 0)
 art_pop = ExtResource("2_rqcgn")
 model = ExtResource("3_pmwws")
 points = []
-collision_shape = SubResource("PackedScene_msk70")
-stat = 2.0
-top = 2.0
-eye = 2.0
+collision_shape = SubResource("PackedScene_m6d60")
+stat = 2.013
+top = 2.267
+eye = 1.841
 abilities = Array[ExtResource("1_ugo1s")]([])
-base_stats = SubResource("Resource_fjf63")
-height = SubResource("Resource_ruktp")
 id = 2
 name = "Divinus Palmus"
 gdscript = ExtResource("2_7n28t")
