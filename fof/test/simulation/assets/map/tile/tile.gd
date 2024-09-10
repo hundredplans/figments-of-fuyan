@@ -126,4 +126,3 @@ func _on_simulation_inside_pressed(tile_info: Array):
 func _on_area_2d_mouse_exited():
 	allow_change = false
 	allow_change_anywhere = false
-
