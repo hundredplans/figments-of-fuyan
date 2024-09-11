@@ -1,9 +1,9 @@
-extends Node
+class_name Random
 
-func setSeed(_my_seed: int) -> void:
+static func setSeed(_my_seed: int) -> void:
 	seed(1)
 
-func getRandomKey(odds: Dictionary) -> String:
+static func getRandomKey(odds: Dictionary) -> String:
 	var roll: float = randf()
 	var total: float = 0
 	for key in odds:
@@ -11,8 +11,8 @@ func getRandomKey(odds: Dictionary) -> String:
 		total += odds[key]
 	return odds[odds.size() - 1]
 
-func getBool() -> bool:
+static func getBool() -> bool:
 	return randf() > 0.5
 
-func rollFloat(x: float) -> bool:
+static func rollFloat(x: float) -> bool:
 	return x > randf()

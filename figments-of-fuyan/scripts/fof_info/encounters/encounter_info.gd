@@ -1,4 +1,3 @@
-@tool
 class_name EncounterInfo extends FofInfo
 
 @export var branch: BranchDatastore

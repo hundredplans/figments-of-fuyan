@@ -1,4 +1,3 @@
-@tool
 class_name CardInfo extends GameObjectInfo
 
 const CARD_UI_SCENE_PATH: String = "res://scenes/game/cards/ui/card_ui.tscn"
@@ -13,6 +12,7 @@ const CARD_UI_SCENE_PATH: String = "res://scenes/game/cards/ui/card_ui.tscn"
 
 @export_group("Art")
 @export var art_mini_coordinate: Vector2i
+@export var art_mini: Image
 @export var art_pop: Image
 @export_group("")
 
@@ -34,5 +34,5 @@ static func getInfoPath() -> String: return "res://resources/fof/cards"
 
 static func getFofName() -> String: return "Card"
 
-func getIcon() -> Texture2D:
-	return load("res://assets/sprites/text/icons/block_icon.png")
+func getArtMini() -> ImageTexture: return ImageTexture.create_from_image(art_mini)
+func getArtPop() -> ImageTexture: return ImageTexture.create_from_image(art_pop)

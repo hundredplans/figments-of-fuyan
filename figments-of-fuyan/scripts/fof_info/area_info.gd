@@ -1,11 +1,11 @@
-@tool
 class_name AreaInfo extends FofInfo
 
 @export var world: WorldDatastore
 @export var card_background: Image
-@export var cards: Array[CardInfo]
+@export var card_ids: Array[int]
 @export var overworld_info: OverworldLevelInfo
 @export var base_environment: Environment
 @export var late_environment: Environment
+@export var level_script: GDScript
 
 static func getInfoPath() -> String: return "res://resources/fof/areas"

@@ -2,6 +2,7 @@ class_name CameraItem extends Resource
 
 @export var name: String
 @export var type: TYPES
+@export var menu: PackedScene
 
 enum TYPES {NULL, MAIN_MENU, PLAY_TABLE}
 

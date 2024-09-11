@@ -12,6 +12,7 @@ extends Node3D
 signal champion_pressed
 signal travel
 signal start
+signal create_ui
 
 var UI: Control
 @onready var env: WorldEnvironment = %WorldEnvironment
@@ -57,8 +58,11 @@ func onAnimationFinished(__: String) -> void:
 		
 func onMeshChosen(camera_item: CameraItem) -> void:
 	if active_travel_info == null:
-		active_travel_info = CameraTravelDatastore.new(active_camera_item, camera_item, onAnimationTravel)
-		active_travel_info.travel_callable.call()
+		if camera_item.menu != null:
+			create_ui.emit(camera_item.menu)
+		else:
+			active_travel_info = CameraTravelDatastore.new(active_camera_item, camera_item, onAnimationTravel)
+			active_travel_info.travel_callable.call()
 #endregion
 		
 #region Back

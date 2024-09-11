@@ -27,9 +27,11 @@ func _on_destroy_pressed():
 
 func _on_drag_zone_mouse_entered():
 	can_drag = true
+	print("ENTERED")
 
 func _on_drag_zone_mouse_exited():
 	can_drag = false
+	print("EXITED")
 	
 func _process(_delta: float) -> void:
 	if can_hold and (can_drag or held):

@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=11 format=3 uid="uid://dpe6trp7rxeps"]
+[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=12 format=3 uid="uid://dpe6trp7rxeps"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/ability_datastore.gd" id="1_guukj"]
+[ext_resource type="Image" uid="uid://bxkodabddetvr" path="res://assets/sprites/game/cards/art_mini/quickdraw_quentin.png" id="2_8x7e6"]
 [ext_resource type="Image" uid="uid://dx8teuokadlmc" path="res://assets/sprites/game/cards/art_pop/quickdraw_quentin.png" id="2_jemvb"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/champion_card_info.gd" id="2_s60fl"]
 [ext_resource type="Resource" uid="uid://c427cbie2arvi" path="res://resources/fof/boons/agile_aura.tres" id="2_udvb6"]
@@ -8,7 +9,7 @@
 [ext_resource type="Script" path="res://scripts/common/data_structures/pos_rot.gd" id="3_wy00w"]
 [ext_resource type="PackedScene" uid="uid://bxdixxrf3f7aa" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_bf1vc"]
 
-[sub_resource type="Resource" id="Resource_pc3iu"]
+[sub_resource type="Resource" id="Resource_7gysq"]
 script = ExtResource("3_wy00w")
 pos = Vector3(0.682366, 1.7369, 1.28953)
 rot = Vector3(-10.3107, 17.017, -3.1355)
@@ -16,7 +17,7 @@ rot = Vector3(-10.3107, 17.017, -3.1355)
 [sub_resource type="BoxShape3D" id="BoxShape3D_ru2ex"]
 size = Vector3(0.611084, 1.88574, 0.241943)
 
-[sub_resource type="PackedScene" id="PackedScene_vaaqk"]
+[sub_resource type="PackedScene" id="PackedScene_131pw"]
 _bundled = {
 "conn_count": 0,
 "conns": PackedInt32Array(),
@@ -34,7 +35,7 @@ script = ExtResource("2_s60fl")
 description = Array[String](["Carries bullets across fights", "Has to pay a higher price at shops", "Enjoys duelling fights for gold and power"])
 associated_color = Color(1, 0.380392, 0, 1)
 epithet = "The Duelist"
-champion_select_posrot = SubResource("Resource_pc3iu")
+champion_select_posrot = SubResource("Resource_7gysq")
 unique_nodes_id = Array[int]([11])
 ultimate_name = "Killer's Eye"
 ultimate_description = "[0/7]: REVEAL [3] random enemies and enemies with no allies in vision for [3] Turns. Gain [1] point per RAMPAGE, [3] for a DUEL kill"
@@ -45,13 +46,14 @@ speed = 2
 energy = 2
 rarity = 8
 flavor_text = "BOOM. Headshot"
-art_mini_coordinate = Vector2i(0, 0)
+art_mini_coordinate = Vector2i(80, 50)
+art_mini = ExtResource("2_8x7e6")
 art_pop = ExtResource("2_jemvb")
 model = ExtResource("5_bf1vc")
 points = []
-collision_shape = SubResource("PackedScene_vaaqk")
-stat = 1.848
-top = 2.013
+collision_shape = SubResource("PackedScene_131pw")
+stat = 2.01124
+top = 1.86689
 eye = 1.642
 abilities = Array[ExtResource("1_guukj")]([])
 id = 3

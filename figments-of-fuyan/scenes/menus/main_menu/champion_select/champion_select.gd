@@ -13,7 +13,7 @@ signal champion_pressed
 #region Base Functions
 func _ready() -> void:
 	position = starter_position
-	var champions: Array = Helper.getResourcesRecursive(ChampionCardInfo)
+	var champions: Array = Helper.getFofInfoArray(ChampionCardInfo)
 	@warning_ignore("narrowing_conversion")
 	var theta: int = 162
 	for i in range(20):

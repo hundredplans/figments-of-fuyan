@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://jbo36kl5xxtf"]
+[gd_scene load_steps=25 format=3 uid="uid://jbo36kl5xxtf"]
 
 [ext_resource type="PackedScene" uid="uid://cu3rvdx6pd1i1" path="res://assets/models/environment/main_menu_environment.glb" id="1_tncwr"]
 [ext_resource type="Script" path="res://scenes/menus/main_menu/main_menu_environment.gd" id="2_jkan1"]
@@ -10,6 +10,8 @@
 [ext_resource type="Material" uid="uid://dv2au1sg8a0hx" path="res://resources/materials/game/base_material_outline_thin/material/yellow_outline.tres" id="8_j0mei"]
 [ext_resource type="Material" uid="uid://bx7tnlcuc7gtp" path="res://resources/materials/game/base_material_outline_thin/material/green_outline.tres" id="9_s5t8w"]
 [ext_resource type="Script" path="res://scripts/menus/main_menu/camera_item.gd" id="10_juh0t"]
+[ext_resource type="PackedScene" uid="uid://dleioqgg331i7" path="res://scenes/menus/main_menu/load_menu/load_menu.tscn" id="11_431ym"]
+[ext_resource type="PackedScene" uid="uid://hkr4msbct4fb" path="res://scenes/menus/main_menu/continue_menu/continue_menu.tscn" id="11_dkyf2"]
 
 [sub_resource type="Resource" id="Resource_vqdwt"]
 script = ExtResource("3_ypvax")
@@ -65,11 +67,13 @@ type = 2
 script = ExtResource("10_juh0t")
 name = "LoadGame"
 type = 2
+menu = ExtResource("11_431ym")
 
 [sub_resource type="Resource" id="Resource_3nue2"]
 script = ExtResource("10_juh0t")
 name = "Continue"
 type = 2
+menu = ExtResource("11_dkyf2")
 
 [node name="main_menu_environment" instance=ExtResource("1_tncwr")]
 script = ExtResource("2_jkan1")

@@ -11,4 +11,7 @@ func onLoadData(data: SavedData) -> void:
 	super(data)
 	for tile_object_data in info.data:
 		SavedData.onLoadModel(tile_object_data, self)
+		
+	for light in info.lights:
+		add_child(light.instantiate())
 	add_to_group("LevelsGD")

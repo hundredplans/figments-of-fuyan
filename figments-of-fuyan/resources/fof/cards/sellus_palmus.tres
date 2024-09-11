@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="CardInfo" load_steps=9 format=3 uid="uid://bsjdkploqaje5"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/ability_datastore.gd" id="1_k4gll"]
+[ext_resource type="Image" uid="uid://dwaxgobdb2kxy" path="res://assets/sprites/game/cards/art_pop/sellus_palmus.png" id="2_3b8rb"]
+[ext_resource type="Image" uid="uid://csv1wpnctbpvq" path="res://assets/sprites/game/cards/art_mini/sellus_palmus.png" id="2_6vb1n"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="2_8byqm"]
+[ext_resource type="PackedScene" uid="uid://xgamssjyk4yp" path="res://assets/models/fof/cards/sellus_palmus.glb" id="3_aih6y"]
+[ext_resource type="Script" path="res://scripts/fof/cards/sellus_palmus.gd" id="3_av7uo"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_njt8i"]
+size = Vector3(0.732422, 1.78247, 0.238831)
+
+[sub_resource type="PackedScene" id="PackedScene_aylse"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0146484, 0.890503, 0.0167542), SubResource("BoxShape3D_njt8i")],
+"version": 3
+}
+
+[resource]
+script = ExtResource("2_8byqm")
+attack = 2
+health = 2
+speed = 2
+energy = 2
+rarity = 3
+flavor_text = ""
+art_mini_coordinate = Vector2i(80, 30)
+art_mini = ExtResource("2_6vb1n")
+art_pop = ExtResource("2_3b8rb")
+model = ExtResource("3_aih6y")
+points = []
+collision_shape = SubResource("PackedScene_aylse")
+stat = 2.11207
+top = 1.78806
+eye = 1.51064
+abilities = Array[ExtResource("1_k4gll")]([])
+id = 7
+name = "Sellus Palmus"
+gdscript = ExtResource("3_av7uo")

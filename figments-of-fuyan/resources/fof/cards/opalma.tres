@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="CardInfo" load_steps=9 format=3 uid="uid://clsku6huprg3a"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/ability_datastore.gd" id="1_tkinr"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="2_6qwcd"]
+[ext_resource type="Image" uid="uid://cgsw5wofpuh4" path="res://assets/sprites/game/cards/art_mini/opalma.png" id="2_aepkj"]
+[ext_resource type="Script" path="res://scripts/fof/cards/opalma.gd" id="2_jvah2"]
+[ext_resource type="Image" uid="uid://bdo5p78id4v7b" path="res://assets/sprites/game/cards/art_pop/opalma.png" id="2_xx7ca"]
+[ext_resource type="PackedScene" uid="uid://bcp2omtkk3vf1" path="res://assets/models/fof/cards/opalma.glb" id="4_8gm72"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vb8c6"]
+size = Vector3(0.830505, 1.57715, 0.225403)
+
+[sub_resource type="PackedScene" id="PackedScene_6tqby"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00317383, 0.787659, 0.00288746), SubResource("BoxShape3D_vb8c6")],
+"version": 3
+}
+
+[resource]
+script = ExtResource("2_6qwcd")
+attack = 2
+health = 1
+speed = 3
+energy = 2
+rarity = 3
+flavor_text = ""
+art_mini_coordinate = Vector2i(80, 30)
+art_mini = ExtResource("2_aepkj")
+art_pop = ExtResource("2_xx7ca")
+model = ExtResource("4_8gm72")
+points = []
+collision_shape = SubResource("PackedScene_6tqby")
+stat = 1.9411
+top = 1.57202
+eye = 1.36063
+abilities = Array[ExtResource("1_tkinr")]([])
+id = 6
+name = "Opalma"
+gdscript = ExtResource("2_jvah2")

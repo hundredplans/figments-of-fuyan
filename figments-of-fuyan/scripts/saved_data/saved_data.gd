@@ -7,7 +7,7 @@ func _init(_id: int = 0) -> void:
 
 static func onLoadModel(data: SavedData, parent: Node3D) -> FofGD:
 	var model := FofGD.new()
-	var info: FofInfo = Helper.getResourcesRecursiveID(data.getInfoType(), data.id)
+	var info: FofInfo = Helper.getFofInfoID(data.getInfoType(), data.id)
 	
 	model.script = info.gdscript
 	model.info = info
@@ -18,6 +18,6 @@ static func onLoadModel(data: SavedData, parent: Node3D) -> FofGD:
 	
 func getInfoType() -> GDScript: return FofInfo
 static func onSaveGroup(nodes: Array, save_data: Array = []) -> Array:
-	for node in nodes.filter(func(x: FofGD): return x.save):
+	for node in nodes.filter(func(x: FofGD): return x.groupsave):
 		save_data.append(node.onSave())
 	return save_data

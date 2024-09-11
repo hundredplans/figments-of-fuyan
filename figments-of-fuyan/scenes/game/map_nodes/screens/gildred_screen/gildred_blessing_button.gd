@@ -1,5 +1,6 @@
 extends Button
 
+@warning_ignore("unused_signal")
 signal custom_pressed
 @onready var label: FancyTextLabel = %Label
 

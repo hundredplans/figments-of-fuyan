@@ -61,7 +61,7 @@ func onMapNodeSelected(map_node: MapNodeGD, WALK_OVERWORLD_SPEED: float, is_init
 	var spotlight_destination := map_node.position
 	spotlight_destination.y += UNIT_SPOTLIGHT_UP_OFFSET
 	if is_initial_load_select:
-		if Helper.admin: Camera.position = getMapNodeDestination(map_node) + CAMERA_OFFSET
+		if Helper.getAdmin(): Camera.position = getMapNodeDestination(map_node) + CAMERA_OFFSET
 		UnitSpotlight.position = spotlight_destination
 		MapCard.position = map_node.position
 		return
@@ -99,7 +99,7 @@ func onMapNodeFinished(_map_node: MapNodeGD) -> void:
 @export var MAP_START_TRAVEL_TIME: float = 7
 var is_map_starting: bool
 func onMapStartAnimation() -> void:
-	if !Helper.admin:
+	if !Helper.getAdmin():
 		is_map_starting = true
 		onUpdateActionLock()
 		

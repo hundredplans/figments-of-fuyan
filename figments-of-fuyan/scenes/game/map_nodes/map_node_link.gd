@@ -15,11 +15,12 @@ extends Node3D
 @export var massive_ball_mesh_holy: Mesh
 @export_group("")
 
-@export var BALL_COUNT: int = 5
 @export var BALL_Y: float = 1
 var vector: Vector3
 var is_holy: bool
 var is_selected: bool
+
+const PROGRESS_VALUES: Array = [0.2, 0.375, 0.5, 0.625, 0.8]
 
 func setInfo(_vector: Vector3, _is_holy: bool) -> void:
 	vector = _vector
@@ -30,11 +31,11 @@ func setInfo(_vector: Vector3, _is_holy: bool) -> void:
 var BigBall: MapNodeBall
 func onCreateBalls() -> void:
 	var progress: float = 0
-	for i in range(BALL_COUNT):
-		progress += 1.0 / float((BALL_COUNT + 1))
+	for i in range(PROGRESS_VALUES.size()):
+		progress = PROGRESS_VALUES[i]
 		
 		var mesh_node: Node3D
-		if i == floor(BALL_COUNT / 2.0):
+		if i == 2:
 			mesh_node = big_ball.instantiate()
 			mesh_node.setInfo(BigBall.BALL_TYPE.BIG)
 			

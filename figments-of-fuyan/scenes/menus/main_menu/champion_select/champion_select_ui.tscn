@@ -1,11 +1,13 @@
-[gd_scene load_steps=8 format=3 uid="uid://cbt3ofougwb5l"]
+[gd_scene load_steps=10 format=3 uid="uid://cbt3ofougwb5l"]
 
 [ext_resource type="Script" path="res://scenes/menus/main_menu/champion_select/champion_select_ui.gd" id="1_5whd0"]
 [ext_resource type="LabelSettings" uid="uid://dag33u8xdxeu0" path="res://resources/ui/label_settings/jacquard_medium.tres" id="2_i4cch"]
 [ext_resource type="PackedScene" uid="uid://cqwfvh83nko7x" path="res://scenes/game/cards/ui/card_ui.tscn" id="5_2ty5s"]
 [ext_resource type="Script" path="res://scenes/common/fancy_text/fancy_text_label.gd" id="5_mufjb"]
+[ext_resource type="PackedScene" uid="uid://2figxxms5ybp" path="res://scenes/common/hide_button/hide_button.tscn" id="5_rpxwj"]
 [ext_resource type="LabelSettings" uid="uid://dbh1brjnbxe8c" path="res://resources/ui/label_settings/roboto_large.tres" id="6_3y22e"]
 [ext_resource type="Resource" uid="uid://cd4sbguneyj71" path="res://resources/ui/fancy_text/fancy_text_label_settings_medium.tres" id="6_40ra6"]
+[ext_resource type="PackedScene" uid="uid://6nf3mir2i2rk" path="res://scenes/common/fancy_text/fancy_text_label.tscn" id="7_ll1ak"]
 [ext_resource type="LabelSettings" uid="uid://yueau3nak32p" path="res://resources/ui/label_settings/roboto_small.tres" id="8_bx5yu"]
 
 [node name="ChampionSelectUI" type="VBoxContainer"]
@@ -125,6 +127,11 @@ autowrap_mode = 3
 [node name="MiddleMiddleBar" type="HBoxContainer" parent="."]
 layout_mode = 2
 
+[node name="HideButton" parent="MiddleMiddleBar" node_paths=PackedStringArray("hide_node") instance=ExtResource("5_rpxwj")]
+layout_mode = 2
+start_state = false
+hide_node = NodePath("../../LowerMiddleBar/PanelContainer")
+
 [node name="PanelContainer" type="PanelContainer" parent="MiddleMiddleBar"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -137,6 +144,11 @@ bbcode_enabled = true
 fit_content = true
 script = ExtResource("5_mufjb")
 settings = ExtResource("6_40ra6")
+
+[node name="HideButton2" parent="MiddleMiddleBar" node_paths=PackedStringArray("hide_node") instance=ExtResource("5_rpxwj")]
+layout_mode = 2
+start_state = false
+hide_node = NodePath("../../LowerMiddleBar/PanelContainer2")
 
 [node name="PanelContainer2" type="PanelContainer" parent="MiddleMiddleBar"]
 layout_mode = 2
@@ -153,20 +165,15 @@ settings = ExtResource("6_40ra6")
 
 [node name="LowerMiddleBar" type="HBoxContainer" parent="."]
 layout_mode = 2
-size_flags_vertical = 3
 
 [node name="PanelContainer" type="PanelContainer" parent="LowerMiddleBar"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"PurplePanelContainer"
 
-[node name="ChampionBoonLabel" type="Label" parent="LowerMiddleBar/PanelContainer"]
+[node name="ChampionBoonLabel" parent="LowerMiddleBar/PanelContainer" instance=ExtResource("7_ll1ak")]
 unique_name_in_owner = true
 layout_mode = 2
-text = "You first non-Frederic kill gains [+0/1]"
-label_settings = ExtResource("8_bx5yu")
-horizontal_alignment = 1
-autowrap_mode = 3
 
 [node name="PanelContainer2" type="PanelContainer" parent="LowerMiddleBar"]
 layout_mode = 2

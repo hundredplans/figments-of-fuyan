@@ -1,22 +1,23 @@
-[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=11 format=3 uid="uid://dlwf2r78qfyiy"]
+[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=12 format=3 uid="uid://dlwf2r78qfyiy"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/ability_datastore.gd" id="1_hmy8x"]
 [ext_resource type="Image" uid="uid://b86c6f1uyjyd6" path="res://assets/sprites/game/cards/art_pop/frederic_the_fearless.png" id="2_d16dl"]
+[ext_resource type="Image" uid="uid://cqe3wqg1v4gc" path="res://assets/sprites/game/cards/art_mini/frederic_the_fearless.png" id="2_jnghr"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/champion_card_info.gd" id="2_y17s3"]
 [ext_resource type="Resource" uid="uid://dhiqm4mrd7qpb" path="res://resources/fof/boons/bold_aura.tres" id="4_f5cwk"]
 [ext_resource type="Script" path="res://scripts/common/data_structures/pos_rot.gd" id="5_j2m8k"]
 [ext_resource type="Script" path="res://scripts/fof/cards/frederic_the_fearless.gd" id="5_jvipk"]
 [ext_resource type="PackedScene" uid="uid://bd2esqpmo73tk" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_ks7mj"]
 
-[sub_resource type="Resource" id="Resource_bxtvo"]
+[sub_resource type="Resource" id="Resource_kddgi"]
 script = ExtResource("5_j2m8k")
 pos = Vector3(0.8, 1.6, 0.8)
-rot = Vector3(-8.11719e-06, 30, -20)
+rot = Vector3(-7.84584e-06, 30, -20)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
 size = Vector3(0.663147, 1.94543, 0.526978)
 
-[sub_resource type="PackedScene" id="PackedScene_gj4ku"]
+[sub_resource type="PackedScene" id="PackedScene_d6dgo"]
 _bundled = {
 "conn_count": 0,
 "conns": PackedInt32Array(),
@@ -34,7 +35,7 @@ script = ExtResource("2_y17s3")
 description = Array[String](["Regular and enhanced fights are more common", "Gets stronger the more fights he triumphs over"])
 associated_color = Color(1, 0, 0, 1)
 epithet = "The Brute"
-champion_select_posrot = SubResource("Resource_bxtvo")
+champion_select_posrot = SubResource("Resource_kddgi")
 unique_nodes_id = Array[int]([])
 ultimate_name = "Ogre Mode"
 ultimate_description = "[0/4]: Heal to full HP and cleanse any negative effects. RAMPAGE to gain [1] point"
@@ -45,11 +46,12 @@ speed = 2
 energy = 2
 rarity = 8
 flavor_text = "A thug on the streets, a monster in the sheets"
-art_mini_coordinate = Vector2i(0, 0)
+art_mini_coordinate = Vector2i(60, 0)
+art_mini = ExtResource("2_jnghr")
 art_pop = ExtResource("2_d16dl")
 model = ExtResource("5_ks7mj")
 points = []
-collision_shape = SubResource("PackedScene_gj4ku")
+collision_shape = SubResource("PackedScene_d6dgo")
 stat = 1.947
 top = 2.058
 eye = 1.788

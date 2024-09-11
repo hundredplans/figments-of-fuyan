@@ -1,1 +1,1 @@
-extends MapNodeGD
+class_name EliteChiefFightNodeGD extends ChiefFightNodeGD

@@ -1,4 +1,3 @@
-@tool
 class_name BaseTileInfo extends TileInfo
 
 @export var overworld_tile: PackedScene

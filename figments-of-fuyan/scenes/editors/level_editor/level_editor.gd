@@ -63,7 +63,7 @@ func _notification(what):
 
 func _ready() -> void:
 	setBaseElevation(0)
-	all_tile_objects = Helper.getResourcesRecursive(TileObjectInfo)
+	all_tile_objects = Helper.getFofInfoArray(TileObjectInfo)
 	setAreaOptionButtonItems()
 	onNewEmptyLevel()
 	
@@ -365,7 +365,7 @@ func _on_load_button_pressed():
 		SearchTileObject.text = ""
 		SearchTileObject.text_changed.emit("")
 		onHoverModelDeselected()
-		var levels: Array = Helper.getResourcesRecursive(LevelInfo)
+		var levels: Array = Helper.getFofInfoArray(LevelInfo)
 		for level_info in levels:
 			var button := Button.new()
 			button.alignment = HORIZONTAL_ALIGNMENT_LEFT
@@ -394,9 +394,9 @@ func onMouseInUI(state: bool) -> void:
 
 #region Area Option Button
 func setAreaOptionButtonItems() -> void:
-	for area_info in Helper.getResourcesRecursive(AreaInfo):
+	for area_info in Helper.getFofInfoArray(AreaInfo):
 		AreaOptionButton.add_item(area_info.name, area_info.id)
-	AreaOptionButton.select(2)
+	AreaOptionButton.select(0)
 	
 #endregion
 
@@ -417,13 +417,12 @@ func onNewEmptyLevel() -> void:
 		
 	if is_overworld:
 		loaded_level = OverworldLevelInfo.new()
-		var OVERWORLD_MAP_SIZE: int = 26
-		var Y_MAX: int = 7
+		var OVERWORLD_MAP_SIZE: int = 27
+		var Y_MAX: int = 9
 		for x in range(-OVERWORLD_MAP_SIZE, (OVERWORLD_MAP_SIZE + 1)):
 			for y in range(max(-OVERWORLD_MAP_SIZE, -x - OVERWORLD_MAP_SIZE), min(OVERWORLD_MAP_SIZE, -x + OVERWORLD_MAP_SIZE) + 1):
 				if abs(y) <= Y_MAX: onPlaceBaseTile(Vector4i(x, y, -x-y, 0))
 		return
-		
 		
 	loaded_level = AREA_TO_LEVEL_INFO[AreaOptionButton.get_selected_id()].new()
 	for x in range(-DEFAULT_LEVEL_SIZE, (DEFAULT_LEVEL_SIZE + 1)):
@@ -475,7 +474,7 @@ func _on_area_option_button_item_selected(_index: int) -> void:
 	onNewEmptyLevel()
 	
 func onFindLevelByName(level_name: String) -> LevelInfo:
-	for level in Helper.getResourcesRecursive(LevelInfo):
+	for level in Helper.getFofInfoArray(LevelInfo):
 		if level.name == level_name: return level
 	return null
 #region 

@@ -1,6 +1,7 @@
 class_name AreaGD extends FofGD
 
 #region Global
+signal map_node_hovered
 signal map_node_selected
 signal map_nodes_loaded
 signal map_node_entered
@@ -8,10 +9,14 @@ signal map_node_finished
 var map_location_to_node: Dictionary
 var map_location: MapLocation
 var overworld_level: OverworldLevelGD
-
+var card_ids: Array = []
 #endregion
 
 #region Helper
+
+func getWorld() -> int:
+	return info.world.world
+
 func onFindMapLocation(progress: int, lane: int) -> MapLocation:
 	for _map_location in map_location_to_node:
 		if _map_location.progress == progress and _map_location.lane == lane: return _map_location
@@ -29,11 +34,13 @@ func onSave() -> SavedDataArea:
 	
 func onLoadData(data: SavedData) -> void:
 	super(data)
+	card_ids = info.card_ids.filter(func(x: int): \
+	return Game.isBasicRarity(Helper.getFofInfoID(CardInfo, x).rarity))
 	map_location = data.map_location
 	
 	var overworld_level_id: int
-	if !Helper.admin: overworld_level_id = data.overworld_level_id
-	else: overworld_level_id = 99999
+	if !Helper.getAdmin(): overworld_level_id = data.overworld_level_id
+	else: overworld_level_id = 1
 	
 	overworld_level = SavedData.onLoadModel(SavedDataOverworldLevel.new(overworld_level_id), self)
 	for map_node_data in data.map_nodes_data: SavedData.onLoadModel(map_node_data, self)
@@ -49,7 +56,7 @@ func onCreateMapNodes(Card: CardGD) -> void:
 	
 	setEmptySpotsIDS(empty_spots, unique_node_id, map_node_odds)
 	setEliteChiefFights(empty_spots, map_node_odds, Card)
-	onLoadMapNodes(empty_spots)
+	onLoadMapNodes(empty_spots, Card)
 
 #region Generators
 func generateEmptyMapSpots() -> Array[EmptyMapNode]:
@@ -153,10 +160,11 @@ func onRemoveEdgesAtRandom(empty_spots_by_progress: Dictionary) -> void:
 		for empty_spot in batch.filter(func(x: EmptyMapNode): return x.links.size() > 1):
 			var erase_array: Array = []
 			for link in empty_spot.links.filter(func(y: EmptyMapNode): return y in next_batch):
-				var remove_link: bool = Random.rollFloat(info.world.REMOVE_RANDOM_EDGES)
-				if remove_link:
-					erase_array.append(link)
-					next_batch.erase(link)
+				if empty_spot.links.size() > 1:
+					var remove_link: bool = Random.rollFloat(info.world.REMOVE_RANDOM_EDGES)
+					if remove_link:
+						erase_array.append(link)
+						next_batch.erase(link)
 			for link in erase_array: empty_spot.links.erase(link)
 			
 func onFilterNextBatchToManyLinks(batch: Array, next_batch: Array) -> void:
@@ -203,7 +211,7 @@ func setEmptySpotsIDS(empty_spots: Array, unique_node_ids: Array, map_node_odds:
 			empty_spot.id = 8
 			guarantee_shop = true
 			continue
-		elif guarantee_unique_node.size() > 0:
+		elif guarantee_unique_node.size() > 0 and empty_spot.progress > 5:
 			var index: int = 0
 			for state in guarantee_unique_node:
 				if state:
@@ -255,7 +263,7 @@ func getExtraEliteChiefOdds(Card: CardGD) -> float:
 #endregion
 
 #region Map Nodes
-func onLoadMapNodes(empty_spots: Array) -> void:
+func onLoadMapNodes(empty_spots: Array, Card: CardGD) -> void:
 	for empty_spot in empty_spots: empty_spot.map_location = MapLocation.new(empty_spot.progress, empty_spot.lane, map_location.area)
 	var map_locations: Array = empty_spots.map(func(x: EmptyMapNode): return x.map_location)
 	
@@ -264,10 +272,13 @@ func onLoadMapNodes(empty_spots: Array) -> void:
 		var saved_data: SavedDataMapNode = MapNodeInfo.getDataFromID(empty_spot.id).new(empty_spot.id, empty_spot.map_location, links)
 		var map_node: MapNodeGD = SavedData.onLoadModel(saved_data, self)
 		map_node.onCreateModel(map_locations)
-		map_node.onFofInit()
+		map_node.onFofInit(self)
 		map_location_to_node[map_node.map_location] = map_node
 		
-	for map_node in get_tree().get_nodes_in_group("MapNodesGD"):
+	var map_nodes: Array = get_tree().get_nodes_in_group("MapNodesGD")
+	if Card.info.id == 2: onCreateHolyPath()
+		
+	for map_node in map_nodes:
 		map_node.onCreateLinks(map_location_to_node)
 		map_node.hovered.connect(onMapNodeHovered)
 		map_node.pressed.connect(onMapNodePressed)
@@ -275,10 +286,23 @@ func onLoadMapNodes(empty_spots: Array) -> void:
 	
 	map_nodes_loaded.emit()
 	onSelectMapNode(onFindMapLocation(map_location.progress, map_location.lane), true)
+	
+#endregion
+#region Holy Path
+func onCreateHolyPath() -> void:
+	var start_point: MapLocation
+	start_point = onFindMapLocation(0, 0) if getWorld() > 1 else onFindMapLocation(-1, 0)
+	
+	var map_node: MapNodeGD = map_location_to_node[start_point]
+	while(map_node.map_location.progress < 10):
+		var link: MapLink = map_node.links.pick_random()
+		link.is_holy = true
+		map_node = map_location_to_node[link.map_location]
+
 #endregion
 #endregion
 
-#region Map Noodes
+#region Map Nodes
 const SELECTED_SPEED: float = 1
 func getSelectedMapNode() -> MapNodeGD:
 	return map_location_to_node[map_location]
@@ -295,6 +319,7 @@ func onSelectMapNode(_map_location: MapLocation, is_initial_load_select: bool = 
 	
 func onMapNodeHovered(map_node: MapNodeGD, state: bool) -> void:
 	var selected_map_node: MapNodeGD = getSelectedMapNode()
+	map_node_hovered.emit(map_node, state)
 	if !state or map_node != selected_map_node:
 		var is_walkable: bool = selected_map_node.isMapNodeLink(map_node)
 		map_node.onStaticBodyHovered(is_walkable, state)
@@ -309,7 +334,6 @@ func onMapNodeEntered(map_node: MapNodeGD) -> void:
 		map_node_entered.emit(map_node)
 			
 func onMapNodeFinished() -> void:
-	var sel: MapNodeGD = getSelectedMapNode()
 	map_node_finished.emit(getSelectedMapNode())
 #endregion
 

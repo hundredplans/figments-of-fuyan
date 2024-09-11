@@ -22,3 +22,6 @@ static func getShopType(shop_type: ShopTypes) -> String:
 		ShopTypes.TOOL: return "Tool"
 		ShopTypes.DECK: return "Deck alteration"
 	return "NULL"
+
+static func isBasicRarity(rarity: int) -> bool:
+	return rarity > 2 and rarity < 6

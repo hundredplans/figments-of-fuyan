@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="FancyText" load_steps=20 format=3 uid="uid://c3aw38hh46yj6"]
+[gd_resource type="Resource" script_class="FancyText" load_steps=24 format=3 uid="uid://c3aw38hh46yj6"]
 
 [ext_resource type="Script" path="res://scripts/common/fancy_text/ability_fancy_text.gd" id="1_tbnr7"]
 [ext_resource type="Script" path="res://scripts/fof_info/boons/boon_info.gd" id="3_bopw1"]
@@ -11,6 +11,8 @@
 [ext_resource type="Texture2D" uid="uid://byqpgk7qtluhe" path="res://assets/sprites/ui/shilling.png" id="8_srdud"]
 [ext_resource type="Texture2D" uid="uid://oae0nwgo3lfh" path="res://assets/sprites/text/icons/energy_icon.png" id="9_0faqv"]
 [ext_resource type="Texture2D" uid="uid://chno2lamv2rri" path="res://assets/sprites/ui/ultimate.png" id="10_8hn1a"]
+[ext_resource type="Texture2D" uid="uid://g6t2favuul2k" path="res://assets/sprites/ui/boon.png" id="11_w4ddg"]
+[ext_resource type="Texture2D" uid="uid://b28qk3yq3qtl0" path="res://assets/sprites/ui/tool.png" id="12_irqx2"]
 
 [sub_resource type="Resource" id="Resource_p0dpw"]
 script = ExtResource("1_tbnr7")
@@ -66,8 +68,22 @@ tx = ExtResource("10_8hn1a")
 capture_preceding_number_plus = false
 color = ""
 
+[sub_resource type="Resource" id="Resource_67y14"]
+script = ExtResource("5_7iob1")
+name = "BOON"
+tx = ExtResource("11_w4ddg")
+capture_preceding_number_plus = false
+color = ""
+
+[sub_resource type="Resource" id="Resource_0kk5j"]
+script = ExtResource("5_7iob1")
+name = "TOOL"
+tx = ExtResource("12_irqx2")
+capture_preceding_number_plus = false
+color = ""
+
 [resource]
 script = ExtResource("4_j7rpx")
 icons = Array[ExtResource("3_r3qjm")]([SubResource("Resource_ppbve")])
-images = Array[ExtResource("5_7iob1")]([SubResource("Resource_7631x"), SubResource("Resource_ty3wq"), SubResource("Resource_5fvdb"), SubResource("Resource_66f0b"), SubResource("Resource_oacu5"), SubResource("Resource_6le3q")])
+images = Array[ExtResource("5_7iob1")]([SubResource("Resource_7631x"), SubResource("Resource_ty3wq"), SubResource("Resource_5fvdb"), SubResource("Resource_66f0b"), SubResource("Resource_oacu5"), SubResource("Resource_6le3q"), SubResource("Resource_67y14"), SubResource("Resource_0kk5j")])
 abilities = Array[ExtResource("1_tbnr7")]([SubResource("Resource_p0dpw")])

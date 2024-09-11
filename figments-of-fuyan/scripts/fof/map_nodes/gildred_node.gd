@@ -2,7 +2,7 @@ extends MapNodeGD
 
 var selected_map_effects: Array[MapEffectDatastore] = []
 const SELECTION_AMOUNT: int = 3
-func onFofInit() -> void:
+func onFofInit(_area: AreaGD) -> void:
 	var gildred_node_resources: Node3D = load(info.GILDRED_NODE_RESOURCES).instantiate()
 	var resources: Array = gildred_node_resources.map_effects.duplicate()
 	for i in range(SELECTION_AMOUNT):

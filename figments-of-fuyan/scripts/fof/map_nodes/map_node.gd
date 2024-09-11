@@ -8,18 +8,22 @@ var map_location: MapLocation
 var link_models: Array
 var links: Array
 var Model: Node3D
+var mesh: MeshInstance3D
 
 const PROGRESS_OFFSET: float = 3
 const LANE_OFFSET: float = 4
 const CENTER_PROGRESS_OFFSET: float = -15
 #endregion
 
-func onFofInit() -> void: pass
+func onFofInit(_area: AreaGD) -> void: pass
 
 #region Base Functions
 func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("MainInput") and hovered_state:
 		pressed.emit(self)
+		
+func _process(delta: float) -> void:
+	if Model != null: Model.rotation_degrees.y += SPIN_SPEED * delta
 #endregion
 
 #region Save / Load
@@ -34,8 +38,11 @@ func onLoadData(data: SavedData) -> void:
 	
 func onCreateModel(map_locations: Array) -> void:
 	Model = info.model.instantiate()
+	Model.position.y += info.float_y
 	add_child(Model)
+	mesh = Helper.getNodeTypeRecursive(Model, MeshInstance3D)[0]
 	setPosition(map_locations)
+	onTweenChain()
 	
 	for static_body in Helper.getNodeTypeRecursive(self, StaticBody3D):
 		static_body.mouse_exited.connect(onMouseHovered.bind(false))
@@ -50,7 +57,8 @@ func onCreateLinks(map_location_to_node: Dictionary) -> void:
 		link_models.append(MapNodeLink)
 		add_child(MapNodeLink)
 		
-		var vector: Vector3 = map_location_to_node[link.map_location].position - map_location_to_node[map_location].position
+		var vector: Vector3 = \
+		map_location_to_node[link.map_location].position - map_location_to_node[map_location].position
 		MapNodeLink.setInfo(vector, link.is_holy)
 		
 func isMapNodeLink(map_node: MapNodeGD) -> bool:
@@ -59,16 +67,14 @@ func isMapNodeLink(map_node: MapNodeGD) -> bool:
 		
 #region Selected
 func onSelected(speed: float) -> void:
-	var mesh: MeshInstance3D = Helper.getNodeTypeRecursive(Model, MeshInstance3D)[0]
 	var tween := get_tree().create_tween()
-	tween.tween_method(setAlphagreyMaterialValue.bind(mesh), 0.0, 1.0, speed)
+	tween.tween_method(setAlphagreyMaterialValue, 0.0, 1.0, speed)
 	
 	for link_model in link_models: link_model.onMapNodeSelected()
 	await tween.finished
 	entered.emit(self)
 	
 func onDeselected(speed: float) -> void:
-	var mesh: MeshInstance3D = Helper.getNodeTypeRecursive(Model, MeshInstance3D)[0]
 	var tween := get_tree().create_tween()
 	tween.tween_method(setAlphagreyMaterialValue.bind(mesh), 1.0, 0.0, speed)
 	
@@ -76,20 +82,20 @@ func onDeselected(speed: float) -> void:
 #endregion
 
 #region Setters
-func setAlphagreyMaterialValue(value: float, mesh: MeshInstance3D) -> void:
+func setAlphagreyMaterialValue(value: float) -> void:
 	mesh.set_instance_shader_parameter("time_value", value)
 
 func setPosition(map_locations: Array) -> void:
 	var pos := Vector3((map_location.progress * PROGRESS_OFFSET) + CENTER_PROGRESS_OFFSET, 0.3, 0)
 	var lanes: Array = map_locations.filter(func(x: MapLocation): return x.progress == map_location.progress)\
 	.map(func(x: MapLocation): return x.lane)
-	var direction: int = 0
+	var _direction: int = 0
 	
 	match lanes.size():
-		2: direction = -1 if lanes.max() == 1 else 1
-		4: direction = -1 if lanes.max() == 2 else 1
+		2: _direction = -1 if lanes.max() == 1 else 1
+		4: _direction = -1 if lanes.max() == 2 else 1
 	
-	pos.z = (map_location.lane + (direction * 0.5)) * LANE_OFFSET
+	pos.z = (map_location.lane + (_direction * 0.5)) * LANE_OFFSET
 	position = pos
 	
 func setRayPickable(state: bool) -> void:
@@ -109,6 +115,19 @@ func onStaticBodyHovered(is_walkable: bool, state: bool) -> void:
 		if is_walkable: mat = load(info.MAP_NODE_WALKABLE_OUTLINE_PATH)
 		else: mat = load(info.MAP_NODE_OUTLINE_PATH)
 	
-	for mesh in Helper.getNodeTypeRecursive(Model, MeshInstance3D):
-		mesh.set_surface_override_material(0, mat)
+	mesh.set_surface_override_material(0, mat)
+		
+#endregion
+
+#region Default Animation
+const SPIN_SPEED: float = 40
+const SPEED: float = 3
+const DISTANCE: float = 0.2
+var direction: int = -1
+func onTweenChain() -> void:
+	direction *= -1
+	var tween := get_tree().create_tween()
+	tween.tween_property(Model, "position:y", DISTANCE * direction, SPEED).as_relative().set_trans(Tween.TRANS_SINE)
+	tween.finished.connect(onTweenChain)
+	
 #endregion

@@ -57,7 +57,17 @@ func onUnitChanged(_card_info: CardInfo) -> void:
 			if box.position.y > 0: card_info[box.stat] = box.position.y
 			box.position.y = 0
 			box.position.x = box.default_x
+		
+		var image := Image.new()
+		image = Image.create_empty(80, 80, false, Image.FORMAT_RGBA8)
+		
+		for x in range(80):
+			for y in range(80):
+				image.set_pixel(x, y, card_info.art_pop.get_pixel(\
+				x + card_info.art_mini_coordinate.x, y + card_info.art_mini_coordinate.y))
 			
+		image.save_png(card_info.art_pop.resource_path.replace("art_pop", "art_mini"))
+		
 		ResourceSaver.save(card_info)
 		for child in World.get_children() + ColShapeHolder.get_children(): child.free()
 			

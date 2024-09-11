@@ -1,4 +1,3 @@
-@tool
 class_name ChampionCardInfo extends CardInfo
 
 @export_group("Champion Select")

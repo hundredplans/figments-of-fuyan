@@ -17,10 +17,12 @@ func _ready() -> void:
 	if World != null:
 		World.travel.connect(onTravelStateChanged)
 		World.champion_pressed.connect(onChampionPressed)
+		World.create_ui.connect(onCreateUI)
 #endregion
 
 #region Travelling
 func onTravelStateChanged(travel_info: CameraTravelDatastore) -> void:
+	if ActiveMenu != null: ActiveMenu.queue_free()
 	GoBackLabel.visible = !travel_info.is_start
 	if travel_info.start.name == "ChampionPressed": onClearChampionUI()
 #endregion
@@ -38,5 +40,14 @@ func onChampionPressed(Card: CardGD) -> void:
 func onClearChampionUI() -> void:
 	if ChampionSelectUI != null: ChampionSelectUI.queue_free()
 	
-func onStart(Card: CardGD) -> void: start.emit(Card)
+func onStart(Card: CardGD) -> void:
+	start.emit(Card)
+#endregion
+
+#region Menus
+var ActiveMenu: Control
+func onCreateUI(_menu: PackedScene) -> void:
+	if ActiveMenu != null: ActiveMenu.queue_free()
+	ActiveMenu = _menu.instantiate()
+	add_child(ActiveMenu)
 #endregion

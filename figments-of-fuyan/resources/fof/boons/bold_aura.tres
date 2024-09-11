@@ -1,11 +1,13 @@
-[gd_resource type="Resource" script_class="ChampionBoonInfo" load_steps=2 format=3 uid="uid://dhiqm4mrd7qpb"]
+[gd_resource type="Resource" script_class="ChampionBoonInfo" load_steps=3 format=3 uid="uid://dhiqm4mrd7qpb"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/boons/champion_boon_info.gd" id="1_3bsiu"]
+[ext_resource type="Image" uid="uid://cqe3wqg1v4gc" path="res://assets/sprites/game/cards/art_mini/frederic_the_fearless.png" id="1_tusxd"]
 
 [resource]
 script = ExtResource("1_3bsiu")
 champion_id = 1
-description = "Your first non-Frederic kill gains [+0/1]"
+icon = ExtResource("1_tusxd")
+description = "Your first non-Frederic kill gains +1 HP"
 RARITY = 7
 id = 1
 name = "Bold Aura"

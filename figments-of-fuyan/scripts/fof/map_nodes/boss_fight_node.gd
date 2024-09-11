@@ -1,1 +1,1 @@
-extends MapNodeGD
+class_name BossFightNodeGD extends FightNodeGD

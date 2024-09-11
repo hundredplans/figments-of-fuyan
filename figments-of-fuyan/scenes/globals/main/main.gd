@@ -11,7 +11,7 @@ extends Node
 
 #region Base Functions
 func _ready():
-	if !Helper.admin: onLoadScreenWorld(main_menu_ui, main_menu_world)
+	if !Helper.getAdmin(): onLoadScreenWorld(main_menu_ui, main_menu_world)
 	else:
 		onLoadScreenWorld(map_ui, map_world)
 		var node := Node3D.new()
@@ -49,24 +49,22 @@ func onStartGame(_Card: CardGD) -> void:
 	var scenes: Dictionary = onLoadScreenWorld(map_ui, map_world)
 	var area_id: int = 1
 		
-	var area_info: AreaInfo = Helper.getResourcesRecursiveID(AreaInfo, area_id)
+	var area_info: AreaInfo = Helper.getFofInfoID(AreaInfo, area_id)
 	var area: AreaGD = SavedData.onLoadModel(SavedDataArea.new(area_id, area_info.overworld_info.id, MapLocation.new(-1, 0, area_id)), scenes.world)
 	
 	var save_file_data := SavedDataSaveFile.new(getFirstEmptySaveSlotID(), randi(), area.onSave(), SHILLING_START_COUNT)
+	
 	var save_file: SaveFileGD = SavedData.onLoadModel(save_file_data, scenes.world)
 	save_file.area = area
 	
 	var Card: CardGD = SavedData.onLoadModel(SavedDataCard.new(_Card.info.id), scenes.world)
+	Card.onAddToDeck()
+	
 	scenes.ui.onLoad(save_file)
 	scenes.world.onLoad(save_file, Card)
 	
 	area.onCreateMapNodes(Card)
-
-func getFirstEmptySaveSlotID() -> int:
-	var DIR_PATH_SAVE_FILE: String = "user://save/save_files/"
-	var saves: Array = Array(DirAccess.get_files_at(DIR_PATH_SAVE_FILE)).map(func(x: String): return load(DIR_PATH_SAVE_FILE + x).id)
-	var id: int = Helper.getNonConsecutive(saves)
 	
-	if id == -1: return saves.size() + 1
-	return id + 1
+func getFirstEmptySaveSlotID() -> int:
+	return min(DirAccess.get_files_at(SaveFileInfo.SAVE_DIRECTORY).size() + 1, 5)
 #endregion

@@ -1,4 +1,3 @@
-@tool
 class_name ToolInfo extends FofInfo
 
 static func getFofName() -> String: return "Tool"

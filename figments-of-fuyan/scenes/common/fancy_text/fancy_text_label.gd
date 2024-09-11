@@ -24,7 +24,7 @@ func onFofIconsReplace(regex: RegEx, fancy_text: FancyText) -> void:
 		regex.compile("(\\[" + str(fof_icon_fancy_text.name) + "=[0-9]+\\])")
 		for _result in regex.search_all(text):
 			var result: String = _result.get_string()
-			var icon_path: String = Helper.getResourcesRecursiveID(fof_icon_fancy_text.fof_type, int(result)).getIcon().resource_path
+			var icon_path: String = Helper.getFofInfoID(fof_icon_fancy_text.fof_type, int(result)).getIcon().resource_path
 			text = text.replace(result, \
 			"[img=" + str(settings.font_size) + "x" + str(settings.font_size) + "]" + icon_path + "[/img]")
 			

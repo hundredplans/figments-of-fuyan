@@ -1,0 +1,44 @@
+[gd_scene load_steps=3 format=3 uid="uid://8k6ibmwcfnyu"]
+
+[ext_resource type="Script" path="res://scenes/game/map_nodes/extra/fight_node_hover_ui.gd" id="1_4kecg"]
+[ext_resource type="PackedScene" uid="uid://bk7ao27fc3efw" path="res://scenes/game/map_nodes/extra/fight_node_hover_ui_box.tscn" id="2_0jghf"]
+
+[node name="FightNodeHoverUI" type="PanelContainer"]
+custom_minimum_size = Vector2(388, 166)
+offset_right = 336.0
+offset_bottom = 166.0
+localize_numeral_system = false
+script = ExtResource("1_4kecg")
+UIBoxPacked = ExtResource("2_0jghf")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="HBoxContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="UIBoxParent" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="LevelLabel" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "1-7: PalmLevel"
+horizontal_alignment = 1
+
+[node name="Control2" type="Control" parent="HBoxContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2

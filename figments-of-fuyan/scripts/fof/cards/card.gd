@@ -34,8 +34,8 @@ func setMapPosition() -> void:
 #region Getters
 	
 func getArea() -> AreaInfo:
-	for area_info in Helper.getResourcesRecursive(AreaInfo):
-		if info in area_info.cards: return area_info
+	for area_info in Helper.getFofInfoArray(AreaInfo):
+		if info.id in area_info.card_ids: return area_info
 	return null
 	
 func getStatHeightPosition() -> Vector3:
@@ -104,3 +104,9 @@ func onLookAtObjectOnlyY(node: Node) -> void:
 	var old_rotation: Vector3 = rotation
 	look_at(node.position, Vector3(0, 1, 0), true)
 	rotation = Vector3(old_rotation.x, rotation.y, old_rotation.z)
+#endregion
+
+#region Deck
+func onAddToDeck() -> void:
+	add_to_group("DeckCardsGD")
+#endregion

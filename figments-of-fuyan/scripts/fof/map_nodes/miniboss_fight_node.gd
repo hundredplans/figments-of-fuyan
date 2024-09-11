@@ -1,1 +1,1 @@
-extends MapNodeGD
+class_name MinibossFightNodeGD extends FightNodeGD

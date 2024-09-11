@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="CardInfo" load_steps=9 format=3 uid="uid://fjrpavsyo51s"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/ability_datastore.gd" id="1_s0al6"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="2_amlc3"]
+[ext_resource type="Image" uid="uid://b4qt1fl4q0slo" path="res://assets/sprites/game/cards/art_mini/palmer.png" id="2_s1x8n"]
+[ext_resource type="Image" uid="uid://i34owvhii218" path="res://assets/sprites/game/cards/art_pop/palmer.png" id="2_xsqxw"]
+[ext_resource type="PackedScene" uid="uid://nsl73xnqq64e" path="res://assets/models/fof/cards/palmer.glb" id="3_qrvjs"]
+[ext_resource type="Script" path="res://scripts/fof/cards/palmer.gd" id="3_rgqu8"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_t0e05"]
+size = Vector3(0.509277, 0.840393, 0.164551)
+
+[sub_resource type="PackedScene" id="PackedScene_w7hq4"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00366211, 0.423676, 0.0012207), SubResource("BoxShape3D_t0e05")],
+"version": 3
+}
+
+[resource]
+script = ExtResource("2_amlc3")
+attack = 2
+health = 3
+speed = 2
+energy = 2
+rarity = 3
+flavor_text = ""
+art_mini_coordinate = Vector2i(80, 30)
+art_mini = ExtResource("2_s1x8n")
+art_pop = ExtResource("2_xsqxw")
+model = ExtResource("3_qrvjs")
+points = []
+collision_shape = SubResource("PackedScene_w7hq4")
+stat = 1.26944
+top = 0.846295
+eye = 0.716096
+abilities = Array[ExtResource("1_s0al6")]([])
+id = 5
+name = "Palmer"
+gdscript = ExtResource("3_rgqu8")
