@@ -60,7 +60,7 @@ func onDeleteTile(tile_coords: Vector4i) -> void:
 
 #region Save/Load
 func onSave() -> SavedDataGameObject:
-	return SavedDataObject.new(info.id, coords, tile_rotation, variation, map_rotation, map_position, height)
+	return SavedDataObject.new(info.id, false, coords, tile_rotation, variation, map_rotation, map_position, height)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=5 format=3 uid="uid://bjqv8sd8lko8x"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="1_4c0dd"]
+[ext_resource type="Script" path="res://scripts/fof/objects/object.gd" id="1_4s7en"]
+[ext_resource type="PackedScene" uid="uid://b52kcgs2ycht0" path="res://assets/models/fof/objects/palm_door_tall.glb" id="2_u8yia"]
+[ext_resource type="PackedScene" uid="uid://4xgp6fl2e0oi" path="res://assets/models/fof/objects/palm_door_short.glb" id="3_3m0df"]
+
+[resource]
+script = ExtResource("1_4c0dd")
+tile_coords = Array[Array]([[Vector4(0, 0, 0, 0)]])
+lock_rotation = false
+lock_tile = false
+solids = Array[bool]([true, true])
+models = Array[PackedScene]([ExtResource("2_u8yia"), ExtResource("3_3m0df")])
+points = Array[Array]([])
+id = 14
+name = "Palm Door"
+gdscript = ExtResource("1_4s7en")

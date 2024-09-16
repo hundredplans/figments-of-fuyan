@@ -13,4 +13,4 @@ func getType() -> GDScript:
 	return null
 
 func getSavedData() -> SavedDataMapEffect:
-	return SavedDataMapEffectGainFofObject.new(id, rarity, getType())
+	return SavedDataMapEffectGainFofObject.new(id, false, rarity, getType())

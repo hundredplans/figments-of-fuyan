@@ -1,0 +1,52 @@
+[gd_scene load_steps=5 format=3 uid="uid://d184bk44cwqxg"]
+
+[ext_resource type="Script" path="res://scenes/editors/card_editor/card_editor.gd" id="1_dfyc6"]
+[ext_resource type="Script" path="res://addons/movement_camera.gd" id="2_xw1dl"]
+[ext_resource type="Environment" uid="uid://g3ihmrpunr2b" path="res://assets/environments/main_menu_environment.tres" id="3_1854o"]
+[ext_resource type="PackedScene" uid="uid://2figxxms5ybp" path="res://scenes/common/hide_button/hide_button.tscn" id="4_mok6a"]
+
+[node name="CardEditor" type="Node"]
+script = ExtResource("1_dfyc6")
+
+[node name="MovementCamera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 2)
+script = ExtResource("2_xw1dl")
+
+[node name="World" type="Node3D" parent="."]
+unique_name_in_owner = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+unique_name_in_owner = true
+environment = ExtResource("3_1854o")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="HideButton" parent="." node_paths=PackedStringArray("hide_node") instance=ExtResource("4_mok6a")]
+offset_left = 33.0
+offset_top = 978.0
+offset_right = 158.0
+offset_bottom = 1045.0
+hide_node = NodePath("../MarginContainer")
+
+[node name="AnimationNames" type="HBoxContainer" parent="."]
+unique_name_in_owner = true
+offset_left = 184.0
+offset_top = 978.0
+offset_right = 1880.0
+offset_bottom = 1045.0
+
+[node name="CardUIHolder" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0

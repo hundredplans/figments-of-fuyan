@@ -1,0 +1,15 @@
+[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://clojn4v02al00"]
+
+[ext_resource type="Shader" uid="uid://ce3ku0ssrd0kb" path="res://resources/shaders/base_material_greyscale.tres" id="1_2d5qy"]
+[ext_resource type="Texture2D" uid="uid://b685s17cryxbp" path="res://assets/textures/base_texture_attributes.png" id="2_el12d"]
+[ext_resource type="Texture2D" uid="uid://ddsn8uavsg04i" path="res://assets/textures/base_texture_color.png" id="3_ykwv1"]
+[ext_resource type="Texture2D" uid="uid://ywduaqhno8y0" path="res://assets/textures/base_texture_emission.png" id="4_djwyk"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_2d5qy")
+shader_parameter/EmissionStrength = 3.0
+shader_parameter/max_grey = 0.5
+shader_parameter/tx_attributes = ExtResource("2_el12d")
+shader_parameter/tx_color = ExtResource("3_ykwv1")
+shader_parameter/tx_emission = ExtResource("4_djwyk")

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=4 format=3 uid="uid://yk4k6m3m7rs4"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="1_fnihf"]
+[ext_resource type="Script" path="res://scripts/fof/objects/object.gd" id="1_kjpi4"]
+[ext_resource type="PackedScene" uid="uid://2o8kb3dponwh" path="res://assets/models/fof/objects/palm_tree.glb" id="2_0d454"]
+
+[resource]
+script = ExtResource("1_fnihf")
+tile_coords = Array[Array]([[Vector4(0, 0, 0, 0)]])
+lock_rotation = false
+lock_tile = false
+solids = Array[bool]([true])
+models = Array[PackedScene]([ExtResource("2_0d454")])
+points = Array[Array]([])
+id = 15
+name = "Palm Tree"
+gdscript = ExtResource("1_kjpi4")

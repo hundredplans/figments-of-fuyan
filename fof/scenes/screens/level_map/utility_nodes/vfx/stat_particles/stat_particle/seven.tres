@@ -1,12 +1,12 @@
 [gd_resource type="ArrayMesh" load_steps=3 format=4 uid="uid://c526n8jx3cawo"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3f7u2"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t2iln"]
 resource_name = "Material"
 cull_mode = 2
 albedo_color = Color(0.906332, 0.906332, 0.906332, 1)
 roughness = 0.5
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_iq6b6"]
+[sub_resource type="ArrayMesh" id="ArrayMesh_s8f1m"]
 _surfaces = [{
 "aabb": AABB(-0.0407115, -0.000225596, -0.0255413, 0.115402, 0.137534, 0.0510826),
 "format": 34359742465,
@@ -28,7 +28,7 @@ _surfaces = [{
 "format": 34359742487,
 "index_count": 108,
 "index_data": PackedByteArray("AQAJAAcAAQADAAkAKAAZACYAKAAhABkACgAOAAgACgAVAA4AAgASAAQAAgARABIABQAXAAsABQAUABcABgAQAAAABgANABAAHQAiAB8AHQAaACIALwAeACsALwAcAB4AHgA3ACsAHgAwADcAJQAbAC4AJQAYABsADAAtAA8ADAAkAC0AEwApABYAEwAsACkAEQArABIAEQAvACsAFQAmAA4AFQAoACYAOAA1ADsAOAAyADUAIwAxACAAIwA0ADEAKgA5ACcAKgA2ADkAKAAzACEAKAA6ADMA"),
-"material": SubResource("StandardMaterial3D_3f7u2"),
+"material": SubResource("StandardMaterial3D_t2iln"),
 "name": "Material",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -36,4 +36,4 @@ _surfaces = [{
 "vertex_data": PackedByteArray("oN0AvQCObLkJPNE8oN0AvQCObLkJPNE8oN0AvQCObLkJPNE8pHMHOwCObLkJPNE8pHMHOwCObLkJPNE8pHMHOwCObLkJPNE8oN0AvQCObLkJPNG8oN0AvQCObLkJPNG8oN0AvQCObLkJPNG8pHMHOwCObLkJPNG8pHMHOwCObLkJPNG8pHMHOwCObLkJPNG8FQANvXFiCT0JPNG8FQANvXFiCT0JPNG8FQANvXFiCT0JPNG8FQANvXFiCT0JPNE8FQANvXFiCT0JPNE8FQANvXFiCT0JPNE8oHMHO3FiCT0JPNE8oHMHO3FiCT0JPNE8oHMHO3FiCT0JPNE8oHMHO3FiCT0JPNG8oHMHO3FiCT0JPNG8oHMHO3FiCT0JPNG8IcEmvaSaDD4JPNG8IcEmvaSaDD4JPNG8IcEmvaSaDD4JPNG8IcEmvaSaDD4JPNE8IcEmvaSaDD4JPNE8IcEmvaSaDD4JPNE87HeIPLJ7Bj4JPNE87HeIPLJ7Bj4JPNE87HeIPLJ7Bj4JPNE87HeIPLJ7Bj4JPNG87HeIPLJ7Bj4JPNG87HeIPLJ7Bj4JPNG8FQANvaTkvD0JPNG8FQANvaTkvD0JPNG8FQANvaTkvD0JPNG85MHEOx4ptT0JPNG85MHEOx4ptT0JPNG85MHEOx4ptT0JPNG85MHEOx4ptT0JPNE85MHEOx4ptT0JPNE85MHEOx4ptT0JPNE8FQANvaTkvD0JPNE8FQANvaTkvD0JPNE8FQANvaTkvD0JPNE8NPeYPafr9D0JPNE8NPeYPafr9D0JPNE8NPeYPafr9D0JPNE8NPeYPafr9D0JPNG8NPeYPafr9D0JPNG8NPeYPafr9D0JPNG8B7yIPflCqT0JPNE8B7yIPflCqT0JPNE8B7yIPflCqT0JPNE8B7yIPflCqT0JPNG8B7yIPflCqT0JPNG8B7yIPflCqT0JPNG8Ugqsdf///7//fwAA////P/9//3////8//38AAP///z//f/9/////P////3////+/Ugqsdf///7//fwAA////P/////////+//38AAP///z//////////v////3////+/AAD/f////79SCqx1////v/////////+/AAD/f////79SCqx1////v/9//3////8//3//f////z9v9293////v////3////+//////////79v9293////v////3////+/rA9TcP///7//////////vxKM6/Pr8/W5rA9TcP///7//f/9/////PxKM6/Pr8/W5/3//f////z8SjOvz6/P1uYmVdOr///+//////////78SjOvz6/P1uYmVdOr///+/AAD/f////7+sD1Nw////v/////////+/03QsC////7//////////v2/3b3f///+/03QsC////7//f/9/////P2/3b3f///+/AAD/f////7+sD1Nw////v/9//3////8//3//f////z+JlXTq////v2LpYmn///+//////////7+JlXTq////v2LpYmn///+/03QsC////7//f/9/////P2LpYmn///+/03QsC////7//////////v2LpYmn///+/")
 }]
 blend_shape_mode = 0
-shadow_mesh = SubResource("ArrayMesh_iq6b6")
+shadow_mesh = SubResource("ArrayMesh_s8f1m")

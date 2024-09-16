@@ -27,7 +27,7 @@ func onFindTile(coords: Vector4i) -> TileGD:
 		if Tile.getCoords() == coords: return Tile
 	return null
 	
-func onFindTileObjectInfo(id: int) -> TileObjectInfoGD:
+func onFindTileObjectInfo(id: int) -> TileObjectInfo:
 	return all_tile_objects.filter(func(x: TileObjectInfoGD): return x.id == id)[0]
 #endregion
 #region Base Functions
@@ -180,7 +180,7 @@ func onMouseEnterTileStaticBody(_HoverStaticBody: StaticBody3D) -> void:
 	
 func onPlaceTile() -> void:
 	if !onFindTile(HoverStaticBody.coords) and !mouse_in_ui:
-		var Tile: TileGD = SavedDataTile.new(1, 0, HoverStaticBody.coords).onLoad(World)
+		var Tile: TileGD = SavedDataTile.new(1, false, 0, HoverStaticBody.coords).onLoad(World)
 		Tile.setHalfTransparent()
 		SelectedModel.onSaveTile(Tile.getCoords())
 #endregion

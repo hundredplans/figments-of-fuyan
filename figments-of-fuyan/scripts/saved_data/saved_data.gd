@@ -2,10 +2,13 @@ class_name SavedData extends Resource
 
 # Stores the id to the info
 @export var id: int
-func _init(_id: int = 0) -> void:
-	id = _id
+@export var first_init: bool = true
 
-static func onLoadModel(data: SavedData, parent: Node3D) -> FofGD:
+func _init(_id: int = 0, _first_init: bool = false) -> void:
+	id = _id
+	first_init = _first_init
+
+static func onLoadModel(data: SavedData, parent: Node3D, init_args: Array = []) -> FofGD:
 	var model := FofGD.new()
 	var info: FofInfo = Helper.getFofInfoID(data.getInfoType(), data.id)
 	
@@ -14,6 +17,8 @@ static func onLoadModel(data: SavedData, parent: Node3D) -> FofGD:
 	
 	parent.add_child(model)
 	model.onLoadData(data)
+	
+	if data.first_init and model.has_method("onFofInit"): model.callv("onFofInit", init_args)
 	return model
 	
 func getInfoType() -> GDScript: return FofInfo

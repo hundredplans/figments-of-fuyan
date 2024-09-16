@@ -3,6 +3,7 @@ class_name FancyTextLabel extends RichTextLabel
 const FANCY_TEXT_RESOURCE_PATH: String = "res://resources/ui/fancy_text/fancy_text.tres"
 const ROBOTO_FONT_PATH: String = "res://assets/fonts/roboto.ttf"
 @export var settings: FancyTextLabelSettings
+@export var center: bool = true
 
 func setText(_text: String) -> void:
 	if !_text.is_empty():
@@ -12,9 +13,13 @@ func setText(_text: String) -> void:
 		
 		onFofIconsReplace(regex, fancy_text)
 		onFofImagesReplace(regex, fancy_text)
-		text = text.insert(0, "[outline_size=" + str(settings.outline_size) + "][center][font=" + \
+		text = text.insert(0, "[outline_size=" + str(settings.outline_size) + "][font=" + \
 		ROBOTO_FONT_PATH + "][font_size={" + str(settings.font_size) + "}]")
-		text += "[/font_size][/font][/center][/outline_size]"
+		text += "[/font_size][/font][/outline_size]"
+		
+		if center:
+			text = text.insert(0, "[center]")
+			text += "[/center]"
 
 func _ready() -> void:
 	setText(text)

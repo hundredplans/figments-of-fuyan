@@ -2,6 +2,7 @@ class_name CardGD extends GameObjectGD
 
 #region Saved Data
 var team: int
+var is_in_deck: bool
 #endregion
 
 #region Globals
@@ -66,14 +67,19 @@ func onCreateCardUI(parent: Control) -> Control:
 
 #region Save/Load/Clear
 func onSave() -> SavedDataCard:
-	return SavedDataCard.new(info.id, coords, tile_rotation, team)
+	return SavedDataCard.new(info.id, false, coords, tile_rotation, team, is_in_deck)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
 	team = data.team
+	
+	is_in_deck = data.is_in_deck
+	if is_in_deck: add_to_group("DeckCardsGD")
+	
 	add_to_group("CardsGD")
 	
 func onCreateModel() -> void:
+	onRemoveModel()
 	Model = info.model.instantiate()
 	add_child(Model)
 	
@@ -87,6 +93,9 @@ func onCreateModel() -> void:
 		
 	setDefaultCollisionLayers()
 	setAniPlayer()
+	
+func onRemoveModel() -> void:
+	if Model != null: Model.queue_free()
 #endregion
 
 #region Walk
@@ -104,9 +113,4 @@ func onLookAtObjectOnlyY(node: Node) -> void:
 	var old_rotation: Vector3 = rotation
 	look_at(node.position, Vector3(0, 1, 0), true)
 	rotation = Vector3(old_rotation.x, rotation.y, old_rotation.z)
-#endregion
-
-#region Deck
-func onAddToDeck() -> void:
-	add_to_group("DeckCardsGD")
 #endregion

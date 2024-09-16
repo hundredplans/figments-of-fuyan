@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="FancyText" load_steps=24 format=3 uid="uid://c3aw38hh46yj6"]
+[gd_resource type="Resource" script_class="FancyText" load_steps=26 format=3 uid="uid://c3aw38hh46yj6"]
 
 [ext_resource type="Script" path="res://scripts/common/fancy_text/ability_fancy_text.gd" id="1_tbnr7"]
 [ext_resource type="Script" path="res://scripts/fof_info/boons/boon_info.gd" id="3_bopw1"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://chno2lamv2rri" path="res://assets/sprites/ui/ultimate.png" id="10_8hn1a"]
 [ext_resource type="Texture2D" uid="uid://g6t2favuul2k" path="res://assets/sprites/ui/boon.png" id="11_w4ddg"]
 [ext_resource type="Texture2D" uid="uid://b28qk3yq3qtl0" path="res://assets/sprites/ui/tool.png" id="12_irqx2"]
+[ext_resource type="Texture2D" uid="uid://drju02m4wqrw1" path="res://assets/sprites/ui/card.png" id="13_fvofg"]
 
 [sub_resource type="Resource" id="Resource_p0dpw"]
 script = ExtResource("1_tbnr7")
@@ -82,8 +83,15 @@ tx = ExtResource("12_irqx2")
 capture_preceding_number_plus = false
 color = ""
 
+[sub_resource type="Resource" id="Resource_1fn1k"]
+script = ExtResource("5_7iob1")
+name = "CARD"
+tx = ExtResource("13_fvofg")
+capture_preceding_number_plus = false
+color = ""
+
 [resource]
 script = ExtResource("4_j7rpx")
 icons = Array[ExtResource("3_r3qjm")]([SubResource("Resource_ppbve")])
-images = Array[ExtResource("5_7iob1")]([SubResource("Resource_7631x"), SubResource("Resource_ty3wq"), SubResource("Resource_5fvdb"), SubResource("Resource_66f0b"), SubResource("Resource_oacu5"), SubResource("Resource_6le3q"), SubResource("Resource_67y14"), SubResource("Resource_0kk5j")])
+images = Array[ExtResource("5_7iob1")]([SubResource("Resource_7631x"), SubResource("Resource_ty3wq"), SubResource("Resource_5fvdb"), SubResource("Resource_66f0b"), SubResource("Resource_oacu5"), SubResource("Resource_6le3q"), SubResource("Resource_67y14"), SubResource("Resource_0kk5j"), SubResource("Resource_1fn1k")])
 abilities = Array[ExtResource("1_tbnr7")]([SubResource("Resource_p0dpw")])

@@ -8,3 +8,8 @@ func setInfo(_name: String = "", _area_id: int = 1) -> void:
 	area_id = _area_id
 	
 static func getInfoPath() -> String: return "res://resources/fof/levels"
+
+static func getDataFromType(type: GDScript) -> GDScript:
+	match type:
+		PalmLevelInfo: return SavedDataPalmLevel
+		_: return SavedDataLevel

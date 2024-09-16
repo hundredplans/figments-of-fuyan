@@ -1,6 +1,5 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=9 format=3 uid="uid://dy0gh3hkc2ffq"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=8 format=3 uid="uid://dy0gh3hkc2ffq"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/ability_datastore.gd" id="1_6urrh"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="2_bypfo"]
 [ext_resource type="Image" uid="uid://bjfdb5fkve0v7" path="res://assets/sprites/game/cards/art_pop/palmy.png" id="2_lhe0c"]
 [ext_resource type="Image" uid="uid://8krlme6a4ohv" path="res://assets/sprites/game/cards/art_mini/palmy.png" id="2_xuow0"]
@@ -30,6 +29,8 @@ health = 1
 speed = 1
 energy = 1
 rarity = 3
+initial_traits = Array[int]([])
+ability_text = "TRAUMA [1]: Gain +1 SPD"
 flavor_text = ""
 art_mini_coordinate = Vector2i(80, 120)
 art_mini = ExtResource("2_xuow0")
@@ -40,7 +41,12 @@ collision_shape = SubResource("PackedScene_v5jpe")
 stat = 0.765662
 top = 0.416175
 eye = 0.319112
-abilities = Array[ExtResource("1_6urrh")]([])
+plus_attack = 0
+plus_health = 0
+plus_speed = 0
+plus_energy = 0
+ascended_traits = Array[int]([])
+ascended_ability_text = "TRAUMA [1]: Gain +2 SPD"
 id = 4
 name = "Palmy"
 gdscript = ExtResource("3_44obp")

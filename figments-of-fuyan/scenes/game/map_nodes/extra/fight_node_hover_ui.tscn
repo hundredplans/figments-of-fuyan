@@ -8,37 +8,31 @@ custom_minimum_size = Vector2(388, 166)
 offset_right = 336.0
 offset_bottom = 166.0
 localize_numeral_system = false
+mouse_filter = 2
 script = ExtResource("1_4kecg")
 UIBoxPacked = ExtResource("2_0jghf")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
+mouse_filter = 2
 
-[node name="Control" type="Control" parent="HBoxContainer"]
-custom_minimum_size = Vector2(30, 0)
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
+mouse_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
-layout_mode = 2
-
-[node name="Control" type="Control" parent="HBoxContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="UIBoxParent" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
+[node name="UIBoxParent" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(300, 100)
 layout_mode = 2
+mouse_filter = 2
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
+mouse_filter = 2
 
-[node name="LevelLabel" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer2"]
+[node name="LevelLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "1-7: PalmLevel"
 horizontal_alignment = 1
-
-[node name="Control2" type="Control" parent="HBoxContainer"]
-custom_minimum_size = Vector2(30, 0)
-layout_mode = 2
