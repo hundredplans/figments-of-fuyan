@@ -6,18 +6,23 @@ const CARD_UI_OFFSET := Vector2(-120, -400)
 @onready var World: Node3D = %World
 @onready var AnimationNames: Container = %AnimationNames
 @onready var CardUIHolder: Control = %CardUIHolder
+@onready var BackgroundMap: Node3D = %BackgroundMap
+@onready var CardGrid: GridContainer = %CardGrid
+@export var Background: DecorationDatastore
 
 func _ready() -> void:
 	var start_x: int = START_X
 	var start_z: int = 0
 	var unique_animation_names: Dictionary = {}
-	var level: LevelGD = SavedData.onLoadModel(SavedDataOverworldLevel.new(1), World)
-	level.position.y -= 0.3
+	
+	for data in Background.data:
+		SavedData.onLoadModel(data, BackgroundMap)
 	
 	for card_info in Helper.getFofInfoArray(CardInfo):
 		var Card: CardGD = SavedData.onLoadModel(SavedDataCard.new(card_info.id), World)
 		Card.onCreateModel()
 		Card.onIdle()
+		Card.onCreateCardUI(CardGrid)
 		Card.mouse_entered.connect(onCreateCardUI)
 		Card.mouse_exited.connect(onRemoveCardUI)
 		
@@ -52,3 +57,15 @@ func setCardUIPosition() -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and CardUI != null:
 		setCardUIPosition()
+
+
+func _on_hide_button_pressed() -> void:
+	AnimationNames.visible = !AnimationNames.visible
+
+
+func _on_ascend_button_pressed() -> void:
+	for child in CardGrid.get_children(): child.queue_free()
+	for Card in get_tree().get_nodes_in_group("CardsGD"):
+		Card.ascended = !Card.ascended
+		Card.setBaseStats()
+		Card.onCreateCardUI(CardGrid)

@@ -7,6 +7,7 @@ var ROTATION_SPEED: float = 0.02
 var map_rotation: float
 var map_position: Vector3
 var height: int
+var occupied_coords: Array
 #endregion
 
 #region Getters
@@ -44,8 +45,7 @@ func onLoadTilesCoords(parent: Node3D, tile_info: TileInfo) -> void:
 		if i >= info.tile_coords.size(): info.tile_coords.append([Vector4.ZERO])
 	
 	for tile_coords in info.tile_coords[variation]:
-		var Tile := TileGD.new()
-		Tile.onLoad(SavedDataTile.new(tile_info.id, tile_coords), parent)
+		var Tile: TileGD = SavedData.onLoadModel(SavedDataTile.new(tile_info.id, false, tile_coords), parent)
 		Tile.setHalfTransparent()
 	ResourceSaver.save(info)
 	
@@ -60,7 +60,8 @@ func onDeleteTile(tile_coords: Vector4i) -> void:
 
 #region Save/Load
 func onSave() -> SavedDataGameObject:
-	return SavedDataObject.new(info.id, false, coords, tile_rotation, variation, map_rotation, map_position, height)
+	return SavedDataObject.new(info.id, false, coords, tile_rotation, variation, map_rotation, map_position, height,\
+	occupied_coords)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -70,6 +71,7 @@ func onLoadData(data: SavedData) -> void:
 	map_position = position
 	map_rotation = rotation.y
 	height = data.height
+	occupied_coords = data.occupied_coords
 	
 	onLoadModel()
 	add_to_group("ObjectsGD")
@@ -79,4 +81,9 @@ func onLoadData(data: SavedData) -> void:
 func setDefaultCollisionLayers() -> void:
 	for body in getStaticBodies():
 		body.collision_layer = 16
+#endregion
+
+#region Occupied Tiles
+func setOccupiedCoords() -> void:
+	pass
 #endregion

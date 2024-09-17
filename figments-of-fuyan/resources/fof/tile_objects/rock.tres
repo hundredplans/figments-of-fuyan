@@ -1,19 +1,19 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=6 format=3 uid="uid://c4xy17pve55gu"]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scripts/fof/objects/object.gd" id="1_3ws3e"]
 [ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="1_k8q05"]
-[ext_resource type="PackedScene" uid="uid://dses4i1n3jrtb" path="res://assets/models/fof/objects/default_rock.glb" id="2_o8hib"]
-[ext_resource type="PackedScene" uid="uid://b6stunnd4wreh" path="res://assets/models/fof/objects/circle_rock.glb" id="3_0k1l1"]
-[ext_resource type="PackedScene" uid="uid://dbgs7ishxikif" path="res://assets/models/fof/objects/long_rock.glb" id="4_asces"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/default_rock.glb" id="2_o8hib"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/circle_rock.glb" id="3_0k1l1"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/long_rock.glb" id="4_asces"]
 
 [resource]
 script = ExtResource("1_k8q05")
-tile_coords = Array[Array]([[Vector4(0, 0, 0, 0)]])
+tile_coords = Array[Array]([[Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)]])
 lock_rotation = false
 lock_tile = false
 solids = Array[bool]([true, true, true])
 models = Array[PackedScene]([ExtResource("2_o8hib"), ExtResource("3_0k1l1"), ExtResource("4_asces")])
-points = Array[Array]([])
+points = Array[Array]([[], [], []])
 id = 9
 name = "Rock"
 gdscript = ExtResource("1_3ws3e")

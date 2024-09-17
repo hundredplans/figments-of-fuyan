@@ -1,15 +1,15 @@
-[gd_resource type="Resource" script_class="TileInfo" load_steps=5 format=3 uid="uid://dtms7q7dbscvh"]
+[gd_resource type="Resource" script_class="TileInfo" load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/fof_info/game_objects/tile_info.gd" id="1_5t3ss"]
 [ext_resource type="Script" path="res://scripts/fof/tiles/tile.gd" id="1_71f3r"]
-[ext_resource type="PackedScene" uid="uid://80fr6gyt05am" path="res://assets/models/fof/tiles/deep_water_tile.glb" id="2_jip2f"]
-[ext_resource type="PackedScene" uid="uid://bb6rd8ea31ga" path="res://assets/models/fof/tiles/palm_tile_fill.glb" id="4_pg802"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/tiles/deep_water_tile.glb" id="2_jip2f"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/tiles/palm_tile_fill.glb" id="4_pg802"]
 
 [resource]
 script = ExtResource("1_5t3ss")
 tile_fill = ExtResource("4_pg802")
 models = Array[PackedScene]([ExtResource("2_jip2f")])
-points = Array[Array]([])
+points = Array[Array]([[]])
 id = 8
 name = "Deep Water Tile"
 gdscript = ExtResource("1_71f3r")

@@ -17,9 +17,7 @@ extends Node
 func _ready():
 	if !Helper.getAdmin(): onLoadScreenWorld(main_menu_ui, main_menu_world)
 	else:
-		#var node := Node3D.new()
-		#add_child(node)
-		#onStartGame(SavedData.onLoadModel(SavedDataCard.new(2), node))
+		#onStartGame(SavedData.onLoadModel(SavedDataCard.new(2), KeepAcross))
 		var DIR_PATH: String = SaveFileInfo.SAVE_DIRECTORY
 		var files: Array = Array(DirAccess.get_files_at(DIR_PATH))
 		onLoadLevel(SavedData.onLoadModel(load(DIR_PATH + files[0]), KeepAcross))
@@ -57,8 +55,7 @@ func onLoadWorld(packed_scene: PackedScene) -> void:
 func onStartGame(Card: CardGD) -> void:
 	Card.is_in_deck = true
 	var area_id: int = 1
-	var area_info: AreaInfo = Helper.getFofInfoID(AreaInfo, area_id)
-	var area_data: SavedDataArea = SavedDataArea.new(area_id, area_info.overworld_info.id)
+	var area_data: SavedDataArea = SavedDataArea.new(area_id, true)
 	
 	var save_file_data := SavedDataSaveFile.new(getFirstEmptySaveSlotID(), true, randi(), area_data, \
 	SHILLING_START_COUNT, [], 0, [Card.onSave()])
@@ -68,7 +65,7 @@ func onStartGame(Card: CardGD) -> void:
 func onLoadGame(save_file_data: SavedDataSaveFile) -> void:
 	var load_map: bool = save_file_data.area_data.level_data == null
 	var save_file: SaveFileGD = SavedData.onLoadModel(save_file_data, KeepAcross)
-	save_file.load_level.connect(onLoadLevel.bind(self))
+	save_file.load_level.connect(onLoadLevel.bind(save_file))
 	if load_map:
 		var scenes: Dictionary = onLoadScreenWorld(map_ui, map_world)
 		scenes.ui.setInfo(save_file)

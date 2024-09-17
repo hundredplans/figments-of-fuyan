@@ -9,8 +9,6 @@ signal load_level
 
 var map_location_to_node: Dictionary
 var active_level: LevelGD
-var overworld_level: OverworldLevelGD
-var overworld_level_id: int
 var map_nodes_data: Array[SavedDataMapNode] = []
 var card_ids: Array = []
 #endregion
@@ -35,26 +33,23 @@ func onSave() -> SavedDataArea:
 		for map_node in map_nodes: map_nodes_data.append(map_node.onSave())
 		
 	var level_data := active_level.onSave() if active_level != null else null
-	return SavedDataArea.new(info.id, false, overworld_level_id, map_nodes_data, level_data)
+	return SavedDataArea.new(info.id, false, map_nodes_data, level_data)
 	
 func onLoadData(data: SavedData) -> void:
 	super(data)
 	add_to_group("AreasGD")
 	card_ids = info.card_ids.filter(func(x: int): \
 		return Game.isBasicRarity(Helper.getFofInfoID(CardInfo, x).rarity))
-	
-	if !Helper.getAdmin(): overworld_level_id = data.overworld_level_id
-	else: overworld_level_id = 1
-	
+		
 	map_nodes_data = data.map_nodes_data
-	var overworld_level_data: SavedDataOverworldLevel = SavedDataOverworldLevel.new(overworld_level_id)
-	overworld_level_id = overworld_level_data.id
 	
 	if data.level_data != null:
 		onMapNodeLoadLevel(data.level_data)
 		return
 		
-	overworld_level = SavedData.onLoadModel(overworld_level_data, self)
+	for tile_object_data in info.overworld_decoration.data:
+		SavedData.onLoadModel(tile_object_data, self)
+		
 	for map_node_data in data.map_nodes_data:
 		onCreateMapNode(map_node_data)
 #endregion
@@ -363,10 +358,11 @@ func onAfterScenesLoad() -> void:
 		onMapNodeEntered(map_node)
 		
 func onMapNodeLoadLevel(level_data: SavedDataLevel) -> void:
-	if overworld_level != null: overworld_level.onClear()
 	var map_nodes: Array = get_tree().get_nodes_in_group("MapNodesGD")
 	if !map_nodes.is_empty():
 		map_nodes_data.assign(SavedData.onSaveGroup(get_tree().get_nodes_in_group("MapNodesGD")))
+	
+	get_tree().call_group("TileObjectsGD", "free")
 	get_tree().call_group("MapNodesGD", "onClear")
 	get_tree().call_group("CardsGD", "onRemoveModel")
 	active_level = SavedData.onLoadModel(level_data, self)

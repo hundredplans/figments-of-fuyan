@@ -1,8 +1,15 @@
 class_name CardGD extends GameObjectGD
 
 #region Saved Data
+var attack: int
+var health: int
+var speed: int
+var max_health: int
+var energy: int
+
 var team: int
 var is_in_deck: bool
+var ascended: bool
 #endregion
 
 #region Globals
@@ -33,6 +40,9 @@ func setMapPosition() -> void:
 #endregion
 
 #region Getters
+func getAbilityText() -> String:
+	if ascended and !info.ascended_ability_text.is_empty(): return info.ascended_ability_text
+	return info.ability_text
 	
 func getArea() -> AreaInfo:
 	for area_info in Helper.getFofInfoArray(AreaInfo):
@@ -67,16 +77,35 @@ func onCreateCardUI(parent: Control) -> Control:
 
 #region Save/Load/Clear
 func onSave() -> SavedDataCard:
-	return SavedDataCard.new(info.id, false, coords, tile_rotation, team, is_in_deck)
+	return SavedDataCard.new(info.id, false, coords, tile_rotation, team, is_in_deck, attack, health, speed, max_health, energy, ascended)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
 	team = data.team
+	ascended = data.ascended
+	setBaseStats()
 	
 	is_in_deck = data.is_in_deck
 	if is_in_deck: add_to_group("DeckCardsGD")
 	
 	add_to_group("CardsGD")
+	
+func onFofInit() -> void:
+	setBaseStats()
+	
+func setBaseStats() -> void:
+	attack = info.attack
+	health = info.health
+	speed = info.speed
+	max_health = info.health
+	energy = info.energy
+	
+	if ascended:
+		attack += info.plus_attack
+		health += info.plus_health
+		speed += info.plus_speed
+		max_health += info.plus_health
+		energy += info.plus_energy
 	
 func onCreateModel() -> void:
 	onRemoveModel()
@@ -113,4 +142,26 @@ func onLookAtObjectOnlyY(node: Node) -> void:
 	var old_rotation: Vector3 = rotation
 	look_at(node.position, Vector3(0, 1, 0), true)
 	rotation = Vector3(old_rotation.x, rotation.y, old_rotation.z)
+#endregion
+
+#region Points
+func onLoadPoints(parent: Node3D) -> void:
+	for point in info.points:
+		var Point: MeshInstance3D = load(info.POINT_PATH).instantiate()
+		Point.setInfo(self)
+		Point.position = point
+		parent.add_child(Point)
+	ResourceSaver.save(info)
+	
+func onCreatePoint(parent: Node3D, point: Vector3) -> void:
+	var Point: MeshInstance3D = load(info.POINT_PATH).instantiate()
+	Point.setInfo(self)
+	Point.position = point
+	parent.add_child(Point)
+	info.points.append(point)
+	ResourceSaver.save(info)
+	
+func onRemovePoint(point: Vector3) -> void:
+	info.points.erase(point)
+	ResourceSaver.save(info)
 #endregion

@@ -3,6 +3,7 @@ extends TileObjectGD
 
 #region Saved Data
 var tile_fill: bool = false
+var level_visible: bool = true
 #endregion
 #region Getters
 func getHeight() -> int: return coords.w

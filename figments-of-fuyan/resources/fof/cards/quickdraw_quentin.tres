@@ -1,12 +1,12 @@
-[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=11 format=3 uid="uid://dpe6trp7rxeps"]
+[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=11 format=3]
 
-[ext_resource type="Image" uid="uid://bxkodabddetvr" path="res://assets/sprites/game/cards/art_mini/quickdraw_quentin.png" id="2_8x7e6"]
-[ext_resource type="Image" uid="uid://dx8teuokadlmc" path="res://assets/sprites/game/cards/art_pop/quickdraw_quentin.png" id="2_jemvb"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_mini/quickdraw_quentin.png" id="2_8x7e6"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/quickdraw_quentin.png" id="2_jemvb"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/champion_card_info.gd" id="2_s60fl"]
-[ext_resource type="Resource" uid="uid://c427cbie2arvi" path="res://resources/fof/boons/agile_aura.tres" id="2_udvb6"]
+[ext_resource type="Resource" path="res://resources/fof/boons/agile_aura.tres" id="2_udvb6"]
 [ext_resource type="Script" path="res://scripts/fof/cards/quickdraw_quentin.gd" id="2_vol13"]
 [ext_resource type="Script" path="res://scripts/common/data_structures/pos_rot.gd" id="3_wy00w"]
-[ext_resource type="PackedScene" uid="uid://bxdixxrf3f7aa" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_bf1vc"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_bf1vc"]
 
 [sub_resource type="Resource" id="Resource_7gysq"]
 script = ExtResource("3_wy00w")
@@ -56,6 +56,12 @@ collision_shape = SubResource("PackedScene_131pw")
 stat = 2.01124
 top = 1.86689
 eye = 1.642
+plus_attack = 0
+plus_health = 0
+plus_speed = 0
+plus_energy = 0
+ascended_traits = Array[int]([])
+ascended_ability_text = ""
 id = 3
 name = "Quickdraw Quentin"
 gdscript = ExtResource("2_vol13")

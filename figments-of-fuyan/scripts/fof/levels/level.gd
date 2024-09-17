@@ -9,9 +9,12 @@ func onClear() -> void:
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
-	for tile_object_data in info.data:
-		SavedData.onLoadModel(tile_object_data, self)
-		
 	for light in info.lights:
 		add_child(light.instantiate())
+		
+	for tile_object_data in info.data:
+		SavedData.onLoadModel(tile_object_data, self)
 	add_to_group("LevelsGD")
+
+func onFofInit() -> void:
+	get_tree().call_group("ObjectsGD", "setOccupiedCoords")

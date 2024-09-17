@@ -1,18 +1,18 @@
-[gd_resource type="Resource" script_class="TileInfo" load_steps=8 format=3 uid="uid://d12jdk68kjufo"]
+[gd_resource type="Resource" script_class="TileInfo" load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scripts/fof/tiles/tile.gd" id="1_seys7"]
-[ext_resource type="PackedScene" uid="uid://bqxy06d8pvddu" path="res://assets/models/fof/tiles/sand_tile.glb" id="2_8yfgy"]
-[ext_resource type="PackedScene" uid="uid://b8r3ayq3v0rv3" path="res://assets/models/fof/tiles/sand_tile_stair.glb" id="3_euqtv"]
-[ext_resource type="PackedScene" uid="uid://do2q01ermbmj3" path="res://assets/models/fof/tiles/sand_tile_bad.glb" id="4_nxplp"]
-[ext_resource type="PackedScene" uid="uid://ddhud6mnkjdul" path="res://assets/models/fof/tiles/sand_tile_good.glb" id="5_kvhnw"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/tiles/sand_tile.glb" id="2_8yfgy"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/tiles/sand_tile_stair.glb" id="3_euqtv"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/tiles/sand_tile_bad.glb" id="4_nxplp"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/tiles/sand_tile_good.glb" id="5_kvhnw"]
 [ext_resource type="Script" path="res://scripts/fof_info/game_objects/tile_info.gd" id="6_c5asi"]
-[ext_resource type="PackedScene" uid="uid://bb6rd8ea31ga" path="res://assets/models/fof/tiles/palm_tile_fill.glb" id="7_5s0e5"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/tiles/palm_tile_fill.glb" id="7_5s0e5"]
 
 [resource]
 script = ExtResource("6_c5asi")
 tile_fill = ExtResource("7_5s0e5")
 models = Array[PackedScene]([ExtResource("2_8yfgy"), ExtResource("3_euqtv"), ExtResource("4_nxplp"), ExtResource("5_kvhnw")])
-points = Array[Array]([])
+points = Array[Array]([[], [], [], []])
 id = 5
 name = "Sand Tile"
 gdscript = ExtResource("1_seys7")

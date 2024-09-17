@@ -41,6 +41,8 @@ func onMouseHovered(state: bool) -> void:
 
 #region Loading Level
 func onLoadEntered() -> bool:
-	load_level.emit(LevelInfo.getDataFromType(level_info.get_script()).new(level_info.id, true, level_info.timeout))
+	load_level.emit(\
+		LevelInfo.getDataFromType(level_info.get_script())\
+		.new(level_info.id, true, level_info.timeout))
 	return true
 #endregion

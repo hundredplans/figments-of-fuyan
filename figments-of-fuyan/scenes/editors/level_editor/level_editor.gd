@@ -227,7 +227,7 @@ func onHoverModelPlaced() -> void:
 	
 	onTileObjectInfoSelected(save_data, false)
 
-func onPlaceBaseTile(coords: Vector4i) -> TileGD:
+func onPlaceBaseTile(coords: Vector4i, is_overworld: bool = false) -> TileGD:
 	return SavedData.onLoadModel(SavedDataTile.new(1, false, coords, 0, int(is_overworld) * -1, false), World)
 	
 #endregion
@@ -345,19 +345,18 @@ func onChangeTileLockButtonState() -> void:
 	tile_lock_force = !tile_lock_force
 	TileLockButton.set_pressed_no_signal(tile_lock_force)
 #endregion
-#region Saving / Loading
+#region Load Buttons
 const LEVEL_PATH: String = "res://resources/fof/levels/"
+const DECORATION_PATH: String = "res://resources/datastore/decorations/"
 @onready var SaveLineEdit: LineEdit = %SaveLineEdit
 @onready var AreaOptionButton: OptionButton = %AreaOptionButton
+@onready var LoadLevelContainer: Container = %LoadLevelContainer
+@onready var LoadLevels: Control = %LoadLevels
 
 var AREA_TO_LEVEL_INFO: Dictionary = {
 	1: PalmLevelInfo,
 }
-		
-#endregion
-#region Loading
-@onready var LoadLevelContainer: Container = %LoadLevelContainer
-@onready var LoadLevels: Control = %LoadLevels
+
 func _on_load_button_pressed():
 	LoadLevels.visible = !LoadLevels.visible
 	for child in LoadLevelContainer.get_children(): child.queue_free()
@@ -367,15 +366,25 @@ func _on_load_button_pressed():
 		onHoverModelDeselected()
 		var levels: Array = Helper.getFofInfoArray(LevelInfo)
 		for level_info in levels:
-			var button := Button.new()
-			button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-			button.text = level_info.name
-			button.pressed.connect(onLoadLevel.bind(level_info))
-			button.mouse_filter = Control.MOUSE_FILTER_STOP
-			button.mouse_entered.connect(onMouseInUI.bind(true))
-			button.mouse_exited.connect(onMouseInUI.bind(false))
-			LoadLevelContainer.add_child(button)
-
+			onCreateLoadLevelButton(level_info.name, level_info)
+			
+		for decoration in Array(DirAccess.get_files_at(DECORATION_PATH))\
+		.map(func(x: String): return load(DECORATION_PATH + x)):
+			var button := onCreateLoadLevelButton(decoration.name, decoration)
+			button.theme_type_variation = "YellowButton"
+			
+func onCreateLoadLevelButton(button_name: String, pressed_info: Variant) -> Button:
+	var button := Button.new()
+	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	button.text = button_name
+	
+	button.mouse_filter = Control.MOUSE_FILTER_STOP
+	button.mouse_entered.connect(onMouseInUI.bind(true))
+	button.mouse_exited.connect(onMouseInUI.bind(false))
+	button.pressed.connect(onLoadLevel.bind(pressed_info))
+	LoadLevelContainer.add_child(button)
+	return button
+			
 func _on_hide_load_level_button_pressed():
 	LoadLevels.visible = false
 		
@@ -391,7 +400,6 @@ func onMouseInUI(state: bool) -> void:
 	else:
 		if was_last_selected: onLastHoverModelSelected()
 #endregion
-
 #region Area Option Button
 func setAreaOptionButtonItems() -> void:
 	for area_info in Helper.getFofInfoArray(AreaInfo):
@@ -399,76 +407,88 @@ func setAreaOptionButtonItems() -> void:
 	AreaOptionButton.select(0)
 	
 #endregion
-
 #region Overworld
-var is_overworld: bool = false
 func _on_overworld_button_pressed() -> void:
-	is_overworld = !is_overworld
-	onNewEmptyLevel()
+	onNewEmptyLevel(true)
 #endregion
 
 #region Level Shenaningans
-var loaded_level: LevelInfo
-func onNewEmptyLevel() -> void:
+var loaded: Variant # Level / Decoration
+func onNewEmptyLevel(is_overworld: bool = false) -> void:
 	onSaveLevel()
 	SaveLineEdit.text = ""
 	for tile_object in get_tree().get_nodes_in_group("TileObjectsGD"):
 		tile_object.onClear()
 		
 	if is_overworld:
-		loaded_level = OverworldLevelInfo.new()
+		loaded = DecorationDatastore.new()
+		setDecoration(true)
+		
 		var OVERWORLD_MAP_SIZE: int = 27
 		var Y_MAX: int = 9
 		for x in range(-OVERWORLD_MAP_SIZE, (OVERWORLD_MAP_SIZE + 1)):
 			for y in range(max(-OVERWORLD_MAP_SIZE, -x - OVERWORLD_MAP_SIZE), min(OVERWORLD_MAP_SIZE, -x + OVERWORLD_MAP_SIZE) + 1):
-				if abs(y) <= Y_MAX: onPlaceBaseTile(Vector4i(x, y, -x-y, 0))
+				if abs(y) <= Y_MAX: onPlaceBaseTile(Vector4i(x, y, -x-y, 0), true)
 		return
 		
-	loaded_level = AREA_TO_LEVEL_INFO[AreaOptionButton.get_selected_id()].new()
+	loaded = AREA_TO_LEVEL_INFO[AreaOptionButton.get_selected_id()].new()
 	for x in range(-DEFAULT_LEVEL_SIZE, (DEFAULT_LEVEL_SIZE + 1)):
 		for y in range(max(-DEFAULT_LEVEL_SIZE, -x - DEFAULT_LEVEL_SIZE), min(DEFAULT_LEVEL_SIZE, -x + DEFAULT_LEVEL_SIZE) + 1):
 			onPlaceBaseTile(Vector4i(x, y, -x-y, 0))
 	
 func onSaveLevel() -> void:
 	var level_name: String = SaveLineEdit.text
-	if !level_name.is_empty():
-		if level_name != loaded_level.name:
+	if level_name.is_empty(): return
+	if !save_as_decoration:
+		if loaded is DecorationDatastore:
+			loaded = AREA_TO_LEVEL_INFO[AreaOptionButton.get_selected_id()].new()
+			
+		if level_name != loaded.name:
 			var new_level: LevelInfo = onFindLevelByName(level_name)
-			if new_level != null: loaded_level = new_level
-			else: loaded_level = loaded_level.get_script().new()
+			if new_level != null: loaded = new_level
+			else: loaded = loaded.get_script().new()
 
-		loaded_level.data = []
+		loaded.data = []
 		for child in get_tree().get_nodes_in_group("TileObjectsGD"):
-			loaded_level.data.append(child.onSave())
+			loaded.data.append(child.onSave())
 
-		if level_name == loaded_level.name:
-			ResourceSaver.save(loaded_level)
+		if level_name == loaded.name:
+			ResourceSaver.save(loaded)
 			return
 		
-		loaded_level.setInfo(level_name, AreaOptionButton.get_selected_id())
-		if loaded_level is RegularLevelInfo:
-			loaded_level.setSpawnPropertiesAutoValues(get_tree().get_nodes_in_group("TileObjectsGD"))
+		loaded.setInfo(level_name, AreaOptionButton.get_selected_id())
+		loaded.setSpawnPropertiesAutoValues(get_tree().get_nodes_in_group("TileObjectsGD"))
 		var path: String = LEVEL_PATH + level_name.to_snake_case() + ".tres"
-		loaded_level.resource_path = path
-		ResourceSaver.save(loaded_level)
+		loaded.resource_path = path
+		ResourceSaver.save(loaded)
+		return
 	
-func onLoadLevel(level_info: LevelInfo) -> void:
+	if loaded is not DecorationDatastore: loaded = DecorationDatastore.new()
+	loaded.name = level_name
+	loaded.data = []
+	for child in get_tree().get_nodes_in_group("TileObjectsGD"):
+		loaded.data.append(child.onSave())
+
+	ResourceSaver.save(loaded, DECORATION_PATH + loaded.name + ".tres")
+		
+func onLoadLevel(loaded_info: Variant) -> void:
 	onSaveLevel()
-	loaded_level = level_info
+	loaded = loaded_info
+	setDecoration(loaded is DecorationDatastore)
 	onHoverModelDeselected()
-	is_overworld = level_info is OverworldLevelInfo
-	SaveLineEdit.text = level_info.name
+	SaveLineEdit.text = loaded.name
 	
-	var area_id: int = level_info.area_id
-	for idx in range(AreaOptionButton.item_count):
-		if AreaOptionButton.get_item_id(idx) == area_id:
-			AreaOptionButton.select(idx)
-			break
+	if loaded is LevelInfo:
+		var area_id: int = loaded.area_id
+		for idx in range(AreaOptionButton.item_count):
+			if AreaOptionButton.get_item_id(idx) == area_id:
+				AreaOptionButton.select(idx)
+				break
 	
 	for tile_object in get_tree().get_nodes_in_group("TileObjectsGD"):
 		tile_object.onClear()
 	
-	for data in level_info.data: SavedData.onLoadModel(data, World)
+	for data in loaded.data: SavedData.onLoadModel(data, World)
 	
 func _on_area_option_button_item_selected(_index: int) -> void:
 	onNewEmptyLevel()
@@ -477,4 +497,15 @@ func onFindLevelByName(level_name: String) -> LevelInfo:
 	for level in Helper.getFofInfoArray(LevelInfo):
 		if level.name == level_name: return level
 	return null
-#region 
+#endregion 
+
+#region Decorations
+@onready var DecorationButton: CheckBox = %DecorationButton
+var save_as_decoration: bool = false
+func _on_decoration_button_pressed() -> void:
+	setDecoration(!save_as_decoration)
+	
+func setDecoration(state: bool) -> void:
+	save_as_decoration = state
+	DecorationButton.set_pressed_no_signal(state)
+#endregion

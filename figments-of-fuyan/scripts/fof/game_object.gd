@@ -36,7 +36,7 @@ func setRayPickable(state: bool) -> void:
 		body.input_ray_pickable = state
 
 func setVisible(state: bool) -> void: visible = state
-
+	
 func onRotateDirection(direction: int) -> void:
 	tile_rotation += direction
 	if tile_rotation > 6: tile_rotation = 1
@@ -57,7 +57,7 @@ func setMapPosition() -> void:
 
 #region Save/Load/Clear
 func onLoadData(_data: SavedData) -> void:
-	add_to_group("GameObjectGD")
+	add_to_group("GameObjectsGD")
 #endregion
 
 #region Material Updates
