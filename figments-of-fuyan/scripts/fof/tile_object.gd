@@ -1,7 +1,6 @@
 class_name TileObjectGD extends GameObjectGD
 
 var variation: int
-
 #region Helper functions
 func isIDVariation(id: int, _variation: int) -> bool: return info.id == id and _variation == variation
 #endregion
@@ -31,6 +30,7 @@ func onRemovePoint(point: Vector3) -> void:
 	ResourceSaver.save(info)
 #endregion
 
+#region Load
 func onLoadData(data: SavedData) -> void:
 	coords = data.coords
 	tile_rotation = data.tile_rotation
@@ -51,10 +51,24 @@ func onLoadModel() -> void:
 	call("setDefaultCollisionLayers")
 	setRayPickable(ray_pickable)
 	
+func onLevelFofInit() -> void: pass
+func onLoadDataLevel() -> void: pass
+#endregion
+	
 #region Variations
 func clampVariation(i: int) -> void:
 	if variation >= 0:
 		variation += i
 		if variation >= info.models.size(): variation = 0
 		elif variation < 0: variation = info.models.size() - 1
+#endregion
+
+#region Level Visible
+func setLevelVisible(state: bool) -> void:
+	super(state)
+	if is_in_group("LevelTileObjectsGD"):
+		var greyscale_material: ShaderMaterial = load(info.GREYSCALE_MATERIAL) if !state else null
+		for mesh in getMeshes():
+			for surface_id in mesh.get_surface_override_material_count():
+				mesh.set_surface_override_material(surface_id, greyscale_material)
 #endregion

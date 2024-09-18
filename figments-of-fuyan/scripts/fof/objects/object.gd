@@ -8,6 +8,7 @@ var map_rotation: float
 var map_position: Vector3
 var height: int
 var occupied_coords: Array
+var occupied_tiles: Array
 #endregion
 
 #region Getters
@@ -40,6 +41,9 @@ func setPosition(_coords := Vector4i.ZERO, point := Vector3.ZERO, force_tile_loc
 #endregion
 
 #region Tile Coords
+func getTilesCoords() -> Array:
+	return info.tile_coords[variation]
+
 func onLoadTilesCoords(parent: Node3D, tile_info: TileInfo) -> void:
 	for i in range(info.models.size()):
 		if i >= info.tile_coords.size(): info.tile_coords.append([Vector4.ZERO])
@@ -60,8 +64,8 @@ func onDeleteTile(tile_coords: Vector4i) -> void:
 
 #region Save/Load
 func onSave() -> SavedDataGameObject:
-	return SavedDataObject.new(info.id, false, coords, tile_rotation, variation, map_rotation, map_position, height,\
-	occupied_coords)
+	return SavedDataObject.new(info.id, false, coords, tile_rotation, level_visible, variation, map_rotation, map_position, height,\
+	occupied_tiles.map(func(x: TileGD): return x.getCoords()))
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -75,6 +79,11 @@ func onLoadData(data: SavedData) -> void:
 	
 	onLoadModel()
 	add_to_group("ObjectsGD")
+	
+func onLoadDataLevel() -> void:
+	occupied_tiles = occupied_coords.map(func(x: Vector4i): return Game.getTile(x))
+	for Tile in occupied_tiles:
+		Tile.setOccupiedObject(self)
 #endregion
 
 #region Collision Layers
@@ -84,6 +93,17 @@ func setDefaultCollisionLayers() -> void:
 #endregion
 
 #region Occupied Tiles
-func setOccupiedCoords() -> void:
-	pass
+func setOccupiedTiles(tile_position_to_tile: Dictionary) -> void:
+	var closest_tile: TileGD
+	var closest_distance: float = 1000
+	for pos in tile_position_to_tile:
+		var distance: float = pos.distance_to(position)
+		if distance < closest_distance:
+			closest_tile = tile_position_to_tile[pos]
+			closest_distance = distance
+			
+	var coords_array: Array = getTilesCoords().map(func(x: Vector4i): return x + closest_tile.getCoords())
+	occupied_tiles = coords_array.map(func(x: Vector4i): return Game.getTile(x)).filter(func(x: TileGD): return x != null)
+	for Tile in occupied_tiles:
+		Tile.setOccupiedObject(self)
 #endregion

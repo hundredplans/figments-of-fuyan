@@ -4,6 +4,7 @@ class_name GameObjectGD extends FofGD
 var Model: Node3D
 var coords: Vector4i
 var tile_rotation: int
+var level_visible: bool
 #endregion
 
 #region Helper Functions
@@ -56,7 +57,8 @@ func setMapPosition() -> void:
 #endregion
 
 #region Save/Load/Clear
-func onLoadData(_data: SavedData) -> void:
+func onLoadData(data: SavedData) -> void:
+	setLevelVisible(data.level_visible)
 	add_to_group("GameObjectsGD")
 #endregion
 
@@ -77,4 +79,9 @@ func setMeshesMaterial(mat: Material = null) -> void:
 func setEmptyCollisionLayers() -> void:
 	for body in getStaticBodies():
 		body.collision_layer = 0
+#endregion
+
+#region Level Visible
+func setLevelVisible(state: bool) -> void:
+	level_visible = state
 #endregion

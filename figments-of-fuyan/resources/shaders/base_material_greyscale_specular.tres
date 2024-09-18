@@ -1,4 +1,4 @@
-[gd_resource type="Shader" format=3 uid="uid://ce3ku0ssrd0kb"]
+[gd_resource type="Shader" format=3 uid="uid://ckjs74ku8inpc"]
 
 [resource]
 code = "shader_type spatial;
@@ -8,6 +8,10 @@ uniform sampler2D tx_attributes;
 uniform sampler2D tx_color;
 uniform sampler2D tx_emission;
 uniform float max_grey;
+
+uniform float distance_fade_min = 0.5;
+uniform float distance_fade_max = 2;
+uniform float specular = 0.5;
 
 void fragment() {
 // Input:9
@@ -77,5 +81,13 @@ void fragment() {
 	EMISSION = vec3(n_out15p0.xyz);
 
 	ALBEDO = vec3(dot(ALBEDO.rgb, vec3(max_grey)));
+	SPECULAR = specular;
+	{
+		float fade_distance = length(VERTEX);
+		const vec3 magic = vec3(0.06711056f, 0.00583715f, 52.9829189f);		float fade = clamp(smoothstep(distance_fade_min, distance_fade_max, fade_distance), 0.0, 1.0);
+		if (fade < 0.001 || fade < fract(magic.z * fract(dot(FRAGCOORD.xy, magic.xy)))) {
+			discard;
+		}
+	}
 }
 "

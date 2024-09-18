@@ -18,6 +18,12 @@ static func onLoadModel(data: SavedData, parent: Node3D, init_args: Array = []) 
 	parent.add_child(model)
 	model.onLoadData(data)
 	
+	if Game.ActionManagerReference != null:
+		model.push_action.connect(Game.ActionManagerReference.onPushAction)
+		model.append_action.connect(Game.ActionManagerReference.onAppendAction)
+		Game.ActionManagerReference.pre_action.connect(model.onProcessAction)
+		Game.ActionManagerReference.post_action.connect(model.onProcessAction)
+	
 	if data.first_init and model.has_method("onFofInit"): model.callv("onFofInit", init_args)
 	return model
 	

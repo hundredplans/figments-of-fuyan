@@ -13,14 +13,17 @@ extends Node
 
 @export var SHILLING_START_COUNT: int = 10
 
+@onready var ActionManager: ActionManagerGD
+@export var ActionManagerPacked: PackedScene
+
 #region Base Functions
 func _ready():
 	if !Helper.getAdmin(): onLoadScreenWorld(main_menu_ui, main_menu_world)
 	else:
-		#onStartGame(SavedData.onLoadModel(SavedDataCard.new(2), KeepAcross))
-		var DIR_PATH: String = SaveFileInfo.SAVE_DIRECTORY
-		var files: Array = Array(DirAccess.get_files_at(DIR_PATH))
-		onLoadLevel(SavedData.onLoadModel(load(DIR_PATH + files[0]), KeepAcross))
+		onStartGame(SavedData.onLoadModel(SavedDataCard.new(2), KeepAcross))
+		#var DIR_PATH: String = SaveFileInfo.SAVE_DIRECTORY
+		#var files: Array = Array(DirAccess.get_files_at(DIR_PATH))
+		#onLoadLevel(SavedData.onLoadModel(load(DIR_PATH + files[0]), KeepAcross))
 #endregion
 
 #region Load Screen + World
@@ -74,6 +77,10 @@ func onLoadGame(save_file_data: SavedDataSaveFile) -> void:
 	else: onLoadLevel(save_file)
 	
 func onLoadLevel(save_file: SaveFileGD) -> void:
+	ActionManager = ActionManagerPacked.instantiate()
+	add_child(ActionManager)
+	Game.ActionManagerReference = ActionManager
+	
 	var scenes: Dictionary = onLoadScreenWorld(level_ui, level_world)
 	scenes.ui.setInfo(save_file)
 	scenes.world.setInfo(save_file)

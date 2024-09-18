@@ -20,4 +20,6 @@ func onAppendAction(action: Action) -> void:
 	action.owner = self
 	append_action.emit(action)
 
+func onProcessAction(_action: Action) -> void: pass
+
 #endregion

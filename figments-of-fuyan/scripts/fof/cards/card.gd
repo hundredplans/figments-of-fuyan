@@ -9,6 +9,7 @@ var energy: int
 
 var team: int
 var is_in_deck: bool
+var is_in_hand: bool
 var ascended: bool
 #endregion
 
@@ -77,7 +78,7 @@ func onCreateCardUI(parent: Control) -> Control:
 
 #region Save/Load/Clear
 func onSave() -> SavedDataCard:
-	return SavedDataCard.new(info.id, false, coords, tile_rotation, team, is_in_deck, attack, health, speed, max_health, energy, ascended)
+	return SavedDataCard.new(info.id, false, coords, tile_rotation, level_visible, team, is_in_deck, attack, health, speed, max_health, energy, ascended, is_in_hand)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -87,6 +88,9 @@ func onLoadData(data: SavedData) -> void:
 	
 	is_in_deck = data.is_in_deck
 	if is_in_deck: add_to_group("DeckCardsGD")
+	
+	is_in_hand = data.is_in_hand
+	if is_in_hand: add_to_group("HandCardsGD")
 	
 	add_to_group("CardsGD")
 	

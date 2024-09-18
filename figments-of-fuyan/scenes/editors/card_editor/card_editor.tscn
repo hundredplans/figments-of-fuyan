@@ -1,11 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://d184bk44cwqxg"]
+[gd_scene load_steps=6 format=3 uid="uid://d184bk44cwqxg"]
 
 [ext_resource type="Script" path="res://scenes/editors/card_editor/card_editor.gd" id="1_dfyc6"]
 [ext_resource type="Resource" uid="uid://qeewgquabwm5" path="res://resources/datastore/decorations/PalmOverworldDecoration.tres" id="2_seu8c"]
 [ext_resource type="Script" path="res://addons/movement_camera.gd" id="2_xw1dl"]
 [ext_resource type="Environment" uid="uid://g3ihmrpunr2b" path="res://assets/environments/main_menu_environment.tres" id="3_1854o"]
 [ext_resource type="PackedScene" uid="uid://2figxxms5ybp" path="res://scenes/common/hide_button/hide_button.tscn" id="4_mok6a"]
-[ext_resource type="PackedScene" uid="uid://cqwfvh83nko7x" path="res://scenes/game/cards/ui/card_ui.tscn" id="5_i2ww7"]
 
 [node name="CardEditor" type="Node"]
 script = ExtResource("1_dfyc6")
@@ -29,9 +28,11 @@ environment = ExtResource("3_1854o")
 [node name="MarginContainer" type="MarginContainer" parent="."]
 offset_right = 1920.0
 offset_bottom = 1080.0
+mouse_filter = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="CardsContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -57,17 +58,17 @@ columns = 5
 custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 
-[node name="LineEdit" type="LineEdit" parent="MarginContainer/VBoxContainer/CardsContainer/VBoxContainer"]
+[node name="SearchAreaCard" type="LineEdit" parent="MarginContainer/VBoxContainer/CardsContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 placeholder_text = "Search by Name / Area"
 alignment = 1
 
 [node name="CardSpot" type="Control" parent="MarginContainer/VBoxContainer/CardsContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-
-[node name="CardUI" parent="MarginContainer/VBoxContainer/CardsContainer/VBoxContainer/CardSpot" instance=ExtResource("5_i2ww7")]
-scale = Vector2(2, 2)
+mouse_filter = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CardsContainer/VBoxContainer"]
 layout_mode = 2
@@ -106,5 +107,7 @@ size_flags_horizontal = 3
 theme_type_variation = &"BlueButton"
 hide_node = NodePath("../MarginContainer")
 
+[connection signal="camera_panning" from="MovementCamera" to="." method="_on_movement_camera_camera_panning"]
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/CardsContainer/VBoxContainer/SearchAreaCard" to="." method="_on_search_area_card_text_changed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/CardsContainer/VBoxContainer/HBoxContainer/AscendButton" to="." method="_on_ascend_button_pressed"]
 [connection signal="pressed" from="HideButton" to="." method="_on_hide_button_pressed"]

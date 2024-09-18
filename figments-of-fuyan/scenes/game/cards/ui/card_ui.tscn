@@ -48,6 +48,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 264.0
 offset_bottom = 397.0
+mouse_filter = 2
 script = ExtResource("1_q53ix")
 rarities = Array[Image]([ExtResource("2_6wo8e"), ExtResource("3_8tmke"), null, ExtResource("4_nqgip"), ExtResource("5_nm6rj"), ExtResource("6_ngrci"), ExtResource("7_uqhgb"), ExtResource("8_1oo08"), ExtResource("8_f8y83")])
 
@@ -59,6 +60,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="AreaBackground" type="TextureButton" parent="Art"]
 unique_name_in_owner = true
@@ -99,6 +101,7 @@ offset_left = 7.0
 offset_top = 338.0
 offset_right = 242.0
 offset_bottom = 392.0
+mouse_filter = 2
 
 [node name="Attack" type="Control" parent="Stats"]
 layout_mode = 1
@@ -110,6 +113,7 @@ offset_left = -0.0349998
 offset_top = -53.0
 offset_right = 39.965
 offset_bottom = -3.0
+mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="Stats/Attack"]
 texture_filter = 1
@@ -139,6 +143,7 @@ offset_left = -0.0100098
 offset_top = -50.08
 offset_right = 39.99
 offset_bottom = -0.0800171
+mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="Stats/Health"]
 texture_filter = 1
@@ -168,6 +173,7 @@ offset_left = 0.0799866
 offset_top = -49.864
 offset_right = 40.08
 offset_bottom = 0.135986
+mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="Stats/Speed"]
 texture_filter = 1
@@ -198,6 +204,7 @@ offset_left = 25.08
 offset_top = -180.568
 offset_right = 65.08
 offset_bottom = -130.568
+mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="Stats/ToolControl"]
 texture_filter = 1
@@ -215,6 +222,7 @@ offset_left = -150.92
 offset_top = -224.568
 offset_right = -110.92
 offset_bottom = -174.568
+mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="Stats/Energy"]
 texture_filter = 1
@@ -240,6 +248,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme = ExtResource("10_cav0f")
 
 [node name="NameLabel" type="Label" parent="Text"]
@@ -258,10 +267,12 @@ offset_left = 72.0
 offset_top = 233.0
 offset_right = 189.0
 offset_bottom = 347.0
+mouse_filter = 2
 
 [node name="SpacerTop" type="Control" parent="Text/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 2
 
 [node name="TextLabel" parent="Text/VBoxContainer" instance=ExtResource("19_hlg43")]
 unique_name_in_owner = true
@@ -271,3 +282,8 @@ settings = ExtResource("20_rm1pc")
 [node name="SpacerBottom" type="Control" parent="Text/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 2
+
+[connection signal="pressed" from="Art/AreaBackground" to="." method="onPressed"]
+[connection signal="pressed" from="Art/Background" to="." method="onPressed"]
+[connection signal="pressed" from="Art/ArtPop" to="." method="onPressed"]

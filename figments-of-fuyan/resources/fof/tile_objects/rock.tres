@@ -8,7 +8,7 @@
 
 [resource]
 script = ExtResource("1_k8q05")
-tile_coords = Array[Array]([[Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)]])
+tile_coords = Array[Array]([[Vector4(0, 0, 0, 0), Vector4i(-1, 1, 0, 0), Vector4i(0, 1, -1, 0), Vector4i(1, 0, -1, 0), Vector4i(1, -1, 0, 0), Vector4i(0, -1, 1, 0), Vector4i(-1, 0, 1, 0), Vector4i(0, -1, 1, 1), Vector4i(-1, 0, 1, 1), Vector4i(-1, 1, 0, 1), Vector4i(0, 1, -1, 1), Vector4i(1, 0, -1, 1), Vector4i(1, -1, 0, 1), Vector4i(0, 0, 0, 2)], [Vector4(0, 0, 0, 0), Vector4i(1, 0, -1, 0), Vector4i(-1, 0, 1, 0), Vector4i(-1, 1, 0, 0), Vector4i(0, 1, -1, 0), Vector4i(1, -1, 0, 0), Vector4i(0, -1, 1, 0), Vector4i(0, 1, -1, 1), Vector4i(1, 0, -1, 1), Vector4i(1, -1, 0, 1), Vector4i(0, -1, 1, 1), Vector4i(-1, 1, 0, 1), Vector4i(-1, 0, 1, 1), Vector4i(0, 0, 0, 2)], [Vector4(0, 0, 0, 0), Vector4i(1, 0, -1, 0), Vector4i(-1, 0, 1, 0), Vector4i(0, 0, 0, 1), Vector4i(-1, 0, 1, 1), Vector4i(1, 0, -1, 1)]])
 lock_rotation = false
 lock_tile = false
 solids = Array[bool]([true, true, true])

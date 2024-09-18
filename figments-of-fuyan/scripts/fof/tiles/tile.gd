@@ -1,9 +1,12 @@
 class_name TileGD
 extends TileObjectGD
 
+#region Global
+var occupied_objects: Array = []
+#endregion
+
 #region Saved Data
 var tile_fill: bool = false
-var level_visible: bool = true
 #endregion
 #region Getters
 func getHeight() -> int: return coords.w
@@ -38,7 +41,7 @@ func onCreateTileFill(state: bool) -> String:
 #endregion
 #region Save / Load
 func onSave() -> SavedDataGameObject:
-	return SavedDataTile.new(info.id, false, coords, tile_rotation, variation, tile_fill)
+	return SavedDataTile.new(info.id, false, coords, tile_rotation, level_visible, variation, tile_fill)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -50,4 +53,17 @@ func onLoadModel() -> void:
 	super()
 	setCoords(coords)
 	setTileRotation(tile_rotation)
+	
+func onLevelFofInit() -> void:
+	setLevelVisible(SpawnGD in occupied_objects.map(func(x: ObjectGD): return x.get_script()))
+
+func setLevelVisible(state: bool) -> void:
+	super(state)
+	for object in occupied_objects: object.setLevelVisible(state)
+
+#endregion
+
+#region Occupied Objects
+func setOccupiedObject(object: ObjectGD) -> void:
+	occupied_objects.append(object)
 #endregion

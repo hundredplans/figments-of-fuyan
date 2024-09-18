@@ -23,16 +23,19 @@ func onFofInit() -> void:
 	decoration_datas.shuffle()
 	decoration_datas.resize(int(Random.getRandomKey(ISLAND_ODDS)))
 	
+	var avoid_coords: Array = [Vector4i.ZERO]
 	for island in decoration_datas:
 		var start_coord := Vector4i.ZERO
-		while(decoration_coords.all(func(x: Vector4i): return Game.getCoordsDistance(x, start_coord) > DISTANCE_BOUND)):
+		while(avoid_coords.any(func(x: Vector4i): return Game.getCoordsDistance(x, start_coord) <= DISTANCE_BOUND)):
 			var x: int = randi_range(LOWER_GEN_BOUND, UPPER_GEN_BOUND)
 			x *= int(Random.getBool()) * -1
 			
 			var y: int = randi_range(-UPPER_GEN_BOUND, UPPER_GEN_BOUND)
 			
 			start_coord = Vector4i(x, y, -x-y, 0) if Random.getBool() else Vector4i(y, x, -y-x, 0)
-			decoration_coords.append(start_coord)
+			
+		avoid_coords.append(start_coord)
+		decoration_coords.append(start_coord)
 	onCreatePalmDecorations()
 			
 func onSave() -> SavedDataPalmLevel:

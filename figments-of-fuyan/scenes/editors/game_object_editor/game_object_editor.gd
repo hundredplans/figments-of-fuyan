@@ -25,7 +25,7 @@ func onFindMouseTileObject() -> TileGD:
 	return Helper.getCollision(TileRay.get_collider(), TileGD)
 	
 func onFindTile(coords: Vector4i) -> TileGD:
-	for Tile in get_tree().get_nodes_in_group("Tiles"):
+	for Tile in get_tree().get_nodes_in_group("TilesGD"):
 		if Tile.getCoords() == coords: return Tile
 	return null
 	
@@ -114,8 +114,7 @@ var is_scroll_disabled: bool = false
 func onChangeVariation(direction: int) -> void:
 	if SelectedModel is not CardGD and !is_scroll_disabled and !mouse_in_ui:
 		SelectedModel.clampVariation(direction)
-		SelectedModel.onLoadModel()
-		#onGameObjectInfoSelected(SelectedModel.onSave())
+		onGameObjectInfoSelected(SelectedModel.onSave())
 		onDisableScroll()
 	
 func onDisableScroll() -> void:

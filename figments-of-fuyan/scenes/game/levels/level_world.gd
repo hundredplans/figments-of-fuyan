@@ -9,3 +9,6 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	save_file = _save_file
 	area = save_file.area
 	level = area.active_level
+
+func onActionPlaying(_state: bool) -> void:
+	pass

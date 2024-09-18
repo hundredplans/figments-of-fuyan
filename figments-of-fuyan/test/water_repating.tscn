@@ -1,15 +1,11 @@
-[gd_scene load_steps=9 format=4 uid="uid://y5ytdt7d7c61"]
+[gd_scene load_steps=8 format=4 uid="uid://y5ytdt7d7c61"]
 
-[ext_resource type="Texture2D" uid="uid://d2ij48bhm7aer" path="res://test/hex.png" id="1_ul8ui"]
+[ext_resource type="Material" uid="uid://b42ynlkiit1ws" path="res://test/water_test.tres" id="1_7gyk5"]
 [ext_resource type="Material" uid="uid://ki84ow24b01p" path="res://resources/materials/game/base_material_specular.tres" id="2_k8swc"]
 [ext_resource type="Material" uid="uid://dqs86kl42o4rm" path="res://resources/materials/colors/unshaded/black.tres" id="3_3xrvr"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j4n6b"]
-albedo_texture = ExtResource("1_ul8ui")
-uv1_scale = Vector3(600, 600, 600)
-
 [sub_resource type="PlaneMesh" id="PlaneMesh_asgh1"]
-material = SubResource("StandardMaterial3D_j4n6b")
+material = ExtResource("1_7gyk5")
 size = Vector2(1000, 1000)
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_w8j8q"]

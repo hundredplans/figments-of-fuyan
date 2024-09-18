@@ -247,5 +247,5 @@ collision_mask = 24
 [connection signal="pressed" from="UI/BottomBar/NewButton" to="." method="onNewEmptyLevel"]
 [connection signal="pressed" from="UI/BottomBar/OverworldButton" to="." method="_on_overworld_button_pressed"]
 [connection signal="pressed" from="UI/LoadLevels/HBoxContainer/HideLoadLevelButton" to="." method="_on_hide_load_level_button_pressed"]
-[connection signal="camera_panning" from="World/Camera3D" to="." method="onMouseInUI"]
 [connection signal="camera_panning" from="World/Camera3D" to="." method="_on_camera_3d_camera_panning"]
+[connection signal="camera_panning" from="World/Camera3D" to="." method="onMouseInUI"]

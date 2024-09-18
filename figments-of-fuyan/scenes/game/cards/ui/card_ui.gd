@@ -1,5 +1,6 @@
 extends Control
 
+signal pressed
 #region Globals
 @onready var AreaBackground: ButtonAutomask = %AreaBackground
 @onready var Background: ButtonAutomask = %Background
@@ -19,7 +20,10 @@ extends Control
 @export_group("Admin")
 @export var rarities: Array[Image]
 #endregion
-func setInfo(Card: CardGD) -> void:
+var Card: CardGD
+
+func setInfo(_Card: CardGD) -> void:
+	Card = _Card
 	Background.setTexture(rarities[Card.info.rarity])
 	ArtPop.setTexture(Card.info.art_pop)
 	TextLabel.setText(Card.getAbilityText())
@@ -31,4 +35,5 @@ func setInfo(Card: CardGD) -> void:
 	EnergyLabel.text = str(Card.energy)
 	ToolControl.visible = false
 	
-	
+func onPressed() -> void:
+	pressed.emit(self)
