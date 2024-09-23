@@ -365,5 +365,10 @@ func onMapNodeLoadLevel(level_data: SavedDataLevel) -> void:
 	get_tree().call_group("TileObjectsGD", "free")
 	get_tree().call_group("MapNodesGD", "onClear")
 	get_tree().call_group("CardsGD", "onRemoveModel")
+	load_level.emit(level_data)
+
+func onLoadActiveLevel(level_data: SavedDataLevel) -> LevelGD:
+	level_data.max_energy = info.world.getMaxEnergy()
+	level_data.energy = level_data.max_energy
 	active_level = SavedData.onLoadModel(level_data, self)
-	load_level.emit()
+	return active_level

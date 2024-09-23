@@ -4,6 +4,16 @@ var ActionManagerReference: ActionManagerGD
 const SELECTED_MAP_NODE_TRAVEL_SPEED: float = 1
 enum Rarities {SCRAP, NEUTRAL, MINI, COMMON, RARE, EXALT, MINIBOSS, BOSS, CHAMPION}
 enum ShopTypes {CARD, BOON, TOOL, DECK}
+enum Phases {NULL, START, HAND, PLAYER, AI, NEUTRAL}
+enum SpectateTypes {ALLY, ENEMY, SPAWN}
+
+var CARD_PLACES_TO_GROUP: Dictionary = {
+	CardGD.CARD_PLACES.NULL: "",
+	CardGD.CARD_PLACES.HAND: "HandCardsGD",
+	CardGD.CARD_PLACES.DECK: "DeckCardsGD",
+	CardGD.CARD_PLACES.FIELD: "FieldCardsGD"
+}
+
 func getRarityString(rarity: Rarities) -> String:
 	match rarity:
 		Rarities.SCRAP: return "Scrap"
@@ -47,5 +57,13 @@ func getTile(coords: Vector4i) -> TileGD:
 	for Tile in get_tree().get_nodes_in_group("LevelTilesGD"):
 		if Tile.getCoords() == coords: return Tile
 	return null
+#endregion
+
+#region Units
+func getAllyUnits(team: int = 0) -> Array:
+	return get_tree().get_nodes_in_group("FieldCardsGD").filter(func(x: CardGD): return x.team == team)
+	
+func getEnemyUnits(team: int = 0) -> Array:
+	return get_tree().get_nodes_in_group("FieldCardsGD").filter(func(x: CardGD): return x.team != team)
 #endregion
 	

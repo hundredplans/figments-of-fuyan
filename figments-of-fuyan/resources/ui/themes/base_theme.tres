@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=24 format=3 uid="uid://dcbv431prk86r"]
+[gd_resource type="Theme" load_steps=28 format=3 uid="uid://dcbv431prk86r"]
 
 [ext_resource type="FontFile" uid="uid://dpk4daccj6hwv" path="res://assets/fonts/roboto.ttf" id="1_8d2p5"]
 
@@ -153,6 +153,42 @@ corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 anti_aliasing = false
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lckoa"]
+bg_color = Color(0.188389, 0.0193033, 0, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 1)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jiyny"]
+bg_color = Color(0.685379, 0.158333, 0, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 1)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vyoa2"]
+bg_color = Color(0.685379, 0.158333, 0, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 1)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lwrfe"]
+bg_color = Color(0.422602, 0.0826168, 4.81308e-08, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 1)
+anti_aliasing = false
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vyaib"]
 bg_color = Color(1, 0.21268, 0.159696, 1)
 border_width_left = 10
@@ -259,6 +295,11 @@ PurpleButton/styles/normal = SubResource("StyleBoxFlat_refw3")
 PurpleButton/styles/pressed = SubResource("StyleBoxFlat_gfera")
 PurplePanelContainer/base_type = &"PanelContainer"
 PurplePanelContainer/styles/panel = SubResource("StyleBoxFlat_xycu3")
+RedButton/base_type = &"Button"
+RedButton/styles/disabled = SubResource("StyleBoxFlat_lckoa")
+RedButton/styles/hover = SubResource("StyleBoxFlat_jiyny")
+RedButton/styles/normal = SubResource("StyleBoxFlat_vyoa2")
+RedButton/styles/pressed = SubResource("StyleBoxFlat_lwrfe")
 RedPanelContainer/base_type = &"PanelContainer"
 RedPanelContainer/styles/panel = SubResource("StyleBoxFlat_vyaib")
 WhitePanelContainer/base_type = &"PanelContainer"

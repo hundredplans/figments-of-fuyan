@@ -20,10 +20,10 @@ extends Node
 func _ready():
 	if !Helper.getAdmin(): onLoadScreenWorld(main_menu_ui, main_menu_world)
 	else:
-		onStartGame(SavedData.onLoadModel(SavedDataCard.new(2), KeepAcross))
-		#var DIR_PATH: String = SaveFileInfo.SAVE_DIRECTORY
-		#var files: Array = Array(DirAccess.get_files_at(DIR_PATH))
-		#onLoadLevel(SavedData.onLoadModel(load(DIR_PATH + files[0]), KeepAcross))
+		var DIR_PATH: String = SaveFileInfo.SAVE_DIRECTORY
+		var files: Array = Array(DirAccess.get_files_at(DIR_PATH))
+		if files.is_empty(): onStartGame(SavedData.onLoadModel(SavedDataCard.new(2), KeepAcross))
+		else: onLoadGame(load(DIR_PATH + files[0]))
 #endregion
 
 #region Load Screen + World
@@ -46,7 +46,8 @@ func onLoadScreen(packed_scene: PackedScene) -> void:
 	ActiveScreen = packed_scene.instantiate()
 	
 	match packed_scene:
-		main_menu_ui: ActiveScreen.load_game.connect(onLoadGame)
+		main_menu_ui:
+			ActiveScreen.load_game.connect(onLoadGame)
 	
 func onLoadWorld(packed_scene: PackedScene) -> void:
 	if ActiveWorld != null: ActiveWorld.queue_free()
@@ -56,34 +57,37 @@ func onLoadWorld(packed_scene: PackedScene) -> void:
 		main_menu_world: ActiveWorld.start.connect(onStartGame)
 	
 func onStartGame(Card: CardGD) -> void:
-	Card.is_in_deck = true
 	var area_id: int = 1
 	var area_data: SavedDataArea = SavedDataArea.new(area_id, true)
 	
 	var save_file_data := SavedDataSaveFile.new(getFirstEmptySaveSlotID(), true, randi(), area_data, \
-	SHILLING_START_COUNT, [], 0, [Card.onSave()])
+	SHILLING_START_COUNT, [], 0, [Card.onSave(), SavedDataCard.new(4), SavedDataCard.new(5), SavedDataCard.new(6), SavedDataCard.new(7)])
 	
 	onLoadGame(save_file_data)
 	
 func onLoadGame(save_file_data: SavedDataSaveFile) -> void:
 	var load_map: bool = save_file_data.area_data.level_data == null
 	var save_file: SaveFileGD = SavedData.onLoadModel(save_file_data, KeepAcross)
-	save_file.load_level.connect(onLoadLevel.bind(save_file))
+	save_file.load_level.connect(onLoadLevel)
 	if load_map:
 		var scenes: Dictionary = onLoadScreenWorld(map_ui, map_world)
 		scenes.ui.setInfo(save_file)
 		scenes.world.setInfo(save_file)
 		save_file.area.onAfterScenesLoad()
-	else: onLoadLevel(save_file)
+	else: onLoadLevel(save_file_data.area_data.level_data, save_file)
 	
-func onLoadLevel(save_file: SaveFileGD) -> void:
+func onLoadLevel(level_data: SavedDataLevel, save_file: SaveFileGD) -> void:
 	ActionManager = ActionManagerPacked.instantiate()
 	add_child(ActionManager)
 	Game.ActionManagerReference = ActionManager
 	
 	var scenes: Dictionary = onLoadScreenWorld(level_ui, level_world)
+	var area: AreaGD =  save_file.area
+	var level: LevelGD = area.onLoadActiveLevel(level_data)
+	
 	scenes.ui.setInfo(save_file)
 	scenes.world.setInfo(save_file)
+	level.onLoadActiveLevel(level_data)
 	
 func getFirstEmptySaveSlotID() -> int:
 	return min(DirAccess.get_files_at(SaveFileInfo.SAVE_DIRECTORY).size() + 1, 5)

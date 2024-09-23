@@ -1,12 +1,12 @@
 [gd_resource type="ArrayMesh" load_steps=3 format=4 uid="uid://dcd3nqivx2aij"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8unm0"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a5fj6"]
 resource_name = "Material"
 cull_mode = 2
 albedo_color = Color(0.906332, 0.906332, 0.906332, 1)
 roughness = 0.5
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_8memr"]
+[sub_resource type="ArrayMesh" id="ArrayMesh_3ap0a"]
 _surfaces = [{
 "aabb": AABB(0.0813291, 0.042561, -0.0250162, 0.268625, 0.0477398, 0.0500324),
 "format": 34359742465,
@@ -28,7 +28,7 @@ _surfaces = [{
 "format": 34359742487,
 "index_count": 48,
 "index_data": PackedByteArray("CAAXAAsACAAUABcAAAAPAAMAAAAMAA8ACgANAAIACgAVAA0AAQAGAAkAAQAEAAYAFgARAA4AFgATABEAEgAFABAAEgAHAAUAGAAbABkAGAAaABsAHAAfAB0AHAAeAB8A"),
-"material": SubResource("StandardMaterial3D_8unm0"),
+"material": SubResource("StandardMaterial3D_a5fj6"),
 "name": "Material",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -36,4 +36,4 @@ _surfaces = [{
 "vertex_data": PackedByteArray("4o+mPX5ULj3S7sy84o+mPX5ULj3S7sy84o+mPX5ULj3S7sy84o+mPX5ULj3S7sw84o+mPX5ULj3S7sw84o+mPX5ULj3S7sw8K9NfPn5ULj3S7sw8K9NfPn5ULj3S7sw8K9NfPn5ULj3S7sw8K9NfPn5ULj3S7sy8K9NfPn5ULj3S7sy8K9NfPn5ULj3S7sy84o+mPanvuD3S7sy84o+mPanvuD3S7sy84o+mPanvuD3S7sy84o+mPanvuD3S7sw84o+mPanvuD3S7sw84o+mPanvuD3S7sw8K9NfPqnvuD3S7sw8K9NfPqnvuD3S7sw8K9NfPqnvuD3S7sw8K9NfPqnvuD3S7sy8K9NfPqnvuD3S7sy8K9NfPqnvuD3S7sy8Li2zPsGshz0AAACALi2zPsGshz0AAACALi2zPsGshz0AAACALi2zPsGshz0AAACALi2zPsGshz0AAACALi2zPsGshz0AAACALi2zPsGshz0AAACALi2zPsGshz0AAACAAAD/f////7//fwAA////P/////////+/AAD/f////7//fwAA////P/9//3////8//38AAP///z//f/9/////P////3////+//38AAP///z//////////v////3////+/AAD/f////7//////////v/9///////+/AAD/f////7//f/9/////P/9///////+//3//f////z//f///////v////3////+//////////7//f///////v////3////+//3///////7//f///////v/9///////+//3///////7//f///////v/9///////+//3///////7//f///////vw==")
 }]
 blend_shape_mode = 0
-shadow_mesh = SubResource("ArrayMesh_8memr")
+shadow_mesh = SubResource("ArrayMesh_3ap0a")

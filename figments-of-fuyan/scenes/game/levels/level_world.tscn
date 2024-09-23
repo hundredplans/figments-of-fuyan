@@ -1,15 +1,35 @@
-[gd_scene load_steps=4 format=3 uid="uid://cjmt3kd7ntlan"]
+[gd_scene load_steps=7 format=3 uid="uid://cjmt3kd7ntlan"]
 
 [ext_resource type="Script" path="res://scenes/game/levels/level_world.gd" id="1_5gypc"]
 [ext_resource type="Script" path="res://addons/movement_camera.gd" id="2_k01hc"]
+[ext_resource type="PackedScene" uid="uid://dwbg2om1w3245" path="res://scenes/particles/spawn_particle.tscn" id="2_locir"]
 [ext_resource type="Environment" uid="uid://g3ihmrpunr2b" path="res://assets/environments/main_menu_environment.tres" id="3_u2cmg"]
+[ext_resource type="Script" path="res://scenes/game/levels/world/camera_manager.gd" id="4_t61g7"]
+[ext_resource type="Script" path="res://scenes/game/levels/world/level_camera.gd" id="5_amvjx"]
 
 [node name="LevelWorld" type="Node3D"]
 script = ExtResource("1_5gypc")
-
-[node name="FreeLookCamera" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 2)
-script = ExtResource("2_k01hc")
+SpawnParticlePacked = ExtResource("2_locir")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("3_u2cmg")
+
+[node name="CameraManager" type="Node3D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_t61g7")
+
+[node name="LevelCamera" type="Camera3D" parent="CameraManager"]
+unique_name_in_owner = true
+script = ExtResource("5_amvjx")
+
+[node name="FreeLookCamera" type="Camera3D" parent="CameraManager"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 2)
+script = ExtResource("2_k01hc")
+
+[node name="MouseRaycast" type="RayCast3D" parent="."]
+unique_name_in_owner = true
+collision_mask = 8
+
+[connection signal="zooming" from="CameraManager" to="." method="onUpdateMousePosition"]
+[connection signal="camera_panning" from="CameraManager/FreeLookCamera" to="." method="_on_free_look_camera_camera_panning"]

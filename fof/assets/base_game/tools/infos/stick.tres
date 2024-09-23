@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="ToolInfoGD" load_steps=4 format=3 uid="uid://csev1gb8u4evn"]
+[gd_resource type="Resource" script_class="ToolInfoGD" load_steps=5 format=3 uid="uid://csev1gb8u4evn"]
 
 [ext_resource type="Script" path="res://assets/base_game/tools/tool_info.gd" id="1_0k8ml"]
 [ext_resource type="Texture2D" uid="uid://dubiaat3tgwg" path="res://assets/base_game/tools/icons/Stick.png" id="1_0krex"]
 [ext_resource type="Script" path="res://assets/base_game/tools/scripts/stick.gd" id="3_3r5bv"]
+[ext_resource type="Script" path="res://assets/base_game/tools/tool_ability_info.gd" id="3_l842l"]
 
 [resource]
 script = ExtResource("1_0k8ml")
@@ -13,4 +14,4 @@ tool_script = ExtResource("3_3r5bv")
 display_name = "Stick"
 description = "This unit deals [+1] DMG for their next attack"
 ascended_description = ""
-tool_abilities = Array[Resource("res://assets/base_game/tools/tool_ability_info.gd")]([])
+tool_abilities = Array[ExtResource("3_l842l")]([])

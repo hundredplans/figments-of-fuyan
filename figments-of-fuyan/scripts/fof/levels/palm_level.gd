@@ -39,7 +39,11 @@ func onFofInit() -> void:
 	onCreatePalmDecorations()
 			
 func onSave() -> SavedDataPalmLevel:
-	return SavedDataPalmLevel.new(info.id, false, timeout, decoration_datas, decoration_coords)
+	var data: Array = SavedData.onSaveGroup(get_tree().get_nodes_in_group("LevelTileObjectsGD"))
+	request_camera_data.emit()
+	return SavedDataPalmLevel.new(info.id, false, data, timeout, phase, level_camera_data,
+	energy, max_energy,\
+	decoration_datas, decoration_coords)
 	
 func onLoadData(data: SavedData) -> void:
 	super(data)

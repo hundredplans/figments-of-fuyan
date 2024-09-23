@@ -1,7 +1,8 @@
 extends Control
 
+signal mouse_in_ui
 signal pressed
-#region Globals
+#region Onready
 @onready var AreaBackground: ButtonAutomask = %AreaBackground
 @onready var Background: ButtonAutomask = %Background
 @onready var ArtPop: ButtonAutomask = %ArtPop
@@ -14,16 +15,21 @@ signal pressed
 @onready var TextLabel: FancyTextLabel = %TextLabel
 @onready var ToolControl: Control = %ToolControl
 #endregion
-
 #region Exports
-@export var is_inspectable: bool
+@export var white_outline_canvas: ShaderMaterial
 @export_group("Admin")
 @export var rarities: Array[Image]
 #endregion
+#region Globals
 var Card: CardGD
+var highlight_on_hover: bool
+var disabled: bool
+var selected: bool
+#endregion
 
-func setInfo(_Card: CardGD) -> void:
+func setInfo(_Card: CardGD, _highlight_on_hover: bool = false) -> void:
 	Card = _Card
+	highlight_on_hover = _highlight_on_hover
 	Background.setTexture(rarities[Card.info.rarity])
 	ArtPop.setTexture(Card.info.art_pop)
 	TextLabel.setText(Card.getAbilityText())
@@ -36,4 +42,22 @@ func setInfo(_Card: CardGD) -> void:
 	ToolControl.visible = false
 	
 func onPressed() -> void:
-	pressed.emit(self)
+	if !disabled: pressed.emit(self)
+
+func onMouseHovered(state: bool) -> void:
+	mouse_in_ui.emit(state)
+	if highlight_on_hover and !disabled:
+		if state: modulate = Color(0.5, 0.5, 0.5)
+		else: modulate = Color(1, 1, 1)
+
+func setDisabled(_disabled: bool) -> void:
+	disabled = _disabled
+	if disabled:
+		onMouseHovered(false)
+		onSelected(false)
+		modulate = Color(0.2, 0.2, 0.2)
+	else: modulate = Color(1, 1, 1)
+
+func onSelected(_selected: bool) -> void:
+	selected = _selected
+	Background.material = white_outline_canvas if selected else null

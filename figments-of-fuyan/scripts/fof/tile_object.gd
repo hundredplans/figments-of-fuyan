@@ -35,9 +35,13 @@ func onLoadData(data: SavedData) -> void:
 	coords = data.coords
 	tile_rotation = data.tile_rotation
 	variation = data.variation
+	level_visible = data.level_visible
 	
 	add_to_group("TileObjectsGD")
 	super(data)
+	
+func onLoadDataLevel() -> void:
+	setLevelVisible(level_visible, true)
 	
 func onLoadModel() -> void:
 	var ray_pickable: bool = false
@@ -50,9 +54,6 @@ func onLoadModel() -> void:
 	
 	call("setDefaultCollisionLayers")
 	setRayPickable(ray_pickable)
-	
-func onLevelFofInit() -> void: pass
-func onLoadDataLevel() -> void: pass
 #endregion
 	
 #region Variations
@@ -64,7 +65,7 @@ func clampVariation(i: int) -> void:
 #endregion
 
 #region Level Visible
-func setLevelVisible(state: bool) -> void:
+func setLevelVisible(state: bool, _avoid_recursion: bool = false) -> void:
 	super(state)
 	if is_in_group("LevelTileObjectsGD"):
 		var greyscale_material: ShaderMaterial = load(info.GREYSCALE_MATERIAL) if !state else null

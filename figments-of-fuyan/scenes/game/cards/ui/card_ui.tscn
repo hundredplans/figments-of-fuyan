@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://cqwfvh83nko7x"]
+[gd_scene load_steps=25 format=3 uid="uid://cqwfvh83nko7x"]
 
 [ext_resource type="Script" path="res://scenes/game/cards/ui/card_ui.gd" id="1_q53ix"]
 [ext_resource type="Image" uid="uid://ckxnjmhktgr8q" path="res://assets/sprites/game/cards/common/rarity/scrap.png" id="2_6wo8e"]
@@ -11,6 +11,7 @@
 [ext_resource type="Image" uid="uid://bxmihpk6puyki" path="res://assets/sprites/game/cards/common/rarity/champion.png" id="8_f8y83"]
 [ext_resource type="Script" path="res://scenes/common/button_automask.gd" id="9_wywqj"]
 [ext_resource type="Theme" uid="uid://dk7j06yculq0a" path="res://resources/ui/themes/card_theme.tres" id="10_cav0f"]
+[ext_resource type="Material" uid="uid://3i2s1wpeg8pe" path="res://resources/materials/ui/white_outline_canvas.tres" id="11_dkfsn"]
 [ext_resource type="Texture2D" uid="uid://c6m2vx6yd57ns" path="res://assets/sprites/game/cards/common/stats/attack_icon.png" id="11_et8ce"]
 [ext_resource type="FontFile" uid="uid://dpk4daccj6hwv" path="res://assets/fonts/roboto.ttf" id="12_5qxhe"]
 [ext_resource type="Texture2D" uid="uid://de1l5iyvymvpq" path="res://assets/sprites/game/cards/common/stats/health_icon.png" id="13_tpr3o"]
@@ -50,6 +51,7 @@ offset_right = 264.0
 offset_bottom = 397.0
 mouse_filter = 2
 script = ExtResource("1_q53ix")
+white_outline_canvas = ExtResource("11_dkfsn")
 rarities = Array[Image]([ExtResource("2_6wo8e"), ExtResource("3_8tmke"), null, ExtResource("4_nqgip"), ExtResource("5_nm6rj"), ExtResource("6_ngrci"), ExtResource("7_uqhgb"), ExtResource("8_1oo08"), ExtResource("8_f8y83")])
 
 [node name="Art" type="Control" parent="."]
@@ -218,10 +220,10 @@ anchor_left = 0.672
 anchor_top = 0.992
 anchor_right = 0.672
 anchor_bottom = 0.992
-offset_left = -150.92
-offset_top = -224.568
-offset_right = -110.92
-offset_bottom = -174.568
+offset_left = -152.92
+offset_top = -225.568
+offset_right = -96.92
+offset_bottom = -165.568
 mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="Stats/Energy"]
@@ -232,11 +234,11 @@ centered = false
 [node name="EnergyLabel" type="Label" parent="Stats/Energy"]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 10.0
+offset_left = 9.0
 offset_top = 8.0
 offset_right = 50.0
-offset_bottom = 52.0
-text = "5"
+offset_bottom = 51.0
+text = "2"
 label_settings = ExtResource("16_jx4jy")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -284,6 +286,12 @@ layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 
+[connection signal="mouse_entered" from="Art/AreaBackground" to="." method="onMouseHovered" binds= [true]]
+[connection signal="mouse_exited" from="Art/AreaBackground" to="." method="onMouseHovered" binds= [false]]
 [connection signal="pressed" from="Art/AreaBackground" to="." method="onPressed"]
+[connection signal="mouse_entered" from="Art/Background" to="." method="onMouseHovered" binds= [true]]
+[connection signal="mouse_exited" from="Art/Background" to="." method="onMouseHovered" binds= [false]]
 [connection signal="pressed" from="Art/Background" to="." method="onPressed"]
+[connection signal="mouse_entered" from="Art/ArtPop" to="." method="onMouseHovered" binds= [true]]
+[connection signal="mouse_exited" from="Art/ArtPop" to="." method="onMouseHovered" binds= [false]]
 [connection signal="pressed" from="Art/ArtPop" to="." method="onPressed"]

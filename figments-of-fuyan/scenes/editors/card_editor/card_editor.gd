@@ -10,6 +10,7 @@ const CARD_UI_OFFSET := Vector2(-120, -400)
 @onready var CardGrid: GridContainer = %CardGrid
 @onready var SearchAreaCard: LineEdit = %SearchAreaCard
 @export var Background: DecorationDatastore
+const MODEL_EMPTY_PATH: String = "res://test/model_empty/"
 
 func _ready() -> void:
 	var start_x: int = START_X
@@ -23,10 +24,8 @@ func _ready() -> void:
 		var Card: CardGD = SavedData.onLoadModel(SavedDataCard.new(card_info.id), World)
 		Card.onCreateModel()
 		Card.onIdle()
-		var CardUI: Control = Card.onCreateCardUI(CardGrid)
-		CardUI.pressed.connect(onCardUIPressed)
-		Card.mouse_entered.connect(onCreateCardUI)
-		Card.mouse_exited.connect(onRemoveCardUI)
+		
+		onCreateDeckCardUI(Card)
 		
 		for ani_name in Card.AniPlayer.get_animation_list():
 			unique_animation_names[ani_name] = true
@@ -34,6 +33,10 @@ func _ready() -> void:
 		Card.position = Vector3(start_x, 0, start_z)
 		start_x += OFFSET
 		if start_x == -START_X: start_z += OFFSET; start_x = START_X
+
+	#for file in DirAccess.get_files_at(MODEL_EMPTY_PATH):
+		#var card_info: CardInfo = load(MODEL_EMPTY_PATH + file)
+		#var Card: CardGD = SavedData.onLoadModel(SavedDataCard.new(card_info.id))
 
 	for animation_name in unique_animation_names:
 		var btn := Button.new()
@@ -44,6 +47,12 @@ func _ready() -> void:
 func onAnimationNameButtonPressed(ani_name: String) -> void:
 	for Card in get_tree().get_nodes_in_group("CardsGD"):
 		if Card.AniPlayer.has_animation(ani_name): Card.AniPlayer.play(ani_name)
+
+func onCreateDeckCardUI(Card: CardGD) -> void:
+	var CardUI: Control = Card.onCreateCardUI(CardGrid)
+	CardUI.pressed.connect(onCardUIPressed)
+	Card.mouse_entered.connect(onCreateCardUI)
+	Card.mouse_exited.connect(onRemoveCardUI)
 
 var HoverCardUI: Control
 func onCreateCardUI(Card: CardGD) -> void:

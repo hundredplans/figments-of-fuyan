@@ -8,9 +8,13 @@ var max_health: int
 var energy: int
 
 var team: int
-var is_in_deck: bool
-var is_in_hand: bool
 var ascended: bool
+
+enum CARD_PLACES {NULL, HAND, DECK, FIELD}
+var card_place: CARD_PLACES
+
+var draw_order: int
+var Tile: TileGD
 #endregion
 
 #region Globals
@@ -69,31 +73,35 @@ func onIdle() -> void:
 #endregion
 
 #region Card
-func onCreateCardUI(parent: Control) -> Control:
+func onCreateCardUI(parent: Control, highlight_on_hover: bool = false) -> Control:
 	var CardUI: Control = load(info.CARD_UI_SCENE_PATH).instantiate()
 	parent.add_child(CardUI)
-	CardUI.setInfo(self)
+	CardUI.setInfo(self, highlight_on_hover)
 	return CardUI
 #endregion
 
 #region Save/Load/Clear
 func onSave() -> SavedDataCard:
-	return SavedDataCard.new(info.id, false, coords, tile_rotation, level_visible, team, is_in_deck, attack, health, speed, max_health, energy, ascended, is_in_hand)
+	return SavedDataCard.new(info.id, false, coords, tile_rotation, level_visible, team, \
+	attack, health, speed, max_health, energy, ascended, draw_order, card_place)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
+	coords = data.coords
 	team = data.team
 	ascended = data.ascended
 	setBaseStats()
-	
-	is_in_deck = data.is_in_deck
-	if is_in_deck: add_to_group("DeckCardsGD")
-	
-	is_in_hand = data.is_in_hand
-	if is_in_hand: add_to_group("HandCardsGD")
-	
+	onChangeCardPlace(data.card_place)
 	add_to_group("CardsGD")
 	
+func onChangeCardPlace(place: CARD_PLACES) -> void:
+	if place != card_place:
+		if card_place != CARD_PLACES.NULL:
+			remove_from_group(Game.CARD_PLACES_TO_GROUP[card_place])
+			
+		card_place = place
+		add_to_group(Game.CARD_PLACES_TO_GROUP[card_place])
+			
 func onFofInit() -> void:
 	setBaseStats()
 	
@@ -169,3 +177,18 @@ func onRemovePoint(point: Vector3) -> void:
 	info.points.erase(point)
 	ResourceSaver.save(info)
 #endregion
+
+#region Position
+func setPositionToTile() -> void:
+	position = Tile.position + Vector3(0, 0.3, 0)
+#endregion
+
+#region Is Checks
+func isAlly(_team: int = 0) -> bool:
+	return team == _team
+	
+func isEnemy(_team: int = 0) -> bool:
+	return team != _team
+
+func isPlayable(_energy: int) -> bool:
+	return _energy >= energy

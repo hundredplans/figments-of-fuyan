@@ -22,7 +22,7 @@ func onSaveToFile() -> void:
 
 func onSave() -> SavedData:
 	var map_effects: Array = SavedData.onSaveGroup(get_tree().get_nodes_in_group("MapEffectsGD"))
-	var deck_cards: Array = SavedData.onSaveGroup(get_tree().get_nodes_in_group("DeckCardsGD"))
+	var deck_cards: Array = SavedData.onSaveGroup(get_tree().get_nodes_in_group("AllyCardsGD"))
 	var boons: Array = SavedData.onSaveGroup(get_tree().get_nodes_in_group("BoonsGD"))
 	time += int(timer.wait_time - timer.time_left)
 	return SavedDataSaveFile.new(id, false, my_seed, area.onSave(), shillings, map_effects, time, deck_cards, boons)
@@ -35,10 +35,11 @@ func onLoadData(data: SavedData) -> void:
 	var ChampionCard: CardGD
 	for card_data in data.deck:
 		var Card: CardGD = SavedData.onLoadModel(card_data, get_parent())
+		Card.add_to_group("AllyCardsGD")
 		if Game.isChampion(Card.info.rarity): ChampionCard = Card
 	
 	area = SavedData.onLoadModel(data.area_data, get_parent(), [ChampionCard])
-	area.load_level.connect(func(): load_level.emit())
+	area.load_level.connect(onLoadLevel)
 	
 	shillings = data.shillings
 	map_effects_data = data.map_effects
@@ -74,7 +75,12 @@ func onUpdateShillings(delta: int) -> void:
 	update_shillings.emit(shillings)
 	
 func getChampionCard() -> CardGD:
-	for Card in get_tree().get_nodes_in_group("DeckCardsGD"):
+	for Card in get_tree().get_nodes_in_group("AllyCardsGD"):
 		if Game.isChampion(Card.info.rarity): return Card
 	return null
+#endregion
+
+#region Load Level
+func onLoadLevel(level_data: SavedDataLevel) -> void:
+	load_level.emit(level_data, self)
 #endregion

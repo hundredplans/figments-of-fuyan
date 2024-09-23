@@ -84,6 +84,7 @@ func onLoadDataLevel() -> void:
 	occupied_tiles = occupied_coords.map(func(x: Vector4i): return Game.getTile(x))
 	for Tile in occupied_tiles:
 		Tile.setOccupiedObject(self)
+	super()
 #endregion
 
 #region Collision Layers
@@ -106,4 +107,11 @@ func setOccupiedTiles(tile_position_to_tile: Dictionary) -> void:
 	occupied_tiles = coords_array.map(func(x: Vector4i): return Game.getTile(x)).filter(func(x: TileGD): return x != null)
 	for Tile in occupied_tiles:
 		Tile.setOccupiedObject(self)
+#endregion
+
+#region Set Visible
+func setLevelVisible(state: bool, avoid_recursion: bool = false) -> void:
+	super(state)
+	if !avoid_recursion:
+		for Tile in occupied_tiles: setLevelVisible(state, true)
 #endregion
