@@ -1,0 +1,81 @@
+[gd_resource type="Shader" format=3 uid="uid://ce3ku0ssrd0kb"]
+
+[resource]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+uniform sampler2D tx_attributes;
+uniform sampler2D tx_color;
+uniform sampler2D tx_emission;
+uniform float max_grey;
+
+void fragment() {
+// Input:9
+	vec2 n_out9p0 = UV;
+
+
+// VectorDecompose:10
+	float n_out10p0 = n_out9p0.x;
+	float n_out10p1 = n_out9p0.y;
+
+
+// Input:3
+	float n_out3p0 = TIME;
+
+
+// Texture2D:6
+	vec4 n_out6p0 = texture(tx_attributes, UV);
+
+
+// VectorDecompose:7
+	float n_out7p0 = n_out6p0.x;
+	float n_out7p1 = n_out6p0.y;
+	float n_out7p2 = n_out6p0.z;
+
+
+// FloatOp:4
+	float n_out4p0 = n_out3p0 * n_out7p2;
+
+
+// FloatOp:8
+	float n_out8p0 = n_out10p1 - n_out4p0;
+
+
+// VectorCompose:11
+	vec2 n_out11p0 = vec2(n_out10p0, n_out8p0);
+
+
+// Texture2D:14
+	vec4 n_out14p0 = texture(tx_color, n_out11p0);
+
+
+// FloatFunc:12
+	float n_out12p0 = 1.0 - n_out7p1;
+
+
+// Texture2D:13
+	vec4 n_out13p0 = texture(tx_emission, n_out11p0);
+
+
+// FloatParameter:16
+	float n_out16p0 = 0.0;
+
+
+// VectorCompose:17
+	float n_in17p3 = 0.00000;
+	vec4 n_out17p0 = vec4(n_out16p0, n_out16p0, n_out16p0, n_in17p3);
+
+
+// VectorOp:15
+	vec4 n_out15p0 = n_out13p0 * n_out17p0;
+
+
+// Output:0
+	ALBEDO = vec3(n_out14p0.xyz);
+	METALLIC = n_out7p0;
+	ROUGHNESS = n_out12p0;
+	EMISSION = vec3(n_out15p0.xyz);
+
+	ALBEDO = vec3(dot(ALBEDO.rgb, vec3(max_grey)));
+}
+"

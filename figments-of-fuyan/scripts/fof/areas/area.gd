@@ -2,13 +2,14 @@ class_name AreaGD extends FofGD
 
 #region Global
 signal map_node_hovered
-signal map_node_selected
-signal map_nodes_loaded
 signal map_node_entered
 signal map_node_finished
+signal map_node_pressed
+signal load_level
+
 var map_location_to_node: Dictionary
-var map_location: MapLocation
-var overworld_level: OverworldLevelGD
+var active_level: LevelGD
+var map_nodes_data: Array[SavedDataMapNode] = []
 var card_ids: Array = []
 #endregion
 
@@ -17,50 +18,56 @@ var card_ids: Array = []
 func getWorld() -> int:
 	return info.world.world
 
-func onFindMapLocation(progress: int, lane: int) -> MapLocation:
-	for _map_location in map_location_to_node:
-		if _map_location.progress == progress and _map_location.lane == lane: return _map_location
+func onFindEmptyMapSpot(progress: int, lane: int) -> EmptyMapNode:
+	for empty_map_spot in empty_spots:
+		if empty_map_spot.progress == progress and empty_map_spot.lane == lane: return empty_map_spot
 	return null
 
 #endregion
 
 #region Save / Load
 func onSave() -> SavedDataArea:
-	var map_nodes_data: Array[SavedDataMapNode] = []
-	for map_node in get_tree().get_nodes_in_group("MapNodesGD"):
-		map_nodes_data.append(map_node.onSave())
+	var map_nodes: Array = get_tree().get_nodes_in_group("MapNodesGD")
+	if !map_nodes.is_empty():
+		map_nodes_data = []
+		for map_node in map_nodes: map_nodes_data.append(map_node.onSave())
 		
-	return SavedDataArea.new(info.id, overworld_level.info.id, map_location, map_nodes_data)
+	var level_data := active_level.onSave() if active_level != null else null
+	return SavedDataArea.new(info.id, false, map_nodes_data, level_data)
 	
 func onLoadData(data: SavedData) -> void:
 	super(data)
-	card_ids = info.card_ids.filter(func(x: int): \
-	return Game.isBasicRarity(Helper.getFofInfoID(CardInfo, x).rarity))
-	map_location = data.map_location
-	
-	var overworld_level_id: int
-	if !Helper.getAdmin(): overworld_level_id = data.overworld_level_id
-	else: overworld_level_id = 1
-	
-	overworld_level = SavedData.onLoadModel(SavedDataOverworldLevel.new(overworld_level_id), self)
-	for map_node_data in data.map_nodes_data: SavedData.onLoadModel(map_node_data, self)
 	add_to_group("AreasGD")
+	card_ids = info.card_ids.filter(func(x: int): \
+		return Game.isBasicRarity(Helper.getFofInfoID(CardInfo, x).rarity))
+		
+	map_nodes_data = data.map_nodes_data
+	
+	if data.level_data != null:
+		onMapNodeLoadLevel(data.level_data)
+		return
+		
+	for tile_object_data in info.overworld_decoration.data:
+		SavedData.onLoadModel(tile_object_data, self)
+		
+	for map_node_data in data.map_nodes_data:
+		onCreateMapNode(map_node_data)
 #endregion
 	
 #region Create Map Nodes
-func onCreateMapNodes(Card: CardGD) -> void:
-	var empty_spots: Array[EmptyMapNode] = generateEmptyMapSpots()
-	generateMapLinks(empty_spots)
+var empty_spots: Array[EmptyMapNode] = []
+func onFofInit(Card: CardGD) -> void:
+	empty_spots = generateEmptyMapSpots()
+	generateMapLinks(Card)
 	var map_node_odds: Dictionary = getMapNodeOdds()
 	var unique_node_id: Array = Card.info.unique_nodes_id
 	
-	setEmptySpotsIDS(empty_spots, unique_node_id, map_node_odds)
-	setEliteChiefFights(empty_spots, map_node_odds, Card)
-	onLoadMapNodes(empty_spots, Card)
+	setEmptySpotsIDS(unique_node_id, map_node_odds)
+	setEliteChiefFights(map_node_odds, Card)
+	onCreateMapNodes()
 
 #region Generators
 func generateEmptyMapSpots() -> Array[EmptyMapNode]:
-	var empty_spots: Array[EmptyMapNode] = []
 	if info.world.world == 1: empty_spots.append(EmptyMapNode.new(-1, 0))
 	empty_spots.append(EmptyMapNode.new(0, 0))
 	
@@ -87,13 +94,14 @@ func generateEmptyMapSpots() -> Array[EmptyMapNode]:
 					start_lane += 1
 	return empty_spots
 	
-func generateMapLinks(empty_spots: Array) -> void:
-	var empty_spots_by_progress: Dictionary = generateEmptySpotsByProgress(empty_spots)
+func generateMapLinks(Card) -> void:
+	var empty_spots_by_progress: Dictionary = generateEmptySpotsByProgress()
 	onCreateAllMapLinks(empty_spots_by_progress)
 	onRemoveOverlappingMapLinks(empty_spots_by_progress)
 	onRemoveEdgesAtRandom(empty_spots_by_progress)
+	setHolyPath(Card)
 			
-func generateEmptySpotsByProgress(empty_spots: Array) -> Dictionary:
+func generateEmptySpotsByProgress() -> Dictionary:
 	var empty_spots_by_progress: Dictionary = {}
 	for empty_spot in empty_spots:
 		if empty_spots_by_progress.has(empty_spot.progress):
@@ -119,14 +127,14 @@ func onCreateAllMapLinks(empty_spots_by_progress: Dictionary) -> void:
 		var batch: Array = empty_spots_by_progress[key]
 		var next_batch: Array = empty_spots_by_progress[key + 1]
 		
-		if next_batch.size() == 1: for empty_spot in batch: empty_spot.links.append(next_batch[0])
-		elif batch.size() == 1: for empty_spot in next_batch: batch[0].links.append(empty_spot)
+		if next_batch.size() == 1: for empty_spot in batch: empty_spot.links.append(EmptyMapNodeLink.new(next_batch[0]))
+		elif batch.size() == 1: for empty_spot in next_batch: batch[0].links.append(EmptyMapNodeLink.new(empty_spot))
 		else:
 			for empty_spot in batch:
 				for _empty_spot in next_batch:
 					if empty_spot.lane == _empty_spot.lane or empty_spot.lane == _empty_spot.lane + 1\
 					or empty_spot.lane == _empty_spot.lane - 1:
-						empty_spot.links.append(_empty_spot)
+						empty_spot.links.append(EmptyMapNodeLink.new(_empty_spot))
 						
 func onRemoveOverlappingMapLinks(empty_spots_by_progress: Dictionary) -> void:
 	for key in empty_spots_by_progress:
@@ -142,30 +150,31 @@ func onRemoveOverlappingMapLinks(empty_spots_by_progress: Dictionary) -> void:
 				else: next_empty_spot.links.erase(links[next_empty_spot])
 					
 func onFindNextOverlappingLinks(empty_spot: EmptyMapNode, next_empty_spot: EmptyMapNode) -> Dictionary:
-	for link in empty_spot.links:
+	for map_link in empty_spot.links:
+		var link: EmptyMapNode = map_link.empty_map_node
 		if link.lane == next_empty_spot.lane:
-			for _link in next_empty_spot.links:
+			for _map_link in next_empty_spot.links:
+				var _link: EmptyMapNode = _map_link.empty_map_node
 				if _link.lane == empty_spot.lane:
-					return {empty_spot: link, next_empty_spot: _link}
+					return {empty_spot: map_link, next_empty_spot: _map_link}
 	return {}
 	
 func onRemoveEdgesAtRandom(empty_spots_by_progress: Dictionary) -> void:
 	for key in empty_spots_by_progress:
-		if key == 10: break
-		var batch: Array = empty_spots_by_progress[key]
-		var next_batch: Array = empty_spots_by_progress[key + 1]
-		onFilterNextBatchToManyLinks(batch, next_batch)
-		batch.shuffle()
+		if key == 10: continue
 		
-		for empty_spot in batch.filter(func(x: EmptyMapNode): return x.links.size() > 1):
-			var erase_array: Array = []
-			for link in empty_spot.links.filter(func(y: EmptyMapNode): return y in next_batch):
-				if empty_spot.links.size() > 1:
-					var remove_link: bool = Random.rollFloat(info.world.REMOVE_RANDOM_EDGES)
-					if remove_link:
-						erase_array.append(link)
-						next_batch.erase(link)
-			for link in erase_array: empty_spot.links.erase(link)
+		var batch: Array = empty_spots_by_progress[key]
+		for empty_spot in batch:
+			var remove_links: Array = []
+			var link_size: int = empty_spot.links.size()
+			for link in empty_spot.links:
+				if link_size > 1 and batch.any(func(x: EmptyMapNode): return x != empty_spot and \
+				link.empty_map_node in x.links.map(func(y: EmptyMapNodeLink): return y.empty_map_node))\
+				and Random.rollFloat(info.world.REMOVE_RANDOM_EDGES):
+					remove_links.append(link)
+					link_size -= 1
+				
+			for link in remove_links: empty_spot.links.erase(link)
 			
 func onFilterNextBatchToManyLinks(batch: Array, next_batch: Array) -> void:
 	var batch_with_links: Dictionary = {}
@@ -179,7 +188,7 @@ func onFilterNextBatchToManyLinks(batch: Array, next_batch: Array) -> void:
 #endregion
 
 #region Set Empty ID
-func setEmptySpotsIDS(empty_spots: Array, unique_node_ids: Array, map_node_odds: Dictionary) -> void:
+func setEmptySpotsIDS(unique_node_ids: Array, map_node_odds: Dictionary) -> void:
 	empty_spots.shuffle()
 	var guarantee_shop: bool = false
 	var guarantee_unique_node: Array = []
@@ -233,7 +242,7 @@ func setEmptySpotsIDS(empty_spots: Array, unique_node_ids: Array, map_node_odds:
 #endregion
 
 #region Elites
-func setEliteChiefFights(empty_spots: Array, map_node_odds: Dictionary, Card: CardGD) -> void:
+func setEliteChiefFights(map_node_odds: Dictionary, Card: CardGD) -> void:
 	var guarantee_chief: bool = true
 	var guarantee_elite: bool = true
 	for empty_spot in empty_spots.filter(func(x: EmptyMapNode): return x.id == 3):
@@ -263,81 +272,74 @@ func getExtraEliteChiefOdds(Card: CardGD) -> float:
 #endregion
 
 #region Map Nodes
-func onLoadMapNodes(empty_spots: Array, Card: CardGD) -> void:
-	for empty_spot in empty_spots: empty_spot.map_location = MapLocation.new(empty_spot.progress, empty_spot.lane, map_location.area)
+func onCreateMapNodes() -> void:
+	for empty_spot in empty_spots:
+		empty_spot.map_location = MapLocation.new(empty_spot.progress, empty_spot.lane, info.id)
+		
 	var map_locations: Array = empty_spots.map(func(x: EmptyMapNode): return x.map_location)
+	for _map_location in map_locations:
+		_map_location.position = MapNodeGD.onCalculatePosition(_map_location, map_locations)
 	
 	for empty_spot in empty_spots:
-		var links: Array = empty_spot.links.map(func(x: EmptyMapNode): return MapLink.new(x.map_location, false))
-		var saved_data: SavedDataMapNode = MapNodeInfo.getDataFromID(empty_spot.id).new(empty_spot.id, empty_spot.map_location, links)
-		var map_node: MapNodeGD = SavedData.onLoadModel(saved_data, self)
-		map_node.onCreateModel(map_locations)
-		map_node.onFofInit(self)
-		map_location_to_node[map_node.map_location] = map_node
-		
-	var map_nodes: Array = get_tree().get_nodes_in_group("MapNodesGD")
-	if Card.info.id == 2: onCreateHolyPath()
-		
-	for map_node in map_nodes:
-		map_node.onCreateLinks(map_location_to_node)
-		map_node.hovered.connect(onMapNodeHovered)
-		map_node.pressed.connect(onMapNodePressed)
-		map_node.entered.connect(onMapNodeEntered)
+		var links: Array = empty_spot.links.map(func(x: EmptyMapNodeLink): return MapLink.new(x.empty_map_node.map_location, x.is_holy))
+		onCreateMapNode(MapNodeInfo.getDataFromID(empty_spot.id).\
+		new(empty_spot.id, true, empty_spot.map_location, links))
 	
-	map_nodes_loaded.emit()
-	onSelectMapNode(onFindMapLocation(map_location.progress, map_location.lane), true)
+func onCreateMapNode(data: SavedDataMapNode) -> void:
+	var map_node: MapNodeGD = SavedData.onLoadModel(data, self)
+	map_location_to_node[map_node.map_location] = map_node
+	map_node.hovered.connect(onMapNodeHovered)
+	map_node.pressed.connect(onMapNodePressed)
+	map_node.load_level.connect(onMapNodeLoadLevel)
+	map_node.entered.connect(onMapNodeEntered)
+	map_node.finished.connect(onMapNodeFinished)
 	
 #endregion
 #region Holy Path
-func onCreateHolyPath() -> void:
-	var start_point: MapLocation
-	start_point = onFindMapLocation(0, 0) if getWorld() > 1 else onFindMapLocation(-1, 0)
-	
-	var map_node: MapNodeGD = map_location_to_node[start_point]
-	while(map_node.map_location.progress < 10):
-		var link: MapLink = map_node.links.pick_random()
-		link.is_holy = true
-		map_node = map_location_to_node[link.map_location]
+func setHolyPath(Card: CardGD) -> void:
+	if Card.info.id == 2:
+		var empty_map_node: EmptyMapNode = onFindEmptyMapSpot(0, 0) if getWorld() > 1 else onFindEmptyMapSpot(-1, 0)
+		while(empty_map_node.progress < 10):
+			var link: EmptyMapNodeLink = empty_map_node.links.pick_random()
+			link.is_holy = true
+			empty_map_node = link.empty_map_node
 
 #endregion
-#endregion
+#endregion	
 
 #region Map Nodes
-const SELECTED_SPEED: float = 1
-func getSelectedMapNode() -> MapNodeGD:
-	return map_location_to_node[map_location]
-
-func onSelectMapNode(_map_location: MapLocation, is_initial_load_select: bool = false) -> void:
-	if !is_initial_load_select:
-		var selected_map_node: MapNodeGD = getSelectedMapNode()
-		selected_map_node.onDeselected(SELECTED_SPEED)
-		
-	map_location = _map_location
-	var map_node: MapNodeGD = map_location_to_node[map_location]
-	map_node.onSelected(SELECTED_SPEED)
-	map_node_selected.emit(map_node, SELECTED_SPEED, is_initial_load_select)
+func getEnteredMapNode() -> MapNodeGD:
+	for map_node in get_tree().get_nodes_in_group("MapNodesGD"):
+		if map_node.is_entered: return map_node
+	return null
 	
 func onMapNodeHovered(map_node: MapNodeGD, state: bool) -> void:
-	var selected_map_node: MapNodeGD = getSelectedMapNode()
 	map_node_hovered.emit(map_node, state)
-	if !state or map_node != selected_map_node:
-		var is_walkable: bool = selected_map_node.isMapNodeLink(map_node)
-		map_node.onStaticBodyHovered(is_walkable, state)
+	var EnteredMapNode: MapNodeGD = getEnteredMapNode()
+	var is_walkable: bool = EnteredMapNode.isMapNodeLink(map_node)
+	map_node.onStaticBodyHovered(is_walkable, state)
 	
 func onMapNodePressed(map_node: MapNodeGD) -> void:
-	var selected_map_node: MapNodeGD = getSelectedMapNode()
-	if selected_map_node.isMapNodeLink(map_node):
-		onSelectMapNode(map_node.map_location)
-		
-func onMapNodeEntered(map_node: MapNodeGD) -> void:
-	if map_node == getSelectedMapNode():
-		map_node_entered.emit(map_node)
+	var EnteredMapNode: MapNodeGD = getEnteredMapNode()
+	if EnteredMapNode.isMapNodeLink(map_node) and EnteredMapNode.is_finished:
+		get_tree().call_group("MapNodesGD", "setRayPickableGlobal", false)
+		EnteredMapNode.onExit()
+		map_node.onEnter()
+		map_node_pressed.emit(map_node)
 			
-func onMapNodeFinished() -> void:
-	map_node_finished.emit(getSelectedMapNode())
+func onMapNodeEntered(map_node: MapNodeGD) -> void:
+	get_tree().call_group("MapNodesGD", "setRayPickableGlobal", false)
+	map_node_entered.emit(map_node)
+			
+func onMapNodeFinished(map_node: MapNodeGD) -> void:
+	get_tree().call_group("MapNodesGD", "setRayPickableGlobal", true)
+	map_node_finished.emit(map_node)
 #endregion
 
 #region Getters
+func isAfterMiniboss() -> bool:
+	return getEnteredMapNode().map_location.isAfterMiniboss()
+
 func getBossMapNode() -> MapNodeGD:
 	return getNodeByID(10)
 	
@@ -349,3 +351,24 @@ func getNodeByID(id: int) -> MapNodeGD:
 		if map_node.info.id == id: return map_node
 	return null
 #endregion
+
+func onAfterScenesLoad() -> void:
+	var map_node: MapNodeGD = getEnteredMapNode()
+	if map_node.is_entered and !map_node.is_finished:
+		onMapNodeEntered(map_node)
+		
+func onMapNodeLoadLevel(level_data: SavedDataLevel) -> void:
+	var map_nodes: Array = get_tree().get_nodes_in_group("MapNodesGD")
+	if !map_nodes.is_empty():
+		map_nodes_data.assign(SavedData.onSaveGroup(get_tree().get_nodes_in_group("MapNodesGD")))
+	
+	get_tree().call_group("TileObjectsGD", "free")
+	get_tree().call_group("MapNodesGD", "onClear")
+	get_tree().call_group("CardsGD", "onRemoveModel")
+	load_level.emit(level_data)
+
+func onLoadActiveLevel(level_data: SavedDataLevel) -> LevelGD:
+	level_data.max_energy = info.world.getMaxEnergy()
+	level_data.energy = level_data.max_energy
+	active_level = SavedData.onLoadModel(level_data, self)
+	return active_level

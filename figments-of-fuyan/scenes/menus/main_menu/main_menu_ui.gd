@@ -3,6 +3,8 @@ extends Control
 #region Globals
 signal cancel_champion_selected
 signal start
+signal load_game
+
 var World: Node3D
 @onready var GoBackLabel: Label = %GoBackLabel
 #endregion
@@ -49,5 +51,9 @@ var ActiveMenu: Control
 func onCreateUI(_menu: PackedScene) -> void:
 	if ActiveMenu != null: ActiveMenu.queue_free()
 	ActiveMenu = _menu.instantiate()
+	ActiveMenu.load_game.connect(onLoadGame)
 	add_child(ActiveMenu)
+	
+func onLoadGame(saved_data: SavedDataSaveFile) -> void:
+	load_game.emit(saved_data)
 #endregion

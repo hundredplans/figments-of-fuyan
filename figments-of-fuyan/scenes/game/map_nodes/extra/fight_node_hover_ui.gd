@@ -7,7 +7,7 @@ extends Control
 const UNIT_BOXES_DISPLAYED: int = 3
 
 func setInfo(map_node: MapNodeGD, area: AreaGD) -> void:
-	var level_info: LevelInfo = Helper.getFofInfoID(LevelInfo, map_node.level_id)
+	var level_info: LevelInfo = Helper.getFofInfoID(LevelInfo, map_node.level_info.id)
 	LevelLabel.text = str(area.getWorld()) + "-" + str(map_node.map_location.progress) + ": " + str(level_info.name)
 	
 	var valid_spawns: Array = map_node.spawn_ids.filter(func(x: int): return x > 0)

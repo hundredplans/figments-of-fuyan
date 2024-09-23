@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="1_84vkc"]
+[ext_resource type="Script" path="res://scripts/fof/objects/object.gd" id="1_q8n2n"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/pebbles.glb" id="2_7aqu8"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/pebbles1.glb" id="3_lipe1"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/pebbles2.glb" id="4_xmr7q"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/pebbles3.glb" id="5_hv1pw"]
+
+[resource]
+script = ExtResource("1_84vkc")
+tile_coords = Array[Array]([[Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)]])
+lock_rotation = false
+lock_tile = false
+solids = Array[bool]([false, false, false, false])
+models = Array[PackedScene]([ExtResource("2_7aqu8"), ExtResource("3_lipe1"), ExtResource("4_xmr7q"), ExtResource("5_hv1pw")])
+points = Array[Array]([[], [], [], []])
+id = 16
+name = "Pebbles"
+gdscript = ExtResource("1_q8n2n")

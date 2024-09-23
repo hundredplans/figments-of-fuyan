@@ -7,6 +7,8 @@ var ROTATION_SPEED: float = 0.02
 var map_rotation: float
 var map_position: Vector3
 var height: int
+var occupied_coords: Array
+var occupied_tiles: Array
 #endregion
 
 #region Getters
@@ -39,13 +41,15 @@ func setPosition(_coords := Vector4i.ZERO, point := Vector3.ZERO, force_tile_loc
 #endregion
 
 #region Tile Coords
+func getTilesCoords() -> Array:
+	return info.tile_coords[variation]
+
 func onLoadTilesCoords(parent: Node3D, tile_info: TileInfo) -> void:
 	for i in range(info.models.size()):
 		if i >= info.tile_coords.size(): info.tile_coords.append([Vector4.ZERO])
 	
 	for tile_coords in info.tile_coords[variation]:
-		var Tile := TileGD.new()
-		Tile.onLoad(SavedDataTile.new(tile_info.id, tile_coords), parent)
+		var Tile: TileGD = SavedData.onLoadModel(SavedDataTile.new(tile_info.id, false, tile_coords), parent)
 		Tile.setHalfTransparent()
 	ResourceSaver.save(info)
 	
@@ -60,7 +64,8 @@ func onDeleteTile(tile_coords: Vector4i) -> void:
 
 #region Save/Load
 func onSave() -> SavedDataGameObject:
-	return SavedDataObject.new(info.id, coords, tile_rotation, variation, map_rotation, map_position, height)
+	return SavedDataObject.new(info.id, false, coords, tile_rotation, level_visible, variation, map_rotation, map_position, height,\
+	occupied_tiles.map(func(x: TileGD): return x.getCoords()))
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -70,13 +75,43 @@ func onLoadData(data: SavedData) -> void:
 	map_position = position
 	map_rotation = rotation.y
 	height = data.height
+	occupied_coords = data.occupied_coords
 	
 	onLoadModel()
 	add_to_group("ObjectsGD")
+	
+func onLoadDataLevel() -> void:
+	occupied_tiles = occupied_coords.map(func(x: Vector4i): return Game.getTile(x))
+	for Tile in occupied_tiles:
+		Tile.setOccupiedObject(self)
+	super()
 #endregion
 
 #region Collision Layers
 func setDefaultCollisionLayers() -> void:
 	for body in getStaticBodies():
 		body.collision_layer = 16
+#endregion
+
+#region Occupied Tiles
+func setOccupiedTiles(tile_position_to_tile: Dictionary) -> void:
+	var closest_tile: TileGD
+	var closest_distance: float = 1000
+	for pos in tile_position_to_tile:
+		var distance: float = pos.distance_to(position)
+		if distance < closest_distance:
+			closest_tile = tile_position_to_tile[pos]
+			closest_distance = distance
+			
+	var coords_array: Array = getTilesCoords().map(func(x: Vector4i): return x + closest_tile.getCoords())
+	occupied_tiles = coords_array.map(func(x: Vector4i): return Game.getTile(x)).filter(func(x: TileGD): return x != null)
+	for Tile in occupied_tiles:
+		Tile.setOccupiedObject(self)
+#endregion
+
+#region Set Visible
+func setLevelVisible(state: bool, avoid_recursion: bool = false) -> void:
+	super(state)
+	if !avoid_recursion:
+		for Tile in occupied_tiles: setLevelVisible(state, true)
 #endregion

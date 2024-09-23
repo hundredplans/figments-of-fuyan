@@ -11,21 +11,22 @@ var area: AreaGD
 #endregion
 
 #region Base Functions
-func onLoad(_save_file: SaveFileGD) -> void:
+func setInfo(_save_file: SaveFileGD) -> void:
 	save_file = _save_file
 	save_file.update_shillings.connect(onUpdateShillings)
 	onUpdateShillings(save_file.getShillings())
 	area = save_file.area
-	area.map_nodes_loaded.connect(onMapStartAnimation)
-	area.map_node_entered.connect(onMapNodeEntered)
 	area.map_node_finished.connect(onMapNodeFinished)
 	area.map_node_hovered.connect(onMapNodeHovered)
+	area.map_node_entered.connect(onMapNodeEntered)
+	
 	BackgroundDarkener.visible = false
+	onMapStartAnimation()
 #endregion
 
 #region Area Name Label
 func onMapStartAnimation() -> void:
-	if !Helper.getAdmin():
+	if !Helper.getAdmin() and !area.getEnteredMapNode().info.id > 1:
 		AreaNameLabel.text = area.info.name
 		AniPlayer.play("MapStart")
 #endregion
@@ -36,21 +37,18 @@ func onUpdateShillings(count: int) -> void:
 #endregion
 
 #region Map Node
-var ActiveScreen: Control
+	
 func onMapNodeEntered(map_node: MapNodeGD) -> void:
-	var screen_packed: PackedScene = map_node.info.screen
-	if screen_packed != null:
-		ActiveScreen = screen_packed.instantiate()
+	if map_node.ActiveScreen != null:
 		BackgroundDarkener.visible = true
-		ActiveScreen.finished.connect(area.onMapNodeFinished)
-		add_child(ActiveScreen)
-		ActiveScreen.setInfo(map_node, World, save_file)
+		add_child(map_node.ActiveScreen)
+		map_node.ActiveScreen.setInfo(map_node, World, save_file)
 	
 func onMapNodeFinished(_map_node: MapNodeGD) -> void:
 	BackgroundDarkener.visible = false
-	if ActiveScreen != null: ActiveScreen.queue_free()
 
 func onMapNodeHovered(map_node: MapNodeGD, state: bool) -> void:
-	if state and map_node.get("HoverUI") != null:
+	if state and map_node.HoverUI != null:
 		add_child(map_node.HoverUI)
 		map_node.HoverUI.setInfo(map_node, area)
+#endregion

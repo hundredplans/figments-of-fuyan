@@ -19,7 +19,7 @@ var UI: Control
 
 #region Helper Functions
 func isActionLock() -> bool:
-	return is_map_starting or is_unit_walking_to_map_node or is_unit_in_map_node_screen
+	return is_map_starting or is_unit_walking_to_map_node or is_unit_entered
 	
 func getMapNodeDestination(map_node: MapNodeGD) -> Vector3:
 	return Vector3(map_node.position.x, 0, 0)
@@ -29,68 +29,60 @@ func getMapNodeDestination(map_node: MapNodeGD) -> Vector3:
 func onUpdateActionLock() -> void:
 	var state: bool = isActionLock()
 	action_lock.emit(state)
-	get_tree().call_group("MapNodesGD", "setRayPickable", !state)
+	get_tree().call_group("MapNodesGD", "setRayPickableGlobal", !state)
 
 #region Base Functions
-func onLoad(_save_file: SaveFileGD, Card: CardGD) -> void:
+func setInfo(_save_file: SaveFileGD) -> void:
 	save_file = _save_file
 	area = save_file.area
 	
-	area.map_node_selected.connect(onMapNodeSelected)
-	area.map_nodes_loaded.connect(onMapStartAnimation)
+	area.map_node_pressed.connect(onMapNodePressed)
 	area.map_node_entered.connect(onMapNodeEntered)
 	area.map_node_finished.connect(onMapNodeFinished)
 	
+	var Card: CardGD = save_file.getChampionCard()
 	MapCard = Card
 	MapCard.onCreateModel()
 	MapCard.onIdle()
 	MapCard.rotation_degrees.y = 90
-	
+	onMapStartAnimation()
 	setEnvironment()
 #endregion
 
 #region Setters
 func setEnvironment() -> void:
 	WorldEnv.environment = area.info.base_environment\
-	if !area.map_location.isAfterMiniboss() else area.info.late_environment
+	if !area.isAfterMiniboss() else area.info.late_environment
 #endregion
 
-#region Map Node Selected
+#region Map Node Selected / Entered / Finished
 var is_unit_walking_to_map_node: bool = false
-func onMapNodeSelected(map_node: MapNodeGD, WALK_OVERWORLD_SPEED: float, is_initial_load_select: bool) -> void:
+var is_unit_entered: bool = false
+func onMapNodePressed(map_node: MapNodeGD) -> void:
 	var spotlight_destination := map_node.position
 	spotlight_destination.y += UNIT_SPOTLIGHT_UP_OFFSET
-	if is_initial_load_select:
-		if Helper.getAdmin(): Camera.position = getMapNodeDestination(map_node) + CAMERA_OFFSET
-		UnitSpotlight.position = spotlight_destination
-		MapCard.position = map_node.position
-		return
 		
 	is_unit_walking_to_map_node = true
 	onUpdateActionLock()
-	MapCard.onWalkTo(map_node.position, WALK_OVERWORLD_SPEED)
+	MapCard.onWalkTo(map_node.position, Game.SELECTED_MAP_NODE_TRAVEL_SPEED)
 	MapCard.onLookAtObjectOnlyY(map_node)
 	
 	var tween := get_tree().create_tween()
-	tween.tween_property(UnitSpotlight, "position", spotlight_destination, WALK_OVERWORLD_SPEED)
+	tween.tween_property(UnitSpotlight, "position", spotlight_destination, Game.SELECTED_MAP_NODE_TRAVEL_SPEED)
 	
 	var camera_tween := get_tree().create_tween()
-	camera_tween.tween_property(Camera, "position:x", map_node.position.x, WALK_OVERWORLD_SPEED)
+	camera_tween.tween_property(Camera, "position:x", map_node.position.x, Game.SELECTED_MAP_NODE_TRAVEL_SPEED)
 	
 	await tween.finished
-	
 	is_unit_walking_to_map_node = false
 	onUpdateActionLock()
+
+func onMapNodeEntered(_map_node: MapNodeGD) -> void:
+	is_unit_entered = true
+	onUpdateActionLock()
 	
-var is_unit_in_map_node_screen: bool = false
-func onMapNodeEntered(map_node: MapNodeGD) -> void:
-	if map_node.info.screen != null:
-		is_unit_in_map_node_screen = true
-		onUpdateActionLock()
-	else: area.onMapNodeFinished()
-		
 func onMapNodeFinished(_map_node: MapNodeGD) -> void:
-	is_unit_in_map_node_screen = false
+	is_unit_entered = false
 	onUpdateActionLock()
 #endregion
 
@@ -99,7 +91,13 @@ func onMapNodeFinished(_map_node: MapNodeGD) -> void:
 @export var MAP_START_TRAVEL_TIME: float = 7
 var is_map_starting: bool
 func onMapStartAnimation() -> void:
-	if !Helper.getAdmin():
+	var map_node: MapNodeGD = area.getEnteredMapNode()
+	var spotlight_destination := map_node.position
+	spotlight_destination.y += UNIT_SPOTLIGHT_UP_OFFSET
+	UnitSpotlight.position = spotlight_destination
+	MapCard.position = map_node.position
+	
+	if !Helper.getAdmin() and !area.getEnteredMapNode().info.id > 1:
 		is_map_starting = true
 		onUpdateActionLock()
 		
@@ -116,4 +114,6 @@ func onMapStartAnimation() -> void:
 		await tween.finished
 		is_map_starting = false
 		onUpdateActionLock()
+	else: Camera.position = getMapNodeDestination(map_node) + CAMERA_OFFSET
+
 #endregion

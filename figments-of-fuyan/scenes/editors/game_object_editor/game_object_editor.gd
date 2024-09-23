@@ -7,10 +7,12 @@ extends Node
 #endregion
 #region Globals
 var all_tile_objects: Array = []
+var all_card_objects: Array = []
 var all_game_objects: Array = []
 @onready var World: Node3D = $World
 @onready var GameObjectsContainer: VBoxContainer = %GameObjectsContainer
 @onready var Camera: Camera3D = %Camera
+@onready var ScrollCont: ScrollContainer = %ScrollContainer
 #endregion
 #region Helper
 
@@ -23,19 +25,22 @@ func onFindMouseTileObject() -> TileGD:
 	return Helper.getCollision(TileRay.get_collider(), TileGD)
 	
 func onFindTile(coords: Vector4i) -> TileGD:
-	for Tile in get_tree().get_nodes_in_group("Tiles"):
+	for Tile in get_tree().get_nodes_in_group("TilesGD"):
 		if Tile.getCoords() == coords: return Tile
 	return null
 	
-func onFindTileObjectInfo(id: int) -> TileObjectInfoGD:
-	return all_tile_objects.filter(func(x: TileObjectInfoGD): return x.id == id)[0]
+func onFindTileObjectInfo(id: int) -> TileObjectInfo:
+	return all_tile_objects.filter(func(x: TileObjectInfo): return x.id == id)[0]
 #endregion
 #region Base Functions
 func _ready() -> void:
-	all_tile_objects = Helper.getResourcesRecursive(TileObjectInfoGD)
-	all_tile_objects.sort_custom(func(x: TileObjectInfoGD, y: TileObjectInfoGD): return x.id < y.id)
+	all_tile_objects = Helper.getFofInfoArray(TileObjectInfo)
+	all_tile_objects.sort_custom(func(x: TileObjectInfo, y: TileObjectInfo): return x.id < y.id)
 	
-	all_game_objects = all_tile_objects
+	all_card_objects = Helper.getFofInfoArray(CardInfo)
+	all_card_objects.sort_custom(func(x: CardInfo, y: CardInfo): return x.id < y.id)
+	
+	all_game_objects = all_tile_objects + all_card_objects
 	
 	for info in all_game_objects:
 		var button := Button.new()
@@ -43,10 +48,24 @@ func _ready() -> void:
 		button.mouse_filter = Control.MOUSE_FILTER_STOP
 		button.mouse_entered.connect(onMouseInUI.bind(true))
 		button.mouse_exited.connect(onMouseInUI.bind(false))
-		button.pressed.connect(onGameObjectInfoSelected.bind(info.getBaseData()))
+		
+		var data: SavedData
+		if info is TileInfo: data = SavedDataTile.new(info.id); button.theme_type_variation = "BlueButton"
+		elif info is ObjectInfo: data = SavedDataObject.new(info.id)
+		elif info is CardInfo: data = SavedDataCard.new(info.id); button.theme_type_variation = "YellowButton"
+			
+		button.pressed.connect(onGameObjectInfoSelected.bind(data))
 		GameObjectsContainer.add_child(button)
-	onGameObjectInfoSelected(all_game_objects[0].getBaseData())
+	onGameObjectInfoSelected(getGameObjectData(all_game_objects[0]))
+	ScrollCont.get_v_scroll_bar().mouse_entered.connect(onMouseInUI.bind(true))
+	ScrollCont.get_v_scroll_bar().mouse_exited.connect(onMouseInUI.bind(false))
 	
+func getGameObjectData(info: Variant) -> SavedData:
+	if info is TileInfo: return SavedDataTile.new(info.id)
+	elif info is ObjectInfo: return SavedDataObject.new(info.id)
+	elif info is CardInfo: return SavedDataCard.new(info.id)
+	return null
+
 func _input(_event: InputEvent) -> void:
 	if !is_camera_panning:
 		if Input.is_action_just_pressed("ChangeVariationDown"):
@@ -77,9 +96,11 @@ func _input(_event: InputEvent) -> void:
 #region Selecting Info
 var SelectedModel: GameObjectGD
 func onGameObjectInfoSelected(data: SavedData) -> void:
-	if SelectedModel != null: SelectedModel.queue_free()
-	get_tree().call_group("Tiles", "queue_free")
-	SelectedModel = data.onLoad(World)
+	get_tree().call_group("GameObjectsGD", "queue_free")
+	
+	SelectedModel = SavedData.onLoadModel(data, World)
+	if SelectedModel is CardGD: SelectedModel.onCreateModel()
+	
 	onLoadPoints()
 	onUpdateEditTileCoordsEnabled()
 	
@@ -91,7 +112,7 @@ func onLoadPoints() -> void:
 #region Variations
 var is_scroll_disabled: bool = false
 func onChangeVariation(direction: int) -> void:
-	if !is_scroll_disabled:
+	if SelectedModel is not CardGD and !is_scroll_disabled and !mouse_in_ui:
 		SelectedModel.clampVariation(direction)
 		onGameObjectInfoSelected(SelectedModel.onSave())
 		onDisableScroll()
@@ -121,14 +142,14 @@ func _on_camera_camera_panning(state: bool):
 @onready var EditTileCoords: CheckBox = %EditTileCoords
 var edit_tile_coords: bool = false
 func onUpdateEditTileCoordsEnabled() -> void:
-	EditTileCoords.disabled = !(SelectedModel is ObjectGD)
+	EditTileCoords.disabled = SelectedModel is not ObjectGD
 	if EditTileCoords.button_pressed:
 		if EditTileCoords.disabled: onDisableEditTileCoords()
 		else: onEnableEditTileCoords()
 
 func onDisableEditTileCoords() -> void:
 	get_tree().call_group("TileStaticBody", "queue_free")
-	get_tree().call_group("Tiles", "queue_free")
+	get_tree().call_group("TilesGD", "queue_free")
 	edit_tile_coords = false
 	EditTileCoords.set_pressed_no_signal(false)
 	onLoadPoints()
@@ -180,7 +201,7 @@ func onMouseEnterTileStaticBody(_HoverStaticBody: StaticBody3D) -> void:
 	
 func onPlaceTile() -> void:
 	if !onFindTile(HoverStaticBody.coords) and !mouse_in_ui:
-		var Tile: TileGD = SavedDataTile.new(1, 0, HoverStaticBody.coords).onLoad(World)
+		var Tile: TileGD = SavedData.onLoadModel(SavedDataTile.new(1, false, HoverStaticBody.coords), World)
 		Tile.setHalfTransparent()
 		SelectedModel.onSaveTile(Tile.getCoords())
 #endregion

@@ -26,7 +26,7 @@ func _ready() -> void:
 		add_child(pedestal)
 		
 		if champion != null:
-			var card: CardGD = SavedData.onLoadModel(SavedDataCard.new(champion.id), pedestal)
+			var card: CardGD = SavedData.onLoadModel(SavedDataCard.new(champion.id, true), pedestal)
 			card.onCreateModel()
 			pedestal.setInfo(card)
 			

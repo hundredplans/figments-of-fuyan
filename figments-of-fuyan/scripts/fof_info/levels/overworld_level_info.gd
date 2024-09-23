@@ -1,1 +1,0 @@
-class_name OverworldLevelInfo extends LevelInfo

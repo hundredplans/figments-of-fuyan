@@ -18,3 +18,5 @@ class_name WorldDatastore extends Resource
 
 static func getInfoPath() -> String: return "res://resources/datastore/world"
 	
+func getMaxEnergy() -> int:
+	return world + 4

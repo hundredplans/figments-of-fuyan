@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://jbo36kl5xxtf"]
+[gd_scene load_steps=26 format=3 uid="uid://jbo36kl5xxtf"]
 
 [ext_resource type="PackedScene" uid="uid://cu3rvdx6pd1i1" path="res://assets/models/environment/main_menu_environment.glb" id="1_tncwr"]
 [ext_resource type="Script" path="res://scenes/menus/main_menu/main_menu_environment.gd" id="2_jkan1"]
@@ -12,6 +12,7 @@
 [ext_resource type="Script" path="res://scripts/menus/main_menu/camera_item.gd" id="10_juh0t"]
 [ext_resource type="PackedScene" uid="uid://dleioqgg331i7" path="res://scenes/menus/main_menu/load_menu/load_menu.tscn" id="11_431ym"]
 [ext_resource type="PackedScene" uid="uid://hkr4msbct4fb" path="res://scenes/menus/main_menu/continue_menu/continue_menu.tscn" id="11_dkyf2"]
+[ext_resource type="Material" uid="uid://clojn4v02al00" path="res://resources/materials/game/base_material_greyscale.tres" id="13_xkd1g"]
 
 [sub_resource type="Resource" id="Resource_vqdwt"]
 script = ExtResource("3_ypvax")
@@ -80,3 +81,4 @@ script = ExtResource("2_jkan1")
 main_menu_meshes = Array[ExtResource("3_ypvax")]([SubResource("Resource_vqdwt"), SubResource("Resource_jxai7"), SubResource("Resource_0cf5f")])
 play_table_meshes = Array[ExtResource("3_ypvax")]([SubResource("Resource_cqaut"), SubResource("Resource_33vvc"), SubResource("Resource_1r1xn")])
 camera_item_array = Array[ExtResource("10_juh0t")]([SubResource("Resource_4r4k4"), SubResource("Resource_wov85"), SubResource("Resource_2hu0v"), SubResource("Resource_n0exn"), SubResource("Resource_3rr8o"), SubResource("Resource_3nue2")])
+GREYSCALE_MATERIAL = ExtResource("13_xkd1g")

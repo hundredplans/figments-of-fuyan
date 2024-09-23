@@ -51,28 +51,36 @@ func _input(event):
 	if event is InputEventMouseMotion:
 		_mouse_position = event.relative
 	
-	# Receives mouse button input
-	if !disable_freelook and event is InputEventMouseButton:
+	if event is InputEventMouseButton:
+		# Receives mouse button input
 		match event.button_index:
 			ANTI_INTERACT_BUTTON: # Only allows rotation if right click down
-				camera_panning.emit(event.is_pressed())
-				Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED if event.pressed else Input.MOUSE_MODE_VISIBLE)
+				if !disable_freelook:
+					camera_panning.emit(event.is_pressed())
+					Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED if event.pressed else Input.MOUSE_MODE_VISIBLE)
 			MOUSE_BUTTON_WHEEL_UP: # Increases max velocity
 				_vel_multiplier = clamp(_vel_multiplier * 1.1, 0.2, 20)
 			MOUSE_BUTTON_WHEEL_DOWN: # Decereases max velocity
 				_vel_multiplier = clamp(_vel_multiplier / 1.1, 0.2, 20)
 
 	# Receives key input
-	if !disable_movement and event is InputEventKey and !(get_viewport().gui_get_focus_owner() as LineEdit):
+	if event is InputEventKey and !(get_viewport().gui_get_focus_owner() as LineEdit):
+		if !disable_movement:
+			match event.keycode:
+				KEY_W:
+					_w = event.pressed
+				KEY_S:
+					_s = event.pressed
+				KEY_A:
+					_a = event.pressed
+				KEY_D:
+					_d = event.pressed
+					
 		match event.keycode:
-			KEY_W:
-				_w = event.pressed
-			KEY_S:
-				_s = event.pressed
-			KEY_A:
-				_a = event.pressed
-			KEY_D:
-				_d = event.pressed
+			KEY_SHIFT:
+				_shift = event.pressed
+			KEY_ALT:
+				_alt = event.pressed
 
 # Updates mouselook and movement every frame
 func _process(delta):

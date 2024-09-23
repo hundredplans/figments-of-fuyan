@@ -4,8 +4,8 @@
 [ext_resource type="Image" uid="uid://crmlvrqh52rb8" path="res://assets/sprites/game/cards/common/art_background/palm_background.png" id="1_xwfqh"]
 [ext_resource type="Script" path="res://scripts/fof_info/area_info.gd" id="2_omppq"]
 [ext_resource type="Script" path="res://scripts/fof/areas/area.gd" id="4_xelp4"]
+[ext_resource type="Resource" uid="uid://qeewgquabwm5" path="res://resources/datastore/decorations/PalmOverworldDecoration.tres" id="5_cc4fi"]
 [ext_resource type="Resource" uid="uid://ctfukjvhoe8nm" path="res://resources/datastore/world/world_one.tres" id="5_dy22h"]
-[ext_resource type="Resource" uid="uid://bh6fsm6xsmw82" path="res://resources/fof/levels/palm_overworld_level.tres" id="5_yv4a7"]
 [ext_resource type="Script" path="res://scripts/fof_info/levels/palm_level_info.gd" id="6_jqirr"]
 
 [resource]
@@ -13,7 +13,7 @@ script = ExtResource("2_omppq")
 world = ExtResource("5_dy22h")
 card_background = ExtResource("1_xwfqh")
 card_ids = Array[int]([2, 4, 5, 6, 7])
-overworld_info = ExtResource("5_yv4a7")
+overworld_decoration = ExtResource("5_cc4fi")
 base_environment = ExtResource("1_nr01x")
 late_environment = ExtResource("1_nr01x")
 level_script = ExtResource("6_jqirr")

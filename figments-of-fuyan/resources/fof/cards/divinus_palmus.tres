@@ -1,12 +1,11 @@
-[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=12 format=3 uid="uid://bcetk1atul6wp"]
+[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=11 format=3]
 
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/ability_datastore.gd" id="1_ugo1s"]
-[ext_resource type="Resource" uid="uid://hommkky4kkh3" path="res://resources/fof/boons/divine_aura.tres" id="2_4ivuh"]
+[ext_resource type="Resource" path="res://resources/fof/boons/divine_aura.tres" id="2_4ivuh"]
 [ext_resource type="Script" path="res://scripts/fof/cards/divinus_palmus.gd" id="2_7n28t"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/champion_card_info.gd" id="2_qu6p4"]
-[ext_resource type="Image" uid="uid://crmdn6pdw7trc" path="res://assets/sprites/game/cards/art_pop/divinus_palmus.png" id="2_rqcgn"]
-[ext_resource type="Image" uid="uid://4tjnieth15fo" path="res://assets/sprites/game/cards/art_mini/divinus_palmus.png" id="2_uxbkr"]
-[ext_resource type="PackedScene" uid="uid://w83kn76qjgqx" path="res://assets/models/fof/cards/divinus_palmus.glb" id="3_pmwws"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/divinus_palmus.png" id="2_rqcgn"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_mini/divinus_palmus.png" id="2_uxbkr"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/divinus_palmus.glb" id="3_pmwws"]
 [ext_resource type="Script" path="res://scripts/common/data_structures/pos_rot.gd" id="3_yh5yn"]
 
 [sub_resource type="Resource" id="Resource_k2dke"]
@@ -45,6 +44,8 @@ health = 3
 speed = 2
 energy = 2
 rarity = 8
+initial_traits = Array[int]([])
+ability_text = "ABILITY [2]: Heal [1] HP to an ally or self"
 flavor_text = "His beleaf can't be questioned"
 art_mini_coordinate = Vector2i(90, 70)
 art_mini = ExtResource("2_uxbkr")
@@ -55,7 +56,12 @@ collision_shape = SubResource("PackedScene_38cve")
 stat = 2.013
 top = 2.267
 eye = 1.841
-abilities = Array[ExtResource("1_ugo1s")]([])
+plus_attack = 0
+plus_health = 0
+plus_speed = 0
+plus_energy = 0
+ascended_traits = Array[int]([])
+ascended_ability_text = ""
 id = 2
 name = "Divinus Palmus"
 gdscript = ExtResource("2_7n28t")

@@ -1,7 +1,20 @@
 class_name CardGD extends GameObjectGD
 
 #region Saved Data
+var attack: int
+var health: int
+var speed: int
+var max_health: int
+var energy: int
+
 var team: int
+var ascended: bool
+
+enum CARD_PLACES {NULL, HAND, DECK, FIELD}
+var card_place: CARD_PLACES
+
+var draw_order: int
+var Tile: TileGD
 #endregion
 
 #region Globals
@@ -32,6 +45,9 @@ func setMapPosition() -> void:
 #endregion
 
 #region Getters
+func getAbilityText() -> String:
+	if ascended and !info.ascended_ability_text.is_empty(): return info.ascended_ability_text
+	return info.ability_text
 	
 func getArea() -> AreaInfo:
 	for area_info in Helper.getFofInfoArray(AreaInfo):
@@ -57,23 +73,54 @@ func onIdle() -> void:
 #endregion
 
 #region Card
-func onCreateCardUI(parent: Control) -> Control:
+func onCreateCardUI(parent: Control, highlight_on_hover: bool = false) -> Control:
 	var CardUI: Control = load(info.CARD_UI_SCENE_PATH).instantiate()
 	parent.add_child(CardUI)
-	CardUI.setInfo(self)
+	CardUI.setInfo(self, highlight_on_hover)
 	return CardUI
 #endregion
 
 #region Save/Load/Clear
 func onSave() -> SavedDataCard:
-	return SavedDataCard.new(info.id, coords, tile_rotation, team)
+	return SavedDataCard.new(info.id, false, coords, tile_rotation, level_visible, team, \
+	attack, health, speed, max_health, energy, ascended, draw_order, card_place)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
+	coords = data.coords
 	team = data.team
+	ascended = data.ascended
+	setBaseStats()
+	onChangeCardPlace(data.card_place)
 	add_to_group("CardsGD")
 	
+func onChangeCardPlace(place: CARD_PLACES) -> void:
+	if place != card_place:
+		if card_place != CARD_PLACES.NULL:
+			remove_from_group(Game.CARD_PLACES_TO_GROUP[card_place])
+			
+		card_place = place
+		add_to_group(Game.CARD_PLACES_TO_GROUP[card_place])
+			
+func onFofInit() -> void:
+	setBaseStats()
+	
+func setBaseStats() -> void:
+	attack = info.attack
+	health = info.health
+	speed = info.speed
+	max_health = info.health
+	energy = info.energy
+	
+	if ascended:
+		attack += info.plus_attack
+		health += info.plus_health
+		speed += info.plus_speed
+		max_health += info.plus_health
+		energy += info.plus_energy
+	
 func onCreateModel() -> void:
+	onRemoveModel()
 	Model = info.model.instantiate()
 	add_child(Model)
 	
@@ -87,6 +134,9 @@ func onCreateModel() -> void:
 		
 	setDefaultCollisionLayers()
 	setAniPlayer()
+	
+func onRemoveModel() -> void:
+	if Model != null: Model.queue_free()
 #endregion
 
 #region Walk
@@ -106,7 +156,39 @@ func onLookAtObjectOnlyY(node: Node) -> void:
 	rotation = Vector3(old_rotation.x, rotation.y, old_rotation.z)
 #endregion
 
-#region Deck
-func onAddToDeck() -> void:
-	add_to_group("DeckCardsGD")
+#region Points
+func onLoadPoints(parent: Node3D) -> void:
+	for point in info.points:
+		var Point: MeshInstance3D = load(info.POINT_PATH).instantiate()
+		Point.setInfo(self)
+		Point.position = point
+		parent.add_child(Point)
+	ResourceSaver.save(info)
+	
+func onCreatePoint(parent: Node3D, point: Vector3) -> void:
+	var Point: MeshInstance3D = load(info.POINT_PATH).instantiate()
+	Point.setInfo(self)
+	Point.position = point
+	parent.add_child(Point)
+	info.points.append(point)
+	ResourceSaver.save(info)
+	
+func onRemovePoint(point: Vector3) -> void:
+	info.points.erase(point)
+	ResourceSaver.save(info)
 #endregion
+
+#region Position
+func setPositionToTile() -> void:
+	position = Tile.position + Vector3(0, 0.3, 0)
+#endregion
+
+#region Is Checks
+func isAlly(_team: int = 0) -> bool:
+	return team == _team
+	
+func isEnemy(_team: int = 0) -> bool:
+	return team != _team
+
+func isPlayable(_energy: int) -> bool:
+	return _energy >= energy

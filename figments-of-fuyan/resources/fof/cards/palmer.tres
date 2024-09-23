@@ -1,6 +1,5 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=9 format=3 uid="uid://fjrpavsyo51s"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=8 format=3 uid="uid://dmmud06uiccre"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/ability_datastore.gd" id="1_s0al6"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="2_amlc3"]
 [ext_resource type="Image" uid="uid://b4qt1fl4q0slo" path="res://assets/sprites/game/cards/art_mini/palmer.png" id="2_s1x8n"]
 [ext_resource type="Image" uid="uid://i34owvhii218" path="res://assets/sprites/game/cards/art_pop/palmer.png" id="2_xsqxw"]
@@ -30,6 +29,8 @@ health = 3
 speed = 2
 energy = 2
 rarity = 3
+initial_traits = Array[int]([])
+ability_text = ""
 flavor_text = ""
 art_mini_coordinate = Vector2i(80, 30)
 art_mini = ExtResource("2_s1x8n")
@@ -40,7 +41,12 @@ collision_shape = SubResource("PackedScene_w7hq4")
 stat = 1.26944
 top = 0.846295
 eye = 0.716096
-abilities = Array[ExtResource("1_s0al6")]([])
+plus_attack = 0
+plus_health = 2
+plus_speed = 0
+plus_energy = 0
+ascended_traits = Array[int]([])
+ascended_ability_text = ""
 id = 5
 name = "Palmer"
 gdscript = ExtResource("3_rgqu8")

@@ -1,8 +1,8 @@
 extends Node
 
-func getAdmin() -> bool: return false
+func getAdmin() -> bool: return true
 #region Resources
-var GDSCRIPT_TYPES: Array = [AreaInfo, LevelInfo, RegularLevelInfo, PalmLevelInfo, OverworldLevelInfo,\
+var GDSCRIPT_TYPES: Array = [AreaInfo, LevelInfo, PalmLevelInfo, \
 	CardInfo, ChampionCardInfo, BoonInfo, ToolInfo, MapNodeInfo, SaveFileInfo, EncounterInfo, MapEffectInfo,\
 	TileObjectInfo, TileInfo, ObjectInfo, GameObjectInfo]
 	

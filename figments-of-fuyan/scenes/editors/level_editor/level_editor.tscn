@@ -67,6 +67,11 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Tile Lock"
 
+[node name="DecorationButton" type="CheckBox" parent="UI/TopBar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Save as Decoration"
+
 [node name="SearchResults" type="ScrollContainer" parent="UI"]
 layout_mode = 0
 offset_left = 5.0
@@ -235,11 +240,12 @@ collision_mask = 24
 [connection signal="text_changed" from="UI/TopBar/SearchTileObject" to="." method="_on_search_tile_object_text_changed"]
 [connection signal="pressed" from="UI/TopBar/TileFillButton" to="." method="onTileFillButtonPressed"]
 [connection signal="pressed" from="UI/TopBar/TileLockButton" to="." method="onTileLockButtonPressed"]
+[connection signal="pressed" from="UI/TopBar/DecorationButton" to="." method="_on_decoration_button_pressed"]
 [connection signal="item_selected" from="UI/BottomBar/AreaOptionButton" to="." method="_on_area_option_button_item_selected"]
 [connection signal="pressed" from="UI/BottomBar/LoadButton" to="." method="_on_load_button_pressed"]
 [connection signal="pressed" from="UI/BottomBar/SaveButton" to="." method="onSaveLevel"]
 [connection signal="pressed" from="UI/BottomBar/NewButton" to="." method="onNewEmptyLevel"]
 [connection signal="pressed" from="UI/BottomBar/OverworldButton" to="." method="_on_overworld_button_pressed"]
 [connection signal="pressed" from="UI/LoadLevels/HBoxContainer/HideLoadLevelButton" to="." method="_on_hide_load_level_button_pressed"]
-[connection signal="camera_panning" from="World/Camera3D" to="." method="onMouseInUI"]
 [connection signal="camera_panning" from="World/Camera3D" to="." method="_on_camera_3d_camera_panning"]
+[connection signal="camera_panning" from="World/Camera3D" to="." method="onMouseInUI"]

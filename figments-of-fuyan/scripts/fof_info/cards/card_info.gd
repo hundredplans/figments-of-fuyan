@@ -7,6 +7,8 @@ const CARD_UI_SCENE_PATH: String = "res://scenes/game/cards/ui/card_ui.tscn"
 @export var speed: int
 @export var energy: int
 @export var rarity: Game.Rarities
+@export var initial_traits: Array[int]
+@export_multiline var ability_text: String
 @export_multiline var flavor_text: String
 @export_group("")
 
@@ -28,7 +30,15 @@ const CARD_UI_SCENE_PATH: String = "res://scenes/game/cards/ui/card_ui.tscn"
 @export var eye: float
 @export_group("")
 
-@export var abilities: Array[AbilityDatastore]
+@export_group("Ascended")
+@export var plus_attack: int
+@export var plus_health: int
+@export var plus_speed: int
+@export var plus_energy: int
+@export var ascended_traits: Array[int]
+# Leave empty if no changes
+@export_multiline var ascended_ability_text: String
+@export_group("")
 
 static func getInfoPath() -> String: return "res://resources/fof/cards"
 
