@@ -1,5 +1,6 @@
 extends Node3D
 
+signal camera_updated
 signal zooming
 #region Exports
 # How high / low the level camera can go
@@ -59,11 +60,14 @@ func setInfo(level_camera_data: LevelCameraData) -> void:
 		FreelookCamera.rotation = level_camera_data.freelook_posrot.rot
 		setCameraType(level_camera_data.is_in_freelook)
 		
+		if !level_camera_data.is_in_freelook: onResetSpectate()
+		
+		
 func _input(event: InputEvent) -> void:
-	if Input.is_action_just_pressed("ChangeCameraLeft"): onChangeCameraInDirection(-1)
-	elif Input.is_action_just_pressed("ChangeCameraRight"): onChangeCameraInDirection(1)
-	
 	if !action_lock and CurrentCamera == LevelCamera:
+		if Input.is_action_just_pressed("ChangeCameraLeft"): onChangeCameraInDirection(-1)
+		elif Input.is_action_just_pressed("ChangeCameraRight"): onChangeCameraInDirection(1)
+		
 		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and event is InputEventMouseMotion:
 			setCameraPointAlongCircle((event.relative / 10000) * CAMERA_ROTATION_SPEED)
 		elif Input.is_action_just_pressed("ZoomIn"): setCameraRadius(-1); zooming.emit()
@@ -76,10 +80,15 @@ func onResetSpectate() -> void:
 	var camera_objects: Array = getCameraObjectArray()
 	if !camera_objects.is_empty():
 		if spectate_index >= camera_objects.size(): spectate_index = 0
+		var OldSpectateObject: Variant = SpectateObject
 		SpectateObject = camera_objects[spectate_index]
-		central_point = SpectateObject.position
-		central_point.y += (SPAWN_CENTRAL_Y) if SpectateObject is SpawnGD else (SpectateObject.info.top + CARD_CENTRAL_Y)
+		setCameraCentralPoint()
 		setCameraPointAlongCircle()
+		camera_updated.emit(SpectateObject, OldSpectateObject)
+	
+func setCameraCentralPoint() -> void:
+	central_point = SpectateObject.position
+	central_point.y += (SPAWN_CENTRAL_Y) if SpectateObject is SpawnGD else (SpectateObject.info.top + CARD_CENTRAL_Y)
 	
 func setCameraPointAlongCircle(progress := Vector2.ZERO) -> void:
 	if progress != Vector2.ZERO:
@@ -103,14 +112,26 @@ func setCameraRadius(direction: int) -> void:
 #endregion
 
 #region Reseters
+func onSwapCameraType() -> void:
+	if CurrentCamera == LevelCamera: setCameraType(true)
+	else: setCameraType(false)
+
 func setCameraType(is_freelook: bool, override_action_lock: bool = false) -> void:
 	if (!action_lock or override_action_lock) and  \
-	(CurrentCamera == null or (!is_freelook and CurrentCamera == LevelCamera) or (is_freelook and CurrentCamera == FreelookCamera)):
+	(CurrentCamera == null or (is_freelook and CurrentCamera == LevelCamera) or (!is_freelook and CurrentCamera == FreelookCamera)):
 		if CurrentCamera != null:
 			CurrentCamera.current = false
+			CurrentCamera.disable_freelook = true
 		
 		CurrentCamera = LevelCamera if !is_freelook else FreelookCamera
 		CurrentCamera.current = true
+		CurrentCamera.disable_freelook = false
+		
+		FreelookCamera.disable_movement = CurrentCamera != FreelookCamera
+		
+		var OldSpectateObject: Variant = SpectateObject
+		if CurrentCamera == FreelookCamera: SpectateObject = null
+		camera_updated.emit(SpectateObject, OldSpectateObject)
 	
 func onSpectateSpawn() -> void:
 	if spectate_type != Game.SpectateTypes.SPAWN:
@@ -178,4 +199,19 @@ func setCameraSaveables(level: LevelGD) -> void:
 	level.level_camera_data = LevelCameraData.new(\
 		spectate_type, ally_spectate_index, spawn_spectate_index, CurrentCamera == FreelookCamera,\
 		PosRot.new(FreelookCamera.position, FreelookCamera.rotation), total_progress, camera_radius)
+#endregion
+
+#region Spectate Object
+func getCardSpectateObject() -> CardGD:
+	if SpectateObject != null and SpectateObject is CardGD: return SpectateObject
+	return null
+#endregion
+
+#region Tracking
+var previous_position: Vector3
+var track_card: bool = true
+func _process(_delta: float) -> void:
+	if SpectateObject is CardGD and track_card:
+		setCameraCentralPoint()
+		setCameraPointAlongCircle()
 #endregion

@@ -1,54 +1,54 @@
 extends HBoxContainer
 
-const EXIT_DELAY: float = 0.2
-var selectable_cards: bool = false
-var pinned: bool = false
-var is_up: bool = false
-var parent: Control
+const UI_DELAY: float = 0.2
+var selectable_cards: bool
+var pinned: bool
+var is_down: bool
+var mouse_in_ui: bool
+var AniPlayer: AnimationPlayer
+var area: Area2D
 
-func setInfo(_parent: Control) -> void:
-	parent = _parent
+func setInfo(_AniPlayer: AnimationPlayer, _area: Area2D) -> void:
+	AniPlayer = _AniPlayer
+	area = _area
+	area.mouse_entered.connect(onMouseInUI.bind(true))
+	area.mouse_exited.connect(onMouseInUI.bind(false))
 
-func onPin() -> void:
-	pinned = true
-	if !is_up:
-		onUp()
-	
-func onUnpin() -> void:
-	pinned = false
-	if !mouse_in_ui:
-		onDown()
-
-func onSelectableCards(_selectable_cards: bool) -> void:
-	selectable_cards = _selectable_cards
-	for Card in get_children():
-		Card.setDisabled(!selectable_cards)
-
-var mouse_in_ui: bool = false
 func onMouseInUI(state: bool) -> void:
 	mouse_in_ui = state
 	if !pinned:
 		if state: onUp()
 		else: onDown()
-		
-func _on_child_entered_tree(node: Node) -> void:
-	pass
-	#node.mouse_entered.connect(onMouseInUI.bind(true))
-	#node.mouse_exited.connect(onMouseInUI.bind(false))
 
-const MOVE_TIME: float = 1
-var moving: bool = false
+func onPin() -> void:
+	pinned = true
+	onUp()
+		
+func onUnpin() -> void:
+	pinned = false
+	if !mouse_in_ui: onDown()
+
+var energy: int
+func onSelectableCards(_selectable_cards: bool) -> void:
+	selectable_cards = _selectable_cards
+	for CardUI in get_children():
+		CardUI.setDisabled(!selectable_cards or !CardUI.Card.isPlayable(energy))
+
+func onUpdateEnergy(_energy: int) -> void:
+	energy = _energy
+	onSelectableCards(selectable_cards)
+
 func onUp() -> void:
-	onTweenPosition(1)
+	if onPlayAnimation(false):
+		is_down = false
 	
 func onDown() -> void:
-	onTweenPosition(-1)
+	if onPlayAnimation(true):
+		is_down = true
 
-func onTweenPosition(direction: int) -> void:
-	if !moving:
-		pass
-		#moving = true
-		#var tween := get_tree().create_tween()
-		#tween.tween_property(self, "position:y", size.y * direction, MOVE_TIME)
-		#await tween.finished
-		#moving = false
+func onPlayAnimation(down: bool) -> bool:
+	if !AniPlayer.is_playing() and !((down and is_down) or (!down and !is_down)):
+		if down: AniPlayer.play("HandPanelMovement")
+		else: AniPlayer.play_backwards("HandPanelMovement")
+		return true
+	return false

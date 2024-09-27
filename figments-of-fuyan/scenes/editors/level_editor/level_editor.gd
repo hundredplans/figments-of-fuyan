@@ -309,8 +309,7 @@ func onRotate(TileObject: TileObjectGD, direction: int) -> void:
 	
 func onDisableRotation() -> void:
 	is_rotation_disabled = true
-	await get_tree().create_timer(ROTATION_LOCK_DELAY).timeout
-	is_rotation_disabled = false
+	get_tree().create_timer(ROTATION_LOCK_DELAY).timeout.connect(func(): is_rotation_disabled = false)
 	
 #endregion
 #region TileFill

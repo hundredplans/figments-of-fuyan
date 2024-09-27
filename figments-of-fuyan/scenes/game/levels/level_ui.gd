@@ -1,17 +1,22 @@
 extends Control
 
 #region Onready
+@onready var HandBoxArea: Area2D = %HandBoxArea
 @onready var HandPanel: PanelContainer = %HandPanel
+@onready var HandPanelAnimationPlayer: AnimationPlayer = %HandPanelAnimationPlayer
 @onready var ShillingLabel: FancyTextLabel = %ShillingLabel
 @onready var LevelLabel: Label = %LevelLabel
 @onready var ArtMiniRect: TextureRect = %ArtMiniRect
 
 @onready var EnergyLabel: Label = %EnergyLabel
 @onready var PhaseIcon: TextureRect = %PhaseIcon
+@onready var HeroNameLabel: Label = %HeroNameLabel
+@onready var AbilityNameLabel: Label = %AbilityNameLabel
 #endregion
 
 #region Globals
 signal mouse_signal
+signal camera_button_pressed
 signal action_lock
 signal card_selected
 signal camera_direction_changed
@@ -20,6 +25,12 @@ var level: LevelGD
 var area: AreaGD
 var World: Node3D
 var mouse_in_ui: bool
+#endregion
+
+#region Exports
+@export var DeckScreenPacked: PackedScene
+@export var GraveyardScreenPacked: PackedScene
+@export var MinimapPacked: PackedScene
 #endregion
 
 #region Base Functions
@@ -35,9 +46,14 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level.energy_changed.connect(onUpdateEnergy)
 	save_file.update_shillings.connect(onUpdateShillings)
 	
-	HandBox.setInfo(HandPanel)
+	World.camera_updated.connect(onCameraUpdated)
+	
+	HandBox.setInfo(HandPanelAnimationPlayer, HandBoxArea)
 	ArtMiniRect.texture = save_file.getChampionCard().info.getArtMini()
 	LevelLabel.text = level.info.name
+	
+	setHeroNameLabel()
+	setAbilityNameLabel()
 	onUpdateEnergy(level.energy)
 	onUpdateShillings(save_file.shillings)
 #endregion
@@ -76,6 +92,7 @@ func onPhaseChanged(phase: Game.Phases, _instant: bool = false) -> void:
 @onready var HandBox: Container = %HandBox
 func onDrawCardUI(Card: CardGD) -> void:
 	var CardUI: Control = Card.onCreateCardUI(HandBox, true)
+	Card.setInspectable(true, self)
 	CardUI.pressed.connect(onSelectCard)
 	CardUI.mouse_in_ui.connect(onMouseInUI)
 	
@@ -103,9 +120,46 @@ func onUpdateShillings(shillings: int) -> void:
 #region Energy
 func onUpdateEnergy(energy: int) -> void:
 	EnergyLabel.text = str(energy) + "/" + str(level.max_energy)
+	HandBox.onUpdateEnergy(energy)
 #endregion
 
 #region Camera
 func onCameraDirectionChanged(direction: int) -> void:
 	camera_direction_changed.emit(direction)
+	
+func _on_camera_button_pressed() -> void:
+	camera_button_pressed.emit()
+	
+func onCameraUpdated(SpectateObject: Variant, _OldSpectateObject: Variant) -> void:
+	setHeroNameLabel(SpectateObject.info.name if SpectateObject is CardGD else "")
+		
+#endregion
+
+#region Deck / Graveyard
+func _on_deck_button_pressed() -> void:
+	add_child(DeckScreenPacked.instantiate())
+	
+func _on_graveyard_button_pressed() -> void:
+	add_child(GraveyardScreenPacked.instantiate())
+#endregion
+
+#region Pass Button
+func _on_pass_button_pressed() -> void:
+	level.onPassTurn()
+#endregion
+
+#region Hero + Ability Labels
+func setHeroNameLabel(text: String = "") -> void:
+	HeroNameLabel.text = text
+	
+func setAbilityNameLabel(text: String = "") -> void:
+	AbilityNameLabel.text = text
+#endregion
+
+#region Minimap
+var Minimap: Control
+func _on_minimap_button_pressed() -> void:
+	if Minimap != null:
+		Minimap = MinimapPacked.instantiate()
+		add_child(Minimap)
 #endregion

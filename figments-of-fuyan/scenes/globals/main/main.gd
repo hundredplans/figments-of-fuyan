@@ -66,6 +66,10 @@ func onStartGame(Card: CardGD) -> void:
 	onLoadGame(save_file_data)
 	
 func onLoadGame(save_file_data: SavedDataSaveFile) -> void:
+	ActionManager = ActionManagerPacked.instantiate()
+	add_child(ActionManager)
+	Game.ActionManagerReference = ActionManager
+	
 	var load_map: bool = save_file_data.area_data.level_data == null
 	var save_file: SaveFileGD = SavedData.onLoadModel(save_file_data, KeepAcross)
 	save_file.load_level.connect(onLoadLevel)
@@ -77,10 +81,6 @@ func onLoadGame(save_file_data: SavedDataSaveFile) -> void:
 	else: onLoadLevel(save_file_data.area_data.level_data, save_file)
 	
 func onLoadLevel(level_data: SavedDataLevel, save_file: SaveFileGD) -> void:
-	ActionManager = ActionManagerPacked.instantiate()
-	add_child(ActionManager)
-	Game.ActionManagerReference = ActionManager
-	
 	var scenes: Dictionary = onLoadScreenWorld(level_ui, level_world)
 	var area: AreaGD =  save_file.area
 	var level: LevelGD = area.onLoadActiveLevel(level_data)

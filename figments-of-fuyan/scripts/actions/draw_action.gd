@@ -10,4 +10,4 @@ func onPreAction() -> void:
 	onFailAction()
 		
 func onPostAction() -> void:
-	Card.onChangeCardPlace(CardGD.CARD_PLACES.HAND)
+	Card.onChangeCardPlace(Game.CardPlaces.HAND)

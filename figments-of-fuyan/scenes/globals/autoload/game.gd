@@ -6,13 +6,28 @@ enum Rarities {SCRAP, NEUTRAL, MINI, COMMON, RARE, EXALT, MINIBOSS, BOSS, CHAMPI
 enum ShopTypes {CARD, BOON, TOOL, DECK}
 enum Phases {NULL, START, HAND, PLAYER, AI, NEUTRAL}
 enum SpectateTypes {ALLY, ENEMY, SPAWN}
+enum CardPlaces {NULL, HAND, DECK, FIELD, GRAVEYARD}
+enum TurnStates {PASSED, INACTIVE, ACTIVE}
 
 var CARD_PLACES_TO_GROUP: Dictionary = {
-	CardGD.CARD_PLACES.NULL: "",
-	CardGD.CARD_PLACES.HAND: "HandCardsGD",
-	CardGD.CARD_PLACES.DECK: "DeckCardsGD",
-	CardGD.CARD_PLACES.FIELD: "FieldCardsGD"
+	CardPlaces.NULL: "",
+	CardPlaces.HAND: "HandCardsGD",
+	CardPlaces.DECK: "DeckCardsGD",
+	CardPlaces.FIELD: "FieldCardsGD",
+	CardPlaces.GRAVEYARD: "GraveyardCardsGD"
 }
+
+
+var cube_directions: Array[Vector3i] = [
+	Vector3(0, 1, -1),
+	Vector3(1, 0, -1),
+	Vector3(1, -1, 0),
+	Vector3(0, -1, 1),
+	Vector3(-1, 0, 1),
+	Vector3(-1, 1, 0)
+]
+
+
 
 func getRarityString(rarity: Rarities) -> String:
 	match rarity:
@@ -42,7 +57,7 @@ func isChampion(rarity: int) -> bool:
 	return rarity == 8
 
 #region Tiles / Coords
-func getCoordsDistance(coords: Vector4i, _coords: Vector4i) -> int	:
+func getCoordsDistance(coords: Vector4i, _coords: Vector4i) -> int:
 	var pos := Vector3(coords.x - _coords.x, coords.y - _coords.y, coords.z - _coords.z)
 	return (abs(pos.x) + abs(pos.y) + abs(pos.z)) / 2
 	
@@ -57,6 +72,40 @@ func getTile(coords: Vector4i) -> TileGD:
 	for Tile in get_tree().get_nodes_in_group("LevelTilesGD"):
 		if Tile.getCoords() == coords: return Tile
 	return null
+	
+func getAdjacentTiles(Tile: TileGD, distance: int = 1) -> Array:
+	return get_tree().get_nodes_in_group("LevelTilesGD").filter(func(x: TileGD): return isAdjacent(Tile, x, distance))
+	
+func getAdjacentOrCloserTiles(Tile: TileGD, distance: int = 1) -> Array:
+	return get_tree().get_nodes_in_group("LevelTilesGD").filter(func(x: TileGD): return Tile != x and isAdjacentOrCloser(Tile, x, distance))
+	
+func isAdjacent(Tile: TileGD, _Tile: TileGD, distance: int = 1) -> bool:
+	var coords: Vector4i = Tile.getCoords()
+	var _coords: Vector4i = _Tile.getCoords()
+	return abs(coords.x - _coords.x) + abs(coords.y - _coords.y) + abs(coords.z - _coords.z) == distance * 2
+	
+func isAdjacentOrCloser(Tile: TileGD, _Tile: TileGD, distance: int = 2) -> bool:
+	var coords: Vector4i = Tile.getCoords()
+	var _coords: Vector4i = _Tile.getCoords()
+	return abs(coords.x - _coords.x) + abs(coords.y - _coords.y) + abs(coords.z - _coords.z) <= distance * 2
+	
+func getRelativeTileRotation(Tile: TileGD, _Tile: TileGD) -> int:
+	if Tile == _Tile: return 0
+	var direction: Vector3i = _Tile.getCoordsHeightless() - Tile.getCoordsHeightless()
+	var distance: int = getCoordsDistance(Tile.getCoords(), _Tile.getCoords())
+	
+	if distance == 1:
+		for i in range(cube_directions.size()):
+			if cube_directions[i] == direction: return i
+		return 0
+		
+	var each_tile_distance: Array = []
+	for i in range(cube_directions.size()):
+		var new_pos: Vector3 = cube_directions[i] + Tile.getCoordsHeightless()
+		
+		each_tile_distance.append([i, getCoordsDistance(_Tile.getCoords(), Vector4i(new_pos.x, new_pos.y, new_pos.z, 0))])
+	each_tile_distance.sort_custom(func(x: Array, y: Array): return x[1] < y[1])
+	return each_tile_distance[0][0]
 #endregion
 
 #region Units

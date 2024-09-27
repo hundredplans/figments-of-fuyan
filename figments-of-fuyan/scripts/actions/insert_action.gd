@@ -7,4 +7,4 @@ func _init(_Card: CardGD) -> void:
 	Card = _Card
 
 func onPostAction() -> void:
-	Card.onChangeCardPlace(CardGD.CARD_PLACES.HAND)
+	Card.onChangeCardPlace(Game.CardPlaces.HAND)

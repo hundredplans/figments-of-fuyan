@@ -4,14 +4,16 @@ class_name CardGD extends GameObjectGD
 var attack: int
 var health: int
 var speed: int
+var max_speed: int
 var max_health: int
 var energy: int
 
+var is_spectated: bool
 var team: int
 var ascended: bool
 
-enum CARD_PLACES {NULL, HAND, DECK, FIELD}
-var card_place: CARD_PLACES
+var card_place: Game.CardPlaces
+var turn_state: Game.TurnStates
 
 var draw_order: int
 var Tile: TileGD
@@ -25,7 +27,7 @@ const DEFAULT_ANIMATION_BLEND_TIME: float = 0.2
 signal mouse_entered
 signal mouse_exited
 #endregion
-
+		
 #region Setters
 func setOwner(node: Node) -> void:
 	owner = node
@@ -42,6 +44,11 @@ func setDefaultCollisionLayers() -> void:
 	
 func setMapPosition() -> void:
 	position = Vector3((sqrt(3) * coords.x + sqrt(3) * coords.y * 0.5), (coords.w * 0.6) + 0.3, coords.y * 3 / 2.0)
+
+func setTileRotation(_tile_rotation: int) -> void:
+	super(_tile_rotation)
+	rotation.y += PI / 6
+
 #endregion
 
 #region Getters
@@ -56,6 +63,9 @@ func getArea() -> AreaInfo:
 	
 func getStatHeightPosition() -> Vector3:
 	return Vector3(position.x, info.stat, position.z)
+	
+func getMovementSpeed() -> int:
+	return speed
 #endregion
 
 #region Animation
@@ -70,6 +80,9 @@ func setAniPlayer() -> void:
 var AniPlayer: AnimationPlayer
 func onIdle() -> void:
 	if AniPlayer != null: AniPlayer.play("Idle")
+	
+func onWalk() -> void:
+	if AniPlayer != null and AniPlayer.current_animation != "Walk": AniPlayer.play("Walk")
 #endregion
 
 #region Card
@@ -83,20 +96,21 @@ func onCreateCardUI(parent: Control, highlight_on_hover: bool = false) -> Contro
 #region Save/Load/Clear
 func onSave() -> SavedDataCard:
 	return SavedDataCard.new(info.id, false, coords, tile_rotation, level_visible, team, \
-	attack, health, speed, max_health, energy, ascended, draw_order, card_place)
+	attack, health, speed, max_speed, max_health, energy, ascended, draw_order, card_place, turn_state)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
 	coords = data.coords
 	team = data.team
 	ascended = data.ascended
+	turn_state = data.turn_state
 	setBaseStats()
 	onChangeCardPlace(data.card_place)
 	add_to_group("CardsGD")
 	
-func onChangeCardPlace(place: CARD_PLACES) -> void:
+func onChangeCardPlace(place: Game.CardPlaces) -> void:
 	if place != card_place:
-		if card_place != CARD_PLACES.NULL:
+		if card_place != Game.CardPlaces.NULL:
 			remove_from_group(Game.CARD_PLACES_TO_GROUP[card_place])
 			
 		card_place = place
@@ -134,6 +148,11 @@ func onCreateModel() -> void:
 		
 	setDefaultCollisionLayers()
 	setAniPlayer()
+	
+func onCreateEmptyModel(parent: Node3D) -> Node3D:
+	var EmptyModel: Node3D = info.model.instantiate()
+	parent.add_child(EmptyModel)
+	return EmptyModel
 	
 func onRemoveModel() -> void:
 	if Model != null: Model.queue_free()
@@ -180,7 +199,7 @@ func onRemovePoint(point: Vector3) -> void:
 
 #region Position
 func setPositionToTile() -> void:
-	position = Tile.position + Vector3(0, 0.3, 0)
+	position = Tile.getCardPosition()
 #endregion
 
 #region Is Checks
@@ -192,3 +211,106 @@ func isEnemy(_team: int = 0) -> bool:
 
 func isPlayable(_energy: int) -> bool:
 	return _energy >= energy
+
+#endregion
+
+#region Inspect Card
+var inspectable: bool
+var InspectableParent: Control
+func setInspectable(_inspectable: bool, _InspectableParent: Control = null) -> void:
+	inspectable = _inspectable
+	InspectableParent = _InspectableParent
+
+func onInspectCard() -> void:
+	if inspectable:
+		var InspectCardScreen: Control = load(info.INSPECT_CARD_SCREEN).instantiate()
+		InspectableParent.add_child(InspectCardScreen)
+		InspectCardScreen.setInfo(self)
+#endregion
+
+#region TurnStates
+func setTurnState(_turn_state: Game.TurnStates) -> void:
+	turn_state = _turn_state
+	
+#endregion
+
+#region Actions
+func onProcessAction(action: Action) -> void:
+	if !action.post:
+		if action is MoveToTileAction and action.Card == self: onMoveToTile(action)
+	elif action.post:
+		if action is MovementFinishAction and action.Card == self: Tile.setOutlineMaterial()
+#endregion
+
+#region Movement
+func onMoveToTile(action: MoveToTileAction) -> void:
+	if !action.isJumpFall(): # Regular = Ramp movement
+		onWalk()
+		
+		if action.movement_type == MoveToTileAction.MOVEMENT_TYPES.REGULAR:
+			var tween := get_tree().create_tween()
+			tween.tween_property(self, "position", action.DestinationTile.getCardPosition(), action.getDelay())
+		else:
+			var tween := get_tree().create_tween()
+			tween.tween_property(self, "position", action.DestinationTile.getCardPosition(), action.getDelay() / 2)
+		return
+	
+	onJumpAnimation()
+	if action.movement_type == MoveToTileAction.MOVEMENT_TYPES.JUMP: onJump(action)
+	elif action.movement_type == MoveToTileAction.MOVEMENT_TYPES.FALL: onFall(action)
+	
+const FALL_MULTIPLIER: float = 2.3
+
+func onJumpAnimation() -> void:
+	AniPlayer.play("Jump")
+
+func onJump(action: MoveToTileAction) -> void:
+	var jump_time: float = 1
+	var jump_end: Vector3 = action.DestinationTile.getCardPosition()
+	var jump_height: float = -4
+	var start_highest: Vector3 = position + Vector3(0, jump_height, 0)
+	var end_highest: Vector3 = jump_end + Vector3(0, jump_height, 0)
+	
+	AniPlayer.speed_scale = 2
+	
+	onTweenJumpFall(jump_end, start_highest, end_highest, jump_time)
+	await get_tree().create_timer(action.getDelay()).timeout
+	
+	AniPlayer.speed_scale = 1
+	
+
+func onFall(action: MoveToTileAction) -> void:
+	var height_diff: int = abs(action.DestinationTile.getHeight() - Tile.getHeight())
+	var jump_end: Vector3 = action.DestinationTile.getCardPosition()
+	var jump_height: float = -3 + (height_diff * FALL_MULTIPLIER)
+	var start_highest: Vector3 = position + Vector3(0, jump_height, 0)
+	var end_highest: Vector3 = jump_end + Vector3(0, jump_height, 0)
+	
+	AniPlayer.speed_scale = 2.0 / action.fall_time
+	onTweenJumpFall(jump_end, start_highest, end_highest, action.fall_time)
+	await get_tree().create_timer(action.getDelay()).timeout
+	
+	AniPlayer.speed_scale = 1
+	
+func onTweenJumpFall(jump_end: Vector3, start_highest: Vector3, end_highest: Vector3, jump_time: float) -> void:
+	var tween := get_tree().create_tween()
+	tween.tween_method(onJumpFall.bind(Tile.getCardPosition(), jump_end, start_highest, end_highest), 0.0, 1.0, jump_time)
+	onJumpAnimation()
+	
+func onJumpFall(time: float, jump_start: Vector3, jump_end: Vector3, start_highest: Vector3, end_highest: Vector3) -> void:
+	position = jump_start.cubic_interpolate(jump_end, start_highest, end_highest, time)
+#endregion
+
+#region Spectated
+func onSpectated(state: bool) -> void:
+	is_spectated = state
+	FieldInfo.onSpectated(state)
+#endregion
+
+#region Field Info
+var FieldInfo: Node3D
+func onCreateFieldInfo() -> void:
+	FieldInfo = load(info.FIELD_INFO_SCENE_PATH).instantiate()
+	Model.add_child(FieldInfo)
+	FieldInfo.setInfo(self)
+#endregion

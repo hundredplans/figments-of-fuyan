@@ -1,0 +1,73 @@
+[gd_scene load_steps=22 format=3 uid="uid://ct6euhy8orf2m"]
+
+[ext_resource type="Script" path="res://scenes/game/cards/world/field_info.gd" id="1_doj6w"]
+[ext_resource type="PackedScene" uid="uid://b7aqntno6susb" path="res://assets/models/general/numbers/zero.glb" id="2_emwqa"]
+[ext_resource type="PackedScene" uid="uid://crmnqmwjj31wk" path="res://assets/models/general/floating_stats/attack_default.glb" id="2_v7j5s"]
+[ext_resource type="PackedScene" uid="uid://c4l2g2xc10yi4" path="res://assets/models/general/floating_stats/health_default.glb" id="3_idggp"]
+[ext_resource type="PackedScene" uid="uid://c4hntclk7hxr4" path="res://assets/models/general/floating_stats/speed.glb" id="4_5w26i"]
+[ext_resource type="PackedScene" uid="uid://it17t4thfbe" path="res://assets/models/general/numbers/three.glb" id="5_sdyep"]
+[ext_resource type="PackedScene" uid="uid://cj1tqdvpopx8e" path="res://assets/models/general/numbers/four.glb" id="6_1r07y"]
+[ext_resource type="PackedScene" uid="uid://ci6pfnb26s5bi" path="res://assets/models/general/numbers/one.glb" id="6_hhji0"]
+[ext_resource type="PackedScene" uid="uid://bot88a67sd02m" path="res://assets/models/general/numbers/five.glb" id="7_5ijq8"]
+[ext_resource type="PackedScene" uid="uid://c7hpaqma8ikkj" path="res://assets/models/general/numbers/two.glb" id="7_rtn5l"]
+[ext_resource type="PackedScene" uid="uid://cnrv23yoi52ob" path="res://assets/models/general/numbers/six.glb" id="8_7cvsh"]
+[ext_resource type="PackedScene" uid="uid://bvrgvidl2c7y4" path="res://assets/models/general/numbers/seven.glb" id="9_a1tgo"]
+[ext_resource type="PackedScene" uid="uid://sglmcojlk1je" path="res://assets/models/general/numbers/eight.glb" id="10_dhlus"]
+[ext_resource type="PackedScene" uid="uid://dq5ux8j1jjffc" path="res://assets/models/general/numbers/nine.glb" id="11_apcfk"]
+[ext_resource type="Material" uid="uid://bejm0dawc77gj" path="res://resources/materials/colors/unshaded/green.tres" id="12_5ikdo"]
+[ext_resource type="Material" uid="uid://bj6n2uaf0f6uv" path="res://resources/materials/colors/unshaded/white.tres" id="13_itc2r"]
+[ext_resource type="Material" uid="uid://3te7r175xgh2" path="res://resources/materials/colors/unshaded/red.tres" id="14_bvr8m"]
+[ext_resource type="Material" uid="uid://dwwfjm1wwygh" path="res://resources/materials/colors/top_unshaded/green.tres" id="15_6rglu"]
+[ext_resource type="Material" uid="uid://dps10m73p80xv" path="res://resources/materials/colors/top_unshaded/white.tres" id="16_m8mfd"]
+[ext_resource type="Material" uid="uid://bl76cu5hicepy" path="res://resources/materials/colors/top_unshaded/red.tres" id="17_dv8uk"]
+[ext_resource type="Material" uid="uid://cs44x6eyyv8fk" path="res://resources/materials/game/base_material_top.tres" id="18_xbibn"]
+
+[node name="FieldInfo" type="Node3D"]
+script = ExtResource("1_doj6w")
+number_to_model = Array[PackedScene]([ExtResource("2_emwqa"), ExtResource("6_hhji0"), ExtResource("7_rtn5l"), ExtResource("5_sdyep"), ExtResource("6_1r07y"), ExtResource("7_5ijq8"), ExtResource("8_7cvsh"), ExtResource("9_a1tgo"), ExtResource("10_dhlus"), ExtResource("11_apcfk")])
+green_material = ExtResource("12_5ikdo")
+white_material = ExtResource("13_itc2r")
+red_material = ExtResource("14_bvr8m")
+green_top_material = ExtResource("15_6rglu")
+white_top_material = ExtResource("16_m8mfd")
+red_top_material = ExtResource("17_dv8uk")
+top_base_material = ExtResource("18_xbibn")
+
+[node name="FloatingStats" type="Node3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.560323, 0)
+
+[node name="attack_default" parent="FloatingStats" instance=ExtResource("2_v7j5s")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0, 0)
+
+[node name="health_default" parent="FloatingStats" instance=ExtResource("3_idggp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+
+[node name="speed" parent="FloatingStats" instance=ExtResource("4_5w26i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0.0187304, 0)
+
+[node name="Numbers" type="Node3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0.00872064, 0)
+
+[node name="AttackSpot" type="Node3D" parent="Numbers"]
+unique_name_in_owner = true
+transform = Transform3D(0.75, 0, 0, 0, 0.75, 0, 0, 0, 0.75, -0.4, 0, 0)
+
+[node name="two" parent="Numbers/AttackSpot" instance=ExtResource("7_rtn5l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.125, 0, 0)
+
+[node name="five" parent="Numbers/AttackSpot" instance=ExtResource("7_5ijq8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.125, 0, 0)
+
+[node name="HealthSpot" type="Node3D" parent="Numbers"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+
+[node name="three" parent="Numbers/HealthSpot" instance=ExtResource("5_sdyep")]
+
+[node name="SpeedSpot" type="Node3D" parent="Numbers"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, 0)
+
+[node name="two" parent="Numbers/SpeedSpot" instance=ExtResource("7_rtn5l")]
