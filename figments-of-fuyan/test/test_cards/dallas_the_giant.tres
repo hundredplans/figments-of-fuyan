@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=2 format=3 uid="uid://b00rpm6g3xqoa"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=3 format=3 uid="uid://b00rpm6g3xqoa"]
 
+[ext_resource type="Image" uid="uid://bbkgjnsy0ah3u" path="res://assets/sprites/game/cards/art_pop/Dallas the Giant.png" id="1_e0g88"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="1_u7gg2"]
 
 [resource]
@@ -13,6 +14,7 @@ initial_traits = Array[int]([])
 ability_text = "When a DUEL begins: This gains FERAL and +2 ATT +1 HP until the enemy dies"
 flavor_text = ""
 art_mini_coordinate = Vector2i(0, 0)
+art_pop = ExtResource("1_e0g88")
 points = []
 stat = 0.0
 top = 0.0

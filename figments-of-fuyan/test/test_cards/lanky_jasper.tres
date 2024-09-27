@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=2 format=3 uid="uid://c77jrnmirjo1a"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=3 format=3 uid="uid://c77jrnmirjo1a"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="1_icdj1"]
+[ext_resource type="Image" uid="uid://dnfxp5drwss3q" path="res://assets/sprites/game/cards/art_pop/Lanky Jasper.png" id="1_o25gh"]
 
 [resource]
 script = ExtResource("1_icdj1")
@@ -13,6 +14,7 @@ initial_traits = Array[int]([])
 ability_text = "START OF TURN: Alternate between reflecting [1] DMG from melee to ranged attacks"
 flavor_text = ""
 art_mini_coordinate = Vector2i(0, 0)
+art_pop = ExtResource("1_o25gh")
 points = []
 stat = 0.0
 top = 0.0

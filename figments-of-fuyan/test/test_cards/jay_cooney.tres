@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=2 format=3 uid="uid://dybm2bbcbxq4d"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=3 format=3 uid="uid://dybm2bbcbxq4d"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="1_875pk"]
+[ext_resource type="Image" uid="uid://dbty0ttijpb5l" path="res://assets/sprites/game/cards/art_pop/Jay Cooney.png" id="1_l2ftl"]
 
 [resource]
 script = ExtResource("1_875pk")
@@ -13,6 +14,7 @@ initial_traits = Array[int]([])
 ability_text = "ABILITY [1]: STUN a DUELLING enemy in vision"
 flavor_text = ""
 art_mini_coordinate = Vector2i(0, 0)
+art_pop = ExtResource("1_l2ftl")
 points = []
 stat = 0.0
 top = 0.0

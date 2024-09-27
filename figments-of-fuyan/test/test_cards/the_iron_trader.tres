@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=2 format=3 uid="uid://capu8dlppwplt"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=3 format=3 uid="uid://capu8dlppwplt"]
 
+[ext_resource type="Image" uid="uid://dw2mipxbagv2f" path="res://assets/sprites/game/cards/art_pop/Iron Trader.png" id="1_b8g7r"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="1_umwdq"]
 
 [resource]
@@ -13,6 +14,7 @@ initial_traits = Array[int]([])
 ability_text = "ABILITY [3]: Spend 5 SH to give an ally in vision +1 ATT / +1 HP or 20 SH +1 HP +1 ATT +1 SPD"
 flavor_text = ""
 art_mini_coordinate = Vector2i(0, 0)
+art_pop = ExtResource("1_b8g7r")
 points = []
 stat = 0.0
 top = 0.0
