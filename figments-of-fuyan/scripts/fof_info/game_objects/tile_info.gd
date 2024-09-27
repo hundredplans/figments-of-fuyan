@@ -1,5 +1,8 @@
 class_name TileInfo extends TileObjectInfo
 
+const PATH_HOVERED_MATERIAL: String = "res://resources/materials/colors/unshaded/grey.tres"
+const MOVEMENT_RANGE_ATTACKABLE_MATERIAL: String = "res://resources/materials/colors/unshaded/pink.tres"
+const MOVEMENT_RANGE_MATERIAL: String = "res://resources/materials/colors/unshaded/light_grey.tres"
 const HOVERED_MATERIAL: String = "res://resources/materials/colors/unshaded/white.tres"
 const ALLY_OCCUPY_MATERIAL: String = "res://resources/materials/colors/unshaded/green.tres"
 const ENEMY_OCCUPY_MATERIAL: String = "res://resources/materials/colors/unshaded/red.tres"

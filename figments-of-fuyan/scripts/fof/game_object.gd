@@ -19,6 +19,11 @@ func getStaticBodies() -> Array[StaticBody3D]:
 	return arr
 #endregion
 
+#region Is Checks
+func isLevelVisible() -> bool:
+	return level_visible
+#endregion
+
 #region Getters
 func getLockRotation() -> bool: return false
 
@@ -41,12 +46,12 @@ func setVisible(state: bool) -> void: visible = state
 func onRotateDirection(direction: int) -> void:
 	tile_rotation += direction
 	if tile_rotation > 6: tile_rotation = 1
-	elif tile_rotation < 0: tile_rotation = 6
+	elif tile_rotation < 1: tile_rotation = 6
 	setTileRotation(tile_rotation)
 
 func setTileRotation(_tile_rotation: int) -> void:
 	tile_rotation = _tile_rotation
-	rotation.y = tile_rotation * (PI / 3)
+	rotation.y = (tile_rotation * (PI / 3))
 	
 func setCoords(_coords: Vector4i) -> void:
 	coords = _coords

@@ -16,6 +16,11 @@ func getLockRotation() -> bool:
 	return info.lock_rotation
 #endregion
 
+#region is Checks
+func isSolid() -> bool:
+	return info.solids[variation]
+#endregion
+
 #region Rotation
 func onRotateDirection(direction: int) -> void:
 	if !getLockRotation():
@@ -24,6 +29,7 @@ func onRotateDirection(direction: int) -> void:
 		if rotation.y > 2 * PI: rotation.y -= 2 * PI
 		elif rotation.y < 0: rotation.y += 2 * PI
 	else: super(direction)
+	
 	map_rotation = rotation.y
 #endregion
 
@@ -70,7 +76,9 @@ func onSave() -> SavedDataGameObject:
 func onLoadData(data: SavedData) -> void:
 	super(data)
 	position = data.position
-	rotation.y = data.rotation
+	
+	if !info.lock_rotation: rotation.y = data.rotation
+	else: setTileRotation(data.tile_rotation)
 	
 	map_position = position
 	map_rotation = rotation.y

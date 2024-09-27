@@ -10,7 +10,7 @@ func _init(_Card: CardGD = null, _add_type: ADD_TYPES = ADD_TYPES.SHUFFLE) -> vo
 	add_type = _add_type
 
 func onPostAction() -> void:
-	Card.onChangeCardPlace(CardGD.CARD_PLACES.DECK)
+	Card.onChangeCardPlace(Game.CardPlaces.DECK)
 	
 	if add_type == ADD_TYPES.SHUFFLE:
 		var deck_cards: Array = Game.get_tree().get_nodes_in_group("DeckCardsGD")

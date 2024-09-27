@@ -5,8 +5,7 @@ extends Node3D
 #endregion
 
 #region Globals
-signal push_action
-signal append_action
+signal camera_updated
 
 var level: LevelGD
 var save_file: SaveFileGD
@@ -30,21 +29,24 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level.phase_changed.connect(onPhaseChanged)
 	level.awakened.connect(onCardAwakened)
 	level.request_camera_data.connect(CameraManager.setCameraSaveables.bind(level))
+	level.card_moving.connect(onCardMoving)
+	level.card_finished_moving.connect(onCardFinishedMoving)
 	CameraManager.setInfo(level.level_camera_data)
+	CameraManager.camera_updated.connect(onCameraUpdated)
 	UI.action_lock.connect(CameraManager.setActionLock)
 	UI.action_lock.connect(onUpdateActionLock)
 	UI.card_selected.connect(onCardSelected)
 	UI.mouse_signal.connect(onMouseInUI)
+	UI.camera_button_pressed.connect(CameraManager.onSwapCameraType)
 	UI.camera_direction_changed.connect(CameraManager.onChangeCameraInDirection)
-	
-	push_action.connect(Game.ActionManagerReference.onPushAction)
-	append_action.connect(Game.ActionManagerReference.onAppendAction)
 	
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		onUpdateMousePosition()
 	
-	if Input.is_action_just_pressed("MainInput") and HoverTile != null: onTilePressed()
+	if HoverTile != null:
+		if Input.is_action_just_pressed("MainInput"): onTilePressed()
+		elif Input.is_action_just_pressed("InspectCard"): onTileInspected()
 	
 #endregion
 
@@ -82,8 +84,13 @@ func setMouseHoverTile() -> void:
 func getActionLock() -> bool:
 	return UI.getActionLock()
 	
-func onUpdateActionLock(_state: bool) -> void:
+func onUpdateActionLock(state: bool) -> void:
 	onHoverTile()
+	for btn in get_tree().get_nodes_in_group("ActionLockDisabled"):
+		if btn is Button: btn.disabled = state
+		elif btn is HighlightTxButton: btn.setDisabled(state)
+		
+	if state: onRemoveMovementRange()
 	
 func getMouseInUI() -> bool:
 	return UI.mouse_in_ui
@@ -92,7 +99,7 @@ func onMouseInUI(state: bool) -> void:
 	onHoverTile()
 	
 var camera_panning: bool
-func _on_free_look_camera_camera_panning(state: bool) -> void:
+func onCameraPanning(state: bool) -> void:
 	camera_panning = state
 	onHoverTile()
 #endregion
@@ -102,7 +109,10 @@ func onPhaseChanged(phase: Game.Phases, _instant: bool = false) -> void:
 	match phase:
 		Game.Phases.START: CameraManager.onSpectateSpawn(); onSpawnFX(true)
 		Game.Phases.HAND: onSpawnFX(true)
-		_: onSpawnFX(false); CameraManager.onSpectateAllies()
+		Game.Phases.PLAYER:
+			onSpawnFX(false)
+			CameraManager.onSpectateAllies()
+			onCreateMovementRange(CameraManager.getCardSpectateObject())
 #endregion
 	
 #region SpawnFX
@@ -134,5 +144,78 @@ func onTilePressed() -> void:
 	if Tile.isAllySpawnTile() and !Tile.isOccupied():
 		var HandCard: CardGD = UI.getSelectedCard()
 		if HandCard != null:
-			append_action.emit(PlayCardAction.new(HandCard, Tile))
+			level.onAppendAction(PlayCardAction.new(HandCard, Tile))
+	elif Tile.isOccupied() and Tile.isLevelVisible(): CameraManager.onSpectateCard(Tile.getCard())
+	elif Tile.is_movement_range:
+		var Card: CardGD = CameraManager.getCardSpectateObject()
+		if Card != null:
+			level.onAppendAction(MovementAction.new(Card, Tile))
+	
+func onTileInspected() -> void:
+	var Tile: TileGD = HoverTile
+	var Card: CardGD = Tile.getCard()
+	if Card != null:
+		Card.setInspectable(true, UI)
+		Card.onInspectCard()
+#endregion
+
+#region Camera
+func onCameraUpdated(SpectateObject: Variant, OldSpectateObject: Variant) -> void:
+	camera_updated.emit(SpectateObject, OldSpectateObject)
+	
+	if OldSpectateObject is CardGD: OldSpectateObject.onSpectated(false)
+	if SpectateObject is CardGD: SpectateObject.onSpectated(true)
+	
+	if SpectateObject is CardGD and SpectateObject.isAlly() and SpectateObject.turn_state == Game.TurnStates.INACTIVE and level.phase == Game.Phases.PLAYER and !getActionLock():
+		onCreateMovementRange(SpectateObject)
+		
+#endregion
+		
+#region Movement Range
+func onRemoveMovementRange() -> void:
+	get_tree().call_group("LevelTilesGD", "onRemoveMovementRange")
+
+func onCreateMovementRange(Card: CardGD) -> void:
+	onRemoveMovementRange()
+	if Card == null or !Card.isAlly(): return
+	
+	var CenterTile: TileGD = Card.Tile
+	var speed: int = Card.getMovementSpeed()
+	var tiles: Array = Game.getAdjacentOrCloserTiles(Card.Tile, speed) # Gather all tiles
+	tiles = tiles.filter(func(x: TileGD): return !x.occupied_objects.any(func(y: ObjectGD): return y.isSolid())) # Check for solidity
+	
+	for Tile in tiles:
+		var astar := AStar3D.new()
+		# Limits tiles to those in movement range
+		var add_to_astar_tiles: Array = tiles.filter(func(x: TileGD): return Game.getCoordsDistance(Tile.getCoords(), x.getCoords()) <= speed)
+		add_to_astar_tiles.append(CenterTile)
+		for _Tile in add_to_astar_tiles: astar.add_point(_Tile.get_instance_id(), _Tile.getCoordsHeightless())
+		
+		for StartTile in add_to_astar_tiles:
+			for EndTile in add_to_astar_tiles.filter(func(x: TileGD): return Game.isAdjacent(x, StartTile)):
+				var height_diff: int = StartTile.getHeight() - EndTile.getHeight()
+				if StartTile.variation == 1:
+					if StartTile.isValidRampRelation(EndTile):
+						astar.connect_points(StartTile.get_instance_id(), EndTile.get_instance_id(), false)
+					
+				elif EndTile.variation == 1:
+					if EndTile.isValidRampRelation(StartTile):
+						astar.connect_points(StartTile.get_instance_id(), EndTile.get_instance_id(), false)
+					
+				elif abs(height_diff) <= 1:
+					astar.connect_points(StartTile.get_instance_id(), EndTile.get_instance_id(), false)
+					
+		var point_path: Array = astar.get_id_path(CenterTile.get_instance_id(), Tile.get_instance_id())
+		Tile.movement_path = point_path.map(func(x: int): return instance_from_id(x))
+		
+		if !point_path.is_empty(): Tile.setMovementRange(true)
+	
+#endregion
+
+#region Movement
+func onCardMoving(_Card: CardGD) -> void:
+	onRemoveMovementRange()
+	
+func onCardFinishedMoving(Card: CardGD) -> void:
+	onCreateMovementRange(Card)
 #endregion

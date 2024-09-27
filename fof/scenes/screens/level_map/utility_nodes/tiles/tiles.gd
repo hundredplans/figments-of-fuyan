@@ -507,7 +507,7 @@ func onCreateAllTiles(Unit: UnitGD, speed: int) -> Dictionary:
 	for _Unit in Units.all_units():
 		if !(Unit.team == 0 and _Unit.team == 1 and _Unit.Tile not in ally_vision):
 			in_speed_tiles.erase(_Unit.Tile)
-	in_speed_tiles.append(Unit.Tile)
+	in_speed_tiles.append(Unit.Tile)	
 	return {"full_tiles": enemy_tiles + in_speed_tiles, "enemy_tiles": enemy_tiles, "unit_tiles": Units.all_units().map(func(x: UnitGD): return x.Tile)}
 
 func onUnits(team_relation: TeamRelationGD) -> Array:

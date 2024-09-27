@@ -1,15 +1,20 @@
-[gd_resource type="Resource" script_class="MapNodeInfo" load_steps=5 format=3 uid="uid://cees3cvj5mw0w"]
+[gd_resource type="Resource" script_class="MapNodeInfo" load_steps=6 format=3 uid="uid://cees3cvj5mw0w"]
 
 [ext_resource type="Script" path="res://scripts/fof/map_nodes/gildred_node.gd" id="1_gjd7l"]
 [ext_resource type="Script" path="res://scripts/fof_info/map_nodes/map_node_info.gd" id="1_tu3u5"]
+[ext_resource type="Texture2D" uid="uid://p3hdrlmb4yal" path="res://assets/sprites/game/map/gildred.png" id="2_c853n"]
 [ext_resource type="PackedScene" uid="uid://btwc7g83p2isk" path="res://assets/models/fof/map_nodes/gildred_node.glb" id="2_o0oif"]
 [ext_resource type="PackedScene" uid="uid://ddpd64bnmddvi" path="res://scenes/game/map_nodes/screens/gildred_screen/gildred_screen.tscn" id="3_o6fyv"]
 
 [resource]
 script = ExtResource("1_tu3u5")
+load_level = false
 screen = ExtResource("3_o6fyv")
+icon = ExtResource("2_c853n")
 model = ExtResource("2_o0oif")
 is_unique_node = false
+float_y = 0.0
+legend_order = 1
 id = 2
 name = "Gildred"
 gdscript = ExtResource("1_gjd7l")

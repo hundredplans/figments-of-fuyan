@@ -32,4 +32,5 @@ unique_name_in_owner = true
 collision_mask = 8
 
 [connection signal="zooming" from="CameraManager" to="." method="onUpdateMousePosition"]
-[connection signal="camera_panning" from="CameraManager/FreeLookCamera" to="." method="_on_free_look_camera_camera_panning"]
+[connection signal="camera_panning" from="CameraManager/LevelCamera" to="." method="onCameraPanning"]
+[connection signal="camera_panning" from="CameraManager/FreeLookCamera" to="." method="onCameraPanning"]

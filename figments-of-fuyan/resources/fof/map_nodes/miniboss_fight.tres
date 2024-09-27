@@ -1,13 +1,18 @@
-[gd_resource type="Resource" script_class="MapNodeInfoGD" load_steps=4 format=3 uid="uid://ck34cj8wt52a0"]
+[gd_resource type="Resource" script_class="MapNodeInfo" load_steps=5 format=3 uid="uid://ck34cj8wt52a0"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/map_nodes/map_node_info.gd" id="1_48omj"]
 [ext_resource type="Script" path="res://scripts/fof/map_nodes/miniboss_fight_node.gd" id="1_txbmn"]
+[ext_resource type="Texture2D" uid="uid://dsscusbna4rt2" path="res://assets/sprites/game/map/miniboss.png" id="2_kh56i"]
 [ext_resource type="PackedScene" uid="uid://cjgf5l4n8810f" path="res://assets/models/fof/map_nodes/miniboss_fight_node.glb" id="2_qa3hc"]
 
 [resource]
 script = ExtResource("1_48omj")
+load_level = false
+icon = ExtResource("2_kh56i")
+model = ExtResource("2_qa3hc")
+is_unique_node = false
+float_y = 0.0
+legend_order = 8
 id = 9
 name = "Miniboss"
-model = ExtResource("2_qa3hc")
 gdscript = ExtResource("1_txbmn")
-is_unique_node = false

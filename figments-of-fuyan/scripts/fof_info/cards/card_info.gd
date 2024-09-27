@@ -1,5 +1,7 @@
 class_name CardInfo extends GameObjectInfo
 
+const FIELD_INFO_SCENE_PATH: String = "res://scenes/game/cards/world/field_info.tscn"
+const INSPECT_CARD_SCREEN: String = "res://scenes/game/cards/ui/inspect_card_screen.tscn"
 const CARD_UI_SCENE_PATH: String = "res://scenes/game/cards/ui/card_ui.tscn"
 @export_group("Card")
 @export var attack: int

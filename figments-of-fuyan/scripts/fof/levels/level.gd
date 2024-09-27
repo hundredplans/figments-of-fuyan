@@ -4,10 +4,12 @@ const START_HAND_SIZE: int = 4
 var timeout: int
 var energy: int
 var max_energy: int
-var level_camera_data: LevelCameraData
 
+var level_camera_data: LevelCameraData
 var phase: Game.Phases
 
+signal card_finished_moving
+signal card_moving
 signal energy_changed
 signal request_camera_data
 signal phase_changed
@@ -15,6 +17,7 @@ signal draw_card
 signal remove_card
 signal awakened
 
+#region Load / Save
 func onSave() -> SavedData:
 	var data: Array = SavedData.onSaveGroup(get_tree().get_nodes_in_group("LevelTileObjectsGD"))
 	request_camera_data.emit()
@@ -23,7 +26,6 @@ func onSave() -> SavedData:
 func onClear() -> void:
 	queue_free()
 
-#region Load / Save
 func onLoadData(data: SavedData) -> void:
 	super(data)
 	energy = data.energy
@@ -39,6 +41,7 @@ func onLoadData(data: SavedData) -> void:
 			
 	for TileObject in get_tree().get_nodes_in_group("LevelTileObjectsGD"):
 		TileObject.onLoadDataLevel()
+		TileObject.setLevelVisible(true)
 		
 	for Card in get_tree().get_nodes_in_group("FieldCardsGD"):
 		Card.Tile = Game.getTile(Card.coords)
@@ -46,6 +49,7 @@ func onLoadData(data: SavedData) -> void:
 		Card.onIdle()
 		Card.setPositionToTile()
 		Card.setTileRotation(Card.tile_rotation)
+		Card.setTurnState(Card.turn_state)
 	
 	level_camera_data = data.level_camera_data
 	add_to_group("LevelsGD")
@@ -54,6 +58,8 @@ func onLoadActiveLevel(data: SavedDataLevel) -> void:
 	# Triggers after UI and World have loaded
 	if is_init:
 		var deck_cards: Array = get_tree().get_nodes_in_group("AllyCardsGD")
+		
+		
 		var champion_card: CardGD = deck_cards.filter(func(x: CardGD): return Game.isChampion(x.info.rarity))[0]
 		deck_cards.erase(champion_card)
 		
@@ -82,12 +88,18 @@ func onFofInit() -> void:
 #region Setters
 func onChangePhase(_phase: Game.Phases, instant: bool = false) -> void:
 	match phase: # Old phase
-		Game.Phases.START: onDrawStarterHand()
+		Game.Phases.START:
+			onDrawStarterHand()
+			setAlliesTurnState(Game.TurnStates.INACTIVE)
 		Game.Phases.HAND:
 			onCheckSkipHandPhase()
 				
 	phase = _phase
 	phase_changed.emit(phase, instant)
+	
+func setAlliesTurnState(turn_state: Game.TurnStates) -> void:
+	for Card in Game.getAllyUnits():
+		onPushAction(ChangeTurnStateAction.new(Card, turn_state))
 #endregion
 
 #region Action Processing
@@ -107,6 +119,10 @@ func onProcessAction(action: Action) -> void:
 			energy += action.energy
 			energy_changed.emit(energy)
 			onCheckSkipHandPhase()
+		elif action is MovementAction:
+			card_moving.emit(action.Card)
+		elif action is MovementFinishAction:
+			card_finished_moving.emit(action.Card)
 	else:
 		if action is ChangePhaseAction:
 			if action.phase == phase: action.failed = true
@@ -132,3 +148,14 @@ func onCheckSkipHandPhase() -> void:
 	if phase == Game.Phases.HAND and (hand.is_empty() or !is_hand_playable or are_spawns_occupied):
 		onAppendAction(ChangePhaseAction.new(Game.Phases.PLAYER))
 #endregion
+
+#region Pass Turn
+func onPassTurn() -> void:
+	var new_phase: Game.Phases
+	match phase:
+		Game.Phases.HAND: new_phase = Game.Phases.PLAYER
+		Game.Phases.PLAYER: new_phase = Game.Phases.AI
+		_: new_phase = Game.Phases.NULL
+		
+	if new_phase != Game.Phases.NULL:
+		onAppendAction(ChangePhaseAction.new(new_phase))

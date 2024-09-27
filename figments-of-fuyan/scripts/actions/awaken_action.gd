@@ -12,7 +12,10 @@ func onPreAction() -> void:
 	force_action.emit(OccupyAction.new(Card, Tile))
 
 func onPostAction() -> void:
-	Card.onChangeCardPlace(CardGD.CARD_PLACES.FIELD)
+	Card.onChangeCardPlace(Game.CardPlaces.FIELD)
 	Card.onCreateModel()
 	Card.onIdle()
-	Card.setTileRotation(Card.tile_rotation)
+	Card.onCreateFieldInfo()
+	Card.setTileRotation(Tile.getAllySpawnTile().tile_rotation)
+	onPushAction(ChangeTurnStateAction.new(Card, Game.TurnStates.INACTIVE))
+	

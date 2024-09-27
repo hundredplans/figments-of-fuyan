@@ -44,7 +44,9 @@ func setInfo(_Card: CardGD, _highlight_on_hover: bool = false) -> void:
 func onPressed() -> void:
 	if !disabled: pressed.emit(self)
 
+var is_mouse_in_ui: bool = false
 func onMouseHovered(state: bool) -> void:
+	is_mouse_in_ui = state
 	mouse_in_ui.emit(state)
 	if highlight_on_hover and !disabled:
 		if state: modulate = Color(0.5, 0.5, 0.5)
@@ -61,3 +63,8 @@ func setDisabled(_disabled: bool) -> void:
 func onSelected(_selected: bool) -> void:
 	selected = _selected
 	Background.material = white_outline_canvas if selected else null
+	
+func _input(_event: InputEvent) -> void:
+	if Input.is_action_just_pressed("InspectCard") and is_mouse_in_ui:
+		Card.onInspectCard()
+		

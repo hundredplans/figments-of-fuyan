@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=28 format=3 uid="uid://dcbv431prk86r"]
+[gd_resource type="Theme" load_steps=32 format=3 uid="uid://dcbv431prk86r"]
 
 [ext_resource type="FontFile" uid="uid://dpk4daccj6hwv" path="res://assets/fonts/roboto.ttf" id="1_8d2p5"]
 
@@ -202,6 +202,42 @@ corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 anti_aliasing = false
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_he4ox"]
+bg_color = Color(0.285993, 0.277531, 0, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 1)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h0876"]
+bg_color = Color(0.99944, 0.999998, 0.784761, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 1)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y4my1"]
+bg_color = Color(0.99944, 0.999998, 0.784761, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 1)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_si6xx"]
+bg_color = Color(0.740822, 0.721072, 0, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 1)
+anti_aliasing = false
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ycnox"]
 bg_color = Color(0.997771, 0.921575, 0.775806, 1)
 border_width_left = 10
@@ -302,6 +338,11 @@ RedButton/styles/normal = SubResource("StyleBoxFlat_vyoa2")
 RedButton/styles/pressed = SubResource("StyleBoxFlat_lwrfe")
 RedPanelContainer/base_type = &"PanelContainer"
 RedPanelContainer/styles/panel = SubResource("StyleBoxFlat_vyaib")
+WhiteButton/base_type = &"Button"
+WhiteButton/styles/disabled = SubResource("StyleBoxFlat_he4ox")
+WhiteButton/styles/hover = SubResource("StyleBoxFlat_h0876")
+WhiteButton/styles/normal = SubResource("StyleBoxFlat_y4my1")
+WhiteButton/styles/pressed = SubResource("StyleBoxFlat_si6xx")
 WhitePanelContainer/base_type = &"PanelContainer"
 WhitePanelContainer/styles/panel = SubResource("StyleBoxFlat_ycnox")
 YellowButton/base_type = &"Button"
