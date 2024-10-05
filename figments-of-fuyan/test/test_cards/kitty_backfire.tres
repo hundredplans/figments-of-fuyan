@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=2 format=3 uid="uid://dg4nl1660n5w1"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=3 format=3 uid="uid://dg4nl1660n5w1"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="1_3fdpx"]
+[ext_resource type="Image" uid="uid://c2g35x20orkj6" path="res://assets/sprites/game/cards/art_pop/Kitty Backfire.png" id="1_yc4ep"]
 
 [resource]
 script = ExtResource("1_3fdpx")
@@ -13,6 +14,7 @@ initial_traits = Array[int]([])
 ability_text = "RANGED [1-2]; On Hit: KNOCKBACK [2] this"
 flavor_text = ""
 art_mini_coordinate = Vector2i(0, 0)
+art_pop = ExtResource("1_yc4ep")
 points = []
 stat = 0.0
 top = 0.0

@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=2 format=3 uid="uid://4cyt8ycof41"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=3 format=3 uid="uid://4cyt8ycof41"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="1_84mqr"]
+[ext_resource type="Image" uid="uid://deyxnadstr0jf" path="res://assets/sprites/game/cards/art_pop/Marvin Dawn.png" id="1_ko50s"]
 
 [resource]
 script = ExtResource("1_84mqr")
@@ -13,6 +14,7 @@ initial_traits = Array[int]([])
 ability_text = "RANGED [1-2]; RAMPAGE [4]: Deal [2] DMG to all enemies"
 flavor_text = ""
 art_mini_coordinate = Vector2i(0, 0)
+art_pop = ExtResource("1_ko50s")
 points = []
 stat = 0.0
 top = 0.0

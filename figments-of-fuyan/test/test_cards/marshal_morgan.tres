@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=2 format=3 uid="uid://uaescgl3nr0f"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=3 format=3 uid="uid://uaescgl3nr0f"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="1_majbx"]
+[ext_resource type="Image" uid="uid://bnh16eiomyu82" path="res://assets/sprites/game/cards/art_pop/Marshall Morgan.png" id="1_xbrxb"]
 
 [resource]
 script = ExtResource("1_majbx")
@@ -13,6 +14,7 @@ initial_traits = Array[int]([])
 ability_text = "RANGED [1-2]; While DUELLING: This and the enemy have +1 ATT"
 flavor_text = ""
 art_mini_coordinate = Vector2i(0, 0)
+art_pop = ExtResource("1_xbrxb")
 points = []
 stat = 0.0
 top = 0.0

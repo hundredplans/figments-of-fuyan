@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=2 format=3 uid="uid://c4ot8nver532k"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=3 format=3 uid="uid://c4ot8nver532k"]
 
+[ext_resource type="Image" uid="uid://dfk81n741eb2k" path="res://assets/sprites/game/cards/art_pop/Maria Welsh.png" id="1_ik38h"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="1_opy0s"]
 
 [resource]
@@ -13,6 +14,7 @@ initial_traits = Array[int]([])
 ability_text = "RANGED [1-2]; REVENGE: Attacks the DUELLING enemy if in RANGED range"
 flavor_text = ""
 art_mini_coordinate = Vector2i(0, 0)
+art_pop = ExtResource("1_ik38h")
 points = []
 stat = 0.0
 top = 0.0
