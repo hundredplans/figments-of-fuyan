@@ -5,9 +5,12 @@ extends Node3D
 @onready var HealthSpot: Node3D = %HealthSpot
 @onready var SpeedSpot: Node3D = %SpeedSpot
 
+@onready var NumbersParticle: GPUParticles3D = %NumbersParticle
+
 @onready var Numbers: Node3D = %Numbers
 @export var number_to_model: Array[PackedScene]
 
+@export_group("Materials")
 @export var green_material: Material
 @export var white_material: Material
 @export var red_material: Material
@@ -15,34 +18,43 @@ extends Node3D
 @export var green_top_material: Material
 @export var white_top_material: Material
 @export var red_top_material: Material
+@export_group("")
 
 @export var top_base_material: Material
+
+@export_group("Number Particles")
+@export var number_to_particle_mesh: Array[Mesh]
+@export var exclamation_particle_mesh: Mesh
+@export var plus_mesh: Mesh
+@export var minus_mesh: Mesh
+@export_group("")
+
 var Card: CardGD
 
 func setInfo(_Card: CardGD) -> void:
 	Card = _Card
 	position.y = Card.info.stat
+	NumbersParticle.global_position.y = Card.info.top / 2.0
+	
 	onResetStats()
 	
 func onResetStats() -> void:
 	var mat: Material = null if !is_spectated else top_base_material
-	print(mat)
-	print()
 	for mesh in Helper.getNodeTypeRecursive(FloatingStats, MeshInstance3D):
 		mesh.set_surface_override_material(0, mat)
 	onCreateFloatingNumbers()
 	
 func onCreateFloatingNumbers() -> void:
-	onCreateStat(AttackSpot, Card.attack, Card.info.attack, Card.info.attack)
-	onCreateStat(HealthSpot, Card.health, Card.info.health, Card.max_health)
-	onCreateStat(SpeedSpot, Card.speed, Card.info.speed, Card.speed)
+	onCreateSpecificStat(Game.Stats.ATTACK, Card.attack)
+	onCreateSpecificStat(Game.Stats.HEALTH, Card.health)
+	onCreateSpecificStat(Game.Stats.SPEED, Card.speed)
 
 func onCreateStat(spot: Node3D, value: int, above_green_value: int, below_red_value: int) -> void:
 	for child in spot.get_children(): child.queue_free()
 	var string_value: String = str(value)
 	var numbers: Array = []
 	
-	for char in string_value: numbers.append(int(char))
+	for _char in string_value: numbers.append(int(_char))
 	numbers = numbers.map(func(x: int): return number_to_model[x].instantiate())
 	
 	var mat: Material = white_material if !is_spectated else white_top_material
@@ -62,3 +74,46 @@ var is_spectated: bool = false
 func onSpectated(state: bool) -> void:
 	is_spectated = state
 	onResetStats()
+
+func onCameraPositionUpdated(pos: Vector3) -> void:
+	look_at(pos, Vector3(0, 1, 0), true)
+	rotation.x = 0
+	
+func onUpdateStat(type: Game.Stats, value: int, difference: int, play_animation: bool = false) -> void:
+	var spot: Node3D
+	match type:
+		Game.Stats.SPEED: spot = SpeedSpot
+		Game.Stats.HEALTH: spot = HealthSpot
+		Game.Stats.ATTACK: spot = AttackSpot
+	
+	if spot != null:
+		if play_animation:
+			var tween := get_tree().create_tween()
+			tween.tween_property(spot, "scale:y", 0.001, Game.STAT_UPDATE_TIME)
+			
+			await tween.finished
+			
+			var reset_tween := get_tree().create_tween()
+			
+			onCreateSpecificStat(type, value)
+			setNumbersParticle(type, value)
+			
+			var old_scale: float = spot.scale.y
+			spot.scale.y = 0.001
+			reset_tween.tween_property(spot, "scale:y", old_scale, Game.STAT_UPDATE_TIME)
+			return
+		onCreateSpecificStat(type, value)
+			
+func onCreateSpecificStat(type: Game.Stats, value: int) -> void:
+	match type:
+		Game.Stats.SPEED: onCreateStat(SpeedSpot, value, Card.info.speed, Card.speed)
+		Game.Stats.HEALTH: onCreateStat(HealthSpot, value, Card.info.health, Card.max_health)
+		Game.Stats.ATTACK: onCreateStat(AttackSpot, value, Card.info.attack, Card.info.attack)
+
+func setNumbersParticle(type: Game.Stats, value: int) -> void:
+	var sign_mesh: Mesh = plus_mesh if value > 0 else minus_mesh
+	var number_mesh: Mesh = number_to_particle_mesh[value] if abs(value) < 10 else exclamation_particle_mesh
+	
+	NumbersParticle.draw_pass_1 = sign_mesh
+	NumbersParticle.draw_pass_2 = number_mesh
+	NumbersParticle.emitting = true

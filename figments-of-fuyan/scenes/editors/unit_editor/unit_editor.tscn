@@ -1,23 +1,39 @@
-[gd_scene load_steps=6 format=3 uid="uid://dnnfw86w6scfm"]
+[gd_scene load_steps=10 format=3 uid="uid://dnnfw86w6scfm"]
 
 [ext_resource type="Script" path="res://scenes/editors/unit_editor/unit_editor.gd" id="1_yppjx"]
 [ext_resource type="Material" uid="uid://dps10m73p80xv" path="res://resources/materials/colors/top_unshaded/white.tres" id="2_rxdja"]
+[ext_resource type="Resource" uid="uid://bpccbwsymujxo" path="res://resources/fof/cards/divinus_palmus.tres" id="2_wbjn4"]
+[ext_resource type="Script" path="res://scripts/fof/cards/divinus_palmus.gd" id="3_0slfs"]
 [ext_resource type="Material" uid="uid://bl76cu5hicepy" path="res://resources/materials/colors/top_unshaded/red.tres" id="3_rthp2"]
 [ext_resource type="Script" path="res://scenes/editors/unit_editor/height_box.gd" id="3_s2cdb"]
 [ext_resource type="Material" uid="uid://dwwfjm1wwygh" path="res://resources/materials/colors/top_unshaded/green.tres" id="4_1x4m4"]
+[ext_resource type="PackedScene" uid="uid://w83kn76qjgqx" path="res://assets/models/fof/cards/divinus_palmus.glb" id="4_x1cbm"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_80h08"]
+size = Vector3(0.527344, 2.00391, 0.309814)
 
 [node name="UnitEditor" type="Node"]
 script = ExtResource("1_yppjx")
+card_info = ExtResource("2_wbjn4")
 
 [node name="World" type="Node3D" parent="."]
 
+[node name="@Node3D@2" type="Node3D" parent="World"]
+script = ExtResource("3_0slfs")
+
+[node name="divinus_palmus" parent="World/@Node3D@2" instance=ExtResource("4_x1cbm")]
+
 [node name="PlaceCollisionShapeHere" type="Node3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlaceCollisionShapeHere"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00195313, 1.00058, 0.00109863)
+shape = SubResource("BoxShape3D_80h08")
 
 [node name="Heights" type="Node3D" parent="."]
 unique_name_in_owner = true
 
 [node name="Stat" type="CSGBox3D" parent="Heights"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 2.37815, 0)
 size = Vector3(0.05, 0.05, 0.05)
 material = ExtResource("2_rxdja")
 script = ExtResource("3_s2cdb")
@@ -25,7 +41,7 @@ default_x = -0.3
 stat = "stat"
 
 [node name="Eye" type="CSGBox3D" parent="Heights"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 1.841, 0)
 size = Vector3(0.05, 0.05, 0.05)
 material = ExtResource("3_rthp2")
 script = ExtResource("3_s2cdb")
@@ -33,6 +49,7 @@ default_x = 0.3
 stat = "eye"
 
 [node name="Top" type="CSGBox3D" parent="Heights"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.99812, 0)
 size = Vector3(0.05, 0.05, 0.05)
 material = ExtResource("4_1x4m4")
 script = ExtResource("3_s2cdb")
@@ -40,5 +57,5 @@ stat = "top"
 
 [node name="ChampionCamera" type="Camera3D" parent="."]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+transform = Transform3D(0.925064, 4.09782e-08, 0.379811, -0.0545657, 0.989626, 0.132899, -0.375871, -0.143665, 0.915468, 0.776389, 1.84813, 0.963616)
 current = true

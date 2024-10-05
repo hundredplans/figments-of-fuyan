@@ -8,6 +8,7 @@ enum Phases {NULL, START, HAND, PLAYER, AI, NEUTRAL}
 enum SpectateTypes {ALLY, ENEMY, SPAWN}
 enum CardPlaces {NULL, HAND, DECK, FIELD, GRAVEYARD}
 enum TurnStates {PASSED, INACTIVE, ACTIVE}
+enum Stats {ATTACK, HEALTH, SPEED}
 
 var CARD_PLACES_TO_GROUP: Dictionary = {
 	CardPlaces.NULL: "",
@@ -27,7 +28,19 @@ var cube_directions: Array[Vector3i] = [
 	Vector3(-1, 1, 0)
 ]
 
+var tile_face_directions: Array[Vector3] = [
+]
 
+const FALL_DAMAGE_BEGIN_HEIGHT: int = 5
+const HEX_SIZE: float = 0.55
+const STAT_UPDATE_TIME: float = 0.15
+
+func _ready() -> void:
+	var theta: float = PI / 6
+	for cube_direction in Game.cube_directions:
+		var x: float = HEX_SIZE * (3.0 / 2.0 * cube_direction.x)
+		var z: float = HEX_SIZE * (sqrt(3) * (cube_direction.y + cube_direction.x / 2.0))
+		tile_face_directions.append(onRotatePosition(Vector3(x, 0, z), theta))
 
 func getRarityString(rarity: Rarities) -> String:
 	match rarity:
@@ -109,10 +122,44 @@ func getRelativeTileRotation(Tile: TileGD, _Tile: TileGD) -> int:
 #endregion
 
 #region Units
+func getFieldCard(Tile: TileGD) -> CardGD:
+	for Card in get_tree().get_nodes_in_group("FieldCardsGD"):
+		if Card.Tile == Tile: return Card
+	return null
+
 func getAllyUnits(team: int = 0) -> Array:
 	return get_tree().get_nodes_in_group("FieldCardsGD").filter(func(x: CardGD): return x.team == team)
 	
 func getEnemyUnits(team: int = 0) -> Array:
 	return get_tree().get_nodes_in_group("FieldCardsGD").filter(func(x: CardGD): return x.team != team)
 #endregion
+
+#region Vision
+func getTeamVisionDictionary(team: int = 0) -> Dictionary:
+	if team < 2: # Neutral units dont have a team vision
+		var cards: Array = getAllyUnits(team)
+		var team_visible_game_objects: Dictionary = {}
+		
+		for Card in cards:
+			team_visible_game_objects[Card] = null
+			team_visible_game_objects[Card.Tile] = null
+			for GameObject in Card.getVisibleGameObjects():
+				team_visible_game_objects[GameObject] = null
+		return team_visible_game_objects
+	return {}
 	
+func getTeamVision(team: int = 0) -> Array:
+	return getTeamVisionDictionary(team).keys()
+	
+func getVisibleFieldCards(team: int = 0) -> Array:
+	var cards: Dictionary = {}
+	for Card in getAllyUnits(team):
+		for _Card in Card.getVisibleFieldCards():
+			cards[_Card] = null
+	return cards.keys()
+#endregion
+	
+#region Positions
+func onRotatePosition(coords: Vector3, theta: float) -> Vector3:
+	return Vector3(coords.x * cos(theta) + coords.z * sin(theta), coords.y, -coords.x * sin(theta) + coords.z * cos(theta))
+#endregion

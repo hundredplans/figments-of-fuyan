@@ -43,6 +43,6 @@ func onMouseHovered(state: bool) -> void:
 func onLoadEntered() -> bool:
 	load_level.emit(\
 		LevelInfo.getDataFromType(level_info.get_script())\
-		.new(level_info.id, true, level_info.data.duplicate(), level_info.timeout))
+		.new(level_info.id, true, level_info.data.duplicate(), level_info.timeout, spawn_ids))
 	return true
 #endregion

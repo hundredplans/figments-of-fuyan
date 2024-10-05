@@ -15,6 +15,11 @@ func onPostAction() -> void:
 	if Card.Tile != null: Card.Tile.onOccupy(null, true)
 	
 	Card.Tile = Tile
-	Card.coords = Tile.getCoords()
-	Tile.onOccupy(Card, apply_occupy_instant)
-	Card.setPositionToTile()
+	
+	if Tile != null:
+		Card.coords = Tile.getCoords()
+		
+		Tile.onOccupy(Card, apply_occupy_instant)
+		Card.setPositionToTile()
+	
+	onPushAction(VisionAction.new(Card))

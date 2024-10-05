@@ -31,8 +31,11 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level.request_camera_data.connect(CameraManager.setCameraSaveables.bind(level))
 	level.card_moving.connect(onCardMoving)
 	level.card_finished_moving.connect(onCardFinishedMoving)
+	
 	CameraManager.setInfo(level.level_camera_data)
 	CameraManager.camera_updated.connect(onCameraUpdated)
+	CameraManager.camera_position_updated.connect(onCameraPositionUpdated)
+	
 	UI.action_lock.connect(CameraManager.setActionLock)
 	UI.action_lock.connect(onUpdateActionLock)
 	UI.card_selected.connect(onCardSelected)
@@ -44,7 +47,7 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		onUpdateMousePosition()
 	
-	if HoverTile != null:
+	if MouseHoverTile != null:
 		if Input.is_action_just_pressed("MainInput"): onTilePressed()
 		elif Input.is_action_just_pressed("InspectCard"): onTileInspected()
 	
@@ -53,20 +56,25 @@ func _input(event: InputEvent) -> void:
 #region Hover Tile
 @onready var MouseRaycast: RayCast3D = %MouseRaycast
 const RAY_LENGTH: int = 5000
-var MouseHoverTile: TileGD # Ignores action lock
-var HoverTile: TileGD # Doesn't ignore action lock
+var MouseHoverTile: TileGD
 
 func onUpdateMousePosition() -> void:
-	setMouseHoverTile()
-	onHoverTile()
+	onHoverTile(true)
 
-func onHoverTile(disable: bool = false) -> void:
-	if !getActionLock() and !getMouseInUI() and !camera_panning:
-		if MouseHoverTile != null: MouseHoverTile.onHovered(true); HoverTile = MouseHoverTile
-		return
-	if MouseHoverTile != null: MouseHoverTile.onHovered(false); HoverTile = null
+func onHoverTile(is_mouse_hover: bool = false) -> void:
+	var Tile: TileGD = getMouseHoverTile()
+	var enable_hover: bool = !getActionLock() and !getMouseInUI() and !camera_panning
+	
+	if !(Tile == MouseHoverTile and is_mouse_hover):
+		if (!is_mouse_hover or enable_hover) and MouseHoverTile != null:
+			MouseHoverTile.onHovered(false)
+			MouseHoverTile = null
+		
+		if enable_hover and Tile != null:
+			MouseHoverTile = Tile
+			MouseHoverTile.onHovered(true)
 
-func setMouseHoverTile() -> void:
+func getMouseHoverTile() -> TileGD:
 	var to: Vector3 = CameraManager.CurrentCamera.project_ray_normal(get_viewport().get_mouse_position()) * RAY_LENGTH
 	
 	MouseRaycast.position = CameraManager.CurrentCamera.position
@@ -74,10 +82,8 @@ func setMouseHoverTile() -> void:
 	MouseRaycast.force_raycast_update()
 	
 	if MouseRaycast.is_colliding():
-		if MouseHoverTile != null: MouseHoverTile.onHovered(false)
-		MouseHoverTile = Helper.getCollision(MouseRaycast.get_collider(), TileGD)
-		return
-	MouseHoverTile = null
+		return Helper.getCollision(MouseRaycast.get_collider(), TileGD)
+	return null
 #endregion
 
 #region Action Lock / Mouse in UI
@@ -90,7 +96,7 @@ func onUpdateActionLock(state: bool) -> void:
 		if btn is Button: btn.disabled = state
 		elif btn is HighlightTxButton: btn.setDisabled(state)
 		
-	if state: onRemoveMovementRange()
+	if state: onHideMovementRange()
 	
 func getMouseInUI() -> bool:
 	return UI.mouse_in_ui
@@ -140,19 +146,19 @@ func onCardAwakened(Card: CardGD) -> void:
 
 #region Tile Pressing
 func onTilePressed() -> void:
-	var Tile: TileGD = HoverTile
-	if Tile.isAllySpawnTile() and !Tile.isOccupied():
-		var HandCard: CardGD = UI.getSelectedCard()
-		if HandCard != null:
-			level.onAppendAction(PlayCardAction.new(HandCard, Tile))
-	elif Tile.isOccupied() and Tile.isLevelVisible(): CameraManager.onSpectateCard(Tile.getCard())
-	elif Tile.is_movement_range:
+	var Tile: TileGD = MouseHoverTile
+	if Tile.getMovementPathDisplay():
 		var Card: CardGD = CameraManager.getCardSpectateObject()
 		if Card != null:
 			level.onAppendAction(MovementAction.new(Card, Tile))
+	elif Tile.isOccupied() and Tile.isLevelVisible(): CameraManager.onSpectateCard(Tile.getCard())
+	elif Tile.isAllySpawnTile() and !Tile.isOccupied():
+		var HandCard: CardGD = UI.getSelectedCard()
+		if HandCard != null:
+			level.onAppendAction(PlayCardAction.new(HandCard, Tile))
 	
 func onTileInspected() -> void:
-	var Tile: TileGD = HoverTile
+	var Tile: TileGD = MouseHoverTile
 	var Card: CardGD = Tile.getCard()
 	if Card != null:
 		Card.setInspectable(true, UI)
@@ -168,22 +174,27 @@ func onCameraUpdated(SpectateObject: Variant, OldSpectateObject: Variant) -> voi
 	
 	if SpectateObject is CardGD and SpectateObject.isAlly() and SpectateObject.turn_state == Game.TurnStates.INACTIVE and level.phase == Game.Phases.PLAYER and !getActionLock():
 		onCreateMovementRange(SpectateObject)
+	else: onHideMovementRange()
 		
+func onCameraPositionUpdated(pos: Vector3) -> void:
+	get_tree().call_group("FieldCardsGD", "onCameraPositionUpdated", pos)
 #endregion
 		
 #region Movement Range
-func onRemoveMovementRange() -> void:
-	get_tree().call_group("LevelTilesGD", "onRemoveMovementRange")
+func onHideMovementRange() -> void:
+	get_tree().call_group("LevelTilesGD", "setMovementPathDisplay", false)
 
 func onCreateMovementRange(Card: CardGD) -> void:
-	onRemoveMovementRange()
+	onHideMovementRange()
 	if Card == null or !Card.isAlly(): return
 	
 	var CenterTile: TileGD = Card.Tile
-	var speed: int = Card.getMovementSpeed()
+	var speed: int = min(Card.getMovementSpeed(), 5)
 	var tiles: Array = Game.getAdjacentOrCloserTiles(Card.Tile, speed) # Gather all tiles
-	tiles = tiles.filter(func(x: TileGD): return !x.occupied_objects.any(func(y: ObjectGD): return y.isSolid())) # Check for solidity
 	
+	var all_cards_tiles: Array = get_tree().get_nodes_in_group("FieldCardsGD").map(func(x: CardGD): return x.Tile)
+	
+	tiles = tiles.filter(func(x: TileGD): return !x.occupied_objects.any(func(y: ObjectGD): return y.isSolid()) and x not in all_cards_tiles) # Check for solidity
 	for Tile in tiles:
 		var astar := AStar3D.new()
 		# Limits tiles to those in movement range
@@ -193,28 +204,68 @@ func onCreateMovementRange(Card: CardGD) -> void:
 		
 		for StartTile in add_to_astar_tiles:
 			for EndTile in add_to_astar_tiles.filter(func(x: TileGD): return Game.isAdjacent(x, StartTile)):
-				var height_diff: int = StartTile.getHeight() - EndTile.getHeight()
-				if StartTile.variation == 1:
+				var height_diff: int = EndTile.getHeight() - StartTile.getHeight()
+				if StartTile.isRamp():
 					if StartTile.isValidRampRelation(EndTile):
 						astar.connect_points(StartTile.get_instance_id(), EndTile.get_instance_id(), false)
 					
-				elif EndTile.variation == 1:
+				elif EndTile.isRamp():
 					if EndTile.isValidRampRelation(StartTile):
 						astar.connect_points(StartTile.get_instance_id(), EndTile.get_instance_id(), false)
 					
-				elif abs(height_diff) <= 1:
+				elif height_diff <= 1:
 					astar.connect_points(StartTile.get_instance_id(), EndTile.get_instance_id(), false)
 					
-		var point_path: Array = astar.get_id_path(CenterTile.get_instance_id(), Tile.get_instance_id())
-		Tile.movement_path = point_path.map(func(x: int): return instance_from_id(x))
-		
-		if !point_path.is_empty(): Tile.setMovementRange(true)
+		var valid_path: bool = false
+		var point_path: Array = []
+		var movement_path: Array = []
+		while(!valid_path):
+			point_path = astar.get_id_path(CenterTile.get_instance_id(), Tile.get_instance_id())
+			if point_path.is_empty(): break
+			if point_path.size() > speed + 1:
+				astar.disconnect_points(point_path[point_path.size() - 1], point_path[point_path.size() - 2])
+				continue
+			
+			movement_path = point_path.map(func(x: int): return instance_from_id(x))
+			if !onSurviveFallDamage(Card, movement_path, point_path, astar): continue
+			valid_path = true
+			
+		if valid_path: Tile.setMovementPath(MovementPathGD.new(movement_path))
 	
+	var available_tiles: Array = tiles.filter(func(x: TileGD): return x.getMovementPathDisplay())
+	available_tiles.append(CenterTile)
+	
+	var attackables: Array = Card.getAttackablesInRange()
+	for GameObject in attackables:
+		var coords: Vector4i = GameObject.getCoords()
+		var tiles_in_range: Array = available_tiles.filter(func(x: TileGD): return Game.getCoordsDistance(x.getCoords(), GameObject.getCoords()) <= GameObject.getAttackRange())
+		if !tiles_in_range.is_empty():
+			var AttackableTile: TileGD
+			if CenterTile not in tiles_in_range:
+				tiles_in_range.sort_custom(func(x: TileGD, y: TileGD): return x.getMovementPathSize() < y.getMovementPathSize())
+				AttackableTile = tiles_in_range[0]
+			else: AttackableTile = CenterTile
+				
+			var attackable_path_tiles: Array =  AttackableTile.movement_path.tiles.duplicate() if AttackableTile != CenterTile else []
+			if GameObject is CardGD:
+				attackable_path_tiles.append(GameObject.Tile)
+				GameObject.Tile.setMovementPath(MovementPathGD.new(attackable_path_tiles))
+	
+func onSurviveFallDamage(Card: CardGD, movement_path: Array, point_path: Array, astar: AStar3D) -> bool:
+	Card.temp_fall_damage = 0
+	for i in range(1, movement_path.size()):
+		var fall_damage: int = movement_path[i].getFallDamage(movement_path[i - 1])
+		if fall_damage > 0:
+			var survive_fall_damage: bool = Card.isCardSurviveFallDamage(fall_damage)
+			if !survive_fall_damage and i != movement_path.size() - 1:
+				astar.disconnect_points(point_path[i - 1], point_path[i])
+				return false
+	return true
 #endregion
 
 #region Movement
 func onCardMoving(_Card: CardGD) -> void:
-	onRemoveMovementRange()
+	onHideMovementRange()
 	
 func onCardFinishedMoving(Card: CardGD) -> void:
 	onCreateMovementRange(Card)

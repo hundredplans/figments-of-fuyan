@@ -9,10 +9,27 @@ func _init(_Card: CardGD = null, _DestinationTile: TileGD = null) -> void:
 	DestinationTile = _DestinationTile
 
 func onPreAction() -> void:
-	if DestinationTile.movement_path.is_empty(): onFailAction()
+	var is_attackable_on_path: bool =  DestinationTile.getMovementPathTiles().any(func(x: TileGD): return x != Card.Tile and Game.getFieldCard(x) != null)
+	if !Card.canAttack() and is_attackable_on_path: onFailAction()
+	
 
 func onPostAction() -> void:
 	Card.onWalk()
-	for i in range(1, DestinationTile.movement_path.size()):
-		onAppendAction(MoveToTileAction.new(Card, DestinationTile.movement_path[i]))
-	onAppendAction(MovementFinishAction.new(Card))
+	
+	Card.Tile.is_card_moving = true
+	Card.Tile.setOutlineMaterial()
+	
+	var tiles: Array = DestinationTile.getMovementPathTiles()
+	var cards: Array = Game.getEnemyUnits(Card.team)
+	
+	for i in range(1, tiles.size()):
+		var MoveToTile: TileGD = tiles[i]
+		var Attackable: CardGD = Game.getFieldCard(MoveToTile)
+		
+		if Attackable == null:
+			MoveToTile.is_card_moving = true
+			onAppendAction(MoveToTileAction.new(Card, MoveToTile))
+			continue
+		onAppendAction(AttackAction.new(Card, Attackable))
+		break
+	onAppendAction(MovementFinishAction.new(Card, tiles))

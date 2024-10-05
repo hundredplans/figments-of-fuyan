@@ -14,18 +14,18 @@ func _init(_Card: CardGD = null, _DestinationTile: TileGD = null) -> void:
 	Card = _Card
 	DestinationTile = _DestinationTile
 
-func getDelay() -> float: return 1 if !isJumpFall() else getJumpFallDelay()
+func getDelay() -> float: return 1.0 if !isJumpFall() else getJumpFallDelay()
 
 func getJumpFallDelay() -> float:
 	return (1.8) if movement_type == MOVEMENT_TYPES.JUMP else (fall_time + 0.75)
 
 func onPreAction() -> void:
 	if DestinationTile.getHeight() - Card.Tile.getHeight() == 1: movement_type = MOVEMENT_TYPES.JUMP
-	elif DestinationTile.getHeight() - Card.Tile.getHeight() == -1:
+	elif DestinationTile.getHeight() - Card.Tile.getHeight() <= -1:
 		movement_type = MOVEMENT_TYPES.FALL
 		var height_diff: int = abs(DestinationTile.getHeight() - Card.Tile.getHeight())
 		fall_time = 1 + (height_diff * 0.1)
-	elif DestinationTile.variation == 1 or Card.Tile.variation == 1: movement_type = MOVEMENT_TYPES.RAMP
+	elif DestinationTile.isRamp() or Card.Tile.isRamp(): movement_type = MOVEMENT_TYPES.RAMP
 	else: movement_type = MOVEMENT_TYPES.REGULAR
 
 func onPostAction() -> void:

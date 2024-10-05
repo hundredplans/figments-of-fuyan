@@ -17,6 +17,8 @@ var turn_state: Game.TurnStates
 
 var draw_order: int
 var Tile: TileGD
+
+var attacks: int
 #endregion
 
 #region Globals
@@ -40,15 +42,17 @@ func setScaleUniform(x: float) -> void:
 	scale = Vector3(x, x, x)
 
 func setDefaultCollisionLayers() -> void:
-	for body in getStaticBodies(): body.collision_layer = 480
+	setCollisionLayers(96)
+	
+func setCollisionLayers(layer: int) -> void:
+	for body in getStaticBodies(): body.collision_layer = layer
 	
 func setMapPosition() -> void:
 	position = Vector3((sqrt(3) * coords.x + sqrt(3) * coords.y * 0.5), (coords.w * 0.6) + 0.3, coords.y * 3 / 2.0)
 
 func setTileRotation(_tile_rotation: int) -> void:
-	super(_tile_rotation)
-	rotation.y += PI / 6
-
+	tile_rotation = _tile_rotation
+	Model.rotation.y = (tile_rotation * (PI / 3)) + (PI / 6)
 #endregion
 
 #region Getters
@@ -66,6 +70,9 @@ func getStatHeightPosition() -> Vector3:
 	
 func getMovementSpeed() -> int:
 	return speed
+	
+func getCoords() -> Vector4i:
+	return Tile.getCoords()
 #endregion
 
 #region Animation
@@ -83,6 +90,15 @@ func onIdle() -> void:
 	
 func onWalk() -> void:
 	if AniPlayer != null and AniPlayer.current_animation != "Walk": AniPlayer.play("Walk")
+	
+func onAttack() -> void:
+	AniPlayer.play("Attack")
+	
+func onHurt() -> void:
+	AniPlayer.play("Hurt")
+	
+func onDeath() -> void:
+	AniPlayer.play("Death")
 #endregion
 
 #region Card
@@ -95,8 +111,8 @@ func onCreateCardUI(parent: Control, highlight_on_hover: bool = false) -> Contro
 
 #region Save/Load/Clear
 func onSave() -> SavedDataCard:
-	return SavedDataCard.new(info.id, false, coords, tile_rotation, level_visible, team, \
-	attack, health, speed, max_speed, max_health, energy, ascended, draw_order, card_place, turn_state)
+	return SavedDataCard.new(info.id, false, coords, tile_rotation, level_visible, is_revealed, team, \
+	attack, health, speed, max_speed, max_health, energy, ascended, draw_order, card_place, turn_state, [], attacks)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -104,6 +120,10 @@ func onLoadData(data: SavedData) -> void:
 	team = data.team
 	ascended = data.ascended
 	turn_state = data.turn_state
+	attacks = data.attacks
+	
+	onCreateAdjustedPoints()
+	
 	setBaseStats()
 	onChangeCardPlace(data.card_place)
 	add_to_group("CardsGD")
@@ -123,15 +143,16 @@ func setBaseStats() -> void:
 	attack = info.attack
 	health = info.health
 	speed = info.speed
-	max_health = info.health
 	energy = info.energy
 	
 	if ascended:
 		attack += info.plus_attack
 		health += info.plus_health
 		speed += info.plus_speed
-		max_health += info.plus_health
 		energy += info.plus_energy
+		
+	max_health = info.health
+	max_speed = info.speed
 	
 func onCreateModel() -> void:
 	onRemoveModel()
@@ -170,12 +191,15 @@ func onWalkTo(pos: Vector3, walk_speed: float) -> void:
 
 #region look at
 func onLookAtObjectOnlyY(node: Node) -> void:
-	var old_rotation: Vector3 = rotation
-	look_at(node.position, Vector3(0, 1, 0), true)
-	rotation = Vector3(old_rotation.x, rotation.y, old_rotation.z)
+	var old_rotation: Vector3 = Model.rotation
+	Model.look_at(node.position, Vector3(0, 1, 0), true)
+	Model.rotation = Vector3(old_rotation.x, Model.rotation.y, old_rotation.z)
 #endregion
 
 #region Points
+func getPoints() -> Array:
+	return info.points
+
 func onLoadPoints(parent: Node3D) -> void:
 	for point in info.points:
 		var Point: MeshInstance3D = load(info.POINT_PATH).instantiate()
@@ -230,7 +254,11 @@ func onInspectCard() -> void:
 
 #region TurnStates
 func setTurnState(_turn_state: Game.TurnStates) -> void:
-	turn_state = _turn_state
+	if turn_state != _turn_state:
+		turn_state = _turn_state
+		match turn_state:
+			Game.TurnStates.INACTIVE:
+				onPushAction([ChangeAttacksAction.new(self, getMaxAttacks()), StatAction.new(self, Game.Stats.SPEED, max_speed, 0, 0, true)])
 	
 #endregion
 
@@ -240,6 +268,9 @@ func onProcessAction(action: Action) -> void:
 		if action is MoveToTileAction and action.Card == self: onMoveToTile(action)
 	elif action.post:
 		if action is MovementFinishAction and action.Card == self: Tile.setOutlineMaterial()
+		elif action is DeathAction and action.Defender == self:
+			onRemoveModel()
+			onRemoveFieldInfo()
 #endregion
 
 #region Movement
@@ -252,7 +283,13 @@ func onMoveToTile(action: MoveToTileAction) -> void:
 			tween.tween_property(self, "position", action.DestinationTile.getCardPosition(), action.getDelay())
 		else:
 			var tween := get_tree().create_tween()
-			tween.tween_property(self, "position", action.DestinationTile.getCardPosition(), action.getDelay() / 2)
+			
+			if action.DestinationTile.isRamp():
+				tween.tween_property(self, "position", Tile.getHalfwayCardPosition(action.DestinationTile), action.getDelay() / 2.0)
+				tween.tween_property(self, "position", action.DestinationTile.getCardPosition(), action.getDelay() / 2.0)
+			elif Tile.isRamp():
+				tween.tween_property(self, "position", action.DestinationTile.getHalfwayCardPosition(Tile), action.getDelay() / 2.0)
+				tween.tween_property(self, "position", action.DestinationTile.getCardPosition(), action.getDelay() / 2.0)
 		return
 	
 	onJumpAnimation()
@@ -311,6 +348,142 @@ func onSpectated(state: bool) -> void:
 var FieldInfo: Node3D
 func onCreateFieldInfo() -> void:
 	FieldInfo = load(info.FIELD_INFO_SCENE_PATH).instantiate()
-	Model.add_child(FieldInfo)
+	add_child(FieldInfo)
 	FieldInfo.setInfo(self)
+	
+func onRemoveFieldInfo() -> void:
+	FieldInfo.queue_free()
+	
+func onCameraPositionUpdated(pos: Vector3) -> void:
+	FieldInfo.onCameraPositionUpdated(pos)
+#endregion
+
+#region Awaken
+func onAwaken() -> void:
+	onCreateModel()
+	onIdle()
+	onCreateFieldInfo()
+	onCreateVisionRay()
+	setPositionToTile()
+	setTileRotation(tile_rotation)
+	setTurnState(turn_state)
+	setLevelVisible(level_visible)
+#endregion
+
+#region Vision
+var visible_game_objects: Dictionary = {}
+var VisionRay: RayCast3D
+const BASE_VISION_RANGE: int = 5
+const EXTRA_RAY_LENGTH: float = 1.05
+
+func onUpdateVision() -> void:
+	if card_place != Game.CardPlaces.GRAVEYARD:
+		get_tree().call_group("FieldCardsGD", "setDetectableByRay", false)
+		var tile_objects: Array = Game.getAdjacentOrCloserTiles(Tile, BASE_VISION_RANGE)
+		
+		var cards: Array = []
+		for VisionTile in tile_objects.duplicate():
+			var Card: CardGD = Game.getFieldCard(VisionTile)
+			if Card != null and !Card.isInvisible() and Card != self: cards.append(Card); Card.setDetectableByRay(true)
+		
+		for obj_array in tile_objects.map(func(x: GameObjectGD): return x.occupied_objects):
+			for Obj in obj_array: tile_objects.append(Obj)
+			
+		tile_objects += cards
+		var point_batches: Array = tile_objects.map(func(x: GameObjectGD): return x.adjusted_points)
+		for point_batch in point_batches:
+			for point in point_batch:
+				VisionRay.target_position = (point - VisionRay.global_position) * EXTRA_RAY_LENGTH
+				VisionRay.force_raycast_update()
+				if VisionRay.is_colliding():
+					var GameObject: GameObjectGD = Helper.getCollision(VisionRay.get_collider(), GameObjectGD)
+					if GameObject in tile_objects:
+						visible_game_objects[GameObject] = null
+	else: visible_game_objects = {}
+	
+func getVisibleFieldCards() -> Array:
+	return visible_game_objects.keys().filter(func(x: GameObjectGD): return x is CardGD)
+	
+func getVisibleTiles() -> Array:
+	return visible_game_objects.keys().filter(func(x: GameObjectGD): return x is TileGD)
+	
+func getVisibleGameObjects() -> Array:
+	return visible_game_objects.keys()
+	
+func onCreateVisionRay() -> void:
+	VisionRay = load(info.VISION_RAY_SCENE_PATH).instantiate()
+	add_child(VisionRay)
+	VisionRay.position.y = info.eye
+	
+func setLevelVisible(state: bool) -> void:
+	super(state)
+	visible = state
+	
+func setDetectableByRay(state: bool) -> void:
+	if state: setCollisionLayers(96)
+	else: setCollisionLayers(32)
+#endregion
+
+#region Invisible
+func isInvisible() -> bool:
+	return false
+#endregion
+
+#region Fall Damage
+var temp_fall_damage: int = 0
+func isCardSurviveFallDamage(_temp_fall_damage: int) -> bool:
+	temp_fall_damage += _temp_fall_damage
+	return temp_fall_damage < health
+#endregion
+
+#region Attacks and Range
+func isAttackable(GameObject: GameObjectGD) -> bool:
+	if GameObject is CardGD: return !GameObject.isAlly(team)
+	return false
+	
+func getAttackDamage() -> int:
+	return attack
+	
+func getAttackRange() -> int:
+	return 1
+	
+func canAttack() -> bool: return attacks > 0
+	
+func getMaxAttacks() -> int: return 1
+	
+func setAttacks(_attacks: int) -> void: attacks = _attacks
+	
+func getAttackablesInRange() -> Array:
+	if !canAttack(): return []
+	var cards: Array = get_tree().get_nodes_in_group("FieldCardsGD")
+	cards = cards.filter(func(x: GameObjectGD): \
+		return x.isAttackable(self) and\
+		Game.getCoordsDistance(Tile.getCoords(), x.Tile.getCoords()) <= speed + getAttackRange() and\
+		x.position.y <= position.y + info.top)
+	return cards
+#endregion
+
+#region Damage
+func onDMG(Damager: GameObjectGD, damage: int) -> void:
+	var old_health: int = health
+	var health_damage: int = old_health - min(health - damage, 0)
+	Damager.onPushAction(StatAction.new(self, Game.Stats.HEALTH, -health_damage))
+
+func onTakeDamage(Damager: GameObjectGD, damage: int) -> void:
+	var old_health: int = health
+	health = max(health - Damager.getAttackDamage(), 0)
+	var health_damage: int = old_health - health
+	
+	FieldInfo.onUpdateStat(Game.Stats.HEALTH, health, level_visible)
+	if health == 0:
+		onPushAction(DeathAction.new(Damager, self, damage, health_damage))
+		return
+	onPushAction(HurtAction.new(Damager, self, damage, health_damage))
+#endregion
+
+#region Speed
+func onChangeSpeed(_speed: int) -> void:
+	var speed_difference: int = speed - _speed
+	speed = _speed
+	FieldInfo.onUpdateStat(Game.Stats.SPEED, speed_difference, level_visible)
 #endregion

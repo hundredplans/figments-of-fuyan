@@ -21,13 +21,21 @@ func onPostAction() -> void: pass
 func onProcessAction(_action: Action) -> void: pass
 #endregion
 	
-func onPushAction(action: Action) -> void:
-	action.owner = self
-	push_action.emit(action)
+func onPushAction(actions: Variant, action_owner: Variant = self) -> void:
+	if actions is Action:
+		actions = [actions]
+		actions.reverse()
+		
+	for action in actions:
+		action.owner = action_owner
+		push_action.emit(action)
 	
-func onAppendAction(action: Action) -> void:
-	action.owner = self
-	append_action.emit(action)
+func onAppendAction(actions: Variant, action_owner: Variant = self) -> void:
+	if actions is Action: actions = [actions]
+	
+	for action in actions:
+		action.owner = action_owner
+		append_action.emit(action)
 	
 func onFailAction() -> void:
 	failed = true

@@ -1,7 +1,9 @@
 extends Node3D
 
+signal camera_position_updated
 signal camera_updated
 signal zooming
+
 #region Exports
 # How high / low the level camera can go
 @export var Y_SPHERE_BLOCK: float = 0.3
@@ -64,14 +66,17 @@ func setInfo(level_camera_data: LevelCameraData) -> void:
 		
 		
 func _input(event: InputEvent) -> void:
-	if !action_lock and CurrentCamera == LevelCamera:
-		if Input.is_action_just_pressed("ChangeCameraLeft"): onChangeCameraInDirection(-1)
-		elif Input.is_action_just_pressed("ChangeCameraRight"): onChangeCameraInDirection(1)
-		
+	if CurrentCamera == LevelCamera:
 		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and event is InputEventMouseMotion:
 			setCameraPointAlongCircle((event.relative / 10000) * CAMERA_ROTATION_SPEED)
-		elif Input.is_action_just_pressed("ZoomIn"): setCameraRadius(-1); zooming.emit()
+			
+		if Input.is_action_just_pressed("ZoomIn"): setCameraRadius(-1); zooming.emit()
 		elif Input.is_action_just_pressed("ZoomOut"): setCameraRadius(1); zooming.emit()
+			
+		if !action_lock:
+			if Input.is_action_just_pressed("ChangeCameraLeft"): onChangeCameraInDirection(-1)
+			elif Input.is_action_just_pressed("ChangeCameraRight"): onChangeCameraInDirection(1)
+		
 #endregion
 
 #region Spectate
@@ -105,6 +110,7 @@ func setCameraPointAlongCircle(progress := Vector2.ZERO) -> void:
 	CurrentCamera.position.y = sin(phi) * camera_radius + central_point.y
 	CurrentCamera.position.z = cos(phi) * sin(theta) * camera_radius + central_point.z
 	CurrentCamera.look_at(central_point)
+	camera_position_updated.emit(CurrentCamera.position)
 	
 func setCameraRadius(direction: int) -> void:
 	camera_radius = clamp(camera_radius + (CAMERA_RADIUS_INCREMENT * direction), CAMERA_RADIUS_LOWER_BOUND, CAMERA_RADIUS_UPPER_BOUND)

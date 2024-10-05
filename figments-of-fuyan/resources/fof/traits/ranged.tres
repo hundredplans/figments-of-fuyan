@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="TraitInfo" load_steps=3 format=3 uid="uid://dbddkrbu64d60"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/traits/trait_info.gd" id="1_a0lgc"]
+[ext_resource type="Script" path="res://scripts/fof/traits/trait.gd" id="1_gqgli"]
+
+[resource]
+script = ExtResource("1_a0lgc")
+replace_stat = 0
+id = 2
+name = "Ranged"
+gdscript = ExtResource("1_gqgli")

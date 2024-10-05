@@ -167,7 +167,7 @@ func onTileObjectInfoSelected(data: SavedData, remove_last: bool = true) -> void
 	HoverModel = SavedData.onLoadModel(data, World)
 	HoverModel.setRayPickable(true)
 	HoverModel.position = Vector3(0, 10000, 0)
-	HoverModel.setEmptyCollisionLayers()
+	HoverModel.setCollisionLayers(0)
 	HoverModel.setHalfTransparent()
 	
 	var coords := Vector4i.ZERO

@@ -6,6 +6,9 @@ func isIDVariation(id: int, _variation: int) -> bool: return info.id == id and _
 #endregion
 
 #region Points
+func getPoints() -> Array:
+	return info.points[variation]
+
 func onLoadPoints(parent: Node3D) -> void:
 	for i in range(info.models.size()):
 		if i >= info.points.size(): info.points.append([])
@@ -15,6 +18,7 @@ func onLoadPoints(parent: Node3D) -> void:
 		Point.setInfo(self)
 		Point.position = point
 		parent.add_child(Point)
+		
 	ResourceSaver.save(info)
 	
 func onCreatePoint(parent: Node3D, point: Vector3) -> void:
@@ -41,7 +45,8 @@ func onLoadData(data: SavedData) -> void:
 	super(data)
 	
 func onLoadDataLevel() -> void:
-	setLevelVisible(level_visible, true)
+	onApplyGreyscaleMaterial()
+	onCreateAdjustedPoints()
 	
 func onLoadModel() -> void:
 	var ray_pickable: bool = false
@@ -65,11 +70,13 @@ func clampVariation(i: int) -> void:
 #endregion
 
 #region Level Visible
-func setLevelVisible(state: bool, _avoid_recursion: bool = false) -> void:
+func setLevelVisible(state: bool) -> void:
 	super(state)
-	if is_in_group("LevelTileObjectsGD"):
-		var greyscale_material: ShaderMaterial = load(info.GREYSCALE_MATERIAL) if !state else null
-		for mesh in getMeshes():
-			for surface_id in mesh.get_surface_override_material_count():
-				mesh.set_surface_override_material(surface_id, greyscale_material)
+	onApplyGreyscaleMaterial()
+				
+func onApplyGreyscaleMaterial() -> void:
+	var greyscale_material: ShaderMaterial = load(info.GREYSCALE_MATERIAL) if !level_visible else null
+	for mesh in getMeshes():
+		for surface_id in mesh.get_surface_override_material_count():
+			mesh.set_surface_override_material(surface_id, greyscale_material)
 #endregion

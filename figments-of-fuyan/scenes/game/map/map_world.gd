@@ -44,7 +44,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	MapCard = Card
 	MapCard.onCreateModel()
 	MapCard.onIdle()
-	MapCard.rotation_degrees.y = 90
+	MapCard.Model.rotation_degrees.y = 90
 	onMapStartAnimation()
 	setEnvironment()
 #endregion

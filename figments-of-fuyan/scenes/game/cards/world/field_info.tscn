@@ -1,19 +1,19 @@
-[gd_scene load_steps=22 format=3 uid="uid://ct6euhy8orf2m"]
+[gd_scene load_steps=35 format=3 uid="uid://ct6euhy8orf2m"]
 
 [ext_resource type="Script" path="res://scenes/game/cards/world/field_info.gd" id="1_doj6w"]
-[ext_resource type="PackedScene" uid="uid://b7aqntno6susb" path="res://assets/models/general/numbers/zero.glb" id="2_emwqa"]
+[ext_resource type="PackedScene" uid="uid://b7aqntno6susb" path="res://assets/models/general/numbers/stat_numbers/zero.glb" id="2_emwqa"]
 [ext_resource type="PackedScene" uid="uid://crmnqmwjj31wk" path="res://assets/models/general/floating_stats/attack_default.glb" id="2_v7j5s"]
 [ext_resource type="PackedScene" uid="uid://c4l2g2xc10yi4" path="res://assets/models/general/floating_stats/health_default.glb" id="3_idggp"]
 [ext_resource type="PackedScene" uid="uid://c4hntclk7hxr4" path="res://assets/models/general/floating_stats/speed.glb" id="4_5w26i"]
-[ext_resource type="PackedScene" uid="uid://it17t4thfbe" path="res://assets/models/general/numbers/three.glb" id="5_sdyep"]
-[ext_resource type="PackedScene" uid="uid://cj1tqdvpopx8e" path="res://assets/models/general/numbers/four.glb" id="6_1r07y"]
-[ext_resource type="PackedScene" uid="uid://ci6pfnb26s5bi" path="res://assets/models/general/numbers/one.glb" id="6_hhji0"]
-[ext_resource type="PackedScene" uid="uid://bot88a67sd02m" path="res://assets/models/general/numbers/five.glb" id="7_5ijq8"]
-[ext_resource type="PackedScene" uid="uid://c7hpaqma8ikkj" path="res://assets/models/general/numbers/two.glb" id="7_rtn5l"]
-[ext_resource type="PackedScene" uid="uid://cnrv23yoi52ob" path="res://assets/models/general/numbers/six.glb" id="8_7cvsh"]
-[ext_resource type="PackedScene" uid="uid://bvrgvidl2c7y4" path="res://assets/models/general/numbers/seven.glb" id="9_a1tgo"]
-[ext_resource type="PackedScene" uid="uid://sglmcojlk1je" path="res://assets/models/general/numbers/eight.glb" id="10_dhlus"]
-[ext_resource type="PackedScene" uid="uid://dq5ux8j1jjffc" path="res://assets/models/general/numbers/nine.glb" id="11_apcfk"]
+[ext_resource type="PackedScene" uid="uid://it17t4thfbe" path="res://assets/models/general/numbers/stat_numbers/three.glb" id="5_sdyep"]
+[ext_resource type="PackedScene" uid="uid://cj1tqdvpopx8e" path="res://assets/models/general/numbers/stat_numbers/four.glb" id="6_1r07y"]
+[ext_resource type="PackedScene" uid="uid://ci6pfnb26s5bi" path="res://assets/models/general/numbers/stat_numbers/one.glb" id="6_hhji0"]
+[ext_resource type="PackedScene" uid="uid://bot88a67sd02m" path="res://assets/models/general/numbers/stat_numbers/five.glb" id="7_5ijq8"]
+[ext_resource type="PackedScene" uid="uid://c7hpaqma8ikkj" path="res://assets/models/general/numbers/stat_numbers/two.glb" id="7_rtn5l"]
+[ext_resource type="PackedScene" uid="uid://cnrv23yoi52ob" path="res://assets/models/general/numbers/stat_numbers/six.glb" id="8_7cvsh"]
+[ext_resource type="PackedScene" uid="uid://bvrgvidl2c7y4" path="res://assets/models/general/numbers/stat_numbers/seven.glb" id="9_a1tgo"]
+[ext_resource type="PackedScene" uid="uid://sglmcojlk1je" path="res://assets/models/general/numbers/stat_numbers/eight.glb" id="10_dhlus"]
+[ext_resource type="PackedScene" uid="uid://dq5ux8j1jjffc" path="res://assets/models/general/numbers/stat_numbers/nine.glb" id="11_apcfk"]
 [ext_resource type="Material" uid="uid://bejm0dawc77gj" path="res://resources/materials/colors/unshaded/green.tres" id="12_5ikdo"]
 [ext_resource type="Material" uid="uid://bj6n2uaf0f6uv" path="res://resources/materials/colors/unshaded/white.tres" id="13_itc2r"]
 [ext_resource type="Material" uid="uid://3te7r175xgh2" path="res://resources/materials/colors/unshaded/red.tres" id="14_bvr8m"]
@@ -21,6 +21,19 @@
 [ext_resource type="Material" uid="uid://dps10m73p80xv" path="res://resources/materials/colors/top_unshaded/white.tres" id="16_m8mfd"]
 [ext_resource type="Material" uid="uid://bl76cu5hicepy" path="res://resources/materials/colors/top_unshaded/red.tres" id="17_dv8uk"]
 [ext_resource type="Material" uid="uid://cs44x6eyyv8fk" path="res://resources/materials/game/base_material_top.tres" id="18_xbibn"]
+[ext_resource type="ArrayMesh" uid="uid://dg7uxtqjwekn5" path="res://assets/models/general/numbers/particle_numbers/one.tres" id="19_g58ma"]
+[ext_resource type="ArrayMesh" uid="uid://bod8ila0mcgh5" path="res://assets/models/general/numbers/particle_numbers/two.tres" id="20_hvbsd"]
+[ext_resource type="ArrayMesh" uid="uid://b47lrjmcpx52u" path="res://assets/models/general/numbers/particle_numbers/three.tres" id="21_dveln"]
+[ext_resource type="ArrayMesh" uid="uid://8lvyp0xo7m1o" path="res://assets/models/general/numbers/particle_numbers/four.tres" id="22_35x14"]
+[ext_resource type="PackedScene" uid="uid://nue6v6hd501f" path="res://scenes/particles/numbers_particle.tscn" id="22_tcac4"]
+[ext_resource type="ArrayMesh" uid="uid://dtltd47qcc7ba" path="res://assets/models/general/numbers/particle_numbers/five.tres" id="23_n5v4e"]
+[ext_resource type="ArrayMesh" uid="uid://55xffu81oa2l" path="res://assets/models/general/numbers/particle_numbers/six.tres" id="24_6p3qk"]
+[ext_resource type="ArrayMesh" uid="uid://0h0asltc81t4" path="res://assets/models/general/numbers/particle_numbers/seven.tres" id="25_y0a8l"]
+[ext_resource type="ArrayMesh" uid="uid://chfkufbvrar7i" path="res://assets/models/general/numbers/particle_numbers/eight.tres" id="26_4gsdx"]
+[ext_resource type="ArrayMesh" uid="uid://bjmu0vytfeino" path="res://assets/models/general/numbers/particle_numbers/nine.tres" id="27_eixty"]
+[ext_resource type="ArrayMesh" uid="uid://ccoefdad2bccy" path="res://assets/models/general/numbers/particle_numbers/exclamation_marks.tres" id="28_i4f0i"]
+[ext_resource type="ArrayMesh" uid="uid://oom046e4h5g" path="res://assets/models/general/numbers/particle_numbers/plus.tres" id="29_3nsr3"]
+[ext_resource type="ArrayMesh" uid="uid://bw1sie25vkpxj" path="res://assets/models/general/numbers/particle_numbers/minus.tres" id="30_syjsk"]
 
 [node name="FieldInfo" type="Node3D"]
 script = ExtResource("1_doj6w")
@@ -32,6 +45,10 @@ green_top_material = ExtResource("15_6rglu")
 white_top_material = ExtResource("16_m8mfd")
 red_top_material = ExtResource("17_dv8uk")
 top_base_material = ExtResource("18_xbibn")
+number_to_particle_mesh = Array[Mesh]([null, ExtResource("19_g58ma"), ExtResource("20_hvbsd"), ExtResource("21_dveln"), ExtResource("22_35x14"), ExtResource("23_n5v4e"), ExtResource("24_6p3qk"), ExtResource("25_y0a8l"), ExtResource("26_4gsdx"), ExtResource("27_eixty")])
+exclamation_particle_mesh = ExtResource("28_i4f0i")
+plus_mesh = ExtResource("29_3nsr3")
+minus_mesh = ExtResource("30_syjsk")
 
 [node name="FloatingStats" type="Node3D" parent="."]
 unique_name_in_owner = true
@@ -71,3 +88,6 @@ unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, 0)
 
 [node name="two" parent="Numbers/SpeedSpot" instance=ExtResource("7_rtn5l")]
+
+[node name="NumbersParticle" parent="." instance=ExtResource("22_tcac4")]
+unique_name_in_owner = true

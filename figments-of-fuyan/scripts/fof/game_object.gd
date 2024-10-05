@@ -5,6 +5,8 @@ var Model: Node3D
 var coords: Vector4i
 var tile_rotation: int
 var level_visible: bool
+var is_revealed: bool
+var adjusted_points: Array = []
 #endregion
 
 #region Helper Functions
@@ -45,8 +47,8 @@ func setVisible(state: bool) -> void: visible = state
 	
 func onRotateDirection(direction: int) -> void:
 	tile_rotation += direction
-	if tile_rotation > 6: tile_rotation = 1
-	elif tile_rotation < 1: tile_rotation = 6
+	if tile_rotation > 5: tile_rotation = 0
+	elif tile_rotation < 0: tile_rotation = 5
 	setTileRotation(tile_rotation)
 
 func setTileRotation(_tile_rotation: int) -> void:
@@ -63,7 +65,8 @@ func setMapPosition() -> void:
 
 #region Save/Load/Clear
 func onLoadData(data: SavedData) -> void:
-	setLevelVisible(data.level_visible)
+	level_visible = data.level_visible
+	is_revealed = data.is_revealed
 	add_to_group("GameObjectsGD")
 #endregion
 
@@ -80,13 +83,37 @@ func setMeshesMaterial(mat: Material = null) -> void:
 	for mesh in getMeshes():
 		for surface in mesh.get_surface_override_material_count():
 			mesh.set_surface_override_material(surface, mat)
-			
-func setEmptyCollisionLayers() -> void:
+				
+func setCollisionLayers(layer: int) -> void:
 	for body in getStaticBodies():
-		body.collision_layer = 0
+		body.collision_layer = layer
 #endregion
 
 #region Level Visible
 func setLevelVisible(state: bool) -> void:
-	level_visible = state
+	level_visible = state if !is_revealed else true
+	
+func onRevealed() -> void:
+	is_revealed = true
+#endregion
+
+#region Points
+func getLevelPoints() -> Array:
+	return call("getPoints")
+
+func onCreateAdjustedPoints() -> void:
+	var theta: float = (tile_rotation) * (PI / 6)
+	adjusted_points = getLevelPoints().map(func(x: Vector3): return (Game.onRotatePosition(x, theta)) + position)
+	if self is TileGD: adjusted_points += call("getTileFillPoints").map(func(x: Vector3): return x + position)
+	
+	#for point in adjusted_points:
+		#var Point: MeshInstance3D = load(info.POINT_PATH).instantiate()
+		#Point.setInfo(self)
+		#add_child(Point)
+		#Point.global_position = point
+#endregion
+
+#region Attackable
+func isAttackable(_Attacker: GameObjectGD) -> bool:
+	return false
 #endregion

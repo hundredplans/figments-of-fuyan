@@ -4,34 +4,39 @@ extends TileObjectGD
 #region Global
 enum OccupyStates {NULL, ALLY, ENEMY, NEUTRAL}
 var occupied_objects: Array = []
+var is_hovered: bool = false
+var is_path_hovered: bool = false
+var is_card_moving: bool = false
+
+var movement_path: MovementPathGD
 #endregion
 
 #region Saved Data
 var occupy_state: OccupyStates
 var tile_fill: bool = false
-var is_hovered: bool = false
-var is_path_hovered: bool = false
-var is_movement_range: bool = false
-var is_movement_range_attackable: bool = false
-var movement_path: Array
 #endregion
 
 #region Is Checks
-func isAllySpawnTile() -> bool:
-	var ally_spawns: Array = get_tree().get_nodes_in_group("AllySpawnsGD")
-	return occupied_objects.any(func(x: ObjectGD): return x in ally_spawns)
-
-func getAllySpawnTile() -> SpawnGD:
-	var ally_spawns: Array = get_tree().get_nodes_in_group("AllySpawnsGD")
-	for spawn_object in ally_spawns:
-		if self in spawn_object.occupied_tiles: return spawn_object
-	return null
 
 func isOccupied() -> bool:
 	return get_tree().get_nodes_in_group("FieldCardsGD").any(func(x: CardGD): return x.Tile == self)
+	
+func isRamp() -> bool:
+	return variation == 1
 #endregion
 
 #region Getters
+func isAllySpawnTile() -> bool:
+	var spawns: Array = get_tree().get_nodes_in_group("AllySpawnsGD")
+	for spawn_object in spawns:
+		if self in spawn_object.occupied_tiles: return true
+	return false
+
+func getSpawnTile() -> SpawnGD:
+	var spawns: Array = get_tree().get_nodes_in_group("SpawnsGD")
+	for spawn_object in spawns:
+		if self in spawn_object.occupied_tiles: return spawn_object
+	return null
 func getHeight() -> int: return coords.w
 func getCoordsHeightless() -> Vector3i: return Vector3i(coords.x, coords.y, coords.z)
 func getCoords() -> Vector4i: return coords
@@ -41,7 +46,30 @@ func getCard() -> CardGD:
 		if FieldCard.Tile == self: return FieldCard
 	return null
 func getCardPosition() -> Vector3:
-	return (position + Vector3(0, 0.3, 0)) if variation == 0 else (position + Vector3(0, 0.9, 0))
+	var base_position: Vector3 = getCardPositionBase()
+	if variation == 1: base_position += Vector3(0, 0.6, 0)
+	return base_position
+	
+func getCardPositionBase() -> Vector3:
+	return position + Vector3(0, 0.3, 0)
+	
+func getHalfwayCardPosition(Tile: TileGD) -> Vector3:
+	var this: Vector3 = getCardPositionBase()
+	var other: Vector3 = Tile.getCardPositionBase()
+	var y: float = this.y
+	this += other
+	this /= 2.0
+	this.y = y
+	return this
+
+const HEX_SIZE: float = 0.6
+	
+func getTileFillPoints() -> Array:
+	var points: Array = []
+	var height: int = getHeight()
+	if tile_fill and height > 0:
+		for i in range(height): points += Game.tile_face_directions.map(func(x: Vector3): return Vector3(x.x, (i * 0.6) + 0.45 - position.y, x.z))
+	return points
 #endregion
 #region Material Updates
 func setMeshesMaterial(mat: Material = null) -> void:
@@ -50,23 +78,26 @@ func setMeshesMaterial(mat: Material = null) -> void:
 		
 func setOutlineMaterial() -> void:
 	var mat: Material = null
-	if occupy_state != OccupyStates.NULL:
+	var display_movement_path: bool = getMovementPathDisplay()
+	if (occupy_state != OccupyStates.NULL and level_visible and !is_card_moving):
 		match occupy_state:
 			OccupyStates.ALLY: mat = load(info.ALLY_OCCUPY_MATERIAL)
-			OccupyStates.ENEMY: mat = load(info.ENEMY_OCCUPY_MATERIAL)
-			OccupyStates.NEUTRAL: mat = load(info.NEUTRAL_OCCUPY_MATERIAL)
+			OccupyStates.ENEMY: 
+				if !display_movement_path: mat = load(info.ENEMY_OCCUPY_MATERIAL)
+				else: mat = load(info.MOVEMENT_RANGE_ATTACKABLE_MATERIAL)
+			OccupyStates.NEUTRAL:
+				if !display_movement_path: mat = load(info.NEUTRAL_OCCUPY_MATERIAL)
+				else: mat = load(info.MOVEMENT_RANGE_ATTACKABLE_MATERIAL)
 	elif is_path_hovered: mat = load(info.PATH_HOVERED_MATERIAL)
 	elif is_hovered: mat = load(info.HOVERED_MATERIAL)
+	elif display_movement_path: mat = load(info.MOVEMENT_RANGE_MATERIAL)
 	elif !level_visible: mat = load(info.GREYSCALE_MATERIAL)
-	elif is_movement_range: mat = load(info.MOVEMENT_RANGE_MATERIAL)
-	elif is_movement_range_attackable: mat = load(info.MOVEMENT_RANGE_ATTACKABLE_MATERIAL)
 		
 	getMeshes()[0].set_surface_override_material(1, mat)
 #endregion
 #region Collision Layers
 func setDefaultCollisionLayers() -> void:
-	for body in getStaticBodies():
-		body.collision_layer = 24
+	setCollisionLayers(24)
 #endregion
 #region Tile Fill
 var TileFill: Node3D
@@ -85,7 +116,7 @@ func onCreateTileFill(state: bool) -> String:
 #endregion
 #region Save / Load
 func onSave() -> SavedDataGameObject:
-	return SavedDataTile.new(info.id, false, coords, tile_rotation, level_visible, variation, tile_fill, occupy_state)
+	return SavedDataTile.new(info.id, false, coords, tile_rotation, level_visible, is_revealed, variation, tile_fill, occupy_state)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -103,15 +134,8 @@ func onLoadDataLevel() -> void:
 	super()
 	setOutlineMaterial()
 	
-func onProcessAction(action: Action) -> void:
-	if action.post:
-		if action is ChangePhaseAction and action.phase == Game.Phases.START:
-			setLevelVisible(isAllySpawnTile())
-
-func setLevelVisible(state: bool, avoid_recursion: bool = false) -> void:
-	super(state)
-	if !avoid_recursion:
-		for object in occupied_objects: object.setLevelVisible(state, true)
+func onProcessAction(_action: Action) -> void:
+	pass
 #endregion
 #region Occupied Objects
 func setOccupiedObject(object: ObjectGD) -> void:
@@ -123,8 +147,8 @@ func onHovered(state: bool) -> void:
 		is_hovered = state
 		setOutlineMaterial()
 		
-		if is_movement_range:
-			for Tile in movement_path: Tile.setPathHovered(state)
+		if !getMovementPathDisplay(): return
+		for Tile in movement_path.tiles: Tile.setPathHovered(state)
 		
 #endregion
 #region Occupied By Unit
@@ -138,24 +162,38 @@ func onOccupy(Card: CardGD, instant: bool) -> void:
 #endregion
 
 #region Movement Range / Path Hovered
-func onRemoveMovementRange() -> void:
-	if is_movement_range or is_movement_range_attackable:
-		is_movement_range = false
-		is_movement_range_attackable = false
-		setOutlineMaterial()
-
-func setMovementRange(state: bool) -> void:
-	is_movement_range = state
-	setOutlineMaterial()
-
 func setPathHovered(state: bool) -> void:
 	is_path_hovered = state
 	setOutlineMaterial()
 
+func getMovementPathDisplay() -> bool:
+	return movement_path != null and movement_path.display
+	
+func setMovementPathDisplay(state: bool) -> void:
+	if movement_path != null:
+		movement_path.display = state
+		setOutlineMaterial()
+		
+func setMovementPath(_movement_path: MovementPathGD) -> void:
+	movement_path = _movement_path
+	setOutlineMaterial()
+	
+func getMovementPathSize() -> int:
+	if movement_path == null: return -1
+	return movement_path.tiles.size()
+	
+func getMovementPathTiles() -> Array:
+	return movement_path.tiles
 #endregion
 
 #region Ramps
 func isValidRampRelation(Tile: TileGD) -> bool:
-	return true
-	var relative_tile_rotation: int = Game.getRelativeTileRotation(self, Tile) 
-	return (relative_tile_rotation == (tile_rotation - 1) % 6) or (relative_tile_rotation == (tile_rotation - 4) % 6)
+	var relative_tile_rotation: int = Game.getRelativeTileRotation(self, Tile)
+	return (relative_tile_rotation == (tile_rotation + 2) % 6) or (relative_tile_rotation == (tile_rotation + 5) % 6)
+#endregion
+
+#region Fall Damage
+func getFallDamage(Tile: TileGD) -> int:
+	var height_diff: int = Tile.getHeight() - getHeight()
+	return floor((height_diff - 3) / 2.0) if height_diff >= Game.FALL_DAMAGE_BEGIN_HEIGHT else 0
+#endregion

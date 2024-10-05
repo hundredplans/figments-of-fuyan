@@ -70,7 +70,7 @@ func onDeleteTile(tile_coords: Vector4i) -> void:
 
 #region Save/Load
 func onSave() -> SavedDataGameObject:
-	return SavedDataObject.new(info.id, false, coords, tile_rotation, level_visible, variation, map_rotation, map_position, height,\
+	return SavedDataObject.new(info.id, false, coords, tile_rotation, level_visible, is_revealed, variation, map_rotation, map_position, height,\
 	occupied_tiles.map(func(x: TileGD): return x.getCoords()))
 
 func onLoadData(data: SavedData) -> void:
@@ -97,8 +97,7 @@ func onLoadDataLevel() -> void:
 
 #region Collision Layers
 func setDefaultCollisionLayers() -> void:
-	for body in getStaticBodies():
-		body.collision_layer = 16
+	setCollisionLayers(20)
 #endregion
 
 #region Occupied Tiles
@@ -115,11 +114,4 @@ func setOccupiedTiles(tile_position_to_tile: Dictionary) -> void:
 	occupied_tiles = coords_array.map(func(x: Vector4i): return Game.getTile(x)).filter(func(x: TileGD): return x != null)
 	for Tile in occupied_tiles:
 		Tile.setOccupiedObject(self)
-#endregion
-
-#region Set Visible
-func setLevelVisible(state: bool, avoid_recursion: bool = false) -> void:
-	super(state)
-	if !avoid_recursion:
-		for Tile in occupied_tiles: setLevelVisible(state, true)
 #endregion

@@ -114,7 +114,7 @@ func getSelectedCard() -> CardGD:
 
 #region Shillings
 func onUpdateShillings(shillings: int) -> void:
-	ShillingLabel.setText("SH:" + str(shillings))
+	ShillingLabel.setText("SH: " + str(shillings))
 #endregion
 	
 #region Energy

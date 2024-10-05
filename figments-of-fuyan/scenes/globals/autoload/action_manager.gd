@@ -33,9 +33,9 @@ func onActionChain() -> void:
 			process_action.emit(active_action)
 		
 		active_action = null
+		
+		if actions.is_empty(): action_playing.emit(false)
 		onActionChain()
-		return
-	action_playing.emit(false)
 	
 func onForceAction(action: Action) -> void:
 	# Forced actions can't have a delay

@@ -39,9 +39,10 @@ function onCreateMovesTables($mysqli) {
                 $move_id = $move['id'];
                 $charges = $move['recharge'];
                 $iq = "INSERT INTO AllyMoves(class_id, move_id, charges) VALUES ('$id', '$move_id', '$charges')";
-                $mysqli -> query($iq);
+                $mysqli->query($iq);
             }
         }
+
         $enemies = getEnemiesBattleInfo($mysqli);
         foreach ($enemies as $enemy) {
             $id = $enemy['battle_id'];

@@ -20,28 +20,29 @@ const UPPER_GEN_BOUND: int = 60
 func onFofInit() -> void:
 	super()
 	decoration_datas = load(info.PALM_ISLAND_RESOURCES).palm_islands.map(func(x: Resource): return x.data)
-	decoration_datas.shuffle()
-	decoration_datas.resize(int(Random.getRandomKey(ISLAND_ODDS)))
-	
-	var avoid_coords: Array = [Vector4i.ZERO]
-	for island in decoration_datas:
-		var start_coord := Vector4i.ZERO
-		while(avoid_coords.any(func(x: Vector4i): return Game.getCoordsDistance(x, start_coord) <= DISTANCE_BOUND)):
-			var x: int = randi_range(LOWER_GEN_BOUND, UPPER_GEN_BOUND)
-			x *= int(Random.getBool()) * -1
-			
-			var y: int = randi_range(-UPPER_GEN_BOUND, UPPER_GEN_BOUND)
-			
-			start_coord = Vector4i(x, y, -x-y, 0) if Random.getBool() else Vector4i(y, x, -y-x, 0)
-			
-		avoid_coords.append(start_coord)
-		decoration_coords.append(start_coord)
-	onCreatePalmDecorations()
+	if !decoration_datas.is_empty():
+		decoration_datas.shuffle()
+		decoration_datas.resize(int(Random.getRandomKey(ISLAND_ODDS)))
+		
+		var avoid_coords: Array = [Vector4i.ZERO]
+		for island in decoration_datas:
+			var start_coord := Vector4i.ZERO
+			while(avoid_coords.any(func(x: Vector4i): return Game.getCoordsDistance(x, start_coord) <= DISTANCE_BOUND)):
+				var x: int = randi_range(LOWER_GEN_BOUND, UPPER_GEN_BOUND)
+				x *= int(Random.getBool()) * -1
+				
+				var y: int = randi_range(-UPPER_GEN_BOUND, UPPER_GEN_BOUND)
+				
+				start_coord = Vector4i(x, y, -x-y, 0) if Random.getBool() else Vector4i(y, x, -y-x, 0)
+				
+			avoid_coords.append(start_coord)
+			decoration_coords.append(start_coord)
+		onCreatePalmDecorations()
 			
 func onSave() -> SavedDataPalmLevel:
 	var data: Array = SavedData.onSaveGroup(get_tree().get_nodes_in_group("LevelTileObjectsGD"))
 	request_camera_data.emit()
-	return SavedDataPalmLevel.new(info.id, false, data, timeout, phase, level_camera_data,
+	return SavedDataPalmLevel.new(info.id, false, data, timeout, enemy_spawn_ids, getFieldCards(), phase, level_camera_data,
 	energy, max_energy,\
 	decoration_datas, decoration_coords)
 	

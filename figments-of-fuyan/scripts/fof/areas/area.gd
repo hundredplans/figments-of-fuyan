@@ -371,4 +371,5 @@ func onLoadActiveLevel(level_data: SavedDataLevel) -> LevelGD:
 	level_data.max_energy = info.world.getMaxEnergy()
 	level_data.energy = level_data.max_energy
 	active_level = SavedData.onLoadModel(level_data, self)
+	#active_level.enemy_spawn_ids = 
 	return active_level

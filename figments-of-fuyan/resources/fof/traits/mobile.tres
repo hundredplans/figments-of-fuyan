@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitInfo" load_steps=4 format=3 uid="uid://bvduvvv7t5ltp"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/traits/trait_info.gd" id="1_6c3rr"]
+[ext_resource type="Script" path="res://scripts/fof/traits/trait.gd" id="1_l74vb"]
+[ext_resource type="PackedScene" uid="uid://c4hntclk7hxr4" path="res://assets/models/general/floating_stats/speed.glb" id="2_c8x4d"]
+
+[resource]
+script = ExtResource("1_6c3rr")
+replace_model = ExtResource("2_c8x4d")
+replace_stat = 2
+id = 3
+name = "Mobile"
+gdscript = ExtResource("1_l74vb")

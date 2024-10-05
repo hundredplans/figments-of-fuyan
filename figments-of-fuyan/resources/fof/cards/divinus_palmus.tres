@@ -1,11 +1,11 @@
-[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=11 format=3]
+[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=11 format=3 uid="uid://bpccbwsymujxo"]
 
-[ext_resource type="Resource" path="res://resources/fof/boons/divine_aura.tres" id="2_4ivuh"]
+[ext_resource type="Resource" uid="uid://hommkky4kkh3" path="res://resources/fof/boons/divine_aura.tres" id="2_4ivuh"]
 [ext_resource type="Script" path="res://scripts/fof/cards/divinus_palmus.gd" id="2_7n28t"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/champion_card_info.gd" id="2_qu6p4"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/divinus_palmus.png" id="2_rqcgn"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_mini/divinus_palmus.png" id="2_uxbkr"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/divinus_palmus.glb" id="3_pmwws"]
+[ext_resource type="Image" uid="uid://crmdn6pdw7trc" path="res://assets/sprites/game/cards/art_pop/divinus_palmus.png" id="2_rqcgn"]
+[ext_resource type="Image" uid="uid://4tjnieth15fo" path="res://assets/sprites/game/cards/art_mini/divinus_palmus.png" id="2_uxbkr"]
+[ext_resource type="PackedScene" uid="uid://w83kn76qjgqx" path="res://assets/models/fof/cards/divinus_palmus.glb" id="3_pmwws"]
 [ext_resource type="Script" path="res://scripts/common/data_structures/pos_rot.gd" id="3_yh5yn"]
 
 [sub_resource type="Resource" id="Resource_k2dke"]
@@ -51,7 +51,7 @@ art_mini_coordinate = Vector2i(90, 70)
 art_mini = ExtResource("2_uxbkr")
 art_pop = ExtResource("2_rqcgn")
 model = ExtResource("3_pmwws")
-points = []
+points = [Vector3(-0.157598, 0.275337, 0.156006), Vector3(0.125076, 0.272346, 0.156006), Vector3(0.123484, 0.581134, 0.156006), Vector3(-0.149234, 0.630647, 0.156006), Vector3(-0.100989, 0.947012, 0.156006), Vector3(0.102517, 0.95601, 0.156006), Vector3(-0.130152, 1.22192, 0.156006), Vector3(0.164963, 1.23761, 0.156006), Vector3(0.0273505, 1.5193, 0.156006), Vector3(0.00637631, 1.87432, 0.156006), Vector3(-0.265625, 0.205133, 0.000790742), Vector3(-0.265625, 0.592861, 0.0129754), Vector3(-0.265625, 1.02456, 0.0377797), Vector3(-0.265625, 1.45412, 0.0288714), Vector3(-0.265625, 1.85718, -0.00282015), Vector3(0.141333, 0.218789, -0.153808), Vector3(-0.128178, 0.239154, -0.153808), Vector3(-0.135871, 0.62485, -0.153808), Vector3(0.115484, 0.62557, -0.153808), Vector3(0.0929544, 0.908064, -0.153808), Vector3(-0.168235, 0.925916, -0.153808), Vector3(0.116615, 1.19054, -0.153808), Vector3(-0.106401, 1.19073, -0.153808), Vector3(0.0231847, 1.46869, -0.153808), Vector3(-0.00657967, 1.69085, -0.153808), Vector3(0.000361825, 1.87829, -0.153808), Vector3(0.261719, 0.252995, 0.02889), Vector3(0.261719, 0.645675, -0.0100488), Vector3(0.261719, 1.00111, -0.00295574), Vector3(0.261719, 1.35312, -0.0173286), Vector3(0.261719, 1.74087, -0.0295988), Vector3(0.261719, 1.90084, -0.0204164)]
 collision_shape = SubResource("PackedScene_38cve")
 stat = 2.013
 top = 2.267

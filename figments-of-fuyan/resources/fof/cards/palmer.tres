@@ -1,9 +1,9 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=8 format=3 uid="uid://dmmud06uiccre"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="2_amlc3"]
-[ext_resource type="Image" uid="uid://b4qt1fl4q0slo" path="res://assets/sprites/game/cards/art_mini/palmer.png" id="2_s1x8n"]
-[ext_resource type="Image" uid="uid://i34owvhii218" path="res://assets/sprites/game/cards/art_pop/palmer.png" id="2_xsqxw"]
-[ext_resource type="PackedScene" uid="uid://nsl73xnqq64e" path="res://assets/models/fof/cards/palmer.glb" id="3_qrvjs"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_mini/palmer.png" id="2_s1x8n"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/palmer.png" id="2_xsqxw"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/palmer.glb" id="3_qrvjs"]
 [ext_resource type="Script" path="res://scripts/fof/cards/palmer.gd" id="3_rgqu8"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_t0e05"]
@@ -36,7 +36,7 @@ art_mini_coordinate = Vector2i(80, 30)
 art_mini = ExtResource("2_s1x8n")
 art_pop = ExtResource("2_xsqxw")
 model = ExtResource("3_qrvjs")
-points = []
+points = [Vector3(-0.123624, 0.231224, 0.0834962), Vector3(0.136509, 0.226674, 0.0834962), Vector3(-0.0633262, 0.52942, 0.0834962), Vector3(0.149129, 0.539952, 0.0834962), Vector3(-0.130955, 0.790634, 0.0834962), Vector3(0.151485, 0.794796, 0.0834962), Vector3(-0.258301, 0.273282, -0.00685092), Vector3(-0.258301, 0.588817, 0.0162464), Vector3(-0.258301, 0.82258, 0.030476), Vector3(0.250976, 0.287808, -0.0171126), Vector3(0.250976, 0.545266, -0.0126056), Vector3(0.250976, 0.78012, -0.00982134), Vector3(0.121047, 0.283579, -0.0810548), Vector3(-0.109491, 0.311578, -0.0810548), Vector3(0.0848029, 0.57769, -0.0810548), Vector3(-0.106857, 0.572642, -0.0810548), Vector3(0.113501, 0.789519, -0.0810548), Vector3(-0.102634, 0.790709, -0.0810548)]
 collision_shape = SubResource("PackedScene_w7hq4")
 stat = 1.26944
 top = 0.846295

@@ -7,6 +7,7 @@ var max_energy: int
 
 var level_camera_data: LevelCameraData
 var phase: Game.Phases
+var enemy_spawn_ids: Array
 
 signal card_finished_moving
 signal card_moving
@@ -21,7 +22,7 @@ signal awakened
 func onSave() -> SavedData:
 	var data: Array = SavedData.onSaveGroup(get_tree().get_nodes_in_group("LevelTileObjectsGD"))
 	request_camera_data.emit()
-	return SavedDataLevel.new(info.id, false, data, timeout, phase, level_camera_data, energy, max_energy)
+	return SavedDataLevel.new(info.id, false, data, timeout, enemy_spawn_ids, getFieldCards(), phase, level_camera_data, energy, max_energy)
 
 func onClear() -> void:
 	queue_free()
@@ -30,6 +31,8 @@ func onLoadData(data: SavedData) -> void:
 	super(data)
 	energy = data.energy
 	max_energy = data.max_energy
+	enemy_spawn_ids = data.enemy_spawn_ids
+	
 	for light in info.lights:
 		add_child(light.instantiate())
 	
@@ -41,15 +44,11 @@ func onLoadData(data: SavedData) -> void:
 			
 	for TileObject in get_tree().get_nodes_in_group("LevelTileObjectsGD"):
 		TileObject.onLoadDataLevel()
-		TileObject.setLevelVisible(true)
-		
+	
+	for card_data in data.field_cards_data: SavedData.onLoadModel(card_data, self)
 	for Card in get_tree().get_nodes_in_group("FieldCardsGD"):
 		Card.Tile = Game.getTile(Card.coords)
-		Card.onCreateModel()
-		Card.onIdle()
-		Card.setPositionToTile()
-		Card.setTileRotation(Card.tile_rotation)
-		Card.setTurnState(Card.turn_state)
+		Card.onAwaken()
 	
 	level_camera_data = data.level_camera_data
 	add_to_group("LevelsGD")
@@ -59,7 +58,6 @@ func onLoadActiveLevel(data: SavedDataLevel) -> void:
 	if is_init:
 		var deck_cards: Array = get_tree().get_nodes_in_group("AllyCardsGD")
 		
-		
 		var champion_card: CardGD = deck_cards.filter(func(x: CardGD): return Game.isChampion(x.info.rarity))[0]
 		deck_cards.erase(champion_card)
 		
@@ -68,12 +66,24 @@ func onLoadActiveLevel(data: SavedDataLevel) -> void:
 		
 		onPushAction(InsertAction.new(champion_card))
 		onPushAction(ChangePhaseAction.new(Game.Phases.START))
+		
+		for Spawn in get_tree().get_nodes_in_group("AllySpawnsGD"):
+			onPushAction(RevealAction.new(Spawn))
+		
+		var spawns: Array = get_tree().get_nodes_in_group("EnemySpawnsGD")
+		for i in range(enemy_spawn_ids.size()):
+			if enemy_spawn_ids[i] > 0:
+				var Card: CardGD = SavedData.onLoadModel(SavedDataCard.new(enemy_spawn_ids[i], true, Vector4i.ZERO, 0, false, false, 1), self)
+				onPushAction(AwakenAction.new(Card, spawns[i].getTile()))
+				
+		onPushAction(LevelVisibleAction.new(false, get_tree().get_nodes_in_group("LevelTileObjectsGD") + get_tree().get_nodes_in_group("FieldCardsGD")))
 		return
 		
 	onChangePhase(data.phase, true)
-	
 	for Card in get_tree().get_nodes_in_group("HandCardsGD"):
 		draw_card.emit(Card)
+		
+	get_tree().call_group("FieldCardsGD", "onUpdateVision")
 
 var is_init: bool = false
 func onFofInit() -> void:
@@ -83,6 +93,11 @@ func onFofInit() -> void:
 		tile_position_to_tile[Tile.position] = Tile
 	
 	get_tree().call_group("ObjectsGD", "setOccupiedTiles", tile_position_to_tile)
+#endregion
+
+#region Getters
+func getFieldCards() -> Array:
+	return SavedData.onSaveGroup(get_tree().get_nodes_in_group("FieldCardsGD").filter(func(x: CardGD): return !x.is_in_group("AllyCardsGD")))
 #endregion
 
 #region Setters
@@ -107,7 +122,7 @@ func onProcessAction(action: Action) -> void:
 	if action.post:
 		if action is ChangePhaseAction: onChangePhase(action.phase)
 		elif action is DrawAction: draw_card.emit(action.Card)
-		elif action is AwakenAction:
+		elif action is AwakenAction and action.Card.isAlly(0):
 			awakened.emit(action.Card)
 			if phase == Game.Phases.START: append_action.emit(ChangePhaseAction.new(Game.Phases.HAND))
 		elif action is RemoveCardAction:

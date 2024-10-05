@@ -1,0 +1,17 @@
+[gd_scene load_steps=6 format=3 uid="uid://ci57i4w18nskg"]
+
+[ext_resource type="Script" path="res://addons/movement_camera.gd" id="1_e44df"]
+[ext_resource type="Script" path="res://test/particle_tester.gd" id="1_mdens"]
+[ext_resource type="PackedScene" uid="uid://nue6v6hd501f" path="res://scenes/particles/numbers_particle.tscn" id="2_hex6m"]
+[ext_resource type="ArrayMesh" uid="uid://oom046e4h5g" path="res://assets/models/general/numbers/particle_numbers/plus.tres" id="4_fyfc5"]
+[ext_resource type="ArrayMesh" uid="uid://55xffu81oa2l" path="res://assets/models/general/numbers/particle_numbers/six.tres" id="5_e5ycu"]
+
+[node name="ParticleTester" type="Node3D"]
+script = ExtResource("1_mdens")
+
+[node name="FreeLookCamera" type="Camera3D" parent="."]
+script = ExtResource("1_e44df")
+
+[node name="NumbersParticle" parent="." instance=ExtResource("2_hex6m")]
+draw_pass_1 = ExtResource("4_fyfc5")
+draw_pass_2 = ExtResource("5_e5ycu")
