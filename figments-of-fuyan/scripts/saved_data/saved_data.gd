@@ -2,7 +2,7 @@ class_name SavedData extends Resource
 
 # Stores the id to the info
 @export var id: int
-@export var first_init: bool = true
+@export var first_init: bool
 
 func _init(_id: int = 0, _first_init: bool = false) -> void:
 	id = _id

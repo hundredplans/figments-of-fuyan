@@ -20,7 +20,10 @@ func onPostAction() -> void:
 	Card.Tile.setOutlineMaterial()
 	
 	var tiles: Array = DestinationTile.getMovementPathTiles()
-	var cards: Array = Game.getEnemyUnits(Card.team)
+	var actions: Array = []
+	
+	if Card.turn_state == Game.TurnStates.INACTIVE:
+		actions.append(ChangeTurnStateAction.new(Card, Game.TurnStates.ACTIVE))
 	
 	for i in range(1, tiles.size()):
 		var MoveToTile: TileGD = tiles[i]
@@ -28,8 +31,10 @@ func onPostAction() -> void:
 		
 		if Attackable == null:
 			MoveToTile.is_card_moving = true
-			onAppendAction(MoveToTileAction.new(Card, MoveToTile))
+			actions.append(MoveToTileAction.new(Card, MoveToTile))
 			continue
-		onAppendAction(AttackAction.new(Card, Attackable))
+		actions.append(AttackAction.new(Card, Attackable))
 		break
-	onAppendAction(MovementFinishAction.new(Card, tiles))
+		
+	actions.append(MovementFinishAction.new(Card, tiles))
+	onAppendAction(actions)

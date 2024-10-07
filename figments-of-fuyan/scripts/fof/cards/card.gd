@@ -19,6 +19,7 @@ var draw_order: int
 var Tile: TileGD
 
 var attacks: int
+var field_traits: Array = []
 #endregion
 
 #region Globals
@@ -112,7 +113,7 @@ func onCreateCardUI(parent: Control, highlight_on_hover: bool = false) -> Contro
 #region Save/Load/Clear
 func onSave() -> SavedDataCard:
 	return SavedDataCard.new(info.id, false, coords, tile_rotation, level_visible, is_revealed, team, \
-	attack, health, speed, max_speed, max_health, energy, ascended, draw_order, card_place, turn_state, [], attacks)
+	attack, health, speed, max_speed, max_health, energy, ascended, draw_order, card_place, turn_state, SavedData.onSaveGroup(field_traits), attacks)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -121,6 +122,9 @@ func onLoadData(data: SavedData) -> void:
 	ascended = data.ascended
 	turn_state = data.turn_state
 	attacks = data.attacks
+	
+	for field_trait_data in data.field_traits:
+		field_traits.append(SavedData.onLoadModel(field_trait_data, self))
 	
 	onCreateAdjustedPoints()
 	
@@ -256,6 +260,7 @@ func onInspectCard() -> void:
 func setTurnState(_turn_state: Game.TurnStates) -> void:
 	if turn_state != _turn_state:
 		turn_state = _turn_state
+		FieldInfo.setInfoSpriteTurnState()
 		match turn_state:
 			Game.TurnStates.INACTIVE:
 				onPushAction([ChangeAttacksAction.new(self, getMaxAttacks()), StatAction.new(self, Game.Stats.SPEED, max_speed, 0, 0, true)])
@@ -437,6 +442,9 @@ func isCardSurviveFallDamage(_temp_fall_damage: int) -> bool:
 #endregion
 
 #region Attacks and Range
+func setEnemyInMovementRange(state: bool) -> void:
+	if !isAlly(0): FieldInfo.setInfoSpriteEnemyInMovementRange(state)
+
 func isAttackable(GameObject: GameObjectGD) -> bool:
 	if GameObject is CardGD: return !GameObject.isAlly(team)
 	return false
@@ -445,7 +453,9 @@ func getAttackDamage() -> int:
 	return attack
 	
 func getAttackRange() -> int:
-	return 1
+	for field_trait in field_traits:
+		if field_trait is RangedGD: return field_trait.ranged
+	return 1 
 	
 func canAttack() -> bool: return attacks > 0
 	
@@ -469,21 +479,44 @@ func onDMG(Damager: GameObjectGD, damage: int) -> void:
 	var health_damage: int = old_health - min(health - damage, 0)
 	Damager.onPushAction(StatAction.new(self, Game.Stats.HEALTH, -health_damage))
 
-func onTakeDamage(Damager: GameObjectGD, damage: int) -> void:
+func onTakeDamage(Damager: GameObjectGD, damage: int) -> int: # Returns damage dealt
 	var old_health: int = health
-	health = max(health - Damager.getAttackDamage(), 0)
+	damage = onApplyArmor(damage)
+	health = max(health - damage, 0)
 	var health_damage: int = old_health - health
 	
 	FieldInfo.onUpdateStat(Game.Stats.HEALTH, health, level_visible)
-	if health == 0:
-		onPushAction(DeathAction.new(Damager, self, damage, health_damage))
-		return
-	onPushAction(HurtAction.new(Damager, self, damage, health_damage))
+	if health == 0: onPushAction(DeathAction.new(Damager, self, damage, health_damage))
+	else: onPushAction(HurtAction.new(Damager, self, damage, health_damage))
+	return health_damage
 #endregion
 
 #region Speed
-func onChangeSpeed(_speed: int) -> void:
-	var speed_difference: int = speed - _speed
-	speed = _speed
-	FieldInfo.onUpdateStat(Game.Stats.SPEED, speed_difference, level_visible)
+func onUpdateStat(type: Game.Stats, difference: int, show_particles: bool, include_action_delay: bool) -> void:
+	var play_animation: bool = include_action_delay and level_visible
+	var value: int = 0
+	match type:
+		Game.Stats.ATTACK: value = attack
+		Game.Stats.HEALTH: value = health
+		Game.Stats.SPEED: value = speed
+	
+	FieldInfo.onUpdateStat(type, value, difference, play_animation, show_particles)
 #endregion
+
+#region Traits
+func onCreateInitialTraits() -> void:
+	var initial_traits: Array = []
+	if !ascended: initial_traits = info.initial_traits
+	else: initial_traits = info.ascended_traits
+	
+	for field_trait_data in initial_traits:
+		field_traits.append(SavedData.onLoadModel(field_trait_data, self))
+		
+func onApplyArmor(damage: int) -> int:
+	for field_trait in field_traits:
+		if field_trait is ArmorGD: damage -= field_trait.armor
+	return damage
+	
+func isMobile() -> bool:
+	return field_traits.any(func(x: TraitGD): return x is MobileGD)
+	

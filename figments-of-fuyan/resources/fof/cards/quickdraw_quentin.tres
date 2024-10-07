@@ -1,12 +1,20 @@
-[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=11 format=3]
+[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=15 format=3 uid="uid://rsknj57oo0io"]
 
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_mini/quickdraw_quentin.png" id="2_8x7e6"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/quickdraw_quentin.png" id="2_jemvb"]
+[ext_resource type="Image" uid="uid://bxkodabddetvr" path="res://assets/sprites/game/cards/art_mini/quickdraw_quentin.png" id="2_8x7e6"]
+[ext_resource type="Image" uid="uid://dx8teuokadlmc" path="res://assets/sprites/game/cards/art_pop/quickdraw_quentin.png" id="2_jemvb"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/champion_card_info.gd" id="2_s60fl"]
-[ext_resource type="Resource" path="res://resources/fof/boons/agile_aura.tres" id="2_udvb6"]
+[ext_resource type="Resource" uid="uid://c427cbie2arvi" path="res://resources/fof/boons/agile_aura.tres" id="2_udvb6"]
 [ext_resource type="Script" path="res://scripts/fof/cards/quickdraw_quentin.gd" id="2_vol13"]
 [ext_resource type="Script" path="res://scripts/common/data_structures/pos_rot.gd" id="3_wy00w"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_bf1vc"]
+[ext_resource type="PackedScene" uid="uid://bxdixxrf3f7aa" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_bf1vc"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="6_liqvw"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_ranged.gd" id="7_ynran"]
+
+[sub_resource type="Resource" id="Resource_srqb7"]
+script = ExtResource("7_ynran")
+ranged = 2
+id = 2
+first_init = false
 
 [sub_resource type="Resource" id="Resource_7gysq"]
 script = ExtResource("3_wy00w")
@@ -29,6 +37,12 @@ _bundled = {
 "version": 3
 }
 
+[sub_resource type="Resource" id="Resource_80tv5"]
+script = ExtResource("7_ynran")
+ranged = 2
+id = 2
+first_init = false
+
 [resource]
 script = ExtResource("2_s60fl")
 description = Array[String](["Carries bullets across fights", "Has to pay a higher price at shops", "Enjoys duelling fights for gold and power"])
@@ -44,7 +58,7 @@ health = 1
 speed = 2
 energy = 2
 rarity = 8
-initial_traits = Array[int]([])
+initial_traits = Array[ExtResource("6_liqvw")]([SubResource("Resource_80tv5")])
 ability_text = "RANGED [1-2]; Has x/4 Bullets in chamber; Has to Reload to refresh bullets"
 flavor_text = "BOOM. Headshot"
 art_mini_coordinate = Vector2i(80, 50)
@@ -60,7 +74,7 @@ plus_attack = 0
 plus_health = 0
 plus_speed = 0
 plus_energy = 0
-ascended_traits = Array[int]([])
+ascended_traits = Array[ExtResource("6_liqvw")]([SubResource("Resource_srqb7")])
 ascended_ability_text = ""
 id = 3
 name = "Quickdraw Quentin"

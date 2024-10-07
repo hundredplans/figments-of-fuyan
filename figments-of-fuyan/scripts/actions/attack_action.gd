@@ -12,7 +12,12 @@ func onPostAction() -> void:
 	Attacker.setTileRotation(Game.getRelativeTileRotation(Attacker.Tile, Defender.Tile))
 	Attacker.onAttack()
 	
-	onPushAction([ChangeAttacksAction.new(Attacker, Attacker.attacks - 1), StatAction.new(Attacker, Game.Stats.SPEED, 0, 0, 0, true), DamageAction.new(Attacker, Defender, Attacker.getAttackDamage())])
+	var actions: Array = [ChangeAttacksAction.new(Attacker, Attacker.attacks - 1)]
+	if Attacker is CardGD and !Attacker.isMobile():
+		actions.append(StatAction.new(Attacker, Game.Stats.SPEED, 0, 0, 0, true))
+		
+	actions.append(DamageAction.new(Attacker, Defender, Attacker.getAttackDamage()))
+	onPushAction(actions)
 
 func getDelay() -> float:
 	return 1.25

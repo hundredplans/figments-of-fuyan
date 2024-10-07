@@ -12,8 +12,9 @@ initial_velocity_max = 1.2
 gravity = Vector3(0, 0, 0)
 
 [node name="NumbersParticle" type="GPUParticles3D"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 emitting = false
-amount = 100
+amount = 32
 lifetime = 1.4
 one_shot = true
 explosiveness = 0.3

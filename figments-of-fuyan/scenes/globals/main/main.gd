@@ -18,11 +18,13 @@ extends Node
 
 #region Base Functions
 func _ready():
-	if !Helper.getAdmin(): onLoadScreenWorld(main_menu_ui, main_menu_world)
+	if !Helper.getAdmin():
+		var scenes: Dictionary = onLoadScreenWorld(main_menu_ui, main_menu_world)
+		scenes.world.onFirstLoad()
 	else:
 		var DIR_PATH: String = SaveFileInfo.SAVE_DIRECTORY
 		var files: Array = Array(DirAccess.get_files_at(DIR_PATH))
-		if files.is_empty(): onStartGame(SavedData.onLoadModel(SavedDataCard.new(2), KeepAcross))
+		if files.is_empty(): onStartGame(SavedData.onLoadModel(SavedDataCard.new(3), KeepAcross))
 		else: onLoadGame(load(DIR_PATH + files[0]))
 #endregion
 

@@ -183,6 +183,7 @@ func onCameraPositionUpdated(pos: Vector3) -> void:
 #region Movement Range
 func onHideMovementRange() -> void:
 	get_tree().call_group("LevelTilesGD", "setMovementPathDisplay", false)
+	get_tree().call_group("FieldCardsGD", "setEnemyInMovementRange", false)
 
 func onCreateMovementRange(Card: CardGD) -> void:
 	onHideMovementRange()
@@ -250,6 +251,7 @@ func onCreateMovementRange(Card: CardGD) -> void:
 			if GameObject is CardGD:
 				attackable_path_tiles.append(GameObject.Tile)
 				GameObject.Tile.setMovementPath(MovementPathGD.new(attackable_path_tiles))
+				GameObject.setEnemyInMovementRange()
 	
 func onSurviveFallDamage(Card: CardGD, movement_path: Array, point_path: Array, astar: AStar3D) -> bool:
 	Card.temp_fall_damage = 0

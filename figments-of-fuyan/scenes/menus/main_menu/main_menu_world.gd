@@ -151,3 +151,8 @@ func onChampionTweenTravel(Card: CardGD, camera_pos_rot: PosRot) -> void:
 	else: setUnitsPickable(true)
 	onFinishTravel()
 #endregion
+
+#region First Load
+func onFirstLoad() -> void:
+	ani_player.play("FirstLoad")
+#endregion

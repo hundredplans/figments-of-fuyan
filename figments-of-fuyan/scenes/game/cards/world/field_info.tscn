@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://ct6euhy8orf2m"]
+[gd_scene load_steps=39 format=3 uid="uid://ct6euhy8orf2m"]
 
 [ext_resource type="Script" path="res://scenes/game/cards/world/field_info.gd" id="1_doj6w"]
 [ext_resource type="PackedScene" uid="uid://b7aqntno6susb" path="res://assets/models/general/numbers/stat_numbers/zero.glb" id="2_emwqa"]
@@ -18,7 +18,9 @@
 [ext_resource type="Material" uid="uid://bj6n2uaf0f6uv" path="res://resources/materials/colors/unshaded/white.tres" id="13_itc2r"]
 [ext_resource type="Material" uid="uid://3te7r175xgh2" path="res://resources/materials/colors/unshaded/red.tres" id="14_bvr8m"]
 [ext_resource type="Material" uid="uid://dwwfjm1wwygh" path="res://resources/materials/colors/top_unshaded/green.tres" id="15_6rglu"]
+[ext_resource type="Material" uid="uid://cso4e6y5ycep2" path="res://resources/materials/colors/unshaded/pink.tres" id="15_ydnjg"]
 [ext_resource type="Material" uid="uid://dps10m73p80xv" path="res://resources/materials/colors/top_unshaded/white.tres" id="16_m8mfd"]
+[ext_resource type="Material" uid="uid://dwxlwgqbngm5v" path="res://resources/materials/colors/unshaded/orange.tres" id="16_s1f37"]
 [ext_resource type="Material" uid="uid://bl76cu5hicepy" path="res://resources/materials/colors/top_unshaded/red.tres" id="17_dv8uk"]
 [ext_resource type="Material" uid="uid://cs44x6eyyv8fk" path="res://resources/materials/game/base_material_top.tres" id="18_xbibn"]
 [ext_resource type="ArrayMesh" uid="uid://dg7uxtqjwekn5" path="res://assets/models/general/numbers/particle_numbers/one.tres" id="19_g58ma"]
@@ -34,6 +36,8 @@
 [ext_resource type="ArrayMesh" uid="uid://ccoefdad2bccy" path="res://assets/models/general/numbers/particle_numbers/exclamation_marks.tres" id="28_i4f0i"]
 [ext_resource type="ArrayMesh" uid="uid://oom046e4h5g" path="res://assets/models/general/numbers/particle_numbers/plus.tres" id="29_3nsr3"]
 [ext_resource type="ArrayMesh" uid="uid://bw1sie25vkpxj" path="res://assets/models/general/numbers/particle_numbers/minus.tres" id="30_syjsk"]
+[ext_resource type="Texture2D" uid="uid://d00s1ki7w4ucx" path="res://assets/sprites/game/status_effects/blind.png" id="37_lp8jr"]
+[ext_resource type="Texture2D" uid="uid://d04al8251a7ao" path="res://assets/sprites/game/status_effects/invisible.png" id="38_tfj05"]
 
 [node name="FieldInfo" type="Node3D"]
 script = ExtResource("1_doj6w")
@@ -41,6 +45,8 @@ number_to_model = Array[PackedScene]([ExtResource("2_emwqa"), ExtResource("6_hhj
 green_material = ExtResource("12_5ikdo")
 white_material = ExtResource("13_itc2r")
 red_material = ExtResource("14_bvr8m")
+pink_material = ExtResource("15_ydnjg")
+orange_material = ExtResource("16_s1f37")
 green_top_material = ExtResource("15_6rglu")
 white_top_material = ExtResource("16_m8mfd")
 red_top_material = ExtResource("17_dv8uk")
@@ -54,14 +60,23 @@ minus_mesh = ExtResource("30_syjsk")
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.560323, 0)
 
-[node name="attack_default" parent="FloatingStats" instance=ExtResource("2_v7j5s")]
+[node name="AttackFloatingStatSpot" type="Node3D" parent="FloatingStats"]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0, 0)
 
-[node name="health_default" parent="FloatingStats" instance=ExtResource("3_idggp")]
+[node name="attack_default" parent="FloatingStats/AttackFloatingStatSpot" instance=ExtResource("2_v7j5s")]
+
+[node name="HealthFloatingStatSpot" type="Node3D" parent="FloatingStats"]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
 
-[node name="speed" parent="FloatingStats" instance=ExtResource("4_5w26i")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0.0187304, 0)
+[node name="health_default" parent="FloatingStats/HealthFloatingStatSpot" instance=ExtResource("3_idggp")]
+
+[node name="SpeedFloatingStatSpot" type="Node3D" parent="FloatingStats"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0, 0)
+
+[node name="speed" parent="FloatingStats/SpeedFloatingStatSpot" instance=ExtResource("4_5w26i")]
 
 [node name="Numbers" type="Node3D" parent="."]
 unique_name_in_owner = true
@@ -91,3 +106,19 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, 0)
 
 [node name="NumbersParticle" parent="." instance=ExtResource("22_tcac4")]
 unique_name_in_owner = true
+
+[node name="InfoSprite" type="Sprite3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.14813, 0.410257, 0)
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.627122, 1.47389, 0)
+pixel_size = 0.02
+texture_filter = 0
+texture = ExtResource("37_lp8jr")
+
+[node name="Sprite3D2" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0156684, 1.47389, 0)
+pixel_size = 0.02
+texture_filter = 0
+texture = ExtResource("38_tfj05")

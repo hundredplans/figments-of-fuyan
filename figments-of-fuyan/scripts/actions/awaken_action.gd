@@ -16,6 +16,7 @@ func onPostAction() -> void:
 	var SpawnObject: SpawnGD = Tile.getSpawnTile()
 	if SpawnObject != null: Card.tile_rotation = SpawnObject.tile_rotation
 	
+	Card.onCreateInitialTraits()
 	Card.onChangeCardPlace(Game.CardPlaces.FIELD)
 	Card.onAwaken()
 	onPushAction(ChangeTurnStateAction.new(Card, Game.TurnStates.INACTIVE))

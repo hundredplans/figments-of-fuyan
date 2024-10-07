@@ -30,5 +30,5 @@ func onPreAction() -> void:
 
 func onPostAction() -> void:
 	Card.setTileRotation(Game.getRelativeTileRotation(Card.Tile, DestinationTile))
-	onPushAction(OccupyAction.new(Card, DestinationTile, false))
+	onPushAction([OccupyAction.new(Card, DestinationTile, false), StatAction.new(Card, Game.Stats.SPEED, -1, 0, 0, false, true, false)])
 	

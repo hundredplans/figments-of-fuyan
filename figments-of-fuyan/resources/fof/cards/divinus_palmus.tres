@@ -1,12 +1,14 @@
-[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=11 format=3 uid="uid://bpccbwsymujxo"]
+[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=15 format=3 uid="uid://bpccbwsymujxo"]
 
 [ext_resource type="Resource" uid="uid://hommkky4kkh3" path="res://resources/fof/boons/divine_aura.tres" id="2_4ivuh"]
 [ext_resource type="Script" path="res://scripts/fof/cards/divinus_palmus.gd" id="2_7n28t"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/champion_card_info.gd" id="2_qu6p4"]
 [ext_resource type="Image" uid="uid://crmdn6pdw7trc" path="res://assets/sprites/game/cards/art_pop/divinus_palmus.png" id="2_rqcgn"]
 [ext_resource type="Image" uid="uid://4tjnieth15fo" path="res://assets/sprites/game/cards/art_mini/divinus_palmus.png" id="2_uxbkr"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_276uu"]
 [ext_resource type="PackedScene" uid="uid://w83kn76qjgqx" path="res://assets/models/fof/cards/divinus_palmus.glb" id="3_pmwws"]
 [ext_resource type="Script" path="res://scripts/common/data_structures/pos_rot.gd" id="3_yh5yn"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_armor.gd" id="7_xh3gv"]
 
 [sub_resource type="Resource" id="Resource_k2dke"]
 script = ExtResource("3_yh5yn")
@@ -29,6 +31,17 @@ _bundled = {
 "version": 3
 }
 
+[sub_resource type="Resource" id="Resource_guh65"]
+script = ExtResource("7_xh3gv")
+armor = 1
+id = 1
+first_init = false
+
+[sub_resource type="Resource" id="Resource_t1dk5"]
+script = ExtResource("3_276uu")
+id = 3
+first_init = false
+
 [resource]
 script = ExtResource("2_qu6p4")
 description = Array[String](["Can temporarily buff units at campfires", "More likely to get boons from card rewards", "Weakens if diverged from the Holy Path"])
@@ -44,7 +57,7 @@ health = 3
 speed = 2
 energy = 2
 rarity = 8
-initial_traits = Array[int]([])
+initial_traits = Array[ExtResource("3_276uu")]([SubResource("Resource_guh65"), SubResource("Resource_t1dk5")])
 ability_text = "ABILITY [2]: Heal [1] HP to an ally or self"
 flavor_text = "His beleaf can't be questioned"
 art_mini_coordinate = Vector2i(90, 70)
@@ -60,7 +73,7 @@ plus_attack = 0
 plus_health = 0
 plus_speed = 0
 plus_energy = 0
-ascended_traits = Array[int]([])
+ascended_traits = Array[ExtResource("3_276uu")]([])
 ascended_ability_text = ""
 id = 2
 name = "Divinus Palmus"

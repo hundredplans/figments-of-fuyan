@@ -10,7 +10,7 @@ const VISION_RAY_SCENE_PATH: String = "res://scenes/game/cards/world/vision_ray.
 @export var speed: int
 @export var energy: int
 @export var rarity: Game.Rarities
-@export var initial_traits: Array[int]
+@export var initial_traits: Array[SavedDataTrait]
 @export_multiline var ability_text: String
 @export_multiline var flavor_text: String
 @export_group("")
@@ -38,7 +38,7 @@ const VISION_RAY_SCENE_PATH: String = "res://scenes/game/cards/world/vision_ray.
 @export var plus_health: int
 @export var plus_speed: int
 @export var plus_energy: int
-@export var ascended_traits: Array[int]
+@export var ascended_traits: Array[SavedDataTrait]
 # Leave empty if no changes
 @export_multiline var ascended_ability_text: String
 @export_group("")

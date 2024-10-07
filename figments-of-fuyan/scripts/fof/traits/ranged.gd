@@ -1,0 +1,9 @@
+class_name RangedGD extends TraitGD
+
+var ranged: int
+func onLoadData(data: SavedData) -> void:
+	super(data)
+	ranged = data.ranged
+	
+func onSaveData() -> SavedDataRanged:
+	return SavedDataRanged.new(info.id, false, ranged)

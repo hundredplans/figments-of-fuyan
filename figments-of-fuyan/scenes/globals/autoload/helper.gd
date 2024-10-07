@@ -4,7 +4,7 @@ func getAdmin() -> bool: return true
 #region Resources
 var GDSCRIPT_TYPES: Array = [AreaInfo, LevelInfo, PalmLevelInfo, \
 	CardInfo, ChampionCardInfo, BoonInfo, ToolInfo, MapNodeInfo, SaveFileInfo, EncounterInfo, MapEffectInfo,\
-	TileObjectInfo, TileInfo, ObjectInfo, GameObjectInfo]
+	TileObjectInfo, TileInfo, ObjectInfo, GameObjectInfo, TraitInfo, StatusEffectInfo]
 	
 var fof_info_dict: Dictionary = {}
 func _ready() -> void:
