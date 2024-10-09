@@ -12,6 +12,8 @@ extends Control
 @onready var PhaseIcon: TextureRect = %PhaseIcon
 @onready var HeroNameLabel: Label = %HeroNameLabel
 @onready var AbilityNameLabel: Label = %AbilityNameLabel
+
+@onready var BackgroundDimmer: ColorRect = %BackgroundDimmer
 #endregion
 
 #region Globals
@@ -72,6 +74,7 @@ func onMouseInUI(state: bool) -> void:
 
 func onActionPlaying(state: bool) -> void:
 	is_action_playing = state
+	onChangeVisionMode(false)
 	onUpdateActionLock()
 #endregion
 
@@ -162,4 +165,20 @@ func _on_minimap_button_pressed() -> void:
 	if Minimap != null:
 		Minimap = MinimapPacked.instantiate()
 		add_child(Minimap)
+#endregion
+
+#region Vision Mode
+var in_vision_mode: bool
+func _on_vision_mode_button_pressed() -> void:
+	onChangeVisionMode(!in_vision_mode)
+	
+func onChangeVisionMode(state: bool) -> void:
+	if state != in_vision_mode:
+		in_vision_mode = state
+		BackgroundDimmer.visible = state
+		
+		#for GameObject in get_tree().get_nodes_in_group("LevelTileObjectsGD") + get_tree().get_nodes_in_group("FieldCardsGD"):
+			#GameObject.setLevelVisible()
+		#get_tree().call_group("setLevelVisible", Game.getTeamVision())
+		#if !in_vision_mode:
 #endregion

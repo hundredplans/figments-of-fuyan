@@ -15,6 +15,7 @@ extends Node3D
 
 @onready var InfoSprite: Sprite3D = %InfoSprite
 @onready var Numbers: Node3D = %Numbers
+@onready var IconsManager: Node3D = %IconsManager
 #endregion
 
 @export var number_to_model: Array[PackedScene]
@@ -45,6 +46,10 @@ extends Node3D
 @export var enemy_in_range_texture: Texture2D
 @export_group("")
 
+@export_group("Icons Manager")
+@export var FofObjectIconPacked: PackedScene
+@export_group("")
+
 var Card: CardGD
 
 func setInfo(_Card: CardGD) -> void:
@@ -60,6 +65,9 @@ func onResetStats() -> void:
 	InfoSprite.no_depth_test = is_spectated
 	for mesh in Helper.getNodeTypeRecursive(FloatingStats, MeshInstance3D):
 		mesh.set_surface_override_material(0, mat)
+	
+	IconsManager.setDepthTest(is_spectated)
+	
 	onCreateFloatingNumbers()
 	
 func onCreateFloatingNumbers() -> void:
@@ -160,7 +168,6 @@ func setInfoSpriteEnemyInMovementRange(state: bool) -> void:
 
 #region Traits
 func onUpdateTraits() -> void:
-	print(Card.field_traits)
 	for field_trait in Card.field_traits.filter(func(x: TraitGD): return x.info.replace_model != null):
 		var replace_stat_spot: Node3D
 		match field_trait.info.replace_stat:
@@ -170,4 +177,20 @@ func onUpdateTraits() -> void:
 			
 		for child in replace_stat_spot.get_children(): child.queue_free()
 		replace_stat_spot.add_child(field_trait.info.replace_model.instantiate())
+#endregion
+
+#region IconsManager
+func onRemoveIcon(fof_object: FofGD) -> void:
+	onFindIconNode(fof_object).queue_free()
+	
+func onAddIcon(FofObject: FofGD) -> void:
+	var FofObjectIcon: Sprite3D = FofObjectIconPacked.instantiate()
+	IconsManager.add_child(FofObjectIcon)
+	FofObjectIcon.FofObject = FofObject
+	FofObjectIcon.texture = FofObject.getIcon()
+	
+func onFindIconNode(FofObject: FofGD) -> Sprite3D:
+	for child in IconsManager.get_children():
+		if child.FofObject == FofObject: return child
+	return null
 #endregion

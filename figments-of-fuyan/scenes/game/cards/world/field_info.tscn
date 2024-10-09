@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://ct6euhy8orf2m"]
+[gd_scene load_steps=42 format=3 uid="uid://ct6euhy8orf2m"]
 
 [ext_resource type="Script" path="res://scenes/game/cards/world/field_info.gd" id="1_doj6w"]
 [ext_resource type="PackedScene" uid="uid://b7aqntno6susb" path="res://assets/models/general/numbers/stat_numbers/zero.glb" id="2_emwqa"]
@@ -36,8 +36,11 @@
 [ext_resource type="ArrayMesh" uid="uid://ccoefdad2bccy" path="res://assets/models/general/numbers/particle_numbers/exclamation_marks.tres" id="28_i4f0i"]
 [ext_resource type="ArrayMesh" uid="uid://oom046e4h5g" path="res://assets/models/general/numbers/particle_numbers/plus.tres" id="29_3nsr3"]
 [ext_resource type="ArrayMesh" uid="uid://bw1sie25vkpxj" path="res://assets/models/general/numbers/particle_numbers/minus.tres" id="30_syjsk"]
-[ext_resource type="Texture2D" uid="uid://d00s1ki7w4ucx" path="res://assets/sprites/game/status_effects/blind.png" id="37_lp8jr"]
-[ext_resource type="Texture2D" uid="uid://d04al8251a7ao" path="res://assets/sprites/game/status_effects/invisible.png" id="38_tfj05"]
+[ext_resource type="Texture2D" uid="uid://b2lh8txdjfbpi" path="res://assets/sprites/game/cards/field_info/turn_passed.png" id="33_7aext"]
+[ext_resource type="PackedScene" uid="uid://da2oicq7t4k61" path="res://scenes/game/cards/world/fof_object_icon.tscn" id="33_haxel"]
+[ext_resource type="Texture2D" uid="uid://bxorkkcsj7ba7" path="res://assets/sprites/game/cards/field_info/turn_active.png" id="34_t37ao"]
+[ext_resource type="Texture2D" uid="uid://c4vogckvyfita" path="res://assets/sprites/game/cards/field_info/enemy_in_range.png" id="35_aitxo"]
+[ext_resource type="Script" path="res://scenes/game/cards/world/icons_manager.gd" id="38_bc6s6"]
 
 [node name="FieldInfo" type="Node3D"]
 script = ExtResource("1_doj6w")
@@ -55,6 +58,10 @@ number_to_particle_mesh = Array[Mesh]([null, ExtResource("19_g58ma"), ExtResourc
 exclamation_particle_mesh = ExtResource("28_i4f0i")
 plus_mesh = ExtResource("29_3nsr3")
 minus_mesh = ExtResource("30_syjsk")
+turn_passed_texture = ExtResource("33_7aext")
+turn_active_texture = ExtResource("34_t37ao")
+enemy_in_range_texture = ExtResource("35_aitxo")
+FofObjectIconPacked = ExtResource("33_haxel")
 
 [node name="FloatingStats" type="Node3D" parent="."]
 unique_name_in_owner = true
@@ -111,14 +118,10 @@ unique_name_in_owner = true
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.14813, 0.410257, 0)
 
-[node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.627122, 1.47389, 0)
-pixel_size = 0.02
-texture_filter = 0
-texture = ExtResource("37_lp8jr")
+[node name="IconsManager" type="Node3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+script = ExtResource("38_bc6s6")
 
-[node name="Sprite3D2" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0156684, 1.47389, 0)
-pixel_size = 0.02
-texture_filter = 0
-texture = ExtResource("38_tfj05")
+[connection signal="child_entered_tree" from="IconsManager" to="IconsManager" method="_on_child_entered_tree"]
+[connection signal="child_exiting_tree" from="IconsManager" to="IconsManager" method="_on_child_exiting_tree"]

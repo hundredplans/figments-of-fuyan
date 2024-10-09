@@ -59,11 +59,13 @@ func onLoadWorld(packed_scene: PackedScene) -> void:
 		main_menu_world: ActiveWorld.start.connect(onStartGame)
 	
 func onStartGame(Card: CardGD) -> void:
+	Game.highest_public_id = 0
 	var area_id: int = 1
 	var area_data: SavedDataArea = SavedDataArea.new(area_id, true)
 	
 	var save_file_data := SavedDataSaveFile.new(getFirstEmptySaveSlotID(), true, randi(), area_data, \
-	SHILLING_START_COUNT, [], 0, [Card.onSave(), SavedDataCard.new(4), SavedDataCard.new(5), SavedDataCard.new(6), SavedDataCard.new(7)])
+	SHILLING_START_COUNT, [], 0, [Card.onSave(), SavedDataCard.new(4), SavedDataCard.new(5), SavedDataCard.new(6), SavedDataCard.new(7)],
+	[])
 	
 	onLoadGame(save_file_data)
 	

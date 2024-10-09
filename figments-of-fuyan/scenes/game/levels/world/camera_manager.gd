@@ -145,7 +145,7 @@ func onSpectateSpawn() -> void:
 		spectate_type = Game.SpectateTypes.SPAWN
 		
 		spectate_index = spawn_spectate_index
-		setSpawnSpectateIndex()
+		onValidateSpectateIndex()
 		onResetSpectate()
 		setSpectateIndex()
 	
@@ -172,7 +172,7 @@ func onChangeCameraInDirection(direction: int) -> void:
 		elif spectate_index + direction < 0: spectate_index = arr.size() - 1
 		else: spectate_index += direction
 		
-		setSpawnSpectateIndex(arr, direction)
+		onValidateSpectateIndex(arr, direction)
 		onResetSpectate()
 		setSpectateIndex()
 		
@@ -190,14 +190,15 @@ func setSpectateIndex() -> void:
 		Game.SpectateTypes.SPAWN: spawn_spectate_index = spectate_index
 		Game.SpectateTypes.ALLY: ally_spectate_index = spectate_index
 
-func setSpawnSpectateIndex(arr: Array = getCameraObjectArray(), direction: int = 1) -> void:
-	if spectate_type == Game.SpectateTypes.SPAWN:
-		arr = arr.map(func(x: SpawnGD): return null if x.isSpawnOccupied() else x)
+func onValidateSpectateIndex(arr: Array = getCameraObjectArray(), direction: int = 1) -> void:
+	match spectate_type:
+		Game.SpectateTypes.SPAWN: arr = arr.map(func(x: SpawnGD): return null if x.isSpawnOccupied() else x)
+		Game.SpectateTypes.ALLY, Game.SpectateTypes.ENEMY: arr = arr.map(func(x: CardGD): return null if !x.level_visible else x)
 		
-		while (arr[spectate_index] == null):
-			if spectate_index + direction == arr.size(): spectate_index = 0
-			elif spectate_index + direction < 0: spectate_index = arr.size() - 1
-			else: spectate_index += direction
+	while (arr[spectate_index] == null):
+		if spectate_index + direction == arr.size(): spectate_index = 0
+		elif spectate_index + direction < 0: spectate_index = arr.size() - 1
+		else: spectate_index += direction
 #endregion
 	
 #region Save

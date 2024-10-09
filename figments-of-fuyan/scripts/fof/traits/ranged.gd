@@ -5,5 +5,5 @@ func onLoadData(data: SavedData) -> void:
 	super(data)
 	ranged = data.ranged
 	
-func onSaveData() -> SavedDataRanged:
+func onSave() -> SavedDataRanged:
 	return SavedDataRanged.new(info.id, false, ranged)

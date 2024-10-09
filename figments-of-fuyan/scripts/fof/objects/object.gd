@@ -19,6 +19,9 @@ func getLockRotation() -> bool:
 #region is Checks
 func isSolid() -> bool:
 	return info.solids[variation]
+	
+func isAdjacent(_coords: Vector4i, distance: int = 1) -> bool:
+	return occupied_tiles.any(func(x: TileGD): return x.isAdjacent(_coords, distance))
 #endregion
 
 #region Rotation
@@ -47,6 +50,9 @@ func setPosition(_coords := Vector4i.ZERO, point := Vector3.ZERO, force_tile_loc
 #endregion
 
 #region Tile Coords
+func getCoords() -> Array:
+	return occupied_tiles.map(func(x: TileGD): return x.getCoords())
+
 func getTilesCoords() -> Array:
 	return info.tile_coords[variation]
 

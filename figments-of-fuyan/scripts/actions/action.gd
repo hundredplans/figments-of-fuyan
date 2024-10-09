@@ -4,9 +4,10 @@ signal push_action
 signal append_action
 signal force_action
 
-var failed: bool = false
-var post: bool = false
 var owner: Variant # FofGD or another action always
+@export var owner_coords: CoordsSaver
+@export var failed: bool = false
+@export var post: bool = false
 
 func _init() -> void:
 	push_action.connect(Game.ActionManagerReference.onPushAction)
@@ -39,3 +40,9 @@ func onAppendAction(actions: Variant, action_owner: Variant = self) -> void:
 	
 func onFailAction() -> void:
 	failed = true
+
+func onSave() -> void:
+	owner_coords = CoordsSaver.new().onSave(owner)
+
+func onLoad() -> void:
+	owner = owner_coords.onLoad()

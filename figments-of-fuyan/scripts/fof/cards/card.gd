@@ -20,6 +20,9 @@ var Tile: TileGD
 
 var attacks: int
 var field_traits: Array = []
+var status_effects: Array = []
+
+var delayed_stats: Array[StatAction]
 #endregion
 
 #region Globals
@@ -113,7 +116,8 @@ func onCreateCardUI(parent: Control, highlight_on_hover: bool = false) -> Contro
 #region Save/Load/Clear
 func onSave() -> SavedDataCard:
 	return SavedDataCard.new(info.id, false, coords, tile_rotation, level_visible, is_revealed, team, \
-	attack, health, speed, max_speed, max_health, energy, ascended, draw_order, card_place, turn_state, SavedData.onSaveGroup(field_traits), attacks)
+	attack, health, speed, max_speed, max_health, energy, ascended, draw_order, card_place, turn_state,\
+	SavedData.onSaveGroup(field_traits), SavedData.onSaveGroup(status_effects), attacks)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -125,6 +129,9 @@ func onLoadData(data: SavedData) -> void:
 	
 	for field_trait_data in data.field_traits:
 		field_traits.append(SavedData.onLoadModel(field_trait_data, self))
+	
+	for status_effect_data in data.status_effects:
+		status_effects.append(SavedData.onLoadModel(status_effect_data, self))
 	
 	onCreateAdjustedPoints()
 	
@@ -240,6 +247,8 @@ func isEnemy(_team: int = 0) -> bool:
 func isPlayable(_energy: int) -> bool:
 	return _energy >= energy
 
+func isAdjacent(_coords: Vector4i, distance: int = 1) -> bool:
+	return Tile.isAdjacent(_coords, distance)
 #endregion
 
 #region Inspect Card
@@ -269,13 +278,19 @@ func setTurnState(_turn_state: Game.TurnStates) -> void:
 
 #region Actions
 func onProcessAction(action: Action) -> void:
-	if !action.post:
-		if action is MoveToTileAction and action.Card == self: onMoveToTile(action)
-	elif action.post:
-		if action is MovementFinishAction and action.Card == self: Tile.setOutlineMaterial()
-		elif action is DeathAction and action.Defender == self:
-			onRemoveModel()
-			onRemoveFieldInfo()
+	if Game.CardPlaces.FIELD == card_place:
+		if !action.post:
+			if action is MoveToTileAction and action.Card == self: onMoveToTile(action)
+		elif action.post:
+			if action is MovementFinishAction and action.Card == self: Tile.setOutlineMaterial()
+			elif action is ChangePhaseAction and Game.isAdvanceTurn(action.phase, team):
+				onAdvanceTurn()
+				
+	elif Game.CardPlaces.GRAVEYARD == card_place:
+		if action.post:
+			if action is DeathAction and action.Defender == self:
+				onRemoveModel()
+				onRemoveFieldInfo()
 #endregion
 
 #region Movement
@@ -373,6 +388,8 @@ func onAwaken() -> void:
 	setTileRotation(tile_rotation)
 	setTurnState(turn_state)
 	setLevelVisible(level_visible)
+	
+	onPushAction(AddStatusEffectAction.new(SavedData.onLoadModel(SavedDataStatusEffect.new(2, false, 1, getCoords()), self)))
 #endregion
 
 #region Vision
@@ -381,8 +398,10 @@ var VisionRay: RayCast3D
 const BASE_VISION_RANGE: int = 5
 const EXTRA_RAY_LENGTH: float = 1.05
 
-func onUpdateVision() -> void:
+func onUpdateVision() -> Array:
+	var updated_visible_game_objects: Dictionary = {}
 	if card_place != Game.CardPlaces.GRAVEYARD:
+		
 		get_tree().call_group("FieldCardsGD", "setDetectableByRay", false)
 		var tile_objects: Array = Game.getAdjacentOrCloserTiles(Tile, BASE_VISION_RANGE)
 		
@@ -403,8 +422,10 @@ func onUpdateVision() -> void:
 				if VisionRay.is_colliding():
 					var GameObject: GameObjectGD = Helper.getCollision(VisionRay.get_collider(), GameObjectGD)
 					if GameObject in tile_objects:
-						visible_game_objects[GameObject] = null
-	else: visible_game_objects = {}
+						updated_visible_game_objects[GameObject] = null
+	else: updated_visible_game_objects = {}
+	
+	return updated_visible_game_objects.keys()
 	
 func getVisibleFieldCards() -> Array:
 	return visible_game_objects.keys().filter(func(x: GameObjectGD): return x is CardGD)
@@ -510,7 +531,9 @@ func onCreateInitialTraits() -> void:
 	else: initial_traits = info.ascended_traits
 	
 	for field_trait_data in initial_traits:
+		field_trait_data.coords = getCoords()
 		field_traits.append(SavedData.onLoadModel(field_trait_data, self))
+	FieldInfo.onUpdateTraits()
 		
 func onApplyArmor(damage: int) -> int:
 	for field_trait in field_traits:
@@ -519,4 +542,20 @@ func onApplyArmor(damage: int) -> int:
 	
 func isMobile() -> bool:
 	return field_traits.any(func(x: TraitGD): return x is MobileGD)
+#endregion
+
+#region Status Effects
+func onRemoveStatusEffect(status_effect: StatusEffectGD) -> void:
+	status_effects.erase(status_effect)
+	FieldInfo.onRemoveIcon(status_effect)
 	
+func onAddStatusEffect(status_effect: StatusEffectGD) -> void:
+	status_effects.append(status_effect)
+	FieldInfo.onAddIcon(status_effect)
+#endregion
+
+#region Advance Turn
+func onAdvanceTurn() -> void:
+	var actions: Array = [StatAction.new(self, Game.Stats.SPEED, max_speed, 0, 0, true, false, false), ChangeTurnStateAction.new(self, Game.TurnStates.INACTIVE)]
+	onPushAction(actions)
+#endregion

@@ -76,7 +76,7 @@ func onLoadActiveLevel(data: SavedDataLevel) -> void:
 				var Card: CardGD = SavedData.onLoadModel(SavedDataCard.new(enemy_spawn_ids[i], true, Vector4i.ZERO, 0, false, false, 1), self)
 				onPushAction(AwakenAction.new(Card, spawns[i].getTile()))
 				
-		onPushAction(LevelVisibleAction.new(false, get_tree().get_nodes_in_group("LevelTileObjectsGD") + get_tree().get_nodes_in_group("FieldCardsGD")))
+		onPushAction(LevelVisibleAction.new(false, get_tree().get_nodes_in_group("LevelTileObjectsGD") + get_tree().get_nodes_in_group("FieldCardsGD"), false))
 		return
 		
 	onChangePhase(data.phase, true)
@@ -108,9 +108,17 @@ func onChangePhase(_phase: Game.Phases, instant: bool = false) -> void:
 			setAlliesTurnState(Game.TurnStates.INACTIVE)
 		Game.Phases.HAND:
 			onCheckSkipHandPhase()
+		
 				
 	phase = _phase
 	phase_changed.emit(phase, instant)
+	
+	match phase:
+		Game.Phases.AI:
+			onAppendAction(ChangePhaseAction.new(Game.Phases.NEUTRAL))
+		Game.Phases.NEUTRAL:
+			onAppendAction(ChangePhaseAction.new(Game.Phases.HAND))
+	
 	
 func setAlliesTurnState(turn_state: Game.TurnStates) -> void:
 	for Card in Game.getAllyUnits():

@@ -5,11 +5,14 @@ signal append_action
 
 var info: FofInfo
 var groupsave: bool = true
+var public_id: int
 
 #region Save / Load
 func onSave() -> SavedData: return SavedData.new(info.id)
-func onLoadData(_data: SavedData) -> void:
+func onLoadData(data: SavedData) -> void:
 	add_to_group("FofGD")
+	public_id = data.public_id
+		
 func onClear() -> void: queue_free()
 
 func onPushAction(actions: Variant, action_owner: Variant = self) -> void:

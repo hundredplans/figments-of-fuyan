@@ -7,10 +7,11 @@ class_name SavedDataSaveFile extends SavedData
 @export var time: int
 @export var deck: Array
 @export var boons: Array
+@export var highest_public_id: int
 
-func _init(_id: int = 0, _first_init: bool = false, _my_seed: int = 0, _area_data: SavedDataArea = null,\
- _shillings: int = 0, _map_effects: Array = [], _time: int = 0, _deck: Array = [], _boons: Array = []) -> void:
-	super(_id, _first_init)
+func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _my_seed: int = 0, _area_data: SavedDataArea = null,\
+ _shillings: int = 0, _map_effects: Array = [], _time: int = 0, _deck: Array = [], _boons: Array = [], _highest_public_id: int = 0) -> void:
+	super(_id, _first_init, _public_id)
 	my_seed = _my_seed
 	area_data = _area_data
 	shillings = _shillings
@@ -18,6 +19,7 @@ func _init(_id: int = 0, _first_init: bool = false, _my_seed: int = 0, _area_dat
 	time = _time
 	deck = _deck
 	boons = _boons
+	highest_public_id = _highest_public_id
 
 func getInfoType() -> GDScript: return SaveFileInfo
 func getChampionData() -> SavedDataCard:

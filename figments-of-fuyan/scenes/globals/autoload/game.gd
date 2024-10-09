@@ -163,3 +163,17 @@ func getVisibleFieldCards(team: int = 0) -> Array:
 func onRotatePosition(coords: Vector3, theta: float) -> Vector3:
 	return Vector3(coords.x * cos(theta) + coords.z * sin(theta), coords.y, -coords.x * sin(theta) + coords.z * cos(theta))
 #endregion
+
+#region Phases
+func isAdvanceTurn(phase: Phases, team: int) -> bool:
+	if phase == Phases.PLAYER and team == 0: return true
+	elif phase == Phases.AI and team == 1: return true
+	elif phase == Phases.NEUTRAL and team == 2: return true
+	return false
+#endregion
+
+#region Public ID
+var highest_public_id: int
+func onIncrementPublicID() -> int:
+	highest_public_id += 1
+	return highest_public_id

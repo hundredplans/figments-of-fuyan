@@ -5,5 +5,5 @@ func onLoadData(data: SavedData) -> void:
 	super(data)
 	armor = data.armor
 	
-func onSaveData() -> SavedDataArmor:
+func onSave() -> SavedDataArmor:
 	return SavedDataArmor.new(info.id, false, armor)

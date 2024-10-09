@@ -17,12 +17,14 @@ var tile_fill: bool = false
 #endregion
 
 #region Is Checks
-
 func isOccupied() -> bool:
 	return get_tree().get_nodes_in_group("FieldCardsGD").any(func(x: CardGD): return x.Tile == self)
 	
 func isRamp() -> bool:
 	return variation == 1
+	
+func isAdjacent(_coords: Vector4i, distance: int = 1) -> bool:
+	return Game.getCoordsDistance(getCoords(), _coords) == distance
 #endregion
 
 #region Getters

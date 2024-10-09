@@ -3,10 +3,14 @@ class_name SavedData extends Resource
 # Stores the id to the info
 @export var id: int
 @export var first_init: bool
+@export var public_id: int
 
-func _init(_id: int = 0, _first_init: bool = false) -> void:
+func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0) -> void:
 	id = _id
 	first_init = _first_init
+	
+	if _public_id == 0: _public_id = Game.onIncrementPublicID()
+	public_id = _public_id
 
 static func onLoadModel(data: SavedData, parent: Node3D, init_args: Array = []) -> FofGD:
 	var model := FofGD.new()
