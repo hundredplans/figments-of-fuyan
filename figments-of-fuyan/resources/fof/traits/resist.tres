@@ -1,10 +1,12 @@
-[gd_resource type="Resource" script_class="TraitInfo" load_steps=3 format=3 uid="uid://bsroe0yrgqik0"]
+[gd_resource type="Resource" script_class="TraitInfo" load_steps=4 format=3 uid="uid://bsroe0yrgqik0"]
 
 [ext_resource type="Script" path="res://scripts/fof/traits/resist.gd" id="1_fbifg"]
 [ext_resource type="Script" path="res://scripts/fof_info/traits/trait_info.gd" id="1_v6ko7"]
+[ext_resource type="Texture2D" uid="uid://byeq1m5ccwrfn" path="res://assets/sprites/game/fof_object_icons/traits/resist.png" id="2_ubo6q"]
 
 [resource]
 script = ExtResource("1_v6ko7")
+icon = ExtResource("2_ubo6q")
 replace_stat = 0
 id = 4
 name = "Resist"

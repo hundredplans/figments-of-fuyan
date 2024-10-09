@@ -25,7 +25,7 @@ func onSave() -> SavedData:
 	var deck_cards: Array = SavedData.onSaveGroup(get_tree().get_nodes_in_group("AllyCardsGD"))
 	var boons: Array = SavedData.onSaveGroup(get_tree().get_nodes_in_group("BoonsGD"))
 	time += int(timer.wait_time - timer.time_left)
-	return SavedDataSaveFile.new(id, false, my_seed, area.onSave(), shillings, map_effects, time, deck_cards, boons)
+	return SavedDataSaveFile.new(id, false, public_id, my_seed, area.onSave(), shillings, map_effects, time, deck_cards, boons)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)

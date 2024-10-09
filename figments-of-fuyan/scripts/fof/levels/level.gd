@@ -22,7 +22,7 @@ signal awakened
 func onSave() -> SavedData:
 	var data: Array = SavedData.onSaveGroup(get_tree().get_nodes_in_group("LevelTileObjectsGD"))
 	request_camera_data.emit()
-	return SavedDataLevel.new(info.id, false, data, timeout, enemy_spawn_ids, getFieldCards(), phase, level_camera_data, energy, max_energy)
+	return SavedDataLevel.new(info.id, false, public_id, data, timeout, enemy_spawn_ids, getFieldCards(), phase, level_camera_data, energy, max_energy)
 
 func onClear() -> void:
 	queue_free()
@@ -73,7 +73,7 @@ func onLoadActiveLevel(data: SavedDataLevel) -> void:
 		var spawns: Array = get_tree().get_nodes_in_group("EnemySpawnsGD")
 		for i in range(enemy_spawn_ids.size()):
 			if enemy_spawn_ids[i] > 0:
-				var Card: CardGD = SavedData.onLoadModel(SavedDataCard.new(enemy_spawn_ids[i], true, Vector4i.ZERO, 0, false, false, 1), self)
+				var Card: CardGD = SavedData.onLoadModel(SavedDataCard.new(enemy_spawn_ids[i], true, 0, Vector4i.ZERO, 0, false, false, 1), self)
 				onPushAction(AwakenAction.new(Card, spawns[i].getTile()))
 				
 		onPushAction(LevelVisibleAction.new(false, get_tree().get_nodes_in_group("LevelTileObjectsGD") + get_tree().get_nodes_in_group("FieldCardsGD"), false))
@@ -108,7 +108,6 @@ func onChangePhase(_phase: Game.Phases, instant: bool = false) -> void:
 			setAlliesTurnState(Game.TurnStates.INACTIVE)
 		Game.Phases.HAND:
 			onCheckSkipHandPhase()
-		
 				
 	phase = _phase
 	phase_changed.emit(phase, instant)

@@ -1,20 +1,22 @@
 extends Node3D
 
 const COLUMNS: int = 5
-const SPACING: float = 0.5
+const SPACING: float = 0.6
 func _ready() -> void:
 	position.x = -((COLUMNS / 4.0) - (SPACING / 2.0))
 	onSortNodes()
 
 func _on_child_entered_tree(node: Node) -> void:
-	node.no_depth_test = depth_test_state
+	node.setDepthTest(depth_test_state)
 	onSortNodes()
 
 func _on_child_exiting_tree(node: Node) -> void:
 	onSortNodes(node)
 
 func onSortNodes(exiting_node: Node = null) -> void:
-	var nodes: Array = get_children().filter(func(x: Sprite3D): return x != exiting_node)
+	var nodes: Array = get_children().filter(func(x: Node3D): return x != exiting_node)
+	nodes.sort_custom(func(x: Node3D, y: Node3D): return int(x.FofObject != null) < int(y.FofObject != null))
+	
 	var count: int = nodes.size()
 	@warning_ignore("integer_division")
 	var rows: int = (count + COLUMNS - 1) / COLUMNS
@@ -28,4 +30,4 @@ var depth_test_state: bool
 func setDepthTest(state: bool) -> void:
 	depth_test_state = state
 	for child in get_children():
-		child.no_depth_test = depth_test_state
+		child.setDepthTest(depth_test_state)

@@ -5,8 +5,8 @@ class_name SavedDataGameObject extends SavedData
 @export var coords: Vector4i
 @export var is_revealed: bool
 
-func _init(_id: int = 0, _first_init: bool = false, _coords := Vector4.ZERO, _tile_rotation: int = 0, _level_visible: bool = true, _is_revealed: bool = false) -> void:
-	super(_id, _first_init)
+func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _coords := Vector4.ZERO, _tile_rotation: int = 0, _level_visible: bool = true, _is_revealed: bool = false) -> void:
+	super(_id, _first_init, _public_id)
 	coords = _coords
 	tile_rotation = _tile_rotation
 	level_visible = _level_visible

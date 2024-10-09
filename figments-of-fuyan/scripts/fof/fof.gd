@@ -8,7 +8,7 @@ var groupsave: bool = true
 var public_id: int
 
 #region Save / Load
-func onSave() -> SavedData: return SavedData.new(info.id)
+func onSave() -> SavedData: return SavedData.new(info.id, false, public_id)
 func onLoadData(data: SavedData) -> void:
 	add_to_group("FofGD")
 	public_id = data.public_id

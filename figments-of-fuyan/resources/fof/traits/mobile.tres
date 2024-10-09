@@ -1,11 +1,13 @@
-[gd_resource type="Resource" script_class="TraitInfo" load_steps=4 format=3 uid="uid://bvduvvv7t5ltp"]
+[gd_resource type="Resource" script_class="TraitInfo" load_steps=5 format=3 uid="uid://bvduvvv7t5ltp"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/traits/trait_info.gd" id="1_6c3rr"]
 [ext_resource type="Script" path="res://scripts/fof/traits/mobile.gd" id="1_6ls2r"]
 [ext_resource type="PackedScene" uid="uid://c44sjkvjjxy7q" path="res://assets/models/general/floating_stats/speed_mobile.glb" id="2_3bw8r"]
+[ext_resource type="Texture2D" uid="uid://cqsgw748ymd6k" path="res://assets/sprites/game/fof_object_icons/traits/mobile.png" id="2_crjp4"]
 
 [resource]
 script = ExtResource("1_6c3rr")
+icon = ExtResource("2_crjp4")
 replace_model = ExtResource("2_3bw8r")
 replace_stat = 2
 id = 3

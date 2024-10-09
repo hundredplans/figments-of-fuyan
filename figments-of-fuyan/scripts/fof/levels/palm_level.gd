@@ -42,7 +42,7 @@ func onFofInit() -> void:
 func onSave() -> SavedDataPalmLevel:
 	var data: Array = SavedData.onSaveGroup(get_tree().get_nodes_in_group("LevelTileObjectsGD"))
 	request_camera_data.emit()
-	return SavedDataPalmLevel.new(info.id, false, data, timeout, enemy_spawn_ids, getFieldCards(), phase, level_camera_data,
+	return SavedDataPalmLevel.new(info.id, false, public_id, data, timeout, enemy_spawn_ids, getFieldCards(), phase, level_camera_data,
 	energy, max_energy,\
 	decoration_datas, decoration_coords)
 	

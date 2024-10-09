@@ -118,7 +118,7 @@ func onCreateTileFill(state: bool) -> String:
 #endregion
 #region Save / Load
 func onSave() -> SavedDataGameObject:
-	return SavedDataTile.new(info.id, false, coords, tile_rotation, level_visible, is_revealed, variation, tile_fill, occupy_state)
+	return SavedDataTile.new(info.id, false, public_id, coords, tile_rotation, level_visible, is_revealed, variation, tile_fill, occupy_state)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)

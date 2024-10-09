@@ -4,7 +4,7 @@ var rarity: Game.Rarities
 var type: GDScript
 
 func onSave() -> SavedData:
-	return SavedDataMapEffectGainFofObject.new(info.id, false, rarity, type)
+	return SavedDataMapEffectGainFofObject.new(info.id, false, public_id, rarity, type)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)

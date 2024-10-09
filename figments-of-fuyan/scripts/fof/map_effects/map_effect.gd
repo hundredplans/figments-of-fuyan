@@ -2,7 +2,7 @@ class_name MapEffectGD extends FofGD
 
 #region Save / Load
 func onSave() -> SavedData:
-	return SavedDataMapEffect.new(info.id)
+	return SavedDataMapEffect.new(info.id, false, public_id)
 	
 func onLoadData(data: SavedData) -> void:
 	super(data)

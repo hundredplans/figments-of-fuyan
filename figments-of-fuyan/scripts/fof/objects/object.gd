@@ -61,7 +61,7 @@ func onLoadTilesCoords(parent: Node3D, tile_info: TileInfo) -> void:
 		if i >= info.tile_coords.size(): info.tile_coords.append([Vector4.ZERO])
 	
 	for tile_coords in info.tile_coords[variation]:
-		var Tile: TileGD = SavedData.onLoadModel(SavedDataTile.new(tile_info.id, false, tile_coords), parent)
+		var Tile: TileGD = SavedData.onLoadModel(SavedDataTile.new(tile_info.id, false, 0, tile_coords), parent)
 		Tile.setHalfTransparent()
 	ResourceSaver.save(info)
 	
@@ -76,7 +76,7 @@ func onDeleteTile(tile_coords: Vector4i) -> void:
 
 #region Save/Load
 func onSave() -> SavedDataGameObject:
-	return SavedDataObject.new(info.id, false, coords, tile_rotation, level_visible, is_revealed, variation, map_rotation, map_position, height,\
+	return SavedDataObject.new(info.id, false, public_id, coords, tile_rotation, level_visible, is_revealed, variation, map_rotation, map_position, height,\
 	occupied_tiles.map(func(x: TileGD): return x.getCoords()))
 
 func onLoadData(data: SavedData) -> void:

@@ -51,7 +51,7 @@ func _process(delta: float) -> void:
 
 #region Save / Load
 func onSave() -> SavedDataMapNode:
-	return SavedDataMapNode.new(info.id, false, map_location, links, is_entered, is_finished, rotation.y)
+	return SavedDataMapNode.new(info.id, false, public_id, map_location, links, is_entered, is_finished, rotation.y)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)

@@ -8,7 +8,7 @@ enum Phases {NULL, START, HAND, PLAYER, AI, NEUTRAL}
 enum SpectateTypes {ALLY, ENEMY, SPAWN}
 enum CardPlaces {NULL, HAND, DECK, FIELD, GRAVEYARD}
 enum TurnStates {PASSED, INACTIVE, ACTIVE}
-enum Stats {ATTACK, HEALTH, SPEED}
+enum Stats {ATTACK, HEALTH, SPEED, MAX_HEALTH, MAX_SPEED}
 
 var CARD_PLACES_TO_GROUP: Dictionary = {
 	CardPlaces.NULL: "",
@@ -177,3 +177,9 @@ var highest_public_id: int
 func onIncrementPublicID() -> int:
 	highest_public_id += 1
 	return highest_public_id
+	
+func onFindPublicIDObject(public_id: int) -> FofGD:
+	for FofObject in get_tree().get_nodes_in_group("FofGD"):
+		if FofObject.public_id == public_id: return FofObject
+	return null
+#endreigon

@@ -5,7 +5,7 @@ signal append_action
 signal force_action
 
 var owner: Variant # FofGD or another action always
-@export var owner_coords: CoordsSaver
+@export var owner_public_id: int
 @export var failed: bool = false
 @export var post: bool = false
 
@@ -42,7 +42,7 @@ func onFailAction() -> void:
 	failed = true
 
 func onSave() -> void:
-	owner_coords = CoordsSaver.new().onSave(owner)
+	owner_public_id = owner.public_id
 
 func onLoad() -> void:
-	owner = owner_coords.onLoad()
+	owner = Game.onFindPublicIDObject(owner_public_id)

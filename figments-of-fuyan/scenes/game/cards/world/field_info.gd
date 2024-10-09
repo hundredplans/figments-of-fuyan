@@ -44,6 +44,12 @@ extends Node3D
 @export var turn_passed_texture: Texture2D
 @export var turn_active_texture: Texture2D
 @export var enemy_in_range_texture: Texture2D
+@export var down_one: Texture2D
+@export var down_two: Texture2D
+@export var down_three: Texture2D
+@export var up_one: Texture2D
+@export var up_two: Texture2D
+@export var up_three: Texture2D
 @export_group("")
 
 @export_group("Icons Manager")
@@ -59,6 +65,7 @@ func setInfo(_Card: CardGD) -> void:
 	
 	onResetStats()
 	onUpdateTraits()
+	onUpdateDelayedStats()
 	
 func onResetStats() -> void:
 	var mat: Material = null if !is_spectated else top_base_material
@@ -144,9 +151,8 @@ func setNumbersParticle(type: Game.Stats, value: int) -> void:
 	match type:
 		Game.Stats.SPEED: mat = green_material
 		Game.Stats.ATTACK: mat = orange_material
-		Game.Stats.HEALTH:
-			if value > 0: mat = pink_material
-			else: mat = red_material
+		Game.Stats.HEALTH: mat = red_material
+		Game.Stats.MAX_HEALTH: mat = pink_material
 	
 	sign_mesh.surface_set_material(0, mat)
 	number_mesh.surface_set_material(0, mat)
@@ -177,6 +183,9 @@ func onUpdateTraits() -> void:
 			
 		for child in replace_stat_spot.get_children(): child.queue_free()
 		replace_stat_spot.add_child(field_trait.info.replace_model.instantiate())
+		
+func onAddTrait(Trait: TraitGD) -> void:
+	onAddIcon(Trait)
 #endregion
 
 #region IconsManager
@@ -184,13 +193,56 @@ func onRemoveIcon(fof_object: FofGD) -> void:
 	onFindIconNode(fof_object).queue_free()
 	
 func onAddIcon(FofObject: FofGD) -> void:
-	var FofObjectIcon: Sprite3D = FofObjectIconPacked.instantiate()
+	var FofObjectIcon: Node3D = FofObjectIconPacked.instantiate()
 	IconsManager.add_child(FofObjectIcon)
-	FofObjectIcon.FofObject = FofObject
-	FofObjectIcon.texture = FofObject.getIcon()
+	FofObjectIcon.setInfo(FofObject)
+	FofObjectIcon.setTexture(FofObject.getIcon())
 	
 func onFindIconNode(FofObject: FofGD) -> Sprite3D:
 	for child in IconsManager.get_children():
 		if child.FofObject == FofObject: return child
 	return null
 #endregion
+
+#region Delayed Stats
+func onUpdateDelayedStats() -> void:
+	onResetDelayedStats()
+	var stats: Dictionary = {Game.Stats.ATTACK: 0, Game.Stats.HEALTH: 0, Game.Stats.SPEED: 0, Game.Stats.MAX_HEALTH: 0}
+	for stat_action in Card.delayed_stats.filter(func(x: StatAction): return x.turn_delay == 1):
+		for i in range(stat_action.types.size()):
+			stats[stat_action.types[i]] += stat_action.values[i]
+	
+	for stat in stats:
+		if stats[stat] > 0: onAddDelayedStatNode(stat, stats[stat])
+	
+func onAddDelayedStatNode(type: Game.Stats, value: int) -> void:
+	var FofObjectIcon: Node3D = FofObjectIconPacked.instantiate()
+	IconsManager.add_child(FofObjectIcon)
+	FofObjectIcon.setInfo(null)
+	
+	var texture: Texture2D
+	match value:
+		1: texture = up_one
+		2, 3: texture = up_two
+		
+		-1: texture = down_one
+		-2, -3: texture = down_two
+		
+		_:
+			if value > 3: texture = up_three
+			elif value < -3: texture = down_three
+	
+	var icon_color: Color
+	match type:
+		Game.Stats.ATTACK: icon_color = Color(1, 0.5, 0)
+		Game.Stats.HEALTH: icon_color = Color(1, 0, 0)
+		Game.Stats.SPEED: icon_color = Color(0, 1, 0)
+		Game.Stats.MAX_HEALTH: icon_color = Color(1, 0, 1)
+		Game.Stats.MAX_SPEED: icon_color = Color(0, 0.5, 0)
+	
+	FofObjectIcon.setTexture(texture)
+	FofObjectIcon.setModulate(icon_color)
+
+func onResetDelayedStats() -> void:
+	for child in IconsManager.get_children():
+		if child.FofObject == null: child.queue_free()

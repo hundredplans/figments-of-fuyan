@@ -7,4 +7,4 @@ func _init(_Trait: TraitGD = null) -> void:
 	Trait = _Trait
 
 func onPostAction() -> void:
-	pass
+	Trait.Card.onAddTrait(Trait)

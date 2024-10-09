@@ -33,7 +33,7 @@ func onSave() -> SavedDataArea:
 		for map_node in map_nodes: map_nodes_data.append(map_node.onSave())
 		
 	var level_data := active_level.onSave() if active_level != null else null
-	return SavedDataArea.new(info.id, false, map_nodes_data, level_data)
+	return SavedDataArea.new(info.id, false, public_id, map_nodes_data, level_data)
 	
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -283,7 +283,7 @@ func onCreateMapNodes() -> void:
 	for empty_spot in empty_spots:
 		var links: Array = empty_spot.links.map(func(x: EmptyMapNodeLink): return MapLink.new(x.empty_map_node.map_location, x.is_holy))
 		onCreateMapNode(MapNodeInfo.getDataFromID(empty_spot.id).\
-		new(empty_spot.id, true, empty_spot.map_location, links))
+		new(empty_spot.id, true, 0, empty_spot.map_location, links))
 	
 func onCreateMapNode(data: SavedDataMapNode) -> void:
 	var map_node: MapNodeGD = SavedData.onLoadModel(data, self)

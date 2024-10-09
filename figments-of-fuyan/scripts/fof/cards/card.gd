@@ -115,9 +115,11 @@ func onCreateCardUI(parent: Control, highlight_on_hover: bool = false) -> Contro
 
 #region Save/Load/Clear
 func onSave() -> SavedDataCard:
-	return SavedDataCard.new(info.id, false, coords, tile_rotation, level_visible, is_revealed, team, \
+	for stat_action in delayed_stats: stat_action.onSave()
+	
+	return SavedDataCard.new(info.id, false, public_id, coords, tile_rotation, level_visible, is_revealed, team, \
 	attack, health, speed, max_speed, max_health, energy, ascended, draw_order, card_place, turn_state,\
-	SavedData.onSaveGroup(field_traits), SavedData.onSaveGroup(status_effects), attacks)
+	SavedData.onSaveGroup(field_traits), SavedData.onSaveGroup(status_effects), attacks, delayed_stats)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -132,6 +134,9 @@ func onLoadData(data: SavedData) -> void:
 	
 	for status_effect_data in data.status_effects:
 		status_effects.append(SavedData.onLoadModel(status_effect_data, self))
+	
+	delayed_stats = data.delayed_stats
+	for stat_action in delayed_stats: stat_action.onLoad()
 	
 	onCreateAdjustedPoints()
 	
@@ -272,7 +277,7 @@ func setTurnState(_turn_state: Game.TurnStates) -> void:
 		FieldInfo.setInfoSpriteTurnState()
 		match turn_state:
 			Game.TurnStates.INACTIVE:
-				onPushAction([ChangeAttacksAction.new(self, getMaxAttacks()), StatAction.new(self, Game.Stats.SPEED, max_speed, 0, 0, true)])
+				onPushAction([ChangeAttacksAction.new(self, getMaxAttacks()), StatAction.new(self, Game.Stats.SPEED, max_speed, 0, true)])
 	
 #endregion
 
@@ -285,6 +290,7 @@ func onProcessAction(action: Action) -> void:
 			if action is MovementFinishAction and action.Card == self: Tile.setOutlineMaterial()
 			elif action is ChangePhaseAction and Game.isAdvanceTurn(action.phase, team):
 				onAdvanceTurn()
+				onPushAction(DelayedStatAction.new(1, StatAction.new(self, Game.Stats.SPEED, 3)))
 				
 	elif Game.CardPlaces.GRAVEYARD == card_place:
 		if action.post:
@@ -389,7 +395,7 @@ func onAwaken() -> void:
 	setTurnState(turn_state)
 	setLevelVisible(level_visible)
 	
-	onPushAction(AddStatusEffectAction.new(SavedData.onLoadModel(SavedDataStatusEffect.new(2, false, 1, getCoords()), self)))
+	onPushAction(AddStatusEffectAction.new(SavedData.onLoadModel(SavedDataStatusEffect.new(2, false, 0, 1, getCoords()), self)))
 #endregion
 
 #region Vision
@@ -520,6 +526,7 @@ func onUpdateStat(type: Game.Stats, difference: int, show_particles: bool, inclu
 		Game.Stats.ATTACK: value = attack
 		Game.Stats.HEALTH: value = health
 		Game.Stats.SPEED: value = speed
+		Game.Stats.MAX_HEALTH: value = max_health
 	
 	FieldInfo.onUpdateStat(type, value, difference, play_animation, show_particles)
 #endregion
@@ -532,7 +539,9 @@ func onCreateInitialTraits() -> void:
 	
 	for field_trait_data in initial_traits:
 		field_trait_data.coords = getCoords()
-		field_traits.append(SavedData.onLoadModel(field_trait_data, self))
+		var Trait: TraitGD = SavedData.onLoadModel(field_trait_data, self)
+		field_traits.append(Trait)
+		FieldInfo.onAddTrait(Trait)
 	FieldInfo.onUpdateTraits()
 		
 func onApplyArmor(damage: int) -> int:
@@ -542,6 +551,11 @@ func onApplyArmor(damage: int) -> int:
 	
 func isMobile() -> bool:
 	return field_traits.any(func(x: TraitGD): return x is MobileGD)
+	
+func onAddTrait(Trait: TraitGD) -> void:
+	field_traits.append(Trait)
+	FieldInfo.onAddTrait(Trait)
+	FieldInfo.onUpdateTraits()
 #endregion
 
 #region Status Effects
@@ -551,11 +565,24 @@ func onRemoveStatusEffect(status_effect: StatusEffectGD) -> void:
 	
 func onAddStatusEffect(status_effect: StatusEffectGD) -> void:
 	status_effects.append(status_effect)
-	FieldInfo.onAddIcon(status_effect)
+	if FieldInfo != null: FieldInfo.onAddIcon(status_effect)
 #endregion
 
 #region Advance Turn
 func onAdvanceTurn() -> void:
-	var actions: Array = [StatAction.new(self, Game.Stats.SPEED, max_speed, 0, 0, true, false, false), ChangeTurnStateAction.new(self, Game.TurnStates.INACTIVE)]
+	var actions: Array = [StatAction.new(self, Game.Stats.SPEED, max_speed, 0, true, false, false), ChangeTurnStateAction.new(self, Game.TurnStates.INACTIVE)]
 	onPushAction(actions)
+	
+	if !delayed_stats.is_empty():
+		for stat_action in delayed_stats.duplicate():
+			stat_action.onAdvanceTurn()
+		
+	FieldInfo.onUpdateDelayedStats()
+	
+#endregion
+
+#region Delayed Stats
+func onAddDelayedStatAction(stat_action: StatAction) -> void:
+	delayed_stats.append(stat_action)
+	FieldInfo.onUpdateDelayedStats()
 #endregion

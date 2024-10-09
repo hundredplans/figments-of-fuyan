@@ -4,7 +4,7 @@ var cheaper_percentage: float
 var type: Game.ShopTypes
 
 func onSave() -> SavedData:
-	return SavedDataMapEffectNextShopTypeCheaper.new(info.id, false, cheaper_percentage, type)
+	return SavedDataMapEffectNextShopTypeCheaper.new(info.id, false, public_id, cheaper_percentage, type)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)

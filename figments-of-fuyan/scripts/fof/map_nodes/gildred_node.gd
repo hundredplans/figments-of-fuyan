@@ -13,7 +13,7 @@ func onFofInit() -> void:
 		resources.remove_at(index)
 		
 func onSave() -> SavedDataMapNode:
-	return SavedDataMapNodeGildred.new(info.id, false, map_location, links, is_entered, is_finished, rotation.y, selected_map_effects)
+	return SavedDataMapNodeGildred.new(info.id, false, public_id, map_location, links, is_entered, is_finished, rotation.y, selected_map_effects)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
