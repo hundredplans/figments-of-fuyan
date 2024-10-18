@@ -93,6 +93,9 @@ func setCollisionLayers(layer: int) -> void:
 func setLevelVisible(state: bool) -> void:
 	level_visible = state if !is_revealed else true
 	
+func getLevelVisible() -> bool:
+	return level_visible
+	
 func onRevealed() -> void:
 	is_revealed = true
 #endregion

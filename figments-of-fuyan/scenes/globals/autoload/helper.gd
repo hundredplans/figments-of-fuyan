@@ -9,18 +9,26 @@ var GDSCRIPT_TYPES: Array = [AreaInfo, LevelInfo, PalmLevelInfo, \
 var fof_info_dict: Dictionary = {}
 func _ready() -> void:
 	for type in GDSCRIPT_TYPES:
+		fof_info_dict[type] = {}
 		if type not in [TileInfo, ObjectInfo]:
 			var DIR_PATH: String = type.getInfoPath()
-			fof_info_dict[type] = getFilesRecursive(DIR_PATH).map(func(x: String): return load(x))\
-			.filter(func(x: FofInfo): return is_instance_of(x, type))
-			fof_info_dict[type].sort_custom(func(x: FofInfo, y: FofInfo): return x.id < y.id)
+			var fof_info_array: Array = getFilesRecursive(DIR_PATH).map(func(x: String): return load(x)).filter(func(x: FofInfo): return is_instance_of(x, type))
+			
+			if type == CardInfo:
+				var ALT_DIR_PATH: String = "res://test/test_cards/"
+				fof_info_array += getFilesRecursive(ALT_DIR_PATH).map(func(x: String): return load(x))
+				
+			for fof_info in fof_info_array:
+				fof_info_dict[type][fof_info.id] = fof_info 
 		else: fof_info_dict[type] = fof_info_dict[TileObjectInfo]
 		
 func getFofInfoArray(type: GDScript) -> Array:
-	return fof_info_dict[type]
+	var arr: Array = fof_info_dict[type].values()
+	arr.sort_custom(func(x: FofInfo, y: FofInfo): return x.id < y.id)
+	return arr
 	
 func getFofInfoID(type: GDScript, id: int) -> FofInfo:
-	return fof_info_dict[type][id - 1]
+	return fof_info_dict[type][id]
 #endregion
 
 func getChildrenRecursive(node: Node, children := []) -> Array:

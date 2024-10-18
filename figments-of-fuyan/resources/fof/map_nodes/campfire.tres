@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="MapNodeInfo" load_steps=5 format=3 uid="uid://d28en37m6ppol"]
+[gd_resource type="Resource" script_class="MapNodeInfo" load_steps=6 format=3 uid="uid://d28en37m6ppol"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/map_nodes/map_node_info.gd" id="1_bpfcu"]
 [ext_resource type="Script" path="res://scripts/fof/map_nodes/campfire_node.gd" id="1_ryksa"]
 [ext_resource type="Texture2D" uid="uid://b1jhcpn8bmx2f" path="res://assets/sprites/game/map/campfire.png" id="2_h5m6u"]
 [ext_resource type="PackedScene" uid="uid://d2fhbevi72vxe" path="res://assets/models/fof/map_nodes/campfire_node.glb" id="2_sxei3"]
+[ext_resource type="Script" path="res://scripts/saved_data/map_nodes/saved_data_map_node.gd" id="4_ovnqw"]
 
 [resource]
 script = ExtResource("1_bpfcu")
@@ -16,3 +17,4 @@ legend_order = 10
 id = 12
 name = "Campfire"
 gdscript = ExtResource("1_ryksa")
+saved_data = ExtResource("4_ovnqw")

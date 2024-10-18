@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://dppiux7bnao8g"]
+[gd_scene load_steps=8 format=3 uid="uid://dppiux7bnao8g"]
 
 [ext_resource type="Script" path="res://scenes/editors/level_editor/level_editor.gd" id="1_d12w1"]
 [ext_resource type="PackedScene" uid="uid://bydj1x1wtvu8y" path="res://scenes/editors/common/tile_static_body/tile_static_body.tscn" id="2_bfkth"]
+[ext_resource type="PackedScene" uid="uid://rvtclcchrvew" path="res://scenes/editors/level_editor/set_spawn_id_ui.tscn" id="2_maew7"]
 [ext_resource type="Script" path="res://addons/movement_camera.gd" id="2_voor8"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_w412d"]
@@ -25,6 +26,7 @@ glow_blend_mode = 0
 
 [node name="LevelEditor" type="Node"]
 script = ExtResource("1_d12w1")
+SpawnIdUIPacked = ExtResource("2_maew7")
 TILE_OBJECTS_PATH = "res://resources/game/game_object/tile_object/info/"
 tile_static_body = ExtResource("2_bfkth")
 
@@ -144,7 +146,12 @@ horizontal_alignment = 2
 
 [node name="Label6" type="Label" parent="UI/KeybindHints"]
 layout_mode = 2
-text = "Show Overworld Button [O]"
+text = "Show Overworld Button: [O]"
+horizontal_alignment = 2
+
+[node name="Label11" type="Label" parent="UI/KeybindHints"]
+layout_mode = 2
+text = "Set Spawn ID: [MMB]"
 horizontal_alignment = 2
 
 [node name="BottomBar" type="HBoxContainer" parent="UI"]

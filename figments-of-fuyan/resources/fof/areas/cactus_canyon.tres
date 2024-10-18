@@ -1,12 +1,16 @@
-[gd_resource type="Resource" script_class="AreaInfo" load_steps=3 format=3 uid="uid://k7lq48618j8v"]
+[gd_resource type="Resource" script_class="AreaInfo" load_steps=5 format=3 uid="uid://k7lq48618j8v"]
 
 [ext_resource type="Image" uid="uid://ck15r1yclfv0c" path="res://assets/sprites/game/cards/common/art_background/cactus_background.png" id="1_7c2sc"]
+[ext_resource type="Script" path="res://scripts/fof/areas/area.gd" id="2_8dlfa"]
 [ext_resource type="Script" path="res://scripts/fof_info/area_info.gd" id="2_jv8bu"]
+[ext_resource type="Script" path="res://scripts/saved_data/saved_data_area.gd" id="3_te6v3"]
 
 [resource]
 script = ExtResource("2_jv8bu")
 world = 1
 card_background = ExtResource("1_7c2sc")
-card_ids = Array[int]([3])
+card_ids = Array[int]([3, 500, 501, 502, 503, 504, 505, 506, 507, 508, 509, 510, 511, 512, 513, 514, 515, 516, 517, 518, 519, 520, 521, 522, 523, 524, 525])
 id = 2
 name = "Cactus Canyon"
+gdscript = ExtResource("2_8dlfa")
+saved_data = ExtResource("3_te6v3")

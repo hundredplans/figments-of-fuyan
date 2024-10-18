@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="TraitInfo" load_steps=5 format=3 uid="uid://dbq163k3b11pp"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/traits/trait_info.gd" id="1_2o2yi"]
+[ext_resource type="Script" path="res://scripts/fof/traits/trait.gd" id="1_ubrux"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_efoti"]
+[ext_resource type="Texture2D" uid="uid://cvqwrnid07gn4" path="res://assets/sprites/game/fof_object_icons/traits/Docile.png" id="2_i0xrf"]
+
+[resource]
+script = ExtResource("1_2o2yi")
+icon = ExtResource("2_i0xrf")
+replace_stat = 0
+description = "This is unilkely to attack nearby units"
+id = 5
+name = "Docile"
+gdscript = ExtResource("1_ubrux")
+saved_data = ExtResource("2_efoti")

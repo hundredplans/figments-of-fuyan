@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="MapNodeInfo" load_steps=5 format=3 uid="uid://c8hwlnp18f57g"]
+[gd_resource type="Resource" script_class="MapNodeInfo" load_steps=6 format=3 uid="uid://c8hwlnp18f57g"]
 
 [ext_resource type="Script" path="res://scripts/fof/map_nodes/elite_fight_node.gd" id="1_dtgjl"]
 [ext_resource type="Script" path="res://scripts/fof_info/map_nodes/map_node_info.gd" id="1_khcca"]
 [ext_resource type="Texture2D" uid="uid://day1j1s6v0llu" path="res://assets/sprites/game/map/elite_fight.png" id="2_23gse"]
 [ext_resource type="PackedScene" uid="uid://1fb76cqvr1y1" path="res://assets/models/fof/map_nodes/elite_fight_node.glb" id="2_n7rm7"]
+[ext_resource type="Script" path="res://scripts/saved_data/map_nodes/saved_data_map_node_elite_fight.gd" id="4_62asq"]
 
 [resource]
 script = ExtResource("1_khcca")
@@ -16,3 +17,4 @@ legend_order = 5
 id = 4
 name = "Elite Fight"
 gdscript = ExtResource("1_dtgjl")
+saved_data = ExtResource("4_62asq")

@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="MapNodeInfo" load_steps=5 format=3 uid="uid://bkmvfywnyo1gv"]
+[gd_resource type="Resource" script_class="MapNodeInfo" load_steps=6 format=3 uid="uid://bkmvfywnyo1gv"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/map_nodes/map_node_info.gd" id="1_2sq5v"]
 [ext_resource type="Script" path="res://scripts/fof/map_nodes/elite_chief_fight_node.gd" id="1_fn1v0"]
 [ext_resource type="PackedScene" uid="uid://sdd3hyteri6m" path="res://assets/models/fof/map_nodes/elite_chief_fight_node.glb" id="2_r0i32"]
 [ext_resource type="Texture2D" uid="uid://d11g45e22t3s4" path="res://assets/sprites/game/map/elite_chief_fight.png" id="2_s4qlx"]
+[ext_resource type="Script" path="res://scripts/saved_data/map_nodes/saved_data_map_node_elite_chief_fight.gd" id="4_d2i38"]
 
 [resource]
 script = ExtResource("1_2sq5v")
@@ -16,3 +17,4 @@ legend_order = 7
 id = 6
 name = "Elite Chief Fight"
 gdscript = ExtResource("1_fn1v0")
+saved_data = ExtResource("4_d2i38")

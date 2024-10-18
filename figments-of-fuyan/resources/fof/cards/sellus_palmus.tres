@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=9 format=3 uid="uid://bsjdkploqaje5"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=10 format=3 uid="uid://bsjdkploqaje5"]
 
 [ext_resource type="Image" uid="uid://dwaxgobdb2kxy" path="res://assets/sprites/game/cards/art_pop/sellus_palmus.png" id="2_3b8rb"]
 [ext_resource type="Image" uid="uid://csv1wpnctbpvq" path="res://assets/sprites/game/cards/art_mini/sellus_palmus.png" id="2_6vb1n"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_1mo6m"]
 [ext_resource type="PackedScene" uid="uid://xgamssjyk4yp" path="res://assets/models/fof/cards/sellus_palmus.glb" id="3_aih6y"]
 [ext_resource type="Script" path="res://scripts/fof/cards/sellus_palmus.gd" id="3_av7uo"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_aawy5"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_njt8i"]
 size = Vector3(0.732422, 1.78247, 0.238831)
@@ -51,3 +52,4 @@ ascended_ability_text = "MOBILE; ABILITY [2]: Heal [1] HP to adjacent allies"
 id = 7
 name = "Sellus Palmus"
 gdscript = ExtResource("3_av7uo")
+saved_data = ExtResource("6_aawy5")

@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="MapNodeInfo" load_steps=5 format=3 uid="uid://dlwsy5weweapm"]
+[gd_resource type="Resource" script_class="MapNodeInfo" load_steps=6 format=3 uid="uid://dlwsy5weweapm"]
 
 [ext_resource type="Script" path="res://scripts/fof/map_nodes/encounter_node.gd" id="1_c17um"]
 [ext_resource type="Script" path="res://scripts/fof_info/map_nodes/map_node_info.gd" id="1_y36ia"]
 [ext_resource type="PackedScene" uid="uid://dqlurjtxoifoe" path="res://assets/models/fof/map_nodes/encounter_node.glb" id="2_c73bo"]
 [ext_resource type="Texture2D" uid="uid://cvgp1be2j2ir" path="res://assets/sprites/game/map/encounter.png" id="2_lc3lc"]
+[ext_resource type="Script" path="res://scripts/saved_data/map_nodes/saved_data_map_node.gd" id="4_nspj1"]
 
 [resource]
 script = ExtResource("1_y36ia")
@@ -16,3 +17,4 @@ legend_order = 3
 id = 7
 name = "Encounter"
 gdscript = ExtResource("1_c17um")
+saved_data = ExtResource("4_nspj1")

@@ -5,3 +5,5 @@ class_name TraitInfo extends FofInfo
 @export var replace_model: PackedScene
 @export var replace_stat: Game.Stats
 @export_group("")
+
+@export_multiline var description: String

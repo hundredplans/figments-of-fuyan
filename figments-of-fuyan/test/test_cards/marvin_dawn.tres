@@ -1,7 +1,9 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=3 format=3 uid="uid://4cyt8ycof41"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=5 format=3 uid="uid://4cyt8ycof41"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="1_84mqr"]
 [ext_resource type="Image" uid="uid://deyxnadstr0jf" path="res://assets/sprites/game/cards/art_pop/Marvin Dawn.png" id="1_ko50s"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_p2hbr"]
+[ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="3_gc52a"]
 
 [resource]
 script = ExtResource("1_84mqr")
@@ -10,7 +12,7 @@ health = 5
 speed = 3
 energy = 6
 rarity = 7
-initial_traits = Array[int]([])
+initial_traits = Array[ExtResource("2_p2hbr")]([])
 ability_text = "RANGED [1-2]; RAMPAGE [4]: Deal [2] DMG to all enemies"
 flavor_text = ""
 art_mini_coordinate = Vector2i(0, 0)
@@ -23,7 +25,8 @@ plus_attack = 0
 plus_health = 0
 plus_speed = 0
 plus_energy = 0
-ascended_traits = Array[int]([])
+ascended_traits = Array[ExtResource("2_p2hbr")]([])
 ascended_ability_text = ""
-id = 0
+id = 524
 name = "Marvin Dawn"
+gdscript = ExtResource("3_gc52a")

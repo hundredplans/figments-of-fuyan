@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=5 format=3 uid="uid://lds6ovgbu67t"]
 
 [ext_resource type="Script" path="res://scripts/fof/objects/object.gd" id="1_ihps2"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/coconut_tree.glb" id="2_x5mqk"]
+[ext_resource type="PackedScene" uid="uid://rkjfqnikp5px" path="res://assets/models/fof/objects/coconut_tree.glb" id="2_x5mqk"]
 [ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="3_8ksgs"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="3_jmpn4"]
 
 [resource]
 script = ExtResource("3_8ksgs")
@@ -15,3 +16,4 @@ points = Array[Array]([[Vector3(0.0674333, 1.11662, 0.254421), Vector3(-0.283044
 id = 3
 name = "Coconut Tree"
 gdscript = ExtResource("1_ihps2")
+saved_data = ExtResource("3_jmpn4")

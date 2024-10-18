@@ -1,7 +1,7 @@
 extends Node3D
 
 signal camera_position_updated
-signal camera_updated
+signal create_camera_action
 signal zooming
 
 #region Exports
@@ -27,43 +27,37 @@ var CurrentCamera: Camera3D
 
 var camera_radius: float = 3
 var central_point: Vector3
-var ally_spectate_index: int
-var spawn_spectate_index: int
-var spectate_index: int
-var spectate_type: Game.SpectateTypes
+
 var total_progress: Vector2
 var action_lock: bool = false
+var last_freelook_rotation: Vector3
+
+var LastSpawnSpectateObject: SpawnGD # Not saved across sessions
+var LastAllySpectateObject: CardGD
+var LastEnemySpectateObject: CardGD
 #endregion
 
 #region Helpers
-func getCameraObjectArray() -> Array:
-	match spectate_type:
-		Game.SpectateTypes.ALLY: return Game.getAllyUnits()
-		Game.SpectateTypes.ENEMY: return Game.getEnemyUnits()
-		Game.SpectateTypes.SPAWN: return get_tree().get_nodes_in_group("AllySpawnsGD")
-	return []
+func isFreelook() -> bool:
+	return CurrentCamera == FreelookCamera
 #endregion
 
 #region Action Lock
 func setActionLock(_action_lock: bool) -> void:
 	action_lock = _action_lock
-	if CurrentCamera == FreelookCamera:
-		setCameraType(false)
+	if isFreelook(): setCameraType(false)
 #endregion
 		
 #region Base Functions
 func setInfo(level_camera_data: LevelCameraData) -> void:
 	if level_camera_data != null:
-		ally_spectate_index = level_camera_data.ally_spectate_index
-		spawn_spectate_index = level_camera_data.spawn_spectate_index
-		spectate_type = level_camera_data.spectate_type
 		total_progress = level_camera_data.total_progress
 		FreelookCamera.position = level_camera_data.freelook_posrot.pos
 		FreelookCamera.rotation = level_camera_data.freelook_posrot.rot
 		setCameraType(level_camera_data.is_in_freelook)
 		
-		if !level_camera_data.is_in_freelook: onResetSpectate()
-		
+		if !level_camera_data.is_in_freelook:
+			onCreateCameraChangeAction(getGameObjectFromCoords(level_camera_data.coords))
 		
 func _input(event: InputEvent) -> void:
 	if CurrentCamera == LevelCamera:
@@ -77,19 +71,24 @@ func _input(event: InputEvent) -> void:
 			if Input.is_action_just_pressed("ChangeCameraLeft"): onChangeCameraInDirection(-1)
 			elif Input.is_action_just_pressed("ChangeCameraRight"): onChangeCameraInDirection(1)
 		
+func getGameObjectFromCoords(coords: Vector4i) -> GameObjectGD:
+	var Tile: TileGD = Game.getTile(coords)
+	var Card: CardGD = Game.getFieldCard(Tile)
+	if Card == null: return Tile.getSpawnTile()
+	return Card
 #endregion
 
 #region Spectate
-var SpectateObject: FofGD
-func onResetSpectate() -> void:
-	var camera_objects: Array = getCameraObjectArray()
-	if !camera_objects.is_empty():
-		if spectate_index >= camera_objects.size(): spectate_index = 0
-		var OldSpectateObject: Variant = SpectateObject
-		SpectateObject = camera_objects[spectate_index]
+var SpectateObject: GameObjectGD
+func onCameraChange(_SpectateObject: GameObjectGD) -> void:
+	SpectateObject = _SpectateObject
+	if SpectateObject != null:
+		setCameraType(false)
 		setCameraCentralPoint()
 		setCameraPointAlongCircle()
-		camera_updated.emit(SpectateObject, OldSpectateObject)
+
+func onCreateCameraChangeAction(NewSpectateObject: GameObjectGD) -> void:
+	create_camera_action.emit(NewSpectateObject)
 	
 func setCameraCentralPoint() -> void:
 	central_point = SpectateObject.position
@@ -119,12 +118,10 @@ func setCameraRadius(direction: int) -> void:
 
 #region Reseters
 func onSwapCameraType() -> void:
-	if CurrentCamera == LevelCamera: setCameraType(true)
-	else: setCameraType(false)
+	setCameraType(CurrentCamera == LevelCamera, true)
 
-func setCameraType(is_freelook: bool, override_action_lock: bool = false) -> void:
-	if (!action_lock or override_action_lock) and  \
-	(CurrentCamera == null or (is_freelook and CurrentCamera == LevelCamera) or (!is_freelook and CurrentCamera == FreelookCamera)):
+func setCameraType(is_freelook: bool, spectate_first_ally: bool = false) -> void:
+	if (CurrentCamera == null or (is_freelook and CurrentCamera == LevelCamera) or (!is_freelook and CurrentCamera == FreelookCamera)):
 		if CurrentCamera != null:
 			CurrentCamera.current = false
 			CurrentCamera.disable_freelook = true
@@ -135,83 +132,52 @@ func setCameraType(is_freelook: bool, override_action_lock: bool = false) -> voi
 		
 		FreelookCamera.disable_movement = CurrentCamera != FreelookCamera
 		
-		var OldSpectateObject: Variant = SpectateObject
-		if CurrentCamera == FreelookCamera: SpectateObject = null
-		camera_updated.emit(SpectateObject, OldSpectateObject)
-	
-func onSpectateSpawn() -> void:
-	if spectate_type != Game.SpectateTypes.SPAWN:
-		setCameraType(false, true)
-		spectate_type = Game.SpectateTypes.SPAWN
+		if is_freelook: FreelookCamera.rotation_degrees = last_freelook_rotation
+		else: last_freelook_rotation = FreelookCamera.rotation_degrees
 		
-		spectate_index = spawn_spectate_index
-		onValidateSpectateIndex()
-		onResetSpectate()
-		setSpectateIndex()
+		if is_freelook: onCreateCameraChangeAction(null)
+		elif spectate_first_ally: onSpectateAllies()
+		
+func onSpectateSpawn() -> void:
+	var _SpectateObject: GameObjectGD = LastSpawnSpectateObject
+	if _SpectateObject == null:
+		var spawns: Array = get_tree().get_nodes_in_group("AllySpawnsGD").filter(func(x: SpawnGD): return !x.isSpawnOccupied())
+		if !spawns.is_empty(): _SpectateObject = spawns[0]
 	
-func onSpectateCard(Card: CardGD) -> void:
-	setCameraType(false, true)
-	spectate_type = Game.SpectateTypes.ALLY if Card.isAlly() else Game.SpectateTypes.ENEMY
-	spectate_index = getCameraObjectArray().find(Card)
-	onResetSpectate()
-	setSpectateIndex()
+	onCreateCameraChangeAction(_SpectateObject)
 	
 func onSpectateAllies() -> void:
-	if spectate_type != Game.SpectateTypes.ALLY:
-		setCameraType(false, true)
-		spectate_index = ally_spectate_index
-		spectate_type = Game.SpectateTypes.ALLY
-		onResetSpectate()
-		setSpectateIndex()
+	var _SpectateObject: GameObjectGD = LastAllySpectateObject
+	if _SpectateObject == null:
+		var allies: Array = Game.getAllyUnits()
+		if !allies.is_empty(): _SpectateObject = allies[0]
+	
+	onCreateCameraChangeAction(_SpectateObject)
 	
 func onChangeCameraInDirection(direction: int) -> void:
-	if !action_lock:
+	if !action_lock and SpectateObject != null:
 		var arr: Array = getCameraObjectArray()
-		spectate_index = getSpectateIndex()
+		var spectate_index: int = arr.find(SpectateObject)
+		
 		if spectate_index + direction == arr.size(): spectate_index = 0
 		elif spectate_index + direction < 0: spectate_index = arr.size() - 1
 		else: spectate_index += direction
 		
-		onValidateSpectateIndex(arr, direction)
-		onResetSpectate()
-		setSpectateIndex()
+		onCreateCameraChangeAction(arr[spectate_index])
 		
-#endregion
-	
-#region Spectate Index
-func getSpectateIndex() -> int:
-	match spectate_type:
-		Game.SpectateTypes.SPAWN: return spawn_spectate_index
-		Game.SpectateTypes.ALLY: return ally_spectate_index
-		_: return spectate_index
-
-func setSpectateIndex() -> void:
-	match spectate_type:
-		Game.SpectateTypes.SPAWN: spawn_spectate_index = spectate_index
-		Game.SpectateTypes.ALLY: ally_spectate_index = spectate_index
-
-func onValidateSpectateIndex(arr: Array = getCameraObjectArray(), direction: int = 1) -> void:
-	match spectate_type:
-		Game.SpectateTypes.SPAWN: arr = arr.map(func(x: SpawnGD): return null if x.isSpawnOccupied() else x)
-		Game.SpectateTypes.ALLY, Game.SpectateTypes.ENEMY: arr = arr.map(func(x: CardGD): return null if !x.level_visible else x)
-		
-	while (arr[spectate_index] == null):
-		if spectate_index + direction == arr.size(): spectate_index = 0
-		elif spectate_index + direction < 0: spectate_index = arr.size() - 1
-		else: spectate_index += direction
+func getCameraObjectArray() -> Array:
+	if SpectateObject != null:
+		if SpectateObject is SpawnGD: return get_tree().get_nodes_in_group("AllySpawnsGD").filter(func(x: SpawnGD): return !x.isSpawnOccupied())
+		elif SpectateObject.isAlly(): return Game.getAllyUnits()
+		else: return Game.getEnemyUnits().filter(func(x: CardGD): return x.level_visible)
+	return []
 #endregion
 	
 #region Save
 func setCameraSaveables(level: LevelGD) -> void:
 	level.level_camera_data = LevelCameraData.new(\
-		spectate_type, ally_spectate_index, spawn_spectate_index, CurrentCamera == FreelookCamera,\
+		SpectateObject.getCoords() if SpectateObject != null else Vector4i(0, 0, 0, -1), isFreelook(),\
 		PosRot.new(FreelookCamera.position, FreelookCamera.rotation), total_progress, camera_radius)
-#endregion
-
-#region Spectate Object
-func getCardSpectateObject() -> CardGD:
-	if SpectateObject != null and SpectateObject is CardGD: return SpectateObject
-	return null
 #endregion
 
 #region Tracking

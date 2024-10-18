@@ -10,11 +10,11 @@ func onFofInit() -> void:
 		return map_location.progress >= x.progress_min and map_location.progress <= x.progress_max)
 		
 	level_info = levels.pick_random()
-
-	for i in range(level_info.enemy_max_spawn_amount):
-		var value: int = area.card_ids.pick_random() if i < level_info.enemy_spawn_amount else 0
-		spawn_ids.append(value)
-		
+	var spawns: Array = level_info.data.filter(func(x: SavedDataTileObject): return x is SavedDataSpawn and x.spawn_id == 0 and x.variation == 1)
+	
+	var enemy_spawn_amount: int = max(randi_range(level_info.enemy_min_spawn_amount, level_info.enemy_max_spawn_amount), spawns.size() - 1)
+	for i in range(enemy_spawn_amount):
+		spawn_ids.append(area.card_ids.pick_random())
 	spawn_ids.shuffle()
 	
 func onSave() -> SavedDataMapNode:

@@ -10,3 +10,6 @@ func onLoadData(data: SavedData) -> void:
 
 func getIcon() -> Texture2D:
 	return info.icon
+
+func getDescription() -> String:
+	return info.description

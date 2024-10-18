@@ -121,3 +121,15 @@ func setOccupiedTiles(tile_position_to_tile: Dictionary) -> void:
 	for Tile in occupied_tiles:
 		Tile.setOccupiedObject(self)
 #endregion
+
+#region Vision
+func getVisibleGroup() -> Array:
+	var visible_group: Array = [self]
+	for Tile in occupied_tiles:
+		visible_group.append(Tile)
+		
+		var Card: CardGD = Game.getFieldCard(Tile)
+		if Card != null: visible_group.append(Card)
+	return visible_group
+		
+#endregion

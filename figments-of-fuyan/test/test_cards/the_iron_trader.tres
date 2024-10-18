@@ -1,16 +1,18 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=3 format=3 uid="uid://capu8dlppwplt"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=5 format=3 uid="uid://capu8dlppwplt"]
 
 [ext_resource type="Image" uid="uid://dw2mipxbagv2f" path="res://assets/sprites/game/cards/art_pop/Iron Trader.png" id="1_b8g7r"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="1_umwdq"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_j7osm"]
+[ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="3_n86sn"]
 
 [resource]
 script = ExtResource("1_umwdq")
-attack = 4
-health = 1
-speed = 5
-energy = 2
+attack = 1
+health = 4
+speed = 2
+energy = 5
 rarity = 6
-initial_traits = Array[int]([])
+initial_traits = Array[ExtResource("2_j7osm")]([])
 ability_text = "ABILITY [3]: Spend 5 SH to give an ally in vision +1 ATT / +1 HP or 20 SH +1 HP +1 ATT +1 SPD"
 flavor_text = ""
 art_mini_coordinate = Vector2i(0, 0)
@@ -23,7 +25,8 @@ plus_attack = 0
 plus_health = 0
 plus_speed = 0
 plus_energy = 0
-ascended_traits = Array[int]([])
+ascended_traits = Array[ExtResource("2_j7osm")]([])
 ascended_ability_text = ""
-id = 0
+id = 521
 name = "The Iron Trader"
+gdscript = ExtResource("3_n86sn")

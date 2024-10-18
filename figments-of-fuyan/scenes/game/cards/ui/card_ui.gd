@@ -15,6 +15,19 @@ signal pressed
 @onready var TextLabel: FancyTextLabel = %TextLabel
 @onready var ToolControl: Control = %ToolControl
 @onready var OutlineMask: TextureRect = %OutlineMask
+
+@onready var BuffControlAttack: Control = %BuffControlAttack
+@onready var BuffLabelAttack: Label = %BuffLabelAttack
+@onready var BuffLabelAttackSign: Label = %BuffLabelAttackSign
+
+@onready var BuffControlHealth: Control = %BuffControlHealth
+@onready var BuffLabelHealth: Label = %BuffLabelHealth
+@onready var BuffLabelHealthSign: Label = %BuffLabelHealthSign
+
+@onready var BuffControlSpeed: Control = %BuffControlSpeed
+@onready var BuffLabelSpeed: Label = %BuffLabelSpeed
+@onready var BuffLabelSpeedSign: Label = %BuffLabelSpeedSign
+
 #endregion
 #region Exports
 @export var white_outline_canvas: ShaderMaterial
@@ -71,3 +84,22 @@ func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("InspectCard") and is_mouse_in_ui:
 		Card.onInspectCard()
 		
+func setBuffLabels() -> void:
+	var attack_diff: int = Card.attack - Card.info.attack
+	var health_diff: int = Card.health - Card.max_health
+	var speed_diff: int = Card.max_speed - Card.info.speed
+	
+	if attack_diff != 0:
+		BuffControlAttack.visible = true
+		BuffLabelAttack.text = str(abs(attack_diff))
+		BuffLabelAttackSign.text = "+" if attack_diff > 0 else "-"
+		
+	if health_diff != 0:
+		BuffControlHealth.visible = true
+		BuffLabelHealth.text = str(abs(health_diff))
+		BuffLabelHealthSign.text = "+" if health_diff > 0 else "-"
+		
+	if speed_diff != 0:
+		BuffControlSpeed.visible = true
+		BuffLabelSpeed.text = str(abs(speed_diff))
+		BuffLabelSpeedSign.text = "+" if speed_diff > 0 else "-"

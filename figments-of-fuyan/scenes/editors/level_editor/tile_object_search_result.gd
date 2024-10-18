@@ -6,8 +6,7 @@ var data: SavedData
 var info: TileObjectInfo
 func setInfo(_info: TileObjectInfo) -> void:
 	info = _info
-	@warning_ignore("incompatible_ternary")
-	data = SavedDataTile.new(info.id) if info is TileInfo else SavedDataObject.new(info.id)
+	data = info.saved_data.new(info.id)
 	text = _info.name
 
 func _on_pressed():

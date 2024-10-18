@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="TileInfo" load_steps=6 format=3]
+[gd_resource type="Resource" script_class="TileInfo" load_steps=7 format=3 uid="uid://dvk74bqrcp64a"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/game_objects/tile_info.gd" id="1_7t5e0"]
 [ext_resource type="Script" path="res://scripts/fof/tiles/tile.gd" id="1_ni2kb"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/tiles/beach_tile.glb" id="2_185ps"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/tiles/beach_tile_stair.glb" id="3_1cthl"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/tiles/palm_tile_fill.glb" id="5_kr7rb"]
+[ext_resource type="PackedScene" uid="uid://db4bg8wt1fmb1" path="res://assets/models/fof/tiles/beach_tile.glb" id="2_185ps"]
+[ext_resource type="PackedScene" uid="uid://c7fygn7edse2q" path="res://assets/models/fof/tiles/beach_tile_stair.glb" id="3_1cthl"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="4_kc3jn"]
+[ext_resource type="PackedScene" uid="uid://bb6rd8ea31ga" path="res://assets/models/fof/tiles/palm_tile_fill.glb" id="5_kr7rb"]
 
 [resource]
 script = ExtResource("1_7t5e0")
@@ -14,3 +15,4 @@ points = Array[Array]([[], []])
 id = 4
 name = "Beach Tile"
 gdscript = ExtResource("1_ni2kb")
+saved_data = ExtResource("4_kc3jn")

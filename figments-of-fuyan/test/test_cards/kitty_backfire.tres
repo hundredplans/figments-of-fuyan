@@ -1,7 +1,9 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=3 format=3 uid="uid://dg4nl1660n5w1"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=5 format=3 uid="uid://dg4nl1660n5w1"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="1_3fdpx"]
-[ext_resource type="Image" uid="uid://c2g35x20orkj6" path="res://assets/sprites/game/cards/art_pop/Kitty Backfire.png" id="1_yc4ep"]
+[ext_resource type="Image" uid="uid://c2g35x20orkj6" path="res://assets/sprites/game/cards/art_pop/kitty_backfire.png" id="1_yc4ep"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_d4d43"]
+[ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="3_0apnn"]
 
 [resource]
 script = ExtResource("1_3fdpx")
@@ -10,7 +12,7 @@ health = 2
 speed = 2
 energy = 2
 rarity = 3
-initial_traits = Array[int]([])
+initial_traits = Array[ExtResource("2_d4d43")]([])
 ability_text = "RANGED [1-2]; On Hit: KNOCKBACK [2] this"
 flavor_text = ""
 art_mini_coordinate = Vector2i(0, 0)
@@ -23,7 +25,8 @@ plus_attack = 0
 plus_health = 0
 plus_speed = 0
 plus_energy = 0
-ascended_traits = Array[int]([])
+ascended_traits = Array[ExtResource("2_d4d43")]([])
 ascended_ability_text = ""
-id = 0
+id = 502
 name = "Kitty Backfire"
+gdscript = ExtResource("3_0apnn")

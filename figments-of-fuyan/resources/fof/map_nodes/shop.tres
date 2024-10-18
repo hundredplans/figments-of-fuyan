@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="MapNodeInfo" load_steps=5 format=3 uid="uid://c2odit6usmpey"]
+[gd_resource type="Resource" script_class="MapNodeInfo" load_steps=6 format=3 uid="uid://c2odit6usmpey"]
 
 [ext_resource type="Script" path="res://scripts/fof/map_nodes/shop_node.gd" id="1_8v87d"]
 [ext_resource type="Script" path="res://scripts/fof_info/map_nodes/map_node_info.gd" id="1_fdpsf"]
 [ext_resource type="PackedScene" uid="uid://bbhu33eque7at" path="res://assets/models/fof/map_nodes/shop_node.glb" id="2_jjrfs"]
 [ext_resource type="Texture2D" uid="uid://kcitn6i05q53" path="res://assets/sprites/game/map/shop.png" id="2_rou6g"]
+[ext_resource type="Script" path="res://scripts/saved_data/map_nodes/saved_data_map_node.gd" id="4_yrbvm"]
 
 [resource]
 script = ExtResource("1_fdpsf")
@@ -16,3 +17,4 @@ legend_order = 4
 id = 8
 name = "Shop"
 gdscript = ExtResource("1_8v87d")
+saved_data = ExtResource("4_yrbvm")

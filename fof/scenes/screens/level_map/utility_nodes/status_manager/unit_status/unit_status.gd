@@ -139,7 +139,7 @@ func onRemoveBuffNextTurn(stat: String) -> void:
 
 func onCreateHealNextTurn(color: Color) -> void:
 	var stat_node: TextureRect = Stats.get_node("Health/NextTurnStats/Heal")
-	stat_node.texture = preload("res://scenes/screens/level_ui/next_turn_buffs/up_heal.png")
+	#stat_node.texture = preload("res://scenes/screens/level_ui/next_turn_buffs/up_heal.png")
 	stat_node.modulate = color
 	stat_node.visible = true
 

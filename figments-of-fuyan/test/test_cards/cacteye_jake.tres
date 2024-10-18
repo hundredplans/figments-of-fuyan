@@ -1,7 +1,9 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=3 format=3 uid="uid://d0mtujepq5bh8"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=5 format=3 uid="uid://d0mtujepq5bh8"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="1_7mtqi"]
 [ext_resource type="Image" uid="uid://dngy47x47yq0h" path="res://assets/sprites/game/cards/art_pop/Cacteye Jake.png" id="1_gjgno"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_anyfq"]
+[ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="3_yftnm"]
 
 [resource]
 script = ExtResource("1_7mtqi")
@@ -10,7 +12,7 @@ health = 3
 speed = 2
 energy = 3
 rarity = 4
-initial_traits = Array[int]([])
+initial_traits = Array[ExtResource("2_anyfq")]([])
 ability_text = "RANGED [1-4]; On Hit: Mark an enemy; ABILITY [1]: WOUND all Marked enemies"
 flavor_text = ""
 art_mini_coordinate = Vector2i(0, 0)
@@ -23,7 +25,8 @@ plus_attack = 0
 plus_health = 0
 plus_speed = 0
 plus_energy = 0
-ascended_traits = Array[int]([])
+ascended_traits = Array[ExtResource("2_anyfq")]([])
 ascended_ability_text = ""
-id = 0
+id = 510
 name = "\"Cacteye\" Jake"
+gdscript = ExtResource("3_yftnm")

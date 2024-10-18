@@ -9,14 +9,15 @@ var level_camera_data: LevelCameraData
 var phase: Game.Phases
 var enemy_spawn_ids: Array
 
-signal card_finished_moving
-signal card_moving
+signal set_spectate_card
 signal energy_changed
 signal request_camera_data
 signal phase_changed
 signal draw_card
 signal remove_card
 signal awakened
+signal turn_state_changing
+signal camera_change_action
 
 #region Load / Save
 func onSave() -> SavedData:
@@ -39,7 +40,9 @@ func onLoadData(data: SavedData) -> void:
 	for tile_object_data in data.data:
 		var TileObject: TileObjectGD = SavedData.onLoadModel(tile_object_data, self)
 		TileObject.add_to_group("LevelTileObjectsGD")
-		if TileObject is TileGD: TileObject.add_to_group("LevelTilesGD")
+		TileObject.set_spectate_card.connect(func(x: TileObjectGD): set_spectate_card.emit(x))
+		
+		if TileObject is TileGD: TileObject.add_to_group("LevelTilesGD"); 
 		elif TileObject is ObjectGD: TileObject.add_to_group("LevelObjectsGD")
 			
 	for TileObject in get_tree().get_nodes_in_group("LevelTileObjectsGD"):
@@ -49,7 +52,10 @@ func onLoadData(data: SavedData) -> void:
 	for Card in get_tree().get_nodes_in_group("FieldCardsGD"):
 		Card.Tile = Game.getTile(Card.coords)
 		Card.onAwaken()
-	
+		Card.onLoadTraits()
+		Card.onLoadStatusEffects()
+		Card.setVisibleGameObjects()
+		
 	level_camera_data = data.level_camera_data
 	add_to_group("LevelsGD")
 
@@ -70,13 +76,17 @@ func onLoadActiveLevel(data: SavedDataLevel) -> void:
 		for Spawn in get_tree().get_nodes_in_group("AllySpawnsGD"):
 			onPushAction(RevealAction.new(Spawn))
 		
-		var spawns: Array = get_tree().get_nodes_in_group("EnemySpawnsGD")
-		for i in range(enemy_spawn_ids.size()):
-			if enemy_spawn_ids[i] > 0:
-				var Card: CardGD = SavedData.onLoadModel(SavedDataCard.new(enemy_spawn_ids[i], true, 0, Vector4i.ZERO, 0, false, false, 1), self)
-				onPushAction(AwakenAction.new(Card, spawns[i].getTile()))
+		var spawns: Array = get_tree().get_nodes_in_group("EnemySpawnsGD").filter(func(x: SpawnGD): return x.spawn_id == 0)
+		for i in range(spawns.size()):
+			var Spawn: SpawnGD = spawns[i]
+			var Card: CardGD = SavedData.onLoadModel(SavedDataCard.new(enemy_spawn_ids[i], true, 0, Vector4i.ZERO, Spawn.tile_rotation, false, false, 1), self)
+			onPushAction(AwakenAction.new(Card, Spawn.getTile()))
 				
-		onPushAction(LevelVisibleAction.new(false, get_tree().get_nodes_in_group("LevelTileObjectsGD") + get_tree().get_nodes_in_group("FieldCardsGD"), false))
+		for Spawn in get_tree().get_nodes_in_group("NeutralSpawnsGD").filter(func(x: SpawnGD): return x.spawn_id > 0):
+			var Card: CardGD = SavedData.onLoadModel(SavedDataCard.new(Spawn.spawn_id, true, 0, Vector4i.ZERO, Spawn.tile_rotation, false, false, 2), self)
+			onPushAction(AwakenAction.new(Card, Spawn.getTile()))
+				
+		onPushAction(LevelVisibleAction.new(null, false, get_tree().get_nodes_in_group("LevelTileObjectsGD") + get_tree().get_nodes_in_group("FieldCardsGD")))
 		return
 		
 	onChangePhase(data.phase, true)
@@ -113,11 +123,9 @@ func onChangePhase(_phase: Game.Phases, instant: bool = false) -> void:
 	phase_changed.emit(phase, instant)
 	
 	match phase:
-		Game.Phases.AI:
-			onAppendAction(ChangePhaseAction.new(Game.Phases.NEUTRAL))
-		Game.Phases.NEUTRAL:
-			onAppendAction(ChangePhaseAction.new(Game.Phases.HAND))
-	
+		Game.Phases.AI: onAppendAction(AITurnStartAction.new(1))
+		Game.Phases.NEUTRAL: onAppendAction(AITurnStartAction.new(2))
+			
 	
 func setAlliesTurnState(turn_state: Game.TurnStates) -> void:
 	for Card in Game.getAllyUnits():
@@ -141,13 +149,15 @@ func onProcessAction(action: Action) -> void:
 			energy += action.energy
 			energy_changed.emit(energy)
 			onCheckSkipHandPhase()
-		elif action is MovementAction:
-			card_moving.emit(action.Card)
-		elif action is MovementFinishAction:
-			card_finished_moving.emit(action.Card)
+		elif action is ChangeTurnStateAction:
+			turn_state_changing.emit(action.Card)
+		elif action is CameraChangeAction:
+			onCameraChange(action)
 	else:
 		if action is ChangePhaseAction:
 			if action.phase == phase: action.failed = true
+		elif action is CameraChangeAction:
+			if getSpectateObject() == action.SpectateObject: action.failed = true
 #endregion
 
 #region Hand
@@ -176,8 +186,42 @@ func onPassTurn() -> void:
 	var new_phase: Game.Phases
 	match phase:
 		Game.Phases.HAND: new_phase = Game.Phases.PLAYER
-		Game.Phases.PLAYER: new_phase = Game.Phases.AI
+		Game.Phases.PLAYER:
+			var ally_units: Array = Game.getAllyUnits(0)
+			var Card: CardGD = getAllySpectateObject()
+			#for AllyCard in ally_units:
+				#if AllyCard.turn_state == Game.TurnStates.ACTIVE and Card == AllyCard:
+					#onPushAction(ChangeTurnStateAction.new(AllyCard, Game.TurnStates.PASSED))
+					#if !ally_units.all(func(x: CardGD): return x.turn_state == Game.TurnStates.PASSED):
+						#return
+		
+			if Card != null and Card.turn_state != Game.TurnStates.PASSED:
+				onPushAction(ChangeTurnStateAction.new(Card, Game.TurnStates.PASSED))
+				if !ally_units.all(func(x: CardGD): return x.turn_state == Game.TurnStates.PASSED):
+					return
+				
+			new_phase = Game.Phases.AI
 		_: new_phase = Game.Phases.NULL
 		
 	if new_phase != Game.Phases.NULL:
 		onAppendAction(ChangePhaseAction.new(new_phase))
+#endregion
+
+#region SpectateCard
+func setTileObjectSpectateCard(TileObject: TileObjectGD, SpectateCard: CardGD) -> void:
+	TileObject.SpectateCard = SpectateCard
+#endregion
+
+#region Camera
+var SpectateObject: GameObjectGD
+func getSpectateObject() -> GameObjectGD:
+	return SpectateObject
+	
+func getAllySpectateObject() -> CardGD:
+	if SpectateObject != null and SpectateObject is CardGD and SpectateObject.isAlly(0): return SpectateObject
+	return null
+	
+func onCameraChange(action: CameraChangeAction) -> void:
+	camera_change_action.emit(action.SpectateObject, getSpectateObject())
+	SpectateObject = action.SpectateObject
+#endregion

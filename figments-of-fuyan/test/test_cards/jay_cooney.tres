@@ -1,7 +1,9 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=3 format=3 uid="uid://dybm2bbcbxq4d"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=5 format=3 uid="uid://dybm2bbcbxq4d"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="1_875pk"]
 [ext_resource type="Image" uid="uid://dbty0ttijpb5l" path="res://assets/sprites/game/cards/art_pop/Jay Cooney.png" id="1_l2ftl"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_4q51j"]
+[ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="3_i7mbq"]
 
 [resource]
 script = ExtResource("1_875pk")
@@ -10,7 +12,7 @@ health = 1
 speed = 2
 energy = 1
 rarity = 3
-initial_traits = Array[int]([])
+initial_traits = Array[ExtResource("2_4q51j")]([])
 ability_text = "ABILITY [1]: STUN a DUELLING enemy in vision"
 flavor_text = ""
 art_mini_coordinate = Vector2i(0, 0)
@@ -23,7 +25,8 @@ plus_attack = 0
 plus_health = 0
 plus_speed = 0
 plus_energy = 0
-ascended_traits = Array[int]([])
+ascended_traits = Array[ExtResource("2_4q51j")]([])
 ascended_ability_text = ""
-id = 0
+id = 500
 name = "Jay Cooney"
+gdscript = ExtResource("3_i7mbq")

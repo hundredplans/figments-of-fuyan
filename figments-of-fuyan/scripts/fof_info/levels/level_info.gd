@@ -7,7 +7,7 @@ class_name LevelInfo extends FofInfo
 
 @export_group("Manual")
 @export var trinket_amount: int 
-@export var enemy_spawn_amount: int
+@export var enemy_min_spawn_amount: int
 @export var enemy_max_spawn_amount: int
 @export var ally_spawn_amount: int
 @export var progress_min: int
@@ -30,6 +30,6 @@ static func getDataFromType(type: GDScript) -> GDScript:
 
 func setSpawnPropertiesAutoValues(tile_objects: Array) -> void:
 	ally_spawn_amount  = tile_objects.filter(func(x: TileObjectGD): return x.isIDVariation(2, 0)).size()
-	enemy_spawn_amount = tile_objects.filter(func(x: TileObjectGD): return x.isIDVariation(2, 1)).size()
-	enemy_max_spawn_amount = enemy_spawn_amount
+	enemy_min_spawn_amount = tile_objects.filter(func(x: TileObjectGD): return x.isIDVariation(2, 1)).size()
+	enemy_max_spawn_amount = enemy_max_spawn_amount
 	trinket_amount = tile_objects.filter(func(x: TileObjectGD): return x.isIDVariation(2, 3)).size()

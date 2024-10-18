@@ -1,5 +1,6 @@
 extends Control
 
+
 #region Onready
 @onready var HandBoxArea: Area2D = %HandBoxArea
 @onready var HandPanel: PanelContainer = %HandPanel
@@ -14,6 +15,7 @@ extends Control
 @onready var AbilityNameLabel: Label = %AbilityNameLabel
 
 @onready var BackgroundDimmer: ColorRect = %BackgroundDimmer
+@onready var PassButton: Button = %PassButton
 #endregion
 
 #region Globals
@@ -22,6 +24,7 @@ signal camera_button_pressed
 signal action_lock
 signal card_selected
 signal camera_direction_changed
+signal vision_mode_changed
 var save_file: SaveFileGD
 var level: LevelGD
 var area: AreaGD
@@ -46,9 +49,10 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level.phase_changed.connect(onPhaseChanged)
 	level.remove_card.connect(onRemoveCardUI)
 	level.energy_changed.connect(onUpdateEnergy)
+	level.turn_state_changing.connect(onTurnStateChanging)
 	save_file.update_shillings.connect(onUpdateShillings)
 	
-	World.camera_updated.connect(onCameraUpdated)
+	level.camera_change_action.connect(onCameraUpdated)
 	
 	HandBox.setInfo(HandPanelAnimationPlayer, HandBoxArea)
 	ArtMiniRect.texture = save_file.getChampionCard().info.getArtMini()
@@ -62,8 +66,15 @@ func setInfo(_save_file: SaveFileGD) -> void:
 
 #region Action Lock / Mouse In UI
 var is_action_playing: bool
-func onUpdateActionLock() -> void:
-	action_lock.emit(getActionLock())
+func onUpdateActionLock(previous_state: bool) -> void:
+	var state: bool = getActionLock()
+	if state != previous_state:
+		action_lock.emit(state)
+		get_tree().call_group("LevelTilesGD", "onUpdateActionLock", state)
+		for btn in get_tree().get_nodes_in_group("ActionLockDisabled"):
+			if btn == PassButton: btn.setActionLock(state)
+			elif btn is Button: btn.disabled = state
+			elif btn is HighlightTxButton: btn.setDisabled(state)
 
 func getActionLock() -> bool:
 	return is_action_playing
@@ -73,15 +84,17 @@ func onMouseInUI(state: bool) -> void:
 	mouse_signal.emit(mouse_in_ui)
 
 func onActionPlaying(state: bool) -> void:
+	var previous_state: bool = getActionLock()
 	is_action_playing = state
 	onChangeVisionMode(false)
-	onUpdateActionLock()
+	onUpdateActionLock(previous_state)
 #endregion
 
 #region Phase
 func onPhaseChanged(phase: Game.Phases, _instant: bool = false) -> void:
 	HandPanel.theme_type_variation = "BluePanelContainer" if phase == Game.Phases.START else "WhitePanelContainer"
 	PhaseIcon.setPhase(phase)
+	PassButton.setPhase(phase)
 	match phase:
 		Game.Phases.START, Game.Phases.HAND:
 			HandBox.onPin()
@@ -89,6 +102,7 @@ func onPhaseChanged(phase: Game.Phases, _instant: bool = false) -> void:
 		Game.Phases.PLAYER:
 			HandBox.onUnpin()
 			HandBox.onSelectableCards(false)
+			PassButton.setAllySpectating(level.getAllySpectateObject())
 #endregion
 
 #region Hand
@@ -133,9 +147,9 @@ func onCameraDirectionChanged(direction: int) -> void:
 func _on_camera_button_pressed() -> void:
 	camera_button_pressed.emit()
 	
-func onCameraUpdated(SpectateObject: Variant, _OldSpectateObject: Variant) -> void:
-	setHeroNameLabel(SpectateObject.info.name if SpectateObject is CardGD else "")
-		
+func onCameraUpdated(SpectateObject: GameObjectGD, __: GameObjectGD) -> void:
+	setHeroNameLabel(SpectateObject.info.name if (SpectateObject != null and SpectateObject is CardGD) else "")
+	PassButton.setAllySpectating(SpectateObject)
 #endregion
 
 #region Deck / Graveyard
@@ -149,6 +163,9 @@ func _on_graveyard_button_pressed() -> void:
 #region Pass Button
 func _on_pass_button_pressed() -> void:
 	level.onPassTurn()
+	
+func onTurnStateChanging(Card: CardGD) -> void:
+	PassButton.setIsAllyInactiveActive(Card)
 #endregion
 
 #region Hero + Ability Labels
@@ -176,9 +193,5 @@ func onChangeVisionMode(state: bool) -> void:
 	if state != in_vision_mode:
 		in_vision_mode = state
 		BackgroundDimmer.visible = state
-		
-		#for GameObject in get_tree().get_nodes_in_group("LevelTileObjectsGD") + get_tree().get_nodes_in_group("FieldCardsGD"):
-			#GameObject.setLevelVisible()
-		#get_tree().call_group("setLevelVisible", Game.getTeamVision())
-		#if !in_vision_mode:
+		vision_mode_changed.emit(state)
 #endregion

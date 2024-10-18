@@ -1,0 +1,34 @@
+[gd_scene load_steps=3 format=3 uid="uid://rvtclcchrvew"]
+
+[ext_resource type="Script" path="res://scenes/editors/level_editor/set_spawn_id_ui.gd" id="1_44uqw"]
+[ext_resource type="PackedScene" uid="uid://dxvuvb68hgxug" path="res://scenes/common/exit_button/exit_button.tscn" id="1_53mle"]
+
+[node name="SetSpawnIdUi" type="PanelContainer"]
+script = ExtResource("1_44uqw")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Set ID"
+
+[node name="SpawnIDEdit" type="LineEdit" parent="MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "ID"
+alignment = 1
+
+[node name="ExitButton" parent="MarginContainer/HBoxContainer" node_paths=PackedStringArray("exit_screen") instance=ExtResource("1_53mle")]
+layout_mode = 2
+exit_screen = NodePath("../../..")
+
+[connection signal="mouse_entered" from="." to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="." to="." method="onMouseInUI" binds= [false]]
+[connection signal="mouse_entered" from="MarginContainer/HBoxContainer/SpawnIDEdit" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="MarginContainer/HBoxContainer/SpawnIDEdit" to="." method="onMouseInUI" binds= [false]]
+[connection signal="text_changed" from="MarginContainer/HBoxContainer/SpawnIDEdit" to="." method="_on_spawn_id_edit_text_changed"]

@@ -1,12 +1,15 @@
-[gd_resource type="Resource" script_class="AreaInfo" load_steps=4 format=3 uid="uid://d3dk8q2ypeyvk"]
+[gd_resource type="Resource" script_class="AreaInfo" load_steps=5 format=3 uid="uid://d3dk8q2ypeyvk"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="1_2qyu2"]
 [ext_resource type="Image" uid="uid://bsuw2m5nhuq4d" path="res://assets/sprites/game/cards/common/art_background/skeleton_background.png" id="1_kovhy"]
 [ext_resource type="Script" path="res://scripts/fof_info/area_info.gd" id="2_ujv72"]
+[ext_resource type="Script" path="res://scripts/fof/areas/area.gd" id="2_yf10w"]
+[ext_resource type="Script" path="res://scripts/saved_data/saved_data_area.gd" id="3_fgeuo"]
 
 [resource]
 script = ExtResource("2_ujv72")
 card_background = ExtResource("1_kovhy")
-cards = Array[ExtResource("1_2qyu2")]([])
+card_ids = Array[int]([])
 id = 4
 name = "Ashbone Citadel"
+gdscript = ExtResource("2_yf10w")
+saved_data = ExtResource("3_fgeuo")

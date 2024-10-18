@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=5 format=3 uid="uid://bjcsit5d36yfe"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="1_fnihf"]
 [ext_resource type="Script" path="res://scripts/fof/objects/object.gd" id="1_kjpi4"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/palm_tree.glb" id="2_0d454"]
+[ext_resource type="PackedScene" uid="uid://2o8kb3dponwh" path="res://assets/models/fof/objects/palm_tree.glb" id="2_0d454"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="3_e23we"]
 
 [resource]
 script = ExtResource("1_fnihf")
@@ -15,3 +16,4 @@ points = Array[Array]([[]])
 id = 15
 name = "Palm Tree"
 gdscript = ExtResource("1_kjpi4")
+saved_data = ExtResource("3_e23we")

@@ -1,14 +1,20 @@
 class_name SpawnGD
 extends ObjectGD
 var loaded_in_level: bool = false
+var spawn_id: int
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
+	spawn_id = data.spawn_id
 	add_to_group("SpawnsGD")
 	match variation:
 		0: add_to_group("AllySpawnsGD")
 		1: add_to_group("EnemySpawnsGD")
 		2: add_to_group("NeutralSpawnsGD")
+
+func onSave() -> SavedDataSpawn:
+	return SavedDataSpawn.new(info.id, false, public_id, coords, tile_rotation, level_visible, is_revealed, variation, map_rotation, map_position, height,\
+	occupied_tiles.map(func(x: TileGD): return x.getCoords()), spawn_id)
 
 func onLoadDataLevel() -> void:
 	super()

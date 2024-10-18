@@ -9,18 +9,15 @@ func _init(_Card: CardGD = null, _DestinationTile: TileGD = null) -> void:
 	DestinationTile = _DestinationTile
 
 func onPreAction() -> void:
-	var is_attackable_on_path: bool =  DestinationTile.getMovementPathTiles().any(func(x: TileGD): return x != Card.Tile and Game.getFieldCard(x) != null)
+	var is_attackable_on_path: bool = DestinationTile.getMovementPathTiles().any(func(x: TileGD): return x != Card.Tile and Game.getFieldCard(x) != null)
 	if !Card.canAttack() and is_attackable_on_path: onFailAction()
-	
 
 func onPostAction() -> void:
-	Card.onWalk()
-	
 	Card.Tile.is_card_moving = true
 	Card.Tile.setOutlineMaterial()
 	
 	var tiles: Array = DestinationTile.getMovementPathTiles()
-	var actions: Array = []
+	var actions: Array = [CameraChangeAction.new(Card)]
 	
 	if Card.turn_state == Game.TurnStates.INACTIVE:
 		actions.append(ChangeTurnStateAction.new(Card, Game.TurnStates.ACTIVE))
@@ -38,3 +35,6 @@ func onPostAction() -> void:
 		
 	actions.append(MovementFinishAction.new(Card, tiles))
 	onAppendAction(actions)
+
+func getLogInfo() -> Array:
+	return ["Card: " + Card.info.name]

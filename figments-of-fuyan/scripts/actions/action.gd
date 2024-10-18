@@ -3,6 +3,7 @@ class_name Action extends Resource
 signal push_action
 signal append_action
 signal force_action
+signal remove_action
 
 var owner: Variant # FofGD or another action always
 @export var owner_public_id: int
@@ -13,6 +14,7 @@ func _init() -> void:
 	push_action.connect(Game.ActionManagerReference.onPushAction)
 	append_action.connect(Game.ActionManagerReference.onAppendAction)
 	force_action.connect(Game.ActionManagerReference.onForceAction)
+	remove_action.connect(Game.ActionManagerReference.onRemoveAction)
 	Game.ActionManagerReference.process_action.connect(onProcessAction)
 
 #region Fillers
@@ -30,6 +32,9 @@ func onPushAction(actions: Variant, action_owner: Variant = self) -> void:
 	for action in actions:
 		action.owner = action_owner
 		push_action.emit(action)
+		
+func onRemoveAction(filter_method: Callable) -> void:
+	remove_action.emit(filter_method)
 	
 func onAppendAction(actions: Variant, action_owner: Variant = self) -> void:
 	if actions is Action: actions = [actions]
@@ -46,3 +51,6 @@ func onSave() -> void:
 
 func onLoad() -> void:
 	owner = Game.onFindPublicIDObject(owner_public_id)
+	
+func getLogInfo() -> Array:
+	return []

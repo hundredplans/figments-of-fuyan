@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="TraitInfo" load_steps=5 format=3 uid="uid://bfbjgtcsedrrs"]
+
+[ext_resource type="Script" path="res://scripts/fof/traits/trait.gd" id="1_h1cqu"]
+[ext_resource type="Script" path="res://scripts/fof_info/traits/trait_info.gd" id="1_nf130"]
+[ext_resource type="Texture2D" uid="uid://d32vw5ss0l81d" path="res://assets/sprites/game/fof_object_icons/traits/Hostile.png" id="2_hwaq3"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_sicas"]
+
+[resource]
+script = ExtResource("1_nf130")
+icon = ExtResource("2_hwaq3")
+replace_stat = 0
+description = "This is likely to attack nearby units"
+id = 6
+name = "Hostile"
+gdscript = ExtResource("1_h1cqu")
+saved_data = ExtResource("2_sicas")

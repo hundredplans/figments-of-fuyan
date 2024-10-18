@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="MapEffectInfo" load_steps=3 format=3 uid="uid://c85nkd6c515g3"]
+[gd_resource type="Resource" script_class="MapEffectInfo" load_steps=4 format=3 uid="uid://c85nkd6c515g3"]
 
 [ext_resource type="Script" path="res://scripts/fof/map_effects/gain_fof_object.gd" id="1_faetp"]
 [ext_resource type="Script" path="res://scripts/fof_info/map_effects/map_effect_info.gd" id="1_t720c"]
+[ext_resource type="Script" path="res://scripts/saved_data/map_effects/saved_data_map_effect_gain_fof_object.gd" id="2_2udcq"]
 
 [resource]
 script = ExtResource("1_t720c")
@@ -9,3 +10,4 @@ description = "Gain a [X] [Y]"
 id = 1
 name = "GainFofObject"
 gdscript = ExtResource("1_faetp")
+saved_data = ExtResource("2_2udcq")

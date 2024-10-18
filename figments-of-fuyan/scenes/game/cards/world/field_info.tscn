@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=3 uid="uid://ct6euhy8orf2m"]
+[gd_scene load_steps=50 format=3 uid="uid://ct6euhy8orf2m"]
 
 [ext_resource type="Script" path="res://scenes/game/cards/world/field_info.gd" id="1_doj6w"]
 [ext_resource type="PackedScene" uid="uid://b7aqntno6susb" path="res://assets/models/general/numbers/stat_numbers/zero.glb" id="2_emwqa"]
@@ -47,6 +47,8 @@
 [ext_resource type="Texture2D" uid="uid://cyypgr821ykya" path="res://assets/sprites/game/fof_object_icons/status_effects/delayed_stat/up1.png" id="39_y8ii6"]
 [ext_resource type="Texture2D" uid="uid://d2uo58hiywsw8" path="res://assets/sprites/game/fof_object_icons/status_effects/delayed_stat/up2.png" id="40_y70rl"]
 [ext_resource type="Texture2D" uid="uid://cqx55eb3klkcq" path="res://assets/sprites/game/fof_object_icons/status_effects/delayed_stat/up3.png" id="41_cx6x4"]
+[ext_resource type="Script" path="res://scripts/fof/traits/extra/trait_combination_datastore.gd" id="43_1ekr7"]
+[ext_resource type="Resource" uid="uid://024pkvrpmwgy" path="res://resources/datastore/traits/resist_armor.tres" id="44_bxsc6"]
 
 [node name="FieldInfo" type="Node3D"]
 script = ExtResource("1_doj6w")
@@ -74,6 +76,7 @@ up_one = ExtResource("39_y8ii6")
 up_two = ExtResource("40_y70rl")
 up_three = ExtResource("41_cx6x4")
 FofObjectIconPacked = ExtResource("33_haxel")
+trait_combinations = Array[ExtResource("43_1ekr7")]([ExtResource("44_bxsc6")])
 
 [node name="FloatingStats" type="Node3D" parent="."]
 unique_name_in_owner = true

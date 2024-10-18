@@ -22,17 +22,20 @@ func _ready() -> void:
 	
 	for card_info in Helper.getFofInfoArray(CardInfo):
 		var Card: CardGD = SavedData.onLoadModel(SavedDataCard.new(card_info.id), World)
-		Card.onCreateModel()
-		Card.onIdle()
+		
+		if Card.info.model != null:
+			Card.onCreateModel()
+			Card.onIdle()
+			
+			for ani_name in Card.AniPlayer.get_animation_list():
+				unique_animation_names[ani_name] = true
+				
+			Card.position = Vector3(start_x, 0, start_z)
+			start_x += OFFSET
+			if start_x == -START_X: start_z += OFFSET; start_x = START_X
 		
 		onCreateDeckCardUI(Card)
 		
-		for ani_name in Card.AniPlayer.get_animation_list():
-			unique_animation_names[ani_name] = true
-		
-		Card.position = Vector3(start_x, 0, start_z)
-		start_x += OFFSET
-		if start_x == -START_X: start_z += OFFSET; start_x = START_X
 
 	#for file in DirAccess.get_files_at(MODEL_EMPTY_PATH):
 		#var card_info: CardInfo = load(MODEL_EMPTY_PATH + file)

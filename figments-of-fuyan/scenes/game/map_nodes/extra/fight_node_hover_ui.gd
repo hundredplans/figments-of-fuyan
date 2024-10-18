@@ -10,7 +10,7 @@ func setInfo(map_node: MapNodeGD, area: AreaGD) -> void:
 	var level_info: LevelInfo = Helper.getFofInfoID(LevelInfo, map_node.level_info.id)
 	LevelLabel.text = str(area.getWorld()) + "-" + str(map_node.map_location.progress) + ": " + str(level_info.name)
 	
-	var valid_spawns: Array = map_node.spawn_ids.filter(func(x: int): return x > 0)
+	var valid_spawns: Array = map_node.spawn_ids
 	for i in range(UNIT_BOXES_DISPLAYED):
 		if valid_spawns.size() > i:
 			var UIBox: Control = UIBoxPacked.instantiate()

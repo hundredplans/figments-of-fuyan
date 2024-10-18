@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="TileInfo" load_steps=6 format=3]
+[gd_resource type="Resource" script_class="TileInfo" load_steps=7 format=3 uid="uid://durbc7wi8xf6j"]
 
 [ext_resource type="Script" path="res://scripts/fof/tiles/tile.gd" id="1_hr5ty"]
 [ext_resource type="Script" path="res://scripts/fof_info/game_objects/tile_info.gd" id="1_x23li"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/tiles/sand_road_tile.glb" id="1_xn38s"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/tiles/sand_road_tile_stair.glb" id="2_kao5c"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/tiles/palm_tile_fill.glb" id="4_ss6jm"]
+[ext_resource type="PackedScene" uid="uid://dkjnml3m02864" path="res://assets/models/fof/tiles/sand_road_tile.glb" id="1_xn38s"]
+[ext_resource type="PackedScene" uid="uid://dfodvw1v257bu" path="res://assets/models/fof/tiles/sand_road_tile_stair.glb" id="2_kao5c"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="4_m03aw"]
+[ext_resource type="PackedScene" uid="uid://bb6rd8ea31ga" path="res://assets/models/fof/tiles/palm_tile_fill.glb" id="4_ss6jm"]
 
 [resource]
 script = ExtResource("1_x23li")
@@ -14,3 +15,4 @@ points = Array[Array]([[], []])
 id = 6
 name = "Sandroad Tile"
 gdscript = ExtResource("1_hr5ty")
+saved_data = ExtResource("4_m03aw")

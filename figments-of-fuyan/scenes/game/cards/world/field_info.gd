@@ -56,6 +56,10 @@ extends Node3D
 @export var FofObjectIconPacked: PackedScene
 @export_group("")
 
+@export_group("Trait Combinations")
+@export var trait_combinations: Array[TraitCombinationDatastore]
+@export_group("")
+
 var Card: CardGD
 
 func setInfo(_Card: CardGD) -> void:
@@ -68,14 +72,16 @@ func setInfo(_Card: CardGD) -> void:
 	onUpdateDelayedStats()
 	
 func onResetStats() -> void:
+	onResetDepthTest()
+	onCreateFloatingNumbers()
+	
+func onResetDepthTest() -> void:
 	var mat: Material = null if !is_spectated else top_base_material
 	InfoSprite.no_depth_test = is_spectated
 	for mesh in Helper.getNodeTypeRecursive(FloatingStats, MeshInstance3D):
 		mesh.set_surface_override_material(0, mat)
 	
 	IconsManager.setDepthTest(is_spectated)
-	
-	onCreateFloatingNumbers()
 	
 func onCreateFloatingNumbers() -> void:
 	onCreateSpecificStat(Game.Stats.ATTACK, Card.attack)
@@ -145,7 +151,7 @@ func onCreateSpecificStat(type: Game.Stats, value: int) -> void:
 
 func setNumbersParticle(type: Game.Stats, value: int) -> void:
 	var sign_mesh: Mesh = (plus_mesh if value > 0 else minus_mesh).duplicate()
-	var number_mesh: Mesh = (number_to_particle_mesh[value] if abs(value) < 10 else exclamation_particle_mesh).duplicate()
+	var number_mesh: Mesh = (number_to_particle_mesh[abs(value)] if abs(value) < 10 else exclamation_particle_mesh).duplicate()
 	
 	var mat: Material
 	match type:
@@ -174,15 +180,29 @@ func setInfoSpriteEnemyInMovementRange(state: bool) -> void:
 
 #region Traits
 func onUpdateTraits() -> void:
-	for field_trait in Card.field_traits.filter(func(x: TraitGD): return x.info.replace_model != null):
+	var field_traits_info: Array = Card.field_traits.filter(func(x: TraitGD): return x.info.replace_model != null).map(func(y: TraitGD): return y.info)
+	var stat_to_model: Dictionary
+	
+	for trait_combination in trait_combinations:
+		if trait_combination.traits.all(func(x: TraitInfo): return x in field_traits_info):
+			for trait_info in trait_combination.traits:
+				field_traits_info.erase(trait_info)
+			stat_to_model[trait_combination.replace_stat] = trait_combination.replace_model
+	
+	for field_trait_info in field_traits_info:
+		stat_to_model[field_trait_info.replace_stat] = field_trait_info.replace_model
+			
+	for stat in stat_to_model:
 		var replace_stat_spot: Node3D
-		match field_trait.info.replace_stat:
+		match stat:
 			Game.Stats.ATTACK: replace_stat_spot = AttackFloatingStatSpot
 			Game.Stats.HEALTH: replace_stat_spot = HealthFloatingStatSpot
 			Game.Stats.SPEED: replace_stat_spot = SpeedFloatingStatSpot
-			
+		
 		for child in replace_stat_spot.get_children(): child.queue_free()
-		replace_stat_spot.add_child(field_trait.info.replace_model.instantiate())
+		replace_stat_spot.add_child(stat_to_model[stat].instantiate())
+		
+	onResetDepthTest()
 		
 func onAddTrait(Trait: TraitGD) -> void:
 	onAddIcon(Trait)

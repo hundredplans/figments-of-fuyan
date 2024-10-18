@@ -1,5 +1,8 @@
 class_name TileObjectGD extends GameObjectGD
 
+signal set_spectate_card
+var SpectateCard: CardGD
+
 var variation: int
 #region Helper functions
 func isIDVariation(id: int, _variation: int) -> bool: return info.id == id and _variation == variation
@@ -70,7 +73,7 @@ func clampVariation(i: int) -> void:
 #endregion
 
 #region Level Visible
-func setLevelVisible(state: bool) -> void:
+func setLevelVisible(state: bool, _Discoverer: GameObjectGD = null) -> void:
 	super(state)
 	onApplyGreyscaleMaterial()
 				

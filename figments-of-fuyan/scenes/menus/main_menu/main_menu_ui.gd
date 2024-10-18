@@ -25,8 +25,8 @@ func _ready() -> void:
 #region Travelling
 func onTravelStateChanged(travel_info: CameraTravelDatastore) -> void:
 	if ActiveMenu != null: ActiveMenu.queue_free()
-	GoBackLabel.visible = !travel_info.is_start
-	if travel_info.start.name == "ChampionPressed": onClearChampionUI()
+	GoBackLabel.visible = !travel_info.is_start and !travel_info.end.name == "MainMenu"
+	if travel_info.start != null and travel_info.start.name == "ChampionPressed": onClearChampionUI()
 #endregion
 
 #region Champion Selected

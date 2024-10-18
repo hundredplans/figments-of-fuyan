@@ -126,6 +126,10 @@ func onAnimationTravel() -> void:
 	else: ani_player.play_backwards(active_travel_info.start.name)
 	travel.emit(active_travel_info)
 	
+func onFirstLoadTravel() -> void:
+	ani_player.play("FirstLoad")
+	travel.emit(active_travel_info)
+	
 func onChampionTweenTravel(Card: CardGD, camera_pos_rot: PosRot) -> void:
 	var travel_posrot: PosRot = camera_pos_rot
 	if !active_travel_info.is_history:
@@ -154,5 +158,7 @@ func onChampionTweenTravel(Card: CardGD, camera_pos_rot: PosRot) -> void:
 
 #region First Load
 func onFirstLoad() -> void:
-	ani_player.play("FirstLoad")
+	active_travel_info = CameraTravelDatastore.new(CameraItem.new("FirstLoad", CameraItem.TYPES.NULL), active_camera_item, onFirstLoadTravel)
+	active_travel_info.is_history = true
+	active_travel_info.travel_callable.call()
 #endregion

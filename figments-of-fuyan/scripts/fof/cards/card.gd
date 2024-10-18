@@ -23,6 +23,7 @@ var field_traits: Array = []
 var status_effects: Array = []
 
 var delayed_stats: Array[StatAction]
+var ability_save: Dictionary
 #endregion
 
 #region Globals
@@ -85,24 +86,40 @@ func setAniPlayer() -> void:
 	for child in Helper.getChildrenRecursive(self):
 		if child is AnimationPlayer:
 			AniPlayer = child
+			AniPlayer.animation_finished.connect(onAnimationFinished)
 			AniPlayer.playback_default_blend_time = DEFAULT_ANIMATION_BLEND_TIME
 			return
 
 var AniPlayer: AnimationPlayer
-func onIdle() -> void:
-	if AniPlayer != null: AniPlayer.play("Idle")
-	
-func onWalk() -> void:
-	if AniPlayer != null and AniPlayer.current_animation != "Walk": AniPlayer.play("Walk")
-	
+
+func onPlayAnimation(animation_name: String) -> void:
+	if AniPlayer != null:
+		match animation_name:
+			"Walk": if AniPlayer.current_animation == "Walk": return
+		
+		AniPlayer.play(animation_name)
+		
+func onAnimationFinished(ani_name: String) -> void:
+	if !ani_name.begins_with("Death"): onIdle()
+		
+func onJump() -> void:
+	AniPlayer.stop()
+	onPlayAnimation("Jump")
+		
 func onAttack() -> void:
-	AniPlayer.play("Attack")
+	onPlayAnimation("Attack")
+		
+func onWalk() -> void:
+	onPlayAnimation("Walk")
 	
-func onHurt() -> void:
-	AniPlayer.play("Hurt")
+func onIdle() -> void:
+	onPlayAnimation("Idle")
 	
 func onDeath() -> void:
-	AniPlayer.play("Death")
+	onPlayAnimation("Death")
+	
+func onHurt() -> void:
+	onPlayAnimation("Hurt")
 #endregion
 
 #region Card
@@ -116,10 +133,12 @@ func onCreateCardUI(parent: Control, highlight_on_hover: bool = false) -> Contro
 #region Save/Load/Clear
 func onSave() -> SavedDataCard:
 	for stat_action in delayed_stats: stat_action.onSave()
+	var visible_game_object_public_ids: Array = visible_game_objects.map(func(x: GameObjectGD): return x.public_id)
 	
 	return SavedDataCard.new(info.id, false, public_id, coords, tile_rotation, level_visible, is_revealed, team, \
 	attack, health, speed, max_speed, max_health, energy, ascended, draw_order, card_place, turn_state,\
-	SavedData.onSaveGroup(field_traits), SavedData.onSaveGroup(status_effects), attacks, delayed_stats)
+	SavedData.onSaveGroup(field_traits), SavedData.onSaveGroup(status_effects), attacks, delayed_stats,\
+	visible_game_object_public_ids, ability_save)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -128,21 +147,39 @@ func onLoadData(data: SavedData) -> void:
 	ascended = data.ascended
 	turn_state = data.turn_state
 	attacks = data.attacks
-	
-	for field_trait_data in data.field_traits:
-		field_traits.append(SavedData.onLoadModel(field_trait_data, self))
-	
-	for status_effect_data in data.status_effects:
-		status_effects.append(SavedData.onLoadModel(status_effect_data, self))
-	
+	field_traits_datas = data.field_traits
+	status_effects_datas = data.status_effects
+	tile_rotation = data.tile_rotation
 	delayed_stats = data.delayed_stats
+	visible_game_objects_public_ids = data.visible_game_objects_public_ids
+	ability_save = data.ability_save
 	for stat_action in delayed_stats: stat_action.onLoad()
+	
+	for custom_variable in ability_save:
+		set(custom_variable, ability_save[custom_variable])
 	
 	onCreateAdjustedPoints()
 	
 	setBaseStats()
 	onChangeCardPlace(data.card_place)
 	add_to_group("CardsGD")
+	
+var field_traits_datas: Array
+var status_effects_datas: Array
+func onLoadTraits() -> void:
+	for field_trait_data in field_traits_datas:
+		var Trait: TraitGD = SavedData.onLoadModel(field_trait_data, self)
+		field_traits.append(Trait)
+		FieldInfo.onAddTrait(Trait)
+	FieldInfo.onUpdateTraits()
+	
+func onLoadStatusEffects() -> void:
+	if isAlly(1): status_effects_datas.append(SavedDataStatusEffect.new(2, true, 0, 1, getCoords()))
+	
+	for status_effect_data in status_effects_datas:
+		var StatusEffect: StatusEffectGD = SavedData.onLoadModel(status_effect_data, self)
+		status_effects.append(StatusEffect)
+		FieldInfo.onAddIcon(StatusEffect)
 	
 func onChangeCardPlace(place: Game.CardPlaces) -> void:
 	if place != card_place:
@@ -172,6 +209,7 @@ func setBaseStats() -> void:
 	
 func onCreateModel() -> void:
 	onRemoveModel()
+	
 	Model = info.model.instantiate()
 	add_child(Model)
 	
@@ -201,7 +239,7 @@ func onWalkTo(pos: Vector3, walk_speed: float) -> void:
 	var tween := get_tree().create_tween()
 	tween.tween_property(self, "position", pos, walk_speed)
 	await tween.finished
-	onIdle()
+	AniPlayer.play("Idle")
 	
 #endregion
 
@@ -277,7 +315,7 @@ func setTurnState(_turn_state: Game.TurnStates) -> void:
 		FieldInfo.setInfoSpriteTurnState()
 		match turn_state:
 			Game.TurnStates.INACTIVE:
-				onPushAction([ChangeAttacksAction.new(self, getMaxAttacks()), StatAction.new(self, Game.Stats.SPEED, max_speed, 0, true)])
+				onPushAction([ChangeAttacksAction.new(self, getMaxAttacks()), StatAction.new(self, Game.Stats.SPEED, max_speed, 0, false, false)])
 	
 #endregion
 
@@ -290,13 +328,12 @@ func onProcessAction(action: Action) -> void:
 			if action is MovementFinishAction and action.Card == self: Tile.setOutlineMaterial()
 			elif action is ChangePhaseAction and Game.isAdvanceTurn(action.phase, team):
 				onAdvanceTurn()
-				onPushAction(DelayedStatAction.new(1, StatAction.new(self, Game.Stats.SPEED, 3)))
-				
 	elif Game.CardPlaces.GRAVEYARD == card_place:
 		if action.post:
 			if action is DeathAction and action.Defender == self:
 				onRemoveModel()
 				onRemoveFieldInfo()
+
 #endregion
 
 #region Movement
@@ -318,16 +355,13 @@ func onMoveToTile(action: MoveToTileAction) -> void:
 				tween.tween_property(self, "position", action.DestinationTile.getCardPosition(), action.getDelay() / 2.0)
 		return
 	
-	onJumpAnimation()
-	if action.movement_type == MoveToTileAction.MOVEMENT_TYPES.JUMP: onJump(action)
+	onJump()
+	if action.movement_type == MoveToTileAction.MOVEMENT_TYPES.JUMP: onJumpTween(action)
 	elif action.movement_type == MoveToTileAction.MOVEMENT_TYPES.FALL: onFall(action)
 	
 const FALL_MULTIPLIER: float = 2.3
 
-func onJumpAnimation() -> void:
-	AniPlayer.play("Jump")
-
-func onJump(action: MoveToTileAction) -> void:
+func onJumpTween(action: MoveToTileAction) -> void:
 	var jump_time: float = 1
 	var jump_end: Vector3 = action.DestinationTile.getCardPosition()
 	var jump_height: float = -4
@@ -345,9 +379,9 @@ func onJump(action: MoveToTileAction) -> void:
 func onFall(action: MoveToTileAction) -> void:
 	var height_diff: int = abs(action.DestinationTile.getHeight() - Tile.getHeight())
 	var jump_end: Vector3 = action.DestinationTile.getCardPosition()
-	var jump_height: float = -3 + (height_diff * FALL_MULTIPLIER)
-	var start_highest: Vector3 = position + Vector3(0, jump_height, 0)
-	var end_highest: Vector3 = jump_end + Vector3(0, jump_height, 0)
+	var jump_height: float = 3 + (height_diff * FALL_MULTIPLIER)
+	var start_highest: Vector3 = position + Vector3(0, -jump_height, 0)
+	var end_highest: Vector3 = jump_end + Vector3(0, -jump_height, 0)
 	
 	AniPlayer.speed_scale = 2.0 / action.fall_time
 	onTweenJumpFall(jump_end, start_highest, end_highest, action.fall_time)
@@ -357,8 +391,9 @@ func onFall(action: MoveToTileAction) -> void:
 	
 func onTweenJumpFall(jump_end: Vector3, start_highest: Vector3, end_highest: Vector3, jump_time: float) -> void:
 	var tween := get_tree().create_tween()
-	tween.tween_method(onJumpFall.bind(Tile.getCardPosition(), jump_end, start_highest, end_highest), 0.0, 1.0, jump_time)
-	onJumpAnimation()
+	var jump_start: Vector3 = Tile.getCardPosition()
+	tween.tween_method(onJumpFall.bind(jump_start, jump_end, start_highest, end_highest), 0.0, 1.0, jump_time)
+	onJump()
 	
 func onJumpFall(time: float, jump_start: Vector3, jump_end: Vector3, start_highest: Vector3, end_highest: Vector3) -> void:
 	position = jump_start.cubic_interpolate(jump_end, start_highest, end_highest, time)
@@ -377,6 +412,12 @@ func onCreateFieldInfo() -> void:
 	add_child(FieldInfo)
 	FieldInfo.setInfo(self)
 	
+	for Trait in field_traits:
+		FieldInfo.onAddTrait(Trait)
+		
+	for StatusEffect in status_effects:
+		FieldInfo.onAddIcon(StatusEffect)
+	
 func onRemoveFieldInfo() -> void:
 	FieldInfo.queue_free()
 	
@@ -394,12 +435,11 @@ func onAwaken() -> void:
 	setTileRotation(tile_rotation)
 	setTurnState(turn_state)
 	setLevelVisible(level_visible)
-	
-	onPushAction(AddStatusEffectAction.new(SavedData.onLoadModel(SavedDataStatusEffect.new(2, false, 0, 1, getCoords()), self)))
 #endregion
 
 #region Vision
-var visible_game_objects: Dictionary = {}
+var visible_game_objects_public_ids: Array = []
+var visible_game_objects: Array = []
 var VisionRay: RayCast3D
 const BASE_VISION_RANGE: int = 5
 const EXTRA_RAY_LENGTH: float = 1.05
@@ -407,14 +447,16 @@ const EXTRA_RAY_LENGTH: float = 1.05
 func onUpdateVision() -> Array:
 	var updated_visible_game_objects: Dictionary = {}
 	if card_place != Game.CardPlaces.GRAVEYARD:
-		
 		get_tree().call_group("FieldCardsGD", "setDetectableByRay", false)
 		var tile_objects: Array = Game.getAdjacentOrCloserTiles(Tile, BASE_VISION_RANGE)
 		
 		var cards: Array = []
 		for VisionTile in tile_objects.duplicate():
 			var Card: CardGD = Game.getFieldCard(VisionTile)
-			if Card != null and !Card.isInvisible() and Card != self: cards.append(Card); Card.setDetectableByRay(true)
+			
+			if Card != null:
+				cards.append(Card)
+				Card.setDetectableByRay(true)
 		
 		for obj_array in tile_objects.map(func(x: GameObjectGD): return x.occupied_objects):
 			for Obj in obj_array: tile_objects.append(Obj)
@@ -434,31 +476,39 @@ func onUpdateVision() -> Array:
 	return updated_visible_game_objects.keys()
 	
 func getVisibleFieldCards() -> Array:
-	return visible_game_objects.keys().filter(func(x: GameObjectGD): return x is CardGD)
+	return visible_game_objects.filter(func(x: GameObjectGD): return x is CardGD)
 	
 func getVisibleTiles() -> Array:
-	return visible_game_objects.keys().filter(func(x: GameObjectGD): return x is TileGD)
+	return visible_game_objects.filter(func(x: GameObjectGD): return x is TileGD)
 	
 func getVisibleGameObjects() -> Array:
-	return visible_game_objects.keys()
+	return visible_game_objects
+	
+func setVisibleGameObjects() -> void:
+	for public_id in visible_game_objects_public_ids:
+		visible_game_objects.append(Game.onFindPublicIDObject(public_id))
 	
 func onCreateVisionRay() -> void:
 	VisionRay = load(info.VISION_RAY_SCENE_PATH).instantiate()
 	add_child(VisionRay)
 	VisionRay.position.y = info.eye
 	
-func setLevelVisible(state: bool) -> void:
+func setLevelVisible(state: bool, Discoverer: GameObjectGD = null) -> void:
 	super(state)
 	visible = state
+	
+	if Discoverer != null: onPushAction(DiscoverAction.new(self, Discoverer, state))
+	
 	
 func setDetectableByRay(state: bool) -> void:
 	if state: setCollisionLayers(96)
 	else: setCollisionLayers(32)
-#endregion
-
-#region Invisible
-func isInvisible() -> bool:
-	return false
+	
+func getVisibleGroup() -> Array:
+	var visible_group: Array = [self, Tile]
+	for Obj in Tile.occupied_objects:
+		visible_group.append(Obj)
+	return visible_group
 #endregion
 
 #region Fall Damage
@@ -482,7 +532,7 @@ func getAttackDamage() -> int:
 func getAttackRange() -> int:
 	for field_trait in field_traits:
 		if field_trait is RangedGD: return field_trait.ranged
-	return 1 
+	return 1
 	
 func canAttack() -> bool: return attacks > 0
 	
@@ -493,34 +543,35 @@ func setAttacks(_attacks: int) -> void: attacks = _attacks
 func getAttackablesInRange() -> Array:
 	if !canAttack(): return []
 	var cards: Array = get_tree().get_nodes_in_group("FieldCardsGD")
-	cards = cards.filter(func(x: GameObjectGD): \
-		return x.isAttackable(self) and\
-		Game.getCoordsDistance(Tile.getCoords(), x.Tile.getCoords()) <= speed + getAttackRange() and\
-		x.position.y <= position.y + info.top)
+	cards = cards.filter(isCardAttackable)
 	return cards
+	
+func isCardAttackable(Card: CardGD) -> bool:
+	var is_enemy_team: bool = Card.isAttackable(self)
+	var is_in_range: bool = Game.getCoordsDistance(Tile.getCoords(), Card.Tile.getCoords()) <= speed + getAttackRange()
+	var is_in_height: bool = abs(Card.Tile.getHeight() - Tile.getHeight()) in [0, 1]
+	var is_in_unit_height: bool = position.y <= (Card.position.y + Card.info.top) and Card.info.top <= (position.y + info.top)
+	var is_ranged: bool = Card.getAttackRange() > 1 and abs(Card.Tile.getHeight() - Tile.getHeight() <= 5)
+
+	return is_enemy_team and is_in_range and (is_in_height or is_in_unit_height or is_ranged)
+		
 #endregion
 
 #region Damage
-func onDMG(Damager: GameObjectGD, damage: int) -> void:
-	var old_health: int = health
-	var health_damage: int = old_health - min(health - damage, 0)
-	Damager.onPushAction(StatAction.new(self, Game.Stats.HEALTH, -health_damage))
-
 func onTakeDamage(Damager: GameObjectGD, damage: int) -> int: # Returns damage dealt
 	var old_health: int = health
-	damage = onApplyArmor(damage)
 	health = max(health - damage, 0)
+	
 	var health_damage: int = old_health - health
 	
-	FieldInfo.onUpdateStat(Game.Stats.HEALTH, health, level_visible)
+	FieldInfo.onUpdateStat(Game.Stats.HEALTH, health, health_damage, level_visible)
 	if health == 0: onPushAction(DeathAction.new(Damager, self, damage, health_damage))
 	else: onPushAction(HurtAction.new(Damager, self, damage, health_damage))
 	return health_damage
 #endregion
 
 #region Speed
-func onUpdateStat(type: Game.Stats, difference: int, show_particles: bool, include_action_delay: bool) -> void:
-	var play_animation: bool = include_action_delay and level_visible
+func onUpdateStat(type: Game.Stats, difference: int, show_particles: bool) -> void:
 	var value: int = 0
 	match type:
 		Game.Stats.ATTACK: value = attack
@@ -528,7 +579,7 @@ func onUpdateStat(type: Game.Stats, difference: int, show_particles: bool, inclu
 		Game.Stats.SPEED: value = speed
 		Game.Stats.MAX_HEALTH: value = max_health
 	
-	FieldInfo.onUpdateStat(type, value, difference, play_animation, show_particles)
+	FieldInfo.onUpdateStat(type, value, difference, level_visible, show_particles)
 #endregion
 
 #region Traits
@@ -543,14 +594,6 @@ func onCreateInitialTraits() -> void:
 		field_traits.append(Trait)
 		FieldInfo.onAddTrait(Trait)
 	FieldInfo.onUpdateTraits()
-		
-func onApplyArmor(damage: int) -> int:
-	for field_trait in field_traits:
-		if field_trait is ArmorGD: damage -= field_trait.armor
-	return damage
-	
-func isMobile() -> bool:
-	return field_traits.any(func(x: TraitGD): return x is MobileGD)
 	
 func onAddTrait(Trait: TraitGD) -> void:
 	field_traits.append(Trait)
@@ -570,7 +613,7 @@ func onAddStatusEffect(status_effect: StatusEffectGD) -> void:
 
 #region Advance Turn
 func onAdvanceTurn() -> void:
-	var actions: Array = [StatAction.new(self, Game.Stats.SPEED, max_speed, 0, true, false, false), ChangeTurnStateAction.new(self, Game.TurnStates.INACTIVE)]
+	var actions: Array = [StatAction.new(self, Game.Stats.SPEED, max_speed, 0, true, false), ChangeTurnStateAction.new(self, Game.TurnStates.INACTIVE)]
 	onPushAction(actions)
 	
 	if !delayed_stats.is_empty():
@@ -585,4 +628,19 @@ func onAdvanceTurn() -> void:
 func onAddDelayedStatAction(stat_action: StatAction) -> void:
 	delayed_stats.append(stat_action)
 	FieldInfo.onUpdateDelayedStats()
+#endregion
+
+#region Action Checker
+func isValidTrauma(action: Action) -> bool:
+	return action.post and action is DeathAction and action.Defender.isAlly(team) and card_place == Game.CardPlaces.FIELD and action.Defender in getVisibleFieldCards()
+
+func isValidLastWill(action: Action) -> bool:
+	return action.post and action is DeathAction and action.Defender == self and card_place == Game.CardPlaces.GRAVEYARD
+
+func isValidRampage(action: Action) -> bool:
+	return action.post and action is DeathAction and action.Damager == self and card_place == Game.CardPlaces.FIELD
+
+func isValidOnHit(action: Action) -> bool:
+	return action.post and action is DamageAction and action.owner is AttackAction and action.Damager == self and card_place == Game.CardPlaces.FIELD
+
 #endregion

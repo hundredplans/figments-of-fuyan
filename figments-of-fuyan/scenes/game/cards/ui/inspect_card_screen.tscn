@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://byg8f1pn2h8u1"]
+[gd_scene load_steps=7 format=3 uid="uid://byg8f1pn2h8u1"]
 
 [ext_resource type="Script" path="res://scenes/game/cards/ui/inspect_card_screen.gd" id="1_s3ffg"]
 [ext_resource type="Script" path="res://scenes/game/cards/ui/inspect_card_viewport.gd" id="2_4u3ql"]
 [ext_resource type="PackedScene" uid="uid://dxvuvb68hgxug" path="res://scenes/common/exit_button/exit_button.tscn" id="2_amdtx"]
 [ext_resource type="Environment" uid="uid://g3ihmrpunr2b" path="res://assets/environments/main_menu_environment.tres" id="2_e52jv"]
+[ext_resource type="PackedScene" uid="uid://dm4vpkb840j4g" path="res://scenes/game/cards/ui/inspect_screen_tooltip.tscn" id="2_xvib6"]
 
 [sub_resource type="World3D" id="World3D_2ijdp"]
 environment = ExtResource("2_e52jv")
@@ -16,6 +17,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_s3ffg")
+tooltip = ExtResource("2_xvib6")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 self_modulate = Color(1, 1, 1, 0.658824)
@@ -35,6 +37,7 @@ layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer"]
 layout_mode = 2
+theme_override_constants/separation = 10
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
@@ -52,7 +55,7 @@ own_world_3d = true
 world_3d = SubResource("World3D_2ijdp")
 transparent_bg = true
 handle_input_locally = false
-size = Vector2i(602, 1040)
+size = Vector2i(2, 2)
 size_2d_override_stretch = true
 render_target_update_mode = 4
 script = ExtResource("2_4u3ql")
@@ -62,7 +65,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10000, 0, 10000)
 
 [node name="Camera3D" type="Camera3D" parent="PanelContainer/MarginContainer/HBoxContainer/MarginContainer/SubviewportContainer/InspectSubviewport/HiddenNode"]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
+transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 0, 3)
 
 [node name="ModelParent" type="Node3D" parent="PanelContainer/MarginContainer/HBoxContainer/MarginContainer/SubviewportContainer/InspectSubviewport/HiddenNode"]
 unique_name_in_owner = true
@@ -98,11 +101,19 @@ layout_mode = 2
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer"]
+[node name="ScrollTooltipContainer" type="ScrollContainer" parent="PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/MarginContainer/HBoxContainer"]
+[node name="TooltipContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer/ScrollTooltipContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="Control" type="Control" parent="PanelContainer/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 
 [node name="ExitButton" parent="." node_paths=PackedStringArray("exit_screen") instance=ExtResource("2_amdtx")]

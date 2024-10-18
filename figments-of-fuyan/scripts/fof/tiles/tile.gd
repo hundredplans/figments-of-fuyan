@@ -7,6 +7,7 @@ var occupied_objects: Array = []
 var is_hovered: bool = false
 var is_path_hovered: bool = false
 var is_card_moving: bool = false
+var is_action_lock: bool = false
 
 var movement_path: MovementPathGD
 #endregion
@@ -90,9 +91,9 @@ func setOutlineMaterial() -> void:
 			OccupyStates.NEUTRAL:
 				if !display_movement_path: mat = load(info.NEUTRAL_OCCUPY_MATERIAL)
 				else: mat = load(info.MOVEMENT_RANGE_ATTACKABLE_MATERIAL)
-	elif is_path_hovered: mat = load(info.PATH_HOVERED_MATERIAL)
-	elif is_hovered: mat = load(info.HOVERED_MATERIAL)
-	elif display_movement_path: mat = load(info.MOVEMENT_RANGE_MATERIAL)
+	elif is_path_hovered and !is_action_lock: mat = load(info.PATH_HOVERED_MATERIAL)
+	elif is_hovered and !is_action_lock: mat = load(info.HOVERED_MATERIAL)
+	elif display_movement_path and !is_action_lock: mat = load(info.MOVEMENT_RANGE_MATERIAL)
 	elif !level_visible: mat = load(info.GREYSCALE_MATERIAL)
 		
 	getMeshes()[0].set_surface_override_material(1, mat)
@@ -150,7 +151,15 @@ func onHovered(state: bool) -> void:
 		setOutlineMaterial()
 		
 		if !getMovementPathDisplay(): return
-		for Tile in movement_path.tiles: Tile.setPathHovered(state)
+		for i in range(movement_path.tiles.size()):
+			var Tile: TileGD = movement_path.tiles[i]
+			Tile.setPathHovered(state)
+			
+			if i > 0:
+				var PreviousTile: TileGD = movement_path.tiles[i - 1]
+				var damage: int = Tile.getFallDamage(PreviousTile)
+				if damage > 0:
+					Tile.setFallDamageWorldEffect(state, PreviousTile, damage)
 		
 #endregion
 #region Occupied By Unit
@@ -172,13 +181,14 @@ func getMovementPathDisplay() -> bool:
 	return movement_path != null and movement_path.display
 	
 func setMovementPathDisplay(state: bool) -> void:
-	if movement_path != null:
+	if movement_path != null and movement_path.display != state:
 		movement_path.display = state
 		setOutlineMaterial()
 		
 func setMovementPath(_movement_path: MovementPathGD) -> void:
-	movement_path = _movement_path
-	setOutlineMaterial()
+	if movement_path != _movement_path:
+		movement_path = _movement_path
+		setOutlineMaterial()
 	
 func getMovementPathSize() -> int:
 	if movement_path == null: return -1
@@ -198,4 +208,34 @@ func isValidRampRelation(Tile: TileGD) -> bool:
 func getFallDamage(Tile: TileGD) -> int:
 	var height_diff: int = Tile.getHeight() - getHeight()
 	return floor((height_diff - 3) / 2.0) if height_diff >= Game.FALL_DAMAGE_BEGIN_HEIGHT else 0
+	
+var FallDamageEffect: Node3D
+func setFallDamageWorldEffect(state: bool, PreviousTile: TileGD, damage: int) -> void:
+	if FallDamageEffect != null: FallDamageEffect.queue_free()
+	if state and damage > 0:
+		FallDamageEffect = load(info.FALL_DAMAGE_EFFECT_SCENE_PATH).instantiate()
+		add_child(FallDamageEffect)
+		
+		set_spectate_card.emit(self)
+		FallDamageEffect.setInfo(self, PreviousTile, SpectateCard, damage)
+		
+#endregion
+
+#region Vision
+func getVisibleGroup() -> Array:
+	var visible_group: Array = [self]
+	
+	for Obj in occupied_objects:
+		visible_group.append(Obj)
+			
+	var Card: CardGD = Game.getFieldCard(self)
+	if Card != null: visible_group.append(Card)
+	return visible_group
+
+#endregion
+
+#region Action Lock
+func onUpdateActionLock(state: bool) -> void:
+	is_action_lock = state
+	setOutlineMaterial()
 #endregion

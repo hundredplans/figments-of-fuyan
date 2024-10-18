@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://cn4d5j3lhhmta"]
+
+[ext_resource type="Script" path="res://scenes/game/tiles/fall_damage_effect.gd" id="1_0ytwf"]
+[ext_resource type="Texture2D" uid="uid://cytf2a2oalyet" path="res://assets/sprites/game/tiles/fall_damage_death_skull.png" id="2_8pp8k"]
+[ext_resource type="Texture2D" uid="uid://de1l5iyvymvpq" path="res://assets/sprites/game/cards/common/stats/health_icon.png" id="2_lp62p"]
+
+[node name="FallDamageEffect" type="Node3D"]
+script = ExtResource("1_0ytwf")
+health_icon = ExtResource("2_lp62p")
+skull_icon = ExtResource("2_8pp8k")
+
+[node name="Icon" type="Sprite3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.149978, 0, 0)
+double_sided = false
+no_depth_test = true
+alpha_cut = 1
+texture_filter = 0
+texture = ExtResource("2_8pp8k")
+
+[node name="DamageLabel" type="Label3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.17179, 0, 0)
+pixel_size = 0.01
+double_sided = false
+no_depth_test = true
+texture_filter = 0
+text = "5"

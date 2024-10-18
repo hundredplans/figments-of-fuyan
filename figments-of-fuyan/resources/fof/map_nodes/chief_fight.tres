@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="MapNodeInfo" load_steps=5 format=3 uid="uid://bju5x5qqfuvsm"]
+[gd_resource type="Resource" script_class="MapNodeInfo" load_steps=6 format=3 uid="uid://bju5x5qqfuvsm"]
 
 [ext_resource type="Script" path="res://scripts/fof/map_nodes/chief_fight_node.gd" id="1_c11js"]
 [ext_resource type="Script" path="res://scripts/fof_info/map_nodes/map_node_info.gd" id="1_v22uy"]
 [ext_resource type="PackedScene" uid="uid://bwjea7mbgu3rt" path="res://assets/models/fof/map_nodes/chief_fight_node.glb" id="2_d13x0"]
 [ext_resource type="Texture2D" uid="uid://b344gjx71aqqc" path="res://assets/sprites/game/map/chief_fight.png" id="2_rlrbg"]
+[ext_resource type="Script" path="res://scripts/saved_data/map_nodes/saved_data_map_node_chief_fight.gd" id="4_q3d0h"]
 
 [resource]
 script = ExtResource("1_v22uy")
@@ -16,3 +17,4 @@ legend_order = 6
 id = 5
 name = "Chief Fight"
 gdscript = ExtResource("1_c11js")
+saved_data = ExtResource("4_q3d0h")

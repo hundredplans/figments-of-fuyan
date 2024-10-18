@@ -6,6 +6,7 @@ extends Node
 @export var MAX_LEVEL_SIZE: int = 30
 @export var SCROLL_DELAY: float = 0.2
 @export var ROTATION_LOCK_DELAY: float = 0.15
+@export var SpawnIdUIPacked: PackedScene
 @export_dir var TILE_OBJECTS_PATH: String
 @onready var UI: Control = $UI
 @onready var World: Node3D = %World
@@ -79,7 +80,7 @@ func _input(event: InputEvent) -> void:
 			else: SearchTileObject.grab_focus()
 		else: SaveLineEdit.release_focus()
 	
-	if !SaveLineEdit.has_focus() and !SearchTileObject.has_focus():
+	if !get_viewport().gui_get_focus_owner() is LineEdit:
 		if Input.is_action_just_pressed("SelectDeselect"):
 			if HoverModel != null: onHoverModelDeselected()
 			else: onLastHoverModelSelected()
@@ -96,6 +97,15 @@ func _input(event: InputEvent) -> void:
 			
 		elif Input.is_action_just_pressed("ShowOverworldButton"):
 			OverworldButton.visible = !OverworldButton.visible
+			
+		elif Input.is_action_just_released("SetSpawnID"):
+			var spawn_object: SpawnGD
+			if HoverModel != null and HoverModel is SpawnGD: spawn_object = HoverModel
+			
+			var TileObject: TileObjectGD = onFindMouseTileObject()
+			if TileObject is SpawnGD: spawn_object = TileObject
+			
+			if spawn_object != null: onCreateSetSpawnIdUI(spawn_object)
 			
 		if Input.is_action_just_released("Delete"): deletion_elevation = -1; object_delete = false
 			
@@ -228,7 +238,7 @@ func onHoverModelPlaced() -> void:
 	onTileObjectInfoSelected(save_data, false)
 
 func onPlaceBaseTile(coords: Vector4i, is_overworld: bool = false) -> TileGD:
-	return SavedData.onLoadModel(SavedDataTile.new(1, false, coords, 0, int(is_overworld) * -1, false), World)
+	return SavedData.onLoadModel(SavedDataTile.new(1, false, 0, coords, 0, int(is_overworld) * -1, false), World)
 	
 #endregion
 #region Elevation
@@ -507,4 +517,12 @@ func _on_decoration_button_pressed() -> void:
 func setDecoration(state: bool) -> void:
 	save_as_decoration = state
 	DecorationButton.set_pressed_no_signal(state)
+#endregion
+
+#region Set Spawn ID
+func onCreateSetSpawnIdUI(Spawn: SpawnGD) -> void:
+	var SpawnIdUI: Control = SpawnIdUIPacked.instantiate()
+	UI.add_child(SpawnIdUI)
+	SpawnIdUI.setInfo(Spawn)
+	SpawnIdUI.mouse_in_ui.connect(onMouseInUI)
 #endregion
