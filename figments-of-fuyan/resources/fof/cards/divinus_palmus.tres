@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=13 format=3 uid="uid://bpccbwsymujxo"]
+[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=14 format=3 uid="uid://bpccbwsymujxo"]
 
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_my31a"]
 [ext_resource type="Resource" uid="uid://hommkky4kkh3" path="res://resources/fof/boons/divine_aura.tres" id="2_4ivuh"]
 [ext_resource type="Script" path="res://scripts/fof/cards/divinus_palmus.gd" id="2_7n28t"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/champion_card_info.gd" id="2_qu6p4"]
@@ -47,6 +48,7 @@ speed = 2
 energy = 2
 rarity = 8
 initial_traits = Array[ExtResource("3_276uu")]([])
+active_abilities = Array[ExtResource("1_my31a")]([])
 ability_text = "ABILITY [2]: Heal [1] HP to an ally or self"
 flavor_text = "His beleaf can't be questioned"
 art_mini_coordinate = Vector2i(90, 70)

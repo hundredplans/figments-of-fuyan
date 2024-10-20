@@ -13,6 +13,8 @@ extends Node
 @onready var ColShapeHolder: Node3D = $PlaceCollisionShapeHere
 @onready var Heights: Node3D = %Heights
 @onready var Camera: Camera3D = %ChampionCamera
+
+@onready var ArtMiniRect: TextureRect = %ArtMiniRect
 #endregion
 
 func _ready() -> void:
@@ -37,6 +39,7 @@ func _ready() -> void:
 			Camera.position = card.info.champion_select_posrot.pos
 			Camera.rotation_degrees = card.info.champion_select_posrot.rot
 		
+		ArtMiniRect.texture = ImageTexture.create_from_image(onCreateArtMiniImage(card.info))
 		var packed_scene := PackedScene.new()
 		packed_scene.pack(self)
 		ResourceSaver.save(packed_scene, scene_file_path)
@@ -58,16 +61,18 @@ func onUnitChanged(_card_info: CardInfo) -> void:
 			box.position.y = 0
 			box.position.x = box.default_x
 		
-		var image := Image.new()
-		image = Image.create_empty(80, 80, false, Image.FORMAT_RGBA8)
-		
-		for x in range(80):
-			for y in range(80):
-				image.set_pixel(x, y, card_info.art_pop.get_pixel(\
-				x + card_info.art_mini_coordinate.x, y + card_info.art_mini_coordinate.y))
-			
+		var image: Image = onCreateArtMiniImage(card_info)
 		image.save_png(card_info.art_pop.resource_path.replace("art_pop", "art_mini"))
 		
 		ResourceSaver.save(card_info)
 		for child in World.get_children() + ColShapeHolder.get_children(): child.free()
-			
+
+func onCreateArtMiniImage(info: CardInfo) -> Image:
+	var image := Image.new()
+	image = Image.create_empty(80, 80, false, Image.FORMAT_RGBA8)
+		
+	for x in range(80):
+		for y in range(80):
+			image.set_pixel(x, y, info.art_pop.get_pixel(\
+			x + info.art_mini_coordinate.x, y + info.art_mini_coordinate.y))
+	return image

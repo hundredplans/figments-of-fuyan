@@ -175,9 +175,12 @@ func getCameraObjectArray() -> Array:
 	
 #region Save
 func setCameraSaveables(level: LevelGD) -> void:
-	level.level_camera_data = LevelCameraData.new(\
-		SpectateObject.getCoords() if SpectateObject != null else Vector4i(0, 0, 0, -1), isFreelook(),\
-		PosRot.new(FreelookCamera.position, FreelookCamera.rotation), total_progress, camera_radius)
+	var coords := Vector4i(0, 0, 0, -1)
+	if SpectateObject != null:
+		if SpectateObject is SpawnGD: coords = SpectateObject.getCoords()[0]
+		elif SpectateObject is CardGD: coords = SpectateObject.getCoords()
+	
+	level.level_camera_data = LevelCameraData.new(coords, isFreelook(), PosRot.new(FreelookCamera.position, FreelookCamera.rotation), total_progress, camera_radius)
 #endregion
 
 #region Tracking

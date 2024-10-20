@@ -98,9 +98,11 @@ func onUpdateActionLock(state: bool) -> void:
 	else: onCreateMovementRange(level.getAllySpectateObject())
 	
 func getMouseInUI() -> bool:
-	return UI.mouse_in_ui
+	return mouse_in_ui
 	
+var mouse_in_ui: bool
 func onMouseInUI(state: bool) -> void:
+	mouse_in_ui = state
 	onHoverTile()
 	
 var camera_panning: bool
@@ -158,7 +160,7 @@ func onTilePressed() -> void:
 func onTileInspected() -> void:
 	var Tile: TileGD = MouseHoverTile
 	var Card: CardGD = Tile.getCard()
-	if Card != null:
+	if Card != null and Card.level_visible:
 		Card.setInspectable(true, UI)
 		Card.onInspectCard()
 #endregion

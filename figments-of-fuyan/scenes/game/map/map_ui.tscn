@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scenes/game/map/map_ui.gd" id="1_8nhbi"]
 [ext_resource type="LabelSettings" uid="uid://baxopkmeda53x" path="res://resources/ui/label_settings/roboto_huge.tres" id="2_r0ufu"]
 [ext_resource type="PackedScene" uid="uid://d3m353h1jnkku" path="res://scenes/game/map/legend_key.tscn" id="2_xp1my"]
-[ext_resource type="Texture2D" uid="uid://byqpgk7qtluhe" path="res://assets/sprites/ui/shilling.png" id="3_75w01"]
+[ext_resource type="Texture2D" uid="uid://byqpgk7qtluhe" path="res://assets/sprites/ui/icons/shilling.png" id="3_75w01"]
 [ext_resource type="LabelSettings" uid="uid://cyodc3xq62xbg" path="res://resources/ui/label_settings/jacquard_large.tres" id="4_10pk8"]
 
 [sub_resource type="Animation" id="Animation_bd438"]
@@ -103,6 +103,35 @@ mouse_filter = 2
 script = ExtResource("1_8nhbi")
 LegendKeyPacked = ExtResource("2_xp1my")
 
+[node name="LegendContainer" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 1556.0
+offset_top = 24.0
+offset_right = 1890.0
+offset_bottom = 1053.0
+theme_type_variation = &"WhitePanelContainer"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="LegendContainer"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="LegendContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="LegendBox" type="VBoxContainer" parent="LegendContainer/ScrollContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="LegendContainer/ScrollContainer/MarginContainer/LegendBox"]
+layout_mode = 2
+text = "Legend"
+label_settings = ExtResource("4_10pk8")
+horizontal_alignment = 1
+
 [node name="AreaNameLabel" type="Label" parent="."]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0)
@@ -155,32 +184,3 @@ text = "0"
 
 [node name="Spacer" type="Control" parent="ShillingsContainer/HBoxContainer"]
 layout_mode = 2
-
-[node name="LegendContainer" type="PanelContainer" parent="."]
-layout_mode = 0
-offset_left = 1556.0
-offset_top = 24.0
-offset_right = 1890.0
-offset_bottom = 1053.0
-theme_type_variation = &"WhitePanelContainer"
-
-[node name="ScrollContainer" type="ScrollContainer" parent="LegendContainer"]
-layout_mode = 2
-horizontal_scroll_mode = 0
-
-[node name="MarginContainer" type="MarginContainer" parent="LegendContainer/ScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="LegendBox" type="VBoxContainer" parent="LegendContainer/ScrollContainer/MarginContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Label" type="Label" parent="LegendContainer/ScrollContainer/MarginContainer/LegendBox"]
-layout_mode = 2
-text = "Legend"
-label_settings = ExtResource("4_10pk8")
-horizontal_alignment = 1

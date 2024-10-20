@@ -48,7 +48,7 @@ func setInfo(_Card: CardGD, _highlight_on_hover: bool = false) -> void:
 	Background.setTexture(rarities[Card.info.rarity])
 	OutlineMask.texture = masks[Card.info.rarity]
 	ArtPop.setTexture(Card.info.art_pop)
-	TextLabel.setText(Card.getAbilityText())
+	TextLabel.setText(Card.getDescription())
 	AreaBackground.setTexture(Card.getArea().card_background)
 	NameLabel.text = Card.info.name
 	AttackLabel.text = str(Card.attack)

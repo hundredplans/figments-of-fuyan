@@ -19,6 +19,7 @@ func onPostAction() -> void:
 	Card.onChangeCardPlace(Game.CardPlaces.FIELD)
 	Card.onAwaken()
 	Card.onCreateInitialTraits()
+	Card.onCreateInitialActiveAbilities()
 	
 	var actions: Array = [ChangeTurnStateAction.new(Card, Game.TurnStates.INACTIVE), InVisionResetAction.new(Card)]
 	onPushAction(actions)

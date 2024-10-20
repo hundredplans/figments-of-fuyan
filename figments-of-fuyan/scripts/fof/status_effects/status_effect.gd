@@ -28,7 +28,7 @@ func onProcessAction(action: Action) -> void:
 				turns -= 1
 				if turns == 0: onPushAction(RemoveStatusEffectAction.new(self))
 			
-		elif action is DeathAction and action.Card == Card:
+		elif action is DeathAction and action.Defender == Card:
 			onClear()
 			
 func onAdvanceTurn() -> void:

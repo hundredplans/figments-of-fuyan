@@ -16,3 +16,6 @@ func onSave() -> SavedDataCard:
 	ability_save['trauma_charges'] = trauma_charges
 	return super()
 	
+func getDescription() -> String:
+	return super()
+	#return Helper.getDescription(super(), [trauma_charges], ["TRAUMA [1]"])

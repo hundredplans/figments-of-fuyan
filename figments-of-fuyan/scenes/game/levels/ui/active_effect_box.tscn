@@ -1,0 +1,101 @@
+[gd_scene load_steps=17 format=3 uid="uid://24qd28lyobrw"]
+
+[ext_resource type="Script" path="res://scenes/game/levels/ui/active_effect_box.gd" id="1_65c7x"]
+[ext_resource type="Texture2D" uid="uid://i2x1spgr2rts" path="res://assets/sprites/ui/scene_specific/active_effect_box.png" id="1_nl6sb"]
+[ext_resource type="PackedScene" uid="uid://6nf3mir2i2rk" path="res://scenes/common/fancy_text/fancy_text_label.tscn" id="2_ilmrk"]
+[ext_resource type="LabelSettings" uid="uid://yueau3nak32p" path="res://resources/ui/label_settings/roboto_small.tres" id="3_fr0oq"]
+[ext_resource type="Resource" uid="uid://bw0qo7tuhyhqm" path="res://resources/ui/fancy_text/fancy_text_label_settings_tiny.tres" id="4_sv1ui"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_quyqm"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nghbe"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vk4co"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7snnu"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5mdh0"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_n2fcw"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_uh0ct"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ldibx"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_35p3x"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_s4xj3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_o3ug1"]
+
+[node name="ActiveEffectBox" type="Control"]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 300.0
+offset_bottom = 300.0
+mouse_filter = 1
+script = ExtResource("1_65c7x")
+
+[node name="Button" type="Button" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 20.0
+offset_bottom = 20.0
+theme_override_styles/focus = SubResource("StyleBoxEmpty_quyqm")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_nghbe")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_vk4co")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_7snnu")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_5mdh0")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_n2fcw")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_uh0ct")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_ldibx")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_35p3x")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_s4xj3")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_o3ug1")
+icon = ExtResource("1_nl6sb")
+
+[node name="NameLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 45.0
+offset_top = 16.0
+offset_right = 257.0
+offset_bottom = 95.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 6
+mouse_filter = 1
+text = "Palmleaf Remedy"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="DescriptionLabel" parent="." instance=ExtResource("2_ilmrk")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+offset_left = 32.0
+offset_top = 165.0
+offset_right = 266.0
+offset_bottom = 165.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+autowrap_mode = 2
+settings = ExtResource("4_sv1ui")
+
+[node name="ChargesLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 10.0
+offset_top = 237.0
+offset_right = 289.0
+offset_bottom = 275.0
+mouse_filter = 1
+text = "Charges: 0/1"
+label_settings = ExtResource("3_fr0oq")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="mouse_entered" from="Button" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="Button" to="." method="onMouseInUI" binds= [false]]

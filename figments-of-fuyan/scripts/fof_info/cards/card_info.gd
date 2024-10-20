@@ -11,6 +11,7 @@ const VISION_RAY_SCENE_PATH: String = "res://scenes/game/cards/world/vision_ray.
 @export var energy: int
 @export var rarity: Game.Rarities
 @export var initial_traits: Array[SavedDataTrait]
+@export var active_abilities: Array[ActiveAbilityDatastore]
 @export_multiline var ability_text: String
 @export_multiline var flavor_text: String
 @export_group("")

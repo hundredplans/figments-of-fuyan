@@ -9,7 +9,7 @@ func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0) -> void
 	id = _id
 	first_init = _first_init
 	
-	if _public_id == 0: _public_id = Game.onIncrementPublicID()
+	if _public_id == 0 and !Engine.is_editor_hint(): _public_id = Game.onIncrementPublicID()
 	public_id = _public_id
 
 static func onLoadModel(data: SavedData, parent: Node3D, init_args: Array = []) -> FofGD:

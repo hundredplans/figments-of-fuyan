@@ -1,6 +1,6 @@
 extends Node
 
-func getAdmin() -> bool: return true
+func getAdmin() -> bool: return false
 #region Resources
 var GDSCRIPT_TYPES: Array = [AreaInfo, LevelInfo, PalmLevelInfo, \
 	CardInfo, ChampionCardInfo, BoonInfo, ToolInfo, MapNodeInfo, SaveFileInfo, EncounterInfo, MapEffectInfo,\
@@ -17,7 +17,7 @@ func _ready() -> void:
 			if type == CardInfo:
 				var ALT_DIR_PATH: String = "res://test/test_cards/"
 				fof_info_array += getFilesRecursive(ALT_DIR_PATH).map(func(x: String): return load(x))
-				
+					
 			for fof_info in fof_info_array:
 				fof_info_dict[type][fof_info.id] = fof_info 
 		else: fof_info_dict[type] = fof_info_dict[TileObjectInfo]

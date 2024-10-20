@@ -16,6 +16,9 @@ extends Control
 
 @onready var BackgroundDimmer: ColorRect = %BackgroundDimmer
 @onready var PassButton: Button = %PassButton
+
+@onready var ActiveEffects: Container = %ActiveEffects
+@onready var Console: Control = %Console
 #endregion
 
 #region Globals
@@ -50,6 +53,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level.remove_card.connect(onRemoveCardUI)
 	level.energy_changed.connect(onUpdateEnergy)
 	level.turn_state_changing.connect(onTurnStateChanging)
+	level.awakened.connect(onAwakened)
 	save_file.update_shillings.connect(onUpdateShillings)
 	
 	level.camera_change_action.connect(onCameraUpdated)
@@ -62,6 +66,8 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	setAbilityNameLabel()
 	onUpdateEnergy(level.energy)
 	onUpdateShillings(save_file.shillings)
+	
+	for Card in get_tree().get_nodes_in_group("FieldCardsGD"): onAwakened(Card)
 #endregion
 
 #region Action Lock / Mouse In UI
@@ -150,6 +156,14 @@ func _on_camera_button_pressed() -> void:
 func onCameraUpdated(SpectateObject: GameObjectGD, __: GameObjectGD) -> void:
 	setHeroNameLabel(SpectateObject.info.name if (SpectateObject != null and SpectateObject is CardGD) else "")
 	PassButton.setAllySpectating(SpectateObject)
+	
+	var active_abilities: Array = []
+	if SpectateObject != null and SpectateObject is CardGD and SpectateObject.isAlly(0):
+		active_abilities = SpectateObject.active_abilities
+		
+	ActiveEffects.onUpdate(active_abilities)
+	Console.onCameraUpdated(SpectateObject)
+	
 #endregion
 
 #region Deck / Graveyard
@@ -194,4 +208,14 @@ func onChangeVisionMode(state: bool) -> void:
 		in_vision_mode = state
 		BackgroundDimmer.visible = state
 		vision_mode_changed.emit(state)
+#endregion
+
+#region Inspect Screen
+func onInspectScreenCreated(InspectScreen: Control) -> void:
+	InspectScreen.mouse_in_ui.connect(onMouseInUI)
+#endregion
+
+#region Awakened
+func onAwakened(Card: CardGD) -> void:
+	Card.inspect_screen_created.connect(onInspectScreenCreated)
 #endregion

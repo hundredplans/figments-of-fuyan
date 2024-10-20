@@ -105,7 +105,7 @@ func getLevelPoints() -> Array:
 	return call("getPoints")
 
 func onCreateAdjustedPoints() -> void:
-	var theta: float = (tile_rotation) * (PI / 6)
+	var theta: float = rotation.y
 	adjusted_points = getLevelPoints().map(func(x: Vector3): return (Game.onRotatePosition(x, theta)) + position)
 	if self is TileGD: adjusted_points += call("getTileFillPoints").map(func(x: Vector3): return x + position)
 	
@@ -114,7 +114,7 @@ func onCreateAdjustedPoints() -> void:
 		#Point.setInfo(self)
 		#add_child(Point)
 		#Point.global_position = point
-#endregion
+#endregion	
 
 #region Attackable
 func isAttackable(_Attacker: GameObjectGD) -> bool:

@@ -1,5 +1,7 @@
 extends Control
 
+signal mouse_in_ui
+
 @export var tooltip: PackedScene
 
 @onready var InspectSubviewport: SubViewport = %InspectSubviewport
@@ -11,6 +13,7 @@ var Card: CardGD
 func setInfo(_Card: CardGD) -> void:
 	Card = _Card
 	var CardUI: Control = Card.onCreateCardUI(CardSpot)
+	CardUI.mouse_in_ui.connect(onMouseInUI)
 	CardUI.setBuffLabels()
 	
 	FlavorTextLabel.text = Card.info.flavor_text
@@ -21,3 +24,5 @@ func setInfo(_Card: CardGD) -> void:
 		TooltipContainer.add_child(Tooltip)
 		Tooltip.setInfo(FofObject)
 		
+func onMouseInUI(state: bool) -> void:
+	mouse_in_ui.emit(state)

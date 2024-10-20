@@ -1,0 +1,24 @@
+extends VBoxContainer
+
+signal mouse_in_ui
+@export var ActiveEffectBoxPacked: PackedScene
+
+func onUpdate(active_effects: Array) -> void:
+	for grandchild in getGrandchildren(): grandchild.queue_free()
+	
+	for i in range(active_effects.size()):
+		var active_effect: ActiveEffectDatastore = active_effects[i]
+		var ActiveEffectBox: Control = ActiveEffectBoxPacked.instantiate()
+		get_child(i % 2).add_child(ActiveEffectBox)
+		ActiveEffectBox.setInfo(active_effect)
+		ActiveEffectBox.mouse_in_ui.connect(func(x: bool): mouse_in_ui.emit(x))
+
+func getGrandchildren() -> Array:
+	var grandchildren: Array = []
+	for child in get_children():
+		for grandchild in child.get_children().filter(func(x: Control): return !x.is_queued_for_deletion()):
+			grandchildren.append(grandchild)
+	return grandchildren
+	
+func onUpdateActionLock(state: bool) -> void:
+	for grandchild in getGrandchildren(): grandchild.onUpdateActionLock(state) 

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="StatusEffectInfo" load_steps=5 format=3 uid="uid://bo263kaen2ix0"]
+
+[ext_resource type="Script" path="res://scripts/fof/status_effects/status_effect.gd" id="1_8xm6b"]
+[ext_resource type="Script" path="res://scripts/fof_info/status_effects/status_effect_info.gd" id="1_c8e4b"]
+[ext_resource type="Texture2D" uid="uid://dsjks0vwgi12w" path="res://assets/sprites/game/fof_object_icons/status_effects/fatigue.png" id="2_dv55i"]
+[ext_resource type="Script" path="res://scripts/saved_data/status_effects/saved_data_status_effect.gd" id="2_y0n5g"]
+
+[resource]
+script = ExtResource("1_c8e4b")
+icon = ExtResource("2_dv55i")
+description = "This can't move, attack or use abilities for [1] Turn"
+state = 1
+id = 3
+name = "Fatigue"
+gdscript = ExtResource("1_8xm6b")
+saved_data = ExtResource("2_y0n5g")

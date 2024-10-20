@@ -24,6 +24,7 @@ var status_effects: Array = []
 
 var delayed_stats: Array[StatAction]
 var ability_save: Dictionary
+var active_abilities: Array[ActiveAbilityDatastore]
 #endregion
 
 #region Globals
@@ -31,6 +32,7 @@ const DEFAULT_ANIMATION_BLEND_TIME: float = 0.2
 #endregion
 
 #region Signals
+signal inspect_screen_created
 signal mouse_entered
 signal mouse_exited
 #endregion
@@ -61,7 +63,7 @@ func setTileRotation(_tile_rotation: int) -> void:
 #endregion
 
 #region Getters
-func getAbilityText() -> String:
+func getDescription() -> String:
 	if ascended and !info.ascended_ability_text.is_empty(): return info.ascended_ability_text
 	return info.ability_text
 	
@@ -138,7 +140,7 @@ func onSave() -> SavedDataCard:
 	return SavedDataCard.new(info.id, false, public_id, coords, tile_rotation, level_visible, is_revealed, team, \
 	attack, health, speed, max_speed, max_health, energy, ascended, draw_order, card_place, turn_state,\
 	SavedData.onSaveGroup(field_traits), SavedData.onSaveGroup(status_effects), attacks, delayed_stats,\
-	visible_game_object_public_ids, ability_save)
+	visible_game_object_public_ids, ability_save, active_abilities)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -153,8 +155,12 @@ func onLoadData(data: SavedData) -> void:
 	delayed_stats = data.delayed_stats
 	visible_game_objects_public_ids = data.visible_game_objects_public_ids
 	ability_save = data.ability_save
-	for stat_action in delayed_stats: stat_action.onLoad()
+	active_abilities = data.active_abilities
 	
+	for active_ability in active_abilities:
+		active_ability.Card = self
+	
+	for stat_action in delayed_stats: stat_action.onLoad()
 	for custom_variable in ability_save:
 		set(custom_variable, ability_save[custom_variable])
 	
@@ -174,12 +180,16 @@ func onLoadTraits() -> void:
 	FieldInfo.onUpdateTraits()
 	
 func onLoadStatusEffects() -> void:
-	if isAlly(1): status_effects_datas.append(SavedDataStatusEffect.new(2, true, 0, 1, getCoords()))
-	
 	for status_effect_data in status_effects_datas:
 		var StatusEffect: StatusEffectGD = SavedData.onLoadModel(status_effect_data, self)
 		status_effects.append(StatusEffect)
 		FieldInfo.onAddIcon(StatusEffect)
+	
+func onCreateInitialActiveAbilities() -> void:
+	for _active_ability_datastore in info.active_abilities:
+		var active_ability_datastore: ActiveAbilityDatastore = _active_ability_datastore.duplicate()
+		active_ability_datastore.Card = self
+		active_abilities.append(active_ability_datastore)
 	
 func onChangeCardPlace(place: Game.CardPlaces) -> void:
 	if place != card_place:
@@ -306,6 +316,7 @@ func onInspectCard() -> void:
 		var InspectCardScreen: Control = load(info.INSPECT_CARD_SCREEN).instantiate()
 		InspectableParent.add_child(InspectCardScreen)
 		InspectCardScreen.setInfo(self)
+		inspect_screen_created.emit(InspectCardScreen)
 #endregion
 
 #region TurnStates
@@ -435,6 +446,9 @@ func onAwaken() -> void:
 	setTileRotation(tile_rotation)
 	setTurnState(turn_state)
 	setLevelVisible(level_visible)
+	
+	if Game.getRarityString(info.rarity) != "Champion":
+		onCreateBaseStatusEffect(3, 2)
 #endregion
 
 #region Vision
@@ -485,8 +499,8 @@ func getVisibleGameObjects() -> Array:
 	return visible_game_objects
 	
 func setVisibleGameObjects() -> void:
-	for public_id in visible_game_objects_public_ids:
-		visible_game_objects.append(Game.onFindPublicIDObject(public_id))
+	for _public_id in visible_game_objects_public_ids:
+		visible_game_objects.append(Game.onFindPublicIDObject(_public_id))
 	
 func onCreateVisionRay() -> void:
 	VisionRay = load(info.VISION_RAY_SCENE_PATH).instantiate()
@@ -609,6 +623,11 @@ func onRemoveStatusEffect(status_effect: StatusEffectGD) -> void:
 func onAddStatusEffect(status_effect: StatusEffectGD) -> void:
 	status_effects.append(status_effect)
 	if FieldInfo != null: FieldInfo.onAddIcon(status_effect)
+	
+func onCreateBaseStatusEffect(id: int, turns: int = 1) -> void:
+	var status_data := SavedDataStatusEffect.new(id, true, 0, turns, getCoords())
+	var status_effect: StatusEffectGD = SavedData.onLoadModel(status_data, self)
+	onPushAction(AddStatusEffectAction.new(status_effect))
 #endregion
 
 #region Advance Turn
