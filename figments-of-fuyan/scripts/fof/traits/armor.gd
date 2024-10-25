@@ -6,7 +6,7 @@ func onLoadData(data: SavedData) -> void:
 	armor = data.armor
 	
 func onSave() -> SavedDataArmor:
-	return SavedDataArmor.new(info.id, false, public_id, Card.getCoords(), armor)
+	return SavedDataArmor.new(info.id, false, public_id, armor)
 	
 func onProcessAction(action: Action) -> void:
 	if !action.post:

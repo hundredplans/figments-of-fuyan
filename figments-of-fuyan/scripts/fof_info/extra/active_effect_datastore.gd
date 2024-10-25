@@ -3,8 +3,11 @@ class_name ActiveEffectDatastore extends Resource
 @export var name: String
 @export_multiline var description: String
 @export var max_charges: int = -1
-var charges: int
-var used: bool
+
+@export_storage var charges: int
+@export_storage var used: bool
+
+var owner: FofGD
 
 func getName() -> String:
 	return name
@@ -20,3 +23,6 @@ func getCharges() -> int:
 	
 func isUsed() -> bool:
 	return used
+
+func onAdvanceTurn() -> void:
+	used = false

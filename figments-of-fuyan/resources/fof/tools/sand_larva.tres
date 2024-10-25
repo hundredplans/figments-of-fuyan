@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=5 format=3 uid="uid://c58u2b2awelyw"]
+
+[ext_resource type="Script" path="res://scripts/fof/tools/tool.gd" id="1_6v6ty"]
+[ext_resource type="Script" path="res://scripts/fof_info/tools/tool_info.gd" id="1_fb4oe"]
+[ext_resource type="Image" uid="uid://dck6cc6bb1ptk" path="res://assets/sprites/game/cards/art_pop/sand_larva.png" id="2_qusx2"]
+[ext_resource type="Script" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="3_87c5w"]
+
+[resource]
+script = ExtResource("1_fb4oe")
+icon = ExtResource("2_qusx2")
+description = "LAST WILL: Awaken a neutral Sand Larva"
+ascended_description = ""
+RARITY = 2
+id = 11
+name = "Sand Larva"
+gdscript = ExtResource("1_6v6ty")
+saved_data = ExtResource("3_87c5w")

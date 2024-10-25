@@ -1,0 +1,62 @@
+[gd_resource type="Resource" script_class="CardInfo" load_steps=11 format=3 uid="uid://0x1ocnplgsij"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_qt1qu"]
+[ext_resource type="Image" uid="uid://0wetkbms0dlv" path="res://assets/sprites/game/cards/art_pop/coconut_crab.png" id="2_lc7ul"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_ytoss"]
+[ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="3_244dr"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_m42yu"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="4_ktkxl"]
+[ext_resource type="PackedScene" uid="uid://c58k7e6yqhsfr" path="res://assets/models/fof/cards/coconut_crab.glb" id="5_qe7ba"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_37af5"]
+size = Vector3(0.645752, 0.64212, 0.468506)
+
+[sub_resource type="PackedScene" id="PackedScene_8y4yb"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000854492, 0.323532, 0.012085), SubResource("BoxShape3D_37af5")],
+"version": 3
+}
+
+[sub_resource type="Resource" id="Resource_vtnsc"]
+script = ExtResource("2_ytoss")
+coords = Vector4i(0, 0, 0, 0)
+id = 7
+first_init = false
+public_id = 0
+
+[resource]
+script = ExtResource("3_m42yu")
+attack = 1
+health = 3
+speed = 2
+energy = 2
+rarity = 1
+initial_traits = Array[ExtResource("2_ytoss")]([SubResource("Resource_vtnsc")])
+active_abilities = Array[ExtResource("1_qt1qu")]([])
+ability_text = "ERRATIC; Disguise this as a Coconut when out of vision for [2] Turns"
+flavor_text = ""
+art_mini_coordinate = Vector2i(80, 70)
+art_pop = ExtResource("2_lc7ul")
+model = ExtResource("5_qe7ba")
+points = []
+collision_shape = SubResource("PackedScene_8y4yb")
+stat = 0.718589
+top = 0.643101
+eye = 0.455338
+plus_attack = 1
+plus_health = 1
+plus_speed = 0
+plus_energy = 0
+ascended_traits = Array[ExtResource("2_ytoss")]([])
+ascended_ability_text = ""
+id = 9
+name = "Coconut Crab"
+gdscript = ExtResource("3_244dr")
+saved_data = ExtResource("4_ktkxl")

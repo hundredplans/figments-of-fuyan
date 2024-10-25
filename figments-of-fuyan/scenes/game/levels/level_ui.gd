@@ -12,7 +12,7 @@ extends Control
 @onready var EnergyLabel: Label = %EnergyLabel
 @onready var PhaseIcon: TextureRect = %PhaseIcon
 @onready var HeroNameLabel: Label = %HeroNameLabel
-@onready var AbilityNameLabel: Label = %AbilityNameLabel
+@onready var ActiveEffectLabel: Label = %ActiveEffectLabel
 
 @onready var BackgroundDimmer: ColorRect = %BackgroundDimmer
 @onready var PassButton: Button = %PassButton
@@ -28,6 +28,9 @@ signal action_lock
 signal card_selected
 signal camera_direction_changed
 signal vision_mode_changed
+signal active_effect_box_pressed
+signal active_effect_added
+
 var save_file: SaveFileGD
 var level: LevelGD
 var area: AreaGD
@@ -54,6 +57,8 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level.energy_changed.connect(onUpdateEnergy)
 	level.turn_state_changing.connect(onTurnStateChanging)
 	level.awakened.connect(onAwakened)
+	level.active_effect_used.connect(onActiveEffectUsed)
+	level.active_effect_added.connect(onActiveEffectAdded)
 	save_file.update_shillings.connect(onUpdateShillings)
 	
 	level.camera_change_action.connect(onCameraUpdated)
@@ -61,9 +66,11 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	HandBox.setInfo(HandPanelAnimationPlayer, HandBoxArea)
 	ArtMiniRect.texture = save_file.getChampionCard().info.getArtMini()
 	LevelLabel.text = level.info.name
+	World.active_effect_activated.connect(onActiveEffectActivated)
+	World.active_effect_deselected.connect(onActiveEffectDeselected)
 	
 	setHeroNameLabel()
-	setAbilityNameLabel()
+	setActiveEffectLabel()
 	onUpdateEnergy(level.energy)
 	onUpdateShillings(save_file.shillings)
 	
@@ -157,11 +164,7 @@ func onCameraUpdated(SpectateObject: GameObjectGD, __: GameObjectGD) -> void:
 	setHeroNameLabel(SpectateObject.info.name if (SpectateObject != null and SpectateObject is CardGD) else "")
 	PassButton.setAllySpectating(SpectateObject)
 	
-	var active_abilities: Array = []
-	if SpectateObject != null and SpectateObject is CardGD and SpectateObject.isAlly(0):
-		active_abilities = SpectateObject.active_abilities
-		
-	ActiveEffects.onUpdate(active_abilities)
+	onUpdateActiveEffects(SpectateObject)
 	Console.onCameraUpdated(SpectateObject)
 	
 #endregion
@@ -180,14 +183,16 @@ func _on_pass_button_pressed() -> void:
 	
 func onTurnStateChanging(Card: CardGD) -> void:
 	PassButton.setIsAllyInactiveActive(Card)
+	if Card == level.SpectateObject:
+		onUpdateActiveEffects()
 #endregion
 
 #region Hero + Ability Labels
 func setHeroNameLabel(text: String = "") -> void:
 	HeroNameLabel.text = text
 	
-func setAbilityNameLabel(text: String = "") -> void:
-	AbilityNameLabel.text = text
+func setActiveEffectLabel(text: String = "") -> void:
+	ActiveEffectLabel.text = text
 #endregion
 
 #region Minimap
@@ -219,3 +224,34 @@ func onInspectScreenCreated(InspectScreen: Control) -> void:
 func onAwakened(Card: CardGD) -> void:
 	Card.inspect_screen_created.connect(onInspectScreenCreated)
 #endregion
+
+#region Active Effects
+func onActiveEffectBoxPressed(active_effect: ActiveEffectDatastore) -> void:
+	var tiles: ActiveEffectTiles = active_effect.owner.getActiveEffectTiles(active_effect)
+	if !tiles.in_range_tiles.is_empty():
+		setActiveEffectLabel(active_effect.name)
+		active_effect_box_pressed.emit(active_effect, tiles)
+	
+		
+func onActiveEffectDeselected() -> void:
+	setActiveEffectLabel("")
+		
+func onActiveEffectActivated(_active_effect: ActiveEffectDatastore) -> void:
+	onUpdateActiveEffects()
+	
+func onUpdateActiveEffects(SpectateObject: GameObjectGD = level.getSpectateObject()) -> void:
+	var active_effects: Array = []
+	if SpectateObject != null and SpectateObject is CardGD:
+		active_effects = SpectateObject.active_effects
+		if SpectateObject.getTool() != null:
+			active_effects += SpectateObject.getTool().active_effects
+		
+	ActiveEffects.onUpdate(active_effects)
+#endregion
+
+#region
+func onActiveEffectUsed(_active_effect: ActiveEffectDatastore) -> void:
+	onUpdateActiveEffects()
+	
+func onActiveEffectAdded(_active_effect: ActiveEffectDatastore) -> void:
+	onUpdateActiveEffects()

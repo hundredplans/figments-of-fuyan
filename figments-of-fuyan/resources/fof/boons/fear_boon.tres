@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="BoonInfo" load_steps=5 format=3 uid="uid://cdmdxo3exmn1o"]
+
+[ext_resource type="Script" path="res://scripts/fof/boons/boon.gd" id="1_2klj7"]
+[ext_resource type="Script" path="res://scripts/fof_info/boons/boon_info.gd" id="1_52ewj"]
+[ext_resource type="Image" uid="uid://j55c2msepx11" path="res://assets/sprites/game/boons/fear.png" id="2_oyqu1"]
+[ext_resource type="Script" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="2_p3cb1"]
+
+[resource]
+script = ExtResource("1_52ewj")
+icon = ExtResource("2_oyqu1")
+description = "Enemies are stunned for the first turn"
+ascended_description = "Enemies are stunned for the first two turns"
+RARITY = 3
+id = 7
+name = "Fear Boon"
+gdscript = ExtResource("1_2klj7")
+saved_data = ExtResource("2_p3cb1")

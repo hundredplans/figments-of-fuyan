@@ -16,6 +16,9 @@ extends Node3D
 @onready var InfoSprite: Sprite3D = %InfoSprite
 @onready var Numbers: Node3D = %Numbers
 @onready var IconsManager: Node3D = %IconsManager
+
+@onready var ToolIcon: Sprite3D = %ToolIcon
+@onready var ToolShine: Sprite3D = %ToolShine
 #endregion
 
 @export var number_to_model: Array[PackedScene]
@@ -64,6 +67,7 @@ var Card: CardGD
 
 func setInfo(_Card: CardGD) -> void:
 	Card = _Card
+	Card.tool_added.connect(onToolAdded)
 	position.y = Card.info.stat
 	NumbersParticle.global_position.y = Card.info.top / 2.0
 	
@@ -78,6 +82,8 @@ func onResetStats() -> void:
 func onResetDepthTest() -> void:
 	var mat: Material = null if !is_spectated else top_base_material
 	InfoSprite.no_depth_test = is_spectated
+	ToolIcon.no_depth_test = is_spectated
+	ToolShine.no_depth_test = is_spectated
 	for mesh in Helper.getNodeTypeRecursive(FloatingStats, MeshInstance3D):
 		mesh.set_surface_override_material(0, mat)
 	
@@ -97,7 +103,7 @@ func onCreateStat(spot: Node3D, value: int, above_green_value: int, below_red_va
 	numbers = numbers.map(func(x: int): return number_to_model[x].instantiate())
 	
 	var mat: Material = white_material if !is_spectated else white_top_material
-	if value < below_red_value: mat = red_material if !is_spectated else white_top_material
+	if value < below_red_value: mat = red_material if !is_spectated else red_top_material
 	elif value > above_green_value: mat = green_material if !is_spectated else green_top_material
 	
 	for NumberModel in numbers:
@@ -107,7 +113,7 @@ func onCreateStat(spot: Node3D, value: int, above_green_value: int, below_red_va
 	spot.scale = Vector3.ONE if numbers.size() == 1 else Vector3(0.75, 0.75, 0.75)
 	if numbers.size() == 2:
 		numbers[0].position.x = -0.125
-		numbers[1].postiion.x = 0.125
+		numbers[1].position.x = 0.125
 		
 var is_spectated: bool = false
 func onSpectated(state: bool) -> void:
@@ -209,14 +215,15 @@ func onAddTrait(Trait: TraitGD) -> void:
 #endregion
 
 #region IconsManager
-func onRemoveIcon(fof_object: FofGD) -> void:
-	onFindIconNode(fof_object).queue_free()
+func onRemoveIcon(FofObject: FofGD) -> void:
+	onFindIconNode(FofObject).queue_free()
 	
-func onAddIcon(FofObject: FofGD) -> void:
+func onAddIcon(FofObject: FofGD, icon: Texture2D = FofObject.getIcon()) -> Node3D:
 	var FofObjectIcon: Node3D = FofObjectIconPacked.instantiate()
 	IconsManager.add_child(FofObjectIcon)
 	FofObjectIcon.setInfo(FofObject)
 	FofObjectIcon.setTexture(FofObject.getIcon())
+	return FofObjectIcon
 	
 func onFindIconNode(FofObject: FofGD) -> Sprite3D:
 	for child in IconsManager.get_children():
@@ -226,7 +233,7 @@ func onFindIconNode(FofObject: FofGD) -> Sprite3D:
 
 #region Delayed Stats
 func onUpdateDelayedStats() -> void:
-	onResetDelayedStats()
+	onResetNullIcons()
 	var stats: Dictionary = {Game.Stats.ATTACK: 0, Game.Stats.HEALTH: 0, Game.Stats.SPEED: 0, Game.Stats.MAX_HEALTH: 0}
 	for stat_action in Card.delayed_stats.filter(func(x: StatAction): return x.turn_delay == 1):
 		for i in range(stat_action.types.size()):
@@ -263,6 +270,11 @@ func onAddDelayedStatNode(type: Game.Stats, value: int) -> void:
 	FofObjectIcon.setTexture(texture)
 	FofObjectIcon.setModulate(icon_color)
 
-func onResetDelayedStats() -> void:
+func onResetNullIcons() -> void:
 	for child in IconsManager.get_children():
 		if child.FofObject == null: child.queue_free()
+
+func onToolAdded(Tool: ToolGD) -> void:
+	ToolIcon.texture = Tool.getIcon() if Tool != null else null
+	ToolShine.visible = Tool != null
+#endregion

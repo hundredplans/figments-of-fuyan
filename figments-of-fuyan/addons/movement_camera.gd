@@ -58,7 +58,6 @@ func _input(event):
 				if !disable_freelook:
 					camera_panning.emit(event.is_pressed())
 					Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED if event.pressed else Input.MOUSE_MODE_VISIBLE)
-					print(event.pressed)
 			MOUSE_BUTTON_WHEEL_UP: # Increases max velocity
 				_vel_multiplier = clamp(_vel_multiplier * 1.1, 0.2, 20)
 			MOUSE_BUTTON_WHEEL_DOWN: # Decereases max velocity

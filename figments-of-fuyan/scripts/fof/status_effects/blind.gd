@@ -6,9 +6,12 @@ func onFofInit() -> void:
 func onProcessAction(action: Action) -> void:
 	super(action)
 	if !action.post:
-		if action is VisionAction and action.Card == Card:
-			action.new_card_visible_game_objects = action.new_card_visible_game_objects.filter(func(x: GameObjectGD): return x.isAdjacent(Card.getCoords()))
+		if !is_queued_for_deletion() and action is VisionAction and Card in action.cards:
+			action.new_visible_game_objects[Card] = action.new_visible_game_objects[Card].filter(func(x: GameObjectGD): return x.isAdjacent(Card.getCoords()))
 	
 func onClear() -> void:
 	super()
 	onPushAction(VisionAction.new(Card))
+
+func getDescription() -> String:
+	return Helper.getDescription(super(), [turns])

@@ -1,5 +1,6 @@
 class_name StatAction extends Action
 
+var cards: Array[CardGD] = []
 var GameObject: GameObjectGD
 @export var game_object_public_id: int
 @export var types: Array # Either stat or array of stats
@@ -34,9 +35,10 @@ func onPreAction() -> void:
 	if !absolute and values.all(func(x: int): return x == 0): onFailAction()
 	
 func onPostAction() -> void:
-	for i in range(types.size()):
-		var type: int = types[i]
-		var value: int = values[i]
+	var max_health_not_damage: bool
+	while (!types.is_empty()):
+		var type: int = types.pop_front()
+		var value: int = values.pop_front()
 		var difference: int
 		match type:
 			Game.Stats.SPEED:
@@ -44,13 +46,49 @@ func onPostAction() -> void:
 				if absolute: GameObject.speed = value
 				else: GameObject.speed += value
 				
-				GameObject.speed = clamp(GameObject.speed, 0, 99)
+				GameObject.speed = clamp(GameObject.speed, 0, GameObject.max_speed)
 				difference = old_speed - GameObject.speed
 				
+			Game.Stats.MAX_SPEED:
+				var old_speed: int = GameObject.max_speed
+				if absolute: GameObject.max_speed = value
+				else: GameObject.max_speed += value
+				
+				GameObject.max_speed = clamp(GameObject.max_speed, 1, 9)
+				difference = old_speed - GameObject.max_speed
+				
+				types.append(Game.Stats.SPEED)
+				values.append(value)
+				
 			Game.Stats.HEALTH:
-				if !absolute and value < 0:
+				if (!absolute and value < 0) and !max_health_not_damage:
 					difference = GameObject.onTakeDamage(owner.Damager, -value) * -1
-		
+				else:
+					var old_health: int = GameObject.health
+					GameObject.health = clamp(GameObject.health + value, 0, GameObject.max_health)
+					difference = GameObject.health - old_health
+					max_health_not_damage = false
+					
+			Game.Stats.MAX_HEALTH:
+				var old_health: int = GameObject.max_health
+				if absolute: GameObject.max_health = value
+				else: GameObject.max_health += value
+				
+				GameObject.max_health = clamp(GameObject.max_health, 0, 99)
+				difference = old_health - GameObject.max_health
+				
+				types.push_front(Game.Stats.HEALTH)
+				values.push_front(value)
+				max_health_not_damage = true
+				
+			Game.Stats.ATTACK:
+				var old_attack: int = GameObject.attack
+				if absolute: GameObject.attack = value
+				else: GameObject.attack += value
+				
+				GameObject.attack = clamp(GameObject.attack, 0, 99)
+				difference = old_attack - GameObject.attack
+					
 		if difference != 0:
 			GameObject.onUpdateStat(type, difference, show_particles)
 	
@@ -70,3 +108,6 @@ func onAdvanceTurn() -> void:
 	turns -= 1
 	if turns == 0: onPushAction(self, GameObject)
 	GameObject.delayed_stats.erase(self)
+	
+func getLogInfo() -> Array:
+	return ["Card: " + GameObject.info.name]

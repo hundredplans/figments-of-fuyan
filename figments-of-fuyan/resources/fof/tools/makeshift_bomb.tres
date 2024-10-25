@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=6 format=3 uid="uid://dwxjhhh8la8q3"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_etyn7"]
+[ext_resource type="Script" path="res://scripts/fof_info/tools/tool_info.gd" id="1_xtgw1"]
+[ext_resource type="Script" path="res://scripts/fof/tools/makeshift_bomb.gd" id="2_3vuad"]
+[ext_resource type="Image" uid="uid://3fwdtndxth8v" path="res://assets/sprites/game/tools/Makeshift Bomb.png" id="2_ojpge"]
+[ext_resource type="Script" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="3_8nwll"]
+
+[resource]
+script = ExtResource("1_xtgw1")
+icon = ExtResource("2_ojpge")
+description = "LAST WILL: Deal [1] DMG to adjacent units"
+ascended_description = "LAST WILL: Deal [1] DMG to enemies in a [2] Tile range"
+RARITY = 3
+active_abilities = Array[ExtResource("1_etyn7")]([])
+id = 2
+name = "Makeshift Bomb"
+gdscript = ExtResource("2_3vuad")
+saved_data = ExtResource("3_8nwll")

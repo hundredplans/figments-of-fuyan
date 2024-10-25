@@ -1,5 +1,6 @@
 extends VBoxContainer
 
+signal pressed
 signal mouse_in_ui
 @export var ActiveEffectBoxPacked: PackedScene
 
@@ -10,8 +11,10 @@ func onUpdate(active_effects: Array) -> void:
 		var active_effect: ActiveEffectDatastore = active_effects[i]
 		var ActiveEffectBox: Control = ActiveEffectBoxPacked.instantiate()
 		get_child(i % 2).add_child(ActiveEffectBox)
+		
 		ActiveEffectBox.setInfo(active_effect)
 		ActiveEffectBox.mouse_in_ui.connect(func(x: bool): mouse_in_ui.emit(x))
+		ActiveEffectBox.pressed.connect(func(x: ActiveEffectDatastore): pressed.emit(x))
 
 func getGrandchildren() -> Array:
 	var grandchildren: Array = []

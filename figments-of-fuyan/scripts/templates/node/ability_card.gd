@@ -1,0 +1,19 @@
+extends CardGD
+
+func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
+	super(active_effect)
+	if active_effect is ActiveAbilityDatastore and active_effect.name == "INSERT NAME":
+		var tiles: Array = []
+		return ActiveEffectTiles.new(tiles, tiles.filter(func(x: TileGD): return x))
+	return null
+	
+func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD) -> void:
+	super(active_effect, PickedTile)
+	if active_effect is ActiveAbilityDatastore and active_effect.name == "INSERT NAME":
+		active_effect.charges -= 1
+		active_effect.used = true
+		
+		var actions: Array = []
+		
+		onPushAction(actions)
+		onAbility()

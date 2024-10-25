@@ -17,5 +17,4 @@ func onSave() -> SavedDataCard:
 	return super()
 	
 func getDescription() -> String:
-	return super()
-	#return Helper.getDescription(super(), [trauma_charges], ["TRAUMA [1]"])
+	return Helper.getDescriptionNumeric(super(), [trauma_charges], [["TRAUMA ", "[1]"]])

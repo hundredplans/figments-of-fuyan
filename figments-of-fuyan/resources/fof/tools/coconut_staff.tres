@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=5 format=3 uid="uid://d0n25jd0p5ixy"]
+
+[ext_resource type="Script" path="res://scripts/fof/tools/tool.gd" id="1_k5x66"]
+[ext_resource type="Script" path="res://scripts/fof_info/tools/tool_info.gd" id="1_washl"]
+[ext_resource type="Script" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="2_6i5g3"]
+[ext_resource type="Image" uid="uid://bbj5jlpmn3rjt" path="res://assets/sprites/game/tools/Coconut Staff.png" id="2_w3w6p"]
+
+[resource]
+script = ExtResource("1_washl")
+icon = ExtResource("2_w3w6p")
+description = "ABILITY: Heal adjacent allies [1] HEALTH. Each ally can only be healed once"
+ascended_description = "ABILITY: Heal allies in vision [1] HEALTH. Each ally can only be healed once"
+RARITY = 5
+id = 7
+name = "Coconut Staff"
+gdscript = ExtResource("1_k5x66")
+saved_data = ExtResource("2_6i5g3")

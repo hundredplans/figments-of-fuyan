@@ -18,6 +18,8 @@ signal remove_card
 signal awakened
 signal turn_state_changing
 signal camera_change_action
+signal active_effect_used
+signal active_effect_added
 
 #region Load / Save
 func onSave() -> SavedData:
@@ -50,11 +52,7 @@ func onLoadData(data: SavedData) -> void:
 	
 	for card_data in data.field_cards_data: SavedData.onLoadModel(card_data, self)
 	for Card in get_tree().get_nodes_in_group("FieldCardsGD"):
-		Card.Tile = Game.getTile(Card.coords)
-		Card.onAwaken()
-		Card.onLoadTraits()
-		Card.onLoadStatusEffects()
-		Card.setVisibleGameObjects()
+		Card.onLoadDataLevel()
 		
 	level_camera_data = data.level_camera_data
 	add_to_group("LevelsGD")
@@ -86,7 +84,7 @@ func onLoadActiveLevel(data: SavedDataLevel) -> void:
 			var Card: CardGD = SavedData.onLoadModel(SavedDataCard.new(Spawn.spawn_id, true, 0, Vector4i.ZERO, Spawn.tile_rotation, false, false, 2), self)
 			onPushAction(AwakenAction.new(Card, Spawn.getTile()))
 				
-		onPushAction(LevelVisibleAction.new(null, false, get_tree().get_nodes_in_group("LevelTileObjectsGD") + get_tree().get_nodes_in_group("FieldCardsGD")))
+		onPushAction(LevelVisibleAction.new(false, get_tree().get_nodes_in_group("LevelTileObjectsGD") + get_tree().get_nodes_in_group("FieldCardsGD")))
 		return
 		
 	onChangePhase(data.phase, true)
@@ -153,6 +151,10 @@ func onProcessAction(action: Action) -> void:
 			turn_state_changing.emit(action.Card)
 		elif action is CameraChangeAction:
 			onCameraChange(action)
+		elif action is ActiveEffectUsedAction:
+			active_effect_used.emit(action.ActiveEffect)
+		elif action is AddActiveEffectAction:
+			active_effect_added.emit(action.active_effect)
 	else:
 		if action is ChangePhaseAction:
 			if action.phase == phase: action.failed = true

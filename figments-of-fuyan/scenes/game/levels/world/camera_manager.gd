@@ -54,6 +54,7 @@ func setInfo(level_camera_data: LevelCameraData) -> void:
 		total_progress = level_camera_data.total_progress
 		FreelookCamera.position = level_camera_data.freelook_posrot.pos
 		FreelookCamera.rotation = level_camera_data.freelook_posrot.rot
+		
 		setCameraType(level_camera_data.is_in_freelook)
 		
 		if !level_camera_data.is_in_freelook:
@@ -67,7 +68,7 @@ func _input(event: InputEvent) -> void:
 		if Input.is_action_just_pressed("ZoomIn"): setCameraRadius(-1); zooming.emit()
 		elif Input.is_action_just_pressed("ZoomOut"): setCameraRadius(1); zooming.emit()
 			
-		if !action_lock:
+		if !action_lock and !get_viewport().gui_get_focus_owner() is LineEdit:
 			if Input.is_action_just_pressed("ChangeCameraLeft"): onChangeCameraInDirection(-1)
 			elif Input.is_action_just_pressed("ChangeCameraRight"): onChangeCameraInDirection(1)
 		

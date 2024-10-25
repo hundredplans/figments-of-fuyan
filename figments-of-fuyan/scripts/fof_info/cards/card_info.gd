@@ -4,6 +4,8 @@ const FIELD_INFO_SCENE_PATH: String = "res://scenes/game/cards/world/field_info.
 const INSPECT_CARD_SCREEN: String = "res://scenes/game/cards/ui/inspect_card_screen.tscn"
 const CARD_UI_SCENE_PATH: String = "res://scenes/game/cards/ui/card_ui.tscn"
 const VISION_RAY_SCENE_PATH: String = "res://scenes/game/cards/world/vision_ray.tscn"
+const UNIT_VISIBLE_PARTICLE_SCENE_PATH: String = "res://scenes/particles/unit_visible_particle.tscn"
+
 @export_group("Card")
 @export var attack: int
 @export var health: int

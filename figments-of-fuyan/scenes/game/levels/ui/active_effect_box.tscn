@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://i2x1spgr2rts" path="res://assets/sprites/ui/scene_specific/active_effect_box.png" id="1_nl6sb"]
 [ext_resource type="PackedScene" uid="uid://6nf3mir2i2rk" path="res://scenes/common/fancy_text/fancy_text_label.tscn" id="2_ilmrk"]
 [ext_resource type="LabelSettings" uid="uid://yueau3nak32p" path="res://resources/ui/label_settings/roboto_small.tres" id="3_fr0oq"]
-[ext_resource type="Resource" uid="uid://bw0qo7tuhyhqm" path="res://resources/ui/fancy_text/fancy_text_label_settings_tiny.tres" id="4_sv1ui"]
+[ext_resource type="Resource" uid="uid://dexjnxstusmq3" path="res://resources/ui/fancy_text/fancy_text_label_settings_little.tres" id="4_ses1t"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_quyqm"]
 
@@ -65,7 +65,6 @@ offset_bottom = 95.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 6
-mouse_filter = 1
 text = "Palmleaf Remedy"
 horizontal_alignment = 1
 autowrap_mode = 2
@@ -80,9 +79,8 @@ offset_right = 266.0
 offset_bottom = 165.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 1
 autowrap_mode = 2
-settings = ExtResource("4_sv1ui")
+settings = ExtResource("4_ses1t")
 
 [node name="ChargesLabel" type="Label" parent="."]
 unique_name_in_owner = true
@@ -91,7 +89,6 @@ offset_left = 10.0
 offset_top = 237.0
 offset_right = 289.0
 offset_bottom = 275.0
-mouse_filter = 1
 text = "Charges: 0/1"
 label_settings = ExtResource("3_fr0oq")
 horizontal_alignment = 1
@@ -99,3 +96,4 @@ vertical_alignment = 1
 
 [connection signal="mouse_entered" from="Button" to="." method="onMouseInUI" binds= [true]]
 [connection signal="mouse_exited" from="Button" to="." method="onMouseInUI" binds= [false]]
+[connection signal="pressed" from="Button" to="." method="onPressed"]

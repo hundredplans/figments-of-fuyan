@@ -5,10 +5,9 @@ var turns: int
 
 #region Save / Load
 func onSave() -> SavedData:
-	return SavedDataStatusEffect.new(info.id, false, public_id, turns, Card.getCoords())
+	return SavedDataStatusEffect.new(info.id, false, public_id, turns)
 	
 func onLoadData(data: SavedData) -> void:
-	Card = Game.getFieldCard(Game.getTile(data.coords))
 	turns = data.turns
 
 func onClear() -> void:

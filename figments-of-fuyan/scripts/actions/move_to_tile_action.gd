@@ -32,9 +32,8 @@ func onPreAction() -> void:
 	delay = (1.0 if !isJumpFall() else getJumpFallDelay()) if Card.level_visible else 0.0
 
 func onPostAction() -> void:
-	var actions: Array = [ OccupyAction.new(Card, DestinationTile, false),\
-	StatAction.new(Card, Game.Stats.SPEED, -1, 0, 0, false, false),\
-	InVisionResetAction.new(Card)]
+	var actions: Array = [OccupyAction.new(Card, DestinationTile, false),\
+	StatAction.new(Card, Game.Stats.SPEED, -1, 0, 0, false, false)]
 	
 	var fall_damage: int = DestinationTile.getFallDamage(Card.Tile)
 	if fall_damage > 0: actions.append(FallDamageAction.new(Card, DestinationTile))

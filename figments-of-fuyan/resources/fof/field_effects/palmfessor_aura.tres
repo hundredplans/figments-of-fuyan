@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="FieldEffectInfo" load_steps=5 format=3 uid="uid://cp23hhnd0ijg"]
+
+[ext_resource type="Script" path="res://scripts/fof/field_effects/field_effect.gd" id="1_b02as"]
+[ext_resource type="Script" path="res://scripts/fof_info/field_effects/field_effect_info.gd" id="1_xjl1f"]
+[ext_resource type="Texture2D" uid="uid://qf8m3byr4cvq" path="res://assets/sprites/game/fof_object_icons/field_effects/palmfessor_aura.png" id="2_8kpq5"]
+[ext_resource type="Script" path="res://scripts/saved_data/field_effects/saved_data_field_effect.gd" id="3_y4ilt"]
+
+[resource]
+script = ExtResource("1_xjl1f")
+icon = ExtResource("2_8kpq5")
+description = ""
+id = 6
+name = "Palmfessor Aura"
+gdscript = ExtResource("1_b02as")
+saved_data = ExtResource("3_y4ilt")

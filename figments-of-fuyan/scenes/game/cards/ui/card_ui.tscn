@@ -233,6 +233,11 @@ position = Vector2(-5, 0)
 texture = ExtResource("15_vn70k")
 centered = false
 
+[node name="ToolIcon" type="Sprite2D" parent="Stats/ToolControl"]
+unique_name_in_owner = true
+texture_filter = 1
+position = Vector2(20, 25)
+
 [node name="Energy" type="Control" parent="Stats"]
 layout_mode = 1
 anchor_left = 0.672

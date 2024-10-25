@@ -24,7 +24,10 @@ var status_effects: Array = []
 
 var delayed_stats: Array[StatAction]
 var ability_save: Dictionary
-var active_abilities: Array[ActiveAbilityDatastore]
+var active_effects: Array[ActiveEffectDatastore]
+var field_effects: Array[FieldEffectGD]
+
+var Tool: ToolGD
 #endregion
 
 #region Globals
@@ -33,6 +36,7 @@ const DEFAULT_ANIMATION_BLEND_TIME: float = 0.2
 
 #region Signals
 signal inspect_screen_created
+signal tool_added
 signal mouse_entered
 signal mouse_exited
 #endregion
@@ -122,6 +126,9 @@ func onDeath() -> void:
 	
 func onHurt() -> void:
 	onPlayAnimation("Hurt")
+	
+func onAbility() -> void:
+	onPlayAnimation("Ability")
 #endregion
 
 #region Card
@@ -134,13 +141,14 @@ func onCreateCardUI(parent: Control, highlight_on_hover: bool = false) -> Contro
 
 #region Save/Load/Clear
 func onSave() -> SavedDataCard:
+	var tool_data: SavedDataTool = Tool.onSave() if Tool != null else null
 	for stat_action in delayed_stats: stat_action.onSave()
-	var visible_game_object_public_ids: Array = visible_game_objects.map(func(x: GameObjectGD): return x.public_id)
+	visible_game_objects_public_ids = visible_game_objects.map(func(x: GameObjectGD): return x.public_id)
 	
 	return SavedDataCard.new(info.id, false, public_id, coords, tile_rotation, level_visible, is_revealed, team, \
 	attack, health, speed, max_speed, max_health, energy, ascended, draw_order, card_place, turn_state,\
 	SavedData.onSaveGroup(field_traits), SavedData.onSaveGroup(status_effects), attacks, delayed_stats,\
-	visible_game_object_public_ids, ability_save, active_abilities)
+	visible_game_objects_public_ids, ability_save, active_effects, tool_data, SavedData.onSaveGroup(field_effects))
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -155,12 +163,15 @@ func onLoadData(data: SavedData) -> void:
 	delayed_stats = data.delayed_stats
 	visible_game_objects_public_ids = data.visible_game_objects_public_ids
 	ability_save = data.ability_save
-	active_abilities = data.active_abilities
+	active_effects = data.active_effects
 	
-	for active_ability in active_abilities:
-		active_ability.Card = self
+	if data.tool_data != null:
+		Tool = SavedData.onLoadModel(data.tool_data, self)
+		Tool.Card = self
 	
-	for stat_action in delayed_stats: stat_action.onLoad()
+	for active_effect in active_effects:
+		active_effect.owner = self
+	
 	for custom_variable in ability_save:
 		set(custom_variable, ability_save[custom_variable])
 	
@@ -170,26 +181,32 @@ func onLoadData(data: SavedData) -> void:
 	onChangeCardPlace(data.card_place)
 	add_to_group("CardsGD")
 	
+func onLoadDataLevel() -> void:
+	super()
+	Tile = Game.getTile(coords)
+	
+	for stat_action in delayed_stats: stat_action.onLoad()
+	
+	onAwaken()
+	onLoadTraits()
+	onLoadStatusEffects()
+	onLoadFieldEffects()
+	setVisibleGameObjects()
+	
 var field_traits_datas: Array
 var status_effects_datas: Array
+var field_effects_datas: Array
 func onLoadTraits() -> void:
 	for field_trait_data in field_traits_datas:
-		var Trait: TraitGD = SavedData.onLoadModel(field_trait_data, self)
-		field_traits.append(Trait)
-		FieldInfo.onAddTrait(Trait)
-	FieldInfo.onUpdateTraits()
+		onAddTrait(SavedData.onLoadModel(field_trait_data, self))
 	
 func onLoadStatusEffects() -> void:
 	for status_effect_data in status_effects_datas:
-		var StatusEffect: StatusEffectGD = SavedData.onLoadModel(status_effect_data, self)
-		status_effects.append(StatusEffect)
-		FieldInfo.onAddIcon(StatusEffect)
+		onAddStatusEffect(SavedData.onLoadModel(status_effect_data, self))
 	
-func onCreateInitialActiveAbilities() -> void:
-	for _active_ability_datastore in info.active_abilities:
-		var active_ability_datastore: ActiveAbilityDatastore = _active_ability_datastore.duplicate()
-		active_ability_datastore.Card = self
-		active_abilities.append(active_ability_datastore)
+func onLoadFieldEffects() -> void:
+	for field_effect_data in field_effects_datas:
+		onAddFieldEffect(SavedData.onLoadModel(field_effect_data, self))
 	
 func onChangeCardPlace(place: Game.CardPlaces) -> void:
 	if place != card_place:
@@ -321,12 +338,8 @@ func onInspectCard() -> void:
 
 #region TurnStates
 func setTurnState(_turn_state: Game.TurnStates) -> void:
-	if turn_state != _turn_state:
-		turn_state = _turn_state
-		FieldInfo.setInfoSpriteTurnState()
-		match turn_state:
-			Game.TurnStates.INACTIVE:
-				onPushAction([ChangeAttacksAction.new(self, getMaxAttacks()), StatAction.new(self, Game.Stats.SPEED, max_speed, 0, false, false)])
+	turn_state = _turn_state
+	FieldInfo.setInfoSpriteTurnState()
 	
 #endregion
 
@@ -339,12 +352,22 @@ func onProcessAction(action: Action) -> void:
 			if action is MovementFinishAction and action.Card == self: Tile.setOutlineMaterial()
 			elif action is ChangePhaseAction and Game.isAdvanceTurn(action.phase, team):
 				onAdvanceTurn()
+			elif isOccupyVisionVisibleAction(action):
+				onAddUnitVisibleParticle()
+			elif action is AwakenAction and action.Card == self:
+				if action.owner is PlayCardAction: onPlayedFromHand()
+				else: onPushAction(ChangeTurnStateAction.new(self, Game.TurnStates.INACTIVE))
+			
 	elif Game.CardPlaces.GRAVEYARD == card_place:
 		if action.post:
 			if action is DeathAction and action.Defender == self:
 				onRemoveModel()
 				onRemoveFieldInfo()
 
+func isOccupyVisionVisibleAction(action: Action) -> bool:
+	return false
+	#return action is LevelVisibleAction and action.owner is VisionAction and action.owner.owner is OccupyAction\
+	#and action.owner.owner.Card == self and action.owner.level_visible != getLevelVisible()
 #endregion
 
 #region Movement
@@ -423,11 +446,11 @@ func onCreateFieldInfo() -> void:
 	add_child(FieldInfo)
 	FieldInfo.setInfo(self)
 	
-	for Trait in field_traits:
-		FieldInfo.onAddTrait(Trait)
-		
-	for StatusEffect in status_effects:
-		FieldInfo.onAddIcon(StatusEffect)
+	#for Trait in field_traits:
+		#FieldInfo.onAddTrait(Trait)
+		#
+	#for StatusEffect in status_effects:
+		#FieldInfo.onAddIcon(StatusEffect)
 	
 func onRemoveFieldInfo() -> void:
 	FieldInfo.queue_free()
@@ -447,6 +470,7 @@ func onAwaken() -> void:
 	setTurnState(turn_state)
 	setLevelVisible(level_visible)
 	
+func onPlayedFromHand() -> void:
 	if Game.getRarityString(info.rarity) != "Champion":
 		onCreateBaseStatusEffect(3, 2)
 #endregion
@@ -458,11 +482,19 @@ var VisionRay: RayCast3D
 const BASE_VISION_RANGE: int = 5
 const EXTRA_RAY_LENGTH: float = 1.05
 
-func onUpdateVision() -> Array:
+func onAddUnitVisibleParticle() -> void:
+	var UnitVisibleParticle: GPUParticles3D = load(info.UNIT_VISIBLE_PARTICLE_SCENE_PATH).instantiate()
+	add_child(UnitVisibleParticle)
+	UnitVisibleParticle.emitting = true
+
+func getVisionRange() -> int:
+	return BASE_VISION_RANGE
+
+func onUpdateVision() -> Dictionary:
 	var updated_visible_game_objects: Dictionary = {}
-	if card_place != Game.CardPlaces.GRAVEYARD:
+	if card_place == Game.CardPlaces.FIELD:
 		get_tree().call_group("FieldCardsGD", "setDetectableByRay", false)
-		var tile_objects: Array = Game.getAdjacentOrCloserTiles(Tile, BASE_VISION_RANGE)
+		var tile_objects: Array = Game.getAdjacentOrCloserTiles(Tile, getVisionRange())
 		
 		var cards: Array = []
 		for VisionTile in tile_objects.duplicate():
@@ -485,9 +517,16 @@ func onUpdateVision() -> Array:
 					var GameObject: GameObjectGD = Helper.getCollision(VisionRay.get_collider(), GameObjectGD)
 					if GameObject in tile_objects:
 						updated_visible_game_objects[GameObject] = null
+		updated_visible_game_objects[self] = null
 	else: updated_visible_game_objects = {}
 	
-	return updated_visible_game_objects.keys()
+	return updated_visible_game_objects
+	
+func getVisibleFieldCardsEnemies() -> Array:
+	return getVisibleFieldCards().filter(func(x: CardGD): return isEnemy(x.team))
+	
+func getVisibleFieldCardsAllies() -> Array:
+	return getVisibleFieldCards().filter(func(x: CardGD): return isAlly(x.team) and x != self)
 	
 func getVisibleFieldCards() -> Array:
 	return visible_game_objects.filter(func(x: GameObjectGD): return x is CardGD)
@@ -507,12 +546,9 @@ func onCreateVisionRay() -> void:
 	add_child(VisionRay)
 	VisionRay.position.y = info.eye
 	
-func setLevelVisible(state: bool, Discoverer: GameObjectGD = null) -> void:
+func setLevelVisible(state: bool) -> void:
 	super(state)
 	visible = state
-	
-	if Discoverer != null: onPushAction(DiscoverAction.new(self, Discoverer, state))
-	
 	
 func setDetectableByRay(state: bool) -> void:
 	if state: setCollisionLayers(96)
@@ -592,6 +628,7 @@ func onUpdateStat(type: Game.Stats, difference: int, show_particles: bool) -> vo
 		Game.Stats.HEALTH: value = health
 		Game.Stats.SPEED: value = speed
 		Game.Stats.MAX_HEALTH: value = max_health
+		Game.Stats.MAX_SPEED: value = max_speed
 	
 	FieldInfo.onUpdateStat(type, value, difference, level_visible, show_particles)
 #endregion
@@ -602,17 +639,51 @@ func onCreateInitialTraits() -> void:
 	if !ascended: initial_traits = info.initial_traits
 	else: initial_traits = info.ascended_traits
 	
+	var actions: Array = []
 	for field_trait_data in initial_traits:
 		field_trait_data.coords = getCoords()
-		var Trait: TraitGD = SavedData.onLoadModel(field_trait_data, self)
-		field_traits.append(Trait)
-		FieldInfo.onAddTrait(Trait)
-	FieldInfo.onUpdateTraits()
+		actions.append(AddTraitAction.new(SavedData.onLoadModel(field_trait_data, self)))
+	onPushAction(actions)
 	
 func onAddTrait(Trait: TraitGD) -> void:
 	field_traits.append(Trait)
+	Trait.Card = self
 	FieldInfo.onAddTrait(Trait)
 	FieldInfo.onUpdateTraits()
+	
+func isMobile() -> bool:
+	return field_traits.any(func(x: TraitGD): return x is MobileGD)
+#endregion
+
+#region Tools
+func onAddTool(_Tool: ToolGD) -> void:
+	Tool = _Tool
+	tool_added.emit(Tool) # Created for Card UI to listen to
+
+func onRemoveTool() -> void:
+	onAddTool(null)
+
+func getTool() -> ToolGD:
+	return Tool
+
+#region Active Effects
+func onAddActiveEffect(active_effect: ActiveEffectDatastore) -> void:
+	active_effects.append(active_effect)
+	active_effect.owner = self
+
+func onCreateInitialActiveAbilities() -> void:
+	onPushAction(info.active_abilities.map(func(x: ActiveAbilityDatastore): return AddActiveEffectAction.new(self, x.duplicate())))
+
+func getActiveEffectByName(_name: String) -> ActiveEffectDatastore:
+	for active_effect in active_effects:
+		if active_effect.name == _name: return active_effect
+	return null
+	
+func getActiveEffectTiles(_active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
+	return null
+	
+func onActiveEffect(_active_effect: ActiveEffectDatastore, _PickedTile: TileGD) -> void:
+	pass
 #endregion
 
 #region Status Effects
@@ -622,11 +693,13 @@ func onRemoveStatusEffect(status_effect: StatusEffectGD) -> void:
 	
 func onAddStatusEffect(status_effect: StatusEffectGD) -> void:
 	status_effects.append(status_effect)
-	if FieldInfo != null: FieldInfo.onAddIcon(status_effect)
+	status_effect.Card = self
+	FieldInfo.onAddIcon(status_effect)
 	
 func onCreateBaseStatusEffect(id: int, turns: int = 1) -> void:
-	var status_data := SavedDataStatusEffect.new(id, true, 0, turns, getCoords())
+	var status_data := SavedDataStatusEffect.new(id, true, 0, turns)
 	var status_effect: StatusEffectGD = SavedData.onLoadModel(status_data, self)
+	status_effect.Card = self
 	onPushAction(AddStatusEffectAction.new(status_effect))
 #endregion
 
@@ -638,6 +711,9 @@ func onAdvanceTurn() -> void:
 	if !delayed_stats.is_empty():
 		for stat_action in delayed_stats.duplicate():
 			stat_action.onAdvanceTurn()
+		
+	for active_effect in active_effects:
+		active_effect.onAdvanceTurn()
 		
 	FieldInfo.onUpdateDelayedStats()
 	
@@ -662,4 +738,26 @@ func isValidRampage(action: Action) -> bool:
 func isValidOnHit(action: Action) -> bool:
 	return action.post and action is DamageAction and action.owner is AttackAction and action.Damager == self and card_place == Game.CardPlaces.FIELD
 
+#endregion
+
+#region Heal
+func isHealable() -> bool:
+	return health < max_health
+	
+func isInjured() -> bool:
+	return health < max_health
+#endregion
+
+#region Field Effect
+func onAddFieldEffect(FieldEffect: FieldEffectGD, FofObject: FofGD = null) -> void:
+	if FofObject != null: FieldEffect.FofObject = FofObject
+	field_effects.append(FieldEffect)
+	FieldInfo.onAddIcon(FieldEffect)
+	
+func onRemoveFieldEffect(FieldEffect: FieldEffectGD) -> void:
+	field_effects.erase(FieldEffect)
+	FieldInfo.onRemoveIcon(FieldEffect)
+	
+func onFindFieldEffectsByOwner(FofObject: FofGD) -> Array:
+	return field_effects.filter(func(x: FieldEffectGD): return x.owner == self)
 #endregion

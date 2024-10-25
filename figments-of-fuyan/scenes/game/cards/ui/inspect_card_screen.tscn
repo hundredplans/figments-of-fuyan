@@ -138,5 +138,5 @@ exit_screen = NodePath("..")
 
 [connection signal="mouse_entered" from="." to="." method="onMouseInUI" binds= [true]]
 [connection signal="mouse_exited" from="." to="." method="onMouseInUI" binds= [false]]
-[connection signal="mouse_entered" from="ExitButton" to="." method="onMouseInUI"]
-[connection signal="mouse_exited" from="ExitButton" to="." method="onMouseInUI"]
+[connection signal="mouse_entered" from="ExitButton" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="ExitButton" to="." method="onMouseInUI" binds= [false]]

@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="ToolInfoGD" load_steps=4 format=3 uid="uid://b2rg0t64gq6qh"]
+[gd_resource type="Resource" script_class="ToolInfoGD" load_steps=5 format=3 uid="uid://b2rg0t64gq6qh"]
 
 [ext_resource type="Texture2D" uid="uid://cha0n3lj8240h" path="res://assets/base_game/tools/icons/Sugori Knife.png" id="1_t88qi"]
 [ext_resource type="Script" path="res://assets/base_game/tools/tool_info.gd" id="1_vui2f"]
 [ext_resource type="Script" path="res://assets/base_game/tools/scripts/sugori_knife.gd" id="3_4ter8"]
+[ext_resource type="Script" path="res://assets/base_game/tools/tool_ability_info.gd" id="3_lthny"]
 
 [resource]
 script = ExtResource("1_vui2f")
@@ -13,4 +14,4 @@ tool_script = ExtResource("3_4ter8")
 display_name = "Sugori Knife"
 description = "This deals [1] extra DMG to injured enemies"
 ascended_description = "This and allies in vision deal [1] extra DMG to injured enemies"
-tool_abilities = Array[Resource("res://assets/base_game/tools/tool_ability_info.gd")]([])
+tool_abilities = Array[ExtResource("3_lthny")]([])

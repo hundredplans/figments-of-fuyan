@@ -19,8 +19,10 @@ func setInfo(FofObject: FofGD) -> void:
 	
 	var panel_color: String
 	
-	if is_instance_of(FofObject, TraitGD): panel_color = "BluePanelContainer"
-	elif is_instance_of(FofObject, StatusEffectGD): panel_color = "WhitePanelContainer"
+	if is_instance_of(FofObject, TraitGD): panel_color = "YellowPanelContainer"
+	elif is_instance_of(FofObject, StatusEffectGD): panel_color = "RedPanelContainer"
+	elif is_instance_of(FofObject, ToolGD): panel_color = "BluePanelContainer"
+	elif is_instance_of(FofObject, FieldEffectGD): panel_color = "WhitePanelContainer"
 	
 	theme_type_variation = panel_color
 		

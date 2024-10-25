@@ -7,11 +7,12 @@ enum ShopTypes {CARD, BOON, TOOL, DECK}
 enum Phases {NULL, START, HAND, PLAYER, AI, NEUTRAL}
 enum SpectateTypes {ALLY, ENEMY, SPAWN}
 enum CardPlaces {NULL, HAND, DECK, FIELD, GRAVEYARD}
-enum TurnStates {PASSED, INACTIVE, ACTIVE}
+enum TurnStates {NULL, PASSED, INACTIVE, ACTIVE}
 enum Stats {ATTACK, HEALTH, SPEED, MAX_HEALTH, MAX_SPEED}
+enum AscendedExists {BOTH, ONLY_DEFAULT, ONLY_ASCENDED}
 
 var CARD_PLACES_TO_GROUP: Dictionary = {
-	CardPlaces.NULL: "",
+	CardPlaces.NULL: "Null",
 	CardPlaces.HAND: "HandCardsGD",
 	CardPlaces.DECK: "DeckCardsGD",
 	CardPlaces.FIELD: "FieldCardsGD",
@@ -19,6 +20,7 @@ var CARD_PLACES_TO_GROUP: Dictionary = {
 }
 
 var TURN_STATES_TO_STRING: Dictionary = {
+	TurnStates.NULL: "Null",
 	TurnStates.PASSED: "Passed",
 	TurnStates.INACTIVE: "Inactive",
 	TurnStates.ACTIVE: "Active"
@@ -132,6 +134,12 @@ func getFieldCard(Tile: TileGD) -> CardGD:
 	for Card in get_tree().get_nodes_in_group("FieldCardsGD"):
 		if Card.Tile == Tile: return Card
 	return null
+	
+func getAllyFieldCard(Tile: TileGD, team: int) -> CardGD:
+	var Card: CardGD = getFieldCard(Tile)
+	if Card != null and Card.isAlly(team):
+		return Card
+	return null
 
 func getAllyUnits(team: int = 0) -> Array:
 	return get_tree().get_nodes_in_group("FieldCardsGD").filter(func(x: CardGD): return x.team == team)
@@ -141,8 +149,9 @@ func getEnemyUnits(team: int = 0) -> Array:
 #endregion
 
 #region Vision
-func inVisionCards(Card: CardGD) -> Array:
-	return Game.get_tree().get_nodes_in_group("FieldCardsGD").filter(func(x: CardGD): return x.getVisibleFieldCards().any(func(y: CardGD): return y == Card))
+func inVisionCards(card_coords: Vector4i) -> Array:
+	return get_tree().get_nodes_in_group("FieldCardsGD").filter(func(x: CardGD):
+		return getCoordsDistance(x.getCoords(), card_coords) <= x.getVisionRange())
 
 func getTeamVisionDictionary(team: int = 0) -> Dictionary:
 	if team < 2: # Neutral units dont have a team vision

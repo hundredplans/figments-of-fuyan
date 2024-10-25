@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=5 format=3 uid="uid://c5lofl73gdggs"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/tools/tool_info.gd" id="1_8mcqv"]
+[ext_resource type="Script" path="res://scripts/fof/tools/tool.gd" id="1_xtcpt"]
+[ext_resource type="Image" uid="uid://d0y31rda81ylp" path="res://assets/sprites/game/tools/Stick.png" id="2_aca5q"]
+[ext_resource type="Script" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="3_filla"]
+
+[resource]
+script = ExtResource("1_8mcqv")
+icon = ExtResource("2_aca5q")
+description = "This unit deals [+1] DMG for their next attack"
+ascended_description = ""
+RARITY = 2
+id = 8
+name = "Stick"
+gdscript = ExtResource("1_xtcpt")
+saved_data = ExtResource("3_filla")

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=6 format=3 uid="uid://bcr68d2wo777a"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_b656t"]
+[ext_resource type="Script" path="res://scripts/fof_info/tools/tool_info.gd" id="1_icstd"]
+[ext_resource type="Script" path="res://scripts/fof/tools/sugori_knife.gd" id="2_e3482"]
+[ext_resource type="Image" uid="uid://wvn4ne7q78mx" path="res://assets/sprites/game/tools/Sugori Knife.png" id="2_n8gx7"]
+[ext_resource type="Script" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="3_ng7tl"]
+
+[resource]
+script = ExtResource("1_icstd")
+icon = ExtResource("2_n8gx7")
+description = "This deals [1] extra DMG to injured enemies"
+ascended_description = "This and allies in vision deal [1] extra DMG to injured enemies"
+RARITY = 3
+active_abilities = Array[ExtResource("1_b656t")]([])
+id = 3
+name = "Sugori Knife"
+gdscript = ExtResource("2_e3482")
+saved_data = ExtResource("3_ng7tl")

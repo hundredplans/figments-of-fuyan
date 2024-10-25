@@ -13,5 +13,5 @@ func onPostAction() -> void:
 	for _GameObject in visibles: # Ignores Cards unless they themself are revealed
 		if !(_GameObject is CardGD and GameObject != _GameObject): _GameObject.onRevealed()
 	
-	onPushAction(LevelVisibleAction.new(Revealer, true, visibles))
+	onPushAction(LevelVisibleAction.new(true, visibles))
 	

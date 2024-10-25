@@ -48,8 +48,8 @@ func onLoadData(data: SavedData) -> void:
 	super(data)
 	
 func onLoadDataLevel() -> void:
+	super()
 	onApplyGreyscaleMaterial()
-	onCreateAdjustedPoints()
 	
 func onLoadModel() -> void:
 	var ray_pickable: bool = false
@@ -73,7 +73,7 @@ func clampVariation(i: int) -> void:
 #endregion
 
 #region Level Visible
-func setLevelVisible(state: bool, _Discoverer: GameObjectGD = null) -> void:
+func setLevelVisible(state: bool) -> void:
 	super(state)
 	onApplyGreyscaleMaterial()
 				

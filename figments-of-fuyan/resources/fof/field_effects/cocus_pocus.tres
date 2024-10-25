@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="FieldEffectInfo" load_steps=5 format=3 uid="uid://c07r01b7025do"]
+
+[ext_resource type="Script" path="res://scripts/fof/field_effects/field_effect.gd" id="1_kht3k"]
+[ext_resource type="Script" path="res://scripts/fof_info/field_effects/field_effect_info.gd" id="1_ujpxj"]
+[ext_resource type="Texture2D" uid="uid://c6k8l2vrrspjo" path="res://assets/sprites/game/fof_object_icons/field_effects/cocus_pocus.png" id="2_1kwmu"]
+[ext_resource type="Script" path="res://scripts/saved_data/field_effects/saved_data_field_effect.gd" id="3_03281"]
+
+[resource]
+script = ExtResource("1_ujpxj")
+icon = ExtResource("2_1kwmu")
+description = ""
+id = 4
+name = "Cocus Pocus"
+gdscript = ExtResource("1_kht3k")
+saved_data = ExtResource("3_03281")

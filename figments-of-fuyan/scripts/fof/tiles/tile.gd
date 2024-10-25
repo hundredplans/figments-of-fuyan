@@ -8,6 +8,8 @@ var is_hovered: bool = false
 var is_path_hovered: bool = false
 var is_card_moving: bool = false
 var is_action_lock: bool = false
+var in_active_effect_range: bool = false
+var in_active_effect_pickable: bool = false
 
 var movement_path: MovementPathGD
 #endregion
@@ -82,7 +84,12 @@ func setMeshesMaterial(mat: Material = null) -> void:
 func setOutlineMaterial() -> void:
 	var mat: Material = null
 	var display_movement_path: bool = getMovementPathDisplay()
-	if (occupy_state != OccupyStates.NULL and level_visible and !is_card_moving):
+	
+	if in_active_effect_pickable:
+		mat = load(info.ACTIVE_EFFECT_PICKABLE_MATERIAL)
+	elif in_active_effect_range:
+		mat = load(info.ACTIVE_EFFECT_RANGE_MATERIAL)
+	elif (occupy_state != OccupyStates.NULL and level_visible and !is_card_moving):
 		match occupy_state:
 			OccupyStates.ALLY: mat = load(info.ALLY_OCCUPY_MATERIAL)
 			OccupyStates.ENEMY: 
@@ -238,4 +245,17 @@ func getVisibleGroup() -> Array:
 func onUpdateActionLock(state: bool) -> void:
 	is_action_lock = state
 	setOutlineMaterial()
+#endregion
+
+#region Active Effect
+func setInActiveEffectRange(state: bool) -> void:
+	in_active_effect_range = state
+	setOutlineMaterial()
+
+func setInActiveEffectPickable(state: bool) -> void:
+	in_active_effect_pickable = state
+	setOutlineMaterial()
+	
+func isActiveEffectPickable() -> bool:
+	return in_active_effect_pickable
 #endregion
