@@ -17,14 +17,11 @@ func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectT
 		return ActiveEffectTiles.new(tiles, tiles.filter(isPickable))
 	return null
 
-func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD) -> void:
-	super(active_effect, PickedTile)
+func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
+	super(active_effect, PickedTile, active_effect_tiles)
 	if active_effect is ActiveAbilityDatastore and active_effect.name == "Coconut Touch":
-		active_effect.charges -= 1
-		active_effect.used = true
-		
 		var actions: Array = [
-			StatAction.new(Game.getFieldCard(PickedTile), Game.Stats.HEALTH, 1)]
+			StatAction.new(StatInfo.new(Game.getFieldCard(PickedTile), Game.Stats.HEALTH, 1))]
 		
 		if Tile != PickedTile: actions.append(ChangeTileRotationAction.new(self, Game.getRelativeTileRotation(Tile, PickedTile)))
 		

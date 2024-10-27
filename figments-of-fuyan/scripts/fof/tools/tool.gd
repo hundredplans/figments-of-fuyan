@@ -16,7 +16,7 @@ func onLoadData(data: SavedData) -> void:
 		set(custom_variable, ability_save[custom_variable])
 	
 func onSave() -> SavedDataTool:
-	return SavedDataTool.new(info.id, false, 0, ascended, active_effects, ability_save)
+	return SavedDataTool.new(info.id, false, public_id, ascended, active_effects, ability_save)
 	
 func onCreateActiveEffects() -> void:
 	active_effects = []
@@ -24,6 +24,9 @@ func onCreateActiveEffects() -> void:
 
 func onAddActiveEffect(active_effect: ActiveEffectDatastore) -> void:
 	active_effects.append(active_effect)
+
+func getRarity() -> Game.Rarities:
+	return info.RARITY
 
 func getIcon() -> ImageTexture:
 	return ImageTexture.create_from_image(info.icon)
@@ -43,7 +46,7 @@ func onProcessAction(action: Action) -> void:
 func getActiveEffectTiles(_active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	return null
 	
-func onActiveEffect(_active_effect: ActiveEffectDatastore, _PickedTile: TileGD) -> void:
+func onActiveEffect(_active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles) -> void:
 	pass
 	
 func onToolEquipped() -> void:

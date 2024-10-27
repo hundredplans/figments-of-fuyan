@@ -18,7 +18,6 @@ func setInfo(_active_effect: ActiveEffectDatastore) -> void:
 	var max_charges: int = active_effect.getMaxCharges()
 	ChargesLabel.text = "Charges: " + ("∞" if max_charges == -1 else (str(charges) + "/" + str(max_charges)))
 	
-	print(active_effect.owner)
 	if active_effect.owner is ToolGD: Btn.modulate = Color(0, 1, 1)
 	elif active_effect.owner is ObjectGD: Btn.modulate = Color(1, 0, 0)
 	

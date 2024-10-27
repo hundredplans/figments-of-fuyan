@@ -1,0 +1,31 @@
+class_name StatInfo extends Resource
+
+var Card: CardGD
+@export var types: Array[Game.Stats]
+@export var values: Array
+@export var turns: int
+@export var absolute: bool
+@export var show_particles: bool
+
+@export var card_public_id: int
+
+func _init(_Card: CardGD = null, _types: Variant = null, _values: Variant = null, _turns: int = 0,\
+ 	_absolute: bool = false, _show_particles: bool = false) -> void:
+	
+	Card = _Card
+	
+	if _types is Array: types = _types
+	elif _types is int: types = [_types]
+	
+	if _values is Array: values = _values
+	elif _values is int: values = [_values]
+	
+	turns = _turns
+	absolute = _absolute
+	show_particles = _show_particles
+		
+func onSave() -> void:
+	card_public_id = Card.public_id
+		
+func onLoad() -> void:
+	Card = Game.onFindPublicIDObject(card_public_id)

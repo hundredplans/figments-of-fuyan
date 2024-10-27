@@ -20,6 +20,8 @@ signal turn_state_changing
 signal camera_change_action
 signal active_effect_used
 signal active_effect_added
+signal boon_added
+signal boon_removed
 
 #region Load / Save
 func onSave() -> SavedData:
@@ -155,6 +157,10 @@ func onProcessAction(action: Action) -> void:
 			active_effect_used.emit(action.ActiveEffect)
 		elif action is AddActiveEffectAction:
 			active_effect_added.emit(action.active_effect)
+		elif action is AddBoonAction:
+			boon_added.emit(action.Boon)
+		elif action is RemoveBoonAction:
+			boon_removed.emit(action.id)
 	else:
 		if action is ChangePhaseAction:
 			if action.phase == phase: action.failed = true

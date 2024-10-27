@@ -1,7 +1,9 @@
-[gd_resource type="Resource" script_class="ChampionBoonInfo" load_steps=3 format=3 uid="uid://hommkky4kkh3"]
+[gd_resource type="Resource" script_class="ChampionBoonInfo" load_steps=5 format=3 uid="uid://hommkky4kkh3"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/boons/champion_boon_info.gd" id="1_5k5bp"]
 [ext_resource type="Image" uid="uid://4tjnieth15fo" path="res://assets/sprites/game/cards/art_mini/divinus_palmus.png" id="1_e8m1x"]
+[ext_resource type="Script" path="res://scripts/fof/boons/boon.gd" id="1_s1sse"]
+[ext_resource type="Script" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_yk4ab"]
 
 [resource]
 script = ExtResource("1_5k5bp")
@@ -12,3 +14,5 @@ ascended_description = ""
 RARITY = 8
 id = 2
 name = "Divine Aura"
+gdscript = ExtResource("1_s1sse")
+saved_data = ExtResource("3_yk4ab")

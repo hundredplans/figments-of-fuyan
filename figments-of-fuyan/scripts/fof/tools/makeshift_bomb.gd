@@ -16,4 +16,4 @@ func onDeath(Tile: TileGD) -> void:
 		tiles = Game.getAdjacentOrCloserTiles(Tile, 2)
 		units = Game.getEnemyUnits(Card.team).filter(func(x: CardGD): return x.Tile in tiles)
 		
-	onPushAction(units.map(func(x: CardGD): return DamageAction.new(Card, x, 1)))
+	onPushAction(DamageAction.new(Card, units, 1))

@@ -282,7 +282,7 @@ func onActiveEffectDeselected() -> void:
 		active_effect_deselected.emit()
 		
 func onActiveEffectActivated(Tile: TileGD) -> void:
-	level.onPushAction(ActiveEffectUsedAction.new(current_active_effect, Tile))
+	level.onPushAction(ActiveEffectUsedAction.new(current_active_effect, Tile, current_active_effect_tiles))
 	active_effect_activated.emit(current_active_effect)
 	onActiveEffectDeselected()
 #endregion

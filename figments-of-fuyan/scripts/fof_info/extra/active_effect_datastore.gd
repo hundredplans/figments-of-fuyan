@@ -23,6 +23,3 @@ func getCharges() -> int:
 	
 func isUsed() -> bool:
 	return used
-
-func onAdvanceTurn() -> void:
-	used = false

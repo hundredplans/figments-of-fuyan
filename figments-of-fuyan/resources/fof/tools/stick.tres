@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="ToolInfo" load_steps=5 format=3 uid="uid://c5lofl73gdggs"]
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=6 format=3 uid="uid://c5lofl73gdggs"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/tools/tool_info.gd" id="1_8mcqv"]
-[ext_resource type="Script" path="res://scripts/fof/tools/tool.gd" id="1_xtcpt"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_v72sy"]
 [ext_resource type="Image" uid="uid://d0y31rda81ylp" path="res://assets/sprites/game/tools/Stick.png" id="2_aca5q"]
+[ext_resource type="Script" path="res://scripts/fof/tools/stick.gd" id="2_p5yv1"]
 [ext_resource type="Script" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="3_filla"]
 
 [resource]
@@ -11,7 +12,8 @@ icon = ExtResource("2_aca5q")
 description = "This unit deals [+1] DMG for their next attack"
 ascended_description = ""
 RARITY = 2
+active_abilities = Array[ExtResource("1_v72sy")]([])
 id = 8
 name = "Stick"
-gdscript = ExtResource("1_xtcpt")
+gdscript = ExtResource("2_p5yv1")
 saved_data = ExtResource("3_filla")

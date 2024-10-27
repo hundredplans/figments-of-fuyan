@@ -50,6 +50,15 @@ func _ready() -> void:
 		var z: float = HEX_SIZE * (sqrt(3) * (cube_direction.y + cube_direction.x / 2.0))
 		tile_face_directions.append(onRotatePosition(Vector3(x, 0, z), theta))
 
+func getStatString(stat: Stats) -> String:
+	match stat:
+		Stats.ATTACK: return "Attack"
+		Stats.HEALTH: return "Health"
+		Stats.MAX_HEALTH: return "Max Health"
+		Stats.SPEED: return "Speed"
+		Stats.MAX_SPEED: "Max Speed"
+	return ""
+
 func getRarityString(rarity: Rarities) -> String:
 	match rarity:
 		Rarities.SCRAP: return "Scrap"
@@ -140,18 +149,27 @@ func getAllyFieldCard(Tile: TileGD, team: int) -> CardGD:
 	if Card != null and Card.isAlly(team):
 		return Card
 	return null
+	
+func getEnemyFieldCard(Tile: TileGD, team: int) -> CardGD:
+	var Card: CardGD = getFieldCard(Tile)
+	if Card != null and Card.isEnemy(team):
+		return Card
+	return null
 
 func getAllyUnits(team: int = 0) -> Array:
 	return get_tree().get_nodes_in_group("FieldCardsGD").filter(func(x: CardGD): return x.team == team)
 	
 func getEnemyUnits(team: int = 0) -> Array:
 	return get_tree().get_nodes_in_group("FieldCardsGD").filter(func(x: CardGD): return x.team != team)
+	
+func getBaseCard(id: int, Tile: TileGD, team: int, tile_rotation: int) -> SavedDataCard:
+	return Helper.getFofInfoID(CardInfo, 11).saved_data.new(11, true, 0, Tile.getCoords(), tile_rotation, false, false, team)
 #endregion
 
 #region Vision
 func inVisionCards(card_coords: Vector4i) -> Array:
 	return get_tree().get_nodes_in_group("FieldCardsGD").filter(func(x: CardGD):
-		return getCoordsDistance(x.getCoords(), card_coords) <= x.getVisionRange())
+		return x.getCoords() != card_coords and getCoordsDistance(x.getCoords(), card_coords) <= x.getVisionRange())
 
 func getTeamVisionDictionary(team: int = 0) -> Dictionary:
 	if team < 2: # Neutral units dont have a team vision
@@ -270,19 +288,26 @@ func getsetMovementRange(Card: CardGD) -> Array:
 	for GameObject in attackables:
 		var coords: Vector4i = GameObject.getCoords()
 		var tiles_in_range: Array = available_tiles.filter(func(x: TileGD): return Game.getCoordsDistance(x.getCoords(), GameObject.getCoords()) <= GameObject.getAttackRange())
-		if !tiles_in_range.is_empty():
-			var AttackableTile: TileGD
-			if CenterTile not in tiles_in_range:
-				tiles_in_range.sort_custom(func(x: TileGD, y: TileGD): return x.getMovementPathSize() < y.getMovementPathSize())
-				AttackableTile = tiles_in_range[0]
-			else: AttackableTile = CenterTile
-				
-			var attackable_path_tiles: Array = AttackableTile.movement_path.tiles.duplicate() if AttackableTile != CenterTile else [CenterTile]
-			if GameObject is CardGD:
-				available_tiles.append(GameObject.Tile)
-				attackable_path_tiles.append(GameObject.Tile)
-				GameObject.Tile.setMovementPath(MovementPathGD.new(attackable_path_tiles))
-				GameObject.setEnemyInMovementRange(true)
+		if tiles_in_range.is_empty(): continue
+		
+		var AttackFromTile: TileGD
+		var attack_from_path: Array = []
+		if CenterTile not in tiles_in_range:
+			tiles_in_range.sort_custom(func(x: TileGD, y: TileGD): return x.getMovementPathSize() < y.getMovementPathSize())
+			AttackFromTile = tiles_in_range[0]
+			attack_from_path = AttackFromTile.movement_path.tiles.duplicate()
+		else: # Closest tile is always the center tile as it's distance is 0, has to have unique logic as it doesn't generate paths
+			AttackFromTile = CenterTile
+			attack_from_path = [CenterTile]
+			
+		if GameObject is not CardGD: continue # For now return no logic
+		
+		var DefenderTile: TileGD = GameObject.Tile
+		available_tiles.append(DefenderTile)
+		attack_from_path.append(DefenderTile)
+		
+		DefenderTile.setMovementPath(MovementPathGD.new(attack_from_path))
+		GameObject.setEnemyInMovementRange(true)
 	return available_tiles
 	
 func onSurviveFallDamage(Card: CardGD, movement_path: Array, point_path: Array, astar: AStar3D) -> bool:

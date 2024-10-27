@@ -11,12 +11,10 @@ func isPickable(_Tile: TileGD) -> bool:
 	var Card: CardGD = Game.getAllyFieldCard(_Tile, team)
 	return Card != null and Card.isHealable()
 		
-func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD) -> void:
+func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
+	super(active_effect, PickedTile, active_effect_tiles)
 	if active_effect is ActiveAbilityDatastore and active_effect.name == "Palmsale":
-		active_effect.charges -= 1
-		active_effect.used = true
-		
-		var actions: Array = [StatAction.new(Game.getFieldCard(PickedTile), Game.Stats.HEALTH, 1),\
+		var actions: Array = [StatAction.new(StatInfo.new(Game.getFieldCard(PickedTile), Game.Stats.HEALTH, 1)),\
 		ChangeTileRotationAction.new(self, Game.getRelativeTileRotation(Tile, PickedTile))]
 		
 		onPushAction(actions)

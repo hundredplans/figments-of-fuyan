@@ -5,13 +5,14 @@ func onProcessAction(action: Action) -> void:
 
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	super(active_effect)
-	if active_effect.name.ends_with("Pendant"):
+	if active_effect.name == info.name:
 		var pickable_tiles: Array = ([Card.Tile] if info.id != 1 or Card.isHealable() else [])
 		return ActiveEffectTiles.new([Card.Tile], pickable_tiles)
 	return null
 
-func onActiveEffect(active_effect: ActiveEffectDatastore, _PickedTile: TileGD) -> void:
-	if active_effect.name.ends_with("Pendant"):
+func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
+	super(active_effect, PickedTile, active_effect_tiles)
+	if active_effect.name == info.name:
 		var type: Game.Stats
 		var turns: int = 1
 		
@@ -20,9 +21,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, _PickedTile: TileGD) -
 			4: type = Game.Stats.ATTACK
 			6: type = Game.Stats.SPEED
 		
-		active_effect.charges -= 1
-		active_effect.used = true
-		onPushAction(StatAction.new(Card, type, 1, turns))
+		onPushAction(StatAction.new(StatInfo.new(Card, type, 1, turns)))
 		
 func onToolEquipped() -> void:
 	var type: Game.Stats
@@ -31,7 +30,7 @@ func onToolEquipped() -> void:
 		4: type = Game.Stats.ATTACK
 		6: type = Game.Stats.MAX_SPEED
 		
-	onPushAction(StatAction.new(Card, type, 1))
+	onPushAction(StatAction.new(StatInfo.new(Card, type, 1)))
 	
 func onToolUnequipped() -> void:
 	super()
@@ -41,4 +40,4 @@ func onToolUnequipped() -> void:
 		4: type = Game.Stats.ATTACK
 		6: type = Game.Stats.MAX_SPEED
 		
-	onPushAction(StatAction.new(Card, type, -1))
+	onPushAction(StatAction.new(StatInfo.new(Card, type, -1)))

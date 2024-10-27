@@ -28,4 +28,4 @@ func filterMethod(action: Action) -> bool:
 	return !(move_predicate or attack_predicate)
 
 func getLogInfo() -> Array:
-	return ["Discoverer: " + Discoverer.info.name, "Discovered: " + Discovered.info.name]
+	return ["Discoverer: " + Discoverer.info.name, "Discovered: " + Discovered.info.name, "State: " + str(enter_vision)]

@@ -1,17 +1,17 @@
 [gd_resource type="Resource" script_class="BoonInfo" load_steps=5 format=3 uid="uid://w10txjhiu3jw"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/boons/boon_info.gd" id="1_3nhxb"]
-[ext_resource type="Script" path="res://scripts/fof/boons/boon.gd" id="1_ikv0n"]
+[ext_resource type="Script" path="res://scripts/templates/node/doubleup_boon.gd" id="1_o283v"]
 [ext_resource type="Image" uid="uid://c1fueeddjxp6e" path="res://assets/sprites/game/boons/doubleup.png" id="2_lexg1"]
 [ext_resource type="Script" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_myoxk"]
 
 [resource]
 script = ExtResource("1_3nhxb")
 icon = ExtResource("2_lexg1")
-description = "Your first stat-buff is doubled"
-ascended_description = "Your first two stat-buffs are doubled"
+description = "Your next [1] stat buffs double"
+ascended_description = "Your next [2] stat buffs double"
 RARITY = 4
 id = 6
 name = "Double-Up Boon"
-gdscript = ExtResource("1_ikv0n")
+gdscript = ExtResource("1_o283v")
 saved_data = ExtResource("3_myoxk")

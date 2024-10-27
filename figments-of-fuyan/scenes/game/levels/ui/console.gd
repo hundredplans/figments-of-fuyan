@@ -6,6 +6,7 @@ signal mouse_in_ui
 @onready var HistoryLabel: Label = %HistoryLabel
 var commands: Array
 var SpectateObject: GameObjectGD
+var level: LevelGD # For pushing actions
 
 func _ready() -> void:
 	const DIR_PATH: String = "res://resources/game/commands/"
@@ -45,14 +46,22 @@ func status_effect(name_id: Variant, turns: int = 1) -> void:
 
 func damage(damage: int) -> void:
 	if SpectateObject is CardGD:
-		SpectateObject.onPushAction(DamageAction.new(null, SpectateObject, damage))
+		SpectateObject.onPushAction(DamageAction.new(SpectateObject, SpectateObject, damage))
 
 func tool(name_id: Variant, ascended: bool = false) -> void:
 	if SpectateObject is CardGD:
 		var info: ToolInfo = getNameIDFofInfo(name_id, ToolInfo)
 		if info != null:
-			SpectateObject.onPushAction(\
+			level.onPushAction(\
 			AddToolAction.new(SpectateObject, SavedData.onLoadModel(info.saved_data.new(info.id, true, 0, ascended), SpectateObject)))
+
+func addboon(name_id: Variant, ascended: bool = false) -> void:
+	var info: BoonInfo = getNameIDFofInfo(name_id, BoonInfo)
+	level.onPushAction(AddBoonAction.new(info.id, ascended))
+
+func removeboon(name_id: Variant) -> void:
+	var info: BoonInfo = getNameIDFofInfo(name_id, BoonInfo)
+	level.onPushAction(RemoveBoonAction.new(info.id))
 
 func getNameIDFofInfo(name_id: Variant, type: GDScript) -> FofInfo:
 	var id: int = name_id if name_id is int else 0

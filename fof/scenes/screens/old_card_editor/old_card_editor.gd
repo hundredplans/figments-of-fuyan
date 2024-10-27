@@ -145,5 +145,3 @@ const EMPTY_INFO: Dictionary = {
 	"bgfn": "",
 }
 func _on_empty_card_pressed(): on_item_selected(EMPTY_INFO, false)
-
-

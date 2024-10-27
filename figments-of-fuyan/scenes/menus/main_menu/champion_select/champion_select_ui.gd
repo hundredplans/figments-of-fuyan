@@ -14,6 +14,9 @@ signal cancel
 @onready var ChampionBoonLabel: FancyTextLabel = %ChampionBoonLabel
 @onready var UltimateLabel: Label = %UltimateLabel
 @onready var FlavorLabel: Label = %FlavorLabel
+
+@onready var HideButtonLabelUlt: Label = %HideButtonLabelUlt
+@onready var HideButtonLabelBoon: Label = %HideButtonLabelBoon
 #endregion
 func setInfo(Card: CardGD) -> void:
 	var area: AreaInfo = Card.getArea()

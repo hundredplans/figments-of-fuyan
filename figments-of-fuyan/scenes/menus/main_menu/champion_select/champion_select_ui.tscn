@@ -6,8 +6,8 @@
 [ext_resource type="Script" path="res://scenes/common/fancy_text/fancy_text_label.gd" id="5_mufjb"]
 [ext_resource type="PackedScene" uid="uid://2figxxms5ybp" path="res://scenes/common/hide_button/hide_button.tscn" id="5_rpxwj"]
 [ext_resource type="LabelSettings" uid="uid://dbh1brjnbxe8c" path="res://resources/ui/label_settings/roboto_large.tres" id="6_3y22e"]
-[ext_resource type="Resource" uid="uid://cd4sbguneyj71" path="res://resources/ui/fancy_text/fancy_text_label_settings_medium.tres" id="6_40ra6"]
 [ext_resource type="PackedScene" uid="uid://6nf3mir2i2rk" path="res://scenes/common/fancy_text/fancy_text_label.tscn" id="7_ll1ak"]
+[ext_resource type="Resource" uid="uid://82i526nehndy" path="res://resources/ui/fancy_text/fancy_text_label_settings_small.tres" id="7_uh4a8"]
 [ext_resource type="LabelSettings" uid="uid://yueau3nak32p" path="res://resources/ui/label_settings/roboto_small.tres" id="8_bx5yu"]
 
 [node name="ChampionSelectUI" type="VBoxContainer"]
@@ -17,11 +17,12 @@ anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 offset_left = -820.0
-offset_top = -517.0
+offset_top = -540.0
 offset_right = -41.0
 offset_bottom = 541.0
 grow_horizontal = 0
 grow_vertical = 2
+alignment = 1
 script = ExtResource("1_5whd0")
 
 [node name="TopBar" type="HBoxContainer" parent="."]
@@ -33,7 +34,10 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 3.0
 theme_type_variation = &"DarkPanelContainer"
 
-[node name="ChampionNameLabel" type="Label" parent="TopBar/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="TopBar/PanelContainer"]
+layout_mode = 2
+
+[node name="ChampionNameLabel" type="Label" parent="TopBar/PanelContainer/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Frederic the Fearless"
@@ -48,7 +52,10 @@ size_flags_horizontal = 3
 layout_mode = 2
 theme_type_variation = &"DarkPanelContainer"
 
-[node name="ChampionEpithetLabel" type="Label" parent="TopBar/Control/PanelContainer2"]
+[node name="MarginContainer" type="MarginContainer" parent="TopBar/Control/PanelContainer2"]
+layout_mode = 2
+
+[node name="ChampionEpithetLabel" type="Label" parent="TopBar/Control/PanelContainer2/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "The Brute"
@@ -60,7 +67,10 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_type_variation = &"DarkPanelContainer"
 
-[node name="AreaNameLabel" type="Label" parent="TopBar/Control/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="TopBar/Control/PanelContainer"]
+layout_mode = 2
+
+[node name="AreaNameLabel" type="Label" parent="TopBar/Control/PanelContainer/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Varoma"
@@ -85,7 +95,10 @@ size_flags_horizontal = 3
 layout_mode = 2
 theme_type_variation = &"YellowPanelContainer"
 
-[node name="Label" type="Label" parent="TopMiddleBar/VBoxContainer/PanelContainer2"]
+[node name="MarginContainer" type="MarginContainer" parent="TopMiddleBar/VBoxContainer/PanelContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TopMiddleBar/VBoxContainer/PanelContainer2/MarginContainer"]
 layout_mode = 2
 text = "Description"
 label_settings = ExtResource("6_3y22e")
@@ -97,29 +110,32 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_type_variation = &"YellowPanelContainer"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="TopMiddleBar/VBoxContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="TopMiddleBar/VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TopMiddleBar/VBoxContainer/PanelContainer/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Control" type="Control" parent="TopMiddleBar/VBoxContainer/PanelContainer/HBoxContainer"]
+[node name="Control" type="Control" parent="TopMiddleBar/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
 
-[node name="DescriptionContainer" type="VBoxContainer" parent="TopMiddleBar/VBoxContainer/PanelContainer/HBoxContainer"]
+[node name="DescriptionContainer" type="VBoxContainer" parent="TopMiddleBar/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 20
 
-[node name="Control" type="Control" parent="TopMiddleBar/VBoxContainer/PanelContainer/HBoxContainer/DescriptionContainer"]
+[node name="Control" type="Control" parent="TopMiddleBar/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/DescriptionContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="TopMiddleBar/VBoxContainer/PanelContainer/HBoxContainer/DescriptionContainer"]
+[node name="Label" type="Label" parent="TopMiddleBar/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/DescriptionContainer"]
 layout_mode = 2
 text = "- Regular and enhanced fights are more common"
 autowrap_mode = 3
 
-[node name="Label2" type="Label" parent="TopMiddleBar/VBoxContainer/PanelContainer/HBoxContainer/DescriptionContainer"]
+[node name="Label2" type="Label" parent="TopMiddleBar/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/DescriptionContainer"]
 layout_mode = 2
 text = "- Gets stronger the more fights he triumphs over"
 autowrap_mode = 3
@@ -128,6 +144,7 @@ autowrap_mode = 3
 layout_mode = 2
 
 [node name="HideButton" parent="MiddleMiddleBar" node_paths=PackedStringArray("hide_node") instance=ExtResource("5_rpxwj")]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 start_state = false
 hide_node = NodePath("../../LowerMiddleBar/PanelContainer")
@@ -137,16 +154,21 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"PurplePanelContainer"
 
-[node name="ChampionBoonTitleLabel" type="RichTextLabel" parent="MiddleMiddleBar/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MiddleMiddleBar/PanelContainer"]
+layout_mode = 2
+
+[node name="ChampionBoonTitleLabel" type="RichTextLabel" parent="MiddleMiddleBar/PanelContainer/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 bbcode_enabled = true
 fit_content = true
 script = ExtResource("5_mufjb")
-settings = ExtResource("6_40ra6")
+settings = ExtResource("7_uh4a8")
 
 [node name="HideButton2" parent="MiddleMiddleBar" node_paths=PackedStringArray("hide_node") instance=ExtResource("5_rpxwj")]
+custom_minimum_size = Vector2(100, 60)
 layout_mode = 2
+text = " Hide "
 start_state = false
 hide_node = NodePath("../../LowerMiddleBar/PanelContainer2")
 
@@ -155,13 +177,16 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"RedPanelContainer"
 
-[node name="UltimateTitleLabel" type="RichTextLabel" parent="MiddleMiddleBar/PanelContainer2"]
+[node name="MarginContainer" type="MarginContainer" parent="MiddleMiddleBar/PanelContainer2"]
+layout_mode = 2
+
+[node name="UltimateTitleLabel" type="RichTextLabel" parent="MiddleMiddleBar/PanelContainer2/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 bbcode_enabled = true
 fit_content = true
 script = ExtResource("5_mufjb")
-settings = ExtResource("6_40ra6")
+settings = ExtResource("7_uh4a8")
 
 [node name="LowerMiddleBar" type="HBoxContainer" parent="."]
 layout_mode = 2
@@ -171,7 +196,10 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"PurplePanelContainer"
 
-[node name="ChampionBoonLabel" parent="LowerMiddleBar/PanelContainer" instance=ExtResource("7_ll1ak")]
+[node name="MarginContainer" type="MarginContainer" parent="LowerMiddleBar/PanelContainer"]
+layout_mode = 2
+
+[node name="ChampionBoonLabel" parent="LowerMiddleBar/PanelContainer/MarginContainer" instance=ExtResource("7_ll1ak")]
 unique_name_in_owner = true
 layout_mode = 2
 
@@ -180,7 +208,10 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"RedPanelContainer"
 
-[node name="UltimateLabel" type="Label" parent="LowerMiddleBar/PanelContainer2"]
+[node name="MarginContainer" type="MarginContainer" parent="LowerMiddleBar/PanelContainer2"]
+layout_mode = 2
+
+[node name="UltimateLabel" type="Label" parent="LowerMiddleBar/PanelContainer2/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Rampage 4x to Heal to full HEALTH and cleanse any negative effects"
@@ -192,7 +223,10 @@ autowrap_mode = 3
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 
-[node name="FlavorLabel" type="Label" parent="FlavorTextContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="FlavorTextContainer"]
+layout_mode = 2
+
+[node name="FlavorLabel" type="Label" parent="FlavorTextContainer/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "\"A thug on the streets, a monster in the sheets\""

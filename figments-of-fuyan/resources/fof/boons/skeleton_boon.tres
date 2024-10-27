@@ -1,11 +1,13 @@
-[gd_resource type="Resource" script_class="BoonInfo" load_steps=4 format=3 uid="uid://gahmc1sayw3e"]
+[gd_resource type="Resource" script_class="BoonInfo" load_steps=5 format=3 uid="uid://gahmc1sayw3e"]
 
 [ext_resource type="Script" path="res://scripts/fof/boons/boon.gd" id="1_8le0k"]
 [ext_resource type="Script" path="res://scripts/fof_info/boons/boon_info.gd" id="1_lcbgg"]
 [ext_resource type="Script" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="2_akh8u"]
+[ext_resource type="Image" uid="uid://c013donwpgkn2" path="res://assets/sprites/game/boons/skeleton.png" id="2_j888r"]
 
 [resource]
 script = ExtResource("1_lcbgg")
+icon = ExtResource("2_j888r")
 description = "When your first ally dies AWAKEN a 1/1 Skeleton"
 ascended_description = "When your first ally dies AWAKEN a 2/2 Skeleton"
 RARITY = 3

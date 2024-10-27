@@ -8,7 +8,7 @@ func onProcessAction(action: Action) -> void:
 			
 func onTrauma(_death_action: DeathAction) -> void:
 	var speed: int = 1 if !ascended else 2
-	var actions: Array = [StatAction.new(self, Game.Stats.MAX_SPEED, speed), CameraChangeAction.new(self)]
+	var actions: Array = [StatAction.new(StatInfo.new(self, Game.Stats.MAX_SPEED, speed)), CameraChangeAction.new(self)]
 	trauma_charges -= 1
 	onPushAction(actions)
 	

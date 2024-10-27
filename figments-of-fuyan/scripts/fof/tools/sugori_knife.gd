@@ -4,9 +4,10 @@ var visible_cards: Array = []
 func onProcessAction(action: Action) -> void:
 	super(action)
 	if !action.post:
-		if action is DamageAction and action.owner is AttackAction and action.owner.Defender.isInjured():
-			if action.owner.Attacker == Card or (ascended and action.owner.Attacker in Card.getVisibleAllies()):
-				action.damage += 1
+		if action is DamageAction and action.owner is AttackAction:
+			for Defender in action.owner.Defenders.filter(func(x: GameObjectGD): return x is CardGD and x.isInjured()):
+				if action.owner.Attacker == Card or (ascended and action.owner.Attacker.isAlly(Card.team) and action.owner.Attacker in visible_cards):
+					action.damage += 1
 	elif action.post:
 		if action is VisionNewUnitAction and action.Discoverer == Card:
 			if action.enter_vision: onAddFieldEffect(action.Discovered)

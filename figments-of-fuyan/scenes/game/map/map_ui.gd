@@ -9,6 +9,7 @@ var area: AreaGD
 @onready var ShillingsLabel: Label = %ShillingsLabel
 @onready var BackgroundDarkener: Control = %BackgroundDarkener
 @onready var LegendBox: VBoxContainer = %LegendBox
+@onready var BoonBox: GridContainer = %BoonBox
 #endregion
 
 #region Exports
@@ -25,6 +26,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	area.map_node_hovered.connect(onMapNodeHovered)
 	area.map_node_entered.connect(onMapNodeEntered)
 	
+	BoonBox.onUpdate()
 	BackgroundDarkener.visible = false
 	onMapStartAnimation()
 	setLegendBox()

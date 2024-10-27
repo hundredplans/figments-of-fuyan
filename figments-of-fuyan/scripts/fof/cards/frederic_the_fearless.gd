@@ -15,4 +15,4 @@ func onProcessAction(action: Action) -> void:
 		onPushAction(RampageAction.new(self, action))
 
 func onRampage(action: DeathAction) -> void:
-	onPushAction(StatAction.new(self, Game.Stats.MAX_HEALTH, 1))
+	onPushAction(StatAction.new(StatInfo.new(self, Game.Stats.MAX_HEALTH, 1)))

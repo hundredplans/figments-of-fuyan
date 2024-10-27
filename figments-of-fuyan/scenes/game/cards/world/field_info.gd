@@ -235,12 +235,13 @@ func onFindIconNode(FofObject: FofGD) -> Sprite3D:
 func onUpdateDelayedStats() -> void:
 	onResetNullIcons()
 	var stats: Dictionary = {Game.Stats.ATTACK: 0, Game.Stats.HEALTH: 0, Game.Stats.SPEED: 0, Game.Stats.MAX_HEALTH: 0}
-	for stat_action in Card.delayed_stats.filter(func(x: StatAction): return x.turn_delay == 1):
-		for i in range(stat_action.types.size()):
-			stats[stat_action.types[i]] += stat_action.values[i]
+	for stat_action in Card.delayed_stats:
+		for stat_info in stat_action.stat_infos.filter(func(x: StatInfo): return x.turn_delay == 1):
+			for i in range(stat_info.types.size()):
+				stats[stat_action.types[i]] += stat_action.values[i]
 	
 	for stat in stats:
-		if stats[stat] > 0: onAddDelayedStatNode(stat, stats[stat])
+		if stats[stat] != 0: onAddDelayedStatNode(stat, stats[stat])
 	
 func onAddDelayedStatNode(type: Game.Stats, value: int) -> void:
 	var FofObjectIcon: Node3D = FofObjectIconPacked.instantiate()

@@ -19,6 +19,8 @@ extends Control
 
 @onready var ActiveEffects: Container = %ActiveEffects
 @onready var Console: Control = %Console
+
+@onready var BoonBox: Control = %BoonBox
 #endregion
 
 #region Globals
@@ -59,6 +61,8 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level.awakened.connect(onAwakened)
 	level.active_effect_used.connect(onActiveEffectUsed)
 	level.active_effect_added.connect(onActiveEffectAdded)
+	level.boon_added.connect(onBoonAdded)
+	level.boon_removed.connect(onBoonRemoved)
 	save_file.update_shillings.connect(onUpdateShillings)
 	
 	level.camera_change_action.connect(onCameraUpdated)
@@ -68,6 +72,8 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	LevelLabel.text = level.info.name
 	World.active_effect_activated.connect(onActiveEffectActivated)
 	World.active_effect_deselected.connect(onActiveEffectDeselected)
+	BoonBox.onUpdate()
+	Console.level = level
 	
 	setHeroNameLabel()
 	setActiveEffectLabel()
@@ -249,9 +255,18 @@ func onUpdateActiveEffects(SpectateObject: GameObjectGD = level.getSpectateObjec
 	ActiveEffects.onUpdate(active_effects)
 #endregion
 
-#region
+#region Active Effects
 func onActiveEffectUsed(_active_effect: ActiveEffectDatastore) -> void:
 	onUpdateActiveEffects()
 	
 func onActiveEffectAdded(_active_effect: ActiveEffectDatastore) -> void:
 	onUpdateActiveEffects()
+#endregion
+
+#region Boons
+func onBoonAdded(Boon: BoonGD) -> void:
+	BoonBox.onAddBoon(Boon)
+	
+func onBoonRemoved(_id: int) -> void:
+	BoonBox.onUpdate()
+#endregion

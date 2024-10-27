@@ -584,7 +584,7 @@ func getAttackRange() -> int:
 		if field_trait is RangedGD: return field_trait.ranged
 	return 1
 	
-func canAttack() -> bool: return attacks > 0
+func canAttack() -> bool: return attacks > 0 and !status_effects.any(func(x: StatusEffectGD): return x is StaggerGD)
 	
 func getMaxAttacks() -> int: return 1
 	
@@ -641,8 +641,7 @@ func onCreateInitialTraits() -> void:
 	
 	var actions: Array = []
 	for field_trait_data in initial_traits:
-		field_trait_data.coords = getCoords()
-		actions.append(AddTraitAction.new(SavedData.onLoadModel(field_trait_data, self)))
+		actions.append(AddTraitAction.new(SavedData.onLoadModel(field_trait_data, self), self))
 	onPushAction(actions)
 	
 func onAddTrait(Trait: TraitGD) -> void:
@@ -682,7 +681,7 @@ func getActiveEffectByName(_name: String) -> ActiveEffectDatastore:
 func getActiveEffectTiles(_active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	return null
 	
-func onActiveEffect(_active_effect: ActiveEffectDatastore, _PickedTile: TileGD) -> void:
+func onActiveEffect(_active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles) -> void:
 	pass
 #endregion
 
@@ -705,15 +704,16 @@ func onCreateBaseStatusEffect(id: int, turns: int = 1) -> void:
 
 #region Advance Turn
 func onAdvanceTurn() -> void:
-	var actions: Array = [StatAction.new(self, Game.Stats.SPEED, max_speed, 0, true, false), ChangeTurnStateAction.new(self, Game.TurnStates.INACTIVE)]
+	var actions: Array = [StatAction.new(
+		StatInfo.new(self, Game.Stats.SPEED, max_speed, 0, true, false)),
+		ChangeTurnStateAction.new(self, Game.TurnStates.INACTIVE)]
+		
+	actions += active_effects.map(func(x: ActiveEffectDatastore): return ChangeActiveEffectUsedAction.new(x, false))
 	onPushAction(actions)
 	
 	if !delayed_stats.is_empty():
 		for stat_action in delayed_stats.duplicate():
 			stat_action.onAdvanceTurn()
-		
-	for active_effect in active_effects:
-		active_effect.onAdvanceTurn()
 		
 	FieldInfo.onUpdateDelayedStats()
 	
@@ -738,6 +738,8 @@ func isValidRampage(action: Action) -> bool:
 func isValidOnHit(action: Action) -> bool:
 	return action.post and action is DamageAction and action.owner is AttackAction and action.Damager == self and card_place == Game.CardPlaces.FIELD
 
+func isValidRevenge(action: Action) -> bool:
+	return action.post and action is DamageAction and self in action.Defenders and card_place == Game.CardPlaces.FIELD
 #endregion
 
 #region Heal
@@ -759,5 +761,5 @@ func onRemoveFieldEffect(FieldEffect: FieldEffectGD) -> void:
 	FieldInfo.onRemoveIcon(FieldEffect)
 	
 func onFindFieldEffectsByOwner(FofObject: FofGD) -> Array:
-	return field_effects.filter(func(x: FieldEffectGD): return x.owner == self)
+	return field_effects.filter(func(x: FieldEffectGD): return x.FofObject == FofObject)
 #endregion
