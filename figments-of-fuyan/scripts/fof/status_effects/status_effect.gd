@@ -29,6 +29,9 @@ func onProcessAction(action: Action) -> void:
 			
 		elif action is DeathAction and action.Defender == Card:
 			onClear()
+		
+		elif action is AddStatusEffectAction and action.StatusEffect == self:
+			onStatusEffectAdded()
 			
 func onAdvanceTurn() -> void:
 	pass
@@ -36,3 +39,5 @@ func onAdvanceTurn() -> void:
 func getDescription() -> String:
 	return info.description
 	
+func onStatusEffectAdded() -> void:
+	pass

@@ -162,8 +162,8 @@ func getAllyUnits(team: int = 0) -> Array:
 func getEnemyUnits(team: int = 0) -> Array:
 	return get_tree().get_nodes_in_group("FieldCardsGD").filter(func(x: CardGD): return x.team != team)
 	
-func getBaseCard(id: int, Tile: TileGD, team: int, tile_rotation: int) -> SavedDataCard:
-	return Helper.getFofInfoID(CardInfo, 11).saved_data.new(11, true, 0, Tile.getCoords(), tile_rotation, false, false, team)
+func getBaseCard(id: int, Tile: TileGD, team: int, tile_rotation: int, ascended: bool = false) -> SavedDataCard:
+	return Helper.getFofInfoID(CardInfo, 11).saved_data.new(11, true, 0, Tile.getCoords(), tile_rotation, false, false, team, ascended)
 #endregion
 
 #region Vision

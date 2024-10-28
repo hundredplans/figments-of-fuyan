@@ -2,6 +2,7 @@ class_name FofGD extends Node3D
 
 signal push_action
 signal append_action
+signal force_action
 
 var info: FofInfo
 var groupsave: bool = true

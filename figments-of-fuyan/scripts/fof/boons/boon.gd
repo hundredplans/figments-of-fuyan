@@ -24,3 +24,9 @@ func onAscenscionChanged() -> void:
 	
 func onBoonAdded() -> void:
 	pass
+
+func getDisabled() -> bool:
+	return false
+	
+func getCharges() -> int:
+	return -1

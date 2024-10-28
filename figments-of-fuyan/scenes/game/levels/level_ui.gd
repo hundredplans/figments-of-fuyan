@@ -63,6 +63,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level.active_effect_added.connect(onActiveEffectAdded)
 	level.boon_added.connect(onBoonAdded)
 	level.boon_removed.connect(onBoonRemoved)
+	level.boon_activated.connect(onBoonActivated)
 	save_file.update_shillings.connect(onUpdateShillings)
 	
 	level.camera_change_action.connect(onCameraUpdated)
@@ -72,7 +73,6 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	LevelLabel.text = level.info.name
 	World.active_effect_activated.connect(onActiveEffectActivated)
 	World.active_effect_deselected.connect(onActiveEffectDeselected)
-	BoonBox.onUpdate()
 	Console.level = level
 	
 	setHeroNameLabel()
@@ -269,4 +269,7 @@ func onBoonAdded(Boon: BoonGD) -> void:
 	
 func onBoonRemoved(_id: int) -> void:
 	BoonBox.onUpdate()
+	
+func onBoonActivated(Boon: BoonGD) -> void:
+	BoonBox.onUpdateBoonChargesAndDisabled(Boon)
 #endregion

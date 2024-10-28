@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="FieldEffectInfo" load_steps=5 format=3 uid="uid://c7t0d7pcstror"]
+
+[ext_resource type="Script" path="res://scripts/fof/field_effects/energized_boon_field_effect.gd" id="1_i3ysh"]
+[ext_resource type="Script" path="res://scripts/fof_info/field_effects/field_effect_info.gd" id="1_rgd2q"]
+[ext_resource type="Texture2D" uid="uid://0a7lcny2vxvy" path="res://assets/sprites/game/fof_object_icons/field_effects/energized_boon.png" id="2_hhur1"]
+[ext_resource type="Script" path="res://scripts/saved_data/field_effects/saved_data_field_effect.gd" id="3_04gx4"]
+
+[resource]
+script = ExtResource("1_rgd2q")
+icon = ExtResource("2_hhur1")
+description = "This has [1] SPD for [1] Turn"
+id = 9
+name = "Energized Boon"
+gdscript = ExtResource("1_i3ysh")
+saved_data = ExtResource("3_04gx4")

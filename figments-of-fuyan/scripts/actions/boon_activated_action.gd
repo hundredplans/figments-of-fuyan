@@ -16,3 +16,6 @@ func onPostAction() -> void:
 
 func getDelay() -> float:
 	return super()
+
+func getLogInfo() -> Array:
+	return ["Boon: " + Boon.info.name]

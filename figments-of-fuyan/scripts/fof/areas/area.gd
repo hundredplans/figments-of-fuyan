@@ -289,7 +289,7 @@ func onCreateMapNode(data: SavedDataMapNode) -> void:
 	map_location_to_node[map_node.map_location] = map_node
 	map_node.hovered.connect(onMapNodeHovered)
 	map_node.pressed.connect(onMapNodePressed)
-	map_node.load_level.connect(onMapNodeLoadLevel)
+	map_node.load_level.connect(onMapNodeLoadLevelInit)
 	map_node.entered.connect(onMapNodeEntered)
 	map_node.finished.connect(onMapNodeFinished)
 	
@@ -355,6 +355,11 @@ func onAfterScenesLoad() -> void:
 	var map_node: MapNodeGD = getEnteredMapNode()
 	if map_node.is_entered and !map_node.is_finished:
 		onMapNodeEntered(map_node)
+	
+func onMapNodeLoadLevelInit(level_data: SavedDataLevel) -> void:
+	level_data.max_energy = info.world.getMaxEnergy()
+	level_data.energy = level_data.max_energy
+	onMapNodeLoadLevel(level_data)
 		
 func onMapNodeLoadLevel(level_data: SavedDataLevel) -> void:
 	var map_nodes: Array = get_tree().get_nodes_in_group("MapNodesGD")
@@ -367,7 +372,6 @@ func onMapNodeLoadLevel(level_data: SavedDataLevel) -> void:
 	load_level.emit(level_data)
 
 func onLoadActiveLevel(level_data: SavedDataLevel) -> LevelGD:
-	level_data.max_energy = info.world.getMaxEnergy()
-	level_data.energy = level_data.max_energy
+
 	active_level = SavedData.onLoadModel(level_data, self)
 	return active_level

@@ -20,7 +20,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 	super(active_effect, PickedTile, active_effect_tiles)
 	if active_effect.name == info.name:
 		var EnemyCard: CardGD = Game.getFieldCard(PickedTile)
-		EnemyCard.onCreateBaseStatusEffect(3)
+		EnemyCard.onCreateBaseStatusEffect(4)
 		
 		var actions: Array = [
 			ChangeTileRotationAction.new(Card, Game.getRelativeTileRotation(Card.Tile, EnemyCard.Tile)),

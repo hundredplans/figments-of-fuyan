@@ -10,3 +10,14 @@ func onUpdate() -> void:
 	for BoonIcon in get_children(): BoonIcon.queue_free(); print(BoonIcon)
 	for Boon in get_tree().get_nodes_in_group("BoonsGD"):
 		onAddBoon(Boon)
+
+func onUpdateBoonChargesAndDisabled(Boon: BoonGD) -> void:
+	var BoonIcon: TextureRect = onFindBoonIcon(Boon)
+	if BoonIcon != null:
+		BoonIcon.onUpdateCharges(Boon.getCharges())
+		BoonIcon.onUpdateDisabled(Boon.getDisabled())
+
+func onFindBoonIcon(Boon: BoonGD) -> TextureRect:
+	for BoonIcon in get_children():
+		if BoonIcon.Boon == Boon: return BoonIcon
+	return null

@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ChampionBoonInfo" load_steps=5 format=3 uid="uid://dhiqm4mrd7qpb"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/boons/champion_boon_info.gd" id="1_3bsiu"]
-[ext_resource type="Script" path="res://scripts/fof/boons/boon.gd" id="1_m5tf0"]
+[ext_resource type="Script" path="res://scripts/fof/boons/bold_aura.gd" id="1_ff4sl"]
 [ext_resource type="Image" uid="uid://cqe3wqg1v4gc" path="res://assets/sprites/game/cards/art_mini/frederic_the_fearless.png" id="1_tusxd"]
 [ext_resource type="Script" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_g1q30"]
 
@@ -14,5 +14,5 @@ ascended_description = ""
 RARITY = 8
 id = 1
 name = "Bold Aura"
-gdscript = ExtResource("1_m5tf0")
+gdscript = ExtResource("1_ff4sl")
 saved_data = ExtResource("3_g1q30")

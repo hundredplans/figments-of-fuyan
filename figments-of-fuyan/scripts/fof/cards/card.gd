@@ -145,8 +145,8 @@ func onSave() -> SavedDataCard:
 	for stat_action in delayed_stats: stat_action.onSave()
 	visible_game_objects_public_ids = visible_game_objects.map(func(x: GameObjectGD): return x.public_id)
 	
-	return SavedDataCard.new(info.id, false, public_id, coords, tile_rotation, level_visible, is_revealed, team, \
-	attack, health, speed, max_speed, max_health, energy, ascended, draw_order, card_place, turn_state,\
+	return SavedDataCard.new(info.id, false, public_id, coords, tile_rotation, level_visible, is_revealed, team, ascended, \
+	attack, health, speed, max_speed, max_health, energy, draw_order, card_place, turn_state,\
 	SavedData.onSaveGroup(field_traits), SavedData.onSaveGroup(status_effects), attacks, delayed_stats,\
 	visible_game_objects_public_ids, ability_save, active_effects, tool_data, SavedData.onSaveGroup(field_effects))
 
@@ -168,6 +168,7 @@ func onLoadData(data: SavedData) -> void:
 	if data.tool_data != null:
 		Tool = SavedData.onLoadModel(data.tool_data, self)
 		Tool.Card = self
+		onAddTool(Tool)
 	
 	for active_effect in active_effects:
 		active_effect.owner = self
@@ -446,12 +447,6 @@ func onCreateFieldInfo() -> void:
 	add_child(FieldInfo)
 	FieldInfo.setInfo(self)
 	
-	#for Trait in field_traits:
-		#FieldInfo.onAddTrait(Trait)
-		#
-	#for StatusEffect in status_effects:
-		#FieldInfo.onAddIcon(StatusEffect)
-	
 func onRemoveFieldInfo() -> void:
 	FieldInfo.queue_free()
 	
@@ -584,7 +579,7 @@ func getAttackRange() -> int:
 		if field_trait is RangedGD: return field_trait.ranged
 	return 1
 	
-func canAttack() -> bool: return attacks > 0 and !status_effects.any(func(x: StatusEffectGD): return x is StaggerGD)
+func canAttack() -> bool: return attacks > 0
 	
 func getMaxAttacks() -> int: return 1
 	
@@ -647,8 +642,16 @@ func onCreateInitialTraits() -> void:
 func onAddTrait(Trait: TraitGD) -> void:
 	field_traits.append(Trait)
 	Trait.Card = self
-	FieldInfo.onAddTrait(Trait)
+	FieldInfo.onAddIcon(Trait)
 	FieldInfo.onUpdateTraits()
+	
+func onRemoveTrait(Trait: TraitGD) -> void:
+	field_traits.erase(Trait)
+	FieldInfo.onRemoveIcon(Trait)
+	FieldInfo.onUpdateTraits()
+	
+func onCreateArmorTrait(armor: int) -> TraitGD:
+	return SavedData.onLoadModel(SavedDataArmor.new(1, true, 0, armor), self)
 	
 func isMobile() -> bool:
 	return field_traits.any(func(x: TraitGD): return x is MobileGD)
@@ -700,6 +703,10 @@ func onCreateBaseStatusEffect(id: int, turns: int = 1) -> void:
 	var status_effect: StatusEffectGD = SavedData.onLoadModel(status_data, self)
 	status_effect.Card = self
 	onPushAction(AddStatusEffectAction.new(status_effect))
+	
+func onStun(turns: int = 1) -> void:
+	onCreateBaseStatusEffect(4, turns)
+	onCreateBaseStatusEffect(5, turns)
 #endregion
 
 #region Advance Turn

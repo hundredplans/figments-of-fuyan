@@ -24,7 +24,7 @@ func _ready():
 	else:
 		var DIR_PATH: String = SaveFileInfo.SAVE_DIRECTORY
 		var files: Array = Array(DirAccess.get_files_at(DIR_PATH))
-		if files.is_empty(): onStartGame(SavedData.onLoadModel(SavedDataCard.new(2), KeepAcross))
+		if files.is_empty(): onStartGame(SavedData.onLoadModel(SavedDataCard.new(1), KeepAcross))
 		else: onLoadGame(load(DIR_PATH + files[0]))
 #endregion
 

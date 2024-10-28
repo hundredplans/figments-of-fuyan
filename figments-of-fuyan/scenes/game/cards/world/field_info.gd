@@ -75,6 +75,9 @@ func setInfo(_Card: CardGD) -> void:
 	onUpdateTraits()
 	onUpdateDelayedStats()
 	
+	if Card.Tool != null:
+		onToolAdded(Card.Tool)
+	
 func onResetStats() -> void:
 	onResetDepthTest()
 	onCreateFloatingNumbers()
@@ -209,9 +212,6 @@ func onUpdateTraits() -> void:
 		replace_stat_spot.add_child(stat_to_model[stat].instantiate())
 		
 	onResetDepthTest()
-		
-func onAddTrait(Trait: TraitGD) -> void:
-	onAddIcon(Trait)
 #endregion
 
 #region IconsManager

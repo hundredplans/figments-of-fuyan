@@ -2,6 +2,8 @@ extends TextureRect
 
 var Boon: BoonGD
 
+@onready var ChargesLabel: Label = %ChargesLabel
+
 @export var TooltipPacked: PackedScene
 const TOOLTIP_DELAY: float = 0.3
 const OFFSET := Vector2(10, -40)
@@ -9,6 +11,8 @@ const OFFSET := Vector2(10, -40)
 func setInfo(_Boon: BoonGD) -> void:
 	Boon = _Boon
 	texture = Boon.getIcon()
+	onUpdateCharges(Boon.getCharges())
+	onUpdateDisabled(Boon.getDisabled())
 	
 var Tooltip: Control
 var mouse_in_ui: bool
@@ -24,6 +28,14 @@ func onMouseInUI(state: bool) -> void:
 		
 	elif Tooltip != null:
 		Tooltip.queue_free()
+		
+func onUpdateCharges(charges: int) -> void:
+	if charges == -1: ChargesLabel.text = ""
+	else:
+		ChargesLabel.text = str(charges)
+	
+func onUpdateDisabled(disabled: bool) -> void:
+	modulate = Color(0.5, 0.5, 0.5) if disabled else Color(1, 1, 1)
 		
 func _process(_delta: float) -> void:
 	if Tooltip != null:

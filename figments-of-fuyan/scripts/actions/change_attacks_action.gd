@@ -1,15 +1,15 @@
 class_name ChangeAttacksAction extends Action
 
-var GameObject: GameObjectGD
+var Card: CardGD
 var attacks: int
 
-func _init(_GameObject: GameObjectGD = null, _attacks: int = 0) -> void:
+func _init(_Card: CardGD = null, _attacks: int = 0) -> void:
 	super()
-	GameObject = _GameObject
+	Card = _Card
 	attacks = _attacks
 
 func onPostAction() -> void:
-	GameObject.setAttacks(attacks)
+	Card.setAttacks(attacks)
 
 func getLogInfo() -> Array:
-	return ["Card: " + GameObject.info.name, "Attacks: " + str(attacks)]
+	return ["Card: " + Card.info.name, "Attacks: " + str(attacks)]

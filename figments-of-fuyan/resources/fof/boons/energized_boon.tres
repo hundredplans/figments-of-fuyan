@@ -2,16 +2,16 @@
 
 [ext_resource type="Script" path="res://scripts/fof_info/boons/boon_info.gd" id="1_2nnha"]
 [ext_resource type="Image" uid="uid://b1mpx5grb511a" path="res://assets/sprites/game/boons/energized.png" id="1_67sg0"]
-[ext_resource type="Script" path="res://scripts/fof/boons/boon.gd" id="1_rbo5u"]
+[ext_resource type="Script" path="res://scripts/fof/boons/energized_boon.gd" id="1_apf5q"]
 [ext_resource type="Script" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_ctq26"]
 
 [resource]
 script = ExtResource("1_2nnha")
 icon = ExtResource("1_67sg0")
-description = "Ally units gain [1] SPEED for [1] Turn when AWAKENED"
-ascended_description = "Ally units gain [2] SPEED for [1] Turn when AWAKENED"
+description = "Ally units gain [1] SPD for [1] Turn when AWAKENED"
+ascended_description = "Ally units gain [2] SPD for [1] Turn when AWAKENED"
 RARITY = 5
 id = 4
 name = "Energizezd Boon"
-gdscript = ExtResource("1_rbo5u")
+gdscript = ExtResource("1_apf5q")
 saved_data = ExtResource("3_ctq26")

@@ -1,4 +1,4 @@
-extends PanelContainer	
+extends PanelContainer
 
 @onready var NameLabel: Label = %NameLabel
 @onready var TopIcon: TextureRect = %TopIcon

@@ -22,6 +22,7 @@ signal active_effect_used
 signal active_effect_added
 signal boon_added
 signal boon_removed
+signal boon_activated
 
 #region Load / Save
 func onSave() -> SavedData:
@@ -56,6 +57,7 @@ func onLoadData(data: SavedData) -> void:
 	for Card in get_tree().get_nodes_in_group("FieldCardsGD"):
 		Card.onLoadDataLevel()
 		
+	energy_changed.emit(energy)
 	level_camera_data = data.level_camera_data
 	add_to_group("LevelsGD")
 
@@ -73,6 +75,7 @@ func onLoadActiveLevel(data: SavedDataLevel) -> void:
 		onPushAction(InsertAction.new(champion_card))
 		onPushAction(ChangePhaseAction.new(Game.Phases.START))
 		
+		
 		for Spawn in get_tree().get_nodes_in_group("AllySpawnsGD"):
 			onPushAction(RevealAction.new(Spawn))
 		
@@ -85,6 +88,9 @@ func onLoadActiveLevel(data: SavedDataLevel) -> void:
 		for Spawn in get_tree().get_nodes_in_group("NeutralSpawnsGD").filter(func(x: SpawnGD): return x.spawn_id > 0):
 			var Card: CardGD = SavedData.onLoadModel(SavedDataCard.new(Spawn.spawn_id, true, 0, Vector4i.ZERO, Spawn.tile_rotation, false, false, 2), self)
 			onPushAction(AwakenAction.new(Card, Spawn.getTile()))
+		
+		var boon_actions: Array = get_tree().get_nodes_in_group("BoonsGD").map(func(x: BoonGD): return AddBoonAction.new(x.info.id, x.ascended, true))
+		onPushAction(boon_actions)
 				
 		onPushAction(LevelVisibleAction.new(false, get_tree().get_nodes_in_group("LevelTileObjectsGD") + get_tree().get_nodes_in_group("FieldCardsGD")))
 		return
@@ -161,6 +167,8 @@ func onProcessAction(action: Action) -> void:
 			boon_added.emit(action.Boon)
 		elif action is RemoveBoonAction:
 			boon_removed.emit(action.id)
+		elif action is BoonActivatedAction:
+			boon_activated.emit(action.Boon)
 	else:
 		if action is ChangePhaseAction:
 			if action.phase == phase: action.failed = true
