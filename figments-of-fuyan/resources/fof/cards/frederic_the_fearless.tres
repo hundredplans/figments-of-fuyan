@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=13 format=3 uid="uid://utawhemi8npn"]
+[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=14 format=3 uid="uid://utawhemi8npn"]
 
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_4a3l2"]
 [ext_resource type="Image" uid="uid://b86c6f1uyjyd6" path="res://assets/sprites/game/cards/art_pop/frederic_the_fearless.png" id="2_d16dl"]
 [ext_resource type="Image" uid="uid://cqe3wqg1v4gc" path="res://assets/sprites/game/cards/art_mini/frederic_the_fearless.png" id="2_jnghr"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/champion_card_info.gd" id="2_y17s3"]
@@ -33,7 +34,7 @@ _bundled = {
 
 [resource]
 script = ExtResource("2_y17s3")
-description = Array[String](["Regular and enhanced fights are more common", "Gets stronger the more fights he triumphs over"])
+description = Array[String](["Regular and enhanced fights are more common", "Your aura gets stronger as you triumph over fights"])
 associated_color = Color(1, 0, 0, 1)
 epithet = "The Brute"
 champion_select_posrot = SubResource("Resource_kddgi")
@@ -47,6 +48,7 @@ speed = 2
 energy = 2
 rarity = 8
 initial_traits = Array[ExtResource("3_xdpta")]([])
+active_abilities = Array[ExtResource("1_4a3l2")]([])
 ability_text = "RAMPAGE: Gain +1 HP"
 flavor_text = "A thug on the streets, a monster in the sheets"
 art_mini_coordinate = Vector2i(60, 0)

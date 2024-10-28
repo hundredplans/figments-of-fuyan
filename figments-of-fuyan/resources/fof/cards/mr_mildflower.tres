@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=11 format=3 uid="uid://booqf44apbwan"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://booqf44apbwan"]
 
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="1_5wykw"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_iocfo"]
 [ext_resource type="Image" uid="uid://qe6xg7rfo7n3" path="res://assets/sprites/game/cards/art_mini/mr_mildflower.png" id="1_lijaw"]
 [ext_resource type="Image" uid="uid://b32fyhkkap3o7" path="res://assets/sprites/game/cards/art_pop/mr_mildflower.png" id="1_pxu7r"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="2_qt6uf"]
@@ -26,7 +27,6 @@ _bundled = {
 
 [sub_resource type="Resource" id="Resource_wg82r"]
 script = ExtResource("1_5wykw")
-coords = Vector4i(0, 0, 0, 0)
 id = 5
 first_init = false
 public_id = 0
@@ -39,6 +39,7 @@ speed = 2
 energy = 1
 rarity = 1
 initial_traits = Array[ExtResource("1_5wykw")]([SubResource("Resource_wg82r")])
+active_abilities = Array[ExtResource("1_iocfo")]([])
 ability_text = "DOCILE; LAST WILL: Debuff units in vision -1 ATT for [1] Turn"
 flavor_text = ""
 art_mini_coordinate = Vector2i(80, 30)

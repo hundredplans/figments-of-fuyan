@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=10 format=3 uid="uid://mhdlwqecapsj"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=11 format=3 uid="uid://mhdlwqecapsj"]
 
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_1tudh"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="2_bypfo"]
 [ext_resource type="Image" uid="uid://bjfdb5fkve0v7" path="res://assets/sprites/game/cards/art_pop/palmy.png" id="2_lhe0c"]
 [ext_resource type="Image" uid="uid://8krlme6a4ohv" path="res://assets/sprites/game/cards/art_mini/palmy.png" id="2_xuow0"]
@@ -32,6 +33,7 @@ speed = 3
 energy = 1
 rarity = 3
 initial_traits = Array[ExtResource("3_6dcot")]([])
+active_abilities = Array[ExtResource("1_1tudh")]([])
 ability_text = "TRAUMA [1]: Gain +1 SPD"
 flavor_text = ""
 art_mini_coordinate = Vector2i(80, 120)

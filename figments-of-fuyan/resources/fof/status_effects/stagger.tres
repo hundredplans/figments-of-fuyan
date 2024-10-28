@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="StatusEffectInfo" load_steps=5 format=3 uid="uid://bmpf31am4unen"]
+
+[ext_resource type="Script" path="res://scripts/fof/status_effects/stagger.gd" id="1_dv1u0"]
+[ext_resource type="Script" path="res://scripts/fof_info/status_effects/status_effect_info.gd" id="1_h4iy1"]
+[ext_resource type="Texture2D" uid="uid://cj0wgesg61dqy" path="res://assets/sprites/game/fof_object_icons/status_effects/stagger.png" id="2_1q2b7"]
+[ext_resource type="Script" path="res://scripts/saved_data/status_effects/saved_data_status_effect.gd" id="2_o0w2y"]
+
+[resource]
+script = ExtResource("1_h4iy1")
+icon = ExtResource("2_1q2b7")
+description = "This can't attack for [X] Turn"
+state = 1
+id = 3
+name = "Stagger"
+gdscript = ExtResource("1_dv1u0")
+saved_data = ExtResource("2_o0w2y")

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=6 format=3 uid="uid://4k78rplcv2ra"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_fwww3"]
+[ext_resource type="Script" path="res://scripts/fof_info/tools/tool_info.gd" id="1_mujmr"]
+[ext_resource type="Script" path="res://scripts/fof/tools/palmleaf.gd" id="2_7dnvl"]
+[ext_resource type="Image" uid="uid://1kp2f181fpe7" path="res://assets/sprites/game/tools/Palmleaf.png" id="2_r1uui"]
+[ext_resource type="Script" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="2_u6616"]
+
+[resource]
+script = ExtResource("1_mujmr")
+icon = ExtResource("2_r1uui")
+description = "EQUIPPED: Gain +1 SPD if no enemies are in vision. Expires in [2] Turns"
+ascended_description = ""
+RARITY = 2
+active_abilities = Array[ExtResource("1_fwww3")]([])
+id = 10
+name = "Palmleaf"
+gdscript = ExtResource("2_7dnvl")
+saved_data = ExtResource("2_u6616")

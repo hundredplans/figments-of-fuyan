@@ -22,6 +22,10 @@ func onPostAction() -> void:
 	if Card.turn_state == Game.TurnStates.INACTIVE:
 		actions.append(ChangeTurnStateAction.new(Card, Game.TurnStates.ACTIVE))
 	
+	var ally_cards: Array = Game.getAllyUnits(Card.team)
+	for ally_card in ally_cards.filter(func(x: CardGD): return x.turn_state == Game.TurnStates.ACTIVE and x != Card):
+		actions.append(ChangeTurnStateAction.new(ally_card, Game.TurnStates.PASSED))
+	
 	for i in range(1, tiles.size()):
 		var MoveToTile: TileGD = tiles[i]
 		var Attackable: CardGD = Game.getFieldCard(MoveToTile)

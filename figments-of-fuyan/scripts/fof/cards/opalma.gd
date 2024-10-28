@@ -17,4 +17,4 @@ func onHit(damage_action: DamageAction, attack_action: AttackAction) -> void:
 			
 		var actions: Array = []
 		for ally in picked_allies:
-			onPushAction(StatAction.new(ally, Game.Stats.HEALTH, heal))
+			onPushAction(StatAction.new(StatInfo.new(ally, Game.Stats.HEALTH, heal)))

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://bsjdkploqaje5"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=13 format=3 uid="uid://bsjdkploqaje5"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_jmwbd"]
 [ext_resource type="Image" uid="uid://dwaxgobdb2kxy" path="res://assets/sprites/game/cards/art_pop/sellus_palmus.png" id="2_3b8rb"]
@@ -11,12 +11,20 @@
 
 [sub_resource type="Resource" id="Resource_atwem"]
 script = ExtResource("1_jmwbd")
-ascended_exists = true
+exists = 0
 ascended_description = "Heal [1] HP to adjacent allies"
 ascended_max_charges = 2
 name = "Palmsale"
 description = "Heal [1] HP to adjacent allies"
-max_charges = 1
+max_charges = 2
+charges = 0
+used = false
+
+[sub_resource type="Resource" id="Resource_ghubt"]
+script = ExtResource("5_ox6gs")
+id = 3
+first_init = false
+public_id = 0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_njt8i"]
 size = Vector3(0.732422, 1.78247, 0.238831)
@@ -58,7 +66,7 @@ plus_attack = null
 plus_health = 1
 plus_speed = null
 plus_energy = null
-ascended_traits = null
+ascended_traits = Array[ExtResource("5_ox6gs")]([SubResource("Resource_ghubt")])
 ascended_ability_text = "MOBILE; ABILITY [2]: Heal [1] HP to adjacent allies"
 id = 7
 name = "Sellus Palmus"

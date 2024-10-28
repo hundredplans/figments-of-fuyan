@@ -18,3 +18,5 @@ scroll_active = false
 threaded = true
 script = ExtResource("1_y11ja")
 settings = SubResource("Resource_ogg58")
+
+[connection signal="child_entered_tree" from="." to="." method="_on_child_entered_tree"]

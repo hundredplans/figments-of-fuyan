@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ChampionBoonInfo" load_steps=5 format=3 uid="uid://c427cbie2arvi"]
+
+[ext_resource type="Script" path="res://scripts/fof/boons/boon.gd" id="1_2ngbd"]
+[ext_resource type="Image" uid="uid://bxkodabddetvr" path="res://assets/sprites/game/cards/art_mini/quickdraw_quentin.png" id="1_7g3qc"]
+[ext_resource type="Script" path="res://scripts/fof_info/boons/champion_boon_info.gd" id="1_twgqe"]
+[ext_resource type="Script" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_kw7j8"]
+
+[resource]
+script = ExtResource("1_twgqe")
+champion_id = 3
+icon = ExtResource("1_7g3qc")
+description = "When an ally wins a DUEL gain [2] SH"
+ascended_description = ""
+RARITY = 8
+id = 3
+name = "Agile Aura"
+gdscript = ExtResource("1_2ngbd")
+saved_data = ExtResource("3_kw7j8")

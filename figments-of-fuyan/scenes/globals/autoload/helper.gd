@@ -1,10 +1,10 @@
 extends Node
 
-func getAdmin() -> bool: return false
+func getAdmin() -> bool: return true
 #region Resources
 var GDSCRIPT_TYPES: Array = [AreaInfo, LevelInfo, PalmLevelInfo, \
 	CardInfo, ChampionCardInfo, BoonInfo, ToolInfo, MapNodeInfo, SaveFileInfo, EncounterInfo, MapEffectInfo,\
-	TileObjectInfo, TileInfo, ObjectInfo, GameObjectInfo, TraitInfo, StatusEffectInfo]
+	TileObjectInfo, TileInfo, ObjectInfo, GameObjectInfo, TraitInfo, StatusEffectInfo, FieldEffectInfo]
 	
 var fof_info_dict: Dictionary = {}
 func _ready() -> void:
@@ -66,4 +66,12 @@ const replacement_letters: Array = ["X", "Y", "Z"]
 func getDescription(text: String, array: Array) -> String:
 	for i in range(array.size()):
 		text = text.replacen("[" + replacement_letters[i] + "]", str(array[i]))
+	return text
+	
+func getDescriptionNumeric(text: String, array: Array, string_array: Array) -> String:
+	for i in range(string_array.size()):
+		var combined_string: String = string_array[i][0] + string_array[i][1]
+		var start_index: int = text.findn(combined_string)
+		text = text.erase(start_index, combined_string.length())
+		text = text.insert(start_index, string_array[i][0] + "[" + str(array[i]) + "]")
 	return text

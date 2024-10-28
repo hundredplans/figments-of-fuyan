@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=7 format=3 uid="uid://brlv2o2mjaf0k"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_3s3pl"]
+[ext_resource type="Script" path="res://scripts/fof_info/tools/tool_info.gd" id="1_6vyux"]
+[ext_resource type="Script" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="2_cmi31"]
+[ext_resource type="Script" path="res://scripts/fof/tools/pendant.gd" id="2_kcm4r"]
+[ext_resource type="Image" uid="uid://dxss0514at87d" path="res://assets/sprites/game/tools/Life Pendant.png" id="2_yomwt"]
+
+[sub_resource type="Resource" id="Resource_h813w"]
+script = ExtResource("1_3s3pl")
+exists = 2
+ascended_description = "Heal [1] HP"
+ascended_max_charges = 1
+name = "Life Pendant"
+description = ""
+max_charges = -1
+charges = 0
+used = false
+
+[resource]
+script = ExtResource("1_6vyux")
+icon = ExtResource("2_yomwt")
+description = "Gain +1 HP"
+ascended_description = "Gain +1 HP
+ABILITY [1]: Heal [1] HP"
+RARITY = 3
+active_abilities = Array[ExtResource("1_3s3pl")]([SubResource("Resource_h813w")])
+id = 1
+name = "Life Pendant"
+gdscript = ExtResource("2_kcm4r")
+saved_data = ExtResource("2_cmi31")

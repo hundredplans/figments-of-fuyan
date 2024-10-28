@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=3 uid="uid://ct6euhy8orf2m"]
+[gd_scene load_steps=53 format=3 uid="uid://ct6euhy8orf2m"]
 
 [ext_resource type="Script" path="res://scenes/game/cards/world/field_info.gd" id="1_doj6w"]
 [ext_resource type="PackedScene" uid="uid://b7aqntno6susb" path="res://assets/models/general/numbers/stat_numbers/zero.glb" id="2_emwqa"]
@@ -49,6 +49,9 @@
 [ext_resource type="Texture2D" uid="uid://cqx55eb3klkcq" path="res://assets/sprites/game/fof_object_icons/status_effects/delayed_stat/up3.png" id="41_cx6x4"]
 [ext_resource type="Script" path="res://scripts/fof/traits/extra/trait_combination_datastore.gd" id="43_1ekr7"]
 [ext_resource type="Resource" uid="uid://024pkvrpmwgy" path="res://resources/datastore/traits/resist_armor.tres" id="44_bxsc6"]
+[ext_resource type="Texture2D" uid="uid://cnh6sqy8os61w" path="res://assets/sprites/game/cards/field_info/icon_box.png" id="50_ubgm4"]
+[ext_resource type="Texture2D" uid="uid://cwyeet8my8y51" path="res://assets/sprites/game/cards/field_info/tool_shine.png" id="50_xtd5x"]
+[ext_resource type="Script" path="res://scenes/game/cards/world/field_info/tool_shine.gd" id="51_1r75t"]
 
 [node name="FieldInfo" type="Node3D"]
 script = ExtResource("1_doj6w")
@@ -132,11 +135,34 @@ unique_name_in_owner = true
 [node name="InfoSprite" type="Sprite3D" parent="."]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.14813, 0.410257, 0)
+texture = ExtResource("33_7aext")
 
 [node name="IconsManager" type="Node3D" parent="."]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 script = ExtResource("38_bc6s6")
+
+[node name="ToolIcon" type="Sprite3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.24106, 0.509992, 0)
+pixel_size = 0.015
+texture_filter = 0
+
+[node name="ToolShine" type="Sprite3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.443, 0.768, 0)
+visible = false
+texture_filter = 0
+render_priority = 1
+texture = ExtResource("50_xtd5x")
+script = ExtResource("51_1r75t")
+ROTATION_SPEED = 30.0
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.84322, 0)
+visible = false
+texture = ExtResource("50_ubgm4")
+region_rect = Rect2(2.115, 0, 0, 0)
 
 [connection signal="child_entered_tree" from="IconsManager" to="IconsManager" method="_on_child_entered_tree"]
 [connection signal="child_exiting_tree" from="IconsManager" to="IconsManager" method="_on_child_exiting_tree"]

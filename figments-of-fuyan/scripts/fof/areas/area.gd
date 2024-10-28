@@ -27,7 +27,10 @@ func onFindEmptyMapSpot(progress: int, lane: int) -> EmptyMapNode:
 
 #region Save / Load
 func onSave() -> SavedDataArea:
-	var map_nodes_data: Array = SavedData.onSaveGroup(get_tree().get_nodes_in_group("MapNodesGD"))
+	var _map_nodes_data: Array = SavedData.onSaveGroup(get_tree().get_nodes_in_group("MapNodesGD"))
+	var map_nodes_data: Array[SavedDataMapNode] = []
+	map_nodes_data.assign(_map_nodes_data)
+	
 	var level_data := active_level.onSave() if active_level != null else null
 	return SavedDataArea.new(info.id, false, public_id, map_nodes_data, level_data)
 	

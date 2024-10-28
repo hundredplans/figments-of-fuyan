@@ -10,3 +10,6 @@ func _init(_GameObject: GameObjectGD = null, _attacks: int = 0) -> void:
 
 func onPostAction() -> void:
 	GameObject.setAttacks(attacks)
+
+func getLogInfo() -> Array:
+	return ["Card: " + GameObject.info.name, "Attacks: " + str(attacks)]

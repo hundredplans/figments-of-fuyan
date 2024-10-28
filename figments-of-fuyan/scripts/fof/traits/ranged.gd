@@ -6,4 +6,4 @@ func onLoadData(data: SavedData) -> void:
 	ranged = data.ranged
 	
 func onSave() -> SavedDataRanged:
-	return SavedDataRanged.new(info.id, false, public_id, Card.getCoords(), ranged)
+	return SavedDataRanged.new(info.id, false, public_id, ranged)

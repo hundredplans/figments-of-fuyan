@@ -14,6 +14,7 @@ signal pressed
 @onready var EnergyLabel: Label = %EnergyLabel
 @onready var TextLabel: FancyTextLabel = %TextLabel
 @onready var ToolControl: Control = %ToolControl
+@onready var ToolIcon: Sprite2D = %ToolIcon
 @onready var OutlineMask: TextureRect = %OutlineMask
 
 @onready var BuffControlAttack: Control = %BuffControlAttack
@@ -55,7 +56,14 @@ func setInfo(_Card: CardGD, _highlight_on_hover: bool = false) -> void:
 	HealthLabel.text = str(Card.health)
 	SpeedLabel.text = str(Card.speed)
 	EnergyLabel.text = str(Card.energy)
-	ToolControl.visible = false
+	
+	onToolAdded(Card.Tool)
+	Card.tool_added.connect(onToolAdded)
+	
+func onToolAdded(Tool: ToolGD) -> void:
+	ToolControl.visible = Tool != null
+	if Tool != null:
+		ToolIcon.texture = Tool.getIcon()
 	
 func onPressed() -> void:
 	if !disabled: pressed.emit(self)

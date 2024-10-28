@@ -6,10 +6,11 @@ signal update_shillings
 var id: int
 var my_seed: int
 var area: AreaGD
-var shillings: int
-var map_effects_data: Array
-var time: int
 var last_loaded_deck: Array
+var map_effects_data: Array
+
+var shillings: int
+var time: int
 
 var timer: Timer
 
@@ -38,6 +39,9 @@ func onLoadData(data: SavedData) -> void:
 		Card.add_to_group("AllyCardsGD")
 		if Game.isChampion(Card.info.rarity): ChampionCard = Card
 	
+	for saved_data_boon in data.boons:
+		SavedData.onLoadModel(saved_data_boon, self)
+	
 	area = SavedData.onLoadModel(data.area_data, get_parent(), [ChampionCard])
 	area.load_level.connect(onLoadLevel)
 	
@@ -52,6 +56,10 @@ func onLoadData(data: SavedData) -> void:
 	timer.start()
 	
 	add_to_group("SaveFilesGD")
+	
+func onFofInit() -> void:
+	var boon_info: BoonInfo = getChampionCard().info.boon_info
+	SavedData.onLoadModel(boon_info.saved_data.new(boon_info.id, true), self)
 	
 func setInfo(_area: AreaGD) -> void:
 	area = _area

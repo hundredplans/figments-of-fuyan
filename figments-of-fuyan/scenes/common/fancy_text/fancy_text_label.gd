@@ -51,3 +51,7 @@ func onFofImagesReplace(regex: RegEx, fancy_text: FancyText) -> void:
 			else: replacement_string = replacement_string.insert(0, first_section)
 				
 			text = text.replacen(result, replacement_string)
+
+
+func _on_child_entered_tree(node: Control) -> void:
+	node.mouse_filter = Control.MOUSE_FILTER_IGNORE

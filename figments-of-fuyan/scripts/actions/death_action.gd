@@ -4,6 +4,7 @@ var Damager: GameObjectGD
 var Defender: GameObjectGD
 var damage: int
 var health_damage: int
+var delay: float
 
 var Tile: TileGD # Where the Defender died
 var game_objects_in_vision: Array # When the defender died saved
@@ -18,11 +19,12 @@ func _init(_Damager: GameObjectGD = null, _Defender: GameObjectGD = null, _damag
 func onPreAction() -> void:
 	Tile = Defender.Tile
 	game_objects_in_vision = Defender.getVisibleGameObjects()
+	delay = 3.0 if Defender.level_visible else 0.0
 	
 func onPostAction() -> void:
 	Defender.onDeath()
 	Defender.onChangeCardPlace(Game.CardPlaces.GRAVEYARD)
-	onPushAction([OccupyAction.new(Defender, null, true), InVisionResetAction.new(Defender)])
+	onPushAction([OccupyAction.new(Defender, null, true)])
 	
 func getDelay() -> float:
-	return 3.0
+	return delay

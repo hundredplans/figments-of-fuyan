@@ -5,10 +5,9 @@ var turns: int
 
 #region Save / Load
 func onSave() -> SavedData:
-	return SavedDataStatusEffect.new(info.id, false, public_id, turns, Card.getCoords())
+	return SavedDataStatusEffect.new(info.id, false, public_id, turns)
 	
 func onLoadData(data: SavedData) -> void:
-	Card = Game.getFieldCard(Game.getTile(data.coords))
 	turns = data.turns
 
 func onClear() -> void:
@@ -23,7 +22,7 @@ func getIcon() -> Texture2D:
 
 func onProcessAction(action: Action) -> void:
 	if action.post:
-		if action is ChangePhaseAction and action.phase == Game.Phases.PLAYER:
+		if action is ChangePhaseAction:
 			if turns > 0 and Game.isAdvanceTurn(action.phase, Card.team):
 				turns -= 1
 				if turns == 0: onPushAction(RemoveStatusEffectAction.new(self))

@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://scenes/game/cards/ui/inspect_card_viewport.gd" id="2_4u3ql"]
 [ext_resource type="PackedScene" uid="uid://dxvuvb68hgxug" path="res://scenes/common/exit_button/exit_button.tscn" id="2_amdtx"]
 [ext_resource type="Environment" uid="uid://g3ihmrpunr2b" path="res://assets/environments/main_menu_environment.tres" id="2_e52jv"]
-[ext_resource type="PackedScene" uid="uid://dm4vpkb840j4g" path="res://scenes/game/cards/ui/inspect_screen_tooltip.tscn" id="2_xvib6"]
+[ext_resource type="PackedScene" uid="uid://dm4vpkb840j4g" path="res://scenes/common/tooltip/tooltip.tscn" id="2_xvib6"]
 
 [sub_resource type="World3D" id="World3D_2ijdp"]
 environment = ExtResource("2_e52jv")
@@ -138,5 +138,5 @@ exit_screen = NodePath("..")
 
 [connection signal="mouse_entered" from="." to="." method="onMouseInUI" binds= [true]]
 [connection signal="mouse_exited" from="." to="." method="onMouseInUI" binds= [false]]
-[connection signal="mouse_entered" from="ExitButton" to="." method="onMouseInUI"]
-[connection signal="mouse_exited" from="ExitButton" to="." method="onMouseInUI"]
+[connection signal="mouse_entered" from="ExitButton" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="ExitButton" to="." method="onMouseInUI" binds= [false]]

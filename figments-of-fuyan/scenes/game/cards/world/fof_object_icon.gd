@@ -1,7 +1,6 @@
 extends Node3D
 
 var FofObject: FofGD
-
 @onready var Icon: Sprite3D = $Icon
 
 func _ready() -> void:

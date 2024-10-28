@@ -1,72 +1,114 @@
 class_name StatAction extends Action
 
-var GameObject: GameObjectGD
-@export var game_object_public_id: int
-@export var types: Array # Either stat or array of stats
-@export var values: Array # Either value or array of values that match to types
-@export var turns: int # How many turns it lasts
-@export var absolute: bool # Whether it changes the stat absolutely
-@export var show_particles: bool
-
-@export var is_reverse: bool # Ignores all types of buffs
-@export var turn_delay: int # After how many turns to apply
-
-func _init(_GameObject: GameObjectGD = null, _type: Variant = null, _value: Variant = null, _turns: int = 0, \
-	_absolute: bool = false, _show_particles: bool = true, _is_reverse: bool = false) -> void:
-	if _GameObject != null: # Avoid calling when init'd
-		GameObject = _GameObject
-		if _type is Game.Stats: types = [_type]
-		if _value is int:
-			values = [_value]
-			if values.size() < types.size():
-				values.resize(types.size())
-				values.fill(values[0])
-
-		turns = _turns
-		absolute = _absolute
-
-		show_particles = _show_particles
-		is_reverse = _is_reverse
+@export var stat_infos: Array
+func _init(_stat_infos: Variant = null) -> void:
+	if stat_infos != null: # Don't call when reinitialised
+		if _stat_infos is Array: stat_infos = _stat_infos
+		elif _stat_infos is StatInfo: stat_infos = [_stat_infos]
 		
-func setTurnDelay(_turn_delay: int) -> void: turn_delay = _turn_delay
+func setTurnDelay(turn_delay: int) -> void:
+	for stat_info in stat_infos:
+		stat_info.turn_delay = turn_delay
 	
 func onPreAction() -> void:
-	if !absolute and values.all(func(x: int): return x == 0): onFailAction()
+	pass
 	
 func onPostAction() -> void:
-	for i in range(types.size()):
-		var type: int = types[i]
-		var value: int = values[i]
-		var difference: int
-		match type:
-			Game.Stats.SPEED:
-				var old_speed: int = GameObject.speed
-				if absolute: GameObject.speed = value
-				else: GameObject.speed += value
-				
-				GameObject.speed = clamp(GameObject.speed, 0, 99)
-				difference = old_speed - GameObject.speed
-				
-			Game.Stats.HEALTH:
-				if !absolute and value < 0:
-					difference = GameObject.onTakeDamage(owner.Damager, -value) * -1
+	var max_health_not_damage: bool
+	for stat_info in stat_infos:
+		var types: Array = stat_info.types
+		var values: Array = stat_info.values
+		var Card: CardGD = stat_info.Card
+		var absolute: bool = stat_info.absolute
+		var show_particles: bool = stat_info.show_particles
+		var turns: int = stat_info.turns
 		
-		if difference != 0:
-			GameObject.onUpdateStat(type, difference, show_particles)
+		while(!types.is_empty()):
+			var type: int = types.pop_front()
+			var value: int = values.pop_front()
+			var difference: int
+			match type:
+				Game.Stats.SPEED:
+					var old_speed: int = Card.speed
+					if stat_info.absolute: Card.speed = value
+					else: Card.speed += value
+					
+					Card.speed = clamp(Card.speed, 0, Card.max_speed)
+					difference = old_speed - Card.speed
+					
+				Game.Stats.MAX_SPEED:
+					var old_speed: int = Card.max_speed
+					if absolute: Card.max_speed = value
+					else: Card.max_speed += value
+					
+					Card.max_speed = clamp(Card.max_speed, 1, 9)
+					difference = old_speed - Card.max_speed
+					
+					types.append(Game.Stats.SPEED)
+					values.append(value)
+					
+				Game.Stats.HEALTH:
+					if (!absolute and value < 0) and !max_health_not_damage:
+						difference = Card.onTakeDamage(owner.Damager, -value) * -1
+					else:
+						var old_health: int = Card.health
+						Card.health = clamp(Card.health + value, 0, Card.max_health)
+						difference = Card.health - old_health
+						max_health_not_damage = false
+						
+				Game.Stats.MAX_HEALTH:
+					var old_health: int = Card.max_health
+					if absolute: Card.max_health = value
+					else: Card.max_health += value
+					
+					Card.max_health = clamp(Card.max_health, 0, 99)
+					difference = old_health - Card.max_health
+					
+					types.push_front(Game.Stats.HEALTH)
+					values.push_front(value)
+					max_health_not_damage = true
+					
+				Game.Stats.ATTACK:
+					var old_attack: int = Card.attack
+					if absolute: Card.attack = value
+					else: Card.attack += value
+					
+					Card.attack = clamp(Card.attack, 0, 99)
+					difference = old_attack - Card.attack
+						
+			if difference != 0:
+				Card.onUpdateStat(type, difference, show_particles)
 	
-	if turns > 0:
-		var reverse_action: StatAction = StatAction.new(GameObject, types, values.map(func(x: int): return x * -1), 0, absolute, show_particles, true)
-		onPushAction(DelayedStatAction.new(turns, reverse_action))
+		if turns > 0:
+			var reverse_action := StatAction.new(StatInfo.new(Card, types, values.map(func(x: int): return x * -1), 0, absolute, show_particles))
+			onPushAction(DelayedStatAction.new(turns, reverse_action))
 
 func onSave() -> void:
 	super()
-	game_object_public_id = GameObject.public_id
+	for stat_info in stat_infos: stat_info.onSave()
 	
 func onLoad() -> void:
 	super()
-	GameObject = Game.onFindPublicIDObject(game_object_public_id)
+	for stat_info in stat_infos: stat_info.onLoad()
 	
 func onAdvanceTurn() -> void:
-	turns -= 1
-	if turns == 0: onPushAction(self, GameObject)
-	GameObject.delayed_stats.erase(self)
+	for stat_info in stat_infos:
+		stat_info.turns -= 1
+		if stat_info.turns == 0:
+			onPushAction(self, stat_info.Card)
+			stat_info.Card.delayed_stats.erase(self)
+	
+func getLogInfo() -> Array:
+	var arr: Array = []
+	for stat_info in stat_infos:
+		arr.append("Card: " + stat_info.Card.info.name)
+		arr.append("Stat: " + str(stat_info.types.map(Game.getStatString)))
+		arr.append("Value: " + str(stat_info.values))
+		arr.append("Absolute: " + str(stat_info.absolute))
+	return arr
+
+func hasCard(Card: CardGD) -> void:
+	return stat_infos.any(func(x: StatInfo): return x.Card == Card)
+	
+func getCards() -> Array:
+	return stat_infos.map(func(x: StatInfo): return x.Card)

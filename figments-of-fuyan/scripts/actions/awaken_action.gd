@@ -21,6 +21,5 @@ func onPostAction() -> void:
 	Card.onCreateInitialTraits()
 	Card.onCreateInitialActiveAbilities()
 	
-	var actions: Array = [ChangeTurnStateAction.new(Card, Game.TurnStates.INACTIVE), InVisionResetAction.new(Card)]
-	onPushAction(actions)
-	
+	if Card.Tool != null:
+		onPushAction(AddToolAction.new(Card, Card.Tool))

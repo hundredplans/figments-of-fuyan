@@ -65,9 +65,13 @@ func setMapPosition() -> void:
 
 #region Save/Load/Clear
 func onLoadData(data: SavedData) -> void:
+	super(data)
 	level_visible = data.level_visible
 	is_revealed = data.is_revealed
 	add_to_group("GameObjectsGD")
+	
+func onLoadDataLevel() -> void:
+	onCreateAdjustedPoints()
 #endregion
 
 #region Material Updates

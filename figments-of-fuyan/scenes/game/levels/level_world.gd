@@ -11,6 +11,11 @@ var area: AreaGD
 var UI: Control
 #endregion
 
+#region Signals
+signal active_effect_activated
+signal active_effect_deselected
+#endregion
+
 #region Onready
 @onready var CameraManager: Node3D = %CameraManager
 #endregion
@@ -41,6 +46,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	UI.camera_button_pressed.connect(CameraManager.onSwapCameraType)
 	UI.camera_direction_changed.connect(CameraManager.onChangeCameraInDirection)
 	UI.vision_mode_changed.connect(onVisionModeChanged)
+	UI.active_effect_box_pressed.connect(onActiveEffectBoxPressed)
 	
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
@@ -94,7 +100,7 @@ func getActionLock() -> bool:
 func onUpdateActionLock(state: bool) -> void:
 	onHoverTile()
 	
-	if state: onHideMovementRange()
+	if state: onHideMovementRange(); onActiveEffectDeselected()
 	else: onCreateMovementRange(level.getAllySpectateObject())
 	
 func getMouseInUI() -> bool:
@@ -147,7 +153,10 @@ func onCardAwakened(Card: CardGD) -> void:
 #region Tile Pressing
 func onTilePressed() -> void:
 	var Tile: TileGD = MouseHoverTile
-	if Tile.getMovementPathDisplay():
+	
+	if Tile.isActiveEffectPickable() and current_active_effect != null:
+		onActiveEffectActivated(Tile)
+	elif Tile.getMovementPathDisplay():
 		var Card: CardGD = level.getAllySpectateObject()
 		if Card != null:
 			level.onAppendAction(MovementAction.new(Card, Tile))
@@ -188,7 +197,7 @@ func onCreateMovementRange(Card: CardGD) -> void:
 		if level.phase == Game.Phases.HAND:
 			onHideMovementRange()
 		return
-	if Card == null or !Card.isAlly(): return
+	if Card == null or !Card.isAlly() or Card.turn_state == Game.TurnStates.PASSED: return
 	
 	Game.getsetMovementRange(Card)
 #endregion
@@ -240,3 +249,40 @@ func onVisionModeTileHovered(Tile: TileGD) -> void:
 			GameObject.setLevelVisible(true)
 #endregion
 	
+#region Active Effects
+var current_active_effect: ActiveEffectDatastore
+var current_active_effect_tiles: ActiveEffectTiles
+
+func onActiveEffectBoxPressed(active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles) -> void:
+	if current_active_effect != active_effect:
+		if current_active_effect != null: onActiveEffectDeselected()
+		current_active_effect = active_effect
+		current_active_effect_tiles = active_effect_tiles
+		onActiveEffectSelected()
+	else:
+		onActiveEffectDeselected()
+
+func onActiveEffectSelected() -> void:
+	for Tile in current_active_effect_tiles.in_range_tiles:
+		Tile.setInActiveEffectRange(true)
+		
+	for Tile in current_active_effect_tiles.pickable_tiles:
+		Tile.setInActiveEffectPickable(true)
+		
+func onActiveEffectDeselected() -> void:
+	if current_active_effect != null:
+		for Tile in current_active_effect_tiles.in_range_tiles:
+			Tile.setInActiveEffectRange(false)
+			
+		for Tile in current_active_effect_tiles.pickable_tiles:
+			Tile.setInActiveEffectPickable(false)
+			
+		current_active_effect = null
+		current_active_effect_tiles = null
+		active_effect_deselected.emit()
+		
+func onActiveEffectActivated(Tile: TileGD) -> void:
+	level.onPushAction(ActiveEffectUsedAction.new(current_active_effect, Tile, current_active_effect_tiles))
+	active_effect_activated.emit(current_active_effect)
+	onActiveEffectDeselected()
+#endregion
