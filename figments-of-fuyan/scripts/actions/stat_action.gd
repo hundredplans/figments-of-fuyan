@@ -1,14 +1,15 @@
 class_name StatAction extends Action
 
-@export var stat_infos: Array
+var stat_infos: Array
 func _init(_stat_infos: Variant = null) -> void:
+	super()
 	if stat_infos != null: # Don't call when reinitialised
 		if _stat_infos is Array: stat_infos = _stat_infos
 		elif _stat_infos is StatInfo: stat_infos = [_stat_infos]
 		
-func setTurnDelay(turn_delay: int) -> void:
+func setTurnDelay(turns: int) -> void:
 	for stat_info in stat_infos:
-		stat_info.turn_delay = turn_delay
+		stat_info.turns = turns
 	
 func onPreAction() -> void:
 	pass
@@ -23,6 +24,9 @@ func onPostAction() -> void:
 		var show_particles: bool = stat_info.show_particles
 		var turns: int = stat_info.turns
 		
+		var original_types: Array = types.duplicate()
+		var original_values: Array = values.duplicate()
+		
 		while(!types.is_empty()):
 			var type: int = types.pop_front()
 			var value: int = values.pop_front()
@@ -34,7 +38,7 @@ func onPostAction() -> void:
 					else: Card.speed += value
 					
 					Card.speed = clamp(Card.speed, 0, Card.max_speed)
-					difference = old_speed - Card.speed
+					difference = Card.speed - old_speed
 					
 				Game.Stats.MAX_SPEED:
 					var old_speed: int = Card.max_speed
@@ -42,7 +46,7 @@ func onPostAction() -> void:
 					else: Card.max_speed += value
 					
 					Card.max_speed = clamp(Card.max_speed, 1, 9)
-					difference = old_speed - Card.max_speed
+					difference = Card.max_speed - old_speed
 					
 					types.append(Game.Stats.SPEED)
 					values.append(value)
@@ -62,7 +66,7 @@ func onPostAction() -> void:
 					else: Card.max_health += value
 					
 					Card.max_health = clamp(Card.max_health, 0, 99)
-					difference = old_health - Card.max_health
+					difference = Card.max_health - Card.health
 					
 					types.push_front(Game.Stats.HEALTH)
 					values.push_front(value)
@@ -74,29 +78,14 @@ func onPostAction() -> void:
 					else: Card.attack += value
 					
 					Card.attack = clamp(Card.attack, 0, 99)
-					difference = old_attack - Card.attack
+					difference = Card.attack - old_attack
 						
 			if difference != 0:
 				Card.onUpdateStat(type, difference, show_particles)
 	
 		if turns > 0:
-			var reverse_action := StatAction.new(StatInfo.new(Card, types, values.map(func(x: int): return x * -1), 0, absolute, show_particles))
-			onPushAction(DelayedStatAction.new(turns, reverse_action))
-
-func onSave() -> void:
-	super()
-	for stat_info in stat_infos: stat_info.onSave()
-	
-func onLoad() -> void:
-	super()
-	for stat_info in stat_infos: stat_info.onLoad()
-	
-func onAdvanceTurn() -> void:
-	for stat_info in stat_infos:
-		stat_info.turns -= 1
-		if stat_info.turns == 0:
-			onPushAction(self, stat_info.Card)
-			stat_info.Card.delayed_stats.erase(self)
+			var reverse_action := StatAction.new(StatInfo.new(Card, original_types, original_values.map(func(x: int): return x * -1), turns, absolute, show_particles, true))
+			onPushAction(DelayedStatAction.new(reverse_action))
 	
 func getLogInfo() -> Array:
 	var arr: Array = []

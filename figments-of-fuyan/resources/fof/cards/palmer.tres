@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=10 format=3 uid="uid://7jxiypup4yku"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=11 format=3 uid="uid://7jxiypup4yku"]
 
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_qrljm"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="2_amlc3"]
 [ext_resource type="Image" uid="uid://b4qt1fl4q0slo" path="res://assets/sprites/game/cards/art_mini/palmer.png" id="2_s1x8n"]
 [ext_resource type="Image" uid="uid://i34owvhii218" path="res://assets/sprites/game/cards/art_pop/palmer.png" id="2_xsqxw"]
@@ -32,6 +33,7 @@ speed = 2
 energy = 2
 rarity = 3
 initial_traits = Array[ExtResource("3_qc4i1")]([])
+active_abilities = Array[ExtResource("1_qrljm")]([])
 ability_text = ""
 flavor_text = ""
 art_mini_coordinate = Vector2i(80, 30)

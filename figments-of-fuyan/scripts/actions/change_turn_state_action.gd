@@ -12,7 +12,7 @@ func onPostAction() -> void:
 	if turn_state != Card.turn_state:
 		Card.setTurnState(turn_state)
 		if turn_state == Game.TurnStates.INACTIVE:
-			var actions: Array = [ChangeAttacksAction.new(Card, Card.getMaxAttacks()), StatAction.new(StatInfo.new(Card, Game.Stats.SPEED, Card.max_speed, 0, false, false))]
+			var actions: Array = [ChangeAttacksAction.new(Card, Card.getMaxAttacks()), StatAction.new(StatInfo.new(Card, Game.Stats.SPEED, Card.max_speed, 0, false, false, true))]
 			onPushAction(actions)
 
 func getLogInfo() -> Array:

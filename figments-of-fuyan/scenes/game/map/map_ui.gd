@@ -14,6 +14,7 @@ var area: AreaGD
 
 #region Exports
 @export var LegendKeyPacked: PackedScene
+@export var DeckScreenPacked: PackedScene
 #endregion
 
 #region Base Functions
@@ -75,4 +76,9 @@ func setLegendBox() -> void:
 		var LegendKey: Control = LegendKeyPacked.instantiate()
 		LegendBox.add_child(LegendKey)
 		LegendKey.setInfo(MapNode)
+#endregion
+
+#region Deck
+func _on_deck_button_pressed() -> void:
+	add_child(DeckScreenPacked.instantiate())
 #endregion

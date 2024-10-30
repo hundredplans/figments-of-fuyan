@@ -21,3 +21,8 @@ func onFindBoonIcon(Boon: BoonGD) -> TextureRect:
 	for BoonIcon in get_children():
 		if BoonIcon.Boon == Boon: return BoonIcon
 	return null
+	
+func onUpdateBoonAscension(Boon: BoonGD) -> void:
+	var BoonIcon: TextureRect = onFindBoonIcon(Boon)
+	if BoonIcon != null:
+		BoonIcon.onUpdateAscension(Boon.ascended)

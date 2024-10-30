@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="CardInfo" load_steps=7 format=3 uid="uid://d2rae8he1qiih"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_kak8a"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_q3lc1"]
+[ext_resource type="Image" uid="uid://be7bo4rbspbnu" path="res://assets/sprites/game/cards/art_pop/titanus_palmus.png" id="2_syo8t"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_8nb48"]
+[ext_resource type="Script" path="res://scripts/fof/cards/titanus_palmus.gd" id="4_purx8"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_02yec"]
+
+[resource]
+script = ExtResource("3_8nb48")
+attack = 0
+health = 0
+speed = 0
+energy = 0
+rarity = 7
+initial_traits = Array[ExtResource("2_q3lc1")]([])
+active_abilities = Array[ExtResource("1_kak8a")]([])
+ability_text = ""
+flavor_text = ""
+art_mini_coordinate = Vector2i(0, 0)
+art_pop = ExtResource("2_syo8t")
+points = []
+stat = 0.0
+top = 0.0
+eye = 0.0
+plus_attack = 0
+plus_health = 0
+plus_speed = 0
+plus_energy = 0
+ascended_traits = Array[ExtResource("2_q3lc1")]([])
+ascended_ability_text = ""
+id = 24
+name = "Titanus Palmus"
+gdscript = ExtResource("4_purx8")
+saved_data = ExtResource("5_02yec")

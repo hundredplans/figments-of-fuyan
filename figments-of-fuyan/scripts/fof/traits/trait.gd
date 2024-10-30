@@ -12,3 +12,11 @@ func getIcon() -> Texture2D:
 
 func getDescription() -> String:
 	return info.description
+
+func onProcessAction(action: Action) -> void:
+	if action.post:
+		if action is AddTraitAction and action.Trait == self:
+			onTraitAdded()
+			
+func onTraitAdded() -> void:
+	pass

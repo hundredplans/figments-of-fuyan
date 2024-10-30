@@ -21,7 +21,7 @@ func _ready() -> void:
 		SavedData.onLoadModel(data, BackgroundMap)
 	
 	for card_info in Helper.getFofInfoArray(CardInfo):
-		var Card: CardGD = SavedData.onLoadModel(SavedDataCard.new(card_info.id), World)
+		var Card: CardGD = SavedData.onLoadModel(SavedDataCard.new(card_info.id, true), World)
 		
 		if Card.info.model != null:
 			Card.onCreateModel()
@@ -48,8 +48,8 @@ func _ready() -> void:
 		btn.pressed.connect(onAnimationNameButtonPressed.bind(animation_name))
 
 func onAnimationNameButtonPressed(ani_name: String) -> void:
-	for Card in get_tree().get_nodes_in_group("CardsGD"):
-		if Card.AniPlayer.has_animation(ani_name): Card.AniPlayer.play(ani_name)
+	for Card in get_tree().get_nodes_in_group("CardsGD").filter(func(x: CardGD): return x.AniPlayer != null and x.AniPlayer.has_animation(ani_name)):
+		Card.AniPlayer.play(ani_name)
 
 func onCreateDeckCardUI(Card: CardGD) -> void:
 	var CardUI: Control = Card.onCreateCardUI(CardGrid)

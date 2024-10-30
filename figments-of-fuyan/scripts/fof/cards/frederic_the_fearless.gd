@@ -11,6 +11,7 @@ const extra_elite_chief_odds: float = 0.03
 # Every 4th fight add an extra charge to your boon 
 
 func onProcessAction(action: Action) -> void:
+	super(action)
 	if isValidRampage(action):
 		onPushAction(RampageAction.new(self, action))
 

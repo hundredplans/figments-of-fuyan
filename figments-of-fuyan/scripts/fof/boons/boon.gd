@@ -4,8 +4,10 @@ var ascended: bool
 var ability_save: Dictionary
 
 func onLoadData(data: SavedData) -> void:
+	super(data)
 	add_to_group("BoonsGD")
 	ascended = data.ascended
+	ability_save = data.ability_save
 	
 	for custom_variable in ability_save:
 		set(custom_variable, ability_save[custom_variable])

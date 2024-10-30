@@ -19,10 +19,11 @@ var draw_order: int
 var Tile: TileGD
 
 var attacks: int
+var attack_range: int
 var field_traits: Array = []
 var status_effects: Array = []
 
-var delayed_stats: Array[StatAction]
+var delayed_stats: Array[StatInfo]
 var ability_save: Dictionary
 var active_effects: Array[ActiveEffectDatastore]
 var field_effects: Array[FieldEffectGD]
@@ -142,12 +143,12 @@ func onCreateCardUI(parent: Control, highlight_on_hover: bool = false) -> Contro
 #region Save/Load/Clear
 func onSave() -> SavedDataCard:
 	var tool_data: SavedDataTool = Tool.onSave() if Tool != null else null
-	for stat_action in delayed_stats: stat_action.onSave()
+	for stat_info in delayed_stats: stat_info.onSave()
 	visible_game_objects_public_ids = visible_game_objects.map(func(x: GameObjectGD): return x.public_id)
 	
 	return SavedDataCard.new(info.id, false, public_id, coords, tile_rotation, level_visible, is_revealed, team, ascended, \
 	attack, health, speed, max_speed, max_health, energy, draw_order, card_place, turn_state,\
-	SavedData.onSaveGroup(field_traits), SavedData.onSaveGroup(status_effects), attacks, delayed_stats,\
+	SavedData.onSaveGroup(field_traits), SavedData.onSaveGroup(status_effects), attacks, attack_range, delayed_stats,\
 	visible_game_objects_public_ids, ability_save, active_effects, tool_data, SavedData.onSaveGroup(field_effects))
 
 func onLoadData(data: SavedData) -> void:
@@ -164,6 +165,12 @@ func onLoadData(data: SavedData) -> void:
 	visible_game_objects_public_ids = data.visible_game_objects_public_ids
 	ability_save = data.ability_save
 	active_effects = data.active_effects
+	attack = data.attack
+	attack_range = data.attack_range
+	health = data.health
+	max_health = data.max_health
+	speed = data.speed
+	max_speed = data.max_speed
 	
 	if data.tool_data != null:
 		Tool = SavedData.onLoadModel(data.tool_data, self)
@@ -178,7 +185,6 @@ func onLoadData(data: SavedData) -> void:
 	
 	onCreateAdjustedPoints()
 	
-	setBaseStats()
 	onChangeCardPlace(data.card_place)
 	add_to_group("CardsGD")
 	
@@ -186,7 +192,7 @@ func onLoadDataLevel() -> void:
 	super()
 	Tile = Game.getTile(coords)
 	
-	for stat_action in delayed_stats: stat_action.onLoad()
+	for stat_info in delayed_stats: stat_info.onLoad()
 	
 	onAwaken()
 	onLoadTraits()
@@ -575,9 +581,10 @@ func getAttackDamage() -> int:
 	return attack
 	
 func getAttackRange() -> int:
-	for field_trait in field_traits:
-		if field_trait is RangedGD: return field_trait.ranged
-	return 1
+	return attack_range
+	
+func setAttackRange(_attack_range: int) -> void:
+	attack_range = _attack_range
 	
 func canAttack() -> bool: return attacks > 0
 	
@@ -596,7 +603,8 @@ func isCardAttackable(Card: CardGD) -> bool:
 	var is_in_range: bool = Game.getCoordsDistance(Tile.getCoords(), Card.Tile.getCoords()) <= speed + getAttackRange()
 	var is_in_height: bool = abs(Card.Tile.getHeight() - Tile.getHeight()) in [0, 1]
 	var is_in_unit_height: bool = position.y <= (Card.position.y + Card.info.top) and Card.info.top <= (position.y + info.top)
-	var is_ranged: bool = Card.getAttackRange() > 1 and abs(Card.Tile.getHeight() - Tile.getHeight() <= 5)
+	var is_ranged: bool = Card.getAttackRange() > 1 and (abs(Card.Tile.getHeight() - Tile.getHeight()) <= 5)
+	var is_in_vision: bool = Card in getVisibleFieldCardsEnemies()
 
 	return is_enemy_team and is_in_range and (is_in_height or is_in_unit_height or is_ranged)
 		
@@ -609,7 +617,6 @@ func onTakeDamage(Damager: GameObjectGD, damage: int) -> int: # Returns damage d
 	
 	var health_damage: int = old_health - health
 	
-	FieldInfo.onUpdateStat(Game.Stats.HEALTH, health, health_damage, level_visible)
 	if health == 0: onPushAction(DeathAction.new(Damager, self, damage, health_damage))
 	else: onPushAction(HurtAction.new(Damager, self, damage, health_damage))
 	return health_damage
@@ -712,23 +719,26 @@ func onStun(turns: int = 1) -> void:
 #region Advance Turn
 func onAdvanceTurn() -> void:
 	var actions: Array = [StatAction.new(
-		StatInfo.new(self, Game.Stats.SPEED, max_speed, 0, true, false)),
+		StatInfo.new(self, Game.Stats.SPEED, max_speed, 0, true, false, true)),
 		ChangeTurnStateAction.new(self, Game.TurnStates.INACTIVE)]
 		
 	actions += active_effects.map(func(x: ActiveEffectDatastore): return ChangeActiveEffectUsedAction.new(x, false))
 	onPushAction(actions)
 	
-	if !delayed_stats.is_empty():
-		for stat_action in delayed_stats.duplicate():
-			stat_action.onAdvanceTurn()
+	for stat_info in delayed_stats:
+		stat_info.onAdvanceTurn()
 		
 	FieldInfo.onUpdateDelayedStats()
 	
 #endregion
 
 #region Delayed Stats
-func onAddDelayedStatAction(stat_action: StatAction) -> void:
-	delayed_stats.append(stat_action)
+func onAddDelayedStatInfo(stat_info: StatInfo) -> void:
+	delayed_stats.append(stat_info)
+	FieldInfo.onUpdateDelayedStats()
+	
+func onRemoveDelayedStatInfo(stat_info: StatInfo) -> void:
+	delayed_stats.erase(stat_info)
 	FieldInfo.onUpdateDelayedStats()
 #endregion
 

@@ -11,14 +11,14 @@ extends Node3D
 @onready var HealthSpot: Node3D = %HealthSpot
 @onready var SpeedSpot: Node3D = %SpeedSpot
 
-@onready var NumbersParticle: GPUParticles3D = %NumbersParticle
-
 @onready var InfoSprite: Sprite3D = %InfoSprite
 @onready var Numbers: Node3D = %Numbers
 @onready var IconsManager: Node3D = %IconsManager
 
 @onready var ToolIcon: Sprite3D = %ToolIcon
 @onready var ToolShine: Sprite3D = %ToolShine
+
+@onready var NumbersParticleManager: Node3D = %NumbersParticleManager
 #endregion
 
 @export var number_to_model: Array[PackedScene]
@@ -41,6 +41,7 @@ extends Node3D
 @export var exclamation_particle_mesh: Mesh
 @export var plus_mesh: Mesh
 @export var minus_mesh: Mesh
+@export var NumbersParticlePacked: PackedScene
 @export_group("")
 
 @export_group("Textures")
@@ -63,13 +64,18 @@ extends Node3D
 @export var trait_combinations: Array[TraitCombinationDatastore]
 @export_group("")
 
+@export_group("Shine Icons")
+@export var default_shine: Texture2D
+@export var ascended_shine: Texture2D
+@export_group("")
+
 var Card: CardGD
 
 func setInfo(_Card: CardGD) -> void:
 	Card = _Card
 	Card.tool_added.connect(onToolAdded)
 	position.y = Card.info.stat
-	NumbersParticle.global_position.y = Card.info.top / 2.0
+	NumbersParticleManager.global_position.y = Card.info.top / 2.0
 	
 	onResetStats()
 	onUpdateTraits()
@@ -159,6 +165,8 @@ func onCreateSpecificStat(type: Game.Stats, value: int) -> void:
 		Game.Stats.ATTACK: onCreateStat(AttackSpot, value, Card.info.attack, Card.info.attack)
 
 func setNumbersParticle(type: Game.Stats, value: int) -> void:
+	var NumbersParticle: GPUParticles3D = NumbersParticlePacked.instantiate()
+	NumbersParticleManager.add_child(NumbersParticle)
 	var sign_mesh: Mesh = (plus_mesh if value > 0 else minus_mesh).duplicate()
 	var number_mesh: Mesh = (number_to_particle_mesh[abs(value)] if abs(value) < 10 else exclamation_particle_mesh).duplicate()
 	
@@ -174,6 +182,9 @@ func setNumbersParticle(type: Game.Stats, value: int) -> void:
 	NumbersParticle.draw_pass_1 = sign_mesh
 	NumbersParticle.draw_pass_2 = number_mesh
 	NumbersParticle.emitting = true
+	
+	await NumbersParticle.finished
+	NumbersParticle.queue_free()
 
 #region InfoSprite
 func setInfoSpriteTurnState() -> void:
@@ -235,10 +246,9 @@ func onFindIconNode(FofObject: FofGD) -> Sprite3D:
 func onUpdateDelayedStats() -> void:
 	onResetNullIcons()
 	var stats: Dictionary = {Game.Stats.ATTACK: 0, Game.Stats.HEALTH: 0, Game.Stats.SPEED: 0, Game.Stats.MAX_HEALTH: 0}
-	for stat_action in Card.delayed_stats:
-		for stat_info in stat_action.stat_infos.filter(func(x: StatInfo): return x.turn_delay == 1):
-			for i in range(stat_info.types.size()):
-				stats[stat_action.types[i]] += stat_action.values[i]
+	for stat_info in Card.delayed_stats.filter(func(x: StatInfo): return x.turns == 1):
+		for i in range(stat_info.types.size()):
+			stats[stat_info.types[i]] += stat_info.values[i]
 	
 	for stat in stats:
 		if stats[stat] != 0: onAddDelayedStatNode(stat, stats[stat])
@@ -278,4 +288,7 @@ func onResetNullIcons() -> void:
 func onToolAdded(Tool: ToolGD) -> void:
 	ToolIcon.texture = Tool.getIcon() if Tool != null else null
 	ToolShine.visible = Tool != null
+	
+	if Tool != null:
+		ToolShine.texture = default_shine if !Tool.ascended else ascended_shine
 #endregion

@@ -23,6 +23,7 @@ signal active_effect_added
 signal boon_added
 signal boon_removed
 signal boon_activated
+signal boon_ascended
 
 #region Load / Save
 func onSave() -> SavedData:
@@ -95,6 +96,8 @@ func onLoadActiveLevel(data: SavedDataLevel) -> void:
 		onPushAction(LevelVisibleAction.new(false, get_tree().get_nodes_in_group("LevelTileObjectsGD") + get_tree().get_nodes_in_group("FieldCardsGD")))
 		return
 		
+	for Boon in get_tree().get_nodes_in_group("BoonsGD"):
+		boon_added.emit(Boon)
 	onChangePhase(data.phase, true)
 	for Card in get_tree().get_nodes_in_group("HandCardsGD"):
 		draw_card.emit(Card)
@@ -169,6 +172,8 @@ func onProcessAction(action: Action) -> void:
 			boon_removed.emit(action.id)
 		elif action is BoonActivatedAction:
 			boon_activated.emit(action.Boon)
+		elif action is ChangeBoonAscenscionAction:
+			boon_ascended.emit(action.Boon)
 	else:
 		if action is ChangePhaseAction:
 			if action.phase == phase: action.failed = true

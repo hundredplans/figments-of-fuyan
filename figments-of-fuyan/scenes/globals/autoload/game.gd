@@ -287,7 +287,7 @@ func getsetMovementRange(Card: CardGD) -> Array:
 	var attackables: Array = Card.getAttackablesInRange()
 	for GameObject in attackables:
 		var coords: Vector4i = GameObject.getCoords()
-		var tiles_in_range: Array = available_tiles.filter(func(x: TileGD): return Game.getCoordsDistance(x.getCoords(), GameObject.getCoords()) <= GameObject.getAttackRange())
+		var tiles_in_range: Array = available_tiles.filter(func(x: TileGD): return Game.getCoordsDistance(x.getCoords(), GameObject.getCoords()) <= Card.getAttackRange())
 		if tiles_in_range.is_empty(): continue
 		
 		var AttackFromTile: TileGD

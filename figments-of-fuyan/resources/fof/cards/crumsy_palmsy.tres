@@ -1,0 +1,42 @@
+[gd_resource type="Resource" script_class="CardInfo" load_steps=7 format=3 uid="uid://cphkqgg57ln23"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_s8aeo"]
+[ext_resource type="Image" uid="uid://bn224n4krctqt" path="res://assets/sprites/game/cards/art_pop/crumsy_palmsy.png" id="2_7nmyg"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_36a3e"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_ojak4"]
+[ext_resource type="Script" path="res://scripts/fof/cards/crumsy_palmsy.gd" id="4_4bwob"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="4_pxnpv"]
+
+[resource]
+script = ExtResource("3_ojak4")
+attack = 2
+health = 2
+speed = 2
+energy = 3
+rarity = 5
+initial_traits = Array[ExtResource("2_36a3e")]([])
+active_abilities = Array[ExtResource("1_s8aeo")]([])
+ability_text = "RAMPAGE [2]
+TRAUMA [2]
+BLOODTHIRST [2]:
+Gain [1] HP"
+flavor_text = ""
+art_mini_coordinate = Vector2i(0, 0)
+art_pop = ExtResource("2_7nmyg")
+points = []
+stat = 0.0
+top = 0.0
+eye = 0.0
+plus_attack = 0
+plus_health = 0
+plus_speed = 0
+plus_energy = 0
+ascended_traits = Array[ExtResource("2_36a3e")]([])
+ascended_ability_text = "RAMPAGE
+TRAUMA
+BLOODTHIRST:
+Gain [1] HP"
+id = 21
+name = "Crumsy Palmsy"
+gdscript = ExtResource("4_4bwob")
+saved_data = ExtResource("4_pxnpv")

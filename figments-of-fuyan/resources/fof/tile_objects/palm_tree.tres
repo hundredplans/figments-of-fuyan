@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=5 format=3]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=6 format=3]
 
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_dvd0h"]
 [ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="1_fnihf"]
 [ext_resource type="Script" path="res://scripts/fof/objects/object.gd" id="1_kjpi4"]
-[ext_resource type="PackedScene" uid="uid://2o8kb3dponwh" path="res://assets/models/fof/objects/palm_tree.glb" id="2_0d454"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/palm_tree.glb" id="2_0d454"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="3_e23we"]
 
 [resource]
@@ -11,6 +12,7 @@ tile_coords = Array[Array]([[Vector4(0, 0, 0, 0), Vector4i(0, 0, 0, 1), Vector4i
 lock_rotation = false
 lock_tile = false
 solids = Array[bool]([true])
+active_effects = Array[ExtResource("1_dvd0h")]([])
 models = Array[PackedScene]([ExtResource("2_0d454")])
 points = Array[Array]([[Vector3(-0.0365776, 0.133137, 0.419981), Vector3(-0.237042, 0.207915, 0.320797), Vector3(-0.152487, 0.232392, -0.226744), Vector3(0.168352, 0.252399, -0.288042), Vector3(0.454237, 0.289328, 0.259801), Vector3(0.470186, 0.998242, 0.298018), Vector3(0.0952911, 1.05647, 0.609108), Vector3(-0.328011, 1.08741, 0.183026), Vector3(0.0131481, 1.23724, -0.268721), Vector3(0.33744, 1.45411, 0.120554), Vector3(-0.163527, 1.77782, 0.514873), Vector3(-0.693033, 1.90009, -0.0393478), Vector3(-0.0976834, 1.90158, -0.388472), Vector3(0.0967171, 2.19537, 0.159803), Vector3(-0.411722, 2.45524, 0.1778), Vector3(-1.0369, 2.2459, 0.354245), Vector3(-1.05991, 2.31999, -0.527402), Vector3(-0.477815, 2.38475, -1.08587), Vector3(0.36271, 2.31211, -1.07345), Vector3(0.887829, 2.22838, -0.448388), Vector3(0.85133, 2.11579, 0.318087), Vector3(0.346007, 2.12593, 0.822924), Vector3(-0.419767, 2.14414, 0.88676), Vector3(-0.678911, 3.31195, 0.295753), Vector3(-0.951214, 3.34197, -0.023408), Vector3(-0.47623, 3.27517, -0.805584), Vector3(0.425821, 3.15948, -1.12395), Vector3(0.737167, 3.16755, -0.882997), Vector3(0.782629, 3.16224, 0.842956), Vector3(0.0911632, 3.14018, 1.22256)]])
 id = 15

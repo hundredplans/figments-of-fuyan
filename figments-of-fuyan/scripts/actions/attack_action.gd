@@ -23,7 +23,7 @@ func onPostAction() -> void:
 	
 	var actions: Array = [ChangeAttacksAction.new(Attacker, Attacker.attacks - 1)]
 	if Attacker is CardGD:
-		actions.append(StatAction.new(StatInfo.new(Attacker, Game.Stats.SPEED, 0, 0, true)))
+		actions.append(StatAction.new(StatInfo.new(Attacker, Game.Stats.SPEED, 0, 0, true, false, true)))
 		
 	actions.append(DamageAction.new(Attacker, Defenders, Attacker.getAttackDamage()))
 	onPushAction(actions)

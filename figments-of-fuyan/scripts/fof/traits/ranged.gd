@@ -7,3 +7,10 @@ func onLoadData(data: SavedData) -> void:
 	
 func onSave() -> SavedDataRanged:
 	return SavedDataRanged.new(info.id, false, public_id, ranged)
+
+func onTraitAdded() -> void:
+	onPushAction(ChangeAttackRangeAction.new(Card, ranged))
+
+func onClear() -> void:
+	super()
+	onPushAction(ChangeAttackRangeAction.new(Card, 1))

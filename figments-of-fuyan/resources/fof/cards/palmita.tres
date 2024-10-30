@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="CardInfo" load_steps=7 format=3 uid="uid://dos0h7h1l8pv"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_8c5rl"]
+[ext_resource type="Image" uid="uid://cp6mthlsnebq0" path="res://assets/sprites/game/cards/art_pop/palmita.png" id="2_6e25m"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_gibdl"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_u8ukk"]
+[ext_resource type="Script" path="res://scripts/fof/cards/palmita.gd" id="4_s0xsl"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_cli25"]
+
+[resource]
+script = ExtResource("3_u8ukk")
+attack = 1
+health = 1
+speed = 2
+energy = 1
+rarity = 4
+initial_traits = Array[ExtResource("2_gibdl")]([])
+active_abilities = Array[ExtResource("1_8c5rl")]([])
+ability_text = "ABILITY: This dies to give an adjacent ally +1 HP when it RAMPAGES"
+flavor_text = ""
+art_mini_coordinate = Vector2i(0, 0)
+art_pop = ExtResource("2_6e25m")
+points = []
+stat = 0.0
+top = 0.0
+eye = 0.0
+plus_attack = 0
+plus_health = 0
+plus_speed = 0
+plus_energy = 0
+ascended_traits = Array[ExtResource("2_gibdl")]([])
+ascended_ability_text = "ABILITY: This dies to give an adjacent ally +1 HP instantly and when it RAMPAGES"
+id = 13
+name = "Palmita"
+gdscript = ExtResource("4_s0xsl")
+saved_data = ExtResource("5_cli25")

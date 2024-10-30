@@ -12,7 +12,8 @@ func onProcessAction(action: Action) -> void:
 	super(action)
 	if !action.post:
 		if action is StatAction and action.getCards().any(func(x: CardGD): return x.isAlly(0))\
-		and !action.stat_infos.all(func(x: StatInfo): return x.values.all(func(y: int): return y <= 0) or x.absolute)\
+		and !action.stat_infos.all(func(x: StatInfo): return x.values.all(func(y: int): return y <= 0)\
+		or x.absolute or x.immutable or x.types.all(func(z: Game.Stats): return z == Game.Stats.HEALTH))\
 		and doubleup_charges > 0:
 			force_action.emit(BoonActivatedAction.new(self, action))
 	
@@ -28,11 +29,11 @@ func getDescription() -> String:
 
 func onBoon(action: Action) -> void:
 	doubleup_charges -= 1
-	var stat_infos: Array = action.stat_infos.filter(func(x: StatInfo): return x.Card.isAlly(0) and !x.absolute)
+	var stat_infos: Array = action.stat_infos.filter(func(x: StatInfo): return x.Card.isAlly(0) and !x.absolute and !x.immutable)
 	for stat_info in stat_infos:
 		var values: Array = range(stat_info.values.size()).filter(func(i: int): return stat_info.values[i] > 0)
 		for i in values:
-			stat_info.values[i] *= 2
+			if stat_info.types[i] != Game.Stats.HEALTH: stat_info.values[i] *= 2
 	
 func onSave() -> SavedDataBoon:
 	ability_save["doubleup_charges"] = doubleup_charges

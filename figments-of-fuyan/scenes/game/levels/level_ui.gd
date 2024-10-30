@@ -64,6 +64,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level.boon_added.connect(onBoonAdded)
 	level.boon_removed.connect(onBoonRemoved)
 	level.boon_activated.connect(onBoonActivated)
+	level.boon_ascended.connect(onBoonAscended)
 	save_file.update_shillings.connect(onUpdateShillings)
 	
 	level.camera_change_action.connect(onCameraUpdated)
@@ -115,7 +116,10 @@ func onPhaseChanged(phase: Game.Phases, _instant: bool = false) -> void:
 	PhaseIcon.setPhase(phase)
 	PassButton.setPhase(phase)
 	match phase:
-		Game.Phases.START, Game.Phases.HAND:
+		Game.Phases.START:
+			HandBox.onPin()
+			HandBox.onSelectableCards(true)
+		Game.Phases.HAND:
 			HandBox.onPin()
 			HandBox.onSelectableCards(true)
 		Game.Phases.PLAYER:
@@ -237,7 +241,6 @@ func onActiveEffectBoxPressed(active_effect: ActiveEffectDatastore) -> void:
 	if !tiles.in_range_tiles.is_empty():
 		setActiveEffectLabel(active_effect.name)
 		active_effect_box_pressed.emit(active_effect, tiles)
-	
 		
 func onActiveEffectDeselected() -> void:
 	setActiveEffectLabel("")
@@ -272,4 +275,7 @@ func onBoonRemoved(_id: int) -> void:
 	
 func onBoonActivated(Boon: BoonGD) -> void:
 	BoonBox.onUpdateBoonChargesAndDisabled(Boon)
+	
+func onBoonAscended(Boon: BoonGD) -> void:
+	BoonBox.onUpdateBoonAscension(Boon)
 #endregion

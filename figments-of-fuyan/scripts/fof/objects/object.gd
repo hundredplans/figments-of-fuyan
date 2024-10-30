@@ -133,3 +133,7 @@ func getVisibleGroup() -> Array:
 	return visible_group
 		
 #endregion
+
+#region Interactable Object
+
+#endregion
