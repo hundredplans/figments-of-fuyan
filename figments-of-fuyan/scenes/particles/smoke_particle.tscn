@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://5ll2fnvb43gv"]
+
+[ext_resource type="Material" uid="uid://bj6n2uaf0f6uv" path="res://resources/materials/colors/unshaded/white.tres" id="1_d5y0v"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ewt6e"]
+direction = Vector3(0, 1, 0)
+flatness = 0.6
+initial_velocity_min = 0.5
+initial_velocity_max = 1.0
+gravity = Vector3(0, 0, 0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_u7jwb"]
+material = ExtResource("1_d5y0v")
+size = Vector3(0.05, 0.05, 0.05)
+
+[node name="SmokeParticle" type="GPUParticles3D"]
+amount = 32
+amount_ratio = 0.25
+lifetime = 3.0
+process_material = SubResource("ParticleProcessMaterial_ewt6e")
+draw_pass_1 = SubResource("BoxMesh_u7jwb")

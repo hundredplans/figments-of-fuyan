@@ -35,9 +35,7 @@ func onAddFieldEffect(FieldCard: CardGD) -> void:
 	visible_cards.append(FieldCard)
 	
 func onRemoveFieldEffect(FieldCard: CardGD) -> void:
-	var field_effects: Array = FieldCard.onFindFieldEffectsByOwner(self)
-	for FieldEffect in field_effects:
-		FieldCard.onRemoveFieldEffect(FieldEffect)
+	FieldCard.onRemoveFieldEffectsByOwner(self)
 	visible_cards.erase(FieldCard)
 	
 func onSave() -> SavedDataTool:

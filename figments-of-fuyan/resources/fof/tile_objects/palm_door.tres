@@ -1,20 +1,40 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=6 format=3]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=9 format=3 uid="uid://ctkx1jwi6m58v"]
 
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_0hkmw"]
 [ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="1_4c0dd"]
-[ext_resource type="Script" path="res://scripts/fof/objects/object.gd" id="1_4s7en"]
+[ext_resource type="Script" path="res://scripts/fof/objects/palm_door.gd" id="2_8dm3c"]
 [ext_resource type="PackedScene" uid="uid://b52kcgs2ycht0" path="res://assets/models/fof/objects/palm_door_tall.glb" id="2_u8yia"]
 [ext_resource type="PackedScene" uid="uid://4xgp6fl2e0oi" path="res://assets/models/fof/objects/palm_door_short.glb" id="3_3m0df"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="4_md3ok"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_iobject.gd" id="5_600ci"]
+
+[sub_resource type="Resource" id="Resource_lk2nq"]
+script = ExtResource("1_0hkmw")
+name = "Open Door"
+description = ""
+max_charges = -1
+delay = 2.0
+charges = 0
+used = false
+
+[sub_resource type="Resource" id="Resource_wuccq"]
+script = ExtResource("1_0hkmw")
+name = "Close Door"
+description = ""
+max_charges = -1
+delay = 2.0
+charges = 0
+used = false
 
 [resource]
 script = ExtResource("1_4c0dd")
 tile_coords = Array[Array]([[Vector4(0, 0, 0, 0), Vector4i(0, 0, 0, 1), Vector4i(0, 0, 0, 2)], [Vector4(0, 0, 0, 0), Vector4i(0, 0, 0, 1)]])
-lock_rotation = false
-lock_tile = false
+lock_rotation = true
+lock_tile = true
 solids = Array[bool]([true, true])
+active_effects = Array[ExtResource("1_0hkmw")]([SubResource("Resource_lk2nq"), SubResource("Resource_wuccq")])
 models = Array[PackedScene]([ExtResource("2_u8yia"), ExtResource("3_3m0df")])
 points = Array[Array]([[], []])
 id = 14
 name = "Palm Door"
-gdscript = ExtResource("1_4s7en")
-saved_data = ExtResource("4_md3ok")
+gdscript = ExtResource("2_8dm3c")
+saved_data = ExtResource("5_600ci")

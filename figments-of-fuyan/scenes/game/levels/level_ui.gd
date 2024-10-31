@@ -32,6 +32,7 @@ signal camera_direction_changed
 signal vision_mode_changed
 signal active_effect_box_pressed
 signal active_effect_added
+signal tile_occupied
 
 var save_file: SaveFileGD
 var level: LevelGD
@@ -65,6 +66,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level.boon_removed.connect(onBoonRemoved)
 	level.boon_activated.connect(onBoonActivated)
 	level.boon_ascended.connect(onBoonAscended)
+	level.tile_occupied.connect(onTileOccupied)
 	save_file.update_shillings.connect(onUpdateShillings)
 	
 	level.camera_change_action.connect(onCameraUpdated)
@@ -237,7 +239,10 @@ func onAwakened(Card: CardGD) -> void:
 
 #region Active Effects
 func onActiveEffectBoxPressed(active_effect: ActiveEffectDatastore) -> void:
-	var tiles: ActiveEffectTiles = active_effect.owner.getActiveEffectTiles(active_effect)
+	var tiles: ActiveEffectTiles = null
+	if active_effect.owner is IObjectGD: tiles = active_effect.owner.getActiveEffectTiles(active_effect, level.getAllySpectateObject())
+	else: tiles = active_effect.owner.getActiveEffectTiles(active_effect)
+	
 	if !tiles.in_range_tiles.is_empty():
 		setActiveEffectLabel(active_effect.name)
 		active_effect_box_pressed.emit(active_effect, tiles)
@@ -254,6 +259,9 @@ func onUpdateActiveEffects(SpectateObject: GameObjectGD = level.getSpectateObjec
 		active_effects = SpectateObject.active_effects
 		if SpectateObject.getTool() != null:
 			active_effects += SpectateObject.getTool().active_effects
+		
+		for IObject in get_tree().get_nodes_in_group("IObjectsGD"):
+			active_effects += IObject.getValidActiveEffects(SpectateObject)
 		
 	ActiveEffects.onUpdate(active_effects)
 #endregion
@@ -278,4 +286,10 @@ func onBoonActivated(Boon: BoonGD) -> void:
 	
 func onBoonAscended(Boon: BoonGD) -> void:
 	BoonBox.onUpdateBoonAscension(Boon)
+#endregion
+
+#region Occupy Tile
+func onTileOccupied(Card: CardGD, _Tile: TileGD) -> void:
+	if Card.isAlly(0) and Card == level.getSpectateObject():
+		onUpdateActiveEffects()
 #endregion

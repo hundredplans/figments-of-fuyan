@@ -49,8 +49,14 @@ func getActiveEffectTiles(_active_effect: ActiveEffectDatastore) -> ActiveEffect
 func onActiveEffect(_active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles) -> void:
 	pass
 	
+func onActiveEffectPre(_active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles) -> void:
+	pass
+	
 func onToolEquipped() -> void:
 	pass
 	
 func onToolUnequipped() -> void:
 	onClear()
+	
+func getLevelVisible() -> bool:
+	return Card.getLevelVisible()

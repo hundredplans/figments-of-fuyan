@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="CollisionPositionShape" load_steps=3 format=3 uid="uid://di4gpbsmk4cpt"]
+
+[ext_resource type="Script" path="res://scripts/common/data_structures/collision_position_shape.gd" id="1_35ow1"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2nbw6"]
+size = Vector3(1.83411, 0.276394, 0.555176)
+
+[resource]
+script = ExtResource("1_35ow1")
+collision_shape = SubResource("BoxShape3D_2nbw6")
+position = Vector3(0, 2.594, 0)

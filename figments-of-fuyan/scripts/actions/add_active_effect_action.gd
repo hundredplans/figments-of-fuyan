@@ -19,7 +19,7 @@ func onPostAction() -> void:
 		if FofObject.ascended and active_effect.exists != Game.AscendedExists.ONLY_DEFAULT:
 			active_effect.charges = active_effect.ascended_max_charges
 		else: active_effect.charges = active_effect.max_charges
+	elif active_effect is ActiveEffectDatastore:
+		active_effect.charges = active_effect.max_charges	
 	FofObject.onAddActiveEffect(active_effect)
-
-func getDelay() -> float:
-	return super()
+	

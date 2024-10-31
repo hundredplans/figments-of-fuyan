@@ -1,16 +1,16 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=6 format=3]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=6 format=3 uid="uid://dvfwbcqhyyv4a"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="1_a0rfk"]
 [ext_resource type="Script" path="res://scripts/fof/objects/object.gd" id="1_gegke"]
 [ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_raq7j"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/sneaky_bush.glb" id="2_splvw"]
+[ext_resource type="PackedScene" uid="uid://6fux0y633is5" path="res://assets/models/fof/objects/sneaky_bush.glb" id="2_splvw"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="3_3x4nd"]
 
 [resource]
 script = ExtResource("1_a0rfk")
 tile_coords = Array[Array]([[Vector4(0, 0, 0, 0)]])
-lock_rotation = false
-lock_tile = false
+lock_rotation = true
+lock_tile = true
 solids = Array[bool]([false])
 active_effects = Array[ExtResource("1_raq7j")]([])
 models = Array[PackedScene]([ExtResource("2_splvw")])

@@ -26,4 +26,4 @@ func onPostAction() -> void:
 		Tile.onOccupy(Card, apply_occupy_instant)
 		Card.setPositionToTile()
 	
-	onPushAction(VisionAction.new([Card] + Game.inVisionCards(coords)), true)
+	onPushAction(VisionAction.new([Card] + Game.inVisionCards(coords)))

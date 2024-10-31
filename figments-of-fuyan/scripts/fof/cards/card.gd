@@ -693,6 +693,9 @@ func getActiveEffectTiles(_active_effect: ActiveEffectDatastore) -> ActiveEffect
 	
 func onActiveEffect(_active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles) -> void:
 	pass
+	
+func onActiveEffectPre(_active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles) -> void:
+	pass
 #endregion
 
 #region Status Effects
@@ -776,6 +779,10 @@ func onAddFieldEffect(FieldEffect: FieldEffectGD, FofObject: FofGD = null) -> vo
 func onRemoveFieldEffect(FieldEffect: FieldEffectGD) -> void:
 	field_effects.erase(FieldEffect)
 	FieldInfo.onRemoveIcon(FieldEffect)
+	
+func onRemoveFieldEffectsByOwner(FofObject: FofGD) -> void:
+	for FieldEffect in onFindFieldEffectsByOwner(FofObject):
+		onRemoveFieldEffect(FieldEffect)
 	
 func onFindFieldEffectsByOwner(FofObject: FofGD) -> Array:
 	return field_effects.filter(func(x: FieldEffectGD): return x.FofObject == FofObject)

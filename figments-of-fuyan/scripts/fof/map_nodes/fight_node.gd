@@ -14,7 +14,8 @@ func onFofInit() -> void:
 	
 	var enemy_spawn_amount: int = max(randi_range(level_info.enemy_min_spawn_amount, level_info.enemy_max_spawn_amount), spawns.size() - 1)
 	for i in range(enemy_spawn_amount):
-		spawn_ids.append(area.card_ids.pick_random())
+		spawn_ids.append(6)
+			#area.card_ids.pick_random())
 	spawn_ids.shuffle()
 	
 func onSave() -> SavedDataMapNode:

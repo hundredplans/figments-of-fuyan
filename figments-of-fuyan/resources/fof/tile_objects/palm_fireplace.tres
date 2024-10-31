@@ -1,32 +1,26 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=9 format=3 uid="uid://fe3misvc08o3"]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=8 format=3 uid="uid://fe3misvc08o3"]
 
 [ext_resource type="Script" path="res://scripts/fof/objects/palm_fireplace.gd" id="1_14dta"]
 [ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_hlcn0"]
 [ext_resource type="PackedScene" uid="uid://fhtmuue57md5" path="res://assets/models/fof/objects/palm_fireplace.glb" id="2_s5wd2"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="3_ao4ss"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_iobject.gd" id="4_at3y3"]
 [ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="4_mg1nu"]
 
 [sub_resource type="Resource" id="Resource_5u8d1"]
 script = ExtResource("1_hlcn0")
-name = "Palmleaf Twirl"
-description = "Allies in a [2] Tile range gain +1 SPD for [1] Turn"
+name = "Extinguish"
+description = "Units in a [2] Tile range gain +1 ATT"
 max_charges = 1
+delay = 3.0
 charges = 0
 used = false
 
 [sub_resource type="Resource" id="Resource_bu0rh"]
 script = ExtResource("1_hlcn0")
-name = "Fermented Sand-wiches"
-description = "Allies in a [2] Tile range gain +1 ATT for [2] Turns"
+name = "Add Fuel"
+description = "Healing effects are doubled in a [3] Tile range"
 max_charges = 1
-charges = 0
-used = false
-
-[sub_resource type="Resource" id="Resource_7ytug"]
-script = ExtResource("1_hlcn0")
-name = "Crabarm Stew"
-description = "Allies in a [2] Tile range heal [1] HP"
-max_charges = 1
+delay = 3.0
 charges = 0
 used = false
 
@@ -34,12 +28,12 @@ used = false
 script = ExtResource("4_mg1nu")
 tile_coords = Array[Array]([[Vector4(0, 0, 0, 0)]])
 lock_rotation = false
-lock_tile = false
-solids = Array[bool]([])
-active_effects = Array[ExtResource("1_hlcn0")]([SubResource("Resource_5u8d1"), SubResource("Resource_bu0rh"), SubResource("Resource_7ytug")])
+lock_tile = true
+solids = Array[bool]([true])
+active_effects = Array[ExtResource("1_hlcn0")]([SubResource("Resource_5u8d1"), SubResource("Resource_bu0rh")])
 models = Array[PackedScene]([ExtResource("2_s5wd2")])
 points = Array[Array]([[Vector3(-0.138195, 0.0624713, 0.532924), Vector3(-0.459738, 0.0555069, 0.44055), Vector3(-0.526858, 0.0828641, -0.0496471), Vector3(0.427322, 0.0398401, 0.469221), Vector3(0.517072, 0.0480179, -0.201874), Vector3(0.208441, 0.076714, -0.511126), Vector3(-0.429241, 0.0383153, -0.406448), Vector3(0.0328363, 0.405828, -0.0157451), Vector3(0.286297, 0.273941, 0.14166), Vector3(0.323973, 0.14219, -0.194106)]])
 id = 19
 name = "Palm Fireplace"
 gdscript = ExtResource("1_14dta")
-saved_data = ExtResource("3_ao4ss")
+saved_data = ExtResource("4_at3y3")

@@ -11,6 +11,7 @@ func setText(_text: String) -> void:
 		var fancy_text: FancyText = load(FANCY_TEXT_RESOURCE_PATH)
 		var regex := RegEx.new()
 		
+		onCardNamesReplace(regex)
 		onFofIconsReplace(regex, fancy_text)
 		onFofImagesReplace(regex, fancy_text)
 		text = text.insert(0, "[outline_size=" + str(settings.outline_size) + "][font=" + \
@@ -23,6 +24,13 @@ func setText(_text: String) -> void:
 
 func _ready() -> void:
 	setText(text)
+
+func onCardNamesReplace(regex: RegEx) -> void:
+	regex.compile("{id=\\d+,a=[ft],[a-zA-Z]+}")
+	for _result in regex.search_all(text):
+		_result.get_group_count()
+		var result: String = _result.get_string()
+		text = text.replace(result, "[color=light_slate_gray]Palmy[/color]")
 
 func onFofIconsReplace(regex: RegEx, fancy_text: FancyText) -> void:
 	for fof_icon_fancy_text in fancy_text.icons:

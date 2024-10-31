@@ -101,3 +101,10 @@ func hasCard(Card: CardGD) -> void:
 	
 func getCards() -> Array:
 	return stat_infos.map(func(x: StatInfo): return x.Card)
+
+func isHeal() -> bool:
+	for stat_info in stat_infos.filter(func(x: StatInfo): return !x.absolute):
+		for i in range(stat_info.types.size()):
+			if stat_info.types[i] == Game.Stats.HEALTH and stat_info.values[i] > 0:
+				return true
+	return false

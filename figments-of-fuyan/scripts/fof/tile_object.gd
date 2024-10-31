@@ -52,16 +52,14 @@ func onLoadDataLevel() -> void:
 	onApplyGreyscaleMaterial()
 	
 func onLoadModel() -> void:
-	var ray_pickable: bool = false
-	if Model != null:
-		ray_pickable = getRayPickable()
-		Model.queue_free()
-		
+	if Model != null: Model.queue_free()
 	Model = info.getModel(variation).instantiate()
 	add_child(Model)
+	onAfterLoadModel()
 	
+func onAfterLoadModel() -> void:
 	call("setDefaultCollisionLayers")
-	setRayPickable(ray_pickable)
+	setRayPickable(getRayPickable())
 #endregion
 	
 #region Variations

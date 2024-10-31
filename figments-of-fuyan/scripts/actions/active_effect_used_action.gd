@@ -11,7 +11,7 @@ func _init(_ActiveEffect: ActiveEffectDatastore = null, _Tile: TileGD = null, _a
 	active_effect_tiles = _active_effect_tiles
 	
 func onPreAction() -> void:
-	pass
+	ActiveEffect.owner.onActiveEffectPre(ActiveEffect, Tile, active_effect_tiles)
 	
 func onPostAction() -> void:
 	ActiveEffect.owner.onActiveEffect(ActiveEffect, Tile, active_effect_tiles)
@@ -21,7 +21,7 @@ func onPostAction() -> void:
 	onPushAction(actions)
 
 func getDelay() -> float:
-	return super()
+	return ActiveEffect.delay if ActiveEffect.owner.getLevelVisible() else 0
 	
 func getLogInfo() -> Array:
 	return ["ActiveEffect: " + ActiveEffect.name]

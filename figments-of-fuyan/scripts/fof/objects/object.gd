@@ -99,6 +99,9 @@ func onLoadDataLevel() -> void:
 	for Tile in occupied_tiles:
 		Tile.setOccupiedObject(self)
 	super()
+	
+func onFofInit() -> void:
+	pass
 #endregion
 
 #region Collision Layers
@@ -120,6 +123,9 @@ func setOccupiedTiles(tile_position_to_tile: Dictionary) -> void:
 	occupied_tiles = coords_array.map(func(x: Vector4i): return Game.getTile(x)).filter(func(x: TileGD): return x != null)
 	for Tile in occupied_tiles:
 		Tile.setOccupiedObject(self)
+		
+func getTile() -> TileGD:
+	return occupied_tiles[0]
 #endregion
 
 #region Vision

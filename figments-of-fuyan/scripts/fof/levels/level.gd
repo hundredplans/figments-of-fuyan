@@ -24,6 +24,7 @@ signal boon_added
 signal boon_removed
 signal boon_activated
 signal boon_ascended
+signal tile_occupied
 
 #region Load / Save
 func onSave() -> SavedData:
@@ -174,6 +175,8 @@ func onProcessAction(action: Action) -> void:
 			boon_activated.emit(action.Boon)
 		elif action is ChangeBoonAscenscionAction:
 			boon_ascended.emit(action.Boon)
+		elif action is OccupyAction:
+			tile_occupied.emit(action.Card, action.Tile)
 	else:
 		if action is ChangePhaseAction:
 			if action.phase == phase: action.failed = true
