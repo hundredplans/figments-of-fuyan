@@ -1,11 +1,41 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=7 format=3 uid="uid://cwm06gktum4ul"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://cwm06gktum4ul"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_ssr17"]
+[ext_resource type="Image" uid="uid://c4qmdx7sok48s" path="res://assets/sprites/game/cards/art_mini/elder_palmer.png" id="2_1owme"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_gdnhc"]
 [ext_resource type="Image" uid="uid://b1ycy81jsi1xe" path="res://assets/sprites/game/cards/art_pop/elder_palmer.png" id="2_wts5f"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_15h27"]
 [ext_resource type="Script" path="res://scripts/fof/cards/elder_palmer.gd" id="4_wargf"]
+[ext_resource type="PackedScene" uid="uid://cvkraluqscexy" path="res://assets/models/fof/cards/elder_palmer.glb" id="5_emcux"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_jsfsf"]
+
+[sub_resource type="Resource" id="Resource_fibqg"]
+script = ExtResource("1_ssr17")
+exists = 0
+ascended_description = "If in enemy vision this debuffs allies in vision -1 ATT for [1] Turn and heals [2] HP"
+ascended_max_charges = -1
+name = "Palmist Prayer"
+description = "If in enemy vision this debuffs allies in vision -1 ATT for [1] Turn and heals [1] HP"
+max_charges = -1
+delay = 2.0
+charges = 0
+used = false
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7utf7"]
+size = Vector3(0.675293, 1.93091, 0.267822)
+
+[sub_resource type="PackedScene" id="PackedScene_lt088"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00366211, 0.962769, 0.00158691), SubResource("BoxShape3D_7utf7")],
+"version": 3
+}
 
 [resource]
 script = ExtResource("3_15h27")
@@ -15,21 +45,24 @@ speed = 2
 energy = 2
 rarity = 5
 initial_traits = Array[ExtResource("2_gdnhc")]([])
-active_abilities = Array[ExtResource("1_ssr17")]([])
+active_abilities = Array[ExtResource("1_ssr17")]([SubResource("Resource_fibqg")])
 ability_text = "ABILITY: If in enemy vision this debuffs allies in vision -1 ATT for [1] Turn and heals [1] HP"
 flavor_text = ""
-art_mini_coordinate = Vector2i(0, 0)
+art_mini_coordinate = Vector2i(80, 40)
+art_mini = ExtResource("2_1owme")
 art_pop = ExtResource("2_wts5f")
+model = ExtResource("5_emcux")
 points = []
-stat = 0.0
-top = 0.0
-eye = 0.0
+collision_shape = SubResource("PackedScene_lt088")
+stat = 2.23768
+top = 1.92518
+eye = 1.808
 plus_attack = 0
 plus_health = 1
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("2_gdnhc")]([])
-ascended_ability_text = "ABILITY: If in enemy vision this debuffs allies -1 ATT for [1] Turn and heals [1] HP"
+ascended_ability_text = "ABILITY: If in enemy vision this debuffs allies in vision -1 ATT for [1] Turn and heals [2] HP"
 id = 20
 name = "Elder Palmer"
 gdscript = ExtResource("4_wargf")

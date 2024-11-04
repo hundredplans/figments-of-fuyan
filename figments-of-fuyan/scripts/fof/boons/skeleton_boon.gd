@@ -18,9 +18,7 @@ func onBoon(action: Action = null) -> void:
 	var Card: CardGD = action.Defender
 	var Tile: TileGD = Card.Tile
 	
-	var NewCardData: SavedDataCard = Game.getBaseCard(12, Tile, 2, Card.tile_rotation, ascended)
-	var NewCard: CardGD = SavedData.onLoadModel(NewCardData, Card)
-	
+	var NewCard: CardGD = Game.getNewFieldCard(12, Tile, 2, Card.tile_rotation, ascended)
 	onPushAction(AwakenAction.new(NewCard, Tile))
 
 func onBoonAdded() -> void:

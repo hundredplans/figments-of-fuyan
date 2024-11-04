@@ -3,7 +3,7 @@ class_name StatInfo extends Resource
 var Card: CardGD
 var owner: FofGD
 
-@export var types: Array[Game.Stats]
+@export var types: Array
 @export var values: Array
 @export var turns: int
 @export var absolute: bool

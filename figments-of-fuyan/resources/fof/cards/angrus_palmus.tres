@@ -1,16 +1,34 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=7 format=3 uid="uid://lo0gaidbtmx5"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=11 format=3 uid="uid://lo0gaidbtmx5"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_uh8s6"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_7gsfi"]
 [ext_resource type="Image" uid="uid://1nrwl75020iu" path="res://assets/sprites/game/cards/art_pop/angrus_palmus.png" id="2_mdfjq"]
+[ext_resource type="Image" uid="uid://cepva3y1q6dwr" path="res://assets/sprites/game/cards/art_mini/angrus_palmus.png" id="2_mowii"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_ugb5c"]
 [ext_resource type="Script" path="res://scripts/fof/cards/angrus_palmus.gd" id="4_2g88y"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_0ag77"]
+[ext_resource type="PackedScene" uid="uid://dtpdq3wb56v1m" path="res://assets/models/fof/cards/angrus_palmus.glb" id="5_wda5s"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2n2ss"]
+size = Vector3(1.06763, 2.23242, 0.351685)
+
+[sub_resource type="PackedScene" id="PackedScene_mcal7"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00109863, 1.12402, -0.00238037), SubResource("BoxShape3D_2n2ss")],
+"version": 3
+}
 
 [resource]
 script = ExtResource("3_ugb5c")
 attack = 3
-health = 6
+health = 5
 speed = 2
 energy = 4
 rarity = 4
@@ -18,14 +36,17 @@ initial_traits = Array[ExtResource("2_7gsfi")]([])
 active_abilities = Array[ExtResource("1_uh8s6")]([])
 ability_text = "RAMPAGE: The next Heal on this is doubled"
 flavor_text = ""
-art_mini_coordinate = Vector2i(0, 0)
+art_mini_coordinate = Vector2i(80, 40)
+art_mini = ExtResource("2_mowii")
 art_pop = ExtResource("2_mdfjq")
+model = ExtResource("5_wda5s")
 points = []
-stat = 0.0
-top = 0.0
-eye = 0.0
+collision_shape = SubResource("PackedScene_mcal7")
+stat = 2.67426
+top = 2.24036
+eye = 2.03669
 plus_attack = 1
-plus_health = -1
+plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("2_7gsfi")]([])

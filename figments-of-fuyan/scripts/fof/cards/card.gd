@@ -28,6 +28,8 @@ var ability_save: Dictionary
 var active_effects: Array[ActiveEffectDatastore]
 var field_effects: Array[FieldEffectGD]
 
+var anibility_datastore: AnibilityDatastore
+
 var Tool: ToolGD
 #endregion
 
@@ -65,6 +67,21 @@ func setMapPosition() -> void:
 func setTileRotation(_tile_rotation: int) -> void:
 	tile_rotation = _tile_rotation
 	Model.rotation.y = (tile_rotation * (PI / 3)) + (PI / 6)
+	
+func setIdleAbility(state: bool) -> void:
+	anibility_datastore.is_idle_ability = state
+	if AniPlayer.current_animation.begins_with("Idle"):
+		onIdle()
+		
+func setAttackAbility(state: bool, play_attack_animation: bool = true) -> void:
+	anibility_datastore.is_attack_ability = state
+	if play_attack_animation:
+		onAttack()
+		
+func setDeathAbility(state: bool, play_death_animation: bool = true) -> void:
+	anibility_datastore.is_death_ability = state
+	if play_death_animation:
+		onDeath()
 #endregion
 
 #region Getters
@@ -105,6 +122,7 @@ func onPlayAnimation(animation_name: String) -> void:
 			"Walk": if AniPlayer.current_animation == "Walk": return
 		
 		AniPlayer.play(animation_name)
+		AniPlayer.set_current_animation(animation_name)
 		
 func onAnimationFinished(ani_name: String) -> void:
 	if !ani_name.begins_with("Death"): onIdle()
@@ -114,22 +132,25 @@ func onJump() -> void:
 	onPlayAnimation("Jump")
 		
 func onAttack() -> void:
-	onPlayAnimation("Attack")
+	onPlayAnimation("Attack" if !anibility_datastore.is_idle_ability else "AttackAbility")
 		
 func onWalk() -> void:
 	onPlayAnimation("Walk")
 	
 func onIdle() -> void:
-	onPlayAnimation("Idle")
+	onPlayAnimation("Idle" if !anibility_datastore.is_idle_ability else "IdleAbility")
 	
 func onDeath() -> void:
-	onPlayAnimation("Death")
+	onPlayAnimation("Death" if !anibility_datastore.is_death_ability else "DeathAbility")
 	
 func onHurt() -> void:
 	onPlayAnimation("Hurt")
 	
 func onAbility() -> void:
 	onPlayAnimation("Ability")
+	
+func isWalking() -> bool:
+	return AniPlayer.current_animation.begins_with("Walk")
 #endregion
 
 #region Card
@@ -149,7 +170,7 @@ func onSave() -> SavedDataCard:
 	return SavedDataCard.new(info.id, false, public_id, coords, tile_rotation, level_visible, is_revealed, team, ascended, \
 	attack, health, speed, max_speed, max_health, energy, draw_order, card_place, turn_state,\
 	SavedData.onSaveGroup(field_traits), SavedData.onSaveGroup(status_effects), attacks, attack_range, delayed_stats,\
-	visible_game_objects_public_ids, ability_save, active_effects, tool_data, SavedData.onSaveGroup(field_effects))
+	visible_game_objects_public_ids, ability_save, active_effects, tool_data, SavedData.onSaveGroup(field_effects), anibility_datastore)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -171,6 +192,7 @@ func onLoadData(data: SavedData) -> void:
 	max_health = data.max_health
 	speed = data.speed
 	max_speed = data.max_speed
+	anibility_datastore = data.anibility_datastore
 	
 	if data.tool_data != null:
 		Tool = SavedData.onLoadModel(data.tool_data, self)
@@ -728,7 +750,7 @@ func onAdvanceTurn() -> void:
 	actions += active_effects.map(func(x: ActiveEffectDatastore): return ChangeActiveEffectUsedAction.new(x, false))
 	onPushAction(actions)
 	
-	for stat_info in delayed_stats:
+	for stat_info in delayed_stats.duplicate():
 		stat_info.onAdvanceTurn()
 		
 	FieldInfo.onUpdateDelayedStats()
@@ -759,7 +781,16 @@ func isValidOnHit(action: Action) -> bool:
 	return action.post and action is DamageAction and action.owner is AttackAction and action.Damager == self and card_place == Game.CardPlaces.FIELD
 
 func isValidRevenge(action: Action) -> bool:
-	return action.post and action is DamageAction and self in action.Defenders and card_place == Game.CardPlaces.FIELD
+	return action.post and action is StatAction and action.owner is DamageAction and self in action.owner.Defenders and card_place == Game.CardPlaces.FIELD
+
+func isValidBloodthirst(action: Action) -> bool:
+	return action.post and action is DeathAction and action.Defender in getVisibleFieldCardsEnemies() and card_place == Game.CardPlaces.FIELD
+
+func isValidArrive(action: Action) -> bool:
+	return action.post and action is AwakenAction and action.Card == self
+
+func isValidWhenHealed(action: Action) -> bool:
+	return !action.post and action is StatAction and action.isHeal(self) and card_place == Game.CardPlaces.FIELD
 #endregion
 
 #region Heal
@@ -775,10 +806,17 @@ func onAddFieldEffect(FieldEffect: FieldEffectGD, FofObject: FofGD = null) -> vo
 	if FofObject != null: FieldEffect.FofObject = FofObject
 	field_effects.append(FieldEffect)
 	FieldInfo.onAddIcon(FieldEffect)
+	FieldEffect.Card = self
+	
+func onAddBaseFieldEffect(id: int, FofObject: FofGD = null) -> FieldEffectGD:
+	var FieldEffect: FieldEffectGD = SavedData.onLoadModel(SavedDataFieldEffect.new(id, true), self)
+	onAddFieldEffect(FieldEffect, FofObject)
+	return FieldEffect
 	
 func onRemoveFieldEffect(FieldEffect: FieldEffectGD) -> void:
 	field_effects.erase(FieldEffect)
 	FieldInfo.onRemoveIcon(FieldEffect)
+	FieldEffect.onClear()
 	
 func onRemoveFieldEffectsByOwner(FofObject: FofGD) -> void:
 	for FieldEffect in onFindFieldEffectsByOwner(FofObject):
@@ -786,4 +824,10 @@ func onRemoveFieldEffectsByOwner(FofObject: FofGD) -> void:
 	
 func onFindFieldEffectsByOwner(FofObject: FofGD) -> Array:
 	return field_effects.filter(func(x: FieldEffectGD): return x.FofObject == FofObject)
+#endregion
+
+#region Revenge
+func onRevenge(_action: DamageAction) -> void:
+	if AniPlayer.has_animation("HurtAbility"):
+		onPlayAnimation("HurtAbility")
 #endregion

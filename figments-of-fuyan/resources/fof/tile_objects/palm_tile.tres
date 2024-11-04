@@ -1,20 +1,20 @@
-[gd_resource type="Resource" script_class="BaseTileInfo" load_steps=8 format=3]
+[gd_resource type="Resource" script_class="TileInfo" load_steps=8 format=3 uid="uid://bb5nwawh8vxhc"]
 
-[ext_resource type="Script" path="res://scripts/fof/tiles/base_tile.gd" id="1_sqwab"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/tiles/palm_tile.glb" id="2_0icd3"]
-[ext_resource type="Script" path="res://scripts/fof_info/game_objects/base_tile_info.gd" id="3_6bjs2"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/tiles/palm_overworld_tile.glb" id="4_bgba3"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/tiles/palm_tile_stair.glb" id="4_wrhe2"]
+[ext_resource type="Script" path="res://scripts/fof/tiles/tile.gd" id="1_6vv56"]
+[ext_resource type="PackedScene" uid="uid://v7v4k14rugns" path="res://assets/models/fof/tiles/palm_tile.glb" id="2_0icd3"]
+[ext_resource type="Script" path="res://scripts/fof_info/game_objects/tile_info.gd" id="3_fvuip"]
+[ext_resource type="PackedScene" uid="uid://dw5aaldmheh01" path="res://assets/models/fof/tiles/palm_tile_overworld.glb" id="4_2rnfg"]
+[ext_resource type="PackedScene" uid="uid://bdbo62nysy026" path="res://assets/models/fof/tiles/palm_tile_stair.glb" id="4_wrhe2"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="5_gdg5a"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/tiles/palm_tile_fill.glb" id="6_8b5b1"]
+[ext_resource type="PackedScene" uid="uid://bb6rd8ea31ga" path="res://assets/models/fof/tiles/palm_tile_fill.glb" id="6_8b5b1"]
 
 [resource]
-script = ExtResource("3_6bjs2")
-overworld_tile = ExtResource("4_bgba3")
+script = ExtResource("3_fvuip")
+overworld_tile = ExtResource("4_2rnfg")
 tile_fill = ExtResource("6_8b5b1")
 models = Array[PackedScene]([ExtResource("2_0icd3"), ExtResource("4_wrhe2")])
-points = Array[Array]([[Vector3(0.336923, 0.3, -0.565905), Vector3(0.640117, 0.3, 0.0403821), Vector3(0.338527, 0.3, 0.607477), Vector3(-0.323771, 0.3, 0.612843), Vector3(-0.671147, 0.3, 0.014121), Vector3(-0.287396, 0.3, -0.534879), Vector3(-0.00402427, 0.3, 0.00124598)], [Vector3(0.269048, 1.24547, -0.420444), Vector3(-0.186197, 0.627595, 0.346507), Vector3(0.683017, 0.872144, 0.128873), Vector3(-0.467465, 0.852261, -0.511899), Vector3(0.427777, 0.855173, -0.753021)]])
+points = Array[Array]([[Vector3(-0.416633, 0.3, 0.549078), Vector3(-0.679097, 0.3, 0.00782079), Vector3(-0.379376, 0.3, -0.615729), Vector3(0.31699, 0.3, -0.607425), Vector3(0.675387, 0.3, -0.073524), Vector3(0.326611, 0.3, 0.628924), Vector3(0.00770529, 0.3, 0.0161065)], [Vector3(-0.309034, 0.479687, 0.5221), Vector3(-0.741253, 0.472888, -0.177382), Vector3(-0.329283, 0.546349, -0.809887), Vector3(0.436705, 0.530591, -0.747867), Vector3(0.866024, 0.539835, -0.117999), Vector3(0.261783, 1.35428, -0.605985), Vector3(-0.0304617, 0.95085, -0.102337)]])
 id = 1
 name = "Palm Tile"
-gdscript = ExtResource("1_sqwab")
+gdscript = ExtResource("1_6vv56")
 saved_data = ExtResource("5_gdg5a")

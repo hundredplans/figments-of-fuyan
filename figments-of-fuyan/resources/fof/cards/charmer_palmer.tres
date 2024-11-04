@@ -1,11 +1,43 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=7 format=3 uid="uid://yfy52tneneag"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://yfy52tneneag"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_ctxd3"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_ope8q"]
+[ext_resource type="Image" uid="uid://dlqbflcdgpe0i" path="res://assets/sprites/game/cards/art_mini/charmer_palmer.png" id="2_p77gw"]
 [ext_resource type="Image" uid="uid://c417dfnj38t1i" path="res://assets/sprites/game/cards/art_pop/charmer_palmer.png" id="2_r3dp6"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_e0im4"]
-[ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_ktjdf"]
+[ext_resource type="PackedScene" uid="uid://bvg1t02arcb52" path="res://assets/models/fof/cards/charmer_palmer.glb" id="5_50c3x"]
+[ext_resource type="Script" path="res://scripts/fof/cards/charmer_palmer.gd" id="5_n02pe"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_p8xdk"]
+
+[sub_resource type="Resource" id="Resource_c53jk"]
+script = ExtResource("1_ctxd3")
+exists = 0
+ascended_description = "Heal [1] HP to allies in vision
+TRAUMA: Gain +1 ATT if a healed ally died"
+ascended_max_charges = 2
+name = "Charming Stance"
+description = "Heal [1] HP to allies in vision
+TRAUMA: Gain +1 ATT if a healed ally died"
+max_charges = 1
+delay = 3.0
+charges = 0
+used = false
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mx2ak"]
+size = Vector3(0.608459, 0.985077, 0.175049)
+
+[sub_resource type="PackedScene" id="PackedScene_44ax2"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000396729, 0.491013, 0.00012207), SubResource("BoxShape3D_mx2ak")],
+"version": 3
+}
 
 [resource]
 script = ExtResource("3_e0im4")
@@ -15,24 +47,27 @@ speed = 2
 energy = 3
 rarity = 4
 initial_traits = Array[ExtResource("2_ope8q")]([])
-active_abilities = Array[ExtResource("1_ctxd3")]([])
-ability_text = "ABILITY [1]: Heal [1] HP allies in vision
+active_abilities = Array[ExtResource("1_ctxd3")]([SubResource("Resource_c53jk")])
+ability_text = "ABILITY [1]: Heal [1] HP to allies in vision
 TRAUMA: Gain +1 ATT if a healed ally died"
 flavor_text = ""
-art_mini_coordinate = Vector2i(0, 0)
+art_mini_coordinate = Vector2i(80, 40)
+art_mini = ExtResource("2_p77gw")
 art_pop = ExtResource("2_r3dp6")
+model = ExtResource("5_50c3x")
 points = []
-stat = 0.0
-top = 0.0
-eye = 0.0
+collision_shape = SubResource("PackedScene_44ax2")
+stat = 1.29201
+top = 0.976187
+eye = 0.820326
 plus_attack = 0
 plus_health = 0
 plus_speed = 1
 plus_energy = 0
 ascended_traits = Array[ExtResource("2_ope8q")]([])
-ascended_ability_text = "ABILITY [2]: Heal [1] HP allies in vision
+ascended_ability_text = "ABILITY [2]: Heal [1] HP to allies in vision
 TRAUMA: Gain +1 ATT if a healed ally died"
 id = 16
 name = "Charmer Palmer"
-gdscript = ExtResource("4_ktjdf")
+gdscript = ExtResource("5_n02pe")
 saved_data = ExtResource("5_p8xdk")

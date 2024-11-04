@@ -1,12 +1,14 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=10 format=3 uid="uid://cqu16yapbaesy"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=14 format=3 uid="uid://cqu16yapbaesy"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_emko1"]
 [ext_resource type="Image" uid="uid://de35ypopnd0h1" path="res://assets/sprites/game/cards/art_pop/palm_defender.png" id="2_0ye06"]
+[ext_resource type="Image" uid="uid://cdwhck256lnad" path="res://assets/sprites/game/cards/art_mini/palm_defender.png" id="2_6hhqi"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_rtj64"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_skfrn"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_armor.gd" id="4_vhr0q"]
-[ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="5_p40b0"]
+[ext_resource type="Script" path="res://scripts/fof/cards/palm_defender.gd" id="5_0sly7"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_ebfg3"]
+[ext_resource type="PackedScene" uid="uid://xcaffifllsck" path="res://assets/models/fof/cards/palm_defender.glb" id="6_pj53e"]
 
 [sub_resource type="Resource" id="Resource_skkab"]
 script = ExtResource("4_vhr0q")
@@ -14,6 +16,22 @@ armor = 1
 id = 1
 first_init = false
 public_id = 0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qm4p5"]
+size = Vector3(0.697998, 2.09717, 0.369751)
+
+[sub_resource type="PackedScene" id="PackedScene_h8toj"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000854492, 1.05322, 0.0354614), SubResource("BoxShape3D_qm4p5")],
+"version": 3
+}
 
 [sub_resource type="Resource" id="Resource_a7vib"]
 script = ExtResource("4_vhr0q")
@@ -33,12 +51,15 @@ initial_traits = Array[ExtResource("2_rtj64")]([SubResource("Resource_a7vib")])
 active_abilities = Array[ExtResource("1_emko1")]([])
 ability_text = "ARMOR [1]; BLOODTHIRST: Gain +1 HP if the killer was a Palm"
 flavor_text = ""
-art_mini_coordinate = Vector2i(0, 0)
+art_mini_coordinate = Vector2i(80, 40)
+art_mini = ExtResource("2_6hhqi")
 art_pop = ExtResource("2_0ye06")
+model = ExtResource("6_pj53e")
 points = []
-stat = 0.0
-top = 0.0
-eye = 0.0
+collision_shape = SubResource("PackedScene_h8toj")
+stat = 2.31271
+top = 2.07831
+eye = 1.6564
 plus_attack = 1
 plus_health = 0
 plus_speed = 0
@@ -47,5 +68,5 @@ ascended_traits = Array[ExtResource("2_rtj64")]([SubResource("Resource_skkab")])
 ascended_ability_text = ""
 id = 8
 name = "Palm Defender"
-gdscript = ExtResource("5_p40b0")
+gdscript = ExtResource("5_0sly7")
 saved_data = ExtResource("6_ebfg3")

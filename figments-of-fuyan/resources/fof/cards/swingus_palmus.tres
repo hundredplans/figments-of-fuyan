@@ -1,11 +1,29 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=7 format=3 uid="uid://b5y6os8dtukfj"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=11 format=3 uid="uid://b5y6os8dtukfj"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_tuq8f"]
 [ext_resource type="Image" uid="uid://bu3frjs7hgafe" path="res://assets/sprites/game/cards/art_pop/swingus_palmus.png" id="2_qcnbn"]
+[ext_resource type="Image" uid="uid://dvjealvrwyr4m" path="res://assets/sprites/game/cards/art_mini/swingus_palmus.png" id="2_s1gc1"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_v2qqh"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_o34jl"]
 [ext_resource type="Script" path="res://scripts/fof/cards/swingus_palmus.gd" id="4_45u4o"]
+[ext_resource type="PackedScene" uid="uid://c0efk7tksn457" path="res://assets/models/fof/cards/swingus_palmus.glb" id="5_8mjkv"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_hr3n5"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_622up"]
+size = Vector3(0.667969, 1.94019, 0.266113)
+
+[sub_resource type="PackedScene" id="PackedScene_vdwc3"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00195313, 0.968872, 0.00366211), SubResource("BoxShape3D_622up")],
+"version": 3
+}
 
 [resource]
 script = ExtResource("3_o34jl")
@@ -18,12 +36,15 @@ initial_traits = Array[ExtResource("2_v2qqh")]([])
 active_abilities = Array[ExtResource("1_tuq8f")]([])
 ability_text = "Every second hit: Deal [+2] DMG and gain +1 ATT +1 HP after"
 flavor_text = ""
-art_mini_coordinate = Vector2i(0, 0)
+art_mini_coordinate = Vector2i(70, 35)
+art_mini = ExtResource("2_s1gc1")
 art_pop = ExtResource("2_qcnbn")
+model = ExtResource("5_8mjkv")
 points = []
-stat = 0.0
-top = 0.0
-eye = 0.0
+collision_shape = SubResource("PackedScene_vdwc3")
+stat = 2.42777
+top = 1.93961
+eye = 1.7834
 plus_attack = 0
 plus_health = 0
 plus_speed = 0

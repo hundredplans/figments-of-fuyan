@@ -24,7 +24,7 @@ func _ready():
 	else:
 		var DIR_PATH: String = SaveFileInfo.SAVE_DIRECTORY
 		var files: Array = Array(DirAccess.get_files_at(DIR_PATH))
-		if files.is_empty(): onStartGame(SavedData.onLoadModel(SavedDataCard.new(3, true), KeepAcross))
+		if files.is_empty(): onStartGame(SavedData.onLoadModel(SavedDataCard.new(2, true), KeepAcross))
 		else: onLoadGame(load(DIR_PATH + files[0]))
 #endregion
 
@@ -64,7 +64,7 @@ func onStartGame(Card: CardGD) -> void:
 	var area_data: SavedDataArea = SavedDataArea.new(area_id, true)
 	
 	var save_file_data := SavedDataSaveFile.new(getFirstEmptySaveSlotID(), true, 0, randi(), area_data, \
-	SHILLING_START_COUNT, [], 0, [Card.onSave(), SavedDataCard.new(4, true), SavedDataCard.new(5, true), SavedDataCard.new(6, true), SavedDataCard.new(7, true)],
+	SHILLING_START_COUNT, [], 0, [Card.onSave(), SavedDataCard.new(19, true), SavedDataCard.new(20, true), SavedDataCard.new(21, true), SavedDataCard.new(22, true)],
 	[], Game.highest_public_id)
 	
 	onLoadGame(save_file_data)

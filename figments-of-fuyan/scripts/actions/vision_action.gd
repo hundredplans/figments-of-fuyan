@@ -8,12 +8,15 @@ func _init(_cards: Variant) -> void:
 	if _cards is CardGD: cards = [_cards]
 	elif _cards is Array: cards = _cards
 	
-func onPreAction() -> void:	
-	for Card in cards: new_visible_game_objects[Card] = Card.onUpdateVision()
+func onPreAction() -> void:
+	for Card in cards:
+		new_visible_game_objects[Card] = Card.onUpdateVision()
+		
 	var tile_to_card: Dictionary = {}
 	
 	for FieldCard in Game.get_tree().get_nodes_in_group("FieldCardsGD"):
 		tile_to_card[FieldCard.Tile] = FieldCard
+	
 	
 	for card_vision in new_visible_game_objects.values():
 		for GameObject in card_vision:
@@ -25,9 +28,10 @@ func onPreAction() -> void:
 func onPostAction() -> void:
 	var actions: Array = []
 	var Discoverer: CardGD = cards[0]
-	var old_team_vision: Array = Game.getTeamVision(Discoverer.team)
+	var old_team_vision: Array = Game.getTeamVision(0) if cards.any(func(x: CardGD): return x.isAlly(0)) else []
 	
 	for Card in cards:
+		if Card.info.name == "Palmy": print(Card.visible_game_objects)
 		var card_visible_game_objects: Array = new_visible_game_objects[Card].keys()
 		var old_visible_cards: Array = Card.visible_game_objects.filter(func(x: GameObjectGD): return x is CardGD)
 		var new_visible_cards: Array = card_visible_game_objects.filter(func(x: GameObjectGD): return x is CardGD)
@@ -45,6 +49,7 @@ func onPostAction() -> void:
 		
 		var not_in_vision: Array = old_team_vision.filter(func(x: GameObjectGD): return x not in new_team_vision)
 		var now_in_vision: Array = new_team_vision.filter(func(x: GameObjectGD): return x not in old_team_vision)
+		
 		actions += [LevelVisibleAction.new(false, not_in_vision), LevelVisibleAction.new(true, now_in_vision)]
 	onPushAction(actions)
 			

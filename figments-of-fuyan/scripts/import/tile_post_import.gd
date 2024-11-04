@@ -7,7 +7,8 @@ func _post_import(scene: Node) -> Node:
 	for child in getChildrenRecursive(scene):
 		if child is MeshInstance3D:
 			child.mesh.surface_set_material(0, base_material)
-			child.mesh.surface_set_material(1, outline_material)
+			if child.mesh.get_surface_count() > 1:
+				child.mesh.surface_set_material(1, outline_material)
 	return scene
 	
 func getChildrenRecursive(node: Node, children := []):

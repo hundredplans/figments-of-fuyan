@@ -1,11 +1,41 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=7 format=3 uid="uid://dos0h7h1l8pv"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://dos0h7h1l8pv"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_8c5rl"]
 [ext_resource type="Image" uid="uid://cp6mthlsnebq0" path="res://assets/sprites/game/cards/art_pop/palmita.png" id="2_6e25m"]
+[ext_resource type="Image" uid="uid://casdghvavfct7" path="res://assets/sprites/game/cards/art_mini/palmita.png" id="2_doo6g"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_gibdl"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_u8ukk"]
 [ext_resource type="Script" path="res://scripts/fof/cards/palmita.gd" id="4_s0xsl"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_cli25"]
+[ext_resource type="PackedScene" uid="uid://bhm1rhpwkxwjo" path="res://assets/models/fof/cards/palmita.glb" id="5_xhwml"]
+
+[sub_resource type="Resource" id="Resource_4khtw"]
+script = ExtResource("1_8c5rl")
+exists = 0
+ascended_description = "This dies to give an adjacent ally +1 HP instantly and when it RAMPAGES"
+ascended_max_charges = -1
+name = "Helpful Helmet"
+description = "This dies to give an adjacent ally +1 HP when it RAMPAGES"
+max_charges = -1
+delay = 0.0
+charges = 0
+used = false
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ckpx8"]
+size = Vector3(0.443817, 0.432922, 1)
+
+[sub_resource type="PackedScene" id="PackedScene_1qdlc"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00257874, 0.21994, 0), SubResource("BoxShape3D_ckpx8")],
+"version": 3
+}
 
 [resource]
 script = ExtResource("3_u8ukk")
@@ -15,15 +45,18 @@ speed = 2
 energy = 1
 rarity = 4
 initial_traits = Array[ExtResource("2_gibdl")]([])
-active_abilities = Array[ExtResource("1_8c5rl")]([])
+active_abilities = Array[ExtResource("1_8c5rl")]([SubResource("Resource_4khtw")])
 ability_text = "ABILITY: This dies to give an adjacent ally +1 HP when it RAMPAGES"
 flavor_text = ""
-art_mini_coordinate = Vector2i(0, 0)
+art_mini_coordinate = Vector2i(80, 75)
+art_mini = ExtResource("2_doo6g")
 art_pop = ExtResource("2_6e25m")
+model = ExtResource("5_xhwml")
 points = []
-stat = 0.0
-top = 0.0
-eye = 0.0
+collision_shape = SubResource("PackedScene_1qdlc")
+stat = 0.601931
+top = 0.431871
+eye = 0.284697
 plus_attack = 0
 plus_health = 0
 plus_speed = 0

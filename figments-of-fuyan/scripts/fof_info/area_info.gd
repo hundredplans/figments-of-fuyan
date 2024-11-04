@@ -9,3 +9,4 @@ class_name AreaInfo extends FofInfo
 @export var level_script: GDScript
 
 static func getInfoPath() -> String: return "res://resources/fof/areas"
+static func getFofName() -> String: return "Area"

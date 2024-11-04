@@ -1,19 +1,19 @@
-[gd_resource type="Resource" script_class="TileInfo" load_steps=9 format=3 uid="uid://bct6ba4h3t0e8"]
+[gd_resource type="Resource" script_class="TileInfo" load_steps=8 format=3 uid="uid://bct6ba4h3t0e8"]
 
 [ext_resource type="Script" path="res://scripts/fof/tiles/tile.gd" id="1_seys7"]
 [ext_resource type="PackedScene" uid="uid://bqxy06d8pvddu" path="res://assets/models/fof/tiles/sand_tile.glb" id="2_8yfgy"]
 [ext_resource type="PackedScene" uid="uid://b8r3ayq3v0rv3" path="res://assets/models/fof/tiles/sand_tile_stair.glb" id="3_euqtv"]
-[ext_resource type="PackedScene" uid="uid://do2q01ermbmj3" path="res://assets/models/fof/tiles/sand_tile_bad.glb" id="4_nxplp"]
-[ext_resource type="PackedScene" uid="uid://ddhud6mnkjdul" path="res://assets/models/fof/tiles/sand_tile_good.glb" id="5_kvhnw"]
+[ext_resource type="PackedScene" uid="uid://debfrtehpoj0k" path="res://assets/models/fof/tiles/sand_tile_overworld.glb" id="4_34w8k"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="6_6xdm4"]
 [ext_resource type="Script" path="res://scripts/fof_info/game_objects/tile_info.gd" id="6_c5asi"]
 [ext_resource type="PackedScene" uid="uid://bb6rd8ea31ga" path="res://assets/models/fof/tiles/palm_tile_fill.glb" id="7_5s0e5"]
 
 [resource]
 script = ExtResource("6_c5asi")
+overworld_tile = ExtResource("4_34w8k")
 tile_fill = ExtResource("7_5s0e5")
-models = Array[PackedScene]([ExtResource("2_8yfgy"), ExtResource("3_euqtv"), ExtResource("4_nxplp"), ExtResource("5_kvhnw")])
-points = Array[Array]([[], [], [], []])
+models = Array[PackedScene]([ExtResource("2_8yfgy"), ExtResource("3_euqtv")])
+points = Array[Array]([[Vector3(-0.416633, 0.3, 0.549078), Vector3(-0.679097, 0.3, 0.00782079), Vector3(-0.379376, 0.3, -0.615729), Vector3(0.31699, 0.3, -0.607425), Vector3(0.675387, 0.3, -0.073524), Vector3(0.326611, 0.3, 0.628924), Vector3(0.00770529, 0.3, 0.0161065)], [Vector3(-0.309034, 0.479687, 0.5221), Vector3(-0.741253, 0.472888, -0.177382), Vector3(-0.329283, 0.546349, -0.809887), Vector3(0.436705, 0.530591, -0.747867), Vector3(0.866024, 0.539835, -0.117999), Vector3(0.261783, 1.35428, -0.605985), Vector3(-0.0304617, 0.95085, -0.102337)]])
 id = 5
 name = "Sand Tile"
 gdscript = ExtResource("1_seys7")

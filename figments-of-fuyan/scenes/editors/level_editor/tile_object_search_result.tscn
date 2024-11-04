@@ -1,10 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://bq7o6lgr5wu2k"]
+[gd_scene load_steps=3 format=3 uid="uid://bq7o6lgr5wu2k"]
 
 [ext_resource type="Script" path="res://scenes/editors/level_editor/tile_object_search_result.gd" id="1_aedav"]
+[ext_resource type="PackedScene" uid="uid://ceoy120bbs7le" path="res://scenes/common/panel_button/panel_button.tscn" id="2_kwkwa"]
 
-[node name="TileObjectSearchResult" type="Button"]
-custom_minimum_size = Vector2(0, 40)
+[node name="TileObjectSearchResult" type="Control"]
+custom_minimum_size = Vector2(0, 78)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 125.0
+offset_bottom = 78.0
+size_flags_horizontal = 3
 size_flags_vertical = 2
 script = ExtResource("1_aedav")
 
-[connection signal="pressed" from="." to="." method="_on_pressed"]
+[node name="PanelButton" parent="." instance=ExtResource("2_kwkwa")]
+unique_name_in_owner = true
+layout_mode = 0

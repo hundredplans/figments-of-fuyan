@@ -163,7 +163,12 @@ func getEnemyUnits(team: int = 0) -> Array:
 	return get_tree().get_nodes_in_group("FieldCardsGD").filter(func(x: CardGD): return x.team != team)
 	
 func getBaseCard(id: int, Tile: TileGD, team: int, tile_rotation: int, ascended: bool = false) -> SavedDataCard:
-	return Helper.getFofInfoID(CardInfo, 11).saved_data.new(11, true, 0, Tile.getCoords(), tile_rotation, false, false, team, ascended)
+	return Helper.getFofInfoID(CardInfo, id).saved_data.new(id, true, 0, Tile.getCoords(), tile_rotation, false, false, team, ascended)
+
+func getNewFieldCard(id: int, Tile: TileGD, team: int, tile_rotation: int, ascended: bool = false) -> CardGD:
+	var level: LevelGD = get_tree().get_nodes_in_group("LevelsGD")[0]
+	return SavedData.onLoadModel(getBaseCard(id, Tile, team, tile_rotation, ascended), level)
+
 #endregion
 
 #region Vision
@@ -177,8 +182,6 @@ func getTeamVisionDictionary(team: int = 0) -> Dictionary:
 		var team_visible_game_objects: Dictionary = {}
 		
 		for Card in cards:
-			team_visible_game_objects[Card] = null
-			team_visible_game_objects[Card.Tile] = null
 			for GameObject in Card.getVisibleGameObjects():
 				team_visible_game_objects[GameObject] = null
 		return team_visible_game_objects

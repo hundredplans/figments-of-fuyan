@@ -7,6 +7,8 @@ extends Node
 @export var SCROLL_DELAY: float = 0.2
 @export var ROTATION_LOCK_DELAY: float = 0.15
 @export var SpawnIdUIPacked: PackedScene
+@export var TileObjectSearchResultPacked: PackedScene
+@export var PanelButtonPacked: PackedScene
 @export_dir var TILE_OBJECTS_PATH: String
 @onready var UI: Control = $UI
 @onready var World: Node3D = %World
@@ -163,15 +165,14 @@ func _on_search_tile_object_text_changed(text: String):
 	for button in SearchResultsContainer.get_children(): button.queue_free()
 	if !text.is_empty():
 		for info in all_tile_objects.filter(func(x: TileObjectInfo): return x.name.to_lower().begins_with(text.to_lower())):
-			var button: Button = preload("res://scenes/editors/level_editor/tile_object_search_result.tscn").instantiate()
-			SearchResultsContainer.add_child(button)
-			button.setInfo(info)
-			button.mouse_filter = Control.MOUSE_FILTER_STOP
-			button.mouse_entered.connect(onMouseInUI.bind(true))
-			button.mouse_exited.connect(onMouseInUI.bind(false))
-			button.custom_pressed.connect(onTileObjectInfoSelected)
+			var panel_button: Control = TileObjectSearchResultPacked.instantiate()
+			SearchResultsContainer.add_child(panel_button)
+			panel_button.setInfo(info)
+			panel_button.mouse_in_ui.connect(onMouseInUI)
+			panel_button.custom_pressed.connect(onTileObjectInfoSelected)
 
 func onTileObjectInfoSelected(data: SavedData, remove_last: bool = true) -> void:
+	if is_overworld and data is SavedDataTile: data.variation = -1
 	if remove_last and HoverModel != null: HoverModel.queue_free()
 	
 	HoverModel = SavedData.onLoadModel(data, World)
@@ -236,9 +237,9 @@ func onHoverModelPlaced() -> void:
 	if save_data is SavedDataTile: save_data.tile_fill = false
 	
 	onTileObjectInfoSelected(save_data, false)
-
-func onPlaceBaseTile(coords: Vector4i, is_overworld: bool = false) -> TileGD:
-	return SavedData.onLoadModel(SavedDataTile.new(1, false, 0, coords, 0, int(is_overworld) * -1, false), World)
+		
+func onPlaceBaseTile(coords: Vector4i) -> TileGD:
+	return SavedData.onLoadModel(SavedDataTile.new(1, false, 0, coords, 0, false, false, int(is_overworld) * -1), World)
 	
 #endregion
 #region Elevation
@@ -276,11 +277,13 @@ func _on_camera_3d_camera_panning(_is_camera_panning: bool):
 #region Variations
 var is_scroll_disabled: bool = false
 func onChangeHoverModelVariation(direction: int) -> void:
+	if !is_overworld and HoverModel is TileGD: return
 	HoverModel.clampVariation(direction)
 	onTileObjectInfoSelected(HoverModel.onSave(), true)
 	
 func onChangeMouseTileObjectVariation(direction: int) -> void:
 	var TileObject: TileObjectGD = onFindMouseTileObject()
+	if !is_overworld and TileObject is TileGD: return
 	if TileObject != null:
 		TileObject.clampVariation(direction)
 		TileObject.onLoadModel()
@@ -380,19 +383,15 @@ func _on_load_button_pressed():
 		for decoration in Array(DirAccess.get_files_at(DECORATION_PATH))\
 		.map(func(x: String): return load(DECORATION_PATH + x)):
 			var button := onCreateLoadLevelButton(decoration.name, decoration)
-			button.theme_type_variation = "YellowButton"
+			button.theme_type_variation = "YellowPanelContainer"
 			
-func onCreateLoadLevelButton(button_name: String, pressed_info: Variant) -> Button:
-	var button := Button.new()
-	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	button.text = button_name
-	
-	button.mouse_filter = Control.MOUSE_FILTER_STOP
-	button.mouse_entered.connect(onMouseInUI.bind(true))
-	button.mouse_exited.connect(onMouseInUI.bind(false))
-	button.pressed.connect(onLoadLevel.bind(pressed_info))
-	LoadLevelContainer.add_child(button)
-	return button
+func onCreateLoadLevelButton(button_name: String, pressed_info: Variant) -> PanelContainer:
+	var panel_button: PanelContainer = PanelButtonPacked.instantiate()
+	LoadLevelContainer.add_child(panel_button)
+	panel_button.setText(button_name)
+	panel_button.mouse_in_ui.connect(onMouseInUI)
+	panel_button.pressed.connect(onLoadLevel.bind(pressed_info))
+	return panel_button
 			
 func _on_hide_load_level_button_pressed():
 	LoadLevels.visible = false
@@ -417,13 +416,15 @@ func setAreaOptionButtonItems() -> void:
 	
 #endregion
 #region Overworld
+var is_overworld: bool = false
 func _on_overworld_button_pressed() -> void:
 	onNewEmptyLevel(true)
 #endregion
 
 #region Level Shenaningans
 var loaded: Variant # Level / Decoration
-func onNewEmptyLevel(is_overworld: bool = false) -> void:
+func onNewEmptyLevel(_is_overworld: bool = false) -> void:
+	is_overworld = _is_overworld
 	onSaveLevel()
 	SaveLineEdit.text = ""
 	for tile_object in get_tree().get_nodes_in_group("TileObjectsGD"):
@@ -437,7 +438,7 @@ func onNewEmptyLevel(is_overworld: bool = false) -> void:
 		var Y_MAX: int = 9
 		for x in range(-OVERWORLD_MAP_SIZE, (OVERWORLD_MAP_SIZE + 1)):
 			for y in range(max(-OVERWORLD_MAP_SIZE, -x - OVERWORLD_MAP_SIZE), min(OVERWORLD_MAP_SIZE, -x + OVERWORLD_MAP_SIZE) + 1):
-				if abs(y) <= Y_MAX: onPlaceBaseTile(Vector4i(x, y, -x-y, 0), true)
+				if abs(y) <= Y_MAX: onPlaceBaseTile(Vector4i(x, y, -x-y, 0))
 		return
 		
 	loaded = AREA_TO_LEVEL_INFO[AreaOptionButton.get_selected_id()].new()
@@ -483,6 +484,8 @@ func onSaveLevel() -> void:
 func onLoadLevel(loaded_info: Variant) -> void:
 	onSaveLevel()
 	loaded = loaded_info
+	if loaded.name.contains("Overworld"): is_overworld = true
+	
 	setDecoration(loaded is DecorationDatastore)
 	onHoverModelDeselected()
 	SaveLineEdit.text = loaded.name

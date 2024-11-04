@@ -23,3 +23,6 @@ func onPostAction() -> void:
 	
 	if Card.Tool != null:
 		onPushAction(AddToolAction.new(Card, Card.Tool))
+
+func getLogInfo() -> Array:
+	return ["Card: " + Card.info.name]

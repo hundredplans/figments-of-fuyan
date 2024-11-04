@@ -4,7 +4,7 @@ var trauma_charges: int = 1
 func onProcessAction(action: Action) -> void:
 	super(action)
 	if isValidTrauma(action) and trauma_charges > 0:
-		onPushAction(TraumaAction.new(self))
+		onPushAction(TraumaAction.new(self, action))
 			
 func onTrauma(_death_action: DeathAction) -> void:
 	var speed: int = 1 if !ascended else 2

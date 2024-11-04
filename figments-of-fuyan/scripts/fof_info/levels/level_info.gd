@@ -21,6 +21,8 @@ func setInfo(_name: String = "", _area_id: int = 1) -> void:
 	name = _name
 	area_id = _area_id
 	
+static func getFofName() -> String: return "Level"
+	
 static func getInfoPath() -> String: return "res://resources/fof/levels"
 
 static func getDataFromType(type: GDScript) -> GDScript:

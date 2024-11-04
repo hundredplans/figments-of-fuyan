@@ -7,7 +7,7 @@ func onAddBoon(Boon: BoonGD) -> void:
 	BoonIcon.setInfo(Boon)
 
 func onUpdate() -> void:
-	for BoonIcon in get_children(): BoonIcon.queue_free(); print(BoonIcon)
+	for BoonIcon in get_children(): BoonIcon.queue_free()
 	for Boon in get_tree().get_nodes_in_group("BoonsGD"):
 		onAddBoon(Boon)
 

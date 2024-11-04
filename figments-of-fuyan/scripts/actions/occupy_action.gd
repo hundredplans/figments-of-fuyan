@@ -25,5 +25,10 @@ func onPostAction() -> void:
 		
 		Tile.onOccupy(Card, apply_occupy_instant)
 		Card.setPositionToTile()
-	
-	onPushAction(VisionAction.new([Card] + Game.inVisionCards(coords)))
+
+	var vision_cards: Array = Game.inVisionCards(coords)
+	if Tile != null: vision_cards.append(Card)
+	onPushAction(VisionAction.new(vision_cards))
+
+func getLogInfo() -> Array:
+	return ["Card: " + Card.info.name, "TileExists: " + str(Tile != null)]

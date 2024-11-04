@@ -1,11 +1,29 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=7 format=3 uid="uid://ndr60lhmwrxh"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=11 format=3 uid="uid://ndr60lhmwrxh"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_u23tf"]
+[ext_resource type="Image" uid="uid://tj55flr5jslh" path="res://assets/sprites/game/cards/art_mini/neckus_palmus.png" id="2_8b6eu"]
 [ext_resource type="Image" uid="uid://b05u7eu8caa8i" path="res://assets/sprites/game/cards/art_pop/neckus_palmus.png" id="2_8i4fr"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_jja8n"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_d4ttk"]
 [ext_resource type="Script" path="res://scripts/fof/cards/neckus_palmus.gd" id="4_sqndq"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_gi8hp"]
+[ext_resource type="PackedScene" uid="uid://cn6kges8llma0" path="res://assets/models/fof/cards/neckus_palmus.glb" id="5_y482v"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rpmhn"]
+size = Vector3(0.810059, 2.711, 0.424866)
+
+[sub_resource type="PackedScene" id="PackedScene_4mavm"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00366211, 1.35654, -0.00430298), SubResource("BoxShape3D_rpmhn")],
+"version": 3
+}
 
 [resource]
 script = ExtResource("3_d4ttk")
@@ -18,12 +36,15 @@ initial_traits = Array[ExtResource("2_jja8n")]([])
 active_abilities = Array[ExtResource("1_u23tf")]([])
 ability_text = "When Healed: Your next attack STAGGERS"
 flavor_text = ""
-art_mini_coordinate = Vector2i(0, 0)
+art_mini_coordinate = Vector2i(80, 20)
+art_mini = ExtResource("2_8b6eu")
 art_pop = ExtResource("2_8i4fr")
+model = ExtResource("5_y482v")
 points = []
-stat = 0.0
-top = 0.0
-eye = 0.0
+collision_shape = SubResource("PackedScene_4mavm")
+stat = 3.16578
+top = 2.69645
+eye = 2.56238
 plus_attack = 0
 plus_health = 2
 plus_speed = 0

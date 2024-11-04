@@ -66,7 +66,7 @@ func onPostAction() -> void:
 					else: Card.max_health += value
 					
 					Card.max_health = clamp(Card.max_health, 0, 99)
-					difference = Card.max_health - Card.health
+					difference = Card.max_health - old_health
 					
 					types.push_front(Game.Stats.HEALTH)
 					values.push_front(value)
@@ -84,8 +84,8 @@ func onPostAction() -> void:
 				Card.onUpdateStat(type, difference, show_particles)
 	
 		if turns > 0:
-			var reverse_action := StatAction.new(StatInfo.new(Card, original_types, original_values.map(func(x: int): return x * -1), turns, absolute, show_particles, true))
-			onPushAction(DelayedStatAction.new(reverse_action))
+			onPushAction(DelayedStatAction.new(
+				StatInfo.new(Card, original_types, original_values.map(func(x: int): return x * -1), turns, absolute, show_particles, true)))
 	
 func getLogInfo() -> Array:
 	var arr: Array = []
@@ -94,6 +94,7 @@ func getLogInfo() -> Array:
 		arr.append("Stat: " + str(stat_info.types.map(Game.getStatString)))
 		arr.append("Value: " + str(stat_info.values))
 		arr.append("Absolute: " + str(stat_info.absolute))
+		arr.append("Turns: " + str(stat_info.turns))
 	return arr
 
 func hasCard(Card: CardGD) -> void:
@@ -102,8 +103,8 @@ func hasCard(Card: CardGD) -> void:
 func getCards() -> Array:
 	return stat_infos.map(func(x: StatInfo): return x.Card)
 
-func isHeal() -> bool:
-	for stat_info in stat_infos.filter(func(x: StatInfo): return !x.absolute):
+func isHeal(_Card: CardGD = null) -> bool:
+	for stat_info in stat_infos.filter(func(x: StatInfo): return !x.absolute and (_Card == null or x.Card == _Card)):
 		for i in range(stat_info.types.size()):
 			if stat_info.types[i] == Game.Stats.HEALTH and stat_info.values[i] > 0:
 				return true

@@ -1,15 +1,15 @@
 [gd_resource type="Resource" script_class="FieldEffectInfo" load_steps=5 format=3 uid="uid://c316ygqhqnl3t"]
 
+[ext_resource type="Script" path="res://scripts/fof/field_effects/swingus_on_hit_field_effect.gd" id="1_morkv"]
 [ext_resource type="Script" path="res://scripts/fof_info/field_effects/field_effect_info.gd" id="1_neofh"]
-[ext_resource type="Script" path="res://scripts/fof/field_effects/field_effect.gd" id="1_oxssj"]
 [ext_resource type="Texture2D" uid="uid://4frwuk8lse4v" path="res://assets/sprites/game/fof_object_icons/field_effects/swingus_on_hit.png" id="2_ta13n"]
 [ext_resource type="Script" path="res://scripts/saved_data/field_effects/saved_data_field_effect.gd" id="3_8r0m4"]
 
 [resource]
 script = ExtResource("1_neofh")
 icon = ExtResource("2_ta13n")
-description = ""
+description = "This will deal [2] extra DMG on it's next attack"
 id = 8
 name = "Swingus OnHit"
-gdscript = ExtResource("1_oxssj")
+gdscript = ExtResource("1_morkv")
 saved_data = ExtResource("3_8r0m4")

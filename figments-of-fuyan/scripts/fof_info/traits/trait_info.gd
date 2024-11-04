@@ -7,3 +7,5 @@ class_name TraitInfo extends FofInfo
 @export_group("")
 
 @export_multiline var description: String
+
+static func getFofName() -> String: return "Trait"

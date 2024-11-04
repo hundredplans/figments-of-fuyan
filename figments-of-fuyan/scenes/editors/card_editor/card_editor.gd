@@ -79,7 +79,6 @@ func _input(event: InputEvent) -> void:
 func _on_hide_button_pressed() -> void:
 	AnimationNames.visible = !AnimationNames.visible
 
-
 func _on_ascend_button_pressed() -> void:
 	for child in CardGrid.get_children(): child.queue_free()
 	for Card in get_tree().get_nodes_in_group("CardsGD"):

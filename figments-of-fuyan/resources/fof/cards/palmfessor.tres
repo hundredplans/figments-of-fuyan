@@ -1,11 +1,29 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=7 format=3 uid="uid://dvu6dertp2wya"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=11 format=3 uid="uid://dvu6dertp2wya"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_krnpt"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_8abg6"]
+[ext_resource type="Image" uid="uid://0v2ajkdp844w" path="res://assets/sprites/game/cards/art_mini/palmfessor.png" id="2_lq2ir"]
 [ext_resource type="Image" uid="uid://dwfvvnip6sjim" path="res://assets/sprites/game/cards/art_pop/palmfessor.png" id="2_vlei1"]
 [ext_resource type="Script" path="res://scripts/fof/cards/palmfessor.gd" id="3_2h6c5"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_rhojd"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="4_kcfhw"]
+[ext_resource type="PackedScene" uid="uid://cqkw7xut50dq2" path="res://assets/models/fof/cards/palmfessor.glb" id="5_bcbbw"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_x5vgm"]
+size = Vector3(0.794189, 1.37427, 1)
+
+[sub_resource type="PackedScene" id="PackedScene_wkfej"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00109863, 0.687378, 0), SubResource("BoxShape3D_x5vgm")],
+"version": 3
+}
 
 [resource]
 script = ExtResource("3_rhojd")
@@ -18,12 +36,15 @@ initial_traits = Array[ExtResource("2_8abg6")]([])
 active_abilities = Array[ExtResource("1_krnpt")]([])
 ability_text = "Allies in vision on [1] ATT gain +1 ATT"
 flavor_text = ""
-art_mini_coordinate = Vector2i(0, 0)
+art_mini_coordinate = Vector2i(80, 40)
+art_mini = ExtResource("2_lq2ir")
 art_pop = ExtResource("2_vlei1")
+model = ExtResource("5_bcbbw")
 points = []
-stat = 0.0
-top = 0.0
-eye = 0.0
+collision_shape = SubResource("PackedScene_wkfej")
+stat = 1.86332
+top = 1.38948
+eye = 1.23882
 plus_attack = 0
 plus_health = 0
 plus_speed = 0

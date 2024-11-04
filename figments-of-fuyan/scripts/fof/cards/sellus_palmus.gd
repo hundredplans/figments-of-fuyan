@@ -24,5 +24,5 @@ func getDescription() -> String:
 	var active_effect: ActiveEffectDatastore = getActiveEffectByName("Palmsale")
 	if active_effect != null:
 		var number: String = "[1]" if !ascended else "[2]"
-		return Helper.getDescriptionNumeric(super(), [str(active_effect.charges)], [["ABILITY ", number]])
+		return Helper.getDescriptionNumeric(super(), [active_effect.charges], [["ABILITY ", number]])
 	return super()

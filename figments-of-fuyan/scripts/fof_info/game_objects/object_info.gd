@@ -16,3 +16,4 @@ const PALM_DOOR_TALL_CLOSED_MESH_PATH: String = "res://resources/game/custom_col
 const PALM_DOOR_TALL_OPEN_MESH_PATH: String = "res://resources/game/custom_collision_shapes/palm_door/palm_door_tall_open.tres"
 
 static func getInfoPath() -> String: return "res://resources/fof/tile_objects"
+static func getFofName() -> String: return "Object"

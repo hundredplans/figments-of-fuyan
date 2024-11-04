@@ -1,11 +1,43 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=7 format=3 uid="uid://dmk5jfmxyfnen"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://dmk5jfmxyfnen"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_xgrjx"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_85cop"]
+[ext_resource type="Image" uid="uid://chuvrtq4sm0k6" path="res://assets/sprites/game/cards/art_mini/palmon.png" id="2_h8pos"]
 [ext_resource type="Image" uid="uid://b2mlbubqt8qxu" path="res://assets/sprites/game/cards/art_pop/palmon.png" id="2_qqfri"]
 [ext_resource type="Script" path="res://scripts/fof/cards/palmon.gd" id="3_bb4jm"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_h4rou"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="4_0giri"]
+[ext_resource type="PackedScene" uid="uid://bk1cuu34vk738" path="res://assets/models/fof/cards/palmon.glb" id="5_tr6ys"]
+
+[sub_resource type="Resource" id="Resource_bdmil"]
+script = ExtResource("1_xgrjx")
+exists = 0
+ascended_description = "Gives +2 ATT for [1] Turn to an ally in vision
+They heal [1] HP the turn after"
+ascended_max_charges = 3
+name = "Treeleaf Remedy"
+description = "Give +1 ATT for [1] Turn to an ally in vision
+They heal [1] HP the turn after"
+max_charges = 2
+delay = 0.0
+charges = 0
+used = false
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_e2tiu"]
+size = Vector3(0.610901, 0.799561, 0.316162)
+
+[sub_resource type="PackedScene" id="PackedScene_q2gnb"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000335693, 0.396606, -0.00646973), SubResource("BoxShape3D_e2tiu")],
+"version": 3
+}
 
 [resource]
 script = ExtResource("3_h4rou")
@@ -15,23 +47,26 @@ speed = 2
 energy = 2
 rarity = 4
 initial_traits = Array[ExtResource("2_85cop")]([])
-active_abilities = Array[ExtResource("1_xgrjx")]([])
-ability_text = "ABILITY [2]: Gives +1 ATT for [1] Turn to an ally in vision
+active_abilities = Array[ExtResource("1_xgrjx")]([SubResource("Resource_bdmil")])
+ability_text = "ABILITY [2]: Give +1 ATT for [1] Turn to an ally in vision
 They heal [1] HP the turn after"
-flavor_text = "ABILITY [3]: Gives +2 ATT for [1] Turn to an ally in vision
-They heal [1] HP the turn after"
-art_mini_coordinate = Vector2i(0, 0)
+flavor_text = ""
+art_mini_coordinate = Vector2i(80, 50)
+art_mini = ExtResource("2_h8pos")
 art_pop = ExtResource("2_qqfri")
+model = ExtResource("5_tr6ys")
 points = []
-stat = 0.0
-top = 0.0
-eye = 0.0
+collision_shape = SubResource("PackedScene_q2gnb")
+stat = 1.43967
+top = 0.791613
+eye = 0.60704
 plus_attack = 0
 plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("2_85cop")]([])
-ascended_ability_text = ""
+ascended_ability_text = "ABILITY [3]: Gives +2 ATT for [1] Turn to an ally in vision
+They heal [1] HP the turn after"
 id = 14
 name = "Palmon"
 gdscript = ExtResource("3_bb4jm")

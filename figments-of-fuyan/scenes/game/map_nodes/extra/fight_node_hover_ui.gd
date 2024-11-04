@@ -21,9 +21,9 @@ func setInfo(map_node: MapNodeGD, area: AreaGD) -> void:
 	match map_node.get_script():
 		BossFightNodeGD: theme_type_variation = "RedPanelContainer"
 		MinibossFightNodeGD: theme_type_variation = "PurplePanelContainer"
-		ChiefFightNodeGD: theme_type_variation = "YellowPanelContainer"
+		ChiefFightNodeGD: theme_type_variation = "WhitePanelContainer"
 		
-		EliteFightNodeGD: theme_type_variation = "WhitePanelContainer"
+		EliteFightNodeGD: theme_type_variation = "YellowPanelContainer"
 		EliteChiefFightNodeGD: theme_type_variation = "WhitePanelContainer"
 	
 func setMouseCenter(mouse_position: Vector2) -> void:

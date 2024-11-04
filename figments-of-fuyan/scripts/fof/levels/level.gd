@@ -242,7 +242,7 @@ func getSpectateObject() -> GameObjectGD:
 	return SpectateObject
 	
 func getAllySpectateObject() -> CardGD:
-	if SpectateObject != null and SpectateObject is CardGD and SpectateObject.isAlly(0): return SpectateObject
+	if SpectateObject != null and SpectateObject is CardGD and SpectateObject.isAlly(0) and SpectateObject.card_place == Game.CardPlaces.FIELD: return SpectateObject
 	return null
 	
 func onCameraChange(action: CameraChangeAction) -> void:

@@ -1,17 +1,19 @@
-[gd_resource type="Resource" script_class="TileInfo" load_steps=7 format=3 uid="uid://dvk74bqrcp64a"]
+[gd_resource type="Resource" script_class="TileInfo" load_steps=8 format=3 uid="uid://dvk74bqrcp64a"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/game_objects/tile_info.gd" id="1_7t5e0"]
 [ext_resource type="Script" path="res://scripts/fof/tiles/tile.gd" id="1_ni2kb"]
 [ext_resource type="PackedScene" uid="uid://db4bg8wt1fmb1" path="res://assets/models/fof/tiles/beach_tile.glb" id="2_185ps"]
 [ext_resource type="PackedScene" uid="uid://c7fygn7edse2q" path="res://assets/models/fof/tiles/beach_tile_stair.glb" id="3_1cthl"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="4_kc3jn"]
+[ext_resource type="PackedScene" uid="uid://su2c32hywefj" path="res://assets/models/fof/tiles/beach_tile_overworld.glb" id="4_ug7ku"]
 [ext_resource type="PackedScene" uid="uid://bb6rd8ea31ga" path="res://assets/models/fof/tiles/palm_tile_fill.glb" id="5_kr7rb"]
 
 [resource]
 script = ExtResource("1_7t5e0")
+overworld_tile = ExtResource("4_ug7ku")
 tile_fill = ExtResource("5_kr7rb")
 models = Array[PackedScene]([ExtResource("2_185ps"), ExtResource("3_1cthl")])
-points = Array[Array]([[], []])
+points = Array[Array]([[Vector3(-0.416633, 0.3, 0.549078), Vector3(-0.679097, 0.3, 0.00782079), Vector3(-0.379376, 0.3, -0.615729), Vector3(0.31699, 0.3, -0.607425), Vector3(0.675387, 0.3, -0.073524), Vector3(0.326611, 0.3, 0.628924), Vector3(0.00770529, 0.3, 0.0161065)], [Vector3(-0.309034, 0.479687, 0.5221), Vector3(-0.741253, 0.472888, -0.177382), Vector3(-0.329283, 0.546349, -0.809887), Vector3(0.436705, 0.530591, -0.747867), Vector3(0.866024, 0.539835, -0.117999), Vector3(0.261783, 1.35428, -0.605985), Vector3(-0.0304617, 0.95085, -0.102337)]])
 id = 4
 name = "Beach Tile"
 gdscript = ExtResource("1_ni2kb")

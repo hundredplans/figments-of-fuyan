@@ -27,28 +27,41 @@ func _ready() -> void:
 
 func onCardNamesReplace(regex: RegEx) -> void:
 	regex.compile("{id=\\d+,a=[ft],[a-zA-Z]+}")
-	for _result in regex.search_all(text):
-		_result.get_group_count()
+	while(true):
+		var _result: RegExMatch = regex.search(text)
+		if _result == null: break
+		
 		var result: String = _result.get_string()
 		text = text.replace(result, "[color=light_slate_gray]Palmy[/color]")
 
 func onFofIconsReplace(regex: RegEx, fancy_text: FancyText) -> void:
 	for fof_icon_fancy_text in fancy_text.icons:
 		regex.compile("(\\[" + str(fof_icon_fancy_text.name) + "=[0-9]+\\])")
-		for _result in regex.search_all(text):
+		while(true):
+			var _result: RegExMatch = regex.search(text)
+			if _result == null: break
+			
 			var result: String = _result.get_string()
 			var icon_path: String = Helper.getFofInfoID(fof_icon_fancy_text.fof_type, int(result)).getIcon().resource_path
-			text = text.replace(result, \
-			"[img=" + str(settings.font_size) + "x" + str(settings.font_size) + "]" + icon_path + "[/img]")
+			
+			var new_result: String = "[img=" + str(settings.font_size) + "x" + str(settings.font_size) + "]" + icon_path + "[/img]"
+			var replace_index: int = _result.get_start()
+			text = text.left(replace_index) + new_result + text.right(-(replace_index + result.length()))
+			
 			
 func onFofImagesReplace(regex: RegEx, fancy_text: FancyText) -> void:
 	for image_fancy_text in fancy_text.images:
 		var compile_text: String = image_fancy_text.name
 		if image_fancy_text.capture_preceding_number_plus:
 			compile_text = compile_text.insert(0, "((\\+?[0-9]+|\\[[0-9]+\\])\\s)?")
-			
+		
+		compile_text = compile_text.insert(0, "\\s")
 		regex.compile(compile_text)
-		for _result in regex.search_all(text):
+		
+		while(true):
+			var _result: RegExMatch = regex.search(text)
+			if _result == null: break
+			
 			var result: String = _result.get_string()
 			var icon_path: String = image_fancy_text.tx.resource_path
 			var first_section: String = result.substr(0, result.find(image_fancy_text.name))
@@ -57,8 +70,8 @@ func onFofImagesReplace(regex: RegEx, fancy_text: FancyText) -> void:
 			if !image_fancy_text.color.is_empty():
 				replacement_string = replacement_string.insert(0, "[color=" + image_fancy_text.color + "]" + first_section + "[/color]")
 			else: replacement_string = replacement_string.insert(0, first_section)
-				
-			text = text.replacen(result, replacement_string)
+			var replace_index: int = _result.get_start()
+			text = text.left(replace_index) + replacement_string + text.right(-(replace_index + result.length()))
 
 
 func _on_child_entered_tree(node: Control) -> void:

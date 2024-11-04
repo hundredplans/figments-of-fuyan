@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=7 format=3 uid="uid://guu4h5o15q4y"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=10 format=3 uid="uid://guu4h5o15q4y"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_i12jc"]
 [ext_resource type="Image" uid="uid://bruaie558itsg" path="res://assets/sprites/game/cards/art_pop/jackie_palm.png" id="2_5ylc1"]
@@ -6,6 +6,23 @@
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_k50xd"]
 [ext_resource type="Script" path="res://scripts/fof/cards/jackie_palm.gd" id="4_x18c2"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_67qi5"]
+[ext_resource type="PackedScene" uid="uid://df4s4fcc02l1r" path="res://assets/models/fof/cards/jackie_palm.glb" id="5_o02gv"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rv3f5"]
+size = Vector3(0.880859, 2.02158, 0.3125)
+
+[sub_resource type="PackedScene" id="PackedScene_cjghh"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00976563, 1.00731, 0.000976563), SubResource("BoxShape3D_rv3f5")],
+"version": 3
+}
 
 [resource]
 script = ExtResource("3_k50xd")
@@ -18,12 +35,14 @@ initial_traits = Array[ExtResource("2_w7mss")]([])
 active_abilities = Array[ExtResource("1_i12jc")]([])
 ability_text = "REVENGE: Heal [1] HP if there's an ally Palm in vision"
 flavor_text = ""
-art_mini_coordinate = Vector2i(0, 0)
+art_mini_coordinate = Vector2i(80, 40)
 art_pop = ExtResource("2_5ylc1")
+model = ExtResource("5_o02gv")
 points = []
-stat = 0.0
-top = 0.0
-eye = 0.0
+collision_shape = SubResource("PackedScene_cjghh")
+stat = 2.78261
+top = 2.02531
+eye = 1.74976
 plus_attack = 0
 plus_health = 1
 plus_speed = 1

@@ -1,16 +1,18 @@
-[gd_resource type="Resource" script_class="TileInfo" load_steps=6 format=3 uid="uid://fcupgqbrmafb"]
+[gd_resource type="Resource" script_class="TileInfo" load_steps=7 format=3 uid="uid://b0dp6csncas3w"]
 
 [ext_resource type="Script" path="res://scripts/fof/tiles/tile.gd" id="1_f4dm8"]
 [ext_resource type="Script" path="res://scripts/fof_info/game_objects/tile_info.gd" id="1_fcid4"]
 [ext_resource type="PackedScene" uid="uid://ccgkmv8mw0ekd" path="res://assets/models/fof/tiles/shallow_water_tile.glb" id="2_i4dgl"]
+[ext_resource type="PackedScene" uid="uid://6nswwmq4p6gg" path="res://assets/models/fof/tiles/shallow_water_tile_overworld.glb" id="3_2v66v"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="3_52o1c"]
 [ext_resource type="PackedScene" uid="uid://bb6rd8ea31ga" path="res://assets/models/fof/tiles/palm_tile_fill.glb" id="4_b3dat"]
 
 [resource]
 script = ExtResource("1_fcid4")
+overworld_tile = ExtResource("3_2v66v")
 tile_fill = ExtResource("4_b3dat")
 models = Array[PackedScene]([ExtResource("2_i4dgl")])
-points = Array[Array]([[]])
+points = Array[Array]([[Vector3(-0.324292, 0.2, 0.621442), Vector3(0.37165, 0.2, 0.585083), Vector3(0.669979, 0.2, -0.048877), Vector3(0.295823, 0.2, -0.629981), Vector3(-0.383184, 0.2, -0.585718), Vector3(-0.726222, 0.2, 0.0117481), Vector3(0.0224138, 0.2, -0.032415)]])
 id = 7
 name = "Shallow Water Tile"
 gdscript = ExtResource("1_f4dm8")
