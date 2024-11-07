@@ -16,7 +16,9 @@ func _init(_Damager: GameObjectGD = null, _Defenders: Variant = null, _damage: i
 	is_fall_damage = _is_fall_damage
 
 func onPostAction() -> void:
-	var stat_infos: Array = Defenders.map(func(x: GameObjectGD): return StatInfo.new(x, Game.Stats.HEALTH, -damage))
+	var stat_infos: Array = Defenders\
+		.filter(func(x: GameObjectGD): return x is CardGD)\
+		.map(func(x: GameObjectGD): return StatInfo.new(x, Game.Stats.HEALTH, -damage))
 	onPushAction(StatAction.new(stat_infos))
 	
 func getLogInfo() -> Array:

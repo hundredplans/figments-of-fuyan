@@ -13,13 +13,12 @@ func onAscenscionChanged() -> void:
 func getDescription() -> String:
 	return super()
 
-func onBoon(action: Action = null) -> void:
+func onBoon(action: DeathAction) -> void:
 	skeleton_charges -= 1
 	var Card: CardGD = action.Defender
-	var Tile: TileGD = Card.Tile
 	
-	var NewCard: CardGD = Game.getNewFieldCard(12, Tile, 2, Card.tile_rotation, ascended)
-	onPushAction(AwakenAction.new(NewCard, Tile))
+	var NewCard: CardGD = Game.getNewFieldCard(29, action.Tile, 0, Card.tile_rotation, ascended)
+	onPushAction(AwakenAction.new(NewCard, action.Tile))
 
 func onBoonAdded() -> void:
 	skeleton_charges = 1

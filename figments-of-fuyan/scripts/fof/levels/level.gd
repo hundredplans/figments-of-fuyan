@@ -50,7 +50,10 @@ func onLoadData(data: SavedData) -> void:
 		TileObject.set_spectate_card.connect(func(x: TileObjectGD): set_spectate_card.emit(x))
 		
 		if TileObject is TileGD: TileObject.add_to_group("LevelTilesGD"); 
-		elif TileObject is ObjectGD: TileObject.add_to_group("LevelObjectsGD")
+		elif TileObject is ObjectGD:
+			TileObject.add_to_group("LevelObjectsGD")
+			if TileObject is IObjectGD:
+				TileObject.add_to_group("LevelIObjectsGD")
 			
 	for TileObject in get_tree().get_nodes_in_group("LevelTileObjectsGD"):
 		TileObject.onLoadDataLevel()

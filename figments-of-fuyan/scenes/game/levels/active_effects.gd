@@ -4,7 +4,7 @@ signal pressed
 signal mouse_in_ui
 @export var ActiveEffectBoxPacked: PackedScene
 
-func onUpdate(active_effects: Array) -> void:
+func onUpdate(active_effects: Array, Card: CardGD) -> void:
 	for grandchild in getGrandchildren(): grandchild.queue_free()
 	
 	for i in range(active_effects.size()):
@@ -12,7 +12,7 @@ func onUpdate(active_effects: Array) -> void:
 		var ActiveEffectBox: Control = ActiveEffectBoxPacked.instantiate()
 		get_child(i % 2).add_child(ActiveEffectBox)
 		
-		ActiveEffectBox.setInfo(active_effect)
+		ActiveEffectBox.setInfo(active_effect, Card)
 		ActiveEffectBox.mouse_in_ui.connect(func(x: bool): mouse_in_ui.emit(x))
 		ActiveEffectBox.pressed.connect(func(x: ActiveEffectDatastore): pressed.emit(x))
 

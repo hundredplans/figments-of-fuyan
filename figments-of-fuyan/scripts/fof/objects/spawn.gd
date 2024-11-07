@@ -11,6 +11,12 @@ func onLoadData(data: SavedData) -> void:
 		0: add_to_group("AllySpawnsGD")
 		1: add_to_group("EnemySpawnsGD")
 		2: add_to_group("NeutralSpawnsGD")
+		3:
+			if spawn_id == 0: return
+			var tool_info: ToolInfo = Helper.getFofInfoID(ToolInfo, spawn_id)
+			if tool_info.model != null:
+				add_to_group("ToolSpawnsGD")
+				add_child(tool_info.model.instantiate())
 
 func onSave() -> SavedDataSpawn:
 	return SavedDataSpawn.new(info.id, false, public_id, coords, tile_rotation, level_visible, is_revealed, variation, map_rotation, map_position, height,\

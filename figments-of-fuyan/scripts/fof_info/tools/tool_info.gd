@@ -5,6 +5,7 @@ class_name ToolInfo extends FofInfo
 @export_multiline var ascended_description: String
 @export var RARITY: Game.Rarities
 @export var active_abilities: Array[ActiveAbilityDatastore]
+@export var model: PackedScene
 
 static func getFofName() -> String: return "Tool"
 

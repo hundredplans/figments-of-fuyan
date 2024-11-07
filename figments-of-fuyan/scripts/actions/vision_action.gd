@@ -31,7 +31,6 @@ func onPostAction() -> void:
 	var old_team_vision: Array = Game.getTeamVision(0) if cards.any(func(x: CardGD): return x.isAlly(0)) else []
 	
 	for Card in cards:
-		if Card.info.name == "Palmy": print(Card.visible_game_objects)
 		var card_visible_game_objects: Array = new_visible_game_objects[Card].keys()
 		var old_visible_cards: Array = Card.visible_game_objects.filter(func(x: GameObjectGD): return x is CardGD)
 		var new_visible_cards: Array = card_visible_game_objects.filter(func(x: GameObjectGD): return x is CardGD)

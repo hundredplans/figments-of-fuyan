@@ -4,6 +4,12 @@ var AniPlayer: AnimationPlayer
 var active_effects: Array = []
 var ability_save: Dictionary = {}
 
+func isAttackable(Card: CardGD) -> bool:
+	return false
+	
+func getAttackableTile() -> TileGD:
+	return null
+
 func onLoadData(data: SavedData) -> void:
 	super(data)
 	active_effects = data.active_effects
@@ -19,6 +25,11 @@ func onLoadData(data: SavedData) -> void:
 		AniPlayer = get_child(0).get_node("AnimationPlayer")
 	
 	add_to_group("IObjectsGD")
+	
+func setOccupiedTiles(tile_position_to_tile: Dictionary) -> void:
+	super(tile_position_to_tile)
+	if isAttackable(null):
+		getAttackableTile().onOccupyByIObject(self)
 
 func onSave() -> SavedDataIObject:
 	return SavedDataIObject.new(info.id, false, public_id, coords, tile_rotation, level_visible, is_revealed, variation, map_rotation, map_position, height,\
@@ -28,22 +39,43 @@ func onProcessAction(action: Action) -> void:
 	if action.post:
 		if action is ChangePhaseAction and action.phase == Game.Phases.START:
 			onCreateActiveEffects()
+		elif action is DamageAction and self in action.Defenders:
+			onWasDamaged(action)
+			
+#region Damaged
+func onWasDamaged(_action: DamageAction) -> void:
+	pass
+	
+func onIObjectDamaged(_action: DamageAction) -> void:
+	pass
+#endregion
 
 #region Active Effects
 func getValidActiveEffects(Card: CardGD) -> Array: # Returns the ability effects the Card can view
 	return []
 
 func onCreateActiveEffects() -> void:
-	var active_effects: Array = info.active_effects
+	var active_effects: Array = info.active_effects.duplicate()
 	if !active_effects.is_empty():
-		onPushAction(active_effects.map(func(x: ActiveEffectDatastore): return AddActiveEffectAction.new(self, x)))
+		onPushAction(active_effects.map(func(x: ActiveEffectDatastore): return AddActiveEffectAction.new(self, x.duplicate())))
 
 func onAddActiveEffect(active_effect: ActiveEffectDatastore) -> void:
 	active_effects.append(active_effect)
 	
-func onActiveEffect(_active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles) -> void:
+func onActiveEffect(_active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, _Card: CardGD) -> void:
 	pass
 	
-func onActiveEffectPre(_active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles) -> void:
+func onActiveEffectPre(_active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, _Card: CardGD) -> void:
 	pass
+	
+func setActiveEffectUsed(active_effect: ActiveEffectDatastore, used: bool) -> void:
+	active_effect.used = used
+	
+func getActiveEffectDisabled(_active_effect: ActiveEffectDatastore, Card: CardGD) -> bool:
+	return Card == null
+	
+func getActiveEffect(effect_name: String) -> ActiveEffectDatastore:
+	for active_effect in active_effects:
+		if active_effect.name == effect_name: return active_effect
+	return null
 #endregion

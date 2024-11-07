@@ -20,7 +20,7 @@ func onSave() -> SavedDataTool:
 	
 func onCreateActiveEffects() -> void:
 	active_effects = []
-	onPushAction(info.active_abilities.map(func(x: ActiveEffectDatastore): return AddActiveEffectAction.new(self, x)))
+	onPushAction(info.active_abilities.map(func(x: ActiveEffectDatastore): return AddActiveEffectAction.new(self, x.duplicate())))
 
 func onAddActiveEffect(active_effect: ActiveEffectDatastore) -> void:
 	active_effects.append(active_effect)
@@ -51,6 +51,12 @@ func onActiveEffect(_active_effect: ActiveEffectDatastore, _PickedTile: TileGD, 
 	
 func onActiveEffectPre(_active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles) -> void:
 	pass
+	
+func getActiveEffectDisabled(_active_effect: ActiveEffectDatastore) -> bool:
+	return false
+	
+func setActiveEffectUsed(active_effect: ActiveEffectDatastore, used: bool) -> void:
+	active_effect.used = used
 	
 func onToolEquipped() -> void:
 	pass

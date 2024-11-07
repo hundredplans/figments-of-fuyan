@@ -1,5 +1,6 @@
 extends Node3D
 
+signal update_ui
 signal camera_position_updated
 signal create_camera_action
 signal zooming
@@ -35,6 +36,8 @@ var last_freelook_rotation: Vector3
 var LastSpawnSpectateObject: SpawnGD # Not saved across sessions
 var LastAllySpectateObject: CardGD
 var LastEnemySpectateObject: CardGD
+var LastCycleSpectateObject: GameObjectGD
+var cycle_objects: Array
 #endregion
 
 #region Helpers
@@ -57,8 +60,8 @@ func setInfo(level_camera_data: LevelCameraData) -> void:
 		
 		setCameraType(level_camera_data.is_in_freelook)
 		
-		if !level_camera_data.is_in_freelook:
-			onCreateCameraChangeAction(getGameObjectFromCoords(level_camera_data.coords))
+		onCreateCameraChangeAction(\
+			getGameObjectFromCoords(level_camera_data.coords) if !level_camera_data.is_in_freelook else null)
 		
 func _input(event: InputEvent) -> void:
 	if CurrentCamera == LevelCamera:
@@ -155,6 +158,13 @@ func onSpectateAllies() -> void:
 	
 	onCreateCameraChangeAction(_SpectateObject)
 	
+func onSpectateCycle() -> void:
+	var _SpectateObject: GameObjectGD = LastCycleSpectateObject
+	if _SpectateObject == null:
+		if !cycle_objects.is_empty(): _SpectateObject = cycle_objects[0]
+	
+	onCreateCameraChangeAction(_SpectateObject)
+	
 func onChangeCameraInDirection(direction: int) -> void:
 	if !action_lock and SpectateObject != null:
 		var arr: Array = getCameraObjectArray()
@@ -168,7 +178,8 @@ func onChangeCameraInDirection(direction: int) -> void:
 		
 func getCameraObjectArray() -> Array:
 	if SpectateObject != null:
-		if SpectateObject is SpawnGD: return get_tree().get_nodes_in_group("AllySpawnsGD").filter(func(x: SpawnGD): return !x.isSpawnOccupied())
+		if !cycle_objects.is_empty(): return cycle_objects
+		elif SpectateObject is SpawnGD: return get_tree().get_nodes_in_group("AllySpawnsGD").filter(func(x: SpawnGD): return !x.isSpawnOccupied())
 		elif SpectateObject.isAlly(): return Game.getAllyUnits()
 		else: return Game.getEnemyUnits().filter(func(x: CardGD): return x.level_visible)
 	return []
@@ -191,4 +202,17 @@ func _process(_delta: float) -> void:
 	if SpectateObject is CardGD and track_card:
 		setCameraCentralPoint()
 		setCameraPointAlongCircle()
+#endregion
+
+#region Cycle
+func setCycleObjects(_cycle_objects: Array) -> void:
+	cycle_objects = _cycle_objects
+	if !cycle_objects.is_empty():
+		onSpectateCycle()
+		
+func onRemoveCycleObjects() -> void:
+	cycle_objects = []
+		
+func isCycle() -> bool:
+	return !cycle_objects.is_empty()
 #endregion

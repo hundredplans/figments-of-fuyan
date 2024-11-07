@@ -89,7 +89,9 @@ func getMouseHoverTile() -> TileGD:
 	MouseRaycast.force_raycast_update()
 	
 	if MouseRaycast.is_colliding():
-		return Helper.getCollision(MouseRaycast.get_collider(), TileGD)
+		var Tile: TileGD = Helper.getCollision(MouseRaycast.get_collider(), TileGD)
+		if Tile.is_in_group("LevelTilesGD"):
+			return Tile
 	return null
 #endregion
 
@@ -100,7 +102,7 @@ func getActionLock() -> bool:
 func onUpdateActionLock(state: bool) -> void:
 	onHoverTile()
 	
-	if state: onHideMovementRange(); onActiveEffectDeselected()
+	if state: onHideMovementRange() # ; onActiveEffectDeselected()
 	else: onCreateMovementRange(level.getAllySpectateObject())
 	
 func getMouseInUI() -> bool:
@@ -182,6 +184,9 @@ func onCameraChange(SpectateObject: GameObjectGD, OldSpectateObject: GameObjectG
 	if OldSpectateObject is CardGD: OldSpectateObject.onSpectated(false)
 	if SpectateObject is CardGD: SpectateObject.onSpectated(true)
 	CameraManager.onCameraChange(SpectateObject)
+	
+	if !CameraManager.isCycle():
+		onActiveEffectDeselected()
 	
 func onCreateCameraChangeAction(SpectateObject: GameObjectGD) -> void:
 	level.onPushAction(CameraChangeAction.new(SpectateObject))
@@ -269,6 +274,10 @@ func onActiveEffectSelected() -> void:
 	for Tile in current_active_effect_tiles.pickable_tiles:
 		Tile.setInActiveEffectPickable(true)
 		
+	if current_active_effect.camera_type == ActiveEffectDatastore.CameraTypes.CYCLE:
+		var cards: Array = current_active_effect_tiles.pickable_tiles.map(func(x: TileGD): return Game.getFieldCard(x))
+		CameraManager.setCycleObjects(cards)
+		
 func onActiveEffectDeselected() -> void:
 	if current_active_effect != null:
 		for Tile in current_active_effect_tiles.in_range_tiles:
@@ -277,12 +286,23 @@ func onActiveEffectDeselected() -> void:
 		for Tile in current_active_effect_tiles.pickable_tiles:
 			Tile.setInActiveEffectPickable(false)
 			
+		if current_active_effect.camera_type == ActiveEffectDatastore.CameraTypes.CYCLE:
+			CameraManager.onRemoveCycleObjects()
+			
 		current_active_effect = null
 		current_active_effect_tiles = null
 		active_effect_deselected.emit()
 		
 func onActiveEffectActivated(Tile: TileGD) -> void:
-	level.onPushAction(ActiveEffectUsedAction.new(current_active_effect, Tile, current_active_effect_tiles))
+	level.onPushAction(ActiveEffectUsedAction.new(current_active_effect, Tile, current_active_effect_tiles, level.getSpectateObject()))
 	active_effect_activated.emit(current_active_effect)
+	onActiveEffectDeselected()
+	
+func isActiveEffectCurrent() -> bool:
+	return current_active_effect != null
+#endregion
+
+#region Pass
+func onPassButtonPressed() -> void:
 	onActiveEffectDeselected()
 #endregion

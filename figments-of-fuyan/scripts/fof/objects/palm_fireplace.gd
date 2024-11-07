@@ -28,7 +28,7 @@ func getValidActiveEffects(Card: CardGD) -> Array:
 func getActiveEffectTiles(_active_effect: ActiveEffectDatastore, Card: CardGD) -> ActiveEffectTiles:
 	return ActiveEffectTiles.new([Card.Tile], [Card.Tile])
 
-func onActiveEffect(active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles) -> void:
+func onActiveEffect(active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, _Card: CardGD) -> void:
 	var Tile: TileGD = getTile()
 	if active_effect.name == "Extinguish":
 		var tiles: Array = Game.getAdjacentOrCloserTiles(Tile, 2)
@@ -50,7 +50,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _
 			if owned_active_effect.name == "Extinguish":
 				onPushAction(ChangeActiveEffectChargesAction.new(owned_active_effect, -1))
 		
-func onActiveEffectPre(active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles) -> void:
+func onActiveEffectPre(active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, _Card: CardGD) -> void:
 	if active_effect.name == "Extinguish":
 		onExtinguishVFX()
 		

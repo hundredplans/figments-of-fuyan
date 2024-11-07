@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="ToolInfo" load_steps=7 format=3 uid="uid://c7p7fljyv8koo"]
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=8 format=3 uid="uid://c7p7fljyv8koo"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/tools/tool_info.gd" id="1_1j7x4"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_v4acg"]
 [ext_resource type="Image" uid="uid://sopvox7cn04a" path="res://assets/sprites/game/tools/Half-eaten Coconut.png" id="2_1p4px"]
 [ext_resource type="Script" path="res://scripts/fof/tools/halfeaten_coconut.gd" id="2_kaqjf"]
 [ext_resource type="Script" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="3_m65j5"]
+[ext_resource type="PackedScene" uid="uid://itp2qkjch2kc" path="res://assets/models/fof/tools/halfeaten_coconut.glb" id="4_ksset"]
 
 [sub_resource type="Resource" id="Resource_3atko"]
 script = ExtResource("1_v4acg")
@@ -14,6 +15,8 @@ ascended_max_charges = -1
 name = "Half-eaten Coconut"
 description = "Heal this unit and an adjacent ally [1] HEALTH"
 max_charges = 1
+delay = 0.0
+camera_type = 0
 charges = 0
 used = false
 
@@ -24,6 +27,7 @@ description = "ABILITY [1]: Heal this unit and an adjacent ally [1] HEALTH"
 ascended_description = ""
 RARITY = 2
 active_abilities = Array[ExtResource("1_v4acg")]([SubResource("Resource_3atko")])
+model = ExtResource("4_ksset")
 id = 9
 name = "Half-eaten Coconut"
 gdscript = ExtResource("2_kaqjf")

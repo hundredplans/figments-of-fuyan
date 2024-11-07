@@ -7,18 +7,7 @@ uniform sampler2D texture_albedo : source_color, filter_linear_mipmap, repeat_en
 uniform vec3 uv1_scale;
 uniform sampler2D texture_normal;
 
-varying float height;
-varying vec3 world_pos;
-
-uniform sampler2D wave;
-uniform float noise_scale = 10.0;
-uniform float height_scale = 0.15;
-uniform float time_scale : hint_range(0.0, 0.2, 0.005) = 0.025;
-
 void vertex() {
-	world_pos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
-	height = texture(wave, world_pos.xz / noise_scale + TIME * time_scale).r;
-	VERTEX.y += height * height_scale;
 	UV = UV * uv1_scale.xy;
 }
 

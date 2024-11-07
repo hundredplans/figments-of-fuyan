@@ -9,7 +9,7 @@ func _init(_Card: CardGD = null, _DestinationTile: TileGD = null) -> void:
 	DestinationTile = _DestinationTile
 
 func onPreAction() -> void:
-	var is_attackable_on_path: bool = DestinationTile.getMovementPathTiles().any(func(x: TileGD): return x != Card.Tile and Game.getFieldCard(x) != null)
+	var is_attackable_on_path: bool = DestinationTile.getMovementPathTiles().any(func(x: TileGD): return x.occupy_state != TileGD.OccupyStates.NULL)
 	if !Card.canAttack() and is_attackable_on_path: onFailAction()
 
 func onPostAction() -> void:
@@ -28,13 +28,18 @@ func onPostAction() -> void:
 	
 	for i in range(1, tiles.size()):
 		var MoveToTile: TileGD = tiles[i]
-		var Attackable: CardGD = Game.getFieldCard(MoveToTile)
 		
-		if Attackable == null:
+		var Attackables: Array = []
+		match MoveToTile.occupy_state:
+			TileGD.OccupyStates.NULL: pass
+			TileGD.OccupyStates.ATTACKABLE_IOBJECT: Attackables = MoveToTile.getAttackableIObjects()
+			_: Attackables.append(Game.getFieldCard(MoveToTile))
+		
+		if Attackables.is_empty():
 			MoveToTile.is_card_moving = true
 			actions.append(MoveToTileAction.new(Card, MoveToTile))
 			continue
-		actions.append(AttackAction.new(Card, Attackable))
+		actions.append(AttackAction.new(Card, Attackables))
 		break
 		
 	actions.append(MovementFinishAction.new(Card, tiles))

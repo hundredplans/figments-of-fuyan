@@ -12,6 +12,7 @@ func onPreAction() -> void:
 	if active_effect.used == state: onFailAction()
 	
 func onPostAction() -> void:
+	active_effect.owner.setActiveEffectUsed(active_effect, state)
 	active_effect.used = state
 
 func getDelay() -> float:

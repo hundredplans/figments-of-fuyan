@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="ToolInfo" load_steps=7 format=3 uid="uid://dtgoku5wpak0w"]
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=8 format=3 uid="uid://dtgoku5wpak0w"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_87ger"]
 [ext_resource type="Script" path="res://scripts/fof_info/tools/tool_info.gd" id="1_shcwd"]
 [ext_resource type="Image" uid="uid://co1meht67xmor" path="res://assets/sprites/game/tools/Bag of Sand.png" id="2_2k2l1"]
 [ext_resource type="Script" path="res://scripts/fof/tools/bag_of_sand.gd" id="2_wbbhf"]
 [ext_resource type="Script" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="3_d285g"]
+[ext_resource type="PackedScene" uid="uid://deylw46n73mft" path="res://assets/models/fof/tools/bag_of_sand.glb" id="4_4v8h0"]
 
 [sub_resource type="Resource" id="Resource_eg5s1"]
 script = ExtResource("1_87ger")
@@ -14,6 +15,8 @@ ascended_max_charges = -1
 name = "Bag of Sand"
 description = "STAGGER an adjacent enemy with [2] or less ATTACK"
 max_charges = 1
+delay = 0.0
+camera_type = 0
 charges = 0
 used = false
 
@@ -24,6 +27,7 @@ description = "ABILITY [1]: STAGGER an adjacent enemy with ATT [2] or less"
 ascended_description = ""
 RARITY = 2
 active_abilities = Array[ExtResource("1_87ger")]([SubResource("Resource_eg5s1")])
+model = ExtResource("4_4v8h0")
 id = 12
 name = "Bag of Sand"
 gdscript = ExtResource("2_wbbhf")

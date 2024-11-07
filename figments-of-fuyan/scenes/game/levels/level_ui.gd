@@ -172,12 +172,13 @@ func onCameraDirectionChanged(direction: int) -> void:
 func _on_camera_button_pressed() -> void:
 	camera_button_pressed.emit()
 	
-func onCameraUpdated(SpectateObject: GameObjectGD, __: GameObjectGD) -> void:
-	setHeroNameLabel(SpectateObject.info.name if (SpectateObject != null and SpectateObject is CardGD) else "")
-	PassButton.setAllySpectating(SpectateObject)
-	
-	onUpdateActiveEffects(SpectateObject)
-	Console.onCameraUpdated(SpectateObject)
+func onCameraUpdated(SpectateObject: GameObjectGD, __: GameObjectGD = null) -> void:
+	if !World.CameraManager.isCycle():
+		setHeroNameLabel(SpectateObject.info.name if (SpectateObject != null and SpectateObject is CardGD) else "")
+		PassButton.setAllySpectating(SpectateObject)
+		
+		onUpdateActiveEffects(SpectateObject)
+		Console.onCameraUpdated(SpectateObject)
 	
 #endregion
 
@@ -192,6 +193,7 @@ func _on_graveyard_button_pressed() -> void:
 #region Pass Button
 func _on_pass_button_pressed() -> void:
 	level.onPassTurn()
+	World.onPassButtonPressed()
 	
 func onTurnStateChanging(Card: CardGD) -> void:
 	PassButton.setIsAllyInactiveActive(Card)
@@ -249,21 +251,23 @@ func onActiveEffectBoxPressed(active_effect: ActiveEffectDatastore) -> void:
 		
 func onActiveEffectDeselected() -> void:
 	setActiveEffectLabel("")
+	onCameraUpdated(level.getSpectateObject())
 		
 func onActiveEffectActivated(_active_effect: ActiveEffectDatastore) -> void:
 	onUpdateActiveEffects()
 	
 func onUpdateActiveEffects(SpectateObject: GameObjectGD = level.getSpectateObject()) -> void:
 	var active_effects: Array = []
-	if SpectateObject != null and SpectateObject is CardGD:
+	var CardSpectate: CardGD = null if SpectateObject is not CardGD else SpectateObject
+	if CardSpectate != null:
 		active_effects = SpectateObject.active_effects
 		if SpectateObject.getTool() != null:
 			active_effects += SpectateObject.getTool().active_effects
 		
-		for IObject in get_tree().get_nodes_in_group("IObjectsGD"):
+		for IObject in get_tree().get_nodes_in_group("LevelIObjectsGD"):
 			active_effects += IObject.getValidActiveEffects(SpectateObject)
-		
-	ActiveEffects.onUpdate(active_effects)
+			
+	ActiveEffects.onUpdate(active_effects, CardSpectate)
 #endregion
 
 #region Active Effects

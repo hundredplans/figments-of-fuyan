@@ -9,6 +9,7 @@ extends Node
 @export var SpawnIdUIPacked: PackedScene
 @export var TileObjectSearchResultPacked: PackedScene
 @export var PanelButtonPacked: PackedScene
+@export var BASE_ROTATION_TIMER: float = 0.25
 @export_dir var TILE_OBJECTS_PATH: String
 @onready var UI: Control = $UI
 @onready var World: Node3D = %World
@@ -19,6 +20,7 @@ extends Node
 var is_camera_panning: bool = false
 
 var all_tile_objects: Array
+var all_tile_objects_to_words: Dictionary
 var base_elevation: int = -1
 
 var HoverStaticBody: StaticBody3D
@@ -67,15 +69,21 @@ func _notification(what):
 func _ready() -> void:
 	setBaseElevation(0)
 	all_tile_objects = Helper.getFofInfoArray(TileObjectInfo)
+	setAllTileObjectsToWords()
 	setAreaOptionButtonItems()
 	onNewEmptyLevel()
 	
 	OverworldButton.visible = false
 		
+func setAllTileObjectsToWords() -> void:
+	for info in all_tile_objects:
+		all_tile_objects_to_words[info] = Array(info.name.split(" ")).map(func(x: String): return x.to_lower())
+		
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		if HoverModel != null and !(HoverModel is TileGD): onHoverModelHovered()
 		
+func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("FocusControl"):
 		if !SaveLineEdit.has_focus(): 
 			if SearchTileObject.has_focus(): onSearchTileObjectReleaseFocus()
@@ -135,15 +143,19 @@ func _input(event: InputEvent) -> void:
 						else: num -= 1
 						setBaseElevation(num)
 				
+			if Input.is_action_just_released("RotateLeft") or Input.is_action_just_released("RotateRight"):
+				TemporaryRotationObject = null
+				
 			if !is_rotation_disabled:
+				if Input.is_action_just_pressed("RotateLeft") or Input.is_action_just_pressed("RotateRight"):
+					TemporaryRotationObject = HoverModel if HoverModel != null else onFindMouseTileObject()
+				
 				if Input.is_action_pressed("RotateLeft"):
-					if HoverModel != null: onRotate(HoverModel, -1)
-					else: onRotate(onFindMouseTileObject(), -1)
+					onRotate(TemporaryRotationObject, -1)
 					
 				elif Input.is_action_pressed("RotateRight"):
-					if HoverModel != null: onRotate(HoverModel, 1)
-					else: onRotate(onFindMouseTileObject(), 1)
-					
+					onRotate(TemporaryRotationObject, 1)
+				
 			if !is_scroll_disabled:
 				if Input.is_action_just_pressed("ChangeVariationDown"):
 					if HoverModel != null: onChangeHoverModelVariation(-1)
@@ -164,12 +176,20 @@ func onFindTileObjectInfo(id: int) -> TileObjectInfo:
 func _on_search_tile_object_text_changed(text: String):
 	for button in SearchResultsContainer.get_children(): button.queue_free()
 	if !text.is_empty():
-		for info in all_tile_objects.filter(func(x: TileObjectInfo): return x.name.to_lower().begins_with(text.to_lower())):
+		var infos: Array = all_tile_objects_to_words.keys()
+		if text != "all":
+			infos = infos.filter(func(x: TileObjectInfo): return all_tile_objects_to_words[x]\
+				.any(func(y: String): return y.begins_with(text.to_lower())))
+					
+		for info in infos:
 			var panel_button: Control = TileObjectSearchResultPacked.instantiate()
 			SearchResultsContainer.add_child(panel_button)
 			panel_button.setInfo(info)
 			panel_button.mouse_in_ui.connect(onMouseInUI)
 			panel_button.custom_pressed.connect(onTileObjectInfoSelected)
+
+func onCreateSearchPanelButton(info: TileObjectInfo) -> void:
+	pass
 
 func onTileObjectInfoSelected(data: SavedData, remove_last: bool = true) -> void:
 	if is_overworld and data is SavedDataTile: data.variation = -1
@@ -181,13 +201,13 @@ func onTileObjectInfoSelected(data: SavedData, remove_last: bool = true) -> void
 	HoverModel.setCollisionLayers(0)
 	HoverModel.setHalfTransparent()
 	
-	var coords := Vector4i.ZERO
+	var coords := Vector4i(0, 0, 0, -1)
 	if HoverModel is TileGD and HoverStaticBody != null: coords = HoverStaticBody.coords
 	elif !(HoverModel is TileGD):
 		var Tile: TileGD = onFindMouseTile()
 		if Tile != null: coords = Tile.getCoords()
 		
-	if coords != Vector4i.ZERO:
+	if coords != Vector4i(0, 0, 0, -1):
 		if HoverModel is TileGD: HoverModel.setCoords(coords)
 		elif HoverModel is ObjectGD: HoverModel.setPosition(coords, onFindMousePoint(), tile_lock_force)
 	LastSelectedData = HoverModel.onSave()
@@ -314,6 +334,7 @@ func onInputDeleteMouseTileObject() -> void:
 		elif Input.is_action_just_pressed("Delete"): onDeleteTileObject(TileObject); object_delete = true
 #endregion
 #region Rotating
+var TemporaryRotationObject: TileObjectGD
 var is_rotation_disabled: bool = false
 func onRotate(TileObject: TileObjectGD, direction: int) -> void:
 	if TileObject != null:

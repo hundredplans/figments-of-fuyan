@@ -4,41 +4,83 @@ var is_open: bool
 var last_seen_open: bool
 var CollisionShape: CollisionShape3D
 
-func onLoadData(data: SavedData) -> void:
-	super(data)
+#region Data Loading
+func onLoadDataLevel() -> void:
+	super()
+	for ExistingBody in Helper.getNodeTypeRecursive(self, StaticBody3D):
+		ExistingBody.queue_free()
+	
 	var StaticBody := StaticBody3D.new()
 	getMeshes()[0].add_child(StaticBody)
 	
 	CollisionShape = CollisionShape3D.new()
 	StaticBody.add_child(CollisionShape)
 	
-	if is_open: onDoorIsOpen(last_seen_open)
-	else: onDoorIsClosed(!last_seen_open)
 	onAfterLoadModel()
 	
+	if is_open: onDoorIsOpen(last_seen_open)
+	else: onDoorIsClosed(!last_seen_open)
 	AniPlayer.animation_finished.connect(func(__: String): onIdle())
+	
+	if level_visible: onIdle()
 
+func onSave() -> SavedDataIObject:
+	ability_save['is_open'] = is_open
+	ability_save['last_seen_open'] = last_seen_open
+	return super()
+	
+#endregion
+
+#region Process
 func onProcessAction(action: Action) -> void:
 	super(action)
 	if action.post:
 		if action is LevelVisibleAction and self in action.game_objects:
 			onUpdateVisible(action.state)
+#endregion
+
+#region Helper
+func onIdle() -> void:
+	if level_visible:
+		AniPlayer.play("Idle" if !is_open else "IdleAbility")
+
+func isSolid() -> bool:
+	return !is_open
 	
+func isTall() -> bool:
+	return variation == 0
+	
+func onUpdateVisible(state: bool) -> void:
+	if state: # If visible
+		if last_seen_open and !is_open: onDoorIsClosed()
+		elif !last_seen_open and is_open: onDoorIsOpen()
+		onIdle()
+	else:
+		AniPlayer.stop()
+#endregion
+	
+#region Valid / Disabled
 func getValidActiveEffects(Card: CardGD) -> Array: # Returns the ability effects the Card can view
-	return [getActiveEffect("Close Door") if is_open else getActiveEffect("Open Door")] if isAdjacent(Card.getCoords()) else []
+	var Tile: TileGD = getTile()
 	
-func getActiveEffect(effect_name: String) -> ActiveEffectDatastore:
-	for active_effect in active_effects:
-		if active_effect.name == effect_name: return active_effect
-	return null
+	if is_open and get_tree().get_nodes_in_group("FieldCardsGD").any(func(x: CardGD): return x.Tile == Tile): return []
+	if !isAdjacent(Card.getCoords()): return []
 	
+	var active_effect: ActiveEffectDatastore = getActiveEffect("Close Door") if is_open else getActiveEffect("Open Door")
+	return [active_effect]
+#endregion
+	
+#region Active Effect
 func getActiveEffectTiles(_active_effect: ActiveEffectDatastore, Card: CardGD) -> ActiveEffectTiles:
-	return ActiveEffectTiles.new([Card.Tile], [Card.Tile])
+	return ActiveEffectTiles.new([getTile()], [getTile()])
 	
-func onActiveEffect(_active_effect: ActiveEffectDatastore, PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles) -> void:
-	onPushAction(VisionAction.new([Game.getFieldCard(PickedTile)] + Game.inVisionCards(PickedTile.getCoords())))
+func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
+	var actions: Array = [VisionAction.new([Card] + Game.inVisionCards(Card.getCoords()))]
+	for owned_active_effect in active_effects.filter(func(x: ActiveEffectDatastore): return x != active_effect):
+		actions.append(ChangeActiveEffectUsedAction.new(owned_active_effect, true))
+	onPushAction(actions)
 		
-func onActiveEffectPre(active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles) -> void:
+func onActiveEffectPre(active_effect: ActiveEffectDatastore, PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
 	if active_effect.name == "Open Door":
 		if level_visible: AniPlayer.play("Ability"); last_seen_open = true
 		is_open = true
@@ -48,12 +90,13 @@ func onActiveEffectPre(active_effect: ActiveEffectDatastore, _PickedTile: TileGD
 		if level_visible: AniPlayer.play_backwards("Ability"); last_seen_open = false
 		is_open = false
 		onDoorIsClosed(false)
+	force_action.emit(ChangeTileRotationAction.new(Card, Game.getRelativeTileRotation(Card.Tile, PickedTile)))
+	
+func setActiveEffectUsed(active_effect: ActiveEffectDatastore, _used: bool) -> void:
+	active_effect.used = false
+#endregion
 
-func onSave() -> SavedDataIObject:
-	ability_save['is_open'] = is_open
-	ability_save['last_seen_open'] = last_seen_open
-	return super()
-
+#region Door
 # Have to set the collision shape aswell as animation position
 func onDoorIsOpen(set_door_position: bool = true) -> void:
 	var collision_position_shape: CollisionPositionShape = load(info.PALM_DOOR_TALL_OPEN_MESH_PATH if isTall() else info.PALM_DOOR_SHORT_OPEN_MESH_PATH)
@@ -72,21 +115,4 @@ func onDoorIsClosed(set_door_position: bool = true) -> void:
 		AniPlayer.set_current_animation("Ability")
 		AniPlayer.stop()
 		AniPlayer.seek(0, true)
-	
-func isTall() -> bool:
-	return variation == 0
-	
-func onUpdateVisible(state: bool) -> void:
-	if state: # If visible
-		if last_seen_open and !is_open: onDoorIsClosed()
-		elif !last_seen_open and is_open: onDoorIsOpen()
-		onIdle()
-	else:
-		AniPlayer.stop()
-
-func onIdle() -> void:
-	if level_visible:
-		AniPlayer.play("Idle" if !is_open else "IdleAbility")
-
-func isSolid() -> bool:
-	return !is_open
+#endregion

@@ -9,7 +9,10 @@ signal mouse_in_ui
 @onready var ChargesLabel: Label = %ChargesLabel
 
 var active_effect: ActiveEffectDatastore
-func setInfo(_active_effect: ActiveEffectDatastore) -> void:
+var Card: CardGD
+
+func setInfo(_active_effect: ActiveEffectDatastore, _Card: CardGD) -> void:
+	Card = _Card
 	active_effect = _active_effect
 	NameLabel.text = active_effect.getName()
 	DescriptionLabel.setText(active_effect.getDescription())
@@ -24,8 +27,13 @@ func setInfo(_active_effect: ActiveEffectDatastore) -> void:
 	setDisabled()
 	
 func setDisabled() -> void:
-	var disabled: bool = active_effect.used or active_effect.getCharges() == 0 or is_action_lock or\
-	(active_effect.owner is CardGD and ((active_effect.owner.turn_state != Game.TurnStates.INACTIVE or active_effect.owner.isMobile()) or active_effect.owner.isEnemy(0)))
+	var active_effect_disabled: bool = \
+		active_effect.owner.getActiveEffectDisabled(active_effect, Card) if active_effect.owner is IObjectGD\
+		else active_effect.owner.getActiveEffectDisabled(active_effect)
+	
+	var disabled: bool = active_effect_disabled or active_effect.used or active_effect.getCharges() == 0 or is_action_lock or\
+	(active_effect.owner is CardGD and ((active_effect.owner.turn_state != Game.TurnStates.INACTIVE or\
+	active_effect.owner.isMobile()) or active_effect.owner.isEnemy(0)))
 	
 	Btn.disabled = disabled
 	modulate = HOVERED_OR_BASE if !disabled else Color(0.6, 0.6, 0.6, 1)

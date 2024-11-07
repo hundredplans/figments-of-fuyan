@@ -2,7 +2,7 @@ class_name TileGD
 extends TileObjectGD
 
 #region Global
-enum OccupyStates {NULL, ALLY, ENEMY, NEUTRAL}
+enum OccupyStates {NULL, ALLY, ENEMY, NEUTRAL, ATTACKABLE_IOBJECT}
 var occupied_objects: Array = []
 var is_hovered: bool = false
 var is_path_hovered: bool = false
@@ -95,7 +95,7 @@ func setOutlineMaterial() -> void:
 			OccupyStates.ENEMY: 
 				if !display_movement_path: mat = load(info.ENEMY_OCCUPY_MATERIAL)
 				else: mat = load(info.MOVEMENT_RANGE_ATTACKABLE_MATERIAL)
-			OccupyStates.NEUTRAL:
+			OccupyStates.NEUTRAL, OccupyStates.ATTACKABLE_IOBJECT:
 				if !display_movement_path: mat = load(info.NEUTRAL_OCCUPY_MATERIAL)
 				else: mat = load(info.MOVEMENT_RANGE_ATTACKABLE_MATERIAL)
 	elif is_path_hovered and !is_action_lock: mat = load(info.PATH_HOVERED_MATERIAL)
@@ -150,6 +150,9 @@ func onProcessAction(_action: Action) -> void:
 #region Occupied Objects
 func setOccupiedObject(object: ObjectGD) -> void:
 	occupied_objects.append(object)
+	
+func getAttackableIObjects() -> Array:
+	return occupied_objects.filter(func(x: ObjectGD): return x is IObjectGD)
 #endregion
 #region Hover
 func onHovered(state: bool) -> void:
@@ -177,6 +180,10 @@ func onOccupy(Card: CardGD, instant: bool) -> void:
 	elif Card.team == 2: occupy_state = OccupyStates.NEUTRAL
 	
 	if instant: setOutlineMaterial()
+	
+func onOccupyByIObject(IObject: IObjectGD) -> void:
+	occupy_state = OccupyStates.ATTACKABLE_IOBJECT
+	setOutlineMaterial()
 #endregion
 
 #region Movement Range / Path Hovered

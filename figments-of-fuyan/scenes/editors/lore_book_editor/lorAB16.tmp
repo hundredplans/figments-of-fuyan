@@ -1,0 +1,66 @@
+[gd_scene load_steps=7 format=3 uid="uid://dtbg4w738x5u5"]
+
+[ext_resource type="Script" path="res://scenes/editors/lore_book_editor/lore_book_editor.gd" id="1_8avka"]
+[ext_resource type="Script" path="res://scenes/editors/lore_book_editor/select_theme_button.gd" id="1_lp5ya"]
+[ext_resource type="Theme" uid="uid://dcbv431prk86r" path="res://resources/ui/themes/base_theme.tres" id="2_i1h5i"]
+[ext_resource type="Script" path="res://scenes/editors/lore_book_editor/categories.gd" id="4_6kmgo"]
+[ext_resource type="PackedScene" uid="uid://ceoy120bbs7le" path="res://scenes/common/panel_button/panel_button.tscn" id="5_a4wbx"]
+[ext_resource type="Script" path="res://scenes/editors/lore_book_editor/books.gd" id="6_udd2h"]
+
+[node name="LoreBookEditor" type="Node"]
+script = ExtResource("1_8avka")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+offset_right = 1920.0
+offset_bottom = 1080.0
+theme = ExtResource("2_i1h5i")
+theme_type_variation = &"WhitePanelContainer"
+
+[node name="SelectThemeButton" type="OptionButton" parent="." node_paths=PackedStringArray("panel")]
+offset_left = 1586.0
+offset_top = 23.0
+offset_right = 1895.0
+offset_bottom = 78.0
+item_count = 1
+script = ExtResource("1_lp5ya")
+panel = NodePath("../PanelContainer")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Categories" type="VBoxContainer" parent="MarginContainer/HBoxContainer/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("4_6kmgo")
+PackedPanelButton = ExtResource("5_a4wbx")
+lore_books_path = "res://resources/lore_books"
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HBoxContainer/MarginContainer2"]
+layout_mode = 2
+
+[node name="Books" type="VBoxContainer" parent="MarginContainer/HBoxContainer/MarginContainer2/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("6_udd2h")
+PackedPanelButton = ExtResource("5_a4wbx")
+lore_books_path = "res://resources/lore_books"
+
+[connection signal="item_selected" from="SelectThemeButton" to="SelectThemeButton" method="_on_item_selected"]

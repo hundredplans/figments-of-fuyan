@@ -60,12 +60,12 @@ func onRemoveAction(filter_method: Callable) -> void:
 func onDebugAction(action: Action) -> void:
 	past_actions_debug.append(active_action)
 	var path: String = action.get_script().resource_path
-	print(path.get_slice("/", path.get_slice_count("/") - 1))
+	#print(path.get_slice("/", path.get_slice_count("/") - 1))
 	var logs: Array = action.getLogInfo()
 	if action.failed: logs.append("FAILED")
 	
-	for log_info in logs:
-		print("	" + log_info)
+	#for log_info in logs:
+		#print("	" + log_info)
 	
 var is_action_playing: bool
 func onActionPlaying(state: bool) -> void:

@@ -1,8 +1,10 @@
-[gd_resource type="Resource" load_steps=3 format=3 uid="uid://8utplnhpg0dw"]
+[gd_resource type="Resource" load_steps=5 format=3 uid="uid://8utplnhpg0dw"]
 
 [ext_resource type="Script" path="res://scenes/game/decorations/decoration_datastore.gd" id="1_4semv"]
 [ext_resource type="Script" path="res://resources/datastore/areas/coconut_springs/palm_island_resources.gd" id="2_qec7y"]
+[ext_resource type="Resource" path="res://resources/datastore/decorations/PalmIsland1.tres" id="2_rm24r"]
+[ext_resource type="Resource" path="res://resources/datastore/decorations/PalmIsland2.tres" id="3_smefu"]
 
 [resource]
 script = ExtResource("2_qec7y")
-palm_islands = Array[ExtResource("1_4semv")]([])
+palm_islands = Array[ExtResource("1_4semv")]([ExtResource("2_rm24r"), ExtResource("3_smefu")])

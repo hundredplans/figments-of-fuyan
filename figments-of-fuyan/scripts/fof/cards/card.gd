@@ -595,9 +595,8 @@ func isCardSurviveFallDamage(_temp_fall_damage: int) -> bool:
 func setEnemyInMovementRange(state: bool) -> void:
 	if !isAlly(0): FieldInfo.setInfoSpriteEnemyInMovementRange(state)
 
-func isAttackable(GameObject: GameObjectGD) -> bool:
-	if GameObject is CardGD: return !GameObject.isAlly(team)
-	return false
+func isAttackable(Card: CardGD) -> bool:
+	return !Card.isAlly(team)
 	
 func getAttackDamage() -> int:
 	return attack
@@ -614,21 +613,34 @@ func getMaxAttacks() -> int: return 1
 	
 func setAttacks(_attacks: int) -> void: attacks = _attacks
 	
-func getAttackablesInRange() -> Array:
-	if !canAttack(): return []
+func getAttackablesInRange() -> Dictionary:
+	if !canAttack(): return {}
+	var iobjects: Array = get_tree().get_nodes_in_group("LevelIObjectsGD")
 	var cards: Array = get_tree().get_nodes_in_group("FieldCardsGD")
-	cards = cards.filter(isCardAttackable)
-	return cards
 	
-func isCardAttackable(Card: CardGD) -> bool:
-	var is_enemy_team: bool = Card.isAttackable(self)
-	var is_in_range: bool = Game.getCoordsDistance(Tile.getCoords(), Card.Tile.getCoords()) <= speed + getAttackRange()
-	var is_in_height: bool = abs(Card.Tile.getHeight() - Tile.getHeight()) in [0, 1]
-	var is_in_unit_height: bool = position.y <= (Card.position.y + Card.info.top) and Card.info.top <= (position.y + info.top)
-	var is_ranged: bool = Card.getAttackRange() > 1 and (abs(Card.Tile.getHeight() - Tile.getHeight()) <= 5)
-	var is_in_vision: bool = Card in getVisibleFieldCardsEnemies()
-
-	return is_enemy_team and is_in_range and (is_in_height or is_in_unit_height or is_ranged)
+	var attackables: Dictionary = {}
+	for GameObject in cards + iobjects:
+		var Tile: TileGD = GameObject.Tile if GameObject is CardGD else GameObject.getAttackableTile()
+		if isGameObjectAttackable(GameObject, Tile):
+			attackables[GameObject] = Tile
+	
+	return attackables
+	
+func getAttackableTile() -> TileGD: # Simplifying function for iobjects
+	return Tile
+	
+func isGameObjectAttackable(GameObject: GameObjectGD, AttackableTile: TileGD) -> bool:
+	if !GameObject.isAttackable(self): return false
+	if !(Game.getCoordsDistance(Tile.getCoords(), AttackableTile.getCoords()) <= speed + getAttackRange()): return false
+	if !(GameObject in getVisibleGameObjects()): return false
+	var is_in_height: bool = abs(AttackableTile.getHeight() - Tile.getHeight()) in [0, 1]
+	var is_in_unit_height: bool = true
+	
+	if GameObject is CardGD:
+		is_in_unit_height = position.y <= (GameObject.position.y + GameObject.info.top) and GameObject.info.top <= (position.y + info.top)
+	
+	var is_ranged: bool = getAttackRange() > 1 and (abs(AttackableTile.getHeight() - Tile.getHeight()) <= 5)
+	return (is_in_height or is_in_unit_height or is_ranged)
 		
 #endregion
 
@@ -718,6 +730,12 @@ func onActiveEffect(_active_effect: ActiveEffectDatastore, _PickedTile: TileGD, 
 	
 func onActiveEffectPre(_active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles) -> void:
 	pass
+	
+func getActiveEffectDisabled(_active_effect: ActiveEffectDatastore) -> bool:
+	return false
+	
+func setActiveEffectUsed(active_effect: ActiveEffectDatastore, used: bool) -> void:
+	active_effect.used = used
 #endregion
 
 #region Status Effects

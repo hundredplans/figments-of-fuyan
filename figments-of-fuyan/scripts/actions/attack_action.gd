@@ -12,8 +12,8 @@ func _init(_Attacker: GameObjectGD = null, _Defenders: Variant = null) -> void:
 	elif _Defenders is GameObjectGD: Defenders = [_Defenders]
 	
 func onPreAction() -> void:
-	force_action.emit(ChangeTileRotationAction.new(Attacker, Game.getRelativeTileRotation(Attacker.Tile, Defenders[0].Tile)))
-	for Defender in Defenders:
+	force_action.emit(ChangeTileRotationAction.new(Attacker, Game.getRelativeTileRotation(Attacker.Tile, Defenders[0].getAttackableTile())))
+	for Defender in Defenders.filter(func(x: GameObjectGD): return x is CardGD):
 		force_action.emit(ChangeTileRotationAction.new(Defender, Game.getRelativeTileRotation(Defender.Tile, Attacker.Tile)))
 	
 	delay = 1.25 if Attacker.level_visible or Defenders.any(func(x: GameObjectGD): return x.level_visible) else 0.0

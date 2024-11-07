@@ -118,9 +118,4 @@ func onCreateAdjustedPoints() -> void:
 		#Point.setInfo(self)
 		#add_child(Point)
 		#Point.global_position = point
-#endregion	
-
-#region Attackable
-func isAttackable(_Attacker: GameObjectGD) -> bool:
-	return false
 #endregion

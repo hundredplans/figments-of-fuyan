@@ -38,6 +38,7 @@ func _ready() -> void:
 	all_tile_objects.sort_custom(func(x: TileObjectInfo, y: TileObjectInfo): return x.id < y.id)
 	
 	all_card_objects = Helper.getFofInfoArray(CardInfo)
+	all_card_objects = all_card_objects.filter(func(x: CardInfo): return x.id < 100)
 	all_card_objects.sort_custom(func(x: CardInfo, y: CardInfo): return x.id < y.id)
 	
 	all_game_objects = all_tile_objects + all_card_objects
@@ -49,10 +50,9 @@ func _ready() -> void:
 		button.mouse_entered.connect(onMouseInUI.bind(true))
 		button.mouse_exited.connect(onMouseInUI.bind(false))
 		
-		var data: SavedData
-		if info is TileInfo: data = SavedDataTile.new(info.id); button.theme_type_variation = "BlueButton"
-		elif info is ObjectInfo: data = SavedDataObject.new(info.id)
-		elif info is CardInfo: data = SavedDataCard.new(info.id); button.theme_type_variation = "YellowButton"
+		var data: SavedData = info.saved_data.new(info.id)
+		if info is TileInfo: button.theme_type_variation = "BlueButton"
+		elif info is CardInfo: button.theme_type_variation = "YellowButton"
 			
 		button.pressed.connect(onGameObjectInfoSelected.bind(data))
 		GameObjectsContainer.add_child(button)

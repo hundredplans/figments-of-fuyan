@@ -89,6 +89,7 @@ func onUpdateFreelookInput() -> void:
 	if Input.is_action_just_pressed("AltInput") and !disable_freelook:
 		camera_panning.emit(true)
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		get_viewport().warp_mouse(Vector2.ZERO)
 	elif Input.is_action_just_released("AltInput") and !disable_freelook:
 		camera_panning.emit(false)
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)

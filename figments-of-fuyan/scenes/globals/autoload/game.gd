@@ -287,10 +287,12 @@ func getsetMovementRange(Card: CardGD) -> Array:
 	var available_tiles: Array = tiles.filter(func(x: TileGD): return x.getMovementPathDisplay())
 	available_tiles.append(CenterTile)
 	
-	var attackables: Array = Card.getAttackablesInRange()
+	var attackables: Dictionary = Card.getAttackablesInRange()
 	for GameObject in attackables:
-		var coords: Vector4i = GameObject.getCoords()
-		var tiles_in_range: Array = available_tiles.filter(func(x: TileGD): return Game.getCoordsDistance(x.getCoords(), GameObject.getCoords()) <= Card.getAttackRange())
+		var Tile: TileGD = attackables[GameObject]
+		var coords: Vector4i = Tile.getCoords()
+		
+		var tiles_in_range: Array = available_tiles.filter(func(x: TileGD): return Game.getCoordsDistance(x.getCoords(), coords) <= Card.getAttackRange())
 		if tiles_in_range.is_empty(): continue
 		
 		var AttackFromTile: TileGD
@@ -302,15 +304,13 @@ func getsetMovementRange(Card: CardGD) -> Array:
 		else: # Closest tile is always the center tile as it's distance is 0, has to have unique logic as it doesn't generate paths
 			AttackFromTile = CenterTile
 			attack_from_path = [CenterTile]
-			
-		if GameObject is not CardGD: continue # For now return no logic
 		
-		var DefenderTile: TileGD = GameObject.Tile
-		available_tiles.append(DefenderTile)
-		attack_from_path.append(DefenderTile)
+		available_tiles.append(Tile)
+		attack_from_path.append(Tile)
 		
-		DefenderTile.setMovementPath(MovementPathGD.new(attack_from_path))
-		GameObject.setEnemyInMovementRange(true)
+		Tile.setMovementPath(MovementPathGD.new(attack_from_path))
+		if GameObject is CardGD:
+			GameObject.setEnemyInMovementRange(true)
 	return available_tiles
 	
 func onSurviveFallDamage(Card: CardGD, movement_path: Array, point_path: Array, astar: AStar3D) -> bool:

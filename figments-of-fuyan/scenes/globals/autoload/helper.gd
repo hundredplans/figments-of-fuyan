@@ -59,6 +59,12 @@ func getFilesRecursive(DIR_PATH: String, contents := []) -> Array:
 		contents = getFilesRecursive(DIR_PATH + "/" + dir, contents)
 	return contents
 	
+func getDirectoriesRecursive(DIR_PATH: String, contents := []) -> Array:
+	contents += Array(DirAccess.get_directories_at(DIR_PATH)).map(func(x: String): return DIR_PATH + "/" + x)
+	for dir in DirAccess.get_directories_at(DIR_PATH):
+		contents = getDirectoriesRecursive(DIR_PATH + "/" + dir, contents)
+	return contents
+	
 func getNodeTypeRecursive(parent: Node3D, script_type: Variant):
 	return getChildrenRecursive(parent).filter(func(x: Node): return is_instance_of(x, script_type))
 

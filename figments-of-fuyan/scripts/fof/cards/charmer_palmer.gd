@@ -51,3 +51,9 @@ func onSave() -> SavedDataCard:
 func onLoadData(data: SavedData) -> void:
 	super(data)
 	valid_cards = valid_cards.map(func(x: int): return Game.onFindPublicIDObject(x))
+
+func getDescription() -> String:
+	var active_effect: ActiveEffectDatastore = getActiveEffectByName("Charming Stance")
+	if active_effect != null:
+		return Helper.getDescriptionNumeric(super(), [active_effect.charges], [["ABILITY ", ("[1]" if !ascended else "[2]")]])
+	return super()
