@@ -2,6 +2,7 @@ class_name MovementFinishAction extends Action
 
 var tiles: Array
 var Card: CardGD
+var phase: Game.Phases # Set by level in pre action
 
 func _init(_Card: CardGD = null, _tiles: Array = []) -> void:
 	super()
@@ -16,7 +17,13 @@ func onPostAction() -> void:
 	
 	if Card.isEnemy(0) and Card.turn_state == Game.TurnStates.ACTIVE:
 		var NewCard: CardGD = Game.getNextInactiveCard(Card.team)
-		var actions: Array = [ChangeTurnStateAction.new(Card, Game.TurnStates.PASSED),\
-		AITurnAction.new(NewCard) if NewCard != null else ChangePhaseAction.new(Game.Phases.NEUTRAL if Card.isAlly(1) else Game.Phases.HAND)]
+		var actions: Array = [ChangeTurnStateAction.new(Card, Game.TurnStates.PASSED)]
+		
+		if phase in [Game.Phases.AI, Game.Phases.NEUTRAL]:
+			actions.append(
+				AITurnAction.new(NewCard) if NewCard != null else \
+				ChangePhaseAction.new(Game.Phases.NEUTRAL if Card.isAlly(1) else Game.Phases.HAND))
 		onAppendAction(actions)
 	
+func setPhaseByLevel(_phase: Game.Phases) -> void:
+	phase = _phase 

@@ -10,7 +10,7 @@ signal load_level
 var map_location_to_node: Dictionary
 var active_level: LevelGD
 var map_nodes_data: Array[SavedDataMapNode] = []
-var card_ids: Array = []
+var basic_card_ids: Array = []
 #endregion
 
 #region Helper
@@ -37,7 +37,7 @@ func onSave() -> SavedDataArea:
 func onLoadData(data: SavedData) -> void:
 	super(data)
 	add_to_group("AreasGD")
-	card_ids = info.card_ids.filter(func(x: int): \
+	basic_card_ids = info.card_ids.filter(func(x: int): \
 		return Game.isBasicRarity(Helper.getFofInfoID(CardInfo, x).rarity))
 		
 	map_nodes_data = data.map_nodes_data

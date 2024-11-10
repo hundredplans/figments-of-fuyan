@@ -31,7 +31,7 @@ func onProcessAction(action: Action) -> void:
 			onClear()
 		
 		elif action is AddStatusEffectAction and action.StatusEffect == self:
-			onStatusEffectAdded()
+			onStatusEffectAdded(action)
 			
 func onAdvanceTurn() -> void:
 	pass
@@ -39,5 +39,5 @@ func onAdvanceTurn() -> void:
 func getDescription() -> String:
 	return info.description
 	
-func onStatusEffectAdded() -> void:
+func onStatusEffectAdded(_action: AddStatusEffectAction) -> void:
 	pass

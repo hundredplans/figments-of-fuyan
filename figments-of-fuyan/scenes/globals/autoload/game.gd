@@ -120,7 +120,8 @@ func isAdjacentOrCloser(Tile: TileGD, _Tile: TileGD, distance: int = 2) -> bool:
 	return abs(coords.x - _coords.x) + abs(coords.y - _coords.y) + abs(coords.z - _coords.z) <= distance * 2
 	
 func getRelativeTileRotation(Tile: TileGD, _Tile: TileGD) -> int:
-	if Tile == _Tile: return 0
+	assert(Tile != null and _Tile != null)
+	assert(Tile != _Tile)
 	var direction: Vector3i = _Tile.getCoordsHeightless() - Tile.getCoordsHeightless()
 	var distance: int = getCoordsDistance(Tile.getCoords(), _Tile.getCoords())
 	
@@ -163,12 +164,14 @@ func getEnemyUnits(team: int = 0) -> Array:
 	return get_tree().get_nodes_in_group("FieldCardsGD").filter(func(x: CardGD): return x.team != team)
 	
 func getBaseCard(id: int, Tile: TileGD, team: int, tile_rotation: int, ascended: bool = false) -> SavedDataCard:
-	return Helper.getFofInfoID(CardInfo, id).saved_data.new(id, true, 0, Tile.getCoords(), tile_rotation, false, false, team, ascended)
+	return Helper.getFofInfoID(CardInfo, id).saved_data.new(id, true, 0, Tile.getCoords(), tile_rotation, VisionDatastore.new(), team, ascended)
 
 func getNewFieldCard(id: int, Tile: TileGD, team: int, tile_rotation: int, ascended: bool = false) -> CardGD:
 	var level: LevelGD = get_tree().get_nodes_in_group("LevelsGD")[0]
 	return SavedData.onLoadModel(getBaseCard(id, Tile, team, tile_rotation, ascended), level)
 
+func getUnitTiles() -> Array:
+	return get_tree().get_nodes_in_group("FieldCardsGD").map(func(x: CardGD): return x.Tile)
 #endregion
 
 #region Vision
@@ -201,6 +204,11 @@ func getVisibleFieldCards(team: int = 0) -> Array:
 #region Positions
 func onRotatePosition(coords: Vector3, theta: float) -> Vector3:
 	return Vector3(coords.x * cos(theta) + coords.z * sin(theta), coords.y, -coords.x * sin(theta) + coords.z * cos(theta))
+
+func onRotateCoords(coords: Vector4i, tile_rotation: int) -> Vector4i:
+	var theta: float = tile_rotation * (PI / 3)
+	return Vector4i(coords.x * cos(theta) + coords.z * sin(theta), coords.y, -coords.x * sin(theta) + coords.z * cos(theta), coords.w)
+
 #endregion
 
 #region Phases
@@ -246,7 +254,7 @@ func getsetMovementRange(Card: CardGD) -> Array:
 	
 	var all_cards_tiles: Array = get_tree().get_nodes_in_group("FieldCardsGD").map(func(x: CardGD): return x.Tile)
 	
-	tiles = tiles.filter(func(x: TileGD): return !x.occupied_objects.any(func(y: ObjectGD): return y.isSolid()) and x not in all_cards_tiles) # Check for solidity
+	tiles = tiles.filter(func(x: TileGD): return !x.isSolid() and x not in all_cards_tiles) # Check for solidity
 	for Tile in tiles:
 		var astar := AStar3D.new()
 		# Limits tiles to those in movement range

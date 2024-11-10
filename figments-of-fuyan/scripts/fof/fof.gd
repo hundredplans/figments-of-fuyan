@@ -3,6 +3,7 @@ class_name FofGD extends Node3D
 signal push_action
 signal append_action
 signal force_action
+signal remove_move_and_attack_actions
 
 var info: FofInfo
 var groupsave: bool = true
@@ -31,7 +32,13 @@ func onAppendAction(actions: Variant, action_owner: Variant = self) -> void:
 	for action in actions:
 		action.owner = action_owner
 		append_action.emit(action)
+		
+func onForceAction(action: Action) -> void:
+	action.owner = self
+	force_action.emit(action)
 
 func onProcessAction(_action: Action) -> void: pass
 
+func onRemoveMoveAndAttackActions(Card: CardGD) -> void:
+	remove_move_and_attack_actions.emit(Card)
 #endregion

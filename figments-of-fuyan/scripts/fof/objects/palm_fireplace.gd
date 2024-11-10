@@ -19,7 +19,7 @@ func onProcessAction(action: Action) -> void:
 
 func onLoadDataLevel() -> void:
 	super()
-	onVisibleVFX(level_visible)
+	onVisibleVFX(vision_datastore.level_visible)
 
 func getValidActiveEffects(Card: CardGD) -> Array:
 	var arr: Array = active_effects if isAdjacent(Card.getCoords()) else [] # For debugging

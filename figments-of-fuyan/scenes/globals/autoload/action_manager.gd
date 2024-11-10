@@ -54,21 +54,30 @@ func onForceAction(action: Action) -> void:
 	action.post = true
 	process_action.emit(action)
 
-func onRemoveAction(filter_method: Callable) -> void:
-	actions = actions.filter(filter_method)
-
 func onDebugAction(action: Action) -> void:
 	past_actions_debug.append(active_action)
 	var path: String = action.get_script().resource_path
-	#print(path.get_slice("/", path.get_slice_count("/") - 1))
+	print(path.get_slice("/", path.get_slice_count("/") - 1))
 	var logs: Array = action.getLogInfo()
 	if action.failed: logs.append("FAILED")
 	
-	#for log_info in logs:
-		#print("	" + log_info)
+	for log_info in logs:
+		print("	" + log_info)
+	
+func onDebugActionNames() -> void:
+	print("Debug Action Names: ")
+	for action in actions:
+		var path: String = action.get_script().resource_path
+		print(path.get_slice("/", path.get_slice_count("/") - 1))
+	print()
 	
 var is_action_playing: bool
 func onActionPlaying(state: bool) -> void:
 	if state != is_action_playing:
 		is_action_playing = state
 		action_playing.emit(state)
+
+func onRemoveMoveAndAttackActions(Card: CardGD):
+	actions = actions.filter(func(x: Action):
+			return !((x is MoveToTileAction and x.Card == Card) or (x is AttackAction and x.Attacker == Card)))
+		

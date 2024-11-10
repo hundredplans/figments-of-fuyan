@@ -4,9 +4,9 @@ class_name GameObjectGD extends FofGD
 var Model: Node3D
 var coords: Vector4i
 var tile_rotation: int
-var level_visible: bool
-var is_revealed: bool
 var adjusted_points: Array = []
+
+var vision_datastore: VisionDatastore
 #endregion
 
 #region Helper Functions
@@ -23,7 +23,7 @@ func getStaticBodies() -> Array[StaticBody3D]:
 
 #region Is Checks
 func isLevelVisible() -> bool:
-	return level_visible
+	return vision_datastore.level_visible
 #endregion
 
 #region Getters
@@ -66,12 +66,14 @@ func setMapPosition() -> void:
 #region Save/Load/Clear
 func onLoadData(data: SavedData) -> void:
 	super(data)
-	level_visible = data.level_visible
-	is_revealed = data.is_revealed
+	vision_datastore = data.vision_datastore
 	add_to_group("GameObjectsGD")
 	
 func onLoadDataLevel() -> void:
 	onCreateAdjustedPoints()
+	
+func onLoadDataLevelFofInit() -> void:
+	pass
 #endregion
 
 #region Material Updates
@@ -95,13 +97,16 @@ func setCollisionLayers(layer: int) -> void:
 
 #region Level Visible
 func setLevelVisible(state: bool) -> void:
-	level_visible = state if !is_revealed else true
+	vision_datastore.level_visible = state if !getIsRevealed() else true
 	
 func getLevelVisible() -> bool:
-	return level_visible
+	return vision_datastore.level_visible
 	
-func onRevealed() -> void:
-	is_revealed = true
+func getIsRevealed() -> bool:
+	return vision_datastore.is_revealed
+	
+func onRevealed(state: bool) -> void:
+	vision_datastore.is_revealed = state
 #endregion
 
 #region Points

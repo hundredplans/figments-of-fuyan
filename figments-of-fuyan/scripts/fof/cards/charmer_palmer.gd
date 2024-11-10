@@ -21,7 +21,7 @@ func onActiveEffectPre(active_effect: ActiveEffectDatastore, PickedTile: TileGD,
 	super(active_effect, PickedTile, active_effect_tiles)
 	if active_effect is ActiveAbilityDatastore and active_effect.name == "Charming Stance":
 		var cards: Array = active_effect_tiles.pickable_tiles.map(func(x: TileGD): return Game.getAllyFieldCard(x, team))
-		force_action.emit(ChangeTileRotationAction.new(self, Game.getRelativeTileRotation(Tile, PickedTile)))
+		onForceAction(ChangeTileRotationAction.new(self, Game.getRelativeTileRotation(Tile, PickedTile)))
 	
 func onPickable(x: TileGD) -> bool:
 	var Card: CardGD = Game.getAllyFieldCard(x, team)

@@ -9,5 +9,5 @@ func onProcessAction(action: Action) -> void:
 func getDescription() -> String:
 	return Helper.getDescription(super(), [turns])
 	
-func onStatusEffectAdded() -> void:
+func onStatusEffectAdded(_action: AddStatusEffectAction) -> void:
 	onPushAction(ChangeAttacksAction.new(Card, 0))

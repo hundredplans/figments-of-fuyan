@@ -9,6 +9,9 @@ func onProcessAction(action: Action) -> void:
 	
 func getDescription() -> String:
 	return super()
+	
+func onArrivePre(_action: AwakenAction) -> void:
+	pass
 
 func onArrive(action: AwakenAction) -> void:
 	onPushAction(DamageAction.new(self, self, 2))

@@ -21,7 +21,7 @@ func getJumpFallDelay() -> float:
 	return (1.8) if movement_type == MOVEMENT_TYPES.JUMP else (fall_time + 1)
 
 func onPreAction() -> void:
-	force_action.emit(ChangeTileRotationAction.new(Card, Game.getRelativeTileRotation(Card.Tile, DestinationTile)))
+	onForceAction(ChangeTileRotationAction.new(Card, Game.getRelativeTileRotation(Card.Tile, DestinationTile)))
 	if DestinationTile.getHeight() - Card.Tile.getHeight() == 1: movement_type = MOVEMENT_TYPES.JUMP
 	elif DestinationTile.getHeight() - Card.Tile.getHeight() <= -1:
 		movement_type = MOVEMENT_TYPES.FALL
@@ -29,7 +29,7 @@ func onPreAction() -> void:
 		fall_time = 1 + (height_diff * 0.1)
 	elif DestinationTile.isRamp() or Card.Tile.isRamp(): movement_type = MOVEMENT_TYPES.RAMP
 	else: movement_type = MOVEMENT_TYPES.REGULAR
-	delay = (1.0 if !isJumpFall() else getJumpFallDelay()) if Card.level_visible else 0.0
+	delay = (1.0 if !isJumpFall() else getJumpFallDelay()) if Card.vision_datastore.level_visible else 0.0
 
 func onPostAction() -> void:
 	var actions: Array = [OccupyAction.new(Card, DestinationTile, false),\

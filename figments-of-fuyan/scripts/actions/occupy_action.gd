@@ -1,6 +1,7 @@
 class_name OccupyAction extends Action
 
 var Card: CardGD
+var PreviousTile: TileGD
 var Tile: TileGD
 # For movement set to false
 var apply_occupy_instant: bool
@@ -10,6 +11,9 @@ func _init(_Card: CardGD = null, _Tile: TileGD = null, _apply_occupy_instant: bo
 	Card = _Card
 	Tile = _Tile
 	apply_occupy_instant = _apply_occupy_instant
+
+func onPreAction() -> void:
+	PreviousTile = Card.Tile
 
 func onPostAction() -> void:
 	var coords: Vector4i # Last coords of Tile if null otherwise new coords

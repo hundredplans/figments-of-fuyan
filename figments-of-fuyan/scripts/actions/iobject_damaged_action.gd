@@ -9,7 +9,7 @@ func _init(_IObject: IObjectGD = null, _damage_action: DamageAction = null) -> v
 	damage_action = _damage_action
 	
 func onPreAction() -> void:
-	pass
+	IObject.onIObjectDamagedPre(damage_action)
 	
 func onPostAction() -> void:
 	IObject.onIObjectDamaged(damage_action)

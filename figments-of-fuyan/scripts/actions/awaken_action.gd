@@ -10,7 +10,7 @@ func _init(_Card: CardGD = null, _Tile: TileGD = null) -> void:
 	Tile = _Tile
 
 func onPreAction() -> void:
-	force_action.emit(OccupyAction.new(Card, Tile))
+	onForceAction(OccupyAction.new(Card, Tile))
 
 func onPostAction() -> void:
 	var SpawnObject: SpawnGD = Tile.getSpawnTile()

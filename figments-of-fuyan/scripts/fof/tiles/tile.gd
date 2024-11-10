@@ -28,6 +28,9 @@ func isRamp() -> bool:
 	
 func isAdjacent(_coords: Vector4i, distance: int = 1) -> bool:
 	return Game.getCoordsDistance(getCoords(), _coords) == distance
+	
+func isSolid() -> bool:
+	return occupied_objects.any(func(x: ObjectGD): return x.isSolid())
 #endregion
 
 #region Getters
@@ -89,7 +92,7 @@ func setOutlineMaterial() -> void:
 		mat = load(info.ACTIVE_EFFECT_PICKABLE_MATERIAL)
 	elif in_active_effect_range:
 		mat = load(info.ACTIVE_EFFECT_RANGE_MATERIAL)
-	elif (occupy_state != OccupyStates.NULL and level_visible and !is_card_moving):
+	elif (occupy_state != OccupyStates.NULL and vision_datastore.level_visible and !is_card_moving):
 		match occupy_state:
 			OccupyStates.ALLY: mat = load(info.ALLY_OCCUPY_MATERIAL)
 			OccupyStates.ENEMY: 
@@ -101,7 +104,7 @@ func setOutlineMaterial() -> void:
 	elif is_path_hovered and !is_action_lock: mat = load(info.PATH_HOVERED_MATERIAL)
 	elif is_hovered and !is_action_lock: mat = load(info.HOVERED_MATERIAL)
 	elif display_movement_path and !is_action_lock: mat = load(info.MOVEMENT_RANGE_MATERIAL)
-	elif !level_visible: mat = load(info.GREYSCALE_MATERIAL)
+	elif !vision_datastore.level_visible: mat = load(info.GREYSCALE_MATERIAL)
 		
 	getMeshes()[0].set_surface_override_material(1, mat)
 #endregion
@@ -126,7 +129,7 @@ func onCreateTileFill(state: bool) -> String:
 #endregion
 #region Save / Load
 func onSave() -> SavedDataGameObject:
-	return SavedDataTile.new(info.id, false, public_id, coords, tile_rotation, level_visible, is_revealed, variation, tile_fill, occupy_state)
+	return SavedDataTile.new(info.id, false, public_id, coords, tile_rotation, vision_datastore, variation, tile_fill, occupy_state)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -181,7 +184,7 @@ func onOccupy(Card: CardGD, instant: bool) -> void:
 	
 	if instant: setOutlineMaterial()
 	
-func onOccupyByIObject(IObject: IObjectGD) -> void:
+func onOccupyByIObject(_IObject: IObjectGD) -> void:
 	occupy_state = OccupyStates.ATTACKABLE_IOBJECT
 	setOutlineMaterial()
 #endregion

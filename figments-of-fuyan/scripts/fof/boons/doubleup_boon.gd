@@ -15,7 +15,7 @@ func onProcessAction(action: Action) -> void:
 		and !action.stat_infos.all(func(x: StatInfo): return x.values.all(func(y: int): return y <= 0)\
 		or x.absolute or x.immutable or x.types.all(func(z: Game.Stats): return z == Game.Stats.HEALTH))\
 		and doubleup_charges > 0:
-			force_action.emit(BoonActivatedAction.new(self, action))
+			onForceAction(BoonActivatedAction.new(self, action))
 	
 func onAscenscionChanged() -> void:
 	super()

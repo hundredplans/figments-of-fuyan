@@ -32,16 +32,21 @@ func setOccupiedTiles(tile_position_to_tile: Dictionary) -> void:
 		getAttackableTile().onOccupyByIObject(self)
 
 func onSave() -> SavedDataIObject:
-	return SavedDataIObject.new(info.id, false, public_id, coords, tile_rotation, level_visible, is_revealed, variation, map_rotation, map_position, height,\
+	return SavedDataIObject.new(info.id, false, public_id, coords, tile_rotation, vision_datastore, variation, map_rotation, map_position, height,\
 	occupied_tiles.map(func(x: TileGD): return x.getCoords()), active_effects, ability_save)
 
 func onProcessAction(action: Action) -> void:
 	if action.post:
-		if action is ChangePhaseAction and action.phase == Game.Phases.START:
-			onCreateActiveEffects()
+		if action is ChangePhaseAction:
+			if action.phase == Game.Phases.START:
+				onCreateActiveEffects()
+			elif action.phase == Game.Phases.PLAYER:
+				onAdvanceTurn()
 		elif action is DamageAction and self in action.Defenders:
 			onWasDamaged(action)
 			
+func onAdvanceTurn() -> void:
+	pass
 #region Damaged
 func onWasDamaged(_action: DamageAction) -> void:
 	pass

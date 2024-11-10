@@ -1,7 +1,7 @@
 @tool
 extends Node
 
-#region Exports
+#region Exports"res://resources/fof/cards/coconut_crab.tres"
 @export var card_info: CardInfo:
 	set(_card_info):
 		onUnitChanged(_card_info)

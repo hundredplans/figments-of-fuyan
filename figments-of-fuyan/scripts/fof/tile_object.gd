@@ -42,7 +42,9 @@ func onLoadData(data: SavedData) -> void:
 	coords = data.coords
 	tile_rotation = data.tile_rotation
 	variation = data.variation
-	level_visible = data.level_visible
+	
+	if data.vision_datastore != null: vision_datastore = data.vision_datastore
+	else: vision_datastore = VisionDatastore.new()
 	
 	add_to_group("TileObjectsGD")
 	super(data)
@@ -76,7 +78,7 @@ func setLevelVisible(state: bool) -> void:
 	onApplyGreyscaleMaterial()
 				
 func onApplyGreyscaleMaterial() -> void:
-	var greyscale_material: ShaderMaterial = load(info.GREYSCALE_MATERIAL) if !level_visible else null
+	var greyscale_material: ShaderMaterial = load(info.GREYSCALE_MATERIAL) if !vision_datastore.level_visible else null
 	for mesh in getMeshes():
 		for surface_id in mesh.get_surface_override_material_count():
 			mesh.set_surface_override_material(surface_id, greyscale_material)

@@ -17,15 +17,10 @@ func onPreAction() -> void:
 	
 func onPostAction() -> void:
 	if Discoverer.isAlly(0) and owner is VisionAction and owner.owner is OccupyAction and enter_vision and Discovered not in old_team_vision:
-		onRemoveAction(filterMethod)
+		onRemoveMoveAndAttackActions(Discoverer)
 
 func getDelay() -> float:
 	return super()
-	
-func filterMethod(action: Action) -> bool:
-	var move_predicate: bool = action is MoveToTileAction and action.Card == Discoverer
-	var attack_predicate: bool = action is AttackAction and action.Attacker == Discoverer
-	return !(move_predicate or attack_predicate)
 
 func getLogInfo() -> Array:
 	return ["Discoverer: " + Discoverer.info.name, "Discovered: " + Discovered.info.name, "State: " + str(enter_vision)]

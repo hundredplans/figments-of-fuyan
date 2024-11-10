@@ -76,7 +76,7 @@ func onDeleteTile(tile_coords: Vector4i) -> void:
 
 #region Save/Load
 func onSave() -> SavedDataGameObject:
-	return SavedDataObject.new(info.id, false, public_id, coords, tile_rotation, level_visible, is_revealed, variation, map_rotation, map_position, height,\
+	return SavedDataObject.new(info.id, false, public_id, coords, tile_rotation, vision_datastore, variation, map_rotation, map_position, height,\
 	occupied_tiles.map(func(x: TileGD): return x.getCoords()))
 
 func onLoadData(data: SavedData) -> void:
@@ -118,9 +118,10 @@ func setOccupiedTiles(tile_position_to_tile: Dictionary) -> void:
 		if distance < closest_distance:
 			closest_tile = tile_position_to_tile[pos]
 			closest_distance = distance
-			
+	
 	var coords_array: Array = getTilesCoords().map(func(x: Vector4i): return x + closest_tile.getCoords())
 	occupied_tiles = coords_array.map(func(x: Vector4i): return Game.getTile(x)).filter(func(x: TileGD): return x != null)
+	
 	for Tile in occupied_tiles:
 		Tile.setOccupiedObject(self)
 		

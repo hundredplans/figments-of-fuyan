@@ -167,7 +167,7 @@ func onSave() -> SavedDataCard:
 	for stat_info in delayed_stats: stat_info.onSave()
 	visible_game_objects_public_ids = visible_game_objects.map(func(x: GameObjectGD): return x.public_id)
 	
-	return SavedDataCard.new(info.id, false, public_id, coords, tile_rotation, level_visible, is_revealed, team, ascended, \
+	return SavedDataCard.new(info.id, false, public_id, coords, tile_rotation, vision_datastore, team, ascended, \
 	attack, health, speed, max_speed, max_health, energy, draw_order, card_place, turn_state,\
 	SavedData.onSaveGroup(field_traits), SavedData.onSaveGroup(status_effects), attacks, attack_range, delayed_stats,\
 	visible_game_objects_public_ids, ability_save, active_effects, tool_data, SavedData.onSaveGroup(field_effects), anibility_datastore)
@@ -221,6 +221,14 @@ func onLoadDataLevel() -> void:
 	onLoadStatusEffects()
 	onLoadFieldEffects()
 	setVisibleGameObjects()
+	
+func onLoadDataLevelFofInit() -> void:
+	super()
+	if !Game.isChampion(info.rarity):
+		if is_in_group("HandCardsGD"): return
+		onPushAction(AddToDeckAction.new(self, AddToDeckAction.ADD_TYPES.SHUFFLE))
+	else:
+		onPushAction(InsertAction.new(self))
 	
 var field_traits_datas: Array
 var status_effects_datas: Array
@@ -491,7 +499,7 @@ func onAwaken() -> void:
 	setPositionToTile()
 	setTileRotation(tile_rotation)
 	setTurnState(turn_state)
-	setLevelVisible(level_visible)
+	setLevelVisible(vision_datastore.level_visible)
 	
 func onPlayedFromHand() -> void:
 	if Game.getRarityString(info.rarity) != "Champion":
@@ -666,7 +674,7 @@ func onUpdateStat(type: Game.Stats, difference: int, show_particles: bool) -> vo
 		Game.Stats.MAX_HEALTH: value = max_health
 		Game.Stats.MAX_SPEED: value = max_speed
 	
-	FieldInfo.onUpdateStat(type, value, difference, level_visible, show_particles)
+	FieldInfo.onUpdateStat(type, value, difference, vision_datastore.level_visible, show_particles)
 #endregion
 
 #region Traits

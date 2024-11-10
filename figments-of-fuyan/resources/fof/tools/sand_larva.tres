@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ToolInfo" load_steps=7 format=3 uid="uid://c58u2b2awelyw"]
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=8 format=3 uid="uid://c58u2b2awelyw"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/tools/tool_info.gd" id="1_fb4oe"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_vn1cb"]
@@ -7,13 +7,26 @@
 [ext_resource type="Image" uid="uid://c00q5m0c3pakf" path="res://assets/sprites/game/tools/Sand Larva.png" id="3_xjulc"]
 [ext_resource type="PackedScene" uid="uid://b0k7ehg81u3t1" path="res://assets/models/fof/tools/sand_larva.glb" id="4_nvk48"]
 
+[sub_resource type="Resource" id="Resource_lix8k"]
+script = ExtResource("1_vn1cb")
+exists = 1
+ascended_description = ""
+ascended_max_charges = -1
+name = "Sandy Spy"
+description = "REVEAL a random enemy for [1] Turn"
+max_charges = 1
+delay = 0.0
+camera_type = 0
+charges = 0
+used = false
+
 [resource]
 script = ExtResource("1_fb4oe")
 icon = ExtResource("3_xjulc")
 description = "ABILITY [1]: REVEAL a random enemy for [1] Turn"
 ascended_description = ""
 RARITY = 2
-active_abilities = Array[ExtResource("1_vn1cb")]([])
+active_abilities = Array[ExtResource("1_vn1cb")]([SubResource("Resource_lix8k")])
 model = ExtResource("4_nvk48")
 id = 11
 name = "Sand Larva"

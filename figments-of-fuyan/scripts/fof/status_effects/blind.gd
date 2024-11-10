@@ -1,6 +1,6 @@
 extends StatusEffectGD
 
-func onFofInit() -> void:
+func onStatusEffectAdded(_action: AddStatusEffectAction) -> void:
 	onPushAction(VisionAction.new(Card))
 
 func onProcessAction(action: Action) -> void:

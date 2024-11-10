@@ -13,5 +13,5 @@ func onProcessAction(action: Action) -> void:
 func getDescription() -> String:
 	return Helper.getDescription(super(), [turns])
 	
-func onStatusEffectAdded() -> void:
+func onStatusEffectAdded(_action: AddStatusEffectAction) -> void:
 	onPushAction(StatAction.new(StatInfo.new(Card, Game.Stats.SPEED, 0, 0, true, false, true)))

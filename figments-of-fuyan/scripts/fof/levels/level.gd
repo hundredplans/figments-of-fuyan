@@ -45,15 +45,7 @@ func onLoadData(data: SavedData) -> void:
 		add_child(light.instantiate())
 	
 	for tile_object_data in data.data:
-		var TileObject: TileObjectGD = SavedData.onLoadModel(tile_object_data, self)
-		TileObject.add_to_group("LevelTileObjectsGD")
-		TileObject.set_spectate_card.connect(func(x: TileObjectGD): set_spectate_card.emit(x))
-		
-		if TileObject is TileGD: TileObject.add_to_group("LevelTilesGD"); 
-		elif TileObject is ObjectGD:
-			TileObject.add_to_group("LevelObjectsGD")
-			if TileObject is IObjectGD:
-				TileObject.add_to_group("LevelIObjectsGD")
+		onLoadTileObjectInit(tile_object_data)
 			
 	for TileObject in get_tree().get_nodes_in_group("LevelTileObjectsGD"):
 		TileObject.onLoadDataLevel()
@@ -66,42 +58,34 @@ func onLoadData(data: SavedData) -> void:
 	level_camera_data = data.level_camera_data
 	add_to_group("LevelsGD")
 
+func onLoadTileObjectInit(data: SavedDataTileObject) -> TileObjectGD:
+	var TileObject: TileObjectGD = SavedData.onLoadModel(data, self)
+	TileObject.add_to_group("LevelTileObjectsGD")
+	TileObject.set_spectate_card.connect(func(x: TileObjectGD): set_spectate_card.emit(x))
+	
+	if TileObject is TileGD: TileObject.add_to_group("LevelTilesGD"); 
+	elif TileObject is ObjectGD:
+		TileObject.add_to_group("LevelObjectsGD")
+		if TileObject is IObjectGD:
+			TileObject.add_to_group("LevelIObjectsGD")
+			
+	return TileObject
+
 func onLoadActiveLevel(data: SavedDataLevel) -> void:
 	# Triggers after UI and World have loaded
 	if is_init:
-		var deck_cards: Array = get_tree().get_nodes_in_group("AllyCardsGD")
+		var actions: Array = [ChangePhaseAction.new(Game.Phases.START)]
+		for GameObject in get_tree().get_nodes_in_group("GameObjectsGD"):
+			GameObject.onLoadDataLevelFofInit()
 		
-		var champion_card: CardGD = deck_cards.filter(func(x: CardGD): return Game.isChampion(x.info.rarity))[0]
-		deck_cards.erase(champion_card)
-		
-		deck_cards = deck_cards.filter(func(x: CardGD): return !x.is_in_group("HandCardsGD"))
-		for Card in deck_cards: onPushAction(AddToDeckAction.new(Card, AddToDeckAction.ADD_TYPES.SHUFFLE))
-		
-		onPushAction(InsertAction.new(champion_card))
-		onPushAction(ChangePhaseAction.new(Game.Phases.START))
-		
-		
-		for Spawn in get_tree().get_nodes_in_group("AllySpawnsGD"):
-			onPushAction(RevealAction.new(Spawn))
-		
-		var spawns: Array = get_tree().get_nodes_in_group("EnemySpawnsGD").filter(func(x: SpawnGD): return x.spawn_id == 0)
-		for i in range(spawns.size()):
-			var Spawn: SpawnGD = spawns[i]
-			var Card: CardGD = SavedData.onLoadModel(SavedDataCard.new(enemy_spawn_ids[i], true, 0, Vector4i.ZERO, Spawn.tile_rotation, false, false, 1), self)
-			onPushAction(AwakenAction.new(Card, Spawn.getTile()))
-				
-		for Spawn in get_tree().get_nodes_in_group("NeutralSpawnsGD").filter(func(x: SpawnGD): return x.spawn_id > 0):
-			var Card: CardGD = SavedData.onLoadModel(SavedDataCard.new(Spawn.spawn_id, true, 0, Vector4i.ZERO, Spawn.tile_rotation, false, false, 2), self)
-			onPushAction(AwakenAction.new(Card, Spawn.getTile()))
-		
-		var boon_actions: Array = get_tree().get_nodes_in_group("BoonsGD").map(func(x: BoonGD): return AddBoonAction.new(x.info.id, x.ascended, true))
-		onPushAction(boon_actions)
-				
-		onPushAction(LevelVisibleAction.new(false, get_tree().get_nodes_in_group("LevelTileObjectsGD") + get_tree().get_nodes_in_group("FieldCardsGD")))
+		actions += get_tree().get_nodes_in_group("BoonsGD").map(func(x: BoonGD): return AddBoonAction.new(x.info.id, x.ascended, true))
+		actions.append(LevelVisibleAction.new(false, get_tree().get_nodes_in_group("LevelTileObjectsGD") + get_tree().get_nodes_in_group("FieldCardsGD")))
+		onPushAction(actions)
 		return
 		
 	for Boon in get_tree().get_nodes_in_group("BoonsGD"):
 		boon_added.emit(Boon)
+		
 	onChangePhase(data.phase, true)
 	for Card in get_tree().get_nodes_in_group("HandCardsGD"):
 		draw_card.emit(Card)
@@ -111,11 +95,19 @@ func onLoadActiveLevel(data: SavedDataLevel) -> void:
 var is_init: bool = false
 func onFofInit() -> void:
 	is_init = true
+	var tile_position_to_tile: Dictionary = getTilePositionToTile()
+	for Obj in get_tree().get_nodes_in_group("LevelObjectsGD"):
+		setOccupiedTiles(Obj, tile_position_to_tile)
+	
+func getTilePositionToTile() -> Dictionary:
 	var tile_position_to_tile: Dictionary
 	for Tile in get_tree().get_nodes_in_group("TilesGD"):
 		tile_position_to_tile[Tile.position] = Tile
+	return tile_position_to_tile
 	
-	get_tree().call_group("ObjectsGD", "setOccupiedTiles", tile_position_to_tile)
+func setOccupiedTiles(Obj: ObjectGD, tile_position_to_tile: Dictionary = getTilePositionToTile()) -> void:
+	Obj.setOccupiedTiles(tile_position_to_tile)
+	
 #endregion
 
 #region Getters
@@ -185,6 +177,8 @@ func onProcessAction(action: Action) -> void:
 			if action.phase == phase: action.failed = true
 		elif action is CameraChangeAction:
 			if getSpectateObject() == action.SpectateObject: action.failed = true
+		elif action is MovementFinishAction:
+			action.setPhaseByLevel(phase)
 #endregion
 
 #region Hand

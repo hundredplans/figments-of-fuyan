@@ -171,7 +171,7 @@ func onTilePressed() -> void:
 func onTileInspected() -> void:
 	var Tile: TileGD = MouseHoverTile
 	var Card: CardGD = Tile.getCard()
-	if Card != null and Card.level_visible:
+	if Card != null and Card.vision_datastore.level_visible:
 		Card.setInspectable(true, UI)
 		Card.onInspectCard()
 #endregion

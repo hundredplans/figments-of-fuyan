@@ -3,9 +3,10 @@ class_name Action extends Resource
 signal push_action
 signal append_action
 signal force_action
-signal remove_action
+signal remove_move_and_attack_actions
 
 var owner: Variant # FofGD or another action always
+@export var action_delay: float = 0
 @export var owner_public_id: int
 @export var failed: bool = false
 @export var post: bool = false
@@ -14,11 +15,11 @@ func _init() -> void:
 	push_action.connect(Game.ActionManagerReference.onPushAction)
 	append_action.connect(Game.ActionManagerReference.onAppendAction)
 	force_action.connect(Game.ActionManagerReference.onForceAction)
-	remove_action.connect(Game.ActionManagerReference.onRemoveAction)
+	remove_move_and_attack_actions.connect(Game.ActionManagerReference.onRemoveMoveAndAttackActions)
 	Game.ActionManagerReference.process_action.connect(onProcessAction)
 
 #region Fillers
-func getDelay() -> float: return 0
+func getDelay() -> float: return action_delay
 func onPreAction() -> void: pass
 func onPostAction() -> void: pass
 func onProcessAction(_action: Action) -> void: pass
@@ -33,8 +34,12 @@ func onPushAction(actions: Variant, action_owner: Variant = self) -> void:
 		action.owner = action_owner
 		push_action.emit(action)
 		
-func onRemoveAction(filter_method: Callable) -> void:
-	remove_action.emit(filter_method)
+func onForceAction(action: Action) -> void:
+	action.owner = self
+	force_action.emit(action)
+		
+func onRemoveMoveAndAttackActions(Card: CardGD) -> void:
+	remove_move_and_attack_actions.emit(Card)
 	
 func onAppendAction(actions: Variant, action_owner: Variant = self) -> void:
 	if actions is Action: actions = [actions]
@@ -51,6 +56,9 @@ func onSave() -> void:
 
 func onLoad() -> void:
 	owner = Game.onFindPublicIDObject(owner_public_id)
+	
+func setActionDelay(_action_delay: float) -> void:
+	action_delay = _action_delay
 	
 func getLogInfo() -> Array:
 	return []

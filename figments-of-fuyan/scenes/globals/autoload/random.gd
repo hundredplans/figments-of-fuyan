@@ -10,6 +10,12 @@ static func getRandomKey(odds: Dictionary) -> String:
 		if roll < odds[key] + total: return key
 		total += odds[key]
 	return odds[odds.size() - 1]
+	
+static func onConvertPercentOdds(odds: Dictionary) -> Dictionary:
+	var new_odds: Dictionary = {}
+	for key in odds.keys():
+		new_odds[key] = (odds[key] / 100)
+	return new_odds
 
 static func getBool() -> bool:
 	return randf() > 0.5

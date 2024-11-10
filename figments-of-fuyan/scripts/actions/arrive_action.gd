@@ -9,7 +9,7 @@ func _init(_Card: CardGD = null, _action: AwakenAction = null) -> void:
 	action = _action
 	
 func onPreAction() -> void:
-	pass
+	Card.onArrivePre(action)
 	
 func onPostAction() -> void:
 	Card.onArrive(action)

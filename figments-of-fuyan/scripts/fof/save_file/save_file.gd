@@ -25,8 +25,10 @@ func onSave() -> SavedData:
 	var map_effects: Array = SavedData.onSaveGroup(get_tree().get_nodes_in_group("MapEffectsGD"))
 	var deck_cards: Array = SavedData.onSaveGroup(get_tree().get_nodes_in_group("AllyCardsGD"))
 	var boons: Array = SavedData.onSaveGroup(get_tree().get_nodes_in_group("BoonsGD"))
+	var highest_public_id: int = Game.highest_public_id
 	time += int(timer.wait_time - timer.time_left)
-	return SavedDataSaveFile.new(id, false, public_id, my_seed, area.onSave(), shillings, map_effects, time, deck_cards, boons)
+	return SavedDataSaveFile.new(id, false, public_id, my_seed, area.onSave(), shillings,\
+	map_effects, time, deck_cards, boons, highest_public_id)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)

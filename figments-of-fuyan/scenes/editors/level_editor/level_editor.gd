@@ -259,7 +259,7 @@ func onHoverModelPlaced() -> void:
 	onTileObjectInfoSelected(save_data, false)
 		
 func onPlaceBaseTile(coords: Vector4i) -> TileGD:
-	return SavedData.onLoadModel(SavedDataTile.new(1, false, 0, coords, 0, false, false, int(is_overworld) * -1), World)
+	return SavedData.onLoadModel(SavedDataTile.new(1, false, 0, coords, 0, VisionDatastore.new(), int(is_overworld) * -1), World)
 	
 #endregion
 #region Elevation
