@@ -31,6 +31,9 @@ func isAdjacent(_coords: Vector4i, distance: int = 1) -> bool:
 	
 func isSolid() -> bool:
 	return occupied_objects.any(func(x: ObjectGD): return x.isSolid())
+	
+func isDeepwater() -> bool:
+	return info.id == 8
 #endregion
 
 #region Getters

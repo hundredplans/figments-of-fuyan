@@ -21,7 +21,10 @@ func onPreAction() -> void:
 			
 		var boon_info: BoonInfo = Helper.getFofInfoID(BoonInfo, id)
 		var saved_data_boon: SavedDataBoon = boon_info.saved_data.new(id, true, 0, ascended)
-		Boon = SavedData.onLoadModel(saved_data_boon, Game.get_tree().get_nodes_in_group("SaveFilesGD")[0])
+		
+		var save_file: SaveFileGD = Game.get_tree().get_nodes_in_group("SaveFilesGD")[0]
+		Boon = SavedData.onLoadModel(saved_data_boon, save_file)
+		save_file.onAddBoon(Boon)
 	else:
 		Boon = Game.get_tree().get_nodes_in_group("BoonsGD").filter(func(x: BoonGD): return x.info.id == id)[0]
 	

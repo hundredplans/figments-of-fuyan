@@ -7,9 +7,9 @@ static func getRandomKey(odds: Dictionary) -> String:
 	var roll: float = randf()
 	var total: float = 0
 	for key in odds:
-		if roll < odds[key] + total: return key
+		if roll < odds[key] + total: return str(key)
 		total += odds[key]
-	return odds[odds.size() - 1]
+	return str(odds[odds.size() - 1])
 	
 static func onConvertPercentOdds(odds: Dictionary) -> Dictionary:
 	var new_odds: Dictionary = {}

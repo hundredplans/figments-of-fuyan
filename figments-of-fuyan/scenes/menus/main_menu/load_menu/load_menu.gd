@@ -17,7 +17,6 @@ func _ready() -> void:
 			save_file_ui.setInfo(save)
 			save_file_ui.remove_save.connect(onRemoveSave)
 			save_file_ui.start.connect(onStart)
-			
 		MainContainer.move_child(QuitButton, MainContainer.get_child_count() - 1)
 
 func _on_quit_button_pressed() -> void:

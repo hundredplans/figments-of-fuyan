@@ -40,13 +40,8 @@ func onProcessAction(action: Action) -> void:
 		if action is ChangePhaseAction:
 			if action.phase == Game.Phases.START:
 				onCreateActiveEffects()
-			elif action.phase == Game.Phases.PLAYER:
-				onAdvanceTurn()
 		elif action is DamageAction and self in action.Defenders:
 			onWasDamaged(action)
-			
-func onAdvanceTurn() -> void:
-	pass
 #region Damaged
 func onWasDamaged(_action: DamageAction) -> void:
 	pass
@@ -83,4 +78,9 @@ func getActiveEffect(effect_name: String) -> ActiveEffectDatastore:
 	for active_effect in active_effects:
 		if active_effect.name == effect_name: return active_effect
 	return null
+#endregion
+
+#region Animation
+func onAbility() -> void:
+	if isLevelVisible(): AniPlayer.play("Ability")
 #endregion

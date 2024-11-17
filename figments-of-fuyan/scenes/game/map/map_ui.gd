@@ -10,6 +10,7 @@ var area: AreaGD
 @onready var BackgroundDarkener: Control = %BackgroundDarkener
 @onready var LegendBox: VBoxContainer = %LegendBox
 @onready var BoonBox: GridContainer = %BoonBox
+@onready var TimeLabel: Label = %TimeLabel
 #endregion
 
 #region Exports
@@ -26,7 +27,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	area.map_node_finished.connect(onMapNodeFinished)
 	area.map_node_hovered.connect(onMapNodeHovered)
 	area.map_node_entered.connect(onMapNodeEntered)
-	
+	TimeLabel.setInfo(save_file)
 	BoonBox.onUpdate()
 	BackgroundDarkener.visible = false
 	onMapStartAnimation()

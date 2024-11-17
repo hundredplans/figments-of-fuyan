@@ -4,21 +4,34 @@ const UI_DELAY: float = 0.2
 var selectable_cards: bool
 var pinned: bool
 var is_down: bool
-var mouse_in_ui: bool
-var AniPlayer: AnimationPlayer
-var area: Area2D
+var level: LevelGD
 
-func setInfo(_AniPlayer: AnimationPlayer, _area: Area2D) -> void:
-	AniPlayer = _AniPlayer
-	area = _area
-	area.mouse_entered.connect(onMouseInUI.bind(true))
-	area.mouse_exited.connect(onMouseInUI.bind(false))
+var mouse_in_ui: bool
+@export var AniPlayer: AnimationPlayer
+
+func _ready() -> void:
+	AniPlayer.animation_finished.connect(onAnimationFinished)
+
+var temp_up: bool
+var temp_down: bool
 
 func onMouseInUI(state: bool) -> void:
 	mouse_in_ui = state
 	if !pinned:
-		if state: onUp()
-		else: onDown()
+		if state: temp_up = true
+		else: temp_down = true
+
+var phase: Game.Phases
+func setPhase(_phase: Game.Phases) -> void:
+	phase = _phase
+	var state: bool = onCheckPin()
+	if state: onPin()
+	else: onUnpin()
+	
+	onSelectableCards(phase in [Game.Phases.START, Game.Phases.HAND])
+	
+func onCheckPin() -> bool:
+	return phase in [Game.Phases.START, Game.Phases.HAND]
 
 func onPin() -> void:
 	pinned = true
@@ -52,3 +65,30 @@ func onPlayAnimation(down: bool) -> bool:
 		else: AniPlayer.play_backwards("HandPanelMovement")
 		return true
 	return false
+
+func onAnimationFinished(animation_name: String) -> void:
+	if pinned and is_down:
+		onUp()
+		
+	elif !pinned and !is_down and !mouse_in_ui:
+		onDown()
+		
+func _on_child_entered_tree(CardUI: Node) -> void:
+	if CardUI is not Control: return
+	CardUI.mouse_in_ui.connect(onMouseInUI)
+
+func _process(_delta: float) -> void:
+	if temp_up and temp_down:
+		temp_up = false
+		temp_down = false
+	elif temp_up:
+		temp_up = false
+		onUp()
+	elif temp_down:
+		temp_down = false
+		onDown()
+
+func onCardSelected(selected: bool) -> void:
+	if selected: onUnpin()
+	else: onPin()
+		

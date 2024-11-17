@@ -770,7 +770,7 @@ func onStun(turns: int = 1) -> void:
 #region Advance Turn
 func onAdvanceTurn() -> void:
 	var actions: Array = [StatAction.new(
-		StatInfo.new(self, Game.Stats.SPEED, max_speed, 0, true, false, true)),
+		StatInfo.new(self, Game.Stats.SPEED, max_speed - int(Tile.isDeepwater()), 0, true, false, true)),
 		ChangeTurnStateAction.new(self, Game.TurnStates.INACTIVE)]
 		
 	actions += active_effects.map(func(x: ActiveEffectDatastore): return ChangeActiveEffectUsedAction.new(x, false))

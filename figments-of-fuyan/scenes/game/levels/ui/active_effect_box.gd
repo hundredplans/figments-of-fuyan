@@ -31,12 +31,14 @@ func setDisabled() -> void:
 		active_effect.owner.getActiveEffectDisabled(active_effect, Card) if active_effect.owner is IObjectGD\
 		else active_effect.owner.getActiveEffectDisabled(active_effect)
 	
-	var disabled: bool = active_effect_disabled or active_effect.used or active_effect.getCharges() == 0 or is_action_lock or\
-	(active_effect.owner is CardGD and ((active_effect.owner.turn_state != Game.TurnStates.INACTIVE or\
-	active_effect.owner.isMobile()) or active_effect.owner.isEnemy(0)))
+	var is_used: bool = active_effect.used
+	var no_charges: bool = active_effect.getCharges() == 0
+	var turn_passed: bool = Card.turn_state == Game.TurnStates.PASSED
+	var is_not_mobile_and_active: bool = !Card.isMobile() and Card.turn_state == Game.TurnStates.ACTIVE
+	var is_enemy: bool = Card.isEnemy(0)
 	
-	Btn.disabled = disabled
-	modulate = HOVERED_OR_BASE if !disabled else Color(0.6, 0.6, 0.6, 1)
+	Btn.disabled = active_effect_disabled or is_used or no_charges or is_not_mobile_and_active or turn_passed or is_enemy
+	modulate = HOVERED_OR_BASE if !Btn.disabled else Color(0.6, 0.6, 0.6, 1)
 
 var HOVERED_OR_BASE := Color(1, 1, 1, 1)
 func onMouseInUI(state: bool) -> void:

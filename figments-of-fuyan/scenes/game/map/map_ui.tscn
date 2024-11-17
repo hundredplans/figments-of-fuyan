@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://ssbbc35p2xby"]
+[gd_scene load_steps=14 format=3 uid="uid://ssbbc35p2xby"]
 
 [ext_resource type="Script" path="res://scenes/game/map/map_ui.gd" id="1_8nhbi"]
 [ext_resource type="LabelSettings" uid="uid://baxopkmeda53x" path="res://resources/ui/label_settings/roboto_huge.tres" id="2_r0ufu"]
@@ -8,6 +8,8 @@
 [ext_resource type="LabelSettings" uid="uid://cyodc3xq62xbg" path="res://resources/ui/label_settings/jacquard_large.tres" id="4_10pk8"]
 [ext_resource type="Script" path="res://scenes/game/levels/boon_box.gd" id="6_1qe81"]
 [ext_resource type="PackedScene" uid="uid://ct1cn5tc1ofmb" path="res://scenes/game/boons/boon_icon.tscn" id="7_fduhh"]
+[ext_resource type="PackedScene" uid="uid://cewvw3vx3mjcm" path="res://scenes/game/tools/tool_icon.tscn" id="9_mvtve"]
+[ext_resource type="PackedScene" uid="uid://db7lt6qbe4d0e" path="res://scenes/common/time_label/time_label.tscn" id="10_dlqmt"]
 
 [sub_resource type="Animation" id="Animation_bd438"]
 resource_name = "MapStart"
@@ -167,32 +169,6 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0.470588)
 
-[node name="ShillingsContainer" type="PanelContainer" parent="."]
-layout_mode = 0
-offset_left = 11.0
-offset_top = 13.0
-offset_right = 128.0
-offset_bottom = 73.0
-
-[node name="MarginContainer" type="MarginContainer" parent="ShillingsContainer"]
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="ShillingsContainer/MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 10
-
-[node name="TextureRect" type="TextureRect" parent="ShillingsContainer/MarginContainer/HBoxContainer"]
-layout_mode = 2
-texture = ExtResource("3_75w01")
-
-[node name="ShillingsLabel" type="Label" parent="ShillingsContainer/MarginContainer/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "0"
-
-[node name="Spacer" type="Control" parent="ShillingsContainer/MarginContainer/HBoxContainer"]
-layout_mode = 2
-
 [node name="BoonBox" type="GridContainer" parent="."]
 unique_name_in_owner = true
 layout_mode = 0
@@ -203,3 +179,63 @@ offset_bottom = 511.0
 columns = 16
 script = ExtResource("6_1qe81")
 BoonIconPacked = ExtResource("7_fduhh")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 0
+offset_right = 1540.0
+offset_bottom = 80.0
+
+[node name="TopBar" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 20
+
+[node name="ShillingsContainer" type="PanelContainer" parent="MarginContainer/TopBar"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/TopBar/ShillingsContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/TopBar/ShillingsContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/TopBar/ShillingsContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("3_75w01")
+
+[node name="ShillingsLabel" type="Label" parent="MarginContainer/TopBar/ShillingsContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0"
+
+[node name="Spacer" type="Control" parent="MarginContainer/TopBar/ShillingsContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/TopBar"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+theme_type_variation = &"BluePanelContainer"
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/TopBar/PanelContainer"]
+layout_mode = 2
+
+[node name="ToolIcon" parent="MarginContainer/TopBar/PanelContainer/MarginContainer" instance=ExtResource("9_mvtve")]
+layout_mode = 2
+
+[node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/TopBar"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+theme_type_variation = &"BluePanelContainer"
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/TopBar/PanelContainer2"]
+layout_mode = 2
+
+[node name="ToolIcon" parent="MarginContainer/TopBar/PanelContainer2/MarginContainer" instance=ExtResource("9_mvtve")]
+layout_mode = 2
+
+[node name="TimeLabel" parent="MarginContainer/TopBar" instance=ExtResource("10_dlqmt")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_alignment = 2

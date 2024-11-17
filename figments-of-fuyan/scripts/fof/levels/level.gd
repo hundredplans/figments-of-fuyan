@@ -1,13 +1,16 @@
 class_name LevelGD extends FofGD
 
 const START_HAND_SIZE: int = 4
-var timeout: int
 var energy: int
 var max_energy: int
-
 var level_camera_data: LevelCameraData
 var phase: Game.Phases
-var enemy_spawn_ids: Array
+var enemy_spawns: Array
+var is_ended: bool
+var is_elite: bool
+var rewards: Rewards
+var anti_boons: Array
+var save_file: SaveFileGD
 
 signal set_spectate_card
 signal energy_changed
@@ -25,12 +28,21 @@ signal boon_removed
 signal boon_activated
 signal boon_ascended
 signal tile_occupied
+signal set_rewards # Signal for area to interpret
+signal game_ended
+signal tool_picked_up
+signal cards_picked_up
+signal reward_taken # Signal for rewards ui 
+signal rewards_finished # Signal for area to interpret
 
 #region Load / Save
 func onSave() -> SavedData:
 	var data: Array = SavedData.onSaveGroup(get_tree().get_nodes_in_group("LevelTileObjectsGD"))
 	request_camera_data.emit()
-	return SavedDataLevel.new(info.id, false, public_id, data, timeout, enemy_spawn_ids, getFieldCards(), phase, level_camera_data, energy, max_energy)
+	
+	if rewards != null: rewards.onSave()
+	return SavedDataLevel.new(info.id, false, public_id, data, enemy_spawns, getFieldCards(), phase, level_camera_data, energy, max_energy,\
+ 	is_ended, is_elite, rewards, anti_boons)
 
 func onClear() -> void:
 	queue_free()
@@ -39,7 +51,7 @@ func onLoadData(data: SavedData) -> void:
 	super(data)
 	energy = data.energy
 	max_energy = data.max_energy
-	enemy_spawn_ids = data.enemy_spawn_ids
+	enemy_spawns = data.enemy_spawns
 	
 	for light in info.lights:
 		add_child(light.instantiate())
@@ -53,10 +65,22 @@ func onLoadData(data: SavedData) -> void:
 	for card_data in data.field_cards_data: SavedData.onLoadModel(card_data, self)
 	for Card in get_tree().get_nodes_in_group("FieldCardsGD"):
 		Card.onLoadDataLevel()
-		
-	energy_changed.emit(energy)
+	
+	is_elite = data.is_elite
+	is_ended = data.is_ended
+	
+	anti_boons = data.anti_boons
+
 	level_camera_data = data.level_camera_data
 	add_to_group("LevelsGD")
+	
+	rewards = data.rewards
+	if rewards != null:
+		rewards.setInfo(self)
+		rewards.onLoad()
+		
+	if is_ended:
+		onGameEnded()
 
 func onLoadTileObjectInit(data: SavedDataTileObject) -> TileObjectGD:
 	var TileObject: TileObjectGD = SavedData.onLoadModel(data, self)
@@ -71,26 +95,35 @@ func onLoadTileObjectInit(data: SavedDataTileObject) -> TileObjectGD:
 			
 	return TileObject
 
-func onLoadActiveLevel(data: SavedDataLevel) -> void:
+func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 	# Triggers after UI and World have loaded
+	save_file = _save_file
+	energy_changed.emit(energy)
 	if is_init:
 		var actions: Array = [ChangePhaseAction.new(Game.Phases.START)]
 		for GameObject in get_tree().get_nodes_in_group("GameObjectsGD"):
 			GameObject.onLoadDataLevelFofInit()
+			
+		for card_data in enemy_spawns:
+			actions.append(AwakenAction.new(SavedData.onLoadModel(card_data, self), Game.getTile(card_data.coords)))
 		
 		actions += get_tree().get_nodes_in_group("BoonsGD").map(func(x: BoonGD): return AddBoonAction.new(x.info.id, x.ascended, true))
 		actions.append(LevelVisibleAction.new(false, get_tree().get_nodes_in_group("LevelTileObjectsGD") + get_tree().get_nodes_in_group("FieldCardsGD")))
 		onPushAction(actions)
 		return
 		
+	
 	for Boon in get_tree().get_nodes_in_group("BoonsGD"):
 		boon_added.emit(Boon)
 		
-	onChangePhase(data.phase, true)
 	for Card in get_tree().get_nodes_in_group("HandCardsGD"):
 		draw_card.emit(Card)
 		
+	onChangePhase(data.phase, true)
 	get_tree().call_group("FieldCardsGD", "onUpdateVision")
+	
+	if game_ended:
+		onGameEnded()
 
 var is_init: bool = false
 func onFofInit() -> void:
@@ -172,6 +205,8 @@ func onProcessAction(action: Action) -> void:
 			boon_ascended.emit(action.Boon)
 		elif action is OccupyAction:
 			tile_occupied.emit(action.Card, action.Tile)
+		elif action is EndGameAction and !is_ended:
+			setRewards(action.team == 0)
 	else:
 		if action is ChangePhaseAction:
 			if action.phase == phase: action.failed = true
@@ -245,4 +280,36 @@ func getAllySpectateObject() -> CardGD:
 func onCameraChange(action: CameraChangeAction) -> void:
 	camera_change_action.emit(action.SpectateObject, getSpectateObject())
 	SpectateObject = action.SpectateObject
+#endregion
+
+#region Game Ended
+func setRewards(is_win: bool) -> void:
+	is_ended = true
+	set_rewards.emit(is_win)
+
+func onGameEnded() -> void:
+	var groups: Array = ["HandCardsGD", "FieldCardsGD", "GraveyardCardsGD"]
+	for card_group in groups.map(func(x: String): return get_tree().get_nodes_in_group(x)):
+		for Card in card_group.filter(func(x: CardGD): return x.isAlly(0)):
+			Card.onChangeCardPlace(Game.CardPlaces.DECK)
+			
+	game_ended.emit(rewards)
+	
+func onAddReward(reward: Variant) -> void:
+	if reward is MapEffectGD and reward.info.id == 2: # Shillings gain
+		reward.onPickup(save_file)
+		onRewardTaken(reward)
+	elif reward is Array:
+		cards_picked_up.emit(reward)
+	elif reward is BoonGD:
+		save_file.onAddBoon(reward)
+		onRewardTaken(reward)
+	elif reward is ToolGD:
+		tool_picked_up.emit(reward)
+	
+func onRewardTaken(reward: Variant) -> void:
+	reward_taken.emit(reward)
+	
+func onRewardsFinished() -> void:
+	rewards_finished.emit(save_file)
 #endregion

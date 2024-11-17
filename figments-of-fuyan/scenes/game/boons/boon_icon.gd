@@ -42,7 +42,3 @@ func onUpdateDisabled(disabled: bool) -> void:
 		
 func onUpdateAscension(ascended: bool) -> void:
 	BoonShine.visible = ascended
-		
-func _process(_delta: float) -> void:
-	if Tooltip != null:
-		Tooltip.global_position = get_viewport().get_mouse_position() + OFFSET

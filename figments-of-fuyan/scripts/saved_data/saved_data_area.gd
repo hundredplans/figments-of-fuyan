@@ -15,3 +15,8 @@ func getEnteredMapLocation() -> MapLocation:
 	for data in map_nodes_data:
 		if data.is_entered: return data.map_location
 	return null
+
+func getEnteredMapLocationProgress() -> int:
+	for data in map_nodes_data:
+		if data.is_entered: return data.map_location.progress
+	return 0

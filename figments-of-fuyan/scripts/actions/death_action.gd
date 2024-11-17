@@ -26,6 +26,10 @@ func onPreAction() -> void:
 func onPostAction() -> void:
 	Defender.onDeath()
 	onSwapCameraOnDeathInPlayerPhase()
+	
+	if Game.get_tree().get_nodes_in_group("FieldCardsGD")\
+		.filter(func(x: CardGD): return x.team == Defender.team).is_empty():
+			onAppendAction(EndGameAction.new(Defender.team))
 
 func getDelay() -> float:
 	return delay

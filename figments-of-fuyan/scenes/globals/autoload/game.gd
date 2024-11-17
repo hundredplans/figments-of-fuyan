@@ -1,6 +1,7 @@
 extends Node
 
 var ActionManagerReference: ActionManagerGD
+var ADVANCE_PHASES: Array = [Phases.PLAYER, Phases.AI, Phases.NEUTRAL]
 const SELECTED_MAP_NODE_TRAVEL_SPEED: float = 1
 enum Rarities {SCRAP, NEUTRAL, MINI, COMMON, RARE, EXALT, MINIBOSS, BOSS, CHAMPION}
 enum ShopTypes {CARD, BOON, TOOL, DECK}
@@ -42,6 +43,8 @@ var tile_face_directions: Array[Vector3] = [
 const FALL_DAMAGE_BEGIN_HEIGHT: int = 5
 const HEX_SIZE: float = 0.55
 const STAT_UPDATE_TIME: float = 0.15
+
+const CARD_REWARD_DEFAULT_AMOUNT: int = 3
 
 func _ready() -> void:
 	var theta: float = PI / 6
@@ -205,9 +208,11 @@ func getVisibleFieldCards(team: int = 0) -> Array:
 func onRotatePosition(coords: Vector3, theta: float) -> Vector3:
 	return Vector3(coords.x * cos(theta) + coords.z * sin(theta), coords.y, -coords.x * sin(theta) + coords.z * cos(theta))
 
-func onRotateCoords(coords: Vector4i, tile_rotation: int) -> Vector4i:
-	var theta: float = tile_rotation * (PI / 3)
-	return Vector4i(coords.x * cos(theta) + coords.z * sin(theta), coords.y, -coords.x * sin(theta) + coords.z * cos(theta), coords.w)
+# Default coords, rotates counter clockwise which is default for tile rotation
+func onRotateCoordsCC(tile_rotation: int, coords := Vector4i(0, 1, -1, 0)) -> Vector4i:
+	for __ in range(tile_rotation):
+		coords = Vector4i(-coords.z, -coords.x, -coords.y, coords.w)
+	return coords
 
 #endregion
 
@@ -249,7 +254,7 @@ func getsetMovementRange(Card: CardGD) -> Array:
 	get_tree().call_group("LevelTilesGD", "setMovementPath", null)
 	
 	var CenterTile: TileGD = Card.Tile
-	var speed: int = min(Card.getMovementSpeed(), 5)
+	var speed: int = min(Card.getMovementSpeed(), 4)
 	var tiles: Array = Game.getAdjacentOrCloserTiles(Card.Tile, speed) # Gather all tiles
 	
 	var all_cards_tiles: Array = get_tree().get_nodes_in_group("FieldCardsGD").map(func(x: CardGD): return x.Tile)
@@ -279,6 +284,7 @@ func getsetMovementRange(Card: CardGD) -> Array:
 		var valid_path: bool = false
 		var point_path: Array = []
 		var movement_path: Array = []
+		
 		while(!valid_path):
 			point_path = astar.get_id_path(CenterTile.get_instance_id(), Tile.get_instance_id())
 			if point_path.is_empty(): break
@@ -287,7 +293,12 @@ func getsetMovementRange(Card: CardGD) -> Array:
 				continue
 			
 			movement_path = point_path.map(func(x: int): return instance_from_id(x))
+			if movement_path.size() > speed + 2:
+				astar.disconnect_points(point_path[point_path.size() - 1], point_path[point_path.size() - 2])
+				continue
 			if !onSurviveFallDamage(Card, movement_path, point_path, astar): continue
+			
+			
 			valid_path = true
 			
 		Tile.setMovementPath(MovementPathGD.new(movement_path) if valid_path else null)
@@ -331,4 +342,12 @@ func onSurviveFallDamage(Card: CardGD, movement_path: Array, point_path: Array, 
 				astar.disconnect_points(point_path[i - 1], point_path[i])
 				return false
 	return true
+#endregion
+
+#region Map Effect Generator
+func onCreateGainShillings(shilling_amount: int, parent: Node) -> MapEffectGD:
+	return SavedData.onLoadModel(SavedDataMapEffectGainShillings.new(2, true, 0, shilling_amount), parent)
+
+func onGainFofObject(fof_object: FofGD) -> void:
+	pass
 #endregion

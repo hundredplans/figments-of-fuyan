@@ -4,19 +4,24 @@ extends Control
 @onready var LevelLabel: Label = %LevelLabel
 @onready var UIBoxParent: Control = %UIBoxParent
 
-const UNIT_BOXES_DISPLAYED: int = 3
-
 func setInfo(map_node: MapNodeGD, area: AreaGD) -> void:
 	var level_info: LevelInfo = Helper.getFofInfoID(LevelInfo, map_node.level_info.id)
-	LevelLabel.text = str(area.getWorld()) + "-" + str(map_node.map_location.progress) + ": " + str(level_info.name)
+	LevelLabel.text = str(area.getWorldDifficulty()) + "-" + str(map_node.map_location.progress) + ": " + str(level_info.name)
 	
-	var valid_spawns: Array = map_node.spawn_ids
-	for i in range(UNIT_BOXES_DISPLAYED):
-		if valid_spawns.size() > i:
-			var UIBox: Control = UIBoxPacked.instantiate()
-			var card_info: CardInfo = Helper.getFofInfoID(CardInfo, valid_spawns[i])
-			UIBoxParent.add_child(UIBox)
-			UIBox.setInfo(card_info)
+	var valid_spawns: Array = map_node.enemy_spawns
+	valid_spawns.resize(Game.CARD_REWARD_DEFAULT_AMOUNT)
+	valid_spawns = valid_spawns.filter(func(x: SavedDataCard): return x != null)
+	
+	for card_data in valid_spawns:
+		var UIBox: Control = UIBoxPacked.instantiate()
+		
+		var card_info: CardInfo = Helper.getFofInfoID(CardInfo, card_data.id)
+		
+		var tool_data: SavedDataTool = card_data.tool_data
+		var tool_info: ToolInfo = null if tool_data == null else Helper.getFofInfoID(ToolInfo, tool_data.id)
+		
+		UIBoxParent.add_child(UIBox)
+		UIBox.setInfo(card_info, card_data, tool_info, tool_data)
 			
 	match map_node.get_script():
 		BossFightNodeGD: theme_type_variation = "RedPanelContainer"

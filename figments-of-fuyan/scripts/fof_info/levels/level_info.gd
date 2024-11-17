@@ -12,7 +12,6 @@ class_name LevelInfo extends FofInfo
 @export var ally_spawn_amount: int
 @export var progress_min: int
 @export var progress_max: int
-@export_range(0, 10000, 60) var timeout: int = 1200
 @export_group("")
 
 const PALM_ISLAND_RESOURCES: String = "res://resources/datastore/areas/coconut_springs/palm_island_resources.tres"
@@ -24,11 +23,6 @@ func setInfo(_name: String = "", _area_id: int = 1) -> void:
 static func getFofName() -> String: return "Level"
 	
 static func getInfoPath() -> String: return "res://resources/fof/levels"
-
-static func getDataFromType(type: GDScript) -> GDScript:
-	match type:
-		PalmLevelInfo: return SavedDataPalmLevel
-		_: return SavedDataLevel
 
 func setSpawnPropertiesAutoValues(tile_objects: Array) -> void:
 	ally_spawn_amount  = tile_objects.filter(func(x: TileObjectGD): return x.isIDVariation(2, 0)).size()

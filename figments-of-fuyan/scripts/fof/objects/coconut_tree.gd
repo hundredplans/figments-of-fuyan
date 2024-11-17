@@ -27,9 +27,10 @@ func onIObjectDamagedPre(action: DamageAction) -> void:
 		if !Random.rollFloat(COCONUT_DROP_ODDS): continue
 		coconut_tiles.append(Tile)
 	
-func onAdvanceTurn() -> void:
-	super()
-	recharge = max(recharge - 1, 0)
+func onAdvanceTurn(team: int) -> void:
+	super(team)
+	if team == 0:
+		recharge = max(recharge - 1, 0)
 
 func onIObjectDamaged(action: DamageAction) -> void:
 	var actions: Array = []

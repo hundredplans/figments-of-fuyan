@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=10 format=3 uid="uid://guu4h5o15q4y"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=11 format=3 uid="uid://guu4h5o15q4y"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_i12jc"]
 [ext_resource type="Image" uid="uid://bruaie558itsg" path="res://assets/sprites/game/cards/art_pop/jackie_palm.png" id="2_5ylc1"]
+[ext_resource type="Image" uid="uid://cbsie10wiidpk" path="res://assets/sprites/game/cards/art_mini/jackie_palm.png" id="2_80y21"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_w7mss"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_k50xd"]
 [ext_resource type="Script" path="res://scripts/fof/cards/jackie_palm.gd" id="4_x18c2"]
@@ -36,6 +37,7 @@ active_abilities = Array[ExtResource("1_i12jc")]([])
 ability_text = "REVENGE: Heal [1] HP if there's an ally Palm in vision"
 flavor_text = ""
 art_mini_coordinate = Vector2i(80, 40)
+art_mini = ExtResource("2_80y21")
 art_pop = ExtResource("2_5ylc1")
 model = ExtResource("5_o02gv")
 points = []

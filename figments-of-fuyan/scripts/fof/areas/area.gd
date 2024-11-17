@@ -15,7 +15,7 @@ var basic_card_ids: Array = []
 
 #region Helper
 
-func getWorld() -> int:
+func getWorldDifficulty() -> int:
 	return info.world.world
 
 func onFindEmptyMapSpot(progress: int, lane: int) -> EmptyMapNode:
@@ -27,9 +27,8 @@ func onFindEmptyMapSpot(progress: int, lane: int) -> EmptyMapNode:
 
 #region Save / Load
 func onSave() -> SavedDataArea:
-	var _map_nodes_data: Array = SavedData.onSaveGroup(get_tree().get_nodes_in_group("MapNodesGD"))
-	var map_nodes_data: Array[SavedDataMapNode] = []
-	map_nodes_data.assign(_map_nodes_data)
+	if map_nodes_data.is_empty():
+		map_nodes_data.assign(SavedData.onSaveGroup(get_tree().get_nodes_in_group("MapNodesGD")))
 	
 	var level_data := active_level.onSave() if active_level != null else null
 	return SavedDataArea.new(info.id, false, public_id, map_nodes_data, level_data)
@@ -39,18 +38,7 @@ func onLoadData(data: SavedData) -> void:
 	add_to_group("AreasGD")
 	basic_card_ids = info.card_ids.filter(func(x: int): \
 		return Game.isBasicRarity(Helper.getFofInfoID(CardInfo, x).rarity))
-		
 	map_nodes_data = data.map_nodes_data
-	
-	if data.level_data != null:
-		onMapNodeLoadLevel(data.level_data)
-		return
-		
-	for tile_object_data in info.overworld_decoration.data:
-		SavedData.onLoadModel(tile_object_data, self)
-		
-	for map_node_data in data.map_nodes_data:
-		onCreateMapNode(map_node_data)
 #endregion
 	
 #region Create Map Nodes
@@ -67,7 +55,7 @@ func onFofInit(Card: CardGD) -> void:
 
 #region Generators
 func generateEmptyMapSpots() -> Array[EmptyMapNode]:
-	if info.world.world == 1: empty_spots.append(EmptyMapNode.new(-1, 0))
+	if getWorldDifficulty() == 1: empty_spots.append(EmptyMapNode.new(-1, 0))
 	empty_spots.append(EmptyMapNode.new(0, 0))
 	
 	var last_two_lane_value: int = 0
@@ -204,7 +192,7 @@ func setEmptySpotsIDS(unique_node_ids: Array, map_node_odds: Dictionary) -> void
 	for empty_spot in empty_spots:
 		match empty_spot.progress:
 			-1: empty_spot.id = 1; continue
-			0: empty_spot.id = 1 if info.world.world > 1 else 2; continue # Gildred
+			0: empty_spot.id = 1 if getWorldDifficulty() > 1 else 2; continue # Gildred
 			5: empty_spot.id = 9; continue
 			10: empty_spot.id = 10; continue
 			_:
@@ -297,7 +285,7 @@ func onCreateMapNode(data: SavedDataMapNode) -> void:
 #region Holy Path
 func setHolyPath(Card: CardGD) -> void:
 	if Card.info.id == 2:
-		var empty_map_node: EmptyMapNode = onFindEmptyMapSpot(0, 0) if getWorld() > 1 else onFindEmptyMapSpot(-1, 0)
+		var empty_map_node: EmptyMapNode = onFindEmptyMapSpot(0, 0) if getWorldDifficulty() > 1 else onFindEmptyMapSpot(-1, 0)
 		while(empty_map_node.progress < 10):
 			var link: EmptyMapNodeLink = empty_map_node.links.pick_random()
 			link.is_holy = true
@@ -333,6 +321,26 @@ func onMapNodeEntered(map_node: MapNodeGD) -> void:
 func onMapNodeFinished(map_node: MapNodeGD) -> void:
 	get_tree().call_group("MapNodesGD", "setRayPickableGlobal", true)
 	map_node_finished.emit(map_node)
+	
+func onLoadMap() -> void:
+	for tile_object_data in info.overworld_decoration.data:
+		SavedData.onLoadModel(tile_object_data, self)
+		
+	for map_node_data in map_nodes_data:
+		onCreateMapNode(map_node_data)
+		
+	map_nodes_data = []
+	var map_node: MapNodeGD = getEnteredMapNode()
+	if map_node.is_entered and !map_node.is_finished:
+		onMapNodeEntered(map_node)
+	
+func onMapNodeLoadLevelInit(level_data: SavedDataLevel) -> void:
+	level_data.max_energy = info.world.getMaxEnergy()
+	level_data.energy = level_data.max_energy
+	onMapNodeLoadLevel(level_data)
+		
+func onMapNodeLoadLevel(level_data: SavedDataLevel) -> void:
+	load_level.emit(level_data)
 #endregion
 
 #region Getters
@@ -351,27 +359,117 @@ func getNodeByID(id: int) -> MapNodeGD:
 	return null
 #endregion
 
-func onAfterScenesLoad() -> void:
-	var map_node: MapNodeGD = getEnteredMapNode()
-	if map_node.is_entered and !map_node.is_finished:
-		onMapNodeEntered(map_node)
-	
-func onMapNodeLoadLevelInit(level_data: SavedDataLevel) -> void:
-	level_data.max_energy = info.world.getMaxEnergy()
-	level_data.energy = level_data.max_energy
-	onMapNodeLoadLevel(level_data)
-		
-func onMapNodeLoadLevel(level_data: SavedDataLevel) -> void:
-	var map_nodes: Array = get_tree().get_nodes_in_group("MapNodesGD")
-	if !map_nodes.is_empty():
-		map_nodes_data.assign(SavedData.onSaveGroup(get_tree().get_nodes_in_group("MapNodesGD")))
-	
+#region Active Level
+func onLoadActiveLevel(level_data: SavedDataLevel) -> LevelGD:
+	map_nodes_data.assign(SavedData.onSaveGroup(get_tree().get_nodes_in_group("MapNodesGD")))
 	get_tree().call_group("TileObjectsGD", "free")
 	get_tree().call_group("MapNodesGD", "onClear")
 	get_tree().call_group("CardsGD", "onRemoveModel")
-	load_level.emit(level_data)
-
-func onLoadActiveLevel(level_data: SavedDataLevel) -> LevelGD:
-
+	
 	active_level = SavedData.onLoadModel(level_data, self)
+	active_level.set_rewards.connect(setRewards)
+	active_level.rewards_finished.connect(onRewardsFinished)
 	return active_level
+#endregion
+	
+#region Rewards
+func setRewards(is_win: bool) -> void:
+	active_level.is_ended = true
+	if is_win:
+		var items: Array = []
+		var fight_rewards_datastore: FightRewardsDatastore = \
+			info.world.elite_fights_rewards if active_level.is_elite else info.world.fight_rewards
+		
+		var enemy_spawns: Array = active_level.enemy_spawns.duplicate()
+		enemy_spawns.resize(Game.CARD_REWARD_DEFAULT_AMOUNT)
+		enemy_spawns = enemy_spawns.filter(func(x: Variant): return x != null)
+		
+		items.append(enemy_spawns.map(func(x: SavedDataCard):\
+			return SavedData.onLoadModel(x.duplicate(), active_level)))
+			
+		var shillings: int = randi_range(fight_rewards_datastore.shillings_min, fight_rewards_datastore.shillings_max)
+		var shilling_gain: MapEffectGD = Game.onCreateGainShillings(shillings, active_level)
+		items.append(shilling_gain)
+		
+		var add_boon: bool = Random.rollFloat(getDivinusBoonOdds(fight_rewards_datastore.boon_odds) / 100.0)
+		var add_tool: bool = Random.rollFloat(fight_rewards_datastore.tool_odds / 100.0)
+		
+		if add_boon:
+			var odds: Dictionary = fight_rewards_datastore.boon_rarity_odds.getDictionary()
+			var rarity: Game.Rarities = int(Random.getRandomKey(Random.onConvertPercentOdds(odds)))
+			var viable_boons: Array = Helper.getFofInfoArray(BoonInfo).filter(func(x: BoonInfo): return x.rarity == rarity)
+			var boon_info: BoonInfo = viable_boons.pick_random()
+			var boon_data: SavedDataBoon = boon_info.saved_data.new(boon_info.id, true)
+			var ascend_boon: bool = Random.rollFloat(getDivinusBoonAscensionOdds(fight_rewards_datastore.boon_ascension_rate / 100.0))
+			boon_data.ascended = ascend_boon
+			
+			var boon: BoonGD = SavedData.onLoadModel(boon_data, active_level)
+			items.append(boon)
+		
+		elif add_tool:
+			var odds: Dictionary = fight_rewards_datastore.tool_rarity_odds.getDictionary()
+			var rarity: Game.Rarities = int(Random.getRandomKey(Random.onConvertPercentOdds(odds)))
+			var viable_tools: Array = Helper.getFofInfoArray(ToolInfo).filter(func(x: ToolInfo): return x.rarity == rarity)
+			var tool_info: ToolInfo = viable_tools.pick_random()
+			var tool_data: SavedDataTool = tool_info.saved_data.new(tool_info.id, true)
+			var ascend_tool: bool = Random.rollFloat(fight_rewards_datastore.tool_ascension_rate / 100.0)
+			tool_data.ascended = ascend_tool
+			
+			var Tool: ToolGD = SavedData.onLoadModel(tool_data, active_level)
+			items.append(Tool)
+		
+		var rewards := Rewards.new(items)
+		rewards.setInfo(active_level)
+		active_level.rewards = rewards
+	active_level.onGameEnded()
+
+#endregion
+
+#region Random Enemy
+func getRandomEnemySpawn(spawn_coords: Vector4i, progress: int) -> SavedDataCard:
+	var card_info: CardInfo = Helper.getFofInfoID(CardInfo, basic_card_ids.pick_random())
+	var card_data: SavedDataCard = card_info.saved_data.new(card_info.id, true)
+	
+	card_data.team = 1
+	card_data.coords = spawn_coords
+	var tool_data: SavedDataTool
+	
+	var ascend_card: bool = Random.rollFloat(info.world.enemy_ascended_rate / 100.0)
+	if ascend_card:
+		card_data.ascended = true
+	
+	if progress >= 3:
+		var add_tool: bool = Random.rollFloat(info.world.tool_enemy_spawn_rate / 100.0)
+		if add_tool:
+			var odds: Dictionary = info.world.tool_enemy_spawn_rarity_odds.getDictionary()
+			var rarity: Game.Rarities = int(Random.getRandomKey(Random.onConvertPercentOdds(odds)))
+			var tool_info: ToolInfo = Helper.getFofInfoArray(ToolInfo).filter(func(x: ToolInfo): return x.rarity == rarity).pick_random()
+			tool_data = tool_info.saved_data.new(tool_info.id, true)
+			
+			var ascend_tool: bool = Random.rollFloat(info.world.tool_enemy_ascended_rate / 100.0)
+			if ascend_tool:
+				tool_data.ascended = true
+			
+			card_data.tool_data = tool_data
+			
+	return card_data
+	
+#endregion
+
+#region Champion
+func getDivinusBoonOdds(odds: float) -> float:
+	return odds * 2
+	
+func getDivinusBoonAscensionOdds(odds: float) -> float:
+	return odds + 2.5
+#endregion
+
+#region Exit Level
+func onRewardsFinished(save_file: SaveFileGD) -> void:
+	active_level.onClear()
+	active_level = null
+	save_file.onLoadMap()
+	
+func onLossFinished() -> void:
+	pass
+#endregion

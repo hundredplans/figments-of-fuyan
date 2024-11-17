@@ -124,7 +124,7 @@ func _update_movement(delta):
 	
 		translate(_velocity * delta * speed_multi)
 		if X_MIN != 0 and X_MAX != 0: position.x = clamp(position.x, X_MIN, X_MAX)
-
+		get_viewport().warp_mouse(get_viewport().get_mouse_position())
 # Updates mouse look 
 func _update_mouselook():
 	# Only rotates mouse if the mouse is captured

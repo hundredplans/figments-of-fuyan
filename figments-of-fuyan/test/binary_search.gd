@@ -13,7 +13,7 @@ func _ready() -> void:
 	
 	
 func binarySearchRecursive(A: Array, p: int, k: int, x: int) -> Variant:
-	var middle_index: int = (p + k) / 2	
+	var middle_index: int = (p + k) / 2
 	if x == A[middle_index]: return middle_index
 	if p < k:
 		if x < A[middle_index]: return binarySearchRecursive(A, p, middle_index, x)

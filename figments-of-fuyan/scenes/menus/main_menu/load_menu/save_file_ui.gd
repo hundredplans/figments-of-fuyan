@@ -32,7 +32,7 @@ func setInfo(_save_file_data: SavedDataSaveFile) -> void:
 	LevelLabel.text = "LEVEL: " + (area_info.overworld_decoration.name\
 	if save_file_data.area_data.level_data == null else \
 	Helper.getFofInfoID(LevelInfo, save_file_data.area_data.level_data.id).name)
-	LocationLabel.text = "LOCATION: " + str(area_info.world.world) + "-" + str(max(save_file_data.area_data.getEnteredMapLocation().progress, 0))
+	LocationLabel.text = "LOCATION: " + str(area_info.world.world) + "-" + str(save_file_data.area_data.getEnteredMapLocationProgress())
 
 
 func _on_remove_save_button_pressed() -> void:

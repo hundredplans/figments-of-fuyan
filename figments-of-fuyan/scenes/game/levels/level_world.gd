@@ -34,6 +34,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level.request_camera_data.connect(CameraManager.setCameraSaveables.bind(level))
 	level.turn_state_changing.connect(onTurnStateChanging)
 	level.camera_change_action.connect(onCameraChange)
+	level.game_ended.connect(onGameEnded)
 	
 	CameraManager.camera_position_updated.connect(onCameraPositionUpdated)
 	CameraManager.create_camera_action.connect(onCreateCameraChangeAction)
@@ -82,16 +83,18 @@ func onHoverTile(is_mouse_hover: bool = false) -> void:
 		if in_vision_mode: onVisionModeTileHovered(MouseHoverTile)
 
 func getMouseHoverTile() -> TileGD:
-	var to: Vector3 = CameraManager.CurrentCamera.project_ray_normal(get_viewport().get_mouse_position()) * RAY_LENGTH
-	
-	MouseRaycast.position = CameraManager.CurrentCamera.position
-	MouseRaycast.target_position = to
-	MouseRaycast.force_raycast_update()
-	
-	if MouseRaycast.is_colliding():
-		var Tile: TileGD = Helper.getCollision(MouseRaycast.get_collider(), TileGD)
-		if Tile.is_in_group("LevelTilesGD"):
-			return Tile
+	var viewport: Viewport = get_viewport()
+	if viewport != null:
+		var to: Vector3 = CameraManager.CurrentCamera.project_ray_normal(viewport.get_mouse_position()) * RAY_LENGTH
+		
+		MouseRaycast.position = CameraManager.CurrentCamera.position
+		MouseRaycast.target_position = to
+		MouseRaycast.force_raycast_update()
+		
+		if MouseRaycast.is_colliding():
+			var Tile: TileGD = Helper.getCollision(MouseRaycast.get_collider(), TileGD)
+			if Tile.is_in_group("LevelTilesGD"):
+				return Tile
 	return null
 #endregion
 
@@ -189,6 +192,7 @@ func onCameraChange(SpectateObject: GameObjectGD, OldSpectateObject: GameObjectG
 		onActiveEffectDeselected()
 	
 func onCreateCameraChangeAction(SpectateObject: GameObjectGD) -> void:
+	if level.is_ended: return
 	level.onPushAction(CameraChangeAction.new(SpectateObject))
 #endregion
 		
@@ -305,4 +309,9 @@ func isActiveEffectCurrent() -> bool:
 #region Pass
 func onPassButtonPressed() -> void:
 	onActiveEffectDeselected()
+#endregion
+
+#region Game Ended
+func onGameEnded(_rewards: Rewards) -> void:
+	level.onPushAction(LevelVisibleAction.new(false, get_tree().get_nodes_in_group("LevelGameObjectsGD")))
 #endregion

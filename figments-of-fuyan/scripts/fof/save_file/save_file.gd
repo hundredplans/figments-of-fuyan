@@ -1,18 +1,29 @@
 class_name SaveFileGD extends FofGD
 
+signal load_map
 signal load_level
 signal update_shillings
+signal update_toolbelt
 
 var id: int
 var my_seed: int
 var area: AreaGD
 var last_loaded_deck: Array
 var map_effects_data: Array
+var tool_belt: Array
+var boons: Array
 
 var shillings: int
 var time: int
 
 var timer: Timer
+
+#region Helper
+func getChampionCard() -> CardGD:
+	for Card in get_tree().get_nodes_in_group("AllyCardsGD"):
+		if Game.isChampion(Card.info.rarity): return Card
+	return null
+#endregion
 
 #region Save / Load
 func onSaveToFile() -> void:
@@ -24,11 +35,13 @@ func onSaveToFile() -> void:
 func onSave() -> SavedData:
 	var map_effects: Array = SavedData.onSaveGroup(get_tree().get_nodes_in_group("MapEffectsGD"))
 	var deck_cards: Array = SavedData.onSaveGroup(get_tree().get_nodes_in_group("AllyCardsGD"))
-	var boons: Array = SavedData.onSaveGroup(get_tree().get_nodes_in_group("BoonsGD"))
+	var tool_belt_data: Array = SavedData.onSaveGroup(tool_belt)
 	var highest_public_id: int = Game.highest_public_id
-	time += int(timer.wait_time - timer.time_left)
+	boons = SavedData.onSaveGroup(boons)
+	time = getTimeElapsed()
+	
 	return SavedDataSaveFile.new(id, false, public_id, my_seed, area.onSave(), shillings,\
-	map_effects, time, deck_cards, boons, highest_public_id)
+	map_effects, time, deck_cards, boons, highest_public_id, tool_belt)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -41,9 +54,8 @@ func onLoadData(data: SavedData) -> void:
 		Card.add_to_group("AllyCardsGD")
 		if Game.isChampion(Card.info.rarity): ChampionCard = Card
 	
-	for saved_data_boon in data.boons:
-		SavedData.onLoadModel(saved_data_boon, self)
-	
+	boons = data.boons.map(func(x: SavedDataBoon): return SavedData.onLoadModel(x, self))
+	tool_belt = data.tool_belt.map(func(x: SavedDataTool): return SavedData.onLoadModel(x, self))
 	area = SavedData.onLoadModel(data.area_data, get_parent(), [ChampionCard])
 	area.load_level.connect(onLoadLevel)
 	
@@ -53,7 +65,7 @@ func onLoadData(data: SavedData) -> void:
 	last_loaded_deck = data.deck
 	
 	timer = Timer.new()
-	timer.wait_time = 99999999999
+	timer.wait_time = 99999999
 	add_child(timer)
 	timer.start()
 	
@@ -76,21 +88,43 @@ func _notification(what: int) -> void:
 		onSaveToFile()
 #endregion
 
-#region Getters
+#region Shillings
 func getShillings() -> int:
 	return shillings
 	
 func onUpdateShillings(delta: int) -> void:
 	shillings += delta
 	update_shillings.emit(shillings)
-	
-func getChampionCard() -> CardGD:
-	for Card in get_tree().get_nodes_in_group("AllyCardsGD"):
-		if Game.isChampion(Card.info.rarity): return Card
-	return null
 #endregion
 
-#region Load Level
+#region Load Level / Map
 func onLoadLevel(level_data: SavedDataLevel) -> void:
 	load_level.emit(level_data, self)
+	
+func onLoadMap() -> void:
+	load_map.emit(self)
+#endregion
+
+#region Timer
+func getTimeElapsed() -> int:
+	return time + int(timer.wait_time - timer.time_left)
+#endregion
+
+#region Tools
+func onUpdateToolbelt(Tool: ToolGD) -> void:
+	tool_belt.append(Tool)
+	update_toolbelt.emit(tool_belt)
+#endregion
+
+#region Boons
+func onAddBoon(Boon: BoonGD) -> void:
+	boons.append(Boon)
+	if !Boon.is_inside_tree():
+		add_child(Boon)
+		
+	elif Boon.get_parent() != self:
+		Boon.reparent(self)
+	
+func onRemoveBoon(boon: BoonGD) -> void:
+	boons.erase(boon)
 #endregion

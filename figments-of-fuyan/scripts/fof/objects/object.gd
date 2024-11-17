@@ -141,6 +141,15 @@ func getVisibleGroup() -> Array:
 		
 #endregion
 
-#region Interactable Object
+#region Actions
+func onProcessAction(action: Action) -> void:
+	super(action)
+	if action.post:
+		if action is ChangePhaseAction and action.phase in Game.ADVANCE_PHASES:
+			onAdvanceTurn(Game.ADVANCE_PHASES.find(action.phase))
+#endregion
 
+#region Card
+func onAdvanceTurn(_team: int) -> void:
+	pass
 #endregion

@@ -26,7 +26,7 @@ func onAddActiveEffect(active_effect: ActiveEffectDatastore) -> void:
 	active_effects.append(active_effect)
 
 func getRarity() -> Game.Rarities:
-	return info.RARITY
+	return info.rarity
 
 func getIcon() -> ImageTexture:
 	return ImageTexture.create_from_image(info.icon)

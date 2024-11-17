@@ -7,7 +7,6 @@ extends Node3D
 
 #region Globals
 signal action_lock
-
 var MapCard: CardGD
 var save_file: SaveFileGD
 var area: AreaGD

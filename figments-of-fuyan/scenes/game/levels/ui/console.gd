@@ -55,6 +55,9 @@ func tool(name_id: Variant, ascended: bool = false) -> void:
 			level.onPushAction(\
 			AddToolAction.new(SpectateObject, SavedData.onLoadModel(info.saved_data.new(info.id, true, 0, ascended), SpectateObject)))
 
+func endgame(win_state: bool) -> void:
+	level.onPushAction(EndGameAction.new(0 if win_state else 1, true))
+
 func addboon(name_id: Variant, ascended: bool = false) -> void:
 	var info: BoonInfo = getNameIDFofInfo(name_id, BoonInfo)
 	level.onPushAction(AddBoonAction.new(info.id, ascended))

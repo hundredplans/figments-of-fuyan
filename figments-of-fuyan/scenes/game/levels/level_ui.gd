@@ -2,7 +2,6 @@ extends Control
 
 
 #region Onready
-@onready var HandBoxArea: Area2D = %HandBoxArea
 @onready var HandPanel: PanelContainer = %HandPanel
 @onready var HandPanelAnimationPlayer: AnimationPlayer = %HandPanelAnimationPlayer
 @onready var ShillingLabel: FancyTextLabel = %ShillingLabel
@@ -21,6 +20,11 @@ extends Control
 @onready var Console: Control = %Console
 
 @onready var BoonBox: Control = %BoonBox
+
+@onready var TimeLabel: Label = %TimeLabel
+
+@onready var DeckPanel: PanelContainer = %DeckPanel
+@onready var MapPanel: PanelContainer = %MapPanel
 #endregion
 
 #region Globals
@@ -45,6 +49,10 @@ var mouse_in_ui: bool
 @export var DeckScreenPacked: PackedScene
 @export var GraveyardScreenPacked: PackedScene
 @export var MinimapPacked: PackedScene
+@export var LossUIPacked: PackedScene
+@export var RewardsUIPacked: PackedScene
+@export var ToolPickedUpUIPacked: PackedScene
+@export var RewardsCardsPacked: PackedScene
 #endregion
 
 #region Base Functions
@@ -67,23 +75,27 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level.boon_activated.connect(onBoonActivated)
 	level.boon_ascended.connect(onBoonAscended)
 	level.tile_occupied.connect(onTileOccupied)
+	level.game_ended.connect(onGameEnded)
+	level.tool_picked_up.connect(onToolPickedUp)
+	level.cards_picked_up.connect(onCardsPickedUp)
 	save_file.update_shillings.connect(onUpdateShillings)
 	
+	TimeLabel.setInfo(save_file)
 	level.camera_change_action.connect(onCameraUpdated)
 	
-	HandBox.setInfo(HandPanelAnimationPlayer, HandBoxArea)
 	ArtMiniRect.texture = save_file.getChampionCard().info.getArtMini()
 	LevelLabel.text = level.info.name
 	World.active_effect_activated.connect(onActiveEffectActivated)
 	World.active_effect_deselected.connect(onActiveEffectDeselected)
 	Console.level = level
+	HandBox.level = level
 	
 	setHeroNameLabel()
 	setActiveEffectLabel()
-	onUpdateEnergy(level.energy)
 	onUpdateShillings(save_file.shillings)
 	
 	for Card in get_tree().get_nodes_in_group("FieldCardsGD"): onAwakened(Card)
+	
 #endregion
 
 #region Action Lock / Mouse In UI
@@ -106,6 +118,7 @@ func onMouseInUI(state: bool) -> void:
 	mouse_signal.emit(mouse_in_ui)
 
 func onActionPlaying(state: bool) -> void:
+	if level.is_ended: return
 	var previous_state: bool = getActionLock()
 	is_action_playing = state
 	onChangeVisionMode(false)
@@ -117,16 +130,9 @@ func onPhaseChanged(phase: Game.Phases, _instant: bool = false) -> void:
 	HandPanel.theme_type_variation = "BluePanelContainer" if phase == Game.Phases.START else "WhitePanelContainer"
 	PhaseIcon.setPhase(phase)
 	PassButton.setPhase(phase)
+	HandBox.setPhase(phase)
 	match phase:
-		Game.Phases.START:
-			HandBox.onPin()
-			HandBox.onSelectableCards(true)
-		Game.Phases.HAND:
-			HandBox.onPin()
-			HandBox.onSelectableCards(true)
 		Game.Phases.PLAYER:
-			HandBox.onUnpin()
-			HandBox.onSelectableCards(false)
 			PassButton.setAllySpectating(level.getAllySpectateObject())
 #endregion
 
@@ -184,7 +190,9 @@ func onCameraUpdated(SpectateObject: GameObjectGD, __: GameObjectGD = null) -> v
 
 #region Deck / Graveyard
 func _on_deck_button_pressed() -> void:
-	add_child(DeckScreenPacked.instantiate())
+	var DeckScreen: Control = DeckScreenPacked.instantiate()
+	add_child(DeckScreen)
+	DeckScreen.setInfo(false)
 	
 func _on_graveyard_button_pressed() -> void:
 	add_child(GraveyardScreenPacked.instantiate())
@@ -296,4 +304,45 @@ func onBoonAscended(Boon: BoonGD) -> void:
 func onTileOccupied(Card: CardGD, _Tile: TileGD) -> void:
 	if Card.isAlly(0) and Card == level.getSpectateObject():
 		onUpdateActiveEffects()
+#endregion
+
+#region Game Ended
+func onGameEnded(rewards: Rewards) -> void:
+	
+	if rewards == null:
+		var LossUI: Control = LossUIPacked.instantiate()
+		add_child(LossUI)
+	else:
+		var RewardsUI: Control = RewardsUIPacked.instantiate()
+		add_child(RewardsUI)
+		
+		for child in [DeckPanel, MapPanel, ShillingLabel]:
+			child.z_index = 1
+		
+		RewardsUI.setInfo(rewards)
+		RewardsUI.add_reward.connect(level.onAddReward)
+		RewardsUI.rewards_finished.connect(level.onRewardsFinished)
+		level.reward_taken.connect(RewardsUI.onRewardTaken)
+	
+	onUpdateActionLock(false)
+	for btn in get_tree().get_nodes_in_group("EndGameDisabled"):
+		btn.disabled = true
+	
+	HandBox.onUnpin()
+	
+func onToolPickedUp(Tool: ToolGD) -> void:
+	var ToolPickedUpUI: Control = ToolPickedUpUIPacked.instantiate()
+	add_child(ToolPickedUpUI)
+	ToolPickedUpUI.setInfo(Tool, save_file)
+	ToolPickedUpUI.taken.connect(onRewardTaken)
+	
+func onCardsPickedUp(cards: Array) -> void:
+	var RewardsCards: Control = RewardsCardsPacked.instantiate()
+	add_child(RewardsCards)
+	RewardsCards.setInfo(cards, save_file)
+	RewardsCards.taken.connect(onRewardTaken)
+	
+func onRewardTaken(reward: Variant) -> void:
+	level.onRewardTaken(reward)
+	
 #endregion

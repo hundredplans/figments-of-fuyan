@@ -12,39 +12,38 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_eqvxq")
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
-self_modulate = Color(1, 1, 1, 0.658824)
+[node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -10.0
-offset_top = -10.0
-offset_right = 10.0
-offset_bottom = 10.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.941176)
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer"]
-layout_mode = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/MarginContainer/HBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="GraveyardCards" type="GridContainer" parent="PanelContainer/MarginContainer/HBoxContainer/ScrollContainer"]
+[node name="GraveyardCards" type="GridContainer" parent="MarginContainer/HBoxContainer/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 columns = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="ExitButton" parent="PanelContainer/MarginContainer/HBoxContainer/VBoxContainer" node_paths=PackedStringArray("exit_screen") instance=ExtResource("2_pwgym")]
+[node name="ExitButton" parent="MarginContainer/HBoxContainer/VBoxContainer" node_paths=PackedStringArray("exit_screen") instance=ExtResource("2_pwgym")]
 layout_mode = 2
-exit_screen = NodePath("../../../../..")
+exit_screen = NodePath("../../../..")

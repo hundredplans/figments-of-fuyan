@@ -14,10 +14,12 @@ func onLoadData(data: SavedData) -> void:
 #region Getters
 func getDescription() -> String:
 	return Helper.getDescription(info.description, [shillings])
+	
+func getIcon() -> Texture2D:
+	return load(info.SHILLING_ICON_PATH)
 #endregion
 
 #region Pickup
 func onPickup(save_file: SaveFileGD) -> void:
 	save_file.onUpdateShillings(shillings)
-	queue_free()
 #endregion
