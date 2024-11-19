@@ -19,3 +19,4 @@ func setInfo(map_node: MapNodeGD, World: Node3D, _save_file: SaveFileGD) -> void
 func onMapEffectPressed(map_effect: MapEffectGD) -> void:
 	map_effect.onPickup(save_file)
 	finished.emit()
+	queue_free()

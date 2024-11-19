@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MapEffectInfo" load_steps=4 format=3 uid="uid://bsjg27dgismft"]
+
+[ext_resource type="Script" path="res://scripts/fof/map_effects/map_effect.gd" id="1_14qmr"]
+[ext_resource type="Script" path="res://scripts/fof_info/map_effects/map_effect_info.gd" id="1_v022i"]
+[ext_resource type="Script" path="res://scripts/saved_data/map_effects/saved_data_map_effect.gd" id="2_klrh5"]
+
+[resource]
+script = ExtResource("1_v022i")
+description = "Ascend a card in your deck"
+id = 4
+name = "Ascend Card"
+gdscript = ExtResource("1_14qmr")
+saved_data = ExtResource("2_klrh5")

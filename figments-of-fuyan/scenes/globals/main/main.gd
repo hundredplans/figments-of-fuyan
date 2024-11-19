@@ -84,23 +84,21 @@ func onLoadGame(save_file_data: SavedDataSaveFile) -> void:
 	var save_file: SaveFileGD = SavedData.onLoadModel(save_file_data, KeepAcross)
 	save_file.load_level.connect(onLoadLevel)
 	save_file.load_map.connect(onLoadMap)
+	save_file.onLoadGame()
 	
-	var load_map: bool = save_file_data.area_data.level_data == null
-	if load_map: onLoadMap(save_file)
-	else: onLoadLevel(save_file_data.area_data.level_data, save_file)
-	
-func onLoadLevel(level_data: SavedDataLevel, save_file: SaveFileGD) -> void:
+func onLoadLevel(level_data: SavedDataLevel, save_file: SaveFileGD, area: AreaGD) -> void:
 	var scenes: Dictionary = onLoadScreenWorld(level_ui, level_world)
-	var area: AreaGD =  save_file.area
 	var level: LevelGD = area.onLoadActiveLevel(level_data)
 	
 	scenes.ui.setInfo(save_file)
 	scenes.world.setInfo(save_file)
 	level.onLoadActiveLevel(level_data, save_file)
 
-func onLoadMap(save_file: SaveFileGD) -> void:
+func onLoadMap(save_file: SaveFileGD, area: AreaGD) -> void:
 	var scenes: Dictionary = onLoadScreenWorld(map_ui, map_world)
-	save_file.area.onLoadMap()
+	area.onLoadMap()
+	
 	scenes.ui.setInfo(save_file)
 	scenes.world.setInfo(save_file)
+	area.onLoadMapAfterScenes()
 #endregion

@@ -6,11 +6,14 @@ var save_file: SaveFileGD
 var area: AreaGD
 @onready var AreaNameLabel: Label = %AreaNameLabel
 @onready var AniPlayer: AnimationPlayer = %UIAnimationPlayer
-@onready var ShillingsLabel: Label = %ShillingsLabel
+@onready var ShillingsLabel: FancyTextLabel = %ShillingsLabel
 @onready var BackgroundDarkener: Control = %BackgroundDarkener
 @onready var LegendBox: VBoxContainer = %LegendBox
 @onready var BoonBox: GridContainer = %BoonBox
 @onready var TimeLabel: Label = %TimeLabel
+
+@onready var ToolBeltSlotOne: Control = %ToolBeltSlotOne
+@onready var ToolBeltSlotTwo: Control = %ToolBeltSlotTwo
 #endregion
 
 #region Exports
@@ -19,48 +22,59 @@ var area: AreaGD
 #endregion
 
 #region Base Functions
+func _ready() -> void:
+	BackgroundDarkener.visible = false
+	ToolBeltSlotOne.visible = false
+	ToolBeltSlotTwo.visible = false
+
 func setInfo(_save_file: SaveFileGD) -> void:
 	save_file = _save_file
 	save_file.update_shillings.connect(onUpdateShillings)
 	onUpdateShillings(save_file.getShillings())
+	
 	area = save_file.area
-	area.map_node_finished.connect(onMapNodeFinished)
-	area.map_node_hovered.connect(onMapNodeHovered)
-	area.map_node_entered.connect(onMapNodeEntered)
+	area.init_load.connect(onInitLoad)
+	
 	TimeLabel.setInfo(save_file)
 	BoonBox.onUpdate()
-	BackgroundDarkener.visible = false
-	onMapStartAnimation()
 	setLegendBox()
+	onUpdateToolbelt()
+	
+	for map_node in get_tree().get_nodes_in_group("MapNodesGD"):
+		map_node.create_screen.connect(onCreateScreen)
+		map_node.finished.connect(onMapNodeFinished)
+		map_node.hovered.connect(onMapNodeHovered)
+	
+func onInitLoad() -> void: # Basically the area fof init
+	onMapStartAnimation()
+
 #endregion
 
-#region Area Name Label
+#region Map Start
 func onMapStartAnimation() -> void:
-	if !Helper.getAdmin() and !area.getEnteredMapNode().info.id > 1:
+	if !Helper.getAdmin():
 		AreaNameLabel.text = area.info.name
 		AniPlayer.play("MapStart")
 #endregion
 
 #region Shillings
 func onUpdateShillings(count: int) -> void:
-	ShillingsLabel.text = str(count)
+	ShillingsLabel.setText("SH: " + str(count))
 #endregion
 
 #region Map Node
-	
-func onMapNodeEntered(map_node: MapNodeGD) -> void:
-	if map_node.ActiveScreen != null:
-		BackgroundDarkener.visible = true
-		add_child(map_node.ActiveScreen)
-		map_node.ActiveScreen.setInfo(map_node, World, save_file)
+func onCreateScreen(map_node: MapNodeGD, ActiveScreen: Control) -> void:
+	BackgroundDarkener.visible = true
+	add_child(ActiveScreen)
+	ActiveScreen.setInfo(map_node, World, save_file)
 	
 func onMapNodeFinished(_map_node: MapNodeGD) -> void:
 	BackgroundDarkener.visible = false
 
-func onMapNodeHovered(map_node: MapNodeGD, state: bool) -> void:
-	if state and map_node.HoverUI != null:
-		add_child(map_node.HoverUI)
-		map_node.HoverUI.setInfo(map_node, area)
+func onMapNodeHovered(map_node: MapNodeGD, state: bool, HoverUI: Control = null) -> void:
+	if state and HoverUI != null:
+		add_child(HoverUI)
+		HoverUI.setInfo(map_node, area)
 #endregion
 
 #region Legend
@@ -82,4 +96,50 @@ func setLegendBox() -> void:
 #region Deck
 func _on_deck_button_pressed() -> void:
 	add_child(DeckScreenPacked.instantiate())
+#endregion
+
+#region Toolbelt
+var ToolbeltTool: ToolGD
+func onUpdateToolbelt() -> void:
+	var toolbelt_slots: Array = [ToolBeltSlotOne, ToolBeltSlotTwo]
+	for i in range(Game.TOOLBELT_SIZE):
+		var ToolbeltSlot = toolbelt_slots[i]
+		var tool_exists: bool = save_file.tool_belt.size() > i
+		
+		ToolbeltSlot.visible = tool_exists
+		if tool_exists:
+			var Tool: ToolGD = save_file.tool_belt[i]
+			ToolbeltSlot.setInfo(Tool, true)
+			
+func onToolbeltSlotPressed(Tool: ToolGD) -> void:
+	if Tool == null: return
+	var DeckScreen: Control = DeckScreenPacked.instantiate()
+	add_child(DeckScreen)
+	DeckScreen.selected.connect(onToolbeltCardSelected)
+	DeckScreen.setInfo(true)
+	
+	ToolbeltTool = Tool
+	DeckScreen.onDisableCards(onDisableCardsWithTool)
+	
+func onToolbeltCardSelected(Card: CardGD) -> void:
+	save_file.onRemoveToolFromToolbelt(ToolbeltTool)
+	if Card.Tool == null or Card.Tool.info.id != ToolbeltTool.info.id:
+		Card.add_child(ToolbeltTool)
+		Card.onAddTool(ToolbeltTool)
+	else:
+		Card.Tool.setAscended(true)
+	
+	ToolbeltTool = null
+	onUpdateToolbelt()
+
+func onDisableCardsWithTool(CardUI: Control) -> bool:
+	var Tool: ToolGD = CardUI.Card.Tool
+	return Tool != null and (Tool.info.id != ToolbeltTool.info.id or Tool.ascended)
+#endregion
+
+#region Deck
+func onDeckButtonPressed() -> void:
+	var DeckScreen: Control = DeckScreenPacked.instantiate()
+	add_child(DeckScreen)
+	DeckScreen.setInfo(false)
 #endregion

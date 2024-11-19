@@ -66,3 +66,6 @@ func onToolUnequipped() -> void:
 	
 func getLevelVisible() -> bool:
 	return Card.getLevelVisible()
+	
+func setAscended(state: bool) -> void:
+	ascended = state

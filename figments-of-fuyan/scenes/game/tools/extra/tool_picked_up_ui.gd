@@ -1,11 +1,14 @@
 extends Control
 
 @export var DeckScreenPacked: PackedScene
+@export var PanelButtonPacked: PackedScene
+@export var ToolIconPacked: PackedScene
+@export var ToolConfirmScreenPacked: PackedScene
+@export var toolbelt_slots_label_settings: LabelSettings
 
 @onready var ToolIcon: TextureRect = %ToolIcon
 @onready var ToolNameLabel: Label = %ToolNameLabel
-@onready var SlotOne: PanelContainer = %SlotOne
-@onready var SlotTwo: PanelContainer = %SlotTwo
+@onready var ToolbeltSlots: Container = %ToolbeltSlots
 
 signal taken
 
@@ -18,11 +21,42 @@ func setInfo(_Tool: ToolGD, _save_file: SaveFileGD) -> void:
 	ToolIcon.texture = Tool.getIcon()
 	ToolNameLabel.text = Tool.info.name
 	
-	SlotOne.setDisabled(save_file.tool_belt.size() > 0)
-	SlotTwo.setDisabled(save_file.tool_belt.size() != 1)
+	for i in range(Game.TOOLBELT_SIZE):
+		var tool_exists: bool = save_file.tool_belt.size() > i
+		if !tool_exists:
+			var PanelButton: Control = PanelButtonPacked.instantiate()
+			PanelButton.label_settings = toolbelt_slots_label_settings
+			PanelButton.text = "+"
+			PanelButton.pressed.connect(onSlotPressed)
+			ToolbeltSlots.add_child(PanelButton)
+			continue
+			
+		var ToolIcon: Control = ToolIconPacked.instantiate()
+		ToolbeltSlots.add_child(ToolIcon)
+		var ToolbeltTool: ToolGD = save_file.tool_belt[i]
+		ToolIcon.custom_minimum_size = Vector2(80, 80)
+		ToolIcon.setInfo(ToolbeltTool)
+		ToolIcon.pressed.connect(onToolPressed)
 		
 func onSlotPressed() -> void:
 	save_file.onUpdateToolbelt(Tool)
+	onTaken()
+	
+func onToolPressed(ToolbeltTool: ToolGD) -> void:
+	var ascend_tool: bool = ToolbeltTool.info.id == Tool.info.id and !ToolbeltTool.ascended and !Tool.ascended
+	var override_tool: bool = !ascend_tool
+	
+	var ToolConfirmScreen: Control = ToolConfirmScreenPacked.instantiate()
+	add_child(ToolConfirmScreen)
+	ToolConfirmScreen.setInfo(ToolbeltTool, ascend_tool, override_tool)
+	ToolConfirmScreen.confirmed.connect(onToolConfirmed)
+	
+func onToolConfirmed(ToolbeltTool: ToolGD) -> void:
+	var ascend_tool: bool = ToolbeltTool.info.id == Tool.info.id and !ToolbeltTool.ascended and !Tool.ascended
+	if ascend_tool: ToolbeltTool.ascended = true
+	else:
+		save_file.onRemoveToolFromToolbelt(ToolbeltTool)
+		save_file.onUpdateToolbelt(Tool)
 	onTaken()
 
 func _on_bin_button_pressed() -> void:
@@ -36,8 +70,11 @@ func _on_deck_screen_pressed() -> void:
 	DeckScreen.onDisableCards(onDisableCardsWithTool)
 	
 func onCardSelected(Card: CardGD) -> void:
-	Card.onAddTool(Tool)
-	Tool.reparent(Card)
+	if Card.Tool == null or Card.Tool.info.id != Tool.info.id:
+		Tool.reparent(Card)
+		Card.onAddTool(Tool)
+	else:
+		Card.Tool.setAscended(true)
 	onTaken()
 	
 func onTaken() -> void:
@@ -45,5 +82,6 @@ func onTaken() -> void:
 	queue_free()
 	
 func onDisableCardsWithTool(CardUI: Control) -> bool:
-	return CardUI.Card.Tool != null
+	var CardTool: ToolGD = CardUI.Card.Tool
+	return CardTool != null and (CardTool.info.id != Tool.info.id or CardTool.ascended)
 	

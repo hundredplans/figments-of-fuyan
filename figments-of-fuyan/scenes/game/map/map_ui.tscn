@@ -1,15 +1,17 @@
-[gd_scene load_steps=14 format=3 uid="uid://ssbbc35p2xby"]
+[gd_scene load_steps=16 format=3 uid="uid://ssbbc35p2xby"]
 
 [ext_resource type="Script" path="res://scenes/game/map/map_ui.gd" id="1_8nhbi"]
 [ext_resource type="LabelSettings" uid="uid://baxopkmeda53x" path="res://resources/ui/label_settings/roboto_huge.tres" id="2_r0ufu"]
 [ext_resource type="PackedScene" uid="uid://d3m353h1jnkku" path="res://scenes/game/map/legend_key.tscn" id="2_xp1my"]
-[ext_resource type="Texture2D" uid="uid://byqpgk7qtluhe" path="res://assets/sprites/ui/icons/shilling.png" id="3_75w01"]
 [ext_resource type="PackedScene" uid="uid://dkv06ds5ncutu" path="res://scenes/game/levels/ui/deck_screen.tscn" id="3_nrqx8"]
 [ext_resource type="LabelSettings" uid="uid://cyodc3xq62xbg" path="res://resources/ui/label_settings/jacquard_large.tres" id="4_10pk8"]
 [ext_resource type="Script" path="res://scenes/game/levels/boon_box.gd" id="6_1qe81"]
 [ext_resource type="PackedScene" uid="uid://ct1cn5tc1ofmb" path="res://scenes/game/boons/boon_icon.tscn" id="7_fduhh"]
+[ext_resource type="PackedScene" uid="uid://6nf3mir2i2rk" path="res://scenes/common/fancy_text/fancy_text_label.tscn" id="8_v2ied"]
 [ext_resource type="PackedScene" uid="uid://cewvw3vx3mjcm" path="res://scenes/game/tools/tool_icon.tscn" id="9_mvtve"]
 [ext_resource type="PackedScene" uid="uid://db7lt6qbe4d0e" path="res://scenes/common/time_label/time_label.tscn" id="10_dlqmt"]
+[ext_resource type="Texture2D" uid="uid://drju02m4wqrw1" path="res://assets/sprites/ui/icons/card.png" id="11_anl8h"]
+[ext_resource type="PackedScene" uid="uid://mehoa6ajrja5" path="res://scenes/common/highlight_tx_button.tscn" id="11_m1bsi"]
 
 [sub_resource type="Animation" id="Animation_bd438"]
 resource_name = "MapStart"
@@ -167,13 +169,13 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0, 0, 0, 0.470588)
+color = Color(0, 0, 0, 0.941176)
 
 [node name="BoonBox" type="GridContainer" parent="."]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 21.0
-offset_top = 122.0
+offset_top = 139.0
 offset_right = 1540.0
 offset_bottom = 511.0
 columns = 16
@@ -183,7 +185,7 @@ BoonIconPacked = ExtResource("7_fduhh")
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 0
 offset_right = 1540.0
-offset_bottom = 80.0
+offset_bottom = 104.0
 
 [node name="TopBar" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
@@ -200,42 +202,70 @@ layout_mode = 2
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/TopBar/ShillingsContainer/MarginContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TopBar/ShillingsContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
-texture = ExtResource("3_75w01")
 
-[node name="ShillingsLabel" type="Label" parent="MarginContainer/TopBar/ShillingsContainer/MarginContainer/HBoxContainer"]
+[node name="Filler" type="Control" parent="MarginContainer/TopBar/ShillingsContainer/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ShillingsLabel" parent="MarginContainer/TopBar/ShillingsContainer/MarginContainer/HBoxContainer/VBoxContainer" instance=ExtResource("8_v2ied")]
 unique_name_in_owner = true
 layout_mode = 2
-text = "0"
+size_flags_vertical = 3
+autowrap_mode = 0
 
-[node name="Spacer" type="Control" parent="MarginContainer/TopBar/ShillingsContainer/MarginContainer/HBoxContainer"]
+[node name="Filler2" type="Control" parent="MarginContainer/TopBar/ShillingsContainer/MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/TopBar"]
-custom_minimum_size = Vector2(80, 0)
+custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 theme_type_variation = &"BluePanelContainer"
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/TopBar/PanelContainer"]
 layout_mode = 2
 
-[node name="ToolIcon" parent="MarginContainer/TopBar/PanelContainer/MarginContainer" instance=ExtResource("9_mvtve")]
+[node name="ToolBeltSlotOne" parent="MarginContainer/TopBar/PanelContainer/MarginContainer" instance=ExtResource("9_mvtve")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 
 [node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/TopBar"]
-custom_minimum_size = Vector2(80, 0)
+custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 theme_type_variation = &"BluePanelContainer"
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/TopBar/PanelContainer2"]
 layout_mode = 2
 
-[node name="ToolIcon" parent="MarginContainer/TopBar/PanelContainer2/MarginContainer" instance=ExtResource("9_mvtve")]
+[node name="ToolBeltSlotTwo" parent="MarginContainer/TopBar/PanelContainer2/MarginContainer" instance=ExtResource("9_mvtve")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
+
+[node name="DeckPanel" type="PanelContainer" parent="MarginContainer/TopBar"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+mouse_filter = 1
+theme_type_variation = &"WhitePanelContainer"
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/TopBar/DeckPanel"]
+layout_mode = 2
+
+[node name="DeckButton" parent="MarginContainer/TopBar/DeckPanel/MarginContainer" groups=["ActionLockDisabled"] instance=ExtResource("11_m1bsi")]
+layout_mode = 2
+texture_normal = ExtResource("11_anl8h")
+stretch_mode = 0
 
 [node name="TimeLabel" parent="MarginContainer/TopBar" instance=ExtResource("10_dlqmt")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 horizontal_alignment = 2
+
+[connection signal="pressed" from="MarginContainer/TopBar/PanelContainer/MarginContainer/ToolBeltSlotOne" to="." method="onToolbeltSlotPressed"]
+[connection signal="pressed" from="MarginContainer/TopBar/PanelContainer2/MarginContainer/ToolBeltSlotTwo" to="." method="onToolbeltSlotPressed"]
+[connection signal="pressed" from="MarginContainer/TopBar/DeckPanel/MarginContainer/DeckButton" to="." method="onDeckButtonPressed"]

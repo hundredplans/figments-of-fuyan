@@ -344,5 +344,4 @@ func onCardsPickedUp(cards: Array) -> void:
 	
 func onRewardTaken(reward: Variant) -> void:
 	level.onRewardTaken(reward)
-	
 #endregion

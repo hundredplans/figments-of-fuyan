@@ -32,6 +32,8 @@ func setDisabled(state: bool) -> void:
 	if disabled:
 		modulate = DISABLED_COLOR
 
+var was_pressed: bool = false
 func _input(_event: InputEvent) -> void:
-	if Input.is_action_just_pressed("MainInput") and is_mouse_in_ui and !disabled:
+	if Input.is_action_just_pressed("MainInput") and is_mouse_in_ui and !disabled and !was_pressed:
 		pressed.emit()
+		was_pressed = true

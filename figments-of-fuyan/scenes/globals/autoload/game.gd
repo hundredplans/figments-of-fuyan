@@ -45,6 +45,7 @@ const HEX_SIZE: float = 0.55
 const STAT_UPDATE_TIME: float = 0.15
 
 const CARD_REWARD_DEFAULT_AMOUNT: int = 3
+const TOOLBELT_SIZE: int = 2
 
 func _ready() -> void:
 	var theta: float = PI / 6
@@ -350,4 +351,22 @@ func onCreateGainShillings(shilling_amount: int, parent: Node) -> MapEffectGD:
 
 func onGainFofObject(fof_object: FofGD) -> void:
 	pass
+#endregion
+
+#region Tooltips
+const TOOLTIP_PACKED_PATH: String = "res://scenes/common/tooltip/tooltip.tscn"
+const TOOLTIP_DELAY: float = 0.3
+var Tooltip: Control
+func onMouseInUITooltip(state: bool, item: FofGD = null, parent: Control = null, offset := Vector2.ZERO) -> void:
+	if state and Tooltip == null:
+		await get_tree().create_timer(TOOLTIP_DELAY)
+		if !(state and Tooltip == null): return
+		
+		Tooltip = load(TOOLTIP_PACKED_PATH).instantiate()
+		parent.add_child(Tooltip)
+		Tooltip.setInfo(item)
+		Tooltip.global_position = get_viewport().get_mouse_position() + offset
+		
+	elif !state and Tooltip != null:
+		Tooltip.queue_free()
 #endregion

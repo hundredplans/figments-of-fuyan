@@ -23,6 +23,25 @@ class_name WorldDatastore extends Resource
 @export_range(0, 100, 0.1) var enemy_ascended_rate: float
 @export_group("")
 
+@export_group("Shop")
+@export_subgroup("Price")
+@export var card_rarity_prices: RarityPriceDatastore
+@export var tool_rarity_prices: RarityPriceDatastore
+@export var boon_rarity_prices: RarityPriceDatastore
+@export_range(0, 100, 1) var foreign_card_base_price_increase: int
+@export_range(0, 100, 1) var transform_by_rarity_price: int
+@export_range(0, 100, 1) var transform_by_cost_price: int
+@export_range(0, 100, 1) var ascend_card_price: int
+@export_range(0, 100, 1) var remove_card_price: int
+@export_subgroup("")
+
+@export var shop_rarity_odds: RarityOddsDatastore
+@export_range(0, 100, 1) var ascended_items_flat_after_percentage_increase: int
+@export_range(0, 100, 1) var ascended_items_price_percentage_increase: int
+@export_range(0, 100, 0.1) var shop_ascension_chance: float
+@export_range(0, 10, 1) var default_shop_variance: int
+@export_group("")
+
 @export_group("Constants across Worlds")
 @export var LANE_ODDS: Dictionary = {
 	"2": 0.25,

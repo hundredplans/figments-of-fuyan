@@ -1,0 +1,76 @@
+[gd_scene load_steps=5 format=3 uid="uid://bi3qpk2e87wpc"]
+
+[ext_resource type="Script" path="res://scenes/game/tools/extra/tool_confirm_screen.gd" id="1_7guob"]
+[ext_resource type="LabelSettings" uid="uid://baxopkmeda53x" path="res://resources/ui/label_settings/roboto_huge.tres" id="2_mbnom"]
+[ext_resource type="PackedScene" uid="uid://ceoy120bbs7le" path="res://scenes/common/panel_button/panel_button.tscn" id="3_e3ud8"]
+[ext_resource type="LabelSettings" uid="uid://dbh1brjnbxe8c" path="res://resources/ui/label_settings/roboto_large.tres" id="4_oei7l"]
+
+[node name="ToolConfirmScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_7guob")
+ascend_tool_text = "Do you wish to ascend this tool?"
+override_tool_text = "Do you wish to override this tool?"
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.941176)
+
+[node name="TextLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -960.0
+offset_top = -70.0
+offset_right = 960.0
+offset_bottom = 6.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Are you sure about that?"
+label_settings = ExtResource("2_mbnom")
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -210.0
+offset_top = 38.0
+offset_right = 210.0
+offset_bottom = 116.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="YesButton" parent="HBoxContainer" instance=ExtResource("3_e3ud8")]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_type_variation = &"TealPanelContainer"
+text = "Yes"
+label_settings = ExtResource("4_oei7l")
+
+[node name="NoButton" parent="HBoxContainer" instance=ExtResource("3_e3ud8")]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_type_variation = &"RedPanelContainer"
+text = "No"
+label_settings = ExtResource("4_oei7l")
+
+[connection signal="pressed" from="HBoxContainer/YesButton" to="." method="_on_yes_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/NoButton" to="." method="_on_no_button_pressed"]

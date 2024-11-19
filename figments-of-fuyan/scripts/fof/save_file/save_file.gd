@@ -41,7 +41,7 @@ func onSave() -> SavedData:
 	time = getTimeElapsed()
 	
 	return SavedDataSaveFile.new(id, false, public_id, my_seed, area.onSave(), shillings,\
-	map_effects, time, deck_cards, boons, highest_public_id, tool_belt)
+	map_effects, time, deck_cards, boons, highest_public_id, tool_belt_data)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -56,6 +56,7 @@ func onLoadData(data: SavedData) -> void:
 	
 	boons = data.boons.map(func(x: SavedDataBoon): return SavedData.onLoadModel(x, self))
 	tool_belt = data.tool_belt.map(func(x: SavedDataTool): return SavedData.onLoadModel(x, self))
+	
 	area = SavedData.onLoadModel(data.area_data, get_parent(), [ChampionCard])
 	area.load_level.connect(onLoadLevel)
 	
@@ -99,10 +100,14 @@ func onUpdateShillings(delta: int) -> void:
 
 #region Load Level / Map
 func onLoadLevel(level_data: SavedDataLevel) -> void:
-	load_level.emit(level_data, self)
+	load_level.emit(level_data, self, area)
 	
 func onLoadMap() -> void:
-	load_map.emit(self)
+	load_map.emit(self, area)
+	
+func onLoadGame() -> void:
+	if area.level_data == null: onLoadMap()
+	else: onLoadLevel(area.level_data)
 #endregion
 
 #region Timer
@@ -112,8 +117,17 @@ func getTimeElapsed() -> int:
 
 #region Tools
 func onUpdateToolbelt(Tool: ToolGD) -> void:
+	if !Tool.is_inside_tree():
+		add_child(Tool)
+	elif Tool.get_parent() != self:
+		Tool.reparent(self)
+		
 	tool_belt.append(Tool)
 	update_toolbelt.emit(tool_belt)
+	
+func onRemoveToolFromToolbelt(Tool: ToolGD) -> void:
+	tool_belt.erase(Tool)
+	remove_child(Tool)
 #endregion
 
 #region Boons

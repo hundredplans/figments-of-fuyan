@@ -3,11 +3,14 @@ class_name MapNodeGD extends FofGD
 #region Globals
 signal entered
 signal finished
-
+signal create_screen
+signal create_world_screen
+signal load_level
 signal hovered
 signal pressed
+
 @warning_ignore("unused_signal")
-signal load_level
+
 
 var is_finished: bool
 var is_entered: bool
@@ -41,9 +44,11 @@ static func onCalculatePosition(_map_location: MapLocation, map_locations: Array
 #endregion
 
 #region Base Functions
+var was_pressed: bool = false
 func _input(_event: InputEvent) -> void:
-	if Input.is_action_just_pressed("MainInput") and hovered_state:
+	if Input.is_action_just_pressed("MainInput") and hovered_state and !was_pressed:
 		pressed.emit(self)
+		was_pressed = true
 		
 func _process(delta: float) -> void:
 	if Model != null and !is_finished: Model.rotation_degrees.y += SPIN_SPEED * delta
@@ -66,10 +71,10 @@ func onLoadData(data: SavedData) -> void:
 	onAfterLoadSetupFinishedEntered()
 	
 func onAfterLoadSetupFinishedEntered() -> void:
-	if is_finished and !is_entered:
-		onExit(true)
-	elif is_entered:
-		onEnter(true)
+	if is_finished and !is_entered: onExitedVisual(true)
+	elif is_entered: onEnteredVisual(true)
+		
+func onFofInit() -> void: pass # For super purposes
 	
 func onCreateModel() -> void:
 	Model = info.model.instantiate()
@@ -116,8 +121,9 @@ func setRayPickableGlobal(state: bool) -> void:
 
 #region Hovered
 func onMouseHovered(state: bool) -> void:
-	hovered_state = state
-	hovered.emit(self, state)
+	if !is_finished and !is_entered:
+		hovered_state = state
+		hovered.emit(self, state, HoverUI)
 
 var hovered_state: bool
 func onStaticBodyHovered(is_walkable: bool, state: bool) -> void:
@@ -143,40 +149,31 @@ func onTweenChain() -> void:
 #endregion
 
 #region Enter / Exit / Finish
-var ActiveScreen: Control
-func onExit(is_instant: bool = false) -> void:
+func onExited() -> void:
 	is_entered = false
-	if is_instant: setAlphagreyMaterialValue(0.5); setRayPickable(false)
-	else:
-		var tween := get_tree().create_tween()
-		tween.tween_method(setAlphagreyMaterialValue, 1.0, 0.5, Game.SELECTED_MAP_NODE_TRAVEL_SPEED)
-		for link_model in link_models: link_model.onMapNodeDeselected()
 		
-func onEnter(is_instant: bool = false) -> void:
+func onEntered() -> void:
 	is_entered = true
 	setRayPickable(false)
-	for link_model in link_models: link_model.onMapNodeSelected()
-	if is_instant: setAlphagreyMaterialValue(1.0)
-	else:
-		var tween := get_tree().create_tween()
-		tween.tween_method(setAlphagreyMaterialValue, 0.0, 1.0, Game.SELECTED_MAP_NODE_TRAVEL_SPEED)
-		await tween.finished
-	var instant_finish: bool = onLoadEntered()
-	
 	entered.emit(self)
-	if instant_finish: onFinished()
+		
+func onEnteredVisual(is_instant: bool = false) -> void:
+	if is_instant: setAlphagreyMaterialValue(1.0); setRayPickable(false); return
+	
+	var tween := get_tree().create_tween()
+	tween.tween_method(setAlphagreyMaterialValue, 0.0, 1.0, Game.SELECTED_MAP_NODE_TRAVEL_SPEED)
+	for link_model in link_models: link_model.onMapNodeSelected()
+	
+func onExitedVisual(is_instant: bool = false) -> void:
+	if is_instant: setAlphagreyMaterialValue(0.5); setRayPickable(false); return
+	
+	var tween := get_tree().create_tween()
+	tween.tween_method(setAlphagreyMaterialValue, 1.0, 0.5, Game.SELECTED_MAP_NODE_TRAVEL_SPEED)
+	for link_model in link_models: link_model.onMapNodeDeselected()
 		
 func onFinished() -> void:
 	is_finished = true
-	if ActiveScreen != null: ActiveScreen.queue_free()
 	setRayPickable(false)
 	if is_entered:
 		finished.emit(self)
-		
-func onLoadEntered() -> bool:
-	if info.screen != null:
-		ActiveScreen = info.screen.instantiate()
-		ActiveScreen.finished.connect(onFinished)
-		return false
-	return true
 #endregion

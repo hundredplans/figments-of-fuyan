@@ -3,6 +3,7 @@ class_name MapNodeInfo extends FofInfo
 #region Exports
 @export var load_level: bool
 @export var screen: PackedScene
+@export var world: PackedScene
 @export var icon: Texture2D
 @export var model: PackedScene
 @export var is_unique_node: bool
@@ -21,13 +22,3 @@ const MAP_NODE_LINK_PATH: String = "res://scenes/game/map_nodes/map_node_link.ts
 #endregion
 
 static func getInfoPath() -> String: return "res://resources/fof/map_nodes"
-static func getDataFromID(_id: int) -> GDScript:
-	match _id:
-		2: return SavedDataMapNodeGildred
-		3: return SavedDataMapNodeFight
-		4: return SavedDataMapNodeEliteFight
-		5: return SavedDataMapNodeChiefFight
-		6: return SavedDataMapNodeEliteChiefFight
-		9: return SavedDataMapNodeMiniBossFight
-		10: return SavedDataMapNodeBossFight
-		_: return SavedDataMapNode

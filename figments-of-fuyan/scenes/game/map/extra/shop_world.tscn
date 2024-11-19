@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://b03hysv0770d1"]
+
+[ext_resource type="Script" path="res://scenes/game/map/extra/shop_world.gd" id="1_2hfxx"]
+[ext_resource type="PackedScene" uid="uid://duugbk8hfmbe1" path="res://assets/models/environment/merchant_crab_shop.glb" id="1_kht5l"]
+
+[node name="ShopWorld" type="Node3D"]
+script = ExtResource("1_2hfxx")
+
+[node name="merchant_crab_shop" parent="." instance=ExtResource("1_kht5l")]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-4.18981e-08, 0.285036, -0.958517, 1.24593e-08, 0.958517, 0.285036, 1, 0, -4.37114e-08, -2.25873, 1.17421, 0)
+current = true

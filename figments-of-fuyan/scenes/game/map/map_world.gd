@@ -24,40 +24,43 @@ func getMapNodeDestination(map_node: MapNodeGD) -> Vector3:
 	return Vector3(map_node.position.x, 0, 0)
 #endregion
 
-#region Action Lock
-func onUpdateActionLock() -> void:
-	var state: bool = isActionLock()
-	action_lock.emit(state)
-	get_tree().call_group("MapNodesGD", "setRayPickableGlobal", !state)
-
 #region Base Functions
 func setInfo(_save_file: SaveFileGD) -> void:
 	save_file = _save_file
 	area = save_file.area
 	
-	area.map_node_pressed.connect(onMapNodePressed)
-	area.map_node_entered.connect(onMapNodeEntered)
-	area.map_node_finished.connect(onMapNodeFinished)
+	area.init_load.connect(onInitLoad)
 	
 	var Card: CardGD = save_file.getChampionCard()
 	MapCard = Card
 	MapCard.onCreateModel()
 	MapCard.onIdle()
 	MapCard.Model.rotation_degrees.y = 90
-	onMapStartAnimation()
+	
+	var EnteredMapNode: MapNodeGD = area.getEnteredMapNode()
+	var spotlight_destination := EnteredMapNode.position
+	spotlight_destination.y += UNIT_SPOTLIGHT_UP_OFFSET
+	UnitSpotlight.position = spotlight_destination
+	MapCard.position = EnteredMapNode.position
+	Camera.position = getMapNodeDestination(EnteredMapNode) + CAMERA_OFFSET
+	
 	setEnvironment()
-#endregion
-
-#region Setters
-func setEnvironment() -> void:
-	WorldEnv.environment = area.info.base_environment\
-	if !area.isAfterMiniboss() else area.info.late_environment
+	for map_node in get_tree().get_nodes_in_group("MapNodesGD"):
+		map_node.pressed.connect(onMapNodePressed)
+		map_node.entered.connect(onMapNodeEntered)
+		map_node.finished.connect(onMapNodeFinished)
+	
+func onInitLoad() -> void:
+	onMapStartAnimation()
 #endregion
 
 #region Map Node Selected / Entered / Finished
 var is_unit_walking_to_map_node: bool = false
 var is_unit_entered: bool = false
 func onMapNodePressed(map_node: MapNodeGD) -> void:
+	var EnteredMapNode: MapNodeGD = area.getEnteredMapNode()
+	if !(EnteredMapNode.isMapNodeLink(map_node) and EnteredMapNode.is_finished): return
+	
 	var spotlight_destination := map_node.position
 	spotlight_destination.y += UNIT_SPOTLIGHT_UP_OFFSET
 		
@@ -90,29 +93,36 @@ func onMapNodeFinished(_map_node: MapNodeGD) -> void:
 @export var MAP_START_TRAVEL_TIME: float = 7
 var is_map_starting: bool
 func onMapStartAnimation() -> void:
-	var map_node: MapNodeGD = area.getEnteredMapNode()
-	var spotlight_destination := map_node.position
-	spotlight_destination.y += UNIT_SPOTLIGHT_UP_OFFSET
-	UnitSpotlight.position = spotlight_destination
-	MapCard.position = map_node.position
+	if Helper.getAdmin(): return
 	
-	if !Helper.getAdmin() and !area.getEnteredMapNode().info.id > 1:
-		is_map_starting = true
-		onUpdateActionLock()
-		
-		var boss_node: MapNodeGD = area.getBossMapNode()
-		var start_node: MapNodeGD = area.getStartMapNode()
-		Camera.position = getMapNodeDestination(boss_node) + CAMERA_OFFSET
-		
-		await get_tree().create_timer(MAP_START_DELAY_TIME).timeout
-		var tween := get_tree().create_tween()
-		var relative_position: float = getMapNodeDestination(start_node).x - Camera.position.x
-		tween.tween_property(Camera, "position:x", relative_position, MAP_START_TRAVEL_TIME).as_relative()\
-		.set_trans(Tween.TRANS_SINE)
-		
-		await tween.finished
-		is_map_starting = false
-		onUpdateActionLock()
-	else: Camera.position = getMapNodeDestination(map_node) + CAMERA_OFFSET
+	var map_node: MapNodeGD = area.getEnteredMapNode()
+	is_map_starting = true
+	onUpdateActionLock()
+	
+	var boss_node: MapNodeGD = area.getBossMapNode()
+	var start_node: MapNodeGD = area.getStartMapNode()
+	Camera.position = getMapNodeDestination(boss_node) + CAMERA_OFFSET
+	
+	await get_tree().create_timer(MAP_START_DELAY_TIME).timeout
+	var tween := get_tree().create_tween()
+	var relative_position: float = getMapNodeDestination(start_node).x - Camera.position.x
+	tween.tween_property(Camera, "position:x", relative_position, MAP_START_TRAVEL_TIME).as_relative()\
+	.set_trans(Tween.TRANS_SINE)
+	
+	await tween.finished
+	is_map_starting = false
+	onUpdateActionLock()
+#endregion
 
+#region Action Lock
+func onUpdateActionLock() -> void:
+	var state: bool = isActionLock()
+	action_lock.emit(state)
+	get_tree().call_group("MapNodesGD", "setRayPickableGlobal", !state)
+#endregion
+
+#region Environment
+func setEnvironment() -> void:
+	WorldEnv.environment = area.info.base_environment\
+	if !area.isAfterMiniboss() else area.info.late_environment
 #endregion

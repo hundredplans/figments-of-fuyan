@@ -1,9 +1,9 @@
 class_name SavedDataArea extends SavedData
 
 @export var level_data: SavedDataLevel
-@export var map_nodes_data: Array[SavedDataMapNode]
+@export var map_nodes_data: Array
 
-func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _map_nodes_data: Array[SavedDataMapNode] = [],\
+func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _map_nodes_data: Array = [],\
 	_level_data: SavedDataLevel = null) -> void:
 	super(_id, _first_init, _public_id)
 	map_nodes_data = _map_nodes_data

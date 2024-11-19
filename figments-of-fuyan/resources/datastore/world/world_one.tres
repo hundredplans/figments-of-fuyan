@@ -1,9 +1,26 @@
-[gd_resource type="Resource" script_class="WorldDatastore" load_steps=17 format=3 uid="uid://ctfukjvhoe8nm"]
+[gd_resource type="Resource" script_class="WorldDatastore" load_steps=22 format=3 uid="uid://ctfukjvhoe8nm"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/map_nodes/extra/map_node_odds_datastore.gd" id="1_hv7qf"]
+[ext_resource type="Script" path="res://scripts/common/price/rarity_price_datastore.gd" id="1_irbdm"]
 [ext_resource type="Script" path="res://scripts/common/rewards/rarity_odds_datastore.gd" id="2_8uwip"]
 [ext_resource type="Script" path="res://scripts/common/rewards/fight_rewards_datastore.gd" id="2_27jhm"]
 [ext_resource type="Script" path="res://scripts/fof_info/world_datastore.gd" id="2_h8y7y"]
+
+[sub_resource type="Resource" id="Resource_giks2"]
+script = ExtResource("1_irbdm")
+common = 26
+rare = 33
+exalt = 41
+miniboss = 51
+boss = 61
+
+[sub_resource type="Resource" id="Resource_e0jms"]
+script = ExtResource("1_irbdm")
+common = 20
+rare = 28
+exalt = 35
+miniboss = 45
+boss = 55
 
 [sub_resource type="Resource" id="Resource_dv863"]
 script = ExtResource("1_hv7qf")
@@ -93,8 +110,16 @@ boon_rarity_odds = SubResource("Resource_4rk5k")
 boon_odds = 10.0
 boon_ascension_rate = 5.0
 tool_rarity_odds = SubResource("Resource_o4em2")
-tool_odds = 100.0
+tool_odds = 20.0
 tool_ascension_rate = 5.0
+
+[sub_resource type="Resource" id="Resource_uiu5y"]
+script = ExtResource("2_8uwip")
+common = 60.0
+rare = 35.0
+exalt = 5.0
+miniboss = 0.0
+boss = 0.0
 
 [sub_resource type="Resource" id="Resource_woaak"]
 script = ExtResource("2_8uwip")
@@ -103,6 +128,14 @@ rare = 35.0
 exalt = 5.0
 miniboss = 0.0
 boss = 0.0
+
+[sub_resource type="Resource" id="Resource_vnak7"]
+script = ExtResource("1_irbdm")
+common = 14
+rare = 20
+exalt = 28
+miniboss = 38
+boss = 48
 
 [resource]
 script = ExtResource("2_h8y7y")
@@ -115,6 +148,19 @@ tool_enemy_spawn_rarity_odds = SubResource("Resource_woaak")
 tool_enemy_spawn_rate = 10.0
 tool_enemy_ascended_rate = 5.0
 enemy_ascended_rate = 5.0
+card_rarity_prices = SubResource("Resource_e0jms")
+tool_rarity_prices = SubResource("Resource_vnak7")
+boon_rarity_prices = SubResource("Resource_giks2")
+foreign_card_base_price_increase = 4
+transform_by_rarity_price = 20
+transform_by_cost_price = 25
+ascend_card_price = 30
+remove_card_price = 15
+shop_rarity_odds = SubResource("Resource_uiu5y")
+ascended_items_flat_after_percentage_increase = 5
+ascended_items_price_percentage_increase = 50
+shop_ascension_chance = 2.0
+default_shop_variance = 3
 LANE_ODDS = {
 "2": 0.25,
 "3": 0.7,

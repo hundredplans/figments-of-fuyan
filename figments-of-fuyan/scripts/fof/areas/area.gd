@@ -1,20 +1,20 @@
 class_name AreaGD extends FofGD
 
 #region Global
-signal map_node_hovered
-signal map_node_entered
-signal map_node_finished
-signal map_node_pressed
+signal init_load
 signal load_level
 
 var map_location_to_node: Dictionary
-var active_level: LevelGD
-var map_nodes_data: Array[SavedDataMapNode] = []
 var basic_card_ids: Array = []
+var active_level: LevelGD
+#endregion
+
+#region Saved Data
+var map_nodes_data: Array = []
+var level_data: SavedDataLevel
 #endregion
 
 #region Helper
-
 func getWorldDifficulty() -> int:
 	return info.world.world
 
@@ -22,13 +22,12 @@ func onFindEmptyMapSpot(progress: int, lane: int) -> EmptyMapNode:
 	for empty_map_spot in empty_spots:
 		if empty_map_spot.progress == progress and empty_map_spot.lane == lane: return empty_map_spot
 	return null
-
 #endregion
 
 #region Save / Load
 func onSave() -> SavedDataArea:
-	if map_nodes_data.is_empty():
-		map_nodes_data.assign(SavedData.onSaveGroup(get_tree().get_nodes_in_group("MapNodesGD")))
+	if map_nodes_data.is_empty(): # If not loaded into a level get the most recent patch
+		map_nodes_data = SavedData.onSaveGroup(get_tree().get_nodes_in_group("MapNodesGD"))
 	
 	var level_data := active_level.onSave() if active_level != null else null
 	return SavedDataArea.new(info.id, false, public_id, map_nodes_data, level_data)
@@ -38,21 +37,41 @@ func onLoadData(data: SavedData) -> void:
 	add_to_group("AreasGD")
 	basic_card_ids = info.card_ids.filter(func(x: int): \
 		return Game.isBasicRarity(Helper.getFofInfoID(CardInfo, x).rarity))
+		
 	map_nodes_data = data.map_nodes_data
-#endregion
+	level_data = data.level_data
 	
-#region Create Map Nodes
-var empty_spots: Array[EmptyMapNode] = []
+var is_init: bool = false
 func onFofInit(Card: CardGD) -> void:
+	is_init = true
 	empty_spots = generateEmptyMapSpots()
 	generateMapLinks(Card)
 	var map_node_odds: Dictionary = getMapNodeOdds()
 	var unique_node_id: Array = Card.info.unique_nodes_id
 	
 	setEmptySpotsIDS(unique_node_id, map_node_odds)
-	setEliteChiefFights(map_node_odds, Card)
+	setEliteFights(map_node_odds, Card)
 	onCreateMapNodes()
-
+	
+func onLoadMap() -> void:
+	for tile_object_data in info.overworld_decoration.data:
+		SavedData.onLoadModel(tile_object_data, self)
+		
+	for map_node_data in map_nodes_data:
+		onCreateMapNode(map_node_data)
+		
+	map_nodes_data = [] # Empty map nodes data to get most recent versions
+	#var map_node: MapNodeGD = getEnteredMapNode()
+	#if map_node.is_entered and !map_node.is_finished:
+		#onMapNodeEntered(map_node)
+		
+func onLoadMapAfterScenes() -> void:
+	if is_init:
+		init_load.emit()
+#endregion
+	
+#region Create Map Nodes
+var empty_spots: Array[EmptyMapNode] = []
 #region Generators
 func generateEmptyMapSpots() -> Array[EmptyMapNode]:
 	if getWorldDifficulty() == 1: empty_spots.append(EmptyMapNode.new(-1, 0))
@@ -192,9 +211,10 @@ func setEmptySpotsIDS(unique_node_ids: Array, map_node_odds: Dictionary) -> void
 	for empty_spot in empty_spots:
 		match empty_spot.progress:
 			-1: empty_spot.id = 1; continue
-			0: empty_spot.id = 1 if getWorldDifficulty() > 1 else 2; continue # Gildred
-			5: empty_spot.id = 9; continue
-			10: empty_spot.id = 10; continue
+			# Below should be 2 for gildred instead of 8
+			0: empty_spot.id = 1 if getWorldDifficulty() > 1 else 6; continue # Gildred
+			5: empty_spot.id = 7; continue
+			10: empty_spot.id = 8; continue
 			_:
 				if extra_unique_node_segment_one and empty_spot.progress < 5:
 					extra_unique_node_segment_one = false
@@ -204,7 +224,7 @@ func setEmptySpotsIDS(unique_node_ids: Array, map_node_odds: Dictionary) -> void
 					empty_spot.id = unique_node_ids.pick_random()
 			
 		if !guarantee_shop and map_node_odds[empty_spot.progress].shop > 0:
-			empty_spot.id = 8
+			empty_spot.id = 6
 			guarantee_shop = true
 			continue
 		elif guarantee_unique_node.size() > 0 and empty_spot.progress > 5:
@@ -223,28 +243,22 @@ func setEmptySpotsIDS(unique_node_ids: Array, map_node_odds: Dictionary) -> void
 		var roll: String = Random.getRandomKey(map_node_odds_rollable[empty_spot.progress])
 		match roll:
 			"fight": empty_spot.id = 3; continue
-			"shop": empty_spot.id = 8; continue
-			"encounter": empty_spot.id = 7; continue
+			"encounter": empty_spot.id = 5; continue
+			"shop": empty_spot.id = 6; continue
 		
 #endregion
 
 #region Elites
-func setEliteChiefFights(map_node_odds: Dictionary, Card: CardGD) -> void:
-	var guarantee_chief: bool = true
+func setEliteFights(map_node_odds: Dictionary, Card: CardGD) -> void:
 	var guarantee_elite: bool = true
 	for empty_spot in empty_spots.filter(func(x: EmptyMapNode): return x.id == 3):
 		var odds: float = map_node_odds[empty_spot.progress].upgrade_regular_fight
 		if odds > 0:
 			if guarantee_elite: empty_spot.id = 4; guarantee_elite = false; continue
-			elif guarantee_chief: empty_spot.id = 5; guarantee_chief = false; continue
-		odds += getExtraEliteChiefOdds(Card)
+			
+		odds += getExtraEliteOdds(Card)
 		var upgrade: bool = Random.rollFloat(odds / 100)
-		var upgrade_extra: bool = Random.rollFloat(odds / 100)
-		if upgrade and upgrade_extra: empty_spot.id = 6
-		elif upgrade:
-			var upgrade_to_elite: bool = Random.getBool()
-			if upgrade_to_elite: empty_spot.id = 4
-			else: empty_spot.id = 5
+		if upgrade: empty_spot.id = 4
 #endregion
 
 #region Getters
@@ -253,8 +267,8 @@ func getMapNodeOdds() -> Dictionary:
 	for odds in info.world.data: map_node_odds[odds.progress] = odds
 	return map_node_odds
 	
-func getExtraEliteChiefOdds(Card: CardGD) -> float:
-	if Card.info.id == 1: return Card.extra_elite_chief_odds
+func getExtraEliteOdds(Card: CardGD) -> float:
+	if Card.info.id == 1: return Card.extra_elite_odds
 	return 0
 #endregion
 
@@ -267,10 +281,11 @@ func onCreateMapNodes() -> void:
 	for _map_location in map_locations:
 		_map_location.position = MapNodeGD.onCalculatePosition(_map_location, map_locations)
 	
+	var infos: Array = Helper.getFofInfoArray(MapNodeInfo)
 	for empty_spot in empty_spots:
 		var links: Array = empty_spot.links.map(func(x: EmptyMapNodeLink): return MapLink.new(x.empty_map_node.map_location, x.is_holy))
-		onCreateMapNode(MapNodeInfo.getDataFromID(empty_spot.id).\
-		new(empty_spot.id, true, 0, empty_spot.map_location, links))
+		var info: MapNodeInfo = infos.filter(func(x: MapNodeInfo): return x.id == empty_spot.id)[0]
+		onCreateMapNode(info.saved_data.new(empty_spot.id, true, 0, empty_spot.map_location, links))
 	
 func onCreateMapNode(data: SavedDataMapNode) -> void:
 	var map_node: MapNodeGD = SavedData.onLoadModel(data, self)
@@ -278,7 +293,6 @@ func onCreateMapNode(data: SavedDataMapNode) -> void:
 	map_node.hovered.connect(onMapNodeHovered)
 	map_node.pressed.connect(onMapNodePressed)
 	map_node.load_level.connect(onMapNodeLoadLevelInit)
-	map_node.entered.connect(onMapNodeEntered)
 	map_node.finished.connect(onMapNodeFinished)
 	
 #endregion
@@ -300,39 +314,25 @@ func getEnteredMapNode() -> MapNodeGD:
 		if map_node.is_entered: return map_node
 	return null
 	
-func onMapNodeHovered(map_node: MapNodeGD, state: bool) -> void:
-	map_node_hovered.emit(map_node, state)
+func onMapNodeHovered(map_node: MapNodeGD, state: bool, _HoverUI: Control = null) -> void:
 	var EnteredMapNode: MapNodeGD = getEnteredMapNode()
 	var is_walkable: bool = EnteredMapNode.isMapNodeLink(map_node)
 	map_node.onStaticBodyHovered(is_walkable, state)
 	
 func onMapNodePressed(map_node: MapNodeGD) -> void:
 	var EnteredMapNode: MapNodeGD = getEnteredMapNode()
-	if EnteredMapNode.isMapNodeLink(map_node) and EnteredMapNode.is_finished:
-		get_tree().call_group("MapNodesGD", "setRayPickableGlobal", false)
-		EnteredMapNode.onExit()
-		map_node.onEnter()
-		map_node_pressed.emit(map_node)
-			
-func onMapNodeEntered(map_node: MapNodeGD) -> void:
+	if !(EnteredMapNode.isMapNodeLink(map_node) and EnteredMapNode.is_finished): return
 	get_tree().call_group("MapNodesGD", "setRayPickableGlobal", false)
-	map_node_entered.emit(map_node)
+	
+	EnteredMapNode.onExitedVisual()
+	map_node.onEnteredVisual()
+	
+	await get_tree().create_timer(Game.SELECTED_MAP_NODE_TRAVEL_SPEED).timeout
+	EnteredMapNode.onExited()
+	map_node.onEntered()
 			
 func onMapNodeFinished(map_node: MapNodeGD) -> void:
 	get_tree().call_group("MapNodesGD", "setRayPickableGlobal", true)
-	map_node_finished.emit(map_node)
-	
-func onLoadMap() -> void:
-	for tile_object_data in info.overworld_decoration.data:
-		SavedData.onLoadModel(tile_object_data, self)
-		
-	for map_node_data in map_nodes_data:
-		onCreateMapNode(map_node_data)
-		
-	map_nodes_data = []
-	var map_node: MapNodeGD = getEnteredMapNode()
-	if map_node.is_entered and !map_node.is_finished:
-		onMapNodeEntered(map_node)
 	
 func onMapNodeLoadLevelInit(level_data: SavedDataLevel) -> void:
 	level_data.max_energy = info.world.getMaxEnergy()
@@ -361,7 +361,8 @@ func getNodeByID(id: int) -> MapNodeGD:
 
 #region Active Level
 func onLoadActiveLevel(level_data: SavedDataLevel) -> LevelGD:
-	map_nodes_data.assign(SavedData.onSaveGroup(get_tree().get_nodes_in_group("MapNodesGD")))
+	if map_nodes_data.is_empty():
+		map_nodes_data = SavedData.onSaveGroup(get_tree().get_nodes_in_group("MapNodesGD")) # Save map nodes data
 	get_tree().call_group("TileObjectsGD", "free")
 	get_tree().call_group("MapNodesGD", "onClear")
 	get_tree().call_group("CardsGD", "onRemoveModel")
@@ -468,6 +469,7 @@ func getDivinusBoonAscensionOdds(odds: float) -> float:
 func onRewardsFinished(save_file: SaveFileGD) -> void:
 	active_level.onClear()
 	active_level = null
+	
 	save_file.onLoadMap()
 	
 func onLossFinished() -> void:

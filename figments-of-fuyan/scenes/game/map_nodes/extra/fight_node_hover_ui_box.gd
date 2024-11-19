@@ -10,7 +10,7 @@ func setInfo(card_info: CardInfo, card_data: SavedDataCard, tool_info: ToolInfo,
 	if card_data.ascended:
 		UnitPanel.theme_type_variation = "YellowPanelContainer"
 	
-	if tool_info != null:
-		ToolIcon.setInfo(ImageTexture.create_from_image(tool_info.icon), tool_data.ascended)
-	
+	ToolIcon.setInfoDirect(
+		ImageTexture.create_from_image(tool_info.icon) if tool_info != null else null,\
+		tool_data.ascended if tool_data != null else false)
 	
