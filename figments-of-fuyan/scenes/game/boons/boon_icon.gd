@@ -1,6 +1,8 @@
 extends TextureRect
 
+signal pressed
 var Boon: BoonGD
+var disabled: bool
 
 @onready var ChargesLabel: Label = %ChargesLabel
 @onready var BoonShine: TextureRect = %BoonShine
@@ -10,7 +12,7 @@ func setInfo(_Boon: BoonGD) -> void:
 	texture = Boon.getIcon()
 	
 	onUpdateCharges(Boon.getCharges())
-	onUpdateDisabled(Boon.getDisabled())
+	setDisabled(Boon.getDisabled())
 	onUpdateAscension(Boon.ascended)
 	
 var mouse_in_ui: bool
@@ -23,8 +25,13 @@ func onUpdateCharges(charges: int) -> void:
 	else:
 		ChargesLabel.text = str(charges)
 	
-func onUpdateDisabled(disabled: bool) -> void:
+func setDisabled(_disabled: bool) -> void:
+	disabled = _disabled
 	modulate = Color(0.5, 0.5, 0.5) if disabled else Color(1, 1, 1)
 		
 func onUpdateAscension(ascended: bool) -> void:
 	BoonShine.visible = ascended
+	
+func _process(_delta: float) -> void:
+	if Input.is_action_just_pressed("MainInput") and mouse_in_ui and !disabled:
+		pressed.emit(Boon)

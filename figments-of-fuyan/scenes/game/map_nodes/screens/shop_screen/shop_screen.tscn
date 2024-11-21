@@ -1,0 +1,120 @@
+[gd_scene load_steps=9 format=3 uid="uid://ca067vx7dy1b"]
+
+[ext_resource type="Script" path="res://scenes/game/map_nodes/screens/shop_screen/shop_screen.gd" id="1_wcyr3"]
+[ext_resource type="LabelSettings" uid="uid://rtes1t31euap" path="res://resources/ui/label_settings/jacquard_massive.tres" id="2_rv443"]
+[ext_resource type="PackedScene" uid="uid://bd25cc7h0xg0q" path="res://scenes/game/map/extra/purchasable_remove.tscn" id="3_dvy4k"]
+[ext_resource type="PackedScene" uid="uid://bwch12ke7ea65" path="res://scenes/game/map/extra/purchasable_card.tscn" id="3_nsqt1"]
+[ext_resource type="PackedScene" uid="uid://nr8qdav842ar" path="res://scenes/game/map/extra/purchasable_boon.tscn" id="5_wgmd6"]
+[ext_resource type="PackedScene" uid="uid://c1uy4uqnnkrrv" path="res://scenes/game/map/extra/purchasable_tool.tscn" id="6_afqjs"]
+[ext_resource type="PackedScene" uid="uid://jo4ubuikkvku" path="res://scenes/game/map/extra/purchasable_transform.tscn" id="7_bo7jg"]
+[ext_resource type="PackedScene" uid="uid://dxvuvb68hgxug" path="res://scenes/common/exit_button/exit_button.tscn" id="8_w8www"]
+
+[node name="ShopScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_wcyr3")
+PurchasableCardPacked = ExtResource("3_nsqt1")
+PurchasableRemovePacked = ExtResource("3_dvy4k")
+PurchasableBoonPacked = ExtResource("5_wgmd6")
+PurchasableToolPacked = ExtResource("6_afqjs")
+PurchasableTransformPacked = ExtResource("7_bo7jg")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -71.5
+offset_top = -473.0
+offset_right = 71.5
+offset_bottom = -408.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Wares"
+label_settings = ExtResource("2_rv443")
+
+[node name="TopRow" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_top = 228.0
+offset_right = 1920.0
+offset_bottom = 628.0
+
+[node name="Cards" type="HBoxContainer" parent="TopRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="RemoveCardControl" type="Control" parent="TopRow"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+
+[node name="RemoveCardPosition" type="Control" parent="TopRow/RemoveCardControl"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -120.0
+offset_right = 120.0
+offset_bottom = 240.0
+grow_horizontal = 2
+
+[node name="BottomRow" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_top = 766.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="Boons" type="HBoxContainer" parent="BottomRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="Tools" type="HBoxContainer" parent="BottomRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="TransformControl" type="Control" parent="BottomRow"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+
+[node name="TransformPosition" type="Control" parent="BottomRow/TransformControl"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -120.0
+offset_right = 120.0
+offset_bottom = 240.0
+grow_horizontal = 2
+
+[node name="PurchasableTransform" parent="BottomRow/TransformControl/TransformPosition" instance=ExtResource("7_bo7jg")]
+
+[node name="ExitButton" parent="." node_paths=PackedStringArray("exit_screen") instance=ExtResource("8_w8www")]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -110.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = 110.0
+grow_horizontal = 0
+exit_screen = NodePath("..")
+
+[connection signal="pressed" from="ExitButton" to="." method="_on_exit_button_pressed"]

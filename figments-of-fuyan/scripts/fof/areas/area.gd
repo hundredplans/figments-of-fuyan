@@ -11,7 +11,7 @@ var active_level: LevelGD
 
 #region Saved Data
 var map_nodes_data: Array = []
-var level_data: SavedDataLevel
+var active_level_data: SavedDataLevel
 #endregion
 
 #region Helper
@@ -29,8 +29,8 @@ func onSave() -> SavedDataArea:
 	if map_nodes_data.is_empty(): # If not loaded into a level get the most recent patch
 		map_nodes_data = SavedData.onSaveGroup(get_tree().get_nodes_in_group("MapNodesGD"))
 	
-	var level_data := active_level.onSave() if active_level != null else null
-	return SavedDataArea.new(info.id, false, public_id, map_nodes_data, level_data)
+	active_level_data = active_level.onSave() if active_level != null else null
+	return SavedDataArea.new(info.id, false, public_id, map_nodes_data, active_level_data)
 	
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -39,7 +39,7 @@ func onLoadData(data: SavedData) -> void:
 		return Game.isBasicRarity(Helper.getFofInfoID(CardInfo, x).rarity))
 		
 	map_nodes_data = data.map_nodes_data
-	level_data = data.level_data
+	active_level_data = data.level_data
 	
 var is_init: bool = false
 func onFofInit(Card: CardGD) -> void:
@@ -61,13 +61,15 @@ func onLoadMap() -> void:
 		onCreateMapNode(map_node_data)
 		
 	map_nodes_data = [] # Empty map nodes data to get most recent versions
-	#var map_node: MapNodeGD = getEnteredMapNode()
-	#if map_node.is_entered and !map_node.is_finished:
-		#onMapNodeEntered(map_node)
 		
 func onLoadMapAfterScenes() -> void:
 	if is_init:
 		init_load.emit()
+		return
+		
+	var map_node: MapNodeGD = getEnteredMapNode()
+	if map_node.is_entered and !map_node.is_finished:
+		map_node.onEntered()
 #endregion
 	
 #region Create Map Nodes
@@ -334,13 +336,16 @@ func onMapNodePressed(map_node: MapNodeGD) -> void:
 func onMapNodeFinished(map_node: MapNodeGD) -> void:
 	get_tree().call_group("MapNodesGD", "setRayPickableGlobal", true)
 	
-func onMapNodeLoadLevelInit(level_data: SavedDataLevel) -> void:
-	level_data.max_energy = info.world.getMaxEnergy()
-	level_data.energy = level_data.max_energy
-	onMapNodeLoadLevel(level_data)
+func onMapNodeLoadLevelInit(_active_level_data: SavedDataLevel) -> void:
+	if active_level_data != null: return # If level already loaded
+	
+	active_level_data = _active_level_data
+	active_level_data.max_energy = info.world.getMaxEnergy()
+	active_level_data.energy = active_level_data.max_energy
+	onMapNodeLoadLevel()
 		
-func onMapNodeLoadLevel(level_data: SavedDataLevel) -> void:
-	load_level.emit(level_data)
+func onMapNodeLoadLevel() -> void:
+	load_level.emit(active_level_data)
 #endregion
 
 #region Getters
@@ -469,7 +474,7 @@ func getDivinusBoonAscensionOdds(odds: float) -> float:
 func onRewardsFinished(save_file: SaveFileGD) -> void:
 	active_level.onClear()
 	active_level = null
-	
+	active_level_data = null
 	save_file.onLoadMap()
 	
 func onLossFinished() -> void:

@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://nr8qdav842ar"]
+
+[ext_resource type="Script" path="res://scenes/game/map/extra/purchasable_boon.gd" id="1_e6cqj"]
+[ext_resource type="PackedScene" uid="uid://ct1cn5tc1ofmb" path="res://scenes/game/boons/boon_icon.tscn" id="2_5m3wn"]
+[ext_resource type="PackedScene" uid="uid://6nf3mir2i2rk" path="res://scenes/common/fancy_text/fancy_text_label.tscn" id="3_koevc"]
+
+[node name="PurchasableBoon" type="Control"]
+custom_minimum_size = Vector2(160, 202)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 160.0
+offset_bottom = 202.0
+mouse_filter = 2
+script = ExtResource("1_e6cqj")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BoonIcon" parent="VBoxContainer" instance=ExtResource("2_5m3wn")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 160)
+layout_mode = 2
+
+[node name="ShillingsLabel" parent="VBoxContainer" instance=ExtResource("3_koevc")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3

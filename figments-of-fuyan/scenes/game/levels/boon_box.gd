@@ -15,7 +15,7 @@ func onUpdateBoonChargesAndDisabled(Boon: BoonGD) -> void:
 	var BoonIcon: TextureRect = onFindBoonIcon(Boon)
 	if BoonIcon != null:
 		BoonIcon.onUpdateCharges(Boon.getCharges())
-		BoonIcon.onUpdateDisabled(Boon.getDisabled())
+		BoonIcon.setDisabled(Boon.getDisabled())
 
 func onFindBoonIcon(Boon: BoonGD) -> TextureRect:
 	for BoonIcon in get_children():

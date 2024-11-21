@@ -5,7 +5,7 @@ var save_file: SaveFileGD
 @export var gildred_blessing_label_packed: PackedScene
 signal finished
 
-func setInfo(map_node: MapNodeGD, World: Node3D, _save_file: SaveFileGD) -> void:
+func setInfo(_save_file: SaveFileGD, _area: AreaGD, World: Node3D, _UI: Control, map_node: MapNodeGD) -> void:
 	save_file = _save_file
 	for map_effect_datastore in map_node.selected_map_effects:
 		var map_effect: MapEffectGD = SavedData.onLoadModel(map_effect_datastore.getSavedData(), World)
@@ -20,3 +20,6 @@ func onMapEffectPressed(map_effect: MapEffectGD) -> void:
 	map_effect.onPickup(save_file)
 	finished.emit()
 	queue_free()
+	
+func onDimBackground() -> bool:
+	return true

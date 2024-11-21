@@ -5,8 +5,7 @@ var price_variance: int
 #endregion
 
 #region Saved Data
-var available_items: Array # Array of saved datas
-var purchased_items: Array # Array of saved datas
+var items: Array # Array of saved datas
 #endregion
 
 #region Load / Save
@@ -19,12 +18,11 @@ func onFofInit() -> void:
 	onAddTransformation(world_datastore)
 	
 func onSave() -> SavedDataMapNode:
-	return SavedDataShop.new(info.id, false, public_id, map_location, links, is_entered, is_finished, rotation.y, available_items, purchased_items)
+	return SavedDataShop.new(info.id, false, public_id, map_location, links, is_entered, is_finished, rotation.y, items)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
-	available_items = data.available_items
-	purchased_items = data.purchased_items
+	items = data.items
 #endregion
 
 #region Setting Prices
@@ -57,10 +55,10 @@ func onAddLocalForeignCardsBoonTools(world_datastore: WorldDatastore, area: Area
 				base_price *= ((100 + world_datastore.ascended_items_price_percentage_increase) / 100.0)
 				base_price += world_datastore.ascended_items_flat_after_percentage_increase
 			var final_price: int = onAddPriceVariance(base_price)
-			onAddToAvailableItems(PriceDatastore.new(final_price, picked_data))
+			onAddToItems(PriceDatastore.new(final_price, picked_data))
 	
 func onAddRemoveCard(world_datastore: WorldDatastore) -> void:
-	onAddToAvailableItems(PriceDatastore.new(world_datastore.remove_card_price, SavedDataMapEffect.new(3, true)))
+	onAddToItems(PriceDatastore.new(world_datastore.remove_card_price, SavedDataMapEffect.new(3, true)))
 
 func onAddTransformation(world_datastore: WorldDatastore) -> void:
 	var transformation_ids: Array = [4, 5, 6]
@@ -72,11 +70,20 @@ func onAddTransformation(world_datastore: WorldDatastore) -> void:
 		5: base_price = world_datastore.transform_by_rarity_price
 		6: base_price = world_datastore.transform_by_cost_price
 		
-	onAddToAvailableItems(PriceDatastore.new(base_price, picked_data))
+	onAddToItems(PriceDatastore.new(base_price, picked_data))
 
-func onAddToAvailableItems(price_datastore: PriceDatastore) -> void:
-	available_items.append(price_datastore)
+func onAddToItems(price_datastore: PriceDatastore) -> void:
+	items.append(price_datastore)
 	
 func onAddPriceVariance(price: int) -> int:
 	return price + randi_range(-price_variance, price_variance)
 #endregion
+
+func onEntered() -> void:
+	super()
+	var world: Node3D = info.world.instantiate()
+	create_world_scene.emit(self, world)
+	
+	var screen: Control = info.screen.instantiate()
+	screen.finished.connect(onFinished)
+	create_screen.emit(self, screen)

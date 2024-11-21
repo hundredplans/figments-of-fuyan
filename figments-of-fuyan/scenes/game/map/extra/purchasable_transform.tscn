@@ -1,0 +1,47 @@
+[gd_scene load_steps=6 format=3 uid="uid://jo4ubuikkvku"]
+
+[ext_resource type="Script" path="res://scenes/game/map/extra/purchasable_transform.gd" id="1_osmeu"]
+[ext_resource type="PackedScene" uid="uid://ceoy120bbs7le" path="res://scenes/common/panel_button/panel_button.tscn" id="2_07orc"]
+[ext_resource type="LabelSettings" uid="uid://cyodc3xq62xbg" path="res://resources/ui/label_settings/jacquard_large.tres" id="3_7h06v"]
+[ext_resource type="PackedScene" uid="uid://6nf3mir2i2rk" path="res://scenes/common/fancy_text/fancy_text_label.tscn" id="4_2p7fx"]
+[ext_resource type="LabelSettings" uid="uid://baxopkmeda53x" path="res://resources/ui/label_settings/roboto_huge.tres" id="5_xeeo0"]
+
+[node name="PurchasableTransform" type="Control"]
+custom_minimum_size = Vector2(240, 240)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 240.0
+offset_bottom = 240.0
+mouse_filter = 2
+script = ExtResource("1_osmeu")
+
+[node name="PanelButton" parent="." instance=ExtResource("2_07orc")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"YellowPanelContainer"
+autowrap = true
+text = "Remove Card"
+label_settings = ExtResource("3_7h06v")
+
+[node name="ShillingsLabel" parent="." instance=ExtResource("4_2p7fx")]
+unique_name_in_owner = true
+layout_mode = 0
+offset_top = 247.0
+offset_right = 240.0
+offset_bottom = 285.0
+
+[node name="SoldLabel" type="Label" parent="."]
+unique_name_in_owner = true
+visible = false
+offset_left = 36.0
+offset_top = 139.0
+offset_right = 196.0
+offset_bottom = 215.0
+rotation = -0.785397
+text = "SOLD"
+label_settings = ExtResource("5_xeeo0")

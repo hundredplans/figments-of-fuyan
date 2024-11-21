@@ -5,6 +5,7 @@ signal mouse_in_ui
 
 const DISABLED_COLOR := Color(0.2, 0.2, 0.2)
 
+@export var autowrap: bool
 @export var text: String
 @export var label_settings: LabelSettings
 @onready var label: Label = %Label
@@ -15,6 +16,7 @@ func _ready() -> void:
 	
 func setText(_text: String) -> void:
 	label.text = _text
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD if autowrap else TextServer.AutowrapMode.AUTOWRAP_OFF
 
 var disabled: bool
 var is_mouse_in_ui: bool
@@ -32,8 +34,6 @@ func setDisabled(state: bool) -> void:
 	if disabled:
 		modulate = DISABLED_COLOR
 
-var was_pressed: bool = false
-func _input(_event: InputEvent) -> void:
-	if Input.is_action_just_pressed("MainInput") and is_mouse_in_ui and !disabled and !was_pressed:
+func _process(_delta: float) -> void:
+	if Input.is_action_just_pressed("MainInput") and is_mouse_in_ui and !disabled:
 		pressed.emit()
-		was_pressed = true

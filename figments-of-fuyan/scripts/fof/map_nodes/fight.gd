@@ -47,6 +47,7 @@ func onMouseHovered(state: bool) -> void:
 func onEntered() -> void:
 	super()
 	var new_level_data: SavedDataLevel = level_info.saved_data.new(level_info.id, true, 0, level_info.data.duplicate(), enemy_spawns)
+	
 	new_level_data.is_elite = false
 	is_finished = true
 	

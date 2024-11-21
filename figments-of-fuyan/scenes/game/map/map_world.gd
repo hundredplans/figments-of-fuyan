@@ -11,6 +11,8 @@ var MapCard: CardGD
 var save_file: SaveFileGD
 var area: AreaGD
 var UI: Control
+var ActiveWorld: Node3D
+
 @onready var WorldEnv: WorldEnvironment = %WorldEnvironment
 @onready var Camera: Camera3D = %MovementCamera
 @onready var UnitSpotlight: SpotLight3D = %UnitSpotlight
@@ -49,6 +51,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 		map_node.pressed.connect(onMapNodePressed)
 		map_node.entered.connect(onMapNodeEntered)
 		map_node.finished.connect(onMapNodeFinished)
+		map_node.create_world_scene.connect(onMapNodeCreateWorldScene)
 	
 func onInitLoad() -> void:
 	onMapStartAnimation()
@@ -86,6 +89,10 @@ func onMapNodeEntered(_map_node: MapNodeGD) -> void:
 func onMapNodeFinished(_map_node: MapNodeGD) -> void:
 	is_unit_entered = false
 	onUpdateActionLock()
+	
+	if ActiveWorld != null:
+		ActiveWorld.queue_free()
+		Camera.disable_movement = false
 #endregion
 
 #region Map Start
@@ -126,3 +133,12 @@ func setEnvironment() -> void:
 	WorldEnv.environment = area.info.base_environment\
 	if !area.isAfterMiniboss() else area.info.late_environment
 #endregion
+
+#region World Screen
+func onMapNodeCreateWorldScene(_map_node: MapNodeGD, _ActiveWorld: Node3D) -> void:
+	ActiveWorld = _ActiveWorld
+	add_child(ActiveWorld)
+	
+	ActiveWorld.position = Vector3(0, 1000, 0)
+	Camera.disable_movement = true
+	Camera.current = false

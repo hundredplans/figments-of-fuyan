@@ -370,3 +370,11 @@ func onMouseInUITooltip(state: bool, item: FofGD = null, parent: Control = null,
 	elif !state and Tooltip != null:
 		Tooltip.queue_free()
 #endregion
+
+#region Cards
+func onAddToDeck(Card: CardGD) -> void:
+	Card.team = 0
+	Card.reparent(get_tree().get_nodes_in_group("SaveFilesGD")[0])
+	Card.onChangeCardPlace(Game.CardPlaces.DECK)
+	Card.add_to_group("AllyCardsGD")
+#endregion

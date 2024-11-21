@@ -4,7 +4,7 @@ class_name MapNodeGD extends FofGD
 signal entered
 signal finished
 signal create_screen
-signal create_world_screen
+signal create_world_scene
 signal load_level
 signal hovered
 signal pressed

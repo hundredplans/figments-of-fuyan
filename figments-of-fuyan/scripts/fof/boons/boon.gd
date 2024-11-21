@@ -21,7 +21,7 @@ func getIcon() -> ImageTexture:
 func getDescription() -> String:
 	return info.description if !ascended else info.ascended_description	
 
-func onAscenscionChanged() -> void:
+func onUpdateAscended() -> void:
 	pass
 	
 func onBoonAdded() -> void:

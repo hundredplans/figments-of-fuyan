@@ -1,14 +1,18 @@
-[gd_resource type="Resource" script_class="MapNodeInfo" load_steps=6 format=3 uid="uid://c2odit6usmpey"]
+[gd_resource type="Resource" script_class="MapNodeInfo" load_steps=8 format=3 uid="uid://c2odit6usmpey"]
 
 [ext_resource type="Script" path="res://scripts/fof/map_nodes/shop.gd" id="1_8v87d"]
 [ext_resource type="Script" path="res://scripts/fof_info/map_nodes/map_node_info.gd" id="1_fdpsf"]
 [ext_resource type="Texture2D" uid="uid://kcitn6i05q53" path="res://assets/sprites/game/map/shop.png" id="2_rou6g"]
 [ext_resource type="PackedScene" uid="uid://bbhu33eque7at" path="res://assets/models/fof/map_nodes/shop.glb" id="3_g5v21"]
 [ext_resource type="Script" path="res://scripts/saved_data/map_nodes/saved_data_shop.gd" id="4_cw4xi"]
+[ext_resource type="PackedScene" uid="uid://ca067vx7dy1b" path="res://scenes/game/map_nodes/screens/shop_screen/shop_screen.tscn" id="5_5pigd"]
+[ext_resource type="PackedScene" uid="uid://b03hysv0770d1" path="res://scenes/game/map/extra/shop_world.tscn" id="6_3fk6x"]
 
 [resource]
 script = ExtResource("1_fdpsf")
 load_level = false
+screen = ExtResource("5_5pigd")
+world = ExtResource("6_3fk6x")
 icon = ExtResource("2_rou6g")
 model = ExtResource("3_g5v21")
 is_unique_node = false

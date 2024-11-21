@@ -20,10 +20,6 @@ func onMouseInUI(state: bool) -> void:
 	
 func onCardPressed(CardUI: Control) -> void:
 	var Card: CardGD = CardUI.Card
-	Card.team = 0
-	Card.reparent(save_file)
-	Card.onChangeCardPlace(Game.CardPlaces.DECK)
-	Card.add_to_group("AllyCardsGD")
-	
+	Game.onAddToDeck(Card)
 	queue_free()
 	taken.emit(Card)

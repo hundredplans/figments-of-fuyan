@@ -106,7 +106,7 @@ func onLoadMap() -> void:
 	load_map.emit(self, area)
 	
 func onLoadGame() -> void:
-	if area.level_data == null: onLoadMap()
+	if area.active_level_data == null: onLoadMap()
 	else: onLoadLevel(area.level_data)
 #endregion
 
@@ -133,6 +133,9 @@ func onRemoveToolFromToolbelt(Tool: ToolGD) -> void:
 #region Boons
 func onAddBoon(Boon: BoonGD) -> void:
 	boons.append(Boon)
+	if Boon in boons:
+		Boon.onAscenscionChanged()
+	
 	if !Boon.is_inside_tree():
 		add_child(Boon)
 		

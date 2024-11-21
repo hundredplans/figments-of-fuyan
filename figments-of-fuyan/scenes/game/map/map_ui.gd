@@ -9,11 +9,14 @@ var area: AreaGD
 @onready var ShillingsLabel: FancyTextLabel = %ShillingsLabel
 @onready var BackgroundDarkener: Control = %BackgroundDarkener
 @onready var LegendBox: VBoxContainer = %LegendBox
+@onready var LegendContainer: PanelContainer = %LegendContainer
 @onready var BoonBox: GridContainer = %BoonBox
 @onready var TimeLabel: Label = %TimeLabel
 
 @onready var ToolBeltSlotOne: Control = %ToolBeltSlotOne
 @onready var ToolBeltSlotTwo: Control = %ToolBeltSlotTwo
+
+@onready var DeckPanel: PanelContainer = %DeckPanel
 #endregion
 
 #region Exports
@@ -64,12 +67,14 @@ func onUpdateShillings(count: int) -> void:
 
 #region Map Node
 func onCreateScreen(map_node: MapNodeGD, ActiveScreen: Control) -> void:
-	BackgroundDarkener.visible = true
 	add_child(ActiveScreen)
-	ActiveScreen.setInfo(map_node, World, save_file)
+	ActiveScreen.setInfo(save_file, area, World, self, map_node)
+	BackgroundDarkener.visible = ActiveScreen.onDimBackground()
+	LegendContainer.visible = false
 	
 func onMapNodeFinished(_map_node: MapNodeGD) -> void:
 	BackgroundDarkener.visible = false
+	LegendContainer.visible = true
 
 func onMapNodeHovered(map_node: MapNodeGD, state: bool, HoverUI: Control = null) -> void:
 	if state and HoverUI != null:

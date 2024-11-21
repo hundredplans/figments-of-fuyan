@@ -112,9 +112,10 @@ LegendKeyPacked = ExtResource("2_xp1my")
 DeckScreenPacked = ExtResource("3_nrqx8")
 
 [node name="LegendContainer" type="PanelContainer" parent="."]
+unique_name_in_owner = true
 layout_mode = 0
 offset_left = 1556.0
-offset_top = 23.0
+offset_top = 150.0
 offset_right = 1890.0
 offset_bottom = 1053.0
 theme_type_variation = &"WhitePanelContainer"
@@ -184,40 +185,28 @@ BoonIconPacked = ExtResource("7_fduhh")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 0
-offset_right = 1540.0
-offset_bottom = 104.0
+offset_right = 1681.0
+offset_bottom = 140.0
 
 [node name="TopBar" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 20
+alignment = 2
 
-[node name="ShillingsContainer" type="PanelContainer" parent="MarginContainer/TopBar"]
-layout_mode = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/TopBar/ShillingsContainer"]
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/TopBar/ShillingsContainer/MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 10
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TopBar/ShillingsContainer/MarginContainer/HBoxContainer"]
-layout_mode = 2
-
-[node name="Filler" type="Control" parent="MarginContainer/TopBar/ShillingsContainer/MarginContainer/HBoxContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="ShillingsLabel" parent="MarginContainer/TopBar/ShillingsContainer/MarginContainer/HBoxContainer/VBoxContainer" instance=ExtResource("8_v2ied")]
+[node name="ShillingsLabel" parent="MarginContainer/TopBar" instance=ExtResource("8_v2ied")]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
+text = "SH: 15"
 autowrap_mode = 0
+center = false
 
-[node name="Filler2" type="Control" parent="MarginContainer/TopBar/ShillingsContainer/MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="TimeLabel" parent="MarginContainer/TopBar" instance=ExtResource("10_dlqmt")]
+unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 3
+horizontal_alignment = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/TopBar"]
 custom_minimum_size = Vector2(120, 120)
@@ -259,12 +248,6 @@ layout_mode = 2
 layout_mode = 2
 texture_normal = ExtResource("11_anl8h")
 stretch_mode = 0
-
-[node name="TimeLabel" parent="MarginContainer/TopBar" instance=ExtResource("10_dlqmt")]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-horizontal_alignment = 2
 
 [connection signal="pressed" from="MarginContainer/TopBar/PanelContainer/MarginContainer/ToolBeltSlotOne" to="." method="onToolbeltSlotPressed"]
 [connection signal="pressed" from="MarginContainer/TopBar/PanelContainer2/MarginContainer/ToolBeltSlotTwo" to="." method="onToolbeltSlotPressed"]
