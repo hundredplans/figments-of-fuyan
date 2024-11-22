@@ -1,16 +1,20 @@
 class_name Purchasable extends Control
 
 signal pressed
+signal create_screen
 
 var item: FofGD
+var save_file: SaveFileGD
 var DisplayedUI: Control
 var price_datastore: PriceDatastore
 
 @onready var ShillingsLabel: FancyTextLabel = %ShillingsLabel
 
-func setInfo(_item: FofGD, _price_datastore: PriceDatastore, save_file: SaveFileGD) -> void:
+func setInfo(_item: FofGD, _price_datastore: PriceDatastore, _save_file: SaveFileGD) -> void:
 	item = _item
 	price_datastore = _price_datastore
+	save_file = _save_file
+	
 	ShillingsLabel.setText("SH: " + str(price_datastore.price))
 	save_file.update_shillings.connect(onUpdateShillings)
 	onUpdateShillings(save_file.shillings)

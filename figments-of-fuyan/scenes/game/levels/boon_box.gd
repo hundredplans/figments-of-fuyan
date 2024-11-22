@@ -1,5 +1,9 @@
 extends GridContainer
 @export var BoonIconPacked: PackedScene
+var save_file: SaveFileGD
+
+func setInfo(_save_file: SaveFileGD) -> void:
+	save_file = _save_file
 
 func onAddBoon(Boon: BoonGD) -> void:
 	var BoonIcon: TextureRect = BoonIconPacked.instantiate()
@@ -8,7 +12,7 @@ func onAddBoon(Boon: BoonGD) -> void:
 
 func onUpdate() -> void:
 	for BoonIcon in get_children(): BoonIcon.queue_free()
-	for Boon in get_tree().get_nodes_in_group("BoonsGD"):
+	for Boon in save_file.boons:
 		onAddBoon(Boon)
 
 func onUpdateBoonChargesAndDisabled(Boon: BoonGD) -> void:

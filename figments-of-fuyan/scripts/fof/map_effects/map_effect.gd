@@ -13,7 +13,3 @@ func onLoadData(data: SavedData) -> void:
 func getDescription() -> String:
 	return info.description
 #endregion
-
-#region Pickup
-func onPickup(_save_file: SaveFileGD) -> void: pass
-#endregion

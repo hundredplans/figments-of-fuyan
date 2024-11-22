@@ -10,11 +10,14 @@ extends Control
 @onready var ToolNameLabel: Label = %ToolNameLabel
 @onready var ToolbeltSlots: Container = %ToolbeltSlots
 
+@onready var DisposeLabel: Label = %DisposeLabel
+@onready var DisposeContainer: Container = %DisposeContainer
+
 signal taken
 
 var Tool: ToolGD
 var save_file: SaveFileGD
-func setInfo(_Tool: ToolGD, _save_file: SaveFileGD) -> void:
+func setInfo(_Tool: ToolGD, _save_file: SaveFileGD, remove_dispose: bool = false) -> void:
 	Tool = _Tool
 	save_file = _save_file
 	
@@ -37,6 +40,10 @@ func setInfo(_Tool: ToolGD, _save_file: SaveFileGD) -> void:
 		ToolIcon.custom_minimum_size = Vector2(80, 80)
 		ToolIcon.setInfo(ToolbeltTool)
 		ToolIcon.pressed.connect(onToolPressed)
+	
+	if remove_dispose:
+		DisposeLabel.visible = false
+		DisposeContainer.visible = false
 		
 func onSlotPressed() -> void:
 	save_file.onUpdateToolbelt(Tool)

@@ -33,12 +33,15 @@ func _ready() -> void:
 func setInfo(_save_file: SaveFileGD) -> void:
 	save_file = _save_file
 	save_file.update_shillings.connect(onUpdateShillings)
+	save_file.update_toolbelt.connect(onUpdateToolbelt)
+	save_file.update_boons.connect(func(_x: BoonGD): BoonBox.onUpdate())
 	onUpdateShillings(save_file.getShillings())
 	
 	area = save_file.area
 	area.init_load.connect(onInitLoad)
 	
 	TimeLabel.setInfo(save_file)
+	BoonBox.setInfo(save_file)
 	BoonBox.onUpdate()
 	setLegendBox()
 	onUpdateToolbelt()

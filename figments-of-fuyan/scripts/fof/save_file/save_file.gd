@@ -4,6 +4,7 @@ signal load_map
 signal load_level
 signal update_shillings
 signal update_toolbelt
+signal update_boons
 
 var id: int
 var my_seed: int
@@ -123,7 +124,7 @@ func onUpdateToolbelt(Tool: ToolGD) -> void:
 		Tool.reparent(self)
 		
 	tool_belt.append(Tool)
-	update_toolbelt.emit(tool_belt)
+	update_toolbelt.emit()
 	
 func onRemoveToolFromToolbelt(Tool: ToolGD) -> void:
 	tool_belt.erase(Tool)
@@ -133,14 +134,16 @@ func onRemoveToolFromToolbelt(Tool: ToolGD) -> void:
 #region Boons
 func onAddBoon(Boon: BoonGD) -> void:
 	boons.append(Boon)
-	if Boon in boons:
-		Boon.onAscenscionChanged()
+	#if Boon in boons:
+		#Boon.onUpdateAscenscion()
 	
 	if !Boon.is_inside_tree():
 		add_child(Boon)
 		
 	elif Boon.get_parent() != self:
 		Boon.reparent(self)
+		
+	update_boons.emit(Boon)
 	
 func onRemoveBoon(boon: BoonGD) -> void:
 	boons.erase(boon)

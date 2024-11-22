@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://c1uy4uqnnkrrv"]
+[gd_scene load_steps=5 format=3 uid="uid://c1uy4uqnnkrrv"]
 
 [ext_resource type="Script" path="res://scenes/game/map/extra/purchasable_tool.gd" id="1_gqhq1"]
 [ext_resource type="PackedScene" uid="uid://cewvw3vx3mjcm" path="res://scenes/game/tools/tool_icon.tscn" id="2_ge14h"]
+[ext_resource type="PackedScene" uid="uid://b0eb5aa8omon0" path="res://scenes/game/tools/extra/tool_picked_up_ui.tscn" id="2_qua3y"]
 [ext_resource type="PackedScene" uid="uid://6nf3mir2i2rk" path="res://scenes/common/fancy_text/fancy_text_label.tscn" id="3_drr2j"]
 
 [node name="PurchasableTool" type="Control"]
@@ -12,6 +13,7 @@ offset_right = 160.0
 offset_bottom = 202.0
 mouse_filter = 2
 script = ExtResource("1_gqhq1")
+ToolPickedUpUIPacked = ExtResource("2_qua3y")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1

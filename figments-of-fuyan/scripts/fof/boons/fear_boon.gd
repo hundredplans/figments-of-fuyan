@@ -7,7 +7,7 @@ func onProcessAction(action: Action) -> void:
 		if action is ChangePhaseAction and Game.isAdvanceTurn(action.phase, 0) and turns_stunned_remaining > 0:
 			onPushAction(BoonActivatedAction.new(self, action))
 	
-func onAscenscionChanged() -> void:
+func onUpdateAscenscion() -> void:
 	super()
 
 func getDescription() -> String:

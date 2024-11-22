@@ -24,7 +24,7 @@ func _process(delta: float) -> void:
 	if AscendedShine.visible:
 		AscendedShine.rotation_degrees += delta * SPIN_SPEED
 		
-	if Input.is_action_just_pressed("MainInput") and is_mouse_in_ui:
+	if Input.is_action_just_pressed("MainInput") and is_mouse_in_ui and !disabled:
 		pressed.emit(Tool)
 
 func onMouseInUI(state: bool) -> void:

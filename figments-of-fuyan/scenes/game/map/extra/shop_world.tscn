@@ -1,12 +1,22 @@
-[gd_scene load_steps=3 format=3 uid="uid://b03hysv0770d1"]
+[gd_scene load_steps=5 format=3 uid="uid://b03hysv0770d1"]
 
 [ext_resource type="Script" path="res://scenes/game/map/extra/shop_world.gd" id="1_3hn2i"]
 [ext_resource type="PackedScene" uid="uid://duugbk8hfmbe1" path="res://assets/models/environment/merchant_crab_shop.glb" id="2_qsea3"]
+[ext_resource type="PackedScene" uid="uid://b2080geycdkvt" path="res://assets/models/fof/cards/merchant_crab.glb" id="3_nb8m4"]
+[ext_resource type="Script" path="res://assets/models/fof/cards/merchant_crab_model.gd" id="4_jakbe"]
 
 [node name="ShopWorld" type="Node3D"]
 script = ExtResource("1_3hn2i")
 
 [node name="merchant_crab_shop" parent="." instance=ExtResource("2_qsea3")]
+
+[node name="MerchantCrab" parent="." instance=ExtResource("3_nb8m4")]
+unique_name_in_owner = true
+transform = Transform3D(0.139104, 0, -0.990278, 0, 1, 0, 0.990278, 0, 0.139104, -0.955692, 0, -0.33065)
+script = ExtResource("4_jakbe")
+
+[node name="IdleRareTimer" type="Timer" parent="MerchantCrab"]
+unique_name_in_owner = true
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(-4.18981e-08, 0.285036, -0.958517, 1.24593e-08, 0.958517, 0.285036, 1, 0, -4.37114e-08, -2.25873, 1.17421, 0)

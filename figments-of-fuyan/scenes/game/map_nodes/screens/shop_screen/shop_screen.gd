@@ -5,8 +5,8 @@ signal finished
 var save_file: SaveFileGD
 var UI: Control
 
-const BUY_ANIMATION_SPEED: float = 1
-const BUY_ITEM_DISSAPEAR_SPEED: float = 1.2
+const BUY_ANIMATION_SPEED: float = 0.8
+const BUY_ITEM_DISSAPEAR_SPEED: float = 1
 
 @onready var Cards: Control = %Cards
 @onready var RemoveCardPosition: Control = %RemoveCardPosition
@@ -15,17 +15,21 @@ const BUY_ITEM_DISSAPEAR_SPEED: float = 1.2
 @onready var Tools: Control = %Tools
 @onready var TransformPosition: Control = %TransformPosition
 
+@onready var CardsFiller: Control = %CardsFiller
+
 @export var PurchasableCardPacked: PackedScene
 @export var PurchasableRemovePacked: PackedScene
 @export var PurchasableBoonPacked: PackedScene
 @export var PurchasableToolPacked: PackedScene
 @export var PurchasableTransformPacked: PackedScene
 
-func setInfo(_save_file: SaveFileGD, _area: AreaGD, World: Node3D, _UI: Control, map_node: MapNodeGD) -> void:
+var World: Node3D
+func setInfo(_save_file: SaveFileGD, _area: AreaGD, _World: Node3D, _UI: Control, map_node: MapNodeGD) -> void:
+	World = _World
 	UI = _UI
 	save_file = _save_file
 	var items: Array = map_node.items
-
+	
 	for price_datastore in items:
 		var item: SavedData = price_datastore.data
 		var fof: FofGD = SavedData.onLoadModel(price_datastore.data, World.ActiveWorld)
@@ -53,7 +57,9 @@ func setInfo(_save_file: SaveFileGD, _area: AreaGD, World: Node3D, _UI: Control,
 		var purchasable: Control = purchasable_packed.instantiate()
 		parent.add_child(purchasable)
 		purchasable.setInfo(fof, price_datastore, save_file)
+		purchasable.create_screen.connect(onCreateScreen)
 		purchasable.pressed.connect(onItemPressed)
+	Cards.move_child(CardsFiller, 2)
 		
 func onItemPressed(item: FofGD, price_datastore: PriceDatastore, DisplayedUI: Control) -> void:
 	price_datastore.bought = true
@@ -61,9 +67,22 @@ func onItemPressed(item: FofGD, price_datastore: PriceDatastore, DisplayedUI: Co
 	
 	if item is CardGD:
 		Game.onAddToDeck(item)
-		onBuyAnimation(DisplayedUI)
+		onBuyAnimation(DisplayedUI, UI.DeckPanel)
+	elif item is ToolGD:
+		var tool_belt_index: int = save_file.tool_belt.find(item)
+		var To: Control = UI.DeckPanel
 		
-	# Add buying item here
+		if tool_belt_index == 0:
+			To = UI.ToolBeltSlotOne
+		elif tool_belt_index == 1:
+			To = UI.ToolBeltSlotTwo
+		
+		onBuyAnimation(DisplayedUI, To)
+	elif item is BoonGD:
+		save_file.onAddBoon(item)
+		onBuyAnimation(DisplayedUI, UI.BoonBox.onFindBoonIcon(item))
+		
+	World.ActiveWorld.onBuy()
 
 func _on_exit_button_pressed() -> void:
 	finished.emit()
@@ -71,19 +90,19 @@ func _on_exit_button_pressed() -> void:
 func onDimBackground() -> bool:
 	return false
 	
-func onBuyAnimation(CardUI: Control) -> void:
-	var panel: Control = UI.DeckPanel
-	
+func onBuyAnimation(DisplayedUI: Control, To: Control) -> void:
 	var tween := create_tween()
-	tween.tween_property(CardUI, "global_position", panel.global_position, BUY_ANIMATION_SPEED)
+	tween.tween_property(DisplayedUI, "global_position", To.global_position, BUY_ANIMATION_SPEED)
 	
 	var scale_tween := create_tween()
-	scale_tween.tween_property(CardUI, "scale", Vector2(0.01, 0.01), BUY_ANIMATION_SPEED)
+	scale_tween.tween_property(DisplayedUI, "scale", Vector2(0.01, 0.01), BUY_ANIMATION_SPEED)
 	
 	var rotate_tween := create_tween()
-	rotate_tween.tween_property(CardUI, "rotation_degrees", 360, BUY_ANIMATION_SPEED)
+	rotate_tween.tween_property(DisplayedUI, "rotation_degrees", 360, BUY_ANIMATION_SPEED)
 	
 	await get_tree().create_timer(BUY_ITEM_DISSAPEAR_SPEED).timeout
-	CardUI.queue_free()
+	DisplayedUI.queue_free()
 	
+func onCreateScreen(screen: Control) -> void:
+	add_child(screen)
 	

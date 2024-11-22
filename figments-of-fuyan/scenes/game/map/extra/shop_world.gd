@@ -1,4 +1,8 @@
 extends Node3D
 
-func setInfo(map_node: MapNodeGD) -> void:
+@onready var MerchantCrab: Node3D = %MerchantCrab
+func setInfo(_map_node: MapNodeGD) -> void:
 	pass
+
+func onBuy() -> void:
+	MerchantCrab.onBuy()

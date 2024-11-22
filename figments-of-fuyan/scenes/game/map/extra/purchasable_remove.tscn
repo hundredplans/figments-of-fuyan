@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://bd25cc7h0xg0q"]
+[gd_scene load_steps=7 format=3 uid="uid://bd25cc7h0xg0q"]
 
 [ext_resource type="Script" path="res://scenes/game/map/extra/purchasable_remove.gd" id="1_0e0mc"]
 [ext_resource type="PackedScene" uid="uid://ceoy120bbs7le" path="res://scenes/common/panel_button/panel_button.tscn" id="2_fhrs7"]
+[ext_resource type="PackedScene" uid="uid://dkv06ds5ncutu" path="res://scenes/game/levels/ui/deck_screen.tscn" id="2_ogynt"]
 [ext_resource type="LabelSettings" uid="uid://cyodc3xq62xbg" path="res://resources/ui/label_settings/jacquard_large.tres" id="3_6e340"]
 [ext_resource type="PackedScene" uid="uid://6nf3mir2i2rk" path="res://scenes/common/fancy_text/fancy_text_label.tscn" id="4_npa6l"]
 [ext_resource type="LabelSettings" uid="uid://baxopkmeda53x" path="res://resources/ui/label_settings/roboto_huge.tres" id="5_rdesj"]
@@ -15,6 +16,7 @@ offset_bottom = 240.0
 mouse_filter = 2
 theme_type_variation = &"RedPanelContainer"
 script = ExtResource("1_0e0mc")
+DeckScreenPacked = ExtResource("2_ogynt")
 
 [node name="PanelButton" parent="." instance=ExtResource("2_fhrs7")]
 unique_name_in_owner = true

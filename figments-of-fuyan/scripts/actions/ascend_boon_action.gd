@@ -13,7 +13,7 @@ func onPreAction() -> void:
 	
 func onPostAction() -> void:
 	Boon.ascended = is_ascend
-	Boon.onAscenscionChanged()
+	Boon.onUpdateAscenscion()
 
 func getDelay() -> float:
 	return super()

@@ -9,7 +9,7 @@ func onProcessAction(action: Action) -> void:
 		elif action is ChangePhaseAction and Game.isAdvanceTurn(action.phase, 0):
 			onFieldEffectsTurnPassed()
 	
-func onAscenscionChanged() -> void:
+func onUpdateAscenscion() -> void:
 	super()
 
 func getDescription() -> String:

@@ -35,6 +35,8 @@ var Tool: ToolGD
 
 #region Globals
 const DEFAULT_ANIMATION_BLEND_TIME: float = 0.2
+const IDLE_RARE_MIN_TIME: int = 12
+const IDLE_RARE_MAX_TIME: int = 80 
 #endregion
 
 #region Signals
@@ -856,4 +858,9 @@ func onFindFieldEffectsByOwner(FofObject: FofGD) -> Array:
 func onRevenge(_action: DamageAction) -> void:
 	if AniPlayer.has_animation("HurtAbility"):
 		onPlayAnimation("HurtAbility")
+#endregion
+
+#region Ascended
+func onAscend() -> void:
+	ascended = true
 #endregion

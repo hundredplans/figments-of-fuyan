@@ -9,7 +9,7 @@ func onProcessAction(action: Action) -> void:
 		elif action is PlayCardAction:
 			onPushAction(BoonActivatedAction.new(self, action))
 	
-func onAscenscionChanged() -> void:
+func onUpdateAscenscion() -> void:
 	super()
 
 func getDescription() -> String:
