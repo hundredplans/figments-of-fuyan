@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=6 format=3 uid="uid://b6lumsledxkce"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=7 format=3 uid="uid://b6lumsledxkce"]
 
 [ext_resource type="Image" uid="uid://xkhhc4dp7mpu" path="res://assets/sprites/game/cards/art_pop/barrel_buck.png" id="1_4rat4"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="1_co04r"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_k8j6g"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_yi1ib"]
 [ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="3_bt4wf"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="4_yik14"]
@@ -14,6 +15,7 @@ speed = 2
 energy = 2
 rarity = 5
 initial_traits = Array[ExtResource("2_yi1ib")]([])
+active_abilities = Array[ExtResource("1_k8j6g")]([])
 ability_text = "RANGED [1-2]; HIDDEN ABILITY [2]: The first enemy to enter RANGED range is STUNNED"
 flavor_text = ""
 art_mini_coordinate = Vector2i(0, 0)

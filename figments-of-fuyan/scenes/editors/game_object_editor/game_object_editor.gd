@@ -66,7 +66,7 @@ func getGameObjectData(info: Variant) -> SavedData:
 	elif info is CardInfo: return SavedDataCard.new(info.id)
 	return null
 
-func _input(_event: InputEvent) -> void:
+func _process(_delta: float) -> void:
 	if !is_camera_panning:
 		if Input.is_action_just_pressed("ChangeVariationDown"):
 			onChangeVariation(-1)

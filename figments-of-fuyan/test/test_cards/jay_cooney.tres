@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=5 format=3 uid="uid://dybm2bbcbxq4d"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=6 format=3 uid="uid://dybm2bbcbxq4d"]
 
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_4b10p"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="1_875pk"]
 [ext_resource type="Image" uid="uid://dbty0ttijpb5l" path="res://assets/sprites/game/cards/art_pop/jay_cooney.png" id="1_l2ftl"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_4q51j"]
@@ -13,6 +14,7 @@ speed = 2
 energy = 1
 rarity = 3
 initial_traits = Array[ExtResource("2_4q51j")]([])
+active_abilities = Array[ExtResource("1_4b10p")]([])
 ability_text = "ABILITY [1]: STUN a DUELLING enemy in vision"
 flavor_text = ""
 art_mini_coordinate = Vector2i(0, 0)

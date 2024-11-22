@@ -13,6 +13,7 @@ func onFofInit() -> void:
 	super()
 	var area: AreaGD = get_tree().get_nodes_in_group("AreasGD")[0]
 	var world_datastore: WorldDatastore = area.info.world
+	price_variance = world_datastore.default_shop_variance
 	onAddLocalForeignCardsBoonTools(world_datastore, area)
 	onAddRemoveCard(world_datastore)
 	onAddTransformation(world_datastore)
@@ -42,6 +43,7 @@ func onAddLocalForeignCardsBoonTools(world_datastore: WorldDatastore, area: Area
 				rarity_objects = rarity_objects.filter(func(x: CardInfo): return x.id in area.basic_card_ids)
 			
 			var picked_info: FofInfo = rarity_objects.pick_random()
+			objects.erase(picked_info)
 			var picked_data: SavedData = picked_info.saved_data.new(picked_info.id, true)
 			var ascend: bool = Random.rollFloat(world_datastore.shop_ascension_chance / 100.0)
 			

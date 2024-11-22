@@ -11,7 +11,7 @@ extends Node
 @export var level_ui: PackedScene
 @export var level_world: PackedScene
 
-@export var SHILLING_START_COUNT: int = 100
+@export var SHILLING_START_COUNT: int = 50
 
 @onready var ActionManager: ActionManagerGD
 @export var ActionManagerPacked: PackedScene
