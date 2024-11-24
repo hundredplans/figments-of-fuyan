@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://c1uy4uqnnkrrv"]
+[gd_scene load_steps=6 format=3 uid="uid://c1uy4uqnnkrrv"]
 
 [ext_resource type="Script" path="res://scenes/game/map/extra/purchasable_tool.gd" id="1_gqhq1"]
 [ext_resource type="PackedScene" uid="uid://cewvw3vx3mjcm" path="res://scenes/game/tools/tool_icon.tscn" id="2_ge14h"]
 [ext_resource type="PackedScene" uid="uid://b0eb5aa8omon0" path="res://scenes/game/tools/extra/tool_picked_up_ui.tscn" id="2_qua3y"]
 [ext_resource type="PackedScene" uid="uid://6nf3mir2i2rk" path="res://scenes/common/fancy_text/fancy_text_label.tscn" id="3_drr2j"]
+[ext_resource type="LabelSettings" uid="uid://cyodc3xq62xbg" path="res://resources/ui/label_settings/jacquard_large.tres" id="5_7eg40"]
 
 [node name="PurchasableTool" type="Control"]
 custom_minimum_size = Vector2(160, 202)
@@ -32,3 +33,14 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
+
+[node name="NameLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = -292.0
+offset_top = -60.0
+offset_right = 458.0
+offset_bottom = -11.0
+text = "Sugori Knife"
+label_settings = ExtResource("5_7eg40")
+horizontal_alignment = 1

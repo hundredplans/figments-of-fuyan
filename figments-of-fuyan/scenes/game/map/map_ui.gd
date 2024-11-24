@@ -9,7 +9,6 @@ var area: AreaGD
 @onready var ShillingsLabel: FancyTextLabel = %ShillingsLabel
 @onready var BackgroundDarkener: Control = %BackgroundDarkener
 @onready var LegendBox: VBoxContainer = %LegendBox
-@onready var LegendContainer: PanelContainer = %LegendContainer
 @onready var BoonBox: GridContainer = %BoonBox
 @onready var TimeLabel: Label = %TimeLabel
 
@@ -73,11 +72,11 @@ func onCreateScreen(map_node: MapNodeGD, ActiveScreen: Control) -> void:
 	add_child(ActiveScreen)
 	ActiveScreen.setInfo(save_file, area, World, self, map_node)
 	BackgroundDarkener.visible = ActiveScreen.onDimBackground()
-	LegendContainer.visible = false
+	LegendBox.visible = false
 	
 func onMapNodeFinished(_map_node: MapNodeGD) -> void:
 	BackgroundDarkener.visible = false
-	LegendContainer.visible = true
+	LegendBox.visible = true
 
 func onMapNodeHovered(map_node: MapNodeGD, state: bool, HoverUI: Control = null) -> void:
 	if state and HoverUI != null:
@@ -127,7 +126,6 @@ func onToolbeltSlotPressed(Tool: ToolGD) -> void:
 	DeckScreen.setInfo(true)
 	
 	ToolbeltTool = Tool
-	DeckScreen.onDisableCards(onDisableCardsWithTool)
 	
 func onToolbeltCardSelected(Card: CardGD) -> void:
 	save_file.onRemoveToolFromToolbelt(ToolbeltTool)

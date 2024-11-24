@@ -1,5 +1,6 @@
 extends MapEffectGD
 
+var NewCard: CardGD
 func onPickup(Card: CardGD, save_file: SaveFileGD) -> void:
 	var cards: Array = Helper.getFofInfoArray(CardInfo)
 	cards = cards.filter(func(x: CardInfo):\
@@ -14,6 +15,6 @@ func onPickup(Card: CardGD, save_file: SaveFileGD) -> void:
 		new_card_data.tool_data = tool_data
 		new_card_data.ascended = Card.ascended
 		
-		var NewCard: CardGD = SavedData.onLoadModel(new_card_data, save_file)
+		NewCard = SavedData.onLoadModel(new_card_data, save_file)
 		Card.queue_free()
 		Game.onAddToDeck(NewCard)

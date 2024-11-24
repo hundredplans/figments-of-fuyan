@@ -1,0 +1,55 @@
+[gd_resource type="Resource" script_class="CardInfo" load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_oyrna"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/dallas_the_giant.png" id="2_y6nif"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_hvx5a"]
+[ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_h6hio"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_37xlm"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_tx4m7"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="7_jtomd"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ru2ex"]
+size = Vector3(0.611084, 1.88574, 0.241943)
+
+[sub_resource type="PackedScene" id="PackedScene_1xbhj"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00231934, 0.942652, -0.00607296), SubResource("BoxShape3D_ru2ex")],
+"version": 3
+}
+
+[resource]
+script = ExtResource("7_jtomd")
+attack = 4
+health = 5
+speed = 3
+energy = 5
+rarity = 6
+initial_traits = Array[ExtResource("3_hvx5a")]([])
+active_abilities = Array[ExtResource("1_oyrna")]([])
+ability_text = "When a DUEL begins: This gains FERAL and +2 ATT +1 HP until the enemy dies"
+flavor_text = ""
+art_mini_coordinate = Vector2i(0, 0)
+art_pop = ExtResource("2_y6nif")
+model = ExtResource("5_37xlm")
+points = [Vector3(-0.1809, 0.992897, 0.114898), Vector3(0.168124, 0.99905, 0.114898), Vector3(-0.14811, 1.3093, 0.114898), Vector3(0.195476, 1.31675, 0.114898), Vector3(0.0178196, 1.53801, 0.114898), Vector3(-0.00111114, 1.82532, 0.114898), Vector3(-0.174048, 0.6379, 0.114898), Vector3(0.215151, 0.605359, 0.114898), Vector3(-0.2351, 0.352159, 0.114898), Vector3(0.2025, 0.339379, 0.114898), Vector3(-0.186763, 0.0278029, 0.114898), Vector3(0.212882, 0.0438803, 0.114898), Vector3(0.228725, 0.147837, -0.127044), Vector3(-0.226926, 0.18563, -0.127044), Vector3(-0.203473, 0.613974, -0.127044), Vector3(0.199353, 0.67229, -0.127044), Vector3(0.123007, 0.904933, -0.127044), Vector3(-0.125983, 0.916082, -0.127044), Vector3(0.144845, 1.16976, -0.127044), Vector3(-0.0941492, 1.2066, -0.127044), Vector3(0.199255, 1.38336, -0.127044), Vector3(-0.152057, 1.36613, -0.127044), Vector3(0.00239274, 1.54682, -0.127044), Vector3(-0.00490278, 1.78592, -0.127044), Vector3(0.307861, 0.375614, 0.0182745), Vector3(0.307861, 0.862576, 0.000756719), Vector3(0.307861, 1.25218, 0.00725218), Vector3(0.307861, 1.64758, -0.00811803), Vector3(-0.303223, 0.220603, 0.00765105), Vector3(-0.303223, 0.780136, 0.0145246), Vector3(-0.303223, 1.20626, -0.0164034), Vector3(-0.303223, 1.54691, 0.0288335)]
+collision_shape = SubResource("PackedScene_1xbhj")
+stat = 0.0
+top = 0.0
+eye = 0.0
+plus_attack = 0
+plus_health = 0
+plus_speed = 0
+plus_energy = 0
+ascended_traits = Array[ExtResource("3_hvx5a")]([])
+ascended_ability_text = ""
+id = 50
+name = "Dallas the Giant"
+gdscript = ExtResource("4_h6hio")
+saved_data = ExtResource("6_tx4m7")

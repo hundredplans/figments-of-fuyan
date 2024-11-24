@@ -17,8 +17,8 @@ func onProcessAction(action: Action) -> void:
 		and doubleup_charges > 0:
 			onForceAction(BoonActivatedAction.new(self, action))
 	
-func onUpdateAscenscion() -> void:
-	super()
+func onAscend(state: bool) -> void:
+	super(state)
 	
 	if ascended: doubleup_charges += 1
 	else: doubleup_charges = max(doubleup_charges - 1, 0)

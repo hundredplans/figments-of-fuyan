@@ -13,6 +13,7 @@ signal champion_pressed
 signal travel
 signal start
 signal create_ui
+signal backed
 
 var UI: Control
 @onready var env: WorldEnvironment = %WorldEnvironment
@@ -34,6 +35,8 @@ func _ready() -> void:
 	setMapLights(false)
 	UI.start.connect(onStart)
 	UI.cancel_champion_selected.connect(onBack)
+	UI.mouse_in_ui.connect(MapModel.onMouseInUI)
+	UI.remove_save.connect(onRemoveSave)
 
 func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("Back"): onBack()
@@ -88,7 +91,9 @@ func onNewGameHideFrame() -> void:
 	if is_enter:
 		ChampionSelect = ChampionSelectPacked.instantiate()
 		ChampionSelect.champion_pressed.connect(onChampionPressed)
+		ChampionSelect.disable_freelook.connect(func(x: bool): Camera.setDisableFreelook(x))
 		add_child(ChampionSelect)
+		ChampionSelect.setInfo(travel)
 	else: ChampionSelect.queue_free()
 	
 func setMapLights(is_enter: bool) -> void:
@@ -148,12 +153,15 @@ func onChampionTweenTravel(Card: CardGD, camera_pos_rot: PosRot) -> void:
 	var rot_tween := get_tree().create_tween()
 	rot_tween.tween_property(Camera, "rotation_degrees", travel_posrot.rot, CHAMPION_POSE_TRAVEL_TIME)
 		
+	var was_history: bool = active_travel_info.is_history
 	travel.emit(active_travel_info)
 	
 	await pos_tween.finished
-	if !active_travel_info.is_history: champion_pressed.emit(Card)
-	else: setUnitsPickable(true)
+	if was_history: setUnitsPickable(true)
+	else: champion_pressed.emit(Card)
+	
 	onFinishTravel()
+
 #endregion
 
 #region First Load
@@ -161,4 +169,9 @@ func onFirstLoad() -> void:
 	active_travel_info = CameraTravelDatastore.new(CameraItem.new("FirstLoad", CameraItem.TYPES.NULL), active_camera_item, onFirstLoadTravel)
 	active_travel_info.is_history = true
 	active_travel_info.travel_callable.call()
+#endregion
+
+#region Remove Save
+func onRemoveSave() -> void:
+	MapModel.onRemoveSave()
 #endregion

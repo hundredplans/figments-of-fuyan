@@ -13,7 +13,10 @@ func setDisabled(state: bool = true) -> void:
 	super(state)
 	DisplayedUI.setDisabled(state)
 
-func onPressed() -> void:
+func onPressed(load_bought: bool = false) -> void:
 	super()
-	#CardUI.queue_free()
 	ShillingsLabel.queue_free()
+	
+	if load_bought: DisplayedUI.queue_free()
+	
+	

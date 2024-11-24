@@ -97,15 +97,20 @@ func onCreateModel() -> void:
 #region Links
 func onCreateLinks() -> void:
 	for link in links:
+		link.update_finished.connect(onUpdateMapLink)
 		var MapNodeLink: Node3D = load(info.MAP_NODE_LINK_PATH).instantiate()
 		link_models.append(MapNodeLink)
 		add_child(MapNodeLink)
 		
 		var vector: Vector3 = link.map_location.position - map_location.position
-		MapNodeLink.setInfo(vector, link.is_holy)
+		MapNodeLink.setInfo(vector, link.is_holy, getMapNodeAtLocation(link.map_location).is_finished)
 		
-func isMapNodeLink(map_node: MapNodeGD) -> bool:
-	return map_node.map_location in links.map(func(x: MapLink): return x.map_location)
+func onUpdateMapLink(link: MapLink, _finished: bool) -> void:
+	var MapNodeLink: Node3D = link_models[link_models.find(link)]
+	MapNodeLink.onUpdate()
+	
+func getMapNodeAtLocation(map_location: MapLocation) -> MapNodeGD:
+	return get_tree().get_nodes_in_group("MapNodesGD").filter(func(x: MapNodeGD): return x.map_location == map_location)[0]
 #endregion
 
 #region Setters
@@ -158,18 +163,18 @@ func onEntered() -> void:
 	entered.emit(self)
 		
 func onEnteredVisual(is_instant: bool = false) -> void:
+	for link_model in link_models: link_model.onMapNodeSelected()
 	if is_instant: setAlphagreyMaterialValue(1.0); setRayPickable(false); return
 	
 	var tween := get_tree().create_tween()
 	tween.tween_method(setAlphagreyMaterialValue, 0.0, 1.0, Game.SELECTED_MAP_NODE_TRAVEL_SPEED)
-	for link_model in link_models: link_model.onMapNodeSelected()
 	
 func onExitedVisual(is_instant: bool = false) -> void:
+	for link_model in link_models: link_model.onMapNodeDeselected()
 	if is_instant: setAlphagreyMaterialValue(0.5); setRayPickable(false); return
 	
 	var tween := get_tree().create_tween()
 	tween.tween_method(setAlphagreyMaterialValue, 1.0, 0.5, Game.SELECTED_MAP_NODE_TRAVEL_SPEED)
-	for link_model in link_models: link_model.onMapNodeDeselected()
 		
 func onFinished() -> void:
 	is_finished = true

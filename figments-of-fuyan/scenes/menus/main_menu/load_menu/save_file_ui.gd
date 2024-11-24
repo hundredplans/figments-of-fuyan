@@ -1,6 +1,7 @@
 extends Control
 signal remove_save
 signal start
+signal mouse_in_ui
 
 @onready var ArtMiniRect: TextureRect = %ArtMiniRect
 @onready var ChampionNameLabel: Label = %ChampionNameLabel
@@ -34,10 +35,12 @@ func setInfo(_save_file_data: SavedDataSaveFile) -> void:
 	Helper.getFofInfoID(LevelInfo, save_file_data.area_data.level_data.id).name)
 	LocationLabel.text = "LOCATION: " + str(area_info.world.world) + "-" + str(save_file_data.area_data.getEnteredMapLocationProgress())
 
-
 func _on_remove_save_button_pressed() -> void:
 	queue_free()
 	remove_save.emit(save_file_data)
 
 func _on_start_button_pressed() -> void:
 	start.emit(save_file_data)
+	
+func onMouseInUI(state: bool) -> void:
+	mouse_in_ui.emit(state)

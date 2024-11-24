@@ -44,6 +44,7 @@ signal inspect_screen_created
 signal tool_added
 signal mouse_entered
 signal mouse_exited
+signal update_ascended
 #endregion
 		
 #region Setters
@@ -861,6 +862,7 @@ func onRevenge(_action: DamageAction) -> void:
 #endregion
 
 #region Ascended
-func onAscend() -> void:
-	ascended = true
+func onAscend(state: bool) -> void:
+	ascended = state
+	update_ascended.emit(state)
 #endregion

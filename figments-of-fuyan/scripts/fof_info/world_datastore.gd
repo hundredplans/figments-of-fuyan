@@ -8,19 +8,19 @@ class_name WorldDatastore extends Resource
 @export_range(0, 100, 0.1) var unique_node_segment_two_odds: float
 @export_group("")
 
-@export_group("Fight Rewards")
+@export_group("Level")
+@export var enemy_spawn_rarity_odds: RarityOddsDatastore
 @export var fight_rewards: FightRewardsDatastore
 @export var elite_fight_rewards: FightRewardsDatastore
+@export var progress_enemy_energy_budget: Array[int]
+@export var elite_fights_progress_offset: int
+@export_range(0, 100, 0.1) var enemy_ascended_rate: float
 @export_group("")
 
 @export_group("Tools")
 @export var tool_enemy_spawn_rarity_odds: RarityOddsDatastore
 @export_range(0, 100, 0.1) var tool_enemy_spawn_rate: float
 @export_range(0, 100, 0.1) var tool_enemy_ascended_rate: float
-@export_group("")
-
-@export_group("Random Spawns")
-@export_range(0, 100, 0.1) var enemy_ascended_rate: float
 @export_group("")
 
 @export_group("Shop")

@@ -10,6 +10,9 @@ const SPIN_SPEED: float = 10
 var Tool: ToolGD
 var hoverable: bool
 
+func _ready() -> void:
+	AscendedShine.pivot_offset = AscendedShine.size / 2
+
 func setInfo(_Tool: ToolGD, _hoverable: bool = false) -> void:
 	Tool = _Tool
 	setInfoDirect(Tool.getIcon() if Tool != null else null, Tool.ascended if Tool != null else false, _hoverable)

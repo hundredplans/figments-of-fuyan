@@ -7,8 +7,8 @@ func onProcessAction(action: Action) -> void:
 		if action is DeathAction and action.Defender.isAlly(0) and skeleton_charges > 0:
 			onPushAction(BoonActivatedAction.new(self, action))
 	
-func onUpdateAscenscion() -> void:
-	super()
+func onAscend(state: bool) -> void:
+	super(state)
 
 func getDescription() -> String:
 	return super()

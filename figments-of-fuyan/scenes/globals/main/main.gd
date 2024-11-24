@@ -30,7 +30,7 @@ func _ready():
 
 #region Helper
 func getFirstEmptySaveSlotID() -> int:
-	return min(DirAccess.get_files_at(SaveFileInfo.SAVE_DIRECTORY).size() + 1, 5)
+	return min(Helper.getSaveFileCount() + 1, 5)
 #endregion
 
 #region Load Screen + World
@@ -64,14 +64,17 @@ func onLoadWorld(packed_scene: PackedScene) -> void:
 		main_menu_world: ActiveWorld.start.connect(onStartGame)
 	
 func onStartGame(Card: CardGD) -> void:
+	Card.queue_free()
 	Game.highest_public_id = 0
 	var area_id: int = 1
 	var area_data: SavedDataArea = SavedDataArea.new(area_id, true)
 	
-	var temp_deck: Array = [Card.onSave(), SavedDataCard.new(19, true), SavedDataCard.new(20, true), SavedDataCard.new(21, true), SavedDataCard.new(22, true)]
+	var card_data: SavedDataCard = Card.onSave()
+	card_data.card_place = Game.CardPlaces.DECK
+	
 	var save_file_data := SavedDataSaveFile.new(
 		getFirstEmptySaveSlotID(), true, 0, randi(), area_data,\
-		SHILLING_START_COUNT, [], 0, temp_deck, [], Game.highest_public_id, [])
+		SHILLING_START_COUNT, [], 0, [card_data], [], Game.highest_public_id, [])
 	
 	onLoadGame(save_file_data)
 	

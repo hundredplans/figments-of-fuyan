@@ -1,5 +1,7 @@
 class_name BoonGD extends FofGD
 
+signal update_ascend
+
 var ascended: bool
 var ability_save: Dictionary
 
@@ -20,9 +22,6 @@ func getIcon() -> ImageTexture:
 
 func getDescription() -> String:
 	return info.description if !ascended else info.ascended_description	
-
-func onUpdateAscenscion() -> void:
-	pass
 	
 func onBoonAdded() -> void:
 	pass
@@ -32,3 +31,7 @@ func getDisabled() -> bool:
 	
 func getCharges() -> int:
 	return -1
+
+func onAscend(state: bool) -> void:
+	ascended = state
+	update_ascend.emit(state)

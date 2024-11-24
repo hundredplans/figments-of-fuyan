@@ -41,4 +41,8 @@ custom_minimum_size = Vector2(0, 85)
 layout_mode = 2
 text = "Quit"
 
+[connection signal="mouse_entered" from="." to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="." to="." method="onMouseInUI" binds= [false]]
+[connection signal="mouse_entered" from="MarginContainer/MainContainer/QuitButton" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="MarginContainer/MainContainer/QuitButton" to="." method="onMouseInUI" binds= [false]]
 [connection signal="pressed" from="MarginContainer/MainContainer/QuitButton" to="." method="_on_quit_button_pressed"]

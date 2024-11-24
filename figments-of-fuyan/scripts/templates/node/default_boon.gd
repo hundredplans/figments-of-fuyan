@@ -3,7 +3,7 @@ extends BoonGD
 func onProcessAction(action: Action) -> void:
 	super(action)
 	
-func onUpdateAscenscion() -> void:
+func onAscend(state: bool) -> void:
 	super()
 
 func getDescription() -> String:

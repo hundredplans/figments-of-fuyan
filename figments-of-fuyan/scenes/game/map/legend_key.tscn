@@ -8,23 +8,25 @@
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 3
 anchors_preset = 0
-offset_right = 509.0
+offset_right = 177.0
 offset_bottom = 100.0
 script = ExtResource("1_tta6a")
-
-[node name="TextureRect" type="TextureRect" parent="."]
-unique_name_in_owner = true
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-texture = ExtResource("1_6dr8h")
 
 [node name="NameLabel" type="Label" parent="."]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 117.0
-offset_right = 521.0
+offset_left = -236.0
+offset_right = 71.0
 offset_bottom = 100.0
 text = "Boss"
 label_settings = ExtResource("3_oraku")
+horizontal_alignment = 2
 vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 77.0
+offset_right = 177.0
+offset_bottom = 100.0
+texture = ExtResource("1_6dr8h")

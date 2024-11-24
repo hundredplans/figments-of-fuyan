@@ -74,7 +74,6 @@ func _on_deck_screen_pressed() -> void:
 	add_child(DeckScreen)
 	DeckScreen.selected.connect(onCardSelected)
 	DeckScreen.setInfo(true)
-	DeckScreen.onDisableCards(onDisableCardsWithTool)
 	
 func onCardSelected(Card: CardGD) -> void:
 	if Card.Tool == null or Card.Tool.info.id != Tool.info.id:
@@ -87,8 +86,4 @@ func onCardSelected(Card: CardGD) -> void:
 func onTaken() -> void:
 	taken.emit(Tool)
 	queue_free()
-	
-func onDisableCardsWithTool(CardUI: Control) -> bool:
-	var CardTool: ToolGD = CardUI.Card.Tool
-	return CardTool != null and (CardTool.info.id != Tool.info.id or CardTool.ascended)
 	

@@ -82,3 +82,6 @@ func getDescriptionNumeric(text: String, array: Array, string_array: Array) -> S
 		text = text.erase(start_index, combined_string.length())
 		text = text.insert(start_index, string_array[i][0] + "[" + str(array[i]) + "]")
 	return text
+	
+func getSaveFileCount() -> int:
+	return DirAccess.get_files_at(SaveFileInfo.SAVE_DIRECTORY).size()

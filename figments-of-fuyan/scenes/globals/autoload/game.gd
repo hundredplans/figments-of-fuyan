@@ -75,6 +75,13 @@ func getRarityString(rarity: Rarities) -> String:
 		Rarities.BOSS: return "Boss"
 		Rarities.CHAMPION: return "Champion"
 	return "NULL"
+	
+func getRarityColor(rarity: Rarities) -> Color:
+	match rarity:
+		Rarities.COMMON: return Color(0.81, 0.62, 0.5)
+		Rarities.RARE: return Color(0, 0.77, 0.56)
+		Rarities.EXALT: return Color(0.97, 0.81, 0)
+	return Color(1, 1, 1)
 
 func getShopType(shop_type: ShopTypes) -> String:
 	match shop_type:
@@ -377,4 +384,21 @@ func onAddToDeck(Card: CardGD) -> void:
 	Card.reparent(get_tree().get_nodes_in_group("SaveFilesGD")[0])
 	Card.onChangeCardPlace(Game.CardPlaces.DECK)
 	Card.add_to_group("AllyCardsGD")
+#endregion
+
+#region Boons
+func isBoonAvailable(id: int, extra_ids: Array = []) -> bool:
+	var boons: Array = get_tree().get_nodes_in_group("SaveFilesGD")[0].boons 
+	return id not in extra_ids and boons.any(func(x: BoonGD): return !(x.info.id == id and x.ascended))
+	
+func isBoonAvailableUnascended(id: int) -> bool: # Does an unascended version of the Boon exist in the player's deck
+	var boons: Array = get_tree().get_nodes_in_group("SaveFilesGD")[0].boons 
+	return boons.any(func(x: BoonGD): x.info.id == id and !x.ascended)
+	
+func getAvailableBoons() -> Array:
+	var all_boons: Array = Helper.getFofInfoArray(BoonInfo)
+	var used_boon_ids: Array = (get_tree().get_nodes_in_group("SaveFilesGD")[0].boons)\
+		.filter(func(x: BoonGD): return x.ascended)\
+		.map(func(x: BoonGD): return x.info.id)
+	return all_boons.filter(func(x: BoonInfo): return x.id not in used_boon_ids)
 #endregion

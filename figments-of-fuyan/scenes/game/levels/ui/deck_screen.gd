@@ -3,6 +3,7 @@ extends Control
 signal selected
 @onready var DeckCards: Container = %DeckCards
 
+var SelectedCardUI: Control
 var selectable: bool
 func setInfo(_selectable: bool = false) -> void:
 	selectable = _selectable
@@ -15,6 +16,7 @@ func _on_quit_button_pressed() -> void:
 	queue_free()
 	
 func onSelected(CardUI: Control) -> void:
+	SelectedCardUI = CardUI
 	selected.emit(CardUI.Card)
 	queue_free()
 

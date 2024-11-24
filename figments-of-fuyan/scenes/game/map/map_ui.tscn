@@ -10,8 +10,8 @@
 [ext_resource type="PackedScene" uid="uid://6nf3mir2i2rk" path="res://scenes/common/fancy_text/fancy_text_label.tscn" id="8_v2ied"]
 [ext_resource type="PackedScene" uid="uid://cewvw3vx3mjcm" path="res://scenes/game/tools/tool_icon.tscn" id="9_mvtve"]
 [ext_resource type="PackedScene" uid="uid://db7lt6qbe4d0e" path="res://scenes/common/time_label/time_label.tscn" id="10_dlqmt"]
-[ext_resource type="Texture2D" uid="uid://drju02m4wqrw1" path="res://assets/sprites/ui/icons/card.png" id="11_anl8h"]
 [ext_resource type="PackedScene" uid="uid://mehoa6ajrja5" path="res://scenes/common/highlight_tx_button.tscn" id="11_m1bsi"]
+[ext_resource type="Texture2D" uid="uid://do8qr6q0dyyiy" path="res://assets/sprites/ui/icons/deck.png" id="12_xn4sn"]
 
 [sub_resource type="Animation" id="Animation_bd438"]
 resource_name = "MapStart"
@@ -111,31 +111,17 @@ script = ExtResource("1_8nhbi")
 LegendKeyPacked = ExtResource("2_xp1my")
 DeckScreenPacked = ExtResource("3_nrqx8")
 
-[node name="LegendContainer" type="PanelContainer" parent="."]
+[node name="LegendBox" type="VBoxContainer" parent="."]
 unique_name_in_owner = true
-layout_mode = 0
-offset_left = 1556.0
-offset_top = 150.0
-offset_right = 1890.0
-offset_bottom = 1053.0
-theme_type_variation = &"WhitePanelContainer"
-
-[node name="ScrollContainer" type="ScrollContainer" parent="LegendContainer"]
 layout_mode = 2
-horizontal_scroll_mode = 0
-
-[node name="MarginContainer" type="MarginContainer" parent="LegendContainer/ScrollContainer"]
-layout_mode = 2
+offset_left = 1725.0
+offset_top = 30.0
+offset_right = 1907.0
+offset_bottom = 1033.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="LegendBox" type="VBoxContainer" parent="LegendContainer/ScrollContainer/MarginContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Label" type="Label" parent="LegendContainer/ScrollContainer/MarginContainer/LegendBox"]
+[node name="Label" type="Label" parent="LegendBox"]
 layout_mode = 2
 text = "Legend"
 label_settings = ExtResource("4_10pk8")
@@ -192,21 +178,21 @@ offset_bottom = 140.0
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 20
-alignment = 2
 
-[node name="ShillingsLabel" parent="MarginContainer/TopBar" instance=ExtResource("8_v2ied")]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TopBar"]
+layout_mode = 2
+
+[node name="ShillingsLabel" parent="MarginContainer/TopBar/VBoxContainer" instance=ExtResource("8_v2ied")]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
 text = "SH: 15"
 autowrap_mode = 0
 center = false
 
-[node name="TimeLabel" parent="MarginContainer/TopBar" instance=ExtResource("10_dlqmt")]
+[node name="TimeLabel" parent="MarginContainer/TopBar/VBoxContainer" instance=ExtResource("10_dlqmt")]
 unique_name_in_owner = true
 layout_mode = 2
-horizontal_alignment = 2
+size_flags_vertical = 1
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/TopBar"]
 custom_minimum_size = Vector2(120, 120)
@@ -246,7 +232,7 @@ layout_mode = 2
 
 [node name="DeckButton" parent="MarginContainer/TopBar/DeckPanel/MarginContainer" groups=["ActionLockDisabled"] instance=ExtResource("11_m1bsi")]
 layout_mode = 2
-texture_normal = ExtResource("11_anl8h")
+texture_normal = ExtResource("12_xn4sn")
 stretch_mode = 0
 
 [connection signal="pressed" from="MarginContainer/TopBar/PanelContainer/MarginContainer/ToolBeltSlotOne" to="." method="onToolbeltSlotPressed"]

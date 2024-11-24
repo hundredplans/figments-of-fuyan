@@ -11,18 +11,27 @@ var ball_type: BALL_TYPE = BALL_TYPE.BIG
 @export var MASSIVE_BALL_SPEED: float = 0.6
 @export var MASSIVE_BALL_MAX_DISTANCE: float = 0.2
 @export_group("")
+
+var is_grey: bool
 var direction: int = -1
-
-func _ready() -> void:
-	onTweenChain()
-
+var ActiveTween: Tween
+	
+var ball_type_swap: bool
 func setInfo(_ball_type: BALL_TYPE) -> void:
 	ball_type = _ball_type
 	
+	if ActiveTween != null: return
+	position.y = -getMaxDistance() * 0.5
+	
 func onTweenChain() -> void:
+	if is_grey: return
 	direction *= -1
-	var tween := get_tree().create_tween()
+	ActiveTween = get_tree().create_tween()
 	var speed: float = BIG_BALL_SPEED if ball_type == BALL_TYPE.BIG else MASSIVE_BALL_SPEED
-	var max_distance: float = BIG_BALL_MAX_DISTANCE if ball_type == BALL_TYPE.BIG else MASSIVE_BALL_MAX_DISTANCE
-	tween.tween_property(self, "position:y", max_distance * direction, speed).as_relative().set_trans(Tween.TRANS_SINE)
-	tween.finished.connect(onTweenChain)
+	var max_distance: float = getMaxDistance()
+	
+	ActiveTween.tween_property(self, "position:y", max_distance * direction, speed).as_relative().set_trans(Tween.TRANS_SINE)
+	ActiveTween.finished.connect(onTweenChain)
+	
+func getMaxDistance() -> float:
+	return BIG_BALL_MAX_DISTANCE if ball_type == BALL_TYPE.BIG else MASSIVE_BALL_MAX_DISTANCE

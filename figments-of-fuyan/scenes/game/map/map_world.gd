@@ -13,6 +13,8 @@ var area: AreaGD
 var UI: Control
 var ActiveWorld: Node3D
 
+const MOUSE_HOLD_SLOWDOWN: float = 0.005
+
 @onready var WorldEnv: WorldEnvironment = %WorldEnvironment
 @onready var Camera: Camera3D = %MovementCamera
 @onready var UnitSpotlight: SpotLight3D = %UnitSpotlight
@@ -55,6 +57,21 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	
 func onInitLoad() -> void:
 	onMapStartAnimation()
+	
+func _input(event: InputEvent) -> void:
+	if Camera.current:
+		if Input.is_action_just_pressed("AltInput"):
+			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+			Camera.onDisableMovement(true)
+			get_viewport().warp_mouse(get_viewport().get_mouse_position())
+		elif Input.is_action_just_released("AltInput"):
+			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+			Camera.onDisableMovement(false)
+			get_viewport().warp_mouse(get_viewport().get_mouse_position())
+		
+		if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+			Camera.position.x += -event.relative.x * MOUSE_HOLD_SLOWDOWN
+			Camera.onClampPosition()
 #endregion
 
 #region Map Node Selected / Entered / Finished
@@ -93,6 +110,7 @@ func onMapNodeFinished(_map_node: MapNodeGD) -> void:
 	if ActiveWorld != null:
 		ActiveWorld.queue_free()
 		Camera.disable_movement = false
+		WorldEnv.environment = area.info.base_environment
 #endregion
 
 #region Map Start
@@ -135,10 +153,17 @@ func setEnvironment() -> void:
 #endregion
 
 #region World Screen
-func onMapNodeCreateWorldScene(_map_node: MapNodeGD, _ActiveWorld: Node3D) -> void:
+func onMapNodeCreateWorldScene(map_node: MapNodeGD, _ActiveWorld: Node3D) -> void:
 	ActiveWorld = _ActiveWorld
 	add_child(ActiveWorld)
+	ActiveWorld.setInfo(map_node)
 	
 	ActiveWorld.position = Vector3(0, 1000, 0)
 	Camera.disable_movement = true
 	Camera.current = false
+	WorldEnv.environment = null
+#endregion
+
+#region Camera
+
+#endregion

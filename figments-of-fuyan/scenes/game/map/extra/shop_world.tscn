@@ -12,12 +12,17 @@ script = ExtResource("1_3hn2i")
 
 [node name="MerchantCrab" parent="." instance=ExtResource("3_nb8m4")]
 unique_name_in_owner = true
-transform = Transform3D(0.139104, 0, -0.990278, 0, 1, 0, 0.990278, 0, 0.139104, -0.955692, 0, -0.33065)
 script = ExtResource("4_jakbe")
 
 [node name="IdleRareTimer" type="Timer" parent="MerchantCrab"]
 unique_name_in_owner = true
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-4.18981e-08, 0.285036, -0.958517, 1.24593e-08, 0.958517, 0.285036, 1, 0, -4.37114e-08, -2.25873, 1.17421, 0)
+transform = Transform3D(1, -1.24593e-08, -1.81328e-09, 1.24593e-08, 0.958517, 0.285036, -1.81329e-09, -0.285036, 0.958517, 0, 1.18543, 1.35244)
 current = true
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0142794, 1.98126, -0.776809)
+light_color = Color(1, 0.67451, 0, 1)
+light_indirect_energy = 4.0
+omni_range = 3.15

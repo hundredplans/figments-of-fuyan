@@ -17,6 +17,9 @@ var active_level_data: SavedDataLevel
 #region Helper
 func getWorldDifficulty() -> int:
 	return info.world.world
+	
+func getWorld() -> WorldDatastore:
+	return info.world
 
 func onFindEmptyMapSpot(progress: int, lane: int) -> EmptyMapNode:
 	for empty_map_spot in empty_spots:
@@ -214,7 +217,7 @@ func setEmptySpotsIDS(unique_node_ids: Array, map_node_odds: Dictionary) -> void
 		match empty_spot.progress:
 			-1: empty_spot.id = 1; continue
 			# Below should be 2 for gildred instead of 8
-			0: empty_spot.id = 1 if getWorldDifficulty() > 1 else 6; continue # Gildred
+			0: empty_spot.id = 1 if getWorldDifficulty() > 1 else 6; continue
 			5: empty_spot.id = 7; continue
 			10: empty_spot.id = 8; continue
 			_:
@@ -432,34 +435,76 @@ func setRewards(is_win: bool) -> void:
 #endregion
 
 #region Random Enemy
-func getRandomEnemySpawn(spawn_coords: Vector4i, progress: int) -> SavedDataCard:
-	var card_info: CardInfo = Helper.getFofInfoID(CardInfo, basic_card_ids.pick_random())
-	var card_data: SavedDataCard = card_info.saved_data.new(card_info.id, true)
+func onCreateCardByEnergy(_cards: Array, energy: int, spawn_coords: Vector4i, progress: int) -> SavedDataCard:
+	var original_cards: Array = _cards.filter(func(x: CardInfo): return x.energy == energy)
+	var cards: Array = getCardsByRarity(original_cards)
 	
+	var card_info: CardInfo = cards.pick_random()
+	var card_data: SavedDataCard = card_info.saved_data.new(card_info.id, true)
 	card_data.team = 1
 	card_data.coords = spawn_coords
-	var tool_data: SavedDataTool
+	
+	if progress < 3: return card_data
 	
 	var ascend_card: bool = Random.rollFloat(info.world.enemy_ascended_rate / 100.0)
-	if ascend_card:
-		card_data.ascended = true
+	if ascend_card: card_data.ascended = true
 	
-	if progress >= 3:
-		var add_tool: bool = Random.rollFloat(info.world.tool_enemy_spawn_rate / 100.0)
-		if add_tool:
-			var odds: Dictionary = info.world.tool_enemy_spawn_rarity_odds.getDictionary()
-			var rarity: Game.Rarities = int(Random.getRandomKey(Random.onConvertPercentOdds(odds)))
-			var tool_info: ToolInfo = Helper.getFofInfoArray(ToolInfo).filter(func(x: ToolInfo): return x.rarity == rarity).pick_random()
-			tool_data = tool_info.saved_data.new(tool_info.id, true)
-			
-			var ascend_tool: bool = Random.rollFloat(info.world.tool_enemy_ascended_rate / 100.0)
-			if ascend_tool:
-				tool_data.ascended = true
-			
-			card_data.tool_data = tool_data
-			
+	var add_tool: bool = Random.rollFloat(info.world.tool_enemy_spawn_rate / 100.0)
+	if !add_tool: return card_data
+	
+	var odds: Dictionary = info.world.tool_enemy_spawn_rarity_odds.getDictionary()
+	var tool_rarity: Game.Rarities = int(Random.getRandomKey(Random.onConvertPercentOdds(odds)))
+	var tool_info: ToolInfo = Helper.getFofInfoArray(ToolInfo).filter(func(x: ToolInfo): return x.rarity == tool_rarity).pick_random()
+	var tool_data: SavedDataTool = tool_info.saved_data.new(tool_info.id, true)
+	
+	var ascend_tool: bool = Random.rollFloat(info.world.tool_enemy_ascended_rate / 100.0)
+	if ascend_tool: tool_data.ascended = true
+	card_data.tool_data = tool_data
+	
 	return card_data
 	
+func getCardsByRarity(original_cards: Array) -> Array:
+	var rarity: Game.Rarities = int(Random.getRandomKey(Random.onConvertPercentOdds(getWorld().enemy_spawn_rarity_odds.getDictionary())))
+	var cards: Array = original_cards.filter(func(x: CardInfo): return x.rarity == rarity)
+	if cards.is_empty(): return getCardsByRarity(original_cards)
+	return cards
+	
+func setEnemySpawnsFromBudget(budget: int, enemy_spawn_amount: int, spawns: Array, progress: int) -> Array:
+	var enemies: Array = []
+	var cards: Array = Helper.getFofInfoArray(CardInfo).filter(func(x: CardInfo): return x.id in basic_card_ids)
+	var energies: Array = cards.map(func(x: CardInfo): return x.energy)
+	var highest_cost: int = energies.max()
+	var lowest_cost: int = energies.min()
+	
+	var original_energy_combinations: Array = onGenerateCombinations(lowest_cost, highest_cost, enemy_spawn_amount)
+	var energy_combinations: Array = original_energy_combinations.filter(func(x: Array): return x.reduce(sum, 0) == budget)
+	var energy_combination: Array = []
+	if !energy_combinations.is_empty(): # Remove later
+		energy_combination = energy_combinations.pick_random()
+		print("USED ILLEGAL COMBINATION!")
+	else: energy_combination = original_energy_combinations.pick_random()
+	
+	for i in range(energy_combination.size()):
+		var card_data: SavedDataCard = onCreateCardByEnergy(cards, energy_combination[i], spawns[i], progress)
+		enemies.append(card_data)
+	return enemies
+	
+func sum(accum: int, number: int) -> int:
+	return accum + number
+	
+func onGenerateCombinations(x: int, y: int, n: int) -> Array: # Gpt assist
+	var range = range(x, y + 1) # Inclusive range from x to y
+	var result = []
+	onCombineRecursive(range, n, [], result)
+	return result
+
+func onCombineRecursive(arr: Array, n: int, current: Array, result: Array) -> void: # Gpt assist
+	if n == 0:
+		result.append(current.duplicate())
+		return
+	
+	for i in range(len(arr)):
+		onCombineRecursive(arr.slice(i, len(arr)), n - 1, current + [arr[i]], result)
 #endregion
 
 #region Champion

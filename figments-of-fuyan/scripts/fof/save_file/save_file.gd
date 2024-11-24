@@ -46,6 +46,7 @@ func onSave() -> SavedData:
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
+	add_to_group("SaveFilesGD")
 	id = data.id
 	my_seed = data.my_seed
 	
@@ -70,8 +71,6 @@ func onLoadData(data: SavedData) -> void:
 	timer.wait_time = 99999999
 	add_child(timer)
 	timer.start()
-	
-	add_to_group("SaveFilesGD")
 	
 func onFofInit() -> void:
 	var boon_info: BoonInfo = getChampionCard().info.boon_info
@@ -133,15 +132,16 @@ func onRemoveToolFromToolbelt(Tool: ToolGD) -> void:
 
 #region Boons
 func onAddBoon(Boon: BoonGD) -> void:
-	boons.append(Boon)
-	#if Boon in boons:
-		#Boon.onUpdateAscenscion()
-	
-	if !Boon.is_inside_tree():
-		add_child(Boon)
-		
-	elif Boon.get_parent() != self:
-		Boon.reparent(self)
+	if Boon.info.id in boons.map(func(x: BoonGD): return x.info.id):
+		var OriginalBoon: BoonGD = boons.filter(func(x: BoonGD): return x.info.id == Boon.info.id)[0]
+		OriginalBoon.onAscend(true)
+	else:
+		if !Boon.is_inside_tree():
+			add_child(Boon)
+			
+		elif Boon.get_parent() != self:
+			Boon.reparent(self)
+		boons.append(Boon)
 		
 	update_boons.emit(Boon)
 	

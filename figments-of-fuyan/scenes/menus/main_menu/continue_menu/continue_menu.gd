@@ -1,6 +1,8 @@
 extends Control
 
 signal load_game
+signal mouse_in_ui
+
 @onready var ArtMiniRect: TextureRect = %ArtMiniRect
 @onready var ChampionNameLabel: Label = %ChampionNameLabel
 @onready var TimeLabel: Label = %TimeLabel
@@ -62,3 +64,6 @@ func _on_start_button_pressed() -> void:
 
 func _on_quit_button_pressed() -> void:
 	queue_free()
+	
+func onMouseInUI(state: bool) -> void:
+	pass

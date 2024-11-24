@@ -14,15 +14,15 @@ func _ready() -> void:
 	for body in getStaticBodies(main_menu_meshes): body.input_ray_pickable = true
 	for body in getStaticBodies(play_table_meshes): body.input_ray_pickable = false
 	
-	var save_file_count: int = DirAccess.get_files_at(SaveFileInfo.SAVE_DIRECTORY).size()
+	var save_file_count: int = Helper.getSaveFileCount()
 	for mesh in getMeshes(main_menu_meshes + play_table_meshes):
 		if !onDisableMesh(mesh, save_file_count):
 			var StaticBody: StaticBody3D = mesh.get_child(0)
 			StaticBody.mouse_entered.connect(onMouseEnteredMesh.bind(mesh))
 			StaticBody.mouse_exited.connect(onMouseExitedMesh)
 		
-func _input(_event: InputEvent) -> void:
-	if Input.is_action_just_pressed("MainInput"):
+func _process(_delta: float) -> void:
+	if Input.is_action_just_pressed("MainInput") and !mouse_in_ui:
 		if ActiveMesh: mesh_chosen.emit(CameraItem.getCameraItemInArray(camera_item_array, ActiveMesh.name))
 #endregion
 
@@ -43,14 +43,23 @@ func getStaticBodies(arr: Array) -> Array:
 signal mesh_chosen
 var ActiveMesh: MeshInstance3D
 func onMouseEnteredMesh(mesh: MeshInstance3D) -> void:
+	if mouse_in_ui: return
 	if mesh != null:
 		mesh.set_surface_override_material(0, onFindMeshToMaterial(mesh, main_menu_meshes + play_table_meshes))
 	ActiveMesh = mesh
 
 func onMouseExitedMesh() -> void:
+	if mouse_in_ui: return
 	if ActiveMesh != null:
 		ActiveMesh.set_surface_override_material(0, null)
 	ActiveMesh = null
+	
+func onDisableMesh(mesh: MeshInstance3D, save_file_count: int) -> bool:
+	if (mesh.name in ["Continue", "LoadGame"] and save_file_count == 0)\
+	or (mesh.name == "NewGame" and save_file_count >= 5):
+		mesh.set_surface_override_material(0, GREYSCALE_MATERIAL)
+		return true
+	return false
 #endregion
 
 #region NewGame
@@ -67,9 +76,19 @@ func onTravelStateChanged(travel_info: CameraTravelDatastore) -> void:
 		body.input_ray_pickable = travel_info.end.name == "PlayTable" and !travel_info.is_start
 #endregion
 
-func onDisableMesh(mesh: MeshInstance3D, save_file_count: int) -> bool:
-	if (mesh.name in ["Continue", "LoadGame"] and save_file_count == 0)\
-	or (mesh.name == "NewGame" and save_file_count >= 5):
-		mesh.set_surface_override_material(0, GREYSCALE_MATERIAL)
-		return true
-	return false
+#region Mouse In UI
+func getMouseInUI() -> bool:
+	return mouse_in_ui
+	
+var mouse_in_ui: bool
+func onMouseInUI(state: bool) -> void:
+	onMouseExitedMesh()
+	mouse_in_ui = state
+#endregion
+
+#region Remove Save
+func onRemoveSave() -> void:
+	var save_file_count: int = Helper.getSaveFileCount()
+	for mesh in getMeshes(play_table_meshes):
+		onDisableMesh(mesh, save_file_count)
+#endregion

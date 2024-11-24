@@ -5,11 +5,17 @@ var Boon: BoonGD
 var disabled: bool
 var hoverable: bool
 
+const SPIN_SPEED: float = 10
+
 @onready var ChargesLabel: Label = %ChargesLabel
-@onready var BoonShine: TextureRect = %BoonShine
+@onready var AscendedShine: TextureRect = %BoonShine
+
+func _ready() -> void:
+	AscendedShine.pivot_offset = AscendedShine.size / 2
 
 func setInfo(_Boon: BoonGD, _hoverable: bool = false) -> void:
 	Boon = _Boon
+	Boon.update_ascend.connect(onUpdateAscension)
 	texture = Boon.getIcon()
 	hoverable = _hoverable
 	
@@ -37,8 +43,11 @@ func setDisabled(_disabled: bool) -> void:
 	modulate = Color(0.2, 0.2, 0.2) if disabled else Color(1, 1, 1)
 		
 func onUpdateAscension(ascended: bool) -> void:
-	BoonShine.visible = ascended
+	AscendedShine.visible = ascended
 	
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("MainInput") and mouse_in_ui and !disabled:
 		pressed.emit(Boon)
+
+	if AscendedShine.visible:
+		AscendedShine.rotation_degrees += delta * SPIN_SPEED

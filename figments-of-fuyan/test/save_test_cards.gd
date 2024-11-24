@@ -11,4 +11,4 @@ func _ready() -> void:
 		info.points = quentin.points
 		info.collision_shape = quentin.collision_shape
 		
-		ResourceSaver.save(info)
+		ResourceSaver.save(info, "res://resources/fof/cards/" + file_name)

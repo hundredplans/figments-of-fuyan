@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="WorldDatastore" load_steps=22 format=3 uid="uid://ctfukjvhoe8nm"]
+[gd_resource type="Resource" script_class="WorldDatastore" load_steps=23 format=3 uid="uid://ctfukjvhoe8nm"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/map_nodes/extra/map_node_odds_datastore.gd" id="1_hv7qf"]
 [ext_resource type="Script" path="res://scripts/common/price/rarity_price_datastore.gd" id="1_irbdm"]
@@ -86,6 +86,14 @@ encounter = 45.0
 shop = 5.0
 upgrade_regular_fight = 12.0
 
+[sub_resource type="Resource" id="Resource_1acp3"]
+script = ExtResource("2_8uwip")
+common = 60.0
+rare = 35.0
+exalt = 5.0
+miniboss = 0.0
+boss = 0.0
+
 [sub_resource type="Resource" id="Resource_4rk5k"]
 script = ExtResource("2_8uwip")
 common = 60.0
@@ -143,11 +151,14 @@ world = 1
 data = Array[ExtResource("1_hv7qf")]([SubResource("Resource_dv863"), SubResource("Resource_g5dgs"), SubResource("Resource_nm72o"), SubResource("Resource_0tdd2"), SubResource("Resource_6a52b"), SubResource("Resource_7erkh"), SubResource("Resource_humnj"), SubResource("Resource_qoq7q")])
 unique_node_segment_one_odds = 0.0
 unique_node_segment_two_odds = 8.0
+enemy_spawn_rarity_odds = SubResource("Resource_1acp3")
 fight_rewards = SubResource("Resource_1xgva")
+progress_enemy_energy_budget = Array[int]([0, 3, 4, 5, 7, 12, 8, 10, 11, 13, 18])
+elite_fights_progress_offset = 1
+enemy_ascended_rate = 5.0
 tool_enemy_spawn_rarity_odds = SubResource("Resource_woaak")
 tool_enemy_spawn_rate = 10.0
 tool_enemy_ascended_rate = 5.0
-enemy_ascended_rate = 5.0
 card_rarity_prices = SubResource("Resource_e0jms")
 tool_rarity_prices = SubResource("Resource_vnak7")
 boon_rarity_prices = SubResource("Resource_giks2")

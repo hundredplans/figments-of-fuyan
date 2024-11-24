@@ -12,8 +12,8 @@ func onProcessAction(action: Action) -> void:
 		if action is DeathAction and action.Damager is CardGD and action.Damager.isAlly(0) and kills_remaining > 0 and action.Damager.info.id != 1:
 			onPushAction(BoonActivatedAction.new(self, action))
 	
-func onUpdateAscenscion() -> void:
-	super()
+func onAscend(state: bool) -> void:
+	super(state)
 
 func getDescription() -> String:
 	return Helper.getDescription(super(), [kills_remaining])

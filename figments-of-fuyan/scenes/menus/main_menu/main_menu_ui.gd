@@ -4,6 +4,8 @@ extends Control
 signal cancel_champion_selected
 signal start
 signal load_game
+signal mouse_in_ui
+signal remove_save
 
 var World: Node3D
 @onready var GoBackLabel: Label = %GoBackLabel
@@ -52,8 +54,22 @@ func onCreateUI(_menu: PackedScene) -> void:
 	if ActiveMenu != null: ActiveMenu.queue_free()
 	ActiveMenu = _menu.instantiate()
 	ActiveMenu.load_game.connect(onLoadGame)
+	ActiveMenu.mouse_in_ui.connect(onMouseInUI)
+	
+	if "remove_save" in ActiveMenu: ActiveMenu.remove_save.connect(onRemoveSave)
+	
 	add_child(ActiveMenu)
 	
 func onLoadGame(saved_data: SavedDataSaveFile) -> void:
 	load_game.emit(saved_data)
+#endregion
+
+#region Mouse In UI
+var is_mouse_in_ui: bool
+func onMouseInUI(state: bool) -> void:
+	is_mouse_in_ui = state
+	mouse_in_ui.emit(state)
+	
+func onRemoveSave() -> void:
+	remove_save.emit()
 #endregion

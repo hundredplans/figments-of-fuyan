@@ -3,6 +3,8 @@ extends Control
 @export var UIBoxPacked: PackedScene
 @onready var LevelLabel: Label = %LevelLabel
 @onready var UIBoxParent: Control = %UIBoxParent
+func _process(_delta: float) -> void:
+	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED: queue_free()
 
 func setInfo(map_node: MapNodeGD, area: AreaGD) -> void:
 	var level_info: LevelInfo = Helper.getFofInfoID(LevelInfo, map_node.level_info.id)
@@ -11,6 +13,12 @@ func setInfo(map_node: MapNodeGD, area: AreaGD) -> void:
 	var valid_spawns: Array = map_node.enemy_spawns
 	valid_spawns.resize(Game.CARD_REWARD_DEFAULT_AMOUNT)
 	valid_spawns = valid_spawns.filter(func(x: SavedDataCard): return x != null)
+	var valid_infos: Dictionary = {}
+	for saved_data_card in valid_spawns:
+		valid_infos[saved_data_card] = Helper.getFofInfoID(CardInfo, saved_data_card.id)
+	
+	valid_spawns.sort_custom(func(x: SavedDataCard, y: SavedDataCard): return valid_infos[x].rarity > valid_infos[y].rarity)
+	valid_spawns.sort_custom(func(x: SavedDataCard, y: SavedDataCard): return valid_infos[x].energy > valid_infos[y].energy)
 	
 	for card_data in valid_spawns:
 		var UIBox: Control = UIBoxPacked.instantiate()

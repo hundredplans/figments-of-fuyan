@@ -19,7 +19,7 @@ func setInfo(_item: FofGD, _price_datastore: PriceDatastore, _save_file: SaveFil
 	save_file.update_shillings.connect(onUpdateShillings)
 	onUpdateShillings(save_file.shillings)
 	
-	if price_datastore.bought: setDisabled(true)
+	if price_datastore.bought: onPressed(true)
 
 func onUpdateShillings(shillings: int) -> void:
 	if !price_datastore.bought:
@@ -28,6 +28,7 @@ func onUpdateShillings(shillings: int) -> void:
 func setDisabled(state: bool) -> void:
 	ShillingsLabel.modulate = Color(1, 1, 1) if !state else Color(0.5, 0.5, 0.5)
 
-func onPressed() -> void:
+func onPressed(load_bought: bool = false) -> void:
+	if load_bought: return
 	pressed.emit(item, price_datastore, DisplayedUI)
 	setDisabled(true)

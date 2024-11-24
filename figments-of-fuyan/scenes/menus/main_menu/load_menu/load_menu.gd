@@ -1,5 +1,7 @@
 extends Control
 signal load_game
+signal mouse_in_ui
+signal remove_save
 
 @export var save_file_ui_packed: PackedScene
 @onready var QuitButton: Button = %QuitButton
@@ -17,6 +19,7 @@ func _ready() -> void:
 			save_file_ui.setInfo(save)
 			save_file_ui.remove_save.connect(onRemoveSave)
 			save_file_ui.start.connect(onStart)
+			save_file_ui.mouse_in_ui.connect(onMouseInUI)
 		MainContainer.move_child(QuitButton, MainContainer.get_child_count() - 1)
 
 func _on_quit_button_pressed() -> void:
@@ -25,6 +28,10 @@ func _on_quit_button_pressed() -> void:
 func onRemoveSave(save_file_data: SavedDataSaveFile) -> void:
 	DirAccess.remove_absolute(save_file_data.resource_path)
 	if Array(DirAccess.get_files_at(DIR_PATH)).is_empty(): queue_free()
+	remove_save.emit()
 
 func onStart(save_file_data: SavedDataSaveFile) -> void:
 	load_game.emit(save_file_data)
+
+func onMouseInUI(state: bool) -> void:
+	mouse_in_ui.emit(state)

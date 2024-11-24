@@ -22,7 +22,7 @@ func onCardSelected(Card: CardGD) -> void:
 	item.onPickup(Card)
 	onPressed() 
 
-func onPressed() -> void:
+func onPressed(_load_bought: bool = false) -> void:
 	super()
 	SoldLabel.visible = true
 	PanelButton.setText("")

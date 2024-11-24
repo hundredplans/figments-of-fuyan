@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dgjiv4s0c2ynf"]
+[gd_scene load_steps=13 format=3 uid="uid://dgjiv4s0c2ynf"]
 
 [ext_resource type="Script" path="res://scenes/game/map_nodes/map_node_link.gd" id="1_ithsl"]
 [ext_resource type="PackedScene" uid="uid://cjejml4esueol" path="res://scenes/game/map_nodes/map_node_ball.tscn" id="2_8po0c"]
@@ -7,16 +7,26 @@
 [ext_resource type="SphereMesh" uid="uid://bkbum5dhxebdb" path="res://resources/game/map/default/map_node_ball_mesh_holy.tres" id="5_2vjak"]
 [ext_resource type="SphereMesh" uid="uid://cptvj3ih4v268" path="res://resources/game/map/default/map_node_big_ball_mesh.tres" id="5_v3flf"]
 [ext_resource type="SphereMesh" uid="uid://bk85phu5m6ok6" path="res://resources/game/map/default/map_node_massive_mesh.tres" id="6_gpgeb"]
+[ext_resource type="SphereMesh" uid="uid://ka0rjchelrhe" path="res://resources/game/map/default/map_node_ball_mesh_grey.tres" id="6_mkg5b"]
 [ext_resource type="SphereMesh" uid="uid://bcvotg87ttper" path="res://resources/game/map/default/map_node_big_ball_mesh_holy.tres" id="7_wovuh"]
 [ext_resource type="SphereMesh" uid="uid://c31811nbohk85" path="res://resources/game/map/default/map_node_massive_mesh_holy.tres" id="9_46txv"]
+[ext_resource type="SphereMesh" uid="uid://dcau5k1bm24bl" path="res://resources/game/map/default/map_node_big_ball_mesh_grey.tres" id="9_u341a"]
+[ext_resource type="SphereMesh" uid="uid://2d757cllr0yv" path="res://resources/game/map/default/map_node_massive_mesh_grey.tres" id="12_8qntf"]
 
 [node name="MapNodeLink" type="Node3D"]
 script = ExtResource("1_ithsl")
 default_ball = ExtResource("2_8po0c")
 big_ball = ExtResource("3_xk0jq")
+default_balls_meshes = Array[Mesh]([ExtResource("4_ii2ow"), ExtResource("6_mkg5b"), ExtResource("5_2vjak")])
+big_ball_meshes = Array[Mesh]([ExtResource("5_v3flf"), ExtResource("9_u341a"), ExtResource("7_wovuh")])
+massive_ball_meshes = Array[Mesh]([ExtResource("6_gpgeb"), ExtResource("12_8qntf"), ExtResource("9_46txv")])
 default_ball_mesh = ExtResource("4_ii2ow")
 default_ball_mesh_holy = ExtResource("5_2vjak")
+default_ball_mesh_grey = ExtResource("6_mkg5b")
 big_ball_mesh = ExtResource("5_v3flf")
 big_ball_mesh_holy = ExtResource("7_wovuh")
+big_ball_mesh_grey = ExtResource("9_u341a")
 massive_ball_mesh = ExtResource("6_gpgeb")
 massive_ball_mesh_holy = ExtResource("9_46txv")
+massive_ball_mesh_grey = ExtResource("12_8qntf")
+BALL_Y = null

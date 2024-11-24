@@ -61,16 +61,15 @@ func _input(event):
 
 	# Receives key input
 	if event is InputEventKey and !(get_viewport().gui_get_focus_owner() as LineEdit):
-		if !disable_movement:
-			match event.keycode:
-				KEY_W:
-					_w = event.pressed
-				KEY_S:
-					_s = event.pressed
-				KEY_A:
-					_a = event.pressed
-				KEY_D:
-					_d = event.pressed
+		match event.keycode:
+			KEY_W:
+				_w = event.pressed
+			KEY_S:
+				_s = event.pressed
+			KEY_A:
+				_a = event.pressed
+			KEY_D:
+				_d = event.pressed
 					
 		match event.keycode:
 			KEY_SHIFT:
@@ -84,18 +83,19 @@ func _process(delta):
 	_update_movement(delta)
 	onUpdateFreelookInput()
 
-
 func onUpdateFreelookInput() -> void:
 	if Input.is_action_just_pressed("AltInput") and !disable_freelook:
 		camera_panning.emit(true)
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 		get_viewport().warp_mouse(Vector2.ZERO)
+		
 	elif Input.is_action_just_released("AltInput") and !disable_freelook:
 		camera_panning.emit(false)
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		
 # Updates camera movement
 func _update_movement(delta):
+	if disable_movement: return
 	# Computes desired direction from key states
 	_direction = Vector3((_d as float) - (_a as float), 
 						(_e as float) - (_q as float), 
@@ -121,14 +121,17 @@ func _update_movement(delta):
 		_velocity.x = clamp(_velocity.x + offset.x, -_vel_multiplier, _vel_multiplier)
 		_velocity.y = clamp(_velocity.y + offset.y, -_vel_multiplier, _vel_multiplier)
 		_velocity.z = clamp(_velocity.z + offset.z, -_vel_multiplier, _vel_multiplier)
-	
 		translate(_velocity * delta * speed_multi)
-		if X_MIN != 0 and X_MAX != 0: position.x = clamp(position.x, X_MIN, X_MAX)
+		
 		get_viewport().warp_mouse(get_viewport().get_mouse_position())
+		
+func onClampPosition() -> void:
+	if X_MIN != 0 and X_MAX != 0: position.x = clamp(position.x, X_MIN, X_MAX)
+		
 # Updates mouse look 
 func _update_mouselook():
 	# Only rotates mouse if the mouse is captured
-	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED and !disable_freelook:
 		_mouse_position *= sensitivity
 		var yaw = _mouse_position.x
 		var pitch = _mouse_position.y
@@ -143,3 +146,5 @@ func _update_mouselook():
 
 func onDisableMovement(state: bool) -> void:
 	disable_movement = state
+	_velocity = Vector3.ZERO
+	

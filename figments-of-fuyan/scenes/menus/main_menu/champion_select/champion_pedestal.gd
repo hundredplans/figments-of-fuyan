@@ -23,7 +23,7 @@ func onUnitMouseExited(Card: CardGD) -> void:
 	champion_unhovered.emit(Card)
 	ChampionHovered = null
 	
-func _input(_event: InputEvent) -> void:
+func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("MainInput") and ChampionHovered != null:
 		champion_pressed.emit(ChampionHovered)
 	

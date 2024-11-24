@@ -34,7 +34,9 @@ signal pressed
 @export var white_outline_canvas: ShaderMaterial
 @export_group("Admin")
 @export var rarities: Array[Image]
+@export var ascended_rarities: Array[Image]
 @export var masks: Array[Texture2D]
+
 #endregion
 #region Globals
 var Card: CardGD
@@ -45,8 +47,10 @@ var selected: bool
 
 func setInfo(_Card: CardGD, _highlight_on_hover: bool = false) -> void:
 	Card = _Card
+	Card.update_ascended.connect(onCardAscended)
+	
 	highlight_on_hover = _highlight_on_hover
-	Background.setTexture(rarities[Card.info.rarity])
+	Background.setTexture(rarities[Card.info.rarity] if !Card.ascended else ascended_rarities[Card.info.rarity])
 	OutlineMask.texture = masks[Card.info.rarity]
 	ArtPop.setTexture(Card.info.art_pop)
 	TextLabel.setText(Card.getDescription())
@@ -59,6 +63,9 @@ func setInfo(_Card: CardGD, _highlight_on_hover: bool = false) -> void:
 	
 	onToolAdded(Card.Tool)
 	Card.tool_added.connect(onToolAdded)
+	
+func onCardAscended(_state: bool) -> void:
+	Background.setTexture(rarities[Card.info.rarity] if !Card.ascended else ascended_rarities[Card.info.rarity])
 	
 func onToolAdded(Tool: ToolGD) -> void:
 	ToolControl.visible = Tool != null
