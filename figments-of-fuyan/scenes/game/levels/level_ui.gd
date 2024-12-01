@@ -50,9 +50,6 @@ var mouse_in_ui: bool
 @export var GraveyardScreenPacked: PackedScene
 @export var MinimapPacked: PackedScene
 @export var LossUIPacked: PackedScene
-@export var RewardsUIPacked: PackedScene
-@export var ToolPickedUpUIPacked: PackedScene
-@export var RewardsCardsPacked: PackedScene
 #endregion
 
 #region Base Functions
@@ -76,8 +73,6 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level.boon_ascended.connect(onBoonAscended)
 	level.tile_occupied.connect(onTileOccupied)
 	level.game_ended.connect(onGameEnded)
-	level.tool_picked_up.connect(onToolPickedUp)
-	level.cards_picked_up.connect(onCardsPickedUp)
 	save_file.update_shillings.connect(onUpdateShillings)
 	
 	TimeLabel.setInfo(save_file)
@@ -308,40 +303,21 @@ func onTileOccupied(Card: CardGD, _Tile: TileGD) -> void:
 
 #region Game Ended
 func onGameEnded(rewards: Rewards) -> void:
-	
 	if rewards == null:
 		var LossUI: Control = LossUIPacked.instantiate()
 		add_child(LossUI)
 	else:
-		var RewardsUI: Control = RewardsUIPacked.instantiate()
-		add_child(RewardsUI)
+		var RewardsUI: Control = Game.onCreateRewardsUIScreen(rewards, self)
+		RewardsUI.rewards_finished.connect(level.onRewardsFinished)
 		
 		for child in [DeckPanel, MapPanel, ShillingLabel]:
 			child.z_index = 1
 		
-		RewardsUI.setInfo(rewards)
-		RewardsUI.add_reward.connect(level.onAddReward)
-		RewardsUI.rewards_finished.connect(level.onRewardsFinished)
-		level.reward_taken.connect(RewardsUI.onRewardTaken)
+		
 	
 	onUpdateActionLock(false)
 	for btn in get_tree().get_nodes_in_group("EndGameDisabled"):
 		btn.disabled = true
 	
 	HandBox.onUnpin()
-	
-func onToolPickedUp(Tool: ToolGD) -> void:
-	var ToolPickedUpUI: Control = ToolPickedUpUIPacked.instantiate()
-	add_child(ToolPickedUpUI)
-	ToolPickedUpUI.setInfo(Tool, save_file)
-	ToolPickedUpUI.taken.connect(onRewardTaken)
-	
-func onCardsPickedUp(cards: Array) -> void:
-	var RewardsCards: Control = RewardsCardsPacked.instantiate()
-	add_child(RewardsCards)
-	RewardsCards.setInfo(cards, save_file)
-	RewardsCards.taken.connect(onRewardTaken)
-	
-func onRewardTaken(reward: Variant) -> void:
-	level.onRewardTaken(reward)
 #endregion

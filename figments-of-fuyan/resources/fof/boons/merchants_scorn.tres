@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="BoonInfo" load_steps=5 format=3 uid="uid://ceq1w0eb13dus"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/boons/boon_info.gd" id="1_0c1sf"]
+[ext_resource type="Script" path="res://scripts/fof/boons/boon.gd" id="1_no7q8"]
+[ext_resource type="Texture2D" uid="uid://bqxhii0v0dm4e" path="res://assets/sprites/game/boons/merchants_scorn.png" id="2_el4fa"]
+[ext_resource type="Script" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_g5xd7"]
+
+[resource]
+script = ExtResource("1_0c1sf")
+icon = ExtResource("2_el4fa")
+description = "Enemy [card=7] gain +1 ATT when AWAKENED"
+ascended_description = ""
+rarity = 0
+curse = true
+id = 9
+name = "Merchant's Scorn"
+gdscript = ExtResource("1_no7q8")
+saved_data = ExtResource("3_g5xd7")

@@ -1,7 +1,11 @@
 extends Node
 
+var save_file: SaveFileGD
+var area: AreaGD
+
 var ActionManagerReference: ActionManagerGD
 var ADVANCE_PHASES: Array = [Phases.PLAYER, Phases.AI, Phases.NEUTRAL]
+
 const SELECTED_MAP_NODE_TRAVEL_SPEED: float = 1
 enum Rarities {SCRAP, NEUTRAL, MINI, COMMON, RARE, EXALT, MINIBOSS, BOSS, CHAMPION}
 enum ShopTypes {CARD, BOON, TOOL, DECK}
@@ -173,9 +177,6 @@ func getAllyUnits(team: int = 0) -> Array:
 	
 func getEnemyUnits(team: int = 0) -> Array:
 	return get_tree().get_nodes_in_group("FieldCardsGD").filter(func(x: CardGD): return x.team != team)
-	
-func getBaseCard(id: int, Tile: TileGD, team: int, tile_rotation: int, ascended: bool = false) -> SavedDataCard:
-	return Helper.getFofInfoID(CardInfo, id).saved_data.new(id, true, 0, Tile.getCoords(), tile_rotation, VisionDatastore.new(), team, ascended)
 
 func getNewFieldCard(id: int, Tile: TileGD, team: int, tile_rotation: int, ascended: bool = false) -> CardGD:
 	var level: LevelGD = get_tree().get_nodes_in_group("LevelsGD")[0]
@@ -354,10 +355,7 @@ func onSurviveFallDamage(Card: CardGD, movement_path: Array, point_path: Array, 
 
 #region Map Effect Generator
 func onCreateGainShillings(shilling_amount: int, parent: Node) -> MapEffectGD:
-	return SavedData.onLoadModel(SavedDataMapEffectGainShillings.new(2, true, 0, shilling_amount), parent)
-
-func onGainFofObject(fof_object: FofGD) -> void:
-	pass
+	return SavedData.onLoadModel(SavedDataGainShillings.new(2, true, 0, shilling_amount), parent)
 #endregion
 
 #region Tooltips
@@ -381,24 +379,135 @@ func onMouseInUITooltip(state: bool, item: FofGD = null, parent: Control = null,
 #region Cards
 func onAddToDeck(Card: CardGD) -> void:
 	Card.team = 0
-	Card.reparent(get_tree().get_nodes_in_group("SaveFilesGD")[0])
+	Card.reparent(save_file)
 	Card.onChangeCardPlace(Game.CardPlaces.DECK)
 	Card.add_to_group("AllyCardsGD")
+	
+func isIDInDeck(id: int) -> bool:
+	return get_tree().get_nodes_in_group("DeckCardsGD").any(func(x: CardGD): return x.info.id == id)
+
+func getDeckSize() -> int:
+	return get_tree().get_nodes_in_group("DeckCardsGD").size()
+	
+func getBaseCard(id: int, Tile: TileGD, team: int, tile_rotation: int, ascended: bool = false) -> SavedDataCard:
+	return Helper.getFofInfoID(CardInfo, id).saved_data.new(id, true, 0, Tile.getCoords(), tile_rotation, VisionDatastore.new(), team, ascended)
+	
+func getRandomNonChampionCard() -> CardGD:
+	return get_tree().get_nodes_in_group("DeckCardsGD").filter(func(x: CardGD): return x.info.rarity != Rarities.CHAMPION).pick_random()
+	
+const REMOVE_CARD_ANIMATION_TIME: float = 2
+const REMOVE_CARD_ANIMATION_OFFSET: float = 0.5
+const TOTAL_SPIN_DEGREES: int = 360
+func onRemoveCardWithAnimation(Card: CardGD, parent: Control) -> void:
+	var CardUI: Control = Card.onCreateCardUI(parent, false)
+	CardUI.global_position = get_viewport().get_mouse_position() - (CardUI.size / 2)
+	CardUI.setDisabled(true)
+	
+	var rotate_tween := create_tween()
+	rotate_tween.tween_property(CardUI, "rotation_degrees", TOTAL_SPIN_DEGREES, REMOVE_CARD_ANIMATION_TIME)
+	
+	var scale_tween := create_tween()
+	scale_tween.tween_property(CardUI, "scale", Vector2(0.01, 0.01), REMOVE_CARD_ANIMATION_TIME)
+	await get_tree().create_timer(REMOVE_CARD_ANIMATION_TIME + REMOVE_CARD_ANIMATION_OFFSET).timeout
+	Card.queue_free()
+	
+func onCreateBaseCard(id: int, ascended: bool = false, tool_data: SavedDataTool = null) -> SavedDataCard:
+	var card_data := SavedDataCard.new(id, true)
+	card_data.tool_data = tool_data
+	card_data.ascended = ascended
+	return card_data
 #endregion
 
 #region Boons
 func isBoonAvailable(id: int, extra_ids: Array = []) -> bool:
-	var boons: Array = get_tree().get_nodes_in_group("SaveFilesGD")[0].boons 
+	var boons: Array = save_file.boons 
 	return id not in extra_ids and boons.any(func(x: BoonGD): return !(x.info.id == id and x.ascended))
 	
 func isBoonAvailableUnascended(id: int) -> bool: # Does an unascended version of the Boon exist in the player's deck
-	var boons: Array = get_tree().get_nodes_in_group("SaveFilesGD")[0].boons 
+	var boons: Array = save_file.boons 
 	return boons.any(func(x: BoonGD): x.info.id == id and !x.ascended)
 	
 func getAvailableBoons() -> Array:
 	var all_boons: Array = Helper.getFofInfoArray(BoonInfo)
-	var used_boon_ids: Array = (get_tree().get_nodes_in_group("SaveFilesGD")[0].boons)\
+	var used_boon_ids: Array = save_file.boons\
 		.filter(func(x: BoonGD): return x.ascended)\
 		.map(func(x: BoonGD): return x.info.id)
 	return all_boons.filter(func(x: BoonInfo): return x.id not in used_boon_ids)
+	#
+#func onAddBoonFromArray(boons: Array) -> void:
+	#if boons.is_empty(): return
+	#var save_file: SaveFileGD = get_tree().get_nodes_in_group("SaveFilesGD")[0]
+	#var boon_info: BoonInfo = boons.pick_random()
+	#save_file.onAddBoon(boon_info.saved_data.new(boon_info.id, true))
+#endregion
+
+#region Tools
+func playerHasTool(id: int) -> bool: # Player has a regular or ascended tool, in tool belt or in deck
+	return get_tree().get_nodes_in_group("DeckCardsGD").any(func(x: CardGD): return x.Tool != null and x.Tool.info.id == id) \
+		or save_file.tool_belt.any(func(x: ToolGD): return x.info.id == id)
+#endregion
+
+#region Animation
+const FLY_UI_ANIMATION_SPEED: float = 0.8
+const FLY_UI_DISSAPEAR_SPEED: float = 1
+func onFlyToUI(DisplayedUI: Control, To: Control) -> void:
+	var tween := create_tween()
+	tween.tween_property(DisplayedUI, "global_position", To.global_position, FLY_UI_ANIMATION_SPEED)
+	
+	var scale_tween := create_tween()
+	scale_tween.tween_property(DisplayedUI, "scale", Vector2(0.01, 0.01), FLY_UI_ANIMATION_SPEED)
+	
+	var rotate_tween := create_tween()
+	rotate_tween.tween_property(DisplayedUI, "rotation_degrees", 360, FLY_UI_ANIMATION_SPEED)
+	
+	await get_tree().create_timer(FLY_UI_DISSAPEAR_SPEED).timeout
+	if DisplayedUI != null: DisplayedUI.queue_free()
+#endregion
+
+#region Scene Creator
+const TOOL_PICKED_UP_UI_SCENE_PATH: String = "res://scenes/game/tools/extra/tool_picked_up_ui.tscn"
+func onCreateToolPickedUpUI(Tool: ToolGD, remove_dispose: bool, parent: Control) -> Control:
+	var ToolPickedUpUI: Control = load(TOOL_PICKED_UP_UI_SCENE_PATH).instantiate()
+	parent.add_child(ToolPickedUpUI)
+	ToolPickedUpUI.setInfo(Tool, save_file, remove_dispose)
+	return ToolPickedUpUI
+	
+const PICK_TOOL_UI_SCENE_PATH: String = "res://scenes/game/tools/extra/pick_tool_ui.tscn"
+func onCreatePickToolUI(tool_info: ToolInfo, parent: Control) -> Control:
+	var PickToolUI: Control = load(PICK_TOOL_UI_SCENE_PATH).instantiate()
+	parent.add_child(PickToolUI)
+	PickToolUI.setInfo(tool_info, save_file)
+	return PickToolUI
+	
+const DECK_SCREEN_PATH: String = "res://scenes/game/levels/ui/deck_screen.tscn"
+func onCreateDeckScreen(parent: Control, selectable: bool, max_select_amount: int = 1, filter_callable := Callable(), valid_selection := Callable()) -> Control:
+	var DeckScreen: Control = load(DECK_SCREEN_PATH).instantiate()
+	parent.add_child(DeckScreen)
+	DeckScreen.setInfo(selectable, max_select_amount, valid_selection)
+	DeckScreen.onDisableCards(filter_callable)
+	return DeckScreen
+	
+const REWARDS_UI_PATH: String = "res://scenes/common/rewards_ui/rewards_ui.tscn"
+func onCreateRewardsUIScreen(rewards: Rewards, parent: Control) -> Control:
+	var RewardsUI: Control = load(REWARDS_UI_PATH).instantiate()
+	parent.add_child(RewardsUI)
+	RewardsUI.setInfo(rewards, save_file)
+	return RewardsUI
+	
+const REWARDS_CARDS_UI_PATH: String = "res://scenes/common/rewards_ui/rewards_cards_ui.tscn"
+func onCreateRewardsCardsUIScreen(cards: Array, parent: Control) -> Control:
+	var RewardsCards: Control = load(REWARDS_CARDS_UI_PATH).instantiate()
+	parent.add_child(RewardsCards)
+	RewardsCards.setInfo(cards, save_file)
+	return RewardsCards
+#endregion
+
+#region Champion
+func onAddDivinusBoonRewardOdds(odds: float) -> float:
+	if save_file.getChampionCard().info.id != 3: return odds
+	return odds * 2
+	
+func onAddDivinusBoonAscenscionOdds(odds: float) -> float:
+	if save_file.getChampionCard().info.id != 3: return odds
+	return odds + 2.5
 #endregion

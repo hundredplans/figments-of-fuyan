@@ -10,9 +10,8 @@ func onPreAction() -> void:
 		onFailAction()
 	
 func onPostAction() -> void:
-	var save_file: SaveFileGD = Game.get_tree().get_nodes_in_group("SaveFilesGD")[0]
 	var Boon: BoonGD = Game.get_tree().get_nodes_in_group("BoonsGD").filter(func(x: BoonGD): return x.info.id == id)[0]
-	save_file.onRemoveBoon(Boon)
+	Game.save_file.onRemoveBoon(Boon)
 	Boon.onClear()
 
 func getDelay() -> float:

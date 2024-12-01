@@ -1,10 +1,10 @@
 [gd_scene load_steps=4 format=3 uid="uid://der1eqnu65wwb"]
 
-[ext_resource type="Script" path="res://scenes/common/rewards_ui/rewards_cards.gd" id="1_txxry"]
+[ext_resource type="Script" path="res://scenes/common/rewards_ui/rewards_cards_ui.gd" id="1_txxry"]
 [ext_resource type="PackedScene" uid="uid://dxvuvb68hgxug" path="res://scenes/common/exit_button/exit_button.tscn" id="2_dp6p3"]
 [ext_resource type="LabelSettings" uid="uid://bw3j8bkfulvw1" path="res://resources/ui/label_settings/jacquard_huge.tres" id="3_wfj1b"]
 
-[node name="RewardsCards" type="Control"]
+[node name="RewardsCardsUI" type="Control"]
 custom_minimum_size = Vector2(0, 440)
 layout_mode = 3
 anchors_preset = 15

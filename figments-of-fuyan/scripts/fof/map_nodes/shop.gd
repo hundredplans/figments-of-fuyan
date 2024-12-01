@@ -2,9 +2,6 @@ extends MapNodeGD
 
 #region Globals
 var price_variance: int
-
-var area: AreaGD
-var save_file: SaveFileGD
 var world_datastore: WorldDatastore
 
 const QUENTIN_CRIMINAL_PRICE_INCREASE: float = 1.15
@@ -18,12 +15,10 @@ var items: Array # Array of saved datas
 #region Load / Save
 func onFofInit() -> void:
 	super()
-	area = get_tree().get_nodes_in_group("AreasGD")[0]
-	save_file = get_tree().get_nodes_in_group("SaveFilesGD")[0]
-	world_datastore = area.info.world
+	world_datastore = Game.area.getWorld()
 	price_variance = world_datastore.default_shop_variance
 	
-	onAddLocalForeignCardsBoonTools(world_datastore, area, save_file)
+	onAddLocalForeignCardsBoonTools(world_datastore, Game.area, Game.save_file)
 	
 	if isFirstShop(): return # Doesn't activate on first shop
 	onAddRemoveCard(world_datastore)
@@ -107,9 +102,9 @@ func onRollFof(objects: Array, script_type: GDScript, foreign: bool = false) -> 
 	var rarity_objects: Array = objects.filter(func(x: FofInfo): return x.rarity == rarity)
 	
 	if script_type == CardInfo and !foreign: # Local cards only
-		rarity_objects = rarity_objects.filter(func(x: CardInfo): return x.id in area.basic_card_ids)
+		rarity_objects = rarity_objects.filter(func(x: CardInfo): return x.id in Game.area.basic_card_ids)
 	elif script_type == CardInfo and foreign: # Non-local cards only (have to make it from this world only later)
-		rarity_objects = rarity_objects.filter(func(x: CardInfo): return x.id not in area.basic_card_ids)
+		rarity_objects = rarity_objects.filter(func(x: CardInfo): return x.id not in Game.area.basic_card_ids)
 	
 	if rarity_objects.is_empty(): return
 	
@@ -137,10 +132,10 @@ func onRollFof(objects: Array, script_type: GDScript, foreign: bool = false) -> 
 
 #region Final Price
 func onApplyFinalPriceMultipliers(price: int) -> int:
-	if save_file.getChampionCard().info.id == 2:
+	if Game.save_file.getChampionCard().info.id == 2:
 		if !links.any(func(x: MapLink): return x.is_holy): price *= DIVINUS_NOT_ON_HOLY_PATH_PRICE_INCREASE
 		
-	elif save_file.getChampionCard().info.id == 3: # Quentin increase price
+	elif Game.save_file.getChampionCard().info.id == 3: # Quentin increase price
 		price *= QUENTIN_CRIMINAL_PRICE_INCREASE
 		
 	return price

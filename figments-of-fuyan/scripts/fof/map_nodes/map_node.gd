@@ -103,14 +103,17 @@ func onCreateLinks() -> void:
 		add_child(MapNodeLink)
 		
 		var vector: Vector3 = link.map_location.position - map_location.position
-		MapNodeLink.setInfo(vector, link.is_holy, getMapNodeAtLocation(link.map_location).is_finished)
+		MapNodeLink.setInfo(vector, link)
 		
 func onUpdateMapLink(link: MapLink, _finished: bool) -> void:
 	var MapNodeLink: Node3D = link_models[link_models.find(link)]
 	MapNodeLink.onUpdate()
 	
-func getMapNodeAtLocation(map_location: MapLocation) -> MapNodeGD:
-	return get_tree().get_nodes_in_group("MapNodesGD").filter(func(x: MapNodeGD): return x.map_location == map_location)[0]
+func isMapNodeLink(map_node: MapNodeGD) -> bool:
+	for link in links:
+		if link.map_location == map_node.map_location:
+			return true
+	return false
 #endregion
 
 #region Setters
@@ -181,4 +184,9 @@ func onFinished() -> void:
 	setRayPickable(false)
 	if is_entered:
 		finished.emit(self)
+		
+func onOtherMapNodeFinished(map_node: MapNodeGD) -> void:
+	if map_node == self: return
+	for link in links.filter(func(x: MapLink): return x.map_location == map_node.map_location):
+		link.setIsFinished(true)
 #endregion

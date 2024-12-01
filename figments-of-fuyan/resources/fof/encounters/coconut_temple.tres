@@ -1,0 +1,82 @@
+[gd_resource type="Resource" script_class="EncounterInfo" load_steps=16 format=3 uid="uid://8lbyr4xhu35c"]
+
+[ext_resource type="Script" path="res://scripts/fof/encounters/coconut_temple.gd" id="1_n2fa0"]
+[ext_resource type="Script" path="res://scripts/fof_info/encounters/extra/encounter_page_datastore.gd" id="1_q43xb"]
+[ext_resource type="Script" path="res://scripts/fof_info/encounters/encounter_info.gd" id="2_qvhu3"]
+[ext_resource type="Script" path="res://scripts/saved_data/encounters/saved_data_encounter.gd" id="3_jkfg1"]
+[ext_resource type="Script" path="res://scripts/fof_info/encounters/extra/encounter_option_datastore.gd" id="3_k4pdk"]
+
+[sub_resource type="Resource" id="Resource_jl77t"]
+script = ExtResource("3_k4pdk")
+name = "Open"
+description = "Gain 50 SH, Tool, Boon & remove [tool=7]
+"
+requirement = "[tool=7]"
+page_title = "OpenPage"
+
+[sub_resource type="Resource" id="Resource_uts2a"]
+script = ExtResource("3_k4pdk")
+name = "Force"
+description = "10% chance to open"
+requirement = ""
+page_title = ""
+
+[sub_resource type="Resource" id="Resource_feiiw"]
+script = ExtResource("3_k4pdk")
+name = "Admire"
+description = "Gain 5 SH"
+requirement = ""
+page_title = "AdmirePage"
+
+[sub_resource type="Resource" id="Resource_dtyk0"]
+script = ExtResource("3_k4pdk")
+name = "Ignore"
+description = ""
+requirement = ""
+page_title = "IgnorePage"
+
+[sub_resource type="Resource" id="Resource_7akf2"]
+script = ExtResource("1_q43xb")
+title = "StartPage"
+description = "You enter an abandoned coconut temple. An altar in the middle with a staff shaped hole stands out to you, you have a good hunch there is treasure inside."
+options = Array[ExtResource("3_k4pdk")]([SubResource("Resource_jl77t"), SubResource("Resource_uts2a"), SubResource("Resource_feiiw"), SubResource("Resource_dtyk0")])
+
+[sub_resource type="Resource" id="Resource_wfuyi"]
+script = ExtResource("1_q43xb")
+title = "OpenPage"
+description = "The riches of the palm priests astound you. When you try to retrieve the staff its firmly locked. You leave it at the temple."
+options = Array[ExtResource("3_k4pdk")]([])
+
+[sub_resource type="Resource" id="Resource_yrjql"]
+script = ExtResource("1_q43xb")
+title = "AdmirePage"
+description = "As you gaze at the beauties of the temple you feel your coinpouch grow heavier."
+options = Array[ExtResource("3_k4pdk")]([])
+
+[sub_resource type="Resource" id="Resource_esfkv"]
+script = ExtResource("1_q43xb")
+title = "IgnorePage"
+description = "You have places to be."
+options = Array[ExtResource("3_k4pdk")]([])
+
+[sub_resource type="Resource" id="Resource_3n3ly"]
+script = ExtResource("1_q43xb")
+title = "ForceFailPage"
+description = "You place a random stick you found into the slot. Nothing happens."
+options = Array[ExtResource("3_k4pdk")]([])
+
+[sub_resource type="Resource" id="Resource_ohryx"]
+script = ExtResource("1_q43xb")
+title = "ForceSuccessPage"
+description = "You place a random stick you found into the slot you. It opens! The riches of the palm priests astound."
+options = Array[ExtResource("3_k4pdk")]([])
+
+[resource]
+script = ExtResource("2_qvhu3")
+pages = Array[ExtResource("1_q43xb")]([SubResource("Resource_7akf2"), SubResource("Resource_wfuyi"), SubResource("Resource_yrjql"), SubResource("Resource_esfkv"), SubResource("Resource_3n3ly"), SubResource("Resource_ohryx")])
+is_global = false
+state = 2
+id = 5
+name = "Coconut Temple"
+gdscript = ExtResource("1_n2fa0")
+saved_data = ExtResource("3_jkfg1")

@@ -29,3 +29,4 @@ func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _data: 
 	anti_boons = _anti_boons
 	
 func getInfoType() -> GDScript: return LevelInfo
+		

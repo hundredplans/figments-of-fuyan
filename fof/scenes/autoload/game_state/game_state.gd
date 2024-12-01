@@ -1,7 +1,7 @@
 class_name GameStateGD
 extends Node
 
-var admin: bool = true
+var admin: bool = false
 var save_info: SaveInfoGD
 	
 func _queue_free() -> void:

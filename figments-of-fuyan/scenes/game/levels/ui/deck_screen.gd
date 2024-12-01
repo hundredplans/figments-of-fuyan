@@ -3,10 +3,15 @@ extends Control
 signal selected
 @onready var DeckCards: Container = %DeckCards
 
-var SelectedCardUI: Control
+var max_select_amount: int
+var selected_cards: Array
 var selectable: bool
-func setInfo(_selectable: bool = false) -> void:
+var valid_selection: Callable # Used when you have to choose more than one card
+
+func setInfo(_selectable: bool = false, _max_select_amount: int = 1, _valid_selection := Callable()) -> void:
 	selectable = _selectable
+	max_select_amount = _max_select_amount
+	valid_selection = _valid_selection
 	for Card in get_tree().get_nodes_in_group("DeckCardsGD"):
 		var CardUI: Control = Card.onCreateCardUI(DeckCards, selectable)
 		Card.setInspectable(true, self)
@@ -16,10 +21,15 @@ func _on_quit_button_pressed() -> void:
 	queue_free()
 	
 func onSelected(CardUI: Control) -> void:
-	SelectedCardUI = CardUI
-	selected.emit(CardUI.Card)
-	queue_free()
+	if CardUI.Card in selected_cards: selected_cards.erase(CardUI.Card); CardUI.onSelected(false)
+	else: selected_cards.append(CardUI.Card); CardUI.onSelected(true)
+	
+	if !selected_cards.is_empty() and selected_cards.size() == max_select_amount \
+	and (max_select_amount == 1 or (valid_selection == Callable() or valid_selection.call(selected_cards))):
+		selected.emit(selected_cards[0] if max_select_amount == 1 else selected_cards)
+		queue_free()
 
 func onDisableCards(filter: Callable) -> void:
+	if filter == Callable(): return
 	for child in DeckCards.get_children().filter(filter):
 		child.setDisabled(true)

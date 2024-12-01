@@ -28,8 +28,8 @@ func onAddActiveEffect(active_effect: ActiveEffectDatastore) -> void:
 func getRarity() -> Game.Rarities:
 	return info.rarity
 
-func getIcon() -> ImageTexture:
-	return ImageTexture.create_from_image(info.icon)
+func getIcon() -> Texture2D:
+	return info.icon
 
 func getDescription() -> String:
 	return info.description if !ascended else info.ascended_description	

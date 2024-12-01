@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_ctxd3"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_ope8q"]
-[ext_resource type="Image" uid="uid://dlqbflcdgpe0i" path="res://assets/sprites/game/cards/art_mini/charmer_palmer.png" id="2_p77gw"]
+[ext_resource type="Texture2D" uid="uid://dlqbflcdgpe0i" path="res://assets/sprites/game/cards/art_mini/charmer_palmer.png" id="2_p77gw"]
 [ext_resource type="Image" uid="uid://c417dfnj38t1i" path="res://assets/sprites/game/cards/art_pop/charmer_palmer.png" id="2_r3dp6"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_e0im4"]
 [ext_resource type="PackedScene" uid="uid://bvg1t02arcb52" path="res://assets/models/fof/cards/charmer_palmer.glb" id="5_50c3x"]
@@ -20,6 +20,7 @@ description = "Heal [1] HP to allies in vision
 TRAUMA: Gain +1 ATT if a healed ally died"
 max_charges = 1
 delay = 3.0
+camera_type = 0
 charges = 0
 used = false
 

@@ -1,5 +1,6 @@
 class_name FofGD extends Node3D
 
+signal clear
 signal push_action
 signal append_action
 signal force_action
@@ -15,7 +16,7 @@ func onLoadData(data: SavedData) -> void:
 	add_to_group("FofGD")
 	public_id = data.public_id
 		
-func onClear() -> void: queue_free()
+func onClear() -> void: queue_free(); clear.emit()
 
 func onPushAction(actions: Variant, action_owner: Variant = self) -> void:
 	if actions is Action:

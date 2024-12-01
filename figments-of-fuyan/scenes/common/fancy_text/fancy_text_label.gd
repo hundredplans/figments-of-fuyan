@@ -14,6 +14,7 @@ func setText(_text: String) -> void:
 		onCardNamesReplace(regex)
 		onFofIconsReplace(regex, fancy_text)
 		onFofImagesReplace(regex, fancy_text)
+		onColoredTextReplace(regex, fancy_text)
 		text = text.insert(0, "[outline_size=" + str(settings.outline_size) + "][font=" + \
 		ROBOTO_FONT_PATH + "][font_size={" + str(settings.font_size) + "}]")
 		text += "[/font_size][/font][/outline_size]"
@@ -22,8 +23,13 @@ func setText(_text: String) -> void:
 			text = text.insert(0, "[center]")
 			text += "[/center]"
 
+func onColoredTextReplace(regex: RegEx, fancy_text: FancyText) -> void:
+	for colored_text in Game.Rarities:
+		pass
+
 func _ready() -> void:
 	setText(text)
+	clip_contents = false
 
 func onCardNamesReplace(regex: RegEx) -> void:
 	regex.compile("{id=\\d+,a=[ft],[a-zA-Z]+}")
@@ -42,9 +48,10 @@ func onFofIconsReplace(regex: RegEx, fancy_text: FancyText) -> void:
 			if _result == null: break
 			
 			var result: String = _result.get_string()
-			var icon_path: String = Helper.getFofInfoID(fof_icon_fancy_text.fof_type, int(result)).getIcon().resource_path
+			var icon_path: String = Helper.getFofInfoID(fof_icon_fancy_text.fof_type, int(result)).getTextIcon().resource_path
 			
-			var new_result: String = "[img=" + str(settings.font_size) + "x" + str(settings.font_size) + "]" + icon_path + "[/img]"
+			var icon_size: String = str(int(settings.font_size * 1.5))
+			var new_result: String = "[img=" + icon_size + "x" + icon_size + ",center]" + icon_path + "[/img]"
 			var replace_index: int = _result.get_start()
 			text = text.left(replace_index) + new_result + text.right(-(replace_index + result.length()))
 			

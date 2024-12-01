@@ -15,9 +15,11 @@ func _ready() -> void:
 
 func setInfo(_Tool: ToolGD, _hoverable: bool = false) -> void:
 	Tool = _Tool
+	
+	if Tool != null: Tool.clear.connect(queue_free)
 	setInfoDirect(Tool.getIcon() if Tool != null else null, Tool.ascended if Tool != null else false, _hoverable)
 	
-func setInfoDirect(icon: ImageTexture, ascended: bool, _hoverable: bool = false) -> void:
+func setInfoDirect(icon: Texture2D, ascended: bool, _hoverable: bool = false) -> void:
 	visible = icon != null
 	ToolIcon.texture = icon
 	AscendedShine.visible = ascended

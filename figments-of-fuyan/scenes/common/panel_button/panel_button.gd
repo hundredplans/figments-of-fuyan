@@ -12,7 +12,7 @@ const DISABLED_COLOR := Color(0.2, 0.2, 0.2)
 
 func _ready() -> void:
 	label.label_settings = label_settings
-	label.text = text
+	setText(text)
 	
 func setText(_text: String) -> void:
 	label.text = _text

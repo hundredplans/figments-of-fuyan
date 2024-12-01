@@ -1,6 +1,7 @@
 class_name EncounterInfo extends FofInfo
 
-@export var branch: BranchDatastore
-@export var can_occur_randomly: bool = true
-
+enum States {NEUTRAL, NEGATIVE, POSITIVE}
+@export var pages: Array[EncounterPageDatastore]
+@export var is_global: bool
+@export var state: States
 static func getInfoPath() -> String: return "res://resources/fof/encounters"

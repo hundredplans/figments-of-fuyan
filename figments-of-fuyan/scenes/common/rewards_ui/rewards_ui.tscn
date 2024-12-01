@@ -1,13 +1,12 @@
 [gd_scene load_steps=4 format=3 uid="uid://ci8k0pb3sa63a"]
 
 [ext_resource type="Script" path="res://scenes/common/rewards_ui/rewards_ui.gd" id="1_l8ytc"]
-[ext_resource type="PackedScene" uid="uid://der1eqnu65wwb" path="res://scenes/common/rewards_ui/rewards_cards.tscn" id="2_8600w"]
+[ext_resource type="PackedScene" uid="uid://der1eqnu65wwb" path="res://scenes/common/rewards_ui/rewards_cards_ui.tscn" id="2_8600w"]
 [ext_resource type="PackedScene" uid="uid://c7pl1qs6s5o21" path="res://scenes/common/rewards_ui/rewards_item.tscn" id="3_83nba"]
 
 [node name="RewardsUI" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-offset_top = 309.0
 offset_right = 1920.0
 offset_bottom = 1080.0
 script = ExtResource("1_l8ytc")
@@ -19,7 +18,6 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -309.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
@@ -32,10 +30,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -625.0
-offset_top = -341.5
-offset_right = 645.0
-offset_bottom = -4.5
+offset_left = -635.0
+offset_top = -168.5
+offset_right = 635.0
+offset_bottom = 168.5
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1

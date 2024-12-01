@@ -4,7 +4,7 @@ var shillings: int
 
 #region Save / Load
 func onSave() -> SavedData:
-	return SavedDataMapEffectGainShillings.new(info.id, false, public_id, shillings)
+	return SavedDataGainShillings.new(info.id, false, public_id, shillings)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)

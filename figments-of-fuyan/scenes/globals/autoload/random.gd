@@ -22,3 +22,27 @@ static func getBool() -> bool:
 
 static func rollFloat(x: float) -> bool:
 	return x > randf()
+
+static func getRandomFofInRarity(type: GDScript, rarity: Game.Rarities) -> SavedData:
+	var arr: Array = Helper.getFofInfoArray(type)
+	arr = arr.filter(func(x: FofInfo): return x.rarity == rarity)
+	
+	if type == BoonInfo:
+		var boon_ids: Array = Game.save_file.boons.filter(func(x: BoonGD): return x.ascended).map(func(y: BoonGD): return y.info.id)
+		arr = arr.filter(func(x: BoonInfo): return x.id not in boon_ids)
+	
+	if arr.is_empty(): return null
+	var info: FofInfo = arr.pick_random()
+	var data: SavedData = info.saved_data.new(info.id, true)
+	var ascenscion_roll_odds: float = Game.area.getWorld().base_ascended_rate / 100.0
+	
+	if type == BoonInfo:
+		ascenscion_roll_odds = Game.onAddDivinusBoonAscenscionOdds(ascenscion_roll_odds)
+	
+	data.ascended = Random.rollFloat(ascenscion_roll_odds)
+	return data
+	
+static func getRandomFofByBaseOdds(type: GDScript) -> SavedData:
+	var odds: Dictionary = Game.area.getWorld().base_rarity_odds.getDictionary()
+	var rarity: Game.Rarities = int(Random.getRandomKey(Random.onConvertPercentOdds(odds)))
+	return Random.getRandomFofInRarity(type, rarity)

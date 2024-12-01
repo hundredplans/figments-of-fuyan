@@ -23,6 +23,11 @@ var area: AreaGD
 @export var DeckScreenPacked: PackedScene
 #endregion
 
+#region Helper
+func getDeckPanel() -> Control:
+	return DeckPanel
+#endregion
+
 #region Base Functions
 func _ready() -> void:
 	BackgroundDarkener.visible = false

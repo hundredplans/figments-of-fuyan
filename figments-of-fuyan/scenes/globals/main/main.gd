@@ -85,6 +85,7 @@ func onLoadGame(save_file_data: SavedDataSaveFile) -> void:
 	Game.ActionManagerReference = ActionManager
 	
 	var save_file: SaveFileGD = SavedData.onLoadModel(save_file_data, KeepAcross)
+	
 	save_file.load_level.connect(onLoadLevel)
 	save_file.load_map.connect(onLoadMap)
 	save_file.onLoadGame()

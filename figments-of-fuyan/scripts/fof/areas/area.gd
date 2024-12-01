@@ -12,6 +12,7 @@ var active_level: LevelGD
 #region Saved Data
 var map_nodes_data: Array = []
 var active_level_data: SavedDataLevel
+var encountered_encounter_ids: Array = []
 #endregion
 
 #region Helper
@@ -25,6 +26,9 @@ func onFindEmptyMapSpot(progress: int, lane: int) -> EmptyMapNode:
 	for empty_map_spot in empty_spots:
 		if empty_map_spot.progress == progress and empty_map_spot.lane == lane: return empty_map_spot
 	return null
+	
+func getProgress() -> int:
+	return getEnteredMapNode().map_location.progress
 #endregion
 
 #region Save / Load
@@ -33,16 +37,18 @@ func onSave() -> SavedDataArea:
 		map_nodes_data = SavedData.onSaveGroup(get_tree().get_nodes_in_group("MapNodesGD"))
 	
 	active_level_data = active_level.onSave() if active_level != null else null
-	return SavedDataArea.new(info.id, false, public_id, map_nodes_data, active_level_data)
+	return SavedDataArea.new(info.id, false, public_id, map_nodes_data, active_level_data, encountered_encounter_ids)
 	
 func onLoadData(data: SavedData) -> void:
 	super(data)
+	Game.area = self
 	add_to_group("AreasGD")
 	basic_card_ids = info.card_ids.filter(func(x: int): \
 		return Game.isBasicRarity(Helper.getFofInfoID(CardInfo, x).rarity))
 		
 	map_nodes_data = data.map_nodes_data
 	active_level_data = data.level_data
+	encountered_encounter_ids = data.encountered_encounter_ids
 	
 var is_init: bool = false
 func onFofInit(Card: CardGD) -> void:
@@ -338,6 +344,7 @@ func onMapNodePressed(map_node: MapNodeGD) -> void:
 			
 func onMapNodeFinished(map_node: MapNodeGD) -> void:
 	get_tree().call_group("MapNodesGD", "setRayPickableGlobal", true)
+	get_tree().call_group("MapNodesGD", "onOtherMapNodeFinished", map_node)
 	
 func onMapNodeLoadLevelInit(_active_level_data: SavedDataLevel) -> void:
 	if active_level_data != null: return # If level already loaded
@@ -390,9 +397,11 @@ func setRewards(is_win: bool) -> void:
 			info.world.elite_fights_rewards if active_level.is_elite else info.world.fight_rewards
 		
 		var enemy_spawns: Array = active_level.enemy_spawns.duplicate()
-		enemy_spawns.resize(Game.CARD_REWARD_DEFAULT_AMOUNT)
-		enemy_spawns = enemy_spawns.filter(func(x: Variant): return x != null)
 		
+		enemy_spawns = enemy_spawns.filter(func(x: SavedDataCard): return Helper.getFofInfoID(CardInfo, x.id).rarity != Game.Rarities.CHAMPION)
+		enemy_spawns.resize(Game.CARD_REWARD_DEFAULT_AMOUNT)
+		enemy_spawns = enemy_spawns.filter(func(x: SavedDataCard): return x != null)
+	
 		items.append(enemy_spawns.map(func(x: SavedDataCard):\
 			return SavedData.onLoadModel(x.duplicate(), active_level)))
 			
@@ -401,31 +410,13 @@ func setRewards(is_win: bool) -> void:
 		items.append(shilling_gain)
 		
 		var add_boon: bool = Random.rollFloat(getDivinusBoonOdds(fight_rewards_datastore.boon_odds) / 100.0)
-		var add_tool: bool = Random.rollFloat(fight_rewards_datastore.tool_odds / 100.0)
-		
 		if add_boon:
-			var odds: Dictionary = fight_rewards_datastore.boon_rarity_odds.getDictionary()
-			var rarity: Game.Rarities = int(Random.getRandomKey(Random.onConvertPercentOdds(odds)))
-			var viable_boons: Array = Helper.getFofInfoArray(BoonInfo).filter(func(x: BoonInfo): return x.rarity == rarity)
-			var boon_info: BoonInfo = viable_boons.pick_random()
-			var boon_data: SavedDataBoon = boon_info.saved_data.new(boon_info.id, true)
-			var ascend_boon: bool = Random.rollFloat(getDivinusBoonAscensionOdds(fight_rewards_datastore.boon_ascension_rate / 100.0))
-			boon_data.ascended = ascend_boon
-			
-			var boon: BoonGD = SavedData.onLoadModel(boon_data, active_level)
-			items.append(boon)
-		
-		elif add_tool:
-			var odds: Dictionary = fight_rewards_datastore.tool_rarity_odds.getDictionary()
-			var rarity: Game.Rarities = int(Random.getRandomKey(Random.onConvertPercentOdds(odds)))
-			var viable_tools: Array = Helper.getFofInfoArray(ToolInfo).filter(func(x: ToolInfo): return x.rarity == rarity)
-			var tool_info: ToolInfo = viable_tools.pick_random()
-			var tool_data: SavedDataTool = tool_info.saved_data.new(tool_info.id, true)
-			var ascend_tool: bool = Random.rollFloat(fight_rewards_datastore.tool_ascension_rate / 100.0)
-			tool_data.ascended = ascend_tool
-			
-			var Tool: ToolGD = SavedData.onLoadModel(tool_data, active_level)
-			items.append(Tool)
+			var boon_data: SavedDataBoon = Random.getRandomFofByBaseOdds(BoonInfo)
+			if boon_data != null: items.append(SavedData.onLoadModel(boon_data, active_level))
+				
+		var add_tool: bool = Random.rollFloat(fight_rewards_datastore.tool_odds / 100.0)
+		if add_tool:
+			items.append(SavedData.onLoadModel(Random.getRandomFofByBaseOdds(ToolInfo), active_level))
 		
 		var rewards := Rewards.new(items)
 		rewards.setInfo(active_level)
@@ -489,6 +480,9 @@ func setEnemySpawnsFromBudget(budget: int, enemy_spawn_amount: int, spawns: Arra
 		enemies.append(card_data)
 	return enemies
 	
+func getBudget(progress: int, offset: int) -> int:
+	return getWorld().progress_enemy_energy_budget[progress] + offset
+	
 func sum(accum: int, number: int) -> int:
 	return accum + number
 	
@@ -525,3 +519,7 @@ func onRewardsFinished(save_file: SaveFileGD) -> void:
 func onLossFinished() -> void:
 	pass
 #endregion
+
+#region Encounters
+func onAppendToEncouteredEncounterIds(id: int) -> void:
+	encountered_encounter_ids.append(id)

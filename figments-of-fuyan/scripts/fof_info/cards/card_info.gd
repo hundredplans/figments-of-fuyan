@@ -20,7 +20,7 @@ const UNIT_VISIBLE_PARTICLE_SCENE_PATH: String = "res://scenes/particles/unit_vi
 
 @export_group("Art")
 @export var art_mini_coordinate: Vector2i
-@export var art_mini: Image
+@export var art_mini: Texture2D
 @export var art_pop: Image
 @export_group("")
 
@@ -50,5 +50,6 @@ static func getInfoPath() -> String: return "res://resources/fof/cards"
 
 static func getFofName() -> String: return "Card"
 
-func getArtMini() -> ImageTexture: return ImageTexture.create_from_image(art_mini)
+func getArtMini() -> Texture2D: return art_mini
 func getArtPop() -> ImageTexture: return ImageTexture.create_from_image(art_pop)
+func getTextIcon() -> Texture2D: return art_mini

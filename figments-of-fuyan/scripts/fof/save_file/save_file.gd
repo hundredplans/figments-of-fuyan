@@ -16,6 +16,7 @@ var boons: Array
 
 var shillings: int
 var time: int
+var safe_encounter_count: int
 
 var timer: Timer
 
@@ -42,10 +43,11 @@ func onSave() -> SavedData:
 	time = getTimeElapsed()
 	
 	return SavedDataSaveFile.new(id, false, public_id, my_seed, area.onSave(), shillings,\
-	map_effects, time, deck_cards, boons, highest_public_id, tool_belt_data)
+	map_effects, time, deck_cards, boons, highest_public_id, tool_belt_data, safe_encounter_count)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
+	Game.save_file = self
 	add_to_group("SaveFilesGD")
 	id = data.id
 	my_seed = data.my_seed
@@ -66,6 +68,7 @@ func onLoadData(data: SavedData) -> void:
 	map_effects_data = data.map_effects
 	time = data.time
 	last_loaded_deck = data.deck
+	safe_encounter_count = data.safe_encounter_count
 	
 	timer = Timer.new()
 	timer.wait_time = 99999999
@@ -94,7 +97,7 @@ func getShillings() -> int:
 	return shillings
 	
 func onUpdateShillings(delta: int) -> void:
-	shillings += delta
+	shillings = max(shillings + delta, 0)
 	update_shillings.emit(shillings)
 #endregion
 
@@ -107,7 +110,7 @@ func onLoadMap() -> void:
 	
 func onLoadGame() -> void:
 	if area.active_level_data == null: onLoadMap()
-	else: onLoadLevel(area.level_data)
+	else: onLoadLevel(area.active_level_data)
 #endregion
 
 #region Timer
@@ -147,4 +150,12 @@ func onAddBoon(Boon: BoonGD) -> void:
 	
 func onRemoveBoon(boon: BoonGD) -> void:
 	boons.erase(boon)
+#endregion
+
+#region Encounters
+func onUpdateSafeEncounterCount(delta: int) -> void:
+	safe_encounter_count += delta
+	
+func getSafeEncounterCount() -> int:
+	return safe_encounter_count
 #endregion

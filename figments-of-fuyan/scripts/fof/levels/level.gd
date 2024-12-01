@@ -122,7 +122,7 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 	onChangePhase(data.phase, true)
 	get_tree().call_group("FieldCardsGD", "onUpdateVision")
 	
-	if game_ended:
+	if is_ended:
 		onGameEnded()
 
 var is_init: bool = false
@@ -294,21 +294,6 @@ func onGameEnded() -> void:
 			Card.onChangeCardPlace(Game.CardPlaces.DECK)
 			
 	game_ended.emit(rewards)
-	
-func onAddReward(reward: Variant) -> void:
-	if reward is MapEffectGD and reward.info.id == 2: # Shillings gain
-		reward.onPickup(save_file)
-		onRewardTaken(reward)
-	elif reward is Array:
-		cards_picked_up.emit(reward)
-	elif reward is BoonGD:
-		save_file.onAddBoon(reward)
-		onRewardTaken(reward)
-	elif reward is ToolGD:
-		tool_picked_up.emit(reward)
-	
-func onRewardTaken(reward: Variant) -> void:
-	reward_taken.emit(reward)
 	
 func onRewardsFinished() -> void:
 	rewards_finished.emit(save_file)

@@ -12,9 +12,11 @@ signal rewards_finished
 
 var reward_amount: int = 0
 var rewards: Rewards
+var save_file: SaveFileGD
 
-func setInfo(_rewards: Rewards) -> void:
+func setInfo(_rewards: Rewards, _save_file: SaveFileGD) -> void:
 	rewards = _rewards
+	save_file = _save_file
 	for item in rewards.items:
 		onCreateReward(item, false)
 		reward_amount += 1
@@ -37,6 +39,20 @@ func onMouseInUI(state: bool) -> void:
 	
 func onRewardPressed(reward: Variant) -> void:
 	add_reward.emit(reward)
+	if reward is MapEffectGD and reward.info.id == 2: # Shillings gain
+		reward.onPickup(save_file)
+		onRewardTaken(reward)
+		
+	elif reward is Array:
+		var RewardsCardsUI: Control = Game.onCreateRewardsCardsUIScreen(reward, self)
+		RewardsCardsUI.taken.connect(onRewardTaken)
+		
+	elif reward is BoonGD:
+		save_file.onAddBoon(reward)
+		onRewardTaken(reward)
+	elif reward is ToolGD:
+		var ToolPickedUpUI: Control = Game.onCreateToolPickedUpUI(reward, false, self)
+		ToolPickedUpUI.taken.connect(onRewardTaken)
 		
 func onRewardTaken(reward: Variant) -> void:
 	for child in RewardsContainer.get_children():
@@ -56,3 +72,4 @@ func onRewardsFinished() -> void:
 
 func onSkipButtonPressed() -> void:
 	rewards_finished.emit()
+	queue_free()

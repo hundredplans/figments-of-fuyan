@@ -4,21 +4,18 @@ var enemy_spawns: Array
 var level_info: LevelInfo
 #region Save / Load / Init
 func onFofInit() -> void:
-	var area: AreaGD = get_tree().get_nodes_in_group("AreasGD")[0]
-	var levels: Array = Helper.getFofInfoArray(area.info.level_script)
+	var levels: Array = Helper.getFofInfoArray(Game.area.info.level_script)
 	levels = levels.filter(func(x: LevelInfo): \
 		return map_location.progress >= x.progress_min and map_location.progress <= x.progress_max)
 		
 	level_info = levels.pick_random()
-	var empty_spawn_coords: Array = level_info.data\
-		.filter(func(x: SavedDataTileObject): return x is SavedDataSpawn and x.spawn_id == 0 and x.variation == 1)\
-		.map(func(x: SavedDataSpawn): return x.coords)
+	var empty_spawn_coords: Array = level_info.getEmptySpawnCoords()
 		
 	empty_spawn_coords.shuffle()
 	var enemy_spawn_amount: int = min(randi_range(level_info.enemy_min_spawn_amount, level_info.enemy_max_spawn_amount), empty_spawn_coords.size() - 1)
-	var budget: int = getBudget(area, level_info)
+	var budget: int = Game.area.getBudget(map_location.progress, level_info.enemy_budget_offset)
 	
-	enemy_spawns = area.setEnemySpawnsFromBudget(budget, enemy_spawn_amount, empty_spawn_coords, map_location.progress)
+	enemy_spawns = Game.area.setEnemySpawnsFromBudget(budget, enemy_spawn_amount, empty_spawn_coords, map_location.progress)
 	
 func onSave() -> SavedDataMapNode:
 	return SavedDataFight.new(info.id, false, public_id, map_location, links, is_entered, is_finished, rotation.y, level_info, enemy_spawns)
@@ -50,12 +47,7 @@ func onEntered() -> void:
 	var new_level_data: SavedDataLevel = level_info.saved_data.new(level_info.id, true, 0, level_info.data.duplicate(), enemy_spawns)
 	
 	new_level_data.is_elite = false
-	is_finished = true
+	onFinished()
 	
 	load_level.emit(new_level_data)
-#endregion
-
-#region Budget
-func getBudget(area: AreaGD, level_info: LevelInfo) -> int:
-	return area.info.world.progress_enemy_energy_budget[map_location.progress] + level_info.enemy_budget_offset
 #endregion

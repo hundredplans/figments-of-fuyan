@@ -5,8 +5,6 @@ signal finished
 var save_file: SaveFileGD
 var UI: Control
 
-const BUY_ANIMATION_SPEED: float = 0.8
-const BUY_ITEM_DISSAPEAR_SPEED: float = 1
 const TRANSFORM_WAIT_PRESSED_TIME: float = 1.5
 const CARD_FLIP_TIME: float = 0.25
 
@@ -83,7 +81,8 @@ func onItemPressed(item: FofGD, price_datastore: PriceDatastore, DisplayedUI: Co
 	
 	if item is CardGD:
 		Game.onAddToDeck(item)
-		onBuyAnimation(DisplayedUI, UI.DeckPanel)
+		Game.onFlyToUI(DisplayedUI, UI.getDeckPanel())
+		
 	elif item is ToolGD:
 		var tool_belt_index: int = save_file.tool_belt.find(item)
 		var To: Control = UI.DeckPanel
@@ -93,10 +92,10 @@ func onItemPressed(item: FofGD, price_datastore: PriceDatastore, DisplayedUI: Co
 		elif tool_belt_index == 1:
 			To = UI.ToolBeltSlotTwo
 		
-		onBuyAnimation(DisplayedUI, To)
+		Game.onFlyToUI(DisplayedUI, To)
 	elif item is BoonGD:
 		save_file.onAddBoon(item)
-		onBuyAnimation(DisplayedUI, UI.BoonBox.onFindBoonIcon(item))
+		Game.onFlyToUI(DisplayedUI, UI.BoonBox.onFindBoonIcon(item))
 		
 	World.ActiveWorld.onBuy()
 	if item is MapEffectGD and item.info.id != 3: # Not remove card
@@ -104,7 +103,7 @@ func onItemPressed(item: FofGD, price_datastore: PriceDatastore, DisplayedUI: Co
 			DisplayedUI.onCardAscended(false)
 		DisplayedUI = await onFlipCardAnimation(DisplayedUI, item.NewCard)
 		await get_tree().create_timer(TRANSFORM_WAIT_PRESSED_TIME).timeout
-		onBuyAnimation(DisplayedUI, UI.DeckPanel)
+		Game.onFlyToUI(DisplayedUI, UI.DeckPanel)
 		
 func onFlipCardAnimation(CardUI: Control, NewCard: CardGD) -> Control:
 	var NewCardUI: Control = NewCard.onCreateCardUI(self, false)
@@ -127,19 +126,6 @@ func _on_exit_button_pressed() -> void:
 	
 func onDimBackground() -> bool:
 	return false
-	
-func onBuyAnimation(DisplayedUI: Control, To: Control) -> void:
-	var tween := create_tween()
-	tween.tween_property(DisplayedUI, "global_position", To.global_position, BUY_ANIMATION_SPEED)
-	
-	var scale_tween := create_tween()
-	scale_tween.tween_property(DisplayedUI, "scale", Vector2(0.01, 0.01), BUY_ANIMATION_SPEED)
-	
-	var rotate_tween := create_tween()
-	rotate_tween.tween_property(DisplayedUI, "rotation_degrees", 360, BUY_ANIMATION_SPEED)
-	
-	await get_tree().create_timer(BUY_ITEM_DISSAPEAR_SPEED).timeout
-	DisplayedUI.queue_free()
 	
 func onCreateScreen(screen: Control) -> void:
 	add_child(screen)

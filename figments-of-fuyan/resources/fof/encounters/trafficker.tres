@@ -1,0 +1,62 @@
+[gd_resource type="Resource" script_class="EncounterInfo" load_steps=13 format=3 uid="uid://b36dv7ka2mmfe"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/encounters/extra/encounter_page_datastore.gd" id="1_4etp1"]
+[ext_resource type="Script" path="res://scripts/fof/encounters/trafficker.gd" id="1_qqcgf"]
+[ext_resource type="Script" path="res://scripts/fof_info/encounters/encounter_info.gd" id="2_pwwvh"]
+[ext_resource type="Script" path="res://scripts/saved_data/encounters/saved_data_encounter.gd" id="3_3y26r"]
+[ext_resource type="Script" path="res://scripts/fof_info/encounters/extra/encounter_option_datastore.gd" id="3_e4bca"]
+
+[sub_resource type="Resource" id="Resource_c8pqu"]
+script = ExtResource("3_e4bca")
+name = "Handy"
+description = "Pay 30 SH to buy a Common Card with a Rare Tool equipped"
+requirement = "30 SH"
+page_title = "HandyPage"
+
+[sub_resource type="Resource" id="Resource_nv2q3"]
+script = ExtResource("3_e4bca")
+name = "Prestige"
+description = "Pay 30 SH to buy a Rare Card with a Common Tool equipped"
+requirement = "30 SH"
+page_title = "PrestigePage"
+
+[sub_resource type="Resource" id="Resource_de20h"]
+script = ExtResource("3_e4bca")
+name = "Decline"
+description = ""
+requirement = ""
+page_title = "DeclinePage"
+
+[sub_resource type="Resource" id="Resource_agv6w"]
+script = ExtResource("1_4etp1")
+title = "StartPage"
+description = "A rather noble looking trafficker offers to sell you his wares."
+options = Array[ExtResource("3_e4bca")]([SubResource("Resource_c8pqu"), SubResource("Resource_nv2q3"), SubResource("Resource_de20h")])
+
+[sub_resource type="Resource" id="Resource_ek4ae"]
+script = ExtResource("1_4etp1")
+title = "HandyPage"
+description = "You buy the unit and leave satisfied with your purchase."
+options = Array[ExtResource("3_e4bca")]([])
+
+[sub_resource type="Resource" id="Resource_vlyqu"]
+script = ExtResource("1_4etp1")
+title = "PrestigePage"
+description = "You buy the unit and leave satisfied with your purchase."
+options = Array[ExtResource("3_e4bca")]([])
+
+[sub_resource type="Resource" id="Resource_v7qve"]
+script = ExtResource("1_4etp1")
+title = "DeclinePage"
+description = "You refuse the trafficker offer. He leaves, dejected."
+options = Array[ExtResource("3_e4bca")]([])
+
+[resource]
+script = ExtResource("2_pwwvh")
+pages = Array[ExtResource("1_4etp1")]([SubResource("Resource_agv6w"), SubResource("Resource_ek4ae"), SubResource("Resource_vlyqu"), SubResource("Resource_v7qve")])
+is_global = false
+state = 0
+id = 4
+name = "Trafficker"
+gdscript = ExtResource("1_qqcgf")
+saved_data = ExtResource("3_3y26r")

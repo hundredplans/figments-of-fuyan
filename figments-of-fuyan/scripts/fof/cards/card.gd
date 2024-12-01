@@ -109,9 +109,9 @@ func getCoords() -> Vector4i:
 
 #region Animation
 
-func setAniPlayer() -> void:
-	for child in Helper.getChildrenRecursive(self):
-		if child is AnimationPlayer:
+func setAniPlayer(Model: Node3D) -> void:
+	for child in Helper.getChildrenRecursive(Model):
+		if child is AnimationPlayer and !child.is_queued_for_deletion():
 			AniPlayer = child
 			AniPlayer.animation_finished.connect(onAnimationFinished)
 			AniPlayer.playback_default_blend_time = DEFAULT_ANIMATION_BLEND_TIME
@@ -209,7 +209,6 @@ func onLoadData(data: SavedData) -> void:
 		set(custom_variable, ability_save[custom_variable])
 	
 	onCreateAdjustedPoints()
-	
 	onChangeCardPlace(data.card_place)
 	add_to_group("CardsGD")
 	
@@ -289,7 +288,7 @@ func onCreateModel() -> void:
 	body.mouse_exited.connect(func(): mouse_exited.emit(self))
 		
 	setDefaultCollisionLayers()
-	setAniPlayer()
+	setAniPlayer(Model)
 	
 func onCreateEmptyModel(parent: Node3D) -> Node3D:
 	var EmptyModel: Node3D = info.model.instantiate()
@@ -298,6 +297,7 @@ func onCreateEmptyModel(parent: Node3D) -> Node3D:
 	
 func onRemoveModel() -> void:
 	if Model != null: Model.queue_free()
+	if FieldInfo != null: FieldInfo.queue_free()
 #endregion
 
 #region Walk
@@ -863,6 +863,7 @@ func onRevenge(_action: DamageAction) -> void:
 
 #region Ascended
 func onAscend(state: bool) -> void:
+	if ascended == state: return
 	ascended = state
 	update_ascended.emit(state)
 #endregion
