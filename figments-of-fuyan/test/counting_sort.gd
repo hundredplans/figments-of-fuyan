@@ -11,7 +11,7 @@ func countingSort(a: Array, b: Array, k: int) -> void:
 	c.fill(0)
 	
 	b.resize(a.size())
-	b.fill(0)
+	b.fill(0)	
 	
 	for i in range(a.size()):
 		c[a[i]] += 1
