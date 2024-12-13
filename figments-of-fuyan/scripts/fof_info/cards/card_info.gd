@@ -5,6 +5,7 @@ const INSPECT_CARD_SCREEN: String = "res://scenes/game/cards/ui/inspect_card_scr
 const CARD_UI_SCENE_PATH: String = "res://scenes/game/cards/ui/card_ui.tscn"
 const VISION_RAY_SCENE_PATH: String = "res://scenes/game/cards/world/vision_ray.tscn"
 const UNIT_VISIBLE_PARTICLE_SCENE_PATH: String = "res://scenes/particles/unit_visible_particle.tscn"
+const BASE_MATERIAL_ASCENDED_PATH: String = "res://resources/materials/game/base_material_ascended.tres"
 
 @export_group("Card")
 @export var attack: int
@@ -46,6 +47,8 @@ const UNIT_VISIBLE_PARTICLE_SCENE_PATH: String = "res://scenes/particles/unit_vi
 @export_multiline var ascended_ability_text: String
 @export_group("")
 
+@export var archetype: ArchetypeInfo
+
 static func getInfoPath() -> String: return "res://resources/fof/cards"
 
 static func getFofName() -> String: return "Card"
@@ -53,3 +56,11 @@ static func getFofName() -> String: return "Card"
 func getArtMini() -> Texture2D: return art_mini
 func getArtPop() -> ImageTexture: return ImageTexture.create_from_image(art_pop)
 func getTextIcon() -> Texture2D: return art_mini
+func getDescription(ascended: bool = false) -> String: return ability_text if !ascended else ascended_ability_text
+
+func getStats(ascended: bool = false) -> StatsDatastore:
+	return StatsDatastore.new(\
+		attack + (plus_attack if ascended else 0),
+		health + (plus_health if ascended else 0),
+		speed + (plus_speed if ascended else 0),
+		energy + (plus_energy if ascended else 0))

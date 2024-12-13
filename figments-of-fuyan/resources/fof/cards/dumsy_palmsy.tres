@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=11 format=3 uid="uid://glwgv4wfvhor"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://glwgv4wfvhor"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_swuye"]
 [ext_resource type="Image" uid="uid://ds2dbnyxdi26c" path="res://assets/sprites/game/cards/art_pop/dumsy_palmsy.png" id="2_2xs40"]
-[ext_resource type="Image" uid="uid://5ffvvs8jmgd7" path="res://assets/sprites/game/cards/art_mini/dumsy_palmsy.png" id="2_k1blu"]
+[ext_resource type="Texture2D" uid="uid://5ffvvs8jmgd7" path="res://assets/sprites/game/cards/art_mini/dumsy_palmsy.png" id="2_k1blu"]
+[ext_resource type="Resource" uid="uid://dk14kkjps176t" path="res://resources/fof/archetypes/warden.tres" id="2_mtiv2"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_6ae6u"]
 [ext_resource type="Script" path="res://scripts/fof/cards/dumsy_palmsy.gd" id="4_p6qbm"]
 [ext_resource type="PackedScene" uid="uid://cit4w40jw1b6p" path="res://assets/models/fof/cards/dumsy_palmsy.glb" id="5_27uel"]
@@ -51,6 +52,7 @@ plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("3_6ae6u")]([])
 ascended_ability_text = "ARRIVE: Deal [2] DMG to self; RAMPAGE: Heal this and allies in vision [2] HP"
+archetype = ExtResource("2_mtiv2")
 id = 9
 name = "Palmsy Dumsy"
 gdscript = ExtResource("4_p6qbm")

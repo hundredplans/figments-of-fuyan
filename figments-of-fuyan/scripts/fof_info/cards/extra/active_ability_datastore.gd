@@ -7,7 +7,8 @@ class_name ActiveAbilityDatastore extends ActiveEffectDatastore
 @export_group("")
 
 func getDescription() -> String:
-	return description if !owner.ascended else ascended_description
+	var desc: String = description if !owner.ascended else ascended_description
+	return owner.getActiveEffectDescription(self, desc)
 	
 func getMaxCharges() -> int:
 	return max_charges if !owner.ascended else ascended_max_charges

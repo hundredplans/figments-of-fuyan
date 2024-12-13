@@ -29,8 +29,12 @@ var active_effects: Array[ActiveEffectDatastore]
 var field_effects: Array[FieldEffectGD]
 
 var anibility_datastore: AnibilityDatastore
+var temporary_card_conditions: Array = [] # Array of map effects
 
 var Tool: ToolGD
+var is_awakened_in_combat: bool
+var last_seen_violence: int # Turns since they last violence, -1 for haven't seen it yet
+var last_ignore_behaviour_roll: bool
 #endregion
 
 #region Globals
@@ -45,6 +49,9 @@ signal tool_added
 signal mouse_entered
 signal mouse_exited
 signal update_ascended
+signal temporary_card_conditions_updated
+signal update_active_effect_description
+signal awakened_in_combat
 #endregion
 		
 #region Setters
@@ -85,6 +92,10 @@ func setDeathAbility(state: bool, play_death_animation: bool = true) -> void:
 	anibility_datastore.is_death_ability = state
 	if play_death_animation:
 		onDeath()
+		
+func setAwakenedInCombat(state: bool) -> void:
+	is_awakened_in_combat = state
+	awakened_in_combat.emit(state)
 #endregion
 
 #region Getters
@@ -96,9 +107,6 @@ func getArea() -> AreaInfo:
 	for area_info in Helper.getFofInfoArray(AreaInfo):
 		if info.id in area_info.card_ids: return area_info
 	return null
-	
-func getStatHeightPosition() -> Vector3:
-	return Vector3(position.x, info.stat, position.z)
 	
 func getMovementSpeed() -> int:
 	return speed
@@ -157,10 +165,10 @@ func isWalking() -> bool:
 #endregion
 
 #region Card
-func onCreateCardUI(parent: Control, highlight_on_hover: bool = false) -> Control:
+func onCreateCardUI(parent: Control, highlight_on_hover: bool = false, inspectable: bool = true, DraggableParent: Control = null) -> Control:
 	var CardUI: Control = load(info.CARD_UI_SCENE_PATH).instantiate()
 	parent.add_child(CardUI)
-	CardUI.setInfo(self, highlight_on_hover)
+	CardUI.setInfo(self, highlight_on_hover, inspectable, DraggableParent)
 	return CardUI
 #endregion
 
@@ -173,7 +181,8 @@ func onSave() -> SavedDataCard:
 	return SavedDataCard.new(info.id, false, public_id, coords, tile_rotation, vision_datastore, team, ascended, \
 	attack, health, speed, max_speed, max_health, energy, draw_order, card_place, turn_state,\
 	SavedData.onSaveGroup(field_traits), SavedData.onSaveGroup(status_effects), attacks, attack_range, delayed_stats,\
-	visible_game_objects_public_ids, ability_save, active_effects, tool_data, SavedData.onSaveGroup(field_effects), anibility_datastore)
+	visible_game_objects_public_ids, ability_save, active_effects, tool_data, SavedData.onSaveGroup(field_effects), anibility_datastore,\
+	SavedData.onSaveGroup(temporary_card_conditions), is_awakened_in_combat, last_seen_violence, last_ignore_behaviour_roll)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -195,8 +204,13 @@ func onLoadData(data: SavedData) -> void:
 	max_health = data.max_health
 	speed = data.speed
 	max_speed = data.max_speed
+	energy = data.energy
 	anibility_datastore = data.anibility_datastore
+	field_effects_datas = data.field_effects
+	last_seen_violence = data.last_seen_violence
+	is_awakened_in_combat = data.is_awakened_in_combat
 	
+	temporary_card_conditions = temporary_card_conditions.map(func(x: SavedDataMapEffect): return SavedData.onLoadModel(x, self))
 	if data.tool_data != null:
 		Tool = SavedData.onLoadModel(data.tool_data, self)
 		Tool.Card = self
@@ -214,15 +228,16 @@ func onLoadData(data: SavedData) -> void:
 	
 func onLoadDataLevel() -> void:
 	super()
-	Tile = Game.getTile(coords)
-	
-	for stat_info in delayed_stats: stat_info.onLoad()
-	
-	onAwaken()
-	onLoadTraits()
-	onLoadStatusEffects()
-	onLoadFieldEffects()
-	setVisibleGameObjects()
+	if card_place == Game.CardPlaces.FIELD:
+		Tile = Game.getTile(coords)
+		
+		for stat_info in delayed_stats: stat_info.onLoad()
+		
+		onAwaken()
+		onLoadTraits()
+		onLoadStatusEffects()
+		onLoadFieldEffects()
+		setVisibleGameObjects()
 	
 func onLoadDataLevelFofInit() -> void:
 	super()
@@ -254,25 +269,7 @@ func onChangeCardPlace(place: Game.CardPlaces) -> void:
 			
 		card_place = place
 		add_to_group(Game.CARD_PLACES_TO_GROUP[card_place])
-			
-func onFofInit() -> void:
-	setBaseStats()
-	
-func setBaseStats() -> void:
-	attack = info.attack
-	health = info.health
-	speed = info.speed
-	energy = info.energy
-	
-	if ascended:
-		attack += info.plus_attack
-		health += info.plus_health
-		speed += info.plus_speed
-		energy += info.plus_energy
 		
-	max_health = info.health
-	max_speed = info.speed
-	
 func onCreateModel() -> void:
 	onRemoveModel()
 	
@@ -289,6 +286,7 @@ func onCreateModel() -> void:
 		
 	setDefaultCollisionLayers()
 	setAniPlayer(Model)
+	setAscendedVisual()
 	
 func onCreateEmptyModel(parent: Node3D) -> Node3D:
 	var EmptyModel: Node3D = info.model.instantiate()
@@ -397,6 +395,8 @@ func onProcessAction(action: Action) -> void:
 			elif action is AwakenAction and action.Card == self:
 				if action.owner is PlayCardAction: onPlayedFromHand()
 				else: onPushAction(ChangeTurnStateAction.new(self, Game.TurnStates.INACTIVE))
+			elif action is AttackAction and action.Attacker.isEnemy(team) and action.Attacker in getVisibleFieldCardsEnemies():
+				last_seen_violence = 0
 			
 	elif Game.CardPlaces.GRAVEYARD == card_place:
 		if action.post:
@@ -555,6 +555,9 @@ func onUpdateVision() -> Dictionary:
 	else: updated_visible_game_objects = {}
 	
 	return updated_visible_game_objects
+	
+func inEnemyVision() -> bool:
+	return Game.getEnemyUnits(team).any(func(x: CardGD): return self in x.getVisibleFieldCardsEnemies())
 	
 func getVisibleFieldCardsEnemies() -> Array:
 	return getVisibleFieldCards().filter(func(x: CardGD): return isEnemy(x.team))
@@ -747,6 +750,9 @@ func getActiveEffectDisabled(_active_effect: ActiveEffectDatastore) -> bool:
 	
 func setActiveEffectUsed(active_effect: ActiveEffectDatastore, used: bool) -> void:
 	active_effect.used = used
+	
+func getActiveEffectDescription(_active_effect: ActiveEffectDatastore, description: String) -> String:
+	return description
 #endregion
 
 #region Status Effects
@@ -783,6 +789,7 @@ func onAdvanceTurn() -> void:
 		stat_info.onAdvanceTurn()
 		
 	FieldInfo.onUpdateDelayedStats()
+	if last_seen_violence > -1: last_seen_violence += 1
 	
 #endregion
 
@@ -866,4 +873,29 @@ func onAscend(state: bool) -> void:
 	if ascended == state: return
 	ascended = state
 	update_ascended.emit(state)
+	setAscendedVisual()
+	
+func setAscendedVisual() -> void:
+	if ascended:
+		setMeshesMaterial(load(info.BASE_MATERIAL_ASCENDED_PATH))
 #endregion
+
+#region Temp Card
+func onAddTemporaryCardCondition(map_effect_data: SavedDataMapEffect) -> void:
+	temporary_card_conditions.append(SavedData.onLoadModel(map_effect_data, self))
+	temporary_card_conditions_updated.emit()
+	
+func isTemporary() -> bool:
+	return !temporary_card_conditions.is_empty()
+#endregion
+
+#region Info Getters
+func getIcon() -> Texture2D: return info.art_mini
+#endregion
+
+#region Elites
+func isValidEliteLevelSpawns(enemy_spawns: Array) -> bool:
+	return true
+#endregion
+
+#region 

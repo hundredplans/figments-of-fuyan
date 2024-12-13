@@ -1,22 +1,21 @@
 class_name MovementAction extends Action
 
 var Card: CardGD
-var DestinationTile: TileGD
+var movement_path: Array
 
-func _init(_Card: CardGD = null, _DestinationTile: TileGD = null) -> void:
+func _init(_Card: CardGD = null, _movement_path: Array = []) -> void:
 	super()
 	Card = _Card
-	DestinationTile = _DestinationTile
+	movement_path = _movement_path
 
 func onPreAction() -> void:
-	var is_attackable_on_path: bool = DestinationTile.getMovementPathTiles().any(func(x: TileGD): return x.occupy_state != TileGD.OccupyStates.NULL)
+	var is_attackable_on_path: bool = movement_path.any(func(x: TileGD): return x != Card.Tile and x.occupy_state != TileGD.OccupyStates.NULL)
 	if !Card.canAttack() and is_attackable_on_path: onFailAction()
 
 func onPostAction() -> void:
 	Card.Tile.is_card_moving = true
 	Card.Tile.setOutlineMaterial()
 	
-	var tiles: Array = DestinationTile.getMovementPathTiles()
 	var actions: Array = [CameraChangeAction.new(Card)]
 	
 	if Card.turn_state == Game.TurnStates.INACTIVE:
@@ -26,8 +25,8 @@ func onPostAction() -> void:
 	for ally_card in ally_cards.filter(func(x: CardGD): return x.turn_state == Game.TurnStates.ACTIVE and x != Card):
 		actions.append(ChangeTurnStateAction.new(ally_card, Game.TurnStates.PASSED))
 	
-	for i in range(1, tiles.size()):
-		var MoveToTile: TileGD = tiles[i]
+	for i in range(1, movement_path.size()):
+		var MoveToTile: TileGD = movement_path[i]
 		
 		var Attackables: Array = []
 		match MoveToTile.occupy_state:
@@ -42,7 +41,7 @@ func onPostAction() -> void:
 		actions.append(AttackAction.new(Card, Attackables))
 		break
 		
-	actions.append(MovementFinishAction.new(Card, tiles))
+	actions.append(MovementFinishAction.new(Card, movement_path))
 	onAppendAction(actions)
 
 func getLogInfo() -> Array:

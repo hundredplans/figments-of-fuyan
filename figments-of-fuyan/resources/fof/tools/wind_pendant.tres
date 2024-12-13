@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/fof_info/tools/tool_info.gd" id="1_j42uj"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_tr6ff"]
-[ext_resource type="Image" uid="uid://c4ppdil4wx3h2" path="res://assets/sprites/game/tools/Wind Pendant.png" id="2_1oi71"]
+[ext_resource type="Texture2D" uid="uid://c4ppdil4wx3h2" path="res://assets/sprites/game/tools/Wind Pendant.png" id="2_1oi71"]
 [ext_resource type="Script" path="res://scripts/fof/tools/pendant.gd" id="2_dbji6"]
 [ext_resource type="Script" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="2_knxsv"]
 
@@ -22,7 +22,7 @@ used = false
 [resource]
 script = ExtResource("1_j42uj")
 icon = ExtResource("2_1oi71")
-description = "Gain [+0/0/1]"
+description = "Gain +1 SPD"
 ascended_description = "Gain +1 SPD
 ABILITY [1]: Gain +1 SPD for [1] Turn"
 rarity = 5

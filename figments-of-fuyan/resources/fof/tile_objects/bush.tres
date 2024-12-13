@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_bbid5"]
+[ext_resource type="Script" path="res://scripts/fof/objects/object.gd" id="2_fnr43"]
+[ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_thcpj"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="3_m5bx5"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/bush.glb" id="3_od77f"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/bush1.glb" id="4_qnixc"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/bush2.glb" id="5_ckb53"]
+
+[resource]
+script = ExtResource("2_thcpj")
+tile_coords = Array[Array]([[Vector4(0, 0, 0, 0), Vector4i(0, 0, 0, 1)], [Vector4(0, 0, 0, 0), Vector4i(0, 0, 0, 1)], [Vector4(0, 0, 0, 0), Vector4i(0, 0, 0, 1)]])
+lock_rotation = false
+lock_tile = false
+solids = Array[bool]([true, true, true])
+active_effects = Array[ExtResource("1_bbid5")]([])
+models = Array[PackedScene]([ExtResource("3_od77f"), ExtResource("4_qnixc"), ExtResource("5_ckb53")])
+points = Array[Array]([[Vector3(0.027404, 0.265019, 0.874574), Vector3(-0.728075, 0.215918, 0.278494), Vector3(-0.742097, 0.273657, -0.347231), Vector3(0.248021, 0.222262, -0.701054), Vector3(0.775072, 0.263725, 0.183726), Vector3(0.566417, 0.820802, 0.160061), Vector3(0.443947, 0.847804, -0.336382), Vector3(-0.277648, 0.861292, -0.414376), Vector3(-0.508513, 0.847397, 0.119496), Vector3(-0.0459454, 0.87718, 0.491265), Vector3(0.00373411, 0.916927, -0.0698761)], [Vector3(-0.0937606, 0.153226, 0.858987), Vector3(-0.844823, 0.187577, 0.0986215), Vector3(-0.586871, 0.73874, 0.258915), Vector3(-0.17105, 0.801123, 0.618081), Vector3(0.303119, 0.805423, 0.596339), Vector3(0.544881, 0.804399, -0.0897392), Vector3(-0.0398211, 0.868336, -0.375272), Vector3(0.0245885, 0.916927, 0.151518), Vector3(0.724914, 0.311981, -0.0968175), Vector3(-0.0527182, 0.407925, -0.705435), Vector3(-0.757714, 0.257484, -0.356966), Vector3(-0.619948, 0.782654, -0.305635)], [Vector3(-0.429531, 0.110063, 0.681728), Vector3(0.354304, 0.144406, 0.773921), Vector3(0.680351, 0.162019, 0.240592), Vector3(0.653588, 0.233541, -0.266121), Vector3(0.323479, 0.265473, -0.660479), Vector3(-0.346866, 0.167013, -0.674677), Vector3(-0.303098, 0.774955, -0.589815), Vector3(0.37, 0.785844, -0.460861), Vector3(-0.70077, 0.713564, -0.153244), Vector3(-0.398289, 0.724102, 0.617831), Vector3(0.543323, 0.732663, 0.512838), Vector3(0.0123262, 0.951125, 0.256833)]])
+id = 25
+name = "Bush"
+gdscript = ExtResource("2_fnr43")
+saved_data = ExtResource("3_m5bx5")

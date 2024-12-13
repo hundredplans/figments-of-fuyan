@@ -5,7 +5,8 @@ func getAdmin() -> bool: return true
 #region Resources
 var GDSCRIPT_TYPES: Array = [AreaInfo, LevelInfo, PalmLevelInfo, \
 	CardInfo, ChampionCardInfo, BoonInfo, ToolInfo, MapNodeInfo, SaveFileInfo, EncounterInfo, MapEffectInfo,\
-	TileObjectInfo, TileInfo, ObjectInfo, GameObjectInfo, TraitInfo, StatusEffectInfo, FieldEffectInfo]
+	TileObjectInfo, TileInfo, ObjectInfo, GameObjectInfo, TraitInfo, StatusEffectInfo, FieldEffectInfo,\
+	LoreBookInfo, ArchetypeInfo]
 	
 var fof_info_dict: Dictionary = {}
 func _ready() -> void:
@@ -85,3 +86,12 @@ func getDescriptionNumeric(text: String, array: Array, string_array: Array) -> S
 	
 func getSaveFileCount() -> int:
 	return DirAccess.get_files_at(SaveFileInfo.SAVE_DIRECTORY).size()
+
+func getFirstNonConsecutiveId(type: GDScript) -> int:
+	var arr: Array = getFofInfoArray(type).map(func(x: FofInfo): return x.id)
+	if arr.is_empty(): return 1
+	arr.sort_custom(func(x: int, y: int): return x < y)
+	for i in range(arr.size() - 1):
+		if arr[i + 1] != arr[i] + 1:
+			return arr[i] + 1
+	return arr[arr.size() - 1] + 1

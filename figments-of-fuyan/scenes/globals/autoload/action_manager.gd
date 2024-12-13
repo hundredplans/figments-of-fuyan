@@ -5,7 +5,6 @@ signal action_playing
 
 var active_action: Action
 var actions: Array = []
-var past_actions_debug: Array = []
 
 func onPushAction(action: Action) -> void:
 	actions.push_front(action)
@@ -55,7 +54,6 @@ func onForceAction(action: Action) -> void:
 	process_action.emit(action)
 
 func onDebugAction(action: Action) -> void:
-	past_actions_debug.append(active_action)
 	var path: String = action.get_script().resource_path
 	print(path.get_slice("/", path.get_slice_count("/") - 1))
 	var logs: Array = action.getLogInfo()
@@ -82,3 +80,11 @@ func onRemoveMoveAndAttackActions(Card: CardGD):
 	actions = actions.filter(func(x: Action):
 			return !((x is MoveToTileAction and x.Card == Card) or (x is AttackAction and x.Attacker == Card)))
 		
+func onFindFirstAction(type: GDScript) -> Action:
+	var valid_actions: Array = actions.filter(func(x: Action): return is_instance_of(x, type))
+	return valid_actions[0] if !valid_actions.is_empty() else null
+	
+func onFindNextAction(action: Action) -> Action:
+	var index: int = actions.find(action)
+	if index == -1 or index == actions.size() - 1: return null
+	return actions[index + 1]

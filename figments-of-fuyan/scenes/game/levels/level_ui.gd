@@ -31,12 +31,16 @@ extends Control
 signal mouse_signal
 signal camera_button_pressed
 signal action_lock
-signal card_selected
 signal camera_direction_changed
 signal vision_mode_changed
 signal active_effect_box_pressed
 signal active_effect_added
 signal tile_occupied
+
+signal dragged_begin
+signal dragged_end
+
+const BOTTOM_SCREEN_OFFSET: int = 5
 
 var save_file: SaveFileGD
 var level: LevelGD
@@ -73,6 +77,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level.boon_ascended.connect(onBoonAscended)
 	level.tile_occupied.connect(onTileOccupied)
 	level.game_ended.connect(onGameEnded)
+	level.tool_removed.connect(onToolRemoved)
 	save_file.update_shillings.connect(onUpdateShillings)
 	
 	TimeLabel.setInfo(save_file)
@@ -88,8 +93,6 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	setHeroNameLabel()
 	setActiveEffectLabel()
 	onUpdateShillings(save_file.shillings)
-	
-	for Card in get_tree().get_nodes_in_group("FieldCardsGD"): onAwakened(Card)
 	
 #endregion
 
@@ -109,8 +112,10 @@ func getActionLock() -> bool:
 	return is_action_playing
 
 func onMouseInUI(state: bool) -> void:
+	if get_viewport().get_mouse_position().y >= get_viewport().size.y - BOTTOM_SCREEN_OFFSET: return
 	mouse_in_ui = state
 	mouse_signal.emit(mouse_in_ui)
+	$MouseInUILabel.text = "Mouse In UI: " + str(mouse_in_ui)
 
 func onActionPlaying(state: bool) -> void:
 	if level.is_ended: return
@@ -134,25 +139,36 @@ func onPhaseChanged(phase: Game.Phases, _instant: bool = false) -> void:
 #region Hand
 @onready var HandBox: Container = %HandBox
 func onDrawCardUI(Card: CardGD) -> void:
-	var CardUI: Control = Card.onCreateCardUI(HandBox, true)
+	var CardUI: Control = Card.onCreateCardUI(HandBox, true, true, self)
 	Card.setInspectable(true, self)
-	CardUI.pressed.connect(onSelectCard)
+	CardUI.dragged_begin.connect(onCardDraggedBegin)
+	CardUI.dragged_finished.connect(onCardDraggedFinished)
+	CardUI.dragged_end.connect(onCardDraggedEnd)
 	CardUI.mouse_in_ui.connect(onMouseInUI)
+	CardUI.mouse_in_ui.connect(HandBox.onMouseInUI)
 	
 func onRemoveCardUI(Card: CardGD) -> void:
 	for CardUI in HandBox.get_children():
 		if CardUI.Card == Card: CardUI.queue_free()
 #endregion
 
-#region Card Select
-func onSelectCard(CardUI: Control) -> void:
-	CardUI.onSelected(!CardUI.selected)
-	card_selected.emit(CardUI.selected)
+#region Card Dragged
+func onCardDraggedEnd(CardUI: Control, dragged_position: Vector2) -> void:
+	dragged_end.emit(CardUI.Card, dragged_position, CardUI)
 	
-func getSelectedCard() -> CardGD:
-	for CardUI in HandBox.get_children():
-		if CardUI.selected: return CardUI.Card
-	return null
+	if level.getPhase() in [Game.Phases.HAND, Game.Phases.START]:
+		HandBox.onPin()
+		
+	HandPanel.mouse_filter = Control.MOUSE_FILTER_STOP
+	
+func onCardDraggedFinished(_CardUI: Control) -> void: # When card comes back to it's orignial position
+	HandBox.setDraggedCardUI(null)
+	
+func onCardDraggedBegin(CardUI: Control) -> void:
+	dragged_begin.emit()
+	HandBox.onUnpin()
+	HandBox.setDraggedCardUI(CardUI)
+	HandPanel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 #endregion
 
 #region Shillings
@@ -279,6 +295,9 @@ func onActiveEffectUsed(_active_effect: ActiveEffectDatastore) -> void:
 	
 func onActiveEffectAdded(_active_effect: ActiveEffectDatastore) -> void:
 	onUpdateActiveEffects()
+	
+func onToolRemoved() -> void:
+	onUpdateActiveEffects()
 #endregion
 
 #region Boons
@@ -307,13 +326,11 @@ func onGameEnded(rewards: Rewards) -> void:
 		var LossUI: Control = LossUIPacked.instantiate()
 		add_child(LossUI)
 	else:
-		var RewardsUI: Control = Game.onCreateRewardsUIScreen(rewards, self)
+		var RewardsUI: Control = Game.onCreateRewardsUIScreen(rewards, self, level.is_elite)
 		RewardsUI.rewards_finished.connect(level.onRewardsFinished)
 		
 		for child in [DeckPanel, MapPanel, ShillingLabel]:
 			child.z_index = 1
-		
-		
 	
 	onUpdateActionLock(false)
 	for btn in get_tree().get_nodes_in_group("EndGameDisabled"):

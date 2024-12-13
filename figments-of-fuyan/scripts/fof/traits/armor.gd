@@ -12,6 +12,8 @@ func onProcessAction(action: Action) -> void:
 	if !action.post:
 		if action is DamageAction and Card in action.Defenders and !action.is_fall_damage:
 			action.damage = max(action.damage - armor, 0)
+		elif action is GetDamageAction and Card in action.Defenders and !action.is_fall_damage:
+			action.damage = max(action.damage - armor, 0)
 
 func getDescription() -> String:
 	return Helper.getDescription(super(), [armor])

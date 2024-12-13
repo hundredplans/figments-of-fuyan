@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=14 format=3 uid="uid://cqu16yapbaesy"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=15 format=3 uid="uid://cqu16yapbaesy"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_emko1"]
 [ext_resource type="Image" uid="uid://cdwhck256lnad" path="res://assets/sprites/game/cards/art_pop/palm_defender.png" id="2_0ye06"]
+[ext_resource type="Resource" uid="uid://dk14kkjps176t" path="res://resources/fof/archetypes/warden.tres" id="2_f0m57"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_rtj64"]
-[ext_resource type="Image" uid="uid://4ri8dy85v5x8" path="res://assets/sprites/game/cards/art_mini/palm_defender.png" id="2_tpcyn"]
+[ext_resource type="Texture2D" uid="uid://4ri8dy85v5x8" path="res://assets/sprites/game/cards/art_mini/palm_defender.png" id="2_tpcyn"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_skfrn"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_armor.gd" id="4_vhr0q"]
 [ext_resource type="Script" path="res://scripts/fof/cards/palm_defender.gd" id="5_0sly7"]
@@ -66,6 +67,7 @@ plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("2_rtj64")]([SubResource("Resource_skkab")])
 ascended_ability_text = ""
+archetype = ExtResource("2_f0m57")
 id = 8
 name = "Palm Defender"
 gdscript = ExtResource("5_0sly7")

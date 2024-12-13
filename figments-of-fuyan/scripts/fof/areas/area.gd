@@ -58,7 +58,7 @@ func onFofInit(Card: CardGD) -> void:
 	var map_node_odds: Dictionary = getMapNodeOdds()
 	var unique_node_id: Array = Card.info.unique_nodes_id
 	
-	setEmptySpotsIDS(unique_node_id, map_node_odds)
+	setEmptySpotsIDS(unique_node_id, map_node_odds, Card)
 	setEliteFights(map_node_odds, Card)
 	onCreateMapNodes()
 	
@@ -111,7 +111,7 @@ func generateEmptyMapSpots() -> Array[EmptyMapNode]:
 					start_lane += 1
 	return empty_spots
 	
-func generateMapLinks(Card) -> void:
+func generateMapLinks(Card: CardGD) -> void:
 	var empty_spots_by_progress: Dictionary = generateEmptySpotsByProgress()
 	onCreateAllMapLinks(empty_spots_by_progress)
 	onRemoveOverlappingMapLinks(empty_spots_by_progress)
@@ -205,7 +205,7 @@ func onFilterNextBatchToManyLinks(batch: Array, next_batch: Array) -> void:
 #endregion
 
 #region Set Empty ID
-func setEmptySpotsIDS(unique_node_ids: Array, map_node_odds: Dictionary) -> void:
+func setEmptySpotsIDS(unique_node_ids: Array, map_node_odds: Dictionary, Card: CardGD) -> void:
 	empty_spots.shuffle()
 	var guarantee_shop: bool = false
 	var guarantee_unique_node: Array = []
@@ -222,11 +222,10 @@ func setEmptySpotsIDS(unique_node_ids: Array, map_node_odds: Dictionary) -> void
 	for empty_spot in empty_spots:
 		match empty_spot.progress:
 			-1: empty_spot.id = 1; continue
-			# Below should be 2 for gildred instead of 8
 			0: empty_spot.id = 1 if getWorldDifficulty() > 1 else 6; continue
 			5: empty_spot.id = 7; continue
 			10: empty_spot.id = 8; continue
-			_:
+			_: 
 				if extra_unique_node_segment_one and empty_spot.progress < 5:
 					extra_unique_node_segment_one = false
 					empty_spot.id = unique_node_ids.pick_random()
@@ -239,17 +238,21 @@ func setEmptySpotsIDS(unique_node_ids: Array, map_node_odds: Dictionary) -> void
 			guarantee_shop = true
 			continue
 		elif guarantee_unique_node.size() > 0 and empty_spot.progress > 5:
+			var is_divinus: bool = Card.info.id == 2
+			var is_holy: bool = empty_spot.links.any(func(x: EmptyMapNodeLink): return x.is_holy)
 			var index: int = 0
-			for state in guarantee_unique_node:
-				if state:
-					empty_spot.id = unique_node_ids[index]
-					guarantee_unique_node[index] = false
-					break
-				index += 1
 			
-			var remove_guarantee: bool = guarantee_unique_node.all(func(x: bool): return !x)
-			if remove_guarantee: guarantee_unique_node = []
-			continue
+			if !(is_divinus and !is_holy):
+				for state in guarantee_unique_node:
+					if state:
+						empty_spot.id = unique_node_ids[index]
+						guarantee_unique_node[index] = false
+						break
+					index += 1
+			
+				var remove_guarantee: bool = guarantee_unique_node.all(func(x: bool): return !x)
+				if remove_guarantee: guarantee_unique_node = []
+				continue
 		
 		var roll: String = Random.getRandomKey(map_node_odds_rollable[empty_spot.progress])
 		match roll:
@@ -394,14 +397,16 @@ func setRewards(is_win: bool) -> void:
 	if is_win:
 		var items: Array = []
 		var fight_rewards_datastore: FightRewardsDatastore = \
-			info.world.elite_fights_rewards if active_level.is_elite else info.world.fight_rewards
+			getWorld().elite_fight_rewards if active_level.is_elite else getWorld().fight_rewards
 		
 		var enemy_spawns: Array = active_level.enemy_spawns.duplicate()
-		
+		if active_level.is_elite:
+			items.append(SavedData.onLoadModel(enemy_spawns.pop_back(), active_level))
+			
 		enemy_spawns = enemy_spawns.filter(func(x: SavedDataCard): return Helper.getFofInfoID(CardInfo, x.id).rarity != Game.Rarities.CHAMPION)
 		enemy_spawns.resize(Game.CARD_REWARD_DEFAULT_AMOUNT)
 		enemy_spawns = enemy_spawns.filter(func(x: SavedDataCard): return x != null)
-	
+		
 		items.append(enemy_spawns.map(func(x: SavedDataCard):\
 			return SavedData.onLoadModel(x.duplicate(), active_level)))
 			
@@ -411,12 +416,12 @@ func setRewards(is_win: bool) -> void:
 		
 		var add_boon: bool = Random.rollFloat(getDivinusBoonOdds(fight_rewards_datastore.boon_odds) / 100.0)
 		if add_boon:
-			var boon_data: SavedDataBoon = Random.getRandomFofByBaseOdds(BoonInfo)
+			var boon_data: SavedDataBoon = Random.getRandomFofByOdds(BoonInfo)
 			if boon_data != null: items.append(SavedData.onLoadModel(boon_data, active_level))
 				
 		var add_tool: bool = Random.rollFloat(fight_rewards_datastore.tool_odds / 100.0)
 		if add_tool:
-			items.append(SavedData.onLoadModel(Random.getRandomFofByBaseOdds(ToolInfo), active_level))
+			items.append(SavedData.onLoadModel(Random.getRandomFofByOdds(ToolInfo), active_level))
 		
 		var rewards := Rewards.new(items)
 		rewards.setInfo(active_level)
@@ -426,7 +431,7 @@ func setRewards(is_win: bool) -> void:
 #endregion
 
 #region Random Enemy
-func onCreateCardByEnergy(_cards: Array, energy: int, spawn_coords: Vector4i, progress: int) -> SavedDataCard:
+func onCreateCardByEnergy(_cards: Array, energy: int, spawn_coords: Vector4i, progress: int, is_elite: bool) -> SavedDataCard:
 	var original_cards: Array = _cards.filter(func(x: CardInfo): return x.energy == energy)
 	var cards: Array = getCardsByRarity(original_cards)
 	
@@ -435,23 +440,22 @@ func onCreateCardByEnergy(_cards: Array, energy: int, spawn_coords: Vector4i, pr
 	card_data.team = 1
 	card_data.coords = spawn_coords
 	
-	if progress < 3: return card_data
-	
-	var ascend_card: bool = Random.rollFloat(info.world.enemy_ascended_rate / 100.0)
-	if ascend_card: card_data.ascended = true
+	if progress < 3:
+		Game.setCardDataFromInfo(card_data, card_info)
+		return card_data
+		
+	if card_info.rarity != Game.Rarities.EXALT:
+		var ascended_rate: float = getWorld().enemy_ascended_rate if !is_elite else getWorld().elite_enemy_ascended_rate
+		var ascend_card: bool = Random.rollFloat(ascended_rate / 100.0)
+		if ascend_card: card_data.ascended = true
 	
 	var add_tool: bool = Random.rollFloat(info.world.tool_enemy_spawn_rate / 100.0)
-	if !add_tool: return card_data
+	if !add_tool:
+		Game.setCardDataFromInfo(card_data, card_info)
+		return card_data
 	
-	var odds: Dictionary = info.world.tool_enemy_spawn_rarity_odds.getDictionary()
-	var tool_rarity: Game.Rarities = int(Random.getRandomKey(Random.onConvertPercentOdds(odds)))
-	var tool_info: ToolInfo = Helper.getFofInfoArray(ToolInfo).filter(func(x: ToolInfo): return x.rarity == tool_rarity).pick_random()
-	var tool_data: SavedDataTool = tool_info.saved_data.new(tool_info.id, true)
-	
-	var ascend_tool: bool = Random.rollFloat(info.world.tool_enemy_ascended_rate / 100.0)
-	if ascend_tool: tool_data.ascended = true
-	card_data.tool_data = tool_data
-	
+	card_data.tool_data = Random.getRandomFofByOdds(ToolInfo, getWorld().tool_enemy_spawn_rarity_odds.getDictionary())
+	Game.setCardDataFromInfo(card_data, card_info)
 	return card_data
 	
 func getCardsByRarity(original_cards: Array) -> Array:
@@ -460,7 +464,7 @@ func getCardsByRarity(original_cards: Array) -> Array:
 	if cards.is_empty(): return getCardsByRarity(original_cards)
 	return cards
 	
-func setEnemySpawnsFromBudget(budget: int, enemy_spawn_amount: int, spawns: Array, progress: int) -> Array:
+func setEnemySpawnsFromBudget(budget: int, enemy_spawn_amount: int, spawns: Array, progress: int, is_elite: bool) -> Array:
 	var enemies: Array = []
 	var cards: Array = Helper.getFofInfoArray(CardInfo).filter(func(x: CardInfo): return x.id in basic_card_ids)
 	var energies: Array = cards.map(func(x: CardInfo): return x.energy)
@@ -476,7 +480,7 @@ func setEnemySpawnsFromBudget(budget: int, enemy_spawn_amount: int, spawns: Arra
 	else: energy_combination = original_energy_combinations.pick_random()
 	
 	for i in range(energy_combination.size()):
-		var card_data: SavedDataCard = onCreateCardByEnergy(cards, energy_combination[i], spawns[i], progress)
+		var card_data: SavedDataCard = onCreateCardByEnergy(cards, energy_combination[i], spawns[i], progress, is_elite)
 		enemies.append(card_data)
 	return enemies
 	
@@ -514,6 +518,10 @@ func onRewardsFinished(save_file: SaveFileGD) -> void:
 	active_level.onClear()
 	active_level = null
 	active_level_data = null
+	#var progress: int = getEnteredMapNode().map_location.progress
+	#if progress >= 10:
+		#save_file.onLoadArea
+		#return
 	save_file.onLoadMap()
 	
 func onLossFinished() -> void:

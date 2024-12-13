@@ -12,6 +12,7 @@ script = ExtResource("1_5gypc")
 SpawnParticlePacked = ExtResource("2_locir")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+unique_name_in_owner = true
 environment = ExtResource("3_u2cmg")
 
 [node name="CameraManager" type="Node3D" parent="."]
@@ -24,7 +25,6 @@ script = ExtResource("5_amvjx")
 
 [node name="FreeLookCamera" type="Camera3D" parent="CameraManager"]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 2)
 script = ExtResource("2_k01hc")
 
 [node name="MouseRaycast" type="RayCast3D" parent="."]

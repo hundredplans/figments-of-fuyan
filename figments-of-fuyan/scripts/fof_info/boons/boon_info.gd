@@ -5,9 +5,11 @@ class_name BoonInfo extends FofInfo
 @export_multiline var ascended_description: String
 @export var rarity: Game.Rarities
 @export var curse: bool
+@export var elite_fight_curse: bool
 
 static func getFofName() -> String: return "Boon"
 
 static func getInfoPath() -> String: return "res://resources/fof/boons"
 
 func getTextIcon() -> Texture2D: return icon
+func getDescription(ascended: bool = false) -> String: return description if !ascended else ascended_description

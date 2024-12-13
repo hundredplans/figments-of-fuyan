@@ -30,7 +30,11 @@ func onToolEquipped() -> void:
 		4: type = Game.Stats.ATTACK
 		6: type = Game.Stats.MAX_SPEED
 		
-	onPushAction(StatAction.new(StatInfo.new(Card, type, 1)))
+	var stat_action := StatAction.new(StatInfo.new(Card, type, 1))
+	onPushAction(ToolActivatedAction.new(self, stat_action))
+	
+func onToolAction(action: StatAction) -> void:
+	onPushAction(action)
 	
 func onToolUnequipped() -> void:
 	super()
@@ -39,5 +43,6 @@ func onToolUnequipped() -> void:
 		1: type = Game.Stats.MAX_HEALTH
 		4: type = Game.Stats.ATTACK
 		6: type = Game.Stats.MAX_SPEED
-		
-	onPushAction(StatAction.new(StatInfo.new(Card, type, -1)))
+
+	var stat_action := StatAction.new(StatInfo.new(Card, type, -1))
+	onPushAction(ToolActivatedAction.new(self, stat_action))

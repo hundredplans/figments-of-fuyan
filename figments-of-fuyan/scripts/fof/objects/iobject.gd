@@ -1,5 +1,7 @@
 class_name IObjectGD extends ObjectGD
 
+signal update_active_effect_description
+
 var AniPlayer: AnimationPlayer
 var active_effects: Array = []
 var ability_save: Dictionary = {}
@@ -78,6 +80,9 @@ func getActiveEffect(effect_name: String) -> ActiveEffectDatastore:
 	for active_effect in active_effects:
 		if active_effect.name == effect_name: return active_effect
 	return null
+	
+func getActiveEffectDescription(_active_effect: ActiveEffectDatastore, description: String) -> String:
+	return description
 #endregion
 
 #region Animation

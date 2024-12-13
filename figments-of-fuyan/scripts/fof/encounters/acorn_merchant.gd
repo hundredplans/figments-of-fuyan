@@ -4,7 +4,7 @@ const ACCEPT_OPTION_SHILLINGS: int = 12
 const SLEIGHT_OF_HAND_SHILLINGS: int = 12
 
 func canShowUp() -> bool:
-	return anyRequirementMet()
+	return true
 
 func isRequirementMet(option: EncounterOptionDatastore) -> bool:
 	match option.name:

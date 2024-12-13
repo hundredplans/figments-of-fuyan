@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ArchetypeInfo" load_steps=5 format=3 uid="uid://cm711yoprmaev"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/archetypes/archetype_info.gd" id="1_3ilh1"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/behaviours/rusher.gd" id="1_hi7fl"]
+[ext_resource type="Script" path="res://scripts/fof/archetypes/archetype.gd" id="1_y733c"]
+[ext_resource type="Script" path="res://scripts/saved_data/archetypes/saved_data_archetype.gd" id="2_ivl2g"]
+
+[resource]
+script = ExtResource("1_3ilh1")
+behaviours = Array[GDScript]([ExtResource("1_hi7fl")])
+description = "This is likely to attack nearby units"
+id = 10
+name = "Hostile"
+gdscript = ExtResource("1_y733c")
+saved_data = ExtResource("2_ivl2g")

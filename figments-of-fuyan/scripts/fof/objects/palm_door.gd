@@ -4,6 +4,9 @@ var is_open: bool
 var last_seen_open: bool
 var CollisionShape: CollisionShape3D
 
+const SHORT_MAX_MOVEMENT_HEIGHT: float = 1.0
+const TALL_MAX_MOVEMENT_HEIGHT: float = 2.5
+
 #region Data Loading
 func onLoadDataLevel() -> void:
 	super()
@@ -116,3 +119,6 @@ func onDoorIsClosed(set_door_position: bool = true) -> void:
 		AniPlayer.stop()
 		AniPlayer.seek(0, true)
 #endregion
+
+func getMaxMovementHeight() -> float:
+	return SHORT_MAX_MOVEMENT_HEIGHT if !isTall() else TALL_MAX_MOVEMENT_HEIGHT

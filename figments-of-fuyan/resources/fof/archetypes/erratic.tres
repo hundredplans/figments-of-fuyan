@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ArchetypeInfo" load_steps=4 format=3 uid="uid://c5lgdp27b84uw"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/archetypes/archetype_info.gd" id="1_j07av"]
+[ext_resource type="Script" path="res://scripts/fof/archetypes/archetype.gd" id="1_nta25"]
+[ext_resource type="Script" path="res://scripts/saved_data/archetypes/saved_data_archetype.gd" id="2_8afxo"]
+
+[resource]
+script = ExtResource("1_j07av")
+behaviours = Array[GDScript]([])
+description = "Their behaviour is unpredictable"
+id = 11
+name = "Erratic"
+gdscript = ExtResource("1_nta25")
+saved_data = ExtResource("2_8afxo")

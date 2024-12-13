@@ -1,26 +1,28 @@
-extends PanelContainer
+extends Control
 
-@export var offset: Vector2 = Vector2(10, -40)
-@onready var NameLabel: Label = %NameLabel
-@onready var TopIcon: TextureRect = %TopIcon
-@onready var TextLabel: FancyTextLabel = %TextLabel
+@export var TooltipItemPacked: PackedScene
+@onready var MainContainer: Container = %MainContainer
+var offset: Vector2
 
-func setInfo(FofObject: FofGD) -> void:
-	NameLabel.text = FofObject.info.name
-	TopIcon.texture = FofObject.getIcon()
-	TextLabel.setText(FofObject.getDescription())
+func setInfo(items: Array, _offset: Vector2, create_inner_tooltips: bool = false) -> void:
+	offset = _offset
+	var inner_tooltips: Array[InfoAscended] = []
+	for FofObject in items:
+		var TooltipItem: Control = TooltipItemPacked.instantiate()
+		MainContainer.add_child(TooltipItem)
+		TooltipItem.setInfo(FofObject)
+		
+		if create_inner_tooltips:
+			inner_tooltips += TooltipItem.getTextInfos()
 	
-	var panel_color: String
-	
-	if is_instance_of(FofObject, TraitGD): panel_color = "YellowPanelContainer"
-	elif is_instance_of(FofObject, StatusEffectGD): panel_color = "RedPanelContainer"
-	elif is_instance_of(FofObject, ToolGD): panel_color = "BluePanelContainer"
-	elif is_instance_of(FofObject, FieldEffectGD): panel_color = "WhitePanelContainer"
-	elif is_instance_of(FofObject, BoonGD): panel_color = "PurplePanelContainer"
-	elif is_instance_of(FofObject, MapEffectGD) and FofObject.info.id == 2: panel_color = "WhitePanelContainer"
-	
-	theme_type_variation = panel_color
+	for InfoAscend in inner_tooltips:
+		var TooltipItem: Control = TooltipItemPacked.instantiate()
+		MainContainer.add_child(TooltipItem)
+		TooltipItem.setInfo(InfoAscend)
 		
 func _process(_delta: float) -> void:
-	global_position = get_viewport().get_mouse_position() + offset
+	setPosition()
 	
+func setPosition() -> void:
+	global_position = get_viewport().get_mouse_position() + offset
+	global_position.x = clamp(global_position.x, 10, (get_viewport().size.x - size.x - 10))

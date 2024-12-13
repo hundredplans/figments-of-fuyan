@@ -21,7 +21,9 @@ func _ready() -> void:
 		SavedData.onLoadModel(data, BackgroundMap)
 	
 	for card_info in Helper.getFofInfoArray(CardInfo):
-		var Card: CardGD = SavedData.onLoadModel(SavedDataCard.new(card_info.id, true), World)
+		var card_data := SavedDataCard.new(card_info.id, true)
+		Game.setCardDataFromInfo(card_data, card_info)
+		var Card: CardGD = SavedData.onLoadModel(card_data, World)
 		
 		if Card.info.model != null:
 			Card.onCreateModel()
@@ -52,7 +54,7 @@ func onAnimationNameButtonPressed(ani_name: String) -> void:
 		Card.AniPlayer.play(ani_name)
 
 func onCreateDeckCardUI(Card: CardGD) -> void:
-	var CardUI: Control = Card.onCreateCardUI(CardGrid)
+	var CardUI: Control = Card.onCreateCardUI(CardGrid, true, true)
 	CardUI.pressed.connect(onCardUIPressed)
 	Card.mouse_entered.connect(onCreateCardUI)
 	Card.mouse_exited.connect(onRemoveCardUI)
@@ -84,7 +86,7 @@ func _on_ascend_button_pressed() -> void:
 	for Card in get_tree().get_nodes_in_group("CardsGD"):
 		Card.ascended = !Card.ascended
 		Card.setBaseStats()
-		var CardUI: Control = Card.onCreateCardUI(CardGrid)
+		var CardUI: Control = Card.onCreateCardUI(CardGrid, true, true)
 		CardUI.pressed.connect(onCardUIPressed)
 
 func _on_search_area_card_text_changed(text: String) -> void:

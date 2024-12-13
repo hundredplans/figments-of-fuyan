@@ -11,6 +11,14 @@ static func getRandomKey(odds: Dictionary) -> String:
 		total += odds[key]
 	return str(odds[odds.size() - 1])
 	
+static func getRandomKeyVariant(odds: Dictionary) -> Variant:
+	var roll: float = randf()
+	var total: float = 0
+	for key in odds:
+		if roll < odds[key] + total: return key
+		total += odds[key]
+	return odds[odds.size() - 1]
+	
 static func onConvertPercentOdds(odds: Dictionary) -> Dictionary:
 	var new_odds: Dictionary = {}
 	for key in odds.keys():
@@ -42,7 +50,6 @@ static func getRandomFofInRarity(type: GDScript, rarity: Game.Rarities) -> Saved
 	data.ascended = Random.rollFloat(ascenscion_roll_odds)
 	return data
 	
-static func getRandomFofByBaseOdds(type: GDScript) -> SavedData:
-	var odds: Dictionary = Game.area.getWorld().base_rarity_odds.getDictionary()
+static func getRandomFofByOdds(type: GDScript, odds: Dictionary = Game.area.getWorld().base_rarity_odds.getDictionary()) -> SavedData:
 	var rarity: Game.Rarities = int(Random.getRandomKey(Random.onConvertPercentOdds(odds)))
 	return Random.getRandomFofInRarity(type, rarity)

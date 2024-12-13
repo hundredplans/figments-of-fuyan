@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=11 format=3 uid="uid://cb0x4podrg3y1"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://cb0x4podrg3y1"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_rlf34"]
+[ext_resource type="Resource" uid="uid://wd554ki4elsg" path="res://resources/fof/archetypes/ordinary.tres" id="2_07idc"]
 [ext_resource type="Image" uid="uid://cepsbqhr1w002" path="res://assets/sprites/game/cards/art_pop/palmysitter.png" id="2_lt3xo"]
-[ext_resource type="Image" uid="uid://bp62vg527y17o" path="res://assets/sprites/game/cards/art_mini/palmysitter.png" id="2_pk6lp"]
+[ext_resource type="Texture2D" uid="uid://bp62vg527y17o" path="res://assets/sprites/game/cards/art_mini/palmysitter.png" id="2_pk6lp"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_w3gab"]
 [ext_resource type="Script" path="res://scripts/fof/cards/palmysitter.gd" id="3_j5563"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_y72ej"]
@@ -34,7 +35,7 @@ energy = 1
 rarity = 4
 initial_traits = Array[ExtResource("2_w3gab")]([])
 active_abilities = Array[ExtResource("1_rlf34")]([])
-ability_text = "LAST WILL: AWAKEN a {id=4,a=f,Palmy}"
+ability_text = "LAST WILL: AWAKEN a [card=4]"
 flavor_text = ""
 art_mini_coordinate = Vector2i(80, 40)
 art_mini = ExtResource("2_pk6lp")
@@ -51,6 +52,7 @@ plus_speed = 1
 plus_energy = 0
 ascended_traits = Array[ExtResource("2_w3gab")]([])
 ascended_ability_text = "LAST WILL: AWAKEN a {id=4,a=t,Palmy}"
+archetype = ExtResource("2_07idc")
 id = 12
 name = "Palmysitter"
 gdscript = ExtResource("3_j5563")

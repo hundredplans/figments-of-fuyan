@@ -82,9 +82,14 @@ func getRarityString(rarity: Rarities) -> String:
 	
 func getRarityColor(rarity: Rarities) -> Color:
 	match rarity:
+		Rarities.SCRAP: return Color(0.627, 0.627, 0.627)
+		Rarities.NEUTRAL: return Color(0.498, 0.2, 0)
 		Rarities.COMMON: return Color(0.81, 0.62, 0.5)
 		Rarities.RARE: return Color(0, 0.77, 0.56)
-		Rarities.EXALT: return Color(0.97, 0.81, 0)
+		Rarities.EXALT: return Color(0.859, 0.859, 0.859)
+		Rarities.MINIBOSS: return Color(0.475, 0.161, 0.62)
+		Rarities.BOSS: return Color(0.647, 0.188, 0.188)
+		Rarities.CHAMPION: return Color(0.086, 0.549, 0.878)
 	return Color(1, 1, 1)
 
 func getShopType(shop_type: ShopTypes) -> String:
@@ -178,9 +183,11 @@ func getAllyUnits(team: int = 0) -> Array:
 func getEnemyUnits(team: int = 0) -> Array:
 	return get_tree().get_nodes_in_group("FieldCardsGD").filter(func(x: CardGD): return x.team != team)
 
-func getNewFieldCard(id: int, Tile: TileGD, team: int, tile_rotation: int, ascended: bool = false) -> CardGD:
+func getNewFieldCard(id: int, Tile: TileGD, team: int, tile_rotation: int, ascended: bool = false, awakened_in_combat: bool = false) -> CardGD:
 	var level: LevelGD = get_tree().get_nodes_in_group("LevelsGD")[0]
-	return SavedData.onLoadModel(getBaseCard(id, Tile, team, tile_rotation, ascended), level)
+	var Card: CardGD = SavedData.onLoadModel(getBaseCard(id, Tile, team, tile_rotation, ascended), level)
+	if awakened_in_combat: Card.setAwakenedInCombat(awakened_in_combat)
+	return Card
 
 func getUnitTiles() -> Array:
 	return get_tree().get_nodes_in_group("FieldCardsGD").map(func(x: CardGD): return x.Tile)
@@ -268,7 +275,8 @@ func getsetMovementRange(Card: CardGD) -> Array:
 	
 	var all_cards_tiles: Array = get_tree().get_nodes_in_group("FieldCardsGD").map(func(x: CardGD): return x.Tile)
 	
-	tiles = tiles.filter(func(x: TileGD): return !x.isSolid() and x not in all_cards_tiles) # Check for solidity
+	var card_top: float = Card.info.top + Card.position.y
+	tiles = tiles.filter(func(x: TileGD): return !x.isSolid() and x not in all_cards_tiles and x.isBelowMaxMovementHeight(Card)) # Check for solidity
 	for Tile in tiles:
 		var astar := AStar3D.new()
 		# Limits tiles to those in movement range
@@ -289,7 +297,7 @@ func getsetMovementRange(Card: CardGD) -> Array:
 					
 				elif height_diff <= 1:
 					astar.connect_points(StartTile.get_instance_id(), EndTile.get_instance_id(), false)
-					
+						
 		var valid_path: bool = false
 		var point_path: Array = []
 		var movement_path: Array = []
@@ -306,8 +314,6 @@ func getsetMovementRange(Card: CardGD) -> Array:
 				astar.disconnect_points(point_path[point_path.size() - 1], point_path[point_path.size() - 2])
 				continue
 			if !onSurviveFallDamage(Card, movement_path, point_path, astar): continue
-			
-			
 			valid_path = true
 			
 		Tile.setMovementPath(MovementPathGD.new(movement_path) if valid_path else null)
@@ -362,15 +368,18 @@ func onCreateGainShillings(shilling_amount: int, parent: Node) -> MapEffectGD:
 const TOOLTIP_PACKED_PATH: String = "res://scenes/common/tooltip/tooltip.tscn"
 const TOOLTIP_DELAY: float = 0.3
 var Tooltip: Control
-func onMouseInUITooltip(state: bool, item: FofGD = null, parent: Control = null, offset := Vector2.ZERO) -> void:
+func onMouseInUITooltip(state: bool, item: Variant = null, parent: Control = null, create_inner_tooltips: bool = false, offset := Vector2(30, 0)) -> void:
 	if state and Tooltip == null:
+		if item is Array and item.is_empty(): return
+		
 		await get_tree().create_timer(TOOLTIP_DELAY)
 		if !(state and Tooltip == null): return
 		
+		if item is not Array: item = [item]
 		Tooltip = load(TOOLTIP_PACKED_PATH).instantiate()
 		parent.add_child(Tooltip)
-		Tooltip.setInfo(item)
-		Tooltip.global_position = get_viewport().get_mouse_position() + offset
+		Tooltip.setInfo(item, offset, create_inner_tooltips)
+		Tooltip.setPosition()
 		
 	elif !state and Tooltip != null:
 		Tooltip.queue_free()
@@ -394,6 +403,15 @@ func getBaseCard(id: int, Tile: TileGD, team: int, tile_rotation: int, ascended:
 	
 func getRandomNonChampionCard() -> CardGD:
 	return get_tree().get_nodes_in_group("DeckCardsGD").filter(func(x: CardGD): return x.info.rarity != Rarities.CHAMPION).pick_random()
+	
+func setCardDataFromInfo(card_data: SavedDataCard, card_info: CardInfo) -> void:
+	card_data.energy = card_info.energy + (card_info.plus_energy if card_data.ascended else 0)
+	card_data.max_speed = card_info.speed + (card_info.plus_speed if card_data.ascended else 0)
+	card_data.max_health = card_info.health + (card_info.plus_health if card_data.ascended else 0)
+	
+	card_data.attack = card_info.attack + (card_info.plus_attack if card_data.ascended else 0)
+	card_data.health = card_data.max_health
+	card_data.speed = card_data.max_speed
 	
 const REMOVE_CARD_ANIMATION_TIME: float = 2
 const REMOVE_CARD_ANIMATION_OFFSET: float = 0.5
@@ -426,6 +444,9 @@ func isBoonAvailable(id: int, extra_ids: Array = []) -> bool:
 func isBoonAvailableUnascended(id: int) -> bool: # Does an unascended version of the Boon exist in the player's deck
 	var boons: Array = save_file.boons 
 	return boons.any(func(x: BoonGD): x.info.id == id and !x.ascended)
+	
+func isBoonInGame(id: int) -> bool:
+	return save_file.boons.any(func(x: BoonGD): return x.info.id == id)
 	
 func getAvailableBoons() -> Array:
 	var all_boons: Array = Helper.getFofInfoArray(BoonInfo)
@@ -488,10 +509,10 @@ func onCreateDeckScreen(parent: Control, selectable: bool, max_select_amount: in
 	return DeckScreen
 	
 const REWARDS_UI_PATH: String = "res://scenes/common/rewards_ui/rewards_ui.tscn"
-func onCreateRewardsUIScreen(rewards: Rewards, parent: Control) -> Control:
+func onCreateRewardsUIScreen(rewards: Rewards, parent: Control, is_elite: bool = false) -> Control:
 	var RewardsUI: Control = load(REWARDS_UI_PATH).instantiate()
 	parent.add_child(RewardsUI)
-	RewardsUI.setInfo(rewards, save_file)
+	RewardsUI.setInfo(rewards, save_file, is_elite)
 	return RewardsUI
 	
 const REWARDS_CARDS_UI_PATH: String = "res://scenes/common/rewards_ui/rewards_cards_ui.tscn"
@@ -510,4 +531,7 @@ func onAddDivinusBoonRewardOdds(odds: float) -> float:
 func onAddDivinusBoonAscenscionOdds(odds: float) -> float:
 	if save_file.getChampionCard().info.id != 3: return odds
 	return odds + 2.5
+	
+func getDivinusEncounterNegativePlusOdds() -> float:
+	return 0.1 # 0.1 more likely to be negative
 #endregion

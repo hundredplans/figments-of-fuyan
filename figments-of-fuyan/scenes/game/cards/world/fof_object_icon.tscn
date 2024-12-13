@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://da2oicq7t4k61"]
+[gd_scene load_steps=3 format=3 uid="uid://da2oicq7t4k61"]
 
 [ext_resource type="Script" path="res://scenes/game/cards/world/fof_object_icon.gd" id="1_8in6c"]
+[ext_resource type="Texture2D" uid="uid://qng0e877fuqf" path="res://assets/sprites/game/fof_object_icons/field_effects/quentins_bullets.png" id="2_xmand"]
 
 [node name="FofObjectIcon" type="Node3D"]
 script = ExtResource("1_8in6c")
@@ -10,3 +11,11 @@ pixel_size = 0.02
 double_sided = false
 alpha_cut = 1
 texture_filter = 0
+texture = ExtResource("2_xmand")
+
+[node name="ChargesLabel" type="Label3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(0.980067, 0.198667, 0, -0.198667, 0.980067, 0, 0, 0, 1, 0, 0, 0.01)
+double_sided = false
+render_priority = 2
+outline_render_priority = 1

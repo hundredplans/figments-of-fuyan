@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=11 format=3 uid="uid://lo0gaidbtmx5"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://lo0gaidbtmx5"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_uh8s6"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_7gsfi"]
+[ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_hw1df"]
 [ext_resource type="Image" uid="uid://1nrwl75020iu" path="res://assets/sprites/game/cards/art_pop/angrus_palmus.png" id="2_mdfjq"]
-[ext_resource type="Image" uid="uid://cepva3y1q6dwr" path="res://assets/sprites/game/cards/art_mini/angrus_palmus.png" id="2_mowii"]
+[ext_resource type="Texture2D" uid="uid://cepva3y1q6dwr" path="res://assets/sprites/game/cards/art_mini/angrus_palmus.png" id="2_mowii"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_ugb5c"]
 [ext_resource type="Script" path="res://scripts/fof/cards/angrus_palmus.gd" id="4_2g88y"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_0ag77"]
@@ -51,6 +52,7 @@ plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("2_7gsfi")]([])
 ascended_ability_text = "RAMPAGE: The next heal on this heals you fully"
+archetype = ExtResource("2_hw1df")
 id = 17
 name = "Angrus Palmus"
 gdscript = ExtResource("4_2g88y")

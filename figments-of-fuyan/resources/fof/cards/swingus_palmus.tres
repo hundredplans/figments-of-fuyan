@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=11 format=3 uid="uid://b5y6os8dtukfj"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://b5y6os8dtukfj"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_tuq8f"]
+[ext_resource type="Resource" uid="uid://31nmui4k0kfh" path="res://resources/fof/archetypes/tactician.tres" id="2_np7rs"]
 [ext_resource type="Image" uid="uid://bu3frjs7hgafe" path="res://assets/sprites/game/cards/art_pop/swingus_palmus.png" id="2_qcnbn"]
-[ext_resource type="Image" uid="uid://dvjealvrwyr4m" path="res://assets/sprites/game/cards/art_mini/swingus_palmus.png" id="2_s1gc1"]
+[ext_resource type="Texture2D" uid="uid://dvjealvrwyr4m" path="res://assets/sprites/game/cards/art_mini/swingus_palmus.png" id="2_s1gc1"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_v2qqh"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_o34jl"]
 [ext_resource type="Script" path="res://scripts/fof/cards/swingus_palmus.gd" id="4_45u4o"]
@@ -51,6 +52,7 @@ plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("2_v2qqh")]([])
 ascended_ability_text = "Every second hit: Deal [+4] DMG and gain +1 ATT +1 HP after"
+archetype = ExtResource("2_np7rs")
 id = 15
 name = "Swingus Palmus"
 gdscript = ExtResource("4_45u4o")

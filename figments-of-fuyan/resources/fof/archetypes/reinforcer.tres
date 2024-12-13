@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ArchetypeInfo" load_steps=6 format=3 uid="uid://6j57uasj8x66"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/archetypes/archetype_info.gd" id="1_1lxbw"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/behaviours/stepper.gd" id="1_2nqo6"]
+[ext_resource type="Script" path="res://scripts/fof/archetypes/archetype.gd" id="1_dkwdq"]
+[ext_resource type="Script" path="res://scripts/saved_data/archetypes/saved_data_archetype.gd" id="2_jnbys"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/behaviours/teamer.gd" id="2_jt0ys"]
+
+[resource]
+script = ExtResource("1_1lxbw")
+behaviours = Array[GDScript]([ExtResource("1_2nqo6"), ExtResource("2_jt0ys")])
+description = "Always there, never first"
+id = 7
+name = "Reinforcer"
+gdscript = ExtResource("1_dkwdq")
+saved_data = ExtResource("2_jnbys")

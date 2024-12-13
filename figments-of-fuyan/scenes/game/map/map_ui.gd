@@ -1,6 +1,8 @@
 extends Control
 
 #region Globals
+signal screen_created
+
 var World: Node3D
 var save_file: SaveFileGD
 var area: AreaGD
@@ -78,6 +80,7 @@ func onCreateScreen(map_node: MapNodeGD, ActiveScreen: Control) -> void:
 	ActiveScreen.setInfo(save_file, area, World, self, map_node)
 	BackgroundDarkener.visible = ActiveScreen.onDimBackground()
 	LegendBox.visible = false
+	screen_created.emit()
 	
 func onMapNodeFinished(_map_node: MapNodeGD) -> void:
 	BackgroundDarkener.visible = false

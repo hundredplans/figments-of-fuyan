@@ -4,6 +4,7 @@ class_name FieldEffectInfo extends FofInfo
 @export_multiline var description: String
 @export_multiline var ascended_description: String
 @export var ascended_type: AscendedTypes
+@export var charges_label_position: Vector2
 
 enum AscendedTypes {NULL, CARD, OWNER}
 

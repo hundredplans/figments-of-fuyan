@@ -34,6 +34,7 @@ signal tool_picked_up
 signal cards_picked_up
 signal reward_taken # Signal for rewards ui 
 signal rewards_finished # Signal for area to interpret
+signal tool_removed
 
 #region Load / Save
 func onSave() -> SavedData:
@@ -63,7 +64,7 @@ func onLoadData(data: SavedData) -> void:
 		TileObject.onLoadDataLevel()
 	
 	for card_data in data.field_cards_data: SavedData.onLoadModel(card_data, self)
-	for Card in get_tree().get_nodes_in_group("FieldCardsGD"):
+	for Card in get_tree().get_nodes_in_group("CardsGD"):
 		Card.onLoadDataLevel()
 	
 	is_elite = data.is_elite
@@ -154,13 +155,13 @@ func onChangePhase(_phase: Game.Phases, instant: bool = false) -> void:
 		Game.Phases.START:
 			onDrawStarterHand()
 			setAlliesTurnState(Game.TurnStates.INACTIVE)
-		Game.Phases.HAND:
-			onCheckSkipHandPhase()
-				
+			
 	phase = _phase
 	phase_changed.emit(phase, instant)
 	
 	match phase:
+		Game.Phases.HAND:
+			onCheckSkipHandPhase()
 		Game.Phases.AI: onAppendAction(AITurnStartAction.new(1))
 		Game.Phases.NEUTRAL: onAppendAction(AITurnStartAction.new(2))
 			
@@ -175,16 +176,17 @@ func onProcessAction(action: Action) -> void:
 	if action.post:
 		if action is ChangePhaseAction: onChangePhase(action.phase)
 		elif action is DrawAction: draw_card.emit(action.Card)
-		elif action is AwakenAction and action.Card.isAlly(0):
+		elif action is AwakenAction:
 			awakened.emit(action.Card)
-			if phase == Game.Phases.START: append_action.emit(ChangePhaseAction.new(Game.Phases.HAND))
+			if phase == Game.Phases.START and action.Card.isAlly(0):
+				onAppendAction(ChangePhaseAction.new(Game.Phases.HAND))
 		elif action is RemoveCardAction:
 			remove_card.emit(action.Card)
 			onCheckSkipHandPhase()
 		elif action is InsertAction:
 			draw_card.emit(action.Card)
 		elif action is EnergyAction:
-			energy += action.energy
+			energy = min(action.energy + energy, max_energy)
 			energy_changed.emit(energy)
 			onCheckSkipHandPhase()
 		elif action is ChangeTurnStateAction:
@@ -205,8 +207,18 @@ func onProcessAction(action: Action) -> void:
 			boon_ascended.emit(action.Boon)
 		elif action is OccupyAction:
 			tile_occupied.emit(action.Card, action.Tile)
+			onRecalculateAITurnOccupy(action.Card, action.Tile)
 		elif action is EndGameAction and !is_ended:
 			setRewards(action.team == 0)
+		elif action is StatAction:
+			onRecalculateAITurn(action.getCards(), true, true, false, true)
+		elif action is AddToolAction:
+			onRecalculateAITurn(action.Card, true, false, false, true)
+		elif action is RemoveToolAction:
+			onRecalculateAITurn(action.Card, true, false, false, true)
+			tool_removed.emit()
+		elif action is DeathAction:
+			onRecalculateAITurn(action.Defender, true, true, true, true)
 	else:
 		if action is ChangePhaseAction:
 			if action.phase == phase: action.failed = true
@@ -223,10 +235,10 @@ func onDrawStarterHand() -> void:
 	var draw_count: int = START_HAND_SIZE - hand_cards.size() 
 	
 	for Card in hand_cards:
-		onPushAction(InsertAction.new(Card))
+		onForceAction(InsertAction.new(Card))
 	
 	for __ in range(draw_count):
-		onPushAction(DrawAction.new())
+		onForceAction(DrawAction.new())
 		
 func onCheckSkipHandPhase() -> void:
 	var hand: Array = get_tree().get_nodes_in_group("HandCardsGD")
@@ -261,6 +273,9 @@ func onPassTurn() -> void:
 		
 	if new_phase != Game.Phases.NULL:
 		onAppendAction(ChangePhaseAction.new(new_phase))
+		
+func getPhase() -> Game.Phases:
+	return phase
 #endregion
 
 #region SpectateCard
@@ -293,8 +308,55 @@ func onGameEnded() -> void:
 		for Card in card_group.filter(func(x: CardGD): return x.isAlly(0)):
 			Card.onChangeCardPlace(Game.CardPlaces.DECK)
 			
+	if is_elite:
+		for Boon in save_file.boons.filter(func(x: BoonGD): return x.info.elite_fight_curse):
+			save_file.onRemoveBoon(Boon)
+			
+	for Card in Game.get_tree().get_nodes_in_group("DeckCardsGD")\
+		.filter(func(x: CardGD): return x.Tool != null and x.Tool.info.rarity == Game.Rarities.MINI):
+		Card.onRemoveTool()
+			
 	game_ended.emit(rewards)
 	
 func onRewardsFinished() -> void:
 	rewards_finished.emit(save_file)
+#endregion
+
+#region AI
+var ai_turn_recalculated: bool
+func onRecalculateAITurn(cards: Variant, include_self: bool = true, include_enemies: bool = false, include_allies: bool = false, in_vision: bool = true) -> void:
+	if phase != Game.Phases.AI: return
+	
+	if cards is CardGD: cards = [cards]
+	
+	var action: AITurnAction = Game.ActionManagerReference.onFindFirstAction(AITurnAction)
+	if action == null: return
+	#if !((include_self and action.card in cards) or (include_enemies and Card.isEnemy(action.Card.team)) or (include_allies and Card.isAlly(action.Card.team))): return
+	#
+	#var visible_field_cards: Array = Card.getVisibleFieldCards()
+	#if !(in_vision and cards.any(func(x: CardGD): return x in visible_field_cards)): return
+	
+	onRemoveMoveAndAttackActions(action.Card)
+	
+	var finish_action: MovementFinishAction = Game.ActionManagerReference.onFindFirstAction(MovementFinishAction)
+	if finish_action == null: return
+	
+	finish_action.setIgnoreBehaviourRoll(false)
+			
+func onRecalculateAITurnOccupy(Card: CardGD, Tile: TileGD) -> void:
+	if phase != Game.Phases.AI: return
+	var action: Action = Game.ActionManagerReference.onFindFirstAction(AITurnAction)
+	
+	if action == null: return
+	if action.Card != Card: return
+	
+	var path: Array = []
+	while(true):
+		action = Game.ActionManagerReference.onFindNextAction(action)
+		if action == null or action is MovementFinishAction: break
+		elif action is MovementAction: path.append(action.Tile)
+	
+	if Tile in path: return
+	onRemoveMoveAndAttackActions(Card)
+	
 #endregion

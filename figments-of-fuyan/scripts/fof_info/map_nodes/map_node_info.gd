@@ -1,7 +1,6 @@
 class_name MapNodeInfo extends FofInfo
 
 #region Exports
-@export var load_level: bool
 @export var screen: PackedScene
 @export var world: PackedScene
 @export var icon: Texture2D

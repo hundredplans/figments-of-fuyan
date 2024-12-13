@@ -83,12 +83,8 @@ func onAddPriceVariance(price: int) -> int:
 
 func onEntered() -> void:
 	super()
-	var world: Node3D = info.world.instantiate()
-	create_world_scene.emit(self, world)
-	
-	var screen: Control = info.screen.instantiate()
-	screen.finished.connect(onFinished)
-	create_screen.emit(self, screen)
+	onCreateWorldScene()
+	onCreateScreen()
 
 #region Boons
 func onRerollBoon(id: int, rarity: Game.Rarities, ascended: bool) -> PriceDatastore:
@@ -111,6 +107,9 @@ func onRollFof(objects: Array, script_type: GDScript, foreign: bool = false) -> 
 	var picked_info: FofInfo = rarity_objects.pick_random()
 	objects.erase(picked_info)
 	var picked_data: SavedData = picked_info.saved_data.new(picked_info.id, true)
+	if picked_data is SavedDataCard:
+		Game.setCardDataFromInfo(picked_data, picked_info)
+	
 	var ascend: bool = Random.rollFloat(world_datastore.shop_ascension_chance / 100.0)
 	if script_type == BoonInfo and Game.isBoonAvailableUnascended(picked_data.id):
 		ascend = false
@@ -133,7 +132,7 @@ func onRollFof(objects: Array, script_type: GDScript, foreign: bool = false) -> 
 #region Final Price
 func onApplyFinalPriceMultipliers(price: int) -> int:
 	if Game.save_file.getChampionCard().info.id == 2:
-		if !links.any(func(x: MapLink): return x.is_holy): price *= DIVINUS_NOT_ON_HOLY_PATH_PRICE_INCREASE
+		if !isHoly(): price *= DIVINUS_NOT_ON_HOLY_PATH_PRICE_INCREASE
 		
 	elif Game.save_file.getChampionCard().info.id == 3: # Quentin increase price
 		price *= QUENTIN_CRIMINAL_PRICE_INCREASE

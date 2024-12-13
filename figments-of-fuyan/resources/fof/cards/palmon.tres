@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://dmk5jfmxyfnen"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=13 format=3 uid="uid://dmk5jfmxyfnen"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_xgrjx"]
+[ext_resource type="Resource" uid="uid://bbqdeswvpt0y6" path="res://resources/fof/archetypes/support.tres" id="2_0yrhv"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_85cop"]
-[ext_resource type="Image" uid="uid://chuvrtq4sm0k6" path="res://assets/sprites/game/cards/art_mini/palmon.png" id="2_h8pos"]
+[ext_resource type="Texture2D" uid="uid://chuvrtq4sm0k6" path="res://assets/sprites/game/cards/art_mini/palmon.png" id="2_h8pos"]
 [ext_resource type="Image" uid="uid://b2mlbubqt8qxu" path="res://assets/sprites/game/cards/art_pop/palmon.png" id="2_qqfri"]
 [ext_resource type="Script" path="res://scripts/fof/cards/palmon.gd" id="3_bb4jm"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_h4rou"]
@@ -68,6 +69,7 @@ plus_energy = 0
 ascended_traits = Array[ExtResource("2_85cop")]([])
 ascended_ability_text = "ABILITY [3]: Gives +2 ATT for [1] Turn to an ally in vision
 They heal [1] HP the turn after"
+archetype = ExtResource("2_0yrhv")
 id = 14
 name = "Palmon"
 gdscript = ExtResource("3_bb4jm")

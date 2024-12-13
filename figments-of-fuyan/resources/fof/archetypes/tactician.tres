@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ArchetypeInfo" load_steps=5 format=3 uid="uid://31nmui4k0kfh"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/archetypes/archetype_info.gd" id="1_1g8qe"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/behaviours/unengager.gd" id="1_bk1fo"]
+[ext_resource type="Script" path="res://scripts/fof/archetypes/archetype.gd" id="1_sben4"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/behaviours/stepper.gd" id="2_gxo1j"]
+
+[resource]
+script = ExtResource("1_1g8qe")
+behaviours = Array[GDScript]([ExtResource("1_bk1fo"), ExtResource("2_gxo1j")])
+description = "There's no risk worth taking"
+id = 6
+name = "Tactician"
+gdscript = ExtResource("1_sben4")
+saved_data = ExtResource("1_1g8qe")

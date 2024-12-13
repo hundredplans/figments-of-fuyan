@@ -17,7 +17,7 @@ func getName() -> String:
 	return name
 
 func getDescription() -> String:
-	return description
+	return owner.getActiveEffectDescription(self, description)
 	
 func getMaxCharges() -> int:
 	return max_charges

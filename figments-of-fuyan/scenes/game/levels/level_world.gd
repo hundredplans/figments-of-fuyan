@@ -18,6 +18,7 @@ signal active_effect_deselected
 
 #region Onready
 @onready var CameraManager: Node3D = %CameraManager
+@onready var WorldEnv: WorldEnvironment = %WorldEnvironment
 #endregion
 
 #region Base Functions
@@ -28,6 +29,8 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	save_file = _save_file
 	area = save_file.area
 	level = area.active_level
+	
+	setEnvironment()
 	
 	level.phase_changed.connect(onPhaseChanged)
 	level.awakened.connect(onCardAwakened)
@@ -42,12 +45,12 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	
 	UI.action_lock.connect(CameraManager.setActionLock)
 	UI.action_lock.connect(onUpdateActionLock)
-	UI.card_selected.connect(onCardSelected)
 	UI.mouse_signal.connect(onMouseInUI)
 	UI.camera_button_pressed.connect(CameraManager.onSwapCameraType)
 	UI.camera_direction_changed.connect(CameraManager.onChangeCameraInDirection)
 	UI.vision_mode_changed.connect(onVisionModeChanged)
 	UI.active_effect_box_pressed.connect(onActiveEffectBoxPressed)
+	UI.dragged_end.connect(onCardDraggedEnd)
 	
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
@@ -126,7 +129,7 @@ func onCameraPanning(state: bool) -> void:
 func onPhaseChanged(phase: Game.Phases, _instant: bool = false) -> void:
 	match phase:
 		Game.Phases.START: CameraManager.onSpectateSpawn(); onSpawnFX(true)
-		Game.Phases.HAND: CameraManager.onSpectateAllies(); onSpawnFX(true)
+		Game.Phases.HAND: CameraManager.onSpectateSpawn(); onSpawnFX(true)
 		Game.Phases.PLAYER:
 			onSpawnFX(false)
 			CameraManager.onSpectateAllies()
@@ -143,14 +146,9 @@ func onSpawnFX(state: bool) -> void:
 				add_child(SpawnParticle)
 #endregion
 
-#region Card Selected
-func onCardSelected(selected: bool) -> void:
-	if selected: CameraManager.onSpectateSpawn()
-	else: CameraManager.onSpectateAllies()
-#endregion
-
 #region Awakening
 func onCardAwakened(Card: CardGD) -> void:
+	if Card.isEnemy(0): return
 	onSpawnFX(true)
 	onCreateCameraChangeAction(Card)
 #endregion
@@ -164,12 +162,12 @@ func onTilePressed() -> void:
 	elif Tile.getMovementPathDisplay():
 		var Card: CardGD = level.getAllySpectateObject()
 		if Card != null:
-			level.onAppendAction(MovementAction.new(Card, Tile))
+			level.onAppendAction(MovementAction.new(Card, Tile.getMovementPathTiles()))
 	elif Tile.isOccupied() and Tile.isLevelVisible(): onCreateCameraChangeAction(Tile.getCard())
-	elif Tile.isAllySpawnTile() and !Tile.isOccupied():
-		var HandCard: CardGD = UI.getSelectedCard()
-		if HandCard != null:
-			level.onAppendAction(PlayCardAction.new(HandCard, Tile))
+	#elif Tile.isAllySpawnTile() and !Tile.isOccupied():
+		#var HandCard: CardGD = UI.getSelectedCard()
+		#if HandCard != null:
+			#level.onAppendAction(PlayCardAction.new(HandCard, Tile))
 	
 func onTileInspected() -> void:
 	var Tile: TileGD = MouseHoverTile
@@ -314,4 +312,17 @@ func onPassButtonPressed() -> void:
 #region Game Ended
 func onGameEnded(_rewards: Rewards) -> void:
 	level.onPushAction(LevelVisibleAction.new(false, get_tree().get_nodes_in_group("LevelGameObjectsGD")))
+#endregion
+
+#region Environment
+func setEnvironment() -> void:
+	WorldEnv.environment = area.info.base_environment if !level.is_elite else area.info.elite_environment
+#endregion
+
+#region Dragged
+func onCardDraggedEnd(Card: CardGD, dragged_position: Vector2, CardUI: Control) -> void:
+	var Tile: TileGD = getMouseHoverTile()
+	if Tile != null and Tile.isAllySpawnTile() and !Tile.isOccupied() and !getMouseInUI():
+		level.onAppendAction(PlayCardAction.new(Card, Tile))
+		CardUI.queue_free()
 #endregion

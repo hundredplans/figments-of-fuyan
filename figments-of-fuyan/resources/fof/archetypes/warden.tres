@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ArchetypeInfo" load_steps=6 format=3 uid="uid://dk14kkjps176t"]
+
+[ext_resource type="Script" path="res://scripts/fof/archetypes/archetype.gd" id="1_g3py4"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/behaviours/teamer.gd" id="1_mscma"]
+[ext_resource type="Script" path="res://scripts/fof_info/archetypes/archetype_info.gd" id="1_tn7mp"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/behaviours/rusher.gd" id="2_2t8mt"]
+[ext_resource type="Script" path="res://scripts/saved_data/archetypes/saved_data_archetype.gd" id="2_jfdow"]
+
+[resource]
+script = ExtResource("1_tn7mp")
+behaviours = Array[GDScript]([ExtResource("1_mscma"), ExtResource("2_2t8mt")])
+description = "They may have many, but you have me"
+id = 5
+name = "Warden"
+gdscript = ExtResource("1_g3py4")
+saved_data = ExtResource("2_jfdow")

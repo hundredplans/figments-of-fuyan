@@ -3,9 +3,10 @@ extends ToolGD
 func onProcessAction(action: Action) -> void:
 	super(action)
 	if action.post and action is DeathAction and action.Defender == Card:
-		onDeath(action.Tile)
+		onPushAction(ToolActivatedAction.new(self, action))
 		
-func onDeath(Tile: TileGD) -> void:
+func onToolAction(action: DeathAction) -> void:
+	var Tile: TileGD = action.Tile
 	var units: Array = []
 	var tiles: Array = []
 	

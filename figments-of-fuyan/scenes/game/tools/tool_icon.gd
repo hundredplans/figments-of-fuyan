@@ -35,7 +35,7 @@ func _process(delta: float) -> void:
 func onMouseInUI(state: bool) -> void:
 	is_mouse_in_ui = state
 	mouse_in_ui.emit(state)
-	Game.onMouseInUITooltip(state, Tool, self, Vector2(10, -40))
+	Game.onMouseInUITooltip(state, Tool, self, true)
 	if !disabled and hoverable:
 		modulate = Color(1, 1, 1) if !state else Color(0.5, 0.5 , 0.5)
 	

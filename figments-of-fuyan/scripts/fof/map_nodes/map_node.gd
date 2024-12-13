@@ -28,6 +28,11 @@ const LANE_OFFSET: float = 4
 const CENTER_PROGRESS_OFFSET: float = -15
 #endregion
 
+#region Helper
+func isHoly() -> bool:
+	return links.any(func(x: MapLink): return x.is_holy)
+#endregion
+
 #region Static
 static func onCalculatePosition(_map_location: MapLocation, map_locations: Array) -> Vector3:
 	var pos := Vector3((_map_location.progress * PROGRESS_OFFSET) + CENTER_PROGRESS_OFFSET, 0.3, 0)
@@ -189,4 +194,13 @@ func onOtherMapNodeFinished(map_node: MapNodeGD) -> void:
 	if map_node == self: return
 	for link in links.filter(func(x: MapLink): return x.map_location == map_node.map_location):
 		link.setIsFinished(true)
+		
+func onCreateScreen() -> void:
+	var screen: Control = info.screen.instantiate()
+	screen.finished.connect(onFinished)
+	create_screen.emit(self, screen)
+	
+func onCreateWorldScene() -> void:
+	var world: Node3D = info.world.instantiate()
+	create_world_scene.emit(self, world)
 #endregion

@@ -28,7 +28,7 @@ func onDisplayCharges(state: bool) -> void:
 var mouse_in_ui: bool
 func onMouseInUI(state: bool) -> void:
 	mouse_in_ui = state
-	Game.onMouseInUITooltip(state, Boon, self, Vector2(10, -40))
+	Game.onMouseInUITooltip(state, Boon, self, true)
 	
 	if !disabled and hoverable:
 		modulate = Color(0.5, 0.5, 0.5) if state else Color(1, 1, 1)
