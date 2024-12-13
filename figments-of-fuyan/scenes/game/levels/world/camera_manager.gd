@@ -48,7 +48,6 @@ func isFreelook() -> bool:
 #region Action Lock
 func setActionLock(_action_lock: bool) -> void:
 	action_lock = _action_lock
-	if isFreelook(): setCameraType(false)
 #endregion
 		
 #region Base Functions
@@ -136,7 +135,10 @@ func setCameraType(is_freelook: bool, spectate_first_ally: bool = false) -> void
 		
 		FreelookCamera.disable_movement = CurrentCamera != FreelookCamera
 		
-		if is_freelook: FreelookCamera.rotation_degrees = last_freelook_rotation
+		if is_freelook:
+			if FreelookCamera.position == Vector3.ZERO:
+				FreelookCamera.global_position = LevelCamera.global_position
+			else: FreelookCamera.rotation_degrees = last_freelook_rotation
 		else: last_freelook_rotation = FreelookCamera.rotation_degrees
 		
 		if is_freelook: onCreateCameraChangeAction(null)

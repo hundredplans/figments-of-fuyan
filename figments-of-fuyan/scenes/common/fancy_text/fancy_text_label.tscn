@@ -20,3 +20,6 @@ script = ExtResource("1_y11ja")
 settings = SubResource("Resource_ogg58")
 
 [connection signal="child_entered_tree" from="." to="." method="_on_child_entered_tree"]
+[connection signal="meta_hover_started" from="." to="." method="_on_meta_hover_started"]
+[connection signal="mouse_entered" from="." to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="." to="." method="onMouseInUI" binds= [false]]

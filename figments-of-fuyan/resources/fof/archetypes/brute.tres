@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ArchetypeInfo" load_steps=6 format=3 uid="uid://dk07sndke2px0"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/archetypes/archetype_info.gd" id="1_4nlc7"]
+[ext_resource type="Script" path="res://scripts/fof/archetypes/archetype.gd" id="1_jbxe0"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/behaviours/rusher.gd" id="1_v3po8"]
+[ext_resource type="Script" path="res://scripts/saved_data/archetypes/saved_data_archetype.gd" id="2_fyamj"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/behaviours/loner.gd" id="2_j22xa"]
+
+[resource]
+script = ExtResource("1_4nlc7")
+behaviours = Array[GDScript]([ExtResource("1_v3po8"), ExtResource("2_j22xa")])
+description = "Me see people, me smash"
+id = 4
+name = "Brute"
+gdscript = ExtResource("1_jbxe0")
+saved_data = ExtResource("2_fyamj")

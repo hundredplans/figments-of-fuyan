@@ -4,7 +4,7 @@ func onProcessAction(action: Action) -> void:
 	super(action)
 	
 func onAscend(state: bool) -> void:
-	super()
+	super(state)
 
 func getDescription() -> String:
 	return super()

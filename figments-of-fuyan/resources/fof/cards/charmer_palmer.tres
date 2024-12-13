@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://yfy52tneneag"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=13 format=3 uid="uid://yfy52tneneag"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_ctxd3"]
+[ext_resource type="Resource" uid="uid://6j57uasj8x66" path="res://resources/fof/archetypes/reinforcer.tres" id="2_lks3h"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_ope8q"]
 [ext_resource type="Texture2D" uid="uid://dlqbflcdgpe0i" path="res://assets/sprites/game/cards/art_mini/charmer_palmer.png" id="2_p77gw"]
 [ext_resource type="Image" uid="uid://c417dfnj38t1i" path="res://assets/sprites/game/cards/art_pop/charmer_palmer.png" id="2_r3dp6"]
@@ -68,6 +69,7 @@ plus_energy = 0
 ascended_traits = Array[ExtResource("2_ope8q")]([])
 ascended_ability_text = "ABILITY [2]: Heal [1] HP to allies in vision
 TRAUMA: Gain +1 ATT if a healed ally died"
+archetype = ExtResource("2_lks3h")
 id = 16
 name = "Charmer Palmer"
 gdscript = ExtResource("5_n02pe")

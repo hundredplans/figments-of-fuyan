@@ -7,7 +7,7 @@ func _init(_items: Array = []) -> void:
 	items = _items
 
 func onRewardTaken(reward: Variant) -> void:
-	if reward is CardGD:
+	if reward is CardGD and items.any(func(x: Variant): return x is Array and reward in x):
 		for item in items.filter(func(x: Variant): return x is Array and reward in x):
 			items.erase(item)
 			taken_items.append(item)

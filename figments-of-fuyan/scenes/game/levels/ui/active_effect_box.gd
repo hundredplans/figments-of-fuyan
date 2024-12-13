@@ -17,6 +17,8 @@ func setInfo(_active_effect: ActiveEffectDatastore, _Card: CardGD) -> void:
 	NameLabel.text = active_effect.getName()
 	DescriptionLabel.setText(active_effect.getDescription())
 	
+	active_effect.owner.update_active_effect_description.connect(onUpdateActiveDescription)
+	
 	var charges: int = active_effect.getCharges()
 	var max_charges: int = active_effect.getMaxCharges()
 	ChargesLabel.text = "Charges: " + ("∞" if max_charges == -1 else (str(charges) + "/" + str(max_charges)))
@@ -27,6 +29,8 @@ func setInfo(_active_effect: ActiveEffectDatastore, _Card: CardGD) -> void:
 	setDisabled()
 	
 func setDisabled() -> void:
+	if active_effect.owner == null: return
+	var dependant_disabled: bool = Game.isBoonInGame(12) and Card.isAlly(0) and active_effect.owner is ToolGD
 	var active_effect_disabled: bool = \
 		active_effect.owner.getActiveEffectDisabled(active_effect, Card) if active_effect.owner is IObjectGD\
 		else active_effect.owner.getActiveEffectDisabled(active_effect)
@@ -37,7 +41,7 @@ func setDisabled() -> void:
 	var is_not_mobile_and_active: bool = !Card.isMobile() and Card.turn_state == Game.TurnStates.ACTIVE
 	var is_enemy: bool = Card.isEnemy(0)
 	
-	Btn.disabled = active_effect_disabled or is_used or no_charges or is_not_mobile_and_active or turn_passed or is_enemy
+	Btn.disabled = active_effect_disabled or is_used or no_charges or is_not_mobile_and_active or turn_passed or is_enemy or dependant_disabled
 	modulate = HOVERED_OR_BASE if !Btn.disabled else Color(0.6, 0.6, 0.6, 1)
 
 var HOVERED_OR_BASE := Color(1, 1, 1, 1)
@@ -53,3 +57,6 @@ func onUpdateActionLock(state: bool) -> void:
 	
 func onPressed() -> void:
 	pressed.emit(active_effect)
+	
+func onUpdateActiveDescription() -> void:
+	DescriptionLabel.setText(active_effect.getDescription())

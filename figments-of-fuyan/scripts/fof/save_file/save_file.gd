@@ -55,6 +55,7 @@ func onLoadData(data: SavedData) -> void:
 	var ChampionCard: CardGD
 	for card_data in data.deck:
 		var Card: CardGD = SavedData.onLoadModel(card_data, get_parent())
+		print(Card.energy)
 		Card.add_to_group("AllyCardsGD")
 		if Game.isChampion(Card.info.rarity): ChampionCard = Card
 	

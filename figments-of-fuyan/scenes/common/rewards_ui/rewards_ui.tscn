@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://ci8k0pb3sa63a"]
+[gd_scene load_steps=5 format=3 uid="uid://ci8k0pb3sa63a"]
 
 [ext_resource type="Script" path="res://scenes/common/rewards_ui/rewards_ui.gd" id="1_l8ytc"]
 [ext_resource type="PackedScene" uid="uid://der1eqnu65wwb" path="res://scenes/common/rewards_ui/rewards_cards_ui.tscn" id="2_8600w"]
 [ext_resource type="PackedScene" uid="uid://c7pl1qs6s5o21" path="res://scenes/common/rewards_ui/rewards_item.tscn" id="3_83nba"]
+[ext_resource type="PackedScene" uid="uid://6i1ai5xqm8qh" path="res://scenes/common/rewards_ui/chief_card_reward_ui.tscn" id="4_splps"]
 
 [node name="RewardsUI" type="Control"]
 layout_mode = 3
@@ -12,6 +13,7 @@ offset_bottom = 1080.0
 script = ExtResource("1_l8ytc")
 RewardsCardsPacked = ExtResource("2_8600w")
 RewardsItemPacked = ExtResource("3_83nba")
+ChiefCardRewardUIPacked = ExtResource("4_splps")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
@@ -23,7 +25,22 @@ grow_vertical = 2
 mouse_filter = 1
 color = Color(0, 0, 0, 0.941176)
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="FirstContainer" type="HBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Control" type="Control" parent="FirstContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="FirstContainer/Control"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -38,42 +55,42 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="FirstContainer/Control/PanelContainer"]
 layout_mode = 2
 
-[node name="MainContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+[node name="MainContainer" type="VBoxContainer" parent="FirstContainer/Control/PanelContainer/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 20
 alignment = 2
 
-[node name="RewardsContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/MainContainer"]
+[node name="RewardsContainer" type="HBoxContainer" parent="FirstContainer/Control/PanelContainer/MarginContainer/MainContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 80
 alignment = 1
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/MarginContainer/MainContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="FirstContainer/Control/PanelContainer/MarginContainer/MainContainer"]
 layout_mode = 2
 
-[node name="Filler" type="Control" parent="PanelContainer/MarginContainer/MainContainer/HBoxContainer2"]
+[node name="Filler" type="Control" parent="FirstContainer/Control/PanelContainer/MarginContainer/MainContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
 
-[node name="SkipButton" type="Button" parent="PanelContainer/MarginContainer/MainContainer/HBoxContainer2"]
+[node name="SkipButton" type="Button" parent="FirstContainer/Control/PanelContainer/MarginContainer/MainContainer/HBoxContainer2"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(600, 0)
 layout_mode = 2
 text = "Skip"
 
-[node name="Filler2" type="Control" parent="PanelContainer/MarginContainer/MainContainer/HBoxContainer2"]
+[node name="Filler2" type="Control" parent="FirstContainer/Control/PanelContainer/MarginContainer/MainContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
 
 [connection signal="mouse_exited" from="." to="." method="onMouseInUI" binds= [false]]
-[connection signal="mouse_entered" from="PanelContainer/MarginContainer/MainContainer/HBoxContainer2/SkipButton" to="." method="onMouseInUI" binds= [true]]
-[connection signal="mouse_exited" from="PanelContainer/MarginContainer/MainContainer/HBoxContainer2/SkipButton" to="." method="onMouseInUI" binds= [false]]
-[connection signal="pressed" from="PanelContainer/MarginContainer/MainContainer/HBoxContainer2/SkipButton" to="." method="onSkipButtonPressed"]
+[connection signal="mouse_entered" from="FirstContainer/Control/PanelContainer/MarginContainer/MainContainer/HBoxContainer2/SkipButton" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="FirstContainer/Control/PanelContainer/MarginContainer/MainContainer/HBoxContainer2/SkipButton" to="." method="onMouseInUI" binds= [false]]
+[connection signal="pressed" from="FirstContainer/Control/PanelContainer/MarginContainer/MainContainer/HBoxContainer2/SkipButton" to="." method="onSkipButtonPressed"]

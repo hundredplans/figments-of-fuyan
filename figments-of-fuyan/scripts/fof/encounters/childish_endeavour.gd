@@ -23,6 +23,7 @@ func onOptionPressed(option: EncounterOptionDatastore, screen: Control) -> void:
 		"Mentor":
 			var Card: CardGD = SavedData.onLoadModel(Game.onCreateBaseCard(4, true), Game.save_file)
 			Game.onAddToDeck(Card)
+			Card.onAddTemporaryCardCondition(SavedDataMapEffect.new(6, true))
 			
 			var CardUI: Control = Card.onCreateCardUI(screen, false)
 			CardUI.setDisabled(true)

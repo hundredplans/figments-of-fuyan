@@ -1,0 +1,105 @@
+[gd_resource type="Resource" script_class="WorldDatastore" load_steps=11 format=3 uid="uid://c8epcaodidvwx"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/map_nodes/extra/map_node_odds_datastore.gd" id="1_g7ubl"]
+[ext_resource type="Script" path="res://scripts/fof_info/world_datastore.gd" id="2_6vuag"]
+
+[sub_resource type="Resource" id="Resource_dv863"]
+script = ExtResource("1_g7ubl")
+progress = 1
+regular_fight = 100.0
+encounter = 0.0
+shop = 0.0
+upgrade_regular_fight = 0.0
+
+[sub_resource type="Resource" id="Resource_g5dgs"]
+script = ExtResource("1_g7ubl")
+progress = 2
+regular_fight = 100.0
+encounter = 0.0
+shop = 0.0
+upgrade_regular_fight = 0.0
+
+[sub_resource type="Resource" id="Resource_nm72o"]
+script = ExtResource("1_g7ubl")
+progress = 3
+regular_fight = 30.0
+encounter = 70.0
+shop = 0.0
+upgrade_regular_fight = 0.0
+
+[sub_resource type="Resource" id="Resource_0tdd2"]
+script = ExtResource("1_g7ubl")
+progress = 4
+regular_fight = 67.0
+encounter = 33.0
+shop = 0.0
+upgrade_regular_fight = 0.0
+
+[sub_resource type="Resource" id="Resource_6a52b"]
+script = ExtResource("1_g7ubl")
+progress = 6
+regular_fight = 50.0
+encounter = 50.0
+shop = 0.0
+upgrade_regular_fight = 10.0
+
+[sub_resource type="Resource" id="Resource_7erkh"]
+script = ExtResource("1_g7ubl")
+progress = 7
+regular_fight = 50.0
+encounter = 45.0
+shop = 5.0
+upgrade_regular_fight = 12.0
+
+[sub_resource type="Resource" id="Resource_humnj"]
+script = ExtResource("1_g7ubl")
+progress = 8
+regular_fight = 50.0
+encounter = 45.0
+shop = 5.0
+upgrade_regular_fight = 12.0
+
+[sub_resource type="Resource" id="Resource_qoq7q"]
+script = ExtResource("1_g7ubl")
+progress = 9
+regular_fight = 50.0
+encounter = 45.0
+shop = 5.0
+upgrade_regular_fight = 12.0
+
+[resource]
+script = ExtResource("2_6vuag")
+world = 2
+data = Array[ExtResource("1_g7ubl")]([SubResource("Resource_dv863"), SubResource("Resource_g5dgs"), SubResource("Resource_nm72o"), SubResource("Resource_0tdd2"), SubResource("Resource_6a52b"), SubResource("Resource_7erkh"), SubResource("Resource_humnj"), SubResource("Resource_qoq7q")])
+base_ascended_rate = 0.0
+unique_node_segment_one_odds = 0.0
+unique_node_segment_two_odds = 0.0
+progress_enemy_energy_budget = Array[int]([])
+elite_fights_budget_offset = 0
+enemy_ascended_rate = 0.0
+elite_enemy_ascended_rate = 0.0
+tool_enemy_spawn_rate = 0.0
+tool_enemy_ascended_rate = 0.0
+foreign_card_base_price_increase = 0
+transform_by_rarity_price = 0
+transform_by_cost_price = 0
+ascend_card_price = 0
+remove_card_price = 0
+ascended_items_flat_after_percentage_increase = 0
+ascended_items_price_percentage_increase = 0
+shop_ascension_chance = 0.0
+default_shop_variance = 0
+elite_fight_encounter_odds = 0.0
+LANE_ODDS = {
+"2": 0.25,
+"3": 0.7,
+"4": 0.05
+}
+REMOVE_RANDOM_EDGES = 0.5
+ENCOUNTER_COUNT_FIGHT_ODDS = {
+"1": 0,
+"2": 0,
+"3": 0.25,
+"4": 0.5,
+"5": 1.0
+}

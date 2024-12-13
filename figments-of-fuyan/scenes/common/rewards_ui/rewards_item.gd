@@ -20,7 +20,7 @@ func setInfo(_item: Variant, is_taken: bool = false) -> void:
 		IconRect.texture = shilling_icon
 		ItemLabel.text = "Shillings"
 		
-	elif item is BoonGD or item is ToolGD:
+	elif item is BoonGD or item is ToolGD or item is CardGD:
 		match item.info.rarity:
 			Game.Rarities.COMMON: MainContainer.theme_type_variation = "BeigePanelContainer"
 			Game.Rarities.RARE: MainContainer.theme_type_variation = "TealPanelContainer"
@@ -43,7 +43,7 @@ func onMouseInUI(state: bool) -> void:
 	mouse_signal.emit(mouse_in_ui)
 	
 	if !taken and item is FofGD:
-		Game.onMouseInUITooltip(mouse_in_ui, item, self, Vector2(10, -40))
+		Game.onMouseInUITooltip(mouse_in_ui, item, self)
 		
 func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("MainInput") and mouse_in_ui and !taken:

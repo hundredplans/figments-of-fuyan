@@ -27,6 +27,9 @@ func onPostAction() -> void:
 		Card.coords = Tile.getCoords()
 		coords = Card.coords
 		
+		for _Tile in Game.getAdjacentOrCloserTiles(Tile, Card.max_speed - 1).filter(func(x: TileGD): return !x.explored.getExploredByTeam(Card.team)):
+			_Tile.explored.addExploredTeam(Card.team)
+			
 		Tile.onOccupy(Card, apply_occupy_instant)
 		Card.setPositionToTile()
 

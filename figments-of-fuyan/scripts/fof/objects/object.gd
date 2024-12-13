@@ -153,3 +153,6 @@ func onProcessAction(action: Action) -> void:
 func onAdvanceTurn(_team: int) -> void:
 	pass
 #endregion
+
+func getMaxMovementHeight() -> float: # Returns whether card can go below it or not
+	return 0

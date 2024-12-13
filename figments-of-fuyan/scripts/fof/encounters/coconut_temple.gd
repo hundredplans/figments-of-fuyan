@@ -9,8 +9,8 @@ var rewards: Rewards
 func onFirstEntered(screen: Control) -> void:
 	super(screen)
 	var shilling_gain: MapEffectGD = Game.onCreateGainShillings(OPEN_SHILLINGS, self)
-	var Boon: BoonGD = SavedData.onLoadModel(Random.getRandomFofByBaseOdds(BoonInfo), self)
-	var Tool: ToolGD = SavedData.onLoadModel(Random.getRandomFofByBaseOdds(ToolInfo), self)
+	var Boon: BoonGD = SavedData.onLoadModel(Random.getRandomFofByOdds(BoonInfo), self)
+	var Tool: ToolGD = SavedData.onLoadModel(Random.getRandomFofByOdds(ToolInfo), self)
 	rewards = Rewards.new([shilling_gain, Boon, Tool])
 	
 func onEntered(screen: Control) -> void:
@@ -19,7 +19,7 @@ func onEntered(screen: Control) -> void:
 	onCreateRewardsUI("OpenPage", screen)
 	
 func canShowUp() -> bool:
-	return anyRequirementMet()
+	return true
 	
 func isRequirementMet(option: EncounterOptionDatastore) -> bool:
 	match option.name:

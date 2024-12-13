@@ -35,3 +35,6 @@ func getCharges() -> int:
 func onAscend(state: bool) -> void:
 	ascended = state
 	update_ascend.emit(state)
+	
+func isAddRequirementMet() -> bool: # Whether you can add this to your boons
+	return true

@@ -1,0 +1,52 @@
+[gd_scene load_steps=7 format=3 uid="uid://c18ndxg8x7gs3"]
+
+[ext_resource type="Script" path="res://scenes/common/tooltip/tooltip_item.gd" id="1_xd4af"]
+[ext_resource type="LabelSettings" uid="uid://dag33u8xdxeu0" path="res://resources/ui/label_settings/jacquard_medium.tres" id="2_e4hxn"]
+[ext_resource type="PackedScene" uid="uid://ki8iuvgxw73y" path="res://scenes/common/tooltip/card_tooltip_extra.tscn" id="3_n0xql"]
+[ext_resource type="Texture2D" uid="uid://cqe3wqg1v4gc" path="res://assets/sprites/game/cards/art_mini/frederic_the_fearless.png" id="3_p4jm1"]
+[ext_resource type="PackedScene" uid="uid://6nf3mir2i2rk" path="res://scenes/common/fancy_text/fancy_text_label.tscn" id="3_p6trs"]
+[ext_resource type="Resource" uid="uid://82i526nehndy" path="res://resources/ui/fancy_text/fancy_text_label_settings_small.tres" id="4_nifbc"]
+
+[node name="TooltipItem" type="PanelContainer"]
+custom_minimum_size = Vector2(500, 0)
+offset_right = 500.0
+offset_bottom = 77.0
+script = ExtResource("1_xd4af")
+CardTooltipExtraPacked = ExtResource("3_n0xql")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TopSide" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+
+[node name="TopIcon" type="TextureRect" parent="MarginContainer/VBoxContainer/TopSide"]
+unique_name_in_owner = true
+texture_filter = 1
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("3_p4jm1")
+expand_mode = 2
+
+[node name="NameLabel" type="Label" parent="MarginContainer/VBoxContainer/TopSide"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Frederic the Fearless"
+label_settings = ExtResource("2_e4hxn")
+
+[node name="TextLabel" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_p6trs")]
+unique_name_in_owner = true
+layout_mode = 2
+settings = ExtResource("4_nifbc")
+center = false
+
+[connection signal="mouse_entered" from="." to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="." to="." method="onMouseInUI" binds= [false]]

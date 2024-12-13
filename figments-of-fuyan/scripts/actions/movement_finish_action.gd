@@ -3,11 +3,15 @@ class_name MovementFinishAction extends Action
 var tiles: Array
 var Card: CardGD
 var phase: Game.Phases # Set by level in pre action
+var roll_for_ignore_behaviour: bool = true
 
 func _init(_Card: CardGD = null, _tiles: Array = []) -> void:
 	super()
 	Card = _Card
 	tiles = _tiles
+	
+func setIgnoreBehaviourRoll(state: bool) -> void:
+	roll_for_ignore_behaviour = state
 	
 func onPostAction() -> void:
 	for Tile in tiles:
@@ -21,7 +25,7 @@ func onPostAction() -> void:
 		
 		if phase in [Game.Phases.AI, Game.Phases.NEUTRAL]:
 			actions.append(
-				AITurnAction.new(NewCard) if NewCard != null else \
+				AITurnAction.new(NewCard, roll_for_ignore_behaviour) if NewCard != null else \
 				ChangePhaseAction.new(Game.Phases.NEUTRAL if Card.isAlly(1) else Game.Phases.HAND))
 		onAppendAction(actions)
 	

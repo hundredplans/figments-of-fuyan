@@ -13,6 +13,8 @@ var area: AreaGD
 var UI: Control
 var ActiveWorld: Node3D
 
+var is_camera_disabled_by_ui: bool
+
 const MOUSE_HOLD_SLOWDOWN: float = 0.005
 
 @onready var WorldEnv: WorldEnvironment = %WorldEnvironment
@@ -48,6 +50,8 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	MapCard.position = EnteredMapNode.position
 	Camera.position = getMapNodeDestination(EnteredMapNode) + CAMERA_OFFSET
 	
+	UI.screen_created.connect(onScreenCreated)
+	
 	setEnvironment()
 	for map_node in get_tree().get_nodes_in_group("MapNodesGD"):
 		map_node.pressed.connect(onMapNodePressed)
@@ -60,11 +64,11 @@ func onInitLoad() -> void:
 	
 func _input(event: InputEvent) -> void:
 	if Camera.current:
-		if Input.is_action_just_pressed("AltInput"):
+		if Input.is_action_just_pressed("AltInput") and !is_camera_disabled_by_ui:
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 			Camera.onDisableMovement(true)
 			get_viewport().warp_mouse(get_viewport().get_mouse_position())
-		elif Input.is_action_just_released("AltInput"):
+		elif Input.is_action_just_released("AltInput") and !is_camera_disabled_by_ui:
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 			Camera.onDisableMovement(false)
 			get_viewport().warp_mouse(get_viewport().get_mouse_position())
@@ -107,9 +111,9 @@ func onMapNodeFinished(_map_node: MapNodeGD) -> void:
 	is_unit_entered = false
 	onUpdateActionLock()
 	
+	onDisableCameraByUI(false)
 	if ActiveWorld != null:
 		ActiveWorld.queue_free()
-		Camera.disable_movement = false
 		WorldEnv.environment = area.info.base_environment
 #endregion
 
@@ -159,11 +163,17 @@ func onMapNodeCreateWorldScene(map_node: MapNodeGD, _ActiveWorld: Node3D) -> voi
 	ActiveWorld.setInfo(map_node)
 	
 	ActiveWorld.position = Vector3(0, 1000, 0)
-	Camera.disable_movement = true
+	
 	Camera.current = false
 	WorldEnv.environment = null
 #endregion
 
+#region Screen
+func onScreenCreated() -> void:
+	onDisableCameraByUI(true)
 #region Camera
-
+func onDisableCameraByUI(state: bool) -> void:
+	is_camera_disabled_by_ui = state
+	Camera.onDisableMovement(state)
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 #endregion

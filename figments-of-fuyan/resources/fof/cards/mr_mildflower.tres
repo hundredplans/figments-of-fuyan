@@ -2,8 +2,9 @@
 
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="1_5wykw"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_iocfo"]
-[ext_resource type="Image" uid="uid://qe6xg7rfo7n3" path="res://assets/sprites/game/cards/art_mini/mr_mildflower.png" id="1_lijaw"]
+[ext_resource type="Texture2D" uid="uid://qe6xg7rfo7n3" path="res://assets/sprites/game/cards/art_mini/mr_mildflower.png" id="1_lijaw"]
 [ext_resource type="Image" uid="uid://b32fyhkkap3o7" path="res://assets/sprites/game/cards/art_pop/mr_mildflower.png" id="1_pxu7r"]
+[ext_resource type="Resource" uid="uid://ck2eowtrmk57m" path="res://resources/fof/archetypes/docile.tres" id="2_kurxu"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="2_qt6uf"]
 [ext_resource type="PackedScene" uid="uid://mv1l5oygneow" path="res://assets/models/fof/cards/mr_mildflower.glb" id="3_qkak3"]
 [ext_resource type="Script" path="res://scripts/fof/cards/mr_mildflower.gd" id="4_8tp78"]
@@ -25,12 +26,6 @@ _bundled = {
 "version": 3
 }
 
-[sub_resource type="Resource" id="Resource_wg82r"]
-script = ExtResource("1_5wykw")
-id = 5
-first_init = false
-public_id = 0
-
 [resource]
 script = ExtResource("2_qt6uf")
 attack = 1
@@ -38,7 +33,7 @@ health = 2
 speed = 2
 energy = 1
 rarity = 1
-initial_traits = Array[ExtResource("1_5wykw")]([SubResource("Resource_wg82r")])
+initial_traits = Array[ExtResource("1_5wykw")]([])
 active_abilities = Array[ExtResource("1_iocfo")]([])
 ability_text = "DOCILE; LAST WILL: Debuff units in vision -1 ATT for [1] Turn"
 flavor_text = ""
@@ -57,6 +52,7 @@ plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("1_5wykw")]([])
 ascended_ability_text = "DOCILE; LAST WILL: Debuff units in vision -2 ATT for [1] Turn"
+archetype = ExtResource("2_kurxu")
 id = 26
 name = "Mr Mildflower"
 gdscript = ExtResource("4_8tp78")

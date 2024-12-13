@@ -40,15 +40,26 @@ label_settings = ExtResource("3_hsbf2")
 [node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+alignment = 1
+
+[node name="Filler" type="Control" parent="MainContainer/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
 
 [node name="DescriptionLabel" parent="MainContainer/MarginContainer/HBoxContainer/VBoxContainer" instance=ExtResource("3_uash2")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
-fit_content = false
+mouse_filter = 0
 autowrap_mode = 0
 center = false
+hover = true
+
+[node name="Filler2" type="Control" parent="MainContainer/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
 
 [node name="RequirementLabel" parent="." instance=ExtResource("3_uash2")]
 unique_name_in_owner = true
@@ -70,3 +81,4 @@ settings = ExtResource("4_q75o2")
 
 [connection signal="mouse_entered" from="." to="." method="onMouseInUI" binds= [true]]
 [connection signal="mouse_exited" from="." to="." method="onMouseInUI" binds= [false]]
+[connection signal="mouse_in_ui" from="MainContainer/MarginContainer/HBoxContainer/VBoxContainer/DescriptionLabel" to="." method="onMouseInUI"]

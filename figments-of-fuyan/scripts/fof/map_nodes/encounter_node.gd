@@ -3,7 +3,7 @@ extends MapNodeGD
 var encounter: EncounterGD
 var encounter_data: SavedDataEncounter
 
-const FORCE_NODE_ID: int = 0
+const FORCE_NODE_ID: int = 6
 
 #region Load / Save
 func onLoadData(data: SavedData) -> void:
@@ -15,7 +15,7 @@ func onSave() -> SavedDataMapNode:
 	return SavedDataEncounterNode.new(info.id, false, public_id, map_location, links, is_entered, is_finished, rotation.y, encounter_data)
 #endregion
 
-#region Entering
+#region Enteringe
 func onEntered() -> void:
 	super()
 	
@@ -32,13 +32,14 @@ func onEntered() -> void:
 	else: encounter = SavedData.onLoadModel(encounter_data, self)
 	
 	create_screen.emit(self, screen) # Important order
+	
 	encounter.load_level.connect(onLoadLevel)
 	encounter.onEntered(screen)
 	
 	encounter_data = null
 	if encounter == null: # Means a fight encounter was created or there's none available
 		onFinished()
-		return 
+		return
 	
 func onGenerateEncounter() -> EncounterGD:
 	Game.save_file.onUpdateSafeEncounterCount(1)
@@ -55,15 +56,15 @@ func onGenerateEncounter() -> EncounterGD:
 
 func onCreateEncounterThatCanShowUp(encounter_infos: Array) -> EncounterGD:
 	if !encounter_infos.is_empty():
-		var encounter_info: EncounterInfo = encounter_infos.pick_random()
+		var encounter_info: EncounterInfo = getRandomEncounterInfo(encounter_infos)
+		encounter_infos.pick_random()
 		encounter_infos.erase(encounter_info)
 		
 		encounter = SavedData.onLoadModel(encounter_info.saved_data.new(encounter_info.id, true), Game.area)
 		
 		if !encounter.canShowUp():
 			encounter.queue_free()
-			onCreateEncounterThatCanShowUp(encounter_infos)
-			return
+			return onCreateEncounterThatCanShowUp(encounter_infos)
 		Game.area.onAppendToEncouteredEncounterIds(encounter.info.id)
 		return encounter
 	assert(false) # No valid encounters found
@@ -71,6 +72,24 @@ func onCreateEncounterThatCanShowUp(encounter_infos: Array) -> EncounterGD:
 	
 func onCreateFightEncounter() -> EncounterGD:
 	return SavedData.onLoadModel(SavedDataEncounter.new(8, true), Game.area)
+	
+func getRandomEncounterInfo(encounters: Array) -> EncounterInfo: # Divinus not on holy path more likely to be negative
+	if Game.save_file.getChampionCard().info.id == 2 and !isHoly():
+		var negative_encounters: Array = encounters.filter(func(x: EncounterInfo): return x.state == EncounterInfo.States.NEGATIVE)
+		var other_encounters: Array = encounters.filter(func(x: EncounterInfo): return x.state != EncounterInfo.States.NEGATIVE)
+		var weights: Dictionary = {}
+		for negative_encounter in negative_encounters:
+			weights[negative_encounter] = 1 + Game.getDivinusEncounterNegativePlusOdds()
+			
+		for other_encounter in other_encounters:
+			weights[other_encounter] = 1.0
+			
+		var total_weight: int = weights.values().reduce(func(x: int, y: int): return x + y, 0)
+		for key in weights:
+			weights[key] /= total_weight
+		return Random.getRandomKeyVariant(weights)
+	return encounters.pick_random()
+	
 #endregion
 
 #region Finishing

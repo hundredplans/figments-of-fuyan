@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ArchetypeInfo" load_steps=6 format=3 uid="uid://27tqk2ax0xx2"]
+
+[ext_resource type="Script" path="res://scripts/fof/archetypes/archetype.gd" id="1_jmir6"]
+[ext_resource type="Script" path="res://scripts/fof_info/archetypes/archetype_info.gd" id="1_phawl"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/behaviours/runner.gd" id="1_wfttr"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/behaviours/unengager.gd" id="2_3ext7"]
+[ext_resource type="Script" path="res://scripts/saved_data/archetypes/saved_data_archetype.gd" id="2_7beqm"]
+
+[resource]
+script = ExtResource("1_phawl")
+behaviours = Array[GDScript]([ExtResource("1_wfttr"), ExtResource("2_3ext7")])
+description = "Don't rely on them under pressure, but at least they play safe"
+id = 2
+name = "Coward"
+gdscript = ExtResource("1_jmir6")
+saved_data = ExtResource("2_7beqm")

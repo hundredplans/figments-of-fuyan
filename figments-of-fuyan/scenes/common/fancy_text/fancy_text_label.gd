@@ -4,57 +4,92 @@ const FANCY_TEXT_RESOURCE_PATH: String = "res://resources/ui/fancy_text/fancy_te
 const ROBOTO_FONT_PATH: String = "res://assets/fonts/roboto.ttf"
 @export var settings: FancyTextLabelSettings
 @export var center: bool = true
+@export var right: bool = false
+@export var hover: bool = false
+var hoverables: Array[FancyTextHoverable] = []
+var infos: Array[InfoAscended]
+
+signal mouse_in_ui
 
 func setText(_text: String) -> void:
-	if !_text.is_empty():
-		text = _text
-		var fancy_text: FancyText = load(FANCY_TEXT_RESOURCE_PATH)
-		var regex := RegEx.new()
+	text = _text
+	if text.is_empty(): return
 		
-		onCardNamesReplace(regex)
-		onFofIconsReplace(regex, fancy_text)
-		onFofImagesReplace(regex, fancy_text)
-		onColoredTextReplace(regex, fancy_text)
-		text = text.insert(0, "[outline_size=" + str(settings.outline_size) + "][font=" + \
-		ROBOTO_FONT_PATH + "][font_size={" + str(settings.font_size) + "}]")
-		text += "[/font_size][/font][/outline_size]"
+	var fancy_text: FancyText = load(FANCY_TEXT_RESOURCE_PATH)
+	var regex := RegEx.new()
+	
+	onFofIconsReplace(regex, fancy_text)
+	onFofImagesReplace(regex, fancy_text)
+	onColoredTextReplace(regex, fancy_text)
+	
+	text = text.insert(0, "[outline_size=" + str(settings.outline_size) + "][font=" + \
+	ROBOTO_FONT_PATH + "][font_size={" + str(settings.font_size) + "}]")
+	text += "[/font_size][/font][/outline_size]"
+
+	if center:
+		text = text.insert(0, "[center]")
+		text += "[/center]"
 		
-		if center:
-			text = text.insert(0, "[center]")
-			text += "[/center]"
+	elif right:
+		text = text.insert(0, "[right]")
+		text += "[/right]"
 
 func onColoredTextReplace(regex: RegEx, fancy_text: FancyText) -> void:
-	for colored_text in Game.Rarities:
-		pass
+	for rarity in Game.Rarities.values():
+		var colored_text: String = Game.getRarityString(rarity)
+		var color: Color = Game.getRarityColor(rarity)
+		regex.compile("a?" + colored_text)
+		
+		var offset: int = 0
+		while(true):
+			var _result: RegExMatch = regex.search(text, offset)
+			if _result == null: break
+			var result: String = _result.get_string()
+			var new_result: String = onReplaceCardName(colored_text, result[0] == "a", color)
+			var replace_index: int = _result.get_start()
+				
+			offset = _result.get_end() + (new_result.length() - result.length())
+			text = text.left(replace_index) + new_result + text.right(-(replace_index + result.length()))
+
+func onReplaceCardName(colored_text: String, ascended: bool, color: Color) -> String:
+	var new_result: String = "[color=" + color.to_html() + "]" + colored_text + "[/color]"
+	if ascended:
+		new_result = new_result.insert(0, "[outline_color=ffffff]")
+		new_result += "[/outline_color]"
+	return new_result
 
 func _ready() -> void:
 	setText(text)
 	clip_contents = false
 
-func onCardNamesReplace(regex: RegEx) -> void:
-	regex.compile("{id=\\d+,a=[ft],[a-zA-Z]+}")
-	while(true):
-		var _result: RegExMatch = regex.search(text)
-		if _result == null: break
-		
-		var result: String = _result.get_string()
-		text = text.replace(result, "[color=light_slate_gray]Palmy[/color]")
-
 func onFofIconsReplace(regex: RegEx, fancy_text: FancyText) -> void:
 	for fof_icon_fancy_text in fancy_text.icons:
-		regex.compile("(\\[" + str(fof_icon_fancy_text.name) + "=[0-9]+\\])")
+		regex.compile("(\\[a?" + str(fof_icon_fancy_text.name) + "=[0-9]+\\])")
+		var offset: int = 0
 		while(true):
-			var _result: RegExMatch = regex.search(text)
+			var _result: RegExMatch = regex.search(text, offset)
 			if _result == null: break
 			
 			var result: String = _result.get_string()
-			var icon_path: String = Helper.getFofInfoID(fof_icon_fancy_text.fof_type, int(result)).getTextIcon().resource_path
+			var id: int = int(result)
+			var info: FofInfo = Helper.getFofInfoID(fof_icon_fancy_text.fof_type, id)
+			
+			var icon_path: String = info.getTextIcon().resource_path
+			hoverables.append(FancyTextHoverable.new(id, fof_icon_fancy_text.fof_type))
 			
 			var icon_size: String = str(int(settings.font_size * 1.5))
 			var new_result: String = "[img=" + icon_size + "x" + icon_size + ",center]" + icon_path + "[/img]"
+			var ascended: bool = result[1] == "a"
+			new_result = new_result.insert(0, onReplaceCardName(info.name, ascended, Game.getRarityColor(info.rarity)) + " ")
+			infos.append(InfoAscended.new(info, ascended))
+			
+<<<<<<< HEAD
+=======
 			var replace_index: int = _result.get_start()
+			offset = _result.get_end() + (new_result.length() - result.length())
 			text = text.left(replace_index) + new_result + text.right(-(replace_index + result.length()))
 			
+>>>>>>> c762a9152bdd878227ea4edbe90ada105abb7576
 func onFofImagesReplace(regex: RegEx, fancy_text: FancyText) -> void:
 	for image_fancy_text in fancy_text.images:
 		var compile_text: String = image_fancy_text.name
@@ -79,6 +114,23 @@ func onFofImagesReplace(regex: RegEx, fancy_text: FancyText) -> void:
 			var replace_index: int = _result.get_start()
 			text = text.left(replace_index) + replacement_string + text.right(-(replace_index + result.length()))
 
-
 func _on_child_entered_tree(node: Control) -> void:
 	node.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+#region Hover
+func setHover(state: bool) -> void:
+	hover = state
+	
+var is_mouse_in_ui: bool
+func onMouseInUI(state: bool) -> void:
+	is_mouse_in_ui = state
+	mouse_in_ui.emit(is_mouse_in_ui)
+	if hover:
+		var infos: Array = hoverables.map(func(x: FancyTextHoverable): return Helper.getFofInfoID(x.type, x.id))
+		Game.onMouseInUITooltip(is_mouse_in_ui, infos, self)
+#endregion
+
+#region Tooltip Infos
+func getInfos() -> Array[InfoAscended]:
+	return infos
+#endregion

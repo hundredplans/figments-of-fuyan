@@ -1,10 +1,16 @@
-[gd_scene load_steps=7 format=3 uid="uid://byg8f1pn2h8u1"]
+[gd_scene load_steps=13 format=3 uid="uid://byg8f1pn2h8u1"]
 
 [ext_resource type="Script" path="res://scenes/game/cards/ui/inspect_card_screen.gd" id="1_s3ffg"]
 [ext_resource type="Script" path="res://scenes/game/cards/ui/inspect_card_viewport.gd" id="2_4u3ql"]
 [ext_resource type="PackedScene" uid="uid://dxvuvb68hgxug" path="res://scenes/common/exit_button/exit_button.tscn" id="2_amdtx"]
 [ext_resource type="Environment" uid="uid://g3ihmrpunr2b" path="res://assets/environments/main_menu_environment.tres" id="2_e52jv"]
-[ext_resource type="PackedScene" uid="uid://dm4vpkb840j4g" path="res://scenes/common/tooltip/tooltip.tscn" id="2_xvib6"]
+[ext_resource type="PackedScene" uid="uid://c18ndxg8x7gs3" path="res://scenes/common/tooltip/tooltip_item.tscn" id="2_lde1q"]
+[ext_resource type="Texture2D" uid="uid://bxorkkcsj7ba7" path="res://assets/sprites/game/cards/field_info/turn_active.png" id="3_vce4x"]
+[ext_resource type="Texture2D" uid="uid://b2lh8txdjfbpi" path="res://assets/sprites/game/cards/field_info/turn_passed.png" id="4_xlksm"]
+[ext_resource type="Texture2D" uid="uid://c8x28rsutci1j" path="res://assets/sprites/game/cards/common/extra/awakened_in_combat.png" id="5_o2jqu"]
+[ext_resource type="LabelSettings" uid="uid://dbh1brjnbxe8c" path="res://resources/ui/label_settings/roboto_large.tres" id="5_udr5m"]
+[ext_resource type="Texture2D" uid="uid://cgsjk5jrikksx" path="res://assets/sprites/game/cards/common/extra/temporary_card_marker.png" id="6_gl5fh"]
+[ext_resource type="LabelSettings" uid="uid://b44saayykrffg" path="res://resources/ui/label_settings/roboto_medium.tres" id="6_q5hos"]
 
 [sub_resource type="World3D" id="World3D_2ijdp"]
 environment = ExtResource("2_e52jv")
@@ -17,7 +23,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_s3ffg")
-tooltip = ExtResource("2_xvib6")
+TooltipItemPackedScene = ExtResource("2_lde1q")
+ActiveTurnIcon = ExtResource("3_vce4x")
+PassedTurnIcon = ExtResource("4_xlksm")
+AwakenedInCombatIcon = ExtResource("5_o2jqu")
+TemporaryCardIcon = ExtResource("6_gl5fh")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 self_modulate = Color(1, 1, 1, 0.658824)
@@ -47,32 +57,60 @@ layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="SubviewportContainer" type="SubViewportContainer" parent="PanelContainer/MarginContainer/HBoxContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="ArchetypePanel" type="PanelContainer" parent="PanelContainer/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"WhitePanelContainer"
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/ArchetypePanel"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/ArchetypePanel/MarginContainer"]
+layout_mode = 2
+
+[node name="ArchetypeNameLabel" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/ArchetypePanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+label_settings = ExtResource("5_udr5m")
+horizontal_alignment = 1
+
+[node name="ArchetypeDescriptionLabel" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/ArchetypePanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+label_settings = ExtResource("6_q5hos")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="SubviewportContainer" type="SubViewportContainer" parent="PanelContainer/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
 stretch = true
 
-[node name="InspectSubviewport" type="SubViewport" parent="PanelContainer/MarginContainer/HBoxContainer/MarginContainer/SubviewportContainer"]
+[node name="InspectSubviewport" type="SubViewport" parent="PanelContainer/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/SubviewportContainer"]
 unique_name_in_owner = true
 own_world_3d = true
 world_3d = SubResource("World3D_2ijdp")
 transparent_bg = true
 handle_input_locally = false
-size = Vector2i(570, 1040)
+size = Vector2i(2, 2)
 size_2d_override_stretch = true
 render_target_update_mode = 4
 script = ExtResource("2_4u3ql")
 
-[node name="HiddenNode" type="Node3D" parent="PanelContainer/MarginContainer/HBoxContainer/MarginContainer/SubviewportContainer/InspectSubviewport"]
+[node name="HiddenNode" type="Node3D" parent="PanelContainer/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/SubviewportContainer/InspectSubviewport"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10000, 0, 10000)
 
-[node name="Camera3D" type="Camera3D" parent="PanelContainer/MarginContainer/HBoxContainer/MarginContainer/SubviewportContainer/InspectSubviewport/HiddenNode"]
+[node name="Camera3D" type="Camera3D" parent="PanelContainer/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/SubviewportContainer/InspectSubviewport/HiddenNode"]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 0, 3)
 
-[node name="ModelParent" type="Node3D" parent="PanelContainer/MarginContainer/HBoxContainer/MarginContainer/SubviewportContainer/InspectSubviewport/HiddenNode"]
+[node name="ModelParent" type="Node3D" parent="PanelContainer/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/SubviewportContainer/InspectSubviewport/HiddenNode"]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 

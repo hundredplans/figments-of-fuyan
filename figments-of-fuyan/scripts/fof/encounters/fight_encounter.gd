@@ -1,7 +1,7 @@
 extends EncounterGD
 
 func canShowUp() -> bool:
-	return anyRequirementMet()
+	return true
 	
 func isRequirementMet(option: EncounterOptionDatastore) -> bool:
 	match option.name:
@@ -24,7 +24,7 @@ func onStartFight() -> void:
 	
 	var enemy_spawn_amount: int = min(randi_range(level_info.enemy_min_spawn_amount, level_info.enemy_max_spawn_amount), empty_spawn_coords.size() - 1)
 	var budget: int = Game.area.getBudget(progress, level_info.enemy_budget_offset)
-	var enemy_spawns: Array = Game.area.setEnemySpawnsFromBudget(budget, enemy_spawn_amount, empty_spawn_coords, progress)
+	var enemy_spawns: Array = Game.area.setEnemySpawnsFromBudget(budget, enemy_spawn_amount, empty_spawn_coords, progress, false)
 	
 	var level_data: SavedDataLevel = level_info.saved_data.new(level_info.id, true, 0, level_info.data.duplicate(), enemy_spawns)
 	load_level.emit(level_data)

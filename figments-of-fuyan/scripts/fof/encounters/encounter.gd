@@ -23,12 +23,14 @@ func onLoadData(data: SavedData) -> void:
 		set(custom_variable, ability_save[custom_variable])
 	
 func anyRequirementMet() -> bool:
-	var start_page: EncounterPageDatastore = info.pages.filter(func(x: EncounterPageDatastore): return x.title == "StartPage")
-	return start_page.options.any(isRequirementMet)
+	var start_page: EncounterPageDatastore = info.pages.filter(func(x: EncounterPageDatastore): return x.title == "StartPage")[0]
+	var options: Array = start_page.options.filter(func(x: EncounterOptionDatastore): return !x.requirement.is_empty())
+	return options.is_empty() or options.any(isRequirementMet)
 	
 func allRequirementMet() -> bool:
-	var start_page: EncounterPageDatastore = info.pages.filter(func(x: EncounterPageDatastore): return x.title == "StartPage")
-	return start_page.options.all(isRequirementMet)
+	var start_page: EncounterPageDatastore = info.pages.filter(func(x: EncounterPageDatastore): return x.title == "StartPage")[0]
+	var options: Array = start_page.options.filter(func(x: EncounterOptionDatastore): return !x.requirement.is_empty())
+	return options.is_empty() or options.all(isRequirementMet)
 
 func onOptionPressed(_option: EncounterOptionDatastore, _screen: Control) -> void:
 	pass

@@ -1,8 +1,10 @@
-[gd_resource type="Resource" script_class="AreaInfo" load_steps=9 format=3 uid="uid://divjktvvya1ee"]
+[gd_resource type="Resource" script_class="AreaInfo" load_steps=11 format=3 uid="uid://divjktvvya1ee"]
 
 [ext_resource type="Environment" uid="uid://g3ihmrpunr2b" path="res://assets/environments/main_menu_environment.tres" id="1_nr01x"]
 [ext_resource type="Image" uid="uid://crmlvrqh52rb8" path="res://assets/sprites/game/cards/common/art_background/palm_background.png" id="1_xwfqh"]
+[ext_resource type="Resource" uid="uid://csge3os3hg2x6" path="res://resources/fof/tile_objects/palm_tile.tres" id="2_lcnma"]
 [ext_resource type="Script" path="res://scripts/fof_info/area_info.gd" id="2_omppq"]
+[ext_resource type="Environment" uid="uid://ccj8myeinjes5" path="res://assets/environments/palm_evening_environment.tres" id="3_w51i3"]
 [ext_resource type="Script" path="res://scripts/fof/areas/area.gd" id="4_xelp4"]
 [ext_resource type="Resource" uid="uid://dp6nk63861mic" path="res://resources/datastore/decorations/PalmOverworld.tres" id="5_at1h3"]
 [ext_resource type="Resource" uid="uid://ctfukjvhoe8nm" path="res://resources/datastore/world/world_one.tres" id="5_dy22h"]
@@ -17,8 +19,9 @@ card_ids = Array[int]([2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 
 encounter_ids = Array[int]([1, 2, 3, 4, 5, 6])
 overworld_decoration = ExtResource("5_at1h3")
 base_environment = ExtResource("1_nr01x")
-late_environment = ExtResource("1_nr01x")
-level_script = ExtResource("6_jqirr")
+elite_environment = ExtResource("3_w51i3")
+base_level_script = ExtResource("6_jqirr")
+base_tile_info = ExtResource("2_lcnma")
 id = 1
 name = "Coconut Springs"
 gdscript = ExtResource("4_xelp4")

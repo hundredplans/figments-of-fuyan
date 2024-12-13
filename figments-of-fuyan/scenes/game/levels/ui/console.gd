@@ -50,6 +50,10 @@ func damage(damage: int) -> void:
 
 func tool(name_id: Variant, ascended: bool = false) -> void:
 	if SpectateObject is CardGD:
+		if name_id is int and name_id == 0: # Remove tool if id is 0
+			level.onPushAction(RemoveToolAction.new(SpectateObject))
+			return
+			
 		var info: ToolInfo = getNameIDFofInfo(name_id, ToolInfo)
 		if info != null:
 			level.onPushAction(\

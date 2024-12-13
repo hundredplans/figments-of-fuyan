@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=11 format=3 uid="uid://7jxiypup4yku"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://7jxiypup4yku"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_qrljm"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="2_amlc3"]
+[ext_resource type="Resource" uid="uid://wd554ki4elsg" path="res://resources/fof/archetypes/ordinary.tres" id="2_khxhx"]
 [ext_resource type="Texture2D" uid="uid://b4qt1fl4q0slo" path="res://assets/sprites/game/cards/art_mini/palmer.png" id="2_s1x8n"]
 [ext_resource type="Image" uid="uid://i34owvhii218" path="res://assets/sprites/game/cards/art_pop/palmer.png" id="2_xsqxw"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_qc4i1"]
@@ -51,6 +52,7 @@ plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("3_qc4i1")]([])
 ascended_ability_text = ""
+archetype = ExtResource("2_khxhx")
 id = 5
 name = "Palmer"
 gdscript = ExtResource("3_rgqu8")

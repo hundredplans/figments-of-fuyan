@@ -17,7 +17,7 @@ func onBoon(action: DeathAction) -> void:
 	skeleton_charges -= 1
 	var Card: CardGD = action.Defender
 	
-	var NewCard: CardGD = Game.getNewFieldCard(29, action.Tile, 0, Card.tile_rotation, ascended)
+	var NewCard: CardGD = Game.getNewFieldCard(29, action.Tile, 0, Card.tile_rotation, ascended, true)
 	onPushAction(AwakenAction.new(NewCard, action.Tile))
 
 func onBoonAdded() -> void:

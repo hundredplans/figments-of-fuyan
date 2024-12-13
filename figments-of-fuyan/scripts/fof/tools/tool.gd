@@ -5,6 +5,8 @@ var ascended: bool
 var active_effects: Array[ActiveEffectDatastore]
 var ability_save: Dictionary
 
+signal update_active_effect_description
+
 func onLoadData(data: SavedData) -> void:
 	ascended = data.ascended
 	active_effects = data.active_effects
@@ -57,6 +59,9 @@ func getActiveEffectDisabled(_active_effect: ActiveEffectDatastore) -> bool:
 	
 func setActiveEffectUsed(active_effect: ActiveEffectDatastore, used: bool) -> void:
 	active_effect.used = used
+	
+func getActiveEffectDescription(_active_effect: ActiveEffectDatastore, description: String) -> String:
+	return description
 	
 func onToolEquipped() -> void:
 	pass

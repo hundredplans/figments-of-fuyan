@@ -1,0 +1,20 @@
+[gd_scene load_steps=7 format=3 uid="uid://bv0p44ww5o582"]
+
+[ext_resource type="PackedScene" uid="uid://bd2esqpmo73tk" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="1_qrue0"]
+[ext_resource type="Shader" uid="uid://dapg4jw7ocvq5" path="res://resources/shaders/base_material_ascended.tres" id="2_qrmva"]
+[ext_resource type="Texture2D" uid="uid://b685s17cryxbp" path="res://assets/textures/base_texture_attributes.png" id="3_2gnm7"]
+[ext_resource type="Texture2D" uid="uid://ywduaqhno8y0" path="res://assets/textures/base_texture_emission.png" id="3_w1s01"]
+[ext_resource type="Texture2D" uid="uid://ddsn8uavsg04i" path="res://assets/textures/base_texture_color.png" id="4_phm0k"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4roy8"]
+render_priority = 0
+shader = ExtResource("2_qrmva")
+shader_parameter/EmissionStrength = 3.0
+shader_parameter/tx_attributes = ExtResource("3_2gnm7")
+shader_parameter/tx_color = ExtResource("4_phm0k")
+shader_parameter/tx_emission = ExtResource("3_w1s01")
+
+[node name="frederic_the_fearless" instance=ExtResource("1_qrue0")]
+
+[node name="FredericTheFearless" parent="Armature/Skeleton3D" index="0"]
+surface_material_override/0 = SubResource("ShaderMaterial_4roy8")

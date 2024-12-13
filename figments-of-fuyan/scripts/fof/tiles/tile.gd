@@ -10,8 +10,10 @@ var is_card_moving: bool = false
 var is_action_lock: bool = false
 var in_active_effect_range: bool = false
 var in_active_effect_pickable: bool = false
+var max_movement_height: float
 
 var movement_path: MovementPathGD
+var explored: ExploredGD
 #endregion
 
 #region Saved Data
@@ -132,7 +134,7 @@ func onCreateTileFill(state: bool) -> String:
 #endregion
 #region Save / Load
 func onSave() -> SavedDataGameObject:
-	return SavedDataTile.new(info.id, false, public_id, coords, tile_rotation, vision_datastore, variation, tile_fill, occupy_state)
+	return SavedDataTile.new(info.id, false, public_id, coords, tile_rotation, vision_datastore, variation, tile_fill, occupy_state, explored)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -149,6 +151,7 @@ func onLoadModel() -> void:
 func onLoadDataLevel() -> void:
 	super()
 	setOutlineMaterial()
+	explored = ExploredGD.new()
 	
 func onProcessAction(_action: Action) -> void:
 	pass
@@ -156,6 +159,7 @@ func onProcessAction(_action: Action) -> void:
 #region Occupied Objects
 func setOccupiedObject(object: ObjectGD) -> void:
 	occupied_objects.append(object)
+	max_movement_height = max(max_movement_height, object.getMaxMovementHeight())
 	
 func getAttackableIObjects() -> Array:
 	return occupied_objects.filter(func(x: ObjectGD): return x is IObjectGD)
@@ -216,6 +220,10 @@ func getMovementPathSize() -> int:
 	
 func getMovementPathTiles() -> Array:
 	return movement_path.tiles
+	
+func isBelowMaxMovementHeight(Card: CardGD) -> bool:
+	if max_movement_height == 0: return true
+	return Card.info.top + Card.position.y < (max_movement_height + getCardPosition().y)
 #endregion
 
 #region Ramps

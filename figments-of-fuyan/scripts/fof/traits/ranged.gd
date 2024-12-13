@@ -14,3 +14,6 @@ func onTraitAdded() -> void:
 func onClear() -> void:
 	super()
 	onPushAction(ChangeAttackRangeAction.new(Card, 1))
+
+func getDescription() -> String:
+	return Helper.getDescription(super(), [ranged])

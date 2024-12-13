@@ -37,7 +37,7 @@ func onSteppedOn(action: OccupyAction) -> void:
 	onPushAction(actions)
 
 func onSave() -> SavedDataIObject:
-	ability_save['stepped_on_choice'] = stepped_on_choice
+	ability_save['stepped_	on_choice'] = stepped_on_choice
 	ability_save['stepped_on_card_public_id'] = stepped_on_card_public_id
 	return super()
 

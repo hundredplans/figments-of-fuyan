@@ -2,7 +2,6 @@ extends Node
 
 #region Exports
 @export var DEFAULT_LEVEL_SIZE: int = 5
-@export var MAX_ELEVATION: int = 10
 @export var MAX_LEVEL_SIZE: int = 30
 @export var SCROLL_DELAY: float = 0.2
 @export var ROTATION_LOCK_DELAY: float = 0.15
@@ -25,6 +24,10 @@ var base_elevation: int = -1
 
 var HoverStaticBody: StaticBody3D
 var HoverModel: TileObjectGD
+
+var base_tile_info: TileInfo
+var selected_area_id: int = 1
+
 
 #endregion
 #region Helper Functions
@@ -71,8 +74,6 @@ func _ready() -> void:
 	all_tile_objects = Helper.getFofInfoArray(TileObjectInfo)
 	setAllTileObjectsToWords()
 	setAreaOptionButtonItems()
-	onNewEmptyLevel()
-	
 	OverworldButton.visible = false
 		
 func setAllTileObjectsToWords() -> void:
@@ -259,7 +260,7 @@ func onHoverModelPlaced() -> void:
 	onTileObjectInfoSelected(save_data, false)
 		
 func onPlaceBaseTile(coords: Vector4i) -> TileGD:
-	return SavedData.onLoadModel(SavedDataTile.new(1, false, 0, coords, 0, VisionDatastore.new(), int(is_overworld) * -1), World)
+	return SavedData.onLoadModel(SavedDataTile.new(base_tile_info.id, false, 0, coords, 0, VisionDatastore.new(), int(is_overworld) * -1), World)
 	
 #endregion
 #region Elevation
@@ -267,7 +268,7 @@ func onPlaceBaseTile(coords: Vector4i) -> TileGD:
 @onready var BaseElevationLabel: Label = %BaseElevationLabel
 func setBaseElevation(_base_elevation: int) -> void:
 	if _base_elevation != base_elevation:
-		base_elevation = clamp(_base_elevation, 0, MAX_ELEVATION)
+		base_elevation = max(_base_elevation, 0)
 		BaseElevationLabel.text = "Elevation: " + str(base_elevation)
 		get_tree().call_group("TileStaticBody", "queue_free")
 		
@@ -386,10 +387,6 @@ const DECORATION_PATH: String = "res://resources/datastore/decorations/"
 @onready var LoadLevelContainer: Container = %LoadLevelContainer
 @onready var LoadLevels: Control = %LoadLevels
 
-var AREA_TO_LEVEL_INFO: Dictionary = {
-	1: PalmLevelInfo,
-}
-
 func _on_load_button_pressed():
 	LoadLevels.visible = !LoadLevels.visible
 	for child in LoadLevelContainer.get_children(): child.queue_free()
@@ -431,9 +428,12 @@ func onMouseInUI(state: bool) -> void:
 #endregion
 #region Area Option Button
 func setAreaOptionButtonItems() -> void:
+	var index: int = 0
 	for area_info in Helper.getFofInfoArray(AreaInfo):
 		AreaOptionButton.add_item(area_info.name, area_info.id)
-	AreaOptionButton.select(0)
+		if area_info.id == selected_area_id:
+			onAreaOptionButtonSelected(index)
+		index += 1
 	
 #endregion
 #region Overworld
@@ -462,7 +462,7 @@ func onNewEmptyLevel(_is_overworld: bool = false) -> void:
 				if abs(y) <= Y_MAX: onPlaceBaseTile(Vector4i(x, y, -x-y, 0))
 		return
 		
-	loaded = AREA_TO_LEVEL_INFO[AreaOptionButton.get_selected_id()].new()
+	loaded = Helper.getFofInfoID(AreaInfo, selected_area_id).base_level_script.new()
 	for x in range(-DEFAULT_LEVEL_SIZE, (DEFAULT_LEVEL_SIZE + 1)):
 		for y in range(max(-DEFAULT_LEVEL_SIZE, -x - DEFAULT_LEVEL_SIZE), min(DEFAULT_LEVEL_SIZE, -x + DEFAULT_LEVEL_SIZE) + 1):
 			onPlaceBaseTile(Vector4i(x, y, -x-y, 0))
@@ -472,7 +472,7 @@ func onSaveLevel() -> void:
 	if level_name.is_empty(): return
 	if !save_as_decoration:
 		if loaded is DecorationDatastore:
-			loaded = AREA_TO_LEVEL_INFO[AreaOptionButton.get_selected_id()].new()
+			loaded = Helper.getFofInfoID(AreaInfo, selected_area_id).base_level_script.new()
 			
 		if level_name != loaded.name:
 			var new_level: LevelInfo = onFindLevelByName(level_name)
@@ -523,7 +523,9 @@ func onLoadLevel(loaded_info: Variant) -> void:
 	
 	for data in loaded.data: SavedData.onLoadModel(data, World)
 	
-func _on_area_option_button_item_selected(_index: int) -> void:
+func onAreaOptionButtonSelected(_index: int = 0) -> void:
+	selected_area_id = AreaOptionButton.get_selected_id()
+	base_tile_info = Helper.getFofInfoID(AreaInfo, selected_area_id).base_tile_info
 	onNewEmptyLevel()
 	
 func onFindLevelByName(level_name: String) -> LevelInfo:

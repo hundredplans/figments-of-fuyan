@@ -1,9 +1,4 @@
-extends Control
-
-signal finished
-
-var save_file: SaveFileGD
-var UI: Control
+extends MapNodeScreen
 
 const TRANSFORM_WAIT_PRESSED_TIME: float = 1.5
 const CARD_FLIP_TIME: float = 0.25
@@ -25,11 +20,8 @@ const CARD_FLIP_TIME: float = 0.25
 @export var PurchasableToolPacked: PackedScene
 @export var PurchasableTransformPacked: PackedScene
 
-var World: Node3D
 func setInfo(_save_file: SaveFileGD, _area: AreaGD, _World: Node3D, _UI: Control, map_node: MapNodeGD) -> void:
-	World = _World
-	UI = _UI
-	save_file = _save_file
+	super(_save_file, _area, _World, _UI, map_node)
 	var items: Array = map_node.items
 	var boon_ids: Array = []
 	

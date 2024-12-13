@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://b2t11vycsrbk"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=13 format=3 uid="uid://b2t11vycsrbk"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_ljhej"]
 [ext_resource type="Image" uid="uid://bek6ns5qil350" path="res://assets/sprites/game/cards/art_pop/hocus_palmus.png" id="2_6ibk4"]
-[ext_resource type="Image" uid="uid://dorudq0txf7sh" path="res://assets/sprites/game/cards/art_mini/hocus_palmus.png" id="2_6sx50"]
+[ext_resource type="Texture2D" uid="uid://dorudq0txf7sh" path="res://assets/sprites/game/cards/art_mini/hocus_palmus.png" id="2_6sx50"]
+[ext_resource type="Resource" uid="uid://31nmui4k0kfh" path="res://resources/fof/archetypes/tactician.tres" id="2_452pe"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_wy73v"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_e1s4j"]
 [ext_resource type="Script" path="res://scripts/fof/cards/hocus_palmus.gd" id="3_pivk6"]
@@ -64,6 +65,7 @@ plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("2_wy73v")]([])
 ascended_ability_text = "ABILITY [2]: Heal an injured ally on field [2] HP and TELEPORT them to a spawn tile"
+archetype = ExtResource("2_452pe")
 id = 19
 name = "Hocus Palmus"
 gdscript = ExtResource("3_pivk6")

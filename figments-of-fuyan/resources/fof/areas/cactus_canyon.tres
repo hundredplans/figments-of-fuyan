@@ -1,15 +1,26 @@
-[gd_resource type="Resource" script_class="AreaInfo" load_steps=5 format=3 uid="uid://k7lq48618j8v"]
+[gd_resource type="Resource" script_class="AreaInfo" load_steps=10 format=3 uid="uid://k7lq48618j8v"]
 
 [ext_resource type="Image" uid="uid://ck15r1yclfv0c" path="res://assets/sprites/game/cards/common/art_background/cactus_background.png" id="1_7c2sc"]
+[ext_resource type="Environment" uid="uid://g3ihmrpunr2b" path="res://assets/environments/main_menu_environment.tres" id="1_kjyf0"]
 [ext_resource type="Script" path="res://scripts/fof/areas/area.gd" id="2_8dlfa"]
 [ext_resource type="Script" path="res://scripts/fof_info/area_info.gd" id="2_jv8bu"]
+[ext_resource type="Script" path="res://scripts/fof_info/levels/cactus_level_info.gd" id="2_wdd6u"]
+[ext_resource type="Resource" uid="uid://cxinmol18hqxb" path="res://resources/fof/tile_objects/cactus_tile.tres" id="2_yms24"]
 [ext_resource type="Script" path="res://scripts/saved_data/saved_data_area.gd" id="3_te6v3"]
+[ext_resource type="Resource" uid="uid://d0cjgv61ag0tu" path="res://resources/datastore/decorations/CactusOverworld.tres" id="6_7g1ri"]
+[ext_resource type="Resource" uid="uid://c8epcaodidvwx" path="res://resources/datastore/world/world_two.tres" id="8_bcf6s"]
 
 [resource]
 script = ExtResource("2_jv8bu")
-world = 1
+world = ExtResource("8_bcf6s")
 card_background = ExtResource("1_7c2sc")
 card_ids = Array[int]([3, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55])
+encounter_ids = Array[int]([])
+overworld_decoration = ExtResource("6_7g1ri")
+base_environment = ExtResource("1_kjyf0")
+elite_environment = ExtResource("1_kjyf0")
+base_level_script = ExtResource("2_wdd6u")
+base_tile_info = ExtResource("2_yms24")
 id = 2
 name = "Cactus Canyon"
 gdscript = ExtResource("2_8dlfa")

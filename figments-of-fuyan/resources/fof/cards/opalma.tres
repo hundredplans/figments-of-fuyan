@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=11 format=3 uid="uid://clsku6huprg3a"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://clsku6huprg3a"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_76r06"]
+[ext_resource type="Resource" uid="uid://6j57uasj8x66" path="res://resources/fof/archetypes/reinforcer.tres" id="2_5ewew"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="2_6qwcd"]
-[ext_resource type="Image" uid="uid://cgsw5wofpuh4" path="res://assets/sprites/game/cards/art_mini/opalma.png" id="2_aepkj"]
+[ext_resource type="Texture2D" uid="uid://cgsw5wofpuh4" path="res://assets/sprites/game/cards/art_mini/opalma.png" id="2_aepkj"]
 [ext_resource type="Script" path="res://scripts/fof/cards/opalma.gd" id="2_jvah2"]
 [ext_resource type="Image" uid="uid://bdo5p78id4v7b" path="res://assets/sprites/game/cards/art_pop/opalma.png" id="2_xx7ca"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_gw8u1"]
@@ -51,6 +52,7 @@ plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("3_gw8u1")]([])
 ascended_ability_text = "On Hit: Heal allies in vision equal to your DMG dealt"
+archetype = ExtResource("2_5ewew")
 id = 6
 name = "Opalma"
 gdscript = ExtResource("2_jvah2")

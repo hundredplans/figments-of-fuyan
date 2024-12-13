@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ArchetypeInfo" load_steps=6 format=3 uid="uid://ck2eowtrmk57m"]
+
+[ext_resource type="Script" path="res://scripts/fof/archetypes/archetype.gd" id="1_3b2ia"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/behaviours/runner.gd" id="1_jj455"]
+[ext_resource type="Script" path="res://scripts/fof_info/archetypes/archetype_info.gd" id="1_n3x3h"]
+[ext_resource type="Script" path="res://scripts/saved_data/archetypes/saved_data_archetype.gd" id="2_6ktdl"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/behaviours/teamer.gd" id="2_a6klx"]
+
+[resource]
+script = ExtResource("1_n3x3h")
+behaviours = Array[GDScript]([ExtResource("1_jj455"), ExtResource("2_a6klx")])
+description = "This is unilkely to attack nearby units"
+id = 9
+name = "Docile"
+gdscript = ExtResource("1_3b2ia")
+saved_data = ExtResource("2_6ktdl")

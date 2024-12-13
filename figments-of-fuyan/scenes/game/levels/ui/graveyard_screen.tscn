@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://dry5b1uioo2j7"]
+[gd_scene load_steps=4 format=3 uid="uid://dry5b1uioo2j7"]
 
 [ext_resource type="Script" path="res://scenes/game/levels/ui/graveyard_screen.gd" id="1_eqvxq"]
+[ext_resource type="LabelSettings" uid="uid://baxopkmeda53x" path="res://resources/ui/label_settings/roboto_huge.tres" id="2_7h1eu"]
 [ext_resource type="PackedScene" uid="uid://dxvuvb68hgxug" path="res://scenes/common/exit_button/exit_button.tscn" id="2_pwgym"]
 
 [node name="GraveyardScreen" type="Control"]
@@ -30,11 +31,38 @@ offset_bottom = 1080.0
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="GraveyardCards" type="GridContainer" parent="MarginContainer/HBoxContainer/ScrollContainer"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Allies"
+label_settings = ExtResource("2_7h1eu")
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="GraveyardAllies" type="GridContainer" parent="MarginContainer/HBoxContainer/VBoxContainer2/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 6
+
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Enemies"
+label_settings = ExtResource("2_7h1eu")
+horizontal_alignment = 1
+
+[node name="ScrollContainer2" type="ScrollContainer" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="GraveyardEnemies" type="GridContainer" parent="MarginContainer/HBoxContainer/VBoxContainer2/ScrollContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3

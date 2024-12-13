@@ -46,3 +46,7 @@ func onSave() -> SavedDataCard:
 func onLoadData(data: SavedData) -> void:
 	super(data)
 	affected_cards = affected_cards.map(func(id: int): return Game.onFindPublicIDObject(id))
+
+func isValidEliteLevelSpawns(enemy_spawns: Array) -> bool:
+	var one_attack_amount: int = enemy_spawns.filter(func(x: SavedDataCard): return x.attack == 1).size()
+	return one_attack_amount >= 2

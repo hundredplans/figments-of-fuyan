@@ -38,5 +38,8 @@ func setModulate(color: Color) -> void:
 var disabled: bool
 func setDisabled(_disabled: bool) -> void:
 	disabled = _disabled
+	DescriptionLabel.setHover(disabled)
 	if is_requirement_met:
 		setModulate(Color(0.2, 0.2, 0.2) if disabled else Color(1, 1, 1))
+	else:
+		RequirementLabel.setHover(!disabled)

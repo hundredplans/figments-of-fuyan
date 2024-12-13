@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=11 format=3 uid="uid://guu4h5o15q4y"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://guu4h5o15q4y"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_i12jc"]
 [ext_resource type="Image" uid="uid://bruaie558itsg" path="res://assets/sprites/game/cards/art_pop/jackie_palm.png" id="2_5ylc1"]
-[ext_resource type="Image" uid="uid://cbsie10wiidpk" path="res://assets/sprites/game/cards/art_mini/jackie_palm.png" id="2_80y21"]
+[ext_resource type="Texture2D" uid="uid://cbsie10wiidpk" path="res://assets/sprites/game/cards/art_mini/jackie_palm.png" id="2_80y21"]
+[ext_resource type="Resource" uid="uid://6j57uasj8x66" path="res://resources/fof/archetypes/reinforcer.tres" id="2_vuqhq"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_w7mss"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_k50xd"]
 [ext_resource type="Script" path="res://scripts/fof/cards/jackie_palm.gd" id="4_x18c2"]
@@ -51,6 +52,7 @@ plus_speed = 1
 plus_energy = 0
 ascended_traits = Array[ExtResource("2_w7mss")]([])
 ascended_ability_text = ""
+archetype = ExtResource("2_vuqhq")
 id = 10
 name = "Jackie Palm"
 gdscript = ExtResource("4_x18c2")

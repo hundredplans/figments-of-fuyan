@@ -1,6 +1,4 @@
-extends Control
-
-signal finished
+extends MapNodeScreen
 
 @export var exit_option: EncounterOptionDatastore
 @export var EncounterOptionButtonUIPacked: PackedScene
@@ -9,11 +7,10 @@ signal finished
 @onready var DescriptionLabel: Label = %DescriptionLabel
 @onready var OptionsContainer: Container = %OptionsContainer
 
-var UI: Control
 var encounter: EncounterGD
 
 func setInfo(_save_file: SaveFileGD, _area: AreaGD, _World: Node3D, _UI: Control, map_node: MapNodeGD) -> void:
-	UI = _UI
+	super(_save_file, _area, _World, _UI, map_node)
 	encounter = map_node.encounter
 	encounter.continue_to_next_page.connect(onContinueToNextPage)
 	encounter.temp_disable_options.connect(onTempDisableOptions)

@@ -20,7 +20,7 @@ func onBoon(action: Action = null) -> void:
 	var turns: int = 2 if !Game.isChampion(action.Card.info.rarity) else 1
 	onPushAction(StatAction.new(StatInfo.new(action.Card, Game.Stats.MAX_SPEED, speed, turns)))
 	
-	var FieldEffect: FieldEffectGD = SavedData.onLoadModel(SavedDataFieldEffect.new(9, true, 0, public_id, {"speed": speed, "turns": turns}), action.Card)
+	var FieldEffect: FieldEffectGD = SavedData.onLoadModel(SavedDataFieldEffect.new(9, true, 0, public_id, -1, {"speed": speed, "turns": turns}), action.Card)
 	action.Card.onAddFieldEffect(FieldEffect, self)
 	cards.append(action.Card)
 

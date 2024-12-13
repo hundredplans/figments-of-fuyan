@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=34 format=3 uid="uid://dcbv431prk86r"]
+[gd_resource type="Theme" load_steps=37 format=3 uid="uid://dcbv431prk86r"]
 
 [ext_resource type="FontFile" uid="uid://dpk4daccj6hwv" path="res://assets/fonts/roboto.ttf" id="1_8d2p5"]
 
@@ -228,6 +228,42 @@ corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 anti_aliasing = false
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7fnuq"]
+content_margin_left = 10.0
+content_margin_right = 10.0
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0, 0, 0, 1)
+expand_margin_left = 10.0
+expand_margin_right = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4bx8d"]
+content_margin_left = 10.0
+content_margin_right = 10.0
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0, 0, 0, 1)
+expand_margin_left = 10.0
+expand_margin_right = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s2fur"]
+content_margin_left = 10.0
+content_margin_right = 10.0
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0, 0, 0, 1)
+expand_margin_left = 10.0
+expand_margin_right = 10.0
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_he4ox"]
 bg_color = Color(0.285993, 0.277531, 0, 1)
 border_width_left = 10
@@ -368,6 +404,9 @@ RedPanelContainer/base_type = &"PanelContainer"
 RedPanelContainer/styles/panel = SubResource("StyleBoxFlat_vyaib")
 TealPanelContainer/base_type = &"PanelContainer"
 TealPanelContainer/styles/panel = SubResource("StyleBoxFlat_vmrmf")
+VScrollBar/styles/grabber = SubResource("StyleBoxFlat_7fnuq")
+VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_4bx8d")
+VScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_s2fur")
 WhiteButton/base_type = &"Button"
 WhiteButton/styles/disabled = SubResource("StyleBoxFlat_he4ox")
 WhiteButton/styles/hover = SubResource("StyleBoxFlat_h0876")
