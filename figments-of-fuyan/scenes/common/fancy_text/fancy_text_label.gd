@@ -55,7 +55,6 @@ func onFofIconsReplace(regex: RegEx, fancy_text: FancyText) -> void:
 			var replace_index: int = _result.get_start()
 			text = text.left(replace_index) + new_result + text.right(-(replace_index + result.length()))
 			
-			
 func onFofImagesReplace(regex: RegEx, fancy_text: FancyText) -> void:
 	for image_fancy_text in fancy_text.images:
 		var compile_text: String = image_fancy_text.name
