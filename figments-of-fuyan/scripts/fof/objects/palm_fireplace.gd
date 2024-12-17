@@ -46,7 +46,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _
 		for FieldCard in units: onAddFieldEffect(FieldCard)
 		was_fuel_added = true
 		
-		for owned_active_effect in active_effects:
+		for owned_active_effect in	 active_effects:
 			if owned_active_effect.name == "Extinguish":
 				onPushAction(ChangeActiveEffectChargesAction.new(owned_active_effect, -1))
 		

@@ -14,4 +14,5 @@ static func getInfoPath() -> String: return "res://resources/fof/tools"
 
 func getTextIcon() -> Texture2D: return icon
 func getIcon() -> Texture2D: return icon
-func getDescription(ascended: bool = false) -> String: return description if !ascended else ascended_description
+func getDescription(ascended: bool = false) -> String:
+	return description if !ascended else (ascended_description if !ascended_description.is_empty() else description)

@@ -19,11 +19,12 @@ signal active_effect_deselected
 #region Onready
 @onready var CameraManager: Node3D = %CameraManager
 @onready var WorldEnv: WorldEnvironment = %WorldEnvironment
+@onready var AniPlayer: AnimationPlayer = %AnimationPlayer
 #endregion
 
 #region Base Functions
-func _ready() -> void:
-	CameraManager.setCameraType(false)
+#func _ready() -> void:
+	#CameraManager.setCameraType(false)
 	
 func setInfo(_save_file: SaveFileGD) -> void:
 	save_file = _save_file
@@ -38,6 +39,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level.turn_state_changing.connect(onTurnStateChanging)
 	level.camera_change_action.connect(onCameraChange)
 	level.game_ended.connect(onGameEnded)
+	level.game_started.connect(onGameStarted)
 	
 	CameraManager.camera_position_updated.connect(onCameraPositionUpdated)
 	CameraManager.create_camera_action.connect(onCreateCameraChangeAction)
@@ -50,6 +52,8 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	UI.camera_direction_changed.connect(CameraManager.onChangeCameraInDirection)
 	UI.vision_mode_changed.connect(onVisionModeChanged)
 	UI.active_effect_box_pressed.connect(onActiveEffectBoxPressed)
+	
+	UI.dragged_begin.connect(onCardDraggedBegin)
 	UI.dragged_end.connect(onCardDraggedEnd)
 	
 func _input(event: InputEvent) -> void:
@@ -117,6 +121,7 @@ func getMouseInUI() -> bool:
 var mouse_in_ui: bool
 func onMouseInUI(state: bool) -> void:
 	mouse_in_ui = state
+	CameraManager.onMouseInUI(state)
 	onHoverTile()
 	
 var camera_panning: bool
@@ -126,10 +131,13 @@ func onCameraPanning(state: bool) -> void:
 #endregion
 	
 #region Phases
-func onPhaseChanged(phase: Game.Phases, _instant: bool = false) -> void:
+func onPhaseChanged(phase: Game.Phases, previous_phase: Game.Phases, _instant: bool = false) -> void:
 	match phase:
 		Game.Phases.START: CameraManager.onSpectateSpawn(); onSpawnFX(true)
-		Game.Phases.HAND: CameraManager.onSpectateSpawn(); onSpawnFX(true)
+		Game.Phases.HAND:
+			if previous_phase != Game.Phases.START:
+				CameraManager.onSpectateSpawn()
+			onSpawnFX(true)
 		Game.Phases.PLAYER:
 			onSpawnFX(false)
 			CameraManager.onSpectateAllies()
@@ -210,12 +218,21 @@ func onCreateMovementRange(Card: CardGD) -> void:
 #endregion
 
 #region Turn State
-func onTurnStateChanging(Card: CardGD) -> void:
-	if Card.isAlly(0) and Card.turn_state == Game.TurnStates.PASSED:
+func onTurnStateChanging(Card: CardGD, action: ChangeTurnStateAction) -> void:
+	if Card.isAlly(0) and Card.turn_state == Game.TurnStates.PASSED and !isActionTiedToAwakenAction(action):
 		var ally_cards: Array = Game.getAllyUnits(0).filter(func(x: CardGD): return x.turn_state == Game.TurnStates.INACTIVE)
 		if ally_cards.is_empty(): return
 		ally_cards.sort_custom(func(x: CardGD, y: CardGD): return Game.getCoordsDistance(x.getCoords(), Card.getCoords()) < Game.getCoordsDistance(y.getCoords(), Card.getCoords()))
 		onCreateCameraChangeAction(ally_cards[0])
+		
+func isActionTiedToAwakenAction(action: ChangeTurnStateAction) -> bool:
+	if action.owner is AwakenAction:
+		return true
+	if action.owner is not StatusEffectGD:
+		return false
+	if action.owner.info.id == 3:
+		return true
+	return false
 #endregion
 
 #region Vision Mode
@@ -309,9 +326,12 @@ func onPassButtonPressed() -> void:
 	onActiveEffectDeselected()
 #endregion
 
-#region Game Ended
+#region Game Changers
 func onGameEnded(_rewards: Rewards) -> void:
 	level.onPushAction(LevelVisibleAction.new(false, get_tree().get_nodes_in_group("LevelGameObjectsGD")))
+	
+func onGameStarted() -> void:
+	CameraManager.onGameStarted()
 #endregion
 
 #region Environment
@@ -320,6 +340,10 @@ func setEnvironment() -> void:
 #endregion
 
 #region Dragged
+func onCardDraggedBegin(CardUI: Control) -> void:
+	if level.getSpectateObject() is not SpawnGD:
+		CameraManager.onSpectateSpawn(level.getAllySpectateObject())
+		
 func onCardDraggedEnd(Card: CardGD, dragged_position: Vector2, CardUI: Control) -> void:
 	var Tile: TileGD = getMouseHoverTile()
 	if Tile != null and Tile.isAllySpawnTile() and !Tile.isOccupied() and !getMouseInUI():

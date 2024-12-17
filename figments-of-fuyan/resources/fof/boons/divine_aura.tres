@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="ChampionBoonInfo" load_steps=5 format=3 uid="uid://hommkky4kkh3"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/boons/champion_boon_info.gd" id="1_5k5bp"]
-[ext_resource type="Script" path="res://scripts/fof/boons/boon.gd" id="1_s1sse"]
-[ext_resource type="Image" uid="uid://cn1cobqr1xipo" path="res://assets/sprites/game/boons/divine_aura.png" id="2_g2xg0"]
+[ext_resource type="Script" path="res://scripts/fof/boons/divine_aura.gd" id="1_68bge"]
+[ext_resource type="Texture2D" uid="uid://cn1cobqr1xipo" path="res://assets/sprites/game/boons/divine_aura.png" id="2_g2xg0"]
 [ext_resource type="Script" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_yk4ab"]
 
 [resource]
@@ -12,7 +12,9 @@ icon = ExtResource("2_g2xg0")
 description = "Every 4th unit with limited ability charges gains an extra ability charge when AWAKENED"
 ascended_description = ""
 rarity = 8
+curse = false
+elite_fight_curse = false
 id = 2
 name = "Divine Aura"
-gdscript = ExtResource("1_s1sse")
+gdscript = ExtResource("1_68bge")
 saved_data = ExtResource("3_yk4ab")

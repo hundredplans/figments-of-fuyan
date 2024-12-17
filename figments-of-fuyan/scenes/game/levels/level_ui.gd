@@ -25,6 +25,11 @@ extends Control
 
 @onready var DeckPanel: PanelContainer = %DeckPanel
 @onready var MapPanel: PanelContainer = %MapPanel
+
+@onready var LeftCameraArrow: Button = %LeftCameraArrow
+@onready var RightCameraArrow: Button = %RightCameraArrow
+
+@onready var MinimapControl: Control = %MinimapControl
 #endregion
 
 #region Globals
@@ -76,8 +81,11 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level.boon_activated.connect(onBoonActivated)
 	level.boon_ascended.connect(onBoonAscended)
 	level.tile_occupied.connect(onTileOccupied)
+	level.game_started.connect(onGameStarted)
 	level.game_ended.connect(onGameEnded)
 	level.tool_removed.connect(onToolRemoved)
+	
+	level.update_active_effects.connect(onUpdateActiveEffects)
 	save_file.update_shillings.connect(onUpdateShillings)
 	
 	TimeLabel.setInfo(save_file)
@@ -93,7 +101,6 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	setHeroNameLabel()
 	setActiveEffectLabel()
 	onUpdateShillings(save_file.shillings)
-	
 #endregion
 
 #region Action Lock / Mouse In UI
@@ -105,7 +112,7 @@ func onUpdateActionLock(previous_state: bool) -> void:
 		get_tree().call_group("LevelTilesGD", "onUpdateActionLock", state)
 		for btn in get_tree().get_nodes_in_group("ActionLockDisabled"):
 			if btn == PassButton: btn.setActionLock(state)
-			elif btn is Button: btn.disabled = state
+			elif btn is Button: btn.setActionLock(state)
 			elif btn is HighlightTxButton: btn.setDisabled(state)
 
 func getActionLock() -> bool:
@@ -126,7 +133,7 @@ func onActionPlaying(state: bool) -> void:
 #endregion
 
 #region Phase
-func onPhaseChanged(phase: Game.Phases, _instant: bool = false) -> void:
+func onPhaseChanged(phase: Game.Phases, _phase: Game.Phases, _instant: bool = false) -> void:
 	HandPanel.theme_type_variation = "BluePanelContainer" if phase == Game.Phases.START else "WhitePanelContainer"
 	PhaseIcon.setPhase(phase)
 	PassButton.setPhase(phase)
@@ -165,7 +172,7 @@ func onCardDraggedFinished(_CardUI: Control) -> void: # When card comes back to 
 	HandBox.setDraggedCardUI(null)
 	
 func onCardDraggedBegin(CardUI: Control) -> void:
-	dragged_begin.emit()
+	dragged_begin.emit(CardUI)
 	HandBox.onUnpin()
 	HandBox.setDraggedCardUI(CardUI)
 	HandPanel.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -196,7 +203,9 @@ func onCameraUpdated(SpectateObject: GameObjectGD, __: GameObjectGD = null) -> v
 		
 		onUpdateActiveEffects(SpectateObject)
 		Console.onCameraUpdated(SpectateObject)
-	
+		
+		LeftCameraArrow.setIsInFreelook(SpectateObject == null)
+		RightCameraArrow.setIsInFreelook(SpectateObject == null)
 #endregion
 
 #region Deck / Graveyard
@@ -214,7 +223,7 @@ func _on_pass_button_pressed() -> void:
 	level.onPassTurn()
 	World.onPassButtonPressed()
 	
-func onTurnStateChanging(Card: CardGD) -> void:
+func onTurnStateChanging(Card: CardGD, _action: ChangeTurnStateAction) -> void:
 	PassButton.setIsAllyInactiveActive(Card)
 	if Card == level.SpectateObject:
 		onUpdateActiveEffects()
@@ -231,9 +240,10 @@ func setActiveEffectLabel(text: String = "") -> void:
 #region Minimap
 var Minimap: Control
 func _on_minimap_button_pressed() -> void:
-	if Minimap != null:
+	if Minimap == null:
 		Minimap = MinimapPacked.instantiate()
-		add_child(Minimap)
+		MinimapControl.add_child(Minimap)
+	else: Minimap.queue_free()
 #endregion
 
 #region Vision Mode
@@ -320,7 +330,7 @@ func onTileOccupied(Card: CardGD, _Tile: TileGD) -> void:
 		onUpdateActiveEffects()
 #endregion
 
-#region Game Ended
+#region Game Changers
 func onGameEnded(rewards: Rewards) -> void:
 	if rewards == null:
 		var LossUI: Control = LossUIPacked.instantiate()
@@ -337,4 +347,8 @@ func onGameEnded(rewards: Rewards) -> void:
 		btn.disabled = true
 	
 	HandBox.onUnpin()
+	
+func onGameStarted() -> void:
+	HandBox.onUnpin()
+	HandBox.onSelectableCards(false)
 #endregion

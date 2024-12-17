@@ -1,23 +1,25 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=7 format=3 uid="uid://b5quqtpq1iwjc"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=8 format=3 uid="uid://ctbf4tjwr2pjb"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_4jwnb"]
 [ext_resource type="Image" uid="uid://dhbl0enmb7u0a" path="res://assets/sprites/game/cards/art_pop/palm_palm.png" id="2_4i2rg"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_gc03v"]
+[ext_resource type="Resource" uid="uid://6j57uasj8x66" path="res://resources/fof/archetypes/reinforcer.tres" id="2_q41pt"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_hed7p"]
 [ext_resource type="Script" path="res://scripts/fof/cards/palm_palm.gd" id="3_qi8i3"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="4_6ckma"]
 
 [resource]
 script = ExtResource("3_hed7p")
-attack = 0
-health = 0
-speed = 0
-energy = 0
+attack = 1
+health = 2
+speed = 2
+energy = 2
 rarity = 6
 initial_traits = Array[ExtResource("2_gc03v")]([])
 active_abilities = Array[ExtResource("1_4jwnb")]([])
-ability_text = ""
 flavor_text = ""
+description = "RANGED [1-2]; On Hit: Allies adjacent to the target heal [1] HP"
+ascended_description = "RANGED [1-3]; On Hit: Allies adjacent to the target heal [1] HP"
 art_mini_coordinate = Vector2i(0, 0)
 art_pop = ExtResource("2_4i2rg")
 points = []
@@ -25,11 +27,11 @@ stat = 0.0
 top = 0.0
 eye = 0.0
 plus_attack = 0
-plus_health = 0
+plus_health = 1
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("2_gc03v")]([])
-ascended_ability_text = ""
+archetype = ExtResource("2_q41pt")
 id = 23
 name = "Palm P.alm"
 gdscript = ExtResource("3_qi8i3")

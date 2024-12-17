@@ -1,7 +1,7 @@
 class_name ChampionCardInfo extends CardInfo
 
 @export_group("Champion Select")
-@export_multiline var description: Array[String]
+@export_multiline var champion_description: Array[String]
 @export_color_no_alpha var associated_color: Color
 @export var epithet: String
 @export var champion_select_posrot: PosRot

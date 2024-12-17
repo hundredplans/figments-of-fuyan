@@ -1,10 +1,10 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=10 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=10 format=3 uid="uid://2pnwhr7a76eq"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_1rua0"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/d_steel.png" id="2_4ik7o"]
+[ext_resource type="Image" uid="uid://dkhp625u8py3o" path="res://assets/sprites/game/cards/art_pop/d_steel.png" id="2_4ik7o"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_mlns3"]
 [ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_q5v3d"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_eg1by"]
+[ext_resource type="PackedScene" uid="uid://bxdixxrf3f7aa" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_eg1by"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_h8nhh"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="7_oaa28"]
 
@@ -33,8 +33,9 @@ energy = 4
 rarity = 7
 initial_traits = Array[ExtResource("3_mlns3")]([])
 active_abilities = Array[ExtResource("1_1rua0")]([])
-ability_text = "START OF TURN: Gain +1 RANGED; Once you reach RANGED [1-6] remove it instead"
 flavor_text = ""
+description = "START OF TURN: Gain +1 RANGED; Once you reach RANGED [1-6] remove it instead"
+ascended_description = ""
 art_mini_coordinate = Vector2i(0, 0)
 art_pop = ExtResource("2_4ik7o")
 model = ExtResource("5_eg1by")
@@ -48,7 +49,6 @@ plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("3_mlns3")]([])
-ascended_ability_text = ""
 id = 55
 name = "D. Steel"
 gdscript = ExtResource("4_q5v3d")

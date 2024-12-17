@@ -15,8 +15,10 @@ const BASE_MATERIAL_ASCENDED_PATH: String = "res://resources/materials/game/base
 @export var rarity: Game.Rarities
 @export var initial_traits: Array[SavedDataTrait]
 @export var active_abilities: Array[ActiveAbilityDatastore]
-@export_multiline var ability_text: String
 @export_multiline var flavor_text: String
+@export_multiline var description: String
+@export_multiline var ascended_description: String
+
 @export_group("")
 
 @export_group("Art")
@@ -43,8 +45,6 @@ const BASE_MATERIAL_ASCENDED_PATH: String = "res://resources/materials/game/base
 @export var plus_speed: int
 @export var plus_energy: int
 @export var ascended_traits: Array[SavedDataTrait]
-# Leave empty if no changes
-@export_multiline var ascended_ability_text: String
 @export_group("")
 
 @export var archetype: ArchetypeInfo
@@ -56,7 +56,8 @@ static func getFofName() -> String: return "Card"
 func getArtMini() -> Texture2D: return art_mini
 func getArtPop() -> ImageTexture: return ImageTexture.create_from_image(art_pop)
 func getTextIcon() -> Texture2D: return art_mini
-func getDescription(ascended: bool = false) -> String: return ability_text if !ascended else ascended_ability_text
+func getDescription(ascended: bool = false) -> String:
+	return description if !ascended else (ascended_description if !ascended_description.is_empty() else description)
 
 func getStats(ascended: bool = false) -> StatsDatastore:
 	return StatsDatastore.new(\

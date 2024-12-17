@@ -10,9 +10,9 @@ var vision_datastore: VisionDatastore
 #endregion
 
 #region Helper Functions
-func getMeshes() -> Array[MeshInstance3D]:
+func getMeshes(parent: Node3D = self) -> Array[MeshInstance3D]:
 	var arr: Array[MeshInstance3D] = []
-	arr.assign(Helper.getChildrenRecursive(self).filter(func(x: Node): return x is MeshInstance3D))
+	arr.assign(Helper.getChildrenRecursive(parent).filter(func(x: Node): return x is MeshInstance3D))
 	return arr
 
 func getStaticBodies() -> Array[StaticBody3D]:
@@ -74,6 +74,9 @@ func onLoadDataLevel() -> void:
 	
 func onLoadDataLevelFofInit() -> void:
 	pass
+	
+func onFofInit() -> void:
+	pass
 #endregion
 
 #region Material Updates
@@ -85,8 +88,8 @@ func setHalfTransparent() -> void:
 func setRegularMaterial() -> void:
 	setMeshesMaterial()
 	
-func setMeshesMaterial(mat: Material = null) -> void:
-	for mesh in getMeshes():
+func setMeshesMaterial(mat: Material = null, parent: Node3D = self) -> void:
+	for mesh in getMeshes(parent):
 		for surface in mesh.get_surface_override_material_count():
 			mesh.set_surface_override_material(surface, mat)
 				

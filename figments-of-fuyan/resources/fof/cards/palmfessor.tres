@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://dvu6dertp2wya"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://c5ouon881noun"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_krnpt"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_8abg6"]
@@ -35,8 +35,9 @@ energy = 1
 rarity = 5
 initial_traits = Array[ExtResource("2_8abg6")]([])
 active_abilities = Array[ExtResource("1_krnpt")]([])
-ability_text = "Allies in vision on [1] ATT gain +1 ATT"
 flavor_text = ""
+description = "Allies in vision on [1] ATT gain +1 ATT"
+ascended_description = "Allies in vision on [1] ATT gain +2 ATT"
 art_mini_coordinate = Vector2i(80, 40)
 art_mini = ExtResource("2_lq2ir")
 art_pop = ExtResource("2_vlei1")
@@ -51,7 +52,6 @@ plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("2_8abg6")]([])
-ascended_ability_text = "Allies in vision on [1] ATT gain +2 ATT"
 archetype = ExtResource("2_hw1s4")
 id = 18
 name = "Palmfessor"

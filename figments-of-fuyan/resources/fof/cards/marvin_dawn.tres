@@ -1,10 +1,10 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=10 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=10 format=3 uid="uid://bfcm15vfnx8og"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_ypmkf"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/marvin_dawn.png" id="2_dgin5"]
+[ext_resource type="Image" uid="uid://deyxnadstr0jf" path="res://assets/sprites/game/cards/art_pop/marvin_dawn.png" id="2_dgin5"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_6mtt3"]
 [ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_u78m4"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_3gao5"]
+[ext_resource type="PackedScene" uid="uid://bxdixxrf3f7aa" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_3gao5"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_n317a"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="7_ygdx0"]
 
@@ -33,8 +33,9 @@ energy = 6
 rarity = 7
 initial_traits = Array[ExtResource("3_6mtt3")]([])
 active_abilities = Array[ExtResource("1_ypmkf")]([])
-ability_text = "RANGED [1-2]; RAMPAGE [4]: Deal [2] DMG to all enemies"
 flavor_text = ""
+description = "RANGED [1-2]; RAMPAGE [4]: Deal [2] DMG to all enemies"
+ascended_description = ""
 art_mini_coordinate = Vector2i(0, 0)
 art_pop = ExtResource("2_dgin5")
 model = ExtResource("5_3gao5")
@@ -48,7 +49,6 @@ plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("3_6mtt3")]([])
-ascended_ability_text = ""
 id = 54
 name = "Marvin Dawn"
 gdscript = ExtResource("4_u78m4")

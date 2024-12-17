@@ -41,3 +41,6 @@ func getDescription() -> String:
 	
 func onStatusEffectAdded(_action: AddStatusEffectAction) -> void:
 	pass
+
+func onLevelEnded(_win: bool) -> void:
+	onClear()

@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=7 format=3 uid="uid://d2rae8he1qiih"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=8 format=3 uid="uid://c1c3miwhiocd2"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_kak8a"]
+[ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_85t00"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_q3lc1"]
 [ext_resource type="Image" uid="uid://be7bo4rbspbnu" path="res://assets/sprites/game/cards/art_pop/titanus_palmus.png" id="2_syo8t"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_8nb48"]
@@ -9,15 +10,16 @@
 
 [resource]
 script = ExtResource("3_8nb48")
-attack = 0
-health = 0
-speed = 0
-energy = 0
+attack = 2
+health = 7
+speed = 2
+energy = 5
 rarity = 7
 initial_traits = Array[ExtResource("2_q3lc1")]([])
 active_abilities = Array[ExtResource("1_kak8a")]([])
-ability_text = ""
 flavor_text = ""
+description = "ABILITY [2]: KNOCKBACK [2] adjacent enemies and Heal [1] HP per unit"
+ascended_description = ""
 art_mini_coordinate = Vector2i(0, 0)
 art_pop = ExtResource("2_syo8t")
 points = []
@@ -29,7 +31,7 @@ plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("2_q3lc1")]([])
-ascended_ability_text = ""
+archetype = ExtResource("2_85t00")
 id = 24
 name = "Titanus Palmus"
 gdscript = ExtResource("4_purx8")

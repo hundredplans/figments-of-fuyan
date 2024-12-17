@@ -39,3 +39,6 @@ func onRemoveFromCard() -> void: # Removes field effect from the card
 func setCharges(_charges: int) -> void:
 	charges = _charges
 	update_charges.emit(charges)
+	
+func onLevelEnded(_win: bool) -> void:
+	onClear()

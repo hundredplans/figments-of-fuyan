@@ -4,6 +4,7 @@ func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectT
 	super(active_effect)
 	if active_effect is ActiveAbilityDatastore and active_effect.name == "Treeleaf Remedy":
 		var tiles: Array = getVisibleTiles()
+		tiles.erase(Tile)
 		return ActiveEffectTiles.new(tiles, tiles.filter(func(x: TileGD): return Game.getAllyFieldCard(x, team) != null))
 	return null
 	

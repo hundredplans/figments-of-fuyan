@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/fof_info/boons/champion_boon_info.gd" id="1_3bsiu"]
 [ext_resource type="Script" path="res://scripts/fof/boons/bold_aura.gd" id="1_ff4sl"]
-[ext_resource type="Image" uid="uid://chnjosgppxow4" path="res://assets/sprites/game/boons/bold_aura.png" id="2_jlfhb"]
+[ext_resource type="Texture2D" uid="uid://chnjosgppxow4" path="res://assets/sprites/game/boons/bold_aura.png" id="2_jlfhb"]
 [ext_resource type="Script" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_g1q30"]
 
 [resource]
@@ -12,6 +12,8 @@ icon = ExtResource("2_jlfhb")
 description = "Your next [X] non-Frederic kills gains +1 HP"
 ascended_description = ""
 rarity = 8
+curse = false
+elite_fight_curse = false
 id = 1
 name = "Bold Aura"
 gdscript = ExtResource("1_ff4sl")

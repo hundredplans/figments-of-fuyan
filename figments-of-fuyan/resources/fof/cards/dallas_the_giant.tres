@@ -1,10 +1,10 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=10 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=10 format=3 uid="uid://dfyvkwad86rjm"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_oyrna"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/dallas_the_giant.png" id="2_y6nif"]
+[ext_resource type="Image" uid="uid://bbkgjnsy0ah3u" path="res://assets/sprites/game/cards/art_pop/dallas_the_giant.png" id="2_y6nif"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_hvx5a"]
 [ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_h6hio"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_37xlm"]
+[ext_resource type="PackedScene" uid="uid://bxdixxrf3f7aa" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_37xlm"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_tx4m7"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="7_jtomd"]
 
@@ -33,8 +33,9 @@ energy = 5
 rarity = 6
 initial_traits = Array[ExtResource("3_hvx5a")]([])
 active_abilities = Array[ExtResource("1_oyrna")]([])
-ability_text = "When a DUEL begins: This gains FERAL and +2 ATT +1 HP until the enemy dies"
 flavor_text = ""
+description = "When a DUEL begins: This gains FERAL and +2 ATT +1 HP until the enemy dies"
+ascended_description = ""
 art_mini_coordinate = Vector2i(0, 0)
 art_pop = ExtResource("2_y6nif")
 model = ExtResource("5_37xlm")
@@ -48,7 +49,6 @@ plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("3_hvx5a")]([])
-ascended_ability_text = ""
 id = 50
 name = "Dallas the Giant"
 gdscript = ExtResource("4_h6hio")

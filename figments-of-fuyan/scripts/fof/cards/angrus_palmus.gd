@@ -28,7 +28,6 @@ func onHealed(action: StatAction) -> void:
 	setIdleAbility(false)
 	field_effect_public_id = 0
 
-
 func onSave() -> SavedDataCard:
 	ability_save['field_effect_public_id'] = field_effect_public_id
 	return super()

@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://byprpvtvga6km"]
+
+[ext_resource type="Shader" path="res://resources/shaders/white_outline_canvas.gdshader" id="1_vflsd"]
+
+[resource]
+shader = ExtResource("1_vflsd")
+shader_parameter/outline_color = Color(0.97, 0.835, 0.318, 1)
+shader_parameter/BORDER_SIZE = 4

@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://ch67jw7eiad1q"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_1tudh"]
-[ext_resource type="Resource" uid="uid://27tqk2ax0xx2" path="res://resources/fof/archetypes/coward.tres" id="2_1gpix"]
+[ext_resource type="Resource" uid="uid://27tqk2ax0xx2" path="res://resources/fof/archetypes/scout.tres" id="2_1gpix"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="2_bypfo"]
 [ext_resource type="Image" uid="uid://bjfdb5fkve0v7" path="res://assets/sprites/game/cards/art_pop/palmy.png" id="2_lhe0c"]
 [ext_resource type="Texture2D" uid="uid://8krlme6a4ohv" path="res://assets/sprites/game/cards/art_mini/palmy.png" id="2_xuow0"]
@@ -37,6 +37,8 @@ initial_traits = Array[ExtResource("3_6dcot")]([])
 active_abilities = Array[ExtResource("1_1tudh")]([])
 ability_text = "TRAUMA [1]: Gain +1 SPD"
 flavor_text = ""
+description = "TRAUMA [1]: Gain +1 SPD"
+ascended_description = "TRAUMA [1]: Gain +2 SPD"
 art_mini_coordinate = Vector2i(100, 100)
 art_mini = ExtResource("2_xuow0")
 art_pop = ExtResource("2_lhe0c")

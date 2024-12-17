@@ -12,7 +12,7 @@ func setInfo(info_or_fof: Variant, stop_mouse: bool = false) -> void:
 	var ascended: bool = false
 	if is_instance_of(info_or_fof, InfoAscended):
 		ascended = info_or_fof.ascended
-		info_or_fof = info_or_fof.info
+		info = info_or_fof.info
 	
 	if is_instance_of(info_or_fof, FofGD):
 		NameLabel.text = info_or_fof.info.name
@@ -24,8 +24,8 @@ func setInfo(info_or_fof: Variant, stop_mouse: bool = false) -> void:
 		NameLabel.text = info_or_fof.name
 		TopIcon.texture = info_or_fof.art_mini if is_card else info_or_fof.icon
 		info = info_or_fof
-		
-	TextLabel.setText(info_or_fof.getDescription())
+	
+	TextLabel.setText(info_or_fof.getDescription(ascended) if info in [CardInfo, BoonInfo, ToolInfo] else info_or_fof.getDescription())
 	if info is CardInfo:
 		var CardTooltipExtra: Control = CardTooltipExtraPacked.instantiate()
 		Topside.add_child(CardTooltipExtra)

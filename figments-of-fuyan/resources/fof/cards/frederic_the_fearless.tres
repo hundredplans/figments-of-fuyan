@@ -34,7 +34,7 @@ _bundled = {
 
 [resource]
 script = ExtResource("2_y17s3")
-description = Array[String](["Regular and enhanced fights are more common", "Your aura gets stronger as you triumph over fights"])
+champion_description = Array[String](["Regular and enhanced fights are more common", "Your aura gets stronger as you triumph over fights"])
 associated_color = Color(1, 0, 0, 1)
 epithet = "The Dolt"
 champion_select_posrot = SubResource("Resource_kddgi")
@@ -49,8 +49,9 @@ energy = 2
 rarity = 8
 initial_traits = Array[ExtResource("3_xdpta")]([])
 active_abilities = Array[ExtResource("1_4a3l2")]([])
-ability_text = "RAMPAGE: Gain +1 HP"
 flavor_text = "A thug on the streets, a monster in the sheets"
+description = "RAMPAGE: Gain +1 HP"
+ascended_description = ""
 art_mini_coordinate = Vector2i(60, 0)
 art_mini = ExtResource("2_jnghr")
 art_pop = ExtResource("2_d16dl")
@@ -65,7 +66,6 @@ plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("3_xdpta")]([])
-ascended_ability_text = ""
 id = 1
 name = "Frederic the Fearless"
 gdscript = ExtResource("5_jvipk")

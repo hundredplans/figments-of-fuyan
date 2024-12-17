@@ -1,10 +1,10 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=10 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=10 format=3 uid="uid://c1848r1rv16ye"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_wjlyu"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/lasso_jackson.png" id="2_8fvre"]
+[ext_resource type="Image" uid="uid://dik5dgqvlyhqa" path="res://assets/sprites/game/cards/art_pop/lasso_jackson.png" id="2_8fvre"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_ktk3v"]
 [ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_at1l7"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_v7umy"]
+[ext_resource type="PackedScene" uid="uid://bxdixxrf3f7aa" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_v7umy"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_f67q4"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="7_iglur"]
 
@@ -33,8 +33,9 @@ energy = 2
 rarity = 4
 initial_traits = Array[ExtResource("3_ktk3v")]([])
 active_abilities = Array[ExtResource("1_wjlyu")]([])
-ability_text = "RANGED [1-2]; ABILITY: Pull a unit [1] tile closer"
 flavor_text = ""
+description = "RANGED [1-2]; ABILITY: Pull a unit [1] tile closer"
+ascended_description = ""
 art_mini_coordinate = Vector2i(0, 0)
 art_pop = ExtResource("2_8fvre")
 model = ExtResource("5_v7umy")
@@ -48,7 +49,6 @@ plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("3_ktk3v")]([])
-ascended_ability_text = ""
 id = 37
 name = "\"Lasso\" Jackson"
 gdscript = ExtResource("4_at1l7")

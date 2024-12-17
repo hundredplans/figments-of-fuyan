@@ -25,7 +25,7 @@ func onBoon(action: Action = null) -> void:
 			onPushAction(EnergyAction.new(energy_gain))
 
 func onBoonAdded() -> void:
-	pass
+	onResetCharges()
 
 func onSave() -> SavedDataBoon:
 	ability_save['played_this_turn'] = played_this_turn
@@ -36,3 +36,6 @@ func getDisabled() -> bool:
 	
 func getCharges() -> int:
 	return played_this_turn
+	
+func onResetCharges() -> void:
+	played_this_turn = 0

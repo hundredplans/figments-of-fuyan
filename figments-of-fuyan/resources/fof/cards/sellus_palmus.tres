@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=14 format=3 uid="uid://bsjdkploqaje5"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=14 format=3 uid="uid://b60dsgwa8cef5"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_jmwbd"]
 [ext_resource type="Image" uid="uid://dwaxgobdb2kxy" path="res://assets/sprites/game/cards/art_pop/sellus_palmus.png" id="2_3b8rb"]
@@ -54,8 +54,9 @@ energy = 2
 rarity = 3
 initial_traits = Array[ExtResource("5_ox6gs")]([])
 active_abilities = Array[ExtResource("1_jmwbd")]([SubResource("Resource_atwem")])
-ability_text = "ABILITY [2]: Heal [1] HP to adjacent allies"
 flavor_text = ""
+description = "ABILITY [2]: Heal [1] HP to adjacent allies"
+ascended_description = "MOBILE; ABILITY [2]: Heal [1] HP to adjacent allies"
 art_mini_coordinate = Vector2i(90, 40)
 art_mini = ExtResource("2_6vb1n")
 art_pop = ExtResource("2_3b8rb")
@@ -65,12 +66,11 @@ collision_shape = SubResource("PackedScene_p1tqe")
 stat = 2.11207
 top = 1.78806
 eye = 1.51064
-plus_attack = null
+plus_attack = 0
 plus_health = 1
-plus_speed = null
-plus_energy = null
+plus_speed = 0
+plus_energy = 0
 ascended_traits = Array[ExtResource("5_ox6gs")]([SubResource("Resource_ghubt")])
-ascended_ability_text = "MOBILE; ABILITY [2]: Heal [1] HP to adjacent allies"
 archetype = ExtResource("2_iqmb7")
 id = 7
 name = "Sellus Palmus"

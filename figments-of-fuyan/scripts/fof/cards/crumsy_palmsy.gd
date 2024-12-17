@@ -50,3 +50,7 @@ func onSave() -> SavedDataCard:
 	ability_save['trauma_charges'] = trauma_charges
 	ability_save['bloodthirst_charges'] = bloodthirst_charges
 	return super()
+
+func onAscendedUpdated(state: bool) -> void:
+	super(state)
+	onResetCharges()

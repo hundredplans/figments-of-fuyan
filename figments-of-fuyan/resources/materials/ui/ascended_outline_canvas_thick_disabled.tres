@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://b73rx0symxoxf"]
+
+[ext_resource type="Shader" path="res://resources/shaders/white_outline_canvas.gdshader" id="1_ntk02"]
+
+[resource]
+shader = ExtResource("1_ntk02")
+shader_parameter/outline_color = Color(0.284309, 0.233989, 0.0247796, 1)
+shader_parameter/BORDER_SIZE = 4

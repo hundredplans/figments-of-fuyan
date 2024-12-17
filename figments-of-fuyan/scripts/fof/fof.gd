@@ -43,3 +43,5 @@ func onProcessAction(_action: Action) -> void: pass
 func onRemoveMoveAndAttackActions(Card: CardGD) -> void:
 	remove_move_and_attack_actions.emit(Card)
 #endregion
+
+func onLevelEnded(_win: bool) -> void: pass

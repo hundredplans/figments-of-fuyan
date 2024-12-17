@@ -17,6 +17,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+mouse_filter = 2
 script = ExtResource("1_30v8b")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
@@ -26,7 +27,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
 layout_mode = 2
@@ -76,8 +76,6 @@ unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 
-[connection signal="mouse_entered" from="." to="." method="onMouseInUI" binds= [true]]
-[connection signal="mouse_exited" from="." to="." method="onMouseInUI" binds= [false]]
-[connection signal="mouse_entered" from="PanelContainer/MarginContainer/VBoxContainer/CommandLineEdit" to="." method="onMouseInUI" binds= [true]]
-[connection signal="mouse_exited" from="PanelContainer/MarginContainer/VBoxContainer/CommandLineEdit" to="." method="onMouseInUI" binds= [false]]
+[connection signal="mouse_entered" from="PanelContainer" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="PanelContainer" to="." method="onMouseInUI" binds= [false]]
 [connection signal="text_submitted" from="PanelContainer/MarginContainer/VBoxContainer/CommandLineEdit" to="." method="_on_line_edit_text_submitted"]

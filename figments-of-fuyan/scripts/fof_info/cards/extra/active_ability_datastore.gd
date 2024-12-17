@@ -1,5 +1,7 @@
 class_name ActiveAbilityDatastore extends ActiveEffectDatastore
 
+signal update
+
 @export var exists: Game.AscendedExists
 @export_group("Ascended")
 @export_multiline var ascended_description: String

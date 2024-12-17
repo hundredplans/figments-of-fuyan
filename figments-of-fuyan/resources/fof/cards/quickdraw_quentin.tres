@@ -64,7 +64,7 @@ public_id = 0
 
 [resource]
 script = ExtResource("2_s60fl")
-description = Array[String](["Carries bullets across fights", "Has to pay a higher price at shops", "Enjoys duelling fights for gold and power"])
+champion_description = Array[String](["Carries bullets across fights", "Has to pay a higher price at shops", "Enjoys duelling fights for gold and power"])
 associated_color = Color(1, 0.380392, 0, 1)
 epithet = "The Duelist"
 champion_select_posrot = SubResource("Resource_kc7er")
@@ -79,10 +79,11 @@ energy = 2
 rarity = 8
 initial_traits = Array[ExtResource("6_liqvw")]([SubResource("Resource_80tv5")])
 active_abilities = Array[ExtResource("1_gkstj")]([SubResource("Resource_qs1ev")])
-ability_text = "RANGED [1-2];
+flavor_text = "BOOM. Headshot"
+description = "RANGED [1-2];
 Has [X]/4 bullets; ABILITY: If an enemy is in vision STUN self to gain a bullet
 "
-flavor_text = "BOOM. Headshot"
+ascended_description = ""
 art_mini_coordinate = Vector2i(80, 50)
 art_mini = ExtResource("2_8x7e6")
 art_pop = ExtResource("3_73we7")
@@ -97,7 +98,6 @@ plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("6_liqvw")]([SubResource("Resource_srqb7")])
-ascended_ability_text = ""
 archetype = ExtResource("2_31ae6")
 id = 3
 name = "Quickdraw Quentin"

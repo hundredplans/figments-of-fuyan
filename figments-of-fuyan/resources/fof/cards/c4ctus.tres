@@ -1,10 +1,10 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=10 format=3 uid="uid://bii1qgwnn0gu1"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_386nn"]
-[ext_resource type="Image" uid="uid://qk68le6o7ido" path="res://assets/sprites/game/cards/art_pop/c4ctus.png" id="2_jnes4"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/c4ctus.png" id="2_jnes4"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_lf2kf"]
 [ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_qgx5f"]
-[ext_resource type="PackedScene" uid="uid://bxdixxrf3f7aa" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_2875h"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_2875h"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_7truy"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="7_erqtd"]
 
@@ -35,6 +35,8 @@ initial_traits = Array[ExtResource("3_lf2kf")]([])
 active_abilities = Array[ExtResource("1_386nn")]([])
 ability_text = "RANGED [1-3]; ABILITY [2]: Instead of attacking throw a Cactus Bomb in a [3] Tile range"
 flavor_text = ""
+description = "RANGED [1-3]; ABILITY [2]: Instead of attacking throw a Cactus Bomb in a [3] Tile range"
+ascended_description = ""
 art_mini_coordinate = Vector2i(0, 0)
 art_pop = ExtResource("2_jnes4")
 model = ExtResource("5_2875h")

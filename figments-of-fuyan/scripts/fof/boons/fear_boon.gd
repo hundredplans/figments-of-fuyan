@@ -21,7 +21,6 @@ func onBoonAdded() -> void:
 	for EnemyCard in Game.getEnemyUnits(0):
 		EnemyCard.onStun()
 	
-
 func getDisabled() -> bool:
 	return turns_stunned_remaining == 0
 

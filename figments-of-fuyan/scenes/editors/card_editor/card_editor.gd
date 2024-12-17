@@ -82,12 +82,8 @@ func _on_hide_button_pressed() -> void:
 	AnimationNames.visible = !AnimationNames.visible
 
 func _on_ascend_button_pressed() -> void:
-	for child in CardGrid.get_children(): child.queue_free()
 	for Card in get_tree().get_nodes_in_group("CardsGD"):
-		Card.ascended = !Card.ascended
-		Card.setBaseStats()
-		var CardUI: Control = Card.onCreateCardUI(CardGrid, true, true)
-		CardUI.pressed.connect(onCardUIPressed)
+		Card.onAscend(!Card.ascended)
 
 func _on_search_area_card_text_changed(text: String) -> void:
 	var area_name_to_unit_id: Dictionary
@@ -106,7 +102,7 @@ func _on_search_area_card_text_changed(text: String) -> void:
 @onready var CardSpot: Control = %CardSpot
 var CardSpotCard: Control
 func onCardUIPressed(CardUI: Control) -> void:
-	if CardSpotCard != null: CardSpotCard.queue_free()
+	if CardSpotCard != null: CardSpotCard.queue_free()	
 	var Card: CardGD = CardUI.Card
 	CardSpotCard = Card.onCreateCardUI(CardSpot)
 	CardSpotCard.scale = Vector2(2, 2)

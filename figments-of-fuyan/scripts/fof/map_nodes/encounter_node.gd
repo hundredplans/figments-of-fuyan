@@ -3,7 +3,7 @@ extends MapNodeGD
 var encounter: EncounterGD
 var encounter_data: SavedDataEncounter
 
-const FORCE_NODE_ID: int = 6
+const FORCE_NODE_ID: int = 1
 
 #region Load / Save
 func onLoadData(data: SavedData) -> void:

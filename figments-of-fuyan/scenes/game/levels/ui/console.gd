@@ -4,6 +4,9 @@ signal mouse_in_ui
 @onready var CommandList: Container = %CommandList
 @onready var CommandLineEdit: LineEdit = %CommandLineEdit
 @onready var HistoryLabel: Label = %HistoryLabel
+
+var past_index: int = 0
+var past_commands: Array[String] = []
 var commands: Array
 var SpectateObject: GameObjectGD
 var level: LevelGD # For pushing actions
@@ -30,6 +33,8 @@ func _on_line_edit_text_submitted(new_text: String) -> void:
 				elif args[i].to_lower() in ["f", "false"]: args[i] = false
 			
 			callv(command_name, args)
+			past_commands.append(CommandLineEdit.text)
+			past_index += 1
 			HistoryLabel.text += CommandLineEdit.text + "\n"
 			CommandLineEdit.text = ""
 
@@ -37,6 +42,11 @@ func onFindCommandByName(command_name: String) -> Command:
 	for command in commands:
 		if command.name == command_name: return command
 	return null
+
+func ascend() -> void:
+	
+	if SpectateObject is CardGD:
+		level.onPushAction(AscendCardAction.new(SpectateObject, !SpectateObject.ascended))
 
 func status_effect(name_id: Variant, turns: int = 1) -> void:
 	if SpectateObject is CardGD:
@@ -66,6 +76,17 @@ func addboon(name_id: Variant, ascended: bool = false) -> void:
 	var info: BoonInfo = getNameIDFofInfo(name_id, BoonInfo)
 	level.onPushAction(AddBoonAction.new(info.id, ascended))
 
+func insert(name_id: Variant, ascended: bool = false) -> void:
+	var card_info: CardInfo = getNameIDFofInfo(name_id, CardInfo)
+	var card_data: SavedDataCard = card_info.saved_data.new(card_info.id, true)
+	Game.setCardDataFromInfo(card_data, card_info)
+	card_data.ascended = ascended
+	var Card: CardGD = SavedData.onLoadModel(card_data, level)
+	level.onPushAction(InsertAction.new(Card))
+
+func energy(delta: int) -> void:
+	level.onPushAction(EnergyAction.new(delta))
+
 func removeboon(name_id: Variant) -> void:
 	var info: BoonInfo = getNameIDFofInfo(name_id, BoonInfo)
 	level.onPushAction(RemoveBoonAction.new(info.id))
@@ -90,7 +111,15 @@ func _input(_event: InputEvent) -> void:
 			CommandLineEdit.editable = false
 			await get_tree().create_timer(0.02).timeout
 			CommandLineEdit.editable = true
+	elif Input.is_action_just_pressed("ChangeElevationUp") and CommandLineEdit.has_focus():
+		onChangeToPastCommand(-1)
+	elif Input.is_action_just_pressed("ChangeElevationDown") and CommandLineEdit.has_focus():
+		onChangeToPastCommand(1)
 		
-	
+func onChangeToPastCommand(direction: int) -> void:
+	if past_commands.is_empty(): return
+	past_index = clamp(past_index + direction, 0, past_commands.size())
+	CommandLineEdit.text = past_commands[past_index] if past_index != past_commands.size() else ""
+
 func onMouseInUI(state: bool) -> void:
 	mouse_in_ui.emit(state)

@@ -11,9 +11,10 @@ signal mouse_in_ui
 var active_effect: ActiveEffectDatastore
 var Card: CardGD
 
-func setInfo(_active_effect: ActiveEffectDatastore, _Card: CardGD) -> void:
+func setInfo(_active_effect: ActiveEffectDatastore, _Card: CardGD, _is_action_lock: bool) -> void:
 	Card = _Card
 	active_effect = _active_effect
+	is_action_lock = _is_action_lock
 	NameLabel.text = active_effect.getName()
 	DescriptionLabel.setText(active_effect.getDescription())
 	
@@ -34,14 +35,14 @@ func setDisabled() -> void:
 	var active_effect_disabled: bool = \
 		active_effect.owner.getActiveEffectDisabled(active_effect, Card) if active_effect.owner is IObjectGD\
 		else active_effect.owner.getActiveEffectDisabled(active_effect)
-	
+		
 	var is_used: bool = active_effect.used
 	var no_charges: bool = active_effect.getCharges() == 0
 	var turn_passed: bool = Card.turn_state == Game.TurnStates.PASSED
-	var is_not_mobile_and_active: bool = !Card.isMobile() and Card.turn_state == Game.TurnStates.ACTIVE
+	var is_not_mobile_and_active: bool = !Card.isMobile() and Card.turn_state == Game.TurnStates.ACTIVE and active_effect is ActiveAbilityDatastore
 	var is_enemy: bool = Card.isEnemy(0)
 	
-	Btn.disabled = active_effect_disabled or is_used or no_charges or is_not_mobile_and_active or turn_passed or is_enemy or dependant_disabled
+	Btn.disabled = active_effect_disabled or is_used or no_charges or is_not_mobile_and_active or turn_passed or is_enemy or dependant_disabled or is_action_lock
 	modulate = HOVERED_OR_BASE if !Btn.disabled else Color(0.6, 0.6, 0.6, 1)
 
 var HOVERED_OR_BASE := Color(1, 1, 1, 1)

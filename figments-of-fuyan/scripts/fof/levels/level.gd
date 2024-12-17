@@ -29,12 +29,14 @@ signal boon_activated
 signal boon_ascended
 signal tile_occupied
 signal set_rewards # Signal for area to interpret
+signal game_started
 signal game_ended
 signal tool_picked_up
 signal cards_picked_up
 signal reward_taken # Signal for rewards ui 
 signal rewards_finished # Signal for area to interpret
 signal tool_removed
+signal update_active_effects
 
 #region Load / Save
 func onSave() -> SavedData:
@@ -101,7 +103,7 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 	save_file = _save_file
 	energy_changed.emit(energy)
 	if is_init:
-		var actions: Array = [ChangePhaseAction.new(Game.Phases.START)]
+		var actions: Array = [StartGameAction.new(), ChangePhaseAction.new(Game.Phases.START)]
 		for GameObject in get_tree().get_nodes_in_group("GameObjectsGD"):
 			GameObject.onLoadDataLevelFofInit()
 			
@@ -112,7 +114,7 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 		actions.append(LevelVisibleAction.new(false, get_tree().get_nodes_in_group("LevelTileObjectsGD") + get_tree().get_nodes_in_group("FieldCardsGD")))
 		onPushAction(actions)
 		return
-		
+
 	
 	for Boon in get_tree().get_nodes_in_group("BoonsGD"):
 		boon_added.emit(Boon)
@@ -151,13 +153,14 @@ func getFieldCards() -> Array:
 
 #region Setters
 func onChangePhase(_phase: Game.Phases, instant: bool = false) -> void:
+	var old_phase: Game.Phases = phase
 	match phase: # Old phase
 		Game.Phases.START:
 			onDrawStarterHand()
 			setAlliesTurnState(Game.TurnStates.INACTIVE)
 			
 	phase = _phase
-	phase_changed.emit(phase, instant)
+	phase_changed.emit(phase, old_phase, instant)
 	
 	match phase:
 		Game.Phases.HAND:
@@ -190,7 +193,7 @@ func onProcessAction(action: Action) -> void:
 			energy_changed.emit(energy)
 			onCheckSkipHandPhase()
 		elif action is ChangeTurnStateAction:
-			turn_state_changing.emit(action.Card)
+			turn_state_changing.emit(action.Card, action)
 		elif action is CameraChangeAction:
 			onCameraChange(action)
 		elif action is ActiveEffectUsedAction:
@@ -219,6 +222,8 @@ func onProcessAction(action: Action) -> void:
 			tool_removed.emit()
 		elif action is DeathAction:
 			onRecalculateAITurn(action.Defender, true, true, true, true)
+		elif action is ChangeActiveEffectChargesAction:
+			update_active_effects.emit()
 	else:
 		if action is ChangePhaseAction:
 			if action.phase == phase: action.failed = true
@@ -226,6 +231,9 @@ func onProcessAction(action: Action) -> void:
 			if getSpectateObject() == action.SpectateObject: action.failed = true
 		elif action is MovementFinishAction:
 			action.setPhaseByLevel(phase)
+		elif action is StartGameAction:
+			if action.getDelay() == 0: return # Means admin is on
+			game_started.emit()
 #endregion
 
 #region Hand
@@ -303,21 +311,10 @@ func setRewards(is_win: bool) -> void:
 	set_rewards.emit(is_win)
 
 func onGameEnded() -> void:
-	var groups: Array = ["HandCardsGD", "FieldCardsGD", "GraveyardCardsGD"]
-	for card_group in groups.map(func(x: String): return get_tree().get_nodes_in_group(x)):
-		for Card in card_group.filter(func(x: CardGD): return x.isAlly(0)):
-			Card.onChangeCardPlace(Game.CardPlaces.DECK)
-			
-	if is_elite:
-		for Boon in save_file.boons.filter(func(x: BoonGD): return x.info.elite_fight_curse):
-			save_file.onRemoveBoon(Boon)
-			
-	for Card in Game.get_tree().get_nodes_in_group("DeckCardsGD")\
-		.filter(func(x: CardGD): return x.Tool != null and x.Tool.info.rarity == Game.Rarities.MINI):
-		Card.onRemoveTool()
+	for FofObject in get_tree().get_nodes_in_group("FofGD"):
+		FofObject.onLevelEnded(rewards != null)
 			
 	game_ended.emit(rewards)
-	
 func onRewardsFinished() -> void:
 	rewards_finished.emit(save_file)
 #endregion

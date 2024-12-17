@@ -27,7 +27,7 @@ static func getInfoPath() -> String: return "res://resources/fof/levels"
 func setSpawnPropertiesAutoValues(tile_objects: Array) -> void:
 	ally_spawn_amount  = tile_objects.filter(func(x: TileObjectGD): return x.isIDVariation(2, 0)).size()
 	enemy_min_spawn_amount = tile_objects.filter(func(x: TileObjectGD): return x.isIDVariation(2, 1)).size()
-	enemy_max_spawn_amount = enemy_max_spawn_amount
+	enemy_max_spawn_amount = enemy_min_spawn_amount
 
 func getEmptySpawnCoords() -> Array:
 	return data\

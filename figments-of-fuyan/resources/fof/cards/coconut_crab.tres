@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://0x1ocnplgsij"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://d32t4ywtxnsk3"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_qt1qu"]
 [ext_resource type="Texture2D" uid="uid://mqbjcmdfmhj1" path="res://assets/sprites/game/cards/art_mini/coconut_crab.png" id="2_876bb"]
@@ -35,8 +35,9 @@ energy = 2
 rarity = 1
 initial_traits = Array[ExtResource("2_ytoss")]([])
 active_abilities = Array[ExtResource("1_qt1qu")]([])
-ability_text = "ERRATIC; Disguise this as a Coconut when out of vision for [2] Turns"
 flavor_text = ""
+description = "ERRATIC; Disguise this as a Coconut when out of vision for [2] Turns"
+ascended_description = ""
 art_mini_coordinate = Vector2i(80, 70)
 art_mini = ExtResource("2_876bb")
 art_pop = ExtResource("2_lc7ul")
@@ -51,7 +52,6 @@ plus_health = 1
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("2_ytoss")]([])
-ascended_ability_text = ""
 archetype = ExtResource("2_rpyhs")
 id = 27
 name = "Coconut Crab"

@@ -47,7 +47,7 @@ _bundled = {
 
 [resource]
 script = ExtResource("2_qu6p4")
-description = Array[String](["Can temporarily buff units at campfires", "More likely to get boons from card rewards", "Weakens if diverged from the Holy Path"])
+champion_description = Array[String](["Can temporarily buff units at campfires", "More likely to get boons from card rewards", "Weakens if diverged from the Holy Path"])
 associated_color = Color(0.890196, 0.890196, 0.792157, 1)
 epithet = "The Devout"
 champion_select_posrot = SubResource("Resource_ax8vu")
@@ -62,8 +62,9 @@ energy = 2
 rarity = 8
 initial_traits = Array[ExtResource("3_276uu")]([])
 active_abilities = Array[ExtResource("1_my31a")]([SubResource("Resource_ehxq3")])
-ability_text = "ABILITY [2]: Heal [1] HP to an ally in vision or self"
 flavor_text = "His beleaf can't be questioned"
+description = "ABILITY [2]: Heal [1] HP to an ally in vision or self"
+ascended_description = ""
 art_mini_coordinate = Vector2i(90, 70)
 art_mini = ExtResource("2_uxbkr")
 art_pop = ExtResource("2_rqcgn")
@@ -78,7 +79,6 @@ plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("3_276uu")]([])
-ascended_ability_text = ""
 id = 2
 name = "Divinus Palmus"
 gdscript = ExtResource("2_7n28t")

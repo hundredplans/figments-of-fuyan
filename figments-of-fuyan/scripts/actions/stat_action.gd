@@ -86,6 +86,7 @@ func onPostAction() -> void:
 		if turns > 0:
 			onPushAction(DelayedStatAction.new(
 				StatInfo.new(Card, original_types, original_values.map(func(x: int): return x * -1), turns, absolute, show_particles, true)))
+		Card.update_stats.emit()
 	
 func getLogInfo() -> Array:
 	var arr: Array = []

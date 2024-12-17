@@ -1,10 +1,10 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=10 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=10 format=3 uid="uid://ck37rpjy3bl8f"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_jtfwr"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/maria_welsh.png" id="2_jmwwe"]
+[ext_resource type="Image" uid="uid://dfk81n741eb2k" path="res://assets/sprites/game/cards/art_pop/maria_welsh.png" id="2_jmwwe"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_1xmu0"]
 [ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_p228n"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_weg0y"]
+[ext_resource type="PackedScene" uid="uid://bxdixxrf3f7aa" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_weg0y"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_qhuv1"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="7_661xi"]
 
@@ -33,8 +33,9 @@ energy = 3
 rarity = 4
 initial_traits = Array[ExtResource("3_1xmu0")]([])
 active_abilities = Array[ExtResource("1_jtfwr")]([])
-ability_text = "RANGED [1-2]; REVENGE: Attacks the DUELLING enemy if in RANGED range"
 flavor_text = ""
+description = "RANGED [1-2]; REVENGE: Attacks the DUELLING enemy if in RANGED range"
+ascended_description = ""
 art_mini_coordinate = Vector2i(0, 0)
 art_pop = ExtResource("2_jmwwe")
 model = ExtResource("5_weg0y")
@@ -48,7 +49,6 @@ plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("3_1xmu0")]([])
-ascended_ability_text = ""
 id = 39
 name = "Maria Welsh"
 gdscript = ExtResource("4_p228n")

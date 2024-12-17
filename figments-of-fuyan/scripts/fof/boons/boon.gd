@@ -5,6 +5,9 @@ signal update_ascend
 var ascended: bool
 var ability_save: Dictionary
 
+func onFofInit() -> void:
+	onResetCharges()
+
 func onLoadData(data: SavedData) -> void:
 	super(data)
 	add_to_group("BoonsGD")
@@ -31,6 +34,9 @@ func getDisabled() -> bool:
 	
 func getCharges() -> int:
 	return -1
+	
+func onResetCharges() -> void:
+	pass
 
 func onAscend(state: bool) -> void:
 	ascended = state
@@ -38,3 +44,10 @@ func onAscend(state: bool) -> void:
 	
 func isAddRequirementMet() -> bool: # Whether you can add this to your boons
 	return true
+
+func onLevelEnded(_win: bool) -> void:
+	if info.elite_fight_curse or info.rarity == Game.Rarities.MINI:
+		Game.save_file.onRemoveBoon(self)
+		onClear()
+		return
+	onResetCharges()

@@ -20,3 +20,6 @@ func onProcessAction(action: Action) -> void:
 			
 func onTraitAdded() -> void:
 	pass
+
+func onLevelEnded(_win: bool) -> void:
+	onClear()

@@ -21,10 +21,13 @@ func onSteppedOn(action: OccupyAction) -> void:
 	match stepped_on_choice:
 		"heal":
 			actions.append(StatAction.new(StatInfo.new(action.Card, Game.Stats.HEALTH, 1)))
+			onRemoveMoveAndAttackActions(action.Card)
 		"minitool":
-			var id: int = range(8, 13).pick_random()
-			var Tool: ToolGD = SavedData.onLoadModel(Helper.getFofInfoID(ToolInfo, id).saved_data.new(id, true), action.Card)
-			actions.append(AddToolAction.new(action.Card, Tool))
+			if !action.Card.getTool() != null:
+				var id: int = range(8, 13).pick_random()
+				var Tool: ToolGD = SavedData.onLoadModel(Helper.getFofInfoID(ToolInfo, id).saved_data.new(id, true), action.Card)
+				actions.append(AddToolAction.new(action.Card, Tool))
+				onRemoveMoveAndAttackActions(action.Card)
 		"crab":
 			var Tile: TileGD = getRandomAdjacentTile()
 			if Tile != null:
@@ -32,8 +35,7 @@ func onSteppedOn(action: OccupyAction) -> void:
 				var Card: CardGD = Game.getNewFieldCard(27, Tile, 2, card_tile_rotation, false)
 				stepped_on_card_public_id = action.Card.public_id
 				actions.append(AwakenAction.new(Card, Tile))
-			
-	onRemoveMoveAndAttackActions(action.Card)
+				onRemoveMoveAndAttackActions(action.Card)
 	onPushAction(actions)
 
 func onSave() -> SavedDataIObject:

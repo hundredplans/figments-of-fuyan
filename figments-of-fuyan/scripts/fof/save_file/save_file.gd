@@ -55,7 +55,6 @@ func onLoadData(data: SavedData) -> void:
 	var ChampionCard: CardGD
 	for card_data in data.deck:
 		var Card: CardGD = SavedData.onLoadModel(card_data, get_parent())
-		print(Card.energy)
 		Card.add_to_group("AllyCardsGD")
 		if Game.isChampion(Card.info.rarity): ChampionCard = Card
 	
@@ -78,7 +77,8 @@ func onLoadData(data: SavedData) -> void:
 	
 func onFofInit() -> void:
 	var boon_info: BoonInfo = getChampionCard().info.boon_info
-	SavedData.onLoadModel(boon_info.saved_data.new(boon_info.id, true), self)
+	var Boon: BoonGD = SavedData.onLoadModel(boon_info.saved_data.new(boon_info.id, true), self)
+	onAddBoon(Boon)
 	
 func setInfo(_area: AreaGD) -> void:
 	area = _area

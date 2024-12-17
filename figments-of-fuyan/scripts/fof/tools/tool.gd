@@ -74,3 +74,7 @@ func getLevelVisible() -> bool:
 	
 func setAscended(state: bool) -> void:
 	ascended = state
+
+func onLevelEnded(_win: bool) -> void:
+	if info.rarity == Game.Rarities.MINI: Card.onRemoveTool(); onClear()
+		

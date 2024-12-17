@@ -20,6 +20,7 @@ signal dragged_finished
 @onready var TextLabel: FancyTextLabel = %TextLabel
 @onready var ToolControl: Control = %ToolControl
 @onready var ToolIcon: Control = %ToolIcon
+@onready var ToolIconBackground: Sprite2D = %ToolIconBackground
 @onready var OutlineMask: TextureRect = %OutlineMask
 
 @onready var BuffControlAttack: Control = %BuffControlAttack
@@ -44,7 +45,8 @@ signal dragged_finished
 @export var rarities: Array[Image]
 @export var ascended_rarities: Array[Image]
 @export var masks: Array[Texture2D]
-
+@export var REGULAR_TOOL_ICON_BACKGROUND: Texture2D
+@export var ASCENDED_TOOL_ICON_BACKGROUND: Texture2D
 #endregion
 #region Globals
 const CARD_TO_CENTER_HELD_TIMER: float = 0.2
@@ -57,6 +59,7 @@ var disabled: bool
 var selected: bool
 var inspectable: bool
 var DraggableParent: Control
+var child_index: int
 
 var is_held: bool
 var original_position: Vector2
@@ -80,24 +83,35 @@ func setInfo(_Card: CardGD, _highlight_on_hover: bool = false, _inspectable: boo
 	TextLabel.setText(Card.getDescription())
 	AreaBackground.setTexture(Card.getArea().card_background)
 	NameLabel.text = Card.info.name
+	
+	onUpdateTemporaryCardMarker()
+	onUpdateAwakenedInCombat()
+	onToolAdded(Card.Tool)
+	onUpdateStats()
+	
+	Card.update_stats.connect(onUpdateStats)
+	Card.tool_added.connect(onToolAdded)
+	Card.temporary_card_conditions_updated.connect(onUpdateTemporaryCardMarker)
+	Card.awakened_in_combat.connect(onUpdateAwakenedInCombat)
+	
+func onUpdateStats() -> void:
 	AttackLabel.text = str(Card.attack)
 	HealthLabel.text = str(Card.health)
 	SpeedLabel.text = str(Card.speed)
 	EnergyLabel.text = str(Card.energy)
 	
-	onUpdateTemporaryCardMarker()
-	onUpdateAwakenedInCombat()
-	onToolAdded(Card.Tool)
-	Card.tool_added.connect(onToolAdded)
-	Card.temporary_card_conditions_updated.connect(onUpdateTemporaryCardMarker)
-	Card.awakened_in_combat.connect(onUpdateAwakenedInCombat)
-	
 func onCardAscended(_state: bool) -> void:
 	Background.setTexture(rarities[Card.info.rarity] if !Card.ascended else ascended_rarities[Card.info.rarity])
+	onUpdateStats()
+	TextLabel.setText(Card.getDescription())
 	
 func onToolAdded(Tool: ToolGD) -> void:
 	ToolControl.visible = Tool != null
 	ToolIcon.setInfo(Tool, false)
+	onToolAscended(Tool.ascended if Tool != null else false)
+	
+func onToolAscended(state: bool) -> void:
+	ToolIconBackground.texture = REGULAR_TOOL_ICON_BACKGROUND if !state else ASCENDED_TOOL_ICON_BACKGROUND
 	
 func onPressed() -> void:
 	if !disabled: pressed.emit(self)
@@ -136,9 +150,9 @@ func _input(event: InputEvent) -> void:
 			position = get_viewport().get_mouse_position() - (size / 2)
 		
 func setBuffLabels() -> void:
-	var attack_diff: int = Card.attack - Card.info.attack
-	var health_diff: int = Card.health - Card.max_health
-	var speed_diff: int = Card.max_speed - Card.info.speed
+	var attack_diff: int = Card.attack - Card.base_stats.attack
+	var health_diff: int = Card.health - Card.base_stats.health
+	var speed_diff: int = Card.max_speed - Card.base_stats.speed
 	
 	if attack_diff != 0:
 		BuffControlAttack.visible = true
@@ -186,6 +200,7 @@ func onHeldBegan() -> void:
 	onChangeBackgroundMouseFilter(false)
 	
 	original_parent = get_parent()
+	child_index = get_index()
 	get_parent().remove_child(self)
 	DraggableParent.add_child(self)
 	global_position = original_position
@@ -221,6 +236,7 @@ func onHeldEnded() -> void:
 	onChangeBackgroundMouseFilter(true)
 	get_parent().remove_child(self)
 	original_parent.add_child(self)
+	original_parent.move_child(self, child_index)
 	global_position = original_position
 	dragged_finished.emit(self)
 	

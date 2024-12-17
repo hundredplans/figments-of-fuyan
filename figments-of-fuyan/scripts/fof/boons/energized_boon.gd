@@ -42,3 +42,7 @@ func onFieldEffectsTurnPassed() -> void:
 			FieldEffect.turns -= 1
 			if FieldEffect.turns == 0:
 				FieldCard.onRemoveFieldEffect(FieldEffect)
+
+func onLevelEnded(win: bool) -> void:
+	super(win)
+	cards = []

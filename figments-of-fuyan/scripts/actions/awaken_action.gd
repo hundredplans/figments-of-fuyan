@@ -16,13 +16,21 @@ func onPostAction() -> void:
 	var SpawnObject: SpawnGD = Tile.getSpawnTile()
 	if SpawnObject != null: Card.tile_rotation = SpawnObject.tile_rotation
 	
+	onPushAction(FinishAwakenAction.new(Card)) # Important it's here so the other pushes move it back
 	Card.onChangeCardPlace(Game.CardPlaces.FIELD)
 	Card.onAwaken()
 	Card.onCreateInitialTraits()
 	Card.onCreateInitialActiveAbilities()
 	
-	if Card.Tool != null:
-		onPushAction(AddToolAction.new(Card, Card.Tool))
+	var actions: Array = []
+	if owner is PlayCardAction:
+		if Card.info.rarity != Game.Rarities.CHAMPION:
+			actions.append(Card.getBaseStatusEffectAction(3, 2))
+	else: actions.append(ChangeTurnStateAction.new(Card, Game.TurnStates.INACTIVE))
+		
+	if Card.Tool != null: actions.append(AddToolAction.new(Card, Card.Tool))
+		
+	onPushAction(actions)
 
 func getLogInfo() -> Array:
 	return ["Card: " + Card.info.name]

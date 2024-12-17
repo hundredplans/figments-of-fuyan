@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=13 format=3 uid="uid://b2t11vycsrbk"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=13 format=3 uid="uid://x0q8allwrtdx"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_ljhej"]
 [ext_resource type="Image" uid="uid://bek6ns5qil350" path="res://assets/sprites/game/cards/art_pop/hocus_palmus.png" id="2_6ibk4"]
@@ -48,8 +48,9 @@ energy = 2
 rarity = 5
 initial_traits = Array[ExtResource("2_wy73v")]([])
 active_abilities = Array[ExtResource("1_ljhej")]([SubResource("Resource_bgqxv")])
-ability_text = "ABILITY [1]: Heal the most injured ally on field [2] HP and TELEPORT them to a spawn tile"
 flavor_text = ""
+description = "ABILITY [1]: Heal the most injured ally on field [2] HP and TELEPORT them to a spawn tile"
+ascended_description = "ABILITY [2]: Heal an injured ally on field [2] HP and TELEPORT them to a spawn tile"
 art_mini_coordinate = Vector2i(80, 40)
 art_mini = ExtResource("2_6sx50")
 art_pop = ExtResource("2_6ibk4")
@@ -64,7 +65,6 @@ plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("2_wy73v")]([])
-ascended_ability_text = "ABILITY [2]: Heal an injured ally on field [2] HP and TELEPORT them to a spawn tile"
 archetype = ExtResource("2_452pe")
 id = 19
 name = "Hocus Palmus"

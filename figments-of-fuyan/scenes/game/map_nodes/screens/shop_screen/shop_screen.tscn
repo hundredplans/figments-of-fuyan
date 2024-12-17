@@ -63,6 +63,7 @@ mouse_filter = 2
 unique_name_in_owner = true
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
+mouse_filter = 2
 
 [node name="RemoveCardPosition" type="Control" parent="TopRow/RemoveCardControl"]
 unique_name_in_owner = true
@@ -74,6 +75,7 @@ offset_left = -120.0
 offset_right = 120.0
 offset_bottom = 240.0
 grow_horizontal = 2
+mouse_filter = 2
 
 [node name="BottomRow" type="HBoxContainer" parent="."]
 layout_mode = 0

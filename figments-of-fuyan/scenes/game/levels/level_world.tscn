@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://cjmt3kd7ntlan"]
+[gd_scene load_steps=10 format=3 uid="uid://cjmt3kd7ntlan"]
 
 [ext_resource type="Script" path="res://scenes/game/levels/level_world.gd" id="1_5gypc"]
 [ext_resource type="Script" path="res://addons/movement_camera.gd" id="2_k01hc"]
@@ -6,6 +6,92 @@
 [ext_resource type="Environment" uid="uid://g3ihmrpunr2b" path="res://assets/environments/main_menu_environment.tres" id="3_u2cmg"]
 [ext_resource type="Script" path="res://scenes/game/levels/world/camera_manager.gd" id="4_t61g7"]
 [ext_resource type="Script" path="res://scenes/game/levels/world/level_camera.gd" id="5_amvjx"]
+
+[sub_resource type="Animation" id="Animation_tafbe"]
+resource_name = "CameraStartGame"
+length = 4.1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CameraManager/FreeLookCamera:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -10, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CameraManager/FreeLookCamera:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 6.28319, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CameraManager:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 4, 4.1),
+"transitions": PackedFloat32Array(1, 5.89561e-05, 1),
+"update": 0,
+"values": [Vector3(0, 10, 0), Vector3(0, 10, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_gatn3"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CameraManager/FreeLookCamera:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CameraManager/FreeLookCamera:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CameraManager:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_05fem"]
+_data = {
+"CameraStartGame": SubResource("Animation_tafbe"),
+"RESET": SubResource("Animation_gatn3")
+}
 
 [node name="LevelWorld" type="Node3D"]
 script = ExtResource("1_5gypc")
@@ -31,6 +117,13 @@ script = ExtResource("2_k01hc")
 unique_name_in_owner = true
 collision_mask = 8
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+"": SubResource("AnimationLibrary_05fem")
+}
+
 [connection signal="zooming" from="CameraManager" to="." method="onUpdateMousePosition"]
 [connection signal="camera_panning" from="CameraManager/LevelCamera" to="." method="onCameraPanning"]
 [connection signal="camera_panning" from="CameraManager/FreeLookCamera" to="." method="onCameraPanning"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="onAnimationFinished"]

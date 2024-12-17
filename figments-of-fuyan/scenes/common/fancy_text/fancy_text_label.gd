@@ -6,7 +6,6 @@ const ROBOTO_FONT_PATH: String = "res://assets/fonts/roboto.ttf"
 @export var center: bool = true
 @export var right: bool = false
 @export var hover: bool = false
-var hoverables: Array[FancyTextHoverable] = []
 var infos: Array[InfoAscended]
 
 signal mouse_in_ui
@@ -54,7 +53,7 @@ func onColoredTextReplace(regex: RegEx, fancy_text: FancyText) -> void:
 func onReplaceCardName(colored_text: String, ascended: bool, color: Color) -> String:
 	var new_result: String = "[color=" + color.to_html() + "]" + colored_text + "[/color]"
 	if ascended:
-		new_result = new_result.insert(0, "[outline_color=ffffff]")
+		new_result = new_result.insert(0, "[outline_color=" + Game.ASCENDED_COLOR.to_html() + "]")
 		new_result += "[/outline_color]"
 	return new_result
 
@@ -75,21 +74,18 @@ func onFofIconsReplace(regex: RegEx, fancy_text: FancyText) -> void:
 			var info: FofInfo = Helper.getFofInfoID(fof_icon_fancy_text.fof_type, id)
 			
 			var icon_path: String = info.getTextIcon().resource_path
-			hoverables.append(FancyTextHoverable.new(id, fof_icon_fancy_text.fof_type))
 			
 			var icon_size: String = str(int(settings.font_size * 1.5))
+			
 			var new_result: String = "[img=" + icon_size + "x" + icon_size + ",center]" + icon_path + "[/img]"
 			var ascended: bool = result[1] == "a"
 			new_result = new_result.insert(0, onReplaceCardName(info.name, ascended, Game.getRarityColor(info.rarity)) + " ")
 			infos.append(InfoAscended.new(info, ascended))
 			
-<<<<<<< HEAD
-=======
 			var replace_index: int = _result.get_start()
 			offset = _result.get_end() + (new_result.length() - result.length())
 			text = text.left(replace_index) + new_result + text.right(-(replace_index + result.length()))
 			
->>>>>>> c762a9152bdd878227ea4edbe90ada105abb7576
 func onFofImagesReplace(regex: RegEx, fancy_text: FancyText) -> void:
 	for image_fancy_text in fancy_text.images:
 		var compile_text: String = image_fancy_text.name
@@ -126,7 +122,6 @@ func onMouseInUI(state: bool) -> void:
 	is_mouse_in_ui = state
 	mouse_in_ui.emit(is_mouse_in_ui)
 	if hover:
-		var infos: Array = hoverables.map(func(x: FancyTextHoverable): return Helper.getFofInfoID(x.type, x.id))
 		Game.onMouseInUITooltip(is_mouse_in_ui, infos, self)
 #endregion
 

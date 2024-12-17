@@ -27,15 +27,17 @@ class_name SavedDataCard extends SavedDataGameObject
 @export var max_movement_height: float
 @export var last_seen_violence: int
 @export var last_ignore_behaviour_roll: bool
+@export var base_stats: StatsDatastore
 
 func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _coords := Vector4i.ZERO,\
  _tile_rotation: int = 0, _vision_datastore := VisionDatastore.new(), _team: int = 0, _ascended: bool = false, _attack: int = 0, _health: int = 0,\
 	_speed: int = 0, _max_speed: int = 0, _max_health: int = 0, _energy: int = 0,\
-	_draw_order: int = 0, _card_place := Game.CardPlaces.NULL, _turn_state := Game.TurnStates.PASSED, _field_traits: Array = [],\
+	_draw_order: int = 0, _card_place := Game.CardPlaces.NULL, _turn_state := Game.TurnStates.NULL, _field_traits: Array = [],\
 	_status_effects: Array = [], _attacks: int = 0, _attack_range: int = 1, _delayed_stats: Array[StatInfo] = [], _visible_game_objects_public_ids: Array = [],\
 	_ability_save: Dictionary = {}, _active_effects: Array[ActiveEffectDatastore] = [], _tool_data: SavedDataTool = null,\
 	_field_effects: Array = [], _anibility_datastore := AnibilityDatastore.new(), _temporary_card_conditions: Array = [],\
-	_is_awakened_in_combat: bool = false, _last_seen_violence: int = -1, _last_ignore_behaviour_roll: bool = false) -> void:
+	_is_awakened_in_combat: bool = false, _last_seen_violence: int = -1, _last_ignore_behaviour_roll: bool = false,\
+	_base_stats: StatsDatastore = null) -> void:
 		
 	super(_id, _first_init, _public_id, _coords, _tile_rotation, _vision_datastore)
 	
@@ -65,5 +67,6 @@ func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _coords
 	is_awakened_in_combat = _is_awakened_in_combat
 	last_seen_violence = _last_seen_violence
 	last_ignore_behaviour_roll = _last_ignore_behaviour_roll
+	base_stats = _base_stats
 	
 func getInfoType() -> GDScript: return CardInfo

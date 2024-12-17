@@ -3,9 +3,6 @@ extends BoonGD
 var max_kills: int
 var kills_remaining: int
 
-func onFofInit() -> void:
-	max_kills = 1
-
 func onProcessAction(action: Action) -> void:
 	super(action)
 	if action.post:
@@ -23,13 +20,17 @@ func onBoon(action: Action = null) -> void:
 	onPushAction(StatAction.new(StatInfo.new(action.Damager, Game.Stats.MAX_HEALTH, 1)))
 
 func onBoonAdded() -> void:
-	kills_remaining = max_kills
+	onResetCharges()
 	
 func getCharges() -> int:
 	return kills_remaining
 	
 func getDisabled() -> bool:
 	return kills_remaining == 0
+	
+func onResetCharges() -> void:
+	max_kills = 1
+	kills_remaining = 1
 	
 func onSave() -> SavedDataBoon:
 	ability_save['max_kills'] = max_kills

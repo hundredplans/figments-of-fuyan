@@ -1,10 +1,10 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=10 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=10 format=3 uid="uid://d3vgv4huxg0qm"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_wy1ly"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/low_dusk_dunny.png" id="2_ddi1t"]
+[ext_resource type="Image" uid="uid://t554x2ary785" path="res://assets/sprites/game/cards/art_pop/low_dusk_dunny.png" id="2_ddi1t"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_albhr"]
 [ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_5c2c6"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_875w4"]
+[ext_resource type="PackedScene" uid="uid://bxdixxrf3f7aa" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_875w4"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_tv3ju"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="7_707qb"]
 
@@ -33,8 +33,9 @@ energy = 3
 rarity = 6
 initial_traits = Array[ExtResource("3_albhr")]([])
 active_abilities = Array[ExtResource("1_wy1ly")]([])
-ability_text = "RANGED [1-3]; All injured enemies on [2] HP or less are REVEALED"
 flavor_text = ""
+description = "RANGED [1-3]; All injured enemies on [2] HP or less are REVEALED"
+ascended_description = ""
 art_mini_coordinate = Vector2i(0, 0)
 art_pop = ExtResource("2_ddi1t")
 model = ExtResource("5_875w4")
@@ -48,7 +49,6 @@ plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("3_albhr")]([])
-ascended_ability_text = ""
 id = 49
 name = "\"Low Dusk\" Dunny"
 gdscript = ExtResource("4_5c2c6")

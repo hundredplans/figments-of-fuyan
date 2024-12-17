@@ -85,8 +85,8 @@ func getTileFillPoints() -> Array:
 	return points
 #endregion
 #region Material Updates
-func setMeshesMaterial(mat: Material = null) -> void:
-	for mesh in getMeshes():
+func setMeshesMaterial(mat: Material = null, parent: Node3D = null) -> void:
+	for mesh in getMeshes(parent):
 		mesh.set_surface_override_material(0, mat)
 		
 func setOutlineMaterial() -> void:
@@ -100,7 +100,7 @@ func setOutlineMaterial() -> void:
 	elif (occupy_state != OccupyStates.NULL and vision_datastore.level_visible and !is_card_moving):
 		match occupy_state:
 			OccupyStates.ALLY: mat = load(info.ALLY_OCCUPY_MATERIAL)
-			OccupyStates.ENEMY: 
+			OccupyStates.ENEMY:
 				if !display_movement_path: mat = load(info.ENEMY_OCCUPY_MATERIAL)
 				else: mat = load(info.MOVEMENT_RANGE_ATTACKABLE_MATERIAL)
 			OccupyStates.NEUTRAL, OccupyStates.ATTACKABLE_IOBJECT:

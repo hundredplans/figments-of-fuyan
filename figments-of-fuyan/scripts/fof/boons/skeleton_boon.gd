@@ -21,13 +21,16 @@ func onBoon(action: DeathAction) -> void:
 	onPushAction(AwakenAction.new(NewCard, action.Tile))
 
 func onBoonAdded() -> void:
-	skeleton_charges = 1
-
+	onResetCharges()
+	
 func getDisabled() -> bool:
 	return skeleton_charges == 0
 
 func getCharges() -> int:
 	return skeleton_charges
+	
+func onResetCharges() -> void:
+	skeleton_charges = 1
 	
 func onSave() -> SavedDataBoon:
 	ability_save['skeleton_charges'] = skeleton_charges

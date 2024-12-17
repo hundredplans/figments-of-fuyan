@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://cphkqgg57ln23"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://bn1tfwf2cerep"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_s8aeo"]
 [ext_resource type="Resource" uid="uid://dk14kkjps176t" path="res://resources/fof/archetypes/warden.tres" id="2_5mj67"]
@@ -35,11 +35,15 @@ energy = 3
 rarity = 5
 initial_traits = Array[ExtResource("2_36a3e")]([])
 active_abilities = Array[ExtResource("1_s8aeo")]([])
-ability_text = "RAMPAGE [2]
+flavor_text = ""
+description = "RAMPAGE [2]
 TRAUMA [2]
 BLOODTHIRST [2]:
 Gain [1] HP"
-flavor_text = ""
+ascended_description = "RAMPAGE
+TRAUMA
+BLOODTHIRST:
+Gain [1] HP"
 art_mini_coordinate = Vector2i(80, 60)
 art_mini = ExtResource("2_5x7tp")
 art_pop = ExtResource("2_7nmyg")
@@ -54,10 +58,6 @@ plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("2_36a3e")]([])
-ascended_ability_text = "RAMPAGE
-TRAUMA
-BLOODTHIRST:
-Gain [1] HP"
 archetype = ExtResource("2_5mj67")
 id = 21
 name = "Crumsy Palmsy"

@@ -1,15 +1,17 @@
 extends Purchasable
 
 @onready var BoonIcon: Control = %BoonIcon
-@onready var NameLabel: Label = %NameLabel
+@onready var NameLabel: FancyTextLabel = %NameLabel
 
-func setInfo(_item: FofGD, _price_datastore: PriceDatastore, save_file: SaveFileGD) -> void:
-	super(_item, _price_datastore, save_file)
+func setInfo(_item: FofGD, _price_datastore: PriceDatastore, _save_file: SaveFileGD) -> void:
+	super(_item, _price_datastore, _save_file)
 	BoonIcon.setInfo(item, true)
 	BoonIcon.onDisplayCharges(false)
 	BoonIcon.pressed.connect(func(_x: BoonGD): onPressed())
 	DisplayedUI = BoonIcon
-	NameLabel.text = item.info.name
+	
+	var text: String = "[" + ("a" if item.ascended else "") + "boon=" + str(item.info.id) + "]"
+	NameLabel.setText(text)
 	NameLabel.modulate = Game.getRarityColor(item.info.rarity)
 
 func setDisabled(state: bool = true) -> void:

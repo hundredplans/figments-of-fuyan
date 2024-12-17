@@ -50,6 +50,7 @@ const STAT_UPDATE_TIME: float = 0.15
 
 const CARD_REWARD_DEFAULT_AMOUNT: int = 3
 const TOOLBELT_SIZE: int = 2
+const ASCENDED_COLOR := Color(0.937, 0.835, 0.318)
 
 func _ready() -> void:
 	var theta: float = PI / 6
@@ -399,7 +400,10 @@ func getDeckSize() -> int:
 	return get_tree().get_nodes_in_group("DeckCardsGD").size()
 	
 func getBaseCard(id: int, Tile: TileGD, team: int, tile_rotation: int, ascended: bool = false) -> SavedDataCard:
-	return Helper.getFofInfoID(CardInfo, id).saved_data.new(id, true, 0, Tile.getCoords(), tile_rotation, VisionDatastore.new(), team, ascended)
+	var card_info: CardInfo = Helper.getFofInfoID(CardInfo, id)
+	var card_data: SavedDataCard = card_info.saved_data.new(id, true, 0, Tile.getCoords(), tile_rotation, VisionDatastore.new(), team, ascended)
+	setCardDataFromInfo(card_data, card_info)
+	return card_data
 	
 func getRandomNonChampionCard() -> CardGD:
 	return get_tree().get_nodes_in_group("DeckCardsGD").filter(func(x: CardGD): return x.info.rarity != Rarities.CHAMPION).pick_random()

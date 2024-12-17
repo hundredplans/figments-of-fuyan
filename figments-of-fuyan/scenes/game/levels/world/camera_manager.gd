@@ -51,6 +51,9 @@ func setActionLock(_action_lock: bool) -> void:
 #endregion
 		
 #region Base Functions
+func _ready() -> void:
+	CurrentCamera = LevelCamera
+
 func setInfo(level_camera_data: LevelCameraData) -> void:
 	if level_camera_data != null:
 		total_progress = level_camera_data.total_progress
@@ -67,8 +70,9 @@ func _input(event: InputEvent) -> void:
 		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and event is InputEventMouseMotion:
 			setCameraPointAlongCircle((event.relative / 10000) * CAMERA_ROTATION_SPEED)
 			
-		if Input.is_action_just_pressed("ZoomIn"): setCameraRadius(-1); zooming.emit()
-		elif Input.is_action_just_pressed("ZoomOut"): setCameraRadius(1); zooming.emit()
+		if !is_mouse_in_ui:
+			if Input.is_action_just_pressed("ZoomIn"): setCameraRadius(-1); zooming.emit()
+			elif Input.is_action_just_pressed("ZoomOut"): setCameraRadius(1); zooming.emit()
 			
 		if !action_lock and !get_viewport().gui_get_focus_owner() is LineEdit:
 			if Input.is_action_just_pressed("ChangeCameraLeft"): onChangeCameraInDirection(-1)
@@ -85,6 +89,15 @@ func getGameObjectFromCoords(coords: Vector4i) -> GameObjectGD:
 var SpectateObject: GameObjectGD
 func onCameraChange(_SpectateObject: GameObjectGD) -> void:
 	SpectateObject = _SpectateObject
+	if isCycle():
+		LastCycleSpectateObject = SpectateObject
+	elif SpectateObject is CardGD:
+		if SpectateObject.isAlly(0): LastAllySpectateObject = SpectateObject
+		else: LastEnemySpectateObject = SpectateObject
+	elif SpectateObject is SpawnGD:
+		LastSpawnSpectateObject = SpectateObject
+	
+	
 	if SpectateObject != null:
 		setCameraType(false)
 		setCameraCentralPoint()
@@ -123,7 +136,7 @@ func setCameraRadius(direction: int) -> void:
 func onSwapCameraType() -> void:
 	setCameraType(CurrentCamera == LevelCamera, true)
 
-func setCameraType(is_freelook: bool, spectate_first_ally: bool = false) -> void:
+func setCameraType(is_freelook: bool, spectate_allies: bool = false) -> void:
 	if (CurrentCamera == null or (is_freelook and CurrentCamera == LevelCamera) or (!is_freelook and CurrentCamera == FreelookCamera)):
 		if CurrentCamera != null:
 			CurrentCamera.current = false
@@ -138,17 +151,24 @@ func setCameraType(is_freelook: bool, spectate_first_ally: bool = false) -> void
 		if is_freelook:
 			if FreelookCamera.position == Vector3.ZERO:
 				FreelookCamera.global_position = LevelCamera.global_position
+				FreelookCamera.rotation_degrees = LevelCamera.rotation_degrees
 			else: FreelookCamera.rotation_degrees = last_freelook_rotation
 		else: last_freelook_rotation = FreelookCamera.rotation_degrees
 		
 		if is_freelook: onCreateCameraChangeAction(null)
-		elif spectate_first_ally: onSpectateAllies()
+		elif spectate_allies:
+			onSpectateAllies()
 		
-func onSpectateSpawn() -> void:
+func onSpectateSpawn(ClosestCard: CardGD = null) -> void:
 	var _SpectateObject: GameObjectGD = LastSpawnSpectateObject
-	if _SpectateObject == null:
+	if _SpectateObject == null or _SpectateObject.isSpawnOccupied() or ClosestCard != null:
 		var spawns: Array = get_tree().get_nodes_in_group("AllySpawnsGD").filter(func(x: SpawnGD): return !x.isSpawnOccupied())
-		if !spawns.is_empty(): _SpectateObject = spawns[0]
+		
+		if !spawns.is_empty():
+			if ClosestCard != null:
+				spawns.sort_custom(func(x: SpawnGD, y: SpawnGD):\
+				return Game.getCoordsDistance(x.getCoords()[0], ClosestCard.getCoords()) < Game.getCoordsDistance(y.getCoords()[0], ClosestCard.getCoords()))
+			_SpectateObject = spawns[0]
 	
 	onCreateCameraChangeAction(_SpectateObject)
 	
@@ -204,6 +224,9 @@ func _process(_delta: float) -> void:
 	if SpectateObject is CardGD and track_card:
 		setCameraCentralPoint()
 		setCameraPointAlongCircle()
+		
+	if is_camera_travelling:
+		FreelookCamera.look_at(position + Vector3(0, -LOOK_AT_OFFSET, 0))
 #endregion
 
 #region Cycle
@@ -218,3 +241,49 @@ func onRemoveCycleObjects() -> void:
 func isCycle() -> bool:
 	return !cycle_objects.is_empty()
 #endregion
+
+#region
+var is_mouse_in_ui: bool
+func onMouseInUI(state: bool) -> void:
+	is_mouse_in_ui = state
+	
+#region Game Started
+const START_Y: int = 15
+const START_UP_OFFSET: int = 5
+const TOTAL_ROTATION: float = 2 * PI
+const MINUS_TRAVEL_TIME: float = 0.5
+const LOOK_AT_OFFSET: float = 5
+var is_camera_travelling: bool = false
+
+func onGameStarted() -> void:
+	setCameraType(true)
+	
+	await get_tree().process_frame
+	
+	is_camera_travelling = true
+	
+	position.y += START_Y
+	FreelookCamera.position.x = 5
+	FreelookCamera.disable_movement = true
+	FreelookCamera.disable_freelook = true
+	
+	var pos_tween := create_tween()
+	pos_tween.tween_property(self, "position:y", -START_Y + START_UP_OFFSET, StartGameAction.START_TIME - MINUS_TRAVEL_TIME)\
+		.as_relative().set_trans(Tween.TRANS_SINE)
+	
+	var rot_tween := create_tween()
+	rot_tween.tween_property(self, "rotation:y", TOTAL_ROTATION, StartGameAction.START_TIME - MINUS_TRAVEL_TIME).as_relative()
+	
+	await get_tree().create_timer(StartGameAction.START_TIME).timeout
+	
+	is_camera_travelling = false
+	position.y -= START_UP_OFFSET
+	rotation.y = 0
+	onSpectateSpawn()
+	
+	await get_tree().process_frame
+	FreelookCamera.position = Vector3.ZERO
+	FreelookCamera.rotation_degrees = Vector3.ZERO
+	FreelookCamera.disable_movement = false
+	FreelookCamera.disable_freelook = false
+	

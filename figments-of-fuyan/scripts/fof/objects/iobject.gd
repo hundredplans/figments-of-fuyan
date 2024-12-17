@@ -38,6 +38,7 @@ func onSave() -> SavedDataIObject:
 	occupied_tiles.map(func(x: TileGD): return x.getCoords()), active_effects, ability_save)
 
 func onProcessAction(action: Action) -> void:
+	super(action)
 	if action.post:
 		if action is ChangePhaseAction:
 			if action.phase == Game.Phases.START:
@@ -89,3 +90,11 @@ func getActiveEffectDescription(_active_effect: ActiveEffectDatastore, descripti
 func onAbility() -> void:
 	if isLevelVisible(): AniPlayer.play("Ability")
 #endregion
+
+func onAdvanceTurn(team: int) -> void:
+	if team != 0: return
+	var actions: Array =\
+		active_effects.filter(func(x: ActiveEffectDatastore): return x.used).\
+		map(func(x: ActiveEffectDatastore): return ChangeActiveEffectUsedAction.new(x, false))
+	onPushAction(actions)
+		

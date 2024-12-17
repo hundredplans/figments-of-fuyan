@@ -50,3 +50,9 @@ func onLoadData(data: SavedData) -> void:
 func isValidEliteLevelSpawns(enemy_spawns: Array) -> bool:
 	var one_attack_amount: int = enemy_spawns.filter(func(x: SavedDataCard): return x.attack == 1).size()
 	return one_attack_amount >= 2
+	
+func onAscendedUpdated(state: bool) -> void:
+	super(state)
+	var mult: int = 1 if state else -1
+	for Card in affected_cards:
+		onPushAction(StatAction.new(StatInfo.new(Card, Game.Stats.ATTACK, 1 * mult,  0, false, true, true)))

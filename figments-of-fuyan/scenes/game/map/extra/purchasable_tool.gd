@@ -1,6 +1,6 @@
 extends Purchasable
 @onready var ToolIcon: Control = %ToolIcon
-@onready var NameLabel: Label = %NameLabel
+@onready var NameLabel: FancyTextLabel = %NameLabel
 @export var ToolPickedUpUIPacked: PackedScene
 
 func setInfo(_item: FofGD, _price_datastore: PriceDatastore, _save_file: SaveFileGD) -> void:
@@ -8,8 +8,9 @@ func setInfo(_item: FofGD, _price_datastore: PriceDatastore, _save_file: SaveFil
 	ToolIcon.setInfo(item, true)
 	ToolIcon.pressed.connect(onToolSelected)
 	DisplayedUI = ToolIcon
-	NameLabel.text = item.info.name
-	NameLabel.modulate = Game.getRarityColor(item.info.rarity)
+	
+	var text: String = "[" + ("a" if item.ascended else "") + "tool=" + str(item.info.id) + "]"
+	NameLabel.setText(text)
 	
 func onToolSelected(Tool: ToolGD) -> void:
 	var ToolPickedUpUI: Control = ToolPickedUpUIPacked.instantiate()

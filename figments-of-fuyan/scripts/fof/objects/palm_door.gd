@@ -68,13 +68,12 @@ func getValidActiveEffects(Card: CardGD) -> Array: # Returns the ability effects
 	
 	if is_open and get_tree().get_nodes_in_group("FieldCardsGD").any(func(x: CardGD): return x.Tile == Tile): return []
 	if !isAdjacent(Card.getCoords()): return []
-	
-	var active_effect: ActiveEffectDatastore = getActiveEffect("Close Door") if is_open else getActiveEffect("Open Door")
-	return [active_effect]
+
+	return [getActiveEffect("Close Door") if is_open else getActiveEffect("Open Door")]
 #endregion
 	
 #region Active Effect
-func getActiveEffectTiles(_active_effect: ActiveEffectDatastore, Card: CardGD) -> ActiveEffectTiles:
+func getActiveEffectTiles(_active_effect: ActiveEffectDatastore, _Card: CardGD) -> ActiveEffectTiles:
 	return ActiveEffectTiles.new([getTile()], [getTile()])
 	
 func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
@@ -94,9 +93,6 @@ func onActiveEffectPre(active_effect: ActiveEffectDatastore, PickedTile: TileGD,
 		is_open = false
 		onDoorIsClosed(false)
 	onForceAction(ChangeTileRotationAction.new(Card, Game.getRelativeTileRotation(Card.Tile, PickedTile)))
-	
-func setActiveEffectUsed(active_effect: ActiveEffectDatastore, _used: bool) -> void:
-	active_effect.used = false
 #endregion
 
 #region Door

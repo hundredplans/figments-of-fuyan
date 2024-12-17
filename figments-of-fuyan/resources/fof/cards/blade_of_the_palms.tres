@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=7 format=3 uid="uid://buise5q8em2y"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=8 format=3 uid="uid://buise5q8em2y"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_jytd8"]
+[ext_resource type="Resource" uid="uid://31nmui4k0kfh" path="res://resources/fof/archetypes/tactician.tres" id="2_7o1xd"]
 [ext_resource type="Image" uid="uid://du02yxtlqrpgq" path="res://assets/sprites/game/cards/art_pop/blade_of_the_palms.png" id="2_67b8k"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_xobv8"]
 [ext_resource type="Script" path="res://scripts/fof/cards/blade_of_the_palms.gd" id="3_031b3"]
@@ -9,15 +10,16 @@
 
 [resource]
 script = ExtResource("3_asufp")
-attack = 0
-health = 0
-speed = 0
-energy = 0
+attack = 3
+health = 2
+speed = 3
+energy = 3
 rarity = 7
 initial_traits = Array[ExtResource("2_xobv8")]([])
 active_abilities = Array[ExtResource("1_jytd8")]([])
-ability_text = ""
 flavor_text = ""
+description = "On Hit: Deal [X] DMG extra for each Palm ally the target has RAMPAGED or BLOODTHIRST"
+ascended_description = ""
 art_mini_coordinate = Vector2i(0, 0)
 art_pop = ExtResource("2_67b8k")
 points = []
@@ -27,9 +29,9 @@ eye = 0.0
 plus_attack = 0
 plus_health = 0
 plus_speed = 0
-plus_energy = 0
+plus_energy = -1
 ascended_traits = Array[ExtResource("2_xobv8")]([])
-ascended_ability_text = ""
+archetype = ExtResource("2_7o1xd")
 id = 25
 name = "Blade of the Palms"
 gdscript = ExtResource("3_031b3")
