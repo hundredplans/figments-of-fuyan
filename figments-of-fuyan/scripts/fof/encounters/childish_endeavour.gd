@@ -22,7 +22,7 @@ func onOptionPressed(option: EncounterOptionDatastore, screen: Control) -> void:
 			Game.save_file.onAddBoon(Boon)
 		"Mentor":
 			var Card: CardGD = SavedData.onLoadModel(Game.onCreateBaseCard(4, true), Game.save_file)
-			Game.onAddToDeck(Card)
+			Game.save_file.onAddToDeck(Card)
 			Card.onAddTemporaryCardCondition(SavedDataMapEffect.new(6, true))
 			
 			var CardUI: Control = Card.onCreateCardUI(screen, false)

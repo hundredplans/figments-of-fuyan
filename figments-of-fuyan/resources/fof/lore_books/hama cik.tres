@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_niuvm"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_lo0ro"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_3bod8"]
+
+[resource]
+script = ExtResource("3_3bod8")
+category = 18
+text = "================Hama Cik==============
+
+The Hama Cik is believed to be an ancient race of humans that were once on this earth
+or are going to be on this earth. This is because they are believed to be explorers or 
+researchers of Space and Time. Their only remainings found so far were an island with 
+monuments and an ancient dialect supposedly theirs. There is not much to none 
+information on the Hama Cik so all of these were common rumours/guesses to who they 
+were, the name Hama Cik didn't even have any correlation to anything it was a name 
+given by the people who merely found the island. The Name means (Mysterious Ones) in
+______ese, the island was found in the year _____ by the _____.
+
+The most popular theory is that the Hama Cik either fled from something or simply were 
+curious to space time, they succeeded and either co-exist(ed) in this timeline or a 
+parralel timeline. Due to the fact they already were in the past they are believed to 
+have travelled to the Future and will one day be hopefully spotted, and hopefully not 
+murdered. Despite the wars or conflicts, the Powers have indirectly agreed to try 
+conserve any spottings of Hama Cik to keep them alive when they must appear even if 
+there was no agreement to do so.
+
+Written by Kuba"
+id = 33
+name = "Hama Cik"
+gdscript = ExtResource("1_niuvm")
+saved_data = ExtResource("2_lo0ro")

@@ -160,3 +160,17 @@ func onUpdateSafeEncounterCount(delta: int) -> void:
 func getSafeEncounterCount() -> int:
 	return safe_encounter_count
 #endregion
+
+#region Deck
+signal deck_changed
+func onRemoveCard(Card: CardGD) -> void:
+	Card.queue_free()
+	deck_changed.emit()
+
+func onAddToDeck(Card: CardGD) -> void:
+	Card.team = 0
+	Card.reparent(self)
+	Card.onChangeCardPlace(Game.CardPlaces.DECK)
+	Card.add_to_group("AllyCardsGD")
+	deck_changed.emit()
+#endregion

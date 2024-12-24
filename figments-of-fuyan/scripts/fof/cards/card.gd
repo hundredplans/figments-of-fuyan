@@ -22,7 +22,6 @@ var Tile: TileGD
 
 var attacks: int
 var attack_range: int
-var field_traits: Array = []
 var status_effects: Array = []
 
 var delayed_stats: Array[StatInfo]
@@ -37,12 +36,13 @@ var Tool: ToolGD
 var is_awakened_in_combat: bool
 var last_seen_violence: int # Turns since they last violence, -1 for haven't seen it yet
 var last_ignore_behaviour_roll: bool
+var overworld_traits: Array[OverworldTrait] = []
 #endregion
 
 #region Globals
 const DEFAULT_ANIMATION_BLEND_TIME: float = 0.2
 const IDLE_RARE_MIN_TIME: int = 12
-const IDLE_RARE_MAX_TIME: int = 80 
+const IDLE_RARE_MAX_TIME: int = 80
 #endregion
 
 #region Signals
@@ -170,6 +170,9 @@ func onHurt() -> void:
 func onAbility() -> void:
 	onPlayAnimation("Ability")
 	
+func onIdleRare() -> void:
+	onPlayAnimation("IdleRare")
+	
 func isWalking() -> bool:
 	return AniPlayer.current_animation.begins_with("Walk")
 #endregion
@@ -189,13 +192,15 @@ func _ready() -> void:
 func onSave() -> SavedDataCard:
 	var tool_data: SavedDataTool = Tool.onSave() if Tool != null else null
 	for stat_info in delayed_stats: stat_info.onSave()
+	for overworld_trait in overworld_traits: overworld_trait.onSave()
+	
 	visible_game_objects_public_ids = visible_game_objects.map(func(x: GameObjectGD): return x.public_id)
 	
 	return SavedDataCard.new(info.id, false, public_id, coords, tile_rotation, vision_datastore, team, ascended, \
-	attack, health, speed, max_speed, max_health, energy, draw_order, card_place, turn_state,\
-	SavedData.onSaveGroup(field_traits), SavedData.onSaveGroup(status_effects), attacks, attack_range, delayed_stats,\
+	attack, health, speed, max_speed, max_health, energy, draw_order, card_place, turn_state, SavedData.onSaveGroup(status_effects), attacks, attack_range, delayed_stats,\
 	visible_game_objects_public_ids, ability_save, active_effects, tool_data, SavedData.onSaveGroup(field_effects), anibility_datastore,\
-	SavedData.onSaveGroup(temporary_card_conditions), is_awakened_in_combat, last_seen_violence, last_ignore_behaviour_roll, base_stats)
+	SavedData.onSaveGroup(temporary_card_conditions), is_awakened_in_combat, last_seen_violence, last_ignore_behaviour_roll, base_stats,
+	overworld_traits)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -204,7 +209,6 @@ func onLoadData(data: SavedData) -> void:
 	ascended = data.ascended
 	turn_state = data.turn_state
 	attacks = data.attacks
-	field_traits_datas = data.field_traits
 	status_effects_datas = data.status_effects
 	tile_rotation = data.tile_rotation
 	delayed_stats = data.delayed_stats
@@ -265,13 +269,20 @@ func onFofInit() -> void:
 	super()
 	base_stats = StatsDatastore.new(attack, max_health, max_speed, energy)
 	
-var field_traits_datas: Array
+	var initial_traits: Array = []
+	if !ascended: initial_traits = info.initial_traits.duplicate()
+	else: initial_traits = info.ascended_traits.duplicate()
+	
+	for trait_data in initial_traits:
+		var added_by := OverworldTrait.AddedBy.ASCENDED if ascended else OverworldTrait.AddedBy.REGULAR
+		onAddOverworldTrait(OverworldTrait.new(trait_data, added_by))
+	
 var status_effects_datas: Array
 var field_effects_datas: Array
 func onLoadTraits() -> void:
-	for field_trait_data in field_traits_datas:
-		onAddTrait(SavedData.onLoadModel(field_trait_data, self))
-	
+	for overworld_trait in overworld_traits:
+		overworld_trait.onLoad(self)
+
 func onLoadStatusEffects() -> void:
 	for status_effect_data in status_effects_datas:
 		onAddStatusEffect(SavedData.onLoadModel(status_effect_data, self))
@@ -518,6 +529,7 @@ func onAwaken() -> void:
 	setTileRotation(tile_rotation)
 	setTurnState(turn_state)
 	setLevelVisible(vision_datastore.level_visible)
+	onCreateIdleRareTimer()
 #endregion
 
 #region Vision
@@ -696,23 +708,50 @@ func onUpdateStat(type: Game.Stats, difference: int, show_particles: bool) -> vo
 
 #region Traits
 func onCreateInitialTraits() -> void:
-	var initial_traits: Array = []
-	if !ascended: initial_traits = info.initial_traits
-	else: initial_traits = info.ascended_traits
-	
 	var actions: Array = []
-	for field_trait_data in initial_traits:
-		actions.append(AddTraitAction.new(SavedData.onLoadModel(field_trait_data, self), self))
+	for overworld_trait in overworld_traits:
+		onAddFieldTrait(overworld_trait)
+	
+func onAscendedUpdateOverworldTraits() -> void:
+	var new_traits: Array = info.ascended_traits if ascended else info.initial_traits
+	var old_traits: Array = info.ascended_traits if !ascended else info.initial_traits
+	
+	var new_traits_ids: Array = new_traits.map(func(x: SavedDataTrait): return x.id)
+	var old_traits_ids: Array = old_traits.map(func(x: SavedDataTrait): return x.id)
+	
+	new_traits = new_traits.filter(func(x: SavedDataTrait): return x.id not in old_traits_ids)
+	old_traits = old_traits.filter(func(x: SavedDataTrait): return x.id not in new_traits_ids)
+	
+	var old_added_by := OverworldTrait.AddedBy.REGULAR if ascended else OverworldTrait.AddedBy.ASCENDED
+	var added_by := OverworldTrait.AddedBy.ASCENDED if ascended else OverworldTrait.AddedBy.REGULAR
+	var actions: Array = old_traits.map(func(x: SavedDataTrait): return RemoveOverworldTraitAction.new(self, x.id, old_added_by))
+	actions += new_traits.map(func(x: SavedDataTrait): return AddOverworldTraitAction.new(self, OverworldTrait.new(x, added_by), true))
+	
 	onPushAction(actions)
 	
-func onAddTrait(Trait: TraitGD) -> void:
-	field_traits.append(Trait)
+func onAddOverworldTrait(overworld_trait: OverworldTrait) -> void:
+	overworld_traits.append(overworld_trait)
+	overworld_trait.clear.connect(func():\
+		onPushAction(RemoveOverworldTraitAction.new(self, overworld_trait.Trait.id, overworld_trait.added_by)))
+	
+func onAddFieldTrait(overworld_trait: OverworldTrait) -> void:
+	var Trait: TraitGD = SavedData.onLoadModel(overworld_trait.getData(), self)
+	
 	Trait.Card = self
+	overworld_trait.Trait = Trait
+	
+	if FieldInfo == null: return
 	FieldInfo.onAddIcon(Trait)
 	FieldInfo.onUpdateTraits()
 	
-func onRemoveTrait(Trait: TraitGD) -> void:
-	field_traits.erase(Trait)
+func onRemoveOverworldTrait(overworld_trait: OverworldTrait) -> void:
+	overworld_traits.erase(overworld_trait)
+	
+func onRemoveFieldTrait(overworld_trait: OverworldTrait) -> void:
+	var Trait: TraitGD = overworld_trait.Trait
+	overworld_trait.onRemoveFieldTrait()
+	
+	if FieldInfo == null: return
 	FieldInfo.onRemoveIcon(Trait)
 	FieldInfo.onUpdateTraits()
 	
@@ -720,7 +759,25 @@ func onCreateArmorTrait(armor: int) -> TraitGD:
 	return SavedData.onLoadModel(SavedDataArmor.new(1, true, 0, armor), self)
 	
 func isMobile() -> bool:
-	return field_traits.any(func(x: TraitGD): return x is MobileGD)
+	return getOverworldTraitByID(3) != null
+	
+func getOverworldTraitByID(id: int) -> OverworldTrait:
+	for overworld_trait in overworld_traits:
+		if overworld_trait.getData().id == id:
+			return overworld_trait
+	return null
+	
+func getFieldTraitByID(id: int) -> TraitGD:
+	for overworld_trait in overworld_traits:
+		if overworld_trait.getData().id == id and overworld_trait.isActive():
+			return overworld_trait.Trait
+	return null
+	
+func getFieldTraits() -> Array:
+	return getActiveOverworldTraits().map(func(x: OverworldTrait): return x.Trait)
+	
+func getActiveOverworldTraits() -> Array:
+	return overworld_traits.filter(func(x: OverworldTrait): return x.isActive())
 #endregion
 
 #region Tools
@@ -915,6 +972,8 @@ func onAscend(state: bool) -> void:
 		energy += plus_speed
 		
 	update_ascended.emit(state)
+	
+	onAscendedUpdateOverworldTraits()
 	setAscendedVisual()
 	
 func onAscendedUpdated(state: bool) -> void:
@@ -961,7 +1020,6 @@ func onLevelEnded(_win: bool) -> void:
 	tile_rotation = 0
 	delayed_stats = []
 	
-	field_traits = []
 	status_effects = []
 	field_effects = []
 	visible_game_objects = []
@@ -972,4 +1030,25 @@ func onLevelEnded(_win: bool) -> void:
 	last_seen_violence = -1
 	Tile = null
 	
+	for overworld_trait in overworld_traits:
+		overworld_trait.onLevelEnded(_win)
+	
+#endregion
+
+#region Idle Rare
+var IdleRareTimer: Timer
+func onCreateIdleRareTimer() -> void:
+	IdleRareTimer = Timer.new()
+	add_child(IdleRareTimer)
+	IdleRareTimer.timeout.connect(onIdleRareTimerTimeout)
+	
+	IdleRareTimer.wait_time = randi_range(IDLE_RARE_MIN_TIME, IDLE_RARE_MAX_TIME)
+	IdleRareTimer.start()
+	
+func onIdleRareTimerTimeout() -> void:
+	if AniPlayer.current_animation.begins_with("Idle"):
+		onIdleRare()
+		
+	IdleRareTimer.start()
+	IdleRareTimer.wait_time = randi_range(IDLE_RARE_MIN_TIME, IDLE_RARE_MAX_TIME)
 #endregion

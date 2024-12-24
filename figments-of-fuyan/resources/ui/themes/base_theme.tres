@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=37 format=3 uid="uid://dcbv431prk86r"]
+[gd_resource type="Theme" load_steps=38 format=3 uid="uid://dcbv431prk86r"]
 
 [ext_resource type="FontFile" uid="uid://dpk4daccj6hwv" path="res://assets/fonts/roboto.ttf" id="1_8d2p5"]
 
@@ -89,6 +89,19 @@ border_width_top = 10
 border_width_right = 10
 border_width_bottom = 10
 border_color = Color(0, 0, 0, 1)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lrxfy"]
+bg_color = Color(0.331712, 0.181858, 2.40654e-08, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ki0ao"]
@@ -379,6 +392,8 @@ Button/styles/normal = SubResource("StyleBoxFlat_j6kt4")
 Button/styles/pressed = SubResource("StyleBoxFlat_scw7j")
 CheckBox/colors/font_outline_color = Color(0, 0, 0, 1)
 CheckBox/constants/outline_size = 8
+DarkBrownPanelContainer/base_type = &"PanelContainer"
+DarkBrownPanelContainer/styles/panel = SubResource("StyleBoxFlat_lrxfy")
 Label/colors/font_outline_color = Color(0, 0, 0, 1)
 Label/constants/outline_size = 8
 Label/font_sizes/font_size = 32

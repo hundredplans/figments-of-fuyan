@@ -1,14 +1,20 @@
-class_name AddTraitAction extends Action
+class_name AddTraitAction extends Action # Should be always called via Card.onAddOverworldTrait
 
-var Trait: TraitGD
+var Card: CardGD
+var overworld_trait: OverworldTrait
 
-func _init(_Trait: TraitGD = null, Card: CardGD = null) -> void:
+func _init(_Card: CardGD = null, _overworld_trait: OverworldTrait = null) -> void:
 	super()
-	Trait = _Trait
-	Trait.Card = Card
+	Card = _Card
+	overworld_trait = _overworld_trait
+
+func onPreAction() -> void:
+	var id: int = overworld_trait.getData().id
+	if Card.getFieldTraits().any(func(x: TraitGD): return x.id == id):
+		onFailAction()
 
 func onPostAction() -> void:
-	Trait.Card.onAddTrait(Trait)
+	Card.onAddFieldTrait(overworld_trait)
 
 func getLogInfo() -> Array:
-	return ["Trait: " + Trait.info.name, "Card: " + Trait.Card.info.name]
+	return ["Trait ID: " + str(overworld_trait.getData().id), "Card: " + Card.info.name, "AddedBy: " + overworld_trait.getAddedByString()]

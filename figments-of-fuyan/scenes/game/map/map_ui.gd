@@ -18,6 +18,7 @@ var area: AreaGD
 @onready var ToolBeltSlotTwo: Control = %ToolBeltSlotTwo
 
 @onready var DeckPanel: PanelContainer = %DeckPanel
+@onready var DeckCardAmountLabel: Label = %DeckCardAmountLabel
 #endregion
 
 #region Exports
@@ -56,6 +57,9 @@ func setInfo(_save_file: SaveFileGD) -> void:
 		map_node.create_screen.connect(onCreateScreen)
 		map_node.finished.connect(onMapNodeFinished)
 		map_node.hovered.connect(onMapNodeHovered)
+		
+	save_file.deck_changed.connect(onUpdateDeckCardAmountLabel)
+	onUpdateDeckCardAmountLabel()
 	
 func onInitLoad() -> void: # Basically the area fof init
 	onMapStartAnimation()
@@ -156,4 +160,9 @@ func onDeckButtonPressed() -> void:
 	var DeckScreen: Control = DeckScreenPacked.instantiate()
 	add_child(DeckScreen)
 	DeckScreen.setInfo(false)
+#endregion
+
+#region Deck Card Amount
+func onUpdateDeckCardAmountLabel() -> void:
+	DeckCardAmountLabel.text = str(get_tree().get_node_count_in_group("DeckCardsGD"))
 #endregion

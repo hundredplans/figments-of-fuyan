@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_c22jn"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_31cu5"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_d0ljp"]
+
+[resource]
+script = ExtResource("3_d0ljp")
+category = 6
+text = "Ambient mana, which resides in the God Realm, is how mages power Creation Magic. It's denser in some regions of the world, such as the West side of Volin where it's particularly dense. A mage regenerates mana passively, the denser the ambient mana in a particular region the faster they regenerate it. If a mage overexerts, they get manasick and feel an excruciating pain in their soul. Extreme manasickness can even result in death. The only way to cure manasickness is rest, with a break from using Creation Magic. Mages develop an affinity towards detecting the densities of mana, and experienced mages can not only feel Infused objects but also the density of the ambient mana around them. Mana comes from souls that die and disperse into the atmosphere, both human and monster."
+id = 112
+name = "Mana"
+gdscript = ExtResource("1_c22jn")
+saved_data = ExtResource("2_31cu5")

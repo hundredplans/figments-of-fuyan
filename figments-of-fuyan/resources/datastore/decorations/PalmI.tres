@@ -1,1187 +1,1825 @@
-[gd_resource type="Resource" script_class="DecorationDatastore" load_steps=94 format=3]
+[gd_resource type="Resource" script_class="DecorationDatastore" load_steps=186 format=3]
 
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="1_h0etd"]
 [ext_resource type="Script" path="res://scenes/game/decorations/decoration_datastore.gd" id="2_8gegl"]
+[ext_resource type="Script" path="res://scripts/fof_info/game_objects/extra/vision_datastore.gd" id="2_bri8w"]
 
-[sub_resource type="Resource" id="Resource_55cps"]
+[sub_resource type="Resource" id="Resource_63gjr"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_led7q"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_63gjr")
 coords = Vector4i(-5, 0, 5, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1587
 
-[sub_resource type="Resource" id="Resource_m83ky"]
+[sub_resource type="Resource" id="Resource_u53fx"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_1leva"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_u53fx")
 coords = Vector4i(-5, 1, 4, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1588
 
-[sub_resource type="Resource" id="Resource_g810y"]
+[sub_resource type="Resource" id="Resource_dag7x"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_cq2mm"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_dag7x")
 coords = Vector4i(-5, 2, 3, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1589
 
-[sub_resource type="Resource" id="Resource_dufmj"]
+[sub_resource type="Resource" id="Resource_1spde"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_ry6p0"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_1spde")
 coords = Vector4i(-5, 3, 2, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1590
 
-[sub_resource type="Resource" id="Resource_77waw"]
+[sub_resource type="Resource" id="Resource_vdpbc"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_2wkns"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_vdpbc")
 coords = Vector4i(-5, 4, 1, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1591
 
-[sub_resource type="Resource" id="Resource_1oubi"]
+[sub_resource type="Resource" id="Resource_ai1s8"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_2u6qt"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_ai1s8")
 coords = Vector4i(-5, 5, 0, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1592
 
-[sub_resource type="Resource" id="Resource_26bk0"]
+[sub_resource type="Resource" id="Resource_166u3"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_0op31"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_166u3")
 coords = Vector4i(-4, -1, 5, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1593
 
-[sub_resource type="Resource" id="Resource_ltfkx"]
+[sub_resource type="Resource" id="Resource_en2rj"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_6ucx8"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_en2rj")
 coords = Vector4i(-4, 0, 4, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1594
 
-[sub_resource type="Resource" id="Resource_6wkt5"]
+[sub_resource type="Resource" id="Resource_fjoem"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_t53yb"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_fjoem")
 coords = Vector4i(-4, 1, 3, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1595
 
-[sub_resource type="Resource" id="Resource_20hb0"]
+[sub_resource type="Resource" id="Resource_oipjt"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_vocld"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_oipjt")
 coords = Vector4i(-4, 2, 2, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1596
 
-[sub_resource type="Resource" id="Resource_pf6wi"]
+[sub_resource type="Resource" id="Resource_pqhq7"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_wqpiy"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_pqhq7")
 coords = Vector4i(-4, 3, 1, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1597
 
-[sub_resource type="Resource" id="Resource_siusy"]
+[sub_resource type="Resource" id="Resource_mwhiy"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_2jvdr"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_mwhiy")
 coords = Vector4i(-4, 4, 0, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1598
 
-[sub_resource type="Resource" id="Resource_m66mc"]
+[sub_resource type="Resource" id="Resource_dt5dg"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_b04w8"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_dt5dg")
 coords = Vector4i(-4, 5, -1, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1599
 
-[sub_resource type="Resource" id="Resource_t3t3d"]
+[sub_resource type="Resource" id="Resource_5lmr7"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_uhrxv"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_5lmr7")
 coords = Vector4i(-3, -2, 5, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1600
 
-[sub_resource type="Resource" id="Resource_bux8y"]
+[sub_resource type="Resource" id="Resource_lyrsj"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_44wvf"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_lyrsj")
 coords = Vector4i(-3, -1, 4, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1601
 
-[sub_resource type="Resource" id="Resource_e1ooe"]
+[sub_resource type="Resource" id="Resource_3b4ed"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_t6t7a"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_3b4ed")
 coords = Vector4i(-3, 0, 3, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1602
 
-[sub_resource type="Resource" id="Resource_5lceq"]
+[sub_resource type="Resource" id="Resource_4ssy7"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_j6s27"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_4ssy7")
 coords = Vector4i(-3, 1, 2, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1603
 
-[sub_resource type="Resource" id="Resource_mxd6w"]
+[sub_resource type="Resource" id="Resource_inbid"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_t2xhb"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_inbid")
 coords = Vector4i(-3, 2, 1, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1604
 
-[sub_resource type="Resource" id="Resource_oj68t"]
+[sub_resource type="Resource" id="Resource_icn6n"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_tr4hh"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_icn6n")
 coords = Vector4i(-3, 3, 0, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1605
 
-[sub_resource type="Resource" id="Resource_tsrmy"]
+[sub_resource type="Resource" id="Resource_4sm02"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_kea46"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_4sm02")
 coords = Vector4i(-3, 4, -1, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1606
 
-[sub_resource type="Resource" id="Resource_6r10g"]
+[sub_resource type="Resource" id="Resource_nhbgi"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_e8deg"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_nhbgi")
 coords = Vector4i(-3, 5, -2, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1607
 
-[sub_resource type="Resource" id="Resource_ke2jw"]
+[sub_resource type="Resource" id="Resource_sbfnn"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_7ryuo"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_sbfnn")
 coords = Vector4i(-2, -3, 5, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1608
 
-[sub_resource type="Resource" id="Resource_18ek0"]
+[sub_resource type="Resource" id="Resource_tcg30"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_7fqmj"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_tcg30")
 coords = Vector4i(-2, -2, 4, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1609
 
-[sub_resource type="Resource" id="Resource_t5fqu"]
+[sub_resource type="Resource" id="Resource_asm6i"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_ceb5c"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_asm6i")
 coords = Vector4i(-2, -1, 3, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1610
 
-[sub_resource type="Resource" id="Resource_wllil"]
+[sub_resource type="Resource" id="Resource_2jcy7"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_j2102"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_2jcy7")
 coords = Vector4i(-2, 0, 2, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1611
 
-[sub_resource type="Resource" id="Resource_vte5e"]
+[sub_resource type="Resource" id="Resource_kj1iy"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_gkygs"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_kj1iy")
 coords = Vector4i(-2, 1, 1, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1612
 
-[sub_resource type="Resource" id="Resource_52qj2"]
+[sub_resource type="Resource" id="Resource_wge7k"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_td0ak"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_wge7k")
 coords = Vector4i(-2, 2, 0, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1613
 
-[sub_resource type="Resource" id="Resource_x0fq4"]
+[sub_resource type="Resource" id="Resource_nt182"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_7qe88"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_nt182")
 coords = Vector4i(-2, 3, -1, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1614
 
-[sub_resource type="Resource" id="Resource_vhabu"]
+[sub_resource type="Resource" id="Resource_8u4x0"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_boidq"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_8u4x0")
 coords = Vector4i(-2, 4, -2, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1615
 
-[sub_resource type="Resource" id="Resource_8xhoe"]
+[sub_resource type="Resource" id="Resource_4uy4s"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_ynrl6"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_4uy4s")
 coords = Vector4i(-2, 5, -3, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1616
 
-[sub_resource type="Resource" id="Resource_4y3ek"]
+[sub_resource type="Resource" id="Resource_bbwvw"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_quabr"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_bbwvw")
 coords = Vector4i(-1, -4, 5, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1617
 
-[sub_resource type="Resource" id="Resource_p0i6w"]
+[sub_resource type="Resource" id="Resource_665lf"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_k3btt"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_665lf")
 coords = Vector4i(-1, -3, 4, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1618
 
-[sub_resource type="Resource" id="Resource_3jajk"]
+[sub_resource type="Resource" id="Resource_islca"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_atvae"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_islca")
 coords = Vector4i(-1, -2, 3, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1619
 
-[sub_resource type="Resource" id="Resource_nbm02"]
+[sub_resource type="Resource" id="Resource_mrjvt"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_kotmb"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_mrjvt")
 coords = Vector4i(-1, -1, 2, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1620
 
-[sub_resource type="Resource" id="Resource_cs48a"]
+[sub_resource type="Resource" id="Resource_7686y"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_i7xu7"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_7686y")
 coords = Vector4i(-1, 0, 1, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1621
 
-[sub_resource type="Resource" id="Resource_fmekh"]
+[sub_resource type="Resource" id="Resource_ahsi7"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_37fbs"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_ahsi7")
 coords = Vector4i(-1, 1, 0, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1622
 
-[sub_resource type="Resource" id="Resource_pjsrl"]
+[sub_resource type="Resource" id="Resource_wbebn"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_e6wsg"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_wbebn")
 coords = Vector4i(-1, 2, -1, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1623
 
-[sub_resource type="Resource" id="Resource_s2fuk"]
+[sub_resource type="Resource" id="Resource_fflvo"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_4jvmm"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_fflvo")
 coords = Vector4i(-1, 3, -2, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1624
 
-[sub_resource type="Resource" id="Resource_u8otw"]
+[sub_resource type="Resource" id="Resource_6a3ys"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_ilx8e"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_6a3ys")
 coords = Vector4i(-1, 4, -3, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1625
 
-[sub_resource type="Resource" id="Resource_o5jih"]
+[sub_resource type="Resource" id="Resource_gloyc"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_whchr"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_gloyc")
 coords = Vector4i(-1, 5, -4, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1626
 
-[sub_resource type="Resource" id="Resource_4r6ty"]
+[sub_resource type="Resource" id="Resource_vhkd7"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_bm1c6"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_vhkd7")
 coords = Vector4i(0, -5, 5, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1627
 
-[sub_resource type="Resource" id="Resource_b8o30"]
+[sub_resource type="Resource" id="Resource_uvlxx"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_umoi7"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_uvlxx")
 coords = Vector4i(0, -4, 4, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1628
 
-[sub_resource type="Resource" id="Resource_dskcg"]
+[sub_resource type="Resource" id="Resource_pot2p"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_uul5b"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_pot2p")
 coords = Vector4i(0, -3, 3, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1629
 
-[sub_resource type="Resource" id="Resource_gxrxx"]
+[sub_resource type="Resource" id="Resource_pw3xu"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_4nh2b"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_pw3xu")
 coords = Vector4i(0, -2, 2, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1630
 
-[sub_resource type="Resource" id="Resource_o5aat"]
+[sub_resource type="Resource" id="Resource_jycft"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_03o63"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_jycft")
 coords = Vector4i(0, -1, 1, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1631
 
-[sub_resource type="Resource" id="Resource_5eu15"]
+[sub_resource type="Resource" id="Resource_owbcf"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_y6rsa"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_owbcf")
 coords = Vector4i(0, 0, 0, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1632
 
-[sub_resource type="Resource" id="Resource_jvtyy"]
+[sub_resource type="Resource" id="Resource_uj2wx"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_qb16x"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_uj2wx")
 coords = Vector4i(0, 1, -1, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1633
 
-[sub_resource type="Resource" id="Resource_qgqis"]
+[sub_resource type="Resource" id="Resource_oeur0"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_xs5j6"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_oeur0")
 coords = Vector4i(0, 2, -2, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1634
 
-[sub_resource type="Resource" id="Resource_pe0y2"]
+[sub_resource type="Resource" id="Resource_qqe3o"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_mlgwl"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_qqe3o")
 coords = Vector4i(0, 3, -3, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1635
 
-[sub_resource type="Resource" id="Resource_udewd"]
+[sub_resource type="Resource" id="Resource_6i43j"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_yj00f"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_6i43j")
 coords = Vector4i(0, 4, -4, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1636
 
-[sub_resource type="Resource" id="Resource_pjyj4"]
+[sub_resource type="Resource" id="Resource_tk5mh"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_vm3xi"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_tk5mh")
 coords = Vector4i(0, 5, -5, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1637
 
-[sub_resource type="Resource" id="Resource_d23c6"]
+[sub_resource type="Resource" id="Resource_oqv57"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_tw2nd"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_oqv57")
 coords = Vector4i(1, -5, 4, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1638
 
-[sub_resource type="Resource" id="Resource_1trmq"]
+[sub_resource type="Resource" id="Resource_ysto3"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_5uxix"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_ysto3")
 coords = Vector4i(1, -4, 3, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1639
 
-[sub_resource type="Resource" id="Resource_yvyk3"]
+[sub_resource type="Resource" id="Resource_7bwec"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_25ywq"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_7bwec")
 coords = Vector4i(1, -3, 2, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1640
 
-[sub_resource type="Resource" id="Resource_36wxq"]
+[sub_resource type="Resource" id="Resource_oly7d"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_jyb37"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_oly7d")
 coords = Vector4i(1, -2, 1, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1641
 
-[sub_resource type="Resource" id="Resource_ayebr"]
+[sub_resource type="Resource" id="Resource_1yjrf"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_emry4"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_1yjrf")
 coords = Vector4i(1, -1, 0, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1642
 
-[sub_resource type="Resource" id="Resource_u1d0p"]
+[sub_resource type="Resource" id="Resource_qw7x7"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_df6kf"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_qw7x7")
 coords = Vector4i(1, 0, -1, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1643
 
-[sub_resource type="Resource" id="Resource_ujdct"]
+[sub_resource type="Resource" id="Resource_xrso7"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_oldfc"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_xrso7")
 coords = Vector4i(1, 1, -2, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1644
 
-[sub_resource type="Resource" id="Resource_kfqkj"]
+[sub_resource type="Resource" id="Resource_8e7cr"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_o4v0g"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_8e7cr")
 coords = Vector4i(1, 2, -3, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1645
 
-[sub_resource type="Resource" id="Resource_5xlqr"]
+[sub_resource type="Resource" id="Resource_yvf1l"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_wjum4"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_yvf1l")
 coords = Vector4i(1, 3, -4, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1646
 
-[sub_resource type="Resource" id="Resource_2f7nh"]
+[sub_resource type="Resource" id="Resource_8mgxw"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_50mab"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_8mgxw")
 coords = Vector4i(1, 4, -5, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1647
 
-[sub_resource type="Resource" id="Resource_3dh0u"]
+[sub_resource type="Resource" id="Resource_k1i8o"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_vjryd"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_k1i8o")
 coords = Vector4i(2, -5, 3, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1648
 
-[sub_resource type="Resource" id="Resource_sqrx2"]
+[sub_resource type="Resource" id="Resource_jxbxu"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_1hwdx"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_jxbxu")
 coords = Vector4i(2, -4, 2, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1649
 
-[sub_resource type="Resource" id="Resource_ac202"]
+[sub_resource type="Resource" id="Resource_vsnxl"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_fmifc"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_vsnxl")
 coords = Vector4i(2, -3, 1, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1650
 
-[sub_resource type="Resource" id="Resource_u01ws"]
+[sub_resource type="Resource" id="Resource_ycoyv"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_m6sa7"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_ycoyv")
 coords = Vector4i(2, -2, 0, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1651
 
-[sub_resource type="Resource" id="Resource_fjgmf"]
+[sub_resource type="Resource" id="Resource_4ys21"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_5fm8m"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_4ys21")
 coords = Vector4i(2, -1, -1, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1652
 
-[sub_resource type="Resource" id="Resource_72g3h"]
+[sub_resource type="Resource" id="Resource_f3r3e"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_ks1cn"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_f3r3e")
 coords = Vector4i(2, 0, -2, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1653
 
-[sub_resource type="Resource" id="Resource_qertb"]
+[sub_resource type="Resource" id="Resource_jy3ib"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_7hvl8"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_jy3ib")
 coords = Vector4i(2, 1, -3, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1654
 
-[sub_resource type="Resource" id="Resource_76t67"]
+[sub_resource type="Resource" id="Resource_onplw"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_1g0cj"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_onplw")
 coords = Vector4i(2, 2, -4, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1655
 
-[sub_resource type="Resource" id="Resource_nra5x"]
+[sub_resource type="Resource" id="Resource_oooou"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_o5smh"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_oooou")
 coords = Vector4i(2, 3, -5, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1656
 
-[sub_resource type="Resource" id="Resource_wskqj"]
+[sub_resource type="Resource" id="Resource_hmqtb"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_0avgu"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_hmqtb")
 coords = Vector4i(3, -5, 2, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1657
 
-[sub_resource type="Resource" id="Resource_sa05a"]
+[sub_resource type="Resource" id="Resource_3sgn7"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_njoyl"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_3sgn7")
 coords = Vector4i(3, -4, 1, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1658
 
-[sub_resource type="Resource" id="Resource_y7a2g"]
+[sub_resource type="Resource" id="Resource_86b0s"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_asc3j"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_86b0s")
 coords = Vector4i(3, -3, 0, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1659
 
-[sub_resource type="Resource" id="Resource_al0n2"]
+[sub_resource type="Resource" id="Resource_57wag"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_1cdlb"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_57wag")
 coords = Vector4i(3, -2, -1, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1660
 
-[sub_resource type="Resource" id="Resource_i78ue"]
+[sub_resource type="Resource" id="Resource_aax3k"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_ovc1f"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_aax3k")
 coords = Vector4i(3, -1, -2, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1661
 
-[sub_resource type="Resource" id="Resource_5kmke"]
+[sub_resource type="Resource" id="Resource_8ly8l"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_osi0q"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_8ly8l")
 coords = Vector4i(3, 0, -3, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1662
 
-[sub_resource type="Resource" id="Resource_ewwp2"]
+[sub_resource type="Resource" id="Resource_2qocu"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_5fyle"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_2qocu")
 coords = Vector4i(3, 1, -4, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1663
 
-[sub_resource type="Resource" id="Resource_k0mkf"]
+[sub_resource type="Resource" id="Resource_wmkrl"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_rm4pv"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_wmkrl")
 coords = Vector4i(3, 2, -5, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1664
 
-[sub_resource type="Resource" id="Resource_h6hpn"]
+[sub_resource type="Resource" id="Resource_s3ent"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_jcc8s"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_s3ent")
 coords = Vector4i(4, -5, 1, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1665
 
-[sub_resource type="Resource" id="Resource_iu4xi"]
+[sub_resource type="Resource" id="Resource_eivdf"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_d5ngi"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_eivdf")
 coords = Vector4i(4, -4, 0, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1666
 
-[sub_resource type="Resource" id="Resource_k1ybt"]
+[sub_resource type="Resource" id="Resource_si7f6"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_fhbct"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_si7f6")
 coords = Vector4i(4, -3, -1, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1667
 
-[sub_resource type="Resource" id="Resource_2l27w"]
+[sub_resource type="Resource" id="Resource_7uasm"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_xkjqn"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_7uasm")
 coords = Vector4i(4, -2, -2, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1668
 
-[sub_resource type="Resource" id="Resource_oope3"]
+[sub_resource type="Resource" id="Resource_kcou1"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_p4x61"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_kcou1")
 coords = Vector4i(4, -1, -3, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1669
 
-[sub_resource type="Resource" id="Resource_j1i8p"]
+[sub_resource type="Resource" id="Resource_oeliw"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_4c1co"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_oeliw")
 coords = Vector4i(4, 0, -4, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1670
 
-[sub_resource type="Resource" id="Resource_37vwq"]
+[sub_resource type="Resource" id="Resource_ayjm4"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_8maam"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_ayjm4")
 coords = Vector4i(4, 1, -5, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1671
 
-[sub_resource type="Resource" id="Resource_u7pqw"]
+[sub_resource type="Resource" id="Resource_7cn2k"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_uw2hn"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_7cn2k")
 coords = Vector4i(5, -5, 0, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1672
 
-[sub_resource type="Resource" id="Resource_mxrxw"]
+[sub_resource type="Resource" id="Resource_1purq"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_k2tnv"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_1purq")
 coords = Vector4i(5, -4, -1, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1673
 
-[sub_resource type="Resource" id="Resource_6lbnp"]
+[sub_resource type="Resource" id="Resource_7pfkp"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_fjvsk"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_7pfkp")
 coords = Vector4i(5, -3, -2, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1674
 
-[sub_resource type="Resource" id="Resource_fo2b8"]
+[sub_resource type="Resource" id="Resource_cquil"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_sbvgg"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_cquil")
 coords = Vector4i(5, -2, -3, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1675
 
-[sub_resource type="Resource" id="Resource_iiljj"]
+[sub_resource type="Resource" id="Resource_d5raa"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_bf857"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_d5raa")
 coords = Vector4i(5, -1, -4, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1676
 
-[sub_resource type="Resource" id="Resource_jbwq0"]
+[sub_resource type="Resource" id="Resource_17cmd"]
+script = ExtResource("2_bri8w")
+level_visible = false
+is_revealed = false
+turns = 0
+last_seen_by_enemy = 0
+
+[sub_resource type="Resource" id="Resource_7c6cu"]
 script = ExtResource("1_h0etd")
 tile_fill = false
 occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-level_visible = false
+vision_datastore = SubResource("Resource_17cmd")
 coords = Vector4i(5, 0, -5, 0)
-is_revealed = false
 id = 1
 first_init = false
 public_id = 1677
@@ -1189,4 +1827,4 @@ public_id = 1677
 [resource]
 script = ExtResource("2_8gegl")
 name = "PalmI"
-data = [SubResource("Resource_55cps"), SubResource("Resource_m83ky"), SubResource("Resource_g810y"), SubResource("Resource_dufmj"), SubResource("Resource_77waw"), SubResource("Resource_1oubi"), SubResource("Resource_26bk0"), SubResource("Resource_ltfkx"), SubResource("Resource_6wkt5"), SubResource("Resource_20hb0"), SubResource("Resource_pf6wi"), SubResource("Resource_siusy"), SubResource("Resource_m66mc"), SubResource("Resource_t3t3d"), SubResource("Resource_bux8y"), SubResource("Resource_e1ooe"), SubResource("Resource_5lceq"), SubResource("Resource_mxd6w"), SubResource("Resource_oj68t"), SubResource("Resource_tsrmy"), SubResource("Resource_6r10g"), SubResource("Resource_ke2jw"), SubResource("Resource_18ek0"), SubResource("Resource_t5fqu"), SubResource("Resource_wllil"), SubResource("Resource_vte5e"), SubResource("Resource_52qj2"), SubResource("Resource_x0fq4"), SubResource("Resource_vhabu"), SubResource("Resource_8xhoe"), SubResource("Resource_4y3ek"), SubResource("Resource_p0i6w"), SubResource("Resource_3jajk"), SubResource("Resource_nbm02"), SubResource("Resource_cs48a"), SubResource("Resource_fmekh"), SubResource("Resource_pjsrl"), SubResource("Resource_s2fuk"), SubResource("Resource_u8otw"), SubResource("Resource_o5jih"), SubResource("Resource_4r6ty"), SubResource("Resource_b8o30"), SubResource("Resource_dskcg"), SubResource("Resource_gxrxx"), SubResource("Resource_o5aat"), SubResource("Resource_5eu15"), SubResource("Resource_jvtyy"), SubResource("Resource_qgqis"), SubResource("Resource_pe0y2"), SubResource("Resource_udewd"), SubResource("Resource_pjyj4"), SubResource("Resource_d23c6"), SubResource("Resource_1trmq"), SubResource("Resource_yvyk3"), SubResource("Resource_36wxq"), SubResource("Resource_ayebr"), SubResource("Resource_u1d0p"), SubResource("Resource_ujdct"), SubResource("Resource_kfqkj"), SubResource("Resource_5xlqr"), SubResource("Resource_2f7nh"), SubResource("Resource_3dh0u"), SubResource("Resource_sqrx2"), SubResource("Resource_ac202"), SubResource("Resource_u01ws"), SubResource("Resource_fjgmf"), SubResource("Resource_72g3h"), SubResource("Resource_qertb"), SubResource("Resource_76t67"), SubResource("Resource_nra5x"), SubResource("Resource_wskqj"), SubResource("Resource_sa05a"), SubResource("Resource_y7a2g"), SubResource("Resource_al0n2"), SubResource("Resource_i78ue"), SubResource("Resource_5kmke"), SubResource("Resource_ewwp2"), SubResource("Resource_k0mkf"), SubResource("Resource_h6hpn"), SubResource("Resource_iu4xi"), SubResource("Resource_k1ybt"), SubResource("Resource_2l27w"), SubResource("Resource_oope3"), SubResource("Resource_j1i8p"), SubResource("Resource_37vwq"), SubResource("Resource_u7pqw"), SubResource("Resource_mxrxw"), SubResource("Resource_6lbnp"), SubResource("Resource_fo2b8"), SubResource("Resource_iiljj"), SubResource("Resource_jbwq0")]
+data = [SubResource("Resource_led7q"), SubResource("Resource_1leva"), SubResource("Resource_cq2mm"), SubResource("Resource_ry6p0"), SubResource("Resource_2wkns"), SubResource("Resource_2u6qt"), SubResource("Resource_0op31"), SubResource("Resource_6ucx8"), SubResource("Resource_t53yb"), SubResource("Resource_vocld"), SubResource("Resource_wqpiy"), SubResource("Resource_2jvdr"), SubResource("Resource_b04w8"), SubResource("Resource_uhrxv"), SubResource("Resource_44wvf"), SubResource("Resource_t6t7a"), SubResource("Resource_j6s27"), SubResource("Resource_t2xhb"), SubResource("Resource_tr4hh"), SubResource("Resource_kea46"), SubResource("Resource_e8deg"), SubResource("Resource_7ryuo"), SubResource("Resource_7fqmj"), SubResource("Resource_ceb5c"), SubResource("Resource_j2102"), SubResource("Resource_gkygs"), SubResource("Resource_td0ak"), SubResource("Resource_7qe88"), SubResource("Resource_boidq"), SubResource("Resource_ynrl6"), SubResource("Resource_quabr"), SubResource("Resource_k3btt"), SubResource("Resource_atvae"), SubResource("Resource_kotmb"), SubResource("Resource_i7xu7"), SubResource("Resource_37fbs"), SubResource("Resource_e6wsg"), SubResource("Resource_4jvmm"), SubResource("Resource_ilx8e"), SubResource("Resource_whchr"), SubResource("Resource_bm1c6"), SubResource("Resource_umoi7"), SubResource("Resource_uul5b"), SubResource("Resource_4nh2b"), SubResource("Resource_03o63"), SubResource("Resource_y6rsa"), SubResource("Resource_qb16x"), SubResource("Resource_xs5j6"), SubResource("Resource_mlgwl"), SubResource("Resource_yj00f"), SubResource("Resource_vm3xi"), SubResource("Resource_tw2nd"), SubResource("Resource_5uxix"), SubResource("Resource_25ywq"), SubResource("Resource_jyb37"), SubResource("Resource_emry4"), SubResource("Resource_df6kf"), SubResource("Resource_oldfc"), SubResource("Resource_o4v0g"), SubResource("Resource_wjum4"), SubResource("Resource_50mab"), SubResource("Resource_vjryd"), SubResource("Resource_1hwdx"), SubResource("Resource_fmifc"), SubResource("Resource_m6sa7"), SubResource("Resource_5fm8m"), SubResource("Resource_ks1cn"), SubResource("Resource_7hvl8"), SubResource("Resource_1g0cj"), SubResource("Resource_o5smh"), SubResource("Resource_0avgu"), SubResource("Resource_njoyl"), SubResource("Resource_asc3j"), SubResource("Resource_1cdlb"), SubResource("Resource_ovc1f"), SubResource("Resource_osi0q"), SubResource("Resource_5fyle"), SubResource("Resource_rm4pv"), SubResource("Resource_jcc8s"), SubResource("Resource_d5ngi"), SubResource("Resource_fhbct"), SubResource("Resource_xkjqn"), SubResource("Resource_p4x61"), SubResource("Resource_4c1co"), SubResource("Resource_8maam"), SubResource("Resource_uw2hn"), SubResource("Resource_k2tnv"), SubResource("Resource_fjvsk"), SubResource("Resource_sbvgg"), SubResource("Resource_bf857"), SubResource("Resource_7c6cu")]

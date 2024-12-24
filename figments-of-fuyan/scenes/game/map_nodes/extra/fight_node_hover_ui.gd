@@ -43,7 +43,7 @@ func setInfo(map_node: MapNodeGD, area: AreaGD) -> void:
 	match map_node.get_script():
 		BossFightNodeGD: theme_type_variation = "RedPanelContainer"
 		MinibossFightNodeGD: theme_type_variation = "PurplePanelContainer"
-		EliteFightNodeGD: theme_type_variation = "YellowPanelContainer"
+		EliteFightNodeGD: theme_type_variation = "DarkBrownPanelContainer"
 	
 func onAddUIBox(card_data: SavedDataCard) -> Control:
 	var UIBox: Control = UIBoxPacked.instantiate()

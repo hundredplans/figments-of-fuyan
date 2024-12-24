@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_gj2dp"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_ii5se"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_s8jks"]
+
+[resource]
+script = ExtResource("3_s8jks")
+category = 2
+text = "Rockmoles, Earthmoles, and Tunnelmoles are all the same small, dark-brown, blind mole. Rockmoles can be found anywhere within Zengef, and even as far as Dalanet, but are most prominent in Aronka. The tunnel-city is their mating ground, which a majority of Rockmoles return to every spring. The locals call this Restoration Week, as the Rockmoles destroy a majority of the tunnels and town-infrastucture of Aronka. The Earthmagic which the moles use is for tunelling and acts as a sense to navigate their tunnels alongside smell. When attacked by humans, they have learnt to shield themself in a small rock casing and then tunnel away. There also exists a sub-species of Rockmole within Aronka, which the locals simply call Big Rockmoles. These are super-sized versions of the small mammals, they tend to tower over humans after only a decade of growth. Big Rockmoles are creatures that should be absolutely avoided, they are carnivores which mostly prey on their smaller cousins but can also use crude but potent Earthmagic on humans they encounter.
+
+Riverbears look almost identical to their Eastern cousins, brown bears. The most major difference is a 50% reduction in size, an extenuated snout to catch fish and large paws to help swimming. They can only be found by the largest river in Zengef, the Gritte, due to it's plentiful sealife. Riverbears use Watermagic to trap fish in a small whirlpool and then swim to eat the trapped fish. If the bear considers the water dangerous, it will instead use Windmagic to hurl the fish out of the water aimed at it's teeth. They tend to avoid humans, and so are not a major danger. If caught it is recommended to avoid physical proximity to the bear, as their magic is not strong enough to severely injure a human, but they can maul one.
+
+Windfox's are tiny orange mammals, the body is about the size of a human's elbow to the hand and the bushy tail is slightly smaller than the body. They are found all over the grasslands of Zengef. Considered the most dangerous animal in the country, they are hunted extensively by specialised mages sent by the Prasedi. Windfoxes have managed to avoid a significant population decrease in the century since hunting became commonplace, due to their exasperating use of Windmagic. A sonic boom, used to temporarily stun their prey, followed by a quick slice of wind targeted at the animal's weak point (the throat for humans) is the Windfox's most common attack. They also often use Windmagic to lift themself onto trees/hills to hide or hunt. Deadly, smart and tiny these foxes only saving grace for humanity is their relatively low reproductive drive. Zoologists believe only 4,000 Windfoxes are currently alive in Zengef.
+
+Greyhorn Goat, an aptly named creature, is a large white mammal with massive grey horns and a grey streak across it's face. An expert in climbing rocky slopes, and adapted to the cold climate, it can only be found in the alpine climate of the Catarac Mountains. It's the most significant Firemagic animal user, as most magical animals tend to shy away from fire due to it's volatility. There is not much to burn in the snowy mountains however, and the goats use Firemagic for many purposes, including thermoregulation, general survival such as clearing snow and combat. In fights with other animals (including humans), the Greyhorn Goat will most often attempt first to create an intimidating fire display in front of it to frighten attackers. If the predator still pursues, it will charge with it's horns and send slices of flame aimed by the point of their horn. The Greyhorn Goat is not much of a nuisance to humans, as it's hidden n remote regions. It's worshipped by one clan deep in the Catarac Mountains, who name the God of Heat & Warmth the Goatfather.
+
+
+Greyhorned Goat
+
+Appearance
+Habitat
+How they use magic"
+id = 90
+name = "Zengef Creatures"
+gdscript = ExtResource("1_gj2dp")
+saved_data = ExtResource("2_ii5se")

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_im734"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_iaad3"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_3qmqi"]
+
+[resource]
+script = ExtResource("3_3qmqi")
+category = 5
+text = "are using life magic, tell the soul to move and wake up
+maybe some life magician on nolaka and he run away to terranica (evil guy)
+old kingdom of nolaka descendants, maybe the guy who run away had a right hand man
+
+there is a core under ashbone citadel that is a very strong soul of a warrior who wanted to create an army but he died so all the soul does now is just make it so that if someone dies in the area hes stronger so he ties their soul to their skeleton"
+id = 10
+name = "AshboneIdeas"
+gdscript = ExtResource("1_im734")
+saved_data = ExtResource("2_iaad3")

@@ -387,12 +387,6 @@ func onMouseInUITooltip(state: bool, item: Variant = null, parent: Control = nul
 #endregion
 
 #region Cards
-func onAddToDeck(Card: CardGD) -> void:
-	Card.team = 0
-	Card.reparent(save_file)
-	Card.onChangeCardPlace(Game.CardPlaces.DECK)
-	Card.add_to_group("AllyCardsGD")
-	
 func isIDInDeck(id: int) -> bool:
 	return get_tree().get_nodes_in_group("DeckCardsGD").any(func(x: CardGD): return x.info.id == id)
 

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_hfb4o"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_8mjtf"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_7fhc7"]
+
+[resource]
+script = ExtResource("3_7fhc7")
+category = 4
+text = "The City Watch can be found in each town or city of the Varoma, regardless of the city's size a minimum of 20 knights serve in the watch per city. Each Captain of the City Watch writes directly to the Blade when problems arise and the message is carried to Lastock as well as other cities with their own watches, due to this Varoma's response time to reinforce a weakened city after a raid is admirable. Knights of other city watches make their way to the attacked city and the cities they left are fortified for a few weeks by other City Watch knights or the Valor's Silver Army if need be."
+id = 71
+name = "City Watch"
+gdscript = ExtResource("1_hfb4o")
+saved_data = ExtResource("2_8mjtf")

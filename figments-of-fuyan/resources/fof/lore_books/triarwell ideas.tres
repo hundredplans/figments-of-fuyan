@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_q63vb"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_14qoc"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_5ekt0"]
+
+[resource]
+script = ExtResource("3_5ekt0")
+category = 25
+text = "Zarin established trade with them, they are also Befre's closest allies and trade partners
+pretty default nation will see what can do"
+id = 67
+name = "Triarwell Ideas"
+gdscript = ExtResource("1_q63vb")
+saved_data = ExtResource("2_14qoc")

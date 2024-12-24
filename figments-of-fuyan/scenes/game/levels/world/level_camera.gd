@@ -11,3 +11,6 @@ func _input(event: InputEvent) -> void:
 				if !disable_freelook:
 					camera_panning.emit(event.is_pressed())
 					Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED if event.pressed else Input.MOUSE_MODE_VISIBLE)
+
+func onDisableFreelook(state: bool) -> void:
+	disable_freelook = state

@@ -1,0 +1,93 @@
+[gd_scene load_steps=4 format=3 uid="uid://oobbuomm2pt2"]
+
+[ext_resource type="Script" path="res://scenes/game/map_nodes/screens/campfire_screen/duel_arena.gd" id="1_rqn04"]
+[ext_resource type="PackedScene" uid="uid://ceoy120bbs7le" path="res://scenes/common/panel_button/panel_button.tscn" id="2_0sukw"]
+[ext_resource type="LabelSettings" uid="uid://baxopkmeda53x" path="res://resources/ui/label_settings/roboto_huge.tres" id="2_lb2co"]
+
+[node name="DuelArena" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 321.0
+offset_top = 344.0
+offset_right = -350.0
+offset_bottom = -372.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_rqn04")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+anchor_left = 0.009
+anchor_top = 0.151
+anchor_right = 1.0
+anchor_bottom = 0.151
+offset_left = -0.241001
+offset_top = 48.036
+offset_right = -9.0
+offset_bottom = 299.036
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "A roadside duelist ring has gathered, and they're betting coins on the winner.
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="AnswerButtons" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="PlayButton" parent="MarginContainer/VBoxContainer/AnswerButtons" instance=ExtResource("2_0sukw")]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Test your skills (100%)"
+
+[node name="LeaveButton" parent="MarginContainer/VBoxContainer/AnswerButtons" instance=ExtResource("2_0sukw")]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Leave"
+
+[node name="Header" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -9.0
+offset_bottom = 103.0
+color = Color(0.333333, 0.180392, 0, 1)
+
+[node name="Label" type="Label" parent="."]
+modulate = Color(0.756863, 0.568627, 0.0941176, 1)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 10.5
+offset_top = 10.0
+offset_right = -9.5
+offset_bottom = 96.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+text = "Duel Arena"
+label_settings = ExtResource("2_lb2co")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/AnswerButtons/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/AnswerButtons/LeaveButton" to="." method="_on_leave_button_pressed"]

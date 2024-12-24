@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_kggj3"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_wi16w"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_vt6sq"]
+
+[resource]
+script = ExtResource("3_vt6sq")
+category = 29
+text = "After scareye \"died\" Xavas took charge and \"teamed\" up with the guy maybe to get control of sugori once he \"takes over the world\""
+id = 6
+name = "People"
+gdscript = ExtResource("1_kggj3")
+saved_data = ExtResource("2_wi16w")

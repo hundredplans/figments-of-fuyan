@@ -29,7 +29,7 @@ func onOptionPressed(option: EncounterOptionDatastore, screen: Control) -> void:
 	if card_data != null and tool_data != null:
 		card_data.tool_data = tool_data
 		var Card: CardGD = SavedData.onLoadModel(card_data, Game.save_file)
-		Game.onAddToDeck(Card)
+		Game.save_file.onAddToDeck(Card)
 		
 		var CardUI: Control = Card.onCreateCardUI(screen, false)
 		CardUI.setDisabled(true)

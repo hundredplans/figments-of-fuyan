@@ -226,9 +226,10 @@ func onProcessAction(action: Action) -> void:
 			update_active_effects.emit()
 	else:
 		if action is ChangePhaseAction:
-			if action.phase == phase: action.failed = true
+			if action.phase == phase: action.onFailAction()
 		elif action is CameraChangeAction:
-			if getSpectateObject() == action.SpectateObject: action.failed = true
+			if action.SpectateObject != null and getSpectateObject() == action.SpectateObject:
+				action.onFailAction()
 		elif action is MovementFinishAction:
 			action.setPhaseByLevel(phase)
 		elif action is StartGameAction:
@@ -313,7 +314,7 @@ func setRewards(is_win: bool) -> void:
 func onGameEnded() -> void:
 	for FofObject in get_tree().get_nodes_in_group("FofGD"):
 		FofObject.onLevelEnded(rewards != null)
-			
+	
 	game_ended.emit(rewards)
 func onRewardsFinished() -> void:
 	rewards_finished.emit(save_file)

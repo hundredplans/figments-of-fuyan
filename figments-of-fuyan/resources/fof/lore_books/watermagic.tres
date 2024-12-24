@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_42le4"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_62aol"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_kstqb"]
+
+[resource]
+script = ExtResource("3_kstqb")
+category = 6
+text = "can form hot water vapor and ice
+make steam with fire"
+id = 107
+name = "Watermagic"
+gdscript = ExtResource("1_42le4")
+saved_data = ExtResource("2_62aol")

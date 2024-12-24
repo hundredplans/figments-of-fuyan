@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_5w6qw"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_3c4n2"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_80cnx"]
+
+[resource]
+script = ExtResource("3_80cnx")
+category = 7
+text = "Live on the mainland on the right side
+Less racism than there used to be
+
+It's like 75% humans, 25% on the left side of Pustan"
+id = 115
+name = "Sand Elves"
+gdscript = ExtResource("1_5w6qw")
+saved_data = ExtResource("2_3c4n2")

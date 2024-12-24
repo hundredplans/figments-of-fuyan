@@ -28,7 +28,7 @@ func setInfo(_Card: CardGD) -> void:
 	FlavorTextLabel.text = Card.info.flavor_text
 	InspectSubviewport.setInfo(Card)
 	
-	for FofObject in (Card.field_traits + Card.status_effects + Card.field_effects + [Card.Tool]).filter(func(x: FofGD): return x != null):
+	for FofObject in (Card.getFieldTraits() + Card.status_effects + Card.field_effects + [Card.Tool]).filter(func(x: FofGD): return x != null):
 		var TooltipItem: Control = TooltipItemPackedScene.instantiate()
 		TooltipContainer.add_child(TooltipItem)
 		TooltipItem.setInfo(FofObject, true)

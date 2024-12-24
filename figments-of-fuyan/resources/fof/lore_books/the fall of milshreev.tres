@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_o1lu8"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_i6ye5"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_ghjqt"]
+
+[resource]
+script = ExtResource("3_ghjqt")
+category = 13
+text = "The Jiha is the country that took over Milshreev, a colony and eventually conquered Milshreev
+
+When Milshreev fell the Jiha generals took over the empire and distributed it among themself, which forms present day Jiralta, Dalanet, Holy Shreev, New Shreev, Manok and of course Stoneland
+
+The Six Generals, two of which practiced Rikenism, three Fuyanists (Stoneland, Jiralta and Manok) and an atheist (Dalanet, who worship guns)"
+id = 118
+name = "The Fall of Milshreev"
+gdscript = ExtResource("1_o1lu8")
+saved_data = ExtResource("2_i6ye5")

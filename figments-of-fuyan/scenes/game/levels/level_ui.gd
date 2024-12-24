@@ -30,6 +30,10 @@ extends Control
 @onready var RightCameraArrow: Button = %RightCameraArrow
 
 @onready var MinimapControl: Control = %MinimapControl
+@onready var DeckCardAmountLabel: Label = %DeckCardAmountLabel
+
+@onready var OverworldInformation: Control = %OverworldInformation
+@onready var LeftContainer: HBoxContainer = %LeftContainer
 #endregion
 
 #region Globals
@@ -95,12 +99,15 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	LevelLabel.text = level.info.name
 	World.active_effect_activated.connect(onActiveEffectActivated)
 	World.active_effect_deselected.connect(onActiveEffectDeselected)
+	World.active_effect_selected.connect(onActiveEffectSelected)
 	Console.level = level
 	HandBox.level = level
 	
 	setHeroNameLabel()
 	setActiveEffectLabel()
 	onUpdateShillings(save_file.shillings)
+	onUpdateDeckCardAmountLabel()
+	onCameraUpdated(level.getSpectateObject())
 #endregion
 
 #region Action Lock / Mouse In UI
@@ -153,6 +160,7 @@ func onDrawCardUI(Card: CardGD) -> void:
 	CardUI.dragged_end.connect(onCardDraggedEnd)
 	CardUI.mouse_in_ui.connect(onMouseInUI)
 	CardUI.mouse_in_ui.connect(HandBox.onMouseInUI)
+	onUpdateDeckCardAmountLabel()
 	
 func onRemoveCardUI(Card: CardGD) -> void:
 	for CardUI in HandBox.get_children():
@@ -281,6 +289,10 @@ func onActiveEffectBoxPressed(active_effect: ActiveEffectDatastore) -> void:
 func onActiveEffectDeselected() -> void:
 	setActiveEffectLabel("")
 	onCameraUpdated(level.getSpectateObject())
+	PassButton.setAbilityMode(false)
+		
+func onActiveEffectSelected() -> void:
+	PassButton.setAbilityMode(true)
 		
 func onActiveEffectActivated(_active_effect: ActiveEffectDatastore) -> void:
 	onUpdateActiveEffects()
@@ -338,17 +350,29 @@ func onGameEnded(rewards: Rewards) -> void:
 	else:
 		var RewardsUI: Control = Game.onCreateRewardsUIScreen(rewards, self, level.is_elite)
 		RewardsUI.rewards_finished.connect(level.onRewardsFinished)
+		MinimapControl = RewardsUI.MinimapControl
 		
-		for child in [DeckPanel, MapPanel, ShillingLabel]:
-			child.z_index = 1
+		var filler := Control.new()
+		filler.custom_minimum_size.x = OverworldInformation.size.x
+		LeftContainer.add_child(filler)
+		LeftContainer.move_child(filler, 0)
+		
+		for child in [DeckPanel, MapPanel, OverworldInformation]:
+			child.reparent(RewardsUI)
 	
+	onUpdateDeckCardAmountLabel()
 	onUpdateActionLock(false)
-	for btn in get_tree().get_nodes_in_group("EndGameDisabled"):
-		btn.disabled = true
+	for btn in get_tree().get_nodes_in_group("ActionLockDisabled").filter(func(x: Control): return x is HighlightTxButton):
+		btn.setDisabled(btn.is_in_group("EndGameDisabled"))
 	
 	HandBox.onUnpin()
 	
 func onGameStarted() -> void:
 	HandBox.onUnpin()
 	HandBox.onSelectableCards(false)
+#endregion
+
+#region Deck Amount
+func onUpdateDeckCardAmountLabel() -> void:
+	DeckCardAmountLabel.text = str(get_tree().get_node_count_in_group("DeckCardsGD"))
 #endregion

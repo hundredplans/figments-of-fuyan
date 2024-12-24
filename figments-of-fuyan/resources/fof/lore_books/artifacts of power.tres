@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_ekfug"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_luvs6"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_2t4ma"]
+
+[resource]
+script = ExtResource("3_2t4ma")
+category = 4
+text = "The Stone Empire has a deep hatred of spellcasting that the Varoma were taught. Despite this, some magical artifacts are secretly used by the Varoma. The Silver Army marches tremendous distances when the Four Towers or the Boulder is attacked and to keep up a steady pace Horns of Power are used. They rejuvenate the Knights and inspire loyalty to the land of Varoma. Banners of Power are similary used but in battles, any man who sees such a Banner loses respect for his life and instead fights for the good of Varoma. Most of the Knights of Varoma are unaware these are magical artifacts however, as this information is kept hidden by the Arbiter. Hate of all magic is used as a rallying force against the Ka'luta, it would do no good to reveal some magical artifacts are utilized by the Varoma."
+id = 70
+name = "Artifacts of Power"
+gdscript = ExtResource("1_ekfug")
+saved_data = ExtResource("2_luvs6")

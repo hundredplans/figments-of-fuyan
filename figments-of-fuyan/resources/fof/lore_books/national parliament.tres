@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_iconi"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_jrsrc"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_vkd6g"]
+
+[resource]
+script = ExtResource("3_vkd6g")
+category = 3
+text = "On the other side of the power struggle is the National Parliment, a government led by Government Officials (\"GO\") that get elected by their zones every 3 years. Each GO has a party they are a part of, yet elections aren't won by the most populated party, instead the highest party just has the biggest voting power. The three main parties are the Economic Development Party (EDP), the Befre Independence Party (BIP) and the Peoples Progressive Party (PPP) which all cover differing areas of the political spectrum. Each party does elect a Party Leader for themselves, but this person is not in power if that party has majority, they usually serve as a repressentative.
+
+The Parliment was founded at the same time as Befre was, as the two leaders decided there needed to be a stronger foundation for government to control so many people. Apart from changes to rules and election times, the National Parliment back then still had the same type of Zone System. The only issue was the King, at the time the King of Beguria was really not for this idea, despite agreeing to merge. The founders of the parliment negotiatied with the King that he can keep his title and stature but lets most of the decision making be done by them. As the king was lazy, he agreed and it has been the same ever since. As the Frentuans had no monarch, just a small government, it made the process easier.
+
+Parliment usually has a meeting every 2 weeks, but each county contains 5 Assembly Calls which any GOs can use to summon an emergency Parliment meeting. Not often are these used, most notably in the \"Grolgat Pirate War\", the GOs in Grolgat had to wait until the fortnightly Parliment meeting just to tell the whole government they got invaded by the infamous pirate Scareye. interestingly also, the GO of the east-most Zone even joined the Scareye Pirates to help them take over the country, the other GOs simply evacuated for the months of the pirates' Grolgat control.
+
+Typically the Parliment follow similar ideals to where the no-majority system does not hinder progress, yet there were notable times. 60 years ago, there was a scare of an Extremist government in Befre. Heimr Rolfman riled up the south of Befre into voting for the Monarch Reinstallation Party, who he led. This would have led to the ultimate power being the monarchy again, and passing tyrannical policies that would turn the country into an autocracy. Despite their agreement, the Blue Caps nearly stepped in, but did not need to. This is because in the last possible vote to pass power to the king and overule the general election coming a week from then, it failed by 3 votes only. The party pretty much liquidated after that as they did not even win 1 seat in the assembly."
+id = 24
+name = "National Parliament"
+gdscript = ExtResource("1_iconi")
+saved_data = ExtResource("2_jrsrc")

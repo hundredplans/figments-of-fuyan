@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_6t3bf"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_k7bru"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_w7h6v"]
+
+[resource]
+script = ExtResource("3_w7h6v")
+category = 4
+text = "The King of Varoma, Medved Sarsenof, is chosen by the Stone Emperor but the King's Council is typically chosen from the three families or their direct vassals. It is a great honor to serve under the King. The Bulwark has been chosen from the Walcotts since Peace's End, only recently finding controversy when Silas was promoted to the position by Medved. The Rabbit and the Coffer have always been in the hands of the Beltons and similarly the Arbiter is Hastons. The Valor and Blade are the most tumultous positions, requiring a renowned knight to take them and therefore are shared by the three families equally.
+
+The King's Council is made up of three knights and three diplomats. The diplomats serve as the
+- Rabbit who keeps the nation fed by managing the state-run farms found primarily in the Belton's land, it is held by William Belton
+- Coffer who manages the treasury alongside all foreign and international affairs concerning shillings, it is held by Alice Belton, wife of William Belton
+- Arbiter which is in charge of foreign diplomacy and government intelligence is held by Thomas Stebbing, the Stebbings are a vassal family to the Hastons
+
+The positions of the knights require an anointed knight to serve them, as they are concerned with warfare
+- Bulwark's Border Brothers protects the country's border from foreign attacks, primarily raids of the Ka'luta, Goblin King or monsters from the Roughlands. It's held by Silas Redgrave III \"King's Dog\", Redgraves are vassals to the Walcotts
+- Blade keeps peace within the country, commanding all captains of the city watches, Blade is held by Bernard Blackstone, also known as the Drunk Knight, the Blackstones are vassals of the Beltons
+- Valor is in charge of the Silver Army, typically used as a strike force wherever the need grows, is held by Albert Haston, also known as the Paladin"
+id = 72
+name = "Kings Council"
+gdscript = ExtResource("1_6t3bf")
+saved_data = ExtResource("2_k7bru")

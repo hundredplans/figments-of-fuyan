@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_w2wi0"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_h8es0"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_a7i44"]
+
+[resource]
+script = ExtResource("3_a7i44")
+category = 4
+text = "The King of Varoma, Medved Sarsenof, is a Stoneman. Medved is the perfect Stoneman, he is tall (203cm), bulky with copper eyes and long-flowing dark hair. Medved takes advantage of his massive size, and when he fought, it was with his two greathammers. He primarily battled against resisting colonies of the Stone Empire and hasn't seen much fighting lately, this irks him greatly. He was chosen to sit on the Rusty Throne in the Lastock court 22 years ago. The reason for his choosing is two-faceted, the Stone Emperor believed the Varoma required a strong war-like leader due to the growing threat of the Ka'luta, but also Medved's faction at court, the Expansion Faction, was threatening his power. Medved's close associates describe him as a decisive and martial ruler but by others, when not in his presence, he is secretly scorched as a harsh and combative ruler, even to his allies. The only family who Medved is accordant to are the Walcotts and by extension their vassal families, such as the Redgraves, he sees the others as peasants and sheepherders, with their ways going against his martial nature."
+id = 73
+name = "Medved Sarsenof"
+gdscript = ExtResource("1_w2wi0")
+saved_data = ExtResource("2_h8es0")

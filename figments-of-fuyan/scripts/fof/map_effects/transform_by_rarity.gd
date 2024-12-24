@@ -15,5 +15,5 @@ func onPickup(Card: CardGD, save_file: SaveFileGD) -> void:
 		new_card_data.ascended = Card.ascended
 		
 		NewCard = SavedData.onLoadModel(new_card_data, save_file)
-		Card.queue_free()
-		Game.onAddToDeck(NewCard)
+		Game.save_file.onRemoveCard(Card)
+		Game.save_file.onAddToDeck(NewCard)

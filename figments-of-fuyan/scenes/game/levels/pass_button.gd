@@ -5,13 +5,18 @@ var is_ally_spectating: bool
 var is_ally_inactive_active: bool
 var is_only_active: bool
 var is_player_phase: bool
+var is_ability_mode: bool
 
 func setDisabled() -> void:
 	var player_phase_checks: bool = is_ally_spectating and is_ally_inactive_active and is_only_active
-	disabled = action_lock or (is_player_phase and !player_phase_checks)
+	disabled = action_lock or (is_player_phase and !player_phase_checks) or is_ability_mode
 	
 func setActionLock(state: bool) -> void:
 	action_lock = state
+	setDisabled()
+	
+func setAbilityMode(state: bool) -> void:
+	is_ability_mode = state
 	setDisabled()
 
 func setAllySpectating(SpectateObject: GameObjectGD) -> void:

@@ -1,0 +1,57 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_qr2jd"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_7xe6g"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_dma0b"]
+
+[resource]
+script = ExtResource("3_dma0b")
+category = 21
+text = "Khaal controls The Council. It is run by the 6 Counselors, they control the underlings of the cult. They all extremely powerful and unique individuals, the only thing they share is their fanatical zeal towards Khaal, even if he were to leave them they would continue operating the cult.
+
+Damon Ransata: Counselor of Education - \"The only way to find out is to try\"
+- Devoted to his research
+- Left his hometown to investigate Khaal but was controlled by him
+- The most powerful mage
+- Did not believe in Khaal (before his transformation)
+- Cannot do combat Blood Magic
+- Can speed up his brain with Blood
+
+Arkon: Counselor of War - \"Bathe in their Blood\"
+- Natural leader
+- Can insert his subconcious into his bodyguards
+- Is basically immortal
+- Likes to beat people up
+- Not very devoted to Khaal
+
+Jhon: Counselor of Affairs - \"Takes care of heretics\"
+- Witty
+- Sarcastic
+- Has the weakest devotion to Khaal
+- Can split his conciousness into human-like forms (Khaal's essence)
+
+Mogot: Counselor of Religion - \"Believe in Blood\"
+- Most devoted to Khaal
+- Leads the cult
+- Typical cult leader
+- Most manipulative
+- Can control people's brains without their knowledge
+
+Hegma: Counselor of Law - \"Strives for power\"
+- Rude
+- Demands respect
+- Perpetually an old lady
+- Very devoted to Khaal  as she will turn into dust if Khaal stops feeding her power
+- Has powerful Blood Magic (She can control frightened people)
+
+Steek: Counselor of Infrastructure - \"Natural genius\"
+- Not interested in power
+- Devoted to Khaal
+- Smart
+- Resourceful
+- Has powerful Bloodbending (Can turn Blood into tools)
+- Has 6 arms"
+id = 37
+name = "The Council"
+gdscript = ExtResource("1_qr2jd")
+saved_data = ExtResource("2_7xe6g")

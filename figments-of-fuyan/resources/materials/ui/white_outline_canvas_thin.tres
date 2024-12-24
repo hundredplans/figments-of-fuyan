@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bf4cb8c3t7igf"]
+
+[ext_resource type="Shader" path="res://resources/shaders/white_outline_canvas.gdshader" id="1_ckpuj"]
+
+[resource]
+shader = ExtResource("1_ckpuj")
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/BORDER_SIZE = 3

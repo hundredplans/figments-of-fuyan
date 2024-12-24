@@ -11,6 +11,7 @@ var is_action_lock: bool = false
 var in_active_effect_range: bool = false
 var in_active_effect_pickable: bool = false
 var max_movement_height: float
+var is_decoration: bool
 
 var movement_path: MovementPathGD
 var explored: ExploredGD
@@ -85,7 +86,7 @@ func getTileFillPoints() -> Array:
 	return points
 #endregion
 #region Material Updates
-func setMeshesMaterial(mat: Material = null, parent: Node3D = null) -> void:
+func setMeshesMaterial(mat: Material = null, parent: Node3D = self) -> void:
 	for mesh in getMeshes(parent):
 		mesh.set_surface_override_material(0, mat)
 		
@@ -134,17 +135,24 @@ func onCreateTileFill(state: bool) -> String:
 #endregion
 #region Save / Load
 func onSave() -> SavedDataGameObject:
-	return SavedDataTile.new(info.id, false, public_id, coords, tile_rotation, vision_datastore, variation, tile_fill, occupy_state, explored)
+	return SavedDataTile.new(info.id, false, public_id, coords, tile_rotation, vision_datastore, variation, tile_fill, occupy_state, explored, is_decoration)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
+	
+	is_decoration = data.is_decoration
 	onLoadModel()
 	onCreateTileFill(data.tile_fill)
 	occupy_state = data.occupy_state
 	add_to_group("TilesGD")
 	
 func onLoadModel() -> void:
-	super()
+	if Model != null: Model.queue_free()
+	
+	Model = info.getModel(variation, is_decoration).instantiate()
+	add_child(Model)
+	onAfterLoadModel()
+	
 	setCoords(coords)
 	setTileRotation(tile_rotation)
 	

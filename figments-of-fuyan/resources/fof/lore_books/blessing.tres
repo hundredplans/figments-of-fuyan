@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_e86lh"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_momi6"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_upw1j"]
+
+[resource]
+script = ExtResource("3_upw1j")
+category = 6
+text = "The Blessing of Creation was given to the Disciples of the First Man. The blessing is then inherited by blood, or soul, with the child having a natural predisposition to whatever element their parent's were strongest in at the time of conception. It should be noted anyone possessing the blessing can use any of the elements. It's common for the child of a strong mage to discover their innate abilities young, even without knowing the existence of Creation magic. However this strength only shows what kind of potential you can reach, many with great mages as parents don't ever learn a basic fireball and others with magicless parents become great mages. 
+
+Over the three millenia since the First Man's departure, the Blessing has spread to far reaches of the world, there are many of those who have the ability and never learn of it."
+id = 110
+name = "Blessing"
+gdscript = ExtResource("1_e86lh")
+saved_data = ExtResource("2_momi6")

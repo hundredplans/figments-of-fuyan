@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_bvy8b"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_0goml"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_2va4q"]
+
+[resource]
+script = ExtResource("3_2va4q")
+category = 5
+text = "The Battle of Ashbone Citadel occured around 2600 years prior to the present day, and despite Ashbone Citadel still being over-run by skeletons, much of it has changed. During the battle, revived soldiers were undead, they only turnt to skeletons once they fully deteriorated, unlike in the present which are majority skeleton. Due to the strength of the World's Core, Marutol's soul has been slowly sucking in souls that were unable to be reincarneted, getting stronger and stronger. Furthermore, he also started re-inserting souls that die from skeletons getting broken, causing skeletons to be immortal unless a life mage tampers with its soul.
+
+The most interesting change in the Citadel today is its rulers. Certain skeletons have developed personalities different from their original hosts, with some taking sort of leadership roles. There are approximately 8 \"Vice Generals\" of the Ashbone Citadel, which are stronger and visibly unique skeletons who have visible control over the skeletons actions. Following that is the Emperor, who is a large skeleton that sits in Marutol's throne room, wielding some armor and the infamous Kurakaraka that Lithduga had previously found. As it has been nearly 2600 years, civilisation has reached Terranica before, including Ashbone Citadel. Any explorers who dare to try challenge the fortress likely die and do not even make it far enough to see a Vice General. But the army has increased in strength to higher lengths that it managed to get to under Marutol's control due to its growing force with the explorers, researchers and the new Vice Generals.
+
+It is unknown what will come from the future of Ashbone Citadel, and unknown what the plans of Marutol are. Due to the evolving nature of the place, it seems Marutol has free will and is bending the area to his liking. Sucking in souls proves that Marutol is looking for a certain plan and is likely he might come back again unless someone steps in to destroy the World's Core and free all the souls. Lithduga's legacy is yet to be decided as a tarnished or successful story but it will be unknown until Marutol succeeds or stops. The one thing is apparent that an Artifact of Elvus is waiting to be collected by a powerful warrior, one that no one knows exists."
+id = 16
+name = "AshbonePresent"
+gdscript = ExtResource("1_bvy8b")
+saved_data = ExtResource("2_0goml")

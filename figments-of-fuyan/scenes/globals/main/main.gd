@@ -101,6 +101,9 @@ func onLoadLevel(level_data: SavedDataLevel, save_file: SaveFileGD, area: AreaGD
 	
 	scenes.ui.setInfo(save_file)
 	scenes.world.setInfo(save_file)
+	
+	await get_tree().process_frame # Necessary
+	
 	level.onLoadActiveLevel(level_data, save_file)
 
 func onLoadMap(save_file: SaveFileGD, area: AreaGD) -> void:

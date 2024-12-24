@@ -19,7 +19,11 @@ var active_category: LoreBookInfo.Categories
 var active_book: LoreBookInfo
 
 func _ready() -> void:
-	for category in LoreBookInfo.Categories.values():
+	var categories: Array = LoreBookInfo.Categories.values()
+	categories.sort_custom(func(x: LoreBookInfo.Categories, y: LoreBookInfo.Categories):\
+		return LoreBookInfo.getCategoryString(x) < LoreBookInfo.getCategoryString(y))
+	
+	for category in categories:
 		if category == LoreBookInfo.Categories.Null: continue
 		var category_name: String = LoreBookInfo.getCategoryString(category)
 		var PanelButton: Control = PanelButtonPacked.instantiate()
@@ -42,7 +46,9 @@ func onRefreshBooks() -> void:
 	for child in Books.get_children(): child.queue_free()
 	
 	if active_category == LoreBookInfo.Categories.Null: return
-	for lore_book_info in Helper.getFofInfoArray(LoreBookInfo).filter(func(x: LoreBookInfo): return x.category == active_category):
+	var books: Array = Helper.getFofInfoArray(LoreBookInfo).filter(func(x: LoreBookInfo): return x.category == active_category)
+	books.sort_custom(func(x: LoreBookInfo, y: LoreBookInfo): return x.text < y.text)
+	for lore_book_info in books:
 		var PanelButton: Control = PanelButtonPacked.instantiate()
 		PanelButton.text = lore_book_info.name
 		PanelButton.label_settings = lore_book_label_settings
@@ -69,6 +75,8 @@ func onSave() -> void:
 		active_book.saved_data = book_base_data
 		active_book.id = Helper.getFirstNonConsecutiveId(LoreBookInfo)
 	ResourceSaver.save(active_book)
+	Helper.onRefreshFofInfoArray(LoreBookInfo)
+	onRefreshBooks()
 
 func onBookNameEditSubmitted(new_name: String):
 	if !new_name.is_valid_filename() or new_name.is_empty():
@@ -99,9 +107,15 @@ func onNewBookPressed() -> void:
 		return
 	
 	var lore_book_info: LoreBookInfo = LoreBookInfo.new()
-	setBookName("EmptyBook", lore_book_info)
+	
+	if BookNameEdit.text.is_empty():
+		setBookName("EmptyBook", lore_book_info)
+		
 	lore_book_info.category = active_category
 	onLoreBookPressed(lore_book_info)
+	
+	if !BookNameEdit.text.is_empty():
+		onBookNameEditSubmitted(BookNameEdit.text)
 	
 func setBookName(book_name: String, book: LoreBookInfo = active_book) -> void:
 	if book != null:

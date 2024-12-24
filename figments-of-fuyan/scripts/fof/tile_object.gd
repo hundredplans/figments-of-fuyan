@@ -55,6 +55,7 @@ func onLoadDataLevel() -> void:
 	
 func onLoadModel() -> void:
 	if Model != null: Model.queue_free()
+	
 	Model = info.getModel(variation).instantiate()
 	add_child(Model)
 	onAfterLoadModel()

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_o7fho"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_cbpkd"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_785qr"]
+
+[resource]
+script = ExtResource("3_785qr")
+category = 9
+text = "Baulandians use life magic to control the giant creatures and Huff Perkot got taught lifemagic by a native (needs to be included in his book)
+
+They use chants and rituals to cast things instead of standard creation magic and that's how they believe it works"
+id = 116
+name = "Bauland Ideas"
+gdscript = ExtResource("1_o7fho")
+saved_data = ExtResource("2_cbpkd")

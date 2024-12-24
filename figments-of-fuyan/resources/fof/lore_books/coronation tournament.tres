@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3 uid="uid://cso6wqg4225c6"]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_hxme2"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_v8sdo"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_xgt3r"]
+
+[resource]
+script = ExtResource("3_xgt3r")
+category = 15
+text = "Every certain amount of years exists a special occasion, called the Coronation Tournament that brings the whole nation together when it occurs. Kings and Queens are not forever lasting, so every 12 years, a Coronation Tournament begins to crown the next leaders of Acedonia. Although, the monarchy can summon a Coronation Tournament any time they please to determine their new successor.
+
+Firstly, the system of heirarchy has to be explained. Above civilians lie Nobles, who are wealthy people that earn spots in the different houses. There are 4 Noble Houses: Clubs, Clovers, Hearts and Diamonds. Each house has a King and a Queen who are some of the most important and famous people in the public view. Regular civilians can become Nobles but they need to marry in or buy it. Doing different inter-house tournaments and successful courses can land you promotions and eventually you will be King or Queen of the house. Each house has multiple levels of Guarming teams with senior teams that can rival top division clubs that play eachother multiple times a year and friendly fights between houses to have sharpness in check.
+
+But when it comes to the main event it really shows the sheer size of fighting sports in Acedonia. When a Coronation Tournament begins, 1 month prior it is announced and the participants prepare. 2 weeks before the official tournament, each house has their own tournament to see who is the strongests for show, but ultimately all that matters are the King and Queen of the house. During the actual tournament, the National Greyscale Stadium sells out at 250,000 seats and the population watch as the 4 houses battle at who is the next monarch. Usually it is seperated by gender, a monarch's death or resignation would mean the Coronation Tournament is only a competition between that genders' monarchs of the 4 houses, but the other monarch can opt to throw in their crown if they want, even if their reign time is not yet over. These 4 houses fight in a battle, and whoever stands last will be crowned the King/Queen of Acedonia. In the situation of a reign ending, that monarch usually steps in as the \"Ace\" in the fight, and if the Ace wins they keep their spot as monarch, but for only 6 years until another tournament. Participants that lose do not die, due to Acedonians' increased durability and regenaration alongside the rules of the battle, making is really hard to kill anyone and it hasn't been seen for hundreds of years. Nobles that lose in the tournament get demoted down to \"Jack Officer\", which is the 3rd lowest rank in the house. Many failed participants leave the persuage of monarchhood and live their days as a noble, but some try their hand again and promote back to the top.
+
+Most notably Elias Quire Vonderveld, who lost twice in the Coronation Tournament as the King of Clubs before becoming White King for a reign of 24 years. It is never known whether the Monarchs of houses are strong enough to beat the White King or Black Queen as usually training is private, but it is never predictable. Many times in history they changed often and sometimes the opposite. 400 years ago, 8 Black Queens in a row were beaten after 12 year reigns. But also there exists the \"Globius Period\" where Globius Quire Hamilton was White King of Acedonia for 84 years."
+id = 12
+name = "Coronation Tournament"
+gdscript = ExtResource("1_hxme2")
+saved_data = ExtResource("2_v8sdo")

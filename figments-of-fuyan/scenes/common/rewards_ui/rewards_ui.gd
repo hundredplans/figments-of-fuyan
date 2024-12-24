@@ -13,6 +13,7 @@ const ELITE_FIGHT_DIVIDER_SIZE: int = 50
 @onready var MainContainer: VBoxContainer = %MainContainer
 @onready var RewardsContainer: HBoxContainer = %RewardsContainer
 @onready var SkipButton: Button = %SkipButton
+@onready var MinimapControl: Control = %MinimapControl
 
 @onready var FirstContainer: Container = %FirstContainer
 
@@ -81,7 +82,7 @@ func onRewardPressed(reward: Variant) -> void:
 		ToolPickedUpUI.taken.connect(onRewardTaken)
 		
 	elif reward is CardGD:
-		Game.onAddToDeck(reward)
+		Game.save_file.onAddToDeck(reward)
 		onRewardTaken(reward)
 		
 func onRewardTaken(reward: Variant) -> void:

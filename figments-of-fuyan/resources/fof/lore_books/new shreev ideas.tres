@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_ac2g1"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_qqii7"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_thrpi"]
+
+[resource]
+script = ExtResource("3_thrpi")
+category = 11
+text = "Use the title Saint
+Warriors Monks
+
+New shreev tried to escape stoneland grasp but was colonised back
+
+Saint Jankali, who is now the leader of the Izgroi
+
+Practice Fuyanism"
+id = 45
+name = "New Shreev Ideas"
+gdscript = ExtResource("1_ac2g1")
+saved_data = ExtResource("2_qqii7")

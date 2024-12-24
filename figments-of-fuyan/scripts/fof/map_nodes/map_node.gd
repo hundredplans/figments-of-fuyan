@@ -192,6 +192,7 @@ func onFinished() -> void:
 		
 func onOtherMapNodeFinished(map_node: MapNodeGD) -> void:
 	if map_node == self: return
+	if !is_finished: return
 	for link in links.filter(func(x: MapLink): return x.map_location == map_node.map_location):
 		link.setIsFinished(true)
 		

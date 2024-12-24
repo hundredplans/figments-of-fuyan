@@ -11,6 +11,7 @@ const CARD_FLIP_TIME: float = 0.25
 @onready var TransformPosition: Control = %TransformPosition
 @onready var RemoveCardControl: Control = %RemoveCardControl
 @onready var TransformControl: Control = %TransformControl
+@onready var MinimapControl: Control = %MinimapControl
 
 @onready var CardsFiller: Control = %CardsFiller
 
@@ -19,6 +20,8 @@ const CARD_FLIP_TIME: float = 0.25
 @export var PurchasableBoonPacked: PackedScene
 @export var PurchasableToolPacked: PackedScene
 @export var PurchasableTransformPacked: PackedScene
+
+@export var MinimapPacked: PackedScene
 
 func setInfo(_save_file: SaveFileGD, _area: AreaGD, _World: Node3D, _UI: Control, map_node: MapNodeGD) -> void:
 	super(_save_file, _area, _World, _UI, map_node)
@@ -72,7 +75,7 @@ func onItemPressed(item: FofGD, price_datastore: PriceDatastore, DisplayedUI: Co
 	save_file.onUpdateShillings(-price_datastore.price)
 	
 	if item is CardGD:
-		Game.onAddToDeck(item)
+		Game.save_file.onAddToDeck(item)
 		Game.onFlyToUI(DisplayedUI, UI.getDeckPanel())
 		
 	elif item is ToolGD:
@@ -122,3 +125,11 @@ func onDimBackground() -> bool:
 func onCreateScreen(screen: Control) -> void:
 	add_child(screen)
 	
+#region Minimap
+var Minimap: Control
+func _on_minimap_button_pressed() -> void:
+	if Minimap == null:
+		Minimap = MinimapPacked.instantiate()
+		MinimapControl.add_child(Minimap)
+	else: Minimap.queue_free()
+#endregion

@@ -86,7 +86,7 @@ func onEntered() -> void:
 	onCreateWorldScene()
 	onCreateScreen()
 
-#region Boons
+#region Rolls
 func onRerollBoon(id: int, rarity: Game.Rarities, ascended: bool) -> PriceDatastore:
 	var available_boons: Array = Game.getAvailableBoons()
 	return onRollFof(available_boons, BoonInfo)
@@ -138,3 +138,4 @@ func onApplyFinalPriceMultipliers(price: int) -> int:
 		price *= QUENTIN_CRIMINAL_PRICE_INCREASE
 		
 	return price
+#endregion

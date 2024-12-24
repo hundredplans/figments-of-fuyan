@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="TileInfo" load_steps=8 format=3 uid="uid://cctolh7i0yk8w"]
+[gd_resource type="Resource" script_class="TileInfo" load_steps=9 format=3 uid="uid://cctolh7i0yk8w"]
 
 [ext_resource type="Script" path="res://scripts/fof/tiles/tile.gd" id="1_hr5ty"]
 [ext_resource type="Script" path="res://scripts/fof_info/game_objects/tile_info.gd" id="1_x23li"]
 [ext_resource type="PackedScene" uid="uid://dkjnml3m02864" path="res://assets/models/fof/tiles/sand_road_tile.glb" id="1_xn38s"]
+[ext_resource type="PackedScene" uid="uid://ihoubhg8fe0t" path="res://assets/models/fof/tiles/sand_road_tile_stair_overworld.glb" id="2_ibxla"]
 [ext_resource type="PackedScene" uid="uid://dfodvw1v257bu" path="res://assets/models/fof/tiles/sand_road_tile_stair.glb" id="2_kao5c"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="4_m03aw"]
 [ext_resource type="PackedScene" uid="uid://c5b42fsbn0imw" path="res://assets/models/fof/tiles/sand_road_tile_overworld.glb" id="4_oe56t"]
@@ -12,6 +13,7 @@
 script = ExtResource("1_x23li")
 overworld_tile = ExtResource("4_oe56t")
 tile_fill = ExtResource("4_ss6jm")
+decoration_models = Array[PackedScene]([ExtResource("4_oe56t"), ExtResource("2_ibxla")])
 models = Array[PackedScene]([ExtResource("1_xn38s"), ExtResource("2_kao5c")])
 points = Array[Array]([[Vector3(-0.416633, 0.3, 0.549078), Vector3(-0.679097, 0.3, 0.00782079), Vector3(-0.379376, 0.3, -0.615729), Vector3(0.31699, 0.3, -0.607425), Vector3(0.675387, 0.3, -0.073524), Vector3(0.326611, 0.3, 0.628924), Vector3(0.00770529, 0.3, 0.0161065)], [Vector3(-0.309034, 0.479687, 0.5221), Vector3(-0.741253, 0.472888, -0.177382), Vector3(-0.329283, 0.546349, -0.809887), Vector3(0.436705, 0.530591, -0.747867), Vector3(0.866024, 0.539835, -0.117999), Vector3(0.261783, 1.35428, -0.605985), Vector3(-0.0304617, 0.95085, -0.102337)]])
 id = 6

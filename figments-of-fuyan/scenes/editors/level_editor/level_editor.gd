@@ -10,6 +10,8 @@ extends Node
 @export var PanelButtonPacked: PackedScene
 @export var BASE_ROTATION_TIMER: float = 0.25
 @export_dir var TILE_OBJECTS_PATH: String
+@export var AREA_ID_TO_SCRIPTS: Array[IdToScripts]
+
 @onready var UI: Control = $UI
 @onready var World: Node3D = %World
 @onready var Camera: Camera3D = %Camera3D
@@ -62,6 +64,12 @@ func getTilesBelow(Tile: TileGD) -> Array[TileGD]:
 		var _Tile: TileGD = onFindTile(coords)
 		if _Tile != null: arr.append(_Tile)
 	return arr
+	
+func onFindScriptsById(id: int = selected_area_id) -> Array:
+	for id_to_scripts in AREA_ID_TO_SCRIPTS:
+		if id == id_to_scripts.id:
+			return id_to_scripts.scripts
+	return []
 
 #endregion
 #region Base Functions
@@ -193,9 +201,9 @@ func onCreateSearchPanelButton(info: TileObjectInfo) -> void:
 	pass
 
 func onTileObjectInfoSelected(data: SavedData, remove_last: bool = true) -> void:
-	if is_overworld and data is SavedDataTile: data.variation = -1
 	if remove_last and HoverModel != null: HoverModel.queue_free()
 	
+	if data is SavedDataTile: data.is_decoration = save_as_decoration
 	HoverModel = SavedData.onLoadModel(data, World)
 	HoverModel.setRayPickable(true)
 	HoverModel.position = Vector3(0, 10000, 0)
@@ -260,7 +268,9 @@ func onHoverModelPlaced() -> void:
 	onTileObjectInfoSelected(save_data, false)
 		
 func onPlaceBaseTile(coords: Vector4i) -> TileGD:
-	return SavedData.onLoadModel(SavedDataTile.new(base_tile_info.id, false, 0, coords, 0, VisionDatastore.new(), int(is_overworld) * -1), World)
+	var tile_data: SavedDataTile = SavedDataTile.new(base_tile_info.id, false, 0, coords)
+	tile_data.is_decoration = save_as_decoration
+	return SavedData.onLoadModel(tile_data, World)
 	
 #endregion
 #region Elevation
@@ -298,13 +308,11 @@ func _on_camera_3d_camera_panning(_is_camera_panning: bool):
 #region Variations
 var is_scroll_disabled: bool = false
 func onChangeHoverModelVariation(direction: int) -> void:
-	if !is_overworld and HoverModel is TileGD: return
 	HoverModel.clampVariation(direction)
 	onTileObjectInfoSelected(HoverModel.onSave(), true)
 	
 func onChangeMouseTileObjectVariation(direction: int) -> void:
 	var TileObject: TileObjectGD = onFindMouseTileObject()
-	if !is_overworld and TileObject is TileGD: return
 	if TileObject != null:
 		TileObject.clampVariation(direction)
 		TileObject.onLoadModel()
@@ -489,6 +497,12 @@ func onSaveLevel() -> void:
 		
 		loaded.setInfo(level_name, AreaOptionButton.get_selected_id())
 		loaded.setSpawnPropertiesAutoValues(get_tree().get_nodes_in_group("TileObjectsGD"))
+		loaded.id = Helper.getFirstNonConsecutiveId(LevelInfo)
+		
+		var scripts: Array = onFindScriptsById()
+		loaded.gdscript = scripts[0]
+		loaded.saved_data = scripts[1]
+		
 		var path: String = LEVEL_PATH + level_name.to_snake_case() + ".tres"
 		loaded.resource_path = path
 		ResourceSaver.save(loaded)
@@ -521,7 +535,8 @@ func onLoadLevel(loaded_info: Variant) -> void:
 	for tile_object in get_tree().get_nodes_in_group("TileObjectsGD"):
 		tile_object.onClear()
 	
-	for data in loaded.data: SavedData.onLoadModel(data, World)
+	for data in loaded.data:
+		SavedData.onLoadModel(data, World)
 	
 func onAreaOptionButtonSelected(_index: int = 0) -> void:
 	selected_area_id = AreaOptionButton.get_selected_id()

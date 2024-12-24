@@ -17,7 +17,6 @@ func onPostAction() -> void:
 	Card.Tile.setOutlineMaterial()
 	
 	var actions: Array = [CameraChangeAction.new(Card)]
-	
 	if Card.turn_state == Game.TurnStates.INACTIVE:
 		actions.append(ChangeTurnStateAction.new(Card, Game.TurnStates.ACTIVE))
 	
@@ -25,21 +24,22 @@ func onPostAction() -> void:
 	for ally_card in ally_cards.filter(func(x: CardGD): return x.turn_state == Game.TurnStates.ACTIVE and x != Card):
 		actions.append(ChangeTurnStateAction.new(ally_card, Game.TurnStates.PASSED))
 	
-	for i in range(1, movement_path.size()):
-		var MoveToTile: TileGD = movement_path[i]
-		
-		var Attackables: Array = []
-		match MoveToTile.occupy_state:
-			TileGD.OccupyStates.NULL: pass
-			TileGD.OccupyStates.ATTACKABLE_IOBJECT: Attackables = MoveToTile.getAttackableIObjects()
-			_: Attackables.append(Game.getFieldCard(MoveToTile))
-		
-		if Attackables.is_empty():
-			MoveToTile.is_card_moving = true
-			actions.append(MoveToTileAction.new(Card, MoveToTile))
-			continue
-		actions.append(AttackAction.new(Card, Attackables))
-		break
+	if !movement_path.is_empty():
+		for i in range(1, movement_path.size()):
+			var MoveToTile: TileGD = movement_path[i]
+			
+			var Attackables: Array = []
+			match MoveToTile.occupy_state:
+				TileGD.OccupyStates.NULL: pass
+				TileGD.OccupyStates.ATTACKABLE_IOBJECT: Attackables = MoveToTile.getAttackableIObjects()
+				_: Attackables.append(Game.getFieldCard(MoveToTile))
+			
+			if Attackables.is_empty():
+				MoveToTile.is_card_moving = true
+				actions.append(MoveToTileAction.new(Card, MoveToTile))
+				continue
+			actions.append(AttackAction.new(Card, Attackables))
+			break
 		
 	actions.append(MovementFinishAction.new(Card, movement_path))
 	onAppendAction(actions)

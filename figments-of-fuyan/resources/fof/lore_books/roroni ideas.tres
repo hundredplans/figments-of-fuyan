@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_jlxj0"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_00ffj"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_45cx5"]
+
+[resource]
+script = ExtResource("3_45cx5")
+category = 23
+text = "believe fuyan is the pursuit of mastery
+get their metal from the Zengef and Manok
+
+Roroni has one big clan in the middle of their territory which has Warrior Societies that specialise in specific weapons
+		Dancing Swords - Rapiers and a dancing avoiding style
+		Blackblades - Black Greatswords (made of a special material?) and aspis shields
+		Spearbonded - Use spears, sickles and short spears aka javelins they throw, treat their spear as sacred
+		Strongfists - Fight with like hooped blades on their fists
+		Jabpoles - Polearms, Glaives
+
+People's Societies
+		Molten Hammers - Blacksmiths, very renowned
+
+wind spear guy in roroni
+	part of the spearbonded
+	uses a sickle sword to catch swords
+	has quick reflex, can transform projectiles into wind then disperse it
+	catches enemies sword throws it away and transform it into wind
+	carries javelin he throws, enhances with wind
+	wears a hoop thingy to hold his sickles (has 2 and sometimes uses both) but primarily uses his spear"
+id = 42
+name = "Roroni Ideas"
+gdscript = ExtResource("1_jlxj0")
+saved_data = ExtResource("2_00ffj")

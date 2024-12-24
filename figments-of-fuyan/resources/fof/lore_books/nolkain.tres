@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_8ijn5"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_ryiim"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_73n6k"]
+
+[resource]
+script = ExtResource("3_73n6k")
+category = 10
+text = "2300ish years ago, ancient village on the coastline of Bauland that made artifacts, Nolak did not like it as he thought it was a dangerous art, so they had to throw their artifacts. 
+some didnt like it so they set out to find the artifacts, ended up settling on East Pustan, where they still live to this day albeit quite differently, making artifacts and searching for them.
+supposedly Gildred is from the Ancient Nolkain village"
+id = 41
+name = "Nolkain"
+gdscript = ExtResource("1_8ijn5")
+saved_data = ExtResource("2_ryiim")

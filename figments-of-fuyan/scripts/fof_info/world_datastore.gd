@@ -48,10 +48,6 @@ class_name WorldDatastore extends Resource
 @export_range(0, 10, 1) var default_shop_variance: int
 @export_group("")
 
-@export_group("Encounters")
-@export_range(0, 100, 1) var elite_fight_encounter_odds: float
-@export_group("")
-
 @export_group("Constants across Worlds")
 @export var LANE_ODDS: Dictionary = {
 	"2": 0.25,

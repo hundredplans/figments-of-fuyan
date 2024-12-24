@@ -238,5 +238,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Cancel"
 
+[node name="Timer" type="Timer" parent="."]
+
 [connection signal="pressed" from="ButtonBar/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="ButtonBar/CancelButton" to="." method="_on_cancel_button_pressed"]

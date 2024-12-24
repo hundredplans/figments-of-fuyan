@@ -200,7 +200,7 @@ func setInfoSpriteEnemyInMovementRange(state: bool) -> void:
 
 #region Traits
 func onUpdateTraits() -> void:
-	var field_traits_info: Array = Card.field_traits.filter(func(x: TraitGD): return x.info.replace_model != null).map(func(y: TraitGD): return y.info)
+	var field_traits_info: Array = Card.getFieldTraits().filter(func(x: TraitGD): return x.info.replace_model != null).map(func(y: TraitGD): return y.info)
 	var stat_to_model: Dictionary
 	
 	for trait_combination in trait_combinations:

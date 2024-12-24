@@ -1,21 +1,78 @@
-[gd_scene load_steps=6 format=3 uid="uid://dvnoqpn6m0fnl"]
+[gd_scene load_steps=25 format=3 uid="uid://dvnoqpn6m0fnl"]
 
 [ext_resource type="PackedScene" uid="uid://dxvuvb68hgxug" path="res://scenes/common/exit_button/exit_button.tscn" id="1_1q7xy"]
 [ext_resource type="Script" path="res://scenes/common/minimap/minimap.gd" id="1_uy1dy"]
 [ext_resource type="PackedScene" uid="uid://cuniyltbdi5lu" path="res://scenes/common/minimap/minimap_node.tscn" id="2_gw74w"]
-[ext_resource type="PackedScene" uid="uid://dp38anqwlqkk8" path="res://scenes/common/minimap/minimap_lane.tscn" id="3_3i4ee"]
-[ext_resource type="Texture2D" uid="uid://cw0vojrck6hvh" path="res://assets/sprites/game/tools/acorn.png" id="3_uqdwp"]
+[ext_resource type="PackedScene" uid="uid://ykoigfwtxsxy" path="res://scenes/common/minimap/minimap_link.tscn" id="3_48jev"]
+[ext_resource type="Script" path="res://scripts/common/id_to/id_to_icon.gd" id="4_a31ah"]
+[ext_resource type="Texture2D" uid="uid://ch3cbwi4llkcb" path="res://assets/sprites/game/map/minimap_icons/MinimapStart.png" id="4_u4r1t"]
+[ext_resource type="Texture2D" uid="uid://bk7dc1ybs8h4r" path="res://assets/sprites/game/map/minimap_icons/MinimapFight.png" id="5_4q1aj"]
+[ext_resource type="Texture2D" uid="uid://bjw5u0u6xn16o" path="res://assets/sprites/game/map/minimap_icons/MinimapEliteFight.png" id="6_yam3o"]
+[ext_resource type="Texture2D" uid="uid://c0m08arkgdq3v" path="res://assets/sprites/game/map/minimap_icons/MinimapEncounter.png" id="7_bkkug"]
+[ext_resource type="Texture2D" uid="uid://bgqsa31ykksck" path="res://assets/sprites/game/map/minimap_icons/MinimapShop.png" id="8_nosov"]
+[ext_resource type="Texture2D" uid="uid://c1lc8dravr0te" path="res://assets/sprites/game/map/minimap_icons/MinimapMiniBoss.png" id="9_peyg4"]
+[ext_resource type="Texture2D" uid="uid://o7uueqco14wh" path="res://assets/sprites/game/map/minimap_icons/MinimapBoss.png" id="10_v7rfa"]
+[ext_resource type="Texture2D" uid="uid://dfyiu0w7ajcas" path="res://assets/sprites/game/map/minimap_icons/MinimapDuelist.png" id="11_tqeb6"]
+[ext_resource type="Texture2D" uid="uid://c07o6bp34512" path="res://assets/sprites/game/map/minimap_icons/MinimapCampfire.png" id="12_b6p5y"]
+
+[sub_resource type="Resource" id="Resource_xniu3"]
+script = ExtResource("4_a31ah")
+id = 1
+icon = ExtResource("4_u4r1t")
+
+[sub_resource type="Resource" id="Resource_oobxm"]
+script = ExtResource("4_a31ah")
+id = 2
+
+[sub_resource type="Resource" id="Resource_6qvdt"]
+script = ExtResource("4_a31ah")
+id = 3
+icon = ExtResource("5_4q1aj")
+
+[sub_resource type="Resource" id="Resource_rmrtu"]
+script = ExtResource("4_a31ah")
+id = 4
+icon = ExtResource("6_yam3o")
+
+[sub_resource type="Resource" id="Resource_srjsr"]
+script = ExtResource("4_a31ah")
+id = 5
+icon = ExtResource("7_bkkug")
+
+[sub_resource type="Resource" id="Resource_hp22b"]
+script = ExtResource("4_a31ah")
+id = 6
+icon = ExtResource("8_nosov")
+
+[sub_resource type="Resource" id="Resource_0khle"]
+script = ExtResource("4_a31ah")
+id = 7
+icon = ExtResource("9_peyg4")
+
+[sub_resource type="Resource" id="Resource_kcbgn"]
+script = ExtResource("4_a31ah")
+id = 8
+icon = ExtResource("10_v7rfa")
+
+[sub_resource type="Resource" id="Resource_8wgs1"]
+script = ExtResource("4_a31ah")
+id = 9
+icon = ExtResource("11_tqeb6")
+
+[sub_resource type="Resource" id="Resource_o5n4r"]
+script = ExtResource("4_a31ah")
+id = 10
+icon = ExtResource("12_b6p5y")
 
 [node name="Minimap" type="Control"]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = 0
+offset_right = 893.0
+offset_bottom = 279.0
 script = ExtResource("1_uy1dy")
 MinimapNodePacked = ExtResource("2_gw74w")
-temp_tx = ExtResource("3_uqdwp")
+MinimapLinkPacked = ExtResource("3_48jev")
+id_to_icons = Array[ExtResource("4_a31ah")]([SubResource("Resource_xniu3"), SubResource("Resource_oobxm"), SubResource("Resource_6qvdt"), SubResource("Resource_rmrtu"), SubResource("Resource_srjsr"), SubResource("Resource_hp22b"), SubResource("Resource_0khle"), SubResource("Resource_kcbgn"), SubResource("Resource_8wgs1"), SubResource("Resource_o5n4r")])
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -25,71 +82,54 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
-layout_mode = 2
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 87.0
+offset_right = 782.0
+offset_bottom = 270.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer"]
-layout_mode = 2
-
-[node name="Control" type="Control" parent="PanelContainer/MarginContainer/HBoxContainer"]
+[node name="NodeParent" type="Control" parent="MarginContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="ThreeLaner" type="VBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer/Control"]
-unique_name_in_owner = true
+[node name="Header" type="ColorRect" parent="."]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = -1
 anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 15
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = 70.0
+color = Color(0.333333, 0.180392, 0, 1)
 
-[node name="MinimapLane" parent="PanelContainer/MarginContainer/HBoxContainer/Control/ThreeLaner" instance=ExtResource("3_3i4ee")]
+[node name="Label" type="Label" parent="."]
+modulate = Color(0.756863, 0.568627, 0.0941176, 1)
 layout_mode = 2
-
-[node name="MinimapLane2" parent="PanelContainer/MarginContainer/HBoxContainer/Control/ThreeLaner" instance=ExtResource("3_3i4ee")]
-layout_mode = 2
-
-[node name="MinimapLane3" parent="PanelContainer/MarginContainer/HBoxContainer/Control/ThreeLaner" instance=ExtResource("3_3i4ee")]
-layout_mode = 2
-
-[node name="FourLaner" type="VBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer/Control"]
-layout_mode = 1
-anchors_preset = 15
 anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -74.0
+offset_bottom = 58.0
 size_flags_horizontal = 3
-
-[node name="MinimapLane" parent="PanelContainer/MarginContainer/HBoxContainer/Control/FourLaner" instance=ExtResource("3_3i4ee")]
-layout_mode = 2
-
-[node name="MinimapLane2" parent="PanelContainer/MarginContainer/HBoxContainer/Control/FourLaner" instance=ExtResource("3_3i4ee")]
-layout_mode = 2
-
-[node name="MinimapLane3" parent="PanelContainer/MarginContainer/HBoxContainer/Control/FourLaner" instance=ExtResource("3_3i4ee")]
-layout_mode = 2
-
-[node name="MinimapLane4" parent="PanelContainer/MarginContainer/HBoxContainer/Control/FourLaner" instance=ExtResource("3_3i4ee")]
-layout_mode = 2
-
-[node name="Filler" type="Control" parent="PanelContainer/MarginContainer/HBoxContainer"]
-custom_minimum_size = Vector2(40, 5)
-layout_mode = 2
+size_flags_vertical = 0
+text = "Minimap"
+horizontal_alignment = 1
 
 [node name="ExitButton" parent="." node_paths=PackedStringArray("exit_screen") instance=ExtResource("1_1q7xy")]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -65.0
+offset_left = -66.0
 offset_top = 15.0
-offset_right = 35.0
+offset_right = 34.0
 offset_bottom = 115.0
 grow_horizontal = 0
 scale = Vector2(0.5, 0.5)
 exit_screen = NodePath("..")
+
+[node name="Links" type="Node2D" parent="."]
+unique_name_in_owner = true

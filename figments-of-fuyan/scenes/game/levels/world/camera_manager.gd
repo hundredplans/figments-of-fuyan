@@ -33,6 +33,7 @@ var total_progress: Vector2
 var action_lock: bool = false
 var last_freelook_rotation: Vector3
 
+var LastSpectateObject: GameObjectGD # Used for swapping between freelook and regular
 var LastSpawnSpectateObject: SpawnGD # Not saved across sessions
 var LastAllySpectateObject: CardGD
 var LastEnemySpectateObject: CardGD
@@ -89,6 +90,7 @@ func getGameObjectFromCoords(coords: Vector4i) -> GameObjectGD:
 var SpectateObject: GameObjectGD
 func onCameraChange(_SpectateObject: GameObjectGD) -> void:
 	SpectateObject = _SpectateObject
+	
 	if isCycle():
 		LastCycleSpectateObject = SpectateObject
 	elif SpectateObject is CardGD:
@@ -97,8 +99,8 @@ func onCameraChange(_SpectateObject: GameObjectGD) -> void:
 	elif SpectateObject is SpawnGD:
 		LastSpawnSpectateObject = SpectateObject
 	
-	
 	if SpectateObject != null:
+		LastSpectateObject = SpectateObject
 		setCameraType(false)
 		setCameraCentralPoint()
 		setCameraPointAlongCircle()
@@ -134,7 +136,9 @@ func setCameraRadius(direction: int) -> void:
 
 #region Reseters
 func onSwapCameraType() -> void:
-	setCameraType(CurrentCamera == LevelCamera, true)
+	setCameraType(CurrentCamera == LevelCamera)
+	if CurrentCamera == LevelCamera:
+		onCreateCameraChangeAction(LastSpectateObject)
 
 func setCameraType(is_freelook: bool, spectate_allies: bool = false) -> void:
 	if (CurrentCamera == null or (is_freelook and CurrentCamera == LevelCamera) or (!is_freelook and CurrentCamera == FreelookCamera)):
@@ -220,13 +224,16 @@ func setCameraSaveables(level: LevelGD) -> void:
 #region Tracking
 var previous_position: Vector3
 var track_card: bool = true
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	if SpectateObject is CardGD and track_card:
 		setCameraCentralPoint()
 		setCameraPointAlongCircle()
 		
 	if is_camera_travelling:
 		FreelookCamera.look_at(position + Vector3(0, -LOOK_AT_OFFSET, 0))
+		
+	if game_ended:
+		FreelookCamera.rotation_degrees.y += ENDGAME_SPIN_SPEED * delta
 #endregion
 
 #region Cycle
@@ -253,6 +260,7 @@ const START_UP_OFFSET: int = 5
 const TOTAL_ROTATION: float = 2 * PI
 const MINUS_TRAVEL_TIME: float = 0.5
 const LOOK_AT_OFFSET: float = 5
+const ENDGAME_SPIN_SPEED: int = 5
 var is_camera_travelling: bool = false
 
 func onGameStarted() -> void:
@@ -265,7 +273,6 @@ func onGameStarted() -> void:
 	position.y += START_Y
 	FreelookCamera.position.x = 5
 	FreelookCamera.disable_movement = true
-	FreelookCamera.disable_freelook = true
 	
 	var pos_tween := create_tween()
 	pos_tween.tween_property(self, "position:y", -START_Y + START_UP_OFFSET, StartGameAction.START_TIME - MINUS_TRAVEL_TIME)\
@@ -285,5 +292,15 @@ func onGameStarted() -> void:
 	FreelookCamera.position = Vector3.ZERO
 	FreelookCamera.rotation_degrees = Vector3.ZERO
 	FreelookCamera.disable_movement = false
-	FreelookCamera.disable_freelook = false
 	
+func onDisableFreelook(state: bool) -> void:
+	LevelCamera.onDisableFreelook(state)
+
+var game_ended: bool
+func onGameEnded() -> void:
+	onDisableFreelook(true)
+	FreelookCamera.position = Vector3(0, START_Y, 0)
+	FreelookCamera.current = true
+	FreelookCamera.rotation_degrees = Vector3(-90, 0, 0)
+	game_ended = true
+	SpectateObject = null

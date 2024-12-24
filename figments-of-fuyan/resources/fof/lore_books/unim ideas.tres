@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_nqet7"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_ufmrj"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_aqahy"]
+
+[resource]
+script = ExtResource("3_aqahy")
+category = 26
+text = "Unim: Unnatural desert, said to be formed by a powerful stonemage in the past, inhabited by a lot of monsters as it is in the mana rich region of Volin, and also the Unim who are nomads
+Unim's are very old Roroni, Dalanet and Zengef descendants I imagine.
+Oldtree's are something, they all have names
+Karas is family/friends group (can get pretty big)
+endless oasis is a deeeeeeeeeeeep hole where they throw their bodies, it never seems to fill up though
+not a country.
+
+follow many Gods, among which are the Gods of the Sun, the Moon, the Trees, the People, the Monsters etc. Very weird people as they are one of the few not to follow the First Man / a descendant of his theology."
+id = 68
+name = "Unim Ideas"
+gdscript = ExtResource("1_nqet7")
+saved_data = ExtResource("2_ufmrj")

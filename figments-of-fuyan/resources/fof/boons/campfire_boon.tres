@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="BoonInfo" load_steps=5 format=3 uid="uid://cu53colyin0c4"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/boons/boon_info.gd" id="1_ccilf"]
+[ext_resource type="Script" path="res://scripts/fof/boons/campfire_boon.gd" id="1_skipv"]
+[ext_resource type="Texture2D" uid="uid://dilj4y3uvwbg8" path="res://assets/sprites/game/boons/campfire_boon.png" id="2_i6vaq"]
+[ext_resource type="Script" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_7k0fm"]
+
+[resource]
+script = ExtResource("1_ccilf")
+icon = ExtResource("2_i6vaq")
+description = "Your [X] has [Y] for the next [Z] fights"
+ascended_description = ""
+rarity = 0
+curse = false
+elite_fight_curse = false
+duplicatable = false
+id = 16
+name = "Campfire Boon"
+gdscript = ExtResource("1_skipv")
+saved_data = ExtResource("3_7k0fm")

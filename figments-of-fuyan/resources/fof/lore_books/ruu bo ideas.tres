@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_xsbco"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_oh8v2"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_mdibq"]
+
+[resource]
+script = ExtResource("3_mdibq")
+category = 8
+text = "Wuxia
+Spartan demons
+
+Demonmages, serve the king and are focused on looking very pristine and swag money
+Originally the Sea Demons (or maybe that's in their mythology)"
+id = 44
+name = "Ruu Bo Ideas"
+gdscript = ExtResource("1_xsbco")
+saved_data = ExtResource("2_oh8v2")

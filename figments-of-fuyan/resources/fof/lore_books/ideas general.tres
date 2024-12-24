@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3 uid="uid://g5x8drckp72o"]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_whxoh"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_lalfi"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_d5mwc"]
+
+[resource]
+script = ExtResource("3_d5mwc")
+category = 29
+text = "NOTES:
+
+Wonders of the World
+first man made everyone learn the common tongue
+giant world mosnters
+relics/artifacts of the world
+soft magic system maybe artifacts or something hmm
+give names to months
+dragons somewhere somehow, maybe Bauland
+Soulstone
+
+"
+id = 3
+name = "IdeasGeneral"
+gdscript = ExtResource("1_whxoh")
+saved_data = ExtResource("2_lalfi")

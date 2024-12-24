@@ -237,6 +237,14 @@ layout_mode = 2
 texture_normal = ExtResource("12_xn4sn")
 stretch_mode = 0
 
+[node name="DeckCardAmountLabel" type="Label" parent="MarginContainer/TopBar/DeckPanel/MarginContainer"]
+unique_name_in_owner = true
+modulate = Color(0.947592, 0.765959, 0.53102, 1)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+horizontal_alignment = 1
+
 [connection signal="pressed" from="MarginContainer/TopBar/PanelContainer/MarginContainer/ToolBeltSlotOne" to="." method="onToolbeltSlotPressed"]
 [connection signal="pressed" from="MarginContainer/TopBar/PanelContainer2/MarginContainer/ToolBeltSlotTwo" to="." method="onToolbeltSlotPressed"]
 [connection signal="pressed" from="MarginContainer/TopBar/DeckPanel/MarginContainer/DeckButton" to="." method="onDeckButtonPressed"]

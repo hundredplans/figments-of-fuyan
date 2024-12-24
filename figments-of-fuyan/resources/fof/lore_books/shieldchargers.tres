@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_orkbo"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_4o63e"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_yuufo"]
+
+[resource]
+script = ExtResource("3_yuufo")
+category = 14
+text = "The Stone Emperor commands a legion named the Shieldchargers. It is made up of pairs or triplets of soldiers. The first warrior is a Stoneblooded man, he wields only a massive shield coated in silversteel, it holds a spike in it's centre. The shield's gigantic size renders any foes using magic useless against it. The other warriors are one or two foreigners, typically from New Shreev, Jiralta or Varoma. They wield any melee weapon from axes, swords to hammers and hide behind the Stoneman and assist him against any non-magical enemies. The foreigners lives are seen as lesser than the Stoneman's and it is often that they are expected to sacrifice their life for his sake."
+id = 48
+name = "Shieldchargers"
+gdscript = ExtResource("1_orkbo")
+saved_data = ExtResource("2_4o63e")

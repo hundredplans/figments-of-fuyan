@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_ybcdh"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_5hq2t"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_gk5p2"]
+
+[resource]
+script = ExtResource("3_gk5p2")
+category = 2
+text = "Cunning old mage somewhere
+Eventually Leon makes human earth golems that are useable by anyone
+Wind is the fastest to cast, Earth is the slowest"
+id = 120
+name = "Zengef Ideas"
+gdscript = ExtResource("1_ybcdh")
+saved_data = ExtResource("2_5hq2t")

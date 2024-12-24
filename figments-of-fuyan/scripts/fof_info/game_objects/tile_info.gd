@@ -11,12 +11,11 @@ const NEUTRAL_OCCUPY_MATERIAL: String = "res://resources/materials/colors/unshad
 const ACTIVE_EFFECT_RANGE_MATERIAL: String = "res://resources/materials/colors/unshaded/orange.tres"
 const ACTIVE_EFFECT_PICKABLE_MATERIAL: String = "res://resources/materials/colors/unshaded/pink.tres"
 
-@export var overworld_tile: PackedScene
 @export var tile_fill: PackedScene
+@export var decoration_models: Array[PackedScene]
 
 static func getInfoPath() -> String: return "res://resources/fof/tile_objects"
-func getModel(variation: int) -> PackedScene:
-	if variation == -1: return overworld_tile
-	return super(variation)
+func getModel(variation: int, is_decoration: bool = false) -> PackedScene:
+	return models[variation] if !is_decoration else decoration_models[variation]
 	
 static func getFofName() -> String: return "Tile"

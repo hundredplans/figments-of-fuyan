@@ -11,18 +11,22 @@ var GDSCRIPT_TYPES: Array = [AreaInfo, LevelInfo, PalmLevelInfo, \
 var fof_info_dict: Dictionary = {}
 func _ready() -> void:
 	for type in GDSCRIPT_TYPES:
-		fof_info_dict[type] = {}
-		if type not in [TileInfo, ObjectInfo]:
-			var DIR_PATH: String = type.getInfoPath()
-			var fof_info_array: Array = getFilesRecursive(DIR_PATH).map(func(x: String): return load(x)).filter(func(x: FofInfo): return is_instance_of(x, type))
-			
-			if type == CardInfo:
-				var ALT_DIR_PATH: String = "res://test/test_cards/"
-				fof_info_array += getFilesRecursive(ALT_DIR_PATH).map(func(x: String): return load(x))
-					
-			for fof_info in fof_info_array:
-				fof_info_dict[type][fof_info.id] = fof_info 
-		else: fof_info_dict[type] = fof_info_dict[TileObjectInfo]
+		onRefreshFofInfoArray(type)
+		
+func onRefreshFofInfoArray(type: GDScript) -> void: # DEV
+	fof_info_dict[type] = {}
+	if type not in [TileInfo, ObjectInfo]:
+		var DIR_PATH: String = type.getInfoPath()
+		var fof_info_array: Array = getFilesRecursive(DIR_PATH).map(func(x: String): return load(x)).filter(func(x: FofInfo): return is_instance_of(x, type))
+		
+		if type == CardInfo:
+			var ALT_DIR_PATH: String = "res://test/test_cards/"
+			fof_info_array += getFilesRecursive(ALT_DIR_PATH).map(func(x: String): return load(x))
+				
+		for fof_info in fof_info_array:
+			fof_info_dict[type][fof_info.id] = fof_info 
+	else: fof_info_dict[type] = fof_info_dict[TileObjectInfo]
+	
 		
 func getFofInfoArray(type: GDScript) -> Array:
 	var arr: Array = fof_info_dict[type].values()

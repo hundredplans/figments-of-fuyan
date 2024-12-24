@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_ctp7t"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_3on3e"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_npy7g"]
+
+[resource]
+script = ExtResource("3_npy7g")
+category = 17
+text = "ruled by the Goblin King who is a very old goblin indeed
+before Varoma's conquest traded with Varoma for cloth, he is not indiscrimnately evil
+
+Goblins - Regular ol goblins
+Grolkins - Big Goblin (subrace)
+
+has enslaved orcs who fight each other"
+id = 32
+name = "Goblinland Ideas"
+gdscript = ExtResource("1_ctp7t")
+saved_data = ExtResource("2_3on3e")

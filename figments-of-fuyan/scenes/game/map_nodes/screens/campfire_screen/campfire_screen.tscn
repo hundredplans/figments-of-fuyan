@@ -1,0 +1,90 @@
+[gd_scene load_steps=5 format=3 uid="uid://denlapu74ec3g"]
+
+[ext_resource type="Script" path="res://scenes/game/map_nodes/screens/campfire_screen/campfire_screen.gd" id="1_inlye"]
+[ext_resource type="LabelSettings" uid="uid://rtes1t31euap" path="res://resources/ui/label_settings/jacquard_massive.tres" id="2_qyknf"]
+[ext_resource type="LabelSettings" uid="uid://dbh1brjnbxe8c" path="res://resources/ui/label_settings/roboto_large.tres" id="3_xlxcr"]
+[ext_resource type="PackedScene" uid="uid://ceoy120bbs7le" path="res://scenes/common/panel_button/panel_button.tscn" id="4_mad8p"]
+
+[node name="CampfireScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_inlye")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -244.5
+offset_top = 231.0
+offset_right = 244.5
+offset_bottom = 328.0
+grow_horizontal = 2
+text = "The Campfire"
+label_settings = ExtResource("2_qyknf")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -819.0
+offset_top = -168.5
+offset_right = 819.0
+offset_bottom = 168.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Divinus rests at the roadside campfire to recover his strength. He prays for strength for the journey ahead. When he awakens the next morning he finds one of his units has: "
+label_settings = ExtResource("3_xlxcr")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="ArmorButton" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_mad8p")]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"WhitePanelContainer"
+text = "ARMOR [1]"
+
+[node name="MobileButton" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_mad8p")]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"WhitePanelContainer"
+text = "MOBILE"
+
+[node name="ResistButton" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_mad8p")]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"WhitePanelContainer"
+text = "RESIST"
+
+[node name="NothingButton" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_mad8p")]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"WhitePanelContainer"
+text = "Nothing [Skip]"
+
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/ArmorButton" to="." method="onChoiceButtonPressed" binds= ["Armor"]]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/MobileButton" to="." method="onChoiceButtonPressed" binds= ["Mobile"]]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/ResistButton" to="." method="onChoiceButtonPressed" binds= ["Resist"]]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/NothingButton" to="." method="onChoiceButtonPressed" binds= ["Nothing"]]

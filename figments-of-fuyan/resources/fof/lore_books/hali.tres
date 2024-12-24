@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_dpntm"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_u43md"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_y1nl2"]
+
+[resource]
+script = ExtResource("3_y1nl2")
+category = 1
+text = "Hali is almost like a diety to the Sugori people, she is someone that is not worshipped but looked up to and beloved by the people. Hali comes from an old tale of Halina the Pirate, told over many generations, Halina was responsible for the progressive nature of modern Sugori.
+
+Halina was a pirate that lived 300 years ago, she was the son of a Mala, because of this, she grew up around combat, pirates, weaponry and governing. Eventually Halina's dad wanted to retire, he had to pick an heir, he decided that his child was ready, it was Halina. There was outrage, women were looked down upon in jobs like this, rarely you saw successful female pirates in those days. Halina ended up becoming one of the most prolific and loved Malas in history. 
+
+So much so that many still believe she is the reason for their fortune, freedom and happiness today. Halina was so inspiring, that her daughter, started the legacy of the Haliness name. She named herself after her own mother so that she can represent the family line. Ever since, every Mala and Mala decendant since then has had the surname Haliness and has represented the Haliness dynasty. A statue of Hali was erected in the Capital not so long after, but many others have showed up over the 300 years."
+id = 55
+name = "Hali"
+gdscript = ExtResource("1_dpntm")
+saved_data = ExtResource("2_u43md")

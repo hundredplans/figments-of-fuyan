@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_l14v5"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_wwsy3"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_4n5u3"]
+
+[resource]
+script = ExtResource("3_4n5u3")
+category = 12
+text = "Holy shreevians use the title Monk
+a guy who was exiled for reviving from shapeshifter land, now has become a Monk
+
+Practice Fuyanism
+
+Act like Gurus
+"
+id = 46
+name = "Holy Shreev Ideas"
+gdscript = ExtResource("1_l14v5")
+saved_data = ExtResource("2_wwsy3")

@@ -1,0 +1,43 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_d6f8s"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_vvch3"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_c0ibb"]
+
+[resource]
+script = ExtResource("3_c0ibb")
+category = 29
+text = "AH - After Hali
+-26AH - Hali born
+0AH - Hali comes to power
+38AH - Hali retires
+63AH - Hali dies
+322AH - Scareye banishment
+343AH - Present day
+
+SR - Stoneland Reign
+0SR - Stoneland Empire forms, they take over Jiralta and Shreev (used to border Jiralta)
+677SR - Current day
+
+BF - Befre Form
+0BF - Two nations and the kings join up to form Befre
+1237BF - Current day
+
+PD - Post First Man's Departure
+0PD - First Man leaves
+2996PD - Current day
+
+PD Calendar - Each month lasts 30 days, at the end there's 5 days of celebration known as the Feastdays
+Feastdays are celebrated by those who follow the PD calendar and most of Volin, due to Zengef's influence, but they do also spread to outside nations that don't even follow the calendar
+
+Elvusian - 12th month
+Feastdays - 5 days
+Day 1 - 
+Day 2 -
+Day 3 -
+Day 4 - Smolderings - Each person burns an item important to them, happen at night under the sky
+Day 5 -"
+id = 4
+name = "Calendars"
+gdscript = ExtResource("1_d6f8s")
+saved_data = ExtResource("2_vvch3")

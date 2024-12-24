@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_6vcm7"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_qek5r"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_86il0"]
+
+[resource]
+script = ExtResource("3_86il0")
+category = 4
+text = "Varoma is a nation primarily of knights and it is a vassal state of the Stone Empire. It is ruled by three vassal families, that serve under the King of Varoma, Medved Sarsenof, a Stoneman. The three are the Beltons, Hastons and the Walcotts. Each family is responsible for ruling a portion of Varoma's land, they are effectively the Dukes of their region. Lastock, the capital of Varoma, is however outside of their juridisction and ruled by Medved and the King's Council. The Walcotts are the furthest from Lastock and due to this the Beltons and Hastons influence over their region is weaker then the Walcotts.
+
+Before the invasion of their land 80 years ago, an event known as Peace's End, the Varoma were known as shepherds and craftsmen, a very peaceful people. They maintained good ties with the Manok and the Goblin King, trading food, cattle and clothes in exchange for protection of their cities. However when the Stone Empire set it's eyes on their pastures and land the Manok and Goblin King decided not to intervene and let Varoma be conquered. Castles and villages were erected and many farmers fled north beyond the Varoma Mountains in search of new pastures. This inadvertendly began Ka'luta's rise, as the farmers were converted to the Blood Cult. The farmers who remained overtime became knights as the Stone Empire's culture combined with theirs, the Ka'luta becoming a threat and requiring knights to defend against their attacks was also a factor."
+id = 77
+name = "Varoma"
+gdscript = ExtResource("1_6vcm7")
+saved_data = ExtResource("2_qek5r")

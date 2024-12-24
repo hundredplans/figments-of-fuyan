@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_dcivx"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_1b5ou"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_gx23d"]
+
+[resource]
+script = ExtResource("3_gx23d")
+category = 3
+text = "In the underworld of Befre, there exists one dominant force. The Black Heart Gang is a criminal organisation lead by \"Void King\" Mazik Laulil Kaluji, and is known for all of its atrocities commited over the many years of its lifespan.
+
+Originally, the Black Heart Gang was quite literally a gang inside of the Orenstark Maximum Security Prison, the second deadliest in the country. Mazik was the leader of the gang during his time at Orenstark, and when the prison had the largest breakout of all prisons in Beferian history, it really impacted the country's safety massively. The Orenstark breakout happened 13 years ago, Mazik has remained the leader, and has dominated the underground criminal scene since.
+
+The Black Hearts are composed of what seems to be just criminals and evil masterminds, and there doesnt seem to be any loyalty, only respect powered by strength and power. Mazik also is known to be quite a autocratic ruler, with disrespect and disloyalty to his actions punishable heniously. There also seems to be some kind of power hierarchy inside the gang but all sources of information lead the government to believe its just loyal members in a sort of meritocracy where if you are loyal enough to Mazik you become a trusted ally. No one knows where the Black Hearts Gang are situated, especially now after the capture of their leader, but it is also likely they were moving around a lot once they noticed the Blue Caps cracking on their location. 
+
+2 years ago, happened the \"Eddignale Massacre\", which caused big trouble to the whole gang. They decided to raid a town called Eddignale but because of a defector telling the authorities that they might do such a thing, Eddignale was guarded by 100s of soldiers. Once the Black Heart attacked, the soldiers then went rampant to protect the town, managing to kill multiple members and even capture Mazik himself. Then with 133 total casualties, the Black Heart left Eddignale and the battle ended. Mazik after being captured was sent to the Icy Hollows but somehow escaped, returning to the gang, but after killing too many of his own men, he was abandoned by his gang and they have not been spotted since.
+
+Hilda Bravenberch who was a politican, now in prison, was known for at somepoint selling government weapons to the gang for a lot of money. This lead people to believe that these guys had amounted a fortune of money from black market deals. They were also rumoured to have been collaborating with the Scareye Pirates during their invasion of Grolgat ages ago, but this overlaps with what defectors have said is not true. Additionally they were also responsible for the murder of Julies the Paragen, which was big in the public eye. Influence was a key factor of the Black Heart Gang, seeing as they had ties to countless criminal organisations, but it seems that their era is over, seeing as they no longer have ownership of Mazik."
+id = 19
+name = "Black Heart Gang"
+gdscript = ExtResource("1_dcivx")
+saved_data = ExtResource("2_1b5ou")

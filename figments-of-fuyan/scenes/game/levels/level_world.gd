@@ -14,6 +14,7 @@ var UI: Control
 #region Signals
 signal active_effect_activated
 signal active_effect_deselected
+signal active_effect_selected
 #endregion
 
 #region Onready
@@ -296,6 +297,8 @@ func onActiveEffectSelected() -> void:
 	if current_active_effect.camera_type == ActiveEffectDatastore.CameraTypes.CYCLE:
 		var cards: Array = current_active_effect_tiles.pickable_tiles.map(func(x: TileGD): return Game.getFieldCard(x))
 		CameraManager.setCycleObjects(cards)
+	
+	active_effect_selected.emit()
 		
 func onActiveEffectDeselected() -> void:
 	if current_active_effect != null:
@@ -329,6 +332,7 @@ func onPassButtonPressed() -> void:
 #region Game Changers
 func onGameEnded(_rewards: Rewards) -> void:
 	level.onPushAction(LevelVisibleAction.new(false, get_tree().get_nodes_in_group("LevelGameObjectsGD")))
+	CameraManager.onGameEnded()
 	
 func onGameStarted() -> void:
 	CameraManager.onGameStarted()

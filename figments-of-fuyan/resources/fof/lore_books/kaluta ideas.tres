@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_t52lt"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_w7pfs"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_iy266"]
+
+[resource]
+script = ExtResource("3_iy266")
+category = 21
+text = "khaal can transform/control monsters
+previous territory of the Manok and Varoma that was taken over when K'haal was banished, now ruled by him and his henchmen, a wasteland even more dead than the Unim desert.
+kaluta have the goal of bringing khaal to the mortal plane
+Red Robe, the previous Councillor of Affairs before Jhon (cool stuff here, killed by Tonitrus Thunderblood)
+before kaluta the land was half varoman and half manokan
+the Blood Invasions are attacks by the Kalutans during their early years in attempt to capture pieces of Volin, they failed mostly between 2916PD-2923PD"
+id = 36
+name = "Kaluta Ideas"
+gdscript = ExtResource("1_t52lt")
+saved_data = ExtResource("2_w7pfs")

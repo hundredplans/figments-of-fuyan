@@ -7,6 +7,8 @@ signal load_level
 var map_location_to_node: Dictionary
 var basic_card_ids: Array = []
 var active_level: LevelGD
+
+const FORCE_NODE_SPAWN_AT_ZERO_ID: int = 0
 #endregion
 
 #region Saved Data
@@ -222,7 +224,9 @@ func setEmptySpotsIDS(unique_node_ids: Array, map_node_odds: Dictionary, Card: C
 	for empty_spot in empty_spots:
 		match empty_spot.progress:
 			-1: empty_spot.id = 1; continue
-			0: empty_spot.id = 1 if getWorldDifficulty() > 1 else 6; continue
+			0:
+				empty_spot.id = 1 if getWorldDifficulty() > 1 else (6 if FORCE_NODE_SPAWN_AT_ZERO_ID == 0 else FORCE_NODE_SPAWN_AT_ZERO_ID)
+				continue
 			5: empty_spot.id = 7; continue
 			10: empty_spot.id = 8; continue
 			_: 
@@ -254,11 +258,15 @@ func setEmptySpotsIDS(unique_node_ids: Array, map_node_odds: Dictionary, Card: C
 				if remove_guarantee: guarantee_unique_node = []
 				continue
 		
-		var roll: String = Random.getRandomKey(map_node_odds_rollable[empty_spot.progress])
-		match roll:
-			"fight": empty_spot.id = 3; continue
-			"encounter": empty_spot.id = 5; continue
-			"shop": empty_spot.id = 6; continue
+		
+		if empty_spots.filter(func(y: EmptyMapNode): return y != empty_spot).all(func(x: EmptyMapNode): return x.id not in [0, 3]):
+			empty_spot.id = 3
+		else:
+			var roll: String = Random.getRandomKey(map_node_odds_rollable[empty_spot.progress])
+			match roll:
+				"fight": empty_spot.id = 3; continue
+				"encounter": empty_spot.id = 5; continue
+				"shop": empty_spot.id = 6; continue
 		
 #endregion
 

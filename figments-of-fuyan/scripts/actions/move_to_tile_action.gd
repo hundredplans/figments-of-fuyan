@@ -21,6 +21,8 @@ func getJumpFallDelay() -> float:
 	return (1.8) if movement_type == MOVEMENT_TYPES.JUMP else (fall_time + 1)
 
 func onPreAction() -> void:
+	if DestinationTile.isOccupied(): onFailAction(); return
+	
 	onForceAction(ChangeTileRotationAction.new(Card, Game.getRelativeTileRotation(Card.Tile, DestinationTile)))
 	if DestinationTile.getHeight() - Card.Tile.getHeight() == 1: movement_type = MOVEMENT_TYPES.JUMP
 	elif DestinationTile.getHeight() - Card.Tile.getHeight() <= -1:

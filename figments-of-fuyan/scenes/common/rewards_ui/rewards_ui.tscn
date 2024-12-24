@@ -10,6 +10,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
+mouse_filter = 1
 script = ExtResource("1_l8ytc")
 RewardsCardsPacked = ExtResource("2_8600w")
 RewardsItemPacked = ExtResource("3_83nba")
@@ -90,6 +91,16 @@ layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
 
+[node name="MinimapControl" type="Control" parent="."]
+unique_name_in_owner = true
+anchors_preset = 0
+offset_left = 34.0
+offset_top = 126.0
+offset_right = 34.0
+offset_bottom = 126.0
+mouse_filter = 2
+
+[connection signal="mouse_entered" from="." to="." method="onMouseInUI" binds= [true]]
 [connection signal="mouse_exited" from="." to="." method="onMouseInUI" binds= [false]]
 [connection signal="mouse_entered" from="FirstContainer/Control/PanelContainer/MarginContainer/MainContainer/HBoxContainer2/SkipButton" to="." method="onMouseInUI" binds= [true]]
 [connection signal="mouse_exited" from="FirstContainer/Control/PanelContainer/MarginContainer/MainContainer/HBoxContainer2/SkipButton" to="." method="onMouseInUI" binds= [false]]

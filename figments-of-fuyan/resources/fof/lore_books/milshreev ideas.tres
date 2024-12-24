@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_u8apc"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_4tp0u"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_c6m8m"]
+
+[resource]
+script = ExtResource("3_c6m8m")
+category = 13
+text = "Once a great empire under the name of The Milshreev Empire, Stoneland (under a different name back then) was a colony of theirs but eventually colonised them. Means that Zengef couldn't have fought Stoneland back in the end but the Milshreev Empire. They don't practice Fuyanism and don't believe in magic, Stoneland inherited a lot of their beliefs. Instead they believe in three gods, Ri, Ken and Riken. Ri is the God of change (war). Ken is the god of stability. Riken is the god of balance. After they split a lot happened but two new countries formed both claiming the title of Shreev. Holy Shreev which believe in Riken and New Shreev which believe in only Ri. Ken is unfortunately left out. The religion is called Rikenism."
+id = 117
+name = "Milshreev Ideas"
+gdscript = ExtResource("1_u8apc")
+saved_data = ExtResource("2_4tp0u")

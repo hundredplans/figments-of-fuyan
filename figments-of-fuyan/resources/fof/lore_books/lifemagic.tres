@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="LoreBookInfo" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof/lore_books/lore_book.gd" id="1_1asx4"]
+[ext_resource type="Script" path="res://scripts/saved_data/lore_books/saved_data_lore_book.gd" id="2_wccwy"]
+[ext_resource type="Script" path="res://scripts/fof_info/lore_books/lore_book_info.gd" id="3_bg02x"]
+
+[resource]
+script = ExtResource("3_bg02x")
+category = 6
+text = "Soulmagic, or what the Nolakan's call Lifemagic, is the practice of Infusing souls. Souls reside in the God Realm, and can manipulate the physical world to match their state. This allows Lifemages to Transform their soul into an animal, monster or whatever they desire and also physically transform. Their mental state also changes to reflect the transformation, a man that is Transformed into a beast will think akin to a beast. They can speak even as animals, although they are often hard to understand due to monster's tongues not being adapted for human speech. Lifemages can also communicate with animals, via Transforming their soul to understand their speech, and can also do this with other humans.
+
+There are many other aspects to Lifemagic. A practicioner can make themself immortal by constantly reverting their soul to view themself as a younger person. Healing is also possible by a similar principle, and even curing mental illness as long as the recipient sees it as an aspect they want to change. The Lifemagician's soul can be taken out of their own body, a state during which the body goes limp, it can exist outside of the body even when it dies. A stray soul however cannot collect ambient mana, and so such a soul finds a vessel as soon as possible. If they fail to do so, their soul will dissipate like a regular persons. Domination and Compulsion, is a disdained practice, but possible. It's the act of either directly controlling a soul to act out your orders via Domination or subconciously with Compulsion. Every biological creature has a soul, even grass, a Lifemage can grow grass instaenously and to a size beyond normalcy.
+
+Transforming another base element into a soul is possible, it has a significant mana cost as you need to transpose your own mana into the new soul. You can place this soul inside an inanimate object or alternatively let it dissipate if you Uninfuse and not Lock or even let it naturally dissipate when it runs out of mana. Soulstone for example is a combination of Lifemagic and Earthmagic, placing a soul inside a rock. A Lifemage can also split their soul into chunks, and place them into a body to create a twin of yourself. This procedure however is extremely painful to yourself and never done, as your Aura and mana capacity is damaged permanently. It's unknown whether you can transform a base element into a human soul, some disagree due to it's inherent and some due to theological implications. Whatever the case it hasn't been achieved yet."
+id = 105
+name = "Lifemagic"
+gdscript = ExtResource("1_1asx4")
+saved_data = ExtResource("2_wccwy")
