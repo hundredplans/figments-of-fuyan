@@ -10,6 +10,3 @@ func onPreAction() -> void:
 	
 func onPostAction() -> void:
 	TileObject.onClear()
-
-func getDelay() -> float:
-	return super()

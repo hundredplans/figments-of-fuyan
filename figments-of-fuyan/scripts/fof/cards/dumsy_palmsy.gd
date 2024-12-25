@@ -14,7 +14,9 @@ func onArrivePre(_action: AwakenAction) -> void:
 	pass
 
 func onArrive(action: AwakenAction) -> void:
-	onPushAction(DamageAction.new(self, self, 2))
+	var damage_action := DamageAction.new(self, self, 2)
+	damage_action.setActionDelayWithOverride(0.0)
+	onPushAction(damage_action)
 
 func onRampage(action: DeathAction) -> void:
 	var heal_amount: int = 1 if !ascended else 2

@@ -17,6 +17,9 @@ func getDescription() -> String:
 	
 func getIcon() -> Texture2D:
 	return load(info.SHILLING_ICON_PATH)
+	
+func getShillings() -> int:
+	return shillings
 #endregion
 
 #region Pickup

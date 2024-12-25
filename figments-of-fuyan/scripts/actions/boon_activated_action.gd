@@ -14,8 +14,5 @@ func onPreAction() -> void:
 func onPostAction() -> void:
 	Boon.onBoon(action)
 
-func getDelay() -> float:
-	return super()
-
 func getLogInfo() -> Array:
 	return ["Boon: " + Boon.info.name]

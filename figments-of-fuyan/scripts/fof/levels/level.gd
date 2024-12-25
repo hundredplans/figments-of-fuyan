@@ -37,6 +37,7 @@ signal reward_taken # Signal for rewards ui
 signal rewards_finished # Signal for area to interpret
 signal tool_removed
 signal update_active_effects
+signal camera_change_pre
 
 #region Load / Save
 func onSave() -> SavedData:
@@ -230,6 +231,8 @@ func onProcessAction(action: Action) -> void:
 		elif action is CameraChangeAction:
 			if action.SpectateObject != null and getSpectateObject() == action.SpectateObject:
 				action.onFailAction()
+			else:
+				camera_change_pre.emit(action.SpectateObject, getSpectateObject())
 		elif action is MovementFinishAction:
 			action.setPhaseByLevel(phase)
 		elif action is StartGameAction:

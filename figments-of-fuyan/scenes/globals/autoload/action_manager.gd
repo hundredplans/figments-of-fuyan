@@ -5,6 +5,8 @@ signal action_playing
 
 var active_action: Action
 var actions: Array = []
+var is_game_closing: bool
+@onready var DelayTimer: Timer = %DelayTimer
 
 func onPushAction(action: Action) -> void:
 	actions.push_front(action)
@@ -30,8 +32,10 @@ func onActionChain() -> void:
 	active_action.onPostAction()
 	active_action.post = true
 	
-	if active_action.getDelay() > 0:
-		await get_tree().create_timer(active_action.getDelay()).timeout
+	if active_action.getDelay() > 0 and !is_game_closing:
+		DelayTimer.wait_time = active_action.getDelay()
+		DelayTimer.start()
+		await DelayTimer.timeout
 	
 	process_action.emit(active_action)
 
@@ -88,3 +92,12 @@ func onFindNextAction(action: Action) -> Action:
 	var index: int = actions.find(action)
 	if index == -1 or index == actions.size() - 1: return null
 	return actions[index + 1]
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		onGameClosing()
+	
+func onGameClosing() -> void: # This should save all the actions at a point in time and place in save file instead
+	is_game_closing = true
+	DelayTimer.stop()
+	DelayTimer.timeout.emit()

@@ -139,7 +139,8 @@ func onSelected(_selected: bool) -> void:
 	
 const MASSIVE_MOVEMENT_PREVENT: int = 200
 func _input(event: InputEvent) -> void:
-	if Input.is_action_just_pressed("InspectCard") and is_mouse_in_ui and inspectable:
+	if Input.is_action_just_pressed("InspectCard") and is_mouse_in_ui and inspectable and \
+	!(get_viewport().gui_get_focus_owner() as LineEdit):
 		Card.onInspectCard()
 		
 	elif event is InputEventMouseMotion and is_held and Input.get_mouse_mode() != Input.MOUSE_MODE_CAPTURED:

@@ -41,6 +41,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level.camera_change_action.connect(onCameraChange)
 	level.game_ended.connect(onGameEnded)
 	level.game_started.connect(onGameStarted)
+	level.camera_change_pre.connect(onCameraChangePre)
 	
 	CameraManager.camera_position_updated.connect(onCameraPositionUpdated)
 	CameraManager.create_camera_action.connect(onCreateCameraChangeAction)
@@ -61,6 +62,7 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		onUpdateMousePosition()
 	
+func _process(_delta: float) -> void:
 	if MouseHoverTile != null:
 		if Input.is_action_just_pressed("MainInput"): onTilePressed()
 		elif Input.is_action_just_pressed("InspectCard"): onTileInspected()
@@ -195,6 +197,7 @@ func onCameraChange(SpectateObject: GameObjectGD, OldSpectateObject: GameObjectG
 	if SpectateObject is CardGD: SpectateObject.onSpectated(true)
 	CameraManager.onCameraChange(SpectateObject)
 	
+func onCameraChangePre(_SpectateObject: GameObjectGD, _OldSpectateObject: GameObjectGD) -> void:
 	if !CameraManager.isCycle():
 		onActiveEffectDeselected()
 	
@@ -288,6 +291,7 @@ func onActiveEffectBoxPressed(active_effect: ActiveEffectDatastore, active_effec
 		onActiveEffectDeselected()
 
 func onActiveEffectSelected() -> void:
+	onHideMovementRange()
 	for Tile in current_active_effect_tiles.in_range_tiles:
 		Tile.setInActiveEffectRange(true)
 		

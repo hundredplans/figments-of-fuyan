@@ -13,6 +13,3 @@ func onPreAction() -> void:
 	
 func onPostAction() -> void:
 	Card.onBloodthirst(action)
-
-func getDelay() -> float:
-	return super()

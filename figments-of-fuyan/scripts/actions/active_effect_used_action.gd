@@ -15,6 +15,7 @@ func _init(_ActiveEffect: ActiveEffectDatastore = null, _Tile: TileGD = null, _a
 func onPreAction() -> void:
 	if ActiveEffect.owner is not IObjectGD: ActiveEffect.owner.onActiveEffectPre(ActiveEffect, Tile, active_effect_tiles)
 	else: ActiveEffect.owner.onActiveEffectPre(ActiveEffect, Tile, active_effect_tiles, Card)
+	setActionDelay(ActiveEffect.delay if ActiveEffect.owner.getLevelVisible() else 0)
 	
 func onPostAction() -> void:
 	if ActiveEffect.owner is not IObjectGD: ActiveEffect.owner.onActiveEffect(ActiveEffect, Tile, active_effect_tiles)
@@ -26,8 +27,5 @@ func onPostAction() -> void:
 		ChangeActiveEffectUsedAction.new(ActiveEffect, true)]
 	onPushAction(actions)
 
-func getDelay() -> float:
-	return ActiveEffect.delay if ActiveEffect.owner.getLevelVisible() else 0
-	
 func getLogInfo() -> Array:
 	return ["ActiveEffect: " + ActiveEffect.name]

@@ -5,6 +5,7 @@ signal update_active_effect_description
 var AniPlayer: AnimationPlayer
 var active_effects: Array = []
 var ability_save: Dictionary = {}
+var top_vertex_y: float # The y position of the top vertex
 
 func isAttackable(Card: CardGD) -> bool:
 	return false
@@ -27,6 +28,10 @@ func onLoadData(data: SavedData) -> void:
 		AniPlayer = get_child(0).get_node("AnimationPlayer")
 	
 	add_to_group("IObjectsGD")
+	
+func onLoadModel() -> void:
+	super()
+	setTopVertexY()
 	
 func setOccupiedTiles(tile_position_to_tile: Dictionary) -> void:
 	super(tile_position_to_tile)
@@ -97,4 +102,14 @@ func onAdvanceTurn(team: int) -> void:
 		active_effects.filter(func(x: ActiveEffectDatastore): return x.used).\
 		map(func(x: ActiveEffectDatastore): return ChangeActiveEffectUsedAction.new(x, false))
 	onPushAction(actions)
+	
+func setTopVertexY() -> void:
+	top_vertex_y = getMeshes(Model)\
+		.map(func(x: MeshInstance3D): return x.mesh.get_faces())\
+		.reduce(func(y: Array, z: Array): return y + z, [])\
+		.map(func(v: Vector3): return v.y)\
+		.max()
+	
+func getTopVertexY() -> float:
+	return top_vertex_y
 		

@@ -4,3 +4,7 @@
 
 [node name="ActionManager" type="Node"]
 script = ExtResource("1_2piru")
+
+[node name="DelayTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+one_shot = true

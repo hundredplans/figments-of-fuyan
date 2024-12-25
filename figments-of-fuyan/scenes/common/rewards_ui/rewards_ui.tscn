@@ -94,10 +94,10 @@ mouse_filter = 1
 [node name="MinimapControl" type="Control" parent="."]
 unique_name_in_owner = true
 anchors_preset = 0
-offset_left = 34.0
-offset_top = 126.0
-offset_right = 34.0
-offset_bottom = 126.0
+offset_left = 1015.0
+offset_top = 177.0
+offset_right = 1015.0
+offset_bottom = 177.0
 mouse_filter = 2
 
 [connection signal="mouse_entered" from="." to="." method="onMouseInUI" binds= [true]]

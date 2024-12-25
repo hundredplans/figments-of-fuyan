@@ -8,6 +8,9 @@ extends Control
 @onready var Links: Node2D = %Links
 
 const SPACING := Vector2(75, 60)
+
+signal mouse_in_ui
+
 func _ready() -> void:
 	var data: Array = getData()
 	
@@ -68,3 +71,6 @@ func getData() -> Array:
 	var data: Array = Game.area.map_nodes_data
 	if data.is_empty(): return SavedData.onSaveGroup(get_tree().get_nodes_in_group("MapNodesGD"))
 	return data
+
+func onMouseInUI(state: bool) -> void:
+	mouse_in_ui.emit(state)

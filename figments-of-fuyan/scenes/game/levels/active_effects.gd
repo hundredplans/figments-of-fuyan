@@ -6,7 +6,9 @@ signal mouse_in_ui
 @export var ActiveEffectBoxPacked: PackedScene
 
 func onUpdate(active_effects: Array, Card: CardGD) -> void:
-	for grandchild in getGrandchildren(): grandchild.free()
+	for grandchild in getGrandchildren():
+		grandchild.queue_free()
+		grandchild.get_parent().remove_child(grandchild)
 	
 	for i in range(active_effects.size()):
 		var active_effect: ActiveEffectDatastore = active_effects[i]

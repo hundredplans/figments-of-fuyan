@@ -13,6 +13,3 @@ func onPreAction() -> void:
 	
 func onPostAction() -> void:
 	Card.setAttackRange(attack_range)
-
-func getDelay() -> float:
-	return super()

@@ -17,7 +17,7 @@ func getAttackableTile() -> TileGD:
 func onWasDamaged(action: DamageAction) -> void:
 	if recharge == 0:
 		var iobject_damaged_action := IObjectDamagedAction.new(self, action)
-		iobject_damaged_action.setActionDelay(ACTION_DELAY)
+		iobject_damaged_action.setActionDelayWithOverride(ACTION_DELAY)
 		onPushAction(iobject_damaged_action)
 	
 func onIObjectDamagedPre(action: DamageAction) -> void:

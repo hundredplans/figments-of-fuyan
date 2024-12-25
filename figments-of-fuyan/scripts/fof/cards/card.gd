@@ -671,10 +671,9 @@ func isGameObjectAttackable(GameObject: GameObjectGD, AttackableTile: TileGD) ->
 	if !(Game.getCoordsDistance(Tile.getCoords(), AttackableTile.getCoords()) <= speed + getAttackRange()): return false
 	if !(GameObject in getVisibleGameObjects()): return false
 	var is_in_height: bool = abs(AttackableTile.getHeight() - Tile.getHeight()) in [0, 1]
-	var is_in_unit_height: bool = true
 	
-	if GameObject is CardGD:
-		is_in_unit_height = position.y <= (GameObject.position.y + GameObject.info.top) and GameObject.info.top <= (position.y + info.top)
+	var top_y: float = GameObject.info.top if GameObject is CardGD else GameObject.getTopVertexY()
+	var is_in_unit_height: bool = position.y <= (GameObject.position.y + top_y) and top_y <= (position.y + info.top)
 	
 	var is_ranged: bool = getAttackRange() > 1 and (abs(AttackableTile.getHeight() - Tile.getHeight()) <= 5)
 	return (is_in_height or is_in_unit_height or is_ranged)
@@ -682,14 +681,18 @@ func isGameObjectAttackable(GameObject: GameObjectGD, AttackableTile: TileGD) ->
 #endregion
 
 #region Damage
-func onTakeDamage(Damager: GameObjectGD, damage: int) -> int: # Returns damage dealt
+func onTakeDamage(Damager: GameObjectGD, damage: int, override_set_action_delay: bool) -> int: # Returns damage dealt
 	var old_health: int = health
 	health = max(health - damage, 0)
 	
 	var health_damage: int = old_health - health
 	
-	if health == 0: onPushAction(DeathAction.new(Damager, self, damage, health_damage))
-	else: onPushAction(HurtAction.new(Damager, self, damage, health_damage))
+	var action: Action
+	if health == 0: action = DeathAction.new(Damager, self, damage, health_damage)
+	else: action = HurtAction.new(Damager, self, damage, health_damage)
+	
+	action.setActionDelayWithOverride(action.getDelay(), override_set_action_delay)
+	onPushAction(action)
 	return health_damage
 #endregion
 

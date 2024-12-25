@@ -13,6 +13,3 @@ func onPreAction() -> void:
 	
 func onPostAction() -> void:
 	Card.onAddTool(Tool)
-
-func getDelay() -> float:
-	return super()

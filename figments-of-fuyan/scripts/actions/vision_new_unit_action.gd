@@ -19,8 +19,5 @@ func onPostAction() -> void:
 	if Discoverer.isAlly(0) and owner is VisionAction and owner.owner is OccupyAction and enter_vision and Discovered not in old_team_vision:
 		onRemoveMoveAndAttackActions(Discoverer)
 
-func getDelay() -> float:
-	return super()
-
 func getLogInfo() -> Array:
 	return ["Discoverer: " + Discoverer.info.name, "Discovered: " + Discovered.info.name, "State: " + str(enter_vision)]

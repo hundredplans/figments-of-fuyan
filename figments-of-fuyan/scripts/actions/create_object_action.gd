@@ -21,5 +21,3 @@ func onPostAction() -> void:
 	TileObject.onLoadDataLevel()
 	level.setOccupiedTiles(TileObject)
 	
-func getDelay() -> float:
-	return super()

@@ -74,9 +74,9 @@ func onSave() -> void:
 		active_book.gdscript = book_base_script
 		active_book.saved_data = book_base_data
 		active_book.id = Helper.getFirstNonConsecutiveId(LoreBookInfo)
+		onRefreshBooks()
 	ResourceSaver.save(active_book)
 	Helper.onRefreshFofInfoArray(LoreBookInfo)
-	onRefreshBooks()
 
 func onBookNameEditSubmitted(new_name: String):
 	if !new_name.is_valid_filename() or new_name.is_empty():

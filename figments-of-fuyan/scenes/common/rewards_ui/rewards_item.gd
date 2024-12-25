@@ -5,6 +5,7 @@ extends Control
 @onready var IconRect: TextureRect = %IconRect
 @onready var ItemLabel: Label = %ItemLabel
 @onready var MainContainer: PanelContainer = %MainContainer
+@onready var AmountLabel: Label = %AmountLabel
 
 signal mouse_signal
 signal pressed
@@ -19,6 +20,7 @@ func setInfo(_item: Variant, is_taken: bool = false) -> void:
 		MainContainer.theme_type_variation = "WhitePanelContainer"
 		IconRect.texture = shilling_icon
 		ItemLabel.text = "Shillings"
+		AmountLabel.text = str(item.getShillings())
 		
 	elif item is BoonGD or item is ToolGD or item is CardGD:
 		match item.info.rarity:
@@ -55,4 +57,5 @@ func setTaken(state: bool) -> void:
 		IconRect.texture = null
 		modulate = Color(TAKEN_COLOR)
 		Game.onMouseInUITooltip(false)
+		AmountLabel.text = ""
 	

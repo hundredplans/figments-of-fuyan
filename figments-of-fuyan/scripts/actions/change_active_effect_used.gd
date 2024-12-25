@@ -9,14 +9,14 @@ func _init(_active_effect: ActiveEffectDatastore = null, _state: bool = false) -
 	state = _state
 	
 func onPreAction() -> void:
-	if active_effect.used == state: onFailAction()
+	onCheckFail()
 	
 func onPostAction() -> void:
 	active_effect.owner.setActiveEffectUsed(active_effect, state)
 	active_effect.used = state
 
-func getDelay() -> float:
-	return super()
-
 func getLogInfo() -> Array:
 	return ["ActiveEffect: " + active_effect.name + "State: " + str(state)]
+
+func onCheckFail() -> void:
+	if active_effect.used == state: onFailAction()

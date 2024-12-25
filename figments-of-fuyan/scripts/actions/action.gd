@@ -6,6 +6,8 @@ signal force_action
 signal remove_move_and_attack_actions
 
 var owner: Variant # FofGD or another action always
+
+@export var override_set_action_delay: bool
 @export var action_delay: float = 0
 @export var owner_public_id: int
 @export var failed: bool = false
@@ -58,7 +60,15 @@ func onLoad() -> void:
 	owner = Game.onFindPublicIDObject(owner_public_id)
 	
 func setActionDelay(_action_delay: float) -> void:
-	action_delay = _action_delay
+	if !override_set_action_delay:
+		action_delay = _action_delay
+		
+func setActionDelayWithOverride(_action_delay: float, state: bool = true) -> void:
+	override_set_action_delay = state
+	setActionDelay(_action_delay)
 	
 func getLogInfo() -> Array:
 	return []
+	
+func onCheckFail() -> void:
+	pass

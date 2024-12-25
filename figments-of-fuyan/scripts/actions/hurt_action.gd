@@ -11,9 +11,9 @@ func _init(_Damager: GameObjectGD = null, _Defender: GameObjectGD = null, _damag
 	Defender = _Defender
 	damage = _damage
 	health_damage = _health_damage
+	
+func onPreAction() -> void:
+	setActionDelay(0.0 if health_damage == 0 else 1.8)
 
 func onPostAction() -> void:
 	if health_damage > 0: Defender.onHurt()
-
-func getDelay() -> float:
-	return 0.0 if health_damage == 0 else 1.8

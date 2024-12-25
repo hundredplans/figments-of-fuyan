@@ -9,8 +9,7 @@ func _init(_Card: CardGD = null, _movement_path: Array = []) -> void:
 	movement_path = _movement_path
 
 func onPreAction() -> void:
-	var is_attackable_on_path: bool = movement_path.any(func(x: TileGD): return x != Card.Tile and x.occupy_state != TileGD.OccupyStates.NULL)
-	if !Card.canAttack() and is_attackable_on_path: onFailAction()
+	onCheckFail()
 
 func onPostAction() -> void:
 	Card.Tile.is_card_moving = true
@@ -43,6 +42,10 @@ func onPostAction() -> void:
 		
 	actions.append(MovementFinishAction.new(Card, movement_path))
 	onAppendAction(actions)
+
+func onCheckFail() -> void:
+	var is_attackable_on_path: bool = movement_path.any(func(x: TileGD): return x != Card.Tile and x.occupy_state != TileGD.OccupyStates.NULL)
+	if !Card.canAttack() and is_attackable_on_path: onFailAction()
 
 func getLogInfo() -> Array:
 	return ["Card: " + Card.info.name]

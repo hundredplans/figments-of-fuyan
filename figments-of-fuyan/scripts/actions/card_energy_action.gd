@@ -14,6 +14,3 @@ func onPreAction() -> void:
 func onPostAction() -> void:
 	Card.energy += energy
 	Card.update_stats.emit()
-
-func getDelay() -> float:
-	return super()

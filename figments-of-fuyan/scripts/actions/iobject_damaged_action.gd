@@ -13,6 +13,3 @@ func onPreAction() -> void:
 	
 func onPostAction() -> void:
 	IObject.onIObjectDamaged(damage_action)
-
-func getDelay() -> float:
-	return super()

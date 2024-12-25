@@ -251,7 +251,16 @@ func _on_minimap_button_pressed() -> void:
 	if Minimap == null:
 		Minimap = MinimapPacked.instantiate()
 		MinimapControl.add_child(Minimap)
-	else: Minimap.queue_free()
+		Minimap.mouse_in_ui.connect(onMouseInUI)
+		Minimap.tree_exited.connect(onMinimapRemoved)
+		BackgroundDimmer.visible = true
+	else:
+		Minimap.queue_free()
+		onMinimapRemoved()
+	
+func onMinimapRemoved() -> void:
+	if RewardsUI == null:
+		BackgroundDimmer.visible = false
 #endregion
 
 #region Vision Mode
@@ -343,12 +352,13 @@ func onTileOccupied(Card: CardGD, _Tile: TileGD) -> void:
 #endregion
 
 #region Game Changers
+var RewardsUI: Control
 func onGameEnded(rewards: Rewards) -> void:
 	if rewards == null:
 		var LossUI: Control = LossUIPacked.instantiate()
 		add_child(LossUI)
 	else:
-		var RewardsUI: Control = Game.onCreateRewardsUIScreen(rewards, self, level.is_elite)
+		RewardsUI = Game.onCreateRewardsUIScreen(rewards, self, level.is_elite)
 		RewardsUI.rewards_finished.connect(level.onRewardsFinished)
 		MinimapControl = RewardsUI.MinimapControl
 		

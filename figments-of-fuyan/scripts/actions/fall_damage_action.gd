@@ -10,8 +10,11 @@ func _init(_Card: CardGD = null, _Tile: TileGD = null) -> void:
 	Tile = _Tile
 
 func onPreAction() -> void:
-	damage = Tile.getFallDamage(Card.Tile)
-	if damage == 0: onFailAction()
+	onCheckFail()
 	
 func onPostAction() -> void:
 	onPushAction(DamageAction.new(Tile, Card, damage, true))
+
+func onCheckFail() -> void:
+	damage = Tile.getFallDamage(Card.Tile)
+	if damage == 0: onFailAction()

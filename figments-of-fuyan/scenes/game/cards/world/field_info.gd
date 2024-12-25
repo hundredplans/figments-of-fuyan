@@ -69,6 +69,12 @@ extends Node3D
 @export var ascended_shine: Texture2D
 @export_group("")
 
+@export_group("Default Models")
+@export var AttackDefaultPacked: PackedScene
+@export var HealthDefaultPacked: PackedScene
+@export var SpeedDefaultPacked: PackedScene
+@export_group("")
+
 var Card: CardGD
 
 func setInfo(_Card: CardGD) -> void:
@@ -201,7 +207,11 @@ func setInfoSpriteEnemyInMovementRange(state: bool) -> void:
 #region Traits
 func onUpdateTraits() -> void:
 	var field_traits_info: Array = Card.getFieldTraits().filter(func(x: TraitGD): return x.info.replace_model != null).map(func(y: TraitGD): return y.info)
-	var stat_to_model: Dictionary
+	var stat_to_model: Dictionary = {
+		Game.Stats.ATTACK: AttackDefaultPacked,
+		Game.Stats.HEALTH: HealthDefaultPacked,
+		Game.Stats.SPEED: SpeedDefaultPacked
+	}
 	
 	for trait_combination in trait_combinations:
 		if trait_combination.traits.all(func(x: TraitInfo): return x in field_traits_info):

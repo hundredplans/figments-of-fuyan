@@ -13,6 +13,3 @@ func onPreAction() -> void:
 	
 func onPostAction() -> void:
 	Card.onAscend(state)
-
-func getDelay() -> float:
-	return super()

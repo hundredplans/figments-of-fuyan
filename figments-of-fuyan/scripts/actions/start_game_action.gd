@@ -5,10 +5,7 @@ func _init() -> void:
 	super()
 	
 func onPreAction() -> void:
-	pass
+	setActionDelay(START_TIME if !Helper.getAdmin() else 0)
 	
 func onPostAction() -> void:
 	pass
-
-func getDelay() -> float:
-	return START_TIME if !Helper.getAdmin() else 0

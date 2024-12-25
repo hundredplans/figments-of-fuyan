@@ -6,6 +6,7 @@ func onProcessAction(action: Action) -> void:
 		if !action.post:
 			if action is ChangeTurnStateAction and action.Card == Card and action.turn_state == Game.TurnStates.INACTIVE:
 				action.turn_state = Game.TurnStates.PASSED
+				action.onCheckFail()
 		if action.post:
 			if action is AddStatusEffectAction and action.StatusEffect == self:
 				onPushAction(ChangeTurnStateAction.new(Card, Game.TurnStates.PASSED))

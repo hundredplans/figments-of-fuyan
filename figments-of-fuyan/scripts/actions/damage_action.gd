@@ -19,7 +19,10 @@ func onPostAction() -> void:
 	var stat_infos: Array = Defenders\
 		.filter(func(x: GameObjectGD): return x is CardGD)\
 		.map(func(x: GameObjectGD): return StatInfo.new(x, Game.Stats.HEALTH, -damage))
-	onPushAction(StatAction.new(stat_infos))
+	
+	var stat_action := StatAction.new(stat_infos)
+	stat_action.setActionDelayWithOverride(stat_action.getDelay(), override_set_action_delay)
+	onPushAction(stat_action)
 	
 func getLogInfo() -> Array:
 	var arr: Array = ["Damager: " + Damager.info.name]

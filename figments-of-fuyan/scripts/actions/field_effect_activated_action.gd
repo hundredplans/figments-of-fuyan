@@ -13,6 +13,3 @@ func onPreAction() -> void:
 	
 func onPostAction() -> void:
 	FieldEffect.onFieldEffect(action)
-
-func getDelay() -> float:
-	return super()

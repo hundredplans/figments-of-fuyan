@@ -12,13 +12,8 @@ func _init(_id: int = 0, _ascended: bool = false, _load_into_level: bool = false
 	load_into_level = _load_into_level
 	
 func onPreAction() -> void:
+	onCheckFail()
 	if !load_into_level:
-		var ExistingBoon: Variant = Game.get_tree().get_nodes_in_group("BoonsGD").filter(func(x: BoonGD): return x.info.id == id)
-		if !ExistingBoon.is_empty():
-			ExistingBoon = ExistingBoon[0]
-			onPushAction(ChangeBoonAscenscionAction.new(ExistingBoon, ascended))
-			onFailAction()
-			
 		var boon_info: BoonInfo = Helper.getFofInfoID(BoonInfo, id)
 		var saved_data_boon: SavedDataBoon = boon_info.saved_data.new(id, true, 0, ascended)
 		
@@ -30,9 +25,14 @@ func onPreAction() -> void:
 func onPostAction() -> void:
 	Boon.onBoonAdded()
 
-func getDelay() -> float:
-	return super()
-
 func getLogInfo() -> Array:
 	var boon_info: BoonInfo = Helper.getFofInfoID(BoonInfo, id)
 	return ["Boon: " + boon_info.name]
+
+func onCheckFail() -> void:
+	if !load_into_level:
+		var ExistingBoon: Variant = Game.get_tree().get_nodes_in_group("BoonsGD").filter(func(x: BoonGD): return x.info.id == id)
+		if !ExistingBoon.is_empty():
+			ExistingBoon = ExistingBoon[0]
+			onPushAction(ChangeBoonAscenscionAction.new(ExistingBoon, ascended))
+			onFailAction()

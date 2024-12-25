@@ -4,7 +4,6 @@ var Damager: GameObjectGD
 var Defender: GameObjectGD
 var damage: int
 var health_damage: int
-var delay: float
 
 var Tile: TileGD # Where the Defender died
 var game_objects_in_vision: Array # When the defender died saved
@@ -19,7 +18,7 @@ func _init(_Damager: GameObjectGD = null, _Defender: GameObjectGD = null, _damag
 func onPreAction() -> void:
 	Tile = Defender.Tile
 	game_objects_in_vision = Defender.getVisibleGameObjects()
-	delay = 3.0 if Defender.vision_datastore.level_visible else 0.0
+	setActionDelay(3.0 if Defender.vision_datastore.level_visible else 0.0)
 	Defender.onChangeCardPlace(Game.CardPlaces.GRAVEYARD)
 	onForceAction(OccupyAction.new(Defender, null, true))
 	
@@ -33,9 +32,6 @@ func onPostAction() -> void:
 	if Game.get_tree().get_nodes_in_group("FieldCardsGD")\
 		.filter(func(x: CardGD): return x.team == Defender.team).is_empty():
 			onAppendAction(EndGameAction.new(Defender.team))
-
-func getDelay() -> float:
-	return delay
 	
 func onSwapCameraOnDeathInPlayerPhase() -> void:
 	if !Defender.isAlly(0) or Game.get_tree().get_nodes_in_group("LevelsGD")[0].phase != Game.Phases.PLAYER: return

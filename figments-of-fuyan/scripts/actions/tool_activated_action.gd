@@ -14,8 +14,5 @@ func onPreAction():
 func onPostAction():
 	Tool.onToolAction(action)
 
-func getDelay() -> float:
-	return super()
-
 func getLogInfo() -> Array:
 	return ["Tool: " + Tool.info.name]

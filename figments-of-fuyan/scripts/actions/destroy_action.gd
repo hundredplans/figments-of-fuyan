@@ -13,6 +13,3 @@ func onPreAction() -> void:
 	
 func onPostAction() -> void:
 	onPushAction(DeathAction.new(Destroyer, Card, Card.health, Card.health))
-
-func getDelay() -> float:
-	return super()

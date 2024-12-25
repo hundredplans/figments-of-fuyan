@@ -8,6 +8,3 @@ func onPreAction() -> void:
 	
 func onPostAction() -> void:
 	pass
-
-func getDelay() -> float:
-	return super()

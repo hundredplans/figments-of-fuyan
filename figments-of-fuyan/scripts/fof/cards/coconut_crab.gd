@@ -8,7 +8,7 @@ func onProcessAction(action: Action) -> void:
 		if isValidArrive(action) and action.owner is IObjectGD and action.owner.info.name == "Lottery Coconut":
 			stepped_on_card_public_id = action.owner.stepped_on_card_public_id
 			var arrive_action := ArriveAction.new(self, action)
-			arrive_action.setActionDelay(ARRIVE_ANIMATION_DELAY)
+			arrive_action.setActionDelayWithOverride(ARRIVE_ANIMATION_DELAY)
 			onAppendAction(arrive_action)
 	
 func getDescription() -> String:
