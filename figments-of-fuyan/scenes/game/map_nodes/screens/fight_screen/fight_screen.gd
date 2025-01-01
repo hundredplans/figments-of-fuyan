@@ -21,3 +21,5 @@ func setInfo(_save_file: SaveFileGD, _area: AreaGD, _World: Node3D, _UI: Control
 	alpha_tween.tween_property(BlackBackground, "color:a", 1, FADE_IN_TIME)
 	await alpha_tween.finished
 	finished.emit()
+	#unque
+	#await get_tree().process_frame

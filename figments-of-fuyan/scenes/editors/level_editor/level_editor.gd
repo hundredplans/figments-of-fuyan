@@ -103,7 +103,7 @@ func _process(_delta: float) -> void:
 			else: SearchTileObject.grab_focus()
 		elif focus_owner != null and focus_owner is LineEdit:
 			focus_owner.release_focus()
-	
+		
 	if !get_viewport().gui_get_focus_owner() is LineEdit:
 		if Input.is_action_just_pressed("SelectDeselect"):
 			if HoverModel != null: onHoverModelDeselected()
@@ -487,7 +487,9 @@ func onSaveLevel() -> void:
 
 		loaded.data = []
 		for child in get_tree().get_nodes_in_group("TileObjectsGD"):
-			loaded.data.append(child.onSave())
+			var data: SavedData = child.onSave()
+			data.public_id = 0
+			loaded.data.append(data)
 
 		if level_name == loaded.name:
 			ResourceSaver.save(loaded)
@@ -510,7 +512,9 @@ func onSaveLevel() -> void:
 	loaded.name = level_name
 	loaded.data = []
 	for child in get_tree().get_nodes_in_group("TileObjectsGD"):
-		loaded.data.append(child.onSave())
+		var data: SavedData = child.onSave()
+		data.public_id = 0
+		loaded.data.append(data)
 
 	ResourceSaver.save(loaded, DECORATION_PATH + loaded.name + ".tres")
 		

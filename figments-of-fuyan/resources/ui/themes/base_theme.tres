@@ -242,40 +242,29 @@ corner_radius_bottom_left = 10
 anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7fnuq"]
-content_margin_left = 10.0
-content_margin_right = 10.0
 bg_color = Color(1, 1, 1, 1)
-border_width_left = 5
-border_width_top = 5
-border_width_right = 5
-border_width_bottom = 5
-border_color = Color(0, 0, 0, 1)
-expand_margin_left = 10.0
-expand_margin_right = 10.0
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4bx8d"]
-content_margin_left = 10.0
-content_margin_right = 10.0
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ycmlv"]
+content_margin_left = 20.0
+content_margin_right = 20.0
 bg_color = Color(1, 1, 1, 1)
-border_width_left = 5
-border_width_top = 5
-border_width_right = 5
-border_width_bottom = 5
-border_color = Color(0, 0, 0, 1)
-expand_margin_left = 10.0
-expand_margin_right = 10.0
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s2fur"]
-content_margin_left = 10.0
-content_margin_right = 10.0
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vydci"]
+content_margin_left = 20.0
+content_margin_right = 20.0
 bg_color = Color(1, 1, 1, 1)
-border_width_left = 5
-border_width_top = 5
-border_width_right = 5
-border_width_bottom = 5
-border_color = Color(0, 0, 0, 1)
-expand_margin_left = 10.0
-expand_margin_right = 10.0
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_he4ox"]
 bg_color = Color(0.285993, 0.277531, 0, 1)
@@ -420,8 +409,8 @@ RedPanelContainer/styles/panel = SubResource("StyleBoxFlat_vyaib")
 TealPanelContainer/base_type = &"PanelContainer"
 TealPanelContainer/styles/panel = SubResource("StyleBoxFlat_vmrmf")
 VScrollBar/styles/grabber = SubResource("StyleBoxFlat_7fnuq")
-VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_4bx8d")
-VScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_s2fur")
+VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_ycmlv")
+VScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_vydci")
 WhiteButton/base_type = &"Button"
 WhiteButton/styles/disabled = SubResource("StyleBoxFlat_he4ox")
 WhiteButton/styles/hover = SubResource("StyleBoxFlat_h0876")

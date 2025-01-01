@@ -24,13 +24,14 @@ func _ready():
 	else:
 		var DIR_PATH: String = SaveFileInfo.SAVE_DIRECTORY
 		var files: Array = Array(DirAccess.get_files_at(DIR_PATH))
-		var card_info: CardInfo = Helper.getFofInfoID(CardInfo, 2)
+		var card_info: CardInfo = Helper.getFofInfoID(CardInfo, 3)
 		
 		var card_data: SavedDataCard = card_info.saved_data.new(card_info.id, true)
 		Game.setCardDataFromInfo(card_data, card_info)
 		
-		if files.is_empty(): onStartGame(SavedData.onLoadModel(card_data, KeepAcross))
+		if files.is_empty(): onStartGame(card_data)
 		else: onLoadGame(load(DIR_PATH + files[0]))
+	
 #endregion
 
 #region Helper
@@ -54,7 +55,7 @@ func onLoadScreenWorld(packed_ui: PackedScene, packed_world: PackedScene) -> Dic
 	return {"ui": ActiveScreen, "world": ActiveWorld}
 
 func onLoadScreen(packed_scene: PackedScene) -> void:
-	if ActiveScreen != null: ActiveScreen.queue_free()
+	if ActiveScreen != null: ActiveScreen.queue_free(); ActiveScreen.get_parent().remove_child(ActiveScreen)
 	ActiveScreen = packed_scene.instantiate()
 	
 	match packed_scene:
@@ -62,19 +63,16 @@ func onLoadScreen(packed_scene: PackedScene) -> void:
 			ActiveScreen.load_game.connect(onLoadGame)
 	
 func onLoadWorld(packed_scene: PackedScene) -> void:
-	if ActiveWorld != null: ActiveWorld.queue_free()
+	if ActiveWorld != null: ActiveWorld.queue_free(); ActiveWorld.get_parent().remove_child(ActiveWorld)
 	ActiveWorld = packed_scene.instantiate()
 	
 	match packed_scene:
 		main_menu_world: ActiveWorld.start.connect(onStartGame)
 	
-func onStartGame(Card: CardGD) -> void:
-	Card.queue_free()
+func onStartGame(card_data: SavedDataCard) -> void:
 	Game.highest_public_id = 0
 	var area_id: int = 1
 	var area_data: SavedDataArea = SavedDataArea.new(area_id, true)
-	
-	var card_data: SavedDataCard = Card.onSave()
 	card_data.card_place = Game.CardPlaces.DECK
 	
 	var save_file_data := SavedDataSaveFile.new(
@@ -93,6 +91,7 @@ func onLoadGame(save_file_data: SavedDataSaveFile) -> void:
 	
 	save_file.load_level.connect(onLoadLevel)
 	save_file.load_map.connect(onLoadMap)
+	save_file.exit_save.connect(onExitSaveFile)
 	save_file.onLoadGame()
 	
 func onLoadLevel(level_data: SavedDataLevel, save_file: SaveFileGD, area: AreaGD) -> void:
@@ -101,9 +100,6 @@ func onLoadLevel(level_data: SavedDataLevel, save_file: SaveFileGD, area: AreaGD
 	
 	scenes.ui.setInfo(save_file)
 	scenes.world.setInfo(save_file)
-	
-	await get_tree().process_frame # Necessary
-	
 	level.onLoadActiveLevel(level_data, save_file)
 
 func onLoadMap(save_file: SaveFileGD, area: AreaGD) -> void:
@@ -113,4 +109,8 @@ func onLoadMap(save_file: SaveFileGD, area: AreaGD) -> void:
 	scenes.ui.setInfo(save_file)
 	scenes.world.setInfo(save_file)
 	area.onLoadMapAfterScenes()
+	
+func onExitSaveFile() -> void:
+	for child in KeepAcross.get_children(): child.queue_free()
+	onLoadScreenWorld(main_menu_ui, main_menu_world)
 #endregion

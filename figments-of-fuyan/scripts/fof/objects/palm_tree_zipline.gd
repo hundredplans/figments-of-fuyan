@@ -7,8 +7,7 @@ var end_tile_public_ids: Array
 var ActiveStartTile: TileGD
 var start_tiles: Array
 var end_tiles: Array
-var holders_name: Array = ["HolderRight", "HolderLeft"]
-
+var holders_nodes: Array
 var used_this_turn_cards: Array
 
 #region Helper
@@ -25,8 +24,9 @@ func onSave() -> SavedDataIObject:
 	ability_save['end_tile_public_ids'] = end_tiles.map(func(x: TileGD): return x.public_id)
 	ability_save['active_start_tile_public_id'] = ActiveStartTile.public_id if ActiveStartTile != null else 0
 	ability_save['used_this_turn_cards'] = used_this_turn_cards.map(func(x: CardGD): return x.public_id)
+	#var t = Game.onFindPublicIDObject(ability_save['active_start_tile_public_id'])
 	return super()
-		
+	
 func onLoadDataLevel() -> void:
 	super()
 	if active_start_tile_public_id != 0:
@@ -35,7 +35,8 @@ func onLoadDataLevel() -> void:
 		ActiveStartTile = Game.onFindPublicIDObject(active_start_tile_public_id)
 		
 	used_this_turn_cards = used_this_turn_cards.map(func(x: int): return Game.onFindPublicIDObject(x))
-		
+	setHolderVisible()
+	
 # Sets active start, start tiles and end tiles
 func onLoadDataLevelFofInit() -> void:
 	super()
@@ -44,9 +45,16 @@ func onLoadDataLevelFofInit() -> void:
 		var offset_coords: Array = []
 		if isShort(): # Equal Short
 			offset_coords = [Vector4i(1, 0, -1, 0), Vector4i(4, 0, -4, 0)]
-			start_tiles = []
 		else: # Equal Long
-			pass
+			offset_coords = [Vector4i(1, 0, -1, 0), Vector4i(5, 0, -5, 0)]
+		
+		start_tiles = offset_coords.map(func(x: Vector4i): return Game.getTile(getTile().getCoords() + Game.onRotateCoordsCC(tile_rotation, x)))
+		end_tiles = []
+		
+		for i in range(start_tiles.size() - 1, -1, -1):
+			end_tiles.append(start_tiles[i])
+		
+		ActiveStartTile = start_tiles[0]
 	else:
 		var offset_coords: Vector4i
 		if isShort(): offset_coords = Vector4i(4, 0, -4, 4)
@@ -55,6 +63,13 @@ func onLoadDataLevelFofInit() -> void:
 		ActiveStartTile = Game.getTile(getTile().getCoords() + Game.onRotateCoordsCC(tile_rotation, offset_coords))
 		start_tiles = [ActiveStartTile]
 		end_tiles = [Game.getTile(Tile.getCoords() + Game.onRotateCoordsCC(tile_rotation, Vector4i(1, 0, -1, 0)))]
+	setHolderVisible()
+
+func onLoadModel() -> void:
+	super()
+	holders_nodes = Helper.getNodeTypeRecursive(Model, MeshInstance3D)\
+		.filter(func(x: MeshInstance3D): return x.name.begins_with("Holder"))
+	holders_nodes.sort_custom(func(x: MeshInstance3D, y: MeshInstance3D): return str(x.name) > str(y.name))
 #endregion
 
 #region Active Effects
@@ -80,15 +95,24 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _
 	
 	if !getLevelVisible(): return
 	onAbility()
-	HolderNode = Helper.getNodeTypeRecursive(self, MeshInstance3D)\
-		.filter(func(x: MeshInstance3D): return x.name == holders_name[start_tiles.find(ActiveStartTile)])[0]
+	HolderNode = holders_nodes[start_tiles.find(ActiveStartTile)]
 	HolderCard = Card
+	Card.onPauseAnimation()
 	
 func onZiplineFinished() -> void:
 	HolderNode = null
+	HolderCard.onPauseAnimation(false)
 	HolderCard = null
 	AniPlayer.stop()
 	AniPlayer.seek(0, true)
+	
+	ActiveStartTile = start_tiles[end_tiles.find(ActiveStartTile)]
+	setHolderVisible()
+	
+func setHolderVisible() -> void:
+	if ActiveStartTile == null: return
+	for i in range(holders_nodes.size()):
+		holders_nodes[i].visible = (start_tiles.find(ActiveStartTile) == i)
 #endregion
 
 #region Advance Turn
@@ -111,3 +135,11 @@ func onProcessAction(action: Action) -> void:
 		if action is ActiveEffectUsedAction and action.ActiveEffect in active_effects:
 			onZiplineFinished()
 #endregion
+
+#region Animation
+func onAbility() -> void:
+	if isLevelVisible():
+		if start_tiles.size() == 1:
+			AniPlayer.play("Ability")
+		else:
+			AniPlayer.play("AbilityLeft" if start_tiles.find(ActiveStartTile) == 0 else "AbilityRight")

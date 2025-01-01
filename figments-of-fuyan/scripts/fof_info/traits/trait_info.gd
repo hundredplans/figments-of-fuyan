@@ -5,7 +5,9 @@ class_name TraitInfo extends FofInfo
 @export var replace_model: PackedScene
 @export var replace_stat: Game.Stats
 @export_group("")
+@export var charges_label_position: Vector2
 
 @export_multiline var description: String
 
 static func getFofName() -> String: return "Trait"
+func getIcon() -> Texture2D: return icon

@@ -19,7 +19,8 @@ func setInfo(map_node: MapNodeGD, area: AreaGD) -> void:
 	if map_node is EliteFightNodeGD:
 		chief_data = valid_spawns.pop_back()
 		
-	valid_spawns.resize(Game.CARD_REWARD_DEFAULT_AMOUNT)
+	var reward_amount: int = Game.CARD_REWARD_DEFAULT_AMOUNT
+	valid_spawns.resize(reward_amount)
 	valid_spawns = valid_spawns.filter(func(x: SavedDataCard): return x != null)
 	
 	var valid_infos: Dictionary = {}

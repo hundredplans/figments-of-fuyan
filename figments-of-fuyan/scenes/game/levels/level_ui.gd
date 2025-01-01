@@ -34,6 +34,8 @@ extends Control
 
 @onready var OverworldInformation: Control = %OverworldInformation
 @onready var LeftContainer: HBoxContainer = %LeftContainer
+
+@onready var HoverCardControl: Control = %HoverCardControl
 #endregion
 
 #region Globals
@@ -108,6 +110,17 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	onUpdateShillings(save_file.shillings)
 	onUpdateDeckCardAmountLabel()
 	onCameraUpdated(level.getSpectateObject())
+	
+	for Tile in get_tree().get_nodes_in_group("TilesGD"):
+		onTileCreated(Tile)
+		
+func _process(_delta: float) -> void:
+	if HoverCardUI != null:
+		setHoverCardUIPosition()
+		
+func _input(_event: InputEvent) -> void:
+	if Input.is_action_just_pressed("HideUI") and !level.isGameEnded():
+		onHideUI(!visible)
 #endregion
 
 #region Action Lock / Mouse In UI
@@ -132,7 +145,7 @@ func onMouseInUI(state: bool) -> void:
 	$MouseInUILabel.text = "Mouse In UI: " + str(mouse_in_ui)
 
 func onActionPlaying(state: bool) -> void:
-	if level.is_ended: return
+	if level.isGameEnded(): return
 	var previous_state: bool = getActionLock()
 	is_action_playing = state
 	onChangeVisionMode(false)
@@ -259,7 +272,7 @@ func _on_minimap_button_pressed() -> void:
 		onMinimapRemoved()
 	
 func onMinimapRemoved() -> void:
-	if RewardsUI == null:
+	if !level.isGameEnded():
 		BackgroundDimmer.visible = false
 #endregion
 
@@ -283,6 +296,7 @@ func onInspectScreenCreated(InspectScreen: Control) -> void:
 #region Awakened
 func onAwakened(Card: CardGD) -> void:
 	Card.inspect_screen_created.connect(onInspectScreenCreated)
+	Card.FieldInfo.visible = visible
 #endregion
 
 #region Active Effects
@@ -354,6 +368,8 @@ func onTileOccupied(Card: CardGD, _Tile: TileGD) -> void:
 #region Game Changers
 var RewardsUI: Control
 func onGameEnded(rewards: Rewards) -> void:
+	await get_tree().process_frame # Necessary for UI to load in
+	onHideUI(true)
 	if rewards == null:
 		var LossUI: Control = LossUIPacked.instantiate()
 		add_child(LossUI)
@@ -386,3 +402,29 @@ func onGameStarted() -> void:
 func onUpdateDeckCardAmountLabel() -> void:
 	DeckCardAmountLabel.text = str(get_tree().get_node_count_in_group("DeckCardsGD"))
 #endregion
+
+#region Created
+func onTileCreated(Tile: TileGD) -> void:
+	Tile.change_hover_card_state.connect(onChangeHoverCardState)
+#endregion	
+
+#region Hoverin
+var HoverCardUI: Control
+const HOVER_CARD_OFFSET := Vector2(-110, -400)
+func onChangeHoverCardState(Card: CardGD, state: bool) -> void:
+	if HoverCardUI != null and !state: HoverCardUI.queue_free()
+	elif HoverCardUI == null and state:
+		HoverCardUI = Card.onCreateCardUI(self, false, false)
+		HoverCardControl.add_child(HoverCardUI)
+		setHoverCardUIPosition()
+		
+func setHoverCardUIPosition() -> void:
+	HoverCardUI.global_position = get_viewport().get_mouse_position() + HOVER_CARD_OFFSET
+#endregion
+
+#region Hide UI
+func onHideUI(state: bool) -> void:
+	visible = state
+	
+	for Card in get_tree().get_nodes_in_group("CardsGD").filter(func(x: CardGD): return x.isLevelVisible()):
+		Card.FieldInfo.visible = state

@@ -23,5 +23,5 @@ func onPostAction() -> void:
 
 func onCheckFail() -> void:
 	var current_overworld_trait: OverworldTrait = Card.getOverworldTraitByID(overworld_trait.getData().id)
-	if current_overworld_trait == null or !current_overworld_trait.isUnregularAdded():
+	if overworld_trait == null or (current_overworld_trait != null and !current_overworld_trait.isUnregularAdded()):
 		onFailAction()

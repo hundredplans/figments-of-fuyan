@@ -1,12 +1,12 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=11 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=11 format=3 uid="uid://dqa7lmufknia1"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_2txjm"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/skeleton.png" id="2_qs2xp"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/skeleton.png" id="2_yaf1h"]
+[ext_resource type="Image" uid="uid://dwl5qvjd7c4ko" path="res://assets/sprites/game/cards/art_pop/skeleton.png" id="2_qs2xp"]
+[ext_resource type="Texture2D" uid="uid://dcjbwyqmqdsdy" path="res://assets/sprites/game/cards/art_mini/skeleton.png" id="2_yaf1h"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_ydtej"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_0yrnp"]
 [ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_mob2a"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/skeleton.glb" id="5_y5asc"]
+[ext_resource type="PackedScene" uid="uid://bqwpe68j5ov66" path="res://assets/models/fof/cards/skeleton.glb" id="5_y5asc"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_ymfhc"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_8vdlh"]
@@ -34,7 +34,6 @@ energy = 1
 rarity = 0
 initial_traits = Array[ExtResource("2_ydtej")]([])
 active_abilities = Array[ExtResource("1_2txjm")]([])
-ability_text = ""
 flavor_text = ""
 description = ""
 ascended_description = ""
@@ -52,7 +51,6 @@ plus_health = 1
 plus_speed = 0
 plus_energy = 1
 ascended_traits = Array[ExtResource("2_ydtej")]([])
-ascended_ability_text = ""
 id = 29
 name = "Skeleton"
 gdscript = ExtResource("4_mob2a")

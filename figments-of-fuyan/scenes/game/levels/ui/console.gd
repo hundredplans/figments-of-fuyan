@@ -70,7 +70,7 @@ func tool(name_id: Variant, ascended: bool = false) -> void:
 			AddToolAction.new(SpectateObject, SavedData.onLoadModel(info.saved_data.new(info.id, true, 0, ascended), SpectateObject)))
 
 func endgame(win_state: bool) -> void:
-	level.onPushAction(EndGameAction.new(0 if win_state else 1, true))
+	level.onPushAction(EndGameAction.new(int(win_state), true))
 
 func addboon(name_id: Variant, ascended: bool = false) -> void:
 	var info: BoonInfo = getNameIDFofInfo(name_id, BoonInfo)
@@ -109,7 +109,8 @@ func _input(_event: InputEvent) -> void:
 		if visible:
 			CommandLineEdit.grab_focus()
 			CommandLineEdit.editable = false
-			await get_tree().create_timer(0.02).timeout
+			await get_tree().process_frame
+			#await get_tree().create_timer(0.02).timeout
 			CommandLineEdit.editable = true
 	elif Input.is_action_just_pressed("ChangeElevationUp") and CommandLineEdit.has_focus():
 		onChangeToPastCommand(-1)

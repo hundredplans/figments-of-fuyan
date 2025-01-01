@@ -23,7 +23,7 @@ func setInfo(Card: CardGD) -> void:
 	
 	for child in DescriptionContainer.get_children(): DescriptionContainer.remove_child(child); child.queue_free()
 	DescriptionContainer.add_child(Control.new())
-	for description_text in Card.info.description:
+	for description_text in Card.info.champion_description:
 		var label := Label.new()
 		label.text = "- " + description_text
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART

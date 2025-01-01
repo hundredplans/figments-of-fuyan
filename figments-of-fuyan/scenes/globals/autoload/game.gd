@@ -51,6 +51,7 @@ const STAT_UPDATE_TIME: float = 0.15
 const CARD_REWARD_DEFAULT_AMOUNT: int = 3
 const TOOLBELT_SIZE: int = 2
 const ASCENDED_COLOR := Color(0.937, 0.835, 0.318)
+const ASCENDED_OUTLINE_COLOR := Color(0.512, 0.447, 0.099)
 
 func _ready() -> void:
 	var theta: float = PI / 6
@@ -249,7 +250,8 @@ func onIncrementPublicID() -> int:
 	
 func onFindPublicIDObject(public_id: int) -> FofGD:
 	for FofObject in get_tree().get_nodes_in_group("FofGD"):
-		if FofObject.public_id == public_id: return FofObject
+		if FofObject.public_id == public_id:
+			return FofObject
 	return null
 #endregion
 
@@ -369,7 +371,7 @@ func onCreateGainShillings(shilling_amount: int, parent: Node) -> MapEffectGD:
 const TOOLTIP_PACKED_PATH: String = "res://scenes/common/tooltip/tooltip.tscn"
 const TOOLTIP_DELAY: float = 0.3
 var Tooltip: Control
-func onMouseInUITooltip(state: bool, item: Variant = null, parent: Control = null, create_inner_tooltips: bool = false, offset := Vector2(30, 0)) -> void:
+func onMouseInUITooltip(state: bool, item: Variant = null, parent: Control = null, create_inner_tooltips: bool = true, offset := Vector2(30, 0)) -> void:
 	if state and Tooltip == null:
 		if item is Array and item.is_empty(): return
 		
@@ -523,13 +525,16 @@ func onCreateRewardsCardsUIScreen(cards: Array, parent: Control) -> Control:
 
 #region Champion
 func onAddDivinusBoonRewardOdds(odds: float) -> float:
-	if save_file.getChampionCard().info.id != 3: return odds
+	if !isDivinus(): return odds
 	return odds * 2
 	
 func onAddDivinusBoonAscenscionOdds(odds: float) -> float:
-	if save_file.getChampionCard().info.id != 3: return odds
+	if !isDivinus(): return odds
 	return odds + 2.5
 	
 func getDivinusEncounterNegativePlusOdds() -> float:
 	return 0.1 # 0.1 more likely to be negative
+	
+func isDivinus() -> bool:
+	return save_file.getChampionCard().info.id == 3
 #endregion

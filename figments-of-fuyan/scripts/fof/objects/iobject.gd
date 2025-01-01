@@ -93,7 +93,8 @@ func getActiveEffectDescription(_active_effect: ActiveEffectDatastore, descripti
 
 #region Animation
 func onAbility() -> void:
-	if isLevelVisible(): AniPlayer.play("Ability")
+	if isLevelVisible():
+		AniPlayer.play("Ability")
 #endregion
 
 func onAdvanceTurn(team: int) -> void:

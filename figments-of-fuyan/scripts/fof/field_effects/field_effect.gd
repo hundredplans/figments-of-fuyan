@@ -42,3 +42,6 @@ func setCharges(_charges: int) -> void:
 	
 func onLevelEnded(_win: bool) -> void:
 	onClear()
+	
+func getCharges() -> int:
+	return charges

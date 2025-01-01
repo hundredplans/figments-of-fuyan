@@ -1,5 +1,7 @@
 class_name TraitGD extends FofGD
 
+signal update_charges
+
 var Card: CardGD
 func onSave() -> SavedData:
 	return SavedDataTrait.new(info.id, false, public_id)
@@ -23,3 +25,9 @@ func onTraitAdded() -> void:
 
 func onLevelEnded(_win: bool) -> void:
 	onClear()
+
+func getCharges() -> int:
+	return -1
+
+func setCharges(_charges: int) -> void:
+	update_charges.emit(getCharges())

@@ -8,11 +8,13 @@ var map_location_to_node: Dictionary
 var basic_card_ids: Array = []
 var active_level: LevelGD
 
-const FORCE_NODE_SPAWN_AT_ZERO_ID: int = 0
+const FORCE_NODE_SPAWN_AT_ZERO_ID: int = 4
 #endregion
 
 #region Saved Data
 var map_nodes_data: Array = []
+
+var active_map_node_data: SavedDataMapNode # Data of the last entered map node
 var active_level_data: SavedDataLevel
 var encountered_encounter_ids: Array = []
 #endregion
@@ -39,7 +41,7 @@ func onSave() -> SavedDataArea:
 		map_nodes_data = SavedData.onSaveGroup(get_tree().get_nodes_in_group("MapNodesGD"))
 	
 	active_level_data = active_level.onSave() if active_level != null else null
-	return SavedDataArea.new(info.id, false, public_id, map_nodes_data, active_level_data, encountered_encounter_ids)
+	return SavedDataArea.new(info.id, false, public_id, map_nodes_data, active_level_data, encountered_encounter_ids, active_map_node_data)
 	
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -241,6 +243,7 @@ func setEmptySpotsIDS(unique_node_ids: Array, map_node_odds: Dictionary, Card: C
 			empty_spot.id = 6
 			guarantee_shop = true
 			continue
+			
 		elif guarantee_unique_node.size() > 0 and empty_spot.progress > 5:
 			var is_divinus: bool = Card.info.id == 2
 			var is_holy: bool = empty_spot.links.any(func(x: EmptyMapNodeLink): return x.is_holy)
@@ -257,7 +260,6 @@ func setEmptySpotsIDS(unique_node_ids: Array, map_node_odds: Dictionary, Card: C
 				var remove_guarantee: bool = guarantee_unique_node.all(func(x: bool): return !x)
 				if remove_guarantee: guarantee_unique_node = []
 				continue
-		
 		
 		if empty_spots.filter(func(y: EmptyMapNode): return y != empty_spot).all(func(x: EmptyMapNode): return x.id not in [0, 3]):
 			empty_spot.id = 3
@@ -315,6 +317,7 @@ func onCreateMapNode(data: SavedDataMapNode) -> void:
 	map_node.hovered.connect(onMapNodeHovered)
 	map_node.pressed.connect(onMapNodePressed)
 	map_node.load_level.connect(onMapNodeLoadLevelInit)
+	map_node.entered.connect(onMapNodeEntered)
 	map_node.finished.connect(onMapNodeFinished)
 	
 #endregion
@@ -352,6 +355,9 @@ func onMapNodePressed(map_node: MapNodeGD) -> void:
 	await get_tree().create_timer(Game.SELECTED_MAP_NODE_TRAVEL_SPEED).timeout
 	EnteredMapNode.onExited()
 	map_node.onEntered()
+			
+func onMapNodeEntered(map_node: MapNodeGD) -> void:
+	active_map_node_data = map_node.onSave()
 			
 func onMapNodeFinished(map_node: MapNodeGD) -> void:
 	get_tree().call_group("MapNodesGD", "setRayPickableGlobal", true)
@@ -412,7 +418,9 @@ func setRewards(is_win: bool) -> void:
 			items.append(SavedData.onLoadModel(enemy_spawns.pop_back(), active_level))
 			
 		enemy_spawns = enemy_spawns.filter(func(x: SavedDataCard): return Helper.getFofInfoID(CardInfo, x.id).rarity != Game.Rarities.CHAMPION)
-		enemy_spawns.resize(Game.CARD_REWARD_DEFAULT_AMOUNT)
+		
+		var reward_amount: int = Game.CARD_REWARD_DEFAULT_AMOUNT
+		enemy_spawns.resize(reward_amount)
 		enemy_spawns = enemy_spawns.filter(func(x: SavedDataCard): return x != null)
 		
 		items.append(enemy_spawns.map(func(x: SavedDataCard):\
@@ -492,8 +500,9 @@ func setEnemySpawnsFromBudget(budget: int, enemy_spawn_amount: int, spawns: Arra
 		enemies.append(card_data)
 	return enemies
 	
-func getBudget(progress: int, offset: int) -> int:
-	return getWorld().progress_enemy_energy_budget[progress] + offset
+func getBudget(progress: int, offset: int, is_unholy: bool = false) -> int:
+	var unholy_offset: int = 1 if is_unholy else 0
+	return getWorld().progress_enemy_energy_budget[progress] + offset + (unholy_offset * getWorldDifficulty())
 	
 func sum(accum: int, number: int) -> int:
 	return accum + number

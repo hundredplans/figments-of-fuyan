@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://c4mt7tia32xh3"]
+
+[ext_resource type="Script" path="res://scenes/editors/model_editor/model_editor.gd" id="1_1mtlf"]
+[ext_resource type="Script" path="res://addons/movement_camera.gd" id="2_qo7fd"]
+[ext_resource type="Environment" uid="uid://g3ihmrpunr2b" path="res://assets/environments/main_menu_environment.tres" id="3_4tncq"]
+
+[node name="ModelEditor" type="Node"]
+script = ExtResource("1_1mtlf")
+
+[node name="MovementCamera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 2)
+current = true
+script = ExtResource("2_qo7fd")
+
+[node name="World" type="Node3D" parent="."]
+unique_name_in_owner = true
+
+[node name="BackgroundMap" type="Node3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+unique_name_in_owner = true
+environment = ExtResource("3_4tncq")

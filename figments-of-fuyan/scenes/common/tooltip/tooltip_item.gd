@@ -15,15 +15,14 @@ func setInfo(info_or_fof: Variant, stop_mouse: bool = false) -> void:
 		info = info_or_fof.info
 	
 	if is_instance_of(info_or_fof, FofGD):
-		NameLabel.text = info_or_fof.info.name
-		TopIcon.texture = info_or_fof.getIcon()
 		info = info_or_fof.info
 		
 	elif is_instance_of(info_or_fof, FofInfo):
-		var is_card: bool = is_instance_of(info_or_fof, CardInfo)
-		NameLabel.text = info_or_fof.name
-		TopIcon.texture = info_or_fof.art_mini if is_card else info_or_fof.icon
+		#var is_card: bool = is_instance_of(info_or_fof, CardInfo)
 		info = info_or_fof
+		
+	NameLabel.text = info.name
+	TopIcon.texture = info.getIcon()
 	
 	TextLabel.setText(info_or_fof.getDescription(ascended) if info in [CardInfo, BoonInfo, ToolInfo] else info_or_fof.getDescription())
 	if info is CardInfo:

@@ -68,7 +68,7 @@ icon = ExtResource("12_b6p5y")
 layout_mode = 3
 anchors_preset = 0
 offset_right = 893.0
-offset_bottom = 279.0
+offset_bottom = 319.0
 script = ExtResource("1_uy1dy")
 MinimapNodePacked = ExtResource("2_gw74w")
 MinimapLinkPacked = ExtResource("3_48jev")
@@ -83,11 +83,14 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
 offset_left = 10.0
-offset_top = 87.0
+offset_top = 108.0
 offset_right = 782.0
-offset_bottom = 270.0
+offset_bottom = -9.0
+grow_vertical = 2
 
 [node name="NodeParent" type="Control" parent="MarginContainer"]
 unique_name_in_owner = true

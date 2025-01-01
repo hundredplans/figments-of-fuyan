@@ -9,3 +9,4 @@ class_name FieldEffectInfo extends FofInfo
 enum AscendedTypes {NULL, CARD, OWNER}
 
 static func getFofName() -> String: return "FieldEffect"
+func getIcon() -> Texture2D: return icon

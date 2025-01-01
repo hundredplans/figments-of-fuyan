@@ -175,6 +175,10 @@ func onIdleRare() -> void:
 	
 func isWalking() -> bool:
 	return AniPlayer.current_animation.begins_with("Walk")
+	
+func onPauseAnimation(state: bool = true) -> void:
+	if state: AniPlayer.pause()
+	else: AniPlayer.play()
 #endregion
 
 #region Card
@@ -227,6 +231,7 @@ func onLoadData(data: SavedData) -> void:
 	last_seen_violence = data.last_seen_violence
 	is_awakened_in_combat = data.is_awakened_in_combat
 	base_stats = data.base_stats
+	overworld_traits = data.overworld_traits
 	
 	temporary_card_conditions = temporary_card_conditions.map(func(x: SavedDataMapEffect): return SavedData.onLoadModel(x, self))
 	if data.tool_data != null:
@@ -282,6 +287,7 @@ var field_effects_datas: Array
 func onLoadTraits() -> void:
 	for overworld_trait in overworld_traits:
 		overworld_trait.onLoad(self)
+		onAddFieldTrait(overworld_trait)
 
 func onLoadStatusEffects() -> void:
 	for status_effect_data in status_effects_datas:
@@ -738,6 +744,7 @@ func onAddOverworldTrait(overworld_trait: OverworldTrait) -> void:
 		onPushAction(RemoveOverworldTraitAction.new(self, overworld_trait.Trait.id, overworld_trait.added_by)))
 	
 func onAddFieldTrait(overworld_trait: OverworldTrait) -> void:
+	if overworld_trait.getData() == null: return
 	var Trait: TraitGD = SavedData.onLoadModel(overworld_trait.getData(), self)
 	
 	Trait.Card = self
@@ -990,6 +997,7 @@ func onAscendedUpdated(state: bool) -> void:
 	onPushAction(actions)
 	
 func setAscendedVisual() -> void:
+	if Model == null: return
 	setMeshesMaterial(load(info.BASE_MATERIAL_ASCENDED_PATH) if ascended else null, Model)
 #endregion
 

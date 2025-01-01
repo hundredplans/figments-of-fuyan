@@ -82,7 +82,9 @@ func _input(event: InputEvent) -> void:
 func getGameObjectFromCoords(coords: Vector4i) -> GameObjectGD:
 	var Tile: TileGD = Game.getTile(coords)
 	var Card: CardGD = Game.getFieldCard(Tile)
-	if Card == null: return Tile.getSpawnTile()
+	if Card == null:
+		if Tile != null: 
+			return Tile.getSpawnTile()
 	return Card
 #endregion
 

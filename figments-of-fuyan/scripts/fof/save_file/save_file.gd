@@ -2,6 +2,7 @@ class_name SaveFileGD extends FofGD
 
 signal load_map
 signal load_level
+signal exit_save
 signal update_shillings
 signal update_toolbelt
 signal update_boons
@@ -82,6 +83,10 @@ func onFofInit() -> void:
 	
 func setInfo(_area: AreaGD) -> void:
 	area = _area
+	
+func _process(_delta: float) -> void:
+	if Input.is_action_just_pressed("Save"):
+		onSaveToFile()
 #endregion
 
 #region Base Functions
@@ -173,4 +178,10 @@ func onAddToDeck(Card: CardGD) -> void:
 	Card.onChangeCardPlace(Game.CardPlaces.DECK)
 	Card.add_to_group("AllyCardsGD")
 	deck_changed.emit()
+#endregion
+
+#region Game Loss
+func onGameLost() -> void:
+	DirAccess.remove_absolute(SaveFileInfo.SAVE_DIRECTORY + str(id) + ".tres")
+	exit_save.emit()
 #endregion

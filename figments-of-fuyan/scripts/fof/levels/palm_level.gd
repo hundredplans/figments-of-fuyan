@@ -59,7 +59,9 @@ func onLoadData(data: SavedData) -> void:
 
 #region Decorations
 func onCreatePalmDecorations() -> void:
-	add_child(preload("res://test/water_repating.tscn").instantiate())
+	var water_repeating: Node3D = preload("res://test/water_repating.tscn").instantiate()
+	add_child(water_repeating)
+	water_repeating.name = "WaterRepeating"
 	for i in range(decoration_datas.size()):
 		var data: Array = decoration_datas[i]
 		var start_coord: Vector4i = decoration_coords[i]

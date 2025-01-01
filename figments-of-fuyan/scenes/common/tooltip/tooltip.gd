@@ -11,7 +11,7 @@ func setInfo(items: Array, _offset: Vector2, create_inner_tooltips: bool = false
 		var TooltipItem: Control = TooltipItemPacked.instantiate()
 		MainContainer.add_child(TooltipItem)
 		TooltipItem.setInfo(FofObject)
-		
+			
 		if create_inner_tooltips:
 			inner_tooltips += TooltipItem.getTextInfos()
 	
@@ -26,3 +26,4 @@ func _process(_delta: float) -> void:
 func setPosition() -> void:
 	global_position = get_viewport().get_mouse_position() + offset
 	global_position.x = clamp(global_position.x, 10, (get_viewport().size.x - size.x - 10))
+	global_position.y = clamp(global_position.y, 10, (get_viewport().size.y - size.y - 10))

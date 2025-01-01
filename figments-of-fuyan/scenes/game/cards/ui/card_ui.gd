@@ -185,6 +185,9 @@ func _process(delta: float) -> void:
 	elif Input.is_action_just_released("MainInput") and is_held and !is_held_moving and DraggableParent != null:
 		onHeldEnded()
 		
+	if Input.is_action_just_pressed("MainInput") and is_mouse_in_ui:
+		onPressed()
+		
 	if DraggableParent != null and progress_to_center < CARD_TO_CENTER_HELD_TIMER:
 		progress_to_center += delta
 		var sine_progress = sin(progress_to_center / CARD_TO_CENTER_HELD_TIMER * PI * 0.5)

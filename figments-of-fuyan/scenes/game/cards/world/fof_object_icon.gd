@@ -9,11 +9,11 @@ func _ready() -> void:
 
 func setInfo(_FofObject: FofGD) -> void:
 	FofObject = _FofObject
-	if FofObject is FieldEffectGD:
+	if FofObject is FieldEffectGD or FofObject is TraitGD:
 		ChargesLabel.position.x = FofObject.info.charges_label_position.x
 		ChargesLabel.position.y = FofObject.info.charges_label_position.y
 		FofObject.update_charges.connect(setCharges)
-		setCharges(FofObject.charges)
+		setCharges(FofObject.getCharges())
 
 func setTexture(tx: Texture2D) -> void:
 	Icon.texture = tx

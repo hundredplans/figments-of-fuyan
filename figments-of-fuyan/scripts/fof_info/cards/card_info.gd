@@ -55,7 +55,7 @@ static func getFofName() -> String: return "Card"
 
 func getArtMini() -> Texture2D: return art_mini
 func getArtPop() -> ImageTexture: return ImageTexture.create_from_image(art_pop)
-func getTextIcon() -> Texture2D: return art_mini
+func getIcon() -> Texture2D: return art_mini
 func getDescription(ascended: bool = false) -> String:
 	return description if !ascended else (ascended_description if !ascended_description.is_empty() else description)
 

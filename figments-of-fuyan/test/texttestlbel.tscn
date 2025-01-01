@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://pjuq1iiqb1l6"]
+
+[ext_resource type="PackedScene" uid="uid://6nf3mir2i2rk" path="res://scenes/common/fancy_text/fancy_text_label.tscn" id="1_b5kfc"]
+
+[node name="Node" type="Node"]
+
+[node name="FancyTextLabel" parent="." instance=ExtResource("1_b5kfc")]
+offset_right = 177.0
+text = "+1 HP"

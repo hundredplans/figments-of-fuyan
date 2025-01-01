@@ -23,7 +23,7 @@ func onStartFight() -> void:
 	empty_spawn_coords.shuffle()
 	
 	var enemy_spawn_amount: int = min(randi_range(level_info.enemy_min_spawn_amount, level_info.enemy_max_spawn_amount), empty_spawn_coords.size() - 1)
-	var budget: int = Game.area.getBudget(progress, level_info.enemy_budget_offset)
+	var budget: int = Game.area.getBudget(progress, level_info.enemy_budget_offset, Game.isDivinus() and !Game.area.active_map_node_data.isHoly())
 	var enemy_spawns: Array = Game.area.setEnemySpawnsFromBudget(budget, enemy_spawn_amount, empty_spawn_coords, progress, false)
 	
 	var level_data: SavedDataLevel = level_info.saved_data.new(level_info.id, true, 0, level_info.data.duplicate(), enemy_spawns)

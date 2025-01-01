@@ -16,3 +16,7 @@ _is_entered: bool = false, _is_finished: bool = false, _rotation_y: float = 0) -
 	rotation_y = _rotation_y
 	
 func getInfoType() -> GDScript: return MapNodeInfo
+
+func isHoly() -> bool:
+	return links.any(func(x: MapLink): return x.is_holy)
+	

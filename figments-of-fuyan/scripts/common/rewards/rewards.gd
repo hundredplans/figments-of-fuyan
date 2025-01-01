@@ -30,6 +30,8 @@ func onLoad() -> void:
 func onSaveMap(x: Variant) -> Variant:
 	if x is Array:
 		return SavedData.onSaveGroup(x)
+	elif x is SavedData:
+		return x
 	return x.onSave()
 	
 func onLoadMap(x: Variant) -> Variant:

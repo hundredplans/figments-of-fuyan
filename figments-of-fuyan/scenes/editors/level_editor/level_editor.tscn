@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://dppiux7bnao8g"]
+[gd_scene load_steps=18 format=3 uid="uid://dppiux7bnao8g"]
 
 [ext_resource type="Script" path="res://scenes/editors/level_editor/level_editor.gd" id="1_d12w1"]
 [ext_resource type="PackedScene" uid="uid://bydj1x1wtvu8y" path="res://scenes/editors/common/tile_static_body/tile_static_body.tscn" id="2_bfkth"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" path="res://scripts/saved_data/levels/saved_data_palm_level.gd" id="7_04nsx"]
 [ext_resource type="Script" path="res://scripts/fof/levels/cactus_level.gd" id="8_owk6i"]
 [ext_resource type="Script" path="res://scripts/saved_data/levels/saved_data_cactus_level.gd" id="9_ejbb6"]
+[ext_resource type="PackedScene" uid="uid://bt21hppkk0c8u" path="res://assets/models/fof/objects/palm_tree_zipline_equal_long.glb" id="12_8owbf"]
 
 [sub_resource type="Resource" id="Resource_t0qsf"]
 script = ExtResource("5_sdgn3")
@@ -279,6 +280,8 @@ unique_name_in_owner = true
 unique_name_in_owner = true
 collision_mask = 24
 
+[node name="palm_tree_zipline_equal_long" parent="." instance=ExtResource("12_8owbf")]
+
 [connection signal="focus_entered" from="UI/TopBar/SearchTileObject" to="." method="_on_search_tile_object_focus_entered"]
 [connection signal="text_changed" from="UI/TopBar/SearchTileObject" to="." method="_on_search_tile_object_text_changed"]
 [connection signal="pressed" from="UI/TopBar/TileFillButton" to="." method="onTileFillButtonPressed"]
@@ -294,5 +297,5 @@ collision_mask = 24
 [connection signal="pressed" from="UI/LoadLevels/VBoxContainer/NewLevelButtonsContainer/NewRegularLevelButton" to="." method="onNewEmptyLevelRegular"]
 [connection signal="pressed" from="UI/LoadLevels/VBoxContainer/NewLevelButtonsContainer/NewDecorationLevelButton" to="." method="onNewEmptyLevelDecoration"]
 [connection signal="pressed" from="UI/LoadLevels/VBoxContainer/NewLevelButtonsContainer/NewOverworldLevelButton" to="." method="onNewEmptyLevelOverworld"]
-[connection signal="camera_panning" from="World/Camera3D" to="." method="_on_camera_3d_camera_panning"]
 [connection signal="camera_panning" from="World/Camera3D" to="." method="onMouseInUI"]
+[connection signal="camera_panning" from="World/Camera3D" to="." method="_on_camera_3d_camera_panning"]

@@ -15,6 +15,9 @@ var is_decoration: bool
 
 var movement_path: MovementPathGD
 var explored: ExploredGD
+
+signal change_hover_card_state
+const SHOW_CARD_AT_HOVER_DELAY: float = 1
 #endregion
 
 #region Saved Data
@@ -177,6 +180,7 @@ func onHovered(state: bool) -> void:
 	if is_hovered != state:
 		is_hovered = state
 		setOutlineMaterial()
+		onCardHover(state)
 		
 		if !getMovementPathDisplay(): return
 		for i in range(movement_path.tiles.size()):
@@ -188,6 +192,18 @@ func onHovered(state: bool) -> void:
 				var damage: int = Tile.getFallDamage(PreviousTile)
 				if damage > 0:
 					Tile.setFallDamageWorldEffect(state, PreviousTile, damage)
+		
+func onCardHover(state: bool) -> void:
+	if !state:
+		var Card: CardGD = Game.getFieldCard(self)
+		if Card == null: return
+		change_hover_card_state.emit(Card, false)
+	elif getLevelVisible():
+		await get_tree().create_timer(SHOW_CARD_AT_HOVER_DELAY).timeout
+		if is_hovered == state:
+			var Card: CardGD = Game.getFieldCard(self)
+			if Card == null: return
+			change_hover_card_state.emit(Card, true)
 		
 #endregion
 #region Occupied By Unit

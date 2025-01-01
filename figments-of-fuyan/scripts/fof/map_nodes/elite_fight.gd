@@ -68,7 +68,7 @@ func onFinished() -> void:
 
 #region Level Gen
 func getBudget() -> int:
-	return Game.area.getBudget(map_location.progress + 1, level_info.enemy_budget_offset)
+	return Game.area.getBudget(map_location.progress + 1, level_info.enemy_budget_offset, Game.isDivinus() and !isHoly())
 	
 func getChief(chief_infos: Array, chief_spawn_coords: Vector4i) -> SavedDataCard:
 	var exalt_info: CardInfo = chief_infos.pick_random()

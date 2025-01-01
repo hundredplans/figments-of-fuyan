@@ -17,3 +17,10 @@ func onClear() -> void:
 
 func getDescription() -> String:
 	return Helper.getDescription(super(), [ranged])
+
+func getCharges() -> int:
+	return ranged
+	
+func setCharges(charges: int) -> void:
+	ranged = charges
+	super(charges)

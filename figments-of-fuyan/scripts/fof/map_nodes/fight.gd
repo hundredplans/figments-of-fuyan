@@ -56,7 +56,7 @@ func onFinished() -> void:
 
 #region Level Gen
 func getBudget() -> int:
-	return Game.area.getBudget(map_location.progress, level_info.enemy_budget_offset)
+	return Game.area.getBudget(map_location.progress, level_info.enemy_budget_offset, Game.isDivinus() and !isHoly())
 	
 func setLevelInfo() -> void:
 	var levels: Array = Helper.getFofInfoArray(Game.area.info.base_level_script)

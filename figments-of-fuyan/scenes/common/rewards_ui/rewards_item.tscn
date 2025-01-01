@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://drju02m4wqrw1" path="res://assets/sprites/ui/icons/card.png" id="2_bduvs"]
 [ext_resource type="Texture2D" uid="uid://byqpgk7qtluhe" path="res://assets/sprites/ui/icons/shilling.png" id="2_jygdh"]
 [ext_resource type="LabelSettings" uid="uid://baxopkmeda53x" path="res://resources/ui/label_settings/roboto_huge.tres" id="5_7kfsp"]
-[ext_resource type="LabelSettings" uid="uid://cyodc3xq62xbg" path="res://resources/ui/label_settings/jacquard_large.tres" id="5_ws2vi"]
+[ext_resource type="PackedScene" uid="uid://6nf3mir2i2rk" path="res://scenes/common/fancy_text/fancy_text_label.tscn" id="6_doa86"]
 
 [node name="RewardsItem" type="Control"]
 custom_minimum_size = Vector2(160, 160)
@@ -33,14 +33,6 @@ texture_filter = 1
 layout_mode = 2
 expand_mode = 2
 
-[node name="ItemLabel" type="Label" parent="."]
-unique_name_in_owner = true
-layout_mode = 0
-offset_right = 160.0
-offset_bottom = 41.0
-label_settings = ExtResource("5_ws2vi")
-horizontal_alignment = 1
-
 [node name="AmountLabel" type="Label" parent="."]
 unique_name_in_owner = true
 modulate = Color(0.947592, 0.765959, 0.53102, 1)
@@ -54,6 +46,12 @@ size_flags_vertical = 8
 label_settings = ExtResource("5_7kfsp")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="ItemLabel" parent="." instance=ExtResource("6_doa86")]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 160.0
+offset_bottom = 49.0
 
 [connection signal="mouse_entered" from="MainContainer" to="." method="onMouseInUI" binds= [true]]
 [connection signal="mouse_exited" from="MainContainer" to="." method="onMouseInUI" binds= [false]]

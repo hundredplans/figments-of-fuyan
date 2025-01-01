@@ -9,6 +9,7 @@ func _init(_cards: Variant) -> void:
 	elif _cards is Array: cards = _cards
 	
 func onPreAction() -> void:
+	if cards.is_empty(): onFailAction(); return
 	for Card in cards:
 		new_visible_game_objects[Card] = Card.onUpdateVision()
 		
@@ -16,7 +17,6 @@ func onPreAction() -> void:
 	
 	for FieldCard in Game.get_tree().get_nodes_in_group("FieldCardsGD"):
 		tile_to_card[FieldCard.Tile] = FieldCard
-	
 	
 	for card_vision in new_visible_game_objects.values():
 		for GameObject in card_vision:

@@ -36,7 +36,6 @@ func setText(_text: String) -> void:
 func onColoredTextReplace(regex: RegEx, fancy_text: FancyText) -> void:
 	for rarity in Game.Rarities.values():
 		var colored_text: String = Game.getRarityString(rarity)
-		var color: Color = Game.getRarityColor(rarity)
 		regex.compile("a?" + colored_text)
 		
 		var offset: int = 0
@@ -44,16 +43,16 @@ func onColoredTextReplace(regex: RegEx, fancy_text: FancyText) -> void:
 			var _result: RegExMatch = regex.search(text, offset)
 			if _result == null: break
 			var result: String = _result.get_string()
-			var new_result: String = onReplaceCardName(colored_text, result[0] == "a", color)
+			var new_result: String = onReplaceCardName(colored_text, result[0] == "a", rarity)
 			var replace_index: int = _result.get_start()
 				
 			offset = _result.get_end() + (new_result.length() - result.length())
 			text = text.left(replace_index) + new_result + text.right(-(replace_index + result.length()))
 
-func onReplaceCardName(colored_text: String, ascended: bool, color: Color) -> String:
-	var new_result: String = "[color=" + color.to_html() + "]" + colored_text + "[/color]"
+func onReplaceCardName(colored_text: String, ascended: bool, rarity: Game.Rarities) -> String:
+	var new_result: String = "[color=" + Game.getRarityColor(rarity).to_html() + "]" + colored_text + "[/color]"
 	if ascended:
-		new_result = new_result.insert(0, "[outline_color=" + Game.ASCENDED_COLOR.to_html() + "]")
+		new_result = new_result.insert(0, "[outline_color=" + Game.ASCENDED_OUTLINE_COLOR.to_html() + "]")
 		new_result += "[/outline_color]"
 	return new_result
 
@@ -73,13 +72,13 @@ func onFofIconsReplace(regex: RegEx, fancy_text: FancyText) -> void:
 			var id: int = int(result)
 			var info: FofInfo = Helper.getFofInfoID(fof_icon_fancy_text.fof_type, id)
 			
-			var icon_path: String = info.getTextIcon().resource_path
+			var icon_path: String = info.getIcon().resource_path
 			
 			var icon_size: String = str(int(settings.font_size * 1.5))
 			
 			var new_result: String = "[img=" + icon_size + "x" + icon_size + ",center]" + icon_path + "[/img]"
 			var ascended: bool = result[1] == "a"
-			new_result = new_result.insert(0, onReplaceCardName(info.name, ascended, Game.getRarityColor(info.rarity)) + " ")
+			new_result = new_result.insert(0, onReplaceCardName(info.name, ascended, info.rarity) + " ")
 			infos.append(InfoAscended.new(info, ascended))
 			
 			var replace_index: int = _result.get_start()
@@ -90,9 +89,7 @@ func onFofImagesReplace(regex: RegEx, fancy_text: FancyText) -> void:
 	for image_fancy_text in fancy_text.images:
 		var compile_text: String = image_fancy_text.name
 		if image_fancy_text.capture_preceding_number_plus:
-			compile_text = compile_text.insert(0, "((\\+?[0-9]+|\\[[0-9]+\\])\\s)?\\b")
-		
-		compile_text = compile_text.insert(0, "\\b")
+			compile_text = compile_text.insert(0, "((\\[[0-9]\\])?\\+?([0-9])?\\s)?")
 		regex.compile(compile_text)
 		
 		while(true):

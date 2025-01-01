@@ -22,7 +22,8 @@ func isUnregularAdded() -> bool:
 	return !(added_by == AddedBy.REGULAR or added_by == AddedBy.ASCENDED)
 
 func onSave() -> void:
-	level_trait_data = Trait.onSave()
+	if Trait != null:
+		level_trait_data = Trait.onSave()
 	
 func onLoad(Card: CardGD) -> void:
 	if level_trait_data == null: return

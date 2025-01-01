@@ -213,7 +213,7 @@ func onProcessAction(action: Action) -> void:
 			tile_occupied.emit(action.Card, action.Tile)
 			onRecalculateAITurnOccupy(action.Card, action.Tile)
 		elif action is EndGameAction and !is_ended:
-			setRewards(action.team == 0)
+			setRewards(action.team != 0)
 		elif action is StatAction:
 			onRecalculateAITurn(action.getCards(), true, true, false, true)
 		elif action is AddToolAction:
@@ -319,6 +319,10 @@ func onGameEnded() -> void:
 		FofObject.onLevelEnded(rewards != null)
 	
 	game_ended.emit(rewards)
+	
+func isGameEnded() -> bool:
+	return is_ended
+	
 func onRewardsFinished() -> void:
 	rewards_finished.emit(save_file)
 #endregion

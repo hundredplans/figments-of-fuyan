@@ -3,51 +3,21 @@ extends Node
 const START_X: int = -12
 const OFFSET: int = 3
 const CARD_UI_OFFSET := Vector2(-120, -400)
-@onready var World: Node3D = %World
-@onready var AnimationNames: Container = %AnimationNames
+
 @onready var CardUIHolder: Control = %CardUIHolder
-@onready var BackgroundMap: Node3D = %BackgroundMap
 @onready var CardGrid: GridContainer = %CardGrid
 @onready var SearchAreaCard: LineEdit = %SearchAreaCard
-@export var Background: DecorationDatastore
-const MODEL_EMPTY_PATH: String = "res://test/model_empty/"
+@onready var CardParent: Node3D = %CardParent
 
 func _ready() -> void:
 	var start_x: int = START_X
 	var start_z: int = 0
-	var unique_animation_names: Dictionary = {}
-	
-	for data in Background.data:
-		SavedData.onLoadModel(data, BackgroundMap)
 	
 	for card_info in Helper.getFofInfoArray(CardInfo):
 		var card_data := SavedDataCard.new(card_info.id, true)
 		Game.setCardDataFromInfo(card_data, card_info)
-		var Card: CardGD = SavedData.onLoadModel(card_data, World)
-		
-		if Card.info.model != null:
-			Card.onCreateModel()
-			Card.onIdle()
-			
-			for ani_name in Card.AniPlayer.get_animation_list():
-				unique_animation_names[ani_name] = true
-				
-			Card.position = Vector3(start_x, 0, start_z)
-			start_x += OFFSET
-			if start_x == -START_X: start_z += OFFSET; start_x = START_X
-		
+		var Card: CardGD = SavedData.onLoadModel(card_data, CardParent)
 		onCreateDeckCardUI(Card)
-		
-
-	#for file in DirAccess.get_files_at(MODEL_EMPTY_PATH):
-		#var card_info: CardInfo = load(MODEL_EMPTY_PATH + file)
-		#var Card: CardGD = SavedData.onLoadModel(SavedDataCard.new(card_info.id))
-
-	for animation_name in unique_animation_names:
-		var btn := Button.new()
-		AnimationNames.add_child(btn)
-		btn.text = animation_name
-		btn.pressed.connect(onAnimationNameButtonPressed.bind(animation_name))
 
 func onAnimationNameButtonPressed(ani_name: String) -> void:
 	for Card in get_tree().get_nodes_in_group("CardsGD").filter(func(x: CardGD): return x.AniPlayer != null and x.AniPlayer.has_animation(ani_name)):
@@ -77,9 +47,6 @@ func _input(event: InputEvent) -> void:
 		if SearchAreaCard.has_focus():
 			SearchAreaCard.release_focus()
 		else: SearchAreaCard.grab_focus()
-
-func _on_hide_button_pressed() -> void:
-	AnimationNames.visible = !AnimationNames.visible
 
 func _on_ascend_button_pressed() -> void:
 	for Card in get_tree().get_nodes_in_group("CardsGD"):
