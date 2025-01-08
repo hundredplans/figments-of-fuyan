@@ -209,7 +209,7 @@ func getCameraObjectArray() -> Array:
 		if !cycle_objects.is_empty(): return cycle_objects
 		elif SpectateObject is SpawnGD: return get_tree().get_nodes_in_group("AllySpawnsGD").filter(func(x: SpawnGD): return !x.isSpawnOccupied())
 		elif SpectateObject.isAlly(): return Game.getAllyUnits()
-		else: return Game.getEnemyUnits().filter(func(x: CardGD): return x.vision_datastore.level_visible)
+		else: return Game.getEnemyUnits().filter(func(x: CardGD): return x.isLevelVisible())
 	return []
 #endregion
 	

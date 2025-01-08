@@ -9,8 +9,8 @@ class_name WorldDatastore extends Resource
 @export_group("")
 
 @export_group("Start of Generation")
-@export_range(0, 100, 0.1) var unique_node_segment_one_odds: float
-@export_range(0, 100, 0.1) var unique_node_segment_two_odds: float
+@export_range(0, 100, 0.1) var extra_unique_node_odds: float
+@export_range(0, 100, 0.1) var extra_shop_odds: float
 @export_group("")
 
 @export_group("Level")

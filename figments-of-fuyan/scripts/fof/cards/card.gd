@@ -260,7 +260,7 @@ func onLoadDataLevel() -> void:
 		onLoadTraits()
 		onLoadStatusEffects()
 		onLoadFieldEffects()
-		setVisibleGameObjects()
+		setVisibleGameObjectsFromPublicIDS()
 	
 func onLoadDataLevelFofInit() -> void:
 	super()
@@ -534,7 +534,7 @@ func onAwaken() -> void:
 	setPositionToTile()
 	setTileRotation(tile_rotation)
 	setTurnState(turn_state)
-	setLevelVisible(vision_datastore.level_visible)
+	onUpdateLevelVisible()
 	onCreateIdleRareTimer()
 #endregion
 
@@ -603,18 +603,23 @@ func getVisibleTiles() -> Array:
 func getVisibleGameObjects() -> Array:
 	return visible_game_objects
 	
-func setVisibleGameObjects() -> void:
+func setVisibleGameObjectsFromPublicIDS() -> void:
 	for _public_id in visible_game_objects_public_ids:
 		visible_game_objects.append(Game.onFindPublicIDObject(_public_id))
+	
+func setVisibleGameObjects(_visible_game_objects: Array) -> void:
+	visible_game_objects = _visible_game_objects.duplicate()
 	
 func onCreateVisionRay() -> void:
 	VisionRay = load(info.VISION_RAY_SCENE_PATH).instantiate()
 	add_child(VisionRay)
 	VisionRay.position.y = info.eye
 	
-func setLevelVisible(state: bool) -> void:
-	super(state)
-	visible = state
+func onUpdateLevelVisible() -> void:
+	visible = isLevelVisible()
+	
+func isLevelVisible() -> bool:
+	return isAlly(0) or super()
 	
 func setDetectableByRay(state: bool) -> void:
 	if state: setCollisionLayers(96)
@@ -712,7 +717,7 @@ func onUpdateStat(type: Game.Stats, difference: int, show_particles: bool) -> vo
 		Game.Stats.MAX_HEALTH: value = max_health
 		Game.Stats.MAX_SPEED: value = max_speed
 	
-	FieldInfo.onUpdateStat(type, value, difference, vision_datastore.level_visible, show_particles)
+	FieldInfo.onUpdateStat(type, value, difference, isLevelVisible(), show_particles)
 #endregion
 
 #region Traits
@@ -1062,4 +1067,9 @@ func onIdleRareTimerTimeout() -> void:
 		
 	IdleRareTimer.start()
 	IdleRareTimer.wait_time = randi_range(IDLE_RARE_MIN_TIME, IDLE_RARE_MAX_TIME)
+#endregion
+
+#region Death
+func onPreDeath() -> void:
+	setCollisionLayers(0)
 #endregion

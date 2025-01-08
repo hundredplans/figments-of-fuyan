@@ -8,7 +8,7 @@ var map_location_to_node: Dictionary
 var basic_card_ids: Array = []
 var active_level: LevelGD
 
-const FORCE_NODE_SPAWN_AT_ZERO_ID: int = 4
+const FORCE_NODE_SPAWN_AT_ZERO_ID: int = 0
 #endregion
 
 #region Saved Data
@@ -211,19 +211,28 @@ func onFilterNextBatchToManyLinks(batch: Array, next_batch: Array) -> void:
 #region Set Empty ID
 func setEmptySpotsIDS(unique_node_ids: Array, map_node_odds: Dictionary, Card: CardGD) -> void:
 	empty_spots.shuffle()
-	var guarantee_shop: bool = false
-	var guarantee_unique_node: Array = []
-	var map_node_odds_rollable: Dictionary = generateMapNodeOddsRollable(map_node_odds)
-	guarantee_unique_node.resize(unique_node_ids.size())
-	guarantee_unique_node.fill(true)
 	
-	var extra_unique_node_segment_one: bool = false
-	var extra_unique_node_segment_two: bool = false
-	if !unique_node_ids.is_empty():
-		extra_unique_node_segment_one = Random.rollFloat(info.world.unique_node_segment_one_odds / 100)
-		extra_unique_node_segment_two = Random.rollFloat(info.world.unique_node_segment_two_odds / 100)
+	var is_divinus: bool = Card.info.id == 2
+	var guarantee_shop: bool = false
+	var map_node_odds_rollable: Dictionary = generateMapNodeOddsRollable(map_node_odds)
+	
+	var unique_nodes: Array = unique_node_ids\
+		.filter(func(x: int): return x != 10)\
+		.map(func(x: int):
+		return SegmentNode.new(x, Random.getBool() if getWorldDifficulty() != 1 else false))
+	
+	for segment_node in unique_nodes\
+		.filter(func(__: SegmentNode): return Random.rollFloat(getWorld().extra_unique_node_odds / 100.0)):
+		unique_nodes.append(SegmentNode.new(segment_node.id, !segment_node.segment_one))
+		
+	var shops: Array = [SegmentNode.new(6, false)] if getWorldDifficulty() == 1 \
+	else [SegmentNode.new(6, false), SegmentNode.new(6, true)]
+	
+	if getWorldDifficulty() > 1 and Random.rollFloat(getWorld().extra_shop_odds / 100.0):
+		shops.append(SegmentNode.new(6, Random.getBool()))
 		
 	for empty_spot in empty_spots:
+		var is_holy: bool = empty_spot.links.any(func(x: EmptyMapNodeLink): return x.is_holy)
 		match empty_spot.progress:
 			-1: empty_spot.id = 1; continue
 			0:
@@ -231,35 +240,18 @@ func setEmptySpotsIDS(unique_node_ids: Array, map_node_odds: Dictionary, Card: C
 				continue
 			5: empty_spot.id = 7; continue
 			10: empty_spot.id = 8; continue
-			_: 
-				if extra_unique_node_segment_one and empty_spot.progress < 5:
-					extra_unique_node_segment_one = false
-					empty_spot.id = unique_node_ids.pick_random()
-				elif extra_unique_node_segment_two and empty_spot.progress > 5:
-					extra_unique_node_segment_two = false
-					empty_spot.id = unique_node_ids.pick_random()
+			_:
+				if onSelectUniqueNodeGeneration(unique_nodes, empty_spot):
+					continue
 			
-		if !guarantee_shop and map_node_odds[empty_spot.progress].shop > 0:
+		if is_divinus and is_holy and empty_spot.progress == 9:
+			empty_spot.id = 10
+			continue
+		
+		elif !guarantee_shop and map_node_odds[empty_spot.progress].shop > 0:
 			empty_spot.id = 6
 			guarantee_shop = true
 			continue
-			
-		elif guarantee_unique_node.size() > 0 and empty_spot.progress > 5:
-			var is_divinus: bool = Card.info.id == 2
-			var is_holy: bool = empty_spot.links.any(func(x: EmptyMapNodeLink): return x.is_holy)
-			var index: int = 0
-			
-			if !(is_divinus and !is_holy):
-				for state in guarantee_unique_node:
-					if state:
-						empty_spot.id = unique_node_ids[index]
-						guarantee_unique_node[index] = false
-						break
-					index += 1
-			
-				var remove_guarantee: bool = guarantee_unique_node.all(func(x: bool): return !x)
-				if remove_guarantee: guarantee_unique_node = []
-				continue
 		
 		if empty_spots.filter(func(y: EmptyMapNode): return y != empty_spot).all(func(x: EmptyMapNode): return x.id not in [0, 3]):
 			empty_spot.id = 3
@@ -269,6 +261,14 @@ func setEmptySpotsIDS(unique_node_ids: Array, map_node_odds: Dictionary, Card: C
 				"fight": empty_spot.id = 3; continue
 				"encounter": empty_spot.id = 5; continue
 				"shop": empty_spot.id = 6; continue
+		
+func onSelectUniqueNodeGeneration(unique_nodes: Array, empty_spot: EmptyMapNode) -> bool:
+	for segment_node in unique_nodes.filter(func(x: SegmentNode):\
+		return (x.segment_one and empty_spot.progress < 5) or (!x.segment_one and empty_spot.progress > 5)):
+		empty_spot.id = segment_node.id
+		unique_nodes.erase(segment_node)
+		return true
+	return false
 		
 #endregion
 

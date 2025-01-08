@@ -18,7 +18,7 @@ func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectT
 func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
 	super(active_effect, PickedTile, active_effect_tiles)
 	if active_effect.name == "Sandy Spy":
-		var enemies: Array = Game.getEnemyUnits(Card.team).filter(func(x: CardGD): return !x.getIsRevealed())
+		var enemies: Array = Game.getEnemyUnits(Card.team).filter(func(x: CardGD): return !x.isRevealed(-1))
 		if enemies.is_empty(): return
 		
 		var random_enemy: CardGD = enemies.pick_random()

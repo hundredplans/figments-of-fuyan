@@ -1,10 +1,14 @@
 extends MapNodeGD
 
-	#- Unique Node: You pick a unit; Quentin duels another unit
-	#- Pay 10 shillings to do this (15/20)
-	#- Starts at 100%, (75%, 505%, 25%), caps at twenty
-	#- If you win choice between raising att or hp +1 permanently
-	#- If you lose you don't get your shillings back, you lose the unit
-	# - Usable multiples times (you get one free one on a unit)
-	# - Can't place champion as you can't lose your champion
-	# - Quentin's the one doing the duelling
+#Changes to Bounty Board
+#Start at 8 SH (+4 SH per uses in the arena) (Duels count as 2 kills) (energy rules for the kills)
+#You can choose between +1 ATT or +1 HP
+#
+#1 KILL
+#5 KILL
+#10 KILL
+#20 KILL
+#50 KILL
+#100 KILL
+	
+	

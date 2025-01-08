@@ -220,6 +220,12 @@ func getVisibleFieldCards(team: int = 0) -> Array:
 		for _Card in Card.getVisibleFieldCards():
 			cards[_Card] = null
 	return cards.keys()
+	
+func onCreateRevealedDatastore(Revealed: GameObjectGD, _owner: FofGD, team: int = -1) -> RevealedDatastore:
+	var revealed_datastore := RevealedDatastore.new()
+	var revealed_id: int = randi()
+	revealed_datastore.setInfo(_owner, revealed_id, team)
+	return revealed_datastore
 #endregion
 	
 #region Positions

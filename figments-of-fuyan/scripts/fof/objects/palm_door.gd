@@ -25,7 +25,7 @@ func onLoadDataLevel() -> void:
 	else: onDoorIsClosed(!last_seen_open)
 	AniPlayer.animation_finished.connect(func(__: String): onIdle())
 	
-	if vision_datastore.level_visible: onIdle()
+	if isLevelVisible(): onIdle()
 
 func onSave() -> SavedDataIObject:
 	ability_save['is_open'] = is_open
@@ -37,9 +37,6 @@ func onSave() -> SavedDataIObject:
 #region Process
 func onProcessAction(action: Action) -> void:
 	super(action)
-	if action.post:
-		if action is LevelVisibleAction and self in action.game_objects:
-			onUpdateVisible(action.state)
 #endregion
 
 #region Helper
@@ -53,8 +50,9 @@ func isSolid() -> bool:
 func isTall() -> bool:
 	return variation == 0
 	
-func onUpdateVisible(state: bool) -> void:
-	if state: # If visible
+func onUpdateLevelVisible() -> void:
+	super()
+	if isLevelVisible():
 		if last_seen_open and !is_open: onDoorIsClosed()
 		elif !last_seen_open and is_open: onDoorIsOpen()
 		onIdle()
@@ -84,12 +82,12 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, _a
 		
 func onActiveEffectPre(active_effect: ActiveEffectDatastore, PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
 	if active_effect.name == "Open Door":
-		if vision_datastore.level_visible: AniPlayer.play("Ability"); last_seen_open = true
+		if isLevelVisible(): AniPlayer.play("Ability"); last_seen_open = true
 		is_open = true
 		onDoorIsOpen(false)
 		
 	elif active_effect.name == "Close Door":
-		if vision_datastore.level_visible: AniPlayer.play_backwards("Ability"); last_seen_open = false
+		if isLevelVisible(): AniPlayer.play_backwards("Ability"); last_seen_open = false
 		is_open = false
 		onDoorIsClosed(false)
 	onForceAction(ChangeTileRotationAction.new(Card, Game.getRelativeTileRotation(Card.Tile, PickedTile)))

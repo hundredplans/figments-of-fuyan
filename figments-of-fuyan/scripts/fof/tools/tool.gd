@@ -69,8 +69,8 @@ func onToolEquipped() -> void:
 func onToolUnequipped() -> void:
 	onClear()
 	
-func getLevelVisible() -> bool:
-	return Card.getLevelVisible()
+func isLevelVisible() -> bool:
+	return Card.isLevelVisible()
 	
 func setAscended(state: bool) -> void:
 	ascended = state

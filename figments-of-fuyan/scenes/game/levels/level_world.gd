@@ -183,7 +183,7 @@ func onTilePressed() -> void:
 func onTileInspected() -> void:
 	var Tile: TileGD = MouseHoverTile
 	var Card: CardGD = Tile.getCard()
-	if Card != null and Card.vision_datastore.level_visible:
+	if Card != null and Card.isLevelVisible():
 		Card.setInspectable(true, UI)
 		Card.onInspectCard()
 #endregion
@@ -241,40 +241,44 @@ func isActionTiedToAwakenAction(action: ChangeTurnStateAction) -> bool:
 
 #region Vision Mode
 var original_vision: Dictionary
+var default_vision: Dictionary
 var in_vision_mode: bool
 func onVisionModeChanged(state: bool) -> void:
 	in_vision_mode = state
 	LastCardVisionMode = null
-	previous_vision = {}
 	
 	if state:
+		original_vision = {}
+		default_vision = {}
 		for GameObject in get_tree().get_nodes_in_group("LevelTileObjectsGD") + get_tree().get_nodes_in_group("FieldCardsGD"):
-			var level_visible: bool = GameObject.getLevelVisible()
+			var level_visible: bool = GameObject.isLevelVisible()
 			original_vision[GameObject] = level_visible
-			GameObject.setLevelVisible(false if GameObject is not CardGD else level_visible)
+			GameObject.visible = GameObject.isLevelVisible()
+			default_vision[GameObject] = false if GameObject is not CardGD else level_visible
+			GameObject.setLevelVisible(default_vision[GameObject])
 	elif !state:
 		for GameObject in original_vision:
 			GameObject.setLevelVisible(original_vision[GameObject])
+		original_vision = {}
+		default_vision = {}
 	
 var LastCardVisionMode: CardGD
-var previous_vision: Dictionary
 func onVisionModeTileHovered(Tile: TileGD) -> void:
 	if LastCardVisionMode != null and Tile != LastCardVisionMode.Tile:
 		LastCardVisionMode = null
-		for GameObject in previous_vision:
-			GameObject.setLevelVisible(previous_vision[GameObject])
-		previous_vision = {}
+		for GameObject in default_vision:
+			GameObject.setLevelVisible(default_vision[GameObject])
 		
 	if Tile == null: return
+	
 	var Card: CardGD = Game.getFieldCard(Tile)
-	if Card == null or !Card.getLevelVisible(): return
+	if Card == null or !Card.isLevelVisible(): return
+	if Card == LastCardVisionMode: return
 		
 	var ally_vision: Array = Game.getTeamVision(0)
 	LastCardVisionMode = Card
-	for GameObject in LastCardVisionMode.getVisibleGameObjects():
-		if GameObject in ally_vision:
-			previous_vision[GameObject] = GameObject.getLevelVisible()
-			GameObject.setLevelVisible(true)
+	for GameObject in LastCardVisionMode.getVisibleGameObjects().filter(func(x: GameObjectGD): return x in ally_vision):
+		GameObject.setLevelVisible(true)
 #endregion
 	
 #region Active Effects
@@ -335,7 +339,7 @@ func onPassButtonPressed() -> void:
 
 #region Game Changers
 func onGameEnded(_rewards: Rewards) -> void:
-	level.onPushAction(LevelVisibleAction.new(false, get_tree().get_nodes_in_group("LevelGameObjectsGD")))
+	#level.onPushAction(LevelVisibleAction.new(false, get_tree().get_nodes_in_group("LevelGameObjectsGD")))
 	CameraManager.onGameEnded()
 	
 func onGameStarted() -> void:

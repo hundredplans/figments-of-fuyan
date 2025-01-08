@@ -28,7 +28,8 @@ func onLoadData(data: SavedData) -> void:
 func onLoadDataLevelFofInit() -> void:
 	super()
 	if is_in_group("AllySpawnsGD"):
-		onPushAction(RevealAction.new(self))
+		var revealed_datastore := Game.onCreateRevealedDatastore(self, self, 0)
+		onPushAction(RevealAction.new(self, revealed_datastore))
 		
 	if variation == 3 or spawn_id == 0: return
 	

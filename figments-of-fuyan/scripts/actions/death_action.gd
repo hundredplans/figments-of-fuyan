@@ -18,8 +18,9 @@ func _init(_Damager: GameObjectGD = null, _Defender: GameObjectGD = null, _damag
 func onPreAction() -> void:
 	Tile = Defender.Tile
 	game_objects_in_vision = Defender.getVisibleGameObjects()
-	setActionDelay(3.0 if Defender.vision_datastore.level_visible else 0.0)
+	setActionDelay(3.0 if Defender.isLevelVisible() else 0.0)
 	Defender.onChangeCardPlace(Game.CardPlaces.GRAVEYARD)
+	Defender.onPreDeath()
 	onForceAction(OccupyAction.new(Defender, null, true))
 	
 func onPostAction() -> void:

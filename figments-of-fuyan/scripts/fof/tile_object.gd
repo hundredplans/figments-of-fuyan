@@ -74,12 +74,11 @@ func clampVariation(i: int) -> void:
 #endregion
 
 #region Level Visible
-func setLevelVisible(state: bool) -> void:
-	super(state)
+func onUpdateLevelVisible() -> void:
 	onApplyGreyscaleMaterial()
 				
 func onApplyGreyscaleMaterial() -> void:
-	var greyscale_material: ShaderMaterial = load(info.GREYSCALE_MATERIAL) if !vision_datastore.level_visible else null
+	var greyscale_material: ShaderMaterial = load(info.GREYSCALE_MATERIAL) if !isLevelVisible() else null
 	for mesh in getMeshes():
 		for surface_id in mesh.get_surface_override_material_count():
 			mesh.set_surface_override_material(surface_id, greyscale_material)

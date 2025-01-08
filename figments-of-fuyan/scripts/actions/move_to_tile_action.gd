@@ -25,7 +25,7 @@ func setMovementTypeDelay() -> void:
 		fall_time = 1 + (height_diff * 0.1)
 	elif DestinationTile.isRamp() or Card.Tile.isRamp(): movement_type = MOVEMENT_TYPES.RAMP
 	else: movement_type = MOVEMENT_TYPES.REGULAR
-	setActionDelay((1.0 if !isJumpFall() else getJumpFallDelay()) if Card.vision_datastore.level_visible else 0.0)
+	setActionDelay((1.0 if !isJumpFall() else getJumpFallDelay()) if Card.isLevelVisible() else 0.0)
 
 func onPreAction() -> void:
 	onCheckFail()

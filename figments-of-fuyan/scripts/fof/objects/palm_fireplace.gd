@@ -11,15 +11,12 @@ func onProcessAction(action: Action) -> void:
 	if action.post:
 		if action is OccupyAction and was_fuel_added:
 			onUpdateCardsInRange(action)
-		elif action is LevelVisibleAction and self in action.game_objects:
-			onVisibleVFX(action.state)
 	elif !action.post:
 		if action is StatAction and was_fuel_added and action.isHeal():
 			onHeal(action)
 
 func onLoadDataLevel() -> void:
 	super()
-	onVisibleVFX(vision_datastore.level_visible)
 
 func getValidActiveEffects(Card: CardGD) -> Array:
 	var arr: Array = active_effects if isAdjacent(Card.getCoords()) else [] # For debugging
@@ -102,8 +99,10 @@ func onVisibleDefaultVFX() -> void:
 		add_child(SmokeParticle)
 		if was_fuel_added: onAddFuelVFX()
 	
-func onVisibleVFX(state: bool) -> void:
-	if state: onVisibleDefaultVFX()
+func onUpdateLevelVisible() -> void:
+	super()
+	
+	if isLevelVisible(): onVisibleDefaultVFX()
 	else: onHiddenVFX()
 	
 func onAddFuelVFX() -> void:

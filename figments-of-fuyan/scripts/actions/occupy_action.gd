@@ -35,7 +35,7 @@ func onPostAction() -> void:
 
 	var vision_cards: Array = Game.inVisionCards(coords)
 	if Tile != null: vision_cards.append(Card)
-	onPushAction(VisionAction.new(vision_cards))
+	onPushAction(VisionAction.new(vision_cards, Card))
 
 func getLogInfo() -> Array:
 	return ["Card: " + Card.info.name, "TileExists: " + str(Tile != null)]

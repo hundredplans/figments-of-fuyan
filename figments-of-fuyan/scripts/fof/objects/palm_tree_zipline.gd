@@ -93,7 +93,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _
 	onPushAction(OccupyAction.new(Card, end_tiles[start_tiles.find(ActiveStartTile)]))
 	used_this_turn_cards.append(Card)
 	
-	if !getLevelVisible(): return
+	if !isLevelVisible(): return
 	onAbility()
 	HolderNode = holders_nodes[start_tiles.find(ActiveStartTile)]
 	HolderCard = Card

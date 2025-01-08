@@ -96,12 +96,13 @@ func setMeshesMaterial(mat: Material = null, parent: Node3D = self) -> void:
 func setOutlineMaterial() -> void:
 	var mat: Material = null
 	var display_movement_path: bool = getMovementPathDisplay()
+	var level_visible: bool = isLevelVisible()
 	
 	if in_active_effect_pickable:
 		mat = load(info.ACTIVE_EFFECT_PICKABLE_MATERIAL)
 	elif in_active_effect_range:
 		mat = load(info.ACTIVE_EFFECT_RANGE_MATERIAL)
-	elif (occupy_state != OccupyStates.NULL and vision_datastore.level_visible and !is_card_moving):
+	elif (occupy_state != OccupyStates.NULL and level_visible and !is_card_moving):
 		match occupy_state:
 			OccupyStates.ALLY: mat = load(info.ALLY_OCCUPY_MATERIAL)
 			OccupyStates.ENEMY:
@@ -113,7 +114,7 @@ func setOutlineMaterial() -> void:
 	elif is_path_hovered and !is_action_lock: mat = load(info.PATH_HOVERED_MATERIAL)
 	elif is_hovered and !is_action_lock: mat = load(info.HOVERED_MATERIAL)
 	elif display_movement_path and !is_action_lock: mat = load(info.MOVEMENT_RANGE_MATERIAL)
-	elif !vision_datastore.level_visible: mat = load(info.GREYSCALE_MATERIAL)
+	elif !level_visible: mat = load(info.GREYSCALE_MATERIAL)
 		
 	getMeshes()[0].set_surface_override_material(1, mat)
 #endregion
@@ -198,7 +199,7 @@ func onCardHover(state: bool) -> void:
 		var Card: CardGD = Game.getFieldCard(self)
 		if Card == null: return
 		change_hover_card_state.emit(Card, false)
-	elif getLevelVisible():
+	elif isLevelVisible():
 		await get_tree().create_timer(SHOW_CARD_AT_HOVER_DELAY).timeout
 		if is_hovered == state:
 			var Card: CardGD = Game.getFieldCard(self)

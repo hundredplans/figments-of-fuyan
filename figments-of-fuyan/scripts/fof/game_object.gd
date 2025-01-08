@@ -21,11 +21,6 @@ func getStaticBodies() -> Array[StaticBody3D]:
 	return arr
 #endregion
 
-#region Is Checks
-func isLevelVisible() -> bool:
-	return vision_datastore.level_visible
-#endregion
-
 #region Getters
 func getLockRotation() -> bool: return false
 
@@ -99,17 +94,23 @@ func setCollisionLayers(layer: int) -> void:
 #endregion
 
 #region Level Visible
+func isRevealed(team: int = -1) -> bool:
+	return vision_datastore.isRevealed(team)
+	
+func onRevealed(revealed_datastore: RevealedDatastore) -> void:
+	vision_datastore.onRevealed(revealed_datastore)
+	
+func onRemoveReveal(revealed_id: int) -> void:
+	vision_datastore.onRemoveReveal(revealed_id)
+	
+func isLevelVisible() -> bool:
+	return vision_datastore.level_visible or vision_datastore.isRevealed(0)
+	
 func setLevelVisible(state: bool) -> void:
-	vision_datastore.level_visible = state if !getIsRevealed() else true
+	vision_datastore.level_visible = state
+	onUpdateLevelVisible()
 	
-func getLevelVisible() -> bool:
-	return vision_datastore.level_visible
-	
-func getIsRevealed() -> bool:
-	return vision_datastore.is_revealed
-	
-func onRevealed(state: bool) -> void:
-	vision_datastore.is_revealed = state
+func onUpdateLevelVisible() -> void: pass
 #endregion
 
 #region Points

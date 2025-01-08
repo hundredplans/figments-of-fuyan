@@ -93,7 +93,11 @@ func getSaveFileCount() -> int:
 
 func getFirstNonConsecutiveId(type: GDScript) -> int:
 	var arr: Array = getFofInfoArray(type).map(func(x: FofInfo): return x.id)
+	return getFirstNonConsecutiveIDArray(arr)
+	
+func getFirstNonConsecutiveIDArray(arr: Array) -> int:
 	if arr.is_empty(): return 1
+	arr = arr.duplicate()
 	arr.sort_custom(func(x: int, y: int): return x < y)
 	for i in range(arr.size() - 1):
 		if arr[i + 1] != arr[i] + 1:
