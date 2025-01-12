@@ -12,9 +12,7 @@ func onPreAction() -> void:
 	pass
 	
 func onPostAction() -> void:
-	Revealed.onRemoveReveal(revealed_id)
-	var visibles: Array = Revealed.getVisibleGroup()
+	var visibles: Array = Revealed.getRevealVisibleGroup()
 	for _GameObject in visibles: # Ignores Cards unless they themself are revealed
-		if !(_GameObject is CardGD and Revealed != _GameObject):
-			_GameObject.onRemoveReveal(revealed_id)
-		_GameObject.onUpdateLevelVisible()
+		_GameObject.onRemoveReveal(revealed_id)
+	onPushAction(VisionAction.new())

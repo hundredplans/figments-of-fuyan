@@ -113,4 +113,7 @@ func setTopVertexY() -> void:
 	
 func getTopVertexY() -> float:
 	return top_vertex_y
+	
+func onIObject(action: Action) -> void:
+	pass
 		

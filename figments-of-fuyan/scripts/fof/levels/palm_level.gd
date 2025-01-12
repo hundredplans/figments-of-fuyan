@@ -44,8 +44,9 @@ func onSave() -> SavedDataPalmLevel:
 	request_camera_data.emit()
 	
 	if rewards != null: rewards.onSave()
+	var old_player_vision_public_ids: Array = old_player_vision.map(func(x: GameObjectGD): return x.public_id)
 	return SavedDataPalmLevel.new(info.id, false, public_id, data, enemy_spawns, getFieldCards(), phase, level_camera_data,
-	energy, max_energy, is_elite, is_ended, rewards, anti_boons,\
+	energy, max_energy, is_elite, is_ended, rewards, anti_boons, old_player_vision_public_ids,\
 	decoration_datas, decoration_coords)
 	
 func onLoadData(data: SavedData) -> void:

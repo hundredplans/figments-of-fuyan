@@ -1,7 +1,11 @@
 extends BoonGD
 
+const SHILLING_AMOUNT: int = 2
 func onProcessAction(action: Action) -> void:
 	super(action)
+	if action.post:
+		if action is DeathAction and action.Damager != null and action.Damager.isValidDuelistRampage(action):
+			onPushAction(ChangeShillingsAction.new(SHILLING_AMOUNT))
 	
 func onAscend(state: bool) -> void:
 	super(state)

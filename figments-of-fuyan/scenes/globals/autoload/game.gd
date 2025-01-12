@@ -196,9 +196,12 @@ func getUnitTiles() -> Array:
 #endregion
 
 #region Vision
-func inVisionCards(card_coords: Vector4i) -> Array:
+func inVisionRangeCardsCoords(coords: Vector4i, include_self: bool = false) -> Array:
 	return get_tree().get_nodes_in_group("FieldCardsGD").filter(func(x: CardGD):
-		return x.getCoords() != card_coords and getCoordsDistance(x.getCoords(), card_coords) <= x.getVisionRange())
+		return (x.getCoords() != coords or include_self) and getCoordsDistance(x.getCoords(), coords) <= x.getVisionRange())
+
+func inVisionRangeCards(Tile: TileGD, include_self: bool = false) -> Array:
+	return inVisionRangeCardsCoords(Tile.getCoords(), include_self)
 
 func getTeamVisionDictionary(team: int = 0) -> Dictionary:
 	if team < 2: # Neutral units dont have a team vision
@@ -208,6 +211,7 @@ func getTeamVisionDictionary(team: int = 0) -> Dictionary:
 		for Card in cards:
 			for GameObject in Card.getVisibleGameObjects():
 				team_visible_game_objects[GameObject] = null
+		
 		return team_visible_game_objects
 	return {}
 	

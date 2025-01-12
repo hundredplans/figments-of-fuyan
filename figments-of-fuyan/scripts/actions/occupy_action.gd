@@ -33,8 +33,10 @@ func onPostAction() -> void:
 		Tile.onOccupy(Card, apply_occupy_instant)
 		Card.setPositionToTile()
 
-	var vision_cards: Array = Game.inVisionCards(coords)
-	if Tile != null: vision_cards.append(Card)
+	var vision_cards: Array = Game.inVisionRangeCardsCoords(coords, true)
+	for VisionCard in vision_cards:
+		VisionCard.onTileOccupiedIsInVision(Tile, PreviousTile, Card)
+	
 	onPushAction(VisionAction.new(vision_cards, Card))
 
 func getLogInfo() -> Array:

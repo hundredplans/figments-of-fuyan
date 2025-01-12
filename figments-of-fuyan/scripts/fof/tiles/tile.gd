@@ -10,6 +10,7 @@ var is_card_moving: bool = false
 var is_action_lock: bool = false
 var in_active_effect_range: bool = false
 var in_active_effect_pickable: bool = false
+var is_ui_visible: bool = true
 var max_movement_height: float
 var is_decoration: bool
 
@@ -98,7 +99,12 @@ func setOutlineMaterial() -> void:
 	var display_movement_path: bool = getMovementPathDisplay()
 	var level_visible: bool = isLevelVisible()
 	
-	if in_active_effect_pickable:
+	if !is_ui_visible:
+		if level_visible:
+			mat = null
+		elif !level_visible:
+			mat = load(info.GREYSCALE_MATERIAL)
+	elif in_active_effect_pickable:
 		mat = load(info.ACTIVE_EFFECT_PICKABLE_MATERIAL)
 	elif in_active_effect_range:
 		mat = load(info.ACTIVE_EFFECT_RANGE_MATERIAL)
@@ -115,7 +121,7 @@ func setOutlineMaterial() -> void:
 	elif is_hovered and !is_action_lock: mat = load(info.HOVERED_MATERIAL)
 	elif display_movement_path and !is_action_lock: mat = load(info.MOVEMENT_RANGE_MATERIAL)
 	elif !level_visible: mat = load(info.GREYSCALE_MATERIAL)
-		
+			
 	getMeshes()[0].set_surface_override_material(1, mat)
 #endregion
 #region Collision Layers
@@ -144,11 +150,18 @@ func onSave() -> SavedDataGameObject:
 func onLoadData(data: SavedData) -> void:
 	super(data)
 	
+	if vision_datastore is not VisionDatastoreTile:
+		vision_datastore = VisionDatastoreTile.new()
+	
 	is_decoration = data.is_decoration
 	onLoadModel()
 	onCreateTileFill(data.tile_fill)
 	occupy_state = data.occupy_state
 	add_to_group("TilesGD")
+	
+func onLoadDataLevelFofInit() -> void:
+	super()
+	vision_datastore = VisionDatastoreTile.new()
 	
 func onLoadModel() -> void:
 	if Model != null: Model.queue_free()
@@ -165,8 +178,6 @@ func onLoadDataLevel() -> void:
 	setOutlineMaterial()
 	explored = ExploredGD.new()
 	
-func onProcessAction(_action: Action) -> void:
-	pass
 #endregion
 #region Occupied Objects
 func setOccupiedObject(object: ObjectGD) -> void:
@@ -275,16 +286,16 @@ func setFallDamageWorldEffect(state: bool, PreviousTile: TileGD, damage: int) ->
 #endregion
 
 #region Vision
-func getVisibleGroup() -> Array:
-	var visible_group: Array = [self]
-	
-	for Obj in occupied_objects:
-		visible_group.append(Obj)
-			
-	var Card: CardGD = Game.getFieldCard(self)
-	if Card != null: visible_group.append(Card)
-	return visible_group
+func onUpdateLevelVisible() -> void:
+	super()
+	setOutlineMaterial()
 
+func getRevealVisibleGroup() -> Array:
+	return [self] + occupied_objects
+	
+func onOccupyingCardLevelVisibleChanged(_occupy_state: OccupyStates) -> void:
+	occupy_state = _occupy_state
+	setOutlineMaterial()
 #endregion
 
 #region Action Lock
@@ -304,4 +315,16 @@ func setInActiveEffectPickable(state: bool) -> void:
 	
 func isActiveEffectPickable() -> bool:
 	return in_active_effect_pickable
+#endregion
+
+#region Hide UI
+func onHideUI(state: bool) -> void:
+	is_ui_visible = state
+	setOutlineMaterial()
+#endregion
+
+#region Advance Turn
+func onAdvanceTurn(team: int) -> void:
+	if team == 1:
+		vision_datastore.onIncrementLastSeenByEnemy()
 #endregion

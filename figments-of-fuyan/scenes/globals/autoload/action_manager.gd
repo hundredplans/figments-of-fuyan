@@ -58,13 +58,14 @@ func onForceAction(action: Action) -> void:
 	process_action.emit(action)
 
 func onDebugAction(action: Action) -> void:
-	var path: String = action.get_script().resource_path
-	print(path.get_slice("/", path.get_slice_count("/") - 1))
-	var logs: Array = action.getLogInfo()
-	if action.failed: logs.append("FAILED")
-	
-	for log_info in logs:
-		print("	" + log_info)
+	pass
+	#var path: String = action.get_script().resource_path
+	#print(path.get_slice("/", path.get_slice_count("/") - 1))
+	#var logs: Array = action.getLogInfo()
+	#if action.failed: logs.append("FAILED")
+	#
+	#for log_info in logs:
+		#print("	" + log_info)
 	
 func onDebugActionNames() -> void:
 	pass

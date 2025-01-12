@@ -174,7 +174,8 @@ func onTilePressed() -> void:
 		var Card: CardGD = level.getAllySpectateObject()
 		if Card != null:
 			level.onAppendAction(MovementAction.new(Card, Tile.getMovementPathTiles()))
-	elif Tile.isOccupied() and Tile.isLevelVisible(): onCreateCameraChangeAction(Tile.getCard())
+	elif Tile.isOccupied() and Tile.isLevelVisible() and Tile.getCard().isLevelVisible():
+		onCreateCameraChangeAction(Tile.getCard())
 	#elif Tile.isAllySpawnTile() and !Tile.isOccupied():
 		#var HandCard: CardGD = UI.getSelectedCard()
 		#if HandCard != null:
@@ -253,10 +254,10 @@ func onVisionModeChanged(state: bool) -> void:
 		for GameObject in get_tree().get_nodes_in_group("LevelTileObjectsGD") + get_tree().get_nodes_in_group("FieldCardsGD"):
 			var level_visible: bool = GameObject.isLevelVisible()
 			original_vision[GameObject] = level_visible
-			GameObject.visible = GameObject.isLevelVisible()
+			GameObject.setLevelVisible(level_visible)
 			default_vision[GameObject] = false if GameObject is not CardGD else level_visible
 			GameObject.setLevelVisible(default_vision[GameObject])
-	elif !state:
+	else:
 		for GameObject in original_vision:
 			GameObject.setLevelVisible(original_vision[GameObject])
 		original_vision = {}
@@ -264,6 +265,8 @@ func onVisionModeChanged(state: bool) -> void:
 	
 var LastCardVisionMode: CardGD
 func onVisionModeTileHovered(Tile: TileGD) -> void:
+	if !in_vision_mode: return
+	
 	if LastCardVisionMode != null and Tile != LastCardVisionMode.Tile:
 		LastCardVisionMode = null
 		for GameObject in default_vision:
@@ -339,7 +342,6 @@ func onPassButtonPressed() -> void:
 
 #region Game Changers
 func onGameEnded(_rewards: Rewards) -> void:
-	#level.onPushAction(LevelVisibleAction.new(false, get_tree().get_nodes_in_group("LevelGameObjectsGD")))
 	CameraManager.onGameEnded()
 	
 func onGameStarted() -> void:

@@ -1,10 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://oobbuomm2pt2"]
+[gd_scene load_steps=5 format=3 uid="uid://oobbuomm2pt2"]
 
-[ext_resource type="Script" path="res://scenes/game/map_nodes/screens/campfire_screen/duel_arena.gd" id="1_rqn04"]
+[ext_resource type="Script" path="res://scenes/game/map_nodes/screens/bounty_board_screen/bounty_board_screen.gd" id="1_rqn04"]
 [ext_resource type="PackedScene" uid="uid://ceoy120bbs7le" path="res://scenes/common/panel_button/panel_button.tscn" id="2_0sukw"]
+[ext_resource type="PackedScene" uid="uid://cnihjkfdyh8y5" path="res://scenes/game/map_nodes/screens/bounty_board_screen/bounty_board_check_screen.tscn" id="2_02oe5"]
 [ext_resource type="LabelSettings" uid="uid://baxopkmeda53x" path="res://resources/ui/label_settings/roboto_huge.tres" id="2_lb2co"]
 
-[node name="DuelArena" type="Control"]
+[node name="BountyBoardScreen" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -16,6 +17,8 @@ offset_bottom = -372.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_rqn04")
+kill_amounts = Array[int]([1, 5, 10, 20, 50, 100])
+BountyBoardCheckScreenPacked = ExtResource("2_02oe5")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -42,8 +45,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-text = "A roadside duelist ring has gathered, and they're betting coins on the winner.
-"
+text = "You notice a roadside bounty board. You feel pride in the bounties your units have acquired and can choose to reward them."
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
@@ -52,10 +54,10 @@ autowrap_mode = 2
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="PlayButton" parent="MarginContainer/VBoxContainer/AnswerButtons" instance=ExtResource("2_0sukw")]
+[node name="CheckButton" parent="MarginContainer/VBoxContainer/AnswerButtons" instance=ExtResource("2_0sukw")]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Test your skills (100%)"
+text = "Check"
 
 [node name="LeaveButton" parent="MarginContainer/VBoxContainer/AnswerButtons" instance=ExtResource("2_0sukw")]
 layout_mode = 2
@@ -84,10 +86,9 @@ offset_bottom = 96.0
 grow_horizontal = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
-text = "Duel Arena"
+text = "Bounty Board"
 label_settings = ExtResource("2_lb2co")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer/AnswerButtons/PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/AnswerButtons/LeaveButton" to="." method="_on_leave_button_pressed"]

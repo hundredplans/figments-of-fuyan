@@ -37,6 +37,7 @@ var is_awakened_in_combat: bool
 var last_seen_violence: int # Turns since they last violence, -1 for haven't seen it yet
 var last_ignore_behaviour_roll: bool
 var overworld_traits: Array[OverworldTrait] = []
+var bounty_kills: BountyKills
 #endregion
 
 #region Globals
@@ -72,7 +73,9 @@ func setDefaultCollisionLayers() -> void:
 	setCollisionLayers(96)
 	
 func setCollisionLayers(layer: int) -> void:
-	for body in getStaticBodies(): body.collision_layer = layer
+	layer = 0 if is_in_group("GraveyardCardsGD") else layer
+	for body in getStaticBodies():
+		body.collision_layer = layer
 	
 func setMapPosition() -> void:
 	position = Vector3((sqrt(3) * coords.x + sqrt(3) * coords.y * 0.5), (coords.w * 0.6) + 0.3, coords.y * 3 / 2.0)
@@ -197,14 +200,13 @@ func onSave() -> SavedDataCard:
 	var tool_data: SavedDataTool = Tool.onSave() if Tool != null else null
 	for stat_info in delayed_stats: stat_info.onSave()
 	for overworld_trait in overworld_traits: overworld_trait.onSave()
-	
-	visible_game_objects_public_ids = visible_game_objects.map(func(x: GameObjectGD): return x.public_id)
-	
+
+	vision_datastore.onSave()
 	return SavedDataCard.new(info.id, false, public_id, coords, tile_rotation, vision_datastore, team, ascended, \
 	attack, health, speed, max_speed, max_health, energy, draw_order, card_place, turn_state, SavedData.onSaveGroup(status_effects), attacks, attack_range, delayed_stats,\
-	visible_game_objects_public_ids, ability_save, active_effects, tool_data, SavedData.onSaveGroup(field_effects), anibility_datastore,\
+	ability_save, active_effects, tool_data, SavedData.onSaveGroup(field_effects), anibility_datastore,\
 	SavedData.onSaveGroup(temporary_card_conditions), is_awakened_in_combat, last_seen_violence, last_ignore_behaviour_roll, base_stats,
-	overworld_traits)
+	overworld_traits, bounty_kills)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -216,7 +218,6 @@ func onLoadData(data: SavedData) -> void:
 	status_effects_datas = data.status_effects
 	tile_rotation = data.tile_rotation
 	delayed_stats = data.delayed_stats
-	visible_game_objects_public_ids = data.visible_game_objects_public_ids
 	ability_save = data.ability_save
 	active_effects = data.active_effects
 	attack = data.attack
@@ -232,6 +233,7 @@ func onLoadData(data: SavedData) -> void:
 	is_awakened_in_combat = data.is_awakened_in_combat
 	base_stats = data.base_stats
 	overworld_traits = data.overworld_traits
+	bounty_kills = data.bounty_kills
 	
 	temporary_card_conditions = temporary_card_conditions.map(func(x: SavedDataMapEffect): return SavedData.onLoadModel(x, self))
 	if data.tool_data != null:
@@ -260,7 +262,7 @@ func onLoadDataLevel() -> void:
 		onLoadTraits()
 		onLoadStatusEffects()
 		onLoadFieldEffects()
-		setVisibleGameObjectsFromPublicIDS()
+		vision_datastore.onLoad()
 	
 func onLoadDataLevelFofInit() -> void:
 	super()
@@ -418,17 +420,18 @@ func setTurnState(_turn_state: Game.TurnStates) -> void:
 
 #region Actions
 func onProcessAction(action: Action) -> void:
+	super(action)
 	if Game.CardPlaces.FIELD == card_place:
 		if !action.post:
 			if action is MoveToTileAction and action.Card == self: onMoveToTile(action)
 		elif action.post:
 			if action is MovementFinishAction and action.Card == self: Tile.setOutlineMaterial()
-			elif action is ChangePhaseAction and Game.isAdvanceTurn(action.phase, team):
-				onAdvanceTurn()
 			elif isOccupyVisionVisibleAction(action):
 				onAddUnitVisibleParticle()
 			elif action is AttackAction and action.Attacker.isEnemy(team) and action.Attacker in getVisibleFieldCardsEnemies():
 				last_seen_violence = 0
+			elif isValidRampage(action):
+				onBountyKill(action) # Needs to be here instead of in death action
 			
 	elif Game.CardPlaces.GRAVEYARD == card_place:
 		if action.post:
@@ -437,9 +440,15 @@ func onProcessAction(action: Action) -> void:
 				onRemoveFieldInfo()
 
 func isOccupyVisionVisibleAction(action: Action) -> bool:
-	return false
-	#return action is LevelVisibleAction and action.owner is VisionAction and action.owner.owner is OccupyAction\
-	#and action.owner.owner.Card == self and action.owner.level_visible != getLevelVisible()
+	if action is not VisionNewUnitAction: return false
+	if !action.enter_vision: return false
+	if isAlly(0): return false
+	if action.Discovered != self: return false
+	if action.owner == null: return false
+	if action.owner is not VisionAction: return false
+	if action.owner.owner == null: return false
+	if action.owner.owner is not OccupyAction: return false
+	return true
 #endregion
 
 #region Movement
@@ -534,16 +543,23 @@ func onAwaken() -> void:
 	setPositionToTile()
 	setTileRotation(tile_rotation)
 	setTurnState(turn_state)
-	onUpdateLevelVisible()
 	onCreateIdleRareTimer()
+	onUpdateLevelVisible()
 #endregion
 
 #region Vision
-var visible_game_objects_public_ids: Array = []
-var visible_game_objects: Array = []
 var VisionRay: RayCast3D
 const BASE_VISION_RANGE: int = 5
 const EXTRA_RAY_LENGTH: float = 1.05
+
+func getRevealVisibleGroup() -> Array:
+	return [self]
+
+func onAddVisibleGameObject(GameObject: GameObjectGD) -> void:
+	vision_datastore.onAddVisibleGameObject(GameObject)
+
+func onRemoveVisibleGameObject(GameObject: GameObjectGD) -> void:
+	vision_datastore.onRemoveVisibleGameObject(GameObject)
 
 func onAddUnitVisibleParticle() -> void:
 	var UnitVisibleParticle: GPUParticles3D = load(info.UNIT_VISIBLE_PARTICLE_SCENE_PATH).instantiate()
@@ -551,39 +567,96 @@ func onAddUnitVisibleParticle() -> void:
 	UnitVisibleParticle.emitting = true
 
 func getVisionRange() -> int:
-	return BASE_VISION_RANGE
+	return BASE_VISION_RANGE if !isBlind() else 1
 
-func onUpdateVision() -> Dictionary:
-	var updated_visible_game_objects: Dictionary = {}
-	if card_place == Game.CardPlaces.FIELD:
-		get_tree().call_group("FieldCardsGD", "setDetectableByRay", false)
-		var tile_objects: Array = Game.getAdjacentOrCloserTiles(Tile, getVisionRange())
-		
-		var cards: Array = []
-		for VisionTile in tile_objects.duplicate():
-			var Card: CardGD = Game.getFieldCard(VisionTile)
-			
-			if Card != null:
-				cards.append(Card)
-				Card.setDetectableByRay(true)
-		
-		for obj_array in tile_objects.map(func(x: GameObjectGD): return x.occupied_objects):
-			for Obj in obj_array: tile_objects.append(Obj)
-			
-		tile_objects += cards
-		var point_batches: Array = tile_objects.map(func(x: GameObjectGD): return x.adjusted_points)
-		for point_batch in point_batches:
-			for point in point_batch:
-				VisionRay.target_position = (point - VisionRay.global_position) * EXTRA_RAY_LENGTH
-				VisionRay.force_raycast_update()
-				if VisionRay.is_colliding():
-					var GameObject: GameObjectGD = Helper.getCollision(VisionRay.get_collider(), GameObjectGD)
-					if GameObject in tile_objects:
-						updated_visible_game_objects[GameObject] = null
-		updated_visible_game_objects[self] = null
-	else: updated_visible_game_objects = {}
+func onUpdateVision() -> void: # Returns the new visibles
+	if card_place != Game.CardPlaces.FIELD: return
 	
-	return updated_visible_game_objects
+	var cards: Array = get_tree().get_nodes_in_group("FieldCardsGD")
+	var tile_to_card: Dictionary = {}
+
+	var vision_range_game_objects: Array = Game.getAdjacentOrCloserTiles(Tile, getVisionRange())
+	
+	var visibles: Dictionary = vision_datastore.getVisibles()
+	var previous_direct_game_objects: Array = []
+	for GameObject in visibles:
+		if visibles[GameObject].direct:
+			previous_direct_game_objects.append(GameObject)
+
+	for FieldCard in cards:
+		tile_to_card[FieldCard.Tile] = FieldCard
+
+	for Card in cards.duplicate():
+		var tile_in_vision_range: bool = Card.Tile in vision_range_game_objects
+		Card.setDetectableByRay(tile_in_vision_range and Card.isNotInvisibleOrIsAdjacent(Tile))
+		if !tile_in_vision_range:
+			cards.erase(Card)
+	
+	for obj_array in vision_range_game_objects.map(func(x: GameObjectGD): return x.occupied_objects):
+		for Obj in obj_array: vision_range_game_objects.append(Obj)
+		
+	var adjacent_tiles_and_center: Array = Game.getAdjacentTiles(Tile, 1) + [Tile]
+	for Tile in adjacent_tiles_and_center:
+		vision_range_game_objects.erase(Tile)
+		
+	vision_range_game_objects += cards
+		
+	var direct_game_objects: Array = []
+	var point_batches: Array = vision_range_game_objects.map(func(x: GameObjectGD): return x.adjusted_points)
+	for point_batch in point_batches:
+		for point in point_batch:
+			VisionRay.target_position = (point - VisionRay.global_position) * EXTRA_RAY_LENGTH
+			VisionRay.force_raycast_update()
+			if VisionRay.is_colliding():
+				var GameObject: GameObjectGD = Helper.getCollision(VisionRay.get_collider(), GameObjectGD)
+				if GameObject in vision_range_game_objects: # Has to be in range
+					direct_game_objects.append(GameObject)
+	
+	direct_game_objects += adjacent_tiles_and_center
+	for GameObject in previous_direct_game_objects.filter(func(x: GameObjectGD): return x not in direct_game_objects): # No longer direct
+		vision_datastore.setDirect(GameObject, false)
+		
+		if GameObject is CardGD:
+			visibles[GameObject.Tile].setByUnit(false)
+			
+		elif GameObject is TileGD:
+			for Obj in GameObject.occupied_objects:
+				visibles[Obj].onRemoveTile(GameObject)
+			
+			if tile_to_card.has(GameObject):
+				visibles[tile_to_card[GameObject]].setByTile(false)
+				
+		elif GameObject is ObjectGD:
+			for Tile in GameObject.occupied_tiles:
+				visibles[Tile].onRemoveObject(GameObject)
+		
+	for GameObject in direct_game_objects:
+		if GameObject is CardGD and GameObject in cards:
+			vision_datastore.setDirect(GameObject, true)
+			visibles[GameObject.Tile].setByUnit(true)
+			
+		elif GameObject is TileGD:
+			vision_datastore.setDirect(GameObject, true)
+			for Obj in GameObject.occupied_objects:
+				visibles[Obj].onAddTile(GameObject)
+			
+			if tile_to_card.has(GameObject) and tile_to_card[GameObject].isNotInvisibleOrIsAdjacent(Tile):
+				visibles[tile_to_card[GameObject]].setByTile(true)
+				
+		elif GameObject is ObjectGD:
+			vision_datastore.setDirect(GameObject, true)
+			for Tile in GameObject.occupied_tiles:
+				visibles[Tile].onAddObject(GameObject)
+	
+func onTileOccupiedIsInVision(Tile: TileGD, PreviousTile: TileGD, Card: CardGD) -> void:
+	var visibles: Dictionary = vision_datastore.getVisibles()
+	
+	if PreviousTile != null: visibles[PreviousTile].setByUnit(false)
+	
+	var new_tile_in_vision: bool = Tile != null and Tile in Card.getVisibleGameObjects()
+	
+	if Tile != null: visibles[Tile].setByUnit(new_tile_in_vision)
+	if Card != null: visibles[Card].setByTile(new_tile_in_vision)
 	
 func inEnemyVision() -> bool:
 	return Game.getEnemyUnits(team).any(func(x: CardGD): return self in x.getVisibleFieldCardsEnemies())
@@ -595,20 +668,13 @@ func getVisibleFieldCardsAllies() -> Array:
 	return getVisibleFieldCards().filter(func(x: CardGD): return isAlly(x.team) and x != self)
 	
 func getVisibleFieldCards() -> Array:
-	return visible_game_objects.filter(func(x: GameObjectGD): return x is CardGD)
+	return getVisibleGameObjects().filter(func(x: GameObjectGD): return x is CardGD)
 	
 func getVisibleTiles() -> Array:
-	return visible_game_objects.filter(func(x: GameObjectGD): return x is TileGD)
+	return getVisibleGameObjects().filter(func(x: GameObjectGD): return x is TileGD)
 	
 func getVisibleGameObjects() -> Array:
-	return visible_game_objects
-	
-func setVisibleGameObjectsFromPublicIDS() -> void:
-	for _public_id in visible_game_objects_public_ids:
-		visible_game_objects.append(Game.onFindPublicIDObject(_public_id))
-	
-func setVisibleGameObjects(_visible_game_objects: Array) -> void:
-	visible_game_objects = _visible_game_objects.duplicate()
+	return vision_datastore.getVisibleGameObjects()
 	
 func onCreateVisionRay() -> void:
 	VisionRay = load(info.VISION_RAY_SCENE_PATH).instantiate()
@@ -621,15 +687,20 @@ func onUpdateLevelVisible() -> void:
 func isLevelVisible() -> bool:
 	return isAlly(0) or super()
 	
+func setLevelVisible(state: bool) -> void:
+	super(state)
+	if Tile != null:
+		var occupy_state := Tile.OccupyStates.NULL
+		if state:
+			match team:
+				0: occupy_state = Tile.OccupyStates.ALLY
+				1: occupy_state = Tile.OccupyStates.ENEMY
+				2: occupy_state = Tile.OccupyStates.NEUTRAL
+		Tile.onOccupyingCardLevelVisibleChanged(occupy_state)
+	
 func setDetectableByRay(state: bool) -> void:
 	if state: setCollisionLayers(96)
 	else: setCollisionLayers(32)
-	
-func getVisibleGroup() -> Array:
-	var visible_group: Array = [self, Tile]
-	for Obj in Tile.occupied_objects:
-		visible_group.append(Obj)
-	return visible_group
 #endregion
 
 #region Fall Damage
@@ -866,10 +937,22 @@ func getBaseStatusEffectAction(id: int, turns: int = 1) -> AddStatusEffectAction
 func onStun(turns: int = 1) -> void:
 	onCreateBaseStatusEffect(4, turns)
 	onCreateBaseStatusEffect(5, turns)
+	
+func isInvisible() -> bool:
+	return status_effects.any(func(x: StatusEffectGD): return x.info.id == 2)
+	
+func isNotInvisibleOrIsAdjacent(_Tile: TileGD) -> bool:
+	return !isInvisible() or Game.isAdjacent(_Tile, Tile)
+	
+func isBlind() -> bool:
+	return status_effects.any(func(x: StatusEffectGD): return x.info.id == 1)
 #endregion
 
 #region Advance Turn
-func onAdvanceTurn() -> void:
+func onAdvanceTurn(turn_team: int) -> void:
+	super(turn_team)
+	if team != turn_team or !is_in_group("FieldCardsGD"): return
+	
 	var actions: Array = [StatAction.new(
 		StatInfo.new(self, Game.Stats.SPEED, max_speed - int(Tile.isDeepwater()), 0, true, false, true)),
 		ChangeTurnStateAction.new(self, Game.TurnStates.INACTIVE)]
@@ -1038,10 +1121,8 @@ func onLevelEnded(_win: bool) -> void:
 	
 	status_effects = []
 	field_effects = []
-	visible_game_objects = []
-	visible_game_objects_public_ids = []
 	turn_state = Game.TurnStates.NULL
-	vision_datastore = VisionDatastore.new()
+	vision_datastore = VisionDatastoreCard.new()
 	
 	last_seen_violence = -1
 	Tile = null
@@ -1054,6 +1135,7 @@ func onLevelEnded(_win: bool) -> void:
 #region Idle Rare
 var IdleRareTimer: Timer
 func onCreateIdleRareTimer() -> void:
+	if !is_in_group("FieldCardsGD"): return
 	IdleRareTimer = Timer.new()
 	add_child(IdleRareTimer)
 	IdleRareTimer.timeout.connect(onIdleRareTimerTimeout)
@@ -1062,6 +1144,7 @@ func onCreateIdleRareTimer() -> void:
 	IdleRareTimer.start()
 	
 func onIdleRareTimerTimeout() -> void:
+	if !is_in_group("FieldCardsGD"): return
 	if AniPlayer.current_animation.begins_with("Idle"):
 		onIdleRare()
 		
@@ -1072,4 +1155,29 @@ func onIdleRareTimerTimeout() -> void:
 #region Death
 func onPreDeath() -> void:
 	setCollisionLayers(0)
+#endregion
+
+#region Kills
+func onBountyKill(action: Action) -> void:
+	var duelist_kill: bool = isValidDuelistRampage(action)
+	var Defender: Variant = action.Defender
+	if Defender is CardGD and Defender.isEnemy(team) and \
+		!(Defender.is_awakened_in_combat or Defender.info.rarity in [Game.Rarities.SCRAP, Game.Rarities.NEUTRAL]):
+		bounty_kills.onIncrementBountyKills(duelist_kill)
+	
+func getLastClaimedKills() -> int:
+	return bounty_kills.last_claimed_kills
+	
+func isValidDuelistRampage(action: Action) -> bool:
+	if !isValidRampage(action): return false
+	
+	var cards: Array = getVisibleFieldCards()
+	cards.erase(self)
+	cards.erase(action.Defender)
+	
+	var enemy_cards: Array = action.Defender.getVisibleFieldCards()
+	enemy_cards.erase(self)
+	enemy_cards.erase(action.Defender)
+	
+	return cards.is_empty() and enemy_cards.is_empty()
 #endregion

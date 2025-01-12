@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="ChampionBoonInfo" load_steps=5 format=3 uid="uid://c427cbie2arvi"]
 
-[ext_resource type="Script" path="res://scripts/fof/boons/boon.gd" id="1_2ngbd"]
 [ext_resource type="Script" path="res://scripts/fof_info/boons/champion_boon_info.gd" id="1_twgqe"]
-[ext_resource type="Image" uid="uid://cc6r8nkogr614" path="res://assets/sprites/game/boons/duelist_aura.png" id="2_mgwno"]
+[ext_resource type="Script" path="res://scripts/fof/boons/duelist_aura.gd" id="1_wmnfk"]
+[ext_resource type="Texture2D" uid="uid://cc6r8nkogr614" path="res://assets/sprites/game/boons/duelist_aura.png" id="2_mgwno"]
 [ext_resource type="Script" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_kw7j8"]
 
 [resource]
@@ -12,7 +12,9 @@ icon = ExtResource("2_mgwno")
 description = "When an ally wins a DUEL gain [2] SH"
 ascended_description = ""
 rarity = 0
+curse = false
+elite_fight_curse = false
 id = 3
 name = "Agile Aura"
-gdscript = ExtResource("1_2ngbd")
+gdscript = ExtResource("1_wmnfk")
 saved_data = ExtResource("3_kw7j8")

@@ -6,10 +6,13 @@ func onProcessAction(action: Action):
 	super(action)
 	if action.post:
 		if action is VisionNewUnitAction:
-			var Revealed: CardGD = action.Discovered
-			if action.Discoverer.isAlly(1) and Revealed.isAlly(0) and Revealed not in revealed_cards:
-				onPushAction(RevealAction.new(Revealed, Game.onCreateRevealedDatastore(Revealed, self)))
-				revealed_cards.append(Revealed)
+			onCheckReveal(action.Discovered, action.Discoverer)
+			onCheckReveal(action.Discoverer, action.Discovered)
+				
+func onCheckReveal(Revealer: CardGD, Revealed: CardGD) -> void:
+	if Revealer.isAlly(1) and Revealed.isAlly(0) and Revealed not in revealed_cards:
+		Revealed.onCreateBaseStatusEffect(6, -1)
+		revealed_cards.append(Revealed)
 				
 func onAscend(state: bool):
 	super(state)

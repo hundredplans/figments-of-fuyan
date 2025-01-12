@@ -1,23 +1,25 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=10 format=3]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=11 format=3]
 
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_4cudm"]
 [ext_resource type="Script" path="res://scripts/fof/objects/object.gd" id="1_hsx07"]
 [ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="1_n2bvt"]
-[ext_resource type="PackedScene" uid="uid://bqjr6emlislgb" path="res://assets/models/fof/objects/coconut_pile.glb" id="2_masg1"]
-[ext_resource type="PackedScene" uid="uid://ba1vkd4wmrkxm" path="res://assets/models/fof/objects/coconut_pile1.glb" id="3_e3sj7"]
-[ext_resource type="PackedScene" uid="uid://drn8rbmyunjo1" path="res://assets/models/fof/objects/coconut_pile2.glb" id="4_5hynf"]
-[ext_resource type="PackedScene" uid="uid://2a8d6qh7j17d" path="res://assets/models/fof/objects/coconut_pile3.glb" id="5_44sny"]
-[ext_resource type="PackedScene" uid="uid://b4m8lv281m80e" path="res://assets/models/fof/objects/coconut_pile4.glb" id="6_rl8t3"]
-[ext_resource type="PackedScene" uid="uid://g431i5tdpqn8" path="res://assets/models/fof/objects/coconut_pile5.glb" id="7_jpmn1"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/coconut_pile.glb" id="2_masg1"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/coconut_pile1.glb" id="3_e3sj7"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/coconut_pile2.glb" id="4_5hynf"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/coconut_pile3.glb" id="5_44sny"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/coconut_pile4.glb" id="6_rl8t3"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/coconut_pile5.glb" id="7_jpmn1"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="8_iilho"]
 
 [resource]
 script = ExtResource("1_n2bvt")
-tile_coords = Array[Array]([[Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)]])
+tile_coords = Array[Array]([[Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0), Vector4i(0, 0, 0, 1), Vector4i(0, 0, 0, 2)], [Vector4(0, 0, 0, 0), Vector4i(0, 0, 0, 1), Vector4i(0, 0, 0, 2)]])
 lock_rotation = false
 lock_tile = false
 solids = Array[bool]([true, true, true, true, true, true])
+active_effects = Array[ExtResource("1_4cudm")]([])
 models = Array[PackedScene]([ExtResource("2_masg1"), ExtResource("3_e3sj7"), ExtResource("4_5hynf"), ExtResource("5_44sny"), ExtResource("6_rl8t3"), ExtResource("7_jpmn1")])
-points = Array[Array]([[], [], [], [], [], []])
+points = Array[Array]([[Vector3(0.124615, 0.336228, -0.661678), Vector3(0.534858, 0.353222, 0.0236799), Vector3(-0.194392, 0.39011, 0.493386), Vector3(-0.574625, 0.355587, -0.180347), Vector3(-0.0859775, 0.792916, -0.222948), Vector3(0.137214, 0.737777, -0.000788849), Vector3(-0.210996, 0.646068, 0.0730401)], [Vector3(-0.519985, 0.330964, -0.573462), Vector3(0.251315, 0.321656, -0.545369), Vector3(0.549903, 0.363328, -0.0678009), Vector3(0.342155, 0.363053, 0.561524), Vector3(-0.0595823, 0.365421, 0.592377), Vector3(-0.30933, 0.347312, 0.174377), Vector3(-0.551712, 0.346505, -0.189658), Vector3(-0.315564, 0.476824, -0.313061), Vector3(0.0359981, 0.484371, -0.31118), Vector3(-0.128838, 0.503013, 0.0221674), Vector3(0.329182, 0.480152, 0.0690542), Vector3(0.0808338, 0.505745, 0.458003)], [Vector3(-0.220077, 0.337687, -0.607457), Vector3(0.14836, 0.308207, -0.61474), Vector3(0.541761, 0.306935, -0.122238), Vector3(0.435049, 0.302407, 0.193534), Vector3(-0.0841043, 0.33611, 0.563247), Vector3(-0.419052, 0.303281, 0.257257), Vector3(-0.23491, 0.490263, 0.264514), Vector3(-0.0600096, 0.493927, -0.454372), Vector3(0.0971935, 0.352154, -0.0675178), Vector3(0.494042, 0.844839, -0.165791), Vector3(0.352005, 0.755129, 0.218818), Vector3(0.331623, 0.978064, 0.0321331), Vector3(0.102863, 0.83443, -0.103648)], [Vector3(-0.609824, 0.278621, -0.109654), Vector3(-0.0409474, 0.279289, -0.672425), Vector3(0.337092, 0.258844, -0.408275), Vector3(0.476479, 0.296232, 0.0475972), Vector3(0.279326, 0.294669, 0.260419), Vector3(0.0939786, 0.288158, 0.523462), Vector3(-0.339243, 0.307246, 0.478868), Vector3(-0.247567, 0.763697, -0.124362), Vector3(0.0564584, 0.737265, -0.378979), Vector3(0.0744454, 0.801364, 0.278468), Vector3(-0.151967, 0.820494, 0.625193), Vector3(-0.157604, 0.972386, 0.397232), Vector3(-0.10981, 0.868359, -0.186239)], [Vector3(-0.312706, 0.350544, 0.196626), Vector3(0.243475, 0.359412, 0.198553), Vector3(-0.32237, 0.300512, -0.262755), Vector3(0.253581, 0.31052, -0.255968), Vector3(-0.0380026, 0.740916, -0.265265), Vector3(-0.0469152, 1.21255, -0.262452), Vector3(0.203115, 0.729025, -0.0125282), Vector3(0.467943, 0.255948, -0.0199161), Vector3(0.196722, 1.27078, -0.0256407), Vector3(-0.0692107, 0.766767, 0.203951), Vector3(-0.0618976, 1.26698, 0.200573), Vector3(-0.285371, 0.731007, -0.00685322), Vector3(-0.276475, 1.26832, -0.012285), Vector3(-0.520078, 0.329138, -0.0128407)], [Vector3(-0.0416029, 0.290589, -0.238833), Vector3(0.26139, 0.265748, -0.0661773), Vector3(-0.0392232, 0.289667, 0.22409), Vector3(-0.218292, 0.27545, 0.0208508), Vector3(-0.219674, 0.810554, 0.0242861), Vector3(0.0477079, 0.783689, -0.239101), Vector3(0.246143, 0.801299, 0.0678928), Vector3(0.0433011, 0.798028, 0.23175), Vector3(0.0464341, 1.38648, 0.188278), Vector3(-0.200325, 1.35937, -0.0143399), Vector3(0.11348, 1.36166, -0.189164), Vector3(0.242549, 1.32807, 0.0627328)]])
 id = 12
 name = "Coconut Pile"
 gdscript = ExtResource("1_hsx07")

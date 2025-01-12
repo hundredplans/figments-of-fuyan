@@ -1,11 +1,11 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=8 format=3 uid="uid://bmgwfh4jvw5e2"]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="1_hth47"]
 [ext_resource type="Script" path="res://scripts/fof/objects/object.gd" id="1_ims3d"]
 [ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_muana"]
-[ext_resource type="PackedScene" uid="uid://dqnt0yk88e1ji" path="res://assets/models/fof/objects/coconut_on_floor.glb" id="2_vvxdu"]
-[ext_resource type="PackedScene" uid="uid://bfitba6m1gpv7" path="res://assets/models/fof/objects/coconut_on_floor1.glb" id="3_b8uwn"]
-[ext_resource type="PackedScene" uid="uid://cpkebaowv3lj5" path="res://assets/models/fof/objects/coconut_on_floor2.glb" id="4_40t2e"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/coconut_on_floor.glb" id="2_vvxdu"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/coconut_on_floor1.glb" id="3_b8uwn"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/coconut_on_floor2.glb" id="4_40t2e"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="5_gmgmx"]
 
 [resource]
@@ -16,7 +16,7 @@ lock_tile = false
 solids = Array[bool]([false, false, false])
 active_effects = Array[ExtResource("1_muana")]([])
 models = Array[PackedScene]([ExtResource("2_vvxdu"), ExtResource("3_b8uwn"), ExtResource("4_40t2e")])
-points = Array[Array]([[], [], []])
+points = Array[Array]([[Vector3(-0.031433, 0.164569, -0.00897849)], [Vector3(-0.027009, 0.143689, -0.00153434)], [Vector3(-0.0126234, 0.138993, 0.00962555)]])
 id = 11
 name = "Coconut on Floor"
 gdscript = ExtResource("1_ims3d")

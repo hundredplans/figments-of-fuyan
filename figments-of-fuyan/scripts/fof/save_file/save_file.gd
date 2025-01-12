@@ -33,6 +33,8 @@ func onSaveToFile() -> void:
 	#if !Helper.getAdmin():
 	var saved_data: SavedDataSaveFile = onSave()
 	saved_data.resource_path = SaveFileInfo.SAVE_DIRECTORY + str(id) + ".tres"
+	
+	print(saved_data)
 	ResourceSaver.save(saved_data)
 
 func onSave() -> SavedData:

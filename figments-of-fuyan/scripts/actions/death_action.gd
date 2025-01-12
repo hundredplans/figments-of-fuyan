@@ -21,19 +21,23 @@ func onPreAction() -> void:
 	setActionDelay(3.0 if Defender.isLevelVisible() else 0.0)
 	Defender.onChangeCardPlace(Game.CardPlaces.GRAVEYARD)
 	Defender.onPreDeath()
+	
 	onForceAction(OccupyAction.new(Defender, null, true))
 	
 func onPostAction() -> void:
 	Defender.onDeath()
 	onSwapCameraOnDeathInPlayerPhase()
 	
-	if Defender is CardGD and  Defender.isEnemy(0) and !(Defender.is_awakened_in_combat or Defender.info.rarity in [Game.Rarities.SCRAP, Game.Rarities.NEUTRAL]):
+	if Defender is CardGD and Defender.isEnemy(0) and !(Defender.is_awakened_in_combat or Defender.info.rarity in [Game.Rarities.SCRAP, Game.Rarities.NEUTRAL]):
 		onPushAction(EnergyAction.new(Defender.energy))
+	
+	for Card in Game.get_tree().get_nodes_in_group("FieldCardsGD"):
+		Card.onRemoveVisibleGameObject(Defender)
 	
 	if Game.get_tree().get_nodes_in_group("FieldCardsGD")\
 		.filter(func(x: CardGD): return x.team == Defender.team).is_empty():
 			onAppendAction(EndGameAction.new(Defender.team))
-	
+			
 func onSwapCameraOnDeathInPlayerPhase() -> void:
 	if !Defender.isAlly(0) or Game.get_tree().get_nodes_in_group("LevelsGD")[0].phase != Game.Phases.PLAYER: return
 		

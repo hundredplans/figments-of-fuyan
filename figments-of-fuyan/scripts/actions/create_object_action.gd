@@ -19,5 +19,10 @@ func onPostAction() -> void:
 	var TileObject: TileObjectGD = level.onLoadTileObjectInit(data)
 	TileObject.setPosition(TileObject.coords, TileObject.onCoordsToPosition())
 	TileObject.onLoadDataLevel()
+	
+	for Card in Game.get_tree().get_nodes_in_group("FieldCardsGD"):
+		Card.onAddVisibleGameObject(TileObject)
+	
 	level.setOccupiedTiles(TileObject)
+	onPushAction(VisionAction.new(Game.inVisionRangeCards(Tile, true)))
 	

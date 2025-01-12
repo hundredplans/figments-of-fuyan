@@ -2,7 +2,7 @@ class_name FightNodeGD extends MapNodeGD
 
 var enemy_spawns: Array = []
 var level_info: LevelInfo
-const FORCE_LEVEL_ID: int = 2
+const FORCE_LEVEL_ID: int = 3
 
 #region Save / Load / Init
 func onFofInit() -> void:

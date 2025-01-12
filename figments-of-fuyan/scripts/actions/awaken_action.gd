@@ -10,7 +10,7 @@ func _init(_Card: CardGD = null, _Tile: TileGD = null) -> void:
 	Tile = _Tile
 
 func onPreAction() -> void:
-	onForceAction(OccupyAction.new(Card, Tile))
+	pass
 
 func onPostAction() -> void:
 	var SpawnObject: SpawnGD = Tile.getSpawnTile()
@@ -18,6 +18,13 @@ func onPostAction() -> void:
 	
 	onPushAction(FinishAwakenAction.new(Card)) # Important it's here so the other pushes move it back
 	Card.onChangeCardPlace(Game.CardPlaces.FIELD)
+	
+	Card.vision_datastore.setInfo() # Loads in all the game objects
+	for OtherCard in Game.get_tree().get_nodes_in_group("FieldCardsGD"):
+		OtherCard.onAddVisibleGameObject(Card)
+	
+	onForceAction(OccupyAction.new(Card, Tile))
+	
 	Card.onAwaken()
 	Card.onCreateInitialTraits()
 	Card.onCreateInitialActiveAbilities()

@@ -11,6 +11,7 @@ var is_elite: bool
 var rewards: Rewards
 var anti_boons: Array
 var save_file: SaveFileGD
+var old_player_vision: Array
 
 signal set_spectate_card
 signal energy_changed
@@ -45,8 +46,10 @@ func onSave() -> SavedData:
 	request_camera_data.emit()
 	
 	if rewards != null: rewards.onSave()
+	var old_player_vision_public_ids: Array = old_player_vision.map(func(x: GameObjectGD): return x.public_id)
+	
 	return SavedDataLevel.new(info.id, false, public_id, data, enemy_spawns, getFieldCards(), phase, level_camera_data, energy, max_energy,\
- 	is_ended, is_elite, rewards, anti_boons)
+ 	is_ended, is_elite, rewards, anti_boons, old_player_vision_public_ids)
 
 func onClear() -> void:
 	queue_free()
@@ -76,6 +79,7 @@ func onLoadData(data: SavedData) -> void:
 	anti_boons = data.anti_boons
 
 	level_camera_data = data.level_camera_data
+	old_player_vision = data.old_player_vision.map(func(x: int): return Game.onFindPublicIDObject(x))
 	add_to_group("LevelsGD")
 	
 	rewards = data.rewards
@@ -112,9 +116,6 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 			actions.append(AwakenAction.new(SavedData.onLoadModel(card_data, self), Game.getTile(card_data.coords)))
 		
 		actions += get_tree().get_nodes_in_group("BoonsGD").map(func(x: BoonGD): return AddBoonAction.new(x.info.id, x.ascended, true))
-		
-		var game_objects: Array = get_tree().get_nodes_in_group("LevelTileObjectsGD") + get_tree().get_nodes_in_group("FieldCardsGD")
-		actions.append(LevelVisibleAction.new(false, game_objects))
 		onPushAction(actions)
 		return
 
@@ -223,6 +224,8 @@ func onProcessAction(action: Action) -> void:
 		elif action is RemoveToolAction:
 			onRecalculateAITurn(action.Card, true, false, false, true)
 			tool_removed.emit()
+		elif action is VisionNewUnitAction and action.Discoverer.isAlly(1):
+			onRecalculateAITurn(action.Discoverer, true)
 		elif action is DeathAction:
 			onRecalculateAITurn(action.Defender, true, true, true, true)
 		elif action is ChangeActiveEffectChargesAction:

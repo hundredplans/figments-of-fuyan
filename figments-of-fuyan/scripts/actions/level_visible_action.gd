@@ -14,3 +14,6 @@ func onPreAction() -> void:
 func onPostAction() -> void:
 	for GameObject in game_objects:
 		GameObject.setLevelVisible(state)
+
+func getLogInfo() -> Array:
+	return ["State: " + str(state), "Amount: " + str(game_objects.size())]

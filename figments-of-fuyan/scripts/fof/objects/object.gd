@@ -100,6 +100,9 @@ func onLoadDataLevel() -> void:
 		Tile.setOccupiedObject(self)
 	super()
 	
+func onLoadDataLevelFofInit() -> void:
+	super()
+	vision_datastore = VisionDatastore.new()
 func onFofInit() -> void:
 	pass
 #endregion
@@ -130,23 +133,13 @@ func getTile() -> TileGD:
 #endregion
 
 #region Vision
-func getVisibleGroup() -> Array:
-	var visible_group: Array = [self]
-	for Tile in occupied_tiles:
-		visible_group.append(Tile)
-		
-		var Card: CardGD = Game.getFieldCard(Tile)
-		if Card != null: visible_group.append(Card)
-	return visible_group
-		
+func getRevealVisibleGroup() -> Array:
+	return [self] + occupied_tiles
 #endregion
 
 #region Actions
 func onProcessAction(action: Action) -> void:
 	super(action)
-	if action.post:
-		if action is ChangePhaseAction and action.phase in Game.ADVANCE_PHASES:
-			onAdvanceTurn(Game.ADVANCE_PHASES.find(action.phase))
 #endregion
 
 #region Card

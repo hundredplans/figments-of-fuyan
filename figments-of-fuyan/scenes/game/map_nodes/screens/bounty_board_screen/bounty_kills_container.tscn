@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://b0vcbb14xpp1b"]
+
+[ext_resource type="Script" path="res://scenes/game/map_nodes/screens/bounty_board_screen/bounty_kills_container.gd" id="1_13epj"]
+[ext_resource type="LabelSettings" uid="uid://dbh1brjnbxe8c" path="res://resources/ui/label_settings/roboto_large.tres" id="1_cc4y1"]
+
+[node name="BountyKillsContainer" type="HBoxContainer"]
+custom_minimum_size = Vector2(0, 400)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_13epj")
+
+[node name="BountyKillLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+text = "1"
+label_settings = ExtResource("1_cc4y1")
+
+[node name="Filler" type="Control" parent="."]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2

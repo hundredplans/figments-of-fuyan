@@ -42,9 +42,7 @@ func onLoadData(data: SavedData) -> void:
 	coords = data.coords
 	tile_rotation = data.tile_rotation
 	variation = data.variation
-	
-	if data.vision_datastore != null: vision_datastore = data.vision_datastore
-	else: vision_datastore = VisionDatastore.new()
+	vision_datastore = data.vision_datastore
 	
 	add_to_group("TileObjectsGD")
 	super(data)
@@ -63,6 +61,9 @@ func onLoadModel() -> void:
 func onAfterLoadModel() -> void:
 	call("setDefaultCollisionLayers")
 	setRayPickable(getRayPickable())
+	
+func onFofInit() -> void:
+	super()
 #endregion
 	
 #region Variations
@@ -83,3 +84,6 @@ func onApplyGreyscaleMaterial() -> void:
 		for surface_id in mesh.get_surface_override_material_count():
 			mesh.set_surface_override_material(surface_id, greyscale_material)
 #endregion
+
+func onLoadDataLevelFofInit() -> void:
+	super()

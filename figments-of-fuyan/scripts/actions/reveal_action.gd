@@ -9,9 +9,8 @@ func _init(_Revealed: GameObjectGD = null, _revealed_datastore: RevealedDatastor
 	revealed_datastore = _revealed_datastore
 	
 func onPostAction() -> void:
-	var visibles: Array = Revealed.getVisibleGroup()
+	var visibles: Array = Revealed.getRevealVisibleGroup()
 	for _GameObject in visibles: # Ignores Cards unless they themself are revealed
-		if !(_GameObject is CardGD and Revealed != _GameObject):
-			_GameObject.onRevealed(revealed_datastore)
-		_GameObject.onUpdateLevelVisible()
+		_GameObject.onRevealed(revealed_datastore)
+	onPushAction(VisionAction.new())
 	

@@ -72,6 +72,11 @@ func onLoadDataLevelFofInit() -> void:
 	
 func onFofInit() -> void:
 	pass
+	
+func onProcessAction(action: Action) -> void:
+	if action.post:
+		if action is ChangePhaseAction and action.phase in Game.ADVANCE_PHASES:
+			onAdvanceTurn(Game.ADVANCE_PHASES.find(action.phase))
 #endregion
 
 #region Material Updates
@@ -104,7 +109,7 @@ func onRemoveReveal(revealed_id: int) -> void:
 	vision_datastore.onRemoveReveal(revealed_id)
 	
 func isLevelVisible() -> bool:
-	return vision_datastore.level_visible or vision_datastore.isRevealed(0)
+	return vision_datastore.level_visible
 	
 func setLevelVisible(state: bool) -> void:
 	vision_datastore.level_visible = state
@@ -128,3 +133,7 @@ func onCreateAdjustedPoints() -> void:
 		#add_child(Point)
 		#Point.global_position = point
 #endregion
+
+#region Advance Turn
+func onAdvanceTurn(team: int) -> void:
+	pass

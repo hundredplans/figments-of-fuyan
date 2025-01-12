@@ -2,11 +2,8 @@ class_name VisionDatastore extends Resource
 
 @export var level_visible: bool
 @export var reveals: Array[RevealedDatastore]
-@export var last_seen_by_enemy: int
-
-func onResetLastSeenByEnemy() -> void:
-	last_seen_by_enemy = 0
 	
+#region Revealing
 func isRevealed(team: int) -> bool: # Which team it is revealed to
 	if reveals.is_empty(): return false
 	
@@ -24,3 +21,7 @@ func onRemoveReveal(revealed_id: int) -> void:
 		if revealed_datastore.revealed_id == revealed_id:
 			reveals.erase(revealed_datastore)
 			break
+#endregion
+	
+
+	

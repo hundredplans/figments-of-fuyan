@@ -1,8 +1,8 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=6 format=3 uid="uid://dqgo2xnqafish"]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_8kvx3"]
 [ext_resource type="Script" path="res://scripts/fof/objects/lottery_coconut.gd" id="2_bkjq0"]
-[ext_resource type="PackedScene" uid="uid://bqg3umphn7dha" path="res://assets/models/fof/objects/lottery_coconut.glb" id="3_nnook"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/lottery_coconut.glb" id="3_nnook"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_iobject.gd" id="4_fim2g"]
 [ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="5_yd0ao"]
 
@@ -14,7 +14,7 @@ lock_tile = false
 solids = Array[bool]([false])
 active_effects = Array[ExtResource("1_8kvx3")]([])
 models = Array[PackedScene]([ExtResource("3_nnook")])
-points = Array[Array]([[]])
+points = Array[Array]([[Vector3(0.237033, 0.248421, 0.0985637), Vector3(-0.130234, 0.285748, 0.195214), Vector3(-0.0652245, 0.318341, -0.219852), Vector3(0.0191624, 0.485235, 0.0294329)]])
 id = 13
 name = "Lottery Coconut"
 gdscript = ExtResource("2_bkjq0")

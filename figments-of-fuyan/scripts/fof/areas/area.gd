@@ -137,7 +137,7 @@ func generateMapNodeOddsRollable(map_node_odds: Dictionary) -> Dictionary:
 	var map_node_odds_rollable: Dictionary = {}
 	for key in map_node_odds:
 		map_node_odds_rollable[key] = {"fight": map_node_odds[key].regular_fight / 100,\
-		"encounter": map_node_odds[key].encounter / 100, "shop": map_node_odds[key].shop / 100}
+		"encounter": map_node_odds[key].encounter / 100}
 	return map_node_odds_rollable
 #endregion
 
@@ -213,7 +213,6 @@ func setEmptySpotsIDS(unique_node_ids: Array, map_node_odds: Dictionary, Card: C
 	empty_spots.shuffle()
 	
 	var is_divinus: bool = Card.info.id == 2
-	var guarantee_shop: bool = false
 	var map_node_odds_rollable: Dictionary = generateMapNodeOddsRollable(map_node_odds)
 	
 	var unique_nodes: Array = unique_node_ids\
@@ -225,14 +224,24 @@ func setEmptySpotsIDS(unique_node_ids: Array, map_node_odds: Dictionary, Card: C
 		.filter(func(__: SegmentNode): return Random.rollFloat(getWorld().extra_unique_node_odds / 100.0)):
 		unique_nodes.append(SegmentNode.new(segment_node.id, !segment_node.segment_one))
 		
-	var shops: Array = [SegmentNode.new(6, false)] if getWorldDifficulty() == 1 \
-	else [SegmentNode.new(6, false), SegmentNode.new(6, true)]
+	var shops: Array = []
+	if getWorldDifficulty() == 1:
+		shops = [SegmentNode.new(6, false, true)]
+	else:
+		var is_first_shop_holy: bool = Random.getBool()
+		shops = [SegmentNode.new(6, int(is_first_shop_holy)),\
+			SegmentNode.new(6, abs(int(is_first_shop_holy) - 1))]
 	
 	if getWorldDifficulty() > 1 and Random.rollFloat(getWorld().extra_shop_odds / 100.0):
-		shops.append(SegmentNode.new(6, Random.getBool()))
+		shops.append(SegmentNode.new(6, Random.getBool(), Random.getBool()))
 		
 	for empty_spot in empty_spots:
 		var is_holy: bool = empty_spot.links.any(func(x: EmptyMapNodeLink): return x.is_holy)
+		
+		if is_divinus and is_holy and empty_spot.progress == 9:
+			empty_spot.id = 10
+			continue
+			
 		match empty_spot.progress:
 			-1: empty_spot.id = 1; continue
 			0:
@@ -243,15 +252,8 @@ func setEmptySpotsIDS(unique_node_ids: Array, map_node_odds: Dictionary, Card: C
 			_:
 				if onSelectUniqueNodeGeneration(unique_nodes, empty_spot):
 					continue
-			
-		if is_divinus and is_holy and empty_spot.progress == 9:
-			empty_spot.id = 10
-			continue
-		
-		elif !guarantee_shop and map_node_odds[empty_spot.progress].shop > 0:
-			empty_spot.id = 6
-			guarantee_shop = true
-			continue
+				elif onSelectShop(shops, empty_spot, is_holy):
+					continue
 		
 		if empty_spots.filter(func(y: EmptyMapNode): return y != empty_spot).all(func(x: EmptyMapNode): return x.id not in [0, 3]):
 			empty_spot.id = 3
@@ -260,13 +262,21 @@ func setEmptySpotsIDS(unique_node_ids: Array, map_node_odds: Dictionary, Card: C
 			match roll:
 				"fight": empty_spot.id = 3; continue
 				"encounter": empty_spot.id = 5; continue
-				"shop": empty_spot.id = 6; continue
 		
 func onSelectUniqueNodeGeneration(unique_nodes: Array, empty_spot: EmptyMapNode) -> bool:
 	for segment_node in unique_nodes.filter(func(x: SegmentNode):\
 		return (x.segment_one and empty_spot.progress < 5) or (!x.segment_one and empty_spot.progress > 5)):
 		empty_spot.id = segment_node.id
 		unique_nodes.erase(segment_node)
+		return true
+	return false
+		
+func onSelectShop(shops: Array, empty_spot: EmptyMapNode, is_holy: bool) -> bool:
+	for segment_node in shops.filter(func(x: SegmentNode):\
+		return (x.segment_one and empty_spot.progress < 5) or (!x.segment_one and empty_spot.progress > 5)\
+		and is_holy == x.is_holy):
+		empty_spot.id = 6
+		shops.erase(segment_node)
 		return true
 	return false
 		

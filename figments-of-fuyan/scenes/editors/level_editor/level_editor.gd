@@ -199,11 +199,9 @@ func _on_search_tile_object_text_changed(text: String):
 			panel_button.mouse_in_ui.connect(onMouseInUI)
 			panel_button.custom_pressed.connect(onTileObjectInfoSelected)
 
-func onCreateSearchPanelButton(info: TileObjectInfo) -> void:
-	pass
-
 func onTileObjectInfoSelected(data: SavedData, remove_last: bool = true) -> void:
 	if remove_last and HoverModel != null: HoverModel.queue_free()
+	onReleaseLineEditFocus()
 	
 	if data is SavedDataTile: data.is_decoration = is_decoration
 	HoverModel = SavedData.onLoadModel(data, World)
@@ -620,7 +618,18 @@ func onCreateLoadLevelButton(button_name: String, pressed_info: Variant) -> Pane
 	LoadLevelContainer.add_child(panel_button)
 	panel_button.setText(button_name)
 	panel_button.mouse_in_ui.connect(onMouseInUI)
-	panel_button.pressed.connect(onLoadLevel.bind(pressed_info))
+	panel_button.pressed.connect(onLoadLevelButtonPressed.bind(pressed_info))
 	return panel_button
+	
+func onLoadLevelButtonPressed(pressed_info: Variant) -> void:
+	onReleaseLineEditFocus()
+	onLoadLevel(pressed_info)
 #endregion
+
+#region UI
+func onReleaseLineEditFocus() -> void:
+	var focus_owner := get_viewport().gui_get_focus_owner()
+	if focus_owner != null and focus_owner is LineEdit:
+		focus_owner.release_focus()
+	
 	

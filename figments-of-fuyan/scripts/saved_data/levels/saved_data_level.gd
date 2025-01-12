@@ -11,10 +11,11 @@ class_name SavedDataLevel extends SavedData
 @export var is_ended: bool
 @export var rewards: Rewards
 @export var anti_boons: Array
+@export var old_player_vision: Array
 
 func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _data: Array = [], _enemy_spawns: Array = [], _field_cards_data: Array = [], \
 	_phase := Game.Phases.NULL, _level_camera_data: LevelCameraData = null, _energy: int = 0, _max_energy: int = 0, _is_elite: bool = false, _is_ended: bool = false,
-	_rewards: Rewards = null, _anti_boons: Array = []) -> void:
+	_rewards: Rewards = null, _anti_boons: Array = [], _old_player_vision: Array = []) -> void:
 	super(_id, _first_init, _public_id)
 	data = _data
 	phase = _phase
@@ -27,6 +28,7 @@ func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _data: 
 	is_ended = _is_ended
 	rewards = _rewards
 	anti_boons = _anti_boons
+	old_player_vision = _old_player_vision
 	
 func getInfoType() -> GDScript: return LevelInfo
 		

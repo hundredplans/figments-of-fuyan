@@ -52,6 +52,7 @@ func onLoadDataLevel() -> void:
 	super()
 	Model.visible = false
 	loaded_in_level = true
+	setCollisionLayers(0)
 
 func isSpawnOccupied() -> bool:
 	return occupied_tiles.any(func(x: TileGD): return x.isOccupied())

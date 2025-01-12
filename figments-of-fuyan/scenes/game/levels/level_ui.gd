@@ -425,5 +425,9 @@ func setHoverCardUIPosition() -> void:
 func onHideUI(state: bool) -> void:
 	visible = state
 	
-	for Card in get_tree().get_nodes_in_group("CardsGD").filter(func(x: CardGD): return x.isLevelVisible()):
+	for Card in get_tree().get_nodes_in_group("FieldCardsGD").filter(func(x: CardGD): return x.isLevelVisible()):
 		Card.FieldInfo.visible = state
+		
+	for Tile in get_tree().get_nodes_in_group("LevelTilesGD"):
+		Tile.onHideUI(state)
+#endregion
