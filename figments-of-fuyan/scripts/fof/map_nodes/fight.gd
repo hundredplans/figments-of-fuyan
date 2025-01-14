@@ -2,7 +2,7 @@ class_name FightNodeGD extends MapNodeGD
 
 var enemy_spawns: Array = []
 var level_info: LevelInfo
-const FORCE_LEVEL_ID: int = 3
+const FORCE_LEVEL_ID: int = 0
 
 #region Save / Load / Init
 func onFofInit() -> void:
@@ -14,7 +14,7 @@ func onFofInit() -> void:
 	setLevelInfo()
 	var empty_spawn_coords: Array = getEmptySpawnCoords(level_info)
 	var enemy_spawn_amount: int = min(randi_range(level_info.enemy_min_spawn_amount, level_info.enemy_max_spawn_amount), empty_spawn_coords.size())
-	var budget: int = getBudget() 
+	var budget: int = getBudget()
 	
 	enemy_spawns = Game.area.setEnemySpawnsFromBudget(budget, enemy_spawn_amount, empty_spawn_coords, map_location.progress, false)
 	
