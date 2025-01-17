@@ -1,15 +1,14 @@
-[gd_resource type="Shader" format=3 uid="uid://bti0g8xnidary"]
-
-[resource]
-code = "shader_type spatial;
+shader_type spatial;
 render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
 
 uniform sampler2D tx_attributes;
 uniform sampler2D tx_color;
 uniform sampler2D tx_emission;
+
+uniform vec3 albedo : source_color;
+uniform float max_grey;
+
 uniform float EmissionStrength : hint_range(0, 20) = 3;
-
-
 
 void fragment() {
 // Input:9
@@ -74,9 +73,9 @@ void fragment() {
 
 // Output:0
 	ALBEDO = vec3(n_out14p0.xyz);
+	ALPHA = 0.5;
 	METALLIC = n_out7p0;
 	ROUGHNESS = n_out12p0;
 	EMISSION = vec3(n_out15p0.xyz);
-
+	ALBEDO *= albedo;
 }
-"

@@ -7,6 +7,11 @@ const VISION_RAY_SCENE_PATH: String = "res://scenes/game/cards/world/vision_ray.
 const UNIT_VISIBLE_PARTICLE_SCENE_PATH: String = "res://scenes/particles/unit_visible_particle.tscn"
 const BASE_MATERIAL_ASCENDED_PATH: String = "res://resources/materials/game/base_material_ascended.tres"
 
+const BASE_MATERIAL_BROWN_TRANSPARENT_PATH: String = "res://resources/materials/game/base_material_colored/base_material_brown_transparent.tres"
+const BASE_MATERIAL_GREEN_TRANSPARENT_PATH: String = "res://resources/materials/game/base_material_colored/base_material_green_transparent.tres"
+const BASE_MATERIAL_RED_TRANSPARENT_PATH: String = "res://resources/materials/game/base_material_colored/base_material_red_transparent.tres"
+const BASE_MATERIAL_ALPHAGREY_PATH: String = "res://resources/materials/game/base_material_alphagrey.tres"
+
 @export_group("Card")
 @export var attack: int
 @export var health: int
@@ -65,3 +70,10 @@ func getStats(ascended: bool = false) -> StatsDatastore:
 		health + (plus_health if ascended else 0),
 		speed + (plus_speed if ascended else 0),
 		energy + (plus_energy if ascended else 0))
+
+func getColoredBaseMaterial(team: int) -> ShaderMaterial:
+	match team:
+		0: return load(BASE_MATERIAL_GREEN_TRANSPARENT_PATH)
+		1: return load(BASE_MATERIAL_RED_TRANSPARENT_PATH)
+		2: return load(BASE_MATERIAL_BROWN_TRANSPARENT_PATH)
+	return null

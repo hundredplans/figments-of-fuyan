@@ -1,7 +1,6 @@
 class_name Runner extends Behaviour
 
 func getCombatTiles(_Card: CardGD, tiles: Array, attackables: Array) -> Dictionary:
-	tiles = tiles
 	var tiles_to_value: Dictionary = {}
 	for Tile in tiles:
 		var distance: int = attackables.map(func(x: CardGD): return Game.getCoordsDistance(x.getCoords(), Tile.getCoords())).min()

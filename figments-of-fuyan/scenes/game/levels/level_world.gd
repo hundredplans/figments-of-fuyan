@@ -243,23 +243,32 @@ func isActionTiedToAwakenAction(action: ChangeTurnStateAction) -> bool:
 #region Vision Mode
 var original_vision: Dictionary
 var default_vision: Dictionary
+var cards_vision_mode: Dictionary # Dict of Card: CardVisionMode
 var in_vision_mode: bool
 func onVisionModeChanged(state: bool) -> void:
 	in_vision_mode = state
 	LastCardVisionMode = null
-	
+	var all_cards: Array = get_tree().get_nodes_in_group("FieldCardsGD")
 	if state:
 		original_vision = {}
 		default_vision = {}
-		for GameObject in get_tree().get_nodes_in_group("LevelTileObjectsGD") + get_tree().get_nodes_in_group("FieldCardsGD"):
+		
+		for GameObject in get_tree().get_nodes_in_group("LevelTileObjectsGD") + all_cards:
 			var level_visible: bool = GameObject.isLevelVisible()
 			original_vision[GameObject] = level_visible
 			GameObject.setLevelVisible(level_visible)
 			default_vision[GameObject] = false if GameObject is not CardGD else level_visible
 			GameObject.setLevelVisible(default_vision[GameObject])
+			
+		for Card in all_cards:
+			Card.setCardVisionMode(true)
 	else:
 		for GameObject in original_vision:
 			GameObject.setLevelVisible(original_vision[GameObject])
+			
+		for Card in all_cards:
+			Card.setCardVisionMode(false)
+		
 		original_vision = {}
 		default_vision = {}
 	
@@ -271,6 +280,8 @@ func onVisionModeTileHovered(Tile: TileGD) -> void:
 		LastCardVisionMode = null
 		for GameObject in default_vision:
 			GameObject.setLevelVisible(default_vision[GameObject])
+			if GameObject is CardGD:
+				GameObject.setCardVisionModeState(false)
 		
 	if Tile == null: return
 	
@@ -282,6 +293,8 @@ func onVisionModeTileHovered(Tile: TileGD) -> void:
 	LastCardVisionMode = Card
 	for GameObject in LastCardVisionMode.getVisibleGameObjects().filter(func(x: GameObjectGD): return x in ally_vision):
 		GameObject.setLevelVisible(true)
+		if GameObject is CardGD:
+			GameObject.setCardVisionModeState(true)
 #endregion
 	
 #region Active Effects

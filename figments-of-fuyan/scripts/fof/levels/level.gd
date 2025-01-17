@@ -230,6 +230,8 @@ func onProcessAction(action: Action) -> void:
 			onRecalculateAITurn(action.Defender, true, true, true, true)
 		elif action is ChangeActiveEffectChargesAction:
 			update_active_effects.emit()
+		elif action is ClearTileObjectAction:
+			update_active_effects.emit()
 	else:
 		if action is ChangePhaseAction:
 			if action.phase == phase: action.onFailAction()

@@ -38,12 +38,15 @@ var last_seen_violence: int # Turns since they last violence, -1 for haven't see
 var last_ignore_behaviour_roll: bool
 var overworld_traits: Array[OverworldTrait] = []
 var bounty_kills: BountyKills
+var card_vision_mode: CardVisionMode
+var is_card_change_level_visible: bool # Not saved
 #endregion
 
 #region Globals
 const DEFAULT_ANIMATION_BLEND_TIME: float = 0.2
 const IDLE_RARE_MIN_TIME: int = 12
 const IDLE_RARE_MAX_TIME: int = 80
+const ALPHAGREY_CHANGE_SPEED: float = 0.5
 #endregion
 
 #region Signals
@@ -323,7 +326,7 @@ func onCreateModel() -> void:
 		
 	setDefaultCollisionLayers()
 	setAniPlayer(Model)
-	setAscendedVisual()
+	setBaseMaterials()
 	
 func onCreateEmptyModel(parent: Node3D) -> Node3D:
 	var EmptyModel: Node3D = info.model.instantiate()
@@ -426,8 +429,8 @@ func onProcessAction(action: Action) -> void:
 			if action is MoveToTileAction and action.Card == self: onMoveToTile(action)
 		elif action.post:
 			if action is MovementFinishAction and action.Card == self: Tile.setOutlineMaterial()
-			elif isOccupyVisionVisibleAction(action):
-				onAddUnitVisibleParticle()
+			#elif isOccupyVisionVisibleAction(action):
+				#onAddUnitVisibleParticle()
 			elif action is AttackAction and action.Attacker.isEnemy(team) and action.Attacker in getVisibleFieldCardsEnemies():
 				last_seen_violence = 0
 			elif isValidRampage(action):
@@ -618,6 +621,8 @@ func onUpdateVision() -> void: # Returns the new visibles
 		
 		if GameObject is CardGD:
 			visibles[GameObject.Tile].setByUnit(false)
+			if !GameObject.isNotInvisibleOrIsAdjacent(Tile):
+				visibles[GameObject].setByTile(false)
 			
 		elif GameObject is TileGD:
 			for Obj in GameObject.occupied_objects:
@@ -682,13 +687,20 @@ func onCreateVisionRay() -> void:
 	VisionRay.position.y = info.eye
 	
 func onUpdateLevelVisible() -> void:
-	visible = isLevelVisible()
+	visible = isLevelVisible() if !is_card_change_level_visible else true
 	
 func isLevelVisible() -> bool:
 	return isAlly(0) or super()
 	
 func setLevelVisible(state: bool) -> void:
-	super(state)
+	if state != vision_datastore.level_visible:
+		is_card_change_level_visible = true
+		super(state)
+		await setAlphagreyMaterial(1.0 if state else 0.0)
+		is_card_change_level_visible = false
+	else:
+		super(state)
+		
 	if Tile != null:
 		var occupy_state := Tile.OccupyStates.NULL
 		if state:
@@ -701,6 +713,14 @@ func setLevelVisible(state: bool) -> void:
 func setDetectableByRay(state: bool) -> void:
 	if state: setCollisionLayers(96)
 	else: setCollisionLayers(32)
+	
+func setCardVisionMode(state: bool) -> void:
+	card_vision_mode = null if !state else CardVisionMode.new()
+	setBaseMaterials()
+	
+func setCardVisionModeState(state: bool) -> void:
+	card_vision_mode.state = state
+	setBaseMaterials()
 #endregion
 
 #region Fall Damage
@@ -1072,7 +1092,7 @@ func onAscend(state: bool) -> void:
 	update_ascended.emit(state)
 	
 	onAscendedUpdateOverworldTraits()
-	setAscendedVisual()
+	setBaseMaterials()
 	
 func onAscendedUpdated(state: bool) -> void:
 	var actions: Array = []
@@ -1084,9 +1104,6 @@ func onAscendedUpdated(state: bool) -> void:
 		actions.append(ChangeActiveEffectChargesAction.new(active_ability, max_charges - active_ability.charges, max_charges == -1))
 	onPushAction(actions)
 	
-func setAscendedVisual() -> void:
-	if Model == null: return
-	setMeshesMaterial(load(info.BASE_MATERIAL_ASCENDED_PATH) if ascended else null, Model)
 #endregion
 
 #region Temp Card
@@ -1180,4 +1197,40 @@ func isValidDuelistRampage(action: Action) -> bool:
 	enemy_cards.erase(action.Defender)
 	
 	return cards.is_empty() and enemy_cards.is_empty()
+#endregion
+
+#region AI
+func onUnitSpecificTransforms(_tiles_to_value: Dictionary, enemies: Array, allies: Array) -> void:
+	pass
+#endregion
+
+#region Materials
+func setBaseMaterials() -> void:
+	if Model == null: return
+	var mat: Material
+	if card_vision_mode != null and !card_vision_mode.state: mat = info.getColoredBaseMaterial(team)
+	elif ascended: mat = load(info.BASE_MATERIAL_ASCENDED_PATH)
+	setMeshesMaterial(mat, Model)
+
+var is_in_alphagrey: bool
+var AlphagreyTween: Tween
+func setAlphagreyMaterial(start_value: float) -> void:
+	if AlphagreyTween != null: AlphagreyTween.stop()
+	AlphagreyTween = get_tree().create_tween()
+	
+	is_in_alphagrey = true
+	setMeshesMaterial(load(info.BASE_MATERIAL_ALPHAGREY_PATH), Model)
+	
+	AlphagreyTween.tween_method(setAlphagreyMaterialValue, start_value, abs(start_value - 1), ALPHAGREY_CHANGE_SPEED)
+	await AlphagreyTween.finished
+	
+	is_in_alphagrey = false
+	is_card_change_level_visible = false
+	setBaseMaterials()
+	onUpdateLevelVisible()
+	
+func setAlphagreyMaterialValue(value: float) -> void:
+	if !is_in_alphagrey or !is_in_group("FieldCardsGD"): return
+	for mesh in getMeshes(Model):
+		mesh.set_instance_shader_parameter("time_value", value)
 #endregion

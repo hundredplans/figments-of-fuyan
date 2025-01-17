@@ -293,6 +293,9 @@ func onUpdateLevelVisible() -> void:
 func getRevealVisibleGroup() -> Array:
 	return [self] + occupied_objects
 	
+func getTurnsUnseen() -> int:
+	return vision_datastore.getLastSeenByEnemy()
+	
 func onOccupyingCardLevelVisibleChanged(_occupy_state: OccupyStates) -> void:
 	occupy_state = _occupy_state
 	setOutlineMaterial()
