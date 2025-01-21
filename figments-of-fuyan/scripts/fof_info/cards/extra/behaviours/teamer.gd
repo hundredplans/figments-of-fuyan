@@ -9,7 +9,7 @@ const DISTANCE_TO_VALUE: Dictionary = {
 	# 5 or greater is 0
 }
 
-func getOutOfCombatTiles(_Card: CardGD, tiles: Array, allies: Array) -> Dictionary: 
+func getOutOfCombatTiles(_Card: CardGD, tiles: Array, allies: Array, _enemies: Array) -> Dictionary: 
 	var tiles_by_value: Dictionary = {}
 	for Tile in tiles:
 		tiles_by_value[Tile] = 0
@@ -20,3 +20,9 @@ func getOutOfCombatTiles(_Card: CardGD, tiles: Array, allies: Array) -> Dictiona
 			tiles_by_value[Tile] = min(tiles_by_value[Tile] + DISTANCE_TO_VALUE[distance], MAX_ALLY)
 		tiles_by_value[Tile] /= MAX_ALLY
 	return tiles_by_value
+
+func isOutOfCombatBehaviour() -> bool:
+	return true
+
+func isCombatBehaviour() -> bool:
+	return false

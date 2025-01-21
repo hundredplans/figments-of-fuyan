@@ -16,7 +16,7 @@ extends Node
 @onready var World: Node3D = %World
 @onready var Camera: Camera3D = %Camera3D
 
-@onready var ProgressEdit: LineEdit = %ProgressEdit	
+@onready var ProgressEdit: LineEdit = %ProgressEdit
 @onready var LevelNameEdit: LineEdit = %LevelNameEdit
 #endregion
 #region Globals

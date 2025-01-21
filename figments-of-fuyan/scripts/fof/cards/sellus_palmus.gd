@@ -1,5 +1,7 @@
 extends CardGD
 
+const AMOUNT_TO_USE_HEAL_AI: int = 2
+
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	if active_effect.name == "Palmsale":
 		var tiles: Array = Game.getAdjacentTiles(Tile)
@@ -14,11 +16,16 @@ func isPickable(_Tile: TileGD) -> bool:
 func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
 	super(active_effect, PickedTile, active_effect_tiles)
 	if active_effect is ActiveAbilityDatastore and active_effect.name == "Palmsale":
-		var actions: Array = [StatAction.new(StatInfo.new(Game.getFieldCard(PickedTile), Game.Stats.HEALTH, 1)),\
+		var stat_infos: Array = active_effect_tiles.pickable_tiles.map(func(x: TileGD): return StatInfo.new(Game.getFieldCard(x), Game.Stats.HEALTH, 1))
+		var actions: Array = [StatAction.new(stat_infos),\
 		ChangeTileRotationAction.new(self, Game.getRelativeTileRotation(Tile, PickedTile))]
 		
 		onPushAction(actions)
 		onAbility()
+	
+# If it can hit two or more allies
+func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic) -> TileGD:
+	return active_effect_tiles.pickable_tiles.pick_random() if active_effect_tiles.pickable_tiles.size() >= AMOUNT_TO_USE_HEAL_AI else null
 	
 func getDescription() -> String:
 	var active_effect: ActiveEffectDatastore = getActiveEffectByName("Palmsale")

@@ -5,6 +5,9 @@ var Defenders: Array
 var damage: int
 var is_fall_damage: bool = false
 
+var mults: Array
+var adds: Array
+
 func _init(_Damager: GameObjectGD = null, _Defenders: Variant = null, _damage: int = 0, _is_fall_damage: bool = false) -> void:
 	super()
 	Damager = _Damager
@@ -19,4 +22,13 @@ func onPreAction():
 	pass
 	
 func onPostAction():
-	pass
+	for add in adds: damage += add
+	for mult in mults: damage *= mult
+	damage = max(damage, 0)
+	
+func onAdd(value: int) -> void:
+	adds.append(value)
+	
+func onMult(value: int) -> void:
+	mults.append(value)
+	

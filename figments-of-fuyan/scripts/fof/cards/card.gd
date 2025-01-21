@@ -129,10 +129,12 @@ func getMovementSpeed() -> int:
 	
 func getCoords() -> Vector4i:
 	return Tile.getCoords()
+	
+func getTile() -> TileGD:
+	return Tile
 #endregion
 
 #region Animation
-
 func setAniPlayer(Model: Node3D) -> void:
 	for child in Helper.getChildrenRecursive(Model):
 		if child is AnimationPlayer and !child.is_queued_for_deletion():
@@ -426,7 +428,8 @@ func onProcessAction(action: Action) -> void:
 	super(action)
 	if Game.CardPlaces.FIELD == card_place:
 		if !action.post:
-			if action is MoveToTileAction and action.Card == self: onMoveToTile(action)
+			if action is MoveToTileAction and action.Card == self:
+				onMoveToTile(action)
 		elif action.post:
 			if action is MovementFinishAction and action.Card == self: Tile.setOutlineMaterial()
 			#elif isOccupyVisionVisibleAction(action):
@@ -698,8 +701,7 @@ func setLevelVisible(state: bool) -> void:
 		super(state)
 		await setAlphagreyMaterial(1.0 if state else 0.0)
 		is_card_change_level_visible = false
-	else:
-		super(state)
+	else: super(state)
 		
 	if Tile != null:
 		var occupy_state := Tile.OccupyStates.NULL
@@ -752,32 +754,33 @@ func getMaxAttacks() -> int: return 1
 	
 func setAttacks(_attacks: int) -> void: attacks = _attacks
 	
-func getAttackablesInRange() -> Dictionary:
+func getAttackablesInRange(StartingTile: TileGD = Tile) -> Dictionary:
 	if !canAttack(): return {}
 	var iobjects: Array = get_tree().get_nodes_in_group("LevelIObjectsGD")
 	var cards: Array = get_tree().get_nodes_in_group("FieldCardsGD")
+	cards.erase(self)
 	
 	var attackables: Dictionary = {}
 	for GameObject in cards + iobjects:
-		var Tile: TileGD = GameObject.Tile if GameObject is CardGD else GameObject.getAttackableTile()
-		if isGameObjectAttackable(GameObject, Tile):
-			attackables[GameObject] = Tile
+		var EnemyTile: TileGD = GameObject.Tile if GameObject is CardGD else GameObject.getAttackableTile()
+		if isGameObjectAttackable(GameObject, EnemyTile, StartingTile):
+			attackables[GameObject] = EnemyTile
 	
 	return attackables
 	
 func getAttackableTile() -> TileGD: # Simplifying function for iobjects
 	return Tile
 	
-func isGameObjectAttackable(GameObject: GameObjectGD, AttackableTile: TileGD) -> bool:
+func isGameObjectAttackable(GameObject: GameObjectGD, AttackableTile: TileGD, StartingTile: TileGD = Tile) -> bool:
 	if !GameObject.isAttackable(self): return false
-	if !(Game.getCoordsDistance(Tile.getCoords(), AttackableTile.getCoords()) <= speed + getAttackRange()): return false
+	if !(Game.getCoordsDistance(StartingTile.getCoords(), AttackableTile.getCoords()) <= speed + getAttackRange()): return false
 	if !(GameObject in getVisibleGameObjects()): return false
-	var is_in_height: bool = abs(AttackableTile.getHeight() - Tile.getHeight()) in [0, 1]
+	var is_in_height: bool = abs(AttackableTile.getHeight() - StartingTile.getHeight()) in [0, 1]
 	
 	var top_y: float = GameObject.info.top if GameObject is CardGD else GameObject.getTopVertexY()
 	var is_in_unit_height: bool = position.y <= (GameObject.position.y + top_y) and top_y <= (position.y + info.top)
 	
-	var is_ranged: bool = getAttackRange() > 1 and (abs(AttackableTile.getHeight() - Tile.getHeight()) <= 5)
+	var is_ranged: bool = getAttackRange() > 1 and (abs(AttackableTile.getHeight() - StartingTile.getHeight()) <= 5)
 	return (is_in_height or is_in_unit_height or is_ranged)
 		
 #endregion
@@ -930,6 +933,22 @@ func getActiveEffectDescription(_active_effect: ActiveEffectDatastore, descripti
 	
 func getActiveAbilities() -> Array:
 	return active_effects.filter(func(x: ActiveEffectDatastore): return x is ActiveAbilityDatastore)
+	
+func getActiveEffects() -> Array:
+	return active_effects
+	
+func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, _active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic) -> TileGD:
+	return null
+	
+func onAIAbilityCheckerDefault(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
+	if active_effect.getDefaultDisabled(self): return null
+	
+	var active_effect_tiles: ActiveEffectTiles = getActiveEffectTiles(active_effect)
+	if active_effect_tiles == null or active_effect_tiles.pickable_tiles.is_empty(): return null
+	return active_effect_tiles
+	
+func getPickableTiles(active_effect: ActiveEffectDatastore) -> Array:
+	return active_effect.pickable_tiles if active_effect != null else []
 #endregion
 
 #region Status Effects
@@ -1000,7 +1019,7 @@ func onRemoveDelayedStatInfo(stat_info: StatInfo) -> void:
 
 #region Action Checker
 func isValidTrauma(action: Action) -> bool:
-	return action.post and action is DeathAction and action.Defender.isAlly(team) and card_place == Game.CardPlaces.FIELD and action.Defender in getVisibleFieldCards()
+	return action.post and action is DeathAction and isAlly(action.Defender.team) and card_place == Game.CardPlaces.FIELD and action.getCardSawDefenderDie(self)
 
 func isValidLastWill(action: Action) -> bool:
 	return action.post and action is DeathAction and action.Defender == self and card_place == Game.CardPlaces.GRAVEYARD
@@ -1009,13 +1028,14 @@ func isValidRampage(action: Action) -> bool:
 	return action.post and action is DeathAction and action.Damager == self and card_place == Game.CardPlaces.FIELD
 
 func isValidOnHit(action: Action) -> bool:
-	return action.post and action is DamageAction and action.owner is AttackAction and action.Damager == self and card_place == Game.CardPlaces.FIELD
+	return action.post and action is DamageAction and action.owner is AttackAction and action.Damager == self and card_place == Game.CardPlaces.FIELD\
+		and action.Defenders.any(func(x: GameObjectGD): return x is CardGD)
 
 func isValidRevenge(action: Action) -> bool:
 	return action.post and action is StatAction and action.owner is DamageAction and self in action.owner.Defenders and card_place == Game.CardPlaces.FIELD
 
 func isValidBloodthirst(action: Action) -> bool:
-	return action.post and action is DeathAction and action.Defender in getVisibleFieldCardsEnemies() and card_place == Game.CardPlaces.FIELD
+	return action.post and action is DeathAction and isEnemy(action.Defender.team) and card_place == Game.CardPlaces.FIELD and action.getCardSawDefenderDie(self) 
 
 func isValidArrive(action: Action) -> bool:
 	return action.post and action is AwakenAction and action.Card == self
@@ -1172,6 +1192,12 @@ func onIdleRareTimerTimeout() -> void:
 #region Death
 func onPreDeath() -> void:
 	setCollisionLayers(0)
+	
+func isAlive() -> bool:
+	return is_in_group("FieldCardsGD")
+	
+func isDead() -> bool:
+	return is_in_group("GraveyardCardsGD")
 #endregion
 
 #region Kills
@@ -1200,7 +1226,7 @@ func isValidDuelistRampage(action: Action) -> bool:
 #endregion
 
 #region AI
-func onUnitSpecificTransforms(_tiles_to_value: Dictionary, enemies: Array, allies: Array) -> void:
+func onUnitSpecificTransforms(_tiles_to_value: Dictionary, DFL: DefaultFightLogic) -> void:
 	pass
 #endregion
 
@@ -1220,12 +1246,13 @@ func setAlphagreyMaterial(start_value: float) -> void:
 	
 	is_in_alphagrey = true
 	setMeshesMaterial(load(info.BASE_MATERIAL_ALPHAGREY_PATH), Model)
-	
+	setAlphagreyMaterialValue(start_value)
 	AlphagreyTween.tween_method(setAlphagreyMaterialValue, start_value, abs(start_value - 1), ALPHAGREY_CHANGE_SPEED)
 	await AlphagreyTween.finished
 	
 	is_in_alphagrey = false
 	is_card_change_level_visible = false
+	
 	setBaseMaterials()
 	onUpdateLevelVisible()
 	

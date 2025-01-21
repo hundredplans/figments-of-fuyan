@@ -186,6 +186,20 @@ func onSpectateAllies() -> void:
 	
 	onCreateCameraChangeAction(_SpectateObject)
 	
+func onSpectateEnemies() -> void:
+	var _SpectateObject: GameObjectGD = LastEnemySpectateObject
+	if _SpectateObject == null:
+		var enemies: Array = Game.getEnemyUnits(0)
+		if !enemies.is_empty(): _SpectateObject = enemies[0]
+	
+	onCreateCameraChangeAction(_SpectateObject)
+	
+func onSpectateGroup(team: int) -> void:
+	match team:
+		-1: onSpectateSpawn()
+		0: onSpectateAllies()
+		1: onSpectateEnemies()
+	
 func onSpectateCycle() -> void:
 	var _SpectateObject: GameObjectGD = LastCycleSpectateObject
 	if _SpectateObject == null:

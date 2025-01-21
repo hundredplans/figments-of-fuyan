@@ -42,6 +42,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level.game_ended.connect(onGameEnded)
 	level.game_started.connect(onGameStarted)
 	level.camera_change_pre.connect(onCameraChangePre)
+	level.spectate_group.connect(CameraManager.onSpectateGroup)
 	
 	CameraManager.camera_position_updated.connect(onCameraPositionUpdated)
 	CameraManager.create_camera_action.connect(onCreateCameraChangeAction)

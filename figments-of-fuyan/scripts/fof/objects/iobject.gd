@@ -89,6 +89,19 @@ func getActiveEffect(effect_name: String) -> ActiveEffectDatastore:
 	
 func getActiveEffectDescription(_active_effect: ActiveEffectDatastore, description: String) -> String:
 	return description
+	
+func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, _active_effect_tiles: ActiveEffectTiles, _Card: CardGD, _DFL: DefaultFightLogic) -> TileGD:
+	return null
+	
+func getActiveEffectTiles(_active_effect: ActiveEffectDatastore, _Card: CardGD) -> ActiveEffectTiles:
+	return null
+	
+func onAIAbilityCheckerDefault(active_effect: ActiveEffectDatastore, Card: CardGD) -> ActiveEffectTiles:
+	if active_effect.getDefaultDisabled(Card): return null
+	
+	var active_effect_tiles: ActiveEffectTiles = getActiveEffectTiles(active_effect, Card)
+	if active_effect_tiles == null or active_effect_tiles.pickable_tiles.is_empty(): return null
+	return active_effect_tiles
 #endregion
 
 #region Animation

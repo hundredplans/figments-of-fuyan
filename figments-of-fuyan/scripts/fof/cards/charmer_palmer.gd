@@ -1,5 +1,8 @@
 extends CardGD
 
+const GUARANTEED_CHARMING_STANCE_UNIT_AMOUNT_AI: int = 2
+const SINGLE_UNIT_CHANCE: float = 0.1
+
 var valid_cards: Array = []
 func onProcessAction(action: Action) -> void:
 	super(action)
@@ -34,8 +37,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 	if active_effect is ActiveAbilityDatastore and active_effect.name == "Charming Stance":
 		var cards: Array = active_effect_tiles.pickable_tiles.map(func(x: TileGD): return Game.getAllyFieldCard(x, team))
 		var actions: Array = [StatAction.new(
-			cards.map(func(x: CardGD): return StatInfo.new(x, Game.Stats.HEALTH, 1))
-		)]
+			cards.map(func(x: CardGD): return StatInfo.new(x, Game.Stats.HEALTH, 1)))]
 		
 		for Card in cards.filter(func(x: CardGD): return x not in valid_cards):
 			Card.onAddBaseFieldEffect(3, self)
@@ -44,8 +46,16 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		onPushAction(actions)
 		onAbility()
 		
+# Guaranteed for 2 units, 10% chance to use for 1 unit
+func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic) -> TileGD:
+	if active_effect_tiles.pickable_tiles.size() >= GUARANTEED_CHARMING_STANCE_UNIT_AMOUNT_AI:
+		return active_effect_tiles.pickable_tiles.pick_random()
+	elif active_effect_tiles.pickable_tiles.size() == 1 and Random.rollFloat(SINGLE_UNIT_CHANCE):
+		return active_effect_tiles.pickable_tiles.pick_random()
+	return null
+		
 func onSave() -> SavedDataCard:
-	ability_save["valid_cards"] = valid_cards.map(func(x: FieldEffectGD): return x.public_id)
+	ability_save["valid_cards"] = valid_cards.map(func(x: CardGD): return x.public_id)
 	return super()
 	
 func onLoadData(data: SavedData) -> void:

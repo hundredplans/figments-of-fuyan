@@ -26,3 +26,9 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 			ChangeTileRotationAction.new(Card, Game.getRelativeTileRotation(Card.Tile, EnemyCard.Tile)),
 			ChangeTileRotationAction.new(EnemyCard, Game.getRelativeTileRotation(EnemyCard.Tile, Card.Tile))]
 		onPushAction(actions)
+
+# If attacking someone with a non-lethal attack
+func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, DFL: DefaultFightLogic) -> TileGD:
+	if DFL.getIsCardAttack() and !DFL.getIsKillGuaranteed():
+		return active_effect_tiles.pickable_tiles.pick_random()
+	return null

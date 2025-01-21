@@ -1,6 +1,7 @@
 extends CardGD
 
 func onProcessAction(action: Action) -> void:
+	super(action)
 	if isValidOnHit(action):
 		onPushAction(OnHitAction.new(self, action))
 

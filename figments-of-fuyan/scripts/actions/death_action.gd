@@ -7,6 +7,7 @@ var health_damage: int
 
 var Tile: TileGD # Where the Defender died
 var game_objects_in_vision: Array # When the defender died saved
+var card_to_visible_defender: Dictionary # CardGD: bool, if the card saw this unit before death
 
 func _init(_Damager: GameObjectGD = null, _Defender: GameObjectGD = null, _damage: int = 0, _health_damage: int = 0) -> void:
 	super()
@@ -18,6 +19,10 @@ func _init(_Damager: GameObjectGD = null, _Defender: GameObjectGD = null, _damag
 func onPreAction() -> void:
 	Tile = Defender.Tile
 	game_objects_in_vision = Defender.getVisibleGameObjects()
+	
+	for Card in Game.get_tree().get_nodes_in_group("FieldCardsGD"):
+		card_to_visible_defender[Card] = Defender in Card.getVisibleFieldCards()
+	
 	setActionDelay(3.0 if Defender.isLevelVisible() else 0.0)
 	Defender.onChangeCardPlace(Game.CardPlaces.GRAVEYARD)
 	Defender.onPreDeath()
@@ -34,7 +39,7 @@ func onPostAction() -> void:
 	for Card in Game.get_tree().get_nodes_in_group("FieldCardsGD"):
 		Card.onRemoveVisibleGameObject(Defender)
 	
-	if Game.get_tree().get_nodes_in_group("FieldCardsGD")\
+	if Defender.team != 2 and Game.get_tree().get_nodes_in_group("FieldCardsGD")\
 		.filter(func(x: CardGD): return x.team == Defender.team).is_empty():
 			onAppendAction(EndGameAction.new(Defender.team))
 			
@@ -51,3 +56,6 @@ func onSwapCameraOnDeathInPlayerPhase() -> void:
 	if closest_ally == null: return
 	
 	onPushAction(CameraChangeAction.new(closest_ally))
+	
+func getCardSawDefenderDie(Card: CardGD) -> bool:
+	return card_to_visible_defender[Card]

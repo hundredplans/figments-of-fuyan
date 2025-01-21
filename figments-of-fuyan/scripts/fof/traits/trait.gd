@@ -17,7 +17,7 @@ func getDescription() -> String:
 
 func onProcessAction(action: Action) -> void:
 	if action.post:
-		if action is AddTraitAction and action.Trait == self:
+		if action is AddTraitAction and action.overworld_trait.Trait == self:
 			onTraitAdded()
 			
 func onTraitAdded() -> void:

@@ -1,5 +1,9 @@
 extends CardGD
 
+const GUARANTEED_HEAL_UNIT_AMOUNT_AI: int = 2
+const SINGLE_UNIT_CHANCE: float = 0.1
+
+
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	super(active_effect)
 	if active_effect is ActiveAbilityDatastore and active_effect.name == "Palmist Prayer":
@@ -27,3 +31,10 @@ func getActiveEffectDisabled(active_effect: ActiveEffectDatastore) -> bool:
 	if active_effect is ActiveAbilityDatastore and active_effect.name == "Palmist Prayer":
 		return !inEnemyVision()
 	return false
+	
+func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic) -> TileGD:
+	if active_effect_tiles.pickable_tiles.size() >= GUARANTEED_HEAL_UNIT_AMOUNT_AI:
+		return active_effect_tiles.pickable_tiles.pick_random()
+	elif active_effect_tiles.pickable_tiles.size() == 1 and Random.rollFloat(SINGLE_UNIT_CHANCE):
+		return active_effect_tiles.pickable_tiles.pick_random()
+	return null

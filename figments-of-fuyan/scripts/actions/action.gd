@@ -31,8 +31,8 @@ func onProcessAction(_action: Action) -> void: pass
 func onPushAction(actions: Variant, action_owner: Variant = self) -> void:
 	if actions is Action:
 		actions = [actions]
-		actions.reverse()
-		
+	
+	actions.reverse()
 	for action in actions:
 		action.owner = action_owner
 		push_action.emit(action)

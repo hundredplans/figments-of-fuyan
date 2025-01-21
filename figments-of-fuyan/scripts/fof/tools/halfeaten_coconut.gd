@@ -17,7 +17,7 @@ func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectT
 	
 func isPickable(Tile: TileGD) -> bool:
 	var FieldCard: CardGD = Game.getAllyFieldCard(Tile, Card.team)
-	return FieldCard != null and FieldCard.isHealable()
+	return FieldCard != null and (FieldCard.isHealable() or Card.isHealable())
 
 func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
 	super(active_effect, PickedTile, active_effect_tiles)
@@ -27,3 +27,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		
 		var stat_infos: Array = cards.map(func(x: CardGD): return StatInfo.new(x, Game.Stats.HEALTH, 1))
 		onPushAction(StatAction.new(stat_infos))
+		
+# When possible
+func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, DFL: DefaultFightLogic) -> TileGD:
+	return active_effect_tiles.pickable_tiles.pick_random()

@@ -3,8 +3,11 @@ extends CardGD
 var swingus_field_effect_public_id: int
 func onProcessAction(action: Action) -> void:
 	super(action)
-	if isValidOnHit(action):
-		onPushAction(OnHitAction.new(self, action))
+	if action.post:
+		if isValidOnHit(action):
+			onPushAction(OnHitAction.new(self, action))
+		elif action is GetDamageAction and action.Damager == self and !action.is_fall_damage and swingus_field_effect_public_id > 0:
+			action.onAdd(getExtraDamage())
 	
 func onHit(_damage_action: DamageAction, _attack_action: AttackAction) -> void:
 	if swingus_field_effect_public_id == 0:
@@ -29,8 +32,11 @@ func getDescription() -> String:
 
 func getAttackDamage() -> int:
 	var default_damage: int = super()
-	if swingus_field_effect_public_id > 0: return default_damage + (2 if !ascended else 4)
+	if swingus_field_effect_public_id > 0: return default_damage + getExtraDamage()
 	return default_damage
+	
+func getExtraDamage() -> int:
+	return 2 if !ascended else 4
 
 func onSave() -> SavedDataCard:
 	ability_save['swingus_field_effect_public_id'] = swingus_field_effect_public_id

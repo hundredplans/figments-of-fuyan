@@ -28,7 +28,7 @@ func onHit(_damage_action: DamageAction, attack_action: AttackAction) -> void:
 		onRemoveFieldEffect(FieldEffect)
 		field_effect_public_id = 0
 	
-	for Card in attack_action.Defenders:
+	for Card in attack_action.Defenders.filter(func(x: GameObjectGD): return x is CardGD):
 		Card.onCreateBaseStatusEffect(4)
 
 func onSave() -> SavedDataCard:

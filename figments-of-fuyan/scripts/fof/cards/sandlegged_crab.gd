@@ -4,6 +4,7 @@ var remove_armor_next_turn: bool = false
 var armor_id: int
 
 func onProcessAction(action: Action) -> void:
+	super(action)
 	if action.post:
 		if action is ChangePhaseAction and Game.isAdvanceTurn(action.phase, team) and armor_id > 0:
 			onPushAction(RemoveOverworldTraitAction.new(self, armor_id, OverworldTrait.AddedBy.OTHER))
@@ -24,6 +25,13 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		onPushAction(AddOverworldTraitAction.new(self, OverworldTrait.new(trait_data, OverworldTrait.AddedBy.OTHER, true), true))
 		
 		onAbility()
+
+# Use ability if enemies are within DISTANCE tiles below
+const HARDENED_SHELL_ENEMY_DISTANCE_TO_USE: int = 4
+func onAIAbilityChecker(active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic) -> TileGD:
+	var enemies: Array = getVisibleFieldCardsEnemies()
+	var use_ability: bool = !enemies.is_empty() and enemies.any(func(x: CardGD): return Game.getCoordsDistance(x.getCoords(), getCoords()) <= HARDENED_SHELL_ENEMY_DISTANCE_TO_USE)
+	return active_effect_tiles.pickable_tiles[0] if use_ability else null
 
 func onSave() -> SavedDataCard:
 	ability_save['armor_id'] = armor_id
