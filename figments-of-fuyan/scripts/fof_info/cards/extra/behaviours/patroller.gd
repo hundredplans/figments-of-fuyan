@@ -1,21 +1,15 @@
-class_name Loner extends Behaviour
+class_name Patroller extends Behaviour
 
-const DISTANCE_TO_VALUE: Dictionary = {
-	1: 0,
-	2: 0.2,
-	3: 0.75,
-	# 4 or greater is 1
-}
-
-func getOutOfCombatTiles(_Card: CardGD, tiles: Array, allies: Array) -> Dictionary:
+func getOutOfCombatTiles(_Card: CardGD, tiles: Array, allies: Array, _enemies: Array) -> Dictionary:
 	var tiles_by_value: Dictionary = {}
 	for Tile in tiles:
-		tiles_by_value[Tile] = 0
-		for ally in allies:
-			var distance: int = Game.getCoordsDistance(Tile.getCoords(), ally.getCoords())
-			var value: float = DISTANCE_TO_VALUE[distance] if distance < 4 else 1.0
-			tiles_by_value[Tile] += value
-		
-		if allies.size() > 0:
-			tiles_by_value[Tile] /= allies.size()
+		var turns_unseen: int = clamp(Tile.getTurnsUnseen(), 0, 10)
+		var value: float = 0 if turns_unseen < 5 else (turns_unseen / 10.0)
+		tiles_by_value[Tile] = value
 	return tiles_by_value
+
+func isOutOfCombatBehaviour() -> bool:
+	return true
+
+func isCombatBehaviour() -> bool:
+	return false

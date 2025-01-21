@@ -28,6 +28,9 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		onPushAction(actions)
 		onAbility()
 		
+func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic) -> TileGD:
+	return active_effect_tiles.pickable_tiles.pick_random()
+		
 func isPickable(_Tile: TileGD) -> bool:
 	var Card: CardGD = Game.getAllyFieldCard(_Tile, team)
 	return Card != null and Card.isHealable()

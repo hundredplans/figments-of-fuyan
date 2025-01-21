@@ -1,7 +1,7 @@
 extends IObjectGD
 
 const COCONUT_ID: int = 13
-const COCONUT_DROP_ODDS: float = 0.4
+const COCONUT_DROP_ODDS: float = 0.25
 const ACTION_DELAY: float = 1
 const RECHARGE_MIN_TURN: int = 4
 const RECHAGRE_MAX_TURN: int = 8

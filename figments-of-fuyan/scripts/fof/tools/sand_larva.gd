@@ -23,3 +23,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		
 		var random_enemy: CardGD = enemies.pick_random()
 		random_enemy.onCreateBaseStatusEffect(6)
+
+# Use when possible
+func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _DFL: DefaultFightLogic) -> TileGD:
+	return active_effect_tiles.pickable_tiles[0]

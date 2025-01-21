@@ -161,10 +161,10 @@ func _process(_delta: float) -> void:
 				if Input.is_action_just_pressed("RotateLeft") or Input.is_action_just_pressed("RotateRight"):
 					TemporaryRotationObject = HoverModel if HoverModel != null else onFindMouseTileObject()
 				
-				if Input.is_action_pressed("RotateLeft"):
+				if Input.is_action_pressed("RotateLeft") and TemporaryRotationObject != null:
 					onRotate(TemporaryRotationObject, -1)
 					
-				elif Input.is_action_pressed("RotateRight"):
+				elif Input.is_action_pressed("RotateRight") and TemporaryRotationObject != null:
 					onRotate(TemporaryRotationObject, 1)
 				
 			if !is_scroll_disabled:

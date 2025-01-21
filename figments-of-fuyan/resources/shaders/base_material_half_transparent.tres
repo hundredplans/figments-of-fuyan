@@ -9,8 +9,6 @@ uniform sampler2D tx_color;
 uniform sampler2D tx_emission;
 uniform float EmissionStrength : hint_range(0, 20) = 3;
 
-
-
 void fragment() {
 // Input:9
 	vec2 n_out9p0 = UV;

@@ -26,6 +26,19 @@ func onCreateActiveEffects() -> void:
 
 func onAddActiveEffect(active_effect: ActiveEffectDatastore) -> void:
 	active_effects.append(active_effect)
+	
+func getActiveEffects() -> Array:
+	return active_effects
+	
+func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic) -> TileGD:
+	return null
+	
+func onAIAbilityCheckerDefault(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
+	if active_effect.getDefaultDisabled(Card): return null
+	
+	var active_effect_tiles: ActiveEffectTiles = getActiveEffectTiles(active_effect)
+	if active_effect_tiles == null or active_effect_tiles.pickable_tiles.is_empty(): return null
+	return active_effect_tiles
 
 func getRarity() -> Game.Rarities:
 	return info.rarity

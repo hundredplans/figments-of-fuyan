@@ -30,19 +30,9 @@ func setInfo(_active_effect: ActiveEffectDatastore, _Card: CardGD, _is_action_lo
 	setDisabled()
 	
 func setDisabled() -> void:
-	if active_effect.owner == null: return
-	var dependant_disabled: bool = Game.isBoonInGame(12) and Card.isAlly(0) and active_effect.owner is ToolGD
-	var active_effect_disabled: bool = \
-		active_effect.owner.getActiveEffectDisabled(active_effect, Card) if active_effect.owner is IObjectGD\
-		else active_effect.owner.getActiveEffectDisabled(active_effect)
-		
-	var is_used: bool = active_effect.used
-	var no_charges: bool = active_effect.getCharges() == 0
-	var turn_passed: bool = Card.turn_state == Game.TurnStates.PASSED
-	var is_not_mobile_and_active: bool = !Card.isMobile() and Card.turn_state == Game.TurnStates.ACTIVE and active_effect is ActiveAbilityDatastore
 	var is_enemy: bool = Card.isEnemy(0)
 	
-	Btn.disabled = active_effect_disabled or is_used or no_charges or is_not_mobile_and_active or turn_passed or is_enemy or dependant_disabled or is_action_lock
+	Btn.disabled = active_effect.getDefaultDisabled(Card) or is_action_lock or is_enemy
 	modulate = HOVERED_OR_BASE if !Btn.disabled else Color(0.6, 0.6, 0.6, 1)
 
 var HOVERED_OR_BASE := Color(1, 1, 1, 1)

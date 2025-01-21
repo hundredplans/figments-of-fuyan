@@ -254,6 +254,9 @@ func getMovementPathSize() -> int:
 	if movement_path == null: return -1
 	return movement_path.tiles.size()
 	
+func getMovementPathTilesSafe() -> Array:
+	return [] if movement_path == null else movement_path.tiles
+	
 func getMovementPathTiles() -> Array:
 	return movement_path.tiles
 	
@@ -292,6 +295,9 @@ func onUpdateLevelVisible() -> void:
 
 func getRevealVisibleGroup() -> Array:
 	return [self] + occupied_objects
+	
+func getTurnsUnseen() -> int:
+	return vision_datastore.getLastSeenByEnemy()
 	
 func onOccupyingCardLevelVisibleChanged(_occupy_state: OccupyStates) -> void:
 	occupy_state = _occupy_state

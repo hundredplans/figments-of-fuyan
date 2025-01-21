@@ -407,7 +407,7 @@ func getDeckSize() -> int:
 	
 func getBaseCard(id: int, Tile: TileGD, team: int, tile_rotation: int, ascended: bool = false) -> SavedDataCard:
 	var card_info: CardInfo = Helper.getFofInfoID(CardInfo, id)
-	var card_data: SavedDataCard = card_info.saved_data.new(id, true, 0, Tile.getCoords(), tile_rotation, VisionDatastore.new(), team, ascended)
+	var card_data: SavedDataCard = card_info.saved_data.new(id, true, 0, Tile.getCoords(), tile_rotation, VisionDatastoreCard.new(), team, ascended)
 	setCardDataFromInfo(card_data, card_info)
 	return card_data
 	

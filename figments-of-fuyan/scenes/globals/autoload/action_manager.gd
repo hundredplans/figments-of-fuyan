@@ -59,13 +59,13 @@ func onForceAction(action: Action) -> void:
 
 func onDebugAction(action: Action) -> void:
 	pass
-	#var path: String = action.get_script().resource_path
-	#print(path.get_slice("/", path.get_slice_count("/") - 1))
-	#var logs: Array = action.getLogInfo()
-	#if action.failed: logs.append("FAILED")
-	#
-	#for log_info in logs:
-		#print("	" + log_info)
+	var path: String = action.get_script().resource_path
+	print(path.get_slice("/", path.get_slice_count("/") - 1))
+	var logs: Array = action.getLogInfo()
+	if action.failed: logs.append("FAILED")
+	
+	for log_info in logs:
+		print("	" + log_info)
 	
 func onDebugActionNames() -> void:
 	pass
@@ -88,6 +88,9 @@ func onRemoveMoveAndAttackActions(Card: CardGD):
 func onFindFirstAction(type: GDScript) -> Action:
 	var valid_actions: Array = actions.filter(func(x: Action): return is_instance_of(x, type))
 	return valid_actions[0] if !valid_actions.is_empty() else null
+	
+func onFindAnyFirstAction() -> Action:
+	return null if actions.is_empty() else actions[0]
 	
 func onFindNextAction(action: Action) -> Action:
 	var index: int = actions.find(action)

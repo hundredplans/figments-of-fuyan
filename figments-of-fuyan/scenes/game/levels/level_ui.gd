@@ -328,7 +328,8 @@ func onUpdateActiveEffects(SpectateObject: GameObjectGD = level.getSpectateObjec
 		if SpectateObject.getTool() != null:
 			active_effects += SpectateObject.getTool().active_effects
 		
-		for IObject in get_tree().get_nodes_in_group("LevelIObjectsGD"):
+		for IObject in get_tree().get_nodes_in_group("LevelIObjectsGD")\
+			.filter(func(x: ObjectGD): return !x.is_queued_for_deletion()):
 			active_effects += IObject.getValidActiveEffects(SpectateObject)
 			
 	ActiveEffects.onUpdate(active_effects, CardSpectate)

@@ -9,7 +9,7 @@ func _init(_Card: CardGD = null, _turn_state := Game.TurnStates.PASSED) -> void:
 	turn_state = _turn_state
 	
 func onCheckFail() -> void:
-	if turn_state == Card.turn_state:
+	if turn_state == Card.turn_state or Card.isDead():
 		onFailAction()
 		
 func onPreAction() -> void:

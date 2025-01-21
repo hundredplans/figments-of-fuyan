@@ -82,6 +82,7 @@ func _process(delta):
 	_update_mouselook()
 	_update_movement(delta)
 	onUpdateFreelookInput()
+	get_viewport().size
 
 func onUpdateFreelookInput() -> void:
 	if Input.is_action_just_pressed("AltInput") and !disable_freelook:

@@ -42,6 +42,9 @@ func onPostAction() -> void:
 	var new_team_vision_diff: Array = new_team_vision.filter(func(x: GameObjectGD): return x not in old_team_vision)
 	var old_team_vision_diff: Array = old_team_vision.filter(func(x: GameObjectGD): return x not in new_team_vision)
 	
+	var new_cards: Array = new_team_vision_diff.filter(func(x: GameObjectGD): return x is CardGD)
+	var old_cards: Array = old_team_vision_diff.filter(func(x: GameObjectGD): return x is CardGD)
+	
 	actions.append(LevelVisibleAction.new(false, old_team_vision_diff))
 	actions.append(LevelVisibleAction.new(true, new_team_vision_diff))
 	

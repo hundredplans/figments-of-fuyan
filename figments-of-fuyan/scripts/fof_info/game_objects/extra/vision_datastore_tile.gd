@@ -6,3 +6,6 @@ func onResetLastSeenByEnemy() -> void:
 	
 func onIncrementLastSeenByEnemy() -> void:
 	last_seen_by_enemy += 1
+	
+func getLastSeenByEnemy() -> int:
+	return last_seen_by_enemy

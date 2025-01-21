@@ -9,7 +9,7 @@ func _init(_Card: CardGD = null, _attack_range: int = 0) -> void:
 	attack_range = _attack_range
 	
 func onPreAction() -> void:
-	pass
+	if Card == null: onFailAction()
 	
 func onPostAction() -> void:
 	Card.setAttackRange(attack_range)

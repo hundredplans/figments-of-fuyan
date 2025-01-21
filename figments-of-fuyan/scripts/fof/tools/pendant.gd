@@ -23,6 +23,26 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		
 		onPushAction(StatAction.new(StatInfo.new(Card, type, 1, turns)))
 		
+func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, DFL: DefaultFightLogic) -> TileGD:
+	match info.id:
+		# If you're injured use heal 1 hp
+		1: if Card.isInjured():
+			return active_effect_tiles.pickable_tiles[0]
+		# If you can get a kill out of it use 1 att
+		4:
+			if DFL.is_kill_guaranteed: return null
+			
+			DFL.onAddTempAtt(1)
+			var Tile: TileGD = DFL.getKillTile()
+			DFL.onAddTempAtt(-1)
+			
+			if Tile == null: return null
+			
+			return active_effect_tiles.pickable_tiles[0]
+		# If you can get a kill out of it use 1 spd
+		6: pass
+	return null
+		
 func onToolEquipped() -> void:
 	var type: Game.Stats
 	match info.id:

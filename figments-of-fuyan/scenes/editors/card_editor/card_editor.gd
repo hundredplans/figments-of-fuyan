@@ -69,7 +69,7 @@ func _on_search_area_card_text_changed(text: String) -> void:
 @onready var CardSpot: Control = %CardSpot
 var CardSpotCard: Control
 func onCardUIPressed(CardUI: Control) -> void:
-	if CardSpotCard != null: CardSpotCard.queue_free()	
+	if CardSpotCard != null: CardSpotCard.queue_free()
 	var Card: CardGD = CardUI.Card
 	CardSpotCard = Card.onCreateCardUI(CardSpot)
 	CardSpotCard.scale = Vector2(2, 2)

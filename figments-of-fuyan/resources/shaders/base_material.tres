@@ -7,8 +7,9 @@ render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_s
 uniform sampler2D tx_attributes;
 uniform sampler2D tx_color;
 uniform sampler2D tx_emission;
-
 uniform float EmissionStrength : hint_range(0, 20) = 3;
+
+
 
 void fragment() {
 // Input:9
@@ -76,5 +77,6 @@ void fragment() {
 	METALLIC = n_out7p0;
 	ROUGHNESS = n_out12p0;
 	EMISSION = vec3(n_out15p0.xyz);
+
 }
 "

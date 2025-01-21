@@ -39,6 +39,7 @@ signal rewards_finished # Signal for area to interpret
 signal tool_removed
 signal update_active_effects
 signal camera_change_pre
+signal spectate_group
 
 #region Load / Save
 func onSave() -> SavedData:
@@ -202,6 +203,7 @@ func onProcessAction(action: Action) -> void:
 			onCameraChange(action)
 		elif action is ActiveEffectUsedAction:
 			active_effect_used.emit(action.ActiveEffect)
+			onRecalculateAITurn(action.Card)
 		elif action is AddActiveEffectAction:
 			active_effect_added.emit(action.active_effect)
 		elif action is AddBoonAction:
@@ -214,22 +216,28 @@ func onProcessAction(action: Action) -> void:
 			boon_ascended.emit(action.Boon)
 		elif action is OccupyAction:
 			tile_occupied.emit(action.Card, action.Tile)
-			onRecalculateAITurnOccupy(action.Card, action.Tile)
+			onRecalculateAITurnOccupy(action, action.Card, action.Tile)
 		elif action is EndGameAction and !is_ended:
 			setRewards(action.team != 0)
 		elif action is StatAction:
-			onRecalculateAITurn(action.getCards(), true, true, false, true)
+			if action.owner == null or action.owner is not MoveToTileAction:
+				onRecalculateAITurn(action.getCards(), true, true, false, true)
 		elif action is AddToolAction:
 			onRecalculateAITurn(action.Card, true, false, false, true)
 		elif action is RemoveToolAction:
 			onRecalculateAITurn(action.Card, true, false, false, true)
 			tool_removed.emit()
-		elif action is VisionNewUnitAction and action.Discoverer.isAlly(1):
-			onRecalculateAITurn(action.Discoverer, true)
+		elif action is VisionNewUnitAction:
+			if action.enter_vision and action.Discoverer.isEnemy(action.Discovered.team):
+				onRecalculateAITurn(action.Discoverer, true)
 		elif action is DeathAction:
 			onRecalculateAITurn(action.Defender, true, true, true, true)
 		elif action is ChangeActiveEffectChargesAction:
 			update_active_effects.emit()
+		elif action is ClearTileObjectAction:
+			update_active_effects.emit()
+		elif action is CameraSpectateGroupAction:
+			spectate_group.emit(action.team)
 	else:
 		if action is ChangePhaseAction:
 			if action.phase == phase: action.onFailAction()
@@ -335,38 +343,34 @@ func onRewardsFinished() -> void:
 #region AI
 var ai_turn_recalculated: bool
 func onRecalculateAITurn(cards: Variant, include_self: bool = true, include_enemies: bool = false, include_allies: bool = false, in_vision: bool = true) -> void:
-	if phase != Game.Phases.AI: return
+	if phase not in [Game.Phases.AI, Game.Phases.NEUTRAL]: return
 	
+	if cards == null: return
 	if cards is CardGD: cards = [cards]
-	
-	var action: AITurnAction = Game.ActionManagerReference.onFindFirstAction(AITurnAction)
-	if action == null: return
-	#if !((include_self and action.card in cards) or (include_enemies and Card.isEnemy(action.Card.team)) or (include_allies and Card.isAlly(action.Card.team))): return
-	#
-	#var visible_field_cards: Array = Card.getVisibleFieldCards()
-	#if !(in_vision and cards.any(func(x: CardGD): return x in visible_field_cards)): return
-	
-	onRemoveMoveAndAttackActions(action.Card)
 	
 	var finish_action: MovementFinishAction = Game.ActionManagerReference.onFindFirstAction(MovementFinishAction)
 	if finish_action == null: return
 	
-	finish_action.setIgnoreBehaviourRoll(false)
+	var AICard: CardGD = finish_action.Card
+	if !cards.any(isCardValidForRecalculateAITurn.bind(AICard, include_self, include_enemies, include_allies, in_vision)): return
+	
+	onRemoveMoveAndAttackActions(AICard)
+	finish_action.setRetryAiTurn(true)
 			
-func onRecalculateAITurnOccupy(Card: CardGD, Tile: TileGD) -> void:
-	if phase != Game.Phases.AI: return
-	var action: Action = Game.ActionManagerReference.onFindFirstAction(AITurnAction)
+func isCardValidForRecalculateAITurn(Card: CardGD, AICard: CardGD, include_self: bool, include_enemies: bool, include_allies: bool, in_vision: bool):
+	if Card == AICard and include_self: return true
+	if AICard.isEnemy(Card.team) and include_enemies and (!in_vision or Card in AICard.getVisibleFieldCardsEnemies()): return true
+	if AICard.isAlly(Card.team) and include_allies and (!in_vision or Card in AICard.getVisibleFieldCardsAllies()): return true
+	return false
+			
+func onRecalculateAITurnOccupy(action: OccupyAction, Card: CardGD, Tile: TileGD) -> void:
+	if phase not in [Game.Phases.AI, Game.Phases.NEUTRAL]: return
+	var finish_action: Action = Game.ActionManagerReference.onFindFirstAction(MovementFinishAction)
 	
-	if action == null: return
-	if action.Card != Card: return
+	if finish_action == null: return
+	if finish_action.Card != Card: return
 	
-	var path: Array = []
-	while(true):
-		action = Game.ActionManagerReference.onFindNextAction(action)
-		if action == null or action is MovementFinishAction: break
-		elif action is MovementAction: path.append(action.Tile)
-	
-	if Tile in path: return
-	onRemoveMoveAndAttackActions(Card)
-	
+	if action.owner != null and action.owner is not MoveToTileAction:
+		onRemoveMoveAndAttackActions(Card)
+		finish_action.setRetryAiTurn(true)
 #endregion
