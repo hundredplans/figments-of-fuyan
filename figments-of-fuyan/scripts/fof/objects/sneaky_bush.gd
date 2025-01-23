@@ -29,3 +29,7 @@ func onSave() -> SavedDataIObject:
 func onLoadDataLevel() -> void:
 	super()
 	# Vision things when first loaded
+	
+const CHANCE_TO_DESTROY: float = 0.5
+func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _DFL: DefaultFightLogic) -> TileGD:
+	return active_effect_tiles.pickable_tiles[0] if Random.rollFloat(CHANCE_TO_DESTROY) else null

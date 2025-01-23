@@ -116,3 +116,9 @@ func onDoorIsClosed(set_door_position: bool = true) -> void:
 
 func getMaxMovementHeight() -> float:
 	return SHORT_MAX_MOVEMENT_HEIGHT if !isTall() else TALL_MAX_MOVEMENT_HEIGHT
+
+const GET_CLOSE_TO_DOOR_INCENTIVE: float = 0.3
+func onIObjectSpecificTransforms(tiles_to_value: Dictionary, DFL: DefaultFightLogic) -> void:
+	for Tile in tiles_to_value:
+		if Game.isAdjacent(Tile, getTile()):
+			tiles_to_value[Tile] += GET_CLOSE_TO_DOOR_INCENTIVE

@@ -31,6 +31,13 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		onPushAction(actions)
 		onAbility()
 		
+# Escapes injured units in combat, sorts by energy
+func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic) -> TileGD:
+	var cards: Array = active_effect_tiles.pickable_tiles.map(func(x: TileGD): return Game.getFieldCard(x))
+	cards = cards.filter(func(x: CardGD): return x.isInCombat() and x.getArchetype() not in [Game.Archetypes.WARDEN, Game.Archetypes.BRUTE])
+	cards.sort_custom(func(x: CardGD, y: CardGD): return x.energy > y.energy)
+	return cards[0].getTile() if !cards.is_empty() else []
+		
 func isSpawnAvailable() -> bool:
 	var team_spawn: String = "Ally" if team == 0 else ("Enemy" if team == 1 else "Neutral")
 	return get_tree().get_nodes_in_group(team_spawn + "SpawnsGD").any(func(x: SpawnGD): return !x.isSpawnOccupied())

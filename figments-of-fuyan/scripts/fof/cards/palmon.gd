@@ -21,10 +21,13 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		onPushAction(actions)
 		onAbility()
 		
-# If the attack makes a difference on a unit which didn't use it's turn yet or 30% chance to just heal
+# If the unit is in combat, is healable, then sorted by how low the attack is
 func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic) -> TileGD:
 	var cards: Array = active_effect_tiles.pickable_tiles.map(func(x: TileGD): return Game.getFieldCard(x))
-	var cards_turn_used: Array = cards.filter(func(x: CardGD): return x.turn_state == Game.TurnStates.INACTIVE)
-	var cards_turn
 	
-	return null
+	cards = cards.filter(func(x: CardGD): return x.isHealable() and x.isInCombat())
+	cards.shuffle()
+	cards.sort_custom(func(x: CardGD, y: CardGD): return x.attack > y.attack)
+	
+	if cards.is_empty(): return null
+	return cards[0].getTile()

@@ -31,8 +31,8 @@ func getTilesDFL() -> DFLData:
 	for Tile in tiles:
 		tiles_to_value[Tile] = getFallDamageTileValue(Card, Tile) # 1 by default
 	
-	if !enemies.is_empty():
-		pass
+	for IObject in Card.getVisibleGameObjects().filter(func(x: GameObjectGD): return x is IObjectGD):
+		IObject.onIObjectSpecificTransforms(tiles_to_value, self)
 	
 	Card.onUnitSpecificTransforms(tiles_to_value, self)
 	return DFLData.new(tiles_to_value, null)
@@ -87,11 +87,8 @@ func getKillTile() -> TileGD:
 	if pacifist: return null
 	var local_enemies: Array = enemies.duplicate()
 	local_enemies = local_enemies.filter(func(x: CardGD): return Card.isGameObjectAttackable(x, x.Tile))
-	pass
 	local_enemies = local_enemies.filter(func(x: CardGD): return x.getTile() in tiles)
-	pass
 	local_enemies = local_enemies.filter(isAttackableKillable.bind(Card))
-	pass
 	local_enemies.sort_custom(func(x: CardGD, y: CardGD): return x.energy > y.energy)
 	local_enemies.shuffle()
 	is_kill_guaranteed = !local_enemies.is_empty()

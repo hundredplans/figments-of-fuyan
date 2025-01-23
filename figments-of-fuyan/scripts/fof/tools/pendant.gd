@@ -19,15 +19,16 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		match info.id:
 			1: type = Game.Stats.HEALTH; turns = 0
 			4: type = Game.Stats.ATTACK
-			6: type = Game.Stats.SPEED
-		
+			6: type = Game.Stats.MAX_SPEED
+			
 		onPushAction(StatAction.new(StatInfo.new(Card, type, 1, turns)))
 		
 func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, DFL: DefaultFightLogic) -> TileGD:
 	match info.id:
 		# If you're injured use heal 1 hp
-		1: if Card.isInjured():
-			return active_effect_tiles.pickable_tiles[0]
+		1:
+			if Card.isInjured():
+				return active_effect_tiles.pickable_tiles[0]
 		# If you can get a kill out of it use 1 att
 		4:
 			if DFL.is_kill_guaranteed: return null
@@ -39,8 +40,15 @@ func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_til
 			if Tile == null: return null
 			
 			return active_effect_tiles.pickable_tiles[0]
-		# If you can get a kill out of it use 1 spd
-		6: pass
+		# If speed is debuffed or a killable enemy is 1 tile from being attackable
+		6:
+			if DFL.is_kill_guaranteed: return null
+			elif DFL.is_card_attack: return null
+			elif Card.speed < Card.max_speed: return active_effect_tiles.pickable_tiles[0]
+			
+			var enemies: Array = DFL.enemies.filter(func(x: CardGD): return DFL.isAttackableKillable(x, Card))
+			var any_enemy_one_tile_away: bool = DFL.enemies.any(func(x: CardGD): return Card.getAttackDistanceFromEnemy(x.getTile(), Card.getTile()) == 1)
+			return active_effect_tiles.pickable_tiles[0] if any_enemy_one_tile_away else null
 	return null
 		
 func onToolEquipped() -> void:

@@ -15,6 +15,7 @@ enum CardPlaces {NULL, HAND, DECK, FIELD, GRAVEYARD}
 enum TurnStates {NULL, PASSED, INACTIVE, ACTIVE}
 enum Stats {ATTACK, HEALTH, SPEED, MAX_HEALTH, MAX_SPEED}
 enum AscendedExists {BOTH, ONLY_DEFAULT, ONLY_ASCENDED}
+enum Archetypes {NULL, ADVENTURER, BRUTE, DOCILE, ERRATIC, HOSTILE, REINFORCER, SCOUT, SUPPORT, TACTICIAN, WARDEN}
 
 var CARD_PLACES_TO_GROUP: Dictionary = {
 	CardPlaces.NULL: "Null",
@@ -546,5 +547,5 @@ func getDivinusEncounterNegativePlusOdds() -> float:
 	return 0.1 # 0.1 more likely to be negative
 	
 func isDivinus() -> bool:
-	return save_file.getChampionCard().info.id == 3
+	return save_file.getChampionCard().info.id == 2
 #endregion

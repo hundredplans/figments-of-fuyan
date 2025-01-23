@@ -55,3 +55,12 @@ func getRandomAdjacentTile() -> TileGD:
 		return random_tiles.pick_random()
 	return null
 	
+const NEGATIVE_TRANSFORM: int = -10
+const POSITIVE_TRANSFORM: float = 0.5
+const CHANCE_TO_STEP_ON_WHEN_INJURED_IN_COMBAT: float = 0.5
+# If out of combat -10, if injured and in combat +0.5% with a 50% chance
+func onIObjectSpecificTransforms(tiles_to_value: Dictionary, DFL: DefaultFightLogic) -> void:
+	if !tiles_to_value.has(getTile()): return
+	if !DFL.isInCombat(): tiles_to_value[getTile()] += NEGATIVE_TRANSFORM
+	elif DFL.Card.isHealable() and Random.rollFloat(CHANCE_TO_STEP_ON_WHEN_INJURED_IN_COMBAT):
+		tiles_to_value[getTile()] += POSITIVE_TRANSFORM

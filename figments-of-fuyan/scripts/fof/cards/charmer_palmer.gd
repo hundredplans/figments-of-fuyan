@@ -67,3 +67,9 @@ func getDescription() -> String:
 	if active_effect != null:
 		return Helper.getDescriptionNumeric(super(), [active_effect.charges], [["ABILITY ", ("[1]" if !ascended else "[2]")]])
 	return super()
+
+const IN_ALLY_WITH_BUFF_VISION_BONUS: float = 0.25
+func onUnitSpecificTransforms(tiles_to_value: Dictionary, DFL: DefaultFightLogic) -> void:
+	for Tile in tiles_to_value:
+		var vision_bonus: int = valid_cards.filter(func(x: CardGD): return Tile in x.getVisibleGameObjects()).size() * IN_ALLY_WITH_BUFF_VISION_BONUS
+		tiles_to_value[Tile] += vision_bonus

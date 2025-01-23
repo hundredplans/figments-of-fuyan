@@ -114,3 +114,17 @@ func onExtinguishVFX() -> void:
 		SmokeParticle.emitting = false
 		await SmokeParticle.finished
 		SmokeParticle.queue_free()
+		
+# If used nothing, otherwise 50% chance to have +0.5 on adjacent tiles
+const CHANCE_TO_APPLY_TRANSFORMS: float = 0.5
+const POSITIVE_TRANSFORM_TO_ADJACENT_TILES: float = 0.5
+func onIObjectSpecificTransforms(tiles_to_value: Dictionary, DFL: DefaultFightLogic) -> void:
+	if was_extinguished or was_fuel_added: return
+	if !DFL.Card.isInCombat(): return
+	if !Random.rollFloat(CHANCE_TO_APPLY_TRANSFORMS): return
+	
+	var fuel_tiles: Array = getFuelTilesInRange()
+	for Tile in tiles_to_value:
+		if Tile in fuel_tiles:
+			tiles_to_value[Tile] += POSITIVE_TRANSFORM_TO_ADJACENT_TILES
+	

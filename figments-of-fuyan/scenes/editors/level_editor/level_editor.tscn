@@ -294,5 +294,5 @@ collision_mask = 24
 [connection signal="pressed" from="UI/LoadLevels/VBoxContainer/NewLevelButtonsContainer/NewRegularLevelButton" to="." method="onNewEmptyLevelRegular"]
 [connection signal="pressed" from="UI/LoadLevels/VBoxContainer/NewLevelButtonsContainer/NewDecorationLevelButton" to="." method="onNewEmptyLevelDecoration"]
 [connection signal="pressed" from="UI/LoadLevels/VBoxContainer/NewLevelButtonsContainer/NewOverworldLevelButton" to="." method="onNewEmptyLevelOverworld"]
-[connection signal="camera_panning" from="World/Camera3D" to="." method="_on_camera_3d_camera_panning"]
 [connection signal="camera_panning" from="World/Camera3D" to="." method="onMouseInUI"]
+[connection signal="camera_panning" from="World/Camera3D" to="." method="_on_camera_3d_camera_panning"]

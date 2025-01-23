@@ -33,7 +33,6 @@ var base_tile_info: TileInfo
 var selected_area_id: int = 1
 var current_area_id: int = 1
 
-
 #endregion
 #region Helper Functions
 func onConvertCoords(coords: Vector4i) -> Vector3:

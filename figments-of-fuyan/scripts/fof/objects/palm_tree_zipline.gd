@@ -9,6 +9,7 @@ var start_tiles: Array
 var end_tiles: Array
 var holders_nodes: Array
 var used_this_turn_cards: Array
+var ai_cooldown_cards: Dictionary # 3 turn cooldown
 
 #region Helper
 func isEqual() -> bool:
@@ -24,7 +25,12 @@ func onSave() -> SavedDataIObject:
 	ability_save['end_tile_public_ids'] = end_tiles.map(func(x: TileGD): return x.public_id)
 	ability_save['active_start_tile_public_id'] = ActiveStartTile.public_id if ActiveStartTile != null else 0
 	ability_save['used_this_turn_cards'] = used_this_turn_cards.map(func(x: CardGD): return x.public_id)
-	#var t = Game.onFindPublicIDObject(ability_save['active_start_tile_public_id'])
+	
+	var ai_cooldown_public_ids: Dictionary = {}
+	for Card in ai_cooldown_cards:
+		ai_cooldown_public_ids[Card.public_id] = ai_cooldown_cards[Card]
+	
+	ability_save['ai_cooldown_cards'] = ai_cooldown_public_ids
 	return super()
 	
 func onLoadDataLevel() -> void:
@@ -33,6 +39,11 @@ func onLoadDataLevel() -> void:
 		start_tiles = start_tile_public_ids.map(func(x: int): return Game.onFindPublicIDObject(x))
 		end_tiles = end_tile_public_ids.map(func(x: int): return Game.onFindPublicIDObject(x))
 		ActiveStartTile = Game.onFindPublicIDObject(active_start_tile_public_id)
+	
+	var ai_cooldown_public_ids: Dictionary = ai_cooldown_cards.duplicate()
+	ai_cooldown_cards = {}
+	for public_id in ai_cooldown_public_ids:
+		ai_cooldown_cards[Game.onFindPublicIDObject(public_id)] = ai_cooldown_public_ids[public_id]
 		
 	used_this_turn_cards = used_this_turn_cards.map(func(x: int): return Game.onFindPublicIDObject(x))
 	setHolderVisible()
@@ -93,6 +104,8 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _
 	onPushAction(OccupyAction.new(Card, end_tiles[start_tiles.find(ActiveStartTile)]))
 	used_this_turn_cards.append(Card)
 	
+	if Card.isEnemy(0): ai_cooldown_cards[Card] = TURN_COOLDOWN_FOR_ABILITY_AND_TRANSFORM 
+	
 	if !isLevelVisible(): return
 	onAbility()
 	HolderNode = holders_nodes[start_tiles.find(ActiveStartTile)]
@@ -120,6 +133,11 @@ func onAdvanceTurn(team: int) -> void:
 	super(team)
 	for Card in used_this_turn_cards.filter(func(x: CardGD): return x.team == team):
 		used_this_turn_cards.erase(Card)
+		
+	for Card in ai_cooldown_cards.duplicate():
+		ai_cooldown_cards[Card] -= 1
+		if ai_cooldown_cards[Card] == 0:
+			ai_cooldown_cards.erase(Card)
 #endregion
 
 #region Following Holder
@@ -143,3 +161,24 @@ func onAbility() -> void:
 			AniPlayer.play("Ability")
 		else:
 			AniPlayer.play("AbilityLeft" if start_tiles.find(ActiveStartTile) == 0 else "AbilityRight")
+#endregion
+
+const POSITIVE_TRANSFORM_VALUE: float = 0.2
+const NEGATIVE_TRANSFORM_VALUE: float = -0.5
+const TURN_COOLDOWN_FOR_ABILITY_AND_TRANSFORM: int = 3
+const CHANCE_TO_USE_REGULAR: float = 0.75
+const CHANCE_TO_USE_IN_COOLDOWN: float = 0.05
+
+func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, DFL: DefaultFightLogic) -> TileGD:
+	var roll: bool = Random.rollFloat(CHANCE_TO_USE_REGULAR\
+	if DFL.Card not in ai_cooldown_cards.keys() else CHANCE_TO_USE_IN_COOLDOWN)
+	
+	return active_effect_tiles.pickable_tiles[0] if roll else null
+	
+# 0.2 by default, after u use it -0.5 to step on the tile
+func onIObjectSpecificTransforms(tiles_to_value: Dictionary, DFL: DefaultFightLogic) -> void:
+	for Tile in tiles_to_value:
+		if Tile == ActiveStartTile:
+			if DFL.Card in ai_cooldown_cards.keys(): tiles_to_value[Tile] += NEGATIVE_TRANSFORM_VALUE
+			else: tiles_to_value[Tile] += POSITIVE_TRANSFORM_VALUE
+			return

@@ -48,3 +48,11 @@ func onIObjectDamaged(action: DamageAction) -> void:
 func onSave() -> SavedDataIObject:
 	ability_save['recharge'] = recharge
 	return super()
+
+const NEGATIVE_TRANSFORM: int = -10
+const POSITIVE_TRANSFORM: float = 0.5
+# If recharging, the unit is one health or if the unit is not in combat give a -10, otherwise +0.5
+func onIObjectSpecificTransforms(tiles_to_value: Dictionary, DFL: DefaultFightLogic) -> void:
+	if !tiles_to_value.has(getAttackableTile()): return
+	tiles_to_value[getAttackableTile()] += NEGATIVE_TRANSFORM if (recharge > 0 or DFL.Card.health == 1 or !DFL.Card.isInCombat()) else POSITIVE_TRANSFORM
+	

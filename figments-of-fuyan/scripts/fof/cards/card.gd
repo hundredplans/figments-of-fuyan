@@ -733,6 +733,9 @@ func isCardSurviveFallDamage(_temp_fall_damage: int) -> bool:
 #endregion
 
 #region Attacks and Range
+func isInCombat() -> bool:
+	return !getVisibleFieldCardsEnemies().is_empty()
+
 func setEnemyInMovementRange(state: bool) -> void:
 	if !isAlly(0): FieldInfo.setInfoSpriteEnemyInMovementRange(state)
 
@@ -773,7 +776,8 @@ func getAttackableTile() -> TileGD: # Simplifying function for iobjects
 	
 func isGameObjectAttackable(GameObject: GameObjectGD, AttackableTile: TileGD, StartingTile: TileGD = Tile) -> bool:
 	if !GameObject.isAttackable(self): return false
-	if !(Game.getCoordsDistance(StartingTile.getCoords(), AttackableTile.getCoords()) <= speed + getAttackRange()): return false
+	if getAttackDistanceFromEnemy(AttackableTile, StartingTile) != 0: return false
+	
 	if !(GameObject in getVisibleGameObjects()): return false
 	var is_in_height: bool = abs(AttackableTile.getHeight() - StartingTile.getHeight()) in [0, 1]
 	
@@ -783,6 +787,8 @@ func isGameObjectAttackable(GameObject: GameObjectGD, AttackableTile: TileGD, St
 	var is_ranged: bool = getAttackRange() > 1 and (abs(AttackableTile.getHeight() - StartingTile.getHeight()) <= 5)
 	return (is_in_height or is_in_unit_height or is_ranged)
 		
+func getAttackDistanceFromEnemy(EnemyTile: TileGD, StartingTile: TileGD = Tile, _speed: int = speed) -> int:
+	return max(Game.getCoordsDistance(StartingTile.getCoords(), EnemyTile.getCoords()) - getAttackRange() - _speed, 0)
 #endregion
 
 #region Damage
@@ -1228,6 +1234,20 @@ func isValidDuelistRampage(action: Action) -> bool:
 #region AI
 func onUnitSpecificTransforms(_tiles_to_value: Dictionary, DFL: DefaultFightLogic) -> void:
 	pass
+	
+func getArchetype() -> Game.Archetypes:
+	match info.archetype.id:
+		1: return Game.Archetypes.SCOUT
+		2: return Game.Archetypes.ADVENTURER
+		3: return Game.Archetypes.BRUTE
+		4: return Game.Archetypes.WARDEN
+		5: return Game.Archetypes.TACTICIAN
+		6: return Game.Archetypes.REINFORCER
+		7: return Game.Archetypes.SUPPORT
+		8: return Game.Archetypes.DOCILE
+		9: return Game.Archetypes.HOSTILE
+		10: return Game.Archetypes.ERRATIC
+	return Game.Archetypes.NULL
 #endregion
 
 #region Materials

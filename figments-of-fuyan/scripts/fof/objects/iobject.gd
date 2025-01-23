@@ -90,7 +90,7 @@ func getActiveEffect(effect_name: String) -> ActiveEffectDatastore:
 func getActiveEffectDescription(_active_effect: ActiveEffectDatastore, description: String) -> String:
 	return description
 	
-func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, _active_effect_tiles: ActiveEffectTiles, _Card: CardGD, _DFL: DefaultFightLogic) -> TileGD:
+func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, _active_effect_tiles: ActiveEffectTiles, _DFL: DefaultFightLogic) -> TileGD:
 	return null
 	
 func getActiveEffectTiles(_active_effect: ActiveEffectDatastore, _Card: CardGD) -> ActiveEffectTiles:
@@ -130,3 +130,5 @@ func getTopVertexY() -> float:
 func onIObject(action: Action) -> void:
 	pass
 		
+func onIObjectSpecificTransforms(tiles_to_value: Dictionary, DFL: DefaultFightLogic) -> void:
+	pass

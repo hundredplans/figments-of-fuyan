@@ -73,13 +73,17 @@ func onTileChosen(Tile: TileGD, DFL: DefaultFightLogic) -> void:
 func onCheckActiveEffects(Card: CardGD, DFL: DefaultFightLogic) -> bool:
 	var tool_active_effects: Array = Card.Tool.getActiveEffects() if Card.Tool != null else []
 	var active_effects: Array = Card.getActiveEffects() + tool_active_effects
+	
+	for IObject in Game.get_tree().get_nodes_in_group("LevelIObjectsGD")\
+		.filter(func(x: ObjectGD): return !x.is_queued_for_deletion()):
+		active_effects += IObject.getValidActiveEffects(Card)
+		
 	for active_effect in active_effects:
 		var active_effect_tiles: ActiveEffectTiles = active_effect.owner.onAIAbilityCheckerDefault(active_effect)\
 			if active_effect.owner is not IObjectGD else active_effect.owner.onAIAbilityCheckerDefault(active_effect, Card)
 		if active_effect_tiles == null: continue
 		
-		var Tile: TileGD = active_effect.owner.onAIAbilityChecker(active_effect, active_effect_tiles, DFL)\
-			if active_effect.owner is not IObjectGD else active_effect.owner.onAIAbilityChecker(active_effect, active_effect_tiles, Card, DFL)
+		var Tile: TileGD = active_effect.owner.onAIAbilityChecker(active_effect, active_effect_tiles, DFL)
 		if Tile == null: continue
 		
 		var actions: Array = [ChangeTurnStateAction.new(Card, Game.TurnStates.ACTIVE),\

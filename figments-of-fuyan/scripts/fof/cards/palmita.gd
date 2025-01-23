@@ -45,3 +45,10 @@ func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_til
 			if card_to_health[Card] == max_health:
 				return Card.getTile()
 	return null
+	
+const BONUS_PER_ADJACENT_ALLY_ON_TILE: float = 0.25
+# +0.25 per unit Palmita is adjacent to on a tile
+func onUnitSpecificTransforms(tiles_to_value: Dictionary, DFL: DefaultFightLogic) -> void:
+	for Tile in tiles_to_value:
+		var adjacency_bonus: int = DFL.getAllies().filter(func(x: CardGD): return Game.isAdjacent(x.getTile(), Tile)).size() * BONUS_PER_ADJACENT_ALLY_ON_TILE
+		tiles_to_value[Tile] += adjacency_bonus
