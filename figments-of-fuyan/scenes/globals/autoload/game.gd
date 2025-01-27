@@ -16,6 +16,7 @@ enum TurnStates {NULL, PASSED, INACTIVE, ACTIVE}
 enum Stats {ATTACK, HEALTH, SPEED, MAX_HEALTH, MAX_SPEED}
 enum AscendedExists {BOTH, ONLY_DEFAULT, ONLY_ASCENDED}
 enum Archetypes {NULL, ADVENTURER, BRUTE, DOCILE, ERRATIC, HOSTILE, REINFORCER, SCOUT, SUPPORT, TACTICIAN, WARDEN}
+enum DamageTypes {ATTACK, FALL_DAMAGE, OTHER}
 
 var CARD_PLACES_TO_GROUP: Dictionary = {
 	CardPlaces.NULL: "Null",
@@ -330,9 +331,9 @@ func getsetMovementRange(Card: CardGD) -> Array:
 			if !onSurviveFallDamage(Card, movement_path, point_path, astar): continue
 			valid_path = true
 			
-		Tile.setMovementPath(MovementPathGD.new(movement_path) if valid_path else null)
+		Tile.setMovementPath(MovementPathGD.new(movement_path, Card.isAlly(0)) if valid_path else null)
 	
-	var available_tiles: Array = tiles.filter(func(x: TileGD): return x.getMovementPathDisplay())
+	var available_tiles: Array = tiles.filter(func(x: TileGD): return x.getMovementPath() != null)
 	available_tiles.append(CenterTile)
 	
 	var attackables: Dictionary = Card.getAttackablesInRange()
@@ -356,7 +357,7 @@ func getsetMovementRange(Card: CardGD) -> Array:
 		available_tiles.append(Tile)
 		attack_from_path.append(Tile)
 		
-		Tile.setMovementPath(MovementPathGD.new(attack_from_path))
+		Tile.setMovementPath(MovementPathGD.new(attack_from_path, Card.isAlly(0)))
 		if GameObject is CardGD:
 			GameObject.setEnemyInMovementRange(true)
 	return available_tiles
@@ -549,3 +550,7 @@ func getDivinusEncounterNegativePlusOdds() -> float:
 func isDivinus() -> bool:
 	return save_file.getChampionCard().info.id == 2
 #endregion
+
+#region Getters
+func getLevel() -> LevelGD:
+	return Game.get_tree().get_nodes_in_group("LevelsGD")[0]

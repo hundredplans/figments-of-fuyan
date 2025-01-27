@@ -44,18 +44,21 @@ func onPostAction() -> void:
 			onAppendAction(EndGameAction.new(Defender.team))
 			
 func onSwapCameraOnDeathInPlayerPhase() -> void:
-	if !Defender.isAlly(0) or Game.get_tree().get_nodes_in_group("LevelsGD")[0].phase != Game.Phases.PLAYER: return
-		
-	var allies_by_distance: Array = game_objects_in_vision.filter(func(x: GameObjectGD): return x is CardGD and x.isAlly(0) and x != Defender)
-	allies_by_distance.sort_custom(func(x: CardGD, y: CardGD):\
-		return Game.getCoordsDistance(x.getCoords(), Tile.getCoords()) < Game.getCoordsDistance(y.getCoords(), Tile.getCoords()))
-		
-	var ally_units: Array = Game.getAllyUnits(0)
-	var closest_ally: CardGD = allies_by_distance[0] if !allies_by_distance.is_empty() else (ally_units[0] if !ally_units.is_empty() else null)
+	if Game.getLevel().phase != Game.Phases.PLAYER: return
 	
-	if closest_ally == null: return
-	
-	onPushAction(CameraChangeAction.new(closest_ally))
+	var action: Action
+	if Defender.isAlly(0):
+		var allies_by_distance: Array = Game.getAllyUnits(0).filter(func(x: GameObjectGD): return x is CardGD and x.isAlly(0) and x != Defender)
+		allies_by_distance.sort_custom(func(x: CardGD, y: CardGD):\
+			return Game.getCoordsDistance(x.getCoords(), Tile.getCoords()) < Game.getCoordsDistance(y.getCoords(), Tile.getCoords()))
+			
+		var ally_units: Array = Game.getAllyUnits(0)
+		var closest_ally: CardGD = allies_by_distance[0] if !allies_by_distance.is_empty() else (ally_units[0] if !ally_units.is_empty() else null)
+		
+		if closest_ally == null: return
+		action = CameraChangeAction.new(closest_ally)
+	else: action = CameraSpectateGroupAction.new(0)
+	onPushAction(action)
 	
 func getCardSawDefenderDie(Card: CardGD) -> bool:
 	return card_to_visible_defender[Card]

@@ -1,23 +1,25 @@
 extends ToolGD
 
-var visible_cards: Array = []
 func onProcessAction(action: Action) -> void:
 	super(action)
 	if !action.post:
-		if action is DamageAction and action.owner is AttackAction:
+		if action is DamageAction and action.owner is AttackAction and isValidSugoriKnife(action.Damager):
 			onForceAction(ToolActivatedAction.new(self, action))
-
+		elif action is GetDamageAction and action.damage_type == Game.DamageTypes.ATTACK and isValidSugoriKnife(action.Damager):
+			action.onAdd(1)
 	elif action.post:
-		if action is VisionNewUnitAction and action.Discoverer == Card:
+		if action is VisionNewUnitAction and action.Discoverer == Card and action.Discovered.isAlly(Card.team):
 			if action.enter_vision: onAddFieldEffect(action.Discovered)
 			else: onRemoveFieldEffect(action.Discovered)
 		elif action is DeathAction and action.Defender == Card:
 			onRemoveFieldEffects(action.game_objects_in_vision.filter(func(x: GameObjectGD): return x is CardGD and x.isAlly(Card.team)))
 
+func isValidSugoriKnife(DamageCard: CardGD) -> bool:
+	return DamageCard == Card or (ascended and DamageCard in Card.getVisibleFieldCardsAllies())
+
 func onToolAction(action: DamageAction) -> void:
-	for Defender in action.owner.Defenders.filter(func(x: GameObjectGD): return x is CardGD and x.isInjured()):
-		if action.owner.Attacker == Card or (ascended and action.owner.Attacker.isAlly(Card.team) and action.owner.Attacker in visible_cards):
-			action.damage += 1
+	for Defender in action.owner.Defenders.filter(func(x: GameObjectGD): return x is CardGD and x.isInjured() and x.isEnemy(Card.team)):
+		action.damage += 1
 
 func onToolEquipped() -> void:
 	if ascended:
@@ -36,16 +38,7 @@ func onRemoveFieldEffects(visible_field_cards: Array) -> void:
 func onAddFieldEffect(FieldCard: CardGD) -> void:
 	var FieldEffect: FieldEffectGD = SavedData.onLoadModel(SavedDataFieldEffect.new(1, true), FieldCard)
 	FieldCard.onAddFieldEffect(FieldEffect, self)
-	visible_cards.append(FieldCard)
 	
 func onRemoveFieldEffect(FieldCard: CardGD) -> void:
 	FieldCard.onRemoveFieldEffectsByOwner(self)
-	visible_cards.erase(FieldCard)
 	
-func onSave() -> SavedDataTool:
-	ability_save['visible_cards'] = visible_cards.map(func(x: CardGD): return x.public_id)
-	return super()
-	
-func onLoadData(data: SavedData) -> void:
-	super(data)
-	visible_cards = visible_cards.map(func(id: int): return Game.onFindPublicIDObject(id))

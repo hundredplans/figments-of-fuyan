@@ -23,8 +23,7 @@ class_name SavedDataCard extends SavedDataGameObject
 @export var temporary_card_conditions: Array
 @export var is_awakened_in_combat: bool
 @export var max_movement_height: float
-@export var last_seen_violence: int
-@export var last_ignore_behaviour_roll: bool
+@export var ai_datastore: AIDatastore
 @export var base_stats: StatsDatastore
 @export var overworld_traits: Array[OverworldTrait]
 @export var bounty_kills: BountyKills
@@ -36,7 +35,7 @@ func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _coords
 	_status_effects: Array = [], _attacks: int = 0, _attack_range: int = 1, _delayed_stats: Array[StatInfo] = [],\
 	_ability_save: Dictionary = {}, _active_effects: Array[ActiveEffectDatastore] = [], _tool_data: SavedDataTool = null,\
 	_field_effects: Array = [], _anibility_datastore := AnibilityDatastore.new(), _temporary_card_conditions: Array = [],\
-	_is_awakened_in_combat: bool = false, _last_seen_violence: int = -1, _last_ignore_behaviour_roll: bool = false,\
+	_is_awakened_in_combat: bool = false, _ai_datastore := AIDatastore.new(),\
 	_base_stats: StatsDatastore = null, _overworld_traits: Array[OverworldTrait] = [], _bounty_kills := BountyKills.new()) -> void:
 		
 	super(_id, _first_init, _public_id, _coords, _tile_rotation, _vision_datastore)
@@ -63,8 +62,7 @@ func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _coords
 	anibility_datastore = _anibility_datastore
 	temporary_card_conditions = _temporary_card_conditions
 	is_awakened_in_combat = _is_awakened_in_combat
-	last_seen_violence = _last_seen_violence
-	last_ignore_behaviour_roll = _last_ignore_behaviour_roll
+	ai_datastore = _ai_datastore
 	base_stats = _base_stats
 	overworld_traits = _overworld_traits
 	bounty_kills = _bounty_kills

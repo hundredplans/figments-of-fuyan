@@ -5,10 +5,15 @@ var Card: CardGD
 var phase: Game.Phases # Set by level in pre action
 var retry_ai_turn: bool
 
-func _init(_Card: CardGD = null, _tiles: Array = []) -> void:
+var previous_allies: Array
+var previous_enemies: Array
+
+func _init(_Card: CardGD = null, _tiles: Array = [], _previous_allies: Array = [], _previous_enemies: Array = []) -> void:
 	super()
 	Card = _Card
 	tiles = _tiles
+	previous_allies = _previous_allies
+	previous_enemies = _previous_enemies
 	
 func setRetryAiTurn(state: bool) -> void:
 	retry_ai_turn = state
@@ -24,7 +29,7 @@ func onPostAction() -> void:
 		var actions: Array = [ChangeTurnStateAction.new(Card, Game.TurnStates.PASSED)]
 		
 		if phase in [Game.Phases.AI, Game.Phases.NEUTRAL]:
-			actions.append(AITurnStartAction.new(Card.team) if (!retry_ai_turn or !is_alive) else AITurnAction.new(Card, false))
+			actions.append(AITurnStartAction.new(Card.team) if (!retry_ai_turn or !is_alive) else AITurnAction.new(Card, false, false, previous_allies, previous_enemies))
 		else:
 			actions.append(CameraSpectateGroupAction.new(0))
 		

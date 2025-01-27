@@ -34,12 +34,11 @@ var temporary_card_conditions: Array = [] # Array of map effects
 
 var Tool: ToolGD
 var is_awakened_in_combat: bool
-var last_seen_violence: int # Turns since they last violence, -1 for haven't seen it yet
-var last_ignore_behaviour_roll: bool
 var overworld_traits: Array[OverworldTrait] = []
 var bounty_kills: BountyKills
 var card_vision_mode: CardVisionMode
 var is_card_change_level_visible: bool # Not saved
+var ai_datastore: AIDatastore
 #endregion
 
 #region Globals
@@ -207,10 +206,12 @@ func onSave() -> SavedDataCard:
 	for overworld_trait in overworld_traits: overworld_trait.onSave()
 
 	vision_datastore.onSave()
+	ai_datastore.onSave()
+	
 	return SavedDataCard.new(info.id, false, public_id, coords, tile_rotation, vision_datastore, team, ascended, \
 	attack, health, speed, max_speed, max_health, energy, draw_order, card_place, turn_state, SavedData.onSaveGroup(status_effects), attacks, attack_range, delayed_stats,\
 	ability_save, active_effects, tool_data, SavedData.onSaveGroup(field_effects), anibility_datastore,\
-	SavedData.onSaveGroup(temporary_card_conditions), is_awakened_in_combat, last_seen_violence, last_ignore_behaviour_roll, base_stats,
+	SavedData.onSaveGroup(temporary_card_conditions), is_awakened_in_combat, ai_datastore, base_stats,
 	overworld_traits, bounty_kills)
 
 func onLoadData(data: SavedData) -> void:
@@ -234,8 +235,7 @@ func onLoadData(data: SavedData) -> void:
 	energy = data.energy
 	anibility_datastore = data.anibility_datastore
 	field_effects_datas = data.field_effects
-	last_seen_violence = data.last_seen_violence
-	is_awakened_in_combat = data.is_awakened_in_combat
+	ai_datastore = data.ai_datastore
 	base_stats = data.base_stats
 	overworld_traits = data.overworld_traits
 	bounty_kills = data.bounty_kills
@@ -268,6 +268,7 @@ func onLoadDataLevel() -> void:
 		onLoadStatusEffects()
 		onLoadFieldEffects()
 		vision_datastore.onLoad()
+		ai_datastore.onLoad()
 	
 func onLoadDataLevelFofInit() -> void:
 	super()
@@ -435,7 +436,7 @@ func onProcessAction(action: Action) -> void:
 			#elif isOccupyVisionVisibleAction(action):
 				#onAddUnitVisibleParticle()
 			elif action is AttackAction and action.Attacker.isEnemy(team) and action.Attacker in getVisibleFieldCardsEnemies():
-				last_seen_violence = 0
+				ai_datastore.setLastSeenViolence(0)
 			elif isValidRampage(action):
 				onBountyKill(action) # Needs to be here instead of in death action
 			
@@ -1009,7 +1010,7 @@ func onAdvanceTurn(turn_team: int) -> void:
 		stat_info.onAdvanceTurn()
 		
 	FieldInfo.onUpdateDelayedStats()
-	if last_seen_violence > -1: last_seen_violence += 1
+	ai_datastore.onAdvanceTurn()
 	
 #endregion
 
@@ -1041,7 +1042,7 @@ func isValidRevenge(action: Action) -> bool:
 	return action.post and action is StatAction and action.owner is DamageAction and self in action.owner.Defenders and card_place == Game.CardPlaces.FIELD
 
 func isValidBloodthirst(action: Action) -> bool:
-	return action.post and action is DeathAction and isEnemy(action.Defender.team) and card_place == Game.CardPlaces.FIELD and action.getCardSawDefenderDie(self) 
+	return action.post and action is DeathAction and action.Damager != self and isEnemy(action.Defender.team) and card_place == Game.CardPlaces.FIELD and action.getCardSawDefenderDie(self) 
 
 func isValidArrive(action: Action) -> bool:
 	return action.post and action is AwakenAction and action.Card == self
@@ -1167,7 +1168,7 @@ func onLevelEnded(_win: bool) -> void:
 	turn_state = Game.TurnStates.NULL
 	vision_datastore = VisionDatastoreCard.new()
 	
-	last_seen_violence = -1
+	ai_datastore.onReset()
 	Tile = null
 	
 	for overworld_trait in overworld_traits:
@@ -1248,6 +1249,37 @@ func getArchetype() -> Game.Archetypes:
 		9: return Game.Archetypes.HOSTILE
 		10: return Game.Archetypes.ERRATIC
 	return Game.Archetypes.NULL
+	
+# True if active effect used
+func onAICheckActiveEffects(DFL: DefaultFightLogic, allies: Array, enemies: Array, after_action: MovementFinishAction = null) -> bool:
+	var tool_active_effects: Array = Tool.getActiveEffects() if Tool != null else []
+	var active_effects: Array = getActiveEffects() + tool_active_effects
+	
+	for IObject in Game.get_tree().get_nodes_in_group("LevelIObjectsGD")\
+		.filter(func(x: ObjectGD): return !x.is_queued_for_deletion()):
+		active_effects += IObject.getValidActiveEffects(self)
+		
+	for active_effect in active_effects:
+		var active_effect_tiles: ActiveEffectTiles = active_effect.owner.onAIAbilityCheckerDefault(active_effect)\
+			if active_effect.owner is not IObjectGD else active_effect.owner.onAIAbilityCheckerDefault(active_effect, self)
+		if active_effect_tiles == null: continue
+		
+		var Tile: TileGD = active_effect.owner.onAIAbilityChecker(active_effect, active_effect_tiles, DFL)
+		if Tile == null: continue
+		
+		var actions: Array = [ChangeTurnStateAction.new(self, Game.TurnStates.ACTIVE),\
+			ActiveEffectUsedAction.new(active_effect, Tile, active_effect_tiles, self),\
+			MovementFinishAction.new(self, [], allies, enemies)]
+			
+		if after_action == null: onPushAction(actions)
+		else:
+			pass
+			
+		return true
+	return false
+	
+func onAICheckActiveEffectsOnlyDFL(DFL: DefaultFightLogic, after_action: MovementFinishAction = null) -> bool:
+	return onAICheckActiveEffects(DFL, DFL.allies, DFL.enemies, after_action)
 #endregion
 
 #region Materials

@@ -10,11 +10,11 @@ const DISTANCE_TO_VALUE: Dictionary = {
 }
 func getCombatTiles(Card: CardGD, tiles: Array, enemies: Array, _allies: Array) -> Dictionary:
 	var tiles_to_value: Dictionary = {}
-	var is_violence_recent: bool = Card.last_seen_violence <= 2
+	var is_violence_recent: bool = Card.ai_datastore.last_seen_violence <= 2
 	for Tile in tiles:
 		tiles_to_value[Tile] = getValueByAttackersDistance(Tile, enemies) if !is_violence_recent else getValueFromInAttackableRange(Tile, enemies)
 	return tiles_to_value
-
+	
 func getValueFromInAttackableRange(Tile: TileGD, enemies: Array) -> float:
 	for Card in enemies:
 		var attack_range: int = Card.getAttackRange()

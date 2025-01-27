@@ -6,7 +6,9 @@ func onProcessAction(action: Action) -> void:
 	if action.post:
 		if isValidOnHit(action):
 			onPushAction(OnHitAction.new(self, action))
-		elif action is GetDamageAction and action.Damager == self and !action.is_fall_damage and swingus_field_effect_public_id > 0:
+	
+	elif !action.post:
+		if action is GetDamageAction and action.Damager == self and action.damage_type == Game.DamageTypes.ATTACK and swingus_field_effect_public_id > 0:
 			action.onAdd(getExtraDamage())
 	
 func onHit(_damage_action: DamageAction, _attack_action: AttackAction) -> void:

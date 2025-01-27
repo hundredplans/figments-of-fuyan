@@ -260,6 +260,9 @@ func getMovementPathTilesSafe() -> Array:
 func getMovementPathTiles() -> Array:
 	return movement_path.tiles
 	
+func getMovementPath() -> MovementPathGD:
+	return movement_path
+	
 func isBelowMaxMovementHeight(Card: CardGD) -> bool:
 	if max_movement_height == 0: return true
 	return Card.info.top + Card.position.y < (max_movement_height + getCardPosition().y)

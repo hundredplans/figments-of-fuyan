@@ -1,6 +1,7 @@
 class_name LevelGD extends FofGD
 
 const START_HAND_SIZE: int = 4
+const AI_TURNS_UNTIL_ADVENTURER: int = 10
 var energy: int
 var max_energy: int
 var level_camera_data: LevelCameraData
@@ -12,6 +13,7 @@ var rewards: Rewards
 var anti_boons: Array
 var save_file: SaveFileGD
 var old_player_vision: Array
+var player_card_last_seen_turn: int # Default -1 which means they were never seen, if this is > 10 or -1 every enemy has the adventurer tag
 
 signal set_spectate_card
 signal energy_changed
@@ -50,7 +52,7 @@ func onSave() -> SavedData:
 	var old_player_vision_public_ids: Array = old_player_vision.map(func(x: GameObjectGD): return x.public_id)
 	
 	return SavedDataLevel.new(info.id, false, public_id, data, enemy_spawns, getFieldCards(), phase, level_camera_data, energy, max_energy,\
- 	is_ended, is_elite, rewards, anti_boons, old_player_vision_public_ids)
+ 	is_ended, is_elite, rewards, anti_boons, old_player_vision_public_ids, player_card_last_seen_turn)
 
 func onClear() -> void:
 	queue_free()
@@ -120,7 +122,6 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 		onPushAction(actions)
 		return
 
-	
 	for Boon in get_tree().get_nodes_in_group("BoonsGD"):
 		boon_added.emit(Boon)
 		
@@ -166,6 +167,9 @@ func onChangePhase(_phase: Game.Phases, instant: bool = false) -> void:
 			
 	phase = _phase
 	phase_changed.emit(phase, old_phase, instant)
+	
+	if phase in Game.ADVANCE_PHASES:
+		onAdvanceTurn(Game.ADVANCE_PHASES.find(phase))
 	
 	match phase:
 		Game.Phases.HAND:
@@ -228,8 +232,13 @@ func onProcessAction(action: Action) -> void:
 			onRecalculateAITurn(action.Card, true, false, false, true)
 			tool_removed.emit()
 		elif action is VisionNewUnitAction:
-			if action.enter_vision and action.Discoverer.isEnemy(action.Discovered.team):
-				onRecalculateAITurn(action.Discoverer, true)
+			if action.enter_vision:
+				if action.Discoverer.isEnemy(action.Discovered.team):
+					onRecalculateAITurn(action.Discoverer, true)
+				
+				if action.Discoverer.isAlly(1) and action.Discovered.isAlly(0):
+					onPlayerCardSpottedByAI()
+				
 		elif action is DeathAction:
 			onRecalculateAITurn(action.Defender, true, true, true, true)
 		elif action is ChangeActiveEffectChargesAction:
@@ -238,6 +247,9 @@ func onProcessAction(action: Action) -> void:
 			update_active_effects.emit()
 		elif action is CameraSpectateGroupAction:
 			spectate_group.emit(action.team)
+		elif action is RevealAction:
+			if action.Revealed is CardGD and action.Revealed != null and action.Revealed.isAlly(0):
+				onPlayerCardSpottedByAI()
 	else:
 		if action is ChangePhaseAction:
 			if action.phase == phase: action.onFailAction()
@@ -343,13 +355,11 @@ func onRewardsFinished() -> void:
 #region AI
 var ai_turn_recalculated: bool
 func onRecalculateAITurn(cards: Variant, include_self: bool = true, include_enemies: bool = false, include_allies: bool = false, in_vision: bool = true) -> void:
-	if phase not in [Game.Phases.AI, Game.Phases.NEUTRAL]: return
-	
 	if cards == null: return
 	if cards is CardGD: cards = [cards]
 	
 	var finish_action: MovementFinishAction = Game.ActionManagerReference.onFindFirstAction(MovementFinishAction)
-	if finish_action == null: return
+	if finish_action == null or !finish_action.Card.isEnemy(0): return
 	
 	var AICard: CardGD = finish_action.Card
 	if !cards.any(isCardValidForRecalculateAITurn.bind(AICard, include_self, include_enemies, include_allies, in_vision)): return
@@ -364,13 +374,28 @@ func isCardValidForRecalculateAITurn(Card: CardGD, AICard: CardGD, include_self:
 	return false
 			
 func onRecalculateAITurnOccupy(action: OccupyAction, Card: CardGD, Tile: TileGD) -> void:
-	if phase not in [Game.Phases.AI, Game.Phases.NEUTRAL]: return
 	var finish_action: Action = Game.ActionManagerReference.onFindFirstAction(MovementFinishAction)
 	
-	if finish_action == null: return
+	if finish_action == null or !finish_action.Card.isEnemy(0): return
 	if finish_action.Card != Card: return
 	
-	if action.owner != null and action.owner is not MoveToTileAction:
+	if Card.ai_datastore.onCheckDoubleAdjacentAndReceiving(Card)\
+		or (action.owner != null and action.owner is not MoveToTileAction):
+			
 		onRemoveMoveAndAttackActions(Card)
 		finish_action.setRetryAiTurn(true)
+	elif Card.onAICheckActiveEffectsOnlyDFl(Card.ai_datastore.DFL, finish_action):
+		onRemoveMoveAndAttackActions(Card)
+#endregion
+
+#region Player Card Last Seen Turn
+func isAIAdventurerArchetypeGlobal() -> bool:
+	return player_card_last_seen_turn == -1 or player_card_last_seen_turn >= AI_TURNS_UNTIL_ADVENTURER
+
+func onAdvanceTurn(team: int) -> void:
+	if team != 1 or player_card_last_seen_turn == -1: return
+	player_card_last_seen_turn += 1
+		
+func onPlayerCardSpottedByAI() -> void:
+	player_card_last_seen_turn = 0
 #endregion

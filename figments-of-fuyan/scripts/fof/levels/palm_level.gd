@@ -4,8 +4,8 @@ class_name PalmLevelGD extends LevelGD
 var decoration_datas: Array
 var decoration_coords: Array
 var ISLAND_ODDS: Dictionary = {
-	"1": 0.5,
-	"2": 0.5,
+	"1": 0.5, # 0.5
+	"2": 0.5, # 0.5
 		#"2": 0.39,
 		#"3": 0.1,
 		#"4": 0.01
@@ -46,7 +46,7 @@ func onSave() -> SavedDataPalmLevel:
 	if rewards != null: rewards.onSave()
 	var old_player_vision_public_ids: Array = old_player_vision.map(func(x: GameObjectGD): return x.public_id)
 	return SavedDataPalmLevel.new(info.id, false, public_id, data, enemy_spawns, getFieldCards(), phase, level_camera_data,
-	energy, max_energy, is_elite, is_ended, rewards, anti_boons, old_player_vision_public_ids,\
+	energy, max_energy, is_elite, is_ended, rewards, anti_boons, old_player_vision_public_ids, player_card_last_seen_turn,\
 	decoration_datas, decoration_coords)
 	
 func onLoadData(data: SavedData) -> void:

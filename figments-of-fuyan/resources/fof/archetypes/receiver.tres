@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ArchetypeInfo" load_steps=5 format=3 uid="uid://cmf0flpkc86sl"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/archetypes/archetype_info.gd" id="1_65qe8"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/behaviours/accepter.gd" id="1_bq77r"]
+[ext_resource type="Script" path="res://scripts/fof/archetypes/archetype.gd" id="2_r75o0"]
+[ext_resource type="Script" path="res://scripts/saved_data/archetypes/saved_data_archetype.gd" id="3_qesp8"]
+
+[resource]
+script = ExtResource("1_65qe8")
+behaviours = Array[GDScript]([ExtResource("1_bq77r")])
+description = ""
+calling_chance = 0
+accepting_chance = 0
+id = 11
+name = "Receiver"
+gdscript = ExtResource("2_r75o0")
+saved_data = ExtResource("3_qesp8")

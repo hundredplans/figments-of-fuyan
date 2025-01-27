@@ -119,6 +119,11 @@ func getMaxMovementHeight() -> float:
 
 const GET_CLOSE_TO_DOOR_INCENTIVE: float = 0.3
 func onIObjectSpecificTransforms(tiles_to_value: Dictionary, DFL: DefaultFightLogic) -> void:
+	if is_open: return
 	for Tile in tiles_to_value:
 		if Game.isAdjacent(Tile, getTile()):
 			tiles_to_value[Tile] += GET_CLOSE_TO_DOOR_INCENTIVE
+
+# When possible open the door, never close it
+func onAIAbilityChecker(active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _DFL: DefaultFightLogic) -> TileGD:
+	return active_effect_tiles.pickable_tiles[0] if !is_open and active_effect.name == "Open Door" else null

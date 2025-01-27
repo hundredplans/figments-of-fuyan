@@ -112,12 +112,9 @@ func onTileChosenGetUpdatedAttackablePath(path: Array) -> Array:
 	
 	# If their Tile is inside unit's movement range
 	attackables = attackables.filter(func(x: GameObjectGD): return !x.getTile().getMovementPathTilesSafe().is_empty())
+	attackables = attackables.filter(func(x: GameObjectGD): return x is CardGD)
 	if attackables.is_empty(): return path
-		
-	if attackables.any(func(x: GameObjectGD): return x is CardGD):
-		attackables = attackables.filter(func(x: GameObjectGD): return x is CardGD)
-				
-		attackables.sort_custom(func(x: CardGD, y: CardGD): return x.energy > y.energy)
-		return attackables[0].getTile().getMovementPathTiles()
-	return attackables.pick_random().getTile().getMovementPathTiles()
+	
+	attackables.sort_custom(func(x: CardGD, y: CardGD): return x.energy > y.energy)
+	return attackables[0].getTile().getMovementPathTiles()
 #endregion

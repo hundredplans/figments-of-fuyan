@@ -3,12 +3,14 @@ class_name GetDamageAction extends Action
 var Damager: GameObjectGD
 var Defenders: Array
 var damage: int
-var is_fall_damage: bool = false
+var damage_type: Game.DamageTypes
+
+enum DamageType {ATTACK, FALL_DAMAGE, OTHER}
 
 var mults: Array
 var adds: Array
 
-func _init(_Damager: GameObjectGD = null, _Defenders: Variant = null, _damage: int = 0, _is_fall_damage: bool = false) -> void:
+func _init(_Damager: GameObjectGD = null, _Defenders: Variant = null, _damage: int = 0, _damage_type := Game.DamageTypes.OTHER) -> void:
 	super()
 	Damager = _Damager
 	
@@ -16,7 +18,7 @@ func _init(_Damager: GameObjectGD = null, _Defenders: Variant = null, _damage: i
 	elif _Defenders is GameObjectGD: Defenders = [_Defenders]
 	
 	damage = _damage
-	is_fall_damage = _is_fall_damage
+	damage_type = _damage_type
 	
 func onPreAction():
 	pass

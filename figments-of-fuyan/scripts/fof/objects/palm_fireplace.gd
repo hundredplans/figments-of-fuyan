@@ -128,3 +128,17 @@ func onIObjectSpecificTransforms(tiles_to_value: Dictionary, DFL: DefaultFightLo
 		if Tile in fuel_tiles:
 			tiles_to_value[Tile] += POSITIVE_TRANSFORM_TO_ADJACENT_TILES
 	
+const AI_ALLIES_IN_ATT_RANGE: int = 2
+const AI_ALLIES_IN_VISION: int = 2
+const ATTACK_DISTANCE: int = 2
+# Use Only used when 2 or more units in vision, use add fuel if there's a support or reinforcer in the group, use att if at least two units in 2 tile range
+func onAIAbilityChecker(active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, DFL: DefaultFightLogic) -> TileGD:
+	if DFL.allies.size() >= AI_ALLIES_IN_VISION:
+		if DFL.allies.any(func(x: CardGD): return x.getArchetype() in [Game.Archetypes.SUPPORT, Game.Archetypes.REINFORCER]):
+			if active_effect.name == "Add Fuel": # Excludes Extinguish if it gets this far on purpose
+				return active_effect_tiles.pickable_tiles[0]
+		elif active_effect.name == "Extinguish" and \
+			DFL.allies.filter(func(x: CardGD): return Game.getCoordsDistance(x.getTile().getCoords(), getTile().getCoords()) <= ATTACK_DISTANCE).size() >= AI_ALLIES_IN_ATT_RANGE:
+			return active_effect_tiles.pickable_tiles[0]
+	return null
+		
