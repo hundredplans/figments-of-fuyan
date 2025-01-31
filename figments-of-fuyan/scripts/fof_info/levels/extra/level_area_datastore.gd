@@ -1,0 +1,1 @@
+class_name LevelAreaDatastore extends Resource

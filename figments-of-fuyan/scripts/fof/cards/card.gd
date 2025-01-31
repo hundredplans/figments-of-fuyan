@@ -252,7 +252,6 @@ func onLoadData(data: SavedData) -> void:
 	for custom_variable in ability_save:
 		set(custom_variable, ability_save[custom_variable])
 	
-	onCreateAdjustedPoints()
 	onChangeCardPlace(data.card_place)
 	add_to_group("CardsGD")
 	
@@ -422,6 +421,12 @@ func setTurnState(_turn_state: Game.TurnStates) -> void:
 	turn_state = _turn_state
 	FieldInfo.setInfoSpriteTurnState()
 	
+	if turn_state == Game.TurnStates.PASSED:
+		for stat_info in delayed_stats.duplicate():
+			stat_info.onCardTurnPassed()
+		
+		ai_datastore.onCardTurnPassed()
+	
 #endregion
 
 #region Actions
@@ -481,8 +486,7 @@ func onMoveToTile(action: MoveToTileAction) -> void:
 	if action.movement_type == MoveToTileAction.MOVEMENT_TYPES.JUMP: onJumpTween(action)
 	elif action.movement_type == MoveToTileAction.MOVEMENT_TYPES.FALL: onFall(action)
 	
-const FALL_MULTIPLIER: float = 2.3
-
+const JUMP_SPEEDSCALE: float = 2.5
 func onJumpTween(action: MoveToTileAction) -> void:
 	var jump_time: float = 1
 	var jump_end: Vector3 = action.DestinationTile.getCardPosition()
@@ -490,14 +494,15 @@ func onJumpTween(action: MoveToTileAction) -> void:
 	var start_highest: Vector3 = position + Vector3(0, jump_height, 0)
 	var end_highest: Vector3 = jump_end + Vector3(0, jump_height, 0)
 	
-	AniPlayer.speed_scale = 2
+	AniPlayer.speed_scale = JUMP_SPEEDSCALE
 	
 	onTweenJumpFall(jump_end, start_highest, end_highest, jump_time)
 	await get_tree().create_timer(action.getDelay()).timeout
 	
 	AniPlayer.speed_scale = 1
 	
-
+const FALL_MULTIPLIER: float = 2.3
+const FALL_SPEEDSCALE: float = 3.5
 func onFall(action: MoveToTileAction) -> void:
 	var height_diff: int = abs(action.DestinationTile.getHeight() - Tile.getHeight())
 	var jump_end: Vector3 = action.DestinationTile.getCardPosition()
@@ -505,7 +510,7 @@ func onFall(action: MoveToTileAction) -> void:
 	var start_highest: Vector3 = position + Vector3(0, -jump_height, 0)
 	var end_highest: Vector3 = jump_end + Vector3(0, -jump_height, 0)
 	
-	AniPlayer.speed_scale = 2.0 / action.fall_time
+	AniPlayer.speed_scale = FALL_SPEEDSCALE - ((action.fall_time - 1) * 2.2)
 	onTweenJumpFall(jump_end, start_highest, end_highest, action.fall_time)
 	await get_tree().create_timer(action.getDelay()).timeout
 	
@@ -580,24 +585,24 @@ func onUpdateVision() -> void: # Returns the new visibles
 	if card_place != Game.CardPlaces.FIELD: return
 	
 	var cards: Array = get_tree().get_nodes_in_group("FieldCardsGD")
+	cards.erase(self)
 	var tile_to_card: Dictionary = {}
 
 	var vision_range_game_objects: Array = Game.getAdjacentOrCloserTiles(Tile, getVisionRange())
-	
 	var visibles: Dictionary = vision_datastore.getVisibles()
 	var previous_direct_game_objects: Array = []
 	for GameObject in visibles:
 		if visibles[GameObject].direct:
 			previous_direct_game_objects.append(GameObject)
 
-	for FieldCard in cards:
-		tile_to_card[FieldCard.Tile] = FieldCard
-
 	for Card in cards.duplicate():
 		var tile_in_vision_range: bool = Card.Tile in vision_range_game_objects
 		Card.setDetectableByRay(tile_in_vision_range and Card.isNotInvisibleOrIsAdjacent(Tile))
 		if !tile_in_vision_range:
 			cards.erase(Card)
+			
+	for FieldCard in cards:
+		tile_to_card[FieldCard.Tile] = FieldCard
 	
 	for obj_array in vision_range_game_objects.map(func(x: GameObjectGD): return x.occupied_objects):
 		for Obj in obj_array: vision_range_game_objects.append(Obj)
@@ -607,25 +612,32 @@ func onUpdateVision() -> void: # Returns the new visibles
 		vision_range_game_objects.erase(Tile)
 		
 	vision_range_game_objects += cards
-		
-	var direct_game_objects: Array = []
-	var point_batches: Array = vision_range_game_objects.map(func(x: GameObjectGD): return x.adjusted_points)
-	for point_batch in point_batches:
-		for point in point_batch:
+	
+	var direct_game_objects_dict: Dictionary = {}
+	var point_batches: Dictionary = {}
+	for GameObject in vision_range_game_objects:
+		point_batches[GameObject] = GameObject.getAdjustedPoints()
+	
+	for GameObject in point_batches:
+		for point in point_batches[GameObject]:
 			VisionRay.target_position = (point - VisionRay.global_position) * EXTRA_RAY_LENGTH
 			VisionRay.force_raycast_update()
 			if VisionRay.is_colliding():
-				var GameObject: GameObjectGD = Helper.getCollision(VisionRay.get_collider(), GameObjectGD)
-				if GameObject in vision_range_game_objects: # Has to be in range
-					direct_game_objects.append(GameObject)
+				var DirectGameObject: GameObjectGD = Helper.getCollision(VisionRay.get_collider(), GameObjectGD)
+				if DirectGameObject in vision_range_game_objects: # Has to be in range
+					direct_game_objects_dict[DirectGameObject] = null
+					if GameObject == DirectGameObject: break
 	
-	direct_game_objects += adjacent_tiles_and_center
+	for Tile in adjacent_tiles_and_center:
+		direct_game_objects_dict[Tile] = null
+	
+	var direct_game_objects: Array = direct_game_objects_dict.keys()
 	for GameObject in previous_direct_game_objects.filter(func(x: GameObjectGD): return x not in direct_game_objects): # No longer direct
 		vision_datastore.setDirect(GameObject, false)
 		
 		if GameObject is CardGD:
 			visibles[GameObject.Tile].setByUnit(false)
-			if !GameObject.isNotInvisibleOrIsAdjacent(Tile):
+			if GameObject.isNotInvisibleOrIsAdjacent(Tile):
 				visibles[GameObject].setByTile(false)
 			
 		elif GameObject is TileGD:
@@ -649,7 +661,7 @@ func onUpdateVision() -> void: # Returns the new visibles
 			for Obj in GameObject.occupied_objects:
 				visibles[Obj].onAddTile(GameObject)
 			
-			if tile_to_card.has(GameObject) and tile_to_card[GameObject].isNotInvisibleOrIsAdjacent(Tile):
+			if tile_to_card.has(GameObject):
 				visibles[tile_to_card[GameObject]].setByTile(true)
 				
 		elif GameObject is ObjectGD:
@@ -662,7 +674,7 @@ func onTileOccupiedIsInVision(Tile: TileGD, PreviousTile: TileGD, Card: CardGD) 
 	
 	if PreviousTile != null: visibles[PreviousTile].setByUnit(false)
 	
-	var new_tile_in_vision: bool = Tile != null and Tile in Card.getVisibleGameObjects()
+	var new_tile_in_vision: bool = Tile != null and Tile in getVisibleGameObjects()
 	
 	if Tile != null: visibles[Tile].setByUnit(new_tile_in_vision)
 	if Card != null: visibles[Card].setByTile(new_tile_in_vision)
@@ -700,8 +712,7 @@ func setLevelVisible(state: bool) -> void:
 	if state != vision_datastore.level_visible:
 		is_card_change_level_visible = true
 		super(state)
-		await setAlphagreyMaterial(1.0 if state else 0.0)
-		is_card_change_level_visible = false
+		setAlphagreyMaterial(1.0 if state else 0.0)
 	else: super(state)
 		
 	if Tile != null:
@@ -823,9 +834,8 @@ func onUpdateStat(type: Game.Stats, difference: int, show_particles: bool) -> vo
 
 #region Traits
 func onCreateInitialTraits() -> void:
-	var actions: Array = []
-	for overworld_trait in overworld_traits:
-		onAddFieldTrait(overworld_trait)
+	var actions: Array = overworld_traits.map(func(x: OverworldTrait): return AddTraitAction.new(self, x))
+	onPushAction(actions)
 	
 func onAscendedUpdateOverworldTraits() -> void:
 	var new_traits: Array = info.ascended_traits if ascended else info.initial_traits
@@ -1005,12 +1015,8 @@ func onAdvanceTurn(turn_team: int) -> void:
 		
 	actions += active_effects.map(func(x: ActiveEffectDatastore): return ChangeActiveEffectUsedAction.new(x, false))
 	onPushAction(actions)
-	
-	for stat_info in delayed_stats.duplicate():
-		stat_info.onAdvanceTurn()
 		
 	FieldInfo.onUpdateDelayedStats()
-	ai_datastore.onAdvanceTurn()
 	
 #endregion
 
@@ -1163,6 +1169,7 @@ func onLevelEnded(_win: bool) -> void:
 	tile_rotation = 0
 	delayed_stats = []
 	
+	active_effects = []
 	status_effects = []
 	field_effects = []
 	turn_state = Game.TurnStates.NULL
@@ -1272,9 +1279,7 @@ func onAICheckActiveEffects(DFL: DefaultFightLogic, allies: Array, enemies: Arra
 			MovementFinishAction.new(self, [], allies, enemies)]
 			
 		if after_action == null: onPushAction(actions)
-		else:
-			pass
-			
+		else: onPushAfterAction(actions, after_action)
 		return true
 	return false
 	
@@ -1313,3 +1318,7 @@ func setAlphagreyMaterialValue(value: float) -> void:
 	for mesh in getMeshes(Model):
 		mesh.set_instance_shader_parameter("time_value", value)
 #endregion
+
+func getAdjustedPoints() -> Array:
+	return getLevelPoints().map(func(x: Vector3): return (Game.onRotatePosition(x, rotation.y)) + position)
+	

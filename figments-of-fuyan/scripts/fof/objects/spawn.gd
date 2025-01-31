@@ -60,9 +60,6 @@ func isSpawnOccupied() -> bool:
 func getTile() -> TileGD:
 	return occupied_tiles[0]
 
-func setOccupiedTiles(tile_position_to_tile: Dictionary) -> void:
-	super(tile_position_to_tile)
-
 func setCollisionLayers(layer: int) -> void:
 	if loaded_in_level: super(0)
 	else: super(layer)

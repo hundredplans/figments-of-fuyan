@@ -1,19 +1,19 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://c5ouon881noun"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_krnpt"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_8abg6"]
-[ext_resource type="Resource" uid="uid://bbqdeswvpt0y6" path="res://resources/fof/archetypes/support.tres" id="2_hw1s4"]
-[ext_resource type="Texture2D" uid="uid://0v2ajkdp844w" path="res://assets/sprites/game/cards/art_mini/palmfessor.png" id="2_lq2ir"]
-[ext_resource type="Image" uid="uid://dwfvvnip6sjim" path="res://assets/sprites/game/cards/art_pop/palmfessor.png" id="2_vlei1"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/support.tres" id="2_hw1s4"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/palmfessor.png" id="2_lq2ir"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/palmfessor.png" id="2_vlei1"]
 [ext_resource type="Script" path="res://scripts/fof/cards/palmfessor.gd" id="3_2h6c5"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_rhojd"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="4_kcfhw"]
-[ext_resource type="PackedScene" uid="uid://cqkw7xut50dq2" path="res://assets/models/fof/cards/palmfessor.glb" id="5_bcbbw"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/palmfessor.glb" id="5_bcbbw"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_x5vgm"]
-size = Vector3(0.794189, 1.37427, 1)
+size = Vector3(0.794189, 1.37427, 0.350098)
 
-[sub_resource type="PackedScene" id="PackedScene_wkfej"]
+[sub_resource type="PackedScene" id="PackedScene_xt4t2"]
 _bundled = {
 "conn_count": 0,
 "conns": PackedInt32Array(),
@@ -22,7 +22,7 @@ _bundled = {
 "node_count": 1,
 "node_paths": [],
 "nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
-"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00109863, 0.687378, 0), SubResource("BoxShape3D_x5vgm")],
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00109863, 0.687378, 0.0065918), SubResource("BoxShape3D_x5vgm")],
 "version": 3
 }
 
@@ -42,8 +42,8 @@ art_mini_coordinate = Vector2i(80, 40)
 art_mini = ExtResource("2_lq2ir")
 art_pop = ExtResource("2_vlei1")
 model = ExtResource("5_bcbbw")
-points = []
-collision_shape = SubResource("PackedScene_wkfej")
+points = [Vector3(-0.216654, 1.25261, 0.181641), Vector3(0.0527984, 1.25078, 0.181641), Vector3(0.234945, 1.26436, 0.181641), Vector3(-0.258428, 0.902249, 0.181641), Vector3(0.263948, 0.914453, 0.181641), Vector3(-0.0155043, 0.901131, 0.181641), Vector3(-0.0200658, 0.588602, 0.181641), Vector3(0.247022, 0.612771, 0.181641), Vector3(-0.278457, 0.570444, 0.181641), Vector3(-0.227219, 0.189865, 0.181641), Vector3(0.188239, 0.183047, 0.181641), Vector3(0.240509, 1.23808, -0.168457), Vector3(0.0130114, 1.23916, -0.168457), Vector3(-0.26933, 1.23436, -0.168457), Vector3(0.287095, 0.943327, -0.168457), Vector3(-0.0367997, 0.95576, -0.168457), Vector3(-0.252993, 0.919129, -0.168457), Vector3(0.282934, 0.530132, -0.168457), Vector3(0.0239239, 0.532135, -0.168457), Vector3(-0.267202, 0.526894, -0.168457), Vector3(0.213144, 0.148973, -0.168457), Vector3(-0.209242, 0.150674, -0.168457), Vector3(-0.395996, 0.243867, -0.0127004), Vector3(-0.395996, 0.627768, -0.0176169), Vector3(-0.395996, 0.942862, -0.0129089), Vector3(-0.395996, 1.20999, -0.00466701), Vector3(0.398193, 0.190076, -0.00286948), Vector3(0.398193, 0.514292, -0.0321), Vector3(0.398193, 0.838316, 0.0162219), Vector3(0.398193, 1.21376, 0.0384982), Vector3(0.22875, 1.37451, 0.018092), Vector3(0.0436265, 1.37451, 0.0183672), Vector3(-0.26258, 1.37451, 0.018306), Vector3(-0.198594, 0.000243008, 0.0052878), Vector3(0.197423, 0.000243008, -0.00187477)]
+collision_shape = SubResource("PackedScene_xt4t2")
 stat = 1.86332
 top = 1.38948
 eye = 1.23882

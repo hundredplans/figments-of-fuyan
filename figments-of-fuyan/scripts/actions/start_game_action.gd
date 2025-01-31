@@ -5,7 +5,7 @@ func _init() -> void:
 	super()
 	
 func onPreAction() -> void:
-	setActionDelay(START_TIME if !Helper.getAdmin() else 0)
+	setActionDelay(START_TIME if !Helper.admin_datastore.skip_level_start_animation else 0)
 	
 func onPostAction() -> void:
 	pass

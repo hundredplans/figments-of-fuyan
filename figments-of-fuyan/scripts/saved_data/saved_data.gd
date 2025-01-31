@@ -28,6 +28,7 @@ static func onLoadModel(data: SavedData, parent: Node3D, init_args: Array = []) 
 		model.push_action.connect(Game.ActionManagerReference.onPushAction)
 		model.append_action.connect(Game.ActionManagerReference.onAppendAction)
 		model.force_action.connect(Game.ActionManagerReference.onForceAction)
+		model.push_after_action.connect(Game.ActionManagerReference.onPushAfterAction)
 		model.remove_move_and_attack_actions.connect(Game.ActionManagerReference.onRemoveMoveAndAttackActions)
 		Game.ActionManagerReference.process_action.connect(model.onProcessAction)
 	

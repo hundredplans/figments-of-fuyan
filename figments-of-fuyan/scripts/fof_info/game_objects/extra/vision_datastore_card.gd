@@ -21,12 +21,13 @@ func onLoad() -> void:
 
 #region Getters
 func getVisibleGameObjects() -> Array:
-	var visible_keys: Array = visibles.keys() # For debugging
-	for key in visible_keys:
-		if key is not GameObjectGD:
-			pass
+	return visibles.keys().filter(func(x: GameObjectGD): return visibles[x].isVisibleToUnit())
 	
-	return visible_keys.filter(func(x: GameObjectGD): return visibles[x].isVisibleToUnit())
+func getCardVisibles() -> Dictionary: # For debug can remove later
+	var card_visibles: Dictionary = {}
+	for Card in visibles.keys().filter(func(x: GameObjectGD): return x is CardGD):
+		card_visibles[Card] = visibles[Card]
+	return card_visibles
 	
 func getVisibles() -> Dictionary:
 	return visibles

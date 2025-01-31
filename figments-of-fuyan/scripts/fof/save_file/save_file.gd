@@ -30,11 +30,9 @@ func getChampionCard() -> CardGD:
 
 #region Save / Load
 func onSaveToFile() -> void:
-	#if !Helper.getAdmin():
 	var saved_data: SavedDataSaveFile = onSave()
 	saved_data.resource_path = SaveFileInfo.SAVE_DIRECTORY + str(id) + ".tres"
 	
-	print(saved_data)
 	ResourceSaver.save(saved_data)
 
 func onSave() -> SavedData:
@@ -42,11 +40,11 @@ func onSave() -> SavedData:
 	var deck_cards: Array = SavedData.onSaveGroup(get_tree().get_nodes_in_group("AllyCardsGD"))
 	var tool_belt_data: Array = SavedData.onSaveGroup(tool_belt)
 	var highest_public_id: int = Game.highest_public_id
-	boons = SavedData.onSaveGroup(boons)
-	time = getTimeElapsed()
+	var saved_boons: Array = SavedData.onSaveGroup(boons)
+	var time_elapsed: int = getTimeElapsed()
 	
 	return SavedDataSaveFile.new(id, false, public_id, my_seed, area.onSave(), shillings,\
-	map_effects, time, deck_cards, boons, highest_public_id, tool_belt_data, safe_encounter_count)
+	map_effects, time_elapsed, deck_cards, saved_boons, highest_public_id, tool_belt_data, safe_encounter_count)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)

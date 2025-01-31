@@ -1,14 +1,13 @@
-[gd_resource type="Shader" format=3 uid="uid://dbdpp6042et4r"]
+[gd_resource type="Shader" format=3 uid="uid://ccbm8cvteodm"]
 
 [resource]
 code = "shader_type spatial;
-render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_burley, specular_schlick_ggx;
+render_mode blend_mix, depth_draw_always, cull_back, diffuse_burley, specular_schlick_ggx;
 
 uniform sampler2D tx_attributes;
 uniform sampler2D tx_color;
 uniform sampler2D tx_emission;
 
-uniform float alpha_hash_scale : hint_range(0.0, 2.0, 0.01) = 1.0;
 uniform float EmissionStrength : hint_range(0, 20) = 3;
 instance uniform float time_value;
 uniform float max_grey;
@@ -83,6 +82,5 @@ void fragment() {
 	float grey = dot(ALBEDO.rgb, vec3(max_grey));
 	ALBEDO = mix(ALBEDO.rgb, vec3(grey), time_value);
 	ALPHA = 1.0 - time_value;
-	ALPHA_HASH_SCALE = alpha_hash_scale;
 }
 "

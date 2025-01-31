@@ -78,6 +78,8 @@ func _input(event: InputEvent) -> void:
 		if !action_lock and !get_viewport().gui_get_focus_owner() is LineEdit:
 			if Input.is_action_just_pressed("ChangeCameraLeft"): onChangeCameraInDirection(-1)
 			elif Input.is_action_just_pressed("ChangeCameraRight"): onChangeCameraInDirection(1)
+			elif Input.is_action_just_pressed("ChangeCameraDown"): onChangeCameraTeamInDirection(-1)
+			elif Input.is_action_just_pressed("ChangeCameraUp"): onChangeCameraTeamInDirection(1)
 		
 func getGameObjectFromCoords(coords: Vector4i) -> GameObjectGD:
 	var Tile: TileGD = Game.getTile(coords)
@@ -155,7 +157,7 @@ func setCameraType(is_freelook: bool, spectate_allies: bool = false) -> void:
 		FreelookCamera.disable_movement = CurrentCamera != FreelookCamera
 		
 		if is_freelook:
-			if FreelookCamera.position == Vector3.ZERO:
+			if FreelookCamera.position <= Vector3(0.01, 0.01, 0.01) and FreelookCamera.position >= Vector3(-0.01, -0.01, -0.01):
 				FreelookCamera.global_position = LevelCamera.global_position
 				FreelookCamera.rotation_degrees = LevelCamera.rotation_degrees
 			else: FreelookCamera.rotation_degrees = last_freelook_rotation
@@ -176,6 +178,16 @@ func onSpectateSpawn(ClosestCard: CardGD = null) -> void:
 				return Game.getCoordsDistance(x.getCoords()[0], ClosestCard.getCoords()) < Game.getCoordsDistance(y.getCoords()[0], ClosestCard.getCoords()))
 			_SpectateObject = spawns[0]
 	
+	if _SpectateObject == null: return # If no spawns found to spectate
+	onCreateCameraChangeAction(_SpectateObject)
+	
+func onSpectateSpawnsWithOccupied() -> void:
+	var _SpectateObject: GameObjectGD = LastSpawnSpectateObject
+	if _SpectateObject == null:
+		var spawns: Array = get_tree().get_nodes_in_group("AllySpawnsGD")
+		if !spawns.is_empty(): _SpectateObject = spawns[0]
+		
+	if _SpectateObject == null: return # If no spawns found to spectate
 	onCreateCameraChangeAction(_SpectateObject)
 	
 func onSpectateAllies() -> void:
@@ -184,19 +196,21 @@ func onSpectateAllies() -> void:
 		var allies: Array = Game.getAllyUnits()
 		if !allies.is_empty(): _SpectateObject = allies[0]
 	
+	if _SpectateObject == null: return # If no allies found to spectate
 	onCreateCameraChangeAction(_SpectateObject)
 	
 func onSpectateEnemies() -> void:
 	var _SpectateObject: GameObjectGD = LastEnemySpectateObject
 	if _SpectateObject == null:
-		var enemies: Array = Game.getEnemyUnits(0)
+		var enemies: Array = Game.getEnemyUnits(0).filter(func(x: CardGD): return x.isLevelVisible())
 		if !enemies.is_empty(): _SpectateObject = enemies[0]
 	
+	if _SpectateObject == null: return # If no enemies found to spectate
 	onCreateCameraChangeAction(_SpectateObject)
 	
 func onSpectateGroup(team: int) -> void:
 	match team:
-		-1: onSpectateSpawn()
+		-1: onSpectateSpawnsWithOccupied()
 		0: onSpectateAllies()
 		1: onSpectateEnemies()
 	
@@ -217,6 +231,14 @@ func onChangeCameraInDirection(direction: int) -> void:
 		else: spectate_index += direction
 		
 		onCreateCameraChangeAction(arr[spectate_index])
+		
+func onChangeCameraTeamInDirection(direction: int) -> void:
+	if isCycle() or isFreelook(): return
+	var team: int = (SpectateObject.team if SpectateObject is CardGD else -1) + direction
+	if team < -1: team = 1
+	if team > 1: team = -1
+	
+	onSpectateGroup(team)
 		
 func getCameraObjectArray() -> Array:
 	if SpectateObject != null:

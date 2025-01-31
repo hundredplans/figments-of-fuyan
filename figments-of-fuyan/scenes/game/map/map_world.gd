@@ -122,7 +122,7 @@ func onMapNodeFinished(_map_node: MapNodeGD) -> void:
 @export var MAP_START_TRAVEL_TIME: float = 7
 var is_map_starting: bool
 func onMapStartAnimation() -> void:
-	if Helper.getAdmin(): return
+	if Helper.admin_datastore.skip_map_start_animation: return
 	
 	var map_node: MapNodeGD = area.getEnteredMapNode()
 	is_map_starting = true

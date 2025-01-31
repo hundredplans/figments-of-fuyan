@@ -14,5 +14,5 @@ func onMouseInUI(state: bool) -> void:
 
 
 func _on_spawn_id_edit_text_changed(new_text: String) -> void:
-	if new_text.is_valid_int() and int(new_text) > 0:
+	if new_text.is_valid_int() and int(new_text) >= 0:
 		Spawn.spawn_id = int(new_text)

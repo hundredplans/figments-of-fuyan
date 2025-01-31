@@ -113,12 +113,13 @@ func onStart(Card: CardGD) -> void:
 func onStartTravel(Card: CardGD) -> void:
 	var rot_tween := get_tree().create_tween()
 	rot_tween.tween_property(Camera, "rotation_degrees", Vector3(-90, 90, 0), START_GAME_FADE_OUT_TIME)
-	
+		
 	var light_tween := get_tree().create_tween()
 	light_tween.tween_property(spotlight, "light_color", Color(0, 0, 0), START_GAME_FADE_OUT_TIME)
 	travel.emit(active_travel_info)
 	await light_tween.finished
-	start.emit(Card)
+	Card.onClear()
+	start.emit(Card.onSave())
 #endregion
 
 #region Travelling

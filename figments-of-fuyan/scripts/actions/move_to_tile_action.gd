@@ -4,6 +4,8 @@ enum MOVEMENT_TYPES {REGULAR, RAMP, JUMP, FALL}
 var Card: CardGD
 var DestinationTile: TileGD
 var movement_type: MOVEMENT_TYPES
+
+const JUMP_FALL_TIME_OFFSET: float = 0.5
 var fall_time: float
 
 func isJumpFall() -> bool:
@@ -14,19 +16,17 @@ func _init(_Card: CardGD = null, _DestinationTile: TileGD = null) -> void:
 	Card = _Card
 	DestinationTile = _DestinationTile
 
-func getJumpFallDelay() -> float:
-	return (1.8) if movement_type == MOVEMENT_TYPES.JUMP else (fall_time + 1)
-
 func setMovementTypeDelay() -> void:
-	if DestinationTile.getHeight() - Card.Tile.getHeight() == 1: movement_type = MOVEMENT_TYPES.JUMP
+	fall_time = 1
+	if DestinationTile.isRamp() or Card.Tile.isRamp(): movement_type = MOVEMENT_TYPES.RAMP
+	elif DestinationTile.getHeight() - Card.Tile.getHeight() == 1: movement_type = MOVEMENT_TYPES.JUMP; fall_time += JUMP_FALL_TIME_OFFSET
 	elif DestinationTile.getHeight() - Card.Tile.getHeight() <= -1:
 		movement_type = MOVEMENT_TYPES.FALL
 		var height_diff: int = abs(DestinationTile.getHeight() - Card.Tile.getHeight())
-		fall_time = 1 + (height_diff * 0.1)
-	elif DestinationTile.isRamp() or Card.Tile.isRamp(): movement_type = MOVEMENT_TYPES.RAMP
+		fall_time += (height_diff * 0.2)
 	else: movement_type = MOVEMENT_TYPES.REGULAR
 	
-	setActionDelay((1.0 if !isJumpFall() else getJumpFallDelay()) if Card.isLevelVisible() else 0.0)
+	setActionDelay((1.0 if !isJumpFall() else fall_time) if Card.isLevelVisible() else 0.0)
 
 func setActionDelay(delay: float) -> void:
 	super(delay)

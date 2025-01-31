@@ -1,7 +1,6 @@
 class_name EliteFightNodeGD extends FightNodeGD
 
 var curse_info: BoonInfo
-const FORCE_CURSE_ID: int = 0
 const MAX_RESTART_AMOUNT: int = 16
 
 func onFofInit() -> void:
@@ -41,10 +40,10 @@ func onEntered() -> void:
 func onSelectRandomCurseInfo() -> void:
 	var curse_infos: Array = Helper.getFofInfoArray(BoonInfo).filter(func(x: BoonInfo): return x.elite_fight_curse)
 	
-	if FORCE_CURSE_ID == 0:
+	if Helper.admin_datastore.force_elite_fight_curse_id == 0:
 		curse_info = onGenerateCurseInfo(curse_infos)
 	else:
-		curse_info = Helper.getFofInfoID(BoonInfo, FORCE_CURSE_ID)
+		curse_info = Helper.getFofInfoID(BoonInfo, Helper.admin_datastore.force_elite_fight_curse_id)
 		var curse: BoonGD = SavedData.onLoadModel(curse_info.saved_data.new(curse_info.id, true), self)
 		Game.save_file.onAddBoon(curse)
 	

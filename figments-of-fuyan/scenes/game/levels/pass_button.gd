@@ -2,13 +2,13 @@ extends Button
 
 var action_lock: bool
 var is_ally_spectating: bool
-var is_ally_inactive_active: bool
-var is_only_active: bool
+var is_passed_turn: bool
+var is_inactive_with_another_active: bool
 var is_player_phase: bool
 var is_ability_mode: bool
 
 func setDisabled() -> void:
-	var player_phase_checks: bool = is_ally_spectating and is_ally_inactive_active and is_only_active
+	var player_phase_checks: bool = is_ally_spectating and !is_passed_turn and !is_inactive_with_another_active
 	disabled = action_lock or (is_player_phase and !player_phase_checks) or is_ability_mode
 	
 func setActionLock(state: bool) -> void:
@@ -21,18 +21,14 @@ func setAbilityMode(state: bool) -> void:
 
 func setAllySpectating(SpectateObject: GameObjectGD) -> void:
 	is_ally_spectating = SpectateObject != null and SpectateObject is CardGD and SpectateObject.isAlly(0)
-	setIsAllyInactiveActive(SpectateObject)
+	if is_ally_spectating: # Important so spawn's can't go into the Card func
+		setTurnStates(SpectateObject, true)
 
-func setIsAllyInactiveActive(GameObject: GameObjectGD) -> void:
-	var ally_units: Array = Game.getAllyUnits()
-	is_only_active = true
-	for AllyUnit in ally_units:
-		if AllyUnit.turn_state == Game.TurnStates.ACTIVE:
-			is_only_active = (AllyUnit == GameObject)
-			break
-			
-	is_ally_inactive_active = GameObject is CardGD and GameObject.isAlly(0) and \
-	GameObject.turn_state != Game.TurnStates.PASSED
+func setTurnStates(Card: CardGD, override: bool = false) -> void:
+	if is_ally_spectating and (Card == Game.getLevel().getAllySpectateObject() or override):
+		is_passed_turn = Card.turn_state == Game.TurnStates.PASSED
+		is_inactive_with_another_active = Card.turn_state == Game.TurnStates.INACTIVE and\
+			Game.getAllyUnits().any(func(x: CardGD): return x != Card and x.turn_state == Game.TurnStates.ACTIVE)
 	
 	setDisabled()
 

@@ -12,6 +12,13 @@ func onPushAction(action: Action) -> void:
 	actions.push_front(action)
 	onActionChain()
 	
+func onPushAfterAction(new_actions: Array, after_action: Action) -> void:
+	var index: int = actions.find(after_action)
+	for action in new_actions:
+		actions.insert(index + 1, action)
+		
+	onActionChain()
+	
 func onAppendAction(action: Action) -> void:
 	actions.append(action)
 	onActionChain()
@@ -59,13 +66,13 @@ func onForceAction(action: Action) -> void:
 
 func onDebugAction(action: Action) -> void:
 	pass
-	var path: String = action.get_script().resource_path
-	print(path.get_slice("/", path.get_slice_count("/") - 1))
-	var logs: Array = action.getLogInfo()
-	if action.failed: logs.append("FAILED")
-	
-	for log_info in logs:
-		print("	" + log_info)
+	#var path: String = action.get_script().resource_path
+	#print(path.get_slice("/", path.get_slice_count("/") - 1))
+	#var logs: Array = action.getLogInfo()
+	#if action.failed: logs.append("FAILED")
+	#
+	#for log_info in logs:
+		#print("	" + log_info)
 	
 func onDebugActionNames() -> void:
 	pass

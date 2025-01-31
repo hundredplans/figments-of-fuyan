@@ -1,14 +1,14 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=13 format=3 uid="uid://x0q8allwrtdx"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=13 format=3]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_ljhej"]
-[ext_resource type="Image" uid="uid://bek6ns5qil350" path="res://assets/sprites/game/cards/art_pop/hocus_palmus.png" id="2_6ibk4"]
-[ext_resource type="Texture2D" uid="uid://dorudq0txf7sh" path="res://assets/sprites/game/cards/art_mini/hocus_palmus.png" id="2_6sx50"]
-[ext_resource type="Resource" uid="uid://31nmui4k0kfh" path="res://resources/fof/archetypes/tactician.tres" id="2_452pe"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/hocus_palmus.png" id="2_6ibk4"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/hocus_palmus.png" id="2_6sx50"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/tactician.tres" id="2_452pe"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_wy73v"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_e1s4j"]
 [ext_resource type="Script" path="res://scripts/fof/cards/hocus_palmus.gd" id="3_pivk6"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="4_rgxih"]
-[ext_resource type="PackedScene" uid="uid://dnxhy7drwfn7x" path="res://assets/models/fof/cards/hocus_palmus.glb" id="5_cexjm"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/hocus_palmus.glb" id="5_cexjm"]
 
 [sub_resource type="Resource" id="Resource_bgqxv"]
 script = ExtResource("1_ljhej")
@@ -55,7 +55,7 @@ art_mini_coordinate = Vector2i(80, 40)
 art_mini = ExtResource("2_6sx50")
 art_pop = ExtResource("2_6ibk4")
 model = ExtResource("5_cexjm")
-points = []
+points = [Vector3(-0.18262, 0.171232, 0.157959), Vector3(0.187557, 0.16542, 0.157959), Vector3(-0.130843, 0.503165, 0.157959), Vector3(0.134984, 0.525778, 0.157959), Vector3(-0.0760964, 0.815487, 0.157959), Vector3(0.0565902, 0.814159, 0.157959), Vector3(-0.173326, 1.06712, 0.157959), Vector3(-0.00567236, 1.07932, 0.157959), Vector3(0.16673, 1.0651, 0.157959), Vector3(-0.177285, 1.29074, 0.157959), Vector3(0.0131587, 1.29269, 0.157959), Vector3(0.156136, 1.29237, 0.157959), Vector3(-0.164304, 1.54227, 0.157959), Vector3(0.123601, 1.54866, 0.157959), Vector3(-0.172937, 1.75169, 0.157959), Vector3(0.0168738, 1.7446, 0.157959), Vector3(0.161742, 1.75824, 0.157959), Vector3(0.176651, 1.7254, -0.176758), Vector3(0.0145313, 1.73518, -0.176758), Vector3(-0.129588, 1.73167, -0.176758), Vector3(0.169302, 1.59048, -0.176758), Vector3(0.024921, 1.58479, -0.176758), Vector3(-0.138369, 1.59326, -0.176758), Vector3(0.17295, 1.37694, -0.176758), Vector3(0.0217872, 1.3745, -0.176758), Vector3(-0.184606, 1.38349, -0.176758), Vector3(0.163615, 1.19784, -0.176758), Vector3(-0.0318478, 1.20495, -0.176758), Vector3(-0.193997, 1.20972, -0.176758), Vector3(0.099955, 0.960742, -0.176758), Vector3(-0.104602, 0.967285, -0.176758), Vector3(0.0776351, 0.720063, -0.176758), Vector3(-0.0897585, 0.707596, -0.176758), Vector3(0.173431, 0.48738, -0.176758), Vector3(0.154672, 0.148948, -0.176758), Vector3(-0.171021, 0.152301, -0.176758), Vector3(-0.117309, 0.490173, -0.176758), Vector3(-0.316895, 0.163288, -0.0468546), Vector3(-0.316895, 0.5668, -0.0375983), Vector3(-0.316895, 0.89835, -0.070798), Vector3(-0.316895, 1.19588, -0.0719123), Vector3(-0.316895, 1.46564, -0.0244707), Vector3(-0.316895, 1.74602, -0.0430613), Vector3(0.307861, 1.72009, -0.00854897), Vector3(0.307861, 1.40409, -0.0135376), Vector3(0.307861, 1.09692, -0.0332649), Vector3(0.307861, 0.735427, -0.0126727), Vector3(0.307861, 0.428457, -0.0385478), Vector3(0.307861, 0.135347, -0.0375107), Vector3(0.175417, 0.00286698, -0.00723974), Vector3(-0.206125, 0.00286698, 0.0118533), Vector3(-0.241331, 1.86121, -0.00753581), Vector3(-0.00788281, 1.86121, -0.00969621), Vector3(0.216151, 1.86121, -0.017406)]
 collision_shape = SubResource("PackedScene_umvsw")
 stat = 2.06469
 top = 1.8638

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="PalmLevelInfo" load_steps=182 format=3]
+[gd_resource type="Resource" script_class="PalmLevelInfo" load_steps=124 format=3 uid="uid://dqvckl3o7tvtp"]
 
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="1_e7e5q"]
 [ext_resource type="Script" path="res://scripts/fof_info/game_objects/extra/revealed_datastore.gd" id="2_x3a7f"]
@@ -6,47 +6,8 @@
 [ext_resource type="Script" path="res://scripts/fof_info/game_objects/extra/vision_datastore_tile.gd" id="3_w04vk"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_spawn.gd" id="4_o858a"]
 [ext_resource type="Script" path="res://scripts/fof/levels/palm_level.gd" id="5_2iscj"]
-[ext_resource type="Script" path="res://scripts/saved_data/levels/saved_data_palm_level.gd" id="6_hnhyd"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_iobject.gd" id="6_yi748"]
+[ext_resource type="Script" path="res://scripts/saved_data/levels/saved_data_level.gd" id="7_hm8f3"]
 [ext_resource type="Script" path="res://scripts/fof_info/levels/palm_level_info.gd" id="7_wdq57"]
-
-[sub_resource type="Resource" id="Resource_fw36s"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_1mto8"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_fw36s")
-coords = Vector4i(-5, 0, 5, 0)
-id = 1
-first_init = false
-public_id = 0
-
-[sub_resource type="Resource" id="Resource_3lodq"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_6u0lf"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_3lodq")
-coords = Vector4i(-5, 1, 4, 0)
-id = 1
-first_init = false
-public_id = 0
 
 [sub_resource type="Resource" id="Resource_4fua2"]
 script = ExtResource("3_w04vk")
@@ -54,7 +15,7 @@ last_seen_by_enemy = 0
 level_visible = false
 reveals = Array[ExtResource("2_x3a7f")]([])
 
-[sub_resource type="Resource" id="Resource_e48i8"]
+[sub_resource type="Resource" id="Resource_jcev0"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
@@ -67,32 +28,13 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_gvrhh"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_3imd6"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_gvrhh")
-coords = Vector4i(-5, 3, 2, 0)
-id = 1
-first_init = false
-public_id = 0
-
 [sub_resource type="Resource" id="Resource_hx3ix"]
 script = ExtResource("3_w04vk")
 last_seen_by_enemy = 0
 level_visible = false
 reveals = Array[ExtResource("2_x3a7f")]([])
 
-[sub_resource type="Resource" id="Resource_bmpd2"]
+[sub_resource type="Resource" id="Resource_02g76"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
@@ -105,70 +47,13 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_edgi2"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_3ldvw"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_edgi2")
-coords = Vector4i(-5, 5, 0, 0)
-id = 1
-first_init = false
-public_id = 0
-
-[sub_resource type="Resource" id="Resource_1himk"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_lx7vn"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_1himk")
-coords = Vector4i(-4, -1, 5, 0)
-id = 1
-first_init = false
-public_id = 0
-
-[sub_resource type="Resource" id="Resource_j7coj"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_cq2hc"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_j7coj")
-coords = Vector4i(-4, 0, 4, 0)
-id = 1
-first_init = false
-public_id = 0
-
 [sub_resource type="Resource" id="Resource_hj58r"]
 script = ExtResource("3_w04vk")
 last_seen_by_enemy = 0
 level_visible = false
 reveals = Array[ExtResource("2_x3a7f")]([])
 
-[sub_resource type="Resource" id="Resource_6ioiw"]
+[sub_resource type="Resource" id="Resource_a4ov4"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
@@ -181,89 +66,13 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_n3exy"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_661qc"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_n3exy")
-coords = Vector4i(-4, 2, 2, 0)
-id = 1
-first_init = false
-public_id = 0
-
-[sub_resource type="Resource" id="Resource_4kof5"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_k4qbp"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_4kof5")
-coords = Vector4i(-4, 3, 1, 0)
-id = 1
-first_init = false
-public_id = 0
-
-[sub_resource type="Resource" id="Resource_ws3xl"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_fy07l"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_ws3xl")
-coords = Vector4i(-4, 4, 0, 0)
-id = 1
-first_init = false
-public_id = 0
-
-[sub_resource type="Resource" id="Resource_60fv3"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_1i34l"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_60fv3")
-coords = Vector4i(-4, 5, -1, 0)
-id = 1
-first_init = false
-public_id = 0
-
 [sub_resource type="Resource" id="Resource_j86oo"]
 script = ExtResource("3_w04vk")
 last_seen_by_enemy = 0
 level_visible = false
 reveals = Array[ExtResource("2_x3a7f")]([])
 
-[sub_resource type="Resource" id="Resource_t7nst"]
+[sub_resource type="Resource" id="Resource_3jg4s"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
@@ -282,7 +91,7 @@ last_seen_by_enemy = 0
 level_visible = false
 reveals = Array[ExtResource("2_x3a7f")]([])
 
-[sub_resource type="Resource" id="Resource_j2bja"]
+[sub_resource type="Resource" id="Resource_k8rsa"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
@@ -301,7 +110,7 @@ last_seen_by_enemy = 0
 level_visible = false
 reveals = Array[ExtResource("2_x3a7f")]([])
 
-[sub_resource type="Resource" id="Resource_1fe8l"]
+[sub_resource type="Resource" id="Resource_sowyc"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
@@ -314,89 +123,13 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_d7nxg"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_qt6tq"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_d7nxg")
-coords = Vector4i(-3, 1, 2, 0)
-id = 1
-first_init = false
-public_id = 0
-
-[sub_resource type="Resource" id="Resource_yv62e"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_1c1v0"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_yv62e")
-coords = Vector4i(-3, 2, 1, 0)
-id = 1
-first_init = false
-public_id = 0
-
-[sub_resource type="Resource" id="Resource_7fmc1"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_ri7al"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_7fmc1")
-coords = Vector4i(-3, 3, 0, 0)
-id = 1
-first_init = false
-public_id = 0
-
-[sub_resource type="Resource" id="Resource_5f678"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_j6qjl"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_5f678")
-coords = Vector4i(-3, 4, -1, 0)
-id = 1
-first_init = false
-public_id = 0
-
 [sub_resource type="Resource" id="Resource_xfdav"]
 script = ExtResource("3_w04vk")
 last_seen_by_enemy = 0
 level_visible = false
 reveals = Array[ExtResource("2_x3a7f")]([])
 
-[sub_resource type="Resource" id="Resource_suy5s"]
+[sub_resource type="Resource" id="Resource_h2fcw"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
@@ -409,32 +142,13 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_2a2r6"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_eao5r"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_2a2r6")
-coords = Vector4i(-2, -3, 5, 0)
-id = 1
-first_init = false
-public_id = 0
-
 [sub_resource type="Resource" id="Resource_yqo5o"]
 script = ExtResource("3_w04vk")
 last_seen_by_enemy = 0
 level_visible = false
 reveals = Array[ExtResource("2_x3a7f")]([])
 
-[sub_resource type="Resource" id="Resource_tkrd7"]
+[sub_resource type="Resource" id="Resource_roiop"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
@@ -453,7 +167,7 @@ last_seen_by_enemy = 0
 level_visible = false
 reveals = Array[ExtResource("2_x3a7f")]([])
 
-[sub_resource type="Resource" id="Resource_y1pbi"]
+[sub_resource type="Resource" id="Resource_28y08"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
@@ -472,148 +186,15 @@ last_seen_by_enemy = 0
 level_visible = false
 reveals = Array[ExtResource("2_x3a7f")]([])
 
-[sub_resource type="Resource" id="Resource_ps2uc"]
+[sub_resource type="Resource" id="Resource_ktwm3"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
 is_decoration = false
 variation = 0
-tile_rotation = 0
+tile_rotation = 5
 vision_datastore = SubResource("Resource_xabq0")
 coords = Vector4i(-2, 0, 2, 0)
-id = 1
-first_init = false
-public_id = 0
-
-[sub_resource type="Resource" id="Resource_4h503"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_2q5r0"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_4h503")
-coords = Vector4i(-2, 1, 1, 0)
-id = 1
-first_init = false
-public_id = 0
-
-[sub_resource type="Resource" id="Resource_uel70"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_vi1ae"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_uel70")
-coords = Vector4i(-2, 2, 0, 0)
-id = 1
-first_init = false
-public_id = 0
-
-[sub_resource type="Resource" id="Resource_5bfc7"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_dj0ka"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_5bfc7")
-coords = Vector4i(-2, 3, -1, 0)
-id = 1
-first_init = false
-public_id = 0
-
-[sub_resource type="Resource" id="Resource_2hq3f"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_6dowu"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_2hq3f")
-coords = Vector4i(-2, 4, -2, 0)
-id = 1
-first_init = false
-public_id = 0
-
-[sub_resource type="Resource" id="Resource_vwm54"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_p5e4i"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_vwm54")
-coords = Vector4i(-2, 5, -3, 0)
-id = 1
-first_init = false
-public_id = 0
-
-[sub_resource type="Resource" id="Resource_48irv"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_kw2nh"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_48irv")
-coords = Vector4i(-1, -4, 5, 0)
-id = 1
-first_init = false
-public_id = 0
-
-[sub_resource type="Resource" id="Resource_aq551"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_x6wa7"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_aq551")
-coords = Vector4i(-1, -3, 4, 0)
 id = 1
 first_init = false
 public_id = 0
@@ -624,7 +205,7 @@ last_seen_by_enemy = 0
 level_visible = false
 reveals = Array[ExtResource("2_x3a7f")]([])
 
-[sub_resource type="Resource" id="Resource_f2cfy"]
+[sub_resource type="Resource" id="Resource_5aqk6"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
@@ -643,7 +224,7 @@ last_seen_by_enemy = 0
 level_visible = false
 reveals = Array[ExtResource("2_x3a7f")]([])
 
-[sub_resource type="Resource" id="Resource_sukx4"]
+[sub_resource type="Resource" id="Resource_uj87f"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
@@ -656,108 +237,13 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_1oblm"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_yrco4"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_1oblm")
-coords = Vector4i(-1, 0, 1, 0)
-id = 1
-first_init = false
-public_id = 0
-
-[sub_resource type="Resource" id="Resource_g0qno"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_sxuvr"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_g0qno")
-coords = Vector4i(-1, 1, 0, 0)
-id = 1
-first_init = false
-public_id = 0
-
-[sub_resource type="Resource" id="Resource_bgl76"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_8xmmu"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_bgl76")
-coords = Vector4i(-1, 2, -1, 0)
-id = 1
-first_init = false
-public_id = 0
-
-[sub_resource type="Resource" id="Resource_yy57v"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_8bts2"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_yy57v")
-coords = Vector4i(-1, 3, -2, 0)
-id = 1
-first_init = false
-public_id = 0
-
-[sub_resource type="Resource" id="Resource_rma1y"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_hjr6w"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_rma1y")
-coords = Vector4i(-1, 4, -3, 0)
-id = 1
-first_init = false
-public_id = 0
-
 [sub_resource type="Resource" id="Resource_763xd"]
 script = ExtResource("3_w04vk")
 last_seen_by_enemy = 0
 level_visible = false
 reveals = Array[ExtResource("2_x3a7f")]([])
 
-[sub_resource type="Resource" id="Resource_ypsk5"]
+[sub_resource type="Resource" id="Resource_s8rx0"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
@@ -770,70 +256,13 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_mthro"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_g3oge"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_mthro")
-coords = Vector4i(0, -5, 5, 0)
-id = 1
-first_init = false
-public_id = 0
-
-[sub_resource type="Resource" id="Resource_autgu"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_60f02"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_autgu")
-coords = Vector4i(0, -4, 4, 0)
-id = 1
-first_init = false
-public_id = 0
-
-[sub_resource type="Resource" id="Resource_fe51i"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_wd1v1"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_fe51i")
-coords = Vector4i(0, -3, 3, 0)
-id = 1
-first_init = false
-public_id = 0
-
 [sub_resource type="Resource" id="Resource_p07qa"]
 script = ExtResource("3_w04vk")
 last_seen_by_enemy = 0
 level_visible = false
 reveals = Array[ExtResource("2_x3a7f")]([])
 
-[sub_resource type="Resource" id="Resource_81rjq"]
+[sub_resource type="Resource" id="Resource_kh866"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
@@ -852,7 +281,7 @@ last_seen_by_enemy = 0
 level_visible = false
 reveals = Array[ExtResource("2_x3a7f")]([])
 
-[sub_resource type="Resource" id="Resource_nv7ib"]
+[sub_resource type="Resource" id="Resource_diwom"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
@@ -865,108 +294,13 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_h36b5"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_o8pau"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_h36b5")
-coords = Vector4i(0, 0, 0, 0)
-id = 1
-first_init = false
-public_id = 0
-
-[sub_resource type="Resource" id="Resource_t88pl"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_uqcow"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_t88pl")
-coords = Vector4i(0, 1, -1, 0)
-id = 1
-first_init = false
-public_id = 0
-
-[sub_resource type="Resource" id="Resource_f53ni"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_bljga"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_f53ni")
-coords = Vector4i(0, 2, -2, 0)
-id = 1
-first_init = false
-public_id = 0
-
-[sub_resource type="Resource" id="Resource_ucecj"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_cuvj1"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_ucecj")
-coords = Vector4i(0, 3, -3, 0)
-id = 1
-first_init = false
-public_id = 0
-
-[sub_resource type="Resource" id="Resource_iq3og"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_3d7qi"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_iq3og")
-coords = Vector4i(0, 4, -4, 0)
-id = 1
-first_init = false
-public_id = 0
-
 [sub_resource type="Resource" id="Resource_rtyhm"]
 script = ExtResource("3_w04vk")
 last_seen_by_enemy = 0
 level_visible = false
 reveals = Array[ExtResource("2_x3a7f")]([])
 
-[sub_resource type="Resource" id="Resource_wplio"]
+[sub_resource type="Resource" id="Resource_7kt27"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
@@ -979,89 +313,13 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_d4ikw"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_ui8t4"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_d4ikw")
-coords = Vector4i(1, -5, 4, 0)
-id = 1
-first_init = false
-public_id = 0
-
-[sub_resource type="Resource" id="Resource_rm05a"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_4a7os"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_rm05a")
-coords = Vector4i(1, -3, 2, 0)
-id = 1
-first_init = false
-public_id = 0
-
-[sub_resource type="Resource" id="Resource_krcya"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_uwhhn"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_krcya")
-coords = Vector4i(1, -2, 1, 0)
-id = 1
-first_init = false
-public_id = 0
-
-[sub_resource type="Resource" id="Resource_a7sm6"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_bp0rj"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_a7sm6")
-coords = Vector4i(1, -1, 0, 0)
-id = 1
-first_init = false
-public_id = 0
-
 [sub_resource type="Resource" id="Resource_hdn25"]
 script = ExtResource("3_w04vk")
 last_seen_by_enemy = 0
 level_visible = false
 reveals = Array[ExtResource("2_x3a7f")]([])
 
-[sub_resource type="Resource" id="Resource_t17ab"]
+[sub_resource type="Resource" id="Resource_7pmei"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
@@ -1080,7 +338,7 @@ last_seen_by_enemy = 0
 level_visible = false
 reveals = Array[ExtResource("2_x3a7f")]([])
 
-[sub_resource type="Resource" id="Resource_pj70g"]
+[sub_resource type="Resource" id="Resource_qj4xb"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
@@ -1093,32 +351,13 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_h63kc"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_weipw"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_h63kc")
-coords = Vector4i(1, 3, -4, 0)
-id = 1
-first_init = false
-public_id = 0
-
 [sub_resource type="Resource" id="Resource_s7gxh"]
 script = ExtResource("3_w04vk")
 last_seen_by_enemy = 0
 level_visible = false
 reveals = Array[ExtResource("2_x3a7f")]([])
 
-[sub_resource type="Resource" id="Resource_1r65e"]
+[sub_resource type="Resource" id="Resource_i5b40"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
@@ -1131,548 +370,859 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_n6hbo"]
+[sub_resource type="Resource" id="Resource_odolb"]
 script = ExtResource("3_w04vk")
 last_seen_by_enemy = 0
 level_visible = false
 reveals = Array[ExtResource("2_x3a7f")]([])
 
-[sub_resource type="Resource" id="Resource_47lrg"]
+[sub_resource type="Resource" id="Resource_ixtiu"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
 is_decoration = false
 variation = 0
 tile_rotation = 0
-vision_datastore = SubResource("Resource_n6hbo")
-coords = Vector4i(2, -4, 2, 0)
+vision_datastore = SubResource("Resource_odolb")
+coords = Vector4i(-4, 6, -2, 0)
 id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_lj2dp"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_ujlps"]
+[sub_resource type="Resource" id="Resource_1yftv"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
 is_decoration = false
 variation = 0
 tile_rotation = 0
-vision_datastore = SubResource("Resource_lj2dp")
-coords = Vector4i(2, -3, 1, 0)
+vision_datastore = SubResource("Resource_odolb")
+coords = Vector4i(-1, 6, -5, 0)
 id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_igfvy"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_x54a6"]
+[sub_resource type="Resource" id="Resource_vpupd"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
 is_decoration = false
 variation = 0
 tile_rotation = 0
-vision_datastore = SubResource("Resource_igfvy")
-coords = Vector4i(2, -2, 0, 0)
+vision_datastore = SubResource("Resource_odolb")
+coords = Vector4i(-3, 7, -4, 0)
 id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_l8eld"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_mgq2a"]
+[sub_resource type="Resource" id="Resource_gwk7t"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
 is_decoration = false
 variation = 0
 tile_rotation = 0
-vision_datastore = SubResource("Resource_l8eld")
-coords = Vector4i(2, 3, -5, 0)
+vision_datastore = SubResource("Resource_odolb")
+coords = Vector4i(-2, 7, -5, 0)
 id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_vyg4r"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_bjtm7"]
+[sub_resource type="Resource" id="Resource_ssd88"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
 is_decoration = false
 variation = 0
 tile_rotation = 0
-vision_datastore = SubResource("Resource_vyg4r")
-coords = Vector4i(3, -5, 2, 0)
+vision_datastore = SubResource("Resource_odolb")
+coords = Vector4i(-3, 8, -5, 0)
 id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_2iu8a"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_gd83u"]
+[sub_resource type="Resource" id="Resource_ekmsv"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
 is_decoration = false
 variation = 0
 tile_rotation = 0
-vision_datastore = SubResource("Resource_2iu8a")
-coords = Vector4i(3, -4, 1, 0)
+vision_datastore = SubResource("Resource_odolb")
+coords = Vector4i(-5, 5, 0, 0)
 id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_w8gbi"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_oy38d"]
+[sub_resource type="Resource" id="Resource_7hv4p"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
 is_decoration = false
 variation = 0
 tile_rotation = 0
-vision_datastore = SubResource("Resource_w8gbi")
-coords = Vector4i(3, -3, 0, 0)
+vision_datastore = SubResource("Resource_odolb")
+coords = Vector4i(-6, 4, 2, 0)
 id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_po2kg"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_bf7se"]
+[sub_resource type="Resource" id="Resource_s6pqb"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
 is_decoration = false
 variation = 0
 tile_rotation = 0
-vision_datastore = SubResource("Resource_po2kg")
-coords = Vector4i(3, 0, -3, 0)
+vision_datastore = SubResource("Resource_odolb")
+coords = Vector4i(-6, 5, 1, 0)
 id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_hu3tr"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_gqatn"]
+[sub_resource type="Resource" id="Resource_royqr"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
 is_decoration = false
 variation = 0
 tile_rotation = 0
-vision_datastore = SubResource("Resource_hu3tr")
-coords = Vector4i(3, 1, -4, 0)
+vision_datastore = SubResource("Resource_odolb")
+coords = Vector4i(-7, 6, 1, 0)
 id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_qrmbg"]
+[sub_resource type="Resource" id="Resource_fcdvc"]
 script = ExtResource("3_w04vk")
 last_seen_by_enemy = 0
 level_visible = false
 reveals = Array[ExtResource("2_x3a7f")]([])
 
-[sub_resource type="Resource" id="Resource_apimx"]
+[sub_resource type="Resource" id="Resource_amwe0"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
 is_decoration = false
 variation = 0
 tile_rotation = 0
-vision_datastore = SubResource("Resource_qrmbg")
-coords = Vector4i(4, -5, 1, 0)
+vision_datastore = SubResource("Resource_fcdvc")
+coords = Vector4i(-5, 6, -1, 0)
 id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_te7s7"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_rituh"]
+[sub_resource type="Resource" id="Resource_n12mp"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
 is_decoration = false
 variation = 0
 tile_rotation = 0
-vision_datastore = SubResource("Resource_te7s7")
-coords = Vector4i(4, -4, 0, 0)
+vision_datastore = SubResource("Resource_fcdvc")
+coords = Vector4i(-5, 7, -2, 0)
 id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_vdrjf"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_1x2x2"]
+[sub_resource type="Resource" id="Resource_s8r3a"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
 is_decoration = false
 variation = 0
 tile_rotation = 0
-vision_datastore = SubResource("Resource_vdrjf")
-coords = Vector4i(4, -3, -1, 0)
+vision_datastore = SubResource("Resource_fcdvc")
+coords = Vector4i(-4, 8, -4, 0)
 id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_c62kw"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_okh0d"]
+[sub_resource type="Resource" id="Resource_ctmrj"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
 is_decoration = false
 variation = 0
 tile_rotation = 0
-vision_datastore = SubResource("Resource_c62kw")
-coords = Vector4i(4, -1, -3, 0)
+vision_datastore = SubResource("Resource_fcdvc")
+coords = Vector4i(-5, 8, -3, 0)
 id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_eg14g"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_evg03"]
+[sub_resource type="Resource" id="Resource_equl0"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
 is_decoration = false
 variation = 0
 tile_rotation = 0
-vision_datastore = SubResource("Resource_eg14g")
-coords = Vector4i(4, 0, -4, 0)
+vision_datastore = SubResource("Resource_fcdvc")
+coords = Vector4i(-4, 7, -3, 0)
 id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_fda06"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_y0pj4"]
+[sub_resource type="Resource" id="Resource_2b2u3"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
 is_decoration = false
 variation = 0
 tile_rotation = 0
-vision_datastore = SubResource("Resource_fda06")
-coords = Vector4i(4, 1, -5, 0)
+vision_datastore = SubResource("Resource_fcdvc")
+coords = Vector4i(-2, 4, -2, 0)
 id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_yi0rb"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_20lwb"]
+[sub_resource type="Resource" id="Resource_hjcgm"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
 is_decoration = false
 variation = 0
 tile_rotation = 0
-vision_datastore = SubResource("Resource_yi0rb")
-coords = Vector4i(5, -5, 0, 0)
+vision_datastore = SubResource("Resource_fcdvc")
+coords = Vector4i(-1, 4, -3, 0)
 id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_ehijd"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_657wn"]
+[sub_resource type="Resource" id="Resource_lfopu"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
 is_decoration = false
 variation = 0
 tile_rotation = 0
-vision_datastore = SubResource("Resource_ehijd")
-coords = Vector4i(5, -4, -1, 0)
+vision_datastore = SubResource("Resource_fcdvc")
+coords = Vector4i(-3, 4, -1, 0)
 id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_v1wjg"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_1o4nw"]
+[sub_resource type="Resource" id="Resource_d6kpt"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
 is_decoration = false
 variation = 0
 tile_rotation = 0
-vision_datastore = SubResource("Resource_v1wjg")
-coords = Vector4i(5, -3, -2, 0)
+vision_datastore = SubResource("Resource_fcdvc")
+coords = Vector4i(-4, 4, 0, 0)
 id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_nimeg"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_ui2hf"]
+[sub_resource type="Resource" id="Resource_5ilxl"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
 is_decoration = false
 variation = 0
 tile_rotation = 0
-vision_datastore = SubResource("Resource_nimeg")
-coords = Vector4i(5, -1, -4, 0)
+vision_datastore = SubResource("Resource_fcdvc")
+coords = Vector4i(-1, 2, -1, 0)
 id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_nypdp"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_o10om"]
+[sub_resource type="Resource" id="Resource_8ptwc"]
 script = ExtResource("1_e7e5q")
 tile_fill = false
 occupy_state = 0
 is_decoration = false
 variation = 0
 tile_rotation = 0
-vision_datastore = SubResource("Resource_nypdp")
-coords = Vector4i(5, 0, -5, 0)
+vision_datastore = SubResource("Resource_fcdvc")
+coords = Vector4i(-2, 6, -4, 0)
 id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_1qasq"]
+[sub_resource type="Resource" id="Resource_6ploo"]
+script = ExtResource("1_e7e5q")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_fcdvc")
+coords = Vector4i(-6, 6, 0, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_o0n4h"]
+script = ExtResource("1_e7e5q")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_fcdvc")
+coords = Vector4i(-7, 7, 0, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_0m4bn"]
+script = ExtResource("3_w04vk")
+last_seen_by_enemy = 0
+level_visible = false
+reveals = Array[ExtResource("2_x3a7f")]([])
+
+[sub_resource type="Resource" id="Resource_i1gho"]
+script = ExtResource("1_e7e5q")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_0m4bn")
+coords = Vector4i(-4, 5, -1, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_whtf7"]
+script = ExtResource("3_w04vk")
+last_seen_by_enemy = 0
+level_visible = false
+reveals = Array[ExtResource("2_x3a7f")]([])
+
+[sub_resource type="Resource" id="Resource_bkr8f"]
+script = ExtResource("1_e7e5q")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_whtf7")
+coords = Vector4i(-6, 7, -1, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_j5rya"]
+script = ExtResource("3_w04vk")
+last_seen_by_enemy = 0
+level_visible = false
+reveals = Array[ExtResource("2_x3a7f")]([])
+
+[sub_resource type="Resource" id="Resource_legft"]
+script = ExtResource("1_e7e5q")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_j5rya")
+coords = Vector4i(-4, 2, 2, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_mcgv8"]
+script = ExtResource("1_e7e5q")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_j5rya")
+coords = Vector4i(-3, 2, 1, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_2gbo7"]
+script = ExtResource("1_e7e5q")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_j5rya")
+coords = Vector4i(-2, 2, 0, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_5ceu6"]
+script = ExtResource("1_e7e5q")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_j5rya")
+coords = Vector4i(-1, 0, 1, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_u5fmo"]
+script = ExtResource("1_e7e5q")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_j5rya")
+coords = Vector4i(0, 0, 0, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_uifxv"]
+script = ExtResource("1_e7e5q")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_j5rya")
+coords = Vector4i(1, 1, -2, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_i35vc"]
+script = ExtResource("1_e7e5q")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_j5rya")
+coords = Vector4i(0, 2, -2, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_4mtpx"]
+script = ExtResource("3_w04vk")
+last_seen_by_enemy = 0
+level_visible = false
+reveals = Array[ExtResource("2_x3a7f")]([])
+
+[sub_resource type="Resource" id="Resource_q0x8o"]
+script = ExtResource("1_e7e5q")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_4mtpx")
+coords = Vector4i(0, 1, -1, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_5l7r4"]
+script = ExtResource("3_w04vk")
+last_seen_by_enemy = 0
+level_visible = false
+reveals = Array[ExtResource("2_x3a7f")]([])
+
+[sub_resource type="Resource" id="Resource_04c5c"]
+script = ExtResource("1_e7e5q")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_5l7r4")
+coords = Vector4i(-1, 1, 0, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_57p11"]
+script = ExtResource("3_w04vk")
+last_seen_by_enemy = 0
+level_visible = false
+reveals = Array[ExtResource("2_x3a7f")]([])
+
+[sub_resource type="Resource" id="Resource_jbcs1"]
+script = ExtResource("1_e7e5q")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_57p11")
+coords = Vector4i(-2, 1, 1, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_iftbu"]
+script = ExtResource("3_w04vk")
+last_seen_by_enemy = 0
+level_visible = false
+reveals = Array[ExtResource("2_x3a7f")]([])
+
+[sub_resource type="Resource" id="Resource_ihxtm"]
+script = ExtResource("1_e7e5q")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_iftbu")
+coords = Vector4i(-3, 1, 2, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_h8m05"]
+script = ExtResource("3_w04vk")
+last_seen_by_enemy = 0
+level_visible = false
+reveals = Array[ExtResource("2_x3a7f")]([])
+
+[sub_resource type="Resource" id="Resource_eycfp"]
+script = ExtResource("1_e7e5q")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_h8m05")
+coords = Vector4i(-2, 5, -3, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_6574o"]
+script = ExtResource("3_w04vk")
+last_seen_by_enemy = 0
+level_visible = false
+reveals = Array[ExtResource("2_x3a7f")]([])
+
+[sub_resource type="Resource" id="Resource_smr7q"]
+script = ExtResource("1_e7e5q")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_6574o")
+coords = Vector4i(-3, 6, -3, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_t6jj0"]
+script = ExtResource("3_w04vk")
+last_seen_by_enemy = 0
+level_visible = false
+reveals = Array[ExtResource("2_x3a7f")]([])
+
+[sub_resource type="Resource" id="Resource_xgb6e"]
+script = ExtResource("1_e7e5q")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_t6jj0")
+coords = Vector4i(-5, 1, 4, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_t80kk"]
+script = ExtResource("3_w04vk")
+last_seen_by_enemy = 0
+level_visible = false
+reveals = Array[ExtResource("2_x3a7f")]([])
+
+[sub_resource type="Resource" id="Resource_qqgif"]
+script = ExtResource("1_e7e5q")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_t80kk")
+coords = Vector4i(-5, -1, 6, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_abx36"]
+script = ExtResource("3_w04vk")
+last_seen_by_enemy = 0
+level_visible = false
+reveals = Array[ExtResource("2_x3a7f")]([])
+
+[sub_resource type="Resource" id="Resource_0ycex"]
+script = ExtResource("1_e7e5q")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_abx36")
+coords = Vector4i(-4, -1, 5, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_tf3rr"]
+script = ExtResource("3_w04vk")
+last_seen_by_enemy = 0
+level_visible = false
+reveals = Array[ExtResource("2_x3a7f")]([])
+
+[sub_resource type="Resource" id="Resource_4jmcw"]
+script = ExtResource("1_e7e5q")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_tf3rr")
+coords = Vector4i(-4, 0, 4, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_monan"]
+script = ExtResource("3_w04vk")
+last_seen_by_enemy = 0
+level_visible = false
+reveals = Array[ExtResource("2_x3a7f")]([])
+
+[sub_resource type="Resource" id="Resource_b5br7"]
+script = ExtResource("1_e7e5q")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_monan")
+coords = Vector4i(-6, 0, 6, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_56pk4"]
+script = ExtResource("3_w04vk")
+last_seen_by_enemy = 0
+level_visible = false
+reveals = Array[ExtResource("2_x3a7f")]([])
+
+[sub_resource type="Resource" id="Resource_4v56g"]
+script = ExtResource("1_e7e5q")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_56pk4")
+coords = Vector4i(-6, 1, 5, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_3pyrv"]
+script = ExtResource("3_w04vk")
+last_seen_by_enemy = 0
+level_visible = false
+reveals = Array[ExtResource("2_x3a7f")]([])
+
+[sub_resource type="Resource" id="Resource_1t4d3"]
+script = ExtResource("1_e7e5q")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_3pyrv")
+coords = Vector4i(-5, 0, 5, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_y0ipo"]
 script = ExtResource("3_l53ym")
 level_visible = false
 reveals = Array[ExtResource("2_x3a7f")]([])
 
-[sub_resource type="Resource" id="Resource_y5872"]
+[sub_resource type="Resource" id="Resource_75kma"]
 script = ExtResource("4_o858a")
 spawn_id = 0
 rotation = 0.0
-position = Vector3(-5.19615, 0.3, 0)
+position = Vector3(-2.59808, 0.3, 1.5)
 height = 0
 occupied_coords = []
 variation = 0
 tile_rotation = 0
-vision_datastore = SubResource("Resource_1qasq")
-coords = Vector4i(-3, 0, 3, 0)
+vision_datastore = SubResource("Resource_y0ipo")
+coords = Vector4i(-2, 1, 1, 0)
 id = 2
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_k4f2e"]
-script = ExtResource("3_w04vk")
-last_seen_by_enemy = 0
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_ox31u"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_k4f2e")
-coords = Vector4i(1, -4, 3, 0)
-id = 1
-first_init = false
-public_id = 0
-
-[sub_resource type="Resource" id="Resource_f3gbq"]
-script = ExtResource("1_e7e5q")
-tile_fill = false
-occupy_state = 0
-is_decoration = false
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_k4f2e")
-coords = Vector4i(2, -5, 3, 0)
-id = 1
-first_init = false
-public_id = 0
-
-[sub_resource type="Resource" id="Resource_fvmsy"]
+[sub_resource type="Resource" id="Resource_qince"]
 script = ExtResource("3_l53ym")
 level_visible = false
 reveals = Array[ExtResource("2_x3a7f")]([])
 
-[sub_resource type="Resource" id="Resource_3euea"]
-script = ExtResource("6_yi748")
-active_effects = []
-ability_save = {
-"recharge": 0
-}
-rotation = 0.0
-position = Vector3(6.90847, 0.300001, 0.0341139)
-height = 0
-occupied_coords = []
-variation = 0
-tile_rotation = 0
-vision_datastore = SubResource("Resource_fvmsy")
-coords = Vector4i(4, 0, -4, 0)
-id = 3
-first_init = false
-public_id = 0
-
-[sub_resource type="Resource" id="Resource_jhhp2"]
-script = ExtResource("3_l53ym")
-level_visible = false
-reveals = Array[ExtResource("2_x3a7f")]([])
-
-[sub_resource type="Resource" id="Resource_ut2si"]
+[sub_resource type="Resource" id="Resource_aw4ss"]
 script = ExtResource("4_o858a")
 spawn_id = 0
 rotation = 0.0
-position = Vector3(8.66025, 0.3, 0)
+position = Vector3(-2.59808, 0.3, 7.5)
 height = 0
 occupied_coords = []
 variation = 1
 tile_rotation = 0
-vision_datastore = SubResource("Resource_jhhp2")
-coords = Vector4i(5, 0, -5, 0)
+vision_datastore = SubResource("Resource_qince")
+coords = Vector4i(-4, 5, -1, 0)
 id = 2
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_qpmke"]
+[sub_resource type="Resource" id="Resource_37nam"]
 script = ExtResource("3_w04vk")
 last_seen_by_enemy = 0
 level_visible = false
 reveals = Array[ExtResource("2_x3a7f")]([])
 
-[sub_resource type="Resource" id="Resource_2ajxf"]
+[sub_resource type="Resource" id="Resource_ytg2k"]
 script = ExtResource("1_e7e5q")
-tile_fill = false
+tile_fill = true
 occupy_state = 0
 is_decoration = false
 variation = 0
 tile_rotation = 0
-vision_datastore = SubResource("Resource_qpmke")
-coords = Vector4i(6, 0, -6, 0)
+vision_datastore = SubResource("Resource_37nam")
+coords = Vector4i(-5, 3, 2, 5)
 id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_0ai18"]
+[sub_resource type="Resource" id="Resource_cvatd"]
 script = ExtResource("1_e7e5q")
-tile_fill = false
+tile_fill = true
 occupy_state = 0
 is_decoration = false
 variation = 0
 tile_rotation = 0
-vision_datastore = SubResource("Resource_qpmke")
-coords = Vector4i(7, 0, -7, 0)
+vision_datastore = SubResource("Resource_37nam")
+coords = Vector4i(-4, 3, 1, 5)
 id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_62tu6"]
-script = ExtResource("3_l53ym")
+[sub_resource type="Resource" id="Resource_4ouas"]
+script = ExtResource("1_e7e5q")
+tile_fill = true
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_37nam")
+coords = Vector4i(-2, 3, -1, 5)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_cmm4y"]
+script = ExtResource("1_e7e5q")
+tile_fill = true
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_37nam")
+coords = Vector4i(-1, 3, -2, 5)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_cgc22"]
+script = ExtResource("1_e7e5q")
+tile_fill = true
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_37nam")
+coords = Vector4i(0, 3, -3, 5)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_ktpq1"]
+script = ExtResource("1_e7e5q")
+tile_fill = true
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_37nam")
+coords = Vector4i(1, 3, -4, 5)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_k2u78"]
+script = ExtResource("3_w04vk")
+last_seen_by_enemy = 0
 level_visible = false
 reveals = Array[ExtResource("2_x3a7f")]([])
 
-[sub_resource type="Resource" id="Resource_706ff"]
-script = ExtResource("6_yi748")
-active_effects = []
-ability_save = {
-"stepped_on_card_public_id": 0,
-"stepped_on_choice": ""
-}
-rotation = 0.0
-position = Vector3(10.0208, 0.3, 0.141923)
-height = 0
-occupied_coords = []
+[sub_resource type="Resource" id="Resource_iod1c"]
+script = ExtResource("1_e7e5q")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
 variation = 0
 tile_rotation = 0
-vision_datastore = SubResource("Resource_62tu6")
-coords = Vector4i(6, 0, -6, 0)
-id = 13
+vision_datastore = SubResource("Resource_k2u78")
+coords = Vector4i(0, 4, -4, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_6tov3"]
+script = ExtResource("3_w04vk")
+last_seen_by_enemy = 0
+level_visible = false
+reveals = Array[ExtResource("2_x3a7f")]([])
+
+[sub_resource type="Resource" id="Resource_cfn6f"]
+script = ExtResource("1_e7e5q")
+tile_fill = true
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_6tov3")
+coords = Vector4i(-3, 3, 0, 2)
+id = 1
 first_init = false
 public_id = 0
 
 [resource]
 script = ExtResource("7_wdq57")
 area_id = 1
-data = [SubResource("Resource_1mto8"), SubResource("Resource_6u0lf"), SubResource("Resource_e48i8"), SubResource("Resource_3imd6"), SubResource("Resource_bmpd2"), SubResource("Resource_3ldvw"), SubResource("Resource_lx7vn"), SubResource("Resource_cq2hc"), SubResource("Resource_6ioiw"), SubResource("Resource_661qc"), SubResource("Resource_k4qbp"), SubResource("Resource_fy07l"), SubResource("Resource_1i34l"), SubResource("Resource_t7nst"), SubResource("Resource_j2bja"), SubResource("Resource_1fe8l"), SubResource("Resource_qt6tq"), SubResource("Resource_1c1v0"), SubResource("Resource_ri7al"), SubResource("Resource_j6qjl"), SubResource("Resource_suy5s"), SubResource("Resource_eao5r"), SubResource("Resource_tkrd7"), SubResource("Resource_y1pbi"), SubResource("Resource_ps2uc"), SubResource("Resource_2q5r0"), SubResource("Resource_vi1ae"), SubResource("Resource_dj0ka"), SubResource("Resource_6dowu"), SubResource("Resource_p5e4i"), SubResource("Resource_kw2nh"), SubResource("Resource_x6wa7"), SubResource("Resource_f2cfy"), SubResource("Resource_sukx4"), SubResource("Resource_yrco4"), SubResource("Resource_sxuvr"), SubResource("Resource_8xmmu"), SubResource("Resource_8bts2"), SubResource("Resource_hjr6w"), SubResource("Resource_ypsk5"), SubResource("Resource_g3oge"), SubResource("Resource_60f02"), SubResource("Resource_wd1v1"), SubResource("Resource_81rjq"), SubResource("Resource_nv7ib"), SubResource("Resource_o8pau"), SubResource("Resource_uqcow"), SubResource("Resource_bljga"), SubResource("Resource_cuvj1"), SubResource("Resource_3d7qi"), SubResource("Resource_wplio"), SubResource("Resource_ui8t4"), SubResource("Resource_4a7os"), SubResource("Resource_uwhhn"), SubResource("Resource_bp0rj"), SubResource("Resource_t17ab"), SubResource("Resource_pj70g"), SubResource("Resource_weipw"), SubResource("Resource_1r65e"), SubResource("Resource_47lrg"), SubResource("Resource_ujlps"), SubResource("Resource_x54a6"), SubResource("Resource_mgq2a"), SubResource("Resource_bjtm7"), SubResource("Resource_gd83u"), SubResource("Resource_oy38d"), SubResource("Resource_bf7se"), SubResource("Resource_gqatn"), SubResource("Resource_apimx"), SubResource("Resource_rituh"), SubResource("Resource_1x2x2"), SubResource("Resource_okh0d"), SubResource("Resource_evg03"), SubResource("Resource_y0pj4"), SubResource("Resource_20lwb"), SubResource("Resource_657wn"), SubResource("Resource_1o4nw"), SubResource("Resource_ui2hf"), SubResource("Resource_o10om"), SubResource("Resource_y5872"), SubResource("Resource_ox31u"), SubResource("Resource_f3gbq"), SubResource("Resource_3euea"), SubResource("Resource_ut2si"), SubResource("Resource_2ajxf"), SubResource("Resource_0ai18"), SubResource("Resource_706ff")]
+data = [SubResource("Resource_jcev0"), SubResource("Resource_02g76"), SubResource("Resource_a4ov4"), SubResource("Resource_3jg4s"), SubResource("Resource_k8rsa"), SubResource("Resource_sowyc"), SubResource("Resource_h2fcw"), SubResource("Resource_roiop"), SubResource("Resource_28y08"), SubResource("Resource_ktwm3"), SubResource("Resource_5aqk6"), SubResource("Resource_uj87f"), SubResource("Resource_s8rx0"), SubResource("Resource_kh866"), SubResource("Resource_diwom"), SubResource("Resource_7kt27"), SubResource("Resource_7pmei"), SubResource("Resource_qj4xb"), SubResource("Resource_i5b40"), SubResource("Resource_ixtiu"), SubResource("Resource_1yftv"), SubResource("Resource_vpupd"), SubResource("Resource_gwk7t"), SubResource("Resource_ssd88"), SubResource("Resource_ekmsv"), SubResource("Resource_7hv4p"), SubResource("Resource_s6pqb"), SubResource("Resource_royqr"), SubResource("Resource_amwe0"), SubResource("Resource_n12mp"), SubResource("Resource_s8r3a"), SubResource("Resource_ctmrj"), SubResource("Resource_equl0"), SubResource("Resource_2b2u3"), SubResource("Resource_hjcgm"), SubResource("Resource_lfopu"), SubResource("Resource_d6kpt"), SubResource("Resource_5ilxl"), SubResource("Resource_8ptwc"), SubResource("Resource_6ploo"), SubResource("Resource_o0n4h"), SubResource("Resource_i1gho"), SubResource("Resource_bkr8f"), SubResource("Resource_legft"), SubResource("Resource_mcgv8"), SubResource("Resource_2gbo7"), SubResource("Resource_5ceu6"), SubResource("Resource_u5fmo"), SubResource("Resource_uifxv"), SubResource("Resource_i35vc"), SubResource("Resource_q0x8o"), SubResource("Resource_04c5c"), SubResource("Resource_jbcs1"), SubResource("Resource_ihxtm"), SubResource("Resource_eycfp"), SubResource("Resource_smr7q"), SubResource("Resource_xgb6e"), SubResource("Resource_qqgif"), SubResource("Resource_0ycex"), SubResource("Resource_4jmcw"), SubResource("Resource_b5br7"), SubResource("Resource_4v56g"), SubResource("Resource_1t4d3"), SubResource("Resource_75kma"), SubResource("Resource_aw4ss"), SubResource("Resource_ytg2k"), SubResource("Resource_cvatd"), SubResource("Resource_4ouas"), SubResource("Resource_cmm4y"), SubResource("Resource_cgc22"), SubResource("Resource_ktpq1"), SubResource("Resource_iod1c"), SubResource("Resource_cfn6f")]
 lights = Array[PackedScene]([])
-enemy_min_spawn_amount = 2
-enemy_max_spawn_amount = 2
+enemy_min_spawn_amount = 3
+enemy_max_spawn_amount = 3
 progress_min = 0
 progress_max = 0
 enemy_budget_offset = 0
 id = 3
 name = "deathTest"
 gdscript = ExtResource("5_2iscj")
-saved_data = ExtResource("6_hnhyd")
+saved_data = ExtResource("7_hm8f3")

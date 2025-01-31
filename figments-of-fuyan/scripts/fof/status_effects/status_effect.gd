@@ -27,19 +27,17 @@ func getIcon() -> Texture2D:
 
 func onProcessAction(action: Action) -> void:
 	if action.post:
-		if action is ChangePhaseAction:
-			if turns > 0 and Game.isAdvanceTurn(action.phase, Card.team):
+		if action is ChangeTurnStateAction:
+			if action.turn_state == Game.TurnStates.PASSED and action.Card == Card and turns > 0:
 				turns -= 1
-				if turns == 0: onPushAction(RemoveStatusEffectAction.new(self))
+				if turns == 0:
+					onPushAction(RemoveStatusEffectAction.new(self))
 			
 		elif action is DeathAction and action.Defender == Card:
 			onClear()
 		
 		elif action is AddStatusEffectAction and action.StatusEffect == self:
 			onStatusEffectAdded(action)
-			
-func onAdvanceTurn() -> void:
-	pass
 	
 func getDescription() -> String:
 	return info.description

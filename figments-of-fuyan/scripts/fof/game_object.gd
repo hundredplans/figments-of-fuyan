@@ -37,9 +37,13 @@ func setOwner(new_owner: Node3D) -> void:
 func setRayPickable(state: bool) -> void:
 	for body in getStaticBodies():
 		body.input_ray_pickable = state
-
-func setVisible(state: bool) -> void: visible = state
 	
+func getTileRotationFromRotation() -> int:
+	return (int((rotation_degrees.y + 30) / 60) % 6)
+	
+func getTileRotationForce() -> int:
+	return tile_rotation if info.lock_rotation else getTileRotationFromRotation()
+
 func onRotateDirection(direction: int) -> void:
 	tile_rotation += direction
 	if tile_rotation > 5: tile_rotation = 0
@@ -65,7 +69,7 @@ func onLoadData(data: SavedData) -> void:
 	add_to_group("GameObjectsGD")
 	
 func onLoadDataLevel() -> void:
-	onCreateAdjustedPoints()
+	pass
 	
 func onLoadDataLevelFofInit() -> void:
 	pass
@@ -77,6 +81,8 @@ func onProcessAction(action: Action) -> void:
 	if action.post:
 		if action is ChangePhaseAction and action.phase in Game.ADVANCE_PHASES:
 			onAdvanceTurn(Game.ADVANCE_PHASES.find(action.phase))
+		elif action is ChangeTurnStateAction and action.turn_state == Game.TurnStates.PASSED:
+			onCardTurnPassed(action.Card)
 #endregion
 
 #region Material Updates
@@ -121,19 +127,14 @@ func onUpdateLevelVisible() -> void: pass
 #region Points
 func getLevelPoints() -> Array:
 	return call("getPoints")
-
-func onCreateAdjustedPoints() -> void:
-	var theta: float = rotation.y
-	adjusted_points = getLevelPoints().map(func(x: Vector3): return (Game.onRotatePosition(x, theta)) + position)
-	if self is TileGD: adjusted_points += call("getTileFillPoints").map(func(x: Vector3): return x + position)
-	
-	#for point in adjusted_points:
-		#var Point: MeshInstance3D = load(info.POINT_PATH).instantiate()
-		#Point.setInfo(self)
-		#add_child(Point)
-		#Point.global_position = point
+		
+func getAdjustedPoints() -> Array:
+	return adjusted_points
 #endregion
 
 #region Advance Turn
 func onAdvanceTurn(team: int) -> void:
+	pass
+
+func onCardTurnPassed(_Card: CardGD) -> void:
 	pass

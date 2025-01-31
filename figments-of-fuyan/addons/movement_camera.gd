@@ -51,7 +51,7 @@ func _input(event):
 	if event is InputEventMouseMotion:
 		_mouse_position = event.relative
 	
-	if event is InputEventMouseButton:
+	if event is InputEventMouseButton and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		# Receives mouse button input
 		match event.button_index:
 			MOUSE_BUTTON_WHEEL_UP: # Increases max velocity

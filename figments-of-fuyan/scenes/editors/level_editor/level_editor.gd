@@ -10,7 +10,8 @@ extends Node
 @export var PanelButtonPacked: PackedScene
 @export var BASE_ROTATION_TIMER: float = 0.25
 @export_dir var TILE_OBJECTS_PATH: String
-@export var AREA_ID_TO_SCRIPTS: Array[IdToScripts]
+@export var AREA_ID_TO_SCRIPT: Array[IdToScript]
+@export var saved_data_level_gdscript: GDScript
 
 @onready var UI: Control = $UI
 @onready var World: Node3D = %World
@@ -18,6 +19,7 @@ extends Node
 
 @onready var ProgressEdit: LineEdit = %ProgressEdit
 @onready var LevelNameEdit: LineEdit = %LevelNameEdit
+@onready var SearchResultsPanel: PanelContainer = %SearchResultsPanel
 #endregion
 #region Globals
 var is_camera_panning: bool = false
@@ -67,11 +69,11 @@ func getTilesBelow(Tile: TileGD) -> Array[TileGD]:
 		if _Tile != null: arr.append(_Tile)
 	return arr
 	
-func onFindScriptsById(id: int = current_area_id) -> Array:
-	for id_to_scripts in AREA_ID_TO_SCRIPTS:
+func onFindScriptById(id: int = current_area_id) -> GDScript:
+	for id_to_scripts in AREA_ID_TO_SCRIPT:
 		if id == id_to_scripts.id:
-			return id_to_scripts.scripts
-	return []
+			return id_to_scripts.gdscript
+	return null
 
 #endregion
 #region Base Functions
@@ -85,6 +87,7 @@ func _ready() -> void:
 	setAllTileObjectsToWords()
 	setAreaOptionButtonItems()
 	LoadLevels.visible = false
+	SearchResultsPanel.visible = false
 		
 func setAllTileObjectsToWords() -> void:
 	for info in all_tile_objects:
@@ -197,6 +200,8 @@ func _on_search_tile_object_text_changed(text: String):
 			panel_button.setInfo(info)
 			panel_button.mouse_in_ui.connect(onMouseInUI)
 			panel_button.custom_pressed.connect(onTileObjectInfoSelected)
+			
+	SearchResultsPanel.visible = !text.is_empty()
 
 func onTileObjectInfoSelected(data: SavedData, remove_last: bool = true) -> void:
 	if remove_last and HoverModel != null: HoverModel.queue_free()
@@ -496,9 +501,8 @@ func onSaveLevel() -> void:
 		loaded.setSpawnPropertiesAutoValues(get_tree().get_nodes_in_group("TileObjectsGD"))
 		loaded.id = Helper.getFirstNonConsecutiveId(LevelInfo)
 		
-		var scripts: Array = onFindScriptsById()
-		loaded.gdscript = scripts[0]
-		loaded.saved_data = scripts[1]
+		loaded.gdscript = onFindScriptById()
+		loaded.saved_data = saved_data_level_gdscript
 		
 		var path: String = LEVEL_PATH + level_name.to_snake_case() + ".tres"
 		loaded.resource_path = path
@@ -588,7 +592,7 @@ func onApplyLevelFilters() -> void:
 	var decorations: Array = []
 	if !ProgressEdit.text.is_empty() and progress <= 0:
 		decorations = Array(DirAccess.get_files_at(DECORATION_PATH))\
-			.map(func(x: String): return load(DECORATION_PATH + x)) 
+			.map(func(x: String): return load(DECORATION_PATH + x))
 			
 		if progress == -1:
 			decorations = decorations.filter(func(x: DecorationDatastore): return x.name.ends_with("Overworld"))

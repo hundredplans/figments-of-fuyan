@@ -1,12 +1,12 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=13 format=3 uid="uid://j18lciyli5oh"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=13 format=3]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_ctxd3"]
-[ext_resource type="Resource" uid="uid://6j57uasj8x66" path="res://resources/fof/archetypes/reinforcer.tres" id="2_lks3h"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/reinforcer.tres" id="2_lks3h"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_ope8q"]
-[ext_resource type="Texture2D" uid="uid://dlqbflcdgpe0i" path="res://assets/sprites/game/cards/art_mini/charmer_palmer.png" id="2_p77gw"]
-[ext_resource type="Image" uid="uid://c417dfnj38t1i" path="res://assets/sprites/game/cards/art_pop/charmer_palmer.png" id="2_r3dp6"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/charmer_palmer.png" id="2_p77gw"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/charmer_palmer.png" id="2_r3dp6"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_e0im4"]
-[ext_resource type="PackedScene" uid="uid://bvg1t02arcb52" path="res://assets/models/fof/cards/charmer_palmer.glb" id="5_50c3x"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/charmer_palmer.glb" id="5_50c3x"]
 [ext_resource type="Script" path="res://scripts/fof/cards/charmer_palmer.gd" id="5_n02pe"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_p8xdk"]
 
@@ -59,7 +59,7 @@ art_mini_coordinate = Vector2i(80, 40)
 art_mini = ExtResource("2_p77gw")
 art_pop = ExtResource("2_r3dp6")
 model = ExtResource("5_50c3x")
-points = []
+points = [Vector3(-0.179859, 0.893361, 0.0876466), Vector3(0.0392418, 0.889743, 0.0876466), Vector3(0.226041, 0.887431, 0.0876466), Vector3(-0.166388, 0.669468, 0.0876466), Vector3(0.161954, 0.672482, 0.0876466), Vector3(-0.124565, 0.383422, 0.0876466), Vector3(0.139911, 0.376302, 0.0876466), Vector3(-0.202491, 0.145214, 0.0876466), Vector3(0.195478, 0.120366, 0.0876466), Vector3(-0.304626, 0.129208, -0.00852141), Vector3(-0.304626, 0.455885, 0.00584644), Vector3(-0.304626, 0.69264, -0.0139976), Vector3(-0.304626, 0.89067, -0.0157035), Vector3(0.303833, 0.0991017, -0.0107111), Vector3(0.303833, 0.427818, 0.0104938), Vector3(0.303833, 0.650644, 0.0207857), Vector3(0.303833, 0.877513, 0.0319292), Vector3(0.174564, 0.849292, -0.0874025), Vector3(-0.0837984, 0.858443, -0.0874025), Vector3(0.114616, 0.684372, -0.0874025), Vector3(-0.14521, 0.692382, -0.0874025), Vector3(0.147896, 0.486443, -0.0874025), Vector3(-0.178461, 0.461089, -0.0874025), Vector3(0.175827, -0.00152558, -0.00728324), Vector3(-0.18164, -0.00152552, 0.00647819), Vector3(0.18311, 0.168828, -0.0874025), Vector3(-0.199722, 0.157232, -0.0874025), Vector3(-0.114599, 0.983552, 0.012819), Vector3(0.152649, 0.983552, -0.0129824)]
 collision_shape = SubResource("PackedScene_44ax2")
 stat = 1.29201
 top = 0.976187

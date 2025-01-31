@@ -106,11 +106,12 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _
 	
 	if Card.isEnemy(0): ai_cooldown_cards[Card] = TURN_COOLDOWN_FOR_ABILITY_AND_TRANSFORM 
 	
-	if !isLevelVisible(): return
-	onAbility()
 	HolderNode = holders_nodes[start_tiles.find(ActiveStartTile)]
 	HolderCard = Card
+	
+	if !isLevelVisible(): return
 	Card.onPauseAnimation()
+	onAbility()
 	
 func onZiplineFinished() -> void:
 	HolderNode = null
@@ -129,15 +130,15 @@ func setHolderVisible() -> void:
 #endregion
 
 #region Advance Turn
-func onAdvanceTurn(team: int) -> void:
-	super(team)
-	for Card in used_this_turn_cards.filter(func(x: CardGD): return x.team == team):
-		used_this_turn_cards.erase(Card)
+func onCardTurnPassed(Card: CardGD) -> void:
+	for _Card in used_this_turn_cards:
+		if Card == _Card: used_this_turn_cards.erase(Card); break
 		
-	for Card in ai_cooldown_cards.duplicate():
+	if Card in ai_cooldown_cards.keys():
 		ai_cooldown_cards[Card] -= 1
 		if ai_cooldown_cards[Card] == 0:
 			ai_cooldown_cards.erase(Card)
+		
 #endregion
 
 #region Following Holder

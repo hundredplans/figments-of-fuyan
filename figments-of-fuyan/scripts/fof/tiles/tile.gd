@@ -154,8 +154,9 @@ func onLoadData(data: SavedData) -> void:
 		vision_datastore = VisionDatastoreTile.new()
 	
 	is_decoration = data.is_decoration
+	tile_fill = data.tile_fill
+	
 	onLoadModel()
-	onCreateTileFill(data.tile_fill)
 	occupy_state = data.occupy_state
 	add_to_group("TilesGD")
 	
@@ -168,10 +169,14 @@ func onLoadModel() -> void:
 	
 	Model = info.getModel(variation, is_decoration).instantiate()
 	add_child(Model)
-	onAfterLoadModel()
 	
 	setCoords(coords)
 	setTileRotation(tile_rotation)
+	
+	onCreateTileFill(tile_fill)
+	onAfterLoadModel()
+	
+
 	
 func onLoadDataLevel() -> void:
 	super()
@@ -269,9 +274,11 @@ func isBelowMaxMovementHeight(Card: CardGD) -> bool:
 #endregion
 
 #region Ramps
-func isValidRampRelation(Tile: TileGD) -> bool:
+func isValidRampRelation(Tile: TileGD, height_diff: int) -> bool:
 	var relative_tile_rotation: int = Game.getRelativeTileRotation(self, Tile)
-	return (relative_tile_rotation == (tile_rotation + 2) % 6) or (relative_tile_rotation == (tile_rotation + 5) % 6)
+	
+	return ((relative_tile_rotation == (tile_rotation + 2) % 6) and height_diff in [-2, 2])\
+	or ((relative_tile_rotation == (tile_rotation + 5) % 6) and height_diff == 0)
 #endregion
 
 #region Fall Damage

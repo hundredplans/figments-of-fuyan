@@ -1,6 +1,7 @@
 extends Node
 
-func getAdmin() -> bool: return true
+var admin_datastore: AdminDatastore
+const ADMIN_DATASTORE_PATH: String = "res://resources/datastore/admin/admin_datastore.tres"
 
 #region Resources
 var GDSCRIPT_TYPES: Array = [AreaInfo, LevelInfo, PalmLevelInfo, \
@@ -10,6 +11,7 @@ var GDSCRIPT_TYPES: Array = [AreaInfo, LevelInfo, PalmLevelInfo, \
 	
 var fof_info_dict: Dictionary = {}
 func _ready() -> void:
+	admin_datastore = load(ADMIN_DATASTORE_PATH)
 	for type in GDSCRIPT_TYPES:
 		onRefreshFofInfoArray(type)
 		

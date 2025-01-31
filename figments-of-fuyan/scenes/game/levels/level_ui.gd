@@ -245,7 +245,7 @@ func _on_pass_button_pressed() -> void:
 	World.onPassButtonPressed()
 	
 func onTurnStateChanging(Card: CardGD, _action: ChangeTurnStateAction) -> void:
-	PassButton.setIsAllyInactiveActive(Card)
+	PassButton.setTurnStates(Card)
 	if Card == level.SpectateObject:
 		onUpdateActiveEffects()
 #endregion

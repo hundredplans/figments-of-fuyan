@@ -51,7 +51,7 @@ func onPostAction() -> void:
 	
 	if Card.ai_datastore.isReceiver() and !enemies.is_empty():
 		Card.ai_datastore.setIsReceiver(false)
-	
+
 	if pacifist:
 		var enemy_tiles: Array = enemies.map(func(x: CardGD): return x.getTile())
 		tiles = tiles.filter(func(x: TileGD): return x not in enemy_tiles)
@@ -104,7 +104,6 @@ func getTilesSortedByValue(tiles_to_value: Dictionary) -> Array:
 			tiles_to_value[Tile] += tiles_to_value[tiles[i]]
 		tiles_to_value[Tile] /= float(tiles.size() - 1)
 		
-	
 	var tiles_sorted_by_value: Array = tiles_to_value.keys()
 	tiles_sorted_by_value.sort_custom(func(x: TileGD, y: TileGD): return tiles_to_value[x] > tiles_to_value[y])
 	
@@ -123,9 +122,7 @@ func onApplyBehaviours(Card: CardGD, enemies: Array, allies: Array, tiles: Array
 		behaviours = behaviours.filter(func(x: Behaviour): return (x.isCombatBehaviour() and is_in_combat) or (x.isOutOfCombatBehaviour() and !is_in_combat))
 		
 		var behaviour_amount: float = behaviours.size() + 1.0
-		for behaviour_script in behaviours:
-			var behaviour := Behaviour.new()
-			behaviour.script = behaviour_script
+		for behaviour in behaviours:
 			var behaviour_tiles_to_value: Dictionary
 			if is_in_combat: # For debugging
 				behaviour_tiles_to_value = behaviour.getCombatTiles(Card, tiles, enemies, allies)
@@ -139,12 +136,12 @@ func onApplyBehaviours(Card: CardGD, enemies: Array, allies: Array, tiles: Array
 			tiles_to_value[Tile] /= behaviour_amount
 	return tiles_to_value
 
-func getBehaviours(Card: CardGD) -> Array:
+func getBehaviours(BehaviourCard: CardGD) -> Array:
 	var archetype: ArchetypeInfo
-	if !Card.isInCombat() and Card.ai_datastore.isReceiver():
+	if BehaviourCard.ai_datastore.isReceiver():
 		archetype = load(RECEIVER_ARCHETYPE_PATH)
 	else:
-		archetype = load(ADVENTURER_ARCHETYPE_PATH) if (Card.isAlly(1) and Game.getLevel().isAIAdventurerArchetypeGlobal()) else Card.info.archetype
+		archetype = load(ADVENTURER_ARCHETYPE_PATH) if (BehaviourCard.isAlly(1) and Game.getLevel().isAIAdventurerArchetypeGlobal()) else Card.info.archetype
 	return archetype.behaviours.map(func(x: GDScript): var behaviour := Behaviour.new(); behaviour.set_script(x); return behaviour)
 
 func onCheckCallForHelp(allies: Array, enemies: Array) -> void:
@@ -157,9 +154,9 @@ func onCheckCallForHelp(allies: Array, enemies: Array) -> void:
 		enemies_to_tiles[EnemyCard] = EnemyCard.getTile()
 		
 	Card.ai_datastore.onCall() # Sets call cooldown
-		
-	for AllyCard in allies.filter(func(x: CardGD): return !x.ai_datastore.isReceiver() and\
-	x.ai_datastore.onCanReceive() and Random.rollFloat(x.info.archetype.accepting_chance / 100.0)):
-		
+	var available_allies: Array =  allies.filter(func(x: CardGD): return !x.ai_datastore.isReceiver() and\
+	x.ai_datastore.onCanReceive() and !x.isInCombat()\
+	and Random.rollFloat(x.info.archetype.accepting_chance / 100.0))
+	for AllyCard in available_allies:
 		AllyCard.ai_datastore.setIsReceiver(true, enemies_to_tiles)
 	

@@ -68,7 +68,7 @@ func onInitLoad() -> void: # Basically the area fof init
 
 #region Map Start
 func onMapStartAnimation() -> void:
-	if !Helper.getAdmin():
+	if !Helper.admin_datastore.skip_map_start_animation:
 		AreaNameLabel.text = area.info.name
 		AniPlayer.play("MapStart")
 #endregion

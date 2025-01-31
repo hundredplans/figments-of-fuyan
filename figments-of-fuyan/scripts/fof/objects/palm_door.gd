@@ -75,7 +75,7 @@ func getActiveEffectTiles(_active_effect: ActiveEffectDatastore, _Card: CardGD) 
 	return ActiveEffectTiles.new([getTile()], [getTile()])
 	
 func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
-	var actions: Array = [VisionAction.new([Card] + Game.inVisionCards(Card.getCoords()))]
+	var actions: Array = [VisionAction.new(Game.inVisionRangeCards(Card.getTile(), true))]
 	for owned_active_effect in active_effects.filter(func(x: ActiveEffectDatastore): return x != active_effect):
 		actions.append(ChangeActiveEffectUsedAction.new(owned_active_effect, true))
 	onPushAction(actions)

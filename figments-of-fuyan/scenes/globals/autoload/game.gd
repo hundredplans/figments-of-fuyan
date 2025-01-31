@@ -303,11 +303,11 @@ func getsetMovementRange(Card: CardGD) -> Array:
 			for EndTile in add_to_astar_tiles.filter(func(x: TileGD): return Game.isAdjacent(x, StartTile)):
 				var height_diff: int = EndTile.getHeight() - StartTile.getHeight()
 				if StartTile.isRamp():
-					if StartTile.isValidRampRelation(EndTile):
+					if StartTile.isValidRampRelation(EndTile, height_diff):
 						astar.connect_points(StartTile.get_instance_id(), EndTile.get_instance_id(), false)
 					
 				elif EndTile.isRamp():
-					if EndTile.isValidRampRelation(StartTile):
+					if EndTile.isValidRampRelation(StartTile, height_diff):
 						astar.connect_points(StartTile.get_instance_id(), EndTile.get_instance_id(), false)
 					
 				elif height_diff <= 1:

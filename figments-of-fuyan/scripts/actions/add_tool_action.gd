@@ -9,7 +9,8 @@ func _init(_Card: CardGD = null, _Tool: ToolGD = null) -> void:
 	Tool = _Tool
 	
 func onPreAction() -> void:
-	if Card.Tool != null: onForceAction(RemoveToolAction.new(Card))
+	if Card.Tool != null and Card.Tool != Tool:
+		onForceAction(RemoveToolAction.new(Card))
 	
 func onPostAction() -> void:
 	Card.onAddTool(Tool)

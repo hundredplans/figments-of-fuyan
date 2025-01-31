@@ -2,7 +2,6 @@ class_name FightNodeGD extends MapNodeGD
 
 var enemy_spawns: Array = []
 var level_info: LevelInfo
-const FORCE_LEVEL_ID: int = 0
 
 #region Save / Load / Init
 func onFofInit() -> void:
@@ -62,12 +61,12 @@ func getBudget() -> int:
 func setLevelInfo() -> void:
 	var levels: Array = Helper.getFofInfoArray(Game.area.info.base_level_script)
 	
-	if FORCE_LEVEL_ID == 0:
+	if Helper.admin_datastore.force_level_spawn_id == 0:
 		levels = levels.filter(func(x: LevelInfo): \
 			return map_location.progress >= x.progress_min and map_location.progress <= x.progress_max)
 		level_info = levels.pick_random()
 	else:
-		level_info = Helper.getFofInfoID(LevelInfo, FORCE_LEVEL_ID)
+		level_info = Helper.getFofInfoID(LevelInfo, Helper.admin_datastore.force_level_spawn_id)
 		
 	
 	

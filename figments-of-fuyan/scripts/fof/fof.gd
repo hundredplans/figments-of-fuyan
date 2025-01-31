@@ -2,6 +2,7 @@ class_name FofGD extends Node3D
 
 signal clear
 signal push_action
+signal push_after_action
 signal append_action
 signal force_action
 signal remove_move_and_attack_actions
@@ -27,6 +28,16 @@ func onPushAction(actions: Variant, action_owner: Variant = self) -> void:
 	for action in actions:
 		action.owner = action_owner
 		push_action.emit(action)
+		
+func onPushAfterAction(actions: Variant, after_action: Action, action_owner: Variant = self) -> void:
+	if actions is Action:
+		actions = [actions]
+		
+	actions.reverse()
+	for action in actions:
+		action.owner = action_owner
+		
+	push_after_action.emit(actions, after_action)
 	
 func onAppendAction(actions: Variant, action_owner: Variant = self) -> void:
 	if actions is Action: actions = [actions]

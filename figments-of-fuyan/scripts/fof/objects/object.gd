@@ -122,7 +122,10 @@ func setOccupiedTiles(tile_position_to_tile: Dictionary) -> void:
 			closest_tile = tile_position_to_tile[pos]
 			closest_distance = distance
 	
-	var coords_array: Array = getTilesCoords().map(func(x: Vector4i): return x + closest_tile.getCoords())
+	var tile_rotation_force: int = getTileRotationForce()
+	var coords_array: Array = getTilesCoords().map(func(x: Vector4i): return Game.onRotateCoordsCC(tile_rotation_force, x))\
+		.map(func(x: Vector4i): return x + closest_tile.getCoords())
+	
 	occupied_tiles = coords_array.map(func(x: Vector4i): return Game.getTile(x)).filter(func(x: TileGD): return x != null)
 	
 	for Tile in occupied_tiles:
@@ -140,11 +143,6 @@ func getRevealVisibleGroup() -> Array:
 #region Actions
 func onProcessAction(action: Action) -> void:
 	super(action)
-#endregion
-
-#region Card
-func onAdvanceTurn(_team: int) -> void:
-	pass
 #endregion
 
 func getMaxMovementHeight() -> float: # Returns whether card can go below it or not

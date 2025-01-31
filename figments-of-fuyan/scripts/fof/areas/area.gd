@@ -7,8 +7,6 @@ signal load_level
 var map_location_to_node: Dictionary
 var basic_card_ids: Array = []
 var active_level: LevelGD
-
-const FORCE_NODE_SPAWN_AT_ZERO_ID: int = 0
 #endregion
 
 #region Saved Data
@@ -245,7 +243,7 @@ func setEmptySpotsIDS(unique_node_ids: Array, map_node_odds: Dictionary, Card: C
 		match empty_spot.progress:
 			-1: empty_spot.id = 1; continue
 			0:
-				empty_spot.id = 1 if getWorldDifficulty() > 1 else (6 if FORCE_NODE_SPAWN_AT_ZERO_ID == 0 else FORCE_NODE_SPAWN_AT_ZERO_ID)
+				empty_spot.id = 1 if getWorldDifficulty() > 1 else (6 if Helper.admin_datastore.spawn_instead_of_shop_id == 0 else Helper.admin_datastore.spawn_instead_of_shop_id)
 				continue
 			5: empty_spot.id = 7; continue
 			10: empty_spot.id = 8; continue
@@ -390,7 +388,7 @@ func isAfterMiniboss() -> bool:
 	return getEnteredMapNode().map_location.isAfterMiniboss()
 
 func getBossMapNode() -> MapNodeGD:
-	return getNodeByID(10)
+	return getNodeByID(8)
 	
 func getStartMapNode() -> MapNodeGD:
 	return getNodeByID(1)

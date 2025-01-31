@@ -1,11 +1,11 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=14 format=3 uid="uid://b60dsgwa8cef5"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=14 format=3]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_jmwbd"]
-[ext_resource type="Image" uid="uid://dwaxgobdb2kxy" path="res://assets/sprites/game/cards/art_pop/Sellus_Palmus.png" id="2_3b8rb"]
-[ext_resource type="Texture2D" uid="uid://csv1wpnctbpvq" path="res://assets/sprites/game/cards/art_mini/sellus_palmus.png" id="2_6vb1n"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/Sellus_Palmus.png" id="2_3b8rb"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/sellus_palmus.png" id="2_6vb1n"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="2_8byqm"]
-[ext_resource type="Resource" uid="uid://6j57uasj8x66" path="res://resources/fof/archetypes/reinforcer.tres" id="2_iqmb7"]
-[ext_resource type="PackedScene" uid="uid://xgamssjyk4yp" path="res://assets/models/fof/cards/sellus_palmus.glb" id="3_aih6y"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/reinforcer.tres" id="2_iqmb7"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/sellus_palmus.glb" id="3_aih6y"]
 [ext_resource type="Script" path="res://scripts/fof/cards/sellus_palmus.gd" id="3_av7uo"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="5_ox6gs"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_aawy5"]
@@ -61,7 +61,7 @@ art_mini_coordinate = Vector2i(90, 40)
 art_mini = ExtResource("2_6vb1n")
 art_pop = ExtResource("2_3b8rb")
 model = ExtResource("3_aih6y")
-points = []
+points = [Vector3(-0.224358, -0.000732005, 0.00794344), Vector3(0.259303, -0.000732005, 0.022499), Vector3(-0.254211, 0.224, 0.13617), Vector3(0.207648, 0.254006, 0.13617), Vector3(-0.17165, 0.691221, 0.13617), Vector3(0.186469, 0.717927, 0.13617), Vector3(-0.219999, 1.08876, 0.13617), Vector3(0.203776, 1.09693, 0.13617), Vector3(-0.233058, 1.44528, 0.13617), Vector3(0.190535, 1.4367, 0.13617), Vector3(-0.175913, 1.6849, 0.13617), Vector3(0.164714, 1.68525, 0.13617), Vector3(-0.178675, 1.78174, 0.00346818), Vector3(0.152789, 1.78174, -0.0155848), Vector3(0.18515, 1.59396, -0.102661), Vector3(-0.150176, 1.59733, -0.102661), Vector3(0.222009, 1.155, -0.102661), Vector3(-0.250364, 1.16178, -0.102661), Vector3(0.219527, 0.877163, -0.102661), Vector3(-0.231947, 0.863737, -0.102661), Vector3(0.224623, 0.495978, -0.102661), Vector3(-0.253946, 0.477015, -0.102661), Vector3(0.215271, 0.057127, -0.102661), Vector3(-0.238748, 0.0714645, -0.102661), Vector3(-0.380859, 0.168724, 0.0272134), Vector3(-0.380859, 0.546232, 0.00944178), Vector3(-0.380859, 0.948412, 0.00296411), Vector3(-0.380859, 1.3491, 0.0256061), Vector3(-0.380859, 1.6756, -0.00704176), Vector3(0.351563, 1.62272, -0.00594825), Vector3(0.351562, 1.42963, -0.00600336), Vector3(0.351563, 1.04415, 0.00136959), Vector3(0.351562, 0.696449, 0.0115646), Vector3(0.351563, 0.16657, 0.0119413)]
 collision_shape = SubResource("PackedScene_p1tqe")
 stat = 2.11207
 top = 1.78806

@@ -14,7 +14,7 @@ func _init(_cards: Variant = null, _ExplorerCard: CardGD = null) -> void:
 	ExplorerCard = _ExplorerCard
 	
 func onPreAction() -> void:
-	old_team_vision = Game.get_tree().get_nodes_in_group("LevelsGD")[0].old_player_vision
+	old_team_vision = Game.getLevel().old_player_vision.duplicate()
 	
 	for Card in cards:
 		old_visible_game_objects[Card] = Card.getVisibleGameObjects()
@@ -23,27 +23,29 @@ func onPreAction() -> void:
 	
 func onPostAction() -> void:
 	var actions: Array = []
-	for Card in cards:
-		var old_visible_cards: Array = old_visible_game_objects[Card].filter(func(x: GameObjectGD): return x is CardGD)
-		var new_visible_cards: Array = new_visible_game_objects[Card].filter(func(x: GameObjectGD): return x is CardGD)
-		
-		var not_in_vision: Array = old_visible_cards.filter(func(x: CardGD): return x not in new_visible_cards)
-		var now_in_vision: Array = new_visible_cards.filter(func(x: CardGD): return x not in old_visible_cards)
-		
-		actions += not_in_vision.map(func(x: CardGD): return VisionNewUnitAction.new(Card, x, false))
-		actions += now_in_vision.map(func(x: CardGD): return VisionNewUnitAction.new(Card, x, true))
 	
 	var new_team_vision_dict: Dictionary = Game.getTeamVisionDictionary(0)
 	setRevealedGameObjects(new_team_vision_dict)
 	
 	var new_team_vision: Array = new_team_vision_dict.keys()
-	Game.get_tree().get_nodes_in_group("LevelsGD")[0].old_player_vision = new_team_vision.duplicate()
+	Game.getLevel().old_player_vision = new_team_vision.duplicate()
 	
 	var new_team_vision_diff: Array = new_team_vision.filter(func(x: GameObjectGD): return x not in old_team_vision)
 	var old_team_vision_diff: Array = old_team_vision.filter(func(x: GameObjectGD): return x not in new_team_vision)
 	
-	var new_cards: Array = new_team_vision_diff.filter(func(x: GameObjectGD): return x is CardGD)
-	var old_cards: Array = old_team_vision_diff.filter(func(x: GameObjectGD): return x is CardGD)
+	for Card in cards:
+		var card_visibles: Dictionary = Card.vision_datastore.getCardVisibles()
+		var old_visible_cards: Array = old_visible_game_objects[Card].filter(func(x: GameObjectGD): return x is CardGD)
+		var new_visible_cards: Array = new_visible_game_objects[Card].filter(func(x: GameObjectGD): return x is CardGD)
+		
+		old_visible_cards = old_visible_cards.filter(func(x: CardGD): return x not in new_visible_cards)
+		new_visible_cards = new_visible_cards.filter(func(x: CardGD): return x not in old_visible_cards)
+		
+		var not_in_vision: Array = old_visible_cards.filter(func(x: CardGD): return x not in new_visible_cards)
+		var now_in_vision: Array = new_visible_cards.filter(func(x: CardGD): return x not in old_visible_cards)
+		
+		actions += not_in_vision.map(func(x: CardGD): return VisionNewUnitAction.new(Card, x, false, old_team_vision))
+		actions += now_in_vision.map(func(x: CardGD): return VisionNewUnitAction.new(Card, x, true, old_team_vision))
 	
 	actions.append(LevelVisibleAction.new(false, old_team_vision_diff))
 	actions.append(LevelVisibleAction.new(true, new_team_vision_diff))

@@ -1,12 +1,12 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://glwgv4wfvhor"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_swuye"]
-[ext_resource type="Image" uid="uid://ds2dbnyxdi26c" path="res://assets/sprites/game/cards/art_pop/dumsy_palmsy.png" id="2_2xs40"]
-[ext_resource type="Texture2D" uid="uid://5ffvvs8jmgd7" path="res://assets/sprites/game/cards/art_mini/dumsy_palmsy.png" id="2_k1blu"]
-[ext_resource type="Resource" uid="uid://dk14kkjps176t" path="res://resources/fof/archetypes/warden.tres" id="2_mtiv2"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/dumsy_palmsy.png" id="2_2xs40"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/dumsy_palmsy.png" id="2_k1blu"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/warden.tres" id="2_mtiv2"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_6ae6u"]
 [ext_resource type="Script" path="res://scripts/fof/cards/dumsy_palmsy.gd" id="4_p6qbm"]
-[ext_resource type="PackedScene" uid="uid://cit4w40jw1b6p" path="res://assets/models/fof/cards/dumsy_palmsy.glb" id="5_27uel"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/dumsy_palmsy.glb" id="5_27uel"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_sv20q"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="6_r8l0o"]
 
@@ -42,7 +42,7 @@ art_mini_coordinate = Vector2i(80, 60)
 art_mini = ExtResource("2_k1blu")
 art_pop = ExtResource("2_2xs40")
 model = ExtResource("5_27uel")
-points = []
+points = [Vector3(-0.169512, 1.37585, 0.0172507), Vector3(0.144384, 1.37585, 0.00455088), Vector3(-0.162656, 1.1231, 0.139893), Vector3(0.170862, 1.14475, 0.139893), Vector3(-0.152709, 0.890873, 0.139893), Vector3(0.184353, 0.892481, 0.139893), Vector3(-0.147237, 0.586525, 0.139893), Vector3(0.240281, 0.586822, 0.139893), Vector3(-0.179248, 0.333273, 0.139893), Vector3(0.214955, 0.326129, 0.139893), Vector3(-0.179437, 0.0694971, 0.139893), Vector3(0.217228, 0.0876133, 0.139893), Vector3(-0.177077, 0.000915051, 0.0177712), Vector3(0.201777, 0.000915051, -0.034127), Vector3(0.317871, 0.159966, 0.0166189), Vector3(0.317871, 0.437361, 0.0116312), Vector3(0.317871, 0.740161, 0.0155881), Vector3(0.317871, 0.986766, 0.00495625), Vector3(0.317871, 1.2146, -0.00561333), Vector3(-0.320435, 1.23621, 0.020061), Vector3(-0.320435, 0.952426, 0.0110153), Vector3(-0.320435, 0.643285, 0.00228395), Vector3(-0.320435, 0.385132, 0.00952972), Vector3(-0.320435, 0.116679, 0.0261364), Vector3(0.172276, 0.145672, -0.156738), Vector3(-0.13744, 0.148857, -0.156738), Vector3(0.167739, 0.532523, -0.156738), Vector3(-0.160325, 0.546881, -0.156738), Vector3(0.18144, 0.848533, -0.156738), Vector3(-0.140181, 0.859393, -0.156738), Vector3(0.184541, 1.13746, -0.156738), Vector3(-0.100499, 1.12102, -0.156738)]
 collision_shape = SubResource("PackedScene_v7son")
 stat = 1.54702
 top = 1.36992

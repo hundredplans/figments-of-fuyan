@@ -46,7 +46,7 @@ func onReset() -> void:
 func onCanCall() -> bool:
 	return call_cooldown == 0
 	
-func onAdvanceTurn() -> void:
+func onCardTurnPassed() -> void:
 	if receive_call_cooldown > 0:
 		receive_call_cooldown -= 1
 		

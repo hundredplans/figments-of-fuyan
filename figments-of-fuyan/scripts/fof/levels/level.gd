@@ -14,6 +14,7 @@ var anti_boons: Array
 var save_file: SaveFileGD
 var old_player_vision: Array
 var player_card_last_seen_turn: int # Default -1 which means they were never seen, if this is > 10 or -1 every enemy has the adventurer tag
+var level_area_datastore: LevelAreaDatastore # Specific to each areao
 
 signal set_spectate_card
 signal energy_changed
@@ -52,7 +53,7 @@ func onSave() -> SavedData:
 	var old_player_vision_public_ids: Array = old_player_vision.map(func(x: GameObjectGD): return x.public_id)
 	
 	return SavedDataLevel.new(info.id, false, public_id, data, enemy_spawns, getFieldCards(), phase, level_camera_data, energy, max_energy,\
- 	is_ended, is_elite, rewards, anti_boons, old_player_vision_public_ids, player_card_last_seen_turn)
+ 	is_ended, is_elite, rewards, anti_boons, old_player_vision_public_ids, player_card_last_seen_turn, level_area_datastore)
 
 func onClear() -> void:
 	queue_free()
@@ -80,6 +81,7 @@ func onLoadData(data: SavedData) -> void:
 	is_ended = data.is_ended
 	
 	anti_boons = data.anti_boons
+	level_area_datastore = data.level_area_datastore
 
 	level_camera_data = data.level_camera_data
 	old_player_vision = data.old_player_vision.map(func(x: int): return Game.onFindPublicIDObject(x))
@@ -119,6 +121,7 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 			actions.append(AwakenAction.new(SavedData.onLoadModel(card_data, self), Game.getTile(card_data.coords)))
 		
 		actions += get_tree().get_nodes_in_group("BoonsGD").map(func(x: BoonGD): return AddBoonAction.new(x.info.id, x.ascended, true))
+		level_area_datastore = onCreateLevelAreaDatastore()
 		onPushAction(actions)
 		return
 
@@ -129,8 +132,7 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 		draw_card.emit(Card)
 		
 	onChangePhase(data.phase, true)
-	get_tree().call_group("FieldCardsGD", "onUpdateVision")
-	
+	#onPushAction(VisionAction.new(get_tree().get_nodes_in_group("FieldCardsGD")))
 	if is_ended:
 		onGameEnded()
 
@@ -238,6 +240,9 @@ func onProcessAction(action: Action) -> void:
 				
 				if action.Discoverer.isAlly(1) and action.Discovered.isAlly(0):
 					onPlayerCardSpottedByAI()
+					
+				if phase == Game.Phases.PLAYER and action.Discoverer.isAlly(0) and action.Discovered.isEnemy(0) and action.Discovered not in action.old_player_vision:
+					onRemoveMoveAndAttackActions(action.Discoverer)
 				
 		elif action is DeathAction:
 			onRecalculateAITurn(action.Defender, true, true, true, true)
@@ -380,12 +385,11 @@ func onRecalculateAITurnOccupy(action: OccupyAction, Card: CardGD, Tile: TileGD)
 	if finish_action.Card != Card: return
 	
 	if Card.ai_datastore.onCheckDoubleAdjacentAndReceiving(Card)\
-		or (action.owner != null and action.owner is not MoveToTileAction):
+		or (action.owner != null and action.owner is not MoveToTileAction)\
+		or Card.onAICheckActiveEffectsOnlyDFL(Card.ai_datastore.DFL, finish_action):
 			
 		onRemoveMoveAndAttackActions(Card)
 		finish_action.setRetryAiTurn(true)
-	elif Card.onAICheckActiveEffectsOnlyDFl(Card.ai_datastore.DFL, finish_action):
-		onRemoveMoveAndAttackActions(Card)
 #endregion
 
 #region Player Card Last Seen Turn
@@ -398,4 +402,10 @@ func onAdvanceTurn(team: int) -> void:
 		
 func onPlayerCardSpottedByAI() -> void:
 	player_card_last_seen_turn = 0
+#endregion
+
+#region Level Area Datastore
+func onCreateLevelAreaDatastore() -> LevelAreaDatastore:
+	assert(false)
+	return null
 #endregion

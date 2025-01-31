@@ -1,14 +1,14 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://pohoeer17cu2"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_u23tf"]
-[ext_resource type="Texture2D" uid="uid://tj55flr5jslh" path="res://assets/sprites/game/cards/art_mini/neckus_palmus.png" id="2_8b6eu"]
-[ext_resource type="Image" uid="uid://b05u7eu8caa8i" path="res://assets/sprites/game/cards/art_pop/neckus_palmus.png" id="2_8i4fr"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/neckus_palmus.png" id="2_8b6eu"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/neckus_palmus.png" id="2_8i4fr"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_jja8n"]
-[ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_yjov8"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/brute.tres" id="2_yjov8"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_d4ttk"]
 [ext_resource type="Script" path="res://scripts/fof/cards/neckus_palmus.gd" id="4_sqndq"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_gi8hp"]
-[ext_resource type="PackedScene" uid="uid://cn6kges8llma0" path="res://assets/models/fof/cards/neckus_palmus.glb" id="5_y482v"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/neckus_palmus.glb" id="5_y482v"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rpmhn"]
 size = Vector3(0.810059, 2.711, 0.424866)
@@ -42,7 +42,7 @@ art_mini_coordinate = Vector2i(80, 20)
 art_mini = ExtResource("2_8b6eu")
 art_pop = ExtResource("2_8i4fr")
 model = ExtResource("5_y482v")
-points = []
+points = [Vector3(-0.0032196, 2.60397, 0.20813), Vector3(-0.00649036, 2.3756, 0.20813), Vector3(-0.0222063, 2.12659, 0.20813), Vector3(-0.00692633, 1.87453, 0.20813), Vector3(-0.000869206, 1.63596, 0.20813), Vector3(-0.00113555, 1.27892, 0.20813), Vector3(-0.401367, 1.40997, -0.0415559), Vector3(-0.401367, 1.77829, -0.039068), Vector3(-0.401367, 2.03443, -0.0605737), Vector3(-0.401367, 2.22004, -0.0574094), Vector3(-0.401367, 2.52433, -0.0692342), Vector3(-0.0736485, 2.55046, -0.216736), Vector3(-0.0243696, 2.13846, -0.216736), Vector3(-0.0331217, 1.8332, -0.216736), Vector3(-0.00376147, 1.49284, -0.216736), Vector3(-0.00712597, 1.14978, -0.216736), Vector3(0.408692, 1.37167, -0.00681359), Vector3(0.408692, 1.88035, -0.0459552), Vector3(0.408692, 2.24159, -0.0650297), Vector3(0.408692, 2.5319, -0.063629), Vector3(0.408692, 1.64052, -0.0331972), Vector3(-0.265098, 2.71204, -0.0271792), Vector3(0.0404797, 2.71204, -0.0393578), Vector3(0.332209, 2.71204, -0.0594873), Vector3(0.280171, 0.836166, -0.216736), Vector3(-0.204674, 0.841863, -0.216736), Vector3(0.284512, 0.544031, -0.216736), Vector3(-0.29161, 0.536605, -0.216736), Vector3(0.226411, 0.177728, -0.216736), Vector3(-0.273162, 0.149646, -0.216736), Vector3(0.00746924, 0.556626, -0.216736), Vector3(-0.228651, 0.766222, 0.20813), Vector3(0.0395409, 0.791948, 0.20813), Vector3(0.274237, 0.781025, 0.20813), Vector3(-0.210638, 0.445618, 0.20813), Vector3(0.0351695, 0.469768, 0.20813), Vector3(0.319783, 0.393616, 0.20813), Vector3(-0.248042, 0.147232, 0.20813), Vector3(0.218409, 0.119249, 0.20813), Vector3(-0.401367, 0.157664, -0.012648), Vector3(-0.401367, 0.480915, -0.0126742), Vector3(-0.401367, 0.75402, 0.00115279), Vector3(0.408692, 0.11295, -0.0155727), Vector3(0.408692, 0.489235, -0.0087362), Vector3(0.408692, 0.76765, 0.0116545), Vector3(0.231134, 0.00103998, -0.0242469), Vector3(-0.255735, 0.00103998, 0.0230299), Vector3(-0.401367, 0.940904, -0.036034), Vector3(0.408692, 0.911391, -0.00460899)]
 collision_shape = SubResource("PackedScene_4mavm")
 stat = 3.16578
 top = 2.69645

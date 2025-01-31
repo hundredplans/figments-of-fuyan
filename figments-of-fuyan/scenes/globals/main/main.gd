@@ -18,7 +18,7 @@ extends Node
 
 #region Base Functions
 func _ready():
-	if !Helper.getAdmin():
+	if !Helper.admin_datastore.skip_main_menu:
 		var scenes: Dictionary = onLoadScreenWorld(main_menu_ui, main_menu_world)
 		scenes.world.onFirstLoad()
 	else:

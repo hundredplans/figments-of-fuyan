@@ -12,10 +12,10 @@ func onProcessAction(action: Action) -> void:
 	super(action)
 	if action.post:
 		if action is OccupyAction and action.Tile in occupied_tiles and stepped_on_card_public_id == 0:
-			if !action.Card.isAlly(2): # Coco crab can't step on em
-				onSteppedOn(action)
+			if action.Card.info.id != 27: # Coco crab can't step on em
+				onPushAction(IObjectActivatedAction.new(self, action))
 			
-func onSteppedOn(action: OccupyAction) -> void:
+func onIObject(action: Action) -> void:
 	stepped_on_card_public_id = -1
 	var actions: Array = [ClearTileObjectAction.new(self)]
 	match stepped_on_choice:

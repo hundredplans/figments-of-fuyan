@@ -1,14 +1,14 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://bn1tfwf2cerep"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_s8aeo"]
-[ext_resource type="Resource" uid="uid://dk14kkjps176t" path="res://resources/fof/archetypes/warden.tres" id="2_5mj67"]
-[ext_resource type="Texture2D" uid="uid://l4icfnbmuyhr" path="res://assets/sprites/game/cards/art_mini/crumsy_palmsy.png" id="2_5x7tp"]
-[ext_resource type="Image" uid="uid://bn224n4krctqt" path="res://assets/sprites/game/cards/art_pop/crumsy_palmsy.png" id="2_7nmyg"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/warden.tres" id="2_5mj67"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/crumsy_palmsy.png" id="2_5x7tp"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/crumsy_palmsy.png" id="2_7nmyg"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_36a3e"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_ojak4"]
 [ext_resource type="Script" path="res://scripts/fof/cards/crumsy_palmsy.gd" id="4_4bwob"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="4_pxnpv"]
-[ext_resource type="PackedScene" uid="uid://b3qabjeuvy710" path="res://assets/models/fof/cards/crumsy_palmsy.glb" id="5_5x846"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/crumsy_palmsy.glb" id="5_5x846"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_qs6hw"]
 size = Vector3(0.692139, 1.60736, 0.340332)
@@ -48,7 +48,7 @@ art_mini_coordinate = Vector2i(80, 60)
 art_mini = ExtResource("2_5x7tp")
 art_pop = ExtResource("2_7nmyg")
 model = ExtResource("5_5x846")
-points = []
+points = [Vector3(-0.20755, 1.46189, 0.174805), Vector3(0.00468782, 1.47961, 0.174805), Vector3(0.184763, 1.47465, 0.174805), Vector3(-0.241372, 1.14859, 0.174805), Vector3(0.0240118, 1.16616, 0.174805), Vector3(0.2689, 1.16081, 0.174805), Vector3(-0.256068, 0.855758, 0.174805), Vector3(0.0155665, 0.845761, 0.174805), Vector3(0.306278, 0.850701, 0.174805), Vector3(-0.216536, 0.557759, 0.174805), Vector3(0.0209627, 0.54379, 0.174805), Vector3(0.341573, 0.556939, 0.174805), Vector3(-0.203367, 0.237091, 0.174805), Vector3(0.219271, 0.246142, 0.174805), Vector3(0.20231, 1.47873, -0.165527), Vector3(-0.118457, 1.49859, -0.165527), Vector3(0.227557, 1.28107, -0.165527), Vector3(0.00457265, 1.28053, -0.165527), Vector3(-0.228779, 1.28824, -0.165527), Vector3(0.232402, 0.990009, -0.165527), Vector3(-0.0356712, 0.990072, -0.165527), Vector3(-0.263583, 0.989666, -0.165527), Vector3(0.212224, 0.683709, -0.165527), Vector3(0.00282569, 0.661548, -0.165527), Vector3(-0.261132, 0.655391, -0.165527), Vector3(0.195469, 0.359718, -0.165527), Vector3(-0.288258, 0.322352, -0.165527), Vector3(0.195128, 0.0846743, -0.165527), Vector3(-0.202686, 0.0652111, -0.165527), Vector3(-0.195959, 0.00286901, 0.00799513), Vector3(0.15486, 0.00286901, 0.00574839), Vector3(-0.345215, 0.228997, 0.0145939), Vector3(-0.345215, 0.540759, -0.0326878), Vector3(-0.345215, 0.85878, -0.0207335), Vector3(-0.345215, 1.14806, -0.0285823), Vector3(-0.345215, 1.40235, -0.0174756), Vector3(0.346924, 0.258771, -0.0519813), Vector3(0.346924, 0.569525, -0.0600677), Vector3(0.346924, 0.86763, -0.0292003), Vector3(0.346924, 1.16498, -0.0170388), Vector3(0.346924, 1.46228, 0.0103365), Vector3(0.077528, 1.61023, -0.047949), Vector3(-0.0945908, 1.61023, -0.0552144)]
 collision_shape = SubResource("PackedScene_vwj00")
 stat = 1.98657
 top = 1.61827

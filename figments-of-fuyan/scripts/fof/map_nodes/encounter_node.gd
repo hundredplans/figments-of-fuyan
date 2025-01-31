@@ -3,7 +3,6 @@ extends MapNodeGD
 var encounter: EncounterGD
 var encounter_data: SavedDataEncounter
 
-const FORCE_NODE_ID: int = 0
 
 #region Load / Save
 func onLoadData(data: SavedData) -> void:
@@ -25,9 +24,9 @@ func onEntered() -> void:
 	screen.finished.connect(onFinished)
 	
 	if encounter_data == null: # If first time entering
-		if FORCE_NODE_ID == 0: encounter = onGenerateEncounter()
+		if Helper.admin_datastore.force_encounter_id == 0: encounter = onGenerateEncounter()
 		else: # Admin command to change encounter to specific id for testing
-			encounter = SavedData.onLoadModel(SavedDataEncounter.new(FORCE_NODE_ID, true), self)
+			encounter = SavedData.onLoadModel(SavedDataEncounter.new(Helper.admin_datastore.force_encounter_id, true), self)
 		encounter.onFirstEntered(screen)
 	else: encounter = SavedData.onLoadModel(encounter_data, self)
 	

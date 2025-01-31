@@ -49,6 +49,7 @@ func onLoadData(data: SavedData) -> void:
 	
 func onLoadDataLevel() -> void:
 	super()
+	onCreateAdjustedPoints()
 	onApplyGreyscaleMaterial()
 	
 func onLoadModel() -> void:
@@ -87,3 +88,14 @@ func onApplyGreyscaleMaterial() -> void:
 
 func onLoadDataLevelFofInit() -> void:
 	super()
+
+func onCreateAdjustedPoints() -> void:
+	var theta: float = rotation.y
+	adjusted_points = getLevelPoints().map(func(x: Vector3): return (Game.onRotatePosition(x, theta)) + position)
+	if self is TileGD: adjusted_points += call("getTileFillPoints").map(func(x: Vector3): return x + position)
+	
+	#for point in adjusted_points:
+		#var Point: MeshInstance3D = load(info.POINT_PATH).instantiate()
+		#Point.setInfo(self)
+		#add_child(Point)
+		#Point.global_position = point
