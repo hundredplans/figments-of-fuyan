@@ -332,10 +332,6 @@ var deletion_elevation: int = -1
 func onDeleteTileObject(TileObject: TileObjectGD) -> void:
 	if TileObject != null:
 		TileObject.queue_free()
-		if TileObject is TileGD and TileObject.tile_fill:
-			var coords: Vector4i = TileObject.getCoords()
-			coords.w = 0
-			onPlaceBaseTile(coords)
 	
 func onInputDeleteMouseTileObject() -> void:
 	var TileObject: TileObjectGD = onFindMouseTileObject()
@@ -365,14 +361,9 @@ var tile_fill_enabled: bool = true
 
 func onTileFill(Tile: TileGD, state: bool = !Tile.tile_fill) -> void:
 	var action: String = Tile.onCreateTileFill(state)
-	match action:
-		"CREATE":
-			var coords: Vector4i = Tile.getCoords()
-			coords.w = 0
-			onPlaceBaseTile(coords)
-		"DESTROY":
-			var tiles_below: Array = getTilesBelow(Tile)
-			for _Tile in tiles_below: onDeleteTileObject(_Tile)
+	
+	var tiles_below: Array = getTilesBelow(Tile)
+	for _Tile in tiles_below: onDeleteTileObject(_Tile)
 			
 func onTileFillButtonPressed():
 	tile_fill_enabled = !tile_fill_enabled
