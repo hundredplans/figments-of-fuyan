@@ -1,12 +1,12 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://cn54ccgbwu01q"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="1_5wykw"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_iocfo"]
-[ext_resource type="Texture2D" uid="uid://qe6xg7rfo7n3" path="res://assets/sprites/game/cards/art_mini/mr_mildflower.png" id="1_lijaw"]
-[ext_resource type="Image" uid="uid://b32fyhkkap3o7" path="res://assets/sprites/game/cards/art_pop/mr_mildflower.png" id="1_pxu7r"]
-[ext_resource type="Resource" uid="uid://ck2eowtrmk57m" path="res://resources/fof/archetypes/docile.tres" id="2_kurxu"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/mr_mildflower.png" id="1_lijaw"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/mr_mildflower.png" id="1_pxu7r"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/docile.tres" id="2_kurxu"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="2_qt6uf"]
-[ext_resource type="PackedScene" uid="uid://mv1l5oygneow" path="res://assets/models/fof/cards/mr_mildflower.glb" id="3_qkak3"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/mr_mildflower.glb" id="3_qkak3"]
 [ext_resource type="Script" path="res://scripts/fof/cards/mr_mildflower.gd" id="4_8tp78"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_0qfbd"]
 
@@ -38,7 +38,7 @@ active_abilities = Array[ExtResource("1_iocfo")]([])
 flavor_text = ""
 description = "DOCILE; LAST WILL: Debuff units in vision -1 ATT for [2] Turn"
 ascended_description = "DOCILE; LAST WILL: Debuff units in vision -2 ATT for [2] Turn"
-art_mini_coordinate = Vector2i(80, 30)
+art_mini_coordinate = Vector2i(89, 113)
 art_mini = ExtResource("1_lijaw")
 art_pop = ExtResource("1_pxu7r")
 model = ExtResource("3_qkak3")

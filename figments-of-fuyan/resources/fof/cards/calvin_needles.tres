@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=10 format=3 uid="uid://gdr4a3fi2quo"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_84wr7"]
-[ext_resource type="Image" uid="uid://c07ile511wuh1" path="res://assets/sprites/game/cards/art_pop/calvin_needles.png" id="2_xpkab"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/calvin_needles.png" id="2_poxy3"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/calvin_needles.png" id="2_xpkab"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_caxfw"]
 [ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_wq171"]
-[ext_resource type="PackedScene" uid="uid://bxdixxrf3f7aa" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_coyl7"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_coyl7"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_oicxi"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="7_fuvbv"]
 
@@ -36,7 +37,8 @@ active_abilities = Array[ExtResource("1_84wr7")]([])
 flavor_text = ""
 description = "RANGED [1-2]; ABILITY: Instead of attacking deal [1] DMG to enemies in vision and STAGGER next turn"
 ascended_description = ""
-art_mini_coordinate = Vector2i(0, 0)
+art_mini_coordinate = Vector2i(65, 3)
+art_mini = ExtResource("2_poxy3")
 art_pop = ExtResource("2_xpkab")
 model = ExtResource("5_coyl7")
 points = [Vector3(-0.1809, 0.992897, 0.114898), Vector3(0.168124, 0.99905, 0.114898), Vector3(-0.14811, 1.3093, 0.114898), Vector3(0.195476, 1.31675, 0.114898), Vector3(0.0178196, 1.53801, 0.114898), Vector3(-0.00111114, 1.82532, 0.114898), Vector3(-0.174048, 0.6379, 0.114898), Vector3(0.215151, 0.605359, 0.114898), Vector3(-0.2351, 0.352159, 0.114898), Vector3(0.2025, 0.339379, 0.114898), Vector3(-0.186763, 0.0278029, 0.114898), Vector3(0.212882, 0.0438803, 0.114898), Vector3(0.228725, 0.147837, -0.127044), Vector3(-0.226926, 0.18563, -0.127044), Vector3(-0.203473, 0.613974, -0.127044), Vector3(0.199353, 0.67229, -0.127044), Vector3(0.123007, 0.904933, -0.127044), Vector3(-0.125983, 0.916082, -0.127044), Vector3(0.144845, 1.16976, -0.127044), Vector3(-0.0941492, 1.2066, -0.127044), Vector3(0.199255, 1.38336, -0.127044), Vector3(-0.152057, 1.36613, -0.127044), Vector3(0.00239274, 1.54682, -0.127044), Vector3(-0.00490278, 1.78592, -0.127044), Vector3(0.307861, 0.375614, 0.0182745), Vector3(0.307861, 0.862576, 0.000756719), Vector3(0.307861, 1.25218, 0.00725218), Vector3(0.307861, 1.64758, -0.00811803), Vector3(-0.303223, 0.220603, 0.00765105), Vector3(-0.303223, 0.780136, 0.0145246), Vector3(-0.303223, 1.20626, -0.0164034), Vector3(-0.303223, 1.54691, 0.0288335)]

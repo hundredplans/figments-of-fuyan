@@ -4,7 +4,6 @@ const START_X: int = -12
 const OFFSET: int = 3
 const CARD_UI_OFFSET := Vector2(-120, -400)
 
-@onready var CardUIHolder: Control = %CardUIHolder
 @onready var CardGrid: GridContainer = %CardGrid
 @onready var SearchAreaCard: LineEdit = %SearchAreaCard
 @onready var CardParent: Node3D = %CardParent
@@ -26,23 +25,8 @@ func onAnimationNameButtonPressed(ani_name: String) -> void:
 func onCreateDeckCardUI(Card: CardGD) -> void:
 	var CardUI: Control = Card.onCreateCardUI(CardGrid, true, true)
 	CardUI.pressed.connect(onCardUIPressed)
-	Card.mouse_entered.connect(onCreateCardUI)
-	Card.mouse_exited.connect(onRemoveCardUI)
-
-var HoverCardUI: Control
-func onCreateCardUI(Card: CardGD) -> void:
-	HoverCardUI = Card.onCreateCardUI(CardUIHolder)
-	setCardUIPosition()
-	
-func onRemoveCardUI(_Card: CardGD) -> void:
-	if HoverCardUI != null: HoverCardUI.queue_free()
-	
-func setCardUIPosition() -> void:
-	HoverCardUI.position = get_viewport().get_mouse_position() + CARD_UI_OFFSET
 	
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion and HoverCardUI != null:
-		setCardUIPosition()
 	if Input.is_action_just_pressed("FocusControl"):
 		if SearchAreaCard.has_focus():
 			SearchAreaCard.release_focus()
@@ -73,7 +57,5 @@ func onCardUIPressed(CardUI: Control) -> void:
 	var Card: CardGD = CardUI.Card
 	CardSpotCard = Card.onCreateCardUI(CardSpot)
 	CardSpotCard.scale = Vector2(2, 2)
+	CardSpotCard.position = CardSpot.size / 4
 #endregion
-
-func _on_movement_camera_camera_panning(_state: bool) -> void:
-	if HoverCardUI != null: HoverCardUI.queue_free()

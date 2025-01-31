@@ -1,14 +1,14 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://bmq5a853mecy0"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_rlf34"]
-[ext_resource type="Resource" uid="uid://6j57uasj8x66" path="res://resources/fof/archetypes/reinforcer.tres" id="2_kr22h"]
-[ext_resource type="Image" uid="uid://cepsbqhr1w002" path="res://assets/sprites/game/cards/art_pop/palmysitter.png" id="2_lt3xo"]
-[ext_resource type="Texture2D" uid="uid://bp62vg527y17o" path="res://assets/sprites/game/cards/art_mini/palmysitter.png" id="2_pk6lp"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/reinforcer.tres" id="2_kr22h"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/palmysitter.png" id="2_lt3xo"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/palmysitter.png" id="2_pk6lp"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_w3gab"]
 [ext_resource type="Script" path="res://scripts/fof/cards/palmysitter.gd" id="3_j5563"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_y72ej"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="4_i2u37"]
-[ext_resource type="PackedScene" uid="uid://btx7hrh5b8hey" path="res://assets/models/fof/cards/palmysitter.glb" id="5_sahhw"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/palmysitter.glb" id="5_sahhw"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_j0mjl"]
 size = Vector3(0.700928, 1.44427, 0.268982)
@@ -38,7 +38,7 @@ active_abilities = Array[ExtResource("1_rlf34")]([])
 flavor_text = ""
 description = "LAST WILL: AWAKEN a [card=4]"
 ascended_description = "LAST WILL: AWAKEN a [acard=4]"
-art_mini_coordinate = Vector2i(80, 40)
+art_mini_coordinate = Vector2i(92, 89)
 art_mini = ExtResource("2_pk6lp")
 art_pop = ExtResource("2_lt3xo")
 model = ExtResource("5_sahhw")
