@@ -43,6 +43,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level.game_started.connect(onGameStarted)
 	level.camera_change_pre.connect(onCameraChangePre)
 	level.spectate_group.connect(CameraManager.onSpectateGroup)
+	level.set_last_ally_spectate_object.connect(setLastAllySpectateObjectForLevel)
 	
 	CameraManager.camera_position_updated.connect(onCameraPositionUpdated)
 	CameraManager.create_camera_action.connect(onCreateCameraChangeAction)
@@ -144,7 +145,10 @@ func onPhaseChanged(phase: Game.Phases, previous_phase: Game.Phases, _instant: b
 			onSpawnFX(true)
 		Game.Phases.PLAYER:
 			onSpawnFX(false)
+			if Game.ActionManagerReference.onFindFirstAction(CameraChangeAction) != null: return
 			CameraManager.onSpectateAllies()
+			
+	print(phase)
 #endregion
 	
 #region SpawnFX
@@ -162,7 +166,6 @@ func onSpawnFX(state: bool) -> void:
 func onCardAwakened(Card: CardGD) -> void:
 	if Card.isEnemy(0): return
 	onSpawnFX(true)
-	onCreateCameraChangeAction(Card)
 #endregion
 
 #region Tile Pressing
@@ -191,6 +194,12 @@ func onTileInspected() -> void:
 #endregion
 
 #region Camera
+func getLastAllySpectateObject() -> CardGD:
+	return CameraManager.getLastAllySpectateObject()
+	
+func setLastAllySpectateObjectForLevel() -> void:
+	level.LastAllySpectateObject = getLastAllySpectateObject()
+
 func onCameraPositionUpdated(pos: Vector3) -> void:
 	get_tree().call_group("FieldCardsGD", "onCameraPositionUpdated", pos)
 	

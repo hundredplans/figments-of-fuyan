@@ -41,6 +41,10 @@ func _ready() -> void:
 			MinimapNode.position.y += (SPACING.y / 2.0) * even_lane_offset
 			MinimapNode.setInfo(onFindIconById(map_node_data.id), map_loc, map_node_data.links, map_node_data.is_entered)
 			
+			if map_node_data.id in [3, 4, 7, 8]: # Fight, Elite, Mini, Boss
+				MinimapNode.onIsFightNode(map_node_data)
+				MinimapNode.parent_hover_ui.connect(add_child)
+			
 	for MinimapNode in NodeParent.get_children():
 		for map_link in MinimapNode.links:
 			var MinimapLink: Sprite2D = MinimapLinkPacked.instantiate()

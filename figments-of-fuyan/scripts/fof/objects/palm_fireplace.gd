@@ -19,8 +19,8 @@ func onLoadDataLevel() -> void:
 	super()
 
 func getValidActiveEffects(Card: CardGD) -> Array:
-	var arr: Array = active_effects if isAdjacent(Card.getCoords()) else [] # For debugging
-	return arr
+	if Card.getTile().getHeight() != getTile().getHeight(): return []
+	return active_effects if isAdjacent(Card.getCoords()) else []
 
 func getActiveEffectTiles(_active_effect: ActiveEffectDatastore, Card: CardGD) -> ActiveEffectTiles:
 	return ActiveEffectTiles.new([Card.Tile], [Card.Tile])

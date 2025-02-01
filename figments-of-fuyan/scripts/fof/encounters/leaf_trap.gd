@@ -1,6 +1,6 @@
 extends EncounterGD
 
-const PAY_OPTION_SHILLINGS: int = 25
+const PAY_OPTION_SHILLINGS: int = 12
 func canShowUp() -> bool:
 	return anyRequirementMet()
 	

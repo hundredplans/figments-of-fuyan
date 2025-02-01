@@ -9,14 +9,16 @@ const CHIEF_UI_BOX_SEPERATION: int = 30
 func _process(_delta: float) -> void:
 	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED: queue_free()
 
-func setInfo(map_node: MapNodeGD, area: AreaGD) -> void:
-	var level_info: LevelInfo = Helper.getFofInfoID(LevelInfo, map_node.level_info.id)
-	LevelLabel.text = str(area.getWorldDifficulty()) + "-" + str(map_node.map_location.progress) + ": " + str(level_info.name)
+func setInfo(map_node_data: SavedDataFight) -> void:
+	var area: AreaGD = Game.getArea()
+	var level_info: LevelInfo = Helper.getFofInfoID(LevelInfo, map_node_data.level_info.id)
 	
-	var valid_spawns: Array = map_node.enemy_spawns.duplicate()
+	LevelLabel.text = str(area.getWorldDifficulty()) + "-" + str(map_node_data.map_location.progress) + ": " + str(level_info.name)
+	
+	var valid_spawns: Array = map_node_data.enemy_spawns.duplicate()
 	
 	var chief_data: SavedDataCard
-	if map_node is EliteFightNodeGD:
+	if map_node_data is SavedDataEliteFight:
 		chief_data = valid_spawns.pop_back()
 		
 	var reward_amount: int = Game.CARD_REWARD_DEFAULT_AMOUNT
@@ -41,10 +43,12 @@ func setInfo(map_node: MapNodeGD, area: AreaGD) -> void:
 		UIBoxParent.move_child(filler, 0)
 		UIBoxParent.move_child(UIBox, 0)
 			
-	match map_node.get_script():
-		BossFightNodeGD: theme_type_variation = "RedPanelContainer"
-		MinibossFightNodeGD: theme_type_variation = "PurplePanelContainer"
-		EliteFightNodeGD: theme_type_variation = "DarkBrownPanelContainer"
+	match map_node_data.get_script():
+		SavedDataBossFight: theme_type_variation = "RedPanelContainer"
+		SavedDataMiniBossFight: theme_type_variation = "PurplePanelContainer"
+		SavedDataEliteFight: theme_type_variation = "DarkBrownPanelContainer"
+		
+	setMouseCenter(get_viewport().get_mouse_position())
 	
 func onAddUIBox(card_data: SavedDataCard) -> Control:
 	var UIBox: Control = UIBoxPacked.instantiate()
@@ -56,4 +60,10 @@ func onAddUIBox(card_data: SavedDataCard) -> Control:
 	return UIBox
 	
 func setMouseCenter(mouse_position: Vector2) -> void:
-	position = mouse_position - (size / 2) - Vector2(0, 100)
+	global_position = mouse_position - (size / 2) - Vector2(0, 100)
+	global_position.x = clamp(global_position.x, 0, get_viewport().size.x - size.x - 10)
+	global_position.y = clamp(global_position.y, 0, get_viewport().size.y - size.y - 10)
+	
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion:
+		setMouseCenter(get_viewport().get_mouse_position())

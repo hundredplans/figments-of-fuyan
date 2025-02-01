@@ -2,6 +2,8 @@ class_name LevelGD extends FofGD
 
 const START_HAND_SIZE: int = 4
 const AI_TURNS_UNTIL_ADVENTURER: int = 10
+const CARD_PLACED_SPECTATE_DELAY: float = 1.5
+
 var energy: int
 var max_energy: int
 var level_camera_data: LevelCameraData
@@ -34,6 +36,7 @@ signal boon_ascended
 signal tile_occupied
 signal set_rewards # Signal for area to interpret
 signal game_started
+signal game_started_post
 signal game_ended
 signal tool_picked_up
 signal cards_picked_up
@@ -43,6 +46,7 @@ signal tool_removed
 signal update_active_effects
 signal camera_change_pre
 signal spectate_group
+signal set_last_ally_spectate_object
 
 #region Load / Save
 func onSave() -> SavedData:
@@ -191,9 +195,9 @@ func onProcessAction(action: Action) -> void:
 		if action is ChangePhaseAction: onChangePhase(action.phase)
 		elif action is DrawAction: draw_card.emit(action.Card)
 		elif action is AwakenAction:
-			awakened.emit(action.Card)
-			if phase == Game.Phases.START and action.Card.isAlly(0):
-				onAppendAction(ChangePhaseAction.new(Game.Phases.HAND))
+			onCardAwakened(action)
+		elif action is FinishAwakenAction:
+			onCardFinishedAwakening(action)
 		elif action is RemoveCardAction:
 			remove_card.emit(action.Card)
 			onCheckSkipHandPhase()
@@ -255,6 +259,9 @@ func onProcessAction(action: Action) -> void:
 		elif action is RevealAction:
 			if action.Revealed is CardGD and action.Revealed != null and action.Revealed.isAlly(0):
 				onPlayerCardSpottedByAI()
+		elif action is StartGameAction:
+			if action.getDelay() == 0: return
+			game_started_post.emit()
 	else:
 		if action is ChangePhaseAction:
 			if action.phase == phase: action.onFailAction()
@@ -409,3 +416,31 @@ func onCreateLevelAreaDatastore() -> LevelAreaDatastore:
 	assert(false)
 	return null
 #endregion
+
+#region Awakened
+func onCardAwakened(action: AwakenAction) -> void:
+	awakened.emit(action.Card)
+	if phase == Game.Phases.START and action.Card.isAlly(0):
+		onAppendAction(ChangePhaseAction.new(Game.Phases.HAND))
+		
+	
+func onCardFinishedAwakening(action: FinishAwakenAction) -> void:
+	if !action.Card.isLevelVisible() or phase == Game.Phases.START: return
+	
+	var spectate_awakened_card_temporarily := CameraChangeAction.new(action.Card)
+	spectate_awakened_card_temporarily.setActionDelay(CARD_PLACED_SPECTATE_DELAY)
+	var actions: Array = [spectate_awakened_card_temporarily]
+	
+	if phase == Game.Phases.HAND:
+		var finish_action: ChangePhaseAction = Game.ActionManagerReference.onFindFirstAction(ChangePhaseAction)
+		if finish_action == null: return
+		setLastAllySpectateObject()
+		actions.append(CameraChangeAction.new(LastAllySpectateObject))
+		onPushAfterAction(actions, finish_action)
+	else:
+		actions.append(CameraChangeAction.new(getSpectateObject()))
+		onPushAction(actions)
+	
+var LastAllySpectateObject: CardGD
+func setLastAllySpectateObject() -> void:
+	set_last_ally_spectate_object.emit()

@@ -3,9 +3,9 @@ class_name DamageAction extends Action
 var Damager: GameObjectGD
 var Defenders: Array
 var damage: int
-var is_fall_damage: bool = false
+var damage_type: Game.DamageTypes
 
-func _init(_Damager: GameObjectGD = null, _Defenders: Variant = null, _damage: int = 0, _is_fall_damage: bool = false) -> void:
+func _init(_Damager: GameObjectGD = null, _Defenders: Variant = null, _damage: int = 0, _damage_type := Game.DamageTypes.ATTACK) -> void:
 	super()
 	Damager = _Damager
 	
@@ -13,7 +13,7 @@ func _init(_Damager: GameObjectGD = null, _Defenders: Variant = null, _damage: i
 	elif _Defenders is GameObjectGD: Defenders = [_Defenders]
 	
 	damage = _damage
-	is_fall_damage = _is_fall_damage
+	damage_type = _damage_type
 
 func onPostAction() -> void:
 	var stat_infos: Array = Defenders\
@@ -21,7 +21,7 @@ func onPostAction() -> void:
 		.map(func(x: GameObjectGD): return StatInfo.new(x, Game.Stats.HEALTH, -damage))
 	
 	var stat_action := StatAction.new(stat_infos)
-	stat_action.setActionDelayWithOverride(stat_action.getDelay(), override_set_action_delay)
+	stat_action.setLockActionDelay(lock_action_delay)
 	onPushAction(stat_action)
 	
 func getLogInfo() -> Array:

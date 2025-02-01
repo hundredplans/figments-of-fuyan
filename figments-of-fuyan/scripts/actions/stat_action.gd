@@ -53,7 +53,7 @@ func onPostAction() -> void:
 					
 				Game.Stats.HEALTH:
 					if (!absolute and value < 0) and !max_health_not_damage:
-						difference = Card.onTakeDamage(owner.Damager, -value, override_set_action_delay) * -1
+						difference = Card.onTakeDamage(owner.Damager, -value, lock_action_delay) * -1
 					else:
 						var old_health: int = Card.health
 						Card.health = clamp(Card.health + value, 0, Card.max_health)

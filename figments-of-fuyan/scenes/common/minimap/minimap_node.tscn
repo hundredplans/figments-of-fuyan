@@ -1,16 +1,17 @@
-[gd_scene load_steps=3 format=3 uid="uid://cuniyltbdi5lu"]
+[gd_scene load_steps=4 format=3 uid="uid://cuniyltbdi5lu"]
 
 [ext_resource type="Script" path="res://scenes/common/minimap/minimap_node.gd" id="1_4py8m"]
 [ext_resource type="Material" uid="uid://bf4cb8c3t7igf" path="res://resources/materials/ui/white_outline_canvas_thin.tres" id="2_ajskr"]
+[ext_resource type="PackedScene" uid="uid://8k6ibmwcfnyu" path="res://scenes/game/map_nodes/extra/fight_node_hover_ui.tscn" id="3_uil63"]
 
 [node name="MinimapNode" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 25.0
 offset_bottom = 25.0
-mouse_filter = 2
 script = ExtResource("1_4py8m")
 WHITE_OUTLINE = ExtResource("2_ajskr")
+FightNodeHoverUIPacked = ExtResource("3_uil63")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 unique_name_in_owner = true
@@ -21,3 +22,4 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2

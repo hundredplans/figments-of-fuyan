@@ -88,6 +88,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level.boon_ascended.connect(onBoonAscended)
 	level.tile_occupied.connect(onTileOccupied)
 	level.game_started.connect(onGameStarted)
+	level.game_started_post.connect(onGameStartedPost)
 	level.game_ended.connect(onGameEnded)
 	level.tool_removed.connect(onToolRemoved)
 	
@@ -323,7 +324,7 @@ func onActiveEffectActivated(_active_effect: ActiveEffectDatastore) -> void:
 func onUpdateActiveEffects(SpectateObject: GameObjectGD = level.getSpectateObject()) -> void:
 	var active_effects: Array = []
 	var CardSpectate: CardGD = null if SpectateObject is not CardGD else SpectateObject
-	if CardSpectate != null:
+	if CardSpectate != null and CardSpectate.isAlive():
 		active_effects = SpectateObject.active_effects
 		if SpectateObject.getTool() != null:
 			active_effects += SpectateObject.getTool().active_effects
@@ -397,6 +398,10 @@ func onGameEnded(rewards: Rewards) -> void:
 func onGameStarted() -> void:
 	HandBox.onUnpin()
 	HandBox.onSelectableCards(false)
+	
+func onGameStartedPost() -> void:
+	HandBox.onPin()
+	HandBox.onSelectableCards(true)
 #endregion
 
 #region Deck Amount

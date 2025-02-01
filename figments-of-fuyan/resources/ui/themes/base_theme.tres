@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=38 format=3 uid="uid://dcbv431prk86r"]
+[gd_resource type="Theme" load_steps=42 format=3 uid="uid://dcbv431prk86r"]
 
 [ext_resource type="FontFile" uid="uid://dpk4daccj6hwv" path="res://assets/fonts/roboto.ttf" id="1_8d2p5"]
 
@@ -9,6 +9,19 @@ border_width_top = 10
 border_width_right = 10
 border_width_bottom = 10
 border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_prk77"]
+bg_color = Color(0.807843, 0.623529, 0.501961, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.858824, 0.713726, 0, 1)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
@@ -241,6 +254,19 @@ corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 anti_aliasing = false
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sl5x8"]
+bg_color = Color(0, 0.768627, 0.560784, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.858824, 0.713726, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+anti_aliasing = false
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7fnuq"]
 bg_color = Color(1, 1, 1, 1)
 corner_radius_top_left = 5
@@ -315,6 +341,19 @@ corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 anti_aliasing = false
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mux0y"]
+bg_color = Color(0.997771, 0.921575, 0.775806, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.858824, 0.713726, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+anti_aliasing = false
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wsex2"]
 bg_color = Color(0.968627, 0.807843, 0, 1)
 border_width_left = 10
@@ -363,11 +402,25 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wtser"]
+bg_color = Color(0.968627, 0.807843, 0, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.858824, 0.713726, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
 [resource]
 default_font = ExtResource("1_8d2p5")
 default_font_size = 32
 BeigePanelContainer/base_type = &"PanelContainer"
 BeigePanelContainer/styles/panel = SubResource("StyleBoxFlat_wm4q3")
+BeigePanelContainerAscended/base_type = &"PanelContainer"
+BeigePanelContainerAscended/styles/panel = SubResource("StyleBoxFlat_prk77")
 BlueButton/base_type = &"Button"
 BlueButton/styles/disabled = SubResource("StyleBoxFlat_sol63")
 BlueButton/styles/hover = SubResource("StyleBoxFlat_rwi1j")
@@ -408,6 +461,8 @@ RedPanelContainer/base_type = &"PanelContainer"
 RedPanelContainer/styles/panel = SubResource("StyleBoxFlat_vyaib")
 TealPanelContainer/base_type = &"PanelContainer"
 TealPanelContainer/styles/panel = SubResource("StyleBoxFlat_vmrmf")
+TealPanelContainerAscended/base_type = &"PanelContainer"
+TealPanelContainerAscended/styles/panel = SubResource("StyleBoxFlat_sl5x8")
 VScrollBar/styles/grabber = SubResource("StyleBoxFlat_7fnuq")
 VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_ycmlv")
 VScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_vydci")
@@ -418,6 +473,8 @@ WhiteButton/styles/normal = SubResource("StyleBoxFlat_y4my1")
 WhiteButton/styles/pressed = SubResource("StyleBoxFlat_si6xx")
 WhitePanelContainer/base_type = &"PanelContainer"
 WhitePanelContainer/styles/panel = SubResource("StyleBoxFlat_ycnox")
+WhitePanelContainerAscended/base_type = &"PanelContainer"
+WhitePanelContainerAscended/styles/panel = SubResource("StyleBoxFlat_mux0y")
 YellowButton/base_type = &"Button"
 YellowButton/styles/disabled = SubResource("StyleBoxFlat_wsex2")
 YellowButton/styles/hover = SubResource("StyleBoxFlat_un055")
@@ -425,3 +482,5 @@ YellowButton/styles/normal = SubResource("StyleBoxFlat_8qgw1")
 YellowButton/styles/pressed = SubResource("StyleBoxFlat_k716r")
 YellowPanelContainer/base_type = &"PanelContainer"
 YellowPanelContainer/styles/panel = SubResource("StyleBoxFlat_cklyw")
+YellowPanelContainerAscended/base_type = &"PanelContainer"
+YellowPanelContainerAscended/styles/panel = SubResource("StyleBoxFlat_wtser")

@@ -2,16 +2,17 @@ class_name PalmLevelGD extends LevelGD
 
 #region Globals
 var ISLAND_ODDS: Dictionary = {
-	"1": 0.5, # 0.5
-	"2": 0.5, # 0.5
+	"6": 0.5, # 0.5
+	"7": 0.4, # 0.5
+	"8": 0.1
 		#"2": 0.39,
 		#"3": 0.1,
 		#"4": 0.01
 }
 	
 const DISTANCE_BOUND: int = 30
-const LOWER_GEN_BOUND: int = 40
-const UPPER_GEN_BOUND: int = 60
+const LOWER_GEN_BOUND: int = 50
+const UPPER_GEN_BOUND: int = 120
 #endregion
 
 #region Save / Load / Init
@@ -19,6 +20,13 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 	super(data, _save_file)
 	if is_init:
 		var decoration_datas: Array = load(info.PALM_ISLAND_RESOURCES).palm_islands.map(func(x: Resource): return x.data)
+		decoration_datas.append(decoration_datas[0].duplicate())
+		decoration_datas.append(decoration_datas[1].duplicate())
+		decoration_datas.append(decoration_datas[0].duplicate())
+		decoration_datas.append(decoration_datas[1].duplicate())
+		decoration_datas.append(decoration_datas[0].duplicate())
+		decoration_datas.append(decoration_datas[1].duplicate())
+		
 		var decoration_coords: Array = []
 		if !decoration_datas.is_empty():
 			decoration_datas.shuffle()
@@ -29,11 +37,12 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 				var start_coord := Vector4i.ZERO
 				while(avoid_coords.any(func(x: Vector4i): return Game.getCoordsDistance(x, start_coord) <= DISTANCE_BOUND)):
 					var x: int = randi_range(LOWER_GEN_BOUND, UPPER_GEN_BOUND)
-					x *= int(Random.getBool()) * -1
+					x *= (int(Random.getBool()) * -1)
 					
-					var y: int = randi_range(-UPPER_GEN_BOUND, UPPER_GEN_BOUND)
+					var y: int = randi_range(LOWER_GEN_BOUND, UPPER_GEN_BOUND)
+					y *= (int(Random.getBool()) * -1)
 					
-					start_coord = Vector4i(x, y, -x-y, 0) if Random.getBool() else Vector4i(y, x, -y-x, 0)
+					start_coord = Vector4i(x, y, -x-y, 0)
 					
 				avoid_coords.append(start_coord)
 				decoration_coords.append(start_coord)

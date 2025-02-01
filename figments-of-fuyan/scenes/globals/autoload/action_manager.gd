@@ -74,6 +74,10 @@ func onDebugAction(action: Action) -> void:
 	#for log_info in logs:
 		#print("	" + log_info)
 	
+	#print(([action] + actions).map(func(x: Action):
+		#var path: String = x.get_script().resource_path
+		#return path.get_slice("/", path.get_slice_count("/") - 1)))
+	
 func onDebugActionNames() -> void:
 	pass
 	#print("Debug Action Names: ")

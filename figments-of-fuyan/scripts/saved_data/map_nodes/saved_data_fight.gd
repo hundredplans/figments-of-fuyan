@@ -8,3 +8,4 @@ func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _map_lo
 	super(_id, _first_init, _public_id, _map_location, _links, _is_entered, _is_finished, _rotation_y)
 	level_info = _level_info
 	enemy_spawns = _enemy_spawns
+	

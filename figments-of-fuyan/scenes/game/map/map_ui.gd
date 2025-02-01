@@ -93,7 +93,7 @@ func onMapNodeFinished(_map_node: MapNodeGD) -> void:
 func onMapNodeHovered(map_node: MapNodeGD, state: bool, HoverUI: Control = null) -> void:
 	if state and HoverUI != null:
 		add_child(HoverUI)
-		HoverUI.setInfo(map_node, area)
+		HoverUI.setInfo(map_node.onSave())
 #endregion
 
 #region Legend

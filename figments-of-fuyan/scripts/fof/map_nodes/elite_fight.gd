@@ -33,6 +33,9 @@ func setChiefAndSpawns(base_budget: int, empty_spawn_coords: Array, enemy_spawn_
 		return
 	enemy_spawns.append(chief_data)
 	
+func onSave() -> SavedDataMapNode:
+	return SavedDataEliteFight.new(info.id, false, public_id, map_location, links, is_entered, is_finished, rotation.y, level_info, enemy_spawns)
+	
 func onEntered() -> void:
 	onSelectRandomCurseInfo()
 	super()
