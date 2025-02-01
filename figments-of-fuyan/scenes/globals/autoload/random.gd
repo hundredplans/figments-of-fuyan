@@ -41,7 +41,8 @@ static func getRandomFofInRarity(type: GDScript, rarity: Game.Rarities) -> Saved
 	
 	if arr.is_empty(): return null
 	var info: FofInfo = arr.pick_random()
-	var data: SavedData = info.saved_data.new(info.id, true)
+	
+	var data: SavedData = Game.setCardDataFromInfo(SavedDataCard.new(info.id, true), info) if info is CardInfo else info.saved_data.new(info.id, true)
 	var ascenscion_roll_odds: float = Game.area.getWorld().base_ascended_rate / 100.0
 	
 	if type == BoonInfo:

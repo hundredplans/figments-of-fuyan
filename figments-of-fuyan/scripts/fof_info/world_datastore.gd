@@ -17,7 +17,7 @@ class_name WorldDatastore extends Resource
 @export var enemy_spawn_rarity_odds: RarityOddsDatastore
 @export var fight_rewards: FightRewardsDatastore
 @export var elite_fight_rewards: FightRewardsDatastore
-@export var progress_enemy_energy_budget: Array[int]
+@export var budget_for_fights: Array[int]
 @export var elite_fights_budget_offset: int
 @export_range(0, 100, 0.1) var enemy_ascended_rate: float
 @export_range(0, 100, 0.1) var elite_enemy_ascended_rate: float

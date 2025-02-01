@@ -118,6 +118,9 @@ func setStats(stats: StatsDatastore) -> void:
 func getDescription() -> String:
 	return info.getDescription(ascended)
 	
+func getAscended() -> bool:
+	return ascended
+	
 func getArea() -> AreaInfo:
 	for area_info in Helper.getFofInfoArray(AreaInfo):
 		if info.id in area_info.card_ids: return area_info
@@ -804,7 +807,7 @@ func getAttackDistanceFromEnemy(EnemyTile: TileGD, StartingTile: TileGD = Tile, 
 #endregion
 
 #region Damage
-func onTakeDamage(Damager: GameObjectGD, damage: int, override_set_action_delay: bool) -> int: # Returns damage dealt
+func onTakeDamage(Damager: GameObjectGD, damage: int, lock_action_delay: bool) -> int: # Returns damage dealt
 	var old_health: int = health
 	health = max(health - damage, 0)
 	
@@ -814,7 +817,7 @@ func onTakeDamage(Damager: GameObjectGD, damage: int, override_set_action_delay:
 	if health == 0: action = DeathAction.new(Damager, self, damage, health_damage)
 	else: action = HurtAction.new(Damager, self, damage, health_damage)
 	
-	action.setActionDelayWithOverride(action.getDelay(), override_set_action_delay)
+	action.setLockActionDelay(lock_action_delay)
 	onPushAction(action)
 	return health_damage
 #endregion
@@ -1045,7 +1048,8 @@ func isValidOnHit(action: Action) -> bool:
 		and action.Defenders.any(func(x: GameObjectGD): return x is CardGD)
 
 func isValidRevenge(action: Action) -> bool:
-	return action.post and action is StatAction and action.owner is DamageAction and self in action.owner.Defenders and card_place == Game.CardPlaces.FIELD
+	return action.post and action is StatAction and action.owner is DamageAction and action.owner.damage > 0 and\
+	action.owner.damage_type != Game.DamageTypes.FALL_DAMAGE and self in action.owner.Defenders and card_place == Game.CardPlaces.FIELD
 
 func isValidBloodthirst(action: Action) -> bool:
 	return action.post and action is DeathAction and action.Damager != self and isEnemy(action.Defender.team) and card_place == Game.CardPlaces.FIELD and action.getCardSawDefenderDie(self) 

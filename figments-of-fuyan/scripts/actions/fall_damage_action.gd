@@ -13,7 +13,7 @@ func onPreAction() -> void:
 	onCheckFail()
 	
 func onPostAction() -> void:
-	onPushAction(DamageAction.new(Tile, Card, damage, true))
+	onPushAction(DamageAction.new(Tile, Card, damage, Game.DamageTypes.FALL_DAMAGE))
 
 func onCheckFail() -> void:
 	damage = Tile.getFallDamage(Card.Tile)

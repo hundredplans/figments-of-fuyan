@@ -17,6 +17,9 @@ func onLoadData(data: SavedData) -> void:
 	for custom_variable in ability_save:
 		set(custom_variable, ability_save[custom_variable])
 	
+func getAscended() -> bool:
+	return ascended
+	
 func onSave() -> SavedDataBoon:
 	return SavedDataBoon.new(info.id, false, public_id, ascended, ability_save)
 

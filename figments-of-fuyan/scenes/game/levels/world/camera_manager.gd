@@ -224,6 +224,8 @@ func onSpectateCycle() -> void:
 func onChangeCameraInDirection(direction: int) -> void:
 	if !action_lock and SpectateObject != null:
 		var arr: Array = getCameraObjectArray()
+		if arr.is_empty(): return
+		
 		var spectate_index: int = arr.find(SpectateObject)
 		
 		if spectate_index + direction == arr.size(): spectate_index = 0
@@ -342,3 +344,6 @@ func onGameEnded() -> void:
 	FreelookCamera.rotation_degrees = Vector3(-90, 0, 0)
 	game_ended = true
 	SpectateObject = null
+
+func getLastAllySpectateObject() -> CardGD:
+	return LastAllySpectateObject

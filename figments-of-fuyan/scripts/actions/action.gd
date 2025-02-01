@@ -7,7 +7,7 @@ signal remove_move_and_attack_actions
 
 var owner: Variant # FofGD or another action always
 
-@export var override_set_action_delay: bool
+@export var lock_action_delay: bool
 @export var action_delay: float = 0
 @export var owner_public_id: int
 @export var failed: bool = false
@@ -60,14 +60,14 @@ func onSave() -> void:
 func onLoad() -> void:
 	owner = Game.onFindPublicIDObject(owner_public_id)
 	
+# If override is set to true, you can change 
 func setActionDelay(_action_delay: float) -> void:
-	if !override_set_action_delay:
-		action_delay = _action_delay
-		
-func setActionDelayWithOverride(_action_delay: float, state: bool = true) -> void:
-	override_set_action_delay = state
-	setActionDelay(_action_delay)
-	
+	if lock_action_delay: return
+	action_delay = _action_delay
+
+func setLockActionDelay(state: bool) -> void:
+	lock_action_delay = state
+
 func getLogInfo() -> Array:
 	return []
 	

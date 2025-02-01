@@ -30,11 +30,9 @@ func onPostAction() -> void:
 	Card.onCreateInitialActiveAbilities()
 	
 	var actions: Array = []
-	if owner is PlayCardAction:
-		if Card.info.rarity != Game.Rarities.CHAMPION:
-			actions.append(Card.getBaseStatusEffectAction(3, 2))
-	else: actions.append(ChangeTurnStateAction.new(Card, Game.TurnStates.INACTIVE))
-		
+	if owner is PlayCardAction and Card.info.rarity != Game.Rarities.CHAMPION:
+		actions.append(Card.getBaseStatusEffectAction(3, 2))
+	actions.append(ChangeTurnStateAction.new(Card, Game.TurnStates.INACTIVE if owner is not PlayCardAction else Game.TurnStates.PASSED))
 	if Card.Tool != null: actions.append(AddToolAction.new(Card, Card.Tool))
 		
 	onPushAction(actions)

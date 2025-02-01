@@ -1,5 +1,8 @@
 extends BoonGD
 
+const DEFAULT_STUN_TURNS: int = 2
+const ASCENDED_STUN_TURNS: int = 3
+
 var turns_stunned_remaining: int
 func onProcessAction(action: Action) -> void:
 	super(action)
@@ -28,4 +31,4 @@ func getCharges() -> int:
 	return turns_stunned_remaining
 
 func onResetCharges() -> void:
-	turns_stunned_remaining = 1 if !ascended else 2
+	turns_stunned_remaining = DEFAULT_STUN_TURNS if !ascended else ASCENDED_STUN_TURNS

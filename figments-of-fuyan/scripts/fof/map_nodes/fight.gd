@@ -26,19 +26,11 @@ func onLoadData(data: SavedData) -> void:
 	enemy_spawns = data.enemy_spawns
 #endregion
 
-#region Base Functions
-func _input(event: InputEvent) -> void:
-	super(event)
-	if event is InputEventMouseMotion and HoverUI != null: HoverUI.setMouseCenter(get_viewport().get_mouse_position())
-#endregion
-
 #region Hovering
 func onMouseHovered(state: bool) -> void:
 	if is_queued_for_deletion(): return
 	if !state and HoverUI != null: HoverUI.queue_free()
-	else:
-		HoverUI = load(info.FIGHT_NODE_HOVER_UI).instantiate()
-		HoverUI.setMouseCenter(get_viewport().get_mouse_position())
+	else: HoverUI = load(info.FIGHT_NODE_HOVER_UI).instantiate()
 	super(state)
 #endregion
 
@@ -60,15 +52,12 @@ func getBudget() -> int:
 	
 func setLevelInfo() -> void:
 	var levels: Array = Helper.getFofInfoArray(Game.area.info.base_level_script)
-	
 	if Helper.admin_datastore.force_level_spawn_id == 0:
 		levels = levels.filter(func(x: LevelInfo): \
 			return map_location.progress >= x.progress_min and map_location.progress <= x.progress_max)
 		level_info = levels.pick_random()
 	else:
 		level_info = Helper.getFofInfoID(LevelInfo, Helper.admin_datastore.force_level_spawn_id)
-		
-	
 	
 func getEmptySpawnCoords(level_info: LevelInfo) -> Array:
 	var empty_spawn_coords: Array = level_info.getEmptySpawnCoords()

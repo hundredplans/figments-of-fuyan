@@ -10,7 +10,7 @@ func onProcessAction(action: Action) -> void:
 func onTrauma(_death_action: DeathAction) -> void:
 	var speed: int = 1 if !ascended else 2
 	var camera_change_action := CameraChangeAction.new(self)
-	camera_change_action.setActionDelayWithOverride(PALMY_PAUSE_DELAY)
+	camera_change_action.setActionDelay(PALMY_PAUSE_DELAY)
 	var actions: Array = [StatAction.new(StatInfo.new(self, Game.Stats.MAX_SPEED, speed)), camera_change_action]
 	trauma_charges -= 1
 	onPushAction(actions)

@@ -10,7 +10,7 @@ func onSave() -> SavedDataArmor:
 	
 func onProcessAction(action: Action) -> void:
 	if !action.post:
-		if action is DamageAction and Card in action.Defenders and !action.is_fall_damage:
+		if action is DamageAction and Card in action.Defenders and action.damage_type != Game.DamageTypes.FALL_DAMAGE:
 			action.damage = max(action.damage - armor, 0)
 		elif action is GetDamageAction and Card in action.Defenders and action.damage_type != Game.DamageTypes.FALL_DAMAGE:
 			action.onAdd(-armor)

@@ -89,7 +89,7 @@ func onFofImagesReplace(regex: RegEx, fancy_text: FancyText) -> void:
 	for image_fancy_text in fancy_text.images:
 		var compile_text: String = image_fancy_text.name
 		if image_fancy_text.capture_preceding_number_plus:
-			compile_text = compile_text.insert(0, "((\\[[0-9]\\])?\\+?([0-9])?\\s)?")
+			compile_text = compile_text.insert(0, "((\\[[0-9]*\\])?\\+?([0-9]*)?\\s)?")
 		regex.compile(compile_text)
 		
 		while(true):

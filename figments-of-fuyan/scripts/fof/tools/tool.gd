@@ -20,6 +20,9 @@ func onLoadData(data: SavedData) -> void:
 func onSave() -> SavedDataTool:
 	return SavedDataTool.new(info.id, false, public_id, ascended, active_effects, ability_save)
 	
+func getAscended() -> bool:
+	return ascended
+	
 func onCreateActiveEffects() -> void:
 	active_effects = []
 	onPushAction(info.active_abilities.map(func(x: ActiveEffectDatastore): return AddActiveEffectAction.new(self, x.duplicate())))

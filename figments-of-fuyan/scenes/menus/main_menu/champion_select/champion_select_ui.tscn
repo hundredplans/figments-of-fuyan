@@ -125,9 +125,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 20
 
-[node name="Control" type="Control" parent="TopMiddleBar/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/DescriptionContainer"]
-layout_mode = 2
-
 [node name="Label" type="Label" parent="TopMiddleBar/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/DescriptionContainer"]
 layout_mode = 2
 text = "- Regular and enhanced fights are more common"
@@ -157,7 +154,7 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="MiddleMiddleBar/PanelContainer/MarginContainer"]
 layout_mode = 2
-text = "Cards"
+text = "Boon"
 horizontal_alignment = 1
 
 [node name="HideButton2" parent="MiddleMiddleBar" node_paths=PackedStringArray("hide_node") instance=ExtResource("5_rpxwj")]
@@ -177,7 +174,7 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="MiddleMiddleBar/PanelContainer2/MarginContainer"]
 layout_mode = 2
-text = "Boons"
+text = "Ultimate"
 horizontal_alignment = 1
 
 [node name="LowerMiddleBar" type="HBoxContainer" parent="."]
@@ -191,9 +188,20 @@ theme_type_variation = &"PurplePanelContainer"
 [node name="MarginContainer" type="MarginContainer" parent="LowerMiddleBar/PanelContainer"]
 layout_mode = 2
 
-[node name="ChampionBoonLabel" parent="LowerMiddleBar/PanelContainer/MarginContainer" instance=ExtResource("7_ll1ak")]
+[node name="VBoxContainer" type="VBoxContainer" parent="LowerMiddleBar/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="LowerMiddleBar/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ChampionBoonLabel" parent="LowerMiddleBar/PanelContainer/MarginContainer/VBoxContainer" instance=ExtResource("7_ll1ak")]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="Spacer2" type="Control" parent="LowerMiddleBar/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
 
 [node name="PanelContainer2" type="PanelContainer" parent="LowerMiddleBar"]
 layout_mode = 2
@@ -209,6 +217,7 @@ layout_mode = 2
 text = "Rampage 4x to Heal to full HEALTH and cleanse any negative effects"
 label_settings = ExtResource("8_bx5yu")
 horizontal_alignment = 1
+vertical_alignment = 1
 autowrap_mode = 3
 
 [node name="FlavorTextContainer" type="PanelContainer" parent="."]

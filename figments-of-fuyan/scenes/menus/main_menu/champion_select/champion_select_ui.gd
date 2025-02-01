@@ -22,13 +22,21 @@ func setInfo(Card: CardGD) -> void:
 	ChampionEpithetLabel.text = Card.info.epithet
 	
 	for child in DescriptionContainer.get_children(): DescriptionContainer.remove_child(child); child.queue_free()
-	DescriptionContainer.add_child(Control.new())
+	
+	var spacer := Control.new()
+	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	DescriptionContainer.add_child(spacer)
+	
 	for description_text in Card.info.champion_description:
 		var label := Label.new()
 		label.text = "- " + description_text
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		DescriptionContainer.add_child(label)
 		
+	var end_spacer := Control.new()
+	end_spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	DescriptionContainer.add_child(end_spacer)
+	
 	ChampionBoonLabel.setText(Card.info.boon_info.description)
 	UltimateLabel.text = Card.info.ultimate_description
 	FlavorLabel.text = "\"" + Card.info.flavor_text + "\" "

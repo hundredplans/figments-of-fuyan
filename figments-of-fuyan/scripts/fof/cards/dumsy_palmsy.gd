@@ -15,7 +15,9 @@ func onArrivePre(_action: AwakenAction) -> void:
 
 func onArrive(action: AwakenAction) -> void:
 	var damage_action := DamageAction.new(self, self, 2)
-	damage_action.setActionDelayWithOverride(0.0)
+	damage_action.setActionDelay(0.0)
+	damage_action.setLockActionDelay(true)
+	
 	onPushAction(damage_action)
 
 func onRampage(action: DeathAction) -> void:

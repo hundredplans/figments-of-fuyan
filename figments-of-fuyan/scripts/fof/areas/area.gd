@@ -510,7 +510,7 @@ func setEnemySpawnsFromBudget(budget: int, enemy_spawn_amount: int, spawns: Arra
 	
 func getBudget(progress: int, offset: int, is_unholy: bool = false) -> int:
 	var unholy_offset: int = 1 if is_unholy else 0
-	return getWorld().progress_enemy_energy_budget[progress] + offset + (unholy_offset * getWorldDifficulty())
+	return getWorld().budget_for_fights[progress] + offset + (unholy_offset * getWorldDifficulty())
 	
 func sum(accum: int, number: int) -> int:
 	return accum + number
