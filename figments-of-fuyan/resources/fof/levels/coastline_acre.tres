@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="PalmLevelInfo" load_steps=371 format=3 uid="uid://cgfe6s2ptpqjc"]
+[gd_resource type="Resource" script_class="PalmLevelInfo" load_steps=372 format=3 uid="uid://cgfe6s2ptpqjc"]
 
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="1_kd8j5"]
 [ext_resource type="Script" path="res://scripts/fof_info/game_objects/extra/revealed_datastore.gd" id="2_0gpoh"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="6_rm6tr"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_spawn.gd" id="7_c3hyc"]
 [ext_resource type="Script" path="res://scripts/saved_data/levels/saved_data_level.gd" id="8_wraf7"]
+[ext_resource type="Script" path="res://scripts/fof/levels/palm_level.gd" id="8_y7trt"]
 [ext_resource type="Script" path="res://scripts/fof_info/levels/palm_level_info.gd" id="9_rok0i"]
 
 [sub_resource type="Resource" id="Resource_g8o1w"]
@@ -4647,6 +4648,7 @@ enemy_max_spawn_amount = 5
 progress_min = 6
 progress_max = 6
 enemy_budget_offset = 0
-id = 10
+id = 6
 name = "Coastline Acre"
+gdscript = ExtResource("8_y7trt")
 saved_data = ExtResource("8_wraf7")
