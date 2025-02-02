@@ -25,7 +25,7 @@ func onHit(_damage_action: DamageAction, _attack_action: AttackAction) -> void:
 	swingus_field_effect_public_id = 0
 	onPushAction(
 		StatAction.new([
-			StatInfo.new(self, [Game.Stats.ATTACK, Game.Stats.HEALTH], [1, 1])
+			StatInfo.new(self, [Game.Stats.ATTACK, Game.Stats.MAX_HEALTH], [1, 1])
 		])
 	)
 	

@@ -91,6 +91,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level.game_started_post.connect(onGameStartedPost)
 	level.game_ended.connect(onGameEnded)
 	level.tool_removed.connect(onToolRemoved)
+	level.death.connect(onDeath)
 	
 	level.update_active_effects.connect(onUpdateActiveEffects)
 	save_file.update_shillings.connect(onUpdateShillings)
@@ -298,6 +299,14 @@ func onInspectScreenCreated(InspectScreen: Control) -> void:
 func onAwakened(Card: CardGD) -> void:
 	Card.inspect_screen_created.connect(onInspectScreenCreated)
 	Card.FieldInfo.visible = visible
+	if !Card.isAlly(0): return
+	PassButton.setIsLastAllyAlive()
+#endregion
+
+#region Death
+func onDeath(Card: CardGD) -> void:
+	if !Card.isAlly(0): return
+	PassButton.setIsLastAllyAlive()
 #endregion
 
 #region Active Effects

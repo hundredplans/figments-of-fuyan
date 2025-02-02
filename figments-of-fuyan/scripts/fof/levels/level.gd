@@ -25,6 +25,7 @@ signal phase_changed
 signal draw_card
 signal remove_card
 signal awakened
+signal death
 signal turn_state_changing
 signal camera_change_action
 signal active_effect_used
@@ -250,6 +251,7 @@ func onProcessAction(action: Action) -> void:
 				
 		elif action is DeathAction:
 			onRecalculateAITurn(action.Defender, true, true, true, true)
+			death.emit(action.Defender)
 		elif action is ChangeActiveEffectChargesAction:
 			update_active_effects.emit()
 		elif action is ClearTileObjectAction:
