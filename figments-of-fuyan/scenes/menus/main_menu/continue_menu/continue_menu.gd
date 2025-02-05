@@ -1,6 +1,7 @@
 extends Control
 
 signal load_game
+@warning_ignore("unused_signal")
 signal mouse_in_ui
 
 @onready var ArtMiniRect: TextureRect = %ArtMiniRect
@@ -14,6 +15,8 @@ signal mouse_in_ui
 
 @onready var BoonContainer: GridContainer = %BoonContainer
 @onready var CardContainer: GridContainer = %CardContainer
+
+@export var FofUIBoxPacked: PackedScene
 
 var save_file_data: SavedDataSaveFile
 func _ready() -> void:
@@ -41,23 +44,20 @@ func _ready() -> void:
 		var area_info: AreaInfo = Helper.getFofInfoID(AreaInfo, save_file_data.area_data.id)
 		AreaLabel.text = "AREA: " + area_info.name
 		
-		
 		LevelLabel.text = "LEVEL: " + (area_info.overworld_decoration.name\
 		if save_file_data.area_data.level_data == null else \
 		Helper.getFofInfoID(LevelInfo, save_file_data.area_data.level_data.id).name)
-		LocationLabel.text = "LOCATION: " + str(area_info.world.world) + "-" + str(save_file_data.area_data.getEnteredMapLocationProgress())
+		LocationLabel.text = "LOCATION: " + str(area_info.world.world) + "- " + str(max(save_file_data.area_data.getEnteredMapLocationProgress(), 0))
 		
-		for data in save_file_data.deck:
-			var card_info: CardInfo = Helper.getFofInfoID(CardInfo, data.id)
-			var tx_rect := TextureRect.new()
-			var panel_container := PanelContainer.new()
-			panel_container.theme_type_variation = "WhitePanelContainer"
-			
-			CardContainer.add_child(panel_container)
-			
-			tx_rect.texture = card_info.getArtMini()
-			panel_container.add_child(tx_rect)
+		for card_data in save_file_data.deck:
+			var FofUIBox: Control = FofUIBoxPacked.instantiate()
+			CardContainer.add_child(FofUIBox)
+			FofUIBox.setInfo(card_data)
 		
+		for boon_data in save_file_data.boons:
+			var FofUIBox: Control = FofUIBoxPacked.instantiate()
+			BoonContainer.add_child(FofUIBox)
+			FofUIBox.setInfo(boon_data)
 		
 func _on_start_button_pressed() -> void:
 	load_game.emit(save_file_data)
@@ -65,5 +65,5 @@ func _on_start_button_pressed() -> void:
 func _on_quit_button_pressed() -> void:
 	queue_free()
 	
-func onMouseInUI(state: bool) -> void:
+func onMouseInUI(_state: bool) -> void:
 	pass

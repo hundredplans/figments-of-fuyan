@@ -11,6 +11,8 @@ var occupied_coords: Array
 var occupied_tiles: Array
 #endregion
 
+var loaded_in_level: bool
+
 #region Getters
 func getLockRotation() -> bool:
 	return info.lock_rotation
@@ -95,6 +97,7 @@ func onLoadData(data: SavedData) -> void:
 	add_to_group("ObjectsGD")
 	
 func onLoadDataLevel() -> void:
+	loaded_in_level = true
 	occupied_tiles = occupied_coords.map(func(x: Vector4i): return Game.getTile(x))
 	for Tile in occupied_tiles:
 		Tile.setOccupiedObject(self)
@@ -110,6 +113,10 @@ func onFofInit() -> void:
 #region Collision Layers
 func setDefaultCollisionLayers() -> void:
 	setCollisionLayers(20)
+	
+func setCollisionLayers(layer: int) -> void:
+	if loaded_in_level and info.ignore_collisions: super(0)
+	else: super(layer)
 #endregion
 
 #region Occupied Tiles
@@ -147,3 +154,10 @@ func onProcessAction(action: Action) -> void:
 
 func getMaxMovementHeight() -> float: # Returns whether card can go below it or not
 	return 0
+
+func onCreateAdjustedPoints():
+	if !info.ignore_collisions: super()
+	else: adjusted_points = []
+	
+func onOccupy(_state: bool) -> void:
+	pass

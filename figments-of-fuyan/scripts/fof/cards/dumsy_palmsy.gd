@@ -13,14 +13,14 @@ func getDescription() -> String:
 func onArrivePre(_action: AwakenAction) -> void:
 	pass
 
-func onArrive(action: AwakenAction) -> void:
+func onArrive(_action: AwakenAction) -> void:
 	var damage_action := DamageAction.new(self, self, 2)
 	damage_action.setActionDelay(0.0)
 	damage_action.setLockActionDelay(true)
 	
 	onPushAction(damage_action)
 
-func onRampage(action: DeathAction) -> void:
+func onRampage(_action: DeathAction) -> void:
 	var heal_amount: int = 1 if !ascended else 2
 	var cards: Array = getVisibleFieldCardsAllies() + [self]
 	onPushAction(StatAction.new(cards.map(func(x: CardGD): return StatInfo.new(x, Game.Stats.HEALTH, heal_amount))))

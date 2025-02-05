@@ -1,5 +1,6 @@
 class_name TileObjectGD extends GameObjectGD
 
+@warning_ignore("unused_signal")
 signal set_spectate_card
 var SpectateCard: CardGD
 
@@ -80,7 +81,7 @@ func onUpdateLevelVisible() -> void:
 	onApplyGreyscaleMaterial()
 				
 func onApplyGreyscaleMaterial() -> void:
-	var greyscale_material: ShaderMaterial = load(info.GREYSCALE_MATERIAL) if !isLevelVisible() else null
+	var greyscale_material: ShaderMaterial = load(info.GREYSCALE_MATERIAL) if !isLevelVisible() and !Helper.admin_datastore.see else null
 	for mesh in getMeshes():
 		for surface_id in mesh.get_surface_override_material_count():
 			mesh.set_surface_override_material(surface_id, greyscale_material)

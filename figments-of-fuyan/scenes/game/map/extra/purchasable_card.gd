@@ -2,11 +2,11 @@ extends Purchasable
 
 @onready var MainContainer: Container = %MainContainer
 
-func setInfo(_item: FofGD, _price_datastore: PriceDatastore, save_file: SaveFileGD) -> void:
+func setInfo(_item: FofGD, _price_datastore: PriceDatastore, _save_file: SaveFileGD) -> void:
 	DisplayedUI = _item.onCreateCardUI(MainContainer, true)
-	super(_item, _price_datastore, save_file)
+	super(_item, _price_datastore, _save_file)
 	
-	DisplayedUI.pressed.connect(func(x: Control): onPressed())
+	DisplayedUI.pressed.connect(func(__: Control): onPressed())
 	MainContainer.move_child(DisplayedUI, 0)
 	
 func setDisabled(state: bool = true) -> void:

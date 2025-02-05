@@ -44,6 +44,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level.camera_change_pre.connect(onCameraChangePre)
 	level.spectate_group.connect(CameraManager.onSpectateGroup)
 	level.set_last_ally_spectate_object.connect(setLastAllySpectateObjectForLevel)
+	level.request_camera_position_update.connect(onRequestCameraPositionUpdate)
 	
 	CameraManager.camera_position_updated.connect(onCameraPositionUpdated)
 	CameraManager.create_camera_action.connect(onCreateCameraChangeAction)
@@ -56,6 +57,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	UI.camera_direction_changed.connect(CameraManager.onChangeCameraInDirection)
 	UI.vision_mode_changed.connect(onVisionModeChanged)
 	UI.active_effect_box_pressed.connect(onActiveEffectBoxPressed)
+	UI.create_movement_range.connect(onCreateMovementRange)
 	
 	UI.dragged_begin.connect(onCardDraggedBegin)
 	UI.dragged_end.connect(onCardDraggedEnd)
@@ -147,19 +149,11 @@ func onPhaseChanged(phase: Game.Phases, previous_phase: Game.Phases, _instant: b
 			onSpawnFX(false)
 			if Game.ActionManagerReference.onFindFirstAction(CameraChangeAction) != null: return
 			CameraManager.onSpectateAllies()
-			
-	print(phase)
 #endregion
 	
 #region SpawnFX
 func onSpawnFX(state: bool) -> void:
-	get_tree().call_group("SpawnParticles", "queue_free")
-	if state:
-		for Obj in get_tree().get_nodes_in_group("AllySpawnsGD"):
-			for Tile in Obj.occupied_tiles.filter(func(x: TileGD): return !x.isOccupied()):
-				var SpawnParticle: GPUParticles3D = SpawnParticlePacked.instantiate()
-				SpawnParticle.position = Tile.position
-				add_child(SpawnParticle)
+	get_tree().call_group("SpawnParticles", "onSpawnFX", state)	
 #endregion
 
 #region Awakening
@@ -177,13 +171,9 @@ func onTilePressed() -> void:
 	elif Tile.getMovementPathDisplay():
 		var Card: CardGD = level.getAllySpectateObject()
 		if Card != null:
-			level.onAppendAction(MovementAction.new(Card, Tile.getMovementPathTiles()))
+			level.onPushAction(MovementAction.new(Card, Tile.getMovementPathTiles()))
 	elif Tile.isOccupied() and Tile.isLevelVisible() and Tile.getCard().isLevelVisible():
 		onCreateCameraChangeAction(Tile.getCard())
-	#elif Tile.isAllySpawnTile() and !Tile.isOccupied():
-		#var HandCard: CardGD = UI.getSelectedCard()
-		#if HandCard != null:
-			#level.onAppendAction(PlayCardAction.new(HandCard, Tile))
 	
 func onTileInspected() -> void:
 	var Tile: TileGD = MouseHoverTile
@@ -200,12 +190,15 @@ func getLastAllySpectateObject() -> CardGD:
 func setLastAllySpectateObjectForLevel() -> void:
 	level.LastAllySpectateObject = getLastAllySpectateObject()
 
+func onRequestCameraPositionUpdate() -> void:
+	CameraManager.onUpdateCameraPosition()
+	
 func onCameraPositionUpdated(pos: Vector3) -> void:
 	get_tree().call_group("FieldCardsGD", "onCameraPositionUpdated", pos)
 	
 func onCameraChange(SpectateObject: GameObjectGD, OldSpectateObject: GameObjectGD) -> void:
-	if OldSpectateObject is CardGD: OldSpectateObject.onSpectated(false)
-	if SpectateObject is CardGD: SpectateObject.onSpectated(true)
+	if OldSpectateObject is CardGD and OldSpectateObject.isAlive(): OldSpectateObject.onSpectated(false)
+	if SpectateObject is CardGD and SpectateObject.isAlive(): SpectateObject.onSpectated(true)
 	CameraManager.onCameraChange(SpectateObject)
 	
 func onCameraChangePre(_SpectateObject: GameObjectGD, _OldSpectateObject: GameObjectGD) -> void:
@@ -377,11 +370,11 @@ func setEnvironment() -> void:
 #endregion
 
 #region Dragged
-func onCardDraggedBegin(CardUI: Control) -> void:
+func onCardDraggedBegin(_CardUI: Control) -> void:
 	if level.getSpectateObject() is not SpawnGD:
 		CameraManager.onSpectateSpawn(level.getAllySpectateObject())
 		
-func onCardDraggedEnd(Card: CardGD, dragged_position: Vector2, CardUI: Control) -> void:
+func onCardDraggedEnd(Card: CardGD, _dragged_position: Vector2, CardUI: Control) -> void:
 	var Tile: TileGD = getMouseHoverTile()
 	if Tile != null and Tile.isAllySpawnTile() and !Tile.isOccupied() and !getMouseInUI():
 		level.onAppendAction(PlayCardAction.new(Card, Tile))

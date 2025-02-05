@@ -232,6 +232,9 @@ func onOccupy(Card: CardGD, instant: bool) -> void:
 	
 	if instant: setOutlineMaterial()
 	
+	for Obj in occupied_objects:
+		Obj.onOccupy(occupy_state != OccupyStates.NULL)
+	
 func onOccupyByIObject(_IObject: IObjectGD) -> void:
 	occupy_state = OccupyStates.ATTACKABLE_IOBJECT
 	setOutlineMaterial()

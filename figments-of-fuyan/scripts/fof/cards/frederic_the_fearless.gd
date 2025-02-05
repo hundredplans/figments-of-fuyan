@@ -15,5 +15,5 @@ func onProcessAction(action: Action) -> void:
 	if isValidRampage(action):
 		onPushAction(RampageAction.new(self, action))
 
-func onRampage(action: DeathAction) -> void:
+func onRampage(_action: DeathAction) -> void:
 	onPushAction(StatAction.new(StatInfo.new(self, Game.Stats.MAX_HEALTH, 1)))

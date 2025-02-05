@@ -37,6 +37,6 @@ func getDescription() -> String:
 const BONUS_PER_ADJACENT_ALLY_ON_TILE: float = 0.25
 # +0.25 per unit sellus is adjacent to on a tile
 func onUnitSpecificTransforms(tiles_to_value: Dictionary, DFL: DefaultFightLogic) -> void:
-	for Tile in tiles_to_value:
-		var adjacency_bonus: int = DFL.getAllies().filter(func(x: CardGD): return Game.isAdjacent(x.getTile(), Tile)).size() * BONUS_PER_ADJACENT_ALLY_ON_TILE
-		tiles_to_value[Tile] += adjacency_bonus
+	for TransformTile: TileGD in tiles_to_value:
+		var adjacency_bonus: float = DFL.getAllies().filter(func(x: CardGD): return Game.isAdjacent(x.getTile(), TransformTile)).size() * BONUS_PER_ADJACENT_ALLY_ON_TILE
+		tiles_to_value[TransformTile] += adjacency_bonus

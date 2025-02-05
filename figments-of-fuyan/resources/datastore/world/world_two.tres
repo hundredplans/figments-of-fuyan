@@ -8,7 +8,6 @@ script = ExtResource("1_g7ubl")
 progress = 1
 regular_fight = 100.0
 encounter = 0.0
-shop = 0.0
 upgrade_regular_fight = 0.0
 
 [sub_resource type="Resource" id="Resource_g5dgs"]
@@ -16,7 +15,6 @@ script = ExtResource("1_g7ubl")
 progress = 2
 regular_fight = 100.0
 encounter = 0.0
-shop = 0.0
 upgrade_regular_fight = 0.0
 
 [sub_resource type="Resource" id="Resource_nm72o"]
@@ -24,7 +22,6 @@ script = ExtResource("1_g7ubl")
 progress = 3
 regular_fight = 30.0
 encounter = 70.0
-shop = 0.0
 upgrade_regular_fight = 0.0
 
 [sub_resource type="Resource" id="Resource_0tdd2"]
@@ -32,7 +29,6 @@ script = ExtResource("1_g7ubl")
 progress = 4
 regular_fight = 67.0
 encounter = 33.0
-shop = 0.0
 upgrade_regular_fight = 0.0
 
 [sub_resource type="Resource" id="Resource_6a52b"]
@@ -40,7 +36,6 @@ script = ExtResource("1_g7ubl")
 progress = 6
 regular_fight = 50.0
 encounter = 50.0
-shop = 0.0
 upgrade_regular_fight = 10.0
 
 [sub_resource type="Resource" id="Resource_7erkh"]
@@ -48,7 +43,6 @@ script = ExtResource("1_g7ubl")
 progress = 7
 regular_fight = 50.0
 encounter = 45.0
-shop = 5.0
 upgrade_regular_fight = 12.0
 
 [sub_resource type="Resource" id="Resource_humnj"]
@@ -56,7 +50,6 @@ script = ExtResource("1_g7ubl")
 progress = 8
 regular_fight = 50.0
 encounter = 45.0
-shop = 5.0
 upgrade_regular_fight = 12.0
 
 [sub_resource type="Resource" id="Resource_qoq7q"]
@@ -64,7 +57,6 @@ script = ExtResource("1_g7ubl")
 progress = 9
 regular_fight = 50.0
 encounter = 45.0
-shop = 5.0
 upgrade_regular_fight = 12.0
 
 [resource]
@@ -72,9 +64,9 @@ script = ExtResource("2_6vuag")
 world = 2
 data = Array[ExtResource("1_g7ubl")]([SubResource("Resource_dv863"), SubResource("Resource_g5dgs"), SubResource("Resource_nm72o"), SubResource("Resource_0tdd2"), SubResource("Resource_6a52b"), SubResource("Resource_7erkh"), SubResource("Resource_humnj"), SubResource("Resource_qoq7q")])
 base_ascended_rate = 0.0
-unique_node_segment_one_odds = 0.0
-unique_node_segment_two_odds = 0.0
-progress_enemy_energy_budget = Array[int]([])
+extra_unique_node_odds = 0.0
+extra_shop_odds = 0.0
+budget_for_fights = Array[int]([])
 elite_fights_budget_offset = 0
 enemy_ascended_rate = 0.0
 elite_enemy_ascended_rate = 0.0

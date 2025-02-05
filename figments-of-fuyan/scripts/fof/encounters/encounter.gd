@@ -2,8 +2,10 @@ class_name EncounterGD extends FofGD
 
 var ability_save: Dictionary
 var loaded_page_name: String
+@warning_ignore("unused_signal")
 signal temp_disable_options
 signal continue_to_next_page
+@warning_ignore("unused_signal")
 signal load_level
 
 func onFirstEntered(_screen: Control) -> void: # Equivalent to fof init but with some args

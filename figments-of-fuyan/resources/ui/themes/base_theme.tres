@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=42 format=3 uid="uid://dcbv431prk86r"]
+[gd_resource type="Theme" load_steps=48 format=3 uid="uid://dcbv431prk86r"]
 
 [ext_resource type="FontFile" uid="uid://dpk4daccj6hwv" path="res://assets/fonts/roboto.ttf" id="1_8d2p5"]
 
@@ -77,6 +77,19 @@ corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 anti_aliasing = false
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u5om4"]
+bg_color = Color(0.263281, 0.690522, 1, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.858824, 0.713726, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+anti_aliasing = false
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6bojs"]
 bg_color = Color(0.381661, 0.459669, 0, 1)
 border_width_left = 10
@@ -111,6 +124,45 @@ border_width_top = 10
 border_width_right = 10
 border_width_bottom = 10
 border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gf6hc"]
+bg_color = Color(0.331712, 0.181858, 2.40654e-08, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.858824, 0.713726, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jjiah"]
+bg_color = Color(0.34, 0.338187, 0.3366, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kubhb"]
+bg_color = Color(0.34, 0.338187, 0.3366, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.858824, 0.713726, 0, 1)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
@@ -192,6 +244,19 @@ corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 anti_aliasing = false
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8nxyx"]
+bg_color = Color(0.731843, 0.29657, 1, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.858824, 0.713726, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+anti_aliasing = false
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lckoa"]
 bg_color = Color(0.188389, 0.0193033, 0, 1)
 border_width_left = 10
@@ -235,6 +300,19 @@ border_width_top = 10
 border_width_right = 10
 border_width_bottom = 10
 border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eaek8"]
+bg_color = Color(1, 0.21268, 0.159696, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.858824, 0.713726, 0, 1)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
@@ -428,6 +506,8 @@ BlueButton/styles/normal = SubResource("StyleBoxFlat_i2gin")
 BlueButton/styles/pressed = SubResource("StyleBoxFlat_v7bx5")
 BluePanelContainer/base_type = &"PanelContainer"
 BluePanelContainer/styles/panel = SubResource("StyleBoxFlat_lh0n3")
+BluePanelContainerAscended/base_type = &"PanelContainer"
+BluePanelContainerAscended/styles/panel = SubResource("StyleBoxFlat_u5om4")
 Button/constants/outline_size = 8
 Button/styles/hover = SubResource("StyleBoxFlat_6bojs")
 Button/styles/normal = SubResource("StyleBoxFlat_j6kt4")
@@ -436,6 +516,12 @@ CheckBox/colors/font_outline_color = Color(0, 0, 0, 1)
 CheckBox/constants/outline_size = 8
 DarkBrownPanelContainer/base_type = &"PanelContainer"
 DarkBrownPanelContainer/styles/panel = SubResource("StyleBoxFlat_lrxfy")
+DarkBrownPanelContainerAscended/base_type = &"PanelContainer"
+DarkBrownPanelContainerAscended/styles/panel = SubResource("StyleBoxFlat_gf6hc")
+GreyPanelContainer/base_type = &"PanelContainer"
+GreyPanelContainer/styles/panel = SubResource("StyleBoxFlat_jjiah")
+GreyPanelContainerAscended/base_type = &"PanelContainer"
+GreyPanelContainerAscended/styles/panel = SubResource("StyleBoxFlat_kubhb")
 Label/colors/font_outline_color = Color(0, 0, 0, 1)
 Label/constants/outline_size = 8
 Label/font_sizes/font_size = 32
@@ -452,6 +538,8 @@ PurpleButton/styles/normal = SubResource("StyleBoxFlat_refw3")
 PurpleButton/styles/pressed = SubResource("StyleBoxFlat_gfera")
 PurplePanelContainer/base_type = &"PanelContainer"
 PurplePanelContainer/styles/panel = SubResource("StyleBoxFlat_xycu3")
+PurplePanelContainerAscended/base_type = &"PanelContainer"
+PurplePanelContainerAscended/styles/panel = SubResource("StyleBoxFlat_8nxyx")
 RedButton/base_type = &"Button"
 RedButton/styles/disabled = SubResource("StyleBoxFlat_lckoa")
 RedButton/styles/hover = SubResource("StyleBoxFlat_jiyny")
@@ -459,6 +547,8 @@ RedButton/styles/normal = SubResource("StyleBoxFlat_vyoa2")
 RedButton/styles/pressed = SubResource("StyleBoxFlat_lwrfe")
 RedPanelContainer/base_type = &"PanelContainer"
 RedPanelContainer/styles/panel = SubResource("StyleBoxFlat_vyaib")
+RedPanelContainerAscended/base_type = &"PanelContainer"
+RedPanelContainerAscended/styles/panel = SubResource("StyleBoxFlat_eaek8")
 TealPanelContainer/base_type = &"PanelContainer"
 TealPanelContainer/styles/panel = SubResource("StyleBoxFlat_vmrmf")
 TealPanelContainerAscended/base_type = &"PanelContainer"

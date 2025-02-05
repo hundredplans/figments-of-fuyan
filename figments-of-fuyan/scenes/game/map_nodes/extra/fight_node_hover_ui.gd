@@ -11,6 +11,8 @@ func _process(_delta: float) -> void:
 
 func setInfo(map_node_data: SavedDataFight) -> void:
 	var area: AreaGD = Game.getArea()
+	if area.getProgress() < 5 and map_node_data.map_location.progress > 5: queue_free(); return
+	
 	var level_info: LevelInfo = Helper.getFofInfoID(LevelInfo, map_node_data.level_info.id)
 	
 	LevelLabel.text = str(area.getWorldDifficulty()) + "-" + str(map_node_data.map_location.progress) + ": " + str(level_info.name)
@@ -52,11 +54,9 @@ func setInfo(map_node_data: SavedDataFight) -> void:
 	
 func onAddUIBox(card_data: SavedDataCard) -> Control:
 	var UIBox: Control = UIBoxPacked.instantiate()
-	var card_info: CardInfo = Helper.getFofInfoID(CardInfo, card_data.id)
-	var has_tool: bool = card_data.tool_data != null
 	
 	UIBoxParent.add_child(UIBox)
-	UIBox.setInfo(card_info, card_data, has_tool)
+	UIBox.setInfo(card_data)
 	return UIBox
 	
 func setMouseCenter(mouse_position: Vector2) -> void:

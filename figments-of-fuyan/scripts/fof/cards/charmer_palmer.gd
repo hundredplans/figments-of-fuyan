@@ -9,7 +9,7 @@ func onProcessAction(action: Action) -> void:
 	if isValidTrauma(action) and action.Defender in valid_cards:
 		onPushAction(TraumaAction.new(self, action))
 
-func onTrauma(death_action: DeathAction) -> void:
+func onTrauma(_death_action: DeathAction) -> void:
 	onPushAction(StatAction.new(StatInfo.new(self, Game.Stats.ATTACK, 1)))
 
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
@@ -23,7 +23,6 @@ func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectT
 func onActiveEffectPre(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
 	super(active_effect, PickedTile, active_effect_tiles)
 	if active_effect is ActiveAbilityDatastore and active_effect.name == "Charming Stance":
-		var cards: Array = active_effect_tiles.pickable_tiles.map(func(x: TileGD): return Game.getAllyFieldCard(x, team))
 		onForceAction(ChangeTileRotationAction.new(self, Game.getRelativeTileRotation(Tile, PickedTile)))
 	
 func onPickable(x: TileGD) -> bool:
@@ -69,7 +68,7 @@ func getDescription() -> String:
 	return super()
 
 const IN_ALLY_WITH_BUFF_VISION_BONUS: float = 0.25
-func onUnitSpecificTransforms(tiles_to_value: Dictionary, DFL: DefaultFightLogic) -> void:
-	for Tile in tiles_to_value:
-		var vision_bonus: int = valid_cards.filter(func(x: CardGD): return Tile in x.getVisibleGameObjects()).size() * IN_ALLY_WITH_BUFF_VISION_BONUS
-		tiles_to_value[Tile] += vision_bonus
+func onUnitSpecificTransforms(tiles_to_value: Dictionary, _DFL: DefaultFightLogic) -> void:
+	for TransformTile: TileGD in tiles_to_value:
+		var vision_bonus: float = valid_cards.filter(func(x: CardGD): return TransformTile in x.getVisibleGameObjects()).size() * IN_ALLY_WITH_BUFF_VISION_BONUS
+		tiles_to_value[TransformTile] += vision_bonus

@@ -5,12 +5,10 @@ signal entered
 signal finished
 signal create_screen
 signal create_world_scene
+@warning_ignore("unused_signal")
 signal load_level
 signal hovered
 signal pressed
-
-@warning_ignore("unused_signal")
-
 
 var is_finished: bool
 var is_entered: bool

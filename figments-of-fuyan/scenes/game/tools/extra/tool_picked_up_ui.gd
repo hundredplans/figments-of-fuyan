@@ -34,12 +34,12 @@ func setInfo(_Tool: ToolGD, _save_file: SaveFileGD, remove_dispose: bool = false
 			ToolbeltSlots.add_child(PanelButton)
 			continue
 			
-		var ToolIcon: Control = ToolIconPacked.instantiate()
-		ToolbeltSlots.add_child(ToolIcon)
+		var NewToolIcon: Control = ToolIconPacked.instantiate()
+		ToolbeltSlots.add_child(NewToolIcon)
 		var ToolbeltTool: ToolGD = save_file.tool_belt[i]
-		ToolIcon.custom_minimum_size = Vector2(80, 80)
-		ToolIcon.setInfo(ToolbeltTool)
-		ToolIcon.pressed.connect(onToolPressed)
+		NewToolIcon.custom_minimum_size = Vector2(80, 80)
+		NewToolIcon.setInfo(ToolbeltTool)
+		NewToolIcon.pressed.connect(onToolPressed)
 	
 	if remove_dispose:
 		DisposeLabel.visible = false

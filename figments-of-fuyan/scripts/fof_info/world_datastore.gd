@@ -62,6 +62,7 @@ class_name WorldDatastore extends Resource
 	"4": 0.5,
 	"5": 1.0
 }
+@export var LIMIT_ENCOUNTER_AMOUNT_PER_SEGMENT: int = 4
 @export_group("")
 
 static func getInfoPath() -> String: return "res://resources/datastore/world"

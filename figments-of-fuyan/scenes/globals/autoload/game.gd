@@ -158,7 +158,7 @@ func getRelativeTileRotation(Tile: TileGD, _Tile: TileGD) -> int:
 	for i in range(cube_directions.size()):
 		var new_pos: Vector3 = cube_directions[i] + Tile.getCoordsHeightless()
 		
-		each_tile_distance.append([i, getCoordsDistance(_Tile.getCoords(), Vector4i(new_pos.x, new_pos.y, new_pos.z, 0))])
+		each_tile_distance.append([i, getCoordsDistance(_Tile.getCoords(), Vector4i(int(new_pos.x), int(new_pos.y), int(new_pos.z), 0))])
 	each_tile_distance.sort_custom(func(x: Array, y: Array): return x[1] < y[1])
 	return each_tile_distance[0][0]
 #endregion
@@ -188,7 +188,7 @@ func getEnemyUnits(team: int = 0) -> Array:
 	return get_tree().get_nodes_in_group("FieldCardsGD").filter(func(x: CardGD): return x.team != team)
 
 func getNewFieldCard(id: int, Tile: TileGD, team: int, tile_rotation: int, ascended: bool = false, awakened_in_combat: bool = false) -> CardGD:
-	var level: LevelGD = get_tree().get_nodes_in_group("LevelsGD")[0]
+	var level: LevelGD = Game.getLevel()
 	var Card: CardGD = SavedData.onLoadModel(getBaseCard(id, Tile, team, tile_rotation, ascended), level)
 	if awakened_in_combat: Card.setAwakenedInCombat(awakened_in_combat)
 	return Card
@@ -227,7 +227,7 @@ func getVisibleFieldCards(team: int = 0) -> Array:
 			cards[_Card] = null
 	return cards.keys()
 	
-func onCreateRevealedDatastore(Revealed: GameObjectGD, _owner: FofGD, team: int = -1) -> RevealedDatastore:
+func onCreateRevealedDatastore(_owner: FofGD, team: int = -1) -> RevealedDatastore:
 	var revealed_datastore := RevealedDatastore.new()
 	var revealed_id: int = randi()
 	revealed_datastore.setInfo(_owner, revealed_id, team)
@@ -281,6 +281,7 @@ func onSortByMaxSpeed(Card: CardGD, _Card: CardGD) -> bool:
 
 #region Movement Range
 func getsetMovementRange(Card: CardGD) -> Array:
+	if Card == null: return []
 	get_tree().call_group("FieldCardsGD", "setEnemyInMovementRange", false)
 	get_tree().call_group("LevelTilesGD", "setMovementPath", null)
 	
@@ -290,7 +291,6 @@ func getsetMovementRange(Card: CardGD) -> Array:
 	
 	var all_cards_tiles: Array = get_tree().get_nodes_in_group("FieldCardsGD").map(func(x: CardGD): return x.Tile)
 	
-	var card_top: float = Card.info.top + Card.position.y
 	tiles = tiles.filter(func(x: TileGD): return !x.isSolid() and x not in all_cards_tiles and x.isBelowMaxMovementHeight(Card)) # Check for solidity
 	for Tile in tiles:
 		var astar := AStar3D.new()
@@ -381,13 +381,10 @@ func onCreateGainShillings(shilling_amount: int, parent: Node) -> MapEffectGD:
 
 #region Tooltips
 const TOOLTIP_PACKED_PATH: String = "res://scenes/common/tooltip/tooltip.tscn"
-const TOOLTIP_DELAY: float = 0.3
 var Tooltip: Control
 func onMouseInUITooltip(state: bool, item: Variant = null, parent: Control = null, create_inner_tooltips: bool = true, offset := Vector2(30, 0)) -> void:
 	if state and Tooltip == null:
 		if item is Array and item.is_empty(): return
-		
-		await get_tree().create_timer(TOOLTIP_DELAY)
 		if !(state and Tooltip == null): return
 		
 		if item is not Array: item = [item]
@@ -452,11 +449,11 @@ func onCreateBaseCard(id: int, ascended: bool = false, tool_data: SavedDataTool 
 #region Boons
 func isBoonAvailable(id: int, extra_ids: Array = []) -> bool:
 	var boons: Array = save_file.boons 
-	return id not in extra_ids and boons.any(func(x: BoonGD): return !(x.info.id == id and x.ascended))
+	return id not in extra_ids and (boons.is_empty() or !boons.any(func(x: BoonGD): return x.info.id == id and x.ascended))
 	
 func isBoonAvailableUnascended(id: int) -> bool: # Does an unascended version of the Boon exist in the player's deck
 	var boons: Array = save_file.boons 
-	return boons.any(func(x: BoonGD): x.info.id == id and !x.ascended)
+	return boons.any(func(x: BoonGD): return x.info.id == id and !x.ascended)
 	
 func isBoonInGame(id: int) -> bool:
 	return save_file.boons.any(func(x: BoonGD): return x.info.id == id)

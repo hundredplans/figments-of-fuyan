@@ -8,6 +8,11 @@ func onFofInit() -> void:
 	var odds: Resource = load(info.LOTTERY_COCONUT_DATASTORE_PATH)
 	stepped_on_choice = Random.getRandomKey(Random.onConvertPercentOdds(odds.getDict()))
 
+func onLoadDataLevelFofInit() -> void:
+	super()
+	var odds: Resource = load(info.LOTTERY_COCONUT_DATASTORE_PATH)
+	stepped_on_choice = Random.getRandomKey(Random.onConvertPercentOdds(odds.getDict()))
+
 func onProcessAction(action: Action) -> void:
 	super(action)
 	if action.post:
@@ -20,14 +25,14 @@ func onIObject(action: Action) -> void:
 	var actions: Array = [ClearTileObjectAction.new(self)]
 	match stepped_on_choice:
 		"heal":
-			actions.append(StatAction.new(StatInfo.new(action.Card, Game.Stats.HEALTH, 1)))
-			onRemoveMoveAndAttackActions(action.Card)
+			onHeal(action, actions)
 		"minitool":
 			if !action.Card.getTool() != null:
 				var id: int = range(8, 13).pick_random()
 				var Tool: ToolGD = SavedData.onLoadModel(Helper.getFofInfoID(ToolInfo, id).saved_data.new(id, true), action.Card)
 				actions.append(AddToolAction.new(action.Card, Tool))
 				onRemoveMoveAndAttackActions(action.Card)
+			else: onHeal(action, actions)
 		"crab":
 			var Tile: TileGD = getRandomAdjacentTile()
 			if Tile != null:
@@ -36,7 +41,12 @@ func onIObject(action: Action) -> void:
 				stepped_on_card_public_id = action.Card.public_id
 				actions.append(AwakenAction.new(Card, Tile))
 				onRemoveMoveAndAttackActions(action.Card)
+			else: onHeal(action, actions)
 	onPushAction(actions)
+
+func onHeal(action: Action, actions: Array) -> void:
+	actions.append(StatAction.new(StatInfo.new(action.Card, Game.Stats.HEALTH, 1)))
+	onRemoveMoveAndAttackActions(action.Card)
 
 func onSave() -> SavedDataIObject:
 	ability_save['stepped_on_choice'] = stepped_on_choice

@@ -41,7 +41,6 @@ func onEntered() -> void:
 		return
 	
 func onGenerateEncounter() -> EncounterGD:
-	Game.save_file.onUpdateSafeEncounterCount(1)
 	var encounter_count: int = Game.save_file.getSafeEncounterCount()
 	var fight_roll: bool = Random.rollFloat(Game.area.getWorld().ENCOUNTER_COUNT_FIGHT_ODDS[str(encounter_count)])
 	if fight_roll:
@@ -64,7 +63,10 @@ func onCreateEncounterThatCanShowUp(encounter_infos: Array) -> EncounterGD:
 		if !encounter.canShowUp():
 			encounter.queue_free()
 			return onCreateEncounterThatCanShowUp(encounter_infos)
+			
 		Game.area.onAppendToEncouteredEncounterIds(encounter.info.id)
+		Game.save_file.onUpdateSafeEncounterCount(-Game.save_file.getSafeEncounterCount() if encounter_info.id == 7 else 1) # Mirror dimension
+		
 		return encounter
 	assert(false) # No valid encounters found
 	return null

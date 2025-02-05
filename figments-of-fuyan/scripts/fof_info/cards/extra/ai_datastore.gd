@@ -61,6 +61,8 @@ func onCardTurnPassed() -> void:
 		
 func onCheckDoubleAdjacentAndReceiving(Card: CardGD) -> bool:
 	var CardTile: TileGD = Card.getTile()
+	if CardTile == null: return false
+	
 	for Tile in enemies_to_tiles.values():
 		if Game.isAdjacentOrCloser(Tile, CardTile, ADJACENT_DISTANCE_TO_BREAK_RECEIVING) and Tile in Card.getVisibleTiles():
 			setIsReceiver(false)

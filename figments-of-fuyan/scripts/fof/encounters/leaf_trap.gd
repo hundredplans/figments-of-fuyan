@@ -1,8 +1,10 @@
 extends EncounterGD
 
+const PROGRESS_ABOVE_WHERE_CAN_SHOW_UP: int = 6
 const PAY_OPTION_SHILLINGS: int = 12
+
 func canShowUp() -> bool:
-	return anyRequirementMet()
+	return anyRequirementMet() and Game.area.getProgress() >= PROGRESS_ABOVE_WHERE_CAN_SHOW_UP
 	
 func isRequirementMet(option: EncounterOptionDatastore) -> bool:
 	match option.name:

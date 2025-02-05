@@ -24,9 +24,8 @@ func onPostAction() -> void:
 		var show_particles: bool = stat_info.show_particles
 		var turns: int = stat_info.turns
 		
-		var original_types: Array = types.duplicate()
-		var original_values: Array = values.duplicate()
-		
+		var new_types: Array = []
+		var reverse_values: Array = []
 		while(!types.is_empty()):
 			var type: int = types.pop_front()
 			var value: int = values.pop_front()
@@ -82,10 +81,13 @@ func onPostAction() -> void:
 						
 			if difference != 0:
 				Card.onUpdateStat(type, difference, show_particles)
+				if turns > 0:
+					new_types.append(type)
+					reverse_values.append(difference * -1)
 	
 		if turns > 0:
 			onPushAction(DelayedStatAction.new(
-				StatInfo.new(Card, original_types, original_values.map(func(x: int): return x * -1), turns, absolute, show_particles, true)))
+				StatInfo.new(Card, new_types, reverse_values, turns, absolute, show_particles, true)))
 		Card.update_stats.emit()
 	
 func getLogInfo() -> Array:

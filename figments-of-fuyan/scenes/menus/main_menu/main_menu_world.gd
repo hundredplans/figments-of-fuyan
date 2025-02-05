@@ -13,7 +13,6 @@ signal champion_pressed
 signal travel
 signal start
 signal create_ui
-signal backed
 
 var UI: Control
 @onready var env: WorldEnvironment = %WorldEnvironment

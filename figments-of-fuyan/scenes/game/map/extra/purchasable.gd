@@ -1,6 +1,7 @@
 class_name Purchasable extends Control
 
 signal pressed
+@warning_ignore("unused_signal")
 signal create_screen
 
 var item: FofGD

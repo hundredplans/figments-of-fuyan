@@ -49,7 +49,7 @@ func onMouseInUI(state: bool) -> void:
 	mouse_in_ui = state
 	mouse_signal.emit(mouse_in_ui)
 	
-	if !taken and item is FofGD:
+	if !taken and (item is BoonGD or item is ToolGD):
 		Game.onMouseInUITooltip(mouse_in_ui, item, self, true)
 		
 func _input(_event: InputEvent) -> void:

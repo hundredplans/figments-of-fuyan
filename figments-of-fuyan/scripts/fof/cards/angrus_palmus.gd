@@ -11,7 +11,7 @@ func onProcessAction(action: Action) -> void:
 func getDescription() -> String:
 	return super()
 	
-func onRampage(death_action: DeathAction) -> void:
+func onRampage(_death_action: DeathAction) -> void:
 	var FieldEffect: FieldEffectGD = onAddBaseFieldEffect(2, self)
 	field_effect_public_id = FieldEffect.public_id
 	

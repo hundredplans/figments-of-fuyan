@@ -10,6 +10,8 @@ func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectT
 	super(active_effect)
 	if active_effect is ActiveAbilityDatastore and active_effect.name == "Cocus Pocus":
 		var allies: Array = Game.getAllyUnits(team)
+		allies.erase(self)
+		
 		var tiles: Array = Game.getAllyUnits(team).map(func(x: CardGD): return x.Tile)
 		
 		var pickable_allies: Array = allies.filter(func(x: CardGD): return x.isHealable())
@@ -20,7 +22,7 @@ func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectT
 		return ActiveEffectTiles.new(tiles, pickable_allies.map(func(x: CardGD): return x.Tile))
 	return null
 	
-func onActiveEffectPre(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
+func onActiveEffectPre(_active_effect: ActiveEffectDatastore, PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles) -> void:
 	onForceAction(ChangeTileRotationAction.new(self, Game.getRelativeTileRotation(Tile, PickedTile)))
 	
 func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:

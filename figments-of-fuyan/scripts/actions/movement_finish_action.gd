@@ -26,11 +26,16 @@ func onPostAction() -> void:
 	
 	if Card.isEnemy(0) and Card.turn_state == Game.TurnStates.ACTIVE:
 		var is_alive: bool = Card.isAlive()
-		var actions: Array = [ChangeTurnStateAction.new(Card, Game.TurnStates.PASSED)]
-		
+		var actions: Array = []
 		if phase in [Game.Phases.AI, Game.Phases.NEUTRAL]:
-			actions.append(AITurnStartAction.new(Card.team) if (!retry_ai_turn or !is_alive) else AITurnAction.new(Card, false, false, previous_allies, previous_enemies))
+			var retry: bool = retry_ai_turn and is_alive
+			if retry:
+				actions.append(AITurnAction.new(Card, false, false, previous_allies, previous_enemies))
+			else:
+				actions.append(ChangeTurnStateAction.new(Card, Game.TurnStates.PASSED))
+				actions.append(AITurnStartAction.new(Card.team))
 		else:
+			actions.append(ChangeTurnStateAction.new(Card, Game.TurnStates.PASSED))
 			actions.append(CameraSpectateGroupAction.new(0))
 		
 		onAppendAction(actions)

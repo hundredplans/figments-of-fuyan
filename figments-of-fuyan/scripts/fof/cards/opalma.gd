@@ -5,7 +5,7 @@ func onProcessAction(action: Action) -> void:
 	if isValidOnHit(action):
 		onPushAction(OnHitAction.new(self, action))
 
-func onHit(damage_action: DamageAction, attack_action: AttackAction) -> void:
+func onHit(damage_action: DamageAction, _attack_action: AttackAction) -> void:
 	var heal: int = damage_action.damage
 	
 	if heal > 0:
@@ -16,6 +16,5 @@ func onHit(damage_action: DamageAction, attack_action: AttackAction) -> void:
 		elif ascended:
 			picked_allies = allies
 			
-		var actions: Array = []
-		for ally in picked_allies:
-			onPushAction(StatAction.new(StatInfo.new(ally, Game.Stats.HEALTH, heal)))
+		var actions: Array = picked_allies.map(func(x: CardGD): return StatAction.new(StatInfo.new(x, Game.Stats.HEALTH, heal)))
+		onPushAction(actions)

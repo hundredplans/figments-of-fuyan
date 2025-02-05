@@ -2,7 +2,7 @@ class_name LevelGD extends FofGD
 
 const START_HAND_SIZE: int = 4
 const AI_TURNS_UNTIL_ADVENTURER: int = 10
-const CARD_PLACED_SPECTATE_DELAY: float = 1.5
+const CARD_PLACED_SPECTATE_DELAY: float = 1.0
 
 var energy: int
 var max_energy: int
@@ -17,10 +17,12 @@ var save_file: SaveFileGD
 var old_player_vision: Array
 var player_card_last_seen_turn: int # Default -1 which means they were never seen, if this is > 10 or -1 every enemy has the adventurer tag
 var level_area_datastore: LevelAreaDatastore # Specific to each areao
+var recent_camera_position: Vector3 # Not saved
 
 signal set_spectate_card
 signal energy_changed
 signal request_camera_data
+signal request_camera_position_update
 signal phase_changed
 signal draw_card
 signal remove_card
@@ -39,9 +41,6 @@ signal set_rewards # Signal for area to interpret
 signal game_started
 signal game_started_post
 signal game_ended
-signal tool_picked_up
-signal cards_picked_up
-signal reward_taken # Signal for rewards ui 
 signal rewards_finished # Signal for area to interpret
 signal tool_removed
 signal update_active_effects
@@ -58,7 +57,7 @@ func onSave() -> SavedData:
 	var old_player_vision_public_ids: Array = old_player_vision.map(func(x: GameObjectGD): return x.public_id)
 	
 	return SavedDataLevel.new(info.id, false, public_id, data, enemy_spawns, getFieldCards(), phase, level_camera_data, energy, max_energy,\
- 	is_ended, is_elite, rewards, anti_boons, old_player_vision_public_ids, player_card_last_seen_turn, level_area_datastore)
+ 	is_elite, is_ended, rewards, anti_boons, old_player_vision_public_ids, player_card_last_seen_turn, level_area_datastore)
 
 func onClear() -> void:
 	queue_free()
@@ -198,10 +197,10 @@ func onProcessAction(action: Action) -> void:
 		elif action is AwakenAction:
 			onCardAwakened(action)
 		elif action is FinishAwakenAction:
+			onCheckSkipHandPhase()
 			onCardFinishedAwakening(action)
 		elif action is RemoveCardAction:
 			remove_card.emit(action.Card)
-			onCheckSkipHandPhase()
 		elif action is InsertAction:
 			draw_card.emit(action.Card)
 		elif action is EnergyAction:
@@ -227,7 +226,7 @@ func onProcessAction(action: Action) -> void:
 			boon_ascended.emit(action.Boon)
 		elif action is OccupyAction:
 			tile_occupied.emit(action.Card, action.Tile)
-			onRecalculateAITurnOccupy(action, action.Card, action.Tile)
+			onRecalculateAITurnOccupy(action, action.Card)
 		elif action is EndGameAction and !is_ended:
 			setRewards(action.team != 0)
 		elif action is StatAction:
@@ -346,6 +345,9 @@ func getAllySpectateObject() -> CardGD:
 func onCameraChange(action: CameraChangeAction) -> void:
 	camera_change_action.emit(action.SpectateObject, getSpectateObject())
 	SpectateObject = action.SpectateObject
+	
+func onRequestCameraPositionUpdate() -> void:
+	request_camera_position_update.emit()
 #endregion
 
 #region Game Ended
@@ -387,7 +389,7 @@ func isCardValidForRecalculateAITurn(Card: CardGD, AICard: CardGD, include_self:
 	if AICard.isAlly(Card.team) and include_allies and (!in_vision or Card in AICard.getVisibleFieldCardsAllies()): return true
 	return false
 			
-func onRecalculateAITurnOccupy(action: OccupyAction, Card: CardGD, Tile: TileGD) -> void:
+func onRecalculateAITurnOccupy(action: OccupyAction, Card: CardGD) -> void:
 	var finish_action: Action = Game.ActionManagerReference.onFindFirstAction(MovementFinishAction)
 	
 	if finish_action == null or !finish_action.Card.isEnemy(0): return
@@ -427,21 +429,26 @@ func onCardAwakened(action: AwakenAction) -> void:
 		
 	
 func onCardFinishedAwakening(action: FinishAwakenAction) -> void:
-	if !action.Card.isLevelVisible() or phase == Game.Phases.START: return
+	if !action.Card.isLevelVisible(): return
+	
+	if phase == Game.Phases.START:
+		onPushAfterAction(CameraChangeAction.new(action.Card), ChangePhaseAction)
+		return
 	
 	var spectate_awakened_card_temporarily := CameraChangeAction.new(action.Card)
 	spectate_awakened_card_temporarily.setActionDelay(CARD_PLACED_SPECTATE_DELAY)
 	var actions: Array = [spectate_awakened_card_temporarily]
 	
 	if phase == Game.Phases.HAND:
-		var finish_action: ChangePhaseAction = Game.ActionManagerReference.onFindFirstAction(ChangePhaseAction)
-		if finish_action == null: return
 		setLastAllySpectateObject()
+		if LastAllySpectateObject == null: return
+		
 		actions.append(CameraChangeAction.new(LastAllySpectateObject))
-		onPushAfterAction(actions, finish_action)
-	else:
-		actions.append(CameraChangeAction.new(getSpectateObject()))
-		onPushAction(actions)
+		onPushAfterAction(actions, ChangePhaseAction)
+		return
+		
+	actions.append(CameraChangeAction.new(getSpectateObject()))
+	onPushAction(actions)
 	
 var LastAllySpectateObject: CardGD
 func setLastAllySpectateObject() -> void:

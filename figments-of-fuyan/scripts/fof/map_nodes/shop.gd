@@ -15,14 +15,11 @@ var items: Array # Array of saved datas
 #region Load / Save
 func onFofInit() -> void:
 	super()
-	world_datastore = Game.area.getWorld()
-	price_variance = world_datastore.default_shop_variance
-	
-	onAddLocalForeignCardsBoonTools(world_datastore, Game.area, Game.save_file)
+	onAddLocalForeignCardsBoonTools()
 	
 	if isFirstShop(): return # Doesn't activate on first shop
-	onAddRemoveCard(world_datastore)
-	onAddTransformation(world_datastore)
+	onAddRemoveCard()
+	onAddTransformation()
 	
 func onSave() -> SavedDataMapNode:
 	return SavedDataShop.new(info.id, false, public_id, map_location, links, is_entered, is_finished, rotation.y, items)
@@ -30,10 +27,12 @@ func onSave() -> SavedDataMapNode:
 func onLoadData(data: SavedData) -> void:
 	super(data)
 	items = data.items
+	world_datastore = Game.area.getWorld()
+	price_variance = world_datastore.default_shop_variance
 #endregion
 
 #region Setting Prices
-func onAddLocalForeignCardsBoonTools(world_datastore: WorldDatastore, area: AreaGD, save_file: SaveFileGD) -> void:
+func onAddLocalForeignCardsBoonTools() -> void:
 	var info_types: Array = [CardInfo, BoonInfo, ToolInfo]
 	for i in range(info_types.size()):
 		var type: GDScript = info_types[i]
@@ -59,10 +58,10 @@ func getForeign(info_type: GDScript, j: int) -> bool:
 	
 func isFirstShop() -> bool: return map_location.progress == 0 # Fix this
 	
-func onAddRemoveCard(world_datastore: WorldDatastore) -> void:
+func onAddRemoveCard() -> void:
 	onAddToItems(PriceDatastore.new(world_datastore.remove_card_price, SavedDataMapEffect.new(3, true)))
 
-func onAddTransformation(world_datastore: WorldDatastore) -> void:
+func onAddTransformation() -> void:
 	var transformation_ids: Array = [4, 5, 6]
 	var id: int = transformation_ids.pick_random()
 	var picked_data: SavedData = Helper.getFofInfoID(MapEffectInfo, id).saved_data.new(id, true)
@@ -87,13 +86,14 @@ func onEntered() -> void:
 	onCreateScreen()
 
 #region Rolls
-func onRerollBoon(id: int, rarity: Game.Rarities, ascended: bool) -> PriceDatastore:
+func onRerollBoon() -> PriceDatastore:
 	var available_boons: Array = Game.getAvailableBoons()
 	return onRollFof(available_boons, BoonInfo)
 		
 func onRollFof(objects: Array, script_type: GDScript, foreign: bool = false) -> PriceDatastore:
 	if objects.is_empty(): return null
 	var odds: Dictionary = world_datastore.shop_rarity_odds.getDictionary()
+	@warning_ignore("int_as_enum_without_cast")
 	var rarity: Game.Rarities = int(Random.getRandomKey(Random.onConvertPercentOdds(odds)))
 	var rarity_objects: Array = objects.filter(func(x: FofInfo): return x.rarity == rarity)
 	
@@ -115,13 +115,13 @@ func onRollFof(objects: Array, script_type: GDScript, foreign: bool = false) -> 
 		ascend = false
 	
 	picked_data.ascended = ascend
-	var fof_name: String = picked_info.getFofName().to_lower() # "Boon", "Card"
+	var fof_name: String = picked_info.get_script().getFofName().to_lower() # "Boon", "Card"
 	var base_price: int = world_datastore.get(fof_name + "_rarity_prices").getByRarity(picked_info.rarity)
 	if script_type == CardInfo and foreign: # Extra base_price for foreign cards
 		base_price += world_datastore.foreign_card_base_price_increase
 	
 	if ascend:
-		base_price *= ((100 + world_datastore.ascended_items_price_percentage_increase) / 100.0)
+		base_price = int(base_price * ((100 + world_datastore.ascended_items_price_percentage_increase) / 100.0))
 		base_price += world_datastore.ascended_items_flat_after_percentage_increase
 	var final_price: int = onAddPriceVariance(base_price)
 	final_price = onApplyFinalPriceMultipliers(final_price)
@@ -132,10 +132,10 @@ func onRollFof(objects: Array, script_type: GDScript, foreign: bool = false) -> 
 #region Final Price
 func onApplyFinalPriceMultipliers(price: int) -> int:
 	if Game.save_file.getChampionCard().info.id == 2:
-		if !isHoly(): price *= DIVINUS_NOT_ON_HOLY_PATH_PRICE_INCREASE
+		if !isHoly(): price = int(price * DIVINUS_NOT_ON_HOLY_PATH_PRICE_INCREASE)
 		
 	elif Game.save_file.getChampionCard().info.id == 3: # Quentin increase price
-		price *= QUENTIN_CRIMINAL_PRICE_INCREASE
+		price = int(price * QUENTIN_CRIMINAL_PRICE_INCREASE)
 		
 	return price
 #endregion

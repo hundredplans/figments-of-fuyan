@@ -19,7 +19,7 @@ func setText(_text: String) -> void:
 	
 	onFofIconsReplace(regex, fancy_text)
 	onFofImagesReplace(regex, fancy_text)
-	onColoredTextReplace(regex, fancy_text)
+	onColoredTextReplace(regex)
 	
 	text = text.insert(0, "[outline_size=" + str(settings.outline_size) + "][font=" + \
 	ROBOTO_FONT_PATH + "][font_size={" + str(settings.font_size) + "}]")
@@ -33,7 +33,7 @@ func setText(_text: String) -> void:
 		text = text.insert(0, "[right]")
 		text += "[/right]"
 
-func onColoredTextReplace(regex: RegEx, fancy_text: FancyText) -> void:
+func onColoredTextReplace(regex: RegEx) -> void:
 	for rarity in Game.Rarities.values():
 		var colored_text: String = Game.getRarityString(rarity)
 		regex.compile("a?" + colored_text)
@@ -87,9 +87,9 @@ func onFofIconsReplace(regex: RegEx, fancy_text: FancyText) -> void:
 			
 func onFofImagesReplace(regex: RegEx, fancy_text: FancyText) -> void:
 	for image_fancy_text in fancy_text.images:
-		var compile_text: String = image_fancy_text.name
+		var compile_text: String = "\\b" + image_fancy_text.name + "\\b"
 		if image_fancy_text.capture_preceding_number_plus:
-			compile_text = compile_text.insert(0, "((\\[[0-9]*\\])?\\+?([0-9]*)?\\s)?")
+			compile_text = compile_text.insert(0, "((\\[[0-9]*\\])?\\+?-?([0-9]*)?\\s)?")
 		regex.compile(compile_text)
 		
 		while(true):

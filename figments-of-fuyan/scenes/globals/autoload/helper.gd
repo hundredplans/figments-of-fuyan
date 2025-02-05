@@ -11,6 +11,7 @@ var GDSCRIPT_TYPES: Array = [AreaInfo, LevelInfo, PalmLevelInfo, \
 	
 var fof_info_dict: Dictionary = {}
 func _ready() -> void:
+	Engine.max_fps = 60
 	admin_datastore = load(ADMIN_DATASTORE_PATH)
 	for type in GDSCRIPT_TYPES:
 		onRefreshFofInfoArray(type)
@@ -19,7 +20,8 @@ func onRefreshFofInfoArray(type: GDScript) -> void: # DEV
 	fof_info_dict[type] = {}
 	if type not in [TileInfo, ObjectInfo]:
 		var DIR_PATH: String = type.getInfoPath()
-		var fof_info_array: Array = getFilesRecursive(DIR_PATH).map(func(x: String): return load(x)).filter(func(x: FofInfo): return is_instance_of(x, type))
+		var fof_info_array: Array = getFilesRecursive(DIR_PATH)\
+			.map(func(x: String): return load(x)).filter(func(x: FofInfo): return is_instance_of(x, type))
 		
 		if type == CardInfo:
 			var ALT_DIR_PATH: String = "res://test/test_cards/"

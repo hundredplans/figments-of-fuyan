@@ -1,4 +1,4 @@
-class_name StaggerGD extends StatusEffectGD
+class_name DisarmGD extends StatusEffectGD
 
 func onProcessAction(action: Action) -> void:
 	super(action)

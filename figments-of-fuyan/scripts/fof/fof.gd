@@ -29,7 +29,17 @@ func onPushAction(actions: Variant, action_owner: Variant = self) -> void:
 		action.owner = action_owner
 		push_action.emit(action)
 		
-func onPushAfterAction(actions: Variant, after_action: Action, action_owner: Variant = self) -> void:
+# If action is succesfully found
+func onPushAfterAction(actions: Variant, action_or_script: Variant, action_owner: Variant = self) -> bool:
+	var after_action: Action
+	if action_or_script is GDScript:
+		var action: Action = Game.ActionManagerReference.onFindFirstAction(action_or_script)
+		if action == null: return false
+		after_action = action
+		
+	elif action_or_script is Action:
+		after_action = action_or_script
+	
 	if actions is Action:
 		actions = [actions]
 		
@@ -38,6 +48,7 @@ func onPushAfterAction(actions: Variant, after_action: Action, action_owner: Var
 		action.owner = action_owner
 		
 	push_after_action.emit(actions, after_action)
+	return true
 	
 func onAppendAction(actions: Variant, action_owner: Variant = self) -> void:
 	if actions is Action: actions = [actions]

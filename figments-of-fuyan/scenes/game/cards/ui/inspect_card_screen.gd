@@ -8,6 +8,7 @@ signal mouse_in_ui
 @export var PassedTurnIcon: Texture2D
 @export var AwakenedInCombatIcon: Texture2D
 @export var TemporaryCardIcon: Texture2D
+@export var NeutralUnitIcon: Texture2D
 
 @onready var InspectSubviewport: SubViewport = %InspectSubviewport
 @onready var CardSpot: Control = %CardSpot
@@ -34,7 +35,8 @@ func setInfo(_Card: CardGD) -> void:
 		TooltipItem.setInfo(FofObject, true)
 		TooltipItem.mouse_in_ui.connect(onTooltipMouseEntered.bind(TooltipItem))
 		
-		
+	onCreateCustomTooltip(Card.team == 2,\
+		"This unit is neutral, it can be attacked by both teams and acts independently", "Neutral Unit", NeutralUnitIcon)
 	onCreateCustomTooltip(Card.turn_state == Game.TurnStates.PASSED,\
 		"This unit's turn has passed, it has to wait until it's next turn to move or use abilities", "Passed Turn", PassedTurnIcon)
 	onCreateCustomTooltip(Card.turn_state == Game.TurnStates.ACTIVE,\

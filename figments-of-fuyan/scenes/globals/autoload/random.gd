@@ -22,7 +22,7 @@ static func getRandomKeyVariant(odds: Dictionary) -> Variant:
 static func onConvertPercentOdds(odds: Dictionary) -> Dictionary:
 	var new_odds: Dictionary = {}
 	for key in odds.keys():
-		new_odds[key] = (odds[key] / 100)
+		new_odds[key] = (odds[key] / 100.0)
 	return new_odds
 
 static func getBool() -> bool:
@@ -52,5 +52,6 @@ static func getRandomFofInRarity(type: GDScript, rarity: Game.Rarities) -> Saved
 	return data
 	
 static func getRandomFofByOdds(type: GDScript, odds: Dictionary = Game.area.getWorld().base_rarity_odds.getDictionary()) -> SavedData:
+	@warning_ignore("int_as_enum_without_cast")
 	var rarity: Game.Rarities = int(Random.getRandomKey(Random.onConvertPercentOdds(odds)))
 	return Random.getRandomFofInRarity(type, rarity)

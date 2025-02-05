@@ -76,6 +76,7 @@ func onLoadMap() -> void:
 func onLoadMapAfterScenes() -> void:
 	if is_init:
 		init_load.emit()
+		is_init = false
 		return
 		
 	var map_node: MapNodeGD = getEnteredMapNode()
@@ -224,7 +225,7 @@ func setEmptySpotsIDS(unique_node_ids: Array, map_node_odds: Dictionary, Card: C
 		
 	var shops: Array = []
 	if getWorldDifficulty() == 1:
-		shops = [SegmentNode.new(6, false, true)]
+		shops = [SegmentNode.new(6, false, is_divinus)]
 	else:
 		var is_first_shop_holy: bool = Random.getBool()
 		shops = [SegmentNode.new(6, int(is_first_shop_holy)),\
@@ -233,6 +234,7 @@ func setEmptySpotsIDS(unique_node_ids: Array, map_node_odds: Dictionary, Card: C
 	if getWorldDifficulty() > 1 and Random.rollFloat(getWorld().extra_shop_odds / 100.0):
 		shops.append(SegmentNode.new(6, Random.getBool(), Random.getBool()))
 		
+	var encounter_limiter: Array = [0, 0] # Limited to LIMIT_ENCOUNTER_AMOUNT_PER_SEGMENT
 	for empty_spot in empty_spots:
 		var is_holy: bool = empty_spot.links.any(func(x: EmptyMapNodeLink): return x.is_holy)
 		
@@ -259,7 +261,13 @@ func setEmptySpotsIDS(unique_node_ids: Array, map_node_odds: Dictionary, Card: C
 			var roll: String = Random.getRandomKey(map_node_odds_rollable[empty_spot.progress])
 			match roll:
 				"fight": empty_spot.id = 3; continue
-				"encounter": empty_spot.id = 5; continue
+				"encounter":
+					var segment: int = 1 if empty_spot.progress <= 5 else 2
+					if encounter_limiter[segment - 1] < getWorld().LIMIT_ENCOUNTER_AMOUNT_PER_SEGMENT:
+						encounter_limiter[segment - 1] += 1
+						empty_spot.id = 5
+					else: empty_spot.id = 3
+					continue
 		
 func onSelectUniqueNodeGeneration(unique_nodes: Array, empty_spot: EmptyMapNode) -> bool:
 	for segment_node in unique_nodes.filter(func(x: SegmentNode):\
@@ -316,8 +324,8 @@ func onCreateMapNodes() -> void:
 	var infos: Array = Helper.getFofInfoArray(MapNodeInfo)
 	for empty_spot in empty_spots:
 		var links: Array = empty_spot.links.map(func(x: EmptyMapNodeLink): return MapLink.new(x.empty_map_node.map_location, x.is_holy))
-		var info: MapNodeInfo = infos.filter(func(x: MapNodeInfo): return x.id == empty_spot.id)[0]
-		onCreateMapNode(info.saved_data.new(empty_spot.id, true, 0, empty_spot.map_location, links))
+		var map_node_info: MapNodeInfo = infos.filter(func(x: MapNodeInfo): return x.id == empty_spot.id)[0]
+		onCreateMapNode(map_node_info.saved_data.new(empty_spot.id, true, 0, empty_spot.map_location, links))
 	
 func onCreateMapNode(data: SavedDataMapNode) -> void:
 	var map_node: MapNodeGD = SavedData.onLoadModel(data, self)
@@ -483,6 +491,7 @@ func onCreateCardByEnergy(_cards: Array, energy: int, spawn_coords: Vector4i, pr
 	return card_data
 	
 func getCardsByRarity(original_cards: Array) -> Array:
+	@warning_ignore("int_as_enum_without_cast")
 	var rarity: Game.Rarities = int(Random.getRandomKey(Random.onConvertPercentOdds(getWorld().enemy_spawn_rarity_odds.getDictionary())))
 	var cards: Array = original_cards.filter(func(x: CardInfo): return x.rarity == rarity)
 	if cards.is_empty(): return getCardsByRarity(original_cards)
@@ -496,12 +505,20 @@ func setEnemySpawnsFromBudget(budget: int, enemy_spawn_amount: int, spawns: Arra
 	var lowest_cost: int = energies.min()
 	
 	var original_energy_combinations: Array = onGenerateCombinations(lowest_cost, highest_cost, enemy_spawn_amount)
+	print("Enemy Spawn Amount: " + str(enemy_spawn_amount))
+	print("Budget: " + str(budget))
+	print("Original Combainations: " + str(original_energy_combinations))
+	
 	var energy_combinations: Array = original_energy_combinations.filter(func(x: Array): return x.reduce(sum, 0) == budget)
+	
+	
+	print("End Combinations: " + str(energy_combinations))
+	print()
+	
 	var energy_combination: Array = []
 	if !energy_combinations.is_empty(): # Remove later
 		energy_combination = energy_combinations.pick_random()
-		print("USED ILLEGAL COMBINATION!")
-	else: energy_combination = original_energy_combinations.pick_random()
+	else: energy_combination = original_energy_combinations.pick_random(); print("USED ILLEGAL COMBINATION!")
 	
 	for i in range(energy_combination.size()):
 		var card_data: SavedDataCard = onCreateCardByEnergy(cards, energy_combination[i], spawns[i], progress, is_elite)
@@ -516,9 +533,9 @@ func sum(accum: int, number: int) -> int:
 	return accum + number
 	
 func onGenerateCombinations(x: int, y: int, n: int) -> Array: # Gpt assist
-	var range = range(x, y + 1) # Inclusive range from x to y
+	var combination_range = range(x, y + 1) # Inclusive range from x to y
 	var result = []
-	onCombineRecursive(range, n, [], result)
+	onCombineRecursive(combination_range, n, [], result)
 	return result
 
 func onCombineRecursive(arr: Array, n: int, current: Array, result: Array) -> void: # Gpt assist

@@ -8,7 +8,7 @@ func isOutOfCombatBehaviour() -> bool:
 func isCombatBehaviour() -> bool:
 	return false
 
-func getOutOfCombatTiles(Card: CardGD, tiles: Array, allies: Array, _enemies: Array) -> Dictionary:
+func getOutOfCombatTiles(Card: CardGD, tiles: Array, _allies: Array, _enemies: Array) -> Dictionary:
 	var enemy_tiles: Array = Card.ai_datastore.getEnemyTiles()
 	var tiles_by_value: Dictionary = {}
 	var max_distance: int
@@ -25,7 +25,7 @@ func getOutOfCombatTiles(Card: CardGD, tiles: Array, allies: Array, _enemies: Ar
 		tiles_by_value[Tile] *= ACCEPTER_MULTIPLIER
 	return tiles_by_value
 	
-func getCombatTiles(_Card: CardGD, tiles: Array, _attackables: Array, _allies: Array) -> Dictionary:
+func getCombatTiles(_Card: CardGD, _tiles: Array, _attackables: Array, _allies: Array) -> Dictionary:
 	return {}
 
 func sum(accum: int, value: int) -> int:

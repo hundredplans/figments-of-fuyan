@@ -1,5 +1,7 @@
 extends CardGD
 
+const AI_ABILITY_COOLDOWN: int = 2
+var ai_ability_cooldown_turns_left: int
 var remove_armor_next_turn: bool = false
 var armor_id: int
 
@@ -22,17 +24,28 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		var trait_data := SavedDataArmor.new(1, true, 0)
 		trait_data.armor = 1
 		armor_id = 1
+		ai_ability_cooldown_turns_left = AI_ABILITY_COOLDOWN
+		
 		onPushAction(AddOverworldTraitAction.new(self, OverworldTrait.new(trait_data, OverworldTrait.AddedBy.OTHER, true), true))
 		
 		onAbility()
 
 # Use ability if enemies are within DISTANCE tiles below
 const HARDENED_SHELL_ENEMY_DISTANCE_TO_USE: int = 4
-func onAIAbilityChecker(active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic) -> TileGD:
+func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic) -> TileGD:
 	var enemies: Array = getVisibleFieldCardsEnemies()
-	var use_ability: bool = !enemies.is_empty() and enemies.any(func(x: CardGD): return Game.getCoordsDistance(x.getCoords(), getCoords()) <= HARDENED_SHELL_ENEMY_DISTANCE_TO_USE)
+	var use_ability: bool = !enemies.is_empty() and ai_ability_cooldown_turns_left == 0 and\
+	enemies.any(func(x: CardGD): return Game.getCoordsDistance(x.getCoords(), getCoords()) <= HARDENED_SHELL_ENEMY_DISTANCE_TO_USE)
+	
 	return active_effect_tiles.pickable_tiles[0] if use_ability else null
 
 func onSave() -> SavedDataCard:
 	ability_save['armor_id'] = armor_id
+	ability_save['ai_ability_cooldown_turns_left'] = ai_ability_cooldown_turns_left
 	return super()
+	
+func onCardTurnPassed(Card: CardGD) -> void:
+	super(Card)
+	if self != Card: return
+	
+	ai_ability_cooldown_turns_left = max(ai_ability_cooldown_turns_left - 1, 0)

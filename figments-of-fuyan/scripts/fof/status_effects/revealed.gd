@@ -6,7 +6,7 @@ func onProcessAction(action: Action) -> void:
 	super(action)
 
 func onStatusEffectAdded(action: AddStatusEffectAction) -> void:
-	var revealed_datastore := Game.onCreateRevealedDatastore(Card, action.owner)
+	var revealed_datastore := Game.onCreateRevealedDatastore(action.owner)
 	revealed_id = revealed_datastore.revealed_id
 	onPushAction(RevealAction.new(Card, revealed_datastore))
 

@@ -42,8 +42,8 @@ func onLoadDataLevel() -> void:
 	
 	var ai_cooldown_public_ids: Dictionary = ai_cooldown_cards.duplicate()
 	ai_cooldown_cards = {}
-	for public_id in ai_cooldown_public_ids:
-		ai_cooldown_cards[Game.onFindPublicIDObject(public_id)] = ai_cooldown_public_ids[public_id]
+	for ai_public_id in ai_cooldown_public_ids:
+		ai_cooldown_cards[Game.onFindPublicIDObject(ai_public_id)] = ai_cooldown_public_ids[ai_public_id]
 		
 	used_this_turn_cards = used_this_turn_cards.map(func(x: int): return Game.onFindPublicIDObject(x))
 	setHolderVisible()
@@ -100,7 +100,7 @@ func onActiveEffectPre(active_effect: ActiveEffectDatastore, PickedTile: TileGD,
 	
 var HolderCard: CardGD
 var HolderNode: MeshInstance3D
-func onActiveEffect(active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
+func onActiveEffect(_active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
 	onPushAction(OccupyAction.new(Card, end_tiles[start_tiles.find(ActiveStartTile)]))
 	used_this_turn_cards.append(Card)
 	

@@ -45,8 +45,7 @@ signal action_lock
 signal camera_direction_changed
 signal vision_mode_changed
 signal active_effect_box_pressed
-signal active_effect_added
-signal tile_occupied
+signal create_movement_range
 
 signal dragged_begin
 signal dragged_end
@@ -323,6 +322,7 @@ func onActiveEffectDeselected() -> void:
 	setActiveEffectLabel("")
 	onCameraUpdated(level.getSpectateObject())
 	PassButton.setAbilityMode(false)
+	create_movement_range.emit(level.getAllySpectateObject())
 		
 func onActiveEffectSelected() -> void:
 	PassButton.setAbilityMode(true)
@@ -341,6 +341,8 @@ func onUpdateActiveEffects(SpectateObject: GameObjectGD = level.getSpectateObjec
 		for IObject in get_tree().get_nodes_in_group("LevelIObjectsGD")\
 			.filter(func(x: ObjectGD): return !x.is_queued_for_deletion()):
 			active_effects += IObject.getValidActiveEffects(SpectateObject)
+			
+		active_effects = active_effects.filter(func(x: ActiveEffectDatastore): return x.owner is CardGD or x.getCharges() != 0)
 			
 	ActiveEffects.onUpdate(active_effects, CardSpectate)
 #endregion
@@ -394,7 +396,7 @@ func onGameEnded(rewards: Rewards) -> void:
 		LeftContainer.add_child(filler)
 		LeftContainer.move_child(filler, 0)
 		
-		for child in [DeckPanel, MapPanel, OverworldInformation]:
+		for child in [DeckPanel, MapPanel, OverworldInformation, BoonBox]:
 			child.reparent(RewardsUI)
 	
 	onUpdateDeckCardAmountLabel()

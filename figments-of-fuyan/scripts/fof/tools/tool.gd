@@ -5,6 +5,7 @@ var ascended: bool
 var active_effects: Array[ActiveEffectDatastore]
 var ability_save: Dictionary
 
+@warning_ignore("unused_signal")
 signal update_active_effect_description
 
 func onLoadData(data: SavedData) -> void:
@@ -33,7 +34,7 @@ func onAddActiveEffect(active_effect: ActiveEffectDatastore) -> void:
 func getActiveEffects() -> Array:
 	return active_effects
 	
-func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic) -> TileGD:
+func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, _active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic) -> TileGD:
 	return null
 	
 func onAIAbilityCheckerDefault(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:

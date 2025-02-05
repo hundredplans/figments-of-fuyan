@@ -44,6 +44,6 @@ func getAddedByString() -> String:
 func isActive() -> bool:
 	return Trait != null
 	
-func onLevelEnded(_win: bool) -> void:
+func onReset() -> void:
 	if Trait != null and only_for_level:
 		clear.emit()

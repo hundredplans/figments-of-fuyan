@@ -43,6 +43,14 @@ func onFindCommandByName(command_name: String) -> Command:
 		if command.name == command_name: return command
 	return null
 
+var Previou
+func see() -> void:
+	var game_objects: Array = get_tree().get_nodes_in_group("LevelTileObjectsGD") + get_tree().get_nodes_in_group("FieldCardsGD")
+	Helper.admin_datastore.see = !Helper.admin_datastore.see
+	
+	for GameObject in game_objects:
+		GameObject.onUpdateLevelVisible()
+
 func ascend() -> void:
 	
 	if SpectateObject is CardGD:
@@ -54,9 +62,9 @@ func status_effect(name_id: Variant, turns: int = 1) -> void:
 		if info != null:
 			SpectateObject.onCreateBaseStatusEffect(info.id, turns)
 
-func damage(damage: int) -> void:
+func damage(damage_dealt: int) -> void:
 	if SpectateObject is CardGD:
-		SpectateObject.onPushAction(DamageAction.new(SpectateObject, SpectateObject, damage))
+		SpectateObject.onPushAction(DamageAction.new(SpectateObject, SpectateObject, damage_dealt))
 
 func tool(name_id: Variant, ascended: bool = false) -> void:
 	if SpectateObject is CardGD:

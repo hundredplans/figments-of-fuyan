@@ -39,5 +39,5 @@ func isPickable(_Tile: TileGD) -> bool:
 	return FieldCard != null and FieldCard != Card and FieldCard not in healed_allies and FieldCard.isHealable()
 	
 # When possible
-func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, DFL: DefaultFightLogic) -> TileGD:
+func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _DFL: DefaultFightLogic) -> TileGD:
 	return active_effect_tiles.pickable_tiles.pick_random()

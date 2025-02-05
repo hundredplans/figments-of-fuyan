@@ -461,5 +461,5 @@ text = "+"
 [connection signal="pressed" from="Art/Background" to="." method="onPressed"]
 [connection signal="mouse_entered" from="Art/ArtPop" to="." method="onMouseHovered" binds= [true]]
 [connection signal="mouse_exited" from="Art/ArtPop" to="." method="onMouseHovered" binds= [false]]
-[connection signal="mouse_in_ui" from="Text/VBoxContainer/TextLabel" to="." method="onMouseInText"]
 [connection signal="mouse_in_ui" from="Text/VBoxContainer/TextLabel" to="." method="onMouseHovered"]
+[connection signal="mouse_in_ui" from="Text/VBoxContainer/TextLabel" to="." method="onMouseInText"]

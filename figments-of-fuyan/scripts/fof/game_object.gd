@@ -133,8 +133,9 @@ func getAdjustedPoints() -> Array:
 #endregion
 
 #region Advance Turn
-func onAdvanceTurn(team: int) -> void:
+func onAdvanceTurn(_team: int) -> void:
 	pass
 
 func onCardTurnPassed(_Card: CardGD) -> void:
 	pass
+#endregion

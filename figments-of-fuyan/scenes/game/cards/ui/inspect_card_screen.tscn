@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://byg8f1pn2h8u1"]
+[gd_scene load_steps=14 format=3 uid="uid://byg8f1pn2h8u1"]
 
 [ext_resource type="Script" path="res://scenes/game/cards/ui/inspect_card_screen.gd" id="1_s3ffg"]
 [ext_resource type="Script" path="res://scenes/game/cards/ui/inspect_card_viewport.gd" id="2_4u3ql"]
@@ -11,6 +11,7 @@
 [ext_resource type="LabelSettings" uid="uid://dbh1brjnbxe8c" path="res://resources/ui/label_settings/roboto_large.tres" id="5_udr5m"]
 [ext_resource type="Texture2D" uid="uid://cgsjk5jrikksx" path="res://assets/sprites/game/cards/common/extra/temporary_card_marker.png" id="6_gl5fh"]
 [ext_resource type="LabelSettings" uid="uid://b44saayykrffg" path="res://resources/ui/label_settings/roboto_medium.tres" id="6_q5hos"]
+[ext_resource type="Texture2D" uid="uid://dmbi1m8a3wggn" path="res://assets/sprites/game/cards/common/extra/neutral.png" id="7_jjyv8"]
 
 [sub_resource type="World3D" id="World3D_2ijdp"]
 environment = ExtResource("2_e52jv")
@@ -28,6 +29,7 @@ ActiveTurnIcon = ExtResource("3_vce4x")
 PassedTurnIcon = ExtResource("4_xlksm")
 AwakenedInCombatIcon = ExtResource("5_o2jqu")
 TemporaryCardIcon = ExtResource("6_gl5fh")
+NeutralUnitIcon = ExtResource("7_jjyv8")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 self_modulate = Color(1, 1, 1, 0.658824)

@@ -21,7 +21,7 @@ func getDescription() -> String:
 func onArrivePre(_action: AwakenAction) -> void:
 	onAbility()
 
-func onArrive(action: AwakenAction) -> void:
+func onArrive(_action: AwakenAction) -> void:
 	assert(stepped_on_card_public_id > 0)
 	var SteppedOnCard: CardGD = Game.onFindPublicIDObject(stepped_on_card_public_id)
 	var actions: Array = [

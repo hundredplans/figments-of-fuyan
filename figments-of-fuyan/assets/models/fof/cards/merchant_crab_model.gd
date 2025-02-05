@@ -12,7 +12,7 @@ func _ready() -> void:
 	onIdleRareTimerTimeout()
 	AniPlayer.play("Idle")
 	
-func onAnimationFinished(ani_name: String) -> void:
+func onAnimationFinished(_ani_name: String) -> void:
 	AniPlayer.play("Idle")
 	
 func onIdleRareTimerTimeout() -> void:

@@ -11,7 +11,7 @@ func onFofInit() -> void:
 		return
 	
 	setLevelInfo()
-	var empty_spawn_coords: Array = getEmptySpawnCoords(level_info)
+	var empty_spawn_coords: Array = getEmptySpawnCoords()
 	var enemy_spawn_amount: int = min(randi_range(level_info.enemy_min_spawn_amount, level_info.enemy_max_spawn_amount), empty_spawn_coords.size())
 	var budget: int = getBudget()
 	
@@ -59,7 +59,7 @@ func setLevelInfo() -> void:
 	else:
 		level_info = Helper.getFofInfoID(LevelInfo, Helper.admin_datastore.force_level_spawn_id)
 	
-func getEmptySpawnCoords(level_info: LevelInfo) -> Array:
+func getEmptySpawnCoords() -> Array:
 	var empty_spawn_coords: Array = level_info.getEmptySpawnCoords()
 	empty_spawn_coords.shuffle()
 	return empty_spawn_coords

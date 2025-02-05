@@ -5,8 +5,8 @@ extends Purchasable
 @export var DeckScreenPacked: PackedScene
 var DeckScreen: Control
 
-func setInfo(_item: FofGD, _price_datastore: PriceDatastore, save_file: SaveFileGD) -> void:
-	super(_item, _price_datastore, save_file)
+func setInfo(_item: FofGD, _price_datastore: PriceDatastore, _save_file: SaveFileGD) -> void:
+	super(_item, _price_datastore, _save_file)
 	var text: String = item.info.name
 	PanelButton.setText(text)
 	PanelButton.pressed.connect(onCreateDeckScreen)

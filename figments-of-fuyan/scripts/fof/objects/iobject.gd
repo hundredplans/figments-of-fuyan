@@ -1,5 +1,6 @@
 class_name IObjectGD extends ObjectGD
 
+@warning_ignore("unused_signal")
 signal update_active_effect_description
 
 var AniPlayer: AnimationPlayer
@@ -7,7 +8,7 @@ var active_effects: Array = []
 var ability_save: Dictionary = {}
 var top_vertex_y: float # The y position of the top vertex
 
-func isAttackable(Card: CardGD) -> bool:
+func isAttackable(_Card: CardGD) -> bool:
 	return false
 	
 func getAttackableTile() -> TileGD:
@@ -59,13 +60,13 @@ func onIObjectDamaged(_action: DamageAction) -> void:
 #endregion
 
 #region Active Effects
-func getValidActiveEffects(Card: CardGD) -> Array: # Returns the ability effects the Card can view
+func getValidActiveEffects(_Card: CardGD) -> Array: # Returns the ability effects the Card can view
 	return []
 
 func onCreateActiveEffects() -> void:
-	var active_effects: Array = info.active_effects.duplicate()
-	if !active_effects.is_empty():
-		onPushAction(active_effects.map(func(x: ActiveEffectDatastore): return AddActiveEffectAction.new(self, x.duplicate())))
+	var new_active_effects: Array = info.active_effects.duplicate()
+	if !new_active_effects.is_empty():
+		onPushAction(new_active_effects.map(func(x: ActiveEffectDatastore): return AddActiveEffectAction.new(self, x.duplicate())))
 
 func onAddActiveEffect(active_effect: ActiveEffectDatastore) -> void:
 	active_effects.append(active_effect)
@@ -127,8 +128,8 @@ func setTopVertexY() -> void:
 func getTopVertexY() -> float:
 	return top_vertex_y
 	
-func onIObject(action: Action) -> void:
+func onIObject(_action: Action) -> void:
 	pass
 		
-func onIObjectSpecificTransforms(tiles_to_value: Dictionary, DFL: DefaultFightLogic) -> void:
+func onIObjectSpecificTransforms(_tiles_to_value: Dictionary, _DFL: DefaultFightLogic) -> void:
 	pass

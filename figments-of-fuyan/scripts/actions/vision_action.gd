@@ -31,10 +31,9 @@ func onPostAction() -> void:
 	Game.getLevel().old_player_vision = new_team_vision.duplicate()
 	
 	var new_team_vision_diff: Array = new_team_vision.filter(func(x: GameObjectGD): return x not in old_team_vision)
-	var old_team_vision_diff: Array = old_team_vision.filter(func(x: GameObjectGD): return x not in new_team_vision)
+	var old_team_vision_diff: Array = old_team_vision.filter(func(x: GameObjectGD): return (x not in new_team_vision) and !(x is CardGD and !x.isAlive()))
 	
 	for Card in cards:
-		var card_visibles: Dictionary = Card.vision_datastore.getCardVisibles()
 		var old_visible_cards: Array = old_visible_game_objects[Card].filter(func(x: GameObjectGD): return x is CardGD)
 		var new_visible_cards: Array = new_visible_game_objects[Card].filter(func(x: GameObjectGD): return x is CardGD)
 		

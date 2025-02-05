@@ -4,7 +4,8 @@ var visibles: Dictionary # Dictionary of {GameObject: VisibleByUnit}
 @export var visibles_public_ids: Dictionary
 #region Save / Load
 func setInfo() -> void:
-	for GameObject in Game.get_tree().get_nodes_in_group("LevelTileObjectsGD") + Game.get_tree().get_nodes_in_group("FieldCardsGD"):
+	for GameObject in (Game.get_tree().get_nodes_in_group("LevelTileObjectsGD") + Game.get_tree().get_nodes_in_group("FieldCardsGD"))\
+	.filter(func(x: GameObjectGD): return !x.is_queued_for_deletion()):
 		onAddVisibleGameObject(GameObject)
 func onSave() -> void:
 	visibles_public_ids = {}
@@ -21,6 +22,10 @@ func onLoad() -> void:
 
 #region Getters
 func getVisibleGameObjects() -> Array:
+	for key in visibles.keys():
+		if key is not GameObjectGD:
+			pass
+	
 	return visibles.keys().filter(func(x: GameObjectGD): return visibles[x].isVisibleToUnit())
 	
 func getCardVisibles() -> Dictionary: # For debug can remove later
@@ -38,6 +43,7 @@ func setDirect(GameObject: GameObjectGD, direct: bool) -> void:
 	visibles[GameObject].setDirect(direct)
 	
 func onAddVisibleGameObject(GameObject: GameObjectGD) -> void:
+	if visibles.has(GameObject): return
 	if GameObject is TileGD: visibles[GameObject] = VisibleToUnitTile.new()
 	elif GameObject is ObjectGD: visibles[GameObject] = VisibleToUnitObject.new()
 	else: visibles[GameObject] = VisibleToUnitUnit.new()

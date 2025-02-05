@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/fof/field_effects/remove_when_owner_dies_field_effect.gd" id="1_xdhex"]
 [ext_resource type="Script" path="res://scripts/fof_info/field_effects/field_effect_info.gd" id="1_xjl1f"]
-[ext_resource type="Texture2D" uid="uid://qf8m3byr4cvq" path="res://assets/sprites/game/fof_object_icons/field_effects/palmfessor_aura.png" id="2_8kpq5"]
+[ext_resource type="Texture2D" uid="uid://qf8m3byr4cvq" path="res://assets/sprites/game/fof_object_icons/field_effects/palmfessors_student.png" id="2_8kpq5"]
 [ext_resource type="Script" path="res://scripts/saved_data/field_effects/saved_data_field_effect.gd" id="3_y4ilt"]
 
 [resource]
@@ -11,7 +11,8 @@ icon = ExtResource("2_8kpq5")
 description = "This has +1 ATT"
 ascended_description = "This has +2 ATT"
 ascended_type = 2
+charges_label_position = Vector2(0, 0)
 id = 6
-name = "Palmfessor Aura"
+name = "Palmfessors Student"
 gdscript = ExtResource("1_xdhex")
 saved_data = ExtResource("3_y4ilt")

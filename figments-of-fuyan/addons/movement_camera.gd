@@ -1,5 +1,6 @@
 class_name FreeLookCamera extends Camera3D
 signal camera_panning
+signal camera_changed_speed
 # Modifier keys' speed multiplier
 const SHIFT_MULTIPLIER = 2.5
 const ALT_MULTIPLIER = 1.0 / SHIFT_MULTIPLIER
@@ -58,6 +59,8 @@ func _input(event):
 				_vel_multiplier = clamp(_vel_multiplier * 1.1, 0.2, 20)
 			MOUSE_BUTTON_WHEEL_DOWN: # Decereases max velocity
 				_vel_multiplier = clamp(_vel_multiplier / 1.1, 0.2, 20)
+		
+		camera_changed_speed.emit()
 
 	# Receives key input
 	if event is InputEventKey and !(get_viewport().gui_get_focus_owner() as LineEdit):

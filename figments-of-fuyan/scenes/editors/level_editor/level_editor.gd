@@ -20,6 +20,8 @@ extends Node
 @onready var ProgressEdit: LineEdit = %ProgressEdit
 @onready var LevelNameEdit: LineEdit = %LevelNameEdit
 @onready var SearchResultsPanel: PanelContainer = %SearchResultsPanel
+
+@onready var MouseWheelDelayTimer: Timer = %MouseWheelDelayTimer
 #endregion
 #region Globals
 var is_camera_panning: bool = false
@@ -60,13 +62,13 @@ func onFindMouseTile() -> TileGD:
 	if TileObject != null and TileObject is TileGD: return TileObject
 	return null
 
-func getTilesBelow(Tile: TileGD) -> Array[TileGD]:
+func getTilesAtHeight(Tile: TileGD) -> Array[TileGD]:
 	var arr: Array[TileGD] = []
 	var coords: Vector4i = Tile.getCoords()
-	for w in range(Tile.getHeight() - 1, -1, -1):
+	for w in range(20):
 		coords.w = w
 		var _Tile: TileGD = onFindTile(coords)
-		if _Tile != null: arr.append(_Tile)
+		if _Tile != null and _Tile != Tile: arr.append(_Tile)
 	return arr
 	
 func onFindScriptById(id: int = current_area_id) -> GDScript:
@@ -88,6 +90,7 @@ func _ready() -> void:
 	setAreaOptionButtonItems()
 	LoadLevels.visible = false
 	SearchResultsPanel.visible = false
+	
 		
 func setAllTileObjectsToWords() -> void:
 	for info in all_tile_objects:
@@ -169,7 +172,7 @@ func _process(_delta: float) -> void:
 				elif Input.is_action_pressed("RotateRight") and TemporaryRotationObject != null:
 					onRotate(TemporaryRotationObject, 1)
 				
-			if !is_scroll_disabled:
+			if !is_scroll_disabled and !is_mouse_wheel_delayed:
 				if Input.is_action_just_pressed("ChangeVariationDown"):
 					if HoverModel != null: onChangeHoverModelVariation(-1)
 					else: onChangeMouseTileObjectVariation(-1)
@@ -257,7 +260,10 @@ func onHoverModelHovered() -> void:
 		
 func onHoverModelPlaced() -> void:
 	if HoverModel is TileGD:
-		onDeleteTileObject(onFindTile(HoverModel.getCoords()))
+		var NewTile: TileGD = onFindTile(HoverModel.getCoords())
+		if NewTile != null:
+			if NewTile.info.id == HoverModel.info.id: return
+			onDeleteTileObject(NewTile)
 	
 	HoverModel.setRayPickable(false)
 	HoverModel.setDefaultCollisionLayers()
@@ -362,8 +368,8 @@ var tile_fill_enabled: bool = true
 func onTileFill(Tile: TileGD, state: bool = !Tile.tile_fill) -> void:
 	var action: String = Tile.onCreateTileFill(state)
 	
-	var tiles_below: Array = getTilesBelow(Tile)
-	for _Tile in tiles_below: onDeleteTileObject(_Tile)
+	var tiles: Array = getTilesAtHeight(Tile)
+	for _Tile in tiles: onDeleteTileObject(_Tile)
 			
 func onTileFillButtonPressed():
 	tile_fill_enabled = !tile_fill_enabled
@@ -625,5 +631,15 @@ func onReleaseLineEditFocus() -> void:
 	var focus_owner := get_viewport().gui_get_focus_owner()
 	if focus_owner != null and focus_owner is LineEdit:
 		focus_owner.release_focus()
-	
-	
+#endregion
+
+var is_mouse_wheel_delayed: bool
+const DEFAULT_MOUSE_WHEEL_DELAY: float = 0.5
+func _on_camera_3d_camera_changed_speed() -> void:
+	is_mouse_wheel_delayed = true
+	MouseWheelDelayTimer.stop()
+	MouseWheelDelayTimer.wait_time = DEFAULT_MOUSE_WHEEL_DELAY
+	MouseWheelDelayTimer.start()
+
+func _on_mouse_wheel_delay_timer_timeout() -> void:
+	is_mouse_wheel_delayed = false

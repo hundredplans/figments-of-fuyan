@@ -15,11 +15,18 @@ func setInfo(info_or_fof: Variant, stop_mouse: bool = false) -> void:
 		info = info_or_fof.info
 	
 	if is_instance_of(info_or_fof, FofGD):
+		if info_or_fof is BoonGD or info_or_fof is ToolGD or info_or_fof is CardGD:
+			ascended = info_or_fof.getAscended()
 		info = info_or_fof.info
 		
 	elif is_instance_of(info_or_fof, FofInfo):
-		#var is_card: bool = is_instance_of(info_or_fof, CardInfo)
 		info = info_or_fof
+		
+	elif is_instance_of(info_or_fof, SavedData):
+		if info_or_fof is SavedDataBoon or info_or_fof is SavedDataTool or info_or_fof is SavedDataCard:
+			ascended = info_or_fof.ascended
+		info = Helper.getFofInfoID(info_or_fof.getInfoType(), info_or_fof.id)
+		info_or_fof = info
 		
 	NameLabel.text = info.name
 	TopIcon.texture = info.getIcon()

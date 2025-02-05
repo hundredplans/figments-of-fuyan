@@ -1,6 +1,6 @@
 extends TileGD
 
-func getFallDamage(Tile: TileGD) -> int:
+func getFallDamage(_Tile: TileGD) -> int:
 	return 0
 
 func getCardPosition() -> Vector3:

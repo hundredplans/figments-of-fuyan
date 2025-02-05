@@ -29,6 +29,7 @@ func _init(_Card: CardGD, _is_first_ai_turn: bool = false, _pacifist: bool = fal
 	previous_enemies = _previous_enemies
 		
 func onPostAction() -> void:
+	pacifist = pacifist if Card.attack > 0 else true
 	var tiles: Array = Game.getsetMovementRange(Card)
 	tiles.erase(Card.Tile)
 	
@@ -111,23 +112,23 @@ func getTilesSortedByValue(tiles_to_value: Dictionary) -> Array:
 	tiles_sorted_by_value = tiles_sorted_by_value.filter(func(x: TileGD): return x != null and tiles_to_value[x] >= 0)
 	return tiles_sorted_by_value
 	
-func onApplyBehaviours(Card: CardGD, enemies: Array, allies: Array, tiles: Array, dfl_data: DFLData) -> Dictionary:
+func onApplyBehaviours(BehaviourCard: CardGD, enemies: Array, allies: Array, tiles: Array, dfl_data: DFLData) -> Dictionary:
 	var tiles_to_value: Dictionary = dfl_data.tiles_to_value
-	var ignore_behaviour_roll: bool = Random.rollFloat(IGNORE_BEHAVIOUR_CHANCE) if is_first_ai_turn else Card.ai_datastore.last_ignore_behaviour_roll
-	Card.ai_datastore.last_ignore_behaviour_roll = ignore_behaviour_roll
+	var ignore_behaviour_roll: bool = Random.rollFloat(IGNORE_BEHAVIOUR_CHANCE) if is_first_ai_turn else BehaviourCard.ai_datastore.last_ignore_behaviour_roll
+	BehaviourCard.ai_datastore.last_ignore_behaviour_roll = ignore_behaviour_roll
 	
 	if !ignore_behaviour_roll:
 		var is_in_combat: bool = !enemies.is_empty()
-		var behaviours: Array = getBehaviours(Card)
+		var behaviours: Array = getBehaviours(BehaviourCard)
 		behaviours = behaviours.filter(func(x: Behaviour): return (x.isCombatBehaviour() and is_in_combat) or (x.isOutOfCombatBehaviour() and !is_in_combat))
 		
 		var behaviour_amount: float = behaviours.size() + 1.0
 		for behaviour in behaviours:
 			var behaviour_tiles_to_value: Dictionary
 			if is_in_combat: # For debugging
-				behaviour_tiles_to_value = behaviour.getCombatTiles(Card, tiles, enemies, allies)
+				behaviour_tiles_to_value = behaviour.getCombatTiles(BehaviourCard, tiles, enemies, allies)
 			else:
-				behaviour_tiles_to_value = behaviour.getOutOfCombatTiles(Card, tiles, allies, enemies)
+				behaviour_tiles_to_value = behaviour.getOutOfCombatTiles(BehaviourCard, tiles, allies, enemies)
 			
 			for Tile in behaviour_tiles_to_value:
 				tiles_to_value[Tile] += behaviour_tiles_to_value[Tile]

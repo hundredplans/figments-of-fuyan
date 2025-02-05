@@ -90,6 +90,8 @@ func setInfo(_Card: CardGD) -> void:
 	if Card.Tool != null:
 		onToolAdded(Card.Tool)
 	
+	Game.getLevel().onRequestCameraPositionUpdate() # Updates for all field infos
+	
 func onResetStats() -> void:
 	onResetDepthTest()
 	onCreateFloatingNumbers()
@@ -239,7 +241,7 @@ func onUpdateTraits() -> void:
 func onRemoveIcon(FofObject: FofGD) -> void:
 	onFindIconNode(FofObject).queue_free()
 	
-func onAddIcon(FofObject: FofGD, icon: Texture2D = FofObject.getIcon()) -> Node3D:
+func onAddIcon(FofObject: FofGD, _icon: Texture2D = FofObject.getIcon()) -> Node3D:
 	var FofObjectIcon: Node3D = FofObjectIconPacked.instantiate()
 	IconsManager.add_child(FofObjectIcon)
 	FofObjectIcon.setInfo(FofObject)

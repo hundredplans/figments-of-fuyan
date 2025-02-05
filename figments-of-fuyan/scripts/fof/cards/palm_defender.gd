@@ -10,5 +10,5 @@ func onProcessAction(action: Action) -> void:
 func getDescription() -> String:
 	return super()
 
-func onBloodthirst(action: DeathAction) -> void:
+func onBloodthirst(_action: DeathAction) -> void:
 	onPushAction(StatAction.new(StatInfo.new(self, Game.Stats.MAX_HEALTH, 1)))

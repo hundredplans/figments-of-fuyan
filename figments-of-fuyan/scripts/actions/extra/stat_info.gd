@@ -43,7 +43,7 @@ func onLoad() -> void:
 	Card = Game.onFindPublicIDObject(card_public_id)
 	owner = Game.onFindPublicIDObject(owner_public_id)
 	
-func onCardPassedTurn() -> void:
+func onCardTurnPassed() -> void:
 	turns -= 1
 	if turns == 0:
 		if owner != null: owner.onPushAction(StatAction.new(self), Card)

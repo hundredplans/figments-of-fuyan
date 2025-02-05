@@ -17,7 +17,7 @@ static func onLoadModel(data: SavedData, parent: Node3D, init_args: Array = []) 
 	var model := FofGD.new()
 	var info: FofInfo = Helper.getFofInfoID(data.getInfoType(), data.id)
 	
-	model.name = info.getFofName() + str(data.public_id)
+	model.name = info.get_script().getFofName() + str(data.public_id)
 	model.script = info.gdscript
 	model.info = info
 	

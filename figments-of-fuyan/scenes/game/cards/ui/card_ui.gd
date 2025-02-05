@@ -95,10 +95,10 @@ func setInfo(_Card: CardGD, _highlight_on_hover: bool = false, _inspectable: boo
 	Card.awakened_in_combat.connect(onUpdateAwakenedInCombat)
 	
 func onUpdateStats() -> void:
-	AttackLabel.text = str(Card.attack)
-	HealthLabel.text = str(Card.health)
-	SpeedLabel.text = str(Card.speed)
-	EnergyLabel.text = str(Card.energy)
+	AttackLabel.text = str(Card.base_stats.attack)
+	HealthLabel.text = str(Card.base_stats.health)
+	SpeedLabel.text = str(Card.base_stats.speed)
+	EnergyLabel.text = str(Card.base_stats.energy)
 	
 func onCardAscended(_state: bool) -> void:
 	Background.setTexture(rarities[Card.info.rarity] if !Card.ascended else ascended_rarities[Card.info.rarity])
@@ -248,7 +248,7 @@ func getCenterPos() -> Vector2:
 	return global_position + (size / 2)
 	
 func onChangeBackgroundMouseFilter(is_stop: bool) -> void:
-	var new_mouse_filter: int = Control.MOUSE_FILTER_STOP if is_stop else Control.MOUSE_FILTER_IGNORE
+	var new_mouse_filter := Control.MOUSE_FILTER_STOP if is_stop else Control.MOUSE_FILTER_IGNORE
 	Background.mouse_filter = new_mouse_filter
 	AreaBackground.mouse_filter = new_mouse_filter
 	ArtPop.mouse_filter = new_mouse_filter

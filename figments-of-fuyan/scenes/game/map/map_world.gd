@@ -124,7 +124,6 @@ var is_map_starting: bool
 func onMapStartAnimation() -> void:
 	if Helper.admin_datastore.skip_map_start_animation: return
 	
-	var map_node: MapNodeGD = area.getEnteredMapNode()
 	is_map_starting = true
 	onUpdateActionLock()
 	
@@ -153,7 +152,7 @@ func onUpdateActionLock() -> void:
 #region Environment
 func setEnvironment() -> void:
 	WorldEnv.environment = area.info.base_environment\
-	if !area.isAfterMiniboss() else area.info.late_environment
+	if !area.isAfterMiniboss() else area.info.elite_environment
 #endregion
 
 #region World Screen

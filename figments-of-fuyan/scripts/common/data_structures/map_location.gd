@@ -6,7 +6,7 @@ class_name MapLocation extends Resource
 @export var position: Vector3
 
 func isAfterMiniboss() -> bool:
-	return progress > 5
+	return progress >= 5
 
 func _init(_progress: int = 0, _lane: int = 0, _area: int = 0, _position := Vector3.ZERO) -> void:
 	progress = _progress

@@ -1,23 +1,23 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=9 format=3]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=8 format=3 uid="uid://bdh5nk02hiunq"]
 
 [ext_resource type="Script" path="res://scripts/fof/objects/spawn.gd" id="1_3skul"]
 [ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_x2fts"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/spawn_ally.glb" id="2_lni07"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/spawn_enemy.glb" id="3_i8hoe"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/spawn_neutral.glb" id="4_vn77s"]
+[ext_resource type="PackedScene" uid="uid://bnj05m017ae8a" path="res://assets/models/fof/objects/spawn_ally.glb" id="2_lni07"]
+[ext_resource type="PackedScene" uid="uid://beha0dd3k3ait" path="res://assets/models/fof/objects/spawn_enemy.glb" id="3_i8hoe"]
+[ext_resource type="PackedScene" uid="uid://dbssvvp82qfme" path="res://assets/models/fof/objects/spawn_neutral.glb" id="4_vn77s"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_spawn.gd" id="6_j2ajy"]
 [ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="6_uihc7"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/spawn_tool.glb" id="6_w7enu"]
 
 [resource]
 script = ExtResource("6_uihc7")
-tile_coords = Array[Array]([[Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)]])
+tile_coords = Array[Array]([[Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)]])
 lock_rotation = true
 lock_tile = true
-solids = Array[bool]([false, false, false, false])
+ignore_collisions = true
+solids = Array[bool]([false, false, false])
 active_effects = Array[ExtResource("1_x2fts")]([])
-models = Array[PackedScene]([ExtResource("2_lni07"), ExtResource("3_i8hoe"), ExtResource("4_vn77s"), ExtResource("6_w7enu")])
-points = Array[Array]([[], [], [], []])
+models = Array[PackedScene]([ExtResource("2_lni07"), ExtResource("3_i8hoe"), ExtResource("4_vn77s")])
+points = Array[Array]([[], [], []])
 id = 2
 name = "Spawn"
 gdscript = ExtResource("1_3skul")

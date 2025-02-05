@@ -29,7 +29,7 @@ func onUpdateAscension(_ascended: bool) -> void:
 	ascended = _ascended
 	ToolIcon.material = (ASCENDED_CANVAS_MATERIAL if !disabled else ASCENDED_CANVAS_MATERIAL_DISABLED) if ascended else null
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("MainInput") and is_mouse_in_ui and !disabled:
 		pressed.emit(Tool)
 

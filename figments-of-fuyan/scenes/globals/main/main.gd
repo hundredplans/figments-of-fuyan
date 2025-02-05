@@ -20,7 +20,7 @@ extends Node
 func _ready():
 	if !Helper.admin_datastore.skip_main_menu:
 		var scenes: Dictionary = onLoadScreenWorld(main_menu_ui, main_menu_world)
-		scenes.world.onFirstLoad()
+		if !Helper.admin_datastore.skip_start_cutscene: scenes.world.onFirstLoad()
 	else:
 		var DIR_PATH: String = SaveFileInfo.SAVE_DIRECTORY
 		var files: Array = Array(DirAccess.get_files_at(DIR_PATH))

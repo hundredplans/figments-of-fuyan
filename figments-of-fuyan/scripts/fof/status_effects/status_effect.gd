@@ -28,7 +28,7 @@ func getIcon() -> Texture2D:
 func onProcessAction(action: Action) -> void:
 	if action.post:
 		if action is ChangeTurnStateAction:
-			if action.turn_state == Game.TurnStates.PASSED and action.Card == Card and turns > 0:
+			if action.turn_state == Game.TurnStates.PASSED and action.Card == Card and (self is not FatigueGD) and turns > 0:
 				turns -= 1
 				if turns == 0:
 					onPushAction(RemoveStatusEffectAction.new(self))

@@ -28,27 +28,27 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic) -> TileGD:
 	if !isLevelVisible(): return null
 	var card_to_health: Dictionary = {}
-	for Tile in active_effect_tiles.pickable_tiles:
-		var Card: CardGD = Game.getFieldCard(Tile)
+	for PickableTile: TileGD in active_effect_tiles.pickable_tiles:
+		var Card: CardGD = Game.getFieldCard(PickableTile)
 		card_to_health[Card] = Card.health
 		
 	var max_ally_health_on_field: int = Game.getAllyUnits(team)\
 		.filter(func(x: CardGD): return x != self)\
 		.map(func(x: CardGD): return x.health).max()
 		
-	var max_health: int = card_to_health.values().max()
-	if max_health >= MINIMUM_HEALTH_TO_USE_HELPFUL_HELMET_AI or max_ally_health_on_field < MINIMUM_HEALTH_TO_USE_HELPFUL_HELMET_AI:
+	var adjacent_max_health: int = card_to_health.values().max()
+	if adjacent_max_health >= MINIMUM_HEALTH_TO_USE_HELPFUL_HELMET_AI or max_ally_health_on_field < MINIMUM_HEALTH_TO_USE_HELPFUL_HELMET_AI:
 		var cards: Array = card_to_health.keys()
 		cards.shuffle()
 		
 		for Card in cards:
-			if card_to_health[Card] == max_health:
+			if card_to_health[Card] == adjacent_max_health:
 				return Card.getTile()
 	return null
 	
 const BONUS_PER_ADJACENT_ALLY_ON_TILE: float = 0.25
 # +0.25 per unit Palmita is adjacent to on a tile
 func onUnitSpecificTransforms(tiles_to_value: Dictionary, DFL: DefaultFightLogic) -> void:
-	for Tile in tiles_to_value:
-		var adjacency_bonus: int = DFL.getAllies().filter(func(x: CardGD): return Game.isAdjacent(x.getTile(), Tile)).size() * BONUS_PER_ADJACENT_ALLY_ON_TILE
-		tiles_to_value[Tile] += adjacency_bonus
+	for TransformTile: TileGD in tiles_to_value:
+		var adjacency_bonus: float = DFL.getAllies().filter(func(x: CardGD): return Game.isAdjacent(x.getTile(), TransformTile)).size() * BONUS_PER_ADJACENT_ALLY_ON_TILE
+		tiles_to_value[TransformTile] += adjacency_bonus

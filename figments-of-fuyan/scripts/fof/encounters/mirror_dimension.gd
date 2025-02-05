@@ -11,7 +11,7 @@ func isRequirementMet(option: EncounterOptionDatastore) -> bool:
 		_: pass
 	return true
 	
-func onOptionPressed(option: EncounterOptionDatastore, screen: Control) -> void:
+func onOptionPressed(option: EncounterOptionDatastore, _screen: Control) -> void:
 	match option.name:
 		"Fight":
 			onStartFight()
@@ -43,6 +43,7 @@ func onStartFight() -> void:
 			tool_data.ascended = OriginalTool.ascended
 		
 		var card_data: SavedDataCard = Game.onCreateBaseCard(Card.info.id, Card.ascended, tool_data)
+		Game.setCardDataFromInfo(card_data, Card.info)
 		card_data.coords = empty_spawn_coords[i]
 		card_data.team = 1
 		enemy_spawns.append(card_data)

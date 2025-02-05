@@ -46,8 +46,8 @@ func setInfo(_save_file: SaveFileGD, _area: AreaGD, _World: Node3D, _UI: Control
 					parent = TransformPosition
 			"Boon":
 				boon_ids.append(item.id)
-				if Game.isBoonAvailable(item.id, boon_ids):
-					item = map_node.onRerollBoon()
+				if !Game.isBoonAvailable(item.id, boon_ids):
+					item = map_node.onRerollBoon().data
 					
 				if item != null:
 					purchasable_packed = PurchasableBoonPacked

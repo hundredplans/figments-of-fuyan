@@ -12,4 +12,3 @@ func onLastWill(death_action: DeathAction) -> void:
 	var field_cards: Array = death_action.game_objects_in_vision.filter(func(x: GameObjectGD): return x is CardGD)
 	var stat_infos: Array = field_cards.map(func(x: CardGD): return StatInfo.new(x, Game.Stats.ATTACK, attack_debuff, DEBUFF_TURNS))
 	onPushAction(StatAction.new(stat_infos))
-	

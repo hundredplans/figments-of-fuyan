@@ -3,8 +3,8 @@ extends Purchasable
 @onready var SoldLabel: Label = %SoldLabel
 @export var DeckScreenPacked: PackedScene
 
-func setInfo(_item: FofGD, _price_datastore: PriceDatastore, save_file: SaveFileGD) -> void:
-	super(_item, _price_datastore, save_file)
+func setInfo(_item: FofGD, _price_datastore: PriceDatastore, _save_file: SaveFileGD) -> void:
+	super(_item, _price_datastore, _save_file)
 	PanelButton.pressed.connect(onRemovePressed)
 	
 func setDisabled(state: bool = true) -> void:

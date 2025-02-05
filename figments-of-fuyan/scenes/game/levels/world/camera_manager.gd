@@ -1,6 +1,5 @@
 extends Node3D
 
-signal update_ui
 signal camera_position_updated
 signal create_camera_action
 signal zooming
@@ -131,7 +130,7 @@ func setCameraPointAlongCircle(progress := Vector2.ZERO) -> void:
 	CurrentCamera.position.y = sin(phi) * camera_radius + central_point.y
 	CurrentCamera.position.z = cos(phi) * sin(theta) * camera_radius + central_point.z
 	CurrentCamera.look_at(central_point)
-	camera_position_updated.emit(CurrentCamera.position)
+	onUpdateCameraPosition()
 	
 func setCameraRadius(direction: int) -> void:
 	camera_radius = clamp(camera_radius + (CAMERA_RADIUS_INCREMENT * direction), CAMERA_RADIUS_LOWER_BOUND, CAMERA_RADIUS_UPPER_BOUND)
@@ -191,7 +190,8 @@ func onSpectateSpawnsWithOccupied() -> void:
 	onCreateCameraChangeAction(_SpectateObject)
 	
 func onSpectateAllies() -> void:
-	var _SpectateObject: GameObjectGD = LastAllySpectateObject
+	var _SpectateObject: GameObjectGD = LastAllySpectateObject if LastAllySpectateObject != null and LastAllySpectateObject.isAlive() else null
+	
 	if _SpectateObject == null:
 		var allies: Array = Game.getAllyUnits()
 		if !allies.is_empty(): _SpectateObject = allies[0]
@@ -200,7 +200,7 @@ func onSpectateAllies() -> void:
 	onCreateCameraChangeAction(_SpectateObject)
 	
 func onSpectateEnemies() -> void:
-	var _SpectateObject: GameObjectGD = LastEnemySpectateObject
+	var _SpectateObject: GameObjectGD = LastEnemySpectateObject if LastEnemySpectateObject != null and LastEnemySpectateObject.isAlive() else null
 	if _SpectateObject == null:
 		var enemies: Array = Game.getEnemyUnits(0).filter(func(x: CardGD): return x.isLevelVisible())
 		if !enemies.is_empty(): _SpectateObject = enemies[0]
@@ -347,3 +347,6 @@ func onGameEnded() -> void:
 
 func getLastAllySpectateObject() -> CardGD:
 	return LastAllySpectateObject
+
+func onUpdateCameraPosition() -> void:
+	camera_position_updated.emit(CurrentCamera.position if CurrentCamera != null else Vector3.ZERO)

@@ -1,6 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://5ll2fnvb43gv"]
+[gd_scene load_steps=6 format=3 uid="uid://5ll2fnvb43gv"]
 
-[ext_resource type="Material" uid="uid://bj6n2uaf0f6uv" path="res://resources/materials/colors/unshaded/white.tres" id="1_d5y0v"]
+[ext_resource type="Material" uid="uid://chsu56yu6qtr6" path="res://resources/materials/colors/unshaded_vertex_color/white_vertex_color.tres" id="1_nh7ml"]
+
+[sub_resource type="Gradient" id="Gradient_luqyn"]
+offsets = PackedFloat32Array(0, 0.446809, 1)
+colors = PackedColorArray(0.690196, 0.0745098, 0, 1, 0.21, 0.21, 0.21, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_r1y1d"]
+gradient = SubResource("Gradient_luqyn")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ewt6e"]
 direction = Vector3(0, 1, 0)
@@ -8,9 +15,10 @@ flatness = 0.6
 initial_velocity_min = 0.5
 initial_velocity_max = 1.0
 gravity = Vector3(0, 0, 0)
+color_ramp = SubResource("GradientTexture1D_r1y1d")
 
 [sub_resource type="BoxMesh" id="BoxMesh_u7jwb"]
-material = ExtResource("1_d5y0v")
+material = ExtResource("1_nh7ml")
 size = Vector3(0.05, 0.05, 0.05)
 
 [node name="SmokeParticle" type="GPUParticles3D"]

@@ -74,7 +74,7 @@ func getValidActiveEffects(Card: CardGD) -> Array: # Returns the ability effects
 func getActiveEffectTiles(_active_effect: ActiveEffectDatastore, _Card: CardGD) -> ActiveEffectTiles:
 	return ActiveEffectTiles.new([getTile()], [getTile()])
 	
-func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
+func onActiveEffect(active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
 	var actions: Array = [VisionAction.new(Game.inVisionRangeCards(Card.getTile(), true))]
 	for owned_active_effect in active_effects.filter(func(x: ActiveEffectDatastore): return x != active_effect):
 		actions.append(ChangeActiveEffectUsedAction.new(owned_active_effect, true))
@@ -118,7 +118,7 @@ func getMaxMovementHeight() -> float:
 	return SHORT_MAX_MOVEMENT_HEIGHT if !isTall() else TALL_MAX_MOVEMENT_HEIGHT
 
 const GET_CLOSE_TO_DOOR_INCENTIVE: float = 0.3
-func onIObjectSpecificTransforms(tiles_to_value: Dictionary, DFL: DefaultFightLogic) -> void:
+func onIObjectSpecificTransforms(tiles_to_value: Dictionary, _DFL: DefaultFightLogic) -> void:
 	if is_open: return
 	for Tile in tiles_to_value:
 		if Game.isAdjacent(Tile, getTile()):

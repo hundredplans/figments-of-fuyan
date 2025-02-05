@@ -6,7 +6,7 @@ const MAX_RESTART_AMOUNT: int = 16
 func onFofInit() -> void:
 	super()
 	setLevelInfo()
-	var empty_spawn_coords: Array = getEmptySpawnCoords(level_info)
+	var empty_spawn_coords: Array = getEmptySpawnCoords()
 	var base_budget: int = getBudget()
 	var enemy_spawn_amount: int = min(randi_range(level_info.enemy_min_spawn_amount, level_info.enemy_max_spawn_amount), empty_spawn_coords.size() - 1)
 	var chief_spawn_coords: Vector4i = empty_spawn_coords.pop_front()

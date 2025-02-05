@@ -2,11 +2,13 @@ class_name ChangeTurnStateAction extends Action
 
 var Card: CardGD
 var turn_state: Game.TurnStates
+var is_start_of_phase: bool
 
-func _init(_Card: CardGD = null, _turn_state := Game.TurnStates.PASSED) -> void:
+func _init(_Card: CardGD = null, _turn_state := Game.TurnStates.PASSED, _is_start_of_phase: bool = false) -> void:
 	super()
 	Card = _Card
 	turn_state = _turn_state
+	is_start_of_phase = _is_start_of_phase
 	
 func onCheckFail() -> void:
 	if turn_state == Card.turn_state or Card.isDead():

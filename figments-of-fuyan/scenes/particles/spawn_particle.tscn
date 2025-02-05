@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://dwbg2om1w3245"]
+[gd_scene load_steps=5 format=3 uid="uid://dwbg2om1w3245"]
 
 [ext_resource type="Material" uid="uid://bejm0dawc77gj" path="res://resources/materials/colors/unshaded/green.tres" id="1_737ve"]
+[ext_resource type="Script" path="res://scenes/particles/spawn_particle.gd" id="2_qf5se"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_q26bx"]
 direction = Vector3(0, 1, 0)
@@ -14,7 +15,9 @@ material = ExtResource("1_737ve")
 size = Vector3(0.1, 0.1, 0.1)
 
 [node name="SpawnParticle" type="GPUParticles3D" groups=["SpawnParticles"]]
+amount_ratio = 0.25
 lifetime = 1.2
 explosiveness = 0.3
 process_material = SubResource("ParticleProcessMaterial_q26bx")
 draw_pass_1 = SubResource("BoxMesh_pdsro")
+script = ExtResource("2_qf5se")

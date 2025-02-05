@@ -55,8 +55,10 @@ signal mouse_entered
 signal mouse_exited
 signal update_ascended
 signal temporary_card_conditions_updated
+@warning_ignore("unused_signal")
 signal update_active_effect_description
 signal awakened_in_combat
+@warning_ignore("unused_signal")
 signal update_stats
 #endregion
 		
@@ -86,15 +88,18 @@ func setTileRotation(_tile_rotation: int) -> void:
 	tile_rotation = _tile_rotation
 	Model.rotation.y = (tile_rotation * (PI / 3)) + (PI / 6)
 	
+func setModelRotationToTile(OtherTile: TileGD) -> void:
+	var model_rotation: Vector3 = Model.rotation
+	Model.look_at(OtherTile.global_position)
+	Model.rotation = Vector3(model_rotation.x, Model.rotation.y + PI, model_rotation.z)
+	
 func setIdleAbility(state: bool) -> void:
 	anibility_datastore.is_idle_ability = state
 	if AniPlayer.current_animation.begins_with("Idle"):
 		onIdle()
 		
-func setAttackAbility(state: bool, play_attack_animation: bool = true) -> void:
+func setAttackAbility(state: bool) -> void:
 	anibility_datastore.is_attack_ability = state
-	if play_attack_animation:
-		onAttack()
 		
 func setDeathAbility(state: bool, play_death_animation: bool = true) -> void:
 	anibility_datastore.is_death_ability = state
@@ -137,8 +142,8 @@ func getTile() -> TileGD:
 #endregion
 
 #region Animation
-func setAniPlayer(Model: Node3D) -> void:
-	for child in Helper.getChildrenRecursive(Model):
+func setAniPlayer(AniModel: Node3D) -> void:
+	for child in Helper.getChildrenRecursive(AniModel):
 		if child is AnimationPlayer and !child.is_queued_for_deletion():
 			AniPlayer = child
 			AniPlayer.animation_finished.connect(onAnimationFinished)
@@ -162,8 +167,11 @@ func onJump() -> void:
 	AniPlayer.stop()
 	onPlayAnimation("Jump")
 		
-func onAttack() -> void:
+func onAttack(DefenderTile: TileGD, delay: float) -> void:
 	onPlayAnimation("Attack" if !anibility_datastore.is_idle_ability else "AttackAbility")
+	
+	if Game.getCoordsDistance(DefenderTile.getCoords(), Tile.getCoords()) > 1 and delay > 0: # If is level visible
+		setModelRotationToTile(DefenderTile)
 		
 func onWalk() -> void:
 	onPlayAnimation("Walk")
@@ -192,10 +200,10 @@ func onPauseAnimation(state: bool = true) -> void:
 #endregion
 
 #region Card
-func onCreateCardUI(parent: Control, highlight_on_hover: bool = false, inspectable: bool = true, DraggableParent: Control = null) -> Control:
+func onCreateCardUI(parent: Control, highlight_on_hover: bool = false, ui_inspectable: bool = true, DraggableParent: Control = null) -> Control:
 	var CardUI: Control = load(info.CARD_UI_SCENE_PATH).instantiate()
 	parent.add_child(CardUI)
-	CardUI.setInfo(self, highlight_on_hover, inspectable, DraggableParent)
+	CardUI.setInfo(self, highlight_on_hover, ui_inspectable, DraggableParent)
 	return CardUI
 #endregion
 
@@ -274,6 +282,7 @@ func onLoadDataLevel() -> void:
 	
 func onLoadDataLevelFofInit() -> void:
 	super()
+	onReset()
 	if !Game.isChampion(info.rarity):
 		if is_in_group("HandCardsGD"): return
 		onPushAction(AddToDeckAction.new(self, AddToDeckAction.ADD_TYPES.SHUFFLE))
@@ -423,12 +432,15 @@ func onInspectCard() -> void:
 func setTurnState(_turn_state: Game.TurnStates) -> void:
 	turn_state = _turn_state
 	FieldInfo.setInfoSpriteTurnState()
-	
-	if turn_state == Game.TurnStates.PASSED:
-		for stat_info in delayed_stats.duplicate():
-			stat_info.onCardTurnPassed()
 		
-		ai_datastore.onCardTurnPassed()
+func onCardTurnPassed(Card: CardGD) -> void:
+	if self != Card: return
+	
+	for stat_info in delayed_stats.duplicate():
+		stat_info.onCardTurnPassed()
+		
+	ai_datastore.onCardTurnPassed()
+	onPushAction(StatAction.new(StatInfo.new(Card, Game.Stats.SPEED, Card.max_speed, 0, false, false, true)))
 	
 #endregion
 
@@ -468,26 +480,29 @@ func isOccupyVisionVisibleAction(action: Action) -> bool:
 
 #region Movement
 func onMoveToTile(action: MoveToTileAction) -> void:
-	if !action.isJumpFall(): # Regular = Ramp movement
-		onWalk()
-		
-		if action.movement_type == MoveToTileAction.MOVEMENT_TYPES.REGULAR:
-			var tween := get_tree().create_tween()
-			tween.tween_property(self, "position", action.DestinationTile.getCardPosition(), action.getDelay())
-		else:
-			var tween := get_tree().create_tween()
+	if isLevelVisible():
+		if !action.isJumpFall(): # Regular = Ramp movement
+			onWalk()
 			
-			if action.DestinationTile.isRamp():
-				tween.tween_property(self, "position", Tile.getHalfwayCardPosition(action.DestinationTile), action.getDelay() / 2.0)
-				tween.tween_property(self, "position", action.DestinationTile.getCardPosition(), action.getDelay() / 2.0)
-			elif Tile.isRamp():
-				tween.tween_property(self, "position", action.DestinationTile.getHalfwayCardPosition(Tile), action.getDelay() / 2.0)
-				tween.tween_property(self, "position", action.DestinationTile.getCardPosition(), action.getDelay() / 2.0)
-		return
-	
-	onJump()
-	if action.movement_type == MoveToTileAction.MOVEMENT_TYPES.JUMP: onJumpTween(action)
-	elif action.movement_type == MoveToTileAction.MOVEMENT_TYPES.FALL: onFall(action)
+			if action.movement_type == MoveToTileAction.MOVEMENT_TYPES.REGULAR:
+				var tween := get_tree().create_tween()
+				tween.tween_property(self, "position", action.DestinationTile.getCardPosition(), action.getDelay())
+			else:
+				var tween := get_tree().create_tween()
+				
+				if action.DestinationTile.isRamp():
+					tween.tween_property(self, "position", Tile.getHalfwayCardPosition(action.DestinationTile), action.getDelay() / 2.0)
+					tween.tween_property(self, "position", action.DestinationTile.getCardPosition(), action.getDelay() / 2.0)
+				elif Tile.isRamp():
+					tween.tween_property(self, "position", action.DestinationTile.getHalfwayCardPosition(Tile), action.getDelay() / 2.0)
+					tween.tween_property(self, "position", action.DestinationTile.getCardPosition(), action.getDelay() / 2.0)
+			return
+		
+		onJump()
+		if action.movement_type == MoveToTileAction.MOVEMENT_TYPES.JUMP: onJumpTween(action)
+		elif action.movement_type == MoveToTileAction.MOVEMENT_TYPES.FALL: onFall(action)
+	else:
+		position = action.DestinationTile.getCardPosition()
 	
 const JUMP_SPEEDSCALE: float = 2.5
 func onJumpTween(action: MoveToTileAction) -> void:
@@ -611,8 +626,8 @@ func onUpdateVision() -> void: # Returns the new visibles
 		for Obj in obj_array: vision_range_game_objects.append(Obj)
 		
 	var adjacent_tiles_and_center: Array = Game.getAdjacentTiles(Tile, 1) + [Tile]
-	for Tile in adjacent_tiles_and_center:
-		vision_range_game_objects.erase(Tile)
+	for AdjacentTile: TileGD in adjacent_tiles_and_center:
+		vision_range_game_objects.erase(AdjacentTile)
 		
 	vision_range_game_objects += cards
 	
@@ -631,8 +646,8 @@ func onUpdateVision() -> void: # Returns the new visibles
 					direct_game_objects_dict[DirectGameObject] = null
 					if GameObject == DirectGameObject: break
 	
-	for Tile in adjacent_tiles_and_center:
-		direct_game_objects_dict[Tile] = null
+	for AdjacentTile: TileGD in adjacent_tiles_and_center:
+		direct_game_objects_dict[AdjacentTile] = null
 	
 	var direct_game_objects: Array = direct_game_objects_dict.keys()
 	for GameObject in previous_direct_game_objects.filter(func(x: GameObjectGD): return x not in direct_game_objects): # No longer direct
@@ -651,8 +666,8 @@ func onUpdateVision() -> void: # Returns the new visibles
 				visibles[tile_to_card[GameObject]].setByTile(false)
 				
 		elif GameObject is ObjectGD:
-			for Tile in GameObject.occupied_tiles:
-				visibles[Tile].onRemoveObject(GameObject)
+			for ObjTile: TileGD in GameObject.occupied_tiles:
+				visibles[ObjTile].onRemoveObject(GameObject)
 		
 	for GameObject in direct_game_objects:
 		if GameObject is CardGD and GameObject in cards:
@@ -669,17 +684,17 @@ func onUpdateVision() -> void: # Returns the new visibles
 				
 		elif GameObject is ObjectGD:
 			vision_datastore.setDirect(GameObject, true)
-			for Tile in GameObject.occupied_tiles:
-				visibles[Tile].onAddObject(GameObject)
+			for ObjTile: TileGD in GameObject.occupied_tiles:
+				visibles[ObjTile].onAddObject(GameObject)
 	
-func onTileOccupiedIsInVision(Tile: TileGD, PreviousTile: TileGD, Card: CardGD) -> void:
+func onTileOccupiedIsInVision(OccupiedTile: TileGD, PreviousTile: TileGD, Card: CardGD) -> void:
 	var visibles: Dictionary = vision_datastore.getVisibles()
 	
 	if PreviousTile != null: visibles[PreviousTile].setByUnit(false)
 	
-	var new_tile_in_vision: bool = Tile != null and Tile in getVisibleGameObjects()
+	var new_tile_in_vision: bool = OccupiedTile != null and OccupiedTile in getVisibleGameObjects()
 	
-	if Tile != null: visibles[Tile].setByUnit(new_tile_in_vision)
+	if OccupiedTile != null: visibles[OccupiedTile].setByUnit(new_tile_in_vision)
 	if Card != null: visibles[Card].setByTile(new_tile_in_vision)
 	
 func inEnemyVision() -> bool:
@@ -706,7 +721,7 @@ func onCreateVisionRay() -> void:
 	VisionRay.position.y = info.eye
 	
 func onUpdateLevelVisible() -> void:
-	visible = isLevelVisible() if !is_card_change_level_visible else true
+	visible = true if Helper.admin_datastore.see or is_card_change_level_visible else isLevelVisible()
 	
 func isLevelVisible() -> bool:
 	return isAlly(0) or super()
@@ -715,7 +730,9 @@ func setLevelVisible(state: bool) -> void:
 	if state != vision_datastore.level_visible:
 		is_card_change_level_visible = true
 		super(state)
-		setAlphagreyMaterial(1.0 if state else 0.0)
+		await setAlphagreyMaterial(1.0 if state else 0.0)
+		is_card_change_level_visible = false
+		onUpdateLevelVisible()
 	else: super(state)
 		
 	if Tile != null:
@@ -1014,7 +1031,7 @@ func onAdvanceTurn(turn_team: int) -> void:
 	
 	var actions: Array = [StatAction.new(
 		StatInfo.new(self, Game.Stats.SPEED, max_speed - int(Tile.isDeepwater()), 0, true, false, true)),
-		ChangeTurnStateAction.new(self, Game.TurnStates.INACTIVE)]
+		ChangeTurnStateAction.new(self, Game.TurnStates.INACTIVE, true)]
 		
 	actions += active_effects.map(func(x: ActiveEffectDatastore): return ChangeActiveEffectUsedAction.new(x, false))
 	onPushAction(actions)
@@ -1041,7 +1058,7 @@ func isValidLastWill(action: Action) -> bool:
 	return action.post and action is DeathAction and action.Defender == self and card_place == Game.CardPlaces.GRAVEYARD
 
 func isValidRampage(action: Action) -> bool:
-	return action.post and action is DeathAction and action.Damager == self and card_place == Game.CardPlaces.FIELD
+	return action.post and action is DeathAction and action.Damager == self and card_place == Game.CardPlaces.FIELD and action.Defender.team != 2
 
 func isValidOnHit(action: Action) -> bool:
 	return action.post and action is DamageAction and action.owner is AttackAction and action.Damager == self and card_place == Game.CardPlaces.FIELD\
@@ -1052,7 +1069,8 @@ func isValidRevenge(action: Action) -> bool:
 	action.owner.damage_type != Game.DamageTypes.FALL_DAMAGE and self in action.owner.Defenders and card_place == Game.CardPlaces.FIELD
 
 func isValidBloodthirst(action: Action) -> bool:
-	return action.post and action is DeathAction and action.Damager != self and isEnemy(action.Defender.team) and card_place == Game.CardPlaces.FIELD and action.getCardSawDefenderDie(self) 
+	return action.post and action is DeathAction and action.Damager != self and isEnemy(action.Defender.team)\
+	and card_place == Game.CardPlaces.FIELD and action.getCardSawDefenderDie(self) and action.Defender.team != 2
 
 func isValidArrive(action: Action) -> bool:
 	return action.post and action is AwakenAction and action.Card == self
@@ -1157,34 +1175,15 @@ func getIcon() -> Texture2D: return info.art_mini
 #endregion
 
 #region Elites
-func isValidEliteLevelSpawns(enemy_spawns: Array) -> bool:
+func isValidEliteLevelSpawns(_enemy_spawns: Array) -> bool:
 	return true
 #endregion
 
 #region Level Ended
 func onLevelEnded(_win: bool) -> void:
-	setStats(base_stats)
-			
-	if !(isAlly(0) and !is_awakened_in_combat): return
-	if card_place != Game.CardPlaces.DECK: onChangeCardPlace(Game.CardPlaces.DECK)
-	
-	attacks = 1
-	attack_range = 1
-	tile_rotation = 0
-	delayed_stats = []
-	
-	active_effects = []
-	status_effects = []
-	field_effects = []
-	turn_state = Game.TurnStates.NULL
-	vision_datastore = VisionDatastoreCard.new()
-	
-	ai_datastore.onReset()
-	Tile = null
-	
-	for overworld_trait in overworld_traits:
-		overworld_trait.onLevelEnded(_win)
-	
+	onReset(true)
+	if isAlly(0) and !is_awakened_in_combat and card_place != Game.CardPlaces.DECK:
+		onChangeCardPlace(Game.CardPlaces.DECK)
 #endregion
 
 #region Idle Rare
@@ -1244,7 +1243,7 @@ func isValidDuelistRampage(action: Action) -> bool:
 #endregion
 
 #region AI
-func onUnitSpecificTransforms(_tiles_to_value: Dictionary, DFL: DefaultFightLogic) -> void:
+func onUnitSpecificTransforms(_tiles_to_value: Dictionary, _DFL: DefaultFightLogic) -> void:
 	pass
 	
 func getArchetype() -> Game.Archetypes:
@@ -1264,22 +1263,22 @@ func getArchetype() -> Game.Archetypes:
 # True if active effect used
 func onAICheckActiveEffects(DFL: DefaultFightLogic, allies: Array, enemies: Array, after_action: MovementFinishAction = null) -> bool:
 	var tool_active_effects: Array = Tool.getActiveEffects() if Tool != null else []
-	var active_effects: Array = getActiveEffects() + tool_active_effects
+	var ai_active_effects: Array = getActiveEffects() + tool_active_effects
 	
 	for IObject in Game.get_tree().get_nodes_in_group("LevelIObjectsGD")\
 		.filter(func(x: ObjectGD): return !x.is_queued_for_deletion()):
-		active_effects += IObject.getValidActiveEffects(self)
+		ai_active_effects += IObject.getValidActiveEffects(self)
 		
-	for active_effect in active_effects:
+	for active_effect in ai_active_effects:
 		var active_effect_tiles: ActiveEffectTiles = active_effect.owner.onAIAbilityCheckerDefault(active_effect)\
 			if active_effect.owner is not IObjectGD else active_effect.owner.onAIAbilityCheckerDefault(active_effect, self)
 		if active_effect_tiles == null: continue
 		
-		var Tile: TileGD = active_effect.owner.onAIAbilityChecker(active_effect, active_effect_tiles, DFL)
-		if Tile == null: continue
+		var ChosenTile: TileGD = active_effect.owner.onAIAbilityChecker(active_effect, active_effect_tiles, DFL)
+		if ChosenTile == null: continue
 		
 		var actions: Array = [ChangeTurnStateAction.new(self, Game.TurnStates.ACTIVE),\
-			ActiveEffectUsedAction.new(active_effect, Tile, active_effect_tiles, self),\
+			ActiveEffectUsedAction.new(active_effect, ChosenTile, active_effect_tiles, self),\
 			MovementFinishAction.new(self, [], allies, enemies)]
 			
 		if after_action == null: onPushAction(actions)
@@ -1302,6 +1301,7 @@ func setBaseMaterials() -> void:
 var is_in_alphagrey: bool
 var AlphagreyTween: Tween
 func setAlphagreyMaterial(start_value: float) -> void:
+	if !isAlive() or Helper.admin_datastore.see: return
 	if AlphagreyTween != null: AlphagreyTween.stop()
 	AlphagreyTween = get_tree().create_tween()
 	
@@ -1312,10 +1312,8 @@ func setAlphagreyMaterial(start_value: float) -> void:
 	await AlphagreyTween.finished
 	
 	is_in_alphagrey = false
-	is_card_change_level_visible = false
 	
 	setBaseMaterials()
-	onUpdateLevelVisible()
 	
 func setAlphagreyMaterialValue(value: float) -> void:
 	if !is_in_alphagrey or !is_in_group("FieldCardsGD"): return
@@ -1326,3 +1324,24 @@ func setAlphagreyMaterialValue(value: float) -> void:
 func getAdjustedPoints() -> Array:
 	return getLevelPoints().map(func(x: Vector3): return (Game.onRotatePosition(x, rotation.y)) + position)
 	
+func onReset(override: bool = false) -> void: # Override for when level ends
+	setStats(base_stats)
+			
+	if !override and !(isAlly(0) or is_awakened_in_combat): return
+	
+	attacks = 1
+	attack_range = 1
+	tile_rotation = 0
+	delayed_stats = []
+	
+	active_effects = []
+	status_effects = []
+	field_effects = []
+	turn_state = Game.TurnStates.NULL
+	vision_datastore = VisionDatastoreCard.new()
+	
+	ai_datastore.onReset()
+	Tile = null
+	
+	for overworld_trait in overworld_traits:
+		overworld_trait.onReset()
