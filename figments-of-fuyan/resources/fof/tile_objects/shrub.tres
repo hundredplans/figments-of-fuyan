@@ -1,11 +1,11 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=8 format=3]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=8 format=3 uid="uid://c4thbik6bk4eq"]
 
 [ext_resource type="Script" path="res://scripts/fof/objects/object.gd" id="1_nki22"]
 [ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_o3hgd"]
 [ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="1_wctkn"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/shrub.glb" id="2_gl6bs"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/shrub1.glb" id="3_cidgx"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/shrub2.glb" id="4_v4lfs"]
+[ext_resource type="PackedScene" uid="uid://dr8ox43w46i8w" path="res://assets/models/fof/objects/shrub.glb" id="2_gl6bs"]
+[ext_resource type="PackedScene" uid="uid://dx5e32g8ahbl1" path="res://assets/models/fof/objects/shrub1.glb" id="3_cidgx"]
+[ext_resource type="PackedScene" uid="uid://b5b1g5rtk6rhn" path="res://assets/models/fof/objects/shrub2.glb" id="4_v4lfs"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="5_3cjsl"]
 
 [resource]
@@ -13,6 +13,7 @@ script = ExtResource("1_wctkn")
 tile_coords = Array[Array]([[Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)]])
 lock_rotation = false
 lock_tile = false
+ignore_collisions = true
 solids = Array[bool]([false, false, false])
 active_effects = Array[ExtResource("1_o3hgd")]([])
 models = Array[PackedScene]([ExtResource("2_gl6bs"), ExtResource("3_cidgx"), ExtResource("4_v4lfs")])
