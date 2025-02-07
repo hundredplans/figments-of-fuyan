@@ -33,11 +33,18 @@ func onPostAction() -> void:
 		Tile.onOccupy(Card, apply_occupy_instant)
 		Card.setPositionToTile()
 
-	var vision_cards: Array = Game.inVisionRangeCardsCoords(coords, true)
+	var vision_cards: Dictionary = {}
+	for OtherCard in Game.inVisionRangeCardsCoords(coords, true):
+		vision_cards[OtherCard] = null
+	
+	
+	for OtherCard in Game.get_tree().get_nodes_in_group("FieldCardsGD").filter(func(x: CardGD): return Card in x.getVisibleFieldCards()):
+		vision_cards[OtherCard] = null 
+	
 	for VisionCard in vision_cards:
 		VisionCard.onTileOccupiedIsInVision(Tile, PreviousTile, Card)
 	
-	onPushAction(VisionAction.new(vision_cards, Card))
+	onPushAction(VisionAction.new(vision_cards.keys(), Card))
 
 func getLogInfo() -> Array:
 	return ["Card: " + Card.info.name, "TileExists: " + str(Tile != null)]

@@ -22,7 +22,9 @@ func onPostAction() -> void:
 	for Tile in tiles:
 		Tile.is_card_moving = false
 		Tile.setOutlineMaterial()
-	if Card.isWalking(): Card.onIdle()
+		
+	if Card.isWalking():
+		Card.onIdle()
 	
 	if Card.isEnemy(0) and Card.turn_state == Game.TurnStates.ACTIVE:
 		var is_alive: bool = Card.isAlive()

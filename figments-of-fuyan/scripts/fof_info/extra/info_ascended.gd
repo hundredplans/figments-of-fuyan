@@ -8,4 +8,4 @@ func _init(_info: FofInfo = null, _ascended: bool = false) -> void:
 	ascended = _ascended
 
 func getDescription() -> String:
-	return info.description
+	return info.getDescription(ascended)

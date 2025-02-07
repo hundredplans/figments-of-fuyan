@@ -41,6 +41,8 @@ func onIObject(action: Action) -> void:
 				stepped_on_card_public_id = action.Card.public_id
 				actions.append(AwakenAction.new(Card, Tile))
 				onRemoveMoveAndAttackActions(action.Card)
+				onAppendAction(actions)
+				return
 			else: onHeal(action, actions)
 	onPushAction(actions)
 

@@ -65,27 +65,19 @@ func onForceAction(action: Action) -> void:
 	process_action.emit(action)
 
 func onDebugAction(action: Action) -> void:
-	pass
-	#var path: String = action.get_script().resource_path
-	#print(path.get_slice("/", path.get_slice_count("/") - 1))
-	#var logs: Array = action.getLogInfo()
-	#if action.failed: logs.append("FAILED")
-	#
-	#for log_info in logs:
-		#print("	" + log_info)
-	
-	print(([action] + actions).map(func(x: Action):
-		var path: String = x.get_script().resource_path
-		return path.get_slice("/", path.get_slice_count("/") - 1)))
-	
-func onDebugActionNames() -> void:
-	pass
-	#print("Debug Action Names: ")
-	#for action in actions:
-		#var path: String = action.get_script().resource_path
-		#print(path.get_slice("/", path.get_slice_count("/") - 1))
-	#print()
-	
+	match Helper.admin_datastore.action_debug:
+		AdminDatastore.ActionDebugType.SINGLE:
+			var path: String = action.get_script().resource_path
+			print(path.get_slice("/", path.get_slice_count("/") - 1))
+			var logs: Array = action.getLogInfo()
+			if action.failed: logs.append("FAILED")
+
+			for log_info in logs:
+				print("	" + log_info)
+				
+		AdminDatastore.ActionDebugType.ARRAY:
+			print(([action] + actions).map(func(x: Action): var path: String = x.get_script().resource_path; return path.get_slice("/", path.get_slice_count("/") - 1)))
+
 var is_action_playing: bool
 func onActionPlaying(state: bool) -> void:
 	if state != is_action_playing:

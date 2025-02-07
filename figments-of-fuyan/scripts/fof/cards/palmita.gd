@@ -9,11 +9,14 @@ func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectT
 		return ActiveEffectTiles.new(tiles, tiles.filter(func(x: TileGD): return Game.getAllyFieldCard(x, team)))
 	return null
 	
+func onActiveEffectPre(_active_effect: ActiveEffectDatastore, PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles) -> void:
+	onForceAction(ChangeTileRotationAction.new(self, Game.getRelativeTileRotation(Tile, PickedTile)))
+		
 func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
 	super(active_effect, PickedTile, active_effect_tiles)
 	if active_effect is ActiveAbilityDatastore and active_effect.name == "Helpful Helmet":
 		var Card: CardGD = Game.getFieldCard(PickedTile)
-		var actions: Array = [DestroyAction.new(self, self), ChangeTileRotationAction.new(self, Game.getRelativeTileRotation(Tile, Card.Tile))]
+		var actions: Array = [DestroyAction.new(self, self)]
 		
 		var HelpfulHelmet: FieldEffectGD = SavedData.onLoadModel(SavedDataFieldEffect.new(5, true), Card)
 		Card.onAddFieldEffect(HelpfulHelmet, Card)

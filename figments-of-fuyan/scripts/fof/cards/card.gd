@@ -453,8 +453,6 @@ func onProcessAction(action: Action) -> void:
 				onMoveToTile(action)
 		elif action.post:
 			if action is MovementFinishAction and action.Card == self: Tile.setOutlineMaterial()
-			#elif isOccupyVisionVisibleAction(action):
-				#onAddUnitVisibleParticle()
 			elif action is AttackAction and action.Attacker.isEnemy(team) and action.Attacker in getVisibleFieldCardsEnemies():
 				ai_datastore.setLastSeenViolence(0)
 			elif isValidRampage(action):

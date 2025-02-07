@@ -299,13 +299,13 @@ func onAwakened(Card: CardGD) -> void:
 	Card.inspect_screen_created.connect(onInspectScreenCreated)
 	Card.FieldInfo.visible = visible
 	if !Card.isAlly(0): return
-	PassButton.setIsLastAllyAlive()
+	PassButton.setEveryonePassedTurn()
 #endregion
 
 #region Death
 func onDeath(Card: CardGD) -> void:
 	if !Card.isAlly(0): return
-	PassButton.setIsLastAllyAlive()
+	PassButton.setEveryonePassedTurn()
 #endregion
 
 #region Active Effects

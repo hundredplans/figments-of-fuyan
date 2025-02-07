@@ -64,6 +64,7 @@ func onClear() -> void:
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
+	add_to_group("LevelsGD")
 	energy = data.energy
 	max_energy = data.max_energy
 	enemy_spawns = data.enemy_spawns
@@ -89,7 +90,6 @@ func onLoadData(data: SavedData) -> void:
 
 	level_camera_data = data.level_camera_data
 	old_player_vision = data.old_player_vision.map(func(x: int): return Game.onFindPublicIDObject(x))
-	add_to_group("LevelsGD")
 	
 	rewards = data.rewards
 	if rewards != null:

@@ -64,6 +64,8 @@ func onUpdateLevelVisible() -> void:
 func getValidActiveEffects(Card: CardGD) -> Array: # Returns the ability effects the Card can view
 	var Tile: TileGD = getTile()
 	
+	if Card.getTile().getHeight() != getTile().getHeight(): return []
+	
 	if is_open and get_tree().get_nodes_in_group("FieldCardsGD").any(func(x: CardGD): return x.Tile == Tile): return []
 	if !isAdjacent(Card.getCoords()): return []
 

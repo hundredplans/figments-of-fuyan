@@ -6,10 +6,10 @@ var is_passed_turn: bool
 var is_inactive_with_another_active: bool
 var is_player_phase: bool
 var is_ability_mode: bool
-var is_last_ally_alive: bool
+var everyone_passed_turn: bool
 
 func setDisabled() -> void:
-	var player_phase_checks: bool = is_ally_spectating and (!is_passed_turn or is_last_ally_alive) and !is_inactive_with_another_active
+	var player_phase_checks: bool = is_ally_spectating and (!is_passed_turn or everyone_passed_turn) and !is_inactive_with_another_active
 	disabled = action_lock or (is_player_phase and !player_phase_checks) or is_ability_mode
 	
 func setActionLock(state: bool) -> void:
@@ -30,11 +30,11 @@ func setTurnStates(Card: CardGD, override: bool = false) -> void:
 		is_passed_turn = Card.turn_state == Game.TurnStates.PASSED
 		is_inactive_with_another_active = Card.turn_state == Game.TurnStates.INACTIVE and\
 			Game.getAllyUnits().any(func(x: CardGD): return x != Card and x.turn_state == Game.TurnStates.ACTIVE)
-	
+		everyone_passed_turn = Game.getAllyUnits().all(func(x: CardGD): return x.turn_state == Game.TurnStates.PASSED)
 	setDisabled()
 	
-func setIsLastAllyAlive() -> void:
-	is_last_ally_alive = Game.getAllyUnits(0).size() == 1
+func setEveryonePassedTurn() -> void:
+	everyone_passed_turn = Game.getAllyUnits().all(func(x: CardGD): return x.turn_state == Game.TurnStates.PASSED)
 	setDisabled()
 
 func setPhase(phase: Game.Phases) -> void:

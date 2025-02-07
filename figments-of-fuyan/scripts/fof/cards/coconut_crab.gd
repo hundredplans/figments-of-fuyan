@@ -20,13 +20,17 @@ func getDescription() -> String:
 
 func onArrivePre(_action: AwakenAction) -> void:
 	onAbility()
+	
+	var SteppedOnCard: CardGD = Game.onFindPublicIDObject(stepped_on_card_public_id)
+	var relative_tile_rotation: int = Game.getRelativeTileRotation(SteppedOnCard.Tile, Tile)
+	onForceAction(ChangeTileRotationAction.new(SteppedOnCard, Game.getRelativeTileRotation(SteppedOnCard.Tile, Tile)))
+	onForceAction(ChangeTileRotationAction.new(self, Game.getRelativeTileRotation(Tile, SteppedOnCard.Tile)))
 
 func onArrive(_action: AwakenAction) -> void:
 	assert(stepped_on_card_public_id > 0)
 	var SteppedOnCard: CardGD = Game.onFindPublicIDObject(stepped_on_card_public_id)
 	var actions: Array = [
 		DamageAction.new(self, SteppedOnCard, 1),
-		ChangeTileRotationAction.new(SteppedOnCard, Game.getRelativeTileRotation(SteppedOnCard.Tile, Tile)),
 		AITurnAction.new(self, true, true),
 		]
 	onPushAction(actions)
