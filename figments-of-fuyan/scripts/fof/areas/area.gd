@@ -351,11 +351,11 @@ func setHolyPath(Card: CardGD) -> void:
 
 #region Map Nodes
 func getEnteredMapNode() -> MapNodeGD:
-	for map_node in get_tree().get_nodes_in_group("MapNodesGD"):
-		if map_node.is_entered: return map_node
-	return null
+	var map_nodes: Array = get_tree().get_nodes_in_group("MapNodesGD").filter(func(x: MapNodeGD): return x.is_entered)
+	map_nodes.sort_custom(func(x: MapNodeGD, y: MapNodeGD): return x.progress > y.progress)
+	return map_nodes[0]
 	
-func onMapNodeHovered(map_node: MapNodeGD, state: bool, _HoverUI: Control = null) -> void:
+func onMapNodeHovered(map_node: MapNodeGD, state: bool, _HoverUI: Variant = null) -> void:
 	var EnteredMapNode: MapNodeGD = getEnteredMapNode()
 	var is_walkable: bool = EnteredMapNode.isMapNodeLink(map_node)
 	map_node.onStaticBodyHovered(is_walkable, state)

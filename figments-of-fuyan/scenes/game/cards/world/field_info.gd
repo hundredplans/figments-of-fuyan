@@ -257,7 +257,7 @@ func onFindIconNode(FofObject: FofGD) -> Sprite3D:
 #region Delayed Stats
 func onUpdateDelayedStats() -> void:
 	onResetNullIcons()
-	var stats: Dictionary = {Game.Stats.ATTACK: 0, Game.Stats.HEALTH: 0, Game.Stats.MAX_SPEED: 0, Game.Stats.MAX_HEALTH: 0}
+	var stats: Dictionary = {Game.Stats.ATTACK: 0, Game.Stats.SPEED: 0, Game.Stats.HEALTH: 0, Game.Stats.MAX_SPEED: 0, Game.Stats.MAX_HEALTH: 0}
 	for stat_info in Card.delayed_stats.filter(func(x: StatInfo): return x.turns == 1):
 		for i in range(stat_info.types.size()):
 			stats[stat_info.types[i]] += stat_info.values[i]

@@ -23,14 +23,7 @@ func setInfo(_item: Variant, is_taken: bool = false) -> void:
 		AmountLabel.text = str(item.getShillings())
 		
 	elif item is BoonGD or item is ToolGD or item is CardGD:
-		var theme_variation: String
-		match item.info.rarity:
-			Game.Rarities.COMMON: theme_variation = "BeigePanelContainer"
-			Game.Rarities.RARE: theme_variation = "TealPanelContainer"
-			Game.Rarities.EXALT: theme_variation = "YellowPanelContainer"
-		
-		if item.getAscended(): theme_variation += "Ascended"
-		MainContainer.theme_type_variation = theme_variation
+		MainContainer.theme_type_variation = Game.getRarityThemeVariation(item.info.rarity, item.getAscended())
 		
 		var text: String = ItemLabel.onReplaceCardName(item.info.getFofName(), item.ascended, item.info.rarity)
 		ItemLabel.setText(text)

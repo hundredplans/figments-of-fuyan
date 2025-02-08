@@ -37,9 +37,6 @@ func onPostAction() -> void:
 		var old_visible_cards: Array = old_visible_game_objects[Card].filter(func(x: GameObjectGD): return x is CardGD)
 		var new_visible_cards: Array = new_visible_game_objects[Card].filter(func(x: GameObjectGD): return x is CardGD)
 		
-		old_visible_cards = old_visible_cards.filter(func(x: CardGD): return x not in new_visible_cards)
-		new_visible_cards = new_visible_cards.filter(func(x: CardGD): return x not in old_visible_cards)
-		
 		var not_in_vision: Array = old_visible_cards.filter(func(x: CardGD): return x not in new_visible_cards)
 		var now_in_vision: Array = new_visible_cards.filter(func(x: CardGD): return x not in old_visible_cards)
 		

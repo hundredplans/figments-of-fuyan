@@ -37,7 +37,6 @@ func onPostAction() -> void:
 	for OtherCard in Game.inVisionRangeCardsCoords(coords, true):
 		vision_cards[OtherCard] = null
 	
-	
 	for OtherCard in Game.get_tree().get_nodes_in_group("FieldCardsGD").filter(func(x: CardGD): return Card in x.getVisibleFieldCards()):
 		vision_cards[OtherCard] = null 
 	

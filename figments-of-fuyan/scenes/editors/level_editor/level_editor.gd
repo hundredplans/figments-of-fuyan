@@ -22,6 +22,7 @@ extends Node
 @onready var SearchResultsPanel: PanelContainer = %SearchResultsPanel
 
 @onready var MouseWheelDelayTimer: Timer = %MouseWheelDelayTimer
+@onready var LevelNameLabel: Label = %LevelNameLabel
 #endregion
 #region Globals
 var is_camera_panning: bool = false
@@ -474,7 +475,9 @@ func onNewEmptyLevelOverworld() -> void:
 	
 func onSaveLevel() -> void:
 	var level_name: String = SaveLineEdit.text
+	LevelNameLabel.text = level_name
 	if level_name.is_empty(): return
+	
 	if !is_decoration:
 		if loaded is DecorationDatastore:
 			loaded = Helper.getFofInfoID(AreaInfo, current_area_id).base_level_script.new()
@@ -528,6 +531,7 @@ func onLoadLevel(loaded_info: Variant) -> void:
 	
 	onHoverModelDeselected()
 	SaveLineEdit.text = loaded.name
+	LevelNameLabel.text = loaded.name
 	
 	if loaded is LevelInfo:
 		var area_id: int = loaded.area_id

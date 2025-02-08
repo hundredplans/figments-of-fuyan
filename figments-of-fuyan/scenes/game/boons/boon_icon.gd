@@ -1,6 +1,8 @@
 extends TextureRect
 
 signal pressed
+signal mouse_in_ui
+
 var Boon: BoonGD
 var disabled: bool
 var hoverable: bool
@@ -24,13 +26,14 @@ func setInfo(_Boon: BoonGD, _hoverable: bool = false) -> void:
 func onDisplayCharges(state: bool) -> void:
 	ChargesLabel.visible = state
 	
-var mouse_in_ui: bool
+var is_mouse_in_ui: bool
 func onMouseInUI(state: bool) -> void:
-	mouse_in_ui = state
+	is_mouse_in_ui = state
 	Game.onMouseInUITooltip(state, Boon, self, true)
 	
 	if !disabled and hoverable:
 		modulate = Color(0.5, 0.5, 0.5) if state else Color(1, 1, 1)
+	mouse_in_ui.emit(state)
 		
 func onUpdateCharges(charges: int) -> void:
 	#onDisplayCharges(charges == -1)
@@ -48,5 +51,5 @@ func onUpdateAscension(_ascended: bool) -> void:
 	material = (ASCENDED_CANVAS_MATERIAL if !disabled else ASCENDED_CANVAS_MATERIAL_DISABLED) if ascended else null
 	
 func _process(_delta: float) -> void:
-	if Input.is_action_just_pressed("MainInput") and mouse_in_ui and !disabled:
+	if Input.is_action_just_pressed("MainInput") and is_mouse_in_ui and !disabled:
 		pressed.emit(Boon)

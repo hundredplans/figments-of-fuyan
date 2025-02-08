@@ -28,10 +28,16 @@ func onLoadData(data: SavedData) -> void:
 
 #region Hovering
 func onMouseHovered(state: bool) -> void:
-	if is_queued_for_deletion(): return
-	if !state and HoverUI != null: HoverUI.queue_free()
-	else: HoverUI = load(info.FIGHT_NODE_HOVER_UI).instantiate()
 	super(state)
+	
+func onUpdateHovered() -> void:
+	if is_queued_for_deletion(): return
+	var state: bool = getHoveredState()
+	if state:
+		if HoverUI != null: HoverUI.queue_free()
+		HoverUI = load(info.FIGHT_NODE_HOVER_UI).instantiate()
+	super()
+	
 #endregion
 
 #region Loading Level

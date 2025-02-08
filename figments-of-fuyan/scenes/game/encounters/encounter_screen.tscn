@@ -1,9 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://cn755n0hb1fr1"]
+[gd_scene load_steps=9 format=3 uid="uid://cn755n0hb1fr1"]
 
 [ext_resource type="Script" path="res://scenes/game/encounters/encounter_screen.gd" id="1_k83ph"]
 [ext_resource type="Script" path="res://scripts/fof_info/encounters/extra/encounter_option_datastore.gd" id="2_1drhe"]
 [ext_resource type="PackedScene" uid="uid://baseohs8mjkgc" path="res://scenes/game/encounters/encounter_option_button_ui.tscn" id="3_nquhb"]
 [ext_resource type="LabelSettings" uid="uid://rtes1t31euap" path="res://resources/ui/label_settings/jacquard_massive.tres" id="4_s4j0g"]
+[ext_resource type="PackedScene" uid="uid://dvnoqpn6m0fnl" path="res://scenes/common/minimap/minimap.tscn" id="4_vroqn"]
+[ext_resource type="PackedScene" uid="uid://mehoa6ajrja5" path="res://scenes/common/highlight_tx_button.tscn" id="5_s71gi"]
+[ext_resource type="Texture2D" uid="uid://d203lqs8t7rqv" path="res://assets/sprites/ui/icons/minimap.png" id="6_1fb7s"]
 
 [sub_resource type="Resource" id="Resource_sg63k"]
 script = ExtResource("2_1drhe")
@@ -23,6 +26,7 @@ mouse_filter = 2
 script = ExtResource("1_k83ph")
 exit_option = SubResource("Resource_sg63k")
 EncounterOptionButtonUIPacked = ExtResource("3_nquhb")
+MinimapPacked = ExtResource("4_vroqn")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -94,3 +98,34 @@ text = "Acorn Merchant"
 label_settings = ExtResource("4_s4j0g")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="MapPanel" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 1790.0
+offset_top = 10.0
+offset_right = 1910.0
+offset_bottom = 130.0
+mouse_filter = 1
+theme_type_variation = &"WhitePanelContainer"
+
+[node name="MarginContainer" type="MarginContainer" parent="MapPanel"]
+layout_mode = 2
+
+[node name="MinimapButton" parent="MapPanel/MarginContainer" groups=["ActionLockDisabled"] instance=ExtResource("5_s71gi")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = ExtResource("6_1fb7s")
+
+[node name="MinimapControl" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_left = 879.0
+offset_top = 10.0
+offset_right = 879.0
+offset_bottom = 10.0
+mouse_filter = 2
+
+[connection signal="pressed" from="MapPanel/MarginContainer/MinimapButton" to="." method="_on_minimap_button_pressed"]

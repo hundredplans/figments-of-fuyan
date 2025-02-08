@@ -45,6 +45,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level.spectate_group.connect(CameraManager.onSpectateGroup)
 	level.set_last_ally_spectate_object.connect(setLastAllySpectateObjectForLevel)
 	level.request_camera_position_update.connect(onRequestCameraPositionUpdate)
+	level.vision_changed.connect(onVisionChanged)
 	
 	CameraManager.camera_position_updated.connect(onCameraPositionUpdated)
 	CameraManager.create_camera_action.connect(onCreateCameraChangeAction)
@@ -201,6 +202,8 @@ func onCameraChange(SpectateObject: GameObjectGD, OldSpectateObject: GameObjectG
 	if SpectateObject is CardGD and SpectateObject.isAlive(): SpectateObject.onSpectated(true)
 	CameraManager.onCameraChange(SpectateObject)
 	
+	setLevelVisibleNotInVisionForSpectateObject(SpectateObject)
+	
 func onCameraChangePre(_SpectateObject: GameObjectGD, _OldSpectateObject: GameObjectGD) -> void:
 	if !CameraManager.isCycle():
 		onActiveEffectDeselected()
@@ -243,7 +246,7 @@ func isActionTiedToAwakenAction(action: ChangeTurnStateAction) -> bool:
 	return false
 #endregion
 
-#region Vision Mode
+#region Vision
 var original_vision: Dictionary
 var default_vision: Dictionary
 var cards_vision_mode: Dictionary # Dict of Card: CardVisionMode
@@ -298,6 +301,19 @@ func onVisionModeTileHovered(Tile: TileGD) -> void:
 		GameObject.setLevelVisible(true)
 		if GameObject is CardGD:
 			GameObject.setCardVisionModeState(true)
+
+func setLevelVisibleNotInVisionForSpectateObject(SpectateObject: GameObjectGD = level.getSpectateObject()) -> void:
+	var spectate_vision: Array = SpectateObject.getVisibleFieldCards() if SpectateObject != null and SpectateObject is CardGD else []
+	var is_spectate_vision_empty: bool = spectate_vision.is_empty()
+	
+	for Card in get_tree().get_nodes_in_group("FieldCardsGD"):
+		var is_level_visible: bool = Card.isLevelVisible()
+		var is_card_in_spectate_vision: bool = Card in spectate_vision
+		var level_visible_not_in_vision: bool = is_level_visible and !is_card_in_spectate_vision and !is_spectate_vision_empty and Card != SpectateObject
+		Card.setLevelVisibleNotInVision(level_visible_not_in_vision)
+			
+func onVisionChanged() -> void:
+	setLevelVisibleNotInVisionForSpectateObject()
 #endregion
 	
 #region Active Effects

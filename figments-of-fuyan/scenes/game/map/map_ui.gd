@@ -41,14 +41,13 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	save_file = _save_file
 	save_file.update_shillings.connect(onUpdateShillings)
 	save_file.update_toolbelt.connect(onUpdateToolbelt)
-	save_file.update_boons.connect(func(_x: BoonGD): BoonBox.onUpdate())
+	save_file.update_boons.connect(BoonBox.onUpdate)
 	onUpdateShillings(save_file.getShillings())
 	
 	area = save_file.area
 	area.init_load.connect(onInitLoad)
 	
 	TimeLabel.setInfo(save_file)
-	BoonBox.setInfo(save_file)
 	BoonBox.onUpdate()
 	setLegendBox()
 	onUpdateToolbelt()
@@ -90,9 +89,9 @@ func onMapNodeFinished(_map_node: MapNodeGD) -> void:
 	BackgroundDarkener.visible = false
 	LegendBox.visible = true
 
-func onMapNodeHovered(map_node: MapNodeGD, state: bool, HoverUI: Control = null) -> void:
+func onMapNodeHovered(map_node: MapNodeGD, state: bool, HoverUI: Variant = null) -> void:
+	if HoverUI != null: Game.onEmptyTooltip(state, HoverUI, self)
 	if state and HoverUI != null:
-		add_child(HoverUI)
 		HoverUI.setInfo(map_node.onSave())
 #endregion
 
@@ -165,4 +164,9 @@ func onDeckButtonPressed() -> void:
 #region Deck Card Amount
 func onUpdateDeckCardAmountLabel() -> void:
 	DeckCardAmountLabel.text = str(get_tree().get_node_count_in_group("DeckCardsGD"))
+#endregion
+
+#region Mouse In UI
+func onMouseInUI(state: bool) -> void:
+	Game.onMouseInUI(state)
 #endregion

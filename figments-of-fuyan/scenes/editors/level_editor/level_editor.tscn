@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dppiux7bnao8g"]
+[gd_scene load_steps=17 format=3 uid="uid://dppiux7bnao8g"]
 
 [ext_resource type="Script" path="res://scenes/editors/level_editor/level_editor.gd" id="1_d12w1"]
 [ext_resource type="PackedScene" uid="uid://bydj1x1wtvu8y" path="res://scenes/editors/common/tile_static_body/tile_static_body.tscn" id="2_bfkth"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://scripts/common/id_to/id_to_script.gd" id="5_xmicf"]
 [ext_resource type="Script" path="res://scripts/fof/levels/palm_level.gd" id="6_27k4f"]
 [ext_resource type="Script" path="res://scripts/fof/levels/cactus_level.gd" id="7_qkyao"]
+[ext_resource type="LabelSettings" uid="uid://dbh1brjnbxe8c" path="res://resources/ui/label_settings/roboto_large.tres" id="10_0pcn1"]
 
 [sub_resource type="Resource" id="Resource_pu3c8"]
 script = ExtResource("5_xmicf")
@@ -113,6 +114,7 @@ mouse_filter = 2
 theme_override_constants/separation = 5
 
 [node name="KeybindHints" type="VBoxContainer" parent="UI"]
+visible = false
 layout_mode = 0
 offset_left = 1316.0
 offset_top = 24.0
@@ -269,6 +271,22 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Overworld"
 
+[node name="MarginContainer" type="MarginContainer" parent="UI"]
+layout_mode = 0
+offset_left = 984.0
+offset_right = 1920.0
+offset_bottom = 81.0
+
+[node name="TopRightBar" type="HBoxContainer" parent="UI/MarginContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="LevelNameLabel" type="Label" parent="UI/MarginContainer/TopRightBar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Coconut Creek"
+label_settings = ExtResource("10_0pcn1")
+
 [node name="World" type="Node3D" parent="."]
 unique_name_in_owner = true
 
@@ -308,6 +326,6 @@ unique_name_in_owner = true
 [connection signal="pressed" from="UI/LoadLevels/VBoxContainer/NewLevelButtonsContainer/NewDecorationLevelButton" to="." method="onNewEmptyLevelDecoration"]
 [connection signal="pressed" from="UI/LoadLevels/VBoxContainer/NewLevelButtonsContainer/NewOverworldLevelButton" to="." method="onNewEmptyLevelOverworld"]
 [connection signal="camera_changed_speed" from="World/Camera3D" to="." method="_on_camera_3d_camera_changed_speed"]
-[connection signal="camera_panning" from="World/Camera3D" to="." method="onMouseInUI"]
 [connection signal="camera_panning" from="World/Camera3D" to="." method="_on_camera_3d_camera_panning"]
+[connection signal="camera_panning" from="World/Camera3D" to="." method="onMouseInUI"]
 [connection signal="timeout" from="MouseWheelDelayTimer" to="." method="_on_mouse_wheel_delay_timer_timeout"]

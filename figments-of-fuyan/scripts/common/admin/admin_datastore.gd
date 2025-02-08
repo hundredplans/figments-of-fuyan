@@ -3,6 +3,7 @@ class_name AdminDatastore extends Resource
 @export_group("Main Menu")
 @export var skip_main_menu: bool
 @export var skip_start_cutscene: bool
+@export_range(1, 3, 1) var starting_champion_id: int
 @export_group("")
 
 @export_group("Map")

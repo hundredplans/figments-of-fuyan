@@ -43,3 +43,7 @@ func getExtraDamage() -> int:
 func onSave() -> SavedDataCard:
 	ability_save['swingus_field_effect_public_id'] = swingus_field_effect_public_id
 	return super()
+	
+func onReset(override: bool = false) -> void:
+	super(override)
+	swingus_field_effect_public_id = 0

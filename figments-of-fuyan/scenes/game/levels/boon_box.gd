@@ -1,18 +1,17 @@
 extends GridContainer
 @export var BoonIconPacked: PackedScene
-var save_file: SaveFileGD
 
-func setInfo(_save_file: SaveFileGD) -> void:
-	save_file = _save_file
+signal mouse_in_ui
 
 func onAddBoon(Boon: BoonGD) -> void:
 	var BoonIcon: TextureRect = BoonIconPacked.instantiate()
 	add_child(BoonIcon)
 	BoonIcon.setInfo(Boon)
+	BoonIcon.mouse_in_ui.connect(onMouseInUI)
 
 func onUpdate() -> void:
 	for BoonIcon in get_children(): BoonIcon.queue_free()
-	for Boon in save_file.boons:
+	for Boon in Game.getSaveFile().getBoons():
 		onAddBoon(Boon)
 
 func onUpdateBoonChargesAndDisabled(Boon: BoonGD) -> void:
@@ -30,3 +29,6 @@ func onUpdateBoonAscension(Boon: BoonGD) -> void:
 	var BoonIcon: TextureRect = onFindBoonIcon(Boon)
 	if BoonIcon != null:
 		BoonIcon.onUpdateAscension(Boon.ascended)
+		
+func onMouseInUI(state: bool) -> void:
+	mouse_in_ui.emit(state)

@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=14 format=3 uid="uid://db5q4lk55o6ds"]
+[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=15 format=3 uid="uid://db5q4lk55o6ds"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_4a3l2"]
 [ext_resource type="Image" uid="uid://b86c6f1uyjyd6" path="res://assets/sprites/game/cards/art_pop/frederic_the_fearless.png" id="2_d16dl"]
 [ext_resource type="Texture2D" uid="uid://cqe3wqg1v4gc" path="res://assets/sprites/game/cards/art_mini/frederic_the_fearless.png" id="2_n886d"]
+[ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_xordu"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/champion_card_info.gd" id="2_y17s3"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_xdpta"]
 [ext_resource type="Resource" uid="uid://dhiqm4mrd7qpb" path="res://resources/fof/boons/bold_aura.tres" id="4_f5cwk"]
@@ -66,6 +67,7 @@ plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("3_xdpta")]([])
+archetype = ExtResource("2_xordu")
 id = 1
 name = "Frederic the Fearless"
 gdscript = ExtResource("5_jvipk")

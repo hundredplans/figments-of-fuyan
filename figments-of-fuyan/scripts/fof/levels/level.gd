@@ -32,8 +32,6 @@ signal turn_state_changing
 signal camera_change_action
 signal active_effect_used
 signal active_effect_added
-signal boon_added
-signal boon_removed
 signal boon_activated
 signal boon_ascended
 signal tile_occupied
@@ -47,6 +45,7 @@ signal update_active_effects
 signal camera_change_pre
 signal spectate_group
 signal set_last_ally_spectate_object
+signal vision_changed	
 
 #region Load / Save
 func onSave() -> SavedData:
@@ -128,15 +127,11 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 		level_area_datastore = onCreateLevelAreaDatastore()
 		onPushAction(actions)
 		return
-
-	for Boon in get_tree().get_nodes_in_group("BoonsGD"):
-		boon_added.emit(Boon)
 		
 	for Card in get_tree().get_nodes_in_group("HandCardsGD"):
 		draw_card.emit(Card)
 		
 	onChangePhase(data.phase, true)
-	#onPushAction(VisionAction.new(get_tree().get_nodes_in_group("FieldCardsGD")))
 	if is_ended:
 		onGameEnded()
 
@@ -216,10 +211,6 @@ func onProcessAction(action: Action) -> void:
 			onRecalculateAITurn(action.Card)
 		elif action is AddActiveEffectAction:
 			active_effect_added.emit(action.active_effect)
-		elif action is AddBoonAction:
-			boon_added.emit(action.Boon)
-		elif action is RemoveBoonAction:
-			boon_removed.emit(action.id)
 		elif action is BoonActivatedAction:
 			boon_activated.emit(action.Boon)
 		elif action is ChangeBoonAscenscionAction:
@@ -237,6 +228,8 @@ func onProcessAction(action: Action) -> void:
 		elif action is RemoveToolAction:
 			onRecalculateAITurn(action.Card, true, false, false, true)
 			tool_removed.emit()
+		elif action is VisionAction:
+			vision_changed.emit()
 		elif action is VisionNewUnitAction:
 			if action.enter_vision:
 				if action.Discoverer.isEnemy(action.Discovered.team):
@@ -433,6 +426,10 @@ func onCardFinishedAwakening(action: FinishAwakenAction) -> void:
 	
 	if phase == Game.Phases.START:
 		onPushAfterAction(CameraChangeAction.new(action.Card), ChangePhaseAction)
+		return
+		
+	var arrive_action: ArriveAction = Game.ActionManagerReference.onFindFirstAction(ArriveAction)
+	if action.Card.info.id == 27 and arrive_action != null and arrive_action.Card == action.Card: # Dont play for coco crab arrive
 		return
 	
 	var spectate_awakened_card_temporarily := CameraChangeAction.new(action.Card)

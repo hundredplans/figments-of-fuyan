@@ -81,8 +81,6 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level.awakened.connect(onAwakened)
 	level.active_effect_used.connect(onActiveEffectUsed)
 	level.active_effect_added.connect(onActiveEffectAdded)
-	level.boon_added.connect(onBoonAdded)
-	level.boon_removed.connect(onBoonRemoved)
 	level.boon_activated.connect(onBoonActivated)
 	level.boon_ascended.connect(onBoonAscended)
 	level.tile_occupied.connect(onTileOccupied)
@@ -94,6 +92,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	
 	level.update_active_effects.connect(onUpdateActiveEffects)
 	save_file.update_shillings.connect(onUpdateShillings)
+	save_file.update_boons.connect(BoonBox.onUpdate)
 	
 	TimeLabel.setInfo(save_file)
 	level.camera_change_action.connect(onCameraUpdated)
@@ -111,6 +110,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	onUpdateShillings(save_file.shillings)
 	onUpdateDeckCardAmountLabel()
 	onCameraUpdated(level.getSpectateObject())
+	BoonBox.onUpdate()
 	
 	for Tile in get_tree().get_nodes_in_group("TilesGD"):
 		onTileCreated(Tile)
@@ -359,9 +359,6 @@ func onToolRemoved() -> void:
 #endregion
 
 #region Boons
-func onBoonAdded(Boon: BoonGD) -> void:
-	BoonBox.onAddBoon(Boon)
-	
 func onBoonRemoved(_id: int) -> void:
 	BoonBox.onUpdate()
 	

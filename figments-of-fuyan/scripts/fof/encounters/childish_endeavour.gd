@@ -21,7 +21,9 @@ func onOptionPressed(option: EncounterOptionDatastore, screen: Control) -> void:
 			var Boon: BoonGD = SavedData.onLoadModel(SavedDataBoon.new(10, true), self)
 			Game.save_file.onAddBoon(Boon)
 		"Mentor":
-			var Card: CardGD = SavedData.onLoadModel(Game.onCreateBaseCard(4, true), Game.save_file)
+			var card_data: SavedDataCard = Game.onCreateBaseCard(4, true)
+			Game.setCardDataFromInfo(card_data, Helper.getFofInfoID(CardInfo, card_data.id))
+			var Card: CardGD = SavedData.onLoadModel(card_data, Game.save_file)
 			Game.save_file.onAddToDeck(Card)
 			Card.onAddTemporaryCardCondition(SavedDataMapEffect.new(6, true))
 			

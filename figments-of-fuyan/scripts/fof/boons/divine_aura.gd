@@ -22,20 +22,20 @@ func getDescription() -> String:
 func onBoon(action: Action = null) -> void:
 	if action is AwakenAction: limited_abilities_placed += 1
 	elif action is FinishAwakenAction:
-		onResetCharges()
+		onResetChargesInLevel()
 		onPushAction(action.Card.getActiveAbilities().map(func(x: ActiveAbilityDatastore): return ChangeActiveEffectChargesAction.new(x, 1)))
 
 func onBoonAdded() -> void:
 	onResetCharges()
+	
+func onResetChargesInLevel() -> void:
+	limited_abilities_placed = 0
 
 func getDisabled() -> bool:
 	return super()
 
 func getCharges() -> int:
 	return limited_abilities_placed
-
-func onResetCharges() -> void:
-	limited_abilities_placed = 0
 
 func isCardLimitedAbility(Card: CardGD) -> bool:
 	var abilities: Array = Card.info.active_abilities

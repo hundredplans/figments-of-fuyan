@@ -11,21 +11,7 @@ func setInfo(_data: SavedData) -> void:
 	data = _data
 	var info: FofInfo = Helper.getFofInfoID(data.getInfoType(), data.id)
 	MainTexture.texture = info.getIcon()
-	
-	var theme_variation: String
-	match info.rarity:
-		Game.Rarities.SCRAP, Game.Rarities.MINI: theme_variation = "GreyPanelContainer"
-		Game.Rarities.NEUTRAL: theme_variation = "DarkBrownPanelContainer"
-		Game.Rarities.COMMON: theme_variation = "BeigePanelContainer"
-		Game.Rarities.RARE: theme_variation = "TealPanelContainer"
-		Game.Rarities.EXALT: theme_variation = "YellowPanelContainer"
-		Game.Rarities.MINIBOSS: theme_variation = "PurplePanelContainer"
-		Game.Rarities.BOSS: theme_variation = "RedPanelContainer"
-		Game.Rarities.CHAMPION: theme_variation = "BluePanelContainer"
-		_: theme_variation = "WhitePanelContainer"
-	
-	if data.ascended: theme_variation += "Ascended"
-	MainPanel.theme_type_variation = theme_variation
+	MainPanel.theme_type_variation = Game.getRarityThemeVariation(info.rarity, data.ascended)
 	
 	if data is SavedDataCard: ToolIconRect.visible = data.tool_data != null
 	

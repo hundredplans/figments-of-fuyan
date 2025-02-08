@@ -75,7 +75,7 @@ func onLoadData(data: SavedData) -> void:
 	
 func onAfterLoadSetupFinishedEntered() -> void:
 	if is_finished and !is_entered: onExitedVisual(true)
-	elif is_entered: onEnteredVisual(true)
+	elif !is_finished and is_entered: onEnteredVisual(true)
 		
 func onFofInit() -> void: pass # For super purposes
 	
@@ -92,6 +92,7 @@ func onCreateModel() -> void:
 	StaticBody = load(info.MAP_NODE_STATIC_BODY).instantiate()
 	Model.add_child(StaticBody)
 	
+	Game.mouse_in_ui.connect(onMouseInUI)
 	StaticBody.mouse_exited.connect(onMouseHovered.bind(false))
 	StaticBody.mouse_entered.connect(onMouseHovered.bind(true))
 	onCreateLinks()
@@ -131,12 +132,23 @@ func setRayPickableGlobal(state: bool) -> void:
 #endregion
 
 #region Hovered
+var hovered_state: bool
+func onMouseInUI(_state: bool) -> void:
+	if hovered_state:
+		onUpdateHovered()
+
 func onMouseHovered(state: bool) -> void:
 	if !is_finished and !is_entered:
 		hovered_state = state
-		hovered.emit(self, state, HoverUI)
+	onUpdateHovered()
 
-var hovered_state: bool
+func onUpdateHovered() -> void:
+	var state: bool = getHoveredState()
+	hovered.emit(self, state, HoverUI)
+	
+func getHoveredState() -> bool:
+	return hovered_state and !Game.isMouseInUI()
+
 func onStaticBodyHovered(is_walkable: bool, state: bool) -> void:
 	var mat: Material = null
 	if state:

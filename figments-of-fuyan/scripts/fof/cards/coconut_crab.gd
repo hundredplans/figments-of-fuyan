@@ -11,9 +11,14 @@ func onProcessAction(action: Action) -> void:
 			stepped_on_card_public_id = action.owner.stepped_on_card_public_id
 			var arrive_action := ArriveAction.new(self, action)
 			arrive_action.setActionDelay(ARRIVE_ANIMATION_DELAY)
+			arrive_action.setLockActionDelay(true)
 			onAppendAction(arrive_action)
 		elif isValidLastWill(action):
 			onPushAction(LastWillAction.new(self, action))
+	#elif !action.post:
+		#if action is FinishAwakenAction and action.Card == self:
+			#action.setActionDelay(0.0)
+			#action.setLockActionDelay(true)
 	
 func getDescription() -> String:
 	return super()
@@ -22,7 +27,6 @@ func onArrivePre(_action: AwakenAction) -> void:
 	onAbility()
 	
 	var SteppedOnCard: CardGD = Game.onFindPublicIDObject(stepped_on_card_public_id)
-	var relative_tile_rotation: int = Game.getRelativeTileRotation(SteppedOnCard.Tile, Tile)
 	onForceAction(ChangeTileRotationAction.new(SteppedOnCard, Game.getRelativeTileRotation(SteppedOnCard.Tile, Tile)))
 	onForceAction(ChangeTileRotationAction.new(self, Game.getRelativeTileRotation(Tile, SteppedOnCard.Tile)))
 

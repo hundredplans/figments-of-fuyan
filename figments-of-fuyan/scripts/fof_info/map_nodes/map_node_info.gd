@@ -6,7 +6,7 @@ class_name MapNodeInfo extends FofInfo
 @export var icon: Texture2D
 @export var model: PackedScene
 @export var is_unique_node: bool
-@export var float_y: float 
+@export var float_y: float
 @export var legend_order: int
 #endregion
 
@@ -19,3 +19,4 @@ const MAP_NODE_LINK_PATH: String = "res://scenes/game/map_nodes/map_node_link.ts
 #endregion
 
 static func getInfoPath() -> String: return "res://resources/fof/map_nodes"
+static func getFofName() -> String: return "MapNode"

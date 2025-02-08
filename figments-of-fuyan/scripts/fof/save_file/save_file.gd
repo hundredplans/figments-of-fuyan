@@ -152,10 +152,14 @@ func onAddBoon(Boon: BoonGD) -> void:
 			Boon.reparent(self)
 		boons.append(Boon)
 		
-	update_boons.emit(Boon)
+	update_boons.emit()
 	
-func onRemoveBoon(boon: BoonGD) -> void:
-	boons.erase(boon)
+func onRemoveBoon(Boon: BoonGD) -> void:
+	boons.erase(Boon)
+	update_boons.emit()
+
+func getBoons() -> Array:
+	return boons
 #endregion
 
 #region Encounters

@@ -6,6 +6,8 @@ extends MapNodeScreen
 @onready var NameLabel: Label = %NameLabel
 @onready var DescriptionLabel: Label = %DescriptionLabel
 @onready var OptionsContainer: Container = %OptionsContainer
+@onready var MinimapControl: Control = %MinimapControl
+@export var MinimapPacked: PackedScene
 
 var encounter: EncounterGD
 
@@ -45,3 +47,12 @@ func onDimBackground() -> bool:
 func onTempDisableOptions(state: bool) -> void:
 	for OptionUI in OptionsContainer.get_children():
 		OptionUI.setDisabled(state)
+
+#region Minimap
+var Minimap: Control
+func _on_minimap_button_pressed() -> void:
+	if Minimap == null:
+		Minimap = MinimapPacked.instantiate()
+		MinimapControl.add_child(Minimap)
+	else: Minimap.queue_free()
+#endregion

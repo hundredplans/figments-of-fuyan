@@ -8,11 +8,12 @@ func onProcessAction(action: Action) -> void:
 		elif action is GetDamageAction and action.damage_type == Game.DamageTypes.ATTACK and isValidSugoriKnife(action.Damager):
 			action.onAdd(1)
 	elif action.post:
-		if action is VisionNewUnitAction and action.Discoverer == Card and action.Discovered.isAlly(Card.team):
-			if action.enter_vision: onAddFieldEffect(action.Discovered)
-			else: onRemoveFieldEffect(action.Discovered)
-		elif action is DeathAction and action.Defender == Card:
-			onRemoveFieldEffects(action.game_objects_in_vision.filter(func(x: GameObjectGD): return x is CardGD and x.isAlly(Card.team)))
+		if ascended:
+			if action is VisionNewUnitAction and action.Discoverer == Card and action.Discovered.isAlly(Card.team):
+				if action.enter_vision: onAddFieldEffect(action.Discovered)
+				else: onRemoveFieldEffect(action.Discovered)
+			elif action is DeathAction and action.Defender == Card:
+				onRemoveFieldEffects(action.game_objects_in_vision.filter(func(x: GameObjectGD): return x is CardGD and x.isAlly(Card.team)))
 
 func isValidSugoriKnife(DamageCard: CardGD) -> bool:
 	return DamageCard == Card or (ascended and DamageCard in Card.getVisibleFieldCardsAllies())

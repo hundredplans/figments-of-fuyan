@@ -39,15 +39,13 @@ func setInfo(info_or_fof: Variant, stop_mouse: bool = false) -> void:
 		Topside.add_child(CardTooltipExtra)
 		CardTooltipExtra.setInfo(info, ascended)
 	
-	var panel_color: String
-	if is_instance_of(info, TraitInfo): panel_color = "YellowPanelContainer"
-	elif is_instance_of(info, StatusEffectInfo): panel_color = "RedPanelContainer"
-	elif is_instance_of(info, ToolInfo): panel_color = "BluePanelContainer"
-	elif is_instance_of(info, FieldEffectInfo): panel_color = "WhitePanelContainer"
-	elif is_instance_of(info, BoonInfo): panel_color = "PurplePanelContainer"
-	elif is_instance_of(info, MapEffectInfo) and info.id == 2: panel_color = "WhitePanelContainer"
+	var theme_variation: String
+	if is_instance_of(info, ToolInfo) or is_instance_of(info, BoonInfo) or is_instance_of(info, CardInfo):
+		theme_variation = Game.getRarityThemeVariation(info.rarity, ascended)
+	else:
+		theme_variation = "YellowPanelContainer"
 	
-	theme_type_variation = panel_color
+	theme_type_variation = theme_variation
 	mouse_filter = Control.MOUSE_FILTER_STOP if stop_mouse else Control.MOUSE_FILTER_IGNORE
 	
 func setInfoDirect(title: String, icon: Texture2D, text: String) -> void:

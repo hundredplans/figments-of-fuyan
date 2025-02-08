@@ -1,5 +1,7 @@
 extends Node
 
+signal mouse_in_ui
+var is_mouse_in_ui: bool
 var save_file: SaveFileGD
 var area: AreaGD
 
@@ -61,6 +63,21 @@ func _ready() -> void:
 		var x: float = HEX_SIZE * (3.0 / 2.0 * cube_direction.x)
 		var z: float = HEX_SIZE * (sqrt(3) * (cube_direction.y + cube_direction.x / 2.0))
 		tile_face_directions.append(onRotatePosition(Vector3(x, 0, z), theta))
+
+func getRarityThemeVariation(rarity: Rarities, ascended: bool = false) -> String:
+	var theme_variation: String
+	match rarity:
+		Game.Rarities.SCRAP, Game.Rarities.MINI: theme_variation = "GreyPanelContainer"
+		Game.Rarities.NEUTRAL: theme_variation = "DarkBrownPanelContainer"
+		Game.Rarities.COMMON: theme_variation = "BeigePanelContainer"
+		Game.Rarities.RARE: theme_variation = "TealPanelContainer"
+		Game.Rarities.EXALT: theme_variation = "WhitePanelContainer"
+		Game.Rarities.MINIBOSS: theme_variation = "PurplePanelContainer"
+		Game.Rarities.BOSS: theme_variation = "RedPanelContainer"
+		Game.Rarities.CHAMPION: theme_variation = "BluePanelContainer"
+		_: theme_variation = "YellowPanelContainer"
+	if ascended: theme_variation += "Ascended"
+	return theme_variation
 
 func getStatString(stat: Stats) -> String:
 	match stat:
@@ -383,18 +400,25 @@ func onCreateGainShillings(shilling_amount: int, parent: Node) -> MapEffectGD:
 const TOOLTIP_PACKED_PATH: String = "res://scenes/common/tooltip/tooltip.tscn"
 var Tooltip: Control
 func onMouseInUITooltip(state: bool, item: Variant = null, parent: Control = null, create_inner_tooltips: bool = true, offset := Vector2(30, 0)) -> void:
-	if state and Tooltip == null:
+	if Tooltip != null: Tooltip.queue_free()
+	if state:
 		if item is Array and item.is_empty(): return
-		if !(state and Tooltip == null): return
-		
 		if item is not Array: item = [item]
 		Tooltip = load(TOOLTIP_PACKED_PATH).instantiate()
 		parent.add_child(Tooltip)
 		Tooltip.setInfo(item, offset, create_inner_tooltips)
 		Tooltip.setPosition()
 		
-	elif !state and Tooltip != null:
-		Tooltip.queue_free()
+func onEmptyTooltip(state: bool, child: Control, parent: Control) -> Control:
+	if Tooltip != null: Tooltip.queue_free()
+	if state:
+		Tooltip = Control.new()
+		Tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		Tooltip.size = Vector2.ZERO
+		parent.add_child(Tooltip)
+		Tooltip.add_child(child)
+		return Tooltip
+	return null
 #endregion
 
 #region Cards
@@ -555,3 +579,13 @@ func getLevel() -> LevelGD:
 	
 func getArea() -> AreaGD:
 	return area
+
+func getSaveFile() -> SaveFileGD:
+	return save_file
+
+func onMouseInUI(state: bool) -> void:
+	is_mouse_in_ui = state
+	mouse_in_ui.emit(state)
+	
+func isMouseInUI() -> bool:
+	return is_mouse_in_ui

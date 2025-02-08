@@ -39,6 +39,7 @@ var bounty_kills: BountyKills
 var card_vision_mode: CardVisionMode
 var is_card_change_level_visible: bool # Not saved
 var ai_datastore: AIDatastore
+var level_visible_not_in_vision: bool # Not saved
 #endregion
 
 #region Globals
@@ -629,7 +630,7 @@ func onUpdateVision() -> void: # Returns the new visibles
 		
 	vision_range_game_objects += cards
 	
-	var direct_game_objects_dict: Dictionary = {}
+	var direct_game_objects_dict: Dictionary = {self: null}
 	var point_batches: Dictionary = {}
 	for GameObject in vision_range_game_objects:
 		point_batches[GameObject] = GameObject.getAdjustedPoints()
@@ -753,6 +754,10 @@ func setCardVisionMode(state: bool) -> void:
 func setCardVisionModeState(state: bool) -> void:
 	card_vision_mode.state = state
 	setBaseMaterials()
+	
+func setLevelVisibleNotInVision(state: bool) -> void:
+	level_visible_not_in_vision = state
+	setBaseMaterials()
 #endregion
 
 #region Fall Damage
@@ -767,7 +772,7 @@ func isInCombat() -> bool:
 	return !getVisibleFieldCardsEnemies().is_empty()
 
 func setEnemyInMovementRange(state: bool) -> void:
-	if !isAlly(0): FieldInfo.setInfoSpriteEnemyInMovementRange(state)
+	if !isAlly(0) and FieldInfo != null: FieldInfo.setInfoSpriteEnemyInMovementRange(state)
 
 func isAttackable(Card: CardGD) -> bool:
 	return !Card.isAlly(team)
@@ -1098,6 +1103,7 @@ func onAddBaseFieldEffect(id: int, FofObject: FofGD = null) -> FieldEffectGD:
 	return FieldEffect
 	
 func onRemoveFieldEffect(FieldEffect: FieldEffectGD) -> void:
+	if FieldEffect == null: return
 	field_effects.erase(FieldEffect)
 	FieldInfo.onRemoveIcon(FieldEffect)
 	FieldEffect.onClear()
@@ -1292,7 +1298,8 @@ func onAICheckActiveEffectsOnlyDFL(DFL: DefaultFightLogic, after_action: Movemen
 func setBaseMaterials() -> void:
 	if Model == null: return
 	var mat: Material
-	if card_vision_mode != null and !card_vision_mode.state: mat = info.getColoredBaseMaterial(team)
+	if (card_vision_mode != null and !card_vision_mode.state) or level_visible_not_in_vision:
+		mat = info.getColoredBaseMaterial(team)
 	elif ascended: mat = load(info.BASE_MATERIAL_ASCENDED_PATH)
 	setMeshesMaterial(mat, Model)
 
@@ -1327,6 +1334,7 @@ func onReset(override: bool = false) -> void: # Override for when level ends
 			
 	if !override and !(isAlly(0) or is_awakened_in_combat): return
 	
+	level_visible_not_in_vision = false
 	attacks = 1
 	attack_range = 1
 	tile_rotation = 0
@@ -1340,6 +1348,7 @@ func onReset(override: bool = false) -> void: # Override for when level ends
 	
 	ai_datastore.onReset()
 	Tile = null
+	onRemoveModel()
 	
 	for overworld_trait in overworld_traits:
 		overworld_trait.onReset()
