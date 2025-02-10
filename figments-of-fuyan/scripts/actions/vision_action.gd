@@ -46,6 +46,9 @@ func onPostAction() -> void:
 	actions.append(LevelVisibleAction.new(false, old_team_vision_diff))
 	actions.append(LevelVisibleAction.new(true, new_team_vision_diff))
 	
+	var exit_level_visible_cards: Array = old_team_vision_diff.filter(func(x: GameObjectGD): return x is CardGD)
+	if !exit_level_visible_cards.is_empty(): actions.append(ExitLevelVisibleAction.new(exit_level_visible_cards))
+	
 	onPushAction(actions)
 			
 func getLogInfo() -> Array:

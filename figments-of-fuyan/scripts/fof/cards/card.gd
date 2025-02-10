@@ -204,6 +204,11 @@ func isWalking() -> bool:
 func onPauseAnimation(state: bool = true) -> void:
 	if state: AniPlayer.pause()
 	else: AniPlayer.play()
+	
+func onPauseAnimationWithDelay(delay: float) -> void:
+	AniPlayer.pause()
+	await get_tree().create_timer(delay).timeout
+	AniPlayer.play()
 #endregion
 
 #region Card
@@ -608,17 +613,16 @@ func onUpdateVision() -> void: # Returns the new visibles
 	if card_place != Game.CardPlaces.FIELD: return
 	
 	var cards: Array = get_tree().get_nodes_in_group("FieldCardsGD")
-	cards.erase(self)
 	var tile_to_card: Dictionary = {}
 
-	var vision_range_game_objects: Array = Game.getAdjacentOrCloserTiles(Tile, getVisionRange())
+	var vision_range_game_objects: Array = Game.getAdjacentOrCloserTiles(Tile, getVisionRange()) + [Tile]
 	var visibles: Dictionary = vision_datastore.getVisibles()
 	var previous_direct_game_objects: Array = []
 	for GameObject in visibles:
 		if visibles[GameObject].direct:
 			previous_direct_game_objects.append(GameObject)
 
-	for Card in cards.duplicate():
+	for Card in cards:
 		var tile_in_vision_range: bool = Card.Tile in vision_range_game_objects
 		Card.setDetectableByRay(tile_in_vision_range and Card.isNotInvisibleOrIsAdjacent(Tile))
 		if !tile_in_vision_range:
@@ -636,7 +640,7 @@ func onUpdateVision() -> void: # Returns the new visibles
 		
 	vision_range_game_objects += cards
 	
-	var direct_game_objects_dict: Dictionary = {self: null}
+	var direct_game_objects_dict: Dictionary = {}
 	var point_batches: Dictionary = {}
 	for GameObject in vision_range_game_objects:
 		point_batches[GameObject] = GameObject.getAdjustedPoints()
@@ -653,6 +657,9 @@ func onUpdateVision() -> void: # Returns the new visibles
 	
 	for AdjacentTile: TileGD in adjacent_tiles_and_center:
 		direct_game_objects_dict[AdjacentTile] = null
+		
+	direct_game_objects_dict[Tile] = null
+	direct_game_objects_dict[self] = null
 	
 	var direct_game_objects: Array = direct_game_objects_dict.keys()
 	for GameObject in previous_direct_game_objects.filter(func(x: GameObjectGD): return x not in direct_game_objects): # No longer direct
@@ -1308,25 +1315,22 @@ func setBaseMaterials() -> void:
 	elif ascended: mat = load(info.BASE_MATERIAL_ASCENDED_PATH)
 	setMeshesMaterial(mat, Model)
 
-var is_in_alphagrey: bool
 var AlphagreyTween: Tween
 func setAlphagreyMaterial(start_value: float) -> void:
 	if !isAlive() or Helper.admin_datastore.see: return
 	if AlphagreyTween != null: AlphagreyTween.stop()
+	
 	AlphagreyTween = get_tree().create_tween()
 	
-	is_in_alphagrey = true
 	setMeshesMaterial(load(info.BASE_MATERIAL_ALPHAGREY_PATH), Model)
 	setAlphagreyMaterialValue(start_value)
 	AlphagreyTween.tween_method(setAlphagreyMaterialValue, start_value, abs(start_value - 1), ALPHAGREY_CHANGE_SPEED)
 	await AlphagreyTween.finished
 	
-	is_in_alphagrey = false
-	
 	setBaseMaterials()
 	
 func setAlphagreyMaterialValue(value: float) -> void:
-	if !is_in_alphagrey or !is_in_group("FieldCardsGD"): return
+	if Model == null: return
 	for mesh in getMeshes(Model):
 		mesh.set_instance_shader_parameter("time_value", value)
 #endregion

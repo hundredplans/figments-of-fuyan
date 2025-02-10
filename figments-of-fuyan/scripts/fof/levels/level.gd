@@ -195,8 +195,7 @@ func setAlliesTurnState(turn_state: Game.TurnStates) -> void:
 #region Action Processing
 func onProcessAction(action: Action) -> void:
 	if action.post:
-		if action is ChangePhaseAction: onChangePhase(action.phase)
-		elif action is DrawAction: draw_card.emit(action.Card)
+		if action is DrawAction: draw_card.emit(action.Card)
 		elif action is AwakenAction:
 			onCardAwakened(action)
 		elif action is FinishAwakenAction:
@@ -265,9 +264,10 @@ func onProcessAction(action: Action) -> void:
 		elif action is StartGameAction:
 			if action.getDelay() == 0: return
 			game_started_post.emit()
-	else:
+	elif !action.post:
 		if action is ChangePhaseAction:
-			if action.phase == phase: action.onFailAction()
+			if action.phase == phase: action.onFailAction(); return
+			onChangePhase(action.phase)
 		elif action is CameraChangeAction:
 			if action.SpectateObject != null and getSpectateObject() == action.SpectateObject:
 				action.onFailAction()
