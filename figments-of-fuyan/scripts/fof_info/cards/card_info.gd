@@ -10,6 +10,11 @@ const BASE_MATERIAL_ASCENDED_PATH: String = "res://resources/materials/game/base
 const BASE_MATERIAL_BROWN_TRANSPARENT_PATH: String = "res://resources/materials/game/base_material_colored/base_material_brown_transparent.tres"
 const BASE_MATERIAL_GREEN_TRANSPARENT_PATH: String = "res://resources/materials/game/base_material_colored/base_material_green_transparent.tres"
 const BASE_MATERIAL_RED_TRANSPARENT_PATH: String = "res://resources/materials/game/base_material_colored/base_material_red_transparent.tres"
+
+const BASE_MATERIAL_BROWN_TRANSPARENT_ASCENDED_PATH: String = "res://resources/materials/game/base_material_colored/base_material_brown_transparent_ascended.tres"
+const BASE_MATERIAL_GREEN_TRANSPARENT_ASCENDED_PATH: String = "res://resources/materials/game/base_material_colored/base_material_green_transparent_ascended.tres"
+const BASE_MATERIAL_RED_TRANSPARENT_ASCENDED_PATH: String = "res://resources/materials/game/base_material_colored/base_material_red_transparent_ascended.tres"
+
 const BASE_MATERIAL_ALPHAGREY_PATH: String = "res://resources/materials/game/base_material_alphagrey_hashing.tres"
 
 @export_group("Card")
@@ -71,9 +76,9 @@ func getStats(ascended: bool = false) -> StatsDatastore:
 		speed + (plus_speed if ascended else 0),
 		energy + (plus_energy if ascended else 0))
 
-func getColoredBaseMaterial(team: int) -> ShaderMaterial:
+func getColoredBaseMaterial(team: int, ascended: bool) -> ShaderMaterial:
 	match team:
-		0: return load(BASE_MATERIAL_GREEN_TRANSPARENT_PATH)
-		1: return load(BASE_MATERIAL_RED_TRANSPARENT_PATH)
-		2: return load(BASE_MATERIAL_BROWN_TRANSPARENT_PATH)
+		0: return load(BASE_MATERIAL_GREEN_TRANSPARENT_PATH if !ascended else BASE_MATERIAL_GREEN_TRANSPARENT_ASCENDED_PATH)
+		1: return load(BASE_MATERIAL_RED_TRANSPARENT_PATH if !ascended else BASE_MATERIAL_RED_TRANSPARENT_ASCENDED_PATH)
+		2: return load(BASE_MATERIAL_BROWN_TRANSPARENT_PATH if !ascended else BASE_MATERIAL_BROWN_TRANSPARENT_ASCENDED_PATH)
 	return null

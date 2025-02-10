@@ -38,5 +38,5 @@ func isPickable(_Tile: TileGD) -> bool:
 func getDescription() -> String:
 	var active_effect: ActiveEffectDatastore = getActiveEffectByName("Coconut Touch")
 	if active_effect != null:
-		return Helper.getDescriptionNumeric(super(), [str(active_effect.charges)], [["ABILITY ", "[2]"]])
-	return super()
+		return Helper.getDescription(super(), [active_effect.charges])
+	return Helper.getDescription(super(), [3 if Game.getChampionLevel() >= 2 else 2])

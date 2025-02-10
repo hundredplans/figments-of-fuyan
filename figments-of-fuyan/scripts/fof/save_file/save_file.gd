@@ -14,6 +14,7 @@ var last_loaded_deck: Array
 var map_effects_data: Array
 var tool_belt: Array
 var boons: Array
+var upgrade_level: int
 
 var shillings: int
 var time: int
@@ -44,7 +45,8 @@ func onSave() -> SavedData:
 	var time_elapsed: int = getTimeElapsed()
 	
 	return SavedDataSaveFile.new(id, false, public_id, my_seed, area.onSave(), shillings,\
-	map_effects, time_elapsed, deck_cards, saved_boons, highest_public_id, tool_belt_data, safe_encounter_count)
+	map_effects, time_elapsed, deck_cards, saved_boons, highest_public_id, tool_belt_data, safe_encounter_count,\
+	upgrade_level)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -188,4 +190,14 @@ func onAddToDeck(Card: CardGD) -> void:
 func onGameLost() -> void:
 	DirAccess.remove_absolute(SaveFileInfo.SAVE_DIRECTORY + str(id) + ".tres")
 	exit_save.emit()
+#endregion
+
+#region Champion
+func onUpgradeChampion() -> void:
+	var ChampionCard: CardGD = getChampionCard()
+	upgrade_level += 1
+	ChampionCard.onUpgrade(upgrade_level)
+	
+func getChampionLevel() -> int:
+	return upgrade_level
 #endregion

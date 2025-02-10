@@ -35,11 +35,12 @@ func getProgress() -> int:
 
 #region Save / Load
 func onSave() -> SavedDataArea:
+	var save_map_nodes_data: Array = map_nodes_data.duplicate()
 	if map_nodes_data.is_empty(): # If not loaded into a level get the most recent patch
-		map_nodes_data = SavedData.onSaveGroup(get_tree().get_nodes_in_group("MapNodesGD"))
+		save_map_nodes_data = SavedData.onSaveGroup(get_tree().get_nodes_in_group("MapNodesGD"))
 	
 	active_level_data = active_level.onSave() if active_level != null else null
-	return SavedDataArea.new(info.id, false, public_id, map_nodes_data, active_level_data, encountered_encounter_ids, active_map_node_data)
+	return SavedDataArea.new(info.id, false, public_id, save_map_nodes_data, active_level_data, encountered_encounter_ids, active_map_node_data)
 	
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -77,11 +78,14 @@ func onLoadMapAfterScenes() -> void:
 	if is_init:
 		init_load.emit()
 		is_init = false
-		return
 		
 	var map_node: MapNodeGD = getEnteredMapNode()
 	if map_node.is_entered and !map_node.is_finished:
 		map_node.onEntered()
+		
+	elif map_node.is_entered and map_node.is_finished:
+		map_node.onEnteredVisual(true)
+	
 #endregion
 	
 #region Create Map Nodes
@@ -427,10 +431,10 @@ func setRewards(is_win: bool) -> void:
 	if is_win:
 		var items: Array = []
 		var fight_rewards_datastore: FightRewardsDatastore = \
-			getWorld().elite_fight_rewards if active_level.is_elite else getWorld().fight_rewards
+			getWorld().elite_fight_rewards if active_level.isElite() else getWorld().fight_rewards
 		
 		var enemy_spawns: Array = active_level.enemy_spawns.duplicate()
-		if active_level.is_elite:
+		if active_level.isElite():
 			items.append(SavedData.onLoadModel(enemy_spawns.pop_back(), active_level))
 			
 		enemy_spawns = enemy_spawns.filter(func(x: SavedDataCard): return Helper.getFofInfoID(CardInfo, x.id).rarity != Game.Rarities.CHAMPION)
@@ -527,7 +531,7 @@ func setEnemySpawnsFromBudget(budget: int, enemy_spawn_amount: int, spawns: Arra
 	
 func getBudget(progress: int, offset: int, is_unholy: bool = false) -> int:
 	var unholy_offset: int = 1 if is_unholy else 0
-	return getWorld().budget_for_fights[progress] + offset + (unholy_offset * getWorldDifficulty())
+	return getWorld().budget_for_fights[min(progress, 10)] + offset + (unholy_offset * getWorldDifficulty())
 	
 func sum(accum: int, number: int) -> int:
 	return accum + number
@@ -557,9 +561,13 @@ func getDivinusBoonAscensionOdds(odds: float) -> float:
 
 #region Exit Level
 func onRewardsFinished(save_file: SaveFileGD) -> void:
+	if active_level.fight_type in [Game.FightTypes.MINIBOSS, Game.FightTypes.BOSS]:
+		Game.save_file.onUpgradeChampion()
+	
 	active_level.onClear()
 	active_level = null
 	active_level_data = null
+	
 	#var progress: int = getEnteredMapNode().map_location.progress
 	#if progress >= 10:
 		#save_file.onLoadArea

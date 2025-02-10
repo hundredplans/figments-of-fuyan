@@ -64,8 +64,9 @@ func onGenerateCurseInfo(curse_infos: Array) -> BoonInfo:
 	
 func onFinished() -> void:
 	super()
+	if self is MinibossFightNodeGD or self is BossFightNodeGD: return
 	var new_level_data: SavedDataLevel = level_info.saved_data.new(level_info.id, true, 0, level_info.data.duplicate(), enemy_spawns)
-	new_level_data.is_elite = true
+	new_level_data.fight_type = Game.FightTypes.ELITE
 	load_level.emit(new_level_data)
 
 #region Level Gen

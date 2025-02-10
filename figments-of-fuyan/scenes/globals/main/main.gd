@@ -24,8 +24,10 @@ func _ready():
 	else:
 		var DIR_PATH: String = SaveFileInfo.SAVE_DIRECTORY
 		var files: Array = Array(DirAccess.get_files_at(DIR_PATH))
-		var card_info: CardInfo = Helper.getFofInfoID(CardInfo, Helper.admin_datastore.starting_champion_id)
 		
+		var champion_id: int = Helper.admin_datastore.starting_champion_id
+		var card_info: CardInfo = Helper.getFofInfoID(CardInfo, champion_id)
+			
 		var card_data: SavedDataCard = card_info.saved_data.new(card_info.id, true)
 		Game.setCardDataFromInfo(card_data, card_info)
 		

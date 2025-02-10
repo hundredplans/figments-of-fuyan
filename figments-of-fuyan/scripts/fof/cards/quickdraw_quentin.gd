@@ -1,13 +1,16 @@
 extends CardGD
 
-const MAX_BULLETS: int = 4
-var bullets: int = 4
+var bullets: int
 var quentins_bullets_public_id: int
 # -> +1 hp
 
 #RANGED [1-2]; Has x/4 Bullets in chamber; Has to Reload to refresh bullets
 #RELOAD - ABILITY: If an enemy is in vision; Gain [1] Bullet and STUN self
 # Shop is 15% more expensive cause he's a criminal
+	
+func onFofInit() -> void:
+	super()
+	bullets = 2
 	
 func onProcessAction(action: Action):
 	super(action)
@@ -33,7 +36,7 @@ func onSave() -> SavedDataCard:
 	return super()
 	
 func getDescription() -> String:
-	return Helper.getDescription(super(), [bullets])
+	return Helper.getDescription(super(), [bullets, getMaxBullets()])
 
 func getActiveEffectDescription(active_effect: ActiveEffectDatastore, description: String) -> String:
 	if active_effect.name != "Reload": return super(active_effect, description)
@@ -53,9 +56,16 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		onAbility()
 	
 func getActiveEffectDisabled(_active_effect: ActiveEffectDatastore) -> bool:
-	return bullets == 4 or !inEnemyVision()
+	return bullets == getMaxBullets() or !inEnemyVision()
 	
 func setBullets(delta: int) -> void:
 	bullets += delta
 	Game.onFindPublicIDObject(quentins_bullets_public_id).setCharges(bullets)
 	update_active_effect_description.emit()
+
+func getMaxBullets() -> int:
+	return 2 if Game.getChampionLevel() < 1 else 4
+
+func onUpgrade(upgrade_level: int) -> void:
+	super(upgrade_level)
+	if upgrade_level == 1: bullets += 2

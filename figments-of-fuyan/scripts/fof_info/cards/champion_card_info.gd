@@ -16,3 +16,13 @@ class_name ChampionCardInfo extends CardInfo
 
 @export_group("Champion Boon")
 @export var boon_info: BoonInfo
+@export_group("")
+
+@export_group("Champion Upgrades")
+@export var first_miniboss: ChampionUpgrade
+@export var first_boss: ChampionUpgrade
+@export var second_miniboss: ChampionUpgrade
+@export var second_boss: ChampionUpgrade
+@export var third_miniboss: ChampionUpgrade
+@export var third_boss: ChampionUpgrade
+@export_group("")

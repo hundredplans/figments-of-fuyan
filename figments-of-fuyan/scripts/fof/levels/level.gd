@@ -9,12 +9,13 @@ var max_energy: int
 var level_camera_data: LevelCameraData
 var phase: Game.Phases
 var enemy_spawns: Array
+var fight_type: Game.FightTypes
 var is_ended: bool
-var is_elite: bool
 var rewards: Rewards
 var anti_boons: Array
 var save_file: SaveFileGD
 var old_player_vision: Array
+var speed_order: SpeedOrder
 var player_card_last_seen_turn: int # Default -1 which means they were never seen, if this is > 10 or -1 every enemy has the adventurer tag
 var level_area_datastore: LevelAreaDatastore # Specific to each areao
 var recent_camera_position: Vector3 # Not saved
@@ -45,7 +46,7 @@ signal update_active_effects
 signal camera_change_pre
 signal spectate_group
 signal set_last_ally_spectate_object
-signal vision_changed	
+signal vision_changed
 
 #region Load / Save
 func onSave() -> SavedData:
@@ -53,10 +54,11 @@ func onSave() -> SavedData:
 	request_camera_data.emit()
 	
 	if rewards != null: rewards.onSave()
+	if speed_order != null: speed_order.onSave()
 	var old_player_vision_public_ids: Array = old_player_vision.map(func(x: GameObjectGD): return x.public_id)
 	
 	return SavedDataLevel.new(info.id, false, public_id, data, enemy_spawns, getFieldCards(), phase, level_camera_data, energy, max_energy,\
- 	is_elite, is_ended, rewards, anti_boons, old_player_vision_public_ids, player_card_last_seen_turn, level_area_datastore)
+ 	fight_type, is_ended, rewards, anti_boons, old_player_vision_public_ids, player_card_last_seen_turn, level_area_datastore, speed_order)
 
 func onClear() -> void:
 	queue_free()
@@ -64,9 +66,11 @@ func onClear() -> void:
 func onLoadData(data: SavedData) -> void:
 	super(data)
 	add_to_group("LevelsGD")
+	fight_type = data.fight_type
 	energy = data.energy
 	max_energy = data.max_energy
 	enemy_spawns = data.enemy_spawns
+	speed_order = data.speed_order
 	
 	for light in info.lights:
 		add_child(light.instantiate())
@@ -81,7 +85,6 @@ func onLoadData(data: SavedData) -> void:
 	for Card in get_tree().get_nodes_in_group("CardsGD"):
 		Card.onLoadDataLevel()
 	
-	is_elite = data.is_elite
 	is_ended = data.is_ended
 	
 	anti_boons = data.anti_boons
@@ -94,6 +97,9 @@ func onLoadData(data: SavedData) -> void:
 	if rewards != null:
 		rewards.setInfo(self)
 		rewards.onLoad()
+		
+	if speed_order != null:
+		speed_order.onLoad()
 		
 	if is_ended:
 		onGameEnded()
@@ -117,6 +123,7 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 	energy_changed.emit(energy)
 	if is_init:
 		var actions: Array = [StartGameAction.new(), ChangePhaseAction.new(Game.Phases.START)]
+		speed_order = SpeedOrder.new()
 		for GameObject in get_tree().get_nodes_in_group("GameObjectsGD"):
 			GameObject.onLoadDataLevelFofInit()
 			
@@ -125,6 +132,7 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 		
 		actions += get_tree().get_nodes_in_group("BoonsGD").map(func(x: BoonGD): return AddBoonAction.new(x.info.id, x.ascended, true))
 		level_area_datastore = onCreateLevelAreaDatastore()
+		
 		onPushAction(actions)
 		return
 		
@@ -243,6 +251,7 @@ func onProcessAction(action: Action) -> void:
 				
 		elif action is DeathAction:
 			onRecalculateAITurn(action.Defender, true, true, true, true)
+			speed_order.onDeath(action.Defender)
 			death.emit(action.Defender)
 		elif action is ChangeActiveEffectChargesAction:
 			update_active_effects.emit()
@@ -417,9 +426,9 @@ func onCreateLevelAreaDatastore() -> LevelAreaDatastore:
 #region Awakened
 func onCardAwakened(action: AwakenAction) -> void:
 	awakened.emit(action.Card)
+	speed_order.onAwaken(action.Card)
 	if phase == Game.Phases.START and action.Card.isAlly(0):
 		onAppendAction(ChangePhaseAction.new(Game.Phases.HAND))
-		
 	
 func onCardFinishedAwakening(action: FinishAwakenAction) -> void:
 	if !action.Card.isLevelVisible(): return
@@ -450,3 +459,9 @@ func onCardFinishedAwakening(action: FinishAwakenAction) -> void:
 var LastAllySpectateObject: CardGD
 func setLastAllySpectateObject() -> void:
 	set_last_ally_spectate_object.emit()
+
+func getNextAIUnit(inactive_cards: Array, team: int) -> CardGD:
+	return speed_order.getNextAIUnit(inactive_cards, team)
+
+func isElite() -> bool:
+	return Game.FightTypes.REGULAR != fight_type

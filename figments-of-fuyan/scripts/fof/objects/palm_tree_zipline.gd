@@ -183,3 +183,4 @@ func onIObjectSpecificTransforms(tiles_to_value: Dictionary, DFL: DefaultFightLo
 			if DFL.Card in ai_cooldown_cards.keys(): tiles_to_value[Tile] += NEGATIVE_TRANSFORM_VALUE
 			else: tiles_to_value[Tile] += POSITIVE_TRANSFORM_VALUE
 			return
+			

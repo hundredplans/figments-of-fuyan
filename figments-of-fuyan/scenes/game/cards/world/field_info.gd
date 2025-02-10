@@ -145,7 +145,7 @@ func onUpdateStat(type: Game.Stats, value: int, difference: int, play_animation:
 	var spot: Node3D
 	match type:
 		Game.Stats.SPEED: spot = SpeedSpot
-		Game.Stats.HEALTH: spot = HealthSpot
+		Game.Stats.HEALTH, Game.Stats.MAX_HEALTH: spot = HealthSpot
 		Game.Stats.ATTACK: spot = AttackSpot
 	
 	if spot != null:
@@ -182,8 +182,10 @@ func setNumbersParticle(type: Game.Stats, value: int) -> void:
 	match type:
 		Game.Stats.SPEED: mat = green_material
 		Game.Stats.ATTACK: mat = orange_material
-		Game.Stats.HEALTH: mat = red_material
-		Game.Stats.MAX_HEALTH: mat = pink_material
+		Game.Stats.HEALTH: 
+			if value > 0: mat = pink_material
+			else: mat = red_material
+		Game.Stats.MAX_HEALTH: mat = red_material
 	
 	sign_mesh.surface_set_material(0, mat)
 	number_mesh.surface_set_material(0, mat)

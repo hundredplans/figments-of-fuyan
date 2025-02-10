@@ -17,8 +17,9 @@ enum CardPlaces {NULL, HAND, DECK, FIELD, GRAVEYARD}
 enum TurnStates {NULL, PASSED, INACTIVE, ACTIVE}
 enum Stats {ATTACK, HEALTH, SPEED, MAX_HEALTH, MAX_SPEED}
 enum AscendedExists {BOTH, ONLY_DEFAULT, ONLY_ASCENDED}
-enum Archetypes {NULL, ADVENTURER, BRUTE, DOCILE, ERRATIC, HOSTILE, REINFORCER, SCOUT, SUPPORT, TACTICIAN, WARDEN}
+enum Archetypes {NULL, ADVENTURER, BRUTE, DOCILE, ERRATIC, HOSTILE, REINFORCER, SCOUT, SUPPORT, TACTICIAN, WARDEN, RECEIVER}
 enum DamageTypes {ATTACK, FALL_DAMAGE, OTHER}
+enum FightTypes {REGULAR, ELITE, MINIBOSS, BOSS}
 
 var CARD_PLACES_TO_GROUP: Dictionary = {
 	CardPlaces.NULL: "Null",
@@ -287,13 +288,8 @@ func onFindPublicIDObject(public_id: int) -> FofGD:
 #region Enemy Turns
 func getNextInactiveCard(team: int) -> CardGD:
 	var cards: Array = getAllyUnits(team).filter(func(x: CardGD): return x.turn_state == Game.TurnStates.INACTIVE)
-	cards.sort_custom(onSortByMaxSpeed)
-	return cards[0] if !cards.is_empty() else null
-	
-func onSortByMaxSpeed(Card: CardGD, _Card: CardGD) -> bool:
-	if Card.max_speed == _Card.max_speed:
-		return Card.public_id < _Card.public_id
-	return Card.max_speed < _Card.max_speed
+	var level := getLevel()
+	return level.getNextAIUnit(cards, team)
 #endregion
 
 #region Movement Range
@@ -589,3 +585,6 @@ func onMouseInUI(state: bool) -> void:
 	
 func isMouseInUI() -> bool:
 	return is_mouse_in_ui
+	
+func getChampionLevel() -> int:
+	return 0 if save_file == null else save_file.getChampionLevel()

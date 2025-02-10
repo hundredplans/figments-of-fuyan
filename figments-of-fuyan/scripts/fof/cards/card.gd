@@ -36,7 +36,6 @@ var Tool: ToolGD
 var is_awakened_in_combat: bool
 var overworld_traits: Array[OverworldTrait] = []
 var bounty_kills: BountyKills
-var card_vision_mode: CardVisionMode
 var is_card_change_level_visible: bool # Not saved
 var ai_datastore: AIDatastore
 var level_visible_not_in_vision: bool # Not saved
@@ -122,7 +121,14 @@ func setStats(stats: StatsDatastore) -> void:
 
 #region Getters
 func getDescription() -> String:
-	return info.getDescription(ascended)
+	if info.rarity != Game.Rarities.CHAMPION:
+		return info.getDescription(ascended)
+	
+	var description: String = info.getDescription(ascended)
+	for upgrade_level in range(1, Game.getChampionLevel() + 1):
+		var new_description: String = getChampionUpgrade(upgrade_level).description
+		if !new_description.is_empty(): description = new_description
+	return description
 	
 func getAscended() -> bool:
 	return ascended
@@ -747,15 +753,7 @@ func setDetectableByRay(state: bool) -> void:
 	if state: setCollisionLayers(96)
 	else: setCollisionLayers(32)
 	
-func setCardVisionMode(state: bool) -> void:
-	card_vision_mode = null if !state else CardVisionMode.new()
-	setBaseMaterials()
-	
-func setCardVisionModeState(state: bool) -> void:
-	card_vision_mode.state = state
-	setBaseMaterials()
-	
-func setLevelVisibleNotInVision(state: bool) -> void:
+func setLevelVisibleNotInVision(state: bool) -> void: # Also gets set by vision mode
 	level_visible_not_in_vision = state
 	setBaseMaterials()
 #endregion
@@ -946,7 +944,13 @@ func onAddActiveEffect(active_effect: ActiveEffectDatastore) -> void:
 	active_effect.owner = self
 
 func onCreateInitialActiveAbilities() -> void:
-	onPushAction(info.active_abilities.map(func(x: ActiveAbilityDatastore): return AddActiveEffectAction.new(self, x.duplicate())))
+	var abilities: Array[ActiveAbilityDatastore] = info.active_abilities
+	if info.rarity == Game.Rarities.CHAMPION:
+		for upgrade_level in range(1, Game.getChampionLevel() + 1):
+			var new_abilities: Array = getChampionUpgrade(upgrade_level).active_abilities
+			if !new_abilities.is_empty(): abilities = new_abilities
+		
+	onPushAction(abilities.map(func(x: ActiveAbilityDatastore): return AddActiveEffectAction.new(self, x.duplicate())))
 
 func getActiveEffectByName(_name: String) -> ActiveEffectDatastore:
 	for active_effect in active_effects:
@@ -1262,6 +1266,7 @@ func getArchetype() -> Game.Archetypes:
 		8: return Game.Archetypes.DOCILE
 		9: return Game.Archetypes.HOSTILE
 		10: return Game.Archetypes.ERRATIC
+		11: return Game.Archetypes.RECEIVER
 	return Game.Archetypes.NULL
 	
 # True if active effect used
@@ -1298,8 +1303,8 @@ func onAICheckActiveEffectsOnlyDFL(DFL: DefaultFightLogic, after_action: Movemen
 func setBaseMaterials() -> void:
 	if Model == null: return
 	var mat: Material
-	if (card_vision_mode != null and !card_vision_mode.state) or level_visible_not_in_vision:
-		mat = info.getColoredBaseMaterial(team)
+	if level_visible_not_in_vision:
+		mat = info.getColoredBaseMaterial(team, ascended)
 	elif ascended: mat = load(info.BASE_MATERIAL_ASCENDED_PATH)
 	setMeshesMaterial(mat, Model)
 
@@ -1343,6 +1348,7 @@ func onReset(override: bool = false) -> void: # Override for when level ends
 	active_effects = []
 	status_effects = []
 	field_effects = []
+	ability_save = {}
 	turn_state = Game.TurnStates.NULL
 	vision_datastore = VisionDatastoreCard.new()
 	
@@ -1352,3 +1358,23 @@ func onReset(override: bool = false) -> void: # Override for when level ends
 	
 	for overworld_trait in overworld_traits:
 		overworld_trait.onReset()
+	
+func onUpgrade(upgrade_level: int) -> void:
+	var champion_upgrade: ChampionUpgrade = getChampionUpgrade(upgrade_level)
+
+	base_stats.attack += champion_upgrade.plus_attack
+	base_stats.health += champion_upgrade.plus_health
+	base_stats.speed += champion_upgrade.plus_speed
+	base_stats.energy += champion_upgrade.plus_energy
+
+func getChampionUpgrade(upgrade_level: int) -> ChampionUpgrade:
+	match upgrade_level:
+		0: return null
+		1: return info.first_miniboss
+		2: return info.first_boss
+		3: return info.second_miniboss
+		4: return info.second_boss
+		5: return info.third_miniboss
+		6: return info.third_boss
+	return info.third_boss
+	

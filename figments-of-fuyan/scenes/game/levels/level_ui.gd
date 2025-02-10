@@ -384,7 +384,7 @@ func onGameEnded(rewards: Rewards) -> void:
 		var LossUI: Control = LossUIPacked.instantiate()
 		add_child(LossUI)
 	else:
-		RewardsUI = Game.onCreateRewardsUIScreen(rewards, self, level.is_elite)
+		RewardsUI = Game.onCreateRewardsUIScreen(rewards, self, level.isElite())
 		RewardsUI.rewards_finished.connect(level.onRewardsFinished)
 		MinimapControl = RewardsUI.MinimapControl
 		

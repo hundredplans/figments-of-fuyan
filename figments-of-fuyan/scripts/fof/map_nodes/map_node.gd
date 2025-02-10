@@ -73,6 +73,10 @@ func onLoadData(data: SavedData) -> void:
 	add_to_group("MapNodesGD")
 	onAfterLoadSetupFinishedEntered()
 	
+	#if map_location.progress > 5:
+		#var tval: float = mesh.get_instance_shader_parameter("time_value")
+		#print(tval)
+	
 func onAfterLoadSetupFinishedEntered() -> void:
 	if is_finished and !is_entered: onExitedVisual(true)
 	elif !is_finished and is_entered: onEnteredVisual(true)
@@ -85,6 +89,7 @@ func onCreateModel() -> void:
 	Model.rotation.y = saved_rotation_y
 	add_child(Model)
 	mesh = Helper.getNodeTypeRecursive(Model, MeshInstance3D)[0]
+	mesh.set_instance_shader_parameter("time_value", 0.0) # Default value sets
 	
 	position = map_location.position
 	onTweenChain()

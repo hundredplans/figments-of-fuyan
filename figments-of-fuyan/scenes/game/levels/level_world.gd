@@ -267,13 +267,12 @@ func onVisionModeChanged(state: bool) -> void:
 			GameObject.setLevelVisible(default_vision[GameObject])
 			
 		for Card in all_cards:
-			Card.setCardVisionMode(true)
+			Card.setLevelVisibleNotInVision(false)
 	else:
 		for GameObject in original_vision:
 			GameObject.setLevelVisible(original_vision[GameObject])
 			
-		for Card in all_cards:
-			Card.setCardVisionMode(false)
+		setLevelVisibleNotInVisionForSpectateObject()
 		
 		original_vision = {}
 		default_vision = {}
@@ -281,13 +280,15 @@ func onVisionModeChanged(state: bool) -> void:
 var LastCardVisionMode: CardGD
 func onVisionModeTileHovered(Tile: TileGD) -> void:
 	if !in_vision_mode: return
-	
-	if LastCardVisionMode != null and Tile != LastCardVisionMode.Tile:
+	var all_cards: Array = get_tree().get_nodes_in_group("FieldCardsGD")
+	if LastCardVisionMode != null and Tile != LastCardVisionMode.Tile: # New Unit
 		LastCardVisionMode = null
 		for GameObject in default_vision:
 			GameObject.setLevelVisible(default_vision[GameObject])
 			if GameObject is CardGD:
-				GameObject.setCardVisionModeState(false)
+				GameObject.setLevelVisibleNotInVision(false)
+				
+		for OtherCard in all_cards: OtherCard.setLevelVisibleNotInVision(OtherCard not in default_vision)
 		
 	if Tile == null: return
 	
@@ -297,10 +298,14 @@ func onVisionModeTileHovered(Tile: TileGD) -> void:
 		
 	var ally_vision: Array = Game.getTeamVision(0)
 	LastCardVisionMode = Card
-	for GameObject in LastCardVisionMode.getVisibleGameObjects().filter(func(x: GameObjectGD): return x in ally_vision):
+	
+	var new_vision: Array = LastCardVisionMode.getVisibleGameObjects()
+	for GameObject in new_vision.filter(func(x: GameObjectGD): return x in ally_vision):
 		GameObject.setLevelVisible(true)
 		if GameObject is CardGD:
-			GameObject.setCardVisionModeState(true)
+			GameObject.setLevelVisibleNotInVision(true)
+			
+	for OtherCard in all_cards: OtherCard.setLevelVisibleNotInVision(OtherCard not in new_vision)
 
 func setLevelVisibleNotInVisionForSpectateObject(SpectateObject: GameObjectGD = level.getSpectateObject()) -> void:
 	var spectate_vision: Array = SpectateObject.getVisibleFieldCards() if SpectateObject != null and SpectateObject is CardGD else []
@@ -382,7 +387,7 @@ func onGameStarted() -> void:
 
 #region Environment
 func setEnvironment() -> void:
-	WorldEnv.environment = area.info.base_environment if !level.is_elite else area.info.elite_environment
+	WorldEnv.environment = area.info.base_environment if level.fight_type == Game.FightTypes.REGULAR else area.info.elite_environment
 #endregion
 
 #region Dragged

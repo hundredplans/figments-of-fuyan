@@ -30,6 +30,10 @@ func onLoadData(data: SavedData) -> void:
 	
 	add_to_group("IObjectsGD")
 	
+func onLoadDataLevelFofInit() -> void:
+	super()
+	ability_save = {}
+	
 func onLoadModel() -> void:
 	super()
 	setTopVertexY()
@@ -133,3 +137,4 @@ func onIObject(_action: Action) -> void:
 		
 func onIObjectSpecificTransforms(_tiles_to_value: Dictionary, _DFL: DefaultFightLogic) -> void:
 	pass
+	

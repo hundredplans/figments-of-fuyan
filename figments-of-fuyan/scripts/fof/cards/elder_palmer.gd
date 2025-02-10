@@ -7,7 +7,8 @@ const SINGLE_UNIT_CHANCE: float = 0.1
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	super(active_effect)
 	if active_effect is ActiveAbilityDatastore and active_effect.name == "Palmist Prayer":
-		var tiles: Array = getVisibleFieldCardsAllies().map(func(x: CardGD): return x.Tile)
+		var tiles: Array = getVisibleFieldCardsAllies().filter(func(x: CardGD): return x.isHealable())\
+		.map(func(x: CardGD): return x.Tile)
 		tiles.erase(Tile)
 		return ActiveEffectTiles.new(tiles, tiles)
 	return null

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=15 format=3 uid="uid://db5q4lk55o6ds"]
+[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=18 format=3 uid="uid://db5q4lk55o6ds"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_4a3l2"]
 [ext_resource type="Image" uid="uid://b86c6f1uyjyd6" path="res://assets/sprites/game/cards/art_pop/frederic_the_fearless.png" id="2_d16dl"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" path="res://scripts/fof/cards/frederic_the_fearless.gd" id="5_jvipk"]
 [ext_resource type="PackedScene" uid="uid://bd2esqpmo73tk" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_ks7mj"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="8_j10ap"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/champion_upgrade.gd" id="8_qjhdg"]
 
 [sub_resource type="Resource" id="Resource_kddgi"]
 script = ExtResource("5_j2m8k")
@@ -33,6 +34,24 @@ _bundled = {
 "version": 3
 }
 
+[sub_resource type="Resource" id="Resource_hgy6f"]
+script = ExtResource("8_qjhdg")
+description = "RAMPAGE: Gain +1 HP and Heal [1] HP"
+plus_attack = 0
+plus_health = 0
+plus_energy = 0
+plus_speed = 0
+active_abilities = Array[ExtResource("1_4a3l2")]([])
+
+[sub_resource type="Resource" id="Resource_0mgtp"]
+script = ExtResource("8_qjhdg")
+description = ""
+plus_attack = 0
+plus_health = 1
+plus_energy = 0
+plus_speed = 0
+active_abilities = Array[ExtResource("1_4a3l2")]([])
+
 [resource]
 script = ExtResource("2_y17s3")
 champion_description = Array[String](["Regular and enhanced fights are more common", "Your aura gets stronger as you triumph over fights"])
@@ -43,6 +62,8 @@ unique_nodes_id = Array[int]([])
 ultimate_name = "Ogre Mode"
 ultimate_description = "[0/4]: Heal to full HP and cleanse any negative effects. RAMPAGE to gain [1] point"
 boon_info = ExtResource("4_f5cwk")
+first_miniboss = SubResource("Resource_0mgtp")
+first_boss = SubResource("Resource_hgy6f")
 attack = 2
 health = 2
 speed = 2
