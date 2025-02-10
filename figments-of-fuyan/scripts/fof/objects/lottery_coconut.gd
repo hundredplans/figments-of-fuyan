@@ -27,7 +27,7 @@ func onIObject(action: Action) -> void:
 		"heal":
 			onHeal(action, actions)
 		"minitool":
-			if !action.Card.getTool() != null:
+			if action.Card.getTool() == null:
 				var id: int = range(8, 13).pick_random()
 				var Tool: ToolGD = SavedData.onLoadModel(Helper.getFofInfoID(ToolInfo, id).saved_data.new(id, true), action.Card)
 				actions.append(AddToolAction.new(action.Card, Tool))
