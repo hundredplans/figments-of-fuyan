@@ -26,7 +26,10 @@ func setMovementTypeDelay() -> void:
 		fall_time += (height_diff * 0.2)
 	else: movement_type = MOVEMENT_TYPES.REGULAR
 	
-	setActionDelay((1.0 if !isJumpFall() else fall_time) if Card.isLevelVisible() else 0.0)
+	setActionDelay(getJumpDelay() if Card.isLevelVisible() else 0.0)
+
+func getJumpDelay() -> float:
+	return 1.0 if !isJumpFall() else fall_time
 
 func setActionDelay(delay: float) -> void:
 	super(delay)
@@ -37,6 +40,7 @@ func onPreAction() -> void:
 	
 	setMovementTypeDelay()
 	onForceAction(ChangeTileRotationAction.new(Card, Game.getRelativeTileRotation(Card.Tile, DestinationTile)))
+	Card.onMoveToTile(self, getDelay())
 	
 func onCheckFail() -> void:
 	if DestinationTile.isOccupied():

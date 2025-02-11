@@ -49,6 +49,10 @@ func onPostAction() -> void:
 	var exit_level_visible_cards: Array = old_team_vision_diff.filter(func(x: GameObjectGD): return x is CardGD)
 	if !exit_level_visible_cards.is_empty(): actions.append(ExitLevelVisibleAction.new(exit_level_visible_cards))
 	
+	var enemy_enter_level_visible_cards: Array = new_team_vision_diff.filter(func(x: GameObjectGD): return x is CardGD and x.isEnemy(0))
+	var is_enter_level_visible_by_explorer: bool = new_team_vision_diff.any(func(x: GameObjectGD): return x is CardGD and x.isEnemy(0) and x == ExplorerCard)
+	if is_enter_level_visible_by_explorer and owner is OccupyAction and owner.owner is MoveToTileAction:
+		actions.append(EnterLevelVisibleAction.new(owner))
 	onPushAction(actions)
 			
 func getLogInfo() -> Array:

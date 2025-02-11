@@ -407,8 +407,8 @@ func onRemovePoint(point: Vector3) -> void:
 #endregion
 
 #region Position
-func setPositionToTile() -> void:
-	position = Tile.getCardPosition()
+func setPositionToTile(_Tile: TileGD = Tile) -> void:
+	position = _Tile.getCardPosition()
 #endregion
 
 #region Is Checks
@@ -460,10 +460,7 @@ func onCardTurnPassed(Card: CardGD) -> void:
 func onProcessAction(action: Action) -> void:
 	super(action)
 	if Game.CardPlaces.FIELD == card_place:
-		if !action.post:
-			if action is MoveToTileAction and action.Card == self:
-				onMoveToTile(action)
-		elif action.post:
+		if action.post:
 			if action is MovementFinishAction and action.Card == self: Tile.setOutlineMaterial()
 			elif action is AttackAction and action.Attacker.isEnemy(team) and action.Attacker in getVisibleFieldCardsEnemies():
 				ai_datastore.setLastSeenViolence(0)
@@ -489,30 +486,26 @@ func isOccupyVisionVisibleAction(action: Action) -> bool:
 #endregion
 
 #region Movement
-func onMoveToTile(action: MoveToTileAction) -> void:
+func onMoveToTile(action: MoveToTileAction, delay: float) -> void:
 	if isLevelVisible():
 		if !action.isJumpFall(): # Regular = Ramp movement
 			onWalk()
 			
+			var tween := get_tree().create_tween()
 			if action.movement_type == MoveToTileAction.MOVEMENT_TYPES.REGULAR:
-				var tween := get_tree().create_tween()
-				tween.tween_property(self, "position", action.DestinationTile.getCardPosition(), action.getDelay())
-			else:
-				var tween := get_tree().create_tween()
-				
-				if action.DestinationTile.isRamp():
-					tween.tween_property(self, "position", Tile.getHalfwayCardPosition(action.DestinationTile), action.getDelay() / 2.0)
-					tween.tween_property(self, "position", action.DestinationTile.getCardPosition(), action.getDelay() / 2.0)
-				elif Tile.isRamp():
-					tween.tween_property(self, "position", action.DestinationTile.getHalfwayCardPosition(Tile), action.getDelay() / 2.0)
-					tween.tween_property(self, "position", action.DestinationTile.getCardPosition(), action.getDelay() / 2.0)
+				tween.tween_property(self, "position", action.DestinationTile.getCardPosition(), delay)
+			elif action.DestinationTile.isRamp():
+				tween.tween_property(self, "position", Tile.getHalfwayCardPosition(action.DestinationTile), delay / 2.0)
+				tween.tween_property(self, "position", action.DestinationTile.getCardPosition(), delay / 2.0)
+			elif Tile.isRamp():
+				tween.tween_property(self, "position", action.DestinationTile.getHalfwayCardPosition(Tile), delay / 2.0)
+				tween.tween_property(self, "position", action.DestinationTile.getCardPosition(), delay / 2.0)
 			return
 		
 		onJump()
 		if action.movement_type == MoveToTileAction.MOVEMENT_TYPES.JUMP: onJumpTween(action)
 		elif action.movement_type == MoveToTileAction.MOVEMENT_TYPES.FALL: onFall(action)
-	else:
-		position = action.DestinationTile.getCardPosition()
+	#else: setPositionToTile(action.DestinationTile)
 	
 const JUMP_SPEEDSCALE: float = 2.5
 func onJumpTween(action: MoveToTileAction) -> void:
@@ -622,7 +615,7 @@ func onUpdateVision() -> void: # Returns the new visibles
 		if visibles[GameObject].direct:
 			previous_direct_game_objects.append(GameObject)
 
-	for Card in cards:
+	for Card: CardGD in cards:
 		var tile_in_vision_range: bool = Card.Tile in vision_range_game_objects
 		Card.setDetectableByRay(tile_in_vision_range and Card.isNotInvisibleOrIsAdjacent(Tile))
 		if !tile_in_vision_range:
@@ -1309,6 +1302,7 @@ func onAICheckActiveEffectsOnlyDFL(DFL: DefaultFightLogic, after_action: Movemen
 #region Materials
 func setBaseMaterials() -> void:
 	if Model == null: return
+	if is_in_alphagrey: return
 	var mat: Material
 	if level_visible_not_in_vision:
 		mat = info.getColoredBaseMaterial(team, ascended)
@@ -1316,21 +1310,24 @@ func setBaseMaterials() -> void:
 	setMeshesMaterial(mat, Model)
 
 var AlphagreyTween: Tween
+var is_in_alphagrey: bool # Important so setBaseMaterials doesnt ov
 func setAlphagreyMaterial(start_value: float) -> void:
 	if !isAlive() or Helper.admin_datastore.see: return
 	if AlphagreyTween != null: AlphagreyTween.stop()
 	
 	AlphagreyTween = get_tree().create_tween()
-	
+	is_in_alphagrey = true
 	setMeshesMaterial(load(info.BASE_MATERIAL_ALPHAGREY_PATH), Model)
 	setAlphagreyMaterialValue(start_value)
 	AlphagreyTween.tween_method(setAlphagreyMaterialValue, start_value, abs(start_value - 1), ALPHAGREY_CHANGE_SPEED)
 	await AlphagreyTween.finished
 	
+	is_in_alphagrey = false
 	setBaseMaterials()
 	
-func setAlphagreyMaterialValue(value: float) -> void:
+func setAlphagreyMaterialValue(value: float) -> void: # 0.0 is visible, 1.0 is invisible
 	if Model == null: return
+	
 	for mesh in getMeshes(Model):
 		mesh.set_instance_shader_parameter("time_value", value)
 #endregion
