@@ -27,6 +27,7 @@ var _q = false
 var _e = false
 var _shift = false
 var _alt = false
+var _ctrl = false
 
 @export var disable_movement: bool = false
 @export_group("Sideways")
@@ -79,6 +80,8 @@ func _input(event):
 				_shift = event.pressed
 			KEY_ALT:
 				_alt = event.pressed
+			KEY_CTRL:
+				_ctrl = event.pressed
 
 # Updates mouselook and movement every frame
 func _process(delta):
@@ -99,7 +102,7 @@ func onUpdateFreelookInput() -> void:
 		
 # Updates camera movement
 func _update_movement(delta):
-	if disable_movement: return
+	if disable_movement or _ctrl: return
 	# Computes desired direction from key states
 	_direction = Vector3((_d as float) - (_a as float), 
 						(_e as float) - (_q as float), 

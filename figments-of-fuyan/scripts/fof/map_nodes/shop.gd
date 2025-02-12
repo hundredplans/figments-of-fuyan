@@ -56,7 +56,7 @@ func getForeign(info_type: GDScript, j: int) -> bool:
 		elif j == 3: return true
 	return false
 	
-func isFirstShop() -> bool: return map_location.progress == 0 # Fix this
+func isFirstShop() -> bool: return map_location.progress == 1 # DEBUG
 	
 func onAddRemoveCard() -> void:
 	onAddToItems(PriceDatastore.new(world_datastore.remove_card_price, SavedDataMapEffect.new(3, true)))

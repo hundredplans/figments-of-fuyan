@@ -45,3 +45,5 @@ func onLevelEnded(_win: bool) -> void:
 	
 func getCharges() -> int:
 	return charges
+
+func onFieldEffectAdded() -> void: pass

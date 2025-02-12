@@ -60,6 +60,7 @@ signal update_active_effect_description
 signal awakened_in_combat
 @warning_ignore("unused_signal")
 signal update_stats
+signal card_turn_passed
 #endregion
 		
 #region Setters
@@ -443,7 +444,7 @@ func onInspectCard() -> void:
 #region TurnStates
 func setTurnState(_turn_state: Game.TurnStates) -> void:
 	turn_state = _turn_state
-	FieldInfo.setInfoSpriteTurnState()
+	if FieldInfo != null: FieldInfo.setInfoSpriteTurnState()
 		
 func onCardTurnPassed(Card: CardGD) -> void:
 	if self != Card: return
@@ -453,6 +454,7 @@ func onCardTurnPassed(Card: CardGD) -> void:
 		
 	ai_datastore.onCardTurnPassed()
 	onPushAction(StatAction.new(StatInfo.new(Card, Game.Stats.SPEED, Card.max_speed, 0, false, false, true)))
+	card_turn_passed.emit()
 	
 #endregion
 
@@ -531,7 +533,7 @@ func onFall(action: MoveToTileAction) -> void:
 	var start_highest: Vector3 = position + Vector3(0, -jump_height, 0)
 	var end_highest: Vector3 = jump_end + Vector3(0, -jump_height, 0)
 	
-	AniPlayer.speed_scale = FALL_SPEEDSCALE - ((action.fall_time - 1) * 2.2)
+	AniPlayer.speed_scale = FALL_SPEEDSCALE - ((action.fall_time - 1) * 1.8) # was 2.2
 	onTweenJumpFall(jump_end, start_highest, end_highest, action.fall_time)
 	await get_tree().create_timer(action.getDelay()).timeout
 	
@@ -550,7 +552,7 @@ func onJumpFall(time: float, jump_start: Vector3, jump_end: Vector3, start_highe
 #region Spectated
 func onSpectated(state: bool) -> void:
 	is_spectated = state
-	FieldInfo.onSpectated(state)
+	if FieldInfo != null: FieldInfo.onSpectated(state)
 #endregion
 
 #region Field Info
@@ -561,10 +563,11 @@ func onCreateFieldInfo() -> void:
 	FieldInfo.setInfo(self)
 	
 func onRemoveFieldInfo() -> void:
-	FieldInfo.queue_free()
+	if FieldInfo != null:
+		FieldInfo.queue_free()
 	
 func onCameraPositionUpdated(pos: Vector3) -> void:
-	FieldInfo.onCameraPositionUpdated(pos)
+	if FieldInfo != null: FieldInfo.onCameraPositionUpdated(pos)
 #endregion
 
 #region Awaken
@@ -615,7 +618,7 @@ func onUpdateVision() -> void: # Returns the new visibles
 		if visibles[GameObject].direct:
 			previous_direct_game_objects.append(GameObject)
 
-	for Card: CardGD in cards:
+	for Card: CardGD in cards.duplicate(): # Because it's erasing inside
 		var tile_in_vision_range: bool = Card.Tile in vision_range_game_objects
 		Card.setDetectableByRay(tile_in_vision_range and Card.isNotInvisibleOrIsAdjacent(Tile))
 		if !tile_in_vision_range:
@@ -814,8 +817,13 @@ func isGameObjectAttackable(GameObject: GameObjectGD, AttackableTile: TileGD, St
 	if !(GameObject in getVisibleGameObjects()): return false
 	var is_in_height: bool = abs(AttackableTile.getHeight() - StartingTile.getHeight()) in [0, 1]
 	
-	var top_y: float = GameObject.info.top if GameObject is CardGD else GameObject.getTopVertexY()
-	var is_in_unit_height: bool = position.y <= (GameObject.position.y + top_y) and top_y <= (position.y + info.top)
+	var bot_y: float = GameObject.position.y
+	var top_y: float = bot_y + (GameObject.info.top if GameObject is CardGD else GameObject.getTopVertexY())
+	
+	var bot_self_y: float = position.y
+	var top_self_y: float = position.y + info.top
+	
+	var is_in_unit_height: bool = max(bot_y, bot_self_y) <= min(top_y, top_self_y)
 	
 	var is_ranged: bool = getAttackRange() > 1 and (abs(AttackableTile.getHeight() - StartingTile.getHeight()) <= 5)
 	return (is_in_height or is_in_unit_height or is_ranged)
@@ -850,7 +858,7 @@ func onUpdateStat(type: Game.Stats, difference: int, show_particles: bool) -> vo
 		Game.Stats.MAX_HEALTH: value = max_health
 		Game.Stats.MAX_SPEED: value = max_speed
 	
-	FieldInfo.onUpdateStat(type, value, difference, isLevelVisible(), show_particles)
+	if FieldInfo != null: FieldInfo.onUpdateStat(type, value, difference, isLevelVisible(), show_particles)
 #endregion
 
 #region Traits
@@ -998,12 +1006,12 @@ func getPickableTiles(active_effect: ActiveEffectDatastore) -> Array:
 #region Status Effects
 func onRemoveStatusEffect(status_effect: StatusEffectGD) -> void:
 	status_effects.erase(status_effect)
-	FieldInfo.onRemoveIcon(status_effect)
+	if FieldInfo != null: FieldInfo.onRemoveIcon(status_effect)
 	
 func onAddStatusEffect(status_effect: StatusEffectGD) -> void:
 	status_effects.append(status_effect)
 	status_effect.Card = self
-	FieldInfo.onAddIcon(status_effect)
+	if FieldInfo != null: FieldInfo.onAddIcon(status_effect)
 	
 func onCreateBaseStatusEffect(id: int, turns: int = 1) -> void:
 	var status_data := SavedDataStatusEffect.new(id, true, 0, turns)
@@ -1029,6 +1037,11 @@ func isNotInvisibleOrIsAdjacent(_Tile: TileGD) -> bool:
 	
 func isBlind() -> bool:
 	return status_effects.any(func(x: StatusEffectGD): return x.info.id == 1)
+	
+func getStatusEffect(id: int) -> StatusEffectGD:
+	for status_effect: StatusEffectGD in status_effects:
+		if status_effect.info.id == id: return status_effect
+	return null
 #endregion
 
 #region Advance Turn
@@ -1043,18 +1056,18 @@ func onAdvanceTurn(turn_team: int) -> void:
 	actions += active_effects.map(func(x: ActiveEffectDatastore): return ChangeActiveEffectUsedAction.new(x, false))
 	onPushAction(actions)
 		
-	FieldInfo.onUpdateDelayedStats()
+	if FieldInfo != null: FieldInfo.onUpdateDelayedStats()
 	
 #endregion
 
 #region Delayed Stats
 func onAddDelayedStatInfo(stat_info: StatInfo) -> void:
 	delayed_stats.append(stat_info)
-	FieldInfo.onUpdateDelayedStats()
+	if FieldInfo != null: FieldInfo.onUpdateDelayedStats()
 	
 func onRemoveDelayedStatInfo(stat_info: StatInfo) -> void:
 	delayed_stats.erase(stat_info)
-	FieldInfo.onUpdateDelayedStats()
+	if FieldInfo != null: FieldInfo.onUpdateDelayedStats()
 #endregion
 
 #region Action Checker
@@ -1098,8 +1111,9 @@ func isInjured() -> bool:
 func onAddFieldEffect(FieldEffect: FieldEffectGD, FofObject: FofGD = null) -> void:
 	if FofObject != null: FieldEffect.FofObject = FofObject
 	field_effects.append(FieldEffect)
-	FieldInfo.onAddIcon(FieldEffect)
+	if FieldInfo != null: FieldInfo.onAddIcon(FieldEffect)
 	FieldEffect.Card = self
+	FieldEffect.onFieldEffectAdded()
 	
 func onAddBaseFieldEffect(id: int, FofObject: FofGD = null) -> FieldEffectGD:
 	var FieldEffect: FieldEffectGD = SavedData.onLoadModel(SavedDataFieldEffect.new(id, true), self)
@@ -1109,7 +1123,7 @@ func onAddBaseFieldEffect(id: int, FofObject: FofGD = null) -> FieldEffectGD:
 func onRemoveFieldEffect(FieldEffect: FieldEffectGD) -> void:
 	if FieldEffect == null: return
 	field_effects.erase(FieldEffect)
-	FieldInfo.onRemoveIcon(FieldEffect)
+	if FieldInfo != null: FieldInfo.onRemoveIcon(FieldEffect)
 	FieldEffect.onClear()
 	
 func onRemoveFieldEffectsByOwner(FofObject: FofGD) -> void:
@@ -1118,6 +1132,11 @@ func onRemoveFieldEffectsByOwner(FofObject: FofGD) -> void:
 	
 func onFindFieldEffectsByOwner(FofObject: FofGD) -> Array:
 	return field_effects.filter(func(x: FieldEffectGD): return x.FofObject == FofObject)
+	
+func getFirstFieldEffect(id: int) -> FieldEffectGD:
+	for FieldEffect: FieldEffectGD in field_effects:
+		if FieldEffect.info.id == id: return FieldEffect
+	return null
 #endregion
 
 #region Revenge
@@ -1190,8 +1209,10 @@ func isValidEliteLevelSpawns(_enemy_spawns: Array) -> bool:
 #region Level Ended
 func onLevelEnded(_win: bool) -> void:
 	onReset(true)
-	if isAlly(0) and !is_awakened_in_combat and card_place != Game.CardPlaces.DECK:
-		onChangeCardPlace(Game.CardPlaces.DECK)
+	if isAlly(0) and !is_awakened_in_combat:
+		if card_place != Game.CardPlaces.DECK:
+			onChangeCardPlace(Game.CardPlaces.DECK)
+	else: onChangeCardPlace(Game.CardPlaces.NULL)
 #endregion
 
 #region Idle Rare

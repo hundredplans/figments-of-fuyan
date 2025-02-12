@@ -24,10 +24,16 @@ var rewards: Rewards
 var save_file: SaveFileGD
 var is_elite: bool
 
+const ELITE_MOVE_DOWN_HEIGHT: int = 100
+
 func setInfo(_rewards: Rewards, _save_file: SaveFileGD, _is_elite: bool = false) -> void:
 	rewards = _rewards
 	save_file = _save_file
 	is_elite = _is_elite
+	
+	if is_elite:
+		FirstContainer.size.y -= ELITE_MOVE_DOWN_HEIGHT
+		FirstContainer.position.y += ELITE_MOVE_DOWN_HEIGHT
 	
 	for item in rewards.items:
 		onCreateReward(item, false)

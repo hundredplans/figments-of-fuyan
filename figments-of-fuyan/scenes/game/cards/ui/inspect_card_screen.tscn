@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://byg8f1pn2h8u1"]
+[gd_scene load_steps=15 format=3 uid="uid://byg8f1pn2h8u1"]
 
 [ext_resource type="Script" path="res://scenes/game/cards/ui/inspect_card_screen.gd" id="1_s3ffg"]
 [ext_resource type="Script" path="res://scenes/game/cards/ui/inspect_card_viewport.gd" id="2_4u3ql"]
@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://cgsjk5jrikksx" path="res://assets/sprites/game/cards/common/extra/temporary_card_marker.png" id="6_gl5fh"]
 [ext_resource type="LabelSettings" uid="uid://b44saayykrffg" path="res://resources/ui/label_settings/roboto_medium.tres" id="6_q5hos"]
 [ext_resource type="Texture2D" uid="uid://dmbi1m8a3wggn" path="res://assets/sprites/game/cards/common/extra/neutral.png" id="7_jjyv8"]
+[ext_resource type="LabelSettings" uid="uid://baxopkmeda53x" path="res://resources/ui/label_settings/roboto_huge.tres" id="12_upvdt"]
 
 [sub_resource type="World3D" id="World3D_2ijdp"]
 environment = ExtResource("2_e52jv")
@@ -121,6 +122,14 @@ layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
+[node name="CardNameLabel" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+label_settings = ExtResource("12_upvdt")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
 [node name="CardSpacer" type="Control" parent="PanelContainer/MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -130,10 +139,8 @@ mouse_filter = 2
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 0
-offset_left = 57.0
-offset_top = 13.0
-offset_right = 57.0
-offset_bottom = 13.0
+offset_left = 52.0
+offset_right = 52.0
 scale = Vector2(2, 2)
 mouse_filter = 2
 

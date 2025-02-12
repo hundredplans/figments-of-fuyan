@@ -3,32 +3,34 @@ extends BoonGD
 const DEFAULT_STUN_TURNS: int = 2
 const ASCENDED_STUN_TURNS: int = 3
 
-var turns_stunned_remaining: int
-func onProcessAction(action: Action) -> void:
-	super(action)
-	if action.post:
-		if action is ChangePhaseAction and Game.isAdvanceTurn(action.phase, 0) and turns_stunned_remaining > 0:
-			onPushAction(BoonActivatedAction.new(self, action))
+var used_stun: bool
 	
-func onAscend(state: bool) -> void:
-	super(state)
+func onBoon(__: Action) -> void:
+	var turns: int = getStunTurns()
+	for EnemyCard in Game.getEnemyUnits(0):
+		EnemyCard.onStun(turns)
+	used_stun = true
 
 func getDescription() -> String:
 	return super()
 
-func onBoon(_action: Action = null) -> void:
-	turns_stunned_remaining -= 1
-
 func onBoonAdded() -> void:
+	super()
 	onResetCharges()
-	for EnemyCard in Game.getEnemyUnits(0):
-		EnemyCard.onStun()
+	onPushAction(BoonActivatedAction.new(self, null))
 	
+func getStunTurns() -> int:
+	return DEFAULT_STUN_TURNS if !ascended else ASCENDED_STUN_TURNS
+
 func getDisabled() -> bool:
-	return turns_stunned_remaining == 0
+	return used_stun
 
 func getCharges() -> int:
-	return turns_stunned_remaining
+	return getStunTurns()
 
 func onResetCharges() -> void:
-	turns_stunned_remaining = DEFAULT_STUN_TURNS if !ascended else ASCENDED_STUN_TURNS
+	used_stun = false
+
+func onSave() -> SavedDataBoon:
+	ability_save['used_stun'] = used_stun
+	return super()

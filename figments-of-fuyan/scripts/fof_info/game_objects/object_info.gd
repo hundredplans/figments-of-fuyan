@@ -17,6 +17,7 @@ const PALM_DOOR_SHORT_OPEN_MESH_PATH: String = "res://resources/game/custom_coll
 const PALM_DOOR_TALL_CLOSED_MESH_PATH: String = "res://resources/game/custom_collision_shapes/palm_door/palm_door_tall_closed.tres"
 const PALM_DOOR_TALL_OPEN_MESH_PATH: String = "res://resources/game/custom_collision_shapes/palm_door/palm_door_tall_open.tres"
 const LOTTERY_COCONUT_DATASTORE_PATH: String = "res://resources/datastore/tile_objects/lottery_coconut_datastore.tres"
+const SPAWN_GROUP_LABEL_SCENE_PATH: String = "res://scenes/game/objects/spawns/spawn_group_label.tscn"
 
 static func getInfoPath() -> String: return "res://resources/fof/tile_objects"
 static func getFofName() -> String: return "Object"

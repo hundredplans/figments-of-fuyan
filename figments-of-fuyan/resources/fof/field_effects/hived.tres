@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="FieldEffectInfo" load_steps=5 format=3 uid="uid://csywhqyqnw7eq"]
+
+[ext_resource type="Texture2D" uid="uid://rj1n8yyc0an4" path="res://assets/sprites/game/fof_object_icons/status_effects/hived.png" id="1_7uqbq"]
+[ext_resource type="Script" path="res://scripts/fof/field_effects/hived.gd" id="1_7v7ge"]
+[ext_resource type="Script" path="res://scripts/fof_info/field_effects/field_effect_info.gd" id="1_vpolg"]
+[ext_resource type="Script" path="res://scripts/saved_data/field_effects/saved_data_field_effect.gd" id="3_m62kw"]
+
+[resource]
+script = ExtResource("1_vpolg")
+icon = ExtResource("1_7uqbq")
+description = "Has [X] ATT for [2] Turns and [Y] ATT for [1] Turn"
+ascended_description = ""
+ascended_type = 0
+charges_label_position = Vector2(0, 0)
+id = 12
+name = "Hived"
+gdscript = ExtResource("1_7v7ge")
+saved_data = ExtResource("3_m62kw")

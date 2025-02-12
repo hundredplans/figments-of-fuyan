@@ -9,6 +9,9 @@ signal remove_save
 
 var World: Node3D
 @onready var GoBackLabel: Label = %GoBackLabel
+@onready var ContinueLabel: Label = %ContinueLabel
+@onready var NewGameLabel: Label = %NewGameLabel
+@onready var LoadLabel: Label = %LoadLabel
 #endregion
 
 #region Exports
@@ -22,6 +25,7 @@ func _ready() -> void:
 		World.travel.connect(onTravelStateChanged)
 		World.champion_pressed.connect(onChampionPressed)
 		World.create_ui.connect(onCreateUI)
+		World.mouse_in_mesh.connect(onMouseInMesh)
 #endregion
 
 #region Travelling
@@ -62,6 +66,9 @@ func onCreateUI(_menu: PackedScene) -> void:
 	
 func onLoadGame(saved_data: SavedDataSaveFile) -> void:
 	load_game.emit(saved_data)
+	
+func onRemoveSave() -> void:
+	remove_save.emit()
 #endregion
 
 #region Mouse In UI
@@ -70,6 +77,10 @@ func onMouseInUI(state: bool) -> void:
 	is_mouse_in_ui = state
 	mouse_in_ui.emit(state)
 	
-func onRemoveSave() -> void:
-	remove_save.emit()
+func onMouseInMesh(mesh: MeshInstance3D, state: bool) -> void:
+	if mesh == null: return
+	match mesh.name:
+		"NewGame": NewGameLabel.visible = state
+		"LoadGame": LoadLabel.visible = state
+		"Continue": ContinueLabel.visible = state
 #endregion

@@ -8,6 +8,8 @@ var selected_cards: Array
 var selectable: bool
 var valid_selection: Callable # Used when you have to choose more than one card
 
+var SelectedCardUI: Control
+
 func setInfo(_selectable: bool = false, _max_select_amount: int = 1, _valid_selection := Callable()) -> void:
 	selectable = _selectable
 	max_select_amount = _max_select_amount
@@ -26,6 +28,7 @@ func onSelected(CardUI: Control) -> void:
 	
 	if !selected_cards.is_empty() and selected_cards.size() == max_select_amount \
 	and (max_select_amount == 1 or (valid_selection == Callable() or valid_selection.call(selected_cards))):
+		SelectedCardUI = CardUI
 		selected.emit(selected_cards[0] if max_select_amount == 1 else selected_cards)
 		queue_free()
 

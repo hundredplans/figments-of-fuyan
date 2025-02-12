@@ -12,7 +12,6 @@ func setInfo(_item: FofGD, _price_datastore: PriceDatastore, _save_file: SaveFil
 	
 	var text: String = "[" + ("a" if item.ascended else "") + "boon=" + str(item.info.id) + "]"
 	NameLabel.setText(text)
-	NameLabel.modulate = Game.getRarityColor(item.info.rarity)
 
 func setDisabled(state: bool = true) -> void:
 	super(state)

@@ -13,8 +13,6 @@ extends Node
 @onready var ColShapeHolder: Node3D = $PlaceCollisionShapeHere
 @onready var Heights: Node3D = %Heights
 @onready var Camera: Camera3D = %ChampionCamera
-
-@onready var ArtMiniRect: TextureRect = %ArtMiniRect
 #endregion
 
 func _ready() -> void:
@@ -59,9 +57,6 @@ func onUnitChanged(_card_info: CardInfo) -> void:
 			if box.position.y > 0: card_info[box.stat] = box.position.y
 			box.position.y = 0
 			box.position.x = box.default_x
-		
-		var image: Image = onCreateArtMiniImage(card_info)
-		image.save_png(card_info.art_pop.resource_path.replace("art_pop", "art_mini"))
 		
 		ResourceSaver.save(card_info)
 		for child in World.get_children() + ColShapeHolder.get_children(): child.free()

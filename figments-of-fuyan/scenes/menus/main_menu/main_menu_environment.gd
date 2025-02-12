@@ -1,5 +1,7 @@
 extends Node3D
 
+signal mouse_in_mesh
+
 #region Exports
 @export var main_menu_meshes: Array[MeshToMaterial]
 @export var play_table_meshes: Array[MeshToMaterial]
@@ -46,12 +48,16 @@ func onMouseEnteredMesh(mesh: MeshInstance3D) -> void:
 	if mouse_in_ui: return
 	if mesh != null:
 		mesh.set_surface_override_material(0, onFindMeshToMaterial(mesh, main_menu_meshes + play_table_meshes))
+	
+	mouse_in_mesh.emit(mesh, true)
 	ActiveMesh = mesh
 
 func onMouseExitedMesh() -> void:
 	if mouse_in_ui: return
 	if ActiveMesh != null:
 		ActiveMesh.set_surface_override_material(0, null)
+		
+	mouse_in_mesh.emit(ActiveMesh, false)
 	ActiveMesh = null
 	
 func onDisableMesh(mesh: MeshInstance3D, save_file_count: int) -> bool:

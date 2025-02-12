@@ -30,7 +30,9 @@ func onFindEmptyMapSpot(progress: int, lane: int) -> EmptyMapNode:
 	return null
 	
 func getProgress() -> int:
-	return getEnteredMapNode().map_location.progress
+	var data: Array = get_tree().get_nodes_in_group("MapNodesGD")
+	if data.is_empty(): data = map_nodes_data
+	return data.filter(func(x: Variant): return x.is_entered).map(func(x: Variant): return x.map_location.progress).max()
 #endregion
 
 #region Save / Load
@@ -430,11 +432,12 @@ func setRewards(is_win: bool) -> void:
 	active_level.is_ended = true
 	if is_win:
 		var items: Array = []
+		var is_elite: bool = active_level.isElite()
 		var fight_rewards_datastore: FightRewardsDatastore = \
-			getWorld().elite_fight_rewards if active_level.isElite() else getWorld().fight_rewards
+			getWorld().elite_fight_rewards if is_elite else getWorld().fight_rewards
 		
 		var enemy_spawns: Array = active_level.enemy_spawns.duplicate()
-		if active_level.isElite():
+		if is_elite:
 			items.append(SavedData.onLoadModel(enemy_spawns.pop_back(), active_level))
 			
 		enemy_spawns = enemy_spawns.filter(func(x: SavedDataCard): return Helper.getFofInfoID(CardInfo, x.id).rarity != Game.Rarities.CHAMPION)
@@ -449,21 +452,32 @@ func setRewards(is_win: bool) -> void:
 		var shillings: int = randi_range(fight_rewards_datastore.shillings_min, fight_rewards_datastore.shillings_max)
 		var shilling_gain: MapEffectGD = Game.onCreateGainShillings(shillings, active_level)
 		items.append(shilling_gain)
+			
+		var add_tool: bool
+		var add_boon: bool
 		
-		var add_boon: bool = Random.rollFloat(getDivinusBoonOdds(fight_rewards_datastore.boon_odds) / 100.0)
+		if !is_elite:
+			add_tool = Random.rollFloat(fight_rewards_datastore.tool_odds / 100.0)
+			add_boon = Random.rollFloat(getDivinusBoonOdds(fight_rewards_datastore.boon_odds) / 100.0)
+		else: # 50 / 50 chance if divinus, otherwise 66% 33% chance
+			add_tool = Random.rollFloat((fight_rewards_datastore.tool_odds / 100.0) if !Game.isDivinus() else 0.5)
+			if !add_tool: add_boon = true
+				
+			if Random.rollFloat(getWorld().elite_fight_rewards_second_item_odds):
+				add_tool = true
+				add_boon = true
+			
+		if add_tool:
+			items.append(SavedData.onLoadModel(Random.getRandomFofByOdds(ToolInfo), active_level))
+			
 		if add_boon:
 			var boon_data: SavedDataBoon = Random.getRandomFofByOdds(BoonInfo)
 			if boon_data != null: items.append(SavedData.onLoadModel(boon_data, active_level))
-				
-		var add_tool: bool = Random.rollFloat(fight_rewards_datastore.tool_odds / 100.0)
-		if add_tool:
-			items.append(SavedData.onLoadModel(Random.getRandomFofByOdds(ToolInfo), active_level))
 		
 		var rewards := Rewards.new(items)
 		rewards.setInfo(active_level)
 		active_level.rewards = rewards
 	active_level.onGameEnded()
-
 #endregion
 
 #region Random Enemy
@@ -553,10 +567,7 @@ func onCombineRecursive(arr: Array, n: int, current: Array, result: Array) -> vo
 
 #region Champion
 func getDivinusBoonOdds(odds: float) -> float:
-	return odds * 2
-	
-func getDivinusBoonAscensionOdds(odds: float) -> float:
-	return odds + 2.5
+	return odds * 2 if Game.isDivinus() else odds
 #endregion
 
 #region Exit Level

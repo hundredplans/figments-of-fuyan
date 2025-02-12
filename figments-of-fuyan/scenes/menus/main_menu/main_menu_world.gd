@@ -13,6 +13,7 @@ signal champion_pressed
 signal travel
 signal start
 signal create_ui
+signal mouse_in_mesh
 
 var UI: Control
 @onready var env: WorldEnvironment = %WorldEnvironment
@@ -36,6 +37,7 @@ func _ready() -> void:
 	UI.cancel_champion_selected.connect(onBack)
 	UI.mouse_in_ui.connect(MapModel.onMouseInUI)
 	UI.remove_save.connect(onRemoveSave)
+	MapModel.mouse_in_mesh.connect(onMouseInMesh)
 
 func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("Back"): onBack()
@@ -175,3 +177,6 @@ func onFirstLoad() -> void:
 func onRemoveSave() -> void:
 	MapModel.onRemoveSave()
 #endregion
+
+func onMouseInMesh(mesh: MeshInstance3D, state: bool) -> void:
+	mouse_in_mesh.emit(mesh, state)

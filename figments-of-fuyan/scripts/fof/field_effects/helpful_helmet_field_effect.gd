@@ -1,6 +1,7 @@
 extends FieldEffectGD
 
 func onProcessAction(action: Action) -> void:
+	super(action)
 	if FofObject.isValidRampage(action):
 		onPushAction(FieldEffectActivatedAction.new(self, action))
 		

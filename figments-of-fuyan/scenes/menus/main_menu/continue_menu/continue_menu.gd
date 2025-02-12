@@ -47,7 +47,7 @@ func _ready() -> void:
 		LevelLabel.text = "LEVEL: " + (area_info.overworld_decoration.name\
 		if save_file_data.area_data.level_data == null else \
 		Helper.getFofInfoID(LevelInfo, save_file_data.area_data.level_data.id).name)
-		LocationLabel.text = "LOCATION: " + str(area_info.world.world) + "- " + str(max(save_file_data.area_data.getEnteredMapLocationProgress(), 0))
+		LocationLabel.text = "LOCATION: " + str(area_info.world.world) + "-" + str(max(save_file_data.area_data.getEnteredMapLocationProgress(), 0))
 		
 		for card_data in save_file_data.deck:
 			var FofUIBox: Control = FofUIBoxPacked.instantiate()
@@ -65,5 +65,5 @@ func _on_start_button_pressed() -> void:
 func _on_quit_button_pressed() -> void:
 	queue_free()
 	
-func onMouseInUI(_state: bool) -> void:
-	pass
+func onMouseInUI(state: bool) -> void:
+	mouse_in_ui.emit(state)

@@ -19,6 +19,8 @@ signal mouse_in_ui
 @onready var ArchetypeDescriptionLabel: Label = %ArchetypeDescriptionLabel
 @onready var ArchetypePanel: PanelContainer = %ArchetypePanel
 
+@onready var CardNameLabel: Label = %CardNameLabel
+
 var Card: CardGD
 func setInfo(_Card: CardGD) -> void:
 	Card = _Card
@@ -26,6 +28,7 @@ func setInfo(_Card: CardGD) -> void:
 	CardUI.mouse_in_ui.connect(onMouseInUI)
 	CardUI.setBuffLabels()
 		
+	CardNameLabel.text = Card.info.name
 	FlavorTextLabel.text = Card.info.flavor_text
 	InspectSubviewport.setInfo(Card)
 	

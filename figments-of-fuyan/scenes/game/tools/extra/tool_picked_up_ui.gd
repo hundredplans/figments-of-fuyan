@@ -17,6 +17,8 @@ signal taken
 
 var Tool: ToolGD
 var save_file: SaveFileGD
+const TOOLBEL_SLOT_WIDTH: int = 120
+
 func setInfo(_Tool: ToolGD, _save_file: SaveFileGD, remove_dispose: bool = false) -> void:
 	Tool = _Tool
 	save_file = _save_file
@@ -30,6 +32,7 @@ func setInfo(_Tool: ToolGD, _save_file: SaveFileGD, remove_dispose: bool = false
 			var PanelButton: Control = PanelButtonPacked.instantiate()
 			PanelButton.label_settings = toolbelt_slots_label_settings
 			PanelButton.text = "+"
+			PanelButton.custom_minimum_size.x = TOOLBEL_SLOT_WIDTH
 			PanelButton.pressed.connect(onSlotPressed)
 			ToolbeltSlots.add_child(PanelButton)
 			continue

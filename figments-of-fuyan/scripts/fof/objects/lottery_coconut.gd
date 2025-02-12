@@ -25,14 +25,11 @@ func onIObject(action: Action) -> void:
 	var actions: Array = [ClearTileObjectAction.new(self)]
 	match stepped_on_choice:
 		"heal":
-			onHeal(action, actions)
+			if action.Card.isHealable(): onHeal(action, actions)
+			elif action.Card.getTool() == null: onMinitool(action, actions)
 		"minitool":
-			if action.Card.getTool() == null:
-				var id: int = range(8, 13).pick_random()
-				var Tool: ToolGD = SavedData.onLoadModel(Helper.getFofInfoID(ToolInfo, id).saved_data.new(id, true), action.Card)
-				actions.append(AddToolAction.new(action.Card, Tool))
-				onRemoveMoveAndAttackActions(action.Card)
-			else: onHeal(action, actions)
+			if action.Card.getTool() == null: onMinitool(action, actions)
+			elif action.Card.isHealable(): onHeal(action, actions)
 		"crab":
 			var Tile: TileGD = getRandomAdjacentTile()
 			if Tile != null:
@@ -45,6 +42,12 @@ func onIObject(action: Action) -> void:
 				return
 			else: onHeal(action, actions)
 	onPushAction(actions)
+
+func onMinitool(action: Action, actions) -> void:
+	var id: int = range(8, 13).pick_random()
+	var Tool: ToolGD = SavedData.onLoadModel(Helper.getFofInfoID(ToolInfo, id).saved_data.new(id, true), action.Card)
+	actions.append(AddToolAction.new(action.Card, Tool))
+	onRemoveMoveAndAttackActions(action.Card)
 
 func onHeal(action: Action, actions: Array) -> void:
 	actions.append(StatAction.new(StatInfo.new(action.Card, Game.Stats.HEALTH, 1)))
