@@ -23,6 +23,13 @@ extends Node
 
 @onready var MouseWheelDelayTimer: Timer = %MouseWheelDelayTimer
 @onready var LevelNameLabel: Label = %LevelNameLabel
+
+@onready var SettingsContainer: MarginContainer = %SettingsContainer
+@onready var EnemyMinSpawnLineEdit: LineEdit = %EnemyMinSpawnLineEdit
+@onready var EnemyMaxSpawnLineEdit: LineEdit = %EnemyMaxSpawnLineEdit
+@onready var ProgressMinLineEdit: LineEdit = %ProgressMinLineEdit
+@onready var ProgressMaxLineEdit: LineEdit = %ProgressMaxLineEdit
+@onready var BudgetOffsetLineEdit: LineEdit = %BudgetOffsetLineEdit
 #endregion
 #region Globals
 var is_camera_panning: bool = false
@@ -505,12 +512,17 @@ func onSaveLevel() -> void:
 			data.public_id = 0
 			loaded.data.append(data)
 
+		loaded.enemy_min_spawn_amount = int(EnemyMinSpawnLineEdit.text)
+		loaded.enemy_max_spawn_amount = int(EnemyMaxSpawnLineEdit.text)
+		loaded.progress_min = int(ProgressMinLineEdit.text)
+		loaded.progress_max = int(ProgressMaxLineEdit.text)
+		loaded.enemy_budget_offset = int(BudgetOffsetLineEdit.text)
+		
 		if level_name == loaded.name:
 			ResourceSaver.save(loaded)
 			return
 		
 		loaded.setInfo(level_name, AreaOptionButton.get_selected_id())
-		loaded.setSpawnPropertiesAutoValues(get_tree().get_nodes_in_group("TileObjectsGD"))
 		loaded.id = Helper.getFirstNonConsecutiveId(LevelInfo)
 		
 		loaded.gdscript = onFindScriptById()
@@ -545,6 +557,7 @@ func onLoadLevel(loaded_info: Variant) -> void:
 	SaveLineEdit.text = loaded.name
 	LevelNameLabel.text = loaded.name
 	
+	setSettings(loaded)
 	if loaded is LevelInfo:
 		var area_id: int = loaded.area_id
 		for idx in range(AreaOptionButton.item_count):
@@ -659,3 +672,22 @@ func _on_camera_3d_camera_changed_speed() -> void:
 
 func _on_mouse_wheel_delay_timer_timeout() -> void:
 	is_mouse_wheel_delayed = false
+
+#region Settings
+func _on_settings_button_pressed() -> void:
+	SettingsContainer.visible = !SettingsContainer.visible
+
+func setSettings(loaded: Variant) -> void:
+	if loaded is DecorationDatastore:
+		EnemyMinSpawnLineEdit.text = ""
+		EnemyMaxSpawnLineEdit.text = ""
+		ProgressMinLineEdit.text = ""
+		ProgressMaxLineEdit.text = ""
+		BudgetOffsetLineEdit.text = ""
+	elif loaded is LevelInfo:
+		EnemyMinSpawnLineEdit.text = str(loaded.enemy_min_spawn_amount)
+		EnemyMaxSpawnLineEdit.text = str(loaded.enemy_max_spawn_amount)
+		ProgressMinLineEdit.text = str(loaded.progress_min)
+		ProgressMaxLineEdit.text = str(loaded.progress_max)
+		BudgetOffsetLineEdit.text = str(loaded.enemy_budget_offset)
+#endregion
