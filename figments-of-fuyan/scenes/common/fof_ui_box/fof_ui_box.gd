@@ -7,13 +7,16 @@ signal mouse_in_ui
 @onready var ToolIconRect: Control = %ToolIconRect
 
 var data: SavedData
-func setInfo(_data: SavedData) -> void:
+func setInfo(_data: SavedData, show_tool_icon: bool = false) -> void:
 	data = _data
 	var info: FofInfo = Helper.getFofInfoID(data.getInfoType(), data.id)
 	MainTexture.texture = info.getIcon()
 	MainPanel.theme_type_variation = Game.getRarityThemeVariation(info.rarity, data.ascended)
 	
-	if data is SavedDataCard: ToolIconRect.visible = data.tool_data != null
+	if data is SavedDataCard:
+		ToolIconRect.visible = data.tool_data != null
+		if show_tool_icon and ToolIconRect.visible:
+			ToolIconRect.texture = Helper.getFofInfoID(ToolInfo, data.tool_data.id).getIcon()
 	
 var is_mouse_in_ui: bool
 func onMouseInUI(state: bool) -> void:

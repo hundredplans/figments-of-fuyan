@@ -1,5 +1,6 @@
 extends CardGD
 
+const HELPFUL_HELMET_FIELD_EFFECT_ID: int = 5
 const MINIMUM_HEALTH_TO_USE_HELPFUL_HELMET_AI: int = 3
 
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
@@ -16,10 +17,8 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 	super(active_effect, PickedTile, active_effect_tiles)
 	if active_effect is ActiveAbilityDatastore and active_effect.name == "Helpful Helmet":
 		var Card: CardGD = Game.getFieldCard(PickedTile)
-		var actions: Array = [DestroyAction.new(self, self)]
-		
-		var HelpfulHelmet: FieldEffectGD = SavedData.onLoadModel(SavedDataFieldEffect.new(5, true), Card)
-		Card.onAddFieldEffect(HelpfulHelmet, Card)
+		var field_effect_data := SavedDataFieldEffect.new(HELPFUL_HELMET_FIELD_EFFECT_ID, true)
+		var actions: Array = [DestroyAction.new(self, self), AddFieldEffectAction.new(SavedData.onLoadModel(field_effect_data, Card))]
 		
 		if ascended:
 			actions.append(StatAction.new(StatInfo.new(Card, Game.Stats.MAX_HEALTH, 1)))

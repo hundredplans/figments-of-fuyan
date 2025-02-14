@@ -1,6 +1,8 @@
 extends CardGD
 
 var swingus_field_effect_public_id: int
+const SWINGUS_ON_HIT_FIELD_EFFECT_ID: int = 8
+
 func onProcessAction(action: Action) -> void:
 	super(action)
 	if action.post:
@@ -16,18 +18,18 @@ func onHit(_damage_action: DamageAction, _attack_action: AttackAction) -> void:
 		setIdleAbility(true)
 		setAttackAbility(true)
 		
-		swingus_field_effect_public_id = onAddBaseFieldEffect(8, self).public_id
+		swingus_field_effect_public_id = onCreateBaseFieldEffect(SWINGUS_ON_HIT_FIELD_EFFECT_ID).public_id
 		return
 		
 	setIdleAbility(false)
 	setAttackAbility(false)
-	onRemoveFieldEffect(Game.onFindPublicIDObject(swingus_field_effect_public_id))
+
+	var actions: Array = [
+		StatAction.new([StatInfo.new(self, [Game.Stats.ATTACK, Game.Stats.MAX_HEALTH], [1, 1])]),
+		RemoveFieldEffectAction.new(Game.onFindPublicIDObject(swingus_field_effect_public_id))]
+		
 	swingus_field_effect_public_id = 0
-	onPushAction(
-		StatAction.new([
-			StatInfo.new(self, [Game.Stats.ATTACK, Game.Stats.MAX_HEALTH], [1, 1])
-		])
-	)
+	onPushAction(actions)
 	
 func getDescription() -> String:
 	return super()

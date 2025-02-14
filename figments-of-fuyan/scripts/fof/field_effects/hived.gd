@@ -15,7 +15,7 @@ func onCardTurnPassed() -> void:
 	two_turn_amount = 0
 	
 	if one_turn_amount == 0 and two_turn_amount == 0:
-		onRemoveFromCard()
+		onPushAction(RemoveFieldEffectAction.new(self))
 
 func onSave() -> SavedData:
 	ability_save['one_turn_amount'] = one_turn_amount

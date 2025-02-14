@@ -1,5 +1,6 @@
 extends CardGD
 
+const CHARMING_STANCE_FIELD_EFFECT_ID: int = 3
 const GUARANTEED_CHARMING_STANCE_UNIT_AMOUNT_AI: int = 2
 const SINGLE_UNIT_CHANCE: float = 0.1
 
@@ -38,8 +39,8 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		var actions: Array = [StatAction.new(
 			cards.map(func(x: CardGD): return StatInfo.new(x, Game.Stats.HEALTH, 1)))]
 		
-		for Card in cards.filter(func(x: CardGD): return x not in valid_cards):
-			Card.onAddBaseFieldEffect(3, self)
+		for Card: CardGD in cards.filter(func(x: CardGD): return x not in valid_cards):
+			Card.onCreateBaseFieldEffect(CHARMING_STANCE_FIELD_EFFECT_ID, -1, -1, self)
 			valid_cards.append(Card)
 			
 		onPushAction(actions)

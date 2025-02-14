@@ -16,8 +16,8 @@ page_title = "AcceptAcornPage"
 [sub_resource type="Resource" id="Resource_5qqda"]
 script = ExtResource("3_72rs7")
 name = "Sleight of Hand"
-description = "Pay 12 SH to gain a random Common Tool"
-requirement = "12 SH & [card=7]"
+description = "Gain a random Common Tool"
+requirement = "[card=7]"
 page_title = "SleightOfHandPage"
 
 [sub_resource type="Resource" id="Resource_aml60"]
@@ -42,7 +42,7 @@ options = Array[ExtResource("3_72rs7")]([])
 [sub_resource type="Resource" id="Resource_jj6mq"]
 script = ExtResource("2_1iy87")
 title = "SleightOfHandPage"
-description = "With your Sellus Palmus's help you replace his acorn with another one of his goods and pay for it."
+description = "While your Sellus Palmus distracts the merchant with a discussion about the price of acorns, you sneakily take one of his wares and skulk away."
 options = Array[ExtResource("3_72rs7")]([])
 
 [sub_resource type="Resource" id="Resource_1qo5e"]

@@ -33,6 +33,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level = area.active_level
 	
 	setEnvironment()
+	add_child(area.info.default_light.instantiate())
 	
 	level.phase_changed.connect(onPhaseChanged)
 	level.awakened.connect(onCardAwakened)

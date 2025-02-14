@@ -1,5 +1,7 @@
 extends CardGD
 
+const QUENTIN_BULLETS_FIELD_EFFECT_ID: int = 11
+
 var bullets: int
 var quentins_bullets_public_id: int
 # -> +1 hp
@@ -19,10 +21,7 @@ func onProcessAction(action: Action):
 			action.onFailAction()
 	elif action.post:
 		if action is AwakenAction and action.Card == self:
-			var FieldEffect: FieldEffectGD = SavedData.onLoadModel(SavedDataFieldEffect.new(11, true), self)
-			quentins_bullets_public_id = FieldEffect.public_id
-			action.Card.onAddFieldEffect(FieldEffect, self)
-			FieldEffect.setCharges(bullets)
+			quentins_bullets_public_id = onCreateBaseFieldEffect(QUENTIN_BULLETS_FIELD_EFFECT_ID, bullets).public_id
 	
 	if isValidOnHit(action):
 		onPushAction(OnHitAction.new(self, action))

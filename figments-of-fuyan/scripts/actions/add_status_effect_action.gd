@@ -8,6 +8,7 @@ func _init(_StatusEffect: StatusEffectGD = null) -> void:
 
 func onPostAction() -> void:
 	StatusEffect.Card.onAddStatusEffect(StatusEffect)
+	StatusEffect.onStatusEffectAdded(self)
 
 func getLogInfo() -> Array:
 	return ["StatusEffect: " + StatusEffect.info.name, "Turns: " + str(StatusEffect.turns)]

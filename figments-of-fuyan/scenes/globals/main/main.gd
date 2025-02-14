@@ -93,6 +93,7 @@ func onLoadGame(save_file_data: SavedDataSaveFile) -> void:
 	
 	save_file.load_level.connect(onLoadLevel)
 	save_file.load_map.connect(onLoadMap)
+	save_file.load_main_menu.connect(onLoadMainMenu)
 	save_file.exit_save.connect(onExitSaveFile)
 	save_file.onLoadGame()
 	
@@ -111,6 +112,10 @@ func onLoadMap(save_file: SaveFileGD, area: AreaGD) -> void:
 	scenes.ui.setInfo(save_file)
 	scenes.world.setInfo(save_file)
 	area.onLoadMapAfterScenes()
+	
+func onLoadMainMenu() -> void:
+	var scenes: Dictionary = onLoadScreenWorld(main_menu_ui, main_menu_world)
+	for child in KeepAcross.get_children(): child.queue_free()
 	
 func onExitSaveFile() -> void:
 	for child in KeepAcross.get_children(): child.queue_free()

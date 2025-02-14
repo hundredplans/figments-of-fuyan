@@ -1,6 +1,8 @@
 extends CardGD
 
 var affected_cards: Array = []
+const PALMFESSORS_STUDENT_ID: int = 6
+
 func onProcessAction(action: Action) -> void:
 	super(action)
 	if action.post:
@@ -21,7 +23,7 @@ func getAttackBuff() -> int:
 	
 func onAddToAura(Card: CardGD) -> void:
 	if Card != self:
-		Card.onAddBaseFieldEffect(6, self)
+		Card.onCreateBaseFieldEffect(PALMFESSORS_STUDENT_ID, -1, -1, self)
 		affected_cards.append(Card)
 		onPushAction(StatAction.new(StatInfo.new(Card, Game.Stats.ATTACK, getAttackBuff(), 0, false, true, true)))
 	

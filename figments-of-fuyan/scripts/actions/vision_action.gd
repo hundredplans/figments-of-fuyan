@@ -15,9 +15,12 @@ func _init(_cards: Variant = null, _ExplorerCard: CardGD = null) -> void:
 	
 func onPreAction() -> void:
 	old_team_vision = Game.getLevel().old_player_vision.duplicate()
-	
 	for Card in cards:
 		old_visible_game_objects[Card] = Card.getVisibleGameObjects()
+		
+		if owner is OccupyAction: # Needs to be here
+			Card.onTileOccupiedIsInVision(owner.Tile, owner.PreviousTile, owner.Card)
+			
 		Card.onUpdateVision()
 		new_visible_game_objects[Card] = Card.getVisibleGameObjects()
 	

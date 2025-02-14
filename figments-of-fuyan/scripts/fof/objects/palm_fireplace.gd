@@ -6,6 +6,8 @@ var was_extinguished: bool
 var was_fuel_added: bool
 var cards_in_range: Array
 
+const PALM_FIREPLACE_FIELD_EFFECT_ID: int = 7
+
 func onProcessAction(action: Action) -> void:
 	super(action)
 	if action.post:
@@ -61,8 +63,7 @@ func onActiveEffectPre(active_effect: ActiveEffectDatastore, _PickedTile: TileGD
 	onForceAction(ChangeTileRotationAction.new(Card, Game.getRelativeTileRotation(Card.getTile(), getTile())))
 		
 func onAddFieldEffect(Card: CardGD) -> void:
-	var FieldEffect: FieldEffectGD = SavedData.onLoadModel(SavedDataFieldEffect.new(7, true), Card)
-	Card.onAddFieldEffect(FieldEffect, self)
+	Card.onCreateBaseFieldEffect(PALM_FIREPLACE_FIELD_EFFECT_ID)
 	cards_in_range.append(Card)
 	
 func onRemoveFieldEffect(Card: CardGD) -> void:

@@ -34,6 +34,7 @@ extends Node3D
 @export var red_top_material: Material
 
 @export var top_base_material: Material
+@export var black_outline_material: Material
 @export_group("")
 
 @export_group("Number Particles")
@@ -81,7 +82,7 @@ func setInfo(_Card: CardGD) -> void:
 	Card = _Card
 	Card.tool_added.connect(onToolAdded)
 	position.y = Card.info.stat
-	NumbersParticleManager.global_position.y = Card.info.top / 2.0
+	NumbersParticleManager.global_position.y = Card.position.y + (Card.info.top / 2.0)
 	
 	onResetStats()
 	onUpdateTraits()
@@ -120,12 +121,17 @@ func onCreateStat(spot: Node3D, value: int, above_green_value: int, below_red_va
 	numbers = numbers.map(func(x: int): return number_to_model[x].instantiate())
 	
 	var mat: Material = white_material if !is_spectated else white_top_material
+	#var mat: Material = black_outline_material
 	if value < below_red_value: mat = red_material if !is_spectated else red_top_material
 	elif value > above_green_value: mat = green_material if !is_spectated else green_top_material
 	
 	for NumberModel in numbers:
 		spot.add_child(NumberModel)
-		Helper.getNodeTypeRecursive(NumberModel, MeshInstance3D)[0].set_surface_override_material(0, mat)
+		var number_mesh: MeshInstance3D = Helper.getNodeTypeRecursive(NumberModel, MeshInstance3D)[0]
+		number_mesh.set_surface_override_material(0, mat)
+		
+		#if number_mesh.get_surface_override_material_count() > 1:
+			#number_mesh.set_surface_override_material(1, black_outline_material)
 	
 	spot.scale = Vector3.ONE if numbers.size() == 1 else Vector3(0.75, 0.75, 0.75)
 	if numbers.size() == 2:

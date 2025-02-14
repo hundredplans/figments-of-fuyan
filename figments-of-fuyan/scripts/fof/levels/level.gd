@@ -3,6 +3,7 @@ class_name LevelGD extends FofGD
 const START_HAND_SIZE: int = 4
 const AI_TURNS_UNTIL_ADVENTURER: int = 10
 const CARD_PLACED_SPECTATE_DELAY: float = 1.0
+const DRAW_BELOW_HAND_SIZE: int = 4
 
 var energy: int
 var max_energy: int
@@ -182,6 +183,8 @@ func onChangePhase(_phase: Game.Phases, instant: bool = false) -> void:
 	
 	match phase:
 		Game.Phases.HAND:
+			if get_tree().get_node_count_in_group("HandCardsGD") < DRAW_BELOW_HAND_SIZE:
+				onForceAction(DrawAction.new())
 			onCheckSkipHandPhase()
 		Game.Phases.AI: onAppendAction(AITurnStartAction.new(1))
 		Game.Phases.NEUTRAL: onAppendAction(AITurnStartAction.new(2))

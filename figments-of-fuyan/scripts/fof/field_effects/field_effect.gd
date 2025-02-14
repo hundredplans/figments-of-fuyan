@@ -6,6 +6,19 @@ var Card: CardGD
 var FofObject: FofGD # Equivalent to owner
 var ability_save: Dictionary
 var charges: int = -1
+var turns: int = -1
+
+func onProcessAction(action: Action) -> void:
+	super(action)
+	if action.post:
+		if action is ChangeTurnStateAction:
+			if action.turn_state == Game.TurnStates.PASSED and action.Card == Card and turns > 0:
+				turns -= 1
+				if turns == 0:
+					onPushAction(RemoveFieldEffectAction.new(self))
+			
+		elif action is DeathAction and action.Defender == Card:
+			onPushAction(RemoveFieldEffectAction.new(self))
 
 func getDescription() -> String:
 	match info.ascended_type:
@@ -19,7 +32,7 @@ func getIcon() -> Texture2D:
 	return info.icon
 	
 func onSave() -> SavedData:
-	return SavedDataFieldEffect.new(info.id, false, public_id, FofObject.public_id, charges, ability_save)
+	return SavedDataFieldEffect.new(info.id, false, public_id, FofObject.public_id, charges, turns, ability_save)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -33,7 +46,7 @@ func onLoadData(data: SavedData) -> void:
 		
 	setCharges(data.charges)
 		
-func onRemoveFromCard() -> void: # Removes field effect from the card
+func onRemoveFromCard() -> void: # Removes field effect from the card, interface using RemoveFieldEffectAction
 	Card.onRemoveFieldEffect(self)
 	
 func setCharges(_charges: int) -> void:

@@ -36,6 +36,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	area = save_file.area
 	
 	area.init_load.connect(onInitLoad)
+	add_child(area.info.default_light.instantiate())
 	
 	var Card: CardGD = save_file.getChampionCard()
 	MapCard = Card

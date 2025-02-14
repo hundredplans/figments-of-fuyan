@@ -21,7 +21,7 @@ func onBoon(_action: DeathAction):
 		var field_effect: FieldEffectGD = Card.getFirstFieldEffect(HIVE_FIELD_EFFECT_ID)
 		if field_effect != null: field_effect.onIncrementTwoTurnAmount()
 		else:
-			field_effect = Card.onAddBaseFieldEffect(HIVE_FIELD_EFFECT_ID, Card)
+			field_effect = Card.onCreateBaseFieldEffect(HIVE_FIELD_EFFECT_ID)
 			field_effect.onIncrementTwoTurnAmount()
 			
 func onBoonAdded():

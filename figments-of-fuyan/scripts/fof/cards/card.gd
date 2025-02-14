@@ -200,7 +200,7 @@ func onIdleRare() -> void:
 	onPlayAnimation("IdleRare")
 	
 func isWalking() -> bool:
-	return AniPlayer.current_animation.begins_with("Walk")
+	return isAlive() and AniPlayer.current_animation.begins_with("Walk")
 	
 func onPauseAnimation(state: bool = true) -> void:
 	if state: AniPlayer.pause()
@@ -703,7 +703,7 @@ func onTileOccupiedIsInVision(OccupiedTile: TileGD, PreviousTile: TileGD, Card: 
 	var new_tile_in_vision: bool = OccupiedTile != null and OccupiedTile in getVisibleGameObjects()
 	
 	if OccupiedTile != null: visibles[OccupiedTile].setByUnit(new_tile_in_vision)
-	if Card != null: visibles[Card].setByTile(new_tile_in_vision)
+	if Card != null and Card.isAlive(): visibles[Card].setByTile(new_tile_in_vision)
 	
 func inEnemyVision() -> bool:
 	return Game.getEnemyUnits(team).any(func(x: CardGD): return self in x.getVisibleFieldCardsEnemies())
@@ -1003,47 +1003,6 @@ func getPickableTiles(active_effect: ActiveEffectDatastore) -> Array:
 	return active_effect.pickable_tiles if active_effect != null else []
 #endregion
 
-#region Status Effects
-func onRemoveStatusEffect(status_effect: StatusEffectGD) -> void:
-	status_effects.erase(status_effect)
-	if FieldInfo != null: FieldInfo.onRemoveIcon(status_effect)
-	
-func onAddStatusEffect(status_effect: StatusEffectGD) -> void:
-	status_effects.append(status_effect)
-	status_effect.Card = self
-	if FieldInfo != null: FieldInfo.onAddIcon(status_effect)
-	
-func onCreateBaseStatusEffect(id: int, turns: int = 1) -> void:
-	var status_data := SavedDataStatusEffect.new(id, true, 0, turns)
-	var status_effect: StatusEffectGD = SavedData.onLoadModel(status_data, self)
-	status_effect.Card = self
-	onPushAction(AddStatusEffectAction.new(status_effect))
-	
-func getBaseStatusEffectAction(id: int, turns: int = 1) -> AddStatusEffectAction:
-	var status_data := SavedDataStatusEffect.new(id, true, 0, turns)
-	var status_effect: StatusEffectGD = SavedData.onLoadModel(status_data, self)
-	status_effect.Card = self
-	return AddStatusEffectAction.new(status_effect)
-	
-func onStun(turns: int = 1) -> void:
-	onCreateBaseStatusEffect(4, turns)
-	onCreateBaseStatusEffect(5, turns)
-	
-func isInvisible() -> bool:
-	return status_effects.any(func(x: StatusEffectGD): return x.info.id == 2)
-	
-func isNotInvisibleOrIsAdjacent(_Tile: TileGD) -> bool:
-	return !isInvisible() or Game.isAdjacent(_Tile, Tile)
-	
-func isBlind() -> bool:
-	return status_effects.any(func(x: StatusEffectGD): return x.info.id == 1)
-	
-func getStatusEffect(id: int) -> StatusEffectGD:
-	for status_effect: StatusEffectGD in status_effects:
-		if status_effect.info.id == id: return status_effect
-	return null
-#endregion
-
 #region Advance Turn
 func onAdvanceTurn(turn_team: int) -> void:
 	super(turn_team)
@@ -1108,16 +1067,19 @@ func isInjured() -> bool:
 #endregion
 
 #region Field Effect
-func onAddFieldEffect(FieldEffect: FieldEffectGD, FofObject: FofGD = null) -> void:
-	if FofObject != null: FieldEffect.FofObject = FofObject
+func onAddFieldEffect(FieldEffect: FieldEffectGD) -> void:
 	field_effects.append(FieldEffect)
-	if FieldInfo != null: FieldInfo.onAddIcon(FieldEffect)
-	FieldEffect.Card = self
-	FieldEffect.onFieldEffectAdded()
+	if FieldInfo != null:
+		FieldInfo.onAddIcon(FieldEffect)
 	
-func onAddBaseFieldEffect(id: int, FofObject: FofGD = null) -> FieldEffectGD:
-	var FieldEffect: FieldEffectGD = SavedData.onLoadModel(SavedDataFieldEffect.new(id, true), self)
-	onAddFieldEffect(FieldEffect, FofObject)
+func onCreateBaseFieldEffect(id: int, charges: int = -1, turns: int = -1, FofObject: FofGD = self) -> FieldEffectGD:
+	var field_effect_data: SavedDataFieldEffect = SavedDataFieldEffect.new(id, true)
+	field_effect_data.charges = charges
+	field_effect_data.turns = turns
+	
+	var FieldEffect: FieldEffectGD = SavedData.onLoadModel(field_effect_data, self)
+	FieldEffect.Card = self
+	onPushAction(AddFieldEffectAction.new(FieldEffect, FofObject))
 	return FieldEffect
 	
 func onRemoveFieldEffect(FieldEffect: FieldEffectGD) -> void:
@@ -1127,8 +1089,8 @@ func onRemoveFieldEffect(FieldEffect: FieldEffectGD) -> void:
 	FieldEffect.onClear()
 	
 func onRemoveFieldEffectsByOwner(FofObject: FofGD) -> void:
-	for FieldEffect in onFindFieldEffectsByOwner(FofObject):
-		onRemoveFieldEffect(FieldEffect)
+	var actions: Array = onFindFieldEffectsByOwner(FofObject).map(func(x: FieldEffectGD): return RemoveFieldEffectAction.new(x))
+	onPushAction(actions)
 	
 func onFindFieldEffectsByOwner(FofObject: FofGD) -> Array:
 	return field_effects.filter(func(x: FieldEffectGD): return x.FofObject == FofObject)
@@ -1136,6 +1098,48 @@ func onFindFieldEffectsByOwner(FofObject: FofGD) -> Array:
 func getFirstFieldEffect(id: int) -> FieldEffectGD:
 	for FieldEffect: FieldEffectGD in field_effects:
 		if FieldEffect.info.id == id: return FieldEffect
+	return null
+#endregion
+
+#region Status Effects
+func onRemoveStatusEffect(status_effect: StatusEffectGD) -> void: # Access via action
+	status_effects.erase(status_effect)
+	if FieldInfo != null: FieldInfo.onRemoveIcon(status_effect)
+	
+func onAddStatusEffect(status_effect: StatusEffectGD) -> void: # Access via action
+	status_effects.append(status_effect)
+	status_effect.Card = self
+	if FieldInfo != null:
+		FieldInfo.onAddIcon(status_effect)
+	
+func onCreateBaseStatusEffect(id: int, turns: int = 1) -> void:
+	var status_data := SavedDataStatusEffect.new(id, true, 0, turns)
+	var status_effect: StatusEffectGD = SavedData.onLoadModel(status_data, self)
+	status_effect.Card = self
+	onPushAction(AddStatusEffectAction.new(status_effect))
+	
+func getBaseStatusEffectAction(id: int, turns: int = 1) -> AddStatusEffectAction:
+	var status_data := SavedDataStatusEffect.new(id, true, 0, turns)
+	var status_effect: StatusEffectGD = SavedData.onLoadModel(status_data, self)
+	status_effect.Card = self
+	return AddStatusEffectAction.new(status_effect)
+	
+func onStun(turns: int = 1) -> void:
+	onCreateBaseStatusEffect(4, turns)
+	onCreateBaseStatusEffect(5, turns)
+	
+func isInvisible() -> bool:
+	return status_effects.any(func(x: StatusEffectGD): return x.info.id == 2)
+	
+func isNotInvisibleOrIsAdjacent(_Tile: TileGD) -> bool:
+	return !isInvisible() or Game.isAdjacent(_Tile, Tile)
+	
+func isBlind() -> bool:
+	return status_effects.any(func(x: StatusEffectGD): return x.info.id == 1)
+	
+func getStatusEffect(id: int) -> StatusEffectGD:
+	for status_effect: StatusEffectGD in status_effects:
+		if status_effect.info.id == id: return status_effect
 	return null
 #endregion
 
@@ -1373,6 +1377,9 @@ func onReset(override: bool = false) -> void: # Override for when level ends
 	ability_save = {}
 	turn_state = Game.TurnStates.NULL
 	vision_datastore = VisionDatastoreCard.new()
+	
+	if Tool != null and Tool.info.rarity == Game.Rarities.MINI:
+		onRemoveTool()
 	
 	ai_datastore.onReset()
 	Tile = null

@@ -571,8 +571,13 @@ func onLoadLevel(loaded_info: Variant) -> void:
 	for data in loaded.data:
 		SavedData.onLoadModel(data, World)
 	
+var DefaultLight: DirectionalLight3D
 func onAreaOptionButtonSelected(_index: int = 0) -> void:
 	selected_area_id = AreaOptionButton.get_selected_id()
+	
+	if DefaultLight != null: DefaultLight.queue_free()
+	DefaultLight = Helper.getFofInfoID(AreaInfo, selected_area_id).default_light.instantiate()
+	World.add_child(DefaultLight)
 	
 func onFindLevelByName(level_name: String) -> LevelInfo:
 	for level in Helper.getFofInfoArray(LevelInfo):

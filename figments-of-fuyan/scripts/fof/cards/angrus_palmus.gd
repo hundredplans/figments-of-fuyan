@@ -1,5 +1,6 @@
 extends CardGD
 
+const ANGRUS_RAMPAGE_ID: int = 2
 var field_effect_public_id: int = 0
 func onProcessAction(action: Action) -> void:
 	super(action)
@@ -12,8 +13,7 @@ func getDescription() -> String:
 	return super()
 	
 func onRampage(_death_action: DeathAction) -> void:
-	var FieldEffect: FieldEffectGD = onAddBaseFieldEffect(2, self)
-	field_effect_public_id = FieldEffect.public_id
+	field_effect_public_id = onCreateBaseFieldEffect(ANGRUS_RAMPAGE_ID).public_id
 	
 	onAbility()
 	setIdleAbility(true)
@@ -24,7 +24,7 @@ func onHealed(action: StatAction) -> void:
 			if stat_info.types[i] == Game.Stats.HEALTH and stat_info.values[i] > 0:
 				stat_info.values[i] *= (2 if !ascended else 99)
 	
-	onRemoveFieldEffect(Game.onFindPublicIDObject(field_effect_public_id))
+	onPushAction(RemoveFieldEffectAction.new(Game.onFindPublicIDObject(field_effect_public_id)))
 	setIdleAbility(false)
 	field_effect_public_id = 0
 

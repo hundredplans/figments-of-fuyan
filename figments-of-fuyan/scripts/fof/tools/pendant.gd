@@ -9,6 +9,9 @@ func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectT
 		var pickable_tiles: Array = ([Card.Tile] if info.id != 1 or Card.isHealable() else [])
 		return ActiveEffectTiles.new([Card.Tile], pickable_tiles)
 	return null
+	
+func getActiveEffectDisabled(_active_effect: ActiveEffectDatastore) -> bool:
+	return info.id == 1 and !Card.isHealable()
 
 func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
 	super(active_effect, PickedTile, active_effect_tiles)

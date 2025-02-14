@@ -52,7 +52,7 @@ func _ready() -> void:
 		for card_data in save_file_data.deck:
 			var FofUIBox: Control = FofUIBoxPacked.instantiate()
 			CardContainer.add_child(FofUIBox)
-			FofUIBox.setInfo(card_data)
+			FofUIBox.setInfo(card_data, true)
 		
 		for boon_data in save_file_data.boons:
 			var FofUIBox: Control = FofUIBoxPacked.instantiate()

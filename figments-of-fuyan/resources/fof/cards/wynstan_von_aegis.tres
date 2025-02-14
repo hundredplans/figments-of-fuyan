@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=11 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_s5ofe"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_1oyp4"]
 [ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/wynstan_von_aegis.png" id="2_2gnrq"]
 [ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/wynstan_von_aegis.png" id="2_ji40p"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/brute.tres" id="2_sedhf"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_o3jov"]
 [ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_di4ay"]
 [ext_resource type="PackedScene" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_y2el2"]
@@ -43,14 +44,15 @@ art_pop = ExtResource("2_2gnrq")
 model = ExtResource("5_y2el2")
 points = [Vector3(0.136382, 1.38799, -0.25293), Vector3(-0.149831, 1.3978, -0.25293), Vector3(0.184447, 1.07484, -0.25293), Vector3(-0.199463, 1.09244, -0.25293), Vector3(0.0205718, 1.80753, -0.25293), Vector3(0.000764989, 0.787427, -0.25293), Vector3(0.138302, 0.452581, -0.25293), Vector3(-0.163161, 0.451389, -0.25293), Vector3(-0.00559452, 1.82542, 0.274048), Vector3(-0.137705, 1.47483, 0.274048), Vector3(0.150202, 1.49088, 0.274048), Vector3(0.15502, 1.15623, 0.274048), Vector3(-0.137258, 1.18364, 0.274048), Vector3(0.00930688, 0.785355, 0.274048), Vector3(-0.161626, 0.424052, 0.274048), Vector3(0.186096, 0.414073, 0.274048), Vector3(0.340027, 1.80814, 0.0492667), Vector3(0.340027, 1.35601, -0.00736688), Vector3(0.340027, 0.892121, 0.016009), Vector3(0.340027, 0.408994, 0.0462698), Vector3(-0.32312, 0.416334, 0.0431835), Vector3(-0.32312, 0.916279, -0.00713519), Vector3(-0.32312, 1.19264, -0.018978), Vector3(-0.32312, 1.79059, 0.00938033)]
 collision_shape = SubResource("PackedScene_d6dgo")
-stat = 0.0
-top = 0.0
-eye = 0.0
+stat = 1.947
+top = 2.058
+eye = 1.788
 plus_attack = 0
 plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("2_1oyp4")]([])
+archetype = ExtResource("2_sedhf")
 id = 60
 name = "Wynstan von Aegis"
 gdscript = ExtResource("4_di4ay")

@@ -36,6 +36,10 @@ func _ready() -> void:
 	BackgroundDarkener.visible = false
 	ToolBeltSlotOne.visible = false
 	ToolBeltSlotTwo.visible = false
+	
+func _process(_delta: float) -> void:
+	if Input.is_action_just_pressed("Back"):
+		Game.getSaveFile().onLoadMainMenu()
 
 func setInfo(_save_file: SaveFileGD) -> void:
 	save_file = _save_file

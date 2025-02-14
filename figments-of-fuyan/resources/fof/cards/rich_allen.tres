@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=11 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_omyjs"]
 [ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/rich_allen.png" id="2_0tq5m"]
 [ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/rich_allen.png" id="2_5cb6l"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/brute.tres" id="2_hdhgo"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_0743c"]
 [ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_sjeqx"]
 [ext_resource type="PackedScene" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_s81mi"]
@@ -43,14 +44,15 @@ art_pop = ExtResource("2_5cb6l")
 model = ExtResource("5_s81mi")
 points = [Vector3(-0.1809, 0.992897, 0.114898), Vector3(0.168124, 0.99905, 0.114898), Vector3(-0.14811, 1.3093, 0.114898), Vector3(0.195476, 1.31675, 0.114898), Vector3(0.0178196, 1.53801, 0.114898), Vector3(-0.00111114, 1.82532, 0.114898), Vector3(-0.174048, 0.6379, 0.114898), Vector3(0.215151, 0.605359, 0.114898), Vector3(-0.2351, 0.352159, 0.114898), Vector3(0.2025, 0.339379, 0.114898), Vector3(-0.186763, 0.0278029, 0.114898), Vector3(0.212882, 0.0438803, 0.114898), Vector3(0.228725, 0.147837, -0.127044), Vector3(-0.226926, 0.18563, -0.127044), Vector3(-0.203473, 0.613974, -0.127044), Vector3(0.199353, 0.67229, -0.127044), Vector3(0.123007, 0.904933, -0.127044), Vector3(-0.125983, 0.916082, -0.127044), Vector3(0.144845, 1.16976, -0.127044), Vector3(-0.0941492, 1.2066, -0.127044), Vector3(0.199255, 1.38336, -0.127044), Vector3(-0.152057, 1.36613, -0.127044), Vector3(0.00239274, 1.54682, -0.127044), Vector3(-0.00490278, 1.78592, -0.127044), Vector3(0.307861, 0.375614, 0.0182745), Vector3(0.307861, 0.862576, 0.000756719), Vector3(0.307861, 1.25218, 0.00725218), Vector3(0.307861, 1.64758, -0.00811803), Vector3(-0.303223, 0.220603, 0.00765105), Vector3(-0.303223, 0.780136, 0.0145246), Vector3(-0.303223, 1.20626, -0.0164034), Vector3(-0.303223, 1.54691, 0.0288335)]
 collision_shape = SubResource("PackedScene_1xbhj")
-stat = 0.0
-top = 0.0
-eye = 0.0
+stat = 2.01124
+top = 1.86689
+eye = 1.642
 plus_attack = 0
 plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("3_0743c")]([])
+archetype = ExtResource("2_hdhgo")
 id = 34
 name = "Rich Allen"
 gdscript = ExtResource("4_sjeqx")

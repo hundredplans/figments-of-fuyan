@@ -122,6 +122,9 @@ func _process(_delta: float) -> void:
 func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("HideUI") and !level.isGameEnded():
 		onHideUI(!visible)
+	
+	elif Input.is_action_just_pressed("Back"):
+		Game.getSaveFile().onLoadMainMenu()
 #endregion
 
 #region Action Lock / Mouse In UI

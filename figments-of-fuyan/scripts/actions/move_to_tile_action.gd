@@ -50,7 +50,7 @@ func onPostAction() -> void:
 	var actions: Array = [OccupyAction.new(Card, DestinationTile, false),\
 	StatAction.new(StatInfo.new(Card, Game.Stats.SPEED, -1, 0, false, false, true))]
 	
-	var fall_damage: int = DestinationTile.getFallDamage(Card.Tile)
-	if fall_damage > 0: actions.append(FallDamageAction.new(Card, DestinationTile))
+	var fall_damage: int = Card.Tile.getFallDamage(DestinationTile)
+	if fall_damage > 0: actions.append(FallDamageAction.new(Card, Card.Tile, DestinationTile))
 	
 	onPushAction(actions)

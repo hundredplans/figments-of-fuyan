@@ -7,6 +7,7 @@ func setInfo() -> void:
 	for GameObject in (Game.get_tree().get_nodes_in_group("LevelTileObjectsGD") + Game.get_tree().get_nodes_in_group("FieldCardsGD"))\
 	.filter(func(x: GameObjectGD): return !x.is_queued_for_deletion()):
 		onAddVisibleGameObject(GameObject)
+		
 func onSave() -> void:
 	visibles_public_ids = {}
 	for GameObject in visibles.keys():
@@ -22,10 +23,6 @@ func onLoad() -> void:
 
 #region Getters
 func getVisibleGameObjects() -> Array:
-	for key in visibles.keys():
-		if key is not GameObjectGD:
-			pass
-	
 	return visibles.keys().filter(func(x: GameObjectGD): return visibles[x].isVisibleToUnit())
 	
 func getCardVisibles() -> Dictionary: # For debug can remove later

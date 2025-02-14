@@ -1,12 +1,13 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=11 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://cyexuw0cym2hu"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_t7upv"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/johnny_puff.png" id="2_6clkg"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/johnny_puff.png" id="2_b5h5h"]
+[ext_resource type="Image" uid="uid://dvwjjl6lg0m0q" path="res://assets/sprites/game/cards/art_pop/johnny_puff.png" id="2_6clkg"]
+[ext_resource type="Texture2D" uid="uid://qy1bndwks6wf" path="res://assets/sprites/game/cards/art_mini/johnny_puff.png" id="2_b5h5h"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_lnrfj"]
+[ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_tiif2"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_dfw6u"]
 [ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_chdj4"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_wxma1"]
+[ext_resource type="PackedScene" uid="uid://bd2esqpmo73tk" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_wxma1"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_3anc3"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
@@ -43,14 +44,15 @@ art_pop = ExtResource("2_6clkg")
 model = ExtResource("5_wxma1")
 points = [Vector3(0.136382, 1.38799, -0.25293), Vector3(-0.149831, 1.3978, -0.25293), Vector3(0.184447, 1.07484, -0.25293), Vector3(-0.199463, 1.09244, -0.25293), Vector3(0.0205718, 1.80753, -0.25293), Vector3(0.000764989, 0.787427, -0.25293), Vector3(0.138302, 0.452581, -0.25293), Vector3(-0.163161, 0.451389, -0.25293), Vector3(-0.00559452, 1.82542, 0.274048), Vector3(-0.137705, 1.47483, 0.274048), Vector3(0.150202, 1.49088, 0.274048), Vector3(0.15502, 1.15623, 0.274048), Vector3(-0.137258, 1.18364, 0.274048), Vector3(0.00930688, 0.785355, 0.274048), Vector3(-0.161626, 0.424052, 0.274048), Vector3(0.186096, 0.414073, 0.274048), Vector3(0.340027, 1.80814, 0.0492667), Vector3(0.340027, 1.35601, -0.00736688), Vector3(0.340027, 0.892121, 0.016009), Vector3(0.340027, 0.408994, 0.0462698), Vector3(-0.32312, 0.416334, 0.0431835), Vector3(-0.32312, 0.916279, -0.00713519), Vector3(-0.32312, 1.19264, -0.018978), Vector3(-0.32312, 1.79059, 0.00938033)]
 collision_shape = SubResource("PackedScene_d6dgo")
-stat = 0.0
-top = 0.0
-eye = 0.0
+stat = 1.947
+top = 2.058
+eye = 1.788
 plus_attack = 0
 plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("2_lnrfj")]([])
+archetype = ExtResource("2_tiif2")
 id = 63
 name = "Johnny Puff"
 gdscript = ExtResource("4_chdj4")

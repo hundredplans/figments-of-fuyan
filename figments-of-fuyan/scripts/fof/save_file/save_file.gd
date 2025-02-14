@@ -1,6 +1,7 @@
 class_name SaveFileGD extends FofGD
 
 signal load_map
+signal load_main_menu
 signal load_level
 signal exit_save
 signal update_shillings
@@ -109,12 +110,16 @@ func onUpdateShillings(delta: int) -> void:
 	update_shillings.emit(shillings)
 #endregion
 
-#region Load Level / Map
+#region Load Level / Map / Main Menu
 func onLoadLevel(level_data: SavedDataLevel) -> void:
 	load_level.emit(level_data, self, area)
 	
 func onLoadMap() -> void:
 	load_map.emit(self, area)
+	
+func onLoadMainMenu() -> void:
+	onSaveToFile()
+	load_main_menu.emit()
 	
 func onLoadGame() -> void:
 	if area.active_level_data == null: onLoadMap()

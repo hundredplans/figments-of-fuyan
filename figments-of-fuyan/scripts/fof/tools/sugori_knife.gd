@@ -1,5 +1,7 @@
 extends ToolGD
 
+const SUGORI_KNIFE_FIELD_EFFECT_ID: int = 1
+
 func onProcessAction(action: Action) -> void:
 	super(action)
 	if !action.post:
@@ -37,8 +39,7 @@ func onRemoveFieldEffects(visible_field_cards: Array) -> void:
 			onRemoveFieldEffect(FieldCard)
 	
 func onAddFieldEffect(FieldCard: CardGD) -> void:
-	var FieldEffect: FieldEffectGD = SavedData.onLoadModel(SavedDataFieldEffect.new(1, true), FieldCard)
-	FieldCard.onAddFieldEffect(FieldEffect, self)
+	FieldCard.onCreateBaseFieldEffect(SUGORI_KNIFE_FIELD_EFFECT_ID, -1, -1, self)
 	
 func onRemoveFieldEffect(FieldCard: CardGD) -> void:
 	FieldCard.onRemoveFieldEffectsByOwner(self)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=3 uid="uid://ct6euhy8orf2m"]
+[gd_scene load_steps=55 format=3 uid="uid://ct6euhy8orf2m"]
 
 [ext_resource type="Script" path="res://scenes/game/cards/world/field_info.gd" id="1_doj6w"]
 [ext_resource type="PackedScene" uid="uid://b7aqntno6susb" path="res://assets/models/general/numbers/stat_numbers/zero.glb" id="2_emwqa"]
@@ -26,6 +26,7 @@
 [ext_resource type="ArrayMesh" uid="uid://dg7uxtqjwekn5" path="res://assets/models/general/numbers/particle_numbers/one.tres" id="19_g58ma"]
 [ext_resource type="ArrayMesh" uid="uid://bod8ila0mcgh5" path="res://assets/models/general/numbers/particle_numbers/two.tres" id="20_hvbsd"]
 [ext_resource type="ArrayMesh" uid="uid://b47lrjmcpx52u" path="res://assets/models/general/numbers/particle_numbers/three.tres" id="21_dveln"]
+[ext_resource type="Material" uid="uid://dqs86kl42o4rm" path="res://resources/materials/colors/unshaded/black.tres" id="21_ymrm6"]
 [ext_resource type="ArrayMesh" uid="uid://8lvyp0xo7m1o" path="res://assets/models/general/numbers/particle_numbers/four.tres" id="22_35x14"]
 [ext_resource type="PackedScene" uid="uid://nue6v6hd501f" path="res://scenes/particles/numbers_particle.tscn" id="22_tcac4"]
 [ext_resource type="ArrayMesh" uid="uid://dtltd47qcc7ba" path="res://assets/models/general/numbers/particle_numbers/five.tres" id="23_n5v4e"]
@@ -66,6 +67,7 @@ green_top_material = ExtResource("15_6rglu")
 white_top_material = ExtResource("16_m8mfd")
 red_top_material = ExtResource("17_dv8uk")
 top_base_material = ExtResource("18_xbibn")
+black_outline_material = ExtResource("21_ymrm6")
 number_to_particle_mesh = Array[Mesh]([null, ExtResource("19_g58ma"), ExtResource("20_hvbsd"), ExtResource("21_dveln"), ExtResource("22_35x14"), ExtResource("23_n5v4e"), ExtResource("24_6p3qk"), ExtResource("25_y0a8l"), ExtResource("26_4gsdx"), ExtResource("27_eixty")])
 exclamation_particle_mesh = ExtResource("28_i4f0i")
 plus_mesh = ExtResource("29_3nsr3")

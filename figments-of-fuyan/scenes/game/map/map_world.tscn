@@ -27,10 +27,4 @@ unique_name_in_owner = true
 transform = Transform3D(0.866025, 2.18557e-08, -0.5, 0.5, -3.78552e-08, 0.866025, 2.51215e-15, -1, -4.37114e-08, 0, 0, 0)
 light_energy = 3.0
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-unique_name_in_owner = true
-transform = Transform3D(-0.431987, -0.899773, -0.0616039, 0.541056, -0.313202, 0.780489, -0.721558, 0.30383, 0.622126, 0, 2.11466, 0)
-shadow_enabled = true
-directional_shadow_max_distance = 40.4
-
 [connection signal="action_lock" from="." to="MovementCamera" method="onDisableMovement"]

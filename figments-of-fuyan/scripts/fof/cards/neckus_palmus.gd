@@ -1,5 +1,6 @@
 extends CardGD
 
+const NECKUS_PALMUS_FIELD_EFFECT_ID: int = 10
 var field_effect_public_id: int
 func onProcessAction(action: Action) -> void:
 	super(action)
@@ -14,10 +15,7 @@ func getDescription() -> String:
 func onWhenHealed(_action: StatAction) -> void:
 	setIdleAbility(true)
 	
-	var FieldEffect: FieldEffectGD = SavedData.onLoadModel(SavedDataFieldEffect.new(10, true), self)
-	onAddFieldEffect(FieldEffect, self)
-	field_effect_public_id = FieldEffect.public_id
-	
+	field_effect_public_id = onCreateBaseFieldEffect(NECKUS_PALMUS_FIELD_EFFECT_ID).public_id
 	onIdle()
 
 func onHit(_damage_action: DamageAction, attack_action: AttackAction) -> void:
@@ -25,7 +23,7 @@ func onHit(_damage_action: DamageAction, attack_action: AttackAction) -> void:
 	
 	var FieldEffect: FieldEffectGD = Game.onFindPublicIDObject(field_effect_public_id)
 	if FieldEffect != null:
-		onRemoveFieldEffect(FieldEffect)
+		onPushAction(RemoveFieldEffectAction.new(FieldEffect))
 		field_effect_public_id = 0
 	
 	for Card in attack_action.Defenders.filter(func(x: GameObjectGD): return x is CardGD):

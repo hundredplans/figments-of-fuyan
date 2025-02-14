@@ -39,7 +39,7 @@ func getTilesDFL() -> DFLData:
 func getFallDamageTileValue(FallCard: CardGD, Tile: TileGD) -> float:
 	var total_damage: int = 0
 	for MovementPathTile in Tile.getMovementPathTiles():
-		var fall_damage: int = Tile.getFallDamage(MovementPathTile)
+		var fall_damage: int = MovementPathTile.getFallDamage(Tile)
 		total_damage += fall_damage
 	
 	if !FallCard.isCardSurviveFallDamage(total_damage):

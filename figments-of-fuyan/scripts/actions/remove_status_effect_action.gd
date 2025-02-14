@@ -8,3 +8,6 @@ func _init(_StatusEfffect: StatusEffectGD = null) -> void:
 
 func onPostAction() -> void:
 	StatusEffect.onClear()
+
+func getLogInfo() -> Array:
+	return ["StatusEffect: " + StatusEffect.info.name]

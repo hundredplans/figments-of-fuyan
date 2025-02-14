@@ -2,13 +2,13 @@
 extends BoonGD
 
 var cards: Array = []
+const ENERGIZED_BOON_FIELD_EFFECT_ID: int = 9
+
 func onProcessAction(action: Action) -> void:
 	super(action)
 	if action.post:
 		if action is AwakenAction and action.Card.isAlly(0):
 			onPushAction(BoonActivatedAction.new(self, action))
-		elif action is ChangePhaseAction and Game.isAdvanceTurn(action.phase, 0):
-			onFieldEffectsTurnPassed()
 	
 func onAscend(state: bool) -> void:
 	super(state)
@@ -21,8 +21,7 @@ func onBoon(action: Action = null) -> void:
 	var turns: int = 2 if !Game.isChampion(action.Card.info.rarity) else 1
 	onPushAction(StatAction.new(StatInfo.new(action.Card, Game.Stats.MAX_SPEED, speed, turns)))
 	
-	var FieldEffect: FieldEffectGD = SavedData.onLoadModel(SavedDataFieldEffect.new(9, true, 0, public_id, -1, {"speed": speed, "turns": turns}), action.Card)
-	action.Card.onAddFieldEffect(FieldEffect, self)
+	var FieldEffect: FieldEffectGD = action.Card.onCreateBaseFieldEffect(ENERGIZED_BOON_FIELD_EFFECT_ID)
 	cards.append(action.Card)
 
 func onBoonAdded() -> void:
@@ -36,14 +35,6 @@ func onLoadData(data: SavedData) -> void:
 	super(data)
 	cards = cards.map(func(x: int): return Game.onFindPublicIDObject(x))
 	
-func onFieldEffectsTurnPassed() -> void:
-	for FieldCard in cards:
-		var field_effects: Array = FieldCard.onFindFieldEffectsByOwner(self)
-		for FieldEffect in field_effects:
-			FieldEffect.turns -= 1
-			if FieldEffect.turns == 0:
-				FieldCard.onRemoveFieldEffect(FieldEffect)
-
 func onLevelEnded(win: bool) -> void:
 	super(win)
 	cards = []

@@ -26,6 +26,7 @@ func getIcon() -> Texture2D:
 #endregion
 
 func onProcessAction(action: Action) -> void:
+	super(action)
 	if action.post:
 		if action is ChangeTurnStateAction:
 			if action.turn_state == Game.TurnStates.PASSED and action.Card == Card and (self is not FatigueGD) and turns > 0:
@@ -35,9 +36,6 @@ func onProcessAction(action: Action) -> void:
 			
 		elif action is DeathAction and action.Defender == Card:
 			onClear()
-		
-		elif action is AddStatusEffectAction and action.StatusEffect == self:
-			onStatusEffectAdded(action)
 	
 func getDescription() -> String:
 	return info.description

@@ -2,7 +2,7 @@ extends FieldEffectGD
 
 func onProcessAction(action: Action) -> void:
 	super(action)
-	if FofObject.isValidRampage(action):
+	if Card.isValidRampage(action):
 		onPushAction(FieldEffectActivatedAction.new(self, action))
 		
 func onFieldEffect(_death_action: DeathAction) -> void:

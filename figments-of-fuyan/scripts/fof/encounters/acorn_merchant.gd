@@ -1,7 +1,6 @@
 extends EncounterGD
 
 const ACCEPT_OPTION_SHILLINGS: int = 12
-const SLEIGHT_OF_HAND_SHILLINGS: int = 12
 
 func canShowUp() -> bool:
 	return true
@@ -10,7 +9,7 @@ func isRequirementMet(option: EncounterOptionDatastore) -> bool:
 	match option.name:
 		"Accept": return Game.save_file.getShillings() >= ACCEPT_OPTION_SHILLINGS
 		"Sleight of Hand":
-			return Game.save_file.getShillings() >= SLEIGHT_OF_HAND_SHILLINGS and Game.isIDInDeck(7)
+			return Game.isIDInDeck(7)
 	return true
 
 func onOptionPressed(option: EncounterOptionDatastore, screen: Control) -> void:
@@ -21,7 +20,6 @@ func onOptionPressed(option: EncounterOptionDatastore, screen: Control) -> void:
 			ToolPickedUpUI.taken.connect(onToolAccepted.bind(option))
 			return
 		"Sleight of Hand":
-			Game.save_file.onUpdateShillings(-SLEIGHT_OF_HAND_SHILLINGS)
 			var tool_data: SavedDataTool = Game.getRandomFofInRarity(ToolInfo, Game.Rarities.COMMON)
 			var Tool: ToolGD = SavedData.onLoadModel(tool_data, self)
 			Game.onCreateToolPickedUpUI(Tool, false, screen)
