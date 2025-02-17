@@ -261,7 +261,7 @@ func onLoadData(data: SavedData) -> void:
 	field_effects_datas = data.field_effects
 	ai_datastore = data.ai_datastore
 	base_stats = data.base_stats
-	overworld_traits = data.overworld_traits
+	overworld_traits = data.overworld_traitsw
 	bounty_kills = data.bounty_kills
 	
 	temporary_card_conditions = temporary_card_conditions.map(func(x: SavedDataMapEffect): return SavedData.onLoadModel(x, self))
