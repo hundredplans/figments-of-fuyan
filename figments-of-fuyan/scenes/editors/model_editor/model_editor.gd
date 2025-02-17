@@ -38,6 +38,6 @@ func _ready() -> void:
 		
 func onAnimationNamePressed(ani_name: String) -> void:
 	for Card: CardGD in get_tree().get_nodes_in_group("CardsGD"):
-		if Card.AniPlayer != null:
+		if Card.AniPlayer != null and Card.AniPlayer.has_animation(ani_name):
 			Card.AniPlayer.play(ani_name)
 		

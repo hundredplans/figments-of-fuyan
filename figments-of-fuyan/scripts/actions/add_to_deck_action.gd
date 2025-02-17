@@ -12,6 +12,7 @@ func _init(_Card: CardGD = null, _add_type: ADD_TYPES = ADD_TYPES.SHUFFLE) -> vo
 func onPostAction() -> void:
 	Card.onChangeCardPlace(Game.CardPlaces.DECK)
 	Card.team = 0
+	Card.add_to_group("AllyCardsGD")
 	Card.reparent(Game.getSaveFile())
 	
 	if add_type == ADD_TYPES.SHUFFLE:

@@ -25,6 +25,7 @@ func onToolAction(action: DamageAction) -> void:
 		action.damage += 1
 
 func onToolEquipped() -> void:
+	super()
 	if ascended:
 		for FieldCard in Card.getVisibleFieldCardsAllies():
 			onAddFieldEffect(FieldCard)

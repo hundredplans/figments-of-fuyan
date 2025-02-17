@@ -75,7 +75,6 @@ func setInfo(_save_file: SaveFileGD) -> void:
 		
 	level.draw_card.connect(onDrawCardUI)
 	level.phase_changed.connect(onPhaseChanged)
-	level.remove_card.connect(onRemoveCardUI)
 	level.energy_changed.connect(onUpdateEnergy)
 	level.turn_state_changing.connect(onTurnStateChanging)
 	level.awakened.connect(onAwakened)
@@ -93,8 +92,6 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	area.process_action.connect(onProcessAction)
 	
 	level.update_active_effects.connect(onUpdateActiveEffects)
-	
-	TimeLabel.setInfo(save_file)
 	level.camera_change_action.connect(onCameraUpdated)
 	
 	ArtMiniRect.texture = save_file.getChampionCard().info.getArtMini()

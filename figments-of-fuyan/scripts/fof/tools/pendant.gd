@@ -55,6 +55,7 @@ func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_til
 	return null
 		
 func onToolEquipped() -> void:
+	super()
 	var type: Game.Stats
 	match info.id:
 		1: type = Game.Stats.MAX_HEALTH

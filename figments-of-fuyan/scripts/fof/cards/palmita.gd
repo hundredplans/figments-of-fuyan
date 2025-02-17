@@ -18,7 +18,10 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 	if active_effect is ActiveAbilityDatastore and active_effect.name == "Helpful Helmet":
 		var Card: CardGD = Game.getFieldCard(PickedTile)
 		var field_effect_data := SavedDataFieldEffect.new(HELPFUL_HELMET_FIELD_EFFECT_ID, true)
-		var actions: Array = [DestroyAction.new(self, self), AddFieldEffectAction.new(SavedData.onLoadModel(field_effect_data, Card))]
+		var FieldEffect: FieldEffectGD = SavedData.onLoadModel(field_effect_data, Card)
+		FieldEffect.Card = Card
+		
+		var actions: Array = [DestroyAction.new(self, self), AddFieldEffectAction.new(FieldEffect)]
 		
 		if ascended:
 			actions.append(StatAction.new(StatInfo.new(Card, Game.Stats.MAX_HEALTH, 1)))

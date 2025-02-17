@@ -11,6 +11,7 @@ func onProcessAction(action: Action) -> void:
 				onPushAction(RemoveToolAction.new(Card))
 	
 func onToolEquipped() -> void:
+	super()
 	if Card.getVisibleFieldCardsEnemies().is_empty():
 		var stat_action := StatAction.new(StatInfo.new(Card, Game.Stats.MAX_SPEED, 1, START_TURN_AMOUNT))
 		onPushAction(ToolActivatedAction.new(self, stat_action))

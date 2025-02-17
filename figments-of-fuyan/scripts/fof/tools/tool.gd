@@ -54,13 +54,7 @@ func getDescription() -> String:
 	return info.description if !ascended else info.ascended_description	
 
 func onProcessAction(action: Action) -> void:
-	if action.post:
-		if action is AddToolAction and action.Tool == self:
-			Card = action.Card
-			onCreateActiveEffects()
-			onToolEquipped()
-		elif action is RemoveToolAction and action.Card == Card:
-			onToolUnequipped()
+	super(action)
 
 func getActiveEffectTiles(_active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	return null
@@ -81,7 +75,7 @@ func getActiveEffectDescription(_active_effect: ActiveEffectDatastore, descripti
 	return description
 	
 func onToolEquipped() -> void:
-	pass
+	onCreateActiveEffects()
 	
 func onToolUnequipped() -> void:
 	onClear()

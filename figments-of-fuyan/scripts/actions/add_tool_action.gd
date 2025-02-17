@@ -19,3 +19,5 @@ func onPreAction() -> void:
 func onPostAction() -> void:
 	Tool.reparent(Card)
 	Card.onAddTool(Tool)
+	Tool.Card = Card
+	Tool.onToolEquipped()

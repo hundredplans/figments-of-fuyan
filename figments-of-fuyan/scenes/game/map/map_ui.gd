@@ -50,7 +50,6 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	area.process_action.connect(onProcessAction)
 	area.init_load.connect(onInitLoad)
 	
-	TimeLabel.setInfo(save_file)
 	BoonBox.onUpdate()
 	setLegendBox()
 	onUpdateToolbelt()

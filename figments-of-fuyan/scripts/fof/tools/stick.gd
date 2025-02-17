@@ -14,7 +14,7 @@ func onToolAction(action: DamageAction) -> void:
 	onPushAction(RemoveToolAction.new(Card))
 	
 func onToolEquipped() -> void:
-	pass
+	super()
 	
 func onToolUnequipped() -> void:
 	super()

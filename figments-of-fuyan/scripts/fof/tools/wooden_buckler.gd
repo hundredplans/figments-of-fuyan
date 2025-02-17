@@ -11,7 +11,7 @@ func onToolAction(action: StatAction) -> void:
 	onPushAction(action)
 	
 func onToolEquipped() -> void:
-	pass
+	super()
 	
 func onToolUnequipped() -> void:
 	super()
