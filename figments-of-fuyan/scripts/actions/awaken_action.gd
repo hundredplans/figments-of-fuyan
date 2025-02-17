@@ -38,7 +38,8 @@ func onPostAction() -> void:
 		actions.append(Card.getBaseStatusEffectAction(3, turn_amount))
 		
 	actions.append(ChangeTurnStateAction.new(Card, Game.TurnStates.INACTIVE if owner is not PlayCardAction else Game.TurnStates.PASSED))
-	if Card.Tool != null: actions.append(AddToolAction.new(Card, Card.Tool))
+	if Card.Tool != null:
+		actions.append(AddToolAction.new(Card, Card.Tool, true))
 		
 	onPushAction(actions)
 
