@@ -114,7 +114,7 @@ func onLoadMap(save_file: SaveFileGD, area: AreaGD) -> void:
 	area.onLoadMapAfterScenes()
 	
 func onLoadMainMenu() -> void:
-	var scenes: Dictionary = onLoadScreenWorld(main_menu_ui, main_menu_world)
+	onLoadScreenWorld(main_menu_ui, main_menu_world)
 	for child in KeepAcross.get_children(): child.queue_free()
 	
 func onExitSaveFile() -> void:

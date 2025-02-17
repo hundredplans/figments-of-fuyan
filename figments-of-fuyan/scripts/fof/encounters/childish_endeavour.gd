@@ -16,15 +16,15 @@ func onOptionPressed(option: EncounterOptionDatastore, screen: Control) -> void:
 		"Inform":
 			var boon_data: SavedDataBoon = Random.getRandomFofInRarity(BoonInfo, Game.Rarities.COMMON)
 			if boon_data != null:
-				Game.save_file.onAddBoon(SavedData.onLoadModel(boon_data, self))
+				onPushAction(AddBoonAction.new(boon_data.id, boon_data.ascended))
 		"Train":
 			var Boon: BoonGD = SavedData.onLoadModel(SavedDataBoon.new(10, true), self)
-			Game.save_file.onAddBoon(Boon)
+			onPushAction(AddBoonAction.new(Boon.info.id, Boon.ascended))
 		"Mentor":
 			var card_data: SavedDataCard = Game.onCreateBaseCard(4, true)
 			Game.setCardDataFromInfo(card_data, Helper.getFofInfoID(CardInfo, card_data.id))
-			var Card: CardGD = SavedData.onLoadModel(card_data, Game.save_file)
-			Game.save_file.onAddToDeck(Card)
+			var Card: CardGD = SavedData.onLoadModel(card_data, Game.getSaveFile())
+			onPushAction(AddToDeckAction.new(Card))
 			Card.onAddTemporaryCardCondition(SavedDataMapEffect.new(6, true))
 			
 			var CardUI: Control = Card.onCreateCardUI(screen, false)

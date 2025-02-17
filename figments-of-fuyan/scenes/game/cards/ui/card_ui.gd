@@ -114,7 +114,8 @@ func onToolAscended(state: bool) -> void:
 	ToolIconBackground.texture = REGULAR_TOOL_ICON_BACKGROUND if !state else ASCENDED_TOOL_ICON_BACKGROUND
 	
 func onPressed() -> void:
-	if !disabled: pressed.emit(self)
+	if disabled: return
+	pressed.emit(self)
 
 var is_mouse_in_ui: bool = false
 func onMouseHovered(state: bool) -> void:
@@ -185,7 +186,7 @@ func _process(delta: float) -> void:
 	elif Input.is_action_just_released("MainInput") and is_held and !is_held_moving and DraggableParent != null:
 		onHeldEnded()
 		
-	if Input.is_action_just_pressed("MainInput") and is_mouse_in_ui:
+	elif Input.is_action_just_pressed("MainInput") and is_mouse_in_ui:
 		onPressed()
 		
 	if DraggableParent != null and progress_to_center < CARD_TO_CENTER_HELD_TIMER:
@@ -238,6 +239,7 @@ func onHeldEnded() -> void:
 	last_small_offset_to_center = Vector2.ZERO
 	
 	onChangeBackgroundMouseFilter(true)
+	if !is_mouse_in_ui: onMouseHovered(is_mouse_in_ui)
 	get_parent().remove_child(self)
 	original_parent.add_child(self)
 	original_parent.move_child(self, child_index)

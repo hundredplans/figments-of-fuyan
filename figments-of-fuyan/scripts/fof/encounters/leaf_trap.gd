@@ -16,7 +16,7 @@ func onOptionPressed(option: EncounterOptionDatastore, screen: Control) -> void:
 	match option.name:
 		"Climb":
 			temp_disable_options.emit(true)
-			await Game.onRemoveCardWithAnimation(Game.getRandomNonChampionCard(), screen)
-		"Pay": Game.save_file.onUpdateShillings(-PAY_OPTION_SHILLINGS)
+			await Game.onRemoveCardWithAnimation(Game.getRandomNonChampionCard(), screen, self)
+		"Pay": onPushAction(ChangeShillingsAction.new(-PAY_OPTION_SHILLINGS))
 	onContinueToNextPage(option)
 	

@@ -19,8 +19,9 @@ func onRemovePressed() -> void:
 	DeckScreen.onDisableCards(func(x: Control): return Game.isChampion(x.Card.info.rarity))
 
 func onCardSelected(Card: CardGD) -> void:
-	item.onPickup(Card)
-	onPressed() 
+	item.setForType(RemoveFromDeckAction, Card, "Card")
+	item.onUse()
+	onPressed()
 
 func onPressed(_load_bought: bool = false) -> void:
 	super()

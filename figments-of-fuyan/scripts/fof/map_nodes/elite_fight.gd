@@ -6,14 +6,18 @@ const MAX_RESTART_AMOUNT: int = 16
 func onFofInit() -> void:
 	super()
 	setLevelInfo()
-	var empty_spawn_coords: Array = getEmptySpawnCoords()
-	var base_budget: int = getBudget()
-	var enemy_spawn_amount: int = min(randi_range(level_info.enemy_min_spawn_amount, level_info.enemy_max_spawn_amount), empty_spawn_coords.size() - 1)
-	var chief_spawn_coords: Vector4i = empty_spawn_coords.pop_front()
-	var chief_infos: Array = Game.area.basic_card_ids.map(func(x: int): return Helper.getFofInfoID(CardInfo, x)).filter(func(x: CardInfo): return x.rarity == Game.Rarities.EXALT)
-	setChiefAndSpawns(base_budget, empty_spawn_coords, enemy_spawn_amount, chief_infos, chief_spawn_coords)
+	spawn_group = level_info.getRandomSpawnGroup()
+	var enemy_spawns: Array = level_info.getEnemySpawnsInGroup(spawn_group) # Array[SavedDataSpawn]
+	enemy_spawns.shuffle()
 	
-func setChiefAndSpawns(base_budget: int, empty_spawn_coords: Array, enemy_spawn_amount: int, chief_infos: Array, chief_spawn_coords: Vector4i) -> void:
+	var base_budget: int = getBudget()
+	var enemy_spawn_amount: int = min(randi_range(level_info.enemy_min_spawn_amount, level_info.enemy_max_spawn_amount), enemy_spawns.size() - 1) # -1 for chief
+	var chief_spawn_coords: Vector4i = enemy_spawns.pop_front().coords
+	var chief_infos: Array = Game.area.basic_card_ids.map(func(x: int): return Helper.getFofInfoID(CardInfo, x)).filter(func(x: CardInfo): return x.rarity == Game.Rarities.EXALT)
+	
+	setChiefAndSpawns(base_budget, enemy_spawns, enemy_spawn_amount, chief_infos, chief_spawn_coords)
+	
+func setChiefAndSpawns(base_budget: int, enemy_spawns: Array, enemy_spawn_amount: int, chief_infos: Array, chief_spawn_coords: Vector4i) -> void:
 	var chief_data: SavedDataCard = getChief(chief_infos, chief_spawn_coords)
 	
 	var ChiefCard: CardGD = SavedData.onLoadModel(chief_data, self)
@@ -21,20 +25,20 @@ func setChiefAndSpawns(base_budget: int, empty_spawn_coords: Array, enemy_spawn_
 	Game.setCardDataFromInfo(chief_data, Helper.getFofInfoID(CardInfo, chief_data.id))
 	
 	var budget: int = max(base_budget - chief_data.energy, 0)
-	enemy_spawns = Game.area.setEnemySpawnsFromBudget(max(base_budget - chief_data.energy, 0), enemy_spawn_amount, empty_spawn_coords, map_location.progress, true)
+	enemy_cards = Game.area.setEnemySpawnsFromBudget(max(base_budget - chief_data.energy, 0), enemy_spawn_amount, enemy_spawns, map_location.progress, true)
 	
 	var restart_amount: int = 0
-	while(!ChiefCard.isValidEliteLevelSpawns(enemy_spawns) and restart_amount < MAX_RESTART_AMOUNT):
-		enemy_spawns = Game.area.setEnemySpawnsFromBudget(budget, enemy_spawn_amount, empty_spawn_coords, map_location.progress, true)
+	while(!ChiefCard.isValidEliteLevelSpawns(enemy_cards) and restart_amount < MAX_RESTART_AMOUNT):
+		enemy_cards = Game.area.setEnemySpawnsFromBudget(budget, enemy_spawn_amount, enemy_spawns, map_location.progress, true)
 		restart_amount += 1
 		
 	if restart_amount >= MAX_RESTART_AMOUNT:
-		setChiefAndSpawns(base_budget, empty_spawn_coords, enemy_spawn_amount, chief_infos, chief_spawn_coords)
+		setChiefAndSpawns(base_budget, enemy_spawns, enemy_spawn_amount, chief_infos, chief_spawn_coords)
 		return
-	enemy_spawns.append(chief_data)
+	enemy_cards.append(chief_data)
 	
 func onSave() -> SavedDataMapNode:
-	return SavedDataEliteFight.new(info.id, false, public_id, map_location, links, is_entered, is_finished, rotation.y, level_info, enemy_spawns)
+	return SavedDataEliteFight.new(info.id, false, public_id, map_location, links, is_entered, is_finished, rotation.y, level_info, spawn_group, enemy_cards)
 	
 func onEntered() -> void:
 	onSelectRandomCurseInfo()
@@ -48,7 +52,8 @@ func onSelectRandomCurseInfo() -> void:
 	else:
 		curse_info = Helper.getFofInfoID(BoonInfo, Helper.admin_datastore.force_elite_fight_curse_id)
 		var curse: BoonGD = SavedData.onLoadModel(curse_info.saved_data.new(curse_info.id, true), self)
-		Game.save_file.onAddBoon(curse)
+		
+		onPushAction(AddBoonAction.new(curse.info.id, curse.ascended))
 	
 func onGenerateCurseInfo(curse_infos: Array) -> BoonInfo:
 	var _curse_info: BoonInfo = curse_infos.pick_random()
@@ -59,13 +64,16 @@ func onGenerateCurseInfo(curse_infos: Array) -> BoonInfo:
 		curse.queue_free()
 		return onGenerateCurseInfo(curse_infos)
 	
-	Game.save_file.onAddBoon(curse)
+	onPushAction(AddBoonAction.new(curse.info.id, curse.ascended))
 	return _curse_info
 	
 func onFinished() -> void:
 	super()
 	if self is MinibossFightNodeGD or self is BossFightNodeGD: return
-	var new_level_data: SavedDataLevel = level_info.saved_data.new(level_info.id, true, 0, level_info.data.duplicate(), enemy_spawns)
+	
+	var new_level_data: SavedDataLevel = level_info.saved_data.new(level_info.id, true, 0, level_info.data.duplicate())
+	new_level_data.spawn_group = spawn_group
+	new_level_data.enemy_cards = enemy_cards
 	new_level_data.fight_type = Game.FightTypes.ELITE
 	load_level.emit(new_level_data)
 

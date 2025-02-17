@@ -7,7 +7,13 @@ var DeckScreen: Control
 
 func setInfo(_item: FofGD, _price_datastore: PriceDatastore, _save_file: SaveFileGD) -> void:
 	super(_item, _price_datastore, _save_file)
-	var text: String = item.info.name
+	var text: String
+	if item.hasType(AscendCardAction): text = "Ascend Card"
+	elif item.hasType(TransformCardAction):
+		var transform_action: TransformCardAction = item.getType(TransformCardAction)[0]
+		if transform_action.transform_type == TransformCardAction.TransformType.Energy: text = "Transform by Energy"
+		if transform_action.transform_type == TransformCardAction.TransformType.Rarity: text = "Transform by Rarity"
+	
 	PanelButton.setText(text)
 	PanelButton.pressed.connect(onCreateDeckScreen)
 
@@ -29,8 +35,9 @@ func onCreateDeckScreen() -> void:
 		DeckScreen.onDisableCards(func(x: Control): return Game.isChampion(x.Card.info.rarity))
 	
 func onCardSelected(Card: CardGD) -> void:
-	if item.info.id == 4: item.onPickup(Card)
-	else: item.onPickup(Card, save_file)
+	item.setForType(TransformCardAction, Card, "Card") # Works if it's either
+	item.setForType(AscendCardAction, Card, "Card")
+	item.onUse()
 	
 	var CardUI: Control = DeckScreen.SelectedCardUI
 	var card_ui_position: Vector2 = CardUI.global_position

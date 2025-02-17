@@ -102,8 +102,9 @@ func onResetDepthTest() -> void:
 	InfoSprite.no_depth_test = is_spectated
 	ToolIcon.no_depth_test = is_spectated
 	ToolShine.no_depth_test = is_spectated
-	for mesh in Helper.getNodeTypeRecursive(FloatingStats, MeshInstance3D):
+	for mesh: MeshInstance3D in Helper.getNodeTypeRecursive(FloatingStats, MeshInstance3D):
 		mesh.set_surface_override_material(0, mat)
+		mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	
 	IconsManager.setDepthTest(is_spectated)
 	
@@ -129,6 +130,7 @@ func onCreateStat(spot: Node3D, value: int, above_green_value: int, below_red_va
 		spot.add_child(NumberModel)
 		var number_mesh: MeshInstance3D = Helper.getNodeTypeRecursive(NumberModel, MeshInstance3D)[0]
 		number_mesh.set_surface_override_material(0, mat)
+		number_mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		
 		#if number_mesh.get_surface_override_material_count() > 1:
 			#number_mesh.set_surface_override_material(1, black_outline_material)

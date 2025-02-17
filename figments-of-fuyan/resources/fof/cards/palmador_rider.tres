@@ -1,16 +1,20 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=9 format=3]
+[gd_resource type="Resource" script_class="BossCardInfo" load_steps=9 format=3 uid="uid://b28lsogjv2k6f"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_rrc50"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_54fdl"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/palmador_rider.png" id="2_lqc5j"]
-[ext_resource type="Resource" path="res://resources/fof/archetypes/scout.tres" id="2_yj6kb"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_1172h"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/palmador_rider.png" id="3_upqvj"]
+[ext_resource type="Resource" uid="uid://27tqk2ax0xx2" path="res://resources/fof/archetypes/scout.tres" id="2_yj6kb"]
+[ext_resource type="Script" path="res://scripts/fof/cards/boss/palmador_rider_boss.gd" id="4_sco14"]
 [ext_resource type="Script" path="res://scripts/fof/cards/palmador_rider.gd" id="4_y14he"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_g5wjs"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/boss_card_info.gd" id="5_o8hst"]
+[ext_resource type="PackedScene" uid="uid://d33beirjwt2p7" path="res://assets/models/fof/cards/palmador_rider.glb" id="7_lbc4d"]
 
 [resource]
-script = ExtResource("3_1172h")
+script = ExtResource("5_o8hst")
+boss_attack = 2
+boss_health = 14
+boss_speed = 4
+boss_script = ExtResource("4_sco14")
 attack = 1
 health = 3
 speed = 4
@@ -22,12 +26,11 @@ flavor_text = ""
 description = "MOBILE; Can scale up to [3] Tile walls"
 ascended_description = "MOBILE; Can scale up to [5] Tile walls"
 art_mini_coordinate = Vector2i(69, 46)
-art_mini = ExtResource("3_upqvj")
-art_pop = ExtResource("2_lqc5j")
-points = []
-stat = 0.0
-top = 0.0
-eye = 0.0
+model = ExtResource("7_lbc4d")
+points = [Vector3(-0.184426, 0.321448, 0.453733), Vector3(0.206629, 0.31195, 0.453733), Vector3(-0.169782, 0.723533, 0.453733), Vector3(0.134693, 0.748089, 0.453733), Vector3(-0.12809, 1.07749, 0.453733), Vector3(0.0759274, 1.07842, 0.453733), Vector3(0.315186, 0.795095, 0.313699), Vector3(0.315186, 0.208676, 0.329945), Vector3(0.315186, 0.181938, -0.595819), Vector3(0.218221, 0.252529, -0.742247), Vector3(-0.184627, 0.265852, -0.742247), Vector3(0.201537, 0.682792, -0.742247), Vector3(-0.0920985, 0.689245, -0.742247), Vector3(-0.324707, 0.239192, -0.589023), Vector3(-0.324707, 0.670685, -0.573491), Vector3(-0.324707, 0.68331, -0.22901), Vector3(-0.324707, 0.676476, 0.22264), Vector3(-0.324707, 0.119581, 0.369559), Vector3(0.315186, 0.594397, 0.0618389), Vector3(0.315186, 0.593358, -0.416722), Vector3(-0.324707, 1.03839, -0.181156), Vector3(-0.324707, 1.29461, -0.183676), Vector3(-0.0416917, 1.38416, -0.165172), Vector3(0.225615, 1.38416, -0.190067), Vector3(0.315186, 0.90336, -0.153624), Vector3(0.315186, 1.1747, -0.156526), Vector3(0.0154671, 1.30724, 0.453733), Vector3(-0.0336319, 1.38416, 0.165173), Vector3(-0.324707, 0.991961, 0.267097), Vector3(0.315186, 1.04599, 0.231899), Vector3(0.315186, 0.448679, -0.147284), Vector3(-0.324707, 0.503405, -0.0719151), Vector3(-0.324707, 0.553749, -0.40323)]
+stat = 1.73359
+top = 1.61938
+eye = 1.24003
 plus_attack = 1
 plus_health = 0
 plus_speed = 0

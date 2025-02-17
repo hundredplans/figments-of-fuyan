@@ -2,6 +2,8 @@ class_name MoveToTileAction extends Action
 
 enum MOVEMENT_TYPES {REGULAR, RAMP, JUMP, FALL}
 var Card: CardGD
+
+var OriginalTile: TileGD
 var DestinationTile: TileGD
 var movement_type: MOVEMENT_TYPES
 
@@ -40,6 +42,7 @@ func onPreAction() -> void:
 	
 	setMovementTypeDelay()
 	onForceAction(ChangeTileRotationAction.new(Card, Game.getRelativeTileRotation(Card.Tile, DestinationTile)))
+	OriginalTile = Card.Tile
 	Card.onMoveToTile(self, getDelay())
 	
 func onCheckFail() -> void:

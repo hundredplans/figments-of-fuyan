@@ -90,9 +90,9 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level.tool_removed.connect(onToolRemoved)
 	level.death.connect(onDeath)
 	
+	area.process_action.connect(onProcessAction)
+	
 	level.update_active_effects.connect(onUpdateActiveEffects)
-	save_file.update_shillings.connect(onUpdateShillings)
-	save_file.update_boons.connect(BoonBox.onUpdate)
 	
 	TimeLabel.setInfo(save_file)
 	level.camera_change_action.connect(onCameraUpdated)
@@ -107,7 +107,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	
 	setHeroNameLabel()
 	setActiveEffectLabel()
-	onUpdateShillings(save_file.shillings)
+	onUpdateShillings()
 	onUpdateDeckCardAmountLabel()
 	onCameraUpdated(level.getSpectateObject())
 	BoonBox.onUpdate()
@@ -177,7 +177,6 @@ func onDrawCardUI(Card: CardGD) -> void:
 	CardUI.dragged_end.connect(onCardDraggedEnd)
 	CardUI.mouse_in_ui.connect(onMouseInUI)
 	CardUI.mouse_in_ui.connect(HandBox.onMouseInUI)
-	onUpdateDeckCardAmountLabel()
 	
 func onRemoveCardUI(Card: CardGD) -> void:
 	for CardUI in HandBox.get_children():
@@ -204,8 +203,8 @@ func onCardDraggedBegin(CardUI: Control) -> void:
 #endregion
 
 #region Shillings
-func onUpdateShillings(shillings: int) -> void:
-	ShillingLabel.setText("SH: " + str(shillings))
+func onUpdateShillings() -> void:
+	ShillingLabel.setText("SH: " + str(Game.getSaveFile().getShillings()))
 #endregion
 	
 #region Energy
@@ -447,4 +446,21 @@ func onHideUI(state: bool) -> void:
 		
 	for Tile in get_tree().get_nodes_in_group("LevelTilesGD"):
 		Tile.onHideUI(state)
+#endregion
+
+#region Action
+func onProcessAction(action: Action) -> void:
+	if action.post:
+		if action is AddToDeckAction:
+			onUpdateDeckCardAmountLabel()
+		elif action is RemoveFromDeckAction:
+			onUpdateDeckCardAmountLabel()
+		elif action is AddBoonAction:
+			BoonBox.onUpdate()
+		elif action is RemoveBoonAction:
+			BoonBox.onUpdate()
+		elif action is ChangeShillingsAction:
+			onUpdateShillings()
+		elif action is PlayCardAction:
+			onRemoveCardUI(action.Card)
 #endregion

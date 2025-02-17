@@ -297,7 +297,7 @@ func setFallDamageWorldEffect(state: bool, PreviousTile: TileGD, damage: int) ->
 		add_child(FallDamageEffect)
 		
 		set_spectate_card.emit(self)
-		FallDamageEffect.setInfo(self, PreviousTile, SpectateCard, damage)
+		FallDamageEffect.setInfo(self, PreviousTile, damage)
 		
 #endregion
 

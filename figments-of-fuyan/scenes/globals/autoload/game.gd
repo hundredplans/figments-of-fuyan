@@ -388,11 +388,6 @@ func onSurviveFallDamage(Card: CardGD, movement_path: Array, point_path: Array, 
 	return true
 #endregion
 
-#region Map Effect Generator
-func onCreateGainShillings(shilling_amount: int, parent: Node) -> MapEffectGD:
-	return SavedData.onLoadModel(SavedDataGainShillings.new(2, true, 0, shilling_amount), parent)
-#endregion
-
 #region Tooltips
 const TOOLTIP_PACKED_PATH: String = "res://scenes/common/tooltip/tooltip.tscn"
 var Tooltip: Control
@@ -447,7 +442,7 @@ func setCardDataFromInfo(card_data: SavedDataCard, card_info: CardInfo) -> Saved
 const REMOVE_CARD_ANIMATION_TIME: float = 2
 const REMOVE_CARD_ANIMATION_OFFSET: float = 0.5
 const TOTAL_SPIN_DEGREES: int = 360
-func onRemoveCardWithAnimation(Card: CardGD, parent: Control) -> void:
+func onRemoveCardWithAnimation(Card: CardGD, parent: Control, action_user: FofGD) -> void:
 	var CardUI: Control = Card.onCreateCardUI(parent, false)
 	CardUI.global_position = get_viewport().get_mouse_position() - (CardUI.size / 2)
 	CardUI.setDisabled(true)
@@ -458,7 +453,8 @@ func onRemoveCardWithAnimation(Card: CardGD, parent: Control) -> void:
 	var scale_tween := create_tween()
 	scale_tween.tween_property(CardUI, "scale", Vector2(0.01, 0.01), REMOVE_CARD_ANIMATION_TIME)
 	await get_tree().create_timer(REMOVE_CARD_ANIMATION_TIME + REMOVE_CARD_ANIMATION_OFFSET).timeout
-	Card.queue_free()
+	
+	action_user.onPushAction(RemoveFromDeckAction.new(Card, true))
 	
 func onCreateBaseCard(id: int, ascended: bool = false, tool_data: SavedDataTool = null) -> SavedDataCard:
 	var card_data := SavedDataCard.new(id, true)
@@ -485,12 +481,6 @@ func getAvailableBoons() -> Array:
 		.filter(func(x: BoonGD): return x.ascended)\
 		.map(func(x: BoonGD): return x.info.id)
 	return all_boons.filter(func(x: BoonInfo): return x.id not in used_boon_ids)
-	#
-#func onAddBoonFromArray(boons: Array) -> void:
-	#if boons.is_empty(): return
-	#var save_file: SaveFileGD = get_tree().get_nodes_in_group("SaveFilesGD")[0]
-	#var boon_info: BoonInfo = boons.pick_random()
-	#save_file.onAddBoon(boon_info.saved_data.new(boon_info.id, true))
 #endregion
 
 #region Tools
@@ -572,7 +562,8 @@ func isDivinus() -> bool:
 
 #region Getters
 func getLevel() -> LevelGD:
-	return Game.get_tree().get_nodes_in_group("LevelsGD")[0]
+	var levels: Array = Game.get_tree().get_nodes_in_group("LevelsGD")
+	return null if levels.is_empty() else levels[0]
 	
 func getArea() -> AreaGD:
 	return area
@@ -589,3 +580,7 @@ func isMouseInUI() -> bool:
 	
 func getChampionLevel() -> int:
 	return 0 if save_file == null else save_file.getChampionLevel()
+	
+func isLevel() -> bool:
+	return Game.getLevel() != null
+#endregion

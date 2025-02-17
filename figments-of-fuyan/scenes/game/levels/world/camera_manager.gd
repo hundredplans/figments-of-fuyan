@@ -305,6 +305,7 @@ var is_camera_travelling: bool = false
 
 func onGameStarted() -> void:
 	setCameraType(true)
+	FreelookCamera.disable_freelook = true
 	
 	await get_tree().process_frame
 	
@@ -350,3 +351,4 @@ func getLastAllySpectateObject() -> CardGD:
 
 func onUpdateCameraPosition() -> void:
 	camera_position_updated.emit(CurrentCamera.position if CurrentCamera != null else Vector3.ZERO)
+	

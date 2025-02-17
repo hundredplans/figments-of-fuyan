@@ -25,9 +25,9 @@ func onOptionPressed(option: EncounterOptionDatastore, screen: Control) -> void:
 			Game.onCreateToolPickedUpUI(Tool, false, screen)
 		"Reject":
 			var Boon: BoonGD = SavedData.onLoadModel(SavedDataBoon.new(9, true), self)
-			Game.save_file.onAddBoon(Boon)
+			onPushAction(AddBoonAction.new(Boon.info.id, Boon.ascended))
 	onContinueToNextPage(option)
 
 func onToolAccepted(_Tool: ToolGD, option: EncounterOptionDatastore) -> void:
-	Game.save_file.onUpdateShillings(-ACCEPT_OPTION_SHILLINGS)
+	onPushAction(ChangeShillingsAction.new(-ACCEPT_OPTION_SHILLINGS))
 	onContinueToNextPage(option)

@@ -23,8 +23,17 @@ static func getFofName() -> String: return "Level"
 	
 static func getInfoPath() -> String: return "res://resources/fof/levels"
 
-func getEmptySpawnCoords() -> Array:
-	return data\
-		.filter(func(x: SavedDataTileObject): return x is SavedDataSpawn and x.spawn_id == 0 and x.variation == 1)\
-		.map(func(x: SavedDataSpawn): return x.coords)
-		
+func getSpawnsInGroup(group: String) -> Array:
+	return data.filter(func(x: SavedDataTileObject): return x is SavedDataSpawn and x.spawn_id == 0 and group in x.groups)
+
+func getEnemySpawnsInGroup(group: String) -> Array:
+	return getSpawnsInGroup(group).filter(func(x: SavedDataSpawn): return x.variation != 0)
+	
+func getRandomSpawnGroup() -> String:
+	var groups: Dictionary = {}
+	var spawns: Array = data.filter(func(x: SavedDataTileObject): return x is SavedDataSpawn and x.spawn_id == 0)
+	
+	for spawn_data: SavedDataSpawn in spawns:
+		for group: String in spawn_data.groups:
+			groups[group] = null
+	return groups.keys().pick_random()

@@ -16,11 +16,11 @@ var taken: bool
 var item: Variant
 func setInfo(_item: Variant, is_taken: bool = false) -> void:
 	item = _item
-	if item is MapEffectGD and item.info.id == 2:
+	if item is ActionWrapper and item.hasType(ChangeShillingsAction):
 		MainContainer.theme_type_variation = "WhitePanelContainer"
 		IconRect.texture = shilling_icon
 		ItemLabel.setText("Shillings")
-		AmountLabel.text = str(item.getShillings())
+		AmountLabel.text = str(item.getType(ChangeShillingsAction)[0].getDelta())
 		
 	elif item is BoonGD or item is ToolGD or item is CardGD:
 		MainContainer.theme_type_variation = Game.getRarityThemeVariation(item.info.rarity, item.getAscended())

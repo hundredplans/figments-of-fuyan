@@ -43,7 +43,6 @@ func onFindCommandByName(command_name: String) -> Command:
 		if command.name == command_name: return command
 	return null
 
-var Previou
 func see() -> void:
 	var game_objects: Array = get_tree().get_nodes_in_group("LevelTileObjectsGD") + get_tree().get_nodes_in_group("FieldCardsGD")
 	Helper.admin_datastore.see = !Helper.admin_datastore.see
@@ -52,15 +51,23 @@ func see() -> void:
 		GameObject.onUpdateLevelVisible()
 
 func ascend() -> void:
-	
 	if SpectateObject is CardGD:
-		level.onPushAction(AscendCardAction.new(SpectateObject, !SpectateObject.ascended))
+		Game.getArea().onPushAction(AscendCardAction.new(SpectateObject, !SpectateObject.ascended))
 
 func status_effect(name_id: Variant, turns: int = 1) -> void:
 	if SpectateObject is CardGD:
 		var info: StatusEffectInfo = getNameIDFofInfo(name_id, StatusEffectInfo)
 		if info != null:
 			SpectateObject.onCreateBaseStatusEffect(info.id, turns)
+
+func deckcard(name_id: Variant, ascended: bool = false) -> void:
+	var card_info: CardInfo = getNameIDFofInfo(name_id, CardInfo)
+	var card_data: SavedDataCard = card_info.saved_data.new(card_info.id, true)
+	Game.setCardDataFromInfo(card_data, card_info)
+	card_data.ascended = ascended
+	
+	var Card: CardGD = SavedData.onLoadModel(card_data, Game.getSaveFile())
+	Game.getArea().onPushAction(AddToDeckAction.new(Card))
 
 func damage(damage_dealt: int) -> void:
 	if SpectateObject is CardGD:
@@ -69,20 +76,23 @@ func damage(damage_dealt: int) -> void:
 func tool(name_id: Variant, ascended: bool = false) -> void:
 	if SpectateObject is CardGD:
 		if name_id is int and name_id == 0: # Remove tool if id is 0
-			level.onPushAction(RemoveToolAction.new(SpectateObject))
+			Game.getArea().onPushAction(RemoveToolAction.new(SpectateObject))
 			return
 			
 		var info: ToolInfo = getNameIDFofInfo(name_id, ToolInfo)
 		if info != null:
-			level.onPushAction(\
+			Game.getArea().onPushAction(\
 			AddToolAction.new(SpectateObject, SavedData.onLoadModel(info.saved_data.new(info.id, true, 0, ascended), SpectateObject)))
 
 func endgame(win_state: bool) -> void:
-	level.onPushAction(EndGameAction.new(int(win_state), true))
+	Game.getArea().onPushAction(EndGameAction.new(int(win_state), true))
+
+func shillings(delta: int) -> void:
+	Game.getArea().onPushAction(ChangeShillingsAction.new(delta))
 
 func addboon(name_id: Variant, ascended: bool = false) -> void:
 	var info: BoonInfo = getNameIDFofInfo(name_id, BoonInfo)
-	level.onPushAction(AddBoonAction.new(info.id, ascended))
+	Game.getArea().onPushAction(AddBoonAction.new(info.id, ascended))
 
 func insert(name_id: Variant, ascended: bool = false) -> void:
 	var card_info: CardInfo = getNameIDFofInfo(name_id, CardInfo)
@@ -90,14 +100,14 @@ func insert(name_id: Variant, ascended: bool = false) -> void:
 	Game.setCardDataFromInfo(card_data, card_info)
 	card_data.ascended = ascended
 	var Card: CardGD = SavedData.onLoadModel(card_data, level)
-	level.onPushAction(InsertAction.new(Card))
+	Game.getArea().onPushAction(InsertAction.new(Card))
 
 func energy(delta: int) -> void:
-	level.onPushAction(EnergyAction.new(delta))
+	Game.getArea().onPushAction(EnergyAction.new(delta))
 
 func removeboon(name_id: Variant) -> void:
 	var info: BoonInfo = getNameIDFofInfo(name_id, BoonInfo)
-	level.onPushAction(RemoveBoonAction.new(info.id))
+	Game.getArea().onPushAction(RemoveBoonAction.new(info.id))
 
 func getNameIDFofInfo(name_id: Variant, type: GDScript) -> FofInfo:
 	var id: int = name_id if name_id is int else 0

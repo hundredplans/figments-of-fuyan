@@ -1,6 +1,6 @@
 extends EncounterGD
 
-const FORCE_OPEN_CHANCE: float = 0.1
+const FORCE_OPEN_CHANCE: float = 0.9 # 0.1
 const ADMIRE_SHILLINGS: int = 5
 const OPEN_SHILLINGS: int = 50
 var rewards_page_title: String
@@ -8,10 +8,12 @@ var rewards: Rewards
 
 func onFirstEntered(screen: Control) -> void:
 	super(screen)
-	var shilling_gain: MapEffectGD = Game.onCreateGainShillings(OPEN_SHILLINGS, self)
+	var change_shillings_wrapper: ActionWrapper = SavedData.onLoadModel(SavedDataActionWrapper.new(), self)
+	change_shillings_wrapper.setActions(ChangeShillingsAction.new(OPEN_SHILLINGS))
+	
 	var Boon: BoonGD = SavedData.onLoadModel(Random.getRandomFofByOdds(BoonInfo), self)
 	var Tool: ToolGD = SavedData.onLoadModel(Random.getRandomFofByOdds(ToolInfo), self)
-	rewards = Rewards.new([shilling_gain, Boon, Tool])
+	rewards = Rewards.new([change_shillings_wrapper, Boon, Tool])
 	
 func onEntered(screen: Control) -> void:
 	super(screen)
@@ -39,7 +41,7 @@ func onOptionPressed(option: EncounterOptionDatastore, screen: Control) -> void:
 			onCreateRewardsUI("ForceSuccessPage", screen)
 			return
 		"Admire":
-			Game.save_file.onUpdateShillings(ADMIRE_SHILLINGS)
+			onPushAction(ChangeShillingsAction.new(ADMIRE_SHILLINGS))
 	onContinueToNextPage(option)
 
 func onCreateRewardsUI(page_title: String, screen: Control) -> void:

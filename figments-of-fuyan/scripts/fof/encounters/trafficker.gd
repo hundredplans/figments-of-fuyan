@@ -18,18 +18,18 @@ func onOptionPressed(option: EncounterOptionDatastore, screen: Control) -> void:
 	var tool_data: SavedDataTool
 	match option.name:
 		"Handy":
-			Game.save_file.onUpdateShillings(-HANDY_SHILLINGS)
+			onPushAction(ChangeShillingsAction.new(-HANDY_SHILLINGS))
 			card_data = Random.getRandomFofInRarity(CardInfo, Game.Rarities.COMMON)
 			tool_data = Random.getRandomFofInRarity(ToolInfo, Game.Rarities.RARE)
 		"Prestige":
-			Game.save_file.onUpdateShillings(-HANDY_SHILLINGS)
+			onPushAction(ChangeShillingsAction.new(-PRESTIGE_SHILLINGS))
 			card_data = Random.getRandomFofInRarity(CardInfo, Game.Rarities.RARE)
 			tool_data = Random.getRandomFofInRarity(ToolInfo, Game.Rarities.COMMON)
 	
 	if card_data != null and tool_data != null:
 		card_data.tool_data = tool_data
-		var Card: CardGD = SavedData.onLoadModel(card_data, Game.save_file)
-		Game.save_file.onAddToDeck(Card)
+		var Card: CardGD = SavedData.onLoadModel(card_data, Game.getSaveFile())
+		onPushAction(AddToDeckAction.new(Card))
 		
 		var CardUI: Control = Card.onCreateCardUI(screen, false)
 		CardUI.setDisabled(true)

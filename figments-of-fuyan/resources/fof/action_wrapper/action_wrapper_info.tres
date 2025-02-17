@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ActionWrapperInfo" load_steps=4 format=3 uid="uid://c33hbc0mw6ux6"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/action_wrapper_info.gd" id="1_c66ii"]
+[ext_resource type="Script" path="res://scripts/fof/action_wrapper.gd" id="1_susbv"]
+[ext_resource type="Script" path="res://scripts/saved_data/action_wrapper/saved_data_action_wrapper.gd" id="2_2eg3h"]
+
+[resource]
+script = ExtResource("1_c66ii")
+id = 1
+name = "ActionWrapperInfo"
+gdscript = ExtResource("1_susbv")
+saved_data = ExtResource("2_2eg3h")

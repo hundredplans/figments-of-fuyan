@@ -1,5 +1,6 @@
 extends ToolGD
 
+const START_TURN_AMOUNT: int = 2
 var turns_remaining: int = 2
 func onProcessAction(action: Action) -> void:
 	super(action)
@@ -8,11 +9,10 @@ func onProcessAction(action: Action) -> void:
 			turns_remaining -= 1
 			if turns_remaining == 0:
 				onPushAction(RemoveToolAction.new(Card))
-			
 	
 func onToolEquipped() -> void:
 	if Card.getVisibleFieldCardsEnemies().is_empty():
-		var stat_action := StatAction.new(StatInfo.new(Card, Game.Stats.MAX_SPEED, 1))
+		var stat_action := StatAction.new(StatInfo.new(Card, Game.Stats.MAX_SPEED, 1, START_TURN_AMOUNT))
 		onPushAction(ToolActivatedAction.new(self, stat_action))
 	
 func onToolAction(action: StatAction) -> void:

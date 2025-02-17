@@ -17,14 +17,14 @@ func setInfo(_item: FofGD, _price_datastore: PriceDatastore, _save_file: SaveFil
 	save_file = _save_file
 	
 	ShillingsLabel.setText("SH: " + str(price_datastore.price))
-	save_file.update_shillings.connect(onUpdateShillings)
-	onUpdateShillings(save_file.shillings)
+	Game.getSaveFile().update_shillings.connect(onUpdateShillings)
+	onUpdateShillings()
 	
 	if price_datastore.bought: onPressed(true)
 
-func onUpdateShillings(shillings: int) -> void:
+func onUpdateShillings() -> void:
 	if !price_datastore.bought:
-		setDisabled(price_datastore.price > shillings)
+		setDisabled(price_datastore.price > Game.getSaveFile().getShillings())
 
 func setDisabled(state: bool) -> void:
 	ShillingsLabel.modulate = Color(1, 1, 1) if !state else Color(0.5, 0.5, 0.5)

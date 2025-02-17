@@ -20,6 +20,10 @@ func onBoon(action: Action = null) -> void:
 	onPushAction(StatAction.new(StatInfo.new(action.Damager, Game.Stats.MAX_HEALTH, 1)))
 
 func onBoonAdded() -> void:
+	super()
+
+func onLevelStarted() -> void:
+	super()
 	onResetCharges()
 	
 func getCharges() -> int:

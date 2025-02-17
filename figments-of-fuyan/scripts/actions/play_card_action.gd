@@ -9,5 +9,5 @@ func _init(_Card: CardGD, _Tile: TileGD) -> void:
 	Tile = _Tile
 	
 func onPostAction() -> void:
-	var actions: Array = [RemoveCardAction.new(Card), EnergyAction.new(-Card.energy), AwakenAction.new(Card, Tile)]
+	var actions: Array = [EnergyAction.new(-Card.energy), AwakenAction.new(Card, Tile)]
 	onPushAction(actions)

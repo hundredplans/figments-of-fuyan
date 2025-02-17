@@ -5,8 +5,6 @@ signal load_main_menu
 signal load_level
 signal exit_save
 signal update_shillings
-signal update_toolbelt
-signal update_boons
 
 var id: int
 var my_seed: int
@@ -81,8 +79,7 @@ func onLoadData(data: SavedData) -> void:
 	
 func onFofInit() -> void:
 	var boon_info: BoonInfo = getChampionCard().info.boon_info
-	var Boon: BoonGD = SavedData.onLoadModel(boon_info.saved_data.new(boon_info.id, true), self)
-	onAddBoon(Boon)
+	onPushAction(AddBoonAction.new(boon_info.id, false))
 	
 func setInfo(_area: AreaGD) -> void:
 	area = _area
@@ -104,10 +101,6 @@ func _notification(what: int) -> void:
 #region Shillings
 func getShillings() -> int:
 	return shillings
-	
-func onUpdateShillings(delta: int) -> void:
-	shillings = max(shillings + delta, 0)
-	update_shillings.emit(shillings)
 #endregion
 
 #region Load Level / Map / Main Menu
@@ -132,39 +125,11 @@ func getTimeElapsed() -> int:
 #endregion
 
 #region Tools
-func onUpdateToolbelt(Tool: ToolGD) -> void:
-	if !Tool.is_inside_tree():
-		add_child(Tool)
-	elif Tool.get_parent() != self:
-		Tool.reparent(self)
-		
-	tool_belt.append(Tool)
-	update_toolbelt.emit()
-	
-func onRemoveToolFromToolbelt(Tool: ToolGD) -> void:
-	tool_belt.erase(Tool)
-	remove_child(Tool)
+func getToolbelt() -> Array:
+	return tool_belt
 #endregion
 
 #region Boons
-func onAddBoon(Boon: BoonGD) -> void:
-	if Boon.info.id in boons.map(func(x: BoonGD): return x.info.id):
-		var OriginalBoon: BoonGD = boons.filter(func(x: BoonGD): return x.info.id == Boon.info.id)[0]
-		OriginalBoon.onAscend(true)
-	else:
-		if !Boon.is_inside_tree():
-			add_child(Boon)
-			
-		elif Boon.get_parent() != self:
-			Boon.reparent(self)
-		boons.append(Boon)
-		
-	update_boons.emit()
-	
-func onRemoveBoon(Boon: BoonGD) -> void:
-	boons.erase(Boon)
-	update_boons.emit()
-
 func getBoons() -> Array:
 	return boons
 #endregion
@@ -175,20 +140,6 @@ func onUpdateSafeEncounterCount(delta: int) -> void:
 	
 func getSafeEncounterCount() -> int:
 	return safe_encounter_count
-#endregion
-
-#region Deck
-signal deck_changed
-func onRemoveCard(Card: CardGD) -> void:
-	Card.queue_free()
-	deck_changed.emit()
-
-func onAddToDeck(Card: CardGD) -> void:
-	Card.team = 0
-	Card.reparent(self)
-	Card.onChangeCardPlace(Game.CardPlaces.DECK)
-	Card.add_to_group("AllyCardsGD")
-	deck_changed.emit()
 #endregion
 
 #region Game Loss
@@ -206,3 +157,9 @@ func onUpgradeChampion() -> void:
 func getChampionLevel() -> int:
 	return upgrade_level
 #endregion
+
+func onProcessAction(action: Action) -> void:
+	super(action)
+	if action.post:
+		if action is ChangeShillingsAction:
+			update_shillings.emit()

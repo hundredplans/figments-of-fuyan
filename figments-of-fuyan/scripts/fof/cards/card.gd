@@ -488,61 +488,62 @@ func isOccupyVisionVisibleAction(action: Action) -> bool:
 #endregion
 
 #region Movement
+var MovementTween: Tween
 func onMoveToTile(action: MoveToTileAction, delay: float) -> void:
 	if isLevelVisible():
+		if MovementTween != null: MovementTween.kill()
+		MovementTween = create_tween()
 		if !action.isJumpFall(): # Regular = Ramp movement
 			onWalk()
 			
-			var tween := get_tree().create_tween()
 			if action.movement_type == MoveToTileAction.MOVEMENT_TYPES.REGULAR:
-				tween.tween_property(self, "position", action.DestinationTile.getCardPosition(), delay)
+				MovementTween.tween_property(self, "position", action.DestinationTile.getCardPosition(), delay)
 			elif action.DestinationTile.isRamp():
-				tween.tween_property(self, "position", Tile.getHalfwayCardPosition(action.DestinationTile), delay / 2.0)
-				tween.tween_property(self, "position", action.DestinationTile.getCardPosition(), delay / 2.0)
+				MovementTween.tween_property(self, "position", Tile.getHalfwayCardPosition(action.DestinationTile), delay / 2.0)
+				MovementTween.tween_property(self, "position", action.DestinationTile.getCardPosition(), delay / 2.0)
 			elif Tile.isRamp():
-				tween.tween_property(self, "position", action.DestinationTile.getHalfwayCardPosition(Tile), delay / 2.0)
-				tween.tween_property(self, "position", action.DestinationTile.getCardPosition(), delay / 2.0)
+				MovementTween.tween_property(self, "position", action.DestinationTile.getHalfwayCardPosition(Tile), delay / 2.0)
+				MovementTween.tween_property(self, "position", action.DestinationTile.getCardPosition(), delay / 2.0)
 			return
 		
-		onJump()
 		if action.movement_type == MoveToTileAction.MOVEMENT_TYPES.JUMP: onJumpTween(action)
-		elif action.movement_type == MoveToTileAction.MOVEMENT_TYPES.FALL: onFall(action)
+		elif action.movement_type == MoveToTileAction.MOVEMENT_TYPES.FALL: onFallTween(action)
 	#else: setPositionToTile(action.DestinationTile)
 	
 const JUMP_SPEEDSCALE: float = 2.5
 func onJumpTween(action: MoveToTileAction) -> void:
 	var jump_time: float = 1
+	var jump_start: Vector3 = action.OriginalTile.getCardPosition()
 	var jump_end: Vector3 = action.DestinationTile.getCardPosition()
 	var jump_height: float = -4
-	var start_highest: Vector3 = position + Vector3(0, jump_height, 0)
+	var start_highest: Vector3 = jump_start + Vector3(0, jump_height, 0)
 	var end_highest: Vector3 = jump_end + Vector3(0, jump_height, 0)
 	
 	AniPlayer.speed_scale = JUMP_SPEEDSCALE
 	
-	onTweenJumpFall(jump_end, start_highest, end_highest, jump_time)
+	onTweenJumpFall(jump_start, jump_end, start_highest, end_highest, jump_time)
 	await get_tree().create_timer(action.getDelay()).timeout
 	
 	AniPlayer.speed_scale = 1
 	
 const FALL_MULTIPLIER: float = 2.3
 const FALL_SPEEDSCALE: float = 3.5
-func onFall(action: MoveToTileAction) -> void:
-	var height_diff: int = abs(action.DestinationTile.getHeight() - Tile.getHeight())
+func onFallTween(action: MoveToTileAction) -> void:
+	var height_diff: int = abs(action.DestinationTile.getHeight() - action.OriginalTile.getHeight())
+	var jump_start: Vector3 = action.OriginalTile.getCardPosition()
 	var jump_end: Vector3 = action.DestinationTile.getCardPosition()
 	var jump_height: float = 3 + (height_diff * FALL_MULTIPLIER)
-	var start_highest: Vector3 = position + Vector3(0, -jump_height, 0)
+	var start_highest: Vector3 = jump_start + Vector3(0, -jump_height, 0)
 	var end_highest: Vector3 = jump_end + Vector3(0, -jump_height, 0)
 	
-	AniPlayer.speed_scale = FALL_SPEEDSCALE - ((action.fall_time - 1) * 1.8) # was 2.2
-	onTweenJumpFall(jump_end, start_highest, end_highest, action.fall_time)
+	AniPlayer.speed_scale = FALL_SPEEDSCALE - ((action.fall_time - 1) * FALL_MULTIPLIER)
+	onTweenJumpFall(jump_start, jump_end, start_highest, end_highest, action.fall_time)
 	await get_tree().create_timer(action.getDelay()).timeout
 	
 	AniPlayer.speed_scale = 1
 	
-func onTweenJumpFall(jump_end: Vector3, start_highest: Vector3, end_highest: Vector3, jump_time: float) -> void:
-	var tween := get_tree().create_tween()
-	var jump_start: Vector3 = Tile.getCardPosition()
-	tween.tween_method(onJumpFall.bind(jump_start, jump_end, start_highest, end_highest), 0.0, 1.0, jump_time)
+func onTweenJumpFall(jump_start: Vector3, jump_end: Vector3, start_highest: Vector3, end_highest: Vector3, jump_time: float) -> void:
+	MovementTween.tween_method(onJumpFall.bind(jump_start, jump_end, start_highest, end_highest), 0.0, 1.0, jump_time)
 	onJump()
 	
 func onJumpFall(time: float, jump_start: Vector3, jump_end: Vector3, start_highest: Vector3, end_highest: Vector3) -> void:
@@ -1069,6 +1070,8 @@ func isInjured() -> bool:
 #region Field Effect
 func onAddFieldEffect(FieldEffect: FieldEffectGD) -> void:
 	field_effects.append(FieldEffect)
+	FieldEffect.Card = self
+	
 	if FieldInfo != null:
 		FieldInfo.onAddIcon(FieldEffect)
 	
@@ -1079,6 +1082,7 @@ func onCreateBaseFieldEffect(id: int, charges: int = -1, turns: int = -1, FofObj
 	
 	var FieldEffect: FieldEffectGD = SavedData.onLoadModel(field_effect_data, self)
 	FieldEffect.Card = self
+	
 	onPushAction(AddFieldEffectAction.new(FieldEffect, FofObject))
 	return FieldEffect
 	
@@ -1206,7 +1210,7 @@ func getIcon() -> Texture2D: return info.art_mini
 #endregion
 
 #region Elites
-func isValidEliteLevelSpawns(_enemy_spawns: Array) -> bool:
+func isValidEliteLevelSpawns(_enemy_cards: Array) -> bool:
 	return true
 #endregion
 

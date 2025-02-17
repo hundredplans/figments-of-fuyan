@@ -23,9 +23,9 @@ const CARD_FLIP_TIME: float = 0.25
 
 @export var MinimapPacked: PackedScene
 
-func setInfo(_save_file: SaveFileGD, _area: AreaGD, _World: Node3D, _UI: Control, map_node: MapNodeGD) -> void:
-	super(_save_file, _area, _World, _UI, map_node)
-	var items: Array = map_node.items
+func setInfo(_save_file: SaveFileGD, _area: AreaGD, _World: Node3D, _UI: Control, shop: MapNodeGD) -> void:
+	super(_save_file, _area, _World, _UI, shop)
+	var items: Array = shop.items
 	var boon_ids: Array = []
 	
 	for price_datastore in items:
@@ -37,17 +37,17 @@ func setInfo(_save_file: SaveFileGD, _area: AreaGD, _World: Node3D, _UI: Control
 			"Card":
 				purchasable_packed = PurchasableCardPacked
 				parent = Cards
-			"MapEffect":
-				if item.id == 3:
+			"ActionWrapper":
+				if item.hasType(RemoveFromDeckAction):
 					purchasable_packed = PurchasableRemovePacked
 					parent = RemoveCardPosition
-				else:
+				elif item.hasType(TransformCardAction) or item.hasType(AscendCardAction):
 					purchasable_packed = PurchasableTransformPacked
 					parent = TransformPosition
 			"Boon":
 				boon_ids.append(item.id)
 				if !Game.isBoonAvailable(item.id, boon_ids):
-					item = map_node.onRerollBoon().data
+					item = shop.onRerollBoon().data
 					
 				if item != null:
 					purchasable_packed = PurchasableBoonPacked
@@ -62,20 +62,21 @@ func setInfo(_save_file: SaveFileGD, _area: AreaGD, _World: Node3D, _UI: Control
 		var purchasable: Control = purchasable_packed.instantiate()
 		parent.add_child(purchasable)
 		purchasable.setInfo(fof, price_datastore, save_file)
+		
 		purchasable.create_screen.connect(onCreateScreen)
-		purchasable.pressed.connect(onItemPressed)
+		purchasable.pressed.connect(onItemPressed.bind(shop))
 	Cards.move_child(CardsFiller, 2)
 		
-	if map_node.isFirstShop():
+	if shop.isFirstShop():
 		RemoveCardControl.custom_minimum_size.x = 0
 		TransformControl.custom_minimum_size.x = 0
 		
-func onItemPressed(item: FofGD, price_datastore: PriceDatastore, DisplayedUI: Control) -> void:
+func onItemPressed(item: FofGD, price_datastore: PriceDatastore, DisplayedUI: Control, shop: MapNodeGD) -> void:
 	price_datastore.bought = true
-	save_file.onUpdateShillings(-price_datastore.price)
+	shop.onPushAction(ChangeShillingsAction.new(-price_datastore.price))
 	
 	if item is CardGD:
-		Game.save_file.onAddToDeck(item)
+		shop.onPushAction(AddToDeckAction.new(item))
 		Game.onFlyToUI(DisplayedUI, UI.getDeckPanel())
 		
 	elif item is ToolGD:
@@ -88,15 +89,19 @@ func onItemPressed(item: FofGD, price_datastore: PriceDatastore, DisplayedUI: Co
 			To = UI.ToolBeltSlotTwo
 		
 		Game.onFlyToUI(DisplayedUI, To)
+		
 	elif item is BoonGD:
-		save_file.onAddBoon(item)
-		Game.onFlyToUI(DisplayedUI, UI.BoonBox.onFindBoonIcon(item))
+		shop.onForceAction(AddBoonAction.new(item.info.id, item.ascended))
+		Game.onFlyToUI(DisplayedUI, UI.BoonBox.onFindBoonIcon(item.info.id))
 		
 	World.ActiveWorld.onBuy()
-	if item is MapEffectGD and item.info.id != 3: # Not remove card
-		if item.info.id == 4: # Ascend card
+	if item is ActionWrapper and !item.hasType(RemoveFromDeckAction): # Not remove card
+		var NewCard: CardGD
+		if item.hasType(AscendCardAction): # Ascend card
 			DisplayedUI.onCardAscended(false)
-		DisplayedUI = await onFlipCardAnimation(DisplayedUI, item.NewCard)
+			NewCard = item.getType(AscendCardAction)[0].Card
+		else: NewCard = item.getType(TransformCardAction)[0].NewCard
+		DisplayedUI = await onFlipCardAnimation(DisplayedUI, NewCard)
 		await get_tree().create_timer(TRANSFORM_WAIT_PRESSED_TIME).timeout
 		Game.onFlyToUI(DisplayedUI, UI.DeckPanel)
 		

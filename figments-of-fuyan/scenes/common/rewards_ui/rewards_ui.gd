@@ -71,8 +71,8 @@ func onMouseInUI(state: bool) -> void:
 	
 func onRewardPressed(reward: Variant) -> void:
 	add_reward.emit(reward)
-	if reward is MapEffectGD and reward.info.id == 2: # Shillings gain
-		reward.onPickup(save_file)
+	if reward is ActionWrapper and reward.hasType(ChangeShillingsAction):
+		reward.onUse()
 		onRewardTaken(reward)
 		
 	elif reward is Array:
@@ -80,7 +80,7 @@ func onRewardPressed(reward: Variant) -> void:
 		RewardsCardsUI.taken.connect(onRewardTaken)
 		
 	elif reward is BoonGD:
-		save_file.onAddBoon(reward)
+		Game.getArea().onPushAction(AddBoonAction.new(reward.info.id, reward.getAscended()))
 		onRewardTaken(reward)
 		
 	elif reward is ToolGD:
@@ -88,7 +88,7 @@ func onRewardPressed(reward: Variant) -> void:
 		ToolPickedUpUI.taken.connect(onRewardTaken)
 		
 	elif reward is CardGD:
-		Game.save_file.onAddToDeck(reward)
+		Game.getArea().onPushAction(AddToDeckAction.new(reward))
 		onRewardTaken(reward)
 		
 func onRewardTaken(reward: Variant) -> void:

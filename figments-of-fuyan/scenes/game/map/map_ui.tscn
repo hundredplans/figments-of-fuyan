@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://ssbbc35p2xby"]
+[gd_scene load_steps=17 format=3 uid="uid://ssbbc35p2xby"]
 
 [ext_resource type="Script" path="res://scenes/game/map/map_ui.gd" id="1_8nhbi"]
 [ext_resource type="LabelSettings" uid="uid://baxopkmeda53x" path="res://resources/ui/label_settings/roboto_huge.tres" id="2_r0ufu"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://db7lt6qbe4d0e" path="res://scenes/common/time_label/time_label.tscn" id="10_dlqmt"]
 [ext_resource type="PackedScene" uid="uid://mehoa6ajrja5" path="res://scenes/common/highlight_tx_button.tscn" id="11_m1bsi"]
 [ext_resource type="Texture2D" uid="uid://do8qr6q0dyyiy" path="res://assets/sprites/ui/icons/deck.png" id="12_xn4sn"]
+[ext_resource type="PackedScene" uid="uid://d02qi38rwbhoh" path="res://scenes/game/levels/ui/console.tscn" id="13_n8ysn"]
 
 [sub_resource type="Animation" id="Animation_bd438"]
 resource_name = "MapStart"
@@ -244,7 +245,13 @@ size_flags_horizontal = 8
 size_flags_vertical = 8
 horizontal_alignment = 1
 
+[node name="Console" parent="." instance=ExtResource("13_n8ysn")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+
 [connection signal="mouse_in_ui" from="BoonBox" to="." method="onMouseInUI"]
 [connection signal="pressed" from="MarginContainer/TopBar/PanelContainer/MarginContainer/ToolBeltSlotOne" to="." method="onToolbeltSlotPressed"]
 [connection signal="pressed" from="MarginContainer/TopBar/PanelContainer2/MarginContainer/ToolBeltSlotTwo" to="." method="onToolbeltSlotPressed"]
 [connection signal="pressed" from="MarginContainer/TopBar/DeckPanel/MarginContainer/DeckButton" to="." method="onDeckButtonPressed"]
+[connection signal="mouse_in_ui" from="Console" to="." method="onMouseInUI"]

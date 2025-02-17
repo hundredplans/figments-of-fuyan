@@ -20,4 +20,3 @@ func getDisabled() -> bool:
 
 func getCharges() -> int:
 	return super()
-

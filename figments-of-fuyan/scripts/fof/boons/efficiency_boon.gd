@@ -25,6 +25,10 @@ func onBoon(action: Action = null) -> void:
 			onPushAction(EnergyAction.new(energy_gain))
 
 func onBoonAdded() -> void:
+	super()
+	
+func onLevelStarted() -> void:
+	super()
 	onResetCharges()
 
 func onSave() -> SavedDataBoon:

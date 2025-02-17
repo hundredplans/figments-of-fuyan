@@ -3,6 +3,7 @@ class_name AreaGD extends FofGD
 #region Global
 signal init_load
 signal load_level
+signal process_action
 
 var map_location_to_node: Dictionary
 var basic_card_ids: Array = []
@@ -436,22 +437,24 @@ func setRewards(is_win: bool) -> void:
 		var fight_rewards_datastore: FightRewardsDatastore = \
 			getWorld().elite_fight_rewards if is_elite else getWorld().fight_rewards
 		
-		var enemy_spawns: Array = active_level.enemy_spawns.duplicate()
+		var enemy_cards: Array = active_level.enemy_cards.duplicate()
 		if is_elite:
-			items.append(SavedData.onLoadModel(enemy_spawns.pop_back(), active_level))
+			items.append(SavedData.onLoadModel(enemy_cards.pop_back(), active_level))
 			
-		enemy_spawns = enemy_spawns.filter(func(x: SavedDataCard): return Helper.getFofInfoID(CardInfo, x.id).rarity != Game.Rarities.CHAMPION)
+		enemy_cards = enemy_cards.filter(func(x: SavedDataCard): return Helper.getFofInfoID(CardInfo, x.id).rarity != Game.Rarities.CHAMPION)
 		
 		var reward_amount: int = Game.CARD_REWARD_DEFAULT_AMOUNT
-		enemy_spawns.resize(reward_amount)
-		enemy_spawns = enemy_spawns.filter(func(x: SavedDataCard): return x != null)
+		enemy_cards.resize(reward_amount)
+		enemy_cards = enemy_cards.filter(func(x: SavedDataCard): return x != null)
 		
-		items.append(enemy_spawns.map(func(x: SavedDataCard):\
+		items.append(enemy_cards.map(func(x: SavedDataCard):\
 			return SavedData.onLoadModel(x.duplicate(), active_level)))
 			
 		var shillings: int = randi_range(fight_rewards_datastore.shillings_min, fight_rewards_datastore.shillings_max)
-		var shilling_gain: MapEffectGD = Game.onCreateGainShillings(shillings, active_level)
-		items.append(shilling_gain)
+		var change_shillings_wrapper: ActionWrapper = SavedData.onLoadModel(SavedDataActionWrapper.new(), active_level)
+		change_shillings_wrapper.setActions(ChangeShillingsAction.new(shillings))
+		
+		items.append(change_shillings_wrapper)
 			
 		var add_tool: bool
 		var add_boon: bool
@@ -481,14 +484,14 @@ func setRewards(is_win: bool) -> void:
 #endregion
 
 #region Random Enemy
-func onCreateCardByEnergy(_cards: Array, energy: int, spawn_coords: Vector4i, progress: int, is_elite: bool) -> SavedDataCard:
+func onCreateCardByEnergy(_cards: Array, energy: int, spawn: SavedDataSpawn, progress: int, is_elite: bool) -> SavedDataCard:
 	var original_cards: Array = _cards.filter(func(x: CardInfo): return x.energy == energy)
 	var cards: Array = getCardsByRarity(original_cards)
 	
 	var card_info: CardInfo = cards.pick_random()
 	var card_data: SavedDataCard = card_info.saved_data.new(card_info.id, true)
 	card_data.team = 1
-	card_data.coords = spawn_coords
+	card_data.coords = spawn.coords
 	
 	if progress < 3:
 		Game.setCardDataFromInfo(card_data, card_info)
@@ -592,3 +595,10 @@ func onLossFinished() -> void:
 #region Encounters
 func onAppendToEncouteredEncounterIds(id: int) -> void:
 	encountered_encounter_ids.append(id)
+#endregion
+
+#region Actions
+func onProcessAction(action: Action) -> void:
+	super(action)
+	process_action.emit(action)
+#endregion

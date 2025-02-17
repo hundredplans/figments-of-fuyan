@@ -5,7 +5,7 @@ class_name SavedDataLevel extends SavedData
 @export var data: Array
 @export var energy: int
 @export var max_energy: int
-@export var enemy_spawns: Array
+@export var enemy_cards: Array # Array[SavedDataCard]
 @export var field_cards_data: Array
 @export var fight_type: Game.FightTypes
 @export var is_ended: bool
@@ -15,11 +15,12 @@ class_name SavedDataLevel extends SavedData
 @export var player_card_last_seen_turn: int
 @export var level_area_datastore: LevelAreaDatastore
 @export var speed_order: SpeedOrder
+@export var spawn_group: String
 
-func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _data: Array = [], _enemy_spawns: Array = [], _field_cards_data: Array = [], \
+func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _data: Array = [], _enemy_cards: Array = [], _field_cards_data: Array = [], \
 	_phase := Game.Phases.NULL, _level_camera_data: LevelCameraData = null, _energy: int = 0, _max_energy: int = 0, _fight_type := Game.FightTypes.REGULAR, _is_ended: bool = false,
 	_rewards: Rewards = null, _anti_boons: Array = [], _old_player_vision: Array = [], _player_card_last_seen_turn: int = -1,\
-	_level_area_datastore: LevelAreaDatastore = null, _speed_order: SpeedOrder = null) -> void:
+	_level_area_datastore: LevelAreaDatastore = null, _speed_order: SpeedOrder = null, _spawn_group: String = "") -> void:
 	super(_id, _first_init, _public_id)
 	data = _data
 	phase = _phase
@@ -27,7 +28,7 @@ func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _data: 
 	max_energy = _max_energy
 	level_camera_data = _level_camera_data
 	field_cards_data = _field_cards_data
-	enemy_spawns = _enemy_spawns
+	enemy_cards= _enemy_cards
 	fight_type = _fight_type
 	is_ended = _is_ended
 	rewards = _rewards
@@ -36,6 +37,7 @@ func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _data: 
 	player_card_last_seen_turn = _player_card_last_seen_turn
 	level_area_datastore = _level_area_datastore
 	speed_order = _speed_order
+	spawn_group = _spawn_group
 	
 func getInfoType() -> GDScript: return LevelInfo
 		

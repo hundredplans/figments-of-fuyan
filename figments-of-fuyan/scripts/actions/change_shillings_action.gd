@@ -1,12 +1,15 @@
 class_name ChangeShillingsAction extends Action
 
-var shillings: int
-func _init(_shillings: int) -> void:
+@export var delta: int
+func _init(_delta: int = 0) -> void:
 	super()
-	shillings = _shillings
+	delta = _delta
 	
 func onPreAction() -> void:
 	pass
 	
 func onPostAction() -> void:
-	Game.get_tree().get_nodes_in_group("SaveFilesGD")[0].onUpdateShillings(shillings)
+	Game.getSaveFile().shillings = max(Game.getSaveFile().getShillings() + delta, 0)
+	
+func getDelta() -> int:
+	return delta

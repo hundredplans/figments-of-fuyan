@@ -9,8 +9,13 @@ func _init(_Card: CardGD = null, _Tool: ToolGD = null) -> void:
 	Tool = _Tool
 	
 func onPreAction() -> void:
-	if Card.Tool != null and Card.Tool != Tool:
-		onForceAction(RemoveToolAction.new(Card))
+	if Card.Tool != null:
+		if Card.Tool != Tool:
+			onForceAction(RemoveToolAction.new(Card))
+		elif !Card.Tool.getAscended():
+			onForceAction(AscendToolAction.new(Card.Tool))
+			onFailAction()
 	
 func onPostAction() -> void:
+	Tool.reparent(Card)
 	Card.onAddTool(Tool)

@@ -227,6 +227,7 @@ func _on_search_tile_object_text_changed(text: String):
 	SearchResultsPanel.visible = !text.is_empty()
 
 func onTileObjectInfoSelected(data: SavedData, remove_last: bool = true) -> void:
+	data = data.duplicate()
 	if remove_last and HoverModel != null: HoverModel.queue_free()
 	onReleaseLineEditFocus()
 	

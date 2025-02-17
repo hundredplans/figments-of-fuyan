@@ -19,5 +19,5 @@ func getLogInfo() -> Array:
 
 func onCheckFail() -> void:
 	var id: int = overworld_trait.getData().id
-	if Card.getFieldTraits().any(func(x: TraitGD): return x.id == id):
+	if Card.getFieldTraits().any(func(x: TraitGD): return x.info.id == id):
 		onFailAction()

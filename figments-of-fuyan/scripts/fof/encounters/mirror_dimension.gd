@@ -31,8 +31,12 @@ func onStartFight() -> void:
 	cards.resize(spawn_amount)
 	cards = cards.filter(func(x: CardGD): return x != null)
 	
-	var empty_spawn_coords: Array = level_info.getEmptySpawnCoords()
-	var enemy_spawns: Array = []
+	var spawn_group: String = level_info.getRandomSpawnGroup()
+	var enemy_spawns: Array = level_info.getEnemySpawnsInGroup(spawn_group) # Array[SavedDataSpawn]
+	var enemy_cards: Array = []
+	
+	enemy_spawns.shuffle()
+	
 	for i in range(cards.size()):
 		var Card: CardGD = cards[i]
 		var OriginalTool: ToolGD = Card.getTool()
@@ -44,9 +48,11 @@ func onStartFight() -> void:
 		
 		var card_data: SavedDataCard = Game.onCreateBaseCard(Card.info.id, Card.ascended, tool_data)
 		Game.setCardDataFromInfo(card_data, Card.info)
-		card_data.coords = empty_spawn_coords[i]
+		card_data.coords = enemy_spawns[i].coords
 		card_data.team = 1
-		enemy_spawns.append(card_data)
+		enemy_cards.append(card_data)
 	
-	var level_data: SavedDataLevel = level_info.saved_data.new(level_info.id, true, 0, level_info.data.duplicate(), enemy_spawns)
+	var level_data: SavedDataLevel = level_info.saved_data.new(level_info.id, true, 0, level_info.data.duplicate())
+	level_data.spawn_group = spawn_group
+	level_data.enemy_cards = enemy_cards
 	load_level.emit(level_data)

@@ -56,22 +56,36 @@ func getForeign(info_type: GDScript, j: int) -> bool:
 		elif j == 3: return true
 	return false
 	
-func isFirstShop() -> bool: return map_location.progress == 1 # DEBUG
+func isFirstShop() -> bool: return map_location.progress == 0
 	
 func onAddRemoveCard() -> void:
-	onAddToItems(PriceDatastore.new(world_datastore.remove_card_price, SavedDataMapEffect.new(3, true)))
+	var remove_card_wrapper: ActionWrapper = SavedData.onLoadModel(SavedDataActionWrapper.new(), self)
+	remove_card_wrapper.setActions(RemoveFromDeckAction.new(null, true))
+	
+	onAddToItems(PriceDatastore.new(world_datastore.remove_card_price, remove_card_wrapper.onSave()))
 
 func onAddTransformation() -> void:
 	var transformation_ids: Array = [4, 5, 6]
 	var id: int = transformation_ids.pick_random()
-	var picked_data: SavedData = Helper.getFofInfoID(MapEffectInfo, id).saved_data.new(id, true)
+	
+	var action_wrapper: ActionWrapper = SavedData.onLoadModel(SavedDataActionWrapper.new(), self)
+	var action: Action
+	
 	var base_price: int = 0
+	
 	match id:
-		4: base_price = world_datastore.ascend_card_price
-		5: base_price = world_datastore.transform_by_rarity_price
-		6: base_price = world_datastore.transform_by_cost_price
+		4:
+			action = AscendCardAction.new(null, true)
+			base_price = world_datastore.ascend_card_price
+		5:
+			action = TransformCardAction.new(null, TransformCardAction.TransformType.Rarity)
+			base_price = world_datastore.transform_by_rarity_price
+		6:
+			action = TransformCardAction.new(null, TransformCardAction.TransformType.Energy)
+			base_price = world_datastore.transform_by_cost_price
 		
-	onAddToItems(PriceDatastore.new(base_price, picked_data))
+	action_wrapper.setActions(action)
+	onAddToItems(PriceDatastore.new(base_price, action_wrapper.onSave()))
 
 func onAddToItems(price_datastore: PriceDatastore) -> void:
 	items.append(price_datastore)
@@ -139,3 +153,9 @@ func onApplyFinalPriceMultipliers(price: int) -> int:
 		
 	return price
 #endregion
+
+func onProcessAction(action: Action) -> void:
+	super(action)
+	if action.post:
+		if action is ChangeShillingsAction:
+			pass

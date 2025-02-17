@@ -30,7 +30,10 @@ func getDescription() -> String:
 	return info.description if !ascended else info.ascended_description	
 	
 func onBoonAdded() -> void:
-	pass
+	onResetCharges()
+	
+	if Game.isLevel():
+		onLevelStarted()
 
 func getDisabled() -> bool:
 	return false
@@ -50,7 +53,17 @@ func isAddRequirementMet() -> bool: # Whether you can add this to your boons
 
 func onLevelEnded(_win: bool) -> void:
 	if info.elite_fight_curse or info.rarity == Game.Rarities.MINI:
-		Game.save_file.onRemoveBoon(self)
+		onPushAction(RemoveBoonAction.new(info.id))
 		onClear()
 		return
 	onResetCharges()
+	
+func onProcessAction(action: Action) -> void:
+	if action.post:
+		if action is StartGameAction:
+			onLevelStarted()
+		elif action is ChangePhaseAction and action.phase in Game.ADVANCE_PHASES:
+			onAdvanceTurn(Game.ADVANCE_PHASES.find(action.phase))
+			
+func onLevelStarted() -> void: pass # Called when the level literally starts
+func onAdvanceTurn(_team: int) -> void: pass

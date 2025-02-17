@@ -36,6 +36,7 @@ func onValidSelection(cards: Array) -> bool:
 	return cards.all(func(x: CardGD): return x.info.id == cards[0].info.id)
 	
 func onAccepted(cards: Array, option: EncounterOptionDatastore, screen: Control) -> void:
-	cards[0].onAscend(true)
-	await Game.onRemoveCardWithAnimation(cards[1], screen)
+	onPushAction(AscendCardAction.new(cards[0], true))
+	temp_disable_options.emit(true)
+	await Game.onRemoveCardWithAnimation(cards[1], screen, self)
 	onContinueToNextPage(option)

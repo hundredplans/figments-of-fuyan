@@ -26,6 +26,10 @@ func onBoon(action: Action = null) -> void:
 		onPushAction(action.Card.getActiveAbilities().map(func(x: ActiveAbilityDatastore): return ChangeActiveEffectChargesAction.new(x, 1)))
 
 func onBoonAdded() -> void:
+	super()
+
+func onLevelStarted() -> void:
+	super()
 	onResetCharges()
 	
 func onResetChargesInLevel() -> void:

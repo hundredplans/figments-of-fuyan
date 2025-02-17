@@ -49,7 +49,7 @@ func setInfo(_Tool: ToolGD, _save_file: SaveFileGD, remove_dispose: bool = false
 		DisposeContainer.visible = false
 		
 func onSlotPressed() -> void:
-	save_file.onUpdateToolbelt(Tool)
+	Game.getArea().onPushAction(AddToToolbeltAction.new(Tool))
 	onTaken()
 	
 func onToolPressed(ToolbeltTool: ToolGD) -> void:
@@ -63,10 +63,10 @@ func onToolPressed(ToolbeltTool: ToolGD) -> void:
 	
 func onToolConfirmed(ToolbeltTool: ToolGD) -> void:
 	var ascend_tool: bool = ToolbeltTool.info.id == Tool.info.id and !ToolbeltTool.ascended and !Tool.ascended
-	if ascend_tool: ToolbeltTool.ascended = true
-	else:
-		save_file.onRemoveToolFromToolbelt(ToolbeltTool)
-		save_file.onUpdateToolbelt(Tool)
+	var actions: Array = [AscendToolAction.new(ToolbeltTool)] if !ascend_tool else \
+		[RemoveFromToolbeltAction.new(ToolbeltTool), AddToToolbeltAction.new(Tool)]
+		
+	Game.getArea().onPushAction(actions)
 	onTaken()
 
 func _on_bin_button_pressed() -> void:
@@ -79,11 +79,7 @@ func _on_deck_screen_pressed() -> void:
 	DeckScreen.setInfo(true)
 	
 func onCardSelected(Card: CardGD) -> void:
-	if Card.Tool == null or Card.Tool.info.id != Tool.info.id:
-		Tool.reparent(Card)
-		Card.onAddTool(Tool)
-	else:
-		Card.Tool.setAscended(true)
+	Game.getArea().onPushAction(AddToolAction.new(Card, Tool))
 	onTaken()
 	
 func onTaken() -> void:

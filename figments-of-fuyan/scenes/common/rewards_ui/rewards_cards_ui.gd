@@ -20,6 +20,7 @@ func onMouseInUI(state: bool) -> void:
 	
 func onCardPressed(CardUI: Control) -> void:
 	var Card: CardGD = CardUI.Card
-	Game.save_file.onAddToDeck(Card)
+	Game.getArea().onPushAction(AddToDeckAction.new(Card))
+	
 	queue_free()
 	taken.emit(Card)

@@ -6,6 +6,10 @@ func onResetCharges() -> void:
 	doubleup_charges = 1 if !ascended else 2
 
 func onBoonAdded() -> void:
+	super()
+
+func onLevelStarted() -> void:
+	super()
 	onResetCharges()
 
 func onProcessAction(action: Action) -> void:

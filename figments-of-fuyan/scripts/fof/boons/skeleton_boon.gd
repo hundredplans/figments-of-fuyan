@@ -21,6 +21,11 @@ func onBoon(action: DeathAction) -> void:
 	onPushAction(AwakenAction.new(NewCard, action.Tile))
 
 func onBoonAdded() -> void:
+	super()
+	onResetCharges()
+	
+func onLevelStarted() -> void:
+	super()
 	onResetCharges()
 	
 func getDisabled() -> bool:

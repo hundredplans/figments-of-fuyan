@@ -19,6 +19,7 @@ var area: AreaGD
 
 @onready var DeckPanel: PanelContainer = %DeckPanel
 @onready var DeckCardAmountLabel: Label = %DeckCardAmountLabel
+@onready var Console: Control = %Console
 #endregion
 
 #region Exports
@@ -43,12 +44,10 @@ func _process(_delta: float) -> void:
 
 func setInfo(_save_file: SaveFileGD) -> void:
 	save_file = _save_file
-	save_file.update_shillings.connect(onUpdateShillings)
-	save_file.update_toolbelt.connect(onUpdateToolbelt)
-	save_file.update_boons.connect(BoonBox.onUpdate)
-	onUpdateShillings(save_file.getShillings())
+	onUpdateShillings()
 	
 	area = save_file.area
+	area.process_action.connect(onProcessAction)
 	area.init_load.connect(onInitLoad)
 	
 	TimeLabel.setInfo(save_file)
@@ -60,13 +59,29 @@ func setInfo(_save_file: SaveFileGD) -> void:
 		map_node.create_screen.connect(onCreateScreen)
 		map_node.finished.connect(onMapNodeFinished)
 		map_node.hovered.connect(onMapNodeHovered)
-		
-	save_file.deck_changed.connect(onUpdateDeckCardAmountLabel)
+	
 	onUpdateDeckCardAmountLabel()
 	
 func onInitLoad() -> void: # Basically the area fof init
 	onMapStartAnimation()
 
+func onProcessAction(action: Action) -> void:
+	if is_queued_for_deletion(): return
+	if action.post:
+		if action is AddToDeckAction:
+			onUpdateDeckCardAmountLabel()
+		elif action is RemoveFromDeckAction:
+			onUpdateDeckCardAmountLabel()
+		elif action is AddBoonAction:
+			BoonBox.onUpdate()
+		elif action is RemoveBoonAction:
+			BoonBox.onUpdate()
+		elif action is AddToToolbeltAction:
+			onUpdateToolbelt()
+		elif action is RemoveFromToolbeltAction:
+			onUpdateToolbelt()
+		elif action is ChangeShillingsAction:
+			onUpdateShillings()
 #endregion
 
 #region Map Start
@@ -77,8 +92,8 @@ func onMapStartAnimation() -> void:
 #endregion
 
 #region Shillings
-func onUpdateShillings(count: int) -> void:
-	ShillingsLabel.setText("SH: " + str(count))
+func onUpdateShillings() -> void:
+	ShillingsLabel.setText("SH: " + str(Game.getSaveFile().getShillings()))
 #endregion
 
 #region Map Node
@@ -143,15 +158,8 @@ func onToolbeltSlotPressed(Tool: ToolGD) -> void:
 	ToolbeltTool = Tool
 	
 func onToolbeltCardSelected(Card: CardGD) -> void:
-	save_file.onRemoveToolFromToolbelt(ToolbeltTool)
-	if Card.Tool == null or Card.Tool.info.id != ToolbeltTool.info.id:
-		Card.add_child(ToolbeltTool)
-		Card.onAddTool(ToolbeltTool)
-	else:
-		Card.Tool.setAscended(true)
-	
+	Game.getArea().onPushAction([RemoveFromToolbeltAction.new(ToolbeltTool), AddToolAction.new(Card, ToolbeltTool)])
 	ToolbeltTool = null
-	onUpdateToolbelt()
 
 func onDisableCardsWithTool(CardUI: Control) -> bool:
 	var Tool: ToolGD = CardUI.Card.Tool

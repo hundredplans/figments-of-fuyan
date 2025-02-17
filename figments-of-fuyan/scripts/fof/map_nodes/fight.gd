@@ -1,6 +1,7 @@
 class_name FightNodeGD extends MapNodeGD
 
-var enemy_spawns: Array = []
+var spawn_group: String
+var enemy_cards: Array # Array[SavedDataCard]
 var level_info: LevelInfo
 
 #region Save / Load / Init
@@ -11,19 +12,24 @@ func onFofInit() -> void:
 		return
 	
 	setLevelInfo()
-	var empty_spawn_coords: Array = getEmptySpawnCoords()
-	var enemy_spawn_amount: int = min(randi_range(level_info.enemy_min_spawn_amount, level_info.enemy_max_spawn_amount), empty_spawn_coords.size())
+	
+	spawn_group = level_info.getRandomSpawnGroup()
+	var enemy_spawns: Array = level_info.getEnemySpawnsInGroup(spawn_group) # Array[SavedDataSpawn]
+	enemy_spawns.shuffle()
+	
+	var enemy_spawn_amount: int = min(randi_range(level_info.enemy_min_spawn_amount, level_info.enemy_max_spawn_amount), enemy_spawns.size())
 	var budget: int = getBudget()
 	
-	enemy_spawns = Game.area.setEnemySpawnsFromBudget(budget, enemy_spawn_amount, empty_spawn_coords, map_location.progress, false)
+	enemy_cards = Game.area.setEnemySpawnsFromBudget(budget, enemy_spawn_amount, enemy_spawns, map_location.progress, false)
 	
 func onSave() -> SavedDataMapNode:
-	return SavedDataFight.new(info.id, false, public_id, map_location, links, is_entered, is_finished, rotation.y, level_info, enemy_spawns)
+	return SavedDataFight.new(info.id, false, public_id, map_location, links, is_entered, is_finished, rotation.y, level_info, spawn_group, enemy_cards)
 	
 func onLoadData(data: SavedData) -> void:
-	super(data)
+	super(data)	
 	level_info = data.level_info
-	enemy_spawns = data.enemy_spawns
+	enemy_cards = data.enemy_cards
+	spawn_group = data.spawn_group
 #endregion
 
 #region Hovering
@@ -48,7 +54,9 @@ func onEntered() -> void:
 func onFinished() -> void:
 	super()
 	if self is EliteFightNodeGD or self is MinibossFightNodeGD or self is BossFightNodeGD: return
-	var new_level_data: SavedDataLevel = level_info.saved_data.new(level_info.id, true, 0, level_info.data.duplicate(), enemy_spawns)
+	var new_level_data: SavedDataLevel = level_info.saved_data.new(level_info.id, true, 0, level_info.data.duplicate())
+	new_level_data.enemy_cards = enemy_cards
+	new_level_data.spawn_group = spawn_group
 	new_level_data.fight_type = Game.FightTypes.REGULAR
 	
 	load_level.emit(new_level_data)
@@ -66,9 +74,4 @@ func setLevelInfo() -> void:
 		level_info = levels.pick_random()
 	else:
 		level_info = Helper.getFofInfoID(LevelInfo, Helper.admin_datastore.force_level_spawn_id)
-	
-func getEmptySpawnCoords() -> Array:
-	var empty_spawn_coords: Array = level_info.getEmptySpawnCoords()
-	empty_spawn_coords.shuffle()
-	return empty_spawn_coords
 #endregion

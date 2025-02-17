@@ -6,10 +6,12 @@ extends Node3D
 @onready var Icon: Sprite3D = %Icon
 @onready var DamageLabel: Label3D = %DamageLabel
 
-func setInfo(Tile: TileGD, PreviousTile: TileGD, Card: CardGD, damage: int) -> void:
-	if Card != null:
+func setInfo(Tile: TileGD, PreviousTile: TileGD, damage: int) -> void:
+	var SpectateObject: GameObjectGD = Game.getLevel().getSpectateObject()
+	if SpectateObject != null and SpectateObject is CardGD:
+		var Card: CardGD = SpectateObject
 		Card.temp_fall_damage = 0
-		position.y = Tile.getCardPositionBase().y
+		global_position.y = Tile.getCardPositionBase().y
 		DamageLabel.text = str(damage)
 		Icon.texture = skull_icon if !Card.isCardSurviveFallDamage(damage) else health_icon
 		global_rotation.y = (Game.getRelativeTileRotation(Tile, PreviousTile)) * (PI / 3) + (PI / 6)

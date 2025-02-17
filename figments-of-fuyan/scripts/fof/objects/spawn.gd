@@ -61,12 +61,16 @@ func getTile() -> TileGD:
 	return occupied_tiles[0]
 	
 func onOccupy(state: bool) -> void:
+	super(state)
 	if SpawnParticle == null: return
 	SpawnParticle.onOccupy(state)
 
-func onChangeSpawnGroup(char: String) -> void:
-	if !groups.has(char): groups.append(char)
-	else: groups.erase(char)
+func onChangeSpawnGroup(group_name: String) -> void:
+	if !groups.has(group_name): groups.append(group_name)
+	else: groups.erase(group_name)
 	
 	GroupLabel.setGroups(groups)
+	
+func isInLevelGroup() -> String:
+	return Game.getLevel().getSpawnGroup() in groups
 	

@@ -22,7 +22,7 @@ var archetype_order: Dictionary = {
 
 func onSave() -> void:
 	ai_speed_order_public_ids = ai_speed_order.map(func(x: CardGD): return x.public_id)
-	neutral_speed_order_public_ids = neutral_speed_order.map(func(x: CardGD): return x.public)
+	neutral_speed_order_public_ids = neutral_speed_order.map(func(x: CardGD): return x.public_id)
 	
 func onLoad() -> void:
 	ai_speed_order = ai_speed_order_public_ids.map(func(x: int): return Game.onFindPublicIDObject(x))

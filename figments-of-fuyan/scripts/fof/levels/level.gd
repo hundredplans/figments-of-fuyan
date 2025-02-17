@@ -9,7 +9,7 @@ var energy: int
 var max_energy: int
 var level_camera_data: LevelCameraData
 var phase: Game.Phases
-var enemy_spawns: Array
+var enemy_cards: Array
 var fight_type: Game.FightTypes
 var is_ended: bool
 var rewards: Rewards
@@ -20,6 +20,7 @@ var speed_order: SpeedOrder
 var player_card_last_seen_turn: int # Default -1 which means they were never seen, if this is > 10 or -1 every enemy has the adventurer tag
 var level_area_datastore: LevelAreaDatastore # Specific to each areao
 var recent_camera_position: Vector3 # Not saved
+var spawn_group: String
 
 signal set_spectate_card
 signal energy_changed
@@ -27,7 +28,6 @@ signal request_camera_data
 signal request_camera_position_update
 signal phase_changed
 signal draw_card
-signal remove_card
 signal awakened
 signal death
 signal turn_state_changing
@@ -58,8 +58,8 @@ func onSave() -> SavedData:
 	if speed_order != null: speed_order.onSave()
 	var old_player_vision_public_ids: Array = old_player_vision.map(func(x: GameObjectGD): return x.public_id)
 	
-	return SavedDataLevel.new(info.id, false, public_id, data, enemy_spawns, getFieldCards(), phase, level_camera_data, energy, max_energy,\
- 	fight_type, is_ended, rewards, anti_boons, old_player_vision_public_ids, player_card_last_seen_turn, level_area_datastore, speed_order)
+	return SavedDataLevel.new(info.id, false, public_id, data, enemy_cards, getFieldCards(), phase, level_camera_data, energy, max_energy,\
+ 	fight_type, is_ended, rewards, anti_boons, old_player_vision_public_ids, player_card_last_seen_turn, level_area_datastore, speed_order, spawn_group)
 
 func onClear() -> void:
 	queue_free()
@@ -70,8 +70,9 @@ func onLoadData(data: SavedData) -> void:
 	fight_type = data.fight_type
 	energy = data.energy
 	max_energy = data.max_energy
-	enemy_spawns = data.enemy_spawns
+	enemy_cards = data.enemy_cards
 	speed_order = data.speed_order
+	spawn_group = data.spawn_group
 	
 	for light in info.lights:
 		add_child(light.instantiate())
@@ -106,6 +107,8 @@ func onLoadData(data: SavedData) -> void:
 		onGameEnded()
 
 func onLoadTileObjectInit(data: SavedDataTileObject) -> TileObjectGD:
+	if data is SavedDataSpawn and spawn_group not in data.groups: return null
+		
 	var TileObject: TileObjectGD = SavedData.onLoadModel(data, self)
 	TileObject.add_to_group("LevelTileObjectsGD")
 	TileObject.set_spectate_card.connect(func(x: TileObjectGD): set_spectate_card.emit(x))
@@ -128,10 +131,9 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 		for GameObject in get_tree().get_nodes_in_group("GameObjectsGD"):
 			GameObject.onLoadDataLevelFofInit()
 			
-		for card_data in enemy_spawns:
+		for card_data in enemy_cards:
 			actions.append(AwakenAction.new(SavedData.onLoadModel(card_data, self), Game.getTile(card_data.coords)))
 		
-		actions += get_tree().get_nodes_in_group("BoonsGD").map(func(x: BoonGD): return AddBoonAction.new(x.info.id, x.ascended, true))
 		level_area_datastore = onCreateLevelAreaDatastore()
 		
 		onPushAction(actions)
@@ -204,8 +206,6 @@ func onProcessAction(action: Action) -> void:
 		elif action is FinishAwakenAction:
 			onCheckSkipHandPhase()
 			onCardFinishedAwakening(action)
-		elif action is RemoveCardAction:
-			remove_card.emit(action.Card)
 		elif action is InsertAction:
 			draw_card.emit(action.Card)
 		elif action is EnergyAction:

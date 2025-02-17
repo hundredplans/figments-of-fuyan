@@ -15,18 +15,18 @@ func onUpdate() -> void:
 		onAddBoon(Boon)
 
 func onUpdateBoonChargesAndDisabled(Boon: BoonGD) -> void:
-	var BoonIcon: TextureRect = onFindBoonIcon(Boon)
+	var BoonIcon: TextureRect = onFindBoonIcon(Boon.info.id)
 	if BoonIcon != null:
 		BoonIcon.onUpdateCharges(Boon.getCharges())
 		BoonIcon.setDisabled(Boon.getDisabled())
 
-func onFindBoonIcon(Boon: BoonGD) -> TextureRect:
+func onFindBoonIcon(id: int) -> TextureRect:
 	for BoonIcon in get_children():
-		if BoonIcon.Boon == Boon: return BoonIcon
+		if BoonIcon.Boon.info.id == id: return BoonIcon
 	return null
 	
 func onUpdateBoonAscension(Boon: BoonGD) -> void:
-	var BoonIcon: TextureRect = onFindBoonIcon(Boon)
+	var BoonIcon: TextureRect = onFindBoonIcon(Boon.info.id)
 	if BoonIcon != null:
 		BoonIcon.onUpdateAscension(Boon.ascended)
 		

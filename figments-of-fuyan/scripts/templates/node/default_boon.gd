@@ -13,7 +13,11 @@ func onBoon(_action: Action = null) -> void:
 	pass
 
 func onBoonAdded() -> void:
-	pass
+	super()
+	
+func onLevelStarted() -> void:
+	super()
+	onResetCharges()
 
 func getDisabled() -> bool:
 	return super()

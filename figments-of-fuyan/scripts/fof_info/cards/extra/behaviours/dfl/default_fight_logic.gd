@@ -38,14 +38,18 @@ func getTilesDFL() -> DFLData:
 	
 func getFallDamageTileValue(FallCard: CardGD, Tile: TileGD) -> float:
 	var total_damage: int = 0
-	for MovementPathTile in Tile.getMovementPathTiles():
-		var fall_damage: int = MovementPathTile.getFallDamage(Tile)
+	var movement_path: Array = Tile.getMovementPathTiles()
+	
+	for i in range(1, movement_path.size()):
+		var fall_damage: int = movement_path[i - 1].getFallDamage(movement_path[i])
 		total_damage += fall_damage
 	
 	if !FallCard.isCardSurviveFallDamage(total_damage):
 		return FALL_DAMAGE_DEATH_DECENTIVIZATION
+		
 	elif total_damage > 0:
 		return 0.5
+		
 	return 1.0
 	
 #region Temp Stats

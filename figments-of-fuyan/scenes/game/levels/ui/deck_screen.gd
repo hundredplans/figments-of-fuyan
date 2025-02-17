@@ -23,8 +23,12 @@ func _on_quit_button_pressed() -> void:
 	queue_free()
 	
 func onSelected(CardUI: Control) -> void:
-	if CardUI.Card in selected_cards: selected_cards.erase(CardUI.Card); CardUI.onSelected(false)
-	else: selected_cards.append(CardUI.Card); CardUI.onSelected(true)
+	if CardUI.Card in selected_cards:
+		selected_cards.erase(CardUI.Card)
+		CardUI.onSelected(false)
+	else:
+		selected_cards.append(CardUI.Card)
+		CardUI.onSelected(true)
 	
 	if !selected_cards.is_empty() and selected_cards.size() == max_select_amount \
 	and (max_select_amount == 1 or (valid_selection == Callable() or valid_selection.call(selected_cards))):
