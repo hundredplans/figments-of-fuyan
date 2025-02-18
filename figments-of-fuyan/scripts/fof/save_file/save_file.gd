@@ -10,7 +10,6 @@ var id: int
 var my_seed: int
 var area: AreaGD
 var last_loaded_deck: Array
-var map_effects_data: Array
 var tool_belt: Array
 var boons: Array
 var upgrade_level: int
@@ -36,15 +35,14 @@ func onSaveToFile() -> void:
 	ResourceSaver.save(saved_data)
 
 func onSave() -> SavedData:
-	var map_effects: Array = SavedData.onSaveGroup(get_tree().get_nodes_in_group("MapEffectsGD"))
 	var deck_cards: Array = SavedData.onSaveGroup(get_tree().get_nodes_in_group("AllyCardsGD"))
 	var tool_belt_data: Array = SavedData.onSaveGroup(tool_belt)
 	var highest_public_id: int = Game.highest_public_id
 	var saved_boons: Array = SavedData.onSaveGroup(boons)
 	var time_elapsed: int = getTimeElapsed()
 	
-	return SavedDataSaveFile.new(id, false, public_id, my_seed, area.onSave(), shillings,\
-	map_effects, time_elapsed, deck_cards, saved_boons, highest_public_id, tool_belt_data, safe_encounter_count,\
+	return SavedDataSaveFile.new(id, false, public_id, my_seed, area.onSave(), shillings, time_elapsed,\
+	deck_cards, saved_boons, highest_public_id, tool_belt_data, safe_encounter_count,\
 	upgrade_level)
 
 func onLoadData(data: SavedData) -> void:
@@ -67,7 +65,6 @@ func onLoadData(data: SavedData) -> void:
 	area.load_level.connect(onLoadLevel)
 	
 	shillings = data.shillings
-	map_effects_data = data.map_effects
 	time = data.time
 	last_loaded_deck = data.deck
 	safe_encounter_count = data.safe_encounter_count

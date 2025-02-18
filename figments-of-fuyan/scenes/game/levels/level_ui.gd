@@ -9,6 +9,7 @@ extends Control
 @onready var ArtMiniRect: TextureRect = %ArtMiniRect
 
 @onready var EnergyLabel: Label = %EnergyLabel
+@onready var EnergyTexture: TextureRect = %EnergyTexture
 @onready var PhaseIcon: TextureRect = %PhaseIcon
 @onready var HeroNameLabel: Label = %HeroNameLabel
 @onready var ActiveEffectLabel: Label = %ActiveEffectLabel
@@ -36,6 +37,7 @@ extends Control
 @onready var LeftContainer: HBoxContainer = %LeftContainer
 
 @onready var HoverCardControl: Control = %HoverCardControl
+@onready var BoonEffectFiller: Control = %BoonEffectFiller
 #endregion
 
 #region Globals
@@ -67,6 +69,7 @@ var mouse_in_ui: bool
 #endregion
 
 #region Base Functions
+
 func setInfo(_save_file: SaveFileGD) -> void:
 	save_file = _save_file
 	area = save_file.area
@@ -205,9 +208,21 @@ func onUpdateShillings() -> void:
 #endregion
 	
 #region Energy
-func onUpdateEnergy(energy: int) -> void:
+var EnergyTween: Tween
+const ENERGY_SCALE_SPEED: float = 0.3
+const ENERGY_SCALE_OFFSET := Vector2(0.2, 0.2)
+func onUpdateEnergy(energy: int, action: EnergyAction = null) -> void:
 	EnergyLabel.text = str(energy) + "/" + str(level.max_energy)
 	HandBox.onUpdateEnergy(energy)
+	
+	if action == null: return
+	
+	var direction: int = 1 if action.delta > 0 else -1
+	EnergyTween = create_tween()
+	EnergyTween.tween_property(EnergyTexture, "scale", ENERGY_SCALE_OFFSET * direction, ENERGY_SCALE_SPEED).as_relative().set_trans(Tween.TRANS_SINE)
+	EnergyTween.tween_property(EnergyTexture, "scale", -ENERGY_SCALE_OFFSET * direction, ENERGY_SCALE_SPEED).as_relative().set_trans(Tween.TRANS_SINE)
+	
+	
 #endregion
 
 #region Camera
@@ -460,4 +475,21 @@ func onProcessAction(action: Action) -> void:
 			onUpdateShillings()
 		elif action is PlayCardAction:
 			onRemoveCardUI(action.Card)
+		elif action is BoonActivatedAction:
+			onBoonEffectTemp(action)
 #endregion
+const BOON_EFFECT_TEMP_DURATION: float = 1.2
+func onBoonEffectTemp(action: BoonActivatedAction) -> void:
+	var BoonEffectTemp := TextureRect.new()
+	BoonEffectFiller.add_child(BoonEffectTemp)
+	BoonEffectTemp.texture = action.Boon.getIcon()
+	BoonEffectTemp.pivot_offset = Vector2(40, 40)
+	
+	var rotate_tween := create_tween()
+	rotate_tween.tween_property(BoonEffectTemp, "rotation", PI, BOON_EFFECT_TEMP_DURATION).as_relative().set_trans(Tween.TRANS_SINE)
+	
+	var vis_tween := create_tween()
+	vis_tween.tween_property(BoonEffectTemp, "modulate:a", -1, BOON_EFFECT_TEMP_DURATION).as_relative().set_trans(Tween.TRANS_SINE)
+
+	await vis_tween.finished
+	BoonEffectTemp.queue_free()

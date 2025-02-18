@@ -34,7 +34,7 @@ func getDefaultStunTurns() -> int:
 	return DEFAULT_STUN_TURNS if !ascended else ASCENDED_STUN_TURNS
 
 func getDisabled() -> bool:
-	return used_stun
+	return stun_turns == 0
 
 func getCharges() -> int:
 	return stun_turns

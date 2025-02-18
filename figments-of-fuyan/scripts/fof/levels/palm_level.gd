@@ -11,7 +11,7 @@ var ISLAND_ODDS: Dictionary = {
 }
 	
 const DISTANCE_BOUND: int = 30
-const LOWER_GEN_BOUND: int = 50
+const LOWER_GEN_BOUND: int = 70
 const UPPER_GEN_BOUND: int = 120
 #endregion
 
@@ -37,11 +37,11 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 				var start_coord := Vector4i.ZERO
 				while(avoid_coords.any(func(x: Vector4i): return Game.getCoordsDistance(x, start_coord) <= DISTANCE_BOUND)):
 					var x: int = randi_range(LOWER_GEN_BOUND, UPPER_GEN_BOUND)
-					x *= (int(Random.getBool()) * -1)
+					x *= 1 if Random.getBool() else -1
 					
 					var y: int = randi_range(LOWER_GEN_BOUND, UPPER_GEN_BOUND)
-					y *= (int(Random.getBool()) * -1)
-					
+					y *= 1 if Random.getBool() else -1
+						
 					start_coord = Vector4i(x, y, -x-y, 0)
 					
 				avoid_coords.append(start_coord)

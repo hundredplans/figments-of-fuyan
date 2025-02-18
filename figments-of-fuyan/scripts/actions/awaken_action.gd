@@ -37,10 +37,7 @@ func onPostAction() -> void:
 		var turn_amount: int = 1 if phase != Game.Phases.HAND else 2
 		actions.append(Card.getBaseStatusEffectAction(3, turn_amount))
 		
-	actions.append(ChangeTurnStateAction.new(Card, Game.TurnStates.INACTIVE if owner is not PlayCardAction else Game.TurnStates.PASSED))
-	if Card.Tool != null:
-		actions.append(AddToolAction.new(Card, Card.Tool, true))
-		
+	actions.append(ChangeTurnStateAction.new(Card, Game.TurnStates.INACTIVE if owner is not PlayCardAction else Game.TurnStates.PASSED))		
 	onPushAction(actions)
 
 func getLogInfo() -> Array:

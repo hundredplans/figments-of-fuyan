@@ -13,9 +13,10 @@ func setInfo(_save_file: SaveFileGD, _area: AreaGD, _World: Node3D, _UI: Control
 
 	var is_elite: bool = map_node is EliteFightNodeGD
 	if is_elite:
-		CurseNameLabel.text = map_node.curse_info.name
-		CurseIcon.texture = map_node.curse_info.icon
-		DescriptionLabel.setText(map_node.curse_info.description)
+		var curse_info: BoonInfo = Helper.getFofInfoID(BoonInfo, map_node.curse_id)
+		CurseNameLabel.text = curse_info.name
+		CurseIcon.texture = curse_info.icon
+		DescriptionLabel.setText(curse_info.description)
 
 	var alpha_tween := create_tween()
 	alpha_tween.tween_property(BlackBackground, "color:a", 1, FADE_IN_TIME)

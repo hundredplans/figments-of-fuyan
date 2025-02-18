@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="BoonInfo" load_steps=5 format=3 uid="uid://fe44fu4lqiph"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/boons/boon_info.gd" id="1_aol3b"]
+[ext_resource type="Script" path="res://scripts/fof/boons/mentor_boon.gd" id="1_dou1f"]
+[ext_resource type="Texture2D" uid="uid://uf61yvygws5h" path="res://assets/sprites/game/boons/nurture_boon.png" id="1_ri1c0"]
+[ext_resource type="Script" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_yknmt"]
+
+[resource]
+script = ExtResource("1_aol3b")
+icon = ExtResource("1_ri1c0")
+description = "Gain a [acard=4] until you beat the next boss"
+ascended_description = ""
+rarity = 0
+curse = false
+elite_fight_curse = false
+id = 16
+name = "Mentor Boon"
+gdscript = ExtResource("1_dou1f")
+saved_data = ExtResource("3_yknmt")

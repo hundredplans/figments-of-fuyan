@@ -56,6 +56,15 @@ func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_til
 		
 func onToolEquipped() -> void:
 	super()
+	
+func onToolAction(action: StatAction) -> void:
+	onPushAction(action)
+	
+func onToolUnequipped() -> void:
+	super()
+
+func onToolHolderAwakened() -> void:
+	super()
 	var type: Game.Stats
 	match info.id:
 		1: type = Game.Stats.MAX_HEALTH
@@ -65,10 +74,7 @@ func onToolEquipped() -> void:
 	var stat_action := StatAction.new(StatInfo.new(Card, type, 1))
 	onPushAction(ToolActivatedAction.new(self, stat_action))
 	
-func onToolAction(action: StatAction) -> void:
-	onPushAction(action)
-	
-func onToolUnequipped() -> void:
+func onToolHolderDeath() -> void:
 	super()
 	var type: Game.Stats
 	match info.id:

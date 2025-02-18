@@ -10,6 +10,7 @@ signal zooming
 # How much to add to the default central point for cards / spawns
 @export var SPAWN_CENTRAL_Y: float = 1.4
 @export var CARD_CENTRAL_Y: float = 0.5
+@export var TILE_OBJECT_CENTRAL_Y: float = 0.5
 # How fast camera rotates
 @export var CAMERA_ROTATION_SPEED: float = 3.0
 
@@ -113,7 +114,12 @@ func onCreateCameraChangeAction(NewSpectateObject: GameObjectGD) -> void:
 	
 func setCameraCentralPoint() -> void:
 	central_point = SpectateObject.position
-	central_point.y += (SPAWN_CENTRAL_Y) if SpectateObject is SpawnGD else (SpectateObject.info.top + CARD_CENTRAL_Y)
+	
+	var top_point: float = 0
+	if SpectateObject is SpawnGD: top_point = SPAWN_CENTRAL_Y
+	elif SpectateObject is CardGD: top_point = SpectateObject.info.top + CARD_CENTRAL_Y
+	elif SpectateObject is TileObjectGD: top_point = SpectateObject.getTopVertexY() + TILE_OBJECT_CENTRAL_Y 
+	central_point.y += top_point
 	
 func setCameraPointAlongCircle(progress := Vector2.ZERO) -> void:
 	if progress != Vector2.ZERO:
@@ -246,6 +252,7 @@ func getCameraObjectArray() -> Array:
 	if SpectateObject != null:
 		if !cycle_objects.is_empty(): return cycle_objects
 		elif SpectateObject is SpawnGD: return get_tree().get_nodes_in_group("AllySpawnsGD").filter(func(x: SpawnGD): return !x.isSpawnOccupied())
+		elif SpectateObject is TileObjectGD: return []
 		elif SpectateObject.isAlly(): return Game.getAllyUnits()
 		else: return Game.getEnemyUnits().filter(func(x: CardGD): return x.isLevelVisible())
 	return []
@@ -339,6 +346,7 @@ func onDisableFreelook(state: bool) -> void:
 
 var game_ended: bool
 func onGameEnded() -> void:
+	await get_tree().process_frame
 	onDisableFreelook(true)
 	FreelookCamera.position = Vector3(0, START_Y, 0)
 	FreelookCamera.current = true

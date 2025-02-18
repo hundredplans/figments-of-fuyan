@@ -10,11 +10,17 @@ func onProcessAction(action: Action) -> void:
 			if turns_remaining == 0:
 				onPushAction(RemoveToolAction.new(Card))
 	
-func onToolEquipped() -> void:
+func onToolHolderAwakened() -> void:
 	super()
 	if Card.getVisibleFieldCardsEnemies().is_empty():
 		var stat_action := StatAction.new(StatInfo.new(Card, Game.Stats.MAX_SPEED, 1, START_TURN_AMOUNT))
 		onPushAction(ToolActivatedAction.new(self, stat_action))
+	
+func onToolHolderDeath() -> void:
+	super()
+	
+func onToolEquipped() -> void:
+	super()
 	
 func onToolAction(action: StatAction) -> void:
 	onPushAction(action)

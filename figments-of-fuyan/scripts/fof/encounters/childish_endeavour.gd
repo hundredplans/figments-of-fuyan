@@ -1,5 +1,7 @@
 extends EncounterGD
 
+const MENTOR_BOON_ID: int = 16
+const NURTURE_BOON_ID: int = 10
 const PROGRESS_BELOW_WHERE_CAN_SHOW_UP: int = 6
 const FLY_START_DELAY: float = 1
 
@@ -18,14 +20,16 @@ func onOptionPressed(option: EncounterOptionDatastore, screen: Control) -> void:
 			if boon_data != null:
 				onPushAction(AddBoonAction.new(boon_data.id, boon_data.ascended))
 		"Train":
-			var Boon: BoonGD = SavedData.onLoadModel(SavedDataBoon.new(10, true), self)
-			onPushAction(AddBoonAction.new(Boon.info.id, Boon.ascended))
+			onPushAction(AddBoonAction.new(NURTURE_BOON_ID, false))
 		"Mentor":
 			var card_data: SavedDataCard = Game.onCreateBaseCard(4, true)
 			Game.setCardDataFromInfo(card_data, Helper.getFofInfoID(CardInfo, card_data.id))
 			var Card: CardGD = SavedData.onLoadModel(card_data, Game.getSaveFile())
-			onPushAction(AddToDeckAction.new(Card))
-			Card.onAddTemporaryCardCondition(SavedDataMapEffect.new(6, true))
+			
+			var actions: Array = [AddToDeckAction.new(Card), AddBoonAction.new(MENTOR_BOON_ID, false)]
+			onPushAction(actions)
+			
+			Card.setIsTemporary(true)
 			
 			var CardUI: Control = Card.onCreateCardUI(screen, false)
 			CardUI.setDisabled(true)

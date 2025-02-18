@@ -3,7 +3,7 @@ extends BoonGD
 func onProcessAction(action: Action):
 	super(action)
 	if !action.post:
-		if action is EnergyAction and action.owner is DeathAction and action.energy > 1:
+		if action is EnergyAction and action.owner is DeathAction and action.delta > 1:
 			onForceAction(BoonActivatedAction.new(self, action))
 			
 	

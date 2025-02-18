@@ -21,6 +21,7 @@ var player_card_last_seen_turn: int # Default -1 which means they were never see
 var level_area_datastore: LevelAreaDatastore # Specific to each areao
 var recent_camera_position: Vector3 # Not saved
 var spawn_group: String
+var curse_id: int
 
 signal set_spectate_card
 signal energy_changed
@@ -59,7 +60,8 @@ func onSave() -> SavedData:
 	var old_player_vision_public_ids: Array = old_player_vision.map(func(x: GameObjectGD): return x.public_id)
 	
 	return SavedDataLevel.new(info.id, false, public_id, data, enemy_cards, getFieldCards(), phase, level_camera_data, energy, max_energy,\
- 	fight_type, is_ended, rewards, anti_boons, old_player_vision_public_ids, player_card_last_seen_turn, level_area_datastore, speed_order, spawn_group)
+ 	fight_type, is_ended, rewards, anti_boons, old_player_vision_public_ids, player_card_last_seen_turn, level_area_datastore, speed_order, spawn_group,\
+	curse_id)
 
 func onClear() -> void:
 	queue_free()
@@ -73,6 +75,7 @@ func onLoadData(data: SavedData) -> void:
 	enemy_cards = data.enemy_cards
 	speed_order = data.speed_order
 	spawn_group = data.spawn_group
+	curse_id = data.curse_id
 	
 	for light in info.lights:
 		add_child(light.instantiate())
@@ -135,6 +138,8 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 			actions.append(AwakenAction.new(SavedData.onLoadModel(card_data, self), Game.getTile(card_data.coords)))
 		
 		level_area_datastore = onCreateLevelAreaDatastore()
+		
+		if curse_id > 0: onPushAction(AddBoonAction.new(curse_id))
 		
 		onPushAction(actions)
 		return
@@ -209,8 +214,8 @@ func onProcessAction(action: Action) -> void:
 		elif action is InsertAction:
 			draw_card.emit(action.Card)
 		elif action is EnergyAction:
-			energy = min(action.energy + energy, max_energy)
-			energy_changed.emit(energy)
+			energy = min(action.delta + energy, max_energy)
+			energy_changed.emit(energy, action)
 			onCheckSkipHandPhase()
 		elif action is ChangeTurnStateAction:
 			turn_state_changing.emit(action.Card, action)

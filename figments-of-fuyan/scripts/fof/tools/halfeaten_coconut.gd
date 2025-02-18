@@ -8,6 +8,12 @@ func onToolEquipped() -> void:
 	
 func onToolUnequipped() -> void:
 	super()
+	
+func onToolHolderAwakened() -> void:
+	super()
+	
+func onToolHolderDeath() -> void:
+	super()
 
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	if active_effect.name == "Half-eaten Coconut":

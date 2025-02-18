@@ -9,11 +9,13 @@ func onProcessAction(action: Action) -> void:
 			
 func onTrauma(_death_action: DeathAction) -> void:
 	var trauma_speed: int = 1 if !ascended else 2
-	var camera_change_action := CameraChangeAction.new(self)
-	camera_change_action.setActionDelay(PALMY_PAUSE_DELAY)
-	var actions: Array = [StatAction.new(StatInfo.new(self, Game.Stats.MAX_SPEED, trauma_speed)), camera_change_action]
 	trauma_charges -= 1
-	onPushAction(actions)
+	
+	onForceAction(CameraChangeAction.new(self))
+	var stat_action := StatAction.new(StatInfo.new(self, Game.Stats.MAX_SPEED, trauma_speed))
+	stat_action.setActionDelay(PALMY_PAUSE_DELAY)
+	
+	onPushAction(stat_action)
 	
 func onSave() -> SavedDataCard:
 	ability_save['trauma_charges'] = trauma_charges

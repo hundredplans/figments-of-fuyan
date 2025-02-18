@@ -39,6 +39,10 @@ func onActionChain() -> void:
 	active_action.onPostAction()
 	active_action.post = true
 	
+	var path: String = active_action.get_script().resource_path
+	print(path.get_slice("/", path.get_slice_count("/") - 1))
+	print("Delay: " + str(active_action.action_delay))
+	
 	if active_action.getDelay() > 0 and !is_game_closing:
 		DelayTimer.wait_time = active_action.getDelay()
 		DelayTimer.start()
@@ -71,7 +75,7 @@ func onDebugAction(action: Action) -> void:
 			print(path.get_slice("/", path.get_slice_count("/") - 1))
 			var logs: Array = action.getLogInfo()
 			if action.failed: logs.append("FAILED")
-
+			
 			for log_info in logs:
 				print("	" + log_info)
 				

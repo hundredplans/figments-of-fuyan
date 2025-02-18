@@ -1,6 +1,6 @@
 class_name EliteFightNodeGD extends FightNodeGD
 
-var curse_info: BoonInfo
+var curse_id: int
 const MAX_RESTART_AMOUNT: int = 16
 
 func onFofInit() -> void:
@@ -16,6 +16,7 @@ func onFofInit() -> void:
 	var chief_infos: Array = Game.area.basic_card_ids.map(func(x: int): return Helper.getFofInfoID(CardInfo, x)).filter(func(x: CardInfo): return x.rarity == Game.Rarities.EXALT)
 	
 	setChiefAndSpawns(base_budget, enemy_spawns, enemy_spawn_amount, chief_infos, chief_spawn_coords)
+	setRandomCurseID()
 	
 func setChiefAndSpawns(base_budget: int, enemy_spawns: Array, enemy_spawn_amount: int, chief_infos: Array, chief_spawn_coords: Vector4i) -> void:
 	var chief_data: SavedDataCard = getChief(chief_infos, chief_spawn_coords)
@@ -38,34 +39,30 @@ func setChiefAndSpawns(base_budget: int, enemy_spawns: Array, enemy_spawn_amount
 	enemy_cards.append(chief_data)
 	
 func onSave() -> SavedDataMapNode:
-	return SavedDataEliteFight.new(info.id, false, public_id, map_location, links, is_entered, is_finished, rotation.y, level_info, spawn_group, enemy_cards)
+	return SavedDataEliteFight.new(info.id, false, public_id, map_location, links, is_entered, is_finished, rotation.y, level_info, spawn_group, enemy_cards, curse_id)
+	
+func onLoadData(data: SavedData) -> void:
+	super(data)
+	curse_id = data.curse_id
 	
 func onEntered() -> void:
-	onSelectRandomCurseInfo()
 	super()
 	
-func onSelectRandomCurseInfo() -> void:
+func setRandomCurseID() -> void:
 	var curse_infos: Array = Helper.getFofInfoArray(BoonInfo).filter(func(x: BoonInfo): return x.elite_fight_curse)
+	if Helper.admin_datastore.force_elite_fight_curse_id == 0: curse_id = onGenerateCurseID(curse_infos)
+	else: curse_id =  Helper.admin_datastore.force_elite_fight_curse_id
 	
-	if Helper.admin_datastore.force_elite_fight_curse_id == 0:
-		curse_info = onGenerateCurseInfo(curse_infos)
-	else:
-		curse_info = Helper.getFofInfoID(BoonInfo, Helper.admin_datastore.force_elite_fight_curse_id)
-		var curse: BoonGD = SavedData.onLoadModel(curse_info.saved_data.new(curse_info.id, true), self)
-		
-		onPushAction(AddBoonAction.new(curse.info.id, curse.ascended))
-	
-func onGenerateCurseInfo(curse_infos: Array) -> BoonInfo:
+func onGenerateCurseID(curse_infos: Array) -> int:
 	var _curse_info: BoonInfo = curse_infos.pick_random()
 	curse_infos.erase(_curse_info)
 	var curse: BoonGD = SavedData.onLoadModel(_curse_info.saved_data.new(_curse_info.id, true), self)
 	
 	if !curse.isAddRequirementMet():
-		curse.queue_free()
-		return onGenerateCurseInfo(curse_infos)
+		curse.onClear()
+		return onGenerateCurseID(curse_infos)
 	
-	onPushAction(AddBoonAction.new(curse.info.id, curse.ascended))
-	return _curse_info
+	return curse.info.id
 	
 func onFinished() -> void:
 	super()
@@ -75,6 +72,7 @@ func onFinished() -> void:
 	new_level_data.spawn_group = spawn_group
 	new_level_data.enemy_cards = enemy_cards
 	new_level_data.fight_type = Game.FightTypes.ELITE
+	new_level_data.curse_id = curse_id
 	load_level.emit(new_level_data)
 
 #region Level Gen

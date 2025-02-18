@@ -1,7 +1,7 @@
 class_name EnergyAction extends Action
 
-var energy: int
+var delta: int
 
-func _init(_energy: int) -> void:
+func _init(_delta: int) -> void:
 	super()
-	energy = _energy
+	delta = _delta

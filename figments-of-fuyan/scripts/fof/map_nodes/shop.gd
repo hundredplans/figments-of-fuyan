@@ -37,6 +37,7 @@ func onAddLocalForeignCardsBoonTools() -> void:
 	for i in range(info_types.size()):
 		var type: GDScript = info_types[i]
 		var objects: Array = getAllObjects(type)
+		
 		for j in range(2 if type != CardInfo else 4):
 			var foreign: bool = getForeign(type, j)
 			var price_datastore: PriceDatastore = onRollFof(objects, type, foreign)
@@ -106,6 +107,7 @@ func onRerollBoon() -> PriceDatastore:
 		
 func onRollFof(objects: Array, script_type: GDScript, foreign: bool = false) -> PriceDatastore:
 	if objects.is_empty(): return null
+	
 	var odds: Dictionary = world_datastore.shop_rarity_odds.getDictionary()
 	@warning_ignore("int_as_enum_without_cast")
 	var rarity: Game.Rarities = int(Random.getRandomKey(Random.onConvertPercentOdds(odds)))

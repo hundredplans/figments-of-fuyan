@@ -1,5 +1,7 @@
 class_name HurtAction extends Action
 
+const HURT_DEFAULT_DELAY: float = 1.8
+
 var Damager: GameObjectGD
 var Defender: GameObjectGD
 var damage: int
@@ -13,7 +15,7 @@ func _init(_Damager: GameObjectGD = null, _Defender: GameObjectGD = null, _damag
 	health_damage = _health_damage
 	
 func onPreAction() -> void:
-	setActionDelay(0.0 if health_damage == 0 else 1.8)
+	setActionDelay(HURT_DEFAULT_DELAY if (Defender.isLevelVisible() and health_damage > 0) else 0.0)
 
 func onPostAction() -> void:
 	if health_damage > 0: Defender.onHurt()

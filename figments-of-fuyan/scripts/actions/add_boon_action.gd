@@ -31,5 +31,5 @@ func onCheckFail() -> void:
 	
 	var ExistingBoon: BoonGD = existing_boons[0]
 	if !ExistingBoon.ascended:
-		onPushAction(ChangeBoonAscenscionAction.new(ExistingBoon, ascended))
+		onPushAction(ChangeBoonAscenscionAction.new(ExistingBoon, true))
 	onFailAction()

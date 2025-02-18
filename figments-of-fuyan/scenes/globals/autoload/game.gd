@@ -477,7 +477,7 @@ func isBoonInGame(id: int) -> bool:
 	
 func getAvailableBoons() -> Array:
 	var all_boons: Array = Helper.getFofInfoArray(BoonInfo)
-	var used_boon_ids: Array = save_file.boons\
+	var used_boon_ids: Array = Game.getSaveFile().getBoons()\
 		.filter(func(x: BoonGD): return x.ascended)\
 		.map(func(x: BoonGD): return x.info.id)
 	return all_boons.filter(func(x: BoonInfo): return x.id not in used_boon_ids)

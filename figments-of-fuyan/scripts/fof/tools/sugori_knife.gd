@@ -26,13 +26,20 @@ func onToolAction(action: DamageAction) -> void:
 
 func onToolEquipped() -> void:
 	super()
+			
+func onToolHolderAwakened() -> void:
+	super()
 	if ascended:
 		for FieldCard in Card.getVisibleFieldCardsAllies():
 			onAddFieldEffect(FieldCard)
 	
+func onToolHolderDeath() -> void:
+	super()
+	if ascended:
+		onRemoveFieldEffects(Card.getVisibleFieldCardsAllies())
+	
 func onToolUnequipped() -> void:
 	super()
-	onRemoveFieldEffects(Card.getVisibleFieldCardsAllies())
 	
 func onRemoveFieldEffects(visible_field_cards: Array) -> void:
 	if ascended:

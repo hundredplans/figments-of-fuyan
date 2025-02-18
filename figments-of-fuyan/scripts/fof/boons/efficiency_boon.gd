@@ -20,7 +20,7 @@ func onBoon(action: Action = null) -> void:
 		played_this_turn = 0
 	elif action is PlayCardAction:
 		played_this_turn += 1
-		if played_this_turn == 2:
+		if played_this_turn % 2:
 			var energy_gain: int = 1 if !ascended else 2
 			onPushAction(EnergyAction.new(energy_gain))
 

@@ -19,11 +19,11 @@ func onResetCharges() -> void:
 
 func onProcessAction(action: Action) -> void:
 	super(action)
-	if isValidRampage(action) and rampage_charges > 0:
+	if isValidRampage(action) and rampage_charges != 0:
 		onPushAction(RampageAction.new(self, action))
-	elif isValidTrauma(action) and trauma_charges > 0:
+	elif isValidTrauma(action) and trauma_charges != 0:
 		onPushAction(TraumaAction.new(self, action))
-	elif isValidBloodthirst(action) and bloodthirst_charges > 0:
+	elif isValidBloodthirst(action) and bloodthirst_charges != 0:
 		onPushAction(BloodthirstAction.new(self, action))
 	
 func onRampage(_action: DeathAction) -> void:

@@ -30,7 +30,7 @@ var active_effects: Array[ActiveEffectDatastore]
 var field_effects: Array[FieldEffectGD]
 
 var anibility_datastore: AnibilityDatastore
-var temporary_card_conditions: Array = [] # Array of map effects
+var is_temporary: bool
 
 var Tool: ToolGD
 var is_awakened_in_combat: bool
@@ -54,7 +54,7 @@ signal tool_added
 signal mouse_entered
 signal mouse_exited
 signal update_ascended
-signal temporary_card_conditions_updated
+signal is_temporary_updated
 @warning_ignore("unused_signal")
 signal update_active_effect_description
 signal awakened_in_combat
@@ -235,7 +235,7 @@ func onSave() -> SavedDataCard:
 	return SavedDataCard.new(info.id, false, public_id, coords, tile_rotation, vision_datastore, team, ascended, \
 	attack, health, speed, max_speed, max_health, energy, draw_order, card_place, turn_state, SavedData.onSaveGroup(status_effects), attacks, attack_range, delayed_stats,\
 	ability_save, active_effects, tool_data, SavedData.onSaveGroup(field_effects), anibility_datastore,\
-	SavedData.onSaveGroup(temporary_card_conditions), is_awakened_in_combat, ai_datastore, base_stats,
+	is_temporary, is_awakened_in_combat, ai_datastore, base_stats,
 	overworld_traits, bounty_kills)
 
 func onLoadData(data: SavedData) -> void:
@@ -263,8 +263,8 @@ func onLoadData(data: SavedData) -> void:
 	base_stats = data.base_stats
 	overworld_traits = data.overworld_traits
 	bounty_kills = data.bounty_kills
+	is_temporary = data.is_temporary
 	
-	temporary_card_conditions = temporary_card_conditions.map(func(x: SavedDataMapEffect): return SavedData.onLoadModel(x, self))
 	if data.tool_data != null:
 		Tool = SavedData.onLoadModel(data.tool_data, self)
 		Tool.Card = self
@@ -887,7 +887,7 @@ func onAscendedUpdateOverworldTraits() -> void:
 func onAddOverworldTrait(overworld_trait: OverworldTrait) -> void:
 	overworld_traits.append(overworld_trait)
 	overworld_trait.clear.connect(func():\
-		onPushAction(RemoveOverworldTraitAction.new(self, overworld_trait.Trait.id, overworld_trait.added_by)))
+		onPushAction(RemoveOverworldTraitAction.new(self, overworld_trait.Trait.info.id, overworld_trait.added_by)))
 	
 func onAddFieldTrait(overworld_trait: OverworldTrait) -> void:
 	if overworld_trait.getData() == null: return
@@ -1197,12 +1197,13 @@ func onAscendedUpdated(state: bool) -> void:
 #endregion
 
 #region Temp Card
-func onAddTemporaryCardCondition(map_effect_data: SavedDataMapEffect) -> void:
-	temporary_card_conditions.append(SavedData.onLoadModel(map_effect_data, self))
-	temporary_card_conditions_updated.emit()
+	
+func setIsTemporary(_is_temporary: bool) -> void:
+	is_temporary = _is_temporary
+	is_temporary_updated.emit()
 	
 func isTemporary() -> bool:
-	return !temporary_card_conditions.is_empty()
+	return is_temporary
 #endregion
 
 #region Info Getters

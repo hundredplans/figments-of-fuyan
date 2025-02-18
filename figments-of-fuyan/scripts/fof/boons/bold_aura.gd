@@ -6,7 +6,8 @@ var kills_remaining: int
 func onProcessAction(action: Action) -> void:
 	super(action)
 	if action.post:
-		if action is DeathAction and action.Damager is CardGD and action.Damager.isAlly(0) and kills_remaining > 0 and action.Damager.info.id != 1:
+		if action is DeathAction and action.Damager is CardGD and action.Damager.isAlly(0) and action.Damager.isValidRampage(action)\
+		and kills_remaining > 0 and action.Damager.info.id != 1:
 			onPushAction(BoonActivatedAction.new(self, action))
 	
 func onAscend(state: bool) -> void:

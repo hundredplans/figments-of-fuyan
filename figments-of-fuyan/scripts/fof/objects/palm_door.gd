@@ -80,6 +80,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _
 	var actions: Array = [VisionAction.new(Game.inVisionRangeCards(Card.getTile(), true))]
 	for owned_active_effect in active_effects.filter(func(x: ActiveEffectDatastore): return x != active_effect):
 		actions.append(ChangeActiveEffectUsedAction.new(owned_active_effect, true))
+	actions.append(CameraChangeAction.new(Card))
 	onPushAction(actions)
 		
 func onActiveEffectPre(active_effect: ActiveEffectDatastore, PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
@@ -92,6 +93,7 @@ func onActiveEffectPre(active_effect: ActiveEffectDatastore, PickedTile: TileGD,
 		if isLevelVisible(): AniPlayer.play_backwards("Ability"); last_seen_open = false
 		is_open = false
 		onDoorIsClosed(false)
+	onForceAction(CameraChangeAction.new(self))
 	onForceAction(ChangeTileRotationAction.new(Card, Game.getRelativeTileRotation(Card.Tile, PickedTile)))
 #endregion
 

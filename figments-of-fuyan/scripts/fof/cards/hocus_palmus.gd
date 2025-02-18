@@ -1,5 +1,6 @@
 extends CardGD
 
+const SPECTATE_TELEPORTED_UNIT_DELAY: float = 1.5
 func getActiveEffectDisabled(active_effect: ActiveEffectDatastore) -> bool:
 	super(active_effect)
 	if active_effect is ActiveAbilityDatastore and active_effect.name == "Cocus Pocus":
@@ -29,7 +30,12 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 	super(active_effect, PickedTile, active_effect_tiles)
 	if active_effect is ActiveAbilityDatastore and active_effect.name == "Cocus Pocus":
 		var Card: CardGD = Game.getFieldCard(PickedTile)
-		var actions: Array = [CameraChangeAction.new(Card), OccupyAction.new(Card, getRandomSpawnTile()), StatAction.new(StatInfo.new(Card, Game.Stats.HEALTH, 2))]
+		var actions: Array = [CameraChangeAction.new(Card), OccupyAction.new(Card, getRandomSpawnTile())]
+		
+		var stat_action: StatAction = StatAction.new(StatInfo.new(Card, Game.Stats.HEALTH, 2))
+		stat_action.setActionDelay(SPECTATE_TELEPORTED_UNIT_DELAY)
+		actions.append(stat_action)
+		actions.append(CameraChangeAction.new(self))
 		onPushAction(actions)
 		onAbility()
 		

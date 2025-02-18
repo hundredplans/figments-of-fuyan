@@ -8,3 +8,9 @@ func onToolEquipped() -> void:
 	
 func onToolUnequipped() -> void:
 	super()
+
+func onToolHolderAwakened() -> void:
+	super()
+	
+func onToolHolderDeath() -> void:
+	super()

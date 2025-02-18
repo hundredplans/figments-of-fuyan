@@ -20,7 +20,7 @@ class_name SavedDataCard extends SavedDataGameObject
 @export var tool_data: SavedDataTool
 @export var field_effects: Array
 @export var anibility_datastore: AnibilityDatastore
-@export var temporary_card_conditions: Array
+@export var is_temporary: bool
 @export var is_awakened_in_combat: bool
 @export var max_movement_height: float
 @export var ai_datastore: AIDatastore
@@ -34,7 +34,7 @@ func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _coords
 	_draw_order: int = 0, _card_place := Game.CardPlaces.NULL, _turn_state := Game.TurnStates.NULL,\
 	_status_effects: Array = [], _attacks: int = 0, _attack_range: int = 1, _delayed_stats: Array[StatInfo] = [],\
 	_ability_save: Dictionary = {}, _active_effects: Array[ActiveEffectDatastore] = [], _tool_data: SavedDataTool = null,\
-	_field_effects: Array = [], _anibility_datastore := AnibilityDatastore.new(), _temporary_card_conditions: Array = [],\
+	_field_effects: Array = [], _anibility_datastore := AnibilityDatastore.new(), _is_temporary: bool = false,\
 	_is_awakened_in_combat: bool = false, _ai_datastore := AIDatastore.new(),\
 	_base_stats: StatsDatastore = null, _overworld_traits: Array[OverworldTrait] = [], _bounty_kills := BountyKills.new()) -> void:
 		
@@ -60,7 +60,7 @@ func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _coords
 	tool_data = _tool_data
 	field_effects = _field_effects
 	anibility_datastore = _anibility_datastore
-	temporary_card_conditions = _temporary_card_conditions
+	is_temporary = _is_temporary
 	is_awakened_in_combat = _is_awakened_in_combat
 	ai_datastore = _ai_datastore
 	base_stats = _base_stats

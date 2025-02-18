@@ -91,7 +91,7 @@ func setInfo(_Card: CardGD, _highlight_on_hover: bool = false, _inspectable: boo
 	
 	Card.update_stats.connect(onUpdateStats)
 	Card.tool_added.connect(onToolAdded)
-	Card.temporary_card_conditions_updated.connect(onUpdateTemporaryCardMarker)
+	Card.is_temporary_updated.connect(onUpdateTemporaryCardMarker)
 	Card.awakened_in_combat.connect(onUpdateAwakenedInCombat)
 	
 func onUpdateStats() -> void:
@@ -128,6 +128,7 @@ func onMouseHovered(state: bool) -> void:
 
 func setDisabled(_disabled: bool) -> void:
 	disabled = _disabled
+	ToolIcon.setDisabled(disabled)
 	if disabled:
 		onMouseHovered(false)
 		onSelected(false)

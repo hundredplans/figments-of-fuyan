@@ -27,11 +27,10 @@ func getValidActiveEffects(Card: CardGD) -> Array:
 func getActiveEffectTiles(_active_effect: ActiveEffectDatastore, _Card: CardGD) -> ActiveEffectTiles:
 	return ActiveEffectTiles.new([getTile()], [getTile()])
 
-func onActiveEffect(active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, _Card: CardGD) -> void:
+func onActiveEffect(active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
 	var Tile: TileGD = getTile()
-	var actions: Array = []
-	
 	if active_effect.name in ["Extinguish", "Add Fuel"]:
+		var actions: Array = []
 		if active_effect.name == "Extinguish":
 			var tiles: Array = Game.getAdjacentOrCloserTiles(Tile, 2)
 			var units: Array = Game.get_tree().get_nodes_in_group("FieldCardsGD").filter(func(x: CardGD): return x.Tile in tiles)
@@ -51,6 +50,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _
 			for owned_active_effect in active_effects:
 				if owned_active_effect.name == "Extinguish":
 					actions.append(ChangeActiveEffectChargesAction.new(owned_active_effect, -1))
+		actions.append(CameraChangeAction.new(Card))
 		onPushAction(actions)
 		
 func onActiveEffectPre(active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
@@ -60,10 +60,11 @@ func onActiveEffectPre(active_effect: ActiveEffectDatastore, _PickedTile: TileGD
 	elif active_effect.name == "Add Fuel":
 		onAddFuelVFX()
 		
+	onForceAction(CameraChangeAction.new(self))
 	onForceAction(ChangeTileRotationAction.new(Card, Game.getRelativeTileRotation(Card.getTile(), getTile())))
 		
 func onAddFieldEffect(Card: CardGD) -> void:
-	Card.onCreateBaseFieldEffect(PALM_FIREPLACE_FIELD_EFFECT_ID)
+	Card.onCreateBaseFieldEffect(PALM_FIREPLACE_FIELD_EFFECT_ID, -1, -1, self)
 	cards_in_range.append(Card)
 	
 func onRemoveFieldEffect(Card: CardGD) -> void:

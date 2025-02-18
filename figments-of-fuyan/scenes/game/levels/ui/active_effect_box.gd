@@ -6,7 +6,9 @@ signal mouse_in_ui
 @onready var Btn: Button = %Button
 @onready var NameLabel: Label = %NameLabel
 @onready var DescriptionLabel: FancyTextLabel = %DescriptionLabel
-@onready var ChargesLabel: Label = %ChargesLabel
+
+@onready var ChargesLabelCharges: Label = %ChargesLabelCharges
+@onready var ChargesLabelMaxCharges: Label = %ChargesLabelMaxCharges
 
 var active_effect: ActiveEffectDatastore
 var Card: CardGD
@@ -22,7 +24,13 @@ func setInfo(_active_effect: ActiveEffectDatastore, _Card: CardGD, _is_action_lo
 	
 	var charges: int = active_effect.getCharges()
 	var max_charges: int = active_effect.getMaxCharges()
-	ChargesLabel.text = "Charges: " + ("∞" if max_charges == -1 else (str(charges) + "/" + str(max_charges)))
+	
+	ChargesLabelCharges.text = "∞" if max_charges == -1 else str(charges)
+	ChargesLabelMaxCharges.text = "∞" if max_charges == -1 else str(max_charges)
+	
+	if max_charges != -1:
+		if charges < max_charges: ChargesLabelCharges.modulate = Color(1, 0, 0)
+		if charges > max_charges: ChargesLabelCharges.modulate = Color(0, 1, 0)
 	
 	if active_effect.owner is ToolGD: Btn.modulate = Color(0, 1, 1)
 	elif active_effect.owner is ObjectGD: Btn.modulate = Color(1, 0, 0)

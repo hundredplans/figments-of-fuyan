@@ -55,6 +55,11 @@ func getDescription() -> String:
 
 func onProcessAction(action: Action) -> void:
 	super(action)
+	if action.post:
+		if action is AwakenAction and action.Card == Card:
+			onToolHolderAwakened()
+		elif action is DeathAction and action.Defender == Card:
+			onToolHolderDeath()
 
 func getActiveEffectTiles(_active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	return null
@@ -75,9 +80,16 @@ func getActiveEffectDescription(_active_effect: ActiveEffectDatastore, descripti
 	return description
 	
 func onToolEquipped() -> void:
+	if Card.is_in_group("FieldCardsGD"): onToolHolderAwakened()
+	
+func onToolHolderAwakened() -> void:
 	onCreateActiveEffects()
 	
+func onToolHolderDeath() -> void:
+	pass
+	
 func onToolUnequipped() -> void:
+	if Card.is_in_group("FieldCardsGD"): onToolHolderDeath()
 	onClear()
 	
 func isLevelVisible() -> bool:

@@ -79,7 +79,7 @@ func onStartGame(card_data: SavedDataCard) -> void:
 	
 	var save_file_data := SavedDataSaveFile.new(
 		getFirstEmptySaveSlotID(), true, 0, randi(), area_data,\
-		SHILLING_START_COUNT, [], 0, [card_data], [], Game.highest_public_id, [])
+		SHILLING_START_COUNT, 0, [card_data], [], Game.highest_public_id, [])
 	
 	onLoadGame(save_file_data)
 	
