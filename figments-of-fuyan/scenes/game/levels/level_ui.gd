@@ -467,6 +467,10 @@ func onProcessAction(action: Action) -> void:
 			onUpdateDeckCardAmountLabel()
 		elif action is RemoveFromDeckAction:
 			onUpdateDeckCardAmountLabel()
+		elif action is DrawAction:
+			onUpdateDeckCardAmountLabel()
+		elif action is InsertAction: # For champion, who inserts himself
+			onUpdateDeckCardAmountLabel()
 		elif action is AddBoonAction:
 			BoonBox.onUpdate()
 		elif action is RemoveBoonAction:

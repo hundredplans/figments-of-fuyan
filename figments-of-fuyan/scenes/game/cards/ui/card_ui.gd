@@ -86,11 +86,11 @@ func setInfo(_Card: CardGD, _highlight_on_hover: bool = false, _inspectable: boo
 	
 	onUpdateTemporaryCardMarker()
 	onUpdateAwakenedInCombat()
-	onToolAdded(Card.Tool)
+	onToolUpdated(Card.Tool)
 	onUpdateStats()
 	
 	Card.update_stats.connect(onUpdateStats)
-	Card.tool_added.connect(onToolAdded)
+	Card.tool_updated.connect(onToolUpdated)
 	Card.is_temporary_updated.connect(onUpdateTemporaryCardMarker)
 	Card.awakened_in_combat.connect(onUpdateAwakenedInCombat)
 	
@@ -105,7 +105,7 @@ func onCardAscended(_state: bool) -> void:
 	onUpdateStats()
 	TextLabel.setText(Card.getDescription())
 	
-func onToolAdded(Tool: ToolGD) -> void:
+func onToolUpdated(Tool: ToolGD) -> void:
 	ToolControl.visible = Tool != null
 	ToolIcon.setInfo(Tool, false)
 	onToolAscended(Tool.ascended if Tool != null else false)

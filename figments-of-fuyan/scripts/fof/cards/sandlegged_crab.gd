@@ -9,7 +9,7 @@ func onProcessAction(action: Action) -> void:
 	super(action)
 	if action.post:
 		if action is ChangePhaseAction and Game.isAdvanceTurn(action.phase, team) and armor_id > 0:
-			onPushAction(RemoveOverworldTraitAction.new(self, armor_id, OverworldTrait.AddedBy.OTHER))
+			onPushAction(RemoveOverworldTraitAction.new(self, armor_id, OverworldTrait.AddedBy.CRAB))
 			armor_id = 0
 
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
@@ -26,7 +26,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		armor_id = 1
 		ai_ability_cooldown_turns_left = AI_ABILITY_COOLDOWN
 		
-		onPushAction(AddOverworldTraitAction.new(self, OverworldTrait.new(trait_data, OverworldTrait.AddedBy.OTHER, true), true))
+		onPushAction(AddOverworldTraitAction.new(self, OverworldTrait.new(trait_data, OverworldTrait.AddedBy.CRAB, true), true))
 		
 		onAbility()
 

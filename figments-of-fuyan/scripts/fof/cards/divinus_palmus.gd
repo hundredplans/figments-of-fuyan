@@ -6,9 +6,17 @@ extends CardGD
 
 #Holy path which shows up on map (you can go off it and get a debuff but if you go back on it's good)
 #Always has a shop on it and a campfire otherwise random
-#Fight -> One less card to pick from for card rewards
+#Fight -> +1 budget
 #Encounter -> More likely to be negative
 #Shop -> 10% more expensive
+
+const SHOP_PRICE_MULT: float = 1.1
+
+func onProcessAction(action: Action) -> void:
+	super(action)
+	if !action.post:
+		if action is GetShopPriceAction and !action.getShop().isHoly():
+			action.onMult(SHOP_PRICE_MULT)
 
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	super(active_effect)

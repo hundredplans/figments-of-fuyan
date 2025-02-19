@@ -11,14 +11,16 @@ var turns: int = -1
 func onProcessAction(action: Action) -> void:
 	super(action)
 	if action.post:
-		if action is ChangeTurnStateAction:
-			if action.turn_state == Game.TurnStates.PASSED and action.Card == Card and turns > 0:
-				turns -= 1
-				if turns == 0:
-					onPushAction(RemoveFieldEffectAction.new(self))
+		if action is ChangeTurnStateAction and action.turn_state == Game.TurnStates.PASSED and action.Card == Card:
+			onCardTurnPassed()
 			
 		elif action is DeathAction and action.Defender == Card:
 			onPushAction(RemoveFieldEffectAction.new(self))
+
+func onCardTurnPassed() -> void:
+	if turns > 0:
+		turns = max(turns - 1, 0)
+		if turns == 0: onPushAction(RemoveFieldEffectAction.new(self))
 
 func getDescription() -> String:
 	match info.ascended_type:
@@ -37,6 +39,7 @@ func onSave() -> SavedData:
 func onLoadData(data: SavedData) -> void:
 	super(data)
 	ability_save = data.ability_save
+	turns = data.turns
 	
 	if data.fof_object_public_id != 0:
 		FofObject = Game.onFindPublicIDObject(data.fof_object_public_id)

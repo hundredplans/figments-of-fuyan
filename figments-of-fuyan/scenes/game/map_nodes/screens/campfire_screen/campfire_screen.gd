@@ -18,7 +18,7 @@ func onFilterCardsByTraitData(CardUI: Control, trait_data: SavedDataTrait) -> bo
 	return CardUI.Card.getOverworldTraitByID(trait_data.id) != null
 
 func onDeckScreenSelected(Card: CardGD, trait_data: SavedDataTrait) -> void:
-	Card.onAddOverworldTrait(OverworldTrait.new(trait_data, OverworldTrait.AddedBy.OTHER))
+	Card.onAddOverworldTrait(OverworldTrait.new(trait_data, OverworldTrait.AddedBy.NULL))
 	onFinished()
 
 func onFinished() -> void:

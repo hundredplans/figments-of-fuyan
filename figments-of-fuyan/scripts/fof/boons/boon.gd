@@ -4,6 +4,7 @@ signal update_ascend
 
 var ascended: bool
 var ability_save: Dictionary
+var charges: int = -1
 
 func onFofInit() -> void:
 	onResetCharges()
@@ -21,7 +22,7 @@ func getAscended() -> bool:
 	return ascended
 	
 func onSave() -> SavedDataBoon:
-	return SavedDataBoon.new(info.id, false, public_id, ascended, ability_save)
+	return SavedDataBoon.new(info.id, false, public_id, ascended, charges, ability_save)
 
 func getIcon() -> Texture2D:
 	return info.icon
@@ -39,7 +40,7 @@ func getDisabled() -> bool:
 	return false
 	
 func getCharges() -> int:
-	return -1
+	return charges
 	
 func onResetCharges() -> void:
 	pass
@@ -65,5 +66,9 @@ func onProcessAction(action: Action) -> void:
 		elif action is ChangePhaseAction and action.phase in Game.ADVANCE_PHASES:
 			onAdvanceTurn(Game.ADVANCE_PHASES.find(action.phase))
 			
+		elif action is ChangeTurnStateAction and action.turn_state == Game.TurnStates.PASSED:
+			onCardTurnPassed(action.Card)
+			
 func onLevelStarted() -> void: pass # Called when the level literally starts
 func onAdvanceTurn(_team: int) -> void: pass
+func onCardTurnPassed(_Card: CardGD) -> void: pass

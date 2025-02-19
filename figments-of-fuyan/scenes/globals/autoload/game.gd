@@ -379,7 +379,7 @@ func getsetMovementRange(Card: CardGD) -> Array:
 func onSurviveFallDamage(Card: CardGD, movement_path: Array, point_path: Array, astar: AStar3D) -> bool:
 	Card.temp_fall_damage = 0
 	for i in range(1, movement_path.size()):
-		var fall_damage: int = movement_path[i - 1].getFallDamage(movement_path[i])
+		var fall_damage: int = movement_path[i].getFallDamage(movement_path[i - 1])
 		if fall_damage > 0:
 			var survive_fall_damage: bool = Card.isCardSurviveFallDamage(fall_damage)
 			if !survive_fall_damage and i != movement_path.size() - 1:

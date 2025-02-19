@@ -18,10 +18,11 @@ func getDescription() -> String:
 
 func onBoon(action: Action = null) -> void:
 	var speed: int = 1 if !ascended else 2
-	var turns: int = 2 if !Game.isChampion(action.Card.info.rarity) else 1
+	var turns: int = 1 # 2 if !Game.isChampion(action.Card.info.rarity) else 1
 	onPushAction(StatAction.new(StatInfo.new(action.Card, Game.Stats.MAX_SPEED, speed, turns)))
 	
-	action.Card.onCreateBaseFieldEffect(ENERGIZED_BOON_FIELD_EFFECT_ID)
+	var FieldEffect: FieldEffectGD = action.Card.onCreateBaseFieldEffect(ENERGIZED_BOON_FIELD_EFFECT_ID, -1, turns)
+	FieldEffect.setSpeed(speed)
 	cards.append(action.Card)
 
 func onBoonAdded() -> void:

@@ -80,16 +80,14 @@ var Card: CardGD
 
 func setInfo(_Card: CardGD) -> void:
 	Card = _Card
-	Card.tool_added.connect(onToolAdded)
+	Card.tool_updated.connect(onToolUpdated)
 	position.y = Card.info.stat
 	NumbersParticleManager.global_position.y = Card.position.y + (Card.info.top / 2.0)
 	
 	onResetStats()
 	onUpdateTraits()
 	onUpdateDelayedStats()
-	
-	if Card.Tool != null:
-		onToolAdded(Card.Tool)
+	onToolUpdated(Card.Tool)
 	
 	Game.getLevel().onRequestCameraPositionUpdate() # Updates for all field infos
 	
@@ -307,10 +305,13 @@ func onResetNullIcons() -> void:
 	for child in IconsManager.get_children():
 		if child.FofObject == null: child.queue_free()
 
-func onToolAdded(Tool: ToolGD) -> void:
-	ToolIcon.texture = Tool.getIcon() if Tool != null else null
-	ToolShine.visible = Tool != null
-	
-	if Tool != null:
-		ToolShine.texture = default_shine if !Tool.ascended else ascended_shine
+func onToolUpdated(Tool: ToolGD) -> void:
+	if Tool == null:
+		ToolIcon.texture = null
+		ToolShine.visible = false
+		ToolShine.texture = null
+	else:
+		ToolIcon.texture = Tool.getIcon()
+		ToolShine.visible = Tool.getAscended()
+		ToolShine.texture = null if !Tool.getAscended() else ascended_shine
 #endregion

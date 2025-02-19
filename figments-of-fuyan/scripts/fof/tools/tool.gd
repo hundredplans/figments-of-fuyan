@@ -60,6 +60,13 @@ func onProcessAction(action: Action) -> void:
 			onToolHolderAwakened()
 		elif action is DeathAction and action.Defender == Card:
 			onToolHolderDeath()
+		elif action is EndGameAction:
+			onReset()
+		elif action is AscendToolAction:
+			onToolAscended(action.state)
+
+func onToolAscended(state: bool) -> void:
+	pass
 
 func getActiveEffectTiles(_active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	return null
@@ -86,6 +93,12 @@ func onToolHolderAwakened() -> void:
 	onCreateActiveEffects()
 	
 func onToolHolderDeath() -> void:
+	pass
+	
+func onReset() -> void:
+	pass
+	
+func onCardTurnPassed() -> void:
 	pass
 	
 func onToolUnequipped() -> void:

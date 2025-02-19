@@ -50,7 +50,7 @@ const ALPHAGREY_CHANGE_SPEED: float = 0.5
 
 #region Signals
 signal inspect_screen_created
-signal tool_added
+signal tool_updated
 signal mouse_entered
 signal mouse_exited
 signal update_ascended
@@ -452,6 +452,7 @@ func onCardTurnPassed(Card: CardGD) -> void:
 	for stat_info in delayed_stats.duplicate():
 		stat_info.onCardTurnPassed()
 		
+	if Tool != null: Tool.onCardTurnPassed()
 	ai_datastore.onCardTurnPassed()
 	onPushAction(StatAction.new(StatInfo.new(Card, Game.Stats.SPEED, Card.max_speed, 0, false, false, true)))
 	card_turn_passed.emit()
@@ -468,6 +469,12 @@ func onProcessAction(action: Action) -> void:
 				ai_datastore.setLastSeenViolence(0)
 			elif isValidRampage(action):
 				onBountyKill(action) # Needs to be here instead of in death action
+			elif action is AddToolAction and action.Tool == Tool:
+				tool_updated.emit(action.Tool)
+			elif action is AscendToolAction and action.Tool == Tool:
+				tool_updated.emit(action.Tool)
+			elif action is RemoveToolAction and action.Card == self:
+				tool_updated.emit(null)
 			
 	elif Game.CardPlaces.GRAVEYARD == card_place:
 		if action.post:
@@ -939,7 +946,6 @@ func getActiveOverworldTraits() -> Array:
 #region Tools
 func onAddTool(_Tool: ToolGD) -> void:
 	Tool = _Tool
-	tool_added.emit(Tool) # Created for Card UI to listen to
 
 func onRemoveTool() -> void:
 	onAddTool(null)

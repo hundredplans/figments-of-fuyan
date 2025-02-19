@@ -10,6 +10,8 @@ var quentins_bullets_public_id: int
 #RELOAD - ABILITY: If an enemy is in vision; Gain [1] Bullet and STUN self
 # Shop is 15% more expensive cause he's a criminal
 	
+const SHOP_PRICE_MULT: float = 1.15
+	
 func onFofInit() -> void:
 	super()
 	bullets = 2
@@ -19,10 +21,12 @@ func onProcessAction(action: Action):
 	if !action.post:
 		if action is AttackAction and bullets == 0:
 			action.onFailAction()
+		elif action is GetShopPriceAction:
+			action.onMult(SHOP_PRICE_MULT)
 	elif action.post:
 		if action is AwakenAction and action.Card == self:
 			quentins_bullets_public_id = onCreateBaseFieldEffect(QUENTIN_BULLETS_FIELD_EFFECT_ID, bullets).public_id
-	
+			
 	if isValidOnHit(action):
 		onPushAction(OnHitAction.new(self, action))
 	

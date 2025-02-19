@@ -1,7 +1,7 @@
 class_name ObjectGD extends TileObjectGD
 
 #region Globals
-var ROTATION_SPEED: float = 0.005
+var ROTATION_SPEED: float = 0.02
 #endregion
 #region Saved Data
 var map_rotation: float

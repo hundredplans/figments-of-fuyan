@@ -18,5 +18,5 @@ func onPostAction() -> void:
 	onPushAction(DamageAction.new(DestinationTile, Card, damage, Game.DamageTypes.FALL_DAMAGE))
 
 func onCheckFail() -> void:
-	damage = StartTile.getFallDamage(DestinationTile)
+	damage = DestinationTile.getFallDamage(StartTile)
 	if damage == 0: onFailAction()

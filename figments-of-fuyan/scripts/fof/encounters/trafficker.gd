@@ -1,7 +1,7 @@
 extends EncounterGD
 
-const HANDY_SHILLINGS: int = 30
-const PRESTIGE_SHILLINGS: int = 30
+const HANDY_SHILLINGS: int = 20
+const PRESTIGE_SHILLINGS: int = 20
 const FLY_START_DELAY: int = 1
 
 func canShowUp() -> bool:

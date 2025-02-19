@@ -9,8 +9,17 @@ func onToolEquipped() -> void:
 func onToolUnequipped() -> void:
 	super()
 
-func onToolHolderAwakened() -> void:
+func onToolHolderAwakened() -> void: # Unit awakens
 	super()
 	
-func onToolHolderDeath() -> void:
+func onToolHolderDeath() -> void: # Unit dies
+	super()
+	
+func onToolAscended(state: bool) -> void:
+	super(state)
+	
+func onCardTurnPassed() -> void:
+	super()
+	
+func onReset() -> void: # Level ends
 	super()

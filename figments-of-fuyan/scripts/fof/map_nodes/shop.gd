@@ -3,9 +3,6 @@ extends MapNodeGD
 #region Globals
 var price_variance: int
 var world_datastore: WorldDatastore
-
-const QUENTIN_CRIMINAL_PRICE_INCREASE: float = 1.15
-const DIVINUS_NOT_ON_HOLY_PATH_PRICE_INCREASE: float = 1.1
 #endregion
 
 #region Saved Data
@@ -133,31 +130,19 @@ func onRollFof(objects: Array, script_type: GDScript, foreign: bool = false) -> 
 	picked_data.ascended = ascend
 	var fof_name: String = picked_info.get_script().getFofName().to_lower() # "Boon", "Card"
 	var base_price: int = world_datastore.get(fof_name + "_rarity_prices").getByRarity(picked_info.rarity)
+	
 	if script_type == CardInfo and foreign: # Extra base_price for foreign cards
 		base_price += world_datastore.foreign_card_base_price_increase
 	
 	if ascend:
 		base_price = int(base_price * ((100 + world_datastore.ascended_items_price_percentage_increase) / 100.0))
 		base_price += world_datastore.ascended_items_flat_after_percentage_increase
+		
+	
 	var final_price: int = onAddPriceVariance(base_price)
-	final_price = onApplyFinalPriceMultipliers(final_price)
+	var get_shop_price_action := GetShopPriceAction.new(final_price, self)
+	onForceAction(get_shop_price_action)
+	final_price = get_shop_price_action.final_price
 	
 	return PriceDatastore.new(final_price, picked_data)
 #endregion
-
-#region Final Price
-func onApplyFinalPriceMultipliers(price: int) -> int:
-	if Game.save_file.getChampionCard().info.id == 2:
-		if !isHoly(): price = int(price * DIVINUS_NOT_ON_HOLY_PATH_PRICE_INCREASE)
-		
-	elif Game.save_file.getChampionCard().info.id == 3: # Quentin increase price
-		price = int(price * QUENTIN_CRIMINAL_PRICE_INCREASE)
-		
-	return price
-#endregion
-
-func onProcessAction(action: Action) -> void:
-	super(action)
-	if action.post:
-		if action is ChangeShillingsAction:
-			pass
