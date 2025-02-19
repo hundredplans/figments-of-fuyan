@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="VFXInfo" load_steps=5 format=3 uid="uid://kbmhqwwkt4jk"]
+
+[ext_resource type="Script" path="res://scripts/fof/vfx/hocus_palmus_hat.gd" id="1_viqc4"]
+[ext_resource type="Script" path="res://scripts/fof_info/vfx/vfx_info.gd" id="1_x2jd1"]
+[ext_resource type="Script" path="res://scripts/saved_data/vfx/saved_data_vfx.gd" id="2_e28aq"]
+[ext_resource type="PackedScene" uid="uid://dkdkquhugx63g" path="res://assets/models/vfx/units/hocus_palmus_hat.glb" id="3_u1v01"]
+
+[resource]
+script = ExtResource("1_x2jd1")
+delay = 1.5
+scene = ExtResource("3_u1v01")
+id = 1
+name = "Hocus Palmus Hat"
+gdscript = ExtResource("1_viqc4")
+saved_data = ExtResource("2_e28aq")

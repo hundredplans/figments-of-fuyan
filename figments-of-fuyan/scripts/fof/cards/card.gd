@@ -1412,3 +1412,5 @@ func getChampionUpgrade(upgrade_level: int) -> ChampionUpgrade:
 		6: return info.third_boss
 	return info.third_boss
 	
+func getModel() -> Node3D:
+	return Model
