@@ -24,3 +24,6 @@ func getDisabled() -> bool:
 
 func getCharges() -> int:
 	return super()
+	
+func onCardTurnPassed(Card: CardGD) -> void:
+	super(Card)

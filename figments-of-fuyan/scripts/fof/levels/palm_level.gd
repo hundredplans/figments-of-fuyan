@@ -34,21 +34,24 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 			
 			var avoid_coords: Array = [Vector4i.ZERO]
 			for island in decoration_datas:
-				var start_coord := Vector4i.ZERO
-				while(avoid_coords.any(func(x: Vector4i): return Game.getCoordsDistance(x, start_coord) <= DISTANCE_BOUND)):
-					var x: int = randi_range(LOWER_GEN_BOUND, UPPER_GEN_BOUND)
-					x *= 1 if Random.getBool() else -1
-					
-					var y: int = randi_range(LOWER_GEN_BOUND, UPPER_GEN_BOUND)
-					y *= 1 if Random.getBool() else -1
-						
-					start_coord = Vector4i(x, y, -x-y, 0)
+				var start_coord := onRandomiseStartCoord()
+				while(!avoid_coords.all(func(x: Vector4i): return Game.getCoordsDistance(x, start_coord) >= DISTANCE_BOUND)):
+					start_coord = onRandomiseStartCoord()
 					
 				avoid_coords.append(start_coord)
 				decoration_coords.append(start_coord)
 			level_area_datastore.decoration_coords = decoration_coords
 			level_area_datastore.decoration_datas = decoration_datas
 	onCreatePalmDecorations()
+	
+func onRandomiseStartCoord() -> Vector4i:
+	var x: int = randi_range(LOWER_GEN_BOUND, UPPER_GEN_BOUND)
+	x *= 1 if Random.getBool() else -1
+	
+	var y: int = randi_range(LOWER_GEN_BOUND, UPPER_GEN_BOUND)
+	y *= 1 if Random.getBool() else -1
+		
+	return Vector4i(x, y, -x-y, 0)
 #endregion
 
 #region Decorations

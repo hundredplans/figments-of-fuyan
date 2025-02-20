@@ -206,7 +206,7 @@ func onHovered(state: bool) -> void:
 			
 			if i > 0:
 				var PreviousTile: TileGD = movement_path.tiles[i - 1]
-				var damage: int = PreviousTile.getFallDamage(Tile)
+				var damage: int = Tile.getFallDamage(PreviousTile)
 				if damage > 0:
 					Tile.setFallDamageWorldEffect(state, PreviousTile, damage)
 		
@@ -286,7 +286,7 @@ func isValidRampRelation(Tile: TileGD, height_diff: int) -> bool:
 
 #region Fall Damage
 func getFallDamage(Tile: TileGD) -> int:
-	var height_diff: int = getHeight() - Tile.getHeight()
+	var height_diff: int = Tile.getHeight() - getHeight()
 	return floor((height_diff - 3) / 2.0) if height_diff >= Game.FALL_DAMAGE_BEGIN_HEIGHT else 0
 	
 var FallDamageEffect: Node3D

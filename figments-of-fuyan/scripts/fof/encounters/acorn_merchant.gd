@@ -1,13 +1,11 @@
 extends EncounterGD
 
-const ACCEPT_OPTION_SHILLINGS: int = 12
-
 func canShowUp() -> bool:
 	return true
 
 func isRequirementMet(option: EncounterOptionDatastore) -> bool:
 	match option.name:
-		"Accept": return Game.save_file.getShillings() >= ACCEPT_OPTION_SHILLINGS
+		"Accept": return Game.getDeckSize() > 1
 		"Sleight of Hand":
 			return Game.isIDInDeck(7)
 	return true
@@ -17,7 +15,7 @@ func onOptionPressed(option: EncounterOptionDatastore, screen: Control) -> void:
 		"Accept":
 			var Tool: ToolGD = SavedData.onLoadModel(SavedDataTool.new(13, true), self)
 			var ToolPickedUpUI: Control = Game.onCreateToolPickedUpUI(Tool, false, screen)
-			ToolPickedUpUI.taken.connect(onToolAccepted.bind(option))
+			ToolPickedUpUI.taken.connect(onToolAccepted.bind(option, screen))
 			return
 		"Sleight of Hand":
 			var tool_data: SavedDataTool = Game.getRandomFofInRarity(ToolInfo, Game.Rarities.COMMON)
@@ -28,6 +26,7 @@ func onOptionPressed(option: EncounterOptionDatastore, screen: Control) -> void:
 			onPushAction(AddBoonAction.new(Boon.info.id, Boon.ascended))
 	onContinueToNextPage(option)
 
-func onToolAccepted(_Tool: ToolGD, option: EncounterOptionDatastore) -> void:
-	onPushAction(ChangeShillingsAction.new(-ACCEPT_OPTION_SHILLINGS))
+func onToolAccepted(_Tool: ToolGD, option: EncounterOptionDatastore, screen: Control) -> void:
+	temp_disable_options.emit(true)
+	await Game.onRemoveCardWithAnimation(Game.getRandomNonChampionCard(), screen, self)
 	onContinueToNextPage(option)

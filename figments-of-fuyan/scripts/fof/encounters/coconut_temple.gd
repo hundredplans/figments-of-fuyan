@@ -1,7 +1,7 @@
 extends EncounterGD
 
-const FORCE_OPEN_CHANCE: float = 0.9 # 0.1
-const ADMIRE_SHILLINGS: int = 5
+const FORCE_OPEN_CHANCE: float = 0.15
+const ADMIRE_SHILLINGS: int = 10
 const OPEN_SHILLINGS: int = 50
 var rewards_page_title: String
 var rewards: Rewards
@@ -42,6 +42,9 @@ func onOptionPressed(option: EncounterOptionDatastore, screen: Control) -> void:
 			return
 		"Admire":
 			onPushAction(ChangeShillingsAction.new(ADMIRE_SHILLINGS))
+			var tool_data: SavedDataTool = Game.getRandomFofInRarity(ToolInfo, Game.Rarities.COMMON)
+			var Tool: ToolGD = SavedData.onLoadModel(tool_data, self)
+			Game.onCreateToolPickedUpUI(Tool, false, screen)
 	onContinueToNextPage(option)
 
 func onCreateRewardsUI(page_title: String, screen: Control) -> void:

@@ -8,3 +8,6 @@ func getDescription() -> String:
 func onSave() -> SavedDataFieldEffect:
 	ability_save['speed'] = speed
 	return super()
+
+func setSpeed(value: int) -> void:
+	speed = value

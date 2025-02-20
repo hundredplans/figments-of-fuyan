@@ -16,6 +16,7 @@ func onPreAction() -> void:
 		elif !Card.Tool.getAscended():
 			onForceAction(AscendToolAction.new(Card.Tool))
 			onFailAction()
+		else: onFailAction()
 	
 func onPostAction() -> void:
 	Tool.reparent(Card)

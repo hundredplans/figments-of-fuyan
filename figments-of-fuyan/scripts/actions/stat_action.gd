@@ -12,7 +12,10 @@ func setTurnDelay(turns: int) -> void:
 		stat_info.turns = turns
 	
 func onPreAction() -> void:
-	pass
+	for stat_info: StatInfo in stat_infos.duplicate():
+		if stat_info.Card == null or !stat_info.Card.isAlive(): stat_infos.erase(stat_info)
+	
+	if stat_infos.is_empty(): onFailAction()
 	
 func onPostAction() -> void:
 	var max_health_not_damage: bool

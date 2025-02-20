@@ -1,6 +1,6 @@
 class_name OverworldTrait extends Resource
 
-enum AddedBy {NULL, REGULAR, ASCENDED, OTHER}
+enum AddedBy {NULL, REGULAR, ASCENDED, CRAB, BUCKLER}
 
 signal clear
 
