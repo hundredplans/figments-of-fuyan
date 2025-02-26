@@ -15,6 +15,7 @@ const RED_TILE_INTENT_MODEL_PATH: String = "res://assets/models/general/tile_int
 const GREEN_TILE_INTENT_MODEL_PATH: String = "res://assets/models/general/tile_intents/green_tile_intent.glb"
 const DARK_RED_TILE_INTENT_MODEL_PATH: String = "res://assets/models/general/tile_intents/dark_red_tile_intent.glb"
 const PURPLE_TILE_INTENT_MODEL_PATH: String = "res://assets/models/general/tile_intents/purple_tile_intent.glb"
+const LIGHT_RED_TILE_INTENT_MODEL_PATH: String = "res://assets/models/general/tile_intents/light_red_tile_intent.glb"
 
 @export var tile_fill: PackedScene
 @export var decoration_models: Array[PackedScene]
@@ -31,4 +32,5 @@ func getTileIntentModelPath(tile_intent: Game.TileIntents) -> String:
 		Game.TileIntents.GREEN: return GREEN_TILE_INTENT_MODEL_PATH
 		Game.TileIntents.DARK_RED: return DARK_RED_TILE_INTENT_MODEL_PATH
 		Game.TileIntents.PURPLE: return PURPLE_TILE_INTENT_MODEL_PATH
+		Game.TileIntents.LIGHT_RED: return LIGHT_RED_TILE_INTENT_MODEL_PATH
 	return ""

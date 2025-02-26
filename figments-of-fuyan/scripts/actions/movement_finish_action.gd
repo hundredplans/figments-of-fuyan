@@ -23,31 +23,32 @@ func onPostAction() -> void:
 		Tile.is_card_moving = false
 		Tile.setOutlineMaterial()
 		
-	if Card.isWalking():
-		Card.onIdle()
+	if Card.isWalking(): Card.onIdle()
+		
+	if !(Card.isEnemy(0) and Card.turn_state == Game.TurnStates.ACTIVE): return
 	
-	if Card.isEnemy(0) and Card.turn_state == Game.TurnStates.ACTIVE:
+
+	var actions: Array = []
+	var is_enemy_phase: bool = phase in [Game.Phases.AI, Game.Phases.NEUTRAL]
+	if is_enemy_phase:
 		var is_alive: bool = Card.isAlive()
-		var actions: Array = []
-		if phase in [Game.Phases.AI, Game.Phases.NEUTRAL]:
-			var retry: bool = retry_ai_turn and is_alive
-			if retry:
-				actions.append(AITurnAction.new(Card, false, false, previous_allies, previous_enemies))
-			else:
-				if Card is not BossCardGD or Game.ActionManagerReference.onFindFirstAction(BossIntentFinishedAction) != null:
-					actions.append(ChangeTurnStateAction.new(Card, Game.TurnStates.PASSED))
-					actions.append(AITurnStartAction.new(Card.team))
-				else:
+		var retry: bool = retry_ai_turn and is_alive
+		if retry: actions.append(AITurnAction.new(Card, false, false, previous_allies, previous_enemies))
+		elif !retry:
+			if Card is BossCardGD:
+				if !Card.boss_datastore.boss_intent_used_this_turn:
 					var tiles: Array = Game.getsetMovementRange(Card)
 					var enemies: Array = Card.getVisibleFieldCardsEnemies()
 					var allies: Array =  Card.getVisibleFieldCardsAllies()
-					
 					Card.onUseBossIntent(enemies, allies, tiles, BossCardGD.UseType.END)
-		else:
-			actions.append(ChangeTurnStateAction.new(Card, Game.TurnStates.PASSED))
-			actions.append(CameraSpectateGroupAction.new(0))
+			elif Card is not BossCardGD:
+				actions.append(ChangeTurnStateAction.new(Card, Game.TurnStates.PASSED))
+				actions.append(AITurnStartAction.new(Card.team))
+	elif !is_enemy_phase:
+		actions.append(ChangeTurnStateAction.new(Card, Game.TurnStates.PASSED))
+		actions.append(CameraSpectateGroupAction.new(0))
 		
-		onAppendAction(actions)
+	onAppendAction(actions)
 	
 func setPhaseByLevel(_phase: Game.Phases) -> void:
 	phase = _phase 

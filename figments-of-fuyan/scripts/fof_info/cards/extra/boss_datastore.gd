@@ -2,6 +2,7 @@ class_name BossDatastore extends Resource
 
 var boss_intent_tiles: Dictionary = {}
 @export var phase: int
+@export var boss_intent_used_this_turn: bool
 @export var boss_intent_name: String
 @export var boss_intent_name_to_cooldown: Dictionary = {}
 @export var tile_intents: Array[TileIntentDatastore] = []
@@ -27,15 +28,18 @@ func onLoad() -> void:
 func onUpdateTileIntents(action: OccupyAction = null) -> void:
 	if action.Tile == null: return # If it means death
 	
-	for datastore: TileIntentDatastore in tile_intents.filter(func(x: TileIntentDatastore): return !x.isStaticTile() and action.PreviousTile.getCoords() == x.coords):
+	var valid_tile_intents: Array = tile_intents.filter(func(x: TileIntentDatastore): return !x.isStaticTile() and action.PreviousTile.getCoords() == x.coords)
+	for datastore: TileIntentDatastore in valid_tile_intents:
 		var PreviousTile: TileGD = datastore.getTile()
 		if PreviousTile != null:
 			PreviousTile.setTileIntent(Game.TileIntents.NULL)
 		
+	for datastore: TileIntentDatastore in valid_tile_intents:
 		datastore.coords = action.Tile.getCoords()
 		
 		var Tile: TileGD = datastore.getTile()
-		if Tile == null: continue
+		if Tile == null:
+			continue
 		
 		Tile.setTileIntent(datastore.intent_type)
 		

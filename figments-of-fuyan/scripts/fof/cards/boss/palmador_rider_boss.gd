@@ -1,6 +1,7 @@
 extends BossCardGD
 	
 const PALMY_ID: int = 4
+var diagonal_center_coords: Array = []
 	
 #region Default
 func onProcessAction(action: Action) -> void:
@@ -8,6 +9,10 @@ func onProcessAction(action: Action) -> void:
 	if !action.post:
 		if action is FallDamageAction and action.Card == self:
 			action.onFailAction()
+			
+func onLoadDataLevel() -> void:
+	super()
+	onPreloadDiagonalCenterCoords()
 #endregion
 	
 #region Boss Intent
@@ -31,6 +36,7 @@ func onUseBossIntent(enemies: Array, allies: Array, tiles: Array, use_type: UseT
 		actions.append(ChangeTurnStateAction.new(self, Game.TurnStates.ACTIVE))
 			
 	if use_type == UseType.END:
+		boss_datastore.boss_intent_used_this_turn = true
 		actions.append(BossIntentFinishedAction.new(self))
 		
 	elif actions.is_empty() or !actions.any(func(x: Action): return x is MovementAction):
@@ -40,11 +46,16 @@ func onUseBossIntent(enemies: Array, allies: Array, tiles: Array, use_type: UseT
 	onPushAction(actions)
 
 const ROLL_ATTACK_ODDS: float = 0.5
-func onChangeBossIntent(boss_intents: Array, enemies: Array, allies: Array) -> BossIntent:
-	if Random.rollFloat(ROLL_ATTACK_ODDS):
-		boss_intents = boss_intents.filter(func(x: BossIntent): return x.type in [x.IntentType.ATTACK, x.IntentType.MOVEMENT_ATTACK])
+func onChangeBossIntent(boss_intents: Array, enemies: Array, _allies: Array) -> BossIntent:
+	if !enemies.is_empty():
+		if Random.rollFloat(ROLL_ATTACK_ODDS):
+			boss_intents = boss_intents.filter(func(x: BossIntent): return x.type in [x.IntentType.ATTACK, x.IntentType.MOVEMENT_ATTACK])
+		else:
+			boss_intents = boss_intents.filter(func(x: BossIntent): return x.type not in [x.IntentType.ATTACK, x.IntentType.MOVEMENT_ATTACK])
+			if boss_intents.is_empty(): # If he repositions into a reposition
+				boss_intents = boss_intents.filter(func(x: BossIntent): return x.type in [x.IntentType.ATTACK, x.IntentType.MOVEMENT_ATTACK])
 	else:
-		boss_intents = boss_intents.filter(func(x: BossIntent): return x.type not in [x.IntentType.ATTACK, x.IntentType.MOVEMENT_ATTACK])
+		boss_intents = boss_intents.filter(func(x: BossIntent): return x.name in ["Spin Attack", "Reposition"])
 	return boss_intents.pick_random()
 	
 func onCheckBossIntentCondition(boss_intent: BossIntent, enemies: Array, allies: Array) -> bool:
@@ -53,7 +64,7 @@ func onCheckBossIntentCondition(boss_intent: BossIntent, enemies: Array, allies:
 			return onRallyCondition(allies)
 		"Summon":
 			return onSummonCondition()
-		"Charge":
+		"Charge Attack":
 			return onChargeAttackCondition(enemies)
 	return true
 	
@@ -78,6 +89,7 @@ func setTileIntents() -> void:
 #endregion
 	
 #region Spin Attack
+const SPIN_ATTACK_SPEED_LIMIT: int = 3
 func onSpinAttackSetIntents(tile_intents: Array[TileIntentDatastore]) -> void:
 	for _offset: Vector3i in Game.cube_directions:
 		var offset: Vector4i = Vector4i(_offset.x, _offset.y, _offset.z, 0)
@@ -89,8 +101,8 @@ func getSpinAttackTiles(CardTile: TileGD = Tile) -> Array:
 	
 func onSpinAttack(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 	if use_type != UseType.END:
+		tiles = Game.getsetMovementRange(self, SPIN_ATTACK_SPEED_LIMIT)
 		tiles = onRemoveHighTiles(tiles)
-		tiles.shuffle()
 		if tiles.is_empty(): return []
 		
 		var BestTile: TileGD
@@ -101,17 +113,25 @@ func onSpinAttack(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 				tile_to_adjacent_enemy_count[OtherTile] = adjacent_enemies
 			
 			tiles.sort_custom(func(x: TileGD, y: TileGD): return tile_to_adjacent_enemy_count[x] > tile_to_adjacent_enemy_count[y])
+			if tile_to_adjacent_enemy_count[tiles[0]] == 0:
+				var diagonal_tiles: Array = getDiagonalTiles(tiles)
+				if !diagonal_tiles.is_empty(): tiles = diagonal_tiles
+			
 		else:
+			var diagonal_tiles: Array = getDiagonalTiles(tiles)
+			if !diagonal_tiles.is_empty(): tiles = diagonal_tiles
 			var tile_to_distance: Dictionary = {}
 			for OtherTile: TileGD in tiles:
 				tile_to_distance[OtherTile] = Game.getCoordsDistance(Tile.getCoords(), OtherTile.getCoords())
 				
 			tiles.sort_custom(func(x: TileGD, y: TileGD): return tile_to_distance[x] > tile_to_distance[y])
+			
 		BestTile = tiles[0]
 		return [MovementAction.new(self, BestTile.getMovementPathTiles())]
 	var adjacent_tiles: Array = Game.getAdjacentTiles(Tile)
 	var damagables: Array = adjacent_tiles.map(func(x: TileGD): return Game.getFieldCard(x)).filter(func(x: CardGD): return x != null and x.isEnemy(team))
-	return [ChangeTileRotationAction.new(self, Game.getRelativeTileRotation(damagables.pick_random().getTile(), getTile())),\
+	
+	return [ChangeTileRotationAction.new(self, Game.getRelativeTileRotation(getTile(), damagables.pick_random().getTile())),\
 		DamageAction.new(self, damagables, attack, Game.DamageTypes.ATTACK)] if !damagables.is_empty() else []
 #endregion
 
@@ -173,6 +193,9 @@ func onRally(enemies: Array, allies: Array, tiles: Array, use_type: UseType) -> 
 		
 		tiles = Game.getsetMovementRange(self, RALLY_SPEED_LIMIT)
 		tiles = onRemoveHighTiles(tiles)
+		
+		var diagonal_tiles: Array = getDiagonalTiles(tiles)
+		if !diagonal_tiles.is_empty(): tiles = diagonal_tiles
 		tiles = getDistantToEnemiesTiles(enemies, tiles)
 		
 		if !tiles.is_empty():
@@ -201,6 +224,10 @@ func onSummon(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 		
 		tiles = Game.getsetMovementRange(self, SUMMON_SPEED_LIMIT)
 		tiles = onRemoveHighTiles(tiles)
+		
+		var diagonal_tiles: Array = getDiagonalTiles(tiles)
+		if !diagonal_tiles.is_empty(): tiles = diagonal_tiles
+		
 		tiles = getDistantToEnemiesTiles(enemies, tiles)
 		
 		if !tiles.is_empty():
@@ -220,8 +247,11 @@ func onJumpAttackSetIntents(tile_intents: Array[TileIntentDatastore]) -> void:
 	boss_datastore.setBossIntentTiles({CenterTile: null})
 	
 	tile_intents.append(TileIntentDatastore.new(Game.TileIntents.DARK_RED, null, CenterTile.getCoords()))
-	for AdjacentTile in Game.getAdjacentOrCloserTiles(CenterTile, 2):
+	for AdjacentTile in Game.getAdjacentTiles(CenterTile, 1):
 		tile_intents.append(TileIntentDatastore.new(Game.TileIntents.RED, null, AdjacentTile.getCoords()))
+	
+	for DoubleAdjacentTile in Game.getAdjacentTiles(CenterTile, 2):
+		tile_intents.append(TileIntentDatastore.new(Game.TileIntents.LIGHT_RED, null, DoubleAdjacentTile.getCoords()))
 		
 func onJumpAttack(use_type: UseType) -> Array:
 	var actions: Array = []
@@ -269,23 +299,26 @@ func onChargeAttackSetIntents(tile_intents: Array) -> void:
 	var enemy_coords: Array = enemy_tiles.map(func(x: TileGD): return x.getCoords())
 	var diagonal: Vector4i = getDiagonal()
 	
+	var coords: Vector4i = getCoords()
 	var diagonals: Array = [diagonal, diagonal * -1]
 	diagonals.shuffle()
 	for diag in diagonals: # Has to search backward and forward
 		if isViableDiagonal(diag, enemy_coords):
 			var left_diag := Game.onRotateCoordsCC(1, diag)
 			var right_diag := Game.onRotateCoordsClockwise(1, diag)
+			
 			for i in range(1, CHARGE_ATTACK_MAX_DISTANCE + 1):
-				var CenterTile: TileGD = Game.getTile(diag * i)
+				var CenterTile: TileGD = Game.getTile((diag * i) + coords)
 				if CenterTile != null and (CenterTile.isOccupied() or CenterTile.isSolid()):
 					boss_datastore.setBossIntentTiles({CenterTile: null})
 					return
 					
 				if CenterTile == null:
 					boss_datastore.setBossIntentTiles({Game.getTile(diag * (i - 1)): null})
+					return
 					
-				var LeftTile: TileGD = Game.getTile(left_diag * i)
-				var RightTile: TileGD = Game.getTile(right_diag * i)
+				var LeftTile: TileGD = Game.getTile((left_diag * i) + coords)
+				var RightTile: TileGD = Game.getTile((right_diag * i) + coords)
 				
 				if LeftTile != null:
 					tile_intents.append(TileIntentDatastore.new(Game.TileIntents.RED, null, LeftTile.getCoords()))
@@ -301,26 +334,25 @@ func onChargeAttackSetIntents(tile_intents: Array) -> void:
 			return
 	
 func isViableDiagonal(diag: Vector4i, enemy_coords: Array) -> bool:
+	var coords: Vector4i = getCoords()
 	var left_diag := Game.onRotateCoordsCC(1, diag)
 	var right_diag := Game.onRotateCoordsClockwise(1, diag)
+	
 	for i in range(1, CHARGE_ATTACK_MAX_DISTANCE + 1):
-		var distance_diag: Vector4i = diag * i
-		var distance_left_diag: Vector4i = left_diag * i
-		var distance_right_diag: Vector4i = right_diag * i
+		var distance_diag: Vector4i = (diag * i) + coords
+		var distance_left_diag: Vector4i = (left_diag * i) + coords
+		var distance_right_diag: Vector4i = (right_diag * i) + coords
+		
 		if distance_diag in enemy_coords or distance_left_diag in enemy_coords or distance_right_diag in enemy_coords:
 			return true
 	return false
 	
-func onChargeAttack(use_type: UseType) -> Array:
+func onChargeAttack(use_typea: UseType) -> Array:
 	return []
 	
 func getDiagonal() -> Vector4i:
-	var coords: Vector4i = getTile().getCoords()
-	for _offset: Vector3i in Game.cube_directions:
-		var offset := Vector4i(_offset.x, _offset.y, _offset.z, 0)
-		for i in range(2, 10):
-			if coords == (offset * i): return offset
-	return Vector4i.ZERO
+	return coords if (coords in diagonal_center_coords) else Vector4i.ZERO
+#endregion
 
 #region Helper
 func getDistantToEnemiesTiles(enemies: Array, tiles: Array) -> Array:
@@ -337,4 +369,13 @@ func onRemoveHighTiles(tiles: Array) -> Array:
 	if getTile().getHeight() > 0:
 		return tiles.filter(func(x: TileGD): return x.getHeight() == 0)
 	return tiles
+	
+func getDiagonalTiles(tiles: Array) -> Array:
+	return tiles.filter(func(x: TileGD): return x.getCoords() in diagonal_center_coords)
+	
+func onPreloadDiagonalCenterCoords() -> void:
+	for _offset: Vector3i in Game.cube_directions:
+		var offset := Vector4i(_offset.x, _offset.y, _offset.z, 0)
+		for i in range(1, 10):
+			diagonal_center_coords.append(offset * i)
 #endregion

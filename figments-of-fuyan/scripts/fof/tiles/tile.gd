@@ -63,17 +63,20 @@ func getCard() -> CardGD:
 	for FieldCard in get_tree().get_nodes_in_group("FieldCardsGD"):
 		if FieldCard.Tile == self: return FieldCard
 	return null
-func getCardPosition() -> Vector3:
-	var base_position: Vector3 = getCardPositionBase()
-	if variation == 1: base_position += Vector3(0, 0.6, 0)
-	return base_position
 	
-func getCardPositionBase() -> Vector3:
-	return position + Vector3(0, 0.3, 0)
+func getCardYOffsetBase() -> float:
+	if variation == 1: return 0.6
+	return 0.3
+	
+func getCardYOffset() -> float:
+	return position.y + getCardYOffsetBase()
+	
+func getCardPosition() -> Vector3:
+	return position + Vector3(0, getCardYOffsetBase(), 0)
 	
 func getHalfwayCardPosition(Tile: TileGD) -> Vector3:
-	var this: Vector3 = getCardPositionBase()
-	var other: Vector3 = Tile.getCardPositionBase()
+	var this: Vector3 = getCardPosition()
+	var other: Vector3 = Tile.getCardPosition()
 	var y: float = this.y
 	this += other
 	this /= 2.0
@@ -272,7 +275,7 @@ func getMovementPath() -> MovementPathGD:
 	
 func isBelowMaxMovementHeight(Card: CardGD) -> bool:
 	if max_movement_height == 0: return true
-	return Card.getTopFromInfo() + Card.position.y < (max_movement_height + getCardPosition().y)
+	return Card.getTopFromInfo() + Card.position.y < (max_movement_height + getCardYOffset())
 #endregion
 
 #region Ramps
@@ -305,7 +308,8 @@ func onUpdateLevelVisible() -> void:
 	super()
 	setOutlineMaterial()
 	
-	if TileIntentModel != null: TileIntentModel.visible = isLevelVisible()
+	if TileIntentModel != null:
+		TileIntentModel.visible = isLevelVisible()
 
 func getRevealVisibleGroup() -> Array:
 	return [self] + occupied_objects
@@ -359,6 +363,6 @@ func setTileIntent(tile_intent: Game.TileIntents) -> void:
 		TileIntentModel = load(info.getTileIntentModelPath(tile_intent)).instantiate()
 		add_child(TileIntentModel)
 		
-		TileIntentModel.global_position.y = getCardPosition().y
+		TileIntentModel.position.y = getCardYOffsetBase()
 		TileIntentModel.visible = isLevelVisible()
 #endregion

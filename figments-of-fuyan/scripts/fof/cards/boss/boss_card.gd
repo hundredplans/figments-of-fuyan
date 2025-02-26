@@ -138,4 +138,6 @@ func onCardTurnPassed(Card: CardGD) -> void:
 	for boss_intent_name in boss_datastore.boss_intent_name_to_cooldown:
 		if boss_datastore.boss_intent_name_to_cooldown[boss_intent_name] > 0:
 			boss_datastore.boss_intent_name_to_cooldown[boss_intent_name] -= 1
+			
+	boss_datastore.boss_intent_used_this_turn = false
 #endregion

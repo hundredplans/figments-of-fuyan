@@ -20,7 +20,7 @@ enum AscendedExists {BOTH, ONLY_DEFAULT, ONLY_ASCENDED}
 enum Archetypes {NULL, ADVENTURER, BRUTE, DOCILE, ERRATIC, HOSTILE, REINFORCER, SCOUT, SUPPORT, TACTICIAN, WARDEN, RECEIVER}
 enum DamageTypes {ATTACK, FALL_DAMAGE, OTHER}
 enum FightTypes {REGULAR, ELITE, MINIBOSS, BOSS}
-enum TileIntents {NULL, RED, PURPLE, GREEN, DARK_RED}
+enum TileIntents {NULL, RED, PURPLE, GREEN, DARK_RED, LIGHT_RED}
 
 var CARD_PLACES_TO_GROUP: Dictionary = {
 	CardPlaces.NULL: "Null",
@@ -293,17 +293,17 @@ func getNextInactiveCard(team: int) -> CardGD:
 #endregion
 
 #region Movement Range
-func getsetMovementRange(Card: CardGD, speed_limit: int = -1) -> Array:
+func getsetMovementRange(Card: CardGD, speed_override: int = -1) -> Array:
 	if Card == null: return []
 	if Card.Tile == null: return []
 	get_tree().call_group("FieldCardsGD", "setEnemyInMovementRange", false)
 	get_tree().call_group("LevelTilesGD", "setMovementPath", null)
 	
 	var CenterTile: TileGD = Card.Tile
-	var speed: int = min(Card.getMovementSpeed(), 4)
-	if speed_limit != -1:
-		speed = max(speed, speed_limit)
-	
+	var speed: int = Card.getMovementSpeed()
+	if speed_override != -1:
+		speed = speed_override
+		
 	var tiles: Array = Game.getAdjacentOrCloserTiles(Card.Tile, speed) # Gather all tiles
 	
 	var all_cards_tiles: Array = get_tree().get_nodes_in_group("FieldCardsGD").map(func(x: CardGD): return x.Tile)
@@ -377,6 +377,8 @@ func getsetMovementRange(Card: CardGD, speed_limit: int = -1) -> Array:
 		Tile.setMovementPath(MovementPathGD.new(attack_from_path, Card.isAlly(0)))
 		if GameObject is CardGD:
 			GameObject.setEnemyInMovementRange(true)
+	
+	available_tiles.erase(CenterTile)
 	return available_tiles
 	
 func onSurviveFallDamage(Card: CardGD, movement_path: Array, point_path: Array, astar: AStar3D) -> bool:

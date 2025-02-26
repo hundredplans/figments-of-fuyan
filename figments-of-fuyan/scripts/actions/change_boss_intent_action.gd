@@ -14,4 +14,3 @@ func onPreAction() -> void:
 func onPostAction() -> void:
 	var BossCard: BossCardGD = Game.getLevel().getBoss()
 	BossCard.setBossIntent(boss_intent)
-	BossCard.boss_datastore.boss_intent_name_to_cooldown[boss_intent.name] = boss_intent.default_cooldown if BossCard.isLevelVisible() else 0
