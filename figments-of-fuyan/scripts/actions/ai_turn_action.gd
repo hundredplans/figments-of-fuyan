@@ -50,6 +50,10 @@ func onPostAction() -> void:
 			x not in enemies and \
 			Game.getCoordsDistance(x.getTile().getCoords(), Card.getTile().getCoords()) <= Card.getVisionRange())
 	
+	if Card is not BossCardGD: onDefaultAITurn(enemies, allies, tiles)
+	else: onBossAITurn(enemies, allies, tiles)
+
+func onDefaultAITurn(enemies: Array, allies: Array, tiles: Array) -> void:
 	if Card.ai_datastore.isReceiver() and !enemies.is_empty():
 		Card.ai_datastore.setIsReceiver(false)
 
@@ -58,7 +62,7 @@ func onPostAction() -> void:
 		tiles = tiles.filter(func(x: TileGD): return x not in enemy_tiles)
 	
 	var DFL := DefaultFightLogic.new(Card, tiles, enemies, allies, pacifist)
-	Card.ai_datastore.DFL = DFL
+	Card.ai_datastore.DFL = DFL	
 	
 	var dfl_data: DFLData = DFL.getTilesDFL()
 	
@@ -80,6 +84,10 @@ func onPostAction() -> void:
 		
 	# If no Tile is chosen
 	onPushAction([ChangeTurnStateAction.new(Card, Game.TurnStates.ACTIVE), MovementFinishAction.new(Card, [], allies, enemies)])
+
+func onBossAITurn(enemies: Array, allies: Array, tiles: Array) -> void:
+	var use_type :=  BossCardGD.UseType.START if is_first_ai_turn else BossCardGD.UseType.RECALCULATE
+	Card.onUseBossIntent(enemies, allies, tiles, use_type)
 
 func getLogInfo() -> Array:
 	return ["Card: " + Card.info.name]
@@ -114,7 +122,8 @@ func getTilesSortedByValue(tiles_to_value: Dictionary) -> Array:
 	
 func onApplyBehaviours(BehaviourCard: CardGD, enemies: Array, allies: Array, tiles: Array, dfl_data: DFLData) -> Dictionary:
 	var tiles_to_value: Dictionary = dfl_data.tiles_to_value
-	var ignore_behaviour_roll: bool = Random.rollFloat(IGNORE_BEHAVIOUR_CHANCE) if is_first_ai_turn else BehaviourCard.ai_datastore.last_ignore_behaviour_roll
+	#var ignore_behaviour_roll: bool = Random.rollFloat(IGNORE_BEHAVIOUR_CHANCE) if is_first_ai_turn else BehaviourCard.ai_datastore.last_ignore_behaviour_roll
+	var ignore_behaviour_roll: bool = false # For now
 	BehaviourCard.ai_datastore.last_ignore_behaviour_roll = ignore_behaviour_roll
 	
 	if !ignore_behaviour_roll:
@@ -142,13 +151,13 @@ func getBehaviours(BehaviourCard: CardGD) -> Array:
 	if BehaviourCard.ai_datastore.isReceiver():
 		archetype = load(RECEIVER_ARCHETYPE_PATH)
 	else:
-		archetype = load(ADVENTURER_ARCHETYPE_PATH) if (BehaviourCard.isAlly(1) and Game.getLevel().isAIAdventurerArchetypeGlobal()) else Card.info.archetype
+		archetype = load(ADVENTURER_ARCHETYPE_PATH) if (BehaviourCard.isAlly(1) and Game.getLevel().isAIAdventurerArchetypeGlobal()) else Card.getArchetypeFromInfo()
 	return archetype.behaviours.map(func(x: GDScript): var behaviour := Behaviour.new(); behaviour.set_script(x); return behaviour)
 
 func onCheckCallForHelp(allies: Array, enemies: Array) -> void:
 	if !Card.ai_datastore.onCanCall(): return
 	if !Card.isInCombat(): return
-	if !Random.rollFloat(Card.info.archetype.calling_chance / 100.0): return
+	if !Random.rollFloat(Card.getArchetypeFromInfo().calling_chance / 100.0): return
 	
 	var enemies_to_tiles: Dictionary = {}
 	for EnemyCard in enemies:
@@ -157,7 +166,7 @@ func onCheckCallForHelp(allies: Array, enemies: Array) -> void:
 	Card.ai_datastore.onCall() # Sets call cooldown
 	var available_allies: Array =  allies.filter(func(x: CardGD): return !x.ai_datastore.isReceiver() and\
 	x.ai_datastore.onCanReceive() and !x.isInCombat()\
-	and Random.rollFloat(x.info.archetype.accepting_chance / 100.0))
+	and Random.rollFloat(x.getArchetypeFromInfo().accepting_chance / 100.0))
 	for AllyCard in available_allies:
 		AllyCard.ai_datastore.setIsReceiver(true, enemies_to_tiles)
 	

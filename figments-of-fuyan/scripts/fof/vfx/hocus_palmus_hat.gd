@@ -11,7 +11,7 @@ func onVFX() -> void:
 		return
 	
 	if is_start_hat:
-		position.y = Card.info.top + OFFSET
+		position.y = Card.getTopFromInfo() + OFFSET
 		
 		var down_tween := create_tween()
 		down_tween.tween_property(self, "position:y", -position.y, info.delay)\
@@ -25,7 +25,7 @@ func onVFX() -> void:
 		position.y = 0
 		
 		var up_tween := create_tween()
-		up_tween.tween_property(self, "position:y", Card.info.top + OFFSET, info.delay)\
+		up_tween.tween_property(self, "position:y", Card.getTopFromInfo() + OFFSET, info.delay)\
 			.as_relative().set_trans(Tween.TRANS_SINE)
 			
 		var scale_tween := create_tween()

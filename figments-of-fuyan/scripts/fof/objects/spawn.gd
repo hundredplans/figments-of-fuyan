@@ -14,6 +14,7 @@ func onLoadData(data: SavedData) -> void:
 		0: add_to_group("AllySpawnsGD")
 		1: add_to_group("EnemySpawnsGD")
 		2: add_to_group("NeutralSpawnsGD")
+		3: add_to_group("EnemySpawnsGD"); add_to_group("BossSpawnsGD")
 
 func onLoadModel() -> void:
 	super()
@@ -31,9 +32,16 @@ func onLoadDataLevelFofInit() -> void:
 	
 	get_tree().get_nodes_in_group("AreasGD")[0].basic_card_ids.pick_random()
 	var Tile: TileGD = getTile()
-	var Card: CardGD = Game.getNewFieldCard(spawn_id, Tile, variation, tile_rotation, false)
 	
-	onPushAction(AwakenAction.new(Card, Tile))
+	if variation != 3: # Not Boss
+		var Card: CardGD = Game.getNewFieldCard(spawn_id, Tile, variation, tile_rotation, false)
+		onPushAction(AwakenAction.new(Card, Tile))
+	else: onAwakenBoss(Tile)
+
+func onAwakenBoss(Tile: TileGD) -> void:
+	var boss_info: BossCardInfo = Helper.getFofInfoID(BossCardInfo, spawn_id)
+	var boss_datastore := BossDatastore.new(1, boss_info.awaken_intent_name)
+	onPushAction(AwakenBossAction.new(spawn_id, Tile, boss_datastore))
 
 func onToolPickedUp(action: OccupyAction) -> void:
 	onClear()

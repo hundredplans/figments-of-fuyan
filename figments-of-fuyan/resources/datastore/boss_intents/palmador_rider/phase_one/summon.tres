@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BossIntent" load_steps=2 format=3 uid="uid://cxfmfj5qqxc6l"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/boss_intent.gd" id="1_j5mmu"]
+
+[resource]
+script = ExtResource("1_j5mmu")
+name = "Summon"
+description = "Summon [2] Palmy's if there's [0-1] Palmy's alive. SPD capped to [2] SPD"
+type = 5
+default_cooldown = 1
+combat_type = 1

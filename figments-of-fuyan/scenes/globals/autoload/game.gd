@@ -20,6 +20,7 @@ enum AscendedExists {BOTH, ONLY_DEFAULT, ONLY_ASCENDED}
 enum Archetypes {NULL, ADVENTURER, BRUTE, DOCILE, ERRATIC, HOSTILE, REINFORCER, SCOUT, SUPPORT, TACTICIAN, WARDEN, RECEIVER}
 enum DamageTypes {ATTACK, FALL_DAMAGE, OTHER}
 enum FightTypes {REGULAR, ELITE, MINIBOSS, BOSS}
+enum TileIntents {NULL, RED, PURPLE, GREEN, DARK_RED}
 
 var CARD_PLACES_TO_GROUP: Dictionary = {
 	CardPlaces.NULL: "Null",
@@ -140,15 +141,10 @@ func isCoordsOccupied(coords: Vector4i) -> bool:
 	return get_tree().get_nodes_in_group("LevelTilesGD")\
 	.any(func(x: TileGD): return x.getCoords() == coords)
 	
-func getTile(coords: Vector4i) -> TileGD:
-	for Tile in get_tree().get_nodes_in_group("LevelTilesGD"):
-		if Tile.getCoords() == coords: return Tile
-	return null
-	
 func getAdjacentTiles(Tile: TileGD, distance: int = 1) -> Array:
 	return get_tree().get_nodes_in_group("LevelTilesGD").filter(func(x: TileGD): return isAdjacent(Tile, x, distance))
 	
-func getAdjacentOrCloserTiles(Tile: TileGD, distance: int = 1) -> Array:
+func getAdjacentOrCloserTiles(Tile: TileGD, distance: int = 1) -> Array: # Excludes given tile
 	return get_tree().get_nodes_in_group("LevelTilesGD").filter(func(x: TileGD): return Tile != x and isAdjacentOrCloser(Tile, x, distance))
 	
 func isAdjacent(Tile: TileGD, _Tile: TileGD, distance: int = 1) -> bool:
@@ -262,6 +258,10 @@ func onRotateCoordsCC(tile_rotation: int, coords := Vector4i(0, 1, -1, 0)) -> Ve
 		coords = Vector4i(-coords.z, -coords.x, -coords.y, coords.w)
 	return coords
 
+func onRotateCoordsClockwise(tile_rotation: int, coords := Vector4i(0, 1, -1, 0)) -> Vector4i:
+	for __ in range(tile_rotation):
+		coords = Vector4i(-coords.y, -coords.z, -coords.x, coords.w)
+	return coords
 #endregion
 
 #region Phases
@@ -293,7 +293,7 @@ func getNextInactiveCard(team: int) -> CardGD:
 #endregion
 
 #region Movement Range
-func getsetMovementRange(Card: CardGD) -> Array:
+func getsetMovementRange(Card: CardGD, speed_limit: int = -1) -> Array:
 	if Card == null: return []
 	if Card.Tile == null: return []
 	get_tree().call_group("FieldCardsGD", "setEnemyInMovementRange", false)
@@ -301,6 +301,9 @@ func getsetMovementRange(Card: CardGD) -> Array:
 	
 	var CenterTile: TileGD = Card.Tile
 	var speed: int = min(Card.getMovementSpeed(), 4)
+	if speed_limit != -1:
+		speed = max(speed, speed_limit)
+	
 	var tiles: Array = Game.getAdjacentOrCloserTiles(Card.Tile, speed) # Gather all tiles
 	
 	var all_cards_tiles: Array = get_tree().get_nodes_in_group("FieldCardsGD").map(func(x: CardGD): return x.Tile)
@@ -583,4 +586,18 @@ func getChampionLevel() -> int:
 	
 func isLevel() -> bool:
 	return Game.getLevel() != null
+#endregion
+
+#region Coords To Tile
+var coords_to_tile: Dictionary = {}
+func getTile(coords: Vector4i) -> TileGD:
+	if coords_to_tile.has(coords):
+		return coords_to_tile[coords]
+	return null
+	
+func onAddToCoordsToTile(Tile: TileGD) -> void:
+	coords_to_tile[Tile.getCoords()] = Tile
+	
+func onResetCoordsToTile() -> void:
+	coords_to_tile = {}
 #endregion

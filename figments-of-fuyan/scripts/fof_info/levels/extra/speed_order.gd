@@ -31,11 +31,11 @@ func onLoad() -> void:
 func onAwaken(Card: CardGD) -> void:
 	if Card.isAlly(0): return
 	var order: Array = ai_speed_order if Card.isAlly(1) else neutral_speed_order
-	var archetype_strength: int = archetype_order[Card.getArchetype()]
+	var archetype_strength: int = getOrderStrength(Card)
 	
 	# If there's any of the same archetype strength
-	if order.any(func(x: CardGD): return archetype_order[x.getArchetype()] == archetype_strength):
-		var same_archetype: Array = order.filter(func(x: CardGD): return archetype_order[x.getArchetype()] == archetype_strength)
+	if order.any(func(x: CardGD): return getOrderStrength(x) == archetype_strength):
+		var same_archetype: Array = order.filter(func(x: CardGD): return getOrderStrength(x) == archetype_strength)
 		# If everyone has the same speed insert at random position
 		if same_archetype.all(func(x: CardGD): return x.base_stats.speed == Card.base_stats.speed):
 			same_archetype.shuffle()
@@ -50,14 +50,20 @@ func onAwaken(Card: CardGD) -> void:
 		# If it's the slowest card
 		order.insert(order.find(same_archetype.size() - 1), Card)
 		return
-		
+			
 	for OtherCard: CardGD in order:
-		if archetype_order[OtherCard.getArchetype()] < archetype_strength:
+		if getOrderStrength(OtherCard) < archetype_strength:
 			order.insert(order.find(OtherCard), Card)
 			return
 			
 	# If it's dead last
 	order.append(Card)
+	
+func getOrderStrength(Card: CardGD) -> int:
+	if Card is BossCardGD:
+		var speed_order_override: BossCardInfo.SpeedOrderOverride = Card.getSpeedOrderOverrideFromInfo()
+		return 100 if speed_order_override == BossCardInfo.SpeedOrderOverride.FIRST else 0
+	return archetype_order[Card.getArchetypeEnum()]
 	
 func onDeath(Card: CardGD) -> void:
 	match Card.team:

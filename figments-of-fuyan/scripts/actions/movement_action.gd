@@ -41,7 +41,8 @@ func onPostAction() -> void:
 			break
 		
 	actions.append(MovementFinishAction.new(Card, movement_path))
-	onAppendAction(actions)
+	#onAppendAction(actions)
+	onPushAction(actions)
 
 func onCheckFail() -> void:
 	var is_attackable_on_path: bool = movement_path.any(func(x: TileGD): return x != Card.Tile and x.occupy_state != TileGD.OccupyStates.NULL)

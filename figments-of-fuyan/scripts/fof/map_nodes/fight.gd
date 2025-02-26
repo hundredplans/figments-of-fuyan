@@ -7,10 +7,6 @@ var level_info: LevelInfo
 #region Save / Load / Init
 func onFofInit() -> void:
 	super()
-	
-	if self is EliteFightNodeGD:
-		return
-	
 	setLevelInfo()
 	
 	spawn_group = level_info.getRandomSpawnGroup()
@@ -26,7 +22,7 @@ func onSave() -> SavedDataMapNode:
 	return SavedDataFight.new(info.id, false, public_id, map_location, links, is_entered, is_finished, rotation.y, level_info, spawn_group, enemy_cards)
 	
 func onLoadData(data: SavedData) -> void:
-	super(data)	
+	super(data)
 	level_info = data.level_info
 	enemy_cards = data.enemy_cards
 	spawn_group = data.spawn_group
@@ -41,9 +37,11 @@ func onUpdateHovered() -> void:
 	var state: bool = getHoveredState()
 	if state:
 		if HoverUI != null: HoverUI.queue_free()
-		HoverUI = load(info.FIGHT_NODE_HOVER_UI).instantiate()
+		HoverUI = load(getHoverUIPath()).instantiate()
 	super()
 	
+func getHoverUIPath() -> String:
+	return info.FIGHT_NODE_HOVER_UI
 #endregion
 
 #region Loading Level

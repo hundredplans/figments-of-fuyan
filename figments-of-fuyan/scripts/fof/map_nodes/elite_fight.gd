@@ -4,7 +4,6 @@ var curse_id: int
 const MAX_RESTART_AMOUNT: int = 16
 
 func onFofInit() -> void:
-	super()
 	setLevelInfo()
 	spawn_group = level_info.getRandomSpawnGroup()
 	var enemy_spawns: Array = level_info.getEnemySpawnsInGroup(spawn_group) # Array[SavedDataSpawn]
@@ -66,7 +65,7 @@ func onGenerateCurseID(curse_infos: Array) -> int:
 	
 func onFinished() -> void:
 	super()
-	if self is MinibossFightNodeGD or self is BossFightNodeGD: return
+	if self is BossFightNodeGD: return
 	
 	var new_level_data: SavedDataLevel = level_info.saved_data.new(level_info.id, true, 0, level_info.data.duplicate())
 	new_level_data.spawn_group = spawn_group

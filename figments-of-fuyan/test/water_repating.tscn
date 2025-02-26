@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://y5ytdt7d7c61"]
 
-[ext_resource type="Texture2D" uid="uid://d2ij48bhm7aer" path="res://test/hex.png" id="1_4dgxv"]
+[ext_resource type="Texture2D" uid="uid://6qcv07c2bfqb" path="res://test/hex_test.png" id="1_qi41i"]
 
 [sub_resource type="Shader" id="Shader_pp34d"]
 code = "// NOTE: Shader automatically converted from Godot Engine 4.3.stable's StandardMaterial3D.
@@ -49,7 +49,7 @@ void fragment() {
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lehme"]
 render_priority = 0
 shader = SubResource("Shader_pp34d")
-shader_parameter/albedo = Color(0.12549, 1, 0.788235, 1)
+shader_parameter/albedo = Color(0, 0.694118, 1, 1)
 shader_parameter/point_size = 1.0
 shader_parameter/roughness = 0.01
 shader_parameter/metallic_texture_channel = null
@@ -59,7 +59,7 @@ shader_parameter/uv1_scale = Vector3(1200, 700, 500)
 shader_parameter/uv1_offset = Vector3(0, 0, 0)
 shader_parameter/uv2_scale = Vector3(1, 1, 1)
 shader_parameter/uv2_offset = Vector3(0, 0, 0)
-shader_parameter/texture_albedo = ExtResource("1_4dgxv")
+shader_parameter/texture_albedo = ExtResource("1_qi41i")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_lxl27"]
 material = SubResource("ShaderMaterial_lehme")

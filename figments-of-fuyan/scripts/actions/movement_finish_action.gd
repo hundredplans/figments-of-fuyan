@@ -34,8 +34,15 @@ func onPostAction() -> void:
 			if retry:
 				actions.append(AITurnAction.new(Card, false, false, previous_allies, previous_enemies))
 			else:
-				actions.append(ChangeTurnStateAction.new(Card, Game.TurnStates.PASSED))
-				actions.append(AITurnStartAction.new(Card.team))
+				if Card is not BossCardGD or Game.ActionManagerReference.onFindFirstAction(BossIntentFinishedAction) != null:
+					actions.append(ChangeTurnStateAction.new(Card, Game.TurnStates.PASSED))
+					actions.append(AITurnStartAction.new(Card.team))
+				else:
+					var tiles: Array = Game.getsetMovementRange(Card)
+					var enemies: Array = Card.getVisibleFieldCardsEnemies()
+					var allies: Array =  Card.getVisibleFieldCardsAllies()
+					
+					Card.onUseBossIntent(enemies, allies, tiles, BossCardGD.UseType.END)
 		else:
 			actions.append(ChangeTurnStateAction.new(Card, Game.TurnStates.PASSED))
 			actions.append(CameraSpectateGroupAction.new(0))

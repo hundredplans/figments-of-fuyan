@@ -11,5 +11,10 @@ class_name AreaInfo extends FofInfo
 @export var base_tile_info: TileInfo
 @export var default_light: PackedScene
 
+@export_group("Boss")
+@export var miniboss_ids_to_level: Array[IdToId]
+@export var boss_ids_to_level: Array[IdToId]
+@export_group("")
+
 static func getInfoPath() -> String: return "res://resources/fof/areas"
 static func getFofName() -> String: return "Area"

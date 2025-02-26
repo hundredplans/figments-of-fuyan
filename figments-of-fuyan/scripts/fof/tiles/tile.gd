@@ -176,12 +176,11 @@ func onLoadModel() -> void:
 	onCreateTileFill(tile_fill)
 	onAfterLoadModel()
 	
-
-	
 func onLoadDataLevel() -> void:
 	super()
 	setOutlineMaterial()
 	explored = ExploredGD.new()
+	Game.onAddToCoordsToTile(self)
 	
 #endregion
 #region Occupied Objects
@@ -219,7 +218,7 @@ func onCardHover(state: bool) -> void:
 		await get_tree().create_timer(SHOW_CARD_AT_HOVER_DELAY).timeout
 		if is_hovered == state:
 			var Card: CardGD = Game.getFieldCard(self)
-			if Card == null: return
+			if Card == null or Card is BossCardGD: return
 			change_hover_card_state.emit(Card, true)
 		
 #endregion
@@ -273,7 +272,7 @@ func getMovementPath() -> MovementPathGD:
 	
 func isBelowMaxMovementHeight(Card: CardGD) -> bool:
 	if max_movement_height == 0: return true
-	return Card.info.top + Card.position.y < (max_movement_height + getCardPosition().y)
+	return Card.getTopFromInfo() + Card.position.y < (max_movement_height + getCardPosition().y)
 #endregion
 
 #region Ramps
@@ -305,6 +304,8 @@ func setFallDamageWorldEffect(state: bool, PreviousTile: TileGD, damage: int) ->
 func onUpdateLevelVisible() -> void:
 	super()
 	setOutlineMaterial()
+	
+	if TileIntentModel != null: TileIntentModel.visible = isLevelVisible()
 
 func getRevealVisibleGroup() -> Array:
 	return [self] + occupied_objects
@@ -346,4 +347,18 @@ func onHideUI(state: bool) -> void:
 func onAdvanceTurn(team: int) -> void:
 	if team == 1:
 		vision_datastore.onIncrementLastSeenByEnemy()
+#endregion
+
+#region Tile Intents
+var TileIntentModel: Node3D
+func setTileIntent(tile_intent: Game.TileIntents) -> void:
+	if TileIntentModel != null:
+		TileIntentModel.queue_free()
+		
+	if tile_intent != Game.TileIntents.NULL:
+		TileIntentModel = load(info.getTileIntentModelPath(tile_intent)).instantiate()
+		add_child(TileIntentModel)
+		
+		TileIntentModel.global_position.y = getCardPosition().y
+		TileIntentModel.visible = isLevelVisible()
 #endregion

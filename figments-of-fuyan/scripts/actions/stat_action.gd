@@ -103,7 +103,7 @@ func getLogInfo() -> Array:
 		arr.append("Turns: " + str(stat_info.turns))
 	return arr
 
-func hasCard(Card: CardGD) -> void:
+func hasCard(Card: CardGD) -> bool:
 	return stat_infos.any(func(x: StatInfo): return x.Card == Card)
 	
 func getCards() -> Array:

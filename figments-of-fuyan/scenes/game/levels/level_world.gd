@@ -180,7 +180,7 @@ func onTilePressed() -> void:
 func onTileInspected() -> void:
 	var Tile: TileGD = MouseHoverTile
 	var Card: CardGD = Tile.getCard()
-	if Card != null and Card.isLevelVisible():
+	if Card != null and Card is not BossCardGD and Card.isLevelVisible():
 		Card.setInspectable(true, UI)
 		Card.onInspectCard()
 #endregion

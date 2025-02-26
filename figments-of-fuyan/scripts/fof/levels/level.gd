@@ -60,7 +60,7 @@ func onSave() -> SavedData:
 	var old_player_vision_public_ids: Array = old_player_vision.map(func(x: GameObjectGD): return x.public_id)
 	
 	return SavedDataLevel.new(info.id, false, public_id, data, enemy_cards, getFieldCards(), phase, level_camera_data, energy, max_energy,\
- 	fight_type, is_ended, rewards, anti_boons, old_player_vision_public_ids, player_card_last_seen_turn, level_area_datastore, speed_order, spawn_group,\
+		fight_type, is_ended, rewards, anti_boons, old_player_vision_public_ids, player_card_last_seen_turn, level_area_datastore, speed_order, spawn_group,\
 	curse_id)
 
 func onClear() -> void:
@@ -69,6 +69,7 @@ func onClear() -> void:
 func onLoadData(data: SavedData) -> void:
 	super(data)
 	add_to_group("LevelsGD")
+	Game.onResetCoordsToTile()
 	fight_type = data.fight_type
 	energy = data.energy
 	max_energy = data.max_energy
@@ -116,7 +117,7 @@ func onLoadTileObjectInit(data: SavedDataTileObject) -> TileObjectGD:
 	TileObject.add_to_group("LevelTileObjectsGD")
 	TileObject.set_spectate_card.connect(func(x: TileObjectGD): set_spectate_card.emit(x))
 	
-	if TileObject is TileGD: TileObject.add_to_group("LevelTilesGD"); 
+	if TileObject is TileGD: TileObject.add_to_group("LevelTilesGD");
 	elif TileObject is ObjectGD:
 		TileObject.add_to_group("LevelObjectsGD")
 		if TileObject is IObjectGD:
@@ -192,6 +193,8 @@ func onChangePhase(_phase: Game.Phases, instant: bool = false) -> void:
 		Game.Phases.HAND:
 			if get_tree().get_node_count_in_group("HandCardsGD") < DRAW_BELOW_HAND_SIZE:
 				onForceAction(DrawAction.new())
+			if isEpic() and old_phase != Game.Phases.START: # Gain energy per turn for bosses
+				onForceAction(EnergyAction.new(Game.getArea().getWorldDifficulty()))
 			onCheckSkipHandPhase()
 		Game.Phases.AI: onAppendAction(AITurnStartAction.new(1))
 		Game.Phases.NEUTRAL: onAppendAction(AITurnStartAction.new(2))
@@ -292,7 +295,7 @@ func onProcessAction(action: Action) -> void:
 func onDrawStarterHand() -> void:
 	var hand_cards: Array = get_tree().get_nodes_in_group("HandCardsGD")
 	if hand_cards.size() > START_HAND_SIZE: hand_cards.resize(START_HAND_SIZE)
-	var draw_count: int = START_HAND_SIZE - hand_cards.size() 
+	var draw_count: int = START_HAND_SIZE - hand_cards.size()
 	
 	for Card in hand_cards:
 		onForceAction(InsertAction.new(Card))
@@ -472,4 +475,13 @@ func getNextAIUnit(inactive_cards: Array, team: int) -> CardGD:
 	return speed_order.getNextAIUnit(inactive_cards, team)
 
 func isElite() -> bool:
-	return Game.FightTypes.REGULAR != fight_type
+	return fight_type in [Game.FightTypes.ELITE, Game.FightTypes.BOSS]
+
+func isEpic() -> bool:
+	return fight_type == Game.FightTypes.MINIBOSS
+
+#region Boss
+func getBoss() -> BossCardGD:
+	var boss_cards: Array = get_tree().get_nodes_in_group("BossCardsGD")
+	return boss_cards[0] if !boss_cards.is_empty() else null
+#endregion

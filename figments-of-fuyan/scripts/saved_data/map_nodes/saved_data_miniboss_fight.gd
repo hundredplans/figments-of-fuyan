@@ -1,1 +1,1 @@
-class_name SavedDataMiniBossFight extends SavedDataEliteFight
+class_name SavedDataMiniBossFight extends SavedDataEpicFight

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BossIntent" load_steps=2 format=3 uid="uid://c7q2q8jphfk5w"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/boss_intent.gd" id="1_l5i3q"]
+
+[resource]
+script = ExtResource("1_l5i3q")
+name = "Rally"
+description = "Buff other allies in vision [1] ATT for [2] Turns. Cap your SPD to [2] for this turn. Only triggers if there's 2 or more Palmy's alive."
+type = 4
+default_cooldown = 3
+combat_type = 1

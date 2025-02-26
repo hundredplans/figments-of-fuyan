@@ -142,7 +142,7 @@ const ATTACK_DISTANCE: int = 2
 # Use Only used when 2 or more units in vision, use add fuel if there's a support or reinforcer in the group, use att if at least two units in 2 tile range
 func onAIAbilityChecker(active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, DFL: DefaultFightLogic) -> TileGD:
 	if DFL.allies.size() >= AI_ALLIES_IN_VISION:
-		if DFL.allies.any(func(x: CardGD): return x.getArchetype() in [Game.Archetypes.SUPPORT, Game.Archetypes.REINFORCER]):
+		if DFL.allies.any(func(x: CardGD): return x.getArchetypeEnum() in [Game.Archetypes.SUPPORT, Game.Archetypes.REINFORCER]):
 			if active_effect.name == "Add Fuel": # Excludes Extinguish if it gets this far on purpose
 				return active_effect_tiles.pickable_tiles[0]
 		elif active_effect.name == "Extinguish" and \

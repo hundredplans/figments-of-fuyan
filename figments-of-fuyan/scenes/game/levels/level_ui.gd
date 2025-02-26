@@ -3,7 +3,7 @@ extends Control
 
 #region Onready
 @onready var HandPanel: PanelContainer = %HandPanel
-@onready var HandPanelAnimationPlayer: AnimationPlayer = %HandPanelAnimationPlayer
+@onready var BottomBox: Control = %BottomBox
 @onready var ShillingLabel: FancyTextLabel = %ShillingLabel
 @onready var LevelLabel: Label = %LevelLabel
 @onready var ArtMiniRect: TextureRect = %ArtMiniRect
@@ -38,6 +38,7 @@ extends Control
 
 @onready var HoverCardControl: Control = %HoverCardControl
 @onready var BoonEffectFiller: Control = %BoonEffectFiller
+@onready var EpicFightControl: Control = %EpicFightControl
 #endregion
 
 #region Globals
@@ -110,6 +111,10 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	onUpdateShillings()
 	onUpdateDeckCardAmountLabel()
 	onCameraUpdated(level.getSpectateObject())
+	
+	EpicFightControl.visible = false # Important
+	setEpicFightControlInfo()
+	
 	BoonBox.onUpdate()
 	
 	for Tile in get_tree().get_nodes_in_group("TilesGD"):
@@ -311,7 +316,7 @@ func onInspectScreenCreated(InspectScreen: Control) -> void:
 #region Awakened
 func onAwakened(Card: CardGD) -> void:
 	Card.inspect_screen_created.connect(onInspectScreenCreated)
-	Card.FieldInfo.visible = visible
+	#Card.FieldInfo.visible = visible
 	if !Card.isAlly(0): return
 	PassButton.setEveryonePassedTurn()
 #endregion
@@ -481,6 +486,15 @@ func onProcessAction(action: Action) -> void:
 			onRemoveCardUI(action.Card)
 		elif action is BoonActivatedAction:
 			onBoonEffectTemp(action)
+			
+		if level.isEpic():
+			if action is AwakenBossAction:
+				setEpicFightControlInfo()
+				
+			elif action is StatAction:
+				var BossCard: CardGD = level.getBoss()
+				if action.hasCard(BossCard):
+					EpicFightControl.setHealthBar(BossCard)
 #endregion
 const BOON_EFFECT_TEMP_DURATION: float = 1.2
 func onBoonEffectTemp(action: BoonActivatedAction) -> void:
@@ -497,3 +511,11 @@ func onBoonEffectTemp(action: BoonActivatedAction) -> void:
 
 	await vis_tween.finished
 	BoonEffectTemp.queue_free()
+
+#region Boss
+func setEpicFightControlInfo() -> void:
+	if !level.isEpic(): return
+	if level.getBoss() == null: return
+	EpicFightControl.visible = true
+	EpicFightControl.setInfo()
+#endregion

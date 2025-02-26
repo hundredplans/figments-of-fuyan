@@ -11,7 +11,7 @@ var level: LevelGD
 
 var is_mouse_in_ui: bool
 
-@export var HandPanel: PanelContainer
+@export var BottomBox: Control
 var temp_up: bool
 var temp_down: bool
 
@@ -79,7 +79,7 @@ func onPlayTween(down: bool) -> void:
 	if !is_tweening and !((down and is_down) or (!down and !is_down)):
 		var tween := get_tree().create_tween()
 		var offset: int = TWEEN_OFFSET * (1 if down else -1)
-		tween.tween_property(HandPanel, "position:y", offset, TWEEN_SPEED).as_relative()
+		tween.tween_property(BottomBox, "position:y", offset, TWEEN_SPEED).as_relative()
 		
 		if DraggedCardUI != null:
 			var cardui_tween := get_tree().create_tween()

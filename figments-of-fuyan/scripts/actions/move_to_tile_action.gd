@@ -21,7 +21,7 @@ func _init(_Card: CardGD = null, _DestinationTile: TileGD = null) -> void:
 func setMovementTypeDelay() -> void:
 	fall_time = 1
 	if DestinationTile.isRamp() or Card.Tile.isRamp(): movement_type = MOVEMENT_TYPES.RAMP
-	elif DestinationTile.getHeight() - Card.Tile.getHeight() == 1: movement_type = MOVEMENT_TYPES.JUMP; fall_time += JUMP_FALL_TIME_OFFSET
+	elif DestinationTile.getHeight() - Card.Tile.getHeight() >= 1: movement_type = MOVEMENT_TYPES.JUMP; fall_time += JUMP_FALL_TIME_OFFSET
 	elif DestinationTile.getHeight() - Card.Tile.getHeight() <= -1:
 		movement_type = MOVEMENT_TYPES.FALL
 		var height_diff: int = abs(DestinationTile.getHeight() - Card.Tile.getHeight())

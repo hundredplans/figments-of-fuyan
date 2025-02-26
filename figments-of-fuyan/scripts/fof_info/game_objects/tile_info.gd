@@ -11,6 +11,11 @@ const NEUTRAL_OCCUPY_MATERIAL: String = "res://resources/materials/colors/unshad
 const ACTIVE_EFFECT_RANGE_MATERIAL: String = "res://resources/materials/colors/unshaded/orange.tres"
 const ACTIVE_EFFECT_PICKABLE_MATERIAL: String = "res://resources/materials/colors/unshaded/pink.tres"
 
+const RED_TILE_INTENT_MODEL_PATH: String = "res://assets/models/general/tile_intents/red_tile_intent.glb"
+const GREEN_TILE_INTENT_MODEL_PATH: String = "res://assets/models/general/tile_intents/green_tile_intent.glb"
+const DARK_RED_TILE_INTENT_MODEL_PATH: String = "res://assets/models/general/tile_intents/dark_red_tile_intent.glb"
+const PURPLE_TILE_INTENT_MODEL_PATH: String = "res://assets/models/general/tile_intents/purple_tile_intent.glb"
+
 @export var tile_fill: PackedScene
 @export var decoration_models: Array[PackedScene]
 
@@ -19,3 +24,11 @@ func getModel(variation: int, is_decoration: bool = false) -> PackedScene:
 	return models[variation] if !is_decoration else decoration_models[variation]
 	
 static func getFofName() -> String: return "Tile"
+
+func getTileIntentModelPath(tile_intent: Game.TileIntents) -> String:
+	match tile_intent:
+		Game.TileIntents.RED: return RED_TILE_INTENT_MODEL_PATH
+		Game.TileIntents.GREEN: return GREEN_TILE_INTENT_MODEL_PATH
+		Game.TileIntents.DARK_RED: return DARK_RED_TILE_INTENT_MODEL_PATH
+		Game.TileIntents.PURPLE: return PURPLE_TILE_INTENT_MODEL_PATH
+	return ""

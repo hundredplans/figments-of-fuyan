@@ -26,8 +26,6 @@ func setInfo(_active_effect: ActiveEffectDatastore, _Card: CardGD, _is_action_lo
 	var charges: int = active_effect.getCharges()
 	var max_charges: int = active_effect.getMaxCharges()
 	
-
-	
 	if max_charges != -1:
 		ChargesLabelCharges.text = str(charges)
 		ChargesLabelSlash.text = "/"

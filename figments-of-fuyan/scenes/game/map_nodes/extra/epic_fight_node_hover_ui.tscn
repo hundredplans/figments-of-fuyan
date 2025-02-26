@@ -1,0 +1,46 @@
+[gd_scene load_steps=4 format=3 uid="uid://p4sxotgbwy44"]
+
+[ext_resource type="Script" path="res://scenes/game/map_nodes/extra/epic_fight_node_hover_ui.gd" id="1_52cvy"]
+[ext_resource type="PackedScene" uid="uid://bk7ao27fc3efw" path="res://scenes/common/fof_ui_box/fof_ui_box.tscn" id="2_2sigv"]
+[ext_resource type="LabelSettings" uid="uid://rtes1t31euap" path="res://resources/ui/label_settings/jacquard_massive.tres" id="3_m5uvl"]
+
+[node name="EpicFightNodeHoverUi" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 593.0
+offset_bottom = 210.0
+mouse_filter = 2
+script = ExtResource("1_52cvy")
+FofUIBoxPacked = ExtResource("2_2sigv")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="FofUIControl" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="BossNameLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Palmador Rider"
+label_settings = ExtResource("3_m5uvl")
+vertical_alignment = 1
+autowrap_mode = 2

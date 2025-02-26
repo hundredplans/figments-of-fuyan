@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="PalmLevelInfo" load_steps=84 format=3]
+[gd_resource type="Resource" script_class="PalmLevelInfo" load_steps=208 format=3]
 
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="1_t1p2x"]
 [ext_resource type="Script" path="res://scripts/fof_info/game_objects/extra/revealed_datastore.gd" id="2_dnpoy"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://scripts/fof_info/levels/palm_level_info.gd" id="6_54g8c"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_spawn.gd" id="6_p5q1s"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_iobject.gd" id="6_u68na"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="7_44n26"]
 
 [sub_resource type="Resource" id="Resource_16srk"]
 script = ExtResource("3_xdy6n")
@@ -16,7 +17,7 @@ last_seen_by_enemy = 0
 level_visible = false
 reveals = Array[ExtResource("2_dnpoy")]([])
 
-[sub_resource type="Resource" id="Resource_jc54f"]
+[sub_resource type="Resource" id="Resource_33lr8"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -29,7 +30,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_uu6o2"]
+[sub_resource type="Resource" id="Resource_adev5"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -48,7 +49,7 @@ last_seen_by_enemy = 0
 level_visible = false
 reveals = Array[ExtResource("2_dnpoy")]([])
 
-[sub_resource type="Resource" id="Resource_knwc4"]
+[sub_resource type="Resource" id="Resource_6byhe"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -61,7 +62,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_ebboe"]
+[sub_resource type="Resource" id="Resource_ica0m"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -74,7 +75,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_8w46w"]
+[sub_resource type="Resource" id="Resource_1nti1"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -87,7 +88,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_sydl0"]
+[sub_resource type="Resource" id="Resource_82k8j"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -100,7 +101,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_o155m"]
+[sub_resource type="Resource" id="Resource_khn3j"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -113,7 +114,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_mlb20"]
+[sub_resource type="Resource" id="Resource_i8tcc"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -126,7 +127,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_ur8mh"]
+[sub_resource type="Resource" id="Resource_i7yxj"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -139,7 +140,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_3rduq"]
+[sub_resource type="Resource" id="Resource_h3wkk"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -152,7 +153,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_gffue"]
+[sub_resource type="Resource" id="Resource_g45av"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -165,7 +166,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_afuns"]
+[sub_resource type="Resource" id="Resource_n7fjf"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -178,7 +179,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_4jf4c"]
+[sub_resource type="Resource" id="Resource_b7tqx"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -191,7 +192,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_fo856"]
+[sub_resource type="Resource" id="Resource_rovk3"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -204,7 +205,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_lmknp"]
+[sub_resource type="Resource" id="Resource_p2712"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -217,7 +218,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_6kw8m"]
+[sub_resource type="Resource" id="Resource_an8ty"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -230,7 +231,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_adf74"]
+[sub_resource type="Resource" id="Resource_t44vr"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -243,7 +244,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_oe0qq"]
+[sub_resource type="Resource" id="Resource_10n1p"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -256,7 +257,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_fi7jw"]
+[sub_resource type="Resource" id="Resource_2ddp0"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -269,7 +270,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_rb0q6"]
+[sub_resource type="Resource" id="Resource_naoc0"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -282,7 +283,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_j1wqu"]
+[sub_resource type="Resource" id="Resource_hnacc"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -295,7 +296,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_1rbry"]
+[sub_resource type="Resource" id="Resource_iifj4"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -308,7 +309,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_8fxgd"]
+[sub_resource type="Resource" id="Resource_fq5yq"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -321,7 +322,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_qvvwb"]
+[sub_resource type="Resource" id="Resource_uyag8"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -339,7 +340,7 @@ script = ExtResource("5_fr0t2")
 level_visible = false
 reveals = Array[ExtResource("2_dnpoy")]([])
 
-[sub_resource type="Resource" id="Resource_0k2mq"]
+[sub_resource type="Resource" id="Resource_i62ea"]
 script = ExtResource("6_p5q1s")
 spawn_id = 0
 groups = ["A"]
@@ -361,7 +362,7 @@ last_seen_by_enemy = 0
 level_visible = false
 reveals = Array[ExtResource("2_dnpoy")]([])
 
-[sub_resource type="Resource" id="Resource_hfxu6"]
+[sub_resource type="Resource" id="Resource_gx7k0"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -374,7 +375,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_ge76l"]
+[sub_resource type="Resource" id="Resource_7nj3c"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -387,7 +388,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_q0b8e"]
+[sub_resource type="Resource" id="Resource_idq8q"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -400,7 +401,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_wd38w"]
+[sub_resource type="Resource" id="Resource_x4enp"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -418,7 +419,7 @@ script = ExtResource("5_fr0t2")
 level_visible = false
 reveals = Array[ExtResource("2_dnpoy")]([])
 
-[sub_resource type="Resource" id="Resource_tjleb"]
+[sub_resource type="Resource" id="Resource_577np"]
 script = ExtResource("6_u68na")
 active_effects = []
 ability_save = {
@@ -443,7 +444,7 @@ script = ExtResource("5_fr0t2")
 level_visible = false
 reveals = Array[ExtResource("2_dnpoy")]([])
 
-[sub_resource type="Resource" id="Resource_4pvao"]
+[sub_resource type="Resource" id="Resource_5ohf3"]
 script = ExtResource("6_p5q1s")
 spawn_id = 0
 groups = ["A"]
@@ -465,7 +466,7 @@ last_seen_by_enemy = 0
 level_visible = false
 reveals = Array[ExtResource("2_dnpoy")]([])
 
-[sub_resource type="Resource" id="Resource_8exta"]
+[sub_resource type="Resource" id="Resource_5purn"]
 script = ExtResource("1_t1p2x")
 tile_fill = true
 occupy_state = 0
@@ -478,7 +479,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_wt7nu"]
+[sub_resource type="Resource" id="Resource_0rjjd"]
 script = ExtResource("1_t1p2x")
 tile_fill = true
 occupy_state = 0
@@ -496,7 +497,7 @@ script = ExtResource("5_fr0t2")
 level_visible = false
 reveals = Array[ExtResource("2_dnpoy")]([])
 
-[sub_resource type="Resource" id="Resource_efnhp"]
+[sub_resource type="Resource" id="Resource_26d7s"]
 script = ExtResource("6_u68na")
 active_effects = []
 ability_save = {
@@ -521,7 +522,7 @@ last_seen_by_enemy = 0
 level_visible = false
 reveals = Array[ExtResource("2_dnpoy")]([])
 
-[sub_resource type="Resource" id="Resource_htug7"]
+[sub_resource type="Resource" id="Resource_8nbp3"]
 script = ExtResource("1_t1p2x")
 tile_fill = true
 occupy_state = 0
@@ -534,7 +535,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_gnm37"]
+[sub_resource type="Resource" id="Resource_quvac"]
 script = ExtResource("1_t1p2x")
 tile_fill = true
 occupy_state = 0
@@ -547,7 +548,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_ye1wm"]
+[sub_resource type="Resource" id="Resource_gi8a8"]
 script = ExtResource("1_t1p2x")
 tile_fill = true
 occupy_state = 0
@@ -560,7 +561,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_dmuyi"]
+[sub_resource type="Resource" id="Resource_cay2w"]
 script = ExtResource("1_t1p2x")
 tile_fill = true
 occupy_state = 0
@@ -573,7 +574,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_o0io7"]
+[sub_resource type="Resource" id="Resource_qog1x"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -592,7 +593,7 @@ last_seen_by_enemy = 0
 level_visible = false
 reveals = Array[ExtResource("2_dnpoy")]([])
 
-[sub_resource type="Resource" id="Resource_bt8vr"]
+[sub_resource type="Resource" id="Resource_eo84y"]
 script = ExtResource("1_t1p2x")
 tile_fill = true
 occupy_state = 0
@@ -605,7 +606,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_vwscp"]
+[sub_resource type="Resource" id="Resource_cmvg0"]
 script = ExtResource("1_t1p2x")
 tile_fill = true
 occupy_state = 0
@@ -618,7 +619,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_q0vim"]
+[sub_resource type="Resource" id="Resource_a2xj0"]
 script = ExtResource("1_t1p2x")
 tile_fill = true
 occupy_state = 0
@@ -631,7 +632,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_vyneo"]
+[sub_resource type="Resource" id="Resource_10qhg"]
 script = ExtResource("1_t1p2x")
 tile_fill = true
 occupy_state = 0
@@ -644,7 +645,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_xh46c"]
+[sub_resource type="Resource" id="Resource_nty7e"]
 script = ExtResource("1_t1p2x")
 tile_fill = true
 occupy_state = 0
@@ -657,7 +658,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_3h814"]
+[sub_resource type="Resource" id="Resource_hvn0v"]
 script = ExtResource("1_t1p2x")
 tile_fill = true
 occupy_state = 0
@@ -670,7 +671,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_2dxs5"]
+[sub_resource type="Resource" id="Resource_wswqe"]
 script = ExtResource("1_t1p2x")
 tile_fill = true
 occupy_state = 0
@@ -683,7 +684,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_cpqic"]
+[sub_resource type="Resource" id="Resource_0itj3"]
 script = ExtResource("1_t1p2x")
 tile_fill = true
 occupy_state = 0
@@ -696,7 +697,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_pi4d8"]
+[sub_resource type="Resource" id="Resource_qc3fd"]
 script = ExtResource("1_t1p2x")
 tile_fill = true
 occupy_state = 0
@@ -709,7 +710,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_aujst"]
+[sub_resource type="Resource" id="Resource_qsmem"]
 script = ExtResource("1_t1p2x")
 tile_fill = true
 occupy_state = 0
@@ -722,7 +723,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_l3obb"]
+[sub_resource type="Resource" id="Resource_yiio6"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -735,7 +736,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_5i4ow"]
+[sub_resource type="Resource" id="Resource_hu1dm"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -748,7 +749,7 @@ id = 1
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_gmo44"]
+[sub_resource type="Resource" id="Resource_456s4"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -767,7 +768,7 @@ last_seen_by_enemy = 0
 level_visible = false
 reveals = Array[ExtResource("2_dnpoy")]([])
 
-[sub_resource type="Resource" id="Resource_v2rb0"]
+[sub_resource type="Resource" id="Resource_7tqky"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -780,7 +781,7 @@ id = 7
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_2pnp2"]
+[sub_resource type="Resource" id="Resource_kwnbg"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -793,7 +794,7 @@ id = 7
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_ips6s"]
+[sub_resource type="Resource" id="Resource_6uvck"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -806,7 +807,7 @@ id = 7
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_vxh7n"]
+[sub_resource type="Resource" id="Resource_0vo71"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -819,7 +820,7 @@ id = 7
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_ejaxt"]
+[sub_resource type="Resource" id="Resource_bp01k"]
 script = ExtResource("1_t1p2x")
 tile_fill = false
 occupy_state = 0
@@ -837,7 +838,7 @@ script = ExtResource("5_fr0t2")
 level_visible = false
 reveals = Array[ExtResource("2_dnpoy")]([])
 
-[sub_resource type="Resource" id="Resource_mnapb"]
+[sub_resource type="Resource" id="Resource_rebq1"]
 script = ExtResource("6_p5q1s")
 spawn_id = 0
 groups = ["A"]
@@ -853,7 +854,7 @@ id = 2
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_thsvv"]
+[sub_resource type="Resource" id="Resource_smkki"]
 script = ExtResource("6_p5q1s")
 spawn_id = 0
 groups = ["A"]
@@ -869,7 +870,7 @@ id = 2
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_ppssl"]
+[sub_resource type="Resource" id="Resource_7hfy3"]
 script = ExtResource("6_p5q1s")
 spawn_id = 0
 groups = ["A"]
@@ -885,7 +886,7 @@ id = 2
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_mvdxa"]
+[sub_resource type="Resource" id="Resource_r1wlm"]
 script = ExtResource("6_p5q1s")
 spawn_id = 0
 groups = ["A"]
@@ -901,7 +902,7 @@ id = 2
 first_init = false
 public_id = 0
 
-[sub_resource type="Resource" id="Resource_few64"]
+[sub_resource type="Resource" id="Resource_7oq1f"]
 script = ExtResource("6_p5q1s")
 spawn_id = 0
 groups = ["A"]
@@ -917,17 +918,1539 @@ id = 2
 first_init = false
 public_id = 0
 
+[sub_resource type="Resource" id="Resource_dt0n1"]
+script = ExtResource("3_xdy6n")
+last_seen_by_enemy = 0
+level_visible = false
+reveals = Array[ExtResource("2_dnpoy")]([])
+
+[sub_resource type="Resource" id="Resource_6ysdd"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-3, 0, 3, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_wwh48"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-4, 0, 4, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_havld"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-5, 1, 4, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_pbo1p"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-5, 2, 3, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_giy8y"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-4, 2, 2, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_vpsgm"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-3, 2, 1, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_nhmlc"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-2, 1, 1, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_lg5g3"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-2, 0, 2, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_3prhl"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-6, 3, 3, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_1p4fy"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-5, 3, 2, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_bef0s"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-4, 3, 1, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_3uyni"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-3, 1, 2, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_tb5y8"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-4, 1, 3, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_724ty"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-5, 0, 5, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_dryes"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-3, -1, 4, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_congw"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-2, 2, 0, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_s1nqw"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-7, 4, 3, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_njrjs"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-6, 4, 2, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_3agay"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-4, -1, 5, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_qt6g7"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-5, -1, 6, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_ldxjl"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-6, -1, 7, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_w6wr2"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-7, -1, 8, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_86ui7"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-7, 5, 2, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_0pt0n"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-6, 5, 1, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_fhhn1"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-5, 5, 0, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_et4ga"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-4, 5, -1, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_87g2v"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-3, 4, -1, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_hb3lp"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-3, 3, 0, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_lkhkq"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-9, 7, 2, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_cwpag"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-8, 7, 1, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_wabx3"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-6, 6, 0, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_svu8g"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-4, 4, 0, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_ahgiu"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-5, 4, 1, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_qyson"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-7, 6, 1, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_ms0u7"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-8, 6, 2, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_nhwym"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-14, 6, 8, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_1isbm"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-14, 7, 7, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_aa1w6"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-14, 8, 6, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_bv1t7"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-8, -1, 9, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_w27y1"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dt0n1")
+coords = Vector4i(-9, -1, 10, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_4p1l3"]
+script = ExtResource("5_fr0t2")
+level_visible = false
+reveals = Array[ExtResource("2_dnpoy")]([])
+
+[sub_resource type="Resource" id="Resource_s4vpj"]
+script = ExtResource("7_44n26")
+rotation = 2.13628
+position = Vector3(-9.45241, 0.3, 1.46481)
+height = 0
+occupied_coords = []
+variation = 1
+tile_rotation = 0
+vision_datastore = SubResource("Resource_4p1l3")
+coords = Vector4i(-6, 1, 5, 0)
+id = 25
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_jh54n"]
+script = ExtResource("3_xdy6n")
+last_seen_by_enemy = 0
+level_visible = false
+reveals = Array[ExtResource("2_dnpoy")]([])
+
+[sub_resource type="Resource" id="Resource_yrnfg"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_jh54n")
+coords = Vector4i(-8, 5, 3, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_nirl5"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_jh54n")
+coords = Vector4i(-8, 4, 4, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_uesos"]
+script = ExtResource("3_xdy6n")
+last_seen_by_enemy = 0
+level_visible = false
+reveals = Array[ExtResource("2_dnpoy")]([])
+
+[sub_resource type="Resource" id="Resource_rycxo"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_uesos")
+coords = Vector4i(-10, 8, 2, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_i23id"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_uesos")
+coords = Vector4i(-11, 9, 2, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_tulp6"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_uesos")
+coords = Vector4i(-12, 6, 6, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_1qjal"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_uesos")
+coords = Vector4i(-13, 8, 5, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_pimtn"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_uesos")
+coords = Vector4i(-13, 9, 4, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_2m2qt"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_uesos")
+coords = Vector4i(-13, 10, 3, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_x67x0"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_uesos")
+coords = Vector4i(-13, 7, 6, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_ioqq2"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_uesos")
+coords = Vector4i(-12, 7, 5, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_53amm"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_uesos")
+coords = Vector4i(-12, 9, 3, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_eg2yc"]
+script = ExtResource("3_xdy6n")
+last_seen_by_enemy = 0
+level_visible = false
+reveals = Array[ExtResource("2_dnpoy")]([])
+
+[sub_resource type="Resource" id="Resource_tf1m2"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_eg2yc")
+coords = Vector4i(-13, 6, 7, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_xfwlj"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_eg2yc")
+coords = Vector4i(-13, 5, 8, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_m76x0"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_eg2yc")
+coords = Vector4i(-13, 4, 9, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_p38r2"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_eg2yc")
+coords = Vector4i(-12, 3, 9, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_iy0u0"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_eg2yc")
+coords = Vector4i(-12, 4, 8, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_pwf0t"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_eg2yc")
+coords = Vector4i(-12, 5, 7, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_3hw4n"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_eg2yc")
+coords = Vector4i(-11, 5, 6, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_6cciv"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_eg2yc")
+coords = Vector4i(-11, 4, 7, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_2gj8g"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_eg2yc")
+coords = Vector4i(-13, 3, 10, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_ln85d"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_eg2yc")
+coords = Vector4i(-11, 3, 8, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_wyaiw"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_eg2yc")
+coords = Vector4i(-10, 3, 7, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_hmh5b"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_eg2yc")
+coords = Vector4i(-10, 4, 6, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_pq0nf"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_eg2yc")
+coords = Vector4i(-9, 4, 5, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_3wo7x"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_eg2yc")
+coords = Vector4i(-9, 3, 6, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_bgo1g"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_eg2yc")
+coords = Vector4i(-8, 3, 5, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_tkvbq"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_eg2yc")
+coords = Vector4i(-7, 3, 4, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_fr1l8"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_eg2yc")
+coords = Vector4i(-6, 1, 5, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_cgvla"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_eg2yc")
+coords = Vector4i(-6, 2, 4, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_iopj3"]
+script = ExtResource("3_xdy6n")
+last_seen_by_enemy = 0
+level_visible = false
+reveals = Array[ExtResource("2_dnpoy")]([])
+
+[sub_resource type="Resource" id="Resource_n1pof"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_iopj3")
+coords = Vector4i(-7, 2, 5, 0)
+id = 6
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_pwbm3"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_iopj3")
+coords = Vector4i(-6, 0, 6, 0)
+id = 6
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_tso66"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_iopj3")
+coords = Vector4i(-8, 2, 6, 0)
+id = 6
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_5v74k"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_iopj3")
+coords = Vector4i(-7, 0, 7, 0)
+id = 6
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_esamk"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_iopj3")
+coords = Vector4i(-9, 2, 7, 0)
+id = 6
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_3f0eb"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_iopj3")
+coords = Vector4i(-8, 0, 8, 0)
+id = 6
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_dsfn0"]
+script = ExtResource("3_xdy6n")
+last_seen_by_enemy = 0
+level_visible = false
+reveals = Array[ExtResource("2_dnpoy")]([])
+
+[sub_resource type="Resource" id="Resource_6dr6g"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_dsfn0")
+coords = Vector4i(-10, 2, 8, 0)
+id = 6
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_ymqf1"]
+script = ExtResource("3_xdy6n")
+last_seen_by_enemy = 0
+level_visible = false
+reveals = Array[ExtResource("2_dnpoy")]([])
+
+[sub_resource type="Resource" id="Resource_njyn4"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_ymqf1")
+coords = Vector4i(-7, 1, 6, 0)
+id = 5
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_cmsws"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_ymqf1")
+coords = Vector4i(-8, 1, 7, 0)
+id = 5
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_col1v"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_ymqf1")
+coords = Vector4i(-10, 1, 9, 0)
+id = 5
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_km8rs"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_ymqf1")
+coords = Vector4i(-11, 1, 10, 0)
+id = 5
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_v8eep"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_ymqf1")
+coords = Vector4i(-12, 1, 11, 0)
+id = 5
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_uuwrr"]
+script = ExtResource("3_xdy6n")
+last_seen_by_enemy = 0
+level_visible = false
+reveals = Array[ExtResource("2_dnpoy")]([])
+
+[sub_resource type="Resource" id="Resource_ewvx0"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_uuwrr")
+coords = Vector4i(-11, 2, 9, 0)
+id = 6
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_kofqi"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_uuwrr")
+coords = Vector4i(-12, 2, 10, 0)
+id = 6
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_h3fmm"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_uuwrr")
+coords = Vector4i(-11, 0, 11, 0)
+id = 6
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_pj56c"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_uuwrr")
+coords = Vector4i(-10, 0, 10, 0)
+id = 6
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_4x5vj"]
+script = ExtResource("3_xdy6n")
+last_seen_by_enemy = 0
+level_visible = false
+reveals = Array[ExtResource("2_dnpoy")]([])
+
+[sub_resource type="Resource" id="Resource_0gj6q"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_4x5vj")
+coords = Vector4i(-13, 2, 11, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_3b053"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_4x5vj")
+coords = Vector4i(-14, 2, 12, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_p23hs"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_4x5vj")
+coords = Vector4i(-13, 1, 12, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_s1qbk"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_4x5vj")
+coords = Vector4i(-12, 0, 12, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_dbwqa"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_4x5vj")
+coords = Vector4i(-10, -1, 11, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_3yaug"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_4x5vj")
+coords = Vector4i(-11, -1, 12, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_0oywl"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_4x5vj")
+coords = Vector4i(-12, -1, 13, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_vu0xx"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_4x5vj")
+coords = Vector4i(-13, 0, 13, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_0t1s0"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_4x5vj")
+coords = Vector4i(-10, -2, 12, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_r53d8"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_4x5vj")
+coords = Vector4i(-9, -2, 11, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_frcv5"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_4x5vj")
+coords = Vector4i(-8, -2, 10, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_6p8vh"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_4x5vj")
+coords = Vector4i(-7, -2, 9, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_jnp30"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_4x5vj")
+coords = Vector4i(-6, -2, 8, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_osvtg"]
+script = ExtResource("1_t1p2x")
+tile_fill = false
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_4x5vj")
+coords = Vector4i(-11, -2, 13, 0)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_fqvjv"]
+script = ExtResource("3_xdy6n")
+last_seen_by_enemy = 0
+level_visible = false
+reveals = Array[ExtResource("2_dnpoy")]([])
+
+[sub_resource type="Resource" id="Resource_pi5fd"]
+script = ExtResource("1_t1p2x")
+tile_fill = true
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_fqvjv")
+coords = Vector4i(-14, 4, 10, 3)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_4058t"]
+script = ExtResource("1_t1p2x")
+tile_fill = true
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_fqvjv")
+coords = Vector4i(-15, 4, 11, 2)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_lumm7"]
+script = ExtResource("1_t1p2x")
+tile_fill = true
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_fqvjv")
+coords = Vector4i(-14, 3, 11, 3)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_f62v3"]
+script = ExtResource("1_t1p2x")
+tile_fill = true
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_fqvjv")
+coords = Vector4i(-9, 6, 3, 4)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_0vbv0"]
+script = ExtResource("1_t1p2x")
+tile_fill = true
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_fqvjv")
+coords = Vector4i(-9, 5, 4, 4)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_5348y"]
+script = ExtResource("1_t1p2x")
+tile_fill = true
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_fqvjv")
+coords = Vector4i(-10, 5, 5, 4)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_4totp"]
+script = ExtResource("1_t1p2x")
+tile_fill = true
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_fqvjv")
+coords = Vector4i(-10, 6, 4, 4)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_ulwya"]
+script = ExtResource("1_t1p2x")
+tile_fill = true
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_fqvjv")
+coords = Vector4i(-11, 6, 5, 4)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_oqm6w"]
+script = ExtResource("1_t1p2x")
+tile_fill = true
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_fqvjv")
+coords = Vector4i(-11, 7, 4, 4)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_p5qcp"]
+script = ExtResource("1_t1p2x")
+tile_fill = true
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_fqvjv")
+coords = Vector4i(-10, 7, 3, 4)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_o5ji5"]
+script = ExtResource("1_t1p2x")
+tile_fill = true
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_fqvjv")
+coords = Vector4i(-11, 8, 3, 4)
+id = 1
+first_init = false
+public_id = 0
+
+[sub_resource type="Resource" id="Resource_hv6nb"]
+script = ExtResource("1_t1p2x")
+tile_fill = true
+occupy_state = 0
+is_decoration = false
+variation = 0
+tile_rotation = 0
+vision_datastore = SubResource("Resource_fqvjv")
+coords = Vector4i(-12, 8, 4, 4)
+id = 1
+first_init = false
+public_id = 0
+
 [resource]
 script = ExtResource("6_54g8c")
 area_id = 1
-data = [SubResource("Resource_jc54f"), SubResource("Resource_uu6o2"), SubResource("Resource_knwc4"), SubResource("Resource_ebboe"), SubResource("Resource_8w46w"), SubResource("Resource_sydl0"), SubResource("Resource_o155m"), SubResource("Resource_mlb20"), SubResource("Resource_ur8mh"), SubResource("Resource_3rduq"), SubResource("Resource_gffue"), SubResource("Resource_afuns"), SubResource("Resource_4jf4c"), SubResource("Resource_fo856"), SubResource("Resource_lmknp"), SubResource("Resource_6kw8m"), SubResource("Resource_adf74"), SubResource("Resource_oe0qq"), SubResource("Resource_fi7jw"), SubResource("Resource_rb0q6"), SubResource("Resource_j1wqu"), SubResource("Resource_1rbry"), SubResource("Resource_8fxgd"), SubResource("Resource_qvvwb"), SubResource("Resource_0k2mq"), SubResource("Resource_hfxu6"), SubResource("Resource_ge76l"), SubResource("Resource_q0b8e"), SubResource("Resource_wd38w"), SubResource("Resource_tjleb"), SubResource("Resource_4pvao"), SubResource("Resource_8exta"), SubResource("Resource_wt7nu"), SubResource("Resource_efnhp"), SubResource("Resource_htug7"), SubResource("Resource_gnm37"), SubResource("Resource_ye1wm"), SubResource("Resource_dmuyi"), SubResource("Resource_o0io7"), SubResource("Resource_bt8vr"), SubResource("Resource_vwscp"), SubResource("Resource_q0vim"), SubResource("Resource_vyneo"), SubResource("Resource_xh46c"), SubResource("Resource_3h814"), SubResource("Resource_2dxs5"), SubResource("Resource_cpqic"), SubResource("Resource_pi4d8"), SubResource("Resource_aujst"), SubResource("Resource_l3obb"), SubResource("Resource_5i4ow"), SubResource("Resource_gmo44"), SubResource("Resource_v2rb0"), SubResource("Resource_2pnp2"), SubResource("Resource_ips6s"), SubResource("Resource_vxh7n"), SubResource("Resource_ejaxt"), SubResource("Resource_mnapb"), SubResource("Resource_thsvv"), SubResource("Resource_ppssl"), SubResource("Resource_mvdxa"), SubResource("Resource_few64")]
+data = [SubResource("Resource_33lr8"), SubResource("Resource_adev5"), SubResource("Resource_6byhe"), SubResource("Resource_ica0m"), SubResource("Resource_1nti1"), SubResource("Resource_82k8j"), SubResource("Resource_khn3j"), SubResource("Resource_i8tcc"), SubResource("Resource_i7yxj"), SubResource("Resource_h3wkk"), SubResource("Resource_g45av"), SubResource("Resource_n7fjf"), SubResource("Resource_b7tqx"), SubResource("Resource_rovk3"), SubResource("Resource_p2712"), SubResource("Resource_an8ty"), SubResource("Resource_t44vr"), SubResource("Resource_10n1p"), SubResource("Resource_2ddp0"), SubResource("Resource_naoc0"), SubResource("Resource_hnacc"), SubResource("Resource_iifj4"), SubResource("Resource_fq5yq"), SubResource("Resource_uyag8"), SubResource("Resource_i62ea"), SubResource("Resource_gx7k0"), SubResource("Resource_7nj3c"), SubResource("Resource_idq8q"), SubResource("Resource_x4enp"), SubResource("Resource_577np"), SubResource("Resource_5ohf3"), SubResource("Resource_5purn"), SubResource("Resource_0rjjd"), SubResource("Resource_26d7s"), SubResource("Resource_8nbp3"), SubResource("Resource_quvac"), SubResource("Resource_gi8a8"), SubResource("Resource_cay2w"), SubResource("Resource_qog1x"), SubResource("Resource_eo84y"), SubResource("Resource_cmvg0"), SubResource("Resource_a2xj0"), SubResource("Resource_10qhg"), SubResource("Resource_nty7e"), SubResource("Resource_hvn0v"), SubResource("Resource_wswqe"), SubResource("Resource_0itj3"), SubResource("Resource_qc3fd"), SubResource("Resource_qsmem"), SubResource("Resource_yiio6"), SubResource("Resource_hu1dm"), SubResource("Resource_456s4"), SubResource("Resource_7tqky"), SubResource("Resource_kwnbg"), SubResource("Resource_6uvck"), SubResource("Resource_0vo71"), SubResource("Resource_bp01k"), SubResource("Resource_rebq1"), SubResource("Resource_smkki"), SubResource("Resource_7hfy3"), SubResource("Resource_r1wlm"), SubResource("Resource_7oq1f"), SubResource("Resource_6ysdd"), SubResource("Resource_wwh48"), SubResource("Resource_havld"), SubResource("Resource_pbo1p"), SubResource("Resource_giy8y"), SubResource("Resource_vpsgm"), SubResource("Resource_nhmlc"), SubResource("Resource_lg5g3"), SubResource("Resource_3prhl"), SubResource("Resource_1p4fy"), SubResource("Resource_bef0s"), SubResource("Resource_3uyni"), SubResource("Resource_tb5y8"), SubResource("Resource_724ty"), SubResource("Resource_dryes"), SubResource("Resource_congw"), SubResource("Resource_s1nqw"), SubResource("Resource_njrjs"), SubResource("Resource_3agay"), SubResource("Resource_qt6g7"), SubResource("Resource_ldxjl"), SubResource("Resource_w6wr2"), SubResource("Resource_86ui7"), SubResource("Resource_0pt0n"), SubResource("Resource_fhhn1"), SubResource("Resource_et4ga"), SubResource("Resource_87g2v"), SubResource("Resource_hb3lp"), SubResource("Resource_lkhkq"), SubResource("Resource_cwpag"), SubResource("Resource_wabx3"), SubResource("Resource_svu8g"), SubResource("Resource_ahgiu"), SubResource("Resource_qyson"), SubResource("Resource_ms0u7"), SubResource("Resource_nhwym"), SubResource("Resource_1isbm"), SubResource("Resource_aa1w6"), SubResource("Resource_bv1t7"), SubResource("Resource_w27y1"), SubResource("Resource_s4vpj"), SubResource("Resource_yrnfg"), SubResource("Resource_nirl5"), SubResource("Resource_rycxo"), SubResource("Resource_i23id"), SubResource("Resource_tulp6"), SubResource("Resource_1qjal"), SubResource("Resource_pimtn"), SubResource("Resource_2m2qt"), SubResource("Resource_x67x0"), SubResource("Resource_ioqq2"), SubResource("Resource_53amm"), SubResource("Resource_tf1m2"), SubResource("Resource_xfwlj"), SubResource("Resource_m76x0"), SubResource("Resource_p38r2"), SubResource("Resource_iy0u0"), SubResource("Resource_pwf0t"), SubResource("Resource_3hw4n"), SubResource("Resource_6cciv"), SubResource("Resource_2gj8g"), SubResource("Resource_ln85d"), SubResource("Resource_wyaiw"), SubResource("Resource_hmh5b"), SubResource("Resource_pq0nf"), SubResource("Resource_3wo7x"), SubResource("Resource_bgo1g"), SubResource("Resource_tkvbq"), SubResource("Resource_fr1l8"), SubResource("Resource_cgvla"), SubResource("Resource_n1pof"), SubResource("Resource_pwbm3"), SubResource("Resource_tso66"), SubResource("Resource_5v74k"), SubResource("Resource_esamk"), SubResource("Resource_3f0eb"), SubResource("Resource_6dr6g"), SubResource("Resource_njyn4"), SubResource("Resource_cmsws"), SubResource("Resource_col1v"), SubResource("Resource_km8rs"), SubResource("Resource_v8eep"), SubResource("Resource_ewvx0"), SubResource("Resource_kofqi"), SubResource("Resource_h3fmm"), SubResource("Resource_pj56c"), SubResource("Resource_0gj6q"), SubResource("Resource_3b053"), SubResource("Resource_p23hs"), SubResource("Resource_s1qbk"), SubResource("Resource_dbwqa"), SubResource("Resource_3yaug"), SubResource("Resource_0oywl"), SubResource("Resource_vu0xx"), SubResource("Resource_0t1s0"), SubResource("Resource_r53d8"), SubResource("Resource_frcv5"), SubResource("Resource_6p8vh"), SubResource("Resource_jnp30"), SubResource("Resource_osvtg"), SubResource("Resource_pi5fd"), SubResource("Resource_4058t"), SubResource("Resource_lumm7"), SubResource("Resource_f62v3"), SubResource("Resource_0vbv0"), SubResource("Resource_5348y"), SubResource("Resource_4totp"), SubResource("Resource_ulwya"), SubResource("Resource_oqm6w"), SubResource("Resource_p5qcp"), SubResource("Resource_o5ji5"), SubResource("Resource_hv6nb")]
 lights = Array[PackedScene]([])
 enemy_min_spawn_amount = 1
 enemy_max_spawn_amount = 4
 progress_min = 0
 progress_max = 0
 enemy_budget_offset = 0
-id = 5
+id = 11
 name = "Testy"
 gdscript = ExtResource("4_5yu2p")
 saved_data = ExtResource("5_b7hqb")

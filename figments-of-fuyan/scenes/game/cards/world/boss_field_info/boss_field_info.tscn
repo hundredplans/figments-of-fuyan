@@ -1,0 +1,23 @@
+[gd_scene load_steps=8 format=3 uid="uid://d4msabmicn7rt"]
+
+[ext_resource type="Script" path="res://scenes/game/cards/world/boss_field_info/boss_field_info.gd" id="1_tvnno"]
+[ext_resource type="Texture2D" uid="uid://c64donnquwx7" path="res://assets/sprites/game/boss_cards/intents/attack.png" id="2_boc1b"]
+[ext_resource type="Texture2D" uid="uid://djbrddr5a1cgf" path="res://assets/sprites/game/boss_cards/intents/buff.png" id="3_8idyi"]
+[ext_resource type="Texture2D" uid="uid://c4ajh8cmy88kh" path="res://assets/sprites/game/boss_cards/intents/debuff.png" id="4_bcuk0"]
+[ext_resource type="Texture2D" uid="uid://qhacwtk76uwx" path="res://assets/sprites/game/boss_cards/intents/misc.png" id="5_o8ob5"]
+[ext_resource type="Texture2D" uid="uid://drxf4wfdnrsrf" path="res://assets/sprites/game/boss_cards/intents/movement.png" id="6_k714t"]
+[ext_resource type="Texture2D" uid="uid://b2hm0b55ll8ri" path="res://assets/sprites/game/boss_cards/intents/movement_attack.png" id="7_x68mu"]
+
+[node name="BossFieldInfo" type="Node3D"]
+script = ExtResource("1_tvnno")
+attack_texture = ExtResource("2_boc1b")
+buff_texture = ExtResource("3_8idyi")
+debuff_texture = ExtResource("4_bcuk0")
+misc_texture = ExtResource("5_o8ob5")
+movement_texture = ExtResource("6_k714t")
+movement_attack_texture = ExtResource("7_x68mu")
+
+[node name="BossIntentSprite" type="Sprite3D" parent="."]
+unique_name_in_owner = true
+pixel_size = 0.008
+billboard = 2

@@ -30,14 +30,13 @@ func onPostAction() -> void:
 	Card.onCreateInitialActiveAbilities()
 	
 	var actions: Array = []
-	
 	var phase: Game.Phases = Game.getLevel().getPhase()
 	
 	if phase != Game.Phases.START:
 		var turn_amount: int = 1 if phase != Game.Phases.HAND else 2
 		actions.append(Card.getBaseStatusEffectAction(3, turn_amount))
 		
-	actions.append(ChangeTurnStateAction.new(Card, Game.TurnStates.INACTIVE if owner is not PlayCardAction else Game.TurnStates.PASSED))		
+	actions.append(ChangeTurnStateAction.new(Card, Game.TurnStates.INACTIVE if owner is not PlayCardAction else Game.TurnStates.PASSED))
 	onPushAction(actions)
 
 func getLogInfo() -> Array:

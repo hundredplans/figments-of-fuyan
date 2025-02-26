@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BossIntent" load_steps=2 format=3 uid="uid://cewlgqdq1q84b"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/boss_intent.gd" id="1_nwjbs"]
+
+[resource]
+script = ExtResource("1_nwjbs")
+name = "Jump Attack"
+description = "Choose a double adjacent Tile and jump there. Instakill in the center, adjacent deal [2] DMG and on the outer rim deal [1] DMG"
+type = 0
+default_cooldown = 1
+combat_type = 1

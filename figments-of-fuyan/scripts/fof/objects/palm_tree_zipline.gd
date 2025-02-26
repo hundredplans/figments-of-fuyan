@@ -144,7 +144,7 @@ func onCardTurnPassed(Card: CardGD) -> void:
 #region Following Holder
 func _process(_delta: float) -> void:
 	if HolderNode == null: return
-	HolderCard.position = HolderNode.global_position - Vector3(0, HolderCard.info.top + 0.4, 0)
+	HolderCard.position = HolderNode.global_position - Vector3(0, HolderCard.getTopFromInfo() + 0.4, 0)
 #endregion
 
 #region Action

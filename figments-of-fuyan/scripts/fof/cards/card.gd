@@ -39,6 +39,7 @@ var bounty_kills: BountyKills
 var is_card_change_level_visible: bool # Not saved
 var ai_datastore: AIDatastore
 var level_visible_not_in_vision: bool # Not saved
+var boss_datastore: BossDatastore # Null in here
 #endregion
 
 #region Globals
@@ -225,18 +226,20 @@ func _ready() -> void:
 	update_ascended.connect(onAscendedUpdated)
 
 func onSave() -> SavedDataCard:
-	var tool_data: SavedDataTool = Tool.onSave() if Tool != null else null
 	for stat_info in delayed_stats: stat_info.onSave()
 	for overworld_trait in overworld_traits: overworld_trait.onSave()
 
 	vision_datastore.onSave()
 	ai_datastore.onSave()
 	
+	if boss_datastore != null: boss_datastore.onSave()
+	
+	var tool_data: SavedDataTool = Tool.onSave() if Tool != null else null
 	return SavedDataCard.new(info.id, false, public_id, coords, tile_rotation, vision_datastore, team, ascended, \
 	attack, health, speed, max_speed, max_health, energy, draw_order, card_place, turn_state, SavedData.onSaveGroup(status_effects), attacks, attack_range, delayed_stats,\
 	ability_save, active_effects, tool_data, SavedData.onSaveGroup(field_effects), anibility_datastore,\
 	is_temporary, is_awakened_in_combat, ai_datastore, base_stats,
-	overworld_traits, bounty_kills)
+	overworld_traits, bounty_kills, boss_datastore)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -275,6 +278,9 @@ func onLoadData(data: SavedData) -> void:
 	
 	for custom_variable in ability_save:
 		set(custom_variable, ability_save[custom_variable])
+	
+	boss_datastore = data.boss_datastore
+	if boss_datastore != null: boss_datastore.onLoad()
 	
 	onChangeCardPlace(data.card_place)
 	add_to_group("CardsGD")
@@ -340,13 +346,15 @@ func onChangeCardPlace(place: Game.CardPlaces) -> void:
 func onCreateModel() -> void:
 	onRemoveModel()
 	
-	Model = info.model.instantiate()
+	Model = getModelFromInfo().instantiate()
 	add_child(Model)
 	
 	var body := StaticBody3D.new()
 	Model.add_child(body)
 	
-	if info.collision_shape != null: body.add_child(info.collision_shape.instantiate())
+	var collision_shape_packed: PackedScene = getCollisionShapeFromInfo()
+	if collision_shape_packed != null:
+		body.add_child(collision_shape_packed.instantiate())
 	body.collision_mask = 0
 	body.mouse_entered.connect(func(): mouse_entered.emit(self))
 	body.mouse_exited.connect(func(): mouse_exited.emit(self))
@@ -384,7 +392,7 @@ func onLookAtObjectOnlyY(node: Node) -> void:
 
 #region Points
 func getPoints() -> Array:
-	return info.points
+	return info.getPoints()
 
 func onLoadPoints(parent: Node3D) -> void:
 	for point in info.points:
@@ -734,7 +742,7 @@ func getVisibleGameObjects() -> Array:
 func onCreateVisionRay() -> void:
 	VisionRay = load(info.VISION_RAY_SCENE_PATH).instantiate()
 	add_child(VisionRay)
-	VisionRay.position.y = info.eye
+	VisionRay.position.y = getEyeFromInfo()
 	
 func onUpdateLevelVisible() -> void:
 	visible = true if Helper.admin_datastore.see or is_card_change_level_visible else isLevelVisible()
@@ -826,10 +834,10 @@ func isGameObjectAttackable(GameObject: GameObjectGD, AttackableTile: TileGD, St
 	var is_in_height: bool = abs(AttackableTile.getHeight() - StartingTile.getHeight()) in [0, 1]
 	
 	var bot_y: float = GameObject.position.y
-	var top_y: float = bot_y + (GameObject.info.top if GameObject is CardGD else GameObject.getTopVertexY())
+	var top_y: float = bot_y + (GameObject.getTopFromInfo() if GameObject is CardGD else GameObject.getTopVertexY())
 	
 	var bot_self_y: float = position.y
-	var top_self_y: float = position.y + info.top
+	var top_self_y: float = position.y + getTopFromInfo()
 	
 	var is_in_unit_height: bool = max(bot_y, bot_self_y) <= min(top_y, top_self_y)
 	
@@ -1212,10 +1220,6 @@ func isTemporary() -> bool:
 	return is_temporary
 #endregion
 
-#region Info Getters
-func getIcon() -> Texture2D: return info.art_mini
-#endregion
-
 #region Elites
 func isValidEliteLevelSpawns(_enemy_cards: Array) -> bool:
 	return true
@@ -1290,8 +1294,8 @@ func isValidDuelistRampage(action: Action) -> bool:
 func onUnitSpecificTransforms(_tiles_to_value: Dictionary, _DFL: DefaultFightLogic) -> void:
 	pass
 	
-func getArchetype() -> Game.Archetypes:
-	match info.archetype.id:
+func getArchetypeEnum(archetype_id: int = info.archetype.id) -> Game.Archetypes: # Useful for boss cards
+	match archetype_id:
 		1: return Game.Archetypes.SCOUT
 		2: return Game.Archetypes.ADVENTURER
 		3: return Game.Archetypes.BRUTE
@@ -1420,3 +1424,28 @@ func getChampionUpgrade(upgrade_level: int) -> ChampionUpgrade:
 	
 func getModel() -> Node3D:
 	return Model
+	
+#region Info Getters
+func getTopFromInfo() -> float:
+	return info.top
+	
+func getEyeFromInfo() -> float:
+	return info.eye
+	
+func getNameFromInfo() -> String:
+	return info.name
+	
+func getModelFromInfo() -> PackedScene:
+	return info.model
+	
+func getCollisionShapeFromInfo() -> PackedScene:
+	return info.collision_shape
+	
+func getPointsFromInfo() -> Array:
+	return info.points
+	
+func getArchetypeFromInfo() -> ArchetypeInfo:
+	return info.archetype
+	
+func getIcon() -> Texture2D: return info.art_mini
+#endregion

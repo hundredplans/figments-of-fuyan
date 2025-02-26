@@ -1,41 +1,53 @@
-[gd_resource type="Resource" script_class="BossCardInfo" load_steps=11 format=3 uid="uid://b28lsogjv2k6f"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://b28lsogjv2k6f"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_rrc50"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_54fdl"]
 [ext_resource type="Resource" uid="uid://27tqk2ax0xx2" path="res://resources/fof/archetypes/scout.tres" id="2_yj6kb"]
 [ext_resource type="Texture2D" uid="uid://cn8nbco553gjo" path="res://assets/sprites/game/cards/art_mini/palmador_rider.png" id="3_11lol"]
 [ext_resource type="Image" uid="uid://cvwuxe6achyiw" path="res://assets/sprites/game/cards/art_pop/palmador_rider.png" id="4_0bdqe"]
-[ext_resource type="Script" path="res://scripts/fof/cards/boss/palmador_rider_boss.gd" id="4_sco14"]
 [ext_resource type="Script" path="res://scripts/fof/cards/palmador_rider.gd" id="4_y14he"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_g5wjs"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/boss_card_info.gd" id="5_o8hst"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="6_q2yck"]
 [ext_resource type="PackedScene" uid="uid://d33beirjwt2p7" path="res://assets/models/fof/cards/palmador_rider.glb" id="7_lbc4d"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_2n031"]
+size = Vector3(0.673096, 1.38168, 1.24805)
+
+[sub_resource type="PackedScene" id="PackedScene_clbsu"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0020752, 0.689316, -0.124023), SubResource("BoxShape3D_2n031")],
+"version": 3
+}
+
 [resource]
-script = ExtResource("5_o8hst")
-boss_attack = 2
-boss_health = 14
-boss_speed = 4
-boss_script = ExtResource("4_sco14")
+script = ExtResource("6_q2yck")
 attack = 1
-health = 3
+health = 4
 speed = 4
 energy = 3
 rarity = 6
 initial_traits = Array[ExtResource("2_54fdl")]([])
 active_abilities = Array[ExtResource("1_rrc50")]([])
 flavor_text = ""
-description = "MOBILE; Can scale up to [3] Tile walls"
-ascended_description = "MOBILE; Can scale up to [5] Tile walls"
-art_mini_coordinate = Vector2i(69, 46)
+description = "MOBILE; Can scale up to [3] tile walls"
+ascended_description = "MOBILE; Can scale up to [5] tile walls"
+art_mini_coordinate = Vector2i(70, 45)
 art_mini = ExtResource("3_11lol")
 art_pop = ExtResource("4_0bdqe")
 model = ExtResource("7_lbc4d")
-points = [Vector3(-0.184426, 0.321448, 0.453733), Vector3(0.206629, 0.31195, 0.453733), Vector3(-0.169782, 0.723533, 0.453733), Vector3(0.134693, 0.748089, 0.453733), Vector3(-0.12809, 1.07749, 0.453733), Vector3(0.0759274, 1.07842, 0.453733), Vector3(0.315186, 0.795095, 0.313699), Vector3(0.315186, 0.208676, 0.329945), Vector3(0.315186, 0.181938, -0.595819), Vector3(0.218221, 0.252529, -0.742247), Vector3(-0.184627, 0.265852, -0.742247), Vector3(0.201537, 0.682792, -0.742247), Vector3(-0.0920985, 0.689245, -0.742247), Vector3(-0.324707, 0.239192, -0.589023), Vector3(-0.324707, 0.670685, -0.573491), Vector3(-0.324707, 0.68331, -0.22901), Vector3(-0.324707, 0.676476, 0.22264), Vector3(-0.324707, 0.119581, 0.369559), Vector3(0.315186, 0.594397, 0.0618389), Vector3(0.315186, 0.593358, -0.416722), Vector3(-0.324707, 1.03839, -0.181156), Vector3(-0.324707, 1.29461, -0.183676), Vector3(-0.0416917, 1.38416, -0.165172), Vector3(0.225615, 1.38416, -0.190067), Vector3(0.315186, 0.90336, -0.153624), Vector3(0.315186, 1.1747, -0.156526), Vector3(0.0154671, 1.30724, 0.453733), Vector3(-0.0336319, 1.38416, 0.165173), Vector3(-0.324707, 0.991961, 0.267097), Vector3(0.315186, 1.04599, 0.231899), Vector3(0.315186, 0.448679, -0.147284), Vector3(-0.324707, 0.503405, -0.0719151), Vector3(-0.324707, 0.553749, -0.40323)]
-stat = 1.73359
-top = 1.61938
-eye = 1.24003
-plus_attack = 1
+points = [Vector3(-0.229531, 0.243672, 0.500002), Vector3(0.214489, 0.241334, 0.500002), Vector3(-0.180131, 0.682099, 0.500002), Vector3(0.0893462, 0.679564, 0.500002), Vector3(-0.156875, 0.993601, 0.500002), Vector3(0.0666034, 0.979693, 0.500002), Vector3(0.334473, 0.250479, 0.330762), Vector3(0.334473, 0.664024, 0.266382), Vector3(0.334473, 1.07366, 0.270479), Vector3(-0.0336209, 1.38016, 0.397859), Vector3(-0.338623, 0.300982, 0.346663), Vector3(-0.338623, 0.691329, 0.329441), Vector3(-0.338623, 0.985811, 0.335054), Vector3(-0.338623, 0.582512, 0.0147333), Vector3(-0.338623, 0.587455, -0.324382), Vector3(-0.338623, 0.619717, -0.552539), Vector3(-0.338623, 0.235165, -0.612019), Vector3(-0.22228, 0.238235, -0.748048), Vector3(-0.208139, 0.672222, -0.748048), Vector3(-0.0277378, 0.662761, -0.748048), Vector3(0.218633, 0.642759, -0.748048), Vector3(0.199926, 0.27362, -0.748048), Vector3(0.334473, 0.247136, -0.579024), Vector3(0.334473, 0.618844, -0.554921), Vector3(0.334473, 0.632089, -0.318051), Vector3(0.334473, 0.636843, -0.00519491), Vector3(-0.338623, 0.920689, -0.134672), Vector3(-0.338623, 1.18063, -0.130367), Vector3(-0.338623, 1.35285, -0.12601), Vector3(-0.0691029, 1.38016, -0.176743), Vector3(0.130771, 1.38016, -0.18567), Vector3(0.334473, 1.25486, -0.116744), Vector3(0.334473, 0.967944, -0.133361), Vector3(0.207107, -0.00152415, 0.347685), Vector3(-0.204768, -0.00152403, 0.350122), Vector3(-0.213054, -0.00152403, -0.620556), Vector3(0.207154, -0.00152403, -0.572298)]
+collision_shape = SubResource("PackedScene_clbsu")
+stat = 1.7499
+top = 1.61122
+eye = 0.970809
+plus_attack = 0
 plus_health = 0
 plus_speed = 0
 plus_energy = 0

@@ -13,11 +13,5 @@ func onPreAction() -> void:
 	onForceAction(CameraChangeAction.new(occupy_action.Card))
 	
 func onPostAction() -> void:
-	print(occupy_action.Card.position)
 	occupy_action.Card.setPositionToTile(occupy_action.PreviousTile)
-	print(occupy_action.Card.position)
 	occupy_action.Card.onMoveToTile(move_action, getDelay())
-	print(occupy_action.Card.position)
-	await Game.get_tree().process_frame
-	print(occupy_action.Card.position)
-	print()

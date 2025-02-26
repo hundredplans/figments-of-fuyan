@@ -1,6 +1,6 @@
 class_name CardInfo extends GameObjectInfo
 
-const FIELD_INFO_SCENE_PATH: String = "res://scenes/game/cards/world/field_info.tscn"
+const FIELD_INFO_SCENE_PATH: String = "res://scenes/game/cards/world/field_info/field_info.tscn"
 const INSPECT_CARD_SCREEN: String = "res://scenes/game/cards/ui/inspect_card_screen.tscn"
 const CARD_UI_SCENE_PATH: String = "res://scenes/game/cards/ui/card_ui.tscn"
 const VISION_RAY_SCENE_PATH: String = "res://scenes/game/cards/world/vision_ray.tscn"
@@ -66,6 +66,9 @@ static func getFofName() -> String: return "Card"
 func getArtMini() -> Texture2D: return art_mini
 func getArtPop() -> ImageTexture: return ImageTexture.create_from_image(art_pop)
 func getIcon() -> Texture2D: return art_mini
+func getEye() -> float: return eye
+func getTop() -> float: return top
+func getPoints() -> Array: return points
 func getDescription(ascended: bool = false) -> String:
 	return description if !ascended else (ascended_description if !ascended_description.is_empty() else description)
 

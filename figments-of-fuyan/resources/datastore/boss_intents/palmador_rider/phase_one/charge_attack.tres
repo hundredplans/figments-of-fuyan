@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BossIntent" load_steps=2 format=3 uid="uid://ddv2rlfws581s"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/boss_intent.gd" id="1_l2me8"]
+
+[resource]
+script = ExtResource("1_l2me8")
+name = "Charge Attack"
+description = "Deal [3] DMG  to 3x7 tiles starting from the two tile adjacent to you"
+type = 0
+default_cooldown = 1
+combat_type = 1

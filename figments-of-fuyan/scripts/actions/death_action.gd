@@ -33,7 +33,8 @@ func onPostAction() -> void:
 	Defender.onDeath()
 	onSwapCameraOnDeathInPlayerPhase()
 	
-	if Defender is CardGD and Defender.isEnemy(0) and !(Defender.is_awakened_in_combat or Defender.info.rarity in [Game.Rarities.SCRAP, Game.Rarities.NEUTRAL]):
+	if !Game.getLevel().isEpic() and Defender is CardGD and Defender.isEnemy(0) and\
+	!(Defender.is_awakened_in_combat or Defender.info.rarity in [Game.Rarities.SCRAP, Game.Rarities.NEUTRAL]):
 		onPushAction(EnergyAction.new(Defender.energy))
 	
 	for Card in Game.get_tree().get_nodes_in_group("FieldCardsGD"):

@@ -117,7 +117,7 @@ func setCameraCentralPoint() -> void:
 	
 	var top_point: float = 0
 	if SpectateObject is SpawnGD: top_point = SPAWN_CENTRAL_Y
-	elif SpectateObject is CardGD: top_point = SpectateObject.info.top + CARD_CENTRAL_Y
+	elif SpectateObject is CardGD: top_point = SpectateObject.getTopFromInfo() + CARD_CENTRAL_Y
 	elif SpectateObject is TileObjectGD: top_point = SpectateObject.getTopVertexY() + TILE_OBJECT_CENTRAL_Y 
 	central_point.y += top_point
 	

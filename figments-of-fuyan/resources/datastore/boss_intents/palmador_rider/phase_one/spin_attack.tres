@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BossIntent" load_steps=2 format=3 uid="uid://cdtliwmeg75lj"]
+
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/boss_intent.gd" id="1_wphva"]
+
+[resource]
+script = ExtResource("1_wphva")
+name = "Spin Attack"
+description = "Deal ATT DMG to adjacent tiles"
+type = 1
+default_cooldown = 1
+combat_type = 0
