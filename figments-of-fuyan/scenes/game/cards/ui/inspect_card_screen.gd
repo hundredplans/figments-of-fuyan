@@ -59,9 +59,11 @@ func onCreateCustomTooltip(condition: bool, text: String, title: String, icon: T
 	var Tooltip: Control = TooltipItemPackedScene.instantiate()
 	TooltipContainer.add_child(Tooltip)
 	Tooltip.setInfoDirect(title, icon, text)
+	Tooltip.mouse_in_ui.connect(onMouseInUI)
 		
 func onMouseInUI(state: bool) -> void:
 	mouse_in_ui.emit(state)
 	
 func onTooltipMouseEntered(state: bool, TooltipItem: Control) -> void:
+	onMouseInUI(state)
 	Game.onMouseInUITooltip(state, TooltipItem.getTextInfos(), self)

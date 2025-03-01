@@ -127,7 +127,8 @@ func onFilterBossIntents(enemies: Array, allies: Array) -> Array:
 func getBossIntentsPool(enemies: Array, allies: Array) -> Array:
 	return getBossIntentsFromInfo().filter(onCheckBossIntentCondition.bind(enemies, allies))
 	
-func onCheckBossIntentCondition(boss_intent: BossIntent, enemies: Array, allies: Array) -> bool: return false
+func onCheckBossIntentCondition(_boss_intent: BossIntent, _enemies: Array, _allies: Array) -> bool: return false
+func onIntentUsed(_boss_intent: BossIntent, _use_type: UseType, _actions: Array) -> void: return
 #endregion
 
 #region Card Turn Passed

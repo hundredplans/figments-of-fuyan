@@ -1,13 +1,12 @@
 extends BoonGD
 
-var played_this_turn: int = 0
 func onProcessAction(action: Action) -> void:
 	super(action)
 	if action.post:
 		if action is ChangePhaseAction and action.phase == Game.Phases.HAND:
-			onPushAction(BoonActivatedAction.new(self, action))
+			onResetCharges()
 		elif action is PlayCardAction:
-			onPushAction(BoonActivatedAction.new(self, action))
+			onPushAction(ChangeBoonChargesAction.new(self, 1))
 	
 func onAscend(state: bool) -> void:
 	super(state)
@@ -15,31 +14,18 @@ func onAscend(state: bool) -> void:
 func getDescription() -> String:
 	return super()
 
-func onBoon(action: Action = null) -> void:
-	if action is ChangePhaseAction:
-		played_this_turn = 0
-	elif action is PlayCardAction:
-		played_this_turn += 1
-		if played_this_turn % 2:
-			var energy_gain: int = 1 if !ascended else 2
-			onPushAction(EnergyAction.new(energy_gain))
+func onBoon(_action: Action = null) -> void:
+	var energy_gain: int = 1 if !ascended else 2
+	onPushAction(EnergyAction.new(energy_gain))
 
 func onBoonAdded() -> void:
 	super()
 	
-func onLevelStarted() -> void:
-	super()
-	onResetCharges()
-
-func onSave() -> SavedDataBoon:
-	ability_save['played_this_turn'] = played_this_turn
-	return super()
-	
 func getDisabled() -> bool:
-	return played_this_turn >= 2
+	return false
 	
-func getCharges() -> int:
-	return played_this_turn
+func onChangeCharges(delta: int) -> void:
+	super(delta)
+	if charges != 0 and charges % 2 == 0:
+		onPushAction(BoonActivatedAction.new(self, null))
 	
-func onResetCharges() -> void:
-	played_this_turn = 0

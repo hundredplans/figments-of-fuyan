@@ -10,9 +10,9 @@ var ISLAND_ODDS: Dictionary = {
 		#"4": 0.01
 }
 	
-const DISTANCE_BOUND: int = 30
-const LOWER_GEN_BOUND: int = 70
-const UPPER_GEN_BOUND: int = 120
+const DISTANCE_BOUND: int = 60
+const LOWER_GEN_BOUND: int = 30
+const UPPER_GEN_BOUND: int = 150
 #endregion
 
 #region Save / Load / Init

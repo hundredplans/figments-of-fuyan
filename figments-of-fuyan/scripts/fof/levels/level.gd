@@ -35,8 +35,6 @@ signal turn_state_changing
 signal camera_change_action
 signal active_effect_used
 signal active_effect_added
-signal boon_activated
-signal boon_ascended
 signal tile_occupied
 signal set_rewards # Signal for area to interpret
 signal game_started
@@ -117,7 +115,9 @@ func onLoadTileObjectInit(data: SavedDataTileObject) -> TileObjectGD:
 	TileObject.add_to_group("LevelTileObjectsGD")
 	TileObject.set_spectate_card.connect(func(x: TileObjectGD): set_spectate_card.emit(x))
 	
-	if TileObject is TileGD: TileObject.add_to_group("LevelTilesGD");
+	if TileObject is TileGD:
+		TileObject.add_to_group("LevelTilesGD")
+		Game.onAddToCoordsToTile(TileObject)
 	elif TileObject is ObjectGD:
 		TileObject.add_to_group("LevelObjectsGD")
 		if TileObject is IObjectGD:
@@ -229,10 +229,6 @@ func onProcessAction(action: Action) -> void:
 			onRecalculateAITurn(action.Card)
 		elif action is AddActiveEffectAction:
 			active_effect_added.emit(action.active_effect)
-		elif action is BoonActivatedAction:
-			boon_activated.emit(action.Boon)
-		elif action is ChangeBoonAscenscionAction:
-			boon_ascended.emit(action.Boon)
 		elif action is OccupyAction:
 			tile_occupied.emit(action.Card, action.Tile)
 			onRecalculateAITurnOccupy(action, action.Card)

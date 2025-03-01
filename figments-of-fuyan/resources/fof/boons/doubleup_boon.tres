@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/fof_info/boons/boon_info.gd" id="1_3nhxb"]
 [ext_resource type="Script" path="res://scripts/fof/boons/doubleup_boon.gd" id="1_o283v"]
-[ext_resource type="Image" uid="uid://c1fueeddjxp6e" path="res://assets/sprites/game/boons/doubleup.png" id="2_lexg1"]
+[ext_resource type="Texture2D" uid="uid://c1fueeddjxp6e" path="res://assets/sprites/game/boons/doubleup.png" id="2_lexg1"]
 [ext_resource type="Script" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_myoxk"]
 
 [resource]
@@ -11,6 +11,11 @@ icon = ExtResource("2_lexg1")
 description = "Your next [1] stat buffs double"
 ascended_description = "Your next [2] stat buffs double"
 rarity = 4
+curse = false
+elite_fight_curse = false
+use_charges = true
+auto_reset_charges_level_start = true
+reset_to_default = true
 id = 6
 name = "Double-Up Boon"
 gdscript = ExtResource("1_o283v")

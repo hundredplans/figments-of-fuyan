@@ -106,6 +106,7 @@ func onLoadDataLevel() -> void:
 func onLoadDataLevelFofInit() -> void:
 	super()
 	vision_datastore = VisionDatastore.new()
+	
 func onFofInit() -> void:
 	pass
 #endregion

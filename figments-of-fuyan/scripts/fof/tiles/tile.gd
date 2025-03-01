@@ -183,7 +183,6 @@ func onLoadDataLevel() -> void:
 	super()
 	setOutlineMaterial()
 	explored = ExploredGD.new()
-	Game.onAddToCoordsToTile(self)
 	
 #endregion
 #region Occupied Objects

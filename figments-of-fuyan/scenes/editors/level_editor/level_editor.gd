@@ -98,7 +98,6 @@ func _ready() -> void:
 	setAreaOptionButtonItems()
 	LoadLevels.visible = false
 	SearchResultsPanel.visible = false
-	
 		
 func setAllTileObjectsToWords() -> void:
 	for info in all_tile_objects:

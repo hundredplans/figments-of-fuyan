@@ -1,10 +1,16 @@
 class_name ChangeBoonChargesAction extends Action
 
-func _init() -> void:
+var Boon: BoonGD
+var delta: int
+
+func _init(_Boon: BoonGD = null, _delta: int = 0) -> void:
 	super()
+	Boon = _Boon
+	delta = _delta
 	
 func onPreAction() -> void:
-	pass
+	if delta == 0 or !Boon.info.use_charges:
+		onFailAction()
 	
 func onPostAction() -> void:
-	pass
+	Boon.onChangeCharges(delta)

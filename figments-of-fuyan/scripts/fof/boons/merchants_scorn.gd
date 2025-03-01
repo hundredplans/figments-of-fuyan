@@ -20,6 +20,3 @@ func onBoonAdded() -> void:
 
 func getDisabled() -> bool:
 	return super()
-
-func getCharges() -> int:
-	return super()

@@ -84,8 +84,6 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level.awakened.connect(onAwakened)
 	level.active_effect_used.connect(onActiveEffectUsed)
 	level.active_effect_added.connect(onActiveEffectAdded)
-	level.boon_activated.connect(onBoonActivated)
-	level.boon_ascended.connect(onBoonAscended)
 	level.tile_occupied.connect(onTileOccupied)
 	level.game_started.connect(onGameStarted)
 	level.game_started_post.connect(onGameStartedPost)
@@ -377,17 +375,6 @@ func onToolRemoved() -> void:
 	onUpdateActiveEffects()
 #endregion
 
-#region Boons
-func onBoonRemoved(_id: int) -> void:
-	BoonBox.onUpdate()
-	
-func onBoonActivated(Boon: BoonGD) -> void:
-	BoonBox.onUpdateBoonChargesAndDisabled(Boon)
-	
-func onBoonAscended(Boon: BoonGD) -> void:
-	BoonBox.onUpdateBoonAscension(Boon)
-#endregion
-
 #region Occupy Tile
 func onTileOccupied(Card: CardGD, _Tile: TileGD) -> void:
 	if Card.isAlly(0) and Card == level.getSpectateObject():
@@ -480,6 +467,10 @@ func onProcessAction(action: Action) -> void:
 			BoonBox.onUpdate()
 		elif action is RemoveBoonAction:
 			BoonBox.onUpdate()
+		elif action is ChangeBoonChargesAction:
+			BoonBox.onUpdateBoonChargesAndDisabled(action.Boon)
+		elif action is ChangeBoonAscenscionAction:
+			BoonBox.onUpdateBoonAscension(action.Boon)
 		elif action is ChangeShillingsAction:
 			onUpdateShillings()
 		elif action is PlayCardAction:

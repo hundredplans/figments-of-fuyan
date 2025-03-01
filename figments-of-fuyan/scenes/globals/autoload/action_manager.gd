@@ -39,8 +39,6 @@ func onActionChain() -> void:
 	active_action.onPostAction()
 	active_action.post = true
 	
-	var path: String = active_action.get_script().resource_path
-	
 	if active_action.getDelay() > 0 and !is_game_closing:
 		DelayTimer.wait_time = active_action.getDelay()
 		DelayTimer.start()

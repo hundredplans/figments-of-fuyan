@@ -10,8 +10,7 @@ func onProcessAction(action: Action) -> void:
 					if turns == 0:
 						onPushAction(RemoveStatusEffectAction.new(self))
 						return
-				action.turn_state = Game.TurnStates.PASSED
-				action.onCheckFail()
+				action.onFailAction()
 				
 				
 		if action.post:

@@ -65,7 +65,7 @@ func onProcessAction(action: Action) -> void:
 		elif action is AscendToolAction:
 			onToolAscended(action.state)
 
-func onToolAscended(state: bool) -> void:
+func onToolAscended(_state: bool) -> void:
 	pass
 
 func getActiveEffectTiles(_active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:

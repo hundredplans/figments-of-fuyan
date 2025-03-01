@@ -9,6 +9,8 @@ extends Node3D
 @export var movement_texture: Texture2D
 @export var movement_attack_texture: Texture2D
 
+const INTENT_CHANGE_TIME: float = 0.5
+
 var Card: BossCardGD
 func setInfo(_Card: BossCardGD) -> void:
 	Card = _Card
@@ -27,4 +29,14 @@ func onUpdateBossIntent() -> void:
 		BossIntent.IntentType.MOVEMENT: tx = movement_texture
 		BossIntent.IntentType.MOVEMENT_ATTACK: tx = movement_attack_texture
 	
+	var scale_tween := create_tween()
+	scale_tween.tween_property(BossIntentSprite, "scale:x", -1.0, INTENT_CHANGE_TIME)\
+		.as_relative().set_trans(Tween.TRANS_SINE)
+		
+	await scale_tween.finished
+	
+	scale_tween = create_tween()
 	BossIntentSprite.texture = tx
+	scale_tween.tween_property(BossIntentSprite, "scale:x", 1.0, INTENT_CHANGE_TIME)\
+		.as_relative().set_trans(Tween.TRANS_SINE)
+	

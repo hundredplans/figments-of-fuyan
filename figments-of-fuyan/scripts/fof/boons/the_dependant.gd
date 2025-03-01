@@ -20,6 +20,3 @@ func onBoonAdded():
 
 func getDisabled():
 	return super()
-
-func getCharges():
-	return super()

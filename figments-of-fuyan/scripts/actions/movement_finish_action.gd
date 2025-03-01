@@ -27,21 +27,16 @@ func onPostAction() -> void:
 		
 	if !(Card.isEnemy(0) and Card.turn_state == Game.TurnStates.ACTIVE): return
 	
-
 	var actions: Array = []
 	var is_enemy_phase: bool = phase in [Game.Phases.AI, Game.Phases.NEUTRAL]
 	if is_enemy_phase:
 		var is_alive: bool = Card.isAlive()
 		var retry: bool = retry_ai_turn and is_alive
-		if retry: actions.append(AITurnAction.new(Card, false, false, previous_allies, previous_enemies))
-		elif !retry:
-			if Card is BossCardGD:
-				if !Card.boss_datastore.boss_intent_used_this_turn:
-					var tiles: Array = Game.getsetMovementRange(Card)
-					var enemies: Array = Card.getVisibleFieldCardsEnemies()
-					var allies: Array =  Card.getVisibleFieldCardsAllies()
-					Card.onUseBossIntent(enemies, allies, tiles, BossCardGD.UseType.END)
-			elif Card is not BossCardGD:
+		
+		if Card is not BossCardGD:
+			if retry:
+				actions.append(AITurnAction.new(Card, false, false, previous_allies, previous_enemies))
+			elif !retry:
 				actions.append(ChangeTurnStateAction.new(Card, Game.TurnStates.PASSED))
 				actions.append(AITurnStartAction.new(Card.team))
 	elif !is_enemy_phase:

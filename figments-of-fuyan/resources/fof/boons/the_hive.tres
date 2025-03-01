@@ -8,11 +8,14 @@
 [resource]
 script = ExtResource("1_jmfg6")
 icon = ExtResource("2_6hxuk")
-description = "Enemies gain +1 ATT for [2] Turns when an enemy dies"
+description = "When an ally dies [2] random enemies gain +1 ATT"
 ascended_description = ""
 rarity = 0
 curse = true
 elite_fight_curse = true
+use_charges = false
+auto_reset_charges_level_start = false
+reset_to_default = false
 id = 14
 name = "The Hive"
 gdscript = ExtResource("1_a6x5f")

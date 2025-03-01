@@ -19,6 +19,7 @@ const TOP_ODDS: Dictionary = {
 var pacifist: bool # For when coconut crab wakes up
 var previous_allies: Array
 var previous_enemies: Array
+var is_end_use_type_boss: bool
 
 func _init(_Card: CardGD, _is_first_ai_turn: bool = false, _pacifist: bool = false, _previous_allies: Array = [], _previous_enemies: Array = []) -> void:
 	super()
@@ -29,6 +30,8 @@ func _init(_Card: CardGD, _is_first_ai_turn: bool = false, _pacifist: bool = fal
 	previous_enemies = _previous_enemies
 		
 func onPostAction() -> void:
+	if Card is BossCardGD and Card.boss_datastore.boss_intent_used_this_turn: return
+	
 	pacifist = pacifist if Card.attack > 0 else true
 	var tiles: Array = Game.getsetMovementRange(Card)
 	tiles.erase(Card.Tile)
@@ -86,7 +89,7 @@ func onDefaultAITurn(enemies: Array, allies: Array, tiles: Array) -> void:
 	onPushAction([ChangeTurnStateAction.new(Card, Game.TurnStates.ACTIVE), MovementFinishAction.new(Card, [], allies, enemies)])
 
 func onBossAITurn(enemies: Array, allies: Array, tiles: Array) -> void:
-	var use_type :=  BossCardGD.UseType.START if is_first_ai_turn else BossCardGD.UseType.RECALCULATE
+	var use_type := (BossCardGD.UseType.START if is_first_ai_turn else BossCardGD.UseType.RECALCULATE) if !is_end_use_type_boss else BossCardGD.UseType.END
 	Card.onUseBossIntent(enemies, allies, tiles, use_type)
 
 func getLogInfo() -> Array:
@@ -170,3 +173,5 @@ func onCheckCallForHelp(allies: Array, enemies: Array) -> void:
 	for AllyCard in available_allies:
 		AllyCard.ai_datastore.setIsReceiver(true, enemies_to_tiles)
 	
+func setIsEndUseTypeBoss(state: bool) -> void:
+	is_end_use_type_boss = state

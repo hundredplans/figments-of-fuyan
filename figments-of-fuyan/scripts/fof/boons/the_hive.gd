@@ -1,5 +1,6 @@
 extends BoonGD
 
+const HIVE_AMOUNT: int = 2
 const HIVE_FIELD_EFFECT_ID: int = 12
 func onProcessAction(action: Action):
 	super(action)
@@ -15,20 +16,22 @@ func getDescription():
 	
 func onBoon(_action: DeathAction):
 	var cards: Array = Game.getAllyUnits(1)
-	onPushAction(StatAction.new(cards.map(func(x: CardGD): return StatInfo.new(x, Game.Stats.ATTACK, 1, 2))))
+	cards.shuffle()
+	cards.resize(HIVE_AMOUNT)
+	cards = cards.filter(func(x: CardGD): return x != null)
+	
+	onPushAction(StatAction.new(cards.map(func(x: CardGD): return StatInfo.new(x, Game.Stats.ATTACK, 1))))
 	
 	for Card: CardGD in cards:
 		var field_effect: FieldEffectGD = Card.getFirstFieldEffect(HIVE_FIELD_EFFECT_ID)
-		if field_effect != null: field_effect.onIncrementTwoTurnAmount()
+		if field_effect != null:
+			field_effect.onIncrementAttack()
 		else:
 			field_effect = Card.onCreateBaseFieldEffect(HIVE_FIELD_EFFECT_ID)
-			field_effect.onIncrementTwoTurnAmount()
+			field_effect.onIncrementAttack()
 			
 func onBoonAdded():
 	pass
 
 func getDisabled():
-	return super()
-
-func getCharges():
 	return super()

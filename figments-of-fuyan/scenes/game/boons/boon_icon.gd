@@ -36,10 +36,8 @@ func onMouseInUI(state: bool) -> void:
 	mouse_in_ui.emit(state)
 		
 func onUpdateCharges(charges: int) -> void:
-	#onDisplayCharges(charges == -1)
-	if charges == -1: ChargesLabel.text = ""
-	else:
-		ChargesLabel.text = str(charges)
+	if !Boon.info.use_charges: return
+	ChargesLabel.text = str(charges)
 	
 func setDisabled(_disabled: bool) -> void:
 	disabled = _disabled

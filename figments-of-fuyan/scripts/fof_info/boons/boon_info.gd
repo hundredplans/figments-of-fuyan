@@ -6,9 +6,12 @@ class_name BoonInfo extends FofInfo
 @export var rarity: Game.Rarities
 @export var curse: bool
 @export var elite_fight_curse: bool
-@export var reset_type: ResetType
 
-enum ResetType {NULL, LEVEL}
+@export_group("Charges")
+@export var use_charges: bool
+@export var auto_reset_charges_level_start: bool
+@export var reset_to_default: bool # Otherwise resets to 0
+@export_group("")
 
 static func getFofName() -> String: return "Boon"
 

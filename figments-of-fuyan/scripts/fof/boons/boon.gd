@@ -4,7 +4,7 @@ signal update_ascend
 
 var ascended: bool
 var ability_save: Dictionary
-var charges: int = -1
+var charges: int
 
 func onFofInit() -> void:
 	onResetCharges()
@@ -14,6 +14,7 @@ func onLoadData(data: SavedData) -> void:
 	add_to_group("BoonsGD")
 	ascended = data.ascended
 	ability_save = data.ability_save
+	charges = data.charges
 	
 	for custom_variable in ability_save:
 		set(custom_variable, ability_save[custom_variable])
@@ -43,7 +44,13 @@ func getCharges() -> int:
 	return charges
 	
 func onResetCharges() -> void:
-	pass
+	if !info.use_charges: return
+	
+	var delta: int = -charges if !info.reset_to_default else (getDefaultCharges() - charges)
+	onForceAction(ChangeBoonChargesAction.new(self, delta))
+		
+func getDefaultCharges() -> int:
+	return 0
 
 func onAscend(state: bool) -> void:
 	ascended = state
@@ -69,6 +76,12 @@ func onProcessAction(action: Action) -> void:
 		elif action is ChangeTurnStateAction and action.turn_state == Game.TurnStates.PASSED:
 			onCardTurnPassed(action.Card)
 			
-func onLevelStarted() -> void: pass # Called when the level literally starts
+func onLevelStarted() -> void: # Called when the level literally starts
+	if info.auto_reset_charges_level_start:
+		onResetCharges()
+		
 func onAdvanceTurn(_team: int) -> void: pass
 func onCardTurnPassed(_Card: CardGD) -> void: pass
+
+func onChangeCharges(delta: int) -> void:
+	charges = max(charges + delta, 0) 
