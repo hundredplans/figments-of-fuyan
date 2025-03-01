@@ -201,7 +201,7 @@ func onRally(enemies: Array, allies: Array, tiles: Array, use_type: UseType) -> 
 	var actions: Array = []
 	if use_type == UseType.START:
 		actions.append(StatAction.new(allies.filter(func(x: CardGD): return x.info.id == PALMY_ID)\
-			.map(func(x: CardGD): return StatInfo.new(x, Game.Stats.ATTACK, 1, 2))))
+			.map(func(x: CardGD): return StatInfo.new(x, Game.Stats.ATTACK, 1))))
 			
 		var ally_vision: Array = Game.getTeamVision(0)
 		tiles = Game.getsetMovementRange(self, RALLY_SPEED_LIMIT)
@@ -221,6 +221,8 @@ func onRally(enemies: Array, allies: Array, tiles: Array, use_type: UseType) -> 
 #region Summon
 const MAX_PALMY_AMOUNT_ON_MAP: int = 10
 const SUMMON_SPEED_LIMIT: int = 2
+const SUMMON_MIN_AMOUNT: int = 2
+const SUMMON_MAX_AMOUNT: int = 3
 func onSummonCondition() -> bool:
 	return Game.getAllyUnits(1).filter(func(x: CardGD): return x.info.id == PALMY_ID).size() <= MAX_PALMY_AMOUNT_ON_MAP
 
@@ -232,8 +234,9 @@ func onSummon(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 		tiles.shuffle()
 		
 		var chosen_tiles: Array = []
-		if !tiles.is_empty(): chosen_tiles.append(tiles.pop_front())
-		if !tiles.is_empty(): chosen_tiles.append(tiles.pop_front())
+		var summon_amount: int = randi_range(SUMMON_MIN_AMOUNT, SUMMON_MAX_AMOUNT)
+		for __ in range(summon_amount):
+			if !tiles.is_empty(): chosen_tiles.append(tiles.pop_front())
 		
 		actions += chosen_tiles.map(func(x: TileGD): return AwakenAction.new(Game.getNewFieldCard(PALMY_ID, x, team, 0, false, true), x))
 		

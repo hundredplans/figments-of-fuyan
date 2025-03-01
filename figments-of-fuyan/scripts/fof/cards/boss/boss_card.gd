@@ -87,6 +87,10 @@ func onCreateFieldInfo() -> void:
 	BossFieldInfo = load(info.BOSS_FIELD_INFO_SCENE_PATH).instantiate()
 	add_child(BossFieldInfo)
 	BossFieldInfo.setInfo(self)
+	
+func onRemoveFieldInfo() -> void:
+	if BossFieldInfo != null:
+		BossFieldInfo.queue_free()
 #endregion
 
 #region Boss Intent

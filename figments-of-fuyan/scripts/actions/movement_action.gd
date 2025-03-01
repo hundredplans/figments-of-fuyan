@@ -2,11 +2,13 @@ class_name MovementAction extends Action
 
 var Card: CardGD
 var movement_path: Array
+var destroy_on_occupy: bool
 
-func _init(_Card: CardGD = null, _movement_path: Array = []) -> void:
+func _init(_Card: CardGD = null, _movement_path: Array = [], _destroy_on_occupy: bool = false) -> void:
 	super()
 	Card = _Card
 	movement_path = _movement_path
+	destroy_on_occupy = _destroy_on_occupy
 
 func onPreAction() -> void:
 	onCheckFail()
@@ -33,9 +35,9 @@ func onPostAction() -> void:
 				TileGD.OccupyStates.ATTACKABLE_IOBJECT: Attackables = MoveToTile.getAttackableIObjects()
 				_: Attackables.append(Game.getFieldCard(MoveToTile))
 			
-			if Attackables.is_empty():
+			if Attackables.is_empty() or destroy_on_occupy:
 				MoveToTile.is_card_moving = true
-				actions.append(MoveToTileAction.new(Card, MoveToTile))
+				actions.append(MoveToTileAction.new(Card, MoveToTile, destroy_on_occupy))
 				continue
 			actions.append(AttackAction.new(Card, Attackables))
 			break

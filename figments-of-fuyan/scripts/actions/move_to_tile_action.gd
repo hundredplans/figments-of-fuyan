@@ -9,14 +9,16 @@ var movement_type: MOVEMENT_TYPES
 
 const JUMP_FALL_TIME_OFFSET: float = 0.5
 var fall_time: float
+var destroy_on_occupy: bool
 
 func isJumpFall() -> bool:
 	return movement_type == MOVEMENT_TYPES.JUMP or movement_type == MOVEMENT_TYPES.FALL
 
-func _init(_Card: CardGD = null, _DestinationTile: TileGD = null) -> void:
+func _init(_Card: CardGD = null, _DestinationTile: TileGD = null, _destroy_on_occupy: bool = false) -> void:
 	super()
 	Card = _Card
 	DestinationTile = _DestinationTile
+	destroy_on_occupy = _destroy_on_occupy
 
 func setMovementTypeDelay() -> void:
 	fall_time = 1
@@ -46,12 +48,17 @@ func onPreAction() -> void:
 	Card.onMoveToTile(self, getDelay())
 	
 func onCheckFail() -> void:
-	if DestinationTile.isOccupied():
+	if DestinationTile.isOccupied() and !destroy_on_occupy:
 		onFailAction()
 
 func onPostAction() -> void:
 	var actions: Array = [OccupyAction.new(Card, DestinationTile, false),\
 	StatAction.new(StatInfo.new(Card, Game.Stats.SPEED, -1, 0, false, false, true))]
+	
+	if destroy_on_occupy:
+		var DestroyedCard: CardGD = Game.getFieldCard(DestinationTile)
+		if DestroyedCard != null:
+			actions.push_front(DestroyAction.new(DestroyedCard))
 	
 	var fall_damage: int = DestinationTile.getFallDamage(Card.Tile)
 	if fall_damage > 0: actions.append(FallDamageAction.new(Card, Card.Tile, DestinationTile))
