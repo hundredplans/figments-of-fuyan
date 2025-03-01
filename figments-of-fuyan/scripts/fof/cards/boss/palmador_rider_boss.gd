@@ -326,7 +326,7 @@ func onChargeAttackCondition(enemies: Array) -> bool:
 				break
 			
 	if wall_adjacent_origin_tiles.is_empty(): return false # If nothing found
-	enemies = Game.getEnemyUnits(team)
+	
 	var enemy_tiles: Array = enemies.map(func(x: CardGD): return x.getTile())
 	for OriginWallTile: TileGD in wall_adjacent_origin_tiles:
 		for AdjacentTile: TileGD in getWallAdjacentTiles(OriginWallTile, 1):
