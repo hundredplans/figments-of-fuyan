@@ -76,7 +76,7 @@ func onProcessAction(action: Action) -> void:
 		elif action is RemoveBoonAction:
 			BoonBox.onUpdate()
 		elif action is ChangeBoonChargesAction:
-			BoonBox.onUpdateBoonChargesAndDisabled()
+			BoonBox.onUpdateBoonChargesAndDisabled(action.Boon)
 		elif action is ChangeBoonAscenscionAction:
 			BoonBox.onUpdateBoonAscenscion(action.Boon)
 		elif action is AddToToolbeltAction:
