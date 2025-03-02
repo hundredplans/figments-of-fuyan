@@ -8,6 +8,9 @@ func onProcessAction(action: Action) -> void:
 	if !action.post:
 		if action is FallDamageAction and action.Card == self:
 			action.onFailAction()
+	elif action.post:
+		if action is StatAction and health <= int(max_health / 2.0) and boss_datastore.phase == 1:
+			onPushAction(ChangeBossPhaseAction.new())
 #endregion
 	
 #region Boss Intent

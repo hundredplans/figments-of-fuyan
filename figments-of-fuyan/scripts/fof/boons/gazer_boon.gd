@@ -14,12 +14,18 @@ func onBoon(_action: Action = null) -> void:
 
 func onBoonAdded() -> void:
 	super()
+	
+func onLevelStarted() -> void:
+	super()
 
 func getDisabled() -> bool:
 	return super()
 
 func getCharges() -> int:
 	return super()
+	
+func getDefaultCharges() -> int:
+	return 3
 	
 func onCardTurnPassed(Card: CardGD) -> void:
 	super(Card)

@@ -15,7 +15,7 @@ enum Phases {NULL, START, HAND, PLAYER, AI, NEUTRAL}
 enum SpectateTypes {ALLY, ENEMY, SPAWN}
 enum CardPlaces {NULL, HAND, DECK, FIELD, GRAVEYARD}
 enum TurnStates {NULL, PASSED, INACTIVE, ACTIVE}
-enum Stats {ATTACK, HEALTH, SPEED, MAX_HEALTH, MAX_SPEED}
+enum Stats {ATTACK, HEALTH, SPEED, MAX_HEALTH, MAX_SPEED, ENERGY}
 enum AscendedExists {BOTH, ONLY_DEFAULT, ONLY_ASCENDED}
 enum Archetypes {NULL, ADVENTURER, BRUTE, DOCILE, ERRATIC, HOSTILE, REINFORCER, SCOUT, SUPPORT, TACTICIAN, WARDEN, RECEIVER}
 enum DamageTypes {ATTACK, FALL_DAMAGE, OTHER}
@@ -424,6 +424,12 @@ func isIDInDeck(id: int) -> bool:
 
 func getDeckSize() -> int:
 	return get_tree().get_nodes_in_group("DeckCardsGD").size()
+	
+func getDeckCards() -> Array:
+	return get_tree().get_nodes_in_group("DeckCardsGD")
+	
+func getDeckCardsNoChampion() -> Array:
+	return getDeckCards().filter(func(x: CardGD): return x.info.rarity != Rarities.CHAMPION)
 	
 func getBaseCard(id: int, Tile: TileGD, team: int, tile_rotation: int, ascended: bool = false) -> SavedDataCard:
 	var card_info: CardInfo = Helper.getFofInfoID(CardInfo, id)

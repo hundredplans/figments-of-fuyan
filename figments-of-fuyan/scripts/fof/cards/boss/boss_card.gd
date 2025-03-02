@@ -30,9 +30,20 @@ func onProcessAction(action: Action) -> void:
 	if action.post:
 		if action is OccupyAction:
 			onOccupy(action)
+		elif action is ChangeBossPhaseAction:
+			onChangeBossPhasePostDelay()
 #endregion
 	
 #region Info Getters
+func getAttackFromInfo() -> float:
+	return info.getAttack(boss_datastore.phase)
+	
+func getHealthFromInfo() -> float:
+	return info.getHealth(boss_datastore.phase)
+	
+func getSpeedFromInfo() -> float:
+	return info.getSpeed(boss_datastore.phase)
+
 func getTopFromInfo() -> float:
 	return info.getTop(boss_datastore.phase)
 	
@@ -164,4 +175,20 @@ func onCardTurnPassed(Card: CardGD) -> void:
 #region Phase Change
 func onChangeBossPhase() -> void:
 	boss_datastore.phase += 1
+			
+func onChangeBossPhasePostDelay() -> void:
+	var new_attack: int = getAttackFromInfo()
+	var new_max_health: int = getHealthFromInfo()
+	var new_speed: int = getSpeedFromInfo()
+	
+	var attack_delta: int = new_attack - attack
+	var health_delta: int = 0 if new_max_health == 0 else new_max_health - max_health
+	var speed_delta: int = new_speed - speed
+	
+	var stat_info := StatInfo.new(self, [Game.Stats.ATTACK, Game.Stats.MAX_HEALTH, Game.Stats.MAX_SPEED], [attack_delta, health_delta, speed_delta])
+	onPushAction(StatAction.new(stat_info))
+	
+	if getModelFromInfo() != null:
+		onRemoveModel()
+		onCreateModel()
 #endregion

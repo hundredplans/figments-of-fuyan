@@ -1,0 +1,62 @@
+[gd_resource type="Resource" script_class="EncounterInfo" load_steps=13 format=3 uid="uid://u16sa754vqix"]
+
+[ext_resource type="Script" path="res://scripts/fof/encounters/palm_cultists.gd" id="1_mywxb"]
+[ext_resource type="Script" path="res://scripts/fof_info/encounters/extra/encounter_page_datastore.gd" id="2_ugigr"]
+[ext_resource type="Script" path="res://scripts/fof_info/encounters/extra/encounter_option_datastore.gd" id="3_0hpa0"]
+[ext_resource type="Script" path="res://scripts/saved_data/encounters/saved_data_encounter.gd" id="4_qo0w6"]
+[ext_resource type="Script" path="res://scripts/fof_info/encounters/encounter_info.gd" id="5_xvtbv"]
+
+[sub_resource type="Resource" id="Resource_ja25d"]
+script = ExtResource("3_0hpa0")
+name = "Pray"
+description = "Gain 15 SH to remove a random Boon"
+requirement = "1 Boon"
+page_title = "PrayPage"
+
+[sub_resource type="Resource" id="Resource_b04fx"]
+script = ExtResource("3_0hpa0")
+name = "Gaze"
+description = "Give your Champion BLIND for the next [3] fights"
+requirement = ""
+page_title = "GazePage"
+
+[sub_resource type="Resource" id="Resource_nv2ka"]
+script = ExtResource("3_0hpa0")
+name = "Leave"
+description = "Increase the energy cost of [2] random units in your deck by [1]"
+requirement = "2 Units"
+page_title = "LeavePage"
+
+[sub_resource type="Resource" id="Resource_5qauw"]
+script = ExtResource("2_ugigr")
+title = "StartPage"
+description = "A group of mysterious figures approaches you while camping at night. Their leader bears an effigy resembling a coconut staff with a huge eye fixed to it."
+options = Array[ExtResource("3_0hpa0")]([SubResource("Resource_ja25d"), SubResource("Resource_b04fx"), SubResource("Resource_nv2ka")])
+
+[sub_resource type="Resource" id="Resource_psh7u"]
+script = ExtResource("2_ugigr")
+title = "PrayPage"
+description = "You take the strange coconut effigy from the leaders gnarled hands and hold it up reverently. You feel your coin pouch grow heavier, but something else was lost."
+options = Array[ExtResource("3_0hpa0")]([])
+
+[sub_resource type="Resource" id="Resource_5n3ok"]
+script = ExtResource("2_ugigr")
+title = "GazePage"
+description = "You stare into the coconut effigies eyes and everything else fades into black."
+options = Array[ExtResource("3_0hpa0")]([])
+
+[sub_resource type="Resource" id="Resource_b2qla"]
+script = ExtResource("2_ugigr")
+title = "LeavePage"
+description = "Unsettled by the strange travellers you decide to leave your campsite early. Some of your units are left tired and grouchy."
+options = Array[ExtResource("3_0hpa0")]([])
+
+[resource]
+script = ExtResource("5_xvtbv")
+pages = Array[ExtResource("2_ugigr")]([SubResource("Resource_5qauw"), SubResource("Resource_psh7u"), SubResource("Resource_5n3ok"), SubResource("Resource_b2qla")])
+is_global = false
+state = 1
+id = 2
+name = "Palm Cultists"
+gdscript = ExtResource("1_mywxb")
+saved_data = ExtResource("4_qo0w6")
