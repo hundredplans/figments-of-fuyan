@@ -6,6 +6,11 @@ func _init(_StatusEffect: StatusEffectGD = null) -> void:
 	super()
 	StatusEffect = _StatusEffect
 
+func onPreAction() -> void:
+	if StatusEffect.Card is BossCardGD:
+		StatusEffect.onClear()
+		onFailAction()
+
 func onPostAction() -> void:
 	StatusEffect.Card.onAddStatusEffect(StatusEffect)
 	StatusEffect.onStatusEffectAdded(self)

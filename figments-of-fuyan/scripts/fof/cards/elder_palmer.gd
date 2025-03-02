@@ -22,8 +22,8 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		var heal_amount: int = 1 if !ascended else 2
 		var allies: Array = getVisibleFieldCardsAllies()
 		var actions: Array = [
-			StatAction.new(allies.map(func(x: CardGD): return StatInfo.new(x, Game.Stats.HEALTH, heal_amount)) +
-			allies.map(func(x: CardGD): return StatInfo.new(x, Game.Stats.ATTACK, -1, 1))),]
+			HealAction.new(allies, heal_amount),
+			StatAction.new(allies.map(func(x: CardGD): return StatInfo.new(x, Game.Stats.ATTACK, -1, 1)))]
 		
 		onPushAction(actions)
 		onAbility()

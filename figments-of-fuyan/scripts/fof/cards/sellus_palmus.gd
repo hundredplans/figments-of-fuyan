@@ -16,8 +16,8 @@ func isPickable(_Tile: TileGD) -> bool:
 func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
 	super(active_effect, PickedTile, active_effect_tiles)
 	if active_effect is ActiveAbilityDatastore and active_effect.name == "Palmsale":
-		var stat_infos: Array = active_effect_tiles.pickable_tiles.map(func(x: TileGD): return StatInfo.new(Game.getFieldCard(x), Game.Stats.HEALTH, 1))
-		var actions: Array = [StatAction.new(stat_infos),\
+		var cards: Array = active_effect_tiles.pickable_tiles.map(func(x: TileGD): return Game.getFieldCard(x))
+		var actions: Array = [HealAction.new(cards, 1),\
 		ChangeTileRotationAction.new(self, Game.getRelativeTileRotation(Tile, PickedTile))]
 		
 		onPushAction(actions)

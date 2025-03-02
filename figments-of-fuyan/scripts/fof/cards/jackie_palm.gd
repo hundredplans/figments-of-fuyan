@@ -12,4 +12,4 @@ func onRevenge(action: DamageAction) -> void:
 	super(action)
 	var palm_ids: Array = Helper.getFofInfoID(AreaInfo, 1).card_ids
 	if getVisibleFieldCardsAllies().any(func(x: CardGD): return x.info.id in palm_ids):
-		onPushAction(StatAction.new(StatInfo.new(self, Game.Stats.HEALTH, 1)))
+		onPushAction(HealAction.new(self, 1))

@@ -42,9 +42,9 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		var actions: Array = [CameraChangeAction.new(Card), OccupyAction.new(Card, getRandomSpawnTile()),\
 			DestroyVFXAction.new(FirstHat), CreateVFXAction.new(SecondHat, true)]
 		
-		var stat_action: StatAction = StatAction.new(StatInfo.new(Card, Game.Stats.HEALTH, 2))
-		stat_action.setActionDelay(SPECTATE_TELEPORTED_UNIT_DELAY)
-		actions.append(stat_action)
+		var heal_action := HealAction.new(Card, 2)
+		heal_action.setActionDelay(SPECTATE_TELEPORTED_UNIT_DELAY)
+		actions.append(heal_action)
 		actions.append(CameraChangeAction.new(self))
 		
 		onPushAction(actions)

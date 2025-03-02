@@ -1,12 +1,12 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://df8txb1rkg8y5"]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_swuye"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/dumsy_palmsy.png" id="2_2xs40"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/dumsy_palmsy.png" id="2_k1blu"]
-[ext_resource type="Resource" path="res://resources/fof/archetypes/warden.tres" id="2_mtiv2"]
+[ext_resource type="Image" uid="uid://ds2dbnyxdi26c" path="res://assets/sprites/game/cards/art_pop/dumsy_palmsy.png" id="2_2xs40"]
+[ext_resource type="Resource" uid="uid://6j57uasj8x66" path="res://resources/fof/archetypes/reinforcer.tres" id="2_cqeuy"]
+[ext_resource type="Texture2D" uid="uid://5ffvvs8jmgd7" path="res://assets/sprites/game/cards/art_mini/dumsy_palmsy.png" id="2_k1blu"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_6ae6u"]
 [ext_resource type="Script" path="res://scripts/fof/cards/dumsy_palmsy.gd" id="4_p6qbm"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/dumsy_palmsy.glb" id="5_27uel"]
+[ext_resource type="PackedScene" uid="uid://cit4w40jw1b6p" path="res://assets/models/fof/cards/dumsy_palmsy.glb" id="5_27uel"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_sv20q"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="6_r8l0o"]
 
@@ -28,7 +28,7 @@ _bundled = {
 
 [resource]
 script = ExtResource("6_r8l0o")
-attack = 3
+attack = 2
 health = 4
 speed = 3
 energy = 3
@@ -37,7 +37,7 @@ initial_traits = Array[ExtResource("3_6ae6u")]([])
 active_abilities = Array[ExtResource("1_swuye")]([])
 flavor_text = ""
 description = "ARRIVE: Deal [2] DMG to self; RAMPAGE: Heal this and allies in vision [1] HP"
-ascended_description = "ARRIVE: Deal [2] DMG to self; RAMPAGE: Heal this and allies in vision [2] HP"
+ascended_description = "ARRIVE: Deal [3] DMG to self; RAMPAGE: Heal this and allies in vision [1] HP"
 art_mini_coordinate = Vector2i(112, 65)
 art_mini = ExtResource("2_k1blu")
 art_pop = ExtResource("2_2xs40")
@@ -47,12 +47,12 @@ collision_shape = SubResource("PackedScene_v7son")
 stat = 1.54702
 top = 1.36992
 eye = 1.11469
-plus_attack = 0
-plus_health = 0
+plus_attack = 1
+plus_health = 1
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("3_6ae6u")]([])
-archetype = ExtResource("2_mtiv2")
+archetype = ExtResource("2_cqeuy")
 id = 9
 name = "Dumsy Palmsy"
 gdscript = ExtResource("4_p6qbm")

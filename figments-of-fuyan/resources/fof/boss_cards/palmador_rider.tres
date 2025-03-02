@@ -39,10 +39,10 @@ _bundled = {
 
 [resource]
 script = ExtResource("16_dbjn2")
-phase_to_name = Array[String](["Palmador Rider"])
+phase_to_name = Array[String](["Palmador Rider", "Lone Rider"])
 rarity = 6
 phase_to_attack = Array[int]([2])
-phase_to_health = Array[int]([14])
+phase_to_health = Array[int]([16])
 phase_to_speed = Array[int]([4])
 phase_to_model = Array[PackedScene]([ExtResource("14_dm4ki")])
 phase_to_collision = Array[PackedScene]([SubResource("PackedScene_486fb")])
@@ -57,6 +57,7 @@ initial_traits = Array[ExtResource("2_8vekp")]([])
 phase_to_speed_order_override = Array[int]([0])
 phase_to_archetype = Array[ExtResource("4_fqkye")]([ExtResource("5_ysfwm")])
 phase_to_boss_intents = Array[ExtResource("6_45ina")]([SubResource("Resource_kf6x3")])
+phase_to_change_delay = Array[float]([4.0, 0.0])
 id = 1
 name = "Palmador Rider"
 gdscript = ExtResource("1_3pam4")

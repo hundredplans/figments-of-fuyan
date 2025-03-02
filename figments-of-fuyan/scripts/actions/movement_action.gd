@@ -47,6 +47,7 @@ func onPostAction() -> void:
 	onPushAction(actions)
 
 func onCheckFail() -> void:
+	if Card.is_knockback: return
 	var is_attackable_on_path: bool = movement_path.any(func(x: TileGD): return x != Card.Tile and x.occupy_state != TileGD.OccupyStates.NULL)
 	if !Card.canAttack() and is_attackable_on_path: onFailAction()
 

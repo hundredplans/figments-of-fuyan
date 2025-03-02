@@ -40,9 +40,8 @@ func onPostAction() -> void:
 	for Card in Game.get_tree().get_nodes_in_group("FieldCardsGD"):
 		Card.onRemoveVisibleGameObject(Defender)
 	
-	if Defender.team != 2 and Game.get_tree().get_nodes_in_group("FieldCardsGD")\
-		.filter(func(x: CardGD): return x.team == Defender.team).is_empty():
-			onAppendAction(EndGameAction.new(Defender.team))
+	if onCheckEndGame():
+		onAppendAction(EndGameAction.new(Defender.team, Game.getLevel().isEpic()))
 			
 func onSwapCameraOnDeathInPlayerPhase() -> void:
 	if Game.getLevel().phase != Game.Phases.PLAYER: return
@@ -63,3 +62,10 @@ func onSwapCameraOnDeathInPlayerPhase() -> void:
 	
 func getCardSawDefenderDie(Card: CardGD) -> bool:
 	return card_to_visible_defender[Card]
+
+func onCheckEndGame() -> bool:
+	if Game.getLevel().isEpic() and Game.getLevel().getBoss() == Defender:
+		return true
+		
+	return Defender.team != 2 and Game.get_tree().get_nodes_in_group("FieldCardsGD")\
+		.filter(func(x: CardGD): return x.team == Defender.team).is_empty()

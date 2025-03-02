@@ -16,5 +16,4 @@ func onHit(damage_action: DamageAction, _attack_action: AttackAction) -> void:
 		elif ascended:
 			picked_allies = allies
 			
-		var actions: Array = picked_allies.map(func(x: CardGD): return StatAction.new(StatInfo.new(x, Game.Stats.HEALTH, heal)))
-		onPushAction(actions)
+		onPushAction(HealAction.new(picked_allies, heal))

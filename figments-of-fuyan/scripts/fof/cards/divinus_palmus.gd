@@ -29,7 +29,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 	super(active_effect, PickedTile, active_effect_tiles)
 	if active_effect is ActiveAbilityDatastore and active_effect.name == "Coconut Touch":
 		var actions: Array = [
-			StatAction.new(StatInfo.new(Game.getFieldCard(PickedTile), Game.Stats.HEALTH, 1))]
+			HealAction.new(Game.getFieldCard(PickedTile), 1)]
 		
 		if Tile != PickedTile: actions.append(ChangeTileRotationAction.new(self, Game.getRelativeTileRotation(Tile, PickedTile)))
 		

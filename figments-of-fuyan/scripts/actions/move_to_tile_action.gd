@@ -43,7 +43,10 @@ func onPreAction() -> void:
 	if failed: return
 	
 	setMovementTypeDelay()
-	onForceAction(ChangeTileRotationAction.new(Card, Game.getRelativeTileRotation(Card.Tile, DestinationTile)))
+	
+	if !Card.is_knockback:
+		onForceAction(ChangeTileRotationAction.new(Card, Game.getRelativeTileRotation(Card.Tile, DestinationTile)))
+		
 	OriginalTile = Card.Tile
 	Card.onMoveToTile(self, getDelay())
 	

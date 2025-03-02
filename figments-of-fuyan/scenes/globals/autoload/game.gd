@@ -39,12 +39,12 @@ var TURN_STATES_TO_STRING: Dictionary = {
 
 
 var cube_directions: Array[Vector3i] = [
-	Vector3(0, 1, -1),
-	Vector3(1, 0, -1),
-	Vector3(1, -1, 0),
-	Vector3(0, -1, 1),
-	Vector3(-1, 0, 1),
-	Vector3(-1, 1, 0)
+	Vector3i(0, 1, -1),
+	Vector3i(1, 0, -1),
+	Vector3i(1, -1, 0),
+	Vector3i(0, -1, 1),
+	Vector3i(-1, 0, 1),
+	Vector3i(-1, 1, 0)
 ]
 
 var tile_face_directions: Array[Vector3] = [
@@ -595,6 +595,20 @@ var coords_to_tile: Dictionary = {}
 func getTile(coords: Vector4i) -> TileGD:
 	if coords_to_tile.has(coords):
 		return coords_to_tile[coords]
+	return null
+	
+func getTileAtHeightOrBelow(coords: Vector4i) -> TileGD:
+	for __ in range(coords.w, -1, -1):
+		var Tile: TileGD = getTile(coords)
+		if Tile != null: return Tile
+		coords.w -= 1
+	return null
+	
+func getTileAtHeightOrAbove(coords: Vector4i) -> TileGD:
+	for i in range(coords.w, 21):
+		var Tile: TileGD = getTile(coords)
+		if Tile != null: return Tile
+		coords.w = i
 	return null
 	
 func onAddToCoordsToTile(Tile: TileGD) -> void:

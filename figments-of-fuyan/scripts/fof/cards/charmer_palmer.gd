@@ -36,8 +36,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 	super(active_effect, PickedTile, active_effect_tiles)
 	if active_effect is ActiveAbilityDatastore and active_effect.name == "Charming Stance":
 		var cards: Array = active_effect_tiles.pickable_tiles.map(func(x: TileGD): return Game.getAllyFieldCard(x, team))
-		var actions: Array = [StatAction.new(
-			cards.map(func(x: CardGD): return StatInfo.new(x, Game.Stats.HEALTH, 1)))]
+		var actions: Array = [HealAction.new(cards, 1)]
 		
 		for Card: CardGD in cards.filter(func(x: CardGD): return x not in valid_cards):
 			Card.onCreateBaseFieldEffect(CHARMING_STANCE_FIELD_EFFECT_ID, -1, -1, self)

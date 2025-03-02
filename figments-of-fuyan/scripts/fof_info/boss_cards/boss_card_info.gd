@@ -29,6 +29,7 @@ class_name BossCardInfo extends FofInfo
 @export var phase_to_speed_order_override: Array[SpeedOrderOverride]
 @export var phase_to_archetype: Array[ArchetypeInfo]
 @export var phase_to_boss_intents: Array[PhaseBossIntents]
+@export var phase_to_change_delay: Array[float]
 @export_group("")
 
 enum SpeedOrderOverride {FIRST, LAST}
@@ -86,3 +87,6 @@ func getSpeedOrderOverride(phase: int = 1) -> SpeedOrderOverride:
 
 func getColoredBaseMaterial(_team: int, _ascended: bool) -> ShaderMaterial:
 	return load(BASE_MATERIAL_RED_TRANSPARENT_PATH)
+	
+func getChangeDelay(phase: int = 1) -> float:
+	return phase_to_change_delay[phase - 1]

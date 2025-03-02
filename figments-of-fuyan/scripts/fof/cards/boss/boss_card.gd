@@ -6,8 +6,18 @@ var boss_intent: BossIntent
 var BossFieldInfo: Node3D
 
 #region Default
+func onSave() -> SavedDataBossCard:
+	onPreSave()
+	return SavedDataBossCard.new(info.id, false, public_id, coords, tile_rotation, vision_datastore, team, ascended, \
+	attack, health, speed, max_speed, max_health, energy, draw_order, card_place, turn_state, SavedData.onSaveGroup(status_effects), attacks, attack_range, delayed_stats,\
+	ability_save, active_effects, Tool.onSave() if Tool != null else null, SavedData.onSaveGroup(field_effects), anibility_datastore,\
+	is_temporary, is_awakened_in_combat, ai_datastore, base_stats,
+	overworld_traits, bounty_kills, boss_datastore)
+
 func onLoadData(data: SavedData) -> void:
 	super(data)
+	boss_datastore = data.boss_datastore
+	if boss_datastore != null: boss_datastore.onLoad()
 	setBossIntentByName()
 	add_to_group("BossCardsGD")
 	
@@ -52,6 +62,9 @@ func getBossIntentsFromInfo() -> Array[BossIntent]:
 	
 func getSpeedOrderOverrideFromInfo() -> BossCardInfo.SpeedOrderOverride:
 	return info.getSpeedOrderOverride(boss_datastore.phase)
+	
+func getChangeDelayFromInfo() -> int:
+	return info.getChangeDelay(boss_datastore.phase)
 #endregion
 
 #region Getters
@@ -107,8 +120,9 @@ func setBossIntent(_boss_intent: BossIntent) -> void:
 	boss_datastore.boss_intent_name = boss_intent.name
 	if BossFieldInfo != null: BossFieldInfo.onUpdateBossIntent()
 	
-	if Tile == null: return
-	setTileIntents()
+	if Tile != null: setTileIntents()
+	else: boss_datastore.setTileIntents(boss_datastore.tile_intents) # When first loading in
+	
 	
 func setBossIntentByName() -> void:
 	var _boss_intent: BossIntent = getBossIntentByName()
@@ -145,4 +159,9 @@ func onCardTurnPassed(Card: CardGD) -> void:
 			boss_datastore.boss_intent_name_to_cooldown[boss_intent_name] -= 1
 			
 	boss_datastore.boss_intent_used_this_turn = false
+#endregion
+
+#region Phase Change
+func onChangeBossPhase() -> void:
+	boss_datastore.phase += 1
 #endregion

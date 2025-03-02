@@ -14,7 +14,7 @@ func onProcessAction(action: Action) -> void:
 		if action is OccupyAction and was_fuel_added:
 			onUpdateCardsInRange(action)
 	elif !action.post:
-		if action is StatAction and was_fuel_added and action.isHeal():
+		if action is HealAction and was_fuel_added:
 			onHeal(action)
 
 func onLoadDataLevel() -> void:
@@ -89,11 +89,11 @@ func onSave() -> SavedDataIObject:
 	ability_save['was_extinguished'] = was_extinguished
 	return super()
 
-func onHeal(action: Action) -> void:
-	for stat_info in action.stat_infos.filter(func(x: StatInfo): return x.Card in cards_in_range):
-		for i in range(stat_info.types.size()):
-			if stat_info.types[i] == Game.Stats.HEALTH and stat_info.values[i] > 0:
-				stat_info.values[i] *= 2
+func onHeal(action: HealAction) -> void:
+	for i in range(action.cards.size()):
+		var Card: CardGD = action.cards[i]
+		if Card in cards_in_range:
+			action.heals[i] *= 2
 
 var SmokeParticle: GPUParticles3D
 func onHiddenVFX() -> void:

@@ -40,6 +40,7 @@ var is_card_change_level_visible: bool # Not saved
 var ai_datastore: AIDatastore
 var level_visible_not_in_vision: bool # Not saved
 var boss_datastore: BossDatastore # Null in here
+var is_knockback: bool # Not saved
 #endregion
 
 #region Globals
@@ -183,7 +184,7 @@ func onAttack(DefenderTile: TileGD, delay: float) -> void:
 		setModelRotationToTile(DefenderTile)
 		
 func onWalk() -> void:
-	onPlayAnimation("Walk")
+	onPlayAnimation("Walk" + anibility_datastore.getWalkModifier())
 	
 func onIdle() -> void:
 	onPlayAnimation("Idle" if !anibility_datastore.is_idle_ability else "IdleAbility")
@@ -226,6 +227,14 @@ func _ready() -> void:
 	update_ascended.connect(onAscendedUpdated)
 
 func onSave() -> SavedDataCard:
+	onPreSave()
+	return SavedDataCard.new(info.id, false, public_id, coords, tile_rotation, vision_datastore, team, ascended, \
+	attack, health, speed, max_speed, max_health, energy, draw_order, card_place, turn_state, SavedData.onSaveGroup(status_effects), attacks, attack_range, delayed_stats,\
+	ability_save, active_effects, Tool.onSave() if Tool != null else null, SavedData.onSaveGroup(field_effects), anibility_datastore,\
+	is_temporary, is_awakened_in_combat, ai_datastore, base_stats,
+	overworld_traits, bounty_kills, boss_datastore)
+
+func onPreSave() -> void:
 	for stat_info in delayed_stats: stat_info.onSave()
 	for overworld_trait in overworld_traits: overworld_trait.onSave()
 
@@ -233,13 +242,6 @@ func onSave() -> SavedDataCard:
 	ai_datastore.onSave()
 	
 	if boss_datastore != null: boss_datastore.onSave()
-	
-	var tool_data: SavedDataTool = Tool.onSave() if Tool != null else null
-	return SavedDataCard.new(info.id, false, public_id, coords, tile_rotation, vision_datastore, team, ascended, \
-	attack, health, speed, max_speed, max_health, energy, draw_order, card_place, turn_state, SavedData.onSaveGroup(status_effects), attacks, attack_range, delayed_stats,\
-	ability_save, active_effects, tool_data, SavedData.onSaveGroup(field_effects), anibility_datastore,\
-	is_temporary, is_awakened_in_combat, ai_datastore, base_stats,
-	overworld_traits, bounty_kills, boss_datastore)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -1070,7 +1072,7 @@ func isValidArrive(action: Action) -> bool:
 	return action.post and action is AwakenAction and action.Card == self
 
 func isValidWhenHealed(action: Action) -> bool:
-	return !action.post and action is StatAction and action.isHeal(self) and card_place == Game.CardPlaces.FIELD
+	return action.post and action is StatAction and action.owner is HealAction and action.Card in action.owner.cards and card_place == Game.CardPlaces.FIELD
 #endregion
 
 #region Heal
@@ -1448,4 +1450,9 @@ func getArchetypeFromInfo() -> ArchetypeInfo:
 	return info.archetype
 	
 func getIcon() -> Texture2D: return info.art_mini
+#endregion
+
+#region Knockback
+func setIsKnockback(state: bool) -> void:
+	is_knockback = state
 #endregion

@@ -50,7 +50,7 @@ func onMinitool(action: Action, actions) -> void:
 	onRemoveMoveAndAttackActions(action.Card)
 
 func onHeal(action: Action, actions: Array) -> void:
-	actions.append(StatAction.new(StatInfo.new(action.Card, Game.Stats.HEALTH, 1)))
+	actions.append(HealAction.new(action.Card, 1))
 	onRemoveMoveAndAttackActions(action.Card)
 
 func onSave() -> SavedDataIObject:

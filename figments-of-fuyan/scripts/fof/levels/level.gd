@@ -85,7 +85,9 @@ func onLoadData(data: SavedData) -> void:
 	for TileObject in get_tree().get_nodes_in_group("LevelTileObjectsGD"):
 		TileObject.onLoadDataLevel()
 	
-	for card_data in data.field_cards_data: SavedData.onLoadModel(card_data, self)
+	for card_data in data.field_cards_data:
+		SavedData.onLoadModel(card_data, self)
+		
 	for Card in get_tree().get_nodes_in_group("CardsGD"):
 		Card.onLoadDataLevel()
 	
