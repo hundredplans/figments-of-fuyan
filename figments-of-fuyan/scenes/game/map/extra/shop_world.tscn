@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://b03hysv0770d1"]
 
-[ext_resource type="Script" path="res://scenes/game/map/extra/shop_world.gd" id="1_3hn2i"]
+[ext_resource type="Script" uid="uid://fiyh8jicxf7r" path="res://scenes/game/map/extra/shop_world.gd" id="1_3hn2i"]
 [ext_resource type="PackedScene" uid="uid://duugbk8hfmbe1" path="res://assets/models/environment/merchant_crab_shop.glb" id="2_qsea3"]
 [ext_resource type="PackedScene" uid="uid://b2080geycdkvt" path="res://assets/models/fof/cards/merchant_crab.glb" id="3_nb8m4"]
-[ext_resource type="Script" path="res://assets/models/fof/cards/merchant_crab_model.gd" id="4_jakbe"]
+[ext_resource type="Script" uid="uid://ct8afxtv1erhk" path="res://assets/models/fof/cards/merchant_crab_model.gd" id="4_jakbe"]
 
 [node name="ShopWorld" type="Node3D"]
 script = ExtResource("1_3hn2i")

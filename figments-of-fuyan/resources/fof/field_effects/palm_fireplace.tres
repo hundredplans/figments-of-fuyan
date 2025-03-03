@@ -1,14 +1,17 @@
 [gd_resource type="Resource" script_class="FieldEffectInfo" load_steps=5 format=3 uid="uid://b2lx74em7dt6s"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/field_effects/field_effect_info.gd" id="1_b7mk4"]
-[ext_resource type="Script" path="res://scripts/fof/field_effects/field_effect.gd" id="1_wfhq6"]
+[ext_resource type="Script" uid="uid://bi5dpcw30h2c4" path="res://scripts/fof_info/field_effects/field_effect_info.gd" id="1_b7mk4"]
+[ext_resource type="Script" uid="uid://cnh502l5nlwkd" path="res://scripts/fof/field_effects/field_effect.gd" id="1_wfhq6"]
 [ext_resource type="Texture2D" uid="uid://vuld0eegj8g8" path="res://assets/sprites/game/fof_object_icons/field_effects/palm_fireplace.png" id="2_7lsxt"]
-[ext_resource type="Script" path="res://scripts/saved_data/field_effects/saved_data_field_effect.gd" id="3_q1iqv"]
+[ext_resource type="Script" uid="uid://dw8fbr6hatp7q" path="res://scripts/saved_data/field_effects/saved_data_field_effect.gd" id="3_q1iqv"]
 
 [resource]
 script = ExtResource("1_b7mk4")
 icon = ExtResource("2_7lsxt")
 description = "Healing on this is doubled"
+ascended_description = ""
+ascended_type = 0
+charges_label_position = Vector2(0, 0)
 id = 7
 name = "Palm Fireplace"
 gdscript = ExtResource("1_wfhq6")

@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="BoonInfo" load_steps=5 format=3 uid="uid://bo5jl2xor7s3o"]
 
 [ext_resource type="Texture2D" uid="uid://btln4hyf52b5q" path="res://assets/sprites/game/boons/the_destitute.png" id="1_dbf1i"]
-[ext_resource type="Script" path="res://scripts/fof/boons/the_destitute.gd" id="1_ikqtm"]
-[ext_resource type="Script" path="res://scripts/fof_info/boons/boon_info.gd" id="1_ur86v"]
-[ext_resource type="Script" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_4ckt7"]
+[ext_resource type="Script" uid="uid://b8hv60labvmuw" path="res://scripts/fof/boons/the_destitute.gd" id="1_ikqtm"]
+[ext_resource type="Script" uid="uid://cwaxy6m1b8n5m" path="res://scripts/fof_info/boons/boon_info.gd" id="1_ur86v"]
+[ext_resource type="Script" uid="uid://dh3x145y3ihra" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_4ckt7"]
 
 [resource]
 script = ExtResource("1_ur86v")
@@ -13,6 +13,9 @@ ascended_description = ""
 rarity = 0
 curse = true
 elite_fight_curse = true
+use_charges = false
+auto_reset_charges_level_start = false
+reset_to_default = false
 id = 13
 name = "The Destitute"
 gdscript = ExtResource("1_ikqtm")

@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="BoonInfo" load_steps=5 format=3 uid="uid://cu53colyin0c4"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/boons/boon_info.gd" id="1_ccilf"]
-[ext_resource type="Script" path="res://scripts/fof/boons/campfire_boon.gd" id="1_skipv"]
+[ext_resource type="Script" uid="uid://cwaxy6m1b8n5m" path="res://scripts/fof_info/boons/boon_info.gd" id="1_ccilf"]
+[ext_resource type="Script" uid="uid://by6frklsp72rk" path="res://scripts/fof/boons/campfire_boon.gd" id="1_skipv"]
 [ext_resource type="Texture2D" uid="uid://dilj4y3uvwbg8" path="res://assets/sprites/game/boons/campfire_boon.png" id="2_i6vaq"]
-[ext_resource type="Script" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_7k0fm"]
+[ext_resource type="Script" uid="uid://dh3x145y3ihra" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_7k0fm"]
 
 [resource]
 script = ExtResource("1_ccilf")
@@ -13,7 +13,9 @@ ascended_description = ""
 rarity = 0
 curse = false
 elite_fight_curse = false
-duplicatable = false
+use_charges = false
+auto_reset_charges_level_start = false
+reset_to_default = false
 id = 16
 name = "Campfire Boon"
 gdscript = ExtResource("1_skipv")

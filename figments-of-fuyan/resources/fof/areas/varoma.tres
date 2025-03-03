@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="AreaInfo" load_steps=6 format=3 uid="uid://dvlxu5qrn822j"]
+[gd_resource type="Resource" script_class="AreaInfo" load_steps=7 format=3 uid="uid://dvlxu5qrn822j"]
 
+[ext_resource type="Script" uid="uid://u5fbm3mh8bib" path="res://scripts/common/id_to/id_to_id.gd" id="1_6hpxj"]
 [ext_resource type="Image" uid="uid://c2cuf22wj0rnf" path="res://assets/sprites/game/cards/common/art_background/varoma_background.png" id="1_co4xt"]
-[ext_resource type="Script" path="res://scripts/fof_info/areas/area_info.gd" id="2_0a3gj"]
-[ext_resource type="Script" path="res://scripts/fof/areas/area.gd" id="2_3vnxq"]
-[ext_resource type="Script" path="res://scripts/saved_data/saved_data_area.gd" id="3_xlptc"]
+[ext_resource type="Script" uid="uid://bdrcevdqecvdg" path="res://scripts/fof_info/areas/area_info.gd" id="2_0a3gj"]
+[ext_resource type="Script" uid="uid://b7tnfbmcbq6rn" path="res://scripts/fof/areas/area.gd" id="2_3vnxq"]
+[ext_resource type="Script" uid="uid://ddqxntix0kb3c" path="res://scripts/saved_data/saved_data_area.gd" id="3_xlptc"]
 [ext_resource type="Resource" uid="uid://ctfukjvhoe8nm" path="res://resources/datastore/world/world_one.tres" id="5_deiyx"]
 
 [resource]
@@ -12,6 +13,8 @@ world = ExtResource("5_deiyx")
 card_background = ExtResource("1_co4xt")
 card_ids = Array[int]([1, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77])
 encounter_ids = Array[int]([])
+miniboss_ids_to_level = Array[ExtResource("1_6hpxj")]([])
+boss_ids_to_level = Array[ExtResource("1_6hpxj")]([])
 id = 3
 name = "Varoma"
 gdscript = ExtResource("2_3vnxq")

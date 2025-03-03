@@ -1,21 +1,22 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=11 format=3]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=11 format=3 uid="uid://djeya0srqlgm0"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_4cudm"]
-[ext_resource type="Script" path="res://scripts/fof/objects/object.gd" id="1_hsx07"]
-[ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="1_n2bvt"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/coconut_pile.glb" id="2_masg1"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/coconut_pile1.glb" id="3_e3sj7"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/coconut_pile2.glb" id="4_5hynf"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/coconut_pile3.glb" id="5_44sny"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/coconut_pile4.glb" id="6_rl8t3"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/coconut_pile5.glb" id="7_jpmn1"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="8_iilho"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_4cudm"]
+[ext_resource type="Script" uid="uid://bjdh5jg7ecvli" path="res://scripts/fof/objects/object.gd" id="1_hsx07"]
+[ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="1_n2bvt"]
+[ext_resource type="PackedScene" uid="uid://bqjr6emlislgb" path="res://assets/models/fof/objects/coconut_pile.glb" id="2_masg1"]
+[ext_resource type="PackedScene" uid="uid://ba1vkd4wmrkxm" path="res://assets/models/fof/objects/coconut_pile1.glb" id="3_e3sj7"]
+[ext_resource type="PackedScene" uid="uid://drn8rbmyunjo1" path="res://assets/models/fof/objects/coconut_pile2.glb" id="4_5hynf"]
+[ext_resource type="PackedScene" uid="uid://2a8d6qh7j17d" path="res://assets/models/fof/objects/coconut_pile3.glb" id="5_44sny"]
+[ext_resource type="PackedScene" uid="uid://b4m8lv281m80e" path="res://assets/models/fof/objects/coconut_pile4.glb" id="6_rl8t3"]
+[ext_resource type="PackedScene" uid="uid://g431i5tdpqn8" path="res://assets/models/fof/objects/coconut_pile5.glb" id="7_jpmn1"]
+[ext_resource type="Script" uid="uid://c57vvj8uxhu4x" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="8_iilho"]
 
 [resource]
 script = ExtResource("1_n2bvt")
 tile_coords = Array[Array]([[Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0), Vector4i(0, 0, 0, 1), Vector4i(0, 0, 0, 2)], [Vector4(0, 0, 0, 0), Vector4i(0, 0, 0, 1), Vector4i(0, 0, 0, 2)]])
 lock_rotation = false
 lock_tile = false
+ignore_collisions = false
 solids = Array[bool]([true, true, true, true, true, true])
 active_effects = Array[ExtResource("1_4cudm")]([])
 models = Array[PackedScene]([ExtResource("2_masg1"), ExtResource("3_e3sj7"), ExtResource("4_5hynf"), ExtResource("5_44sny"), ExtResource("6_rl8t3"), ExtResource("7_jpmn1")])

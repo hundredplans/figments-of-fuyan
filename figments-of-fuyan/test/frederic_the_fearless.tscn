@@ -9,10 +9,11 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4roy8"]
 render_priority = 0
 shader = ExtResource("2_qrmva")
-shader_parameter/EmissionStrength = 3.0
 shader_parameter/tx_attributes = ExtResource("3_2gnm7")
 shader_parameter/tx_color = ExtResource("4_phm0k")
 shader_parameter/tx_emission = ExtResource("3_w1s01")
+shader_parameter/ALBEDO_MULT = 0.0
+shader_parameter/EmissionStrength = 3.0
 
 [node name="frederic_the_fearless" instance=ExtResource("1_qrue0")]
 

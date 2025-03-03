@@ -1,11 +1,11 @@
 [gd_resource type="Resource" script_class="ObjectInfo" load_steps=9 format=3 uid="uid://bplg4sgv58oqh"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_0hkmw"]
-[ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="1_4c0dd"]
-[ext_resource type="Script" path="res://scripts/fof/objects/palm_door.gd" id="2_8dm3c"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_0hkmw"]
+[ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="1_4c0dd"]
+[ext_resource type="Script" uid="uid://bgnvegj4jflwf" path="res://scripts/fof/objects/palm_door.gd" id="2_8dm3c"]
 [ext_resource type="PackedScene" uid="uid://b52kcgs2ycht0" path="res://assets/models/fof/objects/palm_door_tall.glb" id="2_u8yia"]
 [ext_resource type="PackedScene" uid="uid://4xgp6fl2e0oi" path="res://assets/models/fof/objects/palm_door_short.glb" id="3_3m0df"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_iobject.gd" id="5_600ci"]
+[ext_resource type="Script" uid="uid://c76iyo8j5sdgv" path="res://scripts/saved_data/game_objects/saved_data_iobject.gd" id="5_600ci"]
 
 [sub_resource type="Resource" id="Resource_lk2nq"]
 script = ExtResource("1_0hkmw")
@@ -32,6 +32,7 @@ script = ExtResource("1_4c0dd")
 tile_coords = Array[Array]([[Vector4(0, 0, 0, 0), Vector4i(0, 0, 0, 1), Vector4i(0, 0, 0, 2), Vector4i(0, 0, 0, 3), Vector4i(0, 0, 0, 4)], [Vector4(0, 0, 0, 0), Vector4i(0, 0, 0, 1)]])
 lock_rotation = true
 lock_tile = true
+ignore_collisions = false
 solids = Array[bool]([true, true])
 active_effects = Array[ExtResource("1_0hkmw")]([SubResource("Resource_lk2nq"), SubResource("Resource_wuccq")])
 models = Array[PackedScene]([ExtResource("2_u8yia"), ExtResource("3_3m0df")])

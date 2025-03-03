@@ -1,14 +1,18 @@
-[gd_resource type="Resource" script_class="AreaInfo" load_steps=5 format=3 uid="uid://d3dk8q2ypeyvk"]
+[gd_resource type="Resource" script_class="AreaInfo" load_steps=6 format=3 uid="uid://d3dk8q2ypeyvk"]
 
+[ext_resource type="Script" uid="uid://u5fbm3mh8bib" path="res://scripts/common/id_to/id_to_id.gd" id="1_8mhk4"]
 [ext_resource type="Image" uid="uid://bsuw2m5nhuq4d" path="res://assets/sprites/game/cards/common/art_background/skeleton_background.png" id="1_kovhy"]
-[ext_resource type="Script" path="res://scripts/fof_info/areas/area_info.gd" id="2_ujv72"]
-[ext_resource type="Script" path="res://scripts/fof/areas/area.gd" id="2_yf10w"]
-[ext_resource type="Script" path="res://scripts/saved_data/saved_data_area.gd" id="3_fgeuo"]
+[ext_resource type="Script" uid="uid://bdrcevdqecvdg" path="res://scripts/fof_info/areas/area_info.gd" id="2_ujv72"]
+[ext_resource type="Script" uid="uid://b7tnfbmcbq6rn" path="res://scripts/fof/areas/area.gd" id="2_yf10w"]
+[ext_resource type="Script" uid="uid://ddqxntix0kb3c" path="res://scripts/saved_data/saved_data_area.gd" id="3_fgeuo"]
 
 [resource]
 script = ExtResource("2_ujv72")
 card_background = ExtResource("1_kovhy")
 card_ids = Array[int]([29])
+encounter_ids = Array[int]([])
+miniboss_ids_to_level = Array[ExtResource("1_8mhk4")]([])
+boss_ids_to_level = Array[ExtResource("1_8mhk4")]([])
 id = 4
 name = "Ashbone Citadel"
 gdscript = ExtResource("2_yf10w")
