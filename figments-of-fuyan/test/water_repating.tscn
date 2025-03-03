@@ -50,16 +50,16 @@ void fragment() {
 render_priority = 0
 shader = SubResource("Shader_pp34d")
 shader_parameter/albedo = Color(0, 0.694118, 1, 1)
+shader_parameter/texture_albedo = ExtResource("1_qi41i")
 shader_parameter/point_size = 1.0
 shader_parameter/roughness = 0.01
-shader_parameter/metallic_texture_channel = null
+shader_parameter/metallic_texture_channel = Vector4(0, 0, 0, 0)
 shader_parameter/specular = 0.7
 shader_parameter/metallic = 0.01
 shader_parameter/uv1_scale = Vector3(1200, 700, 500)
 shader_parameter/uv1_offset = Vector3(0, 0, 0)
 shader_parameter/uv2_scale = Vector3(1, 1, 1)
 shader_parameter/uv2_offset = Vector3(0, 0, 0)
-shader_parameter/texture_albedo = ExtResource("1_qi41i")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_lxl27"]
 material = SubResource("ShaderMaterial_lehme")

@@ -1,11 +1,11 @@
 [gd_scene load_steps=17 format=3 uid="uid://ssbbc35p2xby"]
 
-[ext_resource type="Script" path="res://scenes/game/map/map_ui.gd" id="1_8nhbi"]
+[ext_resource type="Script" uid="uid://bxyqpp5rj7htd" path="res://scenes/game/map/map_ui.gd" id="1_8nhbi"]
 [ext_resource type="LabelSettings" uid="uid://baxopkmeda53x" path="res://resources/ui/label_settings/roboto_huge.tres" id="2_r0ufu"]
 [ext_resource type="PackedScene" uid="uid://d3m353h1jnkku" path="res://scenes/game/map/legend_key.tscn" id="2_xp1my"]
 [ext_resource type="PackedScene" uid="uid://dkv06ds5ncutu" path="res://scenes/game/levels/ui/deck_screen.tscn" id="3_nrqx8"]
 [ext_resource type="LabelSettings" uid="uid://cyodc3xq62xbg" path="res://resources/ui/label_settings/jacquard_large.tres" id="4_10pk8"]
-[ext_resource type="Script" path="res://scenes/game/levels/boon_box.gd" id="6_1qe81"]
+[ext_resource type="Script" uid="uid://dnqf5f1jadalx" path="res://scenes/game/levels/boon_box.gd" id="6_1qe81"]
 [ext_resource type="PackedScene" uid="uid://ct1cn5tc1ofmb" path="res://scenes/game/boons/boon_icon.tscn" id="7_fduhh"]
 [ext_resource type="PackedScene" uid="uid://6nf3mir2i2rk" path="res://scenes/common/fancy_text/fancy_text_label.tscn" id="8_v2ied"]
 [ext_resource type="PackedScene" uid="uid://cewvw3vx3mjcm" path="res://scenes/game/tools/tool_icon.tscn" id="9_mvtve"]
@@ -96,8 +96,8 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_1dwtc"]
 _data = {
-"MapStart": SubResource("Animation_bd438"),
-"RESET": SubResource("Animation_g6ohg")
+&"MapStart": SubResource("Animation_bd438"),
+&"RESET": SubResource("Animation_g6ohg")
 }
 
 [node name="MapUI" type="Control"]

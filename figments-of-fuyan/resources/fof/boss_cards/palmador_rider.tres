@@ -1,13 +1,13 @@
 [gd_resource type="Resource" script_class="BossCardInfo" load_steps=23 format=3 uid="uid://c744mxgw7ka51"]
 
-[ext_resource type="Script" path="res://scripts/fof/cards/boss/palmador_rider_boss.gd" id="1_3pam4"]
+[ext_resource type="Script" uid="uid://dlinaoe5arpsp" path="res://scripts/fof/cards/boss/palmador_rider_boss.gd" id="1_3pam4"]
 [ext_resource type="Texture2D" uid="uid://cn8nbco553gjo" path="res://assets/sprites/game/cards/art_mini/palmador_rider.png" id="1_baw88"]
-[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_8vekp"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_boss_card.gd" id="2_q7laa"]
-[ext_resource type="Script" path="res://scripts/fof_info/archetypes/archetype_info.gd" id="4_fqkye"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_8vekp"]
+[ext_resource type="Script" uid="uid://unn6splqvb3v" path="res://scripts/saved_data/game_objects/saved_data_boss_card.gd" id="2_q7laa"]
+[ext_resource type="Script" uid="uid://dvjkppyxntxvd" path="res://scripts/fof_info/archetypes/archetype_info.gd" id="4_fqkye"]
 [ext_resource type="Resource" uid="uid://27tqk2ax0xx2" path="res://resources/fof/archetypes/scout.tres" id="5_ysfwm"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/phase_boss_intents.gd" id="6_45ina"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/boss_intent.gd" id="7_sb1xn"]
+[ext_resource type="Script" uid="uid://cntpg3e0pcsnn" path="res://scripts/fof_info/cards/extra/phase_boss_intents.gd" id="6_45ina"]
+[ext_resource type="Script" uid="uid://c85vjl4hwbga5" path="res://scripts/fof_info/cards/extra/boss_intent.gd" id="7_sb1xn"]
 [ext_resource type="Resource" uid="uid://c7q2q8jphfk5w" path="res://resources/datastore/boss_intents/palmador_rider/phase_one/rally.tres" id="8_cueg5"]
 [ext_resource type="Resource" uid="uid://cxfmfj5qqxc6l" path="res://resources/datastore/boss_intents/palmador_rider/phase_one/summon.tres" id="9_lp5d6"]
 [ext_resource type="Resource" uid="uid://dc1iifgpa5lv5" path="res://resources/datastore/boss_intents/palmador_rider/phase_one/reposition.tres" id="10_e6u8b"]
@@ -16,7 +16,7 @@
 [ext_resource type="Resource" uid="uid://cewlgqdq1q84b" path="res://resources/datastore/boss_intents/palmador_rider/phase_one/jump_attack.tres" id="13_nxo6b"]
 [ext_resource type="PackedScene" uid="uid://d33beirjwt2p7" path="res://assets/models/fof/cards/palmador_rider.glb" id="14_dm4ki"]
 [ext_resource type="PackedScene" uid="uid://kot3b47ov74g" path="res://assets/models/fof/cards/lone_rider.glb" id="15_h0pk2"]
-[ext_resource type="Script" path="res://scripts/fof_info/boss_cards/boss_card_info.gd" id="16_dbjn2"]
+[ext_resource type="Script" uid="uid://bd0ljqheerbtm" path="res://scripts/fof_info/boss_cards/boss_card_info.gd" id="16_dbjn2"]
 
 [sub_resource type="Resource" id="Resource_kf6x3"]
 script = ExtResource("6_45ina")
