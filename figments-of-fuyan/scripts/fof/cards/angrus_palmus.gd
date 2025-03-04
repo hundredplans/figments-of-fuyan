@@ -1,33 +1,45 @@
 extends CardGD
 
-const ANGRUS_RAMPAGE_ID: int = 2
-var field_effect_public_id: int = 0
+var rampage_charges: int = 3
 func onProcessAction(action: Action) -> void:
 	super(action)
-	if isValidRampage(action) and field_effect_public_id == 0:
+	if isValidRampage(action) and rampage_charges != 0:
 		onPushAction(RampageAction.new(self, action))
-	elif isValidWhenHealed(action) and field_effect_public_id > 0:
-		onHealed(action)
 	
-func getDescription() -> String:
-	return super()
-	
-func onRampage(_death_action: DeathAction) -> void:
-	field_effect_public_id = onCreateBaseFieldEffect(ANGRUS_RAMPAGE_ID).public_id
-	
+func onRampage(death_action: DeathAction) -> void:
 	onAbility()
-	setIdleAbility(true)
 	
-func onHealed(action: StatAction) -> void:
-	for stat_info in action.stat_infos.filter(func(x: StatInfo): return x.Card == self):
-		for i in range(stat_info.types.size()):
-			if stat_info.types[i] == Game.Stats.HEALTH and stat_info.values[i] > 0:
-				stat_info.values[i] *= (2 if !ascended else 99)
+	var enemies: Array = Game.getAdjacentTiles(death_action.Tile).map(func(x: TileGD): return Game.getFieldCard(x))\
+		.filter(func(x: CardGD): return x != null and isEnemy(x.team))
 	
-	onPushAction(RemoveFieldEffectAction.new(Game.onFindPublicIDObject(field_effect_public_id)))
-	setIdleAbility(false)
-	field_effect_public_id = 0
+	onPushAction(DamageAction.new(self, enemies, attack, Game.DamageTypes.OTHER))
+	if rampage_charges > 0:
+		rampage_charges -= 1
+
+func onResetCharges() -> void:
+	rampage_charges = 3 if !ascended else -1
+
+func getDescription() -> String:
+	if !ascended:
+		return Helper.getDescriptionNumeric(super(), [rampage_charges], [["RAMPAGE ", "[3]"]])
+	return super()
 
 func onSave() -> SavedDataCard:
-	ability_save['field_effect_public_id'] = field_effect_public_id
+	ability_save['rampage_charges'] = rampage_charges
 	return super()
+	
+func onAwaken() -> void:
+	super()
+	onResetCharges()
+
+func onFofInit() -> void:
+	super()
+	onResetCharges()
+
+func onReset(override: bool = false) -> void:
+	super(override)
+	onResetCharges()
+	
+func onAscendedUpdated(state: bool) -> void:
+	super(state)
+	onResetCharges()

@@ -57,8 +57,10 @@ func onFindTile(coords: Vector4i) -> TileGD:
 	
 @onready var TileObjectRay: RayCast3D = %TileObjectRay
 func onFindMouseTileObject() -> TileObjectGD:
-	Helper.setCameraRay(TileObjectRay, Camera)
-	return Helper.getCollision(TileObjectRay.get_collider(), TileObjectGD)
+	if !is_mouse_in_ui:
+		Helper.setCameraRay(TileObjectRay, Camera)
+		return Helper.getCollision(TileObjectRay.get_collider(), TileObjectGD)
+	return null
 
 func onFindMousePoint() -> Vector3:
 	Helper.setCameraRay(TileObjectRay, Camera)
@@ -432,7 +434,9 @@ func _on_search_tile_object_focus_entered():
 #endregion
 #region MouseInUI
 var was_last_selected: bool = false
+var is_mouse_in_ui: bool = false
 func onMouseInUI(state: bool) -> void:
+	is_mouse_in_ui = state
 	if state:
 		was_last_selected = HoverModel != null
 		onHoverModelDeselected()

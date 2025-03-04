@@ -15,6 +15,9 @@ func _init(_Damager: GameObjectGD = null, _Defenders: Variant = null, _damage: i
 	damage = _damage
 	damage_type = _damage_type
 
+func onPreAction() -> void:
+	if Defenders.is_empty(): onFailAction()
+
 func onPostAction() -> void:
 	var stat_infos: Array = Defenders\
 		.filter(func(x: GameObjectGD): return x is CardGD)\

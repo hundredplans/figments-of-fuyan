@@ -13,12 +13,12 @@
 [sub_resource type="Resource" id="Resource_c53jk"]
 script = ExtResource("1_ctxd3")
 exists = 0
-ascended_description = "Heal [1] HP to allies in vision
-TRAUMA: Gain +1 ATT if a healed ally died"
-ascended_max_charges = 2
+ascended_description = "Heal [3] HP to allies in vision
+TRAUMA: Gain +1 ATT +1 HP if a healed ally died"
+ascended_max_charges = 1
 name = "Charming Stance"
-description = "Heal [1] HP to allies in vision
-TRAUMA: Gain +1 ATT if a healed ally died"
+description = " Heal [1] HP to allies in vision
+TRAUMA: Gain +1 ATT +1 HP if a healed ally died"
 max_charges = 1
 delay = 3.0
 camera_type = 0
@@ -44,7 +44,7 @@ _bundled = {
 [resource]
 script = ExtResource("3_e0im4")
 attack = 1
-health = 3
+health = 2
 speed = 2
 energy = 3
 rarity = 4
@@ -52,9 +52,9 @@ initial_traits = Array[ExtResource("2_ope8q")]([])
 active_abilities = Array[ExtResource("1_ctxd3")]([SubResource("Resource_c53jk")])
 flavor_text = ""
 description = "ABILITY [1]: Heal [1] HP to allies in vision
-TRAUMA: Gain +1 ATT if a healed ally died"
-ascended_description = "ABILITY [2]: Heal [1] HP to allies in vision
-TRAUMA: Gain +1 ATT if a healed ally died"
+TRAUMA: Gain +1 ATT +1 HP if a healed ally died"
+ascended_description = "ABILITY [1]: Heal [3] HP to allies in vision
+TRAUMA: Gain +1 ATT +1 HP if a healed ally died"
 art_mini_coordinate = Vector2i(98, 58)
 art_mini = ExtResource("2_p77gw")
 art_pop = ExtResource("2_r3dp6")
@@ -66,7 +66,7 @@ top = 0.976187
 eye = 0.820326
 plus_attack = 0
 plus_health = 0
-plus_speed = 1
+plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("2_ope8q")]([])
 archetype = ExtResource("2_lks3h")

@@ -79,4 +79,6 @@ mouse_filter = 2
 
 [connection signal="mouse_entered" from="PanelContainer" to="." method="onMouseInUI" binds= [true]]
 [connection signal="mouse_exited" from="PanelContainer" to="." method="onMouseInUI" binds= [false]]
+[connection signal="mouse_entered" from="PanelContainer/MarginContainer/VBoxContainer/CommandLineEdit" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="PanelContainer/MarginContainer/VBoxContainer/CommandLineEdit" to="." method="onMouseInUI" binds= [false]]
 [connection signal="text_submitted" from="PanelContainer/MarginContainer/VBoxContainer/CommandLineEdit" to="." method="_on_line_edit_text_submitted"]

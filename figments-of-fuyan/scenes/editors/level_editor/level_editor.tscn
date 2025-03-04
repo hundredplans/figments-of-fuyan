@@ -62,8 +62,8 @@ mouse_filter = 2
 
 [node name="TopBar" type="HBoxContainer" parent="UI"]
 layout_mode = 0
-offset_left = 5.0
-offset_top = 5.0
+offset_left = 15.0
+offset_top = 10.0
 offset_right = 1920.0
 offset_bottom = 81.0
 mouse_filter = 2
@@ -94,8 +94,8 @@ text = "Tile Lock"
 unique_name_in_owner = true
 clip_contents = true
 layout_mode = 0
-offset_left = 5.0
-offset_top = 86.0
+offset_left = 15.0
+offset_top = 103.0
 offset_right = 405.0
 offset_bottom = 881.0
 
@@ -198,75 +198,73 @@ layout_mode = 2
 placeholder_text = "Level Name"
 alignment = 1
 
-[node name="LoadLevels" type="Control" parent="UI"]
+[node name="LoadLevels" type="PanelContainer" parent="UI"]
 unique_name_in_owner = true
-anchors_preset = 0
+layout_mode = 0
 offset_left = 15.0
 offset_top = 103.0
 offset_right = 754.0
 offset_bottom = 969.0
-mouse_filter = 2
+theme_type_variation = &"WhitePanelContainer"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/LoadLevels"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 10
+[node name="MarginContainer" type="MarginContainer" parent="UI/LoadLevels"]
+layout_mode = 2
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="UI/LoadLevels/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/LoadLevels/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="AreaOptionButton" type="OptionButton" parent="UI/LoadLevels/VBoxContainer/HBoxContainer2"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="UI/LoadLevels/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="AreaOptionButton" type="OptionButton" parent="UI/LoadLevels/MarginContainer/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ProgressEdit" type="LineEdit" parent="UI/LoadLevels/VBoxContainer/HBoxContainer2"]
+[node name="ProgressEdit" type="LineEdit" parent="UI/LoadLevels/MarginContainer/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 placeholder_text = "Prog"
 alignment = 1
 
-[node name="LevelNameEdit" type="LineEdit" parent="UI/LoadLevels/VBoxContainer/HBoxContainer2"]
+[node name="LevelNameEdit" type="LineEdit" parent="UI/LoadLevels/MarginContainer/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Level Name"
 alignment = 1
 
-[node name="HideLoadLevelButton" parent="UI/LoadLevels/VBoxContainer/HBoxContainer2" instance=ExtResource("4_s4thk")]
+[node name="HideLoadLevelButton" parent="UI/LoadLevels/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("4_s4thk")]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Hide"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="UI/LoadLevels/VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/LoadLevels/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="LoadLevelContainer" type="VBoxContainer" parent="UI/LoadLevels/VBoxContainer/ScrollContainer"]
+[node name="LoadLevelContainer" type="VBoxContainer" parent="UI/LoadLevels/MarginContainer/VBoxContainer/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="NewLevelButtonsContainer" type="HBoxContainer" parent="UI/LoadLevels/VBoxContainer"]
+[node name="NewLevelButtonsContainer" type="HBoxContainer" parent="UI/LoadLevels/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="NewRegularLevelButton" parent="UI/LoadLevels/VBoxContainer/NewLevelButtonsContainer" instance=ExtResource("4_s4thk")]
+[node name="NewRegularLevelButton" parent="UI/LoadLevels/MarginContainer/VBoxContainer/NewLevelButtonsContainer" instance=ExtResource("4_s4thk")]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Regular"
 
-[node name="NewDecorationLevelButton" parent="UI/LoadLevels/VBoxContainer/NewLevelButtonsContainer" instance=ExtResource("4_s4thk")]
+[node name="NewDecorationLevelButton" parent="UI/LoadLevels/MarginContainer/VBoxContainer/NewLevelButtonsContainer" instance=ExtResource("4_s4thk")]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Decoration"
 
-[node name="NewOverworldLevelButton" parent="UI/LoadLevels/VBoxContainer/NewLevelButtonsContainer" instance=ExtResource("4_s4thk")]
+[node name="NewOverworldLevelButton" parent="UI/LoadLevels/MarginContainer/VBoxContainer/NewLevelButtonsContainer" instance=ExtResource("4_s4thk")]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Overworld"
@@ -401,8 +399,14 @@ collision_mask = 24
 unique_name_in_owner = true
 
 [connection signal="focus_entered" from="UI/TopBar/SearchTileObject" to="." method="_on_search_tile_object_focus_entered"]
+[connection signal="mouse_entered" from="UI/TopBar/SearchTileObject" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="UI/TopBar/SearchTileObject" to="." method="onMouseInUI" binds= [false]]
 [connection signal="text_changed" from="UI/TopBar/SearchTileObject" to="." method="_on_search_tile_object_text_changed"]
+[connection signal="mouse_entered" from="UI/TopBar/TileFillButton" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="UI/TopBar/TileFillButton" to="." method="onMouseInUI" binds= [false]]
 [connection signal="pressed" from="UI/TopBar/TileFillButton" to="." method="onTileFillButtonPressed"]
+[connection signal="mouse_entered" from="UI/TopBar/TileLockButton" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="UI/TopBar/TileLockButton" to="." method="onMouseInUI" binds= [false]]
 [connection signal="pressed" from="UI/TopBar/TileLockButton" to="." method="onTileLockButtonPressed"]
 [connection signal="mouse_entered" from="UI/SearchResultsPanel" to="." method="onMouseInUI" binds= [true]]
 [connection signal="mouse_exited" from="UI/SearchResultsPanel" to="." method="onMouseInUI" binds= [false]]
@@ -410,15 +414,30 @@ unique_name_in_owner = true
 [connection signal="pressed" from="UI/BottomBar/LoadButton" to="." method="_on_load_button_pressed"]
 [connection signal="mouse_in_ui" from="UI/BottomBar/SaveButton" to="." method="onMouseInUI"]
 [connection signal="pressed" from="UI/BottomBar/SaveButton" to="." method="onSaveLevel"]
-[connection signal="item_selected" from="UI/LoadLevels/VBoxContainer/HBoxContainer2/AreaOptionButton" to="." method="onAreaOptionButtonSelected"]
-[connection signal="text_changed" from="UI/LoadLevels/VBoxContainer/HBoxContainer2/ProgressEdit" to="." method="_on_progress_edit_text_changed"]
-[connection signal="text_changed" from="UI/LoadLevels/VBoxContainer/HBoxContainer2/LevelNameEdit" to="." method="_on_level_name_edit_text_changed"]
-[connection signal="pressed" from="UI/LoadLevels/VBoxContainer/HBoxContainer2/HideLoadLevelButton" to="." method="_on_hide_load_level_button_pressed"]
-[connection signal="pressed" from="UI/LoadLevels/VBoxContainer/NewLevelButtonsContainer/NewRegularLevelButton" to="." method="onNewEmptyLevelRegular"]
-[connection signal="pressed" from="UI/LoadLevels/VBoxContainer/NewLevelButtonsContainer/NewDecorationLevelButton" to="." method="onNewEmptyLevelDecoration"]
-[connection signal="pressed" from="UI/LoadLevels/VBoxContainer/NewLevelButtonsContainer/NewOverworldLevelButton" to="." method="onNewEmptyLevelOverworld"]
+[connection signal="mouse_entered" from="UI/BottomBar/SaveLineEdit" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="UI/BottomBar/SaveLineEdit" to="." method="onMouseInUI" binds= [false]]
+[connection signal="mouse_entered" from="UI/LoadLevels" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="UI/LoadLevels" to="." method="onMouseInUI" binds= [false]]
+[connection signal="item_selected" from="UI/LoadLevels/MarginContainer/VBoxContainer/HBoxContainer2/AreaOptionButton" to="." method="onAreaOptionButtonSelected"]
+[connection signal="mouse_entered" from="UI/LoadLevels/MarginContainer/VBoxContainer/HBoxContainer2/AreaOptionButton" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="UI/LoadLevels/MarginContainer/VBoxContainer/HBoxContainer2/AreaOptionButton" to="." method="onMouseInUI" binds= [false]]
+[connection signal="mouse_entered" from="UI/LoadLevels/MarginContainer/VBoxContainer/HBoxContainer2/ProgressEdit" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="UI/LoadLevels/MarginContainer/VBoxContainer/HBoxContainer2/ProgressEdit" to="." method="onMouseInUI" binds= [false]]
+[connection signal="text_changed" from="UI/LoadLevels/MarginContainer/VBoxContainer/HBoxContainer2/ProgressEdit" to="." method="_on_progress_edit_text_changed"]
+[connection signal="mouse_entered" from="UI/LoadLevels/MarginContainer/VBoxContainer/HBoxContainer2/LevelNameEdit" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="UI/LoadLevels/MarginContainer/VBoxContainer/HBoxContainer2/LevelNameEdit" to="." method="onMouseInUI" binds= [false]]
+[connection signal="text_changed" from="UI/LoadLevels/MarginContainer/VBoxContainer/HBoxContainer2/LevelNameEdit" to="." method="_on_level_name_edit_text_changed"]
+[connection signal="mouse_in_ui" from="UI/LoadLevels/MarginContainer/VBoxContainer/HBoxContainer2/HideLoadLevelButton" to="." method="onMouseInUI"]
+[connection signal="pressed" from="UI/LoadLevels/MarginContainer/VBoxContainer/HBoxContainer2/HideLoadLevelButton" to="." method="_on_hide_load_level_button_pressed"]
+[connection signal="mouse_in_ui" from="UI/LoadLevels/MarginContainer/VBoxContainer/NewLevelButtonsContainer/NewRegularLevelButton" to="." method="onMouseInUI"]
+[connection signal="pressed" from="UI/LoadLevels/MarginContainer/VBoxContainer/NewLevelButtonsContainer/NewRegularLevelButton" to="." method="onNewEmptyLevelRegular"]
+[connection signal="mouse_in_ui" from="UI/LoadLevels/MarginContainer/VBoxContainer/NewLevelButtonsContainer/NewDecorationLevelButton" to="." method="onMouseInUI"]
+[connection signal="pressed" from="UI/LoadLevels/MarginContainer/VBoxContainer/NewLevelButtonsContainer/NewDecorationLevelButton" to="." method="onNewEmptyLevelDecoration"]
+[connection signal="mouse_in_ui" from="UI/LoadLevels/MarginContainer/VBoxContainer/NewLevelButtonsContainer/NewOverworldLevelButton" to="." method="onMouseInUI"]
+[connection signal="pressed" from="UI/LoadLevels/MarginContainer/VBoxContainer/NewLevelButtonsContainer/NewOverworldLevelButton" to="." method="onNewEmptyLevelOverworld"]
+[connection signal="mouse_in_ui" from="UI/MarginContainer/TopRightBar/SettingsButton" to="." method="onMouseInUI"]
 [connection signal="pressed" from="UI/MarginContainer/TopRightBar/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="camera_changed_speed" from="World/Camera3D" to="." method="_on_camera_3d_camera_changed_speed"]
-[connection signal="camera_panning" from="World/Camera3D" to="." method="onMouseInUI"]
 [connection signal="camera_panning" from="World/Camera3D" to="." method="_on_camera_3d_camera_panning"]
+[connection signal="camera_panning" from="World/Camera3D" to="." method="onMouseInUI"]
 [connection signal="timeout" from="MouseWheelDelayTimer" to="." method="_on_mouse_wheel_delay_timer_timeout"]
