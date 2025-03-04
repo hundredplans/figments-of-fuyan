@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="BossIntent" load_steps=2 format=3 uid="uid://wno0iuuswgdt"]
+
+[ext_resource type="Script" uid="uid://c85vjl4hwbga5" path="res://scripts/fof_info/cards/extra/boss_intent.gd" id="1_0pboc"]
+
+[resource]
+script = ExtResource("1_0pboc")
+name = "Bulk Up"
+description = "Gain ARMOR [1] and 1 ATT, 1 SPD for [2] Turns. Also Heal 3 HP when on 2 HP. Doesn't move after
+"
+type = 4
+default_cooldown = 3
+combat_type = 0
+metadata/_custom_type_script = "uid://c85vjl4hwbga5"

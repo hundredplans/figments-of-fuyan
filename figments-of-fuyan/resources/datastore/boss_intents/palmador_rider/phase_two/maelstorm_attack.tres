@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="BossIntent" load_steps=2 format=3 uid="uid://b5vh0hlo1q7mu"]
+
+[ext_resource type="Script" uid="uid://c85vjl4hwbga5" path="res://scripts/fof_info/cards/extra/boss_intent.gd" id="1_7t0oe"]
+
+[resource]
+script = ExtResource("1_7t0oe")
+name = "Maelstorm Attack"
+description = "Triple adjacent, knockback out of the circle (3 in the center, 2 then 1), 3, 2, 1 DMG. Moves 1 Tile after"
+type = 0
+default_cooldown = 2
+combat_type = 1
+metadata/_custom_type_script = "uid://c85vjl4hwbga5"

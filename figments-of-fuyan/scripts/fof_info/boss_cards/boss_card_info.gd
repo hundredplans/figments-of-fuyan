@@ -16,6 +16,7 @@ class_name BossCardInfo extends FofInfo
 @export var phase_to_top: Array[float]
 @export var phase_to_eye: Array[float]
 @export var phase_to_stat: Array[float]
+@export var phase_to_phase_change_boss_intent_name: Array[String] # Name of intent to use when phase changes, if empty doesn't change intent
 @export_group("")
 
 @export_group("Art")
@@ -90,3 +91,6 @@ func getColoredBaseMaterial(_team: int, _ascended: bool) -> ShaderMaterial:
 	
 func getChangeDelay(phase: int = 1) -> float:
 	return phase_to_change_delay[phase - 1]
+	
+func getPhaseChangeBossIntentName(phase: int = 1) -> String:
+	return phase_to_phase_change_boss_intent_name[phase - 1]

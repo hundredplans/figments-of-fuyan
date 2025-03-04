@@ -1,6 +1,7 @@
 extends BossCardGD
 	
 const PALMY_ID: int = 4
+const ARMOR_TRAIT_ID: int = 1
 	
 #region Default
 func onProcessAction(action: Action) -> void:
@@ -29,21 +30,59 @@ func onUseBossIntent(enemies: Array, allies: Array, tiles: Array, use_type: UseT
 			actions = onChargeAttack(use_type)
 		"Jump Attack":
 			actions = onJumpAttack(use_type)
+		"Maelstorm Attack":
+			actions = onMaelstormAttack(enemies, use_type)
+		"Bulk Up":
+			actions = onBulkUp(use_type)
+		"Run Away":
+			actions = onRunAway(enemies, tiles, use_type)
+		"Autoattack":
+			actions = onAutoattack(enemies, allies, tiles, use_type)
+			
+			
 	onPushAction(BossIntentUsedAction.new(boss_intent, use_type, actions, enemies, allies))
 
+const BULK_UP_CHANCE: float = 0.75
+const ROLL_ATTACK_ODDS_LONE_RIDER: float = 0.66
 const ROLL_ATTACK_ODDS: float = 0.5
 func onChangeBossIntent(boss_intents: Array, enemies: Array, _allies: Array) -> BossIntent:
-	if !enemies.is_empty(): # If is in combat
-		if boss_intents.all(func(x: BossIntent): return x.type in [x.IntentType.ATTACK, x.IntentType.MOVEMENT_ATTACK]): # Only attacks
-			boss_intents = boss_intents.filter(func(x: BossIntent): return x.type in [x.IntentType.ATTACK, x.IntentType.MOVEMENT_ATTACK])
-		elif boss_intents.all(func(x: BossIntent): return x.type not in [x.IntentType.ATTACK, x.IntentType.MOVEMENT_ATTACK]): # Only non attacks
-			boss_intents = boss_intents.filter(func(x: BossIntent): return x.type not in [x.IntentType.ATTACK, x.IntentType.MOVEMENT_ATTACK])
-		elif Random.rollFloat(ROLL_ATTACK_ODDS): # Rolled attack
-			boss_intents = boss_intents.filter(func(x: BossIntent): return x.type in [x.IntentType.ATTACK, x.IntentType.MOVEMENT_ATTACK])
-		else: # Rolled non attack
-			boss_intents = boss_intents.filter(func(x: BossIntent): return x.type not in [x.IntentType.ATTACK, x.IntentType.MOVEMENT_ATTACK])
-	else:
-		boss_intents = boss_intents.filter(func(x: BossIntent): return x.name in ["Spin Attack", "Reposition", "Jump Attack"])
+	match getPhase():
+		1:
+			if !enemies.is_empty(): # If is in combat
+				if boss_intents.all(func(x: BossIntent): return x.type in [x.IntentType.ATTACK, x.IntentType.MOVEMENT_ATTACK]): # Only attacks
+					boss_intents = boss_intents.filter(func(x: BossIntent): return x.type in [x.IntentType.ATTACK, x.IntentType.MOVEMENT_ATTACK])
+				elif boss_intents.all(func(x: BossIntent): return x.type not in [x.IntentType.ATTACK, x.IntentType.MOVEMENT_ATTACK]): # Only non attacks
+					boss_intents = boss_intents.filter(func(x: BossIntent): return x.type not in [x.IntentType.ATTACK, x.IntentType.MOVEMENT_ATTACK])
+				elif Random.rollFloat(ROLL_ATTACK_ODDS): # Rolled attack
+					boss_intents = boss_intents.filter(func(x: BossIntent): return x.type in [x.IntentType.ATTACK, x.IntentType.MOVEMENT_ATTACK])
+				else: # Rolled non attack
+					boss_intents = boss_intents.filter(func(x: BossIntent): return x.type not in [x.IntentType.ATTACK, x.IntentType.MOVEMENT_ATTACK])
+			else:
+				boss_intents = boss_intents.filter(func(x: BossIntent): return x.name in ["Spin Attack", "Reposition", "Jump Attack"])
+		2:
+			if !enemies.is_empty(): # If in combat
+				if Random.rollFloat(ROLL_ATTACK_ODDS_LONE_RIDER):
+					boss_intents = boss_intents.filter(func(x: BossIntent): return x.type in [x.IntentType.ATTACK, x.IntentType.MOVEMENT_ATTACK])
+				else:
+					var new_boss_intents: Array = boss_intents.filter(func(x: BossIntent): return x.type not in [x.IntentType.ATTACK, x.IntentType.MOVEMENT_ATTACK])
+					if new_boss_intents.size() == 2: # If more than one, otherwise guarantees
+						if Random.rollFloat(BULK_UP_CHANCE):
+							new_boss_intents = boss_intents.filter(func(x: BossIntent): return x.name == "Bulk Up")
+						else:
+							new_boss_intents = boss_intents.filter(func(x: BossIntent): return x.name == "Run Away")
+					elif new_boss_intents.size() == 0: # Picks a random attack
+						new_boss_intents = boss_intents.filter(func(x: BossIntent): return x.type in [x.IntentType.ATTACK, x.IntentType.MOVEMENT_ATTACK])
+					boss_intents = new_boss_intents
+			else:
+				var new_boss_intents: Array = boss_intents.filter(func(x: BossIntent): return x.type not in [x.IntentType.ATTACK, x.IntentType.MOVEMENT_ATTACK])
+				if new_boss_intents.size() == 2: # If more than one, otherwise guarantees
+					if Random.rollFloat(BULK_UP_CHANCE):
+						new_boss_intents = boss_intents.filter(func(x: BossIntent): return x.name == "Bulk Up")
+					else:
+						new_boss_intents = boss_intents.filter(func(x: BossIntent): return x.name == "Run Away")
+				elif new_boss_intents.size() == 0: # Picks a random attack
+					new_boss_intents = boss_intents.filter(func(x: BossIntent): return x.type in [x.IntentType.ATTACK, x.IntentType.MOVEMENT_ATTACK])
+				boss_intents = new_boss_intents
 	return boss_intents.pick_random()
 	
 func onCheckBossIntentCondition(conditional_boss_intent: BossIntent, _enemies: Array, allies: Array) -> bool:
@@ -59,6 +98,9 @@ func onCheckBossIntentCondition(conditional_boss_intent: BossIntent, _enemies: A
 			condition_result = onChargeAttackCondition()
 		"Jump Attack":
 			condition_result = onJumpAttackCondition()
+		"Fan Attack":
+			condition_result = onFanAttackCondition()
+		_: condition_result = BossIntentConditionResult.new(true)
 			
 	boss_datastore.setConditionResult(condition_result, conditional_boss_intent.name)
 	return condition_result.state
@@ -84,6 +126,12 @@ func setTileIntents() -> void:
 			onJumpAttackSetIntents(tile_intents)
 		"Charge Attack":
 			onChargeAttackSetIntents(tile_intents)
+		"Maelstorm Attack":
+			onMaelstormAttackSetIntents(tile_intents)
+		"Bulk Up":
+			onBulkUpSetIntents(tile_intents)
+		"Fan Attack":
+			onFanAttackSetIntents(tile_intents)
 			
 	boss_datastore.setTileIntents(tile_intents)
 #endregion
@@ -215,7 +263,6 @@ func onRally(enemies: Array, allies: Array, tiles: Array, use_type: UseType) -> 
 			tiles = tiles.filter(func(x: TileGD): return x in ally_vision)
 			
 		tiles = onRemoveAttackableTiles(tiles)
-		tiles = onRemoveGroundTilesWhenOnGround(tiles)
 		tiles = getDistantToEnemiesTiles(enemies, tiles)
 		
 		if !tiles.is_empty():
@@ -250,7 +297,7 @@ func onSummon(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 			tiles = tiles.filter(func(x: TileGD): return x in ally_vision)
 			
 		tiles = onRemoveAttackableTiles(tiles)
-		tiles = onRemoveGroundTilesWhenOnGround(tiles)
+		tiles = onRemoveGroundTilesWhenNotOnGround(tiles)
 		tiles = getDistantToEnemiesTiles(enemies, tiles)
 		
 		if !tiles.is_empty():
@@ -430,8 +477,179 @@ func onChargeAttack(use_type: UseType) -> Array:
 	return actions
 #endregion
 
+#region Maelstorm Attack
+const MAELSTORM_SPEED_LIMIT: int = 1
+func onMaelstormAttackSetIntents(tile_intents: Array) -> void:
+	var adjacent_tiles: Array = Game.getAdjacentTiles(Tile, 1)
+	var double_adjacent_tiles: Array = Game.getAdjacentTiles(Tile, 2)
+	var triple_adjacent_tiles: Array = Game.getAdjacentTiles(Tile, 3)
+	
+	for OtherTile: TileGD in adjacent_tiles:
+		tile_intents.append(TileIntentDatastore.new(Game.TileIntents.DARK_RED, null, OtherTile.getCoords()))
+		
+	for OtherTile: TileGD in double_adjacent_tiles:
+		tile_intents.append(TileIntentDatastore.new(Game.TileIntents.RED, null, OtherTile.getCoords()))
+		
+	for OtherTile: TileGD in triple_adjacent_tiles:
+		tile_intents.append(TileIntentDatastore.new(Game.TileIntents.LIGHT_RED, null, OtherTile.getCoords()))
+
+func onMaelstormAttack(enemies: Array, use_type: UseType) -> Array:
+	var actions: Array = []
+	if use_type == UseType.START:
+		var all_enemies: Array = Game.getEnemyUnits(team)
+		var adjacent_enemies: Array = all_enemies.filter(func(x: CardGD): return Game.getCoordsDistance(x.getCoords(), coords) == 1)
+		var double_adjacent_enemies: Array = all_enemies.filter(func(x: CardGD): return Game.getCoordsDistance(x.getCoords(), coords) == 2)
+		var triple_adjacent_enemies: Array = all_enemies.filter(func(x: CardGD): return Game.getCoordsDistance(x.getCoords(), coords) == 3)
+		
+		var extra_attack: int = getExtraAttack()
+		actions.append(DamageAction.new(self, adjacent_enemies, 3 + extra_attack, Game.DamageTypes.OTHER))
+		for EnemyCard: CardGD in adjacent_enemies:
+			actions.append(KnockbackStartAction.new(EnemyCard, self, 3, Game.getRelativeTileRotation(getTile(), EnemyCard.getTile())))
+
+		actions.append(DamageAction.new(self, double_adjacent_enemies, 2 + extra_attack, Game.DamageTypes.OTHER))
+		for EnemyCard: CardGD in double_adjacent_enemies:
+			actions.append(KnockbackStartAction.new(EnemyCard, self, 2, Game.getRelativeTileRotation(getTile(), EnemyCard.getTile())))
+
+		actions.append(DamageAction.new(self, triple_adjacent_enemies, 1 + extra_attack, Game.DamageTypes.OTHER))
+		for EnemyCard: CardGD in triple_adjacent_enemies:
+			actions.append(KnockbackStartAction.new(EnemyCard, self, 1, Game.getRelativeTileRotation(getTile(), EnemyCard.getTile())))
+			
+		var ally_vision: Array = Game.getTeamVision(0)
+		var tiles: Array = Game.getsetMovementRange(self, MAELSTORM_SPEED_LIMIT)
+		
+		if !ally_vision.is_empty():
+			tiles = tiles.filter(func(x: TileGD): return x in ally_vision)
+			
+		tiles = onRemoveAttackableTiles(tiles)
+		tiles = getDistantToEnemiesTiles(enemies, tiles)
+		
+		if !tiles.is_empty():
+			var BestTile: TileGD = tiles[0]
+			actions.append(MovementAction.new(self, BestTile.getMovementPathTiles()))
+	return actions
+#endregion
+
+#region Bulk Up
+const BULK_UP_MIN_HEALTH_FOR_HEAL: int = 2
+const BULK_UP_HEAL_AMOUNT: int = 3
+
+func onBulkUpSetIntents(tile_intents: Array) -> void:
+	tile_intents.append(TileIntentDatastore.new(Game.TileIntents.GREEN, OffsetDatastore.new(Vector4i.ZERO, 0, 0, true), coords))
+
+func onBulkUp(use_type: UseType) -> Array:
+	var actions: Array = []
+	if use_type == UseType.START:
+		var trait_data := SavedDataArmor.new(ARMOR_TRAIT_ID, true, 0)
+		trait_data.armor = 1
+		
+		var overworld_trait := OverworldTrait.new(trait_data, OverworldTrait.AddedBy.LONE_RIDER, true, 3)
+		actions.append(AddOverworldTraitAction.new(self, overworld_trait, true))
+		actions.append(StatAction.new(StatInfo.new(self, [Game.Stats.ATTACK, Game.Stats.SPEED], [1, 1], 3)))
+			
+		if health <= BULK_UP_MIN_HEALTH_FOR_HEAL:
+			actions.append(HealAction.new(self, BULK_UP_HEAL_AMOUNT))
+	
+	return actions
+
+func getExtraAttack() -> int:
+	return attack - getAttackFromInfo()
+#endregion
+
+#region Run Away
+func onRunAway(enemies: Array, tiles: Array, use_type: UseType) -> Array:
+	if use_type == UseType.END: return []
+	var actions: Array = []
+	var ally_vision: Array = Game.getTeamVision(0)
+	
+	if !ally_vision.is_empty():
+		tiles = tiles.filter(func(x: TileGD): return x in ally_vision)
+		
+	tiles = onRemoveAttackableTiles(tiles)
+	tiles = getDistantToEnemiesTiles(enemies, tiles)
+	
+	if !tiles.is_empty():
+		var BestTile: TileGD = tiles[0]
+		actions.append(MovementAction.new(self, BestTile.getMovementPathTiles()))
+	return actions
+#endregion
+
+#region Autoattack
+func onAutoattack(enemies: Array, allies: Array, tiles: Array, use_type: UseType) -> Array:
+	var actions: Array = []
+	
+	if tiles.is_empty(): return []
+	if use_type == UseType.END: return []
+	if enemies.is_empty(): return tiles.pick_random()
+	
+	var DFL := DefaultFightLogic.new(self, tiles, enemies, allies)
+	var KillTile: TileGD = DFL.getKillTile()
+	if KillTile != null:
+		actions.append(MovementAction.new(self, KillTile.getMovementPathTiles()))
+	else:
+		var ally_vision: Array = Game.getTeamVision(0)
+		if !ally_vision.is_empty():
+			tiles = tiles.filter(func(x: TileGD): return x in ally_vision)
+	
+		tiles = getDistantToEnemiesTiles(enemies, tiles)
+		var BestTile: TileGD = tiles[0]
+		actions.append(MovementAction.new(self, BestTile.getMovementPathTiles()))
+		
+	return actions
+#endregion
+
+#region Fan Attack
+func onFanAttackCondition() -> BossIntentConditionResult:
+	var condition_result := BossIntentConditionResultFanAttack.new(false)
+	var enemy_tiles: Array = Game.getEnemyUnits(team).map(func(x: CardGD): return x.getTile())
+	var diagonal_tile_to_enemy_count: Dictionary[TileGD, int] = {}
+	var cube_directions: Array = Game.cube_directions.duplicate()
+	cube_directions.shuffle()
+	
+	for diag in cube_directions:
+		var diagonal := Vector4i(diag.x, diag.y, diag.z, 0) * 2
+		var TripleAdjacentDiagonalTile: TileGD = Game.getTileAtAnyHeight(coords + diagonal)
+		if TripleAdjacentDiagonalTile == null: continue
+		
+		var adjacent_tiles: Array = Game.getAdjacentTiles(TripleAdjacentDiagonalTile) + [TripleAdjacentDiagonalTile]
+		diagonal_tile_to_enemy_count[TripleAdjacentDiagonalTile] = adjacent_tiles.filter(func(x: TileGD): return x in enemy_tiles).size()
+		
+	var diagonal_tiles: Array = diagonal_tile_to_enemy_count.keys()
+	if diagonal_tiles.is_empty(): return condition_result
+	
+	diagonal_tiles.sort_custom(func(x: TileGD, y: TileGD): return diagonal_tile_to_enemy_count[x] > diagonal_tile_to_enemy_count[y])
+	if diagonal_tile_to_enemy_count[diagonal_tiles[0]] > 0:
+		condition_result.state = true
+		condition_result.setTripleAdjacentDiagonalTile(diagonal_tiles[0])
+	return condition_result
+
+func onFanAttackSetIntents(tile_intents: Array) -> void:
+	var TripleAdjacentDiagonalTile: TileGD = boss_datastore.getConditionResult("Fan Attack").getTripleAdjacentDiagonalTile()
+	var tiles: Array = Game.getAdjacentOrCloserTiles(TripleAdjacentDiagonalTile, 2) + [TripleAdjacentDiagonalTile]	
+	
+	var diagonal: Vector4i = (TripleAdjacentDiagonalTile.getCoords() - coords) / 2
+	var index: int = Game.cube_directions.find(diagonal)
+	
+	var next_index: int = (index + 1) % 7
+	var previous_index: int = (index - 1) % 7
+	
+	for new_index: int in [next_index, previous_index]:
+		var diag: Vector3i = Game.cube_directions[new_index]
+		var new_diagonal := Vector4i(diag.x, diag.y, diag.z, 0)
+		for i in range(3, 5): # 3 -> 4
+			var multed_diagonal := new_diagonal * i
+			var NewTile: TileGD = Game.getTileAtAnyHeight(multed_diagonal + coords)
+			if NewTile != null: tiles.append(NewTile)
+			
+	for NewTile: TileGD in tiles:
+		tile_intents.append(TileIntentDatastore.new(Game.TileIntents.RED, null, NewTile.getCoords()))
+	
+	
+
+#endregion
+
 #region Helper
 func getDistantToEnemiesTiles(enemies: Array, tiles: Array) -> Array:
+	if enemies.is_empty(): return enemies
 	tiles = tiles.duplicate()
 	var tiles_to_distance: Dictionary = {}
 	for OtherTile: TileGD in tiles:
@@ -456,7 +674,7 @@ func onRemoveHighTiles(tiles: Array) -> Array:
 		return tiles.filter(func(x: TileGD): return x.getHeight() == 0)
 	return tiles
 
-func onRemoveGroundTilesWhenOnGround(tiles: Array) -> Array:
+func onRemoveGroundTilesWhenNotOnGround(tiles: Array) -> Array:
 	if getTile().getHeight() > 0:
 		return tiles.filter(func(x: TileGD): return x.getHeight() > 0)
 	return tiles
@@ -471,5 +689,14 @@ func onChangeBossPhase() -> void:
 	super()
 	onDeath()
 	
+func onChangeBossPhasePostDelay() -> void:
+	super()
+	onIdle()
 	var actions: Array = []
+	
+	var palmies: Array = Game.getAllyUnits(team).filter(func(x: CardGD): return x.info.id == PALMY_ID)
+	actions.append(StatAction.new(palmies.map(func(x: CardGD): return StatInfo.new(x, Game.Stats.ATTACK, 1))))
+	
+	onPushAction(actions)
+	
 #endregion

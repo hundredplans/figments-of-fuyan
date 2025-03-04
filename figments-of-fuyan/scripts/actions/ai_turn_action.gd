@@ -65,7 +65,7 @@ func onDefaultAITurn(enemies: Array, allies: Array, tiles: Array) -> void:
 		tiles = tiles.filter(func(x: TileGD): return x not in enemy_tiles)
 	
 	var DFL := DefaultFightLogic.new(Card, tiles, enemies, allies, pacifist)
-	Card.ai_datastore.DFL = DFL	
+	Card.ai_datastore.DFL = DFL
 	
 	var dfl_data: DFLData = DFL.getTilesDFL()
 	

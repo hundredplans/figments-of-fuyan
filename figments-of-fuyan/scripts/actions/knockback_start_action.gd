@@ -41,7 +41,7 @@ func onPostAction() -> void:
 	var actions: Array = [ChangeTileRotationAction.new(Card, (direction + 3) % 6)]
 	if !tiles.is_empty():
 		actions.append(MovementAction.new(Card, [Card.getTile()] + tiles))
-	if deal_damage: actions.append(DamageAction.new(Card, Card, Game.DamageTypes.OTHER))
+	if deal_damage: actions.append(DamageAction.new(Card, Card, knockback, Game.DamageTypes.OTHER))
 	actions.append(KnockbackEndAction.new(Card))
 	
 	Card.setIsKnockback(true)

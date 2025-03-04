@@ -35,13 +35,13 @@ func onProcessAction(action: Action) -> void:
 #endregion
 	
 #region Info Getters
-func getAttackFromInfo() -> float:
+func getAttackFromInfo() -> int:
 	return info.getAttack(boss_datastore.phase)
 	
-func getHealthFromInfo() -> float:
+func getHealthFromInfo() -> int:
 	return info.getHealth(boss_datastore.phase)
 	
-func getSpeedFromInfo() -> float:
+func getSpeedFromInfo() -> int:
 	return info.getSpeed(boss_datastore.phase)
 
 func getTopFromInfo() -> float:
@@ -76,11 +76,17 @@ func getSpeedOrderOverrideFromInfo() -> BossCardInfo.SpeedOrderOverride:
 	
 func getChangeDelayFromInfo() -> int:
 	return info.getChangeDelay(boss_datastore.phase)
+	
+func getPhaseChangeBossIntentNameFromInfo() -> String:
+	return info.getPhaseChangeBossIntentName(boss_datastore.phase)
 #endregion
 
 #region Getters
 func getArchetypeEnum(archetype_id: int = getArchetypeFromInfo().id) -> Game.Archetypes:
 	return super(archetype_id)
+	
+func getPhase() -> int:
+	return boss_datastore.phase
 #endregion
 
 #region Updaters
@@ -134,7 +140,6 @@ func setBossIntent(_boss_intent: BossIntent) -> void:
 	if Tile != null: setTileIntents()
 	else: boss_datastore.setTileIntents(boss_datastore.tile_intents) # When first loading in
 	
-	
 func setBossIntentByName() -> void:
 	var _boss_intent: BossIntent = getBossIntentByName()
 	setBossIntent(_boss_intent)
@@ -143,6 +148,9 @@ func onChangeBossIntent(_boss_intents: Array, _enemies: Array, _allies: Array) -
 func onResetBossIntentCooldowns() -> void:
 	for _boss_intent: BossIntent in getBossIntentsFromInfo():
 		boss_datastore.boss_intent_name_to_cooldown[_boss_intent.name] = 0
+		
+func onEmptyBossIntentNameCooldowns() -> void:
+	boss_datastore.boss_intent_name_to_cooldown = {}
 		
 func onFilterBossIntents(enemies: Array, allies: Array) -> Array:
 	var in_combat: bool = !enemies.is_empty()
@@ -175,6 +183,9 @@ func onCardTurnPassed(Card: CardGD) -> void:
 #region Phase Change
 func onChangeBossPhase() -> void:
 	boss_datastore.phase += 1
+	onEmptyBossIntentNameCooldowns()
+	onResetBossIntentCooldowns()
+	onPushAction(CameraChangeAction.new(self))
 			
 func onChangeBossPhasePostDelay() -> void:
 	var new_attack: int = getAttackFromInfo()
@@ -186,9 +197,18 @@ func onChangeBossPhasePostDelay() -> void:
 	var speed_delta: int = new_speed - speed
 	
 	var stat_info := StatInfo.new(self, [Game.Stats.ATTACK, Game.Stats.MAX_HEALTH, Game.Stats.MAX_SPEED], [attack_delta, health_delta, speed_delta])
-	onPushAction(StatAction.new(stat_info))
+	var actions: Array = [StatAction.new(stat_info)]
 	
 	if getModelFromInfo() != null:
 		onRemoveModel()
 		onCreateModel()
+		
+	var phase_change_boss_intent_name: String = getPhaseChangeBossIntentNameFromInfo()
+	if !phase_change_boss_intent_name.is_empty():
+		var new_boss_intent: BossIntent = getBossIntentsFromInfo().filter(func(x: BossIntent): return x.name == phase_change_boss_intent_name)[0]
+		boss_datastore.onResetConditionResults()
+		actions.append(ChangeBossIntentAction.new(new_boss_intent))
+		
+	actions.append(CameraSpectateGroupAction.new(0))
+	onPushAction(actions)
 #endregion

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="BossIntent" load_steps=2 format=3 uid="uid://cswxolrx0w3b1"]
+
+[ext_resource type="Script" uid="uid://c85vjl4hwbga5" path="res://scripts/fof_info/cards/extra/boss_intent.gd" id="1_ysiwj"]
+
+[resource]
+script = ExtResource("1_ysiwj")
+name = "Fan Attack"
+description = "Based on ATT DMG, uses if someone is triple adjacent to him. Moves 1 Tile after"
+type = 0
+default_cooldown = 3
+combat_type = 1
+metadata/_custom_type_script = "uid://c85vjl4hwbga5"

@@ -617,6 +617,13 @@ func getTileAtHeightOrAbove(coords: Vector4i) -> TileGD:
 		coords.w = i
 	return null
 	
+func getTileAtAnyHeight(coords: Vector4i) -> TileGD:
+	for i in range(0, 21):
+		var Tile: TileGD = getTile(coords)
+		if Tile != null: return Tile
+		coords.w = i
+	return null
+	
 func onAddToCoordsToTile(Tile: TileGD) -> void:
 	coords_to_tile[Tile.getCoords()] = Tile
 	

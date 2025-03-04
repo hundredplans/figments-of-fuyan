@@ -89,6 +89,7 @@ func setMapPosition() -> void:
 
 func setTileRotation(_tile_rotation: int) -> void:
 	tile_rotation = _tile_rotation
+	if Model == null: return
 	Model.rotation.y = (tile_rotation * (PI / 3)) + (PI / 6)
 	
 func setModelRotationToTile(OtherTile: TileGD) -> void:
@@ -364,6 +365,7 @@ func onCreateModel() -> void:
 	setDefaultCollisionLayers()
 	setAniPlayer(Model)
 	setBaseMaterials()
+	setTileRotation(tile_rotation)
 	
 func onCreateEmptyModel(parent: Node3D) -> Node3D:
 	var EmptyModel: Node3D = info.model.instantiate()

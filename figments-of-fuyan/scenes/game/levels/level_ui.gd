@@ -237,7 +237,7 @@ func _on_camera_button_pressed() -> void:
 	
 func onCameraUpdated(SpectateObject: GameObjectGD, __: GameObjectGD = null) -> void:
 	if !World.CameraManager.isCycle():
-		setHeroNameLabel(SpectateObject.info.name if (SpectateObject != null and SpectateObject is CardGD) else "")
+		setHeroNameLabel(SpectateObject.getNameFromInfo() if (SpectateObject != null and SpectateObject is CardGD) else "")
 		PassButton.setAllySpectating(SpectateObject)
 		
 		onUpdateActiveEffects(SpectateObject)
@@ -479,13 +479,21 @@ func onProcessAction(action: Action) -> void:
 			onBoonEffectTemp(action)
 			
 		if level.isEpic():
+			var BossCard: CardGD = level.getBoss() 
 			if action is AwakenBossAction:
 				setEpicFightControlInfo()
 				
-			elif action is StatAction:
-				var BossCard: CardGD = level.getBoss()
-				if action.hasCard(BossCard):
-					EpicFightControl.setHealthBar(BossCard)
+			elif action is StatAction and action.hasCard(BossCard):
+				EpicFightControl.setHealthBar(BossCard)
+					
+			elif action is ChangeBossPhaseAction:
+				EpicFightControl.onUpdateBossNameLabel(BossCard)
+				
+			elif action is AddTraitAction and action.Card == BossCard:
+				EpicFightControl.setHealthBar(BossCard)
+				
+			elif action is RemoveTraitAction and action.Card == BossCard:
+				EpicFightControl.setHealthBar(BossCard)
 #endregion
 const BOON_EFFECT_TEMP_DURATION: float = 1.2
 func onBoonEffectTemp(action: BoonActivatedAction) -> void:
