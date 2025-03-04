@@ -4,12 +4,20 @@ var rampage_charges: int
 var trauma_charges: int
 var bloodthirst_charges: int
 
-func onLoadData(data: SavedData) -> void:
-	super(data)
-	onResetCharges()
-
 func onAwaken() -> void:
 	super()
+	onResetCharges()
+
+func onFofInit() -> void:
+	super()
+	onResetCharges()
+
+func onReset(override: bool = false) -> void:
+	super(override)
+	onResetCharges()
+	
+func onAscendedUpdated(state: bool) -> void:
+	super(state)
 	onResetCharges()
 
 func onResetCharges() -> void:
@@ -28,15 +36,18 @@ func onProcessAction(action: Action) -> void:
 	
 func onRampage(_action: DeathAction) -> void:
 	onEffect()
-	rampage_charges -= 1
+	if rampage_charges > 0:
+		rampage_charges -= 1
 	
 func onTrauma(_action: DeathAction) -> void:
 	onEffect()
-	trauma_charges -= 1
+	if trauma_charges > 0:
+		trauma_charges -= 1
 	
 func onBloodthirst(_action: DeathAction) -> void:
 	onEffect()
-	bloodthirst_charges -= 1
+	if bloodthirst_charges > 0:
+		bloodthirst_charges -= 1
 	
 func onEffect() -> void:
 	onPushAction(StatAction.new(StatInfo.new(self, Game.Stats.MAX_HEALTH, 1)))
@@ -50,7 +61,4 @@ func onSave() -> SavedDataCard:
 	ability_save['trauma_charges'] = trauma_charges
 	ability_save['bloodthirst_charges'] = bloodthirst_charges
 	return super()
-
-func onAscendedUpdated(state: bool) -> void:
-	super(state)
-	onResetCharges()
+	

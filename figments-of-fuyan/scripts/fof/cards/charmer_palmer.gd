@@ -11,7 +11,7 @@ func onProcessAction(action: Action) -> void:
 		onPushAction(TraumaAction.new(self, action))
 
 func onTrauma(_death_action: DeathAction) -> void:
-	onPushAction(StatAction.new(StatInfo.new(self, Game.Stats.ATTACK, 1)))
+	onPushAction(StatAction.new(StatInfo.new(self, [Game.Stats.ATTACK, Game.Stats.MAX_HEALTH], [1, 1])))
 
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	super(active_effect)

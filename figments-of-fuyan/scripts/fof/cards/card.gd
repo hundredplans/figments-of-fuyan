@@ -463,6 +463,10 @@ func onCardTurnPassed(Card: CardGD) -> void:
 		stat_info.onCardTurnPassed()
 		
 	if Tool != null: Tool.onCardTurnPassed()
+	
+	for overworld_trait: OverworldTrait in overworld_traits:
+		overworld_trait.onCardTurnPassed()
+	
 	ai_datastore.onCardTurnPassed()
 	onPushAction(StatAction.new(StatInfo.new(Card, Game.Stats.SPEED, Card.max_speed, 0, false, false, true)))
 	card_turn_passed.emit()
@@ -929,7 +933,9 @@ func onRemoveFieldTrait(overworld_trait: OverworldTrait) -> void:
 	FieldInfo.onUpdateTraits()
 	
 func onCreateArmorTrait(armor: int) -> TraitGD:
-	return SavedData.onLoadModel(SavedDataArmor.new(1, true, 0, armor), self)
+	var armor_data := SavedDataArmor.new(1, true, 0)
+	armor_data.armor = armor
+	return SavedData.onLoadModel(armor_data, self)
 	
 func isMobile() -> bool:
 	return getOverworldTraitByID(3) != null
@@ -1133,10 +1139,13 @@ func onAddStatusEffect(status_effect: StatusEffectGD) -> void: # Access via acti
 		FieldInfo.onAddIcon(status_effect)
 	
 func onCreateBaseStatusEffect(id: int, turns: int = 1) -> void:
+	onPushAction(onCreateBaseStatusEffectAction(id, turns))
+	
+func onCreateBaseStatusEffectAction(id: int, turns: int = 1) -> AddStatusEffectAction:
 	var status_data := SavedDataStatusEffect.new(id, true, 0, turns)
 	var status_effect: StatusEffectGD = SavedData.onLoadModel(status_data, self)
 	status_effect.Card = self
-	onPushAction(AddStatusEffectAction.new(status_effect))
+	return AddStatusEffectAction.new(status_effect)
 	
 func getBaseStatusEffectAction(id: int, turns: int = 1) -> AddStatusEffectAction:
 	var status_data := SavedDataStatusEffect.new(id, true, 0, turns)

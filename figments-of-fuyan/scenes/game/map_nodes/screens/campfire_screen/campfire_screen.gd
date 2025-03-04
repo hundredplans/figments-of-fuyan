@@ -6,7 +6,7 @@ func onDimBackground() -> bool:
 func onChoiceButtonPressed(identifier: String) -> void:
 	var trait_data: SavedDataTrait
 	match identifier:
-		"Armor": trait_data = SavedDataArmor.new(1, true, 0, 1)
+		"Armor": trait_data = SavedDataArmor.new(1, true, 0); trait_data.armor = 1
 		"Mobile": trait_data = SavedDataTrait.new(3, true)
 		"Resist": trait_data = SavedDataTrait.new(4, true)
 		"Nothing": onFinished(); return

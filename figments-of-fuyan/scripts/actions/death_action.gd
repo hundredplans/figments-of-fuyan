@@ -17,6 +17,8 @@ func _init(_Damager: GameObjectGD = null, _Defender: GameObjectGD = null, _damag
 	health_damage = _health_damage
 	
 func onPreAction() -> void:
+	if !Defender.isAlive(): onFailAction(); return
+	
 	Tile = Defender.Tile
 	game_objects_in_vision = Defender.getVisibleGameObjects()
 	

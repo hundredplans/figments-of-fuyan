@@ -3,6 +3,8 @@ extends CardGD
 const GUARANTEED_HEAL_UNIT_AMOUNT_AI: int = 2
 const SINGLE_UNIT_CHANCE: float = 0.1
 
+const ARMOR_TRAIT_ID: int = 1
+const DISARM_STATUS_EFFECT_ID: int = 4
 
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	super(active_effect)
@@ -19,23 +21,29 @@ func onActiveEffectPre(_active_effect: ActiveEffectDatastore, PickedTile: TileGD
 func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
 	super(active_effect, PickedTile, active_effect_tiles)
 	if active_effect is ActiveAbilityDatastore and active_effect.name == "Palmist Prayer":
-		var heal_amount: int = 1 if !ascended else 2
-		var allies: Array = getVisibleFieldCardsAllies()
+		var Card: CardGD = Game.getFieldCard(PickedTile)
+		var heal_amount: int = 1
+		var armor_amount: int = 1 if !ascended else 2
+		
+		var armor_trait_data := SavedDataArmor.new(ARMOR_TRAIT_ID, true, 0)
+		armor_trait_data.armor = armor_amount
+		var armor_overworld := OverworldTrait.new(armor_trait_data, OverworldTrait.AddedBy.ELDER_PALMER, true, 1)
+
+		var disarm_action: AddStatusEffectAction = Card.onCreateBaseStatusEffectAction(DISARM_STATUS_EFFECT_ID, 1)
 		var actions: Array = [
-			HealAction.new(allies, heal_amount),
-			StatAction.new(allies.map(func(x: CardGD): return StatInfo.new(x, Game.Stats.ATTACK, -1, 1)))]
+			HealAction.new(Card, heal_amount),
+			AddOverworldTraitAction.new(Card, armor_overworld, true),
+			disarm_action]
 		
 		onPushAction(actions)
 		onAbility()
 
-func getActiveEffectDisabled(active_effect: ActiveEffectDatastore) -> bool:
-	if active_effect is ActiveAbilityDatastore and active_effect.name == "Palmist Prayer":
-		return !inEnemyVision()
+func getActiveEffectDisabled(_active_effect: ActiveEffectDatastore) -> bool:
 	return false
 	
 func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic) -> TileGD:
-	if active_effect_tiles.pickable_tiles.size() >= GUARANTEED_HEAL_UNIT_AMOUNT_AI:
-		return active_effect_tiles.pickable_tiles.pick_random()
-	elif active_effect_tiles.pickable_tiles.size() == 1 and Random.rollFloat(SINGLE_UNIT_CHANCE):
-		return active_effect_tiles.pickable_tiles.pick_random()
+	var ally_vision: Array = Game.getTeamVision(0)
+	var tiles: Array = active_effect_tiles.pickable_tiles.filter(func(x: TileGD): return x in ally_vision)
+	if !tiles.is_empty():
+		return tiles.pick_random()
 	return null
