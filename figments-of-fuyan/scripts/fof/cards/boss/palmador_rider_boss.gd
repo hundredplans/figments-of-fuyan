@@ -51,8 +51,6 @@ func onCheckBossIntentCondition(conditional_boss_intent: BossIntent, _enemies: A
 	match conditional_boss_intent.name:
 		"Rally":
 			condition_result = onRallyCondition(allies)
-		"Summon":
-			condition_result = onSummonCondition()
 		"Spin Attack":
 			condition_result = onSpinAttackCondition()
 		"Reposition":
@@ -227,13 +225,9 @@ func onRally(enemies: Array, allies: Array, tiles: Array, use_type: UseType) -> 
 #endregion
 
 #region Summon
-const MAX_PALMY_AMOUNT_ON_MAP: int = 10
 const SUMMON_SPEED_LIMIT: int = 2
 const SUMMON_MIN_AMOUNT: int = 2
 const SUMMON_MAX_AMOUNT: int = 3
-func onSummonCondition() -> BossIntentConditionResult:
-	return BossIntentConditionResult.new(Game.getAllyUnits(1).filter(func(x: CardGD): return x.info.id == PALMY_ID).size() <= MAX_PALMY_AMOUNT_ON_MAP)
-
 func onSummon(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 	var actions: Array = []
 	if use_type == UseType.START:
