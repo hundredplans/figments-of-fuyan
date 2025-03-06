@@ -38,7 +38,10 @@ func onUseBossIntent(enemies: Array, allies: Array, tiles: Array, use_type: UseT
 			actions = onRunAway(enemies, tiles, use_type)
 		"Autoattack":
 			actions = onAutoattack(enemies, allies, tiles, use_type)
-			
+		"Fan Attack":
+			actions = onFanAttack(enemies, use_type)
+		"Slash Attack":
+			actions = onSlashAttack(enemies, tiles, use_type)
 			
 	onPushAction(BossIntentUsedAction.new(boss_intent, use_type, actions, enemies, allies))
 
@@ -114,35 +117,13 @@ func onIntentUsed(used_boss_intent: BossIntent, use_type: UseType, actions: Arra
 		AniPlayer.play("Spin Attack")
 #endregion
 	
-#region Tile Intents
-func setTileIntents() -> void:
-	var tile_intents: Array[TileIntentDatastore] = []
-	match boss_intent.name:
-		"Spin Attack":
-			onSpinAttackSetIntents(tile_intents)
-		"Rally":
-			onRallySetIntents(tile_intents)
-		"Jump Attack":
-			onJumpAttackSetIntents(tile_intents)
-		"Charge Attack":
-			onChargeAttackSetIntents(tile_intents)
-		"Maelstorm Attack":
-			onMaelstormAttackSetIntents(tile_intents)
-		"Bulk Up":
-			onBulkUpSetIntents(tile_intents)
-		"Fan Attack":
-			onFanAttackSetIntents(tile_intents)
-			
-	boss_datastore.setTileIntents(tile_intents)
-#endregion
-	
 #region Spin Attack
 const SPIN_ATTACK_SPEED_LIMIT: int = 3
 const SPIN_ATTACK_DELAY: float = 1.5
 func onSpinAttackSetIntents(tile_intents: Array[TileIntentDatastore]) -> void:
 	for _offset: Vector3i in Game.cube_directions:
 		var offset: Vector4i = Vector4i(_offset.x, _offset.y, _offset.z, 0)
-		var offset_datastore := OffsetDatastore.new(offset, 0, 0, true)
+		var offset_datastore := OffsetDatastore.new(offset)
 		tile_intents.append(TileIntentDatastore.new(Game.TileIntents.RED, offset_datastore, getCoords()))
 
 func getSpinAttackTiles(CardTile: TileGD = Tile) -> Array:
@@ -226,6 +207,8 @@ func onReposition(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 		return [MovementAction.new(self, [getTile(), BestTile]), ChangeTileRotationAction.new(self, Game.getRelativeTileRotation(Tile, BestTile))]
 	return []
 	
+func onRepositionSetIntents(_tile_intents: Array) -> void: pass
+	
 func onRepositionCondition() -> BossIntentConditionResult:
 	return BossIntentConditionResult.new(getTile().getHeight() == 0)
 	
@@ -248,7 +231,7 @@ func onRallyCondition(allies: Array) -> BossIntentConditionResult:
 	
 func onRallySetIntents(tile_intents: Array[TileIntentDatastore]) -> void:
 	for Card: CardGD in Game.getAllyUnits(team):
-		tile_intents.append(TileIntentDatastore.new(Game.TileIntents.GREEN, OffsetDatastore.new(), Card.getTile().getCoords()))
+		tile_intents.append(TileIntentDatastore.new(Game.TileIntents.GREEN, OffsetDatastore.new(Vector4i.ZERO, false), getCoords()))
 		
 func onRally(enemies: Array, allies: Array, tiles: Array, use_type: UseType) -> Array:
 	var actions: Array = []
@@ -304,6 +287,8 @@ func onSummon(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 			var BestTile: TileGD = tiles[0]
 			actions.append(MovementAction.new(self, BestTile.getMovementPathTiles()))
 	return actions
+	
+func onSummonSetIntents(_tile_intents: Array) -> void: pass
 #endregion
 
 #region Jump Attack
@@ -478,6 +463,7 @@ func onChargeAttack(use_type: UseType) -> Array:
 #endregion
 
 #region Maelstorm Attack
+const MAELSTORM_ATTACK_ACTION_DELAY: float = 2.5
 const MAELSTORM_SPEED_LIMIT: int = 1
 func onMaelstormAttackSetIntents(tile_intents: Array) -> void:
 	var adjacent_tiles: Array = Game.getAdjacentTiles(Tile, 1)
@@ -502,6 +488,10 @@ func onMaelstormAttack(enemies: Array, use_type: UseType) -> Array:
 		var triple_adjacent_enemies: Array = all_enemies.filter(func(x: CardGD): return Game.getCoordsDistance(x.getCoords(), coords) == 3)
 		
 		var extra_attack: int = getExtraAttack()
+		var animation_action := AnimationAction.new(self, "Maelstrom Attack")
+		animation_action.setActionDelay(MAELSTORM_ATTACK_ACTION_DELAY)
+		actions.append(animation_action)
+		
 		actions.append(DamageAction.new(self, adjacent_enemies, 3 + extra_attack, Game.DamageTypes.OTHER))
 		for EnemyCard: CardGD in adjacent_enemies:
 			actions.append(KnockbackStartAction.new(EnemyCard, self, 3, Game.getRelativeTileRotation(getTile(), EnemyCard.getTile())))
@@ -532,9 +522,10 @@ func onMaelstormAttack(enemies: Array, use_type: UseType) -> Array:
 #region Bulk Up
 const BULK_UP_MIN_HEALTH_FOR_HEAL: int = 2
 const BULK_UP_HEAL_AMOUNT: int = 3
+const BULK_UP_ACTION_DELAY: float = 2.0
 
 func onBulkUpSetIntents(tile_intents: Array) -> void:
-	tile_intents.append(TileIntentDatastore.new(Game.TileIntents.GREEN, OffsetDatastore.new(Vector4i.ZERO, 0, 0, true), coords))
+	tile_intents.append(TileIntentDatastore.new(Game.TileIntents.GREEN, OffsetDatastore.new(), coords))
 
 func onBulkUp(use_type: UseType) -> Array:
 	var actions: Array = []
@@ -543,6 +534,9 @@ func onBulkUp(use_type: UseType) -> Array:
 		trait_data.armor = 1
 		
 		var overworld_trait := OverworldTrait.new(trait_data, OverworldTrait.AddedBy.LONE_RIDER, true, 3)
+		var animation_action := AnimationAction.new(self, "Bulk Up")
+		animation_action.setActionDelay(BULK_UP_ACTION_DELAY)
+		actions.append(animation_action)
 		actions.append(AddOverworldTraitAction.new(self, overworld_trait, true))
 		actions.append(StatAction.new(StatInfo.new(self, [Game.Stats.ATTACK, Game.Stats.SPEED], [1, 1], 3)))
 			
@@ -558,6 +552,9 @@ func getExtraAttack() -> int:
 #region Run Away
 func onRunAway(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 	if use_type == UseType.END: return []
+	
+	tiles = Game.getsetMovementRange(self, speed + 1)
+	
 	var actions: Array = []
 	var ally_vision: Array = Game.getTeamVision(0)
 	
@@ -571,6 +568,8 @@ func onRunAway(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 		var BestTile: TileGD = tiles[0]
 		actions.append(MovementAction.new(self, BestTile.getMovementPathTiles()))
 	return actions
+	
+func onRunAwaySetIntents(_tile_intents: Array) -> void: pass
 #endregion
 
 #region Autoattack
@@ -582,22 +581,32 @@ func onAutoattack(enemies: Array, allies: Array, tiles: Array, use_type: UseType
 	if enemies.is_empty(): return tiles.pick_random()
 	
 	var DFL := DefaultFightLogic.new(self, tiles, enemies, allies)
-	var KillTile: TileGD = DFL.getKillTile()
-	if KillTile != null:
-		actions.append(MovementAction.new(self, KillTile.getMovementPathTiles()))
-	else:
-		var ally_vision: Array = Game.getTeamVision(0)
-		if !ally_vision.is_empty():
-			tiles = tiles.filter(func(x: TileGD): return x in ally_vision)
-	
-		tiles = getDistantToEnemiesTiles(enemies, tiles)
-		var BestTile: TileGD = tiles[0]
+	var BestTile: TileGD = DFL.getKillTile()
+		
+	if BestTile == null:
+		var attackables: Array = enemies.filter(func(x: CardGD): return x.getTile() in tiles)
+		if !attackables.is_empty():
+			attackables.sort_custom(func(x: CardGD, y: CardGD): return x.energy > y.energy)
+			BestTile = attackables[0].getTile()
+		else:
+			var ally_vision: Array = Game.getTeamVision(0)
+			if !ally_vision.is_empty():
+				tiles = tiles.filter(func(x: TileGD): return x in ally_vision)
+		
+			tiles = getDistantToEnemiesTiles(enemies, tiles)
+			BestTile = tiles[0]
+			
+	if BestTile != null:
 		actions.append(MovementAction.new(self, BestTile.getMovementPathTiles()))
 		
 	return actions
+	
+func onAutoattackSetIntents(_tile_intents: Array) -> void: return 
 #endregion
 
 #region Fan Attack
+const FAN_ATTACK_SPEED_LIMIT: int = 1
+const FAN_ATTACK_ACTION_DELAY: float = 2.0
 func onFanAttackCondition() -> BossIntentConditionResult:
 	var condition_result := BossIntentConditionResultFanAttack.new(false)
 	var enemy_tiles: Array = Game.getEnemyUnits(team).map(func(x: CardGD): return x.getTile())
@@ -624,28 +633,177 @@ func onFanAttackCondition() -> BossIntentConditionResult:
 
 func onFanAttackSetIntents(tile_intents: Array) -> void:
 	var TripleAdjacentDiagonalTile: TileGD = boss_datastore.getConditionResult("Fan Attack").getTripleAdjacentDiagonalTile()
-	var tiles: Array = Game.getAdjacentOrCloserTiles(TripleAdjacentDiagonalTile, 2) + [TripleAdjacentDiagonalTile]	
+	var tiles: Array = Game.getAdjacentOrCloserTiles(TripleAdjacentDiagonalTile, 2) + [TripleAdjacentDiagonalTile]
+	var fan_edge_tiles: Array = getFanEdgeTiles(TripleAdjacentDiagonalTile)
 	
-	var diagonal: Vector4i = (TripleAdjacentDiagonalTile.getCoords() - coords) / 2
+	var boss_intent_tiles: Dictionary = {TripleAdjacentDiagonalTile: "TripleAdjacentDiagonalTile"}
+	for FanEdgeTile: TileGD in fan_edge_tiles:
+		tiles.append(FanEdgeTile)
+		boss_intent_tiles[FanEdgeTile] = "FanEdgeTile"
+		
+	tiles.erase(Tile)
+	boss_datastore.setBossIntentTiles(boss_intent_tiles)
+			
+	for NewTile: TileGD in tiles:
+		tile_intents.append(TileIntentDatastore.new(Game.TileIntents.RED, null, NewTile.getCoords()))
+
+func onFanAttack(enemies: Array, use_type: UseType) -> Array:
+	if use_type == UseType.START:
+		var boss_intent_tiles_dict: Dictionary = boss_datastore.getBossIntentTilesDict()
+		var attack_tiles: Array = []
+		var TripleAdjacentDiagonalTile: TileGD
+		for BossIntentTile: TileGD in boss_intent_tiles_dict.keys():
+			match boss_intent_tiles_dict[BossIntentTile]:
+				"TripleAdjacentDiagonalTile": 
+					TripleAdjacentDiagonalTile = BossIntentTile
+			attack_tiles.append(BossIntentTile)
+		
+		attack_tiles += Game.getAdjacentOrCloserTiles(TripleAdjacentDiagonalTile, 2)
+		attack_tiles.erase(self)
+		
+		var rotation_action := ChangeTileRotationAction.new(self, Game.getRelativeTileRotation(Tile, TripleAdjacentDiagonalTile))
+		
+		var animation_action := AnimationAction.new(self, "Fan Attack")
+		animation_action.setActionDelay(FAN_ATTACK_ACTION_DELAY)
+		
+		var all_enemies: Array = Game.getEnemyUnits(team).filter(func(x: CardGD): return x.getTile() in attack_tiles)
+		var damage_action := DamageAction.new(self, all_enemies, attack, Game.DamageTypes.ATTACK)
+		
+		var actions: Array = [rotation_action, animation_action, damage_action]
+		
+		var ally_vision: Array = Game.getTeamVision(0)
+		var tiles: Array = Game.getsetMovementRange(self, FAN_ATTACK_SPEED_LIMIT)
+		
+		if !ally_vision.is_empty():
+			tiles = tiles.filter(func(x: TileGD): return x in ally_vision)
+			
+		tiles = onRemoveAttackableTiles(tiles)
+		tiles = getDistantToEnemiesTiles(enemies, tiles)
+		
+		if !tiles.is_empty():
+			var BestTile: TileGD = tiles[0]
+			actions.append(MovementAction.new(self, BestTile.getMovementPathTiles()))
+		return actions
+	return []
+
+func getFanEdgeTiles(TripleAdjacentDiagonalTile: TileGD) -> Array:
+	var d: Vector4i = (TripleAdjacentDiagonalTile.getCoords() - coords) / 2
+	var diagonal := Vector3i(d.x, d.y, d.z)
 	var index: int = Game.cube_directions.find(diagonal)
 	
-	var next_index: int = (index + 1) % 7
-	var previous_index: int = (index - 1) % 7
-	
+	var next_index: int = (index + 1) % 6
+	var previous_index: int = (index - 1) % 6
+	var tiles: Array = []
 	for new_index: int in [next_index, previous_index]:
 		var diag: Vector3i = Game.cube_directions[new_index]
 		var new_diagonal := Vector4i(diag.x, diag.y, diag.z, 0)
 		for i in range(3, 5): # 3 -> 4
 			var multed_diagonal := new_diagonal * i
 			var NewTile: TileGD = Game.getTileAtAnyHeight(multed_diagonal + coords)
-			if NewTile != null: tiles.append(NewTile)
+			if NewTile == null: continue
+			tiles.append(NewTile)
 			
-	for NewTile: TileGD in tiles:
-		tile_intents.append(TileIntentDatastore.new(Game.TileIntents.RED, null, NewTile.getCoords()))
-	
-	
-
+			if i == 4:
+				var relative_rotation: int = Game.getRelativeTileRotationCoords(multed_diagonal, d * i)
+				var cube_d: Vector3i = Game.cube_directions[relative_rotation]
+				var cube_direction := Vector4i(cube_d.x, cube_d.y, cube_d.z, 0)
+				var OtherTile: TileGD = Game.getTileAtAnyHeight(multed_diagonal + coords + cube_direction)
+				if OtherTile == null: continue
+				tiles.append(OtherTile)
+	return tiles
 #endregion
+
+#region Slash Attack
+const SLASH_ATTACK_ACTION_DELAY: float = 2.0
+func onSlashAttackSetIntents(tile_intents: Array) -> void:
+	var new_coords: Array = []
+	var direction: Vector4i = Game.getCubeDirectionExtra(0)
+	new_coords = [direction, direction * 2, direction * 3]
+	
+	for x: Vector4i in new_coords:
+		tile_intents.append(TileIntentDatastore.new(Game.TileIntents.RED, OffsetDatastore.new(x, true, tile_rotation), coords))
+
+func onSlashAttack(enemies: Array, tiles: Array, use_type: UseType) -> Array:
+	if use_type == UseType.END: tiles.append(getTile()) # Add self to attack from here
+	
+	var DFL := DefaultFightLogic.new(self, tiles, enemies, [])
+	var potential_killables: Array = enemies.filter(func(x: CardGD): return DFL.isAttackableKillable(x, self))
+	var attackables: Dictionary[CardGD, TileGD] = getSlashAttackables(potential_killables, tiles)
+	
+	if attackables.is_empty():
+		var potential_attackables: Array = enemies.filter(func(x: CardGD): return x not in potential_killables)
+		attackables = getSlashAttackables(potential_attackables, tiles)
+	
+	var actions: Array = []
+	var BestTile: TileGD
+	if use_type != UseType.END:
+		if attackables.is_empty():
+			var ally_vision: Array = Game.getTeamVision(0)
+			
+			if !ally_vision.is_empty():
+				tiles = tiles.filter(func(x: TileGD): return x in ally_vision)
+				
+			tiles = onRemoveAttackableTiles(tiles)
+			tiles = getDistantToEnemiesTiles(enemies, tiles)
+			
+			if !tiles.is_empty():
+				BestTile = tiles[0]
+		else:
+			var attackables_array: Array = attackables.keys()
+			attackables_array.sort_custom(func(x: CardGD, y: CardGD): return x.energy > y.energy)
+			BestTile = attackables[attackables_array[0]]
+			
+		if BestTile != null:
+			actions.append(MovementAction.new(self, BestTile.getMovementPathTiles()))
+				
+	elif use_type == UseType.END: # Rotates towards and enemies and applies damage
+		if attackables.is_empty(): return []
+		var attackables_array: Array = attackables.keys()
+		attackables_array.sort_custom(func(x: CardGD, y: CardGD): return x.energy > y.energy)
+		BestTile = attackables_array[0].getTile()
+		
+		var relative_tr: int = Game.getRelativeTileRotation(Tile, BestTile)
+		actions.append(ChangeTileRotationAction.new(self, relative_tr))
+		
+		var diagonal: Vector4i = Game.getCubeDirectionExtra(relative_tr)
+		var all_enemies: Array = Game.getEnemyUnits(team)
+		var all_enemy_tiles: Array = all_enemies.map(func(x: CardGD): return x.getTile())
+		var damagables: Array = []
+		
+		for i in range(1, 4):
+			var multed_diagonal := diagonal * i
+			var NewTile: TileGD = Game.getTileAtAnyHeight(multed_diagonal + coords)
+			
+			if NewTile != null:
+				var index: int = all_enemy_tiles.find(NewTile)
+				if index == -1: continue
+				damagables.append(all_enemies[index])
+		
+		var animation_action := AnimationAction.new(self, "Slash Attack")
+		animation_action.setActionDelay(SLASH_ATTACK_ACTION_DELAY)
+		actions.append(animation_action)
+		actions.append(DamageAction.new(self, damagables, attack, Game.DamageTypes.OTHER))
+		
+	return actions
+	
+func getSlashAttackables(enemies: Array, tiles: Array) -> Dictionary:
+	var attackables: Dictionary[CardGD, TileGD] = {}
+	for EnemyCard: CardGD in enemies:
+		attackables[EnemyCard] = isSlashEnemyAttackable(EnemyCard, tiles)
+	return attackables
+	
+func isSlashEnemyAttackable(EnemyCard: CardGD, tiles: Array) -> TileGD:
+	var cube_directions: Array = Game.getCubeDirectionsExtra()
+	cube_directions.shuffle()
+	for diagonal: Vector4i in cube_directions:
+		for i in range(3, 0, -1):
+			var multed_diagonal: Vector4i = diagonal * i
+			var NewTile: TileGD = Game.getTile(EnemyCard.getCoords() + multed_diagonal)
+			if NewTile != null and NewTile in tiles:
+				return NewTile
+	return null
+#endregion
+
 
 #region Helper
 func getDistantToEnemiesTiles(enemies: Array, tiles: Array) -> Array:
@@ -698,5 +856,4 @@ func onChangeBossPhasePostDelay() -> void:
 	actions.append(StatAction.new(palmies.map(func(x: CardGD): return StatInfo.new(x, Game.Stats.ATTACK, 1))))
 	
 	onPushAction(actions)
-	
 #endregion

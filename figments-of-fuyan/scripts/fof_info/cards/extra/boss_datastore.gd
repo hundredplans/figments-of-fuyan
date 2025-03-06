@@ -53,6 +53,25 @@ func onUpdateTileIntents(action: OccupyAction = null) -> void:
 		
 		Tile.setTileIntent(datastore.intent_type)
 		
+func onUpdateTileIntentsRotation(action: ChangeTileRotationAction) -> void:
+	if action.GameObject is not CardGD: return
+	var valid_tile_intents: Array = tile_intents.filter(func(x: TileIntentDatastore):\
+		return !x.isStaticTile() and x.offset_datastore.tile_rotation != -1 and action.GameObject.coords == x.coords)
+		
+	for datastore: TileIntentDatastore in valid_tile_intents:
+		var PreviousTile: TileGD = datastore.getTile()
+		if PreviousTile != null:
+			PreviousTile.setTileIntent(Game.TileIntents.NULL)
+			
+	for datastore: TileIntentDatastore in valid_tile_intents:
+		datastore.setTileRotation(action.tile_rotation)
+		
+		var Tile: TileGD = datastore.getTile()
+		if Tile == null:
+			continue
+			
+		Tile.setTileIntent(datastore.intent_type)
+	
 func setTileIntents(_tile_intents: Array[TileIntentDatastore]) -> void:
 	onClearTileIntents()
 	tile_intents = _tile_intents
@@ -77,6 +96,9 @@ func setBossIntentTiles(_boss_intent_tiles: Dictionary = {}) -> void:
 
 func getBossIntentTiles() -> Array:
 	return boss_intent_tiles.keys()
+	
+func getBossIntentTilesDict() -> Dictionary:
+	return boss_intent_tiles.duplicate()
 #endregion
 
 #region Condition Results

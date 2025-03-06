@@ -158,10 +158,14 @@ func isAdjacentOrCloser(Tile: TileGD, _Tile: TileGD, distance: int = 2) -> bool:
 	return abs(coords.x - _coords.x) + abs(coords.y - _coords.y) + abs(coords.z - _coords.z) <= distance * 2
 	
 func getRelativeTileRotation(Tile: TileGD, _Tile: TileGD) -> int:
-	assert(Tile != null and _Tile != null)
-	assert(Tile != _Tile)
-	var direction: Vector3i = _Tile.getCoordsHeightless() - Tile.getCoordsHeightless()
-	var distance: int = getCoordsDistance(Tile.getCoords(), _Tile.getCoords())
+	if Tile == null or _Tile == null: return -1
+	return getRelativeTileRotationCoords(Tile.getCoords(), _Tile.getCoords())
+	
+func getRelativeTileRotationCoords(coords: Vector4i, _coords: Vector4i) -> int:
+	if coords == _coords: return -1
+	var d: Vector4i = _coords - coords
+	var direction := Vector3i(d.x, d.y, d.z)
+	var distance: int = getCoordsDistance(coords, _coords)
 	
 	if distance == 1:
 		for i in range(cube_directions.size()):
@@ -170,9 +174,10 @@ func getRelativeTileRotation(Tile: TileGD, _Tile: TileGD) -> int:
 		
 	var each_tile_distance: Array = []
 	for i in range(cube_directions.size()):
-		var new_pos: Vector3 = cube_directions[i] + Tile.getCoordsHeightless()
-		
-		each_tile_distance.append([i, getCoordsDistance(_Tile.getCoords(), Vector4i(int(new_pos.x), int(new_pos.y), int(new_pos.z), 0))])
+		var cube_pos: Vector3i = cube_directions[i]
+		var new_pos := Vector4i(cube_pos.x, cube_pos.y, cube_pos.z, 0) + coords
+		new_pos.w = 0
+		each_tile_distance.append([i, getCoordsDistance(_coords, new_pos)])
 	each_tile_distance.sort_custom(func(x: Array, y: Array): return x[1] < y[1])
 	return each_tile_distance[0][0]
 #endregion
@@ -629,4 +634,16 @@ func onAddToCoordsToTile(Tile: TileGD) -> void:
 	
 func onResetCoordsToTile() -> void:
 	coords_to_tile = {}
+#endregion
+
+#region Cube Directions
+func getCubeDirectionRegular(index: int) -> Vector3i:
+	return cube_directions[index]
+
+func getCubeDirectionExtra(index: int) -> Vector4i:
+	var d: Vector3i = getCubeDirectionRegular(index)
+	return Vector4i(d.x, d.y, d.z, 0)
+	
+func getCubeDirectionsExtra() -> Array:
+	return range(6).map(getCubeDirectionExtra)
 #endregion

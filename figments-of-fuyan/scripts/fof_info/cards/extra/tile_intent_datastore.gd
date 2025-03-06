@@ -15,3 +15,6 @@ func getTile() -> TileGD:
 
 func isStaticTile() -> bool:
 	return offset_datastore == null
+
+func setTileRotation(tile_rotation: int) -> void:
+	offset_datastore.setTileRotation(tile_rotation)

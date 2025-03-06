@@ -4,6 +4,7 @@ var TripleAdjacentDiagonalTile: TileGD
 @export var triple_adjacent_diagonal_tile_public_id: int
 
 func onSave() -> void:
+	if TripleAdjacentDiagonalTile == null: return
 	triple_adjacent_diagonal_tile_public_id = TripleAdjacentDiagonalTile.public_id
 	
 func onLoad() -> void:

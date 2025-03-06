@@ -30,6 +30,8 @@ func onProcessAction(action: Action) -> void:
 	if action.post:
 		if action is OccupyAction:
 			onOccupy(action)
+		elif action is ChangeTileRotationAction:
+			onChangeTileRotation(action)
 		elif action is ChangeBossPhaseAction:
 			onChangeBossPhasePostDelay()
 #endregion
@@ -91,7 +93,10 @@ func getPhase() -> int:
 
 #region Updaters
 func setTileIntents() -> void:
-	pass
+	var tile_intents: Array[TileIntentDatastore] = []
+	var method_name: String = "on" + boss_intent.name.replace(" ", "") + "SetIntents"
+	call(method_name, tile_intents)
+	boss_datastore.setTileIntents(tile_intents)
 #endregion
 
 #region Setters
@@ -110,6 +115,9 @@ func onAICheckActiveEffectsOnlyDFL(_DFL: DefaultFightLogic, _after_action: Movem
 #region Tile
 func onOccupy(action: OccupyAction) -> void:
 	boss_datastore.onUpdateTileIntents(action)
+	
+func onChangeTileRotation(action: ChangeTileRotationAction) -> void:
+	boss_datastore.onUpdateTileIntentsRotation(action)
 #endregion
 
 #region Boss Field Info
