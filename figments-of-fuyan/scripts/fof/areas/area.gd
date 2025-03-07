@@ -433,9 +433,12 @@ func setRewards(is_win: bool) -> void:
 	active_level.is_ended = true
 	if is_win:
 		var items: Array = []
-		var is_elite: bool = active_level.isElite()
+		var fight_type: Game.FightTypes = active_level.fight_type
+		var is_elite: bool = fight_type == Game.FightTypes.ELITE
+		var is_epic: bool = fight_type in [Game.FightTypes.MINIBOSS, Game.FightTypes.BOSS]
+		
 		var fight_rewards_datastore: FightRewardsDatastore = \
-			getWorld().elite_fight_rewards if is_elite else getWorld().fight_rewards
+			getWorld().elite_fight_rewards if is_epic or is_elite else getWorld().fight_rewards
 		
 		var enemy_cards: Array = active_level.enemy_cards.duplicate()
 		if is_elite:
@@ -459,7 +462,7 @@ func setRewards(is_win: bool) -> void:
 		var add_tool: bool
 		var add_boon: bool
 		
-		if !is_elite:
+		if !is_elite and !is_epic:
 			add_tool = Random.rollFloat(fight_rewards_datastore.tool_odds / 100.0)
 			add_boon = Random.rollFloat(getDivinusBoonOdds(fight_rewards_datastore.boon_odds) / 100.0)
 		else: # 50 / 50 chance if divinus, otherwise 66% 33% chance
@@ -478,9 +481,29 @@ func setRewards(is_win: bool) -> void:
 			if boon_data != null: items.append(SavedData.onLoadModel(boon_data, active_level))
 		
 		var rewards := Rewards.new(items)
+		if is_epic:
+			rewards.epic_items = getEpicFightRewards()
+		
 		rewards.setInfo(active_level)
 		active_level.rewards = rewards
 	active_level.onGameEnded()
+	
+func getEpicFightRewards() -> Array:
+	var boss_card: BossCardGD = active_level.getBoss()
+	
+	var card_info: CardInfo = Helper.getFofInfoID(CardInfo, boss_card.info.card_id)
+	var card_data := SavedDataCard.new(card_info.id, true)
+	card_data.team = 1
+	Game.setCardDataFromInfo(card_data, card_info)
+	
+	var boon_data := SavedDataBoon.new(boss_card.info.boon_id, true)
+	var tool_data := SavedDataTool.new(boss_card.info.tool_id, true)
+	
+	var Card: CardGD = SavedData.onLoadModel(card_data, active_level)
+	var Boon: BoonGD = SavedData.onLoadModel(boon_data, active_level)
+	var Tool: ToolGD = SavedData.onLoadModel(tool_data, active_level)
+	
+	return [Card, Boon, Tool]
 #endregion
 
 #region Random Enemy

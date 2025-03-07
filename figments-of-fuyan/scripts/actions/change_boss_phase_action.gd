@@ -9,3 +9,6 @@ func onPreAction() -> void:
 func onPostAction() -> void:
 	var BossCard: BossCardGD = Game.getLevel().getBoss()
 	BossCard.onChangeBossPhase()
+	
+	var hurt_action: HurtAction = Game.ActionManagerReference.onFindFirstAction(HurtAction)
+	if hurt_action != null and hurt_action.Defender == BossCard: hurt_action.onFailAction()

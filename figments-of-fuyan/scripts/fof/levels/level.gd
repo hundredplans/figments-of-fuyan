@@ -131,6 +131,8 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 	# Triggers after UI and World have loaded
 	save_file = _save_file
 	energy_changed.emit(energy)
+	
+	onPushAction(PlayMusicAction.new(Game.getArea().info.boss_music))
 	if is_init:
 		var actions: Array = [StartGameAction.new(), ChangePhaseAction.new(Game.Phases.START)]
 		speed_order = SpeedOrder.new()
@@ -224,8 +226,6 @@ func onProcessAction(action: Action) -> void:
 			onCheckSkipHandPhase()
 		elif action is ChangeTurnStateAction:
 			turn_state_changing.emit(action.Card, action)
-		elif action is CameraChangeAction:
-			onCameraChange(action)
 		elif action is ActiveEffectUsedAction:
 			active_effect_used.emit(action.ActiveEffect)
 			onRecalculateAITurn(action.Card)
@@ -377,6 +377,7 @@ func isGameEnded() -> bool:
 	
 func onRewardsFinished() -> void:
 	rewards_finished.emit(save_file)
+	onPushAction(PlayMusicAction.new(null))
 #endregion
 
 #region AI

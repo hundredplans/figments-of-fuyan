@@ -48,7 +48,7 @@ func onOptionPressed(option: EncounterOptionDatastore, screen: Control) -> void:
 	onContinueToNextPage(option)
 
 func onCreateRewardsUI(page_title: String, screen: Control) -> void:
-	var RewardsUI: Control = Game.onCreateRewardsUIScreen(rewards, screen)
+	var RewardsUI: Control = Game.onCreateRewardsUIScreen(rewards, screen, Game.FightTypes.NULL)
 	rewards_page_title = page_title
 	RewardsUI.rewards_finished.connect(onContinueToNextPageForce.bind(page_title))
 

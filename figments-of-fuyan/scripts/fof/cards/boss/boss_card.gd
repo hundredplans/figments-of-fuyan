@@ -92,11 +92,13 @@ func getPhase() -> int:
 #endregion
 
 #region Updaters
-func setTileIntents() -> void:
+func onFirstUpdateTileIntents() -> void:
 	var tile_intents: Array[TileIntentDatastore] = []
 	var method_name: String = "on" + boss_intent.name.replace(" ", "") + "SetIntents"
-	call(method_name, tile_intents)
-	boss_datastore.setTileIntents(tile_intents)
+	var tile_results: Dictionary[TileGD, String] = call(method_name, tile_intents)
+	
+	boss_datastore.setTileResults(tile_results)
+	boss_datastore.onFirstUpdateTileIntents(tile_intents)
 #endregion
 
 #region Setters
@@ -145,8 +147,8 @@ func setBossIntent(_boss_intent: BossIntent) -> void:
 	boss_datastore.boss_intent_name = boss_intent.name
 	if BossFieldInfo != null: BossFieldInfo.onUpdateBossIntent()
 	
-	if Tile != null: setTileIntents()
-	else: boss_datastore.setTileIntents(boss_datastore.tile_intents) # When first loading in
+	if Tile != null: onFirstUpdateTileIntents()
+	else: boss_datastore.onFirstUpdateTileIntents(boss_datastore.getTileIntents()) # When first loading in
 	
 func setBossIntentByName() -> void:
 	var _boss_intent: BossIntent = getBossIntentByName()
@@ -193,7 +195,7 @@ func onChangeBossPhase() -> void:
 	boss_datastore.phase += 1
 	onEmptyBossIntentNameCooldowns()
 	onResetBossIntentCooldowns()
-	onPushAction(CameraChangeAction.new(self))
+	onForceAction(CameraChangeAction.new(self))
 			
 func onChangeBossPhasePostDelay() -> void:
 	var new_attack: int = getAttackFromInfo()

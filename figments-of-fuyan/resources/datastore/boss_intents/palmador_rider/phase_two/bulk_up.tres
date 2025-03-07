@@ -5,9 +5,10 @@
 [resource]
 script = ExtResource("1_0pboc")
 name = "Bulk Up"
-description = "Gain ARMOR [1] and 1 ATT, 1 SPD for [2] Turns. Also Heal 3 HP when on 2 HP. Doesn't move after
+description = "Gain ARMOR [1] and 1 ATT, 1 SPD for [2] Turns. Also Heal 2 HP when on 2 HP. Doesn't move after
 "
 type = 4
 default_cooldown = 3
+off_vision_use_cooldown = true
 combat_type = 0
 metadata/_custom_type_script = "uid://c85vjl4hwbga5"

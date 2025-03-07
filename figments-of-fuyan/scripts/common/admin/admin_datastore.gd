@@ -1,5 +1,9 @@
 class_name AdminDatastore extends Resource
 
+@export_group("Music")
+@export var NO_MUSIC: bool
+@export_group("")
+
 @export_group("Main Menu")
 @export var skip_main_menu: bool
 @export var skip_start_cutscene: bool

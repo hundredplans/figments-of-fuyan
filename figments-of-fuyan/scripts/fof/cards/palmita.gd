@@ -26,7 +26,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		if ascended:
 			actions.append(StatAction.new(StatInfo.new(Card, Game.Stats.MAX_HEALTH, 1)))
 		
-		setDeathAbility(true, false)
+		anibility_datastore.setDeathModifier("Ability")
 		onPushAction(actions)
 		
 # Use if a unit is adjacent with 3 or more health, if there's no units on board with 3 or more health use on whoever

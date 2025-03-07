@@ -10,6 +10,7 @@ class_name AreaInfo extends FofInfo
 @export var base_level_script: GDScript
 @export var base_tile_info: TileInfo
 @export var default_light: PackedScene
+@export var boss_music: AudioStreamWAV
 
 @export_group("Boss")
 @export var miniboss_ids_to_level: Array[IdToId]

@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://6i1ai5xqm8qh"]
+
+[ext_resource type="Script" uid="uid://bu0pnwlwdkfn0" path="res://scenes/common/rewards_ui/elite_epic_card_reward_ui.gd" id="1_h33hk"]
+[ext_resource type="PackedScene" uid="uid://6nf3mir2i2rk" path="res://scenes/common/fancy_text/fancy_text_label.tscn" id="2_g8xxm"]
+[ext_resource type="Resource" uid="uid://fpdxebj5npm" path="res://resources/ui/fancy_text/fancy_text_label_settings_huge.tres" id="3_joh8n"]
+
+[node name="EliteEpicCardRewardsUI" type="Control"]
+custom_minimum_size = Vector2(600, 0)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 600.0
+offset_bottom = 1080.0
+mouse_filter = 2
+script = ExtResource("1_h33hk")
+elite_text = "Choose: aExalt Card or Elite Rewards"
+miniboss_text = "Choose Miniboss: Card, Tool or Boon"
+boss_text = "Choose Boss: Card, Tool or Boon"
+
+[node name="ChooseLabel" parent="." instance=ExtResource("2_g8xxm")]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 602.0
+offset_top = 224.0
+offset_right = 1892.0
+offset_bottom = 262.0
+text = "Choose: aExalt Card or Elite Rewards"
+settings = ExtResource("3_joh8n")

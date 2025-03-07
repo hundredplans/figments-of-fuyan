@@ -4,6 +4,7 @@ class_name BossIntent extends Resource
 @export_multiline var description: String
 @export var type: IntentType
 @export var default_cooldown: int = 1
+@export var off_vision_use_cooldown: bool
 @export var combat_type: CombatType
 
 enum CombatType {BOTH, IN_COMBAT, OUT_OF_COMBAT}

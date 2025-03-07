@@ -105,11 +105,6 @@ func setIdleAbility(state: bool) -> void:
 func setAttackAbility(state: bool) -> void:
 	anibility_datastore.is_attack_ability = state
 		
-func setDeathAbility(state: bool, play_death_animation: bool = true) -> void:
-	anibility_datastore.is_death_ability = state
-	if play_death_animation:
-		onDeath()
-		
 func setAwakenedInCombat(state: bool) -> void:
 	is_awakened_in_combat = state
 	awakened_in_combat.emit(state)
@@ -191,7 +186,7 @@ func onIdle() -> void:
 	onPlayAnimation("Idle" if !anibility_datastore.is_idle_ability else "IdleAbility")
 	
 func onDeath() -> void:
-	onPlayAnimation("Death" if !anibility_datastore.is_death_ability else "DeathAbility")
+	onPlayAnimation("Death" + anibility_datastore.getDeathModifier())
 	
 func onHurt() -> void:
 	onPlayAnimation("Hurt")
@@ -533,12 +528,14 @@ func onMoveToTile(action: MoveToTileAction, delay: float) -> void:
 		elif action.movement_type == MoveToTileAction.MOVEMENT_TYPES.FALL: onFallTween(action)
 	#else: setPositionToTile(action.DestinationTile)
 	
+const JUMP_MULTIPLIER: float = 1.25
 const JUMP_SPEEDSCALE: float = 2.5
 func onJumpTween(action: MoveToTileAction) -> void:
+	var height_diff: int = abs(action.DestinationTile.getHeight() - action.OriginalTile.getHeight())
 	var jump_time: float = 1
 	var jump_start: Vector3 = action.OriginalTile.getCardPosition()
 	var jump_end: Vector3 = action.DestinationTile.getCardPosition()
-	var jump_height: float = -4
+	var jump_height: float = -3.5 - (height_diff * JUMP_MULTIPLIER)
 	var start_highest: Vector3 = jump_start + Vector3(0, jump_height, 0)
 	var end_highest: Vector3 = jump_end + Vector3(0, jump_height, 0)
 	

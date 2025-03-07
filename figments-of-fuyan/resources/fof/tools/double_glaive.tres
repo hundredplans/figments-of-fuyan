@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=6 format=3 uid="uid://ct3i0g27herhe"]
+
+[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_t77c0"]
+[ext_resource type="Script" uid="uid://ben23dffxrigp" path="res://scripts/fof/tools/double_glaive.gd" id="2_hgpag"]
+[ext_resource type="Script" uid="uid://dq4qxtx6lyc2u" path="res://scripts/fof_info/tools/tool_info.gd" id="2_ut24a"]
+[ext_resource type="Texture2D" uid="uid://cgl1i5r6mavkd" path="res://assets/sprites/double_glaive.png" id="3_hgpag"]
+[ext_resource type="Script" uid="uid://ccxaxjnbobkaq" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="4_xuyan"]
+
+[resource]
+script = ExtResource("2_ut24a")
+icon = ExtResource("3_hgpag")
+description = "This gains +1 SPD; This unit's attack is equal to it's current SPD
+"
+ascended_description = "This gains +2 SPD; This unit's attack is equal to it's current SPD"
+rarity = 6
+active_abilities = Array[ExtResource("1_t77c0")]([])
+id = 14
+name = "Double Glaive"
+gdscript = ExtResource("2_hgpag")
+saved_data = ExtResource("4_xuyan")
+metadata/_custom_type_script = "uid://dq4qxtx6lyc2u"

@@ -1,8 +1,11 @@
 class_name Rewards extends Resource
 
 var parent: FofGD
+
+@export var epic_items: Array = []
 @export var items: Array = []
 @export var taken_items: Array = []
+
 func _init(_items: Array = []) -> void:
 	items = _items
 
@@ -20,10 +23,12 @@ func setInfo(_parent: FofGD) -> void:
 	parent = _parent
 	
 func onSave() -> void:
+	epic_items = epic_items.map(onSaveMap)
 	items = items.map(onSaveMap)
 	taken_items = taken_items.map(onSaveMap)
 	
 func onLoad() -> void:
+	epic_items = epic_items.map(onLoadMap)
 	items = items.map(onLoadMap)
 	taken_items = taken_items.map(onLoadMap)
 

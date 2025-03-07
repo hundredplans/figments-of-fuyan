@@ -19,8 +19,8 @@ enum Stats {ATTACK, HEALTH, SPEED, MAX_HEALTH, MAX_SPEED, ENERGY}
 enum AscendedExists {BOTH, ONLY_DEFAULT, ONLY_ASCENDED}
 enum Archetypes {NULL, ADVENTURER, BRUTE, DOCILE, ERRATIC, HOSTILE, REINFORCER, SCOUT, SUPPORT, TACTICIAN, WARDEN, RECEIVER}
 enum DamageTypes {ATTACK, FALL_DAMAGE, OTHER}
-enum FightTypes {REGULAR, ELITE, MINIBOSS, BOSS}
-enum TileIntents {NULL, RED, PURPLE, GREEN, DARK_RED, LIGHT_RED}
+enum FightTypes {NULL, REGULAR, ELITE, MINIBOSS, BOSS}
+enum TileIntents {NULL, RED, PURPLE, GREEN, DARK_RED, LIGHT_RED, YELLOW}
 
 var CARD_PLACES_TO_GROUP: Dictionary = {
 	CardPlaces.NULL: "Null",
@@ -546,10 +546,10 @@ func onCreateDeckScreen(parent: Control, selectable: bool, max_select_amount: in
 	return DeckScreen
 	
 const REWARDS_UI_PATH: String = "res://scenes/common/rewards_ui/rewards_ui.tscn"
-func onCreateRewardsUIScreen(rewards: Rewards, parent: Control, is_elite: bool = false) -> Control:
+func onCreateRewardsUIScreen(rewards: Rewards, parent: Control, level_type: FightTypes) -> Control:
 	var RewardsUI: Control = load(REWARDS_UI_PATH).instantiate()
 	parent.add_child(RewardsUI)
-	RewardsUI.setInfo(rewards, save_file, is_elite)
+	RewardsUI.setInfo(rewards, save_file, level_type)
 	return RewardsUI
 	
 const REWARDS_CARDS_UI_PATH: String = "res://scenes/common/rewards_ui/rewards_cards_ui.tscn"

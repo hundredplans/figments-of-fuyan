@@ -129,11 +129,8 @@ func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("Console"):
 		visible = !visible
 		if visible:
-			CommandLineEdit.grab_focus()
-			CommandLineEdit.editable = false
 			await get_tree().process_frame
-			#await get_tree().create_timer(0.02).timeout
-			CommandLineEdit.editable = true
+			CommandLineEdit.grab_focus()
 	elif Input.is_action_just_pressed("ChangeElevationUp") and CommandLineEdit.has_focus():
 		onChangeToPastCommand(-1)
 	elif Input.is_action_just_pressed("ChangeElevationDown") and CommandLineEdit.has_focus():

@@ -3,6 +3,12 @@ class_name BossCardInfo extends FofInfo
 @export var phase_to_name: Array[String]
 @export var rarity: Game.Rarities
 
+@export_group("Rewards")
+@export var card_id: int
+@export var tool_id: int
+@export var boon_id: int
+@export_group("")
+
 @export_group("Stats")
 @export var phase_to_attack: Array[int]
 @export var phase_to_health: Array[int]

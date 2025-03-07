@@ -1,8 +1,8 @@
-[gd_resource type="Resource" script_class="AreaInfo" load_steps=14 format=3 uid="uid://divjktvvya1ee"]
+[gd_resource type="Resource" script_class="AreaInfo" load_steps=15 format=3 uid="uid://divjktvvya1ee"]
 
 [ext_resource type="Environment" uid="uid://g3ihmrpunr2b" path="res://assets/environments/main_menu_environment.tres" id="1_nr01x"]
 [ext_resource type="Image" uid="uid://crmlvrqh52rb8" path="res://assets/sprites/game/cards/common/art_background/palm_background.png" id="1_xwfqh"]
-[ext_resource type="Resource" path="res://resources/fof/tile_objects/palm_tile.tres" id="2_lcnma"]
+[ext_resource type="Resource" uid="uid://ch7csodvetoxm" path="res://resources/fof/tile_objects/palm_tile.tres" id="2_lcnma"]
 [ext_resource type="Script" uid="uid://bdrcevdqecvdg" path="res://scripts/fof_info/areas/area_info.gd" id="2_omppq"]
 [ext_resource type="Environment" uid="uid://ccj8myeinjes5" path="res://assets/environments/palm_evening_environment.tres" id="3_w51i3"]
 [ext_resource type="Script" uid="uid://u5fbm3mh8bib" path="res://scripts/common/id_to/id_to_id.gd" id="4_3geu2"]
@@ -10,6 +10,7 @@
 [ext_resource type="Resource" uid="uid://b7pbgspp5dirh" path="res://resources/datastore/decorations/PalmOverworld.tres" id="5_at1h3"]
 [ext_resource type="Resource" uid="uid://ctfukjvhoe8nm" path="res://resources/datastore/world/world_one.tres" id="5_dy22h"]
 [ext_resource type="PackedScene" uid="uid://bvbfjek6o431c" path="res://scripts/fof/areas/extra/coconut_springs_default_light.tscn" id="5_mg38q"]
+[ext_resource type="AudioStream" uid="uid://cf15l5abfneny" path="res://assets/sounds/music/coconut_springs_boss_music.wav" id="5_otepg"]
 [ext_resource type="Script" uid="uid://rf0dys0w4v2c" path="res://scripts/fof_info/levels/palm_level_info.gd" id="6_jqirr"]
 [ext_resource type="Script" uid="uid://ddqxntix0kb3c" path="res://scripts/saved_data/saved_data_area.gd" id="6_p3usl"]
 
@@ -30,6 +31,7 @@ elite_environment = ExtResource("3_w51i3")
 base_level_script = ExtResource("6_jqirr")
 base_tile_info = ExtResource("2_lcnma")
 default_light = ExtResource("5_mg38q")
+boss_music = ExtResource("5_otepg")
 miniboss_ids_to_level = Array[ExtResource("4_3geu2")]([SubResource("Resource_06u7h")])
 boss_ids_to_level = Array[ExtResource("4_3geu2")]([])
 id = 1
