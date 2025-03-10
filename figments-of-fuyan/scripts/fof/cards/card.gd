@@ -1079,7 +1079,7 @@ func isValidArrive(action: Action) -> bool:
 	return action.post and action is AwakenAction and action.Card == self
 
 func isValidWhenHealed(action: Action) -> bool:
-	return action.post and action is StatAction and action.owner is HealAction and action.Card in action.owner.cards and card_place == Game.CardPlaces.FIELD
+	return action.post and action is StatAction and action.owner is HealAction and action.hasCard(self) and card_place == Game.CardPlaces.FIELD
 #endregion
 
 #region Heal

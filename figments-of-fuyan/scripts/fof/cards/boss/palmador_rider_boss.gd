@@ -135,7 +135,7 @@ func getSpinAttackTiles(CardTile: TileGD = Tile) -> Array:
 	return Game.getAdjacentTiles(CardTile, 1)
 	
 func onSpinAttackCondition() -> BossIntentConditionResult: # Needs to be on the ground to use
-	return BossIntentConditionResult.new(getTile().getHeight() == 0)
+	return BossIntentConditionResult.new(isGround())
 	
 func onSpinAttack(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 	if use_type != UseType.END:
@@ -183,7 +183,7 @@ func onReposition(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 		if !enemies.is_empty(): # If in combat reposition tries to go up
 			for OtherTile: TileGD in tiles:
 				for AdjacentTile: TileGD in Game.getAdjacentTiles(OtherTile):
-					if AdjacentTile.getHeight() > 0:
+					if isHigh(AdjacentTile):
 						tiles_adjacent_to_height.append(OtherTile)
 						break
 						
@@ -200,8 +200,8 @@ func onReposition(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 		
 		return [MovementAction.new(self, BestTile.getMovementPathTiles())]
 	
-	if Tile.getHeight() == 0:
-		var height_tiles: Array = Game.getAdjacentTiles(Tile).filter(func(x: TileGD): return x.getHeight() > 0)
+	if isGround():
+		var height_tiles: Array = Game.getAdjacentTiles(Tile).filter(func(x: TileGD): return isHigh(x))
 		if height_tiles.is_empty(): return []
 		
 		var ally_vision: Array = Game.getTeamVision(0)
@@ -215,7 +215,7 @@ func onReposition(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 func onRepositionSetIntents(_tile_intents: Array) -> Dictionary[TileGD, String]: return {}
 	
 func onRepositionCondition() -> BossIntentConditionResult:
-	return BossIntentConditionResult.new(getTile().getHeight() == 0)
+	return BossIntentConditionResult.new(isGround())
 	
 func onTileInVisionSorter(x: TileGD, y: TileGD, ally_vision: Array) -> int:
 	var first_in_vision: bool = x in ally_vision
@@ -313,7 +313,7 @@ func onSummon(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 	
 func onSummonSetIntents(tile_intents: Array) -> Dictionary[TileGD, String]:
 	var tiles: Array = getVisibleTiles().filter(func(x: TileGD): return !x.isOccupied() and !x.isSolid())
-	tiles = tiles.filter(func(x: TileGD): return x.getHeight() == 0)
+	tiles = tiles.filter(func(x: TileGD): return isGround(x))
 	tiles.shuffle()
 	tiles.resize(SUMMON_AMOUNT)
 	tiles = tiles.filter(func(x: TileGD): return x != null)
@@ -369,7 +369,7 @@ func onJumpAttack(use_type: UseType) -> Array:
 	return actions
 	
 func onJumpAttackCondition() -> BossIntentConditionResult:
-	return BossIntentConditionResult.new(getTile().getHeight() > 0)
+	return BossIntentConditionResult.new(isHigh())
 #endregion
 
 #region Charge Attack
@@ -377,7 +377,7 @@ const CHARGE_ATTACK_HIT_ACTION_DELAY: float = 1.5
 const MAX_CHARGE_DISTANCE: int = 4
 func onChargeAttackCondition() -> BossIntentConditionResult:
 	var condition_result := BossIntentConditionResultChargeAttack.new(false)
-	if getTile().getHeight() > 0: return condition_result
+	if isHigh(): return condition_result
 	
 	var wall_adjacent_origin_tiles: Dictionary = {}
 	for diagonal in Game.cube_directions:
@@ -440,7 +440,7 @@ func getChargeIntentTiles(directions: Array) -> Dictionary:
 	return {}
 	
 func setWallTiles(PointTile: TileGD, wall_tiles: Dictionary = {}) -> void:
-	var height_tiles: Array = Game.getAdjacentTiles(PointTile).filter(func(x: TileGD): return x.getHeight() > 0 and x not in wall_tiles.keys())
+	var height_tiles: Array = Game.getAdjacentTiles(PointTile).filter(func(x: TileGD): return isHigh(x) and x not in wall_tiles.keys())
 	if height_tiles.is_empty(): return
 	
 	for HeightTile: TileGD in height_tiles:
@@ -455,7 +455,7 @@ func getWallAdjacentTiles(OriginTile: TileGD, distance: int = 2) -> Array:
 	setWallTiles(OriginTile, wall_tiles)
 	
 	for WallTile: TileGD in wall_tiles.keys():
-		for AdjacentTile: TileGD in Game.getAdjacentOrCloserTiles(WallTile, distance).filter(func(x: TileGD): return x.getHeight() == 0):
+		for AdjacentTile: TileGD in Game.getAdjacentOrCloserTiles(WallTile, distance).filter(func(x: TileGD): return isGround(x)):
 			wall_adjacent_tiles[AdjacentTile] = null
 	return wall_adjacent_tiles.keys()
 	
@@ -552,7 +552,7 @@ func onMaelstormAttack(enemies: Array, use_type: UseType) -> Array:
 			
 		tiles = onRemoveAttackableTiles(tiles)
 		
-		if getTile().getHeight() > 0:
+		if isHigh():
 			tiles = onRemoveHighTiles(tiles)
 		else:
 			tiles = getDistantToEnemiesTiles(enemies, tiles)
@@ -852,6 +852,12 @@ func isSlashEnemyAttackable(EnemyCard: CardGD, tiles: Array) -> TileGD:
 
 
 #region Helper
+func isGround(_Tile: TileGD = getTile()) -> bool:
+	return _Tile.getHeight() == 10
+	
+func isHigh(_Tile: TileGD = getTile()) -> bool:
+	return _Tile.getHeight() > 10
+
 func getDistantToEnemiesTiles(enemies: Array, tiles: Array) -> Array:
 	if enemies.is_empty(): return enemies
 	tiles = tiles.duplicate()
@@ -874,13 +880,13 @@ func getCloseToEnemiesTiles(enemies: Array, tiles: Array) -> Array:
 	return tiles
 	
 func onRemoveHighTiles(tiles: Array) -> Array:
-	if getTile().getHeight() > 0:
-		return tiles.filter(func(x: TileGD): return x.getHeight() == 0)
+	if isHigh():
+		return tiles.filter(func(x: TileGD): return isGround(x))
 	return tiles
 
 func onRemoveGroundTilesWhenNotOnGround(tiles: Array) -> Array:
-	if getTile().getHeight() > 0:
-		return tiles.filter(func(x: TileGD): return x.getHeight() > 0)
+	if isHigh():
+		return tiles.filter(func(x: TileGD): return isHigh(x))
 	return tiles
 	
 func onRemoveAttackableTiles(tiles: Array) -> Array:
