@@ -1,7 +1,7 @@
 class_name BossCardInfo extends FofInfo
 
-@export var phase_to_name: Array[String]
 @export var rarity: Game.Rarities
+@export var phases: Array[BossPhaseDatastore]
 
 @export_group("Rewards")
 @export var card_id: int
@@ -9,34 +9,9 @@ class_name BossCardInfo extends FofInfo
 @export var boon_id: int
 @export_group("")
 
-@export_group("Stats")
-@export var phase_to_attack: Array[int]
-@export var phase_to_health: Array[int]
-@export var phase_to_speed: Array[int]
-@export_group("")
-
-@export_group("Phase To")
-@export var phase_to_model: Array[PackedScene] # 0 = Phase One etc
-@export var phase_to_collision: Array[PackedScene]
-@export var phase_to_points: Array[Array]
-@export var phase_to_top: Array[float]
-@export var phase_to_eye: Array[float]
-@export var phase_to_stat: Array[float]
-@export var phase_to_phase_change_boss_intent_name: Array[String] # Name of intent to use when phase changes, if empty doesn't change intent
-@export_group("")
-
 @export_group("Art")
 @export var art_mini_coordinate: Vector2i
 @export var art_mini: Texture2D
-@export_group("")
-
-@export_group("Gameplay")
-@export var awaken_intent_name: String
-@export var initial_traits: Array[SavedDataTrait]
-@export var phase_to_speed_order_override: Array[SpeedOrderOverride]
-@export var phase_to_archetype: Array[ArchetypeInfo]
-@export var phase_to_boss_intents: Array[PhaseBossIntents]
-@export var phase_to_change_delay: Array[float]
 @export_group("")
 
 enum SpeedOrderOverride {FIRST, LAST}
@@ -54,49 +29,49 @@ func getIcon() -> Texture2D:
 	return art_mini
 	
 func getName(phase: int = 1) -> String:
-	return phase_to_name[phase - 1]
+	return phases[phase - 1].getName()
 	
 func getModel(phase: int = 1) -> PackedScene:
-	return phase_to_model[phase - 1]
+	return phases[phase - 1].getModel()
 
 func getCollisionShape(phase: int = 1) -> PackedScene:
-	return phase_to_collision[phase - 1]
+	return phases[phase - 1].getCollision()
 	
 func getPoints(phase: int = 1) -> Array:
-	return phase_to_points[phase - 1]
+	return phases[phase - 1].getPoints()
 	
 func getTop(phase: int = 1) -> float:
-	return phase_to_top[phase - 1]
+	return phases[phase - 1].getTop()
 	
 func getEye(phase: int = 1) -> float:
-	return phase_to_eye[phase - 1]
+	return phases[phase - 1].getEye()
 	
 func getStat(phase: int = 1) -> float:
-	return phase_to_stat[phase - 1]
+	return phases[phase - 1].getStat()
 	
 func getArchetype(phase: int = 1) -> ArchetypeInfo:
-	return phase_to_archetype[phase - 1]
+	return phases[phase - 1].getArchetype()
 	
 func getAttack(phase: int = 1) -> int:
-	return phase_to_attack[phase - 1]
+	return phases[phase - 1].getAttack()
 	
 func getHealth(phase: int = 1) -> int:
-	return phase_to_health[phase - 1]
+	return phases[phase - 1].getHealth()
 	
 func getSpeed(phase: int = 1) -> int:
-	return phase_to_speed[phase - 1]
+	return phases[phase - 1].getSpeed()
 	
-func getBossIntents(phase: int = 1) -> PhaseBossIntents:
-	return phase_to_boss_intents[phase - 1]
+func getBossIntents(phase: int = 1) -> Array[BossIntent]:
+	return phases[phase - 1].getBossIntents()
 	
 func getSpeedOrderOverride(phase: int = 1) -> SpeedOrderOverride:
-	return phase_to_speed_order_override[phase - 1]
+	return phases[phase - 1].getSpeedOrderOverride()
 
 func getColoredBaseMaterial(_team: int, _ascended: bool) -> ShaderMaterial:
 	return load(BASE_MATERIAL_RED_TRANSPARENT_PATH)
 	
 func getChangeDelay(phase: int = 1) -> float:
-	return phase_to_change_delay[phase - 1]
+	return phases[phase - 1].getChangeDelay()
 	
-func getPhaseChangeBossIntentName(phase: int = 1) -> String:
-	return phase_to_phase_change_boss_intent_name[phase - 1]
+func getAwakenBossIntentName(phase: int = 1) -> String:
+	return phases[phase - 1].getAwakenBossIntentName()

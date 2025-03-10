@@ -40,7 +40,7 @@ func onLoadDataLevelFofInit() -> void:
 
 func onAwakenBoss(Tile: TileGD) -> void:
 	var boss_info: BossCardInfo = Helper.getFofInfoID(BossCardInfo, spawn_id)
-	var boss_datastore := BossDatastore.new(1, boss_info.awaken_intent_name)
+	var boss_datastore := BossDatastore.new(1, boss_info.getAwakenBossIntentName())
 	onPushAction(AwakenBossAction.new(spawn_id, Tile, boss_datastore))
 
 func onToolPickedUp(action: OccupyAction) -> void:

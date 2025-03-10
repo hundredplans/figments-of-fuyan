@@ -10,7 +10,8 @@ func onProcessAction(action: Action) -> void:
 		if action is FallDamageAction and action.Card == self:
 			action.onFailAction()
 	elif action.post:
-		if action is StatAction and health <= int(max_health / 2.0) and boss_datastore.phase == 1:
+		if action is StatAction and action.hasCard(self) and health <= int(max_health / 2.0) and health > 0\
+		and Game.ActionManagerReference.onFindFirstAction(ChangeBossPhaseAction) == null and getPhase() == 1:
 			onPushAction(ChangeBossPhaseAction.new())
 #endregion
 	
@@ -254,6 +255,8 @@ func onRally(enemies: Array, allies: Array, tiles: Array, use_type: UseType) -> 
 			actions.append(StatAction.new(StatInfo.new(PalmyCard, Game.Stats.ATTACK, 1)))
 			actions.append(camera_change_action)
 			
+		actions.append(ClearTileIntentsAction.new())
+		
 		var ally_vision: Array = Game.getTeamVision(0)
 		tiles = Game.getsetMovementRange(self, RALLY_SPEED_LIMIT)
 		
@@ -291,6 +294,7 @@ func onSummon(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 			camera_change_action.setActionDelay(PALMY_SUMMONING_ACTION_DELAY)
 			actions.append(camera_change_action)
 		
+		actions.append(ClearTileIntentsAction.new())
 		var ally_vision: Array = Game.getTeamVision(0)
 		tiles = Game.getsetMovementRange(self, SUMMON_SPEED_LIMIT)
 		tiles = tiles.filter(func(x: TileGD): return x not in chosen_tiles and x.getMovementPathTiles().all(func(y: TileGD): return y not in chosen_tiles))
@@ -539,6 +543,7 @@ func onMaelstormAttack(enemies: Array, use_type: UseType) -> Array:
 		for EnemyCard: CardGD in triple_adjacent_enemies:
 			actions.append(KnockbackStartAction.new(EnemyCard, self, 1, Game.getRelativeTileRotation(getTile(), EnemyCard.getTile())))
 			
+		actions.append(ClearTileIntentsAction.new())
 		var tiles: Array = Game.getsetMovementRange(self, MAELSTORM_SPEED_LIMIT)
 		var ally_vision: Array = Game.getTeamVision(0)
 		
@@ -708,7 +713,7 @@ func onFanAttack(enemies: Array, use_type: UseType) -> Array:
 		var all_enemies: Array = Game.getEnemyUnits(team).filter(func(x: CardGD): return x.getTile() in attack_tiles)
 		var damage_action := DamageAction.new(self, all_enemies, attack, Game.DamageTypes.ATTACK)
 		
-		var actions: Array = [rotation_action, animation_action, damage_action]
+		var actions: Array = [rotation_action, animation_action, ClearTileIntentsAction.new(), damage_action]
 		
 		var ally_vision: Array = Game.getTeamVision(0)
 		var tiles: Array = Game.getsetMovementRange(self, FAN_ATTACK_SPEED_LIMIT)
@@ -770,14 +775,16 @@ func onSlashAttack(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 	var potential_killables: Array = enemies.filter(func(x: CardGD): return DFL.isAttackableKillable(x, self))
 	var attackables: Dictionary[CardGD, TileGD] = getSlashAttackables(potential_killables, tiles)
 	
-	if attackables.is_empty():
+	if attackables.values().all(func(x: TileGD): return x == null):
 		var potential_attackables: Array = enemies.filter(func(x: CardGD): return x not in potential_killables)
 		attackables = getSlashAttackables(potential_attackables, tiles)
 	
+	var no_attackables: bool = attackables.values().all(func(x: TileGD): return x == null)
 	var actions: Array = []
 	var BestTile: TileGD
+	
 	if use_type != UseType.END:
-		if attackables.is_empty():
+		if no_attackables:
 			var ally_vision: Array = Game.getTeamVision(0)
 			
 			if !ally_vision.is_empty():
@@ -789,7 +796,7 @@ func onSlashAttack(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 			if !tiles.is_empty():
 				BestTile = tiles[0]
 		else:
-			var attackables_array: Array = attackables.keys()
+			var attackables_array: Array = attackables.keys().filter(func(x: CardGD): return attackables[x] != null)
 			attackables_array.sort_custom(func(x: CardGD, y: CardGD): return x.energy > y.energy)
 			BestTile = attackables[attackables_array[0]]
 			
@@ -797,8 +804,8 @@ func onSlashAttack(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 			actions.append(MovementAction.new(self, BestTile.getMovementPathTiles()))
 				
 	elif use_type == UseType.END: # Rotates towards and enemies and applies damage
-		if attackables.is_empty(): return []
-		var attackables_array: Array = attackables.keys()
+		if no_attackables: return []
+		var attackables_array: Array = attackables.keys().filter(func(x: CardGD): return attackables[x] != null)
 		attackables_array.sort_custom(func(x: CardGD, y: CardGD): return x.energy > y.energy)
 		BestTile = attackables_array[0].getTile()
 		
@@ -825,7 +832,7 @@ func onSlashAttack(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 		actions.append(DamageAction.new(self, damagables, attack, Game.DamageTypes.OTHER))
 	return actions
 	
-func getSlashAttackables(enemies: Array, tiles: Array) -> Dictionary:
+func getSlashAttackables(enemies: Array, tiles: Array) -> Dictionary[CardGD, TileGD]:
 	var attackables: Dictionary[CardGD, TileGD] = {}
 	for EnemyCard: CardGD in enemies:
 		attackables[EnemyCard] = isSlashEnemyAttackable(EnemyCard, tiles)

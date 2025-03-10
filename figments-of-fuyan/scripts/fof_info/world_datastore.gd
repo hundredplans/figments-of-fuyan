@@ -1,7 +1,6 @@
 class_name WorldDatastore extends Resource
 
 @export var world: int
-@export var data: Array[MapNodeOddsDatastore]
 
 @export_group("Base")
 @export var base_rarity_odds: RarityOddsDatastore
@@ -10,7 +9,6 @@ class_name WorldDatastore extends Resource
 
 @export_group("Start of Generation")
 @export_range(0, 100, 0.1) var extra_unique_node_odds: float
-@export_range(0, 100, 0.1) var extra_shop_odds: float
 @export_group("")
 
 @export_group("Level")
@@ -50,12 +48,6 @@ class_name WorldDatastore extends Resource
 @export_group("")
 
 @export_group("Constants across Worlds")
-@export var LANE_ODDS: Dictionary = {
-	"2": 0.25,
-	"3": 0.7,
-	"4": 0.05, 
-}
-@export var REMOVE_RANDOM_EDGES: float = 0.5
 @export var ENCOUNTER_COUNT_FIGHT_ODDS: Dictionary = {
 	"1": 0,
 	"2": 0,
@@ -63,10 +55,16 @@ class_name WorldDatastore extends Resource
 	"4": 0.5,
 	"5": 1.0
 }
-@export var LIMIT_ENCOUNTER_AMOUNT_PER_SEGMENT: int = 4
+@export_range(0, 1, 0.01) var UPGRADE_REGULAR_FIGHT: float = 0.125
+@export var MIN_ELITE_FIGHTS: int = 2
+@export var MIN_ENCOUNTER_AMOUNT: int = 1
+@export var MAX_ENCOUNTER_AMOUNT: int = 2
 @export_group("")
 
 static func getInfoPath() -> String: return "res://resources/datastore/world"
 	
 func getMaxEnergy() -> int:
 	return world + 4
+
+func getEncounterAmount() -> int:
+	return randi_range(MIN_ENCOUNTER_AMOUNT, MAX_ENCOUNTER_AMOUNT)

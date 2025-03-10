@@ -22,7 +22,7 @@ var HoverUI: Control
 
 var saved_rotation_y: float = 0
 const PROGRESS_OFFSET: float = 3
-const LANE_OFFSET: float = 4
+const LANE_OFFSET: float = 3
 const CENTER_PROGRESS_OFFSET: float = -15
 #endregion
 
@@ -32,17 +32,9 @@ func isHoly() -> bool:
 #endregion
 
 #region Static
-static func onCalculatePosition(_map_location: MapLocation, map_locations: Array) -> Vector3:
+static func onCalculatePosition(_map_location: MapLocation) -> Vector3:
 	var pos := Vector3((_map_location.progress * PROGRESS_OFFSET) + CENTER_PROGRESS_OFFSET, 0.3, 0)
-	var lanes: Array = map_locations.filter(func(x: MapLocation): return x.progress == _map_location.progress)\
-	.map(func(x: MapLocation): return x.lane)
-	var _direction: int = 0
-	
-	match lanes.size():
-		2: _direction = -1 if lanes.max() == 1 else 1
-		4: _direction = -1 if lanes.max() == 2 else 1
-	
-	pos.z = (_map_location.lane + (_direction * 0.5)) * LANE_OFFSET
+	pos.z = (_map_location.lane * LANE_OFFSET)
 	return pos
 #endregion
 

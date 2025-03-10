@@ -1,4 +1,4 @@
-extends EncounterGD
+extends EncounterGD	
 
 func canShowUp() -> bool:
 	return true

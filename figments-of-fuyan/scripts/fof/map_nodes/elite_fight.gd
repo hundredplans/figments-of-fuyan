@@ -12,7 +12,15 @@ func onFofInit() -> void:
 	var base_budget: int = getBudget()
 	var enemy_spawn_amount: int = min(randi_range(level_info.enemy_min_spawn_amount, level_info.enemy_max_spawn_amount), enemy_spawns.size() - 1) # -1 for chief
 	var chief_spawn_coords: Vector4i = enemy_spawns.pop_front().coords
-	var chief_infos: Array = Game.area.basic_card_ids.map(func(x: int): return Helper.getFofInfoID(CardInfo, x)).filter(func(x: CardInfo): return x.rarity == Game.Rarities.EXALT)
+	
+	var other_chief_ids: Array = get_tree().get_nodes_in_group("EliteFightMapNodesGD")\
+		.map(func(x: MapNodeGD): return x.enemy_cards\
+		.filter(func(y: SavedDataCard): return Helper.getFofInfoID(CardInfo, y.id).rarity == Game.Rarities.EXALT and y.ascended))[0]\
+		.map(func(x: SavedDataCard): return x.id)
+	
+	var chief_infos: Array = Game.area.basic_card_ids\
+		.map(func(x: int): return Helper.getFofInfoID(CardInfo, x))\
+		.filter(func(x: CardInfo): return x.rarity == Game.Rarities.EXALT and x.id not in other_chief_ids)
 	
 	setChiefAndSpawns(base_budget, enemy_spawns, enemy_spawn_amount, chief_infos, chief_spawn_coords)
 	setRandomCurseID()
@@ -28,7 +36,7 @@ func setChiefAndSpawns(base_budget: int, enemy_spawns: Array, enemy_spawn_amount
 	enemy_cards = Game.area.setEnemySpawnsFromBudget(max(base_budget - chief_data.energy, 0), enemy_spawn_amount, enemy_spawns, map_location.progress, true)
 	
 	var restart_amount: int = 0
-	while(!ChiefCard.isValidEliteLevelSpawns(enemy_cards) and restart_amount < MAX_RESTART_AMOUNT):
+	while(!ChiefCard.isValidEliteLevelSpawns(enemy_cards)):
 		enemy_cards = Game.area.setEnemySpawnsFromBudget(budget, enemy_spawn_amount, enemy_spawns, map_location.progress, true)
 		restart_amount += 1
 		
@@ -43,13 +51,16 @@ func onSave() -> SavedDataMapNode:
 func onLoadData(data: SavedData) -> void:
 	super(data)
 	curse_id = data.curse_id
+	add_to_group("EliteFightMapNodesGD")
 	
 func onEntered() -> void:
 	super()
 	
 func setRandomCurseID() -> void:
-	var curse_infos: Array = Helper.getFofInfoArray(BoonInfo).filter(func(x: BoonInfo): return x.elite_fight_curse)
-	if Helper.admin_datastore.force_elite_fight_curse_id == 0: curse_id = onGenerateCurseID(curse_infos)
+	if Helper.admin_datastore.force_elite_fight_curse_id == 0:
+		var existing_curse_ids: Array = get_tree().get_nodes_in_group("EliteFightMapNodesGD").map(func(x: MapNodeGD): return x.curse_id)
+		var curse_infos: Array = Helper.getFofInfoArray(BoonInfo).filter(func(x: BoonInfo): return x.elite_fight_curse and x.id not in existing_curse_ids)
+		curse_id = onGenerateCurseID(curse_infos)
 	else: curse_id =  Helper.admin_datastore.force_elite_fight_curse_id
 	
 func onGenerateCurseID(curse_infos: Array) -> int:

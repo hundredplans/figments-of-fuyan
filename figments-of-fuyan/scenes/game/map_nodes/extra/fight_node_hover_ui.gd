@@ -15,7 +15,7 @@ func setInfo(map_node_data: SavedDataFight) -> void:
 	
 	var level_info: LevelInfo = Helper.getFofInfoID(LevelInfo, map_node_data.level_info.id)
 	
-	LevelLabel.text = str(area.getWorldDifficulty()) + "-" + str(map_node_data.map_location.progress) + ": " + str(level_info.name)
+	LevelLabel.text = str(area.getWorldDifficulty()) + "-" + str(clamp(map_node_data.map_location.progress, 0, 10)) + ": " + str(level_info.name)
 	
 	var enemy_cards: Array = map_node_data.enemy_cards.duplicate()
 	

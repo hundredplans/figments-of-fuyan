@@ -359,7 +359,7 @@ func setTileIntent(tile_intent: Game.TileIntents) -> void:
 		TileIntentModel.queue_free()
 		
 	if tile_intent != Game.TileIntents.NULL:
-		TileIntentModel = load(info.getTileIntentModelPath(tile_intent)).instantiate()
+		TileIntentModel = load(info.getTileIntentModelPath(tile_intent, variation)).instantiate()
 		add_child(TileIntentModel)
 		
 		TileIntentModel.position.y = getCardYOffsetBase()

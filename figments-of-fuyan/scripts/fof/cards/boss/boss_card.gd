@@ -71,16 +71,16 @@ func getArchetypeFromInfo() -> ArchetypeInfo:
 	return info.getArchetype(boss_datastore.phase)
 	
 func getBossIntentsFromInfo() -> Array[BossIntent]:
-	return info.getBossIntents(boss_datastore.phase).getIntents()
+	return info.getBossIntents(boss_datastore.phase)
 	
 func getSpeedOrderOverrideFromInfo() -> BossCardInfo.SpeedOrderOverride:
 	return info.getSpeedOrderOverride(boss_datastore.phase)
 	
-func getChangeDelayFromInfo() -> int:
-	return info.getChangeDelay(boss_datastore.phase)
+func getChangeDelayFromInfo(delta: int = 0) -> int:
+	return info.getChangeDelay(boss_datastore.phase + delta)
 	
-func getPhaseChangeBossIntentNameFromInfo() -> String:
-	return info.getPhaseChangeBossIntentName(boss_datastore.phase)
+func getAwakenBossIntentNameFromInfo() -> String:
+	return info.getAwakenBossIntentName(boss_datastore.phase)
 #endregion
 
 #region Getters
@@ -213,9 +213,9 @@ func onChangeBossPhasePostDelay() -> void:
 		onRemoveModel()
 		onCreateModel()
 		
-	var phase_change_boss_intent_name: String = getPhaseChangeBossIntentNameFromInfo()
-	if !phase_change_boss_intent_name.is_empty():
-		var new_boss_intent: BossIntent = getBossIntentsFromInfo().filter(func(x: BossIntent): return x.name == phase_change_boss_intent_name)[0]
+	var awaken_boss_intent_name: String = getAwakenBossIntentNameFromInfo()
+	if !awaken_boss_intent_name.is_empty():
+		var new_boss_intent: BossIntent = getBossIntentsFromInfo().filter(func(x: BossIntent): return x.name == awaken_boss_intent_name)[0]
 		boss_datastore.onResetConditionResults()
 		actions.append(ChangeBossIntentAction.new(new_boss_intent))
 		

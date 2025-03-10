@@ -310,13 +310,15 @@ func onFofInit() -> void:
 	super()
 	base_stats = StatsDatastore.new(attack, max_health, max_speed, energy)
 	
-	var initial_traits: Array = []
-	if !ascended: initial_traits = info.initial_traits.duplicate()
-	else: initial_traits = info.ascended_traits.duplicate()
-	
-	for trait_data in initial_traits:
-		var added_by := OverworldTrait.AddedBy.ASCENDED if ascended else OverworldTrait.AddedBy.REGULAR
-		onAddOverworldTrait(OverworldTrait.new(trait_data, added_by))
+	if self is not BossCardGD:
+		var initial_traits: Array = []
+		
+		if !ascended: initial_traits = info.initial_traits.duplicate()
+		else: initial_traits = info.ascended_traits.duplicate()
+		
+		for trait_data in initial_traits:
+			var added_by := OverworldTrait.AddedBy.ASCENDED if ascended else OverworldTrait.AddedBy.REGULAR
+			onAddOverworldTrait(OverworldTrait.new(trait_data, added_by))
 	
 var status_effects_datas: Array
 var field_effects_datas: Array

@@ -26,6 +26,7 @@ func onLoadData(data: SavedData) -> void:
 	level_info = data.level_info
 	enemy_cards = data.enemy_cards
 	spawn_group = data.spawn_group
+	add_to_group("FightMapNodesGD")
 #endregion
 
 #region Hovering
@@ -65,10 +66,19 @@ func getBudget() -> int:
 	return Game.area.getBudget(map_location.progress, level_info.enemy_budget_offset, Game.isDivinus() and !isHoly())
 	
 func setLevelInfo() -> void:
-	var levels: Array = Helper.getFofInfoArray(Game.area.info.base_level_script)
 	if Helper.admin_datastore.force_level_spawn_id == 0:
+		var existing_level_ids: Array = get_tree().get_nodes_in_group("FightMapNodesGD")\
+			.filter(func(x: MapNodeGD): return x.map_location.progress == map_location.progress and x != self)\
+			.map(func(y: MapNodeGD): return y.level_info.id if y.level_info != null else 0)\
+			.filter(func(z: int): return z != 0)
+			
+		var levels: Array = Helper.getFofInfoArray(Game.area.info.base_level_script)
 		levels = levels.filter(func(x: LevelInfo): \
 			return map_location.progress >= x.progress_min and map_location.progress <= x.progress_max)
+		
+		if levels.size() > existing_level_ids.size():
+			levels = levels.filter(func(x: LevelInfo): return x.id not in existing_level_ids)
+			
 		level_info = levels.pick_random()
 	else:
 		level_info = Helper.getFofInfoID(LevelInfo, Helper.admin_datastore.force_level_spawn_id)

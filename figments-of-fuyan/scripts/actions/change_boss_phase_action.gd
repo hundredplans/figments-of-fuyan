@@ -4,7 +4,8 @@ func _init() -> void:
 	super()
 	
 func onPreAction() -> void:
-	setActionDelay(Game.getLevel().getBoss().getChangeDelayFromInfo())
+	var BossCard: BossCardGD = Game.getLevel().getBoss()
+	setActionDelay(Game.getLevel().getBoss().getChangeDelayFromInfo(BossCard.getPhase()))
 	
 func onPostAction() -> void:
 	var BossCard: BossCardGD = Game.getLevel().getBoss()

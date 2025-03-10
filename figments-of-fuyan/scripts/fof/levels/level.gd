@@ -132,7 +132,9 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 	save_file = _save_file
 	energy_changed.emit(energy)
 	
-	onPushAction(PlayMusicAction.new(Game.getArea().info.boss_music))
+	if isEpic() and !is_ended:
+		onPushAction(PlayMusicAction.new(Game.getArea().info.boss_music))
+		
 	if is_init:
 		var actions: Array = [StartGameAction.new(), ChangePhaseAction.new(Game.Phases.START)]
 		speed_order = SpeedOrder.new()
@@ -363,6 +365,7 @@ func onRequestCameraPositionUpdate() -> void:
 
 #region Game Ended
 func setRewards(is_win: bool) -> void:
+	onPushAction(PlayMusicAction.new(null))
 	is_ended = true
 	set_rewards.emit(is_win)
 
@@ -377,7 +380,6 @@ func isGameEnded() -> bool:
 	
 func onRewardsFinished() -> void:
 	rewards_finished.emit(save_file)
-	onPushAction(PlayMusicAction.new(null))
 #endregion
 
 #region AI

@@ -23,6 +23,8 @@ signal dragged_finished
 @onready var ToolIconBackground: Sprite2D = %ToolIconBackground
 @onready var OutlineMask: TextureRect = %OutlineMask
 
+@onready var ArchetypeLabelTemp: Label = %ArchetypeLabelTemp
+
 @onready var BuffControlAttack: Control = %BuffControlAttack
 @onready var BuffLabelAttack: Label = %BuffLabelAttack
 @onready var BuffLabelAttackSign: Label = %BuffLabelAttackSign
@@ -75,6 +77,7 @@ func setInfo(_Card: CardGD, _highlight_on_hover: bool = false, _inspectable: boo
 	DraggableParent = _DraggableParent
 	
 	Card = _Card
+	ArchetypeLabelTemp.text = Card.info.archetype.name
 	Card.update_ascended.connect(onCardAscended)
 	
 	Background.setTexture(rarities[Card.info.rarity] if !Card.ascended else ascended_rarities[Card.info.rarity])

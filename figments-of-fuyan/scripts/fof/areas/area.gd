@@ -59,13 +59,12 @@ func onLoadData(data: SavedData) -> void:
 var is_init: bool = false
 func onFofInit(Card: CardGD) -> void:
 	is_init = true
-	empty_spots = generateEmptyMapSpots()
-	generateMapLinks(Card)
-	var map_node_odds: Dictionary = getMapNodeOdds()
-	var unique_node_id: Array = Card.info.unique_nodes_id
+	empty_spots = onGenerateEmptyMapSpots()
+	onGenerateMapLinks()
+	var unique_node_ids: Array = Card.info.unique_nodes_id
 	
-	setEmptySpotsIDS(unique_node_id, map_node_odds, Card)
-	setEliteFights(map_node_odds, Card)
+	setEmptySpotsIDS(unique_node_ids)
+	setEliteFights()
 	onCreateMapNodes()
 	
 func onLoadMap() -> void:
@@ -94,52 +93,35 @@ func onLoadMapAfterScenes() -> void:
 #region Create Map Nodes
 var empty_spots: Array[EmptyMapNode] = []
 #region Generators
-func generateEmptyMapSpots() -> Array[EmptyMapNode]:
+func onGenerateEmptyMapSpots() -> Array[EmptyMapNode]:
 	if getWorldDifficulty() == 1: empty_spots.append(EmptyMapNode.new(-1, 0))
 	empty_spots.append(EmptyMapNode.new(0, 0))
 	
-	var last_two_lane_value: int = 0
 	for i in range(1, 11):
 		match i:
-			1:
-				for j in range(3): empty_spots.append(EmptyMapNode.new(1, j - 1))
-			5, 10: empty_spots.append(EmptyMapNode.new(i, 0))
+			5: empty_spots.append(EmptyMapNode.new(i, 0))
+			10:
+				if Game.isDivinus(): empty_spots.append(EmptyMapNode.new(11, 0))
+				empty_spots.append(EmptyMapNode.new(10, 0))
 			_:
-				var lane_count: int = onGenerateLaneCount()
-				var start_lane: int = 0
-				match lane_count:
-					2: start_lane = -1 if Random.getBool() else 0; last_two_lane_value = start_lane
-					3: start_lane = -1; last_two_lane_value = 1
-					4:
-						if last_two_lane_value != 1:
-							start_lane = -1 if last_two_lane_value == 0 else -2
-						else: start_lane = -1 if Random.getBool() else -2
-						last_two_lane_value = 1
-					
-				for _i in range(lane_count):
-					empty_spots.append(EmptyMapNode.new(i, start_lane))
-					start_lane += 1
+				for j in range(-1, 2): # Create on -1 and 1
+					if j != 0: empty_spots.append(EmptyMapNode.new(i, j))
 	return empty_spots
 	
-func generateMapLinks(Card: CardGD) -> void:
-	var empty_spots_by_progress: Dictionary = generateEmptySpotsByProgress()
-	onCreateAllMapLinks(empty_spots_by_progress)
-	onRemoveOverlappingMapLinks(empty_spots_by_progress)
-	onRemoveEdgesAtRandom(empty_spots_by_progress)
-	setHolyPath(Card)
+func onGenerateMapLinks() -> void:
+	var empty_spots_by_progress: Dictionary[int, Array] = onGenerateEmptySpotsByProgress()
+	onCreateMapLinks(empty_spots_by_progress)
+	setHolyPath()
 			
-func generateEmptySpotsByProgress() -> Dictionary:
-	var empty_spots_by_progress: Dictionary = {}
-	for empty_spot in empty_spots:
+func onGenerateEmptySpotsByProgress() -> Dictionary:
+	var empty_spots_by_progress: Dictionary[int, Array] = {}
+	for empty_spot: EmptyMapNode in empty_spots:
 		if empty_spots_by_progress.has(empty_spot.progress):
 			empty_spots_by_progress[empty_spot.progress].append(empty_spot)
 		else: empty_spots_by_progress[empty_spot.progress] = [empty_spot]
 	return empty_spots_by_progress
-
-func onGenerateLaneCount() -> int:
-	return int(Random.getRandomKey(info.world.LANE_ODDS))
 	
-func generateMapNodeOddsRollable(map_node_odds: Dictionary) -> Dictionary:
+func onGenerateMapNodeOddsRollable(map_node_odds: Dictionary) -> Dictionary:
 	var map_node_odds_rollable: Dictionary = {}
 	for key in map_node_odds:
 		map_node_odds_rollable[key] = {"fight": map_node_odds[key].regular_fight / 100,\
@@ -148,133 +130,122 @@ func generateMapNodeOddsRollable(map_node_odds: Dictionary) -> Dictionary:
 #endregion
 
 #region Link-related
-func onCreateAllMapLinks(empty_spots_by_progress: Dictionary) -> void:
-	for key in empty_spots_by_progress:
-		if key == 10: continue
+func onCreateMapLinks(empty_spots_by_progress: Dictionary[int, Array]) -> void:
+	var section_one_batch: Dictionary[int, Array] = {}
+	var section_two_batch: Dictionary[int, Array] = {} 
+	for key: int in empty_spots_by_progress:
+		if (key == 10 and !Game.isDivinus()) or key == 11: continue
+		
 		var batch: Array = empty_spots_by_progress[key]
 		var next_batch: Array = empty_spots_by_progress[key + 1]
 		
-		if next_batch.size() == 1: for empty_spot in batch: empty_spot.links.append(EmptyMapNodeLink.new(next_batch[0]))
-		elif batch.size() == 1: for empty_spot in next_batch: batch[0].links.append(EmptyMapNodeLink.new(empty_spot))
-		else:
-			for empty_spot in batch:
-				for _empty_spot in next_batch:
-					if empty_spot.lane == _empty_spot.lane or empty_spot.lane == _empty_spot.lane + 1\
-					or empty_spot.lane == _empty_spot.lane - 1:
-						empty_spot.links.append(EmptyMapNodeLink.new(_empty_spot))
-						
-func onRemoveOverlappingMapLinks(empty_spots_by_progress: Dictionary) -> void:
-	for key in empty_spots_by_progress:
-		var batch: Array = empty_spots_by_progress[key]
-		batch.sort_custom(func(x: EmptyMapNode, y: EmptyMapNode): return x.lane < y.lane)
-		for i in range(batch.size() - 1):
-			var empty_spot: EmptyMapNode = batch[i]
-			var next_empty_spot: EmptyMapNode = batch[i + 1]
-			var links: Dictionary = onFindNextOverlappingLinks(empty_spot, next_empty_spot)
-			if !links.is_empty():
-				var remove_first_link: bool = Random.getBool()
-				if remove_first_link: empty_spot.links.erase(links[empty_spot])
-				else: next_empty_spot.links.erase(links[next_empty_spot])
-					
-func onFindNextOverlappingLinks(empty_spot: EmptyMapNode, next_empty_spot: EmptyMapNode) -> Dictionary:
-	for map_link in empty_spot.links:
-		var link: EmptyMapNode = map_link.empty_map_node
-		if link.lane == next_empty_spot.lane:
-			for _map_link in next_empty_spot.links:
-				var _link: EmptyMapNode = _map_link.empty_map_node
-				if _link.lane == empty_spot.lane:
-					return {empty_spot: map_link, next_empty_spot: _map_link}
-	return {}
-	
-func onRemoveEdgesAtRandom(empty_spots_by_progress: Dictionary) -> void:
-	for key in empty_spots_by_progress:
-		if key == 10: continue
+		if key >= 1 and key <= 3: section_one_batch[key] = batch
+		elif key >= 6 and key <= 8: section_two_batch[key] = batch
 		
-		var batch: Array = empty_spots_by_progress[key]
-		for empty_spot in batch:
-			var remove_links: Array = []
-			var link_size: int = empty_spot.links.size()
-			for link in empty_spot.links:
-				if link_size > 1 and batch.any(func(x: EmptyMapNode): return x != empty_spot and \
-				link.empty_map_node in x.links.map(func(y: EmptyMapNodeLink): return y.empty_map_node))\
-				and Random.rollFloat(info.world.REMOVE_RANDOM_EDGES):
-					remove_links.append(link)
-					link_size -= 1
-				
-			for link in remove_links: empty_spot.links.erase(link)
-			
-func onFilterNextBatchToManyLinks(batch: Array, next_batch: Array) -> void:
-	var batch_with_links: Dictionary = {}
-	for empty_spot in batch:
-		for link in empty_spot.links:
-			if !batch_with_links.has(link): batch_with_links[link] = 1
-			else: batch_with_links[link] += 1
+		for empty_spot: EmptyMapNode in batch:
+			for next_empty_spot: EmptyMapNode in next_batch:
+				if next_empty_spot.lane == empty_spot.lane or key in [0, 4, 5, 9]:
+					empty_spot.links.append(EmptyMapNodeLink.new(next_empty_spot))
+		
+	onGenerateLinksPerSection(section_one_batch, empty_spots_by_progress)
+	onGenerateLinksPerSection(section_two_batch, empty_spots_by_progress)
+		
+func onGenerateLinksPerSection(section_batch: Dictionary[int, Array], empty_spots_by_progress: Dictionary[int, Array]) -> void:
+	var section_progresses: Array = section_batch.keys()
+	section_progresses.shuffle()
 	
-	for key in batch_with_links:
-		if batch_with_links[key] <= 1: next_batch.erase(key)
+	var first_lane_link: int = 0
+	var second_lane_link: int = 0
+	
+	for progress: int in section_progresses:
+		if first_lane_link == progress or second_lane_link == progress: continue
+		if first_lane_link > 0 and second_lane_link > 0: break 
+		
+		var empty_map_node: EmptyMapNode
+		if first_lane_link == 0 and second_lane_link == 0:
+			var index: int = int(Random.getBool())
+			empty_map_node = section_batch[progress][index]
+		else:
+			empty_map_node = section_batch[progress]\
+			.filter(func(x: EmptyMapNode): return (x.lane == 1 and first_lane_link > 0) or (x.lane == -1 and second_lane_link > 0))[0]
+		
+		if empty_map_node.lane == -1: first_lane_link = progress
+		elif empty_map_node.lane == 1: second_lane_link = progress
+		
+		var next_empty_map_node: EmptyMapNode = empty_spots_by_progress[progress + 1].filter(func(x: EmptyMapNode): return x.lane != empty_map_node.lane)[0]
+		empty_map_node.links.append(EmptyMapNodeLink.new(next_empty_map_node))
 #endregion
 
 #region Set Empty ID
-func setEmptySpotsIDS(unique_node_ids: Array, map_node_odds: Dictionary, Card: CardGD) -> void:
+func setEmptySpotsIDS(unique_node_ids: Array) -> void:
 	empty_spots.shuffle()
-	
-	var is_divinus: bool = Card.info.id == 2
-	var map_node_odds_rollable: Dictionary = generateMapNodeOddsRollable(map_node_odds)
 	
 	var unique_nodes: Array = unique_node_ids\
 		.filter(func(x: int): return x != 10)\
 		.map(func(x: int):
 		return SegmentNode.new(x, Random.getBool() if getWorldDifficulty() != 1 else false))
 	
-	for segment_node in unique_nodes\
+	for segment_node: SegmentNode in unique_nodes\
 		.filter(func(__: SegmentNode): return Random.rollFloat(getWorld().extra_unique_node_odds / 100.0)):
 		unique_nodes.append(SegmentNode.new(segment_node.id, !segment_node.segment_one))
 		
+	var is_divinus: bool = Game.isDivinus()
 	var shops: Array = []
+	if getWorldDifficulty() == 1: shops = [SegmentNode.new(6, false, is_divinus)]
+	elif !is_divinus: shops = [SegmentNode.new(6, false), SegmentNode.new(6, true)]
+	elif is_divinus:
+		var is_segment_one_shop_holy: int = int(Random.getBool())
+		shops = [SegmentNode.new(6, true, is_segment_one_shop_holy),\
+			SegmentNode.new(6, false, abs(is_segment_one_shop_holy - 1))]
+		
+	var segment_one_encounter_limit: int = getWorld().getEncounterAmount()
+	var segment_two_encounter_limit: int = getWorld().getEncounterAmount()
+	var non_fights_assigned: Array = []
 	if getWorldDifficulty() == 1:
-		shops = [SegmentNode.new(6, false, is_divinus)]
-	else:
-		var is_first_shop_holy: bool = Random.getBool()
-		shops = [SegmentNode.new(6, int(is_first_shop_holy)),\
-			SegmentNode.new(6, abs(int(is_first_shop_holy) - 1))]
+		segment_one_encounter_limit -= 1
 	
-	if getWorldDifficulty() > 1 and Random.rollFloat(getWorld().extra_shop_odds / 100.0):
-		shops.append(SegmentNode.new(6, Random.getBool(), Random.getBool()))
-		
-	var encounter_limiter: Array = [0, 0] # Limited to LIMIT_ENCOUNTER_AMOUNT_PER_SEGMENT
-	for empty_spot in empty_spots:
+	for empty_spot: EmptyMapNode in empty_spots:
 		var is_holy: bool = empty_spot.links.any(func(x: EmptyMapNodeLink): return x.is_holy)
-		
-		if is_divinus and is_holy and empty_spot.progress == 9:
-			empty_spot.id = 10
-			continue
-			
 		match empty_spot.progress:
-			-1: empty_spot.id = 1; continue
+			-1:
+				empty_spot.id = 1
+				continue
 			0:
 				empty_spot.id = 1 if getWorldDifficulty() > 1 else (6 if Helper.admin_datastore.spawn_instead_of_shop_id == 0 else Helper.admin_datastore.spawn_instead_of_shop_id)
 				continue
-			5: empty_spot.id = 7; continue
-			10: empty_spot.id = 8; continue
+			1, 2:
+				if getWorldDifficulty() == 1:
+					empty_spot.id = 3
+					continue
+			5:
+				empty_spot.id = 7
+				continue
+			10:
+				if is_divinus: empty_spot.id = 10
+				else: empty_spot.id = 8
+				continue
+			11:
+				empty_spot.id = 8
+				continue
 			_:
-				if onSelectUniqueNodeGeneration(unique_nodes, empty_spot):
-					continue
-				elif onSelectShop(shops, empty_spot, is_holy):
-					continue
+				if non_fights_assigned.is_empty() or non_fights_assigned.all(func(x: EmptyMapNode): return !x.isLink(empty_spot)):
+					if onSelectUniqueNodeGeneration(unique_nodes, empty_spot):
+						non_fights_assigned.append(empty_spot)
+						continue
+					elif onSelectShop(shops, empty_spot, is_holy):
+						non_fights_assigned.append(empty_spot)
+						continue
 		
-		if empty_spots.filter(func(y: EmptyMapNode): return y != empty_spot).all(func(x: EmptyMapNode): return x.id not in [0, 3]):
-			empty_spot.id = 3
-		else:
-			var roll: String = Random.getRandomKey(map_node_odds_rollable[empty_spot.progress])
-			match roll:
-				"fight": empty_spot.id = 3; continue
-				"encounter":
-					var segment: int = 1 if empty_spot.progress <= 5 else 2
-					if encounter_limiter[segment - 1] < getWorld().LIMIT_ENCOUNTER_AMOUNT_PER_SEGMENT:
-						encounter_limiter[segment - 1] += 1
-						empty_spot.id = 5
-					else: empty_spot.id = 3
-					continue
+		if (empty_spot.isSegmentOne() and segment_one_encounter_limit > 0) or (empty_spot.isSegmentTwo() and segment_two_encounter_limit): # Roll an encounter
+			if non_fights_assigned.is_empty() or non_fights_assigned.all(func(x: EmptyMapNode): return !x.isLink(empty_spot)):
+				non_fights_assigned.append(empty_spot)
+				empty_spot.id = 5
+				
+				if empty_spot.isSegmentOne(): segment_one_encounter_limit -= 1
+				else: segment_two_encounter_limit -= 1
+				
+				continue
+		empty_spot.id = 3
 		
 func onSelectUniqueNodeGeneration(unique_nodes: Array, empty_spot: EmptyMapNode) -> bool:
 	for segment_node in unique_nodes.filter(func(x: SegmentNode):\
@@ -296,24 +267,20 @@ func onSelectShop(shops: Array, empty_spot: EmptyMapNode, is_holy: bool) -> bool
 #endregion
 
 #region Elites
-func setEliteFights(map_node_odds: Dictionary, Card: CardGD) -> void:
-	var guarantee_elite: bool = true
-	for empty_spot in empty_spots.filter(func(x: EmptyMapNode): return x.id == 3):
-		var odds: float = map_node_odds[empty_spot.progress].upgrade_regular_fight
-		if odds > 0:
-			if guarantee_elite: empty_spot.id = 4; guarantee_elite = false; continue
-			
-		odds += getExtraEliteOdds(Card)
-		var upgrade: bool = Random.rollFloat(odds / 100)
-		if upgrade: empty_spot.id = 4
+func setEliteFights() -> void:
+	var max_elite_fight_amount: int = basic_card_ids.map(func(x: int): return Helper.getFofInfoID(CardInfo, x))\
+		.filter(func(x: CardInfo): return x.rarity == Game.Rarities.EXALT).size()
+	var assigned_elite_fights: Array = []
+	for empty_spot: EmptyMapNode in empty_spots.filter(func(x: EmptyMapNode): return x.id == 3):
+		if assigned_elite_fights.size() == max_elite_fight_amount: break
+		if !assigned_elite_fights.all(func(x: EmptyMapNode): return !x.isLink(empty_spot)): continue
+		if getWorldDifficulty() == 1 and empty_spot.progress < 4: continue
+		if assigned_elite_fights.size() < getWorld().MIN_ELITE_FIGHTS or Random.rollFloat(getWorld().UPGRADE_REGULAR_FIGHT):
+			empty_spot.id = 4
+			assigned_elite_fights.append(empty_spot)
 #endregion
 
 #region Getters
-func getMapNodeOdds() -> Dictionary:
-	var map_node_odds: Dictionary = {}
-	for odds in info.world.data: map_node_odds[odds.progress] = odds
-	return map_node_odds
-	
 func getExtraEliteOdds(Card: CardGD) -> float:
 	if Card.info.id == 1: return Card.extra_elite_odds
 	return 0
@@ -326,7 +293,7 @@ func onCreateMapNodes() -> void:
 		
 	var map_locations: Array = empty_spots.map(func(x: EmptyMapNode): return x.map_location)
 	for _map_location in map_locations:
-		_map_location.position = MapNodeGD.onCalculatePosition(_map_location, map_locations)
+		_map_location.position = MapNodeGD.onCalculatePosition(_map_location)
 	
 	var infos: Array = Helper.getFofInfoArray(MapNodeInfo)
 	for empty_spot in empty_spots:
@@ -345,13 +312,17 @@ func onCreateMapNode(data: SavedDataMapNode) -> void:
 	
 #endregion
 #region Holy Path
-func setHolyPath(Card: CardGD) -> void:
-	if Card.info.id == 2:
+func setHolyPath() -> void:
+	if Game.isDivinus():
 		var empty_map_node: EmptyMapNode = onFindEmptyMapSpot(0, 0) if getWorldDifficulty() > 1 else onFindEmptyMapSpot(-1, 0)
-		while(empty_map_node.progress < 10):
-			var link: EmptyMapNodeLink = empty_map_node.links.pick_random()
+		var lane: int = -1 if Random.getBool() else 1
+		while(empty_map_node.progress < 11):
+			var link: EmptyMapNodeLink = empty_map_node.links.filter(func(x: EmptyMapNodeLink): return x.empty_map_node.lane in [0, lane])[0]
 			link.is_holy = true
 			empty_map_node = link.empty_map_node
+			
+			if empty_map_node.progress == 5: lane = -1 if Random.getBool() else 1
+			
 
 #endregion
 #endregion	
@@ -542,32 +513,50 @@ func getCardsByRarity(original_cards: Array) -> Array:
 	return cards
 	
 func setEnemySpawnsFromBudget(budget: int, enemy_spawn_amount: int, spawns: Array, progress: int, is_elite: bool) -> Array:
-	var enemies: Array = []
 	var cards: Array = Helper.getFofInfoArray(CardInfo).filter(func(x: CardInfo): return x.id in basic_card_ids)
+	
+	if progress == 1 and info.id == 1: # Remove charmer
+		cards = cards.filter(func(x: CardInfo): return x.id != 16)
+	
 	var energies: Array = cards.map(func(x: CardInfo): return x.energy)
 	var highest_cost: int = energies.max()
 	var lowest_cost: int = energies.min()
 	
 	var original_energy_combinations: Array = onGenerateCombinations(lowest_cost, highest_cost, enemy_spawn_amount)
-	print("Enemy Spawn Amount: " + str(enemy_spawn_amount))
-	print("Budget: " + str(budget))
-	print("Original Combainations: " + str(original_energy_combinations))
+	#print("Enemy Spawn Amount: " + str(enemy_spawn_amount))
+	#print("Budget: " + str(budget))
+	#print("Original Combainations: " + str(original_energy_combinations))
 	
 	var energy_combinations: Array = original_energy_combinations.filter(func(x: Array): return x.reduce(sum, 0) == budget)
 	
 	
-	print("End Combinations: " + str(energy_combinations))
-	print()
+	#print("End Combinations: " + str(energy_combinations))
+	#print()
 	
 	var energy_combination: Array = []
 	if !energy_combinations.is_empty(): # Remove later
 		energy_combination = energy_combinations.pick_random()
 	else: energy_combination = original_energy_combinations.pick_random(); print("USED ILLEGAL COMBINATION!")
 	
-	for i in range(energy_combination.size()):
-		var card_data: SavedDataCard = onCreateCardByEnergy(cards, energy_combination[i], spawns[i], progress, is_elite)
-		enemies.append(card_data)
-	return enemies
+	var other_enemies_ids: Array = get_tree().get_nodes_in_group("FightMapNodesGD")\
+		.filter(func(x: MapNodeGD): return x.map_location.progress == progress)\
+		.map(func(y: MapNodeGD): return y.enemy_cards.map(func(z: SavedDataCard): return z.id))
+		
+	while(true):
+		var enemies: Array = []
+		for i in range(energy_combination.size()):
+			var card_data: SavedDataCard = onCreateCardByEnergy(cards, energy_combination[i], spawns[i], progress, is_elite)
+			enemies.append(card_data)
+		
+		var enemies_ids: Array = enemies.map(func(x: SavedDataCard): return x.id)
+		if !other_enemies_ids.is_empty() and other_enemies_ids.any(func(x: Array): return x == enemies_ids):
+			continue
+			
+		if info.id == 1 and progress > 1 and !enemies.any(func(x: SavedDataCard): return Helper.getFofInfoID(CardInfo, x.id).archetype.id in [3, 4, 5]): # Reroll if doesn't have at least one tactician, warden or brute
+			continue
+			
+		return enemies
+	return []
 	
 func getBudget(progress: int, offset: int, is_unholy: bool = false) -> int:
 	var unholy_offset: int = 1 if is_unholy else 0

@@ -36,7 +36,7 @@ func setText(_text: String) -> void:
 func onColoredTextReplace(regex: RegEx) -> void:
 	for rarity in Game.Rarities.values():
 		var colored_text: String = Game.getRarityString(rarity)
-		regex.compile("a?" + colored_text)
+		regex.compile("\\ba?" + colored_text + "\\b")
 		
 		var offset: int = 0
 		while(true):

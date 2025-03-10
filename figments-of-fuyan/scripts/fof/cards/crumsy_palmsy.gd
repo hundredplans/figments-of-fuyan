@@ -21,9 +21,9 @@ func onAscendedUpdated(state: bool) -> void:
 	onResetCharges()
 
 func onResetCharges() -> void:
-	rampage_charges = 2 if !ascended else -1
-	trauma_charges = 2 if !ascended else -1
-	bloodthirst_charges = 2 if !ascended else -1
+	rampage_charges = 1 if !ascended else 2
+	trauma_charges = 1 if !ascended else 2
+	bloodthirst_charges = 1 if !ascended else 2
 
 func onProcessAction(action: Action) -> void:
 	super(action)
@@ -54,7 +54,7 @@ func onEffect() -> void:
 	onAbility()
 	
 func getDescription() -> String:
-	return super() if ascended else ("RAMPAGE [%s]\nTRAUMA [%s]\n BLOODTHIRST[%s]:\nGain [1] HP" % [rampage_charges, trauma_charges, bloodthirst_charges])
+	return ("RAMPAGE [%s]\nTRAUMA [%s]\n BLOODTHIRST[%s]:\nGain [1] HP" % [rampage_charges, trauma_charges, bloodthirst_charges])
 
 func onSave() -> SavedDataCard:
 	ability_save['rampage_charges'] = rampage_charges
