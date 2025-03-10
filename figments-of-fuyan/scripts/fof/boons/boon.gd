@@ -64,7 +64,9 @@ func onLevelEnded(_win: bool) -> void:
 		onPushAction(RemoveBoonAction.new(info.id))
 		onClear()
 		return
-	onResetCharges()
+		
+	if info.auto_reset_charges_level_start:
+		onResetCharges()
 	
 func onProcessAction(action: Action) -> void:
 	if action.post:

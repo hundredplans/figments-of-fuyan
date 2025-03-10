@@ -7,6 +7,12 @@ class_name ToolInfo extends FofInfo
 @export var active_abilities: Array[ActiveAbilityDatastore]
 @export var model: PackedScene
 
+@export_group("Charges")
+@export var use_charges: bool
+@export var auto_reset_charges: bool
+@export var reset_to_default: bool # Otherwise resets to 0
+@export_group("")
+
 static func getFofName() -> String: return "Tool"
 
 static func getInfoPath() -> String: return "res://resources/fof/tools"

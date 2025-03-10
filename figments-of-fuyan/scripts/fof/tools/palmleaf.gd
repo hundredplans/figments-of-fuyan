@@ -1,15 +1,22 @@
 extends ToolGD
 
 const START_TURN_AMOUNT: int = 2
-var turns_remaining: int = 2
 func onProcessAction(action: Action) -> void:
 	super(action)
-	if action.post:
-		if action is ChangePhaseAction and Game.isAdvanceTurn(action.phase, Card.team):
-			turns_remaining -= 1
-			if turns_remaining == 0:
-				onPushAction(RemoveToolAction.new(Card))
-	
+				
+func onCardTurnPassed() -> void:
+	super()
+	if charges > 0:
+		onPushAction(ChangeToolChargesAction.new(self, -1))
+
+func onChangeCharges(delta: int) -> void:
+	super(delta)
+	if charges == 0:
+		onPushAction(RemoveToolAction.new(Card))
+
+func getDefaultCharges() -> int:
+	return START_TURN_AMOUNT
+
 func onToolHolderAwakened() -> void:
 	super()
 	if Card.getVisibleFieldCardsEnemies().is_empty():
@@ -28,9 +35,5 @@ func onToolAction(action: StatAction) -> void:
 func onToolUnequipped() -> void:
 	super()
 
-func onSave() -> SavedDataTool:
-	ability_save["turns_remaining"] = turns_remaining
-	return super()
-
 func getDescription() -> String:
-	return Helper.getDescriptionNumeric(super(), [turns_remaining], [["Expires in ", "[2]"]])
+	return Helper.getDescriptionNumeric(super(), [charges], [["Expires in ", "[2]"]])

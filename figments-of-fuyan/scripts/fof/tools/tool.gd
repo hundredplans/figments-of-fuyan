@@ -1,6 +1,7 @@
 class_name ToolGD extends FofGD
 
 var Card: CardGD
+var charges: int
 var ascended: bool
 var active_effects: Array[ActiveEffectDatastore]
 var ability_save: Dictionary
@@ -19,7 +20,7 @@ func onLoadData(data: SavedData) -> void:
 		set(custom_variable, ability_save[custom_variable])
 	
 func onSave() -> SavedDataTool:
-	return SavedDataTool.new(info.id, false, public_id, ascended, active_effects, ability_save)
+	return SavedDataTool.new(info.id, false, public_id, ascended, active_effects, charges, ability_save)
 	
 func getAscended() -> bool:
 	return ascended
@@ -88,12 +89,17 @@ func getActiveEffectDescription(_active_effect: ActiveEffectDatastore, descripti
 	
 func onToolEquipped() -> void:
 	if Card.is_in_group("FieldCardsGD"): onToolHolderAwakened()
+	if info.auto_reset_charges:
+		onResetCharges()
 	
 func onToolHolderAwakened() -> void:
 	onCreateActiveEffects()
+	if info.auto_reset_charges:
+		onResetCharges()
 	
 func onToolHolderDeath() -> void:
-	pass
+	if info.auto_reset_charges:
+		onResetCharges()
 	
 func onReset() -> void:
 	pass
@@ -113,4 +119,19 @@ func setAscended(state: bool) -> void:
 
 func onLevelEnded(_win: bool) -> void:
 	if info.rarity == Game.Rarities.MINI: Card.onRemoveTool(); onClear()
+	if info.auto_reset_charges:
+		onResetCharges()
 		
+#region Charges
+func getDefaultCharges() -> int:
+	return 0
+	
+func onResetCharges() -> void:
+	if !info.use_charges: return
+	
+	var delta: int = -charges if !info.reset_to_default else (getDefaultCharges() - charges)
+	onForceAction(ChangeToolChargesAction.new(self, delta))
+	
+func onChangeCharges(delta: int) -> void:
+	charges = max(charges + delta, 0) 
+#endregion

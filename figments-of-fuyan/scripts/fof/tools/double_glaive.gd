@@ -23,4 +23,3 @@ func onCardTurnPassed() -> void:
 	
 func onReset() -> void: # Level ends
 	super()
-
