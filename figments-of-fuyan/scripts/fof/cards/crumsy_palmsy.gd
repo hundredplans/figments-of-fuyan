@@ -1,5 +1,8 @@
 extends CardGD
 
+const ANIMATION_DELAY: float = 2.0
+const STAT_CHANGE_DELAY: float = 2.0
+
 var rampage_charges: int
 var trauma_charges: int
 var bloodthirst_charges: int
@@ -12,8 +15,8 @@ func onFofInit() -> void:
 	super()
 	onResetCharges()
 
-func onReset(override: bool = false) -> void:
-	super(override)
+func onRegularReset() -> void:
+	super()
 	onResetCharges()
 	
 func onAscendedUpdated(state: bool) -> void:
@@ -50,8 +53,15 @@ func onBloodthirst(_action: DeathAction) -> void:
 		bloodthirst_charges -= 1
 	
 func onEffect() -> void:
-	onPushAction(StatAction.new(StatInfo.new(self, Game.Stats.MAX_HEALTH, 1)))
-	onAbility()
+	var animation_action := AnimationAction.new(self, "Ability")
+	animation_action.setActionDelay(ANIMATION_DELAY)
+	
+	var stat_action := StatAction.new(StatInfo.new(self, Game.Stats.MAX_HEALTH, 1))
+	if isLevelVisible():
+		stat_action.setActionDelay(STAT_CHANGE_DELAY)
+	
+	var actions: Array = [animation_action, stat_action]
+	onPushAction(actions)
 	
 func getDescription() -> String:
 	return ("RAMPAGE [%s]\nTRAUMA [%s]\n BLOODTHIRST[%s]:\nGain [1] HP" % [rampage_charges, trauma_charges, bloodthirst_charges])

@@ -23,7 +23,10 @@ ActionManagerPacked = ExtResource("8_hvpr2")
 unique_name_in_owner = true
 
 [node name="SaveLabel" type="Label" parent="."]
-visible = false
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+top_level = true
+z_index = 1
 offset_left = 1788.0
 offset_top = 4.0
 offset_right = 1916.0

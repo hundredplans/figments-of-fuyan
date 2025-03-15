@@ -14,6 +14,7 @@ func onPreAction() -> void:
 		if Card.Tool.info.id != Tool.info.id:
 			onForceAction(RemoveToolAction.new(Card))
 		elif !Card.Tool.getAscended():
+			Tool.onClear()
 			onForceAction(AscendToolAction.new(Card.Tool))
 			onFailAction()
 		else: onFailAction()

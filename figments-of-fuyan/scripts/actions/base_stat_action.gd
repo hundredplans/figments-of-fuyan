@@ -15,7 +15,7 @@ func _init(_Card: CardGD = null, _types: Variant = null, _values: Variant = null
 	elif _values is int: values = [_values]
 	
 func onPreAction() -> void:
-	pass
+	if values.all(func(x: int): return x == 0): onFailAction()
 	
 func onPostAction() -> void:
-	pass
+	Card.setBaseStats(types, values)

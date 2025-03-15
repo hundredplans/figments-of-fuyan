@@ -93,12 +93,12 @@ func getPhase() -> int:
 
 #region Updaters
 func onFirstUpdateTileIntents() -> void:
-	var tile_intents: Array[TileIntentDatastore] = []
 	var method_name: String = "on" + boss_intent.name.replace(" ", "") + "SetIntents"
-	var tile_results: Dictionary[TileGD, String] = call(method_name, tile_intents)
+	var boss_tile_intents: BossTileIntents = call(method_name)
+	var old_tile_intents: Array = boss_datastore.getTileIntents()
 	
-	boss_datastore.setTileResults(tile_results)
-	boss_datastore.onFirstUpdateTileIntents(tile_intents)
+	boss_datastore.setBossTileIntents(boss_tile_intents)
+	boss_datastore.onFirstUpdateTileIntents(boss_tile_intents.getTileIntents(), old_tile_intents)
 #endregion
 
 #region Setters

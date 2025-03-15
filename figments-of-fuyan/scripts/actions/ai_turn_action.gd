@@ -71,8 +71,8 @@ func onDefaultAITurn(enemies: Array, allies: Array, tiles: Array) -> void:
 	
 	onCheckCallForHelp(allies, enemies)
 	
-	if dfl_data.KillTile != null:
-		onTileChosen(dfl_data.KillTile, DFL, allies, enemies)
+	if !dfl_data.kill_path.is_empty():
+		onKillPathChosen(dfl_data.kill_path, DFL, allies, enemies)
 		return
 	
 	var tiles_to_value: Dictionary = onApplyBehaviours(Card, enemies, allies, tiles, dfl_data)
@@ -105,6 +105,16 @@ func onTileChosen(Tile: TileGD, DFL: DefaultFightLogic, allies: Array, enemies: 
 	
 	var actions: Array = [ChangeTurnStateAction.new(Card, Game.TurnStates.ACTIVE),
 		MovementAction.new(Card, path)]
+	onPushAction(actions)
+	
+func onKillPathChosen(kill_path: Array, DFL: DefaultFightLogic, allies: Array, enemies: Array) -> void:
+	DFL.setPath(kill_path)
+	
+	if Card.onAICheckActiveEffects(DFL, allies, enemies):
+		return
+		
+	var actions: Array = [ChangeTurnStateAction.new(Card, Game.TurnStates.ACTIVE),
+		MovementAction.new(Card, kill_path)]
 	onPushAction(actions)
 	
 func getTilesSortedByValue(tiles_to_value: Dictionary) -> Array:
@@ -142,10 +152,10 @@ func onApplyBehaviours(BehaviourCard: CardGD, enemies: Array, allies: Array, til
 			else:
 				behaviour_tiles_to_value = behaviour.getOutOfCombatTiles(BehaviourCard, tiles, allies, enemies)
 			
-			for Tile in behaviour_tiles_to_value:
+			for Tile: TileGD in behaviour_tiles_to_value:
 				tiles_to_value[Tile] += behaviour_tiles_to_value[Tile]
 				
-		for Tile in tiles_to_value:
+		for Tile: TileGD in tiles_to_value:
 			tiles_to_value[Tile] /= behaviour_amount
 	return tiles_to_value
 

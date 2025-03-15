@@ -27,7 +27,7 @@ func onPostAction() -> void:
 		
 	if use_type == BossCardGD.UseType.END:
 		BossCard.boss_datastore.boss_intent_used_this_turn = true
-		actions.append(BossIntentFinishedAction.new(BossCard))
+		actions.append(BossIntentFinishedAction.new(BossCard, !enemies.is_empty()))
 	
 	BossCard.onIntentUsed(boss_intent, use_type, actions)
 	onPushAction(actions)

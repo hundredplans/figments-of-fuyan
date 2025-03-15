@@ -362,6 +362,7 @@ func setTileIntent(tile_intent: Game.TileIntents) -> void:
 		TileIntentModel = load(info.getTileIntentModelPath(tile_intent, variation)).instantiate()
 		add_child(TileIntentModel)
 		
-		TileIntentModel.position.y = getCardYOffsetBase()
+		if variation == 0:
+			TileIntentModel.position.y = getCardYOffsetBase()
 		TileIntentModel.visible = isLevelVisible()
 #endregion

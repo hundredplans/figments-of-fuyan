@@ -124,12 +124,13 @@ func onIntentUsed(used_boss_intent: BossIntent, use_type: UseType, actions: Arra
 #region Spin Attack
 const SPIN_ATTACK_SPEED_LIMIT: int = 3
 const SPIN_ATTACK_ACTION_DELAY: float = 2.5
-func onSpinAttackSetIntents(tile_intents: Array[TileIntentDatastore]) -> Dictionary[TileGD, String]:
+func onSpinAttackSetIntents() -> BossTileIntents:
+	var tile_intents: Array[TileIntentDatastore] = []
 	for _offset: Vector3i in Game.cube_directions:
 		var offset: Vector4i = Vector4i(_offset.x, _offset.y, _offset.z, 0)
 		var offset_datastore := OffsetDatastore.new(offset)
 		tile_intents.append(TileIntentDatastore.new(Game.TileIntents.RED, offset_datastore, getCoords()))
-	return {}
+	return BossTileIntents.new(tile_intents, {})
 
 func getSpinAttackTiles(CardTile: TileGD = Tile) -> Array:
 	return Game.getAdjacentTiles(CardTile, 1)
@@ -143,6 +144,8 @@ func onSpinAttack(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 		if tiles.is_empty(): return []
 		
 		var BestTile: TileGD
+		tiles = getUnoccupiedTiles(tiles)
+		
 		if !enemies.is_empty():
 			var tile_to_adjacent_enemy_count: Dictionary = {}
 			for OtherTile: TileGD in tiles:
@@ -151,9 +154,7 @@ func onSpinAttack(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 			
 			tiles.sort_custom(func(x: TileGD, y: TileGD): return tile_to_adjacent_enemy_count[x] > tile_to_adjacent_enemy_count[y])
 			if tile_to_adjacent_enemy_count[tiles[0]] == 0: # If no adjacent enemies, use tactician logic
-				var ally_vision: Array = Game.getTeamVision(0)
-				if !ally_vision.is_empty():
-					tiles = tiles.filter(func(x: TileGD): return x in ally_vision)
+				tiles = getAllyVisionTiles(tiles)
 				tiles = getDistantToEnemiesTiles(enemies, tiles)
 		else:
 			BestTile = tiles.pick_random()
@@ -175,7 +176,7 @@ func onSpinAttack(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 #region Reposition
 func onReposition(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 	if use_type != UseType.END:
-		tiles = onRemoveAttackableTiles(tiles)
+		tiles = getUnoccupiedTiles(tiles)
 		if tiles.is_empty(): return []
 		
 		var BestTile: TileGD
@@ -212,7 +213,7 @@ func onReposition(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 		return [MovementAction.new(self, [getTile(), BestTile]), ChangeTileRotationAction.new(self, Game.getRelativeTileRotation(Tile, BestTile))]
 	return []
 	
-func onRepositionSetIntents(_tile_intents: Array) -> Dictionary[TileGD, String]: return {}
+func onRepositionSetIntents() -> BossTileIntents: return BossTileIntents.new()
 	
 func onRepositionCondition() -> BossIntentConditionResult:
 	return BossIntentConditionResult.new(isGround())
@@ -237,10 +238,11 @@ const PALMY_SPECTATE_DELAY: float = 1.2
 func onRallyCondition(allies: Array) -> BossIntentConditionResult:
 	return BossIntentConditionResult.new(allies.filter(func(x: CardGD): return x.info.id == PALMY_ID).size() >= RALLY_MINIMUM_PALMY_AMOUNT)
 	
-func onRallySetIntents(tile_intents: Array[TileIntentDatastore]) -> Dictionary[TileGD, String]:
+func onRallySetIntents() -> BossTileIntents:
+	var tile_intents: Array[TileIntentDatastore] = []
 	for Card: CardGD in Game.getAllyUnits(team):
 		tile_intents.append(TileIntentDatastore.new(Game.TileIntents.GREEN, OffsetDatastore.new(Vector4i.ZERO, false), getCoords()))
-	return {}
+	return BossTileIntents.new(tile_intents, {})
 		
 func onRally(enemies: Array, allies: Array, tiles: Array, use_type: UseType) -> Array:
 	var actions: Array = []
@@ -257,14 +259,10 @@ func onRally(enemies: Array, allies: Array, tiles: Array, use_type: UseType) -> 
 			
 		actions.append(ClearTileIntentsAction.new())
 		
-		var ally_vision: Array = Game.getTeamVision(0)
 		tiles = Game.getsetMovementRange(self, RALLY_SPEED_LIMIT)
-		
-		if !ally_vision.is_empty():
-			tiles = tiles.filter(func(x: TileGD): return x in ally_vision)
-			
+		tiles = getUnoccupiedTiles(tiles)
+		tiles = getAllyVisionTiles(tiles)
 		tiles = onRemoveGroundTilesWhenNotOnGround(tiles)
-		tiles = onRemoveAttackableTiles(tiles)
 		tiles = getDistantToEnemiesTiles(enemies, tiles)
 		
 		if !tiles.is_empty():
@@ -302,7 +300,8 @@ func onSummon(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 		if !ally_vision.is_empty():
 			tiles = tiles.filter(func(x: TileGD): return x in ally_vision)
 			
-		tiles = onRemoveAttackableTiles(tiles)
+		tiles = getAllyVisionTiles(tiles)
+		tiles = getUnoccupiedTiles(tiles)
 		tiles = onRemoveGroundTilesWhenNotOnGround(tiles)
 		tiles = getDistantToEnemiesTiles(enemies, tiles)
 		
@@ -311,7 +310,8 @@ func onSummon(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 			actions.append(MovementAction.new(self, BestTile.getMovementPathTiles()))
 	return actions
 	
-func onSummonSetIntents(tile_intents: Array) -> Dictionary[TileGD, String]:
+func onSummonSetIntents() -> BossTileIntents:
+	var tile_intents: Array[TileIntentDatastore] = []
 	var tiles: Array = getVisibleTiles().filter(func(x: TileGD): return !x.isOccupied() and !x.isSolid())
 	tiles = tiles.filter(func(x: TileGD): return isGround(x))
 	tiles.shuffle()
@@ -322,13 +322,14 @@ func onSummonSetIntents(tile_intents: Array) -> Dictionary[TileGD, String]:
 	for PalmyTile: TileGD in tiles:
 		tile_intents.append(TileIntentDatastore.new(Game.TileIntents.YELLOW, null, PalmyTile.getCoords()))
 		tile_results[PalmyTile] = ""
-	return tile_results
+	return BossTileIntents.new(tile_intents, tile_results)
 #endregion
 
 #region Jump Attack
 const ADJACENT_DAMAGE: int = 2
 const DOUBLE_ADJACENT_DAMAGE: int = 1
-func onJumpAttackSetIntents(tile_intents: Array[TileIntentDatastore]) -> Dictionary[TileGD, String]:
+func onJumpAttackSetIntents() -> BossTileIntents:
+	var tile_intents: Array[TileIntentDatastore] = []
 	var enemies: Array = getVisibleFieldCardsEnemies()
 	var CenterTile: TileGD
 	
@@ -345,7 +346,7 @@ func onJumpAttackSetIntents(tile_intents: Array[TileIntentDatastore]) -> Diction
 	
 	for DoubleAdjacentTile in Game.getAdjacentTiles(CenterTile, 2):
 		tile_intents.append(TileIntentDatastore.new(Game.TileIntents.LIGHT_RED, null, DoubleAdjacentTile.getCoords()))
-	return {CenterTile: ""}
+	return BossTileIntents.new(tile_intents, {CenterTile: ""})
 		
 func onJumpAttack(use_type: UseType) -> Array:
 	var actions: Array = []
@@ -459,7 +460,8 @@ func getWallAdjacentTiles(OriginTile: TileGD, distance: int = 2) -> Array:
 			wall_adjacent_tiles[AdjacentTile] = null
 	return wall_adjacent_tiles.keys()
 	
-func onChargeAttackSetIntents(tile_intents: Array) -> Dictionary[TileGD, String]:
+func onChargeAttackSetIntents() -> BossTileIntents:
+	var tile_intents: Array[TileIntentDatastore] = []
 	var directions: Array = Game.cube_directions.duplicate()
 	directions.shuffle()
 	
@@ -474,7 +476,7 @@ func onChargeAttackSetIntents(tile_intents: Array) -> Dictionary[TileGD, String]
 	for IntentTile: TileGD in condition_result.getChargeTiles():
 		if IntentTile != Tile:
 			tile_intents.append(TileIntentDatastore.new(Game.TileIntents.DARK_RED, null, IntentTile.getCoords()))
-	return {condition_result.getChargeEndTile(): ""}
+	return BossTileIntents.new(tile_intents, {condition_result.getChargeEndTile(): ""})
 	
 func onChargeAttack(use_type: UseType) -> Array:
 	var actions: Array = []
@@ -503,7 +505,8 @@ func onChargeAttack(use_type: UseType) -> Array:
 #region Maelstorm Attack
 const MAELSTORM_ATTACK_ACTION_DELAY: float = 2.5
 const MAELSTORM_SPEED_LIMIT: int = 1
-func onMaelstormAttackSetIntents(tile_intents: Array) -> Dictionary[TileGD, String]:
+func onMaelstormAttackSetIntents() -> BossTileIntents:
+	var tile_intents: Array[TileIntentDatastore] = []
 	var adjacent_tiles: Array = Game.getAdjacentTiles(Tile, 1)
 	var double_adjacent_tiles: Array = Game.getAdjacentTiles(Tile, 2)
 	var triple_adjacent_tiles: Array = Game.getAdjacentTiles(Tile, 3)
@@ -516,7 +519,7 @@ func onMaelstormAttackSetIntents(tile_intents: Array) -> Dictionary[TileGD, Stri
 		
 	for OtherTile: TileGD in triple_adjacent_tiles:
 		tile_intents.append(TileIntentDatastore.new(Game.TileIntents.LIGHT_RED, null, OtherTile.getCoords()))
-	return {}
+	return BossTileIntents.new(tile_intents, {})
 
 func onMaelstormAttack(enemies: Array, use_type: UseType) -> Array:
 	var actions: Array = []
@@ -545,12 +548,9 @@ func onMaelstormAttack(enemies: Array, use_type: UseType) -> Array:
 			
 		actions.append(ClearTileIntentsAction.new())
 		var tiles: Array = Game.getsetMovementRange(self, MAELSTORM_SPEED_LIMIT)
-		var ally_vision: Array = Game.getTeamVision(0)
-		
-		if !ally_vision.is_empty():
-			tiles = tiles.filter(func(x: TileGD): return x in ally_vision)
-			
-		tiles = onRemoveAttackableTiles(tiles)
+
+		tiles = getAllyVisionTiles(tiles)
+		tiles = getUnoccupiedTiles(tiles)
 		
 		if isHigh():
 			tiles = onRemoveHighTiles(tiles)
@@ -568,9 +568,10 @@ const BULK_UP_MIN_HEALTH_FOR_HEAL: int = 2
 const BULK_UP_HEAL_AMOUNT: int = 2
 const BULK_UP_ACTION_DELAY: float = 2.0
 
-func onBulkUpSetIntents(tile_intents: Array) -> Dictionary[TileGD, String]:
+func onBulkUpSetIntents() -> BossTileIntents:
+	var tile_intents: Array[TileIntentDatastore] = []
 	tile_intents.append(TileIntentDatastore.new(Game.TileIntents.GREEN, OffsetDatastore.new(), coords))
-	return {}
+	return BossTileIntents.new(tile_intents, {})
 
 func onBulkUp(use_type: UseType) -> Array:
 	var actions: Array = []
@@ -602,12 +603,8 @@ func onRunAway(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 	tiles = Game.getsetMovementRange(self, speed + 1)
 	
 	var actions: Array = []
-	var ally_vision: Array = Game.getTeamVision(0)
-	
-	if !ally_vision.is_empty():
-		tiles = tiles.filter(func(x: TileGD): return x in ally_vision)
-		
-	tiles = onRemoveAttackableTiles(tiles)
+	tiles = getAllyVisionTiles(tiles)
+	tiles = getUnoccupiedTiles(tiles)
 	tiles = getDistantToEnemiesTiles(enemies, tiles)
 	
 	if !tiles.is_empty():
@@ -615,7 +612,7 @@ func onRunAway(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 		actions.append(MovementAction.new(self, BestTile.getMovementPathTiles()))
 	return actions
 	
-func onRunAwaySetIntents(_tile_intents: Array) -> Dictionary[TileGD, String]: return {}
+func onRunAwaySetIntents() -> BossTileIntents: return BossTileIntents.new()
 #endregion
 
 #region Autoattack
@@ -627,27 +624,25 @@ func onAutoattack(enemies: Array, allies: Array, tiles: Array, use_type: UseType
 	if enemies.is_empty(): return tiles.pick_random()
 	
 	var DFL := DefaultFightLogic.new(self, tiles, enemies, allies)
-	var BestTile: TileGD = DFL.getKillTile()
-		
-	if BestTile == null:
+	var path: Array = DFL.getAttackPath()
+	if path.is_empty():
 		var attackables: Array = enemies.filter(func(x: CardGD): return x.getTile() in tiles)
 		if !attackables.is_empty():
 			attackables.sort_custom(func(x: CardGD, y: CardGD): return x.energy > y.energy)
-			BestTile = attackables[0].getTile()
+			path = attackables[0].getTile().getMovementPathTiles()
 		else:
 			var ally_vision: Array = Game.getTeamVision(0)
 			if !ally_vision.is_empty():
 				tiles = tiles.filter(func(x: TileGD): return x in ally_vision)
 		
 			tiles = getDistantToEnemiesTiles(enemies, tiles)
-			BestTile = tiles[0]
+			path = tiles[0].getMovementPathTiles()
 			
-	if BestTile != null:
-		actions.append(MovementAction.new(self, BestTile.getMovementPathTiles()))
-		
+	if !path.is_empty():
+		actions.append(MovementAction.new(self, path))
 	return actions
 	
-func onAutoattackSetIntents(_tile_intents: Array) -> Dictionary[TileGD, String]: return {}
+func onAutoattackSetIntents() -> BossTileIntents: return BossTileIntents.new()
 #endregion
 
 #region Fan Attack
@@ -662,7 +657,7 @@ func onFanAttackCondition() -> BossIntentConditionResult:
 	
 	for diag in cube_directions:
 		var diagonal := Vector4i(diag.x, diag.y, diag.z, 0) * 2
-		var TripleAdjacentDiagonalTile: TileGD = Game.getTileAtAnyHeight(coords + diagonal)
+		var TripleAdjacentDiagonalTile: TileGD = Game.getTile(coords + diagonal)
 		if TripleAdjacentDiagonalTile == null: continue
 		
 		var adjacent_tiles: Array = Game.getAdjacentTiles(TripleAdjacentDiagonalTile) + [TripleAdjacentDiagonalTile]
@@ -677,7 +672,8 @@ func onFanAttackCondition() -> BossIntentConditionResult:
 		condition_result.setTripleAdjacentDiagonalTile(diagonal_tiles[0])
 	return condition_result
 
-func onFanAttackSetIntents(tile_intents: Array) -> Dictionary[TileGD, String]:
+func onFanAttackSetIntents() -> BossTileIntents:
+	var tile_intents: Array[TileIntentDatastore] = []
 	var TripleAdjacentDiagonalTile: TileGD = boss_datastore.getConditionResult("Fan Attack").getTripleAdjacentDiagonalTile()
 	var tiles: Array = Game.getAdjacentOrCloserTiles(TripleAdjacentDiagonalTile, 2) + [TripleAdjacentDiagonalTile]
 	var fan_edge_tiles: Array = getFanEdgeTiles(TripleAdjacentDiagonalTile)
@@ -690,7 +686,8 @@ func onFanAttackSetIntents(tile_intents: Array) -> Dictionary[TileGD, String]:
 	tiles.erase(Tile)
 	for NewTile: TileGD in tiles:
 		tile_intents.append(TileIntentDatastore.new(Game.TileIntents.RED, null, NewTile.getCoords()))
-	return tile_results
+	return BossTileIntents.new(tile_intents, tile_results)
+	
 func onFanAttack(enemies: Array, use_type: UseType) -> Array:
 	if use_type == UseType.START:
 		var tile_results: Dictionary[TileGD, String] = boss_datastore.getTileResults()
@@ -715,13 +712,10 @@ func onFanAttack(enemies: Array, use_type: UseType) -> Array:
 		
 		var actions: Array = [rotation_action, animation_action, ClearTileIntentsAction.new(), damage_action]
 		
-		var ally_vision: Array = Game.getTeamVision(0)
 		var tiles: Array = Game.getsetMovementRange(self, FAN_ATTACK_SPEED_LIMIT)
 		
-		if !ally_vision.is_empty():
-			tiles = tiles.filter(func(x: TileGD): return x in ally_vision)
-			
-		tiles = onRemoveAttackableTiles(tiles)
+		tiles = getAllyVisionTiles(tiles)
+		tiles = getUnoccupiedTiles(tiles)
 		tiles = getDistantToEnemiesTiles(enemies, tiles)
 		
 		if !tiles.is_empty():
@@ -743,13 +737,13 @@ func getFanEdgeTiles(TripleAdjacentDiagonalTile: TileGD) -> Array:
 		var new_diagonal := Vector4i(diag.x, diag.y, diag.z, 0)
 		for i in range(3, 5): # 3 -> 4
 			var multed_diagonal := new_diagonal * i
-			var NewTile: TileGD = Game.getTileAtAnyHeight(multed_diagonal + coords)
+			var NewTile: TileGD = Game.getTile(multed_diagonal + coords)
 			
 			if i == 4:
 				var relative_rotation: int = Game.getRelativeTileRotationCoords(multed_diagonal, d * i)
 				var cube_d: Vector3i = Game.cube_directions[relative_rotation]
 				var cube_direction := Vector4i(cube_d.x, cube_d.y, cube_d.z, 0)
-				var OtherTile: TileGD = Game.getTileAtAnyHeight(multed_diagonal + coords + cube_direction)
+				var OtherTile: TileGD = Game.getTile(multed_diagonal + coords + cube_direction)
 				if OtherTile != null: tiles.append(OtherTile)
 				
 			if NewTile != null: tiles.append(NewTile)
@@ -759,14 +753,15 @@ func getFanEdgeTiles(TripleAdjacentDiagonalTile: TileGD) -> Array:
 
 #region Slash Attack
 const SLASH_ATTACK_ACTION_DELAY: float = 2.0
-func onSlashAttackSetIntents(tile_intents: Array) -> Dictionary[TileGD, String]:
+func onSlashAttackSetIntents() -> BossTileIntents:
+	var tile_intents: Array[TileIntentDatastore] = []
 	var new_coords: Array = []
 	var direction: Vector4i = Game.getCubeDirectionExtra(0)
 	new_coords = [direction, direction * 2, direction * 3]
 	
 	for x: Vector4i in new_coords:
 		tile_intents.append(TileIntentDatastore.new(Game.TileIntents.RED, OffsetDatastore.new(x, true, tile_rotation), coords))
-	return {}
+	return BossTileIntents.new(tile_intents, {})
 
 func onSlashAttack(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 	if use_type == UseType.END: tiles.append(getTile()) # Add self to attack from here
@@ -785,12 +780,8 @@ func onSlashAttack(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 	
 	if use_type != UseType.END:
 		if no_attackables:
-			var ally_vision: Array = Game.getTeamVision(0)
-			
-			if !ally_vision.is_empty():
-				tiles = tiles.filter(func(x: TileGD): return x in ally_vision)
-				
-			tiles = onRemoveAttackableTiles(tiles)
+			tiles = getAllyVisionTiles(tiles)
+			tiles = getUnoccupiedTiles(tiles)
 			tiles = getDistantToEnemiesTiles(enemies, tiles)
 			
 			if !tiles.is_empty():
@@ -819,7 +810,7 @@ func onSlashAttack(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 		
 		for i in range(1, 4):
 			var multed_diagonal := diagonal * i
-			var NewTile: TileGD = Game.getTileAtAnyHeight(multed_diagonal + coords)
+			var NewTile: TileGD = Game.getTile(multed_diagonal + coords)
 			
 			if NewTile != null:
 				var index: int = all_enemy_tiles.find(NewTile)
@@ -869,6 +860,16 @@ func getDistantToEnemiesTiles(enemies: Array, tiles: Array) -> Array:
 	tiles.sort_custom(func(x: TileGD, y: TileGD): return tiles_to_distance[x] > tiles_to_distance[y])
 	return tiles
 	
+func getAllyVisionTiles(tiles: Array) -> Array:
+	var ally_vision: Array = Game.getTeamVision(0)
+	if !ally_vision.is_empty():
+		return tiles.filter(func(x: TileGD): return x in ally_vision)
+	return tiles
+	
+func getUnoccupiedTiles(tiles: Array) -> Array:
+	var unit_tiles: Array = Game.getUnitTiles()
+	return tiles.filter(func(x: TileGD): return x not in unit_tiles)
+	
 func getCloseToEnemiesTiles(enemies: Array, tiles: Array) -> Array:
 	tiles = tiles.duplicate()
 	var tiles_to_distance: Dictionary = {}
@@ -888,10 +889,6 @@ func onRemoveGroundTilesWhenNotOnGround(tiles: Array) -> Array:
 	if isHigh():
 		return tiles.filter(func(x: TileGD): return isHigh(x))
 	return tiles
-	
-func onRemoveAttackableTiles(tiles: Array) -> Array:
-	var enemy_tiles: Array = Game.getEnemyUnits(team).map(func(x: CardGD): return x.getTile())
-	return tiles.filter(func(x: TileGD): return x not in enemy_tiles)
 #endregion
 
 #region Phase Change

@@ -8,15 +8,44 @@ const CARD_UI_OFFSET := Vector2(-120, -400)
 @onready var SearchAreaCard: LineEdit = %SearchAreaCard
 @onready var CardParent: Node3D = %CardParent
 
+var card_id_to_area_id: Dictionary[int, int]
 func _ready() -> void:
-	var start_x: int = START_X
-	var start_z: int = 0
+	for area_info: AreaInfo in Helper.getFofInfoArray(AreaInfo):
+		for id: int in area_info.card_ids:
+			card_id_to_area_id[id] = area_info.id
 	
-	for card_info in Helper.getFofInfoArray(CardInfo):
+	var card_infos: Array = Helper.getFofInfoArray(CardInfo)
+	
+	for card_info in card_infos:
 		var card_data := SavedDataCard.new(card_info.id, true)
 		Game.setCardDataFromInfo(card_data, card_info)
 		var Card: CardGD = SavedData.onLoadModel(card_data, CardParent)
 		onCreateDeckCardUI(Card)
+
+func getSortValue(x: CardInfo, y: CardInfo) -> bool:
+	var area_x: int = card_id_to_area_id[x.id]
+	var area_y: int = card_id_to_area_id[y.id]
+	
+	if area_x < area_y:
+		return true
+	elif area_x > area_y:
+		return false
+	
+	if x.rarity < y.rarity:
+		return true
+	elif x.rarity > y.rarity:
+		return false
+		
+	if x.energy < y.energy:
+		return true
+	elif x.energy > y.energy:
+		return false
+		
+	if x.id < y.id:
+		return true
+	elif x.id > y.id:
+		return false
+	return false
 
 func onAnimationNameButtonPressed(ani_name: String) -> void:
 	for Card in get_tree().get_nodes_in_group("CardsGD").filter(func(x: CardGD): return x.AniPlayer != null and x.AniPlayer.has_animation(ani_name)):
@@ -26,7 +55,14 @@ func onCreateDeckCardUI(Card: CardGD) -> void:
 	var CardUI: Control = Card.onCreateCardUI(CardGrid, true, true)
 	CardUI.pressed.connect(onCardUIPressed)
 	
-func _input(event: InputEvent) -> void:
+	var ArchetypeLabel := Label.new()
+	ArchetypeLabel.text = Card.info.archetype.name
+	CardUI.add_child(ArchetypeLabel)
+	ArchetypeLabel.position = Vector2(0, -5)
+	ArchetypeLabel.size.x = CardUI.size.x
+	ArchetypeLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	
+func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("FocusControl"):
 		if SearchAreaCard.has_focus():
 			SearchAreaCard.release_focus()

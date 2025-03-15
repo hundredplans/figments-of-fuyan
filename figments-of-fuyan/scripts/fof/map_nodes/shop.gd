@@ -138,7 +138,6 @@ func onRollFof(objects: Array, script_type: GDScript, foreign: bool = false) -> 
 		base_price = int(base_price * ((100 + world_datastore.ascended_items_price_percentage_increase) / 100.0))
 		base_price += world_datastore.ascended_items_flat_after_percentage_increase
 		
-	
 	var final_price: int = onAddPriceVariance(base_price)
 	var get_shop_price_action := GetShopPriceAction.new(final_price, self)
 	onForceAction(get_shop_price_action)

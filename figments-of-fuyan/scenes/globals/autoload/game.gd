@@ -358,20 +358,21 @@ func getsetMovementRange(Card: CardGD, speed_override: int = -1) -> Array:
 	var available_tiles: Array = tiles.filter(func(x: TileGD): return x.getMovementPath() != null)
 	available_tiles.append(CenterTile)
 	
-	var attackables: Dictionary = Card.getAttackablesInRange()
-	for GameObject in attackables:
-		var Tile: TileGD = attackables[GameObject]
+	var attackables: Array = Card.getAttackablesInVision()
+	for GameObject: GameObjectGD in attackables:
+		var Tile: TileGD = GameObject.getAttackableTile()
 		var coords: Vector4i = Tile.getCoords()
 		
-		var tiles_in_range: Array = available_tiles.filter(func(x: TileGD): return Game.getCoordsDistance(x.getCoords(), coords) <= Card.getAttackRange())
+		var tiles_in_range: Array = available_tiles\
+			.filter(func(x: TileGD): return Game.getCoordsDistance(x.getCoords(), coords) <= Card.getAttackRange())
+			
 		if tiles_in_range.is_empty(): continue
-		
 		var AttackFromTile: TileGD
 		var attack_from_path: Array = []
 		if CenterTile not in tiles_in_range:
 			tiles_in_range.sort_custom(func(x: TileGD, y: TileGD): return x.getMovementPathSize() < y.getMovementPathSize())
 			AttackFromTile = tiles_in_range[0]
-			attack_from_path = AttackFromTile.movement_path.tiles.duplicate()
+			attack_from_path = AttackFromTile.getMovementPathTiles().duplicate()
 		else: # Closest tile is always the center tile as it's distance is 0, has to have unique logic as it doesn't generate paths
 			AttackFromTile = CenterTile
 			attack_from_path = [CenterTile]
@@ -603,34 +604,14 @@ func isLevel() -> bool:
 
 #region Coords To Tile
 var coords_to_tile: Dictionary = {}
-func getTile(coords: Vector4i) -> TileGD:
+func getTile(_coords: Vector4i) -> TileGD:
+	var coords := Vector3i(_coords.x, _coords.y, _coords.z)
 	if coords_to_tile.has(coords):
 		return coords_to_tile[coords]
 	return null
 	
-func getTileAtHeightOrBelow(coords: Vector4i) -> TileGD:
-	for __ in range(coords.w, -1, -1):
-		var Tile: TileGD = getTile(coords)
-		if Tile != null: return Tile
-		coords.w -= 1
-	return null
-	
-func getTileAtHeightOrAbove(coords: Vector4i) -> TileGD:
-	for i in range(coords.w, 21):
-		var Tile: TileGD = getTile(coords)
-		if Tile != null: return Tile
-		coords.w = i
-	return null
-	
-func getTileAtAnyHeight(coords: Vector4i) -> TileGD:
-	for i in range(0, 21):
-		var Tile: TileGD = getTile(coords)
-		if Tile != null: return Tile
-		coords.w = i
-	return null
-	
 func onAddToCoordsToTile(Tile: TileGD) -> void:
-	coords_to_tile[Tile.getCoords()] = Tile
+	coords_to_tile[Tile.getCoordsHeightless()] = Tile
 	
 func onResetCoordsToTile() -> void:
 	coords_to_tile = {}

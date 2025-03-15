@@ -36,8 +36,8 @@ func onFofInit() -> void:
 	super()
 	onResetCharges()
 
-func onReset(override: bool = false) -> void:
-	super(override)
+func onRegularReset() -> void:
+	super()
 	onResetCharges()
 	
 func onAscendedUpdated(state: bool) -> void:

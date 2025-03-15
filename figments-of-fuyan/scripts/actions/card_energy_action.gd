@@ -9,7 +9,7 @@ func _init(_Card: CardGD = null, _energy: int = 0) -> void:
 	energy = _energy
 	
 func onPreAction() -> void:
-	pass
+	if energy == 0: onFailAction()
 	
 func onPostAction() -> void:
 	Card.energy += energy

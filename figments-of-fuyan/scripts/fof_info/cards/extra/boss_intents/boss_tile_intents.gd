@@ -5,6 +5,10 @@ class_name BossTileIntents extends Resource
 var tile_results: Dictionary[TileGD, String] = {}
 @export var tile_results_public_ids: Dictionary[int, String] = {}
 
+func _init(_tile_intents: Array[TileIntentDatastore] = [], _tile_results: Dictionary[TileGD, String] = {}) -> void:
+	tile_intents = _tile_intents
+	tile_results = _tile_results
+
 func setTileIntents(_tile_intents: Array[TileIntentDatastore]) -> void:
 	tile_intents = _tile_intents
 

@@ -12,3 +12,9 @@ func onPreAction() -> void:
 	
 func onPostAction() -> void:
 	GameObject.onPlayAnimation(animation_name)
+	
+	if action_delay > 0:
+		var camera_change_back_action := CameraChangeAction.new(Game.getLevel().getSpectateObject())
+		onForceAction(CameraChangeAction.new(GameObject))
+		onPushAction(camera_change_back_action)
+	

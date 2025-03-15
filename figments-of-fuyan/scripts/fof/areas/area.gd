@@ -552,8 +552,8 @@ func setEnemySpawnsFromBudget(budget: int, enemy_spawn_amount: int, spawns: Arra
 		if !other_enemies_ids.is_empty() and other_enemies_ids.any(func(x: Array): return x == enemies_ids):
 			continue
 			
-		if info.id == 1 and progress > 1 and !enemies.any(func(x: SavedDataCard): return Helper.getFofInfoID(CardInfo, x.id).archetype.id in [3, 4, 5]): # Reroll if doesn't have at least one tactician, warden or brute
-			continue
+		#if info.id == 1 and progress > 1 and !enemies.any(func(x: SavedDataCard): return Helper.getFofInfoID(CardInfo, x.id).archetype.id in [3, 4, 5]): # Reroll if doesn't have at least one tactician, warden or brute
+			#continue
 			
 		return enemies
 	return []

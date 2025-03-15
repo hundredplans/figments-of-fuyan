@@ -8,10 +8,11 @@ var enemies: Array
 var allies: Array
 var pacifist: bool
 
-var is_kill_guaranteed: bool
 var temp_att: int
 var path: Array
 var is_card_attack: bool # Non lethal attack on a Card
+
+var kill_path: Array
 
 func _init(_Card: CardGD, _tiles: Array = [], _enemies: Array = [], _allies: Array = [], _pacifist: bool = false) -> void:
 	Card = _Card
@@ -21,12 +22,11 @@ func _init(_Card: CardGD, _tiles: Array = [], _enemies: Array = [], _allies: Arr
 	pacifist = _pacifist
 
 func getTilesDFL() -> DFLData:
-	var KillTile: TileGD = getKillTile()
-	if KillTile != null:
-		return DFLData.new({}, KillTile)
+	kill_path = getKillPath()
+	if !kill_path.is_empty():
+		return DFLData.new({}, kill_path)
 		
 	var tiles_to_value: Dictionary = {}
-	
 	for Tile in tiles:
 		tiles_to_value[Tile] = getFallDamageTileValue(Card, Tile) # 1 by default
 	
@@ -34,7 +34,7 @@ func getTilesDFL() -> DFLData:
 		IObject.onIObjectSpecificTransforms(tiles_to_value, self)
 	
 	Card.onUnitSpecificTransforms(tiles_to_value, self)
-	return DFLData.new(tiles_to_value, null)
+	return DFLData.new(tiles_to_value)
 	
 func getFallDamageTileValue(FallCard: CardGD, Tile: TileGD) -> float:
 	var total_damage: int = 0
@@ -72,9 +72,6 @@ func getPath() -> Array:
 
 func getIsCardAttack() -> bool:
 	return is_card_attack
-	
-func getIsKillGuaranteed() -> bool:
-	return is_kill_guaranteed
 #endregion
 
 #region Setters
@@ -85,16 +82,27 @@ func setPath(_path: Array) -> void:
 
 #region Combat
 # If there's a killable unit get the best one
-func getKillTile() -> TileGD:
-	if pacifist: return null
+func getKillPath() -> Array:
+	if pacifist: return []
+	
 	var local_enemies: Array = enemies.duplicate()
-	local_enemies = local_enemies.filter(func(x: CardGD): return Card.isGameObjectAttackable(x, x.Tile))
+	local_enemies = local_enemies.filter(func(x: CardGD): return Card.isValidAttackableInRangeSpeed(x, Card.getTile()))
 	local_enemies = local_enemies.filter(func(x: CardGD): return x.getTile() in tiles)
 	local_enemies = local_enemies.filter(isAttackableKillable.bind(Card))
+	
 	local_enemies.sort_custom(func(x: CardGD, y: CardGD): return x.energy > y.energy)
-	local_enemies.shuffle()
-	is_kill_guaranteed = !local_enemies.is_empty()
-	return local_enemies[0].Tile if is_kill_guaranteed else null
+	if !local_enemies.is_empty():
+		var KillCard: CardGD = local_enemies[0]
+		var EnemyTile: TileGD = KillCard.getTile()
+		var tiles_in_attack_range: Array = tiles\
+			.filter(func(x: TileGD): return Game.getCoordsDistance(x.getCoords(), EnemyTile.getCoords()) <= Card.getAttackRange())\
+			.filter(Card.isValidAttackTile.bind(KillCard))
+		
+		var attack_path: Array = tiles_in_attack_range.pick_random().getMovementPathTiles()
+		if attack_path[attack_path.size() - 1] != EnemyTile:
+			attack_path.append(EnemyTile)
+		return attack_path
+	return []
 	
 func isAttackableKillable(Defender: CardGD, Damager: CardGD) -> bool:
 	var damage_action := GetDamageAction.new(Damager, Defender, Damager.getAttackDamage() + temp_att)
@@ -104,16 +112,16 @@ func isAttackableKillable(Defender: CardGD, Damager: CardGD) -> bool:
 # Returns an updated path if in the chosen Tile's path there's an attackable in range
 func onTileChosenGetUpdatedAttackablePath(updated_path: Array) -> Array:
 	if updated_path.is_empty(): return []
-	if pacifist: return  updated_path
-	if is_kill_guaranteed: return updated_path
+	if pacifist: return updated_path
+	if !kill_path.is_empty(): return updated_path
 	
-	var LastTile: TileGD = updated_path[updated_path.size() - 1]
-	if enemies.any(func(x: CardGD): return x.getTile() == LastTile): return updated_path
-	
-	var attackables: Array = Card.getAttackablesInRange(LastTile).keys()
-	
-	# If their Tile is inside unit's movement range
-	attackables = attackables.filter(func(x: GameObjectGD): return !x.getTile().getMovementPathTilesSafe().is_empty())
+	var attackables_dict: Dictionary = {}
+	for PathTile: TileGD in updated_path:
+		var path_tile_attackables: Array = Card.getAttackablesInAttackRange(PathTile).keys()
+		for Card: CardGD in path_tile_attackables:
+			attackables_dict[Card] = null
+			
+	var attackables: Array = attackables_dict.keys()
 	attackables = attackables.filter(func(x: GameObjectGD): return x is CardGD)
 	if attackables.is_empty(): return updated_path
 	

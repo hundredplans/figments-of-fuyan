@@ -35,6 +35,6 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 
 # If attacking someone with a non-lethal attack
 func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, DFL: DefaultFightLogic) -> TileGD:
-	if DFL.getIsCardAttack() and !DFL.getIsKillGuaranteed():
+	if DFL.getIsCardAttack() and DFL.getKillPath().is_empty():
 		return active_effect_tiles.pickable_tiles.pick_random()
 	return null

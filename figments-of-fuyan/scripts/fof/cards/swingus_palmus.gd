@@ -15,14 +15,14 @@ func onProcessAction(action: Action) -> void:
 	
 func onHit(_damage_action: DamageAction, _attack_action: AttackAction) -> void:
 	if swingus_field_effect_public_id == 0:
-		setIdleAbility(true)
-		setAttackAbility(true)
+		setIdleModifier("Ability")
+		anibility_datastore.setAttackModifier("Ability")
 		
 		swingus_field_effect_public_id = onCreateBaseFieldEffect(SWINGUS_ON_HIT_FIELD_EFFECT_ID).public_id
 		return
 		
-	setIdleAbility(false)
-	setAttackAbility(false)
+	onResetIdleModifier()
+	anibility_datastore.onResetAttackModifier()
 
 	var actions: Array = [
 		StatAction.new([StatInfo.new(self, [Game.Stats.ATTACK, Game.Stats.MAX_HEALTH], [1, 1])]),
@@ -46,6 +46,9 @@ func onSave() -> SavedDataCard:
 	ability_save['swingus_field_effect_public_id'] = swingus_field_effect_public_id
 	return super()
 	
-func onReset(override: bool = false) -> void:
-	super(override)
+func onRegularReset() -> void:
+	super()
+	
 	swingus_field_effect_public_id = 0
+	onResetIdleModifier()
+	anibility_datastore.onResetAttackModifier()

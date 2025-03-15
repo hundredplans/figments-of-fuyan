@@ -13,9 +13,15 @@ func onTrauma(_death_action: DeathAction) -> void:
 	var turns: int = 2 if !ascended else 0
 	onForceAction(CameraChangeAction.new(self))
 	var stat_action := StatAction.new(StatInfo.new(self, Game.Stats.MAX_SPEED, 1, turns))
-	stat_action.setActionDelay(PALMY_PAUSE_DELAY)
+	
+	if isLevelVisible():
+		stat_action.setActionDelay(PALMY_PAUSE_DELAY)
 	
 	onPushAction(stat_action)
+	
+func onRegularReset() -> void:
+	super()
+	trauma_charges = getDefaultCharges()
 	
 func onSave() -> SavedDataCard:
 	ability_save['trauma_charges'] = trauma_charges
@@ -23,3 +29,6 @@ func onSave() -> SavedDataCard:
 	
 func getDescription() -> String:
 	return Helper.getDescriptionNumeric(super(), [trauma_charges], [["TRAUMA ", "[1]"]])
+
+func getDefaultCharges() -> int:
+	return trauma_charges

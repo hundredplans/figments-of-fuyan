@@ -45,6 +45,8 @@ func onPostAction() -> void:
 	if onCheckEndGame():
 		onAppendAction(EndGameAction.new(Defender.team, Game.getLevel().isEpic()))
 			
+	Defender.onRegularReset()
+			
 func onSwapCameraOnDeathInPlayerPhase() -> void:
 	if Game.getLevel().phase != Game.Phases.PLAYER: return
 	

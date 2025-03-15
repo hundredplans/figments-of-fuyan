@@ -16,6 +16,10 @@ extends Node
 @onready var ActionManager: ActionManagerGD
 @export var ActionManagerPacked: PackedScene
 
+@onready var SaveLabel: Label = %SaveLabel
+const SAVE_LABEL_DELAY_TIME: float = 0.5
+const SAVE_LABEL_VISIBLE_TIME: float = 1.0
+
 #region Base Functions
 func _ready():
 	if !Helper.admin_datastore.skip_main_menu:
@@ -94,6 +98,7 @@ func onLoadGame(save_file_data: SavedDataSaveFile) -> void:
 	save_file.load_level.connect(onLoadLevel)
 	save_file.load_map.connect(onLoadMap)
 	save_file.load_main_menu.connect(onLoadMainMenu)
+	save_file.input_saved.connect(onSaveFileSaved)
 	save_file.exit_save.connect(onExitSaveFile)
 	save_file.onLoadGame()
 	
@@ -121,4 +126,16 @@ func onLoadMainMenu() -> void:
 func onExitSaveFile() -> void:
 	for child in KeepAcross.get_children(): child.queue_free()
 	onLoadScreenWorld(main_menu_ui, main_menu_world)
+	
+var SaveFileTween: Tween
+func onSaveFileSaved() -> void:
+	if SaveFileTween != null:
+		SaveFileTween.stop()
+	
+	SaveLabel.modulate = Color(1, 1, 1, 1)
+	await get_tree().create_timer(SAVE_LABEL_DELAY_TIME).timeout
+		
+	SaveFileTween = create_tween()
+	SaveFileTween.tween_property(SaveLabel, "modulate:a", 0.0, SAVE_LABEL_VISIBLE_TIME)
+	
 #endregion

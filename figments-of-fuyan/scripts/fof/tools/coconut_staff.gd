@@ -35,8 +35,9 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 	super(active_effect, PickedTile, active_effect_tiles)
 	if active_effect.name == info.name:
 		var cards: Array = active_effect_tiles.pickable_tiles.map(func(x: TileGD): return Game.getFieldCard(x))
-
-		onPushAction(HealAction.new(cards, 1))
+		var actions: Array = [HealAction.new(cards, 1), ChangeTileRotationAction.new(Card, Game.getRelativeTileRotation(Card.getTile(), PickedTile))]
+		onPushAction(actions)
+		
 		healed_allies += cards
 		
 func isPickable(_Tile: TileGD) -> bool:

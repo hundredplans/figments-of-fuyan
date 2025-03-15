@@ -293,12 +293,7 @@ func onProcessAction(action: Action) -> void:
 
 #region Hand
 func onDrawStarterHand() -> void:
-	var hand_cards: Array = get_tree().get_nodes_in_group("HandCardsGD")
-	if hand_cards.size() > START_HAND_SIZE: hand_cards.resize(START_HAND_SIZE)
-	var draw_count: int = START_HAND_SIZE - hand_cards.size()
-	
-	for Card in hand_cards:
-		onForceAction(InsertAction.new(Card))
+	var draw_count: int = START_HAND_SIZE
 	
 	for __ in range(draw_count):
 		onForceAction(DrawAction.new())

@@ -65,8 +65,8 @@ func onUpdateTileIntentsRotation(action: ChangeTileRotationAction) -> void:
 			
 		Tile.setTileIntent(datastore.intent_type)
 	
-func onFirstUpdateTileIntents(_tile_intents: Array[TileIntentDatastore]) -> void:
-	onClearTileIntents()
+func onFirstUpdateTileIntents(_tile_intents: Array[TileIntentDatastore], old_tile_intents: Array[TileIntentDatastore] = getTileIntents()) -> void:
+	onClearTileIntents(old_tile_intents)
 	setTileIntents(_tile_intents)
 	
 	for datastore: TileIntentDatastore in getTileIntents():
@@ -75,8 +75,8 @@ func onFirstUpdateTileIntents(_tile_intents: Array[TileIntentDatastore]) -> void
 		
 		Tile.setTileIntent(datastore.intent_type)
 	
-func onClearTileIntents() -> void:
-	for datastore: TileIntentDatastore in getTileIntents():
+func onClearTileIntents(old_tile_intents: Array = getTileIntents()) -> void:
+	for datastore: TileIntentDatastore in old_tile_intents:
 		var Tile: TileGD = datastore.getTile()
 		if Tile == null: continue
 		Tile.setTileIntent(Game.TileIntents.NULL)
@@ -90,9 +90,6 @@ func setTileIntents(tile_intents: Array[TileIntentDatastore]) -> void:
 #endregion
 	
 #region Tile Results
-func setTileResults(tile_results: Dictionary[TileGD, String]) -> void:
-	boss_tile_intents.setTileResults(tile_results)
-
 func getTileResults() -> Dictionary[TileGD, String]:
 	return boss_tile_intents.getTileResults()
 #endregion
@@ -106,4 +103,9 @@ func setConditionResult(condition_result: BossIntentConditionResult, name: Strin
 	
 func getConditionResult(name: String) -> BossIntentConditionResult:
 	return condition_results[name]
+#endregion
+
+#region Boss Tile Intents
+func setBossTileIntents(_boss_tile_intents: BossTileIntents) -> void:
+	boss_tile_intents = _boss_tile_intents
 #endregion

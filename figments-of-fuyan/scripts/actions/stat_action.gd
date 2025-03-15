@@ -20,8 +20,8 @@ func onPreAction() -> void:
 func onPostAction() -> void:
 	var max_health_not_damage: bool
 	for stat_info in stat_infos:
-		var types: Array = stat_info.types
-		var values: Array = stat_info.values
+		var types: Array = stat_info.types.duplicate()
+		var values: Array = stat_info.values.duplicate()
 		var Card: CardGD = stat_info.Card
 		var absolute: bool = stat_info.absolute
 		var show_particles: bool = stat_info.show_particles
@@ -29,6 +29,7 @@ func onPostAction() -> void:
 		
 		var new_types: Array = []
 		var reverse_values: Array = []
+		var i: int = 0
 		while(!types.is_empty()):
 			var type: int = types.pop_front()
 			var value: int = values.pop_front()
@@ -41,6 +42,7 @@ func onPostAction() -> void:
 					
 					Card.speed = clamp(Card.speed, 0, Card.max_speed)
 					difference = Card.speed - old_speed
+					stat_info.values[i] = difference
 					
 				Game.Stats.MAX_SPEED:
 					var old_speed: int = Card.max_speed
@@ -49,6 +51,9 @@ func onPostAction() -> void:
 					
 					Card.max_speed = clamp(Card.max_speed, 1, 9)
 					difference = Card.max_speed - old_speed
+					
+					stat_info.types.append(Game.Stats.SPEED)
+					stat_info.values.append(difference)
 					
 					types.append(Game.Stats.SPEED)
 					values.append(value)
@@ -81,12 +86,14 @@ func onPostAction() -> void:
 					
 					Card.attack = clamp(Card.attack, 0, 99)
 					difference = Card.attack - old_attack
-						
+									
 			if difference != 0:
 				Card.onUpdateStat(type, difference, show_particles)
 				if turns > 0:
 					new_types.append(type)
 					reverse_values.append(difference * -1)
+					
+			i += 1
 	
 		if turns > 0:
 			onPushAction(DelayedStatAction.new(

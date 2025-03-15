@@ -30,8 +30,7 @@ func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_til
 func getDescription() -> String:
 	var active_effect: ActiveEffectDatastore = getActiveEffectByName("Palmsale")
 	if active_effect != null:
-		var number: String = "[1]" if !ascended else "[2]"
-		return Helper.getDescriptionNumeric(super(), [active_effect.charges], [["ABILITY ", number]])
+		return Helper.getDescriptionNumeric(super(), [active_effect.charges], [["ABILITY ", "[2]"]])
 	return super()
 	
 const BONUS_PER_ADJACENT_ALLY_ON_TILE: float = 0.25

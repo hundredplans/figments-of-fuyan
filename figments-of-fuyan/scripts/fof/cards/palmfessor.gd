@@ -59,6 +59,6 @@ func onAscendedUpdated(state: bool) -> void:
 	for Card in affected_cards:
 		onPushAction(StatAction.new(StatInfo.new(Card, Game.Stats.ATTACK, 1 * mult,  0, false, true, true)))
 
-func onReset(override: bool = false) -> void:
-	super(override)
+func onRegularReset() -> void:
+	super()
 	affected_cards = []

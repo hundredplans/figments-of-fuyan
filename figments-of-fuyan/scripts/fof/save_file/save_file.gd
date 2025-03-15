@@ -5,6 +5,7 @@ signal load_main_menu
 signal load_level
 signal exit_save
 signal update_shillings
+signal input_saved
 
 var id: int
 var my_seed: int
@@ -84,6 +85,7 @@ func setInfo(_area: AreaGD) -> void:
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Save"):
 		onSaveToFile()
+		input_saved.emit()
 #endregion
 
 #region Base Functions

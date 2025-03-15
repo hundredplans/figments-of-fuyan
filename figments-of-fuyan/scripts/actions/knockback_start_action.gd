@@ -26,17 +26,14 @@ func onPostAction() -> void:
 	
 	for mult in range(1, knockback + 1):
 		var diagonal: Vector4i = base_diagonal * mult
-		var DiagonalTile: TileGD = Game.getTileAtHeightOrBelow(coords + diagonal)
+		var DiagonalTile: TileGD = Game.getTile(coords + diagonal)
 		if DiagonalTile != null:
-			if DiagonalTile.isSolid() or DiagonalTile.isOccupied():
+			if DiagonalTile.isSolid() or DiagonalTile.isOccupied() or DiagonalTile.getHeight() >= Card.getTile().getHeight():
 				deal_damage = true
 				break
+				
 			tiles.append(DiagonalTile)
-			
-		else: # If null search for tiles above
-			DiagonalTile = Game.getTileAtHeightOrAbove(coords + diagonal)
-			if DiagonalTile != null: deal_damage = true
-			break
+		else: break # If the tile is null has to stop knockbacking
 	
 	var actions: Array = [ChangeTileRotationAction.new(Card, (direction + 3) % 6)]
 	if !tiles.is_empty():

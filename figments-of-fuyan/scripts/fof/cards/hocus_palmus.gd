@@ -44,6 +44,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		
 		var heal_action := HealAction.new(Card, 2)
 		heal_action.setActionDelay(SPECTATE_TELEPORTED_UNIT_DELAY)
+		
 		actions.append(heal_action)
 		actions.append(CameraChangeAction.new(self))
 		

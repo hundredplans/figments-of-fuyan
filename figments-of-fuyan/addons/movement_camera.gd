@@ -30,6 +30,7 @@ var _alt = false
 var _ctrl = false
 
 @export var disable_movement: bool = false
+@export var block_ctrl: bool = false
 @export_group("Sideways")
 @export var enable_only_sideways: bool = false
 @export var X_MIN: float = 0
@@ -81,7 +82,7 @@ func _input(event):
 			KEY_ALT:
 				_alt = event.pressed
 			KEY_CTRL:
-				_ctrl = event.pressed
+				_ctrl = event.pressed if block_ctrl else false
 
 # Updates mouselook and movement every frame
 func _process(delta):

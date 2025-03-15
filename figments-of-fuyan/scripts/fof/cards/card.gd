@@ -97,13 +97,13 @@ func setModelRotationToTile(OtherTile: TileGD) -> void:
 	Model.look_at(OtherTile.global_position)
 	Model.rotation = Vector3(model_rotation.x, Model.rotation.y + PI, model_rotation.z)
 	
-func setIdleAbility(state: bool) -> void:
-	anibility_datastore.is_idle_ability = state
-	if AniPlayer.current_animation.begins_with("Idle"):
+func setIdleModifier(idle_modifier: String) -> void:
+	anibility_datastore.setIdleModifier(idle_modifier)
+	if AniPlayer != null and AniPlayer.current_animation.begins_with("Idle"):
 		onIdle()
 		
-func setAttackAbility(state: bool) -> void:
-	anibility_datastore.is_attack_ability = state
+func onResetIdleModifier() -> void:
+	setIdleModifier("")
 		
 func setAwakenedInCombat(state: bool) -> void:
 	is_awakened_in_combat = state
@@ -174,7 +174,7 @@ func onJump() -> void:
 	onPlayAnimation("Jump")
 		
 func onAttack(DefenderTile: TileGD, delay: float) -> void:
-	onPlayAnimation("Attack" if !anibility_datastore.is_idle_ability else "AttackAbility")
+	onPlayAnimation("Attack" + anibility_datastore.getAttackModifier())
 	
 	if Game.getCoordsDistance(DefenderTile.getCoords(), Tile.getCoords()) > 1 and delay > 0: # If is level visible
 		setModelRotationToTile(DefenderTile)
@@ -183,7 +183,7 @@ func onWalk() -> void:
 	onPlayAnimation("Walk" + anibility_datastore.getWalkModifier())
 	
 func onIdle() -> void:
-	onPlayAnimation("Idle" if !anibility_datastore.is_idle_ability else "IdleAbility")
+	onPlayAnimation("Idle" + anibility_datastore.getIdleModifier())
 	
 func onDeath() -> void:
 	onPlayAnimation("Death" + anibility_datastore.getDeathModifier())
@@ -265,6 +265,7 @@ func onLoadData(data: SavedData) -> void:
 	overworld_traits = data.overworld_traits
 	bounty_kills = data.bounty_kills
 	is_temporary = data.is_temporary
+	draw_order = data.draw_order
 	
 	if data.tool_data != null:
 		Tool = SavedData.onLoadModel(data.tool_data, self)
@@ -301,7 +302,6 @@ func onLoadDataLevelFofInit() -> void:
 	super()
 	onReset()
 	if !Game.isChampion(info.rarity):
-		if is_in_group("HandCardsGD"): return
 		onPushAction(AddToDeckAction.new(self, AddToDeckAction.ADD_TYPES.SHUFFLE))
 	else:
 		onPushAction(InsertAction.new(self))
@@ -309,6 +309,7 @@ func onLoadDataLevelFofInit() -> void:
 func onFofInit() -> void:
 	super()
 	base_stats = StatsDatastore.new(attack, max_health, max_speed, energy)
+	onRegularReset()
 	
 	if self is not BossCardGD:
 		var initial_traits: Array = []
@@ -510,6 +511,7 @@ func isOccupyVisionVisibleAction(action: Action) -> bool:
 #region Movement
 var MovementTween: Tween
 func onMoveToTile(action: MoveToTileAction, delay: float) -> void:
+	print(delay)
 	if isLevelVisible():
 		if MovementTween != null: MovementTween.kill()
 		MovementTween = create_tween()
@@ -526,13 +528,13 @@ func onMoveToTile(action: MoveToTileAction, delay: float) -> void:
 				MovementTween.tween_property(self, "position", action.DestinationTile.getCardPosition(), delay / 2.0)
 			return
 		
-		if action.movement_type == MoveToTileAction.MOVEMENT_TYPES.JUMP: onJumpTween(action)
-		elif action.movement_type == MoveToTileAction.MOVEMENT_TYPES.FALL: onFallTween(action)
+		if action.movement_type == MoveToTileAction.MOVEMENT_TYPES.JUMP: onJumpTween(action, delay)
+		elif action.movement_type == MoveToTileAction.MOVEMENT_TYPES.FALL: onFallTween(action, delay)
 	#else: setPositionToTile(action.DestinationTile)
 	
 const JUMP_MULTIPLIER: float = 1.25
 const JUMP_SPEEDSCALE: float = 2.5
-func onJumpTween(action: MoveToTileAction) -> void:
+func onJumpTween(action: MoveToTileAction, delay: float) -> void:
 	var height_diff: int = abs(action.DestinationTile.getHeight() - action.OriginalTile.getHeight())
 	var jump_time: float = 1
 	var jump_start: Vector3 = action.OriginalTile.getCardPosition()
@@ -544,13 +546,13 @@ func onJumpTween(action: MoveToTileAction) -> void:
 	AniPlayer.speed_scale = JUMP_SPEEDSCALE
 	
 	onTweenJumpFall(jump_start, jump_end, start_highest, end_highest, jump_time)
-	await get_tree().create_timer(action.getDelay()).timeout
+	await get_tree().create_timer(delay).timeout
 	
 	AniPlayer.speed_scale = 1
 	
 const FALL_MULTIPLIER: float = 2.3
 const FALL_SPEEDSCALE: float = 3.5
-func onFallTween(action: MoveToTileAction) -> void:
+func onFallTween(action: MoveToTileAction, delay: float) -> void:
 	var height_diff: int = abs(action.DestinationTile.getHeight() - action.OriginalTile.getHeight())
 	var jump_start: Vector3 = action.OriginalTile.getCardPosition()
 	var jump_end: Vector3 = action.DestinationTile.getCardPosition()
@@ -560,7 +562,7 @@ func onFallTween(action: MoveToTileAction) -> void:
 	
 	AniPlayer.speed_scale = FALL_SPEEDSCALE - ((action.fall_time - 1) * FALL_MULTIPLIER)
 	onTweenJumpFall(jump_start, jump_end, start_highest, end_highest, action.fall_time)
-	await get_tree().create_timer(action.getDelay()).timeout
+	await get_tree().create_timer(delay).timeout
 	
 	AniPlayer.speed_scale = 1
 	
@@ -816,29 +818,53 @@ func getMaxAttacks() -> int: return 1
 	
 func setAttacks(_attacks: int) -> void: attacks = _attacks
 	
-func getAttackablesInRange(StartingTile: TileGD = Tile) -> Dictionary:
+func getAttackablesInAttackRange(AttackTile: TileGD) -> Dictionary:
 	if !canAttack(): return {}
 	var iobjects: Array = get_tree().get_nodes_in_group("LevelIObjectsGD")
 	var cards: Array = get_tree().get_nodes_in_group("FieldCardsGD")
 	cards.erase(self)
 	
 	var attackables: Dictionary = {}
-	for GameObject in cards + iobjects:
-		var EnemyTile: TileGD = GameObject.Tile if GameObject is CardGD else GameObject.getAttackableTile()
-		if isGameObjectAttackable(GameObject, EnemyTile, StartingTile):
-			attackables[GameObject] = EnemyTile
-	
+	var game_objects: Array = (cards + iobjects).filter(isValidAttackableInRange.bind(AttackTile))
+	for GameObject: GameObjectGD in game_objects:
+		if isValidAttackTile(AttackTile, GameObject):
+			attackables[GameObject] = GameObject.getAttackableTile()
 	return attackables
+	
+func getAttackablesInVision() -> Array:
+	if !canAttack(): return []
+	var iobjects: Array = get_tree().get_nodes_in_group("LevelIObjectsGD")
+	var cards: Array = get_tree().get_nodes_in_group("FieldCardsGD")
+	cards.erase(self)
+	var game_objects: Array = (cards + iobjects).filter(isValidAttackableInVision)
+	return game_objects
 	
 func getAttackableTile() -> TileGD: # Simplifying function for iobjects
 	return Tile
-	
-func isGameObjectAttackable(GameObject: GameObjectGD, AttackableTile: TileGD, StartingTile: TileGD = Tile) -> bool:
+		
+func isValidAttackableInVision(GameObject: GameObjectGD) -> bool:
 	if !GameObject.isAttackable(self): return false
-	if getAttackDistanceFromEnemy(AttackableTile, StartingTile) != 0: return false
-	
 	if !(GameObject in getVisibleGameObjects()): return false
-	var is_in_height: bool = abs(AttackableTile.getHeight() - StartingTile.getHeight()) in [0, 1]
+	return true
+	
+func isValidAttackableInRange(GameObject: GameObjectGD, StartTile: TileGD) -> bool:
+	var in_vision: bool = isValidAttackableInVision(GameObject)
+	if !in_vision: return false
+	
+	var in_attack_range: bool = Game.getCoordsDistance(StartTile.getCoords(), GameObject.getAttackableTile().getCoords()) <= getAttackRange()
+	return in_attack_range
+	
+func isValidAttackableInRangeSpeed(GameObject: GameObjectGD, StartTile: TileGD) -> bool:
+	var in_vision: bool = isValidAttackableInVision(GameObject)
+	if !in_vision: return false
+	
+	var in_attack_range: bool = Game.getCoordsDistance(StartTile.getCoords(), GameObject.getAttackableTile().getCoords()) <= getAttackRange() + speed
+	return in_attack_range
+		
+func isValidAttackTile(AttackTile: TileGD, GameObject: GameObjectGD) -> bool:
+	var EnemyTile: TileGD = GameObject.getAttackableTile()
+	var hdiff: int = abs(EnemyTile.getHeight() - AttackTile.getHeight())
+	var is_in_height: bool = hdiff in [0, 1]
 	
 	var bot_y: float = GameObject.position.y
 	var top_y: float = bot_y + (GameObject.getTopFromInfo() if GameObject is CardGD else GameObject.getTopVertexY())
@@ -848,7 +874,7 @@ func isGameObjectAttackable(GameObject: GameObjectGD, AttackableTile: TileGD, St
 	
 	var is_in_unit_height: bool = max(bot_y, bot_self_y) <= min(top_y, top_self_y)
 	
-	var is_ranged: bool = getAttackRange() > 1 and (abs(AttackableTile.getHeight() - StartingTile.getHeight()) <= 5)
+	var is_ranged: bool = getAttackRange() > 1 and hdiff <= 5
 	return (is_in_height or is_in_unit_height or is_ranged)
 		
 func getAttackDistanceFromEnemy(EnemyTile: TileGD, StartingTile: TileGD = Tile, _speed: int = speed) -> int:
@@ -1192,21 +1218,13 @@ func onAscend(state: bool) -> void:
 	var plus_speed: int = info.plus_speed * mult
 	var plus_energy: int = info.plus_energy * mult
 	
-	base_stats.attack += plus_attack
-	base_stats.health += plus_health
-	base_stats.speed += plus_speed
-	base_stats.energy += plus_energy
+	var types: Array = [Game.Stats.ATTACK, Game.Stats.MAX_HEALTH, Game.Stats.MAX_SPEED, Game.Stats.ENERGY]
+	var values: Array = [plus_attack, plus_health, plus_speed, plus_energy]
+	var base_stat_action := BaseStatAction.new(self, types, values)
 	
-	if Game.ActionManagerReference != null:
-		onPushAction(CardEnergyAction.new(self, info.plus_energy * mult))
-	else:
-		attack += plus_attack
-		health += plus_health
-		speed += plus_speed
-		energy += plus_speed
-		
+	onPushAction(base_stat_action)
+	
 	update_ascended.emit(state)
-	
 	onAscendedUpdateOverworldTraits()
 	setBaseMaterials()
 	
@@ -1242,6 +1260,7 @@ func onLevelEnded(_win: bool) -> void:
 	onReset(true)
 	if isAlly(0) and !is_awakened_in_combat:
 		if card_place != Game.CardPlaces.DECK:
+			onPushAction(AddToDeckAction.new(self, AddToDeckAction.ADD_TYPES.SHUFFLE))
 			onChangeCardPlace(Game.CardPlaces.DECK)
 	else: onChangeCardPlace(Game.CardPlaces.NULL)
 #endregion
@@ -1387,7 +1406,7 @@ func setAlphagreyMaterialValue(value: float) -> void: # 0.0 is visible, 1.0 is i
 func getAdjustedPoints() -> Array:
 	return getLevelPoints().map(func(x: Vector3): return (Game.onRotatePosition(x, rotation.y)) + position)
 	
-func onReset(override: bool = false) -> void: # Override for when level ends
+func onReset(override: bool = false) -> void: # Called when unit enters level (not awakened) and level ends, override for when level ends
 	setStats(base_stats)
 			
 	if !override and !(isAlly(0) or is_awakened_in_combat): return
@@ -1414,14 +1433,18 @@ func onReset(override: bool = false) -> void: # Override for when level ends
 	
 	for overworld_trait in overworld_traits:
 		overworld_trait.onReset()
+		
+	onRegularReset()
+	
+func onRegularReset() -> void: # Fof Init, Awakened, Death, Level Start, Level End
+	pass
 	
 func onUpgrade(upgrade_level: int) -> void:
 	var champion_upgrade: ChampionUpgrade = getChampionUpgrade(upgrade_level)
-
-	base_stats.attack += champion_upgrade.plus_attack
-	base_stats.health += champion_upgrade.plus_health
-	base_stats.speed += champion_upgrade.plus_speed
-	base_stats.energy += champion_upgrade.plus_energy
+	var types: Array = [Game.Stats.ATTACK, Game.Stats.MAX_HEALTH, Game.Stats.MAX_SPEED, Game.Stats.ENERGY]
+	var values: Array = [champion_upgrade.plus_attack, champion_upgrade.plus_health, champion_upgrade.plus_speed, champion_upgrade.plus_energy]
+	var base_stat_action := BaseStatAction.new(self, types, values)
+	onPushAction(base_stat_action)
 
 func getChampionUpgrade(upgrade_level: int) -> ChampionUpgrade:
 	match upgrade_level:
@@ -1466,3 +1489,25 @@ func getIcon() -> Texture2D: return info.art_mini
 func setIsKnockback(state: bool) -> void:
 	is_knockback = state
 #endregion
+
+#region Base Stats
+func setBaseStats(types: Array, values: Array) -> void:
+	var valid_types: Array = []
+	var stat_info := StatInfo.new(self, [], [])
+	var actions: Array = []
+	for i in range(types.size()):
+		var type: Game.Stats = types[i]
+		match type:
+			Game.Stats.ATTACK: base_stats.attack += values[i]
+			Game.Stats.MAX_HEALTH: base_stats.health += values[i]
+			Game.Stats.MAX_SPEED: base_stats.speed += values[i]
+			Game.Stats.ENERGY:
+				base_stats.energy += values[i]
+				actions.append(CardEnergyAction.new(self, values[i]))
+			
+		if type != Game.Stats.ENERGY:
+			stat_info.types.append(type)
+			stat_info.values.append(values[i])
+			
+	onPushAction(StatAction.new(stat_info))
+	

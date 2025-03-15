@@ -37,6 +37,8 @@ func onPostAction() -> void:
 		actions.append(Card.getBaseStatusEffectAction(3, turn_amount))
 		
 	actions.append(ChangeTurnStateAction.new(Card, Game.TurnStates.INACTIVE if owner is not PlayCardAction else Game.TurnStates.PASSED))
+	Card.onRegularReset()
+	
 	onPushAction(actions)
 
 func getLogInfo() -> Array:

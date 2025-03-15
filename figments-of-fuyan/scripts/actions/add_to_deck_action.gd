@@ -18,5 +18,6 @@ func onPostAction() -> void:
 	if add_type == ADD_TYPES.SHUFFLE:
 		var deck_cards: Array = Game.get_tree().get_nodes_in_group("DeckCardsGD")
 		deck_cards.insert(randi_range(0, deck_cards.size()), Card)
+		deck_cards.shuffle()
 		for i in range(deck_cards.size()):
 			deck_cards[i].draw_order = i

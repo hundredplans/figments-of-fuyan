@@ -37,10 +37,10 @@ func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_til
 			if DFL.is_kill_guaranteed: return null
 			
 			DFL.onAddTempAtt(1)
-			var Tile: TileGD = DFL.getKillTile()
+			var path: Array = DFL.getKillPath()
 			DFL.onAddTempAtt(-1)
 			
-			if Tile == null: return null
+			if path.is_empty(): return null
 			
 			return active_effect_tiles.pickable_tiles[0]
 		# If speed is debuffed or a killable enemy is 1 tile from being attackable

@@ -6,7 +6,7 @@ func _init(_SpectateObject: GameObjectGD = null) -> void:
 	SpectateObject = _SpectateObject
 	
 func onPreAction() -> void:
-	if SpectateObject is GameObjectGD and !SpectateObject.isLevelVisible():
+	if !SpectateObject.isLevelVisible() or (SpectateObject is CardGD and !SpectateObject.isAlive()):
 		onFailAction()
 		
 func onPostAction() -> void:

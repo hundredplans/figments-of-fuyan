@@ -1,10 +1,11 @@
 class_name BossIntentFinishedAction extends Action
 
 var Card: BossCardGD
-
-func _init(_Card: BossCardGD) -> void:
+var was_in_vision: bool
+func _init(_Card: BossCardGD, _was_in_vision: bool = false) -> void:
 	super()
-	Card = _Card 
+	Card = _Card
+	was_in_vision = _was_in_vision
 	
 func onPostAction() -> void:
 	var enemies: Array = Card.getVisibleFieldCardsEnemies()
@@ -13,7 +14,7 @@ func onPostAction() -> void:
 	var boss_intent: BossIntent = Card.boss_intent
 	var cooldown: int = boss_intent.default_cooldown
 	
-	if !Card.isLevelVisible():
+	if !was_in_vision: # If he never saw an enemy even once
 		if boss_intent.combat_type == BossIntent.CombatType.IN_COMBAT: cooldown = boss_intent.default_cooldown
 		else: cooldown = boss_intent.default_cooldown if boss_intent.off_vision_use_cooldown else 0
 

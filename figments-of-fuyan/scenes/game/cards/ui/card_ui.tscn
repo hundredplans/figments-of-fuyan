@@ -467,20 +467,11 @@ offset_bottom = 39.0
 rotation = -0.0427386
 text = "+"
 
-[node name="ArchetypeLabelTemp" type="Label" parent="."]
-unique_name_in_owner = true
-visible = false
-layout_mode = 0
-offset_left = 77.0
-offset_top = 98.0
-offset_right = 117.0
-offset_bottom = 136.0
-
 [connection signal="mouse_entered" from="Art/AreaBackground" to="." method="onMouseHovered" binds= [true]]
 [connection signal="mouse_exited" from="Art/AreaBackground" to="." method="onMouseHovered" binds= [false]]
 [connection signal="mouse_entered" from="Art/Background" to="." method="onMouseHovered" binds= [true]]
 [connection signal="mouse_exited" from="Art/Background" to="." method="onMouseHovered" binds= [false]]
 [connection signal="mouse_entered" from="Art/ArtPop" to="." method="onMouseHovered" binds= [true]]
 [connection signal="mouse_exited" from="Art/ArtPop" to="." method="onMouseHovered" binds= [false]]
-[connection signal="mouse_in_ui" from="Text/VBoxContainer/TextLabel" to="." method="onMouseInText"]
 [connection signal="mouse_in_ui" from="Text/VBoxContainer/TextLabel" to="." method="onMouseHovered"]
+[connection signal="mouse_in_ui" from="Text/VBoxContainer/TextLabel" to="." method="onMouseInText"]

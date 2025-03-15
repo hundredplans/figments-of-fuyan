@@ -18,12 +18,17 @@ func onPreAction() -> void:
 	setActionDelay(ActiveEffect.delay if ActiveEffect.owner.isLevelVisible() else 0.0)
 	
 func onPostAction() -> void:
-	if ActiveEffect.owner is not IObjectGD: ActiveEffect.owner.onActiveEffect(ActiveEffect, Tile, active_effect_tiles)
-	else: ActiveEffect.owner.onActiveEffect(ActiveEffect, Tile, active_effect_tiles, Card)
-		
 	var actions: Array = [
 		ChangeActiveEffectChargesAction.new(ActiveEffect, -1),
 		ChangeActiveEffectUsedAction.new(ActiveEffect, true)]
+	
+	if ActiveEffect.owner is not IObjectGD:
+		ActiveEffect.owner.onActiveEffect(ActiveEffect, Tile, active_effect_tiles)
+		
+		if ActiveEffect.owner is CardGD: actions.append(CameraChangeAction.new(ActiveEffect.owner))
+		elif ActiveEffect.owner is ToolGD: actions.append(CameraChangeAction.new(ActiveEffect.owner.Card))
+		
+	else: ActiveEffect.owner.onActiveEffect(ActiveEffect, Tile, active_effect_tiles, Card)
 		
 	if Card.turn_state == Game.TurnStates.INACTIVE:
 		actions.push_front(ChangeTurnStateAction.new(Card, Game.TurnStates.ACTIVE))

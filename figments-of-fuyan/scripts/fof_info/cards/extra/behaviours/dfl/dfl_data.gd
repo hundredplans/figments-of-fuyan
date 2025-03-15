@@ -1,8 +1,8 @@
 class_name DFLData extends Resource
 
 var tiles_to_value: Dictionary
-var KillTile: TileGD
+var kill_path: Array
 
-func _init(_tiles_to_value: Dictionary = {}, _KillTile: TileGD = null) -> void:
+func _init(_tiles_to_value: Dictionary = {}, _kill_path: Array = []) -> void:
 	tiles_to_value = _tiles_to_value
-	KillTile = _KillTile
+	kill_path = _kill_path
