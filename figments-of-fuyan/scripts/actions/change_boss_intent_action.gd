@@ -12,5 +12,5 @@ func onPreAction() -> void:
 		setActionDelay(DEFAULT_DELAY)
 	
 func onPostAction() -> void:
-	var BossCard: BossCardGD = Game.getLevel().getBoss()
+	var BossCard: EpicCardGD = Game.getLevel().getBoss()
 	BossCard.setBossIntent(boss_intent)

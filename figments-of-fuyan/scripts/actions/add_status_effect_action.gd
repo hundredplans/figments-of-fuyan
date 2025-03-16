@@ -7,7 +7,7 @@ func _init(_StatusEffect: StatusEffectGD = null) -> void:
 	StatusEffect = _StatusEffect
 
 func onPreAction() -> void:
-	if StatusEffect.Card is BossCardGD:
+	if StatusEffect.Card is EpicCardGD:
 		StatusEffect.onClear()
 		onFailAction()
 

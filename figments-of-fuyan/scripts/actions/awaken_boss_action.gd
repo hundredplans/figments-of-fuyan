@@ -14,7 +14,7 @@ func onPreAction() -> void:
 	pass
 	
 func onPostAction() -> void:
-	var info: BossCardInfo = Helper.getFofInfoID(BossCardInfo, id)
+	var info: EpicCardInfo = Helper.getFofInfoID(EpicCardInfo, id)
 	var data := SavedDataBossCard.new(id, true)
 	data.attack = info.getAttack(boss_datastore.phase)
 	data.health = info.getHealth(boss_datastore.phase)
@@ -26,7 +26,7 @@ func onPostAction() -> void:
 	data.boss_datastore = boss_datastore
 	data.team = 1
 	
-	var BossCard: BossCardGD = SavedData.onLoadModel(data, Game.getLevel())
+	var BossCard: EpicCardGD = SavedData.onLoadModel(data, Game.getLevel())
 	
 	onForceAction(AwakenAction.new(BossCard, Tile))
 	onForceAction(ChangeBossIntentAction.new(BossCard.getBossIntentByName()))

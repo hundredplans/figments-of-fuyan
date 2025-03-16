@@ -33,7 +33,7 @@ func onPostAction() -> void:
 		var is_alive: bool = Card.isAlive()
 		var retry: bool = retry_ai_turn and is_alive
 		
-		if Card is not BossCardGD:
+		if Card is not EpicCardGD:
 			if retry:
 				actions.append(AITurnAction.new(Card, false, false, previous_allies, previous_enemies))
 			elif !retry:

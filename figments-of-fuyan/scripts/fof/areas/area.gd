@@ -460,7 +460,7 @@ func setRewards(is_win: bool) -> void:
 	active_level.onGameEnded()
 	
 func getEpicFightRewards() -> Array:
-	var boss_card: BossCardGD = active_level.getBoss()
+	var boss_card: EpicCardGD = active_level.getBoss()
 	
 	var card_info: CardInfo = Helper.getFofInfoID(CardInfo, boss_card.info.card_id)
 	var card_data := SavedDataCard.new(card_info.id, true)
@@ -558,9 +558,8 @@ func setEnemySpawnsFromBudget(budget: int, enemy_spawn_amount: int, spawns: Arra
 		return enemies
 	return []
 	
-func getBudget(progress: int, offset: int, is_unholy: bool = false) -> int:
-	var unholy_offset: int = 1 if is_unholy else 0
-	return getWorld().budget_for_fights[min(progress, 10)] + offset + (unholy_offset * getWorldDifficulty())
+func getBudget(progress: int, offset: int) -> int:
+	return getWorld().budget_for_fights[min(progress, 10)] + offset
 	
 func sum(accum: int, number: int) -> int:
 	return accum + number

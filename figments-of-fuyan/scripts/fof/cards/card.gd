@@ -311,7 +311,7 @@ func onFofInit() -> void:
 	base_stats = StatsDatastore.new(attack, max_health, max_speed, energy)
 	onRegularReset()
 	
-	if self is not BossCardGD:
+	if self is not EpicCardGD:
 		var initial_traits: Array = []
 		
 		if !ascended: initial_traits = info.initial_traits.duplicate()

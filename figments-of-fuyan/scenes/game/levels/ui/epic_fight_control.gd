@@ -6,7 +6,7 @@ extends MarginContainer
 const FULL_HEALTHBAR_SIZE_X: int = 1070
 
 func setInfo() -> void:
-	var BossCard: BossCardGD = Game.getLevel().getBoss()
+	var BossCard: EpicCardGD = Game.getLevel().getBoss()
 	onUpdateBossNameLabel(BossCard)
 	setHealthBar(BossCard)
 

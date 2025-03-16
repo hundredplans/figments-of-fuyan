@@ -27,11 +27,12 @@ func onCreateDeckScreen() -> void:
 	DeckScreen.setInfo(true)
 	DeckScreen.selected.connect(onCardSelected)
 	
-	if item.info.id == 4: # Ascend
-		DeckScreen.onDisableCards(func(x: Control): return Game.isChampion(x.Card.info.rarity) or x.Card.ascended)
-	elif item.info.id == 5: # By rarity
+	var action: Action = item.getActions()[0]
+	if action is AscendCardAction: # Ascend
+		DeckScreen.onDisableCards(func(x: Control): return x.Card.info.rarity not in [Game.Rarities.COMMON, Game.Rarities.RARE] or x.Card.ascended)
+	elif action is TransformCardAction and action.transform_type == TransformCardAction.TransformType.Rarity: # By rarity
 		DeckScreen.onDisableCards(func(x: Control): return Game.isChampion(x.Card.info.rarity))
-	elif item.info.id == 6: # By cost
+	elif action is TransformCardAction and action.transform_type == TransformCardAction.TransformType.Energy: # By cost
 		DeckScreen.onDisableCards(func(x: Control): return Game.isChampion(x.Card.info.rarity))
 	
 func onCardSelected(Card: CardGD) -> void:

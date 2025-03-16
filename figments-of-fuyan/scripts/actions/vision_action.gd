@@ -36,7 +36,7 @@ func onPostAction() -> void:
 	var new_team_vision_diff: Array = new_team_vision.filter(func(x: GameObjectGD): return x not in old_team_vision)
 	var old_team_vision_diff: Array = old_team_vision.filter(func(x: GameObjectGD): return (x not in new_team_vision) and !(x is CardGD and !x.isAlive()))
 	
-	for Card in cards:
+	for Card: CardGD in cards:
 		var old_visible_cards: Array = old_visible_game_objects[Card].filter(func(x: GameObjectGD): return x is CardGD)
 		var new_visible_cards: Array = new_visible_game_objects[Card].filter(func(x: GameObjectGD): return x is CardGD)
 		
@@ -45,6 +45,10 @@ func onPostAction() -> void:
 		
 		actions += not_in_vision.map(func(x: CardGD): return VisionNewUnitAction.new(Card, x, false, old_team_vision))
 		actions += now_in_vision.map(func(x: CardGD): return VisionNewUnitAction.new(Card, x, true, old_team_vision))
+	
+		if Card.isAlly(1):
+			for Tile: TileGD in new_visible_game_objects[Card].filter(func(x: GameObjectGD): return x is TileGD):
+				Tile.onResetLastSeenByEnemy()
 	
 	actions.append(LevelVisibleAction.new(false, old_team_vision_diff))
 	actions.append(LevelVisibleAction.new(true, new_team_vision_diff))

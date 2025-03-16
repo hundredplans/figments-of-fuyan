@@ -41,7 +41,7 @@ func getFallDamageTileValue(FallCard: CardGD, Tile: TileGD) -> float:
 	var movement_path: Array = Tile.getMovementPathTiles()
 	
 	for i in range(1, movement_path.size()):
-		var fall_damage: int = movement_path[i - 1].getFallDamage(movement_path[i])
+		var fall_damage: int = movement_path[i].getFallDamage(movement_path[i - 1])
 		total_damage += fall_damage
 	
 	if !FallCard.isCardSurviveFallDamage(total_damage):

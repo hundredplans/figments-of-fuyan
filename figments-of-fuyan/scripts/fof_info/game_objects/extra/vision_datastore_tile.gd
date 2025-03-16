@@ -1,6 +1,6 @@
 class_name VisionDatastoreTile extends VisionDatastore
 
-@export var last_seen_by_enemy: int
+@export var last_seen_by_enemy: int = 10
 func onResetLastSeenByEnemy() -> void:
 	last_seen_by_enemy = 0
 	

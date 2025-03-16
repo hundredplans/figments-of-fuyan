@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="AreaInfo" load_steps=15 format=3 uid="uid://divjktvvya1ee"]
+[gd_resource type="Resource" script_class="AreaInfo" load_steps=18 format=3 uid="uid://divjktvvya1ee"]
 
 [ext_resource type="Environment" uid="uid://g3ihmrpunr2b" path="res://assets/environments/main_menu_environment.tres" id="1_nr01x"]
 [ext_resource type="Image" uid="uid://crmlvrqh52rb8" path="res://assets/sprites/game/cards/common/art_background/palm_background.png" id="1_xwfqh"]
@@ -13,6 +13,21 @@
 [ext_resource type="AudioStream" uid="uid://cf15l5abfneny" path="res://assets/sounds/music/coconut_springs_boss_music.wav" id="5_otepg"]
 [ext_resource type="Script" uid="uid://rf0dys0w4v2c" path="res://scripts/fof_info/levels/palm_level_info.gd" id="6_jqirr"]
 [ext_resource type="Script" uid="uid://ddqxntix0kb3c" path="res://scripts/saved_data/saved_data_area.gd" id="6_p3usl"]
+[ext_resource type="Script" uid="uid://j3gava8i61i7" path="res://scripts/fof_info/areas/extra/epic_area_datastore.gd" id="9_ik72x"]
+
+[sub_resource type="Resource" id="Resource_48x5e"]
+script = ExtResource("9_ik72x")
+level_id = 5
+epic_id = 1
+type = 3
+metadata/_custom_type_script = "uid://j3gava8i61i7"
+
+[sub_resource type="Resource" id="Resource_ianwb"]
+script = ExtResource("9_ik72x")
+level_id = 10
+epic_id = 2
+type = 4
+metadata/_custom_type_script = "uid://j3gava8i61i7"
 
 [sub_resource type="Resource" id="Resource_06u7h"]
 script = ExtResource("4_3geu2")
@@ -32,6 +47,7 @@ base_level_script = ExtResource("6_jqirr")
 base_tile_info = ExtResource("2_lcnma")
 default_light = ExtResource("5_mg38q")
 boss_music = ExtResource("5_otepg")
+epic_datastores = Array[ExtResource("9_ik72x")]([SubResource("Resource_48x5e"), SubResource("Resource_ianwb")])
 miniboss_ids_to_level = Array[ExtResource("4_3geu2")]([SubResource("Resource_06u7h")])
 boss_ids_to_level = Array[ExtResource("4_3geu2")]([])
 id = 1

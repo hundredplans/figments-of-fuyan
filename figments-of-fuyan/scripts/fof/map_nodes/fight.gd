@@ -63,7 +63,7 @@ func onFinished() -> void:
 
 #region Level Gen
 func getBudget() -> int:
-	return Game.area.getBudget(map_location.progress, level_info.enemy_budget_offset, Game.isDivinus() and !isHoly())
+	return Game.area.getBudget(map_location.progress, level_info.enemy_budget_offset)
 	
 func setLevelInfo() -> void:
 	if Helper.admin_datastore.force_level_spawn_id == 0:

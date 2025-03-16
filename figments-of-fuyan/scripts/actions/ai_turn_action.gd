@@ -6,6 +6,7 @@ var is_first_ai_turn: bool
 const IGNORE_BEHAVIOUR_CHANCE: float = 0.15
 const RECEIVER_ARCHETYPE_PATH: String = "res://resources/fof/archetypes/receiver.tres"
 const ADVENTURER_ARCHETYPE_PATH: String = "res://resources/fof/archetypes/adventurer.tres"
+const BRUTE_ARCHETYPE_PATH: String = "res://resources/fof/archetypes/brute.tres"
 const DEFAULT_FIGHT_LOGIC_SCRIPT_PATH: String = "res://scripts/fof_info/cards/extra/behaviours/default_fight_logic.gd"
 const TOP_AMOUNT: int = 5
 const TOP_ODDS: Dictionary = {
@@ -30,7 +31,7 @@ func _init(_Card: CardGD, _is_first_ai_turn: bool = false, _pacifist: bool = fal
 	previous_enemies = _previous_enemies
 		
 func onPostAction() -> void:
-	if Card is BossCardGD and Card.boss_datastore.boss_intent_used_this_turn: return
+	if Card is EpicCardGD and Card.boss_datastore.boss_intent_used_this_turn: return
 	
 	pacifist = pacifist if Card.attack > 0 else true
 	var tiles: Array = Game.getsetMovementRange(Card)
@@ -53,7 +54,7 @@ func onPostAction() -> void:
 			x not in enemies and \
 			Game.getCoordsDistance(x.getTile().getCoords(), Card.getTile().getCoords()) <= Card.getVisionRange())
 	
-	if Card is not BossCardGD: onDefaultAITurn(enemies, allies, tiles)
+	if Card is not EpicCardGD: onDefaultAITurn(enemies, allies, tiles)
 	else: onBossAITurn(enemies, allies, tiles)
 
 func onDefaultAITurn(enemies: Array, allies: Array, tiles: Array) -> void:
@@ -89,7 +90,7 @@ func onDefaultAITurn(enemies: Array, allies: Array, tiles: Array) -> void:
 	onPushAction([ChangeTurnStateAction.new(Card, Game.TurnStates.ACTIVE), MovementFinishAction.new(Card, [], allies, enemies)])
 
 func onBossAITurn(enemies: Array, allies: Array, tiles: Array) -> void:
-	var use_type := (BossCardGD.UseType.START if is_first_ai_turn else BossCardGD.UseType.RECALCULATE) if !is_end_use_type_boss else BossCardGD.UseType.END
+	var use_type := (EpicCardGD.UseType.START if is_first_ai_turn else EpicCardGD.UseType.RECALCULATE) if !is_end_use_type_boss else EpicCardGD.UseType.END
 	Card.onUseBossIntent(enemies, allies, tiles, use_type)
 
 func getLogInfo() -> Array:
@@ -163,8 +164,9 @@ func getBehaviours(BehaviourCard: CardGD) -> Array:
 	var archetype: ArchetypeInfo
 	if BehaviourCard.ai_datastore.isReceiver():
 		archetype = load(RECEIVER_ARCHETYPE_PATH)
-	else:
-		archetype = load(ADVENTURER_ARCHETYPE_PATH) if (BehaviourCard.isAlly(1) and Game.getLevel().isAIAdventurerArchetypeGlobal()) else Card.getArchetypeFromInfo()
+	elif BehaviourCard.isAlly(1) and Game.getLevel().isAIAdventurerArchetypeGlobal(): archetype = load(ADVENTURER_ARCHETYPE_PATH)
+	elif Game.getAllyUnits(1).all(func(x: CardGD): return x is not EpicCardGD and x.info.archetype.id == 1): archetype = load(BRUTE_ARCHETYPE_PATH)
+	else: archetype = Card.getArchetypeFromInfo()
 	return archetype.behaviours.map(func(x: GDScript): var behaviour := Behaviour.new(); behaviour.set_script(x); return behaviour)
 
 func onCheckCallForHelp(allies: Array, enemies: Array) -> void:

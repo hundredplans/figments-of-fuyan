@@ -31,7 +31,6 @@ var epic_default_rewards: Array
 
 const ELITE_MOVE_DOWN_HEIGHT: int = 100
 
-
 func setInfo(_rewards: Rewards, _save_file: SaveFileGD, _level_type: Game.FightTypes) -> void:
 	rewards = _rewards
 	save_file = _save_file
@@ -79,9 +78,9 @@ func onRewardPressed(reward: Variant) -> void:
 		reward.onUse()
 		onRewardTaken(reward)
 		
-	elif reward is Array:
-		var RewardsCardsUI: Control = Game.onCreateRewardsCardsUIScreen(reward, self)
-		RewardsCardsUI.taken.connect(onRewardTaken)
+	elif reward is ActionWrapper and reward.hasType(ChooseRewardAction):
+		var ChooseRewardsUI: Control = Game.onCreateChooseRewardsUIScreen(reward, self)
+		ChooseRewardsUI.taken.connect(onRewardTaken)
 		
 	elif reward is BoonGD:
 		Game.getArea().onPushAction(AddBoonAction.new(reward.info.id, reward.getAscended()))
@@ -115,10 +114,7 @@ func onRewardTaken(reward: Variant) -> void:
 				reward_amount += 1
 		
 	for child in RewardsContainer.get_children():
-		if child.item is Array:
-			if reward is CardGD and reward in child.item:
-				child.setTaken(true)
-		elif child.item == reward:
+		if child.item == reward:
 			child.setTaken(true)
 		
 	rewards.onRewardTaken(reward)

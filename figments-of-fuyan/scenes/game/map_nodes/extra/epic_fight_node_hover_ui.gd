@@ -12,14 +12,16 @@ func setInfo(map_node_data: SavedDataEpicFight) -> void:
 	FofUIBox.setInfo(boss_data)
 	FofUIBox.scale = Vector2(2, 2)
 	
-	var boss_info: BossCardInfo = Helper.getFofInfoID(BossCardInfo, boss_data.id)
+	var boss_info: EpicCardInfo = Helper.getFofInfoID(EpicCardInfo, boss_data.id)
 	BossNameLabel.text = boss_info.name
 	
 	var theme_path: String = ""
 	if map_node_data is SavedDataMiniBossFight:
 		theme_path = "PurplePanelContainer"
 		BossNameLabel.modulate = Game.getRarityColor(Game.Rarities.MINIBOSS)
-	#elif map_node_data is SavedDataBossFight: theme_path = "RedPanelContainer"
+	elif map_node_data is SavedDataBossFight:
+		theme_path = "RedPanelContainer"
+		BossNameLabel.modulate = Game.getRarityColor(Game.Rarities.BOSS)
 	
 	theme_type_variation = theme_path
 	setMouseCenter(get_viewport().get_mouse_position())

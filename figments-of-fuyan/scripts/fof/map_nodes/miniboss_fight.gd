@@ -8,6 +8,10 @@ func onLoadData(data: SavedData) -> void:
 	super(data)
 	boss_id = data.boss_id
 
+func onFofInit() -> void:
+	setLevelInfo()
+	spawn_group = level_info.getRandomSpawnGroup()
+
 func onFinished() -> void:
 	super()
 	var new_level_data: SavedDataLevel = level_info.saved_data.new(level_info.id, true, 0, level_info.data.duplicate())
@@ -16,15 +20,17 @@ func onFinished() -> void:
 	new_level_data.fight_type = Game.FightTypes.MINIBOSS
 	
 	load_level.emit(new_level_data)
-
-func onFofInit() -> void:
-	setLevelInfo()
-	spawn_group = level_info.getRandomSpawnGroup()
+#
+#func onFofInit() -> void:
+	#setLevelInfo()
+	#spawn_group = level_info.getRandomSpawnGroup()
 
 func setLevelInfo() -> void:
-	var id_to_id: IdToId = Game.getArea().info.miniboss_ids_to_level.pick_random()
-	boss_id = id_to_id.id
-	level_info = Helper.getFofInfoID(LevelInfo, id_to_id.foreign_id)
+	var epic_datastore: EpicAreaDatastore = Game.getArea().info.epic_datastores\
+		.filter(func(x: EpicAreaDatastore): return x.type == Game.FightTypes.MINIBOSS).pick_random()
+	
+	boss_id = epic_datastore.epic_id
+	level_info = Helper.getFofInfoID(LevelInfo, epic_datastore.level_id)
 
 func getHoverUIPath() -> String:
 	return info.EPIC_FIGHT_NODE_HOVER_UI

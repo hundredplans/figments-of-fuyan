@@ -84,6 +84,10 @@ func tool(name_id: Variant, ascended: bool = false) -> void:
 			Game.getArea().onPushAction(\
 			AddToolAction.new(SpectateObject, SavedData.onLoadModel(info.saved_data.new(info.id, true, 0, ascended), SpectateObject)))
 
+func stat(type: Game.Stats, value: int) -> void:
+	if SpectateObject is CardGD:
+		Game.getLevel().onPushAction(StatAction.new(StatInfo.new(SpectateObject, type, value)))
+
 func knockback(amount: int, direction: int) -> void:
 	if SpectateObject is CardGD:
 		Game.getLevel().onPushAction(KnockbackStartAction.new(SpectateObject, null, amount, direction))

@@ -60,9 +60,9 @@ func onAwaken(Card: CardGD) -> void:
 	order.append(Card)
 	
 func getOrderStrength(Card: CardGD) -> int:
-	if Card is BossCardGD:
-		var speed_order_override: BossCardInfo.SpeedOrderOverride = Card.getSpeedOrderOverrideFromInfo()
-		return 100 if speed_order_override == BossCardInfo.SpeedOrderOverride.FIRST else 0
+	if Card is EpicCardGD:
+		var speed_order_override: EpicCardInfo.SpeedOrderOverride = Card.getSpeedOrderOverrideFromInfo()
+		return 100 if speed_order_override == EpicCardInfo.SpeedOrderOverride.FIRST else 0
 	return archetype_order[Card.getArchetypeEnum()]
 	
 func onDeath(Card: CardGD) -> void:

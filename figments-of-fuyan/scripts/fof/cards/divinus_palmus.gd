@@ -14,9 +14,6 @@ const SHOP_PRICE_MULT: float = 1.1
 
 func onProcessAction(action: Action) -> void:
 	super(action)
-	if !action.post:
-		if action is GetShopPriceAction and !action.getShop().isHoly():
-			action.onMult(SHOP_PRICE_MULT)
 
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	super(active_effect)

@@ -85,6 +85,7 @@ func onActionPlaying(state: bool) -> void:
 		action_playing.emit(state)
 
 func onRemoveMoveAndAttackActions(Card: CardGD):
+	if Card.is_knockback: return
 	actions = actions.filter(func(x: Action):
 			return !((x is MoveToTileAction and x.Card == Card) or (x is AttackAction and x.Attacker == Card)))
 		

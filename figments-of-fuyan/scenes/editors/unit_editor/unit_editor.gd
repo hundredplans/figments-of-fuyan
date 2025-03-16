@@ -20,6 +20,7 @@ func _ready() -> void:
 		for child in World.get_children() + ColShapeHolder.get_children(): child.free()
 		var card: CardGD = SavedData.onLoadModel(SavedDataCard.new(card_info.id), World)
 		card.onCreateModel()
+		card.getModel().rotation.y = 0
 		card.setOwner(self)
 		card.position = Vector3.ZERO
 		

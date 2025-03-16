@@ -16,11 +16,14 @@ func setInfo(_item: FofGD, _price_datastore: PriceDatastore, _save_file: SaveFil
 	price_datastore = _price_datastore
 	save_file = _save_file
 	
-	ShillingsLabel.setText("SH: " + str(price_datastore.price))
+	setShillingsLabel()
 	Game.getSaveFile().update_shillings.connect(onUpdateShillings)
-	onUpdateShillings()
 	
 	if price_datastore.bought: onPressed(true)
+
+func setShillingsLabel() -> void:
+	ShillingsLabel.setText("SH: " + str(price_datastore.price))
+	onUpdateShillings()
 
 func onUpdateShillings() -> void:
 	if !price_datastore.bought:

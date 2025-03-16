@@ -10,12 +10,6 @@ func _init(_items: Array = []) -> void:
 	items = _items
 
 func onRewardTaken(reward: Variant) -> void:
-	if reward is CardGD and items.any(func(x: Variant): return x is Array and reward in x):
-		for item in items.filter(func(x: Variant): return x is Array and reward in x):
-			items.erase(item)
-			taken_items.append(item)
-			return
-			
 	items.erase(reward)
 	taken_items.append(reward)
 	
@@ -32,14 +26,8 @@ func onLoad() -> void:
 	items = items.map(onLoadMap)
 	taken_items = taken_items.map(onLoadMap)
 
-func onSaveMap(x: Variant) -> Variant:
-	if x is Array:
-		return SavedData.onSaveGroup(x)
-	elif x is SavedData:
-		return x
+func onSaveMap(x: FofGD) -> SavedData:
 	return x.onSave()
 	
-func onLoadMap(x: Variant) -> Variant:
-	if x is Array:
-		return x.map(func(y: SavedDataCard): return SavedData.onLoadModel(y, parent))
+func onLoadMap(x: SavedData) -> FofGD:
 	return SavedData.onLoadModel(x, parent)

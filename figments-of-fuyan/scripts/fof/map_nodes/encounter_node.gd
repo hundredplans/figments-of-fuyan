@@ -75,20 +75,6 @@ func onCreateFightEncounter() -> EncounterGD:
 	return SavedData.onLoadModel(SavedDataEncounter.new(8, true), Game.area)
 	
 func getRandomEncounterInfo(encounters: Array) -> EncounterInfo: # Divinus not on holy path more likely to be negative
-	if Game.save_file.getChampionCard().info.id == 2 and !isHoly():
-		var negative_encounters: Array = encounters.filter(func(x: EncounterInfo): return x.state == EncounterInfo.States.NEGATIVE)
-		var other_encounters: Array = encounters.filter(func(x: EncounterInfo): return x.state != EncounterInfo.States.NEGATIVE)
-		var weights: Dictionary = {}
-		for negative_encounter in negative_encounters:
-			weights[negative_encounter] = 1 + Game.getDivinusEncounterNegativePlusOdds()
-			
-		for other_encounter in other_encounters:
-			weights[other_encounter] = 1.0
-			
-		var total_weight: int = weights.values().reduce(func(x: int, y: int): return x + y, 0)
-		for key in weights:
-			weights[key] /= total_weight
-		return Random.getRandomKeyVariant(weights)
 	return encounters.pick_random()
 	
 #endregion

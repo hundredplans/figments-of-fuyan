@@ -7,7 +7,7 @@ const ADMIN_DATASTORE_PATH: String = "res://resources/datastore/admin/admin_data
 var GDSCRIPT_TYPES: Array = [AreaInfo, LevelInfo, PalmLevelInfo, \
 	CardInfo, ChampionCardInfo, BoonInfo, ToolInfo, MapNodeInfo, SaveFileInfo, EncounterInfo,\
 	TileObjectInfo, TileInfo, ObjectInfo, GameObjectInfo, TraitInfo, StatusEffectInfo, FieldEffectInfo,\
-	LoreBookInfo, ArchetypeInfo, ActionWrapperInfo, VFXInfo, BossCardInfo]
+	LoreBookInfo, ArchetypeInfo, ActionWrapperInfo, VFXInfo, EpicCardInfo]
 	
 var fof_info_dict: Dictionary = {}
 func _ready() -> void:

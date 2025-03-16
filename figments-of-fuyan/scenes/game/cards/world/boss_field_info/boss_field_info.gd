@@ -11,8 +11,8 @@ extends Node3D
 
 const INTENT_CHANGE_TIME: float = 0.5
 
-var Card: BossCardGD
-func setInfo(_Card: BossCardGD) -> void:
+var Card: EpicCardGD
+func setInfo(_Card: EpicCardGD) -> void:
 	Card = _Card
 	BossIntentSprite.position.y = Card.getStatFromInfo()
 	onUpdateBossIntent()

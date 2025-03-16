@@ -14,9 +14,8 @@ func onFofInit() -> void:
 	var chief_spawn_coords: Vector4i = enemy_spawns.pop_front().coords
 	
 	var other_chief_ids: Array = get_tree().get_nodes_in_group("EliteFightMapNodesGD")\
-		.map(func(x: MapNodeGD): return x.enemy_cards\
-		.filter(func(y: SavedDataCard): return Helper.getFofInfoID(CardInfo, y.id).rarity == Game.Rarities.EXALT and y.ascended))[0]\
-		.map(func(x: SavedDataCard): return x.id)
+		.filter(func(x: MapNodeGD): return x != self)\
+		.map(func(x: MapNodeGD): return x.getChiefFromCards().id)
 	
 	var chief_infos: Array = Game.area.basic_card_ids\
 		.map(func(x: int): return Helper.getFofInfoID(CardInfo, x))\
@@ -35,14 +34,9 @@ func setChiefAndSpawns(base_budget: int, enemy_spawns: Array, enemy_spawn_amount
 	var budget: int = max(base_budget - chief_data.energy, 0)
 	enemy_cards = Game.area.setEnemySpawnsFromBudget(max(base_budget - chief_data.energy, 0), enemy_spawn_amount, enemy_spawns, map_location.progress, true)
 	
-	var restart_amount: int = 0
 	while(!ChiefCard.isValidEliteLevelSpawns(enemy_cards)):
 		enemy_cards = Game.area.setEnemySpawnsFromBudget(budget, enemy_spawn_amount, enemy_spawns, map_location.progress, true)
-		restart_amount += 1
 		
-	if restart_amount >= MAX_RESTART_AMOUNT:
-		setChiefAndSpawns(base_budget, enemy_spawns, enemy_spawn_amount, chief_infos, chief_spawn_coords)
-		return
 	enemy_cards.append(chief_data)
 	
 func onSave() -> SavedDataMapNode:
@@ -76,8 +70,6 @@ func onGenerateCurseID(curse_infos: Array) -> int:
 	
 func onFinished() -> void:
 	super()
-	if self is BossFightNodeGD: return
-	
 	var new_level_data: SavedDataLevel = level_info.saved_data.new(level_info.id, true, 0, level_info.data.duplicate())
 	new_level_data.spawn_group = spawn_group
 	new_level_data.enemy_cards = enemy_cards
@@ -87,11 +79,12 @@ func onFinished() -> void:
 
 #region Level Gen
 func getBudget() -> int:
-	return Game.area.getBudget(map_location.progress + 1, level_info.enemy_budget_offset, Game.isDivinus() and !isHoly())
+	return Game.area.getBudget(map_location.progress + 1, level_info.enemy_budget_offset)
 	
 func getChief(chief_infos: Array, chief_spawn_coords: Vector4i) -> SavedDataCard:
 	var exalt_info: CardInfo = chief_infos.pick_random()
 	chief_infos.erase(exalt_info)
+	
 	var card_data: SavedDataCard = exalt_info.saved_data.new(exalt_info.id, true)
 	card_data.ascended = true
 	card_data.team = 1
@@ -103,3 +96,6 @@ func getChief(chief_infos: Array, chief_spawn_coords: Vector4i) -> SavedDataCard
 		
 	return card_data
 #endregion
+
+func getChiefFromCards() -> SavedDataCard:
+	return enemy_cards.filter(func(y: SavedDataCard): return y.ascended and Helper.getFofInfoID(CardInfo, y.id).rarity == Game.Rarities.EXALT)[0]

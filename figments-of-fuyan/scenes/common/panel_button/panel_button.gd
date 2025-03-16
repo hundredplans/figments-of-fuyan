@@ -23,16 +23,18 @@ var is_mouse_in_ui: bool
 func onMouseInUI(state: bool) -> void:
 	mouse_in_ui.emit(state)
 	is_mouse_in_ui = state
-	
-	if !disabled:
-		if state: modulate = Color(0.6, 0.6, 0.6)
-		else: modulate = Color(1, 1, 1)
-	else: modulate = DISABLED_COLOR
+	onUpdateModulate()
 	
 func setDisabled(state: bool) -> void:
 	disabled = state
-	if disabled:
-		modulate = DISABLED_COLOR
+	onUpdateModulate()
+	
+func onUpdateModulate() -> void:
+	if !disabled:
+		if is_mouse_in_ui: modulate = Color(0.6, 0.6, 0.6)
+		else: modulate = Color(1, 1, 1)
+	else: modulate = DISABLED_COLOR
+		
 
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("MainInput") and is_mouse_in_ui and !disabled:

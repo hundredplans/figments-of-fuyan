@@ -27,6 +27,9 @@ func setForType(type: GDScript, value: Variant, property_name: String) -> void:
 	var filtered_actions: Array = getType(type)
 	for action: Action in filtered_actions:
 		action[property_name] = value
+		
+func getActions() -> Array:
+	return actions
 	
 func onUse() -> void:
 	onPushAction(actions)

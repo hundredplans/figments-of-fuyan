@@ -75,6 +75,7 @@ func onLoadData(data: SavedData) -> void:
 	speed_order = data.speed_order
 	spawn_group = data.spawn_group
 	curse_id = data.curse_id
+	player_card_last_seen_turn = data.player_card_last_seen_turn
 	
 	for light in info.lights:
 		add_child(light.instantiate())
@@ -471,13 +472,13 @@ func getNextAIUnit(inactive_cards: Array, team: int) -> CardGD:
 	return speed_order.getNextAIUnit(inactive_cards, team)
 
 func isElite() -> bool:
-	return fight_type in [Game.FightTypes.ELITE, Game.FightTypes.BOSS]
+	return fight_type == Game.FightTypes.ELITE
 
 func isEpic() -> bool:
-	return fight_type == Game.FightTypes.MINIBOSS
+	return fight_type in [Game.FightTypes.MINIBOSS, Game.FightTypes.BOSS]
 
 #region Boss
-func getBoss() -> BossCardGD:
-	var boss_cards: Array = get_tree().get_nodes_in_group("BossCardsGD")
+func getBoss() -> EpicCardGD:
+	var boss_cards: Array = get_tree().get_nodes_in_group("EpicCardsGD")
 	return boss_cards[0] if !boss_cards.is_empty() else null
 #endregion

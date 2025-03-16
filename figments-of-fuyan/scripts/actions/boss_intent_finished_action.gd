@@ -1,8 +1,8 @@
 class_name BossIntentFinishedAction extends Action
 
-var Card: BossCardGD
+var Card: EpicCardGD
 var was_in_vision: bool
-func _init(_Card: BossCardGD, _was_in_vision: bool = false) -> void:
+func _init(_Card: EpicCardGD, _was_in_vision: bool = false) -> void:
 	super()
 	Card = _Card
 	was_in_vision = _was_in_vision

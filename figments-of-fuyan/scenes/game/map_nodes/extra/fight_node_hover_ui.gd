@@ -11,7 +11,7 @@ func _process(_delta: float) -> void:
 
 func setInfo(map_node_data: SavedDataFight) -> void:
 	var area: AreaGD = Game.getArea()
-	if area.getProgress() < 5 and map_node_data.map_location.progress > 5: queue_free(); return
+	#if area.getProgress() < 5 and map_node_data.map_location.progress > 5: queue_free(); return
 	
 	var level_info: LevelInfo = Helper.getFofInfoID(LevelInfo, map_node_data.level_info.id)
 	

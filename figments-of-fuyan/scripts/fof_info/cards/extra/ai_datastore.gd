@@ -74,13 +74,13 @@ func getEnemyTiles() -> Array:
 		
 func onSave() -> void:
 	enemies_to_tiles_public_ids = {}
-	for Tile in enemies_to_tiles:
+	for Tile: TileGD in enemies_to_tiles.keys():
 		enemies_to_tiles_public_ids[Tile.public_id] = enemies_to_tiles[Tile].public_id
 	
 func onLoad() -> void:
 	enemies_to_tiles = {}
-	for public_id in enemies_to_tiles_public_ids:
-		var Tile: TileGD = Game.onFindPublicIDObject(public_id)
-		var Card: CardGD = Game.onFindPublicIDObject(enemies_to_tiles_public_ids[public_id])
+	for public_id: int in enemies_to_tiles_public_ids.keys():
+		var Card: CardGD = Game.onFindPublicIDObject(public_id)
+		var Tile: TileGD = Game.onFindPublicIDObject(enemies_to_tiles_public_ids[public_id])
 		enemies_to_tiles[Card] = Tile
 	

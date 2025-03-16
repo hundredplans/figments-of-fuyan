@@ -7,5 +7,5 @@ func onPreAction() -> void:
 	pass
 	
 func onPostAction() -> void:
-	var BossCard: BossCardGD = Game.getLevel().getBoss()
+	var BossCard: EpicCardGD = Game.getLevel().getBoss()
 	BossCard.boss_datastore.onClearTileIntents()

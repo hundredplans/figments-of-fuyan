@@ -16,7 +16,7 @@ class_name BossPhaseDatastore extends Resource
 @export var eye: float
 
 @export var awaken_boss_intent_name: String
-@export var speed_order_override: BossCardInfo.SpeedOrderOverride
+@export var speed_order_override: EpicCardInfo.SpeedOrderOverride
 
 @export var change_delay: float
 @export var boss_intents: Array[BossIntent]
@@ -57,7 +57,7 @@ func getEye() -> float:
 func getAwakenBossIntentName() -> String:
 	return awaken_boss_intent_name
 
-func getSpeedOrderOverride() -> BossCardInfo.SpeedOrderOverride:
+func getSpeedOrderOverride() -> EpicCardInfo.SpeedOrderOverride:
 	return speed_order_override
 	
 func getChangeDelay() -> float:

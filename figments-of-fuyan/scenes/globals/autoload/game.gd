@@ -553,12 +553,12 @@ func onCreateRewardsUIScreen(rewards: Rewards, parent: Control, level_type: Figh
 	RewardsUI.setInfo(rewards, save_file, level_type)
 	return RewardsUI
 	
-const REWARDS_CARDS_UI_PATH: String = "res://scenes/common/rewards_ui/rewards_cards_ui.tscn"
-func onCreateRewardsCardsUIScreen(cards: Array, parent: Control) -> Control:
-	var RewardsCards: Control = load(REWARDS_CARDS_UI_PATH).instantiate()
-	parent.add_child(RewardsCards)
-	RewardsCards.setInfo(cards, save_file)
-	return RewardsCards
+const CHOOSE_REWARDS_UI_PATH: String = "res://scenes/common/rewards_ui/choose_rewards_ui.tscn"
+func onCreateChooseRewardsUIScreen(rewards: ActionWrapper, parent: Control) -> Control:
+	var ChooseRewardsUI: Control = load(CHOOSE_REWARDS_UI_PATH).instantiate()
+	parent.add_child(ChooseRewardsUI)
+	ChooseRewardsUI.setInfo(rewards)
+	return ChooseRewardsUI
 #endregion
 
 #region Champion

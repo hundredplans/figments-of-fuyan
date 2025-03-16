@@ -13,7 +13,7 @@ func _init(_Card: CardGD = null, _Applier: GameObjectGD = null, _knockback: int 
 	direction = _direction
 	
 func onPreAction() -> void:
-	pass
+	if Card.isDead(): onFailAction()
 	
 func onPostAction() -> void:
 	var cube_diagonal: Vector3i = Game.cube_directions[direction]
@@ -28,7 +28,7 @@ func onPostAction() -> void:
 		var diagonal: Vector4i = base_diagonal * mult
 		var DiagonalTile: TileGD = Game.getTile(coords + diagonal)
 		if DiagonalTile != null:
-			if DiagonalTile.isSolid() or DiagonalTile.isOccupied() or DiagonalTile.getHeight() >= Card.getTile().getHeight():
+			if DiagonalTile.isSolid() or DiagonalTile.isOccupied() or DiagonalTile.getHeight() > Card.getTile().getHeight():
 				deal_damage = true
 				break
 				

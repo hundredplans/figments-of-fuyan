@@ -39,7 +39,7 @@ func onLoadDataLevelFofInit() -> void:
 	else: onAwakenBoss(Tile)
 
 func onAwakenBoss(Tile: TileGD) -> void:
-	var boss_info: BossCardInfo = Helper.getFofInfoID(BossCardInfo, spawn_id)
+	var boss_info: EpicCardInfo = Helper.getFofInfoID(EpicCardInfo, spawn_id)
 	var boss_datastore := BossDatastore.new(1, boss_info.getAwakenBossIntentName())
 	onPushAction(AwakenBossAction.new(spawn_id, Tile, boss_datastore))
 

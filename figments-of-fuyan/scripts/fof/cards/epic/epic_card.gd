@@ -1,4 +1,4 @@
-class_name BossCardGD extends CardGD
+class_name EpicCardGD extends CardGD
 
 enum UseType {START, END, RECALCULATE}
 
@@ -19,7 +19,7 @@ func onLoadData(data: SavedData) -> void:
 	boss_datastore = data.boss_datastore
 	if boss_datastore != null: boss_datastore.onLoad()
 	setBossIntentByName()
-	add_to_group("BossCardsGD")
+	add_to_group("EpicCardsGD")
 	
 func onFofInit() -> void:
 	super()
@@ -73,7 +73,7 @@ func getArchetypeFromInfo() -> ArchetypeInfo:
 func getBossIntentsFromInfo() -> Array[BossIntent]:
 	return info.getBossIntents(boss_datastore.phase)
 	
-func getSpeedOrderOverrideFromInfo() -> BossCardInfo.SpeedOrderOverride:
+func getSpeedOrderOverrideFromInfo() -> EpicCardInfo.SpeedOrderOverride:
 	return info.getSpeedOrderOverride(boss_datastore.phase)
 	
 func getChangeDelayFromInfo(delta: int = 0) -> int:

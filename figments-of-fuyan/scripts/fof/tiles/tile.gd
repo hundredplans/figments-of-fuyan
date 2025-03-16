@@ -220,7 +220,7 @@ func onCardHover(state: bool) -> void:
 		await get_tree().create_timer(SHOW_CARD_AT_HOVER_DELAY).timeout
 		if is_hovered == state:
 			var Card: CardGD = Game.getFieldCard(self)
-			if Card == null or Card is BossCardGD: return
+			if Card == null or Card is EpicCardGD: return
 			change_hover_card_state.emit(Card, true)
 		
 #endregion
@@ -315,6 +315,9 @@ func getRevealVisibleGroup() -> Array:
 	
 func getTurnsUnseen() -> int:
 	return vision_datastore.getLastSeenByEnemy()
+	
+func onResetLastSeenByEnemy() -> void:
+	vision_datastore.onResetLastSeenByEnemy()
 	
 func onOccupyingCardLevelVisibleChanged(_occupy_state: OccupyStates) -> void:
 	occupy_state = _occupy_state

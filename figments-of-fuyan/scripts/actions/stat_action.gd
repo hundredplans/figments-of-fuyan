@@ -77,6 +77,10 @@ func onPostAction() -> void:
 					
 					types.push_front(Game.Stats.HEALTH)
 					values.push_front(value)
+					
+					stat_info.types.append(Game.Stats.HEALTH)
+					stat_info.values.append(difference)
+					
 					max_health_not_damage = true
 					
 				Game.Stats.ATTACK:

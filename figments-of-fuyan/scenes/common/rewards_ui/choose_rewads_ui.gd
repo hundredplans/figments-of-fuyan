@@ -4,14 +4,12 @@ signal taken
 signal mouse_signal
 
 @onready var CardsContainer: HBoxContainer = %CardsContainer
-
-var save_file: SaveFileGD
-func setInfo(cards: Array, _save_file: SaveFileGD) -> void:
-	save_file = _save_file
-	for Card in cards:
-		var CardUI: Control = Card.onCreateCardUI(CardsContainer, true)
-		CardUI.mouse_in_ui.connect(onMouseInUI)
-		CardUI.pressed.connect(onCardPressed)
+func setInfo(rewards: ActionWrapper) -> void:
+	for reward: FofGD in rewards.getType(ChooseRewardAction)[0].getItems():
+		if reward is CardGD:
+			var CardUI: Control = reward.onCreateCardUI(CardsContainer, true)
+			CardUI.mouse_in_ui.connect(onMouseInUI)
+			CardUI.pressed.connect(onCardPressed)
 
 var mouse_in_ui: bool
 func onMouseInUI(state: bool) -> void:

@@ -99,7 +99,9 @@ func onGameObjectInfoSelected(data: SavedData) -> void:
 	get_tree().call_group("GameObjectsGD", "queue_free")
 	
 	SelectedModel = SavedData.onLoadModel(data, World)
-	if SelectedModel is CardGD: SelectedModel.onCreateModel()
+	if SelectedModel is CardGD:
+		SelectedModel.onCreateModel()
+		SelectedModel.getModel().rotation.y = 0
 	
 	onLoadPoints()
 	onUpdateEditTileCoordsEnabled()
@@ -173,8 +175,8 @@ func onCreateTileStaticBodies() -> void:
 	get_tree().call_group("TileStaticBody", "queue_free")
 	for x in range(-MAX_LEVEL_SIZE, (MAX_LEVEL_SIZE + 1)):
 		for y in range(max(-MAX_LEVEL_SIZE, -x - MAX_LEVEL_SIZE), min(MAX_LEVEL_SIZE, -x + MAX_LEVEL_SIZE) + 1):
-				var coords := Vector4i(x, y, -x-y, base_elevation)
-				onPlaceTileStaticBody(coords)
+			var coords := Vector4i(x, y, -x-y, base_elevation)
+			onPlaceTileStaticBody(coords)
 			
 func onPlaceTileStaticBody(coords: Vector4i) -> void:
 	var TileStaticBody: StaticBody3D = tile_static_body.instantiate()

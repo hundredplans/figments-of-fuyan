@@ -4,11 +4,11 @@ func _init() -> void:
 	super()
 	
 func onPreAction() -> void:
-	var BossCard: BossCardGD = Game.getLevel().getBoss()
+	var BossCard: EpicCardGD = Game.getLevel().getBoss()
 	setActionDelay(Game.getLevel().getBoss().getChangeDelayFromInfo(BossCard.getPhase()))
 	
 func onPostAction() -> void:
-	var BossCard: BossCardGD = Game.getLevel().getBoss()
+	var BossCard: EpicCardGD = Game.getLevel().getBoss()
 	BossCard.onChangeBossPhase()
 	
 	var hurt_action: HurtAction = Game.ActionManagerReference.onFindFirstAction(HurtAction)

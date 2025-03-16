@@ -1,11 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://bd25cc7h0xg0q"]
+[gd_scene load_steps=6 format=3 uid="uid://bd25cc7h0xg0q"]
 
 [ext_resource type="Script" uid="uid://dpp36nb5g2jbc" path="res://scenes/game/map/extra/purchasable_remove.gd" id="1_0e0mc"]
 [ext_resource type="PackedScene" uid="uid://ceoy120bbs7le" path="res://scenes/common/panel_button/panel_button.tscn" id="2_fhrs7"]
 [ext_resource type="PackedScene" uid="uid://dkv06ds5ncutu" path="res://scenes/game/levels/ui/deck_screen.tscn" id="2_ogynt"]
 [ext_resource type="LabelSettings" uid="uid://cyodc3xq62xbg" path="res://resources/ui/label_settings/jacquard_large.tres" id="3_6e340"]
 [ext_resource type="PackedScene" uid="uid://6nf3mir2i2rk" path="res://scenes/common/fancy_text/fancy_text_label.tscn" id="4_npa6l"]
-[ext_resource type="LabelSettings" uid="uid://baxopkmeda53x" path="res://resources/ui/label_settings/roboto_huge.tres" id="5_rdesj"]
 
 [node name="PurchasableRemove" type="Control"]
 custom_minimum_size = Vector2(240, 240)
@@ -37,17 +36,5 @@ layout_mode = 0
 offset_top = 247.0
 offset_right = 240.0
 offset_bottom = 285.0
-
-[node name="SoldLabel" type="Label" parent="."]
-unique_name_in_owner = true
-visible = false
-layout_mode = 0
-offset_left = 36.0
-offset_top = 139.0
-offset_right = 196.0
-offset_bottom = 215.0
-rotation = -0.785397
-text = "SOLD"
-label_settings = ExtResource("5_rdesj")
 
 [connection signal="pressed" from="PanelButton" to="." method="_on_panel_button_pressed"]

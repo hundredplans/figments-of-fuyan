@@ -1,4 +1,4 @@
-class_name BossCardInfo extends FofInfo
+class_name EpicCardInfo extends FofInfo
 
 @export var rarity: Game.Rarities
 @export var phases: Array[BossPhaseDatastore]
@@ -21,9 +21,9 @@ const BASE_MATERIAL_ALPHAGREY_PATH: String = "res://resources/materials/game/bas
 const BASE_MATERIAL_RED_TRANSPARENT_PATH: String = "res://resources/materials/game/base_material_colored/base_material_red_transparent.tres"
 const BOSS_FIELD_INFO_SCENE_PATH: String = "res://scenes/game/cards/world/boss_field_info/boss_field_info.tscn"
 
-static func getInfoPath() -> String: return "res://resources/fof/boss_cards"
+static func getInfoPath() -> String: return "res://resources/fof/epic_cards"
 
-static func getFofName() -> String: return "BossCard"
+static func getFofName() -> String: return "EpicCard"
 
 func getIcon() -> Texture2D:
 	return art_mini

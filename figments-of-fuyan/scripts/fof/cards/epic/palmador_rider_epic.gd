@@ -1,4 +1,4 @@
-extends BossCardGD
+extends EpicCardGD
 	
 const PALMY_ID: int = 4
 const ARMOR_TRAIT_ID: int = 1
