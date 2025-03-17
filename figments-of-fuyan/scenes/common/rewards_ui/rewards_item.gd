@@ -1,6 +1,9 @@
 extends Control
 
 @export var card_icon: Texture2D
+@export var miniboss_icon: Texture2D
+@export var boss_icon: Texture2D
+
 @export var shilling_icon: Texture2D
 @onready var IconRect: TextureRect = %IconRect
 @onready var ItemLabel: FancyTextLabel = %ItemLabel
@@ -22,17 +25,34 @@ func setInfo(_item: Variant, is_taken: bool = false) -> void:
 		ItemLabel.setText("Shillings")
 		AmountLabel.text = str(item.getType(ChangeShillingsAction)[0].getDelta())
 		
+	elif item is ActionWrapper and item.hasType(ChooseRewardAction):
+		var action: ChooseRewardAction = item.getType(ChooseRewardAction)[0]
+		var icon_texture: Texture2D
+		var text: String = ""
+		var theme_variation: String = ""
+		if action.items.all(func(x: FofGD): return x.info.rarity == Game.Rarities.MINIBOSS):
+			icon_texture = miniboss_icon
+			text = "Miniboss"
+			theme_variation = "PurplePanelContainer"
+		elif action.items.all(func(x: FofGD): return x.info.rarity == Game.Rarities.BOSS):
+			icon_texture = boss_icon
+			text = "Boss"
+			theme_variation = "RedPanelContainer"
+		else:
+			icon_texture = card_icon
+			text = "Cards"
+			theme_variation = "WhitePanelContainer"
+			
+		MainContainer.theme_type_variation = theme_variation
+		IconRect.texture = icon_texture
+		ItemLabel.setText(text)
+		
 	elif item is BoonGD or item is ToolGD or item is CardGD:
 		MainContainer.theme_type_variation = Game.getRarityThemeVariation(item.info.rarity, item.getAscended())
 		
 		var text: String = ItemLabel.onReplaceCardName(item.info.getFofName(), item.ascended, item.info.rarity)
 		ItemLabel.setText(text)
 		IconRect.texture = item.getIcon()
-		
-	elif item is Array:
-		MainContainer.theme_type_variation = "WhitePanelContainer"
-		IconRect.texture = card_icon
-		ItemLabel.setText("Cards")
 		
 	setTaken(is_taken)
 

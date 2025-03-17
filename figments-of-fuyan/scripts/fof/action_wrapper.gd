@@ -9,7 +9,7 @@ func onSave() -> SavedData:
 func onLoadData(data: SavedData) -> void:
 	super(data)
 	actions = data.actions
-	for action: Action in actions: action.onLoad()
+	for action: Action in actions: action.onLoad(); action.setSignals()
 	
 func setActions(_actions: Variant = null) -> void:
 	if _actions is Array: actions = _actions

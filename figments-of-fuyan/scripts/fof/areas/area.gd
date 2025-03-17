@@ -8,6 +8,8 @@ signal process_action
 var map_location_to_node: Dictionary
 var basic_card_ids: Array = []
 var active_level: LevelGD
+
+const EPIC_CARD_REWARDS_CARD_AMOUNT: int = 3
 #endregion
 
 #region Saved Data
@@ -322,8 +324,6 @@ func setHolyPath() -> void:
 			empty_map_node = link.empty_map_node
 			
 			if empty_map_node.progress == 5: lane = -1 if Random.getBool() else 1
-			
-
 #endregion
 #endregion	
 
@@ -410,19 +410,17 @@ func setRewards(is_win: bool) -> void:
 		
 		var fight_rewards_datastore: FightRewardsDatastore = \
 			getWorld().elite_fight_rewards if is_epic or is_elite else getWorld().fight_rewards
-		
+			
 		var enemy_cards: Array = active_level.enemy_cards.duplicate()
 		if is_elite:
 			items.append(SavedData.onLoadModel(enemy_cards.pop_back(), active_level))
 			
-		enemy_cards = enemy_cards.filter(func(x: SavedDataCard): return Helper.getFofInfoID(CardInfo, x.id).rarity != Game.Rarities.CHAMPION)
-		
-		var reward_amount: int = Game.CARD_REWARD_DEFAULT_AMOUNT
-		enemy_cards.resize(reward_amount)
-		enemy_cards = enemy_cards.filter(func(x: SavedDataCard): return x != null)
-		
-		items.append(enemy_cards.map(func(x: SavedDataCard):\
-			return SavedData.onLoadModel(x.duplicate(), active_level)))
+		if !is_epic: enemy_cards = getRegularCardRewards(enemy_cards)
+		else: enemy_cards = onRollEpicCardRewards()
+			
+		var rewards_wrapper: ActionWrapper = SavedData.onLoadModel(SavedDataActionWrapper.new(), active_level)
+		rewards_wrapper.setActions(ChooseRewardAction.new(enemy_cards, true))
+		items.append(rewards_wrapper)
 			
 		var shillings: int = randi_range(fight_rewards_datastore.shillings_min, fight_rewards_datastore.shillings_max)
 		var change_shillings_wrapper: ActionWrapper = SavedData.onLoadModel(SavedDataActionWrapper.new(), active_level)
@@ -451,13 +449,50 @@ func setRewards(is_win: bool) -> void:
 			var boon_data: SavedDataBoon = Random.getRandomFofByOdds(BoonInfo)
 			if boon_data != null: items.append(SavedData.onLoadModel(boon_data, active_level))
 		
-		var rewards := Rewards.new(items)
 		if is_epic:
-			rewards.epic_items = getEpicFightRewards()
-		
+			var epic_rewards_wrapper: ActionWrapper = SavedData.onLoadModel(SavedDataActionWrapper.new(), active_level)
+			epic_rewards_wrapper.setActions(ChooseRewardAction.new(getEpicFightRewards()))
+			items.append(epic_rewards_wrapper)
+			
+		var rewards := Rewards.new(items)
 		rewards.setInfo(active_level)
 		active_level.rewards = rewards
 	active_level.onGameEnded()
+	
+func getRegularCardRewards(enemy_cards: Array) -> Array:
+	enemy_cards = enemy_cards.filter(func(x: SavedDataCard): return Helper.getFofInfoID(CardInfo, x.id).rarity != Game.Rarities.CHAMPION)
+	
+	var reward_amount: int = Game.CARD_REWARD_DEFAULT_AMOUNT
+	enemy_cards.resize(reward_amount)
+	enemy_cards = enemy_cards.filter(func(x: SavedDataCard): return x != null)
+	
+	enemy_cards = enemy_cards.map(func(x: SavedDataCard):\
+		return SavedData.onLoadModel(x.duplicate(), active_level))
+	return enemy_cards
+	
+func onRollEpicCardRewards() -> Array:
+	var enemy_cards: Array = []
+	var enemy_ids: Array = []
+	for i in range(EPIC_CARD_REWARDS_CARD_AMOUNT):
+		var odds: Dictionary = getWorld().enemy_spawn_rarity_odds.getDictionary()
+		var rarity: Game.Rarities = int(Random.getRandomKey(Random.onConvertPercentOdds(odds)))
+		var rarity_cards: Array = basic_card_ids\
+			.map(func(x: int): return Helper.getFofInfoID(CardInfo, x))\
+			.filter(func(y: CardInfo): return y.rarity == rarity and y.id not in enemy_ids)
+			
+		var chosen_info: CardInfo = rarity_cards.pick_random()
+		var ascend_card: bool = rarity != Game.Rarities.EXALT and Random.rollFloat(getWorld().elite_enemy_ascended_rate / 100.0)
+		var tool_data: SavedDataTool = null
+		
+		if Random.rollFloat(getWorld().tool_enemy_spawn_rate_ascended / 100.0):
+			tool_data = Random.getRandomFofByOdds(ToolInfo, getWorld().tool_enemy_spawn_rarity_odds.getDictionary())
+		
+		var card_data: SavedDataCard = Game.onCreateBaseCard(chosen_info.id, ascend_card, tool_data)
+		Game.setCardDataFromInfo(card_data, chosen_info)
+		
+		enemy_ids.append(chosen_info.id)
+		enemy_cards.append(SavedData.onLoadModel(card_data, active_level))
+	return enemy_cards
 	
 func getEpicFightRewards() -> Array:
 	var boss_card: EpicCardGD = active_level.getBoss()
@@ -496,7 +531,8 @@ func onCreateCardByEnergy(_cards: Array, energy: int, spawn: SavedDataSpawn, pro
 		var ascend_card: bool = Random.rollFloat(ascended_rate / 100.0)
 		if ascend_card: card_data.ascended = true
 	
-	var add_tool: bool = Random.rollFloat(info.world.tool_enemy_spawn_rate / 100.0)
+	var tool_spawn_rate: float = getWorld().tool_enemy_spawn_rate if !is_elite else getWorld().tool_enemy_spawn_rate_ascended
+	var add_tool: bool = Random.rollFloat(tool_spawn_rate / 100.0)
 	if !add_tool:
 		Game.setCardDataFromInfo(card_data, card_info)
 		return card_data

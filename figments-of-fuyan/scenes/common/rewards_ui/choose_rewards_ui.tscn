@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://der1eqnu65wwb"]
+[gd_scene load_steps=6 format=3 uid="uid://der1eqnu65wwb"]
 
-[ext_resource type="Script" uid="uid://dpw1dr2asxgfw" path="res://scenes/common/rewards_ui/choose_rewads_ui.gd" id="1_txxry"]
+[ext_resource type="Script" uid="uid://dpw1dr2asxgfw" path="res://scenes/common/rewards_ui/choose_rewards_ui.gd" id="1_txxry"]
 [ext_resource type="PackedScene" uid="uid://dxvuvb68hgxug" path="res://scenes/common/exit_button/exit_button.tscn" id="2_dp6p3"]
+[ext_resource type="PackedScene" uid="uid://cewvw3vx3mjcm" path="res://scenes/game/tools/tool_icon.tscn" id="2_sru1w"]
+[ext_resource type="PackedScene" uid="uid://ct1cn5tc1ofmb" path="res://scenes/game/boons/boon_icon.tscn" id="3_ejfyn"]
 [ext_resource type="LabelSettings" uid="uid://bw3j8bkfulvw1" path="res://resources/ui/label_settings/jacquard_huge.tres" id="3_wfj1b"]
 
 [node name="ChooseRewardsUI" type="Control"]
@@ -14,6 +16,8 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_type_variation = &"WhitePanelContainer"
 script = ExtResource("1_txxry")
+ToolIconPacked = ExtResource("2_sru1w")
+BoonIconPacked = ExtResource("3_ejfyn")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
@@ -33,7 +37,7 @@ offset_bottom = 1080.0
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="CardsContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer"]
+[node name="RewardsContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -54,10 +58,10 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -135.5
-offset_top = 30.0
-offset_right = 135.5
-offset_bottom = 95.0
+offset_left = -173.5
+offset_top = 25.0
+offset_right = 173.5
+offset_bottom = 90.0
 grow_horizontal = 2
-text = "Select Card"
+text = "Select Reward"
 label_settings = ExtResource("3_wfj1b")

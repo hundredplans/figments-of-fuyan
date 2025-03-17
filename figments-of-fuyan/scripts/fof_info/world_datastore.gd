@@ -25,7 +25,7 @@ class_name WorldDatastore extends Resource
 @export_group("Tools")
 @export var tool_enemy_spawn_rarity_odds: RarityOddsDatastore
 @export_range(0, 100, 0.1) var tool_enemy_spawn_rate: float
-@export_range(0, 100, 0.1) var tool_enemy_ascended_rate: float
+@export_range(0, 100, 0.1) var tool_enemy_spawn_rate_ascended: float
 @export_group("")
 
 @export_group("Shop")

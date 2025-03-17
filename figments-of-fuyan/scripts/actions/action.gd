@@ -14,6 +14,9 @@ var owner: Variant # FofGD or another action always
 @export var post: bool = false
 
 func _init() -> void:
+	setSignals()
+
+func setSignals() -> void:
 	if Game.ActionManagerReference == null: return
 	push_action.connect(Game.ActionManagerReference.onPushAction)
 	append_action.connect(Game.ActionManagerReference.onAppendAction)

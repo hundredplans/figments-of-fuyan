@@ -3,7 +3,7 @@ class_name ChooseRewardAction extends Action # Used for the boxes with cards in 
 var items: Array # [FofGD]
 
 @export var chosen_index: int
-@export var items_public_ids: Array[int]
+@export var item_datas: Array
 
 @export var auto_clear: bool
 
@@ -25,14 +25,22 @@ func onPostAction() -> void:
 	
 	if item is CardGD:
 		onPushAction(AddToDeckAction.new(item, AddToDeckAction.ADD_TYPES.SHUFFLE))
+	elif item is BoonGD:
+		onPushAction(AddBoonAction.new(item.info.id, item.getAscended()))
+
+func onItemChosen(item: FofGD) -> void:
+	chosen_index = items.find(item)
 
 func onSave() -> void:
 	super()
-	items_public_ids = items.map(func(x: FofGD): return x.public_id)
+	item_datas = items.map(func(x: FofGD): return x.onSave())
 
 func onLoad() -> void:
 	super()
-	items = items_public_ids.map(func(x: int): return Game.onFindPublicIDObject(x))
+	items = []
+	for saved_data: SavedData in item_datas:
+		var item: FofGD = SavedData.onLoadModel(saved_data, Game.getLevel())
+		items.append(item)
 	
 func getItems() -> Array:
 	return items
