@@ -2,19 +2,19 @@
 
 [ext_resource type="Script" uid="uid://cwaxy6m1b8n5m" path="res://scripts/fof_info/boons/boon_info.gd" id="1_aol3b"]
 [ext_resource type="Script" uid="uid://lp8mbpj3dklp" path="res://scripts/fof/boons/mentor_boon.gd" id="1_dou1f"]
-[ext_resource type="Texture2D" uid="uid://uf61yvygws5h" path="res://assets/sprites/game/boons/nurture_boon.png" id="1_ri1c0"]
+[ext_resource type="Texture2D" uid="uid://vg6qhbo7xvhs" path="res://assets/sprites/game/boons/mentor_boon.png" id="2_33ble"]
 [ext_resource type="Script" uid="uid://dh3x145y3ihra" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_yknmt"]
 
 [resource]
 script = ExtResource("1_aol3b")
-icon = ExtResource("1_ri1c0")
+icon = ExtResource("2_33ble")
 description = "Gain a [acard=4] until you beat the next boss"
 ascended_description = ""
 rarity = 0
 curse = false
 elite_fight_curse = false
 use_charges = false
-auto_reset_charges_level_start = false
+auto_reset_charges = false
 reset_to_default = false
 id = 16
 name = "Mentor Boon"

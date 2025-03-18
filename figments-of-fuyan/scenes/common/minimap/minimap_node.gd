@@ -26,6 +26,12 @@ func onMouseInUI(state: bool, map_node_data: SavedDataMapNode) -> void:
 	if !state and HoverUI != null:
 		HoverUI.queue_free()
 	else:
-		HoverUI = FightNodeHoverUIPacked.instantiate()
+		HoverUI = load(getHoverUIPath(map_node_data)).instantiate()
 		parent_hover_ui.emit(HoverUI)
 		HoverUI.setInfo(map_node_data)
+
+func getHoverUIPath(map_node_data: SavedDataMapNode) -> String:
+	match map_node_data.id:
+		3, 4: return "res://scenes/game/map_nodes/extra/fight_node_hover_ui.tscn"
+		7, 8: return "res://scenes/game/map_nodes/extra/epic_fight_node_hover_ui.tscn"
+	return ""

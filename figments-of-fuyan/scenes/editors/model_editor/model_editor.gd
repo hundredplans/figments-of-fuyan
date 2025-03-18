@@ -16,8 +16,8 @@ func _ready() -> void:
 		var card_data := SavedDataCard.new(card_info.id, true)
 		Game.setCardDataFromInfo(card_data, card_info)
 		var Card: CardGD = SavedData.onLoadModel(card_data, World)
-		
 		Card.onCreateModel()
+		Card.getModel().rotation.y = 0
 		
 		if Card.AniPlayer != null:
 			for animation_name in Card.AniPlayer.get_animation_list():

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="BossIntent" load_steps=2 format=3 uid="uid://bqvep55jkenns"]
+
+[ext_resource type="Script" uid="uid://c85vjl4hwbga5" path="res://scripts/fof_info/cards/extra/boss_intent.gd" id="1_i2jmx"]
+
+[resource]
+script = ExtResource("1_i2jmx")
+name = "Fan Blind"
+description = "5 Tiles fan and adjacent tiles that applies BLIND. After uses Teleport Attack at two pre-established tiles or bat attack where he stands"
+type = 3
+default_cooldown = 3
+off_vision_use_cooldown = false
+combat_type = 1
+metadata/_custom_type_script = "uid://c85vjl4hwbga5"

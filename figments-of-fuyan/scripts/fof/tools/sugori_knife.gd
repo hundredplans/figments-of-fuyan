@@ -38,6 +38,12 @@ func onToolHolderDeath() -> void:
 	if ascended:
 		onRemoveFieldEffects(Card.getVisibleFieldCardsAllies())
 	
+func onReset(override: bool = false) -> void:
+	super(override)
+	if Card == null or !ascended: return
+	
+	onRemoveFieldEffects(Card.getVisibleFieldCardsAllies())
+	
 func onToolUnequipped() -> void:
 	super()
 	

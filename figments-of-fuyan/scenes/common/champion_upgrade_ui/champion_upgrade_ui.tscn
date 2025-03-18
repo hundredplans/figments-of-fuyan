@@ -1,0 +1,63 @@
+[gd_scene load_steps=4 format=3 uid="uid://d38l7okb8ifb5"]
+
+[ext_resource type="Script" uid="uid://cadqhnbdb5ra" path="res://scenes/common/champion_upgrade_ui/champion_upgrade_ui.gd" id="1_mw2xj"]
+[ext_resource type="LabelSettings" uid="uid://bw3j8bkfulvw1" path="res://resources/ui/label_settings/jacquard_huge.tres" id="2_mw2xj"]
+[ext_resource type="Texture2D" uid="uid://xr2y6qr0qyya" path="res://assets/sprites/game/map/minimap_icons/minimap_arrow.png" id="2_vte5a"]
+
+[node name="ChampionUpgradeUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_mw2xj")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -426.0
+offset_top = -326.0
+offset_right = 427.0
+offset_bottom = 220.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_type_variation = &"WhitePanelContainer"
+
+[node name="ChampionUpgradeLabel" type="Label" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 6
+text = "Champion Upgrade [0 -> 1]"
+label_settings = ExtResource("2_mw2xj")
+horizontal_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(853, 440)
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"WhitePanelContainer"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="MainContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 60
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/PanelContainer/MarginContainer/MainContainer"]
+texture_filter = 1
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+texture = ExtResource("2_vte5a")
+stretch_mode = 5

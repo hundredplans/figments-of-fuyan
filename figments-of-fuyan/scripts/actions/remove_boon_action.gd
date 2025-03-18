@@ -11,6 +11,7 @@ func onPreAction() -> void:
 func onPostAction() -> void:
 	var Boon: BoonGD = Game.get_tree().get_nodes_in_group("BoonsGD").filter(func(x: BoonGD): return x.info.id == id)[0]
 	Game.getSaveFile().getBoons().erase(Boon)
+	Boon.onRemoveBoon()
 	Boon.onClear()
 	
 func onCheckFail() -> void:

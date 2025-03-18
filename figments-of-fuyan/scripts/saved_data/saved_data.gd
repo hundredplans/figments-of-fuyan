@@ -13,8 +13,9 @@ func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0) -> void
 	public_id = _public_id
 
 static func onLoadModel(data: SavedData, parent: Node3D, init_args: Array = []) -> FofGD:
-	if data.public_id == 0: data.public_id = Game.onIncrementPublicID()
 	var model := FofGD.new()
+	if data.public_id == 0: data.public_id = Game.onIncrementPublicID()
+	
 	var info: FofInfo = Helper.getFofInfoID(data.getInfoType(), data.id)
 	
 	model.name = info.get_script().getFofName() + str(data.public_id)

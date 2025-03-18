@@ -278,15 +278,18 @@ func isAdvanceTurn(phase: Phases, team: int) -> bool:
 #endregion
 
 #region Public ID
+var public_id_objects: Dictionary[int, FofGD] = {}
 var highest_public_id: int
 func onIncrementPublicID() -> int:
 	highest_public_id += 1
 	return highest_public_id
 	
+func setPublicID(fof: FofGD) -> void:
+	public_id_objects[fof.public_id] = fof
+	
 func onFindPublicIDObject(public_id: int) -> FofGD:
-	for FofObject in get_tree().get_nodes_in_group("FofGD"):
-		if FofObject.public_id == public_id:
-			return FofObject
+	if public_id_objects.has(public_id):
+		return public_id_objects[public_id]
 	return null
 #endregion
 

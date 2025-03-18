@@ -39,14 +39,10 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		
 		var SecondHat: VFXGD = SavedData.onLoadModel(SavedDataVFX.new(HAT_ID, true), Card)
 		SecondHat.setStartHat(false)
+		
 		var actions: Array = [CameraChangeAction.new(Card), OccupyAction.new(Card, getRandomSpawnTile()),\
-			DestroyVFXAction.new(FirstHat), CreateVFXAction.new(SecondHat, true)]
-		
-		var heal_action := HealAction.new(Card, 2)
-		heal_action.setActionDelay(SPECTATE_TELEPORTED_UNIT_DELAY)
-		
-		actions.append(heal_action)
-		actions.append(CameraChangeAction.new(self))
+			DestroyVFXAction.new(FirstHat), CameraChangeAction.new(self), CameraChangeAction.new(Card),\
+			HealAction.new(Card, 2), CreateVFXAction.new(SecondHat, true), CameraChangeAction.new(self)]
 		
 		onPushAction(actions)
 		onAbility()

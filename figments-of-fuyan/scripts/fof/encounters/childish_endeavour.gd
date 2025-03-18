@@ -22,21 +22,18 @@ func onOptionPressed(option: EncounterOptionDatastore, screen: Control) -> void:
 		"Train":
 			onPushAction(AddBoonAction.new(NURTURE_BOON_ID, false))
 		"Mentor":
-			var card_data: SavedDataCard = Game.onCreateBaseCard(4, true)
-			Game.setCardDataFromInfo(card_data, Helper.getFofInfoID(CardInfo, card_data.id))
-			var Card: CardGD = SavedData.onLoadModel(card_data, Game.getSaveFile())
+			onForceAction(AddBoonAction.new(MENTOR_BOON_ID, false))
 			
-			var actions: Array = [AddToDeckAction.new(Card), AddBoonAction.new(MENTOR_BOON_ID, false)]
-			onPushAction(actions)
+			var mentor_boon: BoonGD = Game.getSaveFile().getBoon(MENTOR_BOON_ID)
+			if mentor_boon != null:
+				var Card: CardGD = mentor_boon.getPalmyCard()
 			
-			Card.setIsTemporary(true)
-			
-			var CardUI: Control = Card.onCreateCardUI(screen, false)
-			CardUI.setDisabled(true)
-			CardUI.global_position = get_viewport().get_mouse_position() - (CardUI.size / 2) - Vector2(0, CardUI.size.y / 2)
-			temp_disable_options.emit(true)
-			
-			await get_tree().create_timer(FLY_START_DELAY).timeout
-			await Game.onFlyToUI(CardUI, screen.UI.getDeckPanel())
+				var CardUI: Control = Card.onCreateCardUI(screen, false)
+				CardUI.setDisabled(true)
+				CardUI.global_position = get_viewport().get_mouse_position() - (CardUI.size / 2) - Vector2(0, CardUI.size.y / 2)
+				temp_disable_options.emit(true)
+				
+				await get_tree().create_timer(FLY_START_DELAY).timeout
+				await Game.onFlyToUI(CardUI, screen.UI.getDeckPanel())
 			
 	onContinueToNextPage(option)

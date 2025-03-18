@@ -61,9 +61,8 @@ func onGenerateCurseID(curse_infos: Array) -> int:
 	var _curse_info: BoonInfo = curse_infos.pick_random()
 	curse_infos.erase(_curse_info)
 	var curse: BoonGD = SavedData.onLoadModel(_curse_info.saved_data.new(_curse_info.id, true), self)
-	
+	curse.onClear()
 	if !curse.isAddRequirementMet():
-		curse.onClear()
 		return onGenerateCurseID(curse_infos)
 	
 	return curse.info.id

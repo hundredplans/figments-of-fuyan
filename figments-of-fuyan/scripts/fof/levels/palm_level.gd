@@ -10,7 +10,7 @@ var ISLAND_ODDS: Dictionary = {
 		#"4": 0.01
 }
 	
-const DISTANCE_BOUND: int = 60
+const DISTANCE_BOUND: int = 80
 const LOWER_GEN_BOUND: int = 30
 const UPPER_GEN_BOUND: int = 150
 #endregion

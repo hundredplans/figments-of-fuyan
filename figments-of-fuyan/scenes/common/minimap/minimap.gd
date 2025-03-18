@@ -27,10 +27,6 @@ func _ready() -> void:
 	
 	for progress_batch in data_by_progress:
 		var lowest_lane_offset: int = abs(progress_batch.map(func(x: SavedDataMapNode): return x.map_location.lane).min())
-		var even_lane_offset: int = -1 if progress_batch.size() in [2, 4] else 0
-		if progress_batch.size() == 2 and progress_batch.any(func(x: SavedDataMapNode): return x.map_location.lane == -1):
-			even_lane_offset = 1
-		
 		if lowest_lane_offset == 0: lowest_lane_offset = 1 # To center start node and the like
 		
 		for map_node_data in progress_batch:
@@ -38,7 +34,7 @@ func _ready() -> void:
 			NodeParent.add_child(MinimapNode)
 			var map_loc: MapLocation = map_node_data.map_location
 			MinimapNode.position = (SPACING * Vector2(map_loc.progress + lowest_progress, map_loc.lane + lowest_lane_offset))
-			MinimapNode.position.y += (SPACING.y / 2.0) * even_lane_offset
+			MinimapNode.position.y += (SPACING.y / 2.0)
 			MinimapNode.setInfo(onFindIconById(map_node_data.id), map_loc, map_node_data.links, map_node_data.is_entered)
 			
 			if map_node_data.id in [3, 4, 7, 8]: # Fight, Elite, Mini, Boss

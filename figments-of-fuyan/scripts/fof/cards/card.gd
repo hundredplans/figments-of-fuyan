@@ -1156,6 +1156,8 @@ func getFirstFieldEffect(id: int) -> FieldEffectGD:
 
 #region Status Effects
 func onRemoveStatusEffect(status_effect: StatusEffectGD) -> void: # Access via action
+	if status_effect == null: return
+	
 	status_effects.erase(status_effect)
 	if FieldInfo != null: FieldInfo.onRemoveIcon(status_effect)
 	
@@ -1424,8 +1426,9 @@ func onReset(override: bool = false) -> void: # Called when unit enters level (n
 	turn_state = Game.TurnStates.NULL
 	vision_datastore = VisionDatastoreCard.new()
 	
-	if Tool != null and Tool.info.rarity == Game.Rarities.MINI:
-		onRemoveTool()
+	if Tool != null:
+		if Tool.info.rarity != Game.Rarities.MINI:
+			Tool.onReset(override)
 	
 	ai_datastore.onReset()
 	Tile = null
@@ -1437,7 +1440,8 @@ func onReset(override: bool = false) -> void: # Called when unit enters level (n
 	onRegularReset()
 	
 func onRegularReset() -> void: # Fof Init, Awakened, Death, Level Start, Level End
-	pass
+	if Tool != null:
+		Tool.onRegularReset()
 	
 func onUpgrade(upgrade_level: int) -> void:
 	var champion_upgrade: ChampionUpgrade = getChampionUpgrade(upgrade_level)

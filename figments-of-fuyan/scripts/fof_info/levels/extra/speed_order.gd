@@ -25,8 +25,8 @@ func onSave() -> void:
 	neutral_speed_order_public_ids = neutral_speed_order.map(func(x: CardGD): return x.public_id)
 	
 func onLoad() -> void:
-	ai_speed_order = ai_speed_order_public_ids.map(func(x: int): return Game.onFindPublicIDObject(x))
-	neutral_speed_order = neutral_speed_order_public_ids.map(func(x: int): return Game.onFindPublicIDObject(x))
+	ai_speed_order = ai_speed_order_public_ids.map(func(x: int): return Game.onFindPublicIDObject(x)).filter(func(x: CardGD): return x != null)
+	neutral_speed_order = neutral_speed_order_public_ids.map(func(x: int): return Game.onFindPublicIDObject(x)).filter(func(x: CardGD): return x != null)
 	
 func onAwaken(Card: CardGD) -> void:
 	if Card.isAlly(0): return

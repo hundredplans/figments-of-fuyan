@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="BossIntent" load_steps=2 format=3 uid="uid://dqtvy2nq8fmy8"]
+
+[ext_resource type="Script" uid="uid://c85vjl4hwbga5" path="res://scripts/fof_info/cards/extra/boss_intent.gd" id="1_a0oal"]
+
+[resource]
+script = ExtResource("1_a0oal")
+name = "Bat Attack"
+description = "Attack in a bat formation. Deal 2 DMG uniformly, adjacent is 1 DMG and in front and behind him is 3 DMG"
+type = 0
+default_cooldown = 2
+off_vision_use_cooldown = false
+combat_type = 1
+metadata/_custom_type_script = "uid://c85vjl4hwbga5"

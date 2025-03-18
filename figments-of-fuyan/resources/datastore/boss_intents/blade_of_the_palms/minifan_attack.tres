@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="BossIntent" load_steps=2 format=3 uid="uid://ueg83eboffah"]
+
+[ext_resource type="Script" uid="uid://c85vjl4hwbga5" path="res://scripts/fof_info/cards/extra/boss_intent.gd" id="1_yvwr2"]
+
+[resource]
+script = ExtResource("1_yvwr2")
+name = "Minifan Attack"
+description = "3 DMG with a 2 Tile fan"
+type = 1
+default_cooldown = 2
+off_vision_use_cooldown = false
+combat_type = 1
+metadata/_custom_type_script = "uid://c85vjl4hwbga5"

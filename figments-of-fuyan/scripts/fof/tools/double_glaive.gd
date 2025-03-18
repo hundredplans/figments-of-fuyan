@@ -45,8 +45,8 @@ func onToolAction(stat_action: StatAction) -> void:
 func onCardTurnPassed() -> void:
 	super()
 	
-func onReset() -> void: # Level ends
-	super()
+func onReset(override: bool = false) -> void:
+	super(override)
 	
 func getSpeedFromAction(stat_action: StatAction) -> int:
 	var total_speed: int = 0

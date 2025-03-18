@@ -118,8 +118,8 @@ func onTileChosenGetUpdatedAttackablePath(updated_path: Array) -> Array:
 	var attackables_dict: Dictionary = {}
 	for PathTile: TileGD in updated_path:
 		var path_tile_attackables: Array = Card.getAttackablesInAttackRange(PathTile).keys()
-		for Card: CardGD in path_tile_attackables:
-			attackables_dict[Card] = null
+		for GameObject: GameObjectGD in path_tile_attackables:
+			attackables_dict[GameObject] = null
 			
 	var attackables: Array = attackables_dict.keys()
 	attackables = attackables.filter(func(x: GameObjectGD): return x is CardGD)

@@ -23,7 +23,7 @@ func onWasDamaged(action: DamageAction) -> void:
 func onIObjectDamagedPre(_action: DamageAction) -> void:
 	coconut_tiles = []
 	var tiles: Array = Game.getAdjacentTiles(getAttackableTile())
-	for Tile in tiles.filter(func(x: TileGD): return !x.occupied_objects.any(func(y: ObjectGD): return y.info.id == COCONUT_ID)):
+	for Tile in tiles.filter(func(x: TileGD): return !x.occupied_objects.any(func(y: ObjectGD): return y.info.id == COCONUT_ID) and !x.isSolid()):
 		if !Random.rollFloat(COCONUT_DROP_ODDS): continue
 		coconut_tiles.append(Tile)
 	

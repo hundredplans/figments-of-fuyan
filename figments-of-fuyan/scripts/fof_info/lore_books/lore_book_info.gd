@@ -37,3 +37,5 @@ static func getCategoryString(_category: Categories):
 		Categories.LostBooks: return "Lost Books"
 		Categories.Monsters: return "Monsters"
 		Categories.Ideas: return "Ideas"
+
+static func getFofName() -> String: return "LoreBook"

@@ -9,7 +9,7 @@ class_name BoonInfo extends FofInfo
 
 @export_group("Charges")
 @export var use_charges: bool
-@export var auto_reset_charges_level_start: bool
+@export var auto_reset_charges: bool
 @export var reset_to_default: bool # Otherwise resets to 0
 @export_group("")
 

@@ -2,6 +2,8 @@ extends CardGD
 
 const ARRIVE_ANIMATION_DELAY: float = 2
 const COCONUT_ID: int = 13
+const DISARM_TURNS: int = 2
+
 var stepped_on_card_public_id: int
 
 func onProcessAction(action: Action) -> void:
@@ -33,8 +35,11 @@ func onArrivePre(_action: AwakenAction) -> void:
 func onArrive(_action: AwakenAction) -> void:
 	assert(stepped_on_card_public_id > 0)
 	var SteppedOnCard: CardGD = Game.onFindPublicIDObject(stepped_on_card_public_id)
+	
+	var disarm_action: AddStatusEffectAction = onCreateBaseStatusEffectAction(4, DISARM_TURNS)
 	var actions: Array = [
 		DamageAction.new(self, SteppedOnCard, 1),
+		disarm_action,
 		AITurnAction.new(self, true, true),
 		]
 	onPushAction(actions)

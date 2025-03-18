@@ -6,3 +6,5 @@ const GREYSCALE_MATERIAL: String = "res://resources/materials/game/base_material
 
 func getModel(variation: int) -> PackedScene:
 	return models[variation]
+
+static func getFofName() -> String: return "TileObject"

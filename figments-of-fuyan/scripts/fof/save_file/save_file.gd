@@ -131,6 +131,11 @@ func getToolbelt() -> Array:
 #region Boons
 func getBoons() -> Array:
 	return boons
+	
+func getBoon(id: int) -> BoonGD:
+	for Boon: BoonGD in boons:
+		if Boon.info.id == id: return Boon
+	return null
 #endregion
 
 #region Encounters

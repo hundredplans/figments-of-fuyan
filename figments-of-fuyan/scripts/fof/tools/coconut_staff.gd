@@ -16,6 +16,10 @@ func onToolHolderAwakened() -> void:
 func onToolHolderDeath() -> void:
 	super()
 
+func onRegularReset() -> void:
+	super()
+	healed_allies = []
+
 func onSave() -> SavedDataTool:
 	ability_save['healed_allies'] = healed_allies.map(func(x: CardGD): return x.public_id)
 	return super()

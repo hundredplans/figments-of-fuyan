@@ -2,15 +2,19 @@ extends BoonGD
 
 func onProcessAction(action: Action) -> void:
 	super(action)
+	if action.post:
+		if charges > 0 and action is AwakenAction and action.owner is PlayCardAction and action.owner.Card.info.rarity == Game.Rarities.CHAMPION:
+			onPushAction(BoonActivatedAction.new(self, action))
 	
 func onAscend(state: bool) -> void:
 	super(state)
 
 func getDescription() -> String:
-	return super()
+	return Helper.getDescription(super(), [charges])
 
-func onBoon(_action: Action = null) -> void:
-	pass
+func onBoon(action: Action = null) -> void:
+	action.Card.onCreateBaseStatusEffect(1, -1)
+	onPushAction(ChangeBoonChargesAction.new(self, -1))
 
 func onBoonAdded() -> void:
 	super()
@@ -19,7 +23,7 @@ func onLevelStarted() -> void:
 	super()
 
 func getDisabled() -> bool:
-	return super()
+	return charges == 0
 
 func getCharges() -> int:
 	return super()

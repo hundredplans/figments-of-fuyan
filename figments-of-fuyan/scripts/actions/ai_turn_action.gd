@@ -33,7 +33,7 @@ func _init(_Card: CardGD, _is_first_ai_turn: bool = false, _pacifist: bool = fal
 func onPostAction() -> void:
 	if Card is EpicCardGD and Card.boss_datastore.boss_intent_used_this_turn: return
 	
-	pacifist = pacifist if Card.attack > 0 else true
+	pacifist = pacifist if (Card.attack > 0 or Card.getStatusEffect(4) != null) else true # If no attack or disarmed
 	var tiles: Array = Game.getsetMovementRange(Card)
 	tiles.erase(Card.Tile)
 	

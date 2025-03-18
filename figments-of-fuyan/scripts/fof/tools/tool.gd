@@ -94,15 +94,17 @@ func onToolEquipped() -> void:
 	
 func onToolHolderAwakened() -> void:
 	onCreateActiveEffects()
-	if info.auto_reset_charges:
-		onResetCharges()
 	
 func onToolHolderDeath() -> void:
+	pass
+	
+func onReset(_override: bool = false) -> void:
+	if info.rarity == Game.Rarities.MINI:
+		onPushAction(RemoveToolAction.new(Card))
+	
+func onRegularReset() -> void: #  Fof Init, Awakened, Death, Level Start, Level End
 	if info.auto_reset_charges:
 		onResetCharges()
-	
-func onReset() -> void:
-	pass
 	
 func onCardTurnPassed() -> void:
 	pass
@@ -118,9 +120,7 @@ func setAscended(state: bool) -> void:
 	ascended = state
 
 func onLevelEnded(_win: bool) -> void:
-	if info.rarity == Game.Rarities.MINI: Card.onRemoveTool(); onClear()
-	if info.auto_reset_charges:
-		onResetCharges()
+	pass
 		
 #region Charges
 func getDefaultCharges() -> int:

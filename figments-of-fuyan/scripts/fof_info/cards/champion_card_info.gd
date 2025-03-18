@@ -26,3 +26,5 @@ class_name ChampionCardInfo extends CardInfo
 @export var third_miniboss: ChampionUpgrade
 @export var third_boss: ChampionUpgrade
 @export_group("")
+
+static func getFofName() -> String: return "ChampionCard"

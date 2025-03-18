@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="BossIntent" load_steps=2 format=3 uid="uid://1r4iw08l5lwa"]
+
+[ext_resource type="Script" uid="uid://c85vjl4hwbga5" path="res://scripts/fof_info/cards/extra/boss_intent.gd" id="1_1c4ha"]
+
+[resource]
+script = ExtResource("1_1c4ha")
+name = "Teleport Attack"
+description = "Attempts to teleport onto someone, if he can't teleports next to them instead. Hits all tiles in a triple adjacent circle. Deals 3, 2, 1 DMG"
+type = 0
+default_cooldown = 2
+off_vision_use_cooldown = false
+combat_type = 1
+metadata/_custom_type_script = "uid://c85vjl4hwbga5"

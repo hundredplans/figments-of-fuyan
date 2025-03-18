@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="BossIntent" load_steps=2 format=3 uid="uid://dlygm80h1uwyk"]
+
+[ext_resource type="Script" uid="uid://c85vjl4hwbga5" path="res://scripts/fof_info/cards/extra/boss_intent.gd" id="1_lj8lk"]
+
+[resource]
+script = ExtResource("1_lj8lk")
+name = "Reposition"
+description = "Double TP to a double adjacent tile twice"
+type = 2
+default_cooldown = 1
+off_vision_use_cooldown = false
+combat_type = 0
+metadata/_custom_type_script = "uid://c85vjl4hwbga5"

@@ -34,6 +34,7 @@ func _ready() -> void:
 			Game.setCardDataFromInfo(card_data, Helper.getFofInfoID(CardInfo, champion.id))
 			ChampionCard = SavedData.onLoadModel(card_data, pedestal)
 			ChampionCard.onCreateModel()
+			ChampionCard.getModel().rotation.y = 0
 			pedestal.setInfo(ChampionCard)
 			
 			pedestal.champion_hovered.connect(onChampionHovered)

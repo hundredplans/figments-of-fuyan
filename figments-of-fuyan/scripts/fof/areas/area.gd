@@ -623,7 +623,7 @@ func getDivinusBoonOdds(odds: float) -> float:
 #region Exit Level
 func onRewardsFinished(save_file: SaveFileGD) -> void:
 	if active_level.fight_type in [Game.FightTypes.MINIBOSS, Game.FightTypes.BOSS]:
-		Game.save_file.onUpgradeChampion()
+		onPushAction(ChampionUpgradeAction.new())
 	
 	active_level.onClear()
 	active_level = null

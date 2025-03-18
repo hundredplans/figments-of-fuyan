@@ -8,6 +8,7 @@ func onAddBoon(Boon: BoonGD) -> void:
 	add_child(BoonIcon)
 	BoonIcon.setInfo(Boon)
 	BoonIcon.mouse_in_ui.connect(onMouseInUI)
+	BoonIcon.setDisabled(Boon.getDisabled())
 
 func onUpdate() -> void:
 	for BoonIcon in get_children(): BoonIcon.queue_free()

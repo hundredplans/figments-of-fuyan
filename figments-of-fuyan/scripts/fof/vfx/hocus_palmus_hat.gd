@@ -7,6 +7,11 @@ func onVFX() -> void:
 	super()
 	var Card: CardGD = get_parent()
 	if !Card.isLevelVisible():
+		if is_start_hat:
+			scale.y = 0.01
+		elif !is_start_hat:
+			scale.y = 1
+		
 		onForceAction(DestroyVFXAction.new(self))
 		return
 	

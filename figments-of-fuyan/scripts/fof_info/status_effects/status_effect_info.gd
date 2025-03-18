@@ -7,3 +7,4 @@ enum States {NEUTRAL, NEGATIVE, POSITIVE}
 @export var state: States
 
 func getIcon() -> Texture2D: return icon
+static func getFofName() -> String: return "StatusEffect"

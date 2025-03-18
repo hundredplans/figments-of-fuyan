@@ -65,7 +65,7 @@ func onLevelEnded(_win: bool) -> void:
 		onClear()
 		return
 		
-	if info.auto_reset_charges_level_start:
+	if info.auto_reset_charges:
 		onResetCharges()
 	
 func onProcessAction(action: Action) -> void:
@@ -79,11 +79,12 @@ func onProcessAction(action: Action) -> void:
 			onCardTurnPassed(action.Card)
 			
 func onLevelStarted() -> void: # Called when the level literally starts
-	if info.auto_reset_charges_level_start:
+	if info.auto_reset_charges:
 		onResetCharges()
 		
 func onAdvanceTurn(_team: int) -> void: pass
 func onCardTurnPassed(_Card: CardGD) -> void: pass
+func onRemoveBoon() -> void: pass
 
 func onChangeCharges(delta: int) -> void:
 	charges = max(charges + delta, 0) 

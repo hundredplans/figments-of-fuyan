@@ -21,5 +21,5 @@ func onToolAscended(state: bool) -> void:
 func onCardTurnPassed() -> void:
 	super()
 	
-func onReset() -> void: # Level ends
-	super()
+func onReset(override: bool = false) -> void: # Level ends
+	super(override)

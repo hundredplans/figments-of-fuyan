@@ -11,6 +11,7 @@ var quentins_bullets_public_id: int
 # Shop is 15% more expensive cause he's a criminal
 	
 const SHOP_PRICE_MULT: float = 1.15
+const DISARM_ID: int = 4
 	
 func onFofInit() -> void:
 	super()
@@ -20,7 +21,7 @@ func onProcessAction(action: Action):
 	super(action)
 	if !action.post:
 		if action is AttackAction and bullets == 0:
-			action.onFailAction()
+			action.onFailAction() # Just in case me
 		elif action is GetShopPriceAction:
 			action.onMult(SHOP_PRICE_MULT)
 	elif action.post:
@@ -32,6 +33,8 @@ func onProcessAction(action: Action):
 	
 func onHit(_damage_action: DamageAction, _attack_action: AttackAction) -> void:
 	setBullets(-1)
+	if bullets == 0:
+		onCreateBaseStatusEffect(DISARM_ID, -1)
 
 func onSave() -> SavedDataCard:
 	ability_save['bullets'] = bullets
@@ -55,6 +58,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 	super(active_effect, PickedTile, active_effect_tiles)
 	if active_effect is ActiveAbilityDatastore and active_effect.name == "Reload":
 		setBullets(1)
+		onRemoveStatusEffect(getStatusEffect(DISARM_ID))
 		onStun()
 		onAbility()
 	
