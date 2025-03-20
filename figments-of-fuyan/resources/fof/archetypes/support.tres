@@ -1,15 +1,14 @@
-[gd_resource type="Resource" script_class="ArchetypeInfo" load_steps=7 format=3 uid="uid://bbqdeswvpt0y6"]
+[gd_resource type="Resource" script_class="ArchetypeInfo" load_steps=6 format=3 uid="uid://bbqdeswvpt0y6"]
 
 [ext_resource type="Script" uid="uid://2gnqnxonyxt" path="res://scripts/fof/archetypes/archetype.gd" id="1_3cw7n"]
 [ext_resource type="Script" uid="uid://dvjkppyxntxvd" path="res://scripts/fof_info/archetypes/archetype_info.gd" id="1_5esi4"]
-[ext_resource type="Script" uid="uid://hde0in80w1et" path="res://scripts/fof_info/cards/extra/behaviours/unengager.gd" id="1_74wx4"]
 [ext_resource type="Script" uid="uid://c7uv0ai27s1do" path="res://scripts/saved_data/archetypes/saved_data_archetype.gd" id="2_nhmye"]
 [ext_resource type="Script" uid="uid://bvvru1m1k01sq" path="res://scripts/fof_info/cards/extra/behaviours/teamer.gd" id="2_u6o70"]
 [ext_resource type="Script" uid="uid://bbl7s2kty2nul" path="res://scripts/fof_info/cards/extra/behaviours/runner.gd" id="3_ce11j"]
 
 [resource]
 script = ExtResource("1_5esi4")
-behaviours = Array[GDScript]([ExtResource("1_74wx4"), ExtResource("2_u6o70"), ExtResource("3_ce11j")])
+behaviours = Array[GDScript]([ExtResource("2_u6o70"), ExtResource("3_ce11j")])
 description = "Scared, but not enough to abandon their team"
 calling_chance = 90
 accepting_chance = 90

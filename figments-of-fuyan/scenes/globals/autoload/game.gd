@@ -20,7 +20,7 @@ enum AscendedExists {BOTH, ONLY_DEFAULT, ONLY_ASCENDED}
 enum Archetypes {NULL, ADVENTURER, BRUTE, DOCILE, ERRATIC, HOSTILE, REINFORCER, SCOUT, SUPPORT, TACTICIAN, WARDEN, RECEIVER}
 enum DamageTypes {ATTACK, FALL_DAMAGE, OTHER}
 enum FightTypes {NULL, REGULAR, ELITE, MINIBOSS, BOSS}
-enum TileIntents {NULL, RED, PURPLE, GREEN, DARK_RED, LIGHT_RED, YELLOW}
+enum TileIntents {NULL, RED, PURPLE, GREEN, DARK_RED, LIGHT_RED, YELLOW, LIGHTER_RED}
 
 var CARD_PLACES_TO_GROUP: Dictionary = {
 	CardPlaces.NULL: "Null",
@@ -141,6 +141,17 @@ func isCoordsOccupied(coords: Vector4i) -> bool:
 	return get_tree().get_nodes_in_group("LevelTilesGD")\
 	.any(func(x: TileGD): return x.getCoords() == coords)
 	
+func getAdjacentOrCloserCoords(coord: Vector4i, distance: int = 1) -> Array:
+	var coords: Array = []
+	for x: int in range(-distance, (distance + 1)):
+		for y: int in range(max(-distance, -x - distance), min(distance, -x + distance) + 1):
+			coords.append(Vector4i(x, y, -x-y, 0) + coord)
+	return coords
+	
+func getAdjacentCoords(coord: Vector4i, distance: int = 1) -> Array:
+	var coords: Array = []
+	return getAdjacentOrCloserCoords(coord, distance).filter(func(x: Vector4i): return Game.getCoordsDistance(x, coord) == distance)
+	
 func getAdjacentTiles(Tile: TileGD, distance: int = 1) -> Array:
 	return get_tree().get_nodes_in_group("LevelTilesGD").filter(func(x: TileGD): return isAdjacent(Tile, x, distance))
 	
@@ -180,6 +191,42 @@ func getRelativeTileRotationCoords(coords: Vector4i, _coords: Vector4i) -> int:
 		each_tile_distance.append([i, getCoordsDistance(_coords, new_pos)])
 	each_tile_distance.sort_custom(func(x: Array, y: Array): return x[1] < y[1])
 	return each_tile_distance[0][0]
+	
+func getFanTiles(coords: Vector4i, distance: int, tile_rotation: int) -> Array:
+	return getFanCoords(coords, distance, tile_rotation).map(func(x: Vector4i): return getTile(x))
+	
+func getFanCoords(coords: Vector4i, distance: int, tile_rotation: int = 0) -> Array:
+	var adjacent_coords: Array = getAdjacentOrCloserCoords(coords, distance)
+	var last_diagonal_coords: Vector4i = (Game.getCubeDirectionExtra(tile_rotation) * distance) + coords
+	adjacent_coords = adjacent_coords.filter(func(x: Vector4i): return Game.getCoordsDistance(x, last_diagonal_coords) <= distance)
+	adjacent_coords.erase(coords)
+	return adjacent_coords
+	
+func getInversePyramidCoords(coords: Vector4i, distance: int, first_tile_rotation: int, second_tile_rotation: int) -> Array: # Get two tile rotations next to each other
+	var inverse_pyramid_coords: Array = []
+	var first_cube_direction: Vector4i = getCubeDirectionExtra(first_tile_rotation)
+	var second_cube_direction: Vector4i = getCubeDirectionExtra(second_tile_rotation)
+	
+	var adjacent_numbers: Array = [(first_tile_rotation + 1) % 6, (second_tile_rotation + 1) % 6]
+	var down_tile_rotation: int = adjacent_numbers.filter(func(x: int): return x != first_tile_rotation and x != second_tile_rotation)[0]
+	 
+	for i: int in range(1, distance + 1):
+		var first_coords: Vector4i = coords + (first_cube_direction * i)
+		var second_coords: Vector4i = coords + (second_cube_direction * i)
+		
+		inverse_pyramid_coords.append(first_coords)
+		inverse_pyramid_coords.append(second_coords)
+		inverse_pyramid_coords += getStraightLineCoords(first_coords, i - 1, down_tile_rotation)
+	return inverse_pyramid_coords
+	
+func getStraightLineCoords(coords: Vector4i, distance: int, tile_rotation: int) -> Array:
+	var straight_line_coords: Array = []
+	var cube_direction: Vector4i = Game.getCubeDirectionExtra(tile_rotation)
+	
+	for i: int in range(1, distance + 1):
+		straight_line_coords.append((cube_direction * i) + coords)
+	
+	return straight_line_coords
 #endregion
 
 #region Units

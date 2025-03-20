@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=3 uid="uid://ct6euhy8orf2m"]
+[gd_scene load_steps=56 format=3 uid="uid://ct6euhy8orf2m"]
 
 [ext_resource type="Script" uid="uid://bsrlt8ui5oxuq" path="res://scenes/game/cards/world/field_info/field_info.gd" id="1_doj6w"]
 [ext_resource type="PackedScene" uid="uid://b7aqntno6susb" path="res://assets/models/general/numbers/stat_numbers/zero.glb" id="2_emwqa"]
@@ -54,6 +54,7 @@
 [ext_resource type="Texture2D" uid="uid://i28xd5788x60" path="res://assets/sprites/game/common/shine/ascended_shine.png" id="46_yubbn"]
 [ext_resource type="Texture2D" uid="uid://cnh6sqy8os61w" path="res://assets/sprites/game/cards/field_info/icon_box.png" id="50_ubgm4"]
 [ext_resource type="Script" uid="uid://cqb3jw0qxv0el" path="res://scenes/game/cards/world/field_info/tool_shine.gd" id="51_1r75t"]
+[ext_resource type="Material" uid="uid://bp2ufh6y4ylqd" path="res://resources/materials/game/base_material_outline/material/yellow_outline.tres" id="52_wqo68"]
 
 [node name="FieldInfo" type="Node3D"]
 script = ExtResource("1_doj6w")
@@ -132,6 +133,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
 
 [node name="three" parent="Numbers/HealthSpot" instance=ExtResource("5_sdyep")]
 
+[node name="Three" parent="Numbers/HealthSpot/three" index="0"]
+surface_material_override/0 = ExtResource("52_wqo68")
+
 [node name="SpeedSpot" type="Node3D" parent="Numbers"]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, 0)
@@ -174,3 +178,5 @@ region_rect = Rect2(2.115, 0, 0, 0)
 
 [connection signal="child_entered_tree" from="IconsManager" to="IconsManager" method="_on_child_entered_tree"]
 [connection signal="child_exiting_tree" from="IconsManager" to="IconsManager" method="_on_child_exiting_tree"]
+
+[editable path="Numbers/HealthSpot/three"]

@@ -176,6 +176,8 @@ func getBossIntentsPool(enemies: Array, allies: Array) -> Array:
 	
 func onCheckBossIntentCondition(_boss_intent: BossIntent, _enemies: Array, _allies: Array) -> bool: return false
 func onIntentUsed(_boss_intent: BossIntent, _use_type: UseType, _actions: Array) -> void: return
+
+
 #endregion
 
 #region Card Turn Passed
@@ -221,4 +223,59 @@ func onChangeBossPhasePostDelay() -> void:
 		
 	actions.append(CameraSpectateGroupAction.new(0))
 	onPushAction(actions)
+#endregion
+
+#region Helper
+func onHasNonAttackIntents(boss_intents: Array) -> bool:
+	return boss_intents.any(func(x: BossIntent): return x.type not in [BossIntent.IntentType.ATTACK, BossIntent.IntentType.MOVEMENT_ATTACK])
+
+func onHasAttackIntents(boss_intents: Array) -> bool:
+	return boss_intents.any(func(x: BossIntent): return x.type in [BossIntent.IntentType.ATTACK, BossIntent.IntentType.MOVEMENT_ATTACK])
+
+func onHasIntentName(boss_intents: Array, intent_name: String) -> bool:
+	return boss_intents.any(func(x: BossIntent): return x.name == intent_name)
+
+func onKeepByNames(boss_intents: Array, intent_names: Array) -> Array:
+	return boss_intents.filter(func(x: BossIntent): return x.name in intent_names)
+
+func onKeepByName(boss_intents: Array, intent_name: String) -> Array:
+	return boss_intents.filter(func(x: BossIntent): return x.name == intent_name)
+
+func onKeepAttacks(boss_intents: Array) -> Array:
+	return boss_intents.filter(func(x: BossIntent): return x.type in [BossIntent.IntentType.ATTACK, BossIntent.IntentType.MOVEMENT_ATTACK])
+
+func onKeepNonAttacks(boss_intents: Array) -> Array:
+	return boss_intents.filter(func(x: BossIntent): return x.type not in [BossIntent.IntentType.ATTACK, BossIntent.IntentType.MOVEMENT_ATTACK])
+
+func getDistantToEnemiesTiles(enemies: Array, tiles: Array) -> Array:
+	if enemies.is_empty(): return tiles
+	tiles = tiles.duplicate()
+	var tiles_to_distance: Dictionary = {}
+	for OtherTile: TileGD in tiles:
+		var distance: int = enemies.map(func(x: CardGD): return Game.getCoordsDistance(x.getCoords(), Tile.getCoords())).min()
+		tiles_to_distance[OtherTile] = distance
+			
+	tiles.sort_custom(func(x: TileGD, y: TileGD): return tiles_to_distance[x] > tiles_to_distance[y])
+	return tiles
+	
+func getAllyVisionTiles(tiles: Array) -> Array:
+	var ally_vision: Array = Game.getTeamVision(0)
+	if !ally_vision.is_empty():
+		return tiles.filter(func(x: TileGD): return x in ally_vision)
+	return tiles
+	
+func getUnoccupiedTiles(tiles: Array) -> Array:
+	var unit_tiles: Array = Game.getUnitTiles()
+	return tiles.filter(func(x: TileGD): return x not in unit_tiles)
+	
+func getCloseToEnemiesTiles(enemies: Array, tiles: Array) -> Array:
+	if enemies.is_empty(): return tiles
+	tiles = tiles.duplicate()
+	var tiles_to_distance: Dictionary = {}
+	for OtherTile: TileGD in tiles:
+		var distance: int = enemies.map(func(x: CardGD): return Game.getCoordsDistance(x.getCoords(), Tile.getCoords())).min()
+		tiles_to_distance[OtherTile] = distance
+			
+	tiles.sort_custom(func(x: TileGD, y: TileGD): return tiles_to_distance[x] < tiles_to_distance[y])
+	return tiles
 #endregion

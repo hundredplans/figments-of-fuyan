@@ -1,15 +1,59 @@
-[gd_resource type="Resource" script_class="EpicCardInfo" load_steps=6 format=3 uid="uid://b7lnksd1egi7b"]
+[gd_resource type="Resource" script_class="EpicCardInfo" load_steps=18 format=3 uid="uid://b7lnksd1egi7b"]
 
 [ext_resource type="Texture2D" uid="uid://c4qts40qrbkie" path="res://assets/sprites/game/cards/art_mini/blade_of_the_palms.png" id="1_3caon"]
 [ext_resource type="Script" uid="uid://bnp3nwlcsibyl" path="res://scripts/fof_info/cards/extra/boss_phase_datastore.gd" id="1_d1qqb"]
 [ext_resource type="Script" uid="uid://baum84o21f7jw" path="res://scripts/fof/cards/epic/blade_of_the_palms_epic.gd" id="1_wc1av"]
 [ext_resource type="Script" uid="uid://bd0ljqheerbtm" path="res://scripts/fof_info/epic_cards/epic_card_info.gd" id="2_3psbn"]
 [ext_resource type="Script" uid="uid://unn6splqvb3v" path="res://scripts/saved_data/game_objects/saved_data_epic_card.gd" id="3_3caon"]
+[ext_resource type="Resource" uid="uid://31nmui4k0kfh" path="res://resources/fof/archetypes/tactician.tres" id="4_4ow0h"]
+[ext_resource type="Script" uid="uid://c85vjl4hwbga5" path="res://scripts/fof_info/cards/extra/boss_intent.gd" id="5_tlf4i"]
+[ext_resource type="Resource" uid="uid://dlygm80h1uwyk" path="res://resources/datastore/boss_intents/blade_of_the_palms/reposition.tres" id="6_8g5ul"]
+[ext_resource type="Resource" uid="uid://dqtvy2nq8fmy8" path="res://resources/datastore/boss_intents/blade_of_the_palms/bat_attack.tres" id="7_hhvwj"]
+[ext_resource type="Resource" uid="uid://bqvep55jkenns" path="res://resources/datastore/boss_intents/blade_of_the_palms/fan_blind.tres" id="8_qd2jx"]
+[ext_resource type="Resource" uid="uid://ueg83eboffah" path="res://resources/datastore/boss_intents/blade_of_the_palms/minifan_attack.tres" id="9_qq5yi"]
+[ext_resource type="Resource" uid="uid://1r4iw08l5lwa" path="res://resources/datastore/boss_intents/blade_of_the_palms/teleport_attack.tres" id="10_5epeo"]
+[ext_resource type="Resource" uid="uid://bblllwxqnvljx" path="res://resources/datastore/boss_intents/blade_of_the_palms/petal_attack.tres" id="11_lofdk"]
+[ext_resource type="PackedScene" uid="uid://bb5vdrqxqa0wb" path="res://assets/models/fof/cards/blade_of_the_palms.glb" id="12_e0d1a"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_x8gyx"]
+size = Vector3(0.633057, 2.42429, 0.301514)
+
+[sub_resource type="PackedScene" id="PackedScene_lok3x"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00524902, 1.20674, -0.0177002), SubResource("BoxShape3D_x8gyx")],
+"version": 3
+}
+
+[sub_resource type="Resource" id="Resource_xetlm"]
+script = ExtResource("1_d1qqb")
+name = "Blade of the Palms"
+archetype = ExtResource("4_4ow0h")
+attack = 3
+health = 21
+speed = 3
+model = ExtResource("12_e0d1a")
+collision = SubResource("PackedScene_lok3x")
+points = [Vector3(-0.169155, 0.239571, 0.133057), Vector3(0.183516, 0.239223, 0.133057), Vector3(-0.162775, 0.622093, 0.133057), Vector3(0.169328, 0.64294, 0.133057), Vector3(-0.126926, 0.978036, 0.133057), Vector3(0.136707, 0.986501, 0.133057), Vector3(-0.163384, 1.28892, 0.133057), Vector3(0.136259, 1.31003, 0.133057), Vector3(-0.126951, 1.62307, 0.133057), Vector3(0.140094, 1.62865, 0.133057), Vector3(-0.128728, 1.98679, 0.133057), Vector3(0.149506, 1.98663, 0.133057), Vector3(-0.321778, 0.23041, -0.0647256), Vector3(-0.321778, 0.631307, -0.0628094), Vector3(-0.321778, 1.0514, -0.0378641), Vector3(-0.321778, 1.44625, -0.00441441), Vector3(-0.321778, 1.77035, -0.0161406), Vector3(-0.321778, 2.00958, -0.0192475), Vector3(0.31128, 2.01409, -0.0258838), Vector3(0.31128, 1.69686, -0.00741321), Vector3(0.31128, 1.31173, -0.00891331), Vector3(0.31128, 0.981112, -0.0239298), Vector3(0.31128, 0.694034, -0.0186331), Vector3(0.31128, 0.286051, -0.00584558), Vector3(0.195001, 0.297404, -0.168457), Vector3(-0.188432, 0.312008, -0.168457), Vector3(0.21975, 0.711575, -0.168457), Vector3(-0.185521, 0.779665, -0.168457), Vector3(0.155137, 1.14496, -0.168457), Vector3(-0.189965, 1.19895, -0.168457), Vector3(0.173938, 1.45719, -0.168457), Vector3(-0.127429, 1.47731, -0.168457), Vector3(0.163019, 1.8535, -0.168457), Vector3(-0.131346, 1.87783, -0.168457), Vector3(0.112807, 2.06261, -0.168457), Vector3(-0.124686, 2.05478, -0.168457), Vector3(0.110078, 2.41888, -0.0121994), Vector3(-0.0599903, 2.41888, 0.0125429), Vector3(-0.190922, -0.00540495, -0.0476798), Vector3(0.234382, -0.00540495, 0.029992)]
+stat = 2.649
+top = 2.444
+eye = 1.897
+awaken_boss_intent_name = "Reposition"
+speed_order_override = 0
+change_delay = 0.0
+boss_intents = Array[ExtResource("5_tlf4i")]([ExtResource("6_8g5ul"), ExtResource("7_hhvwj"), ExtResource("8_qd2jx"), ExtResource("9_qq5yi"), ExtResource("10_5epeo"), ExtResource("11_lofdk")])
+metadata/_custom_type_script = "uid://bnp3nwlcsibyl"
 
 [resource]
 script = ExtResource("2_3psbn")
 rarity = 7
-phases = Array[ExtResource("1_d1qqb")]([])
+phases = Array[ExtResource("1_d1qqb")]([SubResource("Resource_xetlm")])
 card_id = 25
 tool_id = 0
 boon_id = 0

@@ -117,8 +117,8 @@ func onResetBossIntentCooldowns() -> void:
 	
 func onIntentUsed(used_boss_intent: BossIntent, use_type: UseType, actions: Array) -> void:
 	super(used_boss_intent, use_type, actions)
-	if used_boss_intent.name == "Spin Attack" and use_type == UseType.END and isLevelVisible():
-		AniPlayer.play("Spin Attack")
+	#if used_boss_intent.name == "Spin Attack" and use_type == UseType.END and isLevelVisible():
+		#AniPlayer.play("Spin Attack")
 #endregion
 	
 #region Spin Attack
@@ -841,44 +841,12 @@ func isSlashEnemyAttackable(EnemyCard: CardGD, tiles: Array) -> TileGD:
 	return null
 #endregion
 
-
 #region Helper
 func isGround(_Tile: TileGD = getTile()) -> bool:
 	return _Tile.getHeight() == 10
 	
 func isHigh(_Tile: TileGD = getTile()) -> bool:
 	return _Tile.getHeight() > 10
-
-func getDistantToEnemiesTiles(enemies: Array, tiles: Array) -> Array:
-	if enemies.is_empty(): return enemies
-	tiles = tiles.duplicate()
-	var tiles_to_distance: Dictionary = {}
-	for OtherTile: TileGD in tiles:
-		var distance: int = enemies.map(func(x: CardGD): return Game.getCoordsDistance(x.getCoords(), Tile.getCoords())).min()
-		tiles_to_distance[OtherTile] = distance
-			
-	tiles.sort_custom(func(x: TileGD, y: TileGD): return tiles_to_distance[x] > tiles_to_distance[y])
-	return tiles
-	
-func getAllyVisionTiles(tiles: Array) -> Array:
-	var ally_vision: Array = Game.getTeamVision(0)
-	if !ally_vision.is_empty():
-		return tiles.filter(func(x: TileGD): return x in ally_vision)
-	return tiles
-	
-func getUnoccupiedTiles(tiles: Array) -> Array:
-	var unit_tiles: Array = Game.getUnitTiles()
-	return tiles.filter(func(x: TileGD): return x not in unit_tiles)
-	
-func getCloseToEnemiesTiles(enemies: Array, tiles: Array) -> Array:
-	tiles = tiles.duplicate()
-	var tiles_to_distance: Dictionary = {}
-	for OtherTile: TileGD in tiles:
-		var distance: int = enemies.map(func(x: CardGD): return Game.getCoordsDistance(x.getCoords(), Tile.getCoords())).min()
-		tiles_to_distance[OtherTile] = distance
-			
-	tiles.sort_custom(func(x: TileGD, y: TileGD): return tiles_to_distance[x] < tiles_to_distance[y])
-	return tiles
 	
 func onRemoveHighTiles(tiles: Array) -> Array:
 	if isHigh():

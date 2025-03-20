@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ArchetypeInfo" load_steps=6 format=3 uid="uid://r4emkni6o3hx"]
+
+[ext_resource type="Script" uid="uid://bceyr6j0djuvp" path="res://scripts/fof_info/cards/extra/behaviours/explorer.gd" id="1_gpyiy"]
+[ext_resource type="Script" uid="uid://dvjkppyxntxvd" path="res://scripts/fof_info/archetypes/archetype_info.gd" id="1_xdwr1"]
+[ext_resource type="Script" uid="uid://uha0p6xjj6np" path="res://scripts/fof_info/cards/extra/behaviours/rusher.gd" id="2_tx3wp"]
+[ext_resource type="Script" uid="uid://2gnqnxonyxt" path="res://scripts/fof/archetypes/archetype.gd" id="3_30d7o"]
+[ext_resource type="Script" uid="uid://c7uv0ai27s1do" path="res://scripts/saved_data/archetypes/saved_data_archetype.gd" id="4_svlai"]
+
+[resource]
+script = ExtResource("1_xdwr1")
+behaviours = Array[GDScript]([ExtResource("1_gpyiy"), ExtResource("2_tx3wp")])
+description = "The only one you can trust is yourself."
+calling_chance = 10
+accepting_chance = 10
+id = 12
+name = "Mercenary"
+gdscript = ExtResource("3_30d7o")
+saved_data = ExtResource("4_svlai")
+metadata/_custom_type_script = "uid://dvjkppyxntxvd"
