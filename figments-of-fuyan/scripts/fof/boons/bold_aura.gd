@@ -1,7 +1,6 @@
 extends BoonGD
 
-var max_kills: int
-
+var max_kills: int = 1
 func onProcessAction(action: Action) -> void:
 	super(action)
 	if action.post:
@@ -27,7 +26,9 @@ func getDisabled() -> bool:
 	
 func onResetCharges() -> void:
 	super()
-	max_kills = 1
+	
+func getDefaultCharges() -> int:
+	return max_kills
 	
 func onSave() -> SavedDataBoon:
 	ability_save['max_kills'] = max_kills

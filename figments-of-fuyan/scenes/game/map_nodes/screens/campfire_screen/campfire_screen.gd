@@ -24,3 +24,6 @@ func onDeckScreenSelected(Card: CardGD, trait_data: SavedDataTrait) -> void:
 func onFinished() -> void:
 	finished.emit()
 	queue_free()
+
+func _on_button_pressed() -> void:
+	onFinished()

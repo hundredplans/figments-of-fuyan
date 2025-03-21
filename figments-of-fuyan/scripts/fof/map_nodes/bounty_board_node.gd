@@ -12,3 +12,6 @@ extends MapNodeGD
 #100 KILL
 	
 	
+func onEntered() -> void:
+	super()
+	onCreateScreen()
