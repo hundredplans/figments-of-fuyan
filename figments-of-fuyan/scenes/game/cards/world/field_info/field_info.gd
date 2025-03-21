@@ -23,18 +23,18 @@ extends Node3D
 
 @export var number_to_model: Array[PackedScene]
 @export_group("Materials")
-@export var green_material: Material
-@export var white_material: Material
-@export var red_material: Material
-@export var pink_material: Material
-@export var orange_material: Material
+
+@export var green_with_outline_material: Material
+@export var red_with_outline_material: Material
+@export var white_with_outline_material: Material
+@export var pink_with_outline_material: Material
+@export var orange_with_outline_material: Material
 
 @export var green_top_material: Material
 @export var white_top_material: Material
 @export var red_top_material: Material
 
 @export var top_base_material: Material
-@export var black_outline_material: Material
 @export_group("")
 
 @export_group("Number Particles")
@@ -119,19 +119,15 @@ func onCreateStat(spot: Node3D, value: int, above_green_value: int, below_red_va
 	for _char in string_value: numbers.append(int(_char))
 	numbers = numbers.map(func(x: int): return number_to_model[x].instantiate())
 	
-	var mat: Material = white_material if !is_spectated else white_top_material
-	#var mat: Material = black_outline_material
-	if value < below_red_value: mat = red_material if !is_spectated else red_top_material
-	elif value > above_green_value: mat = green_material if !is_spectated else green_top_material
+	var mat: Material = white_with_outline_material if !is_spectated else white_top_material
+	if value < below_red_value: mat = red_with_outline_material if !is_spectated else red_top_material
+	elif value > above_green_value: mat = green_with_outline_material if !is_spectated else green_top_material
 	
 	for NumberModel in numbers:
 		spot.add_child(NumberModel)
 		var number_mesh: MeshInstance3D = Helper.getNodeTypeRecursive(NumberModel, MeshInstance3D)[0]
 		number_mesh.set_surface_override_material(0, mat)
 		number_mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		
-		#if number_mesh.get_surface_override_material_count() > 1:
-			#number_mesh.set_surface_override_material(1, black_outline_material)
 	
 	spot.scale = Vector3.ONE if numbers.size() == 1 else Vector3(0.75, 0.75, 0.75)
 	if numbers.size() == 2:
@@ -186,12 +182,12 @@ func setNumbersParticle(type: Game.Stats, value: int) -> void:
 	
 	var mat: Material
 	match type:
-		Game.Stats.SPEED: mat = green_material
-		Game.Stats.ATTACK: mat = orange_material
+		Game.Stats.SPEED: mat = green_with_outline_material
+		Game.Stats.ATTACK: mat = orange_with_outline_material
 		Game.Stats.HEALTH: 
-			if value > 0: mat = pink_material
-			else: mat = red_material
-		Game.Stats.MAX_HEALTH: mat = red_material
+			if value > 0: mat = pink_with_outline_material
+			else: mat = red_with_outline_material
+		Game.Stats.MAX_HEALTH: mat = red_with_outline_material
 	
 	sign_mesh.surface_set_material(0, mat)
 	number_mesh.surface_set_material(0, mat)

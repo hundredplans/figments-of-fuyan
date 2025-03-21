@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=3 uid="uid://ct6euhy8orf2m"]
+[gd_scene load_steps=54 format=3 uid="uid://ct6euhy8orf2m"]
 
 [ext_resource type="Script" uid="uid://bsrlt8ui5oxuq" path="res://scenes/game/cards/world/field_info/field_info.gd" id="1_doj6w"]
 [ext_resource type="PackedScene" uid="uid://b7aqntno6susb" path="res://assets/models/general/numbers/stat_numbers/zero.glb" id="2_emwqa"]
@@ -14,20 +14,19 @@
 [ext_resource type="PackedScene" uid="uid://bvrgvidl2c7y4" path="res://assets/models/general/numbers/stat_numbers/seven.glb" id="9_a1tgo"]
 [ext_resource type="PackedScene" uid="uid://sglmcojlk1je" path="res://assets/models/general/numbers/stat_numbers/eight.glb" id="10_dhlus"]
 [ext_resource type="PackedScene" uid="uid://dq5ux8j1jjffc" path="res://assets/models/general/numbers/stat_numbers/nine.glb" id="11_apcfk"]
-[ext_resource type="Material" uid="uid://bejm0dawc77gj" path="res://resources/materials/colors/unshaded/green.tres" id="12_5ikdo"]
-[ext_resource type="Material" uid="uid://bj6n2uaf0f6uv" path="res://resources/materials/colors/unshaded/white.tres" id="13_itc2r"]
-[ext_resource type="Material" uid="uid://3te7r175xgh2" path="res://resources/materials/colors/unshaded/red.tres" id="14_bvr8m"]
-[ext_resource type="Material" uid="uid://dwwfjm1wwygh" path="res://resources/materials/colors/top_unshaded/green.tres" id="15_6rglu"]
-[ext_resource type="Material" uid="uid://cso4e6y5ycep2" path="res://resources/materials/colors/unshaded/pink.tres" id="15_ydnjg"]
-[ext_resource type="Material" uid="uid://dps10m73p80xv" path="res://resources/materials/colors/top_unshaded/white.tres" id="16_m8mfd"]
-[ext_resource type="Material" uid="uid://dwxlwgqbngm5v" path="res://resources/materials/colors/unshaded/orange.tres" id="16_s1f37"]
-[ext_resource type="Material" uid="uid://bl76cu5hicepy" path="res://resources/materials/colors/top_unshaded/red.tres" id="17_dv8uk"]
+[ext_resource type="Material" uid="uid://df4q3a4a8f7e6" path="res://resources/materials/colors/unshaded_with_outline/green.tres" id="12_mr5mo"]
+[ext_resource type="Material" uid="uid://b27c0ipvylqtd" path="res://resources/materials/colors/unshaded_with_outline/red.tres" id="13_2pyvq"]
+[ext_resource type="Material" uid="uid://db1do0f5gd0ll" path="res://resources/materials/colors/unshaded_with_outline/white.tres" id="14_g7m10"]
+[ext_resource type="Material" uid="uid://b4m1xyv608rvw" path="res://resources/materials/colors/unshaded_with_outline/pink.tres" id="15_h4ovu"]
+[ext_resource type="Material" uid="uid://bspucvlfjlvc" path="res://resources/materials/colors/unshaded_with_outline/orange.tres" id="16_wqo68"]
 [ext_resource type="Material" uid="uid://cs44x6eyyv8fk" path="res://resources/materials/game/base_material_top.tres" id="18_xbibn"]
 [ext_resource type="ArrayMesh" uid="uid://dg7uxtqjwekn5" path="res://assets/models/general/numbers/particle_numbers/one.tres" id="19_g58ma"]
 [ext_resource type="ArrayMesh" uid="uid://bod8ila0mcgh5" path="res://assets/models/general/numbers/particle_numbers/two.tres" id="20_hvbsd"]
+[ext_resource type="Material" uid="uid://bixkd4babe13l" path="res://resources/materials/colors/top_unshaded_with_outline/green.tres" id="20_mr5mo"]
+[ext_resource type="Material" uid="uid://di4v3rs63hs1v" path="res://resources/materials/colors/top_unshaded_with_outline/white.tres" id="21_2pyvq"]
 [ext_resource type="ArrayMesh" uid="uid://b47lrjmcpx52u" path="res://assets/models/general/numbers/particle_numbers/three.tres" id="21_dveln"]
-[ext_resource type="Material" uid="uid://dqs86kl42o4rm" path="res://resources/materials/colors/unshaded/black.tres" id="21_ymrm6"]
 [ext_resource type="ArrayMesh" uid="uid://8lvyp0xo7m1o" path="res://assets/models/general/numbers/particle_numbers/four.tres" id="22_35x14"]
+[ext_resource type="Material" uid="uid://dwaphdapa3lof" path="res://resources/materials/colors/top_unshaded_with_outline/red.tres" id="22_g7m10"]
 [ext_resource type="PackedScene" uid="uid://nue6v6hd501f" path="res://scenes/particles/numbers_particle.tscn" id="22_tcac4"]
 [ext_resource type="ArrayMesh" uid="uid://dtltd47qcc7ba" path="res://assets/models/general/numbers/particle_numbers/five.tres" id="23_n5v4e"]
 [ext_resource type="ArrayMesh" uid="uid://55xffu81oa2l" path="res://assets/models/general/numbers/particle_numbers/six.tres" id="24_6p3qk"]
@@ -54,21 +53,19 @@
 [ext_resource type="Texture2D" uid="uid://i28xd5788x60" path="res://assets/sprites/game/common/shine/ascended_shine.png" id="46_yubbn"]
 [ext_resource type="Texture2D" uid="uid://cnh6sqy8os61w" path="res://assets/sprites/game/cards/field_info/icon_box.png" id="50_ubgm4"]
 [ext_resource type="Script" uid="uid://cqb3jw0qxv0el" path="res://scenes/game/cards/world/field_info/tool_shine.gd" id="51_1r75t"]
-[ext_resource type="Material" uid="uid://bp2ufh6y4ylqd" path="res://resources/materials/game/base_material_outline/material/yellow_outline.tres" id="52_wqo68"]
 
 [node name="FieldInfo" type="Node3D"]
 script = ExtResource("1_doj6w")
 number_to_model = Array[PackedScene]([ExtResource("2_emwqa"), ExtResource("6_hhji0"), ExtResource("7_rtn5l"), ExtResource("5_sdyep"), ExtResource("6_1r07y"), ExtResource("7_5ijq8"), ExtResource("8_7cvsh"), ExtResource("9_a1tgo"), ExtResource("10_dhlus"), ExtResource("11_apcfk")])
-green_material = ExtResource("12_5ikdo")
-white_material = ExtResource("13_itc2r")
-red_material = ExtResource("14_bvr8m")
-pink_material = ExtResource("15_ydnjg")
-orange_material = ExtResource("16_s1f37")
-green_top_material = ExtResource("15_6rglu")
-white_top_material = ExtResource("16_m8mfd")
-red_top_material = ExtResource("17_dv8uk")
+green_with_outline_material = ExtResource("12_mr5mo")
+red_with_outline_material = ExtResource("13_2pyvq")
+white_with_outline_material = ExtResource("14_g7m10")
+pink_with_outline_material = ExtResource("15_h4ovu")
+orange_with_outline_material = ExtResource("16_wqo68")
+green_top_material = ExtResource("20_mr5mo")
+white_top_material = ExtResource("21_2pyvq")
+red_top_material = ExtResource("22_g7m10")
 top_base_material = ExtResource("18_xbibn")
-black_outline_material = ExtResource("21_ymrm6")
 number_to_particle_mesh = Array[Mesh]([null, ExtResource("19_g58ma"), ExtResource("20_hvbsd"), ExtResource("21_dveln"), ExtResource("22_35x14"), ExtResource("23_n5v4e"), ExtResource("24_6p3qk"), ExtResource("25_y0a8l"), ExtResource("26_4gsdx"), ExtResource("27_eixty")])
 exclamation_particle_mesh = ExtResource("28_i4f0i")
 plus_mesh = ExtResource("29_3nsr3")
@@ -133,9 +130,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
 
 [node name="three" parent="Numbers/HealthSpot" instance=ExtResource("5_sdyep")]
 
-[node name="Three" parent="Numbers/HealthSpot/three" index="0"]
-surface_material_override/0 = ExtResource("52_wqo68")
-
 [node name="SpeedSpot" type="Node3D" parent="Numbers"]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, 0)
@@ -178,5 +172,3 @@ region_rect = Rect2(2.115, 0, 0, 0)
 
 [connection signal="child_entered_tree" from="IconsManager" to="IconsManager" method="_on_child_entered_tree"]
 [connection signal="child_exiting_tree" from="IconsManager" to="IconsManager" method="_on_child_exiting_tree"]
-
-[editable path="Numbers/HealthSpot/three"]

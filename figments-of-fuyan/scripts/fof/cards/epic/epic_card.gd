@@ -18,8 +18,11 @@ func onLoadData(data: SavedData) -> void:
 	super(data)
 	boss_datastore = data.boss_datastore
 	if boss_datastore != null: boss_datastore.onLoad()
-	setBossIntentByName()
 	add_to_group("EpicCardsGD")
+	
+func onLoadDataLevel() -> void:
+	super()
+	setBossIntentByName()
 	
 func onFofInit() -> void:
 	super()
@@ -134,10 +137,10 @@ func onRemoveFieldInfo() -> void:
 #endregion
 
 #region Boss Intent
-func getBossIntentByName() -> BossIntent:
+func getBossIntentByName(_name: String = boss_datastore.boss_intent_name) -> BossIntent:
 	var boss_intents: Array[BossIntent] = getBossIntentsFromInfo()
 	for _boss_intent: BossIntent in boss_intents:
-		if _boss_intent.name == boss_datastore.boss_intent_name:
+		if _boss_intent.name == _name:
 			return _boss_intent
 	return null
 	
@@ -252,7 +255,7 @@ func getDistantToEnemiesTiles(enemies: Array, tiles: Array) -> Array:
 	tiles = tiles.duplicate()
 	var tiles_to_distance: Dictionary = {}
 	for OtherTile: TileGD in tiles:
-		var distance: int = enemies.map(func(x: CardGD): return Game.getCoordsDistance(x.getCoords(), Tile.getCoords())).min()
+		var distance: int = enemies.map(func(x: CardGD): return Game.getCoordsDistance(x.getCoords(), OtherTile.getCoords())).min()
 		tiles_to_distance[OtherTile] = distance
 			
 	tiles.sort_custom(func(x: TileGD, y: TileGD): return tiles_to_distance[x] > tiles_to_distance[y])
@@ -273,7 +276,7 @@ func getCloseToEnemiesTiles(enemies: Array, tiles: Array) -> Array:
 	tiles = tiles.duplicate()
 	var tiles_to_distance: Dictionary = {}
 	for OtherTile: TileGD in tiles:
-		var distance: int = enemies.map(func(x: CardGD): return Game.getCoordsDistance(x.getCoords(), Tile.getCoords())).min()
+		var distance: int = enemies.map(func(x: CardGD): return Game.getCoordsDistance(x.getCoords(), OtherTile.getCoords())).min()
 		tiles_to_distance[OtherTile] = distance
 			
 	tiles.sort_custom(func(x: TileGD, y: TileGD): return tiles_to_distance[x] < tiles_to_distance[y])

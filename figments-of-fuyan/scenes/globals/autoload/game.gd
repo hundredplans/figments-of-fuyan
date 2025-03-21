@@ -146,10 +146,10 @@ func getAdjacentOrCloserCoords(coord: Vector4i, distance: int = 1) -> Array:
 	for x: int in range(-distance, (distance + 1)):
 		for y: int in range(max(-distance, -x - distance), min(distance, -x + distance) + 1):
 			coords.append(Vector4i(x, y, -x-y, 0) + coord)
+	coords.erase(coord)
 	return coords
 	
 func getAdjacentCoords(coord: Vector4i, distance: int = 1) -> Array:
-	var coords: Array = []
 	return getAdjacentOrCloserCoords(coord, distance).filter(func(x: Vector4i): return Game.getCoordsDistance(x, coord) == distance)
 	
 func getAdjacentTiles(Tile: TileGD, distance: int = 1) -> Array:
@@ -202,21 +202,22 @@ func getFanCoords(coords: Vector4i, distance: int, tile_rotation: int = 0) -> Ar
 	adjacent_coords.erase(coords)
 	return adjacent_coords
 	
-func getInversePyramidCoords(coords: Vector4i, distance: int, first_tile_rotation: int, second_tile_rotation: int) -> Array: # Get two tile rotations next to each other
+func getInversePyramidCoords(coords: Vector4i, distance: int, first_tile_rotation: int, second_tile_rotation: int, offset: int) -> Array: # Get two tile rotations next to each other
 	var inverse_pyramid_coords: Array = []
 	var first_cube_direction: Vector4i = getCubeDirectionExtra(first_tile_rotation)
 	var second_cube_direction: Vector4i = getCubeDirectionExtra(second_tile_rotation)
 	
-	var adjacent_numbers: Array = [(first_tile_rotation + 1) % 6, (second_tile_rotation + 1) % 6]
-	var down_tile_rotation: int = adjacent_numbers.filter(func(x: int): return x != first_tile_rotation and x != second_tile_rotation)[0]
+	var adjacent_numbers: Array = [posmod(first_tile_rotation + offset, 6), posmod(second_tile_rotation + offset, 6)]
+	var direction_tile_rotation: int = adjacent_numbers.filter(func(x: int): return x != first_tile_rotation and x != second_tile_rotation)[0]
 	 
+	
 	for i: int in range(1, distance + 1):
 		var first_coords: Vector4i = coords + (first_cube_direction * i)
 		var second_coords: Vector4i = coords + (second_cube_direction * i)
 		
 		inverse_pyramid_coords.append(first_coords)
 		inverse_pyramid_coords.append(second_coords)
-		inverse_pyramid_coords += getStraightLineCoords(first_coords, i - 1, down_tile_rotation)
+		inverse_pyramid_coords += getStraightLineCoords(first_coords, i - 1, direction_tile_rotation)
 	return inverse_pyramid_coords
 	
 func getStraightLineCoords(coords: Vector4i, distance: int, tile_rotation: int) -> Array:

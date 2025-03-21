@@ -1,0 +1,14 @@
+// NOTE: Shader automatically converted from Godot Engine 4.2.1.stable's StandardMaterial3D.
+
+shader_type spatial;
+render_mode blend_mix,depth_prepass_alpha,cull_front,unshaded, specular_schlick_ggx;
+uniform vec4 albedo : source_color;
+uniform float grow;
+
+void vertex() {
+    VERTEX+=NORMAL*grow;
+}
+
+void fragment() {
+    ALBEDO = albedo.rgb;
+}

@@ -306,9 +306,7 @@ func setFallDamageWorldEffect(state: bool, PreviousTile: TileGD, damage: int) ->
 func onUpdateLevelVisible() -> void:
 	super()
 	setOutlineMaterial()
-	
-	if TileIntentModel != null:
-		TileIntentModel.visible = isLevelVisible()
+	setTileIntentModelVisible()
 
 func getRevealVisibleGroup() -> Array:
 	return [self] + occupied_objects
@@ -367,5 +365,11 @@ func setTileIntent(tile_intent: Game.TileIntents) -> void:
 		
 		if variation == 0:
 			TileIntentModel.position.y = getCardYOffsetBase()
-		TileIntentModel.visible = isLevelVisible()
+		setTileIntentModelVisible()
+		
+func setTileIntentModelVisible() -> void:
+	if TileIntentModel == null: return
+	
+	TileIntentModel.visible = isLevelVisible() and \
+		(isRevealed(0) or Game.getAllyUnits(0).any(func(x: CardGD): return x.getStatusEffect(1) == null and self in x.getVisibleTiles()))
 #endregion

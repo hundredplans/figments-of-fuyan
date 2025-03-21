@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://b7e0aum6xfejf"]
+
+[ext_resource type="Shader" uid="uid://djw8v6dphgpvb" path="res://resources/shaders/unshaded_outline.gdshader" id="1_pfuju"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_pfuju")
+shader_parameter/albedo = Color(0, 0, 0, 1)
+shader_parameter/grow = 0.005
