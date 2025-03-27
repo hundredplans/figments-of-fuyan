@@ -1,13 +1,13 @@
 [gd_resource type="Resource" script_class="BoonInfo" load_steps=5 format=3 uid="uid://deq0yv0vi71vc"]
 
-[ext_resource type="Texture2D" uid="uid://c4qts40qrbkie" path="res://assets/sprites/game/cards/art_mini/blade_of_the_palms.png" id="1_hti2g"]
 [ext_resource type="Script" uid="uid://besbpk3h87mjl" path="res://scripts/fof/boons/dominance_boon.gd" id="1_qipm4"]
 [ext_resource type="Script" uid="uid://cwaxy6m1b8n5m" path="res://scripts/fof_info/boons/boon_info.gd" id="1_s0bb3"]
+[ext_resource type="Texture2D" uid="uid://brcmwcvusvyf3" path="res://assets/sprites/game/boons/dominance_boon.png" id="2_qipm4"]
 [ext_resource type="Script" uid="uid://dh3x145y3ihra" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_fur7b"]
 
 [resource]
 script = ExtResource("1_s0bb3")
-icon = ExtResource("1_hti2g")
+icon = ExtResource("2_qipm4")
 description = "Your units deal +1 DMG to enemies with a lower ATK stat"
 ascended_description = "Your units deal +2 DMG to enemies with a lower ATK stat"
 rarity = 7

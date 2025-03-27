@@ -132,4 +132,6 @@ horizontal_alignment = 1
 
 [connection signal="mouse_in_ui" from="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MiniBox" to="." method="_on_mini_box_mouse_in_ui"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MiniBox" to="." method="_on_mini_box_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/Buttons/AttackButton" to="." method="onStatBought" binds= ["Attack"]]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/Buttons/HealthButton" to="." method="onStatBought" binds= ["Health"]]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/Buttons/LeaveButton" to="." method="_on_leave_button_pressed"]

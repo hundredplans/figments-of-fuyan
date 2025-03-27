@@ -5,8 +5,9 @@
 [resource]
 script = ExtResource("1_re8vd")
 name = "Clone Phase Change"
-description = "Clear all allies BLIND.  Summon a 3/1/3 clone for each ally that is at least [3] Tiles away. Then BLIND all allies for [2] Turns."
+description = "Waiting action after phase"
 type = 5
+duration = 2
 default_cooldown = 1
 off_vision_use_cooldown = false
 combat_type = 0

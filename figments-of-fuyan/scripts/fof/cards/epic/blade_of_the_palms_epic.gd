@@ -45,8 +45,6 @@ func onUseBossIntent(enemies: Array, allies: Array, tiles: Array, use_type: UseT
 			actions = onMistAttack(use_type)
 		"Clone Phase Change":
 			actions = onClonePhaseChange(use_type)
-		"Dodge Phase Change":
-			actions = onDodgePhaseChange(use_type)
 	
 	if !use_teleport_passive:
 		use_teleport_passive = actions.any(func(x: Action):\
@@ -456,20 +454,6 @@ func getTeleportPassiveAction(enemies: Array) -> Array:
 	return [teleport_enter, TeleportAction.new(self, tiles[0]), teleport_exit]
 #endregion
 
-#region Clone Phase Change
-func onClonePhaseChangeSetIntents() -> BossTileIntents:
-	return BossTileIntents.new()
-	
-func onClonePhaseChange(use_type: UseType) -> Array:
-	if use_type == UseType.START:
-		var allies: Array = Game.getAllyUnits(0)
-		var ally_to_tiles: Dictionary[CardGD, Array] = {}
-		for AllyCard: CardGD in allies:
-			ally_to_tiles[AllyCard] = Game.getAdjacentTiles(AllyCard.getTile(), 3)
-	return []
-	
-#endregion
-
 #region Double Teleport Attack
 func onDoubleTeleportAttackSetIntents() -> BossTileIntents:
 	var tile_intents: Array[TileIntentDatastore] = []
@@ -597,10 +581,14 @@ func onMistAttack(use_type: UseType) -> Array:
 		actions.append(DamageAction.new(self, enemies.filter(func(x: CardGD): return x.getTile() in attack_tiles), attack - 1, Game.DamageTypes.OTHER))		
 		return actions
 	return []
+#endregion
+	
 #region Phase Change
 func onChangeBossPhase() -> void:
 	super()
-	onAbility()
+	
+	onPushAction(AnimationAction.new(self, "PhaseChange"))
+	
 	var actions: Array = []
 	match getPhase():
 		2:
@@ -609,8 +597,14 @@ func onChangeBossPhase() -> void:
 
 func onChangeBossPhasePostDelay() -> void:
 	super()
-	onIdle()
+	
 	var actions: Array = []
+	setIdleModifier("Hammer")
+	
+	var animation_action := AnimationAction.new(self, "HammerJump")
+	animation_action.setActionDelay(HAMMER_JUMP_ACTION_DELAY)
+	actions.append(animation_action)
+	
 	var ally_cards: Array = Game.getAllyUnits(0)
 	actions += ally_cards.map(func(x: CardGD): return RemoveStatusEffectAction.new(x.getStatusEffect(BLIND_ID)))
 	
@@ -641,6 +635,21 @@ func onPhaseTwoPhaseChangePostDelay() -> Array:
 		#
 	#actions += ally_cards.map(func(x: CardGD): return x.getBaseStatusEffectAction(BLIND_ID, 2))
 	return actions
+#endregion
+
+#region Hammer Attack
+const HAMMER_JUMP_ACTION_DELAY: float = 1.8
+
+#region Wait
+func onClonePhaseChangeSetIntents() -> BossTileIntents: return BossTileIntents.new()
+	 
+func onClonePhaseChange(use_type: UseType) -> Array:
+	if use_type == UseType.START:
+		var allies: Array = Game.getAllyUnits(0)
+		var ally_to_tiles: Dictionary[CardGD, Array] = {}
+		for AllyCard: CardGD in allies:
+			ally_to_tiles[AllyCard] = Game.getAdjacentTiles(AllyCard.getTile(), 3)
+	return []
 #endregion
 
 #region Dodge Phase Change

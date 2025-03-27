@@ -8,8 +8,10 @@ func onIncrementBountyKills(duelist_kill: bool) -> void:
 	kills += 1 * (DUELIST_KILL_MULTIPLIER if duelist_kill else 1)
 
 func getKills() -> int:
-	#return kills
-	return 8
+	return kills
 	
 func getLastClaimedKills() -> int:
 	return last_claimed_kills
+	
+func setLastClaimedKills(_last_claimed_kills: int) -> void:
+	last_claimed_kills = _last_claimed_kills 

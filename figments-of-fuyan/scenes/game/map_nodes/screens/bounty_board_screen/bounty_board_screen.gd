@@ -42,9 +42,8 @@ func onCreateTierLabels() -> void:
 		
 func setTierLabels() -> void:
 	if SelectedCard == null: return
-	
 	for TierLabel: FancyTextLabel in TierLabels.get_children().filter(func(x: Node): return x is FancyTextLabel):
-		TierLabel.setStrikethrough(SelectedCard.bounty_kills.getKills(), SelectedCard.bounty_kills.getLastClaimedKills())
+		TierLabel.setTier(SelectedCard.bounty_kills.getKills(), SelectedCard.bounty_kills.getLastClaimedKills())
 
 func setWantedLabel() -> void:
 	var text: String = "Select a card below" if SelectedCard == null else "WANTED: [" + str(SelectedCard.bounty_kills.getKills()) +"] Confirmed Kills"
@@ -92,3 +91,21 @@ func getKillAmountDisabled() -> bool:
 			if last_claimed_kills < kills and kill_amount >= kills:
 				return false
 	return true
+
+func onStatBought(_stat: String) -> void:
+	var stat := Game.Stats.ATTACK if _stat == "Attack" else Game.Stats.MAX_HEALTH
+	var actions: Array = [BaseStatAction.new(SelectedCard, stat, 1), ChangeShillingsAction.new(-map_node.price)]
+	map_node.onPushAction(actions)
+	map_node.price += PRICE_INCREASE
+	
+	var previous_last_claimed_kills: int = SelectedCard.bounty_kills.getLastClaimedKills()
+	var next_last_claimed_kills: int = 1
+	for i: int in range(kill_amounts.size()):
+		if kill_amounts[i] > previous_last_claimed_kills:
+			next_last_claimed_kills = kill_amounts[i]
+			break
+	
+	SelectedCard.bounty_kills.setLastClaimedKills(next_last_claimed_kills)
+	setPriceLabel()
+	setTierLabels()
+	setButtonsDisabled()

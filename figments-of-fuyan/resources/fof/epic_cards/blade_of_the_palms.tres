@@ -17,8 +17,8 @@
 [ext_resource type="Resource" uid="uid://cxcmjs0iae406" path="res://resources/datastore/boss_intents/blade_of_the_palms/double_teleport_attack.tres" id="13_8g5ul"]
 [ext_resource type="Resource" uid="uid://ddns60xv08b60" path="res://resources/datastore/boss_intents/blade_of_the_palms/mist_attack.tres" id="14_hhvwj"]
 [ext_resource type="Resource" uid="uid://b02t6qh4ymrvy" path="res://resources/datastore/boss_intents/blade_of_the_palms/clone_phase_change.tres" id="15_hhvwj"]
-[ext_resource type="Resource" uid="uid://s7btgwkg45bc" path="res://resources/datastore/boss_intents/blade_of_the_palms/pizza_attack.tres" id="16_5epeo"]
 [ext_resource type="Resource" uid="uid://gah3cxhrmedq" path="res://resources/datastore/boss_intents/blade_of_the_palms/clone_minifan_attack.tres" id="17_lofdk"]
+[ext_resource type="Resource" uid="uid://ttm21xdoahcv" path="res://resources/datastore/boss_intents/blade_of_the_palms/thanos_attack.tres" id="18_5epeo"]
 [ext_resource type="Resource" uid="uid://8qu8qls78321" path="res://resources/datastore/boss_intents/blade_of_the_palms/clone_summon.tres" id="18_e0d1a"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_x8gyx"]
@@ -71,7 +71,7 @@ top = 2.444
 eye = 1.897
 awaken_boss_intent_name = "Clone Phase Change"
 speed_order_override = 0
-change_delay = 3.0
+change_delay = 1.8
 boss_intents = Array[ExtResource("5_tlf4i")]([ExtResource("7_hhvwj"), ExtResource("13_8g5ul"), ExtResource("8_qd2jx"), ExtResource("9_qq5yi"), ExtResource("14_hhvwj"), ExtResource("6_8g5ul"), ExtResource("15_hhvwj")])
 metadata/_custom_type_script = "uid://bnp3nwlcsibyl"
 
@@ -90,8 +90,8 @@ top = 2.444
 eye = 1.897
 awaken_boss_intent_name = "Dodge Phase Change"
 speed_order_override = 0
-change_delay = 3.0
-boss_intents = Array[ExtResource("5_tlf4i")]([ExtResource("14_hhvwj"), ExtResource("13_8g5ul"), ExtResource("16_5epeo"), ExtResource("17_lofdk"), ExtResource("6_8g5ul"), ExtResource("18_e0d1a")])
+change_delay = 1.8
+boss_intents = Array[ExtResource("5_tlf4i")]([ExtResource("14_hhvwj"), ExtResource("13_8g5ul"), ExtResource("17_lofdk"), ExtResource("6_8g5ul"), ExtResource("18_e0d1a"), ExtResource("18_5epeo")])
 metadata/_custom_type_script = "uid://bnp3nwlcsibyl"
 
 [resource]
