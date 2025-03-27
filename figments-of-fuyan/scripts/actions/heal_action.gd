@@ -11,11 +11,11 @@ func _init(_cards: Variant = null, _heals: Variant = null) -> void:
 	if _heals is int: heals = [_heals]
 	else:
 		heals = _heals
-		if heals.size() < cards.size():
-			heals.resize(cards.size())
-			
-			for i in range(heals.size()):
-				if heals[i] == null: heals[i] = heals[0]
+	if heals.size() < cards.size():
+		heals.resize(cards.size())
+		
+		for i in range(heals.size()):
+			if heals[i] == null: heals[i] = heals[0]
 	
 func onPreAction() -> void:
 	if cards.all(func(x: CardGD): return !x.isInjured()) or cards.is_empty():
