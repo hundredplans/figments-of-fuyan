@@ -1,0 +1,60 @@
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://bioh4xqgnkovg"]
+
+[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_gd27f"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_kej33"]
+[ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_mvdbc"]
+[ext_resource type="Texture2D" uid="uid://c4qts40qrbkie" path="res://assets/sprites/game/cards/art_mini/blade_of_the_palms.png" id="3_8gyu2"]
+[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_mvdbc"]
+[ext_resource type="Image" uid="uid://du02yxtlqrpgq" path="res://assets/sprites/game/cards/art_pop/blade_of_the_palms.png" id="4_v3vbl"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_mvdbc"]
+[ext_resource type="Script" uid="uid://5d5wn4d1wius" path="res://scripts/fof/cards/clone_of_the_palms.gd" id="6_v3vbl"]
+[ext_resource type="PackedScene" uid="uid://bb5vdrqxqa0wb" path="res://assets/models/fof/cards/blade_of_the_palms.glb" id="7_xwp8q"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_x8gyx"]
+size = Vector3(0.633057, 2.42429, 0.301514)
+
+[sub_resource type="PackedScene" id="PackedScene_lok3x"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00524902, 1.20674, -0.0177002), SubResource("BoxShape3D_x8gyx")],
+"version": 3
+}
+
+[resource]
+script = ExtResource("3_mvdbc")
+attack = 3
+health = 1
+speed = 3
+energy = 2
+rarity = 0
+initial_traits = Array[ExtResource("2_kej33")]([])
+active_abilities = Array[ExtResource("1_gd27f")]([])
+flavor_text = ""
+description = "How'd you get here?"
+ascended_description = ""
+art_mini_coordinate = Vector2i(91, 27)
+art_mini = ExtResource("3_8gyu2")
+art_pop = ExtResource("4_v3vbl")
+model = ExtResource("7_xwp8q")
+points = [Vector3(-0.169155, 0.239571, 0.133057), Vector3(0.183516, 0.239223, 0.133057), Vector3(-0.162775, 0.622093, 0.133057), Vector3(0.169328, 0.64294, 0.133057), Vector3(-0.126926, 0.978036, 0.133057), Vector3(0.136707, 0.986501, 0.133057), Vector3(-0.163384, 1.28892, 0.133057), Vector3(0.136259, 1.31003, 0.133057), Vector3(-0.126951, 1.62307, 0.133057), Vector3(0.140094, 1.62865, 0.133057), Vector3(-0.128728, 1.98679, 0.133057), Vector3(0.149506, 1.98663, 0.133057), Vector3(-0.321778, 0.23041, -0.0647256), Vector3(-0.321778, 0.631307, -0.0628094), Vector3(-0.321778, 1.0514, -0.0378641), Vector3(-0.321778, 1.44625, -0.00441441), Vector3(-0.321778, 1.77035, -0.0161406), Vector3(-0.321778, 2.00958, -0.0192475), Vector3(0.31128, 2.01409, -0.0258838), Vector3(0.31128, 1.69686, -0.00741321), Vector3(0.31128, 1.31173, -0.00891331), Vector3(0.31128, 0.981112, -0.0239298), Vector3(0.31128, 0.694034, -0.0186331), Vector3(0.31128, 0.286051, -0.00584558), Vector3(0.195001, 0.297404, -0.168457), Vector3(-0.188432, 0.312008, -0.168457), Vector3(0.21975, 0.711575, -0.168457), Vector3(-0.185521, 0.779665, -0.168457), Vector3(0.155137, 1.14496, -0.168457), Vector3(-0.189965, 1.19895, -0.168457), Vector3(0.173938, 1.45719, -0.168457), Vector3(-0.127429, 1.47731, -0.168457), Vector3(0.163019, 1.8535, -0.168457), Vector3(-0.131346, 1.87783, -0.168457), Vector3(0.112807, 2.06261, -0.168457), Vector3(-0.124686, 2.05478, -0.168457), Vector3(0.110078, 2.41888, -0.0121994), Vector3(-0.0599903, 2.41888, 0.0125429), Vector3(-0.190922, -0.00540495, -0.0476798), Vector3(0.234382, -0.00540495, 0.029992)]
+collision_shape = SubResource("PackedScene_lok3x")
+stat = 2.649
+top = 2.444
+eye = 1.897
+plus_attack = 0
+plus_health = 0
+plus_speed = 0
+plus_energy = 0
+ascended_traits = Array[ExtResource("2_kej33")]([])
+archetype = ExtResource("2_mvdbc")
+id = 78
+name = "Clone of the Palms"
+gdscript = ExtResource("6_v3vbl")
+saved_data = ExtResource("5_mvdbc")
+metadata/_custom_type_script = "uid://c4ung4opynmre"

@@ -14,7 +14,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		var attack_gain: int = 1 if !ascended else 2
 		var actions: Array = [
 			StatAction.new(StatInfo.new(Card, Game.Stats.ATTACK, attack_gain, 1)),
-			DelayedStatAction.new(StatInfo.new(Card, Game.Stats.HEALTH, 1, 1)),
+			DelayedHealAction.new(HealDatastore.new(Card, 1, 1)),
 			ChangeTileRotationAction.new(self, Game.getRelativeTileRotation(Tile, Card.Tile))]
 		
 		onPushAction(actions)

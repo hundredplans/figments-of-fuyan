@@ -21,6 +21,8 @@ const BASE_MATERIAL_ALPHAGREY_PATH: String = "res://resources/materials/game/bas
 const BASE_MATERIAL_RED_TRANSPARENT_PATH: String = "res://resources/materials/game/base_material_colored/base_material_red_transparent.tres"
 const BOSS_FIELD_INFO_SCENE_PATH: String = "res://scenes/game/cards/world/boss_field_info/boss_field_info.tscn"
 
+const BASE_MATERIAL_SPECULAR_PATH: String = "res://resources/materials/game/base_material_specular.tres"
+
 static func getInfoPath() -> String: return "res://resources/fof/epic_cards"
 
 static func getFofName() -> String: return "EpicCard"

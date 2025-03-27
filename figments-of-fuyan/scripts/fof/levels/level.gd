@@ -153,7 +153,7 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 		return
 		
 	for Card in get_tree().get_nodes_in_group("HandCardsGD"):
-		draw_card.emit(Card)
+		onPushAction(HandCardAction.new(Card))
 		
 	onChangePhase(data.phase, true)
 	if is_ended:
@@ -215,14 +215,11 @@ func setAlliesTurnState(turn_state: Game.TurnStates) -> void:
 #region Action Processing
 func onProcessAction(action: Action) -> void:
 	if action.post:
-		if action is DrawAction: draw_card.emit(action.Card)
-		elif action is AwakenAction:
+		if action is AwakenAction:
 			onCardAwakened(action)
 		elif action is FinishAwakenAction:
 			onCheckSkipHandPhase()
 			onCardFinishedAwakening(action)
-		elif action is InsertAction:
-			draw_card.emit(action.Card)
 		elif action is EnergyAction:
 			energy = min(action.delta + energy, max_energy)
 			energy_changed.emit(energy, action)

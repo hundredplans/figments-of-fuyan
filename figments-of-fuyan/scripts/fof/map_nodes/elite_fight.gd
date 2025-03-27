@@ -40,7 +40,7 @@ func setChiefAndSpawns(base_budget: int, enemy_spawns: Array, enemy_spawn_amount
 	enemy_cards.append(chief_data)
 	
 func onSave() -> SavedDataMapNode:
-	return SavedDataEliteFight.new(info.id, false, public_id, map_location, links, is_entered, is_finished, rotation.y, level_info, spawn_group, enemy_cards, curse_id)
+	return SavedDataEliteFight.new(info.id, false, public_id, map_location, links, is_entered, is_finished, rotation.y, ability_save, level_info, spawn_group, enemy_cards, curse_id)
 	
 func onLoadData(data: SavedData) -> void:
 	super(data)

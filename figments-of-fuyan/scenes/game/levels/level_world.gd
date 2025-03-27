@@ -180,7 +180,7 @@ func onTilePressed() -> void:
 func onTileInspected() -> void:
 	var Tile: TileGD = MouseHoverTile
 	var Card: CardGD = Tile.getCard()
-	if Card != null and Card is not EpicCardGD and Card.isLevelVisible():
+	if Card != null and Card.onCanCreateInspectScreen() and Card.isLevelVisible():
 		Card.setInspectable(true, UI)
 		Card.onInspectCard()
 #endregion
@@ -224,7 +224,7 @@ func onCreateMovementRange(Card: CardGD) -> void:
 		if level.phase == Game.Phases.HAND:
 			onHideMovementRange()
 		return
-	if Card == null or !Card.isAlly() or Card.turn_state == Game.TurnStates.PASSED: return
+	if Card == null or !Card.isAlly() or Card.turn_state == Game.TurnStates.PASSED or current_active_effect != null: return
 	
 	Game.getsetMovementRange(Card)
 #endregion

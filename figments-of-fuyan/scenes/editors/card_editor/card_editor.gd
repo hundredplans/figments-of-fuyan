@@ -8,45 +8,26 @@ const CARD_UI_OFFSET := Vector2(-120, -400)
 @onready var SearchAreaCard: LineEdit = %SearchAreaCard
 @onready var CardParent: Node3D = %CardParent
 
-var card_id_to_area_id: Dictionary[int, int]
 func _ready() -> void:
+	var card_id_to_area_id: Dictionary[int, int] = {}
 	for area_info: AreaInfo in Helper.getFofInfoArray(AreaInfo):
 		for id: int in area_info.card_ids:
 			card_id_to_area_id[id] = area_info.id
 	
 	var card_infos: Array = Helper.getFofInfoArray(CardInfo)
+	card_infos.sort_custom(getSortValue.bind(card_id_to_area_id))
 	
-	for card_info in card_infos:
+	for card_info: CardInfo in card_infos:
 		var card_data := SavedDataCard.new(card_info.id, true)
 		Game.setCardDataFromInfo(card_data, card_info)
 		var Card: CardGD = SavedData.onLoadModel(card_data, CardParent)
 		onCreateDeckCardUI(Card)
 
-func getSortValue(x: CardInfo, y: CardInfo) -> bool:
-	var area_x: int = card_id_to_area_id[x.id]
-	var area_y: int = card_id_to_area_id[y.id]
-	
-	if area_x < area_y:
-		return true
-	elif area_x > area_y:
-		return false
-	
-	if x.rarity < y.rarity:
-		return true
-	elif x.rarity > y.rarity:
-		return false
-		
-	if x.energy < y.energy:
-		return true
-	elif x.energy > y.energy:
-		return false
-		
-	if x.id < y.id:
-		return true
-	elif x.id > y.id:
-		return false
-	return false
-
+func getSortValue(x: CardInfo, y: CardInfo, card_id_to_area_id: Dictionary[int, int]) -> bool:
+	if card_id_to_area_id[x.id] != card_id_to_area_id[y.id]: return card_id_to_area_id[x.id] < card_id_to_area_id[y.id]
+	if x.rarity != y.rarity: return x.rarity < y.rarity
+	if x.energy != y.energy: return x.energy < y.energy
+	return x.id < y.id
 func onAnimationNameButtonPressed(ani_name: String) -> void:
 	for Card in get_tree().get_nodes_in_group("CardsGD").filter(func(x: CardGD): return x.AniPlayer != null and x.AniPlayer.has_animation(ani_name)):
 		Card.AniPlayer.play(ani_name)

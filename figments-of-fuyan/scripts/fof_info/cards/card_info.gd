@@ -5,7 +5,7 @@ const INSPECT_CARD_SCREEN: String = "res://scenes/game/cards/ui/inspect_card_scr
 const CARD_UI_SCENE_PATH: String = "res://scenes/game/cards/ui/card_ui.tscn"
 const VISION_RAY_SCENE_PATH: String = "res://scenes/game/cards/world/vision_ray.tscn"
 const UNIT_VISIBLE_PARTICLE_SCENE_PATH: String = "res://scenes/particles/unit_visible_particle.tscn"
-const BASE_MATERIAL_ASCENDED_PATH: String = "res://resources/materials/game/base_material_ascended.tres"
+const BASE_MATERIAL_ASCENDED_PATH: String = "res://resources/materials/game/base_material_ascended_specular.tres"
 
 const BASE_MATERIAL_BROWN_TRANSPARENT_PATH: String = "res://resources/materials/game/base_material_colored/base_material_brown_transparent.tres"
 const BASE_MATERIAL_GREEN_TRANSPARENT_PATH: String = "res://resources/materials/game/base_material_colored/base_material_green_transparent.tres"
@@ -14,6 +14,9 @@ const BASE_MATERIAL_RED_TRANSPARENT_PATH: String = "res://resources/materials/ga
 const BASE_MATERIAL_BROWN_TRANSPARENT_ASCENDED_PATH: String = "res://resources/materials/game/base_material_colored/base_material_brown_transparent_ascended.tres"
 const BASE_MATERIAL_GREEN_TRANSPARENT_ASCENDED_PATH: String = "res://resources/materials/game/base_material_colored/base_material_green_transparent_ascended.tres"
 const BASE_MATERIAL_RED_TRANSPARENT_ASCENDED_PATH: String = "res://resources/materials/game/base_material_colored/base_material_red_transparent_ascended.tres"
+
+const BASE_MATERIAL_SPECULAR_PATH: String = "res://resources/materials/game/base_material_specular.tres"
+const BASE_MATERIAL_ASCENDED_SPECULAR_PATH: String = "res://resources/shaders/base_material_ascended_specular.gdshader"
 
 const BASE_MATERIAL_ALPHAGREY_PATH: String = "res://resources/materials/game/base_material_alphagrey_hashing.tres"
 

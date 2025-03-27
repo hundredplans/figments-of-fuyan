@@ -1,89 +1,58 @@
-[gd_scene load_steps=5 format=3 uid="uid://oobbuomm2pt2"]
+[gd_scene load_steps=10 format=3 uid="uid://oobbuomm2pt2"]
 
 [ext_resource type="Script" uid="uid://dd1glugcgxlrv" path="res://scenes/game/map_nodes/screens/bounty_board_screen/bounty_board_screen.gd" id="1_rqn04"]
-[ext_resource type="PackedScene" uid="uid://ceoy120bbs7le" path="res://scenes/common/panel_button/panel_button.tscn" id="2_0sukw"]
-[ext_resource type="PackedScene" uid="uid://cnihjkfdyh8y5" path="res://scenes/game/map_nodes/screens/bounty_board_screen/bounty_board_check_screen.tscn" id="2_02oe5"]
+[ext_resource type="PackedScene" uid="uid://cb1fsm48quye1" path="res://scenes/game/map_nodes/screens/bounty_board_screen/tier_label.tscn" id="2_klylf"]
 [ext_resource type="LabelSettings" uid="uid://baxopkmeda53x" path="res://resources/ui/label_settings/roboto_huge.tres" id="2_lb2co"]
+[ext_resource type="LabelSettings" uid="uid://dbh1brjnbxe8c" path="res://resources/ui/label_settings/roboto_large.tres" id="4_v7eq6"]
+[ext_resource type="PackedScene" uid="uid://bk7ao27fc3efw" path="res://scenes/common/fof_ui_box/fof_ui_box.tscn" id="5_koiog"]
+[ext_resource type="PackedScene" uid="uid://6nf3mir2i2rk" path="res://scenes/common/fancy_text/fancy_text_label.tscn" id="6_hvo3w"]
+[ext_resource type="PackedScene" uid="uid://m84gmwmcger1" path="res://scenes/common/fancy_button/fancy_button.tscn" id="7_pnh47"]
+[ext_resource type="Resource" uid="uid://fpdxebj5npm" path="res://resources/ui/fancy_text/fancy_text_label_settings_huge.tres" id="8_by21k"]
+[ext_resource type="Resource" uid="uid://cd4sbguneyj71" path="res://resources/ui/fancy_text/fancy_text_label_settings_medium.tres" id="8_fiu4s"]
 
 [node name="BountyBoardScreen" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 321.0
-offset_top = 344.0
-offset_right = -350.0
-offset_bottom = -372.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_rqn04")
+TierLabelPacked = ExtResource("2_klylf")
 kill_amounts = Array[int]([1, 5, 10, 20, 50, 100])
-BountyBoardCheckScreenPacked = ExtResource("2_02oe5")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -595.5
+offset_top = -416.5
+offset_right = 595.5
+offset_bottom = 416.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"WhitePanelContainer"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="Header" type="ColorRect" parent="PanelContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+color = Color(0.333333, 0.180392, 0, 1)
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/Header"]
+modulate = Color(0.756863, 0.568627, 0.0941176, 1)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="."]
-layout_mode = 2
-anchor_left = 0.009
-anchor_top = 0.151
-anchor_right = 1.0
-anchor_bottom = 0.151
-offset_left = -0.241001
-offset_top = 48.036
-offset_right = -9.0
-offset_bottom = 299.036
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-text = "You notice a roadside bounty board. You feel pride in the bounties your units have acquired and can choose to reward them."
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-
-[node name="AnswerButtons" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 10
-
-[node name="CheckButton" parent="MarginContainer/VBoxContainer/AnswerButtons" instance=ExtResource("2_0sukw")]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Check"
-
-[node name="LeaveButton" parent="MarginContainer/VBoxContainer/AnswerButtons" instance=ExtResource("2_0sukw")]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Leave"
-
-[node name="Header" type="ColorRect" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-offset_left = 10.0
-offset_top = 10.0
-offset_right = -9.0
-offset_bottom = 103.0
-color = Color(0.333333, 0.180392, 0, 1)
-
-[node name="Label" type="Label" parent="."]
-modulate = Color(0.756863, 0.568627, 0.0941176, 1)
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_left = 10.5
-offset_top = 10.0
-offset_right = -9.5
-offset_bottom = 96.0
-grow_horizontal = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 text = "Bounty Board"
@@ -91,4 +60,76 @@ label_settings = ExtResource("2_lb2co")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer/AnswerButtons/LeaveButton" to="." method="_on_leave_button_pressed"]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 20
+
+[node name="WantedLabel" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "WANTED: [10] Confirmed Kills"
+label_settings = ExtResource("4_v7eq6")
+horizontal_alignment = 1
+
+[node name="MiniBox" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" instance=ExtResource("5_koiog")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 400)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="PriceLabel" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" instance=ExtResource("6_hvo3w")]
+unique_name_in_owner = true
+layout_mode = 2
+text = "[center]Price: 10SH (+5SH)
+Duels are worth [2] Kills
+[/center]"
+
+[node name="Buttons" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="AttackButton" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/Buttons" instance=ExtResource("7_pnh47")]
+unique_name_in_owner = true
+layout_mode = 2
+text = "+1 ATT"
+settings = ExtResource("8_by21k")
+
+[node name="HealthButton" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/Buttons" instance=ExtResource("7_pnh47")]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"RedPanelContainer"
+text = "+1 HP"
+settings = ExtResource("8_by21k")
+
+[node name="LeaveButton" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/Buttons" instance=ExtResource("7_pnh47")]
+layout_mode = 2
+theme_type_variation = &"GreyPanelContainer"
+text = "Leave"
+settings = ExtResource("8_fiu4s")
+
+[node name="TierLabels" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.671
+anchor_top = 0.257
+anchor_right = 0.671
+anchor_bottom = 0.257
+offset_left = -98.3201
+offset_top = 67.44
+offset_right = 219.68
+offset_bottom = 563.44
+
+[node name="Label" type="Label" parent="TierLabels"]
+layout_mode = 2
+text = "Kills"
+horizontal_alignment = 1
+
+[connection signal="mouse_in_ui" from="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MiniBox" to="." method="_on_mini_box_mouse_in_ui"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MiniBox" to="." method="_on_mini_box_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/Buttons/LeaveButton" to="." method="_on_leave_button_pressed"]

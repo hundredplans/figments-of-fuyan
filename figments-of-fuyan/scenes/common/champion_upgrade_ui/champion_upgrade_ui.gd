@@ -25,6 +25,8 @@ func setInfo() -> void:
 		
 	await get_tree().process_frame # While actions are processed
 	var PreviousCardUI: Control = PreviousChampionCard.onCreateCardUI(MainContainer, false, false)
+	PreviousChampionCard.onClear()
+	
 	var CardUI: Control = ChampionCard.onCreateCardUI(MainContainer, false, false)
 	MainContainer.move_child(PreviousCardUI, 0)
 	
@@ -32,7 +34,6 @@ func setInfo() -> void:
 	
 	var tween := create_tween()
 	tween.tween_property(self, "modulate:a", 0, FADEOUT_TIME)
-	await tween.finished
 	
-	PreviousChampionCard.onClear()
+	await tween.finished
 	queue_free()

@@ -107,3 +107,4 @@ func getFirstNonConsecutiveIDArray(arr: Array) -> int:
 		if arr[i + 1] != arr[i] + 1:
 			return arr[i] + 1
 	return arr[arr.size() - 1] + 1
+	

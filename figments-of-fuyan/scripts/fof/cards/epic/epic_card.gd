@@ -201,8 +201,10 @@ func onChangeBossPhase() -> void:
 	onEmptyBossIntentNameCooldowns()
 	onResetBossIntentCooldowns()
 	onForceAction(CameraChangeAction.new(self))
+	BossFieldInfo.visible = false
 			
 func onChangeBossPhasePostDelay() -> void:
+	BossFieldInfo.visible = true
 	var new_attack: int = getAttackFromInfo()
 	var new_max_health: int = getHealthFromInfo()
 	var new_speed: int = getSpeedFromInfo()
@@ -282,3 +284,5 @@ func getCloseToEnemiesTiles(enemies: Array, tiles: Array) -> Array:
 	tiles.sort_custom(func(x: TileGD, y: TileGD): return tiles_to_distance[x] < tiles_to_distance[y])
 	return tiles
 #endregion
+
+func onCanCreateInspectScreen() -> bool: return false

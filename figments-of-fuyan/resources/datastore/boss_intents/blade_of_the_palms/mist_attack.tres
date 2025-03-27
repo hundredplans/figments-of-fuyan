@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="BossIntent" load_steps=2 format=3 uid="uid://ddns60xv08b60"]
+
+[ext_resource type="Script" uid="uid://c85vjl4hwbga5" path="res://scripts/fof_info/cards/extra/boss_intent.gd" id="1_wnvex"]
+
+[resource]
+script = ExtResource("1_wnvex")
+name = "Mist Attack"
+description = "Deal [2] DMG to everywhere in vision except double adjacent where it BLINDS instead"
+type = 0
+default_cooldown = 2
+off_vision_use_cooldown = false
+combat_type = 0
+metadata/_custom_type_script = "uid://c85vjl4hwbga5"

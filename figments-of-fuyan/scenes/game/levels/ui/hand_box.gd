@@ -56,6 +56,9 @@ func onSelectableCards(_selectable_cards: bool) -> void:
 	for CardUI in get_children():
 		CardUI.setDisabled(!selectable_cards or !CardUI.Card.isPlayable(energy))
 
+func onDrawCardUI(Card: CardGD, CardUI: Control) -> void:
+	CardUI.setDisabled(!selectable_cards or !CardUI.Card.isPlayable(energy))
+
 func onUpdateEnergy(_energy: int) -> void:
 	energy = _energy
 	onSelectableCards(selectable_cards)

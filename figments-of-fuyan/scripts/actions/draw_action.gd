@@ -9,7 +9,7 @@ func onPreAction() -> void:
 		Card = deck_cards[0]
 		
 func onPostAction() -> void:
-	Card.onChangeCardPlace(Game.CardPlaces.HAND)
+	onForceAction(HandCardAction.new(Card))
 
 func onCheckFail() -> void:
 	var deck_cards: Array = Game.get_tree().get_nodes_in_group("DeckCardsGD")

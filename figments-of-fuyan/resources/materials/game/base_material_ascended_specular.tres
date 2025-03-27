@@ -1,0 +1,18 @@
+[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://bdvri3k4fkq7t"]
+
+[ext_resource type="Shader" uid="uid://cc6gbm06rejjr" path="res://resources/shaders/base_material_ascended_specular.gdshader" id="1_ma1pa"]
+[ext_resource type="Texture2D" uid="uid://b685s17cryxbp" path="res://assets/textures/base_texture_attributes.png" id="2_ypt4n"]
+[ext_resource type="Texture2D" uid="uid://ddsn8uavsg04i" path="res://assets/textures/base_texture_color.png" id="3_i5t2d"]
+[ext_resource type="Texture2D" uid="uid://ywduaqhno8y0" path="res://assets/textures/base_texture_emission.png" id="4_lrpkg"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_ma1pa")
+shader_parameter/tx_attributes = ExtResource("2_ypt4n")
+shader_parameter/tx_color = ExtResource("3_i5t2d")
+shader_parameter/tx_emission = ExtResource("4_lrpkg")
+shader_parameter/ALBEDO_MULT = 5.0
+shader_parameter/EmissionStrength = 3.0
+shader_parameter/distance_fade_min = 0.5
+shader_parameter/distance_fade_max = 2.0
+shader_parameter/specular = 0.5

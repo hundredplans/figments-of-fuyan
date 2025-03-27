@@ -14,7 +14,7 @@ class_name SavedDataCard extends SavedDataGameObject
 @export var status_effects: Array
 @export var attacks: int
 @export var attack_range: int
-@export var delayed_stats: Array[StatInfo]
+@export var delayed_stats: Array
 @export var ability_save: Dictionary
 @export var active_effects: Array[ActiveEffectDatastore]
 @export var tool_data: SavedDataTool
@@ -33,7 +33,7 @@ func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _coords
  _tile_rotation: int = 0, _vision_datastore := VisionDatastoreCard.new(), _team: int = 0, _ascended: bool = false, _attack: int = 0, _health: int = 0,\
 	_speed: int = 0, _max_speed: int = 0, _max_health: int = 0, _energy: int = 0,\
 	_draw_order: int = 0, _card_place := Game.CardPlaces.NULL, _turn_state := Game.TurnStates.NULL,\
-	_status_effects: Array = [], _attacks: int = 0, _attack_range: int = 1, _delayed_stats: Array[StatInfo] = [],\
+	_status_effects: Array = [], _attacks: int = 0, _attack_range: int = 1, _delayed_stats: Array = [],\
 	_ability_save: Dictionary = {}, _active_effects: Array[ActiveEffectDatastore] = [], _tool_data: SavedDataTool = null,\
 	_field_effects: Array = [], _anibility_datastore := AnibilityDatastore.new(), _is_temporary: bool = false,\
 	_is_awakened_in_combat: bool = false, _ai_datastore := AIDatastore.new(),\

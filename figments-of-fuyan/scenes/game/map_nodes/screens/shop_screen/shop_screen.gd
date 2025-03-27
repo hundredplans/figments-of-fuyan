@@ -28,7 +28,7 @@ func setInfo(_save_file: SaveFileGD, _area: AreaGD, _World: Node3D, _UI: Control
 	var items: Array = shop.items
 	var boon_ids: Array = []
 	
-	for price_datastore in items:
+	for price_datastore: PriceDatastore in items:
 		var item: SavedData = price_datastore.data
 		var purchasable_packed: PackedScene
 		var parent: Control

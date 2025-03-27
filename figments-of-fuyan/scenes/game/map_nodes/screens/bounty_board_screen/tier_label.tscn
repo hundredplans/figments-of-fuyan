@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://cb1fsm48quye1"]
+
+[ext_resource type="Script" uid="uid://tw6eedje65fg" path="res://scenes/game/map_nodes/screens/bounty_board_screen/tier_label.gd" id="1_dnc7c"]
+[ext_resource type="Resource" uid="uid://cd4sbguneyj71" path="res://resources/ui/fancy_text/fancy_text_label_settings_medium.tres" id="2_023hh"]
+
+[node name="TierLabel" type="RichTextLabel"]
+offset_right = 1.0
+offset_bottom = 38.0
+size_flags_horizontal = 3
+mouse_filter = 2
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+threaded = true
+script = ExtResource("1_dnc7c")
+settings = ExtResource("2_023hh")
+center = false
+
+[connection signal="child_entered_tree" from="." to="." method="_on_child_entered_tree"]
+[connection signal="mouse_entered" from="." to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="." to="." method="onMouseInUI" binds= [false]]

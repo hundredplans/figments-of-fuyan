@@ -1,12 +1,20 @@
 extends EpicCardGD
 
+const TELEPORT_ENTER_ACTION_DELAY: float = 1.2
+const FIRST_PHASE_CHANGE_HEALTH: int = 14
+const SECOND_PHASE_CHANGE_HEALTH: int = 7
 const BLIND_ID: int = 1
+
 #region Defaults
 func onSave() -> SavedDataBossCard:
 	return super()
 
 func onProcessAction(action: Action) -> void:
 	super(action)
+	if action.post:
+		if action is StatAction and action.hasCard(self) and\
+			((health <= SECOND_PHASE_CHANGE_HEALTH and  getPhase() < 3) or (health <= FIRST_PHASE_CHANGE_HEALTH and getPhase() < 2)):
+			onPushAction(ChangeBossPhaseAction.new())
 	
 func getDescription() -> String:
 	return super()
@@ -31,6 +39,14 @@ func onUseBossIntent(enemies: Array, allies: Array, tiles: Array, use_type: UseT
 			actions = onFanBlind(use_type)
 		"Bat Attack":
 			actions = onBatAttack(use_type)
+		"Double Teleport Attack":
+			actions = onDoubleTeleportAttack(use_type)
+		"Mist Attack":
+			actions = onMistAttack(use_type)
+		"Clone Phase Change":
+			actions = onClonePhaseChange(use_type)
+		"Dodge Phase Change":
+			actions = onDodgePhaseChange(use_type)
 	
 	if !use_teleport_passive:
 		use_teleport_passive = actions.any(func(x: Action):\
@@ -39,31 +55,32 @@ func onUseBossIntent(enemies: Array, allies: Array, tiles: Array, use_type: UseT
 			#return (x is DamageAction and !x.Defenders.is_empty()) or (x is AddStatusEffectAction and x.StatusEffect.info.id == 1))
 			
 	if use_type == UseType.END and use_teleport_passive:
-		var teleport_action := getTeleportPassiveAction(enemies)
-		if teleport_action != null:
-			actions.append(teleport_action)
+		var teleport_actions: Array = getTeleportPassiveAction(enemies)
+		if !teleport_actions.is_empty():
+			actions += teleport_actions
 			
 	onPushAction(BossIntentUsedAction.new(boss_intent, use_type, actions, enemies, allies))
 	
 const USE_ATTACK_PHASE_ONE_CHANCE: float = 0.75
 func onChangeBossIntent(boss_intents: Array, enemies: Array, _allies: Array) -> BossIntent:
-	match getPhase():
-		1:
-			if boss_intent.name == "Fan Blind":
-				if Random.getBool(): return getBossIntentByName("Teleport Attack")
-				else: return getBossIntentByName("Bat Attack")
-			
-			if enemies.is_empty(): # Out of combat
-				boss_intents = onKeepByNames(boss_intents, ["Minifan Attack", "Reposition", "Teleport Attack"])
-			else: # In Combat
-				if Random.rollFloat(USE_ATTACK_PHASE_ONE_CHANCE) or !onHasNonAttackIntents(boss_intents):
-					boss_intents = onKeepAttacks(boss_intents)
-				elif onHasIntentName(boss_intents, "Fan Blind"): boss_intents = onKeepByName(boss_intents, "Fan Blind")
-				else: boss_intents = onKeepNonAttacks(boss_intents)
-				
-			if boss_intents.is_empty(): return getBossIntentByName("Reposition")
-			return boss_intents.pick_random()
-	return null
+	var phase: int = getPhase()
+	if phase == 2: 
+		boss_intents = boss_intents.filter(func(x: BossIntent): return x.name not in ["Clone Phase Change", "Dodge Phase Change"])
+		
+	if boss_intent.name == "Fan Blind":
+		if Random.getBool(): return getBossIntentByName("Teleport Attack" if phase == 1 else "Double Teleport Attack")
+		else: return getBossIntentByName("Bat Attack")
+	
+	if enemies.is_empty(): # Out of combat
+		boss_intents = onKeepByNames(boss_intents, ["Minifan Attack", "Reposition", "Teleport Attack", "Mist Attack", "Double Teleport Attack"])
+	else: # In Combat
+		if Random.rollFloat(USE_ATTACK_PHASE_ONE_CHANCE) or !onHasNonAttackIntents(boss_intents):
+			boss_intents = onKeepAttacks(boss_intents)
+		elif onHasIntentName(boss_intents, "Fan Blind"): boss_intents = onKeepByName(boss_intents, "Fan Blind")
+		else: boss_intents = onKeepNonAttacks(boss_intents)
+		
+	if boss_intents.is_empty(): return getBossIntentByName("Reposition")
+	return boss_intents.pick_random()
 	
 func onCheckBossIntentCondition(conditional_boss_intent: BossIntent, enemies: Array, _allies: Array) -> bool:
 	var condition_result: BossIntentConditionResult
@@ -77,8 +94,8 @@ func onCheckBossIntentCondition(conditional_boss_intent: BossIntent, enemies: Ar
 #endregion
 
 #region Reposition
+const TELEPORT_EXIT_ACTION_DELAY: float = 1.2
 const REPOSITION_TELEPORT_DISTANCE: int = 4
-const REPOSITION_TELEPORT_DELAY: float = 1.2
 func onReposition(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 	if use_type != UseType.END:
 		tiles = getVisibleTiles()
@@ -101,9 +118,13 @@ func onReposition(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 		
 		if ValidTeleportTile == null: return []
 		
-		var occupy_action := OccupyAction.new(self, ValidTeleportTile)
-		occupy_action.setActionDelay(REPOSITION_TELEPORT_DELAY)
-		var actions: Array = [occupy_action]
+		var teleport_enter := AnimationAction.new(self, "TeleportEnter")
+		teleport_enter.setActionDelay(TELEPORT_ENTER_ACTION_DELAY)
+		
+		var teleport_exit := AnimationAction.new(self, "TeleportExit")
+		teleport_exit.setActionDelay(TELEPORT_EXIT_ACTION_DELAY)
+
+		var actions: Array = [teleport_enter, OccupyAction.new(self, ValidTeleportTile), teleport_exit]
 		return actions
 	return []
 	
@@ -111,6 +132,7 @@ func onRepositionSetIntents() -> BossTileIntents: return BossTileIntents.new()
 #endregion
 
 #region Teleport Attack
+const TELEPORT_ATTACK_ACTION_DELAY: float = 2.5
 func onTeleportAttack(use_type: UseType) -> Array:
 	if use_type == UseType.START:
 		var TeleportTile: TileGD = boss_datastore.getTileResults().keys()[0]
@@ -127,7 +149,13 @@ func onTeleportAttack(use_type: UseType) -> Array:
 		var double_adjacent_enemies: Array = double_adjacent_tiles.map(func(x: TileGD): return enemies[enemy_tiles.find(x)])
 		var triple_adjacent_enemies: Array = triple_adjacent_tiles.map(func(x: TileGD): return enemies[enemy_tiles.find(x)])
 		
-		var actions: Array = [teleport_action,
+		var teleport_enter := AnimationAction.new(self, "TeleportEnter")
+		teleport_enter.setActionDelay(TELEPORT_ENTER_ACTION_DELAY)
+		
+		var teleport_attack := AnimationAction.new(self, "TeleportAttack")
+		teleport_attack.setActionDelay(TELEPORT_ATTACK_ACTION_DELAY)
+		
+		var actions: Array = [teleport_enter, teleport_action, teleport_attack,
 			DamageAction.new(self, adjacent_enemies, attack, Game.DamageTypes.OTHER),
 			DamageAction.new(self, double_adjacent_enemies, attack - 1, Game.DamageTypes.OTHER),
 			DamageAction.new(self, triple_adjacent_enemies, attack - 2, Game.DamageTypes.OTHER)]
@@ -168,6 +196,7 @@ func onTeleportAttackSetIntents() -> BossTileIntents:
 #endregion
 
 #region Petal Attack
+const PETAL_ATTACK_ANIMATION_DELAY: float = 2.0
 func onPetalAttackSetIntents() -> BossTileIntents:
 	var tile_intents: Array[TileIntentDatastore] = []
 	var tile_results: Dictionary[TileGD, String] = {}
@@ -199,12 +228,18 @@ func onPetalAttack(use_type: UseType) -> Array:
 		var triple_adjacent_tiles: Array = Game.getAdjacentOrCloserTiles(Tile, 3).filter(func(x: TileGD): return x not in diagonal_tiles)
 		
 		var enemies: Array = Game.getEnemyUnits(team)
+		
+		var animation_action := AnimationAction.new(self, "PetalAttack")
+		animation_action.setActionDelay(PETAL_ATTACK_ANIMATION_DELAY)
+		actions.append(animation_action)
+		
 		actions.append(DamageAction.new(self, enemies.filter(func(x: CardGD): return x.getTile() in triple_adjacent_tiles), attack, Game.DamageTypes.OTHER))
 		actions += onApplyBlind(enemies, diagonal_tiles)
 	return actions
 #endregion
 
 #region Minifan Attack
+const MINIFAN_ATTACK_ACTION_DELAY: float = 2.0
 func onMinifanAttackSetIntents() -> BossTileIntents:
 	var tile_intents: Array[TileIntentDatastore] = []
 	var fan_coords: Array = Game.getFanCoords(Vector4i.ZERO, 2)
@@ -244,6 +279,10 @@ func onMinifanAttack(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 		
 		if all_enemies.size() == 1:
 			actions.append(ChangeTileRotationAction.new(self, Game.getRelativeTileRotation(Tile, all_enemies[0].getTile())))
+		
+		var animation_action := AnimationAction.new(self, "MiniFan")
+		animation_action.setActionDelay(MINIFAN_ATTACK_ACTION_DELAY)
+		actions.append(animation_action)
 		
 		actions.append(DamageAction.new(self, all_enemies, attack, Game.DamageTypes.OTHER))
 	return actions
@@ -292,6 +331,7 @@ func onBatAttackSetIntents() -> BossTileIntents:
 	
 	return BossTileIntents.new(tile_intents, {})
 	
+const BAT_ATTACK_ANIMATION_DELAY: float = 2.5
 func onBatAttack(use_type: UseType) -> Array:
 	var actions: Array = []
 	if use_type == UseType.START:
@@ -319,6 +359,11 @@ func onBatAttack(use_type: UseType) -> Array:
 					edge_damagables.append(EnemyCard)
 		
 		actions.append(ChangeTileRotationAction.new(self, bat_tile_rotation))
+		
+		var animation_action := AnimationAction.new(self, "BatAttack")
+		animation_action.setActionDelay(BAT_ATTACK_ANIMATION_DELAY)
+		actions.append(animation_action)
+		
 		actions.append(DamageAction.new(self, adjacent_damagables, attack, Game.DamageTypes.OTHER))
 		actions.append(DamageAction.new(self, bat_damagables, attack - 1, Game.DamageTypes.OTHER))
 		actions.append(DamageAction.new(self, edge_damagables, attack - 2, Game.DamageTypes.OTHER))
@@ -343,6 +388,7 @@ func getBatCoords(_tile_rotation: int) -> Dictionary[Vector4i, String]:
 #endregion
 
 #region Fan Blind
+const FAN_BLIND_ANIMATION_DELAY: float = 2.0
 func onFanBlindCondition(enemies: Array) -> BossIntentConditionResultFanBlind:
 	var condition_result := BossIntentConditionResultFanBlind.new(true)
 	var directions: Array = Game.getCubeDirectionsExtra()
@@ -383,22 +429,236 @@ func onFanBlind(use_type: UseType) -> Array:
 		
 		var enemies: Array = Game.getEnemyUnits(team)
 		actions.append(ChangeTileRotationAction.new(self, tile_rotation))
+		
+		var animation_action := AnimationAction.new(self, "FanBlind")
+		animation_action.setActionDelay(FAN_BLIND_ANIMATION_DELAY)
+		actions.append(animation_action)
+		
 		actions += onApplyBlind(enemies, tiles)
 	return actions
 #endregion
 
 #region Teleport Passive
 const PASSIVE_TELEPORT_DISTANCE: int = 2
-func getTeleportPassiveAction(enemies: Array) -> TeleportAction:
+func getTeleportPassiveAction(enemies: Array) -> Array:
 	var tiles: Array = getVisibleTiles().filter(func(x: TileGD): return Game.getCoordsDistance(x.getCoords(), coords) == PASSIVE_TELEPORT_DISTANCE)
 	tiles = getUnoccupiedTiles(tiles)
 	tiles = getAllyVisionTiles(tiles)
 	tiles = getDistantToEnemiesTiles(enemies, tiles)
-	if tiles.is_empty(): return null
-	return TeleportAction.new(self, tiles[0])
+	if tiles.is_empty(): return []
+	
+	var teleport_enter := AnimationAction.new(self, "TeleportEnter")
+	teleport_enter.setActionDelay(TELEPORT_ENTER_ACTION_DELAY)
+		
+	var teleport_exit := AnimationAction.new(self, "TeleportExit")
+	teleport_exit.setActionDelay(TELEPORT_EXIT_ACTION_DELAY)
+	
+	return [teleport_enter, TeleportAction.new(self, tiles[0]), teleport_exit]
+#endregion
+
+#region Clone Phase Change
+func onClonePhaseChangeSetIntents() -> BossTileIntents:
+	return BossTileIntents.new()
+	
+func onClonePhaseChange(use_type: UseType) -> Array:
+	if use_type == UseType.START:
+		var allies: Array = Game.getAllyUnits(0)
+		var ally_to_tiles: Dictionary[CardGD, Array] = {}
+		for AllyCard: CardGD in allies:
+			ally_to_tiles[AllyCard] = Game.getAdjacentTiles(AllyCard.getTile(), 3)
+	return []
+	
+#endregion
+
+#region Double Teleport Attack
+func onDoubleTeleportAttackSetIntents() -> BossTileIntents:
+	var tile_intents: Array[TileIntentDatastore] = []
+	var enemies: Array = getVisibleFieldCardsEnemies()
+	enemies.shuffle()
+	enemies.sort_custom(func(x: CardGD, y: CardGD): return x.max_speed < y.max_speed)
+	
+	var visible_tiles: Array = getVisibleTiles()
+	visible_tiles = getAllyVisionTiles(visible_tiles)
+	visible_tiles.shuffle()
+	
+	var teleport_tiles: Array = []
+	for __: int in range(2):
+		if !enemies.is_empty():
+			var TeleportTile: TileGD = enemies.pop_front().getTile()
+			teleport_tiles.append(TeleportTile)
+			visible_tiles.erase(TeleportTile)
+			continue
+		
+		teleport_tiles.append(visible_tiles.pop_front())
+	
+	var adjacent_coords: Dictionary = {}
+	var double_adjacent_coords: Dictionary = {}
+	var triple_adjacent_coords: Dictionary = {}
+	
+	var coords_to_distance: Dictionary[Vector4i, int] = {}
+	
+	for distance: int in range(3, 0, -1): # Goes from furthest to closest, since closest take priority
+		for TeleportTile: TileGD in teleport_tiles:
+			var teleport_coords: Vector4i = TeleportTile.getCoords()
+			for coord: Vector4i in Game.getAdjacentCoords(teleport_coords, distance):
+				coords_to_distance[coord] = distance
+	
+	coords_to_distance[teleport_tiles[0].getCoords()] = 0
+	coords_to_distance[teleport_tiles[1].getCoords()] = 0
+	
+	var tile_results: Dictionary[TileGD, String] = {}
+	for coord: Vector4i in coords_to_distance:
+		var distance: int = coords_to_distance[coord]
+		var tile_intent: Game.TileIntents
+		match distance:
+			3: tile_intent = Game.TileIntents.LIGHTER_RED
+			2: tile_intent = Game.TileIntents.LIGHT_RED
+			1: tile_intent = Game.TileIntents.RED
+			0: tile_intent = Game.TileIntents.DARK_RED
+		tile_intents.append(TileIntentDatastore.new(tile_intent, null, coord))
+		
+		var CoordTile: TileGD = Game.getTile(coord)
+		if CoordTile == null: continue
+		
+		tile_results[CoordTile] = str(distance)
+	
+	return BossTileIntents.new(tile_intents, tile_results)
+	
+func onDoubleTeleportAttack(use_type: UseType) -> Array:
+	if use_type == UseType.START:
+		var actions: Array = []
+		var tile_results: Dictionary[TileGD, String] = boss_datastore.getTileResults()
+		var tiles: Array = tile_results.keys()
+		tiles.shuffle()
+		
+		var enemies: Array = Game.getEnemyUnits(team)
+		var enemy_tiles: Array = enemies.map(func(x: CardGD): return x.getTile())
+		
+		var teleport_tiles: Array = []
+		var adjacent_enemies: Array = []
+		var double_adjacent_enemies: Array = []
+		var triple_adjacent_enemies: Array = []
+		
+		for CoordTile: TileGD in tiles:
+			if int(tile_results[CoordTile]) == 0:
+				teleport_tiles.append(CoordTile)
+				continue
+			
+			var index: int = enemy_tiles.find(CoordTile)
+			if index == -1: continue
+			
+			var EnemyCard: CardGD = enemies[index]
+			match int(tile_results[CoordTile]):
+				1: adjacent_enemies.append(EnemyCard)
+				2: double_adjacent_enemies.append(EnemyCard)
+				3: triple_adjacent_enemies.append(EnemyCard)
+		
+		for TeleportTile: TileGD in teleport_tiles:
+			var teleport_enter := AnimationAction.new(self, "TeleportEnter")
+			teleport_enter.setActionDelay(TELEPORT_ENTER_ACTION_DELAY)
+			
+			var teleport_attack := AnimationAction.new(self, "TeleportAttack")
+			teleport_attack.setActionDelay(TELEPORT_ATTACK_ACTION_DELAY)
+			actions += [teleport_enter, TeleportAction.new(self, TeleportTile), teleport_attack]
+		
+		var all_enemies: Array = adjacent_enemies + double_adjacent_enemies + triple_adjacent_enemies
+		if !all_enemies.is_empty():
+			actions.insert(1, ChangeTileRotationAction.new(self, Game.getRelativeTileRotation(teleport_tiles[1], all_enemies.pick_random().getTile())))
+			
+		actions.append(DamageAction.new(self, adjacent_enemies, attack, Game.DamageTypes.OTHER))
+		actions.append(DamageAction.new(self, double_adjacent_enemies, attack - 1, Game.DamageTypes.OTHER))
+		actions.append(DamageAction.new(self, triple_adjacent_enemies, attack - 2, Game.DamageTypes.OTHER))
+		
+		return actions
+	return []
+#endregion
+
+#region Mist Attack
+func onMistAttackSetIntents() -> BossTileIntents:
+	var tile_intents: Array[TileIntentDatastore] = []
+	var penta_adjacent_coords: Array = Game.getAdjacentOrCloserCoords(Vector4i.ZERO, 5)
+	
+	for coord: Vector4i in penta_adjacent_coords:
+		var tile_intent := Game.TileIntents.LIGHT_RED if Game.getCoordsDistance(Vector4i.ZERO, coord) <= 2 else Game.TileIntents.PURPLE
+		tile_intents.append(TileIntentDatastore.new(tile_intent, OffsetDatastore.new(coord), coords))
+	
+	return BossTileIntents.new(tile_intents, {})
+	
+func onMistAttack(use_type: UseType) -> Array:
+	if use_type == UseType.START:
+		var actions: Array = []
+		
+		var enemies: Array = Game.getEnemyUnits(team)
+		var penta_adjacent_tiles: Array = Game.getAdjacentOrCloserTiles(Tile, 5)
+		var attack_tiles: Array = penta_adjacent_tiles.filter(func(x: TileGD): return Game.getCoordsDistance(x.getCoords(), coords) <= 2)
+		penta_adjacent_tiles = penta_adjacent_tiles.filter(func(x: TileGD): return x not in attack_tiles)
+		
+		actions += onApplyBlind(enemies, penta_adjacent_tiles)
+		actions.append(DamageAction.new(self, enemies.filter(func(x: CardGD): return x.getTile() in attack_tiles), attack - 1, Game.DamageTypes.OTHER))		
+		return actions
+	return []
+#region Phase Change
+func onChangeBossPhase() -> void:
+	super()
+	onAbility()
+	var actions: Array = []
+	match getPhase():
+		2:
+			actions += onPhaseTwoPhaseChange()
+	onPushAction(actions)
+
+func onChangeBossPhasePostDelay() -> void:
+	super()
+	onIdle()
+	var actions: Array = []
+	var ally_cards: Array = Game.getAllyUnits(0)
+	actions += ally_cards.map(func(x: CardGD): return RemoveStatusEffectAction.new(x.getStatusEffect(BLIND_ID)))
+	
+	match getPhase():
+		2: actions += onPhaseTwoPhaseChangePostDelay()
+			
+	onPushAction(actions)
+	
+func onPhaseTwoPhaseChange() -> Array:
+	var actions: Array = []
+	return actions
+	
+func onPhaseTwoPhaseChangePostDelay() -> Array:
+	var actions: Array = []
+	#var PedestalTile: TileGD = getPedestalTile()
+	#
+	#var teleport_enter := AnimationAction.new(self, "TeleportEnter")
+	#teleport_enter.setActionDelay(TELEPORT_ENTER_ACTION_DELAY)
+		#
+	#var teleport_exit := AnimationAction.new(self, "TeleportExit")
+	#teleport_exit.setActionDelay(TELEPORT_EXIT_ACTION_DELAY)
+	#
+	#actions += [teleport_enter, TeleportAction.new(self, PedestalTile), teleport_exit]
+	#
+	#var ally_cards: Array = Game.getAllyUnits(0)
+	#for AllyCard: CardGD in ally_cards:
+		#pass
+		#
+	#actions += ally_cards.map(func(x: CardGD): return x.getBaseStatusEffectAction(BLIND_ID, 2))
+	return actions
+#endregion
+
+#region Dodge Phase Change
+func onDodgePhaseChangeSetIntents() -> BossTileIntents:
+	var tile_intents: Array[TileIntentDatastore] = []
+	var tile_results: Dictionary[TileGD, String] = {}
+	
+	return BossTileIntents.new(tile_intents, tile_results)
+
+func onDodgePhaseChange(use_type: UseType) -> Array:
+	var actions: Array = []
+	return actions
 #endregion
 
 #region Helper
-func onApplyBlind(enemies: Array, tiles: Array, turns: int = 1) -> Array: # Returns blind actions
+func onApplyBlind(enemies: Array, tiles: Array, turns: int = -1) -> Array: # Returns blind actions
 	return enemies.filter(func(x: CardGD): return x.getTile() in tiles).map(func(x: CardGD): return x.getBaseStatusEffectAction(BLIND_ID, turns))
+
+func getPedestalTile() -> TileGD: # Update this so it doesn't wreck ur pc
+	return get_tree().get_nodes_in_group("LevelTilesGD").filter(func(x: TileGD): return x.getHeight() > 5).pick_random()
 #endregion

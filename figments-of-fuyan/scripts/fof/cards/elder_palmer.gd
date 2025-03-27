@@ -38,7 +38,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		disarm_action.setActionDelay(CHANGE_BACK_DELAY)
 		var actions: Array = [
 			camera_change_action,
-			HealAction.new(Card, heal_amount),
+			HealAction.new(HealDatastore.new(Card, heal_amount)),
 			AddOverworldTraitAction.new(Card, armor_overworld, true),
 			disarm_action,
 			camera_change_back_action]

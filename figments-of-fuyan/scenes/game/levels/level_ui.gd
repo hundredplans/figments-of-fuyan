@@ -77,7 +77,6 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level = area.active_level
 	Game.ActionManagerReference.action_playing.connect(onActionPlaying)
 		
-	level.draw_card.connect(onDrawCardUI)
 	level.phase_changed.connect(onPhaseChanged)
 	level.energy_changed.connect(onUpdateEnergy)
 	level.turn_state_changing.connect(onTurnStateChanging)
@@ -180,6 +179,7 @@ func onDrawCardUI(Card: CardGD) -> void:
 	CardUI.dragged_end.connect(onCardDraggedEnd)
 	CardUI.mouse_in_ui.connect(onMouseInUI)
 	CardUI.mouse_in_ui.connect(HandBox.onMouseInUI)
+	HandBox.onDrawCardUI(Card, CardUI)
 	
 func onRemoveCardUI(Card: CardGD) -> void:
 	for CardUI in HandBox.get_children():
@@ -477,6 +477,8 @@ func onProcessAction(action: Action) -> void:
 			onRemoveCardUI(action.Card)
 		elif action is BoonActivatedAction:
 			onBoonEffectTemp(action)
+		elif action is HandCardAction:
+			onDrawCardUI(action.Card)
 			
 		if level.isEpic():
 			var BossCard: CardGD = level.getBoss() 

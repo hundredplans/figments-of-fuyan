@@ -1,28 +1,17 @@
 class_name HealAction extends Action
 
-var cards: Array
-var heals: Array
-
-func _init(_cards: Variant = null, _heals: Variant = null) -> void:
+var heal_datastores: Array
+func _init(_heal_datastores: Variant) -> void:
 	super()
-	if _cards is CardGD: cards = [_cards]
-	else: cards = _cards
-	
-	if _heals is int: heals = [_heals]
-	else:
-		heals = _heals
-		if heals.size() < cards.size():
-			heals.resize(cards.size())
-			
-			for i in range(heals.size()):
-				if heals[i] == null: heals[i] = heals[0]
+	if heal_datastores != null: # Don't call when reinitialised
+		if _heal_datastores is Array: heal_datastores = _heal_datastores
+		elif _heal_datastores is HealDatastore: heal_datastores = [_heal_datastores]
 	
 func onPreAction() -> void:
-	if cards.all(func(x: CardGD): return !x.isInjured()) or cards.is_empty():
+	if heal_datastores.is_empty() or heal_datastores\
+		.all(func(x: HealDatastore): return !x.Card.isInjured()):
 		return onFailAction()
 	
 func onPostAction() -> void:
-	var stat_infos: Array = []
-	for i in range(cards.size()):
-		stat_infos.append(StatInfo.new(cards[i], Game.Stats.HEALTH, heals[i]))
-	onPushAction(StatAction.new(stat_infos))
+	onPushAction(StatAction.new(heal_datastores.map(func(x: HealDatastore):\
+		return StatInfo.new(x.Card, Game.Stats.HEALTH, x.heal, x.turns, false, x.show_particles, x.immutable))))

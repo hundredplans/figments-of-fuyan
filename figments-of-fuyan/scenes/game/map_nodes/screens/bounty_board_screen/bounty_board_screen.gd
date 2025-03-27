@@ -1,15 +1,94 @@
 extends MapNodeScreen
 
-@export var kill_amounts: Array[int]
-@export var BountyBoardCheckScreenPacked: PackedScene
+const PRICE_INCREASE: int = 5
+const BASE_PRICE: int = 10
 
-func onDimBackground() -> bool: return true
+var SelectedCard: CardGD
+@export var TierLabelPacked: PackedScene
+@export var kill_amounts: Array[int]
+
+#@onready var TierToKills: Label = %TierToKills
+@onready var AttackButton: Control = %AttackButton
+@onready var HealthButton: Control = %HealthButton
+@onready var MiniBox: Control = %MiniBox
+@onready var PriceLabel: FancyTextLabel = %PriceLabel
+@onready var TierLabels: Container = %TierLabels
+@onready var WantedLabel: Label = %WantedLabel
+
+func setInfo(_save_file: SaveFileGD, _area: AreaGD, _World: Node3D, _UI: Control, _map_node: MapNodeGD) -> void:
+	super(_save_file, _area, _World, _UI, _map_node)
+	SelectedCard = Game.onFindPublicIDObject(map_node.selected_card_public_id)
+	map_node.change_shillings.connect(onShillingsChanged)
+	
+	setButtonsDisabled()
+	setWantedLabel()
+	if SelectedCard != null:
+		onCardSelected(SelectedCard)
+		
+	map_node.price = BASE_PRICE
+	MiniBox.setData(null)
+	setPriceLabel()
+	onCreateTierLabels()
+	setTierLabels()
+
+func onCreateTierLabels() -> void:
+	for i: int in range(kill_amounts.size() - 1, -1, -1):
+		var kill_amount: int = kill_amounts[i]
+		var tier_label: FancyTextLabel = TierLabelPacked.instantiate()
+		TierLabels.add_child(tier_label)
+		
+		tier_label.setText("Tier " + str(i + 1) + ": " + str(kill_amount))
+		tier_label.setKillAmount(kill_amount)
+		
+func setTierLabels() -> void:
+	if SelectedCard == null: return
+	
+	for TierLabel: FancyTextLabel in TierLabels.get_children().filter(func(x: Node): return x is FancyTextLabel):
+		TierLabel.setStrikethrough(SelectedCard.bounty_kills.getKills(), SelectedCard.bounty_kills.getLastClaimedKills())
+
+func setWantedLabel() -> void:
+	var text: String = "Select a card below" if SelectedCard == null else "WANTED: [" + str(SelectedCard.bounty_kills.getKills()) +"] Confirmed Kills"
+	WantedLabel.text = text 
+
+func setPriceLabel() -> void:
+	PriceLabel.setText("Price: " + str(map_node.price) + " SH [ +" + str(PRICE_INCREASE) + " SH ]\nDuels are worth [2] kills")
+
+func onDimBackground() -> bool:
+	return true
 
 func _on_leave_button_pressed() -> void:
 	finished.emit()
 	queue_free()
 
-func _on_check_button_pressed() -> void:
-	var BountyBoardCheckScreen: Control = BountyBoardCheckScreenPacked.instantiate()
-	add_child(BountyBoardCheckScreen)
-	BountyBoardCheckScreen.setInfo(kill_amounts)
+func _on_mini_box_pressed() -> void:
+	var DeckScreen: Control = Game.onCreateDeckScreen(self, true)
+	DeckScreen.selected.connect(onCardSelected)
+	
+func onCardSelected(Card: CardGD) -> void:
+	SelectedCard = Card
+	map_node.selected_card_public_id = SelectedCard.public_id
+	MiniBox.setData(Card.onSave())
+	setWantedLabel()
+	setTierLabels()
+	setButtonsDisabled()
+
+func _on_mini_box_mouse_in_ui(is_mouse_in_ui: bool) -> void:
+	MiniBox.modulate = Color(0.2, 0.2, 0.2) if is_mouse_in_ui else Color(1, 1, 1)
+
+func onShillingsChanged() -> void:
+	setButtonsDisabled()
+	
+func setButtonsDisabled() -> void:
+	var is_disabled: bool = Game.getSaveFile().getShillings() < map_node.price or getKillAmountDisabled()
+	
+	AttackButton.setDisabled(is_disabled)
+	HealthButton.setDisabled(is_disabled)
+
+func getKillAmountDisabled() -> bool:
+	if SelectedCard != null:
+		var kill_amount: int = SelectedCard.bounty_kills.getKills()
+		var last_claimed_kills: int = SelectedCard.bounty_kills.getLastClaimedKills()
+		for kills: int in kill_amounts:
+			if last_claimed_kills < kills and kill_amount >= kills:
+				return false
+	return true

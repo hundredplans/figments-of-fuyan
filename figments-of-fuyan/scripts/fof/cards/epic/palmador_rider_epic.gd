@@ -192,10 +192,9 @@ func onReposition(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 				tiles_adjacent_to_height = tiles.duplicate()
 				tiles_adjacent_to_height = getDistantToEnemiesTiles(enemies, tiles_adjacent_to_height)
 			else:
-				var ally_vision: Array = Game.getTeamVision(0)
-				tiles_adjacent_to_height.sort_custom(onTileInVisionSorter.bind(ally_vision))
-				tiles_adjacent_to_height\
-					.sort_custom(func(x: TileGD, y: TileGD): return Game.getCoordsDistance(x.getCoords(), coords) < Game.getCoordsDistance(y.getCoords(), coords))
+				tiles_adjacent_to_height = getAllyVisionTiles(tiles_adjacent_to_height)
+				tiles_adjacent_to_height = getCloseToEnemiesTiles(enemies, tiles_adjacent_to_height)
+				
 		else: tiles_adjacent_to_height = tiles; tiles_adjacent_to_height.shuffle()
 		BestTile = tiles_adjacent_to_height[0]
 		
@@ -217,16 +216,6 @@ func onRepositionSetIntents() -> BossTileIntents: return BossTileIntents.new()
 	
 func onRepositionCondition() -> BossIntentConditionResult:
 	return BossIntentConditionResult.new(isGround())
-	
-func onTileInVisionSorter(x: TileGD, y: TileGD, ally_vision: Array) -> int:
-	var first_in_vision: bool = x in ally_vision
-	var second_in_vision: bool = y in ally_vision
-	if first_in_vision and second_in_vision:
-		return 0
-	elif first_in_vision:
-		return -1
-	return 1
-		
 #endregion
 
 #region Rally
@@ -587,7 +576,7 @@ func onBulkUp(use_type: UseType) -> Array:
 		actions.append(StatAction.new(StatInfo.new(self, [Game.Stats.ATTACK, Game.Stats.SPEED], [1, 1], 3)))
 			
 		if health <= BULK_UP_MIN_HEALTH_FOR_HEAL:
-			actions.append(HealAction.new(self, BULK_UP_HEAL_AMOUNT))
+			actions.append(HealAction.new(HealDatastore.new(self, BULK_UP_HEAL_AMOUNT)))
 	
 	return actions
 
@@ -865,12 +854,10 @@ func onChangeBossPhase() -> void:
 	
 	anibility_datastore.setDeathModifier("PhaseChange")
 	onDeath()
-	BossFieldInfo.visible = false
 	
 func onChangeBossPhasePostDelay() -> void:
 	super()
 	onIdle()
-	BossFieldInfo.visible = true
 	
 	anibility_datastore.setDeathModifier("")
 	var actions: Array = []

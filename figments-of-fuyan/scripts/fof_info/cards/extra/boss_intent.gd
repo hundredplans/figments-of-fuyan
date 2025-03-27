@@ -3,6 +3,7 @@ class_name BossIntent extends Resource
 @export var name: String
 @export_multiline var description: String
 @export var type: IntentType
+@export var duration: int = 1 # How many turns the attack holds
 @export var default_cooldown: int = 1
 @export var off_vision_use_cooldown: bool
 @export var combat_type: CombatType

@@ -24,7 +24,7 @@ var attacks: int
 var attack_range: int
 var status_effects: Array = []
 
-var delayed_stats: Array[StatInfo]
+var delayed_stats: Array # Can be [StatInfo] or [HealAction]
 var ability_save: Dictionary
 var active_effects: Array[ActiveEffectDatastore]
 var field_effects: Array[FieldEffectGD]
@@ -231,7 +231,7 @@ func onSave() -> SavedDataCard:
 	overworld_traits, bounty_kills, boss_datastore)
 
 func onPreSave() -> void:
-	for stat_info in delayed_stats: stat_info.onSave()
+	for delayed: Variant in delayed_stats: delayed.onSave()
 	for overworld_trait in overworld_traits: overworld_trait.onSave()
 
 	vision_datastore.onSave()
@@ -289,7 +289,7 @@ func onLoadDataLevel() -> void:
 	if card_place == Game.CardPlaces.FIELD:
 		Tile = Game.getTile(coords)
 		
-		for stat_info in delayed_stats: stat_info.onLoad()
+		for delayed: Variant in delayed_stats: delayed.onLoad()
 		
 		onAwaken()
 		onLoadTraits()
@@ -459,8 +459,8 @@ func setTurnState(_turn_state: Game.TurnStates) -> void:
 func onCardTurnPassed(Card: CardGD) -> void:
 	if self != Card: return
 	
-	for stat_info in delayed_stats.duplicate():
-		stat_info.onCardTurnPassed()
+	for delayed: Variant in delayed_stats.duplicate():
+		delayed.onCardTurnPassed()
 		
 	if Tool != null: Tool.onCardTurnPassed()
 	
@@ -1066,7 +1066,6 @@ func onAdvanceTurn(turn_team: int) -> void:
 	onPushAction(actions)
 		
 	if FieldInfo != null: FieldInfo.onUpdateDelayedStats()
-	
 #endregion
 
 #region Delayed Stats
@@ -1076,6 +1075,14 @@ func onAddDelayedStatInfo(stat_info: StatInfo) -> void:
 	
 func onRemoveDelayedStatInfo(stat_info: StatInfo) -> void:
 	delayed_stats.erase(stat_info)
+	if FieldInfo != null: FieldInfo.onUpdateDelayedStats()
+	
+func onAddDelayedHealDatastore(heal_datastore: HealDatastore) -> void:
+	delayed_stats.append(heal_datastore)
+	if FieldInfo != null: FieldInfo.onUpdateDelayedStats()
+	
+func onRemoveDelayedHealDatastore(heal_datastore: HealDatastore) -> void:
+	delayed_stats.erase(heal_datastore)
 	if FieldInfo != null: FieldInfo.onUpdateDelayedStats()
 #endregion
 
@@ -1376,7 +1383,7 @@ func onAICheckActiveEffectsOnlyDFL(DFL: DefaultFightLogic, after_action: Movemen
 func setBaseMaterials() -> void:
 	if Model == null: return
 	if is_in_alphagrey: return
-	var mat: Material
+	var mat: Material = load(info.BASE_MATERIAL_SPECULAR_PATH)
 	if level_visible_not_in_vision:
 		mat = info.getColoredBaseMaterial(team, ascended)
 	elif ascended: mat = load(info.BASE_MATERIAL_ASCENDED_PATH)
@@ -1515,3 +1522,4 @@ func setBaseStats(types: Array, values: Array) -> void:
 			
 	onPushAction(StatAction.new(stat_info))
 	
+func onCanCreateInspectScreen() -> bool: return true

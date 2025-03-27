@@ -50,3 +50,12 @@ func onCardTurnPassed() -> void:
 		else: Card.onPushAction(StatAction.new(self), Card)
 		
 		Card.onRemoveDelayedStatInfo(self)
+
+func getType(i: int) -> Game.Stats:
+	return types[i]
+	
+func getValue(i: int) -> int:
+	return values[i]
+	
+func getSize() -> int:
+	return types.size()

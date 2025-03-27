@@ -90,10 +90,8 @@ func onSave() -> SavedDataIObject:
 	return super()
 
 func onHeal(action: HealAction) -> void:
-	for i in range(action.cards.size()):
-		var Card: CardGD = action.cards[i]
-		if Card in cards_in_range:
-			action.heals[i] *= 2
+	for heal_datastore: HealDatastore in action.heal_datatstores.filter(func(x: HealDatastore): return x.Card in cards_in_range):
+		heal_datastore.heal *= 2
 
 var SmokeParticle: GPUParticles3D
 func onHiddenVFX() -> void:

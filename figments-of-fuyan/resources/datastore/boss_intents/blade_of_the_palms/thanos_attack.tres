@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BossIntent" load_steps=2 format=3 uid="uid://ttm21xdoahcv"]
+
+[ext_resource type="Script" uid="uid://c85vjl4hwbga5" path="res://scripts/fof_info/cards/extra/boss_intent.gd" id="1_e508g"]
+
+[resource]
+script = ExtResource("1_e508g")
+name = "Thanos Attack"
+description = "Create a double adjacent circle around an ally. All other tiles kill instantly. Waits a turn before used."
+type = 0
+duration = 2
+default_cooldown = 1
+off_vision_use_cooldown = false
+combat_type = 0
+metadata/_custom_type_script = "uid://c85vjl4hwbga5"

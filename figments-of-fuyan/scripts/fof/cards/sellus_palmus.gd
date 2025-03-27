@@ -17,7 +17,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 	super(active_effect, PickedTile, active_effect_tiles)
 	if active_effect is ActiveAbilityDatastore and active_effect.name == "Palmsale":
 		var cards: Array = active_effect_tiles.pickable_tiles.map(func(x: TileGD): return Game.getFieldCard(x))
-		var actions: Array = [HealAction.new(cards, 1),\
+		var actions: Array = [HealAction.new(cards.map(func(x: CardGD): return HealDatastore.new(x, 1))),\
 		ChangeTileRotationAction.new(self, Game.getRelativeTileRotation(Tile, PickedTile))]
 		
 		onPushAction(actions)

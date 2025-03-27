@@ -19,7 +19,7 @@ func onFofInit() -> void:
 	enemy_cards = Game.area.setEnemySpawnsFromBudget(budget, enemy_spawn_amount, enemy_spawns, map_location.progress, false)
 	
 func onSave() -> SavedDataMapNode:
-	return SavedDataFight.new(info.id, false, public_id, map_location, links, is_entered, is_finished, rotation.y, level_info, spawn_group, enemy_cards)
+	return SavedDataFight.new(info.id, false, public_id, map_location, links, is_entered, is_finished, rotation.y, ability_save, level_info, spawn_group, enemy_cards)
 	
 func onLoadData(data: SavedData) -> void:
 	super(data)

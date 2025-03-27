@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="BossIntent" load_steps=2 format=3 uid="uid://b02t6qh4ymrvy"]
+
+[ext_resource type="Script" uid="uid://c85vjl4hwbga5" path="res://scripts/fof_info/cards/extra/boss_intent.gd" id="1_re8vd"]
+
+[resource]
+script = ExtResource("1_re8vd")
+name = "Clone Phase Change"
+description = "Clear all allies BLIND.  Summon a 3/1/3 clone for each ally that is at least [3] Tiles away. Then BLIND all allies for [2] Turns."
+type = 5
+default_cooldown = 1
+off_vision_use_cooldown = false
+combat_type = 0
+metadata/_custom_type_script = "uid://c85vjl4hwbga5"

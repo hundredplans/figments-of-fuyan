@@ -1,9 +1,11 @@
 extends IObjectGD
 
 var active_start_tile_public_id: int
+var last_active_start_tile_public_id: int
 var start_tile_public_ids: Array
 var end_tile_public_ids: Array
 
+var LastActiveStartTile: TileGD # Last visible
 var ActiveStartTile: TileGD
 var start_tiles: Array
 var end_tiles: Array
@@ -25,6 +27,7 @@ func onSave() -> SavedDataIObject:
 	ability_save['end_tile_public_ids'] = end_tiles.map(func(x: TileGD): return x.public_id)
 	ability_save['active_start_tile_public_id'] = ActiveStartTile.public_id if ActiveStartTile != null else 0
 	ability_save['used_this_turn_cards'] = used_this_turn_cards.map(func(x: CardGD): return x.public_id)
+	ability_save['last_active_start_tile_public_id'] = LastActiveStartTile.public_id if LastActiveStartTile != null else 0
 	
 	var ai_cooldown_public_ids: Dictionary = {}
 	for Card in ai_cooldown_cards:
@@ -39,6 +42,7 @@ func onLoadDataLevel() -> void:
 		start_tiles = start_tile_public_ids.map(func(x: int): return Game.onFindPublicIDObject(x))
 		end_tiles = end_tile_public_ids.map(func(x: int): return Game.onFindPublicIDObject(x))
 		ActiveStartTile = Game.onFindPublicIDObject(active_start_tile_public_id)
+		LastActiveStartTile = Game.onFindPublicIDObject(last_active_start_tile_public_id)
 	
 	var ai_cooldown_public_ids: Dictionary = ai_cooldown_cards.duplicate()
 	ai_cooldown_cards = {}
@@ -74,6 +78,7 @@ func onLoadDataLevelFofInit() -> void:
 		ActiveStartTile = Game.getTile(getTile().getCoords() + Game.onRotateCoordsCC(tile_rotation, offset_coords))
 		start_tiles = [ActiveStartTile]
 		end_tiles = [Game.getTile(Tile.getCoords() + Game.onRotateCoordsCC(tile_rotation, Vector4i(1, 0, -1, 0)))]
+	LastActiveStartTile = ActiveStartTile
 	setHolderVisible()
 
 func onLoadModel() -> void:
@@ -97,6 +102,8 @@ func getActiveEffectTiles(_active_effect: ActiveEffectDatastore, _Card: CardGD) 
 func onActiveEffectPre(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
 	super(active_effect, PickedTile, active_effect_tiles, Card)
 	onForceAction(ChangeTileRotationAction.new(Card, Game.getRelativeTileRotation(Card.Tile, end_tiles[start_tiles.find(ActiveStartTile)])))
+	if !Card.isLevelVisible():
+		onForceAction(CameraChangeAction.new(self))
 	
 var HolderCard: CardGD
 var HolderNode: MeshInstance3D
@@ -121,12 +128,15 @@ func onZiplineFinished() -> void:
 	AniPlayer.seek(0, true)
 	
 	ActiveStartTile = start_tiles[end_tiles.find(ActiveStartTile)]
+	if isLevelVisible():
+		LastActiveStartTile = ActiveStartTile
+	
 	setHolderVisible()
 	
 func setHolderVisible() -> void:
-	if ActiveStartTile == null: return
+	if LastActiveStartTile == null: return
 	for i in range(holders_nodes.size()):
-		holders_nodes[i].visible = (start_tiles.find(ActiveStartTile) == i)
+		holders_nodes[i].visible = (start_tiles.find(LastActiveStartTile) == i)
 #endregion
 
 #region Advance Turn
@@ -184,3 +194,9 @@ func onIObjectSpecificTransforms(tiles_to_value: Dictionary, DFL: DefaultFightLo
 			else: tiles_to_value[Tile] += POSITIVE_TRANSFORM_VALUE
 			return
 			
+func setLevelVisible(state: bool) -> void:
+	if state and state != isLevelVisible():
+		LastActiveStartTile = ActiveStartTile
+		setHolderVisible()
+	super(state)
+	

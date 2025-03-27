@@ -19,6 +19,7 @@ var Model: Node3D
 var StaticBody: StaticBody3D
 var mesh: MeshInstance3D
 var HoverUI: Control
+var ability_save: Dictionary
 
 var saved_rotation_y: float = 0
 const PROGRESS_OFFSET: float = 3
@@ -60,14 +61,14 @@ func onLoadData(data: SavedData) -> void:
 	is_entered = data.is_entered
 	is_finished = data.is_finished
 	saved_rotation_y = data.rotation_y
+	ability_save = data.ability_save
 	onCreateModel()
+	
+	for custom_variable in ability_save:
+		set(custom_variable, ability_save[custom_variable])
 		
 	add_to_group("MapNodesGD")
 	onAfterLoadSetupFinishedEntered()
-	
-	#if map_location.progress > 5:
-		#var tval: float = mesh.get_instance_shader_parameter("time_value")
-		#print(tval)
 	
 func onAfterLoadSetupFinishedEntered() -> void:
 	if is_finished and !is_entered: onExitedVisual(true)

@@ -4,6 +4,9 @@ const ARMOR_TURN_DEFAULT_TURNS: int = 2
 const ARMOR_TRAIT_ID: int = 1
 const ARMOR_VALUE: int = 1
 
+func onFofInit() -> void:
+	onRegularReset()
+
 func onProcessAction(action: Action) -> void:
 	super(action)
 	if action.post:

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="EpicCardInfo" load_steps=18 format=3 uid="uid://b7lnksd1egi7b"]
+[gd_resource type="Resource" script_class="EpicCardInfo" load_steps=26 format=3 uid="uid://b7lnksd1egi7b"]
 
 [ext_resource type="Texture2D" uid="uid://c4qts40qrbkie" path="res://assets/sprites/game/cards/art_mini/blade_of_the_palms.png" id="1_3caon"]
 [ext_resource type="Script" uid="uid://bnp3nwlcsibyl" path="res://scripts/fof_info/cards/extra/boss_phase_datastore.gd" id="1_d1qqb"]
@@ -14,6 +14,12 @@
 [ext_resource type="Resource" uid="uid://1r4iw08l5lwa" path="res://resources/datastore/boss_intents/blade_of_the_palms/teleport_attack.tres" id="10_5epeo"]
 [ext_resource type="Resource" uid="uid://bblllwxqnvljx" path="res://resources/datastore/boss_intents/blade_of_the_palms/petal_attack.tres" id="11_lofdk"]
 [ext_resource type="PackedScene" uid="uid://bb5vdrqxqa0wb" path="res://assets/models/fof/cards/blade_of_the_palms.glb" id="12_e0d1a"]
+[ext_resource type="Resource" uid="uid://cxcmjs0iae406" path="res://resources/datastore/boss_intents/blade_of_the_palms/double_teleport_attack.tres" id="13_8g5ul"]
+[ext_resource type="Resource" uid="uid://ddns60xv08b60" path="res://resources/datastore/boss_intents/blade_of_the_palms/mist_attack.tres" id="14_hhvwj"]
+[ext_resource type="Resource" uid="uid://b02t6qh4ymrvy" path="res://resources/datastore/boss_intents/blade_of_the_palms/clone_phase_change.tres" id="15_hhvwj"]
+[ext_resource type="Resource" uid="uid://s7btgwkg45bc" path="res://resources/datastore/boss_intents/blade_of_the_palms/pizza_attack.tres" id="16_5epeo"]
+[ext_resource type="Resource" uid="uid://gah3cxhrmedq" path="res://resources/datastore/boss_intents/blade_of_the_palms/clone_minifan_attack.tres" id="17_lofdk"]
+[ext_resource type="Resource" uid="uid://8qu8qls78321" path="res://resources/datastore/boss_intents/blade_of_the_palms/clone_summon.tres" id="18_e0d1a"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_x8gyx"]
 size = Vector3(0.633057, 2.42429, 0.301514)
@@ -50,13 +56,51 @@ change_delay = 0.0
 boss_intents = Array[ExtResource("5_tlf4i")]([ExtResource("6_8g5ul"), ExtResource("7_hhvwj"), ExtResource("8_qd2jx"), ExtResource("9_qq5yi"), ExtResource("10_5epeo"), ExtResource("11_lofdk")])
 metadata/_custom_type_script = "uid://bnp3nwlcsibyl"
 
+[sub_resource type="Resource" id="Resource_4ow0h"]
+script = ExtResource("1_d1qqb")
+name = "Blade of the Palms"
+archetype = ExtResource("4_4ow0h")
+attack = 3
+health = 0
+speed = 3
+model = ExtResource("12_e0d1a")
+collision = SubResource("PackedScene_lok3x")
+points = Array[Vector3]([Vector3(-0.169155, 0.239571, 0.133057), Vector3(0.183516, 0.239223, 0.133057), Vector3(-0.162775, 0.622093, 0.133057), Vector3(0.169328, 0.64294, 0.133057), Vector3(-0.126926, 0.978036, 0.133057), Vector3(0.136707, 0.986501, 0.133057), Vector3(-0.163384, 1.28892, 0.133057), Vector3(0.136259, 1.31003, 0.133057), Vector3(-0.126951, 1.62307, 0.133057), Vector3(0.140094, 1.62865, 0.133057), Vector3(-0.128728, 1.98679, 0.133057), Vector3(0.149506, 1.98663, 0.133057), Vector3(-0.321778, 0.23041, -0.0647256), Vector3(-0.321778, 0.631307, -0.0628094), Vector3(-0.321778, 1.0514, -0.0378641), Vector3(-0.321778, 1.44625, -0.00441441), Vector3(-0.321778, 1.77035, -0.0161406), Vector3(-0.321778, 2.00958, -0.0192475), Vector3(0.31128, 2.01409, -0.0258838), Vector3(0.31128, 1.69686, -0.00741321), Vector3(0.31128, 1.31173, -0.00891331), Vector3(0.31128, 0.981112, -0.0239298), Vector3(0.31128, 0.694034, -0.0186331), Vector3(0.31128, 0.286051, -0.00584558), Vector3(0.195001, 0.297404, -0.168457), Vector3(-0.188432, 0.312008, -0.168457), Vector3(0.21975, 0.711575, -0.168457), Vector3(-0.185521, 0.779665, -0.168457), Vector3(0.155137, 1.14496, -0.168457), Vector3(-0.189965, 1.19895, -0.168457), Vector3(0.173938, 1.45719, -0.168457), Vector3(-0.127429, 1.47731, -0.168457), Vector3(0.163019, 1.8535, -0.168457), Vector3(-0.131346, 1.87783, -0.168457), Vector3(0.112807, 2.06261, -0.168457), Vector3(-0.124686, 2.05478, -0.168457), Vector3(0.110078, 2.41888, -0.0121994), Vector3(-0.0599903, 2.41888, 0.0125429), Vector3(-0.190922, -0.00540495, -0.0476798), Vector3(0.234382, -0.00540495, 0.029992)])
+stat = 2.649
+top = 2.444
+eye = 1.897
+awaken_boss_intent_name = "Clone Phase Change"
+speed_order_override = 0
+change_delay = 3.0
+boss_intents = Array[ExtResource("5_tlf4i")]([ExtResource("7_hhvwj"), ExtResource("13_8g5ul"), ExtResource("8_qd2jx"), ExtResource("9_qq5yi"), ExtResource("14_hhvwj"), ExtResource("6_8g5ul"), ExtResource("15_hhvwj")])
+metadata/_custom_type_script = "uid://bnp3nwlcsibyl"
+
+[sub_resource type="Resource" id="Resource_hhvwj"]
+script = ExtResource("1_d1qqb")
+name = "Blade of the Palms"
+archetype = ExtResource("4_4ow0h")
+attack = 3
+health = 0
+speed = 3
+model = ExtResource("12_e0d1a")
+collision = SubResource("PackedScene_lok3x")
+points = Array[Vector3]([Vector3(-0.169155, 0.239571, 0.133057), Vector3(0.183516, 0.239223, 0.133057), Vector3(-0.162775, 0.622093, 0.133057), Vector3(0.169328, 0.64294, 0.133057), Vector3(-0.126926, 0.978036, 0.133057), Vector3(0.136707, 0.986501, 0.133057), Vector3(-0.163384, 1.28892, 0.133057), Vector3(0.136259, 1.31003, 0.133057), Vector3(-0.126951, 1.62307, 0.133057), Vector3(0.140094, 1.62865, 0.133057), Vector3(-0.128728, 1.98679, 0.133057), Vector3(0.149506, 1.98663, 0.133057), Vector3(-0.321778, 0.23041, -0.0647256), Vector3(-0.321778, 0.631307, -0.0628094), Vector3(-0.321778, 1.0514, -0.0378641), Vector3(-0.321778, 1.44625, -0.00441441), Vector3(-0.321778, 1.77035, -0.0161406), Vector3(-0.321778, 2.00958, -0.0192475), Vector3(0.31128, 2.01409, -0.0258838), Vector3(0.31128, 1.69686, -0.00741321), Vector3(0.31128, 1.31173, -0.00891331), Vector3(0.31128, 0.981112, -0.0239298), Vector3(0.31128, 0.694034, -0.0186331), Vector3(0.31128, 0.286051, -0.00584558), Vector3(0.195001, 0.297404, -0.168457), Vector3(-0.188432, 0.312008, -0.168457), Vector3(0.21975, 0.711575, -0.168457), Vector3(-0.185521, 0.779665, -0.168457), Vector3(0.155137, 1.14496, -0.168457), Vector3(-0.189965, 1.19895, -0.168457), Vector3(0.173938, 1.45719, -0.168457), Vector3(-0.127429, 1.47731, -0.168457), Vector3(0.163019, 1.8535, -0.168457), Vector3(-0.131346, 1.87783, -0.168457), Vector3(0.112807, 2.06261, -0.168457), Vector3(-0.124686, 2.05478, -0.168457), Vector3(0.110078, 2.41888, -0.0121994), Vector3(-0.0599903, 2.41888, 0.0125429), Vector3(-0.190922, -0.00540495, -0.0476798), Vector3(0.234382, -0.00540495, 0.029992)])
+stat = 2.649
+top = 2.444
+eye = 1.897
+awaken_boss_intent_name = "Dodge Phase Change"
+speed_order_override = 0
+change_delay = 3.0
+boss_intents = Array[ExtResource("5_tlf4i")]([ExtResource("14_hhvwj"), ExtResource("13_8g5ul"), ExtResource("16_5epeo"), ExtResource("17_lofdk"), ExtResource("6_8g5ul"), ExtResource("18_e0d1a")])
+metadata/_custom_type_script = "uid://bnp3nwlcsibyl"
+
 [resource]
 script = ExtResource("2_3psbn")
 rarity = 7
-phases = Array[ExtResource("1_d1qqb")]([SubResource("Resource_xetlm")])
+phases = Array[ExtResource("1_d1qqb")]([SubResource("Resource_xetlm"), SubResource("Resource_4ow0h"), SubResource("Resource_hhvwj")])
 card_id = 25
-tool_id = 0
-boon_id = 0
+tool_id = 15
+boon_id = 19
 art_mini_coordinate = Vector2i(94, 29)
 art_mini = ExtResource("1_3caon")
 id = 2

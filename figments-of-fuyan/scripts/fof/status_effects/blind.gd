@@ -14,6 +14,7 @@ func onClear() -> void:
 	onPushAction(VisionAction.new(Card))
 	
 	# Exists for tile intents, otherwise they dont update
+	if Card.getTile() == null: return
 	for Tile: TileGD in (Game.getAdjacentTiles(Card.getTile()) + [Card.getTile()]).filter(func(x: TileGD): return x != null): 
 		Tile.onUpdateLevelVisible()
 

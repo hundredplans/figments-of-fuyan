@@ -32,7 +32,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		if Card.isHealable(): cards.append(Card)
 		
 		var stat_infos: Array = cards.map(func(x: CardGD): return StatInfo.new(x, Game.Stats.HEALTH, 1))
-		onPushAction(HealAction.new(cards, 1))
+		onPushAction(HealAction.new(cards.map(func(x: CardGD): return HealDatastore.new(x, 1))))
 		
 # When possible
 func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _DFL: DefaultFightLogic) -> TileGD:

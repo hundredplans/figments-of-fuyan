@@ -42,7 +42,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		
 		var actions: Array = [CameraChangeAction.new(Card), OccupyAction.new(Card, getRandomSpawnTile()),\
 			DestroyVFXAction.new(FirstHat), CameraChangeAction.new(self), CameraChangeAction.new(Card),\
-			HealAction.new(Card, 2), CreateVFXAction.new(SecondHat, true), CameraChangeAction.new(self)]
+			HealAction.new(HealDatastore.new(Card, 2)), CreateVFXAction.new(SecondHat, true), CameraChangeAction.new(self)]
 		
 		onPushAction(actions)
 		onAbility()

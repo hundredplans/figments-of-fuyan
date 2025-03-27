@@ -6,7 +6,7 @@ var world_datastore: WorldDatastore
 #endregion
 
 #region Saved Data
-var items: Array # Array of saved datas
+var items: Array # [PriceDatastore]
 #endregion
 
 #region Load / Save

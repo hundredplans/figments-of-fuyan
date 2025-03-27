@@ -9,7 +9,8 @@ static func getRandomKey(odds: Dictionary) -> String:
 	for key in odds:
 		if roll < odds[key] + total: return str(key)
 		total += odds[key]
-	return str(odds[odds.size() - 1])
+	push_error("Odds don't add up to 1")
+	return ""
 	
 static func getRandomKeyVariant(odds: Dictionary) -> Variant:
 	var roll: float = randf()
@@ -17,7 +18,8 @@ static func getRandomKeyVariant(odds: Dictionary) -> Variant:
 	for key in odds:
 		if roll < odds[key] + total: return key
 		total += odds[key]
-	return odds[odds.size() - 1]
+	push_error("Odds don't add up to 1")
+	return null
 	
 static func onConvertPercentOdds(odds: Dictionary) -> Dictionary:
 	var new_odds: Dictionary = {}

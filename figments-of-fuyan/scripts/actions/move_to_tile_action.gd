@@ -27,7 +27,7 @@ func setMovementTypeDelay() -> void:
 	elif DestinationTile.getHeight() - Card.Tile.getHeight() <= -1:
 		movement_type = MOVEMENT_TYPES.FALL
 		var height_diff: int = abs(DestinationTile.getHeight() - Card.Tile.getHeight())
-		fall_time += (height_diff * 0.2)
+		fall_time += (height_diff * 0.25)
 	else: movement_type = MOVEMENT_TYPES.REGULAR
 	
 	setActionDelay(getJumpDelay() if Card.isLevelVisible() else 0.0)

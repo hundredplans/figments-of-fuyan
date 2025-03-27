@@ -15,4 +15,4 @@ func onHit(damage_action: DamageAction, _attack_action: AttackAction) -> void:
 		elif ascended:
 			picked_allies = allies
 			
-		onPushAction(HealAction.new(picked_allies, heal))
+		onPushAction(HealAction.new(picked_allies.map(func(x: CardGD): return HealDatastore.new(x, heal))))

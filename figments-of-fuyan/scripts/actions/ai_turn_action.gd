@@ -131,7 +131,7 @@ func getTilesSortedByValue(tiles_to_value: Dictionary) -> Array:
 	tiles_sorted_by_value.sort_custom(func(x: TileGD, y: TileGD): return tiles_to_value[x] > tiles_to_value[y])
 	
 	tiles_sorted_by_value.resize(TOP_AMOUNT)
-	tiles_sorted_by_value = tiles_sorted_by_value.filter(func(x: TileGD): return x != null and tiles_to_value[x] >= 0)
+	tiles_sorted_by_value = tiles_sorted_by_value.filter(func(x: TileGD): return x != null and tiles_to_value[x] > -0.01)
 	return tiles_sorted_by_value
 	
 func onApplyBehaviours(BehaviourCard: CardGD, enemies: Array, allies: Array, tiles: Array, dfl_data: DFLData) -> Dictionary:

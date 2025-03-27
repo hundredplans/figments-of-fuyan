@@ -9,9 +9,12 @@ func _init(_cards: Array = []) -> void:
 	cards = _cards
 	
 func onPreAction() -> void:
+	#if owner is VisionAction and owner.owner != null and owner.owner is OccupyAction and\
+	#owner.owner.owner != null and owner.owner.owner is MoveToTileAction\
+	#and owner.owner.owner.Card.isAlly(0) and owner.owner.owner.Card == owner.ExplorerCard:
 	if owner is VisionAction and owner.owner != null and owner.owner is OccupyAction and\
 	owner.owner.owner != null and owner.owner.owner is MoveToTileAction\
-	and owner.owner.owner.Card.isAlly(0) and owner.owner.owner.Card == owner.ExplorerCard:
+	and owner.owner.owner.Card == owner.ExplorerCard and owner.owner.owner.Card not in cards:
 		onFailAction()
 	else:
 		setActionDelay(EXIT_LEVEL_VISIBLE_ACTION_DELAY)

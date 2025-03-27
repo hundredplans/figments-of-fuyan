@@ -22,5 +22,5 @@ func onArrive(_action: AwakenAction) -> void:
 
 func onRampage(_action: DeathAction) -> void:
 	var cards: Array = getVisibleFieldCardsAllies() + [self]
-	onPushAction(HealAction.new(cards, 1))
+	onPushAction(HealAction.new(cards.map(func(x: CardGD): return HealDatastore.new(x, 1))))
 	

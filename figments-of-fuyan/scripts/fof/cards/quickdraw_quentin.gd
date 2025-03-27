@@ -24,6 +24,9 @@ func onProcessAction(action: Action):
 			action.onFailAction() # Just in case me
 		elif action is GetShopPriceAction:
 			action.onMult(SHOP_PRICE_MULT)
+		elif action is RemoveStatusEffectAction and action.StatusEffect.info.id == DISARM_ID and bullets == 0:
+			action.onFailAction()
+		
 	elif action.post:
 		if action is AwakenAction and action.Card == self:
 			quentins_bullets_public_id = onCreateBaseFieldEffect(QUENTIN_BULLETS_FIELD_EFFECT_ID, bullets).public_id
