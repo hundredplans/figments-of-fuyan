@@ -41,6 +41,7 @@ var ai_datastore: AIDatastore
 var level_visible_not_in_vision: bool # Not saved
 var boss_datastore: BossDatastore # Null in here
 var is_knockback: bool # Not saved
+var card_offset: CardOffset # Offset of ronotation and position
 #endregion
 
 #region Globals
@@ -90,7 +91,7 @@ func setMapPosition() -> void:
 func setTileRotation(_tile_rotation: int) -> void:
 	tile_rotation = _tile_rotation
 	if Model == null: return
-	Model.rotation.y = (tile_rotation * (PI / 3)) + (PI / 6)
+	Model.rotation.y = (tile_rotation * (PI / 3)) + (PI / 6) + card_offset.getRotationOffset().y
 	
 func setModelRotationToTile(OtherTile: TileGD) -> void:
 	var model_rotation: Vector3 = Model.rotation
@@ -228,7 +229,7 @@ func onSave() -> SavedDataCard:
 	attack, health, speed, max_speed, max_health, energy, draw_order, card_place, turn_state, SavedData.onSaveGroup(status_effects), attacks, attack_range, delayed_stats,\
 	ability_save, active_effects, Tool.onSave() if Tool != null else null, SavedData.onSaveGroup(field_effects), anibility_datastore,\
 	is_temporary, is_awakened_in_combat, ai_datastore, base_stats,
-	overworld_traits, bounty_kills, boss_datastore)
+	overworld_traits, bounty_kills, boss_datastore, card_offset)
 
 func onPreSave() -> void:
 	for delayed: Variant in delayed_stats: delayed.onSave()
@@ -266,6 +267,7 @@ func onLoadData(data: SavedData) -> void:
 	bounty_kills = data.bounty_kills
 	is_temporary = data.is_temporary
 	draw_order = data.draw_order
+	card_offset = data.card_offset
 	
 	if data.tool_data != null:
 		Tool = SavedData.onLoadModel(data.tool_data, self)
@@ -419,7 +421,7 @@ func onRemovePoint(point: Vector3) -> void:
 
 #region Position
 func setPositionToTile(_Tile: TileGD = Tile) -> void:
-	position = _Tile.getCardPosition()
+	position = _Tile.getCardPosition() + card_offset.getPositionOffset()
 #endregion
 
 #region Is Checks
@@ -1193,6 +1195,9 @@ func onStun(turns: int = 1) -> void:
 	onCreateBaseStatusEffect(4, turns)
 	onCreateBaseStatusEffect(5, turns)
 	
+func getStunActions(turns: int = 1) -> Array:
+	return [getBaseStatusEffectAction(4, turns), getBaseStatusEffectAction(5, turns)]
+	
 func isInvisible() -> bool:
 	return status_effects.any(func(x: StatusEffectGD): return x.info.id == 2)
 	
@@ -1383,6 +1388,7 @@ func onAICheckActiveEffectsOnlyDFL(DFL: DefaultFightLogic, after_action: Movemen
 func setBaseMaterials() -> void:
 	if Model == null: return
 	if is_in_alphagrey: return
+		
 	var mat: Material = load(info.BASE_MATERIAL_SPECULAR_PATH)
 	if level_visible_not_in_vision:
 		mat = info.getColoredBaseMaterial(team, ascended)
@@ -1523,3 +1529,103 @@ func setBaseStats(types: Array, values: Array) -> void:
 	onPushAction(StatAction.new(stat_info))
 	
 func onCanCreateInspectScreen() -> bool: return true
+
+#region Movement Range
+func getsetMovementRange(speed_override: int = -1) -> Array:
+	if Tile == null: return []
+	get_tree().call_group("FieldCardsGD", "setEnemyInMovementRange", false)
+	get_tree().call_group("LevelTilesGD", "setMovementPath", null)
+	
+	var CenterTile: TileGD = Tile
+	var new_speed: int = getMovementSpeed()
+	if speed_override != -1:
+		new_speed = speed_override
+		
+	var tiles: Array = Game.getAdjacentOrCloserTiles(Tile, speed) # Gather all tiles
+	var all_cards_tiles: Array = get_tree().get_nodes_in_group("FieldCardsGD").map(func(x: CardGD): return x.Tile)
+	
+	tiles = tiles.filter(func(x: TileGD): return !x.isSolid() and x not in all_cards_tiles and x.isBelowMaxMovementHeight(self)) # Check for solidity
+	for Tile in tiles:
+		var astar := AStar3D.new()
+		# Limits tiles to those in movement range
+		var add_to_astar_tiles: Array = tiles.filter(func(x: TileGD): return Game.getCoordsDistance(Tile.getCoords(), x.getCoords()) <= new_speed)
+		add_to_astar_tiles.append(CenterTile)
+		for _Tile in add_to_astar_tiles: astar.add_point(_Tile.get_instance_id(), _Tile.getCoordsHeightless())
+		
+		for StartTile in add_to_astar_tiles:
+			for EndTile in add_to_astar_tiles.filter(func(x: TileGD): return Game.isAdjacent(x, StartTile)):
+				var height_diff: int = EndTile.getHeight() - StartTile.getHeight()
+				if StartTile.isRamp():
+					if StartTile.isValidRampRelation(EndTile, height_diff):
+						astar.connect_points(StartTile.get_instance_id(), EndTile.get_instance_id(), false)
+					
+				elif EndTile.isRamp():
+					if EndTile.isValidRampRelation(StartTile, height_diff):
+						astar.connect_points(StartTile.get_instance_id(), EndTile.get_instance_id(), false)
+					
+				elif height_diff <= 1:
+					astar.connect_points(StartTile.get_instance_id(), EndTile.get_instance_id(), false)
+						
+		var valid_path: bool = false
+		var point_path: Array = []
+		var movement_path: Array = []
+		
+		while(!valid_path):
+			point_path = astar.get_id_path(CenterTile.get_instance_id(), Tile.get_instance_id())
+			if point_path.is_empty(): break
+			if point_path.size() > new_speed + 1:
+				astar.disconnect_points(point_path[point_path.size() - 1], point_path[point_path.size() - 2])
+				continue
+			
+			movement_path = point_path.map(func(x: int): return instance_from_id(x))
+			if movement_path.size() > new_speed + 2:
+				astar.disconnect_points(point_path[point_path.size() - 1], point_path[point_path.size() - 2])
+				continue
+			if !onSurviveFallDamage(self, movement_path, point_path, astar): continue
+			valid_path = true
+			
+		Tile.setMovementPath(MovementPathGD.new(movement_path, isAlly(0)) if valid_path else null)
+	
+	var available_tiles: Array = tiles.filter(func(x: TileGD): return x.getMovementPath() != null)
+	available_tiles.append(CenterTile)
+	
+	var attackables: Array = getAttackablesInVision()
+	for GameObject: GameObjectGD in attackables:
+		var GameObjectTile: TileGD = GameObject.getAttackableTile()
+		var game_object_coords: Vector4i = GameObjectTile.getCoords()
+		
+		var tiles_in_range: Array = available_tiles\
+			.filter(func(x: TileGD): return Game.getCoordsDistance(x.getCoords(), game_object_coords) <= getAttackRange())
+			
+		if tiles_in_range.is_empty(): continue
+		var AttackFromTile: TileGD
+		var attack_from_path: Array = []
+		if CenterTile not in tiles_in_range:
+			tiles_in_range.sort_custom(func(x: TileGD, y: TileGD): return x.getMovementPathSize() < y.getMovementPathSize())
+			AttackFromTile = tiles_in_range[0]
+			attack_from_path = AttackFromTile.getMovementPathTiles().duplicate()
+		else: # Closest tile is always the center tile as it's distance is 0, has to have unique logic as it doesn't generate paths
+			AttackFromTile = CenterTile
+			attack_from_path = [CenterTile]
+		
+		available_tiles.append(GameObjectTile)
+		attack_from_path.append(GameObjectTile)
+		
+		GameObjectTile.setMovementPath(MovementPathGD.new(attack_from_path, isAlly(0)))
+		if GameObject is CardGD:
+			GameObject.setEnemyInMovementRange(true)
+	
+	available_tiles.erase(CenterTile)
+	return available_tiles
+	
+func onSurviveFallDamage(Card: CardGD, movement_path: Array, point_path: Array, astar: AStar3D) -> bool:
+	Card.temp_fall_damage = 0
+	for i in range(1, movement_path.size()):
+		var fall_damage: int = movement_path[i].getFallDamage(movement_path[i - 1])
+		if fall_damage > 0:
+			var survive_fall_damage: bool = Card.isCardSurviveFallDamage(fall_damage)
+			if !survive_fall_damage and i != movement_path.size() - 1:
+				astar.disconnect_points(point_path[i - 1], point_path[i])
+				return false
+	return true
+#endregion

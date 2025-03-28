@@ -140,7 +140,7 @@ func onSpinAttackCondition() -> BossIntentConditionResult: # Needs to be on the 
 	
 func onSpinAttack(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 	if use_type != UseType.END:
-		tiles = Game.getsetMovementRange(self, SPIN_ATTACK_SPEED_LIMIT)
+		tiles = getsetMovementRange(SPIN_ATTACK_SPEED_LIMIT)
 		if tiles.is_empty(): return []
 		
 		var BestTile: TileGD
@@ -248,7 +248,7 @@ func onRally(enemies: Array, allies: Array, tiles: Array, use_type: UseType) -> 
 			
 		actions.append(ClearTileIntentsAction.new())
 		
-		tiles = Game.getsetMovementRange(self, RALLY_SPEED_LIMIT)
+		tiles = getsetMovementRange(RALLY_SPEED_LIMIT)
 		tiles = getUnoccupiedTiles(tiles)
 		tiles = getAllyVisionTiles(tiles)
 		tiles = onRemoveGroundTilesWhenNotOnGround(tiles)
@@ -283,7 +283,7 @@ func onSummon(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 		
 		actions.append(ClearTileIntentsAction.new())
 		var ally_vision: Array = Game.getTeamVision(0)
-		tiles = Game.getsetMovementRange(self, SUMMON_SPEED_LIMIT)
+		tiles = getsetMovementRange(SUMMON_SPEED_LIMIT)
 		tiles = tiles.filter(func(x: TileGD): return x not in chosen_tiles and x.getMovementPathTiles().all(func(y: TileGD): return y not in chosen_tiles))
 		
 		if !ally_vision.is_empty():
@@ -536,7 +536,7 @@ func onMaelstormAttack(enemies: Array, use_type: UseType) -> Array:
 			actions.append(KnockbackStartAction.new(EnemyCard, self, 1, Game.getRelativeTileRotation(getTile(), EnemyCard.getTile())))
 			
 		actions.append(ClearTileIntentsAction.new())
-		var tiles: Array = Game.getsetMovementRange(self, MAELSTORM_SPEED_LIMIT)
+		var tiles: Array = getsetMovementRange(MAELSTORM_SPEED_LIMIT)
 
 		tiles = getAllyVisionTiles(tiles)
 		tiles = getUnoccupiedTiles(tiles)
@@ -589,7 +589,7 @@ func onRunAway(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 	if use_type == UseType.END: return []
 	if use_type == UseType.RECALCULATE and speed == 0: return []
 	
-	tiles = Game.getsetMovementRange(self, speed + 1)
+	tiles = getsetMovementRange(speed + 1)
 	
 	var actions: Array = []
 	tiles = getAllyVisionTiles(tiles)
@@ -701,7 +701,7 @@ func onFanAttack(enemies: Array, use_type: UseType) -> Array:
 		
 		var actions: Array = [rotation_action, animation_action, ClearTileIntentsAction.new(), damage_action]
 		
-		var tiles: Array = Game.getsetMovementRange(self, FAN_ATTACK_SPEED_LIMIT)
+		var tiles: Array = getsetMovementRange(FAN_ATTACK_SPEED_LIMIT)
 		
 		tiles = getAllyVisionTiles(tiles)
 		tiles = getUnoccupiedTiles(tiles)

@@ -8,6 +8,8 @@ class_name BossDatastore extends Resource
 @export var condition_results: Dictionary # name : BossIntentConditionResult
 @export var boss_tile_intents: BossTileIntents
 
+@export var intent_duration: int
+
 #region Default
 func _init(_phase: int = 0, _boss_intent_name: String = "", _boss_intent_name_to_cooldown: Dictionary = {}) -> void:
 	phase = _phase
@@ -108,4 +110,12 @@ func getConditionResult(name: String) -> BossIntentConditionResult:
 #region Boss Tile Intents
 func setBossTileIntents(_boss_tile_intents: BossTileIntents) -> void:
 	boss_tile_intents = _boss_tile_intents
+#endregion
+
+#region Intent Duration
+func setIntentDuration(_intent_duration: int) -> void:
+	intent_duration = _intent_duration
+	
+func getIntentDuration() -> int:
+	return intent_duration
 #endregion

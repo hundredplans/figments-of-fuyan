@@ -12,7 +12,7 @@ func onSave() -> SavedDataBossCard:
 	attack, health, speed, max_speed, max_health, energy, draw_order, card_place, turn_state, SavedData.onSaveGroup(status_effects), attacks, attack_range, delayed_stats,\
 	ability_save, active_effects, Tool.onSave() if Tool != null else null, SavedData.onSaveGroup(field_effects), anibility_datastore,\
 	is_temporary, is_awakened_in_combat, ai_datastore, base_stats,
-	overworld_traits, bounty_kills, boss_datastore)
+	overworld_traits, bounty_kills, boss_datastore, card_offset)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -79,7 +79,7 @@ func getBossIntentsFromInfo() -> Array[BossIntent]:
 func getSpeedOrderOverrideFromInfo() -> EpicCardInfo.SpeedOrderOverride:
 	return info.getSpeedOrderOverride(boss_datastore.phase)
 	
-func getChangeDelayFromInfo(delta: int = 0) -> int:
+func getChangeDelayFromInfo(delta: int = 0) -> float:
 	return info.getChangeDelay(boss_datastore.phase + delta)
 	
 func getAwakenBossIntentNameFromInfo() -> String:
@@ -224,7 +224,7 @@ func onChangeBossPhasePostDelay() -> void:
 	if !awaken_boss_intent_name.is_empty():
 		var new_boss_intent: BossIntent = getBossIntentsFromInfo().filter(func(x: BossIntent): return x.name == awaken_boss_intent_name)[0]
 		boss_datastore.onResetConditionResults()
-		actions.append(ChangeBossIntentAction.new(new_boss_intent))
+		actions.append(ChangeBossIntentAction.new(new_boss_intent, true))
 		
 	actions.append(CameraSpectateGroupAction.new(0))
 	onPushAction(actions)

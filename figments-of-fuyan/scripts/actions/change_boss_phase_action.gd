@@ -5,7 +5,8 @@ func _init() -> void:
 	
 func onPreAction() -> void:
 	var BossCard: EpicCardGD = Game.getLevel().getBoss()
-	setActionDelay(Game.getLevel().getBoss().getChangeDelayFromInfo(BossCard.getPhase()))
+	var delay: float = BossCard.getChangeDelayFromInfo(BossCard.getPhase())
+	setActionDelay(delay)
 	
 func onPostAction() -> void:
 	var BossCard: EpicCardGD = Game.getLevel().getBoss()

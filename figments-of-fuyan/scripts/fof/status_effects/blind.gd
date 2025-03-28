@@ -2,8 +2,8 @@ extends StatusEffectGD
 
 const BLIND_DELAY: float = 0.5
 func onStatusEffectAdded(_action: AddStatusEffectAction) -> void:
-	var vision_action := VisionAction.new(Card)
-	vision_action.setActionDelay(BLIND_DELAY)
+	var vision_action := VisionAction.new(Card, null, true)
+	#vision_action.setActionDelay(BLIND_DELAY)
 	onPushAction(vision_action)
 
 func onProcessAction(action: Action) -> void:

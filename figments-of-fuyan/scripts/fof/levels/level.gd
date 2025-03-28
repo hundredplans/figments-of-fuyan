@@ -244,8 +244,10 @@ func onProcessAction(action: Action) -> void:
 		elif action is RemoveToolAction:
 			onRecalculateAITurn(action.Card, true, false, false, true)
 			tool_removed.emit()
-		elif action is VisionAction:
+		elif action is LevelVisibleAction:
 			vision_changed.emit()
+		#elif action is VisionAction:
+			#vision_changed.emit()
 		elif action is VisionNewUnitAction:
 			if action.enter_vision:
 				if action.Discoverer.isEnemy(action.Discovered.team):
@@ -446,9 +448,11 @@ func onCardFinishedAwakening(action: FinishAwakenAction) -> void:
 	if action.Card.info.id == 27 and arrive_action != null and arrive_action.Card == action.Card: # Dont play for coco crab arrive
 		return
 	
-	var spectate_awakened_card_temporarily := CameraChangeAction.new(action.Card)
-	spectate_awakened_card_temporarily.setActionDelay(CARD_PLACED_SPECTATE_DELAY)
-	var actions: Array = [spectate_awakened_card_temporarily]
+	var actions: Array = []
+	if !action.override_spectate:
+		var spectate_awakened_card_temporarily := CameraChangeAction.new(action.Card)
+		spectate_awakened_card_temporarily.setActionDelay(CARD_PLACED_SPECTATE_DELAY)
+		actions.append(spectate_awakened_card_temporarily)
 	
 	if phase == Game.Phases.HAND:
 		setLastAllySpectateObject()
@@ -458,7 +462,8 @@ func onCardFinishedAwakening(action: FinishAwakenAction) -> void:
 		onPushAfterAction(actions, ChangePhaseAction)
 		return
 		
-	actions.append(CameraChangeAction.new(getSpectateObject()))
+	if !action.override_spectate:
+		actions.append(CameraChangeAction.new(getSpectateObject()))
 	onPushAction(actions)
 	
 var LastAllySpectateObject: CardGD

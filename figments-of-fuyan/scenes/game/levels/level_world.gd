@@ -225,8 +225,7 @@ func onCreateMovementRange(Card: CardGD) -> void:
 			onHideMovementRange()
 		return
 	if Card == null or !Card.isAlly() or Card.turn_state == Game.TurnStates.PASSED or current_active_effect != null: return
-	
-	Game.getsetMovementRange(Card)
+	Card.getsetMovementRange()
 #endregion
 
 #region Turn State

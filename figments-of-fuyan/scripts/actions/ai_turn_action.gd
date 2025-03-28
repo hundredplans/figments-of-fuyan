@@ -34,7 +34,7 @@ func onPostAction() -> void:
 	if Card is EpicCardGD and Card.boss_datastore.boss_intent_used_this_turn: return
 	
 	pacifist = pacifist if (Card.attack > 0 or Card.getStatusEffect(4) != null) else true # If no attack or disarmed
-	var tiles: Array = Game.getsetMovementRange(Card)
+	var tiles: Array = Card.getsetMovementRange()
 	tiles.erase(Card.Tile)
 	
 	var allies: Array = Card.getVisibleFieldCardsAllies()

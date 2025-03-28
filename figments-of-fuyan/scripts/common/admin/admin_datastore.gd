@@ -24,4 +24,4 @@ class_name AdminDatastore extends Resource
 @export var action_debug: ActionDebugType
 @export_group("")
 
-enum ActionDebugType {NULL, ARRAY, SINGLE}
+enum ActionDebugType {NULL, ARRAY, SINGLE, DELAY}

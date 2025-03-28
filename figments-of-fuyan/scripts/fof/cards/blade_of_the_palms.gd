@@ -5,4 +5,3 @@ func onProcessAction(action: Action) -> void:
 	
 func getDescription() -> String:
 	return super()
-

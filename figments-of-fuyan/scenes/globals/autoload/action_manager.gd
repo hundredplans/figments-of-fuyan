@@ -40,6 +40,10 @@ func onActionChain() -> void:
 	active_action.post = true
 	
 	if active_action.getDelay() > 0 and !is_game_closing:
+		if Helper.admin_datastore.action_debug == AdminDatastore.ActionDebugType.DELAY:
+			var path: String = active_action.get_script().resource_path
+			print(path.get_slice("/", path.get_slice_count("/") - 1) + ": " + str(active_action.getDelay()))
+		
 		DelayTimer.wait_time = active_action.getDelay()
 		DelayTimer.start()
 		await DelayTimer.timeout

@@ -3,11 +3,13 @@ class_name AwakenAction extends Action
 var Card: CardGD
 var Tile: TileGD
 var tile_rotation: int
+var override_spectate: bool
 
-func _init(_Card: CardGD = null, _Tile: TileGD = null) -> void:
+func _init(_Card: CardGD = null, _Tile: TileGD = null, _override_spectate: bool = false) -> void:
 	super()
 	Card = _Card
 	Tile = _Tile
+	override_spectate = _override_spectate
 
 func onPreAction() -> void:
 	pass
@@ -16,7 +18,7 @@ func onPostAction() -> void:
 	var SpawnObject: SpawnGD = Tile.getSpawnTile()
 	if SpawnObject != null: Card.tile_rotation = SpawnObject.tile_rotation
 	
-	onPushAction(FinishAwakenAction.new(Card)) # Important it's here so the other pushes move it back
+	onPushAction(FinishAwakenAction.new(Card, override_spectate)) # Important it's here so the other pushes move it back
 	Card.onChangeCardPlace(Game.CardPlaces.FIELD)
 	
 	Card.vision_datastore.setInfo() # Loads in all the game objects

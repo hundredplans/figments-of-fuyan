@@ -6,12 +6,14 @@ var ExplorerCard: CardGD # Card that occupy action caused the vision action
 var old_visible_game_objects: Dictionary
 var new_visible_game_objects: Dictionary # Dict of {CardGD: visibles}
 var old_team_vision: Array
+var ignore_exit_level_visible_delay: float
 
-func _init(_cards: Variant = null, _ExplorerCard: CardGD = null) -> void:
+func _init(_cards: Variant = null, _ExplorerCard: CardGD = null, _ignore_exit_level_visible_delay: bool = false) -> void:
 	super()
 	if _cards is CardGD: cards = [_cards]
 	elif _cards is Array: cards = _cards
 	ExplorerCard = _ExplorerCard
+	ignore_exit_level_visible_delay = _ignore_exit_level_visible_delay
 	
 func onPreAction() -> void:
 	old_team_vision = Game.getLevel().old_player_vision.duplicate()
@@ -54,7 +56,7 @@ func onPostAction() -> void:
 	actions.append(LevelVisibleAction.new(true, new_team_vision_diff))
 	
 	var exit_level_visible_cards: Array = old_team_vision_diff.filter(func(x: GameObjectGD): return x is CardGD)
-	if !exit_level_visible_cards.is_empty(): actions.append(ExitLevelVisibleAction.new(exit_level_visible_cards))
+	if !exit_level_visible_cards.is_empty(): actions.append(ExitLevelVisibleAction.new(exit_level_visible_cards, ignore_exit_level_visible_delay))
 	
 	var is_enter_level_visible_by_explorer: bool = new_team_vision_diff.any(func(x: GameObjectGD): return x is CardGD and x.isEnemy(0) and x == ExplorerCard)
 	if is_enter_level_visible_by_explorer and owner is OccupyAction and owner.owner is MoveToTileAction:
