@@ -224,7 +224,7 @@ func onChangeBossPhasePostDelay() -> void:
 	if !awaken_boss_intent_name.is_empty():
 		var new_boss_intent: BossIntent = getBossIntentsFromInfo().filter(func(x: BossIntent): return x.name == awaken_boss_intent_name)[0]
 		boss_datastore.onResetConditionResults()
-		actions.append(ChangeBossIntentAction.new(new_boss_intent, true))
+		onForceAction(ChangeBossIntentAction.new(new_boss_intent, true))
 		
 	actions.append(CameraSpectateGroupAction.new(0))
 	onPushAction(actions)

@@ -51,6 +51,8 @@ func onUseBossIntent(enemies: Array, allies: Array, tiles: Array, use_type: UseT
 			actions = onMistAttack(use_type)
 		"Clone Phase Change":
 			actions = onClonePhaseChange(use_type)
+		"Dodge Phase Change":
+			actions = onDodgePhaseChange(use_type)
 	
 	if !use_teleport_passive:
 		use_teleport_passive = actions.any(func(x: Action):\
@@ -429,13 +431,13 @@ func onFanBlindSetIntents() -> BossTileIntents:
 func onFanBlind(use_type: UseType) -> Array:
 	var actions: Array = []
 	if use_type == UseType.START:
-		var tile_rotation: int = boss_datastore.getConditionResult("Fan Blind").getTileRotation()
-		var tiles: Array = Game.getFanTiles(Tile.getCoords(), 5, tile_rotation)
+		var _tile_rotation: int = boss_datastore.getConditionResult("Fan Blind").getTileRotation()
+		var tiles: Array = Game.getFanTiles(Tile.getCoords(), 5, _tile_rotation)
 		var adjacent_tiles: Array = Game.getAdjacentTiles(Tile, 1).filter(func(x: TileGD): return x not in tiles)
 		tiles += adjacent_tiles
 		
 		var enemies: Array = Game.getEnemyUnits(team)
-		actions.append(ChangeTileRotationAction.new(self, tile_rotation))
+		actions.append(ChangeTileRotationAction.new(self, _tile_rotation))
 		
 		var animation_action := AnimationAction.new(self, "FanBlind")
 		animation_action.setActionDelay(FAN_BLIND_ANIMATION_DELAY)
@@ -486,22 +488,25 @@ func onDoubleTeleportAttackSetIntents() -> BossTileIntents:
 			visible_tiles.erase(TeleportTile)
 			continue
 	
-	var adjacent_coords: Dictionary = {}
-	var double_adjacent_coords: Dictionary = {}
-	var triple_adjacent_coords: Dictionary = {}
-	
 	var coords_to_distance: Dictionary[Vector4i, int] = {}
+	var tile_results: Dictionary[TileGD, String] = {}
 	
 	for distance: int in range(3, 0, -1): # Goes from furthest to closest, since closest take priority
-		for TeleportTile: TileGD in teleport_tiles:
+		for i in range(teleport_tiles.size()):
+			var TeleportTile: TileGD = teleport_tiles[i]
 			var teleport_coords: Vector4i = TeleportTile.getCoords()
 			for coord: Vector4i in Game.getAdjacentCoords(teleport_coords, distance):
 				coords_to_distance[coord] = distance
-	
-	for TeleportTile: TileGD in teleport_tiles:
+				
+				var CoordTile: TileGD = Game.getTile(coord)
+				if CoordTile == null: continue
+				tile_results[CoordTile] = str(distance) + ":" + str(i)
+
+	for i: int in range(teleport_tiles.size()):
+		var TeleportTile: TileGD = teleport_tiles[i]
 		coords_to_distance[TeleportTile.getCoords()] = 0
+		tile_results[TeleportTile] = str(0) + ":" + str(i)
 	
-	var tile_results: Dictionary[TileGD, String] = {}
 	for coord: Vector4i in coords_to_distance:
 		var distance: int = coords_to_distance[coord]
 		var tile_intent: Game.TileIntents
@@ -511,63 +516,61 @@ func onDoubleTeleportAttackSetIntents() -> BossTileIntents:
 			1: tile_intent = Game.TileIntents.RED
 			0: tile_intent = Game.TileIntents.DARK_RED
 		tile_intents.append(TileIntentDatastore.new(tile_intent, null, coord))
-		
-		var CoordTile: TileGD = Game.getTile(coord)
-		if CoordTile == null: continue
-		
-		tile_results[CoordTile] = str(distance)
 	
 	return BossTileIntents.new(tile_intents, tile_results)
 	
 func onDoubleTeleportAttack(use_type: UseType) -> Array:
 	if use_type == UseType.START:
 		onResetIdleModifier() # For hammer idle
-		
 		var actions: Array = []
 		var tile_results: Dictionary[TileGD, String] = boss_datastore.getTileResults()
-		var tiles: Array = tile_results.keys()
-		tiles.shuffle()
 		
 		var enemies: Array = Game.getEnemyUnits(team)
 		var enemy_tiles: Array = enemies.map(func(x: CardGD): return x.getTile())
 		
 		var teleport_tiles: Array = []
-		var adjacent_enemies: Array = []
-		var double_adjacent_enemies: Array = []
-		var triple_adjacent_enemies: Array = []
+		teleport_tiles.shuffle()
 		
-		for CoordTile: TileGD in tiles:
-			if int(tile_results[CoordTile]) == 0:
-				teleport_tiles.append(CoordTile)
-				continue
+		var teleport_tile_radius: Array = [[], []]
+		for RadiusTile: TileGD in tile_results.keys():
+			teleport_tile_radius[int(tile_results[RadiusTile][tile_results[RadiusTile].length() - 1])].append(RadiusTile)
 			
-			var index: int = enemy_tiles.find(CoordTile)
-			if index == -1: continue
-			
-			var EnemyCard: CardGD = enemies[index]
-			match int(tile_results[CoordTile]):
-				1: adjacent_enemies.append(EnemyCard)
-				2: double_adjacent_enemies.append(EnemyCard)
-				3: triple_adjacent_enemies.append(EnemyCard)
+		for i in range(teleport_tile_radius.size()):
+			var radius_array: Array = teleport_tile_radius[i]
+			var adjacent_enemies: Array = []
+			var double_adjacent_enemies: Array = []
+			var triple_adjacent_enemies: Array = []
+			var TeleportTile: TileGD
+			for RadiusTile: TileGD in radius_array:
+				if int(tile_results[RadiusTile][0]) == 0:
+					TeleportTile = RadiusTile
+					continue
+				
+				var index: int = enemy_tiles.find(RadiusTile)
+				if index == -1: continue
+				
+				var EnemyCard: CardGD = enemies[index]
+				match int(tile_results[RadiusTile][0]):
+					1: adjacent_enemies.append(EnemyCard)
+					2: double_adjacent_enemies.append(EnemyCard)
+					3: triple_adjacent_enemies.append(EnemyCard)
 		
-		for i in range(teleport_tiles.size()):
-			var TeleportTile: TileGD = teleport_tiles[i]
 			var teleport_enter := AnimationAction.new(self, "TeleportEnter")
 			teleport_enter.setActionDelay(TELEPORT_ENTER_ACTION_DELAY)
-			
+		
+			var all_enemies: Array = adjacent_enemies + double_adjacent_enemies + triple_adjacent_enemies
+			if !all_enemies.is_empty():
+				var relative_rotation: int = Game.getRelativeTileRotation(TeleportTile, all_enemies.pick_random().getTile())
+				actions.append(ChangeTileRotationAction.new(self, relative_rotation))
+		
 			var teleport_attack := AnimationAction.new(self, "TeleportAttack")
 			teleport_attack.setActionDelay(TELEPORT_ATTACK_ACTION_DELAY)
 			actions += [teleport_enter, TeleportAction.new(self, TeleportTile), teleport_attack]
-			if i == 0: actions.insert(2, CardOffsetAction.new(self))
-		
-		var all_enemies: Array = adjacent_enemies + double_adjacent_enemies + triple_adjacent_enemies
-		if !all_enemies.is_empty():
-			actions.insert(1, ChangeTileRotationAction.new(self, Game.getRelativeTileRotation(teleport_tiles[1], all_enemies.pick_random().getTile())))
 			
-		actions.append(DamageAction.new(self, adjacent_enemies, attack, Game.DamageTypes.OTHER))
-		actions.append(DamageAction.new(self, double_adjacent_enemies, attack - 1, Game.DamageTypes.OTHER))
-		actions.append(DamageAction.new(self, triple_adjacent_enemies, attack - 2, Game.DamageTypes.OTHER))
-		
+			if i == 0: actions.insert(2, CardOffsetAction.new(self))
+			actions.append(DamageAction.new(self, adjacent_enemies, attack, Game.DamageTypes.OTHER))
+			actions.append(DamageAction.new(self, double_adjacent_enemies, attack - 1, Game.DamageTypes.OTHER))
+			actions.append(DamageAction.new(self, triple_adjacent_enemies, attack - 2, Game.DamageTypes.OTHER))
 		return actions
 	return []
 #endregion
@@ -578,7 +581,7 @@ func onMistAttackSetIntents() -> BossTileIntents:
 	var penta_adjacent_coords: Array = Game.getAdjacentOrCloserCoords(Vector4i.ZERO, 5)
 	
 	for coord: Vector4i in penta_adjacent_coords:
-		var tile_intent := Game.TileIntents.LIGHT_RED if Game.getCoordsDistance(Vector4i.ZERO, coord) <= 2 else Game.TileIntents.PURPLE
+		var tile_intent := Game.TileIntents.PURPLE if Game.getCoordsDistance(Vector4i.ZERO, coord) <= 2 else Game.TileIntents.LIGHT_RED
 		tile_intents.append(TileIntentDatastore.new(tile_intent, OffsetDatastore.new(coord), coords))
 	
 	return BossTileIntents.new(tile_intents, {})
@@ -592,8 +595,8 @@ func onMistAttack(use_type: UseType) -> Array:
 		var attack_tiles: Array = penta_adjacent_tiles.filter(func(x: TileGD): return Game.getCoordsDistance(x.getCoords(), coords) <= 2)
 		penta_adjacent_tiles = penta_adjacent_tiles.filter(func(x: TileGD): return x not in attack_tiles)
 		
-		actions += onApplyBlind(enemies, penta_adjacent_tiles)
-		actions.append(DamageAction.new(self, enemies.filter(func(x: CardGD): return x.getTile() in attack_tiles), attack - 1, Game.DamageTypes.OTHER))		
+		actions += onApplyBlind(enemies, attack_tiles)
+		actions.append(DamageAction.new(self, enemies.filter(func(x: CardGD): return x.getTile() in penta_adjacent_tiles), attack - 1, Game.DamageTypes.OTHER))		
 		return actions
 	return []
 #endregion
@@ -603,6 +606,7 @@ const PHASE_CHANGE_DELAY_TIME: float = 3.0
 func onChangeBossPhase() -> void:
 	super()
 	onForceAction(AnimationAction.new(self, "PhaseChange"))
+	onForceAction(ClearTileIntentsAction.new())
 
 func onChangeBossPhasePostDelay() -> void:
 	super()
@@ -620,16 +624,16 @@ func onChangeBossPhasePostDelay() -> void:
 	var animation_action := AnimationAction.new(self, "HammerJump")
 	animation_action.setActionDelay(HAMMER_JUMP_ACTION_DELAY)
 	actions.append(animation_action)
-	
+		
 	match getPhase():
 		2: actions += onPhaseTwoPhaseChangePostDelay()
+		3: actions += onPhaseThreePhaseChangePostDelay()
 	
 	var card_offset_action := CardOffsetAction.new(self, HAMMER_END_RELATIVE_POS, rot_offset)
 	card_offset_action.setActionDelay(PHASE_CHANGE_DELAY_TIME)
 	actions.append(card_offset_action)
 			
 	actions += ally_cards.map(func(x: CardGD): return x.getBaseStatusEffectAction(BLIND_ID, -1))
-	#actions += ally_cards.map(func(x: CardGD): return x.getBaseStatusEffectAction(REVEALED_ID, 3))
 	
 	if Game.getLevel().getPhase() == Game.Phases.PLAYER:
 		actions.append(ChangePhaseAction.new(Game.Phases.AI))
@@ -646,16 +650,8 @@ func onChangeBossPhasePostDelay() -> void:
 func onPhaseTwoPhaseChangePostDelay() -> Array:
 	var actions: Array = []
 	var ally_cards: Array = Game.getAllyUnits(0)
-	
-	var _double_adjacent_tiles: Dictionary[TileGD, Object] = {}
-	var double_adjacent_tiles: Array = []
-	for AllyCard: CardGD in ally_cards:
-		for AdjacentTile: TileGD in Game.getAdjacentOrCloserTiles(AllyCard.getTile(), 2):
-			_double_adjacent_tiles[AdjacentTile] = null
 			
 	var chosen_triple_adjacent_tiles: Array = []
-	var awaken_actions: Array = []
-	double_adjacent_tiles = _double_adjacent_tiles.keys()
 	for AllyCard: CardGD in ally_cards:
 		var triple_adjacent_tiles: Array = Game.getAdjacentTiles(AllyCard.getTile(), 3)\
 		.filter(func(x: TileGD): return x not in chosen_triple_adjacent_tiles)
@@ -673,6 +669,11 @@ func onPhaseTwoPhaseChangePostDelay() -> Array:
 		actions.append(AwakenAction.new(CloneCard, BestTile, true))
 		actions += CloneCard.getStunActions(2)
 	return actions
+	
+func onPhaseThreePhaseChangePostDelay() -> Array:
+	var actions: Array = []
+	onFirstUpdateTileIntents()
+	return actions
 #endregion
 
 #region Hammer Attack
@@ -680,6 +681,7 @@ const HAMMER_JUMP_ACTION_DELAY: float = 1.8
 const HAMMER_INITIAL_DELAY: float = 0.5
 const HAMMER_FLY_TIME: float = 0.75
 const HAMMER_END_RELATIVE_POS := Vector3(0, 8, -3)
+#endregion
 
 #region Clone Phase Change
 func onClonePhaseChangeSetIntents() -> BossTileIntents: return BossTileIntents.new()
@@ -692,15 +694,36 @@ func onClonePhaseChange(use_type: UseType) -> Array:
 #endregion
 
 #region Dodge Phase Change
+const DODGE_DOUBLE_ADJACENT_TILES: int = 3
 func onDodgePhaseChangeSetIntents() -> BossTileIntents:
 	var tile_intents: Array[TileIntentDatastore] = []
 	var tile_results: Dictionary[TileGD, String] = {}
 	
+	if boss_datastore.getIntentDuration() == 2:
+		var allies: Array = Game.getEnemyUnits(team)
+		allies.shuffle()
+		
+		var chosen_double_adjacent_tiles: Array = []
+		for AllyCard: CardGD in allies:
+			var double_adjacent_tiles: Array = Game.getAdjacentTiles(AllyCard.getTile(), 2)
+			double_adjacent_tiles.filter(func(x: TileGD): return x not in chosen_double_adjacent_tiles)
+			
+			double_adjacent_tiles.shuffle()
+			double_adjacent_tiles.resize(DODGE_DOUBLE_ADJACENT_TILES)
+			double_adjacent_tiles.filter(func(x: TileGD): return x != null)
+			
+			chosen_double_adjacent_tiles += double_adjacent_tiles
+	
+		for LevelTile: TileGD in get_tree().get_nodes_in_group("LevelTilesGD").filter(func(x: TileGD): return x not in chosen_double_adjacent_tiles):
+			tile_intents.append(TileIntentDatastore.new(Game.TileIntents.RED, null, LevelTile.getCoords()))
+	
 	return BossTileIntents.new(tile_intents, tile_results)
 
 func onDodgePhaseChange(use_type: UseType) -> Array:
-	var actions: Array = []
-	return actions
+	if use_type == UseType.END and boss_datastore.getIntentDuration() == 1:
+		var allies: Array = Game.getAllyUnits(0)
+		return allies.map(func(x: CardGD): return RemoveStatusEffectAction.new(x.getStatusEffect(BLIND_ID)))
+	return []
 #endregion
 
 #region Helper

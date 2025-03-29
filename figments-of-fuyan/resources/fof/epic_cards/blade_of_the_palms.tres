@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="EpicCardInfo" load_steps=26 format=3 uid="uid://b7lnksd1egi7b"]
+[gd_resource type="Resource" script_class="EpicCardInfo" load_steps=27 format=3 uid="uid://b7lnksd1egi7b"]
 
 [ext_resource type="Texture2D" uid="uid://c4qts40qrbkie" path="res://assets/sprites/game/cards/art_mini/blade_of_the_palms.png" id="1_3caon"]
 [ext_resource type="Script" uid="uid://bnp3nwlcsibyl" path="res://scripts/fof_info/cards/extra/boss_phase_datastore.gd" id="1_d1qqb"]
@@ -20,6 +20,7 @@
 [ext_resource type="Resource" uid="uid://gah3cxhrmedq" path="res://resources/datastore/boss_intents/blade_of_the_palms/clone_minifan_attack.tres" id="17_lofdk"]
 [ext_resource type="Resource" uid="uid://ttm21xdoahcv" path="res://resources/datastore/boss_intents/blade_of_the_palms/hammer_attack.tres" id="18_5epeo"]
 [ext_resource type="Resource" uid="uid://8qu8qls78321" path="res://resources/datastore/boss_intents/blade_of_the_palms/clone_summon.tres" id="18_e0d1a"]
+[ext_resource type="Resource" uid="uid://dl6b3ynku6rri" path="res://resources/datastore/boss_intents/blade_of_the_palms/dodge_phase_change.tres" id="19_lofdk"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_x8gyx"]
 size = Vector3(0.633057, 2.42429, 0.301514)
@@ -90,8 +91,8 @@ top = 2.444
 eye = 1.897
 awaken_boss_intent_name = "Dodge Phase Change"
 speed_order_override = 0
-change_delay = 1.8
-boss_intents = Array[ExtResource("5_tlf4i")]([ExtResource("14_hhvwj"), ExtResource("13_8g5ul"), ExtResource("17_lofdk"), ExtResource("6_8g5ul"), ExtResource("18_e0d1a"), ExtResource("18_5epeo")])
+change_delay = 2.4
+boss_intents = Array[ExtResource("5_tlf4i")]([ExtResource("14_hhvwj"), ExtResource("13_8g5ul"), ExtResource("17_lofdk"), ExtResource("6_8g5ul"), ExtResource("18_e0d1a"), ExtResource("18_5epeo"), ExtResource("19_lofdk")])
 metadata/_custom_type_script = "uid://bnp3nwlcsibyl"
 
 [resource]
