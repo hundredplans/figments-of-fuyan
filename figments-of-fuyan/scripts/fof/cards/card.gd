@@ -593,6 +593,9 @@ func onRemoveFieldInfo() -> void:
 	if FieldInfo != null:
 		FieldInfo.queue_free()
 	
+func setFieldInfoVisible(state: bool) -> void:
+	FieldInfo.visible = state
+	
 func onCameraPositionUpdated(pos: Vector3) -> void:
 	if FieldInfo != null: FieldInfo.onCameraPositionUpdated(pos)
 #endregion

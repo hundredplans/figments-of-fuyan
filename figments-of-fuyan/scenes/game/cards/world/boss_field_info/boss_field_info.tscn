@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://d4msabmicn7rt"]
+[gd_scene load_steps=9 format=3 uid="uid://d4msabmicn7rt"]
 
 [ext_resource type="Script" uid="uid://cn2ojinduvk6t" path="res://scenes/game/cards/world/boss_field_info/boss_field_info.gd" id="1_tvnno"]
 [ext_resource type="Texture2D" uid="uid://c64donnquwx7" path="res://assets/sprites/game/epic_cards/intents/attack.png" id="2_boc1b"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://qhacwtk76uwx" path="res://assets/sprites/game/epic_cards/intents/misc.png" id="5_o8ob5"]
 [ext_resource type="Texture2D" uid="uid://drxf4wfdnrsrf" path="res://assets/sprites/game/epic_cards/intents/movement.png" id="6_k714t"]
 [ext_resource type="Texture2D" uid="uid://b2hm0b55ll8ri" path="res://assets/sprites/game/epic_cards/intents/movement_attack.png" id="7_x68mu"]
+[ext_resource type="Texture2D" uid="uid://co8h8d76gvxs5" path="res://assets/sprites/game/epic_cards/intents/hammer.png" id="8_daesc"]
 
 [node name="BossFieldInfo" type="Node3D"]
 script = ExtResource("1_tvnno")
@@ -16,6 +17,7 @@ debuff_texture = ExtResource("4_bcuk0")
 misc_texture = ExtResource("5_o8ob5")
 movement_texture = ExtResource("6_k714t")
 movement_attack_texture = ExtResource("7_x68mu")
+hammer_texture = ExtResource("8_daesc")
 
 [node name="BossIntentSprite" type="Sprite3D" parent="."]
 unique_name_in_owner = true

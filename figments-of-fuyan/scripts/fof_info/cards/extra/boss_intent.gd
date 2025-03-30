@@ -9,4 +9,4 @@ class_name BossIntent extends Resource
 @export var combat_type: CombatType
 
 enum CombatType {BOTH, IN_COMBAT, OUT_OF_COMBAT}
-enum IntentType {ATTACK, MOVEMENT_ATTACK, MOVEMENT, DEBUFF, BUFF, MISC}
+enum IntentType {ATTACK, MOVEMENT_ATTACK, MOVEMENT, DEBUFF, BUFF, MISC, HAMMER}

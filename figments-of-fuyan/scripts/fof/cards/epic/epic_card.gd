@@ -81,9 +81,6 @@ func getSpeedOrderOverrideFromInfo() -> EpicCardInfo.SpeedOrderOverride:
 	
 func getChangeDelayFromInfo(delta: int = 0) -> float:
 	return info.getChangeDelay(boss_datastore.phase + delta)
-	
-func getAwakenBossIntentNameFromInfo() -> String:
-	return info.getAwakenBossIntentName(boss_datastore.phase)
 #endregion
 
 #region Getters
@@ -201,10 +198,8 @@ func onChangeBossPhase() -> void:
 	onEmptyBossIntentNameCooldowns()
 	onResetBossIntentCooldowns()
 	onForceAction(CameraChangeAction.new(self))
-	BossFieldInfo.visible = false
 			
 func onChangeBossPhasePostDelay() -> void:
-	BossFieldInfo.visible = true
 	var new_attack: int = getAttackFromInfo()
 	var new_max_health: int = getHealthFromInfo()
 	var new_speed: int = getSpeedFromInfo()
@@ -220,14 +215,12 @@ func onChangeBossPhasePostDelay() -> void:
 		onRemoveModel()
 		onCreateModel()
 		
-	var awaken_boss_intent_name: String = getAwakenBossIntentNameFromInfo()
-	if !awaken_boss_intent_name.is_empty():
-		var new_boss_intent: BossIntent = getBossIntentsFromInfo().filter(func(x: BossIntent): return x.name == awaken_boss_intent_name)[0]
-		boss_datastore.onResetConditionResults()
-		onForceAction(ChangeBossIntentAction.new(new_boss_intent, true))
-		
-	actions.append(CameraSpectateGroupAction.new(0))
 	onPushAction(actions)
+	
+func onPhaseChangeBossIntent(intent_name: String) -> void:
+	var new_boss_intent: BossIntent = getBossIntentByName(intent_name)
+	boss_datastore.onResetConditionResults()
+	onForceAction(ChangeBossIntentAction.new(new_boss_intent, true))
 #endregion
 
 #region Helper
@@ -286,3 +279,6 @@ func getCloseToEnemiesTiles(enemies: Array, tiles: Array) -> Array:
 #endregion
 
 func onCanCreateInspectScreen() -> bool: return false
+
+func setFieldInfoVisible(state: bool) -> void: # Access via action
+	BossFieldInfo.visible = state

@@ -8,6 +8,7 @@ extends Node3D
 @export var misc_texture: Texture2D
 @export var movement_texture: Texture2D
 @export var movement_attack_texture: Texture2D
+@export var hammer_texture: Texture2D
 
 const INTENT_CHANGE_TIME: float = 0.5
 
@@ -28,6 +29,7 @@ func onUpdateBossIntent() -> void:
 		BossIntent.IntentType.MISC: tx = misc_texture
 		BossIntent.IntentType.MOVEMENT: tx = movement_texture
 		BossIntent.IntentType.MOVEMENT_ATTACK: tx = movement_attack_texture
+		BossIntent.IntentType.HAMMER: tx = hammer_texture
 	
 	var scale_tween := create_tween()
 	scale_tween.tween_property(BossIntentSprite, "scale:x", -1.0, INTENT_CHANGE_TIME)\

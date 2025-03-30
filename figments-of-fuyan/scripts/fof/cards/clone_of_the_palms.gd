@@ -1,5 +1,6 @@
 extends CardGD
 
+var is_clone_summon: bool
 func onProcessAction(action: Action) -> void:
 	super(action)
 	

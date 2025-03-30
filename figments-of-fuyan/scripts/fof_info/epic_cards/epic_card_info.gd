@@ -74,6 +74,3 @@ func getColoredBaseMaterial(_team: int, _ascended: bool) -> ShaderMaterial:
 	
 func getChangeDelay(phase: int = 1) -> float:
 	return phases[phase - 1].getChangeDelay()
-	
-func getAwakenBossIntentName(phase: int = 1) -> String:
-	return phases[phase - 1].getAwakenBossIntentName()

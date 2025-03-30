@@ -851,19 +851,22 @@ func onRemoveGroundTilesWhenNotOnGround(tiles: Array) -> Array:
 #region Phase Change
 func onChangeBossPhase() -> void:
 	super()
-	
+	onForceAction(FieldInfoVisibleAction.new(self, false))
 	anibility_datastore.setDeathModifier("PhaseChange")
 	onDeath()
 	
 func onChangeBossPhasePostDelay() -> void:
 	super()
+	onForceAction(FieldInfoVisibleAction.new(self, true))
 	onIdle()
 	
 	anibility_datastore.setDeathModifier("")
 	var actions: Array = []
+	actions.append(ChangeBossIntentAction.new(getBossIntentByName("Maelstorm Attack")))
 	
 	var palmies: Array = Game.getAllyUnits(team).filter(func(x: CardGD): return x.info.id == PALMY_ID)
 	actions.append(StatAction.new(palmies.map(func(x: CardGD): return StatInfo.new(x, Game.Stats.ATTACK, 1))))
+	actions.append(CameraSpectateGroupAction.new(0))
 	
 	onPushAction(actions)
 #endregion
