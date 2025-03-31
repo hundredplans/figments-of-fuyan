@@ -1,0 +1,45 @@
+[gd_scene load_steps=4 format=3 uid="uid://wqwbgly1ew5t"]
+
+[ext_resource type="Script" uid="uid://dhgemaxdar8u4" path="res://scenes/game/levels/ui/run_finish_ui.gd" id="1_xga4u"]
+[ext_resource type="PackedScene" uid="uid://ip8hisyxk8ia" path="res://scenes/game/levels/ui/loss_ui.tscn" id="2_8qicb"]
+[ext_resource type="LabelSettings" uid="uid://cur26wm5iuwxs" path="res://resources/ui/label_settings/roboto_massive.tres" id="3_5bfhh"]
+
+[node name="RunFinishUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xga4u")
+
+[node name="LossUI" parent="." instance=ExtResource("2_8qicb")]
+layout_mode = 1
+offset_left = -1057.0
+offset_right = 147.0
+
+[node name="Label" type="Label" parent="."]
+top_level = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 70.0
+offset_top = -490.0
+offset_right = 909.0
+offset_bottom = 491.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Thanks for playing the demo!
+
+By
+Kuba Mysłowski
+Witold Anisimow"
+label_settings = ExtResource("3_5bfhh")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[connection signal="exit" from="LossUI" to="." method="_on_loss_ui_exit"]

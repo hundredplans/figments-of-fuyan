@@ -17,6 +17,7 @@ class_name BossPhaseDatastore extends Resource
 
 @export var speed_order_override: EpicCardInfo.SpeedOrderOverride
 
+@export var env: Environment # If null remains as default for area
 @export var change_delay: float
 @export var boss_intents: Array[BossIntent]
 
@@ -61,3 +62,6 @@ func getChangeDelay() -> float:
 	
 func getBossIntents() -> Array[BossIntent]:
 	return boss_intents
+	
+func getEnvironment() -> Environment:
+	return env

@@ -5,8 +5,9 @@
 [resource]
 script = ExtResource("1_dpv3f")
 name = "Clone Minifan Attack"
-description = "- Does a minifan but also summons a clone that does a minifan but doesnt move on the first turn (where he attacks is projected), always summons it within 3 tiles. This clone has 1HP and doesn't summon if you step on it"
-type = 0
+description = "Does a MiniFan but also summons two clones perpendicular to him"
+type = 1
+duration = 1
 default_cooldown = 2
 off_vision_use_cooldown = false
 combat_type = 1

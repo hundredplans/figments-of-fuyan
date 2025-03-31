@@ -14,6 +14,8 @@ class_name EpicCardInfo extends FofInfo
 @export var art_mini: Texture2D
 @export_group("")
 
+@export var awaken_boss_intent_name: String
+
 enum SpeedOrderOverride {FIRST, LAST}
 
 const VISION_RAY_SCENE_PATH: String = "res://scenes/game/cards/world/vision_ray.tscn"
@@ -74,3 +76,9 @@ func getColoredBaseMaterial(_team: int, _ascended: bool) -> ShaderMaterial:
 	
 func getChangeDelay(phase: int = 1) -> float:
 	return phases[phase - 1].getChangeDelay()
+	
+func getEnvironment(phase: int = 1) -> Environment:
+	return phases[phase - 1].getEnvironment()
+	
+func getAwakenBossIntentName() -> String:
+	return awaken_boss_intent_name

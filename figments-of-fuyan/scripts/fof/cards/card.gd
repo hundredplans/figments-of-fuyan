@@ -1533,6 +1533,8 @@ func setBaseStats(types: Array, values: Array) -> void:
 	
 func onCanCreateInspectScreen() -> bool: return true
 
+func onCanHoverOnTile(): return true
+
 #region Movement Range
 func getsetMovementRange(speed_override: int = -1) -> Array:
 	if Tile == null: return []

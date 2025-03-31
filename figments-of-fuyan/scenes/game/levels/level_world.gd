@@ -32,7 +32,6 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	area = save_file.area
 	level = area.active_level
 	
-	setEnvironment()
 	add_child(area.info.default_light.instantiate())
 	
 	level.phase_changed.connect(onPhaseChanged)
@@ -47,6 +46,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level.set_last_ally_spectate_object.connect(setLastAllySpectateObjectForLevel)
 	level.request_camera_position_update.connect(onRequestCameraPositionUpdate)
 	level.vision_changed.connect(onVisionChanged)
+	level.load_env.connect(setEnvironment)
 	
 	CameraManager.camera_position_updated.connect(onCameraPositionUpdated)
 	CameraManager.create_camera_action.connect(onCreateCameraChangeAction)
@@ -63,6 +63,8 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	
 	UI.dragged_begin.connect(onCardDraggedBegin)
 	UI.dragged_end.connect(onCardDraggedEnd)
+	
+	area.process_action.connect(onProcessAction)
 	
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
@@ -386,8 +388,18 @@ func onGameStarted() -> void:
 #endregion
 
 #region Environment
-func setEnvironment() -> void:
-	WorldEnv.environment = area.info.base_environment if level.fight_type == Game.FightTypes.REGULAR else area.info.elite_environment
+func setEnvironment(env: Environment = null) -> void:
+	if env == null:
+		if level.fight_type in [Game.FightTypes.MINIBOSS, Game.FightTypes.BOSS]:
+			env = level.getBoss().getEnvironmentFromInfo()
+		
+		if env == null:
+			match level.fight_type:
+				Game.FightTypes.REGULAR:
+					env = area.info.base_environment
+				_:
+					env = area.info.elite_environment
+	WorldEnv.environment = env
 #endregion
 
 #region Dragged
@@ -401,3 +413,11 @@ func onCardDraggedEnd(Card: CardGD, _dragged_position: Vector2, CardUI: Control)
 		level.onAppendAction(PlayCardAction.new(Card, Tile))
 		CardUI.queue_free()
 #endregion
+
+func onProcessAction(action: Action) -> void:
+	if action.post:
+		if action is ChangeEnvironmentAction:
+			onChangeEnvironment(action)
+			
+func onChangeEnvironment(action: ChangeEnvironmentAction) -> void:
+	setEnvironment(action.environment)

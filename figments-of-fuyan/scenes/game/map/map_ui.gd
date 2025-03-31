@@ -60,6 +60,8 @@ func setInfo(_save_file: SaveFileGD) -> void:
 		map_node.hovered.connect(onMapNodeHovered)
 	
 	onUpdateDeckCardAmountLabel()
+	if get_parent().get_node_or_null("RunFinishUI") != null:
+		visible = false
 	
 func onInitLoad() -> void: # Basically the area fof init
 	onMapStartAnimation()

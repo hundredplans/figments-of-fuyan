@@ -81,6 +81,9 @@ func getSpeedOrderOverrideFromInfo() -> EpicCardInfo.SpeedOrderOverride:
 	
 func getChangeDelayFromInfo(delta: int = 0) -> float:
 	return info.getChangeDelay(boss_datastore.phase + delta)
+	
+func getEnvironmentFromInfo() -> Environment:
+	return info.getEnvironment(boss_datastore.phase)
 #endregion
 
 #region Getters
@@ -162,6 +165,9 @@ func onResetBossIntentCooldowns() -> void:
 func onEmptyBossIntentNameCooldowns() -> void:
 	boss_datastore.boss_intent_name_to_cooldown = {}
 		
+func onFirstUpdateBossIntent() -> void: # Used when it's set by an action for any custom behaviour
+	pass
+		
 func onFilterBossIntents(enemies: Array, allies: Array) -> Array:
 	var in_combat: bool = !enemies.is_empty()
 	var boss_intents: Array = getBossIntentsPool(enemies, allies)
@@ -225,10 +231,10 @@ func onPhaseChangeBossIntent(intent_name: String) -> void:
 
 #region Helper
 func onHasNonAttackIntents(boss_intents: Array) -> bool:
-	return boss_intents.any(func(x: BossIntent): return x.type not in [BossIntent.IntentType.ATTACK, BossIntent.IntentType.MOVEMENT_ATTACK])
+	return boss_intents.any(func(x: BossIntent): return x.type not in [BossIntent.IntentType.ATTACK, BossIntent.IntentType.MOVEMENT_ATTACK, BossIntent.IntentType.HAMMER])
 
 func onHasAttackIntents(boss_intents: Array) -> bool:
-	return boss_intents.any(func(x: BossIntent): return x.type in [BossIntent.IntentType.ATTACK, BossIntent.IntentType.MOVEMENT_ATTACK])
+	return boss_intents.any(func(x: BossIntent): return x.type in [BossIntent.IntentType.ATTACK, BossIntent.IntentType.MOVEMENT_ATTACK, BossIntent.IntentType.HAMMER])
 
 func onHasIntentName(boss_intents: Array, intent_name: String) -> bool:
 	return boss_intents.any(func(x: BossIntent): return x.name == intent_name)
@@ -240,10 +246,10 @@ func onKeepByName(boss_intents: Array, intent_name: String) -> Array:
 	return boss_intents.filter(func(x: BossIntent): return x.name == intent_name)
 
 func onKeepAttacks(boss_intents: Array) -> Array:
-	return boss_intents.filter(func(x: BossIntent): return x.type in [BossIntent.IntentType.ATTACK, BossIntent.IntentType.MOVEMENT_ATTACK])
+	return boss_intents.filter(func(x: BossIntent): return x.type in [BossIntent.IntentType.ATTACK, BossIntent.IntentType.MOVEMENT_ATTACK, BossIntent.IntentType.HAMMER])
 
 func onKeepNonAttacks(boss_intents: Array) -> Array:
-	return boss_intents.filter(func(x: BossIntent): return x.type not in [BossIntent.IntentType.ATTACK, BossIntent.IntentType.MOVEMENT_ATTACK])
+	return boss_intents.filter(func(x: BossIntent): return x.type not in [BossIntent.IntentType.ATTACK, BossIntent.IntentType.MOVEMENT_ATTACK, BossIntent.IntentType.HAMMER])
 
 func getDistantToEnemiesTiles(enemies: Array, tiles: Array) -> Array:
 	if enemies.is_empty(): return tiles

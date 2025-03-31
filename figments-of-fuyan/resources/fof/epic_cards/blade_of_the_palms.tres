@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="EpicCardInfo" load_steps=27 format=3 uid="uid://b7lnksd1egi7b"]
+[gd_resource type="Resource" script_class="EpicCardInfo" load_steps=28 format=3 uid="uid://b7lnksd1egi7b"]
 
 [ext_resource type="Texture2D" uid="uid://c4qts40qrbkie" path="res://assets/sprites/game/cards/art_mini/blade_of_the_palms.png" id="1_3caon"]
 [ext_resource type="Script" uid="uid://bnp3nwlcsibyl" path="res://scripts/fof_info/cards/extra/boss_phase_datastore.gd" id="1_d1qqb"]
@@ -17,10 +17,11 @@
 [ext_resource type="Resource" uid="uid://cxcmjs0iae406" path="res://resources/datastore/boss_intents/blade_of_the_palms/double_teleport_attack.tres" id="13_8g5ul"]
 [ext_resource type="Resource" uid="uid://ddns60xv08b60" path="res://resources/datastore/boss_intents/blade_of_the_palms/mist_attack.tres" id="14_hhvwj"]
 [ext_resource type="Resource" uid="uid://b02t6qh4ymrvy" path="res://resources/datastore/boss_intents/blade_of_the_palms/clone_phase_change.tres" id="15_hhvwj"]
+[ext_resource type="Environment" uid="uid://ccj8myeinjes5" path="res://assets/environments/palm_evening_environment.tres" id="16_e0d1a"]
 [ext_resource type="Resource" uid="uid://gah3cxhrmedq" path="res://resources/datastore/boss_intents/blade_of_the_palms/clone_minifan_attack.tres" id="17_lofdk"]
 [ext_resource type="Resource" uid="uid://ttm21xdoahcv" path="res://resources/datastore/boss_intents/blade_of_the_palms/hammer_attack.tres" id="18_5epeo"]
 [ext_resource type="Resource" uid="uid://8qu8qls78321" path="res://resources/datastore/boss_intents/blade_of_the_palms/clone_summon.tres" id="18_e0d1a"]
-[ext_resource type="Resource" uid="uid://dl6b3ynku6rri" path="res://resources/datastore/boss_intents/blade_of_the_palms/dodge_phase_change.tres" id="19_lofdk"]
+[ext_resource type="Environment" uid="uid://xe2w2q3kwjv" path="res://assets/environments/palm_night_environment.tres" id="20_e0d1a"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_x8gyx"]
 size = Vector3(0.633057, 2.42429, 0.301514)
@@ -51,7 +52,6 @@ points = Array[Vector3]([Vector3(-0.169155, 0.239571, 0.133057), Vector3(0.18351
 stat = 2.649
 top = 2.444
 eye = 1.897
-awaken_boss_intent_name = "Reposition"
 speed_order_override = 0
 change_delay = 2.4
 boss_intents = Array[ExtResource("5_tlf4i")]([ExtResource("6_8g5ul"), ExtResource("7_hhvwj"), ExtResource("8_qd2jx"), ExtResource("9_qq5yi"), ExtResource("10_5epeo"), ExtResource("11_lofdk")])
@@ -70,8 +70,8 @@ points = Array[Vector3]([Vector3(-0.169155, 0.239571, 0.133057), Vector3(0.18351
 stat = 2.649
 top = 2.444
 eye = 1.897
-awaken_boss_intent_name = "Clone Phase Change"
 speed_order_override = 0
+env = ExtResource("16_e0d1a")
 change_delay = 2.4
 boss_intents = Array[ExtResource("5_tlf4i")]([ExtResource("7_hhvwj"), ExtResource("13_8g5ul"), ExtResource("8_qd2jx"), ExtResource("9_qq5yi"), ExtResource("14_hhvwj"), ExtResource("6_8g5ul"), ExtResource("15_hhvwj")])
 metadata/_custom_type_script = "uid://bnp3nwlcsibyl"
@@ -89,10 +89,10 @@ points = Array[Vector3]([Vector3(-0.169155, 0.239571, 0.133057), Vector3(0.18351
 stat = 2.649
 top = 2.444
 eye = 1.897
-awaken_boss_intent_name = "Dodge Phase Change"
 speed_order_override = 0
+env = ExtResource("20_e0d1a")
 change_delay = 2.4
-boss_intents = Array[ExtResource("5_tlf4i")]([ExtResource("14_hhvwj"), ExtResource("13_8g5ul"), ExtResource("17_lofdk"), ExtResource("6_8g5ul"), ExtResource("18_e0d1a"), ExtResource("18_5epeo"), ExtResource("19_lofdk")])
+boss_intents = Array[ExtResource("5_tlf4i")]([ExtResource("14_hhvwj"), ExtResource("13_8g5ul"), ExtResource("17_lofdk"), ExtResource("6_8g5ul"), ExtResource("18_e0d1a"), ExtResource("18_5epeo"), ExtResource("15_hhvwj")])
 metadata/_custom_type_script = "uid://bnp3nwlcsibyl"
 
 [resource]
@@ -104,6 +104,7 @@ tool_id = 15
 boon_id = 19
 art_mini_coordinate = Vector2i(94, 29)
 art_mini = ExtResource("1_3caon")
+awaken_boss_intent_name = "Reposition"
 id = 2
 name = "Blade of the Palms"
 gdscript = ExtResource("1_wc1av")

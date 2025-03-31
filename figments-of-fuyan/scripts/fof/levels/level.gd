@@ -47,6 +47,7 @@ signal camera_change_pre
 signal spectate_group
 signal set_last_ally_spectate_object
 signal vision_changed
+signal load_env
 
 #region Load / Save
 func onSave() -> SavedData:
@@ -158,6 +159,8 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 	onChangePhase(data.phase, true)
 	if is_ended:
 		onGameEnded()
+		
+	load_env.emit()
 
 var is_init: bool = false
 func onFofInit() -> void:

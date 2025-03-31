@@ -1,8 +1,11 @@
 extends Control
 
 signal mouse_in_ui
+signal exit
+
 func _on_loss_button_pressed() -> void:
 	Game.save_file.onGameLost()
+	exit.emit()
 	
 func onMouseInUI(state: bool) -> void:
 	mouse_in_ui.emit(state)

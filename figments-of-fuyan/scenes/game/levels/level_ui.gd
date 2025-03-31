@@ -433,7 +433,7 @@ var HoverCardUI: Control
 const HOVER_CARD_OFFSET := Vector2(-110, -400)
 func onChangeHoverCardState(Card: CardGD, state: bool) -> void:
 	if HoverCardUI != null and !state: HoverCardUI.queue_free()
-	elif HoverCardUI == null and state:
+	elif HoverCardUI == null and state and Card.onCanHoverOnTile():
 		HoverCardUI = Card.onCreateCardUI(HoverCardControl, false, false)
 		setHoverCardUIPosition()
 		

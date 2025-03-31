@@ -17,3 +17,5 @@ func onPostAction() -> void:
 	var BossCard: EpicCardGD = Game.getLevel().getBoss()
 	BossCard.setBossIntent(boss_intent)
 	BossCard.boss_datastore.setIntentDuration(boss_intent.duration)
+	
+	BossCard.onFirstUpdateBossIntent()

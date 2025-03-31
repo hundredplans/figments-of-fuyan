@@ -1,0 +1,21 @@
+[gd_resource type="Environment" load_steps=4 format=3 uid="uid://xe2w2q3kwjv"]
+
+[ext_resource type="Texture2D" uid="uid://dr5qs6fj1427w" path="res://assets/hdrs/kloppenheim_02_puresky_2k.hdr" id="1_ciuuw"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_voyok"]
+panorama = ExtResource("1_ciuuw")
+energy_multiplier = 0.05
+
+[sub_resource type="Sky" id="Sky_x5lgb"]
+sky_material = SubResource("PanoramaSkyMaterial_voyok")
+
+[resource]
+background_mode = 2
+sky = SubResource("Sky_x5lgb")
+ssr_enabled = true
+ssr_fade_in = 0.00662912
+ssr_fade_out = 111.431
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_read_sky_light = false
+glow_blend_mode = 0
