@@ -488,6 +488,7 @@ func onRollEpicCardRewards() -> Array:
 			tool_data = Random.getRandomFofByOdds(ToolInfo, getWorld().tool_enemy_spawn_rarity_odds.getDictionary())
 		
 		var card_data: SavedDataCard = Game.onCreateBaseCard(chosen_info.id, ascend_card, tool_data)
+		card_data.team = 1
 		Game.setCardDataFromInfo(card_data, chosen_info)
 		
 		enemy_ids.append(chosen_info.id)
