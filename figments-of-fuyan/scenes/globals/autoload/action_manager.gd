@@ -93,6 +93,9 @@ func onRemoveMoveAndAttackActions(Card: CardGD):
 	actions = actions.filter(func(x: Action):
 			return !((x is MoveToTileAction and x.Card == Card) or (x is AttackAction and x.Attacker == Card)))
 		
+func getActionsByType(type: GDScript) -> Array:
+	return actions.filter(func(x: Action): return is_instance_of(x, type))
+		
 func onFindFirstAction(type: GDScript) -> Action:
 	var valid_actions: Array = actions.filter(func(x: Action): return is_instance_of(x, type))
 	return valid_actions[0] if !valid_actions.is_empty() else null

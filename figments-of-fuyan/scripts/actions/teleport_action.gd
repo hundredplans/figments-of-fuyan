@@ -12,8 +12,10 @@ func onPreAction() -> void:
 	
 func onPostAction() -> void:
 	var actions: Array = []
-	
 	if Tile.isOccupied():
 		actions.append(DestroyAction.new(Game.getFieldCard(Tile), Card))
-	actions.append(OccupyAction.new(Card, Tile))
+	
+	actions.append(OccupyAction.new(Card, Tile, true, true))
+	Card.setPositionToTile(Tile)
+	
 	onPushAction(actions)

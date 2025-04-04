@@ -348,6 +348,7 @@ func onMapNodePressed(map_node: MapNodeGD) -> void:
 	
 	await get_tree().create_timer(Game.SELECTED_MAP_NODE_TRAVEL_SPEED).timeout
 	EnteredMapNode.onExited()
+	if map_node.isHoly(): Game.onIncrementHolyTravelledAmount()
 	map_node.onEntered()
 			
 func onMapNodeEntered(map_node: MapNodeGD) -> void:
@@ -489,7 +490,6 @@ func onRollEpicCardRewards() -> Array:
 		
 		var card_data: SavedDataCard = Game.onCreateBaseCard(chosen_info.id, ascend_card, tool_data)
 		card_data.team = 1
-		Game.setCardDataFromInfo(card_data, chosen_info)
 		
 		enemy_ids.append(chosen_info.id)
 		enemy_cards.append(SavedData.onLoadModel(card_data, active_level))
@@ -549,7 +549,7 @@ func getCardsByRarity(original_cards: Array) -> Array:
 	if cards.is_empty(): return getCardsByRarity(original_cards)
 	return cards
 	
-func setEnemySpawnsFromBudget(budget: int, enemy_spawn_amount: int, spawns: Array, progress: int, is_elite: bool) -> Array:
+func setEnemySpawnsFromBudget(budget: int, min_spawn_amount: int, max_spawn_amount: int, spawns: Array, progress: int, is_elite: bool) -> Array:
 	var cards: Array = Helper.getFofInfoArray(CardInfo).filter(func(x: CardInfo): return x.id in basic_card_ids)
 	
 	if progress == 1 and info.id == 1: # Remove charmer
@@ -559,22 +559,10 @@ func setEnemySpawnsFromBudget(budget: int, enemy_spawn_amount: int, spawns: Arra
 	var highest_cost: int = energies.max()
 	var lowest_cost: int = energies.min()
 	
-	var original_energy_combinations: Array = onGenerateCombinations(lowest_cost, highest_cost, enemy_spawn_amount)
-	#print("Enemy Spawn Amount: " + str(enemy_spawn_amount))
-	#print("Budget: " + str(budget))
-	#print("Original Combainations: " + str(original_energy_combinations))
-	
-	var energy_combinations: Array = original_energy_combinations.filter(func(x: Array): return x.reduce(sum, 0) == budget)
-	
-	
-	#print("End Combinations: " + str(energy_combinations))
-	#print()
-	
-	var energy_combination: Array = []
-	if !energy_combinations.is_empty(): # Remove later
-		energy_combination = energy_combinations.pick_random()
-	else: energy_combination = original_energy_combinations.pick_random(); print("USED ILLEGAL COMBINATION!")
-	
+	max_spawn_amount = min(max_spawn_amount, spawns.size() - 1)
+	var energy_combination: Array = getRandomEnergyCombination(budget, randi_range(min_spawn_amount, max_spawn_amount), lowest_cost, highest_cost)\
+		if budget > 6 else getEnergyCombinationFromBudget(budget, lowest_cost, highest_cost, min_spawn_amount, max_spawn_amount)
+		
 	var other_enemies_ids: Array = get_tree().get_nodes_in_group("FightMapNodesGD")\
 		.filter(func(x: MapNodeGD): return x.map_location.progress == progress)\
 		.map(func(y: MapNodeGD): return y.enemy_cards.map(func(z: SavedDataCard): return z.id))
@@ -591,6 +579,72 @@ func setEnemySpawnsFromBudget(budget: int, enemy_spawn_amount: int, spawns: Arra
 			
 		return enemies
 	return []
+	
+const BUDGET_TO_COMBINATION_ODDS: Dictionary[int, Dictionary] = {
+	1: {
+		[1]: 1.0,
+	},
+	2: {
+		[1, 1]: 0.5,
+		[2]: 0.5,
+	},
+	3: {
+		[1, 1, 1]: 0.3,
+		[1, 2]: 0.4,
+		[3]: 0.3
+	},
+	4: {
+		[1, 1, 1, 1]: 0.05,
+		[1, 1, 2]: 0.3,
+		[2, 2]: 0.3,
+		[1, 3]: 0.3,
+		[4]: 0.05,
+	},
+	5: {
+		[1, 1, 1, 1, 1]: 0.01,
+		[1, 1, 1, 2]: 0.15,
+		[1, 1, 3]: 0.25,
+		[1, 2, 2]: 0.25,
+		[1, 4]: 0.08,
+		[2, 3]: 0.25,
+		[5]: 0.01,
+	},
+	6: {
+		[1, 1, 1, 1, 1, 1]: 0.005,
+		[1, 1, 1, 1, 2]: 0.01,
+		[1, 1, 2, 2]: 0.14,
+		[1, 1, 1, 3]: 0.14,
+		[1, 2, 3]: 0.14,
+		[1, 1, 4]: 0.14,
+		[2, 2, 2]: 0.14,
+		[2, 4]: 0.14,
+		[3, 3]: 0.14,
+		[1, 5]: 0.05,
+	}
+}
+	
+func getEnergyCombinationFromBudget(budget: int, lowest_cost: int, highest_cost: int, min_spawn_amount: int, max_spawn_amount: int) -> Array:
+	var budget_odds_dictionary: Dictionary = BUDGET_TO_COMBINATION_ODDS[budget]
+	var energy_combination: Array = []
+	var max_attempts: int = 128
+	var i: int = 0
+	
+	while(i < max_attempts):
+		energy_combination = Random.getRandomKeyVariant(budget_odds_dictionary)
+		if energy_combination.size() >= min_spawn_amount and energy_combination.size() <= max_spawn_amount:
+			return energy_combination
+		i += 1
+	push_warning("No valid budget found")
+	return []
+	
+func getRandomEnergyCombination(budget: int, enemy_spawn_amount: int, lowest_cost: int, highest_cost: int) -> Array:
+	var original_energy_combinations: Array = onGenerateCombinations(lowest_cost, highest_cost, enemy_spawn_amount)
+	var energy_combinations: Array = original_energy_combinations.filter(func(x: Array): return x.reduce(sum, 0) == budget)
+	var energy_combination: Array = []
+	if !energy_combinations.is_empty(): # Remove later
+		energy_combination = energy_combinations.pick_random()
+	else: energy_combination = original_energy_combinations.pick_random(); print("USED ILLEGAL COMBINATION!")
+	return energy_combination
 	
 func getBudget(progress: int, offset: int) -> int:
 	return getWorld().budget_for_fights[min(progress, 10)] + offset

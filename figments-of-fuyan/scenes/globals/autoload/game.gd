@@ -5,6 +5,8 @@ var is_mouse_in_ui: bool
 var save_file: SaveFileGD
 var area: AreaGD
 
+var brain: bool # AI Brain
+
 var ActionManagerReference: ActionManagerGD
 var ADVANCE_PHASES: Array = [Phases.PLAYER, Phases.AI, Phases.NEUTRAL]
 
@@ -526,6 +528,7 @@ func onRemoveCardWithAnimation(Card: CardGD, parent: Control, action_user: FofGD
 	
 func onCreateBaseCard(id: int, ascended: bool = false, tool_data: SavedDataTool = null) -> SavedDataCard:
 	var card_data := SavedDataCard.new(id, true)
+	setCardDataFromInfo(card_data, Helper.getFofInfoID(CardInfo, id))
 	card_data.tool_data = tool_data
 	card_data.ascended = ascended
 	return card_data
@@ -623,6 +626,14 @@ func onAddDivinusBoonAscenscionOdds(odds: float) -> float:
 	
 func getDivinusEncounterNegativePlusOdds() -> float:
 	return 0.1 # 0.1 more likely to be negative
+	
+func getHolyTravelledAmount() -> int:
+	if isDivinus():
+		return save_file.getChampionCard().holy_travelled_amount
+	return 0
+	
+func onIncrementHolyTravelledAmount() -> void:
+	if isDivinus(): save_file.getChampionCard().holy_travelled_amount += 1
 	
 func isDivinus() -> bool:
 	return save_file.getChampionCard().info.id == 2

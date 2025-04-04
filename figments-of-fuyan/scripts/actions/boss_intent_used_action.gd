@@ -21,9 +21,7 @@ func onPostAction() -> void:
 	var BossCard: EpicCardGD = Game.getLevel().getBoss()
 	if use_type == EpicCardGD.UseType.START:
 		actions.push_front(ChangeTurnStateAction.new(BossCard, Game.TurnStates.ACTIVE))
-		var ai_turn_action := AITurnAction.new(BossCard, false, false, allies, enemies)
-		ai_turn_action.setIsEndUseTypeBoss(true)
-		actions.append(ai_turn_action)
+		actions.append(EndBossIntentAction.new(BossCard, allies, enemies))
 		
 	if use_type == EpicCardGD.UseType.END:
 		BossCard.boss_datastore.boss_intent_used_this_turn = true

@@ -7,6 +7,7 @@ var retry_ai_turn: bool
 
 var previous_allies: Array
 var previous_enemies: Array
+var kill_rolled: bool
 
 func _init(_Card: CardGD = null, _tiles: Array = [], _previous_allies: Array = [], _previous_enemies: Array = []) -> void:
 	super()
@@ -14,6 +15,9 @@ func _init(_Card: CardGD = null, _tiles: Array = [], _previous_allies: Array = [
 	tiles = _tiles
 	previous_allies = _previous_allies
 	previous_enemies = _previous_enemies
+	
+func setKillRolled(_state: bool) -> void:
+	kill_rolled = _state
 	
 func setRetryAiTurn(state: bool) -> void:
 	retry_ai_turn = state
@@ -35,10 +39,17 @@ func onPostAction() -> void:
 		
 		if Card is not EpicCardGD:
 			if retry:
-				actions.append(AITurnAction.new(Card, false, false, previous_allies, previous_enemies))
+				var ai_turn_action := AITurnAction.new(Card, false, false, previous_allies, previous_enemies)
+				ai_turn_action.setKillRolled(kill_rolled)
+				actions.append(ai_turn_action)
 			elif !retry:
 				actions.append(ChangeTurnStateAction.new(Card, Game.TurnStates.PASSED))
 				actions.append(AITurnStartAction.new(Card.team))
+		elif retry:
+			actions.append(AITurnAction.new(Card, false, false, previous_allies, previous_enemies))
+			onPushAction(actions)
+			return
+	
 	elif !is_enemy_phase:
 		actions.append(ChangeTurnStateAction.new(Card, Game.TurnStates.PASSED))
 		actions.append(CameraSpectateGroupAction.new(0))

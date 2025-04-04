@@ -90,7 +90,7 @@ func onSave() -> SavedDataIObject:
 	return super()
 
 func onHeal(action: HealAction) -> void:
-	for heal_datastore: HealDatastore in action.heal_datatstores.filter(func(x: HealDatastore): return x.Card in cards_in_range):
+	for heal_datastore: HealDatastore in action.heal_datastores.filter(func(x: HealDatastore): return x.Card in cards_in_range):
 		heal_datastore.heal *= 2
 
 var SmokeParticle: GPUParticles3D

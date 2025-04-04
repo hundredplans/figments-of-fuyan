@@ -4,7 +4,7 @@ func onProcessAction(action: Action) -> void:
 	super(action)
 	if isValidBloodthirst(action):
 		var palm_cards: Array = Helper.getFofInfoID(AreaInfo, 1).card_ids
-		if action.Defender.info.id in palm_cards:
+		if action.Damager.info.id in palm_cards:
 			onPushAction(BloodthirstAction.new(self, action))
 	
 func getDescription() -> String:

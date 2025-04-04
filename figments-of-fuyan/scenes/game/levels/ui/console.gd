@@ -109,6 +109,9 @@ func insert(name_id: Variant, ascended: bool = false) -> void:
 	card_data.ascended = ascended
 	var Card: CardGD = SavedData.onLoadModel(card_data, level)
 	Game.getArea().onPushAction(InsertAction.new(Card))
+	
+func brain(state: bool) -> void:
+	Game.brain = state
 
 func energy(delta: int) -> void:
 	Game.getArea().onPushAction(EnergyAction.new(delta))

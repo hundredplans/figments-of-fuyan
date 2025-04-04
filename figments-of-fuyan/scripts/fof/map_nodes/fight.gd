@@ -13,10 +13,9 @@ func onFofInit() -> void:
 	var enemy_spawns: Array = level_info.getEnemySpawnsInGroup(spawn_group) # Array[SavedDataSpawn]
 	enemy_spawns.shuffle()
 	
-	var enemy_spawn_amount: int = min(randi_range(level_info.enemy_min_spawn_amount, level_info.enemy_max_spawn_amount), enemy_spawns.size())
 	var budget: int = getBudget()
 	
-	enemy_cards = Game.area.setEnemySpawnsFromBudget(budget, enemy_spawn_amount, enemy_spawns, map_location.progress, false)
+	enemy_cards = Game.area.setEnemySpawnsFromBudget(budget, level_info.enemy_min_spawn_amount, level_info.enemy_max_spawn_amount, enemy_spawns, map_location.progress, false)
 	
 func onSave() -> SavedDataMapNode:
 	return SavedDataFight.new(info.id, false, public_id, map_location, links, is_entered, is_finished, rotation.y, ability_save, level_info, spawn_group, enemy_cards)

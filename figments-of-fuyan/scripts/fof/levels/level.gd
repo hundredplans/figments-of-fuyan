@@ -254,7 +254,7 @@ func onProcessAction(action: Action) -> void:
 		elif action is VisionNewUnitAction:
 			if action.enter_vision:
 				if action.Discoverer.isEnemy(action.Discovered.team):
-					onRecalculateAITurn(action.Discoverer, true)
+					onRecalculateAITurn(action.Discoverer, true, true)
 				
 				if action.Discoverer.isAlly(1) and action.Discovered.isAlly(0):
 					onPlayerCardSpottedByAI()

@@ -10,7 +10,6 @@ func onFofInit() -> void:
 	enemy_spawns.shuffle()
 	
 	var base_budget: int = getBudget()
-	var enemy_spawn_amount: int = min(randi_range(level_info.enemy_min_spawn_amount, level_info.enemy_max_spawn_amount), enemy_spawns.size() - 1) # -1 for chief
 	var chief_spawn_coords: Vector4i = enemy_spawns.pop_front().coords
 	
 	var other_chief_ids: Array = get_tree().get_nodes_in_group("EliteFightMapNodesGD")\
@@ -21,10 +20,10 @@ func onFofInit() -> void:
 		.map(func(x: int): return Helper.getFofInfoID(CardInfo, x))\
 		.filter(func(x: CardInfo): return x.rarity == Game.Rarities.EXALT and x.id not in other_chief_ids)
 	
-	setChiefAndSpawns(base_budget, enemy_spawns, enemy_spawn_amount, chief_infos, chief_spawn_coords)
+	setChiefAndSpawns(base_budget, enemy_spawns, level_info.enemy_min_spawn_amount, level_info.enemy_max_spawn_amount - 1, chief_infos, chief_spawn_coords)
 	setRandomCurseID()
 	
-func setChiefAndSpawns(base_budget: int, enemy_spawns: Array, enemy_spawn_amount: int, chief_infos: Array, chief_spawn_coords: Vector4i) -> void:
+func setChiefAndSpawns(base_budget: int, enemy_spawns: Array, min_spawn_amount: int, max_spawn_amount: int, chief_infos: Array, chief_spawn_coords: Vector4i) -> void:
 	var chief_data: SavedDataCard = getChief(chief_infos, chief_spawn_coords)
 	
 	var ChiefCard: CardGD = SavedData.onLoadModel(chief_data, self)
@@ -32,10 +31,10 @@ func setChiefAndSpawns(base_budget: int, enemy_spawns: Array, enemy_spawn_amount
 	Game.setCardDataFromInfo(chief_data, Helper.getFofInfoID(CardInfo, chief_data.id))
 	
 	var budget: int = max(base_budget - chief_data.energy, 0)
-	enemy_cards = Game.area.setEnemySpawnsFromBudget(max(base_budget - chief_data.energy, 0), enemy_spawn_amount, enemy_spawns, map_location.progress, true)
+	enemy_cards = Game.area.setEnemySpawnsFromBudget(max(base_budget - chief_data.energy, 0), min_spawn_amount, max_spawn_amount, enemy_spawns, map_location.progress, true)
 	
 	while(!ChiefCard.isValidEliteLevelSpawns(enemy_cards)):
-		enemy_cards = Game.area.setEnemySpawnsFromBudget(budget, enemy_spawn_amount, enemy_spawns, map_location.progress, true)
+		enemy_cards = Game.area.setEnemySpawnsFromBudget(budget, min_spawn_amount, max_spawn_amount, enemy_spawns, map_location.progress, true)
 		
 	enemy_cards.append(chief_data)
 	

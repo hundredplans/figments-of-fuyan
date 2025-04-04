@@ -171,7 +171,7 @@ func onAnimationFinished(ani_name: String) -> void:
 	if !ani_name.begins_with("Death"): onIdle()
 		
 func onJump() -> void:
-	AniPlayer.stop()
+	#AniPlayer.stop() # Removed to address bug where sequencing jumps caused the animation to pause
 	onPlayAnimation("Jump")
 		
 func onAttack(DefenderTile: TileGD, delay: float) -> void:
@@ -513,7 +513,6 @@ func isOccupyVisionVisibleAction(action: Action) -> bool:
 #region Movement
 var MovementTween: Tween
 func onMoveToTile(action: MoveToTileAction, delay: float) -> void:
-	print(delay)
 	if isLevelVisible():
 		if MovementTween != null: MovementTween.kill()
 		MovementTween = create_tween()
@@ -661,8 +660,8 @@ func onUpdateVision() -> void: # Returns the new visibles
 		for Obj in obj_array: vision_range_game_objects.append(Obj)
 		
 	var adjacent_tiles_and_center: Array = Game.getAdjacentTiles(Tile, 1) + [Tile]
-	for AdjacentTile: TileGD in adjacent_tiles_and_center:
-		vision_range_game_objects.erase(AdjacentTile)
+	#for AdjacentTile: TileGD in adjacent_tiles_and_center:
+		#vision_range_game_objects.erase(AdjacentTile)
 		
 	vision_range_game_objects += cards
 	
@@ -671,15 +670,27 @@ func onUpdateVision() -> void: # Returns the new visibles
 	for GameObject in vision_range_game_objects:
 		point_batches[GameObject] = GameObject.getAdjustedPoints()
 	
-	for GameObject in point_batches:
-		for point in point_batches[GameObject]:
+	#var t: float = Time.get_ticks_msec()
+	for GameObject: GameObjectGD in point_batches:
+		for point: Vector3 in point_batches[GameObject]:
 			VisionRay.target_position = (point - VisionRay.global_position) * EXTRA_RAY_LENGTH
 			VisionRay.force_raycast_update()
 			if VisionRay.is_colliding():
-				var DirectGameObject: GameObjectGD = Helper.getCollision(VisionRay.get_collider(), GameObjectGD)
-				if DirectGameObject in vision_range_game_objects: # Has to be in range
-					direct_game_objects_dict[DirectGameObject] = null
-					if GameObject == DirectGameObject: break
+				var o: Node = VisionRay.get_collider().owner
+				var DirectGameObject: GameObjectGD
+				if o is Node3D: DirectGameObject = o.get_parent()
+				else: DirectGameObject = o
+				
+				#var DirectGameObject: GameObjectGD = VisionRay.get_collider().owner
+				#var DirectGameObject: GameObjectGD = Helper.getCollision(VisionRay.get_collider(), GameObjectGD)
+				
+				direct_game_objects_dict[DirectGameObject] = null
+				if GameObject == DirectGameObject: break
+				
+				
+	#var post_t: float = Time.get_ticks_msec() - t
+	#print("Points:" + str(post_t))
+	#pass
 	
 	for AdjacentTile: TileGD in adjacent_tiles_and_center:
 		direct_game_objects_dict[AdjacentTile] = null
@@ -687,7 +698,9 @@ func onUpdateVision() -> void: # Returns the new visibles
 	direct_game_objects_dict[Tile] = null
 	direct_game_objects_dict[self] = null
 	
-	var direct_game_objects: Array = direct_game_objects_dict.keys()
+	var direct_game_objects: Array = direct_game_objects_dict.keys()\
+		.filter(func(x: GameObjectGD): return x in vision_range_game_objects)
+		
 	for GameObject in previous_direct_game_objects.filter(func(x: GameObjectGD): return x not in direct_game_objects): # No longer direct
 		vision_datastore.setDirect(GameObject, false)
 		
@@ -1355,6 +1368,7 @@ func getArchetypeEnum(archetype_id: int = info.archetype.id) -> Game.Archetypes:
 		9: return Game.Archetypes.HOSTILE
 		10: return Game.Archetypes.ERRATIC
 		11: return Game.Archetypes.RECEIVER
+		12: return Game.Archetypes.MERCENARY
 	return Game.Archetypes.NULL
 	
 # True if active effect used
@@ -1547,9 +1561,17 @@ func getsetMovementRange(speed_override: int = -1) -> Array:
 		new_speed = speed_override
 		
 	var tiles: Array = Game.getAdjacentOrCloserTiles(Tile, speed) # Gather all tiles
-	var all_cards_tiles: Array = get_tree().get_nodes_in_group("FieldCardsGD").map(func(x: CardGD): return x.Tile)
+	var visible_cards_tiles: Array = []
 	
-	tiles = tiles.filter(func(x: TileGD): return !x.isSolid() and x not in all_cards_tiles and x.isBelowMaxMovementHeight(self)) # Check for solidity
+	if isAlly(0):
+		visible_cards_tiles = get_tree().get_nodes_in_group("FieldCardsGD")\
+			.filter(func(x: CardGD): return x.isLevelVisible())\
+			.map(func(x: CardGD): return x.getTile())
+	else:
+		visible_cards_tiles = get_tree().get_nodes_in_group("FieldCardsGD").map(func(x: CardGD): return x.getTile())
+	
+	#tiles = tiles.filter(func(x: TileGD): return !x.isSolid() and x not in all_cards_tiles and x.isBelowMaxMovementHeight(self)) # Check for solidity
+	tiles = tiles.filter(func(x: TileGD): return !x.isSolid() and x not in visible_cards_tiles and x.isBelowMaxMovementHeight(self)) # Check for solidity
 	for Tile in tiles:
 		var astar := AStar3D.new()
 		# Limits tiles to those in movement range

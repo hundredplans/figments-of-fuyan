@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=6 format=3 uid="uid://tl1i7te05opm"]
+
+[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_6myuv"]
+[ext_resource type="Script" uid="uid://c05ehc13khj8b" path="res://scripts/fof/tools/palmic_amulet.gd" id="2_qf148"]
+[ext_resource type="Script" uid="uid://ccxaxjnbobkaq" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="3_o8ulk"]
+[ext_resource type="Texture2D" uid="uid://f13qneekcq83" path="res://assets/sprites/game/tools/palmic_amulet.png" id="3_qf148"]
+[ext_resource type="Script" uid="uid://dq4qxtx6lyc2u" path="res://scripts/fof_info/tools/tool_info.gd" id="4_nye0n"]
+
+[resource]
+script = ExtResource("4_nye0n")
+icon = ExtResource("3_qf148")
+description = "Healing on this is doubled"
+ascended_description = ""
+rarity = 0
+active_abilities = Array[ExtResource("1_6myuv")]([])
+use_charges = false
+auto_reset_charges = false
+reset_to_default = false
+id = 16
+name = "Palmic Amulet"
+gdscript = ExtResource("2_qf148")
+saved_data = ExtResource("3_o8ulk")
+metadata/_custom_type_script = "uid://dq4qxtx6lyc2u"

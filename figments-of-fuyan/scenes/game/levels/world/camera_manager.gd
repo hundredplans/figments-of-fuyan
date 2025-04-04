@@ -80,6 +80,12 @@ func _input(event: InputEvent) -> void:
 			elif Input.is_action_just_pressed("ChangeCameraRight"): onChangeCameraInDirection(1)
 			elif Input.is_action_just_pressed("ChangeCameraDown"): onChangeCameraTeamInDirection(-1)
 			elif Input.is_action_just_pressed("ChangeCameraUp"): onChangeCameraTeamInDirection(1)
+			elif Input.is_action_just_pressed("Forward") or Input.is_action_just_pressed("Backward")\
+				or Input.is_action_just_pressed("Left") or Input.is_action_just_pressed("Right"):
+					last_freelook_rotation = LevelCamera.rotation_degrees
+					FreelookCamera.global_position = LevelCamera.global_position
+					#FreelookCamera._total_pitch = 0
+					onSwapCameraType()
 		
 func getGameObjectFromCoords(coords: Vector4i) -> GameObjectGD:
 	var Tile: TileGD = Game.getTile(coords)

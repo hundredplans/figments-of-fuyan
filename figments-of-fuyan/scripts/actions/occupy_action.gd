@@ -5,12 +5,14 @@ var PreviousTile: TileGD
 var Tile: TileGD
 # For movement set to false
 var apply_occupy_instant: bool
+var force_occupy: bool # Removes any awakens trying for the tile
 
-func _init(_Card: CardGD = null, _Tile: TileGD = null, _apply_occupy_instant: bool = true) -> void:
+func _init(_Card: CardGD = null, _Tile: TileGD = null, _apply_occupy_instant: bool = true, _force_occupy: bool = false) -> void:
 	super()
 	Card = _Card
 	Tile = _Tile
 	apply_occupy_instant = _apply_occupy_instant
+	force_occupy = _force_occupy
 
 func onPreAction() -> void:
 	PreviousTile = Card.Tile
@@ -40,7 +42,9 @@ func onPostAction() -> void:
 	for OtherCard in Game.get_tree().get_nodes_in_group("FieldCardsGD").filter(func(x: CardGD): return Card in x.getVisibleFieldCards()):
 		vision_cards[OtherCard] = null
 		
-	onPushAction(VisionAction.new(vision_cards.keys(), Card))
+	var vision_cards_keys: Array = vision_cards.keys()
+	#.filter(func(x: CardGD): return x == Card or x.isLevelVisible())
+	onPushAction(VisionAction.new(vision_cards_keys, Card))
 
 func getLogInfo() -> Array:
 	return ["Card: " + Card.info.name, "TileExists: " + str(Tile != null)]

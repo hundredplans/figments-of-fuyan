@@ -178,6 +178,8 @@ func onTilePressed() -> void:
 			level.onPushAction(MovementAction.new(Card, Tile.getMovementPathTiles()))
 	elif Tile.isOccupied() and Tile.isLevelVisible() and Tile.getCard().isLevelVisible():
 		onCreateCameraChangeAction(Tile.getCard())
+	elif Tile.getOccupiedObjects().any(func(x: ObjectGD): return x is SpawnGD and x.variation == 0) and Tile.isLevelVisible():
+		onCreateCameraChangeAction(Tile.getOccupiedObjects().filter(func(x: ObjectGD): return x is SpawnGD and x.variation == 0)[0])
 	
 func onTileInspected() -> void:
 	var Tile: TileGD = MouseHoverTile

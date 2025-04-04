@@ -31,7 +31,6 @@ func _ready() -> void:
 		
 		if champion != null:
 			var card_data := Game.onCreateBaseCard(champion.id)
-			Game.setCardDataFromInfo(card_data, Helper.getFofInfoID(CardInfo, champion.id))
 			ChampionCard = SavedData.onLoadModel(card_data, pedestal)
 			ChampionCard.onCreateModel()
 			ChampionCard.getModel().rotation.y = 0

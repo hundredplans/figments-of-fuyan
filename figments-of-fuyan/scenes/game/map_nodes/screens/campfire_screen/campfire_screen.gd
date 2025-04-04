@@ -1,5 +1,17 @@
 extends MapNodeScreen
 
+@onready var CampfireRewards: Control = %CampfireRewards
+@onready var TravelledLabel: FancyTextLabel = %TravelledLabel
+
+func setInfo(_save_file: SaveFileGD, _area: AreaGD, _World: Node3D, _UI: Control, _map_node: MapNodeGD) -> void:
+	super(_save_file, _area, _World, _UI, _map_node)
+	var travelled: int = Game.getHolyTravelledAmount()
+	TravelledLabel.setText("You have travelled the [color=navajo_white]Holy Path[/color] " + str(travelled) + " times")
+	for i in range(CampfireRewards.get_child_count()):
+		var CampfireRewardNode: Control = CampfireRewards.get_child(i)
+		CampfireRewardNode.setInfo(map_node.campfire_reward_taken[i])
+		CampfireRewardNode.pressed.connect(onCampfireRewardPressed.bind(i))
+
 func onDimBackground() -> bool:
 	return true
 
@@ -21,9 +33,21 @@ func onDeckScreenSelected(Card: CardGD, trait_data: SavedDataTrait) -> void:
 	Card.onAddOverworldTrait(OverworldTrait.new(trait_data, OverworldTrait.AddedBy.NULL))
 	onFinished()
 
+func onCampfireRewardPressed(reward_node: Control, reward_info: FofInfo, index: int) -> void:
+	map_node.campfire_reward_taken[index] = true
+	if reward_info is CardInfo:
+		var card_data: SavedDataCard = Game.onCreateBaseCard(reward_info.id, false)
+		var Card: CardGD = SavedData.onLoadModel(card_data, Game.getSaveFile())
+		map_node.onPushAction(AddToDeckAction.new(Card))
+		reward_node.onRewardClaimed()
+	elif reward_info is ToolInfo:
+		var Tool: ToolGD = SavedData.onLoadModel(SavedDataTool.new(reward_info.id, true), map_node)
+		var ToolPickedUpUI: Control = Game.onCreateToolPickedUpUI(Tool, true, self)
+		ToolPickedUpUI.taken.connect(func(_x: Variant): reward_node.onRewardClaimed())
+
 func onFinished() -> void:
 	finished.emit()
 	queue_free()
 
-func _on_button_pressed() -> void:
+func onLeaveButtonPressed() -> void:
 	onFinished()

@@ -9,6 +9,9 @@ var ability_save: Dictionary
 @warning_ignore("unused_signal")
 signal update_active_effect_description
 
+func onFofInit() -> void:
+	onRegularReset()
+
 func onLoadData(data: SavedData) -> void:
 	ascended = data.ascended
 	active_effects = data.active_effects

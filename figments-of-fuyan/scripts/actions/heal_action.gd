@@ -15,3 +15,6 @@ func onPreAction() -> void:
 func onPostAction() -> void:
 	onPushAction(StatAction.new(heal_datastores.map(func(x: HealDatastore):\
 		return StatInfo.new(x.Card, Game.Stats.HEALTH, x.heal, x.turns, false, x.show_particles, x.immutable))))
+
+func hasCard(Card: CardGD) -> bool:
+	return heal_datastores.any(func(x: HealDatastore): return x.Card == Card)

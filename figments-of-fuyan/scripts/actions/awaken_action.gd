@@ -12,7 +12,11 @@ func _init(_Card: CardGD = null, _Tile: TileGD = null, _override_spectate: bool 
 	override_spectate = _override_spectate
 
 func onPreAction() -> void:
-	pass
+	if Game.getFieldCard(Tile) != null: onFailAction(); return
+	
+	var occupy_actions: Array = Game.ActionManagerReference.getActionsByType(OccupyAction)
+	if occupy_actions.any(func(x: OccupyAction): return x.force_occupy and x.Tile == Tile):
+		onFailAction()
 
 func onPostAction() -> void:
 	var SpawnObject: SpawnGD = Tile.getSpawnTile()

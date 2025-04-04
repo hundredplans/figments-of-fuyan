@@ -47,7 +47,6 @@ func onStartFight() -> void:
 			tool_data.ascended = OriginalTool.ascended
 		
 		var card_data: SavedDataCard = Game.onCreateBaseCard(Card.info.id, Card.ascended, tool_data)
-		Game.setCardDataFromInfo(card_data, Card.info)
 		card_data.coords = enemy_spawns[i].coords
 		card_data.team = 1
 		enemy_cards.append(card_data)

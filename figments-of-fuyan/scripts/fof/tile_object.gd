@@ -93,7 +93,6 @@ func onLoadDataLevelFofInit() -> void:
 func onCreateAdjustedPoints() -> void:
 	var theta: float = rotation.y
 	adjusted_points = getLevelPoints().map(func(x: Vector3): return (Game.onRotatePosition(x, theta)) + position)
-	if self is TileGD: adjusted_points += call("getTileFillPoints").map(func(x: Vector3): return x + position)
 	
 	#for point in adjusted_points:
 		#var Point: MeshInstance3D = load(info.POINT_PATH).instantiate()

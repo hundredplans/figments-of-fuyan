@@ -11,6 +11,7 @@ extends CardGD
 #Shop -> 10% more expensive
 
 const SHOP_PRICE_MULT: float = 1.1
+var holy_travelled_amount: int
 
 func onProcessAction(action: Action) -> void:
 	super(action)
@@ -45,3 +46,7 @@ func getDescription() -> String:
 	if active_effect != null:
 		return Helper.getDescription(super(), [active_effect.charges])
 	return Helper.getDescription(super(), [3 if Game.getChampionLevel() >= 2 else 2])
+
+func onSave() -> SavedDataCard:
+	ability_save['holy_travelled_amount'] = holy_travelled_amount
+	return super()

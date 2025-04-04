@@ -18,6 +18,7 @@ const TOP_ODDS: Dictionary = {
 }
 
 var pacifist: bool # For when coconut crab wakes up
+var kill_rolled: bool
 var previous_allies: Array
 var previous_enemies: Array
 var is_end_use_type_boss: bool
@@ -29,13 +30,18 @@ func _init(_Card: CardGD, _is_first_ai_turn: bool = false, _pacifist: bool = fal
 	pacifist = _pacifist
 	previous_allies = _previous_allies
 	previous_enemies = _previous_enemies
+	
+func setKillRolled(state: bool) -> void:
+	kill_rolled = state
 		
 func onPostAction() -> void:
 	if Card is EpicCardGD and Card.boss_datastore.boss_intent_used_this_turn: return
 	
 	pacifist = pacifist if (Card.attack > 0 or Card.getStatusEffect(4) != null) else true # If no attack or disarmed
 	var tiles: Array = Card.getsetMovementRange()
-	tiles.erase(Card.Tile)
+	
+	var all_ally_tiles: Array = Game.getAllyUnits(Card.team).map(func(x: CardGD): return x.getTile())
+	tiles = tiles.filter(func(x: TileGD): return x not in all_ally_tiles)
 	
 	var allies: Array = Card.getVisibleFieldCardsAllies()
 	var enemies: Array = Card.getVisibleFieldCardsEnemies()
@@ -65,7 +71,7 @@ func onDefaultAITurn(enemies: Array, allies: Array, tiles: Array) -> void:
 		var enemy_tiles: Array = enemies.map(func(x: CardGD): return x.getTile())
 		tiles = tiles.filter(func(x: TileGD): return x not in enemy_tiles)
 	
-	var DFL := DefaultFightLogic.new(Card, tiles, enemies, allies, pacifist)
+	var DFL := DefaultFightLogic.new(Card, tiles, enemies, allies, pacifist, kill_rolled)
 	Card.ai_datastore.DFL = DFL
 	
 	var dfl_data: DFLData = DFL.getTilesDFL()
@@ -79,15 +85,17 @@ func onDefaultAITurn(enemies: Array, allies: Array, tiles: Array) -> void:
 	var tiles_to_value: Dictionary = onApplyBehaviours(Card, enemies, allies, tiles, dfl_data)
 	var tiles_sorted_by_value: Array = getTilesSortedByValue(tiles_to_value)
 	var index: int = min(Random.getRandomKeyVariant(TOP_ODDS), tiles_sorted_by_value.size())
-	if index > 0: # If the tile is valid
+	if index > 0: # If the tile is valid	
 		onTileChosen(tiles_sorted_by_value[index - 1], DFL, allies, enemies)
 		return
 		
 	if Card.onAICheckActiveEffects(DFL, allies, enemies):
 		return
 		
+	var movement_finish_action := MovementFinishAction.new(Card, [], allies, enemies)
+	movement_finish_action.setKillRolled(kill_rolled)
 	# If no Tile is chosen
-	onPushAction([ChangeTurnStateAction.new(Card, Game.TurnStates.ACTIVE), MovementFinishAction.new(Card, [], allies, enemies)])
+	onPushAction([ChangeTurnStateAction.new(Card, Game.TurnStates.ACTIVE), movement_finish_action])
 
 func onBossAITurn(enemies: Array, allies: Array, tiles: Array) -> void:
 	var use_type := (EpicCardGD.UseType.START if is_first_ai_turn else EpicCardGD.UseType.RECALCULATE) if !is_end_use_type_boss else EpicCardGD.UseType.END
@@ -104,8 +112,10 @@ func onTileChosen(Tile: TileGD, DFL: DefaultFightLogic, allies: Array, enemies: 
 	if Card.onAICheckActiveEffects(DFL, allies, enemies):
 		return
 	
+	var movement_action := MovementAction.new(Card, path)
+	movement_action.setKillRolled(kill_rolled)
 	var actions: Array = [ChangeTurnStateAction.new(Card, Game.TurnStates.ACTIVE),
-		MovementAction.new(Card, path)]
+		movement_action]
 	onPushAction(actions)
 	
 func onKillPathChosen(kill_path: Array, DFL: DefaultFightLogic, allies: Array, enemies: Array) -> void:
@@ -114,18 +124,22 @@ func onKillPathChosen(kill_path: Array, DFL: DefaultFightLogic, allies: Array, e
 	if Card.onAICheckActiveEffects(DFL, allies, enemies):
 		return
 		
+	var movement_action := MovementAction.new(Card, kill_path)
+	movement_action.setKillRolled(kill_rolled)
 	var actions: Array = [ChangeTurnStateAction.new(Card, Game.TurnStates.ACTIVE),
-		MovementAction.new(Card, kill_path)]
+		movement_action]
 	onPushAction(actions)
 	
 func getTilesSortedByValue(tiles_to_value: Dictionary) -> Array:
-	for Tile in tiles_to_value:
+	for Tile: TileGD in tiles_to_value:
 		var tiles: Array = Tile.getMovementPathTilesSafe()
-		if tiles.size() <= 2: continue # This is just the start and end tile
+		#if tiles.size() <= 2: continue # This is just the start and end tile
 		
 		for i in range(1, tiles.size() - 1):
-			tiles_to_value[Tile] += tiles_to_value[tiles[i]]
-		tiles_to_value[Tile] /= float(tiles.size() - 1)
+			var PathTile: TileGD = tiles[i]
+			tiles_to_value[Tile] += tiles_to_value[PathTile]
+			
+		tiles_to_value[Tile] /= max(float(tiles.size() - 1), 1)
 		
 	var tiles_sorted_by_value: Array = tiles_to_value.keys()
 	tiles_sorted_by_value.sort_custom(func(x: TileGD, y: TileGD): return tiles_to_value[x] > tiles_to_value[y])

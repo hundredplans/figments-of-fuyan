@@ -264,9 +264,12 @@ func getDistantToEnemiesTiles(enemies: Array, tiles: Array) -> Array:
 	
 func getAllyVisionTiles(tiles: Array) -> Array:
 	var ally_vision: Array = Game.getTeamVision(0)
-	if !ally_vision.is_empty():
-		return tiles.filter(func(x: TileGD): return x in ally_vision)
-	return tiles
+	
+	var ally_vision_tiles: Array = tiles.filter(func(x: TileGD): return x in ally_vision)
+	if ally_vision_tiles.is_empty():
+		return tiles
+		
+	return ally_vision_tiles
 	
 func getUnoccupiedTiles(tiles: Array) -> Array:
 	var unit_tiles: Array = Game.getUnitTiles()
@@ -281,6 +284,10 @@ func getCloseToEnemiesTiles(enemies: Array, tiles: Array) -> Array:
 		tiles_to_distance[OtherTile] = distance
 			
 	tiles.sort_custom(func(x: TileGD, y: TileGD): return tiles_to_distance[x] < tiles_to_distance[y])
+	return tiles
+	
+func getFarTiles(tiles: Array, CenterTile: TileGD) -> Array:
+	tiles.sort_custom(func(x: TileGD, y: TileGD): return Game.getCoordsDistance(x.getCoords(), CenterTile.getCoords()) > Game.getCoordsDistance(y.getCoords(), CenterTile.getCoords()))
 	return tiles
 #endregion
 

@@ -42,7 +42,7 @@ func onOptionPressed(option: EncounterOptionDatastore, screen: Control) -> void:
 			return
 		"Admire":
 			onPushAction(ChangeShillingsAction.new(ADMIRE_SHILLINGS))
-			var tool_data: SavedDataTool = Game.getRandomFofInRarity(ToolInfo, Game.Rarities.COMMON)
+			var tool_data: SavedDataTool = Random.getRandomFofInRarity(ToolInfo, Game.Rarities.COMMON)
 			var Tool: ToolGD = SavedData.onLoadModel(tool_data, self)
 			Game.onCreateToolPickedUpUI(Tool, false, screen)
 	onContinueToNextPage(option)

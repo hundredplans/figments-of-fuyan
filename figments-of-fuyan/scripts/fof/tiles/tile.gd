@@ -190,6 +190,9 @@ func setOccupiedObject(object: ObjectGD) -> void:
 	occupied_objects.append(object)
 	max_movement_height = max(max_movement_height, object.getMaxMovementHeight())
 	
+func getOccupiedObjects() -> Array:
+	return occupied_objects
+	
 func getAttackableIObjects() -> Array:
 	return occupied_objects.filter(func(x: ObjectGD): return x is IObjectGD)
 #endregion
@@ -373,3 +376,13 @@ func setTileIntentModelVisible() -> void:
 	TileIntentModel.visible = isLevelVisible() and \
 		(isRevealed(0) or Game.getAllyUnits(0).any(func(x: CardGD): return x.getStatusEffect(1) == null and self in x.getVisibleTiles()))
 #endregion
+
+func onCreateAdjustedPoints() -> void:
+	var theta: float = rotation.y
+	adjusted_points = getLevelPoints().map(func(x: Vector3): return (Game.onRotatePosition(x, theta)) + position)
+	if Game.getAdjacentCoords(coords, 1).any(isAdjacentCoordsNotCoverPoints): # If any don't cover points, any false by default
+		adjusted_points += getTileFillPoints().map(func(x: Vector3): return x + position)
+		
+func isAdjacentCoordsNotCoverPoints(x: Vector4i) -> bool:
+	var Tile: TileGD = Game.getTile(x)
+	return Tile == null or Tile.getHeight() < getHeight()

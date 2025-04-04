@@ -1,5 +1,6 @@
 extends CardGD
 
+const ABILITY_DELAY: float = 2.4
 var rampage_charges: int = 3
 func onProcessAction(action: Action) -> void:
 	super(action)
@@ -12,9 +13,15 @@ func onRampage(death_action: DeathAction) -> void:
 	var enemies: Array = Game.getAdjacentTiles(death_action.Tile).map(func(x: TileGD): return Game.getFieldCard(x))\
 		.filter(func(x: CardGD): return x != null and isEnemy(x.team))
 	
-	onPushAction(DamageAction.new(self, enemies, attack, Game.DamageTypes.OTHER))
-	if rampage_charges > 0:
-		rampage_charges -= 1
+	if !enemies.is_empty():
+		var actions: Array = []
+		var animation_action := AnimationAction.new(self, "Ability")
+		animation_action.setActionDelay(ABILITY_DELAY)
+	
+		actions.append(DamageAction.new(self, enemies, attack, Game.DamageTypes.OTHER))
+		onPushAction(actions)
+		if rampage_charges > 0:
+			rampage_charges -= 1
 
 func onResetCharges() -> void:
 	rampage_charges = 3 if !ascended else -1

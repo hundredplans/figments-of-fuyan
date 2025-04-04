@@ -2,6 +2,9 @@ extends EpicCardGD
 	
 const PALMY_ID: int = 4
 const ARMOR_TRAIT_ID: int = 1
+
+var turns_enemies_unseen: int = 0 # -1 means an enemy was spotted and this stops counting, after TURNS_UNTIL_HUNT_MODE starts moving towards allies
+const TURNS_UNTIL_HUNT_MODE: int = 3
 	
 #region Default
 func onProcessAction(action: Action) -> void:
@@ -13,6 +16,18 @@ func onProcessAction(action: Action) -> void:
 		if action is StatAction and action.hasCard(self) and health <= int(max_health / 2.0) and health > 0\
 		and Game.ActionManagerReference.onFindFirstAction(ChangeBossPhaseAction) == null and getPhase() == 1:
 			onPushAction(ChangeBossPhaseAction.new())
+		elif action is VisionNewUnitAction and action.Discoverer == self and action.Discovered.isAlly(0):
+			turns_enemies_unseen = -1
+			
+func onSave() -> SavedDataBossCard:
+	ability_save["turns_enemies_unseen"] = turns_enemies_unseen
+	return super()
+	
+func onCardTurnPassed(Card: CardGD) -> void:
+	super(Card)
+	if self != Card: return
+	if turns_enemies_unseen >= 0:
+		turns_enemies_unseen += 1
 #endregion
 	
 #region Boss Intent
@@ -157,7 +172,11 @@ func onSpinAttack(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 				tiles = getAllyVisionTiles(tiles)
 				tiles = getDistantToEnemiesTiles(enemies, tiles)
 		else:
-			BestTile = tiles.pick_random()
+			if turns_enemies_unseen >= TURNS_UNTIL_HUNT_MODE:
+				tiles = getCloseToEnemiesTiles(Game.getEnemyUnits(team), tiles)
+				BestTile = tiles[0]
+			else: BestTile = tiles.pick_random()
+				
 			
 		BestTile = tiles[0]
 		return [MovementAction.new(self, BestTile.getMovementPathTiles())]
@@ -195,7 +214,11 @@ func onReposition(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 				tiles_adjacent_to_height = getAllyVisionTiles(tiles_adjacent_to_height)
 				tiles_adjacent_to_height = getCloseToEnemiesTiles(enemies, tiles_adjacent_to_height)
 				
-		else: tiles_adjacent_to_height = tiles; tiles_adjacent_to_height.shuffle()
+		else:
+			tiles_adjacent_to_height = tiles
+			tiles_adjacent_to_height.shuffle()
+			if turns_enemies_unseen >= TURNS_UNTIL_HUNT_MODE:
+				tiles_adjacent_to_height = getCloseToEnemiesTiles(Game.getEnemyUnits(team), tiles_adjacent_to_height)
 		BestTile = tiles_adjacent_to_height[0]
 		
 		return [MovementAction.new(self, BestTile.getMovementPathTiles())]

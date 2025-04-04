@@ -1,5 +1,6 @@
 class_name Action extends Resource
 
+signal push_after_action
 signal push_action
 signal append_action
 signal force_action
@@ -19,6 +20,7 @@ func _init() -> void:
 func setSignals() -> void:
 	if Game.ActionManagerReference == null: return
 	push_action.connect(Game.ActionManagerReference.onPushAction)
+	push_after_action.connect(Game.ActionManagerReference.onPushAfterAction)
 	append_action.connect(Game.ActionManagerReference.onAppendAction)
 	force_action.connect(Game.ActionManagerReference.onForceAction)
 	remove_move_and_attack_actions.connect(Game.ActionManagerReference.onRemoveMoveAndAttackActions)
@@ -39,6 +41,27 @@ func onPushAction(actions: Variant, action_owner: Variant = self) -> void:
 	for action in actions:
 		action.owner = action_owner
 		push_action.emit(action)
+		
+# If action is succesfully found
+func onPushAfterAction(actions: Variant, action_or_script: Variant, action_owner: Variant = self) -> bool:
+	var after_action: Action
+	if action_or_script is GDScript:
+		var action: Action = Game.ActionManagerReference.onFindFirstAction(action_or_script)
+		if action == null: return false
+		after_action = action
+		
+	elif action_or_script is Action:
+		after_action = action_or_script
+	
+	if actions is Action:
+		actions = [actions]
+		
+	actions.reverse()
+	for action in actions:
+		action.owner = action_owner
+		
+	push_after_action.emit(actions, after_action)
+	return true
 		
 func onForceAction(action: Action) -> void:
 	action.owner = self

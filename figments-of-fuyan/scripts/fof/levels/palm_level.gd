@@ -2,17 +2,20 @@ class_name PalmLevelGD extends LevelGD
 
 #region Globals
 var ISLAND_ODDS: Dictionary = {
-	"6": 0.5, # 0.5
-	"7": 0.4, # 0.5
-	"8": 0.1
+	#"6": 0.5, # 0.5
+	#"7": 0.4, # 0.5
+	#"8": 0.1
+	"30": 1.0
 		#"2": 0.39,
 		#"3": 0.1,
 		#"4": 0.01
 }
 	
-const DISTANCE_BOUND: int = 80
-const LOWER_GEN_BOUND: int = 30
-const UPPER_GEN_BOUND: int = 150
+const DISTANCE_BOUND: int = 25
+const LOWER_GEN_BOUND: int = 50
+const UPPER_GEN_BOUND: int = 130
+
+const ISLAND_AMOUNT: int = 30
 #endregion
 
 #region Save / Load / Init
@@ -20,12 +23,15 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 	super(data, _save_file)
 	if is_init:
 		var decoration_datas: Array = load(info.PALM_ISLAND_RESOURCES).palm_islands.map(func(x: Resource): return x.data)
-		decoration_datas.append(decoration_datas[0].duplicate())
-		decoration_datas.append(decoration_datas[1].duplicate())
-		decoration_datas.append(decoration_datas[0].duplicate())
-		decoration_datas.append(decoration_datas[1].duplicate())
-		decoration_datas.append(decoration_datas[0].duplicate())
-		decoration_datas.append(decoration_datas[1].duplicate())
+		for i in range(2):
+			for j in range(ISLAND_AMOUNT / 2):
+				decoration_datas.append(decoration_datas[i].duplicate())
+		#decoration_datas.append(decoration_datas[0].duplicate())
+		#decoration_datas.append(decoration_datas[1].duplicate())
+		#decoration_datas.append(decoration_datas[0].duplicate())
+		#decoration_datas.append(decoration_datas[1].duplicate())
+		#decoration_datas.append(decoration_datas[0].duplicate())
+		#decoration_datas.append(decoration_datas[1].duplicate())
 		
 		var decoration_coords: Array = []
 		if !decoration_datas.is_empty():
@@ -35,7 +41,7 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 			var avoid_coords: Array = [Vector4i.ZERO]
 			for island in decoration_datas:
 				var start_coord := onRandomiseStartCoord()
-				while(!avoid_coords.all(func(x: Vector4i): return Game.getCoordsDistance(x, start_coord) >= DISTANCE_BOUND)):
+				while(avoid_coords.any(isCloseCoord.bind(start_coord))):
 					start_coord = onRandomiseStartCoord()
 					
 				avoid_coords.append(start_coord)
@@ -43,6 +49,10 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 			level_area_datastore.decoration_coords = decoration_coords
 			level_area_datastore.decoration_datas = decoration_datas
 	onCreatePalmDecorations()
+	
+func isCloseCoord(x: Vector4i, start_coord: Vector4i) -> bool:
+	var distance: int = Game.getCoordsDistance(x, start_coord)
+	return distance < DISTANCE_BOUND
 	
 func onRandomiseStartCoord() -> Vector4i:
 	var x: int = randi_range(LOWER_GEN_BOUND, UPPER_GEN_BOUND)
@@ -66,12 +76,17 @@ func onCreatePalmDecorations() -> void:
 	for i in range(decoration_datas.size()):
 		var data: Array = decoration_datas[i]
 		var start_coord: Vector4i = decoration_coords[i]
+		var decoration_position: Vector3 = Game.onCoordsToPosition(start_coord)
 		for tile_object_data in data:
 			if tile_object_data is SavedDataTile:
 				tile_object_data.coords += start_coord
 			else:
-				tile_object_data.position += (Game.onCoordsToPosition(start_coord) - Vector3(0, 0.3, 0))
+				tile_object_data.position += decoration_position - Vector3(0, 0.3, 0)
 			SavedData.onLoadModel(tile_object_data, self)
+			
+		print(decoration_position)
+		print(start_coord)
+		print()
 #endregion
 
 #region Level Area Datastore

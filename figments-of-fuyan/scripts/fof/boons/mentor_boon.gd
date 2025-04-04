@@ -14,8 +14,6 @@ func getDescription() -> String:
 
 func onBoon(_action: Action = null) -> void:
 	var card_data: SavedDataCard = Game.onCreateBaseCard(PALMY_ID, true)
-	
-	Game.setCardDataFromInfo(card_data, Helper.getFofInfoID(CardInfo, card_data.id))
 	var Card: CardGD = SavedData.onLoadModel(card_data, Game.getSaveFile())
 	Card.setIsTemporary(true)
 	
