@@ -1,0 +1,103 @@
+[gd_scene load_steps=6 format=3 uid="uid://cqxjqqj3gig1b"]
+
+[ext_resource type="Texture2D" uid="uid://oae0nwgo3lfh" path="res://assets/sprites/text/icons/energy_icon.png" id="1_sli05"]
+[ext_resource type="PackedScene" uid="uid://dxvuvb68hgxug" path="res://scenes/common/exit_button/exit_button.tscn" id="1_xnd7x"]
+[ext_resource type="LabelSettings" uid="uid://baxopkmeda53x" path="res://resources/ui/label_settings/roboto_huge.tres" id="2_vh71u"]
+[ext_resource type="Texture2D" uid="uid://drju02m4wqrw1" path="res://assets/sprites/ui/icons/card.png" id="3_dd1xv"]
+[ext_resource type="LabelSettings" uid="uid://rtes1t31euap" path="res://resources/ui/label_settings/jacquard_massive.tres" id="4_v8bki"]
+
+[node name="StashScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.941176)
+
+[node name="MarginContainer" type="MarginContainer" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ColorRect/MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TopBar" type="HBoxContainer" parent="ColorRect/MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="EnergySprite" type="TextureRect" parent="ColorRect/MarginContainer/ScrollContainer/VBoxContainer/TopBar"]
+texture_filter = 1
+layout_mode = 2
+texture = ExtResource("1_sli05")
+expand_mode = 2
+
+[node name="EnergyLabel" type="Label" parent="ColorRect/MarginContainer/ScrollContainer/VBoxContainer/TopBar"]
+layout_mode = 2
+text = "0/2"
+label_settings = ExtResource("2_vh71u")
+
+[node name="LesserFiler" type="Control" parent="ColorRect/MarginContainer/ScrollContainer/VBoxContainer/TopBar"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="CardSprite" type="TextureRect" parent="ColorRect/MarginContainer/ScrollContainer/VBoxContainer/TopBar"]
+texture_filter = 1
+layout_mode = 2
+texture = ExtResource("3_dd1xv")
+expand_mode = 2
+
+[node name="CardLabel" type="Label" parent="ColorRect/MarginContainer/ScrollContainer/VBoxContainer/TopBar"]
+layout_mode = 2
+text = "0/5"
+label_settings = ExtResource("2_vh71u")
+
+[node name="Decklabel" type="Label" parent="ColorRect/MarginContainer/ScrollContainer/VBoxContainer/TopBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Deck"
+label_settings = ExtResource("4_v8bki")
+horizontal_alignment = 1
+
+[node name="GreaterFiller" type="Control" parent="ColorRect/MarginContainer/ScrollContainer/VBoxContainer/TopBar"]
+custom_minimum_size = Vector2(420, 0)
+layout_mode = 2
+
+[node name="ExitButton" parent="ColorRect/MarginContainer/ScrollContainer/VBoxContainer/TopBar" node_paths=PackedStringArray("exit_screen") instance=ExtResource("1_xnd7x")]
+layout_mode = 2
+exit_screen = NodePath("../../../../../..")
+
+[node name="StashContainer" type="GridContainer" parent="ColorRect/MarginContainer/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 400)
+layout_mode = 2
+columns = 6
+
+[node name="Label" type="Label" parent="ColorRect/MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Stash"
+label_settings = ExtResource("4_v8bki")
+horizontal_alignment = 1
+
+[node name="DeckContainer" type="GridContainer" parent="ColorRect/MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+columns = 6

@@ -243,7 +243,8 @@ func onUpdateTraits() -> void:
 
 #region IconsManager
 func onRemoveIcon(FofObject: FofGD) -> void:
-	onFindIconNode(FofObject).queue_free()
+	var icon_node: Sprite3D = onFindIconNode(FofObject)
+	if icon_node != null: icon_node.queue_free()
 	
 func onAddIcon(FofObject: FofGD, _icon: Texture2D = FofObject.getIcon()) -> Node3D:
 	var FofObjectIcon: Node3D = FofObjectIconPacked.instantiate()

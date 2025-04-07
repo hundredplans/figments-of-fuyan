@@ -56,7 +56,7 @@ func onEffect() -> void:
 	var animation_action := AnimationAction.new(self, "Ability")
 	animation_action.setActionDelay(ANIMATION_DELAY)
 	
-	var stat_action := StatAction.new(StatInfo.new(self, Game.Stats.MAX_HEALTH, 1))
+	var stat_action := StatAction.new(StatInfo.new(self, [Game.Stats.MAX_HEALTH, Game.Stats.HEALTH], [1, 1]))
 	if isLevelVisible():
 		stat_action.setActionDelay(STAT_CHANGE_DELAY)
 	

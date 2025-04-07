@@ -1,8 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://cewvw3vx3mjcm"]
+[gd_scene load_steps=2 format=3 uid="uid://cewvw3vx3mjcm"]
 
 [ext_resource type="Script" uid="uid://ds26xp551jusu" path="res://scenes/game/tools/tool_icon.gd" id="1_dviwd"]
-[ext_resource type="Material" uid="uid://de7u8f88f136s" path="res://resources/materials/ui/ascended_outline_canvas_thin.tres" id="2_svo5i"]
-[ext_resource type="Material" uid="uid://btpfeq7wd2fi5" path="res://resources/materials/ui/ascended_outline_canvas_thin_disabled.tres" id="3_yf3i3"]
 
 [node name="ToolIcon" type="Control"]
 custom_minimum_size = Vector2(40, 40)
@@ -11,8 +9,6 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_dviwd")
-ASCENDED_CANVAS_MATERIAL = ExtResource("2_svo5i")
-ASCENDED_CANVAS_MATERIAL_DISABLED = ExtResource("3_yf3i3")
 
 [node name="ToolIcon" type="TextureRect" parent="."]
 unique_name_in_owner = true

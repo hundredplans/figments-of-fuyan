@@ -4,18 +4,11 @@ extends IObjectGD
 
 var was_extinguished: bool
 var was_fuel_added: bool
-var cards_in_range: Array
 
-const PALM_FIREPLACE_FIELD_EFFECT_ID: int = 7
+const ATTACK_TURNS: int = 3
 
 func onProcessAction(action: Action) -> void:
 	super(action)
-	if action.post:
-		if action is OccupyAction and was_fuel_added:
-			onUpdateCardsInRange(action)
-	elif !action.post:
-		if action is HealAction and was_fuel_added:
-			onHeal(action)
 
 func onLoadDataLevel() -> void:
 	super()
@@ -32,9 +25,9 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _
 	if active_effect.name in ["Extinguish", "Add Fuel"]:
 		var actions: Array = []
 		if active_effect.name == "Extinguish":
-			var tiles: Array = Game.getAdjacentOrCloserTiles(Tile, 2)
+			var tiles: Array = Game.getAdjacentOrCloserTiles(Tile, 3)
 			var units: Array = Game.get_tree().get_nodes_in_group("FieldCardsGD").filter(func(x: CardGD): return x.Tile in tiles)
-			actions.append(StatAction.new(units.map(func(x: CardGD): return StatInfo.new(x, Game.Stats.ATTACK, 1))))
+			actions.append(StatAction.new(units.map(func(x: CardGD): return StatInfo.new(x, Game.Stats.ATTACK, 1, ATTACK_TURNS))))
 			was_extinguished = true
 			
 			for owned_active_effect in active_effects:
@@ -42,9 +35,9 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _
 					actions.append(ChangeActiveEffectChargesAction.new(owned_active_effect, -1))
 		
 		elif active_effect.name == "Add Fuel":
-			var tiles: Array = getFuelTilesInRange()
+			var tiles: Array = Game.getAdjacentOrCloserTiles(getTile(), 3)
 			var units: Array = Game.get_tree().get_nodes_in_group("FieldCardsGD").filter(func(x: CardGD): return x.Tile in tiles)
-			for FieldCard in units: onAddFieldEffect(FieldCard)
+			actions.append(StatAction.new(units.map(func(x: CardGD): return StatInfo.new(x, Game.Stats.MAX_HEALTH, 1))))
 			was_fuel_added = true
 			
 			for owned_active_effect in active_effects:
@@ -62,36 +55,11 @@ func onActiveEffectPre(active_effect: ActiveEffectDatastore, _PickedTile: TileGD
 		
 	onForceAction(CameraChangeAction.new(self))
 	onForceAction(ChangeTileRotationAction.new(Card, Game.getRelativeTileRotation(Card.getTile(), getTile())))
-		
-func onAddFieldEffect(Card: CardGD) -> void:
-	Card.onCreateBaseFieldEffect(PALM_FIREPLACE_FIELD_EFFECT_ID, -1, -1, self)
-	cards_in_range.append(Card)
-	
-func onRemoveFieldEffect(Card: CardGD) -> void:
-	Card.onRemoveFieldEffectsByOwner(self)
-	cards_in_range.erase(Card)
-
-func onUpdateCardsInRange(action: Action) -> void:
-	if action.Card in cards_in_range:
-		if action.Tile == null: onRemoveFieldEffect(action.Card)
-		elif action.Tile not in getFuelTilesInRange(): onRemoveFieldEffect(action.Card)
-		
-	elif !action.Card in cards_in_range:
-		if action.Tile != null and action.Tile in getFuelTilesInRange():
-			onAddFieldEffect(action.Card)
-		
-func getFuelTilesInRange() -> Array:
-	return Game.getAdjacentOrCloserTiles(getTile(), 3)
 	
 func onSave() -> SavedDataIObject:
-	ability_save['cards_in_range'] = cards_in_range.map(func(x: CardGD): return x.public_id)
 	ability_save['was_fuel_added'] = was_fuel_added
 	ability_save['was_extinguished'] = was_extinguished
 	return super()
-
-func onHeal(action: HealAction) -> void:
-	for heal_datastore: HealDatastore in action.heal_datastores.filter(func(x: HealDatastore): return x.Card in cards_in_range):
-		heal_datastore.heal *= 2
 
 var SmokeParticle: GPUParticles3D
 func onHiddenVFX() -> void:
@@ -129,22 +97,16 @@ func onIObjectSpecificTransforms(tiles_to_value: Dictionary, DFL: DefaultFightLo
 	if !DFL.Card.isInCombat(): return
 	if !Random.rollFloat(CHANCE_TO_APPLY_TRANSFORMS): return
 	
-	var fuel_tiles: Array = getFuelTilesInRange()
-	for Tile in tiles_to_value:
-		if Tile in fuel_tiles:
+	var triple_adjacent_tiles: Array = Game.getAdjacentOrCloserTiles(getTile(), 3)
+	for Tile: TileGD in tiles_to_value:
+		if Tile in triple_adjacent_tiles:
 			tiles_to_value[Tile] += POSITIVE_TRANSFORM_TO_ADJACENT_TILES
 	
-const AI_ALLIES_IN_ATT_RANGE: int = 2
-const AI_ALLIES_IN_VISION: int = 2
-const ATTACK_DISTANCE: int = 2
-# Use Only used when 2 or more units in vision, use add fuel if there's a support or reinforcer in the group, use att if at least two units in 2 tile range
+const AI_ALLIES_IN_VISION: int = 1
 func onAIAbilityChecker(active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, DFL: DefaultFightLogic) -> TileGD:
-	if DFL.allies.size() >= AI_ALLIES_IN_VISION:
-		if DFL.allies.any(func(x: CardGD): return x.getArchetypeEnum() in [Game.Archetypes.SUPPORT, Game.Archetypes.REINFORCER]):
-			if active_effect.name == "Add Fuel": # Excludes Extinguish if it gets this far on purpose
-				return active_effect_tiles.pickable_tiles[0]
-		elif active_effect.name == "Extinguish" and \
-			DFL.allies.filter(func(x: CardGD): return Game.getCoordsDistance(x.getTile().getCoords(), getTile().getCoords()) <= ATTACK_DISTANCE).size() >= AI_ALLIES_IN_ATT_RANGE:
+	if DFL.Card.getArchetypeEnum() in [Game.Archetypes.SUPPORT, Game.Archetypes.REINFORCER]:
+		if DFL.allies.size() >= AI_ALLIES_IN_VISION and active_effect.name == "Extinguish":
 			return active_effect_tiles.pickable_tiles[0]
+	elif active_effect.name == "Add Fuel": return active_effect_tiles.pickable_tiles[0]
 	return null
 		

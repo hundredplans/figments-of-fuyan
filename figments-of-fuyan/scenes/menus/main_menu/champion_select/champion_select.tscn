@@ -1,11 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://ck4m8j45epneb"]
+[gd_scene load_steps=5 format=3 uid="uid://ck4m8j45epneb"]
 
 [ext_resource type="Script" uid="uid://17stl4eb4y5t" path="res://scenes/menus/main_menu/champion_select/champion_select.gd" id="1_lk8o8"]
 [ext_resource type="PackedScene" uid="uid://86q5rpijhpb5" path="res://scenes/menus/main_menu/champion_select/champion_pedestal.tscn" id="2_o6kaj"]
 [ext_resource type="PackedScene" uid="uid://b155014ojjg3a" path="res://scenes/game/cards/ui/champion_title.tscn" id="3_f3fux"]
+[ext_resource type="Material" uid="uid://cqlne7cpv3wxu" path="res://resources/materials/game/base_material.tres" id="4_mw8dk"]
 
 [node name="ChampionSelect" type="Node3D"]
 script = ExtResource("1_lk8o8")
 UNIT_INFO_PATH = "res://resources/game/game_object/unit/info/"
 PedestalPacked = ExtResource("2_o6kaj")
 ChampionTitlePacked = ExtResource("3_f3fux")
+BaseMaterial = ExtResource("4_mw8dk")

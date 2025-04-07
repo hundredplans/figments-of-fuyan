@@ -676,18 +676,10 @@ func onUpdateVision() -> void: # Returns the new visibles
 			VisionRay.target_position = (point - VisionRay.global_position) * EXTRA_RAY_LENGTH
 			VisionRay.force_raycast_update()
 			if VisionRay.is_colliding():
-				var o: Node = VisionRay.get_collider().owner
-				var DirectGameObject: GameObjectGD
-				if o is Node3D: DirectGameObject = o.get_parent()
-				else: DirectGameObject = o
-				
-				#var DirectGameObject: GameObjectGD = VisionRay.get_collider().owner
-				#var DirectGameObject: GameObjectGD = Helper.getCollision(VisionRay.get_collider(), GameObjectGD)
+				var DirectGameObject: GameObjectGD = Helper.getCollision(VisionRay.get_collider(), GameObjectGD)
 				
 				direct_game_objects_dict[DirectGameObject] = null
 				if GameObject == DirectGameObject: break
-				
-				
 	#var post_t: float = Time.get_ticks_msec() - t
 	#print("Points:" + str(post_t))
 	#pass
@@ -1195,16 +1187,18 @@ func onAddStatusEffect(status_effect: StatusEffectGD) -> void: # Access via acti
 func onCreateBaseStatusEffect(id: int, turns: int = 1) -> void:
 	onPushAction(onCreateBaseStatusEffectAction(id, turns))
 	
-func onCreateBaseStatusEffectAction(id: int, turns: int = 1) -> AddStatusEffectAction:
+func onCreateBaseStatusEffectAction(id: int, turns: int = 1, Creator: FofGD = null) -> AddStatusEffectAction:
 	var status_data := SavedDataStatusEffect.new(id, true, 0, turns)
 	var status_effect: StatusEffectGD = SavedData.onLoadModel(status_data, self)
 	status_effect.Card = self
+	status_effect.Creator = Creator
 	return AddStatusEffectAction.new(status_effect)
 	
-func getBaseStatusEffectAction(id: int, turns: int = 1) -> AddStatusEffectAction:
+func getBaseStatusEffectAction(id: int, turns: int = 1, Creator: FofGD = null) -> AddStatusEffectAction:
 	var status_data := SavedDataStatusEffect.new(id, true, 0, turns)
 	var status_effect: StatusEffectGD = SavedData.onLoadModel(status_data, self)
 	status_effect.Card = self
+	status_effect.Creator = Creator
 	return AddStatusEffectAction.new(status_effect)
 	
 func onStun(turns: int = 1) -> void:
@@ -1223,9 +1217,10 @@ func isNotInvisibleOrIsAdjacent(_Tile: TileGD) -> bool:
 func isBlind() -> bool:
 	return status_effects.any(func(x: StatusEffectGD): return x.info.id == 1)
 	
-func getStatusEffect(id: int) -> StatusEffectGD:
+func getStatusEffect(id: int, Creator: FofGD = null) -> StatusEffectGD:
 	for status_effect: StatusEffectGD in status_effects:
-		if status_effect.info.id == id: return status_effect
+		if status_effect.info.id == id and (Creator == null or status_effect.Creator == Creator):
+			return status_effect
 	return null
 #endregion
 
@@ -1292,7 +1287,7 @@ func onLevelEnded(_win: bool) -> void:
 		if card_place != Game.CardPlaces.DECK:
 			onPushAction(AddToDeckAction.new(self, AddToDeckAction.ADD_TYPES.SHUFFLE))
 			onChangeCardPlace(Game.CardPlaces.DECK)
-	else: onChangeCardPlace(Game.CardPlaces.NULL)
+	else: onChangeCardPlace(Game.CardPlaces.GRAVEYARD)
 #endregion
 
 #region Idle Rare
@@ -1376,9 +1371,11 @@ func onAICheckActiveEffects(DFL: DefaultFightLogic, allies: Array, enemies: Arra
 	var tool_active_effects: Array = Tool.getActiveEffects() if Tool != null else []
 	var ai_active_effects: Array = getActiveEffects() + tool_active_effects
 	
-	for IObject in Game.get_tree().get_nodes_in_group("LevelIObjectsGD")\
-		.filter(func(x: ObjectGD): return !x.is_queued_for_deletion()):
-		ai_active_effects += IObject.getValidActiveEffects(self)
+	if getTile() != null:
+		for IObject in Game.get_tree().get_nodes_in_group("LevelIObjectsGD")\
+			.filter(func(x: ObjectGD): return !x.is_queued_for_deletion()):
+			
+			ai_active_effects += IObject.getValidActiveEffects(self)
 		
 	for active_effect in ai_active_effects:
 		var active_effect_tiles: ActiveEffectTiles = active_effect.owner.onAIAbilityCheckerDefault(active_effect)\
@@ -1533,7 +1530,8 @@ func setBaseStats(types: Array, values: Array) -> void:
 		var type: Game.Stats = types[i]
 		match type:
 			Game.Stats.ATTACK: base_stats.attack += values[i]
-			Game.Stats.MAX_HEALTH: base_stats.health += values[i]
+			Game.Stats.MAX_HEALTH:
+				base_stats.health += values[i]
 			Game.Stats.MAX_SPEED: base_stats.speed += values[i]
 			Game.Stats.ENERGY:
 				base_stats.energy += values[i]
@@ -1542,6 +1540,10 @@ func setBaseStats(types: Array, values: Array) -> void:
 		if type != Game.Stats.ENERGY:
 			stat_info.types.append(type)
 			stat_info.values.append(values[i])
+			
+			if type == Game.Stats.MAX_HEALTH:
+				stat_info.types.append(Game.Stats.HEALTH)
+				stat_info.values.append(values[i])
 			
 	onPushAction(StatAction.new(stat_info))
 	
@@ -1623,6 +1625,7 @@ func getsetMovementRange(speed_override: int = -1) -> Array:
 		
 		var tiles_in_range: Array = available_tiles\
 			.filter(func(x: TileGD): return Game.getCoordsDistance(x.getCoords(), game_object_coords) <= getAttackRange())
+		tiles_in_range = tiles_in_range.filter(isValidAttackTile.bind(GameObject))
 			
 		if tiles_in_range.is_empty(): continue
 		var AttackFromTile: TileGD

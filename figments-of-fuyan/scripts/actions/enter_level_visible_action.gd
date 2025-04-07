@@ -15,6 +15,7 @@ func onPreAction() -> void:
 	onForceAction(CameraChangeAction.new(occupy_action.Card))
 	
 func onPostAction() -> void:
+	occupy_action.Card.onPauseAnimationWithDelay(ENTER_LEVEL_VISIBLE_DELAY)
 	occupy_action.Card.setPositionToTile(occupy_action.PreviousTile)
 	await Game.get_tree().create_timer(ENTER_LEVEL_VISIBLE_DELAY).timeout
 	occupy_action.Card.onMoveToTile(move_action, getDelay() - ENTER_LEVEL_VISIBLE_DELAY)

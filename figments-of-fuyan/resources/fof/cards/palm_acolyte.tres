@@ -1,14 +1,28 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://ck073hlp2bcbr"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=13 format=3 uid="uid://dvvrvs1ax4iuv"]
 
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_vhuk6"]
 [ext_resource type="Resource" uid="uid://6j57uasj8x66" path="res://resources/fof/archetypes/reinforcer.tres" id="2_racig"]
 [ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_sigte"]
-[ext_resource type="Texture2D" uid="uid://4tjnieth15fo" path="res://assets/sprites/game/cards/art_mini/divinus_palmus.png" id="3_r3qlw"]
+[ext_resource type="Image" uid="uid://b75kho28031ha" path="res://assets/sprites/game/cards/art_pop/palm_acolyte.png" id="3_8qtb0"]
+[ext_resource type="Texture2D" uid="uid://c8muitrvelbnt" path="res://assets/sprites/game/cards/art_mini/palm_acolyte.png" id="3_r3qlw"]
 [ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_s3wjm"]
 [ext_resource type="Script" uid="uid://dediuf1xvriyq" path="res://scripts/fof/cards/palm_acolyte.gd" id="4_6mvja"]
-[ext_resource type="Image" uid="uid://crmdn6pdw7trc" path="res://assets/sprites/game/cards/art_pop/divinus_palmus.png" id="4_b6vpv"]
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_8qtb0"]
 [ext_resource type="PackedScene" uid="uid://w83kn76qjgqx" path="res://assets/models/fof/cards/divinus_palmus.glb" id="7_glhbm"]
+
+[sub_resource type="Resource" id="Resource_r3qlw"]
+script = ExtResource("1_vhuk6")
+exists = 0
+ascended_description = ""
+ascended_max_charges = -1
+name = "Divine Light"
+description = "REVEAL an enemy unit in vision for [3] Turns"
+max_charges = 2
+delay = 2.4
+camera_type = 0
+charges = 0
+used = false
+metadata/_custom_type_script = "uid://cdbphjba7jkam"
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_80h08"]
 size = Vector3(0.527344, 2.00391, 0.309814)
@@ -34,14 +48,14 @@ speed = 2
 energy = 3
 rarity = 0
 initial_traits = Array[ExtResource("2_sigte")]([])
-active_abilities = Array[ExtResource("1_vhuk6")]([])
+active_abilities = Array[ExtResource("1_vhuk6")]([SubResource("Resource_r3qlw")])
 flavor_text = ""
 description = "ABILITY [2]: REVEAL an enemy unit in vision for [3] Turns
-Revealed enemies in vision can't leave"
+Revealed enemies in vision can't exit this unit's vision willingly"
 ascended_description = ""
-art_mini_coordinate = Vector2i(90, 24)
+art_mini_coordinate = Vector2i(88, 45)
 art_mini = ExtResource("3_r3qlw")
-art_pop = ExtResource("4_b6vpv")
+art_pop = ExtResource("3_8qtb0")
 model = ExtResource("7_glhbm")
 points = [Vector3(-0.157598, 0.275337, 0.156006), Vector3(0.125076, 0.272346, 0.156006), Vector3(0.123484, 0.581134, 0.156006), Vector3(-0.149234, 0.630647, 0.156006), Vector3(-0.100989, 0.947012, 0.156006), Vector3(0.102517, 0.95601, 0.156006), Vector3(-0.130152, 1.22192, 0.156006), Vector3(0.164963, 1.23761, 0.156006), Vector3(0.0273505, 1.5193, 0.156006), Vector3(0.00637631, 1.87432, 0.156006), Vector3(-0.265625, 0.205133, 0.000790742), Vector3(-0.265625, 0.592861, 0.0129754), Vector3(-0.265625, 1.02456, 0.0377797), Vector3(-0.265625, 1.45412, 0.0288714), Vector3(-0.265625, 1.85718, -0.00282015), Vector3(0.141333, 0.218789, -0.153808), Vector3(-0.128178, 0.239154, -0.153808), Vector3(-0.135871, 0.62485, -0.153808), Vector3(0.115484, 0.62557, -0.153808), Vector3(0.0929544, 0.908064, -0.153808), Vector3(-0.168235, 0.925916, -0.153808), Vector3(0.116615, 1.19054, -0.153808), Vector3(-0.106401, 1.19073, -0.153808), Vector3(0.0231847, 1.46869, -0.153808), Vector3(-0.00657967, 1.69085, -0.153808), Vector3(0.000361825, 1.87829, -0.153808), Vector3(0.261719, 0.252995, 0.02889), Vector3(0.261719, 0.645675, -0.0100488), Vector3(0.261719, 1.00111, -0.00295574), Vector3(0.261719, 1.35312, -0.0173286), Vector3(0.261719, 1.74087, -0.0295988), Vector3(0.261719, 1.90084, -0.0204164)]
 collision_shape = SubResource("PackedScene_pngqc")

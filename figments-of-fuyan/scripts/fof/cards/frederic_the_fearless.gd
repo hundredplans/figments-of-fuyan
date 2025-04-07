@@ -17,7 +17,7 @@ func onProcessAction(action: Action) -> void:
 		onPushAction(RampageAction.new(self, action))
 
 func onRampage(_action: DeathAction) -> void:
-	var stat_infos: Array = [StatInfo.new(self, Game.Stats.MAX_HEALTH, 1)]
+	var stat_infos: Array = [StatInfo.new(self, [Game.Stats.MAX_HEALTH, Game.Stats.HEALTH], [1, 1])]
 	if Game.getChampionLevel() >= 2:
 		stat_infos.append(StatInfo.new(self, Game.Stats.HEALTH, 1))
 

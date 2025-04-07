@@ -1,30 +1,21 @@
 class_name Rewards extends Resource
 
 var parent: FofGD
-
-@export var items: Array = []
-@export var taken_items: Array = []
+@export var items: Array = [] # [Reward]
 
 func _init(_items: Array = []) -> void:
 	items = _items
 
-func onRewardTaken(reward: Variant) -> void:
-	items.erase(reward)
-	taken_items.append(reward)
+func onRewardTaken(reward: Reward) -> void:
+	reward.setTaken(true)
 	
 func setInfo(_parent: FofGD) -> void:
 	parent = _parent
 	
 func onSave() -> void:
-	items = items.map(onSaveMap)
-	taken_items = taken_items.map(onSaveMap)
+	for reward: Reward in items:
+		reward.onSave()
 	
 func onLoad() -> void:
-	items = items.map(onLoadMap)
-	taken_items = taken_items.map(onLoadMap)
-
-func onSaveMap(x: FofGD) -> SavedData:
-	return x.onSave()
-	
-func onLoadMap(x: SavedData) -> FofGD:
-	return SavedData.onLoadModel(x, parent)
+	for reward: Reward in items:
+		reward.onLoad(parent)

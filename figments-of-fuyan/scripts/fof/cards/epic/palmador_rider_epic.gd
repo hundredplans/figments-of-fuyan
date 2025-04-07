@@ -19,7 +19,7 @@ func onProcessAction(action: Action) -> void:
 		elif action is VisionNewUnitAction and action.Discoverer == self and action.Discovered.isAlly(0):
 			turns_enemies_unseen = -1
 			
-func onSave() -> SavedDataBossCard:
+func onSave() -> SavedDataEpicCard:
 	ability_save["turns_enemies_unseen"] = turns_enemies_unseen
 	return super()
 	
@@ -207,8 +207,9 @@ func onReposition(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 						tiles_adjacent_to_height.append(OtherTile)
 						break
 						
+			tiles_adjacent_to_height = tiles_adjacent_to_height.filter(func(x: TileGD): return !x.isSolid() and !x.isOccupied())
 			if tiles_adjacent_to_height.is_empty():
-				tiles_adjacent_to_height = tiles.duplicate()
+				tiles_adjacent_to_height = tiles
 				tiles_adjacent_to_height = getDistantToEnemiesTiles(enemies, tiles_adjacent_to_height)
 			else:
 				tiles_adjacent_to_height = getAllyVisionTiles(tiles_adjacent_to_height)
@@ -224,12 +225,12 @@ func onReposition(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 		return [MovementAction.new(self, BestTile.getMovementPathTiles())]
 	
 	if isGround():
-		var height_tiles: Array = Game.getAdjacentTiles(Tile).filter(func(x: TileGD): return isHigh(x))
+		var height_tiles: Array = Game.getAdjacentTiles(Tile)\
+			.filter(func(x: TileGD): return isHigh(x) and !x.isSolid() and !x.isOccupied())
 		if height_tiles.is_empty(): return []
 		
 		var ally_vision: Array = Game.getTeamVision(0)
-		if height_tiles.any(func(x: TileGD): return x in ally_vision):
-			height_tiles = height_tiles.filter(func(x: TileGD): return x in ally_vision)
+		height_tiles = getAllyVisionTiles(height_tiles)
 			
 		var BestTile: TileGD = height_tiles.pick_random()
 		return [MovementAction.new(self, [getTile(), BestTile]), ChangeTileRotationAction.new(self, Game.getRelativeTileRotation(Tile, BestTile))]

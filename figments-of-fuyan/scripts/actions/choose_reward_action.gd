@@ -6,10 +6,14 @@ var items: Array # [FofGD]
 @export var item_datas: Array
 
 @export var auto_clear: bool
+@export var reward_type: RewardType
 
-func _init(_items: Array = [], _auto_clear: bool = true) -> void:
+enum RewardType {CARDS, MINIBOSS, BOSS}
+
+func _init(_items: Array = [], _reward_type := RewardType.CARDS, _auto_clear: bool = true) -> void:
 	super()
 	items = _items
+	reward_type = _reward_type
 	auto_clear = _auto_clear
 	
 func onPreAction() -> void:

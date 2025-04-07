@@ -25,9 +25,11 @@ func setInfo() -> void:
 		
 	await get_tree().process_frame # While actions are processed
 	var PreviousCardUI: Control = PreviousChampionCard.onCreateCardUI(MainContainer, false, false)
+	PreviousCardUI.setDisableTooltip(true)
 	PreviousChampionCard.onClear()
 	
 	var CardUI: Control = ChampionCard.onCreateCardUI(MainContainer, false, false)
+	CardUI.setDisableTooltip(true)
 	MainContainer.move_child(PreviousCardUI, 0)
 	
 	await get_tree().create_timer(WAIT_TIME).timeout

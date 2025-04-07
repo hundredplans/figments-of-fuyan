@@ -19,7 +19,6 @@ const ELITE_FIGHT_DIVIDER_SIZE: int = 50
 
 var EliteCardRewardUI: Control
 
-var reward_amount: int = 0
 var rewards: Rewards
 var save_file: SaveFileGD
 var level_type: Game.FightTypes
@@ -44,74 +43,72 @@ func setInfo(_rewards: Rewards, _save_file: SaveFileGD, _level_type: Game.FightT
 		FirstContainer.position.y += ELITE_MOVE_DOWN_HEIGHT
 		
 	var items: Array = rewards.items
-	for item in items:
-		onCreateReward(item, false)
-		reward_amount += 1
-		
-	for item in rewards.taken_items:
-		onCreateReward(item, true)
+	for reward: Reward in items:
+		onCreateReward(reward)
 	onRewardsFinished()
 		
-func onCreateReward(item: Variant, taken: bool) -> void:
-	if item is CardGD and is_elite:
+func onCreateReward(reward: Reward) -> void:
+	if reward.item is CardGD and is_elite:
 		EliteCardRewardUI = EliteCardRewardUIPacked.instantiate()
 		FirstContainer.add_child(EliteCardRewardUI)
 		FirstContainer.move_child(EliteCardRewardUI, 0)
-		EliteCardRewardUI.setInfo(item, taken)
+		EliteCardRewardUI.setInfo(reward)
 		EliteCardRewardUI.pressed.connect(onRewardPressed)
 		return
 	
 	var RewardsItem: Control = RewardsItemPacked.instantiate()
 	RewardsContainer.add_child(RewardsItem)
 	RewardsItem.mouse_signal.connect(onMouseInUI)
-	RewardsItem.setInfo(item, taken)
+	RewardsItem.setInfo(reward)
 	
-	if !taken: RewardsItem.pressed.connect(onRewardPressed)
+	if !reward.taken: RewardsItem.pressed.connect(onRewardPressed)
 		
 func onMouseInUI(state: bool) -> void:
 	mouse_in_ui.emit(state)
 	
-func onRewardPressed(reward: Variant) -> void:
+func onRewardPressed(reward: Reward) -> void:
 	add_reward.emit(reward)
-	if reward is ActionWrapper and reward.hasType(ChangeShillingsAction):
-		reward.onUse()
+	if reward.item is ActionWrapper and reward.item.hasType(ChangeShillingsAction):
+		reward.item.onUse()
 		onRewardTaken(reward)
 		
-	elif reward is ActionWrapper and reward.hasType(ChooseRewardAction):
+	elif reward.item is ActionWrapper and reward.item.hasType(ChooseRewardAction):
 		var ChooseRewardsUI: Control = Game.onCreateChooseRewardsUIScreen(reward, self)
 		ChooseRewardsUI.taken.connect(onRewardTaken)
 		
-	elif reward is BoonGD:
-		Game.getArea().onPushAction(AddBoonAction.new(reward.info.id, reward.getAscended()))
+	elif reward.item is BoonGD:
+		Game.getArea().onPushAction(AddBoonAction.new(reward.item.info.id, reward.item.getAscended()))
 		onRewardTaken(reward)
 		
-	elif reward is ToolGD:
-		var ToolPickedUpUI: Control = Game.onCreateToolPickedUpUI(reward, false, self)
-		ToolPickedUpUI.taken.connect(onRewardTaken)
+	elif reward.item is ToolGD:
+		var ToolPickedUpUI: Control = Game.onCreateToolPickedUpUI(reward.item, false, self)
+		ToolPickedUpUI.taken.connect(onToolTaken.bind(reward))
 		
-	elif reward is CardGD:
-		Game.getArea().onPushAction(AddToDeckAction.new(reward))
+	elif reward.item is CardGD:
+		Game.getArea().onPushAction(AddToDeckAction.new(reward.item))
 		onRewardTaken(reward)
 		
-func onRewardTaken(reward: FofGD) -> void:
+func onToolTaken(_Tool: ToolGD, reward: Reward) -> void:
+	onRewardTaken(reward)
+		
+func onRewardTaken(reward: Reward) -> void:
 	if is_elite and !EliteCardRewardUI.taken:
 		EliteCardRewardUI.setTaken(true)
-		
-		if is_elite:
-			for _reward in rewards.items.duplicate():
-				var item_reward: FofGD = _reward if _reward is not Array else _reward[0]
-				onRewardTaken(item_reward)
+		EliteCardRewardUI.reward.setTaken(true)
+		if reward.item is CardGD:
+			for _reward: Reward in rewards.items.duplicate():
+				onRewardTaken(_reward)
 		
 	for child in RewardsContainer.get_children():
-		if child.item == reward:
+		if child.reward == reward:
 			child.setTaken(true)
+			break
 		
 	rewards.onRewardTaken(reward)
-	reward_amount -= 1
 	onRewardsFinished()
 
 func onRewardsFinished() -> void:
-	if reward_amount == 0:
+	if rewards.items.all(func(x: Reward): return x.taken):
 		SkipButton.text = "Continue"
 
 func onSkipButtonPressed() -> void:
@@ -122,7 +119,7 @@ func onRemoveRewards() -> void:
 	EliteCardRewardUI.queue_free()
 	for child in RewardsContainer.get_children():
 		child.queue_free()
-	reward_amount = 0
+		
 	FirstContainer.size.y += ELITE_MOVE_DOWN_HEIGHT
 	FirstContainer.position.y -= ELITE_MOVE_DOWN_HEIGHT
 	rewards.taken_items = []

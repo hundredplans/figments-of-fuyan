@@ -6,12 +6,12 @@ var disabled: bool
 
 const SPIN_SPEED: float = 10
 @onready var ToolIcon: TextureRect = %ToolIcon
-@export var ASCENDED_CANVAS_MATERIAL: ShaderMaterial
-@export var ASCENDED_CANVAS_MATERIAL_DISABLED: ShaderMaterial
 
 var Tool: ToolGD
 var hoverable: bool
 var ascended: bool
+
+@export var disable_tooltip: bool
 
 func setInfo(_Tool: ToolGD, _hoverable: bool = false) -> void:
 	Tool = _Tool
@@ -27,7 +27,6 @@ func setInfoDirect(icon: Texture2D, _ascended: bool, _hoverable: bool = false) -
 
 func onUpdateAscension(_ascended: bool) -> void:
 	ascended = _ascended
-	ToolIcon.material = (ASCENDED_CANVAS_MATERIAL if !disabled else ASCENDED_CANVAS_MATERIAL_DISABLED) if ascended else null
 
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("MainInput") and is_mouse_in_ui and !disabled:
@@ -36,9 +35,12 @@ func _process(_delta: float) -> void:
 func onMouseInUI(state: bool) -> void:
 	is_mouse_in_ui = state
 	mouse_in_ui.emit(state)
-	Game.onMouseInUITooltip(state, Tool, self, true)
+	
 	if !disabled and hoverable:
 		modulate = Color(1, 1, 1) if !state else Color(0.5, 0.5 , 0.5)
+		
+	if disable_tooltip: return
+	Game.onMouseInUITooltip(state, Tool, self, true)
 	
 func setDisabled(state: bool) -> void:
 	disabled = state

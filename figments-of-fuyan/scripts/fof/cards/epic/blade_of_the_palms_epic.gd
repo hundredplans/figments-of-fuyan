@@ -11,8 +11,38 @@ const CLONE_ID: int = 78
 
 const PEDESTAL_TILE_COORDS := Vector4i(6, -12, 6, 8)
 
+#enum {BAT_ATTACK, CLONE_MINIFAN_ATTACK, CLONE_PHASE_CHANGE, CLONE_SUMMON,\
+	#DOUBLE_TELEPORT_ATTACK, FAN_BLIND, HAMMER_ATTACK, MINIFAN_ATTACK, MIST_ATTACK,
+	#PETAL_ATTACK, REPOSITION, TELEPORT_ATTACK}
+#
+#func getBossIntentName(intent_name: String) -> int:
+	#match intent_name:
+		#"Bat Attack": return BAT_ATTACK
+		#"Clone Minifan Attack": return CLONE_MINIFAN_ATTACK
+		#"Clone Phase Change": return CLONE_PHASE_CHANGE
+		#"Clone Summon": return CLONE_SUMMON
+		#"Double Teleport Attack": return DOUBLE_TELEPORT_ATTACK
+		#"Fan Blind": return FAN_BLIND
+		#"Hammer Attack": return HAMMER_ATTACK
+		#"Minifan Attack": return MINIFAN_ATTACK
+		#"Mist Attack": return MIST_ATTACK
+		#"Petal Attack": return PETAL_ATTACK
+		#"Reposition": return REPOSITION
+		#"Teleport Attack": return TELEPORT_ATTACK
+		
+		#CLONE_SUMMON: return "Clone Summon"
+		#DOUBLE_TELEPORT_ATTACK: return "Double Teleport Attack"
+		#FAN_BLIND: return "Fan Blind"
+		#HAMMER_ATTACK: return "Hammer Attack"
+		#MINIFAN_ATTACK: return "Minifan Attack"
+		#MIST_ATTACK: return "Mist Attack"
+		#PETAL_ATTACK: return "Petal Attack"
+		#REPOSITION: return "Reposition"
+		#TELEPORT_ATTACK: return "Teleport Attack"
+	#return 0
+
 #region Defaults
-func onSave() -> SavedDataBossCard:
+func onSave() -> SavedDataEpicCard:
 	return super()
 
 func onProcessAction(action: Action) -> void:
@@ -181,7 +211,7 @@ func onTeleportAttack(use_type: UseType) -> Array:
 			DamageAction.new(self, adjacent_enemies, attack, Game.DamageTypes.OTHER),
 			DamageAction.new(self, double_adjacent_enemies, attack - 2, Game.DamageTypes.OTHER)]
 			
-		actions += triple_adjacent_enemies.map(func(x: CardGD): return x.getBaseStatusEffectAction(BLIND_ID, -1))
+		actions += triple_adjacent_enemies.map(func(x: CardGD): return x.getBaseStatusEffectAction(BLIND_ID, -1, self))
 		
 		var all_enemies: Array = adjacent_enemies + double_adjacent_enemies + triple_adjacent_enemies
 		if !all_enemies.is_empty():
@@ -608,7 +638,7 @@ func onDoubleTeleportAttack(use_type: UseType) -> Array:
 			if i == 0: actions.insert(2, CardOffsetAction.new(self))
 			actions.append(DamageAction.new(self, adjacent_enemies, attack, Game.DamageTypes.OTHER))
 			actions.append(DamageAction.new(self, double_adjacent_enemies, attack - 2, Game.DamageTypes.OTHER))
-			actions += triple_adjacent_enemies.map(func(x: CardGD): return x.getBaseStatusEffectAction(BLIND_ID, -1))
+			actions += triple_adjacent_enemies.map(func(x: CardGD): return x.getBaseStatusEffectAction(BLIND_ID, -1, self))
 		return actions
 	return []
 #endregion
@@ -675,7 +705,7 @@ func onChangeBossPhasePostDelay() -> void:
 		
 	var ally_cards: Array = Game.getAllyUnits(0)
 	
-	actions += ally_cards.map(func(x: CardGD): return RemoveStatusEffectAction.new(x.getStatusEffect(BLIND_ID)))
+	actions += ally_cards.map(func(x: CardGD): return RemoveStatusEffectAction.new(x.getStatusEffect(BLIND_ID, self)))
 	
 	var intent_name: String = "Clone Phase Change"
 	var clone_amount: int = Game.getAllyUnits(0).size() 
@@ -690,7 +720,7 @@ func onChangeBossPhasePostDelay() -> void:
 	card_offset_action.setActionDelay(PHASE_CHANGE_DELAY_TIME)
 	actions.append(card_offset_action)
 	
-	actions += ally_cards.map(func(x: CardGD): return x.getBaseStatusEffectAction(BLIND_ID, -1))
+	actions += ally_cards.map(func(x: CardGD): return x.getBaseStatusEffectAction(BLIND_ID, -1, self))
 	
 	if Game.getLevel().getPhase() == Game.Phases.PLAYER:
 		actions.append(ChangePhaseAction.new(Game.Phases.AI))
@@ -900,13 +930,13 @@ func onClonePhaseChangeSetIntents() -> BossTileIntents: return BossTileIntents.n
 func onClonePhaseChange(use_type: UseType) -> Array:
 	if use_type == UseType.END and boss_datastore.getIntentDuration() == 1:
 		var allies: Array = Game.getAllyUnits(0)
-		return allies.map(func(x: CardGD): return RemoveStatusEffectAction.new(x.getStatusEffect(BLIND_ID)))
+		return allies.map(func(x: CardGD): return RemoveStatusEffectAction.new(x.getStatusEffect(BLIND_ID, self)))
 	return []
 #endregion
 
 #region Helper
 func onApplyBlind(enemies: Array, tiles: Array, turns: int = -1) -> Array: # Returns blind actions
-	return enemies.filter(func(x: CardGD): return x.getTile() in tiles).map(func(x: CardGD): return x.getBaseStatusEffectAction(BLIND_ID, turns))
+	return enemies.filter(func(x: CardGD): return x.getTile() in tiles).map(func(x: CardGD): return x.getBaseStatusEffectAction(BLIND_ID, turns, self))
 
 func getPedestalTile() -> TileGD: # Update this so it doesn't wreck ur pc
 	return Game.getTile(PEDESTAL_TILE_COORDS)

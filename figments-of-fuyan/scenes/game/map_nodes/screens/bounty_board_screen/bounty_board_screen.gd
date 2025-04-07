@@ -22,11 +22,13 @@ func setInfo(_save_file: SaveFileGD, _area: AreaGD, _World: Node3D, _UI: Control
 	
 	setButtonsDisabled()
 	setWantedLabel()
+	MiniBox.setData(null)
+	
 	if SelectedCard != null:
 		onCardSelected(SelectedCard)
 		
-	map_node.price = BASE_PRICE
-	MiniBox.setData(null)
+	if map_node.price == 0: map_node.price = BASE_PRICE
+	
 	setPriceLabel()
 	onCreateTierLabels()
 	setTierLabels()

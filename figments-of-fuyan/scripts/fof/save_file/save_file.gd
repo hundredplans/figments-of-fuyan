@@ -69,6 +69,7 @@ func onLoadData(data: SavedData) -> void:
 	time = data.time
 	last_loaded_deck = data.deck
 	safe_encounter_count = data.safe_encounter_count
+	upgrade_level = data.upgrade_level
 	
 	timer = Timer.new()
 	timer.wait_time = 99999999

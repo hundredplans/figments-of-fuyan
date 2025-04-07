@@ -7,6 +7,8 @@ signal pressed
 @onready var MainPanel: PanelContainer = $MainPanel
 @onready var ToolIconRect: Control = %ToolIconRect
 
+@export var disable_tooltip: bool
+
 var data: SavedData
 var show_tool_icon: bool
 func setInfo(_data: SavedData, _show_tool_icon: bool = false) -> void:
@@ -34,7 +36,7 @@ func onMouseInUI(state: bool) -> void:
 	is_mouse_in_ui = state
 	mouse_in_ui.emit(is_mouse_in_ui)
 	
-	if data == null: return
+	if data == null or disable_tooltip: return
 	Game.onMouseInUITooltip(is_mouse_in_ui, data, self, true)
 
 func _process(_delta: float) -> void:

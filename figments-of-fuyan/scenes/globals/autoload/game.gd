@@ -608,10 +608,10 @@ func onCreateRewardsUIScreen(rewards: Rewards, parent: Control, level_type: Figh
 	return RewardsUI
 	
 const CHOOSE_REWARDS_UI_PATH: String = "res://scenes/common/rewards_ui/choose_rewards_ui.tscn"
-func onCreateChooseRewardsUIScreen(rewards: ActionWrapper, parent: Control) -> Control:
+func onCreateChooseRewardsUIScreen(reward: Reward, parent: Control) -> Control:
 	var ChooseRewardsUI: Control = load(CHOOSE_REWARDS_UI_PATH).instantiate()
 	parent.add_child(ChooseRewardsUI)
-	ChooseRewardsUI.setInfo(rewards)
+	ChooseRewardsUI.setInfo(reward)
 	return ChooseRewardsUI
 #endregion
 

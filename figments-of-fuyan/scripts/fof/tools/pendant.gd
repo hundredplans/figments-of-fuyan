@@ -73,13 +73,16 @@ func onToolUnequipped() -> void:
 
 func onToolHolderAwakened() -> void:
 	super()
-	var type: Game.Stats
+	var types: Array = []
 	match info.id:
-		1: type = Game.Stats.MAX_HEALTH
-		4: type = Game.Stats.ATTACK
-		6: type = Game.Stats.MAX_SPEED
+		1: types.append(Game.Stats.MAX_HEALTH); types.append(Game.Stats.HEALTH)
+		4: types.append(Game.Stats.ATTACK)
+		6: types.append(Game.Stats.MAX_SPEED)
 		
-	var stat_action := StatAction.new(StatInfo.new(Card, type, 1))
+	var values: Array = []
+	values.resize(types.size())
+	values.fill(1)
+	var stat_action := StatAction.new(StatInfo.new(Card, types, values))
 	onPushAction(ToolActivatedAction.new(self, stat_action))
 	
 func onToolHolderDeath() -> void:

@@ -6,9 +6,9 @@ var boss_intent: BossIntent
 var BossFieldInfo: Node3D
 
 #region Default
-func onSave() -> SavedDataBossCard:
+func onSave() -> SavedDataEpicCard:
 	onPreSave()
-	return SavedDataBossCard.new(info.id, false, public_id, coords, tile_rotation, vision_datastore, team, ascended, \
+	return SavedDataEpicCard.new(info.id, false, public_id, coords, tile_rotation, vision_datastore, team, ascended, \
 	attack, health, speed, max_speed, max_health, energy, draw_order, card_place, turn_state, SavedData.onSaveGroup(status_effects), attacks, attack_range, delayed_stats,\
 	ability_save, active_effects, Tool.onSave() if Tool != null else null, SavedData.onSaveGroup(field_effects), anibility_datastore,\
 	is_temporary, is_awakened_in_combat, ai_datastore, base_stats,
@@ -22,7 +22,7 @@ func onLoadData(data: SavedData) -> void:
 	
 func onLoadDataLevel() -> void:
 	super()
-	setBossIntentByName()
+	setBossIntentLoad()
 	
 func onFofInit() -> void:
 	super()
@@ -148,14 +148,20 @@ func setBossIntent(_boss_intent: BossIntent) -> void:
 	boss_intent = _boss_intent
 
 	boss_datastore.boss_intent_name = boss_intent.name
-	if BossFieldInfo != null: BossFieldInfo.onUpdateBossIntent()
+	if BossFieldInfo != null:
+		BossFieldInfo.onUpdateBossIntent()
 	
-	if Tile != null: onFirstUpdateTileIntents()
-	else: boss_datastore.onFirstUpdateTileIntents(boss_datastore.getTileIntents()) # When first loading in
+	onFirstUpdateTileIntents()
 	
 func setBossIntentByName() -> void:
 	var _boss_intent: BossIntent = getBossIntentByName()
 	setBossIntent(_boss_intent)
+	
+func setBossIntentLoad() -> void:
+	if isDead(): return
+	boss_intent = getBossIntentByName()
+	BossFieldInfo.onUpdateBossIntent()
+	boss_datastore.onFirstUpdateTileIntents(boss_datastore.getTileIntents())
 	
 func onChangeBossIntent(_boss_intents: Array, _enemies: Array, _allies: Array) -> BossIntent: return null
 func onResetBossIntentCooldowns() -> void:

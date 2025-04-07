@@ -25,7 +25,7 @@ func onHit(_damage_action: DamageAction, _attack_action: AttackAction) -> void:
 	anibility_datastore.onResetAttackModifier()
 
 	var actions: Array = [
-		StatAction.new([StatInfo.new(self, [Game.Stats.ATTACK, Game.Stats.MAX_HEALTH], [1, 1])]),
+		StatAction.new([StatInfo.new(self, [Game.Stats.ATTACK, Game.Stats.MAX_HEALTH, Game.Stats.HEALTH], [1, 1, 1])]),
 		RemoveFieldEffectAction.new(Game.onFindPublicIDObject(swingus_field_effect_public_id))]
 		
 	swingus_field_effect_public_id = 0

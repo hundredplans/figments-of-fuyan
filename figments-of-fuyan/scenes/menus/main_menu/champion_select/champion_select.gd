@@ -10,6 +10,7 @@ signal disable_freelook
 @export var starter_position: Vector3 = Vector3(1.25, 1.25, 2.9)
 @export var PedestalPacked: PackedScene
 @export var ChampionTitlePacked: PackedScene
+@export var BaseMaterial: Material
 var is_champion_pressed: bool
 var ChampionCard: CardGD
 #endregion
@@ -34,6 +35,7 @@ func _ready() -> void:
 			ChampionCard = SavedData.onLoadModel(card_data, pedestal)
 			ChampionCard.onCreateModel()
 			ChampionCard.getModel().rotation.y = 0
+			ChampionCard.setMeshesMaterial(BaseMaterial, ChampionCard.getModel())
 			pedestal.setInfo(ChampionCard)
 			
 			pedestal.champion_hovered.connect(onChampionHovered)

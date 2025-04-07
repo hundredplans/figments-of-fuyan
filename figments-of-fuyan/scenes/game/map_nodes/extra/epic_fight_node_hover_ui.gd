@@ -6,11 +6,12 @@ extends Control
 
 func setInfo(map_node_data: SavedDataEpicFight) -> void:
 	var FofUIBox: Control = FofUIBoxPacked.instantiate()
+	FofUIBox.disable_tooltip = true
 	FofUIControl.add_child(FofUIBox)
 	
 	if Game.getArea().getProgress() < 5 and map_node_data.map_location.progress > 5: queue_free(); return
 	
-	var boss_data := SavedDataBossCard.new(map_node_data.boss_id)
+	var boss_data := SavedDataEpicCard.new(map_node_data.boss_id)
 	FofUIBox.setInfo(boss_data)
 	FofUIBox.scale = Vector2(2, 2)
 	

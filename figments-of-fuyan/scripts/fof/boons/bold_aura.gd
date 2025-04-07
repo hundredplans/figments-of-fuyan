@@ -16,7 +16,7 @@ func getDescription() -> String:
 
 func onBoon(action: Action = null) -> void:
 	onPushAction(ChangeBoonChargesAction.new(self, -1))
-	onPushAction(StatAction.new(StatInfo.new(action.Damager, Game.Stats.MAX_HEALTH, 1)))
+	onPushAction(StatAction.new(StatInfo.new(action.Damager, [Game.Stats.MAX_HEALTH, Game.Stats.HEALTH], [1, 1])))
 
 func onBoonAdded() -> void:
 	super()

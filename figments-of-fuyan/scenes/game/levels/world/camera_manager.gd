@@ -82,9 +82,9 @@ func _input(event: InputEvent) -> void:
 			elif Input.is_action_just_pressed("ChangeCameraUp"): onChangeCameraTeamInDirection(1)
 			elif Input.is_action_just_pressed("Forward") or Input.is_action_just_pressed("Backward")\
 				or Input.is_action_just_pressed("Left") or Input.is_action_just_pressed("Right"):
+					if Input.is_action_just_pressed("Save"): return
 					last_freelook_rotation = LevelCamera.rotation_degrees
 					FreelookCamera.global_position = LevelCamera.global_position
-					#FreelookCamera._total_pitch = 0
 					onSwapCameraType()
 		
 func getGameObjectFromCoords(coords: Vector4i) -> GameObjectGD:
@@ -174,7 +174,10 @@ func setCameraType(is_freelook: bool, spectate_allies: bool = false) -> void:
 			else: FreelookCamera.rotation_degrees = last_freelook_rotation
 		else: last_freelook_rotation = FreelookCamera.rotation_degrees
 		
-		if is_freelook: onCreateCameraChangeAction(null)
+		if is_freelook:
+			FreelookCamera._total_pitch = -FreelookCamera.rotation_degrees.x
+			FreelookCamera._mouse_position = Vector2.ZERO
+			onCreateCameraChangeAction(null)
 		elif spectate_allies:
 			onSpectateAllies()
 		
@@ -354,9 +357,14 @@ var game_ended: bool
 func onGameEnded() -> void:
 	await get_tree().process_frame
 	onDisableFreelook(true)
+	FreelookCamera.disable_movement = true
+	FreelookCamera.disable_freelook = true
+	
 	FreelookCamera.position = Vector3(0, START_Y, 0)
 	FreelookCamera.current = true
 	FreelookCamera.rotation_degrees = Vector3(-90, 0, 0)
+	
+	CurrentCamera = FreelookCamera
 	game_ended = true
 	SpectateObject = null
 

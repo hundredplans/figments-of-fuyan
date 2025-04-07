@@ -393,9 +393,11 @@ func onGameStarted() -> void:
 func setEnvironment(env: Environment = null) -> void:
 	if env == null:
 		if level.fight_type in [Game.FightTypes.MINIBOSS, Game.FightTypes.BOSS]:
-			env = level.getBoss().getEnvironmentFromInfo()
-		
-		if env == null:
+			var BossCard: EpicCardGD = level.getBoss()
+			if BossCard != null:
+				env = BossCard.getEnvironmentFromInfo()
+			
+		if env == null: # If doesn't find boss card / doesn't have a set environment
 			match level.fight_type:
 				Game.FightTypes.REGULAR:
 					env = area.info.base_environment

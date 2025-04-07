@@ -112,10 +112,12 @@ func onTileChosen(Tile: TileGD, DFL: DefaultFightLogic, allies: Array, enemies: 
 	if Card.onAICheckActiveEffects(DFL, allies, enemies):
 		return
 	
-	var movement_action := MovementAction.new(Card, path)
-	movement_action.setKillRolled(kill_rolled)
-	var actions: Array = [ChangeTurnStateAction.new(Card, Game.TurnStates.ACTIVE),
-		movement_action]
+	var actions: Array = [ChangeTurnStateAction.new(Card, Game.TurnStates.ACTIVE)]
+	if Tile != Card.Tile:
+		var movement_action := MovementAction.new(Card, path)
+		movement_action.setKillRolled(kill_rolled)
+		actions.append(movement_action)
+	
 	onPushAction(actions)
 	
 func onKillPathChosen(kill_path: Array, DFL: DefaultFightLogic, allies: Array, enemies: Array) -> void:
@@ -140,8 +142,12 @@ func getTilesSortedByValue(tiles_to_value: Dictionary) -> Array:
 			tiles_to_value[Tile] += tiles_to_value[PathTile]
 			
 		tiles_to_value[Tile] /= max(float(tiles.size() - 1), 1)
+		Tile.visible = false
+		pass
+		Tile.visible = true
 		
 	var tiles_sorted_by_value: Array = tiles_to_value.keys()
+	tiles_sorted_by_value.shuffle()
 	tiles_sorted_by_value.sort_custom(func(x: TileGD, y: TileGD): return tiles_to_value[x] > tiles_to_value[y])
 	
 	tiles_sorted_by_value.resize(TOP_AMOUNT)

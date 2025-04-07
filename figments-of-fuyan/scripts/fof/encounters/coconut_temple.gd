@@ -13,12 +13,13 @@ func onFirstEntered(screen: Control) -> void:
 	
 	var Boon: BoonGD = SavedData.onLoadModel(Random.getRandomFofByOdds(BoonInfo), self)
 	var Tool: ToolGD = SavedData.onLoadModel(Random.getRandomFofByOdds(ToolInfo), self)
-	rewards = Rewards.new([change_shillings_wrapper, Boon, Tool])
+	var items: Array = [change_shillings_wrapper, Boon, Tool]
+	rewards = Rewards.new(items.map(func(x: FofGD): return Reward.new(x)))
 	
 func onEntered(screen: Control) -> void:
 	super(screen)
-	if rewards.taken_items.is_empty() or rewards.items.is_empty(): return
-	onCreateRewardsUI("OpenPage", screen)
+	if !rewards_page_title.is_empty() and loaded_page_name == "StartPage":
+		onCreateRewardsUI("OpenPage", screen)
 	
 func canShowUp() -> bool:
 	return true

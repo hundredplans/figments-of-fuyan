@@ -1,10 +1,12 @@
-[gd_resource type="Resource" load_steps=5 format=3 uid="uid://8utplnhpg0dw"]
+[gd_resource type="Resource" load_steps=7 format=3 uid="uid://8utplnhpg0dw"]
 
 [ext_resource type="Script" uid="uid://b7d2fejthx3pg" path="res://scenes/game/decorations/decoration_datastore.gd" id="1_4semv"]
 [ext_resource type="Script" uid="uid://b51jdlg8jc738" path="res://resources/datastore/areas/coconut_springs/palm_island_resources.gd" id="2_qec7y"]
 [ext_resource type="Resource" uid="uid://cjmhdi4s82ra8" path="res://resources/datastore/decorations/PalmIsland1.tres" id="2_rm24r"]
 [ext_resource type="Resource" uid="uid://i6h2tha5v3q" path="res://resources/datastore/decorations/PalmIsland2.tres" id="3_smefu"]
+[ext_resource type="Resource" uid="uid://cedek8v044lfg" path="res://resources/datastore/decorations/PalmIsland3.tres" id="4_krfj1"]
+[ext_resource type="Resource" path="res://resources/datastore/decorations/PalmIsland4.tres" id="5_l2met"]
 
 [resource]
 script = ExtResource("2_qec7y")
-palm_islands = Array[ExtResource("1_4semv")]([ExtResource("2_rm24r"), ExtResource("3_smefu")])
+palm_islands = Array[ExtResource("1_4semv")]([ExtResource("2_rm24r"), ExtResource("3_smefu"), ExtResource("4_krfj1"), ExtResource("5_l2met")])

@@ -15,7 +15,7 @@ func onPreAction() -> void:
 	
 func onPostAction() -> void:
 	var info: EpicCardInfo = Helper.getFofInfoID(EpicCardInfo, id)
-	var data := SavedDataBossCard.new(id, true)
+	var data := SavedDataEpicCard.new(id, true)
 	data.attack = info.getAttack(boss_datastore.phase)
 	data.health = info.getHealth(boss_datastore.phase)
 	data.speed = info.getSpeed(boss_datastore.phase)

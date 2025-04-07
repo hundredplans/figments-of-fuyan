@@ -1,6 +1,7 @@
 class_name HealAction extends Action
 
 var heal_datastores: Array
+
 func _init(_heal_datastores: Variant) -> void:
 	super()
 	if heal_datastores != null: # Don't call when reinitialised
@@ -8,9 +9,8 @@ func _init(_heal_datastores: Variant) -> void:
 		elif _heal_datastores is HealDatastore: heal_datastores = [_heal_datastores]
 	
 func onPreAction() -> void:
-	if heal_datastores.is_empty() or heal_datastores\
-		.all(func(x: HealDatastore): return !x.Card.isInjured()):
-		return onFailAction()
+	heal_datastores = heal_datastores.filter(func(x: HealDatastore): return x.Card.isInjured())
+	if heal_datastores.is_empty(): onFailAction()
 	
 func onPostAction() -> void:
 	onPushAction(StatAction.new(heal_datastores.map(func(x: HealDatastore):\

@@ -3,14 +3,17 @@ class_name StatusEffectGD extends FofGD
 var Card: CardGD
 var turns: int
 var ability_save: Dictionary
+var Creator: FofGD
 
 #region Save / Load
 func onSave() -> SavedData:
-	return SavedDataStatusEffect.new(info.id, false, public_id, turns, ability_save)
+	var creator_public_id: int = Creator.public_id if Creator != null else 0
+	return SavedDataStatusEffect.new(info.id, false, public_id, turns, creator_public_id, ability_save)
 	
 func onLoadData(data: SavedData) -> void:
 	turns = data.turns
 	ability_save = data.ability_save
+	Creator = Game.onFindPublicIDObject(data.creator_public_id)
 	
 	for custom_variable in ability_save:
 		set(custom_variable, ability_save[custom_variable])

@@ -61,6 +61,8 @@ var inspectable: bool
 var DraggableParent: Control
 var child_index: int
 
+var disable_tooltip: bool
+
 var is_held: bool
 var original_position: Vector2
 var is_held_moving: bool
@@ -261,4 +263,9 @@ func onChangeBackgroundMouseFilter(is_stop: bool) -> void:
 #endregion
 
 func onMouseInText(state: bool):
+	if disable_tooltip: return
 	Game.onMouseInUITooltip(state, TextLabel.getInfos(), self, true)
+
+func setDisableTooltip(state: bool) -> void:
+	disable_tooltip = state
+	ToolIcon.disable_tooltip = state

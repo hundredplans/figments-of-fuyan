@@ -88,8 +88,16 @@ const HEX_SIZE: float = 0.6
 func getTileFillPoints() -> Array:
 	var points: Array = []
 	var height: int = getHeight()
+	
 	if tile_fill and height > 0:
-		for i in range(height): points += Game.tile_face_directions.map(func(x: Vector3): return Vector3(x.x, (i * 0.6) + 0.45 - position.y, x.z))
+		var min_height: int = height
+		for adjacent_coord: Vector4i in Game.getAdjacentCoords(coords, 1):
+			var Tile: TileGD = Game.getTile(adjacent_coord)
+			if Tile != null and Tile.tile_fill: min_height = min(Tile.getHeight(), min_height)
+			else: min_height = 0
+				
+		for i in range(min_height, height, 1):
+			points += Game.tile_face_directions.map(func(x: Vector3): return Vector3(x.x, (i * 0.6) + 0.45 - position.y, x.z))
 	return points
 #endregion
 #region Material Updates
@@ -145,6 +153,9 @@ func onCreateTileFill(state: bool) -> String:
 		TileFill.scale.y = getHeight()
 		return "DESTROY"
 	return "CREATE"
+	
+func isTileFill() -> bool:
+	return tile_fill
 #endregion
 #region Save / Load
 func onSave() -> SavedDataGameObject:

@@ -7,7 +7,8 @@ extends Control
 @onready var NodeParent: Control = %NodeParent
 @onready var Links: Node2D = %Links
 
-const SPACING := Vector2(75, 60)
+const DEFAULT_SPACING := Vector2(75, 60)
+const DIVINUS_SPACING := Vector2(69, 60)
 
 signal mouse_in_ui
 
@@ -25,6 +26,7 @@ func _ready() -> void:
 	for map_node_data in data:
 		data_by_progress[map_node_data.map_location.progress + lowest_progress].append(map_node_data)
 	
+	var spacing: Vector2 = DEFAULT_SPACING if !Game.isDivinus() else DIVINUS_SPACING
 	for progress_batch in data_by_progress:
 		var lowest_lane_offset: int = abs(progress_batch.map(func(x: SavedDataMapNode): return x.map_location.lane).min())
 		if lowest_lane_offset == 0: lowest_lane_offset = 1 # To center start node and the like
@@ -33,8 +35,9 @@ func _ready() -> void:
 			var MinimapNode: Control = MinimapNodePacked.instantiate()
 			NodeParent.add_child(MinimapNode)
 			var map_loc: MapLocation = map_node_data.map_location
-			MinimapNode.position = (SPACING * Vector2(map_loc.progress + lowest_progress, map_loc.lane + lowest_lane_offset))
-			MinimapNode.position.y += (SPACING.y / 2.0)
+			
+			MinimapNode.position = (spacing * Vector2(map_loc.progress + lowest_progress, map_loc.lane + lowest_lane_offset))
+			MinimapNode.position.y += (spacing.y / 2.0)
 			MinimapNode.setInfo(onFindIconById(map_node_data.id), map_loc, map_node_data.links, map_node_data.is_entered)
 			
 			if map_node_data.id in [3, 4, 7, 8]: # Fight, Elite, Mini, Boss

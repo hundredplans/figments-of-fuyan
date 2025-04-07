@@ -100,8 +100,4 @@ offset_right = 1015.0
 offset_bottom = 177.0
 mouse_filter = 2
 
-[connection signal="mouse_entered" from="." to="." method="onMouseInUI" binds= [true]]
-[connection signal="mouse_exited" from="." to="." method="onMouseInUI" binds= [false]]
-[connection signal="mouse_entered" from="FirstContainer/Control/PanelContainer/MarginContainer/MainContainer/HBoxContainer2/SkipButton" to="." method="onMouseInUI" binds= [true]]
-[connection signal="mouse_exited" from="FirstContainer/Control/PanelContainer/MarginContainer/MainContainer/HBoxContainer2/SkipButton" to="." method="onMouseInUI" binds= [false]]
 [connection signal="pressed" from="FirstContainer/Control/PanelContainer/MarginContainer/MainContainer/HBoxContainer2/SkipButton" to="." method="onSkipButtonPressed"]

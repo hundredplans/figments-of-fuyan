@@ -18,7 +18,6 @@ func onPreAction() -> void:
 	if stat_infos.is_empty(): onFailAction()
 	
 func onPostAction() -> void:
-	var max_health_not_damage: bool
 	for stat_info in stat_infos:
 		var types: Array = stat_info.types.duplicate()
 		var values: Array = stat_info.values.duplicate()
@@ -57,15 +56,13 @@ func onPostAction() -> void:
 					
 					types.append(Game.Stats.SPEED)
 					values.append(value)
-					
 				Game.Stats.HEALTH:
-					if (!absolute and value < 0) and !max_health_not_damage:
+					if (!absolute and value < 0) and owner is DamageAction:
 						difference = Card.onTakeDamage(owner.Damager, -value, lock_action_delay) * -1
 					else:
 						var old_health: int = Card.health
 						Card.health = clamp(Card.health + value, 0, Card.max_health)
 						difference = Card.health - old_health
-						max_health_not_damage = false
 						
 				Game.Stats.MAX_HEALTH:
 					var old_health: int = Card.max_health
@@ -75,14 +72,12 @@ func onPostAction() -> void:
 					Card.max_health = clamp(Card.max_health, 0, 99)
 					difference = Card.max_health - old_health
 					
-					types.push_front(Game.Stats.HEALTH)
-					values.push_front(value)
-					
-					stat_info.types.append(Game.Stats.HEALTH)
-					stat_info.values.append(difference)
-					
-					max_health_not_damage = true
-					
+					if difference < 0:
+						stat_info.types.append(Game.Stats.HEALTH)
+						stat_info.values.append(value)
+						
+						types.append(Game.Stats.HEALTH)
+						values.append(value)
 				Game.Stats.ATTACK:
 					var old_attack: int = Card.attack
 					if absolute: Card.attack = value

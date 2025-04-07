@@ -29,7 +29,8 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		var actions: Array = [
 			HealAction.new(HealDatastore.new(Game.getFieldCard(PickedTile), 1))]
 		
-		if Tile != PickedTile: actions.append(ChangeTileRotationAction.new(self, Game.getRelativeTileRotation(Tile, PickedTile)))
+		if Tile != PickedTile:
+			onForceAction(ChangeTileRotationAction.new(self, Game.getRelativeTileRotation(Tile, PickedTile)))
 		
 		onPushAction(actions)
 		onAbility()

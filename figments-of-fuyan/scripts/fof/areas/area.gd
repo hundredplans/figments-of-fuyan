@@ -420,7 +420,7 @@ func setRewards(is_win: bool) -> void:
 		else: enemy_cards = onRollEpicCardRewards()
 			
 		var rewards_wrapper: ActionWrapper = SavedData.onLoadModel(SavedDataActionWrapper.new(), active_level)
-		rewards_wrapper.setActions(ChooseRewardAction.new(enemy_cards, true))
+		rewards_wrapper.setActions(ChooseRewardAction.new(enemy_cards, ChooseRewardAction.RewardType.CARDS))
 		items.append(rewards_wrapper)
 			
 		var shillings: int = randi_range(fight_rewards_datastore.shillings_min, fight_rewards_datastore.shillings_max)
@@ -452,10 +452,11 @@ func setRewards(is_win: bool) -> void:
 		
 		if is_epic:
 			var epic_rewards_wrapper: ActionWrapper = SavedData.onLoadModel(SavedDataActionWrapper.new(), active_level)
-			epic_rewards_wrapper.setActions(ChooseRewardAction.new(getEpicFightRewards()))
+			var reward_type := ChooseRewardAction.RewardType.BOSS if fight_type == Game.FightTypes.BOSS else ChooseRewardAction.RewardType.MINIBOSS
+			epic_rewards_wrapper.setActions(ChooseRewardAction.new(getEpicFightRewards(), reward_type))
 			items.append(epic_rewards_wrapper)
 			
-		var rewards := Rewards.new(items)
+		var rewards := Rewards.new(items.map(func(x: FofGD): return Reward.new(x)))
 		rewards.setInfo(active_level)
 		active_level.rewards = rewards
 	active_level.onGameEnded()
@@ -559,7 +560,7 @@ func setEnemySpawnsFromBudget(budget: int, min_spawn_amount: int, max_spawn_amou
 	var highest_cost: int = energies.max()
 	var lowest_cost: int = energies.min()
 	
-	max_spawn_amount = min(max_spawn_amount, spawns.size() - 1)
+	max_spawn_amount = min(max_spawn_amount, spawns.size())
 	var energy_combination: Array = getRandomEnergyCombination(budget, randi_range(min_spawn_amount, max_spawn_amount), lowest_cost, highest_cost)\
 		if budget > 6 else getEnergyCombinationFromBudget(budget, lowest_cost, highest_cost, min_spawn_amount, max_spawn_amount)
 		
@@ -631,7 +632,8 @@ func getEnergyCombinationFromBudget(budget: int, lowest_cost: int, highest_cost:
 	
 	while(i < max_attempts):
 		energy_combination = Random.getRandomKeyVariant(budget_odds_dictionary)
-		if energy_combination.size() >= min_spawn_amount and energy_combination.size() <= max_spawn_amount:
+		if energy_combination.size() >= min_spawn_amount and energy_combination.size() <= max_spawn_amount\
+			and energy_combination.all(func(x: int): return x >= lowest_cost and x <= highest_cost):
 			return energy_combination
 		i += 1
 	push_warning("No valid budget found")

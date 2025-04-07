@@ -58,7 +58,7 @@ func onSave() -> SavedData:
 	if speed_order != null: speed_order.onSave()
 	var old_player_vision_public_ids: Array = old_player_vision.map(func(x: GameObjectGD): return x.public_id)
 	
-	return SavedDataLevel.new(info.id, false, public_id, data, enemy_cards, getFieldCards(), phase, level_camera_data, energy, max_energy,\
+	return SavedDataLevel.new(info.id, false, public_id, data, enemy_cards, getFieldCardDatas(), phase, level_camera_data, energy, max_energy,\
 		fight_type, is_ended, rewards, anti_boons, old_player_vision_public_ids, player_card_last_seen_turn, level_area_datastore, speed_order, spawn_group,\
 	curse_id)
 
@@ -181,8 +181,9 @@ func setOccupiedTiles(Obj: ObjectGD, tile_position_to_tile: Dictionary = getTile
 #endregion
 
 #region Getters
-func getFieldCards() -> Array:
-	return SavedData.onSaveGroup(get_tree().get_nodes_in_group("FieldCardsGD").filter(func(x: CardGD): return !x.is_in_group("AllyCardsGD")))
+func getFieldCardDatas() -> Array:
+	return SavedData.onSaveGroup((get_tree().get_nodes_in_group("FieldCardsGD") + get_tree().get_nodes_in_group("GraveyardCardsGD"))\
+		.filter(func(x: CardGD): return x.isEnemy(0)))
 #endregion
 
 #region Setters

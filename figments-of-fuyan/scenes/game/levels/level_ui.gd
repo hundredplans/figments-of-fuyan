@@ -403,7 +403,10 @@ func onGameEnded(rewards: Rewards) -> void:
 			child.reparent(RewardsUI)
 	
 	onUpdateDeckCardAmountLabel()
+	
+	is_action_playing = true
 	onUpdateActionLock(false)
+	
 	for btn in get_tree().get_nodes_in_group("ActionLockDisabled").filter(func(x: Control): return x is HighlightTxButton):
 		btn.setDisabled(btn.is_in_group("EndGameDisabled"))
 	
@@ -499,6 +502,8 @@ func onProcessAction(action: Action) -> void:
 #endregion
 const BOON_EFFECT_TEMP_DURATION: float = 1.2
 func onBoonEffectTemp(action: BoonActivatedAction) -> void:
+	if !action.Boon.info.display_trigger: return
+	
 	var BoonEffectTemp := TextureRect.new()
 	BoonEffectFiller.add_child(BoonEffectTemp)
 	BoonEffectTemp.texture = action.Boon.getIcon()
