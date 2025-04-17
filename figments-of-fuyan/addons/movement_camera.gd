@@ -131,6 +131,9 @@ func _update_movement(delta):
 		_velocity.z = clamp(_velocity.z + offset.z, -_vel_multiplier, _vel_multiplier)
 		translate(_velocity * delta * speed_multi)
 		
+		if enable_only_sideways:
+			onClampPosition()
+		
 		get_viewport().warp_mouse(get_viewport().get_mouse_position())
 		
 func onClampPosition() -> void:

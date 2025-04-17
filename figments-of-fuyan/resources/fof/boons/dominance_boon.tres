@@ -8,11 +8,12 @@
 [resource]
 script = ExtResource("1_s0bb3")
 icon = ExtResource("2_qipm4")
-description = "Your units deal +1 DMG to enemies with a lower ATK stat"
-ascended_description = "Your units deal +2 DMG to enemies with a lower ATK stat"
+description = "Your units deal +1 DMG to enemies with less ATT"
+ascended_description = "Your units deal +2 DMG to enemies with less ATT"
 rarity = 7
 curse = false
 elite_fight_curse = false
+display_trigger = true
 use_charges = false
 auto_reset_charges = false
 reset_to_default = false

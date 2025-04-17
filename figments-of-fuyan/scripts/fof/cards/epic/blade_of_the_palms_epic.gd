@@ -635,7 +635,7 @@ func onDoubleTeleportAttack(use_type: UseType) -> Array:
 				actions += [teleport_enter, TeleportAction.new(self, TeleportTile), ChangeTileRotationAction.new(self, relative_rotation), teleport_attack, CameraChangeAction.new(self)]
 			else: actions += [teleport_enter, TeleportAction.new(self, TeleportTile), teleport_attack, CameraChangeAction.new(self)]
 				
-			if i == 0: actions.insert(2, CardOffsetAction.new(self))
+			if i == 0: actions.insert(1, CardOffsetAction.new(self))
 			actions.append(DamageAction.new(self, adjacent_enemies, attack, Game.DamageTypes.OTHER))
 			actions.append(DamageAction.new(self, double_adjacent_enemies, attack - 2, Game.DamageTypes.OTHER))
 			actions += triple_adjacent_enemies.map(func(x: CardGD): return x.getBaseStatusEffectAction(BLIND_ID, -1, self))
@@ -730,13 +730,16 @@ func onChangeBossPhasePostDelay() -> void:
 func onPhaseChangeGetCloneActions(clone_amount: int) -> Array:
 	var actions: Array = []
 	var ally_cards: Array = Game.getAllyUnits(0)
+	var adjacent_ally_tiles: Array = ally_cards.map(func(x: CardGD): return Game.getAdjacentTiles(x.getTile()))
+	
 	ally_cards.shuffle()
 	ally_cards.resize(clone_amount)
 			
 	var chosen_triple_adjacent_tiles: Array = []
 	for AllyCard: CardGD in ally_cards:
 		var triple_adjacent_tiles: Array = Game.getAdjacentTiles(AllyCard.getTile(), 3)\
-		.filter(func(x: TileGD): return x not in chosen_triple_adjacent_tiles and !x.isSolid() and !x.isOccupied() and !isPedestalTileOrAdjacent(x))
+		.filter(func(x: TileGD): return x not in chosen_triple_adjacent_tiles and !x.isSolid() and !x.isOccupied() and !isPedestalTileOrAdjacent(x)\
+			and x not in adjacent_ally_tiles)
 		
 		if triple_adjacent_tiles.is_empty(): continue
 		triple_adjacent_tiles.shuffle()

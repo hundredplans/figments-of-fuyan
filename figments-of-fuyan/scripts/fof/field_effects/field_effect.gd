@@ -34,7 +34,8 @@ func getIcon() -> Texture2D:
 	return info.icon
 	
 func onSave() -> SavedData:
-	return SavedDataFieldEffect.new(info.id, false, public_id, FofObject.public_id, charges, turns, ability_save)
+	var fof_object_public_id: int = FofObject.public_id if FofObject != null else 0
+	return SavedDataFieldEffect.new(info.id, false, public_id, fof_object_public_id, charges, turns, ability_save)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)

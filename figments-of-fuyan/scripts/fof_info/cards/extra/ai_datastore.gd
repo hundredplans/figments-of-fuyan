@@ -12,7 +12,7 @@ const ADJACENT_DISTANCE_TO_BREAK_RECEIVING: int = 2 # Double adjacent
 @export var is_receiver_turns_remaining: int
 var DFL: DefaultFightLogic # The last DFL of this unit's ai turn action, used for MOBILE ability checking
 
-var enemies_to_tiles: Dictionary # The enemy card to the tile they were on, if they die it's removed
+var enemies_to_tiles: Dictionary[CardGD, TileGD] # The enemy card to the tile they were on, if they die it's removed
 @export var enemies_to_tiles_public_ids: Dictionary # Card.public_id : Tile.public_id
 
 func setLastSeenViolence(value: bool) -> void:
@@ -74,8 +74,8 @@ func getEnemyTiles() -> Array:
 		
 func onSave() -> void:
 	enemies_to_tiles_public_ids = {}
-	for Tile: TileGD in enemies_to_tiles.keys():
-		enemies_to_tiles_public_ids[Tile.public_id] = enemies_to_tiles[Tile].public_id
+	for Card: CardGD in enemies_to_tiles.keys():
+		enemies_to_tiles_public_ids[Card.public_id] = enemies_to_tiles[Card].public_id
 	
 func onLoad() -> void:
 	enemies_to_tiles = {}

@@ -46,9 +46,9 @@ func getAddedByString() -> String:
 func isActive() -> bool:
 	return Trait != null
 	
-func onReset() -> void:
+func onReset(Card: CardGD) -> void:
 	if Trait != null and (only_for_level or turns != -1): # If for level or turn based (so automatically for level)
-		clear.emit()
+		Trait.onPushAction(RemoveOverworldTraitAction.new(Card, data.id, added_by))
 		
 func onCardTurnPassed() -> void:
 	if turns == -1: return

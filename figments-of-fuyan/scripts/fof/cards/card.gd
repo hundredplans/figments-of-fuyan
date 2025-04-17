@@ -311,6 +311,10 @@ func onLoadDataLevelFofInit() -> void:
 func onFofInit() -> void:
 	super()
 	base_stats = StatsDatastore.new(attack, max_health, max_speed, energy)
+	if ascended:
+		ascended = false # So it can go through
+		onAscend(true)
+	
 	onRegularReset()
 	
 	if self is not EpicCardGD:
@@ -1462,7 +1466,7 @@ func onReset(override: bool = false) -> void: # Called when unit enters level (n
 	onRemoveModel()
 	
 	for overworld_trait in overworld_traits:
-		overworld_trait.onReset()
+		overworld_trait.onReset(self)
 		
 	onRegularReset()
 	

@@ -129,10 +129,14 @@ func onCreateStat(spot: Node3D, value: int, above_green_value: int, below_red_va
 		number_mesh.set_surface_override_material(0, mat)
 		number_mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	
-	spot.scale = Vector3.ONE if numbers.size() == 1 else Vector3(0.75, 0.75, 0.75)
+	spot.scale = getSpotScale(numbers.size())
+	
 	if numbers.size() == 2:
 		numbers[0].position.x = -0.125
 		numbers[1].position.x = 0.125
+		
+func getSpotScale(amount: int) -> Vector3:
+	return Vector3.ONE if amount == 1 else Vector3(0.75, 0.75, 0.75)
 		
 var is_spectated: bool = false
 func onSpectated(state: bool) -> void:
@@ -162,9 +166,8 @@ func onUpdateStat(type: Game.Stats, value: int, difference: int, play_animation:
 			onCreateSpecificStat(type, value)
 			if show_particles: setNumbersParticle(type, difference)
 			
-			var old_scale: float = spot.scale.y
 			spot.scale.y = 0.001
-			reset_tween.tween_property(spot, "scale:y", old_scale, Game.STAT_UPDATE_TIME)
+			reset_tween.tween_property(spot, "scale:y", getSpotScale(1 if value < 10 else 2).y, Game.STAT_UPDATE_TIME)
 			return
 		onCreateSpecificStat(type, value)
 			
