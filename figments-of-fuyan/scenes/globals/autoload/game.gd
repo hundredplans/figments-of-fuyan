@@ -365,7 +365,7 @@ func getNextInactiveCard(team: int) -> CardGD:
 	#var tiles: Array = Game.getAdjacentOrCloserTiles(Card.Tile, speed) # Gather all tiles
 	#
 	#var all_cards_tiles: Array = get_tree().get_nodes_in_group("FieldCardsGD").map(func(x: CardGD): return x.Tile)
-	#
+	#	
 	#tiles = tiles.filter(func(x: TileGD): return !x.isSolid() and x not in all_cards_tiles and x.isBelowMaxMovementHeight(Card)) # Check for solidity
 	#for Tile in tiles:
 		#var astar := AStar3D.new()

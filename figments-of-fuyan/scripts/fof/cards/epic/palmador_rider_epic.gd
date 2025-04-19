@@ -5,6 +5,8 @@ const ARMOR_TRAIT_ID: int = 1
 
 var turns_enemies_unseen: int = 0 # -1 means an enemy was spotted and this stops counting, after TURNS_UNTIL_HUNT_MODE starts moving towards allies
 const TURNS_UNTIL_HUNT_MODE: int = 3
+
+var active_speed: int
 	
 #region Default
 func onProcessAction(action: Action) -> void:
@@ -21,6 +23,7 @@ func onProcessAction(action: Action) -> void:
 			
 func onSave() -> SavedDataEpicCard:
 	ability_save["turns_enemies_unseen"] = turns_enemies_unseen
+	ability_save['active_speed'] = active_speed
 	return super()
 	
 func onCardTurnPassed(Card: CardGD) -> void:
@@ -154,8 +157,9 @@ func onSpinAttackCondition() -> BossIntentConditionResult: # Needs to be on the 
 	return BossIntentConditionResult.new(isGround())
 	
 func onSpinAttack(enemies: Array, tiles: Array, use_type: UseType) -> Array:
+	if use_type == UseType.START: active_speed = SPIN_ATTACK_SPEED_LIMIT
 	if use_type != UseType.END:
-		tiles = getsetMovementRange(SPIN_ATTACK_SPEED_LIMIT)
+		tiles = getsetMovementRange(active_speed)
 		if tiles.is_empty(): return []
 		
 		var BestTile: TileGD
@@ -609,11 +613,14 @@ func getExtraAttack() -> int:
 #endregion
 
 #region Run Away
+const RUN_AWAY_SPEED: int = 3
 func onRunAway(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 	if use_type == UseType.END: return []
 	if use_type == UseType.RECALCULATE and speed == 0: return []
 	
-	tiles = getsetMovementRange(speed + 1)
+	if use_type == UseType.START: active_speed = RUN_AWAY_SPEED
+	
+	tiles = getsetMovementRange(active_speed)
 	
 	var actions: Array = []
 	tiles = getAllyVisionTiles(tiles)
@@ -637,7 +644,7 @@ func onAutoattack(enemies: Array, allies: Array, tiles: Array, use_type: UseType
 	if enemies.is_empty(): return tiles.pick_random()
 	
 	var DFL := DefaultFightLogic.new(self, tiles, enemies, allies)
-	var path: Array = DFL.getAttackPath()
+	var path: Array = DFL.getKillPath()
 	if path.is_empty():
 		var attackables: Array = enemies.filter(func(x: CardGD): return x.getTile() in tiles)
 		if !attackables.is_empty():

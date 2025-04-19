@@ -24,9 +24,6 @@ func onLoadModel() -> void:
 
 func onLoadDataLevelFofInit() -> void:
 	super()
-	if is_in_group("AllySpawnsGD"):
-		var revealed_datastore := Game.onCreateRevealedDatastore(self, 0)
-		onPushAction(RevealAction.new(self, revealed_datastore))
 		
 	if spawn_id == 0: return
 	

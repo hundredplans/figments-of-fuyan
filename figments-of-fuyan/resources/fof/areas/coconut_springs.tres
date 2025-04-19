@@ -2,14 +2,14 @@
 
 [ext_resource type="Environment" uid="uid://g3ihmrpunr2b" path="res://assets/environments/main_menu_environment.tres" id="1_nr01x"]
 [ext_resource type="Image" uid="uid://crmlvrqh52rb8" path="res://assets/sprites/game/cards/common/art_background/palm_background.png" id="1_xwfqh"]
-[ext_resource type="Resource" uid="uid://ydecnhu63280" path="res://resources/fof/tile_objects/palm_tile.tres" id="2_lcnma"]
+[ext_resource type="Resource" uid="uid://byqbjgxe6apuk" path="res://resources/fof/tile_objects/palm_tile.tres" id="2_lcnma"]
 [ext_resource type="Script" uid="uid://bdrcevdqecvdg" path="res://scripts/fof_info/areas/area_info.gd" id="2_omppq"]
 [ext_resource type="Environment" uid="uid://ccj8myeinjes5" path="res://assets/environments/palm_evening_environment.tres" id="3_w51i3"]
+[ext_resource type="AudioStream" uid="uid://cn8nvead0m051" path="res://assets/sounds/music/coconut_springs_boss_music.mp3" id="4_otepg"]
 [ext_resource type="Script" uid="uid://b7tnfbmcbq6rn" path="res://scripts/fof/areas/area.gd" id="4_xelp4"]
-[ext_resource type="Resource" uid="uid://cguaqo0w8hr3i" path="res://resources/datastore/decorations/PalmOverworld.tres" id="5_at1h3"]
+[ext_resource type="Resource" uid="uid://ddvmjldmryvtx" path="res://resources/datastore/decorations/PalmOverworld.tres" id="5_at1h3"]
 [ext_resource type="Resource" uid="uid://ctfukjvhoe8nm" path="res://resources/datastore/world/world_one.tres" id="5_dy22h"]
 [ext_resource type="PackedScene" uid="uid://bvbfjek6o431c" path="res://scripts/fof/areas/extra/coconut_springs_default_light.tscn" id="5_mg38q"]
-[ext_resource type="AudioStream" uid="uid://cf15l5abfneny" path="res://assets/sounds/music/coconut_springs_boss_music.wav" id="5_otepg"]
 [ext_resource type="Script" uid="uid://rf0dys0w4v2c" path="res://scripts/fof_info/levels/palm_level_info.gd" id="6_jqirr"]
 [ext_resource type="Script" uid="uid://ddqxntix0kb3c" path="res://scripts/saved_data/saved_data_area.gd" id="6_p3usl"]
 [ext_resource type="Script" uid="uid://j3gava8i61i7" path="res://scripts/fof_info/areas/extra/epic_area_datastore.gd" id="9_ik72x"]
@@ -40,7 +40,7 @@ elite_environment = ExtResource("3_w51i3")
 base_level_script = ExtResource("6_jqirr")
 base_tile_info = ExtResource("2_lcnma")
 default_light = ExtResource("5_mg38q")
-boss_music = ExtResource("5_otepg")
+boss_music = ExtResource("4_otepg")
 epic_datastores = Array[ExtResource("9_ik72x")]([SubResource("Resource_48x5e"), SubResource("Resource_ianwb")])
 id = 1
 name = "Coconut Springs"

@@ -39,6 +39,7 @@ func onStartFight() -> void:
 	
 	for i in range(cards.size()):
 		var Card: CardGD = cards[i]
+		var base_stats: StatsDatastore = Card.base_stats
 		var OriginalTool: ToolGD = Card.getTool()
 		var tool_info: ToolInfo = OriginalTool.info if OriginalTool != null else null
 		var tool_data: SavedDataTool
@@ -47,6 +48,8 @@ func onStartFight() -> void:
 			tool_data.ascended = OriginalTool.ascended
 		
 		var card_data: SavedDataCard = Game.onCreateBaseCard(Card.info.id, Card.ascended, tool_data)
+		card_data.setBaseStats(base_stats.duplicate())
+		
 		card_data.coords = enemy_spawns[i].coords
 		card_data.team = 1
 		enemy_cards.append(card_data)

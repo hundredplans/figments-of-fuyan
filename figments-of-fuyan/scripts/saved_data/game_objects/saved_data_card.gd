@@ -73,3 +73,11 @@ func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _coords
 	card_offset = _card_offset
 	
 func getInfoType() -> GDScript: return CardInfo
+func setBaseStats(stat_datastore: StatsDatastore) -> void:
+	base_stats = stat_datastore
+	attack = stat_datastore.attack
+	health = stat_datastore.health
+	speed = stat_datastore.speed
+	max_speed = stat_datastore.speed
+	max_health = stat_datastore.health
+	energy = stat_datastore.energy

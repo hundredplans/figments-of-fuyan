@@ -49,7 +49,8 @@ func onAwaken(Card: CardGD) -> void:
 				return
 		
 		# If it's the slowest card
-		order.insert(order.find(same_archetype.size() - 1), Card)
+		var SlowestCard: CardGD = same_archetype[same_archetype.size() - 1]
+		order.insert(order.find(SlowestCard) + 1, Card)
 		return
 			
 	for OtherCard: CardGD in order:

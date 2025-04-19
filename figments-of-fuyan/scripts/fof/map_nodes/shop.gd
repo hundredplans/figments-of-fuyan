@@ -3,6 +3,8 @@ extends MapNodeGD
 #region Globals
 var price_variance: int
 var world_datastore: WorldDatastore
+
+const SHOP_MUSIC_PATH: String = "res://assets/sounds/music/shop_music.wav"
 #endregion
 
 #region Saved Data
@@ -54,7 +56,7 @@ func getForeign(info_type: GDScript, j: int) -> bool:
 		elif j == 3: return true
 	return false
 	
-func isFirstShop() -> bool: return map_location.progress == 0
+func isFirstShop() -> bool: return map_location.progress == 1
 	
 func onAddRemoveCard() -> void:
 	var remove_card_wrapper: ActionWrapper = SavedData.onLoadModel(SavedDataActionWrapper.new(), self)
@@ -96,6 +98,11 @@ func onEntered() -> void:
 	super()
 	onCreateWorldScene()
 	onCreateScreen()
+	onPushAction(PlayMusicAction.new(load(SHOP_MUSIC_PATH)))
+	
+func onFinished() -> void:
+	super()
+	onPushAction(PlayMusicAction.new())
 
 #region Rolls
 func onRerollBoon() -> PriceDatastore:

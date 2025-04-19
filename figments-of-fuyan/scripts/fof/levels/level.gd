@@ -143,6 +143,10 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 		for GameObject in get_tree().get_nodes_in_group("GameObjectsGD"):
 			GameObject.onLoadDataLevelFofInit()
 			
+		for AllySpawn: SpawnGD in get_tree().get_nodes_in_group("AllySpawnsGD"):
+			var revealed_datastore := Game.onCreateRevealedDatastore(AllySpawn, 0)
+			actions.append(RevealAction.new(AllySpawn, revealed_datastore))
+			
 		for card_data in enemy_cards:
 			actions.append(AwakenAction.new(SavedData.onLoadModel(card_data, self), Game.getTile(card_data.coords)))
 		

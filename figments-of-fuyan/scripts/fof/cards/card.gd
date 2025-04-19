@@ -311,6 +311,7 @@ func onLoadDataLevelFofInit() -> void:
 func onFofInit() -> void:
 	super()
 	base_stats = StatsDatastore.new(attack, max_health, max_speed, energy)
+	
 	if ascended:
 		ascended = false # So it can go through
 		onAscend(true)
@@ -1663,3 +1664,6 @@ func onSurviveFallDamage(Card: CardGD, movement_path: Array, point_path: Array, 
 				return false
 	return true
 #endregion
+
+func getOverrideSpeed(limit: int) -> int:
+	return min(speed, limit)

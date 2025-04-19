@@ -31,4 +31,4 @@ func getDescription() -> String:
 	return Helper.getDescriptionNumeric(super(), [trauma_charges], [["TRAUMA ", "[1]"]])
 
 func getDefaultCharges() -> int:
-	return trauma_charges
+	return 1

@@ -2,6 +2,8 @@ extends CardGD
 
 const REVEAL_ID: int = 6
 const REVEAL_TURNS: int = 3
+const DAMAGE_VALUE: int = 2
+
 func onProcessAction(action: Action) -> void:
 	super(action)
 
@@ -9,7 +11,7 @@ func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectT
 	super(active_effect)
 	if active_effect is ActiveAbilityDatastore and active_effect.name == "Divine Light":
 		var tiles: Array = getVisibleTiles()
-		return ActiveEffectTiles.new(tiles, tiles.filter(func(x: TileGD): return Game.getEnemyFieldCard(x, team) != null))
+		return ActiveEffectTiles.new(tiles, tiles.filter(func(x: TileGD): return Game.getFieldCard(x) != null and x != Tile))
 	return null
 
 func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
@@ -20,13 +22,14 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		var actions: Array = []
 		var EnemyCard: CardGD = Game.getFieldCard(PickedTile)
 		
-		actions.append(EnemyCard.getBaseStatusEffectAction(REVEAL_ID, REVEAL_TURNS))
-		
 		onForceAction(ChangeTileRotationAction.new(self, Game.getRelativeTileRotation(Tile, PickedTile)))
-		onPushAction(actions)
+		onPushAction(DamageAction.new(self, EnemyCard, DAMAGE_VALUE, Game.DamageTypes.OTHER))
 		
 func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic) -> TileGD:
-	return active_effect_tiles.pickable_tiles.pick_random()
+	var enemies: Array = active_effect_tiles.pickable_tiles.map(func(x: TileGD): return Game.getFieldCard(x))
+	if enemies.is_empty():
+		return enemies.pick_random().getTile()
+	return null
 
 func getDescription() -> String:
 	var active_effect: ActiveEffectDatastore = getActiveEffectByName("Divine Light")

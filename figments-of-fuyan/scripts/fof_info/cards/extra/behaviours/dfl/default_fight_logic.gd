@@ -93,8 +93,11 @@ func getKillPath() -> Array:
 	local_enemies = local_enemies.filter(func(x: CardGD): return Card.isValidAttackableInRangeSpeed(x, Card.getTile()))
 	local_enemies = local_enemies.filter(func(x: CardGD): return x.getTile() in tiles)
 	local_enemies = local_enemies.filter(isAttackableKillable.bind(Card))
-	
 	local_enemies.shuffle()
+	
+	return getAttackPath(local_enemies)
+
+func getAttackPath(local_enemies: Array) -> Array:
 	local_enemies.sort_custom(func(x: CardGD, y: CardGD): return x.energy > y.energy)
 	if !local_enemies.is_empty():
 		var KillCard: CardGD = local_enemies[0]

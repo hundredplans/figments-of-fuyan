@@ -95,6 +95,7 @@ func onDefaultAITurn(enemies: Array, allies: Array, tiles: Array) -> void:
 	var movement_finish_action := MovementFinishAction.new(Card, [], allies, enemies)
 	movement_finish_action.setKillRolled(kill_rolled)
 	# If no Tile is chosen
+	push_warning("No tile was chosen for AI Turn")
 	onPushAction([ChangeTurnStateAction.new(Card, Game.TurnStates.ACTIVE), movement_finish_action])
 
 func onBossAITurn(enemies: Array, allies: Array, tiles: Array) -> void:

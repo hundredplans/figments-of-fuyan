@@ -96,10 +96,13 @@ func onLoadMapAfterScenes() -> void:
 var empty_spots: Array[EmptyMapNode] = []
 #region Generators
 func onGenerateEmptyMapSpots() -> Array[EmptyMapNode]:
-	if getWorldDifficulty() == 1: empty_spots.append(EmptyMapNode.new(-1, 0))
 	empty_spots.append(EmptyMapNode.new(0, 0))
 	
 	for i in range(1, 11):
+		if i == 1 and getWorldDifficulty() == 1: # To create shop at 1 - 1
+			empty_spots.append(EmptyMapNode.new(i, 0))
+			continue
+			
 		match i:
 			5: empty_spots.append(EmptyMapNode.new(i, 0))
 			10:
@@ -134,7 +137,7 @@ func onGenerateMapNodeOddsRollable(map_node_odds: Dictionary) -> Dictionary:
 #region Link-related
 func onCreateMapLinks(empty_spots_by_progress: Dictionary[int, Array]) -> void:
 	var section_one_batch: Dictionary[int, Array] = {}
-	var section_two_batch: Dictionary[int, Array] = {} 
+	var section_two_batch: Dictionary[int, Array] = {}
 	for key: int in empty_spots_by_progress:
 		if (key == 10 and !Game.isDivinus()) or key == 11: continue
 		
@@ -146,7 +149,7 @@ func onCreateMapLinks(empty_spots_by_progress: Dictionary[int, Array]) -> void:
 		
 		for empty_spot: EmptyMapNode in batch:
 			for next_empty_spot: EmptyMapNode in next_batch:
-				if next_empty_spot.lane == empty_spot.lane or key in [0, 4, 5, 9]:
+				if next_empty_spot.lane == empty_spot.lane or key in [0, 1, 4, 5, 9]:
 					empty_spot.links.append(EmptyMapNodeLink.new(next_empty_spot))
 		
 	onGenerateLinksPerSection(section_one_batch, empty_spots_by_progress)
@@ -160,8 +163,9 @@ func onGenerateLinksPerSection(section_batch: Dictionary[int, Array], empty_spot
 	var second_lane_link: int = 0
 	
 	for progress: int in section_progresses:
+		if progress == 1 and getWorldDifficulty() == 1: continue
 		if first_lane_link == progress or second_lane_link == progress: continue
-		if first_lane_link > 0 and second_lane_link > 0: break 
+		if first_lane_link > 0 and second_lane_link > 0: break
 		
 		var empty_map_node: EmptyMapNode
 		if first_lane_link == 0 and second_lane_link == 0:
@@ -204,18 +208,19 @@ func setEmptySpotsIDS(unique_node_ids: Array) -> void:
 	var segment_two_encounter_limit: int = getWorld().getEncounterAmount()
 	var non_fights_assigned: Array = []
 	if getWorldDifficulty() == 1:
-		segment_one_encounter_limit -= 1
+		segment_one_encounter_limit = min(segment_one_encounter_limit, 1)
 	
 	for empty_spot: EmptyMapNode in empty_spots:
 		var is_holy: bool = empty_spot.links.any(func(x: EmptyMapNodeLink): return x.is_holy)
 		match empty_spot.progress:
-			-1:
+			0:
 				empty_spot.id = 1
 				continue
-			0:
-				empty_spot.id = 1 if getWorldDifficulty() > 1 else (6 if Helper.admin_datastore.spawn_instead_of_shop_id == 0 else Helper.admin_datastore.spawn_instead_of_shop_id)
-				continue
-			1, 2:
+			1:
+				if getWorldDifficulty() == 1:
+					empty_spot.id = 3 if getWorldDifficulty() > 1 else (6 if Helper.admin_datastore.spawn_instead_of_shop_id == 0 else Helper.admin_datastore.spawn_instead_of_shop_id)
+					continue
+			2:
 				if getWorldDifficulty() == 1:
 					empty_spot.id = 3
 					continue
@@ -577,9 +582,28 @@ func setEnemySpawnsFromBudget(budget: int, min_spawn_amount: int, max_spawn_amou
 		var enemies_ids: Array = enemies.map(func(x: SavedDataCard): return x.id)
 		if !other_enemies_ids.is_empty() and other_enemies_ids.any(func(x: Array): return x == enemies_ids):
 			continue
-			
+		
 		return enemies
 	return []
+	
+func onSortUniqueEnemyPreview(enemy_datas: Array, is_elite: bool) -> Array:
+	var sorted_enemy_datas: Array = []
+	var existing_ids: Dictionary = {}
+	for card_data: SavedDataCard in enemy_datas:
+		if existing_ids.has(card_data.id):
+			existing_ids[card_data.id] += 1
+		else: existing_ids[card_data.id] = 1
+	
+	var duplicate_ids: Array = existing_ids.keys().filter(func(x: SavedDataCard): return existing_ids[x] > 1)
+	var chief_data: SavedDataCard
+	if is_elite: chief_data = enemy_datas.pop_front()
+	
+	for i in range(3):
+		if enemy_datas.is_empty(): break
+		sorted_enemy_datas = enemy_datas.pop_front()
+	
+	if is_elite: sorted_enemy_datas.push_front(chief_data)
+	return sorted_enemy_datas
 	
 const BUDGET_TO_COMBINATION_ODDS: Dictionary[int, Dictionary] = {
 	1: {

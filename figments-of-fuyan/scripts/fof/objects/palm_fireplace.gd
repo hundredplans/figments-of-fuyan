@@ -105,8 +105,8 @@ func onIObjectSpecificTransforms(tiles_to_value: Dictionary, DFL: DefaultFightLo
 const AI_ALLIES_IN_VISION: int = 1
 func onAIAbilityChecker(active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, DFL: DefaultFightLogic) -> TileGD:
 	if DFL.Card.getArchetypeEnum() in [Game.Archetypes.SUPPORT, Game.Archetypes.REINFORCER]:
-		if DFL.allies.size() >= AI_ALLIES_IN_VISION and active_effect.name == "Extinguish":
+		if DFL.allies.size() >= AI_ALLIES_IN_VISION and active_effect.name == "Add Fuel":
 			return active_effect_tiles.pickable_tiles[0]
-	elif active_effect.name == "Add Fuel": return active_effect_tiles.pickable_tiles[0]
+	elif active_effect.name == "Extinguish": return active_effect_tiles.pickable_tiles[0]
 	return null
 		

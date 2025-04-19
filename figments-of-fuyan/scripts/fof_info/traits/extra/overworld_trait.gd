@@ -33,6 +33,8 @@ func onLoad(Card: CardGD) -> void:
 	
 func onRemoveFieldTrait() -> void:
 	level_trait_data = null
+	
+	if Trait == null: return
 	Trait.onClear()
 	Trait = null
 	

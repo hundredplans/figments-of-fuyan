@@ -7,6 +7,7 @@ var OriginalTile: TileGD
 var DestinationTile: TileGD
 var movement_type: MOVEMENT_TYPES
 
+const DEFAULT_DELAY: float = 0.75
 const JUMP_FALL_TIME_OFFSET: float = 0.5
 var fall_time: float
 var destroy_on_occupy: bool
@@ -33,7 +34,7 @@ func setMovementTypeDelay() -> void:
 	setActionDelay(getJumpDelay() if Card.isLevelVisible() else 0.0)
 
 func getJumpDelay() -> float:
-	return 1.0 if !isJumpFall() else fall_time
+	return DEFAULT_DELAY if !isJumpFall() else fall_time
 
 func setActionDelay(delay: float) -> void:
 	super(delay)

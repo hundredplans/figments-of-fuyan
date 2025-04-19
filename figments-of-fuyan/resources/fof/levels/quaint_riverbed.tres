@@ -1,15 +1,15 @@
-[gd_resource type="Resource" script_class="PalmLevelInfo" load_steps=260 format=3]
+[gd_resource type="Resource" script_class="PalmLevelInfo" load_steps=260 format=3 uid="uid://d0pg1a2t8hocv"]
 
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="1_s2vy5"]
-[ext_resource type="Script" path="res://scripts/fof_info/game_objects/extra/revealed_datastore.gd" id="2_kj5up"]
-[ext_resource type="Script" path="res://scripts/fof_info/game_objects/extra/vision_datastore_tile.gd" id="3_4rwnh"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_spawn.gd" id="4_kyjyj"]
-[ext_resource type="Script" path="res://scripts/fof_info/game_objects/extra/vision_datastore.gd" id="5_xkh7m"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_iobject.gd" id="6_dyv4f"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="7_gc0sl"]
-[ext_resource type="Script" path="res://scripts/fof/levels/palm_level.gd" id="8_ja7yp"]
-[ext_resource type="Script" path="res://scripts/saved_data/levels/saved_data_level.gd" id="9_u5qji"]
-[ext_resource type="Script" path="res://scripts/fof_info/levels/palm_level_info.gd" id="10_q7nce"]
+[ext_resource type="Script" uid="uid://df278rs03up0b" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="1_s2vy5"]
+[ext_resource type="Script" uid="uid://3encclot053x" path="res://scripts/fof_info/game_objects/extra/revealed_datastore.gd" id="2_kj5up"]
+[ext_resource type="Script" uid="uid://ptqg2yb7m54y" path="res://scripts/fof_info/game_objects/extra/vision_datastore_tile.gd" id="3_4rwnh"]
+[ext_resource type="Script" uid="uid://bqrpess5o2brf" path="res://scripts/saved_data/game_objects/saved_data_spawn.gd" id="4_kyjyj"]
+[ext_resource type="Script" uid="uid://dabwqp16gynmr" path="res://scripts/fof_info/game_objects/extra/vision_datastore.gd" id="5_xkh7m"]
+[ext_resource type="Script" uid="uid://c76iyo8j5sdgv" path="res://scripts/saved_data/game_objects/saved_data_iobject.gd" id="6_dyv4f"]
+[ext_resource type="Script" uid="uid://c57vvj8uxhu4x" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="7_gc0sl"]
+[ext_resource type="Script" uid="uid://dyvdkimog5nh1" path="res://scripts/fof/levels/palm_level.gd" id="8_ja7yp"]
+[ext_resource type="Script" uid="uid://bj5bltgdy7xbp" path="res://scripts/saved_data/levels/saved_data_level.gd" id="9_u5qji"]
+[ext_resource type="Script" uid="uid://rf0dys0w4v2c" path="res://scripts/fof_info/levels/palm_level_info.gd" id="10_q7nce"]
 
 [sub_resource type="Resource" id="Resource_gxkx7"]
 script = ExtResource("3_4rwnh")
@@ -3002,8 +3002,8 @@ data = [SubResource("Resource_g5ue0"), SubResource("Resource_red0l"), SubResourc
 lights = Array[PackedScene]([])
 enemy_min_spawn_amount = 1
 enemy_max_spawn_amount = 3
-progress_min = 1
-progress_max = 1
+progress_min = 2
+progress_max = 2
 enemy_budget_offset = 0
 id = 1
 name = "Quaint Riverbed"

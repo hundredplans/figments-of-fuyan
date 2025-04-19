@@ -1,7 +1,7 @@
 class_name PlayMusicAction extends Action
 
-var stream: AudioStreamWAV
-func _init(_stream: AudioStreamWAV) -> void:
+var stream: AudioStream
+func _init(_stream: AudioStream = null) -> void:
 	super()
 	stream = _stream
 	

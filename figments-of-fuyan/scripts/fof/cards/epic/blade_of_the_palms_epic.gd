@@ -730,7 +730,7 @@ func onChangeBossPhasePostDelay() -> void:
 func onPhaseChangeGetCloneActions(clone_amount: int) -> Array:
 	var actions: Array = []
 	var ally_cards: Array = Game.getAllyUnits(0)
-	var adjacent_ally_tiles: Array = ally_cards.map(func(x: CardGD): return Game.getAdjacentTiles(x.getTile()))
+	var adjacent_ally_tiles: Array = ally_cards.map(func(x: CardGD): return Game.getAdjacentTiles(x.getTile(), 1))
 	
 	ally_cards.shuffle()
 	ally_cards.resize(clone_amount)
@@ -776,7 +776,7 @@ func onHammerAttackSetIntents() -> BossTileIntents:
 	
 	var AllyCard: CardGD = fatigueless_allies.pick_random()
 	var CenterTile: TileGD = AllyCard.getTile()
-	var protected_tiles: Array = Game.getAdjacentOrCloserTiles(CenterTile, 2) + [CenterTile]
+	var protected_tiles: Array = Game.getAdjacentTiles(CenterTile, 1) + [CenterTile]
 	
 	var level_tiles: Array = get_tree().get_nodes_in_group("LevelTilesGD").filter(func(x: TileGD): return !isPedestalTileOrAdjacent(x) and x not in protected_tiles)
 	var unit_tiles: Array = Game.getUnitTiles()
@@ -810,7 +810,7 @@ func onHammerAttack(use_type: UseType) -> Array:
 				"LandingTile": LandingTile = ResultTile
 				"CenterTile": CenterTile = ResultTile
 		
-		var protected_tiles: Array = Game.getAdjacentOrCloserTiles(CenterTile, 2) + [CenterTile]
+		var protected_tiles: Array = Game.getAdjacentTiles(CenterTile, 1) + [CenterTile]
 		var enemy_cards: Array = Game.getEnemyUnits(team).filter(func(x: CardGD): return x.getTile() not in protected_tiles)
 		actions.append(DamageAction.new(self, enemy_cards, attack, Game.DamageTypes.OTHER))
 		actions.append(IdleModifierAction.new(self, ""))

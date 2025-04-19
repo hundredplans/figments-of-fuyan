@@ -9,6 +9,8 @@ var previous_allies: Array
 var previous_enemies: Array
 var kill_rolled: bool
 
+const FINISH_DELAY: float = 0.5
+
 func _init(_Card: CardGD = null, _tiles: Array = [], _previous_allies: Array = [], _previous_enemies: Array = []) -> void:
 	super()
 	Card = _Card
@@ -21,6 +23,10 @@ func setKillRolled(_state: bool) -> void:
 	
 func setRetryAiTurn(state: bool) -> void:
 	retry_ai_turn = state
+	
+func onPreAction() -> void:
+	if Card.isEnemy(0) and !retry_ai_turn and Card.isAlive() and Card.isLevelVisible() and Card.turn_state == Game.TurnStates.ACTIVE:
+		setActionDelay(FINISH_DELAY)
 	
 func onPostAction() -> void:
 	for Tile in tiles:
