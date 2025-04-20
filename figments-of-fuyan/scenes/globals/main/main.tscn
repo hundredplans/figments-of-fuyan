@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cjw212umfin4s"]
+[gd_scene load_steps=10 format=3 uid="uid://cjw212umfin4s"]
 
 [ext_resource type="Script" uid="uid://dgxspsgjou2pt" path="res://scenes/globals/main/main.gd" id="1_vaj5h"]
 [ext_resource type="PackedScene" uid="uid://6pss8e1ltd03" path="res://scenes/menus/main_menu/main_menu_ui.tscn" id="2_2t13x"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://d3lgvy3r3xxo" path="res://scenes/game/levels/level_ui.tscn" id="6_tdyrb"]
 [ext_resource type="PackedScene" uid="uid://cjmt3kd7ntlan" path="res://scenes/game/levels/level_world.tscn" id="7_6lvwx"]
 [ext_resource type="PackedScene" uid="uid://bloplwh136nrx" path="res://scenes/globals/autoload/action_manager.tscn" id="8_hvpr2"]
+[ext_resource type="AudioStream" uid="uid://cqbm8uwjldncr" path="res://assets/sounds/music/main_menu.mp3" id="9_3gh8x"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_vaj5h")
@@ -18,6 +19,7 @@ map_world = ExtResource("5_eo3rv")
 level_ui = ExtResource("6_tdyrb")
 level_world = ExtResource("7_6lvwx")
 ActionManagerPacked = ExtResource("8_hvpr2")
+main_menu_music = ExtResource("9_3gh8x")
 
 [node name="KeepAcross" type="Node3D" parent="."]
 unique_name_in_owner = true

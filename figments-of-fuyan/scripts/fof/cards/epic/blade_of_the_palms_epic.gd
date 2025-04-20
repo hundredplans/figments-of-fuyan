@@ -233,7 +233,7 @@ func onTeleportAttackSetIntents() -> BossTileIntents:
 		potential_tiles.shuffle()
 		TeleportTile = potential_tiles.pick_random()
 	
-	var teleport_coords: Vector4i = TeleportTile.getCoords()
+	var teleport_coords: Vector4i = TeleportTile.getCoords()	
 	tile_intents.append(TileIntentDatastore.new(Game.TileIntents.DARK_RED, null, teleport_coords))
 	
 	var adjacent_coords: Array = Game.getAdjacentCoords(teleport_coords, 1)

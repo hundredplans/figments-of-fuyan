@@ -17,14 +17,17 @@ extends Node
 @export var ActionManagerPacked: PackedScene
 
 @onready var SaveLabel: Label = %SaveLabel
+
+@export var main_menu_music: AudioStream
+
 const SAVE_LABEL_DELAY_TIME: float = 0.5
 const SAVE_LABEL_VISIBLE_TIME: float = 1.0
 
 #region Base Functions
 func _ready():
 	if !Helper.admin_datastore.skip_main_menu:
-		var scenes: Dictionary = onLoadScreenWorld(main_menu_ui, main_menu_world)
-		if !Helper.admin_datastore.skip_start_cutscene: scenes.world.onFirstLoad()
+		onLoadMainMenu()
+		if !Helper.admin_datastore.skip_start_cutscene: ActiveWorld.onFirstLoad()
 	else:
 		var DIR_PATH: String = SaveFileInfo.SAVE_DIRECTORY
 		var files: Array = Array(DirAccess.get_files_at(DIR_PATH))
@@ -88,6 +91,7 @@ func onStartGame(card_data: SavedDataCard) -> void:
 	onLoadGame(save_file_data)
 	
 func onLoadGame(save_file_data: SavedDataSaveFile) -> void:
+	Audio.onPlayMusic()
 	Game.highest_public_id = save_file_data.highest_public_id
 	ActionManager = ActionManagerPacked.instantiate()
 	add_child(ActionManager)
@@ -119,7 +123,7 @@ func onLoadMap(save_file: SaveFileGD, area: AreaGD) -> void:
 	area.onLoadMapAfterScenes()
 	
 func onLoadMainMenu() -> void:
-	
+	Audio.onPlayMusic(main_menu_music)
 	onLoadScreenWorld(main_menu_ui, main_menu_world)
 	for child in KeepAcross.get_children(): child.queue_free()
 	

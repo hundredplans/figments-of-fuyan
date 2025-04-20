@@ -321,7 +321,7 @@ func onCreateMapNode(data: SavedDataMapNode) -> void:
 #region Holy Path
 func setHolyPath() -> void:
 	if Game.isDivinus():
-		var empty_map_node: EmptyMapNode = onFindEmptyMapSpot(0, 0) if getWorldDifficulty() > 1 else onFindEmptyMapSpot(-1, 0)
+		var empty_map_node: EmptyMapNode = onFindEmptyMapSpot(0, 0)
 		var lane: int = -1 if Random.getBool() else 1
 		while(empty_map_node.progress < 11):
 			var link: EmptyMapNodeLink = empty_map_node.links.filter(func(x: EmptyMapNodeLink): return x.empty_map_node.lane in [0, lane])[0]
