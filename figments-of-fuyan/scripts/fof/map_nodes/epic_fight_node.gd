@@ -13,6 +13,7 @@ func onFinished() -> void:
 	super()
 	var new_level_data: SavedDataLevel = level_info.saved_data.new(level_info.id, true, 0, level_info.data.duplicate())
 	new_level_data.spawn_group = spawn_group
+	new_level_data.level_rewards = level_rewards # Not that important for epic fights
 	new_level_data.enemy_cards = enemy_cards
 	new_level_data.fight_type = getFightType()
 	

@@ -17,24 +17,8 @@ func setInfo(map_node_data: SavedDataFight) -> void:
 	
 	LevelLabel.text = str(area.getWorldDifficulty()) + "-" + str(clamp(map_node_data.map_location.progress, 0, 10)) + ": " + str(level_info.name)
 	
-	var enemy_cards: Array = map_node_data.enemy_cards.duplicate()
-	
-	var chief_data: SavedDataCard
-	if map_node_data is SavedDataEliteFight:
-		chief_data = enemy_cards.pop_back()
-		
-	var reward_amount: int = Game.CARD_REWARD_DEFAULT_AMOUNT
-	enemy_cards.resize(reward_amount)
-	enemy_cards = enemy_cards.filter(func(x: SavedDataCard): return x != null)
-	
-	var valid_infos: Dictionary = {}
-	for saved_data_card: SavedDataCard in enemy_cards:
-		valid_infos[saved_data_card] = Helper.getFofInfoID(CardInfo, saved_data_card.id)
-	
-	enemy_cards.sort_custom(func(x: SavedDataCard, y: SavedDataCard): return valid_infos[x].rarity > valid_infos[y].rarity)
-	enemy_cards.sort_custom(func(x: SavedDataCard, y: SavedDataCard): return valid_infos[x].energy > valid_infos[y].energy)
-	
-	for card_data in enemy_cards:
+	var chief_data: SavedDataCard = map_node_data.level_rewards.chief_data
+	for card_data: SavedDataCard in map_node_data.level_rewards.card_datas:
 		onAddUIBox(card_data)
 			
 	if chief_data != null:

@@ -22,6 +22,7 @@ var level_area_datastore: LevelAreaDatastore # Specific to each areao
 var recent_camera_position: Vector3 # Not saved
 var spawn_group: String
 var curse_id: int
+var level_rewards: LevelRewards
 
 signal set_spectate_card
 signal energy_changed
@@ -60,7 +61,7 @@ func onSave() -> SavedData:
 	
 	return SavedDataLevel.new(info.id, false, public_id, data, enemy_cards, getFieldCardDatas(), phase, level_camera_data, energy, max_energy,\
 		fight_type, is_ended, rewards, anti_boons, old_player_vision_public_ids, player_card_last_seen_turn, level_area_datastore, speed_order, spawn_group,\
-	curse_id)
+		curse_id, level_rewards)
 
 func onClear() -> void:
 	queue_free()
@@ -77,6 +78,7 @@ func onLoadData(data: SavedData) -> void:
 	spawn_group = data.spawn_group
 	curse_id = data.curse_id
 	player_card_last_seen_turn = data.player_card_last_seen_turn
+	level_rewards = data.level_rewards
 	
 	for light in info.lights:
 		add_child(light.instantiate())

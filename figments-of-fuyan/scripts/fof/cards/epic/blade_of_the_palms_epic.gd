@@ -115,13 +115,13 @@ func onChangeBossIntent(boss_intents: Array, enemies: Array, _allies: Array) -> 
 		if Random.getBool(): return getBossIntentByName("Teleport Attack" if phase == 1 else "Double Teleport Attack")
 		else: return getBossIntentByName("Bat Attack")
 	
-	if enemies.is_empty(): # Out of combat
-		boss_intents = onKeepByNames(boss_intents, ["Minifan Attack", "Reposition", "Teleport Attack", "Mist Attack", "Double Teleport Attack"])
-	else: # In Combat
-		if Random.rollFloat(USE_ATTACK_PHASE_ONE_CHANCE) or !onHasNonAttackIntents(boss_intents):
-			boss_intents = onKeepAttacks(boss_intents)
-		elif onHasIntentName(boss_intents, "Fan Blind"): boss_intents = onKeepByName(boss_intents, "Fan Blind")
-		else: boss_intents = onKeepNonAttacks(boss_intents)
+	#if enemies.is_empty(): # Out of combat
+		#boss_intents = onKeepByNames(boss_intents, ["Minifan Attack", "Reposition", "Teleport Attack", "Mist Attack", "Double Teleport Attack"])
+	#else: # In Combat
+	if Random.rollFloat(USE_ATTACK_PHASE_ONE_CHANCE) or !onHasNonAttackIntents(boss_intents):
+		boss_intents = onKeepAttacks(boss_intents)
+	elif onHasIntentName(boss_intents, "Fan Blind"): boss_intents = onKeepByName(boss_intents, "Fan Blind")
+	else: boss_intents = onKeepNonAttacks(boss_intents)
 		
 	if boss_intents.is_empty(): return getBossIntentByName("Reposition")
 	return boss_intents.pick_random()
@@ -152,7 +152,6 @@ func onReposition(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 	if use_type != UseType.END:
 		tiles = getVisibleTiles().filter(isValidTeleportTile)
 		tiles = getUnoccupiedTiles(tiles)
-		tiles = getAllyVisionTiles(tiles)
 		tiles = getDistantToEnemiesTiles(enemies, tiles)
 		if tiles.is_empty(): return []
 		
@@ -221,7 +220,7 @@ func onTeleportAttack(use_type: UseType) -> Array:
 	
 func onTeleportAttackSetIntents() -> BossTileIntents:
 	var tile_intents: Array[TileIntentDatastore] = []
-	var enemies: Array = getVisibleFieldCardsEnemies()
+	var enemies: Array = Game.getEnemyUnits(team)
 	
 	enemies.sort_custom(func(x: CardGD, y: CardGD): return x.max_speed < y.max_speed)
 	
@@ -510,7 +509,6 @@ func getTeleportPassiveAction(enemies: Array) -> Array:
 	var tiles: Array = getVisibleTiles().filter(func(x: TileGD): return Game.getCoordsDistance(x.getCoords(), coords) == PASSIVE_TELEPORT_DISTANCE)\
 		.filter(isValidTeleportTile)
 	tiles = getUnoccupiedTiles(tiles)
-	tiles = getAllyVisionTiles(tiles)
 	tiles = getDistantToEnemiesTiles(enemies, tiles)
 	if tiles.is_empty(): return []
 	return getDefaultTeleportActions(tiles[0])
@@ -531,10 +529,7 @@ func getDefaultTeleportActions(BestTile: TileGD, reset_offset: bool = false) -> 
 #region Double Teleport Attack
 func onDoubleTeleportAttackSetIntents() -> BossTileIntents:
 	var tile_intents: Array[TileIntentDatastore] = []
-	var enemies: Array = getVisibleFieldCardsEnemies()
-	
-	if enemies.is_empty():
-		enemies = Game.getEnemyUnits(team)
+	var enemies: Array = Game.getEnemyUnits(team)
 	
 	enemies.shuffle()
 	enemies.sort_custom(func(x: CardGD, y: CardGD): return x.max_speed < y.max_speed)
@@ -730,7 +725,10 @@ func onChangeBossPhasePostDelay() -> void:
 func onPhaseChangeGetCloneActions(clone_amount: int) -> Array:
 	var actions: Array = []
 	var ally_cards: Array = Game.getAllyUnits(0)
-	var adjacent_ally_tiles: Array = ally_cards.map(func(x: CardGD): return Game.getAdjacentTiles(x.getTile(), 1))
+	var adjacent_ally_tiles: Array = []
+	
+	for adjacent_tiles: Array in ally_cards.map(func(x: CardGD): return Game.getAdjacentTiles(x.getTile(), 1)):
+		adjacent_ally_tiles += adjacent_tiles
 	
 	ally_cards.shuffle()
 	ally_cards.resize(clone_amount)

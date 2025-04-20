@@ -1,6 +1,7 @@
 class_name FightNodeGD extends MapNodeGD
 
 var spawn_group: String
+var level_rewards: LevelRewards
 var enemy_cards: Array # Array[SavedDataCard]
 var level_info: LevelInfo
 
@@ -16,15 +17,17 @@ func onFofInit() -> void:
 	var budget: int = getBudget()
 	
 	enemy_cards = Game.area.setEnemySpawnsFromBudget(budget, level_info.enemy_min_spawn_amount, level_info.enemy_max_spawn_amount, enemy_spawns, map_location.progress, false)
+	level_rewards = Game.getArea().getLevelRewards(enemy_cards)
 	
 func onSave() -> SavedDataMapNode:
-	return SavedDataFight.new(info.id, false, public_id, map_location, links, is_entered, is_finished, rotation.y, ability_save, level_info, spawn_group, enemy_cards)
+	return SavedDataFight.new(info.id, false, public_id, map_location, links, is_entered, is_finished, rotation.y, ability_save, level_info, spawn_group, enemy_cards, level_rewards)
 	
 func onLoadData(data: SavedData) -> void:
 	super(data)
 	level_info = data.level_info
 	enemy_cards = data.enemy_cards
 	spawn_group = data.spawn_group
+	level_rewards = data.level_rewards
 	add_to_group("FightMapNodesGD")
 #endregion
 
@@ -54,6 +57,7 @@ func onFinished() -> void:
 	if self is EliteFightNodeGD or self is MinibossFightNodeGD or self is BossFightNodeGD: return
 	var new_level_data: SavedDataLevel = level_info.saved_data.new(level_info.id, true, 0, level_info.data.duplicate())
 	new_level_data.enemy_cards = enemy_cards
+	new_level_data.level_rewards = level_rewards
 	new_level_data.spawn_group = spawn_group
 	new_level_data.fight_type = Game.FightTypes.REGULAR
 	

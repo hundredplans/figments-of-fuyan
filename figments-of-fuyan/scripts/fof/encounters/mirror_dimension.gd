@@ -57,4 +57,12 @@ func onStartFight() -> void:
 	var level_data: SavedDataLevel = level_info.saved_data.new(level_info.id, true, 0, level_info.data.duplicate())
 	level_data.spawn_group = spawn_group
 	level_data.enemy_cards = enemy_cards
+	
+	var valid_infos: Dictionary[SavedDataCard, CardInfo] = {}
+	for saved_data_card: SavedDataCard in enemy_cards:
+		valid_infos[saved_data_card] = Helper.getFofInfoID(CardInfo, saved_data_card.id)
+		
+	level_data.level_rewards = Game.getArea().getLevelRewards(enemy_cards\
+		.filter(func(x: SavedDataCard): return valid_infos[x].rarity != Game.Rarities.CHAMPION))
+	
 	load_level.emit(level_data)

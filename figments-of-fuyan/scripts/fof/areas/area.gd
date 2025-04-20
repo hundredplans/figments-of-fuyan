@@ -418,10 +418,11 @@ func setRewards(is_win: bool) -> void:
 			getWorld().elite_fight_rewards if is_epic or is_elite else getWorld().fight_rewards
 			
 		var enemy_cards: Array = active_level.enemy_cards.duplicate()
+		var level_rewards: LevelRewards = active_level.level_rewards
 		if is_elite:
-			items.append(SavedData.onLoadModel(enemy_cards.pop_back(), active_level))
+			items.append(SavedData.onLoadModel(level_rewards.getChiefData().duplicate(), active_level))
 			
-		if !is_epic: enemy_cards = getRegularCardRewards(enemy_cards)
+		if !is_epic: enemy_cards = level_rewards.getCardDatas().map(func(x: SavedDataCard): return SavedData.onLoadModel(x.duplicate(), active_level))
 		else: enemy_cards = onRollEpicCardRewards()
 			
 		var rewards_wrapper: ActionWrapper = SavedData.onLoadModel(SavedDataActionWrapper.new(), active_level)
@@ -465,17 +466,6 @@ func setRewards(is_win: bool) -> void:
 		rewards.setInfo(active_level)
 		active_level.rewards = rewards
 	active_level.onGameEnded()
-	
-func getRegularCardRewards(enemy_cards: Array) -> Array:
-	enemy_cards = enemy_cards.filter(func(x: SavedDataCard): return Helper.getFofInfoID(CardInfo, x.id).rarity != Game.Rarities.CHAMPION)
-	
-	var reward_amount: int = Game.CARD_REWARD_DEFAULT_AMOUNT
-	enemy_cards.resize(reward_amount)
-	enemy_cards = enemy_cards.filter(func(x: SavedDataCard): return x != null)
-	
-	enemy_cards = enemy_cards.map(func(x: SavedDataCard):\
-		return SavedData.onLoadModel(x.duplicate(), active_level))
-	return enemy_cards
 	
 func onRollEpicCardRewards() -> Array:
 	var enemy_cards: Array = []
@@ -558,9 +548,6 @@ func getCardsByRarity(original_cards: Array) -> Array:
 func setEnemySpawnsFromBudget(budget: int, min_spawn_amount: int, max_spawn_amount: int, spawns: Array, progress: int, is_elite: bool) -> Array:
 	var cards: Array = Helper.getFofInfoArray(CardInfo).filter(func(x: CardInfo): return x.id in basic_card_ids)
 	
-	if progress == 1 and info.id == 1: # Remove charmer
-		cards = cards.filter(func(x: CardInfo): return x.id != 16)
-	
 	var energies: Array = cards.map(func(x: CardInfo): return x.energy)
 	var highest_cost: int = energies.max()
 	var lowest_cost: int = energies.min()
@@ -585,6 +572,45 @@ func setEnemySpawnsFromBudget(budget: int, min_spawn_amount: int, max_spawn_amou
 		
 		return enemies
 	return []
+	
+func getLevelRewards(enemy_cards: Array) -> LevelRewards:
+	var level_rewards := LevelRewards.new()
+	var id_count: Dictionary[int, int] = {}
+	
+	for data: SavedDataCard in enemy_cards:
+		if id_count.has(data.id): id_count[data.id] += 1
+		else: id_count[data.id] = 1
+	
+	var unique_ids: Array = id_count.keys().filter(func(id: int): return id_count[id] == 1)
+	var ids: Array = enemy_cards.map(func(x: SavedDataCard): return x.id)
+	
+	if unique_ids.size() < Game.CARD_REWARD_DEFAULT_AMOUNT:
+		unique_ids = ids
+		
+	unique_ids.shuffle()
+	unique_ids.resize(Game.CARD_REWARD_DEFAULT_AMOUNT)
+	unique_ids = unique_ids.filter(func(x: Variant): return x != null)
+	
+	var card_datas: Array = []
+	for id: int in unique_ids:
+		var index: int = ids.find(id)
+		card_datas.append(enemy_cards[index])
+		
+		ids.remove_at(index)
+		enemy_cards.remove_at(index)
+		
+	var valid_infos: Dictionary[SavedDataCard, CardInfo] = {}
+	for saved_data_card: SavedDataCard in card_datas:
+		valid_infos[saved_data_card] = Helper.getFofInfoID(CardInfo, saved_data_card.id)
+			
+	card_datas.sort_custom(getLevelRewardsSortValue.bind(valid_infos))
+	level_rewards.card_datas = card_datas
+	return level_rewards
+	
+func getLevelRewardsSortValue(x: SavedDataCard, y: SavedDataCard, valid_infos: Dictionary[SavedDataCard, CardInfo]) -> bool:
+	if valid_infos[x].rarity != valid_infos[y].rarity: return valid_infos[x].rarity > valid_infos[y].rarity
+	if x.energy != y.energy: return x.energy > y.energy
+	return x.id < y.id
 	
 func onSortUniqueEnemyPreview(enemy_datas: Array, is_elite: bool) -> Array:
 	var sorted_enemy_datas: Array = []
