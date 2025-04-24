@@ -27,7 +27,12 @@ const SAVE_LABEL_VISIBLE_TIME: float = 1.0
 func _ready():
 	if !Helper.admin_datastore.skip_main_menu:
 		onLoadMainMenu()
-		if !Helper.admin_datastore.skip_start_cutscene: ActiveWorld.onFirstLoad()
+		if !Helper.admin_datastore.skip_start_cutscene:
+			ActiveWorld.onFirstLoad()
+			ActiveScreen.onFirstLoad()
+		else:
+			ActiveWorld.onNotFirstLoad()
+			ActiveScreen.onNotFirstLoad()
 	else:
 		var DIR_PATH: String = SaveFileInfo.SAVE_DIRECTORY
 		var files: Array = Array(DirAccess.get_files_at(DIR_PATH))
@@ -76,7 +81,8 @@ func onLoadWorld(packed_scene: PackedScene) -> void:
 	ActiveWorld = packed_scene.instantiate()
 	
 	match packed_scene:
-		main_menu_world: ActiveWorld.start.connect(onStartGame)
+		_: pass
+		#main_menu_world: ActiveWorld.start.connect(onStartGame)
 	
 func onStartGame(card_data: SavedDataCard) -> void:
 	Game.highest_public_id = 0
@@ -123,7 +129,6 @@ func onLoadMap(save_file: SaveFileGD, area: AreaGD) -> void:
 	area.onLoadMapAfterScenes()
 	
 func onLoadMainMenu() -> void:
-	Audio.onPlayMusic(main_menu_music)
 	onLoadScreenWorld(main_menu_ui, main_menu_world)
 	for child in KeepAcross.get_children(): child.queue_free()
 	

@@ -89,6 +89,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level.game_ended.connect(onGameEnded)
 	level.tool_removed.connect(onToolRemoved)
 	level.death.connect(onDeath)
+	action_lock.connect(level.onActionLock)
 	
 	area.process_action.connect(onProcessAction)
 	

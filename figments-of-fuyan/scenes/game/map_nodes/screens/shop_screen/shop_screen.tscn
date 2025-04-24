@@ -45,13 +45,15 @@ text = "Wares"
 label_settings = ExtResource("2_rv443")
 
 [node name="TopRow" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(1920, 0)
 layout_mode = 0
 offset_top = 228.0
-offset_right = 1920.0
+offset_right = 1924.0
 offset_bottom = 628.0
 
 [node name="Cards" type="HBoxContainer" parent="TopRow"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(1620, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 50

@@ -4,7 +4,7 @@ extends MapNodeGD
 var price_variance: int
 var world_datastore: WorldDatastore
 
-const SHOP_MUSIC_PATH: String = "res://assets/sounds/music/shop_music.wav"
+const SHOP_MUSIC_PATH: String = "res://assets/sounds/music/shop_music.mp3"
 #endregion
 
 #region Saved Data

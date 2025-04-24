@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://tu38c5oc2rpw"]
+
+[ext_resource type="Script" uid="uid://d1202kbp3u1mc" path="res://scenes/menus/main_menu/champion_entrance/champion_entrance_coconut_springs.gd" id="1_e10tp"]
+[ext_resource type="PackedScene" uid="uid://y5ytdt7d7c61" path="res://test/water_repating.tscn" id="2_e10tp"]
+[ext_resource type="Script" uid="uid://m4j4oush86vt" path="res://addons/movement_camera.gd" id="3_5ikfw"]
+
+[node name="ChampionEntranceCoconutSprings" type="Node3D"]
+script = ExtResource("1_e10tp")
+
+[node name="Node3D" parent="." instance=ExtResource("2_e10tp")]
+
+[node name="FreeLookCamera" type="Camera3D" parent="."]
+transform = Transform3D(0.938794, -1.49012e-08, -0.344479, -0.111241, 0.946424, -0.303161, 0.326023, 0.322926, 0.888497, -0.530443, 1.62782, 2.28175)
+script = ExtResource("3_5ikfw")
+metadata/_custom_type_script = "uid://m4j4oush86vt"
+
+[node name="ChampionManager" type="Node3D" parent="."]
+unique_name_in_owner = true

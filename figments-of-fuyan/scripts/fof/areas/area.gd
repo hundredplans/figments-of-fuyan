@@ -574,6 +574,7 @@ func setEnemySpawnsFromBudget(budget: int, min_spawn_amount: int, max_spawn_amou
 	return []
 	
 func getLevelRewards(enemy_cards: Array) -> LevelRewards:
+	enemy_cards = enemy_cards.duplicate()
 	var level_rewards := LevelRewards.new()
 	var id_count: Dictionary[int, int] = {}
 	

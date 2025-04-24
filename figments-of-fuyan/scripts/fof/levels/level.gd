@@ -494,3 +494,12 @@ func getBoss() -> EpicCardGD:
 	var boss_cards: Array = get_tree().get_nodes_in_group("EpicCardsGD")
 	return boss_cards[0] if !boss_cards.is_empty() else null
 #endregion
+
+#region UI
+var is_action_lock: bool
+func onActionLock(state: bool) -> void:
+	is_action_lock = state
+	
+func isActionLock() -> bool:
+	return is_action_lock
+#endregion

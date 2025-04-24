@@ -404,16 +404,13 @@ func onChargeAttackCondition() -> BossIntentConditionResult:
 			var multed_diagonal := Vector4i(diagonal.x * i, diagonal.y * i, diagonal.z * i, 0)
 			var DiagonalTile: TileGD = Game.getTile(multed_diagonal + coords)
 			if DiagonalTile != null:
-				diagonal_tiles.append(DiagonalTile)
-				if DiagonalTile.isSolid():
-					break
-			else:
-				multed_diagonal.w = 4
-				DiagonalTile = Game.getTile(multed_diagonal + coords)
-				if DiagonalTile != null:
+				if isHigh(DiagonalTile):
 					wall_adjacent_origin_tiles[DiagonalTile] = diagonal_tiles
-				break
-			
+					break
+				elif DiagonalTile.isSolid():
+					break
+				diagonal_tiles.append(DiagonalTile)
+					
 	if wall_adjacent_origin_tiles.is_empty(): return condition_result # If nothing found
 	
 	var enemies: Array = Game.getEnemyUnits(team)

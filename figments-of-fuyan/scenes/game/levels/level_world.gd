@@ -234,7 +234,7 @@ func onCreateMovementRange(Card: CardGD) -> void:
 
 #region Turn State
 func onTurnStateChanging(Card: CardGD, action: ChangeTurnStateAction) -> void:
-	if Card.isAlly(0) and Card.turn_state == Game.TurnStates.PASSED and !isActionTiedToAwakenAction(action):
+	if !getActionLock() and Card.isAlly(0) and Card.turn_state == Game.TurnStates.PASSED and !isActionTiedToAwakenAction(action):
 		var ally_cards: Array = Game.getAllyUnits(0).filter(func(x: CardGD): return x.turn_state == Game.TurnStates.INACTIVE)
 		if ally_cards.is_empty(): return
 		ally_cards.sort_custom(func(x: CardGD, y: CardGD): return Game.getCoordsDistance(x.getCoords(), Card.getCoords()) < Game.getCoordsDistance(y.getCoords(), Card.getCoords()))

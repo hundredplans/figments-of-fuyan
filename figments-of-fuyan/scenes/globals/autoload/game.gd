@@ -616,16 +616,9 @@ func onCreateChooseRewardsUIScreen(reward: Reward, parent: Control) -> Control:
 #endregion
 
 #region Champion
-func onAddDivinusBoonRewardOdds(odds: float) -> float:
-	if !isDivinus(): return odds
-	return odds * 2
-	
 func onAddDivinusBoonAscenscionOdds(odds: float) -> float:
 	if !isDivinus(): return odds
 	return odds + 2.5
-	
-func getDivinusEncounterNegativePlusOdds() -> float:
-	return 0.1 # 0.1 more likely to be negative
 	
 func getHolyTravelledAmount() -> int:
 	if isDivinus():

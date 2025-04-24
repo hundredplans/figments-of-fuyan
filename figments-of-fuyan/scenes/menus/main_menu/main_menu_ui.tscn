@@ -1,8 +1,150 @@
-[gd_scene load_steps=4 format=3 uid="uid://6pss8e1ltd03"]
+[gd_scene load_steps=11 format=3 uid="uid://6pss8e1ltd03"]
 
 [ext_resource type="Script" uid="uid://chjab37a8xga" path="res://scenes/menus/main_menu/main_menu_ui.gd" id="1_hm4t8"]
-[ext_resource type="PackedScene" uid="uid://cbt3ofougwb5l" path="res://scenes/menus/main_menu/champion_select/champion_select_ui.tscn" id="2_7op6m"]
-[ext_resource type="LabelSettings" uid="uid://cur26wm5iuwxs" path="res://resources/ui/label_settings/roboto_massive.tres" id="3_3o0mw"]
+[ext_resource type="AudioStream" uid="uid://cqbm8uwjldncr" path="res://assets/sounds/music/main_menu.mp3" id="2_re0qq"]
+[ext_resource type="Texture2D" uid="uid://dvnha0bhvnno6" path="res://assets/backgrounds/splash-screen.png" id="3_o11ev"]
+[ext_resource type="Texture2D" uid="uid://dqvwh4o83r4aj" path="res://assets/sprites/ui/general/logo_name_swingus.png" id="5_m2x35"]
+[ext_resource type="FontFile" uid="uid://baxu43ooayfrm" path="res://assets/fonts/irish_grover.ttf" id="5_nuh7a"]
+[ext_resource type="LabelSettings" uid="uid://cubq58371xpd2" path="res://test/main_menu_tests_settings.tres" id="6_m2x35"]
+
+[sub_resource type="Animation" id="Animation_o11ev"]
+resource_name = "FirstLoad"
+length = 8.0
+step = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("StartBackground:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("StartBackground:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1, 2, 3, 4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(0, 0, 0, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("TextLabelsMarginContainer:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 7.75, 8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-425, 269), Vector2(-425, 269), Vector2(0, 269)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("LogoMarginContainer:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 7.75, 8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1915, 832), Vector2(1915, 832), Vector2(1469, 832)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("VersionMarginContainer:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 7.75, 8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-171, 1021), Vector2(-171, 1021), Vector2(0, 1021)]
+}
+
+[sub_resource type="Animation" id="Animation_w7vfb"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("StartBackground:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("StartBackground:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("TextLabelsMarginContainer:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-425, 269)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("LogoMarginContainer:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1915, 832)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("VersionMarginContainer:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-171, 1022)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nuh7a"]
+_data = {
+&"FirstLoad": SubResource("Animation_o11ev"),
+&"RESET": SubResource("Animation_w7vfb")
+}
+
+[sub_resource type="LabelSettings" id="LabelSettings_nuh7a"]
+font = ExtResource("5_nuh7a")
+font_size = 32
+font_color = Color(0.568973, 0.568973, 0.568973, 1)
 
 [node name="MainMenuUI" type="Control"]
 layout_mode = 3
@@ -13,56 +155,77 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_hm4t8")
-ChampionSelectUIPacked = ExtResource("2_7op6m")
+main_menu_music = ExtResource("2_re0qq")
 
-[node name="GoBackLabel" type="Label" parent="."]
+[node name="StartBackground" type="TextureRect" parent="."]
 unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_o11ev")
+
+[node name="AniPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_nuh7a")
+}
+
+[node name="VersionMarginContainer" type="MarginContainer" parent="."]
 layout_mode = 0
-offset_left = 20.0
-offset_top = 20.0
-offset_right = 234.0
-offset_bottom = 58.0
-text = "Go Back: [ESC]"
+offset_left = -171.0
+offset_top = 1022.0
+offset_right = 1.0
+offset_bottom = 1081.0
 
-[node name="PlayTableButtons" type="Control" parent="."]
-anchors_preset = 0
-offset_left = 841.0
-offset_right = 1266.0
-offset_bottom = 1004.0
-mouse_filter = 2
-
-[node name="ContinueLabel" type="Label" parent="PlayTableButtons"]
-unique_name_in_owner = true
-visible = false
-modulate = Color(1, 1, 0, 1)
+[node name="VersionLabel" type="Label" parent="VersionMarginContainer"]
 layout_mode = 2
-offset_top = 109.0
-offset_right = 425.0
-offset_bottom = 223.0
-size_flags_vertical = 6
-text = "Continue"
-label_settings = ExtResource("3_3o0mw")
+text = "V0.1.0.2.1"
+label_settings = SubResource("LabelSettings_nuh7a")
 
-[node name="NewGameLabel" type="Label" parent="PlayTableButtons"]
-unique_name_in_owner = true
-visible = false
-modulate = Color(1, 0, 0, 1)
-layout_mode = 2
-offset_top = 445.0
-offset_right = 425.0
-offset_bottom = 559.0
-size_flags_vertical = 6
-text = "New Game"
-label_settings = ExtResource("3_3o0mw")
+[node name="LogoMarginContainer" type="MarginContainer" parent="."]
+layout_mode = 0
+offset_left = 1915.0
+offset_top = 832.0
+offset_right = 2817.0
+offset_bottom = 1328.0
+scale = Vector2(0.5, 0.5)
 
-[node name="LoadLabel" type="Label" parent="PlayTableButtons"]
-unique_name_in_owner = true
-visible = false
-modulate = Color(0, 1, 0, 1)
+[node name="TextureRect" type="TextureRect" parent="LogoMarginContainer"]
 layout_mode = 2
-offset_top = 781.0
-offset_right = 425.0
-offset_bottom = 895.0
-size_flags_vertical = 6
-text = "Load"
-label_settings = ExtResource("3_3o0mw")
+texture = ExtResource("5_m2x35")
+
+[node name="TextLabelsMarginContainer" type="MarginContainer" parent="."]
+layout_mode = 0
+offset_left = -425.0
+offset_top = 269.0
+offset_right = 62.0
+offset_bottom = 1080.0
+theme_override_constants/margin_left = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TextLabelsMarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Label" type="Label" parent="TextLabelsMarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Start"
+label_settings = ExtResource("6_m2x35")
+
+[node name="Label2" type="Label" parent="TextLabelsMarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Extras"
+label_settings = ExtResource("6_m2x35")
+
+[node name="Label3" type="Label" parent="TextLabelsMarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Settings"
+label_settings = ExtResource("6_m2x35")
+
+[node name="Label4" type="Label" parent="TextLabelsMarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Exit"
+label_settings = ExtResource("6_m2x35")
