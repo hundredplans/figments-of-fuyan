@@ -7,15 +7,11 @@ class_name WorldDatastore extends Resource
 @export_range(0, 100, 0.1) var base_ascended_rate: float
 @export_group("")
 
-@export_group("Start of Generation")
-@export_range(0, 100, 0.1) var extra_unique_node_odds: float
-@export_group("")
-
 @export_group("Level")
 @export var enemy_spawn_rarity_odds: RarityOddsDatastore
 @export var fight_rewards: FightRewardsDatastore
 @export var elite_fight_rewards: FightRewardsDatastore
-@export var elite_fight_rewards_second_item_odds: float
+@export_range(0, 100, 0.1) var elite_fight_rewards_second_item_odds: float
 @export var budget_for_fights: Array[int]
 @export var elite_fights_budget_offset: int
 @export_range(0, 100, 0.1) var enemy_ascended_rate: float
@@ -47,6 +43,10 @@ class_name WorldDatastore extends Resource
 @export_range(0, 10, 1) var default_shop_variance: int
 @export_group("")
 
+@export_group("Map")
+@export_range(0, 1, 0.01) var UPGRADE_REGULAR_FIGHT: float = 0.125
+@export_group("")
+
 @export_group("Constants across Worlds")
 @export var ENCOUNTER_COUNT_FIGHT_ODDS: Dictionary = {
 	"1": 0,
@@ -55,7 +55,6 @@ class_name WorldDatastore extends Resource
 	"4": 0.5,
 	"5": 1.0
 }
-@export_range(0, 1, 0.01) var UPGRADE_REGULAR_FIGHT: float = 0.125
 @export var MIN_ELITE_FIGHTS: int = 2
 @export var MIN_ENCOUNTER_AMOUNT: int = 1
 @export var MAX_ENCOUNTER_AMOUNT: int = 2

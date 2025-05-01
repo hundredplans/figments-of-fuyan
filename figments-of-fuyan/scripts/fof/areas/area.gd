@@ -190,10 +190,6 @@ func setEmptySpotsIDS(unique_node_ids: Array) -> void:
 		.filter(func(x: int): return x != 10)\
 		.map(func(x: int):
 		return SegmentNode.new(x, Random.getBool() if getWorldDifficulty() != 1 else false))
-	
-	for segment_node: SegmentNode in unique_nodes\
-		.filter(func(__: SegmentNode): return Random.rollFloat(getWorld().extra_unique_node_odds / 100.0)):
-		unique_nodes.append(SegmentNode.new(segment_node.id, !segment_node.segment_one))
 		
 	var is_divinus: bool = Game.isDivinus()
 	var shops: Array = []
@@ -445,7 +441,7 @@ func setRewards(is_win: bool) -> void:
 			add_tool = Random.rollFloat((fight_rewards_datastore.tool_odds / 100.0) if !Game.isDivinus() else 0.5)
 			if !add_tool: add_boon = true
 				
-			if Random.rollFloat(getWorld().elite_fight_rewards_second_item_odds):
+			if Random.rollFloat(getWorld().elite_fight_rewards_second_item_odds / 100.0):
 				add_tool = true
 				add_boon = true
 			

@@ -8,7 +8,8 @@ var quentins_bullets_public_id: int
 
 #RANGED [1-2]; Has x/4 Bullets in chamber; Has to Reload to refresh bullets
 #RELOAD - ABILITY: If an enemy is in vision; Gain [1] Bullet and STUN self
-# Shop is 15% more expensive cause he's a criminal
+# Shop is 15% more expensive cause he's a criminal - REMOVE THIS
+# Tools are 15% more expensive
 	
 const SHOP_PRICE_MULT: float = 1.15
 const DISARM_ID: int = 4

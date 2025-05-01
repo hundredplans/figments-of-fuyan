@@ -2,7 +2,7 @@
 
 [ext_resource type="Environment" uid="uid://g3ihmrpunr2b" path="res://assets/environments/main_menu_environment.tres" id="1_nr01x"]
 [ext_resource type="Image" uid="uid://crmlvrqh52rb8" path="res://assets/sprites/game/cards/common/art_background/palm_background.png" id="1_xwfqh"]
-[ext_resource type="Resource" uid="uid://byqbjgxe6apuk" path="res://resources/fof/tile_objects/palm_tile.tres" id="2_lcnma"]
+[ext_resource type="Resource" uid="uid://dg2y7tm72ptbv" path="res://resources/fof/tile_objects/palm_tile.tres" id="2_lcnma"]
 [ext_resource type="Script" uid="uid://bdrcevdqecvdg" path="res://scripts/fof_info/areas/area_info.gd" id="2_omppq"]
 [ext_resource type="Environment" uid="uid://ccj8myeinjes5" path="res://assets/environments/palm_evening_environment.tres" id="3_w51i3"]
 [ext_resource type="AudioStream" uid="uid://cn8nvead0m051" path="res://assets/sounds/music/coconut_springs_boss_music.mp3" id="4_otepg"]
@@ -46,6 +46,7 @@ default_light = ExtResource("5_mg38q")
 boss_music = ExtResource("4_otepg")
 epic_datastores = Array[ExtResource("9_ik72x")]([SubResource("Resource_48x5e"), SubResource("Resource_ianwb")])
 main_menu_decoration = ExtResource("10_ik72x")
+area_color = Color(1, 0.894118, 0.376471, 1)
 id = 1
 name = "Coconut Springs"
 gdscript = ExtResource("4_xelp4")

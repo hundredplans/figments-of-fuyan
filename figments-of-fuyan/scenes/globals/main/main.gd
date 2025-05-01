@@ -25,25 +25,17 @@ const SAVE_LABEL_VISIBLE_TIME: float = 1.0
 
 #region Base Functions
 func _ready():
+	DirAccess.make_dir_recursive_absolute("user://save/save_files")
 	if !Helper.admin_datastore.skip_main_menu:
 		onLoadMainMenu()
-		if !Helper.admin_datastore.skip_start_cutscene:
-			ActiveWorld.onFirstLoad()
-			ActiveScreen.onFirstLoad()
-		else:
-			ActiveWorld.onNotFirstLoad()
-			ActiveScreen.onNotFirstLoad()
 	else:
 		var DIR_PATH: String = SaveFileInfo.SAVE_DIRECTORY
 		var files: Array = Array(DirAccess.get_files_at(DIR_PATH))
 		
 		var champion_id: int = Helper.admin_datastore.starting_champion_id
-		var card_info: CardInfo = Helper.getFofInfoID(CardInfo, champion_id)
-			
-		var card_data: SavedDataCard = card_info.saved_data.new(card_info.id, true)
-		Game.setCardDataFromInfo(card_data, card_info)
+		var card_info: CardInfo = Helper.getFofInfoID(ChampionCardInfo, champion_id)
 		
-		if files.is_empty(): onStartGame(card_data)
+		if files.is_empty(): onStartGame(card_info)
 		else: onLoadGame(load(DIR_PATH + files[0]))
 	
 #endregion
@@ -75,16 +67,16 @@ func onLoadScreen(packed_scene: PackedScene) -> void:
 	match packed_scene:
 		main_menu_ui:
 			ActiveScreen.load_game.connect(onLoadGame)
+			ActiveScreen.start_game.connect(onStartGame)
 	
 func onLoadWorld(packed_scene: PackedScene) -> void:
 	if ActiveWorld != null: ActiveWorld.queue_free(); ActiveWorld.get_parent().remove_child(ActiveWorld)
 	ActiveWorld = packed_scene.instantiate()
 	
-	match packed_scene:
-		_: pass
-		#main_menu_world: ActiveWorld.start.connect(onStartGame)
+func onStartGame(champion_info: ChampionCardInfo) -> void:
+	var card_data := SavedDataCard.new(champion_info.id, true)
+	Game.setCardDataFromInfo(card_data, champion_info)
 	
-func onStartGame(card_data: SavedDataCard) -> void:
 	Game.highest_public_id = 0
 	var area_id: int = 1
 	var area_data: SavedDataArea = SavedDataArea.new(area_id, true)
@@ -131,6 +123,12 @@ func onLoadMap(save_file: SaveFileGD, area: AreaGD) -> void:
 func onLoadMainMenu() -> void:
 	onLoadScreenWorld(main_menu_ui, main_menu_world)
 	for child in KeepAcross.get_children(): child.queue_free()
+	if !Helper.admin_datastore.skip_start_cutscene:
+		ActiveWorld.onFirstLoad()
+		ActiveScreen.onFirstLoad()
+	else:
+		ActiveWorld.onNotFirstLoad()
+		ActiveScreen.onNotFirstLoad()
 	
 func onExitSaveFile() -> void:
 	for child in KeepAcross.get_children(): child.queue_free()

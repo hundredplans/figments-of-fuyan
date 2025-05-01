@@ -89,22 +89,31 @@ func setInfo(_Card: CardGD) -> void:
 	onUpdateDelayedStats()
 	onToolUpdated(Card.Tool)
 	
-	Game.getLevel().onRequestCameraPositionUpdate() # Updates for all field infos
+	if Game.getLevel() != null:
+		Game.getLevel().onRequestCameraPositionUpdate() # Updates for all field infos
 	
 func onResetStats() -> void:
 	onResetDepthTest()
 	onCreateFloatingNumbers()
 	
 func onResetDepthTest() -> void:
-	var mat: Material = null if !is_spectated else top_base_material
-	InfoSprite.no_depth_test = is_spectated
-	ToolIcon.no_depth_test = is_spectated
-	ToolShine.no_depth_test = is_spectated
-	for mesh: MeshInstance3D in Helper.getNodeTypeRecursive(FloatingStats, MeshInstance3D):
+	setDepthTest(is_spectated)
+
+func setDepthTest(state: bool) -> void:
+	var mat: Material = null if !state else top_base_material
+	InfoSprite.no_depth_test = state
+	ToolIcon.no_depth_test = state
+	ToolShine.no_depth_test = state
+	var meshes: Array = Helper.getNodeTypeRecursive(FloatingStats, MeshInstance3D)
+	for mesh: MeshInstance3D in meshes:
 		mesh.set_surface_override_material(0, mat)
 		mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	IconsManager.setDepthTest(state)
 	
-	IconsManager.setDepthTest(is_spectated)
+func setWhiteNumbersDepthTest(state: bool) -> void:
+	var mat: Material = null if !state else white_top_material
+	for mesh: MeshInstance3D in Helper.getNodeTypeRecursive(Numbers, MeshInstance3D):
+		mesh.set_surface_override_material(0, mat)
 	
 func onCreateFloatingNumbers() -> void:
 	onCreateSpecificStat(Game.Stats.ATTACK, Card.attack)
@@ -211,6 +220,9 @@ func setInfoSpriteTurnState() -> void:
 func setInfoSpriteEnemyInMovementRange(state: bool) -> void:
 	if state: InfoSprite.texture = enemy_in_range_texture
 	else: setInfoSpriteTurnState()
+	
+func setInfoSpriteTexture(tx: Texture2D) -> void:
+	InfoSprite.texture = tx
 #endregion
 
 #region Traits

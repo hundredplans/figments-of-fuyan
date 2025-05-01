@@ -613,6 +613,12 @@ func onCreateChooseRewardsUIScreen(reward: Reward, parent: Control) -> Control:
 	parent.add_child(ChooseRewardsUI)
 	ChooseRewardsUI.setInfo(reward)
 	return ChooseRewardsUI
+	
+const PAUSE_MENU_PATH: String = "res://scenes/menus/pause_menu/pause_menu.tscn"
+func onCreatePauseMenu(parent: Control) -> Control:
+	var PauseMenu: Control = load(PAUSE_MENU_PATH).instantiate()
+	parent.add_child(PauseMenu)
+	return PauseMenu
 #endregion
 
 #region Champion

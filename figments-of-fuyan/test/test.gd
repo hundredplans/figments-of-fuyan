@@ -2,6 +2,7 @@ extends Node
 
 func _ready() -> void:
 	var arr: Array = []
+	#print(Color(0.086, 0.549, 0.878).hex())
 	print(arr.all(func(x: int): return x == 0))
 	print(arr.any(func(x: int): return x == 0))
 	pass

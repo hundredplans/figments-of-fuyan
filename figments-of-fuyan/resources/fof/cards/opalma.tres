@@ -1,19 +1,19 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://bmywrljga3twm"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_76r06"]
-[ext_resource type="Resource" path="res://resources/fof/archetypes/reinforcer.tres" id="2_5ewew"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="2_6qwcd"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/opalma.png" id="2_aepkj"]
-[ext_resource type="Script" path="res://scripts/fof/cards/opalma.gd" id="2_jvah2"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/opalma.png" id="2_xx7ca"]
-[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_gw8u1"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/opalma.glb" id="4_8gm72"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_upg4l"]
+[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_76r06"]
+[ext_resource type="Resource" uid="uid://6j57uasj8x66" path="res://resources/fof/archetypes/reinforcer.tres" id="2_5ewew"]
+[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="2_6qwcd"]
+[ext_resource type="Texture2D" uid="uid://cgsw5wofpuh4" path="res://assets/sprites/game/cards/art_mini/opalma.png" id="2_aepkj"]
+[ext_resource type="Script" uid="uid://j6k615sc3kps" path="res://scripts/fof/cards/opalma.gd" id="2_jvah2"]
+[ext_resource type="Image" uid="uid://bdo5p78id4v7b" path="res://assets/sprites/game/cards/art_pop/opalma.png" id="2_xx7ca"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_gw8u1"]
+[ext_resource type="PackedScene" uid="uid://bcp2omtkk3vf1" path="res://assets/models/fof/cards/opalma.glb" id="4_8gm72"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_upg4l"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_vb8c6"]
 size = Vector3(0.830505, 1.57715, 0.225403)
 
-[sub_resource type="PackedScene" id="PackedScene_6tqby"]
+[sub_resource type="PackedScene" id="PackedScene_2kuih"]
 _bundled = {
 "conn_count": 0,
 "conns": PackedInt32Array(),
@@ -43,7 +43,7 @@ art_mini = ExtResource("2_aepkj")
 art_pop = ExtResource("2_xx7ca")
 model = ExtResource("4_8gm72")
 points = [Vector3(-0.210611, 0.211449, 0.115589), Vector3(0.165427, 0.23598, 0.115589), Vector3(-0.418426, 0.252214, -0.00637015), Vector3(-0.418426, 0.656754, -0.00589689), Vector3(-0.186669, 0.226362, -0.109814), Vector3(0.212266, 0.229692, -0.109814), Vector3(0.183462, 0.666434, -0.109814), Vector3(-0.174193, 0.672688, -0.109814), Vector3(0.412079, 0.216064, 0.0331899), Vector3(0.412079, 0.54341, 0.0138679), Vector3(0.412079, 0.981653, 0.0177344), Vector3(-0.418426, 1.33894, -0.00386712), Vector3(-0.418426, 0.975228, 0.0434083), Vector3(-0.150027, 0.725888, 0.115589), Vector3(0.147207, 0.732439, 0.115589), Vector3(-0.143261, 1.12681, 0.115589), Vector3(0.183587, 1.11817, 0.115589), Vector3(-0.343374, 1.46998, 0.115589), Vector3(0.00276043, 1.46796, 0.115589), Vector3(0.342662, 1.48495, 0.115589), Vector3(0.412079, 1.44072, -0.015159), Vector3(0.18804, 1.05907, -0.109814), Vector3(-0.136407, 1.03654, -0.109814), Vector3(0.188014, 1.42058, -0.109814), Vector3(-0.169989, 1.42383, -0.109814), Vector3(0.2782, 1.57623, -0.000738477), Vector3(-0.172078, 1.57623, 0.00485766), Vector3(-0.193608, -0.000916004, -0.00177917), Vector3(0.202852, -0.000916004, -0.00125625)]
-collision_shape = SubResource("PackedScene_6tqby")
+collision_shape = SubResource("PackedScene_2kuih")
 stat = 1.9411
 top = 1.57202
 eye = 1.36063

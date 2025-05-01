@@ -6,6 +6,10 @@ signal screen_created
 var World: Node3D
 var save_file: SaveFileGD
 var area: AreaGD
+
+var PauseMenu: Control
+
+@onready var FadeBackground: ColorRect = %FadeBackground
 @onready var AreaNameLabel: Label = %AreaNameLabel
 @onready var AniPlayer: AnimationPlayer = %UIAnimationPlayer
 @onready var ShillingsLabel: FancyTextLabel = %ShillingsLabel
@@ -39,8 +43,9 @@ func _ready() -> void:
 	ToolBeltSlotTwo.visible = false
 	
 func _process(_delta: float) -> void:
-	if Input.is_action_just_pressed("Back"):
-		Game.getSaveFile().onLoadMainMenu()
+	if Input.is_action_just_pressed("Back") and PauseMenu == null:
+		PauseMenu = Game.onCreatePauseMenu(self)
+		PauseMenu.mouse_in_ui.connect(onMouseInUI)
 
 func setInfo(_save_file: SaveFileGD) -> void:
 	save_file = _save_file
@@ -49,6 +54,8 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	area = save_file.area
 	area.process_action.connect(onProcessAction)
 	area.init_load.connect(onInitLoad)
+	
+	AniPlayer.play("UnfadeBackground")
 	
 	BoonBox.onUpdate()
 	setLegendBox()
@@ -90,6 +97,7 @@ func onProcessAction(action: Action) -> void:
 #endregion
 
 #region Map Start
+var is_init_load: bool
 func onMapStartAnimation() -> void:
 	if !Helper.admin_datastore.skip_map_start_animation:
 		AreaNameLabel.text = area.info.name

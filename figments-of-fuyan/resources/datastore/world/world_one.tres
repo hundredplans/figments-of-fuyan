@@ -47,8 +47,8 @@ boss = 0.0
 
 [sub_resource type="Resource" id="Resource_akddw"]
 script = ExtResource("2_27jhm")
-shillings_min = 9
-shillings_max = 13
+shillings_min = 16
+shillings_max = 20
 boon_rarity_odds = SubResource("Resource_g5wtb")
 boon_odds = 33.0
 boon_ascension_rate = 7.5
@@ -82,8 +82,8 @@ boss = 0.0
 
 [sub_resource type="Resource" id="Resource_1xgva"]
 script = ExtResource("2_27jhm")
-shillings_min = 5
-shillings_max = 9
+shillings_min = 10
+shillings_max = 14
 boon_rarity_odds = SubResource("Resource_4rk5k")
 boon_odds = 10.0
 boon_ascension_rate = 5.0
@@ -119,19 +119,18 @@ boss = 48
 script = ExtResource("2_h8y7y")
 world = 1
 base_rarity_odds = SubResource("Resource_b3n2l")
-base_ascended_rate = 0.0
-extra_unique_node_odds = 0.0
+base_ascended_rate = 5.0
 enemy_spawn_rarity_odds = SubResource("Resource_1acp3")
 fight_rewards = SubResource("Resource_1xgva")
 elite_fight_rewards = SubResource("Resource_akddw")
-elite_fight_rewards_second_item_odds = 0.075
+elite_fight_rewards_second_item_odds = 7.5
 budget_for_fights = Array[int]([0, 3, 4, 6, 7, 8, 8, 10, 11, 13, 15])
 elite_fights_budget_offset = 1
 enemy_ascended_rate = 5.0
 elite_enemy_ascended_rate = 10.0
 tool_enemy_spawn_rarity_odds = SubResource("Resource_woaak")
 tool_enemy_spawn_rate = 10.0
-tool_enemy_spawn_rate_ascended = 15.0
+tool_enemy_spawn_rate_ascended = 10.0
 card_rarity_prices = SubResource("Resource_e0jms")
 tool_rarity_prices = SubResource("Resource_vnak7")
 boon_rarity_prices = SubResource("Resource_giks2")

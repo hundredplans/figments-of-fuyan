@@ -7,9 +7,6 @@ signal mouse_in_ui
 @onready var ChampionNameLabel: Label = %ChampionNameLabel
 @onready var TimeLabel: Label = %TimeLabel
 @onready var ShillingLabel: FancyTextLabel = %ShillingLabel
-
-@onready var AreaLabel: Label = %AreaLabel
-@onready var LevelLabel: Label = %LevelLabel
 @onready var LocationLabel: Label = %LocationLabel
 
 var save_file_data: SavedDataSaveFile
@@ -29,11 +26,11 @@ func setInfo(_save_file_data: SavedDataSaveFile) -> void:
 	ShillingLabel.setText("SH: " + str(save_file_data.shillings))
 	
 	var area_info: AreaInfo = Helper.getFofInfoID(AreaInfo, save_file_data.area_data.id)
-	AreaLabel.text = "AREA: " + area_info.name
-	LevelLabel.text = "LEVEL: " + (area_info.overworld_decoration.name\
-	if save_file_data.area_data.level_data == null else \
-	Helper.getFofInfoID(LevelInfo, save_file_data.area_data.level_data.id).name)
-	LocationLabel.text = "LOCATION: " + str(area_info.world.world) + "-" + str(clamp(save_file_data.area_data.getEnteredMapLocationProgress(), 0, 10))
+	var area_location: int = area_info.world.world
+	var level_location: int = clamp(save_file_data.area_data.getEnteredMapLocationProgress(), 0, 10)
+	
+	LocationLabel.text = area_info.name + " | " + str(area_location) + "-" + str(level_location)
+	LocationLabel.modulate = area_info.area_color
 
 func _on_remove_save_button_pressed() -> void:
 	queue_free()

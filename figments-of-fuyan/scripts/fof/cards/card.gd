@@ -1420,15 +1420,20 @@ func setAlphagreyMaterial(start_value: float) -> void:
 	if !isAlive() or Helper.admin_datastore.see: return
 	if AlphagreyTween != null: AlphagreyTween.stop()
 	
-	AlphagreyTween = get_tree().create_tween()
+	
 	is_in_alphagrey = true
-	setMeshesMaterial(load(info.BASE_MATERIAL_ALPHAGREY_PATH), Model)
-	setAlphagreyMaterialValue(start_value)
-	AlphagreyTween.tween_method(setAlphagreyMaterialValue, start_value, abs(start_value - 1), ALPHAGREY_CHANGE_SPEED)
-	await AlphagreyTween.finished
+	
+	await onTweenAlphagreyValue(start_value, ALPHAGREY_CHANGE_SPEED)
 	
 	is_in_alphagrey = false
 	setBaseMaterials()
+	
+func onTweenAlphagreyValue(start_value: float, time: float) -> void:
+	setMeshesMaterial(load(info.BASE_MATERIAL_ALPHAGREY_PATH), Model)
+	setAlphagreyMaterialValue(start_value)
+	AlphagreyTween = get_tree().create_tween()
+	AlphagreyTween.tween_method(setAlphagreyMaterialValue, start_value, abs(start_value - 1), time)
+	await AlphagreyTween.finished
 	
 func setAlphagreyMaterialValue(value: float) -> void: # 0.0 is visible, 1.0 is invisible
 	if Model == null: return

@@ -1,0 +1,14 @@
+[gd_resource type="Environment" load_steps=4 format=3 uid="uid://byyic7axtmvvy"]
+
+[ext_resource type="Texture2D" uid="uid://cl1k2cj7jv3yj" path="res://assets/hdrs/evening_road_01_puresky_2k.hdr" id="1_wdct1"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_1v8yb"]
+panorama = ExtResource("1_wdct1")
+energy_multiplier = 0.2
+
+[sub_resource type="Sky" id="Sky_f62ck"]
+sky_material = SubResource("PanoramaSkyMaterial_1v8yb")
+
+[resource]
+background_mode = 2
+sky = SubResource("Sky_f62ck")

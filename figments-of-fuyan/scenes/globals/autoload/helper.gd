@@ -2,6 +2,7 @@ extends Node
 
 var admin_datastore: AdminDatastore
 const ADMIN_DATASTORE_PATH: String = "res://resources/datastore/admin/admin_datastore.tres"
+const SAVE_FILE_MAX_AMOUNT: int = 5
 
 #region Resources
 var GDSCRIPT_TYPES: Array = [AreaInfo, LevelInfo, PalmLevelInfo, \

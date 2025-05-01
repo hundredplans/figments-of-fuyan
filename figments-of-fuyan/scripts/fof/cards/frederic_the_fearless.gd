@@ -7,9 +7,11 @@ const ANIMATION_DELAY: float = 2.0
 
 # -> +1 hp on upgrade
 
-# 3% higher chance for elites
-# Higher chance of getting fights from random encounters
-# Every 4th fight add an extra charge to your boon 
+# Every 3rd major fight gains an extra charge (elites + epic)
+# Guarantees an elite fight per segment
+# 3% higher chance for elites - REMOVE THIS
+# Higher chance of getting fights from random encounters - WONT WORK FOR NOW REMOVE
+# Every 4th fight add an extra charge to your boon - DOESNT WORK RN
 
 func onProcessAction(action: Action) -> void:
 	super(action)

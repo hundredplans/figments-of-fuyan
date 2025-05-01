@@ -14,6 +14,7 @@ class_name AreaInfo extends FofInfo
 @export var boss_music: AudioStream
 @export var epic_datastores: Array[EpicAreaDatastore]
 @export var main_menu_decoration: DecorationDatastore
+@export var area_color: Color
 
 static func getInfoPath() -> String: return "res://resources/fof/areas"
 static func getFofName() -> String: return "Area"

@@ -60,9 +60,11 @@ var level: LevelGD
 var area: AreaGD
 var World: Node3D
 var mouse_in_ui: bool
+var PauseMenu: Control
 #endregion
 
 #region Exports
+@export var PauseMenuPacked: PackedScene
 @export var DeckScreenPacked: PackedScene
 @export var GraveyardScreenPacked: PackedScene
 @export var MinimapPacked: PackedScene
@@ -126,8 +128,9 @@ func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("HideUI") and !level.isGameEnded():
 		onHideUI(!visible)
 	
-	elif Input.is_action_just_pressed("Back"):
-		Game.getSaveFile().onLoadMainMenu()
+	elif Input.is_action_just_pressed("Back") and PauseMenu == null:
+		PauseMenu = Game.onCreatePauseMenu(self)
+		PauseMenu.mouse_in_ui.connect(onMouseInUI)
 #endregion
 
 #region Action Lock / Mouse In UI

@@ -1,0 +1,72 @@
+[gd_scene load_steps=3 format=3 uid="uid://b4wjlswboh7i3"]
+
+[ext_resource type="Script" uid="uid://cfcidtwcmya0l" path="res://scenes/menus/pause_menu/pause_menu.gd" id="1_fgv3k"]
+[ext_resource type="PackedScene" uid="uid://djulw2ubmmu7t" path="res://scenes/common/big_cream_button/big_cream_button.tscn" id="2_i58lr"]
+
+[node name="PauseMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_fgv3k")
+
+[node name="FadeBackground" type="ColorRect" parent="."]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.501961)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 0.745098, 0.14902, 1)
+
+[node name="ButtonsContainer" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -214.5
+offset_top = -274.0
+offset_right = 215.5
+offset_bottom = 274.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(215, 274)
+mouse_filter = 2
+
+[node name="ResumeButton" parent="ButtonsContainer" instance=ExtResource("2_i58lr")]
+layout_mode = 2
+text = "Resume"
+horizontal_alignment = 1
+
+[node name="SettingsButton" parent="ButtonsContainer" instance=ExtResource("2_i58lr")]
+layout_mode = 2
+text = "Settings"
+horizontal_alignment = 1
+
+[node name="MainMenuButton" parent="ButtonsContainer" instance=ExtResource("2_i58lr")]
+layout_mode = 2
+text = "Main Menu"
+horizontal_alignment = 1
+
+[node name="QuitButton" parent="ButtonsContainer" instance=ExtResource("2_i58lr")]
+layout_mode = 2
+text = "Save & Quit"
+horizontal_alignment = 1
+
+[connection signal="mouse_entered" from="FadeBackground" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="FadeBackground" to="." method="onMouseInUI" binds= [false]]
+[connection signal="mouse_in_ui" from="ButtonsContainer/ResumeButton" to="." method="onMouseInUI"]
+[connection signal="pressed" from="ButtonsContainer/ResumeButton" to="." method="onResumeButtonPressed"]
+[connection signal="mouse_in_ui" from="ButtonsContainer/SettingsButton" to="." method="onMouseInUI"]
+[connection signal="mouse_in_ui" from="ButtonsContainer/MainMenuButton" to="." method="onMouseInUI"]
+[connection signal="pressed" from="ButtonsContainer/MainMenuButton" to="." method="onMainMenuButtonPressed"]
+[connection signal="mouse_in_ui" from="ButtonsContainer/QuitButton" to="." method="onMouseInUI"]
+[connection signal="pressed" from="ButtonsContainer/QuitButton" to="." method="onQuitButtonPressed"]

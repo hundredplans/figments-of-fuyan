@@ -1,253 +1,400 @@
-[gd_scene load_steps=8 format=3 uid="uid://cbt3ofougwb5l"]
+[gd_scene load_steps=14 format=3 uid="uid://ch7j15ito6q3d"]
 
-[ext_resource type="Script" uid="uid://bu31kqimeihcm" path="res://scenes/menus/main_menu/champion_select/champion_select_ui.gd" id="1_5whd0"]
-[ext_resource type="LabelSettings" uid="uid://dag33u8xdxeu0" path="res://resources/ui/label_settings/jacquard_medium.tres" id="2_i4cch"]
-[ext_resource type="PackedScene" uid="uid://cqwfvh83nko7x" path="res://scenes/game/cards/ui/card_ui.tscn" id="5_2ty5s"]
-[ext_resource type="PackedScene" uid="uid://2figxxms5ybp" path="res://scenes/common/hide_button/hide_button.tscn" id="5_rpxwj"]
-[ext_resource type="LabelSettings" uid="uid://dbh1brjnbxe8c" path="res://resources/ui/label_settings/roboto_large.tres" id="6_3y22e"]
-[ext_resource type="PackedScene" uid="uid://6nf3mir2i2rk" path="res://scenes/common/fancy_text/fancy_text_label.tscn" id="7_ll1ak"]
-[ext_resource type="LabelSettings" uid="uid://yueau3nak32p" path="res://resources/ui/label_settings/roboto_small.tres" id="8_bx5yu"]
+[ext_resource type="Script" uid="uid://cdrtnvk1o5v8t" path="res://scenes/menus/main_menu/champion_select/champion_select_ui.gd" id="1_5whd0"]
+[ext_resource type="PackedScene" uid="uid://djulw2ubmmu7t" path="res://scenes/common/big_cream_button/big_cream_button.tscn" id="2_2s0a1"]
+[ext_resource type="LabelSettings" uid="uid://ix0siw7rad6y" path="res://resources/ui/label_settings/darumadrop_massive.tres" id="3_bnyhl"]
+[ext_resource type="LabelSettings" uid="uid://cnmlfs66pb1a1" path="res://resources/ui/label_settings/spicyrice_huge.tres" id="4_jcurn"]
+[ext_resource type="LabelSettings" uid="uid://d1fxesog2wasm" path="res://resources/ui/label_settings/spicyrice_medium.tres" id="6_jcurn"]
+[ext_resource type="PackedScene" uid="uid://6nf3mir2i2rk" path="res://scenes/common/fancy_text/fancy_text_label.tscn" id="6_vqabh"]
+[ext_resource type="Texture2D" uid="uid://cc6r8nkogr614" path="res://assets/sprites/game/boons/duelist_aura.png" id="7_vqabh"]
+[ext_resource type="Texture2D" uid="uid://dqix5rlsco2k8" path="res://assets/sprites/ui/buttons/button_box.png" id="8_8mdlh"]
+[ext_resource type="LabelSettings" uid="uid://cdmwscnulgun5" path="res://resources/ui/label_settings/darumadrop_large.tres" id="9_hadoj"]
 
-[node name="ChampionSelectUI" type="VBoxContainer"]
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
+[sub_resource type="Animation" id="Animation_bvmjt"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BackButton:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-546, 946)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ChampionDescription:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1972, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ChampionToggle:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(472, 1117)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("ChampionDescription:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("ChampionToggle:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_2s0a1"]
+resource_name = "SlideUIElements"
+length = 0.25
+step = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BackButton:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-546, 946), Vector2(20, 946)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ChampionDescription:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1972, 0), Vector2(992, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ChampionToggle:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(472, 1117), Vector2(472, 946)]
+}
+
+[sub_resource type="Animation" id="Animation_vqabh"]
+resource_name = "ViewChampion"
+length = 0.25
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ChampionDescription:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1972, 0), Vector2(992, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ChampionToggle:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(472, 946), Vector2(472, 1117)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ChampionDescription:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("ChampionToggle:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.25, 0.2501),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [true, true, false, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_sof48"]
+_data = {
+&"RESET": SubResource("Animation_bvmjt"),
+&"SlideUIElements": SubResource("Animation_2s0a1"),
+&"ViewChampion": SubResource("Animation_vqabh")
+}
+
+[node name="ChampionSelectUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -820.0
-offset_top = -540.0
-offset_right = -41.0
-offset_bottom = 541.0
-grow_horizontal = 0
+anchor_bottom = 1.0
+grow_horizontal = 2
 grow_vertical = 2
-alignment = 1
+mouse_filter = 2
 script = ExtResource("1_5whd0")
+FancyTextLabelPacked = ExtResource("6_vqabh")
 
-[node name="TopBar" type="HBoxContainer" parent="."]
-layout_mode = 2
+[node name="BackButton" parent="." groups=["SceneButtons"] instance=ExtResource("2_2s0a1")]
+layout_mode = 0
+offset_left = -546.0
+offset_top = 946.0
+offset_right = -23.0
+offset_bottom = 1080.0
+text = "Back"
 
-[node name="PanelContainer" type="PanelContainer" parent="TopBar"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 3.0
-theme_type_variation = &"DarkPanelContainer"
-
-[node name="MarginContainer" type="MarginContainer" parent="TopBar/PanelContainer"]
-layout_mode = 2
-
-[node name="ChampionNameLabel" type="Label" parent="TopBar/PanelContainer/MarginContainer"]
+[node name="AniPlayer" type="AnimationPlayer" parent="."]
 unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_sof48")
+}
+
+[node name="ChampionDescription" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 0
+offset_left = 1972.0
+offset_right = 2900.0
+offset_bottom = 1080.0
+
+[node name="ChampionNameLabel" type="Label" parent="ChampionDescription"]
+unique_name_in_owner = true
+modulate = Color(0.172549, 0.439216, 0.627451, 1)
 layout_mode = 2
-text = "Frederic the Fearless"
-label_settings = ExtResource("6_3y22e")
+offset_left = 10.0
+offset_top = -19.0
+offset_right = 918.0
+offset_bottom = 121.0
+size_flags_vertical = 10
+text = "Quickdraw Quentin"
+label_settings = ExtResource("3_bnyhl")
 horizontal_alignment = 1
 
-[node name="Control" type="VBoxContainer" parent="TopBar"]
-layout_mode = 2
-size_flags_horizontal = 3
+[node name="ChampionDescriptionMargin" type="MarginContainer" parent="ChampionDescription"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.119
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 0.479996
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
-[node name="PanelContainer2" type="PanelContainer" parent="TopBar/Control"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ChampionDescription/ChampionDescriptionMargin"]
 layout_mode = 2
-theme_type_variation = &"DarkPanelContainer"
+theme_override_constants/separation = 10
 
-[node name="MarginContainer" type="MarginContainer" parent="TopBar/Control/PanelContainer2"]
+[node name="Label" type="Label" parent="ChampionDescription/ChampionDescriptionMargin/VBoxContainer"]
+modulate = Color(1, 0.843137, 0.478431, 1)
 layout_mode = 2
+text = "General Description"
+label_settings = ExtResource("4_jcurn")
 
-[node name="ChampionEpithetLabel" type="Label" parent="TopBar/Control/PanelContainer2/MarginContainer"]
+[node name="GeneralDescriptionContainer" type="VBoxContainer" parent="ChampionDescription/ChampionDescriptionMargin/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "The Brute"
-label_settings = ExtResource("2_i4cch")
-horizontal_alignment = 1
-
-[node name="PanelContainer" type="PanelContainer" parent="TopBar/Control"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_type_variation = &"DarkPanelContainer"
-
-[node name="MarginContainer" type="MarginContainer" parent="TopBar/Control/PanelContainer"]
-layout_mode = 2
-
-[node name="AreaNameLabel" type="Label" parent="TopBar/Control/PanelContainer/MarginContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Varoma"
-label_settings = ExtResource("2_i4cch")
-horizontal_alignment = 1
-
-[node name="TopMiddleBar" type="HBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="CardSpot" type="PanelContainer" parent="TopMiddleBar"]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="CardUI" parent="TopMiddleBar/CardSpot" instance=ExtResource("5_2ty5s")]
-layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="TopMiddleBar"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="PanelContainer2" type="PanelContainer" parent="TopMiddleBar/VBoxContainer"]
-layout_mode = 2
-theme_type_variation = &"YellowPanelContainer"
-
-[node name="MarginContainer" type="MarginContainer" parent="TopMiddleBar/VBoxContainer/PanelContainer2"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="TopMiddleBar/VBoxContainer/PanelContainer2/MarginContainer"]
-layout_mode = 2
-text = "Description"
-label_settings = ExtResource("6_3y22e")
-horizontal_alignment = 1
-
-[node name="PanelContainer" type="PanelContainer" parent="TopMiddleBar/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_type_variation = &"YellowPanelContainer"
-
-[node name="MarginContainer" type="MarginContainer" parent="TopMiddleBar/VBoxContainer/PanelContainer"]
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="TopMiddleBar/VBoxContainer/PanelContainer/MarginContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Control" type="Control" parent="TopMiddleBar/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
-custom_minimum_size = Vector2(10, 0)
-layout_mode = 2
-
-[node name="DescriptionContainer" type="VBoxContainer" parent="TopMiddleBar/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
 theme_override_constants/separation = 20
 
-[node name="Label" type="Label" parent="TopMiddleBar/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/DescriptionContainer"]
+[node name="Label" type="Label" parent="ChampionDescription/ChampionDescriptionMargin/VBoxContainer/GeneralDescriptionContainer"]
 layout_mode = 2
-text = "- Regular and enhanced fights are more common"
-autowrap_mode = 3
+text = "- Your aura gets stronger as you fight"
 
-[node name="Label2" type="Label" parent="TopMiddleBar/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/DescriptionContainer"]
+[node name="Label2" type="Label" parent="ChampionDescription/ChampionDescriptionMargin/VBoxContainer/GeneralDescriptionContainer"]
 layout_mode = 2
-text = "- Gets stronger the more fights he triumphs over"
-autowrap_mode = 3
+text = "- Your aura gets stronger as you fight"
 
-[node name="MiddleMiddleBar" type="HBoxContainer" parent="."]
+[node name="Label3" type="Label" parent="ChampionDescription/ChampionDescriptionMargin/VBoxContainer/GeneralDescriptionContainer"]
 layout_mode = 2
+text = "- Your aura gets stronger as you fight"
 
-[node name="HideButton" parent="MiddleMiddleBar" node_paths=PackedStringArray("hide_node") instance=ExtResource("5_rpxwj")]
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-start_state = false
-hide_node = NodePath("../../LowerMiddleBar/PanelContainer")
-
-[node name="PanelContainer" type="PanelContainer" parent="MiddleMiddleBar"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"PurplePanelContainer"
-
-[node name="MarginContainer" type="MarginContainer" parent="MiddleMiddleBar/PanelContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MiddleMiddleBar/PanelContainer/MarginContainer"]
-layout_mode = 2
-text = "Boon"
-horizontal_alignment = 1
-
-[node name="HideButton2" parent="MiddleMiddleBar" node_paths=PackedStringArray("hide_node") instance=ExtResource("5_rpxwj")]
-custom_minimum_size = Vector2(100, 60)
-layout_mode = 2
-text = " Hide "
-start_state = false
-hide_node = NodePath("../../LowerMiddleBar/PanelContainer2")
-
-[node name="PanelContainer2" type="PanelContainer" parent="MiddleMiddleBar"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"RedPanelContainer"
-
-[node name="MarginContainer" type="MarginContainer" parent="MiddleMiddleBar/PanelContainer2"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MiddleMiddleBar/PanelContainer2/MarginContainer"]
-layout_mode = 2
-text = "Ultimate"
-horizontal_alignment = 1
-
-[node name="LowerMiddleBar" type="HBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="PanelContainer" type="PanelContainer" parent="LowerMiddleBar"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"PurplePanelContainer"
-
-[node name="MarginContainer" type="MarginContainer" parent="LowerMiddleBar/PanelContainer"]
-layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="LowerMiddleBar/PanelContainer/MarginContainer"]
-layout_mode = 2
-
-[node name="Spacer" type="Control" parent="LowerMiddleBar/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Control" type="Control" parent="ChampionDescription/ChampionDescriptionMargin/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ChampionBoonLabel" parent="LowerMiddleBar/PanelContainer/MarginContainer/VBoxContainer" instance=ExtResource("7_ll1ak")]
+[node name="Label3" type="Label" parent="ChampionDescription/ChampionDescriptionMargin/VBoxContainer"]
+modulate = Color(1, 0.843137, 0.478431, 1)
+layout_mode = 2
+text = "Card Description"
+label_settings = ExtResource("4_jcurn")
+
+[node name="CardDescriptionLabel" parent="ChampionDescription/ChampionDescriptionMargin/VBoxContainer" instance=ExtResource("6_vqabh")]
 unique_name_in_owner = true
 layout_mode = 2
+text = "RAMPAGE - Gain +1 HP"
+center = false
 
-[node name="Spacer2" type="Control" parent="LowerMiddleBar/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Control2" type="Control" parent="ChampionDescription/ChampionDescriptionMargin/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="PanelContainer2" type="PanelContainer" parent="LowerMiddleBar"]
+[node name="HBoxContainer" type="HBoxContainer" parent="ChampionDescription/ChampionDescriptionMargin/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"RedPanelContainer"
+theme_override_constants/separation = 20
 
-[node name="MarginContainer" type="MarginContainer" parent="LowerMiddleBar/PanelContainer2"]
+[node name="Label5" type="Label" parent="ChampionDescription/ChampionDescriptionMargin/VBoxContainer/HBoxContainer"]
+modulate = Color(1, 0.843137, 0.478431, 1)
 layout_mode = 2
+text = "Boon Description"
+label_settings = ExtResource("4_jcurn")
 
-[node name="UltimateLabel" type="Label" parent="LowerMiddleBar/PanelContainer2/MarginContainer"]
+[node name="BoonNameLabel" type="Label" parent="ChampionDescription/ChampionDescriptionMargin/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
+modulate = Color(0.172549, 0.439216, 0.627451, 1)
 layout_mode = 2
-text = "Rampage 4x to Heal to full HEALTH and cleanse any negative effects"
-label_settings = ExtResource("8_bx5yu")
-horizontal_alignment = 1
+size_flags_vertical = 1
+text = "[Bold Aura]"
+label_settings = ExtResource("6_jcurn")
+horizontal_alignment = 2
 vertical_alignment = 1
-autowrap_mode = 3
 
-[node name="FlavorTextContainer" type="PanelContainer" parent="."]
-custom_minimum_size = Vector2(0, 100)
+[node name="AuraTextureRect" type="TextureRect" parent="ChampionDescription/ChampionDescriptionMargin/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+texture_filter = 1
+custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
+texture = ExtResource("7_vqabh")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="MarginContainer" type="MarginContainer" parent="FlavorTextContainer"]
-layout_mode = 2
-
-[node name="FlavorLabel" type="Label" parent="FlavorTextContainer/MarginContainer"]
+[node name="BoonDescriptionLabel" parent="ChampionDescription/ChampionDescriptionMargin/VBoxContainer" instance=ExtResource("6_vqabh")]
 unique_name_in_owner = true
 layout_mode = 2
-text = "\"A thug on the streets, a monster in the sheets\""
-horizontal_alignment = 1
-autowrap_mode = 3
+text = "Gain +1 HP"
+center = false
 
-[node name="ButtonBar" type="HBoxContainer" parent="."]
+[node name="Control4" type="Control" parent="ChampionDescription/ChampionDescriptionMargin/VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 3
 
-[node name="StartButton" type="Button" parent="ButtonBar"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="ChampionDescription/ChampionDescriptionMargin/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="StartButton" parent="ChampionDescription/ChampionDescriptionMargin/VBoxContainer/HBoxContainer2" groups=["SceneButtons"] instance=ExtResource("2_2s0a1")]
+layout_mode = 2
 text = "Start"
+horizontal_alignment = 1
 
-[node name="CancelButton" type="Button" parent="ButtonBar"]
+[node name="CancelButton" parent="ChampionDescription/ChampionDescriptionMargin/VBoxContainer/HBoxContainer2" groups=["SceneButtons"] instance=ExtResource("2_2s0a1")]
 layout_mode = 2
-size_flags_horizontal = 3
 text = "Cancel"
 
-[node name="Timer" type="Timer" parent="."]
+[node name="ChampionToggle" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -488.0
+offset_top = 37.0
+offset_right = 488.0
+offset_bottom = 171.0
+grow_horizontal = 2
+grow_vertical = 0
 
-[connection signal="pressed" from="ButtonBar/StartButton" to="." method="_on_start_button_pressed"]
-[connection signal="pressed" from="ButtonBar/CancelButton" to="." method="_on_cancel_button_pressed"]
+[node name="MarginContainer" type="MarginContainer" parent="ChampionToggle"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ChampionToggle/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 100
+alignment = 1
+
+[node name="LeftArrowButton" parent="ChampionToggle/MarginContainer/HBoxContainer" groups=["SceneButtons"] instance=ExtResource("2_2s0a1")]
+layout_mode = 2
+text = "<="
+
+[node name="ViewButton" parent="ChampionToggle/MarginContainer/HBoxContainer" groups=["SceneButtons"] instance=ExtResource("2_2s0a1")]
+layout_mode = 2
+text = "View"
+
+[node name="RightArrowButton" parent="ChampionToggle/MarginContainer/HBoxContainer" groups=["SceneButtons"] instance=ExtResource("2_2s0a1")]
+layout_mode = 2
+text = "=>"
+
+[node name="TextureRect" type="TextureRect" parent="ChampionToggle"]
+visible = false
+layout_mode = 0
+offset_left = 523.0
+offset_top = -422.0
+offset_right = 1063.0
+offset_bottom = -243.0
+texture = ExtResource("8_8mdlh")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="ChampionToggle/TextureRect"]
+layout_mode = 0
+offset_left = 162.0
+offset_top = 10.0
+offset_right = 378.0
+offset_bottom = 169.0
+text = "View"
+label_settings = ExtResource("9_hadoj")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="ChampionDescription/ChampionDescriptionMargin/VBoxContainer/HBoxContainer2/StartButton" to="." method="onStartButtonPressed"]
+[connection signal="pressed" from="ChampionDescription/ChampionDescriptionMargin/VBoxContainer/HBoxContainer2/CancelButton" to="." method="onCancelButtonPressed"]
+[connection signal="pressed" from="ChampionToggle/MarginContainer/HBoxContainer/LeftArrowButton" to="." method="onArrowButtonPressed" binds= [1]]
+[connection signal="pressed" from="ChampionToggle/MarginContainer/HBoxContainer/ViewButton" to="." method="onViewButtonPressed"]
+[connection signal="pressed" from="ChampionToggle/MarginContainer/HBoxContainer/RightArrowButton" to="." method="onArrowButtonPressed" binds= [-1]]
