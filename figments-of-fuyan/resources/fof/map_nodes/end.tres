@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="MapNodeInfo" load_steps=7 format=3 uid="uid://cees3cvj5mw0w"]
+
+[ext_resource type="Script" uid="uid://bsrlnsfamr6p" path="res://scripts/fof_info/map_nodes/map_node_info.gd" id="1_qkgar"]
+[ext_resource type="Script" uid="uid://tu4m6fxo4bo" path="res://scripts/fof/map_nodes/end_node.gd" id="1_rcssq"]
+[ext_resource type="Texture2D" uid="uid://bsn67o434ggnh" path="res://assets/sprites/game/map/start.png" id="2_r5s2j"]
+[ext_resource type="PackedScene" uid="uid://cb5d2jcortxie" path="res://assets/models/fof/map_nodes/end_node.glb" id="3_8tumq"]
+[ext_resource type="Script" uid="uid://1nhagdcu8nfi" path="res://scripts/saved_data/map_nodes/saved_data_map_node.gd" id="4_86tof"]
+[ext_resource type="PackedScene" uid="uid://ct45ed65mhva0" path="res://scenes/game/map_nodes/screens/end_node_screen/end_node_screen.tscn" id="5_r5s2j"]
+
+[resource]
+script = ExtResource("1_qkgar")
+screen = ExtResource("5_r5s2j")
+icon = ExtResource("2_r5s2j")
+model = ExtResource("3_8tumq")
+is_unique_node = false
+float_y = 0.0
+legend_order = 0
+id = 2
+name = "End"
+gdscript = ExtResource("1_rcssq")
+saved_data = ExtResource("4_86tof")

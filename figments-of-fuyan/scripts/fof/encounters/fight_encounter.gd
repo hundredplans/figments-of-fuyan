@@ -29,7 +29,7 @@ func onStartFight() -> void:
 	var level_data: SavedDataLevel = level_info.saved_data.new(level_info.id, true, 0, level_info.data.duplicate())
 	
 	level_data.enemy_cards = enemy_cards
-	level_data.level_rewards = Game.getArea().getLevelRewards(enemy_cards)
+	level_data.level_preview = Game.getArea().getLevelPreview(enemy_cards)
 	level_data.spawn_group = spawn_group
 	
 	load_level.emit(level_data)

@@ -36,14 +36,14 @@ func setChiefAndSpawns(base_budget: int, enemy_spawns: Array, min_spawn_amount: 
 	while(!ChiefCard.isValidEliteLevelSpawns(enemy_cards)):
 		enemy_cards = Game.area.setEnemySpawnsFromBudget(budget, min_spawn_amount, max_spawn_amount, enemy_spawns, map_location.progress, true)
 		
-	level_rewards = Game.getArea().getLevelRewards(enemy_cards)
-	level_rewards.setChiefData(chief_data)
+	level_preview = Game.getArea().getLevelPreview(enemy_cards)
+	level_preview.setChiefData(chief_data, true)
 	
 	enemy_cards.append(chief_data)
 	
 func onSave() -> SavedDataMapNode:
 	return SavedDataEliteFight.new(info.id, false, public_id, map_location, links, is_entered, is_finished, rotation.y, ability_save, level_info,\
-		spawn_group, enemy_cards, level_rewards, curse_id)
+		spawn_group, enemy_cards, level_preview, curse_id)
 	
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -74,7 +74,7 @@ func onFinished() -> void:
 	super()
 	var new_level_data: SavedDataLevel = level_info.saved_data.new(level_info.id, true, 0, level_info.data.duplicate())
 	new_level_data.spawn_group = spawn_group
-	new_level_data.level_rewards = level_rewards
+	new_level_data.level_preview = level_preview
 	new_level_data.enemy_cards = enemy_cards
 	new_level_data.fight_type = Game.FightTypes.ELITE
 	new_level_data.curse_id = curse_id

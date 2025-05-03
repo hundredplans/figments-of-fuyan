@@ -3,6 +3,8 @@ extends Control
 @export var UIBoxPacked: PackedScene
 @onready var LevelLabel: Label = %LevelLabel
 @onready var UIBoxParent: Control = %UIBoxParent
+@onready var TotalNumberManager: Control = %TotalNumberManager
+@onready var TotalNumberLabel: Label = %TotalNumberLabel
 
 const CHIEF_UI_BOX_SEPERATION: int = 30
 
@@ -17,8 +19,8 @@ func setInfo(map_node_data: SavedDataFight) -> void:
 	
 	LevelLabel.text = str(area.getWorldDifficulty()) + "-" + str(clamp(map_node_data.map_location.progress, 0, 10)) + ": " + str(level_info.name)
 	
-	var chief_data: SavedDataCard = map_node_data.level_rewards.chief_data
-	for card_data: SavedDataCard in map_node_data.level_rewards.card_datas:
+	var chief_data: SavedDataCard = map_node_data.level_preview.chief_data
+	for card_data: SavedDataCard in map_node_data.level_preview.card_datas:
 		onAddUIBox(card_data)
 			
 	if chief_data != null:
@@ -29,6 +31,9 @@ func setInfo(map_node_data: SavedDataFight) -> void:
 		UIBoxParent.move_child(filler, 0)
 		UIBoxParent.move_child(UIBox, 0)
 			
+	UIBoxParent.move_child(TotalNumberManager, UIBoxParent.get_child_count())
+	TotalNumberLabel.text = str(map_node_data.level_preview.total_amount) + "x	"
+	
 	match map_node_data.get_script():
 		SavedDataBossFight: theme_type_variation = "RedPanelContainer"
 		SavedDataMiniBossFight: theme_type_variation = "PurplePanelContainer"

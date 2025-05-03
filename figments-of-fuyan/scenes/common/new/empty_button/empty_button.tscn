@@ -1,0 +1,14 @@
+[gd_scene load_steps=5 format=3 uid="uid://bpr7c3ht43wf3"]
+
+[ext_resource type="Theme" uid="uid://rod7euhgalmu" path="res://resources/ui/themes/ui_theme.tres" id="1_jlp8x"]
+[ext_resource type="Script" uid="uid://dclswmoq0nxko" path="res://scenes/common/new/default_button.gd" id="2_71ml6"]
+[ext_resource type="AudioStream" uid="uid://p2ron586kllu" path="res://assets/sounds/ui/clink.mp3" id="3_gtano"]
+[ext_resource type="AudioStream" uid="uid://cv7fpbvjmtneo" path="res://assets/sounds/ui/clink_sharp.mp3" id="4_5y83g"]
+
+[node name="EmptyButton" type="PanelContainer"]
+offset_right = 300.0
+offset_bottom = 150.0
+theme = ExtResource("1_jlp8x")
+script = ExtResource("2_71ml6")
+CLICK_NOISE = ExtResource("3_gtano")
+HOVER_NOISE = ExtResource("4_5y83g")

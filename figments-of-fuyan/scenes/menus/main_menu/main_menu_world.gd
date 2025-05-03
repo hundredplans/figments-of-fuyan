@@ -1,6 +1,6 @@
 extends Node3D
 
-const START_ANIMATION_DELAY: float = 5.0
+const START_ANIMATION_DELAY: float = 3.0
 
 @onready var Decoration: Node3D = %Decoration
 @export var area_id: int
@@ -37,6 +37,7 @@ func onLoadChampionSelect(ChampionSelectUI: Control) -> void:
 	ChampionSelectUI.arrow_pressed.connect(ChampionSelect.onRotateChampions)
 	ChampionSelectUI.view_champion.connect(ChampionSelect.onViewChampion)
 	ChampionSelectUI.unview_champion.connect(ChampionSelect.onUnviewChampion)
+	ChampionSelectUI.setChampionSelect(ChampionSelect)
 	onReplaceDecoration()
 	
 	add_child(ChampionSelect)

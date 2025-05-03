@@ -78,12 +78,10 @@ func onStartGame(champion_info: ChampionCardInfo) -> void:
 	Game.setCardDataFromInfo(card_data, champion_info)
 	
 	Game.highest_public_id = 0
-	var area_id: int = 1
-	var area_data: SavedDataArea = SavedDataArea.new(area_id, true)
 	card_data.card_place = Game.CardPlaces.DECK
 	
 	var save_file_data := SavedDataSaveFile.new(
-		getFirstEmptySaveSlotID(), true, 0, randi(), area_data,\
+		getFirstEmptySaveSlotID(), true, 0, randi(), null,\
 		SHILLING_START_COUNT, 0, [card_data], [], Game.highest_public_id, [])
 	
 	onLoadGame(save_file_data)

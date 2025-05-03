@@ -18,6 +18,10 @@ var MAIN_MENU_BUTTONS: Array = ["Start", "Settings", "Extras", "", "Exit"]
 
 var World: Node3D
 
+func _process(_delta: float) -> void:
+	if Input.is_action_just_pressed("Back") and pressable:
+		onBackInputPressed()
+
 func onFirstLoad() -> void:
 	AniPlayer.play("FirstLoad")
 	AniPlayer.queue("SlideUIElements")
@@ -70,14 +74,14 @@ func onLoadButtons(button_names: Array, use_animation: bool = true) -> void:
 				if Helper.getSaveFileCount() == 0: MainMenuButton.setDisabled(true)
 		
 	await get_tree().create_timer(SLIDE_MAIN_MENU_BUTTONS_DELAY).timeout
-	for MainMenuButton: Label in getMainMenuButtons():
-		MainMenuButton.setPressable(true)
+	setPressable(true)
 	
 	get_viewport().update_mouse_cursor_state()
 	
 var PLAY_BUTTON_NAMES: Array = ["Continue", "New Game", "Load", "", "Back"]
 var EXTRAS_BUTTON_NAMES: Array = ["Fuyanopedia", "", "Back"]
 var SETTINGS_BUTTON_NAMES: Array = ["To", "Be", "Released", "", "Back"]
+var LOAD_BUTTON_NAMES: Array = ["Back"]
 
 func getMainMenuButtons() -> Array:
 	var main_menu_buttons: Array = []
@@ -86,8 +90,7 @@ func getMainMenuButtons() -> Array:
 	return main_menu_buttons
 
 func onMainMenuButtonPressed(button_name: String) -> void:
-	for MainMenuButton: Label in getMainMenuButtons():
-		MainMenuButton.setPressable(false)
+	setPressable(false)
 		
 	match button_name:
 		"Start": onLoadButtons(PLAY_BUTTON_NAMES)
@@ -96,15 +99,30 @@ func onMainMenuButtonPressed(button_name: String) -> void:
 		"New Game": onLoadChampionSelect()
 		"Load": onLoadLoadMenu()
 		"Continue": onContinue()
-		"Back":
-			if active_button_name in ["New Game", "Start", "Extras", "Settings"]: onLoadButtons(MAIN_MENU_BUTTONS)
+		"Back": onBack()
 		"Exit": get_tree().quit()
 		_:
-			for MainMenuButton: Label in getMainMenuButtons():
-				MainMenuButton.setPressable(true)
+			setPressable(true)
 			return
 		
 	active_button_name = button_name # Has to be at end or else pressed button takes it
+#endregion
+
+#region Back
+func onBackInputPressed() -> void:
+	var success: bool = onBack()
+	if success:
+		setPressable(false)
+	
+func onBack() -> bool: # Returns if it succeeded
+	if active_button_name in ["New Game", "Start", "Extras", "Settings", "Back"]:
+		onLoadButtons(MAIN_MENU_BUTTONS)
+		active_button_name = ""
+		return true
+	elif active_button_name == "Load":
+		onLoadButtons(PLAY_BUTTON_NAMES)
+		LoadMenu.queue_free()
+	return false
 #endregion
 
 #region Champion Select
@@ -161,8 +179,11 @@ func onTransitionEnd() -> void:
 	await tween.finished
 #endregion
 
+var LoadMenu: Control
 func onLoadLoadMenu() -> void:
-	add_child(LoadMenuPacked.instantiate())
+	LoadMenu = LoadMenuPacked.instantiate()
+	add_child(LoadMenu)
+	onLoadButtons(LOAD_BUTTON_NAMES, true)
 
 func onContinue() -> void:
 	var DIR_PATH: String = SaveFileInfo.SAVE_DIRECTORY
@@ -177,3 +198,9 @@ func onContinue() -> void:
 	AniPlayer.play_backwards("SlideUIElements")
 	await onTransitionStart()
 	load_game.emit(save_file_data)
+	
+var pressable: bool
+func setPressable(state: bool) -> void:
+	pressable = state
+	for MainMenuButton: Label in getMainMenuButtons():
+		MainMenuButton.setPressable(state)

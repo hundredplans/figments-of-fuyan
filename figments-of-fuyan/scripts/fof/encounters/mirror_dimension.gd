@@ -62,7 +62,7 @@ func onStartFight() -> void:
 	for saved_data_card: SavedDataCard in enemy_cards:
 		valid_infos[saved_data_card] = Helper.getFofInfoID(CardInfo, saved_data_card.id)
 		
-	level_data.level_rewards = Game.getArea().getLevelRewards(enemy_cards\
+	level_data.level_preview = Game.getArea().getLevelPreview(enemy_cards\
 		.filter(func(x: SavedDataCard): return valid_infos[x].rarity != Game.Rarities.CHAMPION))
 	
 	load_level.emit(level_data)

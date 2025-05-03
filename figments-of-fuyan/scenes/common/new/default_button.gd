@@ -1,11 +1,13 @@
-extends Label
+class_name DefaultButton extends Control
 
 signal pressed
 signal mouse_in_ui
 
-@export var BASE_COLOR := Color("ffbd26")
-@export var HOVER_COLOR := Color("ffd77a")
-@export var DISABLED_COLOR := Color("#856314")
+@export var BASE_COLOR := Color("ffffff")
+@export var HOVER_COLOR := Color("aaaaaa")
+@export var DISABLED_COLOR := Color("#888888")
+@export var CLICK_NOISE: AudioStreamMP3
+@export var HOVER_NOISE: AudioStreamMP3
 
 func _ready() -> void:
 	setModulate()
@@ -14,6 +16,10 @@ var is_mouse_in_ui: bool
 func onMouseInUI(state: bool) -> void:
 	mouse_in_ui.emit(state)
 	is_mouse_in_ui = state
+	
+	if is_mouse_in_ui and !disabled and pressable:
+		Audio.onSoundEffect(HOVER_NOISE)
+		
 	setModulate()
 	
 func setModulate() -> void:
@@ -34,4 +40,8 @@ func setPressable(state: bool) -> void:
 	
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("MainInput") and is_mouse_in_ui and !disabled and pressable:
-		pressed.emit()
+		onPressed()
+		
+func onPressed() -> void:
+	pressed.emit()
+	Audio.onSoundEffect(CLICK_NOISE)

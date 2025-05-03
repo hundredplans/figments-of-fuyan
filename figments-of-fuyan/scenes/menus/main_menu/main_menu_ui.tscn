@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://dvnha0bhvnno6" path="res://assets/backgrounds/splash-screen.png" id="3_o11ev"]
 [ext_resource type="Texture2D" uid="uid://dqvwh4o83r4aj" path="res://assets/sprites/ui/general/logo_name_swingus.png" id="5_m2x35"]
 [ext_resource type="FontFile" uid="uid://baxu43ooayfrm" path="res://assets/fonts/irish_grover.ttf" id="5_nuh7a"]
-[ext_resource type="PackedScene" uid="uid://djulw2ubmmu7t" path="res://scenes/common/big_cream_button/big_cream_button.tscn" id="6_m2x35"]
+[ext_resource type="PackedScene" uid="uid://djulw2ubmmu7t" path="res://scenes/common/new/large_text_button/large_text_button.tscn" id="6_m2x35"]
 
 [sub_resource type="Animation" id="Animation_o11ev"]
 resource_name = "FirstLoad"
@@ -240,10 +240,9 @@ libraries = {
 
 [node name="VersionMarginContainer" type="MarginContainer" parent="."]
 layout_mode = 0
-offset_left = -171.0
-offset_top = 1022.0
-offset_right = 1.0
-offset_bottom = 1081.0
+offset_top = 1021.0
+offset_right = 172.0
+offset_bottom = 1080.0
 
 [node name="VersionLabel" type="Label" parent="VersionMarginContainer"]
 layout_mode = 2
@@ -252,9 +251,9 @@ label_settings = SubResource("LabelSettings_nuh7a")
 
 [node name="LogoMarginContainer" type="MarginContainer" parent="."]
 layout_mode = 0
-offset_left = 1915.0
+offset_left = 1469.0
 offset_top = 832.0
-offset_right = 2817.0
+offset_right = 2371.0
 offset_bottom = 1328.0
 scale = Vector2(0.5, 0.5)
 
@@ -264,10 +263,8 @@ texture = ExtResource("5_m2x35")
 
 [node name="TextLabelsMarginContainer" type="MarginContainer" parent="."]
 layout_mode = 0
-offset_left = -600.0
-offset_top = 269.0
-offset_right = -17.0
-offset_bottom = 1259.0
+offset_right = 583.0
+offset_bottom = 990.0
 theme_override_constants/margin_left = 50
 
 [node name="MainMenuButtonsVBox" type="VBoxContainer" parent="TextLabelsMarginContainer"]

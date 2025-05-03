@@ -57,3 +57,25 @@ static func getRandomFofByOdds(type: GDScript, odds: Dictionary = Game.area.getW
 	@warning_ignore("int_as_enum_without_cast")
 	var rarity: Game.Rarities = int(Random.getRandomKey(Random.onConvertPercentOdds(odds)))
 	return Random.getRandomFofInRarity(type, rarity)
+	
+# Area id = 0 if we want all cards
+static func getRandomCardData(ids: Array, odds: Dictionary, tool_chance: float, tool_ascended_chance: float, tool_odds: Dictionary, ascend_odds: float) -> SavedDataCard:
+	var attempts: float = 0
+	var total_attempts: float = 16
+	while(attempts < total_attempts):
+		var card_infos: Array = ids.map(func(x: int): return Helper.getFofInfoID(CardInfo, x))
+		
+		var rarity: Game.Rarities = int(getRandomKey(onConvertPercentOdds(odds)))
+		card_infos = card_infos.filter(func(x: CardInfo): return x.rarity == rarity)
+		
+		if card_infos.is_empty(): attempts += 1; break
+		var chosen_info: CardInfo = card_infos.pick_random()
+		
+		var ascend_card: bool = rarity != Game.Rarities.EXALT and Random.rollFloat(ascend_odds)
+		var tool_data: SavedDataTool = null
+		if Random.rollFloat(tool_chance):
+			tool_data = getRandomFofByOdds(ToolInfo, tool_odds)
+
+		var card_data: SavedDataCard = Game.onCreateBaseCard(chosen_info.id, ascend_card, tool_data)
+		return card_data
+	return null

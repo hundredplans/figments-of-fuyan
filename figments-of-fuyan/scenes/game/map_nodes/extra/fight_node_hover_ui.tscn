@@ -1,11 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://8k6ibmwcfnyu"]
+[gd_scene load_steps=5 format=3 uid="uid://8k6ibmwcfnyu"]
 
 [ext_resource type="Script" uid="uid://v1kjdacmwo3" path="res://scenes/game/map_nodes/extra/fight_node_hover_ui.gd" id="1_4kecg"]
 [ext_resource type="PackedScene" uid="uid://bk7ao27fc3efw" path="res://scenes/common/fof_ui_box/fof_ui_box.tscn" id="2_0jghf"]
+[ext_resource type="LabelSettings" uid="uid://cnmlfs66pb1a1" path="res://resources/ui/label_settings/spicyrice_huge.tres" id="3_flkcf"]
+[ext_resource type="Texture2D" uid="uid://cpjnp5qqpj33v" path="res://assets/sprites/game/cards/art_mini/art_mini_shadow.png" id="3_owjro"]
 
 [node name="FightNodeHoverUI" type="PanelContainer"]
 custom_minimum_size = Vector2(388, 166)
-offset_right = 492.0
+offset_right = 535.0
 offset_bottom = 182.0
 localize_numeral_system = false
 mouse_filter = 2
@@ -27,6 +29,26 @@ layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 10
 alignment = 1
+
+[node name="TotalNumberManager" type="HBoxContainer" parent="MarginContainer/VBoxContainer/UIBoxParent"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 2
+
+[node name="TotalNumberLabel" type="Label" parent="MarginContainer/VBoxContainer/UIBoxParent/TotalNumberManager"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "1x"
+label_settings = ExtResource("3_flkcf")
+horizontal_alignment = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/UIBoxParent/TotalNumberManager"]
+texture_filter = 1
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+texture = ExtResource("3_owjro")
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2

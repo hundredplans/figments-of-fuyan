@@ -29,6 +29,7 @@ class_name SavedDataCard extends SavedDataGameObject
 @export var bounty_kills: BountyKills
 @export var boss_datastore: BossDatastore
 @export var card_offset: CardOffset
+@export var champion_datastore: ChampionDatastore
 
 func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _coords := Vector4i.ZERO,\
  _tile_rotation: int = 0, _vision_datastore := VisionDatastoreCard.new(), _team: int = 0, _ascended: bool = false, _attack: int = 0, _health: int = 0,\
@@ -39,7 +40,7 @@ func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _coords
 	_field_effects: Array = [], _anibility_datastore := AnibilityDatastore.new(), _is_temporary: bool = false,\
 	_is_awakened_in_combat: bool = false, _ai_datastore := AIDatastore.new(),\
 	_base_stats: StatsDatastore = null, _overworld_traits: Array[OverworldTrait] = [], _bounty_kills := BountyKills.new(),\
-	_boss_datastore: BossDatastore = null, _card_offset := CardOffset.new()) -> void:
+	_boss_datastore: BossDatastore = null, _card_offset := CardOffset.new(), _champion_datastore := ChampionDatastore.new()) -> void:
 		
 	super(_id, _first_init, _public_id, _coords, _tile_rotation, _vision_datastore)
 	
@@ -71,6 +72,7 @@ func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _coords
 	bounty_kills = _bounty_kills
 	boss_datastore = _boss_datastore
 	card_offset = _card_offset
+	champion_datastore = _champion_datastore
 	
 func getInfoType() -> GDScript: return CardInfo
 func setBaseStats(stat_datastore: StatsDatastore) -> void:

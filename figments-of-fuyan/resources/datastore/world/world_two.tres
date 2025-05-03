@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="WorldDatastore" load_steps=14 format=3 uid="uid://c8epcaodidvwx"]
+[gd_resource type="Resource" script_class="WorldDatastore" load_steps=18 format=3 uid="uid://c8epcaodidvwx"]
 
 [ext_resource type="Script" uid="uid://b4u5t7a8bjufi" path="res://scripts/common/rewards/rarity_odds_datastore.gd" id="1_adcua"]
 [ext_resource type="Script" uid="uid://b86r3lxt1v8fp" path="res://scripts/fof_info/world_datastore.gd" id="2_6vuag"]
 [ext_resource type="Script" uid="uid://bl6dfw0necxsf" path="res://scripts/common/rewards/fight_rewards_datastore.gd" id="2_imoxh"]
+[ext_resource type="Script" uid="uid://6cx111b6rsmf" path="res://scripts/common/price/rarity_price_datastore.gd" id="2_n1e13"]
 
 [sub_resource type="Resource" id="Resource_imoxh"]
 script = ExtResource("1_adcua")
@@ -12,6 +13,24 @@ exalt = 7.5
 miniboss = 0.0
 boss = 0.0
 metadata/_custom_type_script = "uid://b4u5t7a8bjufi"
+
+[sub_resource type="Resource" id="Resource_hsfgb"]
+script = ExtResource("2_n1e13")
+common = 26
+rare = 33
+exalt = 41
+miniboss = 51
+boss = 61
+metadata/_custom_type_script = "uid://6cx111b6rsmf"
+
+[sub_resource type="Resource" id="Resource_tnqnj"]
+script = ExtResource("2_n1e13")
+common = 20
+rare = 28
+exalt = 35
+miniboss = 45
+boss = 55
+metadata/_custom_type_script = "uid://6cx111b6rsmf"
 
 [sub_resource type="Resource" id="Resource_v4uvf"]
 script = ExtResource("1_adcua")
@@ -100,6 +119,15 @@ miniboss = 0.0
 boss = 0.0
 metadata/_custom_type_script = "uid://b4u5t7a8bjufi"
 
+[sub_resource type="Resource" id="Resource_avty1"]
+script = ExtResource("2_n1e13")
+common = 14
+rare = 20
+exalt = 28
+miniboss = 38
+boss = 48
+metadata/_custom_type_script = "uid://6cx111b6rsmf"
+
 [resource]
 script = ExtResource("2_6vuag")
 world = 2
@@ -109,18 +137,21 @@ enemy_spawn_rarity_odds = SubResource("Resource_n1e13")
 fight_rewards = SubResource("Resource_stl2c")
 elite_fight_rewards = SubResource("Resource_ikwl5")
 elite_fight_rewards_second_item_odds = 10.0
-budget_for_fights = Array[int]([11, 12, 13, 16, 18, 18, 19, 21, 22, 25])
+budget_for_fights = Array[int]([11, 12, 13, 16, 18, 18, 19, 21, 22, 25, 27])
 elite_fights_budget_offset = 2
 enemy_ascended_rate = 7.5
 elite_enemy_ascended_rate = 12.5
 tool_enemy_spawn_rarity_odds = SubResource("Resource_2p4pu")
 tool_enemy_spawn_rate = 15.0
 tool_enemy_spawn_rate_ascended = 15.0
-foreign_card_base_price_increase = 0
-transform_by_rarity_price = 0
-transform_by_cost_price = 0
-ascend_card_price = 0
-remove_card_price = 0
+card_rarity_prices = SubResource("Resource_tnqnj")
+tool_rarity_prices = SubResource("Resource_avty1")
+boon_rarity_prices = SubResource("Resource_hsfgb")
+foreign_card_base_price_increase = 4
+transform_by_rarity_price = 20
+transform_by_cost_price = 25
+ascend_card_price = 30
+remove_card_price = 15
 shop_rarity_odds = SubResource("Resource_mehiu")
 ascended_items_flat_after_percentage_increase = 5
 ascended_items_price_percentage_increase = 50

@@ -1,7 +1,7 @@
 [gd_scene load_steps=14 format=3 uid="uid://ch7j15ito6q3d"]
 
 [ext_resource type="Script" uid="uid://cdrtnvk1o5v8t" path="res://scenes/menus/main_menu/champion_select/champion_select_ui.gd" id="1_5whd0"]
-[ext_resource type="PackedScene" uid="uid://djulw2ubmmu7t" path="res://scenes/common/big_cream_button/big_cream_button.tscn" id="2_2s0a1"]
+[ext_resource type="PackedScene" uid="uid://djulw2ubmmu7t" path="res://scenes/common/new/large_text_button/large_text_button.tscn" id="2_2s0a1"]
 [ext_resource type="LabelSettings" uid="uid://ix0siw7rad6y" path="res://resources/ui/label_settings/darumadrop_massive.tres" id="3_bnyhl"]
 [ext_resource type="LabelSettings" uid="uid://cnmlfs66pb1a1" path="res://resources/ui/label_settings/spicyrice_huge.tres" id="4_jcurn"]
 [ext_resource type="LabelSettings" uid="uid://d1fxesog2wasm" path="res://resources/ui/label_settings/spicyrice_medium.tres" id="6_jcurn"]
@@ -34,7 +34,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(1972, 0)]
+"values": [Vector2(2200, 0)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -117,7 +117,7 @@ tracks/2/keys = {
 [sub_resource type="Animation" id="Animation_vqabh"]
 resource_name = "ViewChampion"
 length = 0.25
-step = 0.2
+step = 0.025
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -128,7 +128,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.25),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(1972, 0), Vector2(992, 0)]
+"values": [Vector2(2200, 0), Vector2(992, 0)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -149,10 +149,10 @@ tracks/2/path = NodePath("ChampionDescription:visible")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.025, 0.25),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [true]
+"values": [false, true, true]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -190,8 +190,9 @@ layout_mode = 0
 offset_left = -546.0
 offset_top = 946.0
 offset_right = -23.0
-offset_bottom = 1080.0
+offset_bottom = 1050.0
 text = "Back"
+DISABLED_COLOR = Color(0.533333, 0.533333, 0.533333, 1)
 
 [node name="AniPlayer" type="AnimationPlayer" parent="."]
 unique_name_in_owner = true
@@ -203,16 +204,16 @@ libraries = {
 unique_name_in_owner = true
 visible = false
 anchors_preset = 0
-offset_left = 1972.0
-offset_right = 2900.0
-offset_bottom = 1080.0
+offset_left = 2200.0
+offset_right = 3128.0
+offset_bottom = 1050.0
 
 [node name="ChampionNameLabel" type="Label" parent="ChampionDescription"]
 unique_name_in_owner = true
 modulate = Color(0.172549, 0.439216, 0.627451, 1)
 layout_mode = 2
 offset_left = 10.0
-offset_top = -19.0
+offset_top = 16.0
 offset_right = 918.0
 offset_bottom = 121.0
 size_flags_vertical = 10
@@ -326,10 +327,12 @@ alignment = 1
 layout_mode = 2
 text = "Start"
 horizontal_alignment = 1
+DISABLED_COLOR = Color(0.533333, 0.533333, 0.533333, 1)
 
 [node name="CancelButton" parent="ChampionDescription/ChampionDescriptionMargin/VBoxContainer/HBoxContainer2" groups=["SceneButtons"] instance=ExtResource("2_2s0a1")]
 layout_mode = 2
 text = "Cancel"
+DISABLED_COLOR = Color(0.533333, 0.533333, 0.533333, 1)
 
 [node name="ChampionToggle" type="Control" parent="."]
 layout_mode = 1
@@ -361,14 +364,17 @@ alignment = 1
 [node name="LeftArrowButton" parent="ChampionToggle/MarginContainer/HBoxContainer" groups=["SceneButtons"] instance=ExtResource("2_2s0a1")]
 layout_mode = 2
 text = "<="
+DISABLED_COLOR = Color(0.533333, 0.533333, 0.533333, 1)
 
-[node name="ViewButton" parent="ChampionToggle/MarginContainer/HBoxContainer" groups=["SceneButtons"] instance=ExtResource("2_2s0a1")]
+[node name="ViewButton" parent="ChampionToggle/MarginContainer/HBoxContainer" instance=ExtResource("2_2s0a1")]
 layout_mode = 2
 text = "View"
+DISABLED_COLOR = Color(0.533333, 0.533333, 0.533333, 1)
 
 [node name="RightArrowButton" parent="ChampionToggle/MarginContainer/HBoxContainer" groups=["SceneButtons"] instance=ExtResource("2_2s0a1")]
 layout_mode = 2
 text = "=>"
+DISABLED_COLOR = Color(0.533333, 0.533333, 0.533333, 1)
 
 [node name="TextureRect" type="TextureRect" parent="ChampionToggle"]
 visible = false

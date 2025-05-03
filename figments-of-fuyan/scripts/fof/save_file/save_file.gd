@@ -62,8 +62,9 @@ func onLoadData(data: SavedData) -> void:
 	boons = data.boons.map(func(x: SavedDataBoon): return SavedData.onLoadModel(x, self))
 	tool_belt = data.tool_belt.map(func(x: SavedDataTool): return SavedData.onLoadModel(x, self))
 	
-	area = SavedData.onLoadModel(data.area_data, get_parent(), [ChampionCard])
-	area.load_level.connect(onLoadLevel)
+	if data.area_data != null:
+		area = SavedData.onLoadModel(data.area_data, get_parent())
+		area.load_level.connect(onLoadLevel)
 	
 	shillings = data.shillings
 	time = data.time
@@ -79,6 +80,8 @@ func onLoadData(data: SavedData) -> void:
 func onFofInit() -> void:
 	var boon_info: BoonInfo = getChampionCard().info.boon_info
 	onPushAction(AddBoonAction.new(boon_info.id, false))
+
+	onChooseArea()
 	
 func setInfo(_area: AreaGD) -> void:
 	area = _area
@@ -117,6 +120,22 @@ func onLoadMainMenu() -> void:
 func onLoadGame() -> void:
 	if area.active_level_data == null: onLoadMap()
 	else: onLoadLevel(area.active_level_data)
+	
+func onAreaFinished() -> void:
+	var new_difficulty: int = area.getWorldDifficulty() + 1
+	area.queue_free()
+	
+	await get_tree().process_frame # Important for everything to despawn
+	onChooseArea(new_difficulty)
+	onLoadMap()
+	area.init_load.emit()
+	
+func onChooseArea(world: int = 1) -> void:
+	var area_id: int = Helper.getFofInfoArray(AreaInfo)\
+		.filter(func(x: AreaInfo): return x.world != null and x.world.world == world).pick_random().id
+	var area_data: SavedDataArea = SavedDataArea.new(area_id, true)
+	area = SavedData.onLoadModel(area_data, get_parent())
+	area.load_level.connect(onLoadLevel)
 #endregion
 
 #region Timer

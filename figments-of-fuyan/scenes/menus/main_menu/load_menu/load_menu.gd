@@ -21,9 +21,6 @@ func _ready() -> void:
 			save_file_ui.start.connect(onStart)
 			save_file_ui.mouse_in_ui.connect(onMouseInUI)
 		MainContainer.move_child(QuitButton, MainContainer.get_child_count() - 1)
-
-func _on_quit_button_pressed() -> void:
-	queue_free()
 	
 func onRemoveSave(save_file_data: SavedDataSaveFile) -> void:
 	DirAccess.remove_absolute(save_file_data.resource_path)

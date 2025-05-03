@@ -42,6 +42,7 @@ var level_visible_not_in_vision: bool # Not saved
 var boss_datastore: BossDatastore # Null in here
 var is_knockback: bool # Not saved
 var card_offset: CardOffset # Offset of ronotation and position
+var champion_datastore: ChampionDatastore
 #endregion
 
 #region Globals
@@ -125,7 +126,7 @@ func getDescription() -> String:
 		return info.getDescription(ascended)
 	
 	var description: String = info.getDescription(ascended)
-	for upgrade_level in range(1, Game.getChampionLevel() + 1):
+	for upgrade_level in range(1, champion_datastore.upgrade_level + 1):
 		var new_description: String = getChampionUpgrade(upgrade_level).description
 		if !new_description.is_empty(): description = new_description
 	return description
@@ -229,7 +230,7 @@ func onSave() -> SavedDataCard:
 	attack, health, speed, max_speed, max_health, energy, draw_order, card_place, turn_state, SavedData.onSaveGroup(status_effects), attacks, attack_range, delayed_stats,\
 	ability_save, active_effects, Tool.onSave() if Tool != null else null, SavedData.onSaveGroup(field_effects), anibility_datastore,\
 	is_temporary, is_awakened_in_combat, ai_datastore, base_stats,
-	overworld_traits, bounty_kills, boss_datastore, card_offset)
+	overworld_traits, bounty_kills, boss_datastore, card_offset, champion_datastore)
 
 func onPreSave() -> void:
 	for delayed: Variant in delayed_stats: delayed.onSave()
@@ -282,6 +283,8 @@ func onLoadData(data: SavedData) -> void:
 	
 	boss_datastore = data.boss_datastore
 	if boss_datastore != null: boss_datastore.onLoad()
+	
+	champion_datastore = data.champion_datastore
 	
 	onChangeCardPlace(data.card_place)
 	add_to_group("CardsGD")
@@ -1485,6 +1488,7 @@ func onUpgrade(upgrade_level: int) -> void:
 	var types: Array = [Game.Stats.ATTACK, Game.Stats.MAX_HEALTH, Game.Stats.MAX_SPEED, Game.Stats.ENERGY]
 	var values: Array = [champion_upgrade.plus_attack, champion_upgrade.plus_health, champion_upgrade.plus_speed, champion_upgrade.plus_energy]
 	var base_stat_action := BaseStatAction.new(self, types, values)
+	champion_datastore.upgrade_level = upgrade_level
 	onPushAction(base_stat_action)
 
 func getChampionUpgrade(upgrade_level: int) -> ChampionUpgrade:

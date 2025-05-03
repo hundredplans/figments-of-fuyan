@@ -22,7 +22,7 @@ func setInfo(_save_file_data: SavedDataSaveFile) -> void:
 	for key in ["hour", "minute", "second"]:
 		datetime[key] = str(datetime[key]) if datetime[key] >= 10 else "0" + str(datetime[key])
 		
-	TimeLabel.text = "TIME: " + datetime.hour + ":" + datetime.minute + ":" + datetime.second
+	TimeLabel.text = "Time: " + datetime.hour + ":" + datetime.minute + ":" + datetime.second
 	ShillingLabel.setText("SH: " + str(save_file_data.shillings))
 	
 	var area_info: AreaInfo = Helper.getFofInfoID(AreaInfo, save_file_data.area_data.id)
@@ -32,12 +32,12 @@ func setInfo(_save_file_data: SavedDataSaveFile) -> void:
 	LocationLabel.text = area_info.name + " | " + str(area_location) + "-" + str(level_location)
 	LocationLabel.modulate = area_info.area_color
 
-func _on_remove_save_button_pressed() -> void:
-	queue_free()
-	remove_save.emit(save_file_data)
-
 func _on_start_button_pressed() -> void:
 	start.emit(save_file_data)
 	
 func onMouseInUI(state: bool) -> void:
 	mouse_in_ui.emit(state)
+
+func onRemoveButtonPressed() -> void:
+	queue_free()
+	remove_save.emit(save_file_data)

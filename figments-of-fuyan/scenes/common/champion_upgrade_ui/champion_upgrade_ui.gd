@@ -20,7 +20,8 @@ func setInfo() -> void:
 	var PreviousChampionCard: CardGD = SavedData.onLoadModel(data, Game.getSaveFile())
 	PreviousChampionCard.onChangeCardPlace(Game.CardPlaces.NULL)
 	
-	for i in range(upgrade_level - 1):
+	for i in range(1, upgrade_level):
+		print("Champion Upgrade: " + str(i))
 		PreviousChampionCard.onUpgrade(i)
 		
 	await get_tree().process_frame # While actions are processed

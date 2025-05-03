@@ -13,5 +13,5 @@ func getDictionary() -> Dictionary:
 	if exalt > 0: dict[Game.Rarities.EXALT] = exalt
 	if miniboss > 0: dict[Game.Rarities.MINIBOSS] = miniboss
 	if boss > 0: dict[Game.Rarities.BOSS] = boss
-	assert(dict.values().reduce((func(accum: int, number: int): return accum + number), 0) >= 100)
+	assert(dict.values().reduce((func(accum: float, number: float): return accum + number), 0) >= 100)
 	return dict

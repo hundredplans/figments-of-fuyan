@@ -11,6 +11,7 @@ func setInfo(area_id: int) -> void:
 	ChampionCard = SavedData.onLoadModel(champion_data, self)
 	ChampionCard.onCreateModel()
 	ChampionCard.getModel().rotation.y = 0
+	ChampionCard.setIdleModifier("Intro")
 	
 	var area_info: AreaInfo = Helper.getFofInfoID(AreaInfo, area_id)
 	var decoration_datastore: DecorationDatastore = area_info.main_menu_decoration
@@ -19,8 +20,7 @@ func setInfo(area_id: int) -> void:
 		SavedData.onLoadModel(data, Decoration)
 	
 func onStart() -> void:
-	ChampionCard.onIdle()
-	ChampionCard.AniPlayer.play("ChampionEntrance")
+	ChampionCard.AniPlayer.play("IntroEntrance")
 	
 func onSetToEndState() -> void:
 	ChampionCard.onIdle()
