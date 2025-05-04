@@ -70,8 +70,6 @@ func onLoadButtons(button_names: Array, use_animation: bool = true) -> void:
 				if Helper.getSaveFileCount() == 0: MainMenuButton.setDisabled(true)
 			"New Game":
 				if Helper.getSaveFileCount() == Helper.SAVE_FILE_MAX_AMOUNT: MainMenuButton.setDisabled(true)
-			"Load":
-				if Helper.getSaveFileCount() == 0: MainMenuButton.setDisabled(true)
 		
 	await get_tree().create_timer(SLIDE_MAIN_MENU_BUTTONS_DELAY).timeout
 	setPressable(true)
@@ -96,7 +94,8 @@ func onMainMenuButtonPressed(button_name: String) -> void:
 		"Start": onLoadButtons(PLAY_BUTTON_NAMES)
 		"Settings": onLoadButtons(SETTINGS_BUTTON_NAMES)
 		"Extras": onLoadButtons(EXTRAS_BUTTON_NAMES)
-		"New Game": onLoadChampionSelect()
+		"New Game":
+			onNewGamePressed()
 		"Load": onLoadLoadMenu()
 		"Continue": onContinue()
 		"Back": onBack()
@@ -115,13 +114,10 @@ func onBackInputPressed() -> void:
 		setPressable(false)
 	
 func onBack() -> bool: # Returns if it succeeded
-	if active_button_name in ["New Game", "Start", "Extras", "Settings", "Back"]:
+	if active_button_name in ["New Game", "Start", "Extras", "Settings", "Back", "Load"]:
 		onLoadButtons(MAIN_MENU_BUTTONS)
 		active_button_name = ""
 		return true
-	elif active_button_name == "Load":
-		onLoadButtons(PLAY_BUTTON_NAMES)
-		LoadMenu.queue_free()
 	return false
 #endregion
 
@@ -129,7 +125,6 @@ func onBack() -> bool: # Returns if it succeeded
 var ChampionSelectUI: Control
 const FADE_BACKGROUND_TIME: float = 0.25
 func onLoadChampionSelect() -> void:
-	AniPlayer.play_backwards("SlideUIElements")
 	await onTransitionStart()
 	
 	ChampionSelectUI = ChampionSelectUIPacked.instantiate() # Necessary order
@@ -141,6 +136,10 @@ func onLoadChampionSelect() -> void:
 	
 	add_child(ChampionSelectUI)
 	onTransitionEnd()
+	
+func onNewGamePressed() -> void:
+	AniPlayer.play_backwards("SlideUIElements")
+	onLoadChampionSelect()
 	
 func onUnloadChampionSelect() -> void:
 	await onTransitionStart()
@@ -182,8 +181,17 @@ func onTransitionEnd() -> void:
 var LoadMenu: Control
 func onLoadLoadMenu() -> void:
 	LoadMenu = LoadMenuPacked.instantiate()
+	LoadMenu.back.connect(onUnloadLoadMenu)
+	LoadMenu.new_game.connect(onLoadChampionSelect)
+	LoadMenu.load_game.connect(onLoadMenuContinue)
 	add_child(LoadMenu)
-	onLoadButtons(LOAD_BUTTON_NAMES, true)
+	
+	AniPlayer.play_backwards("SlideUIElements")
+	
+func onUnloadLoadMenu() -> void:
+	LoadMenu = null
+	AniPlayer.play("SlideUIElements")
+	onLoadButtons(PLAY_BUTTON_NAMES, false)
 
 func onContinue() -> void:
 	var DIR_PATH: String = SaveFileInfo.SAVE_DIRECTORY
@@ -196,6 +204,10 @@ func onContinue() -> void:
 	var save_file_data: SavedDataSaveFile = load(DIR_PATH + recent_save_file_path)
 	
 	AniPlayer.play_backwards("SlideUIElements")
+	await onTransitionStart()
+	load_game.emit(save_file_data)
+
+func onLoadMenuContinue(save_file_data: SavedDataSaveFile) -> void:
 	await onTransitionStart()
 	load_game.emit(save_file_data)
 	

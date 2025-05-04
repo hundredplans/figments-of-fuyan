@@ -27,7 +27,7 @@ const SAVE_LABEL_VISIBLE_TIME: float = 1.0
 func _ready():
 	DirAccess.make_dir_recursive_absolute("user://save/save_files")
 	if !Helper.admin_datastore.skip_main_menu:
-		onLoadMainMenu()
+		onLoadMainMenu(Helper.admin_datastore.skip_start_cutscene)
 	else:
 		var DIR_PATH: String = SaveFileInfo.SAVE_DIRECTORY
 		var files: Array = Array(DirAccess.get_files_at(DIR_PATH))
@@ -118,10 +118,10 @@ func onLoadMap(save_file: SaveFileGD, area: AreaGD) -> void:
 	scenes.world.setInfo(save_file)
 	area.onLoadMapAfterScenes()
 	
-func onLoadMainMenu() -> void:
+func onLoadMainMenu(skip_cutscene: bool = true) -> void:
 	onLoadScreenWorld(main_menu_ui, main_menu_world)
 	for child in KeepAcross.get_children(): child.queue_free()
-	if !Helper.admin_datastore.skip_start_cutscene:
+	if !skip_cutscene:
 		ActiveWorld.onFirstLoad()
 		ActiveScreen.onFirstLoad()
 	else:

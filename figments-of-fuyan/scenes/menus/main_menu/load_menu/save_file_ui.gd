@@ -1,7 +1,6 @@
-extends Control
+extends DefaultButton
 signal remove_save
-signal start
-signal mouse_in_ui
+signal save_file_pressed
 
 @onready var ArtMiniRect: TextureRect = %ArtMiniRect
 @onready var ChampionNameLabel: Label = %ChampionNameLabel
@@ -9,9 +8,19 @@ signal mouse_in_ui
 @onready var ShillingLabel: FancyTextLabel = %ShillingLabel
 @onready var LocationLabel: Label = %LocationLabel
 
+@onready var MainContainer: Container = %MainContainer
+@onready var NewGameLabel: Label = %NewGameLabel
+
 var save_file_data: SavedDataSaveFile
 func setInfo(_save_file_data: SavedDataSaveFile) -> void:
 	save_file_data = _save_file_data
+	if save_file_data != null: setSaveFileData()
+	else: setNewGameLabel()
+
+func setSaveFileData() -> void:
+	MainContainer.visible = true
+	NewGameLabel.visible = false
+	
 	var champion_data: SavedDataCard = save_file_data.getChampionData()
 	var champion_info: ChampionCardInfo = Helper.getFofInfoID(ChampionCardInfo, champion_data.id)
 	
@@ -31,13 +40,17 @@ func setInfo(_save_file_data: SavedDataSaveFile) -> void:
 	
 	LocationLabel.text = area_info.name + " | " + str(area_location) + "-" + str(level_location)
 	LocationLabel.modulate = area_info.area_color
-
-func _on_start_button_pressed() -> void:
-	start.emit(save_file_data)
 	
-func onMouseInUI(state: bool) -> void:
-	mouse_in_ui.emit(state)
+func setNewGameLabel() -> void:
+	MainContainer.visible = false
+	NewGameLabel.visible = true
 
 func onRemoveButtonPressed() -> void:
-	queue_free()
 	remove_save.emit(save_file_data)
+	MainContainer.visible = false
+	NewGameLabel.visible = true
+	save_file_data = null
+
+func onPressed() -> void:
+	super()
+	save_file_pressed.emit(save_file_data)
