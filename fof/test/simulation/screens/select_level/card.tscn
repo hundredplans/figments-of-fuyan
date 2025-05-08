@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://c8k7xkl3eye1v"]
 
-[ext_resource type="Script" path="res://test/simulation/screens/select_level/card.gd" id="1_2mml4"]
+[ext_resource type="Script" uid="uid://c1c8ippy30yjb" path="res://test/simulation/screens/select_level/card.gd" id="1_2mml4"]
 [ext_resource type="Theme" uid="uid://ckvg0fgx6jl8n" path="res://test/simulation/assets/fonts/bad_theme.tres" id="1_ve85a"]
 [ext_resource type="FontFile" uid="uid://bnuw8icxtgffv" path="res://test/simulation/assets/fonts/Roboto-Black.ttf" id="2_nufit"]
 
@@ -70,8 +70,8 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_k8m32"]
 _data = {
-"RESET": SubResource("Animation_h5l1u"),
-"utility_pressed": SubResource("Animation_u1i44")
+&"RESET": SubResource("Animation_h5l1u"),
+&"utility_pressed": SubResource("Animation_u1i44")
 }
 
 [node name="Card" type="Control"]

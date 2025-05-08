@@ -15,5 +15,8 @@ func onPostAction() -> void:
 			onPushAction(actions)
 			return
 		else: Card.onClear()
-	Card.onChangeCardPlace(Game.CardPlaces.NULL)
+	else:
+		var deck_slot: DeckSlot = Game.getSaveFile().getDeckSlotByPublicID(Card.public_id)
+		if deck_slot != null:
+			deck_slot.onRemoveCard()
 	

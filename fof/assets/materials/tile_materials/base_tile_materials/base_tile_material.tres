@@ -1,13 +1,13 @@
 [gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://0omn51ooiomw"]
 
 [ext_resource type="Texture2D" uid="uid://ebuqqa5efmoi" path="res://assets/materials/base_materials/base_material.png" id="1_0wvcy"]
-[ext_resource type="Shader" path="res://assets/materials/tile_materials/base_tile_materials/base_tile_material.gdshader" id="1_bdoem"]
+[ext_resource type="Shader" uid="uid://0ccimqlhdhms" path="res://assets/materials/tile_materials/base_tile_materials/base_tile_material.gdshader" id="1_bdoem"]
 
 [resource]
 render_priority = 0
 shader = ExtResource("1_bdoem")
 shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/texture_albedo = ExtResource("1_0wvcy")
 shader_parameter/distance_fade_min = 0.5
 shader_parameter/distance_fade_max = 2.0
 shader_parameter/specular = 0.5
-shader_parameter/texture_albedo = ExtResource("1_0wvcy")

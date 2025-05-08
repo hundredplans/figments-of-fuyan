@@ -1,12 +1,12 @@
-[gd_resource type="Resource" script_class="ObjectInteractTilesGD" load_steps=3 format=3 uid="uid://cxudnxf5ki5yu"]
+[gd_resource type="Resource" script_class="ObjectInteractTilesGD" load_steps=4 format=3 uid="uid://cxudnxf5ki5yu"]
 
-[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/iobjects/palm_mini_tool.gd" id="1_njo10"]
-[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/object_interact_tiles/object_interact_tiles.gd" id="2_7u025"]
+[ext_resource type="Script" uid="uid://b5twxdp2sajje" path="res://scenes/screens/level_map/utility_nodes/object_manager/object_interact_tiles/iobject_ability_info.gd" id="1_3vwkp"]
+[ext_resource type="Script" uid="uid://dxkfv3vkif0pt" path="res://scenes/screens/level_map/utility_nodes/object_manager/iobjects/palm_mini_tool.gd" id="1_njo10"]
+[ext_resource type="Script" uid="uid://4cv0vd8wvhkr" path="res://scenes/screens/level_map/utility_nodes/object_manager/object_interact_tiles/object_interact_tiles.gd" id="2_7u025"]
 
 [resource]
 script = ExtResource("2_7u025")
 id = 20
 name = "Bag of Sand"
-tiles = Array[Vector4]([])
-abilities = Array[Resource("res://scenes/screens/level_map/utility_nodes/object_manager/object_interact_tiles/iobject_ability_info.gd")]([])
+abilities = Array[ExtResource("1_3vwkp")]([])
 iobject_script = ExtResource("1_njo10")

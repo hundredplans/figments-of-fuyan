@@ -99,7 +99,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 1
+mouse_filter = 2
 
 [node name="OutlineMask" type="TextureRect" parent="Art"]
 unique_name_in_owner = true
@@ -285,6 +285,8 @@ mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="Stats/Energy"]
 texture_filter = 1
+position = Vector2(6, 7)
+scale = Vector2(0.78125, 0.78125)
 texture = ExtResource("15_vfgvq")
 centered = false
 
@@ -474,5 +476,5 @@ text = "+"
 [connection signal="mouse_exited" from="Art/Background" to="." method="onMouseHovered" binds= [false]]
 [connection signal="mouse_entered" from="Art/ArtPop" to="." method="onMouseHovered" binds= [true]]
 [connection signal="mouse_exited" from="Art/ArtPop" to="." method="onMouseHovered" binds= [false]]
-[connection signal="mouse_in_ui" from="Text/VBoxContainer/TextLabel" to="." method="onMouseInText"]
 [connection signal="mouse_in_ui" from="Text/VBoxContainer/TextLabel" to="." method="onMouseHovered"]
+[connection signal="mouse_in_ui" from="Text/VBoxContainer/TextLabel" to="." method="onMouseInText"]

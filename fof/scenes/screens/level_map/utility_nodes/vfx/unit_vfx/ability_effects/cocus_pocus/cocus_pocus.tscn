@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://dvwqsrva6d4gi"]
 
 [ext_resource type="PackedScene" uid="uid://dglywt3u6k5do" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/ability_effects/cocus_pocus/cocus_pocus.glb" id="1_ryvxx"]
-[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/ability_effects/cocus_pocus/cocus_pocus_vfx.gd" id="2_qfsmt"]
+[ext_resource type="Script" uid="uid://dia35y866ry6v" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/ability_effects/cocus_pocus/cocus_pocus_vfx.gd" id="2_qfsmt"]
 
 [sub_resource type="Animation" id="Animation_53v3t"]
 resource_name = "CocusPocusIdle"
@@ -37,8 +37,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_eco5u"]
 _data = {
-"CocusPocusIdle": SubResource("Animation_53v3t"),
-"RESET": SubResource("Animation_u2hgg")
+&"CocusPocusIdle": SubResource("Animation_53v3t"),
+&"RESET": SubResource("Animation_u2hgg")
 }
 
 [node name="CocusPocus" type="Node3D"]

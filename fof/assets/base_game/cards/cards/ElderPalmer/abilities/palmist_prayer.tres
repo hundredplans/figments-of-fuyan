@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=2 format=3 uid="uid://hcbhvwlhhcnu"]
 
-[ext_resource type="Script" path="res://assets/base_game/cards/cards/ElderPalmer/abilities/palmist_prayer.gd" id="1_qiwan"]
+[ext_resource type="Script" uid="uid://o7ssxema8uau" path="res://assets/base_game/cards/cards/ElderPalmer/abilities/palmist_prayer.gd" id="1_qiwan"]
 
 [resource]
 script = ExtResource("1_qiwan")
@@ -10,8 +10,6 @@ SINGLE_HEAL_ODDS = 0.1
 AI_HEAL_COUNT = 2
 ability_description = "[center]If in enemy vision this debuffs allies in vision [b][color=orange]-1 [img=14x14]res://assets/base_game/cards/game_card/art/bbcode/ATTACK.png[/img][/color][/b]  for [1] Turn and Heals [b][color=red][1] [img=14x14]res://assets/base_game/cards/game_card/art/bbcode/HEALTH.png[/img][/color][/b][/center]"
 ability_description_big = "[center]If in enemy vision this debuffs allies in vision [b][color=orange]-1 [img=28x28]res://assets/base_game/cards/game_card/art/bbcode/ATTACK.png[/img][/color][/b]  for [1] Turn and Heals [b][color=red][1] [img=28x28]res://assets/base_game/cards/game_card/art/bbcode/HEALTH.png[/img][/color][/b][/center]"
-teleport_to_target = false
-change_camera = false
 ability_name = "Palmist Prayer"
 max_charges = -1
 ability_index = -1

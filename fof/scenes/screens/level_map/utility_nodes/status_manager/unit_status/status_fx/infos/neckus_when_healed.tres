@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="StatusFXInfoGD" load_steps=3 format=3 uid="uid://cbbd77qli2yrl"]
+[gd_resource type="Resource" script_class="StatusFXInfoGD" load_steps=4 format=3 uid="uid://cbbd77qli2yrl"]
 
-[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/status_fx_info.gd" id="1_kbxu6"]
+[ext_resource type="Script" uid="uid://bx5hr1dugatg2" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/status_fx_info.gd" id="1_kbxu6"]
 [ext_resource type="Texture2D" uid="uid://c1fb7rdkd0oso" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/icons/neckus_when_healed.png" id="2_afggp"]
+[ext_resource type="Script" uid="uid://bps66rsnt34xm" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/scripts/status_fx_empty.gd" id="2_ia8te"]
 
 [resource]
 resource_local_to_scene = true
@@ -9,6 +10,4 @@ script = ExtResource("1_kbxu6")
 id = 9
 texture = ExtResource("2_afggp")
 tooltip = "This unit's next attack STAGGERS."
-highlight_on_hover = false
-max_turns = -1
-max_charges = 1
+status_fx_script = ExtResource("2_ia8te")

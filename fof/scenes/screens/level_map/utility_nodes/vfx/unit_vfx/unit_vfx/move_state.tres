@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="UnitVFXGD" load_steps=3 format=3 uid="uid://4b2ge0d26pt3"]
 
-[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/unit_vfx/unit_vfx.gd" id="1_aispm"]
+[ext_resource type="Script" uid="uid://cxyva8cl3hy8o" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/unit_vfx/unit_vfx.gd" id="1_aispm"]
 [ext_resource type="PackedScene" uid="uid://la1b8m1wwvyo" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/status_effects/move_state/move_state.tscn" id="1_dwkvw"]
 
 [resource]
@@ -9,3 +9,4 @@ model = ExtResource("1_dwkvw")
 is_height_absolute = false
 height = 1.2
 name = "MoveState"
+inherit_rotation = false

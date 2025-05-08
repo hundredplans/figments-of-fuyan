@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="UnitVFXGD" load_steps=3 format=3 uid="uid://bn8bayow2gqna"]
 
-[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/unit_vfx/unit_vfx.gd" id="1_17en7"]
+[ext_resource type="Script" uid="uid://cxyva8cl3hy8o" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/unit_vfx/unit_vfx.gd" id="1_17en7"]
 [ext_resource type="PackedScene" uid="uid://dvwqsrva6d4gi" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/ability_effects/cocus_pocus/cocus_pocus.tscn" id="1_dvao4"]
 
 [resource]
@@ -9,3 +9,4 @@ model = ExtResource("1_dvao4")
 is_height_absolute = false
 height = 0.85
 name = "CocusPocus"
+inherit_rotation = false

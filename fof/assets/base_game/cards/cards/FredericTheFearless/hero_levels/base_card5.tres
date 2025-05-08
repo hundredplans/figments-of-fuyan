@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="BaseCardGD" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="BaseCardGD" load_steps=2 format=3 uid="uid://b3taxekvq0ba"]
 
-[ext_resource type="Script" path="res://assets/base_game/cards/templates/base_card.gd" id="1_plr83"]
+[ext_resource type="Script" uid="uid://c4liwje80odjl" path="res://assets/base_game/cards/templates/base_card.gd" id="1_plr83"]
 
 [resource]
 script = ExtResource("1_plr83")
@@ -18,12 +18,11 @@ aii = 5
 aiw = 6
 ait = 4
 aia = 5
-weapon_offset = 0.75
-weapon = 1.45
 eye = 1.76
 top = 1.94
 stat = 2.05
-ability_names = Array[String]([])
+default_danger = 0
+default_safety = 0
 id = 1
 name = "Frederic The Fearless"
 folder_name = "FredericTheFearless"

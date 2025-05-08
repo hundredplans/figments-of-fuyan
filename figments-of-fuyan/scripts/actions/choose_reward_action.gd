@@ -28,7 +28,7 @@ func onPostAction() -> void:
 	items = []
 	
 	if item is CardGD:
-		onPushAction(AddToDeckAction.new(item, AddToDeckAction.ADD_TYPES.SHUFFLE))
+		onPushAction(AddToDeckAction.new(item))
 	elif item is BoonGD:
 		onPushAction(AddBoonAction.new(item.info.id, item.getAscended()))
 

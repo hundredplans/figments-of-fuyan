@@ -1,13 +1,13 @@
 [gd_scene load_steps=12 format=3 uid="uid://bl21q1wy6uij6"]
 
-[ext_resource type="Script" path="res://scenes/editor/file_loader/file_loader.gd" id="1_0yoq3"]
+[ext_resource type="Script" uid="uid://bkoccob4uui15" path="res://scenes/editor/file_loader/file_loader.gd" id="1_0yoq3"]
 [ext_resource type="Theme" uid="uid://c5rky1f5xs5if" path="res://assets/UI/lora/lora48.tres" id="2_5k07i"]
 [ext_resource type="Theme" uid="uid://c7y2qa3kssows" path="res://assets/UI/lora/lora.tres" id="2_hm2h0"]
 [ext_resource type="PackedScene" uid="uid://colpm2577r0kn" path="res://assets/UI/exit_button/exit_button.tscn" id="2_n880b"]
 [ext_resource type="PackedScene" uid="uid://bj3h1ak5dv73n" path="res://scenes/ui_general/op_button/op_button.tscn" id="3_uvj3x"]
 [ext_resource type="PackedScene" uid="uid://bkbg8go87dqws" path="res://scenes/ui_general/arrow/ui_arrow.tscn" id="5_5x5od"]
 [ext_resource type="LabelSettings" uid="uid://b3fuc4s50fgra" path="res://assets/UI/roboto/roboto64.tres" id="6_py2b3"]
-[ext_resource type="Script" path="res://static/game_info/heroes.gd" id="8_txgsn"]
+[ext_resource type="Script" uid="uid://o16bwqlldu2i" path="res://static/game_info/heroes.gd" id="8_txgsn"]
 
 [sub_resource type="Animation" id="Animation_gnmio"]
 length = 0.001
@@ -43,8 +43,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_0w4tr"]
 _data = {
-"RESET": SubResource("Animation_gnmio"),
-"load_in_out": SubResource("Animation_w86xr")
+&"RESET": SubResource("Animation_gnmio"),
+&"load_in_out": SubResource("Animation_w86xr")
 }
 
 [node name="FileLoader" type="Control" node_paths=PackedStringArray("SearchEdit", "Items")]

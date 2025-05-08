@@ -15,7 +15,7 @@ enum Rarities {SCRAP, NEUTRAL, MINI, COMMON, RARE, EXALT, MINIBOSS, BOSS, CHAMPI
 enum ShopTypes {CARD, BOON, TOOL, DECK}
 enum Phases {NULL, START, HAND, PLAYER, AI, NEUTRAL}
 enum SpectateTypes {ALLY, ENEMY, SPAWN}
-enum CardPlaces {NULL, HAND, DECK, FIELD, GRAVEYARD}
+enum CardPlaces {NULL, HAND, DECK, FIELD, GRAVEYARD, STASH}
 enum TurnStates {NULL, PASSED, INACTIVE, ACTIVE}
 enum Stats {ATTACK, HEALTH, SPEED, MAX_HEALTH, MAX_SPEED, ENERGY}
 enum AscendedExists {BOTH, ONLY_DEFAULT, ONLY_ASCENDED}
@@ -29,7 +29,8 @@ var CARD_PLACES_TO_GROUP: Dictionary = {
 	CardPlaces.HAND: "HandCardsGD",
 	CardPlaces.DECK: "DeckCardsGD",
 	CardPlaces.FIELD: "FieldCardsGD",
-	CardPlaces.GRAVEYARD: "GraveyardCardsGD"
+	CardPlaces.GRAVEYARD: "GraveyardCardsGD",
+	CardPlaces.STASH: "StashCardsGD",
 }
 
 var TURN_STATES_TO_STRING: Dictionary = {
@@ -89,7 +90,8 @@ func getStatString(stat: Stats) -> String:
 		Stats.HEALTH: return "Health"
 		Stats.MAX_HEALTH: return "Max Health"
 		Stats.SPEED: return "Speed"
-		Stats.MAX_SPEED: "Max Speed"
+		Stats.MAX_SPEED: return "Max Speed"
+		Stats.ENERGY: return "Energy"
 	return ""
 
 func getRarityString(rarity: Rarities) -> String:
@@ -619,6 +621,20 @@ func onCreatePauseMenu(parent: Control) -> Control:
 	var PauseMenu: Control = load(PAUSE_MENU_PATH).instantiate()
 	parent.add_child(PauseMenu)
 	return PauseMenu
+	
+const STASH_SCREEN_PATH: String = "res://scenes/game/map/stash_screen.tscn"
+func onCreateStashScreen(parent: Control) -> Control:
+	var StashScreen: Control = load(STASH_SCREEN_PATH).instantiate()
+	parent.add_child(StashScreen)
+	StashScreen.setInfo()
+	return StashScreen
+
+const CHAMPION_UPGRADE_UI_PATH: String = "res://scenes/common/champion_upgrade_ui/champion_upgrade_ui.tscn"
+func onCreateChampionUpgradeUI(parent: Control, old_deck_limit: int, old_energy_limit: int, old_max_energy: int) -> Control:
+	var ChampionUpgradeUI: Control = load(CHAMPION_UPGRADE_UI_PATH).instantiate()
+	parent.add_child(ChampionUpgradeUI)
+	ChampionUpgradeUI.setInfo(old_deck_limit, old_energy_limit, old_max_energy)
+	return ChampionUpgradeUI
 #endregion
 
 #region Champion

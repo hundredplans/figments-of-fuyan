@@ -240,10 +240,9 @@ libraries = {
 
 [node name="VersionMarginContainer" type="MarginContainer" parent="."]
 layout_mode = 0
-offset_left = -171.0
-offset_top = 1022.0
-offset_right = 1.0
-offset_bottom = 1081.0
+offset_top = 1021.0
+offset_right = 172.0
+offset_bottom = 1080.0
 
 [node name="VersionLabel" type="Label" parent="VersionMarginContainer"]
 layout_mode = 2
@@ -252,9 +251,9 @@ label_settings = SubResource("LabelSettings_nuh7a")
 
 [node name="LogoMarginContainer" type="MarginContainer" parent="."]
 layout_mode = 0
-offset_left = 1915.0
+offset_left = 1469.0
 offset_top = 832.0
-offset_right = 2817.0
+offset_right = 2371.0
 offset_bottom = 1328.0
 scale = Vector2(0.5, 0.5)
 
@@ -264,10 +263,8 @@ texture = ExtResource("5_m2x35")
 
 [node name="TextLabelsMarginContainer" type="MarginContainer" parent="."]
 layout_mode = 0
-offset_left = -600.0
-offset_top = 269.0
-offset_right = -17.0
-offset_bottom = 1259.0
+offset_right = 583.0
+offset_bottom = 990.0
 theme_override_constants/margin_left = 50
 
 [node name="MainMenuButtonsVBox" type="VBoxContainer" parent="TextLabelsMarginContainer"]

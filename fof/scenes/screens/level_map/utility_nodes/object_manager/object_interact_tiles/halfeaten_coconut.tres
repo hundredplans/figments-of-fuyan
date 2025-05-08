@@ -1,12 +1,12 @@
-[gd_resource type="Resource" script_class="ObjectInteractTilesGD" load_steps=3 format=3 uid="uid://cp1o8qs7y7obq"]
+[gd_resource type="Resource" script_class="ObjectInteractTilesGD" load_steps=4 format=3 uid="uid://cp1o8qs7y7obq"]
 
-[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/iobjects/palm_mini_tool.gd" id="1_dk7db"]
-[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/object_interact_tiles/object_interact_tiles.gd" id="2_2wayb"]
+[ext_resource type="Script" uid="uid://dxkfv3vkif0pt" path="res://scenes/screens/level_map/utility_nodes/object_manager/iobjects/palm_mini_tool.gd" id="1_dk7db"]
+[ext_resource type="Script" uid="uid://b5twxdp2sajje" path="res://scenes/screens/level_map/utility_nodes/object_manager/object_interact_tiles/iobject_ability_info.gd" id="1_yuh3p"]
+[ext_resource type="Script" uid="uid://4cv0vd8wvhkr" path="res://scenes/screens/level_map/utility_nodes/object_manager/object_interact_tiles/object_interact_tiles.gd" id="2_2wayb"]
 
 [resource]
 script = ExtResource("2_2wayb")
 id = 17
 name = "Half-eaten Coconut"
-tiles = Array[Vector4]([])
-abilities = Array[Resource("res://scenes/screens/level_map/utility_nodes/object_manager/object_interact_tiles/iobject_ability_info.gd")]([])
+abilities = Array[ExtResource("1_yuh3p")]([])
 iobject_script = ExtResource("1_dk7db")

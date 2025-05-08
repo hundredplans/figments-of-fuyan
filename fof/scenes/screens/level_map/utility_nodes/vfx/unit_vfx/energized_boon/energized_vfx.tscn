@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://d2aldruh3wtiy"]
 
 [ext_resource type="PackedScene" uid="uid://b4r0v67xgiwsm" path="res://scenes/screens/level_map/floating_stats/speed.glb" id="1_klwb0"]
-[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/energized_boon/energized_vfx.gd" id="1_qgxw1"]
+[ext_resource type="Script" uid="uid://b22rpajg4ha58" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/energized_boon/energized_vfx.gd" id="1_qgxw1"]
 
 [sub_resource type="Animation" id="Animation_3xg2q"]
 resource_name = "BootIdle"
@@ -54,9 +54,9 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_54pac"]
 _data = {
-"BootIdle": SubResource("Animation_3xg2q"),
-"BootRare": SubResource("Animation_jv7ts"),
-"RESET": SubResource("Animation_w2k6s")
+&"BootIdle": SubResource("Animation_3xg2q"),
+&"BootRare": SubResource("Animation_jv7ts"),
+&"RESET": SubResource("Animation_w2k6s")
 }
 
 [node name="EnergizedVfx" type="Node3D"]

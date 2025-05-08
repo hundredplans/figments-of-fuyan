@@ -1,11 +1,32 @@
-[gd_scene load_steps=2 format=3 uid="uid://dxvuvb68hgxug"]
+[gd_scene load_steps=3 format=3 uid="uid://dxvuvb68hgxug"]
 
 [ext_resource type="Script" uid="uid://b55niwaomrgx3" path="res://scenes/common/exit_button/exit_button.gd" id="1_16kts"]
+[ext_resource type="PackedScene" uid="uid://djulw2ubmmu7t" path="res://scenes/common/new/large_text_button/large_text_button.tscn" id="2_7ojdh"]
 
-[node name="ExitButton" type="Button"]
+[node name="ExitButton" type="Control"]
 custom_minimum_size = Vector2(100, 100)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 100.0
+offset_bottom = 100.0
+mouse_filter = 2
 theme_type_variation = &"RedButton"
-text = "X"
 script = ExtResource("1_16kts")
 
-[connection signal="pressed" from="." to="." method="_on_pressed"]
+[node name="ExitLabel" parent="." instance=ExtResource("2_7ojdh")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+text = " X "
+vertical_alignment = 1
+BASE_COLOR = Color(1, 0, 0, 1)
+HOVER_COLOR = Color(0.74, 0, 0, 1)
+DISABLED_COLOR = Color(0.31, 0, 0, 1)
+
+[connection signal="pressed" from="ExitLabel" to="." method="_on_pressed"]

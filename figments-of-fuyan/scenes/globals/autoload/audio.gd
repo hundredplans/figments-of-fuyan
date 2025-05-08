@@ -14,6 +14,7 @@ func onSoundEffect(stream: AudioStream, allow_repeat: bool = true) -> void:
 	if !allow_repeat and SFXPlayers.get_children().any(func(x: AudioStreamPlayer): return x.stream == stream): return
 	
 	var SFXPlayer := AudioStreamPlayer.new()
+	SFXPlayer.volume_db = 0
 	SFXPlayer.autoplay = true
 	SFXPlayer.stream = stream
 	SFXPlayers.add_child(SFXPlayer)

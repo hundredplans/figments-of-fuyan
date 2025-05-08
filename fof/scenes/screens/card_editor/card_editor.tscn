@@ -1,10 +1,10 @@
 [gd_scene load_steps=15 format=3 uid="uid://bvynvyfrpwe38"]
 
-[ext_resource type="Script" path="res://scenes/screens/card_editor/card_editor.gd" id="1_txieb"]
+[ext_resource type="Script" uid="uid://bfak4e87xk6ei" path="res://scenes/screens/card_editor/card_editor.gd" id="1_txieb"]
 [ext_resource type="PackedScene" uid="uid://da04y8ex3ym7m" path="res://scenes/screens/card_editor/model_area.tscn" id="2_bjtfj"]
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="3_2lhne"]
-[ext_resource type="Script" path="res://scenes/screens/card_editor/card_fileloader.gd" id="4_b7v1v"]
-[ext_resource type="Script" path="res://scenes/screens/card_editor/display_card.gd" id="4_ebhib"]
+[ext_resource type="Script" uid="uid://cjn8wvca547o7" path="res://scenes/screens/card_editor/card_fileloader.gd" id="4_b7v1v"]
+[ext_resource type="Script" uid="uid://8v1sw3dc1lv5" path="res://scenes/screens/card_editor/display_card.gd" id="4_ebhib"]
 [ext_resource type="PackedScene" uid="uid://dmula87ma5w81" path="res://scenes/editor/file_finder/file_finder.tscn" id="6_3miwi"]
 [ext_resource type="PackedScene" uid="uid://dg1wf0pg3hbod" path="res://scenes/screens/card_editor/ai_icons/ai_icon.tscn" id="7_503my"]
 [ext_resource type="PackedScene" uid="uid://ciohbercpl5c6" path="res://assets/base_game/cards/game_card/compilers/compile_game_card_text.tscn" id="7_ceu3r"]
@@ -118,6 +118,7 @@ layout_mode = 2
 selected = 0
 item_count = 3
 popup/item_0/text = "1"
+popup/item_0/id = 0
 popup/item_1/text = "2"
 popup/item_1/id = 2
 popup/item_2/text = "12"

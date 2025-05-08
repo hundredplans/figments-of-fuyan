@@ -8,6 +8,7 @@ var save_file: SaveFileGD
 var area: AreaGD
 
 var PauseMenu: Control
+var ChampionUpgradeUI: Control
 
 @onready var FadeBackground: ColorRect = %FadeBackground
 @onready var AreaNameLabel: Label = %AreaNameLabel
@@ -94,6 +95,12 @@ func onProcessAction(action: Action) -> void:
 			onUpdateToolbelt()
 		elif action is ChangeShillingsAction:
 			onUpdateShillings()
+		elif action is PlayerDeckUpgradeAction:
+			onUpdateDeckCardAmountLabel()
+		elif action is ChampionUpgradeAction:
+			ChampionUpgradeUI = Game.onCreateChampionUpgradeUI(self, action.old_deck_limit, action.old_energy_limit, action.old_max_energy)
+			ChampionUpgradeUI.mouse_in_ui.connect(onMouseInUI)
+			ChampionUpgradeUI.edit_deck.connect(onCreateStashScreen)
 #endregion
 
 #region Map Start
@@ -180,15 +187,20 @@ func onDisableCardsWithTool(CardUI: Control) -> bool:
 #endregion
 
 #region Deck
+var StashScreen: Control
 func onDeckButtonPressed() -> void:
-	var DeckScreen: Control = DeckScreenPacked.instantiate()
-	add_child(DeckScreen)
-	DeckScreen.setInfo(false)
+	onCreateStashScreen()
+	
+func onCreateStashScreen() -> void:
+	StashScreen = Game.onCreateStashScreen(self)
+	StashScreen.mouse_in_ui.connect(onMouseInUI)
 #endregion
 
 #region Deck Card Amount
 func onUpdateDeckCardAmountLabel() -> void:
-	DeckCardAmountLabel.text = str(get_tree().get_node_count_in_group("DeckCardsGD"))
+	var deck_amount: String = str(get_tree().get_node_count_in_group("DeckCardsGD"))
+	var deck_limit: String = str(Game.getSaveFile().getDeckLimit())
+	DeckCardAmountLabel.text = deck_amount + "/" + deck_limit
 #endregion
 
 #region Mouse In UI

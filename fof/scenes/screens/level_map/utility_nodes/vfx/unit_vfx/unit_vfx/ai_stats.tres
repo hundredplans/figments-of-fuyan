@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="UnitVFXGD" load_steps=3 format=3 uid="uid://b8rnw25d3bvbv"]
 
 [ext_resource type="PackedScene" uid="uid://luwgrq33mk0y" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/status_effects/ai_stats/ai_stats_status_effect.tscn" id="1_4tom2"]
-[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/unit_vfx/unit_vfx.gd" id="1_m0irw"]
+[ext_resource type="Script" uid="uid://cxyva8cl3hy8o" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/unit_vfx/unit_vfx.gd" id="1_m0irw"]
 
 [resource]
 script = ExtResource("1_m0irw")
@@ -9,3 +9,4 @@ model = ExtResource("1_4tom2")
 is_height_absolute = false
 height = 1.0
 name = "AIStats"
+inherit_rotation = false

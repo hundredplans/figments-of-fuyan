@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://cykplgpg4kxa8"]
+[gd_scene load_steps=3 format=3 uid="uid://cykplgpg4kxa8"]
 
 [ext_resource type="Script" uid="uid://b43rr6hcwbhrm" path="res://scenes/globals/autoload/audio.gd" id="1_075ho"]
+[ext_resource type="AudioStream" uid="uid://p2ron586kllu" path="res://assets/sounds/ui/default_hover.mp3" id="2_yepjn"]
 
 [node name="Audio" type="Node"]
 script = ExtResource("1_075ho")
@@ -10,3 +11,6 @@ unique_name_in_owner = true
 
 [node name="SFXPlayers" type="Node" parent="."]
 unique_name_in_owner = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="SFXPlayers"]
+stream = ExtResource("2_yepjn")

@@ -55,6 +55,7 @@ const RELATIVE_SIDE_FORCE_DIV: float = 15.0
 
 var Card: CardGD
 var highlight_on_hover: bool
+var ignore_mouse: bool
 var disabled: bool
 var selected: bool
 var inspectable: bool
@@ -127,6 +128,9 @@ func onMouseHovered(state: bool) -> void:
 	if highlight_on_hover and !disabled:
 		if state: modulate = Color(0.5, 0.5, 0.5)
 		else: modulate = Color(1, 1, 1)
+		
+func setHighlightOnHover(state: bool) -> void:
+	highlight_on_hover = state
 
 func setDisabled(_disabled: bool) -> void:
 	disabled = _disabled
@@ -259,7 +263,10 @@ func onChangeBackgroundMouseFilter(is_stop: bool) -> void:
 	ArtPop.mouse_filter = new_mouse_filter
 	TextLabel.mouse_filter = new_mouse_filter
 	
-	get_viewport().warp_mouse(get_viewport().get_mouse_position())
+	#print(Helper.getChildrenRecursive(self, [])\
+		#.filter(func(x: Node): return x is Control and x.mouse_filter != Control.MouseFilter.MOUSE_FILTER_IGNORE))
+	
+	get_viewport().update_mouse_cursor_state()
 #endregion
 
 func onMouseInText(state: bool):

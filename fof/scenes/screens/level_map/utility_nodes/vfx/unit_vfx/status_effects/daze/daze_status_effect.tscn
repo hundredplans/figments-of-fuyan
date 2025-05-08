@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bqnrgq11fpjv5"]
 
 [ext_resource type="PackedScene" uid="uid://dl8l8gj7hmmmd" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/status_effects/daze/daze_status_effect.glb" id="1_l54n5"]
-[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/status_effects/daze/daze_status_effect.gd" id="2_er7yw"]
+[ext_resource type="Script" uid="uid://bn73vas5320d6" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/status_effects/daze/daze_status_effect.gd" id="2_er7yw"]
 
 [node name="daze_status_effect" instance=ExtResource("1_l54n5")]
 script = ExtResource("2_er7yw")

@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://dr00vsrr1lrid"]
 
-[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/tool_effects/pendant/pendant.gd" id="1_7wrco"]
+[ext_resource type="Script" uid="uid://cipx5ujs14cun" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/tool_effects/pendant/pendant.gd" id="1_7wrco"]
 
 [sub_resource type="Animation" id="Animation_sd5oj"]
 resource_name = "Idle"
@@ -24,8 +24,8 @@ length = 0.001
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_pjtce"]
 _data = {
-"Idle": SubResource("Animation_sd5oj"),
-"RESET": SubResource("Animation_qjo5i")
+&"Idle": SubResource("Animation_sd5oj"),
+&"RESET": SubResource("Animation_qjo5i")
 }
 
 [node name="Pendant" type="Node3D"]

@@ -2,8 +2,8 @@
 
 [ext_resource type="LabelSettings" uid="uid://bw613ebdspq46" path="res://resources/ui/label_settings/spicyrice_massive.tres" id="1_cngt6"]
 [ext_resource type="Script" uid="uid://dbpyf4o3ln5hd" path="res://scenes/common/new/large_text_button/large_text_button.gd" id="2_bi16w"]
-[ext_resource type="AudioStream" uid="uid://p2ron586kllu" path="res://assets/sounds/ui/clink.mp3" id="3_ahna0"]
-[ext_resource type="AudioStream" uid="uid://cv7fpbvjmtneo" path="res://assets/sounds/ui/clink_sharp.mp3" id="4_wxn77"]
+[ext_resource type="AudioStream" uid="uid://p2ron586kllu" path="res://assets/sounds/ui/default_hover.mp3" id="3_ahna0"]
+[ext_resource type="AudioStream" uid="uid://cv7fpbvjmtneo" path="res://assets/sounds/ui/default_press.mp3" id="4_wxn77"]
 
 [node name="BigCreamButton" type="Label"]
 offset_right = 523.0
@@ -14,8 +14,8 @@ script = ExtResource("2_bi16w")
 BASE_COLOR = Color(1, 0.741176, 0.14902, 1)
 HOVER_COLOR = Color(1, 0.843137, 0.478431, 1)
 DISABLED_COLOR = Color(0.521569, 0.388235, 0.0784314, 1)
-CLICK_NOISE = ExtResource("3_ahna0")
-HOVER_NOISE = ExtResource("4_wxn77")
+CLICK_NOISE = ExtResource("4_wxn77")
+HOVER_NOISE = ExtResource("3_ahna0")
 
 [connection signal="mouse_entered" from="." to="." method="onMouseInUI" binds= [true]]
 [connection signal="mouse_exited" from="." to="." method="onMouseInUI" binds= [false]]

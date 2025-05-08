@@ -1,0 +1,72 @@
+[gd_scene load_steps=12 format=3 uid="uid://c4feu28rxx6ev"]
+
+[ext_resource type="Script" uid="uid://cy2gyoesjn1x2" path="res://scenes/game/map/deck_slot_ui.gd" id="1_qnomy"]
+[ext_resource type="Texture2D" uid="uid://bolv24vpechmq" path="res://assets/sprites/ui/buttons/card_ui_box.png" id="2_0mm81"]
+[ext_resource type="Texture2D" uid="uid://dc836hn7flclo" path="res://assets/sprites/ui/icons/lock_closed.png" id="2_moy0k"]
+[ext_resource type="Texture2D" uid="uid://dnsviuhky475l" path="res://assets/sprites/ui/icons/lock_open.png" id="3_7d34k"]
+[ext_resource type="Script" uid="uid://k3tgx7x8pl70" path="res://scenes/game/map/deck_slot_ui_texture.gd" id="3_moy0k"]
+[ext_resource type="Texture2D" uid="uid://jljer2ynbbv0" path="res://assets/sprites/ui/icons/lock.png" id="4_7d34k"]
+[ext_resource type="AudioStream" uid="uid://p2ron586kllu" path="res://assets/sounds/ui/default_hover.mp3" id="7_kmasc"]
+[ext_resource type="Script" uid="uid://dclswmoq0nxko" path="res://scenes/common/new/default_button.gd" id="7_qnomy"]
+[ext_resource type="PackedScene" uid="uid://djulw2ubmmu7t" path="res://scenes/common/new/large_text_button/large_text_button.tscn" id="8_dg8j8"]
+[ext_resource type="AudioStream" uid="uid://djqpx80gse7bk" path="res://assets/sounds/music/lock.mp3" id="8_moy0k"]
+[ext_resource type="LabelSettings" uid="uid://d1fxesog2wasm" path="res://resources/ui/label_settings/spicyrice_medium.tres" id="9_ax8o4"]
+
+[node name="DeckSlotUI" type="Control"]
+custom_minimum_size = Vector2(264, 410)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 264.0
+offset_bottom = 410.0
+mouse_filter = 2
+script = ExtResource("1_qnomy")
+LOCK_CLOSED_TX = ExtResource("2_moy0k")
+LOCK_OPEN_TX = ExtResource("3_7d34k")
+
+[node name="DeckSlotUITexture" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+offset_right = 264.0
+offset_bottom = 410.0
+mouse_filter = 0
+texture = ExtResource("2_0mm81")
+script = ExtResource("3_moy0k")
+HOVER_COLOR = Color(1, 1, 1, 1)
+
+[node name="LockIcon" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 217.0
+offset_top = 14.0
+offset_right = 252.0
+offset_bottom = 47.0
+mouse_filter = 0
+texture = ExtResource("4_7d34k")
+expand_mode = 3
+stretch_mode = 4
+script = ExtResource("7_qnomy")
+CLICK_NOISE = ExtResource("8_moy0k")
+HOVER_NOISE = ExtResource("7_kmasc")
+
+[node name="ExitButton" parent="." instance=ExtResource("8_dg8j8")]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 224.0
+offset_top = 10.0
+offset_right = 244.0
+offset_bottom = 55.0
+text = "X"
+label_settings = ExtResource("9_ax8o4")
+BASE_COLOR = Color(1, 0, 0, 1)
+HOVER_COLOR = Color(0.74, 0, 0, 1)
+DISABLED_COLOR = Color(0.31, 0, 0, 1)
+
+[connection signal="mouse_entered" from="DeckSlotUITexture" to="DeckSlotUITexture" method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="DeckSlotUITexture" to="DeckSlotUITexture" method="onMouseInUI" binds= [false]]
+[connection signal="mouse_in_ui" from="DeckSlotUITexture" to="." method="onMouseInUI"]
+[connection signal="pressed" from="DeckSlotUITexture" to="." method="onDeckSlotPressed"]
+[connection signal="mouse_entered" from="LockIcon" to="LockIcon" method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="LockIcon" to="LockIcon" method="onMouseInUI" binds= [false]]
+[connection signal="pressed" from="LockIcon" to="." method="onLockPressed"]
+[connection signal="mouse_in_ui" from="ExitButton" to="." method="onMouseInUI"]
+[connection signal="pressed" from="ExitButton" to="." method="onExitButtonPressed"]

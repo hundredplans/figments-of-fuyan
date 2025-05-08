@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=2 format=3 uid="uid://jo6rs1k0y17k"]
 
-[ext_resource type="Script" path="res://assets/base_game/cards/cards/CharmerPalmer/abilities/charming_stance.gd" id="1_wkc8l"]
+[ext_resource type="Script" uid="uid://ba4xi86lnkev7" path="res://assets/base_game/cards/cards/CharmerPalmer/abilities/charming_stance.gd" id="1_wkc8l"]
 
 [resource]
 resource_local_to_scene = true
@@ -10,8 +10,6 @@ SINGLE_HEAL_ODDS = 0.1
 GUARANTEE_HEAL = 2
 ability_description = "[center][b]ABILITY[/b] [1]: Heal [b][color=red][1] [img=14x14]res://assets/base_game/cards/game_card/art/bbcode/HEALTH.png[/img][/color][/b] allies in vision; [b]TRAUMA[/b]: Gain [b][color=orange]+1 [img=14x14]res://assets/base_game/cards/game_card/art/bbcode/ATTACK.png[/img][/color][/b]  if a healed ally died[/center]"
 ability_description_big = "[center]Heal [b][color=red][1] [img=28x28]res://assets/base_game/cards/game_card/art/bbcode/HEALTH.png[/img][/color][/b] allies in vision; [b]TRAUMA[/b]: Gain [b][color=orange]+1 [img=28x28]res://assets/base_game/cards/game_card/art/bbcode/ATTACK.png[/img][/color][/b]  if a healed ally died[/center]"
-teleport_to_target = false
-change_camera = false
 ability_name = "Charming Stance"
 max_charges = 1
 ability_index = 24

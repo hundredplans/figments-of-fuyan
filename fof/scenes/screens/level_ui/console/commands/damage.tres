@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="CommandGD" load_steps=2 format=3 uid="uid://mdxba7wl0ki1"]
 
-[ext_resource type="Script" path="res://scenes/screens/level_ui/console/commands/command.gd" id="1_dyb5o"]
+[ext_resource type="Script" uid="uid://dkooc8iwkh2de" path="res://scenes/screens/level_ui/console/commands/command.gd" id="1_dyb5o"]
 
 [resource]
 script = ExtResource("1_dyb5o")
 name = "damage"
-tile_command = true
 placeholder = "value"
+unit_command = true

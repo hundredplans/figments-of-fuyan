@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="UnitVFXGD" load_steps=3 format=3 uid="uid://do8p1dgdltx74"]
 
 [ext_resource type="PackedScene" uid="uid://p786qi6om8am" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/status_effects/stagger/stagger_status_effect.tscn" id="1_amc22"]
-[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/unit_vfx/unit_vfx.gd" id="1_l27bu"]
+[ext_resource type="Script" uid="uid://cxyva8cl3hy8o" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/unit_vfx/unit_vfx.gd" id="1_l27bu"]
 
 [resource]
 script = ExtResource("1_l27bu")
@@ -9,3 +9,4 @@ model = ExtResource("1_amc22")
 is_height_absolute = false
 height = 0.1
 name = "Stagger"
+inherit_rotation = false

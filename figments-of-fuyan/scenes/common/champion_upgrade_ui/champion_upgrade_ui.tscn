@@ -1,8 +1,81 @@
-[gd_scene load_steps=4 format=3 uid="uid://d38l7okb8ifb5"]
+[gd_scene load_steps=18 format=3 uid="uid://d38l7okb8ifb5"]
 
 [ext_resource type="Script" uid="uid://cadqhnbdb5ra" path="res://scenes/common/champion_upgrade_ui/champion_upgrade_ui.gd" id="1_mw2xj"]
-[ext_resource type="LabelSettings" uid="uid://bw3j8bkfulvw1" path="res://resources/ui/label_settings/jacquard_huge.tres" id="2_mw2xj"]
-[ext_resource type="Texture2D" uid="uid://xr2y6qr0qyya" path="res://assets/sprites/game/map/minimap_icons/minimap_arrow.png" id="2_vte5a"]
+[ext_resource type="LabelSettings" uid="uid://bw613ebdspq46" path="res://resources/ui/label_settings/spicyrice_massive.tres" id="4_cpl8k"]
+[ext_resource type="Texture2D" uid="uid://dudcknuimetns" path="res://assets/sprites/text/icons/health_icon.png" id="5_cpl8k"]
+[ext_resource type="LabelSettings" uid="uid://dsm7fumrqa20f" path="res://resources/ui/label_settings/spicyrice_large_shadow.tres" id="7_3l55n"]
+[ext_resource type="Texture2D" uid="uid://cdytprbjsv0ah" path="res://assets/sprites/text/icons/attack_icon.png" id="7_g3gq2"]
+[ext_resource type="Texture2D" uid="uid://c0vlcqcjuo47p" path="res://assets/sprites/text/icons/speed_icon.png" id="8_b2lsx"]
+[ext_resource type="Texture2D" uid="uid://do8qr6q0dyyiy" path="res://assets/sprites/ui/icons/deck.png" id="10_06bta"]
+[ext_resource type="Texture2D" uid="uid://cqe3wqg1v4gc" path="res://assets/sprites/game/cards/art_mini/frederic_the_fearless.png" id="11_ected"]
+[ext_resource type="PackedScene" uid="uid://6nf3mir2i2rk" path="res://scenes/common/fancy_text/fancy_text_label.tscn" id="11_g3gq2"]
+[ext_resource type="PackedScene" uid="uid://djulw2ubmmu7t" path="res://scenes/common/new/large_text_button/large_text_button.tscn" id="11_jto8q"]
+[ext_resource type="Texture2D" uid="uid://dum30f1ix8v5h" path="res://assets/sprites/ui/icons/energy_limit.png" id="12_28jk0"]
+[ext_resource type="Resource" uid="uid://dqrr7apt123rw" path="res://resources/ui/fancy_text/fancy_text_label_settings_large.tres" id="12_g3gq2"]
+[ext_resource type="Texture2D" uid="uid://b4kkv4s35sd16" path="res://assets/sprites/ui/icons/max_energy.png" id="13_08xqd"]
+[ext_resource type="Texture2D" uid="uid://fi32a8tjx0k3" path="res://assets/sprites/game/cards/common/stats/energy_icon.png" id="13_j311j"]
+
+[sub_resource type="Animation" id="Animation_28jk0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FadeBackground:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MainContainer:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 1080)]
+}
+
+[sub_resource type="Animation" id="Animation_7whaw"]
+resource_name = "SlideUIElements"
+length = 0.25
+step = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FadeBackground:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.0333333, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.498039)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MainContainer:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 1080), Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_28jk0"]
+_data = {
+&"RESET": SubResource("Animation_28jk0"),
+&"SlideUIElements": SubResource("Animation_7whaw")
+}
 
 [node name="ChampionUpgradeUI" type="Control"]
 layout_mode = 3
@@ -14,50 +87,299 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_mw2xj")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="FadeBackground" type="ColorRect" parent="."]
+modulate = Color(1, 1, 1, 0)
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -426.0
-offset_top = -326.0
-offset_right = 427.0
-offset_bottom = 220.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 0.745098, 0.14902, 1)
+
+[node name="MainContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 1080.0
+offset_bottom = 1080.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_type_variation = &"WhitePanelContainer"
+theme_override_constants/margin_top = 20
 
-[node name="ChampionUpgradeLabel" type="Label" parent="VBoxContainer"]
-unique_name_in_owner = true
+[node name="VBoxContainer2" type="VBoxContainer" parent="MainContainer"]
 layout_mode = 2
-size_flags_vertical = 6
-text = "Champion Upgrade [0 -> 1]"
-label_settings = ExtResource("2_mw2xj")
+mouse_filter = 2
+theme_override_constants/separation = 25
+
+[node name="Label" type="Label" parent="MainContainer/VBoxContainer2"]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+text = "Level - Up!"
+label_settings = ExtResource("4_cpl8k")
 horizontal_alignment = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
-custom_minimum_size = Vector2(853, 440)
+[node name="HBoxContainer3" type="HBoxContainer" parent="MainContainer/VBoxContainer2"]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 mouse_filter = 2
-theme_type_variation = &"WhitePanelContainer"
-
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/PanelContainer"]
-layout_mode = 2
-
-[node name="MainContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-mouse_filter = 2
-theme_override_constants/separation = 60
+theme_override_constants/separation = 15
 alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/PanelContainer/MarginContainer/MainContainer"]
+[node name="Label" type="Label" parent="MainContainer/VBoxContainer2/HBoxContainer3"]
+layout_mode = 2
+text = "Max Energy"
+label_settings = ExtResource("7_3l55n")
+
+[node name="TextureRect" type="TextureRect" parent="MainContainer/VBoxContainer2/HBoxContainer3"]
 texture_filter = 1
 layout_mode = 2
-size_flags_horizontal = 3
 mouse_filter = 2
-texture = ExtResource("2_vte5a")
-stretch_mode = 5
+texture = ExtResource("13_08xqd")
+expand_mode = 2
+
+[node name="MaxEnergyUpgradeLabel" type="Label" parent="MainContainer/VBoxContainer2/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+label_settings = ExtResource("7_3l55n")
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MainContainer/VBoxContainer2"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="Label" type="Label" parent="MainContainer/VBoxContainer2/HBoxContainer4"]
+layout_mode = 2
+text = "Deck Limit"
+label_settings = ExtResource("7_3l55n")
+
+[node name="TextureRect" type="TextureRect" parent="MainContainer/VBoxContainer2/HBoxContainer4"]
+texture_filter = 1
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_06bta")
+expand_mode = 2
+
+[node name="DeckLimitUpgradeLabel" type="Label" parent="MainContainer/VBoxContainer2/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+label_settings = ExtResource("7_3l55n")
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MainContainer/VBoxContainer2"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="Label" type="Label" parent="MainContainer/VBoxContainer2/HBoxContainer5"]
+layout_mode = 2
+text = "Energy Limit"
+label_settings = ExtResource("7_3l55n")
+
+[node name="TextureRect" type="TextureRect" parent="MainContainer/VBoxContainer2/HBoxContainer5"]
+texture_filter = 1
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("12_28jk0")
+expand_mode = 2
+
+[node name="EnergyLimitUpgradeLabel" type="Label" parent="MainContainer/VBoxContainer2/HBoxContainer5"]
+unique_name_in_owner = true
+layout_mode = 2
+label_settings = ExtResource("7_3l55n")
+
+[node name="Control" type="Control" parent="MainContainer/VBoxContainer2"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="ChampionLevelContainer" type="HBoxContainer" parent="MainContainer/VBoxContainer2"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="Label" type="Label" parent="MainContainer/VBoxContainer2/ChampionLevelContainer"]
+layout_mode = 2
+text = "Champion Level"
+label_settings = ExtResource("7_3l55n")
+
+[node name="ChampionAbilityUpgradeArtMini" type="TextureRect" parent="MainContainer/VBoxContainer2/ChampionLevelContainer"]
+unique_name_in_owner = true
+texture_filter = 1
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("11_ected")
+expand_mode = 2
+
+[node name="ChampionLevelUpgradeLabel" type="Label" parent="MainContainer/VBoxContainer2/ChampionLevelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "1  ->  2"
+label_settings = ExtResource("7_3l55n")
+
+[node name="AttackUpgradeContainer" type="HBoxContainer" parent="MainContainer/VBoxContainer2"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="Label" type="Label" parent="MainContainer/VBoxContainer2/AttackUpgradeContainer"]
+layout_mode = 2
+text = "Attack"
+label_settings = ExtResource("7_3l55n")
+
+[node name="TextureRect" type="TextureRect" parent="MainContainer/VBoxContainer2/AttackUpgradeContainer"]
+texture_filter = 1
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("7_g3gq2")
+expand_mode = 2
+
+[node name="AttackUpgradeLabel" type="Label" parent="MainContainer/VBoxContainer2/AttackUpgradeContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "2  ->  3"
+label_settings = ExtResource("7_3l55n")
+
+[node name="HealthUpgradeContainer" type="HBoxContainer" parent="MainContainer/VBoxContainer2"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="Label" type="Label" parent="MainContainer/VBoxContainer2/HealthUpgradeContainer"]
+layout_mode = 2
+text = "Health"
+label_settings = ExtResource("7_3l55n")
+
+[node name="TextureRect" type="TextureRect" parent="MainContainer/VBoxContainer2/HealthUpgradeContainer"]
+texture_filter = 1
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("5_cpl8k")
+expand_mode = 2
+
+[node name="HealthUpgradeLabel" type="Label" parent="MainContainer/VBoxContainer2/HealthUpgradeContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "2  ->  3"
+label_settings = ExtResource("7_3l55n")
+
+[node name="SpeedUpgradeContainer" type="HBoxContainer" parent="MainContainer/VBoxContainer2"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="Label" type="Label" parent="MainContainer/VBoxContainer2/SpeedUpgradeContainer"]
+layout_mode = 2
+text = "Speed"
+label_settings = ExtResource("7_3l55n")
+
+[node name="TextureRect" type="TextureRect" parent="MainContainer/VBoxContainer2/SpeedUpgradeContainer"]
+texture_filter = 1
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("8_b2lsx")
+expand_mode = 2
+
+[node name="SpeedUpgradeLabel" type="Label" parent="MainContainer/VBoxContainer2/SpeedUpgradeContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "2  ->  3"
+label_settings = ExtResource("7_3l55n")
+
+[node name="EnergyUpgradeContainer" type="HBoxContainer" parent="MainContainer/VBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="Label" type="Label" parent="MainContainer/VBoxContainer2/EnergyUpgradeContainer"]
+layout_mode = 2
+text = "Energy"
+label_settings = ExtResource("7_3l55n")
+
+[node name="TextureRect" type="TextureRect" parent="MainContainer/VBoxContainer2/EnergyUpgradeContainer"]
+texture_filter = 1
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("13_j311j")
+expand_mode = 2
+
+[node name="EnergyUpgradeLabel" type="Label" parent="MainContainer/VBoxContainer2/EnergyUpgradeContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "2  ->  3"
+label_settings = ExtResource("7_3l55n")
+
+[node name="ChampionAbilityUpgradeContainer" type="HBoxContainer" parent="MainContainer/VBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="Label" type="Label" parent="MainContainer/VBoxContainer2/ChampionAbilityUpgradeContainer"]
+layout_mode = 2
+text = "Ability  Description"
+label_settings = ExtResource("7_3l55n")
+
+[node name="AbilityUpgradeLabel" parent="MainContainer/VBoxContainer2" instance=ExtResource("11_g3gq2")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "RAMPAGE: Gain +1 HP  ->  RAMPAGE: Gain +1 HP and Heal [1] HP"
+settings = ExtResource("12_g3gq2")
+
+[node name="Filler" type="Control" parent="MainContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainContainer/VBoxContainer2"]
+custom_minimum_size = Vector2(0, 140)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 100
+alignment = 1
+
+[node name="EditDeckButton" parent="MainContainer/VBoxContainer2/HBoxContainer2" groups=["SceneButtons"] instance=ExtResource("11_jto8q")]
+layout_mode = 2
+text = "Edit  	Deck"
+
+[node name="ExitButton" parent="MainContainer/VBoxContainer2/HBoxContainer2" groups=["SceneButtons"] instance=ExtResource("11_jto8q")]
+layout_mode = 2
+text = "Exit"
+
+[node name="AniPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_28jk0")
+}
+
+[connection signal="mouse_entered" from="FadeBackground" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="FadeBackground" to="." method="onMouseInUI" binds= [false]]
+[connection signal="mouse_in_ui" from="MainContainer/VBoxContainer2/HBoxContainer2/EditDeckButton" to="." method="onMouseInUI"]
+[connection signal="pressed" from="MainContainer/VBoxContainer2/HBoxContainer2/EditDeckButton" to="." method="onEditDeckButtonPressed"]
+[connection signal="mouse_in_ui" from="MainContainer/VBoxContainer2/HBoxContainer2/ExitButton" to="." method="onMouseInUI"]
+[connection signal="pressed" from="MainContainer/VBoxContainer2/HBoxContainer2/ExitButton" to="." method="onExitButtonPressed"]

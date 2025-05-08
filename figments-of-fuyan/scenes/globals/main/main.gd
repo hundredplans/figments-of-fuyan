@@ -76,9 +76,7 @@ func onLoadWorld(packed_scene: PackedScene) -> void:
 func onStartGame(champion_info: ChampionCardInfo) -> void:
 	var card_data := SavedDataCard.new(champion_info.id, true)
 	Game.setCardDataFromInfo(card_data, champion_info)
-	
 	Game.highest_public_id = 0
-	card_data.card_place = Game.CardPlaces.DECK
 	
 	var save_file_data := SavedDataSaveFile.new(
 		getFirstEmptySaveSlotID(), true, 0, randi(), null,\

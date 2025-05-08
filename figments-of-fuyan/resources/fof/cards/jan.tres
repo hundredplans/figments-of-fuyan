@@ -1,14 +1,14 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://xqje5ca8xrcc"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_e2d3a"]
-[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_254me"]
-[ext_resource type="Resource" path="res://resources/fof/archetypes/brute.tres" id="2_baliy"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/jan.png" id="2_c8rg0"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/jan.png" id="2_qtlet"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_6m1pe"]
-[ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_4b60f"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_oxt8a"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_1h5jh"]
+[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_e2d3a"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_254me"]
+[ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_baliy"]
+[ext_resource type="Image" uid="uid://bqe27chdvpwem" path="res://assets/sprites/game/cards/art_pop/jan.png" id="2_c8rg0"]
+[ext_resource type="Texture2D" uid="uid://djhaiqrvptuj2" path="res://assets/sprites/game/cards/art_mini/jan.png" id="2_qtlet"]
+[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_6m1pe"]
+[ext_resource type="Script" uid="uid://d3xulw3ft3e0n" path="res://scripts/fof/cards/card.gd" id="4_4b60f"]
+[ext_resource type="PackedScene" uid="uid://bd2esqpmo73tk" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_oxt8a"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_1h5jh"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
 size = Vector3(0.663147, 1.94543, 0.526978)
@@ -36,8 +36,8 @@ rarity = 3
 initial_traits = Array[ExtResource("2_254me")]([])
 active_abilities = Array[ExtResource("1_e2d3a")]([])
 flavor_text = ""
-description = "PROMOTED: Gain +1 ATT"
-ascended_description = ""
+description = "RAMPAGE [2]: Gain +1 ATT"
+ascended_description = "RAMPAGE [1]: Gain +2 ATT"
 art_mini_coordinate = Vector2i(98, 43)
 art_mini = ExtResource("2_qtlet")
 art_pop = ExtResource("2_c8rg0")

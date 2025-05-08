@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://djrfqf5gbs71b"]
 
 [ext_resource type="PackedScene" uid="uid://bj1yaairxxaqs" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/ability_effects/helpful_helmet/helpfulhelmet.glb" id="1_phxhi"]
-[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/ability_effects/helpful_helmet/helpfulhelmet.gd" id="2_jehdp"]
+[ext_resource type="Script" uid="uid://cvtby4gleqg8r" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/ability_effects/helpful_helmet/helpfulhelmet.gd" id="2_jehdp"]
 
 [sub_resource type="Animation" id="Animation_sr4oe"]
 length = 0.001
@@ -35,8 +35,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_1rbxp"]
 _data = {
-"RESET": SubResource("Animation_sr4oe"),
-"TiltHelmet": SubResource("Animation_3yurx")
+&"RESET": SubResource("Animation_sr4oe"),
+&"TiltHelmet": SubResource("Animation_3yurx")
 }
 
 [node name="helpfulhelmet" instance=ExtResource("1_phxhi")]

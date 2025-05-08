@@ -1,6 +1,6 @@
 [gd_scene load_steps=14 format=3 uid="uid://bdd0m6wbuerq5"]
 
-[ext_resource type="Script" path="res://scenes/editor/edit_file_name/edit_file_name.gd" id="1_0fpue"]
+[ext_resource type="Script" uid="uid://ioik5p2ew5k8" path="res://scenes/editor/edit_file_name/edit_file_name.gd" id="1_0fpue"]
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="1_6unjv"]
 [ext_resource type="Texture2D" uid="uid://dudqc43ccdm43" path="res://scenes/editor/edit_file_name/lock_button/lock1.png" id="3_o4ly1"]
 [ext_resource type="Texture2D" uid="uid://sf4kf8qi4p7d" path="res://scenes/editor/edit_file_name/lock_button/lock5.png" id="4_x5xua"]
@@ -161,9 +161,9 @@ tracks/3/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_0d7hp"]
 _data = {
-"RESET": SubResource("Animation_y3l2c"),
-"on_lock_button_closed": SubResource("Animation_33dgc"),
-"on_lock_button_open": SubResource("Animation_qcp4e")
+&"RESET": SubResource("Animation_y3l2c"),
+&"on_lock_button_closed": SubResource("Animation_33dgc"),
+&"on_lock_button_open": SubResource("Animation_qcp4e")
 }
 
 [node name="EditFileName" type="Control"]

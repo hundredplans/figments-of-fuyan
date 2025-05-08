@@ -1,11 +1,12 @@
 [gd_scene load_steps=2 format=3 uid="uid://b7ttu4fl1g3ag"]
 
-[ext_resource type="Texture2D" uid="uid://b12571j4xxx3a" path="res://assets/base_game/cards/card_ui/rarity/6.png" id="1_uprx4"]
+[sub_resource type="Resource" id="Resource_u3sg0"]
+metadata/__load_path__ = "res://assets/base_game/cards/card_ui/rarity/6.png"
 
 [node name="Collision" type="CollisionPolygon2D"]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
 position = Vector2(0, -1)
-texture = ExtResource("1_uprx4")
+texture = SubResource("Resource_u3sg0")
 centered = false

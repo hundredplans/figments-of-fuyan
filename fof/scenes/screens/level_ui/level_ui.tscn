@@ -1,12 +1,12 @@
 [gd_scene load_steps=36 format=3 uid="uid://b0kr4uhvdhmq3"]
 
-[ext_resource type="Script" path="res://scenes/screens/level_ui/level_ui.gd" id="1_mmiwi"]
+[ext_resource type="Script" uid="uid://b6mfhekckpw8k" path="res://scenes/screens/level_ui/level_ui.gd" id="1_mmiwi"]
 [ext_resource type="Texture2D" uid="uid://iucmlitjenwl" path="res://assets/base_game/cards/game_card/art/stats/energy.png" id="2_bww7p"]
 [ext_resource type="Theme" uid="uid://bhyiyheobours" path="res://scenes/screens/level_ui/panel_theme.tres" id="2_pmg4n"]
 [ext_resource type="LabelSettings" uid="uid://du8wsu8ebr2a0" path="res://assets/UI/lora/lora16.tres" id="4_8w3e7"]
 [ext_resource type="Texture2D" uid="uid://5lneadq0ah6k" path="res://scenes/screens/level_ui/brown_particle.png" id="4_gmrht"]
 [ext_resource type="Texture2D" uid="uid://o2y0lth6qfc2" path="res://assets/base_game/cards/cards/FredericTheFearless/art_mini.png" id="5_h365k"]
-[ext_resource type="Script" path="res://scenes/screens/level_ui/top_bar/energy_labels.gd" id="6_bg05c"]
+[ext_resource type="Script" uid="uid://efguxcib34lq" path="res://scenes/screens/level_ui/top_bar/energy_labels.gd" id="6_bg05c"]
 [ext_resource type="Texture2D" uid="uid://cnykim4ihwroj" path="res://assets/sprites/ui/shilling.png" id="6_jgm8m"]
 [ext_resource type="LabelSettings" uid="uid://c5h6tv2uhlrjf" path="res://assets/UI/lora/lora_outline.tres" id="8_8k4pv"]
 [ext_resource type="LabelSettings" uid="uid://qp0350v2j4ah" path="res://assets/UI/roboto/roboto32_outline.tres" id="8_dq43r"]
@@ -26,8 +26,8 @@
 [ext_resource type="Texture2D" uid="uid://blifphxm7kkhn" path="res://scenes/screens/level_ui/top_bar/top_bar_button/vision_mode.png" id="22_n4ug1"]
 [ext_resource type="Texture2D" uid="uid://cyu547jk2ynkr" path="res://scenes/screens/level_ui/top_bar/top_bar_button/camera.png" id="23_1m0mv"]
 [ext_resource type="Texture2D" uid="uid://dr4ojvlaol232" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/unit_status_pieces/status_in.png" id="23_g3jx8"]
-[ext_resource type="Script" path="res://scenes/screens/level_ui/unit_mode_boxes.gd" id="27_bffhk"]
-[ext_resource type="Script" path="res://scenes/screens/level_ui/temp_text_spawner/temp_text_spawner.gd" id="28_6r5u2"]
+[ext_resource type="Script" uid="uid://blge24kevel7d" path="res://scenes/screens/level_ui/unit_mode_boxes.gd" id="27_bffhk"]
+[ext_resource type="Script" uid="uid://ct80ugpfq8127" path="res://scenes/screens/level_ui/temp_text_spawner/temp_text_spawner.gd" id="28_6r5u2"]
 [ext_resource type="PackedScene" uid="uid://odl0t427yp3b" path="res://scenes/screens/level_ui/temp_text_spawner/temp_text_label.tscn" id="29_60e30"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_q13sk"]
@@ -74,8 +74,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_6v38x"]
 _data = {
-"ChangePhaseChanged": SubResource("Animation_b6dxu"),
-"RESET": SubResource("Animation_6a225")
+&"ChangePhaseChanged": SubResource("Animation_b6dxu"),
+&"RESET": SubResource("Animation_6a225")
 }
 
 [sub_resource type="LabelSettings" id="LabelSettings_ig1jx"]
@@ -207,8 +207,8 @@ unique_name_in_owner = true
 position = Vector2(392, 415)
 amount = 16
 amount_ratio = 0.0
-process_material = SubResource("ParticleProcessMaterial_q13sk")
 texture = ExtResource("4_gmrht")
+process_material = SubResource("ParticleProcessMaterial_q13sk")
 
 [node name="HandBox" type="Control" parent="."]
 unique_name_in_owner = true
@@ -525,7 +525,7 @@ metadata/_edit_lock_ = true
 unique_name_in_owner = true
 root_node = NodePath("../../../..")
 libraries = {
-"": SubResource("AnimationLibrary_6v38x")
+&"": SubResource("AnimationLibrary_6v38x")
 }
 speed_scale = 0.5
 

@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://do6a233hu0w6c"]
 
-[ext_resource type="Script" path="res://scenes/ui_general/mc_button/mc_button.gd" id="1_t5m2k"]
+[ext_resource type="Script" uid="uid://c8pc80oh7si25" path="res://scenes/ui_general/mc_button/mc_button.gd" id="1_t5m2k"]
 [ext_resource type="Theme" uid="uid://x1klhkk1xb34" path="res://assets/UI/roboto/roboto.tres" id="1_wuw3l"]
 
 [sub_resource type="Animation" id="Animation_11pby"]
@@ -37,8 +37,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_536iw"]
 _data = {
-"RESET": SubResource("Animation_11pby"),
-"open_options": SubResource("Animation_x4kkp")
+&"RESET": SubResource("Animation_11pby"),
+&"open_options": SubResource("Animation_x4kkp")
 }
 
 [node name="McButton" type="Control"]

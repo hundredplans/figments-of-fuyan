@@ -10,7 +10,6 @@ signal input_saved
 var id: int
 var my_seed: int
 var area: AreaGD
-var last_loaded_deck: Array
 var tool_belt: Array
 var boons: Array
 var upgrade_level: int
@@ -18,7 +17,10 @@ var upgrade_level: int
 var shillings: int
 var time: int
 var safe_encounter_count: int
+var max_energy: int
 
+var deck_slots: Array # [DeckSlot]
+var energy_limit: int
 var timer: Timer
 
 #region Helper
@@ -36,15 +38,15 @@ func onSaveToFile() -> void:
 	ResourceSaver.save(saved_data)
 
 func onSave() -> SavedData:
-	var deck_cards: Array = SavedData.onSaveGroup(get_tree().get_nodes_in_group("AllyCardsGD"))
+	var ally_cards: Array = SavedData.onSaveGroup(get_tree().get_nodes_in_group("AllyCardsGD"))
 	var tool_belt_data: Array = SavedData.onSaveGroup(tool_belt)
 	var highest_public_id: int = Game.highest_public_id
 	var saved_boons: Array = SavedData.onSaveGroup(boons)
 	var time_elapsed: int = getTimeElapsed()
 	
 	return SavedDataSaveFile.new(id, false, public_id, my_seed, area.onSave(), shillings, time_elapsed,\
-	deck_cards, saved_boons, highest_public_id, tool_belt_data, safe_encounter_count,\
-	upgrade_level)
+	ally_cards, saved_boons, highest_public_id, tool_belt_data, safe_encounter_count,\
+	upgrade_level, max_energy, energy_limit, deck_slots)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -52,12 +54,13 @@ func onLoadData(data: SavedData) -> void:
 	add_to_group("SaveFilesGD")
 	id = data.id
 	my_seed = data.my_seed
+	max_energy = data.max_energy
+	energy_limit = data.energy_limit
+	deck_slots = data.deck_slots
 	
-	var ChampionCard: CardGD
-	for card_data in data.deck:
+	for card_data: SavedDataCard in data.ally_cards:
 		var Card: CardGD = SavedData.onLoadModel(card_data, get_parent())
 		Card.add_to_group("AllyCardsGD")
-		if Game.isChampion(Card.info.rarity): ChampionCard = Card
 	
 	boons = data.boons.map(func(x: SavedDataBoon): return SavedData.onLoadModel(x, self))
 	tool_belt = data.tool_belt.map(func(x: SavedDataTool): return SavedData.onLoadModel(x, self))
@@ -68,7 +71,6 @@ func onLoadData(data: SavedData) -> void:
 	
 	shillings = data.shillings
 	time = data.time
-	last_loaded_deck = data.deck
 	safe_encounter_count = data.safe_encounter_count
 	upgrade_level = data.upgrade_level
 	
@@ -79,8 +81,10 @@ func onLoadData(data: SavedData) -> void:
 	
 func onFofInit() -> void:
 	var boon_info: BoonInfo = getChampionCard().info.boon_info
-	onPushAction(AddBoonAction.new(boon_info.id, false))
-
+	var actions: Array = [AddToDeckAction.new(getChampionCard()), AddBoonAction.new(boon_info.id, false),\
+		getPlayerDeckUpgradeAction(0)]
+	
+	onPushAction(actions)
 	onChooseArea()
 	
 func setInfo(_area: AreaGD) -> void:
@@ -152,9 +156,9 @@ func getToolbelt() -> Array:
 func getBoons() -> Array:
 	return boons
 	
-func getBoon(id: int) -> BoonGD:
+func getBoon(boon_id: int) -> BoonGD:
 	for Boon: BoonGD in boons:
-		if Boon.info.id == id: return Boon
+		if Boon.info.id == boon_id: return Boon
 	return null
 #endregion
 
@@ -187,3 +191,59 @@ func onProcessAction(action: Action) -> void:
 	if action.post:
 		if action is ChangeShillingsAction:
 			update_shillings.emit()
+
+#region Player Deck Upgrade
+func onPlayerDeckUpgrade(player_deck_upgrade: PlayerDeckUpgrade) -> void:
+	if player_deck_upgrade == null: assert(false); return
+	energy_limit += player_deck_upgrade.energy_limit_gain
+	deck_slots += range(player_deck_upgrade.deck_limit_gain).map(func(__: int): return DeckSlot.new())
+	max_energy += player_deck_upgrade.max_energy_gain
+	
+func getPlayerDeckUpgradeAction(world: int, fight_type := Game.FightTypes.NULL) -> PlayerDeckUpgradeAction:
+	var DIR: String = info.PLAYER_DECK_UPGRADE_DIRECTORY
+	var player_deck_upgrades := Array(DirAccess.get_files_at(DIR)).map(func(x: String): return load(DIR + x))
+	var player_deck_upgrade: PlayerDeckUpgrade = null
+	for _player_deck_upgrade: PlayerDeckUpgrade in player_deck_upgrades:
+		if _player_deck_upgrade.world == world and _player_deck_upgrade.fight_type == fight_type:
+			player_deck_upgrade = _player_deck_upgrade
+			break
+			
+	if player_deck_upgrade == null: assert(false); return
+	var player_deck_upgrade_action := PlayerDeckUpgradeAction.new(player_deck_upgrade)
+	return player_deck_upgrade_action
+	
+func getDeckSlots() -> Array:
+	return deck_slots
+	
+func isCardValidForDeck(Card: CardGD) -> bool:
+	var is_energy_limit_unmet: bool = getEnergyLimit() >= Card.energy + getDecksTotalEnergy()
+	var is_slot_available: bool = deck_slots.any(func(x: DeckSlot): return !x.isUsed())
+	return is_energy_limit_unmet and is_slot_available
+
+func getDecksTotalEnergy() -> int:
+	var total: int = 0
+	for deck_slot: DeckSlot in deck_slots:
+		total += 0 if !deck_slot.isCardUsed() else Game.onFindPublicIDObject(deck_slot.card_public_id).energy
+	return total
+	
+func getFirstAvailableDeckSlot() -> DeckSlot:
+	return deck_slots.filter(func(x: DeckSlot): return !x.isUsed())[0]
+	
+func getUsedDeckSlotCount() -> int:
+	return deck_slots.filter(func(x: DeckSlot): return x.isCardUsed()).size()
+	
+func getDeckSlotByPublicID(card_public_id: int) -> DeckSlot:
+	for deck_slot: DeckSlot in deck_slots:
+		if deck_slot.card_public_id == card_public_id:
+			return deck_slot
+	return null
+	
+func getDeckLimit() -> int:
+	return deck_slots.size()
+	
+func getEnergyLimit() -> int:
+	return energy_limit
+	
+func getMaxEnergy() -> int:
+	return max_energy
+#endregion

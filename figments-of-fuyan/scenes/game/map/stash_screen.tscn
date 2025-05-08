@@ -1,20 +1,259 @@
-[gd_scene load_steps=6 format=3 uid="uid://cqxjqqj3gig1b"]
+[gd_scene load_steps=12 format=3 uid="uid://cqxjqqj3gig1b"]
 
-[ext_resource type="Texture2D" uid="uid://oae0nwgo3lfh" path="res://assets/sprites/text/icons/energy_icon.png" id="1_sli05"]
+[ext_resource type="Script" uid="uid://0tx4w8g33qop" path="res://scenes/game/map/stash_screen.gd" id="1_vh71u"]
 [ext_resource type="PackedScene" uid="uid://dxvuvb68hgxug" path="res://scenes/common/exit_button/exit_button.tscn" id="1_xnd7x"]
-[ext_resource type="LabelSettings" uid="uid://baxopkmeda53x" path="res://resources/ui/label_settings/roboto_huge.tres" id="2_vh71u"]
-[ext_resource type="Texture2D" uid="uid://drju02m4wqrw1" path="res://assets/sprites/ui/icons/card.png" id="3_dd1xv"]
-[ext_resource type="LabelSettings" uid="uid://rtes1t31euap" path="res://resources/ui/label_settings/jacquard_massive.tres" id="4_v8bki"]
+[ext_resource type="PackedScene" uid="uid://c4feu28rxx6ev" path="res://scenes/game/map/deck_slot_ui.tscn" id="2_dd1xv"]
+[ext_resource type="LabelSettings" uid="uid://cnmlfs66pb1a1" path="res://resources/ui/label_settings/spicyrice_huge.tres" id="2_sli05"]
+[ext_resource type="Texture2D" uid="uid://dum30f1ix8v5h" path="res://assets/sprites/ui/icons/energy_limit.png" id="3_v8bki"]
+[ext_resource type="LabelSettings" uid="uid://bw613ebdspq46" path="res://resources/ui/label_settings/spicyrice_massive.tres" id="4_sli05"]
+[ext_resource type="Texture2D" uid="uid://do8qr6q0dyyiy" path="res://assets/sprites/ui/icons/deck.png" id="5_jpe4s"]
+
+[sub_resource type="Animation" id="Animation_v8bki"]
+length = 0.001
+step = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FadeBackground:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ScreenManager:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 1080)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ScreenManager/MarginContainer2/HBoxContainer/EnergyLimitContainer:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("ScreenManager/MarginContainer2/HBoxContainer/EnergyLimitContainer/EnergyLimitTexture:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("ScreenManager/MarginContainer2/HBoxContainer/EnergyLimitContainer/EnergyLimitTexture:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_dd1xv"]
+resource_name = "SlideUIElements"
+length = 0.25
+step = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FadeBackground:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.498039)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ScreenManager:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 1080), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_jpe4s"]
+resource_name = "EnergyLimitReached"
+length = 1.5
+step = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ScreenManager/MarginContainer2/HBoxContainer/EnergyLimitContainer:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25, 1.25, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 0, 0, 1), Color(1, 0, 0, 1), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ScreenManager/MarginContainer2/HBoxContainer/EnergyLimitContainer/EnergyLimitTexture:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.25, 1.25, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.2, 1.2), Vector2(1.2, 1.2), Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ScreenManager/MarginContainer2/HBoxContainer/EnergyLimitContainer/EnergyLimitTexture:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.166667, 0.2, 0.233333, 0.25, 0.283333, 0.316667, 0.35, 0.383333, 0.416667, 0.45, 0.483333, 0.516667, 0.55, 0.583333, 0.616667, 0.65, 0.683333, 0.716667, 0.75, 0.783333, 0.816667, 0.85, 0.883333, 0.916667, 0.95, 0.983333, 1.01667, 1.05, 1.08333, 1.11667, 1.15, 1.18333, 1.21667, 1.25, 1.28333, 1.31667, 1.35, 1.38333, 1.41667, 1.45, 1.48333, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0339506, 0.129932, 0.271348, 0.433747, 0.589049, 0.710399, 0.776817, 0.785398, 0.768235, 0.717497, 0.6354, 0.525534, 0.392699, 0.242701, 0.0820965, -0.0820965, -0.242701, -0.392699, -0.525534, -0.635401, -0.717497, -0.768235, -0.785398, -0.768235, -0.717497, -0.6354, -0.525534, -0.392699, -0.242701, -0.0820965, 0.0820965, 0.242701, 0.392699, 0.525534, 0.635401, 0.717497, 0.768235, 0.785398, 0.751448, 0.655466, 0.51405, 0.351651, 0.19635, 0.0749988, 0.00858141, 0.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("ScreenManager/MarginContainer2/HBoxContainer/EnergyLimitContainer/EnergyLimitTexture:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.25, 1.25, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 0, 0, 1), Color(1, 0, 0, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jpe4s"]
+_data = {
+&"EnergyLimitReached": SubResource("Animation_jpe4s"),
+&"RESET": SubResource("Animation_v8bki"),
+&"SlideUIElements": SubResource("Animation_dd1xv")
+}
 
 [node name="StashScreen" type="Control"]
 layout_mode = 3
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+script = ExtResource("1_vh71u")
+DeckSlotPacked = ExtResource("2_dd1xv")
+
+[node name="AniPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_jpe4s")
+}
+
+[node name="FadeBackground" type="ColorRect" parent="."]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+color = Color(1, 0.745098, 0.14902, 1)
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ScreenManager" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 1080.0
+offset_bottom = 1080.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="ScreenManager"]
+layout_mode = 2
+offset_left = 1190.0
+offset_right = 1920.0
+offset_bottom = 120.0
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ScreenManager/MarginContainer2"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 20
+alignment = 2
+
+[node name="EnergyLimitContainer" type="HBoxContainer" parent="ScreenManager/MarginContainer2/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+alignment = 2
+
+[node name="EnergyLimitTexture" type="TextureRect" parent="ScreenManager/MarginContainer2/HBoxContainer/EnergyLimitContainer"]
+unique_name_in_owner = true
+texture_filter = 1
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("3_v8bki")
+expand_mode = 2
+
+[node name="EnergyLimitLabel" type="Label" parent="ScreenManager/MarginContainer2/HBoxContainer/EnergyLimitContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0/12"
+label_settings = ExtResource("2_sli05")
+horizontal_alignment = 2
+
+[node name="CardSprite" type="TextureRect" parent="ScreenManager/MarginContainer2/HBoxContainer"]
+texture_filter = 1
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("5_jpe4s")
+expand_mode = 2
+
+[node name="DeckLimitLabel" type="Label" parent="ScreenManager/MarginContainer2/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0/5"
+label_settings = ExtResource("2_sli05")
+
+[node name="LesserFiler" type="Control" parent="ScreenManager/MarginContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="ExitButton" parent="ScreenManager/MarginContainer2/HBoxContainer" instance=ExtResource("1_xnd7x")]
+layout_mode = 2
+mouse_filter = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="ScreenManager"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -22,82 +261,64 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0, 0, 0, 0.941176)
 
-[node name="MarginContainer" type="MarginContainer" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="ColorRect/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ScreenManager/MarginContainer"]
 layout_mode = 2
+mouse_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/MarginContainer/ScrollContainer"]
+[node name="Decklabel" type="Label" parent="ScreenManager/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+text = "Deck"
+label_settings = ExtResource("4_sli05")
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="ScreenManager/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="MainScrollContainer" type="ScrollContainer" parent="ScreenManager/MarginContainer/VBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/separation = 50
 
-[node name="TopBar" type="HBoxContainer" parent="ColorRect/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="DeckContainer" type="GridContainer" parent="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 30
-alignment = 1
+size_flags_horizontal = 4
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/h_separation = 80
+theme_override_constants/v_separation = 80
+columns = 5
 
-[node name="EnergySprite" type="TextureRect" parent="ColorRect/MarginContainer/ScrollContainer/VBoxContainer/TopBar"]
-texture_filter = 1
-layout_mode = 2
-texture = ExtResource("1_sli05")
-expand_mode = 2
-
-[node name="EnergyLabel" type="Label" parent="ColorRect/MarginContainer/ScrollContainer/VBoxContainer/TopBar"]
-layout_mode = 2
-text = "0/2"
-label_settings = ExtResource("2_vh71u")
-
-[node name="LesserFiler" type="Control" parent="ColorRect/MarginContainer/ScrollContainer/VBoxContainer/TopBar"]
-custom_minimum_size = Vector2(20, 0)
-layout_mode = 2
-
-[node name="CardSprite" type="TextureRect" parent="ColorRect/MarginContainer/ScrollContainer/VBoxContainer/TopBar"]
-texture_filter = 1
-layout_mode = 2
-texture = ExtResource("3_dd1xv")
-expand_mode = 2
-
-[node name="CardLabel" type="Label" parent="ColorRect/MarginContainer/ScrollContainer/VBoxContainer/TopBar"]
-layout_mode = 2
-text = "0/5"
-label_settings = ExtResource("2_vh71u")
-
-[node name="Decklabel" type="Label" parent="ColorRect/MarginContainer/ScrollContainer/VBoxContainer/TopBar"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Deck"
-label_settings = ExtResource("4_v8bki")
-horizontal_alignment = 1
-
-[node name="GreaterFiller" type="Control" parent="ColorRect/MarginContainer/ScrollContainer/VBoxContainer/TopBar"]
-custom_minimum_size = Vector2(420, 0)
-layout_mode = 2
-
-[node name="ExitButton" parent="ColorRect/MarginContainer/ScrollContainer/VBoxContainer/TopBar" node_paths=PackedStringArray("exit_screen") instance=ExtResource("1_xnd7x")]
-layout_mode = 2
-exit_screen = NodePath("../../../../../..")
-
-[node name="StashContainer" type="GridContainer" parent="ColorRect/MarginContainer/ScrollContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 400)
-layout_mode = 2
-columns = 6
-
-[node name="Label" type="Label" parent="ColorRect/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="StashLabel" type="Label" parent="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Stash"
-label_settings = ExtResource("4_v8bki")
+label_settings = ExtResource("4_sli05")
 horizontal_alignment = 1
 
-[node name="DeckContainer" type="GridContainer" parent="ColorRect/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="StashContainer" type="GridContainer" parent="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 400)
 layout_mode = 2
-size_flags_vertical = 3
+mouse_filter = 2
 columns = 6
+
+[connection signal="mouse_entered" from="FadeBackground" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="FadeBackground" to="." method="onMouseInUI" binds= [false]]
+[connection signal="mouse_entered" from="ScreenManager/MarginContainer2/HBoxContainer/ExitButton" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="ScreenManager/MarginContainer2/HBoxContainer/ExitButton" to="." method="onMouseInUI" binds= [false]]
+[connection signal="pressed" from="ScreenManager/MarginContainer2/HBoxContainer/ExitButton" to="." method="onExitButtonPressed"]

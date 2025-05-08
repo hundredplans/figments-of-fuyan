@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="StatusFXInfoGD" load_steps=3 format=3 uid="uid://u0b7kvmjafi6"]
+[gd_resource type="Resource" script_class="StatusFXInfoGD" load_steps=4 format=3 uid="uid://u0b7kvmjafi6"]
 
-[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/status_fx_info.gd" id="1_7ssb5"]
+[ext_resource type="Script" uid="uid://bx5hr1dugatg2" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/status_fx_info.gd" id="1_7ssb5"]
 [ext_resource type="Texture2D" uid="uid://6fyqm8tqgspj" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/icons/helpful_helmet.png" id="2_f586c"]
+[ext_resource type="Script" uid="uid://bps66rsnt34xm" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/scripts/status_fx_empty.gd" id="2_ixv8s"]
 
 [resource]
 resource_local_to_scene = true
@@ -9,6 +10,4 @@ script = ExtResource("1_7ssb5")
 id = 4
 texture = ExtResource("2_f586c")
 tooltip = "This unit gains +0/1 when it RAMPAGES."
-highlight_on_hover = false
-max_turns = -1
-max_charges = 1
+status_fx_script = ExtResource("2_ixv8s")

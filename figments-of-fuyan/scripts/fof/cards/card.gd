@@ -124,10 +124,12 @@ func setStats(stats: StatsDatastore) -> void:
 func getDescription() -> String:
 	if info.rarity != Game.Rarities.CHAMPION:
 		return info.getDescription(ascended)
-	
+	return getDescriptionUpgradeLevel(champion_datastore.upgrade_level + 1)
+
+func getDescriptionUpgradeLevel(_upgrade_level: int):
 	var description: String = info.getDescription(ascended)
-	for upgrade_level in range(1, champion_datastore.upgrade_level + 1):
-		var new_description: String = getChampionUpgrade(upgrade_level).description
+	for upgrade_level in range(0, _upgrade_level):
+		var new_description: String = getChampionUpgrade(_upgrade_level).description
 		if !new_description.is_empty(): description = new_description
 	return description
 	
@@ -306,10 +308,6 @@ func onLoadDataLevel() -> void:
 func onLoadDataLevelFofInit() -> void:
 	super()
 	onReset()
-	if !Game.isChampion(info.rarity):
-		onPushAction(AddToDeckAction.new(self, AddToDeckAction.ADD_TYPES.SHUFFLE))
-	else:
-		onPushAction(InsertAction.new(self))
 	
 func onFofInit() -> void:
 	super()
@@ -1293,7 +1291,6 @@ func onLevelEnded(_win: bool) -> void:
 	onReset(true)
 	if isAlly(0) and !is_awakened_in_combat:
 		if card_place != Game.CardPlaces.DECK:
-			onPushAction(AddToDeckAction.new(self, AddToDeckAction.ADD_TYPES.SHUFFLE))
 			onChangeCardPlace(Game.CardPlaces.DECK)
 	else: onChangeCardPlace(Game.CardPlaces.GRAVEYARD)
 #endregion
@@ -1676,3 +1673,13 @@ func onSurviveFallDamage(Card: CardGD, movement_path: Array, point_path: Array, 
 
 func getOverrideSpeed(limit: int) -> int:
 	return min(speed, limit)
+
+func getStatValue(stat: Game.Stats) -> int:
+	match stat:
+		Game.Stats.ATTACK: return attack
+		Game.Stats.HEALTH: return health
+		Game.Stats.MAX_HEALTH: return max_health
+		Game.Stats.SPEED: return speed
+		Game.Stats.MAX_SPEED: return max_speed
+		Game.Stats.ENERGY: return energy
+	return Game.Stats.ATTACK

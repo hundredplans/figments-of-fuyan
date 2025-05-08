@@ -1,10 +1,10 @@
 [gd_scene load_steps=10 format=3 uid="uid://kipaaomw7to0"]
 
-[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/unit_field_status/unit_field_status.gd" id="1_qelrw"]
+[ext_resource type="Script" uid="uid://t6fcnqrq881a" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/unit_field_status/unit_field_status.gd" id="1_qelrw"]
 [ext_resource type="PackedScene" uid="uid://stsyvwcse7av" path="res://scenes/screens/level_map/floating_stats/attack.glb" id="2_4fbtn"]
 [ext_resource type="PackedScene" uid="uid://b4r0v67xgiwsm" path="res://scenes/screens/level_map/floating_stats/speed.glb" id="3_ff1dn"]
 [ext_resource type="PackedScene" uid="uid://decfumeu2nk8w" path="res://scenes/screens/level_map/floating_stats/health.glb" id="4_afrvl"]
-[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/unit_field_status/container_3d.gd" id="5_upefk"]
+[ext_resource type="Script" uid="uid://ccpslv7wixpuh" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/unit_field_status/container_3d.gd" id="5_upefk"]
 [ext_resource type="Texture2D" uid="uid://bwvrctgpynwje" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/unit_status_pieces/in_range.png" id="6_g7q66"]
 
 [sub_resource type="Animation" id="Animation_2c4if"]
@@ -281,8 +281,8 @@ tracks/10/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_s3t1g"]
 _data = {
-"Animation": SubResource("Animation_2c4if"),
-"RESET": SubResource("Animation_jonmt")
+&"Animation": SubResource("Animation_2c4if"),
+&"RESET": SubResource("Animation_jonmt")
 }
 
 [node name="UnitFieldStatus" type="Node3D"]
@@ -345,6 +345,6 @@ texture = ExtResource("6_g7q66")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_s3t1g")
+&"": SubResource("AnimationLibrary_s3t1g")
 }
 speed_scale = 0.25

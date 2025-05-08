@@ -367,7 +367,7 @@ func onMapNodeLoadLevelInit(_active_level_data: SavedDataLevel) -> void:
 	if active_level_data != null: return # If level already loaded
 	
 	active_level_data = _active_level_data
-	active_level_data.max_energy = info.world.getMaxEnergy()
+	active_level_data.max_energy = Game.getSaveFile().max_energy
 	active_level_data.energy = active_level_data.max_energy
 	onMapNodeLoadLevel()
 		
@@ -703,9 +703,7 @@ func getDivinusBoonOdds(odds: float) -> float:
 
 #region Exit Level
 func onRewardsFinished(save_file: SaveFileGD) -> void:
-	if active_level.fight_type in [Game.FightTypes.MINIBOSS, Game.FightTypes.BOSS]:
-		onPushAction(ChampionUpgradeAction.new())
-	
+	var fight_type: Game.FightTypes = active_level.fight_type
 	active_level.onClear()
 	active_level = null
 	active_level_data = null
@@ -715,6 +713,13 @@ func onRewardsFinished(save_file: SaveFileGD) -> void:
 		#save_file.onLoadArea
 		#return
 	save_file.onLoadMap()
+	if fight_type in [Game.FightTypes.MINIBOSS, Game.FightTypes.BOSS]:
+		var old_deck_limit: int = Game.getSaveFile().getDeckLimit()
+		var old_energy_limit: int = Game.getSaveFile().getEnergyLimit()
+		var old_max_energy: int = Game.getSaveFile().getMaxEnergy()
+		var actions: Array = [ChampionUpgradeAction.new(old_deck_limit, old_energy_limit, old_max_energy),\
+			Game.getSaveFile().getPlayerDeckUpgradeAction(getWorldDifficulty(), fight_type)]
+		onPushAction(actions)
 	
 func onLossFinished() -> void:
 	pass

@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="UnitVFXGD" load_steps=3 format=3 uid="uid://cm7j8gikvgpik"]
 
 [ext_resource type="PackedScene" uid="uid://djrfqf5gbs71b" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/ability_effects/helpful_helmet/helpfulhelmet.tscn" id="1_cf34n"]
-[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/unit_vfx/unit_vfx.gd" id="1_o0qis"]
+[ext_resource type="Script" uid="uid://cxyva8cl3hy8o" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/unit_vfx/unit_vfx.gd" id="1_o0qis"]
 
 [resource]
 script = ExtResource("1_o0qis")
@@ -9,3 +9,4 @@ model = ExtResource("1_cf34n")
 is_height_absolute = false
 height = 0.1
 name = "HelpfulHelmet"
+inherit_rotation = false

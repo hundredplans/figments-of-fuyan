@@ -1,6 +1,6 @@
 [gd_scene load_steps=22 format=3 uid="uid://c58jdx2o7cfwc"]
 
-[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/unit_status.gd" id="1_q5ivk"]
+[ext_resource type="Script" uid="uid://bdicjagvtiuwi" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/unit_status.gd" id="1_q5ivk"]
 [ext_resource type="Texture2D" uid="uid://b0hfj23m52s2r" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/unit_status_pieces/status_white.png" id="2_atxq7"]
 [ext_resource type="Texture2D" uid="uid://dr6tmi3ckdsvk" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/unit_status_pieces/light_mask.png" id="3_t47qj"]
 [ext_resource type="Texture2D" uid="uid://bgts82p0ip45a" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/unit_status_pieces/shifting_background.png" id="4_gqfdn"]
@@ -63,7 +63,7 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_iq8mx"]
 _data = {
-"ScaleStatSlight": SubResource("Animation_ix7td")
+&"ScaleStatSlight": SubResource("Animation_ix7td")
 }
 
 [node name="UnitStatus" type="Control"]

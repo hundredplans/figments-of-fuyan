@@ -6,8 +6,8 @@ signal mouse_in_ui
 @export var BASE_COLOR := Color("ffffff")
 @export var HOVER_COLOR := Color("aaaaaa")
 @export var DISABLED_COLOR := Color("#888888")
-@export var CLICK_NOISE: AudioStreamMP3
-@export var HOVER_NOISE: AudioStreamMP3
+@export var CLICK_NOISE: AudioStreamMP3 = load("res://assets/sounds/ui/default_press.mp3")
+@export var HOVER_NOISE: AudioStreamMP3 = load("res://assets/sounds/ui/default_hover.mp3")
 
 func _ready() -> void:
 	setModulate()
@@ -45,3 +45,7 @@ func _process(_delta: float) -> void:
 func onPressed() -> void:
 	pressed.emit()
 	Audio.onSoundEffect(CLICK_NOISE)
+	
+func onChangeHoverColor(color: Color) -> void:
+	HOVER_COLOR = color
+	setModulate()

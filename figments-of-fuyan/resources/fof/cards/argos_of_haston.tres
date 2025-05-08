@@ -1,14 +1,14 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://bfpujxbrek1i7"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_o5vfm"]
-[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_0y74i"]
-[ext_resource type="Resource" path="res://resources/fof/archetypes/brute.tres" id="2_62qit"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/argos_of_haston.png" id="2_dwna4"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/argos_of_haston.png" id="2_mohxo"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_ae13p"]
-[ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_q5riq"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_1nyn5"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_bm5mb"]
+[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_o5vfm"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_0y74i"]
+[ext_resource type="Resource" uid="uid://6j57uasj8x66" path="res://resources/fof/archetypes/reinforcer.tres" id="2_5env8"]
+[ext_resource type="Image" uid="uid://dgy7f3eps1o0f" path="res://assets/sprites/game/cards/art_pop/argos_of_haston.png" id="2_dwna4"]
+[ext_resource type="Texture2D" uid="uid://juuksfu3vpx5" path="res://assets/sprites/game/cards/art_mini/argos_of_haston.png" id="2_mohxo"]
+[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_ae13p"]
+[ext_resource type="Script" uid="uid://d3xulw3ft3e0n" path="res://scripts/fof/cards/card.gd" id="4_q5riq"]
+[ext_resource type="PackedScene" uid="uid://bd2esqpmo73tk" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_1nyn5"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_bm5mb"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
 size = Vector3(0.663147, 1.94543, 0.526978)
@@ -37,7 +37,7 @@ initial_traits = Array[ExtResource("2_0y74i")]([])
 active_abilities = Array[ExtResource("1_o5vfm")]([])
 flavor_text = ""
 description = "BLOODTHIRST: Gain [1] SH; TRAUMA: Lose [1] SH"
-ascended_description = ""
+ascended_description = "BLOODTHIRST: Gain [2] SH; TRAUMA: Lose [2] SH"
 art_mini_coordinate = Vector2i(94, 41)
 art_mini = ExtResource("2_mohxo")
 art_pop = ExtResource("2_dwna4")
@@ -52,7 +52,7 @@ plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("2_0y74i")]([])
-archetype = ExtResource("2_62qit")
+archetype = ExtResource("2_5env8")
 id = 75
 name = "Argos of Haston"
 gdscript = ExtResource("4_q5riq")

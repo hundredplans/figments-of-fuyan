@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://c4517qungvqpw"]
 
-[ext_resource type="Script" path="res://test/simulation/screens/select_level/utility_menu.gd" id="1_7ilus"]
+[ext_resource type="Script" uid="uid://57chee1j0dff" path="res://test/simulation/screens/select_level/utility_menu.gd" id="1_7ilus"]
 [ext_resource type="Theme" uid="uid://be5u05ixh2dg7" path="res://test/simulation/assets/fonts/roboto32.tres" id="1_rpumo"]
 
 [sub_resource type="Animation" id="Animation_q24de"]
@@ -66,9 +66,9 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_xe70h"]
 _data = {
-"RESET": SubResource("Animation_q24de"),
-"utility_pressed": SubResource("Animation_4a4ww"),
-"utility_pressed_end": SubResource("Animation_plxeg")
+&"RESET": SubResource("Animation_q24de"),
+&"utility_pressed": SubResource("Animation_4a4ww"),
+&"utility_pressed_end": SubResource("Animation_plxeg")
 }
 
 [node name="UtilityMenu" type="Control"]

@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="StatusFXInfoGD" load_steps=3 format=3 uid="uid://cuc8qx4x5wgpt"]
+[gd_resource type="Resource" script_class="StatusFXInfoGD" load_steps=4 format=3 uid="uid://cuc8qx4x5wgpt"]
 
-[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/status_fx_info.gd" id="1_vt3re"]
+[ext_resource type="Script" uid="uid://bx5hr1dugatg2" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/status_fx_info.gd" id="1_vt3re"]
 [ext_resource type="Texture2D" uid="uid://c2ak2e88k8av2" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/icons/swingus_on_hit.png" id="2_dgjtb"]
+[ext_resource type="Script" uid="uid://bps66rsnt34xm" path="res://scenes/screens/level_map/utility_nodes/status_manager/unit_status/status_fx/scripts/status_fx_empty.gd" id="2_s2m8b"]
 
 [resource]
 resource_local_to_scene = true
@@ -9,6 +10,4 @@ script = ExtResource("1_vt3re")
 id = 10
 texture = ExtResource("2_dgjtb")
 tooltip = "This unit's next attack is empowered."
-highlight_on_hover = false
-max_turns = -1
-max_charges = 1
+status_fx_script = ExtResource("2_s2m8b")

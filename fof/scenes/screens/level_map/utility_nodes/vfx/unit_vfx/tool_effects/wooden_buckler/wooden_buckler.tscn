@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://bx7e3pxbf1oo0"]
 
-[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/tool_effects/wooden_buckler/wooden_buckler.gd" id="1_8lbwg"]
+[ext_resource type="Script" uid="uid://lhrewfox6sbf" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/tool_effects/wooden_buckler/wooden_buckler.gd" id="1_8lbwg"]
 [ext_resource type="PackedScene" uid="uid://bfs6x6bo4fpi0" path="res://scenes/screens/level_map/utility_nodes/vfx/unit_vfx/tool_effects/wooden_buckler/wooden_buckler.glb" id="1_m0psm"]
 
 [sub_resource type="Animation" id="Animation_x7kkn"]
@@ -60,8 +60,8 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_nhlya"]
 _data = {
-"Idle": SubResource("Animation_x7kkn"),
-"RESET": SubResource("Animation_83p5m")
+&"Idle": SubResource("Animation_x7kkn"),
+&"RESET": SubResource("Animation_83p5m")
 }
 
 [node name="WoodenBuckler" type="Node3D"]

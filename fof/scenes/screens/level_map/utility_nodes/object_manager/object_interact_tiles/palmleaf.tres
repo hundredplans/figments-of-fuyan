@@ -1,12 +1,12 @@
-[gd_resource type="Resource" script_class="ObjectInteractTilesGD" load_steps=3 format=3 uid="uid://ctbxclxj68kjr"]
+[gd_resource type="Resource" script_class="ObjectInteractTilesGD" load_steps=4 format=3 uid="uid://ctbxclxj68kjr"]
 
-[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/iobjects/palm_mini_tool.gd" id="1_mab43"]
-[ext_resource type="Script" path="res://scenes/screens/level_map/utility_nodes/object_manager/object_interact_tiles/object_interact_tiles.gd" id="2_ejj8n"]
+[ext_resource type="Script" uid="uid://b5twxdp2sajje" path="res://scenes/screens/level_map/utility_nodes/object_manager/object_interact_tiles/iobject_ability_info.gd" id="1_21p8f"]
+[ext_resource type="Script" uid="uid://dxkfv3vkif0pt" path="res://scenes/screens/level_map/utility_nodes/object_manager/iobjects/palm_mini_tool.gd" id="1_mab43"]
+[ext_resource type="Script" uid="uid://4cv0vd8wvhkr" path="res://scenes/screens/level_map/utility_nodes/object_manager/object_interact_tiles/object_interact_tiles.gd" id="2_ejj8n"]
 
 [resource]
 script = ExtResource("2_ejj8n")
 id = 18
 name = "Palmleaf"
-tiles = Array[Vector4]([])
-abilities = Array[Resource("res://scenes/screens/level_map/utility_nodes/object_manager/object_interact_tiles/iobject_ability_info.gd")]([])
+abilities = Array[ExtResource("1_21p8f")]([])
 iobject_script = ExtResource("1_mab43")

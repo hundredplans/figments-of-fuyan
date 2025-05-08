@@ -3,13 +3,13 @@
 [ext_resource type="Script" uid="uid://5q3b75lt2mg4" path="res://scenes/menus/main_menu/load_menu/save_file_ui.gd" id="1_at1dn"]
 [ext_resource type="Theme" uid="uid://rod7euhgalmu" path="res://resources/ui/themes/ui_theme.tres" id="1_v02lb"]
 [ext_resource type="LabelSettings" uid="uid://ix0siw7rad6y" path="res://resources/ui/label_settings/darumadrop_massive.tres" id="3_fy83s"]
-[ext_resource type="AudioStream" uid="uid://p2ron586kllu" path="res://assets/sounds/ui/clink.mp3" id="3_xsvxu"]
+[ext_resource type="AudioStream" uid="uid://p2ron586kllu" path="res://assets/sounds/ui/default_hover.mp3" id="3_xsvxu"]
 [ext_resource type="PackedScene" uid="uid://6nf3mir2i2rk" path="res://scenes/common/fancy_text/fancy_text_label.tscn" id="4_1ccl2"]
-[ext_resource type="AudioStream" uid="uid://cv7fpbvjmtneo" path="res://assets/sounds/ui/clink_sharp.mp3" id="4_3wiil"]
+[ext_resource type="AudioStream" uid="uid://cv7fpbvjmtneo" path="res://assets/sounds/ui/default_press.mp3" id="4_3wiil"]
 [ext_resource type="Texture2D" uid="uid://cqe3wqg1v4gc" path="res://assets/sprites/game/cards/art_mini/frederic_the_fearless.png" id="4_yafv0"]
 [ext_resource type="LabelSettings" uid="uid://wscpsay1s5fu" path="res://resources/ui/label_settings/darumadrop_medium.tres" id="5_v02lb"]
-[ext_resource type="PackedScene" uid="uid://djulw2ubmmu7t" path="res://scenes/common/new/large_text_button/large_text_button.tscn" id="7_v02lb"]
 [ext_resource type="LabelSettings" uid="uid://bw613ebdspq46" path="res://resources/ui/label_settings/spicyrice_massive.tres" id="8_1h0hx"]
+[ext_resource type="PackedScene" uid="uid://dxvuvb68hgxug" path="res://scenes/common/exit_button/exit_button.tscn" id="9_xsvxu"]
 
 [node name="SaveFileUI" type="PanelContainer" groups=["SceneButtons"]]
 custom_minimum_size = Vector2(0, 250)
@@ -17,8 +17,8 @@ offset_right = 1049.0
 offset_bottom = 250.0
 theme = ExtResource("1_v02lb")
 script = ExtResource("1_at1dn")
-CLICK_NOISE = ExtResource("3_xsvxu")
-HOVER_NOISE = ExtResource("4_3wiil")
+CLICK_NOISE = ExtResource("4_3wiil")
+HOVER_NOISE = ExtResource("3_xsvxu")
 
 [node name="MainContainer" type="HBoxContainer" parent="."]
 unique_name_in_owner = true
@@ -78,18 +78,9 @@ text = "SH: 60"
 center = false
 right = true
 
-[node name="Control" type="Control" parent="MainContainer"]
+[node name="RemoveButton" parent="MainContainer" instance=ExtResource("9_xsvxu")]
+unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
-mouse_filter = 2
-
-[node name="RemoveButton" parent="MainContainer" groups=["SceneButtons"] instance=ExtResource("7_v02lb")]
-layout_mode = 2
-text = " X  "
-horizontal_alignment = 2
-BASE_COLOR = Color(1, 0, 0, 1)
-HOVER_COLOR = Color(0.513753, 1.11904e-06, 1.92523e-07, 1)
-DISABLED_COLOR = Color(0.339735, 3.33907e-07, 1.08294e-07, 1)
 
 [node name="NewGameLabel" type="Label" parent="."]
 unique_name_in_owner = true

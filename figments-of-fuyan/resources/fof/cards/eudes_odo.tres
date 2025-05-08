@@ -1,14 +1,14 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://csfq38jw2a01n"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_xhe67"]
-[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_5dqkf"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/eudes_odo.png" id="2_re1a5"]
-[ext_resource type="Resource" path="res://resources/fof/archetypes/brute.tres" id="2_tr8g4"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/eudes_odo.png" id="2_ulnxu"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_s6dth"]
-[ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_dcsx4"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_rh7um"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_lpwl8"]
+[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_xhe67"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_5dqkf"]
+[ext_resource type="Resource" uid="uid://di2pr0npo4h1p" path="res://resources/fof/archetypes/adventurer.tres" id="2_f4dg1"]
+[ext_resource type="Image" uid="uid://ucn7t3h0ufyk" path="res://assets/sprites/game/cards/art_pop/eudes_odo.png" id="2_re1a5"]
+[ext_resource type="Texture2D" uid="uid://ca5stmyfud2dw" path="res://assets/sprites/game/cards/art_mini/eudes_odo.png" id="2_ulnxu"]
+[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_s6dth"]
+[ext_resource type="Script" uid="uid://d3xulw3ft3e0n" path="res://scripts/fof/cards/card.gd" id="4_dcsx4"]
+[ext_resource type="PackedScene" uid="uid://bd2esqpmo73tk" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_rh7um"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_lpwl8"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
 size = Vector3(0.663147, 1.94543, 0.526978)
@@ -36,7 +36,7 @@ rarity = 3
 initial_traits = Array[ExtResource("2_5dqkf")]([])
 active_abilities = Array[ExtResource("1_xhe67")]([])
 flavor_text = ""
-description = "PROMOTED: Gain +1 ATT and SHIELD"
+description = "RAMPAGE [1]: Gain +1 ATT and SHIELD"
 ascended_description = ""
 art_mini_coordinate = Vector2i(100, 34)
 art_mini = ExtResource("2_ulnxu")
@@ -47,12 +47,12 @@ collision_shape = SubResource("PackedScene_d6dgo")
 stat = 1.947
 top = 2.058
 eye = 1.788
-plus_attack = 0
+plus_attack = 1
 plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("2_5dqkf")]([])
-archetype = ExtResource("2_tr8g4")
+archetype = ExtResource("2_f4dg1")
 id = 62
 name = "Eudes Odo"
 gdscript = ExtResource("4_dcsx4")
