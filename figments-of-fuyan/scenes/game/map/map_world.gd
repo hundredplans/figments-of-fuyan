@@ -52,6 +52,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	Camera.position = getMapNodeDestination(EnteredMapNode) + CAMERA_OFFSET
 	
 	UI.screen_created.connect(onScreenCreated)
+	UI.screen_finished.connect(onScreenFinished)
 	
 	setEnvironment()
 	for map_node in get_tree().get_nodes_in_group("MapNodesGD"):
@@ -171,6 +172,10 @@ func onMapNodeCreateWorldScene(map_node: MapNodeGD, _ActiveWorld: Node3D) -> voi
 #region Screen
 func onScreenCreated() -> void:
 	onDisableCameraByUI(true)
+	
+func onScreenFinished() -> void:
+	onDisableCameraByUI(false)
+	
 #region Camera
 func onDisableCameraByUI(state: bool) -> void:
 	is_camera_disabled_by_ui = state

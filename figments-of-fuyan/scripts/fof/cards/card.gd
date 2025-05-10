@@ -1289,6 +1289,7 @@ func isValidEliteLevelSpawns(_enemy_cards: Array) -> bool:
 #region Level Ended
 func onLevelEnded(_win: bool) -> void:
 	onReset(true)
+	if card_place == Game.CardPlaces.STASH: return
 	if isAlly(0) and !is_awakened_in_combat:
 		if card_place != Game.CardPlaces.DECK:
 			onChangeCardPlace(Game.CardPlaces.DECK)

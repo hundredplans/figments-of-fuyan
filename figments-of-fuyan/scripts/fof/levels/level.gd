@@ -156,6 +156,11 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 		
 		if curse_id > 0: onPushAction(AddBoonAction.new(curse_id))
 		
+		var deck_cards: Array = Game.get_tree().get_nodes_in_group("DeckCardsGD")
+		deck_cards.shuffle()
+		for i in range(deck_cards.size()):
+			deck_cards[i].draw_order = i
+		
 		onPushAction(actions)
 		return
 		
@@ -195,7 +200,7 @@ func getFieldCardDatas() -> Array:
 #region Setters
 func onChangePhase(_phase: Game.Phases, instant: bool = false) -> void:
 	var old_phase: Game.Phases = phase
-	match phase: # Old phase
+	match old_phase:
 		Game.Phases.START:
 			onDrawStarterHand()
 			setAlliesTurnState(Game.TurnStates.INACTIVE)
@@ -207,6 +212,8 @@ func onChangePhase(_phase: Game.Phases, instant: bool = false) -> void:
 		onAdvanceTurn(Game.ADVANCE_PHASES.find(phase))
 	
 	match phase:
+		Game.Phases.START:
+			onForceAction(InsertAction.new(Game.getSaveFile().getChampionCard()))
 		Game.Phases.HAND:
 			if get_tree().get_node_count_in_group("HandCardsGD") < DRAW_BELOW_HAND_SIZE:
 				onForceAction(DrawAction.new())

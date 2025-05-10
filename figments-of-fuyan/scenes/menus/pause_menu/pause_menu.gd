@@ -2,7 +2,7 @@ extends Control
 signal mouse_in_ui
 
 @onready var ButtonsContainer: Container = %ButtonsContainer
-@onready var FadeBackground: Control = %FadeBackground
+@onready var FadeCreamBackground: Control = %FadeCreamBackground
 
 const SCALE_BUTTONS_TIME: float = 0.5
 const FADE_BACKGROUND_TIME: float = 0.25
@@ -10,13 +10,11 @@ const FADE_BACKGROUND_TIME: float = 0.25
 func _ready() -> void:
 	ButtonsContainer.pivot_offset = ButtonsContainer.size / 2
 	ButtonsContainer.scale = Vector2.ZERO
+	FadeCreamBackground.onFade(true)
+	
 	var tween := create_tween()
 	tween.tween_property(ButtonsContainer, "scale", Vector2.ONE, SCALE_BUTTONS_TIME)\
 		.as_relative().set_trans(Tween.TRANS_SINE)
-	
-	FadeBackground.modulate.a = 0
-	var fade_tween := create_tween()
-	fade_tween.tween_property(FadeBackground, "modulate:a", 0.5, FADE_BACKGROUND_TIME)
 		
 	await tween.finished
 	
@@ -43,9 +41,8 @@ func onExit() -> void:
 	var tween := create_tween()
 	tween.tween_property(ButtonsContainer, "scale", -Vector2.ONE, SCALE_BUTTONS_TIME)\
 		.as_relative().set_trans(Tween.TRANS_SINE)
-	
-	var fade_tween := create_tween()
-	fade_tween.tween_property(FadeBackground, "modulate:a", 0, FADE_BACKGROUND_TIME)
+		
+	FadeCreamBackground.onFade(false)
 	
 	await tween.finished
 	queue_free()
@@ -56,8 +53,10 @@ func onQuitButtonPressed() -> void:
 
 func onMainMenuButtonPressed() -> void:
 	setPressableState(false)
-	var fade_tween := create_tween()
-	fade_tween.tween_property(FadeBackground, "modulate", Color.BLACK, FADE_BACKGROUND_TIME)
+	
+	FadeCreamBackground.DEFAULT_ALPHA = 255
+	FadeCreamBackground.FADE_COLOR = Color.BLACK
+	FadeCreamBackground.onFade(true)
 	
 	var tween := create_tween()
 	tween.tween_property(ButtonsContainer, "scale", -Vector2.ONE, SCALE_BUTTONS_TIME)\

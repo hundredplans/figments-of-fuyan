@@ -1,9 +1,36 @@
-[gd_scene load_steps=5 format=3 uid="uid://ci8k0pb3sa63a"]
+[gd_scene load_steps=24 format=3 uid="uid://ci8k0pb3sa63a"]
 
 [ext_resource type="Script" uid="uid://chbcgu5ny83fi" path="res://scenes/common/rewards_ui/rewards_ui.gd" id="1_l8ytc"]
 [ext_resource type="PackedScene" uid="uid://der1eqnu65wwb" path="res://scenes/common/rewards_ui/choose_rewards_ui.tscn" id="2_8600w"]
 [ext_resource type="PackedScene" uid="uid://c7pl1qs6s5o21" path="res://scenes/common/rewards_ui/rewards_item.tscn" id="3_83nba"]
 [ext_resource type="PackedScene" uid="uid://6i1ai5xqm8qh" path="res://scenes/common/rewards_ui/elite_rewards_ui.tscn" id="4_splps"]
+[ext_resource type="PackedScene" uid="uid://du22nfcbi2vth" path="res://scenes/common/fade_cream_background/fade_cream_background.tscn" id="5_7wxxg"]
+[ext_resource type="LabelSettings" uid="uid://dsm7fumrqa20f" path="res://resources/ui/label_settings/spicyrice_large_shadow.tres" id="5_cmsfk"]
+[ext_resource type="Texture2D" uid="uid://byqpgk7qtluhe" path="res://assets/sprites/ui/icons/shilling.png" id="6_mtsof"]
+[ext_resource type="LabelSettings" uid="uid://bw613ebdspq46" path="res://resources/ui/label_settings/spicyrice_massive.tres" id="6_tw1y8"]
+[ext_resource type="Texture2D" uid="uid://drju02m4wqrw1" path="res://assets/sprites/ui/icons/card.png" id="8_bf72h"]
+[ext_resource type="LabelSettings" uid="uid://cnmlfs66pb1a1" path="res://resources/ui/label_settings/spicyrice_huge.tres" id="9_caifa"]
+[ext_resource type="Texture2D" uid="uid://dyqo57jww16xu" path="res://assets/sprites/game/tools/Fire Pendant.png" id="9_iq1rh"]
+[ext_resource type="PackedScene" uid="uid://djulw2ubmmu7t" path="res://scenes/common/new/large_text_button/large_text_button.tscn" id="10_iq1rh"]
+[ext_resource type="Texture2D" uid="uid://bbj5jlpmn3rjt" path="res://assets/sprites/game/tools/Coconut Staff.png" id="12_qhr1y"]
+[ext_resource type="FontFile" uid="uid://m1wf62pwj0gt" path="res://assets/fonts/spicyrice.ttf" id="12_v31ku"]
+[ext_resource type="LabelSettings" uid="uid://dbh1brjnbxe8c" path="res://resources/ui/label_settings/roboto_large.tres" id="13_gdltx"]
+[ext_resource type="Texture2D" uid="uid://c013donwpgkn2" path="res://assets/sprites/game/boons/skeleton.png" id="14_gdltx"]
+[ext_resource type="PackedScene" uid="uid://cqwfvh83nko7x" path="res://scenes/game/cards/ui/card_ui.tscn" id="15_h30xf"]
+[ext_resource type="Texture2D" uid="uid://brcmwcvusvyf3" path="res://assets/sprites/game/boons/dominance_boon.png" id="16_5wrpq"]
+[ext_resource type="Texture2D" uid="uid://c0a8p8nkow4vn" path="res://assets/sprites/game/cards/art_mini/maria_welsh.png" id="16_jllea"]
+[ext_resource type="Texture2D" uid="uid://cfkbvgqi3j7ol" path="res://assets/sprites/game/cards/art_mini/wayne_the_sheriff.png" id="17_7wxxg"]
+[ext_resource type="Texture2D" uid="uid://b44urkqche3cu" path="res://assets/sprites/game/tools/blades_claw.png" id="17_liy31"]
+[ext_resource type="Texture2D" uid="uid://bgowqp1otl6hm" path="res://assets/sprites/game/cards/art_mini/pots_mcriley.png" id="18_gr8gq"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_yu675"]
+font = ExtResource("12_v31ku")
+font_size = 256
+outline_size = 64
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 64
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(16, 16)
 
 [node name="RewardsUI" type="Control"]
 layout_mode = 3
@@ -16,15 +43,39 @@ RewardsCardsPacked = ExtResource("2_8600w")
 RewardsItemPacked = ExtResource("3_83nba")
 EliteCardRewardUIPacked = ExtResource("4_splps")
 
-[node name="BackgroundDimmer" type="ColorRect" parent="."]
+[node name="FadeCreamBackground" parent="." instance=ExtResource("5_7wxxg")]
+unique_name_in_owner = true
+layout_mode = 0
+anchors_preset = 0
+
+[node name="Label" type="Label" parent="."]
+visible = false
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -177.5
+offset_top = 17.0
+offset_right = 177.5
+offset_bottom = 121.0
 grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 1
-color = Color(0, 0, 0, 0.941176)
+text = "Rewards  [1/3]"
+label_settings = ExtResource("6_tw1y8")
+
+[node name="Label2" type="Label" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -296.0
+offset_top = 130.0
+offset_right = 296.0
+offset_bottom = 234.0
+grow_horizontal = 2
+text = "(Tap anywhere to claim!)"
+label_settings = ExtResource("5_cmsfk")
+horizontal_alignment = 1
 
 [node name="FirstContainer" type="HBoxContainer" parent="."]
 unique_name_in_owner = true
@@ -100,4 +151,483 @@ offset_right = 1015.0
 offset_bottom = 177.0
 mouse_filter = 2
 
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -324.0
+offset_top = -393.0
+offset_right = 343.0
+offset_bottom = 392.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 30
+
+[node name="VBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/VBoxContainer"]
+layout_mode = 2
+texture = ExtResource("6_mtsof")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Shillings  +20"
+label_settings = ExtResource("9_caifa")
+
+[node name="VBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+texture = ExtResource("8_bf72h")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Cards"
+label_settings = ExtResource("9_caifa")
+
+[node name="VBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/VBoxContainer3"]
+layout_mode = 2
+texture = ExtResource("9_iq1rh")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer3"]
+layout_mode = 2
+text = "Fire Pendant"
+label_settings = ExtResource("9_caifa")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+visible = false
+modulate = Color(1, 0.745098, 0.14902, 1)
+layout_mode = 0
+offset_top = 932.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+theme_override_constants/separation = 100
+alignment = 1
+
+[node name="EditDeckButton" parent="HBoxContainer" groups=["SceneButtons"] instance=ExtResource("10_iq1rh")]
+layout_mode = 2
+text = "View  Deck "
+
+[node name="ExitButton" parent="HBoxContainer" groups=["SceneButtons"] instance=ExtResource("10_iq1rh")]
+layout_mode = 2
+text = "Skip  Rewards"
+
+[node name="Control" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="TextureRect" type="TextureRect" parent="Control"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(12, 12)
+pivot_offset = Vector2(20, 20)
+texture = ExtResource("6_mtsof")
+stretch_mode = 2
+
+[node name="Label2" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = 793.0
+offset_top = 780.0
+offset_right = 1146.0
+offset_bottom = 869.0
+text = "Shillings 12x "
+label_settings = ExtResource("9_caifa")
+
+[node name="Control2" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="TextureRect" type="TextureRect" parent="Control2"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -86.0
+offset_right = 20.0
+offset_bottom = -46.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(12, 12)
+pivot_offset = Vector2(20, 20)
+texture = ExtResource("12_qhr1y")
+stretch_mode = 2
+
+[node name="Label2" type="Label" parent="Control2"]
+modulate = Color(1, 1, 0.76, 1)
+layout_mode = 0
+offset_left = 762.0
+offset_top = 735.0
+offset_right = 1170.0
+offset_bottom = 824.0
+text = "Coconut Staff"
+label_settings = ExtResource("9_caifa")
+
+[node name="Label3" type="Label" parent="Control2"]
+layout_mode = 0
+offset_left = 122.0
+offset_top = 831.0
+offset_right = 1778.0
+offset_bottom = 1381.0
+text = "ABILITY: Heal adjacent allies [1] HP. Each ally can only be healed once"
+label_settings = ExtResource("13_gdltx")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Control3" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="TextureRect" type="TextureRect" parent="Control3"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -77.0
+offset_right = 40.0
+offset_bottom = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(6, 6)
+pivot_offset = Vector2(40, 40)
+texture = ExtResource("14_gdltx")
+stretch_mode = 2
+
+[node name="Label2" type="Label" parent="Control3"]
+modulate = Color(0.81, 0.52488, 0.0324, 1)
+layout_mode = 0
+offset_left = 762.0
+offset_top = 735.0
+offset_right = 1170.0
+offset_bottom = 824.0
+text = "Skeleton Boon"
+label_settings = ExtResource("9_caifa")
+
+[node name="Label3" type="Label" parent="Control3"]
+layout_mode = 0
+offset_left = 122.0
+offset_top = 831.0
+offset_right = 1778.0
+offset_bottom = 888.0
+text = "When your first ally dies AWAKEN a [card=29]"
+label_settings = ExtResource("13_gdltx")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Control6" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control6"]
+layout_mode = 0
+offset_top = 213.0
+offset_right = 1920.0
+offset_bottom = 954.0
+theme_override_constants/separation = 200
+alignment = 1
+
+[node name="Control" type="Control" parent="Control6/HBoxContainer"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+
+[node name="CardUI" parent="Control6/HBoxContainer/Control" instance=ExtResource("15_h30xf")]
+layout_mode = 2
+offset_left = 128.0
+offset_top = 148.0
+offset_right = 392.0
+offset_bottom = 548.0
+scale = Vector2(2, 2)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control6/HBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control6/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="TextureRect" type="TextureRect" parent="Control6/HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("6_mtsof")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="Control6/HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Shillings  +20"
+label_settings = ExtResource("9_caifa")
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Control6/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="TextureRect" type="TextureRect" parent="Control6/HBoxContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+texture = ExtResource("8_bf72h")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="Control6/HBoxContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "Cards"
+label_settings = ExtResource("9_caifa")
+
+[node name="VBoxContainer" type="Control" parent="Control6/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(507, 308)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control6/HBoxContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 45.0
+offset_right = 45.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="Control6/HBoxContainer/VBoxContainer/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="TextureRect" type="TextureRect" parent="Control6/HBoxContainer/VBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+texture = ExtResource("16_jllea")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="Control6/HBoxContainer/VBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+text = "Maria Welsh"
+label_settings = ExtResource("5_cmsfk")
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="Control6/HBoxContainer/VBoxContainer/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="TextureRect" type="TextureRect" parent="Control6/HBoxContainer/VBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+texture = ExtResource("17_7wxxg")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="Control6/HBoxContainer/VBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+text = "Wayne the Sherrif"
+label_settings = ExtResource("5_cmsfk")
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="Control6/HBoxContainer/VBoxContainer/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="TextureRect" type="TextureRect" parent="Control6/HBoxContainer/VBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer6"]
+layout_mode = 2
+texture = ExtResource("18_gr8gq")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="Control6/HBoxContainer/VBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer6"]
+layout_mode = 2
+text = "Pots McRiley"
+label_settings = ExtResource("5_cmsfk")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Control6/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="TextureRect" type="TextureRect" parent="Control6/HBoxContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+texture = ExtResource("12_qhr1y")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="Control6/HBoxContainer/VBoxContainer/HBoxContainer2"]
+modulate = Color(1, 1, 0.627451, 1)
+layout_mode = 2
+text = "Coconut Staff"
+label_settings = ExtResource("9_caifa")
+
+[node name="Control4" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="CardUI" parent="Control4" instance=ExtResource("15_h30xf")]
+offset_left = 443.0
+offset_top = 300.0
+offset_right = 707.0
+offset_bottom = 700.0
+
+[node name="CardUI2" parent="Control4" instance=ExtResource("15_h30xf")]
+offset_left = 825.0
+offset_top = 300.0
+offset_right = 1089.0
+offset_bottom = 700.0
+
+[node name="CardUI3" parent="Control4" instance=ExtResource("15_h30xf")]
+offset_left = 1184.0
+offset_top = 300.0
+offset_right = 1448.0
+offset_bottom = 700.0
+
+[node name="Label2" type="Label" parent="Control4"]
+layout_mode = 0
+offset_top = 746.0
+offset_right = 1920.0
+offset_bottom = 835.0
+text = "Choose  a  Card"
+label_settings = ExtResource("9_caifa")
+horizontal_alignment = 1
+
+[node name="Control5" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="TextureRect" type="TextureRect" parent="Control5"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -596.0
+offset_top = -103.0
+offset_right = -516.0
+offset_bottom = -23.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(6, 6)
+pivot_offset = Vector2(40, 40)
+texture = ExtResource("16_5wrpq")
+stretch_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control5"]
+layout_mode = 0
+offset_top = 759.0
+offset_right = 1920.0
+offset_bottom = 857.0
+theme_override_constants/separation = 400
+alignment = 1
+
+[node name="Label" type="Label" parent="Control5/HBoxContainer"]
+modulate = Color(0.63, 0.1449, 0.1449, 1)
+layout_mode = 2
+text = "Boon"
+label_settings = ExtResource("9_caifa")
+
+[node name="Label2" type="Label" parent="Control5/HBoxContainer"]
+modulate = Color(0.63, 0.1449, 0.1449, 1)
+layout_mode = 2
+text = "Tool"
+label_settings = ExtResource("9_caifa")
+
+[node name="Label3" type="Label" parent="Control5/HBoxContainer"]
+modulate = Color(0.63, 0.1449, 0.1449, 1)
+layout_mode = 2
+text = "Card"
+label_settings = ExtResource("9_caifa")
+
+[node name="TextureRect2" type="TextureRect" parent="Control5"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -74.0
+offset_right = 20.0
+offset_bottom = -34.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(12, 12)
+pivot_offset = Vector2(20, 20)
+texture = ExtResource("17_liy31")
+stretch_mode = 2
+
+[node name="CardUI" parent="Control5" instance=ExtResource("15_h30xf")]
+offset_left = 1358.0
+offset_top = 271.0
+offset_right = 1622.0
+offset_bottom = 671.0
+scale = Vector2(1.3, 1.3)
+
+[node name="Label3" type="Label" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -142.0
+offset_top = -177.0
+offset_right = -46.0
+offset_bottom = 177.0
+grow_horizontal = 0
+grow_vertical = 2
+text = ">"
+label_settings = SubResource("LabelSettings_yu675")
+
+[node name="Label5" type="Label" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 26.0
+offset_top = -177.0
+offset_right = 122.0
+offset_bottom = 177.0
+grow_vertical = 2
+text = "<"
+label_settings = SubResource("LabelSettings_yu675")
+
+[connection signal="mouse_in_ui" from="FadeCreamBackground" to="." method="onMouseInUI"]
 [connection signal="pressed" from="FirstContainer/Control/PanelContainer/MarginContainer/MainContainer/HBoxContainer2/SkipButton" to="." method="onSkipButtonPressed"]

@@ -14,6 +14,7 @@ func _ready() -> void:
 		for id: int in area_info.card_ids:
 			card_id_to_area_id[id] = area_info.id
 	
+	
 	var card_infos: Array = Helper.getFofInfoArray(CardInfo)
 	card_infos.sort_custom(getSortValue.bind(card_id_to_area_id))
 	

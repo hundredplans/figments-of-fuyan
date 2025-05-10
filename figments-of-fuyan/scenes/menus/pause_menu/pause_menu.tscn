@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://b4wjlswboh7i3"]
+[gd_scene load_steps=4 format=3 uid="uid://b4wjlswboh7i3"]
 
 [ext_resource type="Script" uid="uid://cfcidtwcmya0l" path="res://scenes/menus/pause_menu/pause_menu.gd" id="1_fgv3k"]
 [ext_resource type="PackedScene" uid="uid://djulw2ubmmu7t" path="res://scenes/common/new/large_text_button/large_text_button.tscn" id="2_i58lr"]
+[ext_resource type="PackedScene" uid="uid://du22nfcbi2vth" path="res://scenes/common/fade_cream_background/fade_cream_background.tscn" id="2_jh4l0"]
 
 [node name="PauseMenu" type="Control"]
 layout_mode = 3
@@ -13,16 +14,16 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_fgv3k")
 
-[node name="FadeBackground" type="ColorRect" parent="."]
+[node name="FadeCreamBackground" parent="." instance=ExtResource("2_jh4l0")]
 unique_name_in_owner = true
-modulate = Color(1, 1, 1, 0.501961)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(1, 0.745098, 0.14902, 1)
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+grow_horizontal = 1
+grow_vertical = 1
 
 [node name="ButtonsContainer" type="VBoxContainer" parent="."]
 unique_name_in_owner = true
@@ -61,8 +62,7 @@ layout_mode = 2
 text = "Save & Quit"
 horizontal_alignment = 1
 
-[connection signal="mouse_entered" from="FadeBackground" to="." method="onMouseInUI" binds= [true]]
-[connection signal="mouse_exited" from="FadeBackground" to="." method="onMouseInUI" binds= [false]]
+[connection signal="mouse_in_ui" from="FadeCreamBackground" to="." method="onMouseInUI"]
 [connection signal="mouse_in_ui" from="ButtonsContainer/ResumeButton" to="." method="onMouseInUI"]
 [connection signal="pressed" from="ButtonsContainer/ResumeButton" to="." method="onResumeButtonPressed"]
 [connection signal="mouse_in_ui" from="ButtonsContainer/SettingsButton" to="." method="onMouseInUI"]

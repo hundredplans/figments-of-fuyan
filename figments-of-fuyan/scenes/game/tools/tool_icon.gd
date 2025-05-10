@@ -15,8 +15,6 @@ var ascended: bool
 
 func setInfo(_Tool: ToolGD, _hoverable: bool = false) -> void:
 	Tool = _Tool
-	
-	if Tool != null: Tool.clear.connect(queue_free)
 	setInfoDirect(Tool.getIcon() if Tool != null else null, Tool.ascended if Tool != null else false, _hoverable)
 	
 func setInfoDirect(icon: Texture2D, _ascended: bool, _hoverable: bool = false) -> void:
@@ -46,3 +44,6 @@ func setDisabled(state: bool) -> void:
 	disabled = state
 	modulate = Color(1, 1, 1) if !disabled else Color(0.2, 0.2, 0.2)
 	onUpdateAscension(ascended)
+	
+func setMouseFilter(_mouse_filter: Control.MouseFilter) -> void:
+	mouse_filter = _mouse_filter

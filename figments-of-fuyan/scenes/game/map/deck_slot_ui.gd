@@ -10,9 +10,13 @@ var CardUI: Control
 var deck_slot: DeckSlot
 var lock_state: bool
 var selected: bool
+var selectable: bool
 
 @export var LOCK_CLOSED_TX: Texture2D
 @export var LOCK_OPEN_TX: Texture2D
+
+@export var lock_lock_sfx: AudioStream
+@export var lock_unlock_sfx: AudioStream
 
 @onready var DeckSlotUITexture: TextureRect = %DeckSlotUITexture
 @onready var ExitButton: Label = %ExitButton
@@ -24,10 +28,7 @@ func _ready() -> void:
 func setCardUI(_CardUI: Control = null) -> void:
 	if CardUI != null: CardUI.queue_free()
 	CardUI = _CardUI
-	
-	if CardUI != null:
-		var Card: CardGD = CardUI.Card
-		move_child(CardUI, 1)
+	selectable = CardUI.Card.info.rarity != Game.Rarities.CHAMPION if CardUI != null else true
 	
 	setButtons()
 	setDeckSlotUIModulate()
@@ -53,7 +54,7 @@ func onExitButtonPressed() -> void:
 func setButtons() -> void:
 	ExitButton.visible = CardUI != null
 	LockIcon.visible = CardUI == null
-	
+		
 	if CardUI != null:
 		ExitButton.setDisabled(CardUI.Card.info.rarity == Game.Rarities.CHAMPION)
 		
@@ -63,16 +64,19 @@ func setDeckSlot(_deck_slot: DeckSlot) -> void:
 		
 func setLock(state: bool) -> void:
 	LockIcon.texture = LOCK_CLOSED_TX if state else LOCK_OPEN_TX
+	LockIcon.CLICK_NOISE = lock_unlock_sfx if state else lock_lock_sfx
 	lock_state = state
 	DeckSlotUITexture.setDisabled(lock_state)
 	
 	setDeckSlotUIModulate()
 
 func onDeckSlotPressed() -> void:
+	if !selectable: return
 	onSelect(!selected)
 	pressed.emit(deck_slot, selected)
 	
 func onSelect(state: bool) -> void:
+	if !selectable: return
 	selected = state
 	setDeckSlotUIModulate()
 

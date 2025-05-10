@@ -2,6 +2,7 @@ extends Control
 
 #region Globals
 signal screen_created
+signal screen_finished
 
 var World: Node3D
 var save_file: SaveFileGD
@@ -47,6 +48,8 @@ func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Back") and PauseMenu == null:
 		PauseMenu = Game.onCreatePauseMenu(self)
 		PauseMenu.mouse_in_ui.connect(onMouseInUI)
+		PauseMenu.tree_exited.connect(func(): screen_finished.emit())
+		screen_created.emit()
 
 func setInfo(_save_file: SaveFileGD) -> void:
 	save_file = _save_file
@@ -194,11 +197,14 @@ func onDeckButtonPressed() -> void:
 func onCreateStashScreen() -> void:
 	StashScreen = Game.onCreateStashScreen(self)
 	StashScreen.mouse_in_ui.connect(onMouseInUI)
+	screen_created.emit()
+	StashScreen.tree_exited.connect(func(): screen_finished.emit())
+	StashScreen.deck_slot_changed.connect(onUpdateDeckCardAmountLabel)
 #endregion
 
 #region Deck Card Amount
 func onUpdateDeckCardAmountLabel() -> void:
-	var deck_amount: String = str(get_tree().get_node_count_in_group("DeckCardsGD"))
+	var deck_amount: String = str(Game.getSaveFile().getUsedDeckSlotCount())
 	var deck_limit: String = str(Game.getSaveFile().getDeckLimit())
 	DeckCardAmountLabel.text = deck_amount + "/" + deck_limit
 #endregion

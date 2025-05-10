@@ -1,14 +1,14 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://lv23pxgi1vf0"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_e6ab5"]
-[ext_resource type="Resource" uid="uid://6j57uasj8x66" path="res://resources/fof/archetypes/reinforcer.tres" id="2_05brf"]
-[ext_resource type="Image" uid="uid://k35gyq4mh3hj" path="res://assets/sprites/game/cards/art_pop/cedric_baldwin.png" id="2_5gqms"]
-[ext_resource type="Texture2D" uid="uid://cxqcmmljc3e87" path="res://assets/sprites/game/cards/art_mini/cedric_baldwin.png" id="2_fbhtq"]
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_xlam3"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_rlsn7"]
-[ext_resource type="Script" uid="uid://d3xulw3ft3e0n" path="res://scripts/fof/cards/card.gd" id="4_6cgmo"]
-[ext_resource type="PackedScene" uid="uid://bd2esqpmo73tk" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_pgaff"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_eavao"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_e6ab5"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/reinforcer.tres" id="2_05brf"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/cedric_baldwin.png" id="2_5gqms"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/cedric_baldwin.png" id="2_fbhtq"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_xlam3"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_rlsn7"]
+[ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_6cgmo"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_pgaff"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_eavao"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
 size = Vector3(0.663147, 1.94543, 0.526978)
@@ -38,7 +38,7 @@ active_abilities = Array[ExtResource("1_e6ab5")]([])
 flavor_text = ""
 description = "ABILITY [1]: Give an adjacent ally +1 ATT for [1] Turn"
 ascended_description = "ABILITY [2]: Give an adjacent ally +2 ATT for [1] Turn"
-art_mini_coordinate = Vector2i(83, 38)
+art_mini_coordinate = Vector2i(87, 43)
 art_mini = ExtResource("2_fbhtq")
 art_pop = ExtResource("2_5gqms")
 model = ExtResource("5_pgaff")

@@ -16,6 +16,7 @@ const ELITE_FIGHT_DIVIDER_SIZE: int = 50
 @onready var MinimapControl: Control = %MinimapControl
 
 @onready var FirstContainer: Container = %FirstContainer
+@onready var FadeCreamBackground: Control = %FadeCreamBackground
 
 var EliteCardRewardUI: Control
 
@@ -32,6 +33,7 @@ func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE) # Avoid kuba glitch
 
 func setInfo(_rewards: Rewards, _save_file: SaveFileGD, _level_type: Game.FightTypes) -> void:
+	FadeCreamBackground.onFade(true)
 	rewards = _rewards
 	save_file = _save_file
 	level_type = _level_type
@@ -46,6 +48,7 @@ func setInfo(_rewards: Rewards, _save_file: SaveFileGD, _level_type: Game.FightT
 	for reward: Reward in items:
 		onCreateReward(reward)
 	onRewardsFinished()
+	
 		
 func onCreateReward(reward: Reward) -> void:
 	if reward.item is CardGD and is_elite:

@@ -1,105 +1,15 @@
-[gd_scene load_steps=12 format=3 uid="uid://cqxjqqj3gig1b"]
+[gd_scene load_steps=15 format=3 uid="uid://cqxjqqj3gig1b"]
 
 [ext_resource type="Script" uid="uid://0tx4w8g33qop" path="res://scenes/game/map/stash_screen.gd" id="1_vh71u"]
 [ext_resource type="PackedScene" uid="uid://dxvuvb68hgxug" path="res://scenes/common/exit_button/exit_button.tscn" id="1_xnd7x"]
 [ext_resource type="PackedScene" uid="uid://c4feu28rxx6ev" path="res://scenes/game/map/deck_slot_ui.tscn" id="2_dd1xv"]
 [ext_resource type="LabelSettings" uid="uid://cnmlfs66pb1a1" path="res://resources/ui/label_settings/spicyrice_huge.tres" id="2_sli05"]
+[ext_resource type="PackedScene" uid="uid://du22nfcbi2vth" path="res://scenes/common/fade_cream_background/fade_cream_background.tscn" id="3_jpe4s"]
 [ext_resource type="Texture2D" uid="uid://dum30f1ix8v5h" path="res://assets/sprites/ui/icons/energy_limit.png" id="3_v8bki"]
 [ext_resource type="LabelSettings" uid="uid://bw613ebdspq46" path="res://resources/ui/label_settings/spicyrice_massive.tres" id="4_sli05"]
 [ext_resource type="Texture2D" uid="uid://do8qr6q0dyyiy" path="res://assets/sprites/ui/icons/deck.png" id="5_jpe4s"]
-
-[sub_resource type="Animation" id="Animation_v8bki"]
-length = 0.001
-step = 0.25
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("FadeBackground:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("ScreenManager:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 1080)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("ScreenManager/MarginContainer2/HBoxContainer/EnergyLimitContainer:modulate")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("ScreenManager/MarginContainer2/HBoxContainer/EnergyLimitContainer/EnergyLimitTexture:scale")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(1, 1)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("ScreenManager/MarginContainer2/HBoxContainer/EnergyLimitContainer/EnergyLimitTexture:rotation")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-
-[sub_resource type="Animation" id="Animation_dd1xv"]
-resource_name = "SlideUIElements"
-length = 0.25
-step = 0.25
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("FadeBackground:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.25),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.498039)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("ScreenManager:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.25),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(0, 1080), Vector2(0, 0)]
-}
+[ext_resource type="PackedScene" uid="uid://ct1cn5tc1ofmb" path="res://scenes/game/boons/boon_icon.tscn" id="9_2jssj"]
+[ext_resource type="Script" uid="uid://dnqf5f1jadalx" path="res://scenes/game/levels/boon_box.gd" id="9_jpe4s"]
 
 [sub_resource type="Animation" id="Animation_jpe4s"]
 resource_name = "EnergyLimitReached"
@@ -154,6 +64,75 @@ tracks/3/keys = {
 "values": [Color(1, 1, 1, 1), Color(1, 0, 0, 1), Color(1, 0, 0, 1), Color(1, 1, 1, 1)]
 }
 
+[sub_resource type="Animation" id="Animation_v8bki"]
+length = 0.001
+step = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ScreenManager:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 1080)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ScreenManager/MarginContainer2/HBoxContainer/EnergyLimitContainer:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ScreenManager/MarginContainer2/HBoxContainer/EnergyLimitContainer/EnergyLimitTexture:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("ScreenManager/MarginContainer2/HBoxContainer/EnergyLimitContainer/EnergyLimitTexture:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_dd1xv"]
+resource_name = "SlideUIElements"
+length = 0.25
+step = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ScreenManager:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 1080), Vector2(0, 0)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_jpe4s"]
 _data = {
 &"EnergyLimitReached": SubResource("Animation_jpe4s"),
@@ -176,15 +155,16 @@ libraries = {
 &"": SubResource("AnimationLibrary_jpe4s")
 }
 
-[node name="FadeBackground" type="ColorRect" parent="."]
-modulate = Color(1, 1, 1, 0)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(1, 0.745098, 0.14902, 1)
+[node name="FadeCreamBackground" parent="." instance=ExtResource("3_jpe4s")]
+unique_name_in_owner = true
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+grow_horizontal = 1
+grow_vertical = 1
 
 [node name="ScreenManager" type="Control" parent="."]
 layout_mode = 1
@@ -285,6 +265,8 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer"]
 layout_mode = 2
@@ -293,18 +275,53 @@ size_flags_vertical = 3
 mouse_filter = 2
 theme_override_constants/separation = 50
 
-[node name="DeckContainer" type="GridContainer" parent="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer/VBoxContainer"]
-unique_name_in_owner = true
+[node name="HBoxContainer" type="HBoxContainer" parent="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
+mouse_filter = 2
+
+[node name="BoonScrollContainer" type="ScrollContainer" parent="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+mouse_filter = 2
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer/VBoxContainer/HBoxContainer/BoonScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
-theme_override_constants/h_separation = 80
-theme_override_constants/v_separation = 80
-columns = 5
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_right = 15
+
+[node name="BoonBox" type="GridContainer" parent="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer/VBoxContainer/HBoxContainer/BoonScrollContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 0
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+columns = 2
+script = ExtResource("9_jpe4s")
+BoonIconPacked = ExtResource("9_2jssj")
+
+[node name="DeckContainer" type="VBoxContainer" parent="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+alignment = 1
+
+[node name="Control" type="Control" parent="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+mouse_filter = 2
 
 [node name="StashLabel" type="Label" parent="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer/VBoxContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 text = "Stash"
 label_settings = ExtResource("4_sli05")
@@ -317,8 +334,18 @@ layout_mode = 2
 mouse_filter = 2
 columns = 6
 
-[connection signal="mouse_entered" from="FadeBackground" to="." method="onMouseInUI" binds= [true]]
-[connection signal="mouse_exited" from="FadeBackground" to="." method="onMouseInUI" binds= [false]]
+[node name="CardUIRaycast" type="RayCast2D" parent="."]
+unique_name_in_owner = true
+target_position = Vector2(0, 0)
+collision_mask = 4
+hit_from_inside = true
+collide_with_areas = true
+collide_with_bodies = false
+
+[connection signal="mouse_in_ui" from="FadeCreamBackground" to="." method="onMouseInUI"]
 [connection signal="mouse_entered" from="ScreenManager/MarginContainer2/HBoxContainer/ExitButton" to="." method="onMouseInUI" binds= [true]]
 [connection signal="mouse_exited" from="ScreenManager/MarginContainer2/HBoxContainer/ExitButton" to="." method="onMouseInUI" binds= [false]]
 [connection signal="pressed" from="ScreenManager/MarginContainer2/HBoxContainer/ExitButton" to="." method="onExitButtonPressed"]
+[connection signal="mouse_entered" from="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer/VBoxContainer/HBoxContainer/BoonScrollContainer/MarginContainer/BoonBox" to="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer/VBoxContainer/HBoxContainer/BoonScrollContainer/MarginContainer/BoonBox" method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer/VBoxContainer/HBoxContainer/BoonScrollContainer/MarginContainer/BoonBox" to="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer/VBoxContainer/HBoxContainer/BoonScrollContainer/MarginContainer/BoonBox" method="onMouseInUI" binds= [false]]
+[connection signal="mouse_in_ui" from="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer/VBoxContainer/HBoxContainer/BoonScrollContainer/MarginContainer/BoonBox" to="." method="onMouseInUI"]

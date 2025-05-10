@@ -31,5 +31,7 @@ func onUpdateBoonAscension(Boon: BoonGD) -> void:
 	if BoonIcon != null:
 		BoonIcon.onUpdateAscension(Boon.ascended)
 		
+var is_mouse_in_ui: bool
 func onMouseInUI(state: bool) -> void:
+	is_mouse_in_ui = state
 	mouse_in_ui.emit(state)

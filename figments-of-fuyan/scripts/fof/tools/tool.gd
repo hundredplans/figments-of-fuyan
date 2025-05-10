@@ -112,9 +112,14 @@ func onRegularReset() -> void: #  Fof Init, Awakened, Death, Level Start, Level 
 func onCardTurnPassed() -> void:
 	pass
 	
-func onToolUnequipped() -> void:
+func onToolUnequippedDefault(keep_tool: bool) -> void:
+	onToolUnequipped()
 	if Card.is_in_group("FieldCardsGD"): onToolHolderDeath()
-	onClear()
+	if !keep_tool:
+		onClear()
+	
+func onToolUnequipped() -> void:
+	pass
 	
 func isLevelVisible() -> bool:
 	return Card.isLevelVisible()
