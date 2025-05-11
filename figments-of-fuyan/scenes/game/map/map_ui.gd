@@ -190,6 +190,7 @@ func onDisableCardsWithTool(CardUI: Control) -> bool:
 #endregion
 
 #region Deck
+const FADE_BOON_BOX_TIME: float = 0.25
 var StashScreen: Control
 func onDeckButtonPressed() -> void:
 	onCreateStashScreen()
@@ -198,8 +199,19 @@ func onCreateStashScreen() -> void:
 	StashScreen = Game.onCreateStashScreen(self)
 	StashScreen.mouse_in_ui.connect(onMouseInUI)
 	screen_created.emit()
-	StashScreen.tree_exited.connect(func(): screen_finished.emit())
+	StashScreen.tree_exited.connect(onStashExited)
+	StashScreen.exit_start.connect(onStashExitStart)
 	StashScreen.deck_slot_changed.connect(onUpdateDeckCardAmountLabel)
+	
+	var tween := create_tween()
+	tween.tween_property(BoonBox, "modulate:a", 0.0, FADE_BOON_BOX_TIME)
+	
+func onStashExited() -> void:
+	screen_finished.emit()
+	
+func onStashExitStart() -> void:
+	var tween := create_tween()
+	tween.tween_property(BoonBox, "modulate:a", 1.0, FADE_BOON_BOX_TIME)
 #endregion
 
 #region Deck Card Amount

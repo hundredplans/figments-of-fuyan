@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=3 uid="uid://4frkgs7wjkec"]
+
+[ext_resource type="PackedScene" uid="uid://cmy0opngqsj3j" path="res://assets/models/fof/tiles/tile.tscn" id="1_55n04"]
+[ext_resource type="Script" uid="uid://d20srv2a52r02" path="res://test/tile_test.gd" id="1_voult"]
+[ext_resource type="Script" uid="uid://m4j4oush86vt" path="res://addons/movement_camera.gd" id="3_m064n"]
+[ext_resource type="Environment" uid="uid://g3ihmrpunr2b" path="res://assets/environments/main_menu_environment.tres" id="4_4uvea"]
+
+[node name="TileTest" type="Node3D"]
+script = ExtResource("1_voult")
+
+[node name="Tiles" type="Node3D" parent="."]
+unique_name_in_owner = true
+
+[node name="Tile" parent="Tiles" instance=ExtResource("1_55n04")]
+
+[node name="Tile2" parent="Tiles" instance=ExtResource("1_55n04")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.71626, 0, 0)
+
+[node name="Tile3" parent="Tiles" instance=ExtResource("1_55n04")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.43877, 0, 0)
+
+[node name="Tile4" parent="Tiles" instance=ExtResource("1_55n04")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.06111, 0, 0)
+
+[node name="FreeLookCamera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.40351, 2.0252, 3.17787)
+script = ExtResource("3_m064n")
+metadata/_custom_type_script = "uid://m4j4oush86vt"
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("4_4uvea")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.879665, 0.29622, -0.372079, 0, 0.782347, 0.622842, 0.475594, -0.547893, 0.688204, 0, 2.95929, 0)

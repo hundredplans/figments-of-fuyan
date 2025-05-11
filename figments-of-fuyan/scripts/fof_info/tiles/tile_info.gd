@@ -21,6 +21,7 @@ const YELLOW_TILE_INTENT_MODEL_PATH: String = "res://assets/models/general/tile_
 
 @export var tile_fill: PackedScene
 @export var decoration_models: Array[PackedScene]
+@export var tile_height: float = 0.3
 
 static func getInfoPath() -> String: return "res://resources/fof/tile_objects"
 func getModel(variation: int, is_decoration: bool = false) -> PackedScene:

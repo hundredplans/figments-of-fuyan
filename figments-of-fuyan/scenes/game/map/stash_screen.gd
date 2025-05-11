@@ -1,10 +1,10 @@
 extends Control
 
+signal exit_start
 signal deck_slot_changed
 signal mouse_in_ui
 
 @onready var CardUIRaycast: RayCast2D = %CardUIRaycast
-@onready var StashLabel: Label = %StashLabel
 @onready var EnergyLimitLabel: Label = %EnergyLimitLabel
 @onready var DeckLimitLabel: Label = %DeckLimitLabel
 @onready var DeckContainer: Container = %DeckContainer
@@ -89,6 +89,7 @@ func onMouseInUI(state: bool) -> void:
 	is_mouse_in_ui = state
 
 func onExitButtonPressed() -> void:
+	exit_start.emit()
 	AniPlayer.play_backwards("SlideUIElements")
 	FadeCreamBackground.onFade(false)
 	await AniPlayer.animation_finished
@@ -144,12 +145,6 @@ func onStashCardPressed(CardUI: Control) -> void:
 		if AniPlayer.is_playing(): return
 		
 		AniPlayer.play("EnergyLimitReached")
-		EnergyLimitTexture.reparent(self, true)
-		EnergyLimitTexture.pivot_offset = EnergyLimitTexture.size / 2
-		
-		await AniPlayer.animation_finished
-		EnergyLimitTexture.reparent(EnergyLimitContainer)
-		EnergyLimitContainer.move_child(EnergyLimitTexture, 0)
 		return
 		
 	for StashCardUI: Control in StashContainer.get_children():
