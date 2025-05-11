@@ -1,20 +1,15 @@
-[gd_resource type="Resource" script_class="TileInfo" load_steps=9 format=3 uid="uid://bu77rnaaqkpix"]
+[gd_resource type="Resource" script_class="TileInfo" load_steps=4 format=3 uid="uid://bu77rnaaqkpix"]
 
 [ext_resource type="Script" uid="uid://dhxyu4x38jaeb" path="res://scripts/fof_info/tiles/tile_info.gd" id="1_h0txr"]
 [ext_resource type="Script" uid="uid://bojtu0nmjtj6" path="res://scripts/fof/tiles/tile.gd" id="1_y0nrn"]
-[ext_resource type="PackedScene" uid="uid://bvy54r24xv8u3" path="res://assets/models/fof/tiles/cactus_tile_stair_overworld.glb" id="2_05xym"]
-[ext_resource type="PackedScene" uid="uid://dhatkb6er04s6" path="res://assets/models/fof/tiles/cactus_tile.glb" id="2_nbjwn"]
-[ext_resource type="PackedScene" uid="uid://bkb2e2ag4oryy" path="res://assets/models/fof/tiles/cactus_tile_stair.glb" id="3_tgtil"]
-[ext_resource type="PackedScene" uid="uid://be2k8q0t8o2aa" path="res://assets/models/fof/tiles/cactus_tile_overworld.glb" id="4_y5sia"]
 [ext_resource type="Script" uid="uid://df278rs03up0b" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="5_nherh"]
-[ext_resource type="PackedScene" uid="uid://dcfblgmpx0eqv" path="res://assets/models/fof/tiles/cactus_tile_fill.glb" id="7_gkc7i"]
 
 [resource]
 script = ExtResource("1_h0txr")
-tile_fill = ExtResource("7_gkc7i")
-decoration_models = Array[PackedScene]([ExtResource("4_y5sia"), ExtResource("2_05xym")])
-models = Array[PackedScene]([ExtResource("2_nbjwn"), ExtResource("3_tgtil")])
-points = Array[Array]([[Vector3(-0.416633, 0.3, 0.549078), Vector3(-0.679097, 0.3, 0.00782079), Vector3(-0.379376, 0.3, -0.615729), Vector3(0.31699, 0.3, -0.607425), Vector3(0.675387, 0.3, -0.073524), Vector3(0.326611, 0.3, 0.628924), Vector3(0.00770529, 0.3, 0.0161065)], [Vector3(-0.309034, 0.479687, 0.5221), Vector3(-0.741253, 0.472888, -0.177382), Vector3(-0.329283, 0.546349, -0.809887), Vector3(0.436705, 0.530591, -0.747867), Vector3(0.866024, 0.539835, -0.117999), Vector3(0.261783, 1.35428, -0.605985), Vector3(-0.0304617, 0.95085, -0.102337), Vector3(0.397327, 0.643136, 0.484656)]])
+decoration_models = Array[PackedScene]([])
+tile_height = 0.3
+models = Array[PackedScene]([])
+points = Array[Array]([])
 id = 24
 name = "Cactus Tile"
 gdscript = ExtResource("1_y0nrn")

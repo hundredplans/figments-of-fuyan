@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://do8dpfrojdkyu"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_iuqlh"]
+top_radius = 1.0
+bottom_radius = 1.0
+height = 0.6
+radial_segments = 6
+rings = 1
+cap_top = false
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ec26o"]
+points = PackedVector3Array(0.86, 0, -0.5, 0.86, 0, 0.5, -0.86, 0, -0.5, -0.86, 0, 0.5, 0, 0, 1, 0, 0, -1, 0.86, 0.6, 0.5, 0.86, 0.6, -0.5, -0.86, 0.6, 0.5, -0.86, 0.6, -0.5, 0, 0.6, 1, 0, 0.6, -1)
+
+[node name="TileFill" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+mesh = SubResource("CylinderMesh_iuqlh")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_ec26o")
