@@ -1,15 +1,22 @@
-[gd_resource type="Resource" script_class="TileInfo" load_steps=4 format=3 uid="uid://b6o152aww6kxw"]
+[gd_resource type="Resource" script_class="TileInfo" load_steps=7 format=3 uid="uid://b6o152aww6kxw"]
 
 [ext_resource type="Script" uid="uid://bojtu0nmjtj6" path="res://scripts/fof/tiles/tile.gd" id="1_bjxq0"]
 [ext_resource type="Script" uid="uid://dhxyu4x38jaeb" path="res://scripts/fof_info/tiles/tile_info.gd" id="1_y3y5i"]
 [ext_resource type="Script" uid="uid://df278rs03up0b" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="3_cb565"]
+[ext_resource type="Material" uid="uid://p16i6b5n5j2m" path="res://resources/materials/game/tile_material/varoma_tile/varoma_tile_greyscale_material.tres" id="4_43mqo"]
+[ext_resource type="Material" uid="uid://dub50qrj3fmaw" path="res://resources/materials/game/tile_material/varoma_tile/varoma_tile_material.tres" id="5_cb565"]
+[ext_resource type="Material" uid="uid://cwgt42e81io2h" path="res://resources/materials/game/tile_material/palm_tile/palm_tile_fill_material.tres" id="6_uj3t0"]
 
 [resource]
 script = ExtResource("1_y3y5i")
-decoration_models = Array[PackedScene]([])
-tile_height = 0.3
-models = Array[PackedScene]([])
-points = Array[Array]([])
+tile_top_material = ExtResource("5_cb565")
+tile_bottom_material = ExtResource("5_cb565")
+tile_fill_material = ExtResource("6_uj3t0")
+tile_top_greyscale_material = ExtResource("4_43mqo")
+tile_bottom_greyscale_material = ExtResource("4_43mqo")
+tile_fill_greyscale_material = ExtResource("6_uj3t0")
+randomise_top_uv_offset = false
+is_short = false
 id = 28
 name = "Varoma Tile"
 gdscript = ExtResource("1_bjxq0")

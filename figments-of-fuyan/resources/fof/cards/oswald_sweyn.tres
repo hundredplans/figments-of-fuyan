@@ -1,14 +1,14 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://dack0qyxbdoql"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_1sw1f"]
-[ext_resource type="Resource" path="res://resources/fof/archetypes/warden.tres" id="2_2lk38"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/oswald_sweyn.png" id="2_cer3k"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/oswald_sweyn.png" id="2_fum73"]
-[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_gxyms"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_mhdn6"]
-[ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_6o5oo"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_x4eag"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_0kgk1"]
+[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_1sw1f"]
+[ext_resource type="Resource" uid="uid://dk14kkjps176t" path="res://resources/fof/archetypes/warden.tres" id="2_2lk38"]
+[ext_resource type="Image" uid="uid://bvf5fvnq4m6av" path="res://assets/sprites/game/cards/art_pop/oswald_sweyn.png" id="2_cer3k"]
+[ext_resource type="Texture2D" uid="uid://crtmr60f4iqqw" path="res://assets/sprites/game/cards/art_mini/oswald_sweyn.png" id="2_fum73"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_gxyms"]
+[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_mhdn6"]
+[ext_resource type="Script" uid="uid://d3xulw3ft3e0n" path="res://scripts/fof/cards/card.gd" id="4_6o5oo"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_0kgk1"]
+[ext_resource type="PackedScene" uid="uid://b5jijoyfjdmma" path="res://assets/models/fof/cards/oswald_sweyn.glb" id="7_2lk38"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
 size = Vector3(0.663147, 1.94543, 0.526978)
@@ -41,7 +41,7 @@ ascended_description = ""
 art_mini_coordinate = Vector2i(92, 24)
 art_mini = ExtResource("2_fum73")
 art_pop = ExtResource("2_cer3k")
-model = ExtResource("5_x4eag")
+model = ExtResource("7_2lk38")
 points = [Vector3(0.136382, 1.38799, -0.25293), Vector3(-0.149831, 1.3978, -0.25293), Vector3(0.184447, 1.07484, -0.25293), Vector3(-0.199463, 1.09244, -0.25293), Vector3(0.0205718, 1.80753, -0.25293), Vector3(0.000764989, 0.787427, -0.25293), Vector3(0.138302, 0.452581, -0.25293), Vector3(-0.163161, 0.451389, -0.25293), Vector3(-0.00559452, 1.82542, 0.274048), Vector3(-0.137705, 1.47483, 0.274048), Vector3(0.150202, 1.49088, 0.274048), Vector3(0.15502, 1.15623, 0.274048), Vector3(-0.137258, 1.18364, 0.274048), Vector3(0.00930688, 0.785355, 0.274048), Vector3(-0.161626, 0.424052, 0.274048), Vector3(0.186096, 0.414073, 0.274048), Vector3(0.340027, 1.80814, 0.0492667), Vector3(0.340027, 1.35601, -0.00736688), Vector3(0.340027, 0.892121, 0.016009), Vector3(0.340027, 0.408994, 0.0462698), Vector3(-0.32312, 0.416334, 0.0431835), Vector3(-0.32312, 0.916279, -0.00713519), Vector3(-0.32312, 1.19264, -0.018978), Vector3(-0.32312, 1.79059, 0.00938033)]
 collision_shape = SubResource("PackedScene_d6dgo")
 stat = 1.947

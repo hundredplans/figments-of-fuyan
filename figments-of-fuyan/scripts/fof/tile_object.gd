@@ -67,24 +67,13 @@ func onAfterLoadModel() -> void:
 func onFofInit() -> void:
 	super()
 #endregion
-	
-#region Variations
-func clampVariation(i: int) -> void:
-	if variation >= 0:
-		variation += i
-		if variation >= info.models.size(): variation = 0
-		elif variation < 0: variation = info.models.size() - 1
-#endregion
 
 #region Level Visible
 func onUpdateLevelVisible() -> void:
 	onApplyGreyscaleMaterial()
-				
+	
 func onApplyGreyscaleMaterial() -> void:
-	var greyscale_material: ShaderMaterial = load(info.GREYSCALE_MATERIAL) if !isLevelVisible() and !Helper.admin_datastore.see else null
-	for mesh in getMeshes():
-		for surface_id in mesh.get_surface_override_material_count():
-			mesh.set_surface_override_material(surface_id, greyscale_material)
+	pass
 #endregion
 
 func onLoadDataLevelFofInit() -> void:
@@ -94,8 +83,3 @@ func onCreateAdjustedPoints() -> void:
 	var theta: float = rotation.y
 	adjusted_points = getLevelPoints().map(func(x: Vector3): return (Game.onRotatePosition(x, theta)) + position)
 	
-	#for point in adjusted_points:
-		#var Point: MeshInstance3D = load(info.POINT_PATH).instantiate()
-		#Point.setInfo(self)
-		#add_child(Point)
-		#Point.global_position = point

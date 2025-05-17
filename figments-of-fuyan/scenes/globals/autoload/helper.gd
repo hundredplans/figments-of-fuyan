@@ -5,7 +5,7 @@ const ADMIN_DATASTORE_PATH: String = "res://resources/datastore/admin/admin_data
 const SAVE_FILE_MAX_AMOUNT: int = 3
 
 #region Resources
-var GDSCRIPT_TYPES: Array = [AreaInfo, LevelInfo, PalmLevelInfo, CactusLevelInfo, \
+var GDSCRIPT_TYPES: Array = [AreaInfo, LevelInfo, \
 	CardInfo, ChampionCardInfo, BoonInfo, ToolInfo, MapNodeInfo, SaveFileInfo, EncounterInfo,\
 	TileObjectInfo, TileInfo, ObjectInfo, GameObjectInfo, TraitInfo, StatusEffectInfo, FieldEffectInfo,\
 	LoreBookInfo, ArchetypeInfo, ActionWrapperInfo, VFXInfo, EpicCardInfo]

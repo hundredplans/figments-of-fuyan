@@ -1,14 +1,23 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=15 format=3 uid="uid://ct8vy8hybh3wp"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_ou3ee"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/gene_gallo_roman.png" id="2_6cjoi"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/gene_gallo_roman.png" id="2_ctojg"]
-[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_ewxrt"]
-[ext_resource type="Resource" path="res://resources/fof/archetypes/adventurer.tres" id="2_xocpm"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_xdl1w"]
-[ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_fnjxe"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_qug0o"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_bfhlm"]
+[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_ou3ee"]
+[ext_resource type="Texture2D" uid="uid://c4swx2x83oeug" path="res://assets/sprites/game/cards/art_mini/gene_gallo_roman.png" id="2_6cjoi"]
+[ext_resource type="Image" uid="uid://cagnnyn0jah5t" path="res://assets/sprites/game/cards/art_pop/gene_gallo_roman.png" id="2_ctojg"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_ewxrt"]
+[ext_resource type="Resource" uid="uid://di2pr0npo4h1p" path="res://resources/fof/archetypes/adventurer.tres" id="2_xocpm"]
+[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_xdl1w"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_bfhlm"]
+[ext_resource type="Script" uid="uid://bkkdavjpjqgsa" path="res://scripts/fof/cards/gene_gallo_roman.gd" id="6_xocpm"]
+[ext_resource type="Script" uid="uid://cgwafo3gsalxd" path="res://scripts/saved_data/traits/saved_data_ranged.gd" id="7_s2yyt"]
+[ext_resource type="PackedScene" uid="uid://3qyoualochqf" path="res://assets/models/fof/cards/gene_gallo_roman.glb" id="7_xocpm"]
+
+[sub_resource type="Resource" id="Resource_s2yyt"]
+script = ExtResource("7_s2yyt")
+ranged = 3
+id = 2
+first_init = false
+public_id = 0
+metadata/_custom_type_script = "uid://cgwafo3gsalxd"
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
 size = Vector3(0.663147, 1.94543, 0.526978)
@@ -26,6 +35,14 @@ _bundled = {
 "version": 3
 }
 
+[sub_resource type="Resource" id="Resource_ug0ym"]
+script = ExtResource("7_s2yyt")
+ranged = 2
+id = 2
+first_init = false
+public_id = 0
+metadata/_custom_type_script = "uid://cgwafo3gsalxd"
+
 [resource]
 script = ExtResource("3_xdl1w")
 attack = 2
@@ -33,15 +50,15 @@ health = 1
 speed = 2
 energy = 2
 rarity = 4
-initial_traits = Array[ExtResource("2_ewxrt")]([])
+initial_traits = Array[ExtResource("2_ewxrt")]([SubResource("Resource_ug0ym")])
 active_abilities = Array[ExtResource("1_ou3ee")]([])
 flavor_text = ""
-description = "RANGED [1-2]; On Hit {2}: This attack ignores ARMOR & SHIELD"
-ascended_description = "RANGED [1-3]; On Hit {2}: This attack ignores ARMOR & SHIELD"
+description = "RANGED [1-2]; On Hit {[X]/2}: This attack ignores ARMOR & SHIELD"
+ascended_description = "RANGED [1-3]; On Hit {[x]/2}: This attack ignores ARMOR & SHIELD"
 art_mini_coordinate = Vector2i(74, 51)
 art_mini = ExtResource("2_6cjoi")
 art_pop = ExtResource("2_ctojg")
-model = ExtResource("5_qug0o")
+model = ExtResource("7_xocpm")
 points = [Vector3(0.136382, 1.38799, -0.25293), Vector3(-0.149831, 1.3978, -0.25293), Vector3(0.184447, 1.07484, -0.25293), Vector3(-0.199463, 1.09244, -0.25293), Vector3(0.0205718, 1.80753, -0.25293), Vector3(0.000764989, 0.787427, -0.25293), Vector3(0.138302, 0.452581, -0.25293), Vector3(-0.163161, 0.451389, -0.25293), Vector3(-0.00559452, 1.82542, 0.274048), Vector3(-0.137705, 1.47483, 0.274048), Vector3(0.150202, 1.49088, 0.274048), Vector3(0.15502, 1.15623, 0.274048), Vector3(-0.137258, 1.18364, 0.274048), Vector3(0.00930688, 0.785355, 0.274048), Vector3(-0.161626, 0.424052, 0.274048), Vector3(0.186096, 0.414073, 0.274048), Vector3(0.340027, 1.80814, 0.0492667), Vector3(0.340027, 1.35601, -0.00736688), Vector3(0.340027, 0.892121, 0.016009), Vector3(0.340027, 0.408994, 0.0462698), Vector3(-0.32312, 0.416334, 0.0431835), Vector3(-0.32312, 0.916279, -0.00713519), Vector3(-0.32312, 1.19264, -0.018978), Vector3(-0.32312, 1.79059, 0.00938033)]
 collision_shape = SubResource("PackedScene_d6dgo")
 stat = 1.947
@@ -51,9 +68,9 @@ plus_attack = 0
 plus_health = 0
 plus_speed = 0
 plus_energy = 0
-ascended_traits = Array[ExtResource("2_ewxrt")]([])
+ascended_traits = Array[ExtResource("2_ewxrt")]([SubResource("Resource_s2yyt")])
 archetype = ExtResource("2_xocpm")
 id = 65
 name = "Gene Gallo-Roman"
-gdscript = ExtResource("4_fnjxe")
+gdscript = ExtResource("6_xocpm")
 saved_data = ExtResource("6_bfhlm")

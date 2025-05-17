@@ -87,10 +87,6 @@ func onProcessAction(action: Action) -> void:
 
 #region Material Updates
 
-var half_transparent_base_material: ShaderMaterial = preload("res://resources/materials/game/base_material_half_transparent.tres")
-func setHalfTransparent() -> void:
-	setMeshesMaterial(half_transparent_base_material)
-
 func setRegularMaterial() -> void:
 	setMeshesMaterial()
 	

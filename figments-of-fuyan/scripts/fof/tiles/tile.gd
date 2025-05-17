@@ -19,6 +19,10 @@ var explored: ExploredGD
 
 signal change_hover_card_state
 const SHOW_CARD_AT_HOVER_DELAY: float = 1
+
+var OutlineMesh: MeshInstance3D
+var BottomMesh: MeshInstance3D
+var TopMesh: MeshInstance3D
 #endregion
 
 #region Saved Data
@@ -99,11 +103,36 @@ func getTileFillPoints() -> Array:
 		for i in range(min_height, height, 1):
 			points += Game.tile_face_directions.map(func(x: Vector3): return Vector3(x.x, (i * 0.6) + 0.45 - position.y, x.z))
 	return points
+	
 #endregion
 #region Material Updates
-func setMeshesMaterial(mat: Material = null, parent: Node3D = self) -> void:
-	for mesh in getMeshes(parent):
-		mesh.set_surface_override_material(0, mat)
+func setRegularMaterial() -> void:
+	setTileMaterial()
+			
+func setTileMaterial(is_greyscale: bool = false) -> void:
+	BottomMesh.set_surface_override_material(0, info.getTileBottomMaterial() if !is_greyscale else info.getTileBottomGreyscaleMaterial())
+	TopMesh.set_surface_override_material(0, info.getTileTopMaterial() if !is_greyscale else info.getTileTopGreyscaleMaterial())
+	setTileFillMaterial()
+	
+	if info.getRandomiseTopUVOffset():
+		if !is_decoration:
+			var n: Variant = TopMesh.get_instance_shader_parameter("uv_offset")
+			if n == null:
+				var uv_offset := Vector2(randf(), randf())
+				TopMesh.set_instance_shader_parameter("uv_offset", uv_offset)
+		else:
+			pass
+		
+func setTileFillMaterial(is_greyscale: bool = false) -> void:
+	if TileFill != null:
+		var TileFillMesh: MeshInstance3D = TileFill.get_node("MeshInstance3D") if TileFill != null else null
+		TileFillMesh.set_surface_override_material(0, info.getTileFillMaterial() if !is_greyscale else info.getTileFillGreyscaleMaterial())
+		
+func onApplyGreyscaleMaterial() -> void:
+	setTileMaterial(!isLevelVisible() and !Helper.admin_datastore.see)
+		
+func getPoints() -> Array:
+	return [Vector3(0, 0.3, 0), Vector3(0, 0, 0)] + Game.tile_face_directions.map(func(x: Vector3): return x + Vector3(0, 0.15, 0))
 		
 func setOutlineMaterial() -> void:
 	var mat: Material = null
@@ -112,9 +141,9 @@ func setOutlineMaterial() -> void:
 	
 	if !is_ui_visible:
 		if level_visible:
-			mat = null
+			mat = load(info.REGULAR_OUTLINE_MATERIAL)
 		elif !level_visible:
-			mat = load(info.GREYSCALE_MATERIAL)
+			mat = load(info.GREYSCALE_OUTLINE_MATERIAL)
 	elif in_active_effect_pickable:
 		mat = load(info.ACTIVE_EFFECT_PICKABLE_MATERIAL)
 	elif in_active_effect_range:
@@ -131,9 +160,11 @@ func setOutlineMaterial() -> void:
 	elif is_path_hovered and !is_action_lock: mat = load(info.PATH_HOVERED_MATERIAL)
 	elif is_hovered and !is_action_lock: mat = load(info.HOVERED_MATERIAL)
 	elif display_movement_path and !is_action_lock: mat = load(info.MOVEMENT_RANGE_MATERIAL)
-	elif !level_visible: mat = load(info.GREYSCALE_MATERIAL)
+	elif !level_visible: mat = load(info.GREYSCALE_OUTLINE_MATERIAL)
+	
+	if mat == null: mat = load(info.REGULAR_OUTLINE_MATERIAL)
 			
-	getMeshes()[0].set_surface_override_material(1, mat)
+	OutlineMesh.set_surface_override_material(0, mat)
 #endregion
 #region Collision Layers
 func setDefaultCollisionLayers() -> void:
@@ -147,10 +178,11 @@ func onCreateTileFill(state: bool) -> String:
 	tile_fill = state
 	if TileFill != null: TileFill.queue_free()
 	if tile_fill:
-		TileFill = info.tile_fill.instantiate()
+		TileFill = load(info.TILE_FILL_SCENE_PATH).instantiate()
 		add_child(TileFill)
 		TileFill.global_position.y = 0
 		TileFill.scale.y = getHeight()
+		setTileFillMaterial()
 		return "DESTROY"
 	return "CREATE"
 	
@@ -181,14 +213,18 @@ func onLoadDataLevelFofInit() -> void:
 func onLoadModel() -> void:
 	if Model != null: Model.queue_free()
 	
-	Model = info.getModel(variation, is_decoration).instantiate()
-	add_child(Model)
+	Model = info.getModel(self, is_decoration)
+	OutlineMesh = Model.get_node("OutlineMeshInstance3D")
+	BottomMesh = Model.get_node("BottomMeshInstance3D")
+	TopMesh = Model.get_node("TopMeshInstance3D")
 	
 	setCoords(coords)
 	setTileRotation(tile_rotation)
 	
 	onCreateTileFill(tile_fill)
 	onAfterLoadModel()
+	setRegularMaterial()
+	setOutlineMaterial()
 	
 func onLoadDataLevel() -> void:
 	super()
@@ -393,6 +429,12 @@ func onCreateAdjustedPoints() -> void:
 	adjusted_points = getLevelPoints().map(func(x: Vector3): return (Game.onRotatePosition(x, theta)) + position)
 	if Game.getAdjacentCoords(coords, 1).any(isAdjacentCoordsNotCoverPoints): # If any don't cover points, any false by default
 		adjusted_points += getTileFillPoints().map(func(x: Vector3): return x + position)
+		
+	#for point in adjusted_points:
+		#var Point: MeshInstance3D = load(info.POINT_PATH).instantiate()
+		#Point.setInfo(self)
+		#add_child(Point)
+		#Point.global_position = point
 		
 func isAdjacentCoordsNotCoverPoints(x: Vector4i) -> bool:
 	var Tile: TileGD = Game.getTile(x)

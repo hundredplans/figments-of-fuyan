@@ -9,11 +9,6 @@ class_name EpicCardInfo extends FofInfo
 @export var boon_id: int
 @export_group("")
 
-@export_group("Art")
-@export var art_mini_coordinate: Vector2i
-@export var art_mini: Texture2D
-@export_group("")
-
 @export var awaken_boss_intent_name: String
 
 enum SpeedOrderOverride {FIRST, LAST}
@@ -30,7 +25,7 @@ static func getInfoPath() -> String: return "res://resources/fof/epic_cards"
 static func getFofName() -> String: return "EpicCard"
 
 func getIcon() -> Texture2D:
-	return art_mini
+	return Helper.getFofInfoID(CardInfo, card_id).art_mini
 	
 func getName(phase: int = 1) -> String:
 	return phases[phase - 1].getName()

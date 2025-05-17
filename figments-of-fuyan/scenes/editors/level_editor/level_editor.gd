@@ -237,7 +237,9 @@ func onTileObjectInfoSelected(data: SavedData, remove_last: bool = true) -> void
 	HoverModel.setRayPickable(true)
 	HoverModel.position = Vector3(0, 10000, 0)
 	HoverModel.setCollisionLayers(0)
-	HoverModel.setHalfTransparent()
+	
+	if HoverModel is ObjectGD:
+		HoverModel.setHalfTransparent()
 	
 	var coords := Vector4i(0, 0, 0, -1)
 	if HoverModel is TileGD and HoverStaticBody != null: coords = HoverStaticBody.coords
@@ -340,12 +342,13 @@ func _on_camera_3d_camera_panning(_is_camera_panning: bool):
 #region Variations
 var is_scroll_disabled: bool = false
 func onChangeHoverModelVariation(direction: int) -> void:
+	if HoverModel is TileGD: return
 	HoverModel.clampVariation(direction)
 	onTileObjectInfoSelected(HoverModel.onSave(), true)
 	
 func onChangeMouseTileObjectVariation(direction: int) -> void:
 	var TileObject: TileObjectGD = onFindMouseTileObject()
-	if TileObject != null:
+	if TileObject != null and TileObject is ObjectGD:
 		TileObject.clampVariation(direction)
 		TileObject.onLoadModel()
 		
@@ -476,7 +479,7 @@ func onNewEmptyLevel() -> void:
 				if abs(y) <= Y_MAX: onPlaceBaseTile(Vector4i(x, y, -x-y, 0))
 		return
 		
-	loaded = Helper.getFofInfoID(AreaInfo, selected_area_id).base_level_script.new()
+	loaded = LevelInfo.new()
 	for x in range(-DEFAULT_LEVEL_SIZE, (DEFAULT_LEVEL_SIZE + 1)):
 		for y in range(max(-DEFAULT_LEVEL_SIZE, -x - DEFAULT_LEVEL_SIZE), min(DEFAULT_LEVEL_SIZE, -x + DEFAULT_LEVEL_SIZE) + 1):
 			onPlaceBaseTile(Vector4i(x, y, -x-y, 0))
@@ -503,7 +506,7 @@ func onSaveLevel() -> void:
 	
 	if !is_decoration:
 		if loaded is DecorationDatastore:
-			loaded = Helper.getFofInfoID(AreaInfo, current_area_id).base_level_script.new()
+			loaded = LevelInfo.new()
 			
 		if level_name != loaded.name:
 			var new_level: LevelInfo = onFindLevelByName(level_name)

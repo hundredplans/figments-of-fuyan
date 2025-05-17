@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://72b0rtn2lvjo"]
+
+[ext_resource type="Shader" uid="uid://dc740q2ed5f7f" path="res://resources/shaders/albedo_greyscale_material.gdshader" id="1_1aujd"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_1aujd")
+shader_parameter/color = Color(0.478431, 1, 1, 1)

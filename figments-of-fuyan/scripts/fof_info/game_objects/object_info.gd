@@ -5,10 +5,9 @@ class_name ObjectInfo extends TileObjectInfo
 @export var lock_tile: bool
 @export var ignore_collisions: bool
 @export var solids: Array[bool]
-
-@export_group("Interactables")
+@export var models: Array[PackedScene]
+@export var points: Array[Array]
 @export var active_effects: Array[ActiveEffectDatastore]
-@export_group("")
 
 const SPAWN_PARTICLE_SCENE_PATH: String = "res://scenes/particles/spawn_particle.tscn"
 const SMOKE_PARTICLE_SCENE_PATH: String = "res://scenes/particles/smoke_particle.tscn"
@@ -21,3 +20,5 @@ const SPAWN_GROUP_LABEL_SCENE_PATH: String = "res://scenes/game/objects/spawns/s
 
 static func getInfoPath() -> String: return "res://resources/fof/tile_objects"
 static func getFofName() -> String: return "Object"
+func getModel(variation: int) -> PackedScene:
+	return models[variation]

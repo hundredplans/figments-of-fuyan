@@ -78,7 +78,7 @@ void fragment() {
 	METALLIC = n_out7p0;
 	ROUGHNESS = n_out12p0;
 	EMISSION = vec3(n_out15p0.xyz);
-	
+
 	SPECULAR = specular;
 	{
 		float fade_distance = length(VERTEX);

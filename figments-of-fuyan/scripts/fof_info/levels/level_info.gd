@@ -1,6 +1,6 @@
 class_name LevelInfo extends FofInfo
+
 @export_group("Automatic")
-@export var area_id: int
 @export var data: Array
 @export var lights: Array[PackedScene]
 @export_group("")
@@ -15,9 +15,8 @@ class_name LevelInfo extends FofInfo
 
 const PALM_ISLAND_RESOURCES: String = "res://resources/datastore/areas/coconut_springs/palm_island_resources.tres"
 
-func setInfo(_name: String = "", _area_id: int = 1) -> void:
+func setInfo(_name: String = "") -> void:
 	name = _name
-	area_id = _area_id
 	
 static func getFofName() -> String: return "Level"
 	

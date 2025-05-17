@@ -1,15 +1,21 @@
-[gd_resource type="Resource" script_class="TileInfo" load_steps=4 format=3 uid="uid://bopwxdjpvlb0g"]
+[gd_resource type="Resource" script_class="TileInfo" load_steps=6 format=3 uid="uid://bopwxdjpvlb0g"]
 
 [ext_resource type="Script" uid="uid://dhxyu4x38jaeb" path="res://scripts/fof_info/tiles/tile_info.gd" id="1_fcid4"]
 [ext_resource type="Script" uid="uid://bmh1atep8q3gg" path="res://scripts/fof/tiles/shallow_water_tile.gd" id="1_wr3qb"]
 [ext_resource type="Script" uid="uid://df278rs03up0b" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="3_52o1c"]
+[ext_resource type="Material" uid="uid://cp5v4775h5g2q" path="res://resources/materials/game/tile_material/shallow_water_tile/shallow_water_tile_material.tres" id="4_5b3mn"]
+[ext_resource type="Material" uid="uid://72b0rtn2lvjo" path="res://resources/materials/game/tile_material/shallow_water_tile/shallow_water_tile_greyscale_material.tres" id="4_p7fuq"]
 
 [resource]
 script = ExtResource("1_fcid4")
-decoration_models = Array[PackedScene]([])
-tile_height = 0.2
-models = Array[PackedScene]([])
-points = Array[Array]([])
+tile_top_material = ExtResource("4_5b3mn")
+tile_bottom_material = ExtResource("4_5b3mn")
+tile_fill_material = ExtResource("4_5b3mn")
+tile_top_greyscale_material = ExtResource("4_p7fuq")
+tile_bottom_greyscale_material = ExtResource("4_p7fuq")
+tile_fill_greyscale_material = ExtResource("4_p7fuq")
+randomise_top_uv_offset = false
+is_short = true
 id = 7
 name = "Shallow Water Tile"
 gdscript = ExtResource("1_wr3qb")

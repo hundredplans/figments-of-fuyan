@@ -136,7 +136,8 @@ func onAreaFinished() -> void:
 	
 func onChooseArea(world: int = 1) -> void:
 	var area_id: int = Helper.getFofInfoArray(AreaInfo)\
-		.filter(func(x: AreaInfo): return x.world != null and x.world.world == world).pick_random().id
+		.filter(func(x: AreaInfo): return x.world != null and x.world.world == world).pick_random().id\
+		if Helper.admin_datastore.starting_area_id == 0 else Helper.admin_datastore.starting_area_id
 	var area_data: SavedDataArea = SavedDataArea.new(area_id, true)
 	area = SavedData.onLoadModel(area_data, get_parent())
 	area.load_level.connect(onLoadLevel)

@@ -1,15 +1,23 @@
-[gd_resource type="Resource" script_class="TileInfo" load_steps=4 format=3 uid="uid://bu77rnaaqkpix"]
+[gd_resource type="Resource" script_class="TileInfo" load_steps=8 format=3 uid="uid://bu77rnaaqkpix"]
 
 [ext_resource type="Script" uid="uid://dhxyu4x38jaeb" path="res://scripts/fof_info/tiles/tile_info.gd" id="1_h0txr"]
 [ext_resource type="Script" uid="uid://bojtu0nmjtj6" path="res://scripts/fof/tiles/tile.gd" id="1_y0nrn"]
+[ext_resource type="Material" uid="uid://oslnav5o3nsp" path="res://resources/materials/game/tile_material/cactus_tile/cactus_tile_greyscale_material.tres" id="4_guumj"]
+[ext_resource type="Material" uid="uid://dbi4pi1jftnjf" path="res://resources/materials/game/tile_material/cactus_tile/cactus_tile_material.tres" id="5_bvxf7"]
+[ext_resource type="Material" uid="uid://2tolf65ex50q" path="res://resources/materials/game/tile_material/palm_tile/palm_tile_fill_greyscale_material.tres" id="5_g3od3"]
 [ext_resource type="Script" uid="uid://df278rs03up0b" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="5_nherh"]
+[ext_resource type="Material" uid="uid://cwgt42e81io2h" path="res://resources/materials/game/tile_material/palm_tile/palm_tile_fill_material.tres" id="7_wwb22"]
 
 [resource]
 script = ExtResource("1_h0txr")
-decoration_models = Array[PackedScene]([])
-tile_height = 0.3
-models = Array[PackedScene]([])
-points = Array[Array]([])
+tile_top_material = ExtResource("5_bvxf7")
+tile_bottom_material = ExtResource("5_bvxf7")
+tile_fill_material = ExtResource("7_wwb22")
+tile_top_greyscale_material = ExtResource("4_guumj")
+tile_bottom_greyscale_material = ExtResource("4_guumj")
+tile_fill_greyscale_material = ExtResource("5_g3od3")
+randomise_top_uv_offset = false
+is_short = false
 id = 24
 name = "Cactus Tile"
 gdscript = ExtResource("1_y0nrn")

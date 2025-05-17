@@ -64,7 +64,7 @@ func onLoadTilesCoords(parent: Node3D, tile_info: TileInfo) -> void:
 	
 	for tile_coords in info.tile_coords[variation]:
 		var Tile: TileGD = SavedData.onLoadModel(SavedDataTile.new(tile_info.id, false, 0, tile_coords), parent)
-		Tile.setHalfTransparent()
+		#Tile.setHalfTransparent()
 	ResourceSaver.save(info)
 	
 func onSaveTile(tile_coords: Vector4i) -> void:
@@ -162,3 +162,21 @@ func onCreateAdjustedPoints():
 	
 func onOccupy(_state: bool) -> void:
 	pass
+
+#region Variations
+func clampVariation(i: int) -> void:
+	if variation >= 0:
+		variation += i
+		if variation >= info.models.size(): variation = 0
+		elif variation < 0: variation = info.models.size() - 1
+#endregion
+
+var half_transparent_base_material: ShaderMaterial = preload("res://resources/materials/game/base_material_half_transparent.tres")
+func setHalfTransparent() -> void:
+	setMeshesMaterial(half_transparent_base_material)
+
+func onApplyGreyscaleMaterial() -> void:
+	var greyscale_material: ShaderMaterial = load(info.GREYSCALE_MATERIAL) if !isLevelVisible() and !Helper.admin_datastore.see else null
+	for mesh in getMeshes():
+		for surface_id in mesh.get_surface_override_material_count():
+			mesh.set_surface_override_material(surface_id, greyscale_material)

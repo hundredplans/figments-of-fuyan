@@ -443,7 +443,7 @@ func onPlayerCardSpottedByAI() -> void:
 
 #region Level Area Datastore
 func onCreateLevelAreaDatastore() -> LevelAreaDatastore:
-	assert(false)
+	#assert(false)
 	return null
 #endregion
 

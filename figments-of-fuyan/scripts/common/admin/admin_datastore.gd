@@ -11,6 +11,7 @@ class_name AdminDatastore extends Resource
 @export_group("")
 
 @export_group("Map")
+@export var starting_area_id: int
 @export var spawn_instead_of_shop_id: int
 @export var force_level_spawn_id: int
 @export var force_encounter_id: int

@@ -72,14 +72,16 @@ func setLevelInfo() -> void:
 	if Helper.admin_datastore.force_level_spawn_id > 0 and map_location.progress == 1:
 		level_info = Helper.getFofInfoID(LevelInfo, Helper.admin_datastore.force_level_spawn_id)
 	else:
+		var level_script: GDScript = Game.getArea().info.base_level_script
 		var existing_level_ids: Array = get_tree().get_nodes_in_group("FightMapNodesGD")\
 			.filter(func(x: MapNodeGD): return x.map_location.progress == map_location.progress and x != self)\
 			.map(func(y: MapNodeGD): return y.level_info.id if y.level_info != null else 0)\
 			.filter(func(z: int): return z != 0)
 			
-		var levels: Array = Helper.getFofInfoArray(Game.area.info.base_level_script)
+		var levels: Array = Helper.getFofInfoArray(LevelInfo)
 		levels = levels.filter(func(x: LevelInfo): \
-			return map_location.progress >= x.progress_min and map_location.progress <= x.progress_max)
+			return x.gdscript == level_script and\
+				map_location.progress >= x.progress_min and map_location.progress <= x.progress_max)
 		
 		if levels.size() > existing_level_ids.size():
 			levels = levels.filter(func(x: LevelInfo): return x.id not in existing_level_ids)

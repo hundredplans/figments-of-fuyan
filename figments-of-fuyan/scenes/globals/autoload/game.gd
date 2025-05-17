@@ -63,11 +63,13 @@ const ASCENDED_COLOR := Color(0.937, 0.835, 0.318)
 const ASCENDED_OUTLINE_COLOR := Color(0.512, 0.447, 0.099)
 
 func _ready() -> void:
-	var theta: float = PI / 6
-	for cube_direction in Game.cube_directions:
-		var x: float = HEX_SIZE * (3.0 / 2.0 * cube_direction.x)
-		var z: float = HEX_SIZE * (sqrt(3) * (cube_direction.y + cube_direction.x / 2.0))
-		tile_face_directions.append(onRotatePosition(Vector3(x, 0, z), theta))
+	tile_face_directions = [Vector3((sqrt(3.0) / 4.0), 0, (3.0 / 4.0)), Vector3((sqrt(3.0) / 2.0), 0, 0),
+	Vector3(-(sqrt(3.0) / 4.0), 0, (3.0 / 4.0)), Vector3((sqrt(3.0) / 4.0), 0, -(3.0 / 4.0)),
+	Vector3(-(sqrt(3.0) / 4.0), 0, -(3.0 / 4.0)), Vector3(-(sqrt(3.0) / 2.0), 0, 0)]
+	#for cube_direction in Game.cube_directions:
+		#var x: float = HEX_SIZE * (3.0 / 2.0 * cube_direction.x)
+		#var z: float = HEX_SIZE * (sqrt(3) * (cube_direction.y + cube_direction.x / 2.0))
+		#tile_face_directions.append(Vector3(x, 0, z))
 
 func getRarityThemeVariation(rarity: Rarities, ascended: bool = false) -> String:
 	var theme_variation: String

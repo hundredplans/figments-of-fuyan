@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="EpicCardInfo" load_steps=5 format=3 uid="uid://cr8dbqmm5s3xr"]
+
+[ext_resource type="Script" uid="uid://c18vvqrvd4cej" path="res://scripts/fof/cards/epic/epic_card.gd" id="1_dnxcr"]
+[ext_resource type="Script" uid="uid://bnp3nwlcsibyl" path="res://scripts/fof_info/cards/extra/boss_phase_datastore.gd" id="1_umepe"]
+[ext_resource type="Script" uid="uid://bd0ljqheerbtm" path="res://scripts/fof_info/epic_cards/epic_card_info.gd" id="2_mrfby"]
+[ext_resource type="Script" uid="uid://unn6splqvb3v" path="res://scripts/saved_data/game_objects/saved_data_epic_card.gd" id="3_eguk5"]
+
+[resource]
+script = ExtResource("2_mrfby")
+rarity = 6
+phases = Array[ExtResource("1_umepe")]([])
+card_id = 74
+tool_id = 0
+boon_id = 0
+awaken_boss_intent_name = ""
+id = 5
+name = "Prince Aelis"
+gdscript = ExtResource("1_dnxcr")
+saved_data = ExtResource("3_eguk5")
+metadata/_custom_type_script = "uid://bd0ljqheerbtm"

@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cp5v4775h5g2q"]
+
+[ext_resource type="Shader" uid="uid://b87gvxdxse4pt" path="res://resources/shaders/water_material.gdshader" id="1_wpgbm"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_wpgbm")
+shader_parameter/color = Color(0.478431, 1, 1, 1)

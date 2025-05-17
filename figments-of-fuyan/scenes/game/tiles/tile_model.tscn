@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://cmy0opngqsj3j"]
+
+[ext_resource type="CylinderMesh" uid="uid://d0yobv2iynqvy" path="res://resources/game/tiles/short_tile_cylinder.tres" id="1_bxqdd"]
+[ext_resource type="CylinderMesh" uid="uid://3odrg8278egt" path="res://resources/game/tiles/regular_top_cylinder.tres" id="2_3t5ms"]
+[ext_resource type="Shape3D" uid="uid://bqf2kowyjatew" path="res://resources/game/tiles/regular_convex_shape.tres" id="4_rmru3"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_b32ts"]
+top_radius = 1.0
+bottom_radius = 1.0
+height = 0.001
+radial_segments = 6
+rings = 1
+cap_bottom = false
+
+[node name="TileModel" type="Node3D"]
+
+[node name="BottomMeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = ExtResource("1_bxqdd")
+
+[node name="OutlineMeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+mesh = SubResource("CylinderMesh_b32ts")
+
+[node name="TopMeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.201, 0)
+mesh = ExtResource("2_3t5ms")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = ExtResource("4_rmru3")
+
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.500912, -3.21747, 2.65584)

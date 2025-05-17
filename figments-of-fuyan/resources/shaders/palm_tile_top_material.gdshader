@@ -4,11 +4,8 @@ uniform sampler2D noise_tx;
 uniform vec3 tile_color: source_color;
 uniform vec3 tile_spot_color: source_color;
 uniform float noise_cutoff = 0.2;
-
-void vertex() {
-	// Called for every vertex the material is visible on.
-}
 instance uniform vec2 uv_offset;
+
 void fragment() {
 	vec2 uv = UV + uv_offset;
 	float noise = texture(noise_tx, uv).r;

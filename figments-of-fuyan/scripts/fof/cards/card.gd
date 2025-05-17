@@ -975,7 +975,7 @@ func onRemoveFieldTrait(overworld_trait: OverworldTrait) -> void:
 	FieldInfo.onRemoveIcon(Trait)
 	FieldInfo.onUpdateTraits()
 	
-func onCreateArmorTrait(armor: int) -> TraitGD:
+func onCreateArmorTrait(armor: int, ) -> TraitGD:
 	var armor_data := SavedDataArmor.new(1, true, 0)
 	armor_data.armor = armor
 	return SavedData.onLoadModel(armor_data, self)
@@ -1103,6 +1103,9 @@ func onRemoveDelayedHealDatastore(heal_datastore: HealDatastore) -> void:
 #endregion
 
 #region Action Checker
+func isValidEndOfTurn(action: Action) -> bool:
+	return action.post and action is ChangeTurnStateAction and action.Card == self and action.turn_state == Game.TurnStates.PASSED
+
 func isValidTrauma(action: Action) -> bool:
 	return action.post and action is DeathAction and isAlly(action.Defender.team) and card_place == Game.CardPlaces.FIELD and action.getCardSawDefenderDie(self)
 
@@ -1114,6 +1117,10 @@ func isValidRampage(action: Action) -> bool:
 
 func isValidOnHit(action: Action) -> bool:
 	return action.post and action is DamageAction and action.owner is AttackAction and action.Damager == self and card_place == Game.CardPlaces.FIELD\
+		and action.Defenders.any(func(x: GameObjectGD): return x is CardGD)
+
+func isValidForceOnHit(action: Action) -> bool:
+	return !action.post and action is DamageAction and action.owner is AttackAction and action.Damager == self and card_place == Game.CardPlaces.FIELD\
 		and action.Defenders.any(func(x: GameObjectGD): return x is CardGD)
 
 func isValidRevenge(action: Action) -> bool:
@@ -1157,6 +1164,15 @@ func onCreateBaseFieldEffect(id: int, charges: int = -1, turns: int = -1, FofObj
 	
 	onPushAction(AddFieldEffectAction.new(FieldEffect, FofObject))
 	return FieldEffect
+	
+func onCreateBaseFieldEffectAction(id: int, charges: int = -1, turns: int = -1, FofObject: FofGD = self) -> AddFieldEffectAction:
+	var field_effect_data: SavedDataFieldEffect = SavedDataFieldEffect.new(id, true)
+	field_effect_data.charges = charges
+	field_effect_data.turns = turns
+	
+	var FieldEffect: FieldEffectGD = SavedData.onLoadModel(field_effect_data, self)
+	FieldEffect.Card = self
+	return AddFieldEffectAction.new(FieldEffect, FofObject)
 	
 func onRemoveFieldEffect(FieldEffect: FieldEffectGD) -> void:
 	if FieldEffect == null: return
@@ -1684,3 +1700,12 @@ func getStatValue(stat: Game.Stats) -> int:
 		Game.Stats.MAX_SPEED: return max_speed
 		Game.Stats.ENERGY: return energy
 	return Game.Stats.ATTACK
+
+const SHIELD_ID: int = 3
+func onGainShield(FofObject: FofGD = null) -> FieldEffectGD:
+	if getFirstFieldEffect(SHIELD_ID) != null: return null # Shield can't stack
+	return onCreateBaseFieldEffect(SHIELD_ID, -1, -1 , FofObject)
+	
+func onGainShieldAction(FofObject: FofGD = null) -> AddFieldEffectAction:
+	if getFirstFieldEffect(SHIELD_ID) != null: return null
+	return onCreateBaseFieldEffectAction(SHIELD_ID, -1, -1, FofObject)
