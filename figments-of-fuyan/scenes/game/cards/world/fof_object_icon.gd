@@ -2,7 +2,7 @@ extends Node3D
 
 var FofObject: FofGD
 @onready var Icon: Sprite3D = $Icon
-@onready var ChargesLabel: Label3D = %ChargesLabel
+@onready var IntLabel: Label3D = %IntLabel
 
 func _ready() -> void:
 	setDepthTest(depth_test)
@@ -10,10 +10,8 @@ func _ready() -> void:
 func setInfo(_FofObject: FofGD) -> void:
 	FofObject = _FofObject
 	if FofObject is FieldEffectGD or FofObject is TraitGD:
-		ChargesLabel.position.x = FofObject.info.charges_label_position.x
-		ChargesLabel.position.y = FofObject.info.charges_label_position.y
-		FofObject.update_charges.connect(setCharges)
-		setCharges(FofObject.getCharges())
+		FofObject.update_display_number.connect(setDisplayNumber)
+		setDisplayNumber(FofObject.getDisplayNumber())
 
 func setTexture(tx: Texture2D) -> void:
 	Icon.texture = tx
@@ -27,8 +25,8 @@ func setDepthTest(state: bool) -> void:
 	
 	if Icon != null:
 		Icon.no_depth_test = state
-		ChargesLabel.no_depth_test = state
+		IntLabel.no_depth_test = state
 		
-func setCharges(charges: int) -> void:
-	ChargesLabel.visible = charges >= 0
-	ChargesLabel.text = str(charges)
+func setDisplayNumber(display_number: int) -> void:
+	IntLabel.visible = display_number >= 0
+	IntLabel.text = str(display_number)

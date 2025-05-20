@@ -4,6 +4,8 @@ var admin_datastore: AdminDatastore
 const ADMIN_DATASTORE_PATH: String = "res://resources/datastore/admin/admin_datastore.tres"
 const SAVE_FILE_MAX_AMOUNT: int = 3
 
+var level_editor_area_info: AreaInfo
+
 #region Resources
 var GDSCRIPT_TYPES: Array = [AreaInfo, LevelInfo, \
 	CardInfo, ChampionCardInfo, BoonInfo, ToolInfo, MapNodeInfo, SaveFileInfo, EncounterInfo,\

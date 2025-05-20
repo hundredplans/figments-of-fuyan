@@ -1,23 +1,20 @@
-[gd_resource type="Resource" script_class="TileInfo" load_steps=8 format=3 uid="uid://beb155uacqy8e"]
+[gd_resource type="Resource" script_class="TileInfo" load_steps=6 format=3 uid="uid://beb155uacqy8e"]
 
 [ext_resource type="Script" uid="uid://bojtu0nmjtj6" path="res://scripts/fof/tiles/tile.gd" id="1_hr5ty"]
 [ext_resource type="Script" uid="uid://dhxyu4x38jaeb" path="res://scripts/fof_info/tiles/tile_info.gd" id="1_x23li"]
 [ext_resource type="Material" uid="uid://cw86k5e13kiw8" path="res://resources/materials/game/tile_material/sandroad_tile/sandroad_tile_greyscale_material.tres" id="4_lfoa6"]
 [ext_resource type="Script" uid="uid://df278rs03up0b" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="4_m03aw"]
 [ext_resource type="Material" uid="uid://pgwpray65i2n" path="res://resources/materials/game/tile_material/sandroad_tile/sandroad_tile_material.tres" id="5_pe7bo"]
-[ext_resource type="Material" uid="uid://2tolf65ex50q" path="res://resources/materials/game/tile_material/palm_tile/palm_tile_fill_greyscale_material.tres" id="6_drc4j"]
-[ext_resource type="Material" uid="uid://cwgt42e81io2h" path="res://resources/materials/game/tile_material/palm_tile/palm_tile_fill_material.tres" id="7_eio33"]
 
 [resource]
 script = ExtResource("1_x23li")
 tile_top_material = ExtResource("5_pe7bo")
 tile_bottom_material = ExtResource("5_pe7bo")
-tile_fill_material = ExtResource("7_eio33")
 tile_top_greyscale_material = ExtResource("4_lfoa6")
 tile_bottom_greyscale_material = ExtResource("4_lfoa6")
-tile_fill_greyscale_material = ExtResource("6_drc4j")
 randomise_top_uv_offset = false
 is_short = false
+area_ids = Array[int]([1])
 id = 6
 name = "Sandroad Tile"
 gdscript = ExtResource("1_hr5ty")

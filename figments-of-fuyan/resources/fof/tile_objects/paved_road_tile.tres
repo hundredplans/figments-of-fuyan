@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="TileInfo" load_steps=6 format=3 uid="uid://h8ry82dp0ran"]
+
+[ext_resource type="Script" uid="uid://dhxyu4x38jaeb" path="res://scripts/fof_info/tiles/tile_info.gd" id="1_1xifv"]
+[ext_resource type="Script" uid="uid://bojtu0nmjtj6" path="res://scripts/fof/tiles/tile.gd" id="1_srcse"]
+[ext_resource type="Script" uid="uid://df278rs03up0b" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="2_0ho3r"]
+[ext_resource type="Material" uid="uid://bcrrbfcoicbyj" path="res://resources/materials/game/tile_material/paved_road_tile/paved_road_tile_greyscale_material.tres" id="4_01iny"]
+[ext_resource type="Material" uid="uid://eprai0wdb2ef" path="res://resources/materials/game/tile_material/paved_road_tile/paved_road_tile_material.tres" id="5_1hrey"]
+
+[resource]
+script = ExtResource("1_1xifv")
+tile_top_material = ExtResource("5_1hrey")
+tile_bottom_material = ExtResource("5_1hrey")
+tile_top_greyscale_material = ExtResource("4_01iny")
+tile_bottom_greyscale_material = ExtResource("4_01iny")
+randomise_top_uv_offset = false
+is_short = false
+area_ids = Array[int]([3])
+id = 31
+name = "Paved Road Tile"
+gdscript = ExtResource("1_srcse")
+saved_data = ExtResource("2_0ho3r")
+metadata/_custom_type_script = "uid://dhxyu4x38jaeb"

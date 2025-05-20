@@ -126,7 +126,12 @@ func setTileMaterial(is_greyscale: bool = false) -> void:
 func setTileFillMaterial(is_greyscale: bool = false) -> void:
 	if TileFill != null:
 		var TileFillMesh: MeshInstance3D = TileFill.get_node("MeshInstance3D") if TileFill != null else null
-		TileFillMesh.set_surface_override_material(0, info.getTileFillMaterial() if !is_greyscale else info.getTileFillGreyscaleMaterial())
+		var tile_fill_material: ShaderMaterial = info.getTileFillMaterial() if !is_greyscale else info.getTileFillGreyscaleMaterial()
+		if tile_fill_material == null:
+			var area: AreaGD = Game.getArea()
+			var area_info: AreaInfo = area.info if area != null else Helper.level_editor_area_info 
+			tile_fill_material = area_info.tile_fill_material if !is_greyscale else area_info.tile_fill_greyscale_material
+		TileFillMesh.set_surface_override_material(0, tile_fill_material)
 		
 func onApplyGreyscaleMaterial() -> void:
 	setTileMaterial(!isLevelVisible() and !Helper.admin_datastore.see)

@@ -4,13 +4,13 @@
 [ext_resource type="Environment" uid="uid://g3ihmrpunr2b" path="res://assets/environments/main_menu_environment.tres" id="1_kjyf0"]
 [ext_resource type="Script" uid="uid://b7tnfbmcbq6rn" path="res://scripts/fof/areas/area.gd" id="2_8dlfa"]
 [ext_resource type="Script" uid="uid://bdrcevdqecvdg" path="res://scripts/fof_info/areas/area_info.gd" id="2_jv8bu"]
-[ext_resource type="Script" uid="uid://dcsghk6wuqxvk" path="res://scripts/fof_info/levels/cactus_level_info.gd" id="2_wdd6u"]
+[ext_resource type="Script" uid="uid://clhsihudbq1pg" path="res://scripts/fof/levels/cactus_level.gd" id="2_vp3ug"]
 [ext_resource type="Resource" uid="uid://bu77rnaaqkpix" path="res://resources/fof/tile_objects/cactus_tile.tres" id="2_yms24"]
 [ext_resource type="Script" uid="uid://ddqxntix0kb3c" path="res://scripts/saved_data/saved_data_area.gd" id="3_te6v3"]
 [ext_resource type="AudioStream" uid="uid://cn8nvead0m051" path="res://assets/sounds/music/coconut_springs_boss_music.mp3" id="4_vp3ug"]
 [ext_resource type="Script" uid="uid://j3gava8i61i7" path="res://scripts/fof_info/areas/extra/epic_area_datastore.gd" id="5_8cx0y"]
 [ext_resource type="PackedScene" uid="uid://jgxtw1sinygh" path="res://scripts/fof/areas/extra/cactus_canyon_default_light.tscn" id="6_0i6vp"]
-[ext_resource type="Resource" uid="uid://cx20xr5mu5sbm" path="res://resources/datastore/decorations/CactusOverworld.tres" id="6_7g1ri"]
+[ext_resource type="Resource" uid="uid://dh6s1kpciveu7" path="res://resources/datastore/decorations/CactusOverworld.tres" id="6_7g1ri"]
 [ext_resource type="Resource" uid="uid://c8epcaodidvwx" path="res://resources/datastore/world/world_two.tres" id="8_bcf6s"]
 
 [sub_resource type="Resource" id="Resource_vp3ug"]
@@ -36,7 +36,7 @@ encounter_ids = Array[int]([1, 2, 3, 4, 5, 6])
 overworld_decoration = ExtResource("6_7g1ri")
 base_environment = ExtResource("1_kjyf0")
 elite_environment = ExtResource("1_kjyf0")
-base_level_script = ExtResource("2_wdd6u")
+base_level_script = ExtResource("2_vp3ug")
 base_tile_info = ExtResource("2_yms24")
 default_light = ExtResource("6_0i6vp")
 boss_music = ExtResource("4_vp3ug")

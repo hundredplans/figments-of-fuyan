@@ -5,7 +5,8 @@ class_name TraitInfo extends FofInfo
 @export var replace_model: PackedScene
 @export var replace_stat: Game.Stats
 @export_group("")
-@export var charges_label_position: Vector2
+
+@export var int_label_position: Vector2
 
 @export_multiline var description: String
 

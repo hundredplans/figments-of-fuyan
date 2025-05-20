@@ -590,8 +590,7 @@ func onBulkUpSetIntents() -> BossTileIntents:
 func onBulkUp(use_type: UseType) -> Array:
 	var actions: Array = []
 	if use_type == UseType.START:
-		var trait_data := SavedDataArmor.new(ARMOR_TRAIT_ID, true, 0)
-		trait_data.armor = 1
+		var trait_data := SavedDataTrait.new(ARMOR_TRAIT_ID, true, 0, 1)
 		
 		var overworld_trait := OverworldTrait.new(trait_data, OverworldTrait.AddedBy.LONE_RIDER, true, 3)
 		var animation_action := AnimationAction.new(self, "Bulk Up")

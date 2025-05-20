@@ -13,4 +13,4 @@ func onPostAction() -> void:
 	FieldEffect.onRemoveFromCard()
 
 func getLogInfo() -> Array:
-	return ["FieldEffect: " + FieldEffect.info.name]
+	return ["FieldEffect: " + FieldEffect.info.name if FieldEffect != null else ""]

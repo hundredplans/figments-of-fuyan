@@ -19,3 +19,6 @@ func _on_pressed():
 
 func getData() -> SavedData:
 	return data.duplicate(true)
+
+func setSelfModulate(color: Color) -> void:
+	PanelButton.self_modulate = color

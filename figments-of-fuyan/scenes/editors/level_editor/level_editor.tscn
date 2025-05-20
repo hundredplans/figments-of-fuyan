@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://dppiux7bnao8g"]
+[gd_scene load_steps=12 format=3 uid="uid://dppiux7bnao8g"]
 
 [ext_resource type="Script" uid="uid://bi0qnorwdqbx1" path="res://scenes/editors/level_editor/level_editor.gd" id="1_d12w1"]
 [ext_resource type="PackedScene" uid="uid://bydj1x1wtvu8y" path="res://scenes/editors/common/tile_static_body/tile_static_body.tscn" id="2_bfkth"]
@@ -7,20 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bq7o6lgr5wu2k" path="res://scenes/editors/level_editor/tile_object_search_result.tscn" id="3_wfh2w"]
 [ext_resource type="PackedScene" uid="uid://ceoy120bbs7le" path="res://scenes/common/panel_button/panel_button.tscn" id="4_s4thk"]
 [ext_resource type="Script" uid="uid://bj5bltgdy7xbp" path="res://scripts/saved_data/levels/saved_data_level.gd" id="5_ahv3o"]
-[ext_resource type="Script" uid="uid://b7u3qi1xg4jks" path="res://scripts/common/id_to/id_to_script.gd" id="5_xmicf"]
-[ext_resource type="Script" uid="uid://dyvdkimog5nh1" path="res://scripts/fof/levels/palm_level.gd" id="6_27k4f"]
-[ext_resource type="Script" uid="uid://clhsihudbq1pg" path="res://scripts/fof/levels/cactus_level.gd" id="7_qkyao"]
 [ext_resource type="LabelSettings" uid="uid://dbh1brjnbxe8c" path="res://resources/ui/label_settings/roboto_large.tres" id="10_0pcn1"]
-
-[sub_resource type="Resource" id="Resource_pu3c8"]
-script = ExtResource("5_xmicf")
-id = 1
-gdscript = ExtResource("6_27k4f")
-
-[sub_resource type="Resource" id="Resource_m4cse"]
-script = ExtResource("5_xmicf")
-id = 2
-gdscript = ExtResource("7_qkyao")
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_w412d"]
 sky_top_color = Color(0.454902, 0.670588, 1, 1)
@@ -47,7 +34,6 @@ SpawnIdUIPacked = ExtResource("2_maew7")
 TileObjectSearchResultPacked = ExtResource("3_wfh2w")
 PanelButtonPacked = ExtResource("4_s4thk")
 TILE_OBJECTS_PATH = "res://resources/game/game_object/tile_object/info/"
-AREA_ID_TO_SCRIPT = Array[ExtResource("5_xmicf")]([SubResource("Resource_pu3c8"), SubResource("Resource_m4cse")])
 saved_data_level_gdscript = ExtResource("5_ahv3o")
 tile_static_body = ExtResource("2_bfkth")
 
@@ -439,6 +425,6 @@ unique_name_in_owner = true
 [connection signal="mouse_in_ui" from="UI/MarginContainer/TopRightBar/SettingsButton" to="." method="onMouseInUI"]
 [connection signal="pressed" from="UI/MarginContainer/TopRightBar/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="camera_changed_speed" from="World/Camera3D" to="." method="_on_camera_3d_camera_changed_speed"]
-[connection signal="camera_panning" from="World/Camera3D" to="." method="_on_camera_3d_camera_panning"]
 [connection signal="camera_panning" from="World/Camera3D" to="." method="onMouseInUI"]
+[connection signal="camera_panning" from="World/Camera3D" to="." method="_on_camera_3d_camera_panning"]
 [connection signal="timeout" from="MouseWheelDelayTimer" to="." method="_on_mouse_wheel_delay_timer_timeout"]

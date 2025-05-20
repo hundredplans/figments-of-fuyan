@@ -82,7 +82,7 @@ func getTileBottomGreyscaleMaterial() -> ShaderMaterial:
 func getTileTopGreyscaleMaterial() -> ShaderMaterial:
 	return tile_top_greyscale_material
 	
-func getTileFillGreyscasleMaterial() -> ShaderMaterial:
+func getTileFillGreyscaleMaterial() -> ShaderMaterial:
 	return tile_fill_greyscale_material
 	
 func getRandomiseTopUVOffset() -> bool:

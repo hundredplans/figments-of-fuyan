@@ -16,5 +16,10 @@ class_name AreaInfo extends FofInfo
 @export var main_menu_decoration: DecorationDatastore
 @export var area_color: Color
 
+@export_group("Tile Fill")
+@export var tile_fill_material: ShaderMaterial
+@export var tile_fill_greyscale_material: ShaderMaterial
+@export_group("")
+
 static func getInfoPath() -> String: return "res://resources/fof/areas"
 static func getFofName() -> String: return "Area"

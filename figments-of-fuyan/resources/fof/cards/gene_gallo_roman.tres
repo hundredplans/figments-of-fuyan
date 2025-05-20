@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=15 format=3 uid="uid://ct8vy8hybh3wp"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=14 format=3 uid="uid://ct8vy8hybh3wp"]
 
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_ou3ee"]
 [ext_resource type="Texture2D" uid="uid://c4swx2x83oeug" path="res://assets/sprites/game/cards/art_mini/gene_gallo_roman.png" id="2_6cjoi"]
@@ -8,16 +8,15 @@
 [ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_xdl1w"]
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_bfhlm"]
 [ext_resource type="Script" uid="uid://bkkdavjpjqgsa" path="res://scripts/fof/cards/gene_gallo_roman.gd" id="6_xocpm"]
-[ext_resource type="Script" uid="uid://cgwafo3gsalxd" path="res://scripts/saved_data/traits/saved_data_ranged.gd" id="7_s2yyt"]
 [ext_resource type="PackedScene" uid="uid://3qyoualochqf" path="res://assets/models/fof/cards/gene_gallo_roman.glb" id="7_xocpm"]
 
-[sub_resource type="Resource" id="Resource_s2yyt"]
-script = ExtResource("7_s2yyt")
-ranged = 3
+[sub_resource type="Resource" id="Resource_xocpm"]
+script = ExtResource("2_ewxrt")
+display_number = 2
 id = 2
-first_init = false
+first_init = true
 public_id = 0
-metadata/_custom_type_script = "uid://cgwafo3gsalxd"
+metadata/_custom_type_script = "uid://dag3a8ejplko8"
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
 size = Vector3(0.663147, 1.94543, 0.526978)
@@ -36,12 +35,12 @@ _bundled = {
 }
 
 [sub_resource type="Resource" id="Resource_ug0ym"]
-script = ExtResource("7_s2yyt")
-ranged = 2
+script = ExtResource("2_ewxrt")
+display_number = 2
 id = 2
-first_init = false
+first_init = true
 public_id = 0
-metadata/_custom_type_script = "uid://cgwafo3gsalxd"
+metadata/_custom_type_script = "uid://dag3a8ejplko8"
 
 [resource]
 script = ExtResource("3_xdl1w")
@@ -68,7 +67,7 @@ plus_attack = 0
 plus_health = 0
 plus_speed = 0
 plus_energy = 0
-ascended_traits = Array[ExtResource("2_ewxrt")]([SubResource("Resource_s2yyt")])
+ascended_traits = Array[ExtResource("2_ewxrt")]([SubResource("Resource_xocpm")])
 archetype = ExtResource("2_xocpm")
 id = 65
 name = "Gene Gallo-Roman"

@@ -4,16 +4,16 @@
 [ext_resource type="Script" uid="uid://c610vk0sseq2f" path="res://scripts/fof/traits/ranged.gd" id="1_p31o7"]
 [ext_resource type="Texture2D" uid="uid://ctsww5xvg1o1h" path="res://assets/sprites/game/fof_object_icons/traits/ranged.png" id="2_ml2xq"]
 [ext_resource type="PackedScene" uid="uid://4p073ntk8jwb" path="res://assets/models/general/floating_stats/attack_ranged.glb" id="2_qhmyp"]
-[ext_resource type="Script" uid="uid://cgwafo3gsalxd" path="res://scripts/saved_data/traits/saved_data_ranged.gd" id="4_iwdbh"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="4_f7mh5"]
 
 [resource]
 script = ExtResource("1_a0lgc")
 icon = ExtResource("2_ml2xq")
 replace_model = ExtResource("2_qhmyp")
 replace_stat = 0
-charges_label_position = Vector2(0.05, -0.165)
+int_label_position = Vector2(0.05, -0.165)
 description = "Can attack units that are up to [[X]] tiles away"
 id = 2
 name = "Ranged"
 gdscript = ExtResource("1_p31o7")
-saved_data = ExtResource("4_iwdbh")
+saved_data = ExtResource("4_f7mh5")

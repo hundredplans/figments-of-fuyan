@@ -8,6 +8,7 @@ const ARMOR_ID: int = 1
 const DEFAULT_ABILITY_TURNS: int = 3
 const ASCENDED_ABILITY_TURNS: int = 5
 const ABILITY_DELAY: float = 2.0
+const BLACKSMITHS_WILL_ID: int = 17
 
 func onProcessAction(action: Action) -> void:
 	super(action)
@@ -27,15 +28,18 @@ func onProcessAction(action: Action) -> void:
 				
 func onAddToAura(Card: CardGD) -> void:
 	affected_cards.append(Card)
-	var trait_data := SavedDataArmor.new(ARMOR_ID, true, 0)
-	trait_data.armor = 1
+	var trait_data := SavedDataTrait.new(ARMOR_ID, true, 0, 1)
 	
 	var add_overworld_trait_action := AddOverworldTraitAction.new(Card, OverworldTrait.new(trait_data, OverworldTrait.AddedBy.JIBBEN, true), true)
-	onPushAction(add_overworld_trait_action)
+	var actions: Array = [add_overworld_trait_action, Card.onCreateBaseFieldEffectAction(BLACKSMITHS_WILL_ID, -1, ability_turns_remaining, self)]
+	
+	onPushAction(actions)
 	
 func onRemoveFromAura(Card: CardGD) -> void:
 	affected_cards.erase(Card)
-	onPushAction(RemoveOverworldTraitAction.new(Card, ARMOR_ID, OverworldTrait.AddedBy.JIBBEN))
+	var BlacksmithsWill: FieldEffectGD = Card.onFindFieldEffectsByOwner(self).filter(func(x: FieldEffectGD): return x.info.id == BLACKSMITHS_WILL_ID)[0]
+	var actions: Array = [RemoveOverworldTraitAction.new(Card, ARMOR_ID, OverworldTrait.AddedBy.JIBBEN), RemoveFieldEffectAction.new(BlacksmithsWill)]
+	onPushAction(actions)
 					
 func getDescription() -> String:
 	return super()

@@ -138,9 +138,9 @@ func _input(_event: InputEvent) -> void:
 		if visible:
 			await get_tree().process_frame
 			CommandLineEdit.grab_focus()
-	elif Input.is_action_just_pressed("ChangeElevationUp") and CommandLineEdit.has_focus():
+	elif Input.is_action_just_pressed("UpArrow") and CommandLineEdit.has_focus():
 		onChangeToPastCommand(-1)
-	elif Input.is_action_just_pressed("ChangeElevationDown") and CommandLineEdit.has_focus():
+	elif Input.is_action_just_pressed("DownArrow") and CommandLineEdit.has_focus():
 		onChangeToPastCommand(1)
 		
 func onChangeToPastCommand(direction: int) -> void:

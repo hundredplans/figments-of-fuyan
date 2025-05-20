@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="TileInfo" load_steps=6 format=3 uid="uid://dsravhp0pcp5h"]
+
+[ext_resource type="Script" uid="uid://dhxyu4x38jaeb" path="res://scripts/fof_info/tiles/tile_info.gd" id="1_q4len"]
+[ext_resource type="Script" uid="uid://bojtu0nmjtj6" path="res://scripts/fof/tiles/tile.gd" id="1_xx32h"]
+[ext_resource type="Script" uid="uid://df278rs03up0b" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="2_d4vrh"]
+[ext_resource type="Material" uid="uid://ctlcrqv1j0kfb" path="res://resources/materials/game/tile_material/wheat_tile/wheat_tile_greyscale_material.tres" id="4_ds10s"]
+[ext_resource type="Material" uid="uid://bir358f3raf34" path="res://resources/materials/game/tile_material/wheat_tile/wheat_tile_material.tres" id="5_2mpip"]
+
+[resource]
+script = ExtResource("1_q4len")
+tile_top_material = ExtResource("5_2mpip")
+tile_bottom_material = ExtResource("5_2mpip")
+tile_top_greyscale_material = ExtResource("4_ds10s")
+tile_bottom_greyscale_material = ExtResource("4_ds10s")
+randomise_top_uv_offset = false
+is_short = false
+area_ids = Array[int]([3])
+id = 32
+name = "Wheat Tile"
+gdscript = ExtResource("1_xx32h")
+saved_data = ExtResource("2_d4vrh")
+metadata/_custom_type_script = "uid://dhxyu4x38jaeb"

@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="FieldEffectInfo" load_steps=5 format=3 uid="uid://dqx4dp6axka65"]
+
+[ext_resource type="Script" uid="uid://btiiqtd5u2a1u" path="res://scripts/fof/field_effects/lieutenants_aura.gd" id="1_xbrxx"]
+[ext_resource type="Texture2D" uid="uid://8l4rfqg0md01" path="res://assets/sprites/game/fof_object_icons/field_effects/lieutenants_aura.png" id="2_h0173"]
+[ext_resource type="Script" uid="uid://dw8fbr6hatp7q" path="res://scripts/saved_data/field_effects/saved_data_field_effect.gd" id="2_q82qu"]
+[ext_resource type="Script" uid="uid://bi5dpcw30h2c4" path="res://scripts/fof_info/field_effects/field_effect_info.gd" id="3_h0173"]
+
+[resource]
+script = ExtResource("3_h0173")
+icon = ExtResource("2_h0173")
+description = "This deals +[X] DMG per ally in vision"
+ascended_description = ""
+ascended_type = 0
+display_number_type = 1
+remove_on_owner_death = true
+id = 18
+name = "Lieutenants Aura"
+gdscript = ExtResource("1_xbrxx")
+saved_data = ExtResource("2_q82qu")
+metadata/_custom_type_script = "uid://bi5dpcw30h2c4"

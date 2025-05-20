@@ -975,9 +975,8 @@ func onRemoveFieldTrait(overworld_trait: OverworldTrait) -> void:
 	FieldInfo.onRemoveIcon(Trait)
 	FieldInfo.onUpdateTraits()
 	
-func onCreateArmorTrait(armor: int, ) -> TraitGD:
-	var armor_data := SavedDataArmor.new(1, true, 0)
-	armor_data.armor = armor
+func onCreateArmorTrait(armor: int) -> TraitGD:
+	var armor_data := SavedDataTrait.new(1, true, 0, armor)
 	return SavedData.onLoadModel(armor_data, self)
 	
 func isMobile() -> bool:

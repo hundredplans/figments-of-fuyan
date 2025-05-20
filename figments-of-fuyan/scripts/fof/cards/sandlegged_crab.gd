@@ -21,8 +21,7 @@ func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectT
 func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
 	super(active_effect, PickedTile, active_effect_tiles)
 	if active_effect is ActiveAbilityDatastore and active_effect.name == "Hardened Shell":
-		var trait_data := SavedDataArmor.new(1, true, 0)
-		trait_data.armor = 1
+		var trait_data := SavedDataTrait.new(1, true, 0, 1)
 		armor_id = 1
 		ai_ability_cooldown_turns_left = AI_ABILITY_COOLDOWN
 		

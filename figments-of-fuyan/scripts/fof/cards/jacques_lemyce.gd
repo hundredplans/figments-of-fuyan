@@ -1,8 +1,10 @@
 extends CardGD
 
+var mace_smash_public_id: int
 var is_stun_attack: bool
 var rampage_charges: int = 1
 const RAMPAGE_DELAY: float = 2.0
+const MACE_SMASH_ID: int = 15
 
 func getDescription() -> String:
 	return Helper.getDescriptionNumeric(super(), [rampage_charges], [["RAMPAGE ", "[1]"]])
@@ -24,6 +26,7 @@ func onRegularReset() -> void:
 func onSave() -> SavedDataCard:
 	ability_save['rampage_charges'] = rampage_charges
 	ability_save['is_stun_attack'] = is_stun_attack
+	ability_save['mace_smash_public_id'] = mace_smash_public_id
 	return super()
 	
 func onRampage(_death_action: DeathAction) -> void:
@@ -33,10 +36,14 @@ func onRampage(_death_action: DeathAction) -> void:
 	var camera_change_action := CameraChangeAction.new(self)
 	rampage_charges -= 1
 	
-	onPushAction([camera_change_action, animation_action])
+	var add_field_effect_action := onCreateBaseFieldEffectAction(MACE_SMASH_ID)
+	mace_smash_public_id = add_field_effect_action.FieldEffect.public_id
+	onPushAction([camera_change_action, animation_action, add_field_effect_action])
 	is_stun_attack = true
 		
 func onHit(damage_action: DamageAction, _attack_action: AttackAction) -> void:
 	is_stun_attack = false
 	for Defender: CardGD in damage_action.Defenders:
 		Defender.onStun(1)
+	
+	onPushAction(RemoveFieldEffectAction.new(Game.onFindPublicIDObject(mace_smash_public_id)))

@@ -1,19 +1,17 @@
 class_name ArmorGD extends TraitGD
-
-var armor: int
-func onLoadData(data: SavedData) -> void:
-	super(data)
-	armor = data.armor
-	
-func onSave() -> SavedDataArmor:
-	return SavedDataArmor.new(info.id, false, public_id, armor)
 	
 func onProcessAction(action: Action) -> void:
 	if !action.post:
 		if action is DamageAction and Card in action.Defenders and action.damage_type != Game.DamageTypes.FALL_DAMAGE:
-			action.setArmor(armor)
+			action.setArmor(getArmor())
 		elif action is GetDamageAction and Card in action.Defenders and action.damage_type != Game.DamageTypes.FALL_DAMAGE:
-			action.onAdd(-armor)
+			action.setArmor(getArmor())
 
 func getDescription() -> String:
-	return Helper.getDescription(super(), [armor])
+	return Helper.getDescription(super(), [getArmor()])
+
+func getArmor() -> int:
+	return getDisplayNumber()
+
+func setArmor(armor: int) -> void:
+	setDisplayNumber(armor)

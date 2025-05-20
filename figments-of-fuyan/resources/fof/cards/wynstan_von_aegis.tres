@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=14 format=3 uid="uid://c3ls0djdts0jv"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=13 format=3 uid="uid://c3ls0djdts0jv"]
 
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_s5ofe"]
 [ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_1oyp4"]
@@ -8,7 +8,6 @@
 [ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_o3jov"]
 [ext_resource type="Script" uid="uid://d3xulw3ft3e0n" path="res://scripts/fof/cards/card.gd" id="4_di4ay"]
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_mpj45"]
-[ext_resource type="Script" uid="uid://nhwflkcdo5vx" path="res://scripts/saved_data/traits/saved_data_armor.gd" id="7_rnroe"]
 [ext_resource type="PackedScene" uid="uid://b8q0bcdcdwi2l" path="res://assets/models/fof/cards/wynstan_von_aegis.glb" id="8_rnroe"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
@@ -27,13 +26,13 @@ _bundled = {
 "version": 3
 }
 
-[sub_resource type="Resource" id="Resource_b4d0y"]
-script = ExtResource("7_rnroe")
-armor = 1
+[sub_resource type="Resource" id="Resource_pdhn2"]
+script = ExtResource("2_1oyp4")
+display_number = 1
 id = 1
 first_init = true
 public_id = 0
-metadata/_custom_type_script = "uid://nhwflkcdo5vx"
+metadata/_custom_type_script = "uid://dag3a8ejplko8"
 
 [resource]
 script = ExtResource("3_o3jov")
@@ -42,7 +41,7 @@ health = 2
 speed = 2
 energy = 2
 rarity = 3
-initial_traits = Array[ExtResource("2_1oyp4")]([SubResource("Resource_b4d0y")])
+initial_traits = Array[ExtResource("2_1oyp4")]([SubResource("Resource_pdhn2")])
 active_abilities = Array[ExtResource("1_s5ofe")]([])
 flavor_text = ""
 description = "ARMOR [1]"

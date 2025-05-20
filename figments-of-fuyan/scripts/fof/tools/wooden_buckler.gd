@@ -11,8 +11,7 @@ func onProcessAction(action: Action) -> void:
 			onPushAction(ToolActivatedAction.new(self, action))
 	
 func onToolAction(_action: StatAction) -> void:
-	var trait_data := SavedDataArmor.new(ARMOR_TRAIT_ID, true, 0)
-	trait_data.armor = ARMOR_VALUE
+	var trait_data := SavedDataTrait.new(ARMOR_TRAIT_ID, true, 0, ARMOR_VALUE)
 	
 	var overworld_trait := OverworldTrait.new(trait_data, OverworldTrait.AddedBy.BUCKLER, true, ARMOR_TURN_DEFAULT_TURNS)
 	var actions: Array = [AddOverworldTraitAction.new(Card, overworld_trait, true), ChangeToolChargesAction.new(self, -1)]

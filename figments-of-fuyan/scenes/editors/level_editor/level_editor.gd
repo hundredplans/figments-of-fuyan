@@ -10,7 +10,6 @@ extends Node
 @export var PanelButtonPacked: PackedScene
 @export var BASE_ROTATION_TIMER: float = 0.25
 @export_dir var TILE_OBJECTS_PATH: String
-@export var AREA_ID_TO_SCRIPT: Array[IdToScript]
 @export var saved_data_level_gdscript: GDScript
 
 @onready var UI: Control = $UI
@@ -44,8 +43,11 @@ var HoverModel: TileObjectGD
 var base_tile_info: TileInfo
 var selected_area_id: int = 1
 var current_area_id: int = 1
-
 #endregion
+
+var area_id_to_script: Array[IdToScript]
+var area_id_to_color: Dictionary[int, Color] = {}
+
 #region Helper Functions
 func onConvertCoords(coords: Vector4i) -> Vector3:
 	return Vector3((sqrt(3) * coords.x + sqrt(3) * coords.y * 0.5), coords.w * 0.6, coords.y * (3 / 2.0))
@@ -82,7 +84,7 @@ func getTilesAtHeight(Tile: TileGD) -> Array[TileGD]:
 	return arr
 	
 func onFindScriptById(id: int = current_area_id) -> GDScript:
-	for id_to_scripts in AREA_ID_TO_SCRIPT:
+	for id_to_scripts: IdToScript in area_id_to_script:
 		if id == id_to_scripts.id:
 			return id_to_scripts.gdscript
 	return null
@@ -100,6 +102,12 @@ func _ready() -> void:
 	setAreaOptionButtonItems()
 	LoadLevels.visible = false
 	SearchResultsPanel.visible = false
+	
+	for area_info: AreaInfo in Helper.getFofInfoArray(AreaInfo):
+		var id_to_script := IdToScript.new(area_info.id, area_info.base_level_script)
+		area_id_to_script.append(id_to_script)
+		
+		area_id_to_color[area_info.id] = area_info.area_color
 		
 func setAllTileObjectsToWords() -> void:
 	for info in all_tile_objects:
@@ -218,9 +226,17 @@ func _on_search_tile_object_text_changed(text: String):
 			infos = infos.filter(func(x: TileObjectInfo): return all_tile_objects_to_words[x]\
 				.any(func(y: String): return y.begins_with(text.to_lower())))
 					
-		for info in infos:
+		infos.sort_custom(func(x: TileObjectInfo, y: TileObjectInfo):\
+			return int(selected_area_id in x.area_ids) > int(selected_area_id in y.area_ids))
+			
+		for info: TileObjectInfo in infos:
 			var panel_button: Control = TileObjectSearchResultPacked.instantiate()
 			SearchResultsContainer.add_child(panel_button)
+			panel_button.theme_type_variation = "PureWhitePanelContainer"
+			
+			if info.area_ids.size() == 1:
+				panel_button.setSelfModulate(area_id_to_color[info.area_ids[0]])
+			
 			panel_button.setInfo(info)
 			panel_button.mouse_in_ui.connect(onMouseInUI)
 			panel_button.custom_pressed.connect(onTileObjectInfoSelected)
@@ -529,7 +545,7 @@ func onSaveLevel() -> void:
 			ResourceSaver.save(loaded)
 			return
 		
-		loaded.setInfo(level_name, AreaOptionButton.get_selected_id())
+		loaded.setInfo(level_name)
 		loaded.id = Helper.getFirstNonConsecutiveId(LevelInfo)
 		
 		loaded.gdscript = onFindScriptById()
@@ -565,13 +581,6 @@ func onLoadLevel(loaded_info: Variant) -> void:
 	LevelNameLabel.text = loaded.name
 	
 	setSettings(loaded)
-	if loaded is LevelInfo:
-		var area_id: int = loaded.area_id
-		for idx in range(AreaOptionButton.item_count):
-			if AreaOptionButton.get_item_id(idx) == area_id:
-				AreaOptionButton.select(idx)
-				break
-	
 	for tile_object in get_tree().get_nodes_in_group("TileObjectsGD"):
 		tile_object.onClear()
 	
@@ -581,10 +590,14 @@ func onLoadLevel(loaded_info: Variant) -> void:
 var DefaultLight: DirectionalLight3D
 func onAreaOptionButtonSelected(_index: int = 0) -> void:
 	selected_area_id = AreaOptionButton.get_selected_id()
+	var area_info: AreaInfo = Helper.getFofInfoID(AreaInfo, selected_area_id)
+	Helper.level_editor_area_info = area_info
 	
 	if DefaultLight != null: DefaultLight.queue_free()
-	DefaultLight = Helper.getFofInfoID(AreaInfo, selected_area_id).default_light.instantiate()
+	DefaultLight = area_info.default_light.instantiate()
 	World.add_child(DefaultLight)
+	
+	onApplyLevelFilters()
 	
 func onFindLevelByName(level_name: String) -> LevelInfo:
 	for level in Helper.getFofInfoArray(LevelInfo):
@@ -642,7 +655,11 @@ func onApplyLevelFilters() -> void:
 	
 	if !ProgressEdit.text.is_empty():
 		levels = levels.filter(func(x: LevelInfo): return progress >= x.progress_min and progress <= x.progress_max)
-	levels = levels.filter(func(x: LevelInfo): return x.area_id == selected_area_id)
+		
+	var areas: Array = Helper.getFofInfoArray(AreaInfo)
+	
+	var gdscript: GDScript = onFindScriptById(selected_area_id)
+	levels = levels.filter(func(x: LevelInfo): return x.gdscript == gdscript)
 	var name_text: String = LevelNameEdit.text.to_lower()
 	
 	levels += decorations

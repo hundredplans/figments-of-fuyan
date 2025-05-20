@@ -1,13 +1,16 @@
 class_name TraitGD extends FofGD
 
-signal update_charges
+signal update_display_number
 
 var Card: CardGD
+var display_number: int
+
 func onSave() -> SavedData:
-	return SavedDataTrait.new(info.id, false, public_id)
+	return SavedDataTrait.new(info.id, false, public_id, display_number)
 	
 func onLoadData(data: SavedData) -> void:
 	super(data)
+	display_number = data.display_number
 
 func getIcon() -> Texture2D:
 	return info.icon
@@ -25,9 +28,10 @@ func onTraitAdded() -> void:
 
 func onLevelEnded(_win: bool) -> void:
 	onClear()
+	
+func setDisplayNumber(_display_number: int) -> void:
+	display_number = _display_number
+	update_display_number.emit(display_number)
 
-func getCharges() -> int:
-	return -1
-
-func setCharges(_charges: int) -> void:
-	update_charges.emit(getCharges())
+func getDisplayNumber() -> int:
+	return display_number

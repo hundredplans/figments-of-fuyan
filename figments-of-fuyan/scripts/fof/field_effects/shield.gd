@@ -1,4 +1,4 @@
-class_name ShieldFieldEffectGD extends RemoveWhenOwnerDiesFieldEffectGD
+extends FieldEffectGD
 
 func onProcessAction(action: Action) -> void:
 	super(action)

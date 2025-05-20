@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="AreaInfo" load_steps=16 format=3 uid="uid://dvlxu5qrn822j"]
+[gd_resource type="Resource" script_class="AreaInfo" load_steps=18 format=3 uid="uid://dvlxu5qrn822j"]
 
 [ext_resource type="Image" uid="uid://c2cuf22wj0rnf" path="res://assets/sprites/game/cards/common/art_background/varoma_background.png" id="1_co4xt"]
 [ext_resource type="Environment" uid="uid://g3ihmrpunr2b" path="res://assets/environments/main_menu_environment.tres" id="1_n2pqe"]
@@ -12,7 +12,9 @@
 [ext_resource type="AudioStream" uid="uid://cn8nvead0m051" path="res://assets/sounds/music/coconut_springs_boss_music.mp3" id="4_153du"]
 [ext_resource type="Resource" uid="uid://ctfukjvhoe8nm" path="res://resources/datastore/world/world_one.tres" id="6_6hpxj"]
 [ext_resource type="PackedScene" uid="uid://b535kqbktkims" path="res://scripts/fof/areas/extra/varoma_default_light.tscn" id="6_8fijj"]
-[ext_resource type="Resource" uid="uid://pep1w0lxh7rn" path="res://resources/datastore/decorations/VaromaOverworld.tres" id="10_153du"]
+[ext_resource type="Resource" uid="uid://cs41guyb8bq2t" path="res://resources/datastore/decorations/VaromaOverworld.tres" id="10_153du"]
+[ext_resource type="Material" uid="uid://b30a7ejxylfva" path="res://resources/materials/game/tile_material/varoma_tile/varoma_tile_fill_greyscale_material.tres" id="13_fy5xq"]
+[ext_resource type="Material" uid="uid://5dng81umhntr" path="res://resources/materials/game/tile_material/varoma_tile/varoma_tile_fill_material.tres" id="14_qps0y"]
 
 [sub_resource type="Resource" id="Resource_153du"]
 script = ExtResource("2_6hpxj")
@@ -43,7 +45,9 @@ default_light = ExtResource("6_8fijj")
 boss_music = ExtResource("4_153du")
 epic_datastores = Array[ExtResource("2_6hpxj")]([SubResource("Resource_153du"), SubResource("Resource_8fijj")])
 main_menu_decoration = ExtResource("10_153du")
-area_color = Color(0, 0, 0, 1)
+area_color = Color(0, 0.286312, 0, 1)
+tile_fill_material = ExtResource("14_qps0y")
+tile_fill_greyscale_material = ExtResource("13_fy5xq")
 id = 3
 name = "Varoma"
 gdscript = ExtResource("2_3vnxq")

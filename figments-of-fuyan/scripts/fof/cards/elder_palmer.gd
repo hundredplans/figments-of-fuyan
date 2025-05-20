@@ -30,8 +30,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		var camera_change_action := CameraChangeAction.new(Card)
 		var camera_change_back_action := CameraChangeAction.new(Game.getLevel().getSpectateObject())
 		
-		var armor_trait_data := SavedDataArmor.new(ARMOR_TRAIT_ID, true, 0)
-		armor_trait_data.armor = armor_amount
+		var armor_trait_data := SavedDataTrait.new(ARMOR_TRAIT_ID, true, 0, armor_amount)
 		var armor_overworld := OverworldTrait.new(armor_trait_data, OverworldTrait.AddedBy.ELDER_PALMER, true, 1)
 
 		var disarm_action: AddStatusEffectAction = Card.onCreateBaseStatusEffectAction(DISARM_STATUS_EFFECT_ID, 1)

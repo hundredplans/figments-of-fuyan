@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=48 format=3 uid="uid://dcbv431prk86r"]
+[gd_resource type="Theme" load_steps=49 format=3 uid="uid://dcbv431prk86r"]
 
 [ext_resource type="FontFile" uid="uid://dpk4daccj6hwv" path="res://assets/fonts/roboto.ttf" id="1_8d2p5"]
 
@@ -184,6 +184,19 @@ anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jf53r"]
 bg_color = Color(0.756747, 0.567647, 0.0929413, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ohhya"]
+bg_color = Color(1, 1, 1, 1)
 border_width_left = 10
 border_width_top = 10
 border_width_right = 10
@@ -531,6 +544,8 @@ MarginContainer/constants/margin_right = 10
 MarginContainer/constants/margin_top = 10
 Panel/styles/panel = SubResource("StyleBoxFlat_ki0ao")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_jf53r")
+PureWhitePanelContainer/base_type = &"PanelContainer"
+PureWhitePanelContainer/styles/panel = SubResource("StyleBoxFlat_ohhya")
 PurpleButton/base_type = &"Button"
 PurpleButton/styles/disabled = SubResource("StyleBoxFlat_83h5w")
 PurpleButton/styles/hover = SubResource("StyleBoxFlat_woljo")
