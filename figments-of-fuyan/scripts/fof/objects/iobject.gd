@@ -49,7 +49,7 @@ func onSave() -> SavedDataIObject:
 
 func onProcessAction(action: Action) -> void:
 	super(action)
-	if action.post:
+	if action.post:	
 		if action is ChangePhaseAction:
 			if action.phase == Game.Phases.START:
 				onCreateActiveEffects()

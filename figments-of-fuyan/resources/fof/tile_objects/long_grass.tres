@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=8 format=3 uid="uid://dqjwv5a1lhfm6"]
+
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_14gck"]
+[ext_resource type="Script" uid="uid://bjdh5jg7ecvli" path="res://scripts/fof/objects/object.gd" id="2_86ekq"]
+[ext_resource type="PackedScene" uid="uid://cipo755cp26vx" path="res://assets/models/fof/objects/long_grass.glb" id="3_ul3c6"]
+[ext_resource type="Script" uid="uid://c57vvj8uxhu4x" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="4_6deoj"]
+[ext_resource type="PackedScene" uid="uid://cpufur3t42meu" path="res://assets/models/fof/objects/long_grass2.glb" id="4_86ekq"]
+[ext_resource type="PackedScene" uid="uid://cghaajgp1edmf" path="res://assets/models/fof/objects/long_grass1.glb" id="4_ul3c6"]
+[ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="5_lolc5"]
+
+[resource]
+script = ExtResource("5_lolc5")
+tile_coords = Array[Array]([[Vector4(0, 0, 0, 0)]])
+lock_rotation = true
+lock_tile = true
+ignore_collisions = false
+solids = Array[bool]([true, true, true])
+models = Array[PackedScene]([ExtResource("3_ul3c6"), ExtResource("4_ul3c6"), ExtResource("4_86ekq")])
+points = Array[Array]([])
+active_effects = Array[ExtResource("1_14gck")]([])
+area_ids = Array[int]([3])
+id = 36
+name = "Long Grass"
+gdscript = ExtResource("2_86ekq")
+saved_data = ExtResource("4_6deoj")
+metadata/_custom_type_script = "uid://bvxsmhoh3obu"

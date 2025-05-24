@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=8 format=3 uid="uid://b7ailhyxawjxr"]
+
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_hfwv2"]
+[ext_resource type="Script" uid="uid://bjdh5jg7ecvli" path="res://scripts/fof/objects/object.gd" id="2_rtvfu"]
+[ext_resource type="PackedScene" uid="uid://bpw8gws7kjtl5" path="res://assets/models/fof/objects/wheat.glb" id="3_qd28j"]
+[ext_resource type="PackedScene" uid="uid://b3v8nd1kd3edx" path="res://assets/models/fof/objects/wheat1.glb" id="4_oqwwa"]
+[ext_resource type="PackedScene" uid="uid://d3jlegsda04vq" path="res://assets/models/fof/objects/wheat2.glb" id="5_ec73i"]
+[ext_resource type="Script" uid="uid://c57vvj8uxhu4x" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="7_7pgty"]
+[ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="8_br57v"]
+
+[resource]
+script = ExtResource("8_br57v")
+tile_coords = Array[Array]([[Vector4(0, 0, 0, 0)]])
+lock_rotation = true
+lock_tile = true
+ignore_collisions = false
+solids = Array[bool]([true, true, true])
+models = Array[PackedScene]([ExtResource("3_qd28j"), ExtResource("4_oqwwa"), ExtResource("5_ec73i")])
+points = Array[Array]([])
+active_effects = Array[ExtResource("1_hfwv2")]([])
+area_ids = Array[int]([3])
+id = 35
+name = "Wheat"
+gdscript = ExtResource("2_rtvfu")
+saved_data = ExtResource("7_7pgty")
+metadata/_custom_type_script = "uid://bvxsmhoh3obu"

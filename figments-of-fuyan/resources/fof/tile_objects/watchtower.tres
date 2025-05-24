@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=6 format=3 uid="uid://dt3eljuxymhs7"]
+
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_eiqg3"]
+[ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_krbma"]
+[ext_resource type="Script" uid="uid://bfpfskaxanrpk" path="res://scripts/fof/objects/iobject.gd" id="2_rqf28"]
+[ext_resource type="PackedScene" uid="uid://ch8xd01fxoipc" path="res://assets/models/fof/objects/watchtower.glb" id="3_jwebd"]
+[ext_resource type="Script" uid="uid://c76iyo8j5sdgv" path="res://scripts/saved_data/game_objects/saved_data_iobject.gd" id="3_sxaax"]
+
+[resource]
+script = ExtResource("2_krbma")
+tile_coords = Array[Array]([[Vector4(0, 0, 0, 0)]])
+lock_rotation = true
+lock_tile = false
+ignore_collisions = false
+solids = Array[bool]([])
+models = Array[PackedScene]([ExtResource("3_jwebd")])
+points = Array[Array]([])
+active_effects = Array[ExtResource("1_eiqg3")]([])
+area_ids = Array[int]([3])
+id = 37
+name = "Watchtower"
+gdscript = ExtResource("2_rqf28")
+saved_data = ExtResource("3_sxaax")
+metadata/_custom_type_script = "uid://bvxsmhoh3obu"
