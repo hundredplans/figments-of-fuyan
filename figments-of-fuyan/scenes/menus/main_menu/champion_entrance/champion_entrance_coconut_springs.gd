@@ -5,6 +5,7 @@ var ChampionCard: CardGD
 @onready var Decoration: Node3D = %Decoration
 
 func setInfo(area_id: int) -> void:
+	Helper.level_editor_area_info = Helper.getFofInfoID(AreaInfo, area_id)
 	var champion_info: ChampionCardInfo = Helper.getFofInfoID(ChampionCardInfo, DIVINUS_ID)
 	var champion_data := SavedDataCard.new(champion_info.id, true)
 	
