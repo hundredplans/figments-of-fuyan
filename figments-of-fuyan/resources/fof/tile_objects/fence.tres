@@ -1,19 +1,20 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=6 format=3 uid="uid://twtkb8vlvrco"]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=7 format=3 uid="uid://twtkb8vlvrco"]
 
 [ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_8krmr"]
 [ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_wlqqg"]
 [ext_resource type="Script" uid="uid://bjdh5jg7ecvli" path="res://scripts/fof/objects/object.gd" id="2_yo5tv"]
 [ext_resource type="PackedScene" uid="uid://cxeodtbd4cysl" path="res://assets/models/fof/objects/fence.glb" id="3_4bobx"]
+[ext_resource type="PackedScene" uid="uid://f6hi1wb0oiab" path="res://assets/models/fof/objects/fence1.glb" id="4_4bobx"]
 [ext_resource type="Script" uid="uid://c57vvj8uxhu4x" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="4_yfibu"]
 
 [resource]
 script = ExtResource("2_wlqqg")
 tile_coords = Array[Array]([[Vector4(0, 0, 0, 0)]])
 lock_rotation = true
-lock_tile = false
+lock_tile = true
 ignore_collisions = false
 solids = Array[bool]([true])
-models = Array[PackedScene]([ExtResource("3_4bobx")])
+models = Array[PackedScene]([ExtResource("3_4bobx"), ExtResource("4_4bobx")])
 points = Array[Array]([])
 active_effects = Array[ExtResource("1_8krmr")]([])
 area_ids = Array[int]([3])

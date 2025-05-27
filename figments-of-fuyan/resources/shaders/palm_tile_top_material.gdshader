@@ -16,4 +16,3 @@ void fragment() {
 		ALBEDO = tile_spot_color;
 	}
 }
-

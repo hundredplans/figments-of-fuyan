@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=7 format=3 uid="uid://dbne450ox1s3i"]
+
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_c1p88"]
+[ext_resource type="Script" uid="uid://bjdh5jg7ecvli" path="res://scripts/fof/objects/object.gd" id="2_dj1me"]
+[ext_resource type="PackedScene" uid="uid://tfdjo7nuks3r" path="res://assets/models/fof/objects/sunflower.glb" id="3_ysarv"]
+[ext_resource type="PackedScene" uid="uid://cgb81ak2q8br0" path="res://assets/models/fof/objects/sunflower1.glb" id="4_mkbwo"]
+[ext_resource type="Script" uid="uid://c57vvj8uxhu4x" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="5_vtfxc"]
+[ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="6_xuxnd"]
+
+[resource]
+script = ExtResource("6_xuxnd")
+tile_coords = Array[Array]([[Vector4(0, 0, 0, 0)]])
+lock_rotation = false
+lock_tile = false
+ignore_collisions = true
+solids = Array[bool]([false])
+models = Array[PackedScene]([ExtResource("3_ysarv"), ExtResource("4_mkbwo")])
+points = Array[Array]([])
+active_effects = Array[ExtResource("1_c1p88")]([])
+area_ids = Array[int]([3])
+id = 48
+name = "Sunflower"
+gdscript = ExtResource("2_dj1me")
+saved_data = ExtResource("5_vtfxc")
+metadata/_custom_type_script = "uid://bvxsmhoh3obu"
