@@ -1,19 +1,19 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=11 format=3 uid="uid://bxpc6syr3c8yp"]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=11 format=3]
 
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_b0hg3"]
-[ext_resource type="Script" uid="uid://bjdh5jg7ecvli" path="res://scripts/fof/objects/object.gd" id="2_727j3"]
-[ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_jg48g"]
-[ext_resource type="PackedScene" uid="uid://denw4qi1v0j7v" path="res://assets/models/fof/objects/signpost.glb" id="3_8dwtu"]
-[ext_resource type="Script" uid="uid://c57vvj8uxhu4x" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="4_3isgw"]
-[ext_resource type="PackedScene" uid="uid://bqjsk8ghpdpm" path="res://assets/models/fof/objects/signpost1.glb" id="4_5fi48"]
-[ext_resource type="PackedScene" uid="uid://bfhlwejptf3fp" path="res://assets/models/fof/objects/signpost2.glb" id="5_luc88"]
-[ext_resource type="PackedScene" uid="uid://bmmvxwj5w4r2w" path="res://assets/models/fof/objects/signpost3.glb" id="6_g2vti"]
-[ext_resource type="PackedScene" uid="uid://bqf0swwaje0f4" path="res://assets/models/fof/objects/signpost4.glb" id="7_xbygv"]
-[ext_resource type="PackedScene" uid="uid://u8mm1hxygy77" path="res://assets/models/fof/objects/signpost5.glb" id="8_36prk"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_b0hg3"]
+[ext_resource type="Script" path="res://scripts/fof/objects/object.gd" id="2_727j3"]
+[ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_jg48g"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/signpost.glb" id="3_8dwtu"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="4_3isgw"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/signpost1.glb" id="4_5fi48"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/signpost2.glb" id="5_luc88"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/signpost3.glb" id="6_g2vti"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/signpost4.glb" id="7_xbygv"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/signpost5.glb" id="8_36prk"]
 
 [resource]
 script = ExtResource("2_jg48g")
-tile_coords = Array[Array]([[Vector4(0, 0, 0, 0)]])
+tile_coords = Array[Array]([[Vector4(0, 0, 0, 0), Vector4i(0, 0, 0, 1), Vector4i(0, 0, 0, 2)], [Vector4(0, 0, 0, 0), Vector4i(0, 0, 0, 1), Vector4i(0, 0, 0, 2)], [Vector4(0, 0, 0, 0), Vector4i(0, 0, 0, 1), Vector4i(0, 0, 0, 2)], [Vector4(0, 0, 0, 0), Vector4i(0, 0, 0, 1), Vector4i(0, 0, 0, 2)], [Vector4(0, 0, 0, 0), Vector4i(0, 0, 0, 1), Vector4i(0, 0, 0, 2)], [Vector4(0, 0, 0, 0), Vector4i(0, 0, 0, 1), Vector4i(0, 0, 0, 2)]])
 lock_rotation = false
 lock_tile = false
 ignore_collisions = false

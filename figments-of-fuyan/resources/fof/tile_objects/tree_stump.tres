@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_yxtj1"]
+[ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_8gnsw"]
+[ext_resource type="Script" path="res://scripts/fof/objects/object.gd" id="2_8n7ly"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/tree_stump.glb" id="3_wec0s"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="4_ulin0"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/tree_stump1.glb" id="4_wec0s"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/tree_stump2.glb" id="5_fnv23"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/tree_stump3.glb" id="6_4rivj"]
+
+[resource]
+script = ExtResource("2_8gnsw")
+tile_coords = Array[Array]([[Vector4(0, 0, 0, 0), Vector4i(0, 0, 0, 1)], [Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0), Vector4i(0, 0, 0, 1)], [Vector4(0, 0, 0, 0), Vector4i(0, 0, 0, 1)]])
+lock_rotation = false
+lock_tile = false
+ignore_collisions = false
+solids = Array[bool]([true])
+models = Array[PackedScene]([ExtResource("3_wec0s"), ExtResource("4_wec0s"), ExtResource("5_fnv23"), ExtResource("6_4rivj")])
+points = Array[Array]([])
+active_effects = Array[ExtResource("1_yxtj1")]([])
+area_ids = Array[int]([3])
+id = 54
+name = "Tree Stump"
+gdscript = ExtResource("2_8n7ly")
+saved_data = ExtResource("4_ulin0")
+metadata/_custom_type_script = "uid://bvxsmhoh3obu"

@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://dm0g5e1vf1p6e"]
+
+[ext_resource type="PackedScene" uid="uid://b3lo1i6ck1fyj" path="res://assets/models/fof/objects/grass1.glb" id="1_vy1x6"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vy1x6"]
+size = Vector3(1.61911, 0.386719, 1.7337)
+
+[node name="grass1" instance=ExtResource("1_vy1x6")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." index="1"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0149689, 0.1875, 0.009552)
+shape = SubResource("BoxShape3D_vy1x6")

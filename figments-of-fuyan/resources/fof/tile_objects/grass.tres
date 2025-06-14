@@ -1,21 +1,21 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=8 format=3 uid="uid://fteykyouehf1"]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=8 format=3 uid="uid://b1s81tfq5o0gy"]
 
 [ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_pwyam"]
 [ext_resource type="Script" uid="uid://bjdh5jg7ecvli" path="res://scripts/fof/objects/object.gd" id="2_bx334"]
-[ext_resource type="PackedScene" uid="uid://dsryh3vcrufq3" path="res://assets/models/fof/objects/grass.glb" id="3_1gjme"]
-[ext_resource type="PackedScene" uid="uid://b3lo1i6ck1fyj" path="res://assets/models/fof/objects/grass1.glb" id="4_1gjme"]
+[ext_resource type="PackedScene" uid="uid://ceyqqf8t1uo0k" path="res://scenes/game/objects/grass.tscn" id="3_1gjme"]
 [ext_resource type="Script" uid="uid://c57vvj8uxhu4x" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="4_3iwqc"]
-[ext_resource type="PackedScene" uid="uid://377n6ibd4cva" path="res://assets/models/fof/objects/grass2.glb" id="5_3iwqc"]
+[ext_resource type="PackedScene" uid="uid://dm0g5e1vf1p6e" path="res://scenes/game/objects/grass1.tscn" id="4_jthsq"]
 [ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="5_jthsq"]
+[ext_resource type="PackedScene" uid="uid://lsa7adao013b" path="res://scenes/game/objects/grass2.tscn" id="5_rfyle"]
 
 [resource]
 script = ExtResource("5_jthsq")
-tile_coords = Array[Array]([[Vector4(0, 0, 0, 0)]])
+tile_coords = Array[Array]([[Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)]])
 lock_rotation = true
 lock_tile = true
 ignore_collisions = false
 solids = Array[bool]([false, false, false])
-models = Array[PackedScene]([ExtResource("3_1gjme"), ExtResource("4_1gjme"), ExtResource("5_3iwqc")])
+models = Array[PackedScene]([ExtResource("3_1gjme"), ExtResource("4_jthsq"), ExtResource("5_rfyle")])
 points = Array[Array]([])
 active_effects = Array[ExtResource("1_pwyam")]([])
 area_ids = Array[int]([3])

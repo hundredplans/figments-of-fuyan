@@ -34,8 +34,8 @@ func onFindTileObjectInfo(id: int) -> TileObjectInfo:
 #endregion
 #region Base Functions
 func _ready() -> void:
-	all_tile_objects = Helper.getFofInfoArray(TileObjectInfo)
-	all_tile_objects.sort_custom(func(x: TileObjectInfo, y: TileObjectInfo): return x.id < y.id)
+	all_tile_objects = Helper.getFofInfoArray(ObjectInfo)
+	all_tile_objects.sort_custom(func(x: ObjectInfo, y: ObjectInfo): return x.id < y.id)
 	
 	all_card_objects = Helper.getFofInfoArray(CardInfo)
 	all_card_objects = all_card_objects.filter(func(x: CardInfo): return x.id < 100)
@@ -61,10 +61,7 @@ func _ready() -> void:
 	ScrollCont.get_v_scroll_bar().mouse_exited.connect(onMouseInUI.bind(false))
 	
 func getGameObjectData(info: Variant) -> SavedData:
-	if info is TileInfo: return SavedDataTile.new(info.id)
-	elif info is ObjectInfo: return SavedDataObject.new(info.id)
-	elif info is CardInfo: return SavedDataCard.new(info.id)
-	return null
+	return info.saved_data.new(info.id)
 
 func _process(_delta: float) -> void:
 	if !is_camera_panning:
@@ -164,7 +161,7 @@ func onEnableEditTileCoords() -> void:
 	edit_tile_coords = true
 	get_tree().call_group("Points", "queue_free")
 	get_tree().call_group("Tiles", "queue_free")
-	SelectedModel.onLoadTilesCoords(World, onFindTileObjectInfo(1))
+	SelectedModel.onLoadTilesCoords(World, Helper.getFofInfoID(TileInfo, 1))
 	onCreateTileStaticBodies()
 #endregion
 #region Elevation

@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://c1ds2xxo2youg"]
+
+[ext_resource type="PackedScene" uid="uid://d3jlegsda04vq" path="res://assets/models/fof/objects/wheat2.glb" id="1_x1ig3"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_issfn"]
+size = Vector3(1.80115, 1.85596, 1.91138)
+
+[node name="wheat2" instance=ExtResource("1_x1ig3")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." index="1"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0276489, 0.922119, -0.0311279)
+shape = SubResource("BoxShape3D_issfn")

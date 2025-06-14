@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_76vj6"]
+[ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_rpxub"]
+[ext_resource type="Script" path="res://scripts/fof/objects/object.gd" id="2_v0t0l"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/fallen_log.glb" id="3_431kn"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/fallen_log1.glb" id="4_v86ib"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="5_3a31a"]
+
+[resource]
+script = ExtResource("2_rpxub")
+tile_coords = Array[Array]([[Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0), Vector4i(-1, 0, 1, 0)]])
+lock_rotation = false
+lock_tile = false
+ignore_collisions = false
+solids = Array[bool]([true, true])
+models = Array[PackedScene]([ExtResource("3_431kn"), ExtResource("4_v86ib")])
+points = Array[Array]([])
+active_effects = Array[ExtResource("1_76vj6")]([])
+area_ids = Array[int]([3])
+id = 53
+name = "Fallen Log"
+gdscript = ExtResource("2_v0t0l")
+saved_data = ExtResource("5_3a31a")
+metadata/_custom_type_script = "uid://bvxsmhoh3obu"

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_lu720"]
+[ext_resource type="Script" path="res://scripts/fof/objects/object.gd" id="2_8ctky"]
+[ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_xpqi1"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/shovel.glb" id="3_0dp1o"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="4_8mfjj"]
+
+[resource]
+script = ExtResource("2_xpqi1")
+tile_coords = Array[Array]([[Vector4(0, 0, 0, 0), Vector4i(0, 0, 0, 1), Vector4i(0, 0, 0, 2)]])
+lock_rotation = false
+lock_tile = false
+ignore_collisions = false
+solids = Array[bool]([false])
+models = Array[PackedScene]([ExtResource("3_0dp1o")])
+points = Array[Array]([])
+active_effects = Array[ExtResource("1_lu720")]([])
+area_ids = Array[int]([3])
+id = 59
+name = "Shovel"
+gdscript = ExtResource("2_8ctky")
+saved_data = ExtResource("4_8mfjj")
+metadata/_custom_type_script = "uid://bvxsmhoh3obu"

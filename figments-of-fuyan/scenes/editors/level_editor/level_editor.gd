@@ -593,7 +593,7 @@ func onAreaOptionButtonSelected(_index: int = 0) -> void:
 	var area_info: AreaInfo = Helper.getFofInfoID(AreaInfo, selected_area_id)
 	Helper.level_editor_area_info = area_info
 	
-	if DefaultLight != null: DefaultLight.queue_free()
+	if DefaultLight != null: DefaultLight.queue_free()	
 	DefaultLight = area_info.default_light.instantiate()
 	World.add_child(DefaultLight)
 	

@@ -1,17 +1,17 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=9 format=3 uid="uid://clgnsgqmpypne"]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=9 format=3]
 
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_g4js1"]
-[ext_resource type="Script" uid="uid://bjdh5jg7ecvli" path="res://scripts/fof/objects/object.gd" id="2_6wxeu"]
-[ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_xv5fa"]
-[ext_resource type="PackedScene" uid="uid://doj1xwib28btc" path="res://assets/models/fof/objects/reed.glb" id="3_vouis"]
-[ext_resource type="Script" uid="uid://c57vvj8uxhu4x" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="4_0uy4a"]
-[ext_resource type="PackedScene" uid="uid://ra3w8vl2xfat" path="res://assets/models/fof/objects/reed1.glb" id="4_gmxdh"]
-[ext_resource type="PackedScene" uid="uid://bis3cvb4v8dma" path="res://assets/models/fof/objects/reed2.glb" id="5_hbqmt"]
-[ext_resource type="PackedScene" uid="uid://j0p562wa0jeo" path="res://assets/models/fof/objects/reed3.glb" id="6_uyv4n"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_g4js1"]
+[ext_resource type="Script" path="res://scripts/fof/objects/object.gd" id="2_6wxeu"]
+[ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_xv5fa"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/reed.glb" id="3_vouis"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="4_0uy4a"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/reed1.glb" id="4_gmxdh"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/reed2.glb" id="5_hbqmt"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/reed3.glb" id="6_uyv4n"]
 
 [resource]
 script = ExtResource("2_xv5fa")
-tile_coords = Array[Array]([[Vector4(0, 0, 0, 0)]])
+tile_coords = Array[Array]([[Vector4(0, 0, 0, 0), Vector4i(0, 0, 0, 1)], [Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0), Vector4i(0, 0, 0, 1)], [Vector4(0, 0, 0, 0)]])
 lock_rotation = false
 lock_tile = false
 ignore_collisions = false

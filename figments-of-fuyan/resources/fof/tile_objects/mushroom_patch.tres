@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_gfonj"]
+[ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_a1mh5"]
+[ext_resource type="Script" path="res://scripts/fof/objects/object.gd" id="2_jwxyu"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="3_4f57q"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/mushroom_patch.glb" id="3_7fu0n"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/mushroom_patch1.glb" id="4_lw35b"]
+
+[resource]
+script = ExtResource("2_a1mh5")
+tile_coords = Array[Array]([[Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)]])
+lock_rotation = false
+lock_tile = false
+ignore_collisions = false
+solids = Array[bool]([false, false])
+models = Array[PackedScene]([ExtResource("3_7fu0n"), ExtResource("4_lw35b")])
+points = Array[Array]([])
+active_effects = Array[ExtResource("1_gfonj")]([])
+area_ids = Array[int]([3])
+id = 65
+name = "Mushroom Patch"
+gdscript = ExtResource("2_jwxyu")
+saved_data = ExtResource("3_4f57q")
+metadata/_custom_type_script = "uid://bvxsmhoh3obu"

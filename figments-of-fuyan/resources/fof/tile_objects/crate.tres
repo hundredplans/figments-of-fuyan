@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_ayswe"]
+[ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_1sn7f"]
+[ext_resource type="Script" path="res://scripts/fof/objects/object.gd" id="2_hwan1"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/crate.glb" id="3_gc0is"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/crate1.glb" id="4_kgdoa"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="4_qvl40"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/crate2.glb" id="5_v4brv"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/crate3.glb" id="6_kj05e"]
+
+[resource]
+script = ExtResource("2_1sn7f")
+tile_coords = Array[Array]([[Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0), Vector4i(0, 0, 0, 1)], [Vector4(0, 0, 0, 0), Vector4i(0, 0, 0, 1)], [Vector4(0, 0, 0, 0), Vector4i(0, 0, 0, 1)]])
+lock_rotation = false
+lock_tile = false
+ignore_collisions = false
+solids = Array[bool]([true])
+models = Array[PackedScene]([ExtResource("3_gc0is"), ExtResource("4_kgdoa"), ExtResource("5_v4brv"), ExtResource("6_kj05e")])
+points = Array[Array]([])
+active_effects = Array[ExtResource("1_ayswe")]([])
+area_ids = Array[int]([3])
+id = 61
+name = "Crate"
+gdscript = ExtResource("2_hwan1")
+saved_data = ExtResource("4_qvl40")
+metadata/_custom_type_script = "uid://bvxsmhoh3obu"

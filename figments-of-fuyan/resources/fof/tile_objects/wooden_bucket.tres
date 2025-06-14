@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_s0cil"]
+[ext_resource type="Script" path="res://scripts/fof/objects/object.gd" id="2_17tww"]
+[ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_y0syi"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/wooden_bucket.glb" id="3_ftuwi"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/wooden_bucket1.glb" id="4_j4ncc"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/objects/wooden_bucket2.glb" id="5_13pst"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="6_f3ubt"]
+
+[resource]
+script = ExtResource("2_y0syi")
+tile_coords = Array[Array]([[Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)]])
+lock_rotation = false
+lock_tile = false
+ignore_collisions = false
+solids = Array[bool]([false, false, false])
+models = Array[PackedScene]([ExtResource("3_ftuwi"), ExtResource("4_j4ncc"), ExtResource("5_13pst")])
+points = Array[Array]([])
+active_effects = Array[ExtResource("1_s0cil")]([])
+area_ids = Array[int]([3])
+id = 58
+name = "Wooden Bucket"
+gdscript = ExtResource("2_17tww")
+saved_data = ExtResource("6_f3ubt")
+metadata/_custom_type_script = "uid://bvxsmhoh3obu"
