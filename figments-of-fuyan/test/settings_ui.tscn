@@ -1,0 +1,226 @@
+[gd_scene load_steps=8 format=3 uid="uid://bj558wc2hyldj"]
+
+[ext_resource type="LabelSettings" uid="uid://cnmlfs66pb1a1" path="res://resources/ui/label_settings/spicyrice_huge.tres" id="1_a6k52"]
+[ext_resource type="Texture2D" uid="uid://wotymd3wxe5e" path="res://test/cartoon_lab.png" id="1_ym8oo"]
+[ext_resource type="FontFile" uid="uid://cors0qq44rsaq" path="res://assets/fonts/chewy.ttf" id="3_gvmgd"]
+[ext_resource type="FontFile" uid="uid://m1wf62pwj0gt" path="res://assets/fonts/spicyrice.ttf" id="4_ym8oo"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_e6xgy"]
+font = ExtResource("3_gvmgd")
+font_size = 64
+outline_size = 16
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_3mjc3"]
+font = ExtResource("4_ym8oo")
+font_size = 128
+font_color = Color(1, 0, 0, 1)
+outline_size = 48
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_bokvm"]
+font = ExtResource("4_ym8oo")
+font_size = 128
+font_color = Color(0, 1, 0, 1)
+outline_size = 48
+outline_color = Color(0, 0, 0, 1)
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_ym8oo")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -929.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = -10
+
+[node name="PanelContainer3" type="PanelContainer" parent="HBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_type_variation = &"GreyPanelContainer"
+
+[node name="Label" type="Label" parent="HBoxContainer/PanelContainer3"]
+layout_mode = 2
+text = "General"
+label_settings = ExtResource("1_a6k52")
+horizontal_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_type_variation = &"GreyPanelContainer"
+
+[node name="Label" type="Label" parent="HBoxContainer/PanelContainer"]
+layout_mode = 2
+text = "Video"
+label_settings = ExtResource("1_a6k52")
+horizontal_alignment = 1
+
+[node name="PanelContainer2" type="PanelContainer" parent="HBoxContainer"]
+z_index = 2
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_type_variation = &"GreyPanelContainerAscended"
+
+[node name="Label" type="Label" parent="HBoxContainer/PanelContainer2"]
+layout_mode = 2
+text = "Audio"
+label_settings = ExtResource("1_a6k52")
+horizontal_alignment = 1
+
+[node name="PanelContainer4" type="PanelContainer" parent="HBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_type_variation = &"GreyPanelContainer"
+
+[node name="Label" type="Label" parent="HBoxContainer/PanelContainer4"]
+layout_mode = 2
+text = "Controls"
+label_settings = ExtResource("1_a6k52")
+horizontal_alignment = 1
+
+[node name="PanelContainer5" type="PanelContainer" parent="HBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_type_variation = &"GreyPanelContainer"
+
+[node name="Label" type="Label" parent="HBoxContainer/PanelContainer5"]
+layout_mode = 2
+text = "Online"
+label_settings = ExtResource("1_a6k52")
+horizontal_alignment = 1
+
+[node name="PanelContainer6" type="PanelContainer" parent="HBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"GreyPanelContainer"
+
+[node name="Label" type="Label" parent="HBoxContainer/PanelContainer6"]
+modulate = Color(1, 0, 0, 1)
+layout_mode = 2
+text = "Exit  "
+label_settings = ExtResource("1_a6k52")
+horizontal_alignment = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_top = 151.0
+offset_right = 40.0
+offset_bottom = 191.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 0
+offset_top = 141.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="PanelContainer" type="PanelContainer" parent="ScrollContainer"]
+self_modulate = Color(0.180005, 0.180005, 0.180005, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_type_variation = &"PureWhitePanelContainer"
+
+[node name="MarginContainer" type="MarginContainer" parent="ScrollContainer/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 60
+
+[node name="Label" type="Label" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Main Volume: 60 / 100"
+label_settings = SubResource("LabelSettings_e6xgy")
+
+[node name="Label2" type="Label" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "-"
+label_settings = SubResource("LabelSettings_3mjc3")
+
+[node name="Label3" type="Label" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "+"
+label_settings = SubResource("LabelSettings_bokvm")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 60
+
+[node name="Label" type="Label" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Music Volume: 0 / 100"
+label_settings = SubResource("LabelSettings_e6xgy")
+
+[node name="Label2" type="Label" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "-"
+label_settings = SubResource("LabelSettings_3mjc3")
+
+[node name="Label3" type="Label" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "+"
+label_settings = SubResource("LabelSettings_bokvm")
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 60
+
+[node name="Label" type="Label" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "SFX Volume: 45 / 100"
+label_settings = SubResource("LabelSettings_e6xgy")
+
+[node name="Label2" type="Label" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "-"
+label_settings = SubResource("LabelSettings_3mjc3")
+
+[node name="Label3" type="Label" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "+"
+label_settings = SubResource("LabelSettings_bokvm")
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 60
+
+[node name="Label" type="Label" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+text = "Chat Volume: 76 / 100"
+label_settings = SubResource("LabelSettings_e6xgy")
+
+[node name="Label2" type="Label" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+text = "-"
+label_settings = SubResource("LabelSettings_3mjc3")
+
+[node name="Label3" type="Label" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+text = "+"
+label_settings = SubResource("LabelSettings_bokvm")

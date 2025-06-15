@@ -1,0 +1,95 @@
+[gd_scene load_steps=5 format=3 uid="uid://yq4ytmm4dh4v"]
+
+[ext_resource type="Texture2D" uid="uid://wotymd3wxe5e" path="res://test/cartoon_lab.png" id="1_5unes"]
+[ext_resource type="LabelSettings" uid="uid://cnmlfs66pb1a1" path="res://resources/ui/label_settings/spicyrice_huge.tres" id="1_b00or"]
+[ext_resource type="FontFile" uid="uid://6p6txeffrnnl" path="res://assets/fonts/kneewave.ttf" id="1_ex4cx"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_5unes"]
+font = ExtResource("1_ex4cx")
+font_size = 128
+outline_size = 64
+outline_color = Color(0, 0, 0, 1)
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_5unes")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -406.0
+offset_top = -393.0
+offset_right = 406.0
+offset_bottom = 393.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+modulate = Color(0, 0.419608, 1, 1)
+layout_mode = 2
+text = "EduVisualiseR"
+label_settings = SubResource("LabelSettings_5unes")
+horizontal_alignment = 1
+
+[node name="Control" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"BluePanelContainer"
+
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer"]
+layout_mode = 2
+text = "Create Lobby"
+label_settings = ExtResource("1_b00or")
+horizontal_alignment = 1
+
+[node name="PanelContainer3" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"PurplePanelContainer"
+
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer3"]
+layout_mode = 2
+text = "Join Lobby"
+label_settings = ExtResource("1_b00or")
+horizontal_alignment = 1
+
+[node name="PanelContainer2" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"GreyPanelContainer"
+
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer2"]
+layout_mode = 2
+text = "Settings"
+label_settings = ExtResource("1_b00or")
+horizontal_alignment = 1
+
+[node name="PanelContainer4" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"RedPanelContainer"
+
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer4"]
+layout_mode = 2
+text = "Exit"
+label_settings = ExtResource("1_b00or")
+horizontal_alignment = 1

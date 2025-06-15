@@ -1,0 +1,284 @@
+[gd_scene load_steps=13 format=3 uid="uid://dxcdpto7org4j"]
+
+[ext_resource type="LabelSettings" uid="uid://cnmlfs66pb1a1" path="res://resources/ui/label_settings/spicyrice_huge.tres" id="1_uwv1m"]
+[ext_resource type="FontFile" uid="uid://cors0qq44rsaq" path="res://assets/fonts/chewy.ttf" id="2_3kfsy"]
+[ext_resource type="LabelSettings" uid="uid://baxopkmeda53x" path="res://resources/ui/label_settings/roboto_huge.tres" id="3_1fnkc"]
+[ext_resource type="FontFile" uid="uid://m1wf62pwj0gt" path="res://assets/fonts/spicyrice.ttf" id="4_qpj1q"]
+[ext_resource type="Texture2D" uid="uid://dilj4y3uvwbg8" path="res://assets/sprites/game/boons/campfire_boon.png" id="5_rg77d"]
+[ext_resource type="Texture2D" uid="uid://cj1ihg5ofwain" path="res://assets/sprites/game/cards/art_mini/havel_rockfoot.png" id="6_uictm"]
+[ext_resource type="Texture2D" uid="uid://b4qt1fl4q0slo" path="res://assets/sprites/game/cards/art_mini/palmer.png" id="7_cqs3u"]
+[ext_resource type="Texture2D" uid="uid://dg8ey7psr2ltn" path="res://assets/sprites/game/cards/art_mini/sandlegged_crab.png" id="8_5q7jt"]
+[ext_resource type="Texture2D" uid="uid://cfkbvgqi3j7ol" path="res://assets/sprites/game/cards/art_mini/wayne_the_sheriff.png" id="9_wxp6b"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_vowlx"]
+font = ExtResource("2_3kfsy")
+font_size = 64
+outline_size = 16
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_kx6et"]
+font = ExtResource("4_qpj1q")
+font_size = 128
+font_color = Color(1, 0, 0, 1)
+outline_size = 48
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_rg77d"]
+font = ExtResource("4_qpj1q")
+font_size = 128
+font_color = Color(0, 1, 0, 1)
+outline_size = 48
+outline_color = Color(0, 0, 0, 1)
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -929.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = -10
+
+[node name="PanelContainer2" type="PanelContainer" parent="HBoxContainer2"]
+z_index = 2
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_type_variation = &"GreyPanelContainerAscended"
+
+[node name="Label" type="Label" parent="HBoxContainer2/PanelContainer2"]
+layout_mode = 2
+text = "LAN"
+label_settings = ExtResource("1_uwv1m")
+horizontal_alignment = 1
+
+[node name="PanelContainer5" type="PanelContainer" parent="HBoxContainer2"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_type_variation = &"GreyPanelContainer"
+
+[node name="Label" type="Label" parent="HBoxContainer2/PanelContainer5"]
+layout_mode = 2
+text = "Online"
+label_settings = ExtResource("1_uwv1m")
+horizontal_alignment = 1
+
+[node name="PanelContainer6" type="PanelContainer" parent="HBoxContainer2"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"GreyPanelContainer"
+
+[node name="Label" type="Label" parent="HBoxContainer2/PanelContainer6"]
+modulate = Color(1, 0, 0, 1)
+layout_mode = 2
+text = "Exit  "
+label_settings = ExtResource("1_uwv1m")
+horizontal_alignment = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 0
+offset_top = 141.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="PanelContainer" type="PanelContainer" parent="ScrollContainer"]
+self_modulate = Color(0.180005, 0.180005, 0.180005, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_type_variation = &"PureWhitePanelContainer"
+
+[node name="MarginContainer" type="MarginContainer" parent="ScrollContainer/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Server Name: "
+label_settings = SubResource("LabelSettings_vowlx")
+
+[node name="PanelContainer" type="PanelContainer" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+self_modulate = Color(0.843184, 0.843184, 0.843184, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"GreyPanelContainer"
+
+[node name="Label" type="Label" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/PanelContainer"]
+layout_mode = 2
+text = " school server "
+label_settings = ExtResource("3_1fnkc")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Server Password: "
+label_settings = SubResource("LabelSettings_vowlx")
+
+[node name="PanelContainer" type="PanelContainer" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+self_modulate = Color(0.843184, 0.843184, 0.843184, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"GreyPanelContainer"
+
+[node name="Label" type="Label" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer"]
+layout_mode = 2
+text = " ********"
+label_settings = ExtResource("3_1fnkc")
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "Teacher Role:  "
+label_settings = SubResource("LabelSettings_vowlx")
+
+[node name="Label2" type="Label" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "X"
+label_settings = SubResource("LabelSettings_kx6et")
+
+[node name="Label3" type="Label" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+modulate = Color(0.404511, 0.404511, 0.404511, 1)
+layout_mode = 2
+text = "✔"
+label_settings = SubResource("LabelSettings_rg77d")
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Label" type="Label" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+text = "Joined Players:"
+label_settings = SubResource("LabelSettings_vowlx")
+
+[node name="PanelContainer" type="PanelContainer" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer5"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_type_variation = &"PureWhitePanelContainer"
+
+[node name="TextureRect" type="TextureRect" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer5/PanelContainer"]
+layout_mode = 2
+texture = ExtResource("5_rg77d")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer5/PanelContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Student"
+horizontal_alignment = 1
+
+[node name="PanelContainer2" type="PanelContainer" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer5"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_type_variation = &"PureWhitePanelContainer"
+
+[node name="TextureRect" type="TextureRect" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer5/PanelContainer2"]
+layout_mode = 2
+texture = ExtResource("6_uictm")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer5/PanelContainer2"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Student"
+horizontal_alignment = 1
+
+[node name="PanelContainer3" type="PanelContainer" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer5"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_type_variation = &"PureWhitePanelContainer"
+
+[node name="TextureRect" type="TextureRect" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer5/PanelContainer3"]
+layout_mode = 2
+texture = ExtResource("7_cqs3u")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer5/PanelContainer3"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Student"
+horizontal_alignment = 1
+
+[node name="PanelContainer4" type="PanelContainer" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer5"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_type_variation = &"PureWhitePanelContainer"
+
+[node name="TextureRect" type="TextureRect" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer5/PanelContainer4"]
+layout_mode = 2
+texture = ExtResource("8_5q7jt")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer5/PanelContainer4"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Student"
+horizontal_alignment = 1
+
+[node name="PanelContainer5" type="PanelContainer" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer5"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_type_variation = &"PureWhitePanelContainer"
+
+[node name="TextureRect" type="TextureRect" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer5/PanelContainer5"]
+layout_mode = 2
+texture = ExtResource("9_wxp6b")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer5/PanelContainer5"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Student"
+horizontal_alignment = 1
+
+[node name="Control" type="Control" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"TealPanelContainer"
+
+[node name="Label" type="Label" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer4/PanelContainer"]
+layout_mode = 2
+text = "Start"
+label_settings = ExtResource("1_uwv1m")
+horizontal_alignment = 1
+
+[node name="PanelContainer2" type="PanelContainer" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer4"]
+modulate = Color(0.450648, 0.450648, 0.450648, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"GreyPanelContainer"
+
+[node name="Label" type="Label" parent="ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer4/PanelContainer2"]
+layout_mode = 2
+text = "Ready"
+label_settings = ExtResource("1_uwv1m")
+horizontal_alignment = 1

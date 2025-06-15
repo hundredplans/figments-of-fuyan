@@ -1,0 +1,127 @@
+[gd_scene load_steps=8 format=3 uid="uid://b2tdisj6ke2ke"]
+
+[ext_resource type="LabelSettings" uid="uid://cnmlfs66pb1a1" path="res://resources/ui/label_settings/spicyrice_huge.tres" id="1_cwddb"]
+[ext_resource type="Texture2D" uid="uid://wotymd3wxe5e" path="res://test/cartoon_lab.png" id="1_kso5g"]
+[ext_resource type="FontVariation" uid="uid://cm13v3jjfb8ea" path="res://assets/fonts/spicyrice_massive.tres" id="2_oinj6"]
+[ext_resource type="Texture2D" uid="uid://cgowgxdaq3qgv" path="res://test/internet.webp" id="3_w8jmh"]
+[ext_resource type="Texture2D" uid="uid://jljer2ynbbv0" path="res://assets/sprites/ui/icons/lock.png" id="4_oo2sw"]
+[ext_resource type="LabelSettings" uid="uid://bw613ebdspq46" path="res://resources/ui/label_settings/spicyrice_massive.tres" id="6_oinj6"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_dcbd8"]
+font = ExtResource("2_oinj6")
+font_size = 160
+outline_size = 48
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 20
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(10, 10)
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0885599, 0.0885599, 0.0885599, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 100
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 100
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/PanelContainer"]
+layout_mode = 2
+texture = ExtResource("1_kso5g")
+expand_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/PanelContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Join LAN"
+label_settings = SubResource("LabelSettings_dcbd8")
+horizontal_alignment = 1
+
+[node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/HBoxContainer"]
+modulate = Color(0.314316, 0.314316, 0.314316, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/PanelContainer2"]
+layout_mode = 2
+texture = ExtResource("3_w8jmh")
+expand_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/PanelContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/PanelContainer2/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/PanelContainer2/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Join Online"
+label_settings = SubResource("LabelSettings_dcbd8")
+horizontal_alignment = 1
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+modulate = Color(0.0430391, 0.0430392, 0.0430391, 1)
+layout_mode = 2
+offset_left = 1215.0
+offset_top = 345.0
+offset_right = 1637.0
+offset_bottom = 750.0
+texture = ExtResource("4_oo2sw")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="."]
+modulate = Color(0.787759, 0.787759, 0.787759, 1)
+layout_mode = 0
+offset_left = 995.0
+offset_top = 776.0
+offset_right = 1860.0
+offset_bottom = 957.0
+text = "This feature is blocked for student accounts"
+label_settings = ExtResource("1_cwddb")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Label2" type="Label" parent="."]
+modulate = Color(1, 0, 0, 1)
+layout_mode = 0
+offset_left = 1837.0
+offset_top = 5.0
+offset_right = 1896.0
+offset_bottom = 109.0
+text = "X"
+label_settings = ExtResource("6_oinj6")
