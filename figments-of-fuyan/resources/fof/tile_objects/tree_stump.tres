@@ -1,13 +1,13 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=9 format=3]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=9 format=3 uid="uid://de3m0pit3qlqg"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_yxtj1"]
-[ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_8gnsw"]
-[ext_resource type="Script" path="res://scripts/fof/objects/object.gd" id="2_8n7ly"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/tree_stump.glb" id="3_wec0s"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="4_ulin0"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/tree_stump1.glb" id="4_wec0s"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/tree_stump2.glb" id="5_fnv23"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/tree_stump3.glb" id="6_4rivj"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_yxtj1"]
+[ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_8gnsw"]
+[ext_resource type="Script" uid="uid://bjdh5jg7ecvli" path="res://scripts/fof/objects/object.gd" id="2_8n7ly"]
+[ext_resource type="PackedScene" uid="uid://b87iyho5xb12s" path="res://assets/models/fof/objects/tree_stump.glb" id="3_wec0s"]
+[ext_resource type="Script" uid="uid://c57vvj8uxhu4x" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="4_ulin0"]
+[ext_resource type="PackedScene" uid="uid://ccq0h7gm856ug" path="res://assets/models/fof/objects/tree_stump1.glb" id="4_wec0s"]
+[ext_resource type="PackedScene" uid="uid://21mhhkqe2642" path="res://assets/models/fof/objects/tree_stump2.glb" id="5_fnv23"]
+[ext_resource type="PackedScene" uid="uid://brchw3jx3guym" path="res://assets/models/fof/objects/tree_stump3.glb" id="6_4rivj"]
 
 [resource]
 script = ExtResource("2_8gnsw")
@@ -15,9 +15,9 @@ tile_coords = Array[Array]([[Vector4(0, 0, 0, 0), Vector4i(0, 0, 0, 1)], [Vector
 lock_rotation = false
 lock_tile = false
 ignore_collisions = false
-solids = Array[bool]([true])
+solids = Array[bool]([true, true, true, true])
 models = Array[PackedScene]([ExtResource("3_wec0s"), ExtResource("4_wec0s"), ExtResource("5_fnv23"), ExtResource("6_4rivj")])
-points = Array[Array]([])
+points = Array[Array]([[Vector3(-0.248785, 0.358841, 0.364736), Vector3(-0.441161, 0.393369, -0.0176971), Vector3(-0.0261614, 0.369496, -0.422688), Vector3(0.43059, 0.427541, 0.0686507), Vector3(0.157049, 0.332073, 0.393091), Vector3(-0.0357981, 0.674786, 0.00490808)], [Vector3(-0.468682, 0.126294, -0.020031), Vector3(-0.227886, 0.228977, 0.44328), Vector3(0.269687, 0.213896, 0.350442), Vector3(0.479792, 0.148366, -0.119993), Vector3(0.0661324, 0.240557, -0.433002), Vector3(0.0325359, 0.412246, 0.00286663)], [Vector3(0.1545, 0.294624, -0.439856), Vector3(-0.350364, 0.306802, -0.382003), Vector3(-0.436212, 0.387022, 0.0102981), Vector3(-0.123641, 0.408118, 0.420243), Vector3(0.285873, 0.417173, 0.324917), Vector3(0.440676, 0.407458, -0.11662), Vector3(0.00144792, 0.674786, -0.0195785), Vector3(0.0225482, 1.25688, -0.23232), Vector3(-0.0680924, 1.43421, -0.403957), Vector3(0.105933, 0.951693, 0.11189)], [Vector3(0.277948, 1.18165, -0.327177), Vector3(0.136443, 0.893897, -0.0879549), Vector3(0.0236117, 0.565109, 0.0674701), Vector3(-0.217749, 0.241624, 0.443513), Vector3(-0.445789, 0.2571, -0.0750364), Vector3(0.00600369, 0.231024, -0.430995), Vector3(0.426374, 0.293, -0.0712703), Vector3(0.225256, 0.264151, 0.370671)]])
 active_effects = Array[ExtResource("1_yxtj1")]([])
 area_ids = Array[int]([3])
 id = 54

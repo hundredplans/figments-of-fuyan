@@ -1,11 +1,11 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=7 format=3]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=7 format=3 uid="uid://twtkb8vlvrco"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_8krmr"]
-[ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_wlqqg"]
-[ext_resource type="Script" path="res://scripts/fof/objects/object.gd" id="2_yo5tv"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/fence.glb" id="3_4bobx"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/fence1.glb" id="4_4bobx"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="4_yfibu"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_8krmr"]
+[ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_wlqqg"]
+[ext_resource type="Script" uid="uid://bjdh5jg7ecvli" path="res://scripts/fof/objects/object.gd" id="2_yo5tv"]
+[ext_resource type="PackedScene" uid="uid://cxeodtbd4cysl" path="res://assets/models/fof/objects/fence.glb" id="3_4bobx"]
+[ext_resource type="PackedScene" uid="uid://f6hi1wb0oiab" path="res://assets/models/fof/objects/fence1.glb" id="4_4bobx"]
+[ext_resource type="Script" uid="uid://c57vvj8uxhu4x" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="4_yfibu"]
 
 [resource]
 script = ExtResource("2_wlqqg")
@@ -13,9 +13,9 @@ tile_coords = Array[Array]([[Vector4(0, 0, 0, 0), Vector4i(0, 0, 0, 1)], [Vector
 lock_rotation = true
 lock_tile = true
 ignore_collisions = false
-solids = Array[bool]([true])
+solids = Array[bool]([true, true])
 models = Array[PackedScene]([ExtResource("3_4bobx"), ExtResource("4_4bobx")])
-points = Array[Array]([])
+points = Array[Array]([[Vector3(0.627264, 1.27597, -0.136692), Vector3(0.642117, 0.311615, -0.136692), Vector3(-0.640905, 0.278687, -0.136692), Vector3(-0.585044, 1.151, -0.136692), Vector3(0.0225044, 1.02088, -0.0422599), Vector3(0.037018, 0.438727, -0.0422602), Vector3(0.612427, 0.295759, 0.136692), Vector3(0.58053, 1.22433, 0.136692), Vector3(-0.00448155, 1.01525, 0.0422599), Vector3(-0.00103629, 0.375649, 0.0422599), Vector3(-0.622247, 0.141408, 0.136692), Vector3(-0.604157, 1.10906, 0.136692), Vector3(-0.59878, 1.35884, 0.037146), Vector3(0.673453, 1.35884, 0.0262021), Vector3(0.866024, 0.512044, -0.000120223), Vector3(0.866024, 1.06814, 0.0253149), Vector3(-0.862913, 0.375598, 0.0422602), Vector3(-0.866024, 1.06273, 0.0306095)], [Vector3(-0.448479, 0.457463, -0.741121), Vector3(-0.412677, 0.995503, -0.761791), Vector3(-0.357651, 1.35884, -0.581028), Vector3(0.5801, 1.35884, 0.0453484), Vector3(0.866024, 1.0532, 0.0172775), Vector3(0.866024, 0.494611, -0.00995469), Vector3(-0.137979, 1.01677, -0.142162), Vector3(0.19672, 0.973187, 0.0422602), Vector3(-0.13968, 0.447352, -0.14526), Vector3(0.190425, 0.431763, 0.0422602), Vector3(-0.0846271, 0.957319, -0.230862), Vector3(0.315693, 1.01766, -0.0422602), Vector3(0.255197, 0.49918, -0.0422602), Vector3(-0.100542, 0.462415, -0.267319), Vector3(0.620769, 1.06167, -0.136692), Vector3(0.591503, 0.467041, -0.136692), Vector3(-0.200809, 1.12478, -0.620959), Vector3(-0.174231, 0.531121, -0.574924), Vector3(-0.436932, 0.521418, -0.483168), Vector3(-0.4338, 1.00682, -0.477741), Vector3(0.585879, 0.952685, 0.136692), Vector3(0.611863, 0.579992, 0.136692)]])
 active_effects = Array[ExtResource("1_8krmr")]([])
 area_ids = Array[int]([3])
 id = 41

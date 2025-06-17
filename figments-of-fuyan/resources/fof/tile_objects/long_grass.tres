@@ -1,12 +1,12 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=8 format=3 uid="uid://ckmfkl61ibrsw"]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=8 format=3]
 
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_14gck"]
-[ext_resource type="Script" uid="uid://bjdh5jg7ecvli" path="res://scripts/fof/objects/object.gd" id="2_86ekq"]
-[ext_resource type="PackedScene" uid="uid://cxle5i3vye2sm" path="res://scenes/game/objects/long_grass.tscn" id="3_ul3c6"]
-[ext_resource type="Script" uid="uid://c57vvj8uxhu4x" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="4_6deoj"]
-[ext_resource type="PackedScene" uid="uid://dw0o2ywm1ygix" path="res://scenes/game/objects/long_grass1.tscn" id="4_lolc5"]
-[ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="5_lolc5"]
-[ext_resource type="PackedScene" uid="uid://cofapxmidgipn" path="res://scenes/game/objects/long_grass2.tscn" id="5_tv2gq"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_14gck"]
+[ext_resource type="Script" path="res://scripts/fof/objects/object.gd" id="2_86ekq"]
+[ext_resource type="PackedScene" path="res://scenes/game/objects/long_grass.tscn" id="3_ul3c6"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="4_6deoj"]
+[ext_resource type="PackedScene" path="res://scenes/game/objects/long_grass1.tscn" id="4_lolc5"]
+[ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="5_lolc5"]
+[ext_resource type="PackedScene" path="res://scenes/game/objects/long_grass2.tscn" id="5_tv2gq"]
 
 [resource]
 script = ExtResource("5_lolc5")
@@ -16,7 +16,7 @@ lock_tile = true
 ignore_collisions = false
 solids = Array[bool]([true, true, true])
 models = Array[PackedScene]([ExtResource("3_ul3c6"), ExtResource("4_lolc5"), ExtResource("5_tv2gq")])
-points = Array[Array]([])
+points = Array[Array]([[Vector3(-0.824524, 0.564485, -0.0865606), Vector3(-0.601492, 0.635191, 0.876402), Vector3(0.327151, 0.602093, 0.876402), Vector3(0.794586, 0.536396, 0.0519096), Vector3(0.794586, 0.60255, -0.770549), Vector3(0.131739, 1.22864, -0.289076)], [Vector3(-0.0399692, 1.22864, -0.0716113), Vector3(-0.824524, 0.649264, 0.0870357), Vector3(-0.434234, 0.694411, 0.876402), Vector3(0.533247, 0.613872, 0.876402), Vector3(0.794586, 0.53647, 0.171759), Vector3(0.786563, 0.653818, -0.857298), Vector3(-0.160568, 0.63926, -0.857298)], [Vector3(0.114372, 1.22864, 0.0867018), Vector3(0.062589, 0.594311, 0.876402), Vector3(0.794586, 0.56956, 0.115059), Vector3(0.487687, 0.613493, -0.857298), Vector3(-0.483966, 0.621061, -0.857298), Vector3(-0.824524, 0.599602, 0.000446735)]])
 active_effects = Array[ExtResource("1_14gck")]([])
 area_ids = Array[int]([3])
 id = 36

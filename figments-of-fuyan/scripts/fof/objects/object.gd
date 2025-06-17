@@ -23,7 +23,7 @@ func isSolid() -> bool:
 	return info.solids[variation]
 	
 func isAdjacent(_coords: Vector4i, distance: int = 1) -> bool:
-	return occupied_tiles.any(func(x: TileGD): return x.isAdjacent(_coords, distance))
+	return	 occupied_tiles.any(func(x: TileGD): return x.isAdjacent(_coords, distance))
 #endregion
 
 #region Rotation

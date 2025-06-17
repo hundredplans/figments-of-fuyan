@@ -1,15 +1,15 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=11 format=3]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=11 format=3 uid="uid://caf1vlvgr21yg"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_njdvd"]
-[ext_resource type="Script" path="res://scripts/fof/objects/object.gd" id="2_aes6m"]
-[ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_vtv57"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/small_grass.glb" id="3_k3gbu"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/small_grass1.glb" id="4_hxvgt"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="5_3ky88"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/small_grass2.glb" id="5_6r5ki"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/small_grass3.glb" id="6_n422f"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/small_grass4.glb" id="7_61vot"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/small_grass5.glb" id="8_nt8jc"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_njdvd"]
+[ext_resource type="Script" uid="uid://bjdh5jg7ecvli" path="res://scripts/fof/objects/object.gd" id="2_aes6m"]
+[ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_vtv57"]
+[ext_resource type="PackedScene" uid="uid://cw33hif0lmwuv" path="res://assets/models/fof/objects/small_grass.glb" id="3_k3gbu"]
+[ext_resource type="PackedScene" uid="uid://b4s3ts5b1ytom" path="res://assets/models/fof/objects/small_grass1.glb" id="4_hxvgt"]
+[ext_resource type="Script" uid="uid://c57vvj8uxhu4x" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="5_3ky88"]
+[ext_resource type="PackedScene" uid="uid://moffxhfnf84p" path="res://assets/models/fof/objects/small_grass2.glb" id="5_6r5ki"]
+[ext_resource type="PackedScene" uid="uid://cxpyf73si1nao" path="res://assets/models/fof/objects/small_grass3.glb" id="6_n422f"]
+[ext_resource type="PackedScene" uid="uid://cv2o2jx5axqt0" path="res://assets/models/fof/objects/small_grass4.glb" id="7_61vot"]
+[ext_resource type="PackedScene" uid="uid://jtjox3d5esd1" path="res://assets/models/fof/objects/small_grass5.glb" id="8_nt8jc"]
 
 [resource]
 script = ExtResource("2_vtv57")
@@ -17,9 +17,9 @@ tile_coords = Array[Array]([[Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)], [Vecto
 lock_rotation = false
 lock_tile = false
 ignore_collisions = true
-solids = Array[bool]([false, false])
+solids = Array[bool]([false, false, false, false, false, false])
 models = Array[PackedScene]([ExtResource("3_k3gbu"), ExtResource("4_hxvgt"), ExtResource("5_6r5ki"), ExtResource("6_n422f"), ExtResource("7_61vot"), ExtResource("8_nt8jc")])
-points = Array[Array]([])
+points = Array[Array]([[], [], [], [], [], []])
 active_effects = Array[ExtResource("1_njdvd")]([])
 area_ids = Array[int]([3])
 id = 47
