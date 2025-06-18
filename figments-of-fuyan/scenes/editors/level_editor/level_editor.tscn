@@ -425,6 +425,6 @@ unique_name_in_owner = true
 [connection signal="mouse_in_ui" from="UI/MarginContainer/TopRightBar/SettingsButton" to="." method="onMouseInUI"]
 [connection signal="pressed" from="UI/MarginContainer/TopRightBar/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="camera_changed_speed" from="World/Camera3D" to="." method="_on_camera_3d_camera_changed_speed"]
-[connection signal="camera_panning" from="World/Camera3D" to="." method="onMouseInUI"]
 [connection signal="camera_panning" from="World/Camera3D" to="." method="_on_camera_3d_camera_panning"]
+[connection signal="camera_panning" from="World/Camera3D" to="." method="onMouseInUI"]
 [connection signal="timeout" from="MouseWheelDelayTimer" to="." method="_on_mouse_wheel_delay_timer_timeout"]
