@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dppiux7bnao8g"]
+[gd_scene load_steps=10 format=3 uid="uid://dppiux7bnao8g"]
 
 [ext_resource type="Script" uid="uid://bi0qnorwdqbx1" path="res://scenes/editors/level_editor/level_editor.gd" id="1_d12w1"]
 [ext_resource type="PackedScene" uid="uid://bydj1x1wtvu8y" path="res://scenes/editors/common/tile_static_body/tile_static_body.tscn" id="2_bfkth"]
@@ -7,26 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://bq7o6lgr5wu2k" path="res://scenes/editors/level_editor/tile_object_search_result.tscn" id="3_wfh2w"]
 [ext_resource type="PackedScene" uid="uid://ceoy120bbs7le" path="res://scenes/common/panel_button/panel_button.tscn" id="4_s4thk"]
 [ext_resource type="Script" uid="uid://bj5bltgdy7xbp" path="res://scripts/saved_data/levels/saved_data_level.gd" id="5_ahv3o"]
+[ext_resource type="Environment" uid="uid://g3ihmrpunr2b" path="res://assets/environments/main_menu_environment.tres" id="9_my6j7"]
 [ext_resource type="LabelSettings" uid="uid://dbh1brjnbxe8c" path="res://resources/ui/label_settings/roboto_large.tres" id="10_0pcn1"]
-
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_w412d"]
-sky_top_color = Color(0.454902, 0.670588, 1, 1)
-sky_horizon_color = Color(0.964706, 0.976471, 1, 1)
-ground_bottom_color = Color(0.454902, 0.670588, 1, 1)
-ground_horizon_color = Color(0.964706, 0.976471, 1, 1)
-
-[sub_resource type="Sky" id="Sky_2xyd2"]
-sky_material = SubResource("ProceduralSkyMaterial_w412d")
-
-[sub_resource type="Environment" id="Environment_hffsp"]
-background_mode = 2
-sky = SubResource("Sky_2xyd2")
-ssr_enabled = true
-ssao_enabled = true
-ssil_enabled = true
-sdfgi_read_sky_light = false
-glow_enabled = true
-glow_blend_mode = 0
 
 [node name="LevelEditor" type="Node"]
 script = ExtResource("1_d12w1")
@@ -373,7 +355,7 @@ script = ExtResource("2_voor8")
 block_ctrl = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="World"]
-environment = SubResource("Environment_hffsp")
+environment = ExtResource("9_my6j7")
 
 [node name="TilePlaneElevation" type="Node3D" parent="World"]
 unique_name_in_owner = true

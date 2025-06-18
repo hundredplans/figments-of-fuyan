@@ -1,13 +1,13 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=9 format=3]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=9 format=3 uid="uid://ekrwtrsiravo"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_js07g"]
-[ext_resource type="Script" path="res://scripts/fof/objects/object.gd" id="2_inelr"]
-[ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_pweuc"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/stick.glb" id="3_712oc"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="4_63yvp"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/stick1.glb" id="4_712oc"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/stick2.glb" id="5_gtro5"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/stick3.glb" id="6_vdu53"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_js07g"]
+[ext_resource type="Script" uid="uid://bjdh5jg7ecvli" path="res://scripts/fof/objects/object.gd" id="2_inelr"]
+[ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_pweuc"]
+[ext_resource type="PackedScene" uid="uid://cvmbkugukx36o" path="res://assets/models/fof/objects/stick.glb" id="3_712oc"]
+[ext_resource type="Script" uid="uid://c57vvj8uxhu4x" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="4_63yvp"]
+[ext_resource type="PackedScene" uid="uid://dqsvlw5d4ekgy" path="res://assets/models/fof/objects/stick1.glb" id="4_712oc"]
+[ext_resource type="PackedScene" uid="uid://ccupfe7p323a2" path="res://assets/models/fof/objects/stick2.glb" id="5_gtro5"]
+[ext_resource type="PackedScene" uid="uid://dsjxtqwdg62ho" path="res://assets/models/fof/objects/stick3.glb" id="6_vdu53"]
 
 [resource]
 script = ExtResource("2_pweuc")
@@ -15,9 +15,9 @@ tile_coords = Array[Array]([[Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)], [Vecto
 lock_rotation = false
 lock_tile = false
 ignore_collisions = false
-solids = Array[bool]([false])
+solids = Array[bool]([false, false, false, false])
 models = Array[PackedScene]([ExtResource("3_712oc"), ExtResource("4_712oc"), ExtResource("5_gtro5"), ExtResource("6_vdu53")])
-points = Array[Array]([[], [], [], []])
+points = Array[Array]([[Vector3(0.0344962, 0.0907387, 0.182636), Vector3(-0.0114374, 0.16165, -0.189107)], [Vector3(0.0157601, 0.139037, 0.47822), Vector3(0.00047183, 0.122866, -0.113649), Vector3(0.0934975, 0.115957, -0.429386)], [Vector3(0.0177606, 0.119241, 0.304184), Vector3(0.0530522, 0.128186, -0.0861999), Vector3(0.262379, 0.118103, -0.311166)], [Vector3(0.131046, 0.12237, 0.476495), Vector3(0.111718, 0.135569, 0.0260491), Vector3(-0.155162, 0.11838, -0.349249)]])
 active_effects = Array[ExtResource("1_js07g")]([])
 area_ids = Array[int]([3])
 id = 55
