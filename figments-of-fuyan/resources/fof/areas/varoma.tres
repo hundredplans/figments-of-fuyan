@@ -1,14 +1,13 @@
-[gd_resource type="Resource" script_class="AreaInfo" load_steps=18 format=3 uid="uid://dvlxu5qrn822j"]
+[gd_resource type="Resource" script_class="AreaInfo" load_steps=17 format=3 uid="uid://dvlxu5qrn822j"]
 
+[ext_resource type="Environment" uid="uid://bt4oumun6a8kw" path="res://assets/environments/varoma_day_environment.tres" id="1_8fijj"]
 [ext_resource type="Image" uid="uid://c2cuf22wj0rnf" path="res://assets/sprites/game/cards/common/art_background/varoma_background.png" id="1_co4xt"]
-[ext_resource type="Environment" uid="uid://g3ihmrpunr2b" path="res://assets/environments/main_menu_environment.tres" id="1_n2pqe"]
 [ext_resource type="Script" uid="uid://bdrcevdqecvdg" path="res://scripts/fof_info/areas/area_info.gd" id="2_0a3gj"]
 [ext_resource type="Script" uid="uid://b7tnfbmcbq6rn" path="res://scripts/fof/areas/area.gd" id="2_3vnxq"]
 [ext_resource type="Script" uid="uid://j3gava8i61i7" path="res://scripts/fof_info/areas/extra/epic_area_datastore.gd" id="2_6hpxj"]
 [ext_resource type="Script" uid="uid://d3nlf4kn1ucxr" path="res://scripts/fof/levels/varoma_level.gd" id="2_153du"]
 [ext_resource type="Resource" uid="uid://b6o152aww6kxw" path="res://resources/fof/tile_objects/varoma_tile.tres" id="2_t1onc"]
 [ext_resource type="Script" uid="uid://ddqxntix0kb3c" path="res://scripts/saved_data/saved_data_area.gd" id="3_xlptc"]
-[ext_resource type="Environment" uid="uid://ccj8myeinjes5" path="res://assets/environments/palm_evening_environment.tres" id="4_8lan8"]
 [ext_resource type="AudioStream" uid="uid://cn8nvead0m051" path="res://assets/sounds/music/coconut_springs_boss_music.mp3" id="4_153du"]
 [ext_resource type="Resource" uid="uid://ctfukjvhoe8nm" path="res://resources/datastore/world/world_one.tres" id="6_6hpxj"]
 [ext_resource type="PackedScene" uid="uid://b535kqbktkims" path="res://scripts/fof/areas/extra/varoma_default_light.tscn" id="6_8fijj"]
@@ -37,8 +36,8 @@ card_background = ExtResource("1_co4xt")
 card_ids = Array[int]([1, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77])
 encounter_ids = Array[int]([])
 overworld_decoration = ExtResource("10_153du")
-base_environment = ExtResource("1_n2pqe")
-elite_environment = ExtResource("4_8lan8")
+base_environment = ExtResource("1_8fijj")
+elite_environment = ExtResource("1_8fijj")
 base_level_script = ExtResource("2_153du")
 base_tile_info = ExtResource("2_t1onc")
 default_light = ExtResource("6_8fijj")

@@ -1,27 +1,27 @@
-[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=18 format=3]
+[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=18 format=3 uid="uid://cjvps2dr0fj0x"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_4a3l2"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/frederic_the_fearless.png" id="2_d16dl"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/frederic_the_fearless.png" id="2_n886d"]
-[ext_resource type="Resource" path="res://resources/fof/archetypes/brute.tres" id="2_xordu"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/champion_card_info.gd" id="2_y17s3"]
-[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_xdpta"]
-[ext_resource type="Resource" path="res://resources/fof/boons/bold_aura.tres" id="4_f5cwk"]
-[ext_resource type="Script" path="res://scripts/common/data_structures/pos_rot.gd" id="5_j2m8k"]
-[ext_resource type="Script" path="res://scripts/fof/cards/frederic_the_fearless.gd" id="5_jvipk"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_ks7mj"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="8_j10ap"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/champion_upgrade.gd" id="8_qjhdg"]
+[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_4a3l2"]
+[ext_resource type="Image" uid="uid://b86c6f1uyjyd6" path="res://assets/sprites/game/cards/art_pop/frederic_the_fearless.png" id="2_d16dl"]
+[ext_resource type="Texture2D" uid="uid://cqe3wqg1v4gc" path="res://assets/sprites/game/cards/art_mini/frederic_the_fearless.png" id="2_n886d"]
+[ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_xordu"]
+[ext_resource type="Script" uid="uid://bwd15dpd61xnh" path="res://scripts/fof_info/cards/champion_card_info.gd" id="2_y17s3"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_xdpta"]
+[ext_resource type="Resource" uid="uid://dhiqm4mrd7qpb" path="res://resources/fof/boons/bold_aura.tres" id="4_f5cwk"]
+[ext_resource type="Script" uid="uid://c4pplm1lm032l" path="res://scripts/common/data_structures/pos_rot.gd" id="5_j2m8k"]
+[ext_resource type="Script" uid="uid://da4sy8lgds3j5" path="res://scripts/fof/cards/frederic_the_fearless.gd" id="5_jvipk"]
+[ext_resource type="PackedScene" uid="uid://bd2esqpmo73tk" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_ks7mj"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="8_j10ap"]
+[ext_resource type="Script" uid="uid://bl7k0gywtt1r5" path="res://scripts/fof_info/cards/extra/champion_upgrade.gd" id="8_qjhdg"]
 
-[sub_resource type="Resource" id="Resource_kddgi"]
+[sub_resource type="Resource" id="Resource_fjhx1"]
 script = ExtResource("5_j2m8k")
 pos = Vector3(0.8, 1.6, 0.8)
-rot = Vector3(-7.84584e-06, 30, -20)
+rot = Vector3(-8.37677e-06, 30, -20)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
-size = Vector3(0.663147, 1.94543, 0.526978)
+size = Vector3(0.663147, 2.1037, 0.369537)
 
-[sub_resource type="PackedScene" id="PackedScene_d6dgo"]
+[sub_resource type="PackedScene" id="PackedScene_v43g6"]
 _bundled = {
 "conn_count": 0,
 "conns": PackedInt32Array(),
@@ -30,7 +30,7 @@ _bundled = {
 "node_count": 1,
 "node_paths": [],
 "nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
-"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00845337, 0.973806, 0.0105591), SubResource("BoxShape3D_ex838")],
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00845337, 1.05294, 0.00587471), SubResource("BoxShape3D_ex838")],
 "version": 3
 }
 
@@ -57,7 +57,7 @@ script = ExtResource("2_y17s3")
 champion_description = Array[String](["Elite fights are more common", "Your [color=#2c70a0]Aura[/color] gets stronger as you triumph over big battles"])
 associated_color = Color(1, 0, 0, 1)
 epithet = "The Dolt"
-champion_select_posrot = SubResource("Resource_kddgi")
+champion_select_posrot = SubResource("Resource_fjhx1")
 unique_nodes_id = Array[int]([])
 ultimate_name = "Ogre Mode"
 ultimate_description = "[0/4]: Heal to full HP and cleanse any negative effects. RAMPAGE to gain [1] point"
@@ -79,10 +79,10 @@ art_mini = ExtResource("2_n886d")
 art_pop = ExtResource("2_d16dl")
 model = ExtResource("5_ks7mj")
 points = [Vector3(0.136382, 1.38799, -0.25293), Vector3(-0.149831, 1.3978, -0.25293), Vector3(0.184447, 1.07484, -0.25293), Vector3(-0.199463, 1.09244, -0.25293), Vector3(0.0205718, 1.80753, -0.25293), Vector3(0.000764989, 0.787427, -0.25293), Vector3(0.138302, 0.452581, -0.25293), Vector3(-0.163161, 0.451389, -0.25293), Vector3(-0.00559452, 1.82542, 0.274048), Vector3(-0.137705, 1.47483, 0.274048), Vector3(0.150202, 1.49088, 0.274048), Vector3(0.15502, 1.15623, 0.274048), Vector3(-0.137258, 1.18364, 0.274048), Vector3(0.00930688, 0.785355, 0.274048), Vector3(-0.161626, 0.424052, 0.274048), Vector3(0.186096, 0.414073, 0.274048), Vector3(0.340027, 1.80814, 0.0492667), Vector3(0.340027, 1.35601, -0.00736688), Vector3(0.340027, 0.892121, 0.016009), Vector3(0.340027, 0.408994, 0.0462698), Vector3(-0.32312, 0.416334, 0.0431835), Vector3(-0.32312, 0.916279, -0.00713519), Vector3(-0.32312, 1.19264, -0.018978), Vector3(-0.32312, 1.79059, 0.00938033)]
-collision_shape = SubResource("PackedScene_d6dgo")
-stat = 1.947
-top = 2.058
-eye = 1.788
+collision_shape = SubResource("PackedScene_v43g6")
+stat = 2.2
+top = 2.10988
+eye = 1.96358
 plus_attack = 0
 plus_health = 0
 plus_speed = 0

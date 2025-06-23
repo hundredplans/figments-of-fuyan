@@ -17,7 +17,7 @@ signal zooming
 # How much to zoom in / out when scroll is pressed
 @export var CAMERA_RADIUS_INCREMENT: float = 0.3
 # How far you can zoom in and out overall
-@export var CAMERA_RADIUS_UPPER_BOUND: float = 7.0
+@export var CAMERA_RADIUS_UPPER_BOUND: float = 30.0
 @export var CAMERA_RADIUS_LOWER_BOUND: float = 0.5
 #endregion
 

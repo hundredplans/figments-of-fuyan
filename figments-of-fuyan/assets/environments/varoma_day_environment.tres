@@ -1,0 +1,18 @@
+[gd_resource type="Environment" load_steps=4 format=3 uid="uid://bt4oumun6a8kw"]
+
+[ext_resource type="Texture2D" uid="uid://bd78dfgwalo4k" path="res://assets/hdrs/sky_clouds_09_2k.png" id="1_nlb7x"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_a8ma7"]
+panorama = ExtResource("1_nlb7x")
+
+[sub_resource type="Sky" id="Sky_ia7ie"]
+sky_material = SubResource("PanoramaSkyMaterial_a8ma7")
+
+[resource]
+background_mode = 2
+sky = SubResource("Sky_ia7ie")
+ssr_enabled = true
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_enabled = true
+glow_blend_mode = 0
