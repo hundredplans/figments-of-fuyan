@@ -29,6 +29,8 @@ extends Node
 @onready var ProgressMinLineEdit: LineEdit = %ProgressMinLineEdit
 @onready var ProgressMaxLineEdit: LineEdit = %ProgressMaxLineEdit
 @onready var BudgetOffsetLineEdit: LineEdit = %BudgetOffsetLineEdit
+
+@onready var AreaEnv: WorldEnvironment = %AreaEnv
 #endregion
 #region Globals
 var is_camera_panning: bool = false
@@ -596,6 +598,9 @@ func onAreaOptionButtonSelected(_index: int = 0) -> void:
 	if DefaultLight != null: DefaultLight.queue_free()	
 	DefaultLight = area_info.default_light.instantiate()
 	World.add_child(DefaultLight)
+	
+	AreaEnv.environment = area_info.base_environment
+	
 	
 	onApplyLevelFilters()
 	

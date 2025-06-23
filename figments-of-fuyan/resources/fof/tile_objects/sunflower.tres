@@ -1,12 +1,12 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=8 format=3]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=8 format=3 uid="uid://dbne450ox1s3i"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_c1p88"]
-[ext_resource type="Script" path="res://scripts/fof/objects/object.gd" id="2_dj1me"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/sunflower.glb" id="3_ysarv"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/sunflower1.glb" id="4_mkbwo"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/sunflower2.glb" id="5_dj1me"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="5_vtfxc"]
-[ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="6_xuxnd"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_c1p88"]
+[ext_resource type="Script" uid="uid://bjdh5jg7ecvli" path="res://scripts/fof/objects/object.gd" id="2_dj1me"]
+[ext_resource type="PackedScene" uid="uid://tfdjo7nuks3r" path="res://assets/models/fof/objects/sunflower.glb" id="3_ysarv"]
+[ext_resource type="PackedScene" uid="uid://cgb81ak2q8br0" path="res://assets/models/fof/objects/sunflower1.glb" id="4_mkbwo"]
+[ext_resource type="PackedScene" uid="uid://0bxxydlh770c" path="res://assets/models/fof/objects/sunflower2.glb" id="5_dj1me"]
+[ext_resource type="Script" uid="uid://c57vvj8uxhu4x" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="5_vtfxc"]
+[ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="6_xuxnd"]
 
 [resource]
 script = ExtResource("6_xuxnd")
@@ -14,7 +14,7 @@ tile_coords = Array[Array]([[Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)], [Vecto
 lock_rotation = false
 lock_tile = false
 ignore_collisions = true
-solids = Array[bool]([false])
+solids = Array[bool]([false, false, false])
 models = Array[PackedScene]([ExtResource("3_ysarv"), ExtResource("4_mkbwo"), ExtResource("5_dj1me")])
 points = Array[Array]([[], [], [Vector3(-0.0587714, 1.05458, -0.00700001), Vector3(-0.00802374, 1.14794, -0.262449), Vector3(0.0590507, 1.28966, -0.0741525), Vector3(0.0289648, 1.27725, 0.0724298), Vector3(0.0187869, 1.16348, 0.233058), Vector3(-0.0645019, 0.94123, 0.254406), Vector3(-0.103391, 0.796294, 0.0835139), Vector3(-0.109358, 0.781, -0.120073), Vector3(-0.0694063, 0.924129, -0.259643), Vector3(0.0159459, 0.425929, 0.0170082), Vector3(0.0159457, 0.0362539, 0.00967506), Vector3(0.0545946, 0.060293, 0.0198828), Vector3(0.0545946, 0.469722, 0.0112117), Vector3(0.0523448, 0.86982, -0.00218533), Vector3(0.0347595, 1.18651, 0.0156651)]])
 active_effects = Array[ExtResource("1_c1p88")]([])
