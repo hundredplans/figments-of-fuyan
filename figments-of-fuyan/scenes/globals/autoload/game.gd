@@ -62,6 +62,8 @@ const TOOLBELT_SIZE: int = 2
 const ASCENDED_COLOR := Color(0.937, 0.835, 0.318)
 const ASCENDED_OUTLINE_COLOR := Color(0.512, 0.447, 0.099)
 
+const FADE_TIME: float = 0.25
+
 func _ready() -> void:
 	tile_face_directions = [Vector3((sqrt(3.0) / 4.0), 0, (3.0 / 4.0)), Vector3((sqrt(3.0) / 2.0), 0, 0),
 	Vector3(-(sqrt(3.0) / 4.0), 0, (3.0 / 4.0)), Vector3((sqrt(3.0) / 4.0), 0, -(3.0 / 4.0)),
@@ -604,11 +606,11 @@ func onCreateDeckScreen(parent: Control, selectable: bool, max_select_amount: in
 	DeckScreen.onDisableCards(filter_callable)
 	return DeckScreen
 	
-const REWARDS_UI_PATH: String = "res://scenes/common/rewards_ui/rewards_ui.tscn"
-func onCreateRewardsUIScreen(rewards: Rewards, parent: Control, level_type: FightTypes) -> Control:
-	var RewardsUI: Control = load(REWARDS_UI_PATH).instantiate()
+const REWARDS_SCREEN_PATH: String = "res://scenes/common/rewards_screen/rewards_screen.tscn"
+func onCreateRewardsScreen(rewards: Rewards, parent: Control, level_type: FightTypes) -> Control:
+	var RewardsUI: Control = load(REWARDS_SCREEN_PATH).instantiate()
 	parent.add_child(RewardsUI)
-	RewardsUI.setInfo(rewards, save_file, level_type)
+	RewardsUI.setInfo(rewards, level_type)
 	return RewardsUI
 	
 const CHOOSE_REWARDS_UI_PATH: String = "res://scenes/common/rewards_ui/choose_rewards_ui.tscn"
@@ -625,10 +627,13 @@ func onCreatePauseMenu(parent: Control) -> Control:
 	return PauseMenu
 	
 const STASH_SCREEN_PATH: String = "res://scenes/game/map/stash_screen.tscn"
-func onCreateStashScreen(parent: Control) -> Control:
+func onCreateStashScreen(parent: Control, ActiveToolIcon: Control = null) -> Control:
 	var StashScreen: Control = load(STASH_SCREEN_PATH).instantiate()
 	parent.add_child(StashScreen)
 	StashScreen.setInfo()
+	if ActiveToolIcon != null:
+		StashScreen.setActiveToolIcon(ActiveToolIcon)
+	
 	return StashScreen
 
 const CHAMPION_UPGRADE_UI_PATH: String = "res://scenes/common/champion_upgrade_ui/champion_upgrade_ui.tscn"

@@ -37,7 +37,7 @@ func onCreateDeckCardUI(Card: CardGD) -> void:
 	CardUI.pressed.connect(onCardUIPressed)
 	
 	var ArchetypeLabel := Label.new()
-	ArchetypeLabel.text = Card.info.archetype.name
+	ArchetypeLabel.text = Card.getArchetypeFromInfo().name
 	CardUI.add_child(ArchetypeLabel)
 	ArchetypeLabel.position = Vector2(0, -5)
 	ArchetypeLabel.size.x = CardUI.size.x

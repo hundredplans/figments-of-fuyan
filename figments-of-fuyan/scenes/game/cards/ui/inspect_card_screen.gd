@@ -51,8 +51,8 @@ func setInfo(_Card: CardGD) -> void:
 	
 	ArchetypePanel.visible = Card.isEnemy(0)
 	if Card.isEnemy(0):
-		ArchetypeNameLabel.text = Card.info.archetype.name
-		ArchetypeDescriptionLabel.text = Card.info.archetype.description
+		ArchetypeNameLabel.text = Card.getActiveArchetype().name
+		ArchetypeDescriptionLabel.text = Card.getActiveArchetype().description
 		
 func onCreateCustomTooltip(condition: bool, text: String, title: String, icon: Texture2D) -> void:
 	if !condition: return

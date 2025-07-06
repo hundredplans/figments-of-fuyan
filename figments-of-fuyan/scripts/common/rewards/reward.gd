@@ -16,5 +16,14 @@ func onSave() -> void:
 func onLoad(parent: FofGD) -> void:
 	item = SavedData.onLoadModel(item_data, parent)
 
+func isTaken() -> bool:
+	return taken
+
 func setTaken(state: bool) -> void:
 	taken = state
+	
+func getRewardType() -> GDScript:
+	return item.get_script()
+	
+func getItem() -> FofGD:
+	return item

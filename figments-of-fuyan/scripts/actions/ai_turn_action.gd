@@ -186,14 +186,14 @@ func getBehaviours(BehaviourCard: CardGD) -> Array:
 	if BehaviourCard.ai_datastore.isReceiver():
 		archetype = load(RECEIVER_ARCHETYPE_PATH)
 	elif BehaviourCard.isAlly(1) and Game.getLevel().isAIAdventurerArchetypeGlobal(): archetype = load(ADVENTURER_ARCHETYPE_PATH)
-	elif Game.getAllyUnits(1).all(func(x: CardGD): return x is not EpicCardGD and x.info.archetype.id == 1): archetype = load(BRUTE_ARCHETYPE_PATH)
-	else: archetype = Card.getArchetypeFromInfo()
+	elif Game.getAllyUnits(1).all(func(x: CardGD): return x is not EpicCardGD and x.getActiveArchetype().id == 1): archetype = load(BRUTE_ARCHETYPE_PATH)
+	else: archetype = Card.getActiveArchetype()
 	return archetype.behaviours.map(func(x: GDScript): var behaviour := Behaviour.new(); behaviour.set_script(x); return behaviour)
 
 func onCheckCallForHelp(allies: Array, enemies: Array) -> void:
 	if !Card.ai_datastore.onCanCall(): return
 	if !Card.isInCombat(): return
-	if !Random.rollFloat(Card.getArchetypeFromInfo().calling_chance / 100.0): return
+	if !Random.rollFloat(Card.getActiveArchetype().calling_chance / 100.0): return
 	
 	var enemies_to_tiles: Dictionary = {}
 	for EnemyCard in enemies:

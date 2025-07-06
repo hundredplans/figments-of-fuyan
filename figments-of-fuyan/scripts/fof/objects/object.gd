@@ -9,6 +9,7 @@ var map_position: Vector3
 var height: int
 var occupied_coords: Array
 var occupied_tiles: Array
+var groups: Array
 #endregion
 
 var loaded_in_level: bool
@@ -79,11 +80,12 @@ func onDeleteTile(tile_coords: Vector4i) -> void:
 #region Save/Load
 func onSave() -> SavedDataGameObject:
 	return SavedDataObject.new(info.id, false, public_id, coords, tile_rotation, vision_datastore, variation, map_rotation, map_position, height,\
-	occupied_tiles.map(func(x: TileGD): return x.getCoords()))
+	occupied_tiles.map(func(x: TileGD): return x.getCoords()), groups)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
 	position = data.position
+	groups = data.groups
 	
 	if !info.lock_rotation: rotation.y = data.rotation
 	else: setTileRotation(data.tile_rotation)

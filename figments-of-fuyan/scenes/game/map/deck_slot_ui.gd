@@ -79,6 +79,11 @@ func onSelect(state: bool) -> void:
 	if !selectable: return
 	selected = state
 	setDeckSlotUIModulate()
+	
+func setMouseFilter(_mouse_filter: Control.MouseFilter) -> void:
+	ExitButton.mouse_filter = _mouse_filter
+	LockIcon.mouse_filter = _mouse_filter
+	DeckSlotUITexture.mouse_filter = _mouse_filter
 
 const SELECTED_MODULATE := Color(1, 1, 1)
 const DEFAULT_MODULATE := Color(0.5, 0.5, 0.5)

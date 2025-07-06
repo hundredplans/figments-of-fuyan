@@ -3,6 +3,7 @@ extends CardGD
 var bloodthirst_trigger_amount: int = 0 # Oscillates between 1 -> 2
 const TRIGGER_BLOODTHIRST_AMOUNT: int = 2
 const BLOODTHIRST_DELAY: float = 2.0
+const BRUTE_ARCHETYPE_ID: int = 3
 
 func onProcessAction(action: Action) -> void:
 	super(action)
@@ -20,7 +21,8 @@ func onBloodthirst(action: DeathAction) -> void:
 	var animation_action := AnimationAction.new(self, "Ability")
 	animation_action.setActionDelay(BLOODTHIRST_DELAY)
 	
-	var actions: Array = [CameraChangeAction.new(self), animation_action, onGainShieldAction()]
+	var actions: Array = [CameraChangeAction.new(self), animation_action,
+		onGainShieldAction(), ChangeArchetypeAction.new(self, Helper.getFofInfoID(ArchetypeInfo, BRUTE_ARCHETYPE_ID))]
 	onPushAction(actions)
 
 func onRegularReset() -> void:

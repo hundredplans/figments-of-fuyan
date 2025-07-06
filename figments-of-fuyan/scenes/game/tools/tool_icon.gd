@@ -23,6 +23,10 @@ func setInfoDirect(icon: Texture2D, _ascended: bool, _hoverable: bool = false) -
 	hoverable = _hoverable
 	onUpdateAscension(_ascended)
 
+func setHighlightOnHover(_hoverable: bool) -> void:
+	hoverable = _hoverable
+	onUpdateModulate()
+
 func onUpdateAscension(_ascended: bool) -> void:
 	ascended = _ascended
 
@@ -34,16 +38,29 @@ func onMouseInUI(state: bool) -> void:
 	is_mouse_in_ui = state
 	mouse_in_ui.emit(state)
 	
-	if !disabled and hoverable:
-		modulate = Color(1, 1, 1) if !state else Color(0.5, 0.5 , 0.5)
+	onUpdateModulate()
 		
 	if disable_tooltip: return
 	Game.onMouseInUITooltip(state, Tool, self, true)
 	
 func setDisabled(state: bool) -> void:
 	disabled = state
-	modulate = Color(1, 1, 1) if !disabled else Color(0.2, 0.2, 0.2)
+	onUpdateModulate()
 	onUpdateAscension(ascended)
+	
+func onUpdateModulate() -> void:
+	modulate = Color(0.2, 0.2, 0.2) if disabled else\
+		(Color(0.5, 0.5, 0.5) if is_mouse_in_ui and hoverable else Color.WHITE)
+	
+func setDisableTooltip(_disable_tooltip: bool) -> void:
+	disable_tooltip = _disable_tooltip
 	
 func setMouseFilter(_mouse_filter: Control.MouseFilter) -> void:
 	mouse_filter = _mouse_filter
+
+func setSizeScale(n: int) -> void:
+	size *= n
+	pivot_offset = (size / 2)
+	
+func setExpandMode(expand_mode: TextureRect.ExpandMode) -> void:
+	ToolIcon.expand_mode = expand_mode

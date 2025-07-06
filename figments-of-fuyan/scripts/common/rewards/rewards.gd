@@ -12,6 +12,15 @@ func onRewardTaken(reward: Reward) -> void:
 func setInfo(_parent: FofGD) -> void:
 	parent = _parent
 	
+func getReward(index: int) -> Reward:
+	if items.is_empty(): return null
+	if index > items.size(): return items[items.size()]
+	elif index < 0: return items[0]
+	return items[index]
+	
+func isAllRewardsTaken() -> bool:
+	return items.all(func(x: Reward): return x.isTaken())
+	
 func onSave() -> void:
 	for reward: Reward in items:
 		reward.onSave()

@@ -1,12 +1,9 @@
 class_name SpawnGD
 extends ObjectGD
 var spawn_id: int
-var groups: Array
-
 var GroupLabel: Label3D # Set by level editor
 
 func onLoadData(data: SavedData) -> void:
-	groups = data.groups
 	super(data)
 	spawn_id = data.spawn_id
 	add_to_group("SpawnsGD")
@@ -47,7 +44,7 @@ func onToolPickedUp(action: OccupyAction) -> void:
 
 func onSave() -> SavedDataSpawn:
 	return SavedDataSpawn.new(info.id, false, public_id, coords, tile_rotation, vision_datastore, variation, map_rotation, map_position, height,\
-	occupied_tiles.map(func(x: TileGD): return x.getCoords()), spawn_id, groups)
+	occupied_tiles.map(func(x: TileGD): return x.getCoords()), spawn_id)
 
 var SpawnParticle: GPUParticles3D
 func onLoadDataLevel() -> void:

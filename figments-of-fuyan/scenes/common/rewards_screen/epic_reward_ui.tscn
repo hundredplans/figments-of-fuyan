@@ -1,0 +1,123 @@
+[gd_scene load_steps=7 format=3 uid="uid://b1ibv5kwl8wqv"]
+
+[ext_resource type="PackedScene" uid="uid://ct1cn5tc1ofmb" path="res://scenes/game/boons/boon_icon.tscn" id="1_dq3lb"]
+[ext_resource type="Script" uid="uid://dybthfs88f636" path="res://scenes/common/rewards_screen/epic_reward_ui.gd" id="1_r6ufy"]
+[ext_resource type="Texture2D" uid="uid://brcmwcvusvyf3" path="res://assets/sprites/game/boons/dominance_boon.png" id="2_r6ufy"]
+[ext_resource type="PackedScene" uid="uid://c1a0nexo0ytc6" path="res://scenes/common/rewards_screen/claimed_label.tscn" id="2_v0iy0"]
+[ext_resource type="LabelSettings" uid="uid://bw613ebdspq46" path="res://resources/ui/label_settings/spicyrice_massive.tres" id="3_rp5qf"]
+[ext_resource type="PackedScene" uid="uid://cewvw3vx3mjcm" path="res://scenes/game/tools/tool_icon.tscn" id="4_veje7"]
+
+[node name="EpicRewardUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_r6ufy")
+ToolIconPacked = ExtResource("4_veje7")
+spicy_rice_massive = ExtResource("3_rp5qf")
+ClaimedLabelPacked = ExtResource("2_v0iy0")
+
+[node name="Main" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Main"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -760.0
+offset_top = -286.0
+offset_right = 760.0
+offset_bottom = 328.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Main/HBoxContainer"]
+custom_minimum_size = Vector2(480, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 30
+
+[node name="Control" type="Control" parent="Main/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(480, 480)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="BoonIcon" parent="Main/HBoxContainer/VBoxContainer/Control" instance=ExtResource("1_dq3lb")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(240, 240)
+texture = ExtResource("2_r6ufy")
+expand_mode = 4
+
+[node name="BoonLabel" type="Label" parent="Main/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Boon"
+label_settings = ExtResource("3_rp5qf")
+horizontal_alignment = 1
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Main/HBoxContainer"]
+custom_minimum_size = Vector2(480, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 30
+
+[node name="Control" type="Control" parent="Main/HBoxContainer/VBoxContainer2"]
+custom_minimum_size = Vector2(480, 480)
+layout_mode = 2
+
+[node name="ToolIcon" parent="Main/HBoxContainer/VBoxContainer2/Control" instance=ExtResource("4_veje7")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 480)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(240, 240)
+
+[node name="ToolLabel" type="Label" parent="Main/HBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Tool"
+label_settings = ExtResource("3_rp5qf")
+horizontal_alignment = 1
+
+[node name="CardContainer" type="VBoxContainer" parent="Main/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(480, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 30
+alignment = 2
+
+[node name="CardLabel" type="Label" parent="Main/HBoxContainer/CardContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Card"
+label_settings = ExtResource("3_rp5qf")
+horizontal_alignment = 1

@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://d3lgvy3r3xxo"]
+[gd_scene load_steps=38 format=3 uid="uid://d3lgvy3r3xxo"]
 
 [ext_resource type="Script" uid="uid://x7vlr4glcng3" path="res://scenes/game/levels/level_ui.gd" id="1_lmham"]
 [ext_resource type="Script" uid="uid://cjjlvqefk333u" path="res://scenes/game/levels/ui/hand_box.gd" id="2_5k44f"]
@@ -44,6 +44,68 @@ data = {
 
 [sub_resource type="ImageTexture" id="ImageTexture_if0qq"]
 image = SubResource("Image_gvdbv")
+
+[sub_resource type="Animation" id="Animation_qwq4a"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TopPanel:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-12, -12)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("LabelsContainer:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1109, 168)]
+}
+
+[sub_resource type="Animation" id="Animation_gvdbv"]
+resource_name = "RewardsScreenCreated"
+length = 0.25
+step = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TopPanel:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.166667, 0.2, 0.233333, 0.25),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(-12, -12), Vector2(-12, -28.1238), Vector2(-12, -73.7072), Vector2(-12, -140.868), Vector2(-12, -217.995), Vector2(-12, -291.75), Vector2(-12, -349.382), Vector2(-12, -380.925), Vector2(-12, -385)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("LabelsContainer:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.166667, 0.2, 0.233333, 0.25),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1109, 168), Vector2(1109, 151.876), Vector2(1109, 106.293), Vector2(1109, 39.1317), Vector2(1109, -37.9946), Vector2(1109, -111.75), Vector2(1109, -169.382), Vector2(1109, -200.925), Vector2(1109, -205)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_thuap"]
+_data = {
+&"RESET": SubResource("Animation_qwq4a"),
+&"RewardsScreenCreated": SubResource("Animation_gvdbv")
+}
 
 [node name="LevelUI" type="Control"]
 layout_mode = 3
@@ -549,6 +611,12 @@ grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(4, 4)
 pivot_offset = Vector2(40, 40)
+
+[node name="AniPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_thuap")
+}
 
 [connection signal="action_lock" from="." to="ActiveEffects" method="onUpdateActionLock"]
 [connection signal="mouse_entered" from="BottomBox/EpicFightControl/VBoxContainer/PanelContainer" to="." method="onMouseInUI" binds= [true]]

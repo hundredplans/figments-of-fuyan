@@ -1,8 +1,15 @@
 extends Control
 
+signal active_tool_added
 signal exit_start
 signal deck_slot_changed
 signal mouse_in_ui
+
+const TOOL_ADDED_EXIT_DELAY: float = 1.0
+const ROTATION_SPEED_TO_MIDDLE: float = 10.0
+const RELATIVE_SIDE_FORCE_DIV: float = 15.0
+
+var ActiveToolIcon: Control
 
 @onready var CardUIRaycast: RayCast2D = %CardUIRaycast
 @onready var EnergyLimitLabel: Label = %EnergyLimitLabel
@@ -72,6 +79,21 @@ func setInfo() -> void:
 	var stash_cards: Array = get_tree().get_nodes_in_group("StashCardsGD")
 	for StashCard: CardGD in stash_cards:
 		onCreateStashCardUI(StashCard)
+	
+func setActiveToolIcon(_ActiveToolIcon: Control) -> void:
+	ActiveToolIcon = _ActiveToolIcon
+	ActiveToolIcon.global_position = get_viewport().get_mouse_position() - (ActiveToolIcon.size / 2)
+	ActiveToolIcon.setMouseFilter(Control.MOUSE_FILTER_IGNORE)
+	
+	for DeckSlotUI: Control in getDeckContainerDeckUI():
+		DeckSlotUI.setMouseFilter(Control.MOUSE_FILTER_IGNORE)
+	
+	var deck_card_uis: Array = getDeckContainerCardUI().filter(func(x: Control): return x != null)
+	for CardUI: Control in deck_card_uis:
+		CardUI.onChangeBackgroundMouseFilter(true, true)
+	
+	for CardUI: Control in deck_card_uis + StashContainer.get_children():
+		CardUI.setHighlightOnHover(true)
 	
 func setLimitLabels() -> void:
 	var energy_limit: int = Game.getSaveFile().getEnergyLimit()
@@ -189,7 +211,6 @@ func onCreateDeckCardUI(DeckCard: CardGD, DeckSlotUI: Control) -> void:
 	DeckSlotUI.setCardUI(CardUI)
 	
 func onToolDragBegin(CardUI: Control) -> void:
-	
 	onDeckSlotPressed(null, false)
 	var deck_container_card_ui: Array = getDeckContainerCardUI()
 	for OtherCardUI: Control in (StashContainer.get_children() + deck_container_card_ui)\
@@ -255,6 +276,17 @@ func _input(event: InputEvent) -> void:
 	elif Input.is_action_just_pressed("ScrollDown"):
 		onScroll(1)
 		
+	if ActiveToolIcon != null:
+		if Input.is_action_just_released("MainInput"):
+			onActiveToolIconReleased()
+		if event is InputEventMouseMotion:
+			ActiveToolIcon.global_position += event.relative
+			ActiveToolIcon.rotation_degrees += event.relative.x / RELATIVE_SIDE_FORCE_DIV
+		
+func _process(delta: float) -> void:
+	if ActiveToolIcon != null:
+		ActiveToolIcon.rotation = lerp_angle(ActiveToolIcon.rotation, 0, ROTATION_SPEED_TO_MIDDLE * delta)
+		
 const SCROLL_STRENGTH: int = 200
 const SCROLL_SPEED: float = 0.1
 
@@ -262,3 +294,21 @@ func onScroll(direction: int) -> void:
 	var scroll_cont: ScrollContainer = BoonScrollContainer if BoonBox.is_mouse_in_ui else MainScrollContainer
 	var tween := create_tween()
 	tween.tween_property(scroll_cont, "scroll_vertical", SCROLL_STRENGTH * direction, SCROLL_SPEED).as_relative().set_trans(Tween.TRANS_SINE)
+
+func onActiveToolIconReleased() -> void:
+	CardUIRaycast.global_position = ActiveToolIcon.global_position + (ActiveToolIcon.size / 2)
+	CardUIRaycast.target_position = Vector2.ZERO
+	CardUIRaycast.force_raycast_update()
+	var area: Area2D = CardUIRaycast.get_collider()
+	if area == null: onExitButtonPressed(); return
+	
+	var CardUI: Control = area.get_parent()
+	var Card: CardGD = CardUI.Card
+	var Tool: ToolGD = ActiveToolIcon.Tool
+	
+	Card.onPushAction(AddToolAction.new(Card, Tool))
+	CardUI.onToolUpdated(Tool)
+	active_tool_added.emit(CardUI)
+	
+	await get_tree().create_timer(TOOL_ADDED_EXIT_DELAY).timeout
+	onExitButtonPressed()

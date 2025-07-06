@@ -1368,6 +1368,9 @@ func isValidDuelistRampage(action: Action) -> bool:
 #endregion
 
 #region AI
+func setActiveArchetype(archetype_info: ArchetypeInfo) -> void:
+	ai_datastore.setActiveArchetype(archetype_info)
+
 func onUnitSpecificTransforms(_tiles_to_value: Dictionary, _DFL: DefaultFightLogic) -> void:
 	pass
 	
@@ -1386,6 +1389,9 @@ func getArchetypeEnum(archetype_id: int = info.archetype.id) -> Game.Archetypes:
 		11: return Game.Archetypes.RECEIVER
 		12: return Game.Archetypes.MERCENARY
 	return Game.Archetypes.NULL
+	
+func getActiveArchetype() -> ArchetypeInfo:
+	return ai_datastore.getActiveArchetype()
 	
 # True if active effect used
 func onAICheckActiveEffects(DFL: DefaultFightLogic, allies: Array, enemies: Array, after_action: MovementFinishAction = null) -> bool:
@@ -1495,6 +1501,7 @@ func onReset(override: bool = false) -> void: # Called when unit enters level (n
 func onRegularReset() -> void: # Fof Init, Awakened, Death, Level Start, Level End
 	if Tool != null:
 		Tool.onRegularReset()
+	onPushAction(ChangeArchetypeAction.new(self, getArchetypeFromInfo()))
 	
 func onUpgrade(upgrade_level: int) -> void:
 	var champion_upgrade: ChampionUpgrade = getChampionUpgrade(upgrade_level)

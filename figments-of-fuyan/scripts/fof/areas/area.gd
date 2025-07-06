@@ -413,59 +413,73 @@ func setRewards(is_win: bool) -> void:
 		var fight_type: Game.FightTypes = active_level.fight_type
 		var is_elite: bool = fight_type == Game.FightTypes.ELITE
 		var is_epic: bool = fight_type in [Game.FightTypes.MINIBOSS, Game.FightTypes.BOSS]
-		
 		var fight_rewards_datastore: FightRewardsDatastore = \
 			getWorld().elite_fight_rewards if is_epic or is_elite else getWorld().fight_rewards
-			
-		var enemy_cards: Array = active_level.enemy_cards.duplicate()
 		var level_preview: LevelPreview = active_level.level_preview
-		if is_elite:
-			items.append(SavedData.onLoadModel(level_preview.getChiefData().duplicate(), active_level))
-			
-		if !is_epic: enemy_cards = onRollRegularCardRewards()
-		else: enemy_cards = onRollEpicCardRewards()
-			
-		var rewards_wrapper: ActionWrapper = SavedData.onLoadModel(SavedDataActionWrapper.new(), active_level)
-		rewards_wrapper.setActions(ChooseRewardAction.new(enemy_cards, ChooseRewardAction.RewardType.CARDS))
-		items.append(rewards_wrapper)
-			
-		var shillings: int = randi_range(fight_rewards_datastore.shillings_min, fight_rewards_datastore.shillings_max)
-		var change_shillings_wrapper: ActionWrapper = SavedData.onLoadModel(SavedDataActionWrapper.new(), active_level)
-		change_shillings_wrapper.setActions(ChangeShillingsAction.new(shillings))
+		var add_array: Array = getAddBoonAddTool(fight_rewards_datastore, is_elite, is_epic)
+		var add_boon: bool = add_array[0]
+		var add_tool: bool = add_array[1]
 		
-		items.append(change_shillings_wrapper)
-			
-		var add_tool: bool
-		var add_boon: bool
+		if is_epic: items.append(onAddEpicReward(fight_type))
+		items.append(onAddShillingReward(fight_rewards_datastore))
+		if add_boon: items.append(onAddBoonReward())
+		items.append(onAddCardRewards(active_level, is_epic, is_elite, level_preview))
 		
-		if !is_elite and !is_epic:
-			add_tool = Random.rollFloat(fight_rewards_datastore.tool_odds / 100.0)
-			add_boon = Random.rollFloat(getDivinusBoonOdds(fight_rewards_datastore.boon_odds) / 100.0)
-		else: # 50 / 50 chance if divinus, otherwise 66% 33% chance
-			add_tool = Random.rollFloat((fight_rewards_datastore.tool_odds / 100.0) if !Game.isDivinus() else 0.5)
-			if !add_tool: add_boon = true
-				
-			if Random.rollFloat(getWorld().elite_fight_rewards_second_item_odds / 100.0):
-				add_tool = true
-				add_boon = true
-			
-		if add_tool:
-			items.append(SavedData.onLoadModel(Random.getRandomFofByOdds(ToolInfo), active_level))
-			
-		if add_boon:
-			var boon_data: SavedDataBoon = Random.getRandomFofByOdds(BoonInfo)
-			if boon_data != null: items.append(SavedData.onLoadModel(boon_data, active_level))
-		
-		if is_epic:
-			var epic_rewards_wrapper: ActionWrapper = SavedData.onLoadModel(SavedDataActionWrapper.new(), active_level)
-			var reward_type := ChooseRewardAction.RewardType.BOSS if fight_type == Game.FightTypes.BOSS else ChooseRewardAction.RewardType.MINIBOSS
-			epic_rewards_wrapper.setActions(ChooseRewardAction.new(getEpicFightRewards(), reward_type))
-			items.append(epic_rewards_wrapper)
+		if add_tool: items.append(onAddToolReward(active_level))
 			
 		var rewards := Rewards.new(items.map(func(x: FofGD): return Reward.new(x)))
 		rewards.setInfo(active_level)
 		active_level.rewards = rewards
 	active_level.onGameEnded()
+	
+func onAddEpicReward(fight_type: Game.FightTypes) -> ActionWrapper:
+	var epic_rewards_wrapper: ActionWrapper = SavedData.onLoadModel(SavedDataActionWrapper.new(), active_level)
+	var reward_type := ChooseRewardAction.RewardType.BOSS if fight_type == Game.FightTypes.BOSS else ChooseRewardAction.RewardType.MINIBOSS
+	epic_rewards_wrapper.setActions(ChooseRewardAction.new(getEpicFightRewards(), reward_type))
+	return epic_rewards_wrapper
+	
+func getAddBoonAddTool(fight_rewards_datastore: FightRewardsDatastore, is_elite: bool, is_epic: bool) -> Array:
+	var add_tool: bool
+	var add_boon: bool
+	
+	if !is_elite and !is_epic:
+		add_tool = Random.rollFloat(fight_rewards_datastore.tool_odds / 100.0)
+		add_boon = Random.rollFloat(getDivinusBoonOdds(fight_rewards_datastore.boon_odds) / 100.0)
+	else: # 50 / 50 chance if divinus, otherwise 66% 33% chance
+		add_tool = Random.rollFloat((fight_rewards_datastore.tool_odds / 100.0) if !Game.isDivinus() else 0.5)
+		if !add_tool: add_boon = true
+			
+		if Random.rollFloat(getWorld().elite_fight_rewards_second_item_odds / 100.0):
+			add_tool = true
+			add_boon = true
+	return [add_boon, add_tool]
+	
+func onAddToolReward(active_level: LevelGD) -> ToolGD:
+	var Tool: ToolGD = SavedData.onLoadModel(Random.getRandomFofByOdds(ToolInfo), active_level)
+	return Tool
+	
+func onAddBoonReward() -> BoonGD:
+	var boon_data: SavedDataBoon = Random.getRandomFofByOdds(BoonInfo)
+	if boon_data != null:
+		var Boon: BoonGD = SavedData.onLoadModel(boon_data, active_level)
+		return Boon
+	return null
+	
+func onAddCardRewards(active_level: LevelGD, is_epic: bool, is_elite: bool, level_preview: LevelPreview) -> ActionWrapper:
+	var enemy_cards: Array = active_level.enemy_cards.duplicate()
+	if !is_epic: enemy_cards = onRollRegularCardRewards()
+	else: enemy_cards = onRollEpicCardRewards()
+	if is_elite:
+		enemy_cards.append(SavedData.onLoadModel(level_preview.getChiefData().duplicate(), active_level))
+	var rewards_wrapper: ActionWrapper = SavedData.onLoadModel(SavedDataActionWrapper.new(), active_level)
+	rewards_wrapper.setActions(ChooseRewardAction.new(enemy_cards, ChooseRewardAction.RewardType.CARDS))
+	return rewards_wrapper
+	
+func onAddShillingReward(fight_rewards_datastore: FightRewardsDatastore) -> ActionWrapper:
+	var shillings: int = randi_range(fight_rewards_datastore.shillings_min, fight_rewards_datastore.shillings_max)
+	var change_shillings_wrapper: ActionWrapper = SavedData.onLoadModel(SavedDataActionWrapper.new(), active_level)
+	change_shillings_wrapper.setActions(ChangeShillingsAction.new(shillings))
+	return change_shillings_wrapper
 	
 func onRollRegularCardRewards() -> Array:
 	var enemy_cards: Array = []
@@ -514,7 +528,7 @@ func getEpicFightRewards() -> Array:
 	var Boon: BoonGD = SavedData.onLoadModel(boon_data, active_level)
 	var Tool: ToolGD = SavedData.onLoadModel(tool_data, active_level)
 	
-	return [Card, Boon, Tool]
+	return [Boon, Tool, Card]
 #endregion
 
 #region Random Enemy

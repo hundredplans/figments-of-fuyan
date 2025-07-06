@@ -333,3 +333,6 @@ func onToolHeldEnded() -> void:
 	ToolIcon.z_index = 0
 	
 	tool_drag_end.emit(self, tool_global_pos)
+
+func getCard() -> CardGD:
+	return Card

@@ -1,0 +1,39 @@
+[gd_scene load_steps=3 format=3 uid="uid://bamh0kd0bdhrl"]
+
+[ext_resource type="Script" uid="uid://8xp7q4vnpkni" path="res://scenes/common/rewards_screen/choose_card_reward_ui.gd" id="1_maupn"]
+[ext_resource type="PackedScene" uid="uid://c1a0nexo0ytc6" path="res://scenes/common/rewards_screen/claimed_label.tscn" id="2_p3tq4"]
+
+[node name="ChooseCardRewardUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_maupn")
+ClaimedLabelPacked = ExtResource("2_p3tq4")
+
+[node name="Main" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="CardContainer" type="HBoxContainer" parent="Main"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 282.0
+offset_bottom = -398.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 100
+alignment = 1

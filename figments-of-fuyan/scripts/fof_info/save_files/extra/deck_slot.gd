@@ -16,6 +16,13 @@ func onAddCard(Card: CardGD) -> void:
 	card_public_id = Card.public_id
 	Card.onChangeCardPlace(Game.CardPlaces.DECK)
 	is_locked = false
+	
+func getCardData() -> SavedDataCard:
+	if card_public_id == 0: return null
+	var Card: CardGD = Game.onFindPublicIDObject(card_public_id)
+	if Card == null: return null
+	
+	return Card.onSave()
 
 func onRemoveCard() -> void:
 	var Card: CardGD = Game.onFindPublicIDObject(card_public_id)

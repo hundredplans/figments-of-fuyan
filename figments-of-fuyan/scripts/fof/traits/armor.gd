@@ -4,7 +4,7 @@ func onProcessAction(action: Action) -> void:
 	if !action.post:
 		if action is DamageAction and Card in action.Defenders and action.damage_type != Game.DamageTypes.FALL_DAMAGE:
 			action.setArmor(getArmor())
-		elif action is GetDamageAction and Card in action.Defenders and action.damage_type != Game.DamageTypes.FALL_DAMAGE:
+		elif action is GetDamageAction and Card == action.Defender and action.damage_type != Game.DamageTypes.FALL_DAMAGE:
 			action.setArmor(getArmor())
 
 func getDescription() -> String:

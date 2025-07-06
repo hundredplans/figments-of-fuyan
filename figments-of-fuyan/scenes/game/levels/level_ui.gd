@@ -2,6 +2,7 @@ extends Control
 
 
 #region Onready
+@onready var AniPlayer: AnimationPlayer = %AniPlayer
 @onready var HandPanel: PanelContainer = %HandPanel
 @onready var BottomBox: Control = %BottomBox
 @onready var ShillingLabel: FancyTextLabel = %ShillingLabel
@@ -390,12 +391,16 @@ var RewardsUI: Control
 func onGameEnded(rewards: Rewards) -> void:
 	await get_tree().process_frame # Necessary for UI to load in
 	onHideUI(true)
+	EpicFightControl.visible = false
 	if rewards == null:
 		var LossUI: Control = LossUIPacked.instantiate()
 		add_child(LossUI)
 	else:
-		RewardsUI = Game.onCreateRewardsUIScreen(rewards, self, level.fight_type)
-		RewardsUI.rewards_finished.connect(level.onRewardsFinished)
+		RewardsUI = Game.onCreateRewardsScreen(rewards, self, level.fight_type)
+		AniPlayer.play("RewardsScreenCreated")
+		RewardsUI.screen_finished.connect(level.onRewardsFinished)
+		RewardsUI.stash_screen_fade_out.connect(onRewardsStashScreenFade.bind(false))
+		RewardsUI.stash_screen_fade_in.connect(onRewardsStashScreenFade.bind(true))
 		MinimapControl = RewardsUI.MinimapControl
 		
 		var filler := Control.new()
@@ -403,7 +408,7 @@ func onGameEnded(rewards: Rewards) -> void:
 		LeftContainer.add_child(filler)
 		LeftContainer.move_child(filler, 0)
 		
-		for child in [DeckPanel, MapPanel, OverworldInformation, BoonBox]:
+		for child in [MapPanel, OverworldInformation, BoonBox]:
 			child.reparent(RewardsUI)
 	
 	onUpdateDeckCardAmountLabel()
@@ -415,6 +420,21 @@ func onGameEnded(rewards: Rewards) -> void:
 		btn.setDisabled(btn.is_in_group("EndGameDisabled"))
 	
 	HandBox.onUnpin()
+	
+func onRewardsStashScreenFade(fade_in: bool) -> void:
+	var tween := create_tween()
+	tween.tween_property(MapPanel, "modulate:a", int(!fade_in), Game.FADE_TIME)
+	
+	var boon_tween := create_tween()
+	boon_tween.tween_property(BoonBox, "modulate:a", int(!fade_in), Game.FADE_TIME)
+	
+	var overworld_info_tween := create_tween()
+	overworld_info_tween.tween_property(OverworldInformation, "modulate:a", int(!fade_in), Game.FADE_TIME)
+	
+	if !fade_in: MapPanel.visible = true; BoonBox.visible = true; OverworldInformation.visible = true
+	
+	await tween.finished
+	if fade_in: MapPanel.visible = false; BoonBox.visible = false; OverworldInformation.visible = false
 	
 func onGameStarted() -> void:
 	HandBox.onUnpin()
@@ -457,6 +477,8 @@ func onHideUI(state: bool) -> void:
 		
 	for Tile in get_tree().get_nodes_in_group("LevelTilesGD"):
 		Tile.onHideUI(state)
+		
+	EpicFightControl.visible = state
 #endregion
 
 #region Action

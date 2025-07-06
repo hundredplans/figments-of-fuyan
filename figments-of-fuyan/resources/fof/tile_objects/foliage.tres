@@ -1,13 +1,13 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=9 format=3]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=9 format=3 uid="uid://b13fevk66thwo"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_wjg4a"]
-[ext_resource type="Script" path="res://scripts/fof/objects/object.gd" id="2_3fdum"]
-[ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_algpn"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/foliage.glb" id="3_r8yxt"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="4_65m6n"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/foliage1.glb" id="4_r8yxt"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/foliage2.glb" id="5_ibbv4"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/foliage3.glb" id="6_6av6v"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_wjg4a"]
+[ext_resource type="Script" uid="uid://bjdh5jg7ecvli" path="res://scripts/fof/objects/object.gd" id="2_3fdum"]
+[ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_algpn"]
+[ext_resource type="PackedScene" uid="uid://dmd6cj7q4phhc" path="res://assets/models/fof/objects/foliage.glb" id="3_r8yxt"]
+[ext_resource type="Script" uid="uid://c57vvj8uxhu4x" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="4_65m6n"]
+[ext_resource type="PackedScene" uid="uid://clkmimjulv6i2" path="res://assets/models/fof/objects/foliage1.glb" id="4_r8yxt"]
+[ext_resource type="PackedScene" uid="uid://b33kcgh4dvp7u" path="res://assets/models/fof/objects/foliage2.glb" id="5_ibbv4"]
+[ext_resource type="PackedScene" uid="uid://cpbogm18s8nf0" path="res://assets/models/fof/objects/foliage3.glb" id="6_6av6v"]
 
 [resource]
 script = ExtResource("2_algpn")
@@ -15,7 +15,7 @@ tile_coords = Array[Array]([[Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)], [Vecto
 lock_rotation = false
 lock_tile = false
 ignore_collisions = true
-solids = Array[bool]([false, false])
+solids = Array[bool]([false, false, false, false])
 models = Array[PackedScene]([ExtResource("3_r8yxt"), ExtResource("4_r8yxt"), ExtResource("5_ibbv4"), ExtResource("6_6av6v")])
 points = Array[Array]([[Vector3(0.334813, 0.185035, -0.381398), Vector3(0.533912, 0.133656, 0.297098), Vector3(0.205713, 0.0935864, 0.44799), Vector3(-0.110822, 0.141849, 0.482146), Vector3(-0.318088, 0.216851, 0.31293), Vector3(-0.615268, 0.136363, -0.0232916), Vector3(-0.523117, 0.238617, -0.378516), Vector3(-0.0977197, 0.188987, -0.657037), Vector3(0.108598, 0.115289, -0.160704), Vector3(0.157502, 0.0918481, 0.0860254), Vector3(-0.136813, 0.150167, 0.121982), Vector3(-0.179648, 0.152318, -0.136327)], [Vector3(0.0849863, 0.0771952, -0.0912421), Vector3(0.0984912, 0.0614753, 0.0553208), Vector3(-0.0630288, 0.0796201, 0.0802049), Vector3(-0.082944, 0.074883, -0.0743477)], [Vector3(0.515713, 0.260963, 0.0949614), Vector3(0.00979155, 0.303691, -0.571655), Vector3(-0.595248, 0.152274, 0.0233219), Vector3(0.0320855, 0.0896714, 0.625443), Vector3(0.101216, 0.234032, -0.137104), Vector3(0.0945773, 0.205938, 0.126006), Vector3(-0.185205, 0.20441, 0.0431417), Vector3(-0.0932299, 0.0918944, -0.123944)], [Vector3(0.10815, 0.0953107, 0.0227624), Vector3(-0.0178007, 0.0548842, 0.190981), Vector3(-0.159992, 0.132329, 0.0314551), Vector3(-0.0678117, 0.217886, -0.0864602)]])
 active_effects = Array[ExtResource("1_wjg4a")]([])

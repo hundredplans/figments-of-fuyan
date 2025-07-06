@@ -10,6 +10,8 @@ const ADJACENT_DISTANCE_TO_BREAK_RECEIVING: int = 2 # Double adjacent
 @export var call_cooldown: int # Starts at 2 goes down 1 per turn
 @export var last_ignore_behaviour_roll: bool
 @export var is_receiver_turns_remaining: int
+@export var active_archetype: ArchetypeInfo
+
 var DFL: DefaultFightLogic # The last DFL of this unit's ai turn action, used for MOBILE ability checking
 
 var enemies_to_tiles: Dictionary # The enemy card to the tile they were on, if they die it's removed
@@ -83,4 +85,10 @@ func onLoad() -> void:
 		var Card: CardGD = Game.onFindPublicIDObject(public_id)
 		var Tile: TileGD = Game.onFindPublicIDObject(enemies_to_tiles_public_ids[public_id])
 		enemies_to_tiles[Card] = Tile
+		
+func getActiveArchetype() -> ArchetypeInfo:
+	return active_archetype
+	
+func setActiveArchetype(archetype_info: ArchetypeInfo) -> void:
+	active_archetype = archetype_info
 	

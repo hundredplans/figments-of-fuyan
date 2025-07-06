@@ -48,7 +48,7 @@ func _ready() -> void:
 	Helper.getFofInfoID(LevelInfo, save_file_data.area_data.level_data.id).name)
 	LocationLabel.text = "LOCATION: " + str(area_info.world.world) + "-" + str(clamp(save_file_data.area_data.getEnteredMapLocationProgress(), 0, 10))
 	
-	for card_data in save_file_data.deck:
+	for card_data in save_file_data.deck_slots.map(func(x: DeckSlot): return x.getCardData()):
 		var FofUIBox: Control = FofUIBoxPacked.instantiate()
 		CardContainer.add_child(FofUIBox)
 		FofUIBox.setInfo(card_data, true)
