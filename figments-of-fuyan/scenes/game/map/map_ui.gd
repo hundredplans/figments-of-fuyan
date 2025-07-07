@@ -20,9 +20,6 @@ var ChampionUpgradeUI: Control
 @onready var BoonBox: GridContainer = %BoonBox
 @onready var TimeLabel: Label = %TimeLabel
 
-@onready var ToolBeltSlotOne: Control = %ToolBeltSlotOne
-@onready var ToolBeltSlotTwo: Control = %ToolBeltSlotTwo
-
 @onready var DeckPanel: PanelContainer = %DeckPanel
 @onready var DeckCardAmountLabel: Label = %DeckCardAmountLabel
 @onready var Console: Control = %Console
@@ -41,8 +38,6 @@ func getDeckPanel() -> Control:
 #region Base Functions
 func _ready() -> void:
 	BackgroundDarkener.visible = false
-	ToolBeltSlotOne.visible = false
-	ToolBeltSlotTwo.visible = false
 	
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Back") and PauseMenu == null:
@@ -63,7 +58,6 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	
 	BoonBox.onUpdate()
 	setLegendBox()
-	onUpdateToolbelt()
 	
 	for map_node in get_tree().get_nodes_in_group("MapNodesGD"):
 		map_node.create_screen.connect(onCreateScreen)
@@ -92,10 +86,6 @@ func onProcessAction(action: Action) -> void:
 			BoonBox.onUpdateBoonChargesAndDisabled(action.Boon)
 		elif action is ChangeBoonAscenscionAction:
 			BoonBox.onUpdateBoonAscension(action.Boon)
-		elif action is AddToToolbeltAction:
-			onUpdateToolbelt()
-		elif action is RemoveFromToolbeltAction:
-			onUpdateToolbelt()
 		elif action is ChangeShillingsAction:
 			onUpdateShillings()
 		elif action is PlayerDeckUpgradeAction:
@@ -156,37 +146,6 @@ func setLegendBox() -> void:
 #region Deck
 func _on_deck_button_pressed() -> void:
 	add_child(DeckScreenPacked.instantiate())
-#endregion
-
-#region Toolbelt
-var ToolbeltTool: ToolGD
-func onUpdateToolbelt() -> void:
-	var toolbelt_slots: Array = [ToolBeltSlotOne, ToolBeltSlotTwo]
-	for i in range(Game.TOOLBELT_SIZE):
-		var ToolbeltSlot = toolbelt_slots[i]
-		var tool_exists: bool = save_file.tool_belt.size() > i
-		
-		ToolbeltSlot.visible = tool_exists
-		if tool_exists:
-			var Tool: ToolGD = save_file.tool_belt[i]
-			ToolbeltSlot.setInfo(Tool, true)
-			
-func onToolbeltSlotPressed(Tool: ToolGD) -> void:
-	if Tool == null: return
-	var DeckScreen: Control = DeckScreenPacked.instantiate()
-	add_child(DeckScreen)
-	DeckScreen.selected.connect(onToolbeltCardSelected)
-	DeckScreen.setInfo(true)
-	
-	ToolbeltTool = Tool
-	
-func onToolbeltCardSelected(Card: CardGD) -> void:
-	Game.getArea().onPushAction([RemoveFromToolbeltAction.new(ToolbeltTool), AddToolAction.new(Card, ToolbeltTool)])
-	ToolbeltTool = null
-
-func onDisableCardsWithTool(CardUI: Control) -> bool:
-	var Tool: ToolGD = CardUI.Card.Tool
-	return Tool != null and (Tool.info.id != ToolbeltTool.info.id or Tool.ascended)
 #endregion
 
 #region Deck

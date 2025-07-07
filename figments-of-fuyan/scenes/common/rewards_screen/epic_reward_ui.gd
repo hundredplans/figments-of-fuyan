@@ -5,13 +5,21 @@ signal stash_screen_fade_in
 signal stash_screen_fade_out
 var reward: Reward
 var action: ChooseRewardAction
+var StashScreen: Control
 
 const CLAIMED_COLOR := Color(0.5, 0.5, 0.5, 1.0)
-const PRECALCULATED_CLAIMED_LABEL_POSITION := Vector2(-70, 150)
+
+const PRECALCULATED_CLAIMED_LABEL_BOON_OFFSET := Vector2(-70, 150)
+const PRECALCULATED_CLAIMED_LABEL_TOOL_OFFSET := Vector2(-70, 150)
+const PRECALCULATED_CLAIMED_LABEL_CARD_UI_OFFSET := Vector2(-90, 110)
 
 @export var ToolIconPacked: PackedScene
 @export var spicy_rice_massive: LabelSettings
 @export var ClaimedLabelPacked: PackedScene
+
+@onready var BoonControl: Control = %BoonControl
+@onready var ToolControl: Control = %ToolControl
+@onready var CardControl: Control = %CardControl
 
 @onready var Main: Control = %Main
 @onready var CardContainer: Container = %CardContainer
@@ -47,18 +55,17 @@ func setInfo(_reward: Reward) -> void:
 			IconUI = ToolIcon
 			ToolIcon.setInfo(item, !reward.isTaken())
 			ToolIcon.mouse_in_ui.connect(onMouseInIconUI.bind(ToolIcon))
-			ToolIcon.pressed.connect(onToolPressed)
+			ToolIcon.pressed.connect(onToolPressed.bind(IconUI))
 		elif item is CardGD:
-			var CardUI: Control = item.onCreateCardUI(CardContainer, !reward.isTaken())
+			var CardUI: Control = item.onCreateCardUI(CardControl, !reward.isTaken())
 			IconUI = CardUI
 			EpicCardUI = CardUI
-			CardContainer.move_child(CardUI, 0)
-			CardUI.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+			CardUI.set_anchors_preset(Control.PRESET_CENTER)
 			CardUI.mouse_in_ui.connect(onMouseInIconUI.bind(CardUI))
 			CardUI.pressed.connect(onCardUIPressed)
 			
 		if reward.isTaken() and i == action.chosen_index:
-			onCreateClaimedLabel(IconUI)
+			call_deferred("onCreateClaimedLabel", item)
 
 	BoonIcon.onDisplayCharges(false)
 	ToolIcon.setExpandMode(TextureRect.ExpandMode.EXPAND_FIT_HEIGHT)
@@ -81,7 +88,7 @@ func onBoonPressed(Boon: BoonGD, BoonUI: Control) -> void:
 	onRewardTaken(BoonUI, Boon)
 	
 func onRewardTaken(IconUI: Control, item: FofGD) -> void:
-	onCreateClaimedLabel(IconUI)
+	onCreateClaimedLabel(item)
 	reward.setTaken(true)
 	
 	for _IconUI: Control in [BoonIcon, ToolIcon, EpicCardUI]:
@@ -94,8 +101,8 @@ func onRewardTaken(IconUI: Control, item: FofGD) -> void:
 	tween.tween_property(Main, "modulate", CLAIMED_COLOR, Game.FADE_TIME)
 	action.onItemChosen(item)
 	
-func onToolPressed(Tool: ToolGD) -> void:
-	if reward.isTaken(): return
+func onToolPressed(Tool: ToolGD, OriginalToolIcon: Control) -> void:
+	if reward.isTaken() or StashScreen != null: return
 	var ToolIcon: Control = ToolIconPacked.instantiate()
 	add_child(ToolIcon)
 	ToolIcon.setInfo(Tool, false)
@@ -103,21 +110,36 @@ func onToolPressed(Tool: ToolGD) -> void:
 	ToolIcon.setSizeScale(3)
 	ToolIcon.top_level = true
 	
-	var StashScreen: Control = Game.onCreateStashScreen(self, ToolIcon)
+	StashScreen = Game.onCreateStashScreen(self, ToolIcon)
 	stash_screen_fade_in.emit()
-	StashScreen.active_tool_added.connect(onToolClaimed.bind(ToolIcon))
+	StashScreen.active_tool_added.connect(onToolClaimed.bind(ToolIcon, OriginalToolIcon))
 	StashScreen.exit_start.connect(onActiveToolStashExitStart.bind(ToolIcon))
 	
-func onToolClaimed(_CardUI: Control, ToolIcon: Control) -> void:
+func onToolClaimed(_CardUI: Control, ToolIcon: Control, OriginalToolIcon: Control) -> void:
 	onRemoveActiveToolIcon(ToolIcon)
-	onRewardTaken(ToolIcon, ToolIcon.Tool)
+	onRewardTaken(OriginalToolIcon, ToolIcon.Tool)
 	
-func onCreateClaimedLabel(IconUI: Control) -> Label:
+func onCreateClaimedLabel(item: FofGD) -> Label:
 	var ClaimedLabel: Label = ClaimedLabelPacked.instantiate()
 	ClaimedLabel.label_settings = spicy_rice_massive
 	add_child(ClaimedLabel)
 	
-	ClaimedLabel.global_position = IconUI.global_position
+	if StashScreen != null:
+		move_child(ClaimedLabel, StashScreen.get_index())
+	
+	var offset: Vector2
+	var control: Control
+	if item is ToolGD:
+		offset = PRECALCULATED_CLAIMED_LABEL_TOOL_OFFSET
+		control = ToolControl
+	elif item is BoonGD:
+		offset = PRECALCULATED_CLAIMED_LABEL_BOON_OFFSET
+		control = BoonControl
+	elif item is CardGD:
+		offset = PRECALCULATED_CLAIMED_LABEL_CARD_UI_OFFSET
+		control = CardControl
+	
+	ClaimedLabel.global_position = control.global_position + offset
 	return ClaimedLabel
 
 func onRemoveActiveToolIcon(ToolIcon: Variant) -> void:

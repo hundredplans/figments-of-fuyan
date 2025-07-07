@@ -4,6 +4,8 @@ signal reward_taken
 signal stash_screen_fade_in
 signal stash_screen_fade_out
 
+var StashScreen: Control
+
 @export var ShillingsTexture: Texture2D
 @export var BoonIconPacked: PackedScene
 @export var ToolIconPacked: PackedScene
@@ -79,7 +81,7 @@ func onClaimButtonPressed() -> void:
 		onRewardTaken()
 	
 func onClaimButtonDown() -> void:
-	if reward.isTaken(): return
+	if reward.isTaken() or StashScreen != null: return
 	var item: FofGD = reward.getItem()
 	if item is ToolGD:
 		var ToolIcon: Control = ToolIconPacked.instantiate()
@@ -89,7 +91,7 @@ func onClaimButtonDown() -> void:
 		ToolIcon.setSizeScale(3)
 		ToolIcon.top_level = true
 		
-		var StashScreen: Control = Game.onCreateStashScreen(self, ToolIcon)
+		StashScreen = Game.onCreateStashScreen(self, ToolIcon)
 		stash_screen_fade_in.emit()
 		StashScreen.active_tool_added.connect(onToolClaimed.bind(ToolIcon))
 		StashScreen.exit_start.connect(onActiveToolStashExitStart.bind(ToolIcon))

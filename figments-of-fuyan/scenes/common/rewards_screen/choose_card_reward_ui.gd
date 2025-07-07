@@ -11,7 +11,7 @@ var reward: Reward
 var action: ChooseRewardAction
 var taken: bool
 
-const PRECALCULATED_CLAIMED_LABEL_POSITION := Vector2(-100, -40)
+const PRECALCULATED_CLAIMED_LABEL_POSITION := Vector2(-195, 110)
 const CLAIMED_CARD_COLOR := Color(0.2, 0.2, 0.2)
 const CLAIMED_COLOR := Color(0.5, 0.5, 0.5, 1.0)
 
@@ -22,10 +22,14 @@ func setInfo(_reward: Reward) -> void:
 	
 	var i: int = 0
 	for Card: CardGD in action.getItems():
-		var CardUI: Control = Card.onCreateCardUI(CardContainer, !taken, true, null)
+		var control := Control.new()
+		control.custom_minimum_size = Game.CARD_UI_SIZE
+		CardContainer.add_child(control)
+		
+		var CardUI: Control = Card.onCreateCardUI(control, !taken, true, null)
+		CardUI.set_anchors_preset(Control.PRESET_CENTER)
 		CardUI.pressed.connect(onRewardPressed)
 		CardUI.mouse_in_ui.connect(onMouseInCardUI.bind(CardUI))
-		CardContainer.force_update_transform()
 		if taken and i == action.chosen_index:
 			call_deferred("onCreateClaimedLabel", CardUI)
 		i += 1
@@ -37,7 +41,8 @@ func onRewardPressed(CardUI: Control) -> void:
 	reward.setTaken(true)
 	action.onItemChosen(CardUI.getCard())
 	
-	for _CardUI: Control in CardContainer.get_children():
+	for control: Control in CardContainer.get_children():
+		var _CardUI: Control = control.get_child(0)
 		_CardUI.setHighlightOnHover(false)
 	
 	get_viewport().update_mouse_cursor_state()
@@ -56,12 +61,15 @@ func onRewardPressed(CardUI: Control) -> void:
 	
 	reward_taken.emit(reward)
 	
+	var Card: CardGD = CardUI.Card
+	Game.getSaveFile().onPushAction(AddToDeckAction.new(Card))
+	
 func onCreateClaimedLabel(CardUI: Control) -> Label:
 	var ClaimedLabel: Label = ClaimedLabelPacked.instantiate()
 	add_child(ClaimedLabel)
 	
-	ClaimedLabel.global_position = (CardUI.global_position / CardUI.scale)
-	print(CardUI.global_position / CardUI.scale)
+	var control: Control = CardUI.get_parent()
+	ClaimedLabel.global_position = control.global_position + PRECALCULATED_CLAIMED_LABEL_POSITION
 	return ClaimedLabel
 
 func onMouseInCardUI(state: bool, CardUI: Control) -> void:

@@ -44,7 +44,7 @@ func onToolPickedUp(action: OccupyAction) -> void:
 
 func onSave() -> SavedDataSpawn:
 	return SavedDataSpawn.new(info.id, false, public_id, coords, tile_rotation, vision_datastore, variation, map_rotation, map_position, height,\
-	occupied_tiles.map(func(x: TileGD): return x.getCoords()), spawn_id)
+	occupied_tiles.map(func(x: TileGD): return x.getCoords()), groups, spawn_id)
 
 var SpawnParticle: GPUParticles3D
 func onLoadDataLevel() -> void:

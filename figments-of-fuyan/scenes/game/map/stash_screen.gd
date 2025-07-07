@@ -5,10 +5,13 @@ signal exit_start
 signal deck_slot_changed
 signal mouse_in_ui
 
+var is_exit_start: bool
+
 const TOOL_ADDED_EXIT_DELAY: float = 1.0
 const ROTATION_SPEED_TO_MIDDLE: float = 10.0
 const RELATIVE_SIDE_FORCE_DIV: float = 15.0
 
+var active_tool_released: bool
 var ActiveToolIcon: Control
 
 @onready var CardUIRaycast: RayCast2D = %CardUIRaycast
@@ -111,6 +114,7 @@ func onMouseInUI(state: bool) -> void:
 	is_mouse_in_ui = state
 
 func onExitButtonPressed() -> void:
+	is_exit_start = true
 	exit_start.emit()
 	AniPlayer.play_backwards("SlideUIElements")
 	FadeCreamBackground.onFade(false)
@@ -277,14 +281,14 @@ func _input(event: InputEvent) -> void:
 		onScroll(1)
 		
 	if ActiveToolIcon != null:
-		if Input.is_action_just_released("MainInput"):
+		if Input.is_action_just_pressed("MainInput"):
 			onActiveToolIconReleased()
-		if event is InputEventMouseMotion:
+		if event is InputEventMouseMotion and !is_exit_start:
 			ActiveToolIcon.global_position += event.relative
 			ActiveToolIcon.rotation_degrees += event.relative.x / RELATIVE_SIDE_FORCE_DIV
 		
 func _process(delta: float) -> void:
-	if ActiveToolIcon != null:
+	if ActiveToolIcon != null and !is_exit_start:
 		ActiveToolIcon.rotation = lerp_angle(ActiveToolIcon.rotation, 0, ROTATION_SPEED_TO_MIDDLE * delta)
 		
 const SCROLL_STRENGTH: int = 200
@@ -299,6 +303,9 @@ func onActiveToolIconReleased() -> void:
 	CardUIRaycast.global_position = ActiveToolIcon.global_position + (ActiveToolIcon.size / 2)
 	CardUIRaycast.target_position = Vector2.ZERO
 	CardUIRaycast.force_raycast_update()
+	ActiveToolIcon.setMouseFilter(Control.MOUSE_FILTER_STOP)
+	ActiveToolIcon.rotation_degrees = 0
+	
 	var area: Area2D = CardUIRaycast.get_collider()
 	if area == null: onExitButtonPressed(); return
 	

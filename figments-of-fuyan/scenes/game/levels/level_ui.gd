@@ -421,7 +421,9 @@ func onGameEnded(rewards: Rewards) -> void:
 	
 	HandBox.onUnpin()
 	
+var stash_screen_previous_fade: bool
 func onRewardsStashScreenFade(fade_in: bool) -> void:
+	stash_screen_previous_fade = fade_in
 	var tween := create_tween()
 	tween.tween_property(MapPanel, "modulate:a", int(!fade_in), Game.FADE_TIME)
 	
@@ -432,9 +434,9 @@ func onRewardsStashScreenFade(fade_in: bool) -> void:
 	overworld_info_tween.tween_property(OverworldInformation, "modulate:a", int(!fade_in), Game.FADE_TIME)
 	
 	if !fade_in: MapPanel.visible = true; BoonBox.visible = true; OverworldInformation.visible = true
-	
 	await tween.finished
-	if fade_in: MapPanel.visible = false; BoonBox.visible = false; OverworldInformation.visible = false
+	if fade_in and stash_screen_previous_fade == fade_in:
+		MapPanel.visible = false; BoonBox.visible = false; OverworldInformation.visible = false
 	
 func onGameStarted() -> void:
 	HandBox.onUnpin()
