@@ -600,8 +600,6 @@ func onAreaOptionButtonSelected(_index: int = 0) -> void:
 	World.add_child(DefaultLight)
 	
 	AreaEnv.environment = area_info.base_environment
-	
-	
 	onApplyLevelFilters()
 	
 func onFindLevelByName(level_name: String) -> LevelInfo:
