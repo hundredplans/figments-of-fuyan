@@ -53,12 +53,13 @@ var cube_directions: Array[Vector3i] = [
 var tile_face_directions: Array[Vector3] = [
 ]
 
+const CARD_UI_SIZE := Vector2(264, 400)
+
 const FALL_DAMAGE_BEGIN_HEIGHT: int = 5
 const HEX_SIZE: float = 0.55
 const STAT_UPDATE_TIME: float = 0.15
 
 const CARD_REWARD_DEFAULT_AMOUNT: int = 3
-const TOOLBELT_SIZE: int = 2
 const ASCENDED_COLOR := Color(0.937, 0.835, 0.318)
 const ASCENDED_OUTLINE_COLOR := Color(0.512, 0.447, 0.099)
 
@@ -471,7 +472,7 @@ func onMouseInUITooltip(state: bool, item: Variant = null, parent: Control = nul
 		Tooltip.setInfo(item, offset, create_inner_tooltips)
 		Tooltip.setPosition()
 		
-func onEmptyTooltip(state: bool, child: Control, parent: Control) -> Control:
+func onEmptyTooltip(state: bool, child: Control = null, parent: Control = null) -> Control:
 	if Tooltip != null: Tooltip.queue_free()
 	if state:
 		Tooltip = Control.new()

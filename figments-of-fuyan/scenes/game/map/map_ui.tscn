@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://ssbbc35p2xby"]
+[gd_scene load_steps=17 format=3 uid="uid://ssbbc35p2xby"]
 
 [ext_resource type="Script" uid="uid://bxyqpp5rj7htd" path="res://scenes/game/map/map_ui.gd" id="1_8nhbi"]
 [ext_resource type="LabelSettings" uid="uid://baxopkmeda53x" path="res://resources/ui/label_settings/roboto_huge.tres" id="2_r0ufu"]
@@ -8,7 +8,6 @@
 [ext_resource type="Script" uid="uid://dnqf5f1jadalx" path="res://scenes/game/levels/boon_box.gd" id="6_1qe81"]
 [ext_resource type="PackedScene" uid="uid://ct1cn5tc1ofmb" path="res://scenes/game/boons/boon_icon.tscn" id="7_fduhh"]
 [ext_resource type="PackedScene" uid="uid://6nf3mir2i2rk" path="res://scenes/common/fancy_text/fancy_text_label.tscn" id="8_v2ied"]
-[ext_resource type="PackedScene" uid="uid://cewvw3vx3mjcm" path="res://scenes/game/tools/tool_icon.tscn" id="9_mvtve"]
 [ext_resource type="PackedScene" uid="uid://db7lt6qbe4d0e" path="res://scenes/common/time_label/time_label.tscn" id="10_dlqmt"]
 [ext_resource type="PackedScene" uid="uid://mehoa6ajrja5" path="res://scenes/common/highlight_tx_button.tscn" id="11_m1bsi"]
 [ext_resource type="Texture2D" uid="uid://do8qr6q0dyyiy" path="res://assets/sprites/ui/icons/deck.png" id="12_xn4sn"]
@@ -275,32 +274,6 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/TopBar"]
-custom_minimum_size = Vector2(120, 120)
-layout_mode = 2
-theme_type_variation = &"BluePanelContainer"
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/TopBar/PanelContainer"]
-layout_mode = 2
-
-[node name="ToolBeltSlotOne" parent="MarginContainer/TopBar/PanelContainer/MarginContainer" instance=ExtResource("9_mvtve")]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 2
-
-[node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/TopBar"]
-custom_minimum_size = Vector2(120, 120)
-layout_mode = 2
-theme_type_variation = &"BluePanelContainer"
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/TopBar/PanelContainer2"]
-layout_mode = 2
-
-[node name="ToolBeltSlotTwo" parent="MarginContainer/TopBar/PanelContainer2/MarginContainer" instance=ExtResource("9_mvtve")]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 2
-
 [node name="DeckPanel" type="PanelContainer" parent="MarginContainer/TopBar"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(10, 10)
@@ -341,7 +314,5 @@ grow_vertical = 2
 mouse_filter = 2
 
 [connection signal="mouse_in_ui" from="BoonBox" to="." method="onMouseInUI"]
-[connection signal="pressed" from="MarginContainer/TopBar/PanelContainer/MarginContainer/ToolBeltSlotOne" to="." method="onToolbeltSlotPressed"]
-[connection signal="pressed" from="MarginContainer/TopBar/PanelContainer2/MarginContainer/ToolBeltSlotTwo" to="." method="onToolbeltSlotPressed"]
 [connection signal="pressed" from="MarginContainer/TopBar/DeckPanel/MarginContainer/DeckButton" to="." method="onDeckButtonPressed"]
 [connection signal="mouse_in_ui" from="Console" to="." method="onMouseInUI"]

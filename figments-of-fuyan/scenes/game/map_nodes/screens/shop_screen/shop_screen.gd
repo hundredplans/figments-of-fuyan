@@ -80,15 +80,7 @@ func onItemPressed(item: FofGD, price_datastore: PriceDatastore, DisplayedUI: Co
 		Game.onFlyToUI(DisplayedUI, UI.getDeckPanel())
 		
 	elif item is ToolGD:
-		var tool_belt_index: int = save_file.tool_belt.find(item)
-		var To: Control = UI.DeckPanel
-		
-		if tool_belt_index == 0:
-			To = UI.ToolBeltSlotOne
-		elif tool_belt_index == 1:
-			To = UI.ToolBeltSlotTwo
-		
-		Game.onFlyToUI(DisplayedUI, To)
+		DisplayedUI.queue_free()
 		
 	elif item is BoonGD:
 		shop.onForceAction(AddBoonAction.new(item.info.id, item.ascended))

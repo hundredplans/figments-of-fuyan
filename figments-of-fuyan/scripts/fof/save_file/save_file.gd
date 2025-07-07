@@ -10,7 +10,6 @@ signal input_saved
 var id: int
 var my_seed: int
 var area: AreaGD
-var tool_belt: Array
 var boons: Array
 var upgrade_level: int
 
@@ -39,13 +38,12 @@ func onSaveToFile() -> void:
 
 func onSave() -> SavedData:
 	var ally_cards: Array = SavedData.onSaveGroup(get_tree().get_nodes_in_group("AllyCardsGD"))
-	var tool_belt_data: Array = SavedData.onSaveGroup(tool_belt)
 	var highest_public_id: int = Game.highest_public_id
 	var saved_boons: Array = SavedData.onSaveGroup(boons)
 	var time_elapsed: int = getTimeElapsed()
 	
 	return SavedDataSaveFile.new(id, false, public_id, my_seed, area.onSave(), shillings, time_elapsed,\
-	ally_cards, saved_boons, highest_public_id, tool_belt_data, safe_encounter_count,\
+	ally_cards, saved_boons, highest_public_id, safe_encounter_count,\
 	upgrade_level, max_energy, energy_limit, deck_slots)
 
 func onLoadData(data: SavedData) -> void:
@@ -63,7 +61,6 @@ func onLoadData(data: SavedData) -> void:
 		Card.add_to_group("AllyCardsGD")
 	
 	boons = data.boons.map(func(x: SavedDataBoon): return SavedData.onLoadModel(x, self))
-	tool_belt = data.tool_belt.map(func(x: SavedDataTool): return SavedData.onLoadModel(x, self))
 	
 	if data.area_data != null:
 		area = SavedData.onLoadModel(data.area_data, get_parent())
@@ -146,11 +143,6 @@ func onChooseArea(world: int = 1) -> void:
 #region Timer
 func getTimeElapsed() -> int:
 	return time + int(timer.wait_time - timer.time_left)
-#endregion
-
-#region Tools
-func getToolbelt() -> Array:
-	return tool_belt
 #endregion
 
 #region Boons
