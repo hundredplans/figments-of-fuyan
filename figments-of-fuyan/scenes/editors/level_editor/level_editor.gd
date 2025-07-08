@@ -131,14 +131,16 @@ func _process(_delta: float) -> void:
 	if !get_viewport().gui_get_focus_owner() is LineEdit:
 		for char in ['A', 'B', 'C', 'D']:
 			if Input.is_action_just_pressed("AddToGroup" + char):
-				var Spawn: SpawnGD
-				if HoverModel != null and HoverModel is SpawnGD: Spawn = HoverModel
+				var SpawnGroupObject: ObjectGD
+				if HoverModel != null and HoverModel is ObjectGD: SpawnGroupObject = HoverModel
 				
-				var TileObject: TileObjectGD = onFindMouseTileObject()
-				if TileObject is SpawnGD: Spawn = TileObject
+				if SpawnGroupObject == null:
+					var MouseTileObject: TileObjectGD = onFindMouseTileObject()
+					if MouseTileObject is ObjectGD:
+						SpawnGroupObject = onFindMouseTileObject()
 				
-				if Spawn != null:
-					Spawn.onChangeSpawnGroup(char)
+				if SpawnGroupObject != null:
+					SpawnGroupObject.onChangeSpawnGroup(char)
 				break
 		
 		if Input.is_action_just_pressed("SelectDeselect"):

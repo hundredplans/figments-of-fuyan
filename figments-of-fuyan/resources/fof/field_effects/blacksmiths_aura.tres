@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="FieldEffectInfo" load_steps=5 format=3 uid="uid://vbn6xmpxr6j3"]
+
+[ext_resource type="Script" uid="uid://b8dwg0mvem5ks" path="res://scripts/fof/field_effects/blacksmiths_aura.gd" id="1_3svjm"]
+[ext_resource type="Texture2D" uid="uid://ct70rcnblj4b6" path="res://assets/sprites/game/fof_object_icons/field_effects/blacksmiths_aura.png" id="1_b0i0a"]
+[ext_resource type="Script" uid="uid://bi5dpcw30h2c4" path="res://scripts/fof_info/field_effects/field_effect_info.gd" id="2_nmewo"]
+[ext_resource type="Script" uid="uid://dw8fbr6hatp7q" path="res://scripts/saved_data/field_effects/saved_data_field_effect.gd" id="3_23610"]
+
+[resource]
+script = ExtResource("2_nmewo")
+icon = ExtResource("1_b0i0a")
+description = "This unit is giving ARMOR [1] to all units in vision for [X] turns"
+ascended_description = ""
+ascended_type = 0
+display_number_type = 0
+remove_on_owner_death = true
+id = 19
+name = "Blacksmith's Aura"
+gdscript = ExtResource("1_3svjm")
+saved_data = ExtResource("3_23610")

@@ -12,6 +12,7 @@ var occupied_tiles: Array
 var groups: Array
 #endregion
 
+var GroupLabel: Label3D # Set by level editor
 var loaded_in_level: bool
 
 #region Getters
@@ -109,6 +110,12 @@ func onLoadDataLevelFofInit() -> void:
 	super()
 	vision_datastore = VisionDatastore.new()
 	
+func onLoadModel() -> void:
+	super()
+	GroupLabel = load(info.SPAWN_GROUP_LABEL_SCENE_PATH).instantiate()
+	Model.add_child(GroupLabel)
+	GroupLabel.setInfo(groups)
+	
 func onFofInit() -> void:
 	pass
 #endregion
@@ -182,3 +189,12 @@ func onApplyGreyscaleMaterial() -> void:
 	for mesh in getMeshes():
 		for surface_id in mesh.get_surface_override_material_count():
 			mesh.set_surface_override_material(surface_id, greyscale_material)
+
+func onChangeSpawnGroup(group_name: String) -> void:
+	if !groups.has(group_name): groups.append(group_name)
+	else: groups.erase(group_name)
+	
+	GroupLabel.setGroups(groups)
+	
+func isInLevelGroup() -> String:
+	return Game.getLevel().getSpawnGroup() in groups

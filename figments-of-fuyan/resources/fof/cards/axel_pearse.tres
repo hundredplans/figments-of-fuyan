@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://deyo7ci7khsk0"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=13 format=3 uid="uid://deyo7ci7khsk0"]
 
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_7al74"]
 [ext_resource type="Resource" uid="uid://31nmui4k0kfh" path="res://resources/fof/archetypes/tactician.tres" id="2_a55fc"]
@@ -9,6 +9,14 @@
 [ext_resource type="PackedScene" uid="uid://bd2esqpmo73tk" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_nuf8j"]
 [ext_resource type="Script" uid="uid://dti3xtuqh8yx7" path="res://scripts/fof/cards/axel_pearse.gd" id="6_a55fc"]
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_ikjpp"]
+
+[sub_resource type="Resource" id="Resource_a55fc"]
+script = ExtResource("3_0dvgo")
+display_number = 0
+id = 3
+first_init = false
+public_id = 0
+metadata/_custom_type_script = "uid://dag3a8ejplko8"
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
 size = Vector3(0.663147, 1.94543, 0.526978)
@@ -29,15 +37,18 @@ _bundled = {
 [resource]
 script = ExtResource("4_8j3o7")
 attack = 2
-health = 2
+health = 1
 speed = 3
 energy = 2
 rarity = 5
 initial_traits = Array[ExtResource("3_0dvgo")]([])
 active_abilities = Array[ExtResource("1_7al74")]([])
 flavor_text = ""
-description = "On Hit: Ignore ARMOR & SHIELD and MUTE [3] the enemy if they have ARMOR or SHIELD"
-ascended_description = "On Hit: Ignore ARMOR & SHIELD and MUTE [3] all enemies in vision with ARMOR or SHIELD"
+description = "On Hit: If they have ARMOR & SHIELD ignore it and gain
++1 ATT"
+ascended_description = "MOBILE
+On Hit: If they have ARMOR & SHIELD ignore it and gain
++1 ATT"
 art_mini_coordinate = Vector2i(102, 31)
 art_mini = ExtResource("2_x7rxs")
 art_pop = ExtResource("2_acjsm")
@@ -48,10 +59,10 @@ stat = 1.947
 top = 2.058
 eye = 1.788
 plus_attack = 0
-plus_health = 0
+plus_health = 1
 plus_speed = 0
 plus_energy = 0
-ascended_traits = Array[ExtResource("3_0dvgo")]([])
+ascended_traits = Array[ExtResource("3_0dvgo")]([SubResource("Resource_a55fc")])
 archetype = ExtResource("2_a55fc")
 id = 71
 name = "Axel Pearse"

@@ -4,7 +4,6 @@ const TELEPORT_ENTER_ACTION_DELAY: float = 1.2
 const FIRST_PHASE_CHANGE_HEALTH: int = 14
 const SECOND_PHASE_CHANGE_HEALTH: int = 7
 
-const FATIGUE_ID: int = 3
 const BLIND_ID: int = 1
 const REVEALED_ID: int = 6
 const CLONE_ID: int = 78

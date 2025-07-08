@@ -19,7 +19,7 @@ func onArrivePre(_action: AwakenAction) -> void:
 	pass
 		
 func onArrive(action: AwakenAction) -> void:
-	lil_betty_turns_public_id =  onCreateBaseFieldEffect(LIL_BETTY_TURNS_ID, -1, getMaxTurns()).public_id
+	lil_betty_turns_public_id =  onCreateBaseFieldEffect(LIL_BETTY_TURNS_ID).public_id
 	
 func getDescription() -> String:
 	return Helper.getDescription(super(), [turns_remaining])
@@ -38,12 +38,13 @@ func onRegularReset() -> void:
 	
 func onEndTurnEffect(action: ChangeTurnStateAction) -> void:
 	turns_remaining += 1
-	if turns_remaining < getMaxTurns(): return
-	else: turns_remaining = 0
+	if turns_remaining >= getMaxTurns(): turns_remaining = 0
 	
-	var remove_field_effect_action := RemoveFieldEffectAction.new(Game.onFindPublicIDObject(lil_betty_turns_public_id))
-	var add_field_effect_action := onCreateBaseFieldEffectAction(LIL_BETTY_TURNS_ID, 0, getMaxTurns())
-	lil_betty_turns_public_id = add_field_effect_action.FieldEffect.public_id
+	var FieldEffect: FieldEffectGD = Game.onFindPublicIDObject(lil_betty_turns_public_id)
+	if FieldEffect != null:
+		FieldEffect.onForceUpdateDisplayNumber()
+		
+	if turns_remaining < getMaxTurns(): return
 	
 	var animation_action := AnimationAction.new(self, "Ability")
 	animation_action.setActionDelay(END_TURN_ACTION_DELAY)
@@ -57,7 +58,6 @@ func onEndTurnEffect(action: ChangeTurnStateAction) -> void:
 		damage_action.setActionDelay(ENEMY_HIT_ACTION_DELAY)
 		actions += [CameraChangeAction.new(EnemyCard), damage_action, CameraChangeAction.new(self)]
 		
-	actions += [remove_field_effect_action, add_field_effect_action]
 	onPushAction(actions)
 	
 func getMaxTurns() -> int:

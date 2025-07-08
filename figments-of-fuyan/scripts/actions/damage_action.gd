@@ -5,6 +5,7 @@ var Defenders: Array
 var damage: int
 var damage_type: Game.DamageTypes
 var ignore_armor_shield: bool
+var ignore_armor_shield_success: bool
 var armor: int
 
 const SHIELD_ID: int = 3
@@ -41,6 +42,8 @@ func onPostAction() -> void:
 				new_damage = min(damage, 1)
 				if new_damage > 0:
 					actions.append(RemoveFieldEffectAction.new(ShieldFieldEffect))
+		elif ShieldFieldEffect != null or armor > 0:
+			setIgnoreArmorShieldSuccess(true)
 		new_damage *= -1
 		stat_infos.append(StatInfo.new(Card, Game.Stats.HEALTH, new_damage))
 	
@@ -48,6 +51,12 @@ func onPostAction() -> void:
 	stat_action.setLockActionDelay(lock_action_delay)
 	actions.push_front(stat_action)
 	onPushAction(actions)
+	
+func isIgnoreArmorShieldSuccess() -> bool:
+	return ignore_armor_shield_success
+	
+func setIgnoreArmorShieldSuccess(_ignore_armor_shield_success: bool) -> void:
+	ignore_armor_shield_success = _ignore_armor_shield_success
 	
 func getLogInfo() -> Array:
 	var arr: Array = ["Damager: " + Damager.info.name]
