@@ -129,20 +129,6 @@ func _process(_delta: float) -> void:
 			focus_owner.release_focus()
 		
 	if !get_viewport().gui_get_focus_owner() is LineEdit:
-		for char in ['A', 'B', 'C', 'D']:
-			if Input.is_action_just_pressed("AddToGroup" + char):
-				var SpawnGroupObject: ObjectGD
-				if HoverModel != null and HoverModel is ObjectGD: SpawnGroupObject = HoverModel
-				
-				if SpawnGroupObject == null:
-					var MouseTileObject: TileObjectGD = onFindMouseTileObject()
-					if MouseTileObject is ObjectGD:
-						SpawnGroupObject = onFindMouseTileObject()
-				
-				if SpawnGroupObject != null:
-					SpawnGroupObject.onChangeSpawnGroup(char)
-				break
-		
 		if Input.is_action_just_pressed("SelectDeselect"):
 			if HoverModel != null: onHoverModelDeselected()
 			else: onLastHoverModelSelected()
@@ -186,11 +172,25 @@ func _process(_delta: float) -> void:
 			elif Input.is_action_just_pressed("ChangeElevationDown"):
 				setBaseElevation(base_elevation - 1)
 			else:
-				for num in range(10):
-					if Input.is_action_just_pressed("ChangeElevation" + str(num)):
+				for num: int in range(10):
+					if Input.is_action_just_pressed("AddToGroup" + str(num)):
+						var SpawnGroupObject: ObjectGD
+						if HoverModel != null and HoverModel is ObjectGD: SpawnGroupObject = HoverModel
+						
+						if SpawnGroupObject == null:
+							var MouseTileObject: TileObjectGD = onFindMouseTileObject()
+							if MouseTileObject is ObjectGD:
+								SpawnGroupObject = onFindMouseTileObject()
+						
+						if SpawnGroupObject != null:
+							SpawnGroupObject.onChangeSpawnGroup(num)
+						break
+						
+					elif Input.is_action_just_pressed("ChangeElevation" + str(num)):
 						if num == 0: num = 9
 						else: num -= 1
 						setBaseElevation(num)
+						break
 				
 			if Input.is_action_just_released("RotateLeft") or Input.is_action_just_released("RotateRight"):
 				TemporaryRotationObject = null
@@ -254,12 +254,14 @@ func onTileObjectInfoSelected(data: SavedData, remove_last: bool = true) -> void
 	
 	if data is SavedDataTile: data.is_decoration = is_decoration
 	HoverModel = SavedData.onLoadModel(data, World)
+		
 	HoverModel.setRayPickable(true)
 	HoverModel.position = Vector3(0, 10000, 0)
 	HoverModel.setCollisionLayers(0)
 	
 	if HoverModel is ObjectGD:
 		HoverModel.setHalfTransparent()
+		HoverModel.onCreateGroupLabel()
 	
 	var coords := Vector4i(0, 0, 0, -1)
 	if HoverModel is TileGD and HoverStaticBody != null: coords = HoverStaticBody.coords
@@ -589,7 +591,9 @@ func onLoadLevel(loaded_info: Variant) -> void:
 		tile_object.onClear()
 	
 	for data in loaded.data:
-		SavedData.onLoadModel(data, World)
+		var TileObject: TileObjectGD = SavedData.onLoadModel(data, World)
+		if TileObject is ObjectGD:
+			TileObject.onCreateGroupLabel()
 	
 var DefaultLight: DirectionalLight3D
 func onAreaOptionButtonSelected(_index: int = 0) -> void:

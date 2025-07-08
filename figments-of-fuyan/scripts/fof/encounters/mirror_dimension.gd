@@ -31,7 +31,7 @@ func onStartFight() -> void:
 	cards.resize(spawn_amount)
 	cards = cards.filter(func(x: CardGD): return x != null)
 	
-	var spawn_group: String = level_info.getRandomSpawnGroup()
+	var spawn_group: int = level_info.getRandomSpawnGroup()
 	var enemy_spawns: Array = level_info.getEnemySpawnsInGroup(spawn_group) # Array[SavedDataSpawn]
 	var enemy_cards: Array = []
 	

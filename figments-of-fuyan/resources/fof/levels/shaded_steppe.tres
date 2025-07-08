@@ -1,15 +1,15 @@
-[gd_resource type="Resource" script_class="LevelInfo" load_steps=202 format=3 uid="uid://bfn0wchi57fqt"]
+[gd_resource type="Resource" script_class="LevelInfo" load_steps=202 format=3]
 
-[ext_resource type="Script" uid="uid://df278rs03up0b" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="1_csg5g"]
-[ext_resource type="Script" uid="uid://3encclot053x" path="res://scripts/fof_info/game_objects/extra/revealed_datastore.gd" id="2_813vr"]
-[ext_resource type="Script" uid="uid://ptqg2yb7m54y" path="res://scripts/fof_info/game_objects/extra/vision_datastore_tile.gd" id="3_563qp"]
-[ext_resource type="Script" uid="uid://dyvdkimog5nh1" path="res://scripts/fof/levels/palm_level.gd" id="4_31qfe"]
-[ext_resource type="Script" uid="uid://bqrpess5o2brf" path="res://scripts/saved_data/game_objects/saved_data_spawn.gd" id="4_563qp"]
-[ext_resource type="Script" uid="uid://dabwqp16gynmr" path="res://scripts/fof_info/game_objects/extra/vision_datastore.gd" id="5_31qfe"]
-[ext_resource type="Script" uid="uid://c76iyo8j5sdgv" path="res://scripts/saved_data/game_objects/saved_data_iobject.gd" id="6_31qfe"]
-[ext_resource type="Script" uid="uid://c57vvj8uxhu4x" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="7_fj26r"]
-[ext_resource type="Script" uid="uid://bml6vtchj31b0" path="res://scripts/fof_info/levels/level_info.gd" id="9_31qfe"]
-[ext_resource type="Script" uid="uid://bj5bltgdy7xbp" path="res://scripts/saved_data/levels/saved_data_level.gd" id="9_fj26r"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="1_csg5g"]
+[ext_resource type="Script" path="res://scripts/fof_info/game_objects/extra/revealed_datastore.gd" id="2_813vr"]
+[ext_resource type="Script" path="res://scripts/fof_info/game_objects/extra/vision_datastore_tile.gd" id="3_563qp"]
+[ext_resource type="Script" path="res://scripts/fof/levels/palm_level.gd" id="4_31qfe"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_spawn.gd" id="4_563qp"]
+[ext_resource type="Script" path="res://scripts/fof_info/game_objects/extra/vision_datastore.gd" id="5_31qfe"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_iobject.gd" id="6_31qfe"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="7_fj26r"]
+[ext_resource type="Script" path="res://scripts/fof_info/levels/level_info.gd" id="9_31qfe"]
+[ext_resource type="Script" path="res://scripts/saved_data/levels/saved_data_level.gd" id="9_fj26r"]
 
 [sub_resource type="Resource" id="Resource_ngqn8"]
 script = ExtResource("3_563qp")
@@ -95,11 +95,11 @@ reveals = Array[ExtResource("2_813vr")]([])
 [sub_resource type="Resource" id="Resource_2d8er"]
 script = ExtResource("4_563qp")
 spawn_id = 2
-groups = ["A"]
 rotation = 0.0
 position = Vector3(0, 0.3, 0)
 height = 0
 occupied_coords = []
+groups = [1]
 variation = 3
 tile_rotation = 0
 vision_datastore = SubResource("Resource_yqu4i")
@@ -177,6 +177,7 @@ rotation = 3.14159
 position = Vector3(-1.7405, 6.3, -17.9527)
 height = 10
 occupied_coords = []
+groups = []
 variation = 4
 tile_rotation = 0
 vision_datastore = SubResource("Resource_540ap")
@@ -191,6 +192,7 @@ rotation = 0.125662
 position = Vector3(1.78236, 6.3, -18.0042)
 height = 10
 occupied_coords = []
+groups = []
 variation = 4
 tile_rotation = 0
 vision_datastore = SubResource("Resource_540ap")
@@ -231,6 +233,7 @@ rotation = 4.71239
 position = Vector3(0, 5.1, -18)
 height = 8
 occupied_coords = []
+groups = []
 variation = 0
 tile_rotation = 0
 vision_datastore = SubResource("Resource_lks5i")
@@ -1423,11 +1426,11 @@ reveals = Array[ExtResource("2_813vr")]([])
 [sub_resource type="Resource" id="Resource_50l04"]
 script = ExtResource("4_563qp")
 spawn_id = 0
-groups = ["A"]
 rotation = 0.0
 position = Vector3(-5.19615, 1.5, -9)
 height = 2
 occupied_coords = []
+groups = [1]
 variation = 0
 tile_rotation = 0
 vision_datastore = SubResource("Resource_tq12y")
@@ -1439,11 +1442,11 @@ public_id = 0
 [sub_resource type="Resource" id="Resource_v20ih"]
 script = ExtResource("4_563qp")
 spawn_id = 0
-groups = ["A"]
 rotation = 1.0472
 position = Vector3(-10.3923, 1.5, 0)
 height = 2
 occupied_coords = []
+groups = [1]
 variation = 0
 tile_rotation = 1
 vision_datastore = SubResource("Resource_tq12y")
@@ -1455,11 +1458,11 @@ public_id = 0
 [sub_resource type="Resource" id="Resource_nuuai"]
 script = ExtResource("4_563qp")
 spawn_id = 0
-groups = ["A"]
 rotation = 2.0944
 position = Vector3(-5.19615, 1.5, 9)
 height = 2
 occupied_coords = []
+groups = [1]
 variation = 0
 tile_rotation = 2
 vision_datastore = SubResource("Resource_tq12y")
@@ -1471,11 +1474,11 @@ public_id = 0
 [sub_resource type="Resource" id="Resource_t3b4s"]
 script = ExtResource("4_563qp")
 spawn_id = 0
-groups = ["A"]
 rotation = 3.14159
 position = Vector3(5.19615, 1.5, 9)
 height = 2
 occupied_coords = []
+groups = [1]
 variation = 0
 tile_rotation = 3
 vision_datastore = SubResource("Resource_tq12y")
@@ -1487,11 +1490,11 @@ public_id = 0
 [sub_resource type="Resource" id="Resource_d4c7a"]
 script = ExtResource("4_563qp")
 spawn_id = 0
-groups = ["A"]
 rotation = 4.18879
 position = Vector3(10.3923, 1.5, 0)
 height = 2
 occupied_coords = []
+groups = [1]
 variation = 0
 tile_rotation = 4
 vision_datastore = SubResource("Resource_tq12y")
@@ -1503,11 +1506,11 @@ public_id = 0
 [sub_resource type="Resource" id="Resource_a6ria"]
 script = ExtResource("4_563qp")
 spawn_id = 0
-groups = ["A"]
 rotation = 5.23599
 position = Vector3(5.19615, 1.5, -9)
 height = 2
 occupied_coords = []
+groups = [1]
 variation = 0
 tile_rotation = 5
 vision_datastore = SubResource("Resource_tq12y")
@@ -1728,6 +1731,7 @@ rotation = 5.78053
 position = Vector3(-4.34443, 1.4, -4.47083)
 height = 2
 occupied_coords = []
+groups = []
 variation = 1
 tile_rotation = 0
 vision_datastore = SubResource("Resource_dwofi")
@@ -1742,6 +1746,7 @@ rotation = 0.062832
 position = Vector3(-2.55545, 0.8, -1.4824)
 height = 1
 occupied_coords = []
+groups = []
 variation = 2
 tile_rotation = 0
 vision_datastore = SubResource("Resource_dwofi")
@@ -1756,6 +1761,7 @@ rotation = 5.84336
 position = Vector3(-8.72922, 1.4, -2.93487)
 height = 2
 occupied_coords = []
+groups = []
 variation = 3
 tile_rotation = 0
 vision_datastore = SubResource("Resource_dwofi")
@@ -1775,6 +1781,7 @@ rotation = 0.0
 position = Vector3(-3.48446, 1.5, -5.95056)
 height = 2
 occupied_coords = []
+groups = []
 variation = 1
 tile_rotation = 0
 vision_datastore = SubResource("Resource_mrl6m")
@@ -1789,6 +1796,7 @@ rotation = 0.753982
 position = Vector3(-7.75572, 1.5, -1.4714)
 height = 2
 occupied_coords = []
+groups = []
 variation = 0
 tile_rotation = 0
 vision_datastore = SubResource("Resource_mrl6m")
@@ -1808,6 +1816,7 @@ rotation = 1.00531
 position = Vector3(8.23383, 1.5, 2.50447)
 height = 2
 occupied_coords = []
+groups = []
 variation = 2
 tile_rotation = 0
 vision_datastore = SubResource("Resource_oa442")
@@ -1827,6 +1836,7 @@ rotation = 4.77522
 position = Vector3(-5.59297, 1.5, -7.82819)
 height = 2
 occupied_coords = []
+groups = []
 variation = 2
 tile_rotation = 0
 vision_datastore = SubResource("Resource_b5f6g")
@@ -1846,6 +1856,7 @@ rotation = 0.376991
 position = Vector3(6.92314, 1.5, -3.00725)
 height = 2
 occupied_coords = []
+groups = []
 variation = 1
 tile_rotation = 0
 vision_datastore = SubResource("Resource_lu87i")
@@ -1860,6 +1871,7 @@ rotation = 5.96903
 position = Vector3(6.09819, 1.5, 4.44924)
 height = 2
 occupied_coords = []
+groups = []
 variation = 1
 tile_rotation = 0
 vision_datastore = SubResource("Resource_lu87i")
@@ -1874,6 +1886,7 @@ rotation = 6.15752
 position = Vector3(0.0694867, 1.5, 8.98421)
 height = 2
 occupied_coords = []
+groups = []
 variation = 1
 tile_rotation = 0
 vision_datastore = SubResource("Resource_lu87i")
@@ -1888,6 +1901,7 @@ rotation = 0.125664
 position = Vector3(-8.58141, 1.5, 3.02558)
 height = 2
 occupied_coords = []
+groups = []
 variation = 2
 tile_rotation = 0
 vision_datastore = SubResource("Resource_lu87i")
@@ -1907,6 +1921,7 @@ rotation = 4.58672
 position = Vector3(3.4856, 0.9, -2.97431)
 height = 1
 occupied_coords = []
+groups = []
 variation = 1
 tile_rotation = 0
 vision_datastore = SubResource("Resource_67bik")
@@ -1926,6 +1941,7 @@ rotation = 2.70177
 position = Vector3(-2.66392, 0.899999, 4.61573)
 height = 1
 occupied_coords = []
+groups = []
 variation = 0
 tile_rotation = 0
 vision_datastore = SubResource("Resource_gj8vq")
@@ -2203,6 +2219,7 @@ rotation = 5.78053
 position = Vector3(0.0392733, 1.5, -8.99641)
 height = 2
 occupied_coords = []
+groups = []
 variation = 0
 tile_rotation = 0
 vision_datastore = SubResource("Resource_ojj07")
@@ -2217,6 +2234,7 @@ rotation = 0.502655
 position = Vector3(-1.69842, 1.5, -9.014)
 height = 2
 occupied_coords = []
+groups = []
 variation = 0
 tile_rotation = 0
 vision_datastore = SubResource("Resource_ojj07")
@@ -2236,6 +2254,7 @@ rotation = 4.90089
 position = Vector3(-0.931237, 1.5, -7.5684)
 height = 2
 occupied_coords = []
+groups = []
 variation = 3
 tile_rotation = 0
 vision_datastore = SubResource("Resource_nfy5u")
@@ -2255,6 +2274,7 @@ rotation = 3.39292
 position = Vector3(-0.274554, 1.5, -7.32134)
 height = 2
 occupied_coords = []
+groups = []
 variation = 0
 tile_rotation = 0
 vision_datastore = SubResource("Resource_ecwcy")
@@ -2274,6 +2294,7 @@ rotation = 0.062832
 position = Vector3(1.95235, 0.9, 2.98783)
 height = 1
 occupied_coords = []
+groups = []
 variation = 5
 tile_rotation = 0
 vision_datastore = SubResource("Resource_y0un3")
@@ -2298,6 +2319,7 @@ rotation = 0.565487
 position = Vector3(0.430404, 1.5, -7.41062)
 height = 2
 occupied_coords = []
+groups = []
 variation = 0
 tile_rotation = 0
 vision_datastore = SubResource("Resource_73r7w")
@@ -2317,6 +2339,7 @@ rotation = 0.0
 position = Vector3(6.08704, 1.5, -7.43092)
 height = 2
 occupied_coords = []
+groups = []
 variation = 0
 tile_rotation = 0
 vision_datastore = SubResource("Resource_ka05u")
