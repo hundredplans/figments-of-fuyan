@@ -19,7 +19,7 @@ func onStartFight() -> void:
 		.filter(func(x: LevelInfo): return progress >= x.progress_min and progress <= x.progress_max)
 	var level_info: LevelInfo = level_infos.pick_random()
 	
-	var spawn_group: String = level_info.getRandomSpawnGroup()
+	var spawn_group: int = level_info.getRandomSpawnGroup()
 	var enemy_spawns: Array = level_info.getEnemySpawnsaInGroup(spawn_group) # Array[SavedDataSpawn]
 	enemy_spawns.shuffle()
 	

@@ -1,7 +1,6 @@
 class_name SpawnGD
 extends ObjectGD
 var spawn_id: int
-var GroupLabel: Label3D # Set by level editor
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -12,12 +11,6 @@ func onLoadData(data: SavedData) -> void:
 		1: add_to_group("EnemySpawnsGD")
 		2: add_to_group("NeutralSpawnsGD")
 		3: add_to_group("EnemySpawnsGD"); add_to_group("BossSpawnsGD")
-
-func onLoadModel() -> void:
-	super()
-	GroupLabel = load(info.SPAWN_GROUP_LABEL_SCENE_PATH).instantiate()
-	Model.add_child(GroupLabel)
-	GroupLabel.setInfo(groups)
 
 func onLoadDataLevelFofInit() -> void:
 	super()
@@ -66,13 +59,4 @@ func onOccupy(state: bool) -> void:
 	super(state)
 	if SpawnParticle == null: return
 	SpawnParticle.onOccupy(state)
-
-func onChangeSpawnGroup(group_name: String) -> void:
-	if !groups.has(group_name): groups.append(group_name)
-	else: groups.erase(group_name)
-	
-	GroupLabel.setGroups(groups)
-	
-func isInLevelGroup() -> String:
-	return Game.getLevel().getSpawnGroup() in groups
 	

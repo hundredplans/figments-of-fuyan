@@ -1,10 +1,21 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=6 format=3]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=7 format=3 uid="uid://bj1gtxtusfl1c"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_vqxdm"]
-[ext_resource type="Script" path="res://scripts/fof/objects/object.gd" id="2_j3ibe"]
-[ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_k7nwe"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/well.glb" id="3_ktgsg"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="4_xphnk"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_vqxdm"]
+[ext_resource type="Script" uid="uid://d0d7g8puihn01" path="res://scripts/fof/objects/well.gd" id="2_j3ibe"]
+[ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_k7nwe"]
+[ext_resource type="PackedScene" uid="uid://p70s3l1fwjxh" path="res://assets/models/fof/objects/well.glb" id="3_ktgsg"]
+[ext_resource type="Script" uid="uid://c76iyo8j5sdgv" path="res://scripts/saved_data/game_objects/saved_data_iobject.gd" id="4_j3ibe"]
+
+[sub_resource type="Resource" id="Resource_j3ibe"]
+script = ExtResource("1_vqxdm")
+name = "Wishing Well"
+description = "Throw 1 SH down the well for good luck!"
+max_charges = 5
+delay = 2.0
+camera_type = 0
+charges = 0
+used = false
+metadata/_custom_type_script = "uid://cra1nahu5jsgt"
 
 [resource]
 script = ExtResource("2_k7nwe")
@@ -15,10 +26,10 @@ ignore_collisions = false
 solids = Array[bool]([true])
 models = Array[PackedScene]([ExtResource("3_ktgsg")])
 points = Array[Array]([[Vector3(-0.101434, 0.494073, 0.459775), Vector3(-0.466895, 0.514131, 0.105148), Vector3(0.245839, 0.510999, -0.414292), Vector3(0.374706, 0.446538, 0.286411), Vector3(0.771396, 0.118964, 0.0165868), Vector3(0.771396, 0.856349, 0.00430366), Vector3(0.771396, 1.62138, -0.0234382), Vector3(0.771396, 2.3709, 0.0117536), Vector3(-0.777214, 0.123214, -0.0182545), Vector3(-0.810525, 1.39756, 0.0291072), Vector3(-0.777214, 2.09317, 0.00222236), Vector3(-0.777214, 2.47567, 0.0260712), Vector3(-0.00489616, 0.2, -0.54844), Vector3(-0.777213, 0.692081, -0.00310798), Vector3(-1.07199, 1.10685, -0.00283793), Vector3(-0.975849, 1.29605, -0.00278881), Vector3(-0.691374, 2.52099, 0.176065), Vector3(0.609717, 2.52015, 0.177274), Vector3(-0.0604364, 2.5049, 0.171165), Vector3(-0.782309, 2.24069, 0.436486), Vector3(-0.0824748, 2.2119, 0.477536), Vector3(0.768149, 2.25768, 0.427525), Vector3(0.730322, 1.97631, 0.703159), Vector3(0.025299, 1.95705, 0.730619), Vector3(-0.765329, 1.95644, 0.731487), Vector3(0.728563, 1.95101, -0.741163), Vector3(-0.0992432, 1.95304, -0.738278), Vector3(-0.790209, 1.92228, -0.746795), Vector3(-0.798245, 2.24852, -0.428568), Vector3(-0.10554, 2.27074, -0.424736), Vector3(0.776173, 2.28299, -0.407264), Vector3(0.772196, 2.59878, -0.091188), Vector3(-0.18658, 2.58953, -0.104368), Vector3(-0.768736, 2.59718, -0.0934743), Vector3(-0.777213, 1.86138, -0.324923), Vector3(-0.777213, 1.87312, 0.371184), Vector3(0.771395, 1.87248, 0.429987), Vector3(0.771396, 1.85568, -0.40358), Vector3(0.467233, 1.42328, -0.0350006), Vector3(-0.421965, 1.41501, -0.0380578), Vector3(-0.727891, 1.4187, -0.0664949), Vector3(0.708533, 1.4272, -0.0664949), Vector3(0.691444, 1.40093, 0.0653589), Vector3(0.451275, 1.39819, 0.0293396), Vector3(-0.395663, 1.39502, 0.0281694), Vector3(-0.672643, 1.43068, 0.0653591), Vector3(-0.689058, 0.703807, 0.0653594), Vector3(0.692496, 0.778247, 0.0653591), Vector3(0.708621, 0.878425, -0.0664947), Vector3(-0.728536, 0.810271, -0.0664949), Vector3(0.032214, 0.845468, -0.525129), Vector3(-0.00345574, 0.845468, 0.501965), Vector3(0.528844, 0.845468, 0.00988233), Vector3(-0.507871, 0.845468, -0.0219129)]])
-active_effects = Array[ExtResource("1_vqxdm")]([])
+active_effects = Array[ExtResource("1_vqxdm")]([SubResource("Resource_j3ibe")])
 area_ids = Array[int]([3])
 id = 40
 name = "Well"
 gdscript = ExtResource("2_j3ibe")
-saved_data = ExtResource("4_xphnk")
+saved_data = ExtResource("4_j3ibe")
 metadata/_custom_type_script = "uid://bvxsmhoh3obu"

@@ -20,7 +20,7 @@ var speed_order: SpeedOrder
 var player_card_last_seen_turn: int # Default -1 which means they were never seen, if this is > 10 or -1 every enemy has the adventurer tag
 var level_area_datastore: LevelAreaDatastore # Specific to each areao
 var recent_camera_position: Vector3 # Not saved
-var spawn_group: String
+var spawn_group: int
 var curse_id: int
 var level_preview: LevelPreview
 
@@ -115,7 +115,7 @@ func onLoadData(data: SavedData) -> void:
 		onGameEnded()
 
 func onLoadTileObjectInit(data: SavedDataTileObject) -> TileObjectGD:
-	if data is SavedDataSpawn and spawn_group not in data.groups: return null
+	if data is SavedDataObject and (!data.groups.is_empty() and spawn_group not in data.groups): return null
 		
 	var TileObject: TileObjectGD = SavedData.onLoadModel(data, self)
 	TileObject.add_to_group("LevelTileObjectsGD")

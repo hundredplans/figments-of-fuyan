@@ -45,7 +45,7 @@ func setOccupiedTiles(tile_position_to_tile: Dictionary) -> void:
 
 func onSave() -> SavedDataIObject:
 	return SavedDataIObject.new(info.id, false, public_id, coords, tile_rotation, vision_datastore, variation, map_rotation, map_position, height,\
-	occupied_tiles.map(func(x: TileGD): return x.getCoords()), active_effects, ability_save)
+	occupied_tiles.map(func(x: TileGD): return x.getCoords()), groups, active_effects, ability_save)
 
 func onProcessAction(action: Action) -> void:
 	super(action)

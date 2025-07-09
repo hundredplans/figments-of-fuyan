@@ -1,6 +1,6 @@
 class_name FightNodeGD extends MapNodeGD
 
-var spawn_group: String
+var spawn_group: int
 var level_preview: LevelPreview
 var enemy_cards: Array # Array[SavedDataCard]
 var level_info: LevelInfo

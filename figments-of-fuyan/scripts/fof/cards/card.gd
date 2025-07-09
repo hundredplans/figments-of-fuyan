@@ -1,6 +1,7 @@
 class_name CardGD extends GameObjectGD
 
 #region Saved Data
+const FATIGUE_ID: int = 3
 var base_stats: StatsDatastore # Can be updated, are set when unit is first loaded in
 
 var attack: int
@@ -1103,8 +1104,8 @@ func onRemoveDelayedHealDatastore(heal_datastore: HealDatastore) -> void:
 
 #region Action Checker
 func isValidEndOfTurn(action: Action) -> bool:
-	return action.post and action is ChangeTurnStateAction and action.Card == self and action.turn_state == Game.TurnStates.PASSED
-
+	return action.post and action is ChangeTurnStateAction and\
+	action.Card == self and action.turn_state == Game.TurnStates.PASSED and (action.owner is not StatusEffectGD and action.owner.info.id != FATIGUE_ID)
 func isValidTrauma(action: Action) -> bool:
 	return action.post and action is DeathAction and isAlly(action.Defender.team) and card_place == Game.CardPlaces.FIELD and action.getCardSawDefenderDie(self)
 
