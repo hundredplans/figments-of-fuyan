@@ -4,17 +4,36 @@ var admin_datastore: AdminDatastore
 const ADMIN_DATASTORE_PATH: String = "res://resources/datastore/admin/admin_datastore.tres"
 const SAVE_FILE_MAX_AMOUNT: int = 3
 
+var GDSCRIPT_TYPES: Array = [AreaInfo, LevelInfo, \
+	CardInfo, ChampionCardInfo, BoonInfo, ToolInfo, MapNodeInfo, SaveFileInfo, EncounterInfo,\
+	TileObjectInfo, TileInfo, ObjectInfo, GameObjectInfo, TraitInfo, StatusEffectInfo, FieldEffectInfo,\
+	LoreBookInfo, ArchetypeInfo, ActionWrapperInfo, VFXInfo, EpicCardInfo]
+
 var level_editor_area_info: AreaInfo
 
 #region Resources
 	
 var fof_info_dict: Dictionary = {}
-const FOF_INFO_DATASTORE_PATH: String = "res://resources/datastore/fof_info_datastore/fof_info_datastore.tres"
 
 func _ready() -> void:
 	Engine.max_fps = 60
 	admin_datastore = load(ADMIN_DATASTORE_PATH)
-	fof_info_dict = load(FOF_INFO_DATASTORE_PATH).getDict()
+	for type: GDScript in GDSCRIPT_TYPES:
+		onRefreshFofInfoArray(type)
+		
+func onRefreshFofInfoArray(type: GDScript) -> void: # DEV
+	fof_info_dict[type] = {}
+
+	var DIR_PATH: String = type.getInfoPath()
+	var fof_info_array: Array = Helper.getFilesRecursive(DIR_PATH)\
+		.map(func(x: String): return load(x)).filter(func(x: FofInfo): return is_instance_of(x, type))
+	
+	if type == CardInfo:
+		var ALT_DIR_PATH: String = "res://test/test_cards/"
+		fof_info_array += Helper.getFilesRecursive(ALT_DIR_PATH).map(func(x: String): return load(x))
+			
+	for fof_info in fof_info_array:
+		fof_info_dict[type][fof_info.id] = fof_info
 		
 func getFofInfoArray(type: GDScript) -> Array:
 	var arr: Array = fof_info_dict[type].values()

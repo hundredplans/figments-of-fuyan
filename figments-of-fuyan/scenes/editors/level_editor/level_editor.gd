@@ -165,7 +165,7 @@ func _process(_delta: float) -> void:
 						setBaseElevation(TileObject.getHeight())
 				
 			elif Input.is_action_pressed("Delete"):
-				if HoverModel == null: onInputDeleteMouseTileObject()
+				if HoverModel == null: onInputDeleteMouseTileObject(Input.is_action_pressed("DeleteObject"))
 				
 			elif Input.is_action_just_pressed("ChangeElevationUp"):
 				setBaseElevation(base_elevation + 1)
@@ -385,9 +385,9 @@ func onDeleteTileObject(TileObject: TileObjectGD) -> void:
 	if TileObject != null:
 		TileObject.queue_free()
 	
-func onInputDeleteMouseTileObject() -> void:
+func onInputDeleteMouseTileObject(object_only: bool) -> void:
 	var TileObject: TileObjectGD = onFindMouseTileObject()
-	if TileObject != null:
+	if TileObject != null and (!object_only or TileObject is ObjectGD):
 		if TileObject is TileGD and !object_delete:
 			if deletion_elevation == -1: deletion_elevation = TileObject.getHeight()
 			if TileObject.getHeight() == deletion_elevation:
