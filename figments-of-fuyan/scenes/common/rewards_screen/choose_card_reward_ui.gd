@@ -18,7 +18,7 @@ const CLAIMED_COLOR := Color(0.5, 0.5, 0.5, 1.0)
 func setInfo(_reward: Reward) -> void:
 	reward = _reward
 	action = reward.getItem().getType(ChooseRewardAction)[0]
-	var taken: bool = reward.isTaken()
+	var is_taken: bool = reward.isTaken()
 	
 	var i: int = 0
 	for Card: CardGD in action.getItems():
@@ -26,11 +26,11 @@ func setInfo(_reward: Reward) -> void:
 		control.custom_minimum_size = Game.CARD_UI_SIZE
 		CardContainer.add_child(control)
 		
-		var CardUI: Control = Card.onCreateCardUI(control, !taken, true, null)
+		var CardUI: Control = Card.onCreateCardUI(control, !is_taken, true, null)
 		CardUI.set_anchors_preset(Control.PRESET_CENTER)
 		CardUI.pressed.connect(onRewardPressed)
 		CardUI.mouse_in_ui.connect(onMouseInCardUI.bind(CardUI))
-		if taken and i == action.chosen_index:
+		if is_taken and i == action.chosen_index:
 			call_deferred("onCreateClaimedLabel", CardUI)
 		i += 1
 		

@@ -67,13 +67,13 @@ func _input(event):
 	# Receives key input
 	if event is InputEventKey and !(get_viewport().gui_get_focus_owner() as LineEdit):
 		match event.keycode:
-			KEY_W:
+			KEY_W, KEY_UP:
 				_w = event.pressed
-			KEY_S:
+			KEY_S, KEY_DOWN:
 				_s = event.pressed
-			KEY_A:
+			KEY_A, KEY_LEFT:
 				_a = event.pressed
-			KEY_D:
+			KEY_D, KEY_RIGHT:
 				_d = event.pressed
 					
 		match event.keycode:

@@ -11,8 +11,8 @@ extends MapNodeScreen
 
 var encounter: EncounterGD
 
-func setInfo(_save_file: SaveFileGD, _area: AreaGD, _World: Node3D, _UI: Control, map_node: MapNodeGD) -> void:
-	super(_save_file, _area, _World, _UI, map_node)
+func setInfo(_save_file: SaveFileGD, _area: AreaGD, _World: Node3D, _UI: Control, _map_node: MapNodeGD) -> void:
+	super(_save_file, _area, _World, _UI, _map_node)
 	encounter = map_node.encounter
 	encounter.continue_to_next_page.connect(onContinueToNextPage)
 	encounter.temp_disable_options.connect(onTempDisableOptions)

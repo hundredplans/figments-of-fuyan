@@ -45,7 +45,6 @@ const TILE_FILL_SCENE_PATH: String = "res://scenes/game/tiles/tile_fill.tscn"
 @export var tile_fill_greyscale_material: ShaderMaterial
 @export_group("")
 
-@export var randomise_top_uv_offset: bool # For noise textures
 @export var is_short: bool
 
 static func getInfoPath() -> String: return "res://resources/fof/tile_objects"
@@ -85,12 +84,9 @@ func getTileTopGreyscaleMaterial() -> ShaderMaterial:
 func getTileFillGreyscaleMaterial() -> ShaderMaterial:
 	return tile_fill_greyscale_material
 	
-func getRandomiseTopUVOffset() -> bool:
-	return randomise_top_uv_offset
-	
 static func getFofName() -> String: return "Tile"
 
-func getTileIntentModelPath(tile_intent: Game.TileIntents, variation: int = 0) -> String:
+func getTileIntentModelPath(tile_intent: Game.TileIntents, _variation: int = 0) -> String:
 	var path: String = ""
 	match tile_intent:
 		Game.TileIntents.RED: path = RED_TILE_INTENT_MODEL_PATH

@@ -20,6 +20,8 @@ func onProcessAction(action: Action) -> void:
 			onPushAction(ChangeBossPhaseAction.new())
 		elif action is VisionNewUnitAction and action.Discoverer == self and action.Discovered.isAlly(0):
 			turns_enemies_unseen = -1
+		elif action is MoveToTileAction and action.Card == self:
+			active_speed = max(active_speed - 1, 0)
 			
 func onSave() -> SavedDataEpicCard:
 	ability_save["turns_enemies_unseen"] = turns_enemies_unseen
@@ -233,7 +235,6 @@ func onReposition(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 			.filter(func(x: TileGD): return isHigh(x) and !x.isSolid() and !x.isOccupied())
 		if height_tiles.is_empty(): return []
 		
-		var ally_vision: Array = Game.getTeamVision(0)
 		height_tiles = getAllyVisionTiles(height_tiles)
 			
 		var BestTile: TileGD = height_tiles.pick_random()

@@ -65,6 +65,7 @@ static func getRandomCardData(ids: Array, odds: Dictionary, tool_chance: float, 
 	while(attempts < total_attempts):
 		var card_infos: Array = ids.map(func(x: int): return Helper.getFofInfoID(CardInfo, x))
 		
+		@warning_ignore("int_as_enum_without_cast")
 		var rarity: Game.Rarities = int(getRandomKey(onConvertPercentOdds(odds)))
 		card_infos = card_infos.filter(func(x: CardInfo): return x.rarity == rarity)
 		
@@ -75,6 +76,8 @@ static func getRandomCardData(ids: Array, odds: Dictionary, tool_chance: float, 
 		var tool_data: SavedDataTool = null
 		if Random.rollFloat(tool_chance):
 			tool_data = getRandomFofByOdds(ToolInfo, tool_odds)
+			var roll_tool_ascenscion: bool = rollFloat(tool_ascended_chance)
+			tool_data.ascended = roll_tool_ascenscion
 
 		var card_data: SavedDataCard = Game.onCreateBaseCard(chosen_info.id, ascend_card, tool_data)
 		return card_data

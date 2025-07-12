@@ -13,7 +13,7 @@ func onProcessAction(action: Action) -> void:
 func getDescription() -> String:
 	return Helper.getDescription(super(), [bloodthirst_trigger_amount])
 
-func onBloodthirst(action: DeathAction) -> void:
+func onBloodthirst(_action: DeathAction) -> void:
 	bloodthirst_trigger_amount += 1
 	if bloodthirst_trigger_amount < TRIGGER_BLOODTHIRST_AMOUNT: return
 	else: bloodthirst_trigger_amount = 0

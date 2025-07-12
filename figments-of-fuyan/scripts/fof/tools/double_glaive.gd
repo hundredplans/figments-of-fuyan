@@ -7,11 +7,8 @@ func onProcessAction(action: Action) -> void:
 	super(action)
 	if !is_queued_for_deletion() and action.post:
 		if action is StatAction and action.hasCard(Card) and isValidSpeedAction(action):
-			var stat_action := StatAction.new(StatInfo.new(Card, Game.Stats.ATTACK, getSpeedFromAction(action), 0, false, true))
+			var stat_action := StatAction.new(StatInfo.new(Card, Game.Stats.ATTACK, getSpeedFromAction(action), 0, false, true, true))
 			onPushAction(ToolActivatedAction.new(self, stat_action))
-	
-func onToolEquipped() -> void:
-	super()
 	
 func onToolUnequipped() -> void:
 	super()
@@ -19,8 +16,6 @@ func onToolUnequipped() -> void:
 	var stat_action := StatAction.new(StatInfo.new(Card, [Game.Stats.MAX_SPEED, Game.Stats.ATTACK], [speed_diff, Card.max_speed - Card.speed + speed_diff]))
 	stat_action.owner = self
 	onPushAction(stat_action)
-	
-	#onPushAction(ToolActivatedAction.new(self, stat_action))
 
 func onToolHolderAwakened() -> void: # Unit awakens
 	super()
@@ -28,9 +23,6 @@ func onToolHolderAwakened() -> void: # Unit awakens
 	var stat_action := StatAction.new(StatInfo.new(Card, [Game.Stats.MAX_SPEED, Game.Stats.ATTACK], [speed_diff, Card.speed - Card.attack]))
 	stat_action.owner = self
 	onPushAction(ToolActivatedAction.new(self, stat_action))
-	
-func onToolHolderDeath() -> void: # Unit dies
-	super()
 	
 func onToolAscended(state: bool) -> void:
 	super(state)

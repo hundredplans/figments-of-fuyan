@@ -1,8 +1,6 @@
 class_name MapNodeGD extends FofGD
 
 #region Globals
-signal entered
-signal finished
 signal create_screen
 signal create_world_scene
 @warning_ignore("unused_signal")
@@ -174,9 +172,9 @@ func onExited() -> void:
 	is_entered = false
 		
 func onEntered() -> void:
+	onPushAction(MapNodeEnteredAction.new(self))
 	is_entered = true
 	setRayPickable(false)
-	entered.emit(self)
 		
 func onEnteredVisual(is_instant: bool = false) -> void:
 	for link_model in link_models: link_model.onMapNodeSelected()
@@ -193,10 +191,9 @@ func onExitedVisual(is_instant: bool = false) -> void:
 	tween.tween_method(setAlphagreyMaterialValue, 1.0, 0.5, Game.SELECTED_MAP_NODE_TRAVEL_SPEED)
 		
 func onFinished() -> void:
+	onPushAction(MapNodeFinishedAction.new(self))
 	is_finished = true
 	setRayPickable(false)
-	if is_entered:
-		finished.emit(self)
 		
 func onOtherMapNodeFinished(map_node: MapNodeGD) -> void:
 	if map_node == self: return

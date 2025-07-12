@@ -61,7 +61,6 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	
 	for map_node in get_tree().get_nodes_in_group("MapNodesGD"):
 		map_node.create_screen.connect(onCreateScreen)
-		map_node.finished.connect(onMapNodeFinished)
 		map_node.hovered.connect(onMapNodeHovered)
 	
 	onUpdateDeckCardAmountLabel()
@@ -94,6 +93,8 @@ func onProcessAction(action: Action) -> void:
 			ChampionUpgradeUI = Game.onCreateChampionUpgradeUI(self, action.old_deck_limit, action.old_energy_limit, action.old_max_energy)
 			ChampionUpgradeUI.mouse_in_ui.connect(onMouseInUI)
 			ChampionUpgradeUI.edit_deck.connect(onCreateStashScreen)
+		elif action is MapNodeFinishedAction:
+			onMapNodeFinished(action.map_node)
 #endregion
 
 #region Map Start

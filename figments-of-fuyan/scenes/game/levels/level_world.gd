@@ -220,6 +220,7 @@ func onCreateCameraChangeAction(SpectateObject: GameObjectGD) -> void:
 		
 #region Movement Range
 func onHideMovementRange() -> void:
+	if get_tree() == null: return
 	get_tree().call_group("LevelTilesGD", "setMovementPathDisplay", false)
 	get_tree().call_group("FieldCardsGD", "setEnemyInMovementRange", false)
 	

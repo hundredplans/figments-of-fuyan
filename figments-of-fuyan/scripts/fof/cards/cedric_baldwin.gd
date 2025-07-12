@@ -8,6 +8,9 @@ func onProcessAction(action: Action) -> void:
 	super(action)
 	
 func getDescription() -> String:
+	var active_effect: ActiveEffectDatastore = getActiveEffectByName("Rousing Hair")
+	if active_effect != null:
+		return Helper.getDescription(super(), [active_effect.charges])
 	return super()
 
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:

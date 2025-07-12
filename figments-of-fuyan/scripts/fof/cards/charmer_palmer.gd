@@ -46,5 +46,5 @@ func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_til
 func getDescription() -> String:
 	var active_effect: ActiveEffectDatastore = getActiveEffectByName("Charming Stance")
 	if active_effect != null:
-		return Helper.getDescriptionNumeric(super(), [active_effect.charges], [["ABILITY ", ("[1]" if !ascended else "[2]")]])
+		return Helper.getDescription(super(), [active_effect.charges])
 	return super()

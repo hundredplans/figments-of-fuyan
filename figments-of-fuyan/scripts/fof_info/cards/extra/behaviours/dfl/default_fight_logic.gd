@@ -120,19 +120,19 @@ func isKillOdds(KillCard: CardGD) -> bool:
 	var AttackTile: TileGD = path_tiles[path_tiles.size() - 2]
 	var attack_coords: Vector4i = AttackTile.getCoords()
 	
-	var enemies: Array = Game.getEnemyUnits(Card.team)\
+	var local_enemies: Array = Game.getEnemyUnits(Card.team)\
 		.filter(func(x: CardGD): return x not in [KillCard, Card] and Game.getCoordsDistance(x.getCoords(), attack_coords) <= x.getAttackRange() + x.max_speed)
-	var allies: Array = Game.getAllyUnits(Card.team)\
+	var local_allies: Array = Game.getAllyUnits(Card.team)\
 		.filter(func(x: CardGD): return x not in [KillCard, Card] and Game.getCoordsDistance(x.getCoords(), attack_coords) <= x.getAttackRange() + x.max_speed)
 		
-	allies = allies.map(func(x: CardGD): return x.attack)
-	enemies = enemies.map(func(x: CardGD): return x.attack)
+	local_allies = local_allies.map(func(x: CardGD): return x.attack)
+	local_enemies = local_enemies.map(func(x: CardGD): return x.attack)
 		
-	var potential_enemy_attack: int = enemies.reduce(func(x: int, y: int): return x + y, 0)
-	var potential_ally_attack: int = allies.reduce(func(x: int, y: int): return x + y, 0)
+	var potential_enemy_attack: int = local_enemies.reduce(func(x: int, y: int): return x + y, 0)
+	var potential_ally_attack: int = local_allies.reduce(func(x: int, y: int): return x + y, 0)
 	var potential_tile_attack: int = max(potential_enemy_attack - potential_ally_attack, 0) # Ally here is an enemy unit
 	
-	var as_health_total: float = (float(potential_tile_attack) / float(Card.health)) if Card.health > 0 else 0
+	var as_health_total: float = (float(potential_tile_attack) / float(Card.health)) if Card.health > 0 else 0.0
 	as_health_total += 1
 	
 	if potential_enemy_attack >= Card.health:

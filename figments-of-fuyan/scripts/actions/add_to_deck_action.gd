@@ -10,8 +10,6 @@ func onPreAction() -> void:
 	pass
 
 func onPostAction() -> void:
-	var energy_limit: int = Game.getSaveFile().getEnergyLimit()
-	var deck_limit: int = Game.getSaveFile().getDeckLimit()
 	var is_available: bool = Game.getSaveFile().isCardValidForDeck(Card)
 	
 	if is_available:

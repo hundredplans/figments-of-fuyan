@@ -18,7 +18,7 @@ func onProcessAction(action: Action) -> void:
 func onArrivePre(_action: AwakenAction) -> void:
 	pass
 		
-func onArrive(action: AwakenAction) -> void:
+func onArrive(_action: AwakenAction) -> void:
 	lil_betty_turns_public_id =  onCreateBaseFieldEffect(LIL_BETTY_TURNS_ID).public_id
 	
 func getDescription() -> String:
@@ -36,7 +36,7 @@ func onRegularReset() -> void:
 	super()
 	turns_remaining = getDefaultCharges()
 	
-func onEndTurnEffect(action: ChangeTurnStateAction) -> void:
+func onEndTurnEffect(_action: ChangeTurnStateAction) -> void:
 	turns_remaining += 1
 	if turns_remaining >= getMaxTurns(): turns_remaining = 0
 	

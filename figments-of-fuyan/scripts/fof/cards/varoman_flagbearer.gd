@@ -3,9 +3,6 @@ extends CardGD
 const ABILITY_DELAY: float = 2.0
 func onProcessAction(action: Action) -> void:
 	super(action)
-	
-func getDescription() -> String:
-	return super()
 
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	super(active_effect)
@@ -44,3 +41,9 @@ func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_til
 	if !tiles.is_empty():
 		return tiles.pick_random()
 	return null
+	
+func getDescription() -> String:
+	var active_effect: ActiveEffectDatastore = getActiveEffectByName("For Varoma!")
+	if active_effect != null:
+		return Helper.getDescription(super(), [active_effect.charges])
+	return super()

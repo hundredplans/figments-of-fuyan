@@ -29,7 +29,6 @@ func onFirstLoad() -> void:
 func onNotFirstLoad() -> void:
 	FadeBackground.modulate = Color.BLACK
 	onTransitionEnd()
-	AniPlayer.play("SlideUIElements")
 
 func _ready() -> void:
 	Audio.onPlayMusic(main_menu_music)
@@ -143,6 +142,7 @@ func onNewGamePressed() -> void:
 	
 func onUnloadChampionSelect() -> void:
 	await onTransitionStart()
+	await get_tree().process_frame
 	World.onUnloadChampionSelect()
 	
 	ChampionSelectUI.queue_free()
@@ -159,6 +159,7 @@ func setChampionCards(champion_cards: Array) -> void:
 	
 func onStartGame(champion_info: ChampionCardInfo) -> void:
 	await onTransitionStart()
+	await get_tree().process_frame
 	start_game.emit(champion_info)
 
 func onTransitionStart() -> void:

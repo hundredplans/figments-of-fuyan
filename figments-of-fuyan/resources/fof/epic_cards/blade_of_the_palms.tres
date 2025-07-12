@@ -1,6 +1,5 @@
-[gd_resource type="Resource" script_class="EpicCardInfo" load_steps=28 format=3 uid="uid://b7lnksd1egi7b"]
+[gd_resource type="Resource" script_class="EpicCardInfo" load_steps=27 format=3 uid="uid://b7lnksd1egi7b"]
 
-[ext_resource type="Texture2D" uid="uid://c4qts40qrbkie" path="res://assets/sprites/game/cards/art_mini/blade_of_the_palms.png" id="1_3caon"]
 [ext_resource type="Script" uid="uid://bnp3nwlcsibyl" path="res://scripts/fof_info/cards/extra/boss_phase_datastore.gd" id="1_d1qqb"]
 [ext_resource type="Script" uid="uid://baum84o21f7jw" path="res://scripts/fof/cards/epic/blade_of_the_palms_epic.gd" id="1_wc1av"]
 [ext_resource type="Script" uid="uid://bd0ljqheerbtm" path="res://scripts/fof_info/epic_cards/epic_card_info.gd" id="2_3psbn"]
@@ -102,8 +101,6 @@ phases = Array[ExtResource("1_d1qqb")]([SubResource("Resource_xetlm"), SubResour
 card_id = 25
 tool_id = 15
 boon_id = 19
-art_mini_coordinate = Vector2i(94, 29)
-art_mini = ExtResource("1_3caon")
 awaken_boss_intent_name = "Reposition"
 id = 2
 name = "Blade of the Palms"

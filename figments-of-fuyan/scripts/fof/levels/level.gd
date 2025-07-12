@@ -1,9 +1,9 @@
 class_name LevelGD extends FofGD
 
-const START_HAND_SIZE: int = 4
+const START_HAND_SIZE: int = 3
 const AI_TURNS_UNTIL_ADVENTURER: int = 10
 const CARD_PLACED_SPECTATE_DELAY: float = 1.0
-const DRAW_BELOW_HAND_SIZE: int = 4
+const DRAW_BELOW_HAND_SIZE: int = 3
 
 var energy: int
 var max_energy: int
@@ -23,13 +23,13 @@ var recent_camera_position: Vector3 # Not saved
 var spawn_group: int
 var curse_id: int
 var level_preview: LevelPreview
+var env: Environment
 
 signal set_spectate_card
 signal energy_changed
 signal request_camera_data
 signal request_camera_position_update
 signal phase_changed
-signal draw_card
 signal awakened
 signal death
 signal turn_state_changing
@@ -61,7 +61,7 @@ func onSave() -> SavedData:
 	
 	return SavedDataLevel.new(info.id, false, public_id, data, enemy_cards, getFieldCardDatas(), phase, level_camera_data, energy, max_energy,\
 		fight_type, is_ended, rewards, anti_boons, old_player_vision_public_ids, player_card_last_seen_turn, level_area_datastore, speed_order, spawn_group,\
-		curse_id, level_preview)
+		curse_id, level_preview, env)
 
 func onClear() -> void:
 	queue_free()
@@ -79,6 +79,7 @@ func onLoadData(data: SavedData) -> void:
 	curse_id = data.curse_id
 	player_card_last_seen_turn = data.player_card_last_seen_turn
 	level_preview = data.level_preview
+	env = data.env
 	
 	for light in info.lights:
 		add_child(light.instantiate())
@@ -161,6 +162,7 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 		for i in range(deck_cards.size()):
 			deck_cards[i].draw_order = i
 		
+		actions.append(ChangeEnvironmentAction.new(Game.getArea().getEnvironmentFromInfo(isElite())))
 		onPushAction(actions)
 		return
 		
@@ -171,7 +173,7 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 	if is_ended:
 		onGameEnded()
 		
-	load_env.emit()
+	load_env.emit(env)
 
 var is_init: bool = false
 func onFofInit() -> void:
@@ -234,6 +236,8 @@ func onProcessAction(action: Action) -> void:
 	if action.post:
 		if action is AwakenAction:
 			onCardAwakened(action)
+		elif action is ChangeEnvironmentAction:
+			env = action.environment
 		elif action is FinishAwakenAction:
 			onCheckSkipHandPhase()
 			onCardFinishedAwakening(action)
@@ -341,6 +345,7 @@ func onPassTurn() -> void:
 			if Card != null and Card.turn_state != Game.TurnStates.PASSED:
 				onPushAction(ChangeTurnStateAction.new(Card, Game.TurnStates.PASSED))
 				if !ally_units.all(func(x: CardGD): return x.turn_state == Game.TurnStates.PASSED):
+					onSpectateClosestAlly(Card)
 					return
 				
 			new_phase = Game.Phases.AI
@@ -373,6 +378,14 @@ func onCameraChange(action: CameraChangeAction) -> void:
 	
 func onRequestCameraPositionUpdate() -> void:
 	request_camera_position_update.emit()
+	
+func onSpectateClosestAlly(Card: CardGD) -> void:
+	var unpassed_allies: Array = Game.getAllyUnits(0).filter(func(x: CardGD): return x.turn_state != Game.TurnStates.PASSED)
+	if unpassed_allies.is_empty(): return
+	var coords: Vector4i = Card.getCoords()
+	unpassed_allies.sort_custom(func(x: CardGD, y: CardGD):\
+		return Game.getCoordsDistance(coords, x.getCoords()) < Game.getCoordsDistance(coords, y.getCoords()))
+	onPushAction(CameraChangeAction.new(unpassed_allies[0]))
 #endregion
 
 #region Game Ended

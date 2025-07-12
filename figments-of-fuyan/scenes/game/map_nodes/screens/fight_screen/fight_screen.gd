@@ -7,8 +7,8 @@ const FADE_IN_TIME: float = 1.5
 @onready var DescriptionLabel: FancyTextLabel = %DescriptionLabel
 @onready var CurseNameLabel: Label = %CurseNameLabel
 
-func setInfo(_save_file: SaveFileGD, _area: AreaGD, _World: Node3D, _UI: Control, map_node: MapNodeGD) -> void:
-	super(_save_file, _area, _World, _UI, map_node)
+func setInfo(_save_file: SaveFileGD, _area: AreaGD, _World: Node3D, _UI: Control, _map_node: MapNodeGD) -> void:
+	super(_save_file, _area, _World, _UI, _map_node)
 	LevelLabel.text = str(Game.area.getWorldDifficulty()) + "-" + str(map_node.map_location.progress) + ": " + map_node.level_info.name
 
 	var is_elite: bool = map_node is EliteFightNodeGD

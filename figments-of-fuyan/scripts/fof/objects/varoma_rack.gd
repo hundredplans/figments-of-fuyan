@@ -86,5 +86,5 @@ func onLoadDataLevel() -> void:
 	super()
 	onUpdateVisibleModels()
 
-func onAIAbilityChecker(active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, DFL: DefaultFightLogic) -> TileGD:
+func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _DFL: DefaultFightLogic) -> TileGD:
 	return active_effect_tiles.pickable_tiles[0]

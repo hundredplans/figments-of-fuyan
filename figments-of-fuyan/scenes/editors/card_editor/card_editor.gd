@@ -21,6 +21,14 @@ func _ready() -> void:
 		var card_data := SavedDataCard.new(card_info.id, true)
 		Game.setCardDataFromInfo(card_data, card_info)
 		var Card: CardGD = SavedData.onLoadModel(card_data, CardParent)
+		
+		var arr: Array[ActiveEffectDatastore] = []
+		arr.assign(Card.info.active_abilities)
+		
+		for a: ActiveEffectDatastore in arr:
+			a.charges = a.max_charges
+		
+		Card.active_effects = arr
 		onCreateDeckCardUI(Card)
 
 func getSortValue(x: CardInfo, y: CardInfo, card_id_to_area_id: Dictionary[int, int]) -> bool:

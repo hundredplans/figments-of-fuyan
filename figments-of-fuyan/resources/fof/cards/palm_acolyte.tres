@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=13 format=3 uid="uid://brvnthqlohriw"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=13 format=3 uid="uid://bdsj3es2iu7s"]
 
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_vhuk6"]
 [ext_resource type="Resource" uid="uid://6j57uasj8x66" path="res://resources/fof/archetypes/reinforcer.tres" id="2_racig"]
@@ -8,7 +8,7 @@
 [ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_s3wjm"]
 [ext_resource type="Script" uid="uid://dediuf1xvriyq" path="res://scripts/fof/cards/palm_acolyte.gd" id="4_6mvja"]
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_8qtb0"]
-[ext_resource type="PackedScene" uid="uid://w83kn76qjgqx" path="res://assets/models/fof/cards/divinus_palmus.glb" id="7_glhbm"]
+[ext_resource type="PackedScene" uid="uid://dowgcs0ja2fo4" path="res://assets/models/fof/cards/palm_acolyte.glb" id="7_r3qlw"]
 
 [sub_resource type="Resource" id="Resource_r3qlw"]
 script = ExtResource("1_vhuk6")
@@ -25,9 +25,9 @@ used = false
 metadata/_custom_type_script = "uid://cdbphjba7jkam"
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_80h08"]
-size = Vector3(0.527344, 2.00391, 0.309814)
+size = Vector3(0.746033, 2.12097, 0.492493)
 
-[sub_resource type="PackedScene" id="PackedScene_pngqc"]
+[sub_resource type="PackedScene" id="PackedScene_r3qlw"]
 _bundled = {
 "conn_count": 0,
 "conns": PackedInt32Array(),
@@ -36,7 +36,7 @@ _bundled = {
 "node_count": 1,
 "node_paths": [],
 "nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
-"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00195313, 1.00058, 0.00109863), SubResource("BoxShape3D_80h08")],
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0157166, 1.05911, -0.0192566), SubResource("BoxShape3D_80h08")],
 "version": 3
 }
 
@@ -55,12 +55,12 @@ ascended_description = ""
 art_mini_coordinate = Vector2i(88, 45)
 art_mini = ExtResource("3_r3qlw")
 art_pop = ExtResource("3_8qtb0")
-model = ExtResource("7_glhbm")
-points = [Vector3(-0.157598, 0.275337, 0.156006), Vector3(0.125076, 0.272346, 0.156006), Vector3(0.123484, 0.581134, 0.156006), Vector3(-0.149234, 0.630647, 0.156006), Vector3(-0.100989, 0.947012, 0.156006), Vector3(0.102517, 0.95601, 0.156006), Vector3(-0.130152, 1.22192, 0.156006), Vector3(0.164963, 1.23761, 0.156006), Vector3(0.0273505, 1.5193, 0.156006), Vector3(0.00637631, 1.87432, 0.156006), Vector3(-0.265625, 0.205133, 0.000790742), Vector3(-0.265625, 0.592861, 0.0129754), Vector3(-0.265625, 1.02456, 0.0377797), Vector3(-0.265625, 1.45412, 0.0288714), Vector3(-0.265625, 1.85718, -0.00282015), Vector3(0.141333, 0.218789, -0.153808), Vector3(-0.128178, 0.239154, -0.153808), Vector3(-0.135871, 0.62485, -0.153808), Vector3(0.115484, 0.62557, -0.153808), Vector3(0.0929544, 0.908064, -0.153808), Vector3(-0.168235, 0.925916, -0.153808), Vector3(0.116615, 1.19054, -0.153808), Vector3(-0.106401, 1.19073, -0.153808), Vector3(0.0231847, 1.46869, -0.153808), Vector3(-0.00657967, 1.69085, -0.153808), Vector3(0.000361825, 1.87829, -0.153808), Vector3(0.261719, 0.252995, 0.02889), Vector3(0.261719, 0.645675, -0.0100488), Vector3(0.261719, 1.00111, -0.00295574), Vector3(0.261719, 1.35312, -0.0173286), Vector3(0.261719, 1.74087, -0.0295988), Vector3(0.261719, 1.90084, -0.0204164)]
-collision_shape = SubResource("PackedScene_pngqc")
+model = ExtResource("7_r3qlw")
+points = [Vector3(-0.258672, 0.244823, 0.22699), Vector3(0.236165, 0.24346, 0.22699), Vector3(0.175295, 0.723427, 0.22699), Vector3(-0.247059, 0.737931, 0.22699), Vector3(-0.195563, 1.17945, 0.22699), Vector3(0.216, 1.19329, 0.22699), Vector3(-0.19505, 1.50609, 0.22699), Vector3(0.238148, 1.51939, 0.22699), Vector3(-0.251959, 1.81412, 0.22699), Vector3(0.20922, 1.79628, 0.22699), Vector3(-0.232085, 2.1196, -0.0404592), Vector3(0.0853289, 2.1196, -0.030192), Vector3(0.3573, 1.77032, -0.0270879), Vector3(0.3573, 1.30279, -0.00777309), Vector3(0.3573, 0.77002, -0.00649654), Vector3(0.3573, 0.299152, 0.0386218), Vector3(0.229538, 0.431447, -0.265503), Vector3(-0.180691, 0.401618, -0.265503), Vector3(0.184677, 0.875065, -0.265503), Vector3(-0.2501, 0.87856, -0.265503), Vector3(0.18883, 1.25193, -0.265503), Vector3(-0.178976, 1.20861, -0.265503), Vector3(0.177119, 1.67149, -0.265503), Vector3(-0.190373, 1.67032, -0.265503), Vector3(-0.388733, 1.64414, -0.0469729), Vector3(-0.388733, 1.17978, -0.0395873), Vector3(-0.388733, 0.737437, -0.0264893), Vector3(-0.388733, 0.306439, -0.0352339)]
+collision_shape = SubResource("PackedScene_r3qlw")
 stat = 2.378
-top = 1.99812
-eye = 1.841
+top = 2.10577
+eye = 1.6687
 plus_attack = 0
 plus_health = 0
 plus_speed = 0

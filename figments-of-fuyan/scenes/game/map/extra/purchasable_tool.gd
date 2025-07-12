@@ -12,7 +12,7 @@ func setInfo(_item: FofGD, _price_datastore: PriceDatastore, _save_file: SaveFil
 	var text: String = "[" + ("a" if item.ascended else "") + "tool=" + str(item.info.id) + "]"
 	NameLabel.setText(text)
 	
-func onToolSelected(Tool: ToolGD) -> void:
+func onToolSelected(_Tool: ToolGD) -> void:
 	ToolIcon.top_level = true
 	ToolIcon.setDisableTooltip(true)
 	Game.onEmptyTooltip(false)

@@ -8,12 +8,6 @@ var active_effects: Array = []
 var ability_save: Dictionary = {}
 var top_vertex_y: float # The y position of the top vertex
 
-func isAttackable(_Card: CardGD) -> bool:
-	return false
-	
-func getAttackableTile() -> TileGD:
-	return null
-
 func onLoadData(data: SavedData) -> void:
 	super(data)
 	active_effects = data.active_effects
@@ -40,8 +34,6 @@ func onLoadModel() -> void:
 	
 func setOccupiedTiles(tile_position_to_tile: Dictionary) -> void:
 	super(tile_position_to_tile)
-	if isAttackable(null):
-		getAttackableTile().onOccupyByIObject(self)
 
 func onSave() -> SavedDataIObject:
 	return SavedDataIObject.new(info.id, false, public_id, coords, tile_rotation, vision_datastore, variation, map_rotation, map_position, height,\
@@ -53,15 +45,6 @@ func onProcessAction(action: Action) -> void:
 		if action is ChangePhaseAction:
 			if action.phase == Game.Phases.START:
 				onCreateActiveEffects()
-		elif action is DamageAction and self in action.Defenders:
-			onWasDamaged(action)
-#region Damaged
-func onWasDamaged(_action: DamageAction) -> void:
-	pass
-	
-func onIObjectDamaged(_action: DamageAction) -> void:
-	pass
-#endregion
 
 #region Active Effects
 func getValidActiveEffects(_Card: CardGD) -> Array: # Returns the ability effects the Card can view

@@ -102,7 +102,7 @@ func onUseBossIntent(enemies: Array, allies: Array, tiles: Array, use_type: UseT
 	onPushAction(BossIntentUsedAction.new(boss_intent, use_type, actions, enemies, allies))
 	
 const USE_ATTACK_PHASE_ONE_CHANCE: float = 0.75
-func onChangeBossIntent(boss_intents: Array, enemies: Array, _allies: Array) -> BossIntent:
+func onChangeBossIntent(boss_intents: Array, _enemies: Array, _allies: Array) -> BossIntent:
 	var phase: int = getPhase()
 	if boss_intent.name == "Clone Phase Change":
 		return getBossIntentByName("Double Teleport Attack")
@@ -780,8 +780,11 @@ func onHammerAttackSetIntents() -> BossTileIntents:
 	var potential_landing_tiles: Array = level_tiles.filter(func(x: TileGD): return !x.isSolid() and x not in unit_tiles and Game.getCoordsDistance(x.getCoords(), CenterTile.getCoords()) >= 5)
 	
 	var LandingTile: TileGD = potential_landing_tiles.pick_random()
+	var landing_tiles: Array = [LandingTile] + Game.getAdjacentTiles(LandingTile, 1)
 	level_tiles.erase(LandingTile)
-	tile_intents.append(TileIntentDatastore.new(Game.TileIntents.DARK_RED, null, LandingTile.getCoords()))
+	
+	for _LandingTile: TileGD in landing_tiles:
+		tile_intents.append(TileIntentDatastore.new(Game.TileIntents.DARK_RED, null, _LandingTile.getCoords()))
 	
 	for LevelTile: TileGD in level_tiles:
 		tile_intents.append(TileIntentDatastore.new(Game.TileIntents.RED, null, LevelTile.getCoords()))
@@ -808,10 +811,16 @@ func onHammerAttack(use_type: UseType) -> Array:
 				"CenterTile": CenterTile = ResultTile
 		
 		var protected_tiles: Array = Game.getAdjacentTiles(CenterTile, 1) + [CenterTile]
-		var enemy_cards: Array = Game.getEnemyUnits(team).filter(func(x: CardGD): return x.getTile() not in protected_tiles)
+		var enemies: Array = Game.getEnemyUnits(team)
+		var landing_tiles: Array = Game.getAdjacentTiles(LandingTile)
+		var enemy_cards: Array = enemies.filter(func(x: CardGD): return x.getTile() not in protected_tiles and x.getTile() not in landing_tiles)
+		var enemies_in_landing: Array = enemy_cards.filter(func(x: CardGD): return x.getTile() in landing_tiles)
+		
 		actions.append(DamageAction.new(self, enemy_cards, attack, Game.DamageTypes.OTHER))
 		actions.append(IdleModifierAction.new(self, ""))
 		actions += getDefaultTeleportActions(LandingTile, true)
+		actions += enemies_in_landing.map(func(x: CardGD): return DestroyAction.new(x, self))
+		
 		actions.append(ClearTileIntentsAction.new())
 	return actions
 

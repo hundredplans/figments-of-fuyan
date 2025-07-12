@@ -184,13 +184,12 @@ func _process(_delta: float) -> void:
 						
 						if SpawnGroupObject != null:
 							SpawnGroupObject.onChangeSpawnGroup(num)
-						break
-						
+					elif Input.is_action_just_pressed("ShowGroup" + str(num)):
+						onShowGroup(num)
 					elif Input.is_action_just_pressed("ChangeElevation" + str(num)):
 						if num == 0: num = 9
 						else: num -= 1
 						setBaseElevation(num)
-						break
 				
 			if Input.is_action_just_released("RotateLeft") or Input.is_action_just_released("RotateRight"):
 				TemporaryRotationObject = null
@@ -729,3 +728,15 @@ func setSettings(loaded: Variant) -> void:
 		ProgressMaxLineEdit.text = str(loaded.progress_max)
 		BudgetOffsetLineEdit.text = str(loaded.enemy_budget_offset)
 #endregion
+
+var show_group: int
+func onShowGroup(num: int) -> void:
+	var is_show: bool = false
+	if num == show_group:
+		is_show = true
+		show_group = -1
+	else: show_group = num
+	
+	for Obj: ObjectGD in get_tree().get_nodes_in_group("ObjectsGD"):
+		Obj.visible = is_show or (num in Obj.groups or Obj.groups.is_empty())
+		

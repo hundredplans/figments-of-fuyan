@@ -34,6 +34,7 @@ func getMapNodeDestination(map_node: MapNodeGD) -> Vector3:
 func setInfo(_save_file: SaveFileGD) -> void:
 	save_file = _save_file
 	area = save_file.area
+	area.process_action.connect(onProcessAction)
 	
 	area.init_load.connect(onInitLoad)
 	add_child(area.info.default_light.instantiate())
@@ -57,8 +58,6 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	setEnvironment()
 	for map_node in get_tree().get_nodes_in_group("MapNodesGD"):
 		map_node.pressed.connect(onMapNodePressed)
-		map_node.entered.connect(onMapNodeEntered)
-		map_node.finished.connect(onMapNodeFinished)
 		map_node.create_world_scene.connect(onMapNodeCreateWorldScene)
 	
 func onInitLoad() -> void:
@@ -182,3 +181,11 @@ func onDisableCameraByUI(state: bool) -> void:
 	Camera.onDisableMovement(state)
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 #endregion
+
+func onProcessAction(action: Action) -> void:
+	if is_queued_for_deletion(): return
+	if action.post:
+		if action is MapNodeEnteredAction:
+			onMapNodeEntered(action.map_node)
+		elif action is MapNodeFinishedAction:
+			onMapNodeFinished(action.map_node)

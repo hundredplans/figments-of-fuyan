@@ -58,6 +58,7 @@ const CARD_UI_SIZE := Vector2(264, 400)
 const FALL_DAMAGE_BEGIN_HEIGHT: int = 5
 const HEX_SIZE: float = 0.55
 const STAT_UPDATE_TIME: float = 0.15
+const ATTACK_DELAY: float = 1.25
 
 const CARD_REWARD_DEFAULT_AMOUNT: int = 3
 const ASCENDED_COLOR := Color(0.937, 0.835, 0.318)
@@ -355,108 +356,6 @@ func getNextInactiveCard(team: int) -> CardGD:
 	var cards: Array = getAllyUnits(team).filter(func(x: CardGD): return x.turn_state == Game.TurnStates.INACTIVE)
 	var level := getLevel()
 	return level.getNextAIUnit(cards, team)
-#endregion
-
-#region Movement Range
-#func getsetMovementRange(Card: CardGD, speed_override: int = -1) -> Array:
-	#if Card == null: return []
-	#if Card.Tile == null: return []
-	#get_tree().call_group("FieldCardsGD", "setEnemyInMovementRange", false)
-	#get_tree().call_group("LevelTilesGD", "setMovementPath", null)
-	#
-	#var CenterTile: TileGD = Card.Tile
-	#var speed: int = Card.getMovementSpeed()
-	#if speed_override != -1:
-		#speed = speed_override
-		#
-	#var tiles: Array = Game.getAdjacentOrCloserTiles(Card.Tile, speed) # Gather all tiles
-	#
-	#var all_cards_tiles: Array = get_tree().get_nodes_in_group("FieldCardsGD").map(func(x: CardGD): return x.Tile)
-	#	
-	#tiles = tiles.filter(func(x: TileGD): return !x.isSolid() and x not in all_cards_tiles and x.isBelowMaxMovementHeight(Card)) # Check for solidity
-	#for Tile in tiles:
-		#var astar := AStar3D.new()
-		## Limits tiles to those in movement range
-		#var add_to_astar_tiles: Array = tiles.filter(func(x: TileGD): return Game.getCoordsDistance(Tile.getCoords(), x.getCoords()) <= speed)
-		#add_to_astar_tiles.append(CenterTile)
-		#for _Tile in add_to_astar_tiles: astar.add_point(_Tile.get_instance_id(), _Tile.getCoordsHeightless())
-		#
-		#for StartTile in add_to_astar_tiles:
-			#for EndTile in add_to_astar_tiles.filter(func(x: TileGD): return Game.isAdjacent(x, StartTile)):
-				#var height_diff: int = EndTile.getHeight() - StartTile.getHeight()
-				#if StartTile.isRamp():
-					#if StartTile.isValidRampRelation(EndTile, height_diff):
-						#astar.connect_points(StartTile.get_instance_id(), EndTile.get_instance_id(), false)
-					#
-				#elif EndTile.isRamp():
-					#if EndTile.isValidRampRelation(StartTile, height_diff):
-						#astar.connect_points(StartTile.get_instance_id(), EndTile.get_instance_id(), false)
-					#
-				#elif height_diff <= 1:
-					#astar.connect_points(StartTile.get_instance_id(), EndTile.get_instance_id(), false)
-						#
-		#var valid_path: bool = false
-		#var point_path: Array = []
-		#var movement_path: Array = []
-		#
-		#while(!valid_path):
-			#point_path = astar.get_id_path(CenterTile.get_instance_id(), Tile.get_instance_id())
-			#if point_path.is_empty(): break
-			#if point_path.size() > speed + 1:
-				#astar.disconnect_points(point_path[point_path.size() - 1], point_path[point_path.size() - 2])
-				#continue
-			#
-			#movement_path = point_path.map(func(x: int): return instance_from_id(x))
-			#if movement_path.size() > speed + 2:
-				#astar.disconnect_points(point_path[point_path.size() - 1], point_path[point_path.size() - 2])
-				#continue
-			#if !onSurviveFallDamage(Card, movement_path, point_path, astar): continue
-			#valid_path = true
-			#
-		#Tile.setMovementPath(MovementPathGD.new(movement_path, Card.isAlly(0)) if valid_path else null)
-	#
-	#var available_tiles: Array = tiles.filter(func(x: TileGD): return x.getMovementPath() != null)
-	#available_tiles.append(CenterTile)
-	#
-	#var attackables: Array = Card.getAttackablesInVision()
-	#for GameObject: GameObjectGD in attackables:
-		#var Tile: TileGD = GameObject.getAttackableTile()
-		#var coords: Vector4i = Tile.getCoords()
-		#
-		#var tiles_in_range: Array = available_tiles\
-			#.filter(func(x: TileGD): return Game.getCoordsDistance(x.getCoords(), coords) <= Card.getAttackRange())
-			#
-		#if tiles_in_range.is_empty(): continue
-		#var AttackFromTile: TileGD
-		#var attack_from_path: Array = []
-		#if CenterTile not in tiles_in_range:
-			#tiles_in_range.sort_custom(func(x: TileGD, y: TileGD): return x.getMovementPathSize() < y.getMovementPathSize())
-			#AttackFromTile = tiles_in_range[0]
-			#attack_from_path = AttackFromTile.getMovementPathTiles().duplicate()
-		#else: # Closest tile is always the center tile as it's distance is 0, has to have unique logic as it doesn't generate paths
-			#AttackFromTile = CenterTile
-			#attack_from_path = [CenterTile]
-		#
-		#available_tiles.append(Tile)
-		#attack_from_path.append(Tile)
-		#
-		#Tile.setMovementPath(MovementPathGD.new(attack_from_path, Card.isAlly(0)))
-		#if GameObject is CardGD:
-			#GameObject.setEnemyInMovementRange(true)
-	#
-	#available_tiles.erase(CenterTile)
-	#return available_tiles
-	#
-#func onSurviveFallDamage(Card: CardGD, movement_path: Array, point_path: Array, astar: AStar3D) -> bool:
-	#Card.temp_fall_damage = 0
-	#for i in range(1, movement_path.size()):
-		#var fall_damage: int = movement_path[i].getFallDamage(movement_path[i - 1])
-		#if fall_damage > 0:
-			#var survive_fall_damage: bool = Card.isCardSurviveFallDamage(fall_damage)
-			#if !survive_fall_damage and i != movement_path.size() - 1:
-				#astar.disconnect_points(point_path[i - 1], point_path[i])
-				#return false
-	#return true
 #endregion
 
 #region Tooltips

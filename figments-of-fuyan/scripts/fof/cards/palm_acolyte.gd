@@ -1,7 +1,4 @@
 extends CardGD
-
-const REVEAL_ID: int = 6
-const REVEAL_TURNS: int = 3
 const DAMAGE_VALUE: int = 2
 
 func onProcessAction(action: Action) -> void:
@@ -19,7 +16,6 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 	if active_effect is ActiveAbilityDatastore and active_effect.name == "Divine Light":
 		onAbility()
 		
-		var actions: Array = []
 		var EnemyCard: CardGD = Game.getFieldCard(PickedTile)
 		
 		onForceAction(ChangeTileRotationAction.new(self, Game.getRelativeTileRotation(Tile, PickedTile)))

@@ -7,6 +7,7 @@ const FULL_HEALTHBAR_SIZE_X: int = 1070
 
 func setInfo() -> void:
 	var BossCard: EpicCardGD = Game.getLevel().getBoss()
+	BossNameLabel.modulate = Game.getRarityColor(BossCard.info.rarity)
 	onUpdateBossNameLabel(BossCard)
 	setHealthBar(BossCard)
 

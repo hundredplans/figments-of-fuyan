@@ -87,7 +87,7 @@ func onBoonPressed(Boon: BoonGD, BoonUI: Control) -> void:
 	Game.getSaveFile().onPushAction(AddBoonAction.new(Boon.info.id, false))
 	onRewardTaken(BoonUI, Boon)
 	
-func onRewardTaken(IconUI: Control, item: FofGD) -> void:
+func onRewardTaken(_IconUI: Control, item: FofGD) -> void:
 	onCreateClaimedLabel(item)
 	reward.setTaken(true)
 	
@@ -97,27 +97,27 @@ func onRewardTaken(IconUI: Control, item: FofGD) -> void:
 		tween.tween_property(_IconUI, "scale", Vector2.ONE, 0.25)
 	reward_taken.emit(reward)
 	
-	var tween := create_tween()
-	tween.tween_property(Main, "modulate", CLAIMED_COLOR, Game.FADE_TIME)
+	var new_tween := create_tween()
+	new_tween.tween_property(Main, "modulate", CLAIMED_COLOR, Game.FADE_TIME)
 	action.onItemChosen(item)
 	
 func onToolPressed(Tool: ToolGD, OriginalToolIcon: Control) -> void:
 	if reward.isTaken() or StashScreen != null: return
-	var ToolIcon: Control = ToolIconPacked.instantiate()
-	add_child(ToolIcon)
-	ToolIcon.setInfo(Tool, false)
-	ToolIcon.setDisableTooltip(true)
-	ToolIcon.setSizeScale(3)
-	ToolIcon.top_level = true
+	var _ToolIcon: Control = ToolIconPacked.instantiate()
+	add_child(_ToolIcon)
+	_ToolIcon.setInfo(Tool, false)
+	_ToolIcon.setDisableTooltip(true)
+	_ToolIcon.setSizeScale(3)
+	_ToolIcon.top_level = true
 	
-	StashScreen = Game.onCreateStashScreen(self, ToolIcon)
+	StashScreen = Game.onCreateStashScreen(self, _ToolIcon)
 	stash_screen_fade_in.emit()
-	StashScreen.active_tool_added.connect(onToolClaimed.bind(ToolIcon, OriginalToolIcon))
-	StashScreen.exit_start.connect(onActiveToolStashExitStart.bind(ToolIcon))
+	StashScreen.active_tool_added.connect(onToolClaimed.bind(_ToolIcon, OriginalToolIcon))
+	StashScreen.exit_start.connect(onActiveToolStashExitStart.bind(_ToolIcon))
 	
-func onToolClaimed(_CardUI: Control, ToolIcon: Control, OriginalToolIcon: Control) -> void:
-	onRemoveActiveToolIcon(ToolIcon)
-	onRewardTaken(OriginalToolIcon, ToolIcon.Tool)
+func onToolClaimed(_CardUI: Control, _ToolIcon: Control, OriginalToolIcon: Control) -> void:
+	onRemoveActiveToolIcon(_ToolIcon)
+	onRewardTaken(OriginalToolIcon, _ToolIcon.Tool)
 	
 func onCreateClaimedLabel(item: FofGD) -> Label:
 	var ClaimedLabel: Label = ClaimedLabelPacked.instantiate()
@@ -142,9 +142,9 @@ func onCreateClaimedLabel(item: FofGD) -> Label:
 	ClaimedLabel.global_position = control.global_position + offset
 	return ClaimedLabel
 
-func onRemoveActiveToolIcon(ToolIcon: Variant) -> void:
-	if ToolIcon != null: ToolIcon.queue_free()
+func onRemoveActiveToolIcon(_ToolIcon: Variant) -> void:
+	if _ToolIcon != null: _ToolIcon.queue_free()
 	
-func onActiveToolStashExitStart(ToolIcon: Variant) -> void:
-	onRemoveActiveToolIcon(ToolIcon)
+func onActiveToolStashExitStart(_ToolIcon: Variant) -> void:
+	onRemoveActiveToolIcon(_ToolIcon)
 	stash_screen_fade_out.emit()

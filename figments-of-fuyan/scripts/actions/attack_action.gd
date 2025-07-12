@@ -11,7 +11,7 @@ func _init(_Attacker: GameObjectGD = null, _Defenders: Variant = null) -> void:
 	elif _Defenders is GameObjectGD: Defenders = [_Defenders]
 	
 func onPreAction() -> void:
-	setActionDelay(1.25 if Attacker.isLevelVisible() or Defenders.any(func(x: GameObjectGD): return x.isLevelVisible()) else 0.0)
+	setActionDelay(Game.ATTACK_DELAY if Attacker.isLevelVisible() or Defenders.any(func(x: GameObjectGD): return x.isLevelVisible()) else 0.0)
 	onForceAction(ChangeAttacksAction.new(Attacker, Attacker.attacks - 1))
 	
 func onPostAction() -> void:

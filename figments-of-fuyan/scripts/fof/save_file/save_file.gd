@@ -48,6 +48,7 @@ func onSave() -> SavedData:
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
+	get_tree().set_auto_accept_quit(false)
 	Game.save_file = self
 	add_to_group("SaveFilesGD")
 	id = data.id
@@ -99,7 +100,8 @@ func _tree_exited() -> void:
 	
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
-		onSaveToFile()
+		if Game.ActionManagerReference.getActionsByType(ExitGameAction).is_empty():
+			onAppendAction(ExitGameAction.new())
 #endregion
 
 #region Shillings
@@ -184,6 +186,9 @@ func onProcessAction(action: Action) -> void:
 	if action.post:
 		if action is ChangeShillingsAction:
 			update_shillings.emit()
+		elif action is ExitGameAction:
+			onSaveToFile()
+			get_tree().quit()
 
 #region Player Deck Upgrade
 func onPlayerDeckUpgrade(player_deck_upgrade: PlayerDeckUpgrade) -> void:

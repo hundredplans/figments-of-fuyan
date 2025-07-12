@@ -43,7 +43,8 @@ func onRotateDirection(direction: int) -> void:
 
 #region Positions
 func onCoordsToPosition() -> Vector3:
-	return Vector3((sqrt(3) * coords.x + sqrt(3) * coords.y * 0.5), (coords.w * 0.6) + 0.3, coords.y * 3 / 2.0)
+	var offset: float = occupied_tiles[0].getCardYOffsetBase() if !occupied_tiles.is_empty() else 0.3
+	return Vector3((sqrt(3) * coords.x + sqrt(3) * coords.y * 0.5), (coords.w * 0.6) + offset, coords.y * 3 / 2.0)
 
 func setPosition(_coords := Vector4i.ZERO, point := Vector3.ZERO, force_tile_lock: bool = false) -> void:
 	coords = _coords
@@ -66,7 +67,7 @@ func onLoadTilesCoords(parent: Node3D, tile_info: TileInfo) -> void:
 		if i >= info.tile_coords.size(): info.tile_coords.append([Vector4.ZERO])
 	
 	for tile_coords in info.tile_coords[variation]:
-		var Tile: TileGD = SavedData.onLoadModel(SavedDataTile.new(tile_info.id, false, 0, tile_coords), parent)
+		SavedData.onLoadModel(SavedDataTile.new(tile_info.id, false, 0, tile_coords), parent)
 		#Tile.setHalfTransparent()
 	ResourceSaver.save(info)
 	

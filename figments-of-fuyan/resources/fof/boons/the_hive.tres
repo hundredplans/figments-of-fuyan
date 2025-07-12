@@ -8,13 +8,14 @@
 [resource]
 script = ExtResource("1_jmfg6")
 icon = ExtResource("2_6hxuk")
-description = "When an ally dies [2] random enemies gain +1 ATT"
+description = "When an enemy dies [2] random enemies gain +1 ATT"
 ascended_description = ""
 rarity = 0
 curse = true
 elite_fight_curse = true
+display_trigger = true
 use_charges = false
-auto_reset_charges_level_start = false
+auto_reset_charges = false
 reset_to_default = false
 id = 14
 name = "The Hive"

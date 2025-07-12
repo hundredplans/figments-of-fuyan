@@ -69,7 +69,6 @@ func getCard() -> CardGD:
 	return null
 	
 func getCardYOffsetBase() -> float:
-	if variation == 1: return 0.6
 	return 0.3
 	
 func getCardYOffset() -> float:
@@ -109,19 +108,11 @@ func getTileFillPoints() -> Array:
 func setRegularMaterial() -> void:
 	setTileMaterial()
 			
+const UV_SCALE: float = 1.2
 func setTileMaterial(is_greyscale: bool = false) -> void:
 	BottomMesh.set_surface_override_material(0, info.getTileBottomMaterial() if !is_greyscale else info.getTileBottomGreyscaleMaterial())
 	TopMesh.set_surface_override_material(0, info.getTileTopMaterial() if !is_greyscale else info.getTileTopGreyscaleMaterial())
 	setTileFillMaterial()
-	
-	if info.getRandomiseTopUVOffset():
-		if !is_decoration:
-			var n: Variant = TopMesh.get_instance_shader_parameter("uv_offset")
-			if n == null:
-				var uv_offset := Vector2(randf(), randf())
-				TopMesh.set_instance_shader_parameter("uv_offset", uv_offset)
-		else:
-			pass
 		
 func setTileFillMaterial(is_greyscale: bool = false) -> void:
 	if TileFill != null:
@@ -290,10 +281,6 @@ func onOccupy(Card: CardGD, instant: bool) -> void:
 	
 	for Obj in occupied_objects:
 		Obj.onOccupy(occupy_state != OccupyStates.NULL)
-	
-func onOccupyByIObject(_IObject: IObjectGD) -> void:
-	occupy_state = OccupyStates.ATTACKABLE_IOBJECT
-	setOutlineMaterial()
 #endregion
 
 #region Movement Range / Path Hovered

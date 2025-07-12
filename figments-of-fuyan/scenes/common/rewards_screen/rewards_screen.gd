@@ -24,7 +24,7 @@ var rewards_ui: Control
 var rewards: Rewards
 var page: int
 
-func setInfo(_rewards: Rewards, level_type: Game.FightTypes) -> void:
+func setInfo(_rewards: Rewards, _level_type: Game.FightTypes) -> void:
 	rewards = _rewards
 	get_viewport().update_mouse_cursor_state()
 	

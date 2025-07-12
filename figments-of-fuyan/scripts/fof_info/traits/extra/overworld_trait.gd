@@ -2,8 +2,6 @@ class_name OverworldTrait extends Resource
 
 enum AddedBy {NULL, REGULAR, ASCENDED, CRAB, BUCKLER, ELDER_PALMER, LONE_RIDER, HAVEL_ROCKFOOT, JIBBEN, VAROMA_RACK}
 
-signal clear
-
 @export var data: SavedDataTrait
 @export var added_by: AddedBy
 @export var level_trait_data: SavedDataTrait # Reload / save

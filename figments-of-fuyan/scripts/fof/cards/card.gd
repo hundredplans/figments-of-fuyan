@@ -172,7 +172,7 @@ func onPlayAnimation(animation_name: String) -> void:
 		AniPlayer.set_current_animation(animation_name)
 		
 func onAnimationFinished(ani_name: String) -> void:
-	if !ani_name.begins_with("Death"): onIdle()
+	if !ani_name.begins_with("Death") and !AniPlayer.is_playing(): onIdle()
 		
 func onJump() -> void:
 	#AniPlayer.stop() # Removed to address bug where sequencing jumps caused the animation to pause
@@ -834,15 +834,15 @@ func canAttack() -> bool: return attacks > 0
 func getMaxAttacks() -> int: return 1
 	
 func setAttacks(_attacks: int) -> void: attacks = _attacks
+func getAttacks() -> int: return attacks
 	
 func getAttackablesInAttackRange(AttackTile: TileGD) -> Dictionary:
 	if !canAttack(): return {}
-	var iobjects: Array = get_tree().get_nodes_in_group("LevelIObjectsGD")
 	var cards: Array = get_tree().get_nodes_in_group("FieldCardsGD")
 	cards.erase(self)
 	
 	var attackables: Dictionary = {}
-	var game_objects: Array = (cards + iobjects).filter(isValidAttackableInRange.bind(AttackTile))
+	var game_objects: Array = cards.filter(isValidAttackableInRange.bind(AttackTile))
 	for GameObject: GameObjectGD in game_objects:
 		if isValidAttackTile(AttackTile, GameObject):
 			attackables[GameObject] = GameObject.getAttackableTile()
@@ -850,10 +850,9 @@ func getAttackablesInAttackRange(AttackTile: TileGD) -> Dictionary:
 	
 func getAttackablesInVision() -> Array:
 	if !canAttack(): return []
-	var iobjects: Array = get_tree().get_nodes_in_group("LevelIObjectsGD")
 	var cards: Array = get_tree().get_nodes_in_group("FieldCardsGD")
 	cards.erase(self)
-	var game_objects: Array = (cards + iobjects).filter(isValidAttackableInVision)
+	var game_objects: Array = cards.filter(isValidAttackableInVision)
 	return game_objects
 	
 func getAttackableTile() -> TileGD: # Simplifying function for iobjects
@@ -951,8 +950,6 @@ func onAscendedUpdateOverworldTraits() -> void:
 	
 func onAddOverworldTrait(overworld_trait: OverworldTrait) -> void:
 	overworld_traits.append(overworld_trait)
-	overworld_trait.clear.connect(func():\
-		onPushAction(RemoveOverworldTraitAction.new(self, overworld_trait.Trait.info.id, overworld_trait.added_by)))
 	
 func onAddFieldTrait(overworld_trait: OverworldTrait) -> void:
 	if overworld_trait.getData() == null: return
@@ -1558,7 +1555,6 @@ func setIsKnockback(state: bool) -> void:
 
 #region Base Stats
 func setBaseStats(types: Array, values: Array) -> void:
-	var valid_types: Array = []
 	var stat_info := StatInfo.new(self, [], [])
 	var actions: Array = []
 	for i in range(types.size()):
@@ -1609,15 +1605,15 @@ func getsetMovementRange(speed_override: int = -1) -> Array:
 	
 	#tiles = tiles.filter(func(x: TileGD): return !x.isSolid() and x not in all_cards_tiles and x.isBelowMaxMovementHeight(self)) # Check for solidity
 	tiles = tiles.filter(func(x: TileGD): return !x.isSolid() and x not in visible_cards_tiles and x.isBelowMaxMovementHeight(self)) # Check for solidity
-	for Tile in tiles:
+	for AstarTile: TileGD in tiles:
 		var astar := AStar3D.new()
 		# Limits tiles to those in movement range
-		var add_to_astar_tiles: Array = tiles.filter(func(x: TileGD): return Game.getCoordsDistance(Tile.getCoords(), x.getCoords()) <= new_speed)
+		var add_to_astar_tiles: Array = tiles.filter(func(x: TileGD): return Game.getCoordsDistance(AstarTile.getCoords(), x.getCoords()) <= new_speed)
 		add_to_astar_tiles.append(CenterTile)
-		for _Tile in add_to_astar_tiles: astar.add_point(_Tile.get_instance_id(), _Tile.getCoordsHeightless())
+		for _Tile: TileGD in add_to_astar_tiles: astar.add_point(_Tile.get_instance_id(), _Tile.getCoordsHeightless())
 		
-		for StartTile in add_to_astar_tiles:
-			for EndTile in add_to_astar_tiles.filter(func(x: TileGD): return Game.isAdjacent(x, StartTile)):
+		for StartTile: TileGD in add_to_astar_tiles:
+			for EndTile: TileGD in add_to_astar_tiles.filter(func(x: TileGD): return Game.isAdjacent(x, StartTile)):
 				var height_diff: int = EndTile.getHeight() - StartTile.getHeight()
 				if StartTile.isRamp():
 					if StartTile.isValidRampRelation(EndTile, height_diff):
@@ -1635,7 +1631,7 @@ func getsetMovementRange(speed_override: int = -1) -> Array:
 		var movement_path: Array = []
 		
 		while(!valid_path):
-			point_path = astar.get_id_path(CenterTile.get_instance_id(), Tile.get_instance_id())
+			point_path = astar.get_id_path(CenterTile.get_instance_id(), AstarTile.get_instance_id())
 			if point_path.is_empty(): break
 			if point_path.size() > new_speed + 1:
 				astar.disconnect_points(point_path[point_path.size() - 1], point_path[point_path.size() - 2])
@@ -1648,7 +1644,7 @@ func getsetMovementRange(speed_override: int = -1) -> Array:
 			if !onSurviveFallDamage(self, movement_path, point_path, astar): continue
 			valid_path = true
 			
-		Tile.setMovementPath(MovementPathGD.new(movement_path, isAlly(0)) if valid_path else null)
+		AstarTile.setMovementPath(MovementPathGD.new(movement_path, isAlly(0)) if valid_path else null)
 	
 	var available_tiles: Array = tiles.filter(func(x: TileGD): return x.getMovementPath() != null)
 	available_tiles.append(CenterTile)

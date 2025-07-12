@@ -31,7 +31,6 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		var cards: Array = [Game.getFieldCard(PickedTile)]
 		if Card.isHealable(): cards.append(Card)
 		
-		var stat_infos: Array = cards.map(func(x: CardGD): return StatInfo.new(x, Game.Stats.HEALTH, 1))
 		onPushAction(HealAction.new(cards.map(func(x: CardGD): return HealDatastore.new(x, 1))))
 		
 # When possible

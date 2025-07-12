@@ -1,7 +1,6 @@
 extends Control
 
 signal start_game
-signal create_champion_boon
 signal back
 signal arrow_pressed
 signal view_champion

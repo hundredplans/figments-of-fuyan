@@ -63,7 +63,7 @@ func onRemoveFromAura(Card: CardGD) -> void:
 func getDescription() -> String:
 	var active_effect: ActiveEffectDatastore = getActiveEffectByName("Blacksmith's Will")
 	if active_effect != null:
-		return Helper.getDescriptionNumeric(super(), [active_effect.charges], [["ABILITY ", "[1]"]])
+		return Helper.getDescription(super(), [active_effect.charges])
 	return super()
 
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:

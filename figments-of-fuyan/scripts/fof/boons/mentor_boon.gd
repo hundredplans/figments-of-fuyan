@@ -39,8 +39,8 @@ func onRemoveBoon() -> void:
 	if Card != null:
 		onPushAction(RemoveFromDeckAction.new(Card, true))
 	
-func setPalmyPublicID(public_id: int) -> void:
-	palmy_public_id = public_id
+func setPalmyPublicID(_public_id: int) -> void:
+	palmy_public_id = _public_id
 	
 func getPalmyCard() -> CardGD:
 	return PalmyCard

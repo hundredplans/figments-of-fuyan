@@ -21,7 +21,6 @@ func onPostAction() -> void:
 	
 	var coords: Vector4i = Card.getCoords()
 	var tiles: Array = []
-	var current_height: int = Card.getTile().getHeight()
 	var deal_damage: bool = false
 	
 	for mult in range(1, knockback + 1):

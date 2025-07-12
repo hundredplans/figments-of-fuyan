@@ -314,8 +314,6 @@ func onCreateMapNode(data: SavedDataMapNode) -> void:
 	map_node.hovered.connect(onMapNodeHovered)
 	map_node.pressed.connect(onMapNodePressed)
 	map_node.load_level.connect(onMapNodeLoadLevelInit)
-	map_node.entered.connect(onMapNodeEntered)
-	map_node.finished.connect(onMapNodeFinished)
 	
 #endregion
 #region Holy Path
@@ -454,8 +452,8 @@ func getAddBoonAddTool(fight_rewards_datastore: FightRewardsDatastore, is_elite:
 			add_boon = true
 	return [add_boon, add_tool]
 	
-func onAddToolReward(active_level: LevelGD) -> ToolGD:
-	var Tool: ToolGD = SavedData.onLoadModel(Random.getRandomFofByOdds(ToolInfo), active_level)
+func onAddToolReward(_active_level: LevelGD) -> ToolGD:
+	var Tool: ToolGD = SavedData.onLoadModel(Random.getRandomFofByOdds(ToolInfo), _active_level)
 	return Tool
 	
 func onAddBoonReward() -> BoonGD:
@@ -465,13 +463,13 @@ func onAddBoonReward() -> BoonGD:
 		return Boon
 	return null
 	
-func onAddCardRewards(active_level: LevelGD, is_epic: bool, is_elite: bool, level_preview: LevelPreview) -> ActionWrapper:
-	var enemy_cards: Array = active_level.enemy_cards.duplicate()
+func onAddCardRewards(_active_level: LevelGD, is_epic: bool, is_elite: bool, level_preview: LevelPreview) -> ActionWrapper:
+	var enemy_cards: Array = _active_level.enemy_cards.duplicate()
 	if !is_epic: enemy_cards = onRollRegularCardRewards()
 	else: enemy_cards = onRollEpicCardRewards()
 	if is_elite:
-		enemy_cards.append(SavedData.onLoadModel(level_preview.getChiefData().duplicate(), active_level))
-	var rewards_wrapper: ActionWrapper = SavedData.onLoadModel(SavedDataActionWrapper.new(), active_level)
+		enemy_cards.append(SavedData.onLoadModel(level_preview.getChiefData().duplicate(), _active_level))
+	var rewards_wrapper: ActionWrapper = SavedData.onLoadModel(SavedDataActionWrapper.new(), _active_level)
 	rewards_wrapper.setActions(ChooseRewardAction.new(enemy_cards, ChooseRewardAction.RewardType.CARDS))
 	return rewards_wrapper
 	
@@ -608,8 +606,8 @@ func getLevelPreview(enemy_cards: Array) -> LevelPreview:
 	var enemy_card_to_preview_value: Dictionary[SavedDataCard, float] = {}
 	
 	for card_data: SavedDataCard in enemy_cards:
-		var info: CardInfo = Helper.getFofInfoID(CardInfo, card_data.id)
-		var rarity_value: int = PREVIEW_RARITY_VALUE[info.rarity]
+		var card_info: CardInfo = Helper.getFofInfoID(CardInfo, card_data.id)
+		var rarity_value: int = PREVIEW_RARITY_VALUE[card_info.rarity]
 		var tool_value: float = 0.5 if (card_data.tool_data != null) else 0.0
 		var ascended_value: int = int(card_data.ascended)
 		var total_value: float = rarity_value + card_data.energy + tool_value + ascended_value
@@ -748,4 +746,13 @@ func onAppendToEncouteredEncounterIds(id: int) -> void:
 func onProcessAction(action: Action) -> void:
 	super(action)
 	process_action.emit(action)
+	
+	if action.post:
+		if action is MapNodeEnteredAction:
+			onMapNodeEntered(action.map_node)
+		elif action is MapNodeFinishedAction:
+			onMapNodeFinished(action.map_node)
 #endregion
+
+func getEnvironmentFromInfo(is_elite: bool) -> Environment:
+	return info.base_environment if !is_elite else info.elite_environment

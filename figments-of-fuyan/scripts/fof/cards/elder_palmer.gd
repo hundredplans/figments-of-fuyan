@@ -4,7 +4,7 @@ const GUARANTEED_HEAL_UNIT_AMOUNT_AI: int = 2
 const SINGLE_UNIT_CHANCE: float = 0.1
 
 const ARMOR_TRAIT_ID: int = 1
-const DISARM_STATUS_EFFECT_ID: int = 4
+const DAZE_STATUS_EFFECT_ID: int = 4
 
 var CHANGE_BACK_DELAY: float = 2.0
 
@@ -33,13 +33,13 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		var armor_trait_data := SavedDataTrait.new(ARMOR_TRAIT_ID, true, 0, armor_amount)
 		var armor_overworld := OverworldTrait.new(armor_trait_data, OverworldTrait.AddedBy.ELDER_PALMER, true, 1)
 
-		var disarm_action: AddStatusEffectAction = Card.onCreateBaseStatusEffectAction(DISARM_STATUS_EFFECT_ID, 1)
-		disarm_action.setActionDelay(CHANGE_BACK_DELAY)
+		var daze_action: AddStatusEffectAction = Card.onCreateBaseStatusEffectAction(DAZE_STATUS_EFFECT_ID, 1)
+		daze_action.setActionDelay(CHANGE_BACK_DELAY)
 		var actions: Array = [
 			camera_change_action,
 			HealAction.new(HealDatastore.new(Card, heal_amount)),
 			AddOverworldTraitAction.new(Card, armor_overworld, true),
-			disarm_action,
+			daze_action,
 			camera_change_back_action]
 		
 		onPushAction(actions)
@@ -54,3 +54,9 @@ func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_til
 	if !tiles.is_empty():
 		return tiles.pick_random()
 	return null
+
+func getDescription() -> String:
+	var active_effect: ActiveEffectDatastore = getActiveEffectByName("Palmist Prayer")
+	if active_effect != null:
+		return Helper.getDescription(super(), [active_effect.charges])
+	return super()

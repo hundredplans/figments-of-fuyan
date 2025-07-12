@@ -30,3 +30,9 @@ func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_til
 	
 	if cards.is_empty(): return null
 	return cards[0].getTile()
+	
+func getDescription() -> String:
+	var active_effect: ActiveEffectDatastore = getActiveEffectByName("Treeleaf Remedy")
+	if active_effect != null:
+		return Helper.getDescription(super(), [active_effect.charges])
+	return super()

@@ -117,6 +117,7 @@ func onLoadMap(save_file: SaveFileGD, area: AreaGD) -> void:
 	area.onLoadMapAfterScenes()
 	
 func onLoadMainMenu(skip_cutscene: bool = true) -> void:
+	get_tree().set_auto_accept_quit(true)
 	onLoadScreenWorld(main_menu_ui, main_menu_world)
 	for child in KeepAcross.get_children(): child.queue_free()
 	if !skip_cutscene:

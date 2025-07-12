@@ -55,6 +55,7 @@ func setInfo(_reward: Reward) -> void:
 	
 	if item is BoonGD or item is ToolGD:
 		TextureDisplay.setInfo(item, true)
+		@warning_ignore("static_called_on_instance")
 		var text: String = "[" + ("a" if item.ascended else "") + ("%s=" % item.info.getFofName().to_lower())\
 		 + str(item.info.id) + "]"
 		RewardDescription.setText(item.getDescription())

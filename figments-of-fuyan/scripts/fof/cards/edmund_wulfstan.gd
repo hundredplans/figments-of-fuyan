@@ -9,7 +9,7 @@ func onProcessAction(action: Action) -> void:
 func getDescription() -> String:
 	return super()
 
-func onRevenge(action: DamageAction) -> void:
+func onRevenge(_action: DamageAction) -> void:
 	var allies: Array = getVisibleFieldCardsAllies()
 	if allies.is_empty(): return
 	allies.shuffle()
