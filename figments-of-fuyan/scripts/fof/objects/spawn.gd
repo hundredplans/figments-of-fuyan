@@ -60,3 +60,10 @@ func onOccupy(state: bool) -> void:
 	if SpawnParticle == null: return
 	SpawnParticle.onOccupy(state)
 	
+func getHighestPoint() -> float:
+	match variation:
+		0: return 1.2
+		1: return 0.7
+		2: return 1.7
+		3: return 2.2
+	return 0.0

@@ -44,6 +44,7 @@ const DECK_CONTAINER_SPLIT_POINT: Dictionary[int, int] = { # Amount of slots to 
 	10: 5
 }
 
+var is_start_finished: bool
 func setInfo() -> void:
 	AniPlayer.play("SlideUIElements")
 	FadeCreamBackground.onFade(true)
@@ -82,6 +83,12 @@ func setInfo() -> void:
 	var stash_cards: Array = get_tree().get_nodes_in_group("StashCardsGD")
 	for StashCard: CardGD in stash_cards:
 		onCreateStashCardUI(StashCard)
+		
+	sort_type = Game.getSaveFile().getStashSortType()
+	onSortBySortType()
+	
+	await get_tree().create_timer(Game.FADE_TIME).timeout
+	is_start_finished = true
 	
 func setActiveToolIcon(_ActiveToolIcon: Control) -> void:
 	ActiveToolIcon = _ActiveToolIcon
@@ -127,7 +134,16 @@ func onSlotLocked(deck_slot: DeckSlot, state: bool) -> void:
 func onSendToStash(deck_slot: DeckSlot, Card: CardGD) -> void:
 	deck_slot.card_public_id = 0
 	onCreateStashCardUI(Card)
+	onSortBySortType()
 	deck_slot_changed.emit()
+	
+func onSortBySortType() -> void:
+	match sort_type:
+		1: onSortByRarity()
+		2: onSortByEnergy()
+		3: onSortByTier()
+		4: onSortByArea()
+		5: onSortByTool()
 	
 var deck_slot_selected: DeckSlot
 func onDeckSlotPressed(deck_slot: DeckSlot, selected: bool) -> void:
@@ -281,7 +297,7 @@ func _input(event: InputEvent) -> void:
 		onScroll(1)
 		
 	if ActiveToolIcon != null:
-		if Input.is_action_just_pressed("MainInput"):
+		if Input.is_action_just_pressed("MainInput") and is_start_finished:
 			onActiveToolIconReleased()
 		if event is InputEventMouseMotion and !is_exit_start:
 			ActiveToolIcon.global_position += event.relative
@@ -313,9 +329,105 @@ func onActiveToolIconReleased() -> void:
 	var Card: CardGD = CardUI.Card
 	var Tool: ToolGD = ActiveToolIcon.Tool
 	
-	Card.onPushAction(AddToolAction.new(Card, Tool))
-	CardUI.onToolUpdated(Tool)
+	Card.onForceAction(AddToolAction.new(Card, Tool, true))
+	CardUI.onToolUpdated(Card.Tool)
 	active_tool_added.emit(CardUI)
 	
 	await get_tree().create_timer(TOOL_ADDED_EXIT_DELAY).timeout
 	onExitButtonPressed()
+
+var sort_type: int # 0 = nothing, 1 = rarity, 2 = energy, 3 = tier, 4 = area, 5 = tool
+func onSortByRarity() -> void: # Rarity, Energy, Tier, ID
+	if sort_type != 1: Game.getSaveFile().setStashSortType(1)
+	sort_type = 1
+	var children: Array = StashContainer.get_children()
+	children.sort_custom(onSortComparatorByRarity)
+	onSortStashCards(children)
+
+func onSortByEnergy() -> void: # Energy, Rarity, Tier, ID
+	if sort_type != 2: Game.getSaveFile().setStashSortType(2)
+	sort_type = 2
+	var children: Array = StashContainer.get_children()
+	children.sort_custom(onSortComparatorByEnergy)
+	onSortStashCards(children)
+
+func onSortByTier() -> void: # Tier, Energy, Rarity, ID
+	if sort_type != 3: Game.getSaveFile().setStashSortType(3)
+	sort_type = 3
+	var children: Array = StashContainer.get_children()
+	children.sort_custom(onSortComparatorByTier)
+	onSortStashCards(children)
+	
+var card_id_to_area_id: Dictionary[int, int] = {}
+func onSortByArea() -> void: # Area, Energy, Rarity, Tier, ID
+	if sort_type != 4: Game.getSaveFile().setStashSortType(4)
+	sort_type = 4
+	if card_id_to_area_id.is_empty():
+		for area_info: AreaInfo in Helper.getFofInfoArray(AreaInfo):
+			for id: int in area_info.card_ids:
+				card_id_to_area_id[id] = area_info.id
+	
+	var children: Array = StashContainer.get_children()
+	children.sort_custom(onSortComparatorByArea)
+	onSortStashCards(children)
+	
+func onSortByTool() -> void:
+	if sort_type != 5: Game.getSaveFile().setStashSortType(5)
+	sort_type = 5
+	var children: Array = StashContainer.get_children()
+	children.sort_custom(onSortComparatorByTool)
+	onSortStashCards(children)
+	
+func onSortComparatorByTool(xUI: Control, yUI: Control) -> bool:
+	var x: CardInfo = xUI.Card.info
+	var y: CardInfo = yUI.Card.info
+	
+	var xHasTool: bool = xUI.Card.getTool() != null
+	var yHasTool: bool = yUI.Card.getTool() != null
+	
+	if xHasTool != yHasTool: return yHasTool
+	if x.energy != y.energy: return x.energy < y.energy
+	if x.rarity != y.rarity: return x.rarity < y.rarity
+	if xUI.Card.getTier() != yUI.Card.getTier(): return xUI.Card.getTier() < yUI.Card.getTier()
+	return x.id < y.id
+	
+func onSortComparatorByArea(xUI: Control, yUI: Control) -> bool:
+	var x: CardInfo = xUI.Card.info
+	var y: CardInfo = yUI.Card.info
+	if card_id_to_area_id[x.id] != card_id_to_area_id[y.id]: return card_id_to_area_id[x.id] < card_id_to_area_id[y.id]
+	if x.energy != y.energy: return x.energy < y.energy
+	if x.rarity != y.rarity: return x.rarity < y.rarity
+	if xUI.Card.getTier() != yUI.Card.getTier(): return xUI.Card.getTier() < yUI.Card.getTier()
+	return x.id < y.id
+	
+func onSortComparatorByTier(xUI: Control, yUI: Control) -> bool:
+	var x: CardInfo = xUI.Card.info
+	var y: CardInfo = yUI.Card.info
+	if xUI.Card.getTier() != yUI.Card.getTier(): return xUI.Card.getTier() < yUI.Card.getTier()
+	if x.energy != y.energy: return x.energy < y.energy
+	if x.rarity != y.rarity: return x.rarity < y.rarity
+	return x.id < y.id
+	
+func onSortComparatorByRarity(xUI: Control, yUI: Control) -> bool:
+	var x: CardInfo = xUI.Card.info
+	var y: CardInfo = yUI.Card.info
+	if x.rarity != y.rarity: return x.rarity < y.rarity
+	if x.energy != y.energy: return x.energy < y.energy
+	if xUI.Card.getTier() != yUI.Card.getTier(): return xUI.Card.getTier() < yUI.Card.getTier()
+	return x.id < y.id
+	
+func onSortComparatorByEnergy(xUI: Control, yUI: Control) -> bool:
+	var x: CardInfo = xUI.Card.info
+	var y: CardInfo = yUI.Card.info
+	if x.energy != y.energy: return x.energy < y.energy
+	if x.rarity != y.rarity: return x.rarity < y.rarity
+	if xUI.Card.getTier() != yUI.Card.getTier(): return xUI.Card.getTier() < yUI.Card.getTier()
+	return x.id < y.id
+
+func onSortStashCards(new_children: Array) -> void:
+	new_children.reverse()
+	for child: Control in StashContainer.get_children():
+		StashContainer.remove_child(child)
+		
+	for child: Control in new_children:
+		StashContainer.add_child(child)

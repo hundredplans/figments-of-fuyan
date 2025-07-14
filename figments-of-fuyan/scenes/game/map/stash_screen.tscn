@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cqxjqqj3gig1b"]
+[gd_scene load_steps=21 format=3 uid="uid://cqxjqqj3gig1b"]
 
 [ext_resource type="Script" uid="uid://0tx4w8g33qop" path="res://scenes/game/map/stash_screen.gd" id="1_vh71u"]
 [ext_resource type="PackedScene" uid="uid://dxvuvb68hgxug" path="res://scenes/common/exit_button/exit_button.tscn" id="1_xnd7x"]
@@ -10,6 +10,12 @@
 [ext_resource type="Texture2D" uid="uid://do8qr6q0dyyiy" path="res://assets/sprites/ui/icons/deck.png" id="5_jpe4s"]
 [ext_resource type="PackedScene" uid="uid://ct1cn5tc1ofmb" path="res://scenes/game/boons/boon_icon.tscn" id="9_2jssj"]
 [ext_resource type="Script" uid="uid://dnqf5f1jadalx" path="res://scenes/game/levels/boon_box.gd" id="9_jpe4s"]
+[ext_resource type="PackedScene" uid="uid://mehoa6ajrja5" path="res://scenes/common/highlight_tx_button.tscn" id="11_htpxe"]
+[ext_resource type="Texture2D" uid="uid://dilj4y3uvwbg8" path="res://assets/sprites/game/boons/campfire_boon.png" id="12_eus34"]
+[ext_resource type="Texture2D" uid="uid://vg6qhbo7xvhs" path="res://assets/sprites/game/boons/mentor_boon.png" id="12_sgx1o"]
+[ext_resource type="Texture2D" uid="uid://bci3slqe4h5gv" path="res://assets/sprites/game/boons/gazer_boon.png" id="13_eus34"]
+[ext_resource type="Texture2D" uid="uid://uf61yvygws5h" path="res://assets/sprites/game/boons/nurture_boon.png" id="13_sgx1o"]
+[ext_resource type="Texture2D" uid="uid://brcmwcvusvyf3" path="res://assets/sprites/game/boons/dominance_boon.png" id="14_y0ya4"]
 
 [sub_resource type="Animation" id="Animation_jpe4s"]
 resource_name = "EnergyLimitReached"
@@ -336,6 +342,35 @@ layout_mode = 2
 mouse_filter = 2
 columns = 6
 
+[node name="MarginContainer3" type="MarginContainer" parent="ScreenManager"]
+layout_mode = 0
+offset_left = 415.0
+offset_right = 829.0
+offset_bottom = 120.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ScreenManager/MarginContainer3"]
+layout_mode = 2
+
+[node name="SortByToolButton" parent="ScreenManager/MarginContainer3/HBoxContainer" instance=ExtResource("11_htpxe")]
+layout_mode = 2
+texture_normal = ExtResource("12_eus34")
+
+[node name="SortByTierButton" parent="ScreenManager/MarginContainer3/HBoxContainer" instance=ExtResource("11_htpxe")]
+layout_mode = 2
+texture_normal = ExtResource("12_sgx1o")
+
+[node name="SortByAreaButton" parent="ScreenManager/MarginContainer3/HBoxContainer" instance=ExtResource("11_htpxe")]
+layout_mode = 2
+texture_normal = ExtResource("13_sgx1o")
+
+[node name="SortByEnergyButton" parent="ScreenManager/MarginContainer3/HBoxContainer" instance=ExtResource("11_htpxe")]
+layout_mode = 2
+texture_normal = ExtResource("13_eus34")
+
+[node name="SortByRarityButton" parent="ScreenManager/MarginContainer3/HBoxContainer" instance=ExtResource("11_htpxe")]
+layout_mode = 2
+texture_normal = ExtResource("14_y0ya4")
+
 [node name="CardUIRaycast" type="RayCast2D" parent="."]
 unique_name_in_owner = true
 target_position = Vector2(0, 0)
@@ -351,3 +386,13 @@ collide_with_bodies = false
 [connection signal="mouse_entered" from="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer/VBoxContainer/HBoxContainer/BoonScrollContainer/MarginContainer/BoonBox" to="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer/VBoxContainer/HBoxContainer/BoonScrollContainer/MarginContainer/BoonBox" method="onMouseInUI" binds= [true]]
 [connection signal="mouse_exited" from="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer/VBoxContainer/HBoxContainer/BoonScrollContainer/MarginContainer/BoonBox" to="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer/VBoxContainer/HBoxContainer/BoonScrollContainer/MarginContainer/BoonBox" method="onMouseInUI" binds= [false]]
 [connection signal="mouse_in_ui" from="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer/VBoxContainer/HBoxContainer/BoonScrollContainer/MarginContainer/BoonBox" to="." method="onMouseInUI"]
+[connection signal="mouse_in_ui" from="ScreenManager/MarginContainer3/HBoxContainer/SortByToolButton" to="." method="onMouseInUI"]
+[connection signal="pressed" from="ScreenManager/MarginContainer3/HBoxContainer/SortByToolButton" to="." method="onSortByTool"]
+[connection signal="mouse_in_ui" from="ScreenManager/MarginContainer3/HBoxContainer/SortByTierButton" to="." method="onMouseInUI"]
+[connection signal="pressed" from="ScreenManager/MarginContainer3/HBoxContainer/SortByTierButton" to="." method="onSortByTier"]
+[connection signal="mouse_in_ui" from="ScreenManager/MarginContainer3/HBoxContainer/SortByAreaButton" to="." method="onMouseInUI"]
+[connection signal="pressed" from="ScreenManager/MarginContainer3/HBoxContainer/SortByAreaButton" to="." method="onSortByArea"]
+[connection signal="mouse_in_ui" from="ScreenManager/MarginContainer3/HBoxContainer/SortByEnergyButton" to="." method="onMouseInUI"]
+[connection signal="pressed" from="ScreenManager/MarginContainer3/HBoxContainer/SortByEnergyButton" to="." method="onSortByEnergy"]
+[connection signal="mouse_in_ui" from="ScreenManager/MarginContainer3/HBoxContainer/SortByRarityButton" to="." method="onMouseInUI"]
+[connection signal="pressed" from="ScreenManager/MarginContainer3/HBoxContainer/SortByRarityButton" to="." method="onSortByRarity"]

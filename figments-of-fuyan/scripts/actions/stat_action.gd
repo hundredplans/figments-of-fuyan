@@ -105,7 +105,8 @@ func onProcessTypes(stat_info: StatInfo, types: Array, values: Array, turns: int
 	
 func getLogInfo() -> Array:
 	var arr: Array = []
-	for stat_info in stat_infos:
+	for stat_info: StatInfo in stat_infos:
+		if stat_info.Card == null: continue
 		arr.append("Card: " + stat_info.Card.info.name)
 		arr.append("Stat: " + str(stat_info.types.map(Game.getStatString)))
 		arr.append("Value: " + str(stat_info.values))

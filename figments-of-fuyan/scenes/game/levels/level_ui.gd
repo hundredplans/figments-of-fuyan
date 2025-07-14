@@ -118,7 +118,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	
 	BoonBox.onUpdate()
 	
-	for Tile in get_tree().get_nodes_in_group("TilesGD"):
+	for Tile: TileGD in get_tree().get_nodes_in_group("TilesGD"):
 		onTileCreated(Tile)
 		
 func _process(_delta: float) -> void:
@@ -140,6 +140,7 @@ func onUpdateActionLock(previous_state: bool) -> void:
 	var state: bool = getActionLock()
 	if state != previous_state:
 		action_lock.emit(state)
+		if get_tree() == null: return
 		get_tree().call_group("LevelTilesGD", "onUpdateActionLock", state)
 		for btn in get_tree().get_nodes_in_group("ActionLockDisabled"):
 			if btn == PassButton: btn.setActionLock(state)

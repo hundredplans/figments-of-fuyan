@@ -169,7 +169,7 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 	for Card in get_tree().get_nodes_in_group("HandCardsGD"):
 		onPushAction(HandCardAction.new(Card))
 		
-	onChangePhase(data.phase, true)
+	onChangePhase(data.phase, true, true)
 	if is_ended:
 		onGameEnded()
 		
@@ -200,7 +200,7 @@ func getFieldCardDatas() -> Array:
 #endregion
 
 #region Setters
-func onChangePhase(_phase: Game.Phases, instant: bool = false) -> void:
+func onChangePhase(_phase: Game.Phases, instant: bool = false, reload: bool = false) -> void:
 	var old_phase: Game.Phases = phase
 	match old_phase:
 		Game.Phases.START:
@@ -213,6 +213,7 @@ func onChangePhase(_phase: Game.Phases, instant: bool = false) -> void:
 	if phase in Game.ADVANCE_PHASES:
 		onAdvanceTurn(Game.ADVANCE_PHASES.find(phase))
 	
+	if reload: return
 	match phase:
 		Game.Phases.START:
 			onForceAction(InsertAction.new(Game.getSaveFile().getChampionCard()))

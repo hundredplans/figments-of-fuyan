@@ -17,6 +17,10 @@ func onPreAction() -> void:
 	var occupy_actions: Array = Game.ActionManagerReference.getActionsByType(OccupyAction)
 	if occupy_actions.any(func(x: OccupyAction): return x.force_occupy and x.Tile == Tile):
 		onFailAction()
+		return
+		
+	if Card.isAlly(0):
+		Card.add_to_group("AllyCardsGD")
 
 func onPostAction() -> void:
 	var SpawnObject: SpawnGD = Tile.getSpawnTile()

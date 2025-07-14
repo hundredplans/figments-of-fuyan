@@ -31,6 +31,7 @@ var _ctrl = false
 
 @export var disable_movement: bool = false
 @export var block_ctrl: bool = false
+@export var block_arrows: bool = false
 @export_group("Sideways")
 @export var enable_only_sideways: bool = false
 @export var X_MIN: float = 0
@@ -67,14 +68,25 @@ func _input(event):
 	# Receives key input
 	if event is InputEventKey and !(get_viewport().gui_get_focus_owner() as LineEdit):
 		match event.keycode:
-			KEY_W, KEY_UP:
+			KEY_W:
 				_w = event.pressed
-			KEY_S, KEY_DOWN:
+			KEY_S:
 				_s = event.pressed
-			KEY_A, KEY_LEFT:
+			KEY_A:
 				_a = event.pressed
-			KEY_D, KEY_RIGHT:
+			KEY_D:
 				_d = event.pressed
+				
+		if !block_arrows:
+			match event.keycode:
+				KEY_UP:
+					_w = event.pressed
+				KEY_DOWN:
+					_s = event.pressed
+				KEY_LEFT:
+					_a = event.pressed
+				KEY_RIGHT:
+					_d = event.pressed
 					
 		match event.keycode:
 			KEY_SHIFT:

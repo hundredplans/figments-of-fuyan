@@ -26,8 +26,7 @@ extends Node
 @onready var SettingsContainer: MarginContainer = %SettingsContainer
 @onready var EnemyMinSpawnLineEdit: LineEdit = %EnemyMinSpawnLineEdit
 @onready var EnemyMaxSpawnLineEdit: LineEdit = %EnemyMaxSpawnLineEdit
-@onready var ProgressMinLineEdit: LineEdit = %ProgressMinLineEdit
-@onready var ProgressMaxLineEdit: LineEdit = %ProgressMaxLineEdit
+@onready var DifficultyLineEdit: LineEdit = %DifficultyLineEdit
 @onready var BudgetOffsetLineEdit: LineEdit = %BudgetOffsetLineEdit
 
 @onready var AreaEnv: WorldEnvironment = %AreaEnv
@@ -372,6 +371,7 @@ func onChangeMouseTileObjectVariation(direction: int) -> void:
 	if TileObject != null and TileObject is ObjectGD:
 		TileObject.clampVariation(direction)
 		TileObject.onLoadModel()
+		TileObject.onCreateGroupLabel()
 		
 func onDisableScroll() -> void:
 	is_scroll_disabled = true
@@ -542,8 +542,7 @@ func onSaveLevel() -> void:
 
 		loaded.enemy_min_spawn_amount = int(EnemyMinSpawnLineEdit.text)
 		loaded.enemy_max_spawn_amount = int(EnemyMaxSpawnLineEdit.text)
-		loaded.progress_min = int(ProgressMinLineEdit.text)
-		loaded.progress_max = int(ProgressMaxLineEdit.text)
+		loaded.difficulty = int(DifficultyLineEdit.text)
 		loaded.enemy_budget_offset = int(BudgetOffsetLineEdit.text)
 		
 		if level_name == loaded.name:
@@ -718,14 +717,12 @@ func setSettings(loaded: Variant) -> void:
 	if loaded is DecorationDatastore:
 		EnemyMinSpawnLineEdit.text = ""
 		EnemyMaxSpawnLineEdit.text = ""
-		ProgressMinLineEdit.text = ""
-		ProgressMaxLineEdit.text = ""
+		DifficultyLineEdit.text = ""
 		BudgetOffsetLineEdit.text = ""
 	elif loaded is LevelInfo:
 		EnemyMinSpawnLineEdit.text = str(loaded.enemy_min_spawn_amount)
 		EnemyMaxSpawnLineEdit.text = str(loaded.enemy_max_spawn_amount)
-		ProgressMinLineEdit.text = str(loaded.progress_min)
-		ProgressMaxLineEdit.text = str(loaded.progress_max)
+		DifficultyLineEdit.text = str(loaded.difficulty)
 		BudgetOffsetLineEdit.text = str(loaded.enemy_budget_offset)
 #endregion
 

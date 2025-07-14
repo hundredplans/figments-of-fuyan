@@ -9,9 +9,9 @@ var StashScreen: Control
 
 const CLAIMED_COLOR := Color(0.5, 0.5, 0.5, 1.0)
 
-const PRECALCULATED_CLAIMED_LABEL_BOON_OFFSET := Vector2(-70, 150)
-const PRECALCULATED_CLAIMED_LABEL_TOOL_OFFSET := Vector2(-70, 150)
-const PRECALCULATED_CLAIMED_LABEL_CARD_UI_OFFSET := Vector2(-90, 110)
+const PRECALCULATED_CLAIMED_LABEL_BOON_OFFSET := Vector2(-125, 120)
+const PRECALCULATED_CLAIMED_LABEL_TOOL_OFFSET := Vector2(-125, 120)
+const PRECALCULATED_CLAIMED_LABEL_CARD_UI_OFFSET := Vector2(-125, 120)
 
 @export var ToolIconPacked: PackedScene
 @export var spicy_rice_massive: LabelSettings
@@ -49,18 +49,25 @@ func setInfo(_reward: Reward) -> void:
 		if item is BoonGD:
 			IconUI = BoonIcon
 			BoonIcon.setInfo(item, !reward.isTaken())
+			BoonIcon.setMouseFilter(Control.MouseFilter.MOUSE_FILTER_IGNORE\
+				if reward.isTaken() else Control.MouseFilter.MOUSE_FILTER_STOP)
 			BoonIcon.mouse_in_ui.connect(onMouseInIconUI.bind(BoonIcon))
 			BoonIcon.pressed.connect(onBoonPressed.bind(BoonIcon))
 		elif item is ToolGD:
 			IconUI = ToolIcon
 			ToolIcon.setInfo(item, !reward.isTaken())
+			ToolIcon.setMouseFilter(Control.MouseFilter.MOUSE_FILTER_IGNORE\
+				if reward.isTaken() else Control.MouseFilter.MOUSE_FILTER_STOP)
 			ToolIcon.mouse_in_ui.connect(onMouseInIconUI.bind(ToolIcon))
 			ToolIcon.pressed.connect(onToolPressed.bind(IconUI))
 		elif item is CardGD:
 			var CardUI: Control = item.onCreateCardUI(CardControl, !reward.isTaken())
+			if reward.isTaken():
+				CardUI.onChangeBackgroundMouseFilter(false, false)
 			IconUI = CardUI
 			EpicCardUI = CardUI
-			CardUI.set_anchors_preset(Control.PRESET_CENTER)
+			CardUI.position = Vector2(80, 0)
+			#CardUI.set_anchors_preset(Control.PRESET_CENTER_TOP)
 			CardUI.mouse_in_ui.connect(onMouseInIconUI.bind(CardUI))
 			CardUI.pressed.connect(onCardUIPressed)
 			
@@ -69,12 +76,14 @@ func setInfo(_reward: Reward) -> void:
 
 	BoonIcon.onDisplayCharges(false)
 	ToolIcon.setExpandMode(TextureRect.ExpandMode.EXPAND_FIT_HEIGHT)
+	
 	if reward.isTaken(): Main.modulate = CLAIMED_COLOR
 
 func onMouseInIconUI(state: bool, IconUI: Control) -> void:
 	if reward.isTaken(): return
 	var tween: Tween = create_tween()
-	var value: float = 0.1 if state else -0.1
+	var target_value: float = 1.1 if state else 0.9
+	var value: float = target_value - IconUI.scale.x
 	tween.tween_property(IconUI, "scale", Vector2(value, value), 0.25).as_relative().set_trans(Tween.TRANS_SINE)
 
 func onCardUIPressed(CardUI: Control) -> void:
@@ -91,10 +100,14 @@ func onRewardTaken(_IconUI: Control, item: FofGD) -> void:
 	onCreateClaimedLabel(item)
 	reward.setTaken(true)
 	
-	for _IconUI: Control in [BoonIcon, ToolIcon, EpicCardUI]:
-		_IconUI.setHighlightOnHover(false)
+	for NewIconUI: Control in [BoonIcon, ToolIcon, EpicCardUI]:
+		NewIconUI.setHighlightOnHover(false)
 		var tween := create_tween()
-		tween.tween_property(_IconUI, "scale", Vector2.ONE, 0.25)
+		tween.tween_property(NewIconUI, "scale", Vector2.ONE, 0.25)
+		
+	ToolIcon.setMouseFilter(Control.MOUSE_FILTER_IGNORE)
+	BoonIcon.setMouseFilter(Control.MOUSE_FILTER_IGNORE)
+	EpicCardUI.onChangeBackgroundMouseFilter(false, false)
 	reward_taken.emit(reward)
 	
 	var new_tween := create_tween()
