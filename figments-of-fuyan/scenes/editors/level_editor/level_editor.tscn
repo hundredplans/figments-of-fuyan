@@ -312,22 +312,9 @@ layout_mode = 2
 [node name="Label" type="Label" parent="UI/SettingsContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Progress Min: "
+text = "Difficulty:"
 
-[node name="ProgressMinLineEdit" type="LineEdit" parent="UI/SettingsContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer3"]
-unique_name_in_owner = true
-layout_mode = 2
-alignment = 1
-
-[node name="HBoxContainer4" type="HBoxContainer" parent="UI/SettingsContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="UI/SettingsContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer4"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Progress Max: "
-
-[node name="ProgressMaxLineEdit" type="LineEdit" parent="UI/SettingsContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer4"]
+[node name="DifficultyLineEdit" type="LineEdit" parent="UI/SettingsContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer3"]
 unique_name_in_owner = true
 layout_mode = 2
 alignment = 1
@@ -353,6 +340,7 @@ unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 5)
 script = ExtResource("2_voor8")
 block_ctrl = true
+block_arrows = true
 
 [node name="AreaEnv" type="WorldEnvironment" parent="World"]
 unique_name_in_owner = true

@@ -20,6 +20,7 @@ signal claim_button_down
 @onready var RewardsLabel: Label = %RewardsLabel
 @onready var Main: Control = %Main
 
+var is_page_reward_taken: bool
 var rewards_ui: Control
 var rewards: Rewards
 var page: int
@@ -38,6 +39,7 @@ func setRewardUI() -> void:
 	var reward: Reward = getRewardByPage()
 	var item: FofGD = reward.getItem()
 	var rewards_ui_packed: PackedScene
+	is_page_reward_taken = reward.isTaken()
 	
 	if is_instance_of(item, ActionWrapper):
 		if item.hasType(ChooseRewardAction):
@@ -72,7 +74,7 @@ func getRewardByPage() -> Reward:
 	return rewards.getReward(page)
 	
 func setExitButtonText() -> void:
-	ExitButton.text = "Skip  Rewards" if !rewards.isAllRewardsTaken() else "Continue"
+	ExitButton.text = "Skip" if !rewards.isAllRewardsTaken() else "Continue"
 	
 func setRewardsLabelText() -> void:
 	RewardsLabel.text = "Rewards [%s/%s]" % [page + 1, rewards.items.size()]
@@ -125,7 +127,10 @@ func onArrowButtonPressed(direction: int) -> void:
 	setRewardUI()
 
 func onClaimButtonPressed() -> void:
-	claim_button_pressed.emit()
+	if !is_page_reward_taken:
+		claim_button_pressed.emit()
+	else:
+		onArrowButtonPressed(1)
 	
 func setClaimInfoLabel(reward_ui_packed: PackedScene, reward: Reward) -> void:
 	var text: String
@@ -142,6 +147,7 @@ func onClaimButtonDown() -> void:
 func onRewardTaken(reward: Reward) -> void:
 	setExitButtonText()
 	setClaimInfoLabelModulate(reward)
+	is_page_reward_taken = true
 	
 func setClaimInfoLabelModulate(reward: Reward) -> void:
 	ClaimInfoLabel.modulate = Color(0.5, 0.5, 0.5, 1.0) if reward.isTaken() else Color.WHITE

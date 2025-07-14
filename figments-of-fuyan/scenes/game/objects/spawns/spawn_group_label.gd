@@ -10,3 +10,6 @@ func setGroups(groups: Array) -> void:
 	
 	text = str(groups)
 	text = text.replace("\"", "")
+
+func setHighestPoint(highest_point: float) -> void:
+	position.y = highest_point + 0.6

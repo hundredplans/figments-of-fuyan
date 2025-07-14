@@ -10,6 +10,7 @@ extends Control
 func setInfo(info_or_fof: Variant, stop_mouse: bool = false) -> void:
 	var info: FofInfo
 	var ascended: bool = false
+	if info_or_fof == null: queue_free(); return
 	if is_instance_of(info_or_fof, InfoAscended):
 		ascended = info_or_fof.ascended
 		info = info_or_fof.info

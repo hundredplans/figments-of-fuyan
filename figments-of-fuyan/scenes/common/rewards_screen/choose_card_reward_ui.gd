@@ -24,9 +24,13 @@ func setInfo(_reward: Reward) -> void:
 	for Card: CardGD in action.getItems():
 		var control := Control.new()
 		control.custom_minimum_size = Game.CARD_UI_SIZE
+		control.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		CardContainer.add_child(control)
 		
 		var CardUI: Control = Card.onCreateCardUI(control, !is_taken, true, null)
+		if is_taken:
+			CardUI.onChangeBackgroundMouseFilter(false, false)
+		
 		CardUI.set_anchors_preset(Control.PRESET_CENTER)
 		CardUI.pressed.connect(onRewardPressed)
 		CardUI.mouse_in_ui.connect(onMouseInCardUI.bind(CardUI))
@@ -44,6 +48,7 @@ func onRewardPressed(CardUI: Control) -> void:
 	for control: Control in CardContainer.get_children():
 		var _CardUI: Control = control.get_child(0)
 		_CardUI.setHighlightOnHover(false)
+		_CardUI.onChangeBackgroundMouseFilter(false, false)
 	
 	get_viewport().update_mouse_cursor_state()
 	
@@ -75,5 +80,6 @@ func onCreateClaimedLabel(CardUI: Control) -> Label:
 func onMouseInCardUI(state: bool, CardUI: Control) -> void:
 	if reward.isTaken(): return
 	var tween: Tween = create_tween()
-	var value: float = 0.1 if state else -0.1
+	var target_value: float = 1.1 if state else 0.9
+	var value: float = target_value - CardUI.scale.x
 	tween.tween_property(CardUI, "scale", Vector2(value, value), 0.25).as_relative().set_trans(Tween.TRANS_SINE)

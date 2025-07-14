@@ -21,6 +21,7 @@ var max_energy: int
 var deck_slots: Array # [DeckSlot]
 var energy_limit: int
 var timer: Timer
+var stash_sort_type: int
 
 #region Helper
 func getChampionCard() -> CardGD:
@@ -44,7 +45,7 @@ func onSave() -> SavedData:
 	
 	return SavedDataSaveFile.new(id, false, public_id, my_seed, area.onSave(), shillings, time_elapsed,\
 	ally_cards, saved_boons, highest_public_id, safe_encounter_count,\
-	upgrade_level, max_energy, energy_limit, deck_slots)
+	upgrade_level, max_energy, energy_limit, deck_slots, stash_sort_type)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -56,6 +57,7 @@ func onLoadData(data: SavedData) -> void:
 	max_energy = data.max_energy
 	energy_limit = data.energy_limit
 	deck_slots = data.deck_slots
+	stash_sort_type = data.stash_sort_type
 	
 	for card_data: SavedDataCard in data.ally_cards:
 		var Card: CardGD = SavedData.onLoadModel(card_data, get_parent())
@@ -87,6 +89,12 @@ func onFofInit() -> void:
 	
 func setInfo(_area: AreaGD) -> void:
 	area = _area
+	
+func setStashSortType(_stash_sort_type: int) -> void:
+	stash_sort_type = _stash_sort_type
+
+func getStashSortType() -> int:
+	return stash_sort_type
 	
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Save"):

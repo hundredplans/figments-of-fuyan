@@ -78,7 +78,7 @@ func getDirectoriesRecursive(DIR_PATH: String, contents := []) -> Array:
 		contents = getDirectoriesRecursive(DIR_PATH + "/" + dir, contents)
 	return contents
 	
-func getNodeTypeRecursive(parent: Node3D, script_type: Variant):
+func getNodeTypeRecursive(parent: Node, script_type: Variant):
 	return getChildrenRecursive(parent).filter(func(x: Node): return is_instance_of(x, script_type))
 
 const replacement_letters: Array = ["X", "Y", "Z"]

@@ -113,9 +113,16 @@ func onLoadDataLevelFofInit() -> void:
 	vision_datastore = VisionDatastore.new()
 	
 func onCreateGroupLabel() -> void:
+	if GroupLabel != null: GroupLabel.queue_free()
 	GroupLabel = load(info.SPAWN_GROUP_LABEL_SCENE_PATH).instantiate()
+	GroupLabel.setHighestPoint(getHighestPoint())
 	Model.add_child(GroupLabel)
 	GroupLabel.setInfo(groups)
+	
+func getHighestPoint() -> float:
+	var y_points: Array = getPoints().map(func(x: Vector3): return x.y)
+	if y_points.is_empty(): return 0.0
+	return y_points.max()
 	
 func onFofInit() -> void:
 	pass

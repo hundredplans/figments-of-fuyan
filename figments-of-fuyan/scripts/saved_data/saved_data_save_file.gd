@@ -12,11 +12,12 @@ class_name SavedDataSaveFile extends SavedData
 @export var max_energy: int
 @export var energy_limit: int
 @export var deck_slots: Array # [DeckSlot]
+@export var stash_sort_type: int
 
 func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _my_seed: int = 0, _area_data: SavedDataArea = null,\
  _shillings: int = 0, _time: int = 0, _ally_cards: Array = [], _boons: Array = [], _highest_public_id: int = 0,\
 	_safe_encounter_count: int = 1, _upgrade_level: int = 0, _max_energy: int = 0,\
-	_energy_limit: int = 0, _deck_slots: Array = []) -> void:
+	_energy_limit: int = 0, _deck_slots: Array = [], _stash_sort_type: int = 0) -> void:
 	super(_id, _first_init, _public_id)
 	my_seed = _my_seed
 	area_data = _area_data
@@ -30,6 +31,7 @@ func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _my_see
 	max_energy = _max_energy
 	energy_limit = _energy_limit
 	deck_slots = _deck_slots
+	stash_sort_type = _stash_sort_type
 
 func getInfoType() -> GDScript: return SaveFileInfo
 func getChampionData() -> SavedDataCard:

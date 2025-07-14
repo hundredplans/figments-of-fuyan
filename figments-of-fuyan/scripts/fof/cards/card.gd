@@ -44,6 +44,7 @@ var boss_datastore: BossDatastore # Null in here
 var is_knockback: bool # Not saved
 var card_offset: CardOffset # Offset of ronotation and position
 var champion_datastore: ChampionDatastore
+var tier: int
 #endregion
 
 #region Globals
@@ -175,7 +176,7 @@ func onAnimationFinished(ani_name: String) -> void:
 	if !ani_name.begins_with("Death") and !AniPlayer.is_playing(): onIdle()
 		
 func onJump() -> void:
-	#AniPlayer.stop() # Removed to address bug where sequencing jumps caused the animation to pause
+	AniPlayer.stop()
 	onPlayAnimation("Jump")
 		
 func onAttack(DefenderTile: TileGD, delay: float) -> void:
@@ -233,7 +234,7 @@ func onSave() -> SavedDataCard:
 	attack, health, speed, max_speed, max_health, energy, draw_order, card_place, turn_state, SavedData.onSaveGroup(status_effects), attacks, attack_range, delayed_stats,\
 	ability_save, active_effects, Tool.onSave() if Tool != null else null, SavedData.onSaveGroup(field_effects), anibility_datastore,\
 	is_temporary, is_awakened_in_combat, ai_datastore, base_stats,
-	overworld_traits, bounty_kills, boss_datastore, card_offset, champion_datastore)
+	overworld_traits, bounty_kills, boss_datastore, card_offset, champion_datastore, tier)
 
 func onPreSave() -> void:
 	for delayed: Variant in delayed_stats: delayed.onSave()
@@ -272,6 +273,7 @@ func onLoadData(data: SavedData) -> void:
 	is_temporary = data.is_temporary
 	draw_order = data.draw_order
 	card_offset = data.card_offset
+	tier = data.tier
 	
 	if data.tool_data != null:
 		Tool = SavedData.onLoadModel(data.tool_data, self)
@@ -1712,3 +1714,6 @@ func onGainShield(FofObject: FofGD = null) -> FieldEffectGD:
 func onGainShieldAction(FofObject: FofGD = null) -> AddFieldEffectAction:
 	if getFirstFieldEffect(SHIELD_ID) != null: return null
 	return onCreateBaseFieldEffectAction(SHIELD_ID, -1, -1, FofObject)
+	
+func getTier() -> int:
+	return tier
