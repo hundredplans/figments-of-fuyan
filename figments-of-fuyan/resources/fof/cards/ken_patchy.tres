@@ -1,14 +1,16 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://tqw101hxv0i0"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=18 format=3]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_qlku1"]
-[ext_resource type="Image" uid="uid://rqf8oyjefkca" path="res://assets/sprites/game/cards/art_pop/ken_patchy.png" id="2_jpwix"]
-[ext_resource type="Texture2D" uid="uid://dac17h6ctfnth" path="res://assets/sprites/game/cards/art_mini/ken_patchy.png" id="2_mxtni"]
-[ext_resource type="Resource" uid="uid://r4emkni6o3hx" path="res://resources/fof/archetypes/mercenary.tres" id="2_nx5xl"]
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_g48pi"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="4_rsjp6"]
-[ext_resource type="PackedScene" uid="uid://bd2esqpmo73tk" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_vmm0p"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_ifa2t"]
-[ext_resource type="Script" uid="uid://cvt53bcrgxbwp" path="res://scripts/fof/cards/ken_patchy.gd" id="6_nx5xl"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_qlku1"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/ken_patchy.png" id="2_jpwix"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/ken_patchy.png" id="2_mxtni"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/mercenary.tres" id="2_nx5xl"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_g48pi"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="4_rsjp6"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_vmm0p"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_ifa2t"]
+[ext_resource type="Script" path="res://scripts/fof/cards/ken_patchy.gd" id="6_nx5xl"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_e50y3"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_flxe8"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
 size = Vector3(0.663147, 1.94543, 0.526978)
@@ -26,8 +28,49 @@ _bundled = {
 "version": 3
 }
 
+[sub_resource type="Resource" id="Resource_flxe8"]
+script = ExtResource("10_e50y3")
+attack = 5
+health = 2
+speed = 3
+energy = 3
+description = "On Hit: STUN this"
+active_abilities = Array[ExtResource("11_flxe8")]([])
+traits = Array[ExtResource("3_g48pi")]([])
+
+[sub_resource type="Resource" id="Resource_5fenk"]
+script = ExtResource("10_e50y3")
+attack = 5
+health = 2
+speed = 3
+energy = 3
+description = "On Hit [1]: STUN this"
+active_abilities = Array[ExtResource("11_flxe8")]([])
+traits = Array[ExtResource("3_g48pi")]([])
+
+[sub_resource type="Resource" id="Resource_dt3ow"]
+script = ExtResource("10_e50y3")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description = ""
+active_abilities = Array[ExtResource("11_flxe8")]([])
+traits = Array[ExtResource("3_g48pi")]([])
+
+[sub_resource type="Resource" id="Resource_uhcaj"]
+script = ExtResource("10_e50y3")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description = ""
+active_abilities = Array[ExtResource("11_flxe8")]([])
+traits = Array[ExtResource("3_g48pi")]([])
+
 [resource]
 script = ExtResource("4_rsjp6")
+tiers = Array[ExtResource("10_e50y3")]([SubResource("Resource_flxe8"), SubResource("Resource_5fenk"), SubResource("Resource_dt3ow"), SubResource("Resource_uhcaj")])
 attack = 5
 health = 2
 speed = 3

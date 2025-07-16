@@ -4,6 +4,9 @@ const START_X: int = -12
 const OFFSET: int = 3
 const CARD_UI_OFFSET := Vector2(-120, -400)
 
+@export var EDITABLE_CARD_UI_PACKED: PackedScene
+
+@onready var TieredCardGrid: GridContainer = %TieredCardGrid
 @onready var CardGrid: GridContainer = %CardGrid
 @onready var SearchAreaCard: LineEdit = %SearchAreaCard
 @onready var CardParent: Node3D = %CardParent
@@ -50,12 +53,6 @@ func onCreateDeckCardUI(Card: CardGD) -> void:
 	ArchetypeLabel.position = Vector2(0, -5)
 	ArchetypeLabel.size.x = CardUI.size.x
 	ArchetypeLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	
-func _input(_event: InputEvent) -> void:
-	if Input.is_action_just_pressed("FocusControl"):
-		if SearchAreaCard.has_focus():
-			SearchAreaCard.release_focus()
-		else: SearchAreaCard.grab_focus()
 
 func _on_ascend_button_pressed() -> void:
 	for Card in get_tree().get_nodes_in_group("CardsGD"):
@@ -75,12 +72,19 @@ func _on_search_area_card_text_changed(text: String) -> void:
 				CardUI.visible = true
 
 #region CardSpot
-@onready var CardSpot: Control = %CardSpot
-var CardSpotCard: Control
 func onCardUIPressed(CardUI: Control) -> void:
-	if CardSpotCard != null: CardSpotCard.queue_free()
-	var Card: CardGD = CardUI.Card
-	CardSpotCard = Card.onCreateCardUI(CardSpot)
-	CardSpotCard.scale = Vector2(2, 2)
-	CardSpotCard.position = CardSpot.size / 4
+	var card_info: CardInfo = CardUI.Card.info
+	if card_info.tiers.size() < 4:
+		for i: int in range(4 - card_info.tiers.size()):
+			card_info.tiers.append(TierDatastore.new())
+				
+	ResourceSaver.save(card_info)
+	for EditableCardUI: Control in TieredCardGrid.get_children():
+		EditableCardUI.onSaveToCardInfo()
+		EditableCardUI.queue_free()
+	
+	for tier: int in range(1, 5):
+		var EditableCardUI: Control = EDITABLE_CARD_UI_PACKED.instantiate()
+		TieredCardGrid.add_child(EditableCardUI)
+		EditableCardUI.setInfo(card_info, tier)
 #endregion

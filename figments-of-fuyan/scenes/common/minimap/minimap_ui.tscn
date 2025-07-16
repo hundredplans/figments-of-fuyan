@@ -1,0 +1,37 @@
+[gd_scene load_steps=4 format=3 uid="uid://wl5mj2xvabxc"]
+
+[ext_resource type="Script" uid="uid://c2bitbl4csg4j" path="res://scenes/common/minimap/minimap_ui.gd" id="1_ddjvp"]
+[ext_resource type="PackedScene" uid="uid://du22nfcbi2vth" path="res://scenes/common/fade_cream_background/fade_cream_background.tscn" id="2_2f4s1"]
+[ext_resource type="PackedScene" uid="uid://dxvuvb68hgxug" path="res://scenes/common/exit_button/exit_button.tscn" id="3_k3ln5"]
+
+[node name="MinimapUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_ddjvp")
+
+[node name="ExitButton" parent="." instance=ExtResource("3_k3ln5")]
+modulate = Color(1, 0, 0, 1)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -110.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = 110.0
+grow_horizontal = 0
+
+[node name="FadeBackground" parent="." instance=ExtResource("2_2f4s1")]
+unique_name_in_owner = true
+layout_mode = 1
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+DEFAULT_ALPHA = 0
+FADE_COLOR = Color(0, 0, 0, 1)
+
+[connection signal="pressed" from="ExitButton" to="." method="onExit"]

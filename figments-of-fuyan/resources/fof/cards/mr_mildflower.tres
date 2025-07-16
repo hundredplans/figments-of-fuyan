@@ -1,14 +1,16 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://ck8lhku2iedc5"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=18 format=3]
 
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="1_5wykw"]
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_iocfo"]
-[ext_resource type="Texture2D" uid="uid://qe6xg7rfo7n3" path="res://assets/sprites/game/cards/art_mini/mr_mildflower.png" id="1_lijaw"]
-[ext_resource type="Image" uid="uid://b32fyhkkap3o7" path="res://assets/sprites/game/cards/art_pop/mr_mildflower.png" id="1_pxu7r"]
-[ext_resource type="Resource" uid="uid://ck2eowtrmk57m" path="res://resources/fof/archetypes/docile.tres" id="2_kurxu"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="2_qt6uf"]
-[ext_resource type="PackedScene" uid="uid://mv1l5oygneow" path="res://assets/models/fof/cards/mr_mildflower.glb" id="3_qkak3"]
-[ext_resource type="Script" uid="uid://b1c7dhwye1fm1" path="res://scripts/fof/cards/mr_mildflower.gd" id="4_8tp78"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_0qfbd"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="1_5wykw"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_iocfo"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/mr_mildflower.png" id="1_lijaw"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/mr_mildflower.png" id="1_pxu7r"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/docile.tres" id="2_kurxu"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="2_qt6uf"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/mr_mildflower.glb" id="3_qkak3"]
+[ext_resource type="Script" path="res://scripts/fof/cards/mr_mildflower.gd" id="4_8tp78"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_0qfbd"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_18ovi"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_pkikf"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_g8nrt"]
 size = Vector3(0.334961, 1.28284, 0.197754)
@@ -26,8 +28,49 @@ _bundled = {
 "version": 3
 }
 
+[sub_resource type="Resource" id="Resource_pkikf"]
+script = ExtResource("10_18ovi")
+attack = 0
+health = 2
+speed = 2
+energy = 1
+description = "DOCILE; LAST WILL: Debuff units in vision -1 ATT for [2] Turn"
+active_abilities = Array[ExtResource("11_pkikf")]([])
+traits = Array[ExtResource("1_5wykw")]([])
+
+[sub_resource type="Resource" id="Resource_1htg6"]
+script = ExtResource("10_18ovi")
+attack = 0
+health = 2
+speed = 2
+energy = 1
+description = "DOCILE; LAST WILL: Debuff units in vision -2 ATT for [2] Turn"
+active_abilities = Array[ExtResource("11_pkikf")]([])
+traits = Array[ExtResource("1_5wykw")]([])
+
+[sub_resource type="Resource" id="Resource_gqibu"]
+script = ExtResource("10_18ovi")
+attack = 0
+health = 2
+speed = 2
+energy = 1
+description = "DOCILE; LAST WILL: Debuff units in vision -2 ATT for [2] Turn"
+active_abilities = Array[ExtResource("11_pkikf")]([])
+traits = Array[ExtResource("1_5wykw")]([])
+
+[sub_resource type="Resource" id="Resource_uo0l6"]
+script = ExtResource("10_18ovi")
+attack = 0
+health = 2
+speed = 2
+energy = 1
+description = "DOCILE; LAST WILL: Debuff units in vision -2 ATT for [2] Turn"
+active_abilities = Array[ExtResource("11_pkikf")]([])
+traits = Array[ExtResource("1_5wykw")]([])
+
 [resource]
 script = ExtResource("2_qt6uf")
+tiers = Array[ExtResource("10_18ovi")]([SubResource("Resource_pkikf"), SubResource("Resource_1htg6"), SubResource("Resource_gqibu"), SubResource("Resource_uo0l6")])
 attack = 0
 health = 2
 speed = 2

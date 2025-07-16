@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://4frkgs7wjkec"]
+[gd_scene load_steps=6 format=3 uid="uid://4frkgs7wjkec"]
 
 [ext_resource type="PackedScene" uid="uid://cmy0opngqsj3j" path="res://scenes/game/tiles/tile_model.tscn" id="1_55n04"]
 [ext_resource type="Script" uid="uid://d20srv2a52r02" path="res://test/tile_test.gd" id="1_voult"]
 [ext_resource type="Script" uid="uid://m4j4oush86vt" path="res://addons/movement_camera.gd" id="3_m064n"]
+[ext_resource type="Material" uid="uid://dwpy8hqc3ks4a" path="res://resources/materials/game/tile_material/palm_tile/palm_tile_top_material.tres" id="3_vxq3g"]
 [ext_resource type="Environment" uid="uid://g3ihmrpunr2b" path="res://assets/environments/palm_day_environment.tres" id="4_4uvea"]
 
 [node name="TileTest" type="Node3D"]
@@ -12,6 +13,9 @@ script = ExtResource("1_voult")
 unique_name_in_owner = true
 
 [node name="Tile" parent="Tiles" instance=ExtResource("1_55n04")]
+
+[node name="TopMeshInstance3D" parent="Tiles/Tile" index="2"]
+surface_material_override/0 = ExtResource("3_vxq3g")
 
 [node name="Tile2" parent="Tiles" instance=ExtResource("1_55n04")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.71626, 0, 0)
@@ -32,3 +36,5 @@ environment = ExtResource("4_4uvea")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.879665, 0.29622, -0.372079, 0, 0.782347, 0.622842, 0.475594, -0.547893, 0.688204, 0, 2.95929, 0)
+
+[editable path="Tiles/Tile"]

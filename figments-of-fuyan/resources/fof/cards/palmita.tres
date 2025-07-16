@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=13 format=3 uid="uid://ctv0qe17cv1l"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3 uid="uid://dx1y8bst8i6wj"]
 
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_8c5rl"]
 [ext_resource type="Image" uid="uid://cp6mthlsnebq0" path="res://assets/sprites/game/cards/art_pop/palmita.png" id="2_6e25m"]
@@ -9,6 +9,8 @@
 [ext_resource type="Script" uid="uid://cpeu5oa76nfhq" path="res://scripts/fof/cards/palmita.gd" id="4_s0xsl"]
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_cli25"]
 [ext_resource type="PackedScene" uid="uid://bhm1rhpwkxwjo" path="res://assets/models/fof/cards/palmita.glb" id="5_xhwml"]
+[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_aya74"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_1cb68"]
 
 [sub_resource type="Resource" id="Resource_4khtw"]
 script = ExtResource("1_8c5rl")
@@ -39,8 +41,92 @@ _bundled = {
 "version": 3
 }
 
+[sub_resource type="Resource" id="Resource_1cb68"]
+script = ExtResource("11_1cb68")
+name = "Helpful Helmet"
+description = "This dies to give an adjacent ally +1 HP when it RAMPAGES"
+max_charges = -1
+delay = 0.0
+camera_type = 0
+charges = 0
+used = false
+
+[sub_resource type="Resource" id="Resource_vyjta"]
+script = ExtResource("10_aya74")
+attack = 1
+health = 1
+speed = 2
+energy = 1
+description = "ABILITY: This dies to give an adjacent ally +1 HP when it RAMPAGES"
+active_abilities = Array[ExtResource("11_1cb68")]([SubResource("Resource_1cb68")])
+traits = Array[ExtResource("2_gibdl")]([])
+
+[sub_resource type="Resource" id="Resource_5y68w"]
+script = ExtResource("11_1cb68")
+name = "Helpful Helmet"
+description = "This dies to give an adjacent ally +1 HP instantly and when it RAMPAGES"
+max_charges = -1
+delay = 0.0
+camera_type = 0
+charges = 0
+used = false
+metadata/_custom_type_script = "uid://cra1nahu5jsgt"
+
+[sub_resource type="Resource" id="Resource_pn3bc"]
+script = ExtResource("10_aya74")
+attack = 1
+health = 1
+speed = 2
+energy = 1
+description = "ABILITY: This dies to give an adjacent ally +1 HP instantly and when it RAMPAGES"
+active_abilities = Array[ExtResource("11_1cb68")]([SubResource("Resource_5y68w")])
+traits = Array[ExtResource("2_gibdl")]([])
+
+[sub_resource type="Resource" id="Resource_7qr8q"]
+script = ExtResource("11_1cb68")
+name = "Helpful Helmet"
+description = "This dies to give an adjacent ally +1 HP instantly and when it RAMPAGES"
+max_charges = -1
+delay = 0.0
+camera_type = 0
+charges = 0
+used = false
+metadata/_custom_type_script = "uid://cra1nahu5jsgt"
+
+[sub_resource type="Resource" id="Resource_a4xqi"]
+script = ExtResource("10_aya74")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description = ""
+active_abilities = Array[ExtResource("11_1cb68")]([SubResource("Resource_7qr8q")])
+traits = Array[ExtResource("2_gibdl")]([])
+
+[sub_resource type="Resource" id="Resource_jjy02"]
+script = ExtResource("11_1cb68")
+name = "Helpful Helmet"
+description = "This dies to give an adjacent ally +1 HP instantly and when it RAMPAGES"
+max_charges = -1
+delay = 0.0
+camera_type = 0
+charges = 0
+used = false
+metadata/_custom_type_script = "uid://cra1nahu5jsgt"
+
+[sub_resource type="Resource" id="Resource_iuas3"]
+script = ExtResource("10_aya74")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description = ""
+active_abilities = Array[ExtResource("11_1cb68")]([SubResource("Resource_jjy02")])
+traits = Array[ExtResource("2_gibdl")]([])
+
 [resource]
 script = ExtResource("3_u8ukk")
+tiers = Array[ExtResource("10_aya74")]([SubResource("Resource_vyjta"), SubResource("Resource_pn3bc"), SubResource("Resource_a4xqi"), SubResource("Resource_iuas3")])
 attack = 1
 health = 1
 speed = 2

@@ -5,7 +5,6 @@
 [ext_resource type="PackedScene" uid="uid://dkv06ds5ncutu" path="res://scenes/game/levels/ui/deck_screen.tscn" id="2_o62k3"]
 [ext_resource type="PackedScene" uid="uid://dry5b1uioo2j7" path="res://scenes/game/levels/ui/graveyard_screen.tscn" id="3_f17gx"]
 [ext_resource type="PackedScene" uid="uid://6nf3mir2i2rk" path="res://scenes/common/fancy_text/fancy_text_label.tscn" id="3_rdi1t"]
-[ext_resource type="PackedScene" uid="uid://dvnoqpn6m0fnl" path="res://scenes/common/minimap/minimap.tscn" id="4_3io7u"]
 [ext_resource type="Texture2D" uid="uid://fi32a8tjx0k3" path="res://assets/sprites/game/cards/common/stats/energy_icon.png" id="4_fm1wf"]
 [ext_resource type="PackedScene" uid="uid://ip8hisyxk8ia" path="res://scenes/game/levels/ui/loss_ui.tscn" id="5_ruh78"]
 [ext_resource type="Texture2D" uid="uid://drju02m4wqrw1" path="res://assets/sprites/ui/icons/card.png" id="5_x67vg"]
@@ -32,6 +31,7 @@
 [ext_resource type="PackedScene" uid="uid://d02qi38rwbhoh" path="res://scenes/game/levels/ui/console.tscn" id="25_8m8ju"]
 [ext_resource type="Script" uid="uid://dnqf5f1jadalx" path="res://scenes/game/levels/boon_box.gd" id="26_1bter"]
 [ext_resource type="PackedScene" uid="uid://ct1cn5tc1ofmb" path="res://scenes/game/boons/boon_icon.tscn" id="26_ic3cc"]
+[ext_resource type="PackedScene" uid="uid://du22nfcbi2vth" path="res://scenes/common/fade_cream_background/fade_cream_background.tscn" id="32_gvdbv"]
 
 [sub_resource type="Image" id="Image_gvdbv"]
 data = {
@@ -50,7 +50,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("TopPanel:position")
+tracks/0/path = NodePath("Main/TopPanel:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -62,7 +62,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("LabelsContainer:position")
+tracks/1/path = NodePath("Main/LabelsContainer:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -79,7 +79,7 @@ step = 0.25
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("TopPanel:position")
+tracks/0/path = NodePath("Main/TopPanel:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -91,7 +91,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("LabelsContainer:position")
+tracks/1/path = NodePath("Main/LabelsContainer:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -118,10 +118,19 @@ mouse_filter = 2
 script = ExtResource("1_lmham")
 DeckScreenPacked = ExtResource("2_o62k3")
 GraveyardScreenPacked = ExtResource("3_f17gx")
-MinimapPacked = ExtResource("4_3io7u")
 LossUIPacked = ExtResource("5_ruh78")
 
-[node name="BackgroundDimmer" type="ColorRect" parent="."]
+[node name="Main" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="BackgroundDimmer" type="ColorRect" parent="Main"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
@@ -133,7 +142,7 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0.235294)
 
-[node name="BottomBox" type="VBoxContainer" parent="."]
+[node name="BottomBox" type="VBoxContainer" parent="Main"]
 unique_name_in_owner = true
 self_modulate = Color(1, 1, 1, 0.2)
 layout_mode = 1
@@ -151,25 +160,25 @@ grow_vertical = 0
 mouse_filter = 0
 alignment = 2
 
-[node name="EpicFightControl" type="MarginContainer" parent="BottomBox"]
+[node name="EpicFightControl" type="MarginContainer" parent="Main/BottomBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 script = ExtResource("6_eg13e")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="BottomBox/EpicFightControl"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Main/BottomBox/EpicFightControl"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 10
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="BottomBox/EpicFightControl/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="Main/BottomBox/EpicFightControl/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 19
 alignment = 1
 
-[node name="BossNameLabel" type="Label" parent="BottomBox/EpicFightControl/VBoxContainer/HBoxContainer2"]
+[node name="BossNameLabel" type="Label" parent="Main/BottomBox/EpicFightControl/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 modulate = Color(0.662745, 0, 1, 1)
 layout_mode = 2
@@ -178,41 +187,41 @@ text = "Palmador Rider"
 label_settings = ExtResource("7_gvdbv")
 horizontal_alignment = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="BottomBox/EpicFightControl/VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="Main/BottomBox/EpicFightControl/VBoxContainer"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 theme_type_variation = &"GreyPanelContainer"
 
-[node name="Filler" type="Control" parent="BottomBox/EpicFightControl/VBoxContainer/PanelContainer"]
+[node name="Filler" type="Control" parent="Main/BottomBox/EpicFightControl/VBoxContainer/PanelContainer"]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="HealthBar" type="ColorRect" parent="BottomBox/EpicFightControl/VBoxContainer/PanelContainer/Filler"]
+[node name="HealthBar" type="ColorRect" parent="Main/BottomBox/EpicFightControl/VBoxContainer/PanelContainer/Filler"]
 unique_name_in_owner = true
 layout_mode = 2
 offset_right = 1070.0
 offset_bottom = 30.0
 color = Color(1, 0, 0, 1)
 
-[node name="HBoxContainer" type="HBoxContainer" parent="BottomBox/EpicFightControl/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Main/BottomBox/EpicFightControl/VBoxContainer"]
 layout_mode = 2
 
-[node name="HandPanel" type="PanelContainer" parent="BottomBox"]
+[node name="HandPanel" type="PanelContainer" parent="Main/BottomBox"]
 unique_name_in_owner = true
 self_modulate = Color(1, 1, 1, 0.2)
 custom_minimum_size = Vector2(0, 460)
 layout_mode = 2
 size_flags_vertical = 8
 
-[node name="MarginContainer" type="MarginContainer" parent="BottomBox/HandPanel"]
+[node name="MarginContainer" type="MarginContainer" parent="Main/BottomBox/HandPanel"]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="BottomBox/HandPanel/MarginContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Main/BottomBox/HandPanel/MarginContainer"]
 layout_mode = 2
 vertical_scroll_mode = 0
 
-[node name="HandBox" type="HBoxContainer" parent="BottomBox/HandPanel/MarginContainer/ScrollContainer" node_paths=PackedStringArray("BottomBox")]
+[node name="HandBox" type="HBoxContainer" parent="Main/BottomBox/HandPanel/MarginContainer/ScrollContainer" node_paths=PackedStringArray("BottomBox")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -222,7 +231,7 @@ alignment = 1
 script = ExtResource("2_5k44f")
 BottomBox = NodePath("../../../..")
 
-[node name="TopPanel" type="PanelContainer" parent="."]
+[node name="TopPanel" type="PanelContainer" parent="Main"]
 layout_mode = 0
 offset_left = -12.0
 offset_top = -12.0
@@ -230,50 +239,50 @@ offset_right = 1931.0
 offset_bottom = 168.0
 mouse_filter = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="TopPanel"]
+[node name="MarginContainer" type="MarginContainer" parent="Main/TopPanel"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="TopPanel/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Main/TopPanel/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 20
 alignment = 1
 
-[node name="LeftContainer" type="HBoxContainer" parent="TopPanel/MarginContainer/HBoxContainer"]
+[node name="LeftContainer" type="HBoxContainer" parent="Main/TopPanel/MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 10
 alignment = 1
 
-[node name="OverworldInformation" type="PanelContainer" parent="TopPanel/MarginContainer/HBoxContainer/LeftContainer"]
+[node name="OverworldInformation" type="PanelContainer" parent="Main/TopPanel/MarginContainer/HBoxContainer/LeftContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 mouse_filter = 1
 theme_type_variation = &"YellowPanelContainer"
 
-[node name="MarginContainer" type="MarginContainer" parent="TopPanel/MarginContainer/HBoxContainer/LeftContainer/OverworldInformation"]
+[node name="MarginContainer" type="MarginContainer" parent="Main/TopPanel/MarginContainer/HBoxContainer/LeftContainer/OverworldInformation"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="TopPanel/MarginContainer/HBoxContainer/LeftContainer/OverworldInformation/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Main/TopPanel/MarginContainer/HBoxContainer/LeftContainer/OverworldInformation/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="PanelContainer" type="PanelContainer" parent="TopPanel/MarginContainer/HBoxContainer/LeftContainer/OverworldInformation/MarginContainer/HBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="Main/TopPanel/MarginContainer/HBoxContainer/LeftContainer/OverworldInformation/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_filter = 1
 theme_type_variation = &"WhitePanelContainer"
 
-[node name="ArtMiniRect" type="TextureRect" parent="TopPanel/MarginContainer/HBoxContainer/LeftContainer/OverworldInformation/MarginContainer/HBoxContainer/PanelContainer"]
+[node name="ArtMiniRect" type="TextureRect" parent="Main/TopPanel/MarginContainer/HBoxContainer/LeftContainer/OverworldInformation/MarginContainer/HBoxContainer/PanelContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 texture = SubResource("ImageTexture_if0qq")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TopPanel/MarginContainer/HBoxContainer/LeftContainer/OverworldInformation/MarginContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Main/TopPanel/MarginContainer/HBoxContainer/LeftContainer/OverworldInformation/MarginContainer/HBoxContainer"]
 layout_mode = 2
 alignment = 1
 
-[node name="ShillingLabel" parent="TopPanel/MarginContainer/HBoxContainer/LeftContainer/OverworldInformation/MarginContainer/HBoxContainer/VBoxContainer" instance=ExtResource("3_rdi1t")]
+[node name="ShillingLabel" parent="Main/TopPanel/MarginContainer/HBoxContainer/LeftContainer/OverworldInformation/MarginContainer/HBoxContainer/VBoxContainer" instance=ExtResource("3_rdi1t")]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
@@ -281,28 +290,28 @@ text = "SH: 15"
 autowrap_mode = 0
 center = false
 
-[node name="LevelLabel" type="Label" parent="TopPanel/MarginContainer/HBoxContainer/LeftContainer/OverworldInformation/MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="LevelLabel" type="Label" parent="Main/TopPanel/MarginContainer/HBoxContainer/LeftContainer/OverworldInformation/MarginContainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
 text = "Super Long level Name"
 
-[node name="LevelInformation" type="PanelContainer" parent="TopPanel/MarginContainer/HBoxContainer/LeftContainer"]
+[node name="LevelInformation" type="PanelContainer" parent="Main/TopPanel/MarginContainer/HBoxContainer/LeftContainer"]
 layout_mode = 2
 mouse_filter = 1
 theme_type_variation = &"BluePanelContainer"
 
-[node name="MarginContainer" type="MarginContainer" parent="TopPanel/MarginContainer/HBoxContainer/LeftContainer/LevelInformation"]
+[node name="MarginContainer" type="MarginContainer" parent="Main/TopPanel/MarginContainer/HBoxContainer/LeftContainer/LevelInformation"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="TopPanel/MarginContainer/HBoxContainer/LeftContainer/LevelInformation/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Main/TopPanel/MarginContainer/HBoxContainer/LeftContainer/LevelInformation/MarginContainer"]
 layout_mode = 2
 
-[node name="EnergyFiller" type="Control" parent="TopPanel/MarginContainer/HBoxContainer/LeftContainer/LevelInformation/MarginContainer/HBoxContainer"]
+[node name="EnergyFiller" type="Control" parent="Main/TopPanel/MarginContainer/HBoxContainer/LeftContainer/LevelInformation/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 
-[node name="EnergyTexture" type="TextureRect" parent="TopPanel/MarginContainer/HBoxContainer/LeftContainer/LevelInformation/MarginContainer/HBoxContainer/EnergyFiller"]
+[node name="EnergyTexture" type="TextureRect" parent="Main/TopPanel/MarginContainer/HBoxContainer/LeftContainer/LevelInformation/MarginContainer/HBoxContainer/EnergyFiller"]
 unique_name_in_owner = true
 layout_mode = 2
 offset_right = 100.0
@@ -311,7 +320,7 @@ pivot_offset = Vector2(50, 50)
 texture = ExtResource("4_fm1wf")
 expand_mode = 2
 
-[node name="EnergyLabel" type="Label" parent="TopPanel/MarginContainer/HBoxContainer/LeftContainer/LevelInformation/MarginContainer/HBoxContainer/EnergyFiller/EnergyTexture"]
+[node name="EnergyLabel" type="Label" parent="Main/TopPanel/MarginContainer/HBoxContainer/LeftContainer/LevelInformation/MarginContainer/HBoxContainer/EnergyFiller/EnergyTexture"]
 unique_name_in_owner = true
 modulate = Color(0.937255, 1, 0, 1)
 layout_mode = 1
@@ -327,12 +336,12 @@ text = "0/5"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Control" type="Control" parent="TopPanel/MarginContainer/HBoxContainer/LeftContainer/LevelInformation/MarginContainer/HBoxContainer"]
+[node name="Control" type="Control" parent="Main/TopPanel/MarginContainer/HBoxContainer/LeftContainer/LevelInformation/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 mouse_filter = 1
 
-[node name="PhaseIcon" type="TextureRect" parent="TopPanel/MarginContainer/HBoxContainer/LeftContainer/LevelInformation/MarginContainer/HBoxContainer/Control"]
+[node name="PhaseIcon" type="TextureRect" parent="Main/TopPanel/MarginContainer/HBoxContainer/LeftContainer/LevelInformation/MarginContainer/HBoxContainer/Control"]
 unique_name_in_owner = true
 texture_filter = 1
 custom_minimum_size = Vector2(100, 100)
@@ -352,12 +361,12 @@ player_phase_icon = ExtResource("8_vlrs0")
 ai_phase_icon = ExtResource("9_chyqt")
 neutral_phase_icon = ExtResource("10_ese7j")
 
-[node name="Center" type="Control" parent="TopPanel/MarginContainer/HBoxContainer"]
+[node name="Center" type="Control" parent="Main/TopPanel/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 mouse_filter = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TopPanel/MarginContainer/HBoxContainer/Center"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Main/TopPanel/MarginContainer/HBoxContainer/Center"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -367,11 +376,11 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="TopPanel/MarginContainer/HBoxContainer/Center/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Main/TopPanel/MarginContainer/HBoxContainer/Center/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="LeftCameraArrow" type="Button" parent="TopPanel/MarginContainer/HBoxContainer/Center/VBoxContainer/HBoxContainer" groups=["ActionLockDisabled", "EndGameDisabled"]]
+[node name="LeftCameraArrow" type="Button" parent="Main/TopPanel/MarginContainer/HBoxContainer/Center/VBoxContainer/HBoxContainer" groups=["ActionLockDisabled", "EndGameDisabled"]]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -379,13 +388,13 @@ theme_type_variation = &"RedButton"
 text = "<-"
 script = ExtResource("15_mtmiq")
 
-[node name="TimeLabel" parent="TopPanel/MarginContainer/HBoxContainer/Center/VBoxContainer/HBoxContainer" instance=ExtResource("16_hwob5")]
+[node name="TimeLabel" parent="Main/TopPanel/MarginContainer/HBoxContainer/Center/VBoxContainer/HBoxContainer" instance=ExtResource("16_hwob5")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 horizontal_alignment = 1
 
-[node name="RightCameraArrow" type="Button" parent="TopPanel/MarginContainer/HBoxContainer/Center/VBoxContainer/HBoxContainer" groups=["ActionLockDisabled", "EndGameDisabled"]]
+[node name="RightCameraArrow" type="Button" parent="Main/TopPanel/MarginContainer/HBoxContainer/Center/VBoxContainer/HBoxContainer" groups=["ActionLockDisabled", "EndGameDisabled"]]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -393,7 +402,7 @@ theme_type_variation = &"RedButton"
 text = "->"
 script = ExtResource("15_mtmiq")
 
-[node name="PassButton" type="Button" parent="TopPanel/MarginContainer/HBoxContainer/Center/VBoxContainer" groups=["ActionLockDisabled", "EndGameDisabled"]]
+[node name="PassButton" type="Button" parent="Main/TopPanel/MarginContainer/HBoxContainer/Center/VBoxContainer" groups=["ActionLockDisabled", "EndGameDisabled"]]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -402,29 +411,29 @@ theme_type_variation = &"RedButton"
 text = "PASS"
 script = ExtResource("14_0yklm")
 
-[node name="Right" type="HBoxContainer" parent="TopPanel/MarginContainer/HBoxContainer"]
+[node name="Right" type="HBoxContainer" parent="Main/TopPanel/MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 10
 alignment = 1
 
-[node name="DeckPanel" type="PanelContainer" parent="TopPanel/MarginContainer/HBoxContainer/Right"]
+[node name="DeckPanel" type="PanelContainer" parent="Main/TopPanel/MarginContainer/HBoxContainer/Right"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
 mouse_filter = 1
 theme_type_variation = &"WhitePanelContainer"
 
-[node name="MarginContainer" type="MarginContainer" parent="TopPanel/MarginContainer/HBoxContainer/Right/DeckPanel"]
+[node name="MarginContainer" type="MarginContainer" parent="Main/TopPanel/MarginContainer/HBoxContainer/Right/DeckPanel"]
 layout_mode = 2
 
-[node name="DeckButton" parent="TopPanel/MarginContainer/HBoxContainer/Right/DeckPanel/MarginContainer" groups=["ActionLockDisabled"] instance=ExtResource("12_c7bgj")]
+[node name="DeckButton" parent="Main/TopPanel/MarginContainer/HBoxContainer/Right/DeckPanel/MarginContainer" groups=["ActionLockDisabled"] instance=ExtResource("12_c7bgj")]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 texture_normal = ExtResource("11_fvmvl")
 
-[node name="DeckCardAmountLabel" type="Label" parent="TopPanel/MarginContainer/HBoxContainer/Right/DeckPanel/MarginContainer"]
+[node name="DeckCardAmountLabel" type="Label" parent="Main/TopPanel/MarginContainer/HBoxContainer/Right/DeckPanel/MarginContainer"]
 unique_name_in_owner = true
 modulate = Color(0.947592, 0.765959, 0.53102, 1)
 layout_mode = 2
@@ -432,93 +441,93 @@ size_flags_horizontal = 8
 size_flags_vertical = 8
 horizontal_alignment = 1
 
-[node name="PanelContainer2" type="PanelContainer" parent="TopPanel/MarginContainer/HBoxContainer/Right"]
+[node name="PanelContainer2" type="PanelContainer" parent="Main/TopPanel/MarginContainer/HBoxContainer/Right"]
 custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
 mouse_filter = 1
 theme_type_variation = &"WhitePanelContainer"
 
-[node name="MarginContainer" type="MarginContainer" parent="TopPanel/MarginContainer/HBoxContainer/Right/PanelContainer2"]
+[node name="MarginContainer" type="MarginContainer" parent="Main/TopPanel/MarginContainer/HBoxContainer/Right/PanelContainer2"]
 layout_mode = 2
 
-[node name="GraveyardButton" parent="TopPanel/MarginContainer/HBoxContainer/Right/PanelContainer2/MarginContainer" groups=["ActionLockDisabled", "EndGameDisabled"] instance=ExtResource("12_c7bgj")]
+[node name="GraveyardButton" parent="Main/TopPanel/MarginContainer/HBoxContainer/Right/PanelContainer2/MarginContainer" groups=["ActionLockDisabled", "EndGameDisabled"] instance=ExtResource("12_c7bgj")]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 texture_normal = ExtResource("12_0w5oe")
 
-[node name="Filler1" type="Control" parent="TopPanel/MarginContainer/HBoxContainer/Right"]
+[node name="Filler1" type="Control" parent="Main/TopPanel/MarginContainer/HBoxContainer/Right"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="PanelContainer3" type="PanelContainer" parent="TopPanel/MarginContainer/HBoxContainer/Right"]
+[node name="PanelContainer3" type="PanelContainer" parent="Main/TopPanel/MarginContainer/HBoxContainer/Right"]
 custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
 mouse_filter = 1
 theme_type_variation = &"WhitePanelContainer"
 
-[node name="MarginContainer" type="MarginContainer" parent="TopPanel/MarginContainer/HBoxContainer/Right/PanelContainer3"]
+[node name="MarginContainer" type="MarginContainer" parent="Main/TopPanel/MarginContainer/HBoxContainer/Right/PanelContainer3"]
 layout_mode = 2
 
-[node name="VisionModeButton" parent="TopPanel/MarginContainer/HBoxContainer/Right/PanelContainer3/MarginContainer" groups=["ActionLockDisabled", "EndGameDisabled"] instance=ExtResource("12_c7bgj")]
+[node name="VisionModeButton" parent="Main/TopPanel/MarginContainer/HBoxContainer/Right/PanelContainer3/MarginContainer" groups=["ActionLockDisabled", "EndGameDisabled"] instance=ExtResource("12_c7bgj")]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 texture_normal = ExtResource("13_dowy1")
 
-[node name="PanelContainer4" type="PanelContainer" parent="TopPanel/MarginContainer/HBoxContainer/Right"]
+[node name="PanelContainer4" type="PanelContainer" parent="Main/TopPanel/MarginContainer/HBoxContainer/Right"]
 custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
 mouse_filter = 1
 theme_type_variation = &"WhitePanelContainer"
 
-[node name="MarginContainer" type="MarginContainer" parent="TopPanel/MarginContainer/HBoxContainer/Right/PanelContainer4"]
+[node name="MarginContainer" type="MarginContainer" parent="Main/TopPanel/MarginContainer/HBoxContainer/Right/PanelContainer4"]
 layout_mode = 2
 
-[node name="CameraButton" parent="TopPanel/MarginContainer/HBoxContainer/Right/PanelContainer4/MarginContainer" groups=["ActionLockDisabled", "EndGameDisabled"] instance=ExtResource("12_c7bgj")]
+[node name="CameraButton" parent="Main/TopPanel/MarginContainer/HBoxContainer/Right/PanelContainer4/MarginContainer" groups=["ActionLockDisabled", "EndGameDisabled"] instance=ExtResource("12_c7bgj")]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 texture_normal = ExtResource("14_7bql6")
 
-[node name="Filler2" type="Control" parent="TopPanel/MarginContainer/HBoxContainer/Right"]
+[node name="Filler2" type="Control" parent="Main/TopPanel/MarginContainer/HBoxContainer/Right"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="MapPanel" type="PanelContainer" parent="TopPanel/MarginContainer/HBoxContainer/Right"]
+[node name="MapPanel" type="PanelContainer" parent="Main/TopPanel/MarginContainer/HBoxContainer/Right"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
 mouse_filter = 1
 theme_type_variation = &"WhitePanelContainer"
 
-[node name="MarginContainer" type="MarginContainer" parent="TopPanel/MarginContainer/HBoxContainer/Right/MapPanel"]
+[node name="MarginContainer" type="MarginContainer" parent="Main/TopPanel/MarginContainer/HBoxContainer/Right/MapPanel"]
 layout_mode = 2
 
-[node name="MinimapButton" parent="TopPanel/MarginContainer/HBoxContainer/Right/MapPanel/MarginContainer" groups=["ActionLockDisabled"] instance=ExtResource("12_c7bgj")]
+[node name="MinimapButton" parent="Main/TopPanel/MarginContainer/HBoxContainer/Right/MapPanel/MarginContainer" groups=["ActionLockDisabled"] instance=ExtResource("12_c7bgj")]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 texture_normal = ExtResource("18_kr3tm")
 
-[node name="LabelsContainer" type="MarginContainer" parent="."]
+[node name="LabelsContainer" type="MarginContainer" parent="Main"]
 layout_mode = 0
 offset_left = 1109.0
 offset_top = 168.0
 offset_right = 1910.0
 offset_bottom = 353.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="LabelsContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Main/LabelsContainer"]
 layout_mode = 2
 
-[node name="HeroNameLabel" type="Label" parent="LabelsContainer/VBoxContainer"]
+[node name="HeroNameLabel" type="Label" parent="Main/LabelsContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Frederic the Fearless"
 label_settings = ExtResource("18_xoavs")
 horizontal_alignment = 2
 
-[node name="ActiveEffectLabel" type="Label" parent="LabelsContainer/VBoxContainer"]
+[node name="ActiveEffectLabel" type="Label" parent="Main/LabelsContainer/VBoxContainer"]
 unique_name_in_owner = true
 modulate = Color(1, 0.588235, 0, 1)
 layout_mode = 2
@@ -526,7 +535,7 @@ text = "Palmsale"
 label_settings = ExtResource("19_p14ob")
 horizontal_alignment = 2
 
-[node name="ActiveEffects" type="VBoxContainer" parent="."]
+[node name="ActiveEffects" type="VBoxContainer" parent="Main"]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 1299.0
@@ -538,26 +547,26 @@ theme_override_constants/separation = 10
 script = ExtResource("23_q6rwg")
 ActiveEffectBoxPacked = ExtResource("24_32hvr")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ActiveEffects"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Main/ActiveEffects"]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 theme_override_constants/separation = 10
 alignment = 2
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="ActiveEffects"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="Main/ActiveEffects"]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 theme_override_constants/separation = 10
 alignment = 2
 
-[node name="Console" parent="." instance=ExtResource("25_8m8ju")]
+[node name="Console" parent="Main" instance=ExtResource("25_8m8ju")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
 
-[node name="BoonBox" type="GridContainer" parent="."]
+[node name="BoonBox" type="GridContainer" parent="Main"]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 30.0
@@ -571,7 +580,8 @@ columns = 7
 script = ExtResource("26_1bter")
 BoonIconPacked = ExtResource("26_ic3cc")
 
-[node name="MouseInUILabel" type="Label" parent="."]
+[node name="MouseInUILabel" type="Label" parent="Main"]
+unique_name_in_owner = true
 visible = false
 top_level = true
 layout_mode = 0
@@ -581,7 +591,7 @@ offset_right = 1923.0
 offset_bottom = 1086.0
 text = "Mouse In UI: True"
 
-[node name="MinimapControl" type="Control" parent="."]
+[node name="MinimapControl" type="Control" parent="Main"]
 unique_name_in_owner = true
 anchors_preset = 0
 offset_left = 1015.0
@@ -590,12 +600,12 @@ offset_right = 1015.0
 offset_bottom = 177.0
 mouse_filter = 2
 
-[node name="HoverCardControl" type="Control" parent="."]
+[node name="HoverCardControl" type="Control" parent="Main"]
 unique_name_in_owner = true
 anchors_preset = 0
 mouse_filter = 2
 
-[node name="BoonEffectFiller" type="Control" parent="."]
+[node name="BoonEffectFiller" type="Control" parent="Main"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -612,28 +622,44 @@ grow_vertical = 2
 scale = Vector2(4, 4)
 pivot_offset = Vector2(40, 40)
 
+[node name="FadeBackground" parent="Main" instance=ExtResource("32_gvdbv")]
+unique_name_in_owner = true
+top_level = true
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+grow_horizontal = 1
+grow_vertical = 1
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+DEFAULT_ALPHA = 255
+FADE_COLOR = Color(0, 0, 0, 1)
+
 [node name="AniPlayer" type="AnimationPlayer" parent="."]
 unique_name_in_owner = true
 libraries = {
 &"": SubResource("AnimationLibrary_thuap")
 }
 
-[connection signal="action_lock" from="." to="ActiveEffects" method="onUpdateActionLock"]
-[connection signal="mouse_entered" from="BottomBox/EpicFightControl/VBoxContainer/PanelContainer" to="." method="onMouseInUI" binds= [true]]
-[connection signal="mouse_exited" from="BottomBox/EpicFightControl/VBoxContainer/PanelContainer" to="." method="onMouseInUI" binds= [false]]
-[connection signal="mouse_entered" from="BottomBox/HandPanel" to="BottomBox/HandPanel/MarginContainer/ScrollContainer/HandBox" method="onMouseInUI" binds= [true]]
-[connection signal="mouse_exited" from="BottomBox/HandPanel" to="BottomBox/HandPanel/MarginContainer/ScrollContainer/HandBox" method="onMouseInUI" binds= [false]]
-[connection signal="child_entered_tree" from="BottomBox/HandPanel/MarginContainer/ScrollContainer/HandBox" to="BottomBox/HandPanel/MarginContainer/ScrollContainer/HandBox" method="_on_child_entered_tree"]
-[connection signal="mouse_in_ui" from="BottomBox/HandPanel/MarginContainer/ScrollContainer/HandBox" to="." method="onMouseInUI"]
-[connection signal="pressed" from="TopPanel/MarginContainer/HBoxContainer/Center/VBoxContainer/HBoxContainer/LeftCameraArrow" to="." method="onCameraDirectionChanged" binds= [-1]]
-[connection signal="pressed" from="TopPanel/MarginContainer/HBoxContainer/Center/VBoxContainer/HBoxContainer/RightCameraArrow" to="." method="onCameraDirectionChanged" binds= [1]]
-[connection signal="pressed" from="TopPanel/MarginContainer/HBoxContainer/Center/VBoxContainer/PassButton" to="." method="_on_pass_button_pressed"]
-[connection signal="pressed" from="TopPanel/MarginContainer/HBoxContainer/Right/DeckPanel/MarginContainer/DeckButton" to="." method="_on_deck_button_pressed"]
-[connection signal="pressed" from="TopPanel/MarginContainer/HBoxContainer/Right/PanelContainer2/MarginContainer/GraveyardButton" to="." method="_on_graveyard_button_pressed"]
-[connection signal="pressed" from="TopPanel/MarginContainer/HBoxContainer/Right/PanelContainer3/MarginContainer/VisionModeButton" to="." method="_on_vision_mode_button_pressed"]
-[connection signal="pressed" from="TopPanel/MarginContainer/HBoxContainer/Right/PanelContainer4/MarginContainer/CameraButton" to="." method="_on_camera_button_pressed"]
-[connection signal="pressed" from="TopPanel/MarginContainer/HBoxContainer/Right/MapPanel/MarginContainer/MinimapButton" to="." method="_on_minimap_button_pressed"]
-[connection signal="mouse_in_ui" from="ActiveEffects" to="." method="onMouseInUI"]
-[connection signal="pressed" from="ActiveEffects" to="." method="onActiveEffectBoxPressed"]
-[connection signal="mouse_in_ui" from="Console" to="." method="onMouseInUI"]
-[connection signal="mouse_in_ui" from="BoonBox" to="." method="onMouseInUI"]
+[connection signal="action_lock" from="." to="Main/ActiveEffects" method="onUpdateActionLock"]
+[connection signal="mouse_entered" from="Main/BottomBox/EpicFightControl/VBoxContainer/PanelContainer" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="Main/BottomBox/EpicFightControl/VBoxContainer/PanelContainer" to="." method="onMouseInUI" binds= [false]]
+[connection signal="mouse_entered" from="Main/BottomBox/HandPanel" to="Main/BottomBox/HandPanel/MarginContainer/ScrollContainer/HandBox" method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="Main/BottomBox/HandPanel" to="Main/BottomBox/HandPanel/MarginContainer/ScrollContainer/HandBox" method="onMouseInUI" binds= [false]]
+[connection signal="child_entered_tree" from="Main/BottomBox/HandPanel/MarginContainer/ScrollContainer/HandBox" to="Main/BottomBox/HandPanel/MarginContainer/ScrollContainer/HandBox" method="_on_child_entered_tree"]
+[connection signal="mouse_in_ui" from="Main/BottomBox/HandPanel/MarginContainer/ScrollContainer/HandBox" to="." method="onMouseInUI"]
+[connection signal="pressed" from="Main/TopPanel/MarginContainer/HBoxContainer/Center/VBoxContainer/HBoxContainer/LeftCameraArrow" to="." method="onCameraDirectionChanged" binds= [-1]]
+[connection signal="pressed" from="Main/TopPanel/MarginContainer/HBoxContainer/Center/VBoxContainer/HBoxContainer/RightCameraArrow" to="." method="onCameraDirectionChanged" binds= [1]]
+[connection signal="pressed" from="Main/TopPanel/MarginContainer/HBoxContainer/Center/VBoxContainer/PassButton" to="." method="_on_pass_button_pressed"]
+[connection signal="pressed" from="Main/TopPanel/MarginContainer/HBoxContainer/Right/DeckPanel/MarginContainer/DeckButton" to="." method="_on_deck_button_pressed"]
+[connection signal="pressed" from="Main/TopPanel/MarginContainer/HBoxContainer/Right/PanelContainer2/MarginContainer/GraveyardButton" to="." method="_on_graveyard_button_pressed"]
+[connection signal="pressed" from="Main/TopPanel/MarginContainer/HBoxContainer/Right/PanelContainer3/MarginContainer/VisionModeButton" to="." method="_on_vision_mode_button_pressed"]
+[connection signal="pressed" from="Main/TopPanel/MarginContainer/HBoxContainer/Right/PanelContainer4/MarginContainer/CameraButton" to="." method="_on_camera_button_pressed"]
+[connection signal="pressed" from="Main/TopPanel/MarginContainer/HBoxContainer/Right/MapPanel/MarginContainer/MinimapButton" to="." method="_on_minimap_button_pressed"]
+[connection signal="mouse_in_ui" from="Main/ActiveEffects" to="." method="onMouseInUI"]
+[connection signal="pressed" from="Main/ActiveEffects" to="." method="onActiveEffectBoxPressed"]
+[connection signal="mouse_in_ui" from="Main/Console" to="." method="onMouseInUI"]
+[connection signal="mouse_in_ui" from="Main/BoonBox" to="." method="onMouseInUI"]

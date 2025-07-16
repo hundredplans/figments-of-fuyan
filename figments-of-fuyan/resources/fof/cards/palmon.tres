@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=13 format=3 uid="uid://dvf2ppa07txu0"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=21 format=3 uid="uid://nc6niicbphgg"]
 
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_xgrjx"]
 [ext_resource type="Resource" uid="uid://bbqdeswvpt0y6" path="res://resources/fof/archetypes/support.tres" id="2_0yrhv"]
@@ -9,11 +9,13 @@
 [ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_h4rou"]
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="4_0giri"]
 [ext_resource type="PackedScene" uid="uid://bk1cuu34vk738" path="res://assets/models/fof/cards/palmon.glb" id="5_tr6ys"]
+[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_8fe4f"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_cu5su"]
 
 [sub_resource type="Resource" id="Resource_bdmil"]
 script = ExtResource("1_xgrjx")
 exists = 0
-ascended_description = "Gives +2 ATT for [1] Turn to an ally in vision
+ascended_description = "Give +2 ATT for [1] Turn to an ally in vision
 They heal [1] HP the turn after"
 ascended_max_charges = 2
 name = "Treeleaf Remedy"
@@ -41,8 +43,74 @@ _bundled = {
 "version": 3
 }
 
+[sub_resource type="Resource" id="Resource_cu5su"]
+script = ExtResource("11_cu5su")
+name = "Treeleaf Remedy"
+description = "Give +1 ATT for [1] Turn to an ally in vision
+They heal [1] HP the turn after"
+max_charges = 2
+delay = 0.0
+camera_type = 0
+charges = 0
+used = false
+
+[sub_resource type="Resource" id="Resource_171g2"]
+script = ExtResource("10_8fe4f")
+attack = 2
+health = 1
+speed = 2
+energy = 2
+description = "ABILITY [[X]]: Give +1 ATT for [1] Turn to a double adjacent ally
+They heal [1] HP the turn after"
+active_abilities = Array[ExtResource("11_cu5su")]([SubResource("Resource_cu5su")])
+traits = Array[ExtResource("2_85cop")]([])
+
+[sub_resource type="Resource" id="Resource_3dv0f"]
+script = ExtResource("11_cu5su")
+name = "Treeleaf Remedy"
+description = "Give +2 ATT for [1] Turn to an ally in vision
+They heal [1] HP the turn after"
+max_charges = 2
+delay = 0.0
+camera_type = 0
+charges = 0
+used = false
+metadata/_custom_type_script = "uid://cra1nahu5jsgt"
+
+[sub_resource type="Resource" id="Resource_r16p1"]
+script = ExtResource("10_8fe4f")
+attack = 2
+health = 1
+speed = 2
+energy = 2
+description = "ABILITY [[X]]: Give +2 ATT for [1] Turn to a double adjacent ally
+They heal [1] HP the turn after"
+active_abilities = Array[ExtResource("11_cu5su")]([SubResource("Resource_3dv0f")])
+traits = Array[ExtResource("2_85cop")]([])
+
+[sub_resource type="Resource" id="Resource_71lmq"]
+script = ExtResource("10_8fe4f")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description = ""
+active_abilities = Array[ExtResource("11_cu5su")]([])
+traits = Array[ExtResource("2_85cop")]([])
+
+[sub_resource type="Resource" id="Resource_2bsll"]
+script = ExtResource("10_8fe4f")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description = ""
+active_abilities = Array[ExtResource("11_cu5su")]([])
+traits = Array[ExtResource("2_85cop")]([])
+
 [resource]
 script = ExtResource("3_h4rou")
+tiers = Array[ExtResource("10_8fe4f")]([SubResource("Resource_171g2"), SubResource("Resource_r16p1"), SubResource("Resource_71lmq"), SubResource("Resource_2bsll")])
 attack = 2
 health = 1
 speed = 2

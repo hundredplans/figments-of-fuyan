@@ -13,6 +13,7 @@ var area: AreaGD
 var UI: Control
 var ActiveWorld: Node3D
 
+var is_minimap: bool
 var is_camera_disabled_by_ui: bool
 
 const MOUSE_HOLD_SLOWDOWN: float = 0.005
@@ -31,7 +32,8 @@ func getMapNodeDestination(map_node: MapNodeGD) -> Vector3:
 #endregion
 
 #region Base Functions
-func setInfo(_save_file: SaveFileGD) -> void:
+func setInfo(_save_file: SaveFileGD, _is_minimap: bool = false) -> void:
+	is_minimap = _is_minimap
 	save_file = _save_file
 	area = save_file.area
 	area.process_action.connect(onProcessAction)
@@ -51,14 +53,18 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	UnitSpotlight.position = spotlight_destination
 	MapCard.position = EnteredMapNode.position
 	Camera.position = getMapNodeDestination(EnteredMapNode) + CAMERA_OFFSET
+	Camera.current = true
 	
-	UI.screen_created.connect(onScreenCreated)
-	UI.screen_finished.connect(onScreenFinished)
+	if !is_minimap:
+		UI.screen_created.connect(onScreenCreated)
+		UI.screen_finished.connect(onScreenFinished)
 	
 	setEnvironment()
-	for map_node in get_tree().get_nodes_in_group("MapNodesGD"):
-		map_node.pressed.connect(onMapNodePressed)
-		map_node.create_world_scene.connect(onMapNodeCreateWorldScene)
+	
+	if !is_minimap:
+		for map_node in get_tree().get_nodes_in_group("MapNodesGD"):
+			map_node.pressed.connect(onMapNodePressed)
+			map_node.create_world_scene.connect(onMapNodeCreateWorldScene)
 	
 func onInitLoad() -> void:
 	onMapStartAnimation()

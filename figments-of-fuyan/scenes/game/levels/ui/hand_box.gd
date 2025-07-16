@@ -5,7 +5,7 @@ signal mouse_in_ui
 
 const UI_DELAY: float = 0.05
 var selectable_cards: bool
-var pinned: bool
+var pinned: bool = true
 var is_down: bool
 var level: LevelGD
 
@@ -26,29 +26,29 @@ func onMouseInUI(state: bool) -> void:
 		else: temp_down = true
 
 var phase: Game.Phases
-func setPhase(_phase: Game.Phases) -> void:
+func setPhase(_phase: Game.Phases, instant: bool) -> void:
 	phase = _phase
 	var state: bool = onCheckPin()
 	
 	if state:
-		onPin()
+		onPin(instant)
 	else:
-		onUnpin()
+		onUnpin(instant)
 	
 	onSelectableCards(state)
 	
 func onCheckPin() -> bool:
 	return phase in [Game.Phases.START, Game.Phases.HAND]
 
-func onPin() -> void:
+func onPin(instant: bool) -> void:
 	pinned = true
 	await get_tree().process_frame
 	if !pinned: return
-	onUp()
+	onUp(instant)
 		
-func onUnpin() -> void:
+func onUnpin(instant: bool) -> void:
 	pinned = false
-	if !is_mouse_in_ui: onDown()
+	if !is_mouse_in_ui: onDown(instant)
 
 var energy: int
 func onSelectableCards(_selectable_cards: bool) -> void:
@@ -63,34 +63,42 @@ func onUpdateEnergy(_energy: int) -> void:
 	energy = _energy
 	onSelectableCards(selectable_cards)
 
-func onUp() -> void:
+func onUp(instant: bool = false) -> void:
 	if is_tweening: return
-	onPlayTween(false)
+	onPlayTween(false, instant)
 	if is_tweening:
 		is_down = false
 	
-func onDown() -> void:
+func onDown(instant: bool = false) -> void:
 	if is_tweening: return
-	onPlayTween(true)
+	onPlayTween(true, instant)
 	if is_tweening:
 		is_down = true
 
 const TWEEN_OFFSET: int = 410
 const TWEEN_SPEED: float = 0.2
 var is_tweening: bool
-func onPlayTween(down: bool) -> void:
+func onPlayTween(down: bool, instant: bool) -> void:
 	if !is_tweening and !((down and is_down) or (!down and !is_down)):
 		var tween := get_tree().create_tween()
 		var offset: int = TWEEN_OFFSET * (1 if down else -1)
-		tween.tween_property(BottomBox, "position:y", offset, TWEEN_SPEED).as_relative()
 		
-		if DraggedCardUI != null:
-			var cardui_tween := get_tree().create_tween()
-			cardui_tween.tween_method(onTweenDraggedCardUI, DraggedCardUI.original_position.y, DraggedCardUI.original_position.y - offset, TWEEN_SPEED)
+		if !instant:
+			tween.tween_property(BottomBox, "position:y", offset, TWEEN_SPEED).as_relative()
+			if DraggedCardUI != null:
+				var cardui_tween := get_tree().create_tween()
+				cardui_tween.tween_method(onTweenDraggedCardUI, DraggedCardUI.original_position.y, DraggedCardUI.original_position.y - offset, TWEEN_SPEED)
 			
-		is_tweening = true
-		await tween.finished
-		is_tweening = false
+			is_tweening = true
+			await tween.finished
+			is_tweening = false
+		else:
+			BottomBox.position.y += offset
+			if DraggedCardUI != null:
+				DraggedCardUI.original_position.y -= offset
+			is_tweening = true
+			await get_tree().process_frame
+			is_tweening = false
 		onTweenFinished()
 
 func onTweenFinished() -> void:

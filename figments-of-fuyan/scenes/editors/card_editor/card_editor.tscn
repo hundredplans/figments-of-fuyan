@@ -1,9 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://d184bk44cwqxg"]
+[gd_scene load_steps=3 format=3 uid="uid://d184bk44cwqxg"]
 
 [ext_resource type="Script" uid="uid://dnto4suhfydeh" path="res://scenes/editors/card_editor/card_editor.gd" id="1_dfyc6"]
+[ext_resource type="PackedScene" uid="uid://b4xysgmu7vm0o" path="res://scenes/editors/card_editor/editable_card_ui.tscn" id="2_sk8fp"]
 
 [node name="CardEditor" type="Node"]
 script = ExtResource("1_dfyc6")
+EDITABLE_CARD_UI_PACKED = ExtResource("2_sk8fp")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 offset_right = 1920.0
@@ -39,7 +41,7 @@ mouse_filter = 2
 columns = 5
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/CardsContainer"]
-custom_minimum_size = Vector2(500, 0)
+custom_minimum_size = Vector2(528, 0)
 layout_mode = 2
 
 [node name="SearchAreaCard" type="LineEdit" parent="MarginContainer/VBoxContainer/CardsContainer/VBoxContainer"]
@@ -53,6 +55,22 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
+
+[node name="TieredCardGrid" type="GridContainer" parent="MarginContainer/VBoxContainer/CardsContainer/VBoxContainer/CardSpot"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -266.0
+offset_top = -402.0
+offset_right = 266.0
+offset_bottom = 402.0
+grow_horizontal = 2
+grow_vertical = 2
+columns = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CardsContainer/VBoxContainer"]
 layout_mode = 2

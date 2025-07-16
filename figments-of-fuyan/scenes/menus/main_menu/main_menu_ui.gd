@@ -29,6 +29,7 @@ func onFirstLoad() -> void:
 func onNotFirstLoad() -> void:
 	FadeBackground.modulate = Color.BLACK
 	onTransitionEnd()
+	AniPlayer.play("SlideUIElements")
 
 func _ready() -> void:
 	Audio.onPlayMusic(main_menu_music)

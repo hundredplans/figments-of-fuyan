@@ -1,14 +1,16 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=13 format=3 uid="uid://deyo7ci7khsk0"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=19 format=3]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_7al74"]
-[ext_resource type="Resource" uid="uid://31nmui4k0kfh" path="res://resources/fof/archetypes/tactician.tres" id="2_a55fc"]
-[ext_resource type="Image" uid="uid://d2ks2sqp8ojlm" path="res://assets/sprites/game/cards/art_pop/axel_pearse.png" id="2_acjsm"]
-[ext_resource type="Texture2D" uid="uid://c1sfsveor5mw2" path="res://assets/sprites/game/cards/art_mini/axel_pearse.png" id="2_x7rxs"]
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_0dvgo"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="4_8j3o7"]
-[ext_resource type="PackedScene" uid="uid://bd2esqpmo73tk" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_nuf8j"]
-[ext_resource type="Script" uid="uid://dti3xtuqh8yx7" path="res://scripts/fof/cards/axel_pearse.gd" id="6_a55fc"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_ikjpp"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_7al74"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/tactician.tres" id="2_a55fc"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/axel_pearse.png" id="2_acjsm"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/axel_pearse.png" id="2_x7rxs"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_0dvgo"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="4_8j3o7"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_nuf8j"]
+[ext_resource type="Script" path="res://scripts/fof/cards/axel_pearse.gd" id="6_a55fc"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_ikjpp"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_anhdk"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_llebb"]
 
 [sub_resource type="Resource" id="Resource_a55fc"]
 script = ExtResource("3_0dvgo")
@@ -34,8 +36,52 @@ _bundled = {
 "version": 3
 }
 
+[sub_resource type="Resource" id="Resource_llebb"]
+script = ExtResource("10_anhdk")
+attack = 2
+health = 1
+speed = 3
+energy = 2
+description = "On Hit: If they have ARMOR & SHIELD ignore it and gain
++1 ATT"
+active_abilities = Array[ExtResource("11_llebb")]([])
+traits = Array[ExtResource("3_0dvgo")]([])
+
+[sub_resource type="Resource" id="Resource_a6lft"]
+script = ExtResource("10_anhdk")
+attack = 2
+health = 2
+speed = 3
+energy = 2
+description = "MOBILE
+On Hit: If they have ARMOR & SHIELD ignore it and gain
++1 ATT"
+active_abilities = Array[ExtResource("11_llebb")]([])
+traits = Array[ExtResource("3_0dvgo")]([])
+
+[sub_resource type="Resource" id="Resource_fqlag"]
+script = ExtResource("10_anhdk")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description = ""
+active_abilities = Array[ExtResource("11_llebb")]([])
+traits = Array[ExtResource("3_0dvgo")]([])
+
+[sub_resource type="Resource" id="Resource_yvma7"]
+script = ExtResource("10_anhdk")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description = ""
+active_abilities = Array[ExtResource("11_llebb")]([])
+traits = Array[ExtResource("3_0dvgo")]([])
+
 [resource]
 script = ExtResource("4_8j3o7")
+tiers = Array[ExtResource("10_anhdk")]([SubResource("Resource_llebb"), SubResource("Resource_a6lft"), SubResource("Resource_fqlag"), SubResource("Resource_yvma7")])
 attack = 2
 health = 1
 speed = 3

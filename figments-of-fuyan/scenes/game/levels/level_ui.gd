@@ -2,6 +2,9 @@ extends Control
 
 
 #region Onready
+@onready var FadeBackground: Control = %FadeBackground
+@onready var MouseInUILabel: Label = %MouseInUILabel
+@onready var MainControl: Control = %Main
 @onready var AniPlayer: AnimationPlayer = %AniPlayer
 @onready var HandPanel: PanelContainer = %HandPanel
 @onready var BottomBox: Control = %BottomBox
@@ -68,7 +71,6 @@ var PauseMenu: Control
 @export var PauseMenuPacked: PackedScene
 @export var DeckScreenPacked: PackedScene
 @export var GraveyardScreenPacked: PackedScene
-@export var MinimapPacked: PackedScene
 @export var LossUIPacked: PackedScene
 #endregion
 
@@ -154,7 +156,7 @@ func onMouseInUI(state: bool) -> void:
 	if get_viewport().get_mouse_position().y >= get_viewport().size.y - BOTTOM_SCREEN_OFFSET: return
 	mouse_in_ui = state
 	mouse_signal.emit(mouse_in_ui)
-	$MouseInUILabel.text = "Mouse In UI: " + str(mouse_in_ui)
+	MouseInUILabel.text = "Mouse In UI: " + str(mouse_in_ui)
 
 func onActionPlaying(state: bool) -> void:
 	if level.isGameEnded(): return
@@ -165,11 +167,11 @@ func onActionPlaying(state: bool) -> void:
 #endregion
 
 #region Phase
-func onPhaseChanged(phase: Game.Phases, _phase: Game.Phases, _instant: bool = false) -> void:
+func onPhaseChanged(phase: Game.Phases, _phase: Game.Phases, instant: bool = false) -> void:
 	HandPanel.theme_type_variation = "BluePanelContainer" if phase == Game.Phases.START else "WhitePanelContainer"
 	PhaseIcon.setPhase(phase)
 	PassButton.setPhase(phase)
-	HandBox.setPhase(phase)
+	HandBox.setPhase(phase, instant)
 	match phase:
 		Game.Phases.PLAYER:
 			PassButton.setAllySpectating(level.getAllySpectateObject())
@@ -197,7 +199,7 @@ func onCardDraggedEnd(CardUI: Control, dragged_position: Vector2) -> void:
 	dragged_end.emit(CardUI.Card, dragged_position, CardUI)
 	
 	if level.getPhase() in [Game.Phases.HAND, Game.Phases.START]:
-		HandBox.onPin()
+		HandBox.onPin(false)
 		
 	HandPanel.mouse_filter = Control.MOUSE_FILTER_STOP
 	
@@ -206,7 +208,7 @@ func onCardDraggedFinished(_CardUI: Control) -> void: # When card comes back to 
 	
 func onCardDraggedBegin(CardUI: Control) -> void:
 	dragged_begin.emit(CardUI)
-	HandBox.onUnpin()
+	HandBox.onUnpin(false)
 	HandBox.setDraggedCardUI(CardUI)
 	HandPanel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 #endregion
@@ -256,11 +258,11 @@ func onCameraUpdated(SpectateObject: GameObjectGD, __: GameObjectGD = null) -> v
 #region Deck / Graveyard
 func _on_deck_button_pressed() -> void:
 	var DeckScreen: Control = DeckScreenPacked.instantiate()
-	add_child(DeckScreen)
+	MainControl.add_child(DeckScreen)
 	DeckScreen.setInfo(false)
 	
 func _on_graveyard_button_pressed() -> void:
-	add_child(GraveyardScreenPacked.instantiate())
+	MainControl.add_child(GraveyardScreenPacked.instantiate())
 #endregion
 
 #region Pass Button
@@ -283,17 +285,31 @@ func setActiveEffectLabel(text: String = "") -> void:
 #endregion
 
 #region Minimap
-var Minimap: Control
+var MinimapUI: Control
 func _on_minimap_button_pressed() -> void:
-	if Minimap == null:
-		Minimap = MinimapPacked.instantiate()
-		MinimapControl.add_child(Minimap)
-		Minimap.mouse_in_ui.connect(onMouseInUI)
-		Minimap.tree_exited.connect(onMinimapRemoved)
-		BackgroundDimmer.visible = true
-	else:
-		Minimap.queue_free()
-		onMinimapRemoved()
+	if MinimapUI != null: return
+	FadeBackground.DEFAULT_ALPHA = 255
+	FadeBackground.onFade(true)
+	await get_tree().create_timer(FadeBackground.FADE_TIME).timeout
+	await get_tree().process_frame
+	
+	World.onMinimapCreated()
+	MainControl.visible = false
+	Game.getLevel().visible = false
+	for Card: CardGD in get_tree().get_nodes_in_group("FieldCardsGD"):
+		Card.visible = false
+		
+	MinimapUI = Game.onCreateMinimap(self)
+	MinimapUI.exit.connect(onMinimapUIExit)
+	
+func onMinimapUIExit() -> void:
+	FadeBackground.onFade(false)
+	World.onMinimapExited()
+	MainControl.visible = true
+	Game.getLevel().visible = true
+	MinimapUI = null
+	for Card: CardGD in get_tree().get_nodes_in_group("FieldCardsGD"):
+		Card.visible = Card.isLevelVisible()
 	
 func onMinimapRemoved() -> void:
 	if !level.isGameEnded():
@@ -395,9 +411,9 @@ func onGameEnded(rewards: Rewards) -> void:
 	EpicFightControl.visible = false
 	if rewards == null:
 		var LossUI: Control = LossUIPacked.instantiate()
-		add_child(LossUI)
+		MainControl.add_child(LossUI)
 	else:
-		RewardsUI = Game.onCreateRewardsScreen(rewards, self, level.fight_type)
+		RewardsUI = Game.onCreateRewardsScreen(rewards, MainControl, level.fight_type)
 		AniPlayer.play("RewardsScreenCreated")
 		RewardsUI.screen_finished.connect(level.onRewardsFinished)
 		RewardsUI.stash_screen_fade_out.connect(onRewardsStashScreenFade.bind(false))
@@ -420,7 +436,7 @@ func onGameEnded(rewards: Rewards) -> void:
 	for btn in get_tree().get_nodes_in_group("ActionLockDisabled").filter(func(x: Control): return x is HighlightTxButton):
 		btn.setDisabled(btn.is_in_group("EndGameDisabled"))
 	
-	HandBox.onUnpin()
+	HandBox.onUnpin(true)
 	
 var stash_screen_previous_fade: bool
 func onRewardsStashScreenFade(fade_in: bool) -> void:

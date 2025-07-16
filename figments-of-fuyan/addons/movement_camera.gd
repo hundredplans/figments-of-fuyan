@@ -51,6 +51,7 @@ func setDisableFreelook(state: bool) -> void:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 func _input(event):
+	if !current: return
 	# Receives mouse motion
 	if event is InputEventMouseMotion:
 		_mouse_position = event.relative
@@ -98,11 +99,11 @@ func _input(event):
 
 # Updates mouselook and movement every frame
 func _process(delta):
+	if !current: return
 	_update_mouselook()
 	_update_movement(delta)
 	onUpdateFreelookInput()
-	get_viewport().size
-
+	
 func onUpdateFreelookInput() -> void:
 	if Input.is_action_just_pressed("AltInput") and !disable_freelook:
 		camera_panning.emit(true)

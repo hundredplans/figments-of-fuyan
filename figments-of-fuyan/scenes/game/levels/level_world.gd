@@ -426,3 +426,20 @@ func onProcessAction(action: Action) -> void:
 			
 func onChangeEnvironment(action: ChangeEnvironmentAction) -> void:
 	setEnvironment(action.environment)
+	
+func onMinimapCreated() -> void:
+	visible = false
+	CameraManager.setCurrent(false)
+	
+func onMinimapExited() -> void:
+	visible = true
+	CameraManager.setCurrent(true)
+	
+	var ChampionCard: CardGD = Game.getSaveFile().getChampionCard()
+	ChampionCard.onRemoveModel()
+	if !ChampionCard.is_in_group("FieldCardsGD"): return
+	
+	ChampionCard.onCreateModel()
+	ChampionCard.onIdle()
+	ChampionCard.position = ChampionCard.getTile().getCardPosition()
+	ChampionCard.onCreateFieldInfo()

@@ -348,6 +348,7 @@ func onMinifanMovementAction(enemies: Array, tiles: Array) -> MovementAction:
 	if !enemies.is_empty(): tiles = getCloseToEnemiesTiles(enemies, tiles)
 	else: tiles = getFarTiles(tiles, Tile)
 	
+	if tiles.is_empty(): return MovementAction.new(self, [])
 	var BestTile: TileGD = tiles[0]
 	return MovementAction.new(self, BestTile.getMovementPathTiles())
 #endregion

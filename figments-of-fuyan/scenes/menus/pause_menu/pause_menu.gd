@@ -63,4 +63,5 @@ func onMainMenuButtonPressed() -> void:
 		.as_relative().set_trans(Tween.TRANS_SINE)
 	
 	await tween.finished
+	Game.getSaveFile().onSaveToFile()
 	Game.getSaveFile().onLoadMainMenu()

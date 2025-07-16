@@ -1,14 +1,16 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://cas0hhnqiwo3f"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=18 format=3]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_yj15q"]
-[ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_wpdb5"]
-[ext_resource type="Texture2D" uid="uid://dj4oqh61h6oqb" path="res://assets/sprites/game/cards/art_mini/jacques_lemyce.png" id="3_2ah7e"]
-[ext_resource type="Image" uid="uid://d00hd6omdoug3" path="res://assets/sprites/game/cards/art_pop/jacques_lemyce.png" id="4_wrpjv"]
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="5_ttje8"]
-[ext_resource type="Script" uid="uid://k2ruo8m3b8gc" path="res://scripts/fof/cards/jacques_lemyce.gd" id="6_yj15q"]
-[ext_resource type="PackedScene" uid="uid://bd2esqpmo73tk" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="7_5gd10"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="8_gghdh"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="9_qmcpv"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_yj15q"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/brute.tres" id="2_wpdb5"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/jacques_lemyce.png" id="3_2ah7e"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/jacques_lemyce.png" id="4_wrpjv"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="5_ttje8"]
+[ext_resource type="Script" path="res://scripts/fof/cards/jacques_lemyce.gd" id="6_yj15q"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="7_5gd10"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="8_gghdh"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="9_qmcpv"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_wpdb5"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_2ah7e"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
 size = Vector3(0.663147, 1.94543, 0.526978)
@@ -26,8 +28,49 @@ _bundled = {
 "version": 3
 }
 
+[sub_resource type="Resource" id="Resource_2ah7e"]
+script = ExtResource("10_wpdb5")
+attack = 2
+health = 2
+speed = 2
+energy = 2
+description = "RAMPAGE [1]: Your next attack STUNS"
+active_abilities = Array[ExtResource("11_2ah7e")]([])
+traits = Array[ExtResource("5_ttje8")]([])
+
+[sub_resource type="Resource" id="Resource_wrpjv"]
+script = ExtResource("10_wpdb5")
+attack = 2
+health = 3
+speed = 3
+energy = 2
+description = ""
+active_abilities = Array[ExtResource("11_2ah7e")]([])
+traits = Array[ExtResource("5_ttje8")]([])
+
+[sub_resource type="Resource" id="Resource_ttje8"]
+script = ExtResource("10_wpdb5")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description = ""
+active_abilities = Array[ExtResource("11_2ah7e")]([])
+traits = Array[ExtResource("5_ttje8")]([])
+
+[sub_resource type="Resource" id="Resource_pk0wc"]
+script = ExtResource("10_wpdb5")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description = ""
+active_abilities = Array[ExtResource("11_2ah7e")]([])
+traits = Array[ExtResource("5_ttje8")]([])
+
 [resource]
 script = ExtResource("9_qmcpv")
+tiers = Array[ExtResource("10_wpdb5")]([SubResource("Resource_2ah7e"), SubResource("Resource_wrpjv"), SubResource("Resource_ttje8"), SubResource("Resource_pk0wc")])
 attack = 2
 health = 2
 speed = 2

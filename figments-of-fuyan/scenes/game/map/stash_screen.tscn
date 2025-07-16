@@ -11,11 +11,11 @@
 [ext_resource type="PackedScene" uid="uid://ct1cn5tc1ofmb" path="res://scenes/game/boons/boon_icon.tscn" id="9_2jssj"]
 [ext_resource type="Script" uid="uid://dnqf5f1jadalx" path="res://scenes/game/levels/boon_box.gd" id="9_jpe4s"]
 [ext_resource type="PackedScene" uid="uid://mehoa6ajrja5" path="res://scenes/common/highlight_tx_button.tscn" id="11_htpxe"]
-[ext_resource type="Texture2D" uid="uid://dilj4y3uvwbg8" path="res://assets/sprites/game/boons/campfire_boon.png" id="12_eus34"]
-[ext_resource type="Texture2D" uid="uid://vg6qhbo7xvhs" path="res://assets/sprites/game/boons/mentor_boon.png" id="12_sgx1o"]
-[ext_resource type="Texture2D" uid="uid://bci3slqe4h5gv" path="res://assets/sprites/game/boons/gazer_boon.png" id="13_eus34"]
-[ext_resource type="Texture2D" uid="uid://uf61yvygws5h" path="res://assets/sprites/game/boons/nurture_boon.png" id="13_sgx1o"]
-[ext_resource type="Texture2D" uid="uid://brcmwcvusvyf3" path="res://assets/sprites/game/boons/dominance_boon.png" id="14_y0ya4"]
+[ext_resource type="Texture2D" uid="uid://dspfatr83j2o3" path="res://assets/sprites/ui/scene_specific/stash_screen/sort_tool.png" id="12_eus34"]
+[ext_resource type="Texture2D" uid="uid://c4ve0ovr0a8jr" path="res://assets/sprites/ui/scene_specific/stash_screen/sort_tier.png" id="13_y0ya4"]
+[ext_resource type="Texture2D" uid="uid://daf1o5n16hkbe" path="res://assets/sprites/ui/scene_specific/stash_screen/sort_area.png" id="14_504a2"]
+[ext_resource type="Texture2D" uid="uid://by2sd6erbaes8" path="res://assets/sprites/ui/scene_specific/stash_screen/sort_energy.png" id="15_cajyl"]
+[ext_resource type="Texture2D" uid="uid://b6u27mcqxdyc5" path="res://assets/sprites/ui/scene_specific/stash_screen/sort_rarity.png" id="16_l4vsq"]
 
 [sub_resource type="Animation" id="Animation_jpe4s"]
 resource_name = "EnergyLimitReached"
@@ -344,8 +344,7 @@ columns = 6
 
 [node name="MarginContainer3" type="MarginContainer" parent="ScreenManager"]
 layout_mode = 0
-offset_left = 415.0
-offset_right = 829.0
+offset_right = 851.0
 offset_bottom = 120.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScreenManager/MarginContainer3"]
@@ -357,19 +356,19 @@ texture_normal = ExtResource("12_eus34")
 
 [node name="SortByTierButton" parent="ScreenManager/MarginContainer3/HBoxContainer" instance=ExtResource("11_htpxe")]
 layout_mode = 2
-texture_normal = ExtResource("12_sgx1o")
+texture_normal = ExtResource("13_y0ya4")
 
 [node name="SortByAreaButton" parent="ScreenManager/MarginContainer3/HBoxContainer" instance=ExtResource("11_htpxe")]
 layout_mode = 2
-texture_normal = ExtResource("13_sgx1o")
+texture_normal = ExtResource("14_504a2")
 
 [node name="SortByEnergyButton" parent="ScreenManager/MarginContainer3/HBoxContainer" instance=ExtResource("11_htpxe")]
 layout_mode = 2
-texture_normal = ExtResource("13_eus34")
+texture_normal = ExtResource("15_cajyl")
 
 [node name="SortByRarityButton" parent="ScreenManager/MarginContainer3/HBoxContainer" instance=ExtResource("11_htpxe")]
 layout_mode = 2
-texture_normal = ExtResource("14_y0ya4")
+texture_normal = ExtResource("16_l4vsq")
 
 [node name="CardUIRaycast" type="RayCast2D" parent="."]
 unique_name_in_owner = true

@@ -1,0 +1,199 @@
+[gd_scene load_steps=16 format=3 uid="uid://b4xysgmu7vm0o"]
+
+[ext_resource type="Texture2D" uid="uid://c6m2vx6yd57ns" path="res://assets/sprites/game/cards/common/stats/attack_icon.png" id="1_ch743"]
+[ext_resource type="Script" uid="uid://cho4pxi80q0fa" path="res://scenes/editors/card_editor/editable_card_ui.gd" id="1_n3drn"]
+[ext_resource type="Texture2D" uid="uid://de1l5iyvymvpq" path="res://assets/sprites/game/cards/common/stats/health_icon.png" id="2_1tnig"]
+[ext_resource type="Image" uid="uid://ckxnjmhktgr8q" path="res://assets/sprites/game/cards/common/rarity/scrap.png" id="2_3l7jt"]
+[ext_resource type="Texture2D" uid="uid://bpduccrmfydxb" path="res://assets/sprites/game/cards/common/stats/speed_icon.png" id="3_apdn0"]
+[ext_resource type="Image" uid="uid://c30uml0aawfvd" path="res://assets/sprites/game/cards/common/rarity/neutral.png" id="3_nt207"]
+[ext_resource type="Image" uid="uid://duyj4dbtko3a6" path="res://assets/sprites/game/cards/common/rarity/common.png" id="4_cnf42"]
+[ext_resource type="Texture2D" uid="uid://fi32a8tjx0k3" path="res://assets/sprites/game/cards/common/stats/energy_icon.png" id="4_n3drn"]
+[ext_resource type="Image" uid="uid://q0va4msyj05p" path="res://assets/sprites/game/cards/common/rarity/rare.png" id="5_2hehx"]
+[ext_resource type="Theme" uid="uid://dk7j06yculq0a" path="res://resources/ui/themes/card_theme.tres" id="6_apdn0"]
+[ext_resource type="Image" uid="uid://mp134f1rubor" path="res://assets/sprites/game/cards/common/rarity/exalt.png" id="6_i8e6l"]
+[ext_resource type="Image" uid="uid://d2kkw5k3572mg" path="res://assets/sprites/game/cards/common/rarity/miniboss.png" id="7_anwko"]
+[ext_resource type="FontFile" uid="uid://dpk4daccj6hwv" path="res://assets/fonts/roboto.ttf" id="7_n3drn"]
+[ext_resource type="Image" uid="uid://7dyec4w7e653" path="res://assets/sprites/game/cards/common/rarity/boss.png" id="8_6et8o"]
+[ext_resource type="Image" uid="uid://bxmihpk6puyki" path="res://assets/sprites/game/cards/common/rarity/champion.png" id="9_xiatj"]
+
+[node name="EditableCardUI" type="Control"]
+custom_minimum_size = Vector2(264, 400)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 264.0
+offset_bottom = 400.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_n3drn")
+rarities = Array[Image]([ExtResource("2_3l7jt"), ExtResource("3_nt207"), null, ExtResource("4_cnf42"), ExtResource("5_2hehx"), ExtResource("6_i8e6l"), ExtResource("7_anwko"), ExtResource("8_6et8o"), ExtResource("9_xiatj")])
+
+[node name="AreaBackground" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ArtPop" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Stats" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 7.0
+offset_top = 338.0
+offset_right = 242.0
+offset_bottom = 392.0
+mouse_filter = 2
+
+[node name="Attack" type="Control" parent="Stats"]
+layout_mode = 1
+anchor_left = 0.081
+anchor_top = 1.0
+anchor_right = 0.081
+anchor_bottom = 1.0
+offset_left = -0.0349998
+offset_top = -53.0
+offset_right = 39.965
+offset_bottom = -3.0
+mouse_filter = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="Stats/Attack"]
+texture_filter = 1
+position = Vector2(18, 0)
+texture = ExtResource("1_ch743")
+centered = false
+
+[node name="AttackLineEdit" type="LineEdit" parent="Stats/Attack"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = -10.0
+offset_top = 17.0
+offset_right = 36.0
+offset_bottom = 63.0
+theme_override_constants/minimum_character_width = 0
+alignment = 1
+
+[node name="Health" type="Control" parent="Stats"]
+layout_mode = 1
+anchor_left = 0.366
+anchor_top = 0.99
+anchor_right = 0.366
+anchor_bottom = 0.99
+offset_left = -0.0100098
+offset_top = -50.08
+offset_right = 39.99
+offset_bottom = -0.0800171
+mouse_filter = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="Stats/Health"]
+texture_filter = 1
+position = Vector2(18, 0)
+texture = ExtResource("2_1tnig")
+centered = false
+
+[node name="HealthLineEdit" type="LineEdit" parent="Stats/Health"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = -16.0
+offset_top = 14.62
+offset_right = 30.0
+offset_bottom = 60.62
+theme_override_constants/minimum_character_width = 0
+alignment = 1
+
+[node name="Speed" type="Control" parent="Stats"]
+layout_mode = 1
+anchor_left = 0.672
+anchor_top = 0.992
+anchor_right = 0.672
+anchor_bottom = 0.992
+offset_left = 0.0799866
+offset_top = -49.864
+offset_right = 40.08
+offset_bottom = 0.135986
+mouse_filter = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="Stats/Speed"]
+texture_filter = 1
+position = Vector2(18, 0)
+texture = ExtResource("3_apdn0")
+centered = false
+
+[node name="SpeedLineEdit" type="LineEdit" parent="Stats/Speed"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = -18.0
+offset_top = 14.296
+offset_right = 28.0
+offset_bottom = 60.296
+theme_override_constants/minimum_character_width = 0
+alignment = 1
+
+[node name="Energy" type="Control" parent="Stats"]
+layout_mode = 1
+anchor_left = 0.672
+anchor_top = 0.992
+anchor_right = 0.672
+anchor_bottom = 0.992
+offset_left = -152.92
+offset_top = -225.568
+offset_right = -96.92
+offset_bottom = -165.568
+mouse_filter = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="Stats/Energy"]
+texture_filter = 1
+position = Vector2(6, 7)
+scale = Vector2(0.78125, 0.78125)
+texture = ExtResource("4_n3drn")
+centered = false
+
+[node name="EnergyLineEdit" type="LineEdit" parent="Stats/Energy"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 8.0
+offset_top = 10.0
+offset_right = 54.0
+offset_bottom = 56.0
+theme_override_constants/minimum_character_width = 0
+alignment = 1
+
+[node name="NameLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 70.0
+offset_top = 213.0
+offset_right = 191.0
+offset_bottom = 228.0
+theme = ExtResource("6_apdn0")
+text = "Frederic the Fearless"
+horizontal_alignment = 1
+
+[node name="CardTextEdit" type="TextEdit" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 70.0
+offset_top = 245.0
+offset_right = 190.0
+offset_bottom = 352.0
+theme_override_fonts/font = ExtResource("7_n3drn")
+theme_override_font_sizes/font_size = 10
+wrap_mode = 1

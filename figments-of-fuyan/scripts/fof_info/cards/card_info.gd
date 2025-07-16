@@ -21,6 +21,7 @@ const BASE_MATERIAL_ASCENDED_SPECULAR_PATH: String = "res://resources/shaders/ba
 const BASE_MATERIAL_ALPHAGREY_PATH: String = "res://resources/materials/game/base_material_alphagrey_hashing.tres"
 
 @export_group("Card")
+@export var tiers: Array[TierDatastore]
 @export var attack: int
 @export var health: int
 @export var speed: int
@@ -88,3 +89,26 @@ func getColoredBaseMaterial(team: int, ascended: bool) -> ShaderMaterial:
 		1: return load(BASE_MATERIAL_RED_TRANSPARENT_PATH if !ascended else BASE_MATERIAL_RED_TRANSPARENT_ASCENDED_PATH)
 		2: return load(BASE_MATERIAL_BROWN_TRANSPARENT_PATH if !ascended else BASE_MATERIAL_BROWN_TRANSPARENT_ASCENDED_PATH)
 	return null
+	
+func getTierDatastore(tier: int) -> TierDatastore:
+	tier -= 1
+	return tiers[tier] if tiers.size() > tier else TierDatastore.new()
+	
+func getUpdatedTierDatastore(tier: int) -> TierDatastore:
+	var tier_datastore := TierDatastore.new()
+	for i: int in range(tier - 1, -1, -1):
+		var _tier_datastore: TierDatastore = tiers[i] if tiers.size() > i else TierDatastore.new()
+		for property: String in ["attack", "health", "speed", "energy"]:
+			if tier_datastore[property] == -1:
+				tier_datastore[property] = _tier_datastore[property]
+		
+		if tier_datastore.description.is_empty():
+			tier_datastore.description = _tier_datastore.description
+			
+		if tier_datastore.active_abilities.is_empty() and !_tier_datastore.active_abilities.is_empty():
+			tier_datastore.active_abilities = _tier_datastore.active_abilities
+			
+		if tier_datastore.traits.is_empty() and !_tier_datastore.traits.is_empty():
+			tier_datastore.traits = _tier_datastore.traits
+			
+	return tier_datastore

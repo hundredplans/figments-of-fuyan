@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=15 format=3 uid="uid://c5b2uhw77ebx5"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3 uid="uid://5sttoisolkd8"]
 
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_rrc50"]
 [ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_54fdl"]
@@ -9,6 +9,8 @@
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_g5wjs"]
 [ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="6_q2yck"]
 [ext_resource type="PackedScene" uid="uid://d33beirjwt2p7" path="res://assets/models/fof/cards/palmador_rider.glb" id="7_lbc4d"]
+[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_vnoe1"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_3w5kh"]
 
 [sub_resource type="Resource" id="Resource_3w5kh"]
 script = ExtResource("1_rrc50")
@@ -56,8 +58,70 @@ first_init = true
 public_id = 0
 metadata/_custom_type_script = "uid://dag3a8ejplko8"
 
+[sub_resource type="Resource" id="Resource_tfmrg"]
+script = ExtResource("11_3w5kh")
+name = "Highjump"
+description = "Jump up to a [3] Tile adjacent wall"
+max_charges = -1
+delay = 0.0
+camera_type = 0
+charges = 0
+used = false
+
+[sub_resource type="Resource" id="Resource_qibe7"]
+script = ExtResource("10_vnoe1")
+attack = 1
+health = 4
+speed = 4
+energy = 3
+description = "MOBILE; ABILITY: Jump up to a [3] Tile adjacent wall"
+active_abilities = Array[ExtResource("11_3w5kh")]([SubResource("Resource_tfmrg")])
+traits = Array[ExtResource("2_54fdl")]([])
+
+[sub_resource type="Resource" id="Resource_cviod"]
+script = ExtResource("11_3w5kh")
+name = "Highjump"
+description = "Jump up to a [5] Tile adjacent wall"
+max_charges = -1
+delay = 0.0
+camera_type = 0
+charges = 0
+used = false
+metadata/_custom_type_script = "uid://cra1nahu5jsgt"
+
+[sub_resource type="Resource" id="Resource_jwbdo"]
+script = ExtResource("10_vnoe1")
+attack = 1
+health = 4
+speed = 4
+energy = 3
+description = "MOBILE; ABILITY: Jump up to a [5] Tile adjacent wall"
+active_abilities = Array[ExtResource("11_3w5kh")]([SubResource("Resource_cviod")])
+traits = Array[ExtResource("2_54fdl")]([])
+
+[sub_resource type="Resource" id="Resource_yvqlm"]
+script = ExtResource("10_vnoe1")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description = ""
+active_abilities = Array[ExtResource("11_3w5kh")]([])
+traits = Array[ExtResource("2_54fdl")]([])
+
+[sub_resource type="Resource" id="Resource_0xcc7"]
+script = ExtResource("10_vnoe1")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description = ""
+active_abilities = Array[ExtResource("11_3w5kh")]([])
+traits = Array[ExtResource("2_54fdl")]([])
+
 [resource]
 script = ExtResource("6_q2yck")
+tiers = Array[ExtResource("10_vnoe1")]([SubResource("Resource_qibe7"), SubResource("Resource_jwbdo"), SubResource("Resource_yvqlm"), SubResource("Resource_0xcc7")])
 attack = 1
 health = 4
 speed = 4

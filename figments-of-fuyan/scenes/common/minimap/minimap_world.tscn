@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://kilgqr52kmi1"]
+
+[ext_resource type="Script" uid="uid://bg4bntrnhtcba" path="res://scenes/common/minimap/minimap_world.gd" id="1_303fh"]
+[ext_resource type="PackedScene" uid="uid://b6j81bywbv24n" path="res://scenes/game/map/map_world.tscn" id="1_prr3m"]
+
+[node name="MinimapWorld" type="Node3D"]
+script = ExtResource("1_303fh")
+
+[node name="MapWorld" parent="." instance=ExtResource("1_prr3m")]
+unique_name_in_owner = true

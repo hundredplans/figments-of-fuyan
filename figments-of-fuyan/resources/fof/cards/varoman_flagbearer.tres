@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=13 format=3 uid="uid://gfc2jnr2klvd"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=21 format=3 uid="uid://dqkllop1bddj0"]
 
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_ngb84"]
 [ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_3rsmk"]
@@ -9,6 +9,8 @@
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_4kbl8"]
 [ext_resource type="Script" uid="uid://d3v0bddqgef2x" path="res://scripts/fof/cards/varoman_flagbearer.gd" id="6_drvy6"]
 [ext_resource type="PackedScene" uid="uid://cxmof13hj7dce" path="res://assets/models/fof/cards/varoman_flagbearer.glb" id="7_drvy6"]
+[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_c3fq3"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_ela83"]
 
 [sub_resource type="Resource" id="Resource_drvy6"]
 script = ExtResource("1_ngb84")
@@ -40,8 +42,70 @@ _bundled = {
 "version": 3
 }
 
+[sub_resource type="Resource" id="Resource_ela83"]
+script = ExtResource("11_ela83")
+name = "For Varoma!"
+description = "Give an ally in vision +1 ATT for [1] Turn"
+max_charges = 1
+delay = 0.0
+camera_type = 0
+charges = 0
+used = false
+
+[sub_resource type="Resource" id="Resource_fmhn4"]
+script = ExtResource("10_c3fq3")
+attack = 1
+health = 2
+speed = 2
+energy = 1
+description = "ABILITY [[X]]: Give an ally in vision +1 ATT for [1] Turn"
+active_abilities = Array[ExtResource("11_ela83")]([SubResource("Resource_ela83")])
+traits = Array[ExtResource("2_3rsmk")]([])
+
+[sub_resource type="Resource" id="Resource_hwdwp"]
+script = ExtResource("11_ela83")
+name = "For Varoma!"
+description = "Give an ally in vision +1 ATT for [1] Turn"
+max_charges = 2
+delay = 0.0
+camera_type = 0
+charges = 0
+used = false
+metadata/_custom_type_script = "uid://cra1nahu5jsgt"
+
+[sub_resource type="Resource" id="Resource_5kkcc"]
+script = ExtResource("10_c3fq3")
+attack = 1
+health = 2
+speed = 2
+energy = 1
+description = "ABILITY [[X]]: Give an ally in vision +1 ATT for [1] Turn"
+active_abilities = Array[ExtResource("11_ela83")]([SubResource("Resource_hwdwp")])
+traits = Array[ExtResource("2_3rsmk")]([])
+
+[sub_resource type="Resource" id="Resource_efujh"]
+script = ExtResource("10_c3fq3")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description = ""
+active_abilities = Array[ExtResource("11_ela83")]([])
+traits = Array[ExtResource("2_3rsmk")]([])
+
+[sub_resource type="Resource" id="Resource_qahs6"]
+script = ExtResource("10_c3fq3")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description = ""
+active_abilities = Array[ExtResource("11_ela83")]([])
+traits = Array[ExtResource("2_3rsmk")]([])
+
 [resource]
 script = ExtResource("3_l1a2a")
+tiers = Array[ExtResource("10_c3fq3")]([SubResource("Resource_fmhn4"), SubResource("Resource_5kkcc"), SubResource("Resource_efujh"), SubResource("Resource_qahs6")])
 attack = 1
 health = 2
 speed = 2

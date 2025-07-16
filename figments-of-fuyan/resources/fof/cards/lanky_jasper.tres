@@ -1,14 +1,16 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://clrmmvy6g2htj"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=18 format=3]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_c5qm4"]
-[ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_8se3q"]
-[ext_resource type="Image" uid="uid://dnfxp5drwss3q" path="res://assets/sprites/game/cards/art_pop/lanky_jasper.png" id="2_c7sds"]
-[ext_resource type="Texture2D" uid="uid://gss7sut713fv" path="res://assets/sprites/game/cards/art_mini/lanky_jasper.png" id="2_i404x"]
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_q6wx4"]
-[ext_resource type="Script" uid="uid://d3xulw3ft3e0n" path="res://scripts/fof/cards/card.gd" id="4_gsh5j"]
-[ext_resource type="PackedScene" uid="uid://bxdixxrf3f7aa" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_3bti3"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_qyrrx"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="7_nfr2s"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_c5qm4"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/brute.tres" id="2_8se3q"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/lanky_jasper.png" id="2_c7sds"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/lanky_jasper.png" id="2_i404x"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_q6wx4"]
+[ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_gsh5j"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_3bti3"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_qyrrx"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="7_nfr2s"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_aqdih"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_frxdu"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ru2ex"]
 size = Vector3(0.611084, 1.88574, 0.241943)
@@ -26,8 +28,49 @@ _bundled = {
 "version": 3
 }
 
+[sub_resource type="Resource" id="Resource_frxdu"]
+script = ExtResource("10_aqdih")
+attack = 3
+health = 5
+speed = 2
+energy = 4
+description = "START OF TURN: Alternate between reflecting [1] DMG from melee to ranged attacks"
+active_abilities = Array[ExtResource("11_frxdu")]([])
+traits = Array[ExtResource("3_q6wx4")]([])
+
+[sub_resource type="Resource" id="Resource_b5ocg"]
+script = ExtResource("10_aqdih")
+attack = 3
+health = 5
+speed = 2
+energy = 4
+description = ""
+active_abilities = Array[ExtResource("11_frxdu")]([])
+traits = Array[ExtResource("3_q6wx4")]([])
+
+[sub_resource type="Resource" id="Resource_yp6dx"]
+script = ExtResource("10_aqdih")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description = ""
+active_abilities = Array[ExtResource("11_frxdu")]([])
+traits = Array[ExtResource("3_q6wx4")]([])
+
+[sub_resource type="Resource" id="Resource_ok1a5"]
+script = ExtResource("10_aqdih")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description = ""
+active_abilities = Array[ExtResource("11_frxdu")]([])
+traits = Array[ExtResource("3_q6wx4")]([])
+
 [resource]
 script = ExtResource("7_nfr2s")
+tiers = Array[ExtResource("10_aqdih")]([SubResource("Resource_frxdu"), SubResource("Resource_b5ocg"), SubResource("Resource_yp6dx"), SubResource("Resource_ok1a5")])
 attack = 3
 health = 5
 speed = 2

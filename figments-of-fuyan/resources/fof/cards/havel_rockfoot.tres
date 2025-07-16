@@ -1,14 +1,16 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=13 format=3 uid="uid://ckqxpbmylqlnk"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=20 format=3]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_uhsdm"]
-[ext_resource type="Texture2D" uid="uid://cj1ihg5ofwain" path="res://assets/sprites/game/cards/art_mini/havel_rockfoot.png" id="2_1nj2i"]
-[ext_resource type="Image" uid="uid://b8vjfjivxqkpd" path="res://assets/sprites/game/cards/art_pop/havel_rockfoot.png" id="2_f4kx2"]
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_gdxwm"]
-[ext_resource type="Resource" uid="uid://dk14kkjps176t" path="res://resources/fof/archetypes/warden.tres" id="2_lcerg"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_vati7"]
-[ext_resource type="PackedScene" uid="uid://bd2esqpmo73tk" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_yhuxp"]
-[ext_resource type="Script" uid="uid://dxtmq28l3h8sg" path="res://scripts/fof/cards/havel_rockfoot.gd" id="6_lcerg"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_njsxc"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_uhsdm"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/havel_rockfoot.png" id="2_1nj2i"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/havel_rockfoot.png" id="2_f4kx2"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_gdxwm"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/warden.tres" id="2_lcerg"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_vati7"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_yhuxp"]
+[ext_resource type="Script" path="res://scripts/fof/cards/havel_rockfoot.gd" id="6_lcerg"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_njsxc"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_cdtjy"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_jhexs"]
 
 [sub_resource type="Resource" id="Resource_lcerg"]
 script = ExtResource("1_uhsdm")
@@ -40,8 +42,60 @@ _bundled = {
 "version": 3
 }
 
+[sub_resource type="Resource" id="Resource_jhexs"]
+script = ExtResource("11_jhexs")
+name = "Blackclad Armor"
+description = "Gain ARMOR [1] and +1 ATT +1 HP per REVENGE triggered"
+max_charges = 1
+delay = 0.0
+camera_type = 0
+charges = 0
+used = false
+
+[sub_resource type="Resource" id="Resource_wkkql"]
+script = ExtResource("10_cdtjy")
+attack = 2
+health = 4
+speed = 2
+energy = 4
+description = "REVENGE: Gain +1 ATT +1 HP  when you trigger your ability
+ABILITY [1]: Gain ARMOR [1]"
+active_abilities = Array[ExtResource("11_jhexs")]([SubResource("Resource_jhexs")])
+traits = Array[ExtResource("2_gdxwm")]([])
+
+[sub_resource type="Resource" id="Resource_jobq8"]
+script = ExtResource("10_cdtjy")
+attack = 2
+health = 6
+speed = 2
+energy = 4
+description = ""
+active_abilities = Array[ExtResource("11_jhexs")]([])
+traits = Array[ExtResource("2_gdxwm")]([])
+
+[sub_resource type="Resource" id="Resource_vwyj8"]
+script = ExtResource("10_cdtjy")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description = ""
+active_abilities = Array[ExtResource("11_jhexs")]([])
+traits = Array[ExtResource("2_gdxwm")]([])
+
+[sub_resource type="Resource" id="Resource_5crwq"]
+script = ExtResource("10_cdtjy")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description = ""
+active_abilities = Array[ExtResource("11_jhexs")]([])
+traits = Array[ExtResource("2_gdxwm")]([])
+
 [resource]
 script = ExtResource("3_vati7")
+tiers = Array[ExtResource("10_cdtjy")]([SubResource("Resource_wkkql"), SubResource("Resource_jobq8"), SubResource("Resource_vwyj8"), SubResource("Resource_5crwq")])
 attack = 2
 health = 4
 speed = 2

@@ -1,14 +1,16 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://bwowvmbh0bwrg"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=18 format=3]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_qxwry"]
-[ext_resource type="Resource" uid="uid://bbqdeswvpt0y6" path="res://resources/fof/archetypes/support.tres" id="2_b38lb"]
-[ext_resource type="Image" uid="uid://dvc0l1x35g3cq" path="res://assets/sprites/game/cards/art_pop/lil_betty.png" id="2_dujif"]
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_f2ey4"]
-[ext_resource type="Texture2D" uid="uid://d1q53cpp04ok0" path="res://assets/sprites/game/cards/art_mini/lil_betty.png" id="2_f2w1r"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_tk5ul"]
-[ext_resource type="PackedScene" uid="uid://bd2esqpmo73tk" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_447jf"]
-[ext_resource type="Script" uid="uid://bhep3mf1oshi6" path="res://scripts/fof/cards/lil_betty.gd" id="6_b38lb"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_yb5g8"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_qxwry"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/support.tres" id="2_b38lb"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/lil_betty.png" id="2_dujif"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_f2ey4"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/lil_betty.png" id="2_f2w1r"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_tk5ul"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_447jf"]
+[ext_resource type="Script" path="res://scripts/fof/cards/lil_betty.gd" id="6_b38lb"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_yb5g8"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_wybwm"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_4364h"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
 size = Vector3(0.663147, 1.94543, 0.526978)
@@ -26,8 +28,49 @@ _bundled = {
 "version": 3
 }
 
+[sub_resource type="Resource" id="Resource_4364h"]
+script = ExtResource("10_wybwm")
+attack = 0
+health = 3
+speed = 2
+energy = 2
+description = "END OF TURN {[X]/4}: Deal [2] DMG to a random enemy in vision"
+active_abilities = Array[ExtResource("11_4364h")]([])
+traits = Array[ExtResource("2_f2ey4")]([])
+
+[sub_resource type="Resource" id="Resource_xxsna"]
+script = ExtResource("10_wybwm")
+attack = 0
+health = 4
+speed = 2
+energy = 2
+description = "END OF TURN {[X]/3}: Deal [2] DMG to a random enemy in vision"
+active_abilities = Array[ExtResource("11_4364h")]([])
+traits = Array[ExtResource("2_f2ey4")]([])
+
+[sub_resource type="Resource" id="Resource_7r1ym"]
+script = ExtResource("10_wybwm")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description = ""
+active_abilities = Array[ExtResource("11_4364h")]([])
+traits = Array[ExtResource("2_f2ey4")]([])
+
+[sub_resource type="Resource" id="Resource_qlv8j"]
+script = ExtResource("10_wybwm")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description = ""
+active_abilities = Array[ExtResource("11_4364h")]([])
+traits = Array[ExtResource("2_f2ey4")]([])
+
 [resource]
 script = ExtResource("3_tk5ul")
+tiers = Array[ExtResource("10_wybwm")]([SubResource("Resource_4364h"), SubResource("Resource_xxsna"), SubResource("Resource_7r1ym"), SubResource("Resource_qlv8j")])
 attack = 0
 health = 3
 speed = 2

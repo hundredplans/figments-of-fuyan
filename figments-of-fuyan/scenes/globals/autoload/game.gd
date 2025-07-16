@@ -520,6 +520,23 @@ func onCreateChooseRewardsUIScreen(reward: Reward, parent: Control) -> Control:
 	ChooseRewardsUI.setInfo(reward)
 	return ChooseRewardsUI
 	
+const MINIMAP_UI_PATH: String = "res://scenes/common/minimap/minimap_ui.tscn"
+const MINIMAP_WORLD_PATH: String = "res://scenes/common/minimap/minimap_world.tscn"
+func onCreateMinimap(parent: Control) -> Control:
+	var MinimapUI: Control = load(MINIMAP_UI_PATH).instantiate()
+	var MinimapWorld: Node3D = load(MINIMAP_WORLD_PATH).instantiate()
+	parent.add_child(MinimapUI)
+	
+	Game.getArea().add_child(MinimapWorld)
+	Game.getArea().onLoadMap(MinimapWorld)
+	
+	MinimapWorld.setInfo(MinimapUI)
+	MinimapUI.setInfo()
+	
+	Game.getSaveFile().getChampionCard().visible = true
+	Game.getArea().onLoadMapAfterScenes()
+	return MinimapUI
+	
 const PAUSE_MENU_PATH: String = "res://scenes/menus/pause_menu/pause_menu.tscn"
 func onCreatePauseMenu(parent: Control) -> Control:
 	var PauseMenu: Control = load(PAUSE_MENU_PATH).instantiate()

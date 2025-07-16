@@ -69,9 +69,9 @@ func onFofInit() -> void:
 	setEliteFights()
 	onCreateMapNodes()
 	
-func onLoadMap() -> void:
+func onLoadMap(parent: Node3D = self) -> void:
 	for tile_object_data in info.overworld_decoration.data:
-		SavedData.onLoadModel(tile_object_data, self)
+		SavedData.onLoadModel(tile_object_data, parent)
 		
 	for map_node_data in map_nodes_data:
 		onCreateMapNode(map_node_data)
@@ -391,10 +391,8 @@ func getNodeByID(id: int) -> MapNodeGD:
 
 #region Active Level
 func onLoadActiveLevel(level_data: SavedDataLevel) -> LevelGD:
-	if map_nodes_data.is_empty():
-		map_nodes_data = SavedData.onSaveGroup(get_tree().get_nodes_in_group("MapNodesGD")) # Save map nodes data
+	onClearMapNodes()
 	get_tree().call_group("TileObjectsGD", "free")
-	get_tree().call_group("MapNodesGD", "onClear")
 	get_tree().call_group("CardsGD", "onRemoveModel")
 	
 	active_level = SavedData.onLoadModel(level_data, self)
@@ -756,3 +754,8 @@ func onProcessAction(action: Action) -> void:
 
 func getEnvironmentFromInfo(is_elite: bool) -> Environment:
 	return info.base_environment if !is_elite else info.elite_environment
+
+func onClearMapNodes() -> void:
+	if map_nodes_data.is_empty():
+		map_nodes_data = SavedData.onSaveGroup(get_tree().get_nodes_in_group("MapNodesGD")) # Save map nodes data
+	get_tree().call_group("MapNodesGD", "onClear")

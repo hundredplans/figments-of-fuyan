@@ -1,6 +1,5 @@
 extends MapNodeScreen
 
-const FADE_IN_TIME: float = 1.5
 @onready var BlackBackground: ColorRect = %BlackBackground
 @onready var LevelLabel: Label = %LevelLabel
 @onready var CurseIcon: TextureRect = %CurseIcon
@@ -19,7 +18,7 @@ func setInfo(_save_file: SaveFileGD, _area: AreaGD, _World: Node3D, _UI: Control
 		DescriptionLabel.setText(curse_info.description)
 
 	var alpha_tween := create_tween()
-	alpha_tween.tween_property(BlackBackground, "color:a", 1, FADE_IN_TIME)
+	alpha_tween.tween_property(BlackBackground, "color:a", 1, Game.FADE_TIME)
 	await alpha_tween.finished
 	finished.emit()
 	#unque

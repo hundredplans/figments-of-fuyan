@@ -1,14 +1,16 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://ddwvqr7i2fiw1"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=18 format=3]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_jtfwr"]
-[ext_resource type="Texture2D" uid="uid://c0a8p8nkow4vn" path="res://assets/sprites/game/cards/art_mini/maria_welsh.png" id="2_8q5n5"]
-[ext_resource type="Image" uid="uid://dfk81n741eb2k" path="res://assets/sprites/game/cards/art_pop/maria_welsh.png" id="2_jmwwe"]
-[ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_m78bd"]
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_1xmu0"]
-[ext_resource type="Script" uid="uid://d3xulw3ft3e0n" path="res://scripts/fof/cards/card.gd" id="4_p228n"]
-[ext_resource type="PackedScene" uid="uid://bxdixxrf3f7aa" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_weg0y"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_qhuv1"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="7_661xi"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_jtfwr"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/maria_welsh.png" id="2_8q5n5"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/maria_welsh.png" id="2_jmwwe"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/brute.tres" id="2_m78bd"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_1xmu0"]
+[ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_p228n"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_weg0y"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_qhuv1"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="7_661xi"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_nnl53"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_ji44w"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ru2ex"]
 size = Vector3(0.611084, 1.88574, 0.241943)
@@ -26,8 +28,49 @@ _bundled = {
 "version": 3
 }
 
+[sub_resource type="Resource" id="Resource_ji44w"]
+script = ExtResource("10_nnl53")
+attack = 2
+health = 4
+speed = 2
+energy = 3
+description = "RANGED [1-2]; REVENGE: Attacks the DUELLING enemy if in RANGED range"
+active_abilities = Array[ExtResource("11_ji44w")]([])
+traits = Array[ExtResource("3_1xmu0")]([])
+
+[sub_resource type="Resource" id="Resource_q7hur"]
+script = ExtResource("10_nnl53")
+attack = 2
+health = 4
+speed = 2
+energy = 3
+description = ""
+active_abilities = Array[ExtResource("11_ji44w")]([])
+traits = Array[ExtResource("3_1xmu0")]([])
+
+[sub_resource type="Resource" id="Resource_s8mpg"]
+script = ExtResource("10_nnl53")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description = ""
+active_abilities = Array[ExtResource("11_ji44w")]([])
+traits = Array[ExtResource("3_1xmu0")]([])
+
+[sub_resource type="Resource" id="Resource_ggyhl"]
+script = ExtResource("10_nnl53")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description = ""
+active_abilities = Array[ExtResource("11_ji44w")]([])
+traits = Array[ExtResource("3_1xmu0")]([])
+
 [resource]
 script = ExtResource("7_661xi")
+tiers = Array[ExtResource("10_nnl53")]([SubResource("Resource_ji44w"), SubResource("Resource_q7hur"), SubResource("Resource_s8mpg"), SubResource("Resource_ggyhl")])
 attack = 2
 health = 4
 speed = 2

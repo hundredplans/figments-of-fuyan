@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://d38l7okb8ifb5"]
+[gd_scene load_steps=17 format=3 uid="uid://d38l7okb8ifb5"]
 
 [ext_resource type="Script" uid="uid://cadqhnbdb5ra" path="res://scenes/common/champion_upgrade_ui/champion_upgrade_ui.gd" id="1_mw2xj"]
 [ext_resource type="LabelSettings" uid="uid://bw613ebdspq46" path="res://resources/ui/label_settings/spicyrice_massive.tres" id="4_cpl8k"]
@@ -11,7 +11,6 @@
 [ext_resource type="PackedScene" uid="uid://6nf3mir2i2rk" path="res://scenes/common/fancy_text/fancy_text_label.tscn" id="11_g3gq2"]
 [ext_resource type="PackedScene" uid="uid://djulw2ubmmu7t" path="res://scenes/common/new/large_text_button/large_text_button.tscn" id="11_jto8q"]
 [ext_resource type="Texture2D" uid="uid://dum30f1ix8v5h" path="res://assets/sprites/ui/icons/energy_limit.png" id="12_28jk0"]
-[ext_resource type="Resource" uid="uid://dqrr7apt123rw" path="res://resources/ui/fancy_text/fancy_text_label_settings_large.tres" id="12_g3gq2"]
 [ext_resource type="Texture2D" uid="uid://b4kkv4s35sd16" path="res://assets/sprites/ui/icons/max_energy.png" id="13_08xqd"]
 [ext_resource type="Texture2D" uid="uid://fi32a8tjx0k3" path="res://assets/sprites/game/cards/common/stats/energy_icon.png" id="13_j311j"]
 
@@ -349,7 +348,6 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "RAMPAGE: Gain +1 HP  ->  RAMPAGE: Gain +1 HP and Heal [1] HP"
-settings = ExtResource("12_g3gq2")
 
 [node name="Filler" type="Control" parent="MainContainer/VBoxContainer2"]
 layout_mode = 2

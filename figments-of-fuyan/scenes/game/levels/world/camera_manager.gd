@@ -25,6 +25,7 @@ signal zooming
 @onready var LevelCamera: Camera3D = %LevelCamera
 @onready var FreelookCamera: Camera3D = %FreeLookCamera
 var CurrentCamera: Camera3D
+var current: bool = true
 
 var camera_radius: float = 3
 var central_point: Vector3
@@ -67,6 +68,7 @@ func setInfo(level_camera_data: LevelCameraData) -> void:
 			getGameObjectFromCoords(level_camera_data.coords) if !level_camera_data.is_in_freelook else null)
 		
 func _input(event: InputEvent) -> void:
+	if !current: return
 	if CurrentCamera == LevelCamera:
 		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and event is InputEventMouseMotion:
 			setCameraPointAlongCircle((event.relative / 10000) * CAMERA_ROTATION_SPEED)
@@ -374,3 +376,11 @@ func getLastAllySpectateObject() -> CardGD:
 func onUpdateCameraPosition() -> void:
 	camera_position_updated.emit(CurrentCamera.position if CurrentCamera != null else Vector3.ZERO)
 	
+func setCurrent(state: bool) -> void:
+	current = state
+	if !state:
+		FreelookCamera.current = false
+		LevelCamera.current = false
+	elif isFreelook(): FreelookCamera.current = true
+	else: LevelCamera.current = true
+		

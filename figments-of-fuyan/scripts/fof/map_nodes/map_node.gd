@@ -8,6 +8,7 @@ signal load_level
 signal hovered
 signal pressed
 
+var is_minimap: bool
 var is_finished: bool
 var is_entered: bool
 var map_location: MapLocation
@@ -40,7 +41,7 @@ static func onCalculatePosition(_map_location: MapLocation) -> Vector3:
 #region Base Functions
 var was_pressed: bool = false
 func _input(_event: InputEvent) -> void:
-	if Input.is_action_just_pressed("MainInput") and hovered_state and !was_pressed:
+	if Input.is_action_just_pressed("MainInput") and hovered_state and !was_pressed and !is_minimap:
 		pressed.emit(self)
 		was_pressed = true
 		
@@ -148,7 +149,7 @@ func getHoveredState() -> bool:
 func onStaticBodyHovered(is_walkable: bool, state: bool) -> void:
 	var mat: Material = null
 	if state:
-		if is_walkable: mat = load(info.MAP_NODE_WALKABLE_OUTLINE_PATH)
+		if is_walkable and !is_minimap: mat = load(info.MAP_NODE_WALKABLE_OUTLINE_PATH)
 		else: mat = load(info.MAP_NODE_OUTLINE_PATH)
 	mesh.set_surface_override_material(0, mat)
 		

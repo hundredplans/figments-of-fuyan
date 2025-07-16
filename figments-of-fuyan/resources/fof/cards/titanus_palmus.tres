@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=10 format=3 uid="uid://dgme887ye57ty"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=16 format=3 uid="uid://dccpmen5lj2hi"]
 
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_kak8a"]
 [ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_85t00"]
@@ -9,9 +9,52 @@
 [ext_resource type="Script" uid="uid://c4jv5giwgiwu7" path="res://scripts/fof/cards/titanus_palmus.gd" id="4_purx8"]
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_02yec"]
 [ext_resource type="PackedScene" uid="uid://nsl73xnqq64e" path="res://assets/models/fof/cards/palmer.glb" id="7_ogfv7"]
+[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_4fb43"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_be3fu"]
+
+[sub_resource type="Resource" id="Resource_be3fu"]
+script = ExtResource("10_4fb43")
+attack = 2
+health = 7
+speed = 2
+energy = 5
+description = "ABILITY [2]: KNOCKBACK [2] adjacent enemies and Heal [1] HP per unit"
+active_abilities = Array[ExtResource("11_be3fu")]([])
+traits = Array[ExtResource("2_q3lc1")]([])
+
+[sub_resource type="Resource" id="Resource_0i047"]
+script = ExtResource("10_4fb43")
+attack = 2
+health = 7
+speed = 2
+energy = 5
+description = ""
+active_abilities = Array[ExtResource("11_be3fu")]([])
+traits = Array[ExtResource("2_q3lc1")]([])
+
+[sub_resource type="Resource" id="Resource_acxbf"]
+script = ExtResource("10_4fb43")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description = ""
+active_abilities = Array[ExtResource("11_be3fu")]([])
+traits = Array[ExtResource("2_q3lc1")]([])
+
+[sub_resource type="Resource" id="Resource_cehsq"]
+script = ExtResource("10_4fb43")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description = ""
+active_abilities = Array[ExtResource("11_be3fu")]([])
+traits = Array[ExtResource("2_q3lc1")]([])
 
 [resource]
 script = ExtResource("3_8nb48")
+tiers = Array[ExtResource("10_4fb43")]([SubResource("Resource_be3fu"), SubResource("Resource_0i047"), SubResource("Resource_acxbf"), SubResource("Resource_cehsq")])
 attack = 2
 health = 7
 speed = 2

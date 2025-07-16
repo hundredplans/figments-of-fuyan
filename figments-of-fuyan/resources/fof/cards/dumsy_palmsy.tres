@@ -1,14 +1,16 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=12 format=3 uid="uid://n0hv1qerrpn1"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=18 format=3]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_swuye"]
-[ext_resource type="Image" uid="uid://ds2dbnyxdi26c" path="res://assets/sprites/game/cards/art_pop/dumsy_palmsy.png" id="2_2xs40"]
-[ext_resource type="Resource" uid="uid://6j57uasj8x66" path="res://resources/fof/archetypes/reinforcer.tres" id="2_cqeuy"]
-[ext_resource type="Texture2D" uid="uid://5ffvvs8jmgd7" path="res://assets/sprites/game/cards/art_mini/dumsy_palmsy.png" id="2_k1blu"]
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_6ae6u"]
-[ext_resource type="Script" uid="uid://dflcirb6nrkyc" path="res://scripts/fof/cards/dumsy_palmsy.gd" id="4_p6qbm"]
-[ext_resource type="PackedScene" uid="uid://cit4w40jw1b6p" path="res://assets/models/fof/cards/dumsy_palmsy.glb" id="5_27uel"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_sv20q"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="6_r8l0o"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_swuye"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/dumsy_palmsy.png" id="2_2xs40"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/reinforcer.tres" id="2_cqeuy"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/dumsy_palmsy.png" id="2_k1blu"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_6ae6u"]
+[ext_resource type="Script" path="res://scripts/fof/cards/dumsy_palmsy.gd" id="4_p6qbm"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/dumsy_palmsy.glb" id="5_27uel"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_sv20q"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="6_r8l0o"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_s7pw1"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_yo345"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1071a"]
 size = Vector3(0.638306, 1.37494, 0.296631)
@@ -26,8 +28,49 @@ _bundled = {
 "version": 3
 }
 
+[sub_resource type="Resource" id="Resource_yo345"]
+script = ExtResource("10_s7pw1")
+attack = 2
+health = 4
+speed = 3
+energy = 3
+description = "ARRIVE: Deal [2] DMG to self; RAMPAGE: Heal this and allies in vision [1] HP"
+active_abilities = Array[ExtResource("11_yo345")]([])
+traits = Array[ExtResource("3_6ae6u")]([])
+
+[sub_resource type="Resource" id="Resource_86152"]
+script = ExtResource("10_s7pw1")
+attack = 3
+health = 5
+speed = 3
+energy = 3
+description = "ARRIVE: Deal [3] DMG to self; RAMPAGE: Heal this and allies in vision [1] HP"
+active_abilities = Array[ExtResource("11_yo345")]([])
+traits = Array[ExtResource("3_6ae6u")]([])
+
+[sub_resource type="Resource" id="Resource_micap"]
+script = ExtResource("10_s7pw1")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description = ""
+active_abilities = Array[ExtResource("11_yo345")]([])
+traits = Array[ExtResource("3_6ae6u")]([])
+
+[sub_resource type="Resource" id="Resource_sfcfk"]
+script = ExtResource("10_s7pw1")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description = ""
+active_abilities = Array[ExtResource("11_yo345")]([])
+traits = Array[ExtResource("3_6ae6u")]([])
+
 [resource]
 script = ExtResource("6_r8l0o")
+tiers = Array[ExtResource("10_s7pw1")]([SubResource("Resource_yo345"), SubResource("Resource_86152"), SubResource("Resource_micap"), SubResource("Resource_sfcfk")])
 attack = 2
 health = 4
 speed = 3
