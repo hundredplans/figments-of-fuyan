@@ -1,15 +1,15 @@
-[gd_resource type="Resource" script_class="LevelInfo" load_steps=294 format=3 uid="uid://cbdmd3ccp8e2g"]
+[gd_resource type="Resource" script_class="LevelInfo" load_steps=294 format=3]
 
-[ext_resource type="Script" uid="uid://df278rs03up0b" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="1_wfirt"]
-[ext_resource type="Script" uid="uid://3encclot053x" path="res://scripts/fof_info/game_objects/extra/revealed_datastore.gd" id="2_fe3p0"]
-[ext_resource type="Script" uid="uid://ptqg2yb7m54y" path="res://scripts/fof_info/game_objects/extra/vision_datastore_tile.gd" id="3_d2brw"]
-[ext_resource type="Script" uid="uid://d3nlf4kn1ucxr" path="res://scripts/fof/levels/varoma_level.gd" id="4_0gnjl"]
-[ext_resource type="Script" uid="uid://bqrpess5o2brf" path="res://scripts/saved_data/game_objects/saved_data_spawn.gd" id="4_ufi6n"]
-[ext_resource type="Script" uid="uid://dabwqp16gynmr" path="res://scripts/fof_info/game_objects/extra/vision_datastore.gd" id="5_cshta"]
-[ext_resource type="Script" uid="uid://bj5bltgdy7xbp" path="res://scripts/saved_data/levels/saved_data_level.gd" id="5_ufi6n"]
-[ext_resource type="Script" uid="uid://c57vvj8uxhu4x" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="6_408e0"]
-[ext_resource type="Script" uid="uid://bml6vtchj31b0" path="res://scripts/fof_info/levels/level_info.gd" id="6_cshta"]
-[ext_resource type="Script" uid="uid://c76iyo8j5sdgv" path="res://scripts/saved_data/game_objects/saved_data_iobject.gd" id="7_ufi6n"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="1_wfirt"]
+[ext_resource type="Script" path="res://scripts/fof_info/game_objects/extra/revealed_datastore.gd" id="2_fe3p0"]
+[ext_resource type="Script" path="res://scripts/fof_info/game_objects/extra/vision_datastore_tile.gd" id="3_d2brw"]
+[ext_resource type="Script" path="res://scripts/fof/levels/varoma_level.gd" id="4_0gnjl"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_spawn.gd" id="4_ufi6n"]
+[ext_resource type="Script" path="res://scripts/fof_info/game_objects/extra/vision_datastore.gd" id="5_cshta"]
+[ext_resource type="Script" path="res://scripts/saved_data/levels/saved_data_level.gd" id="5_ufi6n"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="6_408e0"]
+[ext_resource type="Script" path="res://scripts/fof_info/levels/level_info.gd" id="6_cshta"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_iobject.gd" id="7_ufi6n"]
 
 [sub_resource type="Resource" id="Resource_d2brw"]
 script = ExtResource("3_d2brw")
@@ -3727,6 +3727,7 @@ enemy_max_spawn_amount = 5
 progress_min = 6
 progress_max = 7
 enemy_budget_offset = 0
+difficulty = 0
 id = 17
 name = "Cliff Edge"
 gdscript = ExtResource("4_0gnjl")
