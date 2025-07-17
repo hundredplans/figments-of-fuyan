@@ -129,7 +129,7 @@ func getDescription() -> String:
 	return getDescriptionUpgradeLevel(champion_datastore.upgrade_level + 1)
 
 func getDescriptionUpgradeLevel(_upgrade_level: int):
-	var description: String = info.getDescription(ascended)
+	var description: String = info.getDescription(tier)
 	for upgrade_level in range(0, _upgrade_level):
 		var new_description: String = getChampionUpgrade(_upgrade_level).description
 		if !new_description.is_empty(): description = new_description
