@@ -125,7 +125,7 @@ func setStats(stats: StatsDatastore) -> void:
 #region Getters
 func getDescription() -> String:
 	if info.rarity != Game.Rarities.CHAMPION:
-		return info.getDescription(ascended)
+		return info.getDescription(tier)
 	return getDescriptionUpgradeLevel(champion_datastore.upgrade_level + 1)
 
 func getDescriptionUpgradeLevel(_upgrade_level: int):
@@ -1104,7 +1104,7 @@ func onRemoveDelayedHealDatastore(heal_datastore: HealDatastore) -> void:
 #region Action Checker
 func isValidEndOfTurn(action: Action) -> bool:
 	return action.post and action is ChangeTurnStateAction and\
-	action.Card == self and action.turn_state == Game.TurnStates.PASSED and (action.owner is not StatusEffectGD and action.owner.info.id != FATIGUE_ID)
+	action.Card == self and action.turn_state == Game.TurnStates.PASSED and (action.owner is StatusEffectGD and action.owner.info.id != FATIGUE_ID)
 func isValidTrauma(action: Action) -> bool:
 	return action.post and action is DeathAction and isAlly(action.Defender.team) and card_place == Game.CardPlaces.FIELD and action.getCardSawDefenderDie(self)
 
@@ -1250,6 +1250,10 @@ func onRevenge(_action: DamageAction) -> void:
 	if AniPlayer.has_animation("HurtAbility"):
 		onPlayAnimation("HurtAbility")
 #endregion
+
+#region Tiered Up
+func onRetiered(_tier: int) -> void:
+	pass
 
 #region Ascended
 func onAscend(state: bool) -> void:

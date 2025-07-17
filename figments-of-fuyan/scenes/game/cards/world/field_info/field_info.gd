@@ -181,7 +181,7 @@ func onUpdateStat(type: Game.Stats, value: int, difference: int, play_animation:
 		onCreateSpecificStat(type, value)
 			
 func onCreateSpecificStat(type: Game.Stats, value: int) -> void:
-	var stat_datastore := Card.getStatDatastoreFromInfo()
+	var stat_datastore: StatsDatastore = Card.getStatsFromInfo()
 	match type:
 		Game.Stats.SPEED: onCreateStat(SpeedSpot, value, stat_datastore.speed, Card.speed)
 		Game.Stats.HEALTH: onCreateStat(HealthSpot, value, stat_datastore.health, Card.max_health)

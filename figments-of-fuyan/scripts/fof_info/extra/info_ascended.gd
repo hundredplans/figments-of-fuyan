@@ -1,10 +1,8 @@
-class_name InfoAscended extends Resource
+class_name InfoAscended extends InfoWithExtra
 
-@export var info: FofInfo
 @export var ascended: bool
-
 func _init(_info: FofInfo = null, _ascended: bool = false) -> void:
-	info = _info
+	super(_info)
 	ascended = _ascended
 
 func getDescription() -> String:

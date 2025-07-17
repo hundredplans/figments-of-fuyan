@@ -5,7 +5,7 @@ class_name TierDatastore extends Resource
 @export var speed: int = -1
 @export var energy: int = -1
 
-@export var description: String
+@export_multiline var description: String
 @export var active_abilities: Array[ActiveEffectDatastore]
 @export var traits: Array[SavedDataTrait]
 

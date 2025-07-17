@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BossIntent" load_steps=2 format=3 uid="uid://dw86mlnvsxyef"]
+
+[ext_resource type="Script" uid="uid://c85vjl4hwbga5" path="res://scripts/fof_info/cards/extra/boss_intent.gd" id="1_ym6rf"]
+
+[resource]
+script = ExtResource("1_ym6rf")
+name = "StrongDuoSpawn"
+description = "Summons 2 strong units, used first time you kill all his goons"
+type = 5
+duration = 1
+default_cooldown = 1
+off_vision_use_cooldown = true
+combat_type = 0
+metadata/_custom_type_script = "uid://c85vjl4hwbga5"

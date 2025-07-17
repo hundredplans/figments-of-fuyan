@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BossIntent" load_steps=2 format=3 uid="uid://b30nralfchtow"]
+
+[ext_resource type="Script" uid="uid://c85vjl4hwbga5" path="res://scripts/fof_info/cards/extra/boss_intent.gd" id="1_686og"]
+
+[resource]
+script = ExtResource("1_686og")
+name = "RoyalBoon"
+description = "Allies in vision gain +1 ATT +1 HP and Heal [2] HP"
+type = 4
+duration = 1
+default_cooldown = 4
+off_vision_use_cooldown = true
+combat_type = 0
+metadata/_custom_type_script = "uid://c85vjl4hwbga5"

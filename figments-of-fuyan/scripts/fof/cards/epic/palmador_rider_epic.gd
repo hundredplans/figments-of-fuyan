@@ -134,11 +134,6 @@ func onCheckBossIntentCondition(conditional_boss_intent: BossIntent, _enemies: A
 	
 func onResetBossIntentCooldowns() -> void:
 	super()
-	
-func onIntentUsed(used_boss_intent: BossIntent, use_type: UseType, actions: Array) -> void:
-	super(used_boss_intent, use_type, actions)
-	#if used_boss_intent.name == "Spin Attack" and use_type == UseType.END and isLevelVisible():
-		#AniPlayer.play("Spin Attack")
 #endregion
 	
 #region Spin Attack

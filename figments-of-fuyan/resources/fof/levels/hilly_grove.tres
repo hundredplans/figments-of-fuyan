@@ -1,14 +1,14 @@
-[gd_resource type="Resource" script_class="LevelInfo" load_steps=247 format=3]
+[gd_resource type="Resource" script_class="LevelInfo" load_steps=247 format=3 uid="uid://cdofrlsdv5rwn"]
 
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="1_uvdvc"]
-[ext_resource type="Script" path="res://scripts/fof_info/game_objects/extra/revealed_datastore.gd" id="2_umrtk"]
-[ext_resource type="Script" path="res://scripts/fof_info/game_objects/extra/vision_datastore_tile.gd" id="3_lf87e"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_spawn.gd" id="4_s0fmg"]
-[ext_resource type="Script" path="res://scripts/fof_info/game_objects/extra/vision_datastore.gd" id="5_su5at"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="6_gapdd"]
-[ext_resource type="Script" path="res://scripts/fof/levels/varoma_level.gd" id="7_kgwg8"]
-[ext_resource type="Script" path="res://scripts/saved_data/levels/saved_data_level.gd" id="8_7rnsv"]
-[ext_resource type="Script" path="res://scripts/fof_info/levels/level_info.gd" id="9_7j500"]
+[ext_resource type="Script" uid="uid://df278rs03up0b" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="1_uvdvc"]
+[ext_resource type="Script" uid="uid://3encclot053x" path="res://scripts/fof_info/game_objects/extra/revealed_datastore.gd" id="2_umrtk"]
+[ext_resource type="Script" uid="uid://ptqg2yb7m54y" path="res://scripts/fof_info/game_objects/extra/vision_datastore_tile.gd" id="3_lf87e"]
+[ext_resource type="Script" uid="uid://bqrpess5o2brf" path="res://scripts/saved_data/game_objects/saved_data_spawn.gd" id="4_s0fmg"]
+[ext_resource type="Script" uid="uid://dabwqp16gynmr" path="res://scripts/fof_info/game_objects/extra/vision_datastore.gd" id="5_su5at"]
+[ext_resource type="Script" uid="uid://c57vvj8uxhu4x" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="6_gapdd"]
+[ext_resource type="Script" uid="uid://d3nlf4kn1ucxr" path="res://scripts/fof/levels/varoma_level.gd" id="7_kgwg8"]
+[ext_resource type="Script" uid="uid://bj5bltgdy7xbp" path="res://scripts/saved_data/levels/saved_data_level.gd" id="8_7rnsv"]
+[ext_resource type="Script" uid="uid://bml6vtchj31b0" path="res://scripts/fof_info/levels/level_info.gd" id="9_7j500"]
 
 [sub_resource type="Resource" id="Resource_558mp"]
 script = ExtResource("3_lf87e")
@@ -3041,6 +3041,7 @@ enemy_max_spawn_amount = 3
 progress_min = 2
 progress_max = 2
 enemy_budget_offset = 0
+difficulty = 0
 id = 22
 name = "Hilly Grove"
 gdscript = ExtResource("7_kgwg8")

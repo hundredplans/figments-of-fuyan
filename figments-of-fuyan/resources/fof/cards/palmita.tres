@@ -1,16 +1,16 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3 uid="uid://dx1y8bst8i6wj"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_8c5rl"]
-[ext_resource type="Image" uid="uid://cp6mthlsnebq0" path="res://assets/sprites/game/cards/art_pop/palmita.png" id="2_6e25m"]
-[ext_resource type="Texture2D" uid="uid://casdghvavfct7" path="res://assets/sprites/game/cards/art_mini/palmita.png" id="2_doo6g"]
-[ext_resource type="Resource" uid="uid://bbqdeswvpt0y6" path="res://resources/fof/archetypes/support.tres" id="2_e0j4a"]
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_gibdl"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_u8ukk"]
-[ext_resource type="Script" uid="uid://cpeu5oa76nfhq" path="res://scripts/fof/cards/palmita.gd" id="4_s0xsl"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_cli25"]
-[ext_resource type="PackedScene" uid="uid://bhm1rhpwkxwjo" path="res://assets/models/fof/cards/palmita.glb" id="5_xhwml"]
-[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_aya74"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_1cb68"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_8c5rl"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/palmita.png" id="2_6e25m"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/palmita.png" id="2_doo6g"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/support.tres" id="2_e0j4a"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_gibdl"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_u8ukk"]
+[ext_resource type="Script" path="res://scripts/fof/cards/palmita.gd" id="4_s0xsl"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_cli25"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/palmita.glb" id="5_xhwml"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_aya74"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_1cb68"]
 
 [sub_resource type="Resource" id="Resource_4khtw"]
 script = ExtResource("1_8c5rl")
@@ -22,7 +22,7 @@ description = "This dies to give an adjacent ally +1 HP when it RAMPAGES"
 max_charges = -1
 delay = 0.0
 camera_type = 0
-charges = 0
+charges = -1
 used = false
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ckpx8"]

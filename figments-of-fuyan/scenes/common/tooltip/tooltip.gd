@@ -6,7 +6,7 @@ var offset: Vector2
 
 func setInfo(items: Array, _offset: Vector2, create_inner_tooltips: bool = false) -> void:
 	offset = _offset
-	var inner_tooltips: Array[InfoAscended] = []
+	var inner_tooltips: Array[InfoWithExtra] = []
 	for FofObject in items:
 		var TooltipItem: Control = TooltipItemPacked.instantiate()
 		MainContainer.add_child(TooltipItem)
@@ -15,10 +15,10 @@ func setInfo(items: Array, _offset: Vector2, create_inner_tooltips: bool = false
 		if create_inner_tooltips:
 			inner_tooltips += TooltipItem.getTextInfos()
 	
-	for InfoAscend in inner_tooltips:
+	for info_with_extra: InfoWithExtra in inner_tooltips:
 		var TooltipItem: Control = TooltipItemPacked.instantiate()
 		MainContainer.add_child(TooltipItem)
-		TooltipItem.setInfo(InfoAscend)
+		TooltipItem.setInfo(info_with_extra)
 		
 func _process(_delta: float) -> void:
 	setPosition()

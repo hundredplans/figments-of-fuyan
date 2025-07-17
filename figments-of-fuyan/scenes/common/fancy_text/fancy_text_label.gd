@@ -6,7 +6,7 @@ const ROBOTO_FONT_PATH: String = "res://assets/fonts/roboto.ttf"
 @export var center: bool = true
 @export var right: bool = false
 @export var hover: bool = false
-var infos: Array[InfoAscended]
+var infos: Array[InfoWithExtra]
 
 signal mouse_in_ui
 
@@ -43,17 +43,21 @@ func onColoredTextReplace(regex: RegEx) -> void:
 			var _result: RegExMatch = regex.search(text, offset)
 			if _result == null: break
 			var result: String = _result.get_string()
-			var new_result: String = onReplaceCardName(colored_text, result[0] == "a", rarity)
+			var new_result: String = onReplaceToolBoonName(colored_text, result[0] == "a", rarity)
 			var replace_index: int = _result.get_start()
 				
 			offset = _result.get_end() + (new_result.length() - result.length())
 			text = text.left(replace_index) + new_result + text.right(-(replace_index + result.length()))
 
-func onReplaceCardName(colored_text: String, ascended: bool, rarity: Game.Rarities) -> String:
+func onReplaceToolBoonName(colored_text: String, ascended: bool, rarity: Game.Rarities) -> String:
 	var new_result: String = "[color=" + Game.getRarityColor(rarity).to_html() + "]" + colored_text + "[/color]"
 	if ascended:
 		new_result = new_result.insert(0, "[outline_color=" + Game.ASCENDED_OUTLINE_COLOR.to_html() + "]")
 		new_result += "[/outline_color]"
+	return new_result
+	
+func onReplaceCardName(colored_text: String, _tier: int, rarity: Game.Rarities) -> String:
+	var new_result: String = "[color=" + Game.getRarityColor(rarity).to_html() + "]" + colored_text + "[/color]"
 	return new_result
 
 func _ready() -> void:
@@ -61,15 +65,15 @@ func _ready() -> void:
 	clip_contents = false
 
 func onFofIconsReplace(regex: RegEx, fancy_text: FancyText) -> void:
-	for fof_icon_fancy_text in fancy_text.icons:
-		regex.compile("(\\[a?" + str(fof_icon_fancy_text.name) + "=[0-9]+\\])")
+	for fof_icon_fancy_text: FofIconFancyText in fancy_text.icons:
+		regex.compile("(\\[a?[1-4]?" + str(fof_icon_fancy_text.name) + "=[0-9]+\\])")
 		var offset: int = 0
 		while(true):
 			var _result: RegExMatch = regex.search(text, offset)
 			if _result == null: break
 			
 			var result: String = _result.get_string()
-			var id: int = int(result)
+			var id: int = int(result.substr(3, -1))
 			var info: FofInfo = Helper.getFofInfoID(fof_icon_fancy_text.fof_type, id)
 			
 			var icon_path: String = info.getIcon().resource_path
@@ -77,10 +81,15 @@ func onFofIconsReplace(regex: RegEx, fancy_text: FancyText) -> void:
 			var icon_size: String = str(int(settings.font_size * 1.5))
 			
 			var new_result: String = "[img=" + icon_size + "x" + icon_size + ",center]" + icon_path + "[/img]"
-			var ascended: bool = result[1] == "a"
-			new_result = new_result.insert(0, onReplaceCardName(info.name, ascended, info.rarity) + " ")
-			infos.append(InfoAscended.new(info, ascended))
 			
+			if fof_icon_fancy_text.name != "card":
+				var ascended: bool = result[1] == "a"
+				new_result = new_result.insert(0, onReplaceToolBoonName(info.name, ascended, info.rarity) + " ")
+				infos.append(InfoAscended.new(info, ascended))
+			else:
+				var tier: int = int(result[1])
+				new_result = new_result.insert(0, onReplaceCardName(info.name, tier, info.rarity) + " ")
+				infos.append(InfoWithTier.new(info, tier))
 			var replace_index: int = _result.get_start()
 			offset = _result.get_end() + (new_result.length() - result.length())
 			text = text.left(replace_index) + new_result + text.right(-(replace_index + result.length()))
@@ -123,6 +132,6 @@ func onMouseInUI(state: bool) -> void:
 #endregion
 
 #region Tooltip Infos
-func getInfos() -> Array[InfoAscended]:
+func getInfos() -> Array[InfoWithExtra]:
 	return infos
 #endregion

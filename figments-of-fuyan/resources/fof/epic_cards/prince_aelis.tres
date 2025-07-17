@@ -1,20 +1,64 @@
-[gd_resource type="Resource" script_class="EpicCardInfo" load_steps=5 format=3 uid="uid://cr8dbqmm5s3xr"]
+[gd_resource type="Resource" script_class="EpicCardInfo" load_steps=17 format=3 uid="uid://cr8dbqmm5s3xr"]
 
-[ext_resource type="Script" uid="uid://c18vvqrvd4cej" path="res://scripts/fof/cards/epic/epic_card.gd" id="1_dnxcr"]
+[ext_resource type="Script" uid="uid://c2rnur1cxt6ls" path="res://scripts/fof/cards/epic/prince_aelis_epic.gd" id="1_gajfs"]
 [ext_resource type="Script" uid="uid://bnp3nwlcsibyl" path="res://scripts/fof_info/cards/extra/boss_phase_datastore.gd" id="1_umepe"]
 [ext_resource type="Script" uid="uid://bd0ljqheerbtm" path="res://scripts/fof_info/epic_cards/epic_card_info.gd" id="2_mrfby"]
+[ext_resource type="Script" uid="uid://c85vjl4hwbga5" path="res://scripts/fof_info/cards/extra/boss_intent.gd" id="3_3wagj"]
 [ext_resource type="Script" uid="uid://unn6splqvb3v" path="res://scripts/saved_data/game_objects/saved_data_epic_card.gd" id="3_eguk5"]
+[ext_resource type="Resource" uid="uid://31nmui4k0kfh" path="res://resources/fof/archetypes/tactician.tres" id="3_kpsji"]
+[ext_resource type="Resource" uid="uid://dwo4xee8cy6gk" path="res://resources/datastore/boss_intents/prince_aelis/phase_one/duo_spawn.tres" id="5_gajfs"]
+[ext_resource type="Environment" uid="uid://bt4oumun6a8kw" path="res://assets/environments/varoma_day_environment.tres" id="5_k1sjb"]
+[ext_resource type="PackedScene" uid="uid://bij84iio2kuda" path="res://assets/models/fof/cards/prince_aelis.glb" id="5_r0jrx"]
+[ext_resource type="Resource" uid="uid://d2lga7fnglruj" path="res://resources/datastore/boss_intents/prince_aelis/phase_one/sleep.tres" id="6_lunae"]
+[ext_resource type="Resource" uid="uid://dth6h6cob5x11" path="res://resources/datastore/boss_intents/prince_aelis/phase_one/solo_spawn.tres" id="7_ctdho"]
+[ext_resource type="Resource" uid="uid://dw86mlnvsxyef" path="res://resources/datastore/boss_intents/prince_aelis/phase_one/strong_duo_spawn.tres" id="8_hehlh"]
+[ext_resource type="Resource" uid="uid://b30nralfchtow" path="res://resources/datastore/boss_intents/prince_aelis/phase_one/royal_boon.tres" id="9_lunae"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
+size = Vector3(0.960953, 2.01422, 0.775299)
+
+[sub_resource type="PackedScene" id="PackedScene_l8njr"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00112152, 1.0082, 0.0954743), SubResource("BoxShape3D_ex838")],
+"version": 3
+}
+
+[sub_resource type="Resource" id="Resource_kpsji"]
+script = ExtResource("1_umepe")
+name = "Prince Aelis"
+archetype = ExtResource("3_kpsji")
+attack = 0
+health = 12
+speed = 1
+model = ExtResource("5_r0jrx")
+collision = SubResource("PackedScene_l8njr")
+points = Array[Vector3]([Vector3(-0.236214, 0.191085, 0.483124), Vector3(0.249187, 0.173123, 0.483124), Vector3(-0.479355, 0.11973, 0.218401), Vector3(-0.479355, 0.0925198, -0.168848), Vector3(-0.262125, 0.178666, -0.292175), Vector3(0.311343, 0.191021, -0.292175), Vector3(0.481598, 0.179319, -0.0541988), Vector3(0.481598, 0.182575, 0.23788), Vector3(0.481598, 0.768006, -0.0122101), Vector3(0.481598, 1.18234, -0.0322137), Vector3(0.481598, 1.52297, -0.00332701), Vector3(0.481598, 1.89292, 0.000387639), Vector3(0.324393, 0.942594, -0.292175), Vector3(-0.259495, 0.894309, -0.292175), Vector3(0.316237, 1.28945, -0.292175), Vector3(-0.262573, 1.26973, -0.292175), Vector3(0.304217, 1.59559, -0.292175), Vector3(-0.223198, 1.59906, -0.292175), Vector3(0.206671, 1.93322, -0.292175), Vector3(-0.251443, 1.91604, -0.292175), Vector3(0.10718, 2.01531, -0.0353482), Vector3(-0.268907, 2.01531, -0.0407307), Vector3(-0.479355, 1.71393, -0.0650098), Vector3(-0.479355, 1.32021, -0.0637226), Vector3(-0.479355, 0.991838, -0.0626489), Vector3(-0.479355, 0.46589, -0.0609294), Vector3(-0.222235, 0.899175, 0.483124), Vector3(0.147646, 0.909649, 0.483124), Vector3(-0.155739, 1.38642, 0.483124), Vector3(0.104005, 1.41033, 0.483124), Vector3(-0.151735, 1.77838, 0.483124), Vector3(0.13508, 1.8069, 0.483124)])
+stat = 2.12257
+top = 2.022
+eye = 1.82
+speed_order_override = 0
+env = ExtResource("5_k1sjb")
+change_delay = 0.0
+boss_intents = Array[ExtResource("3_3wagj")]([ExtResource("5_gajfs"), ExtResource("6_lunae"), ExtResource("7_ctdho"), ExtResource("8_hehlh"), ExtResource("9_lunae")])
+metadata/_custom_type_script = "uid://bnp3nwlcsibyl"
 
 [resource]
 script = ExtResource("2_mrfby")
 rarity = 6
-phases = Array[ExtResource("1_umepe")]([])
+phases = Array[ExtResource("1_umepe")]([SubResource("Resource_kpsji")])
 card_id = 74
 tool_id = 0
 boon_id = 0
-awaken_boss_intent_name = ""
+awaken_boss_intent_name = "Sleep"
 id = 5
 name = "Prince Aelis"
-gdscript = ExtResource("1_dnxcr")
+gdscript = ExtResource("1_gajfs")
 saved_data = ExtResource("3_eguk5")
 metadata/_custom_type_script = "uid://bd0ljqheerbtm"

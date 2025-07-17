@@ -10,36 +10,6 @@ const CLONE_ID: int = 78
 
 const PEDESTAL_TILE_COORDS := Vector4i(6, -12, 6, 8)
 
-#enum {BAT_ATTACK, CLONE_MINIFAN_ATTACK, CLONE_PHASE_CHANGE, CLONE_SUMMON,\
-	#DOUBLE_TELEPORT_ATTACK, FAN_BLIND, HAMMER_ATTACK, MINIFAN_ATTACK, MIST_ATTACK,
-	#PETAL_ATTACK, REPOSITION, TELEPORT_ATTACK}
-#
-#func getBossIntentName(intent_name: String) -> int:
-	#match intent_name:
-		#"Bat Attack": return BAT_ATTACK
-		#"Clone Minifan Attack": return CLONE_MINIFAN_ATTACK
-		#"Clone Phase Change": return CLONE_PHASE_CHANGE
-		#"Clone Summon": return CLONE_SUMMON
-		#"Double Teleport Attack": return DOUBLE_TELEPORT_ATTACK
-		#"Fan Blind": return FAN_BLIND
-		#"Hammer Attack": return HAMMER_ATTACK
-		#"Minifan Attack": return MINIFAN_ATTACK
-		#"Mist Attack": return MIST_ATTACK
-		#"Petal Attack": return PETAL_ATTACK
-		#"Reposition": return REPOSITION
-		#"Teleport Attack": return TELEPORT_ATTACK
-		
-		#CLONE_SUMMON: return "Clone Summon"
-		#DOUBLE_TELEPORT_ATTACK: return "Double Teleport Attack"
-		#FAN_BLIND: return "Fan Blind"
-		#HAMMER_ATTACK: return "Hammer Attack"
-		#MINIFAN_ATTACK: return "Minifan Attack"
-		#MIST_ATTACK: return "Mist Attack"
-		#PETAL_ATTACK: return "Petal Attack"
-		#REPOSITION: return "Reposition"
-		#TELEPORT_ATTACK: return "Teleport Attack"
-	#return 0
-
 #region Defaults
 func onSave() -> SavedDataEpicCard:
 	return super()
@@ -63,30 +33,19 @@ func onUseBossIntent(enemies: Array, allies: Array, tiles: Array, use_type: UseT
 	if use_type == UseType.START: use_teleport_passive = false
 	
 	match boss_intent.name:
-		"Reposition":
-			actions = onReposition(enemies, tiles, use_type)
-		"Teleport Attack":
-			actions = onTeleportAttack(use_type)
-		"Petal Attack":
-			actions = onPetalAttack(use_type)
-		"Minifan Attack":
-			actions = onMinifanAttack(enemies, tiles, use_type)
-		"Fan Blind":
-			actions = onFanBlind(use_type)
-		"Bat Attack":
-			actions = onBatAttack(use_type)
-		"Double Teleport Attack":
-			actions = onDoubleTeleportAttack(use_type)
-		"Mist Attack":
-			actions = onMistAttack(use_type)
-		"Clone Phase Change":
-			actions = onClonePhaseChange(use_type)
-		"Clone Summon":
-			actions = onCloneSummon(enemies, use_type)
-		"Hammer Attack":
-			actions = onHammerAttack(use_type)
-		"Clone Minifan Attack":
-			actions = onCloneMinifanAttack(enemies, tiles, use_type)
+		"Reposition": actions = onReposition(enemies, tiles, use_type)
+		"Teleport Attack": actions = onTeleportAttack(use_type)
+		"Petal Attack": actions = onPetalAttack(use_type)
+		"Minifan Attack": actions = onMinifanAttack(enemies, tiles, use_type)
+		"Fan Blind": actions = onFanBlind(use_type)
+		"Bat Attack": actions = onBatAttack(use_type)
+		"Double Teleport Attack": actions = onDoubleTeleportAttack(use_type)
+		"Mist Attack": actions = onMistAttack(use_type)
+		"Clone Phase Change": actions = onClonePhaseChange(use_type)
+		"Clone Summon": actions = onCloneSummon(enemies, use_type)
+		"Hammer Attack": actions = onHammerAttack(use_type)
+		"Clone Minifan Attack": actions = onCloneMinifanAttack(enemies, tiles, use_type)
+			
 	
 	if !use_teleport_passive and boss_intent.name != "Hammer Attack":
 		use_teleport_passive = actions.any(func(x: Action):\

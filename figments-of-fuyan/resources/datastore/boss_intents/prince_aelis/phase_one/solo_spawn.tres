@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BossIntent" load_steps=2 format=3 uid="uid://dth6h6cob5x11"]
+
+[ext_resource type="Script" uid="uid://c85vjl4hwbga5" path="res://scripts/fof_info/cards/extra/boss_intent.gd" id="1_t646k"]
+
+[resource]
+script = ExtResource("1_t646k")
+name = "SoloSpawn"
+description = "Summons a single strong unit"
+type = 5
+duration = 1
+default_cooldown = 0
+off_vision_use_cooldown = true
+combat_type = 0
+metadata/_custom_type_script = "uid://c85vjl4hwbga5"

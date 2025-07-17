@@ -73,8 +73,8 @@ func getIcon() -> Texture2D: return art_mini
 func getEye() -> float: return eye
 func getTop() -> float: return top
 func getPoints() -> Array: return points
-func getDescription(ascended: bool = false) -> String:
-	return description if !ascended else (ascended_description if !ascended_description.is_empty() else description)
+func getDescription(tier: int = 1) -> String:
+	return getTierDatastore(tier).getDescription()
 
 func getColoredBaseMaterial(team: int, ascended: bool) -> ShaderMaterial:
 	match team:
