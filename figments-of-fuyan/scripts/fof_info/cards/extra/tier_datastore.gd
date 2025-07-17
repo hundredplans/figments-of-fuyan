@@ -8,3 +8,24 @@ class_name TierDatastore extends Resource
 @export var description: String
 @export var active_abilities: Array[ActiveEffectDatastore]
 @export var traits: Array[SavedDataTrait]
+
+func getAttack() -> int:
+	return attack
+	
+func getHealth() -> int:
+	return health
+	
+func getSpeed() -> int:
+	return speed
+	
+func getEnergy() -> int:
+	return energy
+	
+func getDescription() -> String:
+	return description
+	
+func getActiveAbilities() -> Array[ActiveEffectDatastore]:
+	return active_abilities
+	
+func getTraits() -> Array[SavedDataTrait]:
+	return traits

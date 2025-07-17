@@ -76,13 +76,6 @@ func getPoints() -> Array: return points
 func getDescription(ascended: bool = false) -> String:
 	return description if !ascended else (ascended_description if !ascended_description.is_empty() else description)
 
-func getStats(ascended: bool = false) -> StatsDatastore:
-	return StatsDatastore.new(\
-		attack + (plus_attack if ascended else 0),
-		health + (plus_health if ascended else 0),
-		speed + (plus_speed if ascended else 0),
-		energy + (plus_energy if ascended else 0))
-
 func getColoredBaseMaterial(team: int, ascended: bool) -> ShaderMaterial:
 	match team:
 		0: return load(BASE_MATERIAL_GREEN_TRANSPARENT_PATH if !ascended else BASE_MATERIAL_GREEN_TRANSPARENT_ASCENDED_PATH)
@@ -112,3 +105,12 @@ func getUpdatedTierDatastore(tier: int) -> TierDatastore:
 			tier_datastore.traits = _tier_datastore.traits
 			
 	return tier_datastore
+	
+func getStats(tier: int) -> StatsDatastore:
+	var tier_datastore: TierDatastore = getUpdatedTierDatastore(tier)
+	var attack: int = tier_datastore.getAttack()
+	var health: int = tier_datastore.getHealth()
+	var speed: int = tier_datastore.getSpeed()
+	var energy: int = tier_datastore.getEnergy()
+	var stats_datastore := StatsDatastore.new(attack, health, speed, energy)
+	return stats_datastore

@@ -1548,6 +1548,9 @@ func getArchetypeFromInfo() -> ArchetypeInfo:
 	return info.archetype
 	
 func getIcon() -> Texture2D: return info.art_mini
+
+func getStatsFromInfo() -> StatsDatastore:
+	return info.getStats(tier)
 #endregion
 
 #region Knockback

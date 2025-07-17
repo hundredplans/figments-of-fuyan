@@ -406,11 +406,12 @@ func getRandomNonChampionCard() -> CardGD:
 	return get_tree().get_nodes_in_group("DeckCardsGD").filter(func(x: CardGD): return x.info.rarity != Rarities.CHAMPION).pick_random()
 	
 func setCardDataFromInfo(card_data: SavedDataCard, card_info: CardInfo) -> SavedDataCard:
-	card_data.energy = card_info.energy + (card_info.plus_energy if card_data.ascended else 0)
-	card_data.max_speed = card_info.speed + (card_info.plus_speed if card_data.ascended else 0)
-	card_data.max_health = card_info.health + (card_info.plus_health if card_data.ascended else 0)
+	var stat_datastore := card_info.getStats(card_data.tier)
+	card_data.energy = stat_datastore.energy
+	card_data.max_speed = stat_datastore.speed
+	card_data.max_health = stat_datastore.health
 	
-	card_data.attack = card_info.attack + (card_info.plus_attack if card_data.ascended else 0)
+	card_data.attack = stat_datastore.attack
 	card_data.health = card_data.max_health
 	card_data.speed = card_data.max_speed
 	return card_data

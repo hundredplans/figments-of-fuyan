@@ -181,10 +181,11 @@ func onUpdateStat(type: Game.Stats, value: int, difference: int, play_animation:
 		onCreateSpecificStat(type, value)
 			
 func onCreateSpecificStat(type: Game.Stats, value: int) -> void:
+	var stat_datastore := Card.getStatDatastoreFromInfo()
 	match type:
-		Game.Stats.SPEED: onCreateStat(SpeedSpot, value, Card.info.speed, Card.speed)
-		Game.Stats.HEALTH: onCreateStat(HealthSpot, value, Card.info.health, Card.max_health)
-		Game.Stats.ATTACK: onCreateStat(AttackSpot, value, Card.info.attack, Card.info.attack)
+		Game.Stats.SPEED: onCreateStat(SpeedSpot, value, stat_datastore.speed, Card.speed)
+		Game.Stats.HEALTH: onCreateStat(HealthSpot, value, stat_datastore.health, Card.max_health)
+		Game.Stats.ATTACK: onCreateStat(AttackSpot, value, stat_datastore.attack, Card.info.attack)
 
 func setNumbersParticle(type: Game.Stats, value: int) -> void:
 	var NumbersParticle: GPUParticles3D = NumbersParticlePacked.instantiate()

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3 uid="uid://5sttoisolkd8"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=24 format=3 uid="uid://5sttoisolkd8"]
 
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_rrc50"]
 [ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_54fdl"]
@@ -28,7 +28,7 @@ metadata/_custom_type_script = "uid://cdbphjba7jkam"
 
 [sub_resource type="Resource" id="Resource_tptxp"]
 script = ExtResource("2_54fdl")
-display_number = 0
+display_number = -1
 id = 3
 first_init = true
 public_id = 0
@@ -52,7 +52,7 @@ _bundled = {
 
 [sub_resource type="Resource" id="Resource_vnoe1"]
 script = ExtResource("2_54fdl")
-display_number = 0
+display_number = -1
 id = 3
 first_init = true
 public_id = 0
@@ -68,6 +68,14 @@ camera_type = 0
 charges = 0
 used = false
 
+[sub_resource type="Resource" id="Resource_givgy"]
+script = ExtResource("2_54fdl")
+display_number = -1
+id = 3
+first_init = true
+public_id = 0
+metadata/_custom_type_script = "uid://dag3a8ejplko8"
+
 [sub_resource type="Resource" id="Resource_qibe7"]
 script = ExtResource("10_vnoe1")
 attack = 1
@@ -76,7 +84,7 @@ speed = 4
 energy = 3
 description = "MOBILE; ABILITY: Jump up to a [3] Tile adjacent wall"
 active_abilities = Array[ExtResource("11_3w5kh")]([SubResource("Resource_tfmrg")])
-traits = Array[ExtResource("2_54fdl")]([])
+traits = Array[ExtResource("2_54fdl")]([SubResource("Resource_givgy")])
 
 [sub_resource type="Resource" id="Resource_cviod"]
 script = ExtResource("11_3w5kh")
@@ -129,7 +137,7 @@ energy = 3
 rarity = 6
 initial_traits = Array[ExtResource("2_54fdl")]([SubResource("Resource_vnoe1")])
 active_abilities = Array[ExtResource("1_rrc50")]([SubResource("Resource_3w5kh")])
-flavor_text = ""
+flavor_text = null
 description = "MOBILE; ABILITY: Jump up to a [3] Tile adjacent wall"
 ascended_description = "MOBILE; ABILITY: Jump up to a [5] Tile adjacent wall"
 art_mini_coordinate = Vector2i(69, 56)
@@ -141,10 +149,10 @@ collision_shape = SubResource("PackedScene_clbsu")
 stat = 1.7499
 top = 1.61122
 eye = 0.970809
-plus_attack = 0
-plus_health = 0
-plus_speed = 0
-plus_energy = 0
+plus_attack = null
+plus_health = null
+plus_speed = null
+plus_energy = null
 ascended_traits = Array[ExtResource("2_54fdl")]([SubResource("Resource_tptxp")])
 archetype = ExtResource("2_yj6kb")
 id = 22
