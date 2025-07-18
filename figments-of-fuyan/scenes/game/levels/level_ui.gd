@@ -456,11 +456,11 @@ func onRewardsStashScreenFade(fade_in: bool) -> void:
 		MapPanel.visible = false; BoonBox.visible = false; OverworldInformation.visible = false
 	
 func onGameStarted() -> void:
-	HandBox.onUnpin()
+	HandBox.onUnpin(true)
 	HandBox.onSelectableCards(false)
 	
 func onGameStartedPost() -> void:
-	HandBox.onPin()
+	HandBox.onPin(true)
 	HandBox.onSelectableCards(true)
 #endregion
 

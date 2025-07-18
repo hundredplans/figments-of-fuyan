@@ -158,8 +158,7 @@ func onRoyalBoon(allies: Array, use_type: UseType) -> Array:
 			var AllyCard: CardGD = allies.pick_random()
 			var camera_change_action := CameraChangeAction.new(AllyCard)
 			camera_change_action.setActionDelay(ROYAL_BUFF_SPECTATE_DELAY)
-			actions.append(StatAction.new(StatInfo.new(AllyCard, [Game.Stats.ATTACK, Game.Stats.MAX_HEALTH], [1, 2])))
-			actions.append(HealAction.new(HealDatastore.new(AllyCard, 99)))
+			actions.append(StatAction.new(StatInfo.new(AllyCard, [Game.Stats.ATTACK, Game.Stats.MAX_HEALTH], [1, 1])))
 			actions.append(camera_change_action)
 		actions.append(ClearTileIntentsAction.new())
 	return actions
