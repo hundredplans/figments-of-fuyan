@@ -27,6 +27,7 @@ var page: int
 
 func setInfo(_rewards: Rewards, _level_type: Game.FightTypes) -> void:
 	rewards = _rewards
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	get_viewport().update_mouse_cursor_state()
 	
 	onFadeInMain()
