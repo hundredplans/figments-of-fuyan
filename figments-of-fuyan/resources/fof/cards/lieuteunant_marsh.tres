@@ -1,16 +1,16 @@
 [gd_resource type="Resource" script_class="CardInfo" load_steps=18 format=3]
 
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_g2cqs"]
-[ext_resource type="Resource" path="res://resources/fof/archetypes/warden.tres" id="2_3efk2"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/lieutenant_marsh.png" id="3_i412g"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/lieutenant_marsh.png" id="4_bbyfx"]
-[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="5_lcb4o"]
-[ext_resource type="Script" path="res://scripts/fof/cards/lieutenant_marsh.gd" id="6_1um1b"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="7_uwxv0"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="8_1bwa6"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="9_511fk"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_3efk2"]
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_i412g"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_rjp6g"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/warden.tres" id="2_puyp1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/lieutenant_marsh.png" id="3_41wtu"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/lieutenant_marsh.png" id="4_go1cr"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="5_8w667"]
+[ext_resource type="Script" path="res://scripts/fof/cards/lieutenant_marsh.gd" id="6_xjmeh"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/lieuteunant_marsh.glb" id="7_neh0h"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="8_sllkg"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="9_rcuhl"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_p1clm"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_lp4bm"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
 size = Vector3(0.663147, 1.94543, 0.526978)
@@ -29,62 +29,62 @@ _bundled = {
 }
 
 [sub_resource type="Resource" id="Resource_i412g"]
-script = ExtResource("10_3efk2")
+script = ExtResource("10_p1clm")
 attack = 1
 health = 5
 speed = 2
 energy = 4
 description = "On Hit: Deal [1]  DMG per ally in vision"
-active_abilities = Array[ExtResource("11_i412g")]([])
-traits = Array[ExtResource("5_lcb4o")]([])
+active_abilities = Array[ExtResource("11_lp4bm")]([])
+traits = Array[ExtResource("5_8w667")]([])
 
 [sub_resource type="Resource" id="Resource_bbyfx"]
-script = ExtResource("10_3efk2")
+script = ExtResource("10_p1clm")
 attack = 2
 health = 5
 speed = 3
 energy = 4
 description = ""
-active_abilities = Array[ExtResource("11_i412g")]([])
-traits = Array[ExtResource("5_lcb4o")]([])
+active_abilities = Array[ExtResource("11_lp4bm")]([])
+traits = Array[ExtResource("5_8w667")]([])
 
 [sub_resource type="Resource" id="Resource_lcb4o"]
-script = ExtResource("10_3efk2")
+script = ExtResource("10_p1clm")
 attack = -1
 health = -1
 speed = -1
 energy = -1
 description = ""
-active_abilities = Array[ExtResource("11_i412g")]([])
-traits = Array[ExtResource("5_lcb4o")]([])
+active_abilities = Array[ExtResource("11_lp4bm")]([])
+traits = Array[ExtResource("5_8w667")]([])
 
 [sub_resource type="Resource" id="Resource_1um1b"]
-script = ExtResource("10_3efk2")
+script = ExtResource("10_p1clm")
 attack = -1
 health = -1
 speed = -1
 energy = -1
 description = ""
-active_abilities = Array[ExtResource("11_i412g")]([])
-traits = Array[ExtResource("5_lcb4o")]([])
+active_abilities = Array[ExtResource("11_lp4bm")]([])
+traits = Array[ExtResource("5_8w667")]([])
 
 [resource]
-script = ExtResource("9_511fk")
-tiers = Array[ExtResource("10_3efk2")]([SubResource("Resource_i412g"), SubResource("Resource_bbyfx"), SubResource("Resource_lcb4o"), SubResource("Resource_1um1b")])
+script = ExtResource("9_rcuhl")
+tiers = Array[ExtResource("10_p1clm")]([SubResource("Resource_i412g"), SubResource("Resource_bbyfx"), SubResource("Resource_lcb4o"), SubResource("Resource_1um1b")])
 attack = 1
 health = 5
 speed = 2
 energy = 4
 rarity = 4
-initial_traits = Array[ExtResource("5_lcb4o")]([])
-active_abilities = Array[ExtResource("1_g2cqs")]([])
+initial_traits = Array[ExtResource("5_8w667")]([])
+active_abilities = Array[ExtResource("1_rjp6g")]([])
 flavor_text = ""
 description = "On Hit: Deal [1]  DMG per ally in vision"
 ascended_description = ""
 art_mini_coordinate = Vector2i(89, 16)
-art_mini = ExtResource("3_i412g")
-art_pop = ExtResource("4_bbyfx")
-model = ExtResource("7_uwxv0")
+art_mini = ExtResource("3_41wtu")
+art_pop = ExtResource("4_go1cr")
+model = ExtResource("7_neh0h")
 points = [Vector3(0.136382, 1.38799, -0.25293), Vector3(-0.149831, 1.3978, -0.25293), Vector3(0.184447, 1.07484, -0.25293), Vector3(-0.199463, 1.09244, -0.25293), Vector3(0.0205718, 1.80753, -0.25293), Vector3(0.000764989, 0.787427, -0.25293), Vector3(0.138302, 0.452581, -0.25293), Vector3(-0.163161, 0.451389, -0.25293), Vector3(-0.00559452, 1.82542, 0.274048), Vector3(-0.137705, 1.47483, 0.274048), Vector3(0.150202, 1.49088, 0.274048), Vector3(0.15502, 1.15623, 0.274048), Vector3(-0.137258, 1.18364, 0.274048), Vector3(0.00930688, 0.785355, 0.274048), Vector3(-0.161626, 0.424052, 0.274048), Vector3(0.186096, 0.414073, 0.274048), Vector3(0.340027, 1.80814, 0.0492667), Vector3(0.340027, 1.35601, -0.00736688), Vector3(0.340027, 0.892121, 0.016009), Vector3(0.340027, 0.408994, 0.0462698), Vector3(-0.32312, 0.416334, 0.0431835), Vector3(-0.32312, 0.916279, -0.00713519), Vector3(-0.32312, 1.19264, -0.018978), Vector3(-0.32312, 1.79059, 0.00938033)]
 collision_shape = SubResource("PackedScene_d6dgo")
 stat = 1.947
@@ -94,9 +94,9 @@ plus_attack = 1
 plus_health = 0
 plus_speed = 1
 plus_energy = 0
-ascended_traits = Array[ExtResource("5_lcb4o")]([])
-archetype = ExtResource("2_3efk2")
+ascended_traits = Array[ExtResource("5_8w667")]([])
+archetype = ExtResource("2_puyp1")
 id = 69
-name = "Lieutenant Marsh"
-gdscript = ExtResource("6_1um1b")
-saved_data = ExtResource("8_1bwa6")
+name = "Lieuteunant Marsh"
+gdscript = ExtResource("6_xjmeh")
+saved_data = ExtResource("8_sllkg")

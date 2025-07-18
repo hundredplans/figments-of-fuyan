@@ -106,7 +106,7 @@ func onUpdateStats() -> void:
 	AttackLabel.text = str(Card.base_stats.attack)
 	HealthLabel.text = str(Card.base_stats.health)
 	SpeedLabel.text = str(Card.base_stats.speed)
-	EnergyLabel.text = str(Card.base_stats.energy)
+	EnergyLabel.text = str(Card.energy)
 	
 func onCardAscended(_state: bool) -> void:
 	Background.setTexture(rarities[Card.info.rarity] if !Card.ascended else ascended_rarities[Card.info.rarity])

@@ -6,9 +6,9 @@
 [ext_resource type="Resource" path="res://resources/fof/archetypes/mercenary.tres" id="2_nx5xl"]
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_g48pi"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="4_rsjp6"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_vmm0p"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_ifa2t"]
 [ext_resource type="Script" path="res://scripts/fof/cards/ken_patchy.gd" id="6_nx5xl"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/ken_patchy.glb" id="7_flxe8"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_e50y3"]
 [ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_flxe8"]
 
@@ -84,7 +84,7 @@ ascended_description = "On Hit [1]: STUN this"
 art_mini_coordinate = Vector2i(85, 27)
 art_mini = ExtResource("2_mxtni")
 art_pop = ExtResource("2_jpwix")
-model = ExtResource("5_vmm0p")
+model = ExtResource("7_flxe8")
 points = [Vector3(0.136382, 1.38799, -0.25293), Vector3(-0.149831, 1.3978, -0.25293), Vector3(0.184447, 1.07484, -0.25293), Vector3(-0.199463, 1.09244, -0.25293), Vector3(0.0205718, 1.80753, -0.25293), Vector3(0.000764989, 0.787427, -0.25293), Vector3(0.138302, 0.452581, -0.25293), Vector3(-0.163161, 0.451389, -0.25293), Vector3(-0.00559452, 1.82542, 0.274048), Vector3(-0.137705, 1.47483, 0.274048), Vector3(0.150202, 1.49088, 0.274048), Vector3(0.15502, 1.15623, 0.274048), Vector3(-0.137258, 1.18364, 0.274048), Vector3(0.00930688, 0.785355, 0.274048), Vector3(-0.161626, 0.424052, 0.274048), Vector3(0.186096, 0.414073, 0.274048), Vector3(0.340027, 1.80814, 0.0492667), Vector3(0.340027, 1.35601, -0.00736688), Vector3(0.340027, 0.892121, 0.016009), Vector3(0.340027, 0.408994, 0.0462698), Vector3(-0.32312, 0.416334, 0.0431835), Vector3(-0.32312, 0.916279, -0.00713519), Vector3(-0.32312, 1.19264, -0.018978), Vector3(-0.32312, 1.79059, 0.00938033)]
 collision_shape = SubResource("PackedScene_d6dgo")
 stat = 1.947

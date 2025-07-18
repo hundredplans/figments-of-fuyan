@@ -1,12 +1,16 @@
 extends EpicCardGD
 
 const SLEEP_DELAY: float = 2.0
-const ROYAL_BUFF_SPECTATE_DELAY: float = 1.2
+const ROYAL_BUFF_SPECTATE_DELAY: float = 1.0
 const ROYAL_BUFF_DELAY: float = 2.0
-const SUMMON_SPECTATE_DELAY: float = 1.2
+const SUMMON_SPECTATE_DELAY: float = 1.0
 const SUMMON_DELAY: float = 2.0
-const ROYAL_BUFF_MINIMUM_ALLY_IN_VISION: int = 2
+const ROYAL_BUFF_MINIMUM_ALLY_IN_VISION: int = 1
 const SLEEP_OFF_COOLDOWN_ROLL_CHANCE: float = 0.5
+const ENERGY_TOTAL_STOP_SUMMON: int = 10
+const ENERGY_TOTAL_DECREASE_SUMMON_ODDS: int = 5
+const LOWER_ODDS_TO_SUMMON: float = 0.3
+const HIGHER_ODDS_TO_SUMMON: float = 0.66
 
 var solo_spawn_ids: Array = [73, 72, 69, 67, 62, 61]
 var duo_spawn_ids: Array = [64, 60, 66, 65, 71, 58, 59]
@@ -37,12 +41,20 @@ func onUseBossIntent(enemies: Array, allies: Array, _tiles: Array, use_type: Use
 func onChangeBossIntent(boss_intents: Array, _enemies: Array, _allies: Array) -> BossIntent:
 	var phase: int = getPhase()
 	if phase == 1:
-		var sleep_roll: bool = false if !onHasIntentName(boss_intents, "Sleep")\
-			else Random.rollFloat(SLEEP_OFF_COOLDOWN_ROLL_CHANCE)
-		if sleep_roll: return getBossIntentByName("Sleep")
-		
-		var intents: Array = onKeepByNames(boss_intents, ["SoloSpawn", "DuoSpawn", "RoyalBoon"])
-		return intents.pick_random()
+		var all_allies: Array = Game.getAllyUnits(team).filter(func(x: CardGD): return x != self)
+		var energy_total: int = all_allies.reduce(func(a: int, x: CardGD): return x.energy + a, 0)
+		if energy_total >= ENERGY_TOTAL_STOP_SUMMON:
+			boss_intents = onKeepByNames(boss_intents, ["Sleep", "RoyalBoon"])
+		elif energy_total >= ENERGY_TOTAL_DECREASE_SUMMON_ODDS: # >= 5 energy
+			var is_summon: bool = Random.rollFloat(LOWER_ODDS_TO_SUMMON)
+			var keeps: Array = ["SoloSpawn", "DuoSpawn"] if is_summon else ["RoyalBoon", "Sleep"]
+			boss_intents = onKeepByNames(boss_intents, keeps)
+		else: # 5 < Energy
+			var is_summon: bool = Random.rollFloat(HIGHER_ODDS_TO_SUMMON)
+			var keeps: Array = ["SoloSpawn", "DuoSpawn"] if is_summon else ["RoyalBoon", "Sleep"]
+			boss_intents = onKeepByNames(boss_intents, keeps)
+		if boss_intents.is_empty(): return getBossIntentByName("Sleep")
+		return boss_intents.pick_random()
 	return null
 	
 func onCheckBossIntentCondition(conditional_boss_intent: BossIntent, _enemies: Array, _allies: Array) -> bool:
@@ -58,7 +70,7 @@ func onCheckBossIntentCondition(conditional_boss_intent: BossIntent, _enemies: A
 func onSleep(use_type: UseType) -> Array:
 	var actions: Array = []
 	if use_type == UseType.START:
-		var animation_action := AnimationAction.new(self, "Sleep")
+		var animation_action := AnimationAction.new(self, "BossSleep")
 		animation_action.setActionDelay(SLEEP_DELAY)
 		actions.append(animation_action)
 	return actions
@@ -70,7 +82,7 @@ func onSleepSetIntents() -> BossTileIntents: return BossTileIntents.new()
 func onSoloSpawn(use_type: UseType) -> Array:
 	var actions: Array = []
 	if use_type == UseType.START:
-		var animation_action := AnimationAction.new(self, "Summon")
+		var animation_action := AnimationAction.new(self, "Ability")
 		animation_action.setActionDelay(SUMMON_DELAY)
 		actions.append(animation_action)
 		var chosen_tiles: Array = boss_datastore.getTileResults().keys().filter(func(x: TileGD): return x != null and !x.isSolid() and !x.isOccupied())
@@ -104,7 +116,7 @@ func onSoloSpawnSetIntents() -> BossTileIntents:
 func onDuoSpawn(use_type: UseType) -> Array:
 	var actions: Array = []
 	if use_type == UseType.START:
-		var animation_action := AnimationAction.new(self, "Summon")
+		var animation_action := AnimationAction.new(self, "Ability")
 		animation_action.setActionDelay(SUMMON_DELAY)
 		actions.append(animation_action)
 		var chosen_tiles: Array = boss_datastore.getTileResults().keys().filter(func(x: TileGD): return x != null and !x.isSolid() and !x.isOccupied())
@@ -138,15 +150,16 @@ func onDuoSpawnSetIntents() -> BossTileIntents:
 func onRoyalBoon(allies: Array, use_type: UseType) -> Array:
 	var actions: Array = []
 	if use_type == UseType.START:
-		var animation_action := AnimationAction.new(self, "RoyalBoon")
+		var animation_action := AnimationAction.new(self, "BossBuff")
 		animation_action.setActionDelay(ROYAL_BUFF_DELAY)
 		actions.append(animation_action)
 		
-		for AllyCard: CardGD in allies:
+		if !allies.is_empty():
+			var AllyCard: CardGD = allies.pick_random()
 			var camera_change_action := CameraChangeAction.new(AllyCard)
 			camera_change_action.setActionDelay(ROYAL_BUFF_SPECTATE_DELAY)
-			actions.append(StatAction.new(StatInfo.new(AllyCard, [Game.Stats.ATTACK, Game.Stats.MAX_HEALTH], [1, 1])))
-			actions.append(HealAction.new(HealDatastore.new(AllyCard, 2)))
+			actions.append(StatAction.new(StatInfo.new(AllyCard, [Game.Stats.ATTACK, Game.Stats.MAX_HEALTH], [1, 2])))
+			actions.append(HealAction.new(HealDatastore.new(AllyCard, 99)))
 			actions.append(camera_change_action)
 		actions.append(ClearTileIntentsAction.new())
 	return actions

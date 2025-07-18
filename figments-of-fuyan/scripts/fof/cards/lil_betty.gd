@@ -38,13 +38,14 @@ func onRegularReset() -> void:
 	
 func onEndTurnEffect(_action: ChangeTurnStateAction) -> void:
 	turns_remaining += 1
-	if turns_remaining >= getMaxTurns(): turns_remaining = 0
+	var skip: bool = false
+	if turns_remaining >= getMaxTurns(): turns_remaining = 0; skip = true
 	
 	var FieldEffect: FieldEffectGD = Game.onFindPublicIDObject(lil_betty_turns_public_id)
 	if FieldEffect != null:
 		FieldEffect.onForceUpdateDisplayNumber()
 		
-	if turns_remaining < getMaxTurns(): return
+	if !skip and turns_remaining < getMaxTurns(): return
 	
 	var animation_action := AnimationAction.new(self, "Ability")
 	animation_action.setActionDelay(END_TURN_ACTION_DELAY)
