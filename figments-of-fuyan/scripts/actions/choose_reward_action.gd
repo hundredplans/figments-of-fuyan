@@ -43,6 +43,8 @@ func onLoad() -> void:
 	super()
 	items = []
 	for saved_data: SavedData in item_datas:
+		saved_data = saved_data.duplicate()
+		saved_data.public_id = 0
 		var item: FofGD = SavedData.onLoadModel(saved_data, Game.getLevel())
 		items.append(item)
 	

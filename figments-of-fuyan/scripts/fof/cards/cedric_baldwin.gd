@@ -46,5 +46,18 @@ func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_til
 	var ally_vision: Array = Game.getTeamVision(0)
 	var tiles: Array = active_effect_tiles.pickable_tiles.filter(func(x: TileGD): return x in ally_vision)
 	if !tiles.is_empty():
+		#var enemies: Array = Game.getEnemyUnits(team)
+		#var allies: Array = Game.getAllyUnits(team).filter(func(x: CardGD): return x.getTile() in tiles)
+		#allies = allies.filter(func(x: CardGD):\
+			#return enemies.any(func(y: CardGD):\
+				#return Game.getCoordsDistance(x.getCoords(), y.getCoords()) <= x.getAttackRange() + x.speed))
+		#
+		#for AllyCard: CardGD in allies:
+			#var get_damage_action := GetDamageAction.new(AllyCard,)
+			#onForceAction(GetDamageAction.new())
+		#
+		#for AllyCard: CardGD in allies:
+			#if 
+		#if enemies.any(func(x: CardGD): return Game.getCoordsDistance(x.getCoords(), getCoords()) <= )
 		return tiles.pick_random()
 	return null

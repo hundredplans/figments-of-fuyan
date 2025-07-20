@@ -19,5 +19,5 @@ func onRevenge(_action: DamageAction) -> void:
 	
 	var animation_action := AnimationAction.new(self, "Ability")
 	animation_action.setActionDelay(REVENGE_DELAY)
-	onPushAction([animation_action, StatAction.new(StatInfo.new(allies[0], Game.Stats.ATTACK, 1))])
+	onPushAction([animation_action, StatAction.new(StatInfo.new(allies[0], Game.Stats.ATTACK, 1, 1))])
 	

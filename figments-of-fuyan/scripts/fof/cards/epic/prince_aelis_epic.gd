@@ -12,7 +12,7 @@ const ENERGY_TOTAL_DECREASE_SUMMON_ODDS: int = 5
 const LOWER_ODDS_TO_SUMMON: float = 0.3
 const HIGHER_ODDS_TO_SUMMON: float = 0.66
 
-var solo_spawn_ids: Array = [73, 72, 69, 67, 62, 61]
+var solo_spawn_ids: Array = [73, 69, 67, 62, 61]
 var duo_spawn_ids: Array = [64, 60, 66, 65, 71, 58, 59]
 
 #region Default

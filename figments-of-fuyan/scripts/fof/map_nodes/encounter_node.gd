@@ -68,7 +68,8 @@ func onCreateEncounterThatCanShowUp(encounter_infos: Array) -> EncounterGD:
 		Game.save_file.onUpdateSafeEncounterCount(-Game.save_file.getSafeEncounterCount() if encounter_info.id == 7 else 1) # Mirror dimension
 		
 		return encounter
-	assert(false) # No valid encounters found
+	#assert(false) # No valid encounters found
+	onFinished()
 	return null
 	
 func onCreateFightEncounter() -> EncounterGD:

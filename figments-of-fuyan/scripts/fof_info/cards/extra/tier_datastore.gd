@@ -29,3 +29,4 @@ func getActiveAbilities() -> Array[ActiveEffectDatastore]:
 	
 func getTraits() -> Array[SavedDataTrait]:
 	return traits
+	

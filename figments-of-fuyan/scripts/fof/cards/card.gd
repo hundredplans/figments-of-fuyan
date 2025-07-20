@@ -1262,12 +1262,12 @@ func onAscend(state: bool) -> void:
 		[Game.Rarities.NEUTRAL, Game.Rarities.CHAMPION, Game.Rarities.MINI]: return
 		
 	ascended = state
-	
-	var mult: int = 1 if ascended else -1
-	var plus_attack: int = info.plus_attack * mult
-	var plus_health: int = info.plus_health * mult
-	var plus_speed: int = info.plus_speed * mult
-	var plus_energy: int = info.plus_energy * mult
+	tier = 1 if !ascended else 2
+	var stat_datastore: StatsDatastore = getStatsFromInfo()
+	var plus_attack: int = stat_datastore.attack - attack
+	var plus_health: int = stat_datastore.health - health
+	var plus_speed: int = stat_datastore.speed - speed
+	var plus_energy: int = stat_datastore.energy - energy
 	
 	var types: Array = [Game.Stats.ATTACK, Game.Stats.MAX_HEALTH, Game.Stats.MAX_SPEED, Game.Stats.ENERGY]
 	var values: Array = [plus_attack, plus_health, plus_speed, plus_energy]

@@ -349,7 +349,7 @@ func onFindPublicIDObject(public_id: int) -> FofGD:
 	if public_id_objects.has(public_id):
 		return public_id_objects[public_id]
 	return null
-#endregion
+#endregion 
 
 #region Enemy Turns
 func getNextInactiveCard(team: int) -> CardGD:

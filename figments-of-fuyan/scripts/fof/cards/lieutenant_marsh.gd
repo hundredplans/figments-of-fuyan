@@ -34,19 +34,19 @@ func onAddToAura(Card: CardGD) -> void:
 	affected_cards.append(Card)
 	var LieutenantsFieldEffect: FieldEffectGD = Game.onFindPublicIDObject(lieutenants_aura_public_id)
 	if LieutenantsFieldEffect == null: assert(false); return
-	LieutenantsFieldEffect.setCharges(LieutenantsFieldEffect.getCharges() + 1)
+	LieutenantsFieldEffect.setCharges(affected_cards.size())
 	
 func onRemoveFromAura(Card: CardGD) -> void:
 	affected_cards.erase(Card)
 	var LieutenantsFieldEffect: FieldEffectGD = Game.onFindPublicIDObject(lieutenants_aura_public_id)
 	if LieutenantsFieldEffect == null: assert(false); return
-	LieutenantsFieldEffect.setCharges(LieutenantsFieldEffect.getCharges() - 1)
+	LieutenantsFieldEffect.setCharges(affected_cards.size())
 	
 func getDescription() -> String:
 	return super()
 
 func onHit(damage_action: DamageAction, _attack_action: AttackAction) -> void:
-	damage_action.damage += getVisibleFieldCardsAllies().size()
+	damage_action.damage += affected_cards.size()
 	
 func onSave() -> SavedDataCard:
 	ability_save['affected_cards_public_ids'] = affected_cards.map(func(x: CardGD): return x.public_id)
