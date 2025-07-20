@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=11 format=3 uid="uid://ckhxiyhtw5u24"]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=11 format=3 uid="uid://yhd6nbywx2r8"]
 
 [ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_14d5b"]
 [ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_6p2c2"]
@@ -17,7 +17,7 @@ tile_coords = Array[Array]([[Vector4(0, 0, 0, 0)], [Vector4(0, 0, 0, 0)], [Vecto
 lock_rotation = false
 lock_tile = false
 ignore_collisions = true
-solids = Array[bool]([])
+solids = Array[bool]([false, false, false, false, false, false])
 models = Array[PackedScene]([ExtResource("3_4i8dc"), ExtResource("4_wnkrl"), ExtResource("5_4i8dc"), ExtResource("6_7tl7o"), ExtResource("7_ybpmo"), ExtResource("8_vs1ie")])
 points = Array[Array]([[Vector3(-0.0546306, 0.323332, -0.0463583)], [Vector3(-0.0385367, 0.27736, -0.00794625)], [Vector3(-0.0249149, 0.213421, 0.00960684)], [Vector3(-0.0123657, 0.41624, -0.0754659)], [Vector3(-0.0356959, 0.334805, -0.0878494)], [Vector3(-0.0291619, 0.285223, -0.070622)]])
 active_effects = Array[ExtResource("1_14d5b")]([])
