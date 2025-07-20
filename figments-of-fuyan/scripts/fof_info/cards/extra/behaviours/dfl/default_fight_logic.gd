@@ -8,27 +8,23 @@ var enemies: Array
 var allies: Array
 var pacifist: bool
 
-var kill_rolled: bool
-
 var temp_att: int
 var path: Array
 var is_card_attack: bool # Non lethal attack on a Card
 
 var kill_path: Array
 
-func _init(_Card: CardGD, _tiles: Array = [], _enemies: Array = [], _allies: Array = [], _pacifist: bool = false, _kill_rolled: bool = false) -> void:
+func _init(_Card: CardGD, _tiles: Array = [], _enemies: Array = [], _allies: Array = [], _pacifist: bool = false) -> void:
 	Card = _Card
 	tiles = _tiles
 	enemies = _enemies
 	allies = _allies
 	pacifist = _pacifist
-	kill_rolled = _kill_rolled
 
 func getTilesDFL() -> DFLData:
-	if !kill_rolled:
-		kill_path = getKillPath()
-		if !kill_path.is_empty():
-			return DFLData.new({}, kill_path)
+	kill_path = getKillPath()
+	if !kill_path.is_empty():
+		return DFLData.new({}, kill_path)
 		
 	var tiles_to_value: Dictionary = {}
 	for Tile: TileGD in tiles:
@@ -102,7 +98,6 @@ func getAttackPath(local_enemies: Array) -> Array:
 	if !local_enemies.is_empty():
 		var KillCard: CardGD = local_enemies[0]
 		if isKillOdds(KillCard):
-			kill_rolled = true
 			var EnemyTile: TileGD = KillCard.getTile()
 			var tiles_in_attack_range: Array = tiles\
 				.filter(func(x: TileGD): return Game.getCoordsDistance(x.getCoords(), EnemyTile.getCoords()) <= Card.getAttackRange())\

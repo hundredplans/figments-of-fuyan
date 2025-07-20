@@ -1,15 +1,10 @@
 class_name AIDatastore extends Resource
 
-const RECEIVE_CALL_BASE_COOLDOWN: int = 2
 const CALL_BASE_COOLDOWN: int = 2
 const RECEIVER_BASE_TURNS: int = 4 # How many turns you are the receiver
-const ADJACENT_DISTANCE_TO_BREAK_RECEIVING: int = 2 # Double adjacent
 
 @export var last_seen_violence: int = -1 # Turns since they last violence, -1 for haven't seen it yet
-@export var receive_call_cooldown: int # Starts at 2 goes down 1 per turn
-@export var call_cooldown: int # Starts at 2 goes down 1 per turn
 @export var last_ignore_behaviour_roll: bool
-@export var is_receiver_turns_remaining: int
 @export var active_archetype: ArchetypeInfo
 
 var DFL: DefaultFightLogic # The last DFL of this unit's ai turn action, used for MOBILE ability checking
@@ -19,57 +14,15 @@ var enemies_to_tiles: Dictionary # The enemy card to the tile they were on, if t
 
 func setLastSeenViolence(value: bool) -> void:
 	last_seen_violence = value
-
-func isReceiver() -> bool:
-	return is_receiver_turns_remaining > 0
-	
-func onCall() -> void:
-	call_cooldown = CALL_BASE_COOLDOWN
-	
-func setIsReceiver(is_receiver: bool, _enemies_to_tiles: Dictionary = {}) -> void:
-	enemies_to_tiles = _enemies_to_tiles
-	if is_receiver:
-		is_receiver_turns_remaining = RECEIVER_BASE_TURNS
-		receive_call_cooldown = RECEIVE_CALL_BASE_COOLDOWN
-	else:
-		is_receiver_turns_remaining = 0
-	
-func onCanReceive() -> bool:
-	return receive_call_cooldown == 0
 	
 func onReset() -> void:
 	last_seen_violence = -1
-	receive_call_cooldown = 0
-	call_cooldown = 0
 	last_ignore_behaviour_roll = false
-	is_receiver_turns_remaining = 0
 	enemies_to_tiles = {}
 	
-func onCanCall() -> bool:
-	return call_cooldown == 0
-	
 func onCardTurnPassed() -> void:
-	if receive_call_cooldown > 0:
-		receive_call_cooldown -= 1
-		
-	if is_receiver_turns_remaining > 0:
-		is_receiver_turns_remaining -= 1
-		
-	if call_cooldown > 0:
-		call_cooldown -= 1
-		
 	if last_seen_violence != -1:
 		last_seen_violence += 1
-		
-func onCheckDoubleAdjacentAndReceiving(Card: CardGD) -> bool:
-	var CardTile: TileGD = Card.getTile()
-	if CardTile == null: return false
-	
-	for Tile in enemies_to_tiles.values():
-		if Game.isAdjacentOrCloser(Tile, CardTile, ADJACENT_DISTANCE_TO_BREAK_RECEIVING) and Tile in Card.getVisibleTiles():
-			setIsReceiver(false)
-			return true
-	return false
 	
 func getEnemyTiles() -> Array:
 	return enemies_to_tiles.values()

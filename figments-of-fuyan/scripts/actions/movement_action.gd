@@ -4,16 +4,11 @@ var Card: CardGD
 var movement_path: Array
 var destroy_on_occupy: bool
 
-var kill_rolled: bool
-
 func _init(_Card: CardGD = null, _movement_path: Array = [], _destroy_on_occupy: bool = false) -> void:
 	super()
 	Card = _Card
 	movement_path = _movement_path
 	destroy_on_occupy = _destroy_on_occupy
-	
-func setKillRolled(state: bool) -> void:
-	kill_rolled = state
 
 func onPreAction() -> void:
 	onCheckFail()
@@ -48,7 +43,6 @@ func onPostAction() -> void:
 			break
 		
 	var movement_finish_action := MovementFinishAction.new(Card, movement_path)
-	movement_finish_action.setKillRolled(kill_rolled)
 	actions.append(movement_finish_action)
 	#onAppendAction(actions)
 	onPushAction(actions)

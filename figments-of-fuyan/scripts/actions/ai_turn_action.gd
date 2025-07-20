@@ -18,7 +18,6 @@ const TOP_ODDS: Dictionary = {
 }
 
 var pacifist: bool # For when coconut crab wakes up
-var kill_rolled: bool
 var previous_allies: Array
 var previous_enemies: Array
 var is_end_use_type_boss: bool
@@ -30,9 +29,6 @@ func _init(_Card: CardGD, _is_first_ai_turn: bool = false, _pacifist: bool = fal
 	pacifist = _pacifist
 	previous_allies = _previous_allies
 	previous_enemies = _previous_enemies
-	
-func setKillRolled(state: bool) -> void:
-	kill_rolled = state
 		
 func onPostAction() -> void:
 	if Card is EpicCardGD and Card.boss_datastore.boss_intent_used_this_turn: return
@@ -64,19 +60,14 @@ func onPostAction() -> void:
 	else: onBossAITurn(enemies, allies, tiles)
 
 func onDefaultAITurn(enemies: Array, allies: Array, tiles: Array) -> void:
-	if Card.ai_datastore.isReceiver() and !enemies.is_empty():
-		Card.ai_datastore.setIsReceiver(false)
-
 	if pacifist:
 		var enemy_tiles: Array = enemies.map(func(x: CardGD): return x.getTile())
 		tiles = tiles.filter(func(x: TileGD): return x not in enemy_tiles)
 	
-	var DFL := DefaultFightLogic.new(Card, tiles, enemies, allies, pacifist, kill_rolled)
+	var DFL := DefaultFightLogic.new(Card, tiles, enemies, allies, pacifist)
 	Card.ai_datastore.DFL = DFL
 	
 	var dfl_data: DFLData = DFL.getTilesDFL()
-	
-	onCheckCallForHelp(allies, enemies)
 	
 	if !dfl_data.kill_path.is_empty():
 		onKillPathChosen(dfl_data.kill_path, DFL, allies, enemies)
@@ -93,7 +84,6 @@ func onDefaultAITurn(enemies: Array, allies: Array, tiles: Array) -> void:
 		return
 		
 	var movement_finish_action := MovementFinishAction.new(Card, [], allies, enemies)
-	movement_finish_action.setKillRolled(kill_rolled)
 	# If no Tile is chosen
 	push_warning("No tile was chosen for AI Turn")
 	onPushAction([ChangeTurnStateAction.new(Card, Game.TurnStates.ACTIVE), movement_finish_action])
@@ -116,7 +106,6 @@ func onTileChosen(Tile: TileGD, DFL: DefaultFightLogic, allies: Array, enemies: 
 	var actions: Array = [ChangeTurnStateAction.new(Card, Game.TurnStates.ACTIVE)]
 	if Tile != Card.Tile:
 		var movement_action := MovementAction.new(Card, path)
-		movement_action.setKillRolled(kill_rolled)
 		actions.append(movement_action)
 	
 	onPushAction(actions)
@@ -128,7 +117,6 @@ func onKillPathChosen(kill_path: Array, DFL: DefaultFightLogic, allies: Array, e
 		return
 		
 	var movement_action := MovementAction.new(Card, kill_path)
-	movement_action.setKillRolled(kill_rolled)
 	var actions: Array = [ChangeTurnStateAction.new(Card, Game.TurnStates.ACTIVE),
 		movement_action]
 	onPushAction(actions)
@@ -183,28 +171,10 @@ func onApplyBehaviours(BehaviourCard: CardGD, enemies: Array, allies: Array, til
 
 func getBehaviours(BehaviourCard: CardGD) -> Array:
 	var archetype: ArchetypeInfo
-	if BehaviourCard.ai_datastore.isReceiver():
-		archetype = load(RECEIVER_ARCHETYPE_PATH)
-	elif BehaviourCard.isAlly(1) and Game.getLevel().isAIAdventurerArchetypeGlobal(): archetype = load(ADVENTURER_ARCHETYPE_PATH)
+	if BehaviourCard.isAlly(1) and Game.getLevel().isAIAdventurerArchetypeGlobal(): archetype = load(ADVENTURER_ARCHETYPE_PATH)
 	elif Game.getAllyUnits(1).all(func(x: CardGD): return x is not EpicCardGD and x.getActiveArchetype().id == 1): archetype = load(BRUTE_ARCHETYPE_PATH)
 	else: archetype = Card.getActiveArchetype()
 	return archetype.behaviours.map(func(x: GDScript): var behaviour := Behaviour.new(); behaviour.set_script(x); return behaviour)
-
-func onCheckCallForHelp(allies: Array, enemies: Array) -> void:
-	if !Card.ai_datastore.onCanCall(): return
-	if !Card.isInCombat(): return
-	if !Random.rollFloat(Card.getActiveArchetype().calling_chance / 100.0): return
-	
-	var enemies_to_tiles: Dictionary = {}
-	for EnemyCard in enemies:
-		enemies_to_tiles[EnemyCard] = EnemyCard.getTile()
-		
-	Card.ai_datastore.onCall() # Sets call cooldown
-	var available_allies: Array =  allies.filter(func(x: CardGD): return !x.ai_datastore.isReceiver() and\
-	x.ai_datastore.onCanReceive() and !x.isInCombat()\
-	and Random.rollFloat(x.getArchetypeFromInfo().accepting_chance / 100.0))
-	for AllyCard in available_allies:
-		AllyCard.ai_datastore.setIsReceiver(true, enemies_to_tiles)
 	
 func setIsEndUseTypeBoss(state: bool) -> void:
 	is_end_use_type_boss = state

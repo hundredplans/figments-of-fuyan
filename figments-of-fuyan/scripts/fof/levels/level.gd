@@ -435,8 +435,7 @@ func onRecalculateAITurnOccupy(action: OccupyAction, Card: CardGD) -> void:
 	if finish_action == null or !finish_action.Card.isEnemy(0): return
 	if finish_action.Card != Card: return
 	
-	if Card.ai_datastore.onCheckDoubleAdjacentAndReceiving(Card)\
-		or (action.owner != null and action.owner is not MoveToTileAction)\
+	if (action.owner != null and action.owner is not MoveToTileAction)\
 		or Card.onAICheckActiveEffectsOnlyDFL(Card.ai_datastore.DFL, finish_action):
 			
 		onRemoveMoveAndAttackActions(Card)

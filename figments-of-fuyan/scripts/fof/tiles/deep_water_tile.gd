@@ -5,3 +5,4 @@ func getFallDamage(_Tile: TileGD) -> int:
 
 func getCardYOffset() -> float:
 	return 0.2
+	
