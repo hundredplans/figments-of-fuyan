@@ -20,7 +20,7 @@ func onStartFight() -> void:
 	var level_info: LevelInfo = level_infos.pick_random()
 	
 	var spawn_group: int = level_info.getRandomSpawnGroup()
-	var enemy_spawns: Array = level_info.getEnemySpawnsaInGroup(spawn_group) # Array[SavedDataSpawn]
+	var enemy_spawns: Array = level_info.getEnemySpawnsInGroup(spawn_group) # Array[SavedDataSpawn]
 	enemy_spawns.shuffle()
 	
 	var budget: int = Game.area.getBudget(progress, level_info.enemy_budget_offset)
