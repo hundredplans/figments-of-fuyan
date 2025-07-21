@@ -26,10 +26,10 @@ func onRampage(death_action: DeathAction) -> void:
 func onResetCharges() -> void:
 	rampage_charges = 3 if !ascended else -1
 
-func getDescription() -> String:
-	if !ascended:
-		return Helper.getDescriptionNumeric(super(), [rampage_charges], [["RAMPAGE ", "[3]"]])
-	return super()
+func getDescription(use_default_values: bool = false) -> String:
+	if use_default_values:
+		return super(use_default_values)
+	return Helper.getDescription(super(), [rampage_charges])
 
 func onSave() -> SavedDataCard:
 	ability_save['rampage_charges'] = rampage_charges

@@ -1,21 +1,55 @@
-[gd_resource type="Resource" script_class="ToolInfo" load_steps=6 format=3 uid="uid://dgobyyqrm3mid"]
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=15 format=3 uid="uid://mt3478ufevgq"]
 
 [ext_resource type="Script" uid="uid://dq4qxtx6lyc2u" path="res://scripts/fof_info/tools/tool_info.gd" id="1_lsp2t"]
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_w2to6"]
 [ext_resource type="Script" uid="uid://bubywjab3xr8x" path="res://scripts/fof/tools/wooden_buckler.gd" id="2_6aiby"]
 [ext_resource type="Script" uid="uid://ccxaxjnbobkaq" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="2_ik5wq"]
 [ext_resource type="Texture2D" uid="uid://vyane8s1hbx3" path="res://assets/sprites/game/tools/Wooden Buckler.png" id="2_mbssm"]
+[ext_resource type="Script" uid="uid://bigyry2ykda2l" path="res://scripts/fof_info/tools/tool_tier_datastore.gd" id="6_rgxxd"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="7_esd0i"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="8_a4jb4"]
+
+[sub_resource type="Resource" id="Resource_ji7kl"]
+script = ExtResource("8_a4jb4")
+description = "REVENGE [[X]]: Gain [1] ARMOR for [2] Turns"
+default_values = Array[int]([1])
+
+[sub_resource type="Resource" id="Resource_4aiuu"]
+script = ExtResource("6_rgxxd")
+active_abilities = Array[ExtResource("7_esd0i")]([])
+description_datastore = SubResource("Resource_ji7kl")
+
+[sub_resource type="Resource" id="Resource_xx23k"]
+script = ExtResource("8_a4jb4")
+description = "REVENGE [[X]]: Gain [1] ARMOR for [2] Turns"
+default_values = Array[int]([2])
+
+[sub_resource type="Resource" id="Resource_ls4cy"]
+script = ExtResource("6_rgxxd")
+active_abilities = Array[ExtResource("7_esd0i")]([])
+description_datastore = SubResource("Resource_xx23k")
+
+[sub_resource type="Resource" id="Resource_esd0i"]
+script = ExtResource("8_a4jb4")
+description = "REVENGE [[X]]: Gain [1] ARMOR for [2] Turns"
+default_values = Array[int]([2])
+
+[sub_resource type="Resource" id="Resource_ojg0f"]
+script = ExtResource("6_rgxxd")
+active_abilities = Array[ExtResource("7_esd0i")]([])
+description_datastore = SubResource("Resource_esd0i")
 
 [resource]
 script = ExtResource("1_lsp2t")
+tiers = Array[ExtResource("6_rgxxd")]([SubResource("Resource_4aiuu"), SubResource("Resource_ls4cy"), SubResource("Resource_ojg0f")])
 icon = ExtResource("2_mbssm")
-description = "REVENGE [1]: Gain [1] ARMOR for [2] Turns"
-ascended_description = "REVENGE [2]: Gain [1] ARMOR for [2] Turns"
 rarity = 4
-active_abilities = Array[ExtResource("1_w2to6")]([])
 use_charges = true
 auto_reset_charges = true
 reset_to_default = true
+active_abilities = Array[ExtResource("1_w2to6")]([])
+description = "REVENGE [1]: Gain [1] ARMOR for [2] Turns"
+ascended_description = "REVENGE [2]: Gain [1] ARMOR for [2] Turns"
 id = 5
 name = "Wooden Buckler"
 gdscript = ExtResource("2_6aiby")

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=21 format=3 uid="uid://uh4nmhidi4rw"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=31 format=3 uid="uid://uh4nmhidi4rw"]
 
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_w4leg"]
 [ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_0qlpa"]
@@ -9,38 +9,10 @@
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_bl5n0"]
 [ext_resource type="Script" uid="uid://16nolvgw3yr" path="res://scripts/fof/cards/jibben.gd" id="6_m0m73"]
 [ext_resource type="PackedScene" uid="uid://d081qfer72glc" path="res://assets/models/fof/cards/jibben.glb" id="7_fj8oc"]
-[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_r3xw7"]
+[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="10_r3xw7"]
 [ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_fj8oc"]
-
-[sub_resource type="Resource" id="Resource_m0m73"]
-script = ExtResource("1_w4leg")
-exists = 0
-ascended_description = "Allies in vision have ARMOR [1] for [5] Turns"
-ascended_max_charges = 1
-name = "Blacksmith's Will"
-description = "Allies in vision have ARMOR [1] for [3] Turns"
-max_charges = 1
-delay = 0.0
-camera_type = 0
-charges = 0
-used = false
-metadata/_custom_type_script = "uid://cdbphjba7jkam"
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
-size = Vector3(0.663147, 1.94543, 0.526978)
-
-[sub_resource type="PackedScene" id="PackedScene_d6dgo"]
-_bundled = {
-"conn_count": 0,
-"conns": PackedInt32Array(),
-"editable_instances": [],
-"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
-"node_count": 1,
-"node_paths": [],
-"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
-"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00845337, 0.973806, 0.0105591), SubResource("BoxShape3D_ex838")],
-"version": 3
-}
+[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_7jg5x"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_o8pre"]
 
 [sub_resource type="Resource" id="Resource_fj8oc"]
 script = ExtResource("11_fj8oc")
@@ -103,9 +75,104 @@ description = ""
 active_abilities = Array[ExtResource("11_fj8oc")]([])
 traits = Array[ExtResource("2_0qlpa")]([])
 
+[sub_resource type="Resource" id="Resource_m0m73"]
+script = ExtResource("1_w4leg")
+exists = 0
+ascended_description = "Allies in vision have ARMOR [1] for [5] Turns"
+ascended_max_charges = 1
+name = "Blacksmith's Will"
+description = "Allies in vision have ARMOR [1] for [3] Turns"
+max_charges = 1
+delay = 0.0
+camera_type = 0
+charges = 0
+used = false
+metadata/_custom_type_script = "uid://cdbphjba7jkam"
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
+size = Vector3(0.663147, 1.94543, 0.526978)
+
+[sub_resource type="PackedScene" id="PackedScene_d6dgo"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00845337, 0.973806, 0.0105591), SubResource("BoxShape3D_ex838")],
+"version": 3
+}
+
+[sub_resource type="Resource" id="Resource_dxjm1"]
+script = ExtResource("13_o8pre")
+description = "ABILITY [[X]]: Allies in vision have ARMOR [1] for [3] Turns"
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_fou1g"]
+script = ExtResource("12_7jg5x")
+attack = 1
+health = 3
+speed = 2
+energy = 3
+description_datastore = SubResource("Resource_dxjm1")
+description = ""
+active_abilities = Array[ExtResource("11_fj8oc")]([SubResource("Resource_fj8oc")])
+traits = Array[ExtResource("2_0qlpa")]([])
+
+[sub_resource type="Resource" id="Resource_3sykq"]
+script = ExtResource("13_o8pre")
+description = "ABILITY [[X]]: Allies in vision have ARMOR [1] for [5] Turns"
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_xjitf"]
+script = ExtResource("12_7jg5x")
+attack = 1
+health = 4
+speed = 2
+energy = 3
+description_datastore = SubResource("Resource_3sykq")
+description = ""
+active_abilities = Array[ExtResource("11_fj8oc")]([SubResource("Resource_kfdow")])
+traits = Array[ExtResource("2_0qlpa")]([])
+
+[sub_resource type="Resource" id="Resource_rnb2s"]
+script = ExtResource("13_o8pre")
+description = ""
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_mj1wb"]
+script = ExtResource("12_7jg5x")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description_datastore = SubResource("Resource_rnb2s")
+description = ""
+active_abilities = Array[ExtResource("11_fj8oc")]([])
+traits = Array[ExtResource("2_0qlpa")]([])
+
+[sub_resource type="Resource" id="Resource_ofyrv"]
+script = ExtResource("13_o8pre")
+description = ""
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_hvxen"]
+script = ExtResource("12_7jg5x")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description_datastore = SubResource("Resource_ofyrv")
+description = ""
+active_abilities = Array[ExtResource("11_fj8oc")]([])
+traits = Array[ExtResource("2_0qlpa")]([])
+
 [resource]
 script = ExtResource("3_pqx2a")
-tiers = Array[ExtResource("10_r3xw7")]([SubResource("Resource_je1p1"), SubResource("Resource_c7bhd"), SubResource("Resource_7jg5x"), SubResource("Resource_o8pre")])
+tiers = Array[ExtResource("12_7jg5x")]([SubResource("Resource_fou1g"), SubResource("Resource_xjitf"), SubResource("Resource_mj1wb"), SubResource("Resource_hvxen")])
+_tiers = Array[ExtResource("10_r3xw7")]([SubResource("Resource_je1p1"), SubResource("Resource_c7bhd"), SubResource("Resource_7jg5x"), SubResource("Resource_o8pre")])
 attack = 1
 health = 3
 speed = 2

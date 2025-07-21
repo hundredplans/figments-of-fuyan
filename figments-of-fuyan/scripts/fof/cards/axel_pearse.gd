@@ -15,6 +15,3 @@ func onHit(damage_action: DamageAction, _attack_action: AttackAction) -> void:
 	if !damage_action.post: damage_action.setIgnoreArmorShield(true)
 	elif damage_action.post and damage_action.isIgnoreArmorShieldSuccess():
 		onPushAction(StatAction.new(StatInfo.new(self, Game.Stats.ATTACK, 1)))
-	
-func getDescription() -> String:
-	return super()

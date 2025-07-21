@@ -1,15 +1,38 @@
-[gd_resource type="Resource" script_class="BoonInfo" load_steps=5 format=3 uid="uid://52qvhxdqw7sh"]
+[gd_resource type="Resource" script_class="BoonInfo" load_steps=12 format=3]
 
-[ext_resource type="Script" uid="uid://cwaxy6m1b8n5m" path="res://scripts/fof_info/boons/boon_info.gd" id="1_1bfht"]
-[ext_resource type="Script" uid="uid://bfmj0hk5sju75" path="res://scripts/fof/boons/boon.gd" id="1_h6gth"]
-[ext_resource type="Script" uid="uid://dh3x145y3ihra" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="2_gi2op"]
-[ext_resource type="Texture2D" uid="uid://uf61yvygws5h" path="res://assets/sprites/game/boons/nurture_boon.png" id="2_w7c16"]
+[ext_resource type="Script" path="res://scripts/fof_info/boons/boon_info.gd" id="1_1bfht"]
+[ext_resource type="Script" path="res://scripts/fof/boons/boon.gd" id="1_h6gth"]
+[ext_resource type="Script" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="2_gi2op"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/boons/nurture_boon.png" id="2_w7c16"]
+[ext_resource type="Script" path="res://scripts/fof_info/boons/boon_tier_datastore.gd" id="5_3ka58"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="6_2pkmf"]
+
+[sub_resource type="Resource" id="Resource_1838x"]
+script = ExtResource("6_2pkmf")
+description = "Gain a [acard=5] when you beat the next boss"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_uvdb6"]
+script = ExtResource("5_3ka58")
+description_datastore = SubResource("Resource_1838x")
+
+[sub_resource type="Resource" id="Resource_up8sf"]
+script = ExtResource("6_2pkmf")
+description = "Gain a [acard=5] when you beat the next boss"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_c3a3j"]
+script = ExtResource("5_3ka58")
+description_datastore = SubResource("Resource_up8sf")
+
+[sub_resource type="Resource" id="Resource_1l6wr"]
+script = ExtResource("5_3ka58")
+description_datastore = SubResource("Resource_up8sf")
 
 [resource]
 script = ExtResource("1_1bfht")
+tiers = Array[ExtResource("5_3ka58")]([SubResource("Resource_uvdb6"), SubResource("Resource_c3a3j"), SubResource("Resource_1l6wr")])
 icon = ExtResource("2_w7c16")
-description = "Gain a [acard=5] when you beat the next boss"
-ascended_description = ""
 rarity = 0
 curse = false
 elite_fight_curse = false
@@ -17,6 +40,8 @@ display_trigger = true
 use_charges = false
 auto_reset_charges = false
 reset_to_default = false
+description = "Gain a [acard=5] when you beat the next boss"
+ascended_description = ""
 id = 10
 name = "Nurture Boon"
 gdscript = ExtResource("1_h6gth")

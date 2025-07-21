@@ -1,15 +1,38 @@
-[gd_resource type="Resource" script_class="BoonInfo" load_steps=5 format=3 uid="uid://jp6myhwk50iu"]
+[gd_resource type="Resource" script_class="BoonInfo" load_steps=12 format=3]
 
-[ext_resource type="Texture2D" uid="uid://dsyphh43s67j6" path="res://assets/sprites/game/boons/efficiency.png" id="1_4q0ci"]
-[ext_resource type="Script" uid="uid://cwaxy6m1b8n5m" path="res://scripts/fof_info/boons/boon_info.gd" id="1_hksfw"]
-[ext_resource type="Script" uid="uid://ckne7cn0fsfiv" path="res://scripts/fof/boons/efficiency_boon.gd" id="1_woy3g"]
-[ext_resource type="Script" uid="uid://dh3x145y3ihra" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_j84c2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/boons/efficiency.png" id="1_4q0ci"]
+[ext_resource type="Script" path="res://scripts/fof_info/boons/boon_info.gd" id="1_hksfw"]
+[ext_resource type="Script" path="res://scripts/fof/boons/efficiency_boon.gd" id="1_woy3g"]
+[ext_resource type="Script" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_j84c2"]
+[ext_resource type="Script" path="res://scripts/fof_info/boons/boon_tier_datastore.gd" id="5_r8bwd"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="6_gaa8u"]
+
+[sub_resource type="Resource" id="Resource_0a8fo"]
+script = ExtResource("6_gaa8u")
+description = "Gain [1] ENE when you play [2] units in the same turn"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_eab2y"]
+script = ExtResource("5_r8bwd")
+description_datastore = SubResource("Resource_0a8fo")
+
+[sub_resource type="Resource" id="Resource_duy7j"]
+script = ExtResource("6_gaa8u")
+description = "Gain [2] ENE when you play [2] units in the same turn"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_0h47u"]
+script = ExtResource("5_r8bwd")
+description_datastore = SubResource("Resource_duy7j")
+
+[sub_resource type="Resource" id="Resource_yx2rt"]
+script = ExtResource("5_r8bwd")
+description_datastore = SubResource("Resource_duy7j")
 
 [resource]
 script = ExtResource("1_hksfw")
+tiers = Array[ExtResource("5_r8bwd")]([SubResource("Resource_eab2y"), SubResource("Resource_0h47u"), SubResource("Resource_yx2rt")])
 icon = ExtResource("1_4q0ci")
-description = "Gain [1] ENE when you play [2] units in the same turn"
-ascended_description = "Gain [2] ENE when you play [2] units in the same turn"
 rarity = 4
 curse = false
 elite_fight_curse = false
@@ -17,6 +40,8 @@ display_trigger = true
 use_charges = true
 auto_reset_charges = true
 reset_to_default = false
+description = "Gain [1] ENE when you play [2] units in the same turn"
+ascended_description = "Gain [2] ENE when you play [2] units in the same turn"
 id = 5
 name = "Efficiency Boon"
 gdscript = ExtResource("1_woy3g")

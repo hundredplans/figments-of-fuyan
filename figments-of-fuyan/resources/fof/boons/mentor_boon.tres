@@ -1,15 +1,38 @@
-[gd_resource type="Resource" script_class="BoonInfo" load_steps=5 format=3 uid="uid://fe44fu4lqiph"]
+[gd_resource type="Resource" script_class="BoonInfo" load_steps=12 format=3]
 
-[ext_resource type="Script" uid="uid://cwaxy6m1b8n5m" path="res://scripts/fof_info/boons/boon_info.gd" id="1_aol3b"]
-[ext_resource type="Script" uid="uid://lp8mbpj3dklp" path="res://scripts/fof/boons/mentor_boon.gd" id="1_dou1f"]
-[ext_resource type="Texture2D" uid="uid://vg6qhbo7xvhs" path="res://assets/sprites/game/boons/mentor_boon.png" id="2_33ble"]
-[ext_resource type="Script" uid="uid://dh3x145y3ihra" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_yknmt"]
+[ext_resource type="Script" path="res://scripts/fof_info/boons/boon_info.gd" id="1_aol3b"]
+[ext_resource type="Script" path="res://scripts/fof/boons/mentor_boon.gd" id="1_dou1f"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/boons/mentor_boon.png" id="2_33ble"]
+[ext_resource type="Script" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_yknmt"]
+[ext_resource type="Script" path="res://scripts/fof_info/boons/boon_tier_datastore.gd" id="5_n2mm3"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="6_ccuhe"]
+
+[sub_resource type="Resource" id="Resource_xelib"]
+script = ExtResource("6_ccuhe")
+description = "Gain a [acard=4] until you beat the next boss"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_323kb"]
+script = ExtResource("5_n2mm3")
+description_datastore = SubResource("Resource_xelib")
+
+[sub_resource type="Resource" id="Resource_litmr"]
+script = ExtResource("6_ccuhe")
+description = "Gain a [acard=4] until you beat the next boss"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_oqglj"]
+script = ExtResource("5_n2mm3")
+description_datastore = SubResource("Resource_litmr")
+
+[sub_resource type="Resource" id="Resource_kbt6t"]
+script = ExtResource("5_n2mm3")
+description_datastore = SubResource("Resource_litmr")
 
 [resource]
 script = ExtResource("1_aol3b")
+tiers = Array[ExtResource("5_n2mm3")]([SubResource("Resource_323kb"), SubResource("Resource_oqglj"), SubResource("Resource_kbt6t")])
 icon = ExtResource("2_33ble")
-description = "Gain a [acard=4] until you beat the next boss"
-ascended_description = ""
 rarity = 0
 curse = false
 elite_fight_curse = false
@@ -17,6 +40,8 @@ display_trigger = true
 use_charges = false
 auto_reset_charges = false
 reset_to_default = false
+description = "Gain a [acard=4] until you beat the next boss"
+ascended_description = ""
 id = 16
 name = "Mentor Boon"
 gdscript = ExtResource("1_dou1f")

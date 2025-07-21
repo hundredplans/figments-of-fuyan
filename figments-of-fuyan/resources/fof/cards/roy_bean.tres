@@ -1,32 +1,18 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=18 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=28 format=3]
 
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_8hpjk"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/roy_bean.png" id="2_6ony1"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/roy_bean.png" id="2_7bcsk"]
-[ext_resource type="Resource" path="res://resources/fof/archetypes/brute.tres" id="2_sy7qf"]
-[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_hqyyg"]
-[ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_owson"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_32lbx"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_1b2id"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="7_yxywd"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_quxqs"]
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_cj2gm"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_ru2ex"]
-size = Vector3(0.611084, 1.88574, 0.241943)
-
-[sub_resource type="PackedScene" id="PackedScene_1xbhj"]
-_bundled = {
-"conn_count": 0,
-"conns": PackedInt32Array(),
-"editable_instances": [],
-"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
-"node_count": 1,
-"node_paths": [],
-"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
-"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00231934, 0.942652, -0.00607296), SubResource("BoxShape3D_ru2ex")],
-"version": 3
-}
+[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_8hpjk"]
+[ext_resource type="Texture2D" uid="uid://bnnhkahslbvww" path="res://assets/sprites/game/cards/art_mini/roy_bean.png" id="2_6ony1"]
+[ext_resource type="Image" uid="uid://dkagocdxqh3q5" path="res://assets/sprites/game/cards/art_pop/roy_bean.png" id="2_7bcsk"]
+[ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_sy7qf"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_hqyyg"]
+[ext_resource type="Script" uid="uid://d3xulw3ft3e0n" path="res://scripts/fof/cards/card.gd" id="4_owson"]
+[ext_resource type="PackedScene" uid="uid://bxdixxrf3f7aa" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_32lbx"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_1b2id"]
+[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="7_yxywd"]
+[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="10_quxqs"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_cj2gm"]
+[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_4rco7"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_vtplg"]
 
 [sub_resource type="Resource" id="Resource_cj2gm"]
 script = ExtResource("10_quxqs")
@@ -68,9 +54,90 @@ description = ""
 active_abilities = Array[ExtResource("11_cj2gm")]([])
 traits = Array[ExtResource("3_hqyyg")]([])
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_ru2ex"]
+size = Vector3(0.611084, 1.88574, 0.241943)
+
+[sub_resource type="PackedScene" id="PackedScene_1xbhj"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00231934, 0.942652, -0.00607296), SubResource("BoxShape3D_ru2ex")],
+"version": 3
+}
+
+[sub_resource type="Resource" id="Resource_pn6kd"]
+script = ExtResource("13_vtplg")
+description = "A random enemy always has a Bounty; When they die in a DUEL gain a fair ENE reward"
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_jb8sn"]
+script = ExtResource("12_4rco7")
+attack = 3
+health = 4
+speed = 2
+energy = 4
+description_datastore = SubResource("Resource_pn6kd")
+description = ""
+active_abilities = Array[ExtResource("11_cj2gm")]([])
+traits = Array[ExtResource("3_hqyyg")]([])
+
+[sub_resource type="Resource" id="Resource_upkce"]
+script = ExtResource("13_vtplg")
+description = ""
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_o75pa"]
+script = ExtResource("12_4rco7")
+attack = 3
+health = 4
+speed = 2
+energy = 4
+description_datastore = SubResource("Resource_upkce")
+description = ""
+active_abilities = Array[ExtResource("11_cj2gm")]([])
+traits = Array[ExtResource("3_hqyyg")]([])
+
+[sub_resource type="Resource" id="Resource_53atp"]
+script = ExtResource("13_vtplg")
+description = ""
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_wjl47"]
+script = ExtResource("12_4rco7")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description_datastore = SubResource("Resource_53atp")
+description = ""
+active_abilities = Array[ExtResource("11_cj2gm")]([])
+traits = Array[ExtResource("3_hqyyg")]([])
+
+[sub_resource type="Resource" id="Resource_gn4u4"]
+script = ExtResource("13_vtplg")
+description = ""
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_wnxhc"]
+script = ExtResource("12_4rco7")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description_datastore = SubResource("Resource_gn4u4")
+description = ""
+active_abilities = Array[ExtResource("11_cj2gm")]([])
+traits = Array[ExtResource("3_hqyyg")]([])
+
 [resource]
 script = ExtResource("7_yxywd")
-tiers = Array[ExtResource("10_quxqs")]([SubResource("Resource_cj2gm"), SubResource("Resource_84gdi"), SubResource("Resource_4rco7"), SubResource("Resource_vtplg")])
+tiers = Array[ExtResource("12_4rco7")]([SubResource("Resource_jb8sn"), SubResource("Resource_o75pa"), SubResource("Resource_wjl47"), SubResource("Resource_wnxhc")])
+_tiers = Array[ExtResource("10_quxqs")]([SubResource("Resource_cj2gm"), SubResource("Resource_84gdi"), SubResource("Resource_4rco7"), SubResource("Resource_vtplg")])
 attack = 3
 health = 4
 speed = 2

@@ -6,8 +6,8 @@ func onProcessAction(action: Action) -> void:
 func onAscend(state: bool) -> void:
 	super(state)
 
-func getDescription() -> String:
-	return super()
+func getDescription(use_default_values: bool = false) -> String:
+	return super(use_default_values)
 
 func onBoon(_action: Action = null) -> void:
 	pass

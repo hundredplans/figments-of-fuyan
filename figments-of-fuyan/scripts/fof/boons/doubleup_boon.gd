@@ -21,9 +21,10 @@ func onAscend(state: bool) -> void:
 	if ascended: onPushAction(ChangeBoonChargesAction.new(self, 1))
 	else: onPushAction(ChangeBoonChargesAction.new(self, -1))
 
-func getDescription() -> String:
-	var square_bracket_number: String = "[1]" if !ascended else "[2]"
-	return Helper.getDescriptionNumeric(super(), [charges], [["Your next ", square_bracket_number]])
+func getDescription(use_default_values: bool = false) -> String:
+	if use_default_values:
+		return super(use_default_values)
+	return Helper.getDescription(super(), [charges])
 
 func onBoon(action: Action) -> void:
 	onPushAction(ChangeBoonChargesAction.new(self, -1))

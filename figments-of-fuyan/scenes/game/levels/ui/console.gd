@@ -54,6 +54,10 @@ func ascend() -> void:
 	if SpectateObject is CardGD:
 		Game.getArea().onPushAction(AscendCardAction.new(SpectateObject, !SpectateObject.ascended))
 
+func tier(value: int) -> void:
+	if SpectateObject is CardGD:
+		SpectateObject.onRetiered(value)
+
 func status_effect(name_id: Variant, turns: int = 1) -> void:
 	if SpectateObject is CardGD:
 		var info: StatusEffectInfo = getNameIDFofInfo(name_id, StatusEffectInfo)

@@ -11,9 +11,6 @@ func onProcessAction(action: Action) -> void:
 func onAscend(state: bool) -> void:
 	super(state)
 
-func getDescription() -> String:
-	return super()
-
 func onBoon(_action: Action = null) -> void:
 	var energy_gain: int = 1 if !ascended else 2
 	onPushAction(EnergyAction.new(energy_gain))

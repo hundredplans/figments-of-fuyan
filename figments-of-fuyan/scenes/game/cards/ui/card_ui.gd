@@ -11,6 +11,7 @@ signal tool_drag_begin
 signal tool_drag_end
 
 #region Onready
+@onready var TierLabel: Label = %TierLabel
 @onready var AreaBackground: ButtonAutomask = %AreaBackground
 @onready var Background: ButtonAutomask = %Background
 @onready var ArtPop: ButtonAutomask = %ArtPop
@@ -41,7 +42,6 @@ signal tool_drag_end
 @onready var TemporaryCardMarker: TextureRect = %TemporaryCardMarker
 @onready var AwakenedInCombatMarker: TextureRect = %AwakenedInCombatMarker
 #endregion
-
 #region Exports
 @export var white_outline_canvas: ShaderMaterial
 @export_group("Admin")
@@ -101,6 +101,13 @@ func setInfo(_Card: CardGD, _highlight_on_hover: bool = false, _inspectable: boo
 	Card.tool_updated.connect(onToolUpdated)
 	Card.is_temporary_updated.connect(onUpdateTemporaryCardMarker)
 	Card.awakened_in_combat.connect(onUpdateAwakenedInCombat)
+	Card.tier_updated.connect(onTierUpdated)
+	onTierUpdated(Card.getTier())
+	
+func onTierUpdated(tier: int) -> void:
+	TierLabel.text = Game.getTierString(tier)
+	onUpdateStats()
+	TextLabel.setText(Card.getDescription(true))
 	
 func onUpdateStats() -> void:
 	AttackLabel.text = str(Card.base_stats.attack)

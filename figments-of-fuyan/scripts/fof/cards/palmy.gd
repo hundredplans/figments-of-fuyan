@@ -27,7 +27,9 @@ func onSave() -> SavedDataCard:
 	ability_save['trauma_charges'] = trauma_charges
 	return super()
 	
-func getDescription() -> String:
+func getDescription(use_default_values: bool = false) -> String:
+	if use_default_values:
+		return super(use_default_values)
 	return Helper.getDescription(super(), [trauma_charges])
 
 func getDefaultCharges() -> int:

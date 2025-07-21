@@ -75,14 +75,14 @@ columns = 2
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CardsContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="AscendButton" type="Button" parent="MarginContainer/VBoxContainer/CardsContainer/VBoxContainer/HBoxContainer"]
+[node name="TierUpButton" type="Button" parent="MarginContainer/VBoxContainer/CardsContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"PurpleButton"
-text = "Ascend"
+text = "Tier Up"
 
 [node name="CardParent" type="Node3D" parent="."]
 unique_name_in_owner = true
 
 [connection signal="text_changed" from="MarginContainer/VBoxContainer/CardsContainer/VBoxContainer/SearchAreaCard" to="." method="_on_search_area_card_text_changed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/CardsContainer/VBoxContainer/HBoxContainer/AscendButton" to="." method="_on_ascend_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/CardsContainer/VBoxContainer/HBoxContainer/TierUpButton" to="." method="_on_tier_up_button_pressed"]

@@ -1,32 +1,18 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=18 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=28 format=3]
 
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_wtchp"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/eric_wilderman.png" id="2_1aiie"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/eric_wilderman.png" id="2_862im"]
-[ext_resource type="Resource" path="res://resources/fof/archetypes/warden.tres" id="2_fcbtc"]
-[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_j1t5v"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_p0xxa"]
-[ext_resource type="Script" path="res://scripts/fof/cards/eric_wilderman.gd" id="6_fcbtc"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_vxx74"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/eric_wilderman.glb" id="7_fcbtc"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_cw4r1"]
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_q5r0s"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
-size = Vector3(0.663147, 1.94543, 0.526978)
-
-[sub_resource type="PackedScene" id="PackedScene_d6dgo"]
-_bundled = {
-"conn_count": 0,
-"conns": PackedInt32Array(),
-"editable_instances": [],
-"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
-"node_count": 1,
-"node_paths": [],
-"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
-"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00845337, 0.973806, 0.0105591), SubResource("BoxShape3D_ex838")],
-"version": 3
-}
+[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_wtchp"]
+[ext_resource type="Texture2D" uid="uid://dfdquho8f1mk7" path="res://assets/sprites/game/cards/art_mini/eric_wilderman.png" id="2_1aiie"]
+[ext_resource type="Image" uid="uid://dkuemvr2nwqdi" path="res://assets/sprites/game/cards/art_pop/eric_wilderman.png" id="2_862im"]
+[ext_resource type="Resource" uid="uid://dk14kkjps176t" path="res://resources/fof/archetypes/warden.tres" id="2_fcbtc"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_j1t5v"]
+[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_p0xxa"]
+[ext_resource type="Script" uid="uid://wpnh0nodpnei" path="res://scripts/fof/cards/eric_wilderman.gd" id="6_fcbtc"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_vxx74"]
+[ext_resource type="PackedScene" uid="uid://dldkjvsnjecp3" path="res://assets/models/fof/cards/eric_wilderman.glb" id="7_fcbtc"]
+[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="10_cw4r1"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_q5r0s"]
+[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_umwcf"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_nk2tg"]
 
 [sub_resource type="Resource" id="Resource_q5r0s"]
 script = ExtResource("10_cw4r1")
@@ -68,9 +54,90 @@ description = ""
 active_abilities = Array[ExtResource("11_q5r0s")]([])
 traits = Array[ExtResource("2_j1t5v")]([])
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
+size = Vector3(0.663147, 1.94543, 0.526978)
+
+[sub_resource type="PackedScene" id="PackedScene_d6dgo"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00845337, 0.973806, 0.0105591), SubResource("BoxShape3D_ex838")],
+"version": 3
+}
+
+[sub_resource type="Resource" id="Resource_l43r7"]
+script = ExtResource("13_nk2tg")
+description = "ARRIVE: Gain SHIELD; Gain +1 ATT when this loses SHIELD"
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_kisrv"]
+script = ExtResource("12_umwcf")
+attack = 1
+health = 2
+speed = 3
+energy = 2
+description_datastore = SubResource("Resource_l43r7")
+description = ""
+active_abilities = Array[ExtResource("11_q5r0s")]([])
+traits = Array[ExtResource("2_j1t5v")]([])
+
+[sub_resource type="Resource" id="Resource_clvq0"]
+script = ExtResource("13_nk2tg")
+description = "ARRIVE: Gain SHIELD; Gain +2 ATT when this loses SHIELD"
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_lx7fg"]
+script = ExtResource("12_umwcf")
+attack = 1
+health = 2
+speed = 3
+energy = 2
+description_datastore = SubResource("Resource_clvq0")
+description = ""
+active_abilities = Array[ExtResource("11_q5r0s")]([])
+traits = Array[ExtResource("2_j1t5v")]([])
+
+[sub_resource type="Resource" id="Resource_v7v5e"]
+script = ExtResource("13_nk2tg")
+description = ""
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_iv6ek"]
+script = ExtResource("12_umwcf")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description_datastore = SubResource("Resource_v7v5e")
+description = ""
+active_abilities = Array[ExtResource("11_q5r0s")]([])
+traits = Array[ExtResource("2_j1t5v")]([])
+
+[sub_resource type="Resource" id="Resource_ia8xo"]
+script = ExtResource("13_nk2tg")
+description = ""
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_71erk"]
+script = ExtResource("12_umwcf")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description_datastore = SubResource("Resource_ia8xo")
+description = ""
+active_abilities = Array[ExtResource("11_q5r0s")]([])
+traits = Array[ExtResource("2_j1t5v")]([])
+
 [resource]
 script = ExtResource("3_p0xxa")
-tiers = Array[ExtResource("10_cw4r1")]([SubResource("Resource_q5r0s"), SubResource("Resource_ddnk0"), SubResource("Resource_umwcf"), SubResource("Resource_nk2tg")])
+tiers = Array[ExtResource("12_umwcf")]([SubResource("Resource_kisrv"), SubResource("Resource_lx7fg"), SubResource("Resource_iv6ek"), SubResource("Resource_71erk")])
+_tiers = Array[ExtResource("10_cw4r1")]([SubResource("Resource_q5r0s"), SubResource("Resource_ddnk0"), SubResource("Resource_umwcf"), SubResource("Resource_nk2tg")])
 attack = 1
 health = 2
 speed = 3

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=18 format=3 uid="uid://bdny2xghqmgsk"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=28 format=3 uid="uid://cvj6ybwu6b06d"]
 
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_qxwry"]
 [ext_resource type="Resource" uid="uid://bbqdeswvpt0y6" path="res://resources/fof/archetypes/support.tres" id="2_b38lb"]
@@ -9,8 +9,30 @@
 [ext_resource type="Script" uid="uid://bhep3mf1oshi6" path="res://scripts/fof/cards/lil_betty.gd" id="6_b38lb"]
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_yb5g8"]
 [ext_resource type="PackedScene" uid="uid://b7q1jl8vy1rbl" path="res://assets/models/fof/cards/lil_betty.glb" id="7_4364h"]
-[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_wybwm"]
+[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="10_wybwm"]
 [ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_4364h"]
+[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_7r1ym"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_qlv8j"]
+
+[sub_resource type="Resource" id="Resource_4364h"]
+script = ExtResource("10_wybwm")
+active_abilities = Array[ExtResource("11_4364h")]([])
+traits = Array[ExtResource("2_f2ey4")]([])
+
+[sub_resource type="Resource" id="Resource_xxsna"]
+script = ExtResource("10_wybwm")
+active_abilities = Array[ExtResource("11_4364h")]([])
+traits = Array[ExtResource("2_f2ey4")]([])
+
+[sub_resource type="Resource" id="Resource_7r1ym"]
+script = ExtResource("10_wybwm")
+active_abilities = Array[ExtResource("11_4364h")]([])
+traits = Array[ExtResource("2_f2ey4")]([])
+
+[sub_resource type="Resource" id="Resource_qlv8j"]
+script = ExtResource("10_wybwm")
+active_abilities = Array[ExtResource("11_4364h")]([])
+traits = Array[ExtResource("2_f2ey4")]([])
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
 size = Vector3(0.663147, 1.94543, 0.526978)
@@ -28,49 +50,74 @@ _bundled = {
 "version": 3
 }
 
-[sub_resource type="Resource" id="Resource_4364h"]
-script = ExtResource("10_wybwm")
+[sub_resource type="Resource" id="Resource_fck7u"]
+script = ExtResource("13_qlv8j")
+description = "END OF TURN {[X]/4}: Deal [2] DMG to a random enemy in vision"
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_s2mx1"]
+script = ExtResource("12_7r1ym")
 attack = 0
 health = 3
 speed = 1
 energy = 2
-description = "END OF TURN {[X]/4}: Deal [2] DMG to a random enemy in vision"
-active_abilities = Array[ExtResource("11_4364h")]([])
-traits = Array[ExtResource("2_f2ey4")]([])
+description_datastore = SubResource("Resource_fck7u")
+description = null
+active_abilities = null
+traits = null
 
-[sub_resource type="Resource" id="Resource_xxsna"]
-script = ExtResource("10_wybwm")
+[sub_resource type="Resource" id="Resource_veryq"]
+script = ExtResource("13_qlv8j")
+description = "END OF TURN {[X]/3}: Deal [2] DMG to a random enemy in vision"
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_87sn8"]
+script = ExtResource("12_7r1ym")
 attack = 0
 health = 4
 speed = 1
 energy = 2
-description = "END OF TURN {[X]/3}: Deal [2] DMG to a random enemy in vision"
-active_abilities = Array[ExtResource("11_4364h")]([])
-traits = Array[ExtResource("2_f2ey4")]([])
+description_datastore = SubResource("Resource_veryq")
+description = null
+active_abilities = null
+traits = null
 
-[sub_resource type="Resource" id="Resource_7r1ym"]
-script = ExtResource("10_wybwm")
-attack = -1
-health = -1
-speed = -1
-energy = -1
+[sub_resource type="Resource" id="Resource_ow8uo"]
+script = ExtResource("13_qlv8j")
 description = ""
-active_abilities = Array[ExtResource("11_4364h")]([])
-traits = Array[ExtResource("2_f2ey4")]([])
+default_values = 0
 
-[sub_resource type="Resource" id="Resource_qlv8j"]
-script = ExtResource("10_wybwm")
-attack = -1
-health = -1
-speed = -1
-energy = -1
+[sub_resource type="Resource" id="Resource_yjcct"]
+script = ExtResource("12_7r1ym")
+attack = null
+health = null
+speed = null
+energy = null
+description_datastore = SubResource("Resource_ow8uo")
+description = null
+active_abilities = null
+traits = null
+
+[sub_resource type="Resource" id="Resource_6f2cy"]
+script = ExtResource("13_qlv8j")
 description = ""
-active_abilities = Array[ExtResource("11_4364h")]([])
-traits = Array[ExtResource("2_f2ey4")]([])
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_sg6xf"]
+script = ExtResource("12_7r1ym")
+attack = null
+health = null
+speed = null
+energy = null
+description_datastore = SubResource("Resource_6f2cy")
+description = null
+active_abilities = null
+traits = null
 
 [resource]
 script = ExtResource("3_tk5ul")
-tiers = Array[ExtResource("10_wybwm")]([SubResource("Resource_4364h"), SubResource("Resource_xxsna"), SubResource("Resource_7r1ym"), SubResource("Resource_qlv8j")])
+tiers = Array[ExtResource("12_7r1ym")]([SubResource("Resource_s2mx1"), SubResource("Resource_87sn8"), SubResource("Resource_yjcct"), SubResource("Resource_sg6xf")])
+_tiers = Array[ExtResource("10_wybwm")]([SubResource("Resource_4364h"), SubResource("Resource_xxsna"), SubResource("Resource_7r1ym"), SubResource("Resource_qlv8j")])
 attack = 0
 health = 3
 speed = 2

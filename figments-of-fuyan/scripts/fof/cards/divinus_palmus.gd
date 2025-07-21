@@ -37,11 +37,11 @@ func isPickable(_Tile: TileGD) -> bool:
 	var Card: CardGD = Game.getAllyFieldCard(_Tile, team)
 	return Card != null and Card.isHealable()
 
-func getDescription() -> String:
+func getDescription(use_default_values: bool = false) -> String:
 	var active_effect: ActiveEffectDatastore = getActiveEffectByName("Coconut Touch")
-	if active_effect != null:
+	if !use_default_values and active_effect != null:
 		return Helper.getDescription(super(), [active_effect.charges])
-	return Helper.getDescription(super(), [3 if Game.getChampionLevel() >= 2 else 2])
+	return super(true)
 
 func onSave() -> SavedDataCard:
 	ability_save['holy_travelled_amount'] = holy_travelled_amount

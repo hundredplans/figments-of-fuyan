@@ -1,10 +1,13 @@
-[gd_resource type="Resource" script_class="ToolInfo" load_steps=7 format=3 uid="uid://brlv2o2mjaf0k"]
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=17 format=3 uid="uid://b5gn5ug4xo5u3"]
 
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_3s3pl"]
 [ext_resource type="Script" uid="uid://dq4qxtx6lyc2u" path="res://scripts/fof_info/tools/tool_info.gd" id="1_6vyux"]
 [ext_resource type="Script" uid="uid://ccxaxjnbobkaq" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="2_cmi31"]
 [ext_resource type="Script" uid="uid://6jfljie78gvc" path="res://scripts/fof/tools/pendant.gd" id="2_kcm4r"]
 [ext_resource type="Texture2D" uid="uid://dxss0514at87d" path="res://assets/sprites/game/tools/Life Pendant.png" id="2_yomwt"]
+[ext_resource type="Script" uid="uid://bigyry2ykda2l" path="res://scripts/fof_info/tools/tool_tier_datastore.gd" id="6_fjffo"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="7_h5u4r"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="8_jp3jr"]
 
 [sub_resource type="Resource" id="Resource_h813w"]
 script = ExtResource("1_3s3pl")
@@ -19,17 +22,64 @@ camera_type = 0
 charges = 0
 used = false
 
+[sub_resource type="Resource" id="Resource_c3iop"]
+script = ExtResource("8_jp3jr")
+description = "Gain +1 HP"
+default_values = []
+
+[sub_resource type="Resource" id="Resource_nto8d"]
+script = ExtResource("6_fjffo")
+active_abilities = Array[ExtResource("7_h5u4r")]([])
+description_datastore = SubResource("Resource_c3iop")
+
+[sub_resource type="Resource" id="Resource_h5u4r"]
+script = ExtResource("7_h5u4r")
+name = "Life Pendant"
+description = "Heal [1] HP"
+max_charges = 1
+delay = 0.0
+camera_type = 0
+charges = 0
+used = false
+
+[sub_resource type="Resource" id="Resource_jtbrw"]
+script = ExtResource("8_jp3jr")
+description = "Gain +1 HP
+ABILITY [1]: Heal [1] HP"
+default_values = []
+
+[sub_resource type="Resource" id="Resource_f844k"]
+script = ExtResource("6_fjffo")
+active_abilities = Array[ExtResource("7_h5u4r")]([SubResource("Resource_h5u4r")])
+description_datastore = SubResource("Resource_jtbrw")
+
+[sub_resource type="Resource" id="Resource_krus7"]
+script = ExtResource("7_h5u4r")
+name = "Life Pendant"
+description = "Heal [1] HP"
+max_charges = 1
+delay = 0.0
+camera_type = 0
+charges = 0
+used = false
+
+[sub_resource type="Resource" id="Resource_blges"]
+script = ExtResource("6_fjffo")
+active_abilities = Array[ExtResource("7_h5u4r")]([SubResource("Resource_krus7")])
+description_datastore = SubResource("Resource_jtbrw")
+
 [resource]
 script = ExtResource("1_6vyux")
+tiers = Array[ExtResource("6_fjffo")]([SubResource("Resource_nto8d"), SubResource("Resource_f844k"), SubResource("Resource_blges")])
 icon = ExtResource("2_yomwt")
-description = "Gain +1 HP"
-ascended_description = "Gain +1 HP
-ABILITY [1]: Heal [1] HP"
 rarity = 3
-active_abilities = Array[ExtResource("1_3s3pl")]([SubResource("Resource_h813w")])
 use_charges = false
 auto_reset_charges = false
 reset_to_default = false
+active_abilities = Array[ExtResource("1_3s3pl")]([SubResource("Resource_h813w")])
+description = "Gain +1 HP"
+ascended_description = "Gain +1 HP
+ABILITY [1]: Heal [1] HP"
 id = 1
 name = "Life Pendant"
 gdscript = ExtResource("2_kcm4r")

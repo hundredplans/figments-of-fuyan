@@ -1,48 +1,18 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=22 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=32 format=3]
 
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_ou3ee"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/gene_gallo_roman.png" id="2_6cjoi"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/gene_gallo_roman.png" id="2_ctojg"]
-[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_ewxrt"]
-[ext_resource type="Resource" path="res://resources/fof/archetypes/adventurer.tres" id="2_xocpm"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_xdl1w"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_bfhlm"]
-[ext_resource type="Script" path="res://scripts/fof/cards/gene_gallo_roman.gd" id="6_xocpm"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/gene_gallo_roman.glb" id="7_xocpm"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_s2yyt"]
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_ug0ym"]
-
-[sub_resource type="Resource" id="Resource_xocpm"]
-script = ExtResource("2_ewxrt")
-display_number = 2
-id = 2
-first_init = true
-public_id = 0
-metadata/_custom_type_script = "uid://dag3a8ejplko8"
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
-size = Vector3(0.663147, 1.94543, 0.526978)
-
-[sub_resource type="PackedScene" id="PackedScene_d6dgo"]
-_bundled = {
-"conn_count": 0,
-"conns": PackedInt32Array(),
-"editable_instances": [],
-"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
-"node_count": 1,
-"node_paths": [],
-"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
-"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00845337, 0.973806, 0.0105591), SubResource("BoxShape3D_ex838")],
-"version": 3
-}
-
-[sub_resource type="Resource" id="Resource_ug0ym"]
-script = ExtResource("2_ewxrt")
-display_number = 2
-id = 2
-first_init = true
-public_id = 0
-metadata/_custom_type_script = "uid://dag3a8ejplko8"
+[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_ou3ee"]
+[ext_resource type="Texture2D" uid="uid://c4swx2x83oeug" path="res://assets/sprites/game/cards/art_mini/gene_gallo_roman.png" id="2_6cjoi"]
+[ext_resource type="Image" uid="uid://cagnnyn0jah5t" path="res://assets/sprites/game/cards/art_pop/gene_gallo_roman.png" id="2_ctojg"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_ewxrt"]
+[ext_resource type="Resource" uid="uid://di2pr0npo4h1p" path="res://resources/fof/archetypes/adventurer.tres" id="2_xocpm"]
+[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_xdl1w"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_bfhlm"]
+[ext_resource type="Script" uid="uid://bkkdavjpjqgsa" path="res://scripts/fof/cards/gene_gallo_roman.gd" id="6_xocpm"]
+[ext_resource type="PackedScene" uid="uid://3qyoualochqf" path="res://assets/models/fof/cards/gene_gallo_roman.glb" id="7_xocpm"]
+[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="10_s2yyt"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_ug0ym"]
+[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_cocbe"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_qwq4s"]
 
 [sub_resource type="Resource" id="Resource_28qv3"]
 script = ExtResource("2_ewxrt")
@@ -100,9 +70,106 @@ description = ""
 active_abilities = Array[ExtResource("11_ug0ym")]([])
 traits = Array[ExtResource("2_ewxrt")]([])
 
+[sub_resource type="Resource" id="Resource_xocpm"]
+script = ExtResource("2_ewxrt")
+display_number = 2
+id = 2
+first_init = true
+public_id = 0
+metadata/_custom_type_script = "uid://dag3a8ejplko8"
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
+size = Vector3(0.663147, 1.94543, 0.526978)
+
+[sub_resource type="PackedScene" id="PackedScene_d6dgo"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00845337, 0.973806, 0.0105591), SubResource("BoxShape3D_ex838")],
+"version": 3
+}
+
+[sub_resource type="Resource" id="Resource_ug0ym"]
+script = ExtResource("2_ewxrt")
+display_number = 2
+id = 2
+first_init = true
+public_id = 0
+metadata/_custom_type_script = "uid://dag3a8ejplko8"
+
+[sub_resource type="Resource" id="Resource_eae14"]
+script = ExtResource("13_qwq4s")
+description = "RANGED [1-2]; On Hit {[X]/2}: This attack ignores ARMOR & SHIELD"
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_8uc72"]
+script = ExtResource("12_cocbe")
+attack = 2
+health = 1
+speed = 2
+energy = 2
+description_datastore = SubResource("Resource_eae14")
+description = ""
+active_abilities = Array[ExtResource("11_ug0ym")]([])
+traits = Array[ExtResource("2_ewxrt")]([SubResource("Resource_28qv3")])
+
+[sub_resource type="Resource" id="Resource_8d6bp"]
+script = ExtResource("13_qwq4s")
+description = "RANGED [1-3]; On Hit {[x]/2}: This attack ignores ARMOR & SHIELD"
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_hienk"]
+script = ExtResource("12_cocbe")
+attack = 2
+health = 1
+speed = 2
+energy = 2
+description_datastore = SubResource("Resource_8d6bp")
+description = ""
+active_abilities = Array[ExtResource("11_ug0ym")]([])
+traits = Array[ExtResource("2_ewxrt")]([SubResource("Resource_8nh1r")])
+
+[sub_resource type="Resource" id="Resource_ktdpi"]
+script = ExtResource("13_qwq4s")
+description = ""
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_h3ai7"]
+script = ExtResource("12_cocbe")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description_datastore = SubResource("Resource_ktdpi")
+description = ""
+active_abilities = Array[ExtResource("11_ug0ym")]([])
+traits = Array[ExtResource("2_ewxrt")]([])
+
+[sub_resource type="Resource" id="Resource_7lr6p"]
+script = ExtResource("13_qwq4s")
+description = ""
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_8jc6u"]
+script = ExtResource("12_cocbe")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description_datastore = SubResource("Resource_7lr6p")
+description = ""
+active_abilities = Array[ExtResource("11_ug0ym")]([])
+traits = Array[ExtResource("2_ewxrt")]([])
+
 [resource]
 script = ExtResource("3_xdl1w")
-tiers = Array[ExtResource("10_s2yyt")]([SubResource("Resource_iqedc"), SubResource("Resource_cocbe"), SubResource("Resource_qwq4s"), SubResource("Resource_pr7ke")])
+tiers = Array[ExtResource("12_cocbe")]([SubResource("Resource_8uc72"), SubResource("Resource_hienk"), SubResource("Resource_h3ai7"), SubResource("Resource_8jc6u")])
+_tiers = Array[ExtResource("10_s2yyt")]([SubResource("Resource_iqedc"), SubResource("Resource_cocbe"), SubResource("Resource_qwq4s"), SubResource("Resource_pr7ke")])
 attack = 2
 health = 1
 speed = 2

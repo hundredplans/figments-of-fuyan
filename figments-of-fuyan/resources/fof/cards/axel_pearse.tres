@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=20 format=3 uid="uid://be5tymy0ykcnh"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=30 format=3 uid="uid://be5tymy0ykcnh"]
 
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_7al74"]
 [ext_resource type="Resource" uid="uid://31nmui4k0kfh" path="res://resources/fof/archetypes/tactician.tres" id="2_a55fc"]
@@ -9,32 +9,10 @@
 [ext_resource type="Script" uid="uid://dti3xtuqh8yx7" path="res://scripts/fof/cards/axel_pearse.gd" id="6_a55fc"]
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_ikjpp"]
 [ext_resource type="PackedScene" uid="uid://2o4s4grovus1" path="res://assets/models/fof/cards/axel_pearse.glb" id="7_llebb"]
-[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_anhdk"]
+[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="10_anhdk"]
 [ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_llebb"]
-
-[sub_resource type="Resource" id="Resource_a55fc"]
-script = ExtResource("3_0dvgo")
-display_number = 0
-id = 3
-first_init = false
-public_id = 0
-metadata/_custom_type_script = "uid://dag3a8ejplko8"
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
-size = Vector3(0.663147, 1.94543, 0.526978)
-
-[sub_resource type="PackedScene" id="PackedScene_d6dgo"]
-_bundled = {
-"conn_count": 0,
-"conns": PackedInt32Array(),
-"editable_instances": [],
-"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
-"node_count": 1,
-"node_paths": [],
-"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
-"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00845337, 0.973806, 0.0105591), SubResource("BoxShape3D_ex838")],
-"version": 3
-}
+[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_fqlag"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_yvma7"]
 
 [sub_resource type="Resource" id="Resource_llebb"]
 script = ExtResource("10_anhdk")
@@ -87,9 +65,101 @@ description = ""
 active_abilities = Array[ExtResource("11_llebb")]([])
 traits = Array[ExtResource("3_0dvgo")]([])
 
+[sub_resource type="Resource" id="Resource_a55fc"]
+script = ExtResource("3_0dvgo")
+display_number = 0
+id = 3
+first_init = false
+public_id = 0
+metadata/_custom_type_script = "uid://dag3a8ejplko8"
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
+size = Vector3(0.663147, 1.94543, 0.526978)
+
+[sub_resource type="PackedScene" id="PackedScene_d6dgo"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00845337, 0.973806, 0.0105591), SubResource("BoxShape3D_ex838")],
+"version": 3
+}
+
+[sub_resource type="Resource" id="Resource_147te"]
+script = ExtResource("13_yvma7")
+description = "On Hit: If they have ARMOR & SHIELD ignore it and gain
++1 ATT"
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_qa2y5"]
+script = ExtResource("12_fqlag")
+attack = 2
+health = 1
+speed = 3
+energy = 2
+description_datastore = SubResource("Resource_147te")
+description = ""
+active_abilities = Array[ExtResource("11_llebb")]([])
+traits = Array[ExtResource("3_0dvgo")]([])
+
+[sub_resource type="Resource" id="Resource_02p1n"]
+script = ExtResource("13_yvma7")
+description = "MOBILE
+On Hit: If they have ARMOR & SHIELD ignore it and gain
++1 ATT"
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_pruha"]
+script = ExtResource("12_fqlag")
+attack = 2
+health = 2
+speed = 3
+energy = 2
+description_datastore = SubResource("Resource_02p1n")
+description = ""
+active_abilities = Array[ExtResource("11_llebb")]([])
+traits = Array[ExtResource("3_0dvgo")]([SubResource("Resource_swj80")])
+
+[sub_resource type="Resource" id="Resource_poj5o"]
+script = ExtResource("13_yvma7")
+description = ""
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_n7n2h"]
+script = ExtResource("12_fqlag")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description_datastore = SubResource("Resource_poj5o")
+description = ""
+active_abilities = Array[ExtResource("11_llebb")]([])
+traits = Array[ExtResource("3_0dvgo")]([])
+
+[sub_resource type="Resource" id="Resource_itexg"]
+script = ExtResource("13_yvma7")
+description = ""
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_a4qfs"]
+script = ExtResource("12_fqlag")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description_datastore = SubResource("Resource_itexg")
+description = ""
+active_abilities = Array[ExtResource("11_llebb")]([])
+traits = Array[ExtResource("3_0dvgo")]([])
+
 [resource]
 script = ExtResource("4_8j3o7")
-tiers = Array[ExtResource("10_anhdk")]([SubResource("Resource_llebb"), SubResource("Resource_a6lft"), SubResource("Resource_fqlag"), SubResource("Resource_yvma7")])
+tiers = Array[ExtResource("12_fqlag")]([SubResource("Resource_qa2y5"), SubResource("Resource_pruha"), SubResource("Resource_n7n2h"), SubResource("Resource_a4qfs")])
+_tiers = Array[ExtResource("10_anhdk")]([SubResource("Resource_llebb"), SubResource("Resource_a6lft"), SubResource("Resource_fqlag"), SubResource("Resource_yvma7")])
 attack = 2
 health = 1
 speed = 3

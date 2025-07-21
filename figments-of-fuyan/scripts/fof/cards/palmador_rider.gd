@@ -4,9 +4,6 @@ const UNASCENDED_HEIGHT_DIFF: int = 3
 const ASCENDED_HEIGHT_DIFF: int = 5
 func onProcessAction(action: Action) -> void:
 	super(action)
-	
-func getDescription() -> String:
-	return super()
 
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	super(active_effect)

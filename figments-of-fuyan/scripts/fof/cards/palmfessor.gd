@@ -37,9 +37,6 @@ func onCheckAllyStats() -> void:
 	for Card in ally_field_cards:
 		if Card.attack == 1 and Card not in affected_cards: onAddToAura(Card)
 		elif Card.attack != (1 + getAttackBuff()) and Card in affected_cards: onRemoveFromAura(Card)
-	
-func getDescription() -> String:
-	return super()
 
 func onSave() -> SavedDataCard:
 	ability_save['affected_cards'] = affected_cards.map(func(x: CardGD): return x.public_id)

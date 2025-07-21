@@ -1,18 +1,50 @@
-[gd_resource type="Resource" script_class="ToolInfo" load_steps=6 format=3 uid="uid://bcr68d2wo777a"]
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=14 format=3 uid="uid://clhvu30p2p5ij"]
 
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_b656t"]
 [ext_resource type="Script" uid="uid://dq4qxtx6lyc2u" path="res://scripts/fof_info/tools/tool_info.gd" id="1_icstd"]
 [ext_resource type="Script" uid="uid://dxrxxqg5fv2ie" path="res://scripts/fof/tools/sugori_knife.gd" id="2_e3482"]
 [ext_resource type="Texture2D" uid="uid://wvn4ne7q78mx" path="res://assets/sprites/game/tools/Sugori Knife.png" id="2_n8gx7"]
 [ext_resource type="Script" uid="uid://ccxaxjnbobkaq" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="3_ng7tl"]
+[ext_resource type="Script" uid="uid://bigyry2ykda2l" path="res://scripts/fof_info/tools/tool_tier_datastore.gd" id="6_b0hyy"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="7_borlc"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="8_6kbw3"]
+
+[sub_resource type="Resource" id="Resource_wy6tp"]
+script = ExtResource("8_6kbw3")
+description = "This deals [1] extra DMG to injured enemies"
+default_values = []
+
+[sub_resource type="Resource" id="Resource_pd808"]
+script = ExtResource("6_b0hyy")
+active_abilities = Array[ExtResource("7_borlc")]([])
+description_datastore = SubResource("Resource_wy6tp")
+
+[sub_resource type="Resource" id="Resource_uliio"]
+script = ExtResource("8_6kbw3")
+description = "This and allies in vision deal [1] extra DMG to injured enemies"
+default_values = []
+
+[sub_resource type="Resource" id="Resource_fkuxw"]
+script = ExtResource("6_b0hyy")
+active_abilities = Array[ExtResource("7_borlc")]([])
+description_datastore = SubResource("Resource_uliio")
+
+[sub_resource type="Resource" id="Resource_m24v2"]
+script = ExtResource("6_b0hyy")
+active_abilities = Array[ExtResource("7_borlc")]([])
+description_datastore = SubResource("Resource_uliio")
 
 [resource]
 script = ExtResource("1_icstd")
+tiers = Array[ExtResource("6_b0hyy")]([SubResource("Resource_pd808"), SubResource("Resource_fkuxw"), SubResource("Resource_m24v2")])
 icon = ExtResource("2_n8gx7")
 description = "This deals [1] extra DMG to injured enemies"
 ascended_description = "This and allies in vision deal [1] extra DMG to injured enemies"
 rarity = 3
 active_abilities = Array[ExtResource("1_b656t")]([])
+use_charges = false
+auto_reset_charges = false
+reset_to_default = false
 id = 3
 name = "Sugori Knife"
 gdscript = ExtResource("2_e3482")

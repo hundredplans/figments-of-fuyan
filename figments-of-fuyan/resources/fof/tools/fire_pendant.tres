@@ -1,10 +1,13 @@
-[gd_resource type="Resource" script_class="ToolInfo" load_steps=7 format=3 uid="uid://dh6lfyvg5ajfh"]
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=17 format=3 uid="uid://bc6y6mej2u1vo"]
 
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_4s66o"]
 [ext_resource type="Script" uid="uid://dq4qxtx6lyc2u" path="res://scripts/fof_info/tools/tool_info.gd" id="1_hrq2s"]
 [ext_resource type="Script" uid="uid://6jfljie78gvc" path="res://scripts/fof/tools/pendant.gd" id="2_4j6bg"]
 [ext_resource type="Script" uid="uid://ccxaxjnbobkaq" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="2_i0ogl"]
 [ext_resource type="Texture2D" uid="uid://dyqo57jww16xu" path="res://assets/sprites/game/tools/Fire Pendant.png" id="3_owvyx"]
+[ext_resource type="Script" uid="uid://bigyry2ykda2l" path="res://scripts/fof_info/tools/tool_tier_datastore.gd" id="6_44uds"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="7_qej7a"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="8_d6b0c"]
 
 [sub_resource type="Resource" id="Resource_bsaho"]
 script = ExtResource("1_4s66o")
@@ -19,8 +22,55 @@ camera_type = 0
 charges = 0
 used = false
 
+[sub_resource type="Resource" id="Resource_74ajw"]
+script = ExtResource("8_d6b0c")
+description = "Gain +1 ATT"
+default_values = []
+
+[sub_resource type="Resource" id="Resource_rd4il"]
+script = ExtResource("6_44uds")
+active_abilities = Array[ExtResource("7_qej7a")]([])
+description_datastore = SubResource("Resource_74ajw")
+
+[sub_resource type="Resource" id="Resource_fptrv"]
+script = ExtResource("7_qej7a")
+name = "Fire Pendant"
+description = "Gain +1 ATT for [1] Turn"
+max_charges = 1
+delay = 0.0
+camera_type = 0
+charges = 0
+used = false
+
+[sub_resource type="Resource" id="Resource_iyawe"]
+script = ExtResource("8_d6b0c")
+description = "Gain +1 ATT
+ABILITY [1]: Gain +1 ATT for [1] Turn"
+default_values = []
+
+[sub_resource type="Resource" id="Resource_gs708"]
+script = ExtResource("6_44uds")
+active_abilities = Array[ExtResource("7_qej7a")]([SubResource("Resource_fptrv")])
+description_datastore = SubResource("Resource_iyawe")
+
+[sub_resource type="Resource" id="Resource_qej7a"]
+script = ExtResource("7_qej7a")
+name = "Fire Pendant"
+description = "Gain +1 ATT for [1] Turn"
+max_charges = 1
+delay = 0.0
+camera_type = 0
+charges = 0
+used = false
+
+[sub_resource type="Resource" id="Resource_3g4om"]
+script = ExtResource("6_44uds")
+active_abilities = Array[ExtResource("7_qej7a")]([SubResource("Resource_qej7a")])
+description_datastore = SubResource("Resource_iyawe")
+
 [resource]
 script = ExtResource("1_hrq2s")
+tiers = Array[ExtResource("6_44uds")]([SubResource("Resource_rd4il"), SubResource("Resource_gs708"), SubResource("Resource_3g4om")])
 icon = ExtResource("3_owvyx")
 description = "Gain +1 ATT"
 ascended_description = "Gain +1 ATT

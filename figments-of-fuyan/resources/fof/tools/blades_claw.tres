@@ -1,13 +1,42 @@
-[gd_resource type="Resource" script_class="ToolInfo" load_steps=6 format=3 uid="uid://bufodqg76rlcn"]
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=14 format=3 uid="uid://dfo3g7lvptwgp"]
 
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_hpuw3"]
 [ext_resource type="Script" uid="uid://dss3i8f0l6fbs" path="res://scripts/fof/tools/blades_claw.gd" id="2_2rme6"]
 [ext_resource type="Script" uid="uid://dq4qxtx6lyc2u" path="res://scripts/fof_info/tools/tool_info.gd" id="2_pqqpn"]
 [ext_resource type="Texture2D" uid="uid://b44urkqche3cu" path="res://assets/sprites/game/tools/blades_claw.png" id="3_2rme6"]
 [ext_resource type="Script" uid="uid://ccxaxjnbobkaq" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="4_fmn57"]
+[ext_resource type="Script" uid="uid://bigyry2ykda2l" path="res://scripts/fof_info/tools/tool_tier_datastore.gd" id="6_au6bx"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="7_71umx"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="8_ag0yh"]
+
+[sub_resource type="Resource" id="Resource_cucju"]
+script = ExtResource("8_ag0yh")
+description = "RAMPAGE [2]: OVERKILL DMG is gained as DMG for this unit's next attack"
+default_values = []
+
+[sub_resource type="Resource" id="Resource_u30a7"]
+script = ExtResource("6_au6bx")
+active_abilities = Array[ExtResource("7_71umx")]([])
+description_datastore = SubResource("Resource_cucju")
+
+[sub_resource type="Resource" id="Resource_ojk2t"]
+script = ExtResource("8_ag0yh")
+description = "RAMPAGE: OVERKILL DMG is gained as DMG for this unit's next attack"
+default_values = []
+
+[sub_resource type="Resource" id="Resource_xsd46"]
+script = ExtResource("6_au6bx")
+active_abilities = Array[ExtResource("7_71umx")]([])
+description_datastore = SubResource("Resource_ojk2t")
+
+[sub_resource type="Resource" id="Resource_uk2eb"]
+script = ExtResource("6_au6bx")
+active_abilities = Array[ExtResource("7_71umx")]([])
+description_datastore = SubResource("Resource_ojk2t")
 
 [resource]
 script = ExtResource("2_pqqpn")
+tiers = Array[ExtResource("6_au6bx")]([SubResource("Resource_u30a7"), SubResource("Resource_xsd46"), SubResource("Resource_uk2eb")])
 icon = ExtResource("3_2rme6")
 description = "RAMPAGE [2]: OVERKILL DMG is gained as DMG for this unit's next attack"
 ascended_description = "RAMPAGE: OVERKILL DMG is gained as DMG for this unit's next attack"

@@ -1,0 +1,123 @@
+[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3 uid="uid://dw5vk1wi4dtqy"]
+
+[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_uh8s6"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_7gsfi"]
+[ext_resource type="Image" uid="uid://1nrwl75020iu" path="res://assets/sprites/game/cards/art_pop/angrus_palmus.png" id="2_mdfjq"]
+[ext_resource type="Resource" uid="uid://r4emkni6o3hx" path="res://resources/fof/archetypes/mercenary.tres" id="2_yxqn6"]
+[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_ugb5c"]
+[ext_resource type="Texture2D" uid="uid://cjghaccl0t01m" path="res://assets/sprites/game/cards/art_mini/angrus_palmus.png" id="3_w0ny1"]
+[ext_resource type="Script" uid="uid://ct8l73xxrmaog" path="res://scripts/fof/cards/angrus_palmus.gd" id="4_2g88y"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_0ag77"]
+[ext_resource type="PackedScene" uid="uid://dtpdq3wb56v1m" path="res://assets/models/fof/cards/angrus_palmus.glb" id="5_wda5s"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_t83bl"]
+[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_mqhm5"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_8e8kn"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2n2ss"]
+size = Vector3(1.06763, 2.23242, 0.351685)
+
+[sub_resource type="PackedScene" id="PackedScene_mcal7"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00109863, 1.12402, -0.00238037), SubResource("BoxShape3D_2n2ss")],
+"version": 3
+}
+
+[sub_resource type="Resource" id="Resource_5gbe1"]
+script = ExtResource("13_8e8kn")
+description = "RAMPAGE [[X]]: Deal ATT DMG to adjacent enemies"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_jbfd0"]
+script = ExtResource("12_mqhm5")
+attack = 3
+health = 5
+speed = 2
+energy = 4
+traits = Array[ExtResource("2_7gsfi")]([])
+active_abilities = Array[ExtResource("11_t83bl")]([])
+description_datastore = SubResource("Resource_5gbe1")
+
+[sub_resource type="Resource" id="Resource_53o7q"]
+script = ExtResource("13_8e8kn")
+description = "RAMPAGE: Deal ATT DMG to adjacent enemies"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_nfmee"]
+script = ExtResource("12_mqhm5")
+attack = 4
+health = 5
+speed = 2
+energy = 4
+traits = Array[ExtResource("2_7gsfi")]([])
+active_abilities = Array[ExtResource("11_t83bl")]([])
+description_datastore = SubResource("Resource_53o7q")
+
+[sub_resource type="Resource" id="Resource_cfj85"]
+script = ExtResource("13_8e8kn")
+description = ""
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_oogcd"]
+script = ExtResource("12_mqhm5")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+traits = Array[ExtResource("2_7gsfi")]([])
+active_abilities = Array[ExtResource("11_t83bl")]([])
+description_datastore = SubResource("Resource_cfj85")
+
+[sub_resource type="Resource" id="Resource_qlfj0"]
+script = ExtResource("13_8e8kn")
+description = ""
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_mo4ab"]
+script = ExtResource("12_mqhm5")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+traits = Array[ExtResource("2_7gsfi")]([])
+active_abilities = Array[ExtResource("11_t83bl")]([])
+description_datastore = SubResource("Resource_qlfj0")
+
+[resource]
+script = ExtResource("3_ugb5c")
+tiers = Array[ExtResource("12_mqhm5")]([SubResource("Resource_jbfd0"), SubResource("Resource_nfmee"), SubResource("Resource_oogcd"), SubResource("Resource_mo4ab")])
+archetype = ExtResource("2_yxqn6")
+rarity = 5
+flavor_text = ""
+art_mini_coordinate = Vector2i(90, 15)
+art_mini = ExtResource("3_w0ny1")
+art_pop = ExtResource("2_mdfjq")
+model = ExtResource("5_wda5s")
+points = [Vector3(-0.253017, 2.06548, 0.173462), Vector3(0.0353455, 2.08317, 0.173462), Vector3(0.285392, 2.08325, 0.173462), Vector3(-0.295146, 1.73241, 0.173462), Vector3(0.0635584, 1.74152, 0.173462), Vector3(0.335426, 1.73913, 0.173462), Vector3(0.058408, 1.44178, 0.173462), Vector3(0.430522, 1.45825, 0.173462), Vector3(-0.362956, 1.41697, 0.173462), Vector3(-0.332722, 1.11632, 0.173462), Vector3(0.0913046, 1.14232, 0.173462), Vector3(0.400934, 1.11774, 0.173462), Vector3(-0.320754, 0.786312, 0.173462), Vector3(0.0441715, 0.82259, 0.173462), Vector3(0.303261, 0.792869, 0.173462), Vector3(-0.322248, 0.475316, 0.173462), Vector3(0.329858, 0.454822, 0.173462), Vector3(-0.31403, 0.148566, 0.173462), Vector3(0.348717, 0.150687, 0.173462), Vector3(0.296668, 0.150566, -0.178223), Vector3(-0.378329, 0.163389, -0.178223), Vector3(0.309345, 0.582175, -0.178223), Vector3(-0.327192, 0.548836, -0.178223), Vector3(0.299331, 1.01842, -0.178223), Vector3(-0.0250817, 1.00341, -0.178223), Vector3(-0.32805, 1.02145, -0.178223), Vector3(0.335829, 1.42805, -0.178223), Vector3(-0.00589144, 1.42663, -0.178223), Vector3(-0.342935, 1.46471, -0.178223), Vector3(0.264237, 1.72902, -0.178223), Vector3(0.00967011, 1.74967, -0.178223), Vector3(-0.316968, 1.7673, -0.178223), Vector3(0.22263, 2.03879, -0.178223), Vector3(0.00361109, 2.04907, -0.178223), Vector3(-0.285708, 2.06745, -0.178223), Vector3(0.23687, 2.24023, -0.017419), Vector3(-0.0191873, 2.24023, 0.000921996), Vector3(-0.241058, 2.24023, 0.00648314), Vector3(0.532717, 0.179539, 0.0416993), Vector3(0.532717, 0.631099, 0.0123351), Vector3(0.532717, 0.951348, 0.00296316), Vector3(0.532717, 1.35399, 0.00268558), Vector3(0.532716, 1.7597, 0.0344077), Vector3(0.532716, 2.0478, 0.0289979), Vector3(-0.534914, 2.08052, -0.000332831), Vector3(-0.534914, 1.6401, 0.0342187), Vector3(-0.534914, 1.29904, 0.0209748), Vector3(-0.534914, 0.963082, 0.00340808), Vector3(-0.534914, 0.567019, 0.0047887), Vector3(-0.534914, 0.174744, 0.0200229), Vector3(-0.31322, 0.00781, -0.0161463), Vector3(0.302574, 0.00781, 0.00976145)]
+collision_shape = SubResource("PackedScene_mcal7")
+stat = 2.67426
+top = 2.24036
+eye = 2.03669
+plus_attack = 1
+plus_health = 0
+plus_speed = 0
+plus_energy = 0
+ascended_traits = Array[ExtResource("2_7gsfi")]([])
+attack = 3
+health = 5
+speed = 2
+energy = 4
+description = "RAMPAGE [3]: Deal ATT DMG to adjacent enemies"
+ascended_description = "RAMPAGE: Deal ATT DMG to adjacent enemies"
+initial_traits = Array[ExtResource("2_7gsfi")]([])
+active_abilities = Array[ExtResource("1_uh8s6")]([])
+id = 17
+name = "Angrus Palmus"
+gdscript = ExtResource("4_2g88y")
+saved_data = ExtResource("5_0ag77")

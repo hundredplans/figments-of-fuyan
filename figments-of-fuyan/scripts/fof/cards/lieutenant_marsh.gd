@@ -41,9 +41,6 @@ func onRemoveFromAura(Card: CardGD) -> void:
 	var LieutenantsFieldEffect: FieldEffectGD = Game.onFindPublicIDObject(lieutenants_aura_public_id)
 	if LieutenantsFieldEffect == null: assert(false); return
 	LieutenantsFieldEffect.setCharges(affected_cards.size())
-	
-func getDescription() -> String:
-	return super()
 
 func onHit(damage_action: DamageAction, _attack_action: AttackAction) -> void:
 	damage_action.damage += affected_cards.size()

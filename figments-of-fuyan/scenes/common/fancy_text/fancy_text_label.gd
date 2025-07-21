@@ -6,7 +6,7 @@ const ROBOTO_FONT_PATH: String = "res://assets/fonts/roboto.ttf"
 @export var center: bool = true
 @export var right: bool = false
 @export var hover: bool = false
-var infos: Array[InfoWithExtra]
+var infos: Array[InfoWithTier]
 
 signal mouse_in_ui
 
@@ -43,20 +43,13 @@ func onColoredTextReplace(regex: RegEx) -> void:
 			var _result: RegExMatch = regex.search(text, offset)
 			if _result == null: break
 			var result: String = _result.get_string()
-			var new_result: String = onReplaceToolBoonName(colored_text, result[0] == "a", rarity)
+			var new_result: String = onReplaceCBTName(colored_text, rarity)
 			var replace_index: int = _result.get_start()
 				
 			offset = _result.get_end() + (new_result.length() - result.length())
 			text = text.left(replace_index) + new_result + text.right(-(replace_index + result.length()))
-
-func onReplaceToolBoonName(colored_text: String, ascended: bool, rarity: Game.Rarities) -> String:
-	var new_result: String = "[color=" + Game.getRarityColor(rarity).to_html() + "]" + colored_text + "[/color]"
-	if ascended:
-		new_result = new_result.insert(0, "[outline_color=" + Game.ASCENDED_OUTLINE_COLOR.to_html() + "]")
-		new_result += "[/outline_color]"
-	return new_result
 	
-func onReplaceCardName(colored_text: String, _tier: int, rarity: Game.Rarities) -> String:
+func onReplaceCBTName(colored_text: String, rarity: Game.Rarities) -> String:
 	var new_result: String = "[color=" + Game.getRarityColor(rarity).to_html() + "]" + colored_text + "[/color]"
 	return new_result
 
@@ -82,14 +75,10 @@ func onFofIconsReplace(regex: RegEx, fancy_text: FancyText) -> void:
 			
 			var new_result: String = "[img=" + icon_size + "x" + icon_size + ",center]" + icon_path + "[/img]"
 			
-			if fof_icon_fancy_text.name != "card":
-				var ascended: bool = result[1] == "a"
-				new_result = new_result.insert(0, onReplaceToolBoonName(info.name, ascended, info.rarity) + " ")
-				infos.append(InfoAscended.new(info, ascended))
-			else:
-				var tier: int = int(result[1])
-				new_result = new_result.insert(0, onReplaceCardName(info.name, tier, info.rarity) + " ")
-				infos.append(InfoWithTier.new(info, tier))
+			var tier: int = int(result[1])
+			new_result = new_result.insert(0, onReplaceCBTName(info.name, info.rarity) + " ")
+			infos.append(InfoWithTier.new(info, tier))
+			
 			var replace_index: int = _result.get_start()
 			offset = _result.get_end() + (new_result.length() - result.length())
 			text = text.left(replace_index) + new_result + text.right(-(replace_index + result.length()))
@@ -132,6 +121,6 @@ func onMouseInUI(state: bool) -> void:
 #endregion
 
 #region Tooltip Infos
-func getInfos() -> Array[InfoWithExtra]:
+func getInfos() -> Array[InfoWithTier]:
 	return infos
 #endregion

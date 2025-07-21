@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=18 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_qt1qu"]
 [ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/coconut_crab.png" id="2_876bb"]
@@ -9,8 +9,9 @@
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="4_ktkxl"]
 [ext_resource type="Script" path="res://scripts/fof/cards/coconut_crab.gd" id="4_svemn"]
 [ext_resource type="PackedScene" path="res://assets/models/fof/cards/coconut_crab.glb" id="5_qe7ba"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_fgrow"]
 [ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_qx852"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_1tovy"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_53b7p"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_37af5"]
 size = Vector3(0.645752, 0.64212, 0.468506)
@@ -28,59 +29,72 @@ _bundled = {
 "version": 3
 }
 
-[sub_resource type="Resource" id="Resource_qx852"]
-script = ExtResource("10_fgrow")
+[sub_resource type="Resource" id="Resource_pl46p"]
+script = ExtResource("13_53b7p")
+description = "ERRATIC; LAST WILL: Drop a Coconut"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_1tovy"]
+script = ExtResource("12_1tovy")
 attack = 1
 health = 3
 speed = 2
 energy = 2
-description = "ERRATIC; LAST WILL: Drop a Coconut"
-active_abilities = Array[ExtResource("11_qx852")]([])
 traits = Array[ExtResource("2_ytoss")]([])
+active_abilities = Array[ExtResource("11_qx852")]([])
+description_datastore = SubResource("Resource_pl46p")
 
 [sub_resource type="Resource" id="Resource_53b7p"]
-script = ExtResource("10_fgrow")
-attack = 2
-health = 4
-speed = 2
-energy = 2
-description = ""
-active_abilities = Array[ExtResource("11_qx852")]([])
-traits = Array[ExtResource("2_ytoss")]([])
-
-[sub_resource type="Resource" id="Resource_pl46p"]
-script = ExtResource("10_fgrow")
-attack = 2
-health = 4
-speed = 2
-energy = 2
+script = ExtResource("13_53b7p")
 description = "ERRATIC; LAST WILL: Drop a Coconut"
-active_abilities = Array[ExtResource("11_qx852")]([])
-traits = Array[ExtResource("2_ytoss")]([])
+default_values = Array[int]([])
 
-[sub_resource type="Resource" id="Resource_1tovy"]
-script = ExtResource("10_fgrow")
+[sub_resource type="Resource" id="Resource_dwb0j"]
+script = ExtResource("12_1tovy")
 attack = 2
 health = 4
 speed = 2
 energy = 2
-description = "ERRATIC; LAST WILL: Drop a Coconut"
-active_abilities = Array[ExtResource("11_qx852")]([])
 traits = Array[ExtResource("2_ytoss")]([])
+active_abilities = Array[ExtResource("11_qx852")]([])
+description_datastore = SubResource("Resource_53b7p")
+
+[sub_resource type="Resource" id="Resource_1wk70"]
+script = ExtResource("13_53b7p")
+description = "ERRATIC; LAST WILL: Drop a Coconut"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_wig7k"]
+script = ExtResource("12_1tovy")
+attack = 2
+health = 4
+speed = 2
+energy = 2
+traits = Array[ExtResource("2_ytoss")]([])
+active_abilities = Array[ExtResource("11_qx852")]([])
+description_datastore = SubResource("Resource_1wk70")
+
+[sub_resource type="Resource" id="Resource_do48y"]
+script = ExtResource("13_53b7p")
+description = "ERRATIC; LAST WILL: Drop a Coconut"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_84eln"]
+script = ExtResource("12_1tovy")
+attack = 2
+health = 4
+speed = 2
+energy = 2
+traits = Array[ExtResource("2_ytoss")]([])
+active_abilities = Array[ExtResource("11_qx852")]([])
+description_datastore = SubResource("Resource_do48y")
 
 [resource]
 script = ExtResource("3_m42yu")
-tiers = Array[ExtResource("10_fgrow")]([SubResource("Resource_qx852"), SubResource("Resource_53b7p"), SubResource("Resource_pl46p"), SubResource("Resource_1tovy")])
-attack = 1
-health = 3
-speed = 2
-energy = 2
+tiers = Array[ExtResource("12_1tovy")]([SubResource("Resource_1tovy"), SubResource("Resource_dwb0j"), SubResource("Resource_wig7k"), SubResource("Resource_84eln")])
+archetype = ExtResource("2_rpyhs")
 rarity = 1
-initial_traits = Array[ExtResource("2_ytoss")]([])
-active_abilities = Array[ExtResource("1_qt1qu")]([])
 flavor_text = ""
-description = "ERRATIC; LAST WILL: Drop a Coconut"
-ascended_description = ""
 art_mini_coordinate = Vector2i(95, 111)
 art_mini = ExtResource("2_876bb")
 art_pop = ExtResource("2_lc7ul")
@@ -95,7 +109,14 @@ plus_health = 1
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("2_ytoss")]([])
-archetype = ExtResource("2_rpyhs")
+attack = 1
+health = 3
+speed = 2
+energy = 2
+description = "ERRATIC; LAST WILL: Drop a Coconut"
+ascended_description = ""
+initial_traits = Array[ExtResource("2_ytoss")]([])
+active_abilities = Array[ExtResource("1_qt1qu")]([])
 id = 27
 name = "Coconut Crab"
 gdscript = ExtResource("4_svemn")

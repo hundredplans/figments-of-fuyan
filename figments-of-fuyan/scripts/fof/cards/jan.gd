@@ -28,8 +28,10 @@ func onRegularReset() -> void:
 	super()
 	rampage_charges = getDefaultCharges()
 	
-func getDescription() -> String:
-	return Helper.getDescriptionNumeric(super(), [rampage_charges], [["RAMPAGE ", "[1]"]])
+func getDescription(use_default_values: bool = false) -> String:
+	if use_default_values:
+		return super(use_default_values)
+	return Helper.getDescription(super(), [rampage_charges])
 	
 func getDefaultCharges() -> int:
 	return 1

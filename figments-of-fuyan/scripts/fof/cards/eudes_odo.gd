@@ -3,8 +3,10 @@ extends CardGD
 var rampage_charges: int = 1
 const RAMPAGE_DELAY: float = 2.0
 
-func getDescription() -> String:
-	return Helper.getDescriptionNumeric(super(), [rampage_charges], [["RAMPAGE ", "[1]"]])
+func getDescription(use_default_values: bool = false) -> String:
+	if use_default_values:
+		return super(use_default_values)
+	return Helper.getDescription(super(), [rampage_charges])
 
 func onProcessAction(action: Action) -> void:
 	super(action)

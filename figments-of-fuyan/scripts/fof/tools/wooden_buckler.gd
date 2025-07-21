@@ -30,8 +30,10 @@ func onToolAscended(state: bool) -> void:
 	super(state)
 	onResetCharges()
 	
-func getDescription() -> String:
-	return Helper.getDescriptionNumeric(super(), [charges], [["REVENGE ", "[" + str(getDefaultCharges()) + "]"]])
+func getDescription(use_default_values: bool = false) -> String:
+	if use_default_values:
+		return super(use_default_values)
+	return Helper.getDescription(super(), [charges])
 	
 func getDefaultCharges() -> int:
 	return 1 if !ascended else 2

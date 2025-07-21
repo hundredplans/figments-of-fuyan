@@ -27,8 +27,8 @@ func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_til
 		return enemies.pick_random().getTile()
 	return null
 
-func getDescription() -> String:
+func getDescription(use_default_values: bool = false) -> String:
 	var active_effect: ActiveEffectDatastore = getActiveEffectByName("Divine Light")
-	if active_effect != null:
+	if !use_default_values and active_effect != null:
 		return Helper.getDescriptionNumeric(super(), [active_effect.charges], [["ABILITY ", "[2]"]])
-	return super()
+	return super(true)
