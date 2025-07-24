@@ -1,16 +1,17 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=18 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3 uid="uid://cjx2wy7j0pkve"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_s8aeo"]
-[ext_resource type="Resource" path="res://resources/fof/archetypes/warden.tres" id="2_5mj67"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/crumsy_palmsy.png" id="2_5x7tp"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/crumsy_palmsy.png" id="2_7nmyg"]
-[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_36a3e"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_ojak4"]
-[ext_resource type="Script" path="res://scripts/fof/cards/crumsy_palmsy.gd" id="4_4bwob"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="4_pxnpv"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/crumsy_palmsy.glb" id="5_5x846"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_bbtx3"]
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_tjqpf"]
+[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_s8aeo"]
+[ext_resource type="Resource" uid="uid://dk14kkjps176t" path="res://resources/fof/archetypes/warden.tres" id="2_5mj67"]
+[ext_resource type="Texture2D" uid="uid://l4icfnbmuyhr" path="res://assets/sprites/game/cards/art_mini/crumsy_palmsy.png" id="2_5x7tp"]
+[ext_resource type="Image" uid="uid://bn224n4krctqt" path="res://assets/sprites/game/cards/art_pop/crumsy_palmsy.png" id="2_7nmyg"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_36a3e"]
+[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_ojak4"]
+[ext_resource type="Script" uid="uid://dblva1t0edbtf" path="res://scripts/fof/cards/crumsy_palmsy.gd" id="4_4bwob"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="4_pxnpv"]
+[ext_resource type="PackedScene" uid="uid://b3qabjeuvy710" path="res://assets/models/fof/cards/crumsy_palmsy.glb" id="5_5x846"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_tjqpf"]
+[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_givbp"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_rd7w5"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_qs6hw"]
 size = Vector3(0.692139, 1.60736, 0.340332)
@@ -28,77 +29,84 @@ _bundled = {
 "version": 3
 }
 
-[sub_resource type="Resource" id="Resource_tjqpf"]
-script = ExtResource("10_bbtx3")
-attack = 3
-health = 2
-speed = 2
-energy = 3
-description = "RAMPAGE [1]
-TRAUMA [1]
-BLOODTHIRST [1]:
+[sub_resource type="Resource" id="Resource_lx20r"]
+script = ExtResource("13_rd7w5")
+description = "RAMPAGE [[X]]
+TRAUMA [[Y]]
+BLOODTHIRST [[Z]]:
 Gain [1] HP"
-active_abilities = Array[ExtResource("11_tjqpf")]([])
-traits = Array[ExtResource("2_36a3e")]([])
+default_values = Array[int]([1, 1, 1])
 
-[sub_resource type="Resource" id="Resource_rd7w5"]
-script = ExtResource("10_bbtx3")
+[sub_resource type="Resource" id="Resource_lqc8d"]
+script = ExtResource("12_givbp")
 attack = 3
 health = 2
 speed = 2
 energy = 3
-description = "RAMPAGE [2]
-TRAUMA [2]
-BLOODTHIRST [2]:
-Gain [1] HP"
-active_abilities = Array[ExtResource("11_tjqpf")]([])
 traits = Array[ExtResource("2_36a3e")]([])
+active_abilities = Array[ExtResource("11_tjqpf")]([])
+description_datastore = SubResource("Resource_lx20r")
 
-[sub_resource type="Resource" id="Resource_8ivrq"]
-script = ExtResource("10_bbtx3")
-attack = 3
-health = 2
-speed = 2
-energy = 3
-description = "RAMPAGE [2]
-TRAUMA [2]
-BLOODTHIRST [2]:
+[sub_resource type="Resource" id="Resource_54js0"]
+script = ExtResource("13_rd7w5")
+description = "RAMPAGE [[X]]
+TRAUMA [[Y]]
+BLOODTHIRST [[Z]]:
 Gain [1] HP"
-active_abilities = Array[ExtResource("11_tjqpf")]([])
-traits = Array[ExtResource("2_36a3e")]([])
+default_values = Array[int]([2, 2, 2])
 
-[sub_resource type="Resource" id="Resource_givbp"]
-script = ExtResource("10_bbtx3")
+[sub_resource type="Resource" id="Resource_ojv4b"]
+script = ExtResource("12_givbp")
 attack = 3
 health = 2
 speed = 2
 energy = 3
-description = "RAMPAGE [2]
-TRAUMA [2]
-BLOODTHIRST [2]:
-Gain [1] HP"
-active_abilities = Array[ExtResource("11_tjqpf")]([])
 traits = Array[ExtResource("2_36a3e")]([])
+active_abilities = Array[ExtResource("11_tjqpf")]([])
+description_datastore = SubResource("Resource_54js0")
+
+[sub_resource type="Resource" id="Resource_5v62l"]
+script = ExtResource("13_rd7w5")
+description = "RAMPAGE [[X]]
+TRAUMA [[Y]]
+BLOODTHIRST [[Z]]:
+Gain [1] HP"
+default_values = Array[int]([2, 2, 2])
+
+[sub_resource type="Resource" id="Resource_j0dr6"]
+script = ExtResource("12_givbp")
+attack = 3
+health = 2
+speed = 2
+energy = 3
+traits = Array[ExtResource("2_36a3e")]([])
+active_abilities = Array[ExtResource("11_tjqpf")]([])
+description_datastore = SubResource("Resource_5v62l")
+
+[sub_resource type="Resource" id="Resource_jm15g"]
+script = ExtResource("13_rd7w5")
+description = "RAMPAGE [[X]]
+TRAUMA [[Y]]
+BLOODTHIRST [[Z]]:
+Gain [1] HP"
+default_values = Array[int]([2, 2, 2])
+
+[sub_resource type="Resource" id="Resource_aufid"]
+script = ExtResource("12_givbp")
+attack = 3
+health = 2
+speed = 2
+energy = 3
+traits = Array[ExtResource("2_36a3e")]([])
+active_abilities = Array[ExtResource("11_tjqpf")]([])
+description_datastore = SubResource("Resource_jm15g")
 
 [resource]
 script = ExtResource("3_ojak4")
-tiers = Array[ExtResource("10_bbtx3")]([SubResource("Resource_tjqpf"), SubResource("Resource_rd7w5"), SubResource("Resource_8ivrq"), SubResource("Resource_givbp")])
-attack = 3
-health = 2
-speed = 2
-energy = 3
+tiers = Array[ExtResource("12_givbp")]([SubResource("Resource_lqc8d"), SubResource("Resource_ojv4b"), SubResource("Resource_j0dr6"), SubResource("Resource_aufid")])
+archetype = ExtResource("2_5mj67")
 rarity = 4
-initial_traits = Array[ExtResource("2_36a3e")]([])
-active_abilities = Array[ExtResource("1_s8aeo")]([])
 flavor_text = ""
-description = "RAMPAGE [1]
-TRAUMA [1]
-BLOODTHIRST [1]:
-Gain [1] HP"
-ascended_description = "RAMPAGE [2]
-TRAUMA [2]
-BLOODTHIRST [2]:
-Gain [1] HP"
 art_mini_coordinate = Vector2i(93, 83)
 art_mini = ExtResource("2_5x7tp")
 art_pop = ExtResource("2_7nmyg")
@@ -113,7 +121,20 @@ plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("2_36a3e")]([])
-archetype = ExtResource("2_5mj67")
+attack = 3
+health = 2
+speed = 2
+energy = 3
+description = "RAMPAGE [1]
+TRAUMA [1]
+BLOODTHIRST [1]:
+Gain [1] HP"
+ascended_description = "RAMPAGE [2]
+TRAUMA [2]
+BLOODTHIRST [2]:
+Gain [1] HP"
+initial_traits = Array[ExtResource("2_36a3e")]([])
+active_abilities = Array[ExtResource("1_s8aeo")]([])
 id = 21
 name = "Crumsy Palmsy"
 gdscript = ExtResource("4_4bwob")

@@ -22,8 +22,6 @@ func onProcessAction(action: Action) -> void:
 			onPushAction(ChangeBossPhaseAction.new())
 		elif action is HurtAction and getPhase() == 3 and action.Defender.isEnemy(team) and action.Damager is CardGD and (action.Damager == self or action.Damager.info.id == CLONE_ID):
 			onPushAction(HealAction.new(HealDatastore.new(self, 1)))
-func getDescription() -> String:
-	return super()
 #endregion
 
 #region Boss Intent

@@ -6,7 +6,9 @@ func onProcessAction(action: Action) -> void:
 	if isValidRevenge(action) and revenge_charges > 0:
 		onPushAction(RevengeAction.new(self, action.owner, true))
 	
-func getDescription() -> String:
+func getDescription(use_default_values: bool = false) -> String:
+	if use_default_values:
+		return super(use_default_values)
 	return Helper.getDescription(super(), [revenge_charges])
 	
 func onRevenge(action: DamageAction) -> void:

@@ -21,7 +21,9 @@ func onArrivePre(_action: AwakenAction) -> void:
 func onArrive(_action: AwakenAction) -> void:
 	lil_betty_turns_public_id =  onCreateBaseFieldEffect(LIL_BETTY_TURNS_ID).public_id
 	
-func getDescription() -> String:
+func getDescription(use_default_values: bool = false) -> String:
+	if use_default_values:
+		return super(use_default_values)
 	return Helper.getDescription(super(), [turns_remaining])
 
 func onSave() -> SavedDataCard:

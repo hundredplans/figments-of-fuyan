@@ -65,8 +65,8 @@ func getRandomSpawnTile() -> TileGD:
 		.map(func(x: SpawnGD): return x.getTile())\
 		.pick_random()
 	
-func getDescription() -> String:
+func getDescription(use_default_values: bool = false) -> String:
 	var active_effect: ActiveEffectDatastore = getActiveEffectByName("Cocus Pocus")
-	if active_effect != null:
+	if !use_default_values and active_effect != null:
 		return Helper.getDescription(super(), [active_effect.charges])
-	return super()
+	return super(true)

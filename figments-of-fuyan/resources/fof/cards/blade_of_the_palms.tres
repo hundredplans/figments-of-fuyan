@@ -1,32 +1,18 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=18 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=28 format=3]
 
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_jytd8"]
-[ext_resource type="Resource" path="res://resources/fof/archetypes/tactician.tres" id="2_7o1xd"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/blade_of_the_palms.png" id="2_67b8k"]
-[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_xobv8"]
-[ext_resource type="Script" path="res://scripts/fof/cards/blade_of_the_palms.gd" id="3_031b3"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_asufp"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/blade_of_the_palms.png" id="3_w677l"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="4_6gq71"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/blade_of_the_palms.glb" id="7_lok3x"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_b6ly5"]
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_kih3h"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_x8gyx"]
-size = Vector3(0.633057, 2.42429, 0.301514)
-
-[sub_resource type="PackedScene" id="PackedScene_lok3x"]
-_bundled = {
-"conn_count": 0,
-"conns": PackedInt32Array(),
-"editable_instances": [],
-"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
-"node_count": 1,
-"node_paths": [],
-"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
-"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00524902, 1.20674, -0.0177002), SubResource("BoxShape3D_x8gyx")],
-"version": 3
-}
+[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_jytd8"]
+[ext_resource type="Resource" uid="uid://31nmui4k0kfh" path="res://resources/fof/archetypes/tactician.tres" id="2_7o1xd"]
+[ext_resource type="Image" uid="uid://du02yxtlqrpgq" path="res://assets/sprites/game/cards/art_pop/blade_of_the_palms.png" id="2_67b8k"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_xobv8"]
+[ext_resource type="Script" uid="uid://bxpoan1cqgo0v" path="res://scripts/fof/cards/blade_of_the_palms.gd" id="3_031b3"]
+[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_asufp"]
+[ext_resource type="Texture2D" uid="uid://c4qts40qrbkie" path="res://assets/sprites/game/cards/art_mini/blade_of_the_palms.png" id="3_w677l"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="4_6gq71"]
+[ext_resource type="PackedScene" uid="uid://bb5vdrqxqa0wb" path="res://assets/models/fof/cards/blade_of_the_palms.glb" id="7_lok3x"]
+[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="10_b6ly5"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_kih3h"]
+[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_p6nf4"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_n7tox"]
 
 [sub_resource type="Resource" id="Resource_kih3h"]
 script = ExtResource("10_b6ly5")
@@ -68,9 +54,90 @@ description = ""
 active_abilities = Array[ExtResource("11_kih3h")]([])
 traits = Array[ExtResource("2_xobv8")]([])
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_x8gyx"]
+size = Vector3(0.633057, 2.42429, 0.301514)
+
+[sub_resource type="PackedScene" id="PackedScene_lok3x"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00524902, 1.20674, -0.0177002), SubResource("BoxShape3D_x8gyx")],
+"version": 3
+}
+
+[sub_resource type="Resource" id="Resource_ybgri"]
+script = ExtResource("13_n7tox")
+description = "On Hit: Deal [X] DMG extra for each Palm ally the target has RAMPAGED or BLOODTHIRST"
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_b8qq0"]
+script = ExtResource("12_p6nf4")
+attack = 3
+health = 2
+speed = 3
+energy = 3
+description_datastore = SubResource("Resource_ybgri")
+description = ""
+active_abilities = Array[ExtResource("11_kih3h")]([])
+traits = Array[ExtResource("2_xobv8")]([])
+
+[sub_resource type="Resource" id="Resource_4x8ew"]
+script = ExtResource("13_n7tox")
+description = "On Hit: Deal [2X] DMG extra for each Palm ally the target has RAMPAGED or BLOODTHIRST"
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_d6gf2"]
+script = ExtResource("12_p6nf4")
+attack = 3
+health = 2
+speed = 3
+energy = 3
+description_datastore = SubResource("Resource_4x8ew")
+description = ""
+active_abilities = Array[ExtResource("11_kih3h")]([])
+traits = Array[ExtResource("2_xobv8")]([])
+
+[sub_resource type="Resource" id="Resource_lfvrw"]
+script = ExtResource("13_n7tox")
+description = ""
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_eovuw"]
+script = ExtResource("12_p6nf4")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description_datastore = SubResource("Resource_lfvrw")
+description = ""
+active_abilities = Array[ExtResource("11_kih3h")]([])
+traits = Array[ExtResource("2_xobv8")]([])
+
+[sub_resource type="Resource" id="Resource_3r8qo"]
+script = ExtResource("13_n7tox")
+description = ""
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_8843l"]
+script = ExtResource("12_p6nf4")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description_datastore = SubResource("Resource_3r8qo")
+description = ""
+active_abilities = Array[ExtResource("11_kih3h")]([])
+traits = Array[ExtResource("2_xobv8")]([])
+
 [resource]
 script = ExtResource("3_asufp")
-tiers = Array[ExtResource("10_b6ly5")]([SubResource("Resource_kih3h"), SubResource("Resource_lpc65"), SubResource("Resource_p6nf4"), SubResource("Resource_n7tox")])
+tiers = Array[ExtResource("12_p6nf4")]([SubResource("Resource_b8qq0"), SubResource("Resource_d6gf2"), SubResource("Resource_eovuw"), SubResource("Resource_8843l")])
+_tiers = Array[ExtResource("10_b6ly5")]([SubResource("Resource_kih3h"), SubResource("Resource_lpc65"), SubResource("Resource_p6nf4"), SubResource("Resource_n7tox")])
 attack = 3
 health = 2
 speed = 3

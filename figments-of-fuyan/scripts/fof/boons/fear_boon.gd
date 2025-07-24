@@ -13,9 +13,6 @@ func onBoon(__: Action) -> void:
 	for EnemyCard in Game.getEnemyUnits(0):
 		EnemyCard.onStun(turns)
 
-func getDescription() -> String:
-	return super()
-
 func onBoonAdded() -> void:
 	super()
 	

@@ -10,9 +10,6 @@ func onProcessAction(action: Action):
 	
 func onAscend(state: bool):
 	super(state)
-
-func getDescription():
-	return super()
 	
 func onBoon(_action: DeathAction):
 	var cards: Array = Game.getAllyUnits(1)

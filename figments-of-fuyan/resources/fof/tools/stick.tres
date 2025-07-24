@@ -1,20 +1,50 @@
-[gd_resource type="Resource" script_class="ToolInfo" load_steps=7 format=3 uid="uid://c5lofl73gdggs"]
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=14 format=3 uid="uid://ccgkb3btyxgrf"]
 
 [ext_resource type="Script" uid="uid://dq4qxtx6lyc2u" path="res://scripts/fof_info/tools/tool_info.gd" id="1_8mcqv"]
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_v72sy"]
 [ext_resource type="Texture2D" uid="uid://d0y31rda81ylp" path="res://assets/sprites/game/tools/Stick.png" id="2_aca5q"]
 [ext_resource type="Script" uid="uid://desvex24qpycf" path="res://scripts/fof/tools/stick.gd" id="2_p5yv1"]
 [ext_resource type="Script" uid="uid://ccxaxjnbobkaq" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="3_filla"]
-[ext_resource type="PackedScene" uid="uid://di2kjhgkcys33" path="res://assets/models/fof/tools/stick.glb" id="4_wi2a2"]
+[ext_resource type="Script" uid="uid://bigyry2ykda2l" path="res://scripts/fof_info/tools/tool_tier_datastore.gd" id="7_jhj7t"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="8_vwwur"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="9_gh5mk"]
+
+[sub_resource type="Resource" id="Resource_80mqq"]
+script = ExtResource("9_gh5mk")
+description = "This unit deals [+1] DMG for their next attack"
+default_values = []
+
+[sub_resource type="Resource" id="Resource_csqfj"]
+script = ExtResource("7_jhj7t")
+active_abilities = Array[ExtResource("8_vwwur")]([])
+description_datastore = SubResource("Resource_80mqq")
+
+[sub_resource type="Resource" id="Resource_t4hqn"]
+script = ExtResource("9_gh5mk")
+description = "This unit deals [+1] DMG for their next attack"
+default_values = []
+
+[sub_resource type="Resource" id="Resource_nh8u8"]
+script = ExtResource("7_jhj7t")
+active_abilities = Array[ExtResource("8_vwwur")]([])
+description_datastore = SubResource("Resource_t4hqn")
+
+[sub_resource type="Resource" id="Resource_tokqo"]
+script = ExtResource("7_jhj7t")
+active_abilities = Array[ExtResource("8_vwwur")]([])
+description_datastore = SubResource("Resource_t4hqn")
 
 [resource]
 script = ExtResource("1_8mcqv")
+tiers = Array[ExtResource("7_jhj7t")]([SubResource("Resource_csqfj"), SubResource("Resource_nh8u8"), SubResource("Resource_tokqo")])
 icon = ExtResource("2_aca5q")
 description = "This unit deals [+1] DMG for their next attack"
 ascended_description = ""
 rarity = 2
 active_abilities = Array[ExtResource("1_v72sy")]([])
-model = ExtResource("4_wi2a2")
+use_charges = false
+auto_reset_charges = false
+reset_to_default = false
 id = 8
 name = "Stick"
 gdscript = ExtResource("2_p5yv1")

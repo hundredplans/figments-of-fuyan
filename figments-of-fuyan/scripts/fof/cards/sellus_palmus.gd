@@ -27,11 +27,11 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic) -> TileGD:
 	return active_effect_tiles.pickable_tiles.pick_random() if active_effect_tiles.pickable_tiles.size() >= AMOUNT_TO_USE_HEAL_AI else null
 	
-func getDescription() -> String:
+func getDescription(use_default_values: bool = false) -> String:
 	var active_effect: ActiveEffectDatastore = getActiveEffectByName("Palmsale")
-	if active_effect != null:
+	if !use_default_values and active_effect != null:
 		return Helper.getDescription(super(), [active_effect.charges])
-	return super()
+	return super(true)
 	
 const BONUS_PER_ADJACENT_ALLY_ON_TILE: float = 0.25
 # +0.25 per unit sellus is adjacent to on a tile

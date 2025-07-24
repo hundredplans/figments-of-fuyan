@@ -7,11 +7,11 @@ const ABILITY_DELAY: float = 2.0
 func onProcessAction(action: Action) -> void:
 	super(action)
 	
-func getDescription() -> String:
+func getDescription(use_default_values: bool = false) -> String:
 	var active_effect: ActiveEffectDatastore = getActiveEffectByName("Rousing Hair")
-	if active_effect != null:
+	if !use_default_values and active_effect != null:
 		return Helper.getDescription(super(), [active_effect.charges])
-	return super()
+	return super(true)
 
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	super(active_effect)

@@ -21,9 +21,6 @@ func onProcessAction(action: Action) -> void:
 		#if action is FinishAwakenAction and action.Card == self:
 			#action.setActionDelay(0.0)
 			#action.setLockActionDelay(true)
-	
-func getDescription() -> String:
-	return super()
 
 func onArrivePre(_action: AwakenAction) -> void:
 	onAbility()

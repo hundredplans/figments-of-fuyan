@@ -15,9 +15,6 @@ func onProcessAction(action: Action) -> void:
 func onAscend(state: bool) -> void:
 	super(state)
 
-func getDescription() -> String:
-	return super()
-
 func onBoon(action: Action = null) -> void:
 	if action is AwakenAction: onPushAction(ChangeBoonChargesAction.new(self, 1))
 	elif action is FinishAwakenAction:

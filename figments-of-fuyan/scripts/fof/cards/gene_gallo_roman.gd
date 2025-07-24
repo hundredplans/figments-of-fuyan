@@ -15,7 +15,9 @@ func onProcessAction(action: Action) -> void:
 		if action is GetDamageAction and on_hit_trigger_amount == 1:
 			action.setIgnoreArmorShield(true)
 	
-func getDescription() -> String:
+func getDescription(use_default_values: bool = false) -> String:
+	if use_default_values:
+		return super(use_default_values)
 	return Helper.getDescription(super(), [on_hit_trigger_amount])
 
 func onHit(damage_action: DamageAction, _attack_action: AttackAction) -> void:

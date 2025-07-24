@@ -5,6 +5,7 @@ var charges: int
 var ascended: bool
 var active_effects: Array[ActiveEffectDatastore]
 var ability_save: Dictionary
+var tier: int
 
 @warning_ignore("unused_signal")
 signal update_active_effect_description
@@ -15,6 +16,7 @@ func onFofInit() -> void:
 func onLoadData(data: SavedData) -> void:
 	ascended = data.ascended
 	active_effects = data.active_effects
+	tier = data.tier
 	
 	for active_effect in active_effects:
 		active_effect.owner = self
@@ -23,7 +25,7 @@ func onLoadData(data: SavedData) -> void:
 		set(custom_variable, ability_save[custom_variable])
 	
 func onSave() -> SavedDataTool:
-	return SavedDataTool.new(info.id, false, public_id, ascended, active_effects, charges, ability_save)
+	return SavedDataTool.new(info.id, false, public_id, ascended, active_effects, charges, ability_save, tier)
 	
 func getAscended() -> bool:
 	return ascended
@@ -53,9 +55,12 @@ func getRarity() -> Game.Rarities:
 
 func getIcon() -> Texture2D:
 	return info.icon
+	
+func getTier() -> int:
+	return tier
 
-func getDescription() -> String:
-	return info.description if !ascended else info.ascended_description	
+func getDescription(use_default_values: bool = false) -> String:
+	return info.getDescription(tier, use_default_values)
 
 func onProcessAction(action: Action) -> void:
 	super(action)

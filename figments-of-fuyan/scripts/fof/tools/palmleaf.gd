@@ -35,5 +35,7 @@ func onToolAction(action: StatAction) -> void:
 func onToolUnequipped() -> void:
 	super()
 
-func getDescription() -> String:
-	return Helper.getDescriptionNumeric(super(), [charges], [["Expires in ", "[2]"]])
+func getDescription(use_default_values: bool = false) -> String:
+	if use_default_values:
+		return super(use_default_values)
+	return Helper.getDescription(super(), [charges])

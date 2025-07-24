@@ -30,9 +30,6 @@ func onHit(_damage_action: DamageAction, _attack_action: AttackAction) -> void:
 		
 	swingus_field_effect_public_id = 0
 	onPushAction(actions)
-	
-func getDescription() -> String:
-	return super()
 
 func getAttackDamage() -> int:
 	var default_damage: int = super()

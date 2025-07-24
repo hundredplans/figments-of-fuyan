@@ -1,32 +1,18 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=18 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=28 format=3]
 
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_yjw2c"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/wayne_the_sheriff.png" id="2_7gvun"]
-[ext_resource type="Resource" path="res://resources/fof/archetypes/brute.tres" id="2_m5yqr"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/wayne_the_sheriff.png" id="2_u0ypk"]
-[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_l1vis"]
-[ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_sykk5"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_buxg0"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_cvqgq"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="7_e53du"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_wk264"]
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_5p478"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_ru2ex"]
-size = Vector3(0.611084, 1.88574, 0.241943)
-
-[sub_resource type="PackedScene" id="PackedScene_1xbhj"]
-_bundled = {
-"conn_count": 0,
-"conns": PackedInt32Array(),
-"editable_instances": [],
-"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
-"node_count": 1,
-"node_paths": [],
-"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
-"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00231934, 0.942652, -0.00607296), SubResource("BoxShape3D_ru2ex")],
-"version": 3
-}
+[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_yjw2c"]
+[ext_resource type="Texture2D" uid="uid://cfkbvgqi3j7ol" path="res://assets/sprites/game/cards/art_mini/wayne_the_sheriff.png" id="2_7gvun"]
+[ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_m5yqr"]
+[ext_resource type="Image" uid="uid://dcdbxhldudbmy" path="res://assets/sprites/game/cards/art_pop/wayne_the_sheriff.png" id="2_u0ypk"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_l1vis"]
+[ext_resource type="Script" uid="uid://d3xulw3ft3e0n" path="res://scripts/fof/cards/card.gd" id="4_sykk5"]
+[ext_resource type="PackedScene" uid="uid://bxdixxrf3f7aa" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_buxg0"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_cvqgq"]
+[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="7_e53du"]
+[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="10_wk264"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_5p478"]
+[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_knloa"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_5ffsy"]
 
 [sub_resource type="Resource" id="Resource_5p478"]
 script = ExtResource("10_wk264")
@@ -68,9 +54,90 @@ description = ""
 active_abilities = Array[ExtResource("11_5p478")]([])
 traits = Array[ExtResource("3_l1vis")]([])
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_ru2ex"]
+size = Vector3(0.611084, 1.88574, 0.241943)
+
+[sub_resource type="PackedScene" id="PackedScene_1xbhj"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00231934, 0.942652, -0.00607296), SubResource("BoxShape3D_ru2ex")],
+"version": 3
+}
+
+[sub_resource type="Resource" id="Resource_p7xdn"]
+script = ExtResource("13_5ffsy")
+description = "RANGED [1-3]; ABILITY [1]: Place a clone of this on an adjacent tile; It can't move or attack"
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_31mdt"]
+script = ExtResource("12_knloa")
+attack = 2
+health = 1
+speed = 2
+energy = 2
+description_datastore = SubResource("Resource_p7xdn")
+description = ""
+active_abilities = Array[ExtResource("11_5p478")]([])
+traits = Array[ExtResource("3_l1vis")]([])
+
+[sub_resource type="Resource" id="Resource_mfd78"]
+script = ExtResource("13_5ffsy")
+description = ""
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_s0mmn"]
+script = ExtResource("12_knloa")
+attack = 2
+health = 1
+speed = 2
+energy = 2
+description_datastore = SubResource("Resource_mfd78")
+description = ""
+active_abilities = Array[ExtResource("11_5p478")]([])
+traits = Array[ExtResource("3_l1vis")]([])
+
+[sub_resource type="Resource" id="Resource_15kud"]
+script = ExtResource("13_5ffsy")
+description = ""
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_0v3sp"]
+script = ExtResource("12_knloa")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description_datastore = SubResource("Resource_15kud")
+description = ""
+active_abilities = Array[ExtResource("11_5p478")]([])
+traits = Array[ExtResource("3_l1vis")]([])
+
+[sub_resource type="Resource" id="Resource_0nxp8"]
+script = ExtResource("13_5ffsy")
+description = ""
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_r5c7p"]
+script = ExtResource("12_knloa")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description_datastore = SubResource("Resource_0nxp8")
+description = ""
+active_abilities = Array[ExtResource("11_5p478")]([])
+traits = Array[ExtResource("3_l1vis")]([])
+
 [resource]
 script = ExtResource("7_e53du")
-tiers = Array[ExtResource("10_wk264")]([SubResource("Resource_5p478"), SubResource("Resource_qxbgr"), SubResource("Resource_knloa"), SubResource("Resource_5ffsy")])
+tiers = Array[ExtResource("12_knloa")]([SubResource("Resource_31mdt"), SubResource("Resource_s0mmn"), SubResource("Resource_0v3sp"), SubResource("Resource_r5c7p")])
+_tiers = Array[ExtResource("10_wk264")]([SubResource("Resource_5p478"), SubResource("Resource_qxbgr"), SubResource("Resource_knloa"), SubResource("Resource_5ffsy")])
 attack = 2
 health = 1
 speed = 2

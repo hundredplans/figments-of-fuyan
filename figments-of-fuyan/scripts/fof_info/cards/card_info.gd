@@ -1,4 +1,4 @@
-class_name CardInfo extends GameObjectInfo
+class_name CardInfo extends FofInfo
 
 const FIELD_INFO_SCENE_PATH: String = "res://scenes/game/cards/world/field_info/field_info.tscn"
 const INSPECT_CARD_SCREEN: String = "res://scenes/game/cards/ui/inspect_card_screen.tscn"
@@ -20,19 +20,12 @@ const BASE_MATERIAL_ASCENDED_SPECULAR_PATH: String = "res://resources/shaders/ba
 
 const BASE_MATERIAL_ALPHAGREY_PATH: String = "res://resources/materials/game/base_material_alphagrey_hashing.tres"
 
-@export_group("Card")
-@export var tiers: Array[TierDatastore]
-@export var attack: int
-@export var health: int
-@export var speed: int
-@export var energy: int
-@export var rarity: Game.Rarities
-@export var initial_traits: Array[SavedDataTrait]
-@export var active_abilities: Array[ActiveAbilityDatastore]
-@export_multiline var flavor_text: String
-@export_multiline var description: String
-@export_multiline var ascended_description: String
+@export var tiers: Array[CardTierDatastore]
+@export var archetype: ArchetypeInfo
 
+@export_group("Card")
+@export var rarity: Game.Rarities
+@export_multiline var flavor_text: String
 @export_group("")
 
 @export_group("Art")
@@ -54,14 +47,24 @@ const BASE_MATERIAL_ALPHAGREY_PATH: String = "res://resources/materials/game/bas
 @export_group("")
 
 @export_group("Ascended")
+
+@export_group("")
+
+@export_group("Remove")
 @export var plus_attack: int
 @export var plus_health: int
 @export var plus_speed: int
 @export var plus_energy: int
 @export var ascended_traits: Array[SavedDataTrait]
+@export var attack: int
+@export var health: int
+@export var speed: int
+@export var energy: int
+@export_multiline var description: String
+@export_multiline var ascended_description: String
+@export var initial_traits: Array[SavedDataTrait]
+@export var active_abilities: Array[ActiveAbilityDatastore]
 @export_group("")
-
-@export var archetype: ArchetypeInfo
 
 static func getInfoPath() -> String: return "res://resources/fof/cards"
 
@@ -73,30 +76,26 @@ func getIcon() -> Texture2D: return art_mini
 func getEye() -> float: return eye
 func getTop() -> float: return top
 func getPoints() -> Array: return points
-func getDescription(tier: int = 1) -> String:
-	return getTierDatastore(tier).getDescription()
 
-func getColoredBaseMaterial(team: int, ascended: bool) -> ShaderMaterial:
-	match team:
-		0: return load(BASE_MATERIAL_GREEN_TRANSPARENT_PATH if !ascended else BASE_MATERIAL_GREEN_TRANSPARENT_ASCENDED_PATH)
-		1: return load(BASE_MATERIAL_RED_TRANSPARENT_PATH if !ascended else BASE_MATERIAL_RED_TRANSPARENT_ASCENDED_PATH)
-		2: return load(BASE_MATERIAL_BROWN_TRANSPARENT_PATH if !ascended else BASE_MATERIAL_BROWN_TRANSPARENT_ASCENDED_PATH)
-	return null
-	
-func getTierDatastore(tier: int) -> TierDatastore:
+
+func getDescription(tier: int = 1, use_default_values: bool = false) -> String:
+	return getTierDatastore(tier).getDescription(use_default_values)
+
+func getTierDatastore(tier: int) -> CardTierDatastore:
 	tier -= 1
-	return tiers[tier] if tiers.size() > tier else TierDatastore.new()
+	return tiers[tier] if tiers.size() > tier else CardTierDatastore.new()
 	
-func getUpdatedTierDatastore(tier: int) -> TierDatastore:
-	var tier_datastore := TierDatastore.new()
+func getUpdatedTierDatastore(tier: int) -> CardTierDatastore:
+	var tier_datastore := CardTierDatastore.new()
 	for i: int in range(tier - 1, -1, -1):
-		var _tier_datastore: TierDatastore = tiers[i] if tiers.size() > i else TierDatastore.new()
+		var _tier_datastore: CardTierDatastore = tiers[i] if tiers.size() > i else CardTierDatastore.new()
 		for property: String in ["attack", "health", "speed", "energy"]:
 			if tier_datastore[property] == -1:
 				tier_datastore[property] = _tier_datastore[property]
 		
-		if tier_datastore.description.is_empty():
-			tier_datastore.description = _tier_datastore.description
+		if tier_datastore.description_datastore == null or\
+		tier_datastore.description_datastore.description.is_empty():
+			tier_datastore.description_datastore = _tier_datastore.description_datastore
 			
 		if tier_datastore.active_abilities.is_empty() and !_tier_datastore.active_abilities.is_empty():
 			tier_datastore.active_abilities = _tier_datastore.active_abilities
@@ -107,10 +106,18 @@ func getUpdatedTierDatastore(tier: int) -> TierDatastore:
 	return tier_datastore
 	
 func getStats(tier: int) -> StatsDatastore:
-	var tier_datastore: TierDatastore = getUpdatedTierDatastore(tier)
+	var tier_datastore: CardTierDatastore = getUpdatedTierDatastore(tier)
 	var attack: int = tier_datastore.getAttack()
 	var health: int = tier_datastore.getHealth()
 	var speed: int = tier_datastore.getSpeed()
 	var energy: int = tier_datastore.getEnergy()
 	var stats_datastore := StatsDatastore.new(attack, health, speed, energy)
 	return stats_datastore
+
+func getColoredBaseMaterial(team: int, ascended: bool) -> ShaderMaterial:
+	match team:
+		0: return load(BASE_MATERIAL_GREEN_TRANSPARENT_PATH if !ascended else BASE_MATERIAL_GREEN_TRANSPARENT_ASCENDED_PATH)
+		1: return load(BASE_MATERIAL_RED_TRANSPARENT_PATH if !ascended else BASE_MATERIAL_RED_TRANSPARENT_ASCENDED_PATH)
+		2: return load(BASE_MATERIAL_BROWN_TRANSPARENT_PATH if !ascended else BASE_MATERIAL_BROWN_TRANSPARENT_ASCENDED_PATH)
+	return null
+	

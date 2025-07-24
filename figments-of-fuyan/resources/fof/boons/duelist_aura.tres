@@ -1,16 +1,39 @@
-[gd_resource type="Resource" script_class="ChampionBoonInfo" load_steps=5 format=3 uid="uid://c427cbie2arvi"]
+[gd_resource type="Resource" script_class="ChampionBoonInfo" load_steps=12 format=3]
 
-[ext_resource type="Script" uid="uid://s1yxhx6fo0dy" path="res://scripts/fof_info/boons/champion_boon_info.gd" id="1_twgqe"]
-[ext_resource type="Script" uid="uid://g4gxoiwpxxju" path="res://scripts/fof/boons/duelist_aura.gd" id="1_wmnfk"]
-[ext_resource type="Texture2D" uid="uid://cc6r8nkogr614" path="res://assets/sprites/game/boons/duelist_aura.png" id="2_mgwno"]
-[ext_resource type="Script" uid="uid://dh3x145y3ihra" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_kw7j8"]
+[ext_resource type="Script" path="res://scripts/fof_info/boons/champion_boon_info.gd" id="1_twgqe"]
+[ext_resource type="Script" path="res://scripts/fof/boons/duelist_aura.gd" id="1_wmnfk"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/boons/duelist_aura.png" id="2_mgwno"]
+[ext_resource type="Script" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_kw7j8"]
+[ext_resource type="Script" path="res://scripts/fof_info/boons/boon_tier_datastore.gd" id="5_hwne0"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="6_p3ssn"]
+
+[sub_resource type="Resource" id="Resource_leuj0"]
+script = ExtResource("6_p3ssn")
+description = "When an ally wins a DUEL gain [2] SH"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_asqe3"]
+script = ExtResource("5_hwne0")
+description_datastore = SubResource("Resource_leuj0")
+
+[sub_resource type="Resource" id="Resource_3cps4"]
+script = ExtResource("6_p3ssn")
+description = "When an ally wins a DUEL gain [2] SH"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_fb22v"]
+script = ExtResource("5_hwne0")
+description_datastore = SubResource("Resource_3cps4")
+
+[sub_resource type="Resource" id="Resource_f6i20"]
+script = ExtResource("5_hwne0")
+description_datastore = SubResource("Resource_3cps4")
 
 [resource]
 script = ExtResource("1_twgqe")
 champion_id = 3
+tiers = Array[ExtResource("5_hwne0")]([SubResource("Resource_asqe3"), SubResource("Resource_fb22v"), SubResource("Resource_f6i20")])
 icon = ExtResource("2_mgwno")
-description = "When an ally wins a DUEL gain [2] SH"
-ascended_description = ""
 rarity = 8
 curse = false
 elite_fight_curse = false
@@ -18,6 +41,8 @@ display_trigger = true
 use_charges = false
 auto_reset_charges = false
 reset_to_default = false
+description = "When an ally wins a DUEL gain [2] SH"
+ascended_description = ""
 id = 3
 name = "Duelist Aura"
 gdscript = ExtResource("1_wmnfk")

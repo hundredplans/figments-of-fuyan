@@ -1,22 +1,47 @@
-[gd_resource type="Resource" script_class="BoonInfo" load_steps=5 format=3 uid="uid://c3qjywh5cvsfb"]
+[gd_resource type="Resource" script_class="BoonInfo" load_steps=12 format=3]
 
-[ext_resource type="Script" uid="uid://daag7jki3pmos" path="res://scripts/fof/boons/the_dependant.gd" id="1_j1kst"]
-[ext_resource type="Texture2D" uid="uid://33eqmntuc4ks" path="res://assets/sprites/game/boons/the_dependant.png" id="1_u7nqf"]
-[ext_resource type="Script" uid="uid://cwaxy6m1b8n5m" path="res://scripts/fof_info/boons/boon_info.gd" id="1_yamn7"]
-[ext_resource type="Script" uid="uid://dh3x145y3ihra" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_r8o4k"]
+[ext_resource type="Script" path="res://scripts/fof/boons/the_dependant.gd" id="1_j1kst"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/boons/the_dependant.png" id="1_u7nqf"]
+[ext_resource type="Script" path="res://scripts/fof_info/boons/boon_info.gd" id="1_yamn7"]
+[ext_resource type="Script" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_r8o4k"]
+[ext_resource type="Script" path="res://scripts/fof_info/boons/boon_tier_datastore.gd" id="5_re405"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="6_n2sd8"]
+
+[sub_resource type="Resource" id="Resource_hxn05"]
+script = ExtResource("6_n2sd8")
+description = "Your Tools don't work"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_ndqic"]
+script = ExtResource("5_re405")
+description_datastore = SubResource("Resource_hxn05")
+
+[sub_resource type="Resource" id="Resource_4gw6x"]
+script = ExtResource("6_n2sd8")
+description = "Your Tools don't work"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_swqbf"]
+script = ExtResource("5_re405")
+description_datastore = SubResource("Resource_4gw6x")
+
+[sub_resource type="Resource" id="Resource_cu3b0"]
+script = ExtResource("5_re405")
+description_datastore = SubResource("Resource_4gw6x")
 
 [resource]
 script = ExtResource("1_yamn7")
+tiers = Array[ExtResource("5_re405")]([SubResource("Resource_ndqic"), SubResource("Resource_swqbf"), SubResource("Resource_cu3b0")])
 icon = ExtResource("1_u7nqf")
-description = "Your Tools don't work"
-ascended_description = ""
 rarity = 0
 curse = true
 elite_fight_curse = true
+display_trigger = true
 use_charges = false
-auto_reset_charges_level_start = false
 auto_reset_charges = false
 reset_to_default = false
+description = "Your Tools don't work"
+ascended_description = ""
 id = 12
 name = "The Dependant"
 gdscript = ExtResource("1_j1kst")

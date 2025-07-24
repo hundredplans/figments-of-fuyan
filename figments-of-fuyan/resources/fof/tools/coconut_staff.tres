@@ -1,10 +1,13 @@
-[gd_resource type="Resource" script_class="ToolInfo" load_steps=7 format=3 uid="uid://d0n25jd0p5ixy"]
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=17 format=3 uid="uid://xrvn7f6228bv"]
 
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_kjmam"]
 [ext_resource type="Script" uid="uid://dq4qxtx6lyc2u" path="res://scripts/fof_info/tools/tool_info.gd" id="1_washl"]
 [ext_resource type="Script" uid="uid://ccxaxjnbobkaq" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="2_6i5g3"]
 [ext_resource type="Texture2D" uid="uid://bbj5jlpmn3rjt" path="res://assets/sprites/game/tools/Coconut Staff.png" id="2_w3w6p"]
 [ext_resource type="Script" uid="uid://bq3pcg505djgw" path="res://scripts/fof/tools/coconut_staff.gd" id="2_xagqf"]
+[ext_resource type="Script" uid="uid://bigyry2ykda2l" path="res://scripts/fof_info/tools/tool_tier_datastore.gd" id="6_iil5n"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="7_2esoy"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="8_fus8k"]
 
 [sub_resource type="Resource" id="Resource_lawbp"]
 script = ExtResource("1_kjmam")
@@ -19,8 +22,54 @@ camera_type = 0
 charges = 0
 used = false
 
+[sub_resource type="Resource" id="Resource_ajxn7"]
+script = ExtResource("7_2esoy")
+name = "Coconut Staff"
+description = "Heal adjacent allies [1] HEALTH. Each ally can only be healed once"
+max_charges = -1
+delay = 0.0
+camera_type = 0
+charges = 0
+used = false
+
+[sub_resource type="Resource" id="Resource_tr0e8"]
+script = ExtResource("8_fus8k")
+description = "ABILITY: Heal adjacent allies [1] HP. Each ally can only be healed once"
+default_values = []
+
+[sub_resource type="Resource" id="Resource_sj3uk"]
+script = ExtResource("6_iil5n")
+active_abilities = Array[ExtResource("7_2esoy")]([SubResource("Resource_ajxn7")])
+description_datastore = SubResource("Resource_tr0e8")
+
+[sub_resource type="Resource" id="Resource_2esoy"]
+script = ExtResource("7_2esoy")
+name = "Coconut Staff"
+description = "Heal allies in vision [1] HEALTH. Each ally can only be healed once"
+max_charges = -1
+delay = 0.0
+camera_type = 0
+charges = 0
+used = false
+
+[sub_resource type="Resource" id="Resource_xjk8v"]
+script = ExtResource("8_fus8k")
+description = "ABILITY: Heal allies in vision [1] HP. Each ally can only be healed once"
+default_values = []
+
+[sub_resource type="Resource" id="Resource_odp78"]
+script = ExtResource("6_iil5n")
+active_abilities = Array[ExtResource("7_2esoy")]([SubResource("Resource_2esoy")])
+description_datastore = SubResource("Resource_xjk8v")
+
+[sub_resource type="Resource" id="Resource_sr3gn"]
+script = ExtResource("6_iil5n")
+active_abilities = Array[ExtResource("7_2esoy")]([SubResource("Resource_ajxn7")])
+description_datastore = SubResource("Resource_xjk8v")
+
 [resource]
 script = ExtResource("1_washl")
+tiers = Array[ExtResource("6_iil5n")]([SubResource("Resource_sj3uk"), SubResource("Resource_odp78"), SubResource("Resource_sr3gn")])
 icon = ExtResource("2_w3w6p")
 description = "ABILITY: Heal adjacent allies [1] HP. Each ally can only be healed once"
 ascended_description = "ABILITY: Heal allies in vision [1] HP. Each ally can only be healed once"

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=18 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_76r06"]
 [ext_resource type="Resource" path="res://resources/fof/archetypes/reinforcer.tres" id="2_5ewew"]
@@ -9,8 +9,9 @@
 [ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_gw8u1"]
 [ext_resource type="PackedScene" path="res://assets/models/fof/cards/opalma.glb" id="4_8gm72"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_upg4l"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_xlswa"]
 [ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_cgnxy"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_j5xps"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_2db3l"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_vb8c6"]
 size = Vector3(0.830505, 1.57715, 0.225403)
@@ -28,59 +29,72 @@ _bundled = {
 "version": 3
 }
 
-[sub_resource type="Resource" id="Resource_cgnxy"]
-script = ExtResource("10_xlswa")
-attack = 1
-health = 2
-speed = 2
-energy = 1
-description = "On Hit: Heal a random injured ally in vision equal to your DMG dealt"
-active_abilities = Array[ExtResource("11_cgnxy")]([])
-traits = Array[ExtResource("3_gw8u1")]([])
-
-[sub_resource type="Resource" id="Resource_2db3l"]
-script = ExtResource("10_xlswa")
-attack = 1
-health = 2
-speed = 2
-energy = 1
-description = "On Hit: Heal allies in vision equal to your DMG dealt"
-active_abilities = Array[ExtResource("11_cgnxy")]([])
-traits = Array[ExtResource("3_gw8u1")]([])
-
 [sub_resource type="Resource" id="Resource_3tkyn"]
-script = ExtResource("10_xlswa")
-attack = 1
-health = 2
-speed = 2
-energy = 1
-description = "On Hit: Heal allies in vision equal to your DMG dealt"
-active_abilities = Array[ExtResource("11_cgnxy")]([])
-traits = Array[ExtResource("3_gw8u1")]([])
+script = ExtResource("13_2db3l")
+description = "On Hit: Heal a random injured ally in vision equal to your DMG dealt"
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_j5xps"]
-script = ExtResource("10_xlswa")
+script = ExtResource("12_j5xps")
 attack = 1
 health = 2
 speed = 2
 energy = 1
-description = "On Hit: Heal allies in vision equal to your DMG dealt"
-active_abilities = Array[ExtResource("11_cgnxy")]([])
 traits = Array[ExtResource("3_gw8u1")]([])
+active_abilities = Array[ExtResource("11_cgnxy")]([])
+description_datastore = SubResource("Resource_3tkyn")
+
+[sub_resource type="Resource" id="Resource_2db3l"]
+script = ExtResource("13_2db3l")
+description = "On Hit: Heal allies in vision equal to your DMG dealt"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_wn4i3"]
+script = ExtResource("12_j5xps")
+attack = 1
+health = 2
+speed = 2
+energy = 1
+traits = Array[ExtResource("3_gw8u1")]([])
+active_abilities = Array[ExtResource("11_cgnxy")]([])
+description_datastore = SubResource("Resource_2db3l")
+
+[sub_resource type="Resource" id="Resource_w1po8"]
+script = ExtResource("13_2db3l")
+description = "On Hit: Heal allies in vision equal to your DMG dealt"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_dbfyi"]
+script = ExtResource("12_j5xps")
+attack = 1
+health = 2
+speed = 2
+energy = 1
+traits = Array[ExtResource("3_gw8u1")]([])
+active_abilities = Array[ExtResource("11_cgnxy")]([])
+description_datastore = SubResource("Resource_w1po8")
+
+[sub_resource type="Resource" id="Resource_cm5l6"]
+script = ExtResource("13_2db3l")
+description = "On Hit: Heal allies in vision equal to your DMG dealt"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_dvamx"]
+script = ExtResource("12_j5xps")
+attack = 1
+health = 2
+speed = 2
+energy = 1
+traits = Array[ExtResource("3_gw8u1")]([])
+active_abilities = Array[ExtResource("11_cgnxy")]([])
+description_datastore = SubResource("Resource_cm5l6")
 
 [resource]
 script = ExtResource("2_6qwcd")
-tiers = Array[ExtResource("10_xlswa")]([SubResource("Resource_cgnxy"), SubResource("Resource_2db3l"), SubResource("Resource_3tkyn"), SubResource("Resource_j5xps")])
-attack = 1
-health = 2
-speed = 2
-energy = 1
+tiers = Array[ExtResource("12_j5xps")]([SubResource("Resource_j5xps"), SubResource("Resource_wn4i3"), SubResource("Resource_dbfyi"), SubResource("Resource_dvamx")])
+archetype = ExtResource("2_5ewew")
 rarity = 3
-initial_traits = Array[ExtResource("3_gw8u1")]([])
-active_abilities = Array[ExtResource("1_76r06")]([])
 flavor_text = ""
-description = "On Hit: Heal a random injured ally in vision equal to your DMG dealt"
-ascended_description = "On Hit: Heal allies in vision equal to your DMG dealt"
 art_mini_coordinate = Vector2i(98, 69)
 art_mini = ExtResource("2_aepkj")
 art_pop = ExtResource("2_xx7ca")
@@ -95,7 +109,14 @@ plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("3_gw8u1")]([])
-archetype = ExtResource("2_5ewew")
+attack = 1
+health = 2
+speed = 2
+energy = 1
+description = "On Hit: Heal a random injured ally in vision equal to your DMG dealt"
+ascended_description = "On Hit: Heal allies in vision equal to your DMG dealt"
+initial_traits = Array[ExtResource("3_gw8u1")]([])
+active_abilities = Array[ExtResource("1_76r06")]([])
 id = 6
 name = "Opalma"
 gdscript = ExtResource("2_jvah2")

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=24 format=3 uid="uid://5sttoisolkd8"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=34 format=3 uid="uid://5sttoisolkd8"]
 
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_rrc50"]
 [ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_54fdl"]
@@ -9,54 +9,10 @@
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_g5wjs"]
 [ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="6_q2yck"]
 [ext_resource type="PackedScene" uid="uid://d33beirjwt2p7" path="res://assets/models/fof/cards/palmador_rider.glb" id="7_lbc4d"]
-[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_vnoe1"]
+[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="10_vnoe1"]
 [ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_3w5kh"]
-
-[sub_resource type="Resource" id="Resource_3w5kh"]
-script = ExtResource("1_rrc50")
-exists = 0
-ascended_description = "Jump up to a [5] Tile adjacent wall"
-ascended_max_charges = -1
-name = "Highjump"
-description = "Jump up to a [3] Tile adjacent wall"
-max_charges = -1
-delay = 0.0
-camera_type = 0
-charges = 0
-used = false
-metadata/_custom_type_script = "uid://cdbphjba7jkam"
-
-[sub_resource type="Resource" id="Resource_tptxp"]
-script = ExtResource("2_54fdl")
-display_number = -1
-id = 3
-first_init = true
-public_id = 0
-metadata/_custom_type_script = "uid://dag3a8ejplko8"
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_2n031"]
-size = Vector3(0.673096, 1.38168, 1.24805)
-
-[sub_resource type="PackedScene" id="PackedScene_clbsu"]
-_bundled = {
-"conn_count": 0,
-"conns": PackedInt32Array(),
-"editable_instances": [],
-"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
-"node_count": 1,
-"node_paths": [],
-"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
-"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0020752, 0.689316, -0.124023), SubResource("BoxShape3D_2n031")],
-"version": 3
-}
-
-[sub_resource type="Resource" id="Resource_vnoe1"]
-script = ExtResource("2_54fdl")
-display_number = -1
-id = 3
-first_init = true
-public_id = 0
-metadata/_custom_type_script = "uid://dag3a8ejplko8"
+[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_qibe7"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_yvqlm"]
 
 [sub_resource type="Resource" id="Resource_tfmrg"]
 script = ExtResource("11_3w5kh")
@@ -127,9 +83,120 @@ description = ""
 active_abilities = Array[ExtResource("11_3w5kh")]([])
 traits = Array[ExtResource("2_54fdl")]([])
 
+[sub_resource type="Resource" id="Resource_3w5kh"]
+script = ExtResource("1_rrc50")
+exists = 0
+ascended_description = "Jump up to a [5] Tile adjacent wall"
+ascended_max_charges = -1
+name = "Highjump"
+description = "Jump up to a [3] Tile adjacent wall"
+max_charges = -1
+delay = 0.0
+camera_type = 0
+charges = 0
+used = false
+metadata/_custom_type_script = "uid://cdbphjba7jkam"
+
+[sub_resource type="Resource" id="Resource_tptxp"]
+script = ExtResource("2_54fdl")
+display_number = -1
+id = 3
+first_init = true
+public_id = 0
+metadata/_custom_type_script = "uid://dag3a8ejplko8"
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2n031"]
+size = Vector3(0.673096, 1.38168, 1.24805)
+
+[sub_resource type="PackedScene" id="PackedScene_clbsu"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0020752, 0.689316, -0.124023), SubResource("BoxShape3D_2n031")],
+"version": 3
+}
+
+[sub_resource type="Resource" id="Resource_vnoe1"]
+script = ExtResource("2_54fdl")
+display_number = -1
+id = 3
+first_init = true
+public_id = 0
+metadata/_custom_type_script = "uid://dag3a8ejplko8"
+
+[sub_resource type="Resource" id="Resource_0msto"]
+script = ExtResource("13_yvqlm")
+description = "MOBILE; ABILITY: Jump up to a [3] Tile adjacent wall"
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_qrji1"]
+script = ExtResource("12_qibe7")
+attack = 1
+health = 4
+speed = 4
+energy = 3
+description_datastore = SubResource("Resource_0msto")
+description = ""
+active_abilities = Array[ExtResource("11_3w5kh")]([SubResource("Resource_tfmrg")])
+traits = Array[ExtResource("2_54fdl")]([SubResource("Resource_givgy")])
+
+[sub_resource type="Resource" id="Resource_sm5xp"]
+script = ExtResource("13_yvqlm")
+description = "MOBILE; ABILITY: Jump up to a [5] Tile adjacent wall"
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_f3wfw"]
+script = ExtResource("12_qibe7")
+attack = 1
+health = 4
+speed = 4
+energy = 3
+description_datastore = SubResource("Resource_sm5xp")
+description = ""
+active_abilities = Array[ExtResource("11_3w5kh")]([SubResource("Resource_cviod")])
+traits = Array[ExtResource("2_54fdl")]([])
+
+[sub_resource type="Resource" id="Resource_km3i2"]
+script = ExtResource("13_yvqlm")
+description = ""
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_saeek"]
+script = ExtResource("12_qibe7")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description_datastore = SubResource("Resource_km3i2")
+description = ""
+active_abilities = Array[ExtResource("11_3w5kh")]([])
+traits = Array[ExtResource("2_54fdl")]([])
+
+[sub_resource type="Resource" id="Resource_78m27"]
+script = ExtResource("13_yvqlm")
+description = ""
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_ble6l"]
+script = ExtResource("12_qibe7")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description_datastore = SubResource("Resource_78m27")
+description = ""
+active_abilities = Array[ExtResource("11_3w5kh")]([])
+traits = Array[ExtResource("2_54fdl")]([])
+
 [resource]
 script = ExtResource("6_q2yck")
-tiers = Array[ExtResource("10_vnoe1")]([SubResource("Resource_qibe7"), SubResource("Resource_jwbdo"), SubResource("Resource_yvqlm"), SubResource("Resource_0xcc7")])
+tiers = Array[ExtResource("12_qibe7")]([SubResource("Resource_qrji1"), SubResource("Resource_f3wfw"), SubResource("Resource_saeek"), SubResource("Resource_ble6l")])
+_tiers = Array[ExtResource("10_vnoe1")]([SubResource("Resource_qibe7"), SubResource("Resource_jwbdo"), SubResource("Resource_yvqlm"), SubResource("Resource_0xcc7")])
 attack = 1
 health = 4
 speed = 4

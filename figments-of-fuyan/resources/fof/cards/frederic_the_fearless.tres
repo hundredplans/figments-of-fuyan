@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=24 format=3 uid="uid://dxguo11avfoss"]
+[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=34 format=3 uid="uid://dxguo11avfoss"]
 
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_4a3l2"]
 [ext_resource type="Image" uid="uid://b86c6f1uyjyd6" path="res://assets/sprites/game/cards/art_pop/frederic_the_fearless.png" id="2_d16dl"]
@@ -12,47 +12,10 @@
 [ext_resource type="PackedScene" uid="uid://bd2esqpmo73tk" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_ks7mj"]
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="8_j10ap"]
 [ext_resource type="Script" uid="uid://bl7k0gywtt1r5" path="res://scripts/fof_info/cards/extra/champion_upgrade.gd" id="8_qjhdg"]
-[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="13_v43g6"]
+[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="13_v43g6"]
 [ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="14_c5w00"]
-
-[sub_resource type="Resource" id="Resource_fjhx1"]
-script = ExtResource("5_j2m8k")
-pos = Vector3(0.8, 1.6, 0.8)
-rot = Vector3(-8.37677e-06, 30, -20)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
-size = Vector3(0.663147, 2.1037, 0.369537)
-
-[sub_resource type="PackedScene" id="PackedScene_v43g6"]
-_bundled = {
-"conn_count": 0,
-"conns": PackedInt32Array(),
-"editable_instances": [],
-"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
-"node_count": 1,
-"node_paths": [],
-"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
-"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00845337, 1.05294, 0.00587471), SubResource("BoxShape3D_ex838")],
-"version": 3
-}
-
-[sub_resource type="Resource" id="Resource_hgy6f"]
-script = ExtResource("8_qjhdg")
-description = "RAMPAGE: Gain +1 HP and Heal [1] HP"
-plus_attack = 0
-plus_health = 0
-plus_energy = 0
-plus_speed = 0
-active_abilities = Array[ExtResource("1_4a3l2")]([])
-
-[sub_resource type="Resource" id="Resource_0mgtp"]
-script = ExtResource("8_qjhdg")
-description = ""
-plus_attack = 0
-plus_health = 1
-plus_energy = 0
-plus_speed = 0
-active_abilities = Array[ExtResource("1_4a3l2")]([])
+[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="15_blypd"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="16_0ikkh"]
 
 [sub_resource type="Resource" id="Resource_c5w00"]
 script = ExtResource("13_v43g6")
@@ -94,6 +57,109 @@ description = ""
 active_abilities = Array[ExtResource("14_c5w00")]([])
 traits = Array[ExtResource("3_xdpta")]([])
 
+[sub_resource type="Resource" id="Resource_fjhx1"]
+script = ExtResource("5_j2m8k")
+pos = Vector3(0.8, 1.6, 0.8)
+rot = Vector3(-8.37677e-06, 30, -20)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
+size = Vector3(0.663147, 2.1037, 0.369537)
+
+[sub_resource type="PackedScene" id="PackedScene_v43g6"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00845337, 1.05294, 0.00587471), SubResource("BoxShape3D_ex838")],
+"version": 3
+}
+
+[sub_resource type="Resource" id="Resource_hgy6f"]
+script = ExtResource("8_qjhdg")
+description = "RAMPAGE: Gain +1 HP and Heal [1] HP"
+plus_attack = 0
+plus_health = 0
+plus_energy = 0
+plus_speed = 0
+active_abilities = Array[ExtResource("1_4a3l2")]([])
+
+[sub_resource type="Resource" id="Resource_0mgtp"]
+script = ExtResource("8_qjhdg")
+description = ""
+plus_attack = 0
+plus_health = 1
+plus_energy = 0
+plus_speed = 0
+active_abilities = Array[ExtResource("1_4a3l2")]([])
+
+[sub_resource type="Resource" id="Resource_sky5f"]
+script = ExtResource("16_0ikkh")
+description = "RAMPAGE: Gain +1 HP"
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_yurpy"]
+script = ExtResource("15_blypd")
+attack = 2
+health = 2
+speed = 2
+energy = 2
+description_datastore = SubResource("Resource_sky5f")
+description = ""
+active_abilities = Array[ExtResource("14_c5w00")]([])
+traits = Array[ExtResource("3_xdpta")]([])
+
+[sub_resource type="Resource" id="Resource_udxuq"]
+script = ExtResource("16_0ikkh")
+description = ""
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_wf5dt"]
+script = ExtResource("15_blypd")
+attack = 2
+health = 2
+speed = 2
+energy = 2
+description_datastore = SubResource("Resource_udxuq")
+description = ""
+active_abilities = Array[ExtResource("14_c5w00")]([])
+traits = Array[ExtResource("3_xdpta")]([])
+
+[sub_resource type="Resource" id="Resource_dpssp"]
+script = ExtResource("16_0ikkh")
+description = ""
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_5j3ya"]
+script = ExtResource("15_blypd")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description_datastore = SubResource("Resource_dpssp")
+description = ""
+active_abilities = Array[ExtResource("14_c5w00")]([])
+traits = Array[ExtResource("3_xdpta")]([])
+
+[sub_resource type="Resource" id="Resource_3sj8x"]
+script = ExtResource("16_0ikkh")
+description = ""
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_nvxni"]
+script = ExtResource("15_blypd")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description_datastore = SubResource("Resource_3sj8x")
+description = ""
+active_abilities = Array[ExtResource("14_c5w00")]([])
+traits = Array[ExtResource("3_xdpta")]([])
+
 [resource]
 script = ExtResource("2_y17s3")
 champion_description = Array[String](["Elite fights are more common", "Your [color=#2c70a0]Aura[/color] gets stronger as you triumph over big battles"])
@@ -106,7 +172,8 @@ ultimate_description = "[0/4]: Heal to full HP and cleanse any negative effects.
 boon_info = ExtResource("4_f5cwk")
 first_miniboss = SubResource("Resource_0mgtp")
 first_boss = SubResource("Resource_hgy6f")
-tiers = Array[ExtResource("13_v43g6")]([SubResource("Resource_c5w00"), SubResource("Resource_4gwjb"), SubResource("Resource_blypd"), SubResource("Resource_0ikkh")])
+tiers = Array[ExtResource("15_blypd")]([SubResource("Resource_yurpy"), SubResource("Resource_wf5dt"), SubResource("Resource_5j3ya"), SubResource("Resource_nvxni")])
+_tiers = Array[ExtResource("13_v43g6")]([SubResource("Resource_c5w00"), SubResource("Resource_4gwjb"), SubResource("Resource_blypd"), SubResource("Resource_0ikkh")])
 attack = 2
 health = 2
 speed = 2

@@ -10,7 +10,9 @@ func onProcessAction(action: Action) -> void:
 	if isValidBloodthirst(action):
 		onPushAction(BloodthirstAction.new(self, action))
 	
-func getDescription() -> String:
+func getDescription(use_default_values: bool = false) -> String:
+	if use_default_values:
+		return super(use_default_values)
 	return Helper.getDescription(super(), [bloodthirst_trigger_amount])
 
 func onBloodthirst(_action: DeathAction) -> void:

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=20 format=3 uid="uid://bjcr2e60oh3pm"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=30 format=3 uid="uid://bjcr2e60oh3pm"]
 
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_s5ofe"]
 [ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_1oyp4"]
@@ -9,32 +9,10 @@
 [ext_resource type="Script" uid="uid://d3xulw3ft3e0n" path="res://scripts/fof/cards/card.gd" id="4_di4ay"]
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_mpj45"]
 [ext_resource type="PackedScene" uid="uid://b8q0bcdcdwi2l" path="res://assets/models/fof/cards/wynstan_von_aegis.glb" id="8_rnroe"]
-[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_rnroe"]
+[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="10_rnroe"]
 [ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_b4d0y"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
-size = Vector3(0.663147, 1.94543, 0.526978)
-
-[sub_resource type="PackedScene" id="PackedScene_d6dgo"]
-_bundled = {
-"conn_count": 0,
-"conns": PackedInt32Array(),
-"editable_instances": [],
-"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
-"node_count": 1,
-"node_paths": [],
-"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
-"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00845337, 0.973806, 0.0105591), SubResource("BoxShape3D_ex838")],
-"version": 3
-}
-
-[sub_resource type="Resource" id="Resource_pdhn2"]
-script = ExtResource("2_1oyp4")
-display_number = 1
-id = 1
-first_init = true
-public_id = 0
-metadata/_custom_type_script = "uid://dag3a8ejplko8"
+[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_4cydo"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_uapb5"]
 
 [sub_resource type="Resource" id="Resource_c2f4w"]
 script = ExtResource("2_1oyp4")
@@ -84,9 +62,98 @@ description = ""
 active_abilities = Array[ExtResource("11_b4d0y")]([])
 traits = Array[ExtResource("2_1oyp4")]([])
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
+size = Vector3(0.663147, 1.94543, 0.526978)
+
+[sub_resource type="PackedScene" id="PackedScene_d6dgo"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00845337, 0.973806, 0.0105591), SubResource("BoxShape3D_ex838")],
+"version": 3
+}
+
+[sub_resource type="Resource" id="Resource_pdhn2"]
+script = ExtResource("2_1oyp4")
+display_number = 1
+id = 1
+first_init = true
+public_id = 0
+metadata/_custom_type_script = "uid://dag3a8ejplko8"
+
+[sub_resource type="Resource" id="Resource_reruq"]
+script = ExtResource("13_uapb5")
+description = "ARMOR [1]"
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_6q87q"]
+script = ExtResource("12_4cydo")
+attack = 2
+health = 2
+speed = 2
+energy = 2
+description_datastore = SubResource("Resource_reruq")
+description = ""
+active_abilities = Array[ExtResource("11_b4d0y")]([])
+traits = Array[ExtResource("2_1oyp4")]([SubResource("Resource_c2f4w")])
+
+[sub_resource type="Resource" id="Resource_bmecs"]
+script = ExtResource("13_uapb5")
+description = ""
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_fuiwl"]
+script = ExtResource("12_4cydo")
+attack = 3
+health = 2
+speed = 3
+energy = 2
+description_datastore = SubResource("Resource_bmecs")
+description = ""
+active_abilities = Array[ExtResource("11_b4d0y")]([])
+traits = Array[ExtResource("2_1oyp4")]([])
+
+[sub_resource type="Resource" id="Resource_wbxja"]
+script = ExtResource("13_uapb5")
+description = ""
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_bb3k3"]
+script = ExtResource("12_4cydo")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description_datastore = SubResource("Resource_wbxja")
+description = ""
+active_abilities = Array[ExtResource("11_b4d0y")]([])
+traits = Array[ExtResource("2_1oyp4")]([])
+
+[sub_resource type="Resource" id="Resource_wbnpg"]
+script = ExtResource("13_uapb5")
+description = ""
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_4phw1"]
+script = ExtResource("12_4cydo")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description_datastore = SubResource("Resource_wbnpg")
+description = ""
+active_abilities = Array[ExtResource("11_b4d0y")]([])
+traits = Array[ExtResource("2_1oyp4")]([])
+
 [resource]
 script = ExtResource("3_o3jov")
-tiers = Array[ExtResource("10_rnroe")]([SubResource("Resource_b4d0y"), SubResource("Resource_6ebbt"), SubResource("Resource_4cydo"), SubResource("Resource_uapb5")])
+tiers = Array[ExtResource("12_4cydo")]([SubResource("Resource_6q87q"), SubResource("Resource_fuiwl"), SubResource("Resource_bb3k3"), SubResource("Resource_4phw1")])
+_tiers = Array[ExtResource("10_rnroe")]([SubResource("Resource_b4d0y"), SubResource("Resource_6ebbt"), SubResource("Resource_4cydo"), SubResource("Resource_uapb5")])
 attack = 2
 health = 2
 speed = 2

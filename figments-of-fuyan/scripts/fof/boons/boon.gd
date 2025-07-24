@@ -5,6 +5,7 @@ signal update_ascend
 var ascended: bool
 var ability_save: Dictionary
 var charges: int
+var tier: int
 
 func onFofInit() -> void:
 	onResetCharges()
@@ -15,6 +16,7 @@ func onLoadData(data: SavedData) -> void:
 	ascended = data.ascended
 	ability_save = data.ability_save
 	charges = data.charges
+	tier = data.tier
 	
 	for custom_variable in ability_save:
 		set(custom_variable, ability_save[custom_variable])
@@ -23,14 +25,16 @@ func getAscended() -> bool:
 	return ascended
 	
 func onSave() -> SavedDataBoon:
-	return SavedDataBoon.new(info.id, false, public_id, ascended, charges, ability_save)
+	return SavedDataBoon.new(info.id, false, public_id, ascended, charges, ability_save, tier)
 
 func getIcon() -> Texture2D:
 	return info.icon
 
-func getDescription() -> String:
-	return info.description if !ascended else info.ascended_description	
+func getDescription(use_default_values: bool = false) -> String:
+	return info.getDescription(tier, use_default_values)
 	
+func getTier() -> int:
+	return tier
 func onBoonAdded() -> void:
 	onResetCharges()
 	

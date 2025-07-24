@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=21 format=3 uid="uid://nc6niicbphgg"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=31 format=3 uid="uid://nc6niicbphgg"]
 
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_xgrjx"]
 [ext_resource type="Resource" uid="uid://bbqdeswvpt0y6" path="res://resources/fof/archetypes/support.tres" id="2_0yrhv"]
@@ -9,39 +9,10 @@
 [ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_h4rou"]
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="4_0giri"]
 [ext_resource type="PackedScene" uid="uid://bk1cuu34vk738" path="res://assets/models/fof/cards/palmon.glb" id="5_tr6ys"]
-[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_8fe4f"]
+[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="10_8fe4f"]
 [ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_cu5su"]
-
-[sub_resource type="Resource" id="Resource_bdmil"]
-script = ExtResource("1_xgrjx")
-exists = 0
-ascended_description = "Give +2 ATT for [1] Turn to an ally in vision
-They heal [1] HP the turn after"
-ascended_max_charges = 2
-name = "Treeleaf Remedy"
-description = "Give +1 ATT for [1] Turn to an ally in vision
-They heal [1] HP the turn after"
-max_charges = 2
-delay = 0.0
-camera_type = 0
-charges = 0
-used = false
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_e2tiu"]
-size = Vector3(0.610901, 0.799561, 0.316162)
-
-[sub_resource type="PackedScene" id="PackedScene_q2gnb"]
-_bundled = {
-"conn_count": 0,
-"conns": PackedInt32Array(),
-"editable_instances": [],
-"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
-"node_count": 1,
-"node_paths": [],
-"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
-"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000335693, 0.396606, -0.00646973), SubResource("BoxShape3D_e2tiu")],
-"version": 3
-}
+[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_71lmq"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_2bsll"]
 
 [sub_resource type="Resource" id="Resource_cu5su"]
 script = ExtResource("11_cu5su")
@@ -108,9 +79,107 @@ description = ""
 active_abilities = Array[ExtResource("11_cu5su")]([])
 traits = Array[ExtResource("2_85cop")]([])
 
+[sub_resource type="Resource" id="Resource_bdmil"]
+script = ExtResource("1_xgrjx")
+exists = 0
+ascended_description = "Give +2 ATT for [1] Turn to an ally in vision
+They heal [1] HP the turn after"
+ascended_max_charges = 2
+name = "Treeleaf Remedy"
+description = "Give +1 ATT for [1] Turn to an ally in vision
+They heal [1] HP the turn after"
+max_charges = 2
+delay = 0.0
+camera_type = 0
+charges = 0
+used = false
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_e2tiu"]
+size = Vector3(0.610901, 0.799561, 0.316162)
+
+[sub_resource type="PackedScene" id="PackedScene_q2gnb"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000335693, 0.396606, -0.00646973), SubResource("BoxShape3D_e2tiu")],
+"version": 3
+}
+
+[sub_resource type="Resource" id="Resource_2yrh6"]
+script = ExtResource("13_2bsll")
+description = "ABILITY [[X]]: Give +1 ATT for [1] Turn to a double adjacent ally
+They heal [1] HP the turn after"
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_oc82m"]
+script = ExtResource("12_71lmq")
+attack = 2
+health = 1
+speed = 2
+energy = 2
+description_datastore = SubResource("Resource_2yrh6")
+description = ""
+active_abilities = Array[ExtResource("11_cu5su")]([SubResource("Resource_cu5su")])
+traits = Array[ExtResource("2_85cop")]([])
+
+[sub_resource type="Resource" id="Resource_0ilmr"]
+script = ExtResource("13_2bsll")
+description = "ABILITY [[X]]: Give +2 ATT for [1] Turn to a double adjacent ally
+They heal [1] HP the turn after"
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_6886s"]
+script = ExtResource("12_71lmq")
+attack = 2
+health = 1
+speed = 2
+energy = 2
+description_datastore = SubResource("Resource_0ilmr")
+description = ""
+active_abilities = Array[ExtResource("11_cu5su")]([SubResource("Resource_3dv0f")])
+traits = Array[ExtResource("2_85cop")]([])
+
+[sub_resource type="Resource" id="Resource_2p81h"]
+script = ExtResource("13_2bsll")
+description = ""
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_hr1a6"]
+script = ExtResource("12_71lmq")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description_datastore = SubResource("Resource_2p81h")
+description = ""
+active_abilities = Array[ExtResource("11_cu5su")]([])
+traits = Array[ExtResource("2_85cop")]([])
+
+[sub_resource type="Resource" id="Resource_lhu7y"]
+script = ExtResource("13_2bsll")
+description = ""
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_ur6lp"]
+script = ExtResource("12_71lmq")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description_datastore = SubResource("Resource_lhu7y")
+description = ""
+active_abilities = Array[ExtResource("11_cu5su")]([])
+traits = Array[ExtResource("2_85cop")]([])
+
 [resource]
 script = ExtResource("3_h4rou")
-tiers = Array[ExtResource("10_8fe4f")]([SubResource("Resource_171g2"), SubResource("Resource_r16p1"), SubResource("Resource_71lmq"), SubResource("Resource_2bsll")])
+tiers = Array[ExtResource("12_71lmq")]([SubResource("Resource_oc82m"), SubResource("Resource_6886s"), SubResource("Resource_hr1a6"), SubResource("Resource_ur6lp")])
+_tiers = Array[ExtResource("10_8fe4f")]([SubResource("Resource_171g2"), SubResource("Resource_r16p1"), SubResource("Resource_71lmq"), SubResource("Resource_2bsll")])
 attack = 2
 health = 1
 speed = 2

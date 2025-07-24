@@ -8,9 +8,6 @@ func onProcessAction(action: Action) -> void:
 	and action.FieldEffect.info.id == SHIELD_ID and action.FieldEffect.Card == self:
 		onShieldLost()
 
-func getDescription() -> String:
-	return super()
-
 func onArrivePre(_action: AwakenAction) -> void:
 	pass
 

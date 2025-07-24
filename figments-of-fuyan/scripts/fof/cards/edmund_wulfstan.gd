@@ -5,9 +5,6 @@ func onProcessAction(action: Action) -> void:
 	super(action)
 	if isValidRevenge(action):
 		onPushAction(RevengeAction.new(self, action.owner))
-	
-func getDescription() -> String:
-	return super()
 
 func onRevenge(_action: DamageAction) -> void:
 	var allies: Array = getVisibleFieldCardsAllies()

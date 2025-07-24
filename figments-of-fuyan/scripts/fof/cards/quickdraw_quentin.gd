@@ -45,7 +45,9 @@ func onSave() -> SavedDataCard:
 	ability_save['quentins_bullets_public_id'] = quentins_bullets_public_id
 	return super()
 	
-func getDescription() -> String:
+func getDescription(use_default_values: bool = false) -> String:
+	if use_default_values:
+		return super(use_default_values)
 	return Helper.getDescription(super(), [bullets, getMaxBullets()])
 
 func getActiveEffectDescription(active_effect: ActiveEffectDatastore, description: String) -> String:

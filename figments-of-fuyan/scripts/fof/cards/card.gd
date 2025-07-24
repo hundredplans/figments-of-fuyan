@@ -67,6 +67,7 @@ signal awakened_in_combat
 @warning_ignore("unused_signal")
 signal update_stats
 signal card_turn_passed
+signal tier_updated
 #endregion
 		
 #region Setters
@@ -123,9 +124,9 @@ func setStats(stats: StatsDatastore) -> void:
 #endregion
 
 #region Getters
-func getDescription() -> String:
+func getDescription(use_default_values: bool = false) -> String:
 	if info.rarity != Game.Rarities.CHAMPION:
-		return info.getDescription(tier)
+		return info.getDescription(tier, use_default_values)
 	return getDescriptionUpgradeLevel(champion_datastore.upgrade_level + 1)
 
 func getDescriptionUpgradeLevel(_upgrade_level: int):
@@ -1254,7 +1255,19 @@ func onRevenge(_action: DamageAction) -> void:
 
 #region Tiered Up
 func onRetiered(_tier: int) -> void:
-	pass
+	tier = _tier
+	var stat_datastore: StatsDatastore = getStatsFromInfo()
+	var plus_attack: int = stat_datastore.attack - attack
+	var plus_health: int = stat_datastore.health - health
+	var plus_speed: int = stat_datastore.speed - speed
+	var plus_energy: int = stat_datastore.energy - energy
+	
+	var types: Array = [Game.Stats.ATTACK, Game.Stats.HEALTH, Game.Stats.MAX_HEALTH, Game.Stats.MAX_SPEED, Game.Stats.ENERGY]
+	var values: Array = [plus_attack, plus_health, plus_health, plus_speed, plus_energy]
+	var base_stat_action := BaseStatAction.new(self, types, values)
+	onPushAction(base_stat_action)
+	
+	tier_updated.emit(tier)
 
 #region Ascended
 func onAscend(state: bool) -> void:

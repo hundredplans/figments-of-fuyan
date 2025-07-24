@@ -9,9 +9,6 @@ func onProcessAction(action: Action):
 func onAscend(state: bool):
 	super(state)
 
-func getDescription():
-	return super()
-
 func onBoon(action: ToolActivatedAction):
 	action.onFailAction()
 

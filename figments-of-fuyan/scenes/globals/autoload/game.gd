@@ -33,6 +33,19 @@ var CARD_PLACES_TO_GROUP: Dictionary = {
 	CardPlaces.STASH: "StashCardsGD",
 }
 
+var NUMBER_TO_ROMAN_NUMERAL: Dictionary[int, String] = {
+	1: "I",
+	2: "II",
+	3: "III",
+	4: "IV",
+	5: "V",
+	6: "VI",
+	7: "VII",
+	8: "VIII",
+	9: "IX",
+	10: "X"
+}
+
 var TURN_STATES_TO_STRING: Dictionary = {
 	TurnStates.NULL: "Null",
 	TurnStates.PASSED: "Passed",
@@ -629,4 +642,7 @@ func getCubeDirectionExtra(index: int) -> Vector4i:
 	
 func getCubeDirectionsExtra() -> Array:
 	return range(6).map(getCubeDirectionExtra)
+	
+func getTierString(tier: int) -> String:
+	return NUMBER_TO_ROMAN_NUMERAL[tier]
 #endregion

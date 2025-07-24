@@ -54,10 +54,6 @@ func onCreateDeckCardUI(Card: CardGD) -> void:
 	ArchetypeLabel.size.x = CardUI.size.x
 	ArchetypeLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 
-func _on_ascend_button_pressed() -> void:
-	for Card in get_tree().get_nodes_in_group("CardsGD"):
-		Card.onAscend(!Card.ascended)
-
 func _on_search_area_card_text_changed(text: String) -> void:
 	var area_name_to_unit_id: Dictionary
 	for area_info in Helper.getFofInfoArray(AreaInfo):
@@ -88,3 +84,9 @@ func onCardUIPressed(CardUI: Control) -> void:
 		TieredCardGrid.add_child(EditableCardUI)
 		EditableCardUI.setInfo(card_info, tier)
 #endregion
+
+func _on_tier_up_button_pressed() -> void:
+	for Card: CardGD in get_tree().get_nodes_in_group("CardsGD"):
+		var next_tier: int = (Card.getTier() + 1) % (Card.info.tiers.size() + 1)
+		if next_tier == 0: next_tier = 1
+		Card.onRetiered(next_tier)

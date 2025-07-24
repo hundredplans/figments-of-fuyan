@@ -27,7 +27,9 @@ func onLevelEnded(is_win: bool) -> void:
 func onAscend(state: bool) -> void:
 	super(state)
 
-func getDescription() -> String:
+func getDescription(use_default_values: bool = false) -> String:
+	if use_default_values:
+		return super(use_default_values)
 	return Helper.getDescription(super(), [charges])
 
 func onBoon(action: Action = null) -> void:

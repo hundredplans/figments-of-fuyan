@@ -60,11 +60,11 @@ func onRemoveFromAura(Card: CardGD) -> void:
 	var actions: Array = [RemoveOverworldTraitAction.new(Card, ARMOR_ID, OverworldTrait.AddedBy.JIBBEN), RemoveFieldEffectAction.new(BlacksmithsWill)]
 	onPushAction(actions)
 					
-func getDescription() -> String:
+func getDescription(use_default_values: bool = false) -> String:
 	var active_effect: ActiveEffectDatastore = getActiveEffectByName("Blacksmith's Will")
-	if active_effect != null:
+	if !use_default_values and active_effect != null:
 		return Helper.getDescription(super(), [active_effect.charges])
-	return super()
+	return super(true)
 
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	super(active_effect)

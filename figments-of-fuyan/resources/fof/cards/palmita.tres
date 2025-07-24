@@ -1,45 +1,18 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=33 format=3]
 
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_8c5rl"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/palmita.png" id="2_6e25m"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/palmita.png" id="2_doo6g"]
-[ext_resource type="Resource" path="res://resources/fof/archetypes/support.tres" id="2_e0j4a"]
-[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_gibdl"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_u8ukk"]
-[ext_resource type="Script" path="res://scripts/fof/cards/palmita.gd" id="4_s0xsl"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_cli25"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/palmita.glb" id="5_xhwml"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_aya74"]
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_1cb68"]
-
-[sub_resource type="Resource" id="Resource_4khtw"]
-script = ExtResource("1_8c5rl")
-exists = 0
-ascended_description = "This dies to give an adjacent ally +1 HP instantly and when it RAMPAGES"
-ascended_max_charges = -1
-name = "Helpful Helmet"
-description = "This dies to give an adjacent ally +1 HP when it RAMPAGES"
-max_charges = -1
-delay = 0.0
-camera_type = 0
-charges = -1
-used = false
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_ckpx8"]
-size = Vector3(0.443817, 0.432922, 0.203674)
-
-[sub_resource type="PackedScene" id="PackedScene_t70kl"]
-_bundled = {
-"conn_count": 0,
-"conns": PackedInt32Array(),
-"editable_instances": [],
-"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
-"node_count": 1,
-"node_paths": [],
-"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
-"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00257874, 0.21994, 0.000335693), SubResource("BoxShape3D_ckpx8")],
-"version": 3
-}
+[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_8c5rl"]
+[ext_resource type="Image" uid="uid://cp6mthlsnebq0" path="res://assets/sprites/game/cards/art_pop/palmita.png" id="2_6e25m"]
+[ext_resource type="Texture2D" uid="uid://casdghvavfct7" path="res://assets/sprites/game/cards/art_mini/palmita.png" id="2_doo6g"]
+[ext_resource type="Resource" uid="uid://bbqdeswvpt0y6" path="res://resources/fof/archetypes/support.tres" id="2_e0j4a"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_gibdl"]
+[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_u8ukk"]
+[ext_resource type="Script" uid="uid://cpeu5oa76nfhq" path="res://scripts/fof/cards/palmita.gd" id="4_s0xsl"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_cli25"]
+[ext_resource type="PackedScene" uid="uid://bhm1rhpwkxwjo" path="res://assets/models/fof/cards/palmita.glb" id="5_xhwml"]
+[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="10_aya74"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_1cb68"]
+[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_a4xqi"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_iuas3"]
 
 [sub_resource type="Resource" id="Resource_1cb68"]
 script = ExtResource("11_1cb68")
@@ -124,9 +97,103 @@ description = ""
 active_abilities = Array[ExtResource("11_1cb68")]([SubResource("Resource_jjy02")])
 traits = Array[ExtResource("2_gibdl")]([])
 
+[sub_resource type="Resource" id="Resource_4khtw"]
+script = ExtResource("1_8c5rl")
+exists = 0
+ascended_description = "This dies to give an adjacent ally +1 HP instantly and when it RAMPAGES"
+ascended_max_charges = -1
+name = "Helpful Helmet"
+description = "This dies to give an adjacent ally +1 HP when it RAMPAGES"
+max_charges = -1
+delay = 0.0
+camera_type = 0
+charges = -1
+used = false
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ckpx8"]
+size = Vector3(0.443817, 0.432922, 0.203674)
+
+[sub_resource type="PackedScene" id="PackedScene_t70kl"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00257874, 0.21994, 0.000335693), SubResource("BoxShape3D_ckpx8")],
+"version": 3
+}
+
+[sub_resource type="Resource" id="Resource_p4qc6"]
+script = ExtResource("13_iuas3")
+description = "ABILITY: This dies to give an adjacent ally +1 HP when it RAMPAGES"
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_ar0ki"]
+script = ExtResource("12_a4xqi")
+attack = 1
+health = 1
+speed = 2
+energy = 1
+description_datastore = SubResource("Resource_p4qc6")
+description = ""
+active_abilities = Array[ExtResource("11_1cb68")]([SubResource("Resource_1cb68")])
+traits = Array[ExtResource("2_gibdl")]([])
+
+[sub_resource type="Resource" id="Resource_ow28b"]
+script = ExtResource("13_iuas3")
+description = "ABILITY: This dies to give an adjacent ally +1 HP instantly and when it RAMPAGES"
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_dp6m3"]
+script = ExtResource("12_a4xqi")
+attack = 1
+health = 1
+speed = 2
+energy = 1
+description_datastore = SubResource("Resource_ow28b")
+description = ""
+active_abilities = Array[ExtResource("11_1cb68")]([SubResource("Resource_5y68w")])
+traits = Array[ExtResource("2_gibdl")]([])
+
+[sub_resource type="Resource" id="Resource_fpa8y"]
+script = ExtResource("13_iuas3")
+description = ""
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_k4kff"]
+script = ExtResource("12_a4xqi")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description_datastore = SubResource("Resource_fpa8y")
+description = ""
+active_abilities = Array[ExtResource("11_1cb68")]([SubResource("Resource_7qr8q")])
+traits = Array[ExtResource("2_gibdl")]([])
+
+[sub_resource type="Resource" id="Resource_7pjt5"]
+script = ExtResource("13_iuas3")
+description = ""
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_crwom"]
+script = ExtResource("12_a4xqi")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description_datastore = SubResource("Resource_7pjt5")
+description = ""
+active_abilities = Array[ExtResource("11_1cb68")]([SubResource("Resource_jjy02")])
+traits = Array[ExtResource("2_gibdl")]([])
+
 [resource]
 script = ExtResource("3_u8ukk")
-tiers = Array[ExtResource("10_aya74")]([SubResource("Resource_vyjta"), SubResource("Resource_pn3bc"), SubResource("Resource_a4xqi"), SubResource("Resource_iuas3")])
+tiers = Array[ExtResource("12_a4xqi")]([SubResource("Resource_ar0ki"), SubResource("Resource_dp6m3"), SubResource("Resource_k4kff"), SubResource("Resource_crwom")])
+_tiers = Array[ExtResource("10_aya74")]([SubResource("Resource_vyjta"), SubResource("Resource_pn3bc"), SubResource("Resource_a4xqi"), SubResource("Resource_iuas3")])
 attack = 1
 health = 1
 speed = 2

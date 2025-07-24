@@ -63,9 +63,11 @@ func onEffect() -> void:
 	var actions: Array = [animation_action, stat_action]
 	onPushAction(actions)
 	
-func getDescription() -> String:
-	return ("RAMPAGE [%s]\nTRAUMA [%s]\n BLOODTHIRST[%s]:\nGain [1] HP" % [rampage_charges, trauma_charges, bloodthirst_charges])
-
+func getDescription(use_default_values: bool = false) -> String:
+	if use_default_values:
+		return super(use_default_values)
+	return Helper.getDescription(super(), [rampage_charges, trauma_charges, bloodthirst_charges])
+	
 func onSave() -> SavedDataCard:
 	ability_save['rampage_charges'] = rampage_charges
 	ability_save['trauma_charges'] = trauma_charges

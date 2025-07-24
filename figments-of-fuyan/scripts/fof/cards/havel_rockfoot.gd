@@ -54,9 +54,6 @@ func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_til
 func getActiveEffectDisabled(_active_effect: ActiveEffectDatastore) -> bool:
 	return false
 
-func getDescription() -> String:
-	return super()
-
 func onSave() -> SavedDataCard:
 	ability_save['revenge_triggers'] = revenge_triggers
 	ability_save['black_rage_public_id'] = black_rage_public_id

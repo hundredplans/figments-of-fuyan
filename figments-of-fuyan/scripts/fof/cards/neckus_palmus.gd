@@ -11,7 +11,9 @@ func onWhenHealed(_action: StatAction) -> void:
 	var max_hp_gain: int = 1 if !ascended else 2
 	onPushAction(StatAction.new(StatInfo.new(self, [Game.Stats.MAX_HEALTH, Game.Stats.HEALTH], [max_hp_gain, max_hp_gain])))
 
-func getDescription() -> String:
+func getDescription(use_default_values: bool = false) -> String:
+	if use_default_values:
+		return super(use_default_values)
 	return Helper.getDescription(super(), [when_healed_charges])
 
 func getDefaultCharges() -> int:

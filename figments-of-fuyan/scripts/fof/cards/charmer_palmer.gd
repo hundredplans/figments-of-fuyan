@@ -43,8 +43,8 @@ func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_til
 		return active_effect_tiles.pickable_tiles.pick_random()
 	return null
 
-func getDescription() -> String:
+func getDescription(use_default_values: bool = false) -> String:
 	var active_effect: ActiveEffectDatastore = getActiveEffectByName("Charming Stance")
-	if active_effect != null:
+	if !use_default_values and active_effect != null:
 		return Helper.getDescription(super(), [active_effect.charges])
-	return super()
+	return super(true)

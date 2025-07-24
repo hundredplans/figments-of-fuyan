@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=18 format=3 uid="uid://mtesuakdp7hj"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=28 format=3 uid="uid://mtesuakdp7hj"]
 
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_rlf34"]
 [ext_resource type="Resource" uid="uid://6j57uasj8x66" path="res://resources/fof/archetypes/reinforcer.tres" id="2_kr22h"]
@@ -9,24 +9,10 @@
 [ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_y72ej"]
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="4_i2u37"]
 [ext_resource type="PackedScene" uid="uid://btx7hrh5b8hey" path="res://assets/models/fof/cards/palmysitter.glb" id="5_sahhw"]
-[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_x7dkw"]
+[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="10_x7dkw"]
 [ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_m04a6"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_j0mjl"]
-size = Vector3(0.700928, 1.44427, 0.268982)
-
-[sub_resource type="PackedScene" id="PackedScene_le50q"]
-_bundled = {
-"conn_count": 0,
-"conns": PackedInt32Array(),
-"editable_instances": [],
-"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
-"node_count": 1,
-"node_paths": [],
-"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
-"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00354004, 0.725006, -0.00448608), SubResource("BoxShape3D_j0mjl")],
-"version": 3
-}
+[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_otdfc"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_241r8"]
 
 [sub_resource type="Resource" id="Resource_m04a6"]
 script = ExtResource("10_x7dkw")
@@ -68,9 +54,90 @@ description = "LAST WILL: AWAKEN a [4card=4]"
 active_abilities = Array[ExtResource("11_m04a6")]([])
 traits = Array[ExtResource("2_w3gab")]([])
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_j0mjl"]
+size = Vector3(0.700928, 1.44427, 0.268982)
+
+[sub_resource type="PackedScene" id="PackedScene_le50q"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00354004, 0.725006, -0.00448608), SubResource("BoxShape3D_j0mjl")],
+"version": 3
+}
+
+[sub_resource type="Resource" id="Resource_oq8e0"]
+script = ExtResource("13_241r8")
+description = "LAST WILL: AWAKEN a [1card=4]"
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_rgduy"]
+script = ExtResource("12_otdfc")
+attack = 2
+health = 2
+speed = 2
+energy = 2
+description_datastore = SubResource("Resource_oq8e0")
+description = ""
+active_abilities = Array[ExtResource("11_m04a6")]([])
+traits = Array[ExtResource("2_w3gab")]([])
+
+[sub_resource type="Resource" id="Resource_u8jb5"]
+script = ExtResource("13_241r8")
+description = "LAST WILL: AWAKEN a [2card=4]"
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_j7vh3"]
+script = ExtResource("12_otdfc")
+attack = 2
+health = 2
+speed = 3
+energy = 2
+description_datastore = SubResource("Resource_u8jb5")
+description = ""
+active_abilities = Array[ExtResource("11_m04a6")]([])
+traits = Array[ExtResource("2_w3gab")]([])
+
+[sub_resource type="Resource" id="Resource_lqtwj"]
+script = ExtResource("13_241r8")
+description = "LAST WILL: AWAKEN a [3card=4]"
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_1cij7"]
+script = ExtResource("12_otdfc")
+attack = 2
+health = 2
+speed = 3
+energy = 2
+description_datastore = SubResource("Resource_lqtwj")
+description = ""
+active_abilities = Array[ExtResource("11_m04a6")]([])
+traits = Array[ExtResource("2_w3gab")]([])
+
+[sub_resource type="Resource" id="Resource_350u3"]
+script = ExtResource("13_241r8")
+description = "LAST WILL: AWAKEN a [4card=4]"
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_d5spn"]
+script = ExtResource("12_otdfc")
+attack = 2
+health = 2
+speed = 3
+energy = 2
+description_datastore = SubResource("Resource_350u3")
+description = ""
+active_abilities = Array[ExtResource("11_m04a6")]([])
+traits = Array[ExtResource("2_w3gab")]([])
+
 [resource]
 script = ExtResource("3_y72ej")
-tiers = Array[ExtResource("10_x7dkw")]([SubResource("Resource_m04a6"), SubResource("Resource_241r8"), SubResource("Resource_cwoh6"), SubResource("Resource_otdfc")])
+tiers = Array[ExtResource("12_otdfc")]([SubResource("Resource_rgduy"), SubResource("Resource_j7vh3"), SubResource("Resource_1cij7"), SubResource("Resource_d5spn")])
+_tiers = Array[ExtResource("10_x7dkw")]([SubResource("Resource_m04a6"), SubResource("Resource_241r8"), SubResource("Resource_cwoh6"), SubResource("Resource_otdfc")])
 attack = 2
 health = 2
 speed = 2

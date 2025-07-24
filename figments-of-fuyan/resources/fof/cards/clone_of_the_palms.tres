@@ -1,32 +1,18 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=18 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=28 format=3]
 
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_gd27f"]
-[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_kej33"]
-[ext_resource type="Resource" path="res://resources/fof/archetypes/brute.tres" id="2_mvdbc"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/blade_of_the_palms.png" id="3_8gyu2"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_mvdbc"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/blade_of_the_palms.png" id="4_v3vbl"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_mvdbc"]
-[ext_resource type="Script" path="res://scripts/fof/cards/clone_of_the_palms.gd" id="6_v3vbl"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/blade_of_the_palms.glb" id="7_xwp8q"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_xwp8q"]
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_l6186"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_x8gyx"]
-size = Vector3(0.633057, 2.42429, 0.301514)
-
-[sub_resource type="PackedScene" id="PackedScene_lok3x"]
-_bundled = {
-"conn_count": 0,
-"conns": PackedInt32Array(),
-"editable_instances": [],
-"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
-"node_count": 1,
-"node_paths": [],
-"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
-"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00524902, 1.20674, -0.0177002), SubResource("BoxShape3D_x8gyx")],
-"version": 3
-}
+[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_gd27f"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_kej33"]
+[ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_mvdbc"]
+[ext_resource type="Texture2D" uid="uid://c4qts40qrbkie" path="res://assets/sprites/game/cards/art_mini/blade_of_the_palms.png" id="3_8gyu2"]
+[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_mvdbc"]
+[ext_resource type="Image" uid="uid://du02yxtlqrpgq" path="res://assets/sprites/game/cards/art_pop/blade_of_the_palms.png" id="4_v3vbl"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_mvdbc"]
+[ext_resource type="Script" uid="uid://5d5wn4d1wius" path="res://scripts/fof/cards/clone_of_the_palms.gd" id="6_v3vbl"]
+[ext_resource type="PackedScene" uid="uid://bb5vdrqxqa0wb" path="res://assets/models/fof/cards/blade_of_the_palms.glb" id="7_xwp8q"]
+[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="10_xwp8q"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_l6186"]
+[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_04cdr"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_g85vt"]
 
 [sub_resource type="Resource" id="Resource_l6186"]
 script = ExtResource("10_xwp8q")
@@ -68,9 +54,90 @@ description = ""
 active_abilities = Array[ExtResource("11_l6186")]([])
 traits = Array[ExtResource("2_kej33")]([])
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_x8gyx"]
+size = Vector3(0.633057, 2.42429, 0.301514)
+
+[sub_resource type="PackedScene" id="PackedScene_lok3x"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00524902, 1.20674, -0.0177002), SubResource("BoxShape3D_x8gyx")],
+"version": 3
+}
+
+[sub_resource type="Resource" id="Resource_r0vid"]
+script = ExtResource("13_g85vt")
+description = "How'd you get here?"
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_glpec"]
+script = ExtResource("12_04cdr")
+attack = 3
+health = 1
+speed = 3
+energy = 2
+description_datastore = SubResource("Resource_r0vid")
+description = ""
+active_abilities = Array[ExtResource("11_l6186")]([])
+traits = Array[ExtResource("2_kej33")]([])
+
+[sub_resource type="Resource" id="Resource_shcwj"]
+script = ExtResource("13_g85vt")
+description = ""
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_tx62y"]
+script = ExtResource("12_04cdr")
+attack = 3
+health = 1
+speed = 3
+energy = 2
+description_datastore = SubResource("Resource_shcwj")
+description = ""
+active_abilities = Array[ExtResource("11_l6186")]([])
+traits = Array[ExtResource("2_kej33")]([])
+
+[sub_resource type="Resource" id="Resource_0i1uj"]
+script = ExtResource("13_g85vt")
+description = ""
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_76g76"]
+script = ExtResource("12_04cdr")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description_datastore = SubResource("Resource_0i1uj")
+description = ""
+active_abilities = Array[ExtResource("11_l6186")]([])
+traits = Array[ExtResource("2_kej33")]([])
+
+[sub_resource type="Resource" id="Resource_jfm8f"]
+script = ExtResource("13_g85vt")
+description = ""
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_etarw"]
+script = ExtResource("12_04cdr")
+attack = -1
+health = -1
+speed = -1
+energy = -1
+description_datastore = SubResource("Resource_jfm8f")
+description = ""
+active_abilities = Array[ExtResource("11_l6186")]([])
+traits = Array[ExtResource("2_kej33")]([])
+
 [resource]
 script = ExtResource("3_mvdbc")
-tiers = Array[ExtResource("10_xwp8q")]([SubResource("Resource_l6186"), SubResource("Resource_d1wjh"), SubResource("Resource_04cdr"), SubResource("Resource_g85vt")])
+tiers = Array[ExtResource("12_04cdr")]([SubResource("Resource_glpec"), SubResource("Resource_tx62y"), SubResource("Resource_76g76"), SubResource("Resource_etarw")])
+_tiers = Array[ExtResource("10_xwp8q")]([SubResource("Resource_l6186"), SubResource("Resource_d1wjh"), SubResource("Resource_04cdr"), SubResource("Resource_g85vt")])
 attack = 3
 health = 1
 speed = 3

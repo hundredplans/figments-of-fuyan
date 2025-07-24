@@ -1,45 +1,18 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=22 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=32 format=3 uid="uid://beb0o4xhwj3hh"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_0pxj8"]
-[ext_resource type="Resource" path="res://resources/fof/archetypes/hostile.tres" id="2_bdpwe"]
-[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_dg7vn"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/Sandlegged_Crab.png" id="2_mud08"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/sandlegged_crab.png" id="3_77ri4"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_wa8dr"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/sandlegged_crab.glb" id="4_q4tg0"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="4_spybi"]
-[ext_resource type="Script" path="res://scripts/fof/cards/sandlegged_crab.gd" id="5_4lucv"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_t5set"]
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_py00n"]
-
-[sub_resource type="Resource" id="Resource_woacj"]
-script = ExtResource("1_0pxj8")
-exists = 1
-ascended_description = ""
-ascended_max_charges = -1
-name = "Hardened Shell"
-description = "Gain ARMOR [1] for [1] Turn"
-max_charges = -1
-delay = 2.5
-camera_type = 0
-charges = -1
-used = false
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_rw3ha"]
-size = Vector3(1, 0.85559, 0.891479)
-
-[sub_resource type="PackedScene" id="PackedScene_pf6lw"]
-_bundled = {
-"conn_count": 0,
-"conns": PackedInt32Array(),
-"editable_instances": [],
-"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
-"node_count": 1,
-"node_paths": [],
-"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
-"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.427064, 0.000915527), SubResource("BoxShape3D_rw3ha")],
-"version": 3
-}
+[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_0pxj8"]
+[ext_resource type="Resource" uid="uid://cm711yoprmaev" path="res://resources/fof/archetypes/hostile.tres" id="2_bdpwe"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_dg7vn"]
+[ext_resource type="Image" uid="uid://bug1bqmadah7c" path="res://assets/sprites/game/cards/art_pop/Sandlegged_Crab.png" id="2_mud08"]
+[ext_resource type="Texture2D" uid="uid://dg8ey7psr2ltn" path="res://assets/sprites/game/cards/art_mini/sandlegged_crab.png" id="3_77ri4"]
+[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_wa8dr"]
+[ext_resource type="PackedScene" uid="uid://3qtnmbnfu6uw" path="res://assets/models/fof/cards/sandlegged_crab.glb" id="4_q4tg0"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="4_spybi"]
+[ext_resource type="Script" uid="uid://bkldbfkha1ipm" path="res://scripts/fof/cards/sandlegged_crab.gd" id="5_4lucv"]
+[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="10_t5set"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_py00n"]
+[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_gb15k"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_wg4xy"]
 
 [sub_resource type="Resource" id="Resource_py00n"]
 script = ExtResource("11_py00n")
@@ -113,9 +86,103 @@ description = "HOSTILE; ABILITY: Gain ARMOR [1] for [1]  Turn"
 active_abilities = Array[ExtResource("11_py00n")]([])
 traits = Array[ExtResource("2_dg7vn")]([])
 
+[sub_resource type="Resource" id="Resource_woacj"]
+script = ExtResource("1_0pxj8")
+exists = 1
+ascended_description = ""
+ascended_max_charges = -1
+name = "Hardened Shell"
+description = "Gain ARMOR [1] for [1] Turn"
+max_charges = -1
+delay = 2.5
+camera_type = 0
+charges = -1
+used = false
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rw3ha"]
+size = Vector3(1, 0.85559, 0.891479)
+
+[sub_resource type="PackedScene" id="PackedScene_pf6lw"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.427064, 0.000915527), SubResource("BoxShape3D_rw3ha")],
+"version": 3
+}
+
+[sub_resource type="Resource" id="Resource_ov6ei"]
+script = ExtResource("13_wg4xy")
+description = "HOSTILE; ABILITY: Gain ARMOR [1] for [1] Turn"
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_rpnua"]
+script = ExtResource("12_gb15k")
+attack = 2
+health = 3
+speed = 2
+energy = 2
+description_datastore = SubResource("Resource_ov6ei")
+description = ""
+active_abilities = Array[ExtResource("11_py00n")]([SubResource("Resource_py00n")])
+traits = Array[ExtResource("2_dg7vn")]([])
+
+[sub_resource type="Resource" id="Resource_jtehl"]
+script = ExtResource("13_wg4xy")
+description = ""
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_cgdvn"]
+script = ExtResource("12_gb15k")
+attack = 2
+health = 5
+speed = 2
+energy = 2
+description_datastore = SubResource("Resource_jtehl")
+description = ""
+active_abilities = Array[ExtResource("11_py00n")]([SubResource("Resource_qks1e")])
+traits = Array[ExtResource("2_dg7vn")]([])
+
+[sub_resource type="Resource" id="Resource_gyk4m"]
+script = ExtResource("13_wg4xy")
+description = "HOSTILE; ABILITY: Gain ARMOR [1] for [1]  Turn"
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_pj7ei"]
+script = ExtResource("12_gb15k")
+attack = 2
+health = 3
+speed = 2
+energy = 2
+description_datastore = SubResource("Resource_gyk4m")
+description = ""
+active_abilities = Array[ExtResource("11_py00n")]([SubResource("Resource_m58np")])
+traits = Array[ExtResource("2_dg7vn")]([])
+
+[sub_resource type="Resource" id="Resource_mqjvg"]
+script = ExtResource("13_wg4xy")
+description = "HOSTILE; ABILITY: Gain ARMOR [1] for [1]  Turn"
+default_values = 0
+
+[sub_resource type="Resource" id="Resource_rityg"]
+script = ExtResource("12_gb15k")
+attack = 2
+health = 3
+speed = 2
+energy = 2
+description_datastore = SubResource("Resource_mqjvg")
+description = ""
+active_abilities = Array[ExtResource("11_py00n")]([])
+traits = Array[ExtResource("2_dg7vn")]([])
+
 [resource]
 script = ExtResource("3_wa8dr")
-tiers = Array[ExtResource("10_t5set")]([SubResource("Resource_wg4xy"), SubResource("Resource_vt3nu"), SubResource("Resource_3i32s"), SubResource("Resource_gb15k")])
+tiers = Array[ExtResource("12_gb15k")]([SubResource("Resource_rpnua"), SubResource("Resource_cgdvn"), SubResource("Resource_pj7ei"), SubResource("Resource_rityg")])
+_tiers = Array[ExtResource("10_t5set")]([SubResource("Resource_wg4xy"), SubResource("Resource_vt3nu"), SubResource("Resource_3i32s"), SubResource("Resource_gb15k")])
 attack = 2
 health = 3
 speed = 2

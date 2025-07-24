@@ -1,19 +1,52 @@
-[gd_resource type="Resource" script_class="ToolInfo" load_steps=6 format=3 uid="uid://ct3i0g27herhe"]
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=14 format=3 uid="uid://ca050km57qq81"]
 
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_t77c0"]
 [ext_resource type="Script" uid="uid://ben23dffxrigp" path="res://scripts/fof/tools/double_glaive.gd" id="2_hgpag"]
 [ext_resource type="Script" uid="uid://dq4qxtx6lyc2u" path="res://scripts/fof_info/tools/tool_info.gd" id="2_ut24a"]
 [ext_resource type="Texture2D" uid="uid://cgl1i5r6mavkd" path="res://assets/sprites/double_glaive.png" id="3_hgpag"]
 [ext_resource type="Script" uid="uid://ccxaxjnbobkaq" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="4_xuyan"]
+[ext_resource type="Script" uid="uid://bigyry2ykda2l" path="res://scripts/fof_info/tools/tool_tier_datastore.gd" id="6_xuyan"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="7_27r3d"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="8_xxwgp"]
+
+[sub_resource type="Resource" id="Resource_wxud4"]
+script = ExtResource("8_xxwgp")
+description = "This gains +1 SPD; This unit's attack is equal to it's current SPD
+"
+default_values = []
+
+[sub_resource type="Resource" id="Resource_ytat7"]
+script = ExtResource("6_xuyan")
+active_abilities = Array[ExtResource("7_27r3d")]([])
+description_datastore = SubResource("Resource_wxud4")
+
+[sub_resource type="Resource" id="Resource_1sk16"]
+script = ExtResource("8_xxwgp")
+description = "This gains +2 SPD; This unit's attack is equal to it's current SPD"
+default_values = []
+
+[sub_resource type="Resource" id="Resource_hhki7"]
+script = ExtResource("6_xuyan")
+active_abilities = Array[ExtResource("7_27r3d")]([])
+description_datastore = SubResource("Resource_1sk16")
+
+[sub_resource type="Resource" id="Resource_2kfq1"]
+script = ExtResource("6_xuyan")
+active_abilities = Array[ExtResource("7_27r3d")]([])
+description_datastore = SubResource("Resource_1sk16")
 
 [resource]
 script = ExtResource("2_ut24a")
+tiers = Array[ExtResource("6_xuyan")]([SubResource("Resource_ytat7"), SubResource("Resource_hhki7"), SubResource("Resource_2kfq1")])
 icon = ExtResource("3_hgpag")
 description = "This gains +1 SPD; This unit's attack is equal to it's current SPD
 "
 ascended_description = "This gains +2 SPD; This unit's attack is equal to it's current SPD"
 rarity = 6
 active_abilities = Array[ExtResource("1_t77c0")]([])
+use_charges = false
+auto_reset_charges = false
+reset_to_default = false
 id = 14
 name = "Double Glaive"
 gdscript = ExtResource("2_hgpag")

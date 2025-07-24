@@ -6,10 +6,7 @@ func onProcessAction(action: Action) -> void:
 		onPushAction(ArriveAction.new(self, action))
 	elif isValidRampage(action):
 		onPushAction(RampageAction.new(self, action))
-	
-func getDescription() -> String:
-	return super()
-	
+
 func onArrivePre(_action: AwakenAction) -> void:
 	pass
 

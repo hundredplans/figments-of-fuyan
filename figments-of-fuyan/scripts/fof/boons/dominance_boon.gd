@@ -6,9 +6,6 @@ func onProcessAction(action: Action) -> void:
 func onAscend(state: bool) -> void:
 	super(state)
 
-func getDescription() -> String:
-	return super()
-
 func onBoon(_action: Action = null) -> void:
 	pass
 
@@ -23,4 +20,3 @@ func getCharges() -> int:
 	
 func onCardTurnPassed(Card: CardGD) -> void:
 	super(Card)
-

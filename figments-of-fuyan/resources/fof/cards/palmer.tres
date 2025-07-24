@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=18 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_qrljm"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="2_amlc3"]
@@ -9,8 +9,9 @@
 [ext_resource type="PackedScene" path="res://assets/models/fof/cards/palmer.glb" id="3_qrvjs"]
 [ext_resource type="Script" path="res://scripts/fof/cards/palmer.gd" id="3_rgqu8"]
 [ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_3cuwg"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/tier_datastore.gd" id="10_bofk6"]
 [ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_jq0oi"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_73env"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_0hcfp"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_t0e05"]
 size = Vector3(0.509277, 0.840393, 0.164551)
@@ -28,59 +29,72 @@ _bundled = {
 "version": 3
 }
 
-[sub_resource type="Resource" id="Resource_jq0oi"]
-script = ExtResource("10_bofk6")
+[sub_resource type="Resource" id="Resource_6l5bk"]
+script = ExtResource("13_0hcfp")
+description = ""
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_wff6e"]
+script = ExtResource("12_73env")
 attack = 2
 health = 3
 speed = 2
 energy = 2
-description = ""
-active_abilities = Array[ExtResource("11_jq0oi")]([])
 traits = Array[ExtResource("3_qc4i1")]([])
+active_abilities = Array[ExtResource("11_jq0oi")]([])
+description_datastore = SubResource("Resource_6l5bk")
 
-[sub_resource type="Resource" id="Resource_0hcfp"]
-script = ExtResource("10_bofk6")
+[sub_resource type="Resource" id="Resource_8lai7"]
+script = ExtResource("13_0hcfp")
+description = ""
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_va4v6"]
+script = ExtResource("12_73env")
 attack = 2
 health = 5
 speed = 2
 energy = 2
-description = ""
-active_abilities = Array[ExtResource("11_jq0oi")]([])
 traits = Array[ExtResource("3_qc4i1")]([])
+active_abilities = Array[ExtResource("11_jq0oi")]([])
+description_datastore = SubResource("Resource_8lai7")
 
-[sub_resource type="Resource" id="Resource_225in"]
-script = ExtResource("10_bofk6")
+[sub_resource type="Resource" id="Resource_y3ry3"]
+script = ExtResource("13_0hcfp")
+description = ""
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_lgm7y"]
+script = ExtResource("12_73env")
 attack = 2
 health = 5
 speed = 2
 energy = 2
-description = ""
-active_abilities = Array[ExtResource("11_jq0oi")]([])
 traits = Array[ExtResource("3_qc4i1")]([])
+active_abilities = Array[ExtResource("11_jq0oi")]([])
+description_datastore = SubResource("Resource_y3ry3")
 
-[sub_resource type="Resource" id="Resource_73env"]
-script = ExtResource("10_bofk6")
+[sub_resource type="Resource" id="Resource_ghndg"]
+script = ExtResource("13_0hcfp")
+description = ""
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_wox36"]
+script = ExtResource("12_73env")
 attack = 2
 health = 5
 speed = 2
 energy = 2
-description = ""
-active_abilities = Array[ExtResource("11_jq0oi")]([])
 traits = Array[ExtResource("3_qc4i1")]([])
+active_abilities = Array[ExtResource("11_jq0oi")]([])
+description_datastore = SubResource("Resource_ghndg")
 
 [resource]
 script = ExtResource("2_amlc3")
-tiers = Array[ExtResource("10_bofk6")]([SubResource("Resource_jq0oi"), SubResource("Resource_0hcfp"), SubResource("Resource_225in"), SubResource("Resource_73env")])
-attack = 2
-health = 3
-speed = 2
-energy = 2
+tiers = Array[ExtResource("12_73env")]([SubResource("Resource_wff6e"), SubResource("Resource_va4v6"), SubResource("Resource_lgm7y"), SubResource("Resource_wox36")])
+archetype = ExtResource("2_jki1r")
 rarity = 3
-initial_traits = Array[ExtResource("3_qc4i1")]([])
-active_abilities = Array[ExtResource("1_qrljm")]([])
 flavor_text = ""
-description = ""
-ascended_description = ""
 art_mini_coordinate = Vector2i(91, 68)
 art_mini = ExtResource("2_s1x8n")
 art_pop = ExtResource("2_xsqxw")
@@ -95,7 +109,14 @@ plus_health = 2
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("3_qc4i1")]([])
-archetype = ExtResource("2_jki1r")
+attack = 2
+health = 3
+speed = 2
+energy = 2
+description = ""
+ascended_description = ""
+initial_traits = Array[ExtResource("3_qc4i1")]([])
+active_abilities = Array[ExtResource("1_qrljm")]([])
 id = 5
 name = "Palmer"
 gdscript = ExtResource("3_rgqu8")

@@ -13,5 +13,3 @@ func onProcessAction(action: Action) -> void:
 	elif action.post and action is HandCardAction and isAlive():
 		onPushAction(CardEnergyAction.new(action.Card, -1))
 	
-func getDescription() -> String:
-	return super()

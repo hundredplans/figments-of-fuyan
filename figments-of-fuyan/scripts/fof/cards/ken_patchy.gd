@@ -16,10 +16,10 @@ func onAscendedUpdated(state: bool) -> void:
 	super(state)
 	on_hit_charges = getDefaultCharges()
 	
-func getDescription() -> String:
-	if !getAscended():
-		return super()
-	return Helper.getDescriptionNumeric(super(), [on_hit_charges], [["On Hit ", "[1]"]])
+func getDescription(use_default_values: bool = false) -> String:
+	if getTier() >= 2:
+		return Helper.getDescription(super(), [on_hit_charges])
+	return super(use_default_values)
 
 func getDefaultCharges() -> int:
 	return 1
